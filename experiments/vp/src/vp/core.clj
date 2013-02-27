@@ -27,22 +27,22 @@
                      (alter state assoc :stack (conj s arg))
                      nil)))})
 
-(def process-words
+(def processor-words
   {:process (fn [state arg]
-              (dosync (let [flows @(get @state :flows)
+              (dosync (let [context (get @state :context)
                             process-flow (if (nil? arg) (get @state :process-flow) arg)
-                            [instruction op1 op2] (tell-flow process-flow :pop nil)
+                            [instruction op1 op2] (tell-flow context process-flow :pop nil)
                             ]
                         (if (nil? instruction) (str "<Process Completed>")
                             (cond (= instruction :tell) 
                                   (let [[flow-id word args] op1]
-                                    (tell-flow flow-id word args)
+                                    (tell-flow context flow-id word args)
                                     )
                                   (= instruction :link)
                                   (let [[src-flow-id src-word src-args] op1
                                         [dst-flow-id dst-word] op2
-                                        dst-args (tell-flow src-flow-id src-word src-args)]
-                                    (tell-flow dst-flow-id dst-word dst-args)
+                                        dst-args (tell-flow context src-flow-id src-word src-args)]
+                                    (tell-flow context dst-flow-id dst-word dst-args)
                                     )
                                   true (str "<Unknown instruction: " instruction ">"))
                             )
@@ -56,34 +56,36 @@
    [:link [:stack :pop] [:screen :push]]
    [:tell [:memory :restart]]])
 
-(def flow-list (ref {}))
+(def the-context (ref {}))
 
 (defn tell-flow
   "say something to a flow in it's protocol"
-  [flow-id word arguments]
-  (let [flow (get @flow-list flow-id)
+  [context flow-id word arguments]
+  (let [flow (get @context flow-id)
         word-fn (word (:words flow))
         state (:state flow)]
     (println "telling" flow-id "to" word arguments)
     (word-fn state arguments)
     ))
 
-(dosync (alter flow-list assoc 
-               :screen {:words {:push (fn [_ arguments] (println arguments) nil)}}
-               :keyboard {:words {:pop (fn [_ _] (read-line))}}
-               :stack {:words stack-words
-                       :state (ref {:stack []})}                  
-               :memory {:words instruction-set-words
-                        :state (ref {:pc 0 
-                                     :mem instructions})}
-               :_ {:words {:pop (fn [_ _] [:tell [:processor :process]])}}
-               :processor {:words process-words
-                           :state (ref {:process-flow :memory
-                                        :flows flow-list})})
-        )
+(defmacro register-flows [context & list] `(dosync (alter ~context assoc ~@list)))
+
+(register-flows the-context
+                :screen {:words {:push (fn [_ arguments] (println arguments) nil)}}
+                :keyboard {:words {:pop (fn [_ _] (read-line))}}
+                :stack {:words stack-words
+                        :state (ref {:stack []})}
+                :memory {:words instruction-set-words
+                         :state (ref {:pc 0
+                                      :mem instructions})}
+                :_ {:words {:pop (fn [_ _] [:tell [:processor :process]])}}
+                :processor {:words processor-words
+                            :state (ref {:process-flow :memory
+                                         :context the-context})})
+
 
 (defn step
   "Do one process step"
   []
-  (tell-flow :processor :process :_))
+  (tell-flow the-context :processor :process :_))
 
