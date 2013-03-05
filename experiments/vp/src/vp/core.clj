@@ -27,26 +27,36 @@
                      (alter state assoc :stack (conj s arg))
                      nil)))})
 
+(defn tell-flow
+  "say something to a flow in it's protocol"
+  [context flow-id word arguments]
+  (let [flow (get @context flow-id)
+        word-fn (word (:words flow))
+        state (:state flow)]
+    (println "telling" flow-id "to" word arguments)
+    (word-fn state arguments)
+    ))
+
 (def processor-words
-  {:process (fn [state arg]
-              (dosync (let [context (get @state :context)
-                            process-flow (if (nil? arg) (get @state :process-flow) arg)
-                            [instruction op1 op2] (tell-flow context process-flow :pop nil)
-                            ]
-                        (if (nil? instruction) (str "<Process Completed>")
-                            (cond (= instruction :tell) 
-                                  (let [[flow-id word args] op1]
-                                    (tell-flow context flow-id word args)
-                                    )
-                                  (= instruction :link)
-                                  (let [[src-flow-id src-word src-args] op1
-                                        [dst-flow-id dst-word] op2
-                                        dst-args (tell-flow context src-flow-id src-word src-args)]
-                                    (tell-flow context dst-flow-id dst-word dst-args)
-                                    )
-                                  true (str "<Unknown instruction: " instruction ">"))
-                            )
-                        )))})
+  {:run (fn [state arg]
+          (dosync (let [context (get @state :context)
+                        process-flow (if (nil? arg) (get @state :process-flow) arg)
+                        [instruction op1 op2] (tell-flow context process-flow :pop nil)
+                        ]
+                    (if (nil? instruction) (str "<Process Completed>")
+                        (cond (= instruction :tell) 
+                              (let [[flow-id word args] op1]
+                                (tell-flow context flow-id word args)
+                                )
+                              (= instruction :link)
+                              (let [[src-flow-id src-word src-args] op1
+                                    [dst-flow-id dst-word] op2
+                                    dst-args (tell-flow context src-flow-id src-word src-args)]
+                                (tell-flow context dst-flow-id dst-word dst-args)
+                                )
+                              true (str "<Unknown instruction: " instruction ">"))
+                        )
+                    )))})
 
 (def instructions
   [[:tell [:screen :push "hello flows"]]
@@ -58,16 +68,6 @@
 
 (def the-context (ref {}))
 
-(defn tell-flow
-  "say something to a flow in it's protocol"
-  [context flow-id word arguments]
-  (let [flow (get @context flow-id)
-        word-fn (word (:words flow))
-        state (:state flow)]
-    (println "telling" flow-id "to" word arguments)
-    (word-fn state arguments)
-    ))
-
 (defmacro register-flows [context & list] `(dosync (alter ~context assoc ~@list)))
 
 (register-flows the-context
@@ -78,14 +78,14 @@
                 :memory {:words instruction-set-words
                          :state (ref {:pc 0
                                       :mem instructions})}
-                :_ {:words {:pop (fn [_ _] [:tell [:processor :process]])}}
+                :_ {:words {:pop (fn [_ _] [:tell [:processor :run]])}}
                 :processor {:words processor-words
                             :state (ref {:process-flow :memory
                                          :context the-context})})
 
 
-(defn step
-  "Do one process step"
+(defn cycle
+  "Do one process cycle"
   []
-  (tell-flow the-context :processor :process :_))
+  (tell-flow the-context :processor :run :_))
 
