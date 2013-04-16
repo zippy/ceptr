@@ -1,0 +1,33 @@
+; Word Spec
+
+;sample spec for droplets
+
+;text preceeded by "." is how you define a type in place
+
+
+(.type int|str|word)
+
+(.bool ("[.]<word-name>" type|word|group))
+(.group ("[.]<word-name>" type|word|group)+ )
+
+(.date (.year int)
+       (.month int)
+       (.day int))
+
+(.2ple word word)
+
+(.list word+)
+
+(.create-date date)
+
+; source could be a contact (i.e. for droplets that are communications
+; with people) or it could be something like "the web" or a device
+; (camera, etc)
+
+(.channeled-address (2ple (.channel ...) (.address word)))
+
+(.droplet (.source channeled-address)
+          (.dest (.address-list group^channeled-address))
+          (.timeline list^(2ple date (.event word)))
+          (.envelope body-descriptor)
+          (.body word))
