@@ -33,14 +33,14 @@
   (defcond [data]
     {:cond (re-match (last-str data) #"^MAIL( FROM)*:*")
      :method (pass :email-parser
-                   {:id (get-id data) 
+                   {:id (get-id data)
                     :data-ptr (get-match-ptr (last-str data) #"^MAIL( FROM)*:*")
-                    :result-states {:ok (defcond {:method (respond "250 OK")
+                    :result-state {:ok (defcond {:method (respond "250 OK")
                                                   :logging (state :from)})
                                     :_else (defcond {:method (respond "501 Syntax Error")
                                                      :logging (state :open)})
                                     }})
-     :logging (state :passed "Waiting for FROM parse")}
+    :logging (state :passed "Waiting for FROM parse")}
     ))
 
 (def recpt-cond
@@ -48,7 +48,7 @@
   (defcond [data status]
     {:cond (re-match (last-str data) #"^RCPT( TO)*:*")
      :method (pass :email-parser
-                   {:id (get-id data) 
+                   {:id (get-id data)
                     :data-ptr (get-match-ptr (last-str data) #"RCPT( TO)*:*")
                     :result-state {:ok (defcond {:method (respond "250 OK")
                                                  :logging (state :rcpt)})
@@ -85,4 +85,3 @@
      :method (respond "250 OK")
      :logging nil}
     ))
-
