@@ -1,4 +1,4 @@
-#include <igloo/igloo_alt.h>
+#include <igloo/igloo.h>
 #include <ceptr.h>
 using namespace igloo;
 using namespace Ceptr;
@@ -14,15 +14,19 @@ using namespace Ceptr;
 */
 
 
-Describe(existence_addressing)
+Context(existence_addressing)
 {
-    XAddr xaddr;
+    Spec(creating_anything_returns_an_existence_address_for_that_item) {
+	wordID w_id = INT_W;
+	XAddr* xaddrP = Op::New(INT_W);
+	Assert::That(xaddrP->word_id(),Equals<wordID>(INT_W));
+    }
 
-    It(provides existence addressing for receptors to refer to items they contain)
-	{
-	    Assert::That(de.size(), Equals(0));
-	}
-}
+    //    It(provides existence addressing for receptors to refer to items they contain)
+    //	{
+    //	    Assert::That(de.size(), Equals(0));
+    //	}
+};
 /*
 
   ---- TO-DO specs to be implemented-----
