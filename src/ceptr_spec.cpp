@@ -13,25 +13,46 @@ using namespace Ceptr;
    - device bindings (streams)
 */
 
-
-Context(existence_addressing)
-{
-    Spec(creating_anything_returns_an_existence_address_for_that_item) {
-	wordID w_id = INT_W;
-	XAddr* xaddrP = Op::New(INT_W);
-	Assert::That(xaddrP->word_id(),Equals<wordID>(INT_W));
-    }
-
-    //    It(provides existence addressing for receptors to refer to items they contain)
-    //	{
-    //	    Assert::That(de.size(), Equals(0));
-    //	}
+Context(storage){
+    Context(handlers){
+	Spec(handlers_store_data){
+	    StorageHandler<int> s;
+	    storageIdx idx = s.set(1);
+	    int i = s.get(idx);
+	    Assert::That(i,Equals<int>(1));
+	    Assert::That(*static_cast<int*>(s.getP(idx)),Equals<int>(1));
+	}
+    };
+    Context(existence_addressing)
+    {
+	XAddr x = XAddr(1);
+	XAddr y = XAddr("fish");
+	Spec(xaddrs_have_word_ids) {
+	    Assert::That(x.word_id(),Equals<wordID>(INT_W));
+	    Assert::That(y.word_id(),Equals<wordID>(STR_W));
+	}
+	Spec(xaddrs_have_indexes){
+	    //	    Assert::That(x.idx(),Equals(1));
+	}
+	Spec(xaddrs_point_to_values){
+	    Assert::That( *static_cast<int*>(x.value()),Equals(1));
+	    Assert::That( *static_cast<string*>(y.value()),Equals<string>("fish"));
+	}
+    };
+};
+Context(vm_operands){
+    Context(NEW){
+	Spec(takes_a_word_id) {
+	    XAddr* xaddrP = Op::New(INT_W);
+	    Assert::That(xaddrP->word_id(),Equals<wordID>(INT_W));
+	}
+    };
 };
 /*
 
   ---- TO-DO specs to be implemented-----
   It(provides ceptr network addressing for receptors to refer to external receptors)
-
+  //    It(provides existence addressing for receptors to refer to items they contain)
 
 It (can bridge external devices by creating binds which provide a ceptr stream)
 It (maintains a mapping between process and data)
@@ -59,7 +80,6 @@ It(has an event queue that a process can be woken up to service)
 
 Describe(storage){
 It(has storage handlers for different types of data, i.e. buckets for different sizes/chunkability types)
-It(has an abstraction for xaddrs)
 It(has different indexing portions of x-addresses depending on the storage handler) //implemented as polymorphic types by each handler
 It(throws errors when you access something using an incorrect semantic type)
 It(has a permission/in-use tree to mark receptor access to data objects) // also part of garbage collection
