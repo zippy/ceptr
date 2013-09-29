@@ -14,6 +14,12 @@ using namespace Ceptr;
 */
 
 Context(storage){
+    /*It(has storage handlers for different types of data, i.e. buckets for different sizes/chunkability types)
+      It(has different indexing portions of x-addresses depending on the storage handler) //implemented as polymorphic types by each handler
+      It(throws errors when you access something using an incorrect semantic type)
+      It(has a permission/in-use tree to mark receptor access to data objects) // also part of garbage collection
+      It(can set the storage attributes (permanence level, recyclability, latency, throughput[r/w], growth-rate needs, private/shared, redundancy, tolerance), for a data object, which indicates which medium to use: ram,ram-disk,hdd,network shared,etc
+      It(can choose the appropriate storage medium based on balancing the requests for the storage item and what's available in the media pool, closest fit based on tolerances for specific attributes)*/
     Context(handlers){
 	//It(has storage handlers for different types of data, i.e. buckets for different sizes/chunkability types)
 	Spec(handlers_store_data){
@@ -50,6 +56,20 @@ Context(storage){
 };
 Context(virtual_machine){
     Context(code_execution){
+	/*It(is initiated, i.e. there is a wake-up call to the aspect, by a log entry being written)
+	  It(has a round-robin process scheduler based on active items written to log(s): input, fork (for independent processes), scape update queue)
+	  It(has a sematic data stack on which to push "words")
+	  It(has a calling stack onto which are pushed stack-frames)
+	  It(has an "index addressing" mode where you can get portions of a semantic unit back out, especially used by the program counter tuple to reference code-blocks/routines and operations within that routine)
+	  It(has a log (as std input/output/err+))
+	  Describe(log){
+	  It(has immutable log entries)
+	  It(has attached meta-data for each log entry that open loggers (connected receptors) can update)
+	  It(had an open logger tree to manage permissions for accessing the log entry and writing meta-data about results by "called" receptors that continue to process the log entry)
+	  It(has scapes on the meta-data state, like an error scape so folks can listen to errors)
+	  It(automatically ends execution if there is an error and no explicit catch code was supplied)
+	  }
+	*/
 	Spec(xx){}
     };
     Context(operands){
@@ -90,32 +110,6 @@ It(has a required entry point for a respond function for passing responses back 
 It(has a required entry point for a request function for planting listeners on request by other receptors)
 It(has an event queue that a process can be woken up to service)
 }
-
-Describe(storage){
-It(has storage handlers for different types of data, i.e. buckets for different sizes/chunkability types)
-It(has different indexing portions of x-addresses depending on the storage handler) //implemented as polymorphic types by each handler
-It(throws errors when you access something using an incorrect semantic type)
-It(has a permission/in-use tree to mark receptor access to data objects) // also part of garbage collection
-It(can set the storage attributes (permanence level, recyclability, latency, throughput[r/w], growth-rate needs, private/shared, redundancy, tolerance), for a data object, which indicates which medium to use: ram,ram-disk,hdd,network shared,etc
-It(can choose the appropriate storage medium based on balancing the requests for the storage item and what's available in the media pool, closest fit based on tolerances for specific attributes)
-}
-
-Describe(execution context){
-It(is initiated, i.e. there is a wake-up call to the aspect, by a log entry being written)
-It(has a round-robin process scheduler based on active items written to log(s): input, fork (for independent processes), scape update queue)
-It(has a sematic data stack on which to push "words")
-It(has a calling stack onto whcih are pushed stack-frames)
-It(has an "index addressing" mode where you can get portions of a semantic unit back out, especially used by the program counter tuple to reference code-blocks/routines and operations within that routine)
-It(has a log (as std input/output/err+))
-Describe(log){
-It(has immutable log entries)
-It(has attached meta-data for each log entry that open loggers (connected receptors) can update)
-It(had an open logger tree to manage permissions for accessing the log entry and writing meta-data about results by "called" receptors that continue to process the log entry)
-It(has scapes on the meta-data state, like an error scape so folks can listen to errors)
-It(automatically ends execution if there is an error and no explicit catch code was supplied)
-}
-}
-
 
 It(can_calculate_the_size_of_itself)
 It(can_crc_content)
