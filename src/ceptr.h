@@ -20,6 +20,11 @@ namespace Ceptr {
     public:
 	XAddr(int i){word_id_ = INT_W;idx_ = intHandlerP->set(i);}
 	XAddr(string s){word_id_ = STR_W;idx_ = strHandlerP->set(s);}
+	XAddr(wordID wid, storageIdx idx){
+	    word_id_ = wid;
+	    idx_ = idx;
+	}
+	bool operator==(XAddr& a){return word_id_ == a.word_id_ && idx_==a.idx_;}
 	inline wordID word_id() const {return word_id_;}
 	inline void* value() const {
 	    switch(word_id_){

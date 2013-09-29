@@ -15,6 +15,7 @@ using namespace Ceptr;
 
 Context(storage){
     Context(handlers){
+	//It(has storage handlers for different types of data, i.e. buckets for different sizes/chunkability types)
 	Spec(handlers_store_data){
 	    StorageHandler<int> s;
 	    storageIdx idx = s.set(1);
@@ -38,14 +39,26 @@ Context(storage){
 	    Assert::That( *static_cast<int*>(x.value()),Equals(1));
 	    Assert::That( *static_cast<string*>(y.value()),Equals<string>("fish"));
 	}
+	Spec(xaddrs_can_be_constructed_explicitly) {
+	    XAddr z = XAddr(STR_W,y.idx());
+	    Assert::That(z.word_id(),Equals<wordID>(STR_W));
+	    Assert::That( *static_cast<string*>(z.value()),Equals<string>("fish"));
+	    Assert::That(z == y,Is().True());
+	    Assert::That(z == x,Is().False());
+	}
     };
 };
-Context(vm_operands){
-    Context(NEW){
-	Spec(takes_a_word_id) {
-	    XAddr* xaddrP = Op::New(INT_W);
-	    Assert::That(xaddrP->word_id(),Equals<wordID>(INT_W));
-	}
+Context(virtual_machine){
+    Context(code_execution){
+	Spec(xx){}
+    };
+    Context(operands){
+	Context(NEW){
+	    Spec(takes_a_word_id) {
+		XAddr* xaddrP = Op::New(INT_W);
+		Assert::That(xaddrP->word_id(),Equals<wordID>(INT_W));
+	    }
+	};
     };
 };
 /*
