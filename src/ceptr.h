@@ -2,9 +2,21 @@
 #define _CEPTR_H
 using namespace std;
 namespace Ceptr {
+    /*
+     Words
+     */
     typedef int wordID;
     enum {INT_W,BOOL_W,STR_W};
+    class Word {
+	wordID id_;
+    public:
+	Word(wordID id) {id_=id;}
+	wordID id() {return id_;}
+    };
 
+    /*
+      Storage Handlers
+     */
     typedef void* storageIdx;
     template<class T> class StorageHandler{
     public:
@@ -12,6 +24,10 @@ namespace Ceptr {
 	T get(void *p){return *static_cast<T*>(p);}
 	T* getP(void *p){return static_cast<T*>(p);}
     };
+
+    /*
+     XAddrs
+    */
     class XAddr {
 	wordID word_id_;
 	storageIdx idx_;
@@ -35,8 +51,6 @@ namespace Ceptr {
 	}
 	inline storageIdx idx() const {return idx_;}
     };
-    StorageHandler<int>* XAddr::intHandlerP = new StorageHandler<int>;
-    StorageHandler<string>* XAddr::strHandlerP = new StorageHandler<string>;
 
     // VM operands
     namespace Op {
@@ -44,5 +58,11 @@ namespace Ceptr {
 	    return new XAddr(w_id);
 	}
     }
+
+
+    /*Implementation stuff (to be moved to .cpp files later)*/
+    StorageHandler<int>* XAddr::intHandlerP = new StorageHandler<int>;
+    StorageHandler<string>* XAddr::strHandlerP = new StorageHandler<string>;
+
 }
 #endif

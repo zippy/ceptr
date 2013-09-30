@@ -39,7 +39,8 @@ Context(storage){
 	    Assert::That(y.word_id(),Equals<wordID>(STR_W));
 	}
 	Spec(xaddrs_have_indexes){
-	    //	    Assert::That(x.idx(),Equals(1));
+	    //TODO: how do we test this??
+	    //Assert::That(static_cast<int>(x.idx()),IsGreaterThan(0));
 	}
 	Spec(xaddrs_point_to_values){
 	    Assert::That( *static_cast<int*>(x.value()),Equals(1));
@@ -51,6 +52,15 @@ Context(storage){
 	    Assert::That( *static_cast<string*>(z.value()),Equals<string>("fish"));
 	    Assert::That(z == y,Is().True());
 	    Assert::That(z == x,Is().False());
+	}
+    };
+    Context(words) {
+	Word w = Word(INT_W);
+	Spec(have_IDs){
+	    Assert::That(w.id(),Equals<wordID>(INT_W));
+	}
+	Spec(have_structure){
+
 	}
     };
 };
@@ -70,12 +80,14 @@ Context(virtual_machine){
 	  It(automatically ends execution if there is an error and no explicit catch code was supplied)
 	  }
 	*/
-	Spec(xx){}
+	Spec(happens_in_a_context){
+
+	}
     };
     Context(operands){
 	Context(NEW){
 	    Spec(takes_a_word_id) {
-		XAddr* xaddrP = Op::New(INT_W);
+		XAddr* xaddrP = Op::New(INT_W);//TODO: how do we specify data and get types for operands from a carrier?
 		Assert::That(xaddrP->word_id(),Equals<wordID>(INT_W));
 	    }
 	};
