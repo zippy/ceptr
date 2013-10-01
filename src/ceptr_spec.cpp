@@ -55,14 +55,21 @@ Context(storage){
 	}
     };
     Context(words) {
-	Word w = Word(INT_W);
-	Spec(have_IDs){
-	    Assert::That(w.id(),Equals<wordID>(INT_W));
+	Spec(are_identified){
+	    Assert::That(intW.id(),Equals<wordID>(INT_W));
 	}
-	Spec(have_structure){
-
-	}
+	Context(are_embodied_in_a_carrier){
+	    Carrier& c = intW.carrier();
+	    Spec(which_have_a_name){
+		Assert::That(c.name(),Equals("sequence of bits"));
+	    }
+	    Spec(have_structural_geometry){
+		Structure& s = c.structure();
+		Assert::That(s.name(),Equals("sequence"));
+	    }
+	};
     };
+    //Protocol: identifies, where in the semantic geometry an particular variant lives.  Translates from the structural geometry to the semantic geometry
 };
 Context(virtual_machine){
     Context(code_execution){
