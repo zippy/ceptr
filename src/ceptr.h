@@ -17,11 +17,14 @@ namespace Ceptr {
     };
 
     class Structure : public IdentifiedBase {
+    public:
+	virtual const string quality() = 0;
     };
 
     class Sequence : public Structure {
     public:
 	const string name() {return "sequence";}
+	const string quality() {return "order";}
 	virtual const int id() {return SEQ_S;};
     };
 

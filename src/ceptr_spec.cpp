@@ -54,6 +54,67 @@ Context(storage){
 	    Assert::That(z == x,Is().False());
 	}
     };
+
+
+/*
+  Carrier: the use of a specific <geometry> of the <dimensions of variability> of a <substrate/meduim> to manipulate the parts (<words>) of the  <medium> to encode <words> at a new level. [Alternate: a <geometric arrangement/geometry> of <variants (which are also <word(s)...>)> in a <substrate/medium>] [Carriers are level jumpers in that they produces semantic words at a new level from semantic words at a low level. Carriers are the level at which composition is occurring.]
+
+Dimension of variability: an abstract <attribute/quality> that can vary over some range according to some <process> and be applied to a <word>. (A dimension of variability creates a medium when made concrete.  E.g. RAM (as a medium) is concretizing a set of bits according to the DoV Sequence..)
+Example: Guitar as music medium: DoV mass of string, material of string, length of string, resting tension of string, amplitude of displacement of string, size and shape echo chamber, material and structure of plucking
+
+Substrate/Medium: a realization of a collection of <dimensions of variability> applied to a collection of <words>
+
+Geometry: a form/subset of variation within a <dimension of variability> indicated by a <process>
+Variant: a single variation within a <dimension of variability>
+Word: <primitive word> | <protocol> to translate/indicate which <variants> of <carrier> map to variants of semantic meaning of the word
+Protocol: a <process> (including grammar etc) to map of <variants> on a <carrier> to <word variants> at the new level. [Protocols identify, where in the semantic geometry an particular variant lives.  They translate from the structural geometry to the semantic geometry]
+Process: a unit of function which takes <words> as parameters and produces or changes <words>
+
+
+*/
+    Context(dimension_of_variability) {
+	Sequence s = Sequence();
+	Spec(has_a_name){
+	    Assert::That(s.name(),Equals("sequence"));
+	}
+	Spec(has_identification){
+	    Assert::That(s.id(),Equals<int>(SEQ_S));
+	}
+	Spec(has_a_quality_name){
+	    Assert::That(s.quality(),Equals("order"));
+	}
+	/*have name
+	  and id
+	  process for producing or capturing the variants
+	  structure
+	  grammar
+	*/
+    };
+    Context(structure) {
+	/*have names
+	  and ids
+	  and variations
+	*/
+    };
+    Context(protocol) {
+	/*have names
+	  and ids
+	  and variations
+	*/
+    };
+    Context(media) {
+	/*have names
+	  and ids
+	*/
+    };
+
+    Context(carrier){
+	/*
+	  for digital:
+	  variants: 0 or 1
+	  linear sequence
+	*/
+    };
     Context(words) {
 	Spec(are_identified){
 	    Assert::That(intW.id(),Equals<wordID>(INT_W));
@@ -69,7 +130,6 @@ Context(storage){
 	    }
 	};
     };
-    //Protocol: identifies, where in the semantic geometry an particular variant lives.  Translates from the structural geometry to the semantic geometry
 };
 Context(virtual_machine){
     Context(code_execution){
