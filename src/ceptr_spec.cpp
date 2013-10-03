@@ -1,5 +1,6 @@
 #include <igloo/igloo.h>
 #include <ceptr.h>
+
 using namespace igloo;
 using namespace Ceptr;
 
@@ -17,7 +18,6 @@ class X : public IdentifiedBase {
     const string name() {return "my name";}
 };
 auto_init(X,int,1)
-
 
 Context(base_classes) {
     Context(indentified) {
@@ -44,6 +44,9 @@ Context(base_classes) {
 	    X x1,x2(99);
 	    Assert::That(X::instances[x1.id()],Equals<X*>(&x1));
 	    Assert::That(X::instances[99],Equals<X*>(&x2));
+	}
+	Spec(throws_an_exception_if_multiply_defined){
+	    AssertThrows(exception,new X(99));
 	}
     };
 };

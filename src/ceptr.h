@@ -5,7 +5,11 @@
     int id_;								\
     static int id_gen_;							\
     static map<ID_TYPE,CLASS_NAME*>& init_instances_store() {return *(new map<ID_TYPE,CLASS_NAME*>);}; \
-    void init() {instances[id()]=this;}					\
+    void init() {							\
+	ID_TYPE i = id();						\
+	CLASS_NAME* c = instances[i];					\
+	if(c != 0) throw(exception());					\
+	instances[id()]=this;}						\
     public: 								\
     static map<ID_TYPE,CLASS_NAME*>& instances;		         	\
     CLASS_NAME() {id_ = id_gen_++;init();}				\
