@@ -1,5 +1,24 @@
 #ifndef _CEPTR_H
 #define _CEPTR_H
+
+#define auto(CLASS_NAME,ID_TYPE)					\
+    int id_;								\
+    static int id_gen_;							\
+    static map<ID_TYPE,CLASS_NAME*>& init_instances_store() {return *(new map<ID_TYPE,CLASS_NAME*>);}; \
+    void init() {instances[id()]=this;}					\
+    public: 								\
+    static map<ID_TYPE,CLASS_NAME*>& instances;		         	\
+    CLASS_NAME() {id_ = id_gen_++;init();}				\
+    CLASS_NAME(ID_TYPE id) {id_ = id;init();}				\
+    const int id() {return id_;}					\
+    CLASS_NAME* get_instance_by_id(ID_TYPE id) {return instances[id];}  \
+private:
+
+#define auto_init(CLASS_NAME,ID_TYPE,FIRST)	                        \
+    int CLASS_NAME::id_gen_=FIRST;		                        \
+    map<ID_TYPE,CLASS_NAME*>& CLASS_NAME::instances= init_instances_store();
+
+
 using namespace std;
 namespace Ceptr {
     /*
@@ -8,7 +27,7 @@ namespace Ceptr {
      */
     typedef int wordID;
     enum {_W,BIT_W,INT_W,BOOL_W,STR_W}; // primitive words
-    enum {SEQ_S};  // primitive structures
+    enum {SEQ_S,_LAST_S};  // primitive structures
 
     class IdentifiedBase {
     public:
@@ -16,51 +35,42 @@ namespace Ceptr {
 	virtual const int id() = 0;
     };
 
-    class Structure : public IdentifiedBase {
+    class Scape : public IdentifiedBase {
+	auto(Scape,int)
     public:
 	virtual const string quality() = 0;
     };
+    auto_init(Scape,int,_LAST_S)
 
-    class Sequence : public Structure {
+    class Sequence : public Scape {
     public:
+    Sequence():Scape(SEQ_S){};
 	const string name() {return "sequence";}
-	const string quality() {return "order";}
+	const string quality() {return "linear order";}
 	virtual const int id() {return SEQ_S;};
     };
 
     class Word : public IdentifiedBase {
-	static map<wordID,Word*> init_words() {map<wordID,Word*> w; return w;};
+	auto(Word,wordID)
     public:
-	static map<wordID,Word*> words;
-	Word(wordID id){
-	    words[id] = this;
-	}
     };
+    auto_init(Word,wordID,0)
+
     class Carrier : public IdentifiedBase {
-	int id_;
+	auto(Carrier,int)
 	string name_;
-	Structure* structureP_;
+	Scape* scapeP_;
 	wordID medium;
-	static map<int,Structure*> init_structures() {
-	    map<int,Structure*> m;
-	    m[SEQ_S] = new Sequence;
-	    return m;
-	};
-	static map<int,Structure*> structures;
-	static int ids;
     public:
-	Carrier(int structure_id,wordID medium){
-	    structureP_ = structures[structure_id];
-	    if (structureP_ == 0) {throw("UNKNOWN STRUCTURE");}
-	    id_ = ids++;
-	    name_ = structureP_->name() + " of " + Word::words[medium]->name()+"s";
+	Carrier(int scape_id,wordID medium){
+	    scapeP_ = Scape::instances[scape_id];
+	    if (scapeP_ == 0) {throw("UNKNOWN SCAPE");}
+	    name_ = scapeP_->name() + " of " + Word::instances[medium]->name()+"s";
 	}
-	const int id() {return id_;}
 	const string name() {return name_;};
-
-	Structure& structure() {return *structureP_;}
+	Scape& scape() {return *scapeP_;}
     };
-
+    auto_init(Carrier,int,1)
 
     class BitWord : public Word {
     public:
@@ -126,10 +136,10 @@ namespace Ceptr {
     /*Implementation stuff (to be moved to .cpp files later)*/
     StorageHandler<int>* XAddr::intHandlerP = new StorageHandler<int>;
     StorageHandler<string>* XAddr::strHandlerP = new StorageHandler<string>;
-    map<int,Structure*> Carrier::structures = init_structures();
-    int Carrier::ids = 0;
-    map<wordID,Word*> Word::words= init_words();
+
+    Sequence sequenceS = Sequence();
     BitWord bitW = BitWord();
     IntWord intW = IntWord();
+
 }
 #endif

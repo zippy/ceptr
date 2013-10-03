@@ -12,6 +12,41 @@ using namespace Ceptr;
    - processes (VMs/receptors <-> Processes/thread)
    - device bindings (streams)
 */
+class X : public IdentifiedBase {
+    auto(X,int)
+    const string name() {return "my name";}
+};
+auto_init(X,int,1)
+
+
+Context(base_classes) {
+    Context(indentified) {
+	class I : IdentifiedBase {
+	public:
+	    const string name() {return "my name";}
+	    const int id() {return 1;}
+	};
+	I my_i;
+	Spec(creates_identification_by_name){
+	    Assert::That(my_i.name(),Equals("my name"));
+	}
+	Spec(creates_identification_by_id){
+	    Assert::That(my_i.id(),Equals(1));
+	}
+    };
+    Context(auto_classes) {
+	Spec(creates_identification_by_id){
+	    X i1(7),i2;
+	    Assert::That(i1.id(),Equals(7));
+	    Assert::That(i2.id(),Equals(2));
+	}
+	Spec(creates_access_to_objects_by_id){
+	    X x1,x2(99);
+	    Assert::That(X::instances[x1.id()],Equals<X*>(&x1));
+	    Assert::That(X::instances[99],Equals<X*>(&x2));
+	}
+    };
+};
 
 Context(storage){
     /*It(has storage handlers for different types of data, i.e. buckets for different sizes/chunkability types)
@@ -57,31 +92,29 @@ Context(storage){
 
 
 /*
-  Carrier: the use of a specific <geometry> of the <dimensions of variability> of a <substrate/meduim> to manipulate the parts (<words>) of the  <medium> to encode <words> at a new level. [Alternate: a <geometric arrangement/geometry> of <variants (which are also <word(s)...>)> in a <substrate/medium>] [Carriers are level jumpers in that they produces semantic words at a new level from semantic words at a low level. Carriers are the level at which composition is occurring.]
+  Carrier: the use of a specific <geometry> of the <dimensions of variability/scapes> of a <substrate/meduim> to manipulate the parts (<words>) of the  <medium> to encode <words> at a new level. [Alternate: a <geometric arrangement/geometry> of <variants (which are also <word(s)...>)> in a <substrate/medium>] [Carriers are level jumpers in that they produces semantic words at a new level from semantic words at a low level. Carriers are the level at which composition is occurring.]
 
-Dimension of variability: an abstract <attribute/quality> that can vary over some range according to some <process> and be applied to a <word>. (A dimension of variability creates a medium when made concrete.  E.g. RAM (as a medium) is concretizing a set of bits according to the DoV Sequence..)
+Dimension of variability/Scape: an <attribute/quality> that can vary over some range created by <process> applied to a <word_type>. (A dimension of variability creates a medium when applied to a specific set of words.  E.g. RAM (as a medium) is concretizing a set of bits according to the DoV Sequence..)
 Example: Guitar as music medium: DoV mass of string, material of string, length of string, resting tension of string, amplitude of displacement of string, size and shape echo chamber, material and structure of plucking
 
 Substrate/Medium: a realization of a collection of <dimensions of variability> applied to a collection of <words>
 
 Geometry: a form/subset of variation within a <dimension of variability> indicated by a <process>
 Variant: a single variation within a <dimension of variability>
-Word: <primitive word> | <protocol> to translate/indicate which <variants> of <carrier> map to variants of semantic meaning of the word
+Word: <primitive word> | <protocol> to translate/indicate which <variants> of <carrier> map to variants of semantic meaning of the word spec
 Protocol: a <process> (including grammar etc) to map of <variants> on a <carrier> to <word variants> at the new level. [Protocols identify, where in the semantic geometry an particular variant lives.  They translate from the structural geometry to the semantic geometry]
 Process: a unit of function which takes <words> as parameters and produces or changes <words>
-
-
 */
     Context(dimension_of_variability) {
-	Sequence s = Sequence();
 	Spec(has_a_name){
-	    Assert::That(s.name(),Equals("sequence"));
+	    Assert::That(sequenceS.name(),Equals("sequence"));
 	}
 	Spec(has_identification){
-	    Assert::That(s.id(),Equals<int>(SEQ_S));
+	    Assert::That(sequenceS.id(),Equals<int>(SEQ_S));
+	    Assert::That(Scape::instances[SEQ_S],Equals<Scape *>(&sequenceS));
 	}
 	Spec(has_a_quality_name){
-	    Assert::That(s.quality(),Equals("order"));
+	    Assert::That(sequenceS.quality(),Equals("linear order"));
 	}
 	/*have name
 	  and id
@@ -124,8 +157,8 @@ Process: a unit of function which takes <words> as parameters and produces or ch
 	    Spec(which_have_a_name){
 		Assert::That(c.name(),Equals("sequence of bits"));
 	    }
-	    Spec(have_structural_geometry){
-		Structure& s = c.structure();
+	    Spec(have_scapes){
+		Scape& s = c.scape();
 		Assert::That(s.name(),Equals("sequence"));
 	    }
 	};
