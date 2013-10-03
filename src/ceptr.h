@@ -30,7 +30,7 @@ namespace Ceptr {
      and translating the variants possible in that Carrier via a Protocol into a SemanticGeometry.
      */
     typedef int wordID;
-    enum {_W,BIT_W,INT_W,BOOL_W,STR_W}; // primitive words
+    enum {_W,BIT_W,INT_W,BOOL_W,STR_W,_LAST_W}; // primitive words
     enum {SEQ_S,_LAST_S};  // primitive structures
 
     class IdentifiedBase {
@@ -58,7 +58,7 @@ namespace Ceptr {
 	auto(Word,wordID)
     public:
     };
-    auto_init(Word,wordID,0)
+    auto_init(Word,wordID,_LAST_W)
 
     class Carrier : public IdentifiedBase {
 	auto(Carrier,int)
