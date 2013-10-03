@@ -1,6 +1,11 @@
 #ifndef _CEPTR_H
 #define _CEPTR_H
 
+
+/* this is my quick and dirty way to implement reflection on the classes I create.
+   It allows for creating different id types on inherited classes either automatically,
+   or manually by calling the explicit constructor.
+*/
 #define auto(CLASS_NAME,ID_TYPE)					\
     int id_;								\
     static int id_gen_;							\

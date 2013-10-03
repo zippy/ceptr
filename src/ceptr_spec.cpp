@@ -108,7 +108,7 @@ Word: <primitive word> | <protocol> to translate/indicate which <variants> of <c
 Protocol: a <process> (including grammar etc) to map of <variants> on a <carrier> to <word variants> at the new level. [Protocols identify, where in the semantic geometry an particular variant lives.  They translate from the structural geometry to the semantic geometry]
 Process: a unit of function which takes <words> as parameters and produces or changes <words>
 */
-    Context(dimension_of_variability) {
+    Context(scape) {
 	Spec(has_a_name){
 	    Assert::That(sequenceS.name(),Equals("sequence"));
 	}
@@ -124,12 +124,6 @@ Process: a unit of function which takes <words> as parameters and produces or ch
 	  process for producing or capturing the variants
 	  structure
 	  grammar
-	*/
-    };
-    Context(structure) {
-	/*have names
-	  and ids
-	  and variations
 	*/
     };
     Context(protocol) {
