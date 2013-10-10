@@ -66,6 +66,8 @@ Context(storage){
 	    int i = s.get(idx);
 	    Assert::That(i,Equals<int>(1));
 	    Assert::That(*static_cast<int*>(s.getP(idx)),Equals<int>(1));
+	    Assert::That(s.valid_idx(5),Is().False());
+	    AssertThrows(exception,s.get(5));
 	}
     };
     Context(existence_addressing)
@@ -77,8 +79,7 @@ Context(storage){
 	    Assert::That(y.word_id(),Equals<wordID>(STR_W));
 	}
 	Spec(xaddrs_have_indexes){
-	    //TODO: how do we test this??
-	    //Assert::That(static_cast<int>(x.idx()),IsGreaterThan(0));
+	    Assert::That(static_cast<int>(x.idx()),IsGreaterThan(0));
 	}
 	Spec(xaddrs_point_to_values){
 	    Assert::That( *static_cast<int*>(x.value()),Equals(1));
@@ -95,12 +96,21 @@ Context(storage){
 
 
 /*
-  Carrier: the use of a specific <geometry> of the <dimensions of variability/scapes> of a <substrate/meduim> to manipulate the parts (<words>) of the  <medium> to encode <words> at a new level. [Alternate: a <geometric arrangement/geometry> of <variants (which are also <word(s)...>)> in a <substrate/medium>] [Carriers are level jumpers in that they produces semantic words at a new level from semantic words at a low level. Carriers are the level at which composition is occurring.]
+  Carrier/Medium: the embodiment of some <dimensions of variability/scapes> such that an embodied <element/word> of the carrier/medium can take on/have/be of a specific <attribute/quality>, i.e. be a particular variant within the range of variability.
+  Dimension of variability/Scape: a <attribute/quality> that varies over a range as specified by a <geometric process> that can be used to relate <elements/words>
+  Element/Word:
+  Geometric Process: a process which takes an <element/word> as an argument, and yields its <attribute/quality> and/or vice-versa.
+  Signal/Message: A set of variations on a <carrier> according a <protocol>
 
-Dimension of variability/Scape: an <attribute/quality> that can vary over some range created by <process> applied to a <word_type>. (A dimension of variability creates a medium when applied to a specific set of words.  E.g. RAM (as a medium) is concretizing a set of bits according to the DoV Sequence..)
+
+use of a specific <geometry> of the <dimensions of variability/scapes> of a <substrate/meduim> to manipulate the parts (<words>) of the  <medium> to encode <words> at a new level. [Alternate: a <geometric arrangement/geometry> of <variants (which are also <word(s)...>)> in a <substrate/medium>] [Carriers are level jumpers in that they produces semantic words at a new level from semantic words at a low level. Carriers are the level at which composition is occurring.]
+
+Dimension of variability/Scape: an <attribute/quality> that can vary over some range created by <process> applied to a <medium>. (A dimension of variability creates a medium when applied to a specific set of words.  E.g. RAM (as a medium) is concretizing a set of bits according to the DoV Sequence..)
 Example: Guitar as music medium: DoV mass of string, material of string, length of string, resting tension of string, amplitude of displacement of string, size and shape echo chamber, material and structure of plucking
 
-Substrate/Medium: a realization of a collection of <dimensions of variability> applied to a collection of <words>
+Structural aspects of the medium & semantic aspects.  What DoV's are built into medium?
+
+Substrate/Medium: a realization of a collection of <dimensions of variability> applied to a collection of <media>
 
 Geometry: a form/subset of variation within a <dimension of variability> indicated by a <process>
 Variant: a single variation within a <dimension of variability>
@@ -108,7 +118,45 @@ Word: <primitive word> | <protocol> to translate/indicate which <variants> of <c
 Protocol: a <process> (including grammar etc) to map of <variants> on a <carrier> to <word variants> at the new level. [Protocols identify, where in the semantic geometry an particular variant lives.  They translate from the structural geometry to the semantic geometry]
 Process: a unit of function which takes <words> as parameters and produces or changes <words>
 */
-    Context(scape) {
+
+    Context(scapes) {
+/*
+  It(can parse a scape spec)
+  It(comes with default scapes: existence,scape,word(def/dec/spec),variable,process)
+  It(can create scapes, which adds them to the existence scape)
+
+
+	Privacy scape:
+	    Key source: Step level scale: share-bed,share-room,...
+	    Data source: person or the room, or whatever depending on the content_spec
+	    Indexing fn: use key source as the key data (no transform)
+	    Key Geometry: order_by(step level scale)
+*/
+	Context(built_in) {
+	    Context(existence) {
+		Spec(has_a_name_and_quality){
+		    Assert::That(xS.name(),Equals("existence"));
+		    Assert::That(xS.quality(),Equals("embodiment"));
+		    Assert::That(xS.id(),Equals<int>(X_S));
+		    Assert::That(Scape::instances[X_S],Equals<Scape *>(&xS));
+		}
+		Spec(uses_xaddrs_as_the_key_source) {
+		    Assert::That(xS.key_source(),Equals<wordID>(XADDR_W));
+		}
+		Spec(uses_xaddrs_as_the_data_source) {
+		    Assert::That(xS.data_source(),Equals<wordID>(XADDR_W));
+		}
+		Spec(seeking_for_existing_words) {
+		    XAddr* xaddrP = Op::New(314);
+		    XAddr q = xS.seek(*xaddrP);
+		    Assert::That(q == *xaddrP, Is().True());
+		}
+ 		Spec(seeking_for_address_that_dont_exist){
+		    XAddr a = XAddr(INT_W,99);
+		    AssertThrows(exception,xS.seek(a));
+		}
+	    };
+	};
 	Spec(has_a_name){
 	    Assert::That(sequenceS.name(),Equals("sequence"));
 	}
@@ -119,8 +167,7 @@ Process: a unit of function which takes <words> as parameters and produces or ch
 	Spec(has_a_quality_name){
 	    Assert::That(sequenceS.quality(),Equals("linear order"));
 	}
-	/*have name
-	  and id
+	/*
 	  process for producing or capturing the variants
 	  structure
 	  grammar
@@ -132,12 +179,6 @@ Process: a unit of function which takes <words> as parameters and produces or ch
 	  and variations
 	*/
     };
-    Context(media) {
-	/*have names
-	  and ids
-	*/
-    };
-
     Context(carrier){
 	/*
 	  for digital:
@@ -145,7 +186,7 @@ Process: a unit of function which takes <words> as parameters and produces or ch
 	  linear sequence
 	*/
     };
-    Context(words) {
+    Context(word_specs) {
 	Spec(are_identified){
 	    Assert::That(intW.id(),Equals<wordID>(INT_W));
 	}
@@ -153,6 +194,7 @@ Process: a unit of function which takes <words> as parameters and produces or ch
 	    Carrier& c = intW.carrier();
 	    Spec(which_have_a_name){
 		Assert::That(c.name(),Equals("sequence of bits"));
+		//		Assert::That(xaddrW.carrier.name(),Equals("collection "));
 	    }
 	    Spec(have_scapes){
 		Scape& s = c.scape();
@@ -183,13 +225,17 @@ Context(virtual_machine){
     };
     Context(operands){
 	Context(NEW){
-	    Spec(takes_a_word_id) {
-		XAddr* xaddrP = Op::New(INT_W);//TODO: how do we specify data and get types for operands from a carrier?
+	    Spec(you_can_create_ints) {
+		XAddr* xaddrP = Op::New(314);
 		Assert::That(xaddrP->word_id(),Equals<wordID>(INT_W));
+		Assert::That( *static_cast<int*>(xaddrP->value()),Equals(314));
 	    }
 	};
     };
 };
+
+
+
 /*
 
   ---- TO-DO specs to be implemented-----
@@ -205,11 +251,6 @@ It (can trigger execution of a process at a code-point due to a planted listener
 
 It(can install "elevator shaft" publicly available services that are available to all receptors in the host, i.e. domain-name resolution, email-parsing, http-server, smtp server)
 
-Describe(scapes){
-It(can parse a scape spec)
-It(comes with default scapes: existence,scape,word(def/dec/spec),variable,process)
-It(can create scapes, which adds them to the existence scape)
-}
 
 
 Describe(inter-process communication){

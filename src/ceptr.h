@@ -14,7 +14,7 @@
 	ID_TYPE i = id();						\
 	CLASS_NAME* c = instances[i];					\
 	if(c != 0) throw(exception());					\
-	instances[id()]=this;}						\
+	instances[i]=this;}						\
     public: 								\
     static map<ID_TYPE,CLASS_NAME*>& instances;		         	\
     CLASS_NAME() {id_ = id_gen_++;init();}				\
@@ -35,76 +35,40 @@ namespace Ceptr {
      and translating the variants possible in that Carrier via a Protocol into a SemanticGeometry.
      */
     typedef int wordID;
-    enum {_W,BIT_W,INT_W,BOOL_W,STR_W,_LAST_W}; // primitive words
-    enum {SEQ_S,_LAST_S};  // primitive structures
+    enum {_W,XADDR_W,BIT_W,INT_W,BOOL_W,STR_W,_LAST_W}; // primitive words
+    enum {X_S,SEQ_S,_LAST_S};  // primitive scapes
 
     class IdentifiedBase {
     public:
 	virtual const string name() = 0;
 	virtual const int id() = 0;
-    };
+     };
 
-    class Scape : public IdentifiedBase {
-	auto(Scape,int)
-    public:
-	virtual const string quality() = 0;
-    };
-    auto_init(Scape,int,_LAST_S)
-
-    class Sequence : public Scape {
-    public:
-    Sequence():Scape(SEQ_S){};
-	const string name() {return "sequence";}
-	const string quality() {return "linear order";}
-	virtual const int id() {return SEQ_S;};
-    };
-
-    class Word : public IdentifiedBase {
-	auto(Word,wordID)
-    public:
-    };
-    auto_init(Word,wordID,_LAST_W)
-
-    class Carrier : public IdentifiedBase {
-	auto(Carrier,int)
-	string name_;
-	Scape* scapeP_;
-	wordID medium;
-    public:
-	Carrier(int scape_id,wordID medium){
-	    scapeP_ = Scape::instances[scape_id];
-	    if (scapeP_ == 0) {throw("UNKNOWN SCAPE");}
-	    name_ = scapeP_->name() + " of " + Word::instances[medium]->name()+"s";
-	}
-	const string name() {return name_;};
-	Scape& scape() {return *scapeP_;}
-    };
-    auto_init(Carrier,int,1)
-
-    class BitWord : public Word {
-    public:
-    BitWord() : Word(BIT_W){};
-	const int id() {return BIT_W;}
-	const string name() {return "bit";}
-	Carrier& carrier() {return *(new Carrier(SEQ_S,_W));}
-    };
-
-    class IntWord : public Word {
-    public:
-    IntWord() : Word(INT_W) {};
-	const int id() {return INT_W;}
-	const string name() {return "int";}
-	Carrier& carrier() {return *(new Carrier(SEQ_S,BIT_W));}
-    };
     /*
       Storage Handlers: implement storage of data with different structural geometries
      */
-    typedef void* storageIdx;
+    typedef int storageIdx;
     template<class T> class StorageHandler{
-    public:
-	void* set(T data){return new T(data);}
-	T get(void *p){return *static_cast<T*>(p);}
-	T* getP(void *p){return static_cast<T*>(p);}
+	vector<T> store;
+	void rangechk(storageIdx idx) {
+	    if (idx >= store.size() || idx < 0) throw(exception());
+	}
+	public:
+	bool valid_idx(storageIdx idx) {return (idx < store.size() && idx >= 0);}
+
+	storageIdx set(T data){
+	    storageIdx i=store.size();
+	    store.push_back(data);
+	    return i;
+	}
+	T get(storageIdx idx){
+	    rangechk(idx);
+	    return store[idx];
+	}
+	T* getP(storageIdx idx){
+	    rangechk(idx);
+	    return &store[idx];
+	}
     };
 
     /*
@@ -134,21 +98,92 @@ namespace Ceptr {
 	inline storageIdx idx() const {return idx_;}
     };
 
+    /*
+     Scapes:
+    */
+    class Scape : public IdentifiedBase {
+	auto(Scape,int)
+    public:
+	virtual const string quality() = 0;
+	virtual const wordID key_source() = 0;
+	virtual const wordID data_source() = 0;
+    };
+    auto_init(Scape,int,_LAST_S)
+
+    class Sequence : public Scape {
+    public:
+    Sequence():Scape(SEQ_S){};
+	const string name() {return "sequence";}
+	const string quality() {return "linear order";}
+	const wordID key_source() {return 0;};
+	const wordID data_source() {return 0;};
+	const int id() {return SEQ_S;};
+    };
+
+    class Existence : public Scape {
+    public:
+        Existence():Scape(X_S){};
+	const string name() {return "existence";}
+	const string quality() {return "embodiment";}
+	const int id() {return X_S;}
+	const wordID key_source() {return XADDR_W;};
+	const wordID data_source() {return XADDR_W;};
+	XAddr& seek(XAddr& key) {
+	    key.value(); // get the value so as to see if it really exists and throw exception if it doesn't
+	    return key;
+	}
+    };
+
+    class Carrier;
+
+    class WordSpec : public IdentifiedBase {
+	auto(WordSpec,wordID)
+	string name_;
+	Carrier* carrier_;
+    public:
+	WordSpec(wordID id,string name,Carrier& carrier) {
+	    name_ = name;
+	    carrier_ = &carrier;
+	    id_ = id;
+	    init();
+	}
+	const string name() {return name_;}
+	Carrier& carrier() {return *carrier_;}
+    };
+    auto_init(WordSpec,wordID,_LAST_W)
+
+    class Carrier : public IdentifiedBase {
+	auto(Carrier,int)
+	string name_;
+	Scape* scapeP_;
+	wordID medium;
+    public:
+	Carrier(int scape_id,wordID medium){
+	    scapeP_ = Scape::instances[scape_id];
+	    if (scapeP_ == 0) {throw("UNKNOWN SCAPE");}
+	    name_ = scapeP_->name() + " of " +
+		(medium == _W ? "memory" : WordSpec::instances[medium]->name ())+"s";
+	}
+	const string name() {return name_;};
+	Scape& scape() {return *scapeP_;}
+    };
+    auto_init(Carrier,int,1)
+
     // VM operands
     namespace Op {
-	XAddr* New(wordID w_id) {
-	    return new XAddr(w_id);
-	}
+	XAddr* New(int val) {return new XAddr(val);}
     }
-
 
     /*Implementation stuff (to be moved to .cpp files later)*/
     StorageHandler<int>* XAddr::intHandlerP = new StorageHandler<int>;
     StorageHandler<string>* XAddr::strHandlerP = new StorageHandler<string>;
 
     Sequence sequenceS = Sequence();
-    BitWord bitW = BitWord();
-    IntWord intW = IntWord();
-
+    Existence xS = Existence();
+    Carrier primSeqC = Carrier(SEQ_S,_W);
+    WordSpec bitW = WordSpec(BIT_W,"bit",primSeqC);
+    Carrier bitSeqC = Carrier(SEQ_S,BIT_W);
+    WordSpec intW = WordSpec(INT_W,"int",bitSeqC);
+    WordSpec xaddrW = WordSpec(XADDR_W,"xaddr",bitSeqC);
 }
 #endif
