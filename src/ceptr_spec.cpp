@@ -74,9 +74,9 @@ Context(storage){
     {
 	XAddr x = XAddr(1);
 	XAddr y = XAddr("fish");
-	Spec(xaddrs_have_word_ids) {
-	    Assert::That(x.word_id(),Equals<wordID>(INT_W));
-	    Assert::That(y.word_id(),Equals<wordID>(STR_W));
+	Spec(xaddrs_have_word_type_ids) {
+	    Assert::That(x.word_type_id(),Equals<wordTypeID>(INT_P));
+	    Assert::That(y.word_type_id(),Equals<wordTypeID>(STR_P));
 	}
 	Spec(xaddrs_have_indexes){
 	    Assert::That(static_cast<int>(x.idx()),IsGreaterThan(0));
@@ -86,8 +86,8 @@ Context(storage){
 	    Assert::That( *static_cast<string*>(y.value()),Equals<string>("fish"));
 	}
 	Spec(xaddrs_can_be_constructed_explicitly) {
-	    XAddr z = XAddr(STR_W,y.idx());
-	    Assert::That(z.word_id(),Equals<wordID>(STR_W));
+	    XAddr z = XAddr(STR_P,y.idx());
+	    Assert::That(z.word_type_id(),Equals<wordTypeID>(STR_P));
 	    Assert::That( *static_cast<string*>(z.value()),Equals<string>("fish"));
 	    Assert::That(z == y,Is().True());
 	    Assert::That(z == x,Is().False());
@@ -119,60 +119,108 @@ Protocol: a <process> (including grammar etc) to map of <variants> on a <carrier
 Process: a unit of function which takes <words> as parameters and produces or changes <words>
 */
 
-    Context(scapes) {
-/*
-  It(can parse a scape spec)
-  It(comes with default scapes: existence,scape,word(def/dec/spec),variable,process)
-  It(can create scapes, which adds them to the existence scape)
 
-
-	Privacy scape:
-	    Key source: Step level scale: share-bed,share-room,...
-	    Data source: person or the room, or whatever depending on the content_spec
-	    Indexing fn: use key source as the key data (no transform)
-	    Key Geometry: order_by(step level scale)
-*/
+    Context(word_patterns) {
 	Context(built_in) {
-	    Context(existence) {
-		Spec(has_a_name_and_quality){
-		    Assert::That(xS.name(),Equals("existence"));
-		    Assert::That(xS.quality(),Equals("embodiment"));
-		    Assert::That(xS.id(),Equals<int>(X_S));
-		    Assert::That(Scape::instances[X_S],Equals<Scape *>(&xS));
-		}
-		Spec(uses_xaddrs_as_the_key_source) {
-		    Assert::That(xS.key_source(),Equals<wordID>(XADDR_W));
-		}
-		Spec(uses_xaddrs_as_the_data_source) {
-		    Assert::That(xS.data_source(),Equals<wordID>(XADDR_W));
-		}
-		Spec(seeking_for_existing_words) {
-		    XAddr* xaddrP = Op::New(314);
-		    XAddr q = xS.seek(*xaddrP);
-		    Assert::That(q == *xaddrP, Is().True());
-		}
- 		Spec(seeking_for_address_that_dont_exist){
-		    XAddr a = XAddr(INT_W,99);
-		    AssertThrows(exception,xS.seek(a));
-		}
-	    };
+	    Spec(integer) {
+		Assert::That(intP.id(),Equals<wordTypeID>(INT_P));
+		Assert::That(intP.name(),Equals("int"));
+	    }
+	    Spec(xaddr) {
+		Assert::That(xaddrP.id(),Equals<wordTypeID>(XADDR_P));
+		Assert::That(xaddrP.name(),Equals("xaddr"));
+		//		Assert::That(intW.carrier().name(),Equals("sequence of bits"));
+	    }
+	   //  Spec() {
+// 		WordPattern four_bit_int = WordPattern(432,"4 bit int",
+// 						       "(.4bitint (bit bit bit bit)) (def inc (...))");
+// /* this is kind of like
+// 		class 4bitint {
+// 		    bit bits[4];
+// 		    void inc() {...};
+// 		};
+// */
+
+// 		WordType age = WordType(....432);
+// 		XAddr wills_age = Op::New(432,"(1 0 1 1)");
+// 		Op::Exe(cne"winc",wills_age);
+// 		Assert::That(value of wills_age, Equal "(1 1 0 0)");
+// 	    }
 	};
-	Spec(has_a_name){
-	    Assert::That(sequenceS.name(),Equals("sequence"));
-	}
-	Spec(has_identification){
-	    Assert::That(sequenceS.id(),Equals<int>(SEQ_S));
-	    Assert::That(Scape::instances[SEQ_S],Equals<Scape *>(&sequenceS));
-	}
-	Spec(has_a_quality_name){
-	    Assert::That(sequenceS.quality(),Equals("linear order"));
-	}
-	/*
-	  process for producing or capturing the variants
-	  structure
-	  grammar
-	*/
+	/*	Context(are_embodied_in_a_carrier){
+		Carrier& c = intW.carrier();
+		Spec(which_have_a_name){
+		Assert::That(c.name(),Equals("sequence of bits"));
+		Assert::That(xaddrW.carrier().name(),Equals("collection "));
+		}
+		Spec(have_scapes){
+		ScapeType& s = c.scape();
+		Assert::That(s.name(),Equals("sequence"));
+		}
+		};*/
     };
+
+
+    //    Context(scapes)//  {
+// /*
+//   It(can parse a scape spec)
+//   It(comes with default scapes: existence,scape,word(def/dec/spec),variable,process)
+//   It(can create scapes, which adds them to the existence scape)
+
+
+// 	Privacy scape:
+// 	    Key source: Step level scale: share-bed,share-room,...
+// 	    Data source: person or the room, or whatever depending on the content_spec
+// 	    Indexing fn: use key source as the key data (no transform)
+// 	    Key Geometry: order_by(step level scale)
+// */
+// 	Context(built_in) {
+// 	    Context(existence) {
+// 		Spec(has_a_name_and_quality){
+// 		    Assert::That(xS.spec().name(),Equals("existence"));
+// 		    Assert::That(xS.spec().quality(),Equals("embodiment"));
+// 		    Assert::That(xS.spec().id(),Equals<int>(X_S));
+// 		    Assert::That(ScapeType::instances[X_S],Equals<ScapeType *>(&xSS));
+// 		}
+// 		Spec(uses_xaddrs_as_the_key_source) {
+// 		    Assert::That(xS.spec().key_source(),Equals<wordTypeID>(XADDR_P));
+// 		}
+// 		Spec(uses_xaddrs_as_the_data_source) {
+// 		    Assert::That(xS.spec().data_source(),Equals<wordTypeID>(XADDR_P));
+// 		}
+// 		Spec(creating_words_adds_them_to_existence) {
+// 		    //	    int size = xS.size();
+// 		    XAddr* xaddrP = Op::New(314);
+// 		    //Assert::That(size+1,Equals(xS.size()));
+// 		}
+// 		Spec(seeking_for_existing_words) {
+// 		    XAddr* xaddrP = Op::New(314);
+// 		    XAddr q = xS.seek(*xaddrP);
+// 		    Assert::That(q == *xaddrP, Is().True());
+// 		}
+//  		Spec(seeking_for_address_that_dont_exist){
+// 		    XAddr a = XAddr(INT_P,99);
+// 		    AssertThrows(exception,xS.seek(a));
+// 		}
+// 	    };
+// 	};
+// 	Spec(has_a_name){
+// 	    Assert::That(sequenceSS.name(),Equals("sequence"));
+// 	}
+// 	Spec(has_identification){
+// 	    Assert::That(sequenceSS.id(),Equals<int>(SEQ_S));
+// 	    Assert::That(ScapeType::instances[SEQ_S],Equals<ScapeType *>(&sequenceSS));
+// 	}
+// 	Spec(has_a_quality_name){
+// 	    Assert::That(sequenceSS.quality(),Equals("linear order"));
+// 	}
+// 	/*
+// 	  process for producing or capturing the variants
+// 	  structure
+// 	  grammar
+// 	*/
+//     }
+    ;
     Context(protocol) {
 	/*have names
 	  and ids
@@ -185,22 +233,6 @@ Process: a unit of function which takes <words> as parameters and produces or ch
 	  variants: 0 or 1
 	  linear sequence
 	*/
-    };
-    Context(word_specs) {
-	Spec(are_identified){
-	    Assert::That(intW.id(),Equals<wordID>(INT_W));
-	}
-	Context(are_embodied_in_a_carrier){
-	    Carrier& c = intW.carrier();
-	    Spec(which_have_a_name){
-		Assert::That(c.name(),Equals("sequence of bits"));
-		//		Assert::That(xaddrW.carrier.name(),Equals("collection "));
-	    }
-	    Spec(have_scapes){
-		Scape& s = c.scape();
-		Assert::That(s.name(),Equals("sequence"));
-	    }
-	};
     };
 };
 Context(virtual_machine){
@@ -227,14 +259,17 @@ Context(virtual_machine){
 	Context(NEW){
 	    Spec(you_can_create_ints) {
 		XAddr* xaddrP = Op::New(314);
-		Assert::That(xaddrP->word_id(),Equals<wordID>(INT_W));
+		Assert::That(xaddrP->word_type_id(),Equals<wordTypeID>(INT_P));
 		Assert::That( *static_cast<int*>(xaddrP->value()),Equals(314));
 	    }
+	    //	    Spec(you_can_create_scapes) {
+	    //	XAddr* xaddrP = Op::New(sequenceSS);
+	    //	Assert::That(xaddrP->word_type_id(),Equals<wordTypeID>(SCAPE_P));
+	    //	Assert::That( static_cast<Scape*>(xaddrP->value())->spec().id(),Equals(SEQ_S));
+	    //}
 	};
     };
 };
-
-
 
 /*
 
@@ -283,39 +318,6 @@ Sending content to devices:
 
 */
 
-
-/*    void SetUp()
-    {
-	guitar.AddEffect(fuzzbox);
-    }
-
-    It(starts_in_clean_mode)
-    {
-	Assert::That(guitar.Sound(), Equals(Clean));
-    }
-
-    Describe(in_distorted_mode)
-    {
-	void SetUp()
-	{
-	    Parent().fuzzbox.Switch();
-	}
-
-	It(sounds_distorted)
-	{
-	    Assert::That(Parent().guitar.Sound(), Equals(Distorted));
-	}
-
-	It(sounds_clean_when_I_switch_the_fuzzbox)
-	{
-	    Parent().fuzzbox.Switch();
-	    Assert::That(Parent().guitar.Sound(), Equals(Clean));
-	}
-    };
-
-    Fuzzbox fuzzbox;
-    Guitar guitar
-    };*/
 
 int main(int argc, const char** argv)
 {
