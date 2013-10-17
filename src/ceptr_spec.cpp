@@ -118,21 +118,81 @@ Word: <primitive word> | <protocol> to translate/indicate which <variants> of <c
 Protocol: a <process> (including grammar etc) to map of <variants> on a <carrier> to <word variants> at the new level. [Protocols identify, where in the semantic geometry an particular variant lives.  They translate from the structural geometry to the semantic geometry]
 Process: a unit of function which takes <words> as parameters and produces or changes <words>
 */
+    (verb
+     "executable instruction"
+     ());
+    (noun
+     "named pattern"
+     ());
+    (pattern
+     ""
+     (name.(process.pattern)));
+    (xaddr
+     ""
+     ());
+    (process
+     ""
+     (many verb));
+    (scape
+     ""
+     ());
+    (sequence
+     ""
+     ());
+    (group
+     ""
+     ());
+    (many
+     ""
+     ());
+    (enum
+     ""
+     ());
+    (label
+     ""
+     ());
 
+    // (def seq _ _); sequence is undefineable!!!
+    // (def group ()); group is undefineable!!!
+    // (def many _ _ _); many is undefineable!!!
+
+    (defpat name _symbol);
+    (defpat bit (or 0 1));
+    (defpat int (seq _bit _bit _bit _bit));
+    (defpat pattern (defpat _name (seq _process _surface)));
+    (defpat process (many _verb));
+    (defpat surface (or (many _noun) (group _noun)));
+    (defpat noun (seq _name _pattern));
+
+    (pattern.((<many verb>).(latlong.(aLat:lat.aLong:long))));
+    (pattern.(latlong.((name.(aLat.lat)).(name.(aLong.long)))));
+
+    (pattern name (process [(or (many))]));
+    (surface (or (many noun) (group noun)));
+    (many (patternX (or patternX nil)));
+    (ref symbol target);
+
+    (context
+     (ref X pattern)
+      (many _ (or _ nil)));
+
+    //bit int char str
 
     Context(word_patterns) {
 	Context(built_in) {
 	    Spec(integer) {
-		Assert::That(intP.id(),Equals<wordTypeID>(INT_P));
+		Assert::That(intP.id(),Equals<wordPatternID>(INT_P));
 		Assert::That(intP.name(),Equals("int"));
+		Assert::That(intP.structure().to_s(SWEET),Equals("BITP...32"));
 	    }
 	    Spec(xaddr) {
-		Assert::That(xaddrP.id(),Equals<wordTypeID>(XADDR_P));
+		Assert::That(xaddrP.id(),Equals<wordPatternID>(XADDR_P));
 		Assert::That(xaddrP.name(),Equals("xaddr"));
 		//		Assert::That(intW.carrier().name(),Equals("sequence of bits"));
 	    }
 	   //  Spec() {
-// 		WordPattern four_bit_int = WordPattern(432,"4 bit int",
+	    // 	WordPattern four_bit_int = WordPattern(432,"4 bit int",
+	    //
 // 						       "(.4bitint (bit bit bit bit)) (def inc (...))");
 // /* this is kind of like
 // 		class 4bitint {
@@ -143,7 +203,7 @@ Process: a unit of function which takes <words> as parameters and produces or ch
 
 // 		WordType age = WordType(....432);
 // 		XAddr wills_age = Op::New(432,"(1 0 1 1)");
-// 		Op::Exe(cne"winc",wills_age);
+// 		Op::Exec("inc",wills_age);
 // 		Assert::That(value of wills_age, Equal "(1 1 0 0)");
 // 	    }
 	};

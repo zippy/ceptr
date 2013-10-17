@@ -7,7 +7,7 @@
 
 (.type int|str|word)
 
-(.bool ("[.]<word-name>" type|word|group))
+(.word ("[.]<word-name>" type|word|group))
 (.group ("[.]<word-name>" type|word|group)+ )
 
 (.date (.year int)

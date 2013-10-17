@@ -40,6 +40,7 @@ namespace Ceptr {
 
     typedef int wordTypeID;
 
+
     enum {X_S,SEQ_S,_LAST_S};  // primitive scapes
 
     class IdentifiedBase {
@@ -169,7 +170,7 @@ namespace Ceptr {
     };
     auto_init(WordType,wordTypeID,_LAST_P)
 
-   class Carrier : public IdentifiedBase {
+/*   class Carrier : public IdentifiedBase {
 	auto(Carrier,int)
 	string name_;
 	ScapeType* scapeP_;
@@ -185,7 +186,7 @@ namespace Ceptr {
 	ScapeType& scape() {return *scapeP_;}
     };
     auto_init(Carrier,int,1)
-
+*/
     // VM operands
     namespace Op {
 	XAddr* New(int val) {return new XAddr(val);}
