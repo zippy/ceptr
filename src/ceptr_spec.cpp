@@ -58,6 +58,32 @@ Context(storage){
       It(has a permission/in-use tree to mark receptor access to data objects) // also part of garbage collection
       It(can set the storage attributes (permanence level, recyclability, latency, throughput[r/w], growth-rate needs, private/shared, redundancy, tolerance), for a data object, which indicates which medium to use: ram,ram-disk,hdd,network shared,etc
       It(can choose the appropriate storage medium based on balancing the requests for the storage item and what's available in the media pool, closest fit based on tolerances for specific attributes)*/
+    Context(fixed_size_store) {
+	Spec(uses_64_bit_segments) {
+	    Segment s;
+	    Assert::That(sizeof(s),Equals(8));
+	}
+	Spec(storing_and_retrieving_data) {
+	    FixedStore s;
+	    storageIdx idx1 = s.set(1);
+	    storageIdx idx2 = s.set(2);
+	    int t;
+	    int i1 = s.get(idx1);
+	    int i2 = s.get(idx2);
+	    Assert::That(i1,Equals<int>(1));
+	    Assert::That(i2,Equals<int>(2));
+	    Assert::That(idx1+1,Equals(idx2));
+	    Assert::That(s.valid_idx(5),Is().False());
+	    AssertThrows(exception,s.get(5));
+	    t = 3;
+	    s.set(idx1,1,static_cast<void*>(&t));
+	    //i1 = *reinterpret_cast<int*>(s.get(idx1,1));
+	    //Assert::That(i1,Equals(3));
+	    Assert::That(s.get(idx1),Equals(3));
+	    Assert::That(i2,Equals<int>(2));
+	    }
+    };
+
     Context(handlers){
 	//It(has storage handlers for different types of data, i.e. buckets for different sizes/chunkability types)
 	Spec(handlers_store_data){
@@ -74,9 +100,9 @@ Context(storage){
     {
 	XAddr x = XAddr(1);
 	XAddr y = XAddr("fish");
-	Spec(xaddrs_have_word_type_ids) {
-	    Assert::That(x.word_type_id(),Equals<wordTypeID>(INT_P));
-	    Assert::That(y.word_type_id(),Equals<wordTypeID>(STR_P));
+	Spec(xaddrs_have_name_ids) {
+	    Assert::That(x.name_id(),Equals<nameID>(INT_P));
+	    Assert::That(y.name_id(),Equals<nameID>(STR_P));
 	}
 	Spec(xaddrs_have_indexes){
 	    Assert::That(static_cast<int>(x.idx()),IsGreaterThan(0));
@@ -87,7 +113,7 @@ Context(storage){
 	}
 	Spec(xaddrs_can_be_constructed_explicitly) {
 	    XAddr z = XAddr(STR_P,y.idx());
-	    Assert::That(z.word_type_id(),Equals<wordTypeID>(STR_P));
+	    Assert::That(z.name_id(),Equals<nameID>(STR_P));
 	    Assert::That( *static_cast<string*>(z.value()),Equals<string>("fish"));
 	    Assert::That(z == y,Is().True());
 	    Assert::That(z == x,Is().False());
@@ -118,6 +144,7 @@ Word: <primitive word> | <protocol> to translate/indicate which <variants> of <c
 Protocol: a <process> (including grammar etc) to map of <variants> on a <carrier> to <word variants> at the new level. [Protocols identify, where in the semantic geometry an particular variant lives.  They translate from the structural geometry to the semantic geometry]
 Process: a unit of function which takes <words> as parameters and produces or changes <words>
 */
+/*
     (verb
      "executable instruction"
      ());
@@ -156,6 +183,9 @@ Process: a unit of function which takes <words> as parameters and produces or ch
     // (def group ()); group is undefineable!!!
     // (def many _ _ _); many is undefineable!!!
 
+
+    (prime makePattern )
+
     (defpat name _symbol);
     (defpat bit (or 0 1));
     (defpat int (seq _bit _bit _bit _bit));
@@ -177,21 +207,22 @@ Process: a unit of function which takes <words> as parameters and produces or ch
       (many _ (or _ nil)));
 
     //bit int char str
+    */
 
-    Context(word_patterns) {
+    Context(patterns) {
 	Context(built_in) {
 	    Spec(integer) {
-		Assert::That(intP.id(),Equals<wordPatternID>(INT_P));
+		Assert::That(intP.id(),Equals<patternID>(INT_P));
 		Assert::That(intP.name(),Equals("int"));
-		Assert::That(intP.structure().to_s(SWEET),Equals("BITP...32"));
+		//		Assert::That(intP.structure().to_s(SWEET),Equals("BITP...32"));
 	    }
 	    Spec(xaddr) {
-		Assert::That(xaddrP.id(),Equals<wordPatternID>(XADDR_P));
+		Assert::That(xaddrP.id(),Equals<patternID>(XADDR_P));
 		Assert::That(xaddrP.name(),Equals("xaddr"));
-		//		Assert::That(intW.carrier().name(),Equals("sequence of bits"));
+		//		Assert::That(intW.structure().name(),Equals("sequence of bits"));
 	    }
 	   //  Spec() {
-	    // 	WordPattern four_bit_int = WordPattern(432,"4 bit int",
+	    // 	Pattern four_bit_int = Pattern(432,"4 bit int",
 	    //
 // 						       "(.4bitint (bit bit bit bit)) (def inc (...))");
 // /* this is kind of like
@@ -207,6 +238,12 @@ Process: a unit of function which takes <words> as parameters and produces or ch
 // 		Assert::That(value of wills_age, Equal "(1 1 0 0)");
 // 	    }
 	};
+	Spec(named_pattern) {
+	    NamedPattern age = NamedPattern(1,"age",intP);
+	    int a = age.id();
+	    Assert::That(a,Equals(1));
+	    Assert::That(age.name(),Equals("age"));
+	}
 	/*	Context(are_embodied_in_a_carrier){
 		Carrier& c = intW.carrier();
 		Spec(which_have_a_name){
@@ -227,6 +264,14 @@ Process: a unit of function which takes <words> as parameters and produces or ch
 //   It(comes with default scapes: existence,scape,word(def/dec/spec),variable,process)
 //   It(can create scapes, which adds them to the existence scape)
 
+//Scape
+//    Name name
+//    Name keySource // the name of a pattern that we want to use to organize data
+//    Name dataSource // the name of the pattern of the data that is to be organized
+//    Name dataPattern  // the name of the pattern of what we actually want to store if different from data-pattern
+//   Process transforms // if needed to instantiate data pattern
+//    Vector<Condition> conditions  // conditions that are have been planted by listeners on this scape
+
 
 // 	Privacy scape:
 // 	    Key source: Step level scale: share-bed,share-room,...
@@ -243,10 +288,10 @@ Process: a unit of function which takes <words> as parameters and produces or ch
 // 		    Assert::That(ScapeType::instances[X_S],Equals<ScapeType *>(&xSS));
 // 		}
 // 		Spec(uses_xaddrs_as_the_key_source) {
-// 		    Assert::That(xS.spec().key_source(),Equals<wordTypeID>(XADDR_P));
+// 		    Assert::That(xS.spec().key_source(),Equals<nameID>(XADDR_P));
 // 		}
 // 		Spec(uses_xaddrs_as_the_data_source) {
-// 		    Assert::That(xS.spec().data_source(),Equals<wordTypeID>(XADDR_P));
+// 		    Assert::That(xS.spec().data_source(),Equals<nameID>(XADDR_P));
 // 		}
 // 		Spec(creating_words_adds_them_to_existence) {
 // 		    //	    int size = xS.size();
@@ -280,21 +325,14 @@ Process: a unit of function which takes <words> as parameters and produces or ch
 // 	  grammar
 // 	*/
 //     }
-    ;
+    };
     Context(protocol) {
 	/*have names
 	  and ids
 	  and variations
 	*/
     };
-    Context(carrier){
-	/*
-	  for digital:
-	  variants: 0 or 1
-	  linear sequence
-	*/
-    };
-};
+
 Context(virtual_machine){
     Context(code_execution){
 	/*It(is initiated, i.e. there is a wake-up call to the aspect, by a log entry being written)
@@ -319,12 +357,12 @@ Context(virtual_machine){
 	Context(NEW){
 	    Spec(you_can_create_ints) {
 		XAddr* xaddrP = Op::New(314);
-		Assert::That(xaddrP->word_type_id(),Equals<wordTypeID>(INT_P));
+		Assert::That(xaddrP->name_id(),Equals<nameID>(INT_P));
 		Assert::That( *static_cast<int*>(xaddrP->value()),Equals(314));
 	    }
 	    //	    Spec(you_can_create_scapes) {
 	    //	XAddr* xaddrP = Op::New(sequenceSS);
-	    //	Assert::That(xaddrP->word_type_id(),Equals<wordTypeID>(SCAPE_P));
+	    //	Assert::That(xaddrP->word_type_id(),Equals<nameID>(SCAPE_P));
 	    //	Assert::That( static_cast<Scape*>(xaddrP->value())->spec().id(),Equals(SEQ_S));
 	    //}
 	};

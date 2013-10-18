@@ -31,17 +31,17 @@ private:
 using namespace std;
 namespace Ceptr {
     /*
-     Words: implement semantic data by combining a medium with a structural geometry (Carrier)
+     Named Patterns: implement semantic data by combining a medium with a structural geometry (Carrier)
      and translating the variants possible in that Carrier via a Protocol into a SemanticGeometry.
      */
-    typedef int wordPatternID;
-    enum {_P,BIT_P,INT_P,BOOL_P,FLOAT_P,STR_P,XADDR_P,SCAPE_P,CEPTR_P,_LAST_P}; // primitive word pattern ids
+    typedef int patternID;
+    enum {_P,BIT_P,INT_P,BOOL_P,FLOAT_P,STR_P,XADDR_P,SCAPE_P,CEPTR_P,_LAST_P}; // primitive pattern ids
     //ARRAY_P,HASH_P
 
-    typedef int wordTypeID;
+    typedef int nameID;
 
 
-    enum {X_S,SEQ_S,_LAST_S};  // primitive scapes
+    enum {X_S,NAME_S,SEQ_S,_LAST_S};  // primitive scapes
 
     class IdentifiedBase {
     public:
@@ -76,28 +76,72 @@ namespace Ceptr {
 	}
     };
 
+    struct Segment {
+	unsigned char byte1;
+	unsigned char byte2;
+	unsigned char byte3;
+	unsigned char byte4;
+	unsigned char byte5;
+	unsigned char byte6;
+	unsigned char byte7;
+	unsigned char byte8;
+    };
+    class FixedStore {
+	vector<Segment> store;
+	void rangechk(storageIdx idx) {
+	    if (idx >= store.size() || idx < 0) throw(exception());
+	}
+    public:
+	void set(storageIdx idx,int segments,void *data) {
+	    Segment *sP = reinterpret_cast<Segment *>(data);
+	    rangechk(idx);
+	    for (int i=0;i<segments;i++){
+		store[idx+i] = *sP;
+		sP++;
+	    }
+	}
+	//void *get(storageIdx idx,int segments,void *data){	}
+    	storageIdx set(int data){
+	    Segment s;
+	    int *iP;
+	    storageIdx i=store.size();
+	    iP = reinterpret_cast<int *>(&s.byte1);
+	    *iP = data;
+	    store.push_back(s);
+	    return i;
+	}
+    	int get(storageIdx idx){
+	    Segment s;
+	    rangechk(idx);
+	    s = store[idx];
+	    return *reinterpret_cast<int *>(&s.byte1);
+	}
+	bool valid_idx(storageIdx idx) {return (idx < store.size() && idx >= 0);}
+    };
+
     /*
      XAddrs: provide semantic addresses into the ceptr "memory" space
     */
+
     class Scape;
     class XAddr {
-	wordTypeID word_type_id_;
+	nameID name_id_;
 	storageIdx idx_;
 	static StorageHandler<int>* intHandlerP;
 	static StorageHandler<string>* strHandlerP;
 	static StorageHandler<void*>* ptrHandlerP;
     public:
-	XAddr(int i){word_type_id_ = INT_P;idx_ = intHandlerP->set(i);}
-	XAddr(string s){word_type_id_ = STR_P;idx_ = strHandlerP->set(s);}
-	XAddr(Scape* sP){word_type_id_ = SCAPE_P;idx_ = ptrHandlerP->set(sP);}
-	XAddr(wordTypeID wid, storageIdx idx){
-	    word_type_id_ = wid;
+	XAddr(int i){name_id_ = INT_P;idx_ = intHandlerP->set(i);}
+	XAddr(string s){name_id_ = STR_P;idx_ = strHandlerP->set(s);}
+	XAddr(Scape* sP){name_id_ = SCAPE_P;idx_ = ptrHandlerP->set(sP);}
+	XAddr(nameID wid, storageIdx idx){
+	    name_id_ = wid;
 	    idx_ = idx;
 	}
-	bool operator==(XAddr& a){return word_type_id_ == a.word_type_id_ && idx_==a.idx_;}
-	inline wordTypeID word_type_id() const {return word_type_id_;}
+	bool operator==(XAddr& a){return name_id_ == a.name_id_ && idx_==a.idx_;}
+	inline nameID name_id() const {return name_id_;}
 	inline void* value() const {
-	    switch(word_type_id_){
+	    switch(name_id_){
 	    case INT_P: return intHandlerP->getP(idx_);
 	    case STR_P: return strHandlerP->getP(idx_);
 	    case SCAPE_P: return ptrHandlerP->get(idx_);
@@ -114,16 +158,16 @@ namespace Ceptr {
 	auto(ScapeType,int)
 	string quality_;
 	string name_;
-	wordTypeID key_source_;
-	wordTypeID data_source_;
+	nameID key_source_;
+	nameID data_source_;
     public:
-        ScapeType(wordTypeID id,string name,string quality,wordTypeID key_source,wordTypeID data_source) : ScapeType(id) {
+        ScapeType(nameID id,string name,string quality,nameID key_source,nameID data_source) : ScapeType(id) {
 	    name_ = name;quality_ = quality;key_source_ = key_source;data_source_ = data_source;
 	}
         const string name() {return name_;}
 	const string quality() {return quality_;};
-	const wordTypeID key_source() {return key_source_;};
-	const wordTypeID data_source() {return data_source_;};
+	const nameID key_source() {return key_source_;};
+	const nameID data_source() {return data_source_;};
     };
     auto_init(ScapeType,int,_LAST_S)
 
@@ -144,49 +188,32 @@ namespace Ceptr {
 	}
     };
 
-    class WordPattern : public IdentifiedBase {
-	auto(WordPattern,int)
+    class Pattern : public IdentifiedBase {
+	auto(Pattern,int)
 	string name_;
     public:
-       WordPattern(wordPatternID id,string name) : WordPattern(id) {
+       Pattern(patternID id,string name) : Pattern(id) {
 	    name_ = name;
 	}
 	const string name() {return name_;};
     };
-    auto_init(WordPattern,wordPatternID,_LAST_P)
+    auto_init(Pattern,patternID,_LAST_P)
 
-    class WordType : public IdentifiedBase {
-	auto(WordType,wordTypeID)
+    class NamedPattern : public IdentifiedBase {
+	auto(NamedPattern,nameID)
 	string name_;
-	WordPattern* pattern_;
+	Pattern* pattern_;
     public:
-    WordType(wordTypeID id,string name,WordPattern& pattern)  : pattern_(&pattern)  {
+    NamedPattern(nameID id,string name,Pattern& pattern)  : pattern_(&pattern)  {
 	    name_ = name;
 	    id_ = id; init();
 	    // for non- c++11 we have to do this manually
 	}
 	const string name() {return name_;}
-	WordPattern& pattern() {return *pattern_;}
+	Pattern& pattern() {return *pattern_;}
     };
-    auto_init(WordType,wordTypeID,_LAST_P)
+    auto_init(NamedPattern,nameID,_LAST_P)
 
-/*   class Carrier : public IdentifiedBase {
-	auto(Carrier,int)
-	string name_;
-	ScapeType* scapeP_;
-	wordTypeID medium;
-    public:
-	Carrier(int scape_id,wordTypeID medium){
-	    scapeP_ = ScapeType::instances[scape_id];
-	    if (scapeP_ == 0) {throw("UNKNOWN SCAPE");}
-	    name_ = scapeP_->name() + " of " +
-		(medium == _P ? "memory" : WordType::instances[medium]->name ())+"s";
-	}
-	const string name() {return name_;};
-	ScapeType& scape() {return *scapeP_;}
-    };
-    auto_init(Carrier,int,1)
-*/
     // VM operands
     namespace Op {
 	XAddr* New(int val) {return new XAddr(val);}
@@ -202,14 +229,9 @@ namespace Ceptr {
     //Scape sequenceS = Scape(sequenceSS);
     //ScapeType xSS = ScapeType(X_S,"existence","embodiment",XADDR_P,XADDR_P);
     //Existence xS = Existence(xSS);
-    WordPattern bitP = WordPattern(BIT_P,"bit");
-    WordPattern intP = WordPattern(INT_P,"int");
-    WordPattern xaddrP = WordPattern(XADDR_P,"xaddr");
-/*    Carrier primSeqC = Carrier(SEQ_S,_P);
-    WordType bitW = WordType(BIT_P,"bit",primSeqC);
-    Carrier bitSeqC = Carrier(SEQ_S,BIT_P);
-    WordType intW = WordType(INT_P,"int",bitSeqC);
-    WordType xaddrW = WordType(XADDR_P,"xaddr",bitSeqC);//TODO: wrong carrier
-*/
+    Pattern bitP = Pattern(BIT_P,"bit");
+    Pattern intP = Pattern(INT_P,"int");
+    Pattern xaddrP = Pattern(XADDR_P,"xaddr");
+
    }
 #endif
