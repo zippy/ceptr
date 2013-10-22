@@ -206,8 +206,52 @@ Process: a unit of function which takes <words> as parameters and produces or ch
      (ref X pattern)
       (many _ (or _ nil)));
 
+
     //bit int char str
     */
+
+/*
+    (pattern
+     (name pattern)
+     (surface (name:name version:version surface:tree (functions:tree (diff:tree delta:tree valid:tree))))
+     (functions ))
+
+    pattern->
+    (int_8
+     (bit0:bit bit1:bit ...))
+
+    (pattern
+     (name int_8) //name is a token
+     (version (1 (date 10/1/2013)))
+     (surface (bit0:bit bit1:bit bit2:bit bit3:bit bit4:bit bit5:bit bit6:bit bit7:bit bit8:bit))
+     (functions/processes
+      (evaluate/diff/compare
+       (equals:process
+	"Usage: (equals 1 1) -> true"
+	(params self:int_8 second:int_8)
+	(instructions
+	 (walk a:first b:second
+	  (if (xor a b) (return false)))
+	 return true)
+	)
+       (greaterthan:process
+	"Usage: (greaterthan 1 2) -> false"
+	(params first:int_8 second:int_8)
+	(instructions
+	 ))
+       )
+      (change/delta/transform
+       (addto:process
+	"Usage[a=1]: (addto a 2) -> 3  w/sideffect that a now = 3"
+	(params first:int_8 second:int_8)
+	(insructions
+	 ))
+       (inc:process
+	"Usage[a=1]: (inc a) -> 2 w/side-effect that a now = 2"
+	(params first:int_8)
+	(instructions
+	 )))))
+*/
 
     Context(patterns) {
 	Context(built_in) {
@@ -221,6 +265,7 @@ Process: a unit of function which takes <words> as parameters and produces or ch
 		Assert::That(xaddrP.name(),Equals("xaddr"));
 		//		Assert::That(intW.structure().name(),Equals("sequence of bits"));
 	    }
+
 	   //  Spec() {
 	    // 	Pattern four_bit_int = Pattern(432,"4 bit int",
 	    //
@@ -415,9 +460,24 @@ Sending content to devices:
   only through executing bycoded instructions
 
 */
-
+//#include <sexp.h>
 
 int main(int argc, const char** argv)
 {
+/*    pcont_t *pc;
+    char buf[256];
+    int i;
+    sexp_t *sx;
+    string expr = "(this '(is a) test)";
+
+    sx = parse_sexp(&expr[0],expr.size());
+    if (sexp_errno == SEXP_ERR_INCOMPLETE) {
+	printf("Incomplete expression detected.\n");
+    }
+    print_sexp(buf,256,sx);
+    printf("FISH:%s\n",buf);
+    destroy_sexp(sx);
+    sexp_cleanup();*/
     return TestRunner::RunAllTests(argc, argv);
+
 }
