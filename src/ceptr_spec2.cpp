@@ -11,7 +11,7 @@ Context(surface_tree){
 	Assert::That(s.size(),Equals<size_t>(8));
 	Assert::That(s.name(),Equals("xaddr"));
 	Assert::That(s.children(),Equals(0));
-    }
+	}
     Spec(create_tree) {
 	SurfaceTree s = SurfaceTree("t",{new SurfaceTree("t1",4),new SurfaceTree("t2",new SurfaceTree("t2/t1",8))});
 	Assert::That(s.children(),Equals(2));
@@ -32,23 +32,34 @@ Context(pattern_spec) {
 	Assert::That(p.surface().name(),Equals("xaddr"));
     }
 };
-Context(stream_type){
+Context(patterns_with_repetition){
     PatternSpec *p = new PatternSpec(new SurfaceTree("xaddr",8));
-    Spec(pattern_type) {
-	PatternStream s = PatternStream(5,p);
-	Assert::That(s.count(),Equals(5));
-	Assert::That(s.pattern().surface().name(),Equals("xaddr"));
+    Spec(array_of_patterns) {
+	PArray a = PArray(5,p);
+	Assert::That(a.count(),Equals(5));
+	Assert::That(a.pattern().surface().name(),Equals("xaddr"));
+	Assert::That(a.size(),Equals(40));
+    }
+    Spec(list_of_patterns){
+	PList l = PList(p);
+	Assert::That(l.pattern().surface().name(),Equals("xaddr"));
+	Assert::That(l.element_size(),Equals(8));
+    }
+    Spec(list_of_arrays){
+	PList l = PList(new PArray(6,new PatternSpec(new SurfaceTree("fish",4))));
+	Assert::That(l.pattern().surface().name(),Equals("fish"));
+	Assert::That(l.element_size(),Equals(24));
     }
     Spec(envelope_type) {
 	EnvelopeStream e = EnvelopeStream({
 		new EnvelopeItem(p),
-		    new EnvelopeItem(new PatternStream(10,p))});
+		    new EnvelopeItem(new PArray(10,p))});
 	Assert::That(e.size(),Equals(88));
     }
     Spec(envelope_type_unknown_size) {
 	EnvelopeStream e = EnvelopeStream({
 		new EnvelopeItem(p),
-		    new EnvelopeItem(new PatternStream(UNKNOWN_LENGTH,p))});
+		    new EnvelopeItem(new PArray(0,p))});
 	Assert::That(e.size(),Equals(UNKNOWN_SIZE));
     }
     };

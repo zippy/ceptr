@@ -7,7 +7,6 @@ namespace Ceptr {
     typedef int Version;
     typedef string Name;
     const size_t UNKNOWN_SIZE = 0xFFFFFFFF;
-    const int UNKNOWN_LENGTH = 0xFFFFFFFF;
 
     class Process {
 	void (*process) ();
@@ -56,16 +55,25 @@ namespace Ceptr {
     class Pattern {
 	PatternSpec* spec;
     };
-    class StreamType {
-    };
 
-    class PatternStream : public StreamType {
+    class PArray {
 	int count_;
 	PatternSpec* pattern_;
     public:
-    PatternStream(int count, PatternSpec* pattern) : count_(count),pattern_(pattern){};
+    PArray(int count, PatternSpec* pattern) : count_(count), pattern_(pattern){};
 	int count() {return count_;}
+	size_t size() {return pattern_->surface().size()*count_;}
 	PatternSpec& pattern() {return *pattern_;}
+    };
+
+    class PList {
+	size_t size;
+	PatternSpec* pattern_;
+    public:
+    PList(PatternSpec* pattern) : pattern_(pattern) , size_(pattern.size()){};
+    PList(PArray* array) : pattern_(&array->pattern()), size_{};
+	PatternSpec& pattern() {return *pattern_;}
+	size_t element_size() {return _size;}
     };
 
     class EnvelopeItem {
@@ -73,16 +81,16 @@ namespace Ceptr {
 	size_t size_;
     public:
     EnvelopeItem(PatternSpec *pattern) : name_(pattern->surface().name()), size_(pattern->surface().size()) {}
-    EnvelopeItem(PatternStream *pstream) : EnvelopeItem(&pstream->pattern()) {
-	    int count = pstream->count();
-	    if (count == UNKNOWN_LENGTH) {
+    EnvelopeItem(PArray *array) : EnvelopeItem(&array->pattern()) {
+	    int count = array->count();
+	    if (count == 0) {
 		size_ = UNKNOWN_SIZE;
 	    } else size_ = count * size_;
 	}
 	Name name() {return name_;}
 	size_t size() {return size_;}
     };
-    class EnvelopeStream : public StreamType {
+    class EnvelopeStream {
 	size_t size_;
 	vector<EnvelopeItem *> items_;
     public:
@@ -104,7 +112,6 @@ namespace Ceptr {
     class StreamSpec {
 	Name name;
 	Version version;
-	StreamType type;
 	StreamProcess process;
     };
     class Stream {
