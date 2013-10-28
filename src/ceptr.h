@@ -7,7 +7,7 @@
 #include <string.h>
 
 enum Symbols {
-	INT,POINT,X,Y,LINE,_LAST
+	INT,POINT,X,Y,LINE,A,B,_LAST
 };	
 
 typedef int Symbol;
@@ -38,7 +38,9 @@ Symbol last_symbol = _LAST;
 
 Noun noun_DATA[DEFAULT_ARRAY_SIZE] = {
 	{ X, INT },
-	{ Y, INT }
+	{ Y, INT },
+	{ A, POINT },
+	{ B, POINT }
 };
 
 PatternSpec spec_DATA[DEFAULT_ARRAY_SIZE];
@@ -50,7 +52,7 @@ char surfaces_TMP[DEFAULT_CACHE_SIZE];
 char cache_DATA[DEFAULT_CACHE_SIZE];
 
 int last_noun = 1;
-
+int last_spec = 0;
 
 Symbol new_symbol() {
 	return last_symbol++;
@@ -58,15 +60,6 @@ Symbol new_symbol() {
 
 void *createSurface(Noun *whatFor) {
 	return surfaces_TMP;
-}
-
-Noun *getNoun(Symbol name){
-	int i;
-	for (i=0; i<DEFAULT_ARRAY_SIZE; i++) {
-		if (noun_DATA[i].name == name) {
-			return &noun_DATA[i];
-		}
-	}
 }
 
 PatternSpec *getPatternSpec(Symbol patternName){
@@ -87,7 +80,6 @@ int getOffset(PatternSpec *ps, Symbol name) {
 	}		
 }
 
-
 Noun *newNoun(char label[], Symbol patternName) {
 	// FIXME do something useful with label;
 	if ((last_noun +1) == DEFAULT_ARRAY_SIZE) {
@@ -98,6 +90,15 @@ Noun *newNoun(char label[], Symbol patternName) {
 	return &noun_DATA[last_noun];
 }
 
+Noun *getNoun(Symbol name){
+	int i;
+	for (i=0; i<DEFAULT_ARRAY_SIZE; i++) {
+		if (noun_DATA[i].name == name) {
+			return &noun_DATA[i];
+		}
+	}
+	return 0;
+}
 
 void* set(Xaddr xaddr, void *value){
 	PatternSpec *ps = getPatternSpec(xaddr.noun->patternName);
@@ -114,17 +115,38 @@ void *get(Xaddr xaddr){
 	return &cache_DATA[xaddr.key];
 }
 
+PatternSpec* makePatternSpec(Symbol name, int childCount, Symbol children[]) {
+	int i;
+	Noun *n;
+	PatternSpec *ps = &spec_DATA[last_spec++];
+	Offset *o;
+	size_t current_size = 0;
+	ps->name = name;
+	for (i=0; i<childCount; i++) {
+		n = getNoun(children[i]);
+		o = &ps->children[i];
+		o->noun = n;
+		o->offset = current_size;
+		current_size += getPatternSpec(n->patternName)->size;		
+	}
+	ps->size = current_size;
+}
+
+PatternSpec* makeBasePatternSpec(Symbol name, size_t size) {
+	PatternSpec *ps = &spec_DATA[last_spec++];
+	ps->name = name;
+	ps->size = size;
+	return ps;
+}
 
 void init() { 
-	PatternSpec int_spec = { INT, 4, {{}}};
-	spec_DATA[INT] = int_spec;
+	makeBasePatternSpec(INT, 4);
 	
-	PatternSpec point_spec = { POINT, 8, {{ getNoun(X), 0 }, { getNoun(Y), 4 }} };
-	spec_DATA[POINT] = point_spec; 
-	// 
-	// 
-	// PatternSpec point_spec = { LINE, 16, {{ getNoun(A), 0 }, { getNoun(B), 8 }} };
-	// spec_DATA[POINT] = point_spec		
+	Symbol pointChildren[2] = { X, Y };
+	makePatternSpec(POINT, 2, pointChildren);
+	
+	Symbol lineChildren[2] = { A, B };
+	makePatternSpec(LINE, 2, lineChildren);	
 }
 
 #endif

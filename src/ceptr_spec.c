@@ -14,11 +14,24 @@ int main(int argc, const char** argv)
 
 	int myPoint[2] = { 2,10 };
 	set(hereHere, &myPoint);
-	void *localHereSurface = get(hereHere);
+	void *surface = get(hereHere);
 	
 	void *failSurface = get(thereHere);
 	
-	printf("failSurface %ld", (long)failSurface);
-	printf("surface-X %d", *(int*)(localHereSurface));
-	printf("surface-Y %d", *(int*)(localHereSurface + 4));
+	printf("failSurface %ld\n", (long)failSurface);
+	printf("point-X %d", *(int*)(surface));
+	printf("point-Y %d\n", *(int*)(surface + 4));
+	
+	int myLine[4] = {1,2,3,4};
+	Noun *inTheSand = newNoun("in the sand", LINE);
+	Xaddr itsLine = { 20, inTheSand };
+	set(itsLine, myLine);
+	surface = get(itsLine);
+	
+	printf("line-A (%d,%d) B (%d, %d) \n", 
+		*(int*)(surface),
+		*(int*)(surface + 4),
+		*(int*)(surface + 8),
+		*(int*)(surface + 12)
+		);
 }
