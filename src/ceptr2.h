@@ -67,13 +67,13 @@ namespace Ceptr {
     };
 
     class PList {
-	size_t size;
+	size_t size_;
 	PatternSpec* pattern_;
     public:
-    PList(PatternSpec* pattern) : pattern_(pattern) , size_(pattern.size()){};
-    PList(PArray* array) : pattern_(&array->pattern()), size_{};
+    PList(PatternSpec* pattern) : pattern_(pattern) , size_(pattern->surface().size()){};
+    PList(PArray* array) : pattern_(&array->pattern()), size_(array->pattern().surface().size()* array->count()){};
 	PatternSpec& pattern() {return *pattern_;}
-	size_t element_size() {return _size;}
+	size_t element_size() {return size_;}
     };
 
     class EnvelopeItem {
