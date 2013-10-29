@@ -12,7 +12,7 @@
 
 enum Symbols {
 	INT,POINT,X,Y,LINE,A,B,_LAST
-};	
+};
 
 typedef int Symbol;
 
@@ -29,7 +29,7 @@ enum Frametypes {
 typedef int Frametype;
 
 typedef struct {
-	Symbol name;      
+	Symbol name;
 	Symbol patternName;	 //  Symbol patternSpecName;
 } Noun;
 
@@ -57,13 +57,13 @@ typedef struct {
 
 typedef struct {
 	Frametype type;
-	int size;	
+	int size;
 } SemStackFrame;
 
 SemStackFrame semStack[STACK_SIZE];
 int semStackPointer = -1;
 
-char valStack[DEFAULT_CACHE_SIZE];	
+char valStack[DEFAULT_CACHE_SIZE];
 int valStackPointer = 0;
 Symbol last_symbol = _LAST;
 
@@ -115,7 +115,7 @@ int getOffset(PatternSpec *ps, Symbol name) {
 		if (ps->children[i].noun->name == name) {
 			return ps->children[i].offset;
 		}
-	}		
+	}
 	printf("in getOffset for patterSpec %d\n", ps->name);
 	raise_error("offset not found: %d\n", name);
 }
@@ -157,7 +157,7 @@ PatternSpec* _makeBasePatternSpec(Symbol name, size_t size, int processCount, Pr
 	int i;
 	for (i=0; i<processCount; i++) {
 		ps->processes[i] = processes[i];
-	}	
+	}
 	return ps;
 }
 
@@ -178,7 +178,7 @@ PatternSpec* makePatternSpec(Symbol name, int childCount, Symbol children[], int
 		o = &ps->children[i];
 		o->noun = n;
 		o->offset = current_size;
-		current_size += getPatternSpec(n->patternName)->size;		
+		current_size += getPatternSpec(n->patternName)->size;
 	}
 	_makeBasePatternSpec(name, current_size, processCount, processes);
 }
@@ -197,24 +197,24 @@ PatternSpec* walk_path(Xaddr xaddr, Symbol* path, int* offset ){
 	*offset = 0;
 	int i=0;
 	while (path[i]!=TERMINATOR) {
-		*offset += getOffset(ps, path[i]);		
+		*offset += getOffset(ps, path[i]);
 		ps = getPatternSpec( getNoun(path[i])->patternName );
 		i++;
-	}	
-	return ps;	
+	}
+	return ps;
 }
 
 void* op_setpath(Xaddr xaddr, Symbol* path, void *value){
 	int offset;
 	PatternSpec *ps = walk_path(xaddr, path, &offset);
-	void *surface = &cache_DATA[xaddr.key+offset];	
+	void *surface = &cache_DATA[xaddr.key+offset];
 	return memcpy(surface, value, ps->size);
 }
 
 void* op_getpath(Xaddr xaddr, Symbol* path){
 	int offset;
 	walk_path(xaddr, path, &offset);
-	return &cache_DATA[xaddr.key+offset];	
+	return &cache_DATA[xaddr.key+offset];
 }
 
 void *op_get(Xaddr xaddr){
@@ -252,17 +252,15 @@ int proc_add(Xaddr this){
 	return 1;
 }
 
-void init() { 
+void init() {
 	Process pr[2] = {{ INC, &proc_inc }, { ADD, &proc_add }};
 	makeBasePatternSpec(INT, sizeof(Symbol), 2, pr);
 
 	Symbol pointChildren[2] = { X, Y };
 	makePatternSpec(POINT, 2, pointChildren, 0, 0);
-	
+
 	Symbol lineChildren[2] = { A, B };
-	makePatternSpec(LINE, 2, lineChildren, 0, 0);	
+	makePatternSpec(LINE, 2, lineChildren, 0, 0);
 }
 
 #endif
-
-

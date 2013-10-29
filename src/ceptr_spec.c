@@ -9,35 +9,36 @@ void testPoint(){
 	int myPoint[2] = { 2,10 };
 	op_set(hereHere, &myPoint);
 	void *surface = op_get(hereHere);
-		
+
 	printf("point-X %d", *(int*)(surface));
 	printf("point-Y %d\n", *(int*)(surface + 4));
 }
 
+
 void testSemFault(){
-	Noun *here = newNoun("here", POINT);	
+	Noun *here = newNoun("here", POINT);
 	Xaddr thereHere = { 12, here };
-	void *failSurface = op_get(thereHere);	
-	printf("failSurface %ld\n", (long)failSurface);	
+	void *failSurface = op_get(thereHere);
+	printf("failSurface %ld\n", (long)failSurface);
 }
 
-void testLine(){	
+void testLine(){
 	int myLine[4] = {1,2,3,4};
 	Noun *inTheSand = newNoun("in the sand", LINE);
 	Xaddr itsLine = { 20, inTheSand };
 	op_set(itsLine, myLine);
-	
+
 	// op_exec()
-	
+
 	void *surface = op_get(itsLine);
-	
-	printf("line-A (%d,%d) B (%d, %d) \n", 
+
+	printf("line-A (%d,%d) B (%d, %d) \n",
 		*(int*)(surface),
 		*(int*)(surface + 4),
 		*(int*)(surface + 8),
 		*(int*)(surface + 12)
-		);	
-} 
+		);
+}
 
 void testInc(){
 	Noun *x = getNoun(X);
@@ -59,7 +60,7 @@ void testAdd(){
 	op_exec(theX, ADD);
 
 	printf("stack: %d\n", *(int*)(&valStack[0]));
-	assert(*(int*)(&valStack[0]) == 6);	
+	assert(*(int*)(&valStack[0]) == 6);
 }
 
 
@@ -72,15 +73,15 @@ void testSymbolPath(){
 	int *val;
 	int seven = 7;
 	val = op_getpath(itsLine, path);
-	assert(*val == 4);	
+	assert(*val == 4);
 
 	op_setpath(itsLine, path, &seven);
 	val = op_getpath(itsLine, path);
 	assert(*val == 7);
-	
-	void *surface = op_get(itsLine);	
+
+	void *surface = op_get(itsLine);
 	printf("after Pathset: %d\n", *(((int*)surface)+3) );
-	assert(*(((int*)surface)+3) == 7);	
+	assert(*(((int*)surface)+3) == 7);
 }
 
 int main(int argc, const char** argv)
@@ -88,7 +89,7 @@ int main(int argc, const char** argv)
 	init();
 	testPoint();
 	testSemFault();
-	testLine();	
+	testLine();
 	testInc();
 	testAdd();
 	testSymbolPath();
