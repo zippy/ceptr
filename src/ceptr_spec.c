@@ -1,6 +1,7 @@
 #include "ceptr.h"
 #include <stdio.h>
 #include <signal.h>
+#include <assert.h>
 
 void testPoint(){
 	Noun *here = newNoun("here", POINT);
@@ -46,6 +47,7 @@ void testExec(){
 	op_exec(theX, INC);
 	void *surface = op_get(theX);
 	printf("after Exec: %d\n", *(int*)(surface));
+	assert(*(int*)(surface) == 4);
 }
 
 int main(int argc, const char** argv)
