@@ -3,6 +3,7 @@
 
 #define DEFAULT_ARRAY_SIZE 100
 #define DEFAULT_CACHE_SIZE 10000
+#define STACK_SIZE 10000
 #include <signal.h>
 #include <string.h>
 
@@ -13,10 +14,16 @@ enum Symbols {
 typedef int Symbol;
 
 enum FunctionNames {
-	INC
+	INC, ADD
 };
 
 typedef int FunctionName;
+
+enum Frametypes {
+	XADDR, PATTERN
+};
+
+typedef int Frametype;
 
 typedef struct {
 	Symbol name;      
@@ -34,8 +41,8 @@ typedef struct {
 } Xaddr;
 
 typedef struct {
-	int (*function)(Xaddr);
 	FunctionName name;
+	int (*function)(Xaddr);
 } Process;
 
 typedef struct {
@@ -46,6 +53,16 @@ typedef struct {
 } PatternSpec;
 
 
+typedef struct {
+	Frametype type;
+	int size;	
+} SemStackFrame;
+
+SemStackFrame semStack[STACK_SIZE];
+int semStackPointer = -1;
+
+char valStack[DEFAULT_CACHE_SIZE];	
+int valStackPointer = 0;
 Symbol last_symbol = _LAST;
 
 Noun noun_DATA[DEFAULT_ARRAY_SIZE] = {
@@ -141,6 +158,14 @@ int op_exec(Xaddr xaddr, FunctionName processName){
 	(*p->function)(xaddr);
 }
 
+int op_push_pattern(Symbol patternName, void* surface){
+	SemStackFrame *ssf = &semStack[++semStackPointer];
+	ssf->type = PATTERN;
+	ssf->size = getPatternSpec(patternName)->size;
+	memcpy(&valStack[valStackPointer], surface, ssf->size);
+	valStackPointer += ssf->size;
+}
+
 PatternSpec* makeBasePatternSpec(Symbol name, size_t size, int processCount, Process processes[]) {
 	PatternSpec *ps = &spec_DATA[last_spec++];
 	ps->name = name;
@@ -168,15 +193,23 @@ PatternSpec* makePatternSpec(Symbol name, int childCount, Symbol children[], int
 	makeBasePatternSpec(name, current_size, processCount, processes);
 }
 
-int inc(Xaddr this) {
+int proc_inc(Xaddr this) {
 	void *surface = op_get(this);
 	++*(int*)(surface);
 	return 1;
 }
 
+int proc_add(Xaddr this){
+	int *surface = (int*) op_get(this);
+	// semCheck please
+	int *stackSurface = (int*) &valStack[ valStackPointer - semStack[semStackPointer].size ];
+	*stackSurface = *surface + *stackSurface;
+	return 1;
+}
+
 void init() { 
-	Process pr[1] = { &inc };
-	makeBasePatternSpec(INT, 4, 1, pr);
+	Process pr[2] = { { INC, &proc_inc} , {ADD, &proc_add} };
+	makeBasePatternSpec(INT, 4, 2, pr);
 	
 	Symbol pointChildren[2] = { X, Y };
 	makePatternSpec(POINT, 2, pointChildren, 0, 0);

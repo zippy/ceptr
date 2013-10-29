@@ -39,15 +39,27 @@ void testLine(){
 		);	
 } 
 
-void testExec(){
+void testInc(){
 	Noun *x = getNoun(X);
 	Xaddr theX =  { 12, x };
 	int val = 3;
 	op_set(theX, &val);
 	op_exec(theX, INC);
 	void *surface = op_get(theX);
-	printf("after Exec: %d\n", *(int*)(surface));
+	printf("after Inc: %d\n", *(int*)(surface));
 	assert(*(int*)(surface) == 4);
+}
+
+void testAdd(){
+	Noun *x = getNoun(X);
+	Xaddr theX =  { 12, x };
+	int val = 3;
+	op_set(theX, &val);
+	op_push_pattern(INT, &val);
+	op_exec(theX, ADD);
+
+	printf("stack: %d\n", *(int*)(&valStack[0]));
+	assert(*(int*)(&valStack[0]) == 6);	
 }
 
 int main(int argc, const char** argv)
@@ -56,5 +68,6 @@ int main(int argc, const char** argv)
 	testPoint();
 	testSemFault();
 	testLine();	
-	testExec();
+	testInc();
+	testAdd();
 }
