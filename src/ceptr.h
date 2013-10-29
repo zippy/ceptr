@@ -4,8 +4,11 @@
 #define DEFAULT_ARRAY_SIZE 100
 #define DEFAULT_CACHE_SIZE 10000
 #define STACK_SIZE 10000
+#define TERMINATOR 0xFFFF
 #include <signal.h>
 #include <string.h>
+#include <stdio.h>
+
 
 enum Symbols {
 	INT,POINT,X,Y,LINE,A,B,_LAST
@@ -52,7 +55,6 @@ typedef struct {
 	Process processes[DEFAULT_ARRAY_SIZE];
 } PatternSpec;
 
-
 typedef struct {
 	Frametype type;
 	int size;	
@@ -80,8 +82,14 @@ char surfaces_TMP[DEFAULT_CACHE_SIZE];
 
 char cache_DATA[DEFAULT_CACHE_SIZE];
 
-int last_noun = 1;
-int last_spec = 0;
+int last_noun = 3;
+int last_spec = -1;
+
+char error[255];
+
+#define raise_error(error_msg, val)\
+printf(error_msg, val);\
+raise(SIGINT);
 
 Symbol new_symbol() {
 	return last_symbol++;
@@ -97,7 +105,8 @@ PatternSpec *getPatternSpec(Symbol patternName){
 		if (spec_DATA[i].name == patternName) {
 			return &spec_DATA[i];
 		}
-	}	
+	}
+	raise_error("pattern not found: %d", patternName);
 }
 
 int getOffset(PatternSpec *ps, Symbol name) {
@@ -107,6 +116,8 @@ int getOffset(PatternSpec *ps, Symbol name) {
 			return ps->children[i].offset;
 		}
 	}		
+	printf("in getOffset for patterSpec %d\n", ps->name);
+	raise_error("offset not found: %d\n", name);
 }
 
 Noun *newNoun(char label[], Symbol patternName) {
@@ -126,22 +137,7 @@ Noun *getNoun(Symbol name){
 			return &noun_DATA[i];
 		}
 	}
-	return 0;
-}
-
-void* op_set(Xaddr xaddr, void *value){
-	PatternSpec *ps = getPatternSpec(xaddr.noun->patternName);
-	xaddr_SCAPE[xaddr.key] = xaddr.noun;
-	void *surface = &cache_DATA[xaddr.key];
-	return memcpy(surface, value, ps->size);
-}
-
-void *op_get(Xaddr xaddr){
-	if (xaddr_SCAPE[xaddr.key] == 0  ||
-		xaddr_SCAPE[xaddr.key]->name != xaddr.noun->name) {
-		return 0;
-	}
-	return &cache_DATA[xaddr.key];
+	raise_error("noun not found: %d", name);
 }
 
 Process *getProcess(PatternSpec *ps, FunctionName name){
@@ -151,6 +147,78 @@ Process *getProcess(PatternSpec *ps, FunctionName name){
 			return &ps->processes[i];
 		}
 	}
+}
+
+
+PatternSpec* _makeBasePatternSpec(Symbol name, size_t size, int processCount, Process processes[]) {
+	PatternSpec *ps = &spec_DATA[last_spec];
+	ps->name = name;
+	ps->size = size;
+	int i;
+	for (i=0; i<processCount; i++) {
+		ps->processes[i] = processes[i];
+	}	
+	return ps;
+}
+
+PatternSpec* makeBasePatternSpec(Symbol name, size_t size, int processCount, Process processes[]) {
+	++last_spec;
+	_makeBasePatternSpec(name,size,processCount,processes);
+}
+
+PatternSpec* makePatternSpec(Symbol name, int childCount, Symbol children[], int processCount, Process processes[]) {
+printf("makePatternSpec %d\n", name);
+	int i;
+	Noun *n;
+	++last_spec;
+	PatternSpec *ps = &spec_DATA[last_spec];
+	Offset *o;
+	size_t current_size = 0;
+	for (i=0; i<childCount; i++) {
+		printf("  copying Child %d\n",i);
+		n = getNoun(children[i]);
+		o = &ps->children[i];
+		o->noun = n;
+		o->offset = current_size;
+		printf("  - offset noun symbol %d\n", o->noun->name);
+		printf("  - offset size %d\n", o->offset);
+		current_size += getPatternSpec(n->patternName)->size;		
+	}
+	_makeBasePatternSpec(name, current_size, processCount, processes);
+}
+
+void* op_set(Xaddr xaddr, void *value){
+	PatternSpec *ps = getPatternSpec(xaddr.noun->patternName);
+	// FIXME: semfault if not
+	xaddr_SCAPE[xaddr.key] = xaddr.noun;
+	void *surface = &cache_DATA[xaddr.key];
+	return memcpy(surface, value, ps->size);
+}
+
+void* op_pathset(Xaddr xaddr, Symbol* path, void *value){
+	PatternSpec *ps = getPatternSpec(xaddr.noun->patternName);
+	//xaddr_SCAPE[xaddr.key] = xaddr.noun;
+	int offset = 0;
+	int i=0;
+	while (path[i]!=TERMINATOR) {
+printf("op_pathset ps: %d\n", ps->name);
+printf("op_pathset: %d\n", path[i]);
+printf("current offset: %d\n", offset);
+		offset += getOffset(ps, path[i]);		
+		ps = getPatternSpec( getNoun(path[i])->patternName );
+		i++;
+	}	
+printf("final offset: %d\n", offset);
+	void *surface = &cache_DATA[xaddr.key+offset];	
+	return memcpy(surface, value, ps->size);
+}
+
+void *op_get(Xaddr xaddr){
+	if (xaddr_SCAPE[xaddr.key] == 0  ||
+		xaddr_SCAPE[xaddr.key]->name != xaddr.noun->name) {
+		return 0;
+	}
+	return &cache_DATA[xaddr.key];
 }
 
 int op_exec(Xaddr xaddr, FunctionName processName){
@@ -164,33 +232,6 @@ int op_push_pattern(Symbol patternName, void* surface){
 	ssf->size = getPatternSpec(patternName)->size;
 	memcpy(&valStack[valStackPointer], surface, ssf->size);
 	valStackPointer += ssf->size;
-}
-
-PatternSpec* makeBasePatternSpec(Symbol name, size_t size, int processCount, Process processes[]) {
-	PatternSpec *ps = &spec_DATA[last_spec++];
-	ps->name = name;
-	ps->size = size;
-	int i;
-	for (i=0; i<processCount; i++) {
-		ps->processes[i] = processes[i];
-	}	
-	return ps;
-}
-
-PatternSpec* makePatternSpec(Symbol name, int childCount, Symbol children[], int processCount, Process processes[]) {
-	int i;
-	Noun *n;
-	PatternSpec *ps = &spec_DATA[last_spec++];
-	Offset *o;
-	size_t current_size = 0;
-	for (i=0; i<childCount; i++) {
-		n = getNoun(children[i]);
-		o = &ps->children[i];
-		o->noun = n;
-		o->offset = current_size;
-		current_size += getPatternSpec(n->patternName)->size;		
-	}
-	makeBasePatternSpec(name, current_size, processCount, processes);
 }
 
 int proc_inc(Xaddr this) {
@@ -208,9 +249,9 @@ int proc_add(Xaddr this){
 }
 
 void init() { 
-	Process pr[2] = { { INC, &proc_inc} , {ADD, &proc_add} };
-	makeBasePatternSpec(INT, 4, 2, pr);
-	
+	Process pr[2] = {{ INC, &proc_inc }, { ADD, &proc_add }};
+	makeBasePatternSpec(INT, sizeof(Symbol), 2, pr);
+
 	Symbol pointChildren[2] = { X, Y };
 	makePatternSpec(POINT, 2, pointChildren, 0, 0);
 	

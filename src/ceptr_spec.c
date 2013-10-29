@@ -62,6 +62,21 @@ void testAdd(){
 	assert(*(int*)(&valStack[0]) == 6);	
 }
 
+
+void testSymbolPath(){
+	int myLine[4] = {1,2,3,4};
+	Noun *inTheSand = newNoun("in the sand", LINE);
+	Xaddr itsLine = { 4, inTheSand };
+	op_set(itsLine, myLine);
+	Symbol path[3] = {B,Y,TERMINATOR};
+	int val = 7;
+	op_pathset(itsLine, path, &val);
+
+	void *surface = op_get(itsLine);
+	printf("after Pathset: %d\n", *(((int*)surface)+3) );
+	assert(*(((int*)surface)+3) == 7);	
+}
+
 int main(int argc, const char** argv)
 {
 	init();
@@ -70,4 +85,5 @@ int main(int argc, const char** argv)
 	testLine();	
 	testInc();
 	testAdd();
+	testSymbolPath();
 }
