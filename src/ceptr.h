@@ -12,6 +12,12 @@ enum Symbols {
 
 typedef int Symbol;
 
+enum FunctionNames {
+	INC
+};
+
+typedef int FunctionName;
+
 typedef struct {
 	Symbol name;      
 	Symbol patternName;	 //  Symbol patternSpecName;
@@ -23,15 +29,21 @@ typedef struct {
 } Offset;
 
 typedef struct {
-	Symbol name;
-	size_t size;
-	Offset children[DEFAULT_ARRAY_SIZE];
-} PatternSpec;
-
-typedef struct {
 	int key;
 	Noun *noun;
 } Xaddr;
+
+typedef struct {
+	int (*function)(Xaddr);
+	FunctionName name;
+} Process;
+
+typedef struct {
+	Symbol name;
+	size_t size;
+	Offset children[DEFAULT_ARRAY_SIZE];
+	Process processes[DEFAULT_ARRAY_SIZE];
+} PatternSpec;
 
 
 Symbol last_symbol = _LAST;
@@ -100,14 +112,14 @@ Noun *getNoun(Symbol name){
 	return 0;
 }
 
-void* set(Xaddr xaddr, void *value){
+void* op_set(Xaddr xaddr, void *value){
 	PatternSpec *ps = getPatternSpec(xaddr.noun->patternName);
 	xaddr_SCAPE[xaddr.key] = xaddr.noun;
 	void *surface = &cache_DATA[xaddr.key];
 	return memcpy(surface, value, ps->size);
 }
 
-void *get(Xaddr xaddr){
+void *op_get(Xaddr xaddr){
 	if (xaddr_SCAPE[xaddr.key] == 0  ||
 		xaddr_SCAPE[xaddr.key]->name != xaddr.noun->name) {
 		return 0;
@@ -115,13 +127,37 @@ void *get(Xaddr xaddr){
 	return &cache_DATA[xaddr.key];
 }
 
-PatternSpec* makePatternSpec(Symbol name, int childCount, Symbol children[]) {
+Process *getProcess(PatternSpec *ps, FunctionName name){
+	int i;
+	for (i=0; i<DEFAULT_ARRAY_SIZE; i++) {
+		if (ps->processes[i].name == name) {
+			return &ps->processes[i];
+		}
+	}
+}
+
+int op_exec(Xaddr xaddr, FunctionName processName){
+	Process *p = getProcess(getPatternSpec(xaddr.noun->patternName), processName);
+	(*p->function)(xaddr);
+}
+
+PatternSpec* makeBasePatternSpec(Symbol name, size_t size, int processCount, Process processes[]) {
+	PatternSpec *ps = &spec_DATA[last_spec++];
+	ps->name = name;
+	ps->size = size;
+	int i;
+	for (i=0; i<processCount; i++) {
+		ps->processes[i] = processes[i];
+	}	
+	return ps;
+}
+
+PatternSpec* makePatternSpec(Symbol name, int childCount, Symbol children[], int processCount, Process processes[]) {
 	int i;
 	Noun *n;
 	PatternSpec *ps = &spec_DATA[last_spec++];
 	Offset *o;
 	size_t current_size = 0;
-	ps->name = name;
 	for (i=0; i<childCount; i++) {
 		n = getNoun(children[i]);
 		o = &ps->children[i];
@@ -129,24 +165,24 @@ PatternSpec* makePatternSpec(Symbol name, int childCount, Symbol children[]) {
 		o->offset = current_size;
 		current_size += getPatternSpec(n->patternName)->size;		
 	}
-	ps->size = current_size;
+	makeBasePatternSpec(name, current_size, processCount, processes);
 }
 
-PatternSpec* makeBasePatternSpec(Symbol name, size_t size) {
-	PatternSpec *ps = &spec_DATA[last_spec++];
-	ps->name = name;
-	ps->size = size;
-	return ps;
+int inc(Xaddr this) {
+	void *surface = op_get(this);
+	++*(int*)(surface);
+	return 1;
 }
 
 void init() { 
-	makeBasePatternSpec(INT, 4);
+	Process pr[1] = { &inc };
+	makeBasePatternSpec(INT, 4, 1, pr);
 	
 	Symbol pointChildren[2] = { X, Y };
-	makePatternSpec(POINT, 2, pointChildren);
+	makePatternSpec(POINT, 2, pointChildren, 0, 0);
 	
 	Symbol lineChildren[2] = { A, B };
-	makePatternSpec(LINE, 2, lineChildren);	
+	makePatternSpec(LINE, 2, lineChildren, 0, 0);	
 }
 
 #endif
