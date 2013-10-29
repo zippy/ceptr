@@ -167,7 +167,6 @@ PatternSpec* makeBasePatternSpec(Symbol name, size_t size, int processCount, Pro
 }
 
 PatternSpec* makePatternSpec(Symbol name, int childCount, Symbol children[], int processCount, Process processes[]) {
-printf("makePatternSpec %d\n", name);
 	int i;
 	Noun *n;
 	++last_spec;
@@ -175,17 +174,15 @@ printf("makePatternSpec %d\n", name);
 	Offset *o;
 	size_t current_size = 0;
 	for (i=0; i<childCount; i++) {
-		printf("  copying Child %d\n",i);
 		n = getNoun(children[i]);
 		o = &ps->children[i];
 		o->noun = n;
 		o->offset = current_size;
-		printf("  - offset noun symbol %d\n", o->noun->name);
-		printf("  - offset size %d\n", o->offset);
 		current_size += getPatternSpec(n->patternName)->size;		
 	}
 	_makeBasePatternSpec(name, current_size, processCount, processes);
 }
+
 
 void* op_set(Xaddr xaddr, void *value){
 	PatternSpec *ps = getPatternSpec(xaddr.noun->patternName);
@@ -195,22 +192,29 @@ void* op_set(Xaddr xaddr, void *value){
 	return memcpy(surface, value, ps->size);
 }
 
-void* op_pathset(Xaddr xaddr, Symbol* path, void *value){
+PatternSpec* walk_path(Xaddr xaddr, Symbol* path, int* offset ){
 	PatternSpec *ps = getPatternSpec(xaddr.noun->patternName);
-	//xaddr_SCAPE[xaddr.key] = xaddr.noun;
-	int offset = 0;
+	*offset = 0;
 	int i=0;
 	while (path[i]!=TERMINATOR) {
-printf("op_pathset ps: %d\n", ps->name);
-printf("op_pathset: %d\n", path[i]);
-printf("current offset: %d\n", offset);
-		offset += getOffset(ps, path[i]);		
+		*offset += getOffset(ps, path[i]);		
 		ps = getPatternSpec( getNoun(path[i])->patternName );
 		i++;
 	}	
-printf("final offset: %d\n", offset);
+	return ps;	
+}
+
+void* op_setpath(Xaddr xaddr, Symbol* path, void *value){
+	int offset;
+	PatternSpec *ps = walk_path(xaddr, path, &offset);
 	void *surface = &cache_DATA[xaddr.key+offset];	
 	return memcpy(surface, value, ps->size);
+}
+
+void* op_getpath(Xaddr xaddr, Symbol* path){
+	int offset;
+	walk_path(xaddr, path, &offset);
+	return &cache_DATA[xaddr.key+offset];	
 }
 
 void *op_get(Xaddr xaddr){

@@ -69,10 +69,16 @@ void testSymbolPath(){
 	Xaddr itsLine = { 4, inTheSand };
 	op_set(itsLine, myLine);
 	Symbol path[3] = {B,Y,TERMINATOR};
-	int val = 7;
-	op_pathset(itsLine, path, &val);
+	int *val;
+	int seven = 7;
+	val = op_getpath(itsLine, path);
+	assert(*val == 4);	
 
-	void *surface = op_get(itsLine);
+	op_setpath(itsLine, path, &seven);
+	val = op_getpath(itsLine, path);
+	assert(*val == 7);
+	
+	void *surface = op_get(itsLine);	
 	printf("after Pathset: %d\n", *(((int*)surface)+3) );
 	assert(*(((int*)surface)+3) == 7);	
 }
