@@ -5,6 +5,7 @@
 #define DEFAULT_CACHE_SIZE 10000
 #define STACK_SIZE 10000
 #define TERMINATOR 0xFFFF
+#define OPERANDS_SIZE (sizeof(Xaddr) * 2)
 #include <signal.h>
 #include <string.h>
 #include <stdio.h>
@@ -21,7 +22,6 @@ enum FunctionNames {
 };
 
 typedef int FunctionName;
-
 enum Frametypes {
 	XADDR, PATTERN
 };
@@ -42,6 +42,19 @@ typedef struct {
 	int key;
 	Noun *noun;
 } Xaddr;
+
+
+enum Opcodes {
+	RETURN,PUSH_IMMEDIATE	
+};
+
+typedef int Opcode;
+
+typedef struct {
+	Opcode opcode;
+	char operands[OPERANDS_SIZE];
+} Instruction;
+
 
 typedef struct {
 	FunctionName name;
@@ -106,7 +119,7 @@ PatternSpec *getPatternSpec(Symbol patternName){
 			return &spec_DATA[i];
 		}
 	}
-	raise_error("pattern not found: %d", patternName);
+	raise_error("pattern not found: %d\n", patternName);
 }
 
 int getOffset(PatternSpec *ps, Symbol name) {
@@ -137,7 +150,7 @@ Noun *getNoun(Symbol name){
 			return &noun_DATA[i];
 		}
 	}
-	raise_error("noun not found: %d", name);
+	raise_error("noun not found: %d\n", name);
 }
 
 Process *getProcess(PatternSpec *ps, FunctionName name){
@@ -251,6 +264,30 @@ int proc_add(Xaddr this){
 	*stackSurface = *surface + *stackSurface;
 	return 1;
 }
+
+typedef struct {
+	Symbol name;
+	int valueOffset;
+	// pad to size of full operand
+	char padding[OPERANDS_SIZE  - sizeof(Symbol) - sizeof(int)];
+} ImmediatePatternOperand;
+
+int run(Instruction *instructions, void *values){
+	int counter = 0;
+	ImmediatePatternOperand *op;
+	while(1) {
+		switch( instructions[counter].opcode ) {
+			case RETURN:
+				return;
+			case PUSH_IMMEDIATE:			
+				op = (ImmediatePatternOperand*)&instructions[counter].operands;
+				op_push_pattern(op->name, (char*)values + op->valueOffset);
+				break;
+		}
+		counter++;
+	}
+}
+
 
 void init() {
 	Process pr[2] = {{ INC, &proc_inc }, { ADD, &proc_add }};

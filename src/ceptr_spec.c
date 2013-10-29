@@ -84,6 +84,19 @@ void testSymbolPath(){
 	assert(*(((int*)surface)+3) == 7);
 }
 
+void testRun(){
+	int values[1] = { 22 };	
+	ImmediatePatternOperand i = { INT, 0 };
+	Instruction pushProgram[2];
+	pushProgram[0].opcode = PUSH_IMMEDIATE;
+	memcpy(&pushProgram[0].operands, &i, OPERANDS_SIZE);
+	pushProgram[1].opcode = RETURN;
+	int topOfStack = valStackPointer;
+	printf("stack before run: %d\n", *(int*)(&valStack[valStackPointer]));	
+	run(pushProgram, values);
+	printf("stack after run: %d\n", *(int*)(&valStack[topOfStack]));
+}
+
 int main(int argc, const char** argv)
 {
 	init();
@@ -93,4 +106,5 @@ int main(int argc, const char** argv)
 	testInc();
 	testAdd();
 	testSymbolPath();
+	testRun();
 }
