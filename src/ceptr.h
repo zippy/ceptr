@@ -67,7 +67,7 @@ typedef struct {
 } SemStackFrame;
 
 #define BASE_NOUNS 4
-Noun base_noun_DATA[BASE_NOUNS] = {
+Noun base_nouns[BASE_NOUNS] = {
     { X, INT },
     { Y, INT },
     { A, POINT },
@@ -87,35 +87,33 @@ typedef struct {
 } PatternSpec;
 
 typedef struct {
-    SemStackFrame semStack[STACK_SIZE];
-    int semStackPointer;
-
-    char valStack[DEFAULT_CACHE_SIZE];
-    int valStackPointer;
     Symbol last_symbol;
-
-    Noun noun_DATA[DEFAULT_ARRAY_SIZE];
-
-    PatternSpec spec_DATA[DEFAULT_ARRAY_SIZE];
-
-    Noun * xaddr_SCAPE[DEFAULT_CACHE_SIZE];
-
-    char cache_DATA[DEFAULT_CACHE_SIZE];
-
+    Noun nouns[DEFAULT_ARRAY_SIZE];
+    PatternSpec specs[DEFAULT_ARRAY_SIZE];
+    Noun * xaddrs[DEFAULT_CACHE_SIZE];
+    char cache[DEFAULT_CACHE_SIZE];
     int last_noun;
     int last_spec;
+} Data;
+
+typedef struct {
+    SemStackFrame semStack[STACK_SIZE];
+    int semStackPointer;
+    char valStack[DEFAULT_CACHE_SIZE];
+    int valStackPointer;
+    Data data;
 } Receptor;
 
 
 Symbol new_symbol(Receptor *r) {
-    return r->last_symbol++;
+    return r->data.last_symbol++;
 }
 
 PatternSpec *getPatternSpec(Receptor *r, Symbol patternName){
     int i;
     for (i=0; i<DEFAULT_ARRAY_SIZE; i++) {
-	if (r->spec_DATA[i].name == patternName) {
-	    return &r->spec_DATA[i];
+	if (r->data.specs[i].name == patternName) {
+	    return &r->data.specs[i];
 	}
     }
     raise_error("pattern not found: %d\n", patternName);
@@ -134,19 +132,19 @@ int getOffset(PatternSpec *ps, Symbol name) {
 
 Noun *newNoun(Receptor *r,char label[], Symbol patternName) {
     // FIXME do something useful with label;
-    if ((r->last_noun +1) == DEFAULT_ARRAY_SIZE) {
+    if ((r->data.last_noun +1) == DEFAULT_ARRAY_SIZE) {
 	return 0;
     }
-    r->noun_DATA[++r->last_noun].name = new_symbol(r);
-    r->noun_DATA[r->last_noun].patternName = patternName;
-    return &r->noun_DATA[r->last_noun];
+    r->data.nouns[++r->data.last_noun].name = new_symbol(r);
+    r->data.nouns[r->data.last_noun].patternName = patternName;
+    return &r->data.nouns[r->data.last_noun];
 }
 
 Noun *getNoun(Receptor *r, Symbol name){
     int i;
     for (i=0; i<DEFAULT_ARRAY_SIZE; i++) {
-	if (r->noun_DATA[i].name == name) {
-	    return &r->noun_DATA[i];
+	if (r->data.nouns[i].name == name) {
+	    return &r->data.nouns[i];
 	}
     }
     raise_error("noun not found: %d\n", name);
@@ -162,7 +160,7 @@ Process *getProcess(PatternSpec *ps, FunctionName name){
 }
 
 PatternSpec* _makeBasePatternSpec(Receptor *r, Symbol name, size_t size, int processCount, Process processes[]) {
-    PatternSpec *ps = &r->spec_DATA[r->last_spec];
+    PatternSpec *ps = &r->data.specs[r->data.last_spec];
     ps->name = name;
     ps->size = size;
     int i;
@@ -173,15 +171,15 @@ PatternSpec* _makeBasePatternSpec(Receptor *r, Symbol name, size_t size, int pro
 }
 
 PatternSpec* makeBasePatternSpec(Receptor *r, Symbol name, size_t size, int processCount, Process processes[]) {
-    ++r->last_spec;
+    ++r->data.last_spec;
     _makeBasePatternSpec(r,name,size,processCount,processes);
 }
 
 PatternSpec* makePatternSpec(Receptor *r, Symbol name, int childCount, Symbol children[], int processCount, Process processes[]) {
     int i;
     Noun *n;
-    ++r->last_spec;
-    PatternSpec *ps = &r->spec_DATA[r->last_spec];
+    ++r->data.last_spec;
+    PatternSpec *ps = &r->data.specs[r->data.last_spec];
     Offset *o;
     size_t current_size = 0;
     for (i=0; i<childCount; i++) {
@@ -198,8 +196,8 @@ PatternSpec* makePatternSpec(Receptor *r, Symbol name, int childCount, Symbol ch
 void* op_set(Receptor *r,Xaddr xaddr, void *value){
     PatternSpec *ps = getPatternSpec(r,xaddr.noun->patternName);
     // FIXME: semfault if not
-    r->xaddr_SCAPE[xaddr.key] = xaddr.noun;
-    void *surface = &r->cache_DATA[xaddr.key];
+    r->data.xaddrs[xaddr.key] = xaddr.noun;
+    void *surface = &r->data.cache[xaddr.key];
     return memcpy(surface, value, ps->size);
 }
 
@@ -218,22 +216,22 @@ PatternSpec* walk_path(Receptor *r,Xaddr xaddr, Symbol* path, int* offset ){
 void* op_setpath(Receptor *r,Xaddr xaddr, Symbol* path, void *value){
     int offset;
     PatternSpec *ps = walk_path(r,xaddr, path, &offset);
-    void *surface = &r->cache_DATA[xaddr.key+offset];
+    void *surface = &r->data.cache[xaddr.key+offset];
     return memcpy(surface, value, ps->size);
 }
 
 void* op_getpath(Receptor *r,Xaddr xaddr, Symbol* path){
     int offset;
     walk_path(r,xaddr, path, &offset);
-    return &r->cache_DATA[xaddr.key+offset];
+    return &r->data.cache[xaddr.key+offset];
 }
 
 void *op_get(Receptor *r,Xaddr xaddr){
-    if (r->xaddr_SCAPE[xaddr.key] == 0  ||
-	r->xaddr_SCAPE[xaddr.key]->name != xaddr.noun->name) {
+    if (r->data.xaddrs[xaddr.key] == 0  ||
+	r->data.xaddrs[xaddr.key]->name != xaddr.noun->name) {
 	return 0;
     }
-    return &r->cache_DATA[xaddr.key];
+    return &r->data.cache[xaddr.key];
 }
 
 int op_exec(Receptor *r,Xaddr xaddr, FunctionName processName){
@@ -288,13 +286,13 @@ int run(Receptor *r,Instruction *instructions, void *values){
 
 void init(Receptor *r) {
 
-    r->last_noun = BASE_NOUNS-1;
-    r->last_spec = -1;
-    r->last_symbol = _LAST;
+    r->data.last_noun = BASE_NOUNS-1;
+    r->data.last_spec = -1;
+    r->data.last_symbol = _LAST;
     r->semStackPointer= -1;
     r->valStackPointer= 0;
     int i;
-    for(i=0;i<BASE_NOUNS;i++) r->noun_DATA[i]=base_noun_DATA[i];
+    for(i=0;i<BASE_NOUNS;i++) r->data.nouns[i]=base_nouns[i];
 
     Process pr[2] = {{ INC, &proc_inc }, { ADD, &proc_add }};
     makeBasePatternSpec(r,INT, sizeof(Symbol), 2, pr);
