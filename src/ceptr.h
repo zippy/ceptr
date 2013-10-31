@@ -109,6 +109,33 @@ Symbol new_symbol(Receptor *r) {
     return r->data.last_symbol++;
 }
 
+typdef struct {
+	int size;
+	Symbol patternName;
+} ArrayHeader;
+
+void *array_get(){
+	int size = 0;
+	return _array_get(r,array,n,&size);
+}
+
+void *_array_get(Receptor *r, void *array, int n, int * size){
+	ArrayHeader * ah = (ArrayHeader *) array;
+	if (n < 0 || n >= ah->size) {
+		raise_error("array index out of bounds: %d", n);
+	}
+	*size = getPatternSpec(r, ah->patternName)->size;
+	return ((char *)array) + *size * n;
+}
+
+
+void *array_set(Receptor *r, void * array, int n, void * surface){
+	int size;
+	void *array = _array_get(r,array,n,&size);
+	
+	memcpy(array_get(r, array, n), surface, size);
+}
+
 PatternSpec *getPatternSpec(Receptor *r, Symbol patternName){
     int i;
     for (i=0; i<DEFAULT_ARRAY_SIZE; i++) {
