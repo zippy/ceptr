@@ -27,30 +27,60 @@ void dump_process_array(Process* process){
 	}
 }
 
-void xaddr_dump(Receptor* r) {
+Xaddr noun_to_xaddr(Symbol noun){
+	Xaddr nounXaddr = { noun, NOUN_SPEC };
+	return nounXaddr;
+}
+
+void dump_xaddr(Receptor* r, Xaddr xaddr, int indent_level){
 	int i;
 	PatternSpec* ps;
 	NounSurface* ns;
+	Process* print;
+	void* surface;
+	int key = xaddr.key;
+	int noun = xaddr.noun;
+	switch(noun){
+		case PATTERN_SPEC:
+			ps = (PatternSpec*)&r->data.cache[key];
+			printf("Pattern Spec \n");
+			printf("    name: %d\n", ps->name);
+			printf("    size: %d\n", ps->size);
+			printf("    children: ");
+			dump_children_array(ps->children);
+			printf("\n    processes: ");
+			dump_process_array(ps->processes);
+			printf("\n");
+			break;
+		case NOUN_SPEC:
+			ns = (NounSurface*)&r->data.cache[key];
+			printf("Noun \    { %d, %5d } %s" , ns->namedElement.key, ns->namedElement.noun, ns->label);
+			break;
+		default: 
+			surface = op_get(r, noun_to_xaddr(noun));
+			ns = (NounSurface*)surface;
+			printf("%s : ", ns->label);
+ 			ps = (PatternSpec*)op_get(r, ns->namedElement);
+			
+			switch(ps->name) {
+				case 0:
+					printf("%d", *((int*)&r->data.cache[key]));
+					break;
+				default:
+					printf("%d %d ", *((int*)&r->data.cache[key]), *(((int*)&r->data.cache[key])+1));
+					printf("dunno");
+			}
+	}
+}
+
+void dump_xaddrs(Receptor* r) {
+	int i;
+	PatternSpec* ps;
+	NounSurface* ns;
+	void* surface;
 	for (i=0; i<=r->data.current_xaddr; i++){
-		int key = r->data.xaddrs[i].key;
-		int noun = r->data.xaddrs[i].noun;
-		printf("Xaddr { %d, %d } : ", key, noun);
-		switch(noun){
-			case PATTERN_SPEC:
-				ps = (PatternSpec*)&r->data.cache[key];
-				printf("Pattern Spec \n");
-				printf("    name: %d\n", ps->name);
-				printf("    size: %d\n", ps->size);
-				printf("    children: ");
-				dump_children_array(ps->children);
-				printf("\n    processes: ");
-				dump_process_array(ps->processes);
-				printf("\n");
-				break;
-			case NOUN_SPEC:
-				ns = (NounSurface*)&r->data.cache[key];
-				printf("Noun \n    { %d, %d } %s\n" , ns->namedElement.key, ns->namedElement.noun, ns->label);
-		}
+		printf("Xaddr { %5d, %5d } - ", r->data.xaddrs[i].key, r->data.xaddrs[i].noun);		
+		dump_xaddr(r, r->data.xaddrs[i], 0);
 		printf("\n");
 	}
 }
@@ -157,7 +187,7 @@ void xaddr_dump(Receptor* r) {
 
 void test_op_new_noun(){
     Receptor tr;init(&tr);Receptor *r = &tr;
-	xaddr_dump(r);
+	dump_xaddrs(r);
 }
 
 int main(int argc, const char** argv)

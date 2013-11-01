@@ -19,7 +19,7 @@ char error[255];
 typedef int Symbol;
 
 enum FunctionNames {
-    INC, ADD
+    INC, ADD, PRINT
 };
 
 typedef int FunctionName;
@@ -134,15 +134,14 @@ typedef struct {
 // 
 
 // 
-// Process *getProcess(PatternSpec *ps, FunctionName name){
-//     int i;
-//     for (i=0; i<DEFAULT_ARRAY_SIZE; i++) {
-// 	if (ps->processes[i].name == name) {
-// 	    return &ps->processes[i];
-// 	}
-//     }
-// }
-// 
+Process* getProcess(PatternSpec *ps, FunctionName name){
+    int i;
+    for (i=0; i<DEFAULT_ARRAY_SIZE; i++) {
+		if (ps->processes[i].name == name) {
+		    return &ps->processes[i];
+		}
+    }
+}
 
 #define NULL_SURFACE 0
 enum Symbols {
@@ -285,6 +284,16 @@ int proc_int_add(Receptor *r,Xaddr this){
     return 1;
 }
 
+int proc_int_print(Receptor *r, Xaddr this) {
+	int* surface = (int*)op_get(r,this);
+	printf("%d", *surface);
+}
+
+// int default_pattern_print(Receptor* r,PatternSpec* ps){
+// 	
+// 	
+// }
+
 typedef struct {
     Symbol name;
     int valueOffset;
@@ -319,20 +328,33 @@ void init(Receptor *r) {
 	r->patternSpecXaddr.noun = CSPEC;
 	r->data.current_xaddr = -1;
 
-	Process processes[2] = {{ INC, &proc_int_inc }, { ADD, &proc_int_add }};
+	Process processes[2] = {
+		{ INC, &proc_int_inc }, 
+		{ ADD, &proc_int_add },
+		{ PRINT, &proc_int_print }
+	};
 	Xaddr int_ps_xaddr = op_new_pattern(r, "INT", sizeof(int), 0, 2, processes);	
+	
+	Symbol MY_INT = op_new_noun(r, int_ps_xaddr, "MY_INT");
+	int val = 7;
+	Xaddr my_int_xaddr = op_new(r, MY_INT, &val);
 	
 	Symbol X = op_new_noun(r, int_ps_xaddr, "X"); 
 	Symbol Y = op_new_noun(r, int_ps_xaddr, "Y");
-
+	
 	Xaddr point_children[2] = {{X, NOUN_SPEC}, {Y, NOUN_SPEC}};
 	Xaddr point_ps_xaddr = op_new_pattern(r, "POINT", 2, point_children, 0, 0);
+
+	Symbol HERE = op_new_noun(r, point_ps_xaddr, "HERE");
+	int value[2] = { 777, 422 };
+	Xaddr here_xaddr = op_new(r, HERE, &value);
 
 	Symbol A = op_new_noun(r, point_ps_xaddr, "A");
 	Symbol B = op_new_noun(r, point_ps_xaddr, "B");
 	
 	Xaddr line_children[2] = {{A, NOUN_SPEC}, {B, NOUN_SPEC}};
 	Xaddr line_ps_xaddr = op_new_pattern(r, "LINE", 2, line_children, 0, 0);
+	
 }
 
 
