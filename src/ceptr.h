@@ -33,9 +33,6 @@ typedef int Frametype;
 typedef struct {
     int key;
     Symbol noun;
-	// Xaddr* type;
-	// Symbol type;
-	// Symbol name;
 } Xaddr;
 
 typedef struct {
@@ -123,16 +120,7 @@ typedef struct {
 // 	memcpy(array_get(r, array, n), surface, size);
 // }
 // 
-// PatternSpec *getPatternSpec(Receptor *r, Symbol patternName){
-//     int i;
-//     for (i=0; i<DEFAULT_ARRAY_SIZE; i++) {
-// 	if (r->data.specs[i].name == patternName) {
-// 	    return &r->data.specs[i];
-// 	}
-//     }
-//     raise_error("pattern not found: %d\n", patternName);
-// }
-// 
+
 // int getOffset(PatternSpec *ps, Symbol name) {
 //     int i;
 //     for (i=0; ps->children[i].noun != 0; i++) {
@@ -144,25 +132,7 @@ typedef struct {
 //     raise_error("offset not found: %d\n", name);
 // }
 // 
-// Noun *newNoun(Receptor *r,char label[], Symbol patternName) {
-//     // FIXME do something useful with label;
-//     if ((r->data.last_noun +1) == DEFAULT_ARRAY_SIZE) {
-// 	return 0;
-//     }
-//     r->data.nouns[++r->data.last_noun].name = new_symbol(r);
-//     r->data.nouns[r->data.last_noun].patternName = patternName;
-//     return &r->data.nouns[r->data.last_noun];
-// }
-// 
-// Noun *getNoun(Receptor *r, Symbol name){
-//     int i;
-//     for (i=0; i<DEFAULT_ARRAY_SIZE; i++) {
-// 	if (r->data.nouns[i].name == name) {
-// 	    return &r->data.nouns[i];
-// 	}
-//     }
-//     raise_error("noun not found: %d\n", name);
-// }
+
 // 
 // Process *getProcess(PatternSpec *ps, FunctionName name){
 //     int i;
@@ -173,39 +143,6 @@ typedef struct {
 //     }
 // }
 // 
-// PatternSpec* _makeBasePatternSpec(Receptor *r, Symbol name, size_t size, int processCount, Process processes[]) {
-//     PatternSpec *ps = &r->data.specs[r->data.last_spec];
-// 	Xaddr ps_xaddr = { name, }
-//     ps->name = name;
-//     ps->size = size;
-//     int i;
-//     for (i=0; i<processCount; i++) {
-// 	ps->processes[i] = processes[i];
-//     }
-//     return ps;
-// }
-// 
-// PatternSpec* makeBasePatternSpec(Receptor *r, Symbol name, size_t size, int processCount, Process processes[]) {
-//     ++r->data.last_spec;
-//     _makeBasePatternSpec(r,name,size,processCount,processes);
-// }
-// 
-// PatternSpec* makePatternSpec(Receptor *r, Symbol name, int childCount, Symbol children[], int processCount, Process processes[]) {
-//     int i;
-//     Noun *n;
-//     ++r->data.last_spec;
-//     PatternSpec *ps = &r->data.specs[r->data.last_spec];
-//     Offset *o;
-//     size_t current_size = 0;
-//     for (i=0; i<childCount; i++) {
-// 	n = getNoun(r,children[i]);
-// 	o = &ps->children[i];
-// 	o->noun = n;
-// 	o->offset = current_size;
-// 	current_size += getPatternSpec(r,n->patternName)->size;
-//     }
-//     _makeBasePatternSpec(r,name, current_size, processCount, processes);
-// }
 
 #define NULL_SURFACE 0
 enum Symbols {
@@ -213,7 +150,6 @@ enum Symbols {
 };
 
 size_t _get_noun_size(Receptor *r, Symbol noun){	
-// 
 	if (noun == PATTERN_SPEC){
 		return sizeof(PatternSpec);
 	}
@@ -224,10 +160,14 @@ size_t _get_noun_size(Receptor *r, Symbol noun){
 	raise_error("unknown noun type %d\n", elementXaddr->noun);
 }
 
-Symbol op_new_noun(Receptor *r, Symbol xaddr_key, Symbol xaddr_type, char* label) {
+void* op_get(Receptor *r, Xaddr xaddr){	
+    return &r->data.cache[xaddr.key];
+}
+
+Symbol op_new_noun(Receptor *r, Xaddr xaddr, char* label) {
 	NounSurface ns;
-	ns.namedElement.key = xaddr_key;
-	ns.namedElement.noun = xaddr_type;
+	ns.namedElement.key = xaddr.key;
+	ns.namedElement.noun = xaddr.noun;
 	ns.label = label;
 	size_t current_index = r->data.cache_index;
     void *surface = &r->data.cache[current_index];
@@ -240,25 +180,56 @@ Symbol op_new_noun(Receptor *r, Symbol xaddr_key, Symbol xaddr_type, char* label
 	return current_index;
 }
 
-Symbol op_new(Receptor *r, Xaddr elementType) {
+void op_set(Receptor *r, Xaddr xaddr, void *value){
+    void *surface = &r->data.cache[xaddr.key];
+    memcpy(surface, value, _get_noun_size(r, xaddr.noun));	
+}
+
+Xaddr op_new(Receptor *r, Symbol noun, void* surface) {
 	size_t current_index = r->data.cache_index;
-	r->data.cache_index += _get_noun_size(r, elementType.noun);	
+	r->data.cache_index += _get_noun_size(r, noun);	
 	r->data.current_xaddr++;
 	r->data.xaddrs[r->data.current_xaddr].key = current_index;
-	r->data.xaddrs[r->data.current_xaddr].noun = elementType.noun;
-	return current_index;
+	r->data.xaddrs[r->data.current_xaddr].noun = noun;
+	Xaddr new_xaddr = { current_index, noun	};
+	op_set(r, new_xaddr, surface);
+	return new_xaddr;
 }
 
-int _op_set(Receptor *r, int xaddr_key, Symbol xaddr_noun, void* value) {	
-    void *surface = &r->data.cache[xaddr_key];
-	printf("copying %d\n", _get_noun_size(r, xaddr_noun));
-    memcpy(surface, value, _get_noun_size(r, xaddr_noun));	
-	return xaddr_key;
+Xaddr op_new_pattern(Receptor *r, char* label, int childCount, Xaddr* children, int processCount, Process* processes) {
+	PatternSpec ps;
+	memset(&ps, 0, sizeof(PatternSpec));
+	int i;
+	ps.name = op_new_noun(r, r->patternSpecXaddr, label);	
+	if (children == 0) {
+		ps.size = childCount;
+	} else {
+		NounSurface* noun;
+		PatternSpec* cps;
+		ps.size = 0;
+		for (i=0;i<childCount;i++){
+			if (children[i].noun == NOUN_SPEC) {
+				noun = (NounSurface*)op_get(r, children[i]);
+				cps = (PatternSpec*)op_get(r, noun->namedElement);
+			} else if (children[i].noun == PATTERN_SPEC) {
+				cps = (PatternSpec*)op_get(r, children[i]);
+			} else {
+				raise_error("Unkown child element type %d", children[i].noun);
+			}
+			ps.children[i].noun.key = children[i].key;
+			ps.children[i].noun.noun = children[i].noun;
+			ps.children[i].offset = ps.size;
+			ps.size+=cps->size;			
+		}
+	}
+	for (i=0;i<processCount;i++){
+		ps.processes[i].name = processes[i].name;
+		ps.processes[i].function = processes[i].function;
+	}
+	
+	return op_new(r, PATTERN_SPEC, &ps);	
 }
 
-int op_set(Receptor *r,Xaddr xaddr, void *value){
-	return _op_set(r, xaddr.key, xaddr.noun, value);
-}
 // // 
 // // PatternSpec* walk_path(Receptor *r,Xaddr xaddr, Symbol* path, int* offset ){
 // //     PatternSpec *ps = getPatternSpec(r,xaddr.noun->patternName);
@@ -285,13 +256,7 @@ int op_set(Receptor *r,Xaddr xaddr, void *value){
 //     return &r->data.cache[xaddr.key+offset];
 // }
 // 
-void *op_get(Receptor *r,Xaddr xaddr){
-//     if (r->data.xaddrs[xaddr.key] == 0  ||
-// 	r->data.xaddrs[xaddr.key]->name != xaddr.noun->name) {
-// 	return 0;
-//     }
-//     return &r->data.cache[xaddr.key];
-}
+
 // 
 // int op_exec(Receptor *r,Xaddr xaddr, FunctionName processName){
 //     Process *p = getProcess(getPatternSpec(r,xaddr.noun->patternName), processName);
@@ -343,6 +308,7 @@ int run(Receptor *r,Instruction *instructions, void *values){
     }
 }
 
+#define TBD 0
 
 void init(Receptor *r) {
 
@@ -353,64 +319,20 @@ void init(Receptor *r) {
 	r->patternSpecXaddr.noun = CSPEC;
 	r->data.current_xaddr = -1;
 
+	Process processes[2] = {{ INC, &proc_int_inc }, { ADD, &proc_int_add }};
+	Xaddr int_ps_xaddr = op_new_pattern(r, "INT", sizeof(int), 0, 2, processes);	
 	
-	Symbol INT = op_new_noun(r, PATTERN_SPEC, CSPEC, "INT");
-	
-	PatternSpec int_ps = {
-		INT, sizeof(int), {}, {{ INC, &proc_int_inc }, { ADD, &proc_int_add }}
-	};
-	
-	Xaddr int_noun_xaddr = { INT, PATTERN_SPEC };
-	Symbol INT_PS = op_new(r, int_noun_xaddr);
-	
-	_op_set(r, INT_PS, PATTERN_SPEC, &int_ps);
-	
-	printf("INT_PS %d\n", INT_PS);
-	
-	Symbol X = op_new_noun(r, INT_PS, PATTERN_SPEC, "X");
-	Symbol Y = op_new_noun(r, INT_PS, PATTERN_SPEC, "Y");
-	
-	Symbol POINT = op_new_noun(r, PATTERN_SPEC, CSPEC, "POINT");
-	
-	PatternSpec point_ps = {
-		POINT, sizeof(int)*2, {{{X, -3}, 0}, {{Y, -3}, sizeof(int)}}, {}
-	};
-	Xaddr point_noun_xaddr = { POINT, PATTERN_SPEC };
-	Symbol POINT_PS = op_new(r, point_noun_xaddr);
-	
-	_op_set(r, POINT_PS, PATTERN_SPEC, &point_ps);
-	
-	// 
-	// 
-	// 
-	// Symbol X = op_new_noun(r, INT, "X"); //_op_set(r, op_new(r, INT),   INT, &x_ns);
-	// 
-	// NounSurface y_ns = { INT, "Y" };
-	// Symbol Y = _op_set(r, op_new(r, INT),   INT, &y_ns);
-	// 
-	// Symbol POINT = op_new_noun(r, PATTERN_SPEC);
-	// PatternSpec point_ps = {
-	// 	POINT, sizeof(int)*2, { X, Y }, {}
-	// };
-	// _op_set(r, POINT, PATTERN_SPEC, *point_ps);
-	// 
-	// 
-	// int here_val[2] = { 2, 3 };
-	// NounSurface here_ns = { POINT, "HERE" };
-	// Symbol HERE = op_set(r, op_new(r, POINT), POINT, &here_ns);
-	// op_set(r, op_new(r, HERE), HERE, &here_val);
-	// 
-	
+	Symbol X = op_new_noun(r, int_ps_xaddr, "X"); 
+	Symbol Y = op_new_noun(r, int_ps_xaddr, "Y");
 
-	// Symbol A = _op_set(r, op_new(r, POINT),   POINT, "A");
-	// Symbol B = _op_set(r, op_new(r, POINT),   POINT, "B");
-	// 
-	// Symbol LINE = op_new(r, PATTERN_SPEC);
-	// PatternSpec line_ps = {
-	// 	LINE, sizeof(int)*4, { A, B }, {}
-	// };
-	// _op_set(r, LINE, PATTERN_SPEC, *line_ps);
+	Xaddr point_children[2] = {{X, NOUN_SPEC}, {Y, NOUN_SPEC}};
+	Xaddr point_ps_xaddr = op_new_pattern(r, "POINT", 2, point_children, 0, 0);
 
+	Symbol A = op_new_noun(r, point_ps_xaddr, "A");
+	Symbol B = op_new_noun(r, point_ps_xaddr, "B");
+	
+	Xaddr line_children[2] = {{A, NOUN_SPEC}, {B, NOUN_SPEC}};
+	Xaddr line_ps_xaddr = op_new_pattern(r, "LINE", 2, line_children, 0, 0);
 }
 
 
