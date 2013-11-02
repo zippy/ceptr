@@ -213,19 +213,24 @@ void testAdd(){
 //     assert(*(((int*)surface)+3) == 7);
 // }
 //
-// void testRun(){
-//     Receptor tr;init(&tr);Receptor *r = &tr;
-//     int values[1] = { 22 };
-//     ImmediatePatternOperand i = { INT, 0 };
-//     Instruction pushProgram[2];
-//     pushProgram[0].opcode = PUSH_IMMEDIATE;
-//     memcpy(&pushProgram[0].operands, &i, OPERANDS_SIZE);
-//     pushProgram[1].opcode = RETURN;
-//     int topOfStack = r->valStackPointer;
-//     printf("stack before run: %d\n", *(int*)(&r->valStack[r->valStackPointer]));
-//     run(r,pushProgram, values);
-//     printf("stack after run: %d\n", *(int*)(&r->valStack[topOfStack]));
-// }
+
+
+void testRun(){
+    Receptor tr;init(&tr);Receptor *r = &tr;
+    int values[1] = { 31415 };
+    ImmediatePatternOperand i = { r->intPatternSpecXaddr.key, 0 };
+    Instruction pushProgram[2];
+    pushProgram[0].opcode = PUSH_IMMEDIATE;
+    memcpy(&pushProgram[0].operands, &i, OPERANDS_SIZE);
+    pushProgram[1].opcode = RETURN;
+    int topOfStack = r->valStackPointer;
+    spec_is_true(r->valStackPointer == 0);
+    spec_is_true(r->semStackPointer == -1);
+    run(r,pushProgram, values);
+    spec_is_true(r->valStackPointer == 4);
+    spec_is_true(r->semStackPointer == 0);
+    spec_is_true(*(int*)(&r->valStack[topOfStack])== 31415 )
+}
 
 void test_op_new_noun(){
     Receptor tr;init(&tr);Receptor *r = &tr;
@@ -243,7 +248,7 @@ int main(int argc, const char** argv)
     //     testSemFault();
     //     testLine();
     //     testSymbolPath();
-    //     testRun();
+    testRun();
     int i;
     if (spec_failures > 0) {
 	printf("\n%d out of %d specs failed:\n",spec_total,spec_failures);

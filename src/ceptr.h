@@ -28,8 +28,6 @@ enum Frametypes {
     XADDR, PATTERN
 };
 
-typedef int Frametype;
-
 typedef struct {
     int key;
     Symbol noun;
@@ -57,7 +55,7 @@ typedef struct {
 } Instruction;
 
 typedef struct {
-    Frametype type;
+    Xaddr type;
     int size;
 } SemStackFrame;
 
@@ -207,7 +205,8 @@ int op_exec(Receptor *r,Xaddr xaddr, FunctionName processName){
 
 int op_push_pattern(Receptor *r, Symbol patternName, void *surface) {
     SemStackFrame *ssf = &r->semStack[++r->semStackPointer];
-    ssf->type = PATTERN;
+    ssf->type.key = patternName;
+    ssf->type.noun = PATTERN_SPEC;
     ssf->size = _get_pattern_spec(r,patternName)->size;
     memcpy(&r->valStack[r->valStackPointer], surface, ssf->size);
     r->valStackPointer += ssf->size;
