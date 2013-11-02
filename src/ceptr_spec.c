@@ -141,19 +141,17 @@ void testInt() {
     v = op_get(r,my_int_xaddr);
     spec_is_true(*v == 8);
 }
-//
-// void testPoint(){
-//     Receptor tr;init(&tr);Receptor *r = &tr;
-//     Noun *here = newNoun(r,"here", POINT);
-//     Xaddr hereHere = { 10, here };
-//     int myPoint[2] = { 2,10 };
-//     op_set(r,hereHere, &myPoint);
-//     void *surface = op_get(r,hereHere);
-//
-//     printf("point-X %d", *(int*)(surface));
-//     printf("point-Y %d\n", *(int*)(surface + 4));
-// }
-//
+
+ void testPoint(){
+     Receptor tr;init(&tr);Receptor *r = &tr;
+
+     Symbol HERE = op_new_noun(r, r->pointPatternSpecXaddr, "HERE");
+     int value[2] = {777, 422};
+     Xaddr here_xaddr = op_new(r, HERE, &value);
+     int *v = op_get(r,here_xaddr);
+     spec_is_true(*v==777 && *(v+1) == 422);
+ }
+
 // void testSemFault(){
 //     Receptor tr;init(&tr);Receptor *r = &tr;
 //     Noun *here = newNoun(r,"here", POINT);
@@ -251,11 +249,9 @@ int main(int argc, const char** argv)
     printf("Running all tests...\n\n");
     test_op_new_noun();
     testInt();
-    //testPoint();
+    testPoint();
     //     testSemFault();
     //     testLine();
-    //     testInc();
-    //     testAdd();
     //     testSymbolPath();
     //     testRun();
     int i;

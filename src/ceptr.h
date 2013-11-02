@@ -73,8 +73,10 @@ typedef struct {
     int semStackPointer;
     char valStack[DEFAULT_CACHE_SIZE];
     int valStackPointer;
+    //built in xaddrs:
     Xaddr patternSpecXaddr;
     Xaddr intPatternSpecXaddr;
+    Xaddr pointPatternSpecXaddr;
     Data data;
 } Receptor;
 
@@ -261,23 +263,19 @@ void init(Receptor *r) {
     };
     r->intPatternSpecXaddr = op_new_pattern(r, "INT", sizeof(int), 0, 3, int_processes);
 
+    //POINT
     Symbol X = op_new_noun(r, r->intPatternSpecXaddr, "X");
     Symbol Y = op_new_noun(r, r->intPatternSpecXaddr, "Y");
-
 
     Process point_processes[] = {
 	{ PRINT, &proc_point_print }
     };
 
     Xaddr point_children[2] = {{X, NOUN_SPEC}, {Y, NOUN_SPEC}};
-    Xaddr point_ps_xaddr = op_new_pattern(r, "POINT", 2, point_children, 1, point_processes);
+    r->pointPatternSpecXaddr = op_new_pattern(r, "POINT", 2, point_children, 1, point_processes);
 
-    Symbol HERE = op_new_noun(r, point_ps_xaddr, "HERE");
-    int value[2] = {777, 422};
-    Xaddr here_xaddr = op_new(r, HERE, &value);
-
-    Symbol A = op_new_noun(r, point_ps_xaddr, "A");
-    Symbol B = op_new_noun(r, point_ps_xaddr, "B");
+    Symbol A = op_new_noun(r, r->pointPatternSpecXaddr, "A");
+    Symbol B = op_new_noun(r, r->pointPatternSpecXaddr, "B");
 
     Xaddr line_children[2] = {{A, NOUN_SPEC}, {B, NOUN_SPEC}};
     Xaddr line_ps_xaddr = op_new_pattern(r, "LINE", 2, line_children, 0, 0);
