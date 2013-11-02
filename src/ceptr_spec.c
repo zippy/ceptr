@@ -3,6 +3,10 @@
 #include <signal.h>
 #include <assert.h>
 
+#define MAX_FAILURES 1000
+int spec_failures = 0;
+int spec_total = 0;
+char failures[MAX_FAILURES][255];
 
 void hexDump (char *desc, void *addr, int len) {
     int i;
@@ -56,7 +60,7 @@ void dump_process_array(Process* process){
 	if (i!=0){
 	    printf(",");
 	}
-	printf("{ %d, %d }", process[i].name, process[i].function);
+	printf("{ %d, %lx }", (int)process[i].name, (long unsigned int)process[i].function);
 	i++;
     }
 }
@@ -84,7 +88,7 @@ void dump_xaddr(Receptor* r, Xaddr xaddr, int indent_level){
 	ps = (PatternSpec*)&r->data.cache[key];
 	printf("Pattern Spec\n");
 	printf("    name: %s(%d)\n", noun_label(r,ps->name), ps->name);
-	printf("    size: %d\n", ps->size);
+	printf("    size: %d\n", (int)ps->size);
 	printf("    children: ");
 	dump_children_array(ps->children);
 	printf("\n    processes: ");
@@ -93,7 +97,7 @@ void dump_xaddr(Receptor* r, Xaddr xaddr, int indent_level){
 	break;
     case NOUN_SPEC:
 	ns = (NounSurface*)&r->data.cache[key];
-	printf("Noun \    { %d, %5d } %s" , ns->namedElement.key, ns->namedElement.noun, ns->label);
+	printf("Noun     { %d, %5d } %s" , ns->namedElement.key, ns->namedElement.noun, ns->label);
 	break;
     default:
 	surface = op_get(r, noun_to_xaddr(noun));
@@ -123,6 +127,20 @@ void dump_xaddrs(Receptor* r) {
     }
 }
 
+#define spec_is_true(x) spec_total++;if (x){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be true",__FILE__,__LINE__,#x);}
+
+void testInt() {
+    Receptor tr;init(&tr);Receptor *r = &tr;
+    Symbol MY_INT = op_new_noun(r, r->intPatternSpecXaddr, "MY_INT");
+    int val = 7;
+    Xaddr my_int_xaddr = op_new(r, MY_INT, &val);
+    int *v = op_get(r,my_int_xaddr);
+    spec_is_true(*v == 7);
+    val = 8;
+    op_set(r,my_int_xaddr,&val);
+    v = op_get(r,my_int_xaddr);
+    spec_is_true(*v == 8);
+}
 //
 // void testPoint(){
 //     Receptor tr;init(&tr);Receptor *r = &tr;
@@ -230,12 +248,25 @@ void test_op_new_noun(){
 
 int main(int argc, const char** argv)
 {
+    printf("Running all tests...\n\n");
     test_op_new_noun();
-    // testPoint();
+    testInt();
+    //testPoint();
     //     testSemFault();
     //     testLine();
     //     testInc();
     //     testAdd();
     //     testSymbolPath();
     //     testRun();
+    int i;
+    if (spec_failures > 0) {
+	printf("\n%d out of %d specs failed:\n",spec_total,spec_failures);
+	for(i = 0; i < spec_failures; i++) {
+	    printf("%s\n",failures[i]);
+	}
+    }
+    else {
+	printf("\nAll %d specs pass\n",spec_total);
+    }
+    return 0;
 }

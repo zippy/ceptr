@@ -12,6 +12,11 @@ Ceptr provides a new computing stack for semantic self-describing data, and prot
 
 ## Testing
 
+To compile and run all tests simply:
+
+    cd src
+    make specs
+
 ## Development
 
 [issue tracking](https://github.com/zippy/ceptr/issue)

@@ -15,7 +15,6 @@ char error[255];
     printf(error_msg, val);			\
     raise(SIGINT);
 
-
 typedef int Symbol;
 
 enum FunctionNames {
@@ -90,6 +89,7 @@ typedef struct {
     char valStack[DEFAULT_CACHE_SIZE];
     int valStackPointer;
     Xaddr patternSpecXaddr;
+    Xaddr intPatternSpecXaddr;
     Data data;
 } Receptor;
 //
@@ -334,23 +334,22 @@ void init(Receptor *r) {
     r->patternSpecXaddr.noun = CSPEC;
     r->data.current_xaddr = -1;
 
-    Process processes[] = {
-	{ INC, &proc_int_inc },
-	{ ADD, &proc_int_add },
-	{ PRINT, &proc_int_print }
+    // ********************** bootstrap built in types
+
+    // INT
+    Process int_processes[] = {
+	{ PRINT, (int (*)(void *,Xaddr))&proc_int_print},
+	{ INC, (int (*)(void *,Xaddr))&proc_int_inc },
+	{ ADD, (int (*)(void *,Xaddr))&proc_int_add }
     };
-    Xaddr int_ps_xaddr = op_new_pattern(r, "INT", sizeof(int), 0, 3, processes);
+    r->intPatternSpecXaddr = op_new_pattern(r, "INT", sizeof(int), 0, 3, int_processes);
 
-    Symbol MY_INT = op_new_noun(r, int_ps_xaddr, "MY_INT");
-    int val = 7;
-    Xaddr my_int_xaddr = op_new(r, MY_INT, &val);
-
-    Symbol X = op_new_noun(r, int_ps_xaddr, "X");
-    Symbol Y = op_new_noun(r, int_ps_xaddr, "Y");
+    Symbol X = op_new_noun(r, r->intPatternSpecXaddr, "X");
+    Symbol Y = op_new_noun(r, r->intPatternSpecXaddr, "Y");
 
 
     Process point_processes[] = {
-	{ PRINT, &proc_point_print }
+	{ PRINT, (int (*)(void *,Xaddr))&proc_point_print }
     };
 
     Xaddr point_children[2] = {{X, NOUN_SPEC}, {Y, NOUN_SPEC}};
