@@ -39,31 +39,31 @@ void hexDump (char *desc, void *addr, int len) {
 }
 
 void dump_children_array(Offset* children){
-	int i = 0;
-	while(children[i].noun.key != 0 || children[i].noun.noun != 0) {
-		if (i!=0){
-			printf(",");
-		}
-		printf("{ %d, %d }(%d)", children[i].noun.key, children[i].noun.noun, children[i].offset);
-		i++;
+    int i = 0;
+    while(children[i].noun.key != 0 || children[i].noun.noun != 0) {
+	if (i!=0){
+	    printf(",");
 	}
+	printf("{ %d, %d }(%d)", children[i].noun.key, children[i].noun.noun, children[i].offset);
+	i++;
+    }
 }
 
 
 void dump_process_array(Process* process){
-	int i = 0;
-	while(process[i].name != 0 || process[i].function != 0) {
-		if (i!=0){
-			printf(",");
-		}
-		printf("{ %d, %d }", process[i].name, process[i].function);
-		i++;
+    int i = 0;
+    while(process[i].name != 0 || process[i].function != 0) {
+	if (i!=0){
+	    printf(",");
 	}
+	printf("{ %d, %d }", process[i].name, process[i].function);
+	i++;
+    }
 }
 
 Xaddr noun_to_xaddr(Symbol noun){
-	Xaddr nounXaddr = { noun, NOUN_SPEC };
-	return nounXaddr;
+    Xaddr nounXaddr = { noun, NOUN_SPEC };
+    return nounXaddr;
 }
 
 char * noun_label(Receptor *r,Symbol noun) {
@@ -72,55 +72,55 @@ char * noun_label(Receptor *r,Symbol noun) {
 }
 
 void dump_xaddr(Receptor* r, Xaddr xaddr, int indent_level){
-	int i;
-	PatternSpec* ps;
-	NounSurface* ns;
-	Process* print_proc;
-	void* surface;
-	int key = xaddr.key;
-	int noun = xaddr.noun;
-	switch(noun){
-		case PATTERN_SPEC:
-			ps = (PatternSpec*)&r->data.cache[key];
-			printf("Pattern Spec\n");
-			printf("    name: %s(%d)\n", noun_label(r,ps->name), ps->name);
-			printf("    size: %d\n", ps->size);
-			printf("    children: ");
-			dump_children_array(ps->children);
-			printf("\n    processes: ");
-			dump_process_array(ps->processes);
-			printf("\n");
-			break;
-		case NOUN_SPEC:
-			ns = (NounSurface*)&r->data.cache[key];
-			printf("Noun \    { %d, %5d } %s" , ns->namedElement.key, ns->namedElement.noun, ns->label);
-			break;
-		default:
-			surface = op_get(r, noun_to_xaddr(noun));
-			ns = (NounSurface*)surface;
-			printf("%s : ", ns->label);
+    int i;
+    PatternSpec* ps;
+    NounSurface* ns;
+    Process* print_proc;
+    void* surface;
+    int key = xaddr.key;
+    int noun = xaddr.noun;
+    switch(noun){
+    case PATTERN_SPEC:
+	ps = (PatternSpec*)&r->data.cache[key];
+	printf("Pattern Spec\n");
+	printf("    name: %s(%d)\n", noun_label(r,ps->name), ps->name);
+	printf("    size: %d\n", ps->size);
+	printf("    children: ");
+	dump_children_array(ps->children);
+	printf("\n    processes: ");
+	dump_process_array(ps->processes);
+	printf("\n");
+	break;
+    case NOUN_SPEC:
+	ns = (NounSurface*)&r->data.cache[key];
+	printf("Noun \    { %d, %5d } %s" , ns->namedElement.key, ns->namedElement.noun, ns->label);
+	break;
+    default:
+	surface = op_get(r, noun_to_xaddr(noun));
+	ns = (NounSurface*)surface;
+	printf("%s : ", ns->label);
 
-			//FIXME: this breaks when named elements can be other than patterns
- 			ps = (PatternSpec*)op_get(r, ns->namedElement);
-			print_proc = getProcess(ps,PRINT);
-			if (print_proc) {
-			    (*print_proc->function)(r,xaddr);
-			} else {
-			    hexDump("hexDump of surface",&r->data.cache[key],ps->size);
-			}
+	//FIXME: this breaks when named elements can be other than patterns
+	ps = (PatternSpec*)op_get(r, ns->namedElement);
+	print_proc = getProcess(ps,PRINT);
+	if (print_proc) {
+	    (*print_proc->function)(r,xaddr);
+	} else {
+	    hexDump("hexDump of surface",&r->data.cache[key],ps->size);
 	}
+    }
 }
 
 void dump_xaddrs(Receptor* r) {
-	int i;
-	PatternSpec* ps;
-	NounSurface* ns;
-	void* surface;
-	for (i=0; i<=r->data.current_xaddr; i++){
-		printf("Xaddr { %5d, %5d } - ", r->data.xaddrs[i].key, r->data.xaddrs[i].noun);
-		dump_xaddr(r, r->data.xaddrs[i], 0);
-		printf("\n");
-	}
+    int i;
+    PatternSpec* ps;
+    NounSurface* ns;
+    void* surface;
+    for (i=0; i<=r->data.current_xaddr; i++){
+	printf("Xaddr { %5d, %5d } - ", r->data.xaddrs[i].key, r->data.xaddrs[i].noun);
+	dump_xaddr(r, r->data.xaddrs[i], 0);
+	printf("\n");
+    }
 }
 
 //
@@ -225,12 +225,12 @@ void dump_xaddrs(Receptor* r) {
 
 void test_op_new_noun(){
     Receptor tr;init(&tr);Receptor *r = &tr;
-	dump_xaddrs(r);
+    dump_xaddrs(r);
 }
 
 int main(int argc, const char** argv)
 {
-	test_op_new_noun();
+    test_op_new_noun();
     // testPoint();
     //     testSemFault();
     //     testLine();

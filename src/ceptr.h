@@ -41,8 +41,8 @@ typedef struct {
 } Offset;
 
 typedef struct {
-	Xaddr namedElement;
-	char* label;
+    Xaddr namedElement;
+    char* label;
 } NounSurface;
 
 
@@ -79,9 +79,9 @@ typedef struct {
     PatternSpec specs[DEFAULT_ARRAY_SIZE];
     Xaddr xaddrs[DEFAULT_CACHE_SIZE];
     char cache[DEFAULT_CACHE_SIZE];
-	int current_xaddr;
+    int current_xaddr;
     int last_spec;
-	int cache_index;
+    int cache_index;
 } Data;
 
 typedef struct {
@@ -89,7 +89,7 @@ typedef struct {
     int semStackPointer;
     char valStack[DEFAULT_CACHE_SIZE];
     int valStackPointer;
-	Xaddr patternSpecXaddr;
+    Xaddr patternSpecXaddr;
     Data data;
 } Receptor;
 //
@@ -137,9 +137,9 @@ typedef struct {
 Process* getProcess(PatternSpec *ps, FunctionName name){
     int i;
     for (i=0; i<DEFAULT_ARRAY_SIZE; i++) {
-		if (ps->processes[i].name == name) {
-		    return &ps->processes[i];
-		}
+	if (ps->processes[i].name == name) {
+	    return &ps->processes[i];
+	}
     }
     return 0;
 }
@@ -150,14 +150,14 @@ enum Symbols {
 };
 
 size_t _get_noun_size(Receptor *r, Symbol noun){
-	if (noun == PATTERN_SPEC){
-		return sizeof(PatternSpec);
-	}
-	Xaddr* elementXaddr = &((NounSurface*)&r->data.cache[noun])->namedElement;
-	if (elementXaddr->noun == PATTERN_SPEC) {
-		return ((PatternSpec *)&r->data.cache[elementXaddr->key])->size;
-	}
-	raise_error("unknown noun type %d\n", elementXaddr->noun);
+    if (noun == PATTERN_SPEC){
+	return sizeof(PatternSpec);
+    }
+    Xaddr* elementXaddr = &((NounSurface*)&r->data.cache[noun])->namedElement;
+    if (elementXaddr->noun == PATTERN_SPEC) {
+	return ((PatternSpec *)&r->data.cache[elementXaddr->key])->size;
+    }
+    raise_error("unknown noun type %d\n", elementXaddr->noun);
 }
 
 void* op_get(Receptor *r, Xaddr xaddr){
@@ -165,19 +165,19 @@ void* op_get(Receptor *r, Xaddr xaddr){
 }
 
 Symbol op_new_noun(Receptor *r, Xaddr xaddr, char* label) {
-	NounSurface ns;
-	ns.namedElement.key = xaddr.key;
-	ns.namedElement.noun = xaddr.noun;
-	ns.label = label;
-	size_t current_index = r->data.cache_index;
+    NounSurface ns;
+    ns.namedElement.key = xaddr.key;
+    ns.namedElement.noun = xaddr.noun;
+    ns.label = label;
+    size_t current_index = r->data.cache_index;
     void *surface = &r->data.cache[current_index];
-	memcpy(surface, &ns, sizeof(NounSurface));
-	r->data.cache_index += sizeof(NounSurface);
+    memcpy(surface, &ns, sizeof(NounSurface));
+    r->data.cache_index += sizeof(NounSurface);
 
-	r->data.current_xaddr++;
-	r->data.xaddrs[r->data.current_xaddr].key = current_index;
-	r->data.xaddrs[r->data.current_xaddr].noun = NOUN_SPEC;
-	return current_index;
+    r->data.current_xaddr++;
+    r->data.xaddrs[r->data.current_xaddr].key = current_index;
+    r->data.xaddrs[r->data.current_xaddr].noun = NOUN_SPEC;
+    return current_index;
 }
 
 void op_set(Receptor *r, Xaddr xaddr, void *value){
@@ -186,48 +186,48 @@ void op_set(Receptor *r, Xaddr xaddr, void *value){
 }
 
 Xaddr op_new(Receptor *r, Symbol noun, void* surface) {
-	size_t current_index = r->data.cache_index;
-	r->data.cache_index += _get_noun_size(r, noun);
-	r->data.current_xaddr++;
-	r->data.xaddrs[r->data.current_xaddr].key = current_index;
-	r->data.xaddrs[r->data.current_xaddr].noun = noun;
-	Xaddr new_xaddr = { current_index, noun	};
-	op_set(r, new_xaddr, surface);
-	return new_xaddr;
+    size_t current_index = r->data.cache_index;
+    r->data.cache_index += _get_noun_size(r, noun);
+    r->data.current_xaddr++;
+    r->data.xaddrs[r->data.current_xaddr].key = current_index;
+    r->data.xaddrs[r->data.current_xaddr].noun = noun;
+    Xaddr new_xaddr = { current_index, noun	};
+    op_set(r, new_xaddr, surface);
+    return new_xaddr;
 }
 
 Xaddr op_new_pattern(Receptor *r, char* label, int childCount, Xaddr* children, int processCount, Process* processes) {
-	PatternSpec ps;
-	memset(&ps, 0, sizeof(PatternSpec));
-	int i;
-	ps.name = op_new_noun(r, r->patternSpecXaddr, label);
-	if (children == 0) {
-		ps.size = childCount;
-	} else {
-		NounSurface* noun;
-		PatternSpec* cps;
-		ps.size = 0;
-		for (i=0;i<childCount;i++){
-			if (children[i].noun == NOUN_SPEC) {
-				noun = (NounSurface*)op_get(r, children[i]);
-				cps = (PatternSpec*)op_get(r, noun->namedElement);
-			} else if (children[i].noun == PATTERN_SPEC) {
-				cps = (PatternSpec*)op_get(r, children[i]);
-			} else {
-				raise_error("Unkown child element type %d", children[i].noun);
-			}
-			ps.children[i].noun.key = children[i].key;
-			ps.children[i].noun.noun = children[i].noun;
-			ps.children[i].offset = ps.size;
-			ps.size+=cps->size;
-		}
+    PatternSpec ps;
+    memset(&ps, 0, sizeof(PatternSpec));
+    int i;
+    ps.name = op_new_noun(r, r->patternSpecXaddr, label);
+    if (children == 0) {
+	ps.size = childCount;
+    } else {
+	NounSurface* noun;
+	PatternSpec* cps;
+	ps.size = 0;
+	for (i=0;i<childCount;i++){
+	    if (children[i].noun == NOUN_SPEC) {
+		noun = (NounSurface*)op_get(r, children[i]);
+		cps = (PatternSpec*)op_get(r, noun->namedElement);
+	    } else if (children[i].noun == PATTERN_SPEC) {
+		cps = (PatternSpec*)op_get(r, children[i]);
+	    } else {
+		raise_error("Unkown child element type %d", children[i].noun);
+	    }
+	    ps.children[i].noun.key = children[i].key;
+	    ps.children[i].noun.noun = children[i].noun;
+	    ps.children[i].offset = ps.size;
+	    ps.size+=cps->size;
 	}
-	for (i=0;i<processCount;i++){
-		ps.processes[i].name = processes[i].name;
-		ps.processes[i].function = processes[i].function;
-	}
+    }
+    for (i=0;i<processCount;i++){
+	ps.processes[i].name = processes[i].name;
+	ps.processes[i].function = processes[i].function;
+    }
 
-	return op_new(r, PATTERN_SPEC, &ps);
+    return op_new(r, PATTERN_SPEC, &ps);
 }
 
 // //
@@ -264,11 +264,11 @@ Xaddr op_new_pattern(Receptor *r, char* label, int childCount, Xaddr* children, 
 // }
 //
 int op_push_pattern(Receptor *r,Symbol patternName, void* surface){
-//     SemStackFrame *ssf = &r->semStack[++r->semStackPointer];
-//     ssf->type = PATTERN;
-//     ssf->size = getPatternSpec(r,patternName)->size;
-//     memcpy(&r->valStack[r->valStackPointer], surface, ssf->size);
-//     r->valStackPointer += ssf->size;
+    //     SemStackFrame *ssf = &r->semStack[++r->semStackPointer];
+    //     ssf->type = PATTERN;
+    //     ssf->size = getPatternSpec(r,patternName)->size;
+    //     memcpy(&r->valStack[r->valStackPointer], surface, ssf->size);
+    //     r->valStackPointer += ssf->size;
 }
 
 int proc_int_inc(Receptor *r,Xaddr this) {
@@ -327,47 +327,45 @@ int run(Receptor *r,Instruction *instructions, void *values){
 
 void init(Receptor *r) {
 
-	r->data.cache_index = 0;
+    r->data.cache_index = 0;
     r->semStackPointer= -1;
     r->valStackPointer= 0;
-	r->patternSpecXaddr.key = PATTERN_SPEC;
-	r->patternSpecXaddr.noun = CSPEC;
-	r->data.current_xaddr = -1;
+    r->patternSpecXaddr.key = PATTERN_SPEC;
+    r->patternSpecXaddr.noun = CSPEC;
+    r->data.current_xaddr = -1;
 
-	Process processes[] = {
-		{ INC, &proc_int_inc },
-		{ ADD, &proc_int_add },
-		{ PRINT, &proc_int_print }
-	};
-	Xaddr int_ps_xaddr = op_new_pattern(r, "INT", sizeof(int), 0, 3, processes);
+    Process processes[] = {
+	{ INC, &proc_int_inc },
+	{ ADD, &proc_int_add },
+	{ PRINT, &proc_int_print }
+    };
+    Xaddr int_ps_xaddr = op_new_pattern(r, "INT", sizeof(int), 0, 3, processes);
 
-	Symbol MY_INT = op_new_noun(r, int_ps_xaddr, "MY_INT");
-	int val = 7;
-	Xaddr my_int_xaddr = op_new(r, MY_INT, &val);
+    Symbol MY_INT = op_new_noun(r, int_ps_xaddr, "MY_INT");
+    int val = 7;
+    Xaddr my_int_xaddr = op_new(r, MY_INT, &val);
 
-	Symbol X = op_new_noun(r, int_ps_xaddr, "X");
-	Symbol Y = op_new_noun(r, int_ps_xaddr, "Y");
+    Symbol X = op_new_noun(r, int_ps_xaddr, "X");
+    Symbol Y = op_new_noun(r, int_ps_xaddr, "Y");
 
 
-	Process point_processes[] = {
-	    { PRINT, &proc_point_print }
-	};
+    Process point_processes[] = {
+	{ PRINT, &proc_point_print }
+    };
 
-	Xaddr point_children[2] = {{X, NOUN_SPEC}, {Y, NOUN_SPEC}};
-	Xaddr point_ps_xaddr = op_new_pattern(r, "POINT", 2, point_children, 1, point_processes);
+    Xaddr point_children[2] = {{X, NOUN_SPEC}, {Y, NOUN_SPEC}};
+    Xaddr point_ps_xaddr = op_new_pattern(r, "POINT", 2, point_children, 1, point_processes);
 
-	Symbol HERE = op_new_noun(r, point_ps_xaddr, "HERE");
-	int value[2] = { 777, 422 };
-	Xaddr here_xaddr = op_new(r, HERE, &value);
+    Symbol HERE = op_new_noun(r, point_ps_xaddr, "HERE");
+    int value[2] = { 777, 422 };
+    Xaddr here_xaddr = op_new(r, HERE, &value);
 
-	Symbol A = op_new_noun(r, point_ps_xaddr, "A");
-	Symbol B = op_new_noun(r, point_ps_xaddr, "B");
+    Symbol A = op_new_noun(r, point_ps_xaddr, "A");
+    Symbol B = op_new_noun(r, point_ps_xaddr, "B");
 
-	Xaddr line_children[2] = {{A, NOUN_SPEC}, {B, NOUN_SPEC}};
-	Xaddr line_ps_xaddr = op_new_pattern(r, "LINE", 2, line_children, 0, 0);
+    Xaddr line_children[2] = {{A, NOUN_SPEC}, {B, NOUN_SPEC}};
+    Xaddr line_ps_xaddr = op_new_pattern(r, "LINE", 2, line_children, 0, 0);
 
 }
-
-
 
 #endif
