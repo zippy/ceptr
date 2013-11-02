@@ -141,6 +141,7 @@ Process* getProcess(PatternSpec *ps, FunctionName name){
 		    return &ps->processes[i];
 		}
     }
+    return 0;
 }
 
 #define NULL_SURFACE 0
@@ -285,8 +286,13 @@ int proc_int_add(Receptor *r,Xaddr this){
 }
 
 int proc_int_print(Receptor *r, Xaddr this) {
-	int* surface = (int*)op_get(r,this);
-	printf("%d", *surface);
+    int* surface = (int*)op_get(r,this);
+    printf("%d", *surface);
+}
+
+int proc_point_print(Receptor *r, Xaddr this) {
+    int* surface = (int*)op_get(r,this);
+    printf("%d,%d", *surface,*(surface+1));
 }
 
 // int default_pattern_print(Receptor* r,PatternSpec* ps){
@@ -328,12 +334,12 @@ void init(Receptor *r) {
 	r->patternSpecXaddr.noun = CSPEC;
 	r->data.current_xaddr = -1;
 
-	Process processes[2] = {
+	Process processes[] = {
 		{ INC, &proc_int_inc },
 		{ ADD, &proc_int_add },
 		{ PRINT, &proc_int_print }
 	};
-	Xaddr int_ps_xaddr = op_new_pattern(r, "INT", sizeof(int), 0, 2, processes);
+	Xaddr int_ps_xaddr = op_new_pattern(r, "INT", sizeof(int), 0, 3, processes);
 
 	Symbol MY_INT = op_new_noun(r, int_ps_xaddr, "MY_INT");
 	int val = 7;
@@ -342,8 +348,13 @@ void init(Receptor *r) {
 	Symbol X = op_new_noun(r, int_ps_xaddr, "X");
 	Symbol Y = op_new_noun(r, int_ps_xaddr, "Y");
 
+
+	Process point_processes[] = {
+	    { PRINT, &proc_point_print }
+	};
+
 	Xaddr point_children[2] = {{X, NOUN_SPEC}, {Y, NOUN_SPEC}};
-	Xaddr point_ps_xaddr = op_new_pattern(r, "POINT", 2, point_children, 0, 0);
+	Xaddr point_ps_xaddr = op_new_pattern(r, "POINT", 2, point_children, 1, point_processes);
 
 	Symbol HERE = op_new_noun(r, point_ps_xaddr, "HERE");
 	int value[2] = { 777, 422 };
