@@ -4,7 +4,6 @@
 #define DEFAULT_ARRAY_SIZE 100
 #define DEFAULT_CACHE_SIZE 10000
 #define STACK_SIZE 10000
-#define TERMINATOR 0xFFFF
 #define OPERANDS_SIZE (sizeof(Xaddr) * 2)
 
 #include <signal.h>
@@ -12,6 +11,7 @@
 #include <stdio.h>
 
 char error[255];
+
 #define raise_error(error_msg, val)        \
     printf(error_msg, val);            \
     raise(SIGINT);
@@ -45,7 +45,6 @@ typedef struct {
     Xaddr namedElement;
     char *label;
 } NounSurface;
-
 
 enum Opcodes {
     RETURN, PUSH_IMMEDIATE
@@ -92,50 +91,6 @@ typedef struct {
 } PatternSpec;
 
 
-
-
-//
-// typdef struct {
-// 	int size;
-// 	Symbol patternName;
-// } ArrayHeader;
-//
-// void *array_get(){
-// 	int size = 0;
-// 	return _array_get(r,array,n,&size);
-// }
-//
-// void *_array_get(Receptor *r, void *array, int n, int * size){
-// 	ArrayHeader * ah = (ArrayHeader *) array;
-// 	if (n < 0 || n >= ah->size) {
-// 		raise_error("array index out of bounds: %d", n);
-// 	}
-// 	*size = getPatternSpec(r, ah->patternName)->size;
-// 	return ((char *)array) + *size * n;
-// }
-//
-//
-// void *array_set(Receptor *r, void * array, int n, void * surface){
-// 	int size;
-// 	void *array = _array_get(r,array,n,&size);
-//
-// 	memcpy(array_get(r, array, n), surface, size);
-// }
-//
-
-// int getOffset(PatternSpec *ps, Symbol name) {
-//     int i;
-//     for (i=0; ps->children[i].noun != 0; i++) {
-// 	if (ps->children[i].noun->name == name) {
-// 	    return ps->children[i].offset;
-// 	}
-//     }
-//     printf("in getOffset for patterSpec %d\n", ps->name);
-//     raise_error("offset not found: %d\n", name);
-// }
-//
-
-//
 Process *getProcess(PatternSpec *ps, FunctionName name) {
     int i;
     for (i = 0; i < DEFAULT_ARRAY_SIZE; i++) {
@@ -146,7 +101,6 @@ Process *getProcess(PatternSpec *ps, FunctionName name) {
     return 0;
 }
 
-#define NULL_SURFACE 0
 enum Symbols {
     NOUN_SPEC = -3, CSPEC = -2, PATTERN_SPEC = -1
 };
@@ -232,39 +186,6 @@ Xaddr op_new_pattern(Receptor *r, char *label, int childCount, Xaddr *children, 
     return op_new(r, PATTERN_SPEC, &ps);
 }
 
-// //
-// // PatternSpec* walk_path(Receptor *r,Xaddr xaddr, Symbol* path, int* offset ){
-// //     PatternSpec *ps = getPatternSpec(r,xaddr.noun->patternName);
-// //     *offset = 0;
-// //     int i=0;
-// //     while (path[i]!=TERMINATOR) {
-// // 	*offset += getOffset(ps, path[i]);
-// // 	ps = getPatternSpec(r, getNoun(r,path[i])->patternName );
-// // 	i++;
-// //     }
-// //     return ps;
-// // }
-//
-// void* op_setpath(Receptor *r,Xaddr xaddr, Symbol* path, void *value){
-//     int offset;
-//     PatternSpec *ps = walk_path(r,xaddr, path, &offset);
-//     void *surface = &r->data.cache[xaddr.key+offset];
-//     return memcpy(surface, value, ps->size);
-// }
-//
-// void* op_getpath(Receptor *r,Xaddr xaddr, Symbol* path){
-//     int offset;
-//     walk_path(r,xaddr, path, &offset);
-//     return &r->data.cache[xaddr.key+offset];
-// }
-//
-
-//
-// int op_exec(Receptor *r,Xaddr xaddr, FunctionName processName){
-//     Process *p = getProcess(getPatternSpec(r,xaddr.noun->patternName), processName);
-//     (*p->function)(r,xaddr);
-// }
-//
 int op_push_pattern(Receptor *r, Symbol patternName, void *surface) {
     //     SemStackFrame *ssf = &r->semStack[++r->semStackPointer];
     //     ssf->type = PATTERN;
@@ -297,11 +218,6 @@ int proc_point_print(Receptor *r, Xaddr this) {
     printf("%d,%d", *surface, *(surface + 1));
 }
 
-// int default_pattern_print(Receptor* r,PatternSpec* ps){
-//
-//
-// }
-
 typedef struct {
     Symbol name;
     int valueOffset;
@@ -324,8 +240,6 @@ int run(Receptor *r, Instruction *instructions, void *values) {
         counter++;
     }
 }
-
-#define TBD 0
 
 void init(Receptor *r) {
 
