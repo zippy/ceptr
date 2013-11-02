@@ -56,7 +56,7 @@ void dump_process_array(Process *process) {
         if (i != 0) {
             printf(",");
         }
-        printf("{ %d, %d }", process[i].name, process[i].function);
+        printf("{ %d, %zu }", process[i].name, (size_t)process[i].function);
         i++;
     }
 }
@@ -84,7 +84,7 @@ void dump_xaddr(Receptor *r, Xaddr xaddr, int indent_level) {
             ps = (PatternSpec *) &r->data.cache[key];
             printf("Pattern Spec\n");
             printf("    name: %s(%d)\n", noun_label(r, ps->name), ps->name);
-            printf("    size: %d\n", ps->size);
+            printf("    size: %d\n", (int)ps->size);
             printf("    children: ");
             dump_children_array(ps->children);
             printf("\n    processes: ");
@@ -93,7 +93,7 @@ void dump_xaddr(Receptor *r, Xaddr xaddr, int indent_level) {
             break;
         case NOUN_SPEC:
             ns = (NounSurface *) &r->data.cache[key];
-            printf("Noun \    { %d, %5d } %s", ns->namedElement.key, ns->namedElement.noun, ns->label);
+            printf("Noun      { %d, %5d } %s", ns->namedElement.key, ns->namedElement.noun, ns->label);
             break;
         default:
             surface = op_get(r, noun_to_xaddr(noun));

@@ -58,31 +58,15 @@ typedef struct {
     char operands[OPERANDS_SIZE];
 } Instruction;
 
-
 typedef struct {
     Frametype type;
     int size;
 } SemStackFrame;
 
 typedef struct {
-    FunctionName name;
-
-    int (*function)(void *, Xaddr);
-} Process;
-
-typedef struct {
-    Symbol name;
-    size_t size;
-    Offset children[DEFAULT_ARRAY_SIZE];
-    Process processes[DEFAULT_ARRAY_SIZE];
-} PatternSpec;
-
-typedef struct {
-    PatternSpec specs[DEFAULT_ARRAY_SIZE];
     Xaddr xaddrs[DEFAULT_CACHE_SIZE];
     char cache[DEFAULT_CACHE_SIZE];
     int current_xaddr;
-    int last_spec;
     int cache_index;
 } Data;
 
@@ -94,6 +78,22 @@ typedef struct {
     Xaddr patternSpecXaddr;
     Data data;
 } Receptor;
+
+typedef struct {
+    FunctionName name;
+    int (*function)(Receptor*, Xaddr);
+} Process;
+
+typedef struct {
+    Symbol name;
+    size_t size;
+    Offset children[DEFAULT_ARRAY_SIZE];
+    Process processes[DEFAULT_ARRAY_SIZE];
+} PatternSpec;
+
+
+
+
 //
 // typdef struct {
 // 	int size;
@@ -337,8 +337,8 @@ void init(Receptor *r) {
     r->data.current_xaddr = -1;
 
     Process processes[] = {
-        {INC, &proc_int_inc},
-        {ADD, &proc_int_add},
+        {INC,   &proc_int_inc},
+        {ADD,   &proc_int_add},
         {PRINT, &proc_int_print}
     };
     Xaddr int_ps_xaddr = op_new_pattern(r, "INT", sizeof(int), 0, 3, processes);
