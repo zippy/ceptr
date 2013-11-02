@@ -107,15 +107,20 @@ enum Symbols {
     NOUN_SPEC = -3, CSPEC = -2, PATTERN_SPEC = -1
 };
 
+PatternSpec * _get_noun_pattern_spec(Receptor *r, Symbol noun) {
+    Xaddr *elementXaddr = &((NounSurface *) &r->data.cache[noun])->namedElement;
+    if (elementXaddr->noun == PATTERN_SPEC) {
+        return (PatternSpec *) &r->data.cache[elementXaddr->key];
+    }
+    raise_error("nouns named item (%d) is not a pattern\n", elementXaddr->noun);
+}
+
 size_t _get_noun_size(Receptor *r, Symbol noun) {
     if (noun == PATTERN_SPEC) {
         return sizeof(PatternSpec);
     }
-    Xaddr *elementXaddr = &((NounSurface *) &r->data.cache[noun])->namedElement;
-    if (elementXaddr->noun == PATTERN_SPEC) {
-        return ((PatternSpec *) &r->data.cache[elementXaddr->key])->size;
-    }
-    raise_error("unknown noun type %d\n", elementXaddr->noun);
+    PatternSpec *ps = _get_noun_pattern_spec(r,noun);
+    return ps->size;
 }
 
 void *op_get(Receptor *r, Xaddr xaddr) {
@@ -186,6 +191,12 @@ Xaddr op_new_pattern(Receptor *r, char *label, int childCount, Xaddr *children, 
     }
 
     return op_new(r, PATTERN_SPEC, &ps);
+}
+
+int op_exec(Receptor *r,Xaddr xaddr, FunctionName processName){
+    PatternSpec *ps = _get_noun_pattern_spec(r,xaddr.noun);
+    Process *p = getProcess(ps, processName);
+    return (*p->function)(r,xaddr);
 }
 
 int op_push_pattern(Receptor *r, Symbol patternName, void *surface) {
@@ -281,5 +292,18 @@ void init(Receptor *r) {
     Xaddr line_ps_xaddr = op_new_pattern(r, "LINE", 2, line_children, 0, 0);
 
 }
+
+// utilities
+
+Xaddr noun_to_xaddr(Symbol noun) {
+    Xaddr nounXaddr = {noun, NOUN_SPEC};
+    return nounXaddr;
+}
+
+char *noun_label(Receptor *r, Symbol noun) {
+    NounSurface *ns = (NounSurface *) op_get(r, noun_to_xaddr(noun));
+    return ns->label;
+}
+
 
 #endif

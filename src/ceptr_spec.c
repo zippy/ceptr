@@ -65,16 +65,6 @@ void dump_process_array(Process *process) {
     }
 }
 
-Xaddr noun_to_xaddr(Symbol noun) {
-    Xaddr nounXaddr = {noun, NOUN_SPEC};
-    return nounXaddr;
-}
-
-char *noun_label(Receptor *r, Symbol noun) {
-    NounSurface *ns = (NounSurface *) op_get(r, noun_to_xaddr(noun));
-    return ns->label;
-}
-
 void dump_xaddr(Receptor *r, Xaddr xaddr, int indent_level) {
     int i;
     PatternSpec *ps;
@@ -152,6 +142,17 @@ void testInt() {
      spec_is_true(*v==777 && *(v+1) == 422);
  }
 
+void testInc(){
+    Receptor tr;init(&tr);Receptor *r = &tr;
+    Symbol AGE = op_new_noun(r, r->intPatternSpecXaddr, "Age");
+    int val = 7;
+    Xaddr age_xaddr = op_new(r, AGE, &val);
+    op_exec(r,age_xaddr,INC);
+    int *v = op_get(r,age_xaddr);
+    spec_is_true(*v == 8);
+}
+
+
 // void testSemFault(){
 //     Receptor tr;init(&tr);Receptor *r = &tr;
 //     Noun *here = newNoun(r,"here", POINT);
@@ -179,17 +180,6 @@ void testInt() {
 // 	   );
 // }
 //
-// void testInc(){
-//     Receptor tr;init(&tr);Receptor *r = &tr;
-//     Noun *x = getNoun(r,X);
-//     Xaddr theX =  { 12, x };
-//     int val = 3;
-//     op_set(r,theX, &val);
-//     op_exec(r,theX, INC);
-//     void *surface = op_get(r,theX);
-//     printf("after Inc: %d\n", *(int*)(surface));
-//     assert(*(int*)(surface) == 4);
-// }
 //
 // void testAdd(){
 //     Receptor tr;init(&tr);Receptor *r = &tr;
@@ -250,6 +240,8 @@ int main(int argc, const char** argv)
     test_op_new_noun();
     testInt();
     testPoint();
+    testInc();
+    //testAdd();
     //     testSemFault();
     //     testLine();
     //     testSymbolPath();
