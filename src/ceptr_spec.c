@@ -152,6 +152,16 @@ void testInc(){
     spec_is_true(*v == 8);
 }
 
+void testAdd(){
+    Receptor tr;init(&tr);Receptor *r = &tr;
+    Symbol AGE = op_new_noun(r, r->intPatternSpecXaddr, "Age");
+    int val = 7;
+    Xaddr age_xaddr = op_new(r, AGE, &val);
+    val = 3;
+    op_push_pattern(r,r->intPatternSpecXaddr.key,&val);
+    op_exec(r,age_xaddr, ADD);
+    spec_is_true(*(int*)(&r->valStack[0]) == 10);
+}
 
 // void testSemFault(){
 //     Receptor tr;init(&tr);Receptor *r = &tr;
@@ -181,18 +191,6 @@ void testInc(){
 // }
 //
 //
-// void testAdd(){
-//     Receptor tr;init(&tr);Receptor *r = &tr;
-//     Noun *x = getNoun(r,X);
-//     Xaddr theX =  { 12, x };
-//     int val = 3;
-//     op_set(r,theX, &val);
-//     op_push_pattern(r,INT, &val);
-//     op_exec(r,theX, ADD);
-//
-//     printf("stack: %d\n", *(int*)(&r->valStack[0]));
-//     assert(*(int*)(&r->valStack[0]) == 6);
-// }
 //
 // void testSymbolPath(){
 //     Receptor tr; init(&tr); Receptor *r = &tr;
@@ -241,7 +239,7 @@ int main(int argc, const char** argv)
     testInt();
     testPoint();
     testInc();
-    //testAdd();
+    testAdd();
     //     testSemFault();
     //     testLine();
     //     testSymbolPath();

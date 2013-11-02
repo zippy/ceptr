@@ -193,6 +193,12 @@ Xaddr op_new_pattern(Receptor *r, char *label, int childCount, Xaddr *children, 
     return op_new(r, PATTERN_SPEC, &ps);
 }
 
+PatternSpec *_get_pattern_spec(Receptor *r,Symbol patternName)
+{
+    Xaddr px = {patternName,PATTERN_SPEC};
+    return (PatternSpec *)op_get(r,px);
+}
+
 int op_exec(Receptor *r,Xaddr xaddr, FunctionName processName){
     PatternSpec *ps = _get_noun_pattern_spec(r,xaddr.noun);
     Process *p = getProcess(ps, processName);
@@ -200,17 +206,17 @@ int op_exec(Receptor *r,Xaddr xaddr, FunctionName processName){
 }
 
 int op_push_pattern(Receptor *r, Symbol patternName, void *surface) {
-    //     SemStackFrame *ssf = &r->semStack[++r->semStackPointer];
-    //     ssf->type = PATTERN;
-    //     ssf->size = getPatternSpec(r,patternName)->size;
-    //     memcpy(&r->valStack[r->valStackPointer], surface, ssf->size);
-    //     r->valStackPointer += ssf->size;
+    SemStackFrame *ssf = &r->semStack[++r->semStackPointer];
+    ssf->type = PATTERN;
+    ssf->size = _get_pattern_spec(r,patternName)->size;
+    memcpy(&r->valStack[r->valStackPointer], surface, ssf->size);
+    r->valStackPointer += ssf->size;
 }
 
 int proc_int_inc(Receptor *r, Xaddr this) {
     void *surface = op_get(r, this);
     ++*(int *) (surface);
-    return 1;
+    return 0;
 }
 
 int proc_int_add(Receptor *r, Xaddr this) {
@@ -218,7 +224,7 @@ int proc_int_add(Receptor *r, Xaddr this) {
     // semCheck please
     int *stackSurface = (int *) &r->valStack[r->valStackPointer - r->semStack[r->semStackPointer].size];
     *stackSurface = *surface + *stackSurface;
-    return 1;
+    return 0;
 }
 
 int proc_int_print(Receptor *r, Xaddr this) {
