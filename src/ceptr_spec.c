@@ -163,14 +163,12 @@ void testAdd(){
     spec_is_true(*(int*)(&r->valStack[0]) == 10);
 }
 
-// void testSemFault(){
-//     Receptor tr;init(&tr);Receptor *r = &tr;
-//     Noun *here = newNoun(r,"here", POINT);
-//     Xaddr thereHere = { 12, here };
-//     void *failSurface = op_get(r,thereHere);
-//     printf("failSurface %ld\n", (long)failSurface);
-// }
-//
+void testSemFault(){
+    Receptor tr;init(&tr);Receptor *r = &tr;
+    Xaddr badXaddr = { 12, 22 };
+    void *failSurface = op_get(r,badXaddr);
+    spec_is_true(failSurface == 0);
+}
 
 void testLine(){
     Receptor tr;init(&tr);Receptor *r = &tr;
@@ -241,7 +239,7 @@ int main(int argc, const char** argv)
     testPoint();
     testInc();
     testAdd();
-    //     testSemFault();
+    testSemFault();
     testLine();
     testSymbolPath();
     testRun();

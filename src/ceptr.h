@@ -64,6 +64,7 @@ typedef struct {
 
 typedef struct {
     Xaddr xaddrs[DEFAULT_CACHE_SIZE];
+    Symbol xaddr_scape[DEFAULT_CACHE_SIZE];
     char cache[DEFAULT_CACHE_SIZE];
     int current_xaddr;
     int cache_index;
@@ -106,7 +107,7 @@ Process *getProcess(PatternSpec *ps, FunctionName name) {
 }
 
 enum Symbols {
-    NOUN_SPEC = -3, CSPEC = -2, PATTERN_SPEC = -1
+    NULL_SYMBOL = -4, NOUN_SPEC = -3, CSPEC = -2, PATTERN_SPEC = -1
 };
 
 PatternSpec * _get_noun_pattern_spec(Receptor *r, Symbol noun) {
@@ -125,10 +126,17 @@ size_t _get_noun_size(Receptor *r, Symbol noun) {
     return ps->size;
 }
 
+int sem_check(Receptor *r,Xaddr xaddr) {
+    Symbol noun = r->data.xaddr_scape[xaddr.key];
+    return (noun == xaddr.noun);
+}
+
 void *op_get(Receptor *r, Xaddr xaddr) {
+    if (!sem_check(r,xaddr)) return 0;
     return &r->data.cache[xaddr.key];
 }
 
+//Fix
 Symbol op_new_noun(Receptor *r, Xaddr xaddr, char *label) {
     NounSurface ns;
     ns.namedElement.key = xaddr.key;
@@ -142,11 +150,15 @@ Symbol op_new_noun(Receptor *r, Xaddr xaddr, char *label) {
     r->data.current_xaddr++;
     r->data.xaddrs[r->data.current_xaddr].key = current_index;
     r->data.xaddrs[r->data.current_xaddr].noun = NOUN_SPEC;
+    r->data.xaddr_scape[current_index] = NOUN_SPEC;
     return current_index;
 }
 
 void op_set(Receptor *r, Xaddr xaddr, void *value) {
     void *surface = &r->data.cache[xaddr.key];
+    if (!sem_check(r,xaddr)) {
+	raise_error("I do not think that word (%d) means what you think it means!",xaddr.noun);
+    }
     memcpy(surface, value, _get_noun_size(r, xaddr.noun));
 }
 
@@ -157,6 +169,7 @@ Xaddr op_new(Receptor *r, Symbol noun, void *surface) {
     r->data.xaddrs[r->data.current_xaddr].key = current_index;
     r->data.xaddrs[r->data.current_xaddr].noun = noun;
     Xaddr new_xaddr = {current_index, noun};
+    r->data.xaddr_scape[current_index] = noun;
     op_set(r, new_xaddr, surface);
     return new_xaddr;
 }
@@ -323,6 +336,8 @@ Symbol getSymbol(Receptor *r,char *label) {
 }
 
 void init(Receptor *r) {
+    int i;
+    for(i=0;i<DEFAULT_CACHE_SIZE;i++) r->data.xaddr_scape[i]=NULL_SYMBOL;
 
     r->data.cache_index = 0;
     r->semStackPointer = -1;
