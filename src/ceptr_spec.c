@@ -187,28 +187,28 @@ void testLine(){
 	   );
 }
 
+void testSymbolPath(){
+    Receptor tr; init(&tr); Receptor *r = &tr;
+    int myLine[4] = {1,2,3,4};
+    Symbol inTheSand = op_new_noun(r,r->linePatternSpecXaddr,"in the sand");
+    Xaddr itsLine = op_new(r,inTheSand,&myLine);
+    Symbol B = getSymbol(r,"B");
+    Symbol Y = getSymbol(r,"Y");
+    Symbol path[3] = {B,Y,SYMBOL_PATH_TERMINATOR};
+    int *val;
+    int seven = 7;
 
-// void testSymbolPath(){
-//     Receptor tr; init(&tr); Receptor *r = &tr;
-//     int myLine[4] = {1,2,3,4};
-//     Noun *inTheSand = newNoun(r,"in the sand", LINE);
-//     Xaddr itsLine = { 4, inTheSand };
-//     op_set(r,itsLine, myLine);
-//     Symbol path[3] = {B,Y,TERMINATOR};
-//     int *val;
-//     int seven = 7;
-//     val = op_getpath(r,itsLine, path);
-//     assert(*val == 4);
-//
-//     op_setpath(r,itsLine, path, &seven);
-//     val = op_getpath(r,itsLine, path);
-//     assert(*val == 7);
-//
-//     void *surface = op_get(r,itsLine);
-//     printf("after Pathset: %d\n", *(((int*)surface)+3) );
-//     assert(*(((int*)surface)+3) == 7);
-// }
-//
+    val = op_getpath(r,itsLine, path);
+    spec_is_true(*val == 4);
+
+    op_setpath(r,itsLine, path, &seven);
+    val = op_getpath(r,itsLine, path);
+    spec_is_true(*val == 7);
+
+    void *surface = op_get(r,itsLine);
+    spec_is_true(*(((int*)surface)+3) == 7);
+}
+
 
 
 void testRun(){
@@ -243,7 +243,7 @@ int main(int argc, const char** argv)
     testAdd();
     //     testSemFault();
     testLine();
-    //     testSymbolPath();
+    testSymbolPath();
     testRun();
     int i;
     if (spec_failures > 0) {

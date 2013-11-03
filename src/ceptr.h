@@ -15,11 +15,14 @@ char error[255];
 #define raise_error(error_msg, val)        \
     printf(error_msg, val);            \
     raise(SIGINT);
+#define raise_error2(error_msg, val1,val2)		\
+    printf(error_msg, val1,val2);				\
+    raise(SIGINT);
 
 typedef int Symbol;
 
 enum FunctionNames {
-    INC, ADD, PRINT
+    PRINT, INC, ADD
 };
 
 typedef int FunctionName;
@@ -213,6 +216,44 @@ int op_push_pattern(Receptor *r, Symbol patternName, void *surface) {
     r->valStackPointer += ssf->size;
 }
 
+#define NULL_XADDR(x) ((x.noun)==(x.key))
+int getOffset(PatternSpec *ps, Symbol name) {
+    int i;
+    for (i=0; !NULL_XADDR(ps->children[i].noun); i++) {
+	if (ps->children[i].noun.key == name) {
+	    return ps->children[i].offset;
+	}
+    }
+    raise_error2("offset not found for: %d in getOffset for patternSpec %d\n", name,ps->name);
+}
+
+#define SYMBOL_PATH_TERMINATOR 0xFFFF
+
+PatternSpec* walk_path(Receptor *r,Xaddr xaddr, Symbol* path, int* offset ){
+    PatternSpec *ps = _get_noun_pattern_spec(r,xaddr.noun);
+    *offset = 0;
+    int i=0;
+    while (path[i]!=SYMBOL_PATH_TERMINATOR) {
+	*offset += getOffset(ps, path[i]);
+	ps = _get_noun_pattern_spec(r, path[i]);
+	i++;
+    }
+    return ps;
+}
+
+void* op_setpath(Receptor *r,Xaddr xaddr, Symbol* path, void *value){
+    int offset;
+    PatternSpec *ps = walk_path(r,xaddr, path, &offset);
+    void *surface = &r->data.cache[xaddr.key+offset];
+    return memcpy(surface, value, ps->size);
+}
+
+void* op_getpath(Receptor *r,Xaddr xaddr, Symbol* path){
+    int offset;
+    walk_path(r,xaddr, path, &offset);
+    return &r->data.cache[xaddr.key+offset];
+}
+
 int proc_int_inc(Receptor *r, Xaddr this) {
     void *surface = op_get(r, this);
     ++*(int *) (surface);
@@ -237,6 +278,11 @@ int proc_point_print(Receptor *r, Xaddr this) {
     printf("%d,%d", *surface, *(surface + 1));
 }
 
+int proc_line_print(Receptor *r, Xaddr this) {
+    int *surface = (int *) op_get(r, this);
+    printf("[%d,%d - %d,%d] ", *surface, *(surface + 1),*(surface + 2),*(surface + 3));
+}
+
 typedef struct {
     Symbol name;
     int valueOffset;
@@ -257,6 +303,22 @@ int run(Receptor *r, Instruction *instructions, void *values) {
                 break;
         }
         counter++;
+    }
+}
+
+//FIXME: this is needs to be implemented as a scape, not a linear scan of all Xaddrs!!
+Symbol getSymbol(Receptor *r,char *label) {
+    NounSurface *ns;
+    Symbol noun;
+    int i;
+    for (i = 0; i <= r->data.current_xaddr; i++) {
+	if (r->data.xaddrs[i].noun == NOUN_SPEC) {
+	    noun = r->data.xaddrs[i].key;
+	    ns = (NounSurface *) &r->data.cache[noun];
+	    if ( !strcmp(label, ns->label) ) {
+		return noun;
+	    }
+	}
     }
 }
 
@@ -296,7 +358,12 @@ void init(Receptor *r) {
     Symbol B = op_new_noun(r, r->pointPatternSpecXaddr, "B");
 
     Xaddr line_children[2] = {{A, NOUN_SPEC}, {B, NOUN_SPEC}};
-    r->linePatternSpecXaddr = op_new_pattern(r, "LINE", 2, line_children, 0, 0);
+
+    Process line_processes[] = {
+	{ PRINT, &proc_line_print }
+    };
+
+    r->linePatternSpecXaddr = op_new_pattern(r, "LINE", 2, line_children, 1, line_processes);
 
 }
 
