@@ -115,15 +115,21 @@ void testRun(){
     spec_is_true(*(int*)(&r->valStack[topOfStack])== 31415 );
 }
 
-void test_op_new_noun(){
+void test_xaddr_dump(){
     Receptor tr;init(&tr);Receptor *r = &tr;
+    int myLine[4] = {1,2,3,4};
+    Symbol inTheSand = op_new_noun(r,r->linePatternSpecXaddr,"in the sand");
+    Xaddr itsLine = op_new(r,inTheSand,&myLine);
+    Symbol AGE = op_new_noun(r, r->intPatternSpecXaddr, "Age");
+    int val = 7;
+    Xaddr age_xaddr = op_new(r, AGE, &val);
     dump_xaddrs(r);
 }
 
 int main(int argc, const char** argv)
 {
     printf("Running all tests...\n\n");
-    test_op_new_noun();
+    test_xaddr_dump();
     testInt();
     testPoint();
     testInc();

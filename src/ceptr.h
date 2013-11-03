@@ -113,7 +113,7 @@ PatternSpec * _get_noun_pattern_spec(Receptor *r, Symbol noun) {
     if (elementXaddr->noun == PATTERN_SPEC) {
         return (PatternSpec *) &r->data.cache[elementXaddr->key];
     }
-    raise_error("nouns named item (%d) is not a pattern\n", elementXaddr->noun);
+    raise_error("noun's named item (%d) is not a pattern\n", elementXaddr->noun);
 }
 
 size_t _get_noun_size(Receptor *r, Symbol noun) {
@@ -134,7 +134,6 @@ void *op_get(Receptor *r, Xaddr xaddr) {
     return &r->data.cache[xaddr.key];
 }
 
-//Fix
 Symbol op_new_noun(Receptor *r, Xaddr xaddr, char *label) {
     NounSurface ns;
     ns.namedElement.key = xaddr.key;
