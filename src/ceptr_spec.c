@@ -117,7 +117,7 @@ void dump_xaddrs(Receptor *r) {
     }
 }
 
-#define spec_is_true(x) spec_total++;if (x){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be true",__FILE__,__LINE__,#x);}
+#define spec_is_true(x) spec_total++;if (x){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be true",__FUNCTION__,__LINE__,#x);}
 
 void testInt() {
     Receptor tr;init(&tr);Receptor *r = &tr;
@@ -225,7 +225,7 @@ void testRun(){
     run(r,pushProgram, values);
     spec_is_true(r->valStackPointer == 4);
     spec_is_true(r->semStackPointer == 0);
-    spec_is_true(*(int*)(&r->valStack[topOfStack])== 31415 )
+    spec_is_true(*(int*)(&r->valStack[topOfStack])== 31415 );
 }
 
 void test_op_new_noun(){
@@ -255,5 +255,6 @@ int main(int argc, const char** argv)
     else {
 	printf("\nAll %d specs pass\n",spec_total);
     }
+
     return 0;
 }
