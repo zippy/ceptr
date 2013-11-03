@@ -75,6 +75,7 @@ typedef struct {
     Xaddr patternSpecXaddr;
     Xaddr intPatternSpecXaddr;
     Xaddr pointPatternSpecXaddr;
+    Xaddr linePatternSpecXaddr;
     Data data;
 } Receptor;
 
@@ -279,7 +280,7 @@ void init(Receptor *r) {
     };
     r->intPatternSpecXaddr = op_new_pattern(r, "INT", sizeof(int), 0, 3, int_processes);
 
-    //POINT
+    // POINT
     Symbol X = op_new_noun(r, r->intPatternSpecXaddr, "X");
     Symbol Y = op_new_noun(r, r->intPatternSpecXaddr, "Y");
 
@@ -287,6 +288,7 @@ void init(Receptor *r) {
 	{ PRINT, &proc_point_print }
     };
 
+    // LINE
     Xaddr point_children[2] = {{X, NOUN_SPEC}, {Y, NOUN_SPEC}};
     r->pointPatternSpecXaddr = op_new_pattern(r, "POINT", 2, point_children, 1, point_processes);
 
@@ -294,7 +296,7 @@ void init(Receptor *r) {
     Symbol B = op_new_noun(r, r->pointPatternSpecXaddr, "B");
 
     Xaddr line_children[2] = {{A, NOUN_SPEC}, {B, NOUN_SPEC}};
-    Xaddr line_ps_xaddr = op_new_pattern(r, "LINE", 2, line_children, 0, 0);
+    r->linePatternSpecXaddr = op_new_pattern(r, "LINE", 2, line_children, 0, 0);
 
 }
 

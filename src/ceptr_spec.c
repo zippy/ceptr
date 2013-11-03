@@ -171,27 +171,23 @@ void testAdd(){
 //     printf("failSurface %ld\n", (long)failSurface);
 // }
 //
-// void testLine(){
-//     Receptor tr;init(&tr);Receptor *r = &tr;
-//     int myLine[4] = {1,2,3,4};
-//     Noun *inTheSand = newNoun(r,"in the sand", LINE);
-//     Xaddr itsLine = { 20, inTheSand };
-//     op_set(r,itsLine, myLine);
-//
-//     // op_exec()
-//
-//     void *surface = op_get(r,itsLine);
-//
-//     printf("line-A (%d,%d) B (%d, %d) \n",
-// 	   *(int*)(surface),
-// 	   *(int*)(surface + 4),
-// 	   *(int*)(surface + 8),
-// 	   *(int*)(surface + 12)
-// 	   );
-// }
-//
-//
-//
+
+void testLine(){
+    Receptor tr;init(&tr);Receptor *r = &tr;
+    int myLine[4] = {1,2,3,4};
+    Symbol inTheSand = op_new_noun(r,r->linePatternSpecXaddr,"in the sand");
+    Xaddr itsLine = op_new(r,inTheSand,&myLine);
+
+    void *surface = op_get(r,itsLine);
+    spec_is_true(
+	   *(int*)(surface) == 1 &&
+	   *(int*)(surface + 4) == 2 &&
+	   *(int*)(surface + 8) == 3 &&
+	   *(int*)(surface + 12) == 4
+	   );
+}
+
+
 // void testSymbolPath(){
 //     Receptor tr; init(&tr); Receptor *r = &tr;
 //     int myLine[4] = {1,2,3,4};
@@ -246,7 +242,7 @@ int main(int argc, const char** argv)
     testInc();
     testAdd();
     //     testSemFault();
-    //     testLine();
+    testLine();
     //     testSymbolPath();
     testRun();
     int i;
