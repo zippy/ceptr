@@ -23,6 +23,35 @@ void testInt() {
     spec_is_true(*v == 8);
 }
 
+// PatternSpec   (  c-struct  )
+// NamedPattern  (INT, POINT, LINE )
+// PatternInstance  (AGE, IN_THE_SAND, HERE )
+
+// ArraySpec      (  c-struct )
+// NamedArray     (  CONSTELLATION[POINT] )
+// ArrayInstance  (  receptors' semStacks )
+
+
+void testArray() {
+    Receptor tr;init(&tr);Receptor *r = &tr;
+    Xaddr pointArray = op_new_array(r, "POINT_ARRAY", r->pointPatternSpecXaddr, 0, 0);
+    Symbol CONSTELLATION = op_new_noun(r, pointArray, "CONSTELLATION");
+
+    struct {
+        int size;
+        int point1X;
+        int point1Y;
+        int point2X;
+        int point2Y;
+        int point3X;
+        int point3Y;
+    } orion = { 3,   1,2,  10, 20,  100, 200 };
+    Xaddr orionXaddr = op_new(r, CONSTELLATION, &orion);
+    int *orionSurface = (int *)op_get(r, orionXaddr);
+    spec_is_true(*orionSurface == 3);
+    spec_is_true(*(orionSurface+2) == 2);
+}
+
 void testPoint() {
      Receptor tr;init(&tr);Receptor *r = &tr;
 
@@ -148,6 +177,7 @@ int main(int argc, const char **argv) {
     testSemFault();
     testLine();
     testSymbolPath();
+    testArray();
     testRun();
     int i;
     if (spec_failures > 0) {

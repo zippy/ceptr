@@ -75,6 +75,7 @@ typedef struct {
     int valStackPointer;
     //built in xaddrs:
     Xaddr patternSpecXaddr;
+    Xaddr arraySpecXaddr;
     Xaddr intPatternSpecXaddr;
     Xaddr pointPatternSpecXaddr;
     Xaddr linePatternSpecXaddr;
@@ -95,6 +96,12 @@ typedef struct {
 } PatternSpec;
 
 
+typedef struct {
+    Symbol name;
+    Symbol patternName;
+    Process processes[DEFAULT_ARRAY_SIZE];
+} ArraySpec;
+
 Process *getProcess(PatternSpec *ps, FunctionName name) {
     int i;
     for (i = 0; i < DEFAULT_ARRAY_SIZE; i++) {
@@ -106,8 +113,14 @@ Process *getProcess(PatternSpec *ps, FunctionName name) {
 }
 
 enum Symbols {
-    NULL_SYMBOL = -4, NOUN_SPEC = -3, CSPEC = -2, PATTERN_SPEC = -1
+    NULL_SYMBOL = -1, CSPEC = -2, NOUN_SPEC = -3, PATTERN_SPEC = -4,  ARRAY_SPEC = -5
 };
+
+void *_get_noun_element_spec(Receptor *r, Symbol *nounType, Symbol noun){
+    Xaddr *elementXaddr = &((NounSurface *) &r->data.cache[noun])->namedElement;
+    *nounType = elementXaddr->noun;
+    return &r->data.cache[elementXaddr->key];
+}
 
 PatternSpec *_get_noun_pattern_spec(Receptor *r, Symbol noun) {
     Xaddr *elementXaddr = &((NounSurface *) &r->data.cache[noun])->namedElement;
@@ -117,12 +130,23 @@ PatternSpec *_get_noun_pattern_spec(Receptor *r, Symbol noun) {
     raise_error("noun's named item (%d) is not a pattern\n", elementXaddr->noun);
 }
 
-size_t _get_noun_size(Receptor *r, Symbol noun) {
+size_t _get_noun_size(Receptor *r, Symbol noun, void *surface) {
     if (noun == PATTERN_SPEC) {
         return sizeof(PatternSpec);
+    } else if (noun == ARRAY_SPEC) {
+        return sizeof(ARRAY_SPEC);
     }
-    PatternSpec *ps = _get_noun_pattern_spec(r, noun);
-    return ps->size;
+    Symbol nounType;
+    void *spec_surface = _get_noun_element_spec(r, &nounType, noun);
+    switch(nounType) {
+        case PATTERN_SPEC:
+            return ((PatternSpec *)spec_surface)->size;
+            break;
+        case ARRAY_SPEC:
+            return *(int *)surface * _get_noun_pattern_spec(r, ((ArraySpec *)spec_surface)->patternName)->size;
+            break;
+    }
+    raise_error2("unkown noun type %d for noun %d\n", nounType, noun);
 }
 
 int sem_check(Receptor *r, Xaddr xaddr) {
@@ -157,12 +181,12 @@ void op_set(Receptor *r, Xaddr xaddr, void *value) {
     if (!sem_check(r, xaddr)) {
         raise_error("I do not think that word (%d) means what you think it means!", xaddr.noun);
     }
-    memcpy(surface, value, _get_noun_size(r, xaddr.noun));
+    memcpy(surface, value, _get_noun_size(r, xaddr.noun, value));
 }
 
 Xaddr op_new(Receptor *r, Symbol noun, void *surface) {
     size_t current_index = r->data.cache_index;
-    r->data.cache_index += _get_noun_size(r, noun);
+    r->data.cache_index += _get_noun_size(r, noun, surface);
     r->data.current_xaddr++;
     r->data.xaddrs[r->data.current_xaddr].key = current_index;
     r->data.xaddrs[r->data.current_xaddr].noun = noun;
@@ -170,6 +194,19 @@ Xaddr op_new(Receptor *r, Symbol noun, void *surface) {
     r->data.xaddr_scape[current_index] = noun;
     op_set(r, new_xaddr, surface);
     return new_xaddr;
+}
+
+Xaddr op_new_array(Receptor *r, char *label, Xaddr patternSpecXaddr, int processCount, Process *processes){
+    ArraySpec as;
+    memset(&as, 0, sizeof(ArraySpec));
+    as.name = op_new_noun(r, r->arraySpecXaddr, label);
+    as.patternName = patternSpecXaddr.key;
+    int i;
+    for (i = 0; i < processCount; i++) {
+        as.processes[i].name = processes[i].name;
+        as.processes[i].function = processes[i].function;
+    }
+    return op_new(r, ARRAY_SPEC, &as);
 }
 
 Xaddr op_new_pattern(Receptor *r, char *label, int childCount, Xaddr *children, int processCount, Process *processes) {
@@ -336,6 +373,8 @@ void init(Receptor *r) {
     r->valStackPointer = 0;
     r->patternSpecXaddr.key = PATTERN_SPEC;
     r->patternSpecXaddr.noun = CSPEC;
+    r->arraySpecXaddr.key = ARRAY_SPEC;
+    r->arraySpecXaddr.noun = CSPEC;
     r->data.current_xaddr = -1;
 
 
