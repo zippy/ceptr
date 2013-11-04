@@ -1,7 +1,11 @@
-ceptr: clean test
+ceptr: clean specs
 
-test: src/*.h src/*.c
-	gcc -g -o ceptr_spec src/*.h src/*.c && ./ceptr_spec
+specs: ceptr_specs
+	./ceptr_specs
+
+ceptr_specs: src/*.h src/*.c
+	gcc -g -o ceptr_specs src/*.h src/*.c
 
 clean:
-	rm -rf ceptr_spec *.o ceptr_spec.dSYM
+	-rm -rf ceptr_specs *.o ceptr_spec.dSYM
+
