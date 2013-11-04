@@ -8,4 +8,3 @@ ceptr_specs: src/*.h src/*.c
 
 clean:
 	-rm -rf ceptr_specs *.o ceptr_spec.dSYM
-

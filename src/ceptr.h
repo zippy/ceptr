@@ -2,7 +2,7 @@
 #define _CEPTR_H
 
 #define DEFAULT_ARRAY_SIZE 100
-#define DEFAULT_CACHE_SIZE 10000
+#define DEFAULT_CACHE_SIZE 100000
 #define STACK_SIZE 10000
 #define OPERANDS_SIZE (sizeof(Xaddr) * 2)
 
@@ -132,25 +132,6 @@ PatternSpec *_get_noun_pattern_spec(Receptor *r, Symbol noun) {
     raise_error2("noun (%d) named item (%d) is not a pattern\n", noun, elementXaddr->noun);
 }
 
-size_t _get_noun_size(Receptor *r, Symbol noun, void *surface) {
-    if (noun == PATTERN_SPEC) {
-        return sizeof(PatternSpec);
-    } else if (noun == ARRAY_SPEC) {
-        return sizeof(ARRAY_SPEC);
-    }
-    Symbol nounType;
-    void *spec_surface = _get_noun_element_spec(r, &nounType, noun);
-    switch(nounType) {
-        case PATTERN_SPEC:
-            return ((PatternSpec *)spec_surface)->size;
-            break;
-        case ARRAY_SPEC:
-            return 4 + *(int *)surface * _get_noun_pattern_spec(r, ((ArraySpec *)spec_surface)->patternName)->size;
-            break;
-    }
-    raise_error2("unkown noun type %d for noun %d\n", nounType, noun);
-}
-
 int sem_check(Receptor *r, Xaddr xaddr) {
     Symbol noun = r->data.xaddr_scape[xaddr.key];
     return (noun == xaddr.noun);
@@ -159,6 +140,33 @@ int sem_check(Receptor *r, Xaddr xaddr) {
 void *op_get(Receptor *r, Xaddr xaddr) {
     if (!sem_check(r, xaddr)) return 0;
     return &r->data.cache[xaddr.key];
+}
+
+PatternSpec *_get_array_pattern_spec(Receptor *r,ArraySpec *as) {
+    Xaddr psX;
+    psX.key = as->patternName;
+    psX.noun = PATTERN_SPEC;
+    return (PatternSpec *)op_get(r, psX);
+}
+
+size_t _get_noun_size(Receptor *r, Symbol noun, void *surface) {
+    if (noun == PATTERN_SPEC) {
+        return sizeof(PatternSpec);
+    } else if (noun == ARRAY_SPEC) {
+        return sizeof(ArraySpec);
+    }
+    Symbol nounType;
+    void *spec_surface = _get_noun_element_spec(r, &nounType, noun);
+    PatternSpec *ps;
+    switch(nounType) {
+        case PATTERN_SPEC:
+            return ((PatternSpec *)spec_surface)->size;
+            break;
+        case ARRAY_SPEC:
+            return sizeof(int) + (*(int *)surface) * _get_array_pattern_spec(r,(ArraySpec *)spec_surface)->size ;
+            break;
+    }
+    raise_error2("unkown noun type %d for noun %d\n", nounType, noun);
 }
 
 Symbol op_new_noun(Receptor *r, Xaddr xaddr, char *label) {
@@ -183,7 +191,8 @@ void op_set(Receptor *r, Xaddr xaddr, void *value) {
     if (!sem_check(r, xaddr)) {
         raise_error("I do not think that word (%d) means what you think it means!", xaddr.noun);
     }
-    memcpy(surface, value, _get_noun_size(r, xaddr.noun, value));
+    size_t size = _get_noun_size(r, xaddr.noun, value);
+    memcpy(surface, value, size);
 }
 
 Xaddr op_new(Receptor *r, Symbol noun, void *surface) {
@@ -202,7 +211,6 @@ Xaddr op_new_array(Receptor *r, char *label, Xaddr patternSpecXaddr, int process
     ArraySpec as;
     memset(&as, 0, sizeof(ArraySpec));
     as.name = op_new_noun(r, r->arraySpecXaddr, label);
-printf("setting pattern %d\n", patternSpecXaddr.key);
     as.patternName = patternSpecXaddr.key;
     int i;
     for (i = 0; i < processCount; i++) {
@@ -515,6 +523,19 @@ void dump_pattern_value(Receptor *r, PatternSpec *ps, void *surface) {
     }
 }
 
+void dump_array_value(Receptor *r, ArraySpec *as, void *surface) {
+    int count = *(int*)surface;
+    PatternSpec *ps = _get_array_pattern_spec(r,as);
+    printf(" %s(%d) array of %d %s(%d)s\n",noun_label(r,as->name),as->name,count,noun_label(r,ps->name),ps->name );
+    while (count > 0) {
+	printf("    ");
+	dump_pattern_value(r,ps,surface);
+	printf("\n");
+	surface += ps->size;
+	count--;
+    }
+}
+
 void dump_noun(Receptor *r, NounSurface *ns) {
     printf("Noun      { %d, %5d } %s", ns->namedElement.key, ns->namedElement.noun, ns->label);
 }
@@ -539,14 +560,21 @@ void dump_xaddr(Receptor *r, Xaddr xaddr, int indent_level) {
         case ARRAY_SPEC:
             as = (ArraySpec *) &r->data.cache[key];
             dump_array_spec(r, as);
+	    break;
         default:
             surface = op_get(r, noun_to_xaddr(noun));
             ns = (NounSurface *) surface;
             printf("%s : ", ns->label);
-
-            //FIXME: this breaks when named elements can be other than patterns
-            ps = (PatternSpec *) op_get(r, ns->namedElement);
-            dump_pattern_value(r, ps, op_get(r, xaddr));
+	    switch(ns->namedElement.noun) {
+	    case PATTERN_SPEC:
+		ps = (PatternSpec *) op_get(r, ns->namedElement);
+		dump_pattern_value(r, ps, op_get(r, xaddr));
+		break;
+	    case ARRAY_SPEC:
+		as = (ArraySpec *) op_get(r, ns->namedElement);
+		dump_array_value(r,as,op_get(r,xaddr));
+		break;
+	    }
     }
 }
 

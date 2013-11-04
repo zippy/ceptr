@@ -50,6 +50,7 @@ void testArray() {
     int *orionSurface = (int *)op_get(r, orionXaddr);
     spec_is_true(*orionSurface == 3);
     spec_is_true(*(orionSurface+2) == 2);
+    dump_xaddrs(r);
 }
 
 void testPoint() {
@@ -152,7 +153,7 @@ void test_xaddr_dump() {
     Symbol AGE = op_new_noun(r, r->intPatternSpecXaddr, "Age");
     int val = 7;
     Xaddr age_xaddr = op_new(r, AGE, &val);
-    dump_xaddrs(r);
+    //dump_xaddrs(r);
 }
 
 void test_stack_dump() {
@@ -168,8 +169,8 @@ void test_stack_dump() {
 
 int main(int argc, const char **argv) {
     printf("Running all tests...\n\n");
-//    test_xaddr_dump();
-//    test_stack_dump();
+    //        test_xaddr_dump();
+    //test_stack_dump();
 //    testInt();
 //    testPoint();
 //    testInc();
@@ -177,7 +178,7 @@ int main(int argc, const char **argv) {
 //    testSemFault();
 //    testLine();
 //    testSymbolPath();
-    testArray();
+        testArray();
 //    testRun();
     int i;
     if (spec_failures > 0) {
