@@ -116,6 +116,8 @@ enum Symbols {
     NULL_SYMBOL = -1, CSPEC = -2, NOUN_SPEC = -3, PATTERN_SPEC = -4,  ARRAY_SPEC = -5
 };
 
+void dump_xaddrs(Receptor *r);
+
 void *_get_noun_element_spec(Receptor *r, Symbol *nounType, Symbol noun){
     Xaddr *elementXaddr = &((NounSurface *) &r->data.cache[noun])->namedElement;
     *nounType = elementXaddr->noun;
@@ -127,7 +129,7 @@ PatternSpec *_get_noun_pattern_spec(Receptor *r, Symbol noun) {
     if (elementXaddr->noun == PATTERN_SPEC) {
         return (PatternSpec *) &r->data.cache[elementXaddr->key];
     }
-    raise_error("noun's named item (%d) is not a pattern\n", elementXaddr->noun);
+    raise_error2("noun (%d) named item (%d) is not a pattern\n", noun, elementXaddr->noun);
 }
 
 size_t _get_noun_size(Receptor *r, Symbol noun, void *surface) {
@@ -143,7 +145,7 @@ size_t _get_noun_size(Receptor *r, Symbol noun, void *surface) {
             return ((PatternSpec *)spec_surface)->size;
             break;
         case ARRAY_SPEC:
-            return *(int *)surface * _get_noun_pattern_spec(r, ((ArraySpec *)spec_surface)->patternName)->size;
+            return 4 + *(int *)surface * _get_noun_pattern_spec(r, ((ArraySpec *)spec_surface)->patternName)->size;
             break;
     }
     raise_error2("unkown noun type %d for noun %d\n", nounType, noun);
@@ -200,6 +202,7 @@ Xaddr op_new_array(Receptor *r, char *label, Xaddr patternSpecXaddr, int process
     ArraySpec as;
     memset(&as, 0, sizeof(ArraySpec));
     as.name = op_new_noun(r, r->arraySpecXaddr, label);
+printf("setting pattern %d\n", patternSpecXaddr.key);
     as.patternName = patternSpecXaddr.key;
     int i;
     for (i = 0; i < processCount; i++) {
@@ -483,6 +486,14 @@ void dump_process_array(Process *process) {
     }
 }
 
+void dump_array_spec(Receptor *r, ArraySpec *as){
+    printf("Array Spec\n");
+    printf("    name: %s(%d)\n", noun_label(r, as->name), as->name);
+    printf("    patternName: %d \n", as->patternName);
+//    dump_process_array(as->processes);
+    printf("\n");
+}
+
 void dump_pattern_spec(Receptor *r, PatternSpec *ps) {
     printf("Pattern Spec\n");
     printf("    name: %s(%d)\n", noun_label(r, ps->name), ps->name);
@@ -511,6 +522,7 @@ void dump_noun(Receptor *r, NounSurface *ns) {
 void dump_xaddr(Receptor *r, Xaddr xaddr, int indent_level) {
     int i;
     PatternSpec *ps;
+    ArraySpec *as;
     NounSurface *ns;
     void *surface;
     int key = xaddr.key;
@@ -524,6 +536,9 @@ void dump_xaddr(Receptor *r, Xaddr xaddr, int indent_level) {
             ns = (NounSurface *) &r->data.cache[key];
             dump_noun(r, ns);
             break;
+        case ARRAY_SPEC:
+            as = (ArraySpec *) &r->data.cache[key];
+            dump_array_spec(r, as);
         default:
             surface = op_get(r, noun_to_xaddr(noun));
             ns = (NounSurface *) surface;

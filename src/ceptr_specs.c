@@ -168,17 +168,17 @@ void test_stack_dump() {
 
 int main(int argc, const char **argv) {
     printf("Running all tests...\n\n");
-    test_xaddr_dump();
-    test_stack_dump();
-    testInt();
-    testPoint();
-    testInc();
-    testAdd();
-    testSemFault();
-    testLine();
-    testSymbolPath();
+//    test_xaddr_dump();
+//    test_stack_dump();
+//    testInt();
+//    testPoint();
+//    testInc();
+//    testAdd();
+//    testSemFault();
+//    testLine();
+//    testSymbolPath();
     testArray();
-    testRun();
+//    testRun();
     int i;
     if (spec_failures > 0) {
         printf("\n%d out of %d specs failed:\n", spec_total, spec_failures);
