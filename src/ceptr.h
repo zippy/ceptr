@@ -83,7 +83,7 @@ typedef struct {
 
 typedef struct {
     FunctionName name;
-    int (*function)(Receptor*, Xaddr);
+    int (*function)(Receptor*, void*);
 } Process;
 
 typedef struct {
@@ -214,7 +214,7 @@ PatternSpec *_get_pattern_spec(Receptor *r,Symbol patternName)
 int op_exec(Receptor *r,Xaddr xaddr, FunctionName processName){
     PatternSpec *ps = _get_noun_pattern_spec(r,xaddr.noun);
     Process *p = getProcess(ps, processName);
-    return (*p->function)(r,xaddr);
+    return (*p->function)(r,op_get(r,xaddr));
 }
 
 int op_push_pattern(Receptor *r, Symbol patternName, void *surface) {
@@ -262,32 +262,28 @@ void* op_getpath(Receptor *r,Xaddr xaddr, Symbol* path){
     return &r->data.cache[xaddr.key+offset];
 }
 
-int proc_int_inc(Receptor *r, Xaddr this) {
-    void *surface = op_get(r, this);
-    ++*(int *) (surface);
+int proc_int_inc(Receptor *r, void *this) {
+    ++*(int *) (this);
     return 0;
 }
 
-int proc_int_add(Receptor *r, Xaddr this) {
-    int *surface = (int *) op_get(r, this);
+int proc_int_add(Receptor *r, void *this) {
     // semCheck please
     int *stackSurface = (int *) &r->valStack[r->valStackPointer - r->semStack[r->semStackPointer].size];
-    *stackSurface = *surface + *stackSurface;
+    *stackSurface = *(int*)this + *stackSurface;
     return 0;
 }
 
-int proc_int_print(Receptor *r, Xaddr this) {
-    int *surface = (int *) op_get(r, this);
-    printf("%d", *surface);
+int proc_int_print(Receptor *r, void *this) {
+    printf("%d", *(int *)this);
 }
 
-int proc_point_print(Receptor *r, Xaddr this) {
-    int *surface = (int *) op_get(r, this);
-    printf("%d,%d", *surface, *(surface + 1));
+int proc_point_print(Receptor *r, void *this) {
+    printf("%d,%d", *(int *)this, *(((int*)this) + 1));
 }
 
-int proc_line_print(Receptor *r, Xaddr this) {
-    int *surface = (int *) op_get(r, this);
+int proc_line_print(Receptor *r, void *this) {
+    int *surface = (int *) this;
     printf("[%d,%d - %d,%d] ", *surface, *(surface + 1),*(surface + 2),*(surface + 3));
 }
 
@@ -447,29 +443,46 @@ void dump_process_array(Process *process) {
     }
 }
 
+void dump_pattern_spec(Receptor *r,PatternSpec *ps){
+    printf("Pattern Spec\n");
+    printf("    name: %s(%d)\n", noun_label(r, ps->name), ps->name);
+    printf("    size: %d\n", (int)ps->size);
+    printf("    children: ");
+    dump_children_array(ps->children);
+    printf("\n    processes: ");
+    dump_process_array(ps->processes);
+    printf("\n");
+}
+
+dump_pattern_value(Receptor *r,PatternSpec *ps,void *surface){
+    Process *print_proc;
+    print_proc = getProcess(ps, PRINT);
+    if (print_proc) {
+	(*print_proc->function)(r, surface);
+    } else {
+	hexDump("hexDump of surface", surface, ps->size);
+    }
+}
+
+void dump_noun(Receptor *r,NounSurface *ns){
+    printf("Noun      { %d, %5d } %s", ns->namedElement.key, ns->namedElement.noun, ns->label);
+}
+
 void dump_xaddr(Receptor *r, Xaddr xaddr, int indent_level) {
     int i;
     PatternSpec *ps;
     NounSurface *ns;
-    Process *print_proc;
     void *surface;
     int key = xaddr.key;
     int noun = xaddr.noun;
     switch (noun) {
         case PATTERN_SPEC:
             ps = (PatternSpec *) &r->data.cache[key];
-            printf("Pattern Spec\n");
-            printf("    name: %s(%d)\n", noun_label(r, ps->name), ps->name);
-            printf("    size: %d\n", (int)ps->size);
-            printf("    children: ");
-            dump_children_array(ps->children);
-            printf("\n    processes: ");
-            dump_process_array(ps->processes);
-            printf("\n");
+	    dump_pattern_spec(r,ps);
             break;
         case NOUN_SPEC:
             ns = (NounSurface *) &r->data.cache[key];
-            printf("Noun      { %d, %5d } %s", ns->namedElement.key, ns->namedElement.noun, ns->label);
+	    dump_noun(r,ns);
             break;
         default:
             surface = op_get(r, noun_to_xaddr(noun));
@@ -478,12 +491,7 @@ void dump_xaddr(Receptor *r, Xaddr xaddr, int indent_level) {
 
             //FIXME: this breaks when named elements can be other than patterns
             ps = (PatternSpec *) op_get(r, ns->namedElement);
-            print_proc = getProcess(ps, PRINT);
-            if (print_proc) {
-                (*print_proc->function)(r, xaddr);
-            } else {
-                hexDump("hexDump of surface", &r->data.cache[key], ps->size);
-            }
+	    dump_pattern_value(r,ps,op_get(r,xaddr));
     }
 }
 
@@ -497,6 +505,30 @@ void dump_xaddrs(Receptor *r) {
         dump_xaddr(r, r->data.xaddrs[i], 0);
         printf("\n");
     }
+}
+
+void dump_stack(Receptor *r) {
+    int i,v=0;
+   char *unknown = "<unknown>";
+   char *label;
+   PatternSpec *ps;
+   for (i=0;i <= r->semStackPointer;i++) {
+       Xaddr type = r->semStack[i].type;
+       if (type.noun == PATTERN_SPEC) {
+	   ps = (PatternSpec *) &r->data.cache[type.key];
+	   label = noun_label(r, ps->name);
+
+       }
+       else {
+	   label = unknown;
+       }
+       printf("\nStack frame: %d is a %s({%d,%d}) size:%d\n",i,label,type.key,type.noun,r->semStack[i].size);
+       printf("   Value:");
+       dump_pattern_value(r,ps,&r->valStack[v]);
+       v+=r->semStack[i].size;
+       printf("\n");
+   }
+
 }
 
 #endif

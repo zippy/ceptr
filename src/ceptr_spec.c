@@ -125,11 +125,22 @@ void test_xaddr_dump(){
     Xaddr age_xaddr = op_new(r, AGE, &val);
     dump_xaddrs(r);
 }
+void test_stack_dump() {
+    Receptor tr;init(&tr);Receptor *r = &tr;
+    int x = 22;
+    op_push_pattern(r,r->intPatternSpecXaddr.key,&x);
+    x = 44;
+    op_push_pattern(r,r->intPatternSpecXaddr.key,&x);
+    int myLine[4] = {1,2,3,4};
+    op_push_pattern(r,r->linePatternSpecXaddr.key,&myLine);
+    dump_stack(r);
+}
 
 int main(int argc, const char** argv)
 {
     printf("Running all tests...\n\n");
     test_xaddr_dump();
+    test_stack_dump();
     testInt();
     testPoint();
     testInc();
