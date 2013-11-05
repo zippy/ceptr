@@ -1,7 +1,6 @@
 #ifndef _CEPTR_H
 #define _CEPTR_H
 
-#define DEFAULT_ARRAY_SIZE 100
 #define DEFAULT_CACHE_SIZE 100000
 #define STACK_SIZE 10000
 #define OPERANDS_SIZE (sizeof(Xaddr) * 2)
@@ -100,7 +99,8 @@ typedef struct {
 
 typedef struct {
     size_t size;
-    Offset children[DEFAULT_ARRAY_SIZE];
+    int children_count;
+    Offset children;
 } PatternBody;
 
 typedef struct {
@@ -154,15 +154,17 @@ void *op_get(Receptor *r, Xaddr xaddr) {
 #define REPS_GET_PATTERN_NOUN(reps) (((RepsBody *)skip_elem_header(reps))->patternNoun)
 #define REPS_SET_PATTERN_NOUN(reps,n) (((RepsBody *)skip_elem_header(reps))->patternNoun = n)
 #define PATTERN_GET_SIZE(pat) (((PatternBody *)skip_elem_header(pat))->size)
+#define PATTERN_GET_CHILDREN_COUNT(pat) (((PatternBody *)skip_elem_header(pat))->children_count)
+#define PATTERN_SET_CHILDREN_COUNT(pat,count) (((PatternBody *)skip_elem_header(pat))->children_count=count)
 #define PATTERN_SET_SIZE(pat,s) (((PatternBody *)skip_elem_header(pat))->size = s)
-#define PATTERN_GET_CHILDREN(pat) ((((PatternBody *)skip_elem_header(pat))->children))
+#define PATTERN_GET_CHILDREN(pat) (&(((PatternBody *)skip_elem_header(pat))->children))
 
 ElementSurface *_get_reps_pattern_spec(Receptor *r,ElementSurface *rs) {
     return _get_noun_pattern_spec(r,REPS_GET_PATTERN_NOUN(rs));
 }
 
 size_t _get_pattern_spec_size(ElementSurface *es) {
-    return element_header_size(es) + sizeof(PatternBody);
+    return element_header_size(es) + sizeof(PatternBody) - sizeof(Offset) + sizeof(Offset) * PATTERN_GET_CHILDREN_COUNT(es);
 }
 
 #define pattern_size(pat) ((void *)(pat))
@@ -303,6 +305,7 @@ Xaddr op_new_pattern(Receptor *r, char *label, int childCount, Xaddr *children, 
             size += PATTERN_GET_SIZE(child_pattern_surface);
         }
 	PATTERN_SET_SIZE(ps,size);
+	PATTERN_SET_CHILDREN_COUNT(ps,childCount);
     }
 return op_new(r, PATTERN_SPEC, ps);
 }
@@ -529,9 +532,9 @@ void hexDump(char *desc, void *addr, int len) {
     }
 }
 
-void dump_children_array(Offset *children) {
+void dump_children_array(Offset *children,int count) {
     int i = 0;
-    while (children[i].noun.key != 0 || children[i].noun.noun != 0) {
+    while (i < count) {
         if (i != 0) {
             printf(",");
         }
@@ -541,9 +544,9 @@ void dump_children_array(Offset *children) {
 }
 
 
-void dump_process_array(Process *process) {
+void dump_process_array(Process *process,int count) {
     int i = 0;
-    while (process[i].name != 0 || process[i].function != 0) {
+    while (i < count) {
         if (i != 0) {
             printf(",");
         }
@@ -564,10 +567,11 @@ void dump_pattern_spec(Receptor *r, ElementSurface *ps) {
     printf("Pattern Spec\n");
     printf("    name: %s(%d)\n", noun_label(r, ps->name), ps->name);
     printf("    size: %d\n", (int) PATTERN_GET_SIZE(ps));
-    printf("    children: ");
-    dump_children_array(PATTERN_GET_CHILDREN(ps));
-    printf("\n    processes: ");
-    dump_process_array(&ps->processes);
+    int count = PATTERN_GET_CHILDREN_COUNT(ps);
+    printf("    %d children: ",count);
+    dump_children_array(PATTERN_GET_CHILDREN(ps),count);
+    printf("\n    %d processes: ",ps->process_count);
+    dump_process_array(&ps->processes,ps->process_count);
     printf("\n");
 }
 
