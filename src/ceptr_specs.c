@@ -32,8 +32,7 @@ void testInt() {
 // ArrayInstance  (  receptors' semStacks )
 
 
-void testArray() {
-    Receptor tr;init(&tr);Receptor *r = &tr;
+int *_make_array(Receptor *r) {
     Symbol STAR_LOCATION = op_new_noun(r, r->pointPatternSpecXaddr, "STAR_LOCATION");
     Xaddr starLocArray = op_new_array(r, "STAR_LOCATION_ARRAY", STAR_LOCATION, 0, 0);
     Symbol CONSTELLATION = op_new_noun(r, starLocArray, "CONSTELLATION");
@@ -47,12 +46,15 @@ void testArray() {
         int point3X;
         int point3Y;
     } orion = { 3,   1,2,  10, 20,  100, 200 };
-    dump_xaddrs(r);
     Xaddr orionXaddr = op_new(r, CONSTELLATION, &orion);
-    int *orionSurface = (int *)op_get(r, orionXaddr);
+    return (int *)op_get(r, orionXaddr);
+}
+
+void testArray() {
+    Receptor tr;init(&tr);Receptor *r = &tr;
+    int * orionSurface = _make_array(r);
     spec_is_true(*orionSurface == 3);
     spec_is_true(*(orionSurface+2) == 2);
-    dump_xaddrs(r);
 }
 
 void testPoint() {
@@ -155,7 +157,8 @@ void test_xaddr_dump() {
     Symbol AGE = op_new_noun(r, r->intPatternSpecXaddr, "Age");
     int val = 7;
     Xaddr age_xaddr = op_new(r, AGE, &val);
-    //dump_xaddrs(r);
+    _make_array(r);
+    dump_xaddrs(r);
 }
 
 void test_stack_dump() {
@@ -171,17 +174,17 @@ void test_stack_dump() {
 
 int main(int argc, const char **argv) {
     printf("Running all tests...\n\n");
-    //        test_xaddr_dump();
-    //test_stack_dump();
-//    testInt();
-//    testPoint();
-//    testInc();
-//    testAdd();
-//    testSemFault();
-//    testLine();
-//    testSymbolPath();
-        testArray();
-//    testRun();
+    test_xaddr_dump();
+    test_stack_dump();
+    testInt();
+    testPoint();
+    testInc();
+    testAdd();
+    testSemFault();
+    testLine();
+    testSymbolPath();
+    testArray();
+    testRun();
     int i;
     if (spec_failures > 0) {
         printf("\n%d out of %d specs failed:\n", spec_total, spec_failures);
