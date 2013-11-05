@@ -31,12 +31,13 @@ void testInt() {
 // NamedArray     (  CONSTELLATION[POINT] )
 // ArrayInstance  (  receptors' semStacks )
 
+Symbol _make_star_loc(Receptor *r){
+    return op_new_noun(r, r->pointPatternSpecXaddr, "STAR_LOCATION");
+}
 
-int *_make_array(Receptor *r) {
-    Symbol STAR_LOCATION = op_new_noun(r, r->pointPatternSpecXaddr, "STAR_LOCATION");
+int *_make_array(Receptor *r,Symbol STAR_LOCATION,Symbol *CONSTELLATION) {
     Xaddr starLocArray = op_new_array(r, "STAR_LOCATION_ARRAY", STAR_LOCATION, 0, 0);
-    Symbol CONSTELLATION = op_new_noun(r, starLocArray, "CONSTELLATION");
-
+    *CONSTELLATION = op_new_noun(r, starLocArray, "CONSTELLATION");
     struct {
         int size;
         int point1X;
@@ -46,15 +47,45 @@ int *_make_array(Receptor *r) {
         int point3X;
         int point3Y;
     } orion = { 3,   1,2,  10, 20,  100, 200 };
-    Xaddr orionXaddr = op_new(r, CONSTELLATION, &orion);
+    Xaddr orionXaddr = op_new(r, *CONSTELLATION, &orion);
     return (int *)op_get(r, orionXaddr);
 }
 
 void testArray() {
     Receptor tr;init(&tr);Receptor *r = &tr;
-    int * orionSurface = _make_array(r);
+    Symbol CONSTELLATION;
+    int * orionSurface = _make_array(r,_make_star_loc(r),&CONSTELLATION);
     spec_is_true(*orionSurface == 3);
     spec_is_true(*(orionSurface+2) == 2);
+}
+
+
+int *_make_string(Receptor *r,Symbol STAR_LOCATION,Symbol *CONSTELLATION){
+    Xaddr starLocString = op_new_string(r, "STAR_LOCATION_STRING", STAR_LOCATION, 0, 0);
+    *CONSTELLATION = op_new_noun(r, starLocString, "CONSTELLATION");
+
+    struct {
+        int point1X;
+        int point1Y;
+	int escape;
+        int point2X;
+        int point2Y;
+	int escape2;
+        int point3X;
+        int point3Y;
+        int term;
+    } orion = {  1,2,  ESCAPE_STRING_TERMINATOR,-1, 20,  ESCAPE_STRING_TERMINATOR,-2, 200, STRING_TERMINATOR };
+    Xaddr orionXaddr = op_new(r, *CONSTELLATION, &orion);
+    return (int *)op_get(r, orionXaddr);
+}
+
+void testString() {
+    Receptor tr;init(&tr);Receptor *r = &tr;
+    Symbol CONSTELLATION;
+    int * orionSurface = _make_string(r,_make_star_loc(r),&CONSTELLATION);
+    spec_is_true(*orionSurface == 1);
+    spec_is_true(*(orionSurface+8) == STRING_TERMINATOR);
+    spec_is_true(_get_noun_size(r,CONSTELLATION,orionSurface) == sizeof(int)*9);
 }
 
 void testPoint() {
@@ -157,7 +188,10 @@ void test_xaddr_dump() {
     Symbol AGE = op_new_noun(r, r->intPatternSpecXaddr, "Age");
     int val = 7;
     Xaddr age_xaddr = op_new(r, AGE, &val);
-    _make_array(r);
+    Symbol CONSTELLATION;
+    Symbol SL = _make_star_loc(r);
+    _make_array(r,SL,&CONSTELLATION);
+    _make_string(r,SL,&CONSTELLATION);
     dump_xaddrs(r);
 }
 
@@ -184,6 +218,7 @@ int main(int argc, const char **argv) {
     testLine();
     testSymbolPath();
     testArray();
+    testString();
     testRun();
     int i;
     if (spec_failures > 0) {
