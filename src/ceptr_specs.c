@@ -34,8 +34,9 @@ void testInt() {
 
 void testArray() {
     Receptor tr;init(&tr);Receptor *r = &tr;
-    Xaddr pointArray = op_new_array(r, "POINT_ARRAY", r->pointPatternSpecXaddr, 0, 0);
-    Symbol CONSTELLATION = op_new_noun(r, pointArray, "CONSTELLATION");
+    Symbol STAR_LOCATION = op_new_noun(r, r->pointPatternSpecXaddr, "STAR_LOCATION");
+    Xaddr starLocArray = op_new_array(r, "STAR_LOCATION_ARRAY", STAR_LOCATION, 0, 0);
+    Symbol CONSTELLATION = op_new_noun(r, starLocArray, "CONSTELLATION");
 
     struct {
         int size;

@@ -98,7 +98,7 @@ typedef struct {
 
 typedef struct {
     Symbol name;
-    Symbol patternName;
+    Symbol patternNoun;
     Process processes[DEFAULT_ARRAY_SIZE];
 } ArraySpec;
 
@@ -143,10 +143,7 @@ void *op_get(Receptor *r, Xaddr xaddr) {
 }
 
 PatternSpec *_get_array_pattern_spec(Receptor *r,ArraySpec *as) {
-    Xaddr psX;
-    psX.key = as->patternName;
-    psX.noun = PATTERN_SPEC;
-    return (PatternSpec *)op_get(r, psX);
+    return _get_noun_pattern_spec(r,as->patternNoun);
 }
 
 size_t _get_noun_size(Receptor *r, Symbol noun, void *surface) {
@@ -207,11 +204,11 @@ Xaddr op_new(Receptor *r, Symbol noun, void *surface) {
     return new_xaddr;
 }
 
-Xaddr op_new_array(Receptor *r, char *label, Xaddr patternSpecXaddr, int processCount, Process *processes){
+Xaddr op_new_array(Receptor *r, char *label, Symbol patternNoun, int processCount, Process *processes){
     ArraySpec as;
     memset(&as, 0, sizeof(ArraySpec));
     as.name = op_new_noun(r, r->arraySpecXaddr, label);
-    as.patternName = patternSpecXaddr.key;
+    as.patternNoun = patternNoun;
     int i;
     for (i = 0; i < processCount; i++) {
         as.processes[i].name = processes[i].name;
@@ -497,7 +494,7 @@ void dump_process_array(Process *process) {
 void dump_array_spec(Receptor *r, ArraySpec *as){
     printf("Array Spec\n");
     printf("    name: %s(%d)\n", noun_label(r, as->name), as->name);
-    printf("    patternName: %d \n", as->patternName);
+    printf("    patternNoun: %d \n", as->patternNoun);
 //    dump_process_array(as->processes);
     printf("\n");
 }
@@ -526,7 +523,7 @@ void dump_pattern_value(Receptor *r, PatternSpec *ps, void *surface) {
 void dump_array_value(Receptor *r, ArraySpec *as, void *surface) {
     int count = *(int*)surface;
     PatternSpec *ps = _get_array_pattern_spec(r,as);
-    printf(" %s(%d) array of %d %s(%d)s\n",noun_label(r,as->name),as->name,count,noun_label(r,ps->name),ps->name );
+    printf(" %s(%d) array of %d %s(%d)s\n",noun_label(r,as->name),as->name,count,noun_label(r,as->patternNoun),as->patternNoun );
     while (count > 0) {
 	printf("    ");
 	dump_pattern_value(r,ps,surface);
