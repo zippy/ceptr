@@ -222,7 +222,7 @@ int main(int argc, const char **argv) {
     testRun();
     int i;
     if (spec_failures > 0) {
-        printf("\n%d out of %d specs failed:\n", spec_total, spec_failures);
+        printf("\n%d out of %d specs failed:\n", spec_failures,spec_total);
         for (i = 0; i < spec_failures; i++) {
             printf("%s\n", failures[i]);
         }
