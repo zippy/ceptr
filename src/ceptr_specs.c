@@ -47,6 +47,7 @@ void testArray() {
         int point3X;
         int point3Y;
     } orion = { 3,   1,2,  10, 20,  100, 200 };
+    dump_xaddrs(r);
     Xaddr orionXaddr = op_new(r, CONSTELLATION, &orion);
     int *orionSurface = (int *)op_get(r, orionXaddr);
     spec_is_true(*orionSurface == 3);

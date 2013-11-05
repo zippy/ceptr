@@ -90,16 +90,23 @@ typedef struct {
 
 typedef struct {
     Symbol name;
+    Process processes[DEFAULT_ARRAY_SIZE];
+} ElementSurface;
+
+//NOTE: ALL ELEMENTS MUST HAVE THE SAME INITIAL STRUCTURE AS ELEMENT SURFACE
+//FIXME: actually add that in as a sub-struct?
+typedef struct {
+    Symbol name;
+    Process processes[DEFAULT_ARRAY_SIZE];
     size_t size;
     Offset children[DEFAULT_ARRAY_SIZE];
-    Process processes[DEFAULT_ARRAY_SIZE];
 } PatternSpec;
 
 
 typedef struct {
     Symbol name;
-    Symbol patternNoun;
     Process processes[DEFAULT_ARRAY_SIZE];
+    Symbol patternNoun;
 } ArraySpec;
 
 Process *getProcess(PatternSpec *ps, FunctionName name) {
@@ -204,24 +211,31 @@ Xaddr op_new(Receptor *r, Symbol noun, void *surface) {
     return new_xaddr;
 }
 
+Xaddr _new_element(Receptor *r, char *label,Symbol element_spec,ElementSurface *es,int processCount, Process *processes) {
+    int i;
+    Xaddr elemX;
+    elemX.key = element_spec;
+    elemX.noun = CSPEC;
+
+    es->name = op_new_noun(r, elemX, label);
+    for (i = 0; i < processCount; i++) {
+        es->processes[i].name = processes[i].name;
+        es->processes[i].function = processes[i].function;
+    }
+    return op_new(r, element_spec, es);
+}
+
 Xaddr op_new_array(Receptor *r, char *label, Symbol patternNoun, int processCount, Process *processes){
     ArraySpec as;
     memset(&as, 0, sizeof(ArraySpec));
-    as.name = op_new_noun(r, r->arraySpecXaddr, label);
     as.patternNoun = patternNoun;
-    int i;
-    for (i = 0; i < processCount; i++) {
-        as.processes[i].name = processes[i].name;
-        as.processes[i].function = processes[i].function;
-    }
-    return op_new(r, ARRAY_SPEC, &as);
+    return _new_element(r,label,ARRAY_SPEC,(ElementSurface *)&as,processCount,processes);
 }
 
 Xaddr op_new_pattern(Receptor *r, char *label, int childCount, Xaddr *children, int processCount, Process *processes) {
     PatternSpec ps;
     memset(&ps, 0, sizeof(PatternSpec));
     int i;
-    ps.name = op_new_noun(r, r->patternSpecXaddr, label);
     if (children == 0) {
         ps.size = childCount;
     } else {
@@ -243,12 +257,7 @@ Xaddr op_new_pattern(Receptor *r, char *label, int childCount, Xaddr *children, 
             ps.size += cps->size;
         }
     }
-    for (i = 0; i < processCount; i++) {
-        ps.processes[i].name = processes[i].name;
-        ps.processes[i].function = processes[i].function;
-    }
-
-    return op_new(r, PATTERN_SPEC, &ps);
+    return _new_element(r,label,PATTERN_SPEC,(ElementSurface *)&ps,processCount,processes);
 }
 
 PatternSpec *_get_pattern_spec(Receptor *r, Symbol patternName) {
