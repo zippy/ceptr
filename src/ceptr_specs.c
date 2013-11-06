@@ -35,30 +35,28 @@ Symbol _make_star_loc(Receptor *r){
     return op_new_noun(r, r->pointPatternSpecXaddr, "STAR_LOCATION");
 }
 
-int *_make_array(Receptor *r,Symbol STAR_LOCATION,Symbol *CONSTELLATION) {
+Xaddr _make_array(Receptor *r,Symbol STAR_LOCATION,Symbol *CONSTELLATION,int surface[]) {
     Xaddr starLocArray = op_new_array(r, "STAR_LOCATION_ARRAY", STAR_LOCATION, 0, 0);
     *CONSTELLATION = op_new_noun(r, starLocArray, "CONSTELLATION");
-    struct {
-        int size;
-        int point1X;
-        int point1Y;
-        int point2X;
-        int point2Y;
-        int point3X;
-        int point3Y;
-    } orion = { 3,   1,2,  10, 20,  100, 200 };
-    Xaddr orionXaddr = op_new(r, *CONSTELLATION, &orion);
-    return (int *)op_get(r, orionXaddr);
+    return op_new(r, *CONSTELLATION, surface);
 }
 
 void testArray() {
     Receptor tr;init(&tr);Receptor *r = &tr;
     Symbol CONSTELLATION;
-    int * orionSurface = _make_array(r,_make_star_loc(r),&CONSTELLATION);
+    int stars[] = { 3,   1,2,  10, 20,  100, 200 };
+    Xaddr orion = _make_array(r,_make_star_loc(r),&CONSTELLATION,stars);
+    int * orionSurface = (int *)op_get(r, orion);
+
     spec_is_true(*orionSurface == 3);
     spec_is_true(*(orionSurface+2) == 2);
-}
 
+    Xaddr constellationArray = op_new_array(r,"CONSTELLATION_ARRAY",CONSTELLATION,0,0);
+    Symbol ZODIAC = op_new_noun(r, constellationArray, "ZODIAC");
+    int sky[] = {3,   2, 2,3,  40,50,   1,100,101,  4, 11,22, 33,44, 55,66, 77,88 };
+    Xaddr myZodiac = op_new(r, ZODIAC, sky);
+    dump_xaddrs(r);
+}
 
 int *_make_string(Receptor *r,Symbol STAR_LOCATION,Symbol *CONSTELLATION){
     Xaddr starLocString = op_new_string(r, "STAR_LOCATION_STRING", STAR_LOCATION, 0, 0);
@@ -190,7 +188,8 @@ void test_xaddr_dump() {
     Xaddr age_xaddr = op_new(r, AGE, &val);
     Symbol CONSTELLATION;
     Symbol SL = _make_star_loc(r);
-    _make_array(r,SL,&CONSTELLATION);
+    int stars[] = { 3,   1,2,  10, 20,  100, 200 };
+    _make_array(r,SL,&CONSTELLATION,stars);
     _make_string(r,SL,&CONSTELLATION);
     dump_xaddrs(r);
 }

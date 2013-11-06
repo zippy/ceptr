@@ -177,20 +177,31 @@ size_t _get_noun_size(Receptor *r, Symbol noun, void *surface) {
     }
     Symbol nounType;
     ElementSurface *spec_surface = _get_noun_element_spec(r, &nounType, noun);
-    ElementSurface *ps;
+    ElementSurface *es;
     int rep_size;
     int size;
+
+    Symbol arrayItemType;
+    Symbol patternNoun;
     switch(nounType) {
         case PATTERN_SPEC:
             return PATTERN_GET_SIZE(spec_surface);
             break;
         case ARRAY_SPEC:
-	    ps = _get_reps_pattern_spec(r,spec_surface);
-            return sizeof(int) + (*(int *)surface) * PATTERN_GET_SIZE(ps) ;
+	    patternNoun = REPS_GET_PATTERN_NOUN(spec_surface);
+	    es = _get_noun_element_spec(r,&arrayItemType,patternNoun);
+	    if (arrayItemType == PATTERN_SPEC) {
+		size = PATTERN_GET_SIZE(es);
+	    }
+	    else if (arrayItemType == ARRAY_SPEC) {
+		size = _get_noun_size(r,patternNoun,surface);
+	    }
+	    else {raise_error2("illegal noun (%d) as array element type for %d\n",arrayItemType,noun);}
+            return sizeof(int) + (*(int *)surface) * size ;
             break;
         case STRING_SPEC:
-	    ps = _get_reps_pattern_spec(r,spec_surface);
-	    rep_size = PATTERN_GET_SIZE(ps);
+	    es = _get_reps_pattern_spec(r,spec_surface);
+	    rep_size = PATTERN_GET_SIZE(es);
 	    size = 0;
 	    while(*(int *)surface != STRING_TERMINATOR) {
 		if (*(int *)surface == ESCAPE_STRING_TERMINATOR) {
@@ -226,7 +237,7 @@ Symbol op_new_noun(Receptor *r, Xaddr xaddr, char *label) {
 void op_set(Receptor *r, Xaddr xaddr, void *value) {
     void *surface = &r->data.cache[xaddr.key];
     if (!sem_check(r, xaddr)) {
-        raise_error("I do not think that word (%d) means what you think it means!", xaddr.noun);
+        raise_error("I do not think that word (%d) means what you think it means!\n", xaddr.noun);
     }
     size_t size = _get_noun_size(r, xaddr.noun, value);
     memcpy(surface, value, size);
@@ -297,7 +308,7 @@ Xaddr op_new_pattern(Receptor *r, char *label, int childCount, Xaddr *children, 
             } else if (children[i].noun == PATTERN_SPEC) {
                 child_pattern_surface = (ElementSurface *) op_get(r, children[i]);
             } else {
-                raise_error("Unknown child element type %d", children[i].noun);
+                raise_error("Unknown child element type %d\n", children[i].noun);
             }
             pschildren[i].noun.key = children[i].key;
             pschildren[i].noun.noun = children[i].noun;
@@ -588,15 +599,29 @@ void dump_pattern_value(Receptor *r, ElementSurface *ps, void *surface) {
 void dump_array_value(Receptor *r, ElementSurface *rs, void *surface) {
     int count = *(int*)surface;
     surface += sizeof(int);
-    ElementSurface *ps = _get_reps_pattern_spec(r,rs);
+    Symbol arrayItemType;
     Symbol patternNoun = REPS_GET_PATTERN_NOUN(rs);
-    printf(" %s(%d) array of %d %s(%d)s\n",noun_label(r,rs->name),rs->name,count,noun_label(r,patternNoun),patternNoun );
-    while (count > 0) {
-	printf("    ");
-	dump_pattern_value(r,ps,surface);
-	printf("\n");
-	surface += PATTERN_GET_SIZE(ps);
-	count--;
+    ElementSurface *es = _get_noun_element_spec(r,&arrayItemType,patternNoun);
+    int size;
+    if (arrayItemType == PATTERN_SPEC) {
+	printf("%s(%d) array of %d %s(%d)s\n",noun_label(r,rs->name),rs->name,count,noun_label(r,patternNoun),patternNoun );
+	size = PATTERN_GET_SIZE(es);
+	while (count > 0) {
+	    printf("    ");
+	    dump_pattern_value(r,es,surface);
+	    printf("\n");
+	    surface += size;
+	    count--;
+	}
+    }
+    else if (arrayItemType == ARRAY_SPEC) {
+	printf("array of %d arrays\n", count);
+	while (count > 0) {
+	    printf("    ");
+	    dump_array_value(r,es,surface);
+	    surface += _get_noun_size(r,patternNoun,surface);
+	    count--;
+	}
     }
 }
 
