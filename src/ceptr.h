@@ -615,7 +615,7 @@ void dump_array_value(Receptor *r, ElementSurface *rs, void *surface) {
 	}
     }
     else if (arrayItemType == ARRAY_SPEC) {
-	printf("array of %d arrays\n", count);
+	printf("array of %d %s(%d) arrays\n", count,noun_label(r,rs->name),rs->name);
 	while (count > 0) {
 	    printf("    ");
 	    dump_array_value(r,es,surface);
