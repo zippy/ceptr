@@ -167,8 +167,13 @@ size_t _get_pattern_spec_size(ElementSurface *es) {
     return element_header_size(es) + sizeof(PatternBody) - sizeof(Offset) + sizeof(Offset) * PATTERN_GET_CHILDREN_COUNT(es);
 }
 
-#define pattern_size(pat) ((void *)(pat))
+#define _op_get_array_length(surface) (*((int*)surface))
 
+int op_get_array_length(Receptor *r, Xaddr rX) {
+    return _op_get_array_length(op_get(r,rX));
+}
+
+//FIXME: should we allow check for surface == 0 and raise an error for those cases where it matters?
 size_t _get_noun_size(Receptor *r, Symbol noun, void *surface) {
     if (noun == PATTERN_SPEC) {
 	return _get_pattern_spec_size((ElementSurface *)surface);
@@ -179,7 +184,8 @@ size_t _get_noun_size(Receptor *r, Symbol noun, void *surface) {
     ElementSurface *spec_surface = _get_noun_element_spec(r, &nounType, noun);
     ElementSurface *es;
     int rep_size;
-    int size;
+    int size=0;
+    int length;
 
     Symbol arrayItemType;
     Symbol patternNoun;
@@ -188,16 +194,23 @@ size_t _get_noun_size(Receptor *r, Symbol noun, void *surface) {
             return PATTERN_GET_SIZE(spec_surface);
             break;
         case ARRAY_SPEC:
+	    length = _op_get_array_length(surface);
+	    size = sizeof(int);
 	    patternNoun = REPS_GET_PATTERN_NOUN(spec_surface);
 	    es = _get_noun_element_spec(r,&arrayItemType,patternNoun);
 	    if (arrayItemType == PATTERN_SPEC) {
-		size = PATTERN_GET_SIZE(es);
+		size += length * PATTERN_GET_SIZE(es);
 	    }
 	    else if (arrayItemType == ARRAY_SPEC) {
-		size = _get_noun_size(r,patternNoun,surface);
+		surface += sizeof(int);
+		while (length--) {
+		    rep_size = _get_noun_size(r,patternNoun,surface);
+		    size += rep_size;
+		    surface += rep_size;
+		}
 	    }
 	    else {raise_error2("illegal noun (%d) as array element type for %d\n",arrayItemType,noun);}
-            return sizeof(int) + (*(int *)surface) * size ;
+            return size ;
             break;
         case STRING_SPEC:
 	    es = _get_reps_pattern_spec(r,spec_surface);
@@ -217,6 +230,13 @@ size_t _get_noun_size(Receptor *r, Symbol noun, void *surface) {
     raise_error2("unknown noun type %d for noun %d\n", nounType, noun);
 }
 
+void _record_existence(Receptor *r,size_t current_index,Symbol noun) {
+    r->data.current_xaddr++;
+    r->data.xaddrs[r->data.current_xaddr].key = current_index;
+    r->data.xaddrs[r->data.current_xaddr].noun = noun;
+    r->data.xaddr_scape[current_index] = noun;
+}
+
 Symbol op_new_noun(Receptor *r, Xaddr xaddr, char *label) {
     NounSurface ns;
     ns.namedElement.key = xaddr.key;
@@ -227,10 +247,8 @@ Symbol op_new_noun(Receptor *r, Xaddr xaddr, char *label) {
     memcpy(surface, &ns, sizeof(NounSurface));
     r->data.cache_index += sizeof(NounSurface);
 
-    r->data.current_xaddr++;
-    r->data.xaddrs[r->data.current_xaddr].key = current_index;
-    r->data.xaddrs[r->data.current_xaddr].noun = NOUN_SPEC;
-    r->data.xaddr_scape[current_index] = NOUN_SPEC;
+    _record_existence(r,current_index,NOUN_SPEC);
+
     return current_index;
 }
 
@@ -240,17 +258,17 @@ void op_set(Receptor *r, Xaddr xaddr, void *value) {
         raise_error("I do not think that word (%d) means what you think it means!\n", xaddr.noun);
     }
     size_t size = _get_noun_size(r, xaddr.noun, value);
+
     memcpy(surface, value, size);
 }
 
 Xaddr op_new(Receptor *r, Symbol noun, void *surface) {
     size_t current_index = r->data.cache_index;
     r->data.cache_index += _get_noun_size(r, noun, surface);
-    r->data.current_xaddr++;
-    r->data.xaddrs[r->data.current_xaddr].key = current_index;
-    r->data.xaddrs[r->data.current_xaddr].noun = noun;
+
+    _record_existence(r,current_index,noun);
+
     Xaddr new_xaddr = {current_index, noun};
-    r->data.xaddr_scape[current_index] = noun;
     op_set(r, new_xaddr, surface);
     return new_xaddr;
 }
@@ -269,6 +287,38 @@ void _init_element(Receptor *r, char *label,Symbol element_spec,ElementSurface *
         p->function = processes[i].function;
 	p++;
     }
+}
+
+void *op_get_array_nth(Receptor *r,int index, Xaddr rX) {
+    void *surface = op_get(r,rX);
+    int length = _op_get_array_length(surface);
+    if (index >= length){
+	raise_error2("index %d into array %d greater than length\n",rX.key,index);
+    }
+    surface += sizeof(int);
+    if (index > 0) {
+
+	Symbol nounSpecType;
+	ElementSurface *rs = _get_noun_element_spec(r,&nounSpecType,rX.noun);
+	if (nounSpecType != ARRAY_SPEC) {
+	    raise_error2("xaddr points to a %d, expected array(%d)\n",nounSpecType,ARRAY_SPEC);
+	}
+	Symbol patternNoun = REPS_GET_PATTERN_NOUN(rs);
+	Symbol arrayItemType;
+	ElementSurface *es = _get_noun_element_spec(r,&arrayItemType,patternNoun);
+	int size;
+	if (arrayItemType == PATTERN_SPEC) {
+	    size = PATTERN_GET_SIZE(es);
+	    surface += size*index;
+	}
+	else if (arrayItemType == ARRAY_SPEC) {
+	    while (index--) {
+		surface += _get_noun_size(r,patternNoun,surface);
+	    }
+	}
+	else {raise_error("bad array item type %d\n",arrayItemType);}
+    }
+    return surface;
 }
 
 #define BUFFER_SIZE 10000

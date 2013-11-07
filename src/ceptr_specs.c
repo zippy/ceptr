@@ -23,39 +23,40 @@ void testInt() {
     spec_is_true(*v == 8);
 }
 
-// PatternSpec   (  c-struct  )
-// NamedPattern  (INT, POINT, LINE )
-// PatternInstance  (AGE, IN_THE_SAND, HERE )
-
-// ArraySpec      (  c-struct )
-// NamedArray     (  CONSTELLATION[POINT] )
-// ArrayInstance  (  receptors' semStacks )
-
 Symbol _make_star_loc(Receptor *r){
     return op_new_noun(r, r->pointPatternSpecXaddr, "STAR_LOCATION");
 }
 
-Xaddr _make_array(Receptor *r,Symbol STAR_LOCATION,Symbol *CONSTELLATION,int surface[]) {
+Xaddr _make_constellation(Receptor *r,Symbol STAR_LOCATION,Symbol *CONSTELLATION,int surface[]) {
     Xaddr starLocArray = op_new_array(r, "STAR_LOCATION_ARRAY", STAR_LOCATION, 0, 0);
     *CONSTELLATION = op_new_noun(r, starLocArray, "CONSTELLATION");
     return op_new(r, *CONSTELLATION, surface);
+}
+
+Xaddr _make_zodiac(Receptor *r,Symbol CONSTELLATION,Symbol *ZODIAC,void *sky) {
+    Xaddr constellationArray = op_new_array(r,"CONSTELLATION_ARRAY",CONSTELLATION,0,0);
+    *ZODIAC = op_new_noun(r, constellationArray, "ZODIAC");
+    return op_new(r, *ZODIAC, sky);
 }
 
 void testArray() {
     Receptor tr;init(&tr);Receptor *r = &tr;
     Symbol CONSTELLATION;
     int stars[] = { 3,   1,2,  10, 20,  100, 200 };
-    Xaddr orion = _make_array(r,_make_star_loc(r),&CONSTELLATION,stars);
-    int * orionSurface = (int *)op_get(r, orion);
+    Symbol STAR_LOC = _make_star_loc(r);
+    Xaddr orion = _make_constellation(r,STAR_LOC,&CONSTELLATION,stars);
 
-    spec_is_true(*orionSurface == 3);
-    spec_is_true(*(orionSurface+2) == 2);
+    int *pointSurface = (int *) op_get_array_nth(r, 1, orion);
+    spec_is_true(*pointSurface == 10);
+    spec_is_true(*(pointSurface+1) == 20);
+    spec_is_true(op_get_array_length(r,orion) == 3);
 
-    Xaddr constellationArray = op_new_array(r,"CONSTELLATION_ARRAY",CONSTELLATION,0,0);
-    Symbol ZODIAC = op_new_noun(r, constellationArray, "ZODIAC");
-    int sky[] = {3,   2, 2,3,  40,50,   1,100,101,  4, 11,22, 33,44, 55,66, 77,88 };
-    Xaddr myZodiac = op_new(r, ZODIAC, sky);
-    dump_xaddrs(r);
+    Symbol ZODIAC;
+    int sky[] = {3,   2, 2,3, 40,50,   1,100,101,  4, 11,22, 33,44, 55,66, 77,88 };
+    Xaddr myZodiac = _make_zodiac(r,CONSTELLATION,&ZODIAC,sky);
+    int *arraySurface = (int *) op_get_array_nth(r, 2, myZodiac);
+    spec_is_true(_get_noun_size(r,ZODIAC,sky) == 18*sizeof(int));
+    spec_is_true(_op_get_array_length(arraySurface) == 4);
 }
 
 int *_make_string(Receptor *r,Symbol STAR_LOCATION,Symbol *CONSTELLATION){
@@ -189,7 +190,10 @@ void test_xaddr_dump() {
     Symbol CONSTELLATION;
     Symbol SL = _make_star_loc(r);
     int stars[] = { 3,   1,2,  10, 20,  100, 200 };
-    _make_array(r,SL,&CONSTELLATION,stars);
+    _make_constellation(r,SL,&CONSTELLATION,stars);
+    Symbol ZODIAC;
+    int sky[] = {3,   2, 2,3, 40,50,   1,100,101,  4, 11,22, 33,44, 55,66, 77,88 };
+    Xaddr myZodiac = _make_zodiac(r,CONSTELLATION,&ZODIAC,sky);
     _make_string(r,SL,&CONSTELLATION);
     dump_xaddrs(r);
 }
