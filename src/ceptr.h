@@ -104,7 +104,7 @@ typedef struct {
 } PatternBody;
 
 typedef struct {
-    Symbol patternNoun;
+    Symbol noun;
 } RepsBody;
 
 Process *getProcess(ElementSurface *es, FunctionName name) {
@@ -151,8 +151,8 @@ void *op_get(Receptor *r, Xaddr xaddr) {
 
 #define element_header_size(h) (sizeof(ElementSurface)-sizeof(Process)+(((ElementSurface *)h)->process_count)*sizeof(Process))
 #define skip_elem_header(h) (element_header_size(h) + (void *)h)
-#define REPS_GET_PATTERN_NOUN(reps) (((RepsBody *)skip_elem_header(reps))->patternNoun)
-#define REPS_SET_PATTERN_NOUN(reps,n) (((RepsBody *)skip_elem_header(reps))->patternNoun = n)
+#define REPS_GET_NOUN(reps) (((RepsBody *)skip_elem_header(reps))->noun)
+#define REPS_SET_NOUN(reps,n) (((RepsBody *)skip_elem_header(reps))->noun = n)
 #define PATTERN_GET_SIZE(pat) (((PatternBody *)skip_elem_header(pat))->size)
 #define PATTERN_GET_CHILDREN_COUNT(pat) (((PatternBody *)skip_elem_header(pat))->children_count)
 #define PATTERN_SET_CHILDREN_COUNT(pat,count) (((PatternBody *)skip_elem_header(pat))->children_count=count)
@@ -160,7 +160,7 @@ void *op_get(Receptor *r, Xaddr xaddr) {
 #define PATTERN_GET_CHILDREN(pat) (&(((PatternBody *)skip_elem_header(pat))->children))
 
 ElementSurface *_get_reps_pattern_spec(Receptor *r,ElementSurface *rs) {
-    return _get_noun_pattern_spec(r,REPS_GET_PATTERN_NOUN(rs));
+    return _get_noun_pattern_spec(r,REPS_GET_NOUN(rs));
 }
 
 size_t _get_pattern_spec_size(ElementSurface *es) {
@@ -190,7 +190,7 @@ size_t _get_noun_size(Receptor *r, Symbol noun, void *surface) {
     int length;
 
     Symbol arrayItemType;
-    Symbol patternNoun;
+    Symbol repsNoun;
     switch(nounType) {
         case PATTERN_SPEC:
             return PATTERN_GET_SIZE(spec_surface);
@@ -198,15 +198,15 @@ size_t _get_noun_size(Receptor *r, Symbol noun, void *surface) {
         case ARRAY_SPEC:
 	    length = _op_get_array_length(surface);
 	    size = sizeof(int);
-	    patternNoun = REPS_GET_PATTERN_NOUN(spec_surface);
-	    es = _get_noun_element_spec(r,&arrayItemType,patternNoun);
+	    repsNoun = REPS_GET_NOUN(spec_surface);
+	    es = _get_noun_element_spec(r,&arrayItemType,repsNoun);
 	    if (arrayItemType == PATTERN_SPEC) {
 		size += length * PATTERN_GET_SIZE(es);
 	    }
 	    else if (arrayItemType == ARRAY_SPEC) {
 		surface += sizeof(int);
 		while (length--) {
-		    rep_size = _get_noun_size(r,patternNoun,surface);
+		    rep_size = _get_noun_size(r,repsNoun,surface);
 		    size += rep_size;
 		    surface += rep_size;
 		}
@@ -307,9 +307,9 @@ void *op_get_array_nth(Receptor *r,int index, Xaddr rX) {
 	if (nounSpecType != ARRAY_SPEC) {
 	    raise_error2("xaddr points to a %d, expected array(%d)\n",nounSpecType,ARRAY_SPEC);
 	}
-	Symbol patternNoun = REPS_GET_PATTERN_NOUN(rs);
+	Symbol repsNoun = REPS_GET_NOUN(rs);
 	Symbol arrayItemType;
-	ElementSurface *es = _get_noun_element_spec(r,&arrayItemType,patternNoun);
+	ElementSurface *es = _get_noun_element_spec(r,&arrayItemType,repsNoun);
 	int size;
 	if (arrayItemType == PATTERN_SPEC) {
 	    size = PATTERN_GET_SIZE(es);
@@ -317,7 +317,7 @@ void *op_get_array_nth(Receptor *r,int index, Xaddr rX) {
 	}
 	else if (arrayItemType == ARRAY_SPEC) {
 	    while (index--) {
-		surface += _get_noun_size(r,patternNoun,surface);
+		surface += _get_noun_size(r,repsNoun,surface);
 	    }
 	}
 	else {raise_error("bad array item type %d\n",arrayItemType);}
@@ -326,20 +326,20 @@ void *op_get_array_nth(Receptor *r,int index, Xaddr rX) {
 }
 
 #define BUFFER_SIZE 10000
-Xaddr _op_new_rep(Receptor *r, Symbol rep_type, char *label, Symbol patternNoun, int processCount, Process *processes){
+Xaddr _op_new_rep(Receptor *r, Symbol rep_type, char *label, Symbol repsNoun, int processCount, Process *processes){
     char rs[BUFFER_SIZE];
     memset(rs, 0, BUFFER_SIZE);
     _init_element(r,label,rep_type,(ElementSurface *)rs,processCount,processes);
-    REPS_SET_PATTERN_NOUN(rs,patternNoun);
+    REPS_SET_NOUN(rs,repsNoun);
     return op_new(r, rep_type, rs);
 }
 
-Xaddr op_new_string(Receptor *r, char *label, Symbol patternNoun, int processCount, Process *processes){
-    return _op_new_rep(r,STRING_SPEC,label,patternNoun,processCount,processes);
+Xaddr op_new_string(Receptor *r, char *label, Symbol repsNoun, int processCount, Process *processes){
+    return _op_new_rep(r,STRING_SPEC,label,repsNoun,processCount,processes);
 }
 
-Xaddr op_new_array(Receptor *r, char *label, Symbol patternNoun, int processCount, Process *processes){
-    return _op_new_rep(r,ARRAY_SPEC,label,patternNoun,processCount,processes);
+Xaddr op_new_array(Receptor *r, char *label, Symbol repsNoun, int processCount, Process *processes){
+    return _op_new_rep(r,ARRAY_SPEC,label,repsNoun,processCount,processes);
 }
 
 Xaddr op_new_pattern(Receptor *r, char *label, int childCount, Xaddr *children, int processCount, Process *processes) {
@@ -623,7 +623,8 @@ void dump_process_array(Process *process,int count) {
 void dump_reps_spec(Receptor *r, ElementSurface *rs,char * type){
     printf("%s Spec\n",type);
     printf("    name: %s(%d)\n", noun_label(r, rs->name), rs->name);
-    printf("    patternNoun: %d \n", REPS_GET_PATTERN_NOUN(rs));
+    int noun = REPS_GET_NOUN(rs);
+    printf("    repsNoun: %s(%d) \n", noun_label(r,noun),noun);
 //    dump_process_array(rs->processes);
     printf("\n");
 }
@@ -654,11 +655,11 @@ void dump_array_value(Receptor *r, ElementSurface *rs, void *surface) {
     int count = *(int*)surface;
     surface += sizeof(int);
     Symbol arrayItemType;
-    Symbol patternNoun = REPS_GET_PATTERN_NOUN(rs);
-    ElementSurface *es = _get_noun_element_spec(r,&arrayItemType,patternNoun);
+    Symbol repsNoun = REPS_GET_NOUN(rs);
+    ElementSurface *es = _get_noun_element_spec(r,&arrayItemType,repsNoun);
     int size;
     if (arrayItemType == PATTERN_SPEC) {
-	printf("%s(%d) array of %d %s(%d)s\n",noun_label(r,rs->name),rs->name,count,noun_label(r,patternNoun),patternNoun );
+	printf("%s(%d) array of %d %s(%d)s\n",noun_label(r,rs->name),rs->name,count,noun_label(r,repsNoun),repsNoun );
 	size = PATTERN_GET_SIZE(es);
 	while (count > 0) {
 	    printf("    ");
@@ -673,7 +674,7 @@ void dump_array_value(Receptor *r, ElementSurface *rs, void *surface) {
 	while (count > 0) {
 	    printf("    ");
 	    dump_array_value(r,es,surface);
-	    surface += _get_noun_size(r,patternNoun,surface);
+	    surface += _get_noun_size(r,repsNoun,surface);
 	    count--;
 	}
     }
@@ -682,8 +683,8 @@ void dump_array_value(Receptor *r, ElementSurface *rs, void *surface) {
 void dump_string_value(Receptor *r, ElementSurface *rs, void *surface) {
     int count = 0;
     ElementSurface *ps = _get_reps_pattern_spec(r,rs);
-    Symbol patternNoun = REPS_GET_PATTERN_NOUN(rs);
-    printf(" %s(%d) string of %s(%d)\n",noun_label(r,rs->name),rs->name,noun_label(r,patternNoun),patternNoun);
+    Symbol repsNoun = REPS_GET_NOUN(rs);
+    printf(" %s(%d) string of %s(%d)\n",noun_label(r,rs->name),rs->name,noun_label(r,repsNoun),repsNoun);
     while (*(int *)surface != STRING_TERMINATOR) {
 	if (*(int *)surface == ESCAPE_STRING_TERMINATOR) {
 	    surface += sizeof(int);
