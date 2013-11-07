@@ -173,6 +173,8 @@ int op_get_array_length(Receptor *r, Xaddr rX) {
     return _op_get_array_length(op_get(r,rX));
 }
 
+//TODO: refactor out the code in here that walks noun-types.  This code is seen in dump_xaddrs and also in array_nth
+
 //FIXME: should we allow check for surface == 0 and raise an error for those cases where it matters?
 size_t _get_noun_size(Receptor *r, Symbol noun, void *surface) {
     if (noun == PATTERN_SPEC) {
@@ -209,10 +211,12 @@ size_t _get_noun_size(Receptor *r, Symbol noun, void *surface) {
 		    surface += rep_size;
 		}
 	    }
+	    //TODO: handle arrays of strings
 	    else {raise_error2("illegal noun (%d) as array element type for %d\n",arrayItemType,noun);}
             return size ;
             break;
         case STRING_SPEC:
+	    //TODO: handle strings of arrays
 	    es = _get_reps_pattern_spec(r,spec_surface);
 	    rep_size = PATTERN_GET_SIZE(es);
 	    size = 0;
