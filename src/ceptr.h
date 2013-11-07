@@ -422,14 +422,14 @@ ElementSurface *walk_path(Receptor *r, Xaddr xaddr, Symbol *path, int *offset) {
     return ps;
 }
 
-void *op_setpath(Receptor *r, Xaddr xaddr, Symbol *path, void *value) {
+void *op_set_by_path(Receptor *r, Xaddr xaddr, Symbol *path, void *value) {
     int offset;
     ElementSurface *ps = walk_path(r, xaddr, path, &offset);
     void *surface = &r->data.cache[xaddr.key + offset];
     return memcpy(surface, value, PATTERN_GET_SIZE(ps));
 }
 
-void *op_getpath(Receptor *r, Xaddr xaddr, Symbol *path) {
+void *op_get_by_path(Receptor *r, Xaddr xaddr, Symbol *path) {
     int offset;
     walk_path(r, xaddr, path, &offset);
     return &r->data.cache[xaddr.key + offset];

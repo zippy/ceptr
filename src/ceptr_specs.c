@@ -151,11 +151,11 @@ void testSymbolPath() {
     int *val;
     int seven = 7;
 
-    val = op_getpath(r, itsLine, path);
+    val = op_get_by_path(r, itsLine, path);
     spec_is_true(*val == 4);
 
-    op_setpath(r, itsLine, path, &seven);
-    val = op_getpath(r, itsLine, path);
+    op_set_by_path(r, itsLine, path, &seven);
+    val = op_get_by_path(r, itsLine, path);
     spec_is_true(*val == 7);
 
     void *surface = op_get(r, itsLine);
