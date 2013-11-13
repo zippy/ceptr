@@ -375,11 +375,6 @@ Xaddr op_new_pattern(Receptor *r, char *label, int childCount, Xaddr *children, 
 return op_new(r, PATTERN_SPEC, ps);
 }
 
-ElementSurface *_get_pattern_spec(Receptor *r, Symbol patternName) {
-    Xaddr px = {patternName, PATTERN_SPEC};
-    return (ElementSurface *) op_get(r, px);
-}
-
 int op_exec(Receptor *r, Xaddr xaddr, FunctionName processName) {
     ElementSurface *ps = _get_noun_pattern_spec(r, xaddr.noun);
     Process *p = getProcess(ps, processName);
@@ -390,7 +385,7 @@ int op_push_pattern(Receptor *r, Symbol patternName, void *surface) {
     SemStackFrame *ssf = &r->semStack[++r->semStackPointer];
     ssf->type.key = patternName;
     ssf->type.noun = PATTERN_SPEC;
-    ElementSurface *ps = _get_pattern_spec(r, patternName);
+    ElementSurface *ps = (ElementSurface *) op_get(r, ssf->type);
     ssf->size = PATTERN_GET_SIZE(ps);
     memcpy(&r->valStack[r->valStackPointer], surface, ssf->size);
     r->valStackPointer += ssf->size;
