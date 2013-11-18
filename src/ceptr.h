@@ -499,7 +499,7 @@ int run(Receptor *r, Instruction *instructions, void *values) {
     while (1) {
         switch (instructions[counter].opcode) {
             case RETURN:
-                return;
+                return 0;
             case PUSH_IMMEDIATE:
                 op = (ImmediatePatternOperand *) &instructions[counter].operands;
                 op_push_pattern(r, op->name, (char *) values + op->valueOffset);
