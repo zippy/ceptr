@@ -173,9 +173,76 @@ int op_get_array_length(Receptor *r, Xaddr rX) {
     return _op_get_array_length(op_get(r,rX));
 }
 
+
+int proc_pattern_get_size(Receptor *r, Symbol noun,ElementSurface *spec_surface, void *surface){
+    return PATTERN_GET_SIZE(spec_surface);
+}
+
+
+int proc_array_get_size(Receptor *r, Symbol noun,ElementSurface *spec_surface, void *surface) {
+    int length = _op_get_array_length(surface);
+    int size = sizeof(int);
+    Symbol arrayItemType;
+    int rep_size;
+
+    Symbol repsNoun = REPS_GET_NOUN(spec_surface);
+    ElementSurface *es = _get_noun_element_spec(r,&arrayItemType,repsNoun);
+    if (arrayItemType == PATTERN_SPEC) {
+        size += length * PATTERN_GET_SIZE(es);
+    }
+    else if (arrayItemType == ARRAY_SPEC) {
+        surface += sizeof(int);
+        while (length--) {
+	    Symbol itemType;
+	    ElementSurface *item_spec_surface = _get_noun_element_spec(r, &itemType, repsNoun);
+            rep_size = proc_array_get_size(r,repsNoun,item_spec_surface,surface);
+            size += rep_size;
+            surface += rep_size;
+        }
+    }
+    //TODO: handle arrays of strings
+    else {raise_error2("illegal noun (%d) as array element type for %d\n",arrayItemType,noun);}
+    return size ;
+}
+
+int proc_string_get_size(Receptor *r, Symbol noun,ElementSurface *spec_surface, void *surface) {
+    //TODO: handle strings of arrays
+    ElementSurface *es = _get_reps_pattern_spec(r,spec_surface);
+    int rep_size = PATTERN_GET_SIZE(es);
+    int size = 0;
+    while(*(int *)surface != STRING_TERMINATOR) {
+        if (*(int *)surface == ESCAPE_STRING_TERMINATOR) {
+            surface += sizeof(int);
+            size +=sizeof(int);
+        }
+        size += rep_size;
+        surface += rep_size;
+    }
+    return sizeof(int) + size;
+}
+
+int proc_pattern_spec_get_size(Receptor *r, Symbol noun,ElementSurface *spec_surface, void *surface) {
+    return _get_pattern_spec_size((ElementSurface *)surface);
+}
+
+
 //TODO: refactor out the code in here that walks noun-types.  This code is seen in dump_xaddrs and also in array_nth
 
+#define GET_SIZE 0
 //FIXME: should we allow check for surface == 0 and raise an error for those cases where it matters?
+size_t _new_get_noun_size(Receptor *r, Symbol noun, void *surface) {
+    Symbol nounType;
+    ElementSurface *spec_surface = _get_noun_element_spec(r, &nounType, noun);
+    Process *p = getProcess(spec_surface, GET_SIZE);
+    if (p){
+        return (*p->function)(r,  spec_surface);
+    } else {
+        dump_xaddrs(r);
+        raise_error2("couldn't find size function for noun %d in spec surface %d\n", noun, spec_surface->name);
+        return 0;
+    }
+}
+
 size_t _get_noun_size(Receptor *r, Symbol noun, void *surface) {
     if (noun == PATTERN_SPEC) {
 	return _get_pattern_spec_size((ElementSurface *)surface);
@@ -184,51 +251,15 @@ size_t _get_noun_size(Receptor *r, Symbol noun, void *surface) {
     }
     Symbol nounType;
     ElementSurface *spec_surface = _get_noun_element_spec(r, &nounType, noun);
-    ElementSurface *es;
-    int rep_size;
-    int size=0;
-    int length;
-
-    Symbol arrayItemType;
-    Symbol repsNoun;
     switch(nounType) {
         case PATTERN_SPEC:
-            return PATTERN_GET_SIZE(spec_surface);
+            return proc_pattern_get_size(r,noun,spec_surface,surface);
             break;
         case ARRAY_SPEC:
-	    length = _op_get_array_length(surface);
-	    size = sizeof(int);
-	    repsNoun = REPS_GET_NOUN(spec_surface);
-	    es = _get_noun_element_spec(r,&arrayItemType,repsNoun);
-	    if (arrayItemType == PATTERN_SPEC) {
-		size += length * PATTERN_GET_SIZE(es);
-	    }
-	    else if (arrayItemType == ARRAY_SPEC) {
-		surface += sizeof(int);
-		while (length--) {
-		    rep_size = _get_noun_size(r,repsNoun,surface);
-		    size += rep_size;
-		    surface += rep_size;
-		}
-	    }
-	    //TODO: handle arrays of strings
-	    else {raise_error2("illegal noun (%d) as array element type for %d\n",arrayItemType,noun);}
-            return size ;
+	    return proc_array_get_size(r,noun,spec_surface,surface);
             break;
         case STRING_SPEC:
-	    //TODO: handle strings of arrays
-	    es = _get_reps_pattern_spec(r,spec_surface);
-	    rep_size = PATTERN_GET_SIZE(es);
-	    size = 0;
-	    while(*(int *)surface != STRING_TERMINATOR) {
-		if (*(int *)surface == ESCAPE_STRING_TERMINATOR) {
-		    surface += sizeof(int);
-		    size +=sizeof(int);
-		}
-		size += rep_size;
-		surface += rep_size;
-	    }
-	    return sizeof(int) + size;
+	    return proc_string_get_size(r,noun,spec_surface,surface);
 	    break;
     }
     raise_error2("unknown noun type %d for noun %d\n", nounType, noun);
@@ -494,23 +525,30 @@ Symbol getSymbol(Receptor *r, char *label) {
     }
 }
 
-void init(Receptor *r) {
+void init_data(Receptor *r) {
     int i;
     for (i = 0; i < DEFAULT_CACHE_SIZE; i++) r->data.xaddr_scape[i] = NULL_SYMBOL;
 
     r->data.cache_index = 0;
-    r->semStackPointer = -1;
-    r->valStackPointer = 0;
+    r->data.current_xaddr = -1;
+}
+
+void init_elements(Receptor *r){
     r->patternSpecXaddr.key = PATTERN_SPEC;
     r->patternSpecXaddr.noun = CSPEC;
     r->arraySpecXaddr.key = ARRAY_SPEC;
     r->arraySpecXaddr.noun = CSPEC;
     r->stringSpecXaddr.key = STRING_SPEC;
     r->stringSpecXaddr.noun = CSPEC;
-    r->data.current_xaddr = -1;
+}
 
+void init_processing(Receptor *r) {
+    r->semStackPointer = -1;
+    r->valStackPointer = 0;
+}
 
-    // ********************** bootstrap built in types
+void init_base_types(Receptor *r) {
+     // ********************** bootstrap built in types
 
     // INT
     Process int_processes[] = {
@@ -542,7 +580,14 @@ void init(Receptor *r) {
     };
 
     r->linePatternSpecXaddr = op_new_pattern(r, "LINE", 2, line_children, 1, line_processes);
+}
 
+
+void init(Receptor *r) {
+    init_data(r);
+    init_elements(r);
+    init_processing(r);
+    init_base_types(r);
 }
 
 // utilities
