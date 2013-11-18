@@ -30,7 +30,7 @@ Symbol _make_star_loc(Receptor *r){
 Xaddr _make_constellation(Receptor *r,Symbol STAR_LOCATION,Symbol *CONSTELLATION,int surface[]) {
     Xaddr starLocArray = op_new_array(r, "STAR_LOCATION_ARRAY", STAR_LOCATION, 0, 0);
     *CONSTELLATION = op_new_noun(r, starLocArray, "CONSTELLATION");
-    return op_new(r, *CONSTELLATION, surface);
+    return op_new(r, STAR_LOCATION, surface);
 }
 
 Xaddr _make_zodiac(Receptor *r,Symbol CONSTELLATION,Symbol *ZODIAC,void *sky) {
