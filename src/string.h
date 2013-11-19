@@ -54,7 +54,7 @@ void testString() {
     int * orionSurface = _make_string(r,_make_star_loc(r),&CONSTELLATION);
     spec_is_true(*orionSurface == 1);
     spec_is_true(*(orionSurface+8) == STRING_TERMINATOR);
-    spec_is_true(_get_noun_size(r,CONSTELLATION,orionSurface) == sizeof(int)*9);
+    spec_is_true(size_of_named_surface(r,CONSTELLATION,orionSurface) == sizeof(int)*9);
 }
 
 
@@ -74,5 +74,5 @@ int *_make_string(Receptor *r,Symbol STAR_LOCATION,Symbol *CONSTELLATION){
         int term;
     } orion = {  1,2,  ESCAPE_STRING_TERMINATOR,-1, 20,  ESCAPE_STRING_TERMINATOR,-2, 200, STRING_TERMINATOR };
     Xaddr orionXaddr = op_new(r, *CONSTELLATION, &orion);
-    return (int *)op_get(r, orionXaddr);
+    return (int *)surface_for_xaddr(r, orionXaddr);
 }

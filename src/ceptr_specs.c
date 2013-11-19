@@ -15,11 +15,11 @@ void testInt() {
     Symbol MY_INT = op_new_noun(r, r->intPatternSpecXaddr, "MY_INT");
     int val = 7;
     Xaddr my_int_xaddr = op_new(r, MY_INT, &val);
-    int *v = op_get(r, my_int_xaddr);
+    int *v = surface_for_xaddr(r, my_int_xaddr);
     spec_is_true(*v == 7);
     val = 8;
     op_set(r, my_int_xaddr, &val);
-    v = op_get(r, my_int_xaddr);
+    v = surface_for_xaddr(r, my_int_xaddr);
     spec_is_true(*v == 8);
 }
 
@@ -55,7 +55,7 @@ void testArray() {
     int sky[] = {3,   2, 2,3, 40,50,   1,100,101,  4, 11,22, 33,44, 55,66, 77,88 };
     Xaddr myZodiac = _make_zodiac(r,CONSTELLATION,&ZODIAC,sky);
     int *arraySurface = (int *) op_get_array_nth(r, 2, myZodiac);
-    spec_is_true(_get_noun_size(r,ZODIAC,sky) == 18*sizeof(int));
+    spec_is_true(size_of_named_surface(r,ZODIAC,sky) == 18*sizeof(int));
     spec_is_true(_op_get_array_length(arraySurface) == 4);
 }
 
@@ -65,7 +65,7 @@ void testPoint() {
     Symbol HERE = op_new_noun(r, r->pointPatternSpecXaddr, "HERE");
     int value[2] = {777, 422};
     Xaddr here_xaddr = op_new(r, HERE, &value);
-    int *v = op_get(r, here_xaddr);
+    int *v = surface_for_xaddr(r, here_xaddr);
     spec_is_true(*v == 777 && *(v + 1) == 422);
 }
 //
@@ -103,7 +103,7 @@ void testLine() {
     Symbol inTheSand = op_new_noun(r, r->linePatternSpecXaddr, "in the sand");
     Xaddr itsLine = op_new(r, inTheSand, &myLine);
 
-    void *surface = op_get(r, itsLine);
+    void *surface = surface_for_xaddr(r, itsLine);
     spec_is_true(
     *(int *) (surface) == 1 &&
         *(int *) (surface + 4) == 2 &&
