@@ -440,7 +440,7 @@ void *stack_peek(Receptor *r, Symbol *name, void **surface) {
     *surface = &r->valStack[r->valStackPointer - ssf->size];
 }
 
-void stack_ppreop_unchecked(Receptor *r, Symbol *name, void *surface) {
+void stack_pop_unchecked(Receptor *r, Symbol *name, void *surface) {
     SemStackFrame *ssf = &r->semStack[r->semStackPointer];
     *name = ssf->noun;
     memcpy(surface, &r->valStack[r->valStackPointer - ssf->size], ssf->size);
@@ -456,7 +456,7 @@ void stack_push(Receptor *r, Symbol name, void *surface) {
 
 void stack_pop(Receptor *r, Symbol expectedNoun, void *surface) {
     Symbol actualNoun;
-    stack_ppreop_unchecked(r, &actualNoun, surface);
+    stack_pop_unchecked(r, &actualNoun, surface);
     assert( actualNoun == expectedNoun );
 }
 
@@ -475,11 +475,11 @@ void dump_stack(Receptor *r) {
         printf("\n");
     }
 }
-
-void op_new(r) {
-
-}
-
+//
+//void op_new(r) {
+//
+//}
+//
 
 Xaddr proc_cspec_instance_new(Receptor *r, Xaddr invokee) {
     char label[BUFFER_SIZE];
@@ -488,7 +488,7 @@ Xaddr proc_cspec_instance_new(Receptor *r, Xaddr invokee) {
     memset(ps, 0, BUFFER_SIZE);
     Process *p = 0;
     Symbol newNoun = _init_element(r, &label[0], r->rootXaddr, (ElementSurface *) ps, 0, p);
-    return op_new(r, newNoun, ps);
+    return preop_new(r, newNoun, ps);
 }
 
 
