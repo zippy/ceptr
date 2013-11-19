@@ -18,8 +18,8 @@ int proc_string_get_size(Receptor *r, Symbol noun,ElementSurface *spec_surface, 
 }
 
 
-Xaddr op_new_string(Receptor *r, char *label, Symbol repsNoun, int processCount, Process *processes){
-    return _op_new_rep(r,r->stringSpecXaddr,r->stringNoun,label,repsNoun,processCount,processes);
+Xaddr preop_new_string(Receptor *r, char *label, Symbol repsNoun, int processCount, Process *processes){
+    return _preop_new_rep(r,r->stringSpecXaddr,r->stringNoun,label,repsNoun,processCount,processes);
 }
 
 void dump_string_value(Receptor *r, ElementSurface *rs, void *surface) {
@@ -59,8 +59,8 @@ void testString() {
 
 
 int *_make_string(Receptor *r,Symbol STAR_LOCATION,Symbol *CONSTELLATION){
-    Xaddr starLocString = op_new_string(r, "STAR_LOCATION_STRING", STAR_LOCATION, 0, 0);
-    *CONSTELLATION = op_new_noun(r, starLocString, "CONSTELLATION");
+    Xaddr starLocString = preop_new_string(r, "STAR_LOCATION_STRING", STAR_LOCATION, 0, 0);
+    *CONSTELLATION = preop_new_noun(r, starLocString, "CONSTELLATION");
 
     struct {
         int point1X;
@@ -73,6 +73,6 @@ int *_make_string(Receptor *r,Symbol STAR_LOCATION,Symbol *CONSTELLATION){
         int point3Y;
         int term;
     } orion = {  1,2,  ESCAPE_STRING_TERMINATOR,-1, 20,  ESCAPE_STRING_TERMINATOR,-2, 200, STRING_TERMINATOR };
-    Xaddr orionXaddr = op_new(r, *CONSTELLATION, &orion);
+    Xaddr orionXaddr = preop_new(r, *CONSTELLATION, &orion);
     return (int *)surface_for_xaddr(r, orionXaddr);
 }
