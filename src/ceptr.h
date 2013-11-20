@@ -200,7 +200,7 @@ ElementSurface *element_surface_for_xaddr(Receptor *r, Xaddr element) {
 
 Xaddr spec_xaddr_for_noun(Receptor *r, Symbol noun){
     if (noun == r->rootXaddr.noun) {
-        raise_error0("no spec for the root xaddr");
+        raise_error0("no spec for the root xaddr\n");
         return r->rootXaddr;
     } else if (noun == NOUN_NOUN) {
         return r->rootXaddr; // FIXME: should be nounSpecXaddr
@@ -414,6 +414,11 @@ Xaddr preop_new(Receptor *r, Symbol noun, void *surface) {
     return new_xaddr;
 }
 
+void op_new(Receptor *r, Symbol noun, void *surface) {
+    Xaddr x = preop_new(r,noun,surface);
+    stack_push(r,XADDR_NOUN,&x);
+}
+
 void _copy_processes(ElementSurface *dest_surface, int process_count, Process *processes) {
     int i;
     dest_surface->process_count = process_count;
@@ -435,6 +440,7 @@ int _init_element(Receptor *r, char *label, Xaddr element_spec, ElementSurface *
 
 
 void *stack_peek(Receptor *r, Symbol *name, void **surface) {
+    assert(r->semStackPointer >= 0);
     SemStackFrame *ssf = &r->semStack[r->semStackPointer];
     *name = ssf->noun;
     *surface = &r->valStack[r->valStackPointer - ssf->size];
@@ -444,6 +450,8 @@ void stack_pop_unchecked(Receptor *r, Symbol *name, void *surface) {
     SemStackFrame *ssf = &r->semStack[r->semStackPointer];
     *name = ssf->noun;
     memcpy(surface, &r->valStack[r->valStackPointer - ssf->size], ssf->size);
+    r->valStackPointer -= ssf->size;
+    r->semStackPointer--;
 }
 
 void stack_push(Receptor *r, Symbol name, void *surface) {
@@ -481,14 +489,14 @@ void dump_stack(Receptor *r) {
 //}
 //
 
-Xaddr proc_cspec_instance_new(Receptor *r, Xaddr invokee) {
+void proc_cspec_instance_new(Receptor *r, Xaddr invokee) {
     char label[BUFFER_SIZE];
     char ps[BUFFER_SIZE];
     stack_pop(r, CSTRING_NOUN, label);
     memset(ps, 0, BUFFER_SIZE);
     Process *p = 0;
     Symbol newNoun = _init_element(r, &label[0], r->rootXaddr, (ElementSurface *) ps, 0, p);
-    return preop_new(r, newNoun, ps);
+    op_new(r, newNoun, ps);
 }
 
 
@@ -663,7 +671,7 @@ void init_elements(Receptor *r) {
     dump_stack(r);
     op_invoke(r, r->rootXaddr, INSTANCE_NEW);
 //    Symbol *_;
-//    stack_ppreop_named_surface(r, _, &r->patternSpecXaddr);
+//    stack_pop_named_surface(r, _, &r->patternSpecXaddr);
 
 //    r->patternSpecXaddr = proc_cspec_instance_new(r, "PATTERN");
 //

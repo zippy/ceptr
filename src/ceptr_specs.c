@@ -185,24 +185,44 @@ void testStack() {
     Symbol noun;
     char *peek_surface;
     init_stack(r);
+    spec_is_true(r->valStackPointer == 0);
+    spec_is_true(r->semStackPointer == -1);
     stack_push(r, CSTRING_NOUN, "Hello, Stack");
-    stack_peek(r, &noun, &peek_surface);
+    spec_is_true(r->valStackPointer == 13);
+    spec_is_true(r->semStackPointer == 0);
+    stack_peek(r, &noun, (void **)&peek_surface);
     printf("retrieved string %s\n", peek_surface);
     spec_is_true( noun == CSTRING_NOUN );
     spec_is_true( strcmp("Hello, Stack", peek_surface) == 0);
 
-    char ppreop_surface[BUFFER_SIZE];
-    stack_pop(r, CSTRING_NOUN, ppreop_surface);
-    spec_is_true( strcmp("Hello, Stack", ppreop_surface) == 0 );
+    char pop_surface[BUFFER_SIZE];
+    stack_pop(r, CSTRING_NOUN, pop_surface);
+    spec_is_true( strcmp("Hello, Stack", pop_surface) == 0 );
+    spec_is_true(r->valStackPointer == 0);
+    spec_is_true(r->semStackPointer == -1);
 }
 
 void testInit() {
     Receptor tr;init(&tr);Receptor *r = &tr;
 }
 
+void testCore() {
+    Receptor tr;init_data(&tr);init_stack(&tr);Receptor *r = &tr;
+    r->rootXaddr.key = ROOT;
+    r->rootXaddr.noun = CSPEC_NOUN;
+    stack_push(r, CSTRING_NOUN, "FIRST_SPEC");
+    proc_cspec_instance_new(r,r->rootXaddr);
+    Symbol noun;
+    Xaddr *xaddr;
+    stack_peek(r, &noun, (void **)&xaddr);
+    spec_is_true( noun == XADDR_NOUN );
+    spec_is_true( xaddr->noun == 0 ); // first noun should be at surface 0
+}
+
 int main(int argc, const char **argv) {
     printf("Running all tests...\n\n");
     testStack();
+    testCore();
     testInit();
 //
 //    test_xaddr_dump();
