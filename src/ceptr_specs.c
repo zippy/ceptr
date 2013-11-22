@@ -157,7 +157,6 @@ void test_xaddr_dump() {
     Symbol AGE = preop_new_noun(r, r->intPatternSpecXaddr, "Age");
     int val = 7;
     Xaddr age_xaddr = preop_new(r, AGE, &val);
-    dump_xaddr(r, age_xaddr, 0);
 
     int myLine[4] = {1, 2, 3, 4};
     Symbol inTheSand = preop_new_noun(r, r->linePatternSpecXaddr, "in the sand");
@@ -191,7 +190,6 @@ void testStack() {
     spec_is_true(r->valStackPointer == 13);
     spec_is_true(r->semStackPointer == 0);
     stack_peek(r, &noun, (void **)&peek_surface);
-    printf("retrieved string %s\n", peek_surface);
     spec_is_true( noun == CSTRING_NOUN );
     spec_is_true( strcmp("Hello, Stack", peek_surface) == 0);
 
@@ -204,9 +202,21 @@ void testStack() {
 
 void testInit() {
     Receptor tr;init(&tr);Receptor *r = &tr;
+    spec_is_true( r->rootXaddr.key == ROOT );
+    spec_is_true( r->rootXaddr.noun == CSPEC_NOUN );
+
+    spec_is_true( r->patternSpecXaddr.noun == 0);
+    spec_is_true( r->patternSpecXaddr.key == 19);
+    spec_is_true( r->patternNoun == 0);
+
+    spec_is_true( r->arraySpecXaddr.noun == 27);
+    spec_is_true( r->arraySpecXaddr.key == 44);
+    spec_is_true( r->arrayNoun == 27);
+    spec_is_true(r->semStackPointer == -1);
+
 }
 
-void testCore() {
+void testCspecInstanceNew() {
     Receptor tr;init_data(&tr);init_stack(&tr);Receptor *r = &tr;
     r->rootXaddr.key = ROOT;
     r->rootXaddr.noun = CSPEC_NOUN;
@@ -217,15 +227,19 @@ void testCore() {
     stack_peek(r, &noun, (void **)&xaddr);
     spec_is_true( noun == XADDR_NOUN );
     spec_is_true( xaddr->noun == 0 ); // first noun should be at surface 0
+    NounSurface *ns = noun_surface_for_noun(r,0);
+    spec_is_true(strcmp("FIRST_SPEC",&ns->label) == 0);
+    spec_is_true(ns->specXaddr.key == ROOT);
+    spec_is_true(ns->specXaddr.noun == CSPEC_NOUN);
 }
 
 int main(int argc, const char **argv) {
     printf("Running all tests...\n\n");
     testStack();
-    testCore();
+    testCspecInstanceNew();
     testInit();
 //
-//    test_xaddr_dump();
+    test_xaddr_dump();
 //    testInt();
 //    testPoint();
 //    testLine();

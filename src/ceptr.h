@@ -49,7 +49,7 @@ typedef struct {
 
 typedef struct {
     Xaddr specXaddr;
-    char *label;
+    char label;
 } NounSurface;
 
 enum Opcodes {
@@ -240,10 +240,13 @@ char *label_for_noun(Receptor *r, Symbol noun) {
         case CSTRING_NOUN:
             return "Cstring";
         default:
-            return noun_surface_for_noun(r, noun)->label;
+            return &noun_surface_for_noun(r, noun)->label;
     }
 }
 
+size_t get_noun_size(NounSurface *ns) {
+    return sizeof(NounSurface)+strlen(&ns->label);
+}
 
 #define ELEMENT_HEADER_SIZE(h) (sizeof(ElementSurface)-sizeof(Process)+(((ElementSurface *)h)->process_count)*sizeof(Process))
 #define SKIP_ELEM_HEADER(h) (ELEMENT_HEADER_SIZE(h) + (void *)h)
@@ -381,14 +384,13 @@ void _record_existence(Receptor *r, size_t current_index, Symbol noun) {
 }
 
 Symbol preop_new_noun(Receptor *r, Xaddr xaddr, char *label) {
-    NounSurface ns;
-    ns.specXaddr.key = xaddr.key;
-    ns.specXaddr.noun = xaddr.noun;
-    ns.label = label;
+
     size_t current_index = r->data.cache_index;
-    void *surface = &r->data.cache[current_index];
-    memcpy(surface, &ns, sizeof(NounSurface));
-    r->data.cache_index += sizeof(NounSurface);
+    NounSurface *ns = (NounSurface *)&r->data.cache[current_index];
+    ns->specXaddr.key = xaddr.key;
+    ns->specXaddr.noun = xaddr.noun;
+    memcpy(&ns->label,label,strlen(label)+1);
+    r->data.cache_index += get_noun_size(ns);
 
     _record_existence(r, current_index, NOUN_NOUN);
 
@@ -414,10 +416,6 @@ Xaddr preop_new(Receptor *r, Symbol noun, void *surface) {
     return new_xaddr;
 }
 
-void op_new(Receptor *r, Symbol noun, void *surface) {
-    Xaddr x = preop_new(r,noun,surface);
-    stack_push(r,XADDR_NOUN,&x);
-}
 
 void _copy_processes(ElementSurface *dest_surface, int process_count, Process *processes) {
     int i;
@@ -488,6 +486,11 @@ void dump_stack(Receptor *r) {
 //
 //}
 //
+
+void op_new(Receptor *r, Symbol noun, void *surface) {
+    Xaddr x = preop_new(r,noun,surface);
+    stack_push(r,XADDR_NOUN,&x);
+}
 
 void proc_cspec_instance_new(Receptor *r, Xaddr invokee) {
     char label[BUFFER_SIZE];
@@ -647,7 +650,7 @@ Symbol getSymbol(Receptor *r, char *label) {
         if (r->data.xaddrs[i].noun == NOUN_NOUN) {
             noun = r->data.xaddrs[i].key;
             ns = (NounSurface *) &r->data.cache[noun];
-            if (!strcmp(label, ns->label)) {
+            if (!strcmp(label, &ns->label)) {
                 return noun;
             }
         }
@@ -667,17 +670,23 @@ void init_elements(Receptor *r) {
     r->rootXaddr.key = ROOT;
     r->rootXaddr.noun = CSPEC_NOUN;
 
-    stack_push(r, CSTRING_NOUN, "PATTERN");
-    dump_stack(r);
+    stack_push(r, CSTRING_NOUN, &"PATTERN");
     op_invoke(r, r->rootXaddr, INSTANCE_NEW);
+    stack_pop(r,XADDR_NOUN,&r->patternSpecXaddr);
+    r->patternNoun = (element_surface_for_xaddr(r, r->patternSpecXaddr))->name;
+
+    stack_push(r, CSTRING_NOUN, &"ARRAY");
+    op_invoke(r, r->rootXaddr, INSTANCE_NEW);
+    stack_pop(r,XADDR_NOUN,&r->arraySpecXaddr);
+    r->arrayNoun = (element_surface_for_xaddr(r, r->arraySpecXaddr))->name;
 //    Symbol *_;
 //    stack_pop_named_surface(r, _, &r->patternSpecXaddr);
 
 //    r->patternSpecXaddr = proc_cspec_instance_new(r, "PATTERN");
 //
-//    r->patternNoun = (element_surface_for_xaddr(r, r->patternSpecXaddr))->name;
+
 //    r->arraySpecXaddr = proc_cspec_instance_new(r, "ARRAY");
-//    r->arrayNoun = (element_surface_for_xaddr(r, r->arraySpecXaddr))->name;
+
 }
 
 void init_stack(Receptor *r) {
@@ -867,7 +876,7 @@ void dump_array_value(Receptor *r, ElementSurface *rs, void *surface) {
 
 
 void dump_noun(Receptor *r, NounSurface *ns) {
-    printf("Noun      { %d, %5d } %s", ns->specXaddr.key, ns->specXaddr.noun, ns->label);
+    printf("Noun      { %d, %5d } %s", ns->specXaddr.key, ns->specXaddr.noun, &ns->label);
 }
 
 void dump_xaddr(Receptor *r, Xaddr xaddr, int indent_level) {
@@ -900,7 +909,7 @@ void dump_xaddr(Receptor *r, Xaddr xaddr, int indent_level) {
             default:
                 surface = surface_for_xaddr(r, xaddr_for_noun(noun));
                 ns = (NounSurface *) surface;
-                printf("%s : ", ns->label);
+                printf("%s : ", &ns->label);
                 es = element_surface_for_xaddr(r, ns->specXaddr);
                 if (typeTypeNoun == r->patternNoun) {
                     dump_pattern_value(r, es, surface_for_xaddr(r, xaddr));
