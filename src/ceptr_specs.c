@@ -167,17 +167,18 @@ void test_xaddr_dump() {
     _make_constellation(r,SL,&CONSTELLATION,stars);
     dump_xaddrs(r);
 }
-//
-//void test_stack_dump() {
-//    Receptor tr;init(&tr);Receptor *r = &tr;
-//    int x = 22;
-//    preop_push_pattern(r, r->intPatternSpecXaddr.key, &x);
-//    x = 44;
-//    preop_push_pattern(r, r->intPatternSpecXaddr.key, &x);
-//    int myLine[4] = {1, 2, 3, 4};
-//    preop_push_pattern(r, r->linePatternSpecXaddr.key, &myLine);
-//    dump_stack(r);
-//}
+
+void test_stack_dump() {
+    Receptor tr;init(&tr);Receptor *r = &tr;
+    int x = 22;
+    Symbol AGE = preop_new_noun(r, r->intPatternSpecXaddr, "Age");
+    stack_push(r, AGE, &x);
+    stack_push(r, CSTRING_NOUN, "Hello, Stack");
+    int myLine[4] = {1, 2, 3, 4};
+    Symbol inTheSand = preop_new_noun(r, r->linePatternSpecXaddr, "in the sand");
+    stack_push(r, inTheSand, &myLine);
+    dump_stack(r);
+}
 
 void testStack() {
     Receptor tr;Receptor *r = &tr;
@@ -238,15 +239,15 @@ int main(int argc, const char **argv) {
     testStack();
     testCspecInstanceNew();
     testInit();
-//
+
+    testInt();
+    testPoint();
+    testLine();
+    testArray();
+
     test_xaddr_dump();
-//    testInt();
-//    testPoint();
-//    testLine();
-//    testArray();
+    test_stack_dump();
 
-
-//    test_stack_dump();
 //    testInc();
 //    testAdd();
 //    testSemFault();

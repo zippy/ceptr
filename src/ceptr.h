@@ -968,15 +968,6 @@ void dump_xaddrs(Receptor *r) {
 //    return (*p->function)(r, preop_get(r, xaddr));
 //}
 //
-//int preop_push_pattern(Receptor *r, Symbol patternName, void *surface) {
-//    SemStackFrame *ssf = &r->semStack[++r->semStackPointer];
-//    ssf->type.key = patternName;
-//    ssf->type.noun = r->patternNoun;
-//    ElementSurface *ps = (ElementSurface *) preop_get(r, ssf->type);
-//    ssf->size = pattern_get_size(ps);
-//    memcpy(&r->valStack[r->valStackPointer], surface, ssf->size);
-//    r->valStackPointer += ssf->size;
-//}
 
 //
 //
