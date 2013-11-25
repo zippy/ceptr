@@ -1,6 +1,6 @@
 
 public class CeptrDataEngine {
-    Map<long, Surface> surfaces
+    Map<String, Surface> surfaces
     Surface get(Xaddr x) {
 	if (existenceScape.get(x.key).equals( x.noun))
 	    throw new SemanticFault()
@@ -18,15 +18,45 @@ public interface Scape<S extends Surface> {
     CeptrType containedType
 }
 
+public class SurfaceNounPair {
+    public Surface surface;
+    public Noun noun;
+    SurfaceNounPair next;
+}
+public class SemanticStack {
+    SurfaceNounPair head = null
+    void push(Noun n, Surface s) {
+	head = new SurfaceNounPair(n, s, head)
+    }
+    private SurfaceNounPair privatePop() {
+	if (head == null){
+	    throw new NoSuchElementException();}
+	SurfaceNounPair ret = head
+	head = head.next
+	return ret
+    }
+    SurfaceNounPair popBySpec(Class c) {
+	if (c.name != head.noun.nounSpec.name)
+	    throw new SemanticFault("requested that noun names a $c instead is a ${head.noun.nounSpec}")
+	return privatePop()
+    }
+    SurfaceNounPair pop(Noun n) {
+	if (n != head.noun)
+	    throw new SemanticFault("requested $n expecting ${head.noun}")
+	return privatePop()
+    }
+}
+
 public class Receptor {
-    CeptrDataEngine host;
+    SemanticStack stack
+    CeptrDataEngine host
     Executor ex
-    Set<Scape> scapes;
+    Set<Scape> scapes
     Scape scapeScape
     void invoke(Xaddr x, long processName) {
 	CeptrProcess toInvoke = x.getSpec().getProcesses()[processName]
 	Surface arg = host.get(x)
-	toInvoke.call(arg)
+	toInvoke.call(this, arg)
     }
 }
 class XaddrInstructionRunnable implements Runnable {
@@ -39,9 +69,15 @@ class XaddrInstructionRunnable implements Runnable {
     }
 }
 
-public interface CeptrProcess
-   extends Runnable {
-
+public interface CeptrProcess {
+    private Closure c
+    public CeptrProcess(Closure c) {
+	this.c = c
+    }
+    public void call(Receptor r, Surface s) {
+	c.delegate = s
+	c.call(r)
+    }
 }
 
 public interface CeptrType {
@@ -58,7 +94,7 @@ public class Path {
 }
 
 public interface Element {
-    Process[] getProcesses()
+    Map<String, CeptrProcess> getProcesses()
     Noun getName()
 }
 
@@ -70,6 +106,26 @@ public interface PatternSpec
          extends Element {
     Pattern[] getChildren()
     long getSize()
+}
+
+class CeptrInteger extends PatternSpec {
+    Pattern[] getChildren() {return []}
+    long getSize() {Integer.SIZE}
+    Map<String, CeptrProcess> getProcesses() {
+	[add: new CeptrProcess{Receptor r ->
+	      SurfaceNounPair pair = r.stack.popBySpec(CeptrInteger.class)
+	      def finished = new BigInteger(pair.surface).add(new BigInteger(delegate))
+	      ByteBuffer byteSurface = ByteBuffer.allocate(4).putInt(finished.intValue())
+	      r.stack.push(pair.noun, new Surface(byteSurface))
+	    }
+	 , subtract: new CeptrProcess{}
+	 , inc: new CeptrProcess{
+	      def finished = new BigInteger(delegate).add(BigInteger.valueOf(1))
+	      ByteBuffer byteSurface = ByteBuffer.allocate(4).putInt(finished.intValue())
+	      delegate.set(byteSurface)
+	    }
+	    ]
+    }
 }
 
 public class ArraySpec
@@ -113,6 +169,7 @@ public void test() {
     // 2 xaddrs on the stack
     invoke(ADD )
 }
+
 
 
 age1 : Age = 7
