@@ -146,21 +146,12 @@ enum Spec1 implements InstructionSpec {
     }
     public void runInstruction(Receptor rec) {rec.run()}
 }
-ADD.run()
-enum Spec2 implements InstructionSpec {
-    ADD, SUBTRACT
-}
 
 public class Instruction {
     Surface
     Noun
     InstructionSpec processName
     Xaddr operands
-}
-PatternSpec instruction = new PatternSpec() {
-    long processName
-    Pattern[] getChildren()
-    long getSize()    
 }
 
 public void test() {
