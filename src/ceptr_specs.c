@@ -190,8 +190,12 @@ void testStack() {
     stack_push(r, CSTRING_NOUN, "Hello, Stack");
     spec_is_true(r->valStackPointer == 13);
     spec_is_true(r->semStackPointer == 0);
-    stack_peek(r, &noun, (void **)&peek_surface);
+
+    stack_peek_unchecked(r, &noun, (void **)&peek_surface);
     spec_is_true( noun == CSTRING_NOUN );
+    spec_is_true( strcmp("Hello, Stack", peek_surface) == 0);
+
+    stack_peek(r, CSTRING_NOUN, (void **)&peek_surface);
     spec_is_true( strcmp("Hello, Stack", peek_surface) == 0);
 
     char pop_surface[BUFFER_SIZE];
@@ -222,10 +226,10 @@ void testCspecInstanceNew() {
     r->rootXaddr.key = ROOT;
     r->rootXaddr.noun = CSPEC_NOUN;
     stack_push(r, CSTRING_NOUN, "FIRST_SPEC");
-    proc_cspec_instance_new(r,r->rootXaddr);
+    proc_cspec_instance_new(r);
     Symbol noun;
     Xaddr *xaddr;
-    stack_peek(r, &noun, (void **)&xaddr);
+    stack_peek_unchecked(r, &noun, (void **)&xaddr);
     spec_is_true( noun == XADDR_NOUN );
     spec_is_true( xaddr->noun == 0 ); // first noun should be at surface 0
     NounSurface *ns = noun_surface_for_noun(r,0);

@@ -24,6 +24,22 @@ char error[255];
 
 typedef int Symbol;
 
+/*  NEXT STEPS!
+
+* fix arrays / arrays of arrays
+* finish preop_new_pattern -> op_invoke(r->patternSpecXaddr, INSTANCE_NEW) refactor
+
+== replace calls to preop_new with op_invoke($X, INSTANCE_NEW)  (in test code)
+    - making sure we have INSTANCE_NEW available on all specs
+
+== replace calls to peop_new_noun -> op_invoke(NOUN_NOUN, INSTANCE_NEW)
+    - create a NOUN_SPEC cspec with cases in appropriate switch statements
+
+
+
+ */
+
+
 #define SYMBOL_PATH_TERMINATOR 0xFFFF
 #define BUFFER_SIZE 10000
 
@@ -32,7 +48,7 @@ enum FunctionNames {
 };
 
 enum Symbols {
-    ROOT = -1, CSPEC_NOUN = -2, XADDR_NOUN = -3, NOUN_NOUN = -4, CSTRING_NOUN = -5
+    ROOT = -1, CSPEC_NOUN = -2, XADDR_NOUN = -3, NOUN_NOUN = -4, CSTRING_NOUN = -5, PATTERN_SPEC_DATA_NOUN = -6
 };
 
 typedef int FunctionName;
@@ -51,6 +67,7 @@ typedef struct {
     Xaddr specXaddr;
     char label;
 } NounSurface;
+
 
 enum Opcodes {
     RETURN, PUSH_IMMEDIATE
@@ -97,10 +114,18 @@ typedef struct {
 
 typedef struct {
     FunctionName name;
+    int (*function)(Receptor *);
+} YagnArgsProcess;
 
-    int (*function)(Receptor *, void *);
+typedef struct {
+    FunctionName name;
+    int (*function)(Receptor *, Symbol, void *, void *);
 } Process;
 
+typedef struct {
+    FunctionName name;
+    int (*function)(Receptor *, void *);
+} LegacyProcess;
 
 typedef struct {
     Symbol name;
@@ -113,6 +138,14 @@ typedef struct {
     int children_count;
     Offset children;
 } PatternBody;
+
+typedef struct {
+    char *label;
+    int child_count;
+    Xaddr *children;
+    int process_count;
+    Process *processes;
+} PatternSpecData;
 
 typedef struct {
     Symbol noun;
@@ -160,15 +193,23 @@ void dump_xaddrs(Receptor *r);
 // instance_size_proc:
 // value_size_proc:
 //
-// algorithm for finding size:
-// if my spec has an instance_size_proc, use that.
-// else crawl up the stack to see if any ancestor has a value_size_proc
-//   if you reach root, fail.
+// algorithm for finding size:  spec should always have an INSTANCE_SIZE proc
+//
 //
 
+int xaddr_eq(Xaddr x1, Xaddr x2) {
+    return x1.key == x2.key && x1.noun == x2.noun;
+}
+
+
 int sem_check(Receptor *r, Xaddr xaddr) {
-    if (xaddr.noun == -4) {
-        return 1;
+    if (xaddr.key < 0) {
+        if (xaddr.noun == -4) {
+            return 1;
+        }
+        if (xaddr_eq(xaddr, r->rootXaddr)) {
+            return 1;
+        }
     }
     Symbol noun = r->data.xaddr_scape[xaddr.key];
     return (noun == xaddr.noun);
@@ -324,18 +365,18 @@ int proc_array_get_size(Receptor *r, Symbol noun, ElementSurface *spec_surface, 
 #define GET_SIZE 0
 
 //FIXME: should we allow check for surface == 0 and raise an error for those cases where it matters?
-size_t _newsize_of_named_surface(Receptor *r, Symbol noun, void *surface) {
-    Symbol nounType;
-    ElementSurface *spec_surface = spec_surface_for_noun(r, &nounType, noun);
-    Process *p = getProcess(spec_surface, GET_SIZE);
-    if (p) {
-        return (*p->function)(r, spec_surface);
-    } else {
-        dump_xaddrs(r);
-        raise_error2("couldn't find size function for noun %d in spec surface %d\n", noun, spec_surface->name);
-        return 0;
-    }
-}
+//size_t _newsize_of_named_surface(Receptor *r, Symbol noun, void *surface) {
+//    Symbol nounType;
+//    ElementSurface *spec_surface = spec_surface_for_noun(r, &nounType, noun);
+//    Process *p = getProcess(spec_surface, GET_SIZE);
+//    if (p) {
+//        return (*p->function)(r, name, spec_surface, surface);
+//    } else {
+//        dump_xaddrs(r);
+//        raise_error2("couldn't find size function for noun %d in spec surface %d\n", noun, spec_surface->name);
+//        return 0;
+//    }
+//}
 
 
 size_t size_of_named_surface(Receptor *r, Symbol name, void *surface) {
@@ -347,6 +388,8 @@ size_t size_of_named_surface(Receptor *r, Symbol name, void *surface) {
             return 0;
         case CSTRING_NOUN:
             return strlen((char *) surface) + 1;
+        case PATTERN_SPEC_DATA_NOUN:
+            return sizeof(PatternSpecData);
         default:
             spec_xaddr = spec_xaddr_for_noun(r, name);
             if (spec_xaddr.noun == CSPEC_NOUN) {
@@ -363,14 +406,16 @@ size_t size_of_named_surface(Receptor *r, Symbol name, void *surface) {
                 Symbol type_type_noun = spec_noun_for_noun(r, spec_xaddr.noun);
                 Symbol _;
                 ElementSurface *spec_surface = spec_surface_for_noun(r, &_, name);
-		Process *p = getProcess(spec_surface,INSTANCE_SIZE);
-		if (p) {
-		    return (*p->function)(r, spec_surface);
-		} else {
-		    //		    dump_xaddrs(r);
-		    raise_error2("couldn't find size function for noun %d in spec surface %d\n", _, name);
-		    return 0;
-		}
+                Process *p = getProcess(spec_surface, INSTANCE_SIZE);
+printf("instance size %d\n", INSTANCE_SIZE);
+
+                if (p) {
+                    return (*p->function)(r, name, spec_surface, surface);
+                } else {
+                    dump_xaddrs(r);
+                    raise_error2("couldn't find size function for noun %d in spec surface %d\n", _, name);
+                    return 0;
+                }
 
                 if (type_type_noun == r->patternNoun) {
                     return proc_pattern_get_size(r, name, spec_surface, surface);
@@ -426,6 +471,19 @@ Xaddr preop_new(Receptor *r, Symbol noun, void *surface) {
 }
 
 
+void add_processes(ElementSurface *dest_surface, int process_count, Process *source_p) {
+    printf("add_processes count %d\n", process_count);
+    Process *dest_p = &dest_surface->processes;
+    dest_p += dest_surface->process_count;
+    dest_surface->process_count += process_count;
+    while (process_count-- > 0) {
+        dest_p->name = source_p->name;
+        dest_p->function = source_p->function;
+        source_p++;
+        dest_p++;
+    }
+}
+
 void _copy_processes(ElementSurface *dest_surface, int process_count, Process *processes) {
     int i;
     dest_surface->process_count = process_count;
@@ -440,12 +498,14 @@ void _copy_processes(ElementSurface *dest_surface, int process_count, Process *p
 int _init_element(Receptor *r, char *label, Xaddr element_spec, ElementSurface *es, int processCount, Process *processes) {
     es->name = preop_new_noun(r, element_spec, label);
     ElementSurface *spec_surface = element_surface_for_xaddr(r,element_spec);
-    _copy_processes(es, processCount, processes);
+
     es->processes = spec_surface->processes;
+    es->process_count = 1;
+    add_processes(es, processCount, processes);
     return es->name;
 }
 
-void *stack_peek(Receptor *r, Symbol *name, void **surface) {
+void stack_peek_unchecked(Receptor *r, Symbol *name, void **surface) {
     assert(r->semStackPointer >= 0);
     SemStackFrame *ssf = &r->semStack[r->semStackPointer];
     *name = ssf->noun;
@@ -460,18 +520,24 @@ void stack_pop_unchecked(Receptor *r, Symbol *name, void *surface) {
     r->semStackPointer--;
 }
 
-void stack_push(Receptor *r, Symbol name, void *surface) {
-    SemStackFrame *ssf = &r->semStack[++r->semStackPointer];
-    ssf->noun = name;
-    ssf->size = size_of_named_surface(r, name, surface);
-    memcpy(&r->valStack[r->valStackPointer], surface, ssf->size);
-    r->valStackPointer += ssf->size;
+void stack_peek(Receptor *r, Symbol expectedNoun, void **surface){
+    Symbol actualNoun;
+    stack_peek_unchecked(r, &actualNoun, surface);
+    assert( actualNoun == expectedNoun );
 }
 
 void stack_pop(Receptor *r, Symbol expectedNoun, void *surface) {
     Symbol actualNoun;
     stack_pop_unchecked(r, &actualNoun, surface);
     assert( actualNoun == expectedNoun );
+}
+
+void stack_push(Receptor *r, Symbol name, void *surface) {
+    SemStackFrame *ssf = &r->semStack[++r->semStackPointer];
+    ssf->noun = name;
+    ssf->size = size_of_named_surface(r, name, surface);
+    memcpy(&r->valStack[r->valStackPointer], surface, ssf->size);
+    r->valStackPointer += ssf->size;
 }
 
 void dump_stack(Receptor *r) {
@@ -490,12 +556,65 @@ void dump_stack(Receptor *r) {
     }
 }
 
-void op_new(Receptor *r, Symbol noun, void *surface) {
-    Xaddr x = preop_new(r,noun,surface);
-    stack_push(r,XADDR_NOUN,&x);
+
+// given:  surface on stack
+// result: new xaddr on stack
+void op_new(Receptor *r) {
+    Symbol noun;
+    void *surface;
+
+    stack_peek_unchecked(r, &noun, &surface);
+    size_t current_index = r->data.cache_index;
+    r->data.cache_index += size_of_named_surface(r, noun, surface);
+    _record_existence(r, current_index, noun);
+    Xaddr new_xaddr = {current_index, noun};
+    preop_set(r, new_xaddr, surface);
+    stack_push(r,XADDR_NOUN,&new_xaddr);
 }
 
-void proc_cspec_instance_new(Receptor *r, Xaddr invokee) {
+Xaddr preop_new_pattern(Receptor *r, char *label, int child_count_or_size, Xaddr *children, int processCount, Process *processes) {
+    char ps[BUFFER_SIZE];
+    memset(ps, 0, BUFFER_SIZE);
+    int i;
+    Symbol newNoun = _init_element(r, label, r->patternSpecXaddr, (ElementSurface *) ps, processCount, processes);
+
+    if (children == 0) {
+        pattern_set_size(ps, child_count_or_size);
+    } else {
+        NounSurface *noun;
+        ElementSurface *child_pattern_surface;
+        int size = 0;
+        Offset *pschildren = PATTERN_GET_CHILDREN(ps);
+
+        for (i = 0; i < child_count_or_size; i++) {
+            if (children[i].noun == NOUN_NOUN) {
+                noun = (NounSurface *) surface_for_xaddr(r, children[i]);
+                child_pattern_surface = element_surface_for_xaddr(r, noun->specXaddr);
+            } else if (children[i].noun == r->patternNoun) {
+                child_pattern_surface = element_surface_for_xaddr(r, children[i]);
+            } else {
+                raise_error("Unknown child element type %d\n", children[i].noun);
+            }
+            pschildren[i].noun.key = children[i].key;
+            pschildren[i].noun.noun = children[i].noun;
+            pschildren[i].offset = size;
+            size += pattern_get_size(child_pattern_surface);
+        }
+        pattern_set_size(ps, size);
+        PATTERN_SET_CHILDREN_COUNT(ps, child_count_or_size);
+
+    }
+    return preop_new(r, newNoun, ps);
+}
+
+void proc_pattern_instance_new(Receptor *r) {
+    PatternSpecData *d;
+    stack_peek(r, PATTERN_SPEC_DATA_NOUN, &d);
+    Xaddr pattern_xaddr = preop_new_pattern(r, d->label, d->child_count, d->children, d->process_count, d->processes);
+    stack_push(r, XADDR_NOUN, &pattern_xaddr);
+}
+
+void proc_cspec_instance_new(Receptor *r) {
     char label[BUFFER_SIZE];
     char ps[BUFFER_SIZE];
     stack_pop(r, CSTRING_NOUN, label);
@@ -503,35 +622,50 @@ void proc_cspec_instance_new(Receptor *r, Xaddr invokee) {
     Process *p = 0;
     int processes = 0;
     Process pattern_processes[] = {
-        {INSTANCE_SIZE, &proc_pattern_get_size}
+        {INSTANCE_SIZE, &proc_pattern_get_size },
+        {INSTANCE_NEW, &proc_pattern_instance_new }
     };
     Process array_processes[] = {
         {INSTANCE_SIZE, &proc_array_get_size}
     };
-    if (strcmp(label,"PATTERN")== 0) {
-	p = pattern_processes;
-	processes = 1;
+    if (strcmp(label, "PATTERN") == 0) {
+        p = pattern_processes;
+        processes = 2;
     }
-    if (strcmp(label,"ARRAY")== 0) {
-	p = array_processes;
-	processes = 1;
+    if (strcmp(label, "ARRAY") == 0) {
+        p = array_processes;
+        processes = 1;
     }
     Symbol newNoun = preop_new_noun(r, r->rootXaddr, label);
-    _copy_processes((ElementSurface *)ps, processes, p);
-
-    op_new(r, newNoun, ps);
+    ((ElementSurface *) ps)->process_count = 0;
+    add_processes((ElementSurface *) ps, processes, p);
+    stack_push(r, newNoun, ps);
+    op_new(r);
 }
 
 
 void op_invoke(Receptor *r, Xaddr invokee, FunctionName function) {
     // record call on stack?
-    switch(invokee.noun) {
-        case CSPEC_NOUN:
-            switch(function){
-                case INSTANCE_NEW:
-                    proc_cspec_instance_new(r, invokee);
-            }
+    if (invokee.key < 0) {
+        switch (invokee.noun) {
+            case CSPEC_NOUN:
+                switch (function) {
+                    case INSTANCE_NEW:
+                        proc_cspec_instance_new(r);
+                        return;
+                }
+        }
+    } else {
+        ElementSurface *surface;
+        Process *p;
+        surface = element_surface_for_xaddr(r, invokee);
+        p = getProcess(surface, function);
+        if (p) {
+            (((YagnArgsProcess *) p)->function)(r);
+            return;
+        }
     }
+    raise_error2("No function %d for key %d", function, invokee.key);
 }
 
 
@@ -581,40 +715,6 @@ Xaddr preop_new_array(Receptor *r, char *label, Symbol repsNoun, int processCoun
     return _preop_new_rep(r, r->arraySpecXaddr, r->arrayNoun, label, repsNoun, processCount, processes);
 }
 
-Xaddr preop_new_pattern(Receptor *r, char *label, int child_count_or_size, Xaddr *children, int processCount, Process *processes) {
-    char ps[BUFFER_SIZE];
-    memset(ps, 0, BUFFER_SIZE);
-    int i;
-    Symbol newNoun = _init_element(r, label, r->patternSpecXaddr, (ElementSurface *) ps, processCount, processes);
-
-    if (children == 0) {
-        pattern_set_size(ps, child_count_or_size);
-    } else {
-        NounSurface *noun;
-        ElementSurface *child_pattern_surface;
-        int size = 0;
-        Offset *pschildren = PATTERN_GET_CHILDREN(ps);
-
-        for (i = 0; i < child_count_or_size; i++) {
-            if (children[i].noun == NOUN_NOUN) {
-                noun = (NounSurface *) surface_for_xaddr(r, children[i]);
-                child_pattern_surface = element_surface_for_xaddr(r, noun->specXaddr);
-            } else if (children[i].noun == r->patternNoun) {
-                child_pattern_surface = element_surface_for_xaddr(r, children[i]);
-            } else {
-                raise_error("Unknown child element type %d\n", children[i].noun);
-            }
-            pschildren[i].noun.key = children[i].key;
-            pschildren[i].noun.noun = children[i].noun;
-            pschildren[i].offset = size;
-            size += pattern_get_size(child_pattern_surface);
-        }
-        pattern_set_size(ps, size);
-        PATTERN_SET_CHILDREN_COUNT(ps, child_count_or_size);
-
-    }
-    return preop_new(r, newNoun, ps);
-}
 
 #define NULL_XADDR(x) ((x.noun)==(x.key))
 
@@ -700,14 +800,11 @@ void init_elements(Receptor *r) {
     op_invoke(r, r->rootXaddr, INSTANCE_NEW);
     stack_pop(r,XADDR_NOUN,&r->arraySpecXaddr);
     r->arrayNoun = (element_surface_for_xaddr(r, r->arraySpecXaddr))->name;
+
 //    Symbol *_;
 //    stack_pop_named_surface(r, _, &r->patternSpecXaddr);
-
 //    r->patternSpecXaddr = proc_cspec_instance_new(r, "PATTERN");
-//
-
 //    r->arraySpecXaddr = proc_cspec_instance_new(r, "ARRAY");
-
 }
 
 void init_stack(Receptor *r) {
@@ -724,7 +821,13 @@ void init_base_types(Receptor *r) {
         {INC, &proc_int_inc},
         {ADD, &proc_int_add}
     };
-    r->intPatternSpecXaddr = preop_new_pattern(r, "INT", sizeof(int), 0, 3, int_processes);
+
+    PatternSpecData psd = {
+        "INT", sizeof(int), 0, 3, int_processes
+    };
+    stack_push(r, PATTERN_SPEC_DATA_NOUN, &psd);
+    op_invoke(r, r->patternSpecXaddr, INSTANCE_NEW);
+    stack_pop(r, XADDR_NOUN, &r->intPatternSpecXaddr);
 
     // POINT
     Symbol X = preop_new_noun(r, r->intPatternSpecXaddr, "X");
@@ -826,7 +929,6 @@ void dump_reps_spec(Receptor *r, void *surface) {
     printf("    name: %s(%d)\n", label_for_noun(r, rs->name), rs->name);
     int noun = REPS_GET_NOUN(rs);
     printf("    repsNoun: %s(%d) \n", label_for_noun(r, noun), noun);
-//    dump_process_array(rs->processes);
     printf("\n");
 }
 
@@ -859,7 +961,7 @@ void dump_pattern_value(Receptor *r, void *pattern_surface, void *surface) {
     Process *print_proc;
     print_proc = getProcess(ps, PRINT);
     if (print_proc) {
-        (*print_proc->function)(r, surface);
+        (((LegacyProcess *)print_proc)->function)(r, surface);
     } else {
         hexDump("hexDump of surface", surface, pattern_get_size(ps));
     }
