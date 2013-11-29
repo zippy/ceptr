@@ -111,45 +111,6 @@ void testLine() {
         *(int *) (surface + 12) == 4
     );
 }
-//
-//void testSymbolPath() {
-//    Receptor tr; init(&tr); Receptor *r = &tr;
-//    int myLine[4] = {1, 2, 3, 4};
-//    Symbol inTheSand = preop_new_noun(r, r->linePatternSpecXaddr, "in the sand");
-//    Xaddr itsLine = preop_new(r, inTheSand, &myLine);
-//    Symbol B = getSymbol(r, "B");
-//    Symbol Y = getSymbol(r, "Y");
-//    Symbol path[3] = {B, Y, SYMBOL_PATH_TERMINATOR};
-//    int *val;
-//    int seven = 7;
-//
-//    val = preop_get_by_path(r, itsLine, path);
-//    spec_is_true(*val == 4);
-//
-//    preop_set_by_path(r, itsLine, path, &seven);
-//    val = preop_get_by_path(r, itsLine, path);
-//    spec_is_true(*val == 7);
-//
-//    void *surface = preop_get(r, itsLine);
-//    spec_is_true(*(((int *) surface) + 3) == 7);
-//}
-//
-//void testRun() {
-//    Receptor tr;init(&tr);Receptor *r = &tr;
-//    int values[1] = {31415};
-//    ImmediatePatternOperand i = {r->intPatternSpecXaddr.key, 0};
-//    Instruction pushProgram[2];
-//    pushProgram[0].opcode = PUSH_IMMEDIATE;
-//    memcpy(&pushProgram[0].operands, &i, OPERANDS_SIZE);
-//    pushProgram[1].opcode = RETURN;
-//    int topOfStack = r->valStackPointer;
-//    spec_is_true(r->valStackPointer == 0);
-//    spec_is_true(r->semStackPointer == -1);
-//    run(r, pushProgram, values);
-//    spec_is_true(r->valStackPointer == 4);
-//    spec_is_true(r->semStackPointer == 0);
-//    spec_is_true(*(int *) (&r->valStack[topOfStack]) == 31415 );
-//}
 
 void test_xaddr_dump() {
     Receptor tr;init(&tr);Receptor *r = &tr;
@@ -242,14 +203,13 @@ int main(int argc, const char **argv) {
     printf("Running all tests...\n\n");
     testStack();
     testCspecInstanceNew();
-    testInit();
+//    testInit();
 
     testInt();
     testPoint();
     testLine();
-    testArray();
-
-    test_xaddr_dump();
+//    testArray();
+//    test_xaddr_dump();
     test_stack_dump();
 
 //    testInc();
