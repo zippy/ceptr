@@ -43,7 +43,8 @@ enum FunctionNames {
 };
 
 enum Symbols {
-    ROOT = -1, CSPEC_NOUN = -2, XADDR_NOUN = -3, NOUN_NOUN = -4, CSTRING_NOUN = -5, PATTERN_SPEC_DATA_NOUN = -6
+    CSPEC = -1, CSPEC_NOUN = -2, XADDR_NOUN = -3, NOUN_NOUN = -4,
+    CSTRING_NOUN = -5, PATTERN_SPEC_DATA_NOUN = -6, ROOT = -100
 };
 
 typedef int FunctionName;
@@ -74,8 +75,19 @@ typedef struct {
     Symbol xaddr_scape[DEFAULT_CACHE_SIZE];
     char cache[DEFAULT_CACHE_SIZE];
     int current_xaddr;
-    int cache_index;
+    size_t cache_index;
 } Data;
+
+typedef struct {
+    FunctionName name;
+    int (*function)(void *);
+} UntypedProcess;
+
+typedef struct {
+    Symbol name;
+    int process_count;
+    UntypedProcess processes;
+} ElementSurface;
 
 typedef struct {
     SemStackFrame semStack[STACK_SIZE];
@@ -83,6 +95,7 @@ typedef struct {
     int semStackPointer;
     char valStack[DEFAULT_CACHE_SIZE];
     int valStackPointer;
+    ElementSurface rootSurface;
 
     //built in xaddrs:
     Xaddr patternSpecXaddr;
@@ -90,12 +103,14 @@ typedef struct {
     Xaddr intPatternSpecXaddr;
     Xaddr pointPatternSpecXaddr;
     Xaddr linePatternSpecXaddr;
+    Xaddr cspecXaddr;
     Xaddr rootXaddr;
     Symbol patternNoun;
     Symbol arrayNoun;
 
     Data data;
 } Receptor;
+
 
 typedef struct {
     FunctionName name;
@@ -112,11 +127,6 @@ typedef struct {
     int (*function)(Receptor *, void *);
 } LegacyProcess;
 
-typedef struct {
-    Symbol name;
-    int process_count;
-    Process processes;
-} ElementSurface;
 
 typedef struct {
     size_t size;
@@ -136,26 +146,9 @@ typedef struct {
     Symbol noun;
 } RepsBody;
 
-
-Process *getProcess(ElementSurface *es, FunctionName name) {
-    int i = es->process_count;
-    Process *p = &es->processes;
-    while (i--) {
-        if (p->name == name) {
-            return p;
-        }
-        p++;
-    }
-    return 0;
-}
-
-
 void dump_xaddrs(Receptor *r);
 
 
-
-// function naming convention:  <returned-thing>_for_<given-thing>
-//
 // General Types of things that can be pointed to by Xaddrs:
 //
 // "Root" - Root of semantic tree- A thing which has no spec.
@@ -182,176 +175,30 @@ void dump_xaddrs(Receptor *r);
 //
 //
 
-int xaddr_eq(Xaddr x1, Xaddr x2) {
-    return x1.key == x2.key && x1.noun == x2.noun;
-}
+//
+#include "util.h"
 
-int sem_check(Receptor *r, Xaddr xaddr) {
-    if (xaddr.key < 0) {
-        if (xaddr.noun == -4) {
-            return 1;
-        }
-        if (xaddr_eq(xaddr, r->rootXaddr)) {
-            return 1;
-        }
-    }
-    Symbol noun = r->data.xaddr_scape[xaddr.key];
-    return (noun == xaddr.noun);
-}
+//
+#include "data.h"
 
-void *surface_for_xaddr(Receptor *r, Xaddr xaddr) {
-    if (!sem_check(r, xaddr)) {
-        raise_error2("semcheck failed getting xaddr { %d, %d }\n", xaddr.key, xaddr.noun );
-    }
-    return &r->data.cache[xaddr.key];
-}
+//
+#include "semtree.h"
 
-Xaddr xaddr_for_noun(Symbol noun) {
-    Xaddr nounXaddr = {noun, NOUN_NOUN};
-    return nounXaddr;
-}
+//
+#include "element.h"
 
-void *surface_for_noun(Receptor *r, Symbol noun) {
-    return surface_for_xaddr(r, xaddr_for_noun(noun));
-}
-
-NounSurface *noun_surface_for_noun(Receptor *r, Symbol noun) {
-    return (NounSurface *) surface_for_noun(r, noun);
-}
-
-ElementSurface *element_surface_for_xaddr(Receptor *r, Xaddr element) {
-    return (ElementSurface *) surface_for_xaddr(r, element);
-}
-
-Xaddr spec_xaddr_for_noun(Receptor *r, Symbol noun){
-    if (noun == r->rootXaddr.noun) {
-        raise_error0("no spec for the root xaddr\n");
-        return r->rootXaddr;
-    } else if (noun == NOUN_NOUN) {
-        return r->rootXaddr; // FIXME: should be nounSpecXaddr
-    } else if (noun == XADDR_NOUN) {
-        return r->rootXaddr; // FIXME: should be xaddrSpecXaddr
-    } else {
-        return noun_surface_for_noun(r, noun)->specXaddr;
-    }
-}
-
-Xaddr spec_xaddr_for_xaddr(Receptor *r, Xaddr element) {
-    return spec_xaddr_for_noun(r, element.noun);
-}
-
-Symbol spec_noun_for_xaddr(Receptor *r, Xaddr element) {
-    return spec_xaddr_for_xaddr(r, element).noun;
-}
-
-Symbol spec_noun_for_noun(Receptor *r, Symbol noun) {
-    return spec_xaddr_for_noun(r, noun).noun;
-}
-
-void *spec_surface_for_noun(Receptor *r, Symbol *nounType, Symbol noun) {
-    void *surface = surface_for_xaddr(r, spec_xaddr_for_noun(r, noun));
-    *nounType = spec_noun_for_noun(r, noun);
-    return surface;
-}
-
-char *label_for_noun(Receptor *r, Symbol noun) {
-    switch (noun) {
-        case XADDR_NOUN:
-            return "Xaddr";
-        case NOUN_NOUN:
-            return "Noun";
-        case CSPEC_NOUN:
-            return "Cspec";
-        case CSTRING_NOUN:
-            return "Cstring";
-        default:
-            return &noun_surface_for_noun(r, noun)->label;
-    }
-}
-
-size_t get_noun_size(NounSurface *ns) {
-    return sizeof(NounSurface)+strlen(&ns->label);
-}
-
-#define ELEMENT_HEADER_SIZE(h) (sizeof(ElementSurface)-sizeof(Process)+(((ElementSurface *)h)->process_count)*sizeof(Process))
-#define SKIP_ELEM_HEADER(h) (ELEMENT_HEADER_SIZE(h) + (void *)h)
-#define REPS_GET_NOUN(reps) (((RepsBody *)SKIP_ELEM_HEADER(reps))->noun)
-#define REPS_SET_NOUN(reps,n) (((RepsBody *)SKIP_ELEM_HEADER(reps))->noun = n)
-#define PATTERN_GET_CHILDREN_COUNT(pat) (((PatternBody *)SKIP_ELEM_HEADER(pat))->children_count)
-#define PATTERN_SET_CHILDREN_COUNT(pat,count) (((PatternBody *)SKIP_ELEM_HEADER(pat))->children_count=count)
-#define PATTERN_GET_CHILDREN(pat) (&(((PatternBody *)SKIP_ELEM_HEADER(pat))->children))
-//#define PATTERN_GET_SIZE(pat) (((PatternBody *)skip_elem_header(pat))->size)
-//#define PATTERN_SET_SIZE(pat,s) (((PatternBody *)skip_elem_header(pat))->size = s)
+//
+#include "pattern.h"
 
 
-size_t element_header_size(void *h) {
-    return sizeof(ElementSurface) - sizeof(Process) + (((ElementSurface *) h)->process_count) * sizeof(Process);
-}
-
-size_t skip_elem_header(void *element_surface) {
-    return element_header_size(element_surface) + (void *) element_surface;
-}
-
-size_t pattern_get_size(void *pattern_surface) {
-    return ((PatternBody *) skip_elem_header(pattern_surface))->size;
-}
-
-void pattern_set_size(void *pattern_surface, size_t size) {
-    ((PatternBody *) skip_elem_header(pattern_surface))->size = size;
-}
-
-size_t get_pattern_spec_size(ElementSurface *es) {
-    return ELEMENT_HEADER_SIZE(es) + sizeof(PatternBody) - sizeof(Offset) + sizeof(Offset) * PATTERN_GET_CHILDREN_COUNT(es);
-}
-
-#define _preop_get_array_length(surface) (*((int*)surface))
-
-int preop_get_array_length(Receptor *r, Xaddr rX) {
-    return _preop_get_array_length(surface_for_xaddr(r, rX));
-}
-
-
-int proc_pattern_get_size(Receptor *r, Symbol noun, ElementSurface *spec_surface, void *surface) {
-    return pattern_get_size(spec_surface);
-}
-
-
-int proc_array_get_size(Receptor *r, Symbol noun, ElementSurface *spec_surface, void *surface) {
-    int length = _preop_get_array_length(surface);
-    int size = sizeof(int);
-    Symbol arrayItemType;
-    int rep_size;
-
-    Symbol repsNoun = REPS_GET_NOUN(spec_surface);
-    ElementSurface *es = spec_surface_for_noun(r, &arrayItemType, repsNoun);
-    Symbol typeTypeNoun = spec_noun_for_noun(r, arrayItemType);
-    if (typeTypeNoun == r->patternNoun) {
-        size += length * pattern_get_size(es);
-    }
-    else if (typeTypeNoun == r->arrayNoun) {
-        surface += sizeof(int);
-        while (length--) {
-            Symbol itemType;
-            ElementSurface *item_spec_surface = spec_surface_for_noun(r, &itemType, repsNoun);
-            rep_size = proc_array_get_size(r, repsNoun, item_spec_surface, surface);
-            size += rep_size;
-            surface += rep_size;
-        }
-    }
-        //TODO: handle arrays of strings
-    else {raise_error2("illegal noun (%d) as array element type for %d\n", arrayItemType, noun);}
-    return size;
-}
-
-
-
+// this should go somewhere once the dependencies are better resolved.  right now it depends on everything.
 size_t size_of_named_surface(Receptor *r, Symbol name, void *surface) {
     Xaddr spec_xaddr;
     switch (name) {
         case XADDR_NOUN:
             return sizeof(Xaddr);
         case CSPEC_NOUN:
-            return 0;
+            return (size_t) 0;
         case CSTRING_NOUN:
             return strlen((char *) surface) + 1;
         case PATTERN_SPEC_DATA_NOUN:
@@ -373,58 +220,29 @@ size_t size_of_named_surface(Receptor *r, Symbol name, void *surface) {
                 Symbol _;
                 ElementSurface *spec_surface = spec_surface_for_noun(r, &_, name);
                 Process *p = getProcess(spec_surface, INSTANCE_SIZE);
-printf("instance size %d\n", INSTANCE_SIZE);
+                printf("instance size %d\n", INSTANCE_SIZE);
 
                 if (p) {
-                    return (*p->function)(r, name, spec_surface, surface);
+                    return (size_t) (*p->function)(r, name, spec_surface, surface);
                 } else {
                     dump_xaddrs(r);
                     raise_error2("couldn't find size function for noun %d in spec surface %d\n", _, name);
-                    return 0;
+                    return (size_t) 0;
                 }
 
                 if (type_type_noun == r->patternNoun) {
-                    return proc_pattern_get_size(r, name, spec_surface, surface);
+                    return (size_t) proc_pattern_get_size(r, name, spec_surface, surface);
 
                 } else if (type_type_noun == r->arrayNoun) {
-                    return proc_array_get_size(r, name, spec_surface, surface);
+                    return (size_t) proc_array_get_size(r, name, spec_surface, surface);
                 }
 
             }
             raise_error2("unknown noun type %d for noun %d\n", spec_xaddr.noun, name);
-            return 0;
+            return (size_t) 0;
     }
 }
 
-void _record_existence(Receptor *r, size_t current_index, Symbol noun) {
-    r->data.current_xaddr++;
-    r->data.xaddrs[r->data.current_xaddr].key = current_index;
-    r->data.xaddrs[r->data.current_xaddr].noun = noun;
-    r->data.xaddr_scape[current_index] = noun;
-}
-
-void add_processes(ElementSurface *dest_surface, int process_count, Process *source_p) {
-    printf("add_processes count %d\n", process_count);
-    Process *dest_p = &dest_surface->processes;
-    dest_p += dest_surface->process_count;
-    dest_surface->process_count += process_count;
-    while (process_count-- > 0) {
-        dest_p->name = source_p->name;
-        dest_p->function = source_p->function;
-        source_p++;
-        dest_p++;
-    }
-}
-
-int _init_element(Receptor *r, char *label, Xaddr element_spec, ElementSurface *es, int processCount, Process *processes) {
-    es->name = preop_new_noun(r, element_spec, label);
-    ElementSurface *spec_surface = element_surface_for_xaddr(r,element_spec);
-
-    es->processes = spec_surface->processes;
-    es->process_count = 1;
-    add_processes(es, processCount, processes);
-    return es->name;
-}
 
 //
 #include "stack.h"
@@ -438,6 +256,10 @@ int _init_element(Receptor *r, char *label, Xaddr element_spec, ElementSurface *
 //
 #include "procs.h"
 
+//
+#include "builtins/cspec.h"
+
+
 
 //  This really should be in ops.h.
 //  it's here until we implement fake surfaces for the builtin specs so that we don't refer to the procs by name in op_invoke.
@@ -448,7 +270,7 @@ void op_invoke(Receptor *r, Xaddr invokee, FunctionName function) {
             case CSPEC_NOUN:
                 switch (function) {
                     case INSTANCE_NEW:
-                        proc_cspec_instance_new(r);
+                        cspec_proc_instance_new(r);
                         return;
                 }
         }
@@ -464,6 +286,7 @@ void op_invoke(Receptor *r, Xaddr invokee, FunctionName function) {
     }
     raise_error2("No function %d for key %d", function, invokee.key);
 }
+
 
 // receptor init
 #include "init.h"

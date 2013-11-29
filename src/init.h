@@ -1,38 +1,33 @@
 #include "ceptr.h"
 
-void init_data(Receptor *r) {
-    int i;
-    for (i = 0; i < DEFAULT_CACHE_SIZE; i++) r->data.xaddr_scape[i] = ROOT;
-
-    r->data.cache_index = 0;
-    r->data.current_xaddr = -1;
-}
 
 void init_elements(Receptor *r) {
+
     r->rootXaddr.key = ROOT;
-    r->rootXaddr.noun = CSPEC_NOUN;
+    r->rootXaddr.noun = ROOT;
+    r->rootSurface.name = ROOT;
+    r->rootSurface.process_count = 0;
 
+    cspec_init(r);
+
+    r->cspecXaddr.key = CSPEC;
+    r->cspecXaddr.noun = CSPEC_NOUN;
     stack_push(r, CSTRING_NOUN, &"PATTERN");
-
-    op_invoke(r, r->rootXaddr, INSTANCE_NEW);
-    stack_pop(r,XADDR_NOUN,&r->patternSpecXaddr);
+    op_invoke(r, r->cspecXaddr, INSTANCE_NEW);
+    stack_pop(r, XADDR_NOUN, &r->patternSpecXaddr);
     r->patternNoun = (element_surface_for_xaddr(r, r->patternSpecXaddr))->name;
 
     stack_push(r, CSTRING_NOUN, &"ARRAY");
-    op_invoke(r, r->rootXaddr, INSTANCE_NEW);
+    op_invoke(r, r->cspecXaddr, INSTANCE_NEW);
     stack_pop(r,XADDR_NOUN,&r->arraySpecXaddr);
     r->arrayNoun = (element_surface_for_xaddr(r, r->arraySpecXaddr))->name;
 
 //    Symbol *_;
 //    stack_pop_named_surface(r, _, &r->patternSpecXaddr);
-//    r->patternSpecXaddr = proc_cspec_instance_new(r, "PATTERN");
-//    r->arraySpecXaddr = proc_cspec_instance_new(r, "ARRAY");
+//    r->patternSpecXaddr = cspec_proc_instance_new(r, "PATTERN");
+//    r->arraySpecXaddr = cspec_proc_instance_new(r, "ARRAY");
 }
 
-void init_stack(Receptor *r) {
-    r->semStackPointer = -1;
-    r->valStackPointer = 0;
-}
 
 void init_base_types(Receptor *r) {
     // ********************** bootstrap built in types
@@ -66,19 +61,21 @@ void init_base_types(Receptor *r) {
     Symbol A = preop_new_noun(r, r->pointPatternSpecXaddr, "A");
     Symbol B = preop_new_noun(r, r->pointPatternSpecXaddr, "B");
 
+
     Xaddr line_children[2] = {{A, NOUN_NOUN}, {B, NOUN_NOUN}};
 
     Process line_processes[] = {
         {PRINT, &proc_line_print}
     };
 
+
     r->linePatternSpecXaddr = preop_new_pattern(r, "LINE", 2, line_children, 1, line_processes);
 }
 
 void init(Receptor *r) {
-    init_stack(r);
+    stack_init(r);
 //    init_processing(r);
-    init_data(r);
+    data_init(r);
     init_elements(r);
     init_base_types(r);
 }

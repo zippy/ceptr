@@ -1,6 +1,38 @@
 #include "ceptr.h"
 
 
+int proc_array_get_size(Receptor *r, Symbol noun, ElementSurface *spec_surface, void *surface) {
+    int length = _preop_get_array_length(surface);
+    int size = sizeof(int);
+    Symbol arrayItemType;
+    int rep_size;
+
+    Symbol repsNoun = REPS_GET_NOUN(spec_surface);
+    ElementSurface *es = spec_surface_for_noun(r, &arrayItemType, repsNoun);
+    Symbol typeTypeNoun = spec_noun_for_noun(r, arrayItemType);
+    if (typeTypeNoun == r->patternNoun) {
+        size += length * pattern_get_size(es);
+    }
+    else if (typeTypeNoun == r->arrayNoun) {
+        surface += sizeof(int);
+        while (length--) {
+            Symbol itemType;
+            ElementSurface *item_spec_surface = spec_surface_for_noun(r, &itemType, repsNoun);
+            rep_size = proc_array_get_size(r, repsNoun, item_spec_surface, surface);
+            size += rep_size;
+            surface += rep_size;
+        }
+    }
+        //TODO: handle arrays of strings
+    else {raise_error2("illegal noun (%d) as array element type for %d\n", arrayItemType, noun);}
+    return size;
+}
+
+
+int proc_pattern_get_size(Receptor *r, Symbol noun, ElementSurface *spec_surface, void *surface) {
+    return pattern_get_size(spec_surface);
+}
+
 void proc_pattern_instance_new(Receptor *r) {
     PatternSpecData *d;
     stack_peek(r, PATTERN_SPEC_DATA_NOUN, &d);
@@ -33,32 +65,3 @@ int proc_line_print(Receptor *r, void *this) {
     printf("[%d,%d - %d,%d] ", *surface, *(surface + 1), *(surface + 2), *(surface + 3));
 }
 
-
-void proc_cspec_instance_new(Receptor *r) {
-    char label[BUFFER_SIZE];
-    char ps[BUFFER_SIZE];
-    stack_pop(r, CSTRING_NOUN, label);
-    memset(ps, 0, BUFFER_SIZE);
-    Process *p = 0;
-    int processes = 0;
-    Process pattern_processes[] = {
-        {INSTANCE_SIZE, &proc_pattern_get_size },
-        {INSTANCE_NEW, &proc_pattern_instance_new }
-    };
-    Process array_processes[] = {
-        {INSTANCE_SIZE, &proc_array_get_size}
-    };
-    if (strcmp(label, "PATTERN") == 0) {
-        p = pattern_processes;
-        processes = 2;
-    }
-    if (strcmp(label, "ARRAY") == 0) {
-        p = array_processes;
-        processes = 1;
-    }
-    Symbol newNoun = preop_new_noun(r, r->rootXaddr, label);
-    ((ElementSurface *) ps)->process_count = 0;
-    add_processes((ElementSurface *) ps, processes, p);
-    stack_push(r, newNoun, ps);
-    op_new(r);
-}

@@ -36,7 +36,7 @@ void stack_push(Receptor *r, Symbol name, void *surface) {
     r->valStackPointer += ssf->size;
 }
 
-void dump_stack(Receptor *r) {
+void stack_dump(Receptor *r) {
     int i, v = 0;
     char *unknown = "<unknown>";
     char *label;
@@ -45,10 +45,11 @@ void dump_stack(Receptor *r) {
     for (i = 0; i <= r->semStackPointer; i++) {
         ssf = &r->semStack[i];
         printf("\nStack frame: %d is a %s(%d) size:%d\n", i, label_for_noun(r, ssf->noun), ssf->noun, (int)ssf->size);
-//        printf("   Value:");
-//        dump_pattern_value(r, ps, &r->valStack[v]);
-//        v += r->semStack[i].size;
         printf("\n");
     }
 }
 
+void stack_init(Receptor *r) {
+    r->semStackPointer = -1;
+    r->valStackPointer = 0;
+}

@@ -138,14 +138,14 @@ void test_stack_dump() {
     int myLine[4] = {1, 2, 3, 4};
     Symbol inTheSand = preop_new_noun(r, r->linePatternSpecXaddr, "in the sand");
     stack_push(r, inTheSand, &myLine);
-    dump_stack(r);
+    stack_dump(r);
 }
 
 void testStack() {
     Receptor tr;Receptor *r = &tr;
     Symbol noun;
     char *peek_surface;
-    init_stack(r);
+    stack_init(r);
     spec_is_true(r->valStackPointer == 0);
     spec_is_true(r->semStackPointer == -1);
     stack_push(r, CSTRING_NOUN, "Hello, Stack");
@@ -168,8 +168,8 @@ void testStack() {
 
 void testInit() {
     Receptor tr;init(&tr);Receptor *r = &tr;
-    spec_is_true( r->rootXaddr.key == ROOT );
-    spec_is_true( r->rootXaddr.noun == CSPEC_NOUN );
+    spec_is_true( r->cspecXaddr.key == CSPEC );
+    spec_is_true( r->cspecXaddr.noun == CSPEC_NOUN );
 
     spec_is_true( r->patternSpecXaddr.noun == 0);
     spec_is_true( r->patternSpecXaddr.key == 19);
@@ -183,11 +183,11 @@ void testInit() {
 }
 
 void testCspecInstanceNew() {
-    Receptor tr;init_data(&tr);init_stack(&tr);Receptor *r = &tr;
-    r->rootXaddr.key = ROOT;
-    r->rootXaddr.noun = CSPEC_NOUN;
+    Receptor tr;data_init(&tr);stack_init(&tr);Receptor *r = &tr;
+    r->cspecXaddr.key = CSPEC;
+    r->cspecXaddr.noun = CSPEC_NOUN;
     stack_push(r, CSTRING_NOUN, "FIRST_SPEC");
-    proc_cspec_instance_new(r);
+    cspec_proc_instance_new(r);
     Symbol noun;
     Xaddr *xaddr;
     stack_peek_unchecked(r, &noun, (void **)&xaddr);
@@ -195,7 +195,7 @@ void testCspecInstanceNew() {
     spec_is_true( xaddr->noun == 0 ); // first noun should be at surface 0
     NounSurface *ns = noun_surface_for_noun(r,0);
     spec_is_true(strcmp("FIRST_SPEC",&ns->label) == 0);
-    spec_is_true(ns->specXaddr.key == ROOT);
+    spec_is_true(ns->specXaddr.key == CSPEC);
     spec_is_true(ns->specXaddr.noun == CSPEC_NOUN);
 }
 

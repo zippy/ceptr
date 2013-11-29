@@ -9,13 +9,8 @@
 void op_new(Receptor *r) {
     Symbol noun;
     void *surface;
-
     stack_peek_unchecked(r, &noun, &surface);
-    size_t current_index = r->data.cache_index;
-    r->data.cache_index += size_of_named_surface(r, noun, surface);
-    _record_existence(r, current_index, noun);
-    Xaddr new_xaddr = {current_index, noun};
-    preop_set(r, new_xaddr, surface);
+    Xaddr new_xaddr = data_new(r, noun, surface, size_of_named_surface(r, noun, surface));
     stack_push(r,XADDR_NOUN,&new_xaddr);
 }
 
