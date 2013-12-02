@@ -4,6 +4,8 @@ Ceptr provides a new computing stack for semantic self-describing data, and prot
 
 ## Installation
 
+There are currently no dependencies, so just clone this repo.
+
 ## Usage
 
 ## Architecture
@@ -12,10 +14,9 @@ Ceptr provides a new computing stack for semantic self-describing data, and prot
 
 ## Testing
 
-To compile and run all tests simply:
+Currently nothing runs other than a test suite which you can execute simply by typing make from the root directory.  To compile and run all tests simple cd into the root directory and:
 
-    cd src
-    make specs
+    make
 
 ## Development
 
@@ -27,6 +28,6 @@ To compile and run all tests simply:
 
 Copyright (C) 2013, The MetaCurrencyProject (Eric Harris-Braun, et. al.)
 
-Distributed under TBD
+Distributed under the GPL for now, perhaps less restrictive later.
 
 ## Acknowledgements
