@@ -12,6 +12,12 @@ void init_elements(Receptor *r) {
 
     r->cspecXaddr.key = CSPEC;
     r->cspecXaddr.noun = CSPEC_NOUN;
+
+    stack_push(r, CSTRING_NOUN, &"NOUN");
+    op_invoke(r, r->cspecXaddr, INSTANCE_NEW);
+    stack_pop(r, XADDR_NOUN, &r->nounSpecXaddr);
+    r->nounNoun = (element_surface_for_xaddr(r, r->nounSpecXaddr))->name;
+
     stack_push(r, CSTRING_NOUN, &"PATTERN");
     op_invoke(r, r->cspecXaddr, INSTANCE_NEW);
     stack_pop(r, XADDR_NOUN, &r->patternSpecXaddr);
@@ -30,7 +36,7 @@ void init_elements(Receptor *r) {
 
 
 void init_base_types(Receptor *r) {
-    // ********************** bootstrap built in types
+    // *********************f* bootstrap built in types
 
     // INT
     Process int_processes[] = {
@@ -47,22 +53,34 @@ void init_base_types(Receptor *r) {
     stack_pop(r, XADDR_NOUN, &r->intPatternSpecXaddr);
 
     // POINT
-    Symbol X = preop_new_noun(r, r->intPatternSpecXaddr, "X");
-    Symbol Y = preop_new_noun(r, r->intPatternSpecXaddr, "Y");
+
+    stack_push(r, XADDR_NOUN, &r->intPatternSpecXaddr);
+    stack_push(r, CSTRING_NOUN, &"X");
+    op_invoke(r, r->nounSpecXaddr, INSTANCE_NEW);
+    Xaddr X;
+    stack_pop(r, XADDR_NOUN, &X);
+    //    Symbol X = preop_new_noun(r, r->intPatternSpecXaddr, "X");
+
+    stack_push(r, XADDR_NOUN, &r->intPatternSpecXaddr);
+    stack_push(r, CSTRING_NOUN, &"Y");
+    op_invoke(r, r->nounSpecXaddr, INSTANCE_NEW);
+    Xaddr Y;
+    stack_pop(r, XADDR_NOUN, &Y);
+    //    Symbol Y = preop_new_noun(r, r->intPatternSpecXaddr, "Y");
 
     Process point_processes[] = {
         {PRINT, &proc_point_print}
     };
 
     // LINE
-    Xaddr point_children[2] = {{X, NOUN_NOUN}, {Y, NOUN_NOUN}};
+    Xaddr point_children[2] = {X, Y};
     r->pointPatternSpecXaddr = preop_new_pattern(r, "POINT", 2, point_children, 1, point_processes);
 
     Symbol A = preop_new_noun(r, r->pointPatternSpecXaddr, "A");
     Symbol B = preop_new_noun(r, r->pointPatternSpecXaddr, "B");
 
 
-    Xaddr line_children[2] = {{A, NOUN_NOUN}, {B, NOUN_NOUN}};
+    Xaddr line_children[2] = {{A, r->nounNoun}, {B, r->nounNoun}};
 
     Process line_processes[] = {
         {PRINT, &proc_line_print}
@@ -79,4 +97,3 @@ void init(Receptor *r) {
     init_elements(r);
     init_base_types(r);
 }
-

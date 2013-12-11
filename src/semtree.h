@@ -6,13 +6,13 @@ void *surface_for_xaddr(Receptor *r, Xaddr xaddr) {
     return data_get(r, xaddr);
 }
 
-Xaddr xaddr_for_noun(Symbol noun) {
-    Xaddr nounXaddr = {noun, NOUN_NOUN};
+Xaddr xaddr_for_noun(Receptor *r, Symbol noun) {
+    Xaddr nounXaddr = {noun, r->nounNoun};
     return nounXaddr;
 }
 
 void *surface_for_noun(Receptor *r, Symbol noun) {
-    return surface_for_xaddr(r, xaddr_for_noun(noun));
+    return surface_for_xaddr(r, xaddr_for_noun(r, noun));
 }
 
 NounSurface *noun_surface_for_noun(Receptor *r, Symbol noun) {
@@ -27,8 +27,8 @@ Xaddr spec_xaddr_for_noun(Receptor *r, Symbol noun){
     if (noun == r->cspecXaddr.noun) {
         raise_error0("no spec for the root xaddr\n");
         return r->cspecXaddr;
-    } else if (noun == NOUN_NOUN) {
-        return r->cspecXaddr; // FIXME: should be nounSpecXaddr
+    } else if (noun == r->nounNoun) {
+        return r->nounSpecXaddr;
     } else if (noun == XADDR_NOUN) {
         return r->cspecXaddr; // FIXME: should be xaddrSpecXaddr
     } else {
@@ -58,8 +58,6 @@ char *label_for_noun(Receptor *r, Symbol noun) {
     switch (noun) {
         case XADDR_NOUN:
             return "Xaddr";
-        case NOUN_NOUN:
-            return "Noun";
         case CSPEC_NOUN:
             return "Cspec";
         case CSPEC:
@@ -70,4 +68,3 @@ char *label_for_noun(Receptor *r, Symbol noun) {
             return &noun_surface_for_noun(r, noun)->label;
     }
 }
-

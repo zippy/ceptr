@@ -30,8 +30,8 @@ typedef int Symbol;
 == replace calls to preop_new with op_invoke($X, INSTANCE_NEW)  (in test code)
     - making sure we have INSTANCE_NEW available on all specs
 
-== replace calls to peop_new_noun -> op_invoke(NOUN_NOUN, INSTANCE_NEW)
-    - create a NOUN_SPEC cspec with cases in appropriate switch statements
+== replace calls to preop_new_noun -> op_invoke(NOUN_NOUN, INSTANCE_NEW)
+    DONE:- create a NOUN_SPEC cspec with cases in appropriate switch statements
 
  */
 
@@ -43,8 +43,8 @@ enum FunctionNames {
 };
 
 enum Symbols {
-    CSPEC = -1, CSPEC_NOUN = -2, XADDR_NOUN = -3, NOUN_NOUN = -4,
-    CSTRING_NOUN = -5, PATTERN_SPEC_DATA_NOUN = -6, ROOT = -100
+    CSPEC = -1, CSPEC_NOUN = -2, XADDR_NOUN = -3,
+    CSTRING_NOUN = -4, PATTERN_SPEC_DATA_NOUN = -5,  ROOT = -100
 };
 
 typedef int FunctionName;
@@ -98,6 +98,7 @@ typedef struct {
     ElementSurface rootSurface;
 
     //built in xaddrs:
+    Xaddr nounSpecXaddr;
     Xaddr patternSpecXaddr;
     Xaddr arraySpecXaddr;
     Xaddr intPatternSpecXaddr;
@@ -105,6 +106,7 @@ typedef struct {
     Xaddr linePatternSpecXaddr;
     Xaddr cspecXaddr;
     Xaddr rootXaddr;
+    Symbol nounNoun;
     Symbol patternNoun;
     Symbol arrayNoun;
 
@@ -188,6 +190,9 @@ void dump_xaddrs(Receptor *r);
 #include "element.h"
 
 //
+#include "noun.h"
+
+//
 #include "pattern.h"
 
 
@@ -205,8 +210,15 @@ size_t size_of_named_surface(Receptor *r, Symbol name, void *surface) {
             return sizeof(PatternSpecData);
         default:
             spec_xaddr = spec_xaddr_for_noun(r, name);
-            if (spec_xaddr.noun == CSPEC_NOUN) {
+	    // special case for noun spec
+	    if (spec_xaddr.noun == 0 && name == 0) {
+		return element_header_size(surface);
+	    }
+            else if (spec_xaddr.noun == CSPEC_NOUN) {
                 return element_header_size(surface);
+
+            } else if (spec_xaddr.noun == r->nounNoun) {
+                return get_noun_spec_size(surface);
 
             } else if (spec_xaddr.noun == r->patternNoun) {
                 return get_pattern_spec_size(surface);
@@ -284,7 +296,7 @@ void op_invoke(Receptor *r, Xaddr invokee, FunctionName function) {
             return;
         }
     }
-    raise_error2("No function %d for key %d", function, invokee.key);
+    raise_error2("No function %d for key %d\n", function, invokee.key);
 }
 
 

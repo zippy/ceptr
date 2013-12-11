@@ -39,6 +39,7 @@ void data_set(Receptor *r, Xaddr xaddr, void *value, size_t size) {
 
 Xaddr data_new(Receptor *r, Symbol noun, void *surface, size_t size) {
     Xaddr new_xaddr;
+    //    printf("DATA_NEW: noun-%d,size-%ld\n",noun,size);
     data_new_uninitialized(r, &new_xaddr, noun, size);
     data_set(r, new_xaddr, surface, size);
     return new_xaddr;
@@ -56,7 +57,7 @@ Symbol data_new_noun(Receptor *r, Xaddr xaddr, char *label) {
     ns->specXaddr.noun = xaddr.noun;
     memcpy(&ns->label,label,strlen(label)+1);
     r->data.cache_index += sizeof(NounSurface)+strlen(&ns->label);
-    data_record_existence(r, current_index, NOUN_NOUN);
+    data_record_existence(r, current_index, r->nounNoun);
     return current_index;
 }
 

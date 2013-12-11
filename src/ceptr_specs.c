@@ -42,7 +42,7 @@ Xaddr _make_zodiac(Receptor *r,Symbol CONSTELLATION,Symbol *ZODIAC,void *sky) {
 void testArray() {
     Receptor tr;init(&tr);Receptor *r = &tr;
     Symbol CONSTELLATION;
-    int stars[] = { 3,   1,2,  10, 20,  100, 200 };
+    int stars[] = { 3,   1,2,  10,20,  100,200 };
     Symbol STAR_LOC = _make_star_loc(r);
     Xaddr orion = _make_constellation(r,STAR_LOC,&CONSTELLATION,stars);
 
@@ -182,34 +182,16 @@ void testInit() {
 
 }
 
-void testCspecInstanceNew() {
-    Receptor tr;data_init(&tr);stack_init(&tr);Receptor *r = &tr;
-    r->cspecXaddr.key = CSPEC;
-    r->cspecXaddr.noun = CSPEC_NOUN;
-    stack_push(r, CSTRING_NOUN, "FIRST_SPEC");
-    cspec_proc_instance_new(r);
-    Symbol noun;
-    Xaddr *xaddr;
-    stack_peek_unchecked(r, &noun, (void **)&xaddr);
-    spec_is_true( noun == XADDR_NOUN );
-    spec_is_true( xaddr->noun == 0 ); // first noun should be at surface 0
-    NounSurface *ns = noun_surface_for_noun(r,0);
-    spec_is_true(strcmp("FIRST_SPEC",&ns->label) == 0);
-    spec_is_true(ns->specXaddr.key == CSPEC);
-    spec_is_true(ns->specXaddr.noun == CSPEC_NOUN);
-}
-
 int main(int argc, const char **argv) {
     printf("Running all tests...\n\n");
     testStack();
-    testCspecInstanceNew();
 //    testInit();
 
     testInt();
     testPoint();
     testLine();
-//    testArray();
-//    test_xaddr_dump();
+    testArray();
+    test_xaddr_dump();
     test_stack_dump();
 
 //    testInc();

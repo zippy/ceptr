@@ -38,7 +38,7 @@ Xaddr preop_new_pattern(Receptor *r, char *label, int child_count_or_size, Xaddr
         Offset *pschildren = PATTERN_GET_CHILDREN(ps);
 
         for (i = 0; i < child_count_or_size; i++) {
-            if (children[i].noun == NOUN_NOUN) {
+            if (children[i].noun == r->nounNoun) {
                 noun = (NounSurface *) surface_for_xaddr(r, children[i]);
                 child_pattern_surface = element_surface_for_xaddr(r, noun->specXaddr);
             } else if (children[i].noun == r->patternNoun) {

@@ -1,4 +1,3 @@
-
 ////FIXME: this is needs to be implemented as a scape, not a linear scan of all Xaddrs!!
 
 //
@@ -20,7 +19,7 @@
 //    Symbol noun;
 //    int i;
 //    for (i = 0; i <= r->data.current_xaddr; i++) {
-//        if (r->data.xaddrs[i].noun == NOUN_NOUN) {
+//        if (r->data.xaddrs[i].noun == r->nounNoun) {
 //            noun = r->data.xaddrs[i].key;
 //            ns = (NounSurface *) &r->data.cache[noun];
 //            if (!strcmp(label, &ns->label)) {

@@ -9,7 +9,6 @@ void hexDump(char *desc, void *addr, int len) {
     // Output description if given.
     if (desc != NULL)
         printf("%s:\n", desc);
-
     // Process every byte in the data.
     for (i = 0; i < len; i++) {
         // Multiple of 16 means new line (with line offset).
@@ -72,8 +71,8 @@ void dump_spec_spec(Receptor *r, void *surface) {
     ElementSurface *ps = (ElementSurface *)surface;
     printf("Spec\n");
     printf("    name: %s(%d)\n", label_for_noun(r, ps->name), ps->name);
-    printf("\n    %d processes: ", ps->process_count);
-    dump_process_array(&ps->processes, ps->process_count);
+    printf("    %d processes: ", ps->process_count);
+    dump_process_array((Process *)&ps->processes, ps->process_count);
     printf("\n");
 }
 
@@ -88,7 +87,7 @@ void dump_pattern_spec(Receptor *r, void *surface) {
     printf("    %d children: ", count);
     dump_children_array(PATTERN_GET_CHILDREN(ps), count);
     printf("\n    %d processes: ", ps->process_count);
-    dump_process_array(&ps->processes, ps->process_count);
+    dump_process_array((Process *)&ps->processes, ps->process_count);
     printf("\n");
 }
 
@@ -146,8 +145,10 @@ void dump_xaddr(Receptor *r, Xaddr xaddr, int indent_level) {
     void *surface;
     int key = xaddr.key;
     int noun = xaddr.noun;
-
-    if (noun == NOUN_NOUN) {
+    if (noun == 0 && key == 16) {
+        dump_spec_spec(r, &r->data.cache[key]);
+    }
+    else if (noun == r->nounNoun) {
         dump_noun(r, (NounSurface *) &r->data.cache[key]);
     } else if (typeNoun == CSPEC_NOUN) {
         dump_spec_spec(r, &r->data.cache[key]);
@@ -160,22 +161,21 @@ void dump_xaddr(Receptor *r, Xaddr xaddr, int indent_level) {
 
     } else {
         Symbol typeTypeNoun = spec_noun_for_noun(r, typeNoun);
-        switch (typeTypeNoun) {
-            case NOUN_NOUN:
-                ns = (NounSurface *) &r->data.cache[key];
-                dump_noun(r, ns);
-                break;
-            default:
-                surface = surface_for_xaddr(r, xaddr_for_noun(noun));
-                ns = (NounSurface *) surface;
-                printf("%s : ", &ns->label);
-                es = element_surface_for_xaddr(r, ns->specXaddr);
-                if (typeTypeNoun == r->patternNoun) {
-                    dump_pattern_value(r, es, surface_for_xaddr(r, xaddr));
-                } else if (typeTypeNoun == r->arrayNoun) {
-                    dump_array_value(r, es, surface_for_xaddr(r, xaddr));
-                }
-        }
+	if (typeTypeNoun == r->nounNoun) {
+	    ns = (NounSurface *) &r->data.cache[key];
+	    dump_noun(r, ns);
+	}
+	else {
+	    surface = surface_for_xaddr(r, xaddr_for_noun(r, noun));
+	    ns = (NounSurface *) surface;
+	    printf("%s : ", &ns->label);
+	    es = element_surface_for_xaddr(r, ns->specXaddr);
+	    if (typeTypeNoun == r->patternNoun) {
+		dump_pattern_value(r, es, surface_for_xaddr(r, xaddr));
+	    } else if (typeTypeNoun == r->arrayNoun) {
+		dump_array_value(r, es, surface_for_xaddr(r, xaddr));
+	    }
+	}
     }
 }
 
