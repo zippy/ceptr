@@ -56,14 +56,18 @@ int preop_get_array_length(Receptor *r, Xaddr rX) {
     return _preop_get_array_length(surface_for_xaddr(r, rX));
 }
 
-int array_get_size(Receptor *r, Symbol noun, void *surface) {
+size_t _array_get_size(Receptor *r, Symbol noun, void *surface) {
+    Symbol nounType;
+
+    ElementSurface *spec_surface = spec_surface_for_noun(r, &nounType, noun);
+    assert(nounType == r->arrayNoun);
+    _array_get_size(r, noun, spec_surface, surface);
+}
+
+size_t _array_get_size(Receptor *r, Symbol noun, ElementSurface *spec_surface, void *surface) {
     int length = _preop_get_array_length(surface);
     int size = sizeof(int);
     Symbol arrayItemType;
-    Symbol nounType;
-
-    ElementSurface *spec_surface = spec_surface_for_noun(r, &nounType, <#(Symbol)noun#>)
-    assert(nounType == )
     int rep_size;
 
     Symbol repsNoun = REPS_GET_NOUN(spec_surface);
@@ -77,7 +81,7 @@ int array_get_size(Receptor *r, Symbol noun, void *surface) {
         while (length--) {
             Symbol itemType;
             ElementSurface *item_spec_surface = spec_surface_for_noun(r, &itemType, repsNoun);
-            rep_size = proc_array_get_size(r, repsNoun, item_spec_surface, surface);
+            rep_size = _array_get_size(r, repsNoun, item_spec_surface, surface);
             size += rep_size;
             surface += rep_size;
         }

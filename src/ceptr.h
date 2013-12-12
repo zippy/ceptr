@@ -234,7 +234,7 @@ size_t size_of_named_surface(Receptor *r, Symbol instanceNoun, void *surface) {
 //            case PATTERN_SPEC_DATA_NOUN:
 //                return sizeof(PatternSpecData);
 //            default:
-//                raise_error("can't get size of instance %d \n", instanceNoun);
+//                raise_error("can't get size of instance of %d \n", instanceNoun);
 //        }
 //    } else {
 //        return (*size_table_get(instanceNoun))(r, instanceNoun, surface);
