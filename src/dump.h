@@ -82,7 +82,7 @@ void dump_pattern_spec(Receptor *r, void *surface) {
 
     printf("Pattern\n");
     printf("    name: %s(%d)\n", label_for_noun(r, ps->name), ps->name);
-    printf("    size: %d\n", (int) pattern_get_size(ps));
+    printf("    size: %d\n", (int) _pattern_get_size(ps));
     int count = PATTERN_GET_CHILDREN_COUNT(ps);
     printf("    %d children: ", count);
     dump_children_array(PATTERN_GET_CHILDREN(ps), count);
@@ -98,7 +98,7 @@ void dump_pattern_value(Receptor *r, void *pattern_surface, void *surface) {
     if (print_proc) {
         (((LegacyProcess *)print_proc)->function)(r, surface);
     } else {
-        hexDump("hexDump of surface", surface, pattern_get_size(ps));
+        hexDump("hexDump of surface", surface, _pattern_get_size(ps));
     }
 }
 
@@ -112,7 +112,7 @@ void dump_array_value(Receptor *r, ElementSurface *rs, void *surface) {
     int size;
     if (typeTypeNoun == r->patternNoun) {
         printf("%s(%d) array of %d %s(%d)s\n", label_for_noun(r, rs->name), rs->name, count, label_for_noun(r, repsNoun), repsNoun);
-        size = pattern_get_size(es);
+        size = _pattern_get_size(es);
         while (count > 0) {
             printf("    ");
             dump_pattern_value(r, es, surface);

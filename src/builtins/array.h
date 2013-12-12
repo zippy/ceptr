@@ -1,6 +1,8 @@
 #include "../ceptr.h"
 
-size_t get_array_spec_size(void *es) {
+#define _preop_get_array_length(surface) (*((int*)surface))
+
+size_t array_get_spec_size(void *es) {
     return element_header_size((ElementSurface *) es) + sizeof(RepsBody);
 }
 
@@ -25,7 +27,7 @@ void *preop_get_array_nth(Receptor *r, int index, Xaddr rX) {
         typeTypeNoun = spec_noun_for_noun(r, nounSpecType);
         int size;
         if (typeTypeNoun == r->patternNoun) {
-            size = pattern_get_size(es);
+            size = _pattern_get_size(es);
             surface += size * index;
         }
         else if (typeTypeNoun == r->arrayNoun) {
@@ -38,30 +40,9 @@ void *preop_get_array_nth(Receptor *r, int index, Xaddr rX) {
     return surface;
 }
 
-Xaddr preop_new_rep(Receptor *r, Xaddr rep_type, Symbol rep_type_noun, char *label, Symbol repsNoun, int processCount, Process *processes) {
-    char rs[BUFFER_SIZE];
-    memset(rs, 0, BUFFER_SIZE);
-    Symbol new_noun = init_element(r, label, rep_type, (ElementSurface *) rs, processCount, processes);
-    REPS_SET_NOUN(rs, repsNoun);
-    size_table_set(new_noun, array_get_size);
-    return preop_new(r, new_noun, rs);
-}
-
-Xaddr preop_new_array(Receptor *r, char *label, Symbol repsNoun, int processCount, Process *processes) {
-    return preop_new_rep(r, r->arraySpecXaddr, r->arrayNoun, label, repsNoun, processCount, processes);
-}
-
 
 int preop_get_array_length(Receptor *r, Xaddr rX) {
     return _preop_get_array_length(surface_for_xaddr(r, rX));
-}
-
-size_t _array_get_size(Receptor *r, Symbol noun, void *surface) {
-    Symbol nounType;
-
-    ElementSurface *spec_surface = spec_surface_for_noun(r, &nounType, noun);
-    assert(nounType == r->arrayNoun);
-    _array_get_size(r, noun, spec_surface, surface);
 }
 
 size_t _array_get_size(Receptor *r, Symbol noun, ElementSurface *spec_surface, void *surface) {
@@ -74,7 +55,7 @@ size_t _array_get_size(Receptor *r, Symbol noun, ElementSurface *spec_surface, v
     ElementSurface *es = spec_surface_for_noun(r, &arrayItemType, repsNoun);
     Symbol typeTypeNoun = spec_noun_for_noun(r, arrayItemType);
     if (typeTypeNoun == r->patternNoun) {
-        size += length * pattern_get_size(es);
+        size += length * _pattern_get_size(es);
     }
     else if (typeTypeNoun == r->arrayNoun) {
         surface += sizeof(int);
@@ -89,4 +70,25 @@ size_t _array_get_size(Receptor *r, Symbol noun, ElementSurface *spec_surface, v
         //TODO: handle arrays of strings
     else {raise_error2("illegal noun (%d) as array element type for %d\n", arrayItemType, noun);}
     return size;
+}
+
+size_t array_get_size(Receptor *r, Symbol noun, void *surface) {
+    Symbol nounType;
+    ElementSurface *spec_surface = spec_surface_for_noun(r, &nounType, noun);
+    assert(nounType == r->arrayNoun);
+    _array_get_size(r, noun, spec_surface, surface);
+}
+
+Xaddr preop_new_rep(Receptor *r, Xaddr rep_type, Symbol rep_type_noun, char *label, Symbol repsNoun, int processCount, Process *processes) {
+    char rs[BUFFER_SIZE];
+    memset(rs, 0, BUFFER_SIZE);
+    Symbol new_noun = init_element(r, label, rep_type, (ElementSurface *) rs, processCount, processes);
+    REPS_SET_NOUN(rs, repsNoun);
+    size_table_set(new_noun, array_get_spec_size);
+    return preop_new(r, new_noun, rs);
+}
+
+
+Xaddr preop_new_array(Receptor *r, char *label, Symbol repsNoun, int processCount, Process *processes) {
+    return preop_new_rep(r, r->arraySpecXaddr, r->arrayNoun, label, repsNoun, processCount, processes);
 }

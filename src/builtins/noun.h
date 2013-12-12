@@ -4,8 +4,8 @@ size_t noun_get_size(Receptor *r, Symbol noun, void *surface) {
     return sizeof(NounSurface);
 }
 
-size_t get_noun_spec_size(void *es) {
-    return element_header_size((ElementSurface *) es);
+size_t noun_get_spec_size(Receptor *r, Symbol noun, void *surface) {
+    return element_header_size((ElementSurface *) surface);
 }
 
 void proc_noun_instance_new(Receptor *r) {
@@ -18,3 +18,4 @@ void proc_noun_instance_new(Receptor *r) {
     size_table_set(spec.key, noun_get_size);
     stack_push(r,XADDR_NOUN,&spec);
 }
+

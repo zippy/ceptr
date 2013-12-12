@@ -20,24 +20,33 @@ printf("cspec_proc_instance_new \n");
     if (strcmp(label, "NOUN") == 0) {
         p = noun_processes;
         processes = 1;
-        size_function = get_noun_spec_size;
+        size_function = noun_get_spec_size;
     }
     if (strcmp(label, "PATTERN") == 0) {
         p = pattern_processes;
         processes = 1;
-        size_function = get_pattern_spec_size;
+        size_function = pattern_get_spec_size;
     }
     if (strcmp(label, "ARRAY") == 0) {
         p = array_processes;
         processes = 0;
+        size_function = array_get_spec_size;
     }
     Symbol newNoun = preop_new_noun(r, r->cspecXaddr, label);
     ((ElementSurface *) ps)->process_count = 0;
     ((ElementSurface *) ps)->name = newNoun;
     add_processes((ElementSurface *) ps, processes, p);
-    stack_push(r, newNoun, ps);
     size_table_set(newNoun, size_function);
-    op_new(r);
+    stack_push(r, newNoun, ps);
+    if(size_function == noun_get_spec_size) {
+        Symbol noun;
+        void *surface;
+        stack_peek_unchecked(r, &noun, &surface);
+        Xaddr new_xaddr = data_new(r, noun, surface, noun_get_spec_size(r, noun, surface));
+        stack_push(r,XADDR_NOUN,&new_xaddr);
+    } else {
+        op_new(r);
+    }
 }
 
 //int cspec_proc_instance_size(Receptor *r) {

@@ -18,6 +18,7 @@ void init_elements(Receptor *r) {
     // breaks if we don't initialize it.
     r->nounSpecXaddr.key = 0;
     r->nounSpecXaddr.noun = 0;
+    size_table_set(0, noun_get_spec_size);
 
     stack_push(r, CSTRING_NOUN, &"NOUN");
     op_invoke(r, r->cspecXaddr, INSTANCE_NEW);

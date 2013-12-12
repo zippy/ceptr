@@ -4,7 +4,7 @@
 int proc_string_get_size(Receptor *r, Symbol noun,ElementSurface *spec_surface, void *surface) {
     //TODO: handle strings of arrays
     ElementSurface *es = _get_reps_pattern_spec(r,spec_surface);
-    int rep_size = pattern_get_size(es);
+    int rep_size = _pattern_get_size(es);
     int size = 0;
     while(*(int *)surface != STRING_TERMINATOR) {
         if (*(int *)surface == ESCAPE_STRING_TERMINATOR) {
@@ -34,7 +34,7 @@ void dump_string_value(Receptor *r, ElementSurface *rs, void *surface) {
         printf("    ");
         dump_pattern_value(r,ps,surface);
         printf("\n");
-        surface += pattern_get_size(ps);
+        surface += _pattern_get_size(ps);
         count++;
     }
     printf(" %d elements found\n",count);
