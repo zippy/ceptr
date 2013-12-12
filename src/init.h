@@ -8,10 +8,16 @@ void init_elements(Receptor *r) {
     r->rootSurface.name = ROOT;
     r->rootSurface.process_count = 0;
 
+
     cspec_init(r);
 
     r->cspecXaddr.key = CSPEC;
     r->cspecXaddr.noun = CSPEC_NOUN;
+
+    // we know this is the first Xaddr in system and it will try to look itself up and that
+    // breaks if we don't initialize it.
+    r->nounSpecXaddr.key = 0;
+    r->nounSpecXaddr.noun = 0;
 
     stack_push(r, CSTRING_NOUN, &"NOUN");
     op_invoke(r, r->cspecXaddr, INSTANCE_NEW);

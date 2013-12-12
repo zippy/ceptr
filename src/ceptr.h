@@ -190,16 +190,83 @@ void dump_xaddrs(Receptor *r);
 #include "element.h"
 
 //
-#include "noun.h"
+#include "builtins/noun.h"
 
 //
-#include "pattern.h"
+#include "builtins/pattern.h"
 
+//
+#include "builtins/array.h"
+
+
+/**
+*
+*  size_of_named_surface(Receptor *r, Symbol instanceNoun, void *surface, Symbol specNoun)
+*    if specXaddr is a known case
+*      do that
+*    else
+*      size_of_named_surface(..args..,  spec(specXaddr))
+*
+*/
+
+
+typedef size_t (*sizeFunction)(Receptor *, Symbol, void *);
+sizeFunction size_table[BUFFER_SIZE];
+
+sizeFunction size_table_get(Symbol noun) {
+    return size_table[noun];
+}
+
+void size_table_set(Symbol noun, sizeFunction func) {
+    size_table[noun] = func;
+}
 
 // this should go somewhere once the dependencies are better resolved.  right now it depends on everything.
-size_t size_of_named_surface(Receptor *r, Symbol name, void *surface) {
+size_t size_of_named_surface(Receptor *r, Symbol instanceNoun, void *surface) {
+//    if (instanceNoun < 0){
+//        switch (instanceNoun) {
+//            case XADDR_NOUN:
+//                return sizeof(Xaddr);
+//            case CSPEC_NOUN:
+//                return (size_t) 0;
+//            case CSTRING_NOUN:
+//                return strlen((char *) surface) + 1;
+//            case PATTERN_SPEC_DATA_NOUN:
+//                return sizeof(PatternSpecData);
+//            default:
+//                raise_error("can't get size of instance %d \n", instanceNoun);
+//        }
+//    } else {
+//        return (*size_table_get(instanceNoun))(r, instanceNoun, surface);
+//    }
+//    if (specNoun == ROOT) {
+//    } else {
+//        if (specNoun == 0 && instanceNoun == 0) {
+//            return element_header_size(surface);
+//
+//        } else if (specNoun == r->nounNoun) {
+//            return sizeof(NounSurface);
+//
+//        } else if (specNoun == CSPEC_NOUN) {
+//            return element_header_size(surface);
+//
+//        } else if (specNoun == r->patternNoun) {
+////            return get_pattern_spec_size(surface);
+//        } else if (specNoun == r->intPatternSpecXaddr.noun) {
+//            return pattern_get_size(surface);
+//
+//        }
+//
+//        } else if (specNoun == r->arrayNoun) {
+//            return element_header_size(surface) + sizeof(RepsBody);
+//
+//        } else {
+//            return size_of_named_surface(r, instanceNoun, surface, spec_noun_for_noun(r, specNoun));
+//        }
+//    }
+
     Xaddr spec_xaddr;
-    switch (name) {
+    switch (instanceNoun) {
         case XADDR_NOUN:
             return sizeof(Xaddr);
         case CSPEC_NOUN:
@@ -209,16 +276,13 @@ size_t size_of_named_surface(Receptor *r, Symbol name, void *surface) {
         case PATTERN_SPEC_DATA_NOUN:
             return sizeof(PatternSpecData);
         default:
-            spec_xaddr = spec_xaddr_for_noun(r, name);
-	    // special case for noun spec
-	    if (spec_xaddr.noun == 0 && name == 0) {
-		return element_header_size(surface);
-	    }
+            spec_xaddr = spec_xaddr_for_noun(r, instanceNoun);
+            // special case for noun spec
+            if (spec_xaddr.noun == 0 && instanceNoun == 0) {
+                return element_header_size(surface);
+            }
             else if (spec_xaddr.noun == CSPEC_NOUN) {
                 return element_header_size(surface);
-
-            } else if (spec_xaddr.noun == r->nounNoun) {
-                return get_noun_spec_size(surface);
 
             } else if (spec_xaddr.noun == r->patternNoun) {
                 return get_pattern_spec_size(surface);
@@ -230,27 +294,27 @@ size_t size_of_named_surface(Receptor *r, Symbol name, void *surface) {
             } else {
                 Symbol type_type_noun = spec_noun_for_noun(r, spec_xaddr.noun);
                 Symbol _;
-                ElementSurface *spec_surface = spec_surface_for_noun(r, &_, name);
+                ElementSurface *spec_surface = spec_surface_for_noun(r, &_, instanceNoun);
                 Process *p = getProcess(spec_surface, INSTANCE_SIZE);
                 printf("instance size %d\n", INSTANCE_SIZE);
 
                 if (p) {
-                    return (size_t) (*p->function)(r, name, spec_surface, surface);
+                    return (size_t)(*p->function)(r, instanceNoun, spec_surface, surface);
                 } else {
                     dump_xaddrs(r);
-                    raise_error2("couldn't find size function for noun %d in spec surface %d\n", _, name);
+                    raise_error2("couldn't find size function for noun %d in spec surface %d\n", _, instanceNoun);
                     return (size_t) 0;
                 }
 
                 if (type_type_noun == r->patternNoun) {
-                    return (size_t) proc_pattern_get_size(r, name, spec_surface, surface);
+                    return (size_t) proc_pattern_get_size(r, instanceNoun, spec_surface, surface);
 
                 } else if (type_type_noun == r->arrayNoun) {
-                    return (size_t) proc_array_get_size(r, name, spec_surface, surface);
+                    return (size_t) proc_array_get_size(r, instanceNoun, spec_surface, surface);
                 }
 
             }
-            raise_error2("unknown noun type %d for noun %d\n", spec_xaddr.noun, name);
+            raise_error2("unknown noun type %d for noun %d\n", spec_xaddr.noun, instanceNoun);
             return (size_t) 0;
     }
 }
