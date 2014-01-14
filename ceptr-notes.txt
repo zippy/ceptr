@@ -9,3 +9,53 @@ Aspect (inbound channel on which it can reveive) is tuned to a scape, a particul
 Inside = living in an existance scape.
 
 Composition is a manifestation of intent.
+
+
+
+
+// General Types of things that can be pointed to by Xaddrs:
+//
+// "Root" - Root of semantic tree- A thing which has no spec.
+//
+// "Spec" - Anything of which instances can be made (defines a new_proc)
+//   also, in the relative sense means 1 level up the semantic tree, aka what kind of things is this?
+//
+//   7.spec == Age
+//   Age.spec == Int
+//   Int.spec == Pattern
+//   Pattern.spec == Cspec
+//
+//
+// "Instance" - opposite of a spec, 1 level down the semantic tree
+//
+// "Value" - a leaf in the semantic tree- something which is never a spec for something else (does not define new)
+//
+// new_instance_proc;
+//
+// instance_size_proc:
+// value_size_proc:
+//
+// algorithm for finding size:  spec should always have an INSTANCE_SIZE proc
+//
+// maybe if I put useless comments here, AppCode won't try to fold up all the include statements.  super crazy-making
+
+
+
+/*  NEXT STEPS!
+
+* fix arrays / arrays of arrays
+* finish preop_new_pattern -> op_invoke(r->patternSpecXaddr, INSTANCE_NEW) refactor
+
+== replace calls to preop_new with op_invoke($X, INSTANCE_NEW)  (in test code)
+    - making sure we have INSTANCE_NEW available on all specs
+
+== replace calls to preop_new_noun -> op_invoke(NOUN_NOUN, INSTANCE_NEW)
+    DONE:- create a NOUN_SPEC cspec with cases in appropriate switch statements
+
+== when creating a new noun, ask the spec for the size function to add to the size_table.
+e.g.
+    in init_element
+        - add into the ElementSurface for element we add instance size function
+        - creating a noun we copy size function from the spec into the size_table for the noun.
+
+ */

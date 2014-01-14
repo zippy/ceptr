@@ -15,14 +15,15 @@ int proc_int_add(Receptor *r, void *this) {
 
 int proc_int_print(Receptor *r, void *this) {
     printf("%d", *(int *) this);
+    return 0;
 }
 
 void int_init(Receptor *r) {
     // INT
     Process int_processes[] = {
-        {PRINT, &proc_int_print},
-        {INC, &proc_int_inc},
-        {ADD, &proc_int_add}
+        {PRINT, (processFn)proc_int_print},
+        {INC, (processFn)proc_int_inc},
+        {ADD, (processFn)proc_int_add}
     };
 
     PatternSpecData psd = {

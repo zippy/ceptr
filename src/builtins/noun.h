@@ -34,6 +34,8 @@ Symbol getSymbol(Receptor *r, char *label) {
             }
         }
     }
+    raise_error("couldn't find symbol for label %s", label);
+    return 0;
 }
 
 void noun_init(Receptor *r){
@@ -44,7 +46,12 @@ void noun_init(Receptor *r){
 
     size_table_set(0, noun_get_size);
     data_new_noun(r, r->cspecXaddr, "NOUN");
-    UntypedProcess noun_processes = {INSTANCE_NEW, &proc_noun_instance_new };
+    UntypedProcess noun_processes = {INSTANCE_NEW, (voidVoidFn)proc_noun_instance_new };
     ElementSurface nounSpecSurface = {0, 1, noun_processes};
     data_new(r, r->nounSpecXaddr.noun, &nounSpecSurface,  element_header_size((void *)&nounSpecSurface));
 }
+
+void dump_noun(Receptor *r, NounSurface *ns) {
+    printf("Noun      { %d, %5d } %s", ns->specXaddr.key, ns->specXaddr.noun, &ns->label);
+}
+

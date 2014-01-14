@@ -4,7 +4,7 @@ void testInt() {
     Receptor tr; init(&tr); Receptor *r = &tr;
 
     spec_is_equal( r->intPatternSpecXaddr.noun, getSymbol(r, "INT") );
-    spec_is_equal( size_table_get(getSymbol(r, "INT")), &pattern_get_size );
+    spec_is_equal( (int)size_table_get(getSymbol(r, "INT")), (int)pattern_get_size );
     spec_is_equal( element_surface_for_xaddr(r, r->intPatternSpecXaddr)->process_count, 4 );
 
 

@@ -13,8 +13,8 @@
 #include "builtins/array_spec.h"
 
 #include "examples/point.h"
-#include "examples/stars.h"
 #include "examples/line.h"
+#include "examples/stars.h"
 
 int main(int argc, const char **argv) {
     printf("Running all tests...\n\n");

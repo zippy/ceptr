@@ -2,10 +2,10 @@
 
 
 typedef size_t (*sizeFunction)(Receptor *, Symbol, void *);
+
 sizeFunction size_table[BUFFER_SIZE];
 
 sizeFunction size_table_get(Symbol noun) {
-    printf("size_table_get %d \n", noun);
     if (size_table[noun] == 0) {
         raise_error("null size fn for noun %d \n", noun);
     }
@@ -13,7 +13,6 @@ sizeFunction size_table_get(Symbol noun) {
 }
 
 void size_table_set(Symbol noun, sizeFunction func) {
-    printf("size_table_set %d \n", noun);
     size_table[noun] = func;
 }
 
@@ -73,9 +72,6 @@ Symbol data_new_noun(Receptor *r, Xaddr xaddr, char *label) {
     ns->specXaddr.noun = xaddr.noun;
     memcpy(&ns->label,label,strlen(label)+1);
     r->data.cache_index += sizeof(NounSurface)+strlen(&ns->label);
-//    if (size_table[xaddr.noun] != 0) {
-//        size_table_set(current_index, size_table_get(xaddr.noun));
-//    }
     data_record_existence(r, current_index, r->nounSpecXaddr.noun);
     return current_index;
 }

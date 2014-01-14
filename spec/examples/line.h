@@ -3,31 +3,34 @@
 int proc_line_print(Receptor *r, void *this) {
     int *surface = (int *) this;
     printf("[%d,%d - %d,%d] ", *surface, *(surface + 1), *(surface + 2), *(surface + 3));
+    return 0;
 }
 
 
-void initLine(Receptor *r) {
+Xaddr initLine(Receptor *r) {
     // LINE
+    Xaddr pointPatternSpecXaddr = initPoint(r);
 
-    Symbol A = preop_new_noun(r, r->pointPatternSpecXaddr, "A");
-    Symbol B = preop_new_noun(r, r->pointPatternSpecXaddr, "B");
+    Symbol A = preop_new_noun(r, pointPatternSpecXaddr, "A");
+    Symbol B = preop_new_noun(r, pointPatternSpecXaddr, "B");
 
 
     Xaddr line_children[2] = {{A, r->nounSpecXaddr.noun}, {B, r->nounSpecXaddr.noun}};
 
     Process line_processes[] = {
-        {PRINT, &proc_line_print}
+        {PRINT, (processFn) proc_line_print}
     };
 
 
-    r->linePatternSpecXaddr = preop_new_pattern(r, "LINE", 2, line_children, 1, line_processes);
+    return preop_new_pattern(r, "LINE", 2, line_children, 1, line_processes);
 }
 
 
 void testLine() {
     Receptor tr;init(&tr);Receptor *r = &tr;
+    Xaddr linePatternSpecXaddr = initLine(r);
     int myLine[4] = {1, 2, 3, 4};
-    Symbol inTheSand = preop_new_noun(r, r->linePatternSpecXaddr, "in the sand");
+    Symbol inTheSand = preop_new_noun(r, linePatternSpecXaddr, "in the sand");
     Xaddr itsLine = preop_new(r, inTheSand, &myLine);
 
     void *surface = surface_for_xaddr(r, itsLine);

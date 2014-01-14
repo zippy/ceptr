@@ -2,9 +2,10 @@
 
 int proc_point_print(Receptor *r, void *this) {
     printf("%d,%d", *(int *) this, *(((int *) this) + 1));
+    return 0;
 }
 
-void initPoint(Receptor *r) {
+Xaddr initPoint(Receptor *r) {
     stack_push(r, XADDR_NOUN, &r->intPatternSpecXaddr);
     stack_push(r, CSTRING_NOUN, &"X");
     op_invoke(r, r->nounSpecXaddr, INSTANCE_NEW);
@@ -20,23 +21,20 @@ void initPoint(Receptor *r) {
     //    Symbol Y = preop_new_noun(r, r->intPatternSpecXaddr, "Y");
 
     Process point_processes[] = {
-        {PRINT, &proc_point_print}
+        {PRINT, (processFn) proc_point_print}
     };
     Xaddr point_children[2] = {X, Y};
-    r->pointPatternSpecXaddr = preop_new_pattern(r, "POINT", 2, point_children, 1, point_processes);
+    return preop_new_pattern(r, "POINT", 2, point_children, 1, point_processes);
 
 }
 
 void testPoint() {
     Receptor tr;init(&tr);Receptor *r = &tr;
+    Xaddr pointPatternSpecXaddr = initPoint(r);
 
-    initPoint(r);
-
-    Symbol HERE = preop_new_noun(r, r->pointPatternSpecXaddr, "HERE");
+    Symbol HERE = preop_new_noun(r, pointPatternSpecXaddr, "HERE");
     int value[2] = {777, 422};
     Xaddr here_xaddr = preop_new(r, HERE, &value);
     int *v = surface_for_xaddr(r, here_xaddr);
     spec_is_true(*v == 777 && *(v + 1) == 422);
-
-    dump_xaddrs(r);
 }

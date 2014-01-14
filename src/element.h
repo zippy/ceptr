@@ -27,6 +27,31 @@ Process *getProcess(ElementSurface *es, FunctionName name) {
     return 0;
 }
 
+
+void dump_children_array(Offset *children, int count) {
+    int i = 0;
+    while (i < count) {
+        if (i != 0) {
+            printf(",");
+        }
+        printf("{ %d, %d }(%d)", children[i].noun.key, children[i].noun.noun, children[i].offset);
+        i++;
+    }
+}
+
+
+void dump_process_array(Process *process, int count) {
+    int i = 0;
+    while (i < count) {
+        if (i != 0) {
+            printf(",");
+        }
+        printf("{ %d, %zu }", process[i].name, (size_t) process[i].function);
+        i++;
+    }
+}
+
+
 void add_processes(ElementSurface *dest_surface, int process_count, Process *source_p) {
 //    printf("add_processes count %d\n", process_count);
     Process *dest_p = (Process *)&dest_surface->processes;
@@ -49,3 +74,5 @@ int init_element(Receptor *r, char *label, Xaddr element_spec, ElementSurface *e
     add_processes(es, processCount, processes);
     return es->name;
 }
+
+

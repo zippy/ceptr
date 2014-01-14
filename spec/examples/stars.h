@@ -1,7 +1,8 @@
 #include "../../src/ceptr.h"
 
 Symbol _make_star_loc(Receptor *r){
-    return preop_new_noun(r, r->pointPatternSpecXaddr, "STAR_LOCATION");
+    Xaddr pointPatternSpecXaddr = initPoint(r);
+    return preop_new_noun(r, pointPatternSpecXaddr, "STAR_LOCATION");
 }
 
 Xaddr _make_constellation(Receptor *r,Symbol STAR_LOCATION,Symbol *CONSTELLATION,int surface[]) {

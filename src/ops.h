@@ -14,5 +14,23 @@ void op_new(Receptor *r) {
     stack_push(r,XADDR_NOUN,&new_xaddr);
 }
 
+//  This really should be in ops.h.
+//  it's here until we implement fake surfaces for the builtin specs so that we don't refer to the procs by name in op_invoke.
+void op_invoke(Receptor *r, Xaddr invokee, FunctionName function) {
+    // record call on stack?
+    if (invokee.key < 0) {
+        raise_error("run op invoke for invokee %d", invokee.key);
+    }
+    ElementSurface *surface;
+    Process *p;
+    surface = element_surface_for_xaddr(r, invokee);
+    p = getProcess(surface, function);
+    if (p) {
+        (((YagnArgsProcess *) p)->function)(r);
+        return;
+    }
+    raise_error2("No function %d for key %d\n", function, invokee.key);
+}
 
-void op_invoke(Receptor *r, Xaddr invokee, FunctionName function);
+
+//void op_invoke(Receptor *r, Xaddr invokee, FunctionName function);

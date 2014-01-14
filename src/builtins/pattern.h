@@ -8,16 +8,6 @@
 
 
 size_t _pattern_get_size(void *pattern_surface) {
-//printf("pattern_get_size \n");
-//    ElementSurface *es = (ElementSurface *)pattern_surface;
-//    PatternBody *pb = (PatternBody *)skip_elem_header(pattern_surface);
-//
-//printf("  - name %d \n", es->name);
-//printf("  - process_count %d \n", es->process_count);
-//
-//printf("  - size %d \n", pb->size);
-//printf("  - child_count %d \n", pb->children_count);
-
     return ((PatternBody *) skip_elem_header(pattern_surface))->size;
 }
 
@@ -27,7 +17,6 @@ size_t pattern_get_size(Receptor *r, Symbol noun, void *pattern_surface) {
     return _pattern_get_size(spec_surface);
 }
 
-
 void pattern_set_size(void *pattern_surface, size_t size) {
     ((PatternBody *) skip_elem_header(pattern_surface))->size = size;
 }
@@ -35,7 +24,6 @@ void pattern_set_size(void *pattern_surface, size_t size) {
 size_t pattern_get_spec_size(Receptor *r, Symbol noun, ElementSurface *es) {
     return ELEMENT_HEADER_SIZE(es) + sizeof(PatternBody) - sizeof(Offset) + sizeof(Offset) * PATTERN_GET_CHILDREN_COUNT(es);
 }
-
 
 Xaddr preop_new_pattern(Receptor *r, char *label, int child_count_or_size, Xaddr *children, int processCount, Process *processes) {
     char ps[BUFFER_SIZE];
@@ -73,7 +61,6 @@ Xaddr preop_new_pattern(Receptor *r, char *label, int child_count_or_size, Xaddr
     return preop_new(r, newNoun, ps);
 }
 
-
 void proc_pattern_instance_new(Receptor *r) {
     PatternSpecData *d;
     stack_peek(r, PATTERN_SPEC_DATA_NOUN, (void **)&d);
@@ -81,10 +68,36 @@ void proc_pattern_instance_new(Receptor *r) {
     stack_push(r, XADDR_NOUN, &pattern_xaddr);
 }
 
+void dump_pattern_spec(Receptor *r, void *surface) {
+    ElementSurface *ps = (ElementSurface *)surface;
+
+    printf("Pattern\n");
+    printf("    name: %s(%d)\n", label_for_noun(r, ps->name), ps->name);
+    printf("    size: %d\n", (int) _pattern_get_size(ps));
+    int count = PATTERN_GET_CHILDREN_COUNT(ps);
+    printf("    %d children: ", count);
+    dump_children_array(PATTERN_GET_CHILDREN(ps), count);
+    printf("\n    %d processes: ", ps->process_count);
+    dump_process_array((Process *)&ps->processes, ps->process_count);
+    printf("\n");
+}
+
+void dump_pattern_value(Receptor *r, void *pattern_surface, void *surface) {
+    ElementSurface *ps = (ElementSurface *)pattern_surface;
+    Process *print_proc;
+    print_proc = getProcess(ps, PRINT);
+    if (print_proc) {
+        (((LegacyProcess *)print_proc)->function)(r, surface);
+    } else {
+        hexDump("hexDump of surface", surface, _pattern_get_size(ps));
+    }
+}
+
+
 void pattern_init(Receptor *r){
     Symbol newNoun = data_new_noun(r, r->cspecXaddr, "PATTERN");
-    size_table_set(newNoun, pattern_get_spec_size);
-    UntypedProcess processes = {INSTANCE_NEW, &proc_pattern_instance_new };
+    size_table_set(newNoun, (sizeFunction) pattern_get_spec_size);
+    UntypedProcess processes = {INSTANCE_NEW, (voidVoidFn)proc_pattern_instance_new };
     ElementSurface specSurface = { newNoun, 1, processes};
     r->patternSpecXaddr = data_new(r, newNoun, &specSurface,  element_header_size((void *)&specSurface));
 }
