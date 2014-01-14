@@ -32,5 +32,3 @@ void op_invoke(Receptor *r, Xaddr invokee, FunctionName function) {
     raise_error2("No function %d for key %d\n", function, invokee.key);
 }
 
-
-//void op_invoke(Receptor *r, Xaddr invokee, FunctionName function);

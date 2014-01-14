@@ -28,6 +28,21 @@ Process *getProcess(ElementSurface *es, FunctionName name) {
 }
 
 
+void add_processes(ElementSurface *dest_surface, int process_count, Process *source_p) {
+//    printf("add_processes count %d\n", process_count);
+    Process *dest_p = (Process *)&dest_surface->processes;
+    dest_p += dest_surface->process_count;
+    dest_surface->process_count += process_count;
+    while (process_count-- > 0) {
+        dest_p->name = source_p->name;
+        dest_p->function = source_p->function;
+        source_p++;
+        dest_p++;
+    }
+}
+
+
+
 void dump_children_array(Offset *children, int count) {
     int i = 0;
     while (i < count) {
@@ -48,20 +63,6 @@ void dump_process_array(Process *process, int count) {
         }
         printf("{ %d, %zu }", process[i].name, (size_t) process[i].function);
         i++;
-    }
-}
-
-
-void add_processes(ElementSurface *dest_surface, int process_count, Process *source_p) {
-//    printf("add_processes count %d\n", process_count);
-    Process *dest_p = (Process *)&dest_surface->processes;
-    dest_p += dest_surface->process_count;
-    dest_surface->process_count += process_count;
-    while (process_count-- > 0) {
-        dest_p->name = source_p->name;
-        dest_p->function = source_p->function;
-        source_p++;
-        dest_p++;
     }
 }
 

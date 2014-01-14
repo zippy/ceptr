@@ -10,7 +10,7 @@ void init_elements(Receptor *r) {
     r->cspecXaddr.noun = CSPEC_NOUN;
 }
 
-void init_base_types(Receptor *r) {
+void init_builtins(Receptor *r) {
     noun_init(r);
     pattern_init(r);
     array_init(r);
@@ -22,5 +22,5 @@ void init(Receptor *r) {
     //    init_processing(r);
     data_init(r);
     init_elements(r);
-    init_base_types(r);
+    init_builtins(r);
 }
