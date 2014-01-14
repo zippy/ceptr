@@ -6,6 +6,9 @@ sizeFunction size_table[BUFFER_SIZE];
 
 sizeFunction size_table_get(Symbol noun) {
     printf("size_table_get %d \n", noun);
+    if (size_table[noun] == 0) {
+        raise_error("null size fn for noun %d \n", noun);
+    }
     return size_table[noun];
 }
 
@@ -73,7 +76,7 @@ Symbol data_new_noun(Receptor *r, Xaddr xaddr, char *label) {
 //    if (size_table[xaddr.noun] != 0) {
 //        size_table_set(current_index, size_table_get(xaddr.noun));
 //    }
-    data_record_existence(r, current_index, r->nounNoun);
+    data_record_existence(r, current_index, r->nounSpecXaddr.noun);
     return current_index;
 }
 

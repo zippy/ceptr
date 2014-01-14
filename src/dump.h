@@ -110,7 +110,7 @@ void dump_array_value(Receptor *r, ElementSurface *rs, void *surface) {
     ElementSurface *es = spec_surface_for_noun(r, &arrayItemType, repsNoun);
     Symbol typeTypeNoun = spec_noun_for_noun(r, arrayItemType);
     int size;
-    if (typeTypeNoun == r->patternNoun) {
+    if (typeTypeNoun == r->patternSpecXaddr.noun) {
         printf("%s(%d) array of %d %s(%d)s\n", label_for_noun(r, rs->name), rs->name, count, label_for_noun(r, repsNoun), repsNoun);
         size = _pattern_get_size(es);
         while (count > 0) {
@@ -121,7 +121,7 @@ void dump_array_value(Receptor *r, ElementSurface *rs, void *surface) {
             count--;
         }
     }
-    else if (typeTypeNoun == r->arrayNoun) {
+    else if (typeTypeNoun == r->arraySpecXaddr.noun) {
         printf("array of %d %s(%d) arrays\n", count, label_for_noun(r, rs->name), rs->name);
         while (count > 0) {
             printf("    ");
@@ -148,20 +148,21 @@ void dump_xaddr(Receptor *r, Xaddr xaddr, int indent_level) {
     if (noun == 0 && key == 16) {
         dump_spec_spec(r, &r->data.cache[key]);
     }
-    else if (noun == r->nounNoun) {
+    else if (noun == r->nounSpecXaddr.noun) {
         dump_noun(r, (NounSurface *) &r->data.cache[key]);
+
     } else if (typeNoun == CSPEC_NOUN) {
         dump_spec_spec(r, &r->data.cache[key]);
 
-    } else if (typeNoun == r->patternNoun) {
+    } else if (typeNoun == r->patternSpecXaddr.noun) {
         dump_pattern_spec(r, &r->data.cache[key]);
 
-    } else if (typeNoun == r->arrayNoun) {
+    } else if (typeNoun == r->arraySpecXaddr.noun) {
         dump_reps_spec(r, &r->data.cache[key]);
 
     } else {
         Symbol typeTypeNoun = spec_noun_for_noun(r, typeNoun);
-	if (typeTypeNoun == r->nounNoun) {
+	if (typeTypeNoun == r->nounSpecXaddr.noun) {
 	    ns = (NounSurface *) &r->data.cache[key];
 	    dump_noun(r, ns);
 	}
@@ -170,9 +171,9 @@ void dump_xaddr(Receptor *r, Xaddr xaddr, int indent_level) {
 	    ns = (NounSurface *) surface;
 	    printf("%s : ", &ns->label);
 	    es = element_surface_for_xaddr(r, ns->specXaddr);
-	    if (typeTypeNoun == r->patternNoun) {
+	    if (typeTypeNoun == r->patternSpecXaddr.noun) {
 		dump_pattern_value(r, es, surface_for_xaddr(r, xaddr));
-	    } else if (typeTypeNoun == r->arrayNoun) {
+	    } else if (typeTypeNoun == r->arraySpecXaddr.noun) {
 		dump_array_value(r, es, surface_for_xaddr(r, xaddr));
 	    }
 	}

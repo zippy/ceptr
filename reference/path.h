@@ -14,21 +14,7 @@
 //
 
 
-//Symbol getSymbol(Receptor *r, char *label) {
-//    NounSurface *ns;
-//    Symbol noun;
-//    int i;
-//    for (i = 0; i <= r->data.current_xaddr; i++) {
-//        if (r->data.xaddrs[i].noun == r->nounNoun) {
-//            noun = r->data.xaddrs[i].key;
-//            ns = (NounSurface *) &r->data.cache[noun];
-//            if (!strcmp(label, &ns->label)) {
-//                return noun;
-//            }
-//        }
-//    }
-//}
-//
+
 
 
 // #define SYMBOL_PATH_TERMINATOR 0xFFFF
@@ -87,3 +73,6 @@
 //    void *surface = preop_get(r, itsLine);
 //    spec_is_true(*(((int *) surface) + 3) == 7);
 //}
+
+
+//    testSymbolPath();

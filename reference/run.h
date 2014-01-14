@@ -9,3 +9,6 @@ typedef struct {
     Opcode opcode;
     char operands[OPERANDS_SIZE];
 } Instruction;
+
+
+//    testRun();

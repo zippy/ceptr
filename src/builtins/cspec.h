@@ -1,6 +1,7 @@
 #include "../ceptr.h"
 
 void cspec_proc_instance_new(Receptor *r) {
+    raise_error0("how i get here?");
 printf("cspec_proc_instance_new \n");
     char label[BUFFER_SIZE];
     char ps[BUFFER_SIZE];
@@ -20,7 +21,7 @@ printf("cspec_proc_instance_new \n");
     if (strcmp(label, "NOUN") == 0) {
         p = noun_processes;
         processes = 1;
-        size_function = noun_get_spec_size;
+        size_function = noun_get_size;
     }
     if (strcmp(label, "PATTERN") == 0) {
         p = pattern_processes;
@@ -38,7 +39,7 @@ printf("cspec_proc_instance_new \n");
     add_processes((ElementSurface *) ps, processes, p);
     size_table_set(newNoun, size_function);
     stack_push(r, newNoun, ps);
-    if(size_function == noun_get_spec_size) {
+    if(size_function == noun_get_size) {
         Symbol noun;
         void *surface;
         stack_peek_unchecked(r, &noun, &surface);
@@ -49,20 +50,3 @@ printf("cspec_proc_instance_new \n");
     }
 }
 
-//int cspec_proc_instance_size(Receptor *r) {
-//    return element_header_size(surface);
-//}
-
-void cspec_init(Receptor *r) {
-//    Symbol noun = data_new_noun(r, r->rootXaddr, "CSPEC");
-//    dump_xaddrs(r);
-//    ElementSurface tmp_cspec = {noun, 1, {}};
-//    size_t size = element_header_size(&tmp_cspec);
-//    ElementSurface *cspec = (ElementSurface *)data_new_uninitialized(r, &r->cspecXaddr, noun, size);
-//
-//    cspec->processes.name = INSTANCE_NEW;
-//    cspec->processes.function = &cspec_proc_instance_new;
-
-//    cspec->processes[1].name = INSTANCE_SIZE;
-//    cspec->processes[1].function = &cspec_proc_instance_size;
-}

@@ -24,7 +24,6 @@ size_t _pattern_get_size(void *pattern_surface) {
 size_t pattern_get_size(Receptor *r, Symbol noun, void *pattern_surface) {
     Symbol nounType;
     ElementSurface *spec_surface = spec_surface_for_noun(r, &nounType, noun);
-    assert(nounType == r->patternNoun);
     return _pattern_get_size(spec_surface);
 }
 
@@ -38,13 +37,12 @@ size_t pattern_get_spec_size(Receptor *r, Symbol noun, ElementSurface *es) {
 }
 
 
-
 Xaddr preop_new_pattern(Receptor *r, char *label, int child_count_or_size, Xaddr *children, int processCount, Process *processes) {
     char ps[BUFFER_SIZE];
     memset(ps, 0, BUFFER_SIZE);
     int i;
     Symbol newNoun = init_element(r, label, r->patternSpecXaddr, (ElementSurface *) ps, processCount, processes);
-    size_table_set(newNoun, pattern_get_spec_size);
+    size_table_set(newNoun, pattern_get_size);
 
     if (children == 0) {
         pattern_set_size(ps, child_count_or_size);
@@ -55,10 +53,10 @@ Xaddr preop_new_pattern(Receptor *r, char *label, int child_count_or_size, Xaddr
         Offset *pschildren = PATTERN_GET_CHILDREN(ps);
 
         for (i = 0; i < child_count_or_size; i++) {
-            if (children[i].noun == r->nounNoun) {
+            if (children[i].noun == r->nounSpecXaddr.noun) {
                 noun = (NounSurface *) surface_for_xaddr(r, children[i]);
                 child_pattern_surface = element_surface_for_xaddr(r, noun->specXaddr);
-            } else if (children[i].noun == r->patternNoun) {
+            } else if (children[i].noun == r->patternSpecXaddr.noun) {
                 child_pattern_surface = element_surface_for_xaddr(r, children[i]);
             } else {
                 raise_error("Unknown child element type %d\n", children[i].noun);
@@ -81,4 +79,12 @@ void proc_pattern_instance_new(Receptor *r) {
     stack_peek(r, PATTERN_SPEC_DATA_NOUN, (void **)&d);
     Xaddr pattern_xaddr = preop_new_pattern(r, d->label, d->child_count, d->children, d->process_count, d->processes);
     stack_push(r, XADDR_NOUN, &pattern_xaddr);
+}
+
+void pattern_init(Receptor *r){
+    Symbol newNoun = data_new_noun(r, r->cspecXaddr, "PATTERN");
+    size_table_set(newNoun, pattern_get_spec_size);
+    UntypedProcess processes = {INSTANCE_NEW, &proc_pattern_instance_new };
+    ElementSurface specSurface = { newNoun, 1, processes};
+    r->patternSpecXaddr = data_new(r, newNoun, &specSurface,  element_header_size((void *)&specSurface));
 }

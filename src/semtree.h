@@ -7,7 +7,7 @@ void *surface_for_xaddr(Receptor *r, Xaddr xaddr) {
 }
 
 Xaddr xaddr_for_noun(Receptor *r, Symbol noun) {
-    Xaddr nounXaddr = {noun, r->nounNoun};
+    Xaddr nounXaddr = {noun, r->nounSpecXaddr.noun};
     return nounXaddr;
 }
 
@@ -27,7 +27,7 @@ Xaddr spec_xaddr_for_noun(Receptor *r, Symbol noun){
     if (noun == r->cspecXaddr.noun) {
         raise_error0("no spec for the root xaddr\n");
         return r->cspecXaddr;
-    } else if (noun == r->nounNoun) {
+    } else if (noun == r->nounSpecXaddr.noun) {
         return r->nounSpecXaddr;
     } else if (noun == XADDR_NOUN) {
         return r->cspecXaddr; // FIXME: should be xaddrSpecXaddr

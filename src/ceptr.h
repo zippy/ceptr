@@ -104,17 +104,14 @@ typedef struct {
     ElementSurface rootSurface;
 
     //built in xaddrs:
+    Xaddr rootXaddr;
+    Xaddr cspecXaddr;
     Xaddr nounSpecXaddr;
     Xaddr patternSpecXaddr;
     Xaddr arraySpecXaddr;
     Xaddr intPatternSpecXaddr;
     Xaddr pointPatternSpecXaddr;
     Xaddr linePatternSpecXaddr;
-    Xaddr cspecXaddr;
-    Xaddr rootXaddr;
-    Symbol nounNoun;
-    Symbol patternNoun;
-    Symbol arrayNoun;
 
     Data data;
 } Receptor;
@@ -208,7 +205,7 @@ void dump_xaddrs(Receptor *r);
 // this should go somewhere once the dependencies are better resolved.  right now it depends on everything.
 size_t size_of_named_surface(Receptor *r, Symbol instanceNoun, void *surface) {
     size_t result = 0;
-    if (instanceNoun < 0){
+    if (instanceNoun <= 0){
         switch (instanceNoun) {
             case XADDR_NOUN:
                 result = sizeof(Xaddr);
@@ -226,7 +223,7 @@ size_t size_of_named_surface(Receptor *r, Symbol instanceNoun, void *surface) {
                 raise_error("can't get size of instance of %d \n", instanceNoun);
         }
     } else {
-        result = (*size_table_get(instanceNoun))(r, instanceNoun, surface);
+        result = (*size_table_get(spec_noun_for_noun(r, instanceNoun)))(r, instanceNoun, surface);
     }
     printf("size_of_named_surface %d = %ld\n", instanceNoun, result);
     return result;
@@ -243,9 +240,6 @@ size_t size_of_named_surface(Receptor *r, Symbol instanceNoun, void *surface) {
 #include "ops.h"
 
 //
-#include "procs.h"
-
-//
 #include "element.h"
 
 //
@@ -256,6 +250,9 @@ size_t size_of_named_surface(Receptor *r, Symbol instanceNoun, void *surface) {
 
 //
 #include "builtins/array.h"
+
+//
+#include "builtins/int.h"
 
 //
 #include "builtins/cspec.h"

@@ -14,6 +14,9 @@ void * skip_elem_header(void *element_surface) {
 
 Process *getProcess(ElementSurface *es, FunctionName name) {
     int i = es->process_count;
+    if (i <= 0){
+        raise_error2("request for process %d on element with %d process_count\n", name, i);
+    }
     Process *p = (Process *)&es->processes;
     while (i--) {
         if (p->name == name) {
