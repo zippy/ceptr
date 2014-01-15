@@ -23,6 +23,7 @@
 typedef int Symbol;
 
 #define BUFFER_SIZE 10000
+#define SMALL_BUFFER_SIZE 500
 
 enum FunctionNames {
     INSTANCE_SIZE, INSTANCE_NEW, PRINT, INC, ADD
@@ -58,10 +59,15 @@ typedef struct {
 } SemStackFrame;
 
 typedef struct {
+    char content[SMALL_BUFFER_SIZE];
+} LogEntry;
+
+typedef struct {
     Xaddr xaddrs[DEFAULT_CACHE_SIZE];
     Symbol xaddr_scape[DEFAULT_CACHE_SIZE];
     char cache[DEFAULT_CACHE_SIZE];
     int current_xaddr;
+    LogEntry lastLogEntry;
     size_t cache_index;
 } Data;
 
@@ -92,6 +98,9 @@ typedef struct {
     Xaddr arraySpecXaddr;
     Xaddr intPatternSpecXaddr;
     Xaddr linePatternSpecXaddr;
+    Xaddr streamSpecXaddr;
+    Xaddr receptorSpecXaddr;
+    Xaddr membraneXaddr;
 
     Data data;
 } Receptor;
@@ -112,12 +121,6 @@ typedef struct {
     FunctionName name;
     int (*function)(Receptor *, void *);
 } LegacyProcess;
-
-typedef struct {
-    size_t size;
-    int children_count;
-    Offset children;
-} PatternBody;
 
 typedef struct {
     char *label;
@@ -164,10 +167,19 @@ void dump_xaddrs(Receptor *r);
 #include "builtins/array.h"
 
 //
+#include "builtins/stream.h"
+
+//
 #include "builtins/int.h"
 
 //
+#include "builtins/receptor.h"
+
+//
 #include "init.h"
+
+//
+#include "builtins/vm_host.h"
 
 //
 #include "dump.h"

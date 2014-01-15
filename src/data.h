@@ -87,6 +87,11 @@ void *data_get(Receptor *r, Xaddr xaddr) {
     return &r->data.cache[xaddr.key];
 }
 
+void data_write_log(Receptor *r, void *surface, size_t length) {
+    memcpy( r->data.lastLogEntry.content, surface, length);
+}
+
+
 void data_init(Receptor *r) {
     int i;
     for (i = 0; i < DEFAULT_CACHE_SIZE; i++) r->data.xaddr_scape[i] = CSPEC;

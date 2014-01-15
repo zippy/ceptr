@@ -34,7 +34,7 @@ Symbol getSymbol(Receptor *r, char *label) {
             }
         }
     }
-    raise_error("couldn't find symbol for label %s", label);
+    raise_error("couldn't find symbol for label %s\n", label);
     return 0;
 }
 

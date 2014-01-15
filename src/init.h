@@ -15,6 +15,8 @@ void init_builtins(Receptor *r) {
     pattern_init(r);
     array_init(r);
     int_init(r);
+    stream_init(r);
+    receptor_init(r);
 }
 
 void init(Receptor *r) {
@@ -23,4 +25,5 @@ void init(Receptor *r) {
     data_init(r);
     init_elements(r);
     init_builtins(r);
+
 }

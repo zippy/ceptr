@@ -106,15 +106,6 @@ void dump_reps_spec(Receptor *r, void *surface) {
     printf("\n");
 }
 
-void array_init(Receptor *r){
-    Symbol newNoun = data_new_noun(r, r->cspecXaddr, "ARRAY");
-    size_table_set(newNoun, (sizeFunction)array_get_spec_size);
-    UntypedProcess processes = {INSTANCE_NEW, (voidVoidFn) proc_array_instance_new };
-    ElementSurface specSurface = { newNoun, 1, processes};
-    r->arraySpecXaddr = data_new(r, newNoun, &specSurface,  element_header_size((void *)&specSurface));
-}
-
-
 
 void dump_array_value(Receptor *r, ElementSurface *rs, void *surface) {
     int count = *(int *) surface;
@@ -145,4 +136,14 @@ void dump_array_value(Receptor *r, ElementSurface *rs, void *surface) {
         }
     }
 }
+
+
+void array_init(Receptor *r){
+    Symbol newNoun = data_new_noun(r, r->cspecXaddr, "ARRAY");
+    size_table_set(newNoun, (sizeFunction)array_get_spec_size);
+    UntypedProcess processes = {INSTANCE_NEW, (voidVoidFn) proc_array_instance_new };
+    ElementSurface specSurface = { newNoun, 1, processes};
+    r->arraySpecXaddr = data_new(r, newNoun, &specSurface,  element_header_size((void *)&specSurface));
+}
+
 

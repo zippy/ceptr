@@ -11,6 +11,9 @@
 #include "builtins/noun_spec.h"
 #include "builtins/int_spec.h"
 #include "builtins/array_spec.h"
+#include "builtins/stream_spec.h"
+#include "builtins/receptor_spec.h"
+#include "builtins/vm_host_spec.h"
 
 #include "examples/point.h"
 #include "examples/line.h"
@@ -25,8 +28,12 @@ int main(int argc, const char **argv) {
 
     testInt();
     testPoint();
+    testStream();
+
 //    testLine();
 //    testArray();
+    testReceptor();
+    testVmHost();
 
     report_tests();
     return 0;

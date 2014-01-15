@@ -1,5 +1,14 @@
 #include "../ceptr.h"
 
+
+typedef struct {
+    size_t size;
+    int children_count;
+    Offset children;
+} PatternBody;
+
+
+
 #define PATTERN_GET_CHILDREN_COUNT(pat) (((PatternBody *)SKIP_ELEM_HEADER(pat))->children_count)
 #define PATTERN_SET_CHILDREN_COUNT(pat,count) (((PatternBody *)SKIP_ELEM_HEADER(pat))->children_count=count)
 #define PATTERN_GET_CHILDREN(pat) (&(((PatternBody *)SKIP_ELEM_HEADER(pat))->children))

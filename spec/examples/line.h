@@ -21,7 +21,6 @@ Xaddr initLine(Receptor *r) {
         {PRINT, (processFn) proc_line_print}
     };
 
-
     return preop_new_pattern(r, "LINE", 2, line_children, 1, line_processes);
 }
 
