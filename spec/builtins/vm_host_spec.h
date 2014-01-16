@@ -1,15 +1,11 @@
 #include "../../src/ceptr.h"
 
-void echo_log_proc(Receptor *r) {
-    raise_error0("nuh uh\n");
-}
-
 void testSendMessageFromEchoToStdoutLog() {
     HostReceptor vmHostReceptor;
     HostReceptor *vm = &vmHostReceptor;
     vm_host_init(vm);
 
-    Receptor *echo_r = vmh_receptor_new(vm, echo_log_proc);
+    Receptor *echo_r = vmh_receptor_new(vm, null_proc);
 
     Packet p;
     p.destination = STDOUT;
@@ -21,6 +17,20 @@ void testSendMessageFromEchoToStdoutLog() {
     printf("\nshould have printed 'Int Spec'\n");
 }
 
+void testPlantListenerOnStdinSendsMessagestoEcho() {
+    HostReceptor vmHostReceptor, *vm = &vmHostReceptor;
+    vm_host_init(vm);
+
+    Receptor *echo_r = vmh_receptor_new(vm, null_proc);
+    listen(echo_r, STDIN);
+    int val = 33;
+    write_out(vm, &vm->receptors[STDIN], echo_r->charIntNoun, &val, 4);
+
+    spec_is_equal( echo_r->data.lastLogEntry.noun, echo_r->charIntNoun);
+    spec_is_equal( *(int *)echo_r->data.lastLogEntry.content, val);
+}
+
+
 void testGetLogProcFromStdout() {
     HostReceptor vmHostReceptor, *vm = &vmHostReceptor;
     vm_host_init(vm);
@@ -28,9 +38,26 @@ void testGetLogProcFromStdout() {
     spec_is_long_equal((long)lp, (long)stdout_log_proc);
 }
 
+void echo_log_proc(Receptor *r) {
+    LogEntry *le = &r->data.lastLogEntry;
+    size_t size = size_of_named_surface(r, le->noun, le->content);
+    _send_message((HostReceptor *)r->parent, STDOUT, le->noun, le->content, size);
+}
+
+void testEcho(){
+    HostReceptor vmHostReceptor, *vm = &vmHostReceptor;
+    vm_host_init(vm);
+    Receptor *echo_r = vmh_receptor_new(vm, echo_log_proc);
+    listen(echo_r, STDIN);
+    vm_host_poll(vm);
+    // spec:  should do the echo loop
+}
+
 void testVmHost(){
     testSendMessageFromEchoToStdoutLog();
     testGetLogProcFromStdout();
+    testPlantListenerOnStdinSendsMessagestoEcho();
+    testEcho();
 }
 
 

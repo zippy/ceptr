@@ -13,6 +13,10 @@ void init_elements(Receptor *r) {
     r->membraneXaddr.noun = CSPEC;
     r->xaddrXaddr.key = XADDR_NOUN;
     r->xaddrXaddr.noun = CSPEC;
+
+    r->listenerCount = 0;
+    r->logProc = 0;
+    r->pollProc = 0;
 }
 
 void init_builtins(Receptor *r) {
@@ -20,6 +24,9 @@ void init_builtins(Receptor *r) {
     pattern_init(r);
     array_init(r);
     int_init(r);
+
+    r->charIntNoun = preop_new_noun(r, r->intPatternSpecXaddr, "CHAR_INT");
+
 //    stream_init(r);
 //    receptor_init(r);
 }
