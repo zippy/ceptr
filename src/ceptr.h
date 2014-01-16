@@ -59,6 +59,7 @@ typedef struct {
 } SemStackFrame;
 
 typedef struct {
+    Symbol noun;
     char content[SMALL_BUFFER_SIZE];
 } LogEntry;
 
@@ -84,6 +85,8 @@ typedef struct {
 
 typedef struct Receptor;
 
+typedef void (* LogProc)(void *);
+
 typedef struct {
     SemStackFrame semStack[STACK_SIZE];
     Symbol nounStack[STACK_SIZE];
@@ -103,11 +106,14 @@ typedef struct {
     Xaddr streamSpecXaddr;
     Xaddr receptorSpecXaddr;
     Xaddr membraneXaddr;
+    Xaddr xaddrXaddr;
 
-    struct Receptor  *parent;
+    struct Receptor *parent;
 
+    LogProc logProc;
     Data data;
 } Receptor;
+
 
 typedef struct {
     FunctionName name;

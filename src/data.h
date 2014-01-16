@@ -12,6 +12,16 @@ sizeFunction size_table_get(Symbol noun) {
     return size_table[noun];
 }
 
+void *data_get(Receptor *r, Xaddr xaddr) {
+    if (util_xaddr_eq(xaddr, r->rootXaddr)){
+        return &r->rootSurface;
+    }
+    if (!data_sem_check(r, xaddr)) {
+        raise_error2("semcheck failed getting xaddr { %d, %d }\n", xaddr.key, xaddr.noun );
+    }
+    return &r->data.cache[xaddr.key];
+}
+
 void size_table_set(Symbol noun, sizeFunction func) {
     size_table[noun] = func;
 }
@@ -45,44 +55,39 @@ void *data_new_uninitialized(Receptor *r, Xaddr *new_xaddr, Symbol noun, size_t 
 }
 
 
-enum { STDOUT };
-
-typedef int Address;
-
-typedef struct {
-    Receptor base;
-    Receptor stdout;
-} VMReceptor;
-
-
-Receptor *resolve(VMReceptor *r, Address addr) {
-    if (addr == STDOUT) {
-        return &r->stdout;
+// this should go somewhere once the dependencies are better resolved.  right now it depends on everything.
+size_t size_of_named_surface(Receptor *r, Symbol instanceNoun, void *surface) {
+    size_t result = 0;
+    if (instanceNoun <= 0){
+        switch (instanceNoun) {
+            case XADDR_NOUN:
+                result = sizeof(Xaddr);
+                break;
+            case CSPEC_NOUN:
+                result = (size_t) 0;
+                break;
+            case CSTRING_NOUN:
+                result = strlen((char *) surface) + 1;
+                break;
+            case PATTERN_SPEC_DATA_NOUN:
+                result = sizeof(PatternSpecData);
+                break;
+            default:
+                raise_error("can't get size of instance of %d \n", instanceNoun);
+        }
+    } else {
+        result = (*size_table_get(spec_noun_for_noun(r, instanceNoun)))(r, instanceNoun, surface);
     }
-    raise_error("whatchu talking about addred %d\n", addr );
-    return 0;
+    return result;
 }
 
-
-void data_write_log(Receptor *r, void *surface, size_t length) {
-    memcpy( r->data.lastLogEntry.content, surface, length);
-}
-
-void send_message(VMReceptor *r, Address dest_addr, void *surface, size_t length) {
-    Receptor *dest_receptor = resolve(r, dest_addr);
-    data_write_log( dest_receptor, surface, length);
-}
 
 void data_set(Receptor *r, Xaddr xaddr, void *value, size_t size) {
     void *surface = &r->data.cache[xaddr.key];
-    if (xaddr.key == MEMBRANE) {
-        send_message(r->parent, ((int*)value)[0], &((int*)value)[2], 4);
-    } else {
-        if (xaddr.key == 0 || !data_sem_check(r, xaddr)) {
-            raise_error("I do not think that word (%d) means what you think it means!\n", xaddr.noun);
-        }
-        memcpy(surface, value, size);
+    if (xaddr.key == 0 || !data_sem_check(r, xaddr)) {
+        raise_error("I do not think that word (%d) means what you think it means!\n", xaddr.noun);
     }
+    memcpy(surface, value, size);
 }
 
 Xaddr data_new(Receptor *r, Symbol noun, void *surface, size_t size) {
@@ -107,17 +112,6 @@ Symbol data_new_noun(Receptor *r, Xaddr xaddr, char *label) {
     r->data.cache_index += sizeof(NounSurface)+strlen(&ns->label);
     data_record_existence(r, current_index, r->nounSpecXaddr.noun);
     return current_index;
-}
-
-void *data_get(Receptor *r, Xaddr xaddr) {
-    if (util_xaddr_eq(xaddr, r->rootXaddr)){
-        return &r->rootSurface;
-    }
-
-    if (!data_sem_check(r, xaddr)) {
-        raise_error2("semcheck failed getting xaddr { %d, %d }\n", xaddr.key, xaddr.noun );
-    }
-    return &r->data.cache[xaddr.key];
 }
 
 

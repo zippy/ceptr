@@ -1,14 +1,5 @@
 #include "ceptr.h"
 
-void dump_spec_spec(Receptor *r, void *surface) {
-    ElementSurface *ps = (ElementSurface *) surface;
-    printf("Spec\n");
-    printf("    name: %s(%d)\n", label_for_noun(r, ps->name), ps->name);
-    printf("    %d processes: ", ps->process_count);
-    dump_process_array((Process *) &ps->processes, ps->process_count);
-    printf("\n");
-}
-
 void dump_xaddr(Receptor *r, Xaddr xaddr, int indent_level) {
     Symbol typeNoun = spec_noun_for_xaddr(r, xaddr);
 

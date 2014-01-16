@@ -11,6 +11,8 @@ void init_elements(Receptor *r) {
 
     r->membraneXaddr.key = MEMBRANE;
     r->membraneXaddr.noun = CSPEC;
+    r->xaddrXaddr.key = XADDR_NOUN;
+    r->xaddrXaddr.noun = CSPEC;
 }
 
 void init_builtins(Receptor *r) {
@@ -18,8 +20,8 @@ void init_builtins(Receptor *r) {
     pattern_init(r);
     array_init(r);
     int_init(r);
-    stream_init(r);
-    receptor_init(r);
+//    stream_init(r);
+//    receptor_init(r);
 }
 
 void init(Receptor *r) {

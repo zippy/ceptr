@@ -28,11 +28,11 @@ int main(int argc, const char **argv) {
 
     testInt();
     testPoint();
-    testStream();
+//    testStream();
 
 //    testLine();
 //    testArray();
-    testReceptor();
+//    testReceptor();
     testVmHost();
 
     report_tests();
