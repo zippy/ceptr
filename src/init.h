@@ -8,6 +8,9 @@ void init_elements(Receptor *r) {
 
     r->cspecXaddr.key = CSPEC;
     r->cspecXaddr.noun = CSPEC_NOUN;
+
+    r->membraneXaddr.key = MEMBRANE;
+    r->membraneXaddr.noun = CSPEC;
 }
 
 void init_builtins(Receptor *r) {

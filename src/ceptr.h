@@ -31,7 +31,7 @@ enum FunctionNames {
 
 enum Symbols {
     CSPEC = -1, CSPEC_NOUN = -2, XADDR_NOUN = -3,
-    CSTRING_NOUN = -4, PATTERN_SPEC_DATA_NOUN = -5,  ROOT = -100
+    CSTRING_NOUN = -4, PATTERN_SPEC_DATA_NOUN = -5, MEMBRANE = -6,  ROOT = -100
 };
 
 typedef int FunctionName;
@@ -82,6 +82,8 @@ typedef struct {
     UntypedProcess processes;
 } ElementSurface;
 
+typedef struct Receptor;
+
 typedef struct {
     SemStackFrame semStack[STACK_SIZE];
     Symbol nounStack[STACK_SIZE];
@@ -101,6 +103,8 @@ typedef struct {
     Xaddr streamSpecXaddr;
     Xaddr receptorSpecXaddr;
     Xaddr membraneXaddr;
+
+    struct Receptor  *parent;
 
     Data data;
 } Receptor;

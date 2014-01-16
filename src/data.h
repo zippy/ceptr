@@ -44,12 +44,45 @@ void *data_new_uninitialized(Receptor *r, Xaddr *new_xaddr, Symbol noun, size_t 
     return &r->data.cache[new_xaddr->key];
 }
 
+
+enum { STDOUT };
+
+typedef int Address;
+
+typedef struct {
+    Receptor base;
+    Receptor stdout;
+} VMReceptor;
+
+
+Receptor *resolve(VMReceptor *r, Address addr) {
+    if (addr == STDOUT) {
+        return &r->stdout;
+    }
+    raise_error("whatchu talking about addred %d\n", addr );
+    return 0;
+}
+
+
+void data_write_log(Receptor *r, void *surface, size_t length) {
+    memcpy( r->data.lastLogEntry.content, surface, length);
+}
+
+void send_message(VMReceptor *r, Address dest_addr, void *surface, size_t length) {
+    Receptor *dest_receptor = resolve(r, dest_addr);
+    data_write_log( dest_receptor, surface, length);
+}
+
 void data_set(Receptor *r, Xaddr xaddr, void *value, size_t size) {
     void *surface = &r->data.cache[xaddr.key];
-    if (!data_sem_check(r, xaddr)) {
-        raise_error("I do not think that word (%d) means what you think it means!\n", xaddr.noun);
+    if (xaddr.key == MEMBRANE) {
+        send_message(r->parent, ((int*)value)[0], &((int*)value)[2], 4);
+    } else {
+        if (xaddr.key == 0 || !data_sem_check(r, xaddr)) {
+            raise_error("I do not think that word (%d) means what you think it means!\n", xaddr.noun);
+        }
+        memcpy(surface, value, size);
     }
-    memcpy(surface, value, size);
 }
 
 Xaddr data_new(Receptor *r, Symbol noun, void *surface, size_t size) {
@@ -85,10 +118,6 @@ void *data_get(Receptor *r, Xaddr xaddr) {
         raise_error2("semcheck failed getting xaddr { %d, %d }\n", xaddr.key, xaddr.noun );
     }
     return &r->data.cache[xaddr.key];
-}
-
-void data_write_log(Receptor *r, void *surface, size_t length) {
-    memcpy( r->data.lastLogEntry.content, surface, length);
 }
 
 
