@@ -1,18 +1,15 @@
 #include "../../src/ceptr.h"
 
+void echo_log_proc(Receptor *r) {
+    raise_error0("nuh uh\n");
+}
 
 void testSendMessageFromEchoToStdoutLog() {
-    VMReceptor vmHostReceptor, *vm = &vmHostReceptor;
+    HostReceptor vmHostReceptor;
+    HostReceptor *vm = &vmHostReceptor;
     vm_host_init(vm);
 
-    Receptor echoReceptor, *echo_r = &echoReceptor;
-
-    init(echo_r);
-    echo_r->parent = &vm->base;
-
-    Xaddr expected_xaddr;
-
-//    Xaddr packetSpecXaddr = initPacket(echo_r);
+    Receptor *echo_r = vmh_receptor_new(vm, echo_log_proc);
 
     Packet p;
     p.destination = STDOUT;
@@ -20,16 +17,14 @@ void testSendMessageFromEchoToStdoutLog() {
 
     send_message(echo_r, &p);
 
-//    data_set(echo_r, echo_r->membraneXaddr, &p, 0);
-
-    spec_is_equal( vm->stdout.data.lastLogEntry.noun, echo_r->intPatternSpecXaddr.noun);
+    spec_is_equal( vm->receptors[STDOUT].data.lastLogEntry.noun, echo_r->intPatternSpecXaddr.noun);
     printf("\nshould have printed 'Int Spec'\n");
 }
 
 void testGetLogProcFromStdout() {
-    VMReceptor vmHostReceptor, *vm = &vmHostReceptor;
+    HostReceptor vmHostReceptor, *vm = &vmHostReceptor;
     vm_host_init(vm);
-    LogProc lp = getLogProc(&vm->stdout);
+    LogProc lp = getLogProc(&vm->receptors[STDOUT]);
     spec_is_long_equal((long)lp, (long)stdout_log_proc);
 }
 

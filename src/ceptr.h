@@ -85,7 +85,7 @@ typedef struct {
 
 typedef struct Receptor;
 
-typedef void (* LogProc)(void *);
+typedef void (* LogProc)(struct Receptor *);
 
 typedef struct {
     SemStackFrame semStack[STACK_SIZE];

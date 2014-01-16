@@ -1,28 +1,29 @@
 #include "../ceptr.h"
 
+#define MAX_RECEPTORS 3
 
-enum { STDOUT };
+enum { VM, STDOUT };
 
 typedef int Address;
 
 typedef struct {
-    Receptor base;
-    Receptor stdout;
-} VMReceptor;
+    Receptor receptors[MAX_RECEPTORS];
+    int receptor_count;
+} HostReceptor;
 
 
-Receptor *resolve(VMReceptor *r, Address addr) {
-    if (addr == STDOUT) {
-        return &r->stdout;
+Receptor *resolve(HostReceptor *r, Address addr) {
+    Receptor *dr = &r->receptors[addr];
+    if (dr == 0) {
+        raise_error("whatchu talking about addred %d\n", addr );
+        return 0;
     }
-    raise_error("whatchu talking about addred %d\n", addr );
-    return 0;
+    return dr;
 }
 
 LogProc getLogProc(Receptor *r) {
     return r->logProc;
 }
-
 
 void data_write_log(Receptor *r, Symbol noun, void *surface, size_t length) {
     memcpy( r->data.lastLogEntry.content, surface, length);
@@ -38,12 +39,11 @@ void wakeup(Receptor *r){
     (*getLogProc((void*)r))((void *)r);
 }
 
-void _send_message(VMReceptor *r, Packet *p, void *surface, size_t size) {
+void _send_message(HostReceptor *r, Packet *p, void *surface, size_t size) {
     Receptor *dest_receptor = resolve(r, p->destination);
     data_write_log( dest_receptor, p->value.noun, surface, size);
     wakeup(dest_receptor);
 }
-
 
 void send_message(Receptor *r, Packet *p) {
     void *surface = surface_for_xaddr(r, p->value);
@@ -69,18 +69,28 @@ void dump_named_surface(Receptor *r, Symbol noun, void *surface) {
     }
 }
 
-
-void stdout_log_proc(void *r_ptr) {
-    Receptor *r = (Receptor *) r_ptr;
+void stdout_log_proc(Receptor *r) {
     dump_named_surface(r, r->data.lastLogEntry.noun, &r->data.lastLogEntry.content );
 }
 
+void _vmh_receptor_new(HostReceptor *r, Address addr, LogProc lp) {
+    init(&r->receptors[addr]);
+    r->receptors[addr].logProc = lp;
+    r->receptors[addr].parent = r;
+}
 
-void vm_host_init(VMReceptor *r){
+Receptor *vmh_receptor_new(HostReceptor *r, LogProc lp) {
+    _vmh_receptor_new(r, ++r->receptor_count, lp);
+    return &r->receptors[r->receptor_count];
+}
 
-    init(&r->base);
-    init(&r->stdout);
-    r->stdout.logProc = &stdout_log_proc;
+void vm_host_init(HostReceptor *r){
+    r->receptor_count = 0;
+    init(&r->receptors[VM]);
+
+    _vmh_receptor_new(r, STDOUT, stdout_log_proc);
+    r->receptor_count = STDOUT;
+
     // add "STDIN", "STDOUT" receptors to Vmhost
 
 
