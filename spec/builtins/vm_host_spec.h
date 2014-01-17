@@ -13,7 +13,9 @@ void testSendMessageFromEchoToStdoutLog() {
 
     send_message(echo_r, &p);
 
-    spec_is_equal( vm->receptors[STDOUT].data.lastLogEntry.noun, echo_r->intPatternSpecXaddr.noun);
+    LogEntry *le = &vm->receptors[STDOUT].data.log[vm->receptors[STDOUT].data.log_tail];
+
+    spec_is_equal( le->noun, echo_r->intPatternSpecXaddr.noun);
     printf("\nshould have printed 'Int Spec'\n");
 }
 
@@ -26,8 +28,9 @@ void testPlantListenerOnStdinSendsMessagestoEcho() {
     int val = 33;
     write_out(vm, &vm->receptors[STDIN], echo_r->charIntNoun, &val, 4);
 
-    spec_is_equal( echo_r->data.lastLogEntry.noun, echo_r->charIntNoun);
-    spec_is_equal( *(int *)echo_r->data.lastLogEntry.content, val);
+    LogEntry *le = &echo_r->data.log[echo_r->data.log_tail];
+    spec_is_equal( le->noun, echo_r->charIntNoun);
+    spec_is_equal( *(int *)le->content, val);
 }
 
 
@@ -38,8 +41,7 @@ void testGetLogProcFromStdout() {
     spec_is_long_equal((long)lp, (long)stdout_log_proc);
 }
 
-void echo_log_proc(Receptor *r) {
-    LogEntry *le = &r->data.lastLogEntry;
+void echo_log_proc(Receptor *r, LogEntry *le) {
     size_t size = size_of_named_surface(r, le->noun, le->content);
     _send_message((HostReceptor *)r->parent, STDOUT, le->noun, le->content, size);
 }

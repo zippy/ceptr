@@ -20,6 +20,9 @@ void init_processing(Receptor *r) {
     r->logProc = 0;
     r->pollProc = 0;
     r->logChange = false;
+
+    assert( pthread_mutex_init(&r->data.log_mutex, NULL) == 0);
+
 }
 
 void init_builtins(Receptor *r) {

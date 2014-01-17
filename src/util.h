@@ -41,4 +41,3 @@ void hexDump(char *desc, void *addr, int len) {
         buff[(i % 16) + 1] = '\0';
     }
 }
-

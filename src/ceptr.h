@@ -29,6 +29,7 @@
 
 typedef int Symbol;
 
+#define MAX_LOG_ENTRIES 30
 #define BUFFER_SIZE 10000
 #define SMALL_BUFFER_SIZE 500
 
@@ -77,7 +78,12 @@ typedef struct {
     Symbol xaddr_scape[DEFAULT_CACHE_SIZE];
     char cache[DEFAULT_CACHE_SIZE];
     int current_xaddr;
-    LogEntry lastLogEntry;
+
+    int log_head;
+    int log_tail;
+    LogEntry log[MAX_LOG_ENTRIES];
+    pthread_mutex_t log_mutex;
+
     size_t cache_index;
 } Data;
 
@@ -94,7 +100,8 @@ typedef struct {
 
 typedef struct Receptor;
 
-typedef void (* LogProc)(struct Receptor *);
+typedef void (* LogProc)(struct Receptor *, LogEntry *);
+typedef void (* PollProc)(struct Receptor *);
 
 typedef struct {
     SemStackFrame semStack[STACK_SIZE];
@@ -120,7 +127,7 @@ typedef struct {
     struct Receptor *parent;
 
     LogProc logProc;
-    LogProc pollProc;
+    PollProc pollProc;
     Data data;
 
     int listenerCount;
@@ -204,6 +211,9 @@ void dump_xaddrs(Receptor *r);
 
 //
 #include "init.h"
+
+//
+#include "receptor_util.h"
 
 //
 #include "builtins/vm_host.h"
