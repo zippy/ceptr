@@ -21,6 +21,8 @@ void init_processing(Receptor *r) {
     r->pollProc = 0;
     r->logChange = false;
 
+    r->data.log_head = 0;
+    r->data.log_tail = 0;
     assert( pthread_mutex_init(&r->data.log_mutex, NULL) == 0);
 
 }

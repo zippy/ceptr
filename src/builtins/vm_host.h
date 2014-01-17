@@ -36,6 +36,12 @@ void wakeup(Receptor *r){
 
 void data_write_log(HostReceptor *h, Receptor *r, Symbol noun, void *surface, size_t length) {
     // HostReceptor h is here just to make it clear this isn't internal operation on r
+
+    assert( pthread_mutex_lock( &r->data.log_mutex) == 0);
+
+    r->data.log[r->data.log_head].noun = noun;
+    memcpy( r->data.log[r->data.log_head].content, surface, length);
+
     int new_log_head = r->data.log_head + 1;
     if (new_log_head >= MAX_LOG_ENTRIES) {
         new_log_head = 0;
@@ -43,11 +49,6 @@ void data_write_log(HostReceptor *h, Receptor *r, Symbol noun, void *surface, si
     if (new_log_head == r->data.log_tail) {
         raise_error0("buffer overflow");
     }
-
-    assert( pthread_mutex_lock( &r->data.log_mutex) == 0);
-
-    r->data.log[new_log_head].noun = noun;
-    memcpy( r->data.log[new_log_head].content, surface, length);
     r->data.log_head = new_log_head;
 
     assert( pthread_mutex_unlock( &r->data.log_mutex) == 0);
@@ -95,13 +96,10 @@ void dump_named_surface(Receptor *r, Symbol noun, void *surface) {
 }
 
 void stdin_poll_proc(Receptor *r){
-    printf("stdin_poll_proc\n");
+//    printf("stdin_poll_proc\n");
     int c;
     c = getchar();
-    while(c != EOF){
-        write_out((HostReceptor *)r->parent, r, r->charIntNoun, &c, 4);
-        c = getchar();
-    }
+    write_out((HostReceptor *)r->parent, r, r->charIntNoun, &c, 4);
 }
 
 void stdout_log_proc(Receptor *r, LogEntry *le) {
@@ -114,7 +112,6 @@ void *receptor_task(void *arg) {
     // r->initProc;
     r->alive = true;
     while(r->alive) {
-        sleep(1);
         if (r->pollProc != 0) {
             (r->pollProc)(r);
         }

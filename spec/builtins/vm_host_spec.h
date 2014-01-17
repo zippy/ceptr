@@ -33,7 +33,6 @@ void testPlantListenerOnStdinSendsMessagestoEcho() {
     spec_is_equal( *(int *)le->content, val);
 }
 
-
 void testGetLogProcFromStdout() {
     HostReceptor vmHostReceptor, *vm = &vmHostReceptor;
     vm_host_init(vm);
