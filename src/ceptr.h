@@ -10,6 +10,9 @@
 #include <stdio.h>
 #include <assert.h>
 
+#include <pthread.h>
+#include <stdlib.h>
+
 #define raise_error0(error_msg)        \
     printf(error_msg);            \
     printf("\n"); \
@@ -27,6 +30,8 @@ typedef int Symbol;
 
 #define BUFFER_SIZE 10000
 #define SMALL_BUFFER_SIZE 500
+
+typedef enum { false, true } bool;
 
 enum FunctionNames {
     INSTANCE_SIZE, INSTANCE_NEW, PRINT, INC, ADD
@@ -121,6 +126,7 @@ typedef struct {
     struct Receptor *listeners[10];
 
     Symbol charIntNoun;
+    bool alive;
 } Receptor;
 
 

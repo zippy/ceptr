@@ -9,8 +9,8 @@ typedef int Address;
 typedef struct {
     Receptor receptors[MAX_RECEPTORS];
     int receptor_count;
+    pthread_t threads[MAX_RECEPTORS];
 } HostReceptor;
-
 
 
 void null_proc(Receptor *r) {
@@ -81,6 +81,7 @@ void dump_named_surface(Receptor *r, Symbol noun, void *surface) {
 }
 
 void stdin_poll_proc(Receptor *r){
+    printf("stdin_poll_proc\n");
     int c;
     c = getchar();
     while(c != EOF){
@@ -93,11 +94,33 @@ void stdout_log_proc(Receptor *r) {
     dump_named_surface(r, r->data.lastLogEntry.noun, &r->data.lastLogEntry.content );
 }
 
+
+
+void *receptor_task(void *arg) {
+    Receptor *r = (Receptor *)arg;
+    // r->initProc;
+    r->alive = true;
+    while(r->alive) {
+        sleep(1);
+        if (r->pollProc != 0) {
+            (r->pollProc)(r);
+        }
+        // onLogChange  r->logProc;
+    }
+    return NULL;
+}
 void _vmh_receptor_new(HostReceptor *r, Address addr, LogProc lp, LogProc pp) {
     init(&r->receptors[addr]);
     r->receptors[addr].logProc = lp;
     r->receptors[addr].pollProc = pp;
     r->receptors[addr].parent = r;
+
+    int rc;
+printf("creating thread for addr %d\n", addr);
+
+    rc = pthread_create(&r->threads[addr], NULL, receptor_task, (void *) &r->receptors[addr]);
+    assert(0 == rc);
+
 }
 
 Receptor *vmh_receptor_new(HostReceptor *r, LogProc lp) {
@@ -118,11 +141,17 @@ void vm_host_init(HostReceptor *r){
 }
 
 
-void vm_host_poll(HostReceptor *h) {
-    for (int i=0; i < h->receptor_count; i++){
-        if (h->receptors[i].pollProc != 0) {
-            (h->receptors[i].pollProc)(&h->receptors[i]);
-        }
+void vm_host_run(HostReceptor *h) {
+//    for (int i=0; i < h->receptor_count; i++){
+//        if (h->receptors[i].pollProc != 0) {
+//            (h->receptors[i].pollProc)(&h->receptors[i]);
+//        }
+//    }
+
+    int rc;
+    for (int i = 1; i < h->receptor_count; i++) {
+        rc = pthread_join(h->threads[i], NULL);
+        assert(0 == rc);
     }
 
     //

@@ -49,14 +49,14 @@ void testEcho(){
     vm_host_init(vm);
     Receptor *echo_r = vmh_receptor_new(vm, echo_log_proc);
     listen(echo_r, STDIN);
-    vm_host_poll(vm);
+    vm_host_run(vm);
     // spec:  should do the echo loop
 }
 
 void testVmHost(){
-    testSendMessageFromEchoToStdoutLog();
-    testGetLogProcFromStdout();
-    testPlantListenerOnStdinSendsMessagestoEcho();
+//    testSendMessageFromEchoToStdoutLog();
+//    testGetLogProcFromStdout();
+//    testPlantListenerOnStdinSendsMessagestoEcho();
     testEcho();
 }
 
