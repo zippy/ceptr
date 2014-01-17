@@ -12,6 +12,7 @@
 
 #include <pthread.h>
 #include <stdlib.h>
+#include <sys/queue.h>
 
 #define raise_error0(error_msg)        \
     printf(error_msg);            \
@@ -127,6 +128,7 @@ typedef struct {
 
     Symbol charIntNoun;
     bool alive;
+    bool logChange;
 } Receptor;
 
 

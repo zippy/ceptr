@@ -31,7 +31,7 @@ LogProc getLogProc(Receptor *r) {
 }
 
 void wakeup(Receptor *r){
-    (*getLogProc((void*)r))((void *)r);
+    r->logChange = true;
 }
 
 void data_write_log(HostReceptor *h, Receptor *r, Symbol noun, void *surface, size_t length) {
@@ -104,6 +104,10 @@ void *receptor_task(void *arg) {
         sleep(1);
         if (r->pollProc != 0) {
             (r->pollProc)(r);
+        }
+        if (r->logChange && r->logProc) {
+            (r->logProc)(r);
+            r->logChange = false;
         }
         // onLogChange  r->logProc;
     }

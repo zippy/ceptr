@@ -13,10 +13,13 @@ void init_elements(Receptor *r) {
     r->membraneXaddr.noun = CSPEC;
     r->xaddrXaddr.key = XADDR_NOUN;
     r->xaddrXaddr.noun = CSPEC;
+}
 
+void init_processing(Receptor *r) {
     r->listenerCount = 0;
     r->logProc = 0;
     r->pollProc = 0;
+    r->logChange = false;
 }
 
 void init_builtins(Receptor *r) {
@@ -33,7 +36,7 @@ void init_builtins(Receptor *r) {
 
 void init(Receptor *r) {
     stack_init(r);
-    //    init_processing(r);
+    init_processing(r);
     data_init(r);
     init_elements(r);
     init_builtins(r);
