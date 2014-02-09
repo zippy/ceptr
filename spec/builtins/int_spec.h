@@ -19,30 +19,17 @@ void testInt() {
     v = surface_for_xaddr(r, my_int_xaddr);
     spec_is_equal(*v, 8);
 
+    op_invoke(r, my_int_xaddr, INC);
+    spec_is_equal(*v, 9);
 
-    //    testInc();
-    //    testAdd();
+    val = 99;
+    Xaddr my_int2_xaddr = preop_new(r, MY_INT, &val);
+    int *v2 = surface_for_xaddr(r, my_int2_xaddr);
+    spec_is_equal(*v2, 99);
+
+    stack_push(r,MY_INT,v);
+    op_invoke(r, my_int2_xaddr, ADD);
+    stack_pop(r, MY_INT, &val);
+    spec_is_equal(val, 108);
 
 }
-
-
-//void testInc() {
-//    Receptor tr;init(&tr);Receptor *r = &tr;
-//    Symbol AGE = preop_new_noun(r, r->intPatternSpecXaddr, "Age");
-//    int val = 7;
-//    Xaddr age_xaddr = preop_new(r, AGE, &val);
-//    preop_exec(r, age_xaddr, INC);
-//    int *v = preop_get(r, age_xaddr);
-//    spec_is_true(*v == 8);
-//}
-//
-//void testAdd() {
-//    Receptor tr;init(&tr);Receptor *r = &tr;
-//    Symbol AGE = preop_new_noun(r, r->intPatternSpecXaddr, "Age");
-//    int val = 7;
-//    Xaddr age_xaddr = preop_new(r, AGE, &val);
-//    val = 3;
-//    preop_push_pattern(r, r->intPatternSpecXaddr.key, &val);
-//    preop_exec(r, age_xaddr, ADD);
-//    spec_is_true(*(int *) (&r->valStack[0]) == 10);
-//}

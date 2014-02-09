@@ -1,15 +1,15 @@
 #include "../ceptr.h"
 
 
-int proc_int_inc(Receptor *r, void *this) {
+int proc_int_inc(Receptor *r,Symbol noun, void *this) {
     ++*(int *) (this);
     return 0;
 }
 
-int proc_int_add(Receptor *r, void *this) {
-    // semCheck please
-    int *stackSurface = (int *) &r->valStack[r->valStackPointer - r->semStack[r->semStackPointer].size];
-    *stackSurface = *(int *) this + *stackSurface;
+int proc_int_add(Receptor *r,Symbol noun, void *this) {
+    int *i;
+    stack_peek(r, noun, (void **)&i);
+    *i += *(int *)this;
     return 0;
 }
 

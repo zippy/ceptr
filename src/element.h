@@ -14,8 +14,9 @@ void * skip_elem_header(void *element_surface) {
 
 Process *getProcess(ElementSurface *es, FunctionName name) {
     int i = es->process_count;
-    if (i <= 0){
-        raise_error2("request for process %d on element with %d process_count\n", name, i);
+    if (i <= 0) {
+	return 0;
+	//        raise_error2("request for process %d on element with %d process_count\n", name, i);
     }
     Process *p = (Process *)&es->processes;
     while (i--) {
@@ -75,5 +76,3 @@ int init_element(Receptor *r, char *label, Xaddr element_spec, ElementSurface *e
     add_processes(es, processCount, processes);
     return es->name;
 }
-
-

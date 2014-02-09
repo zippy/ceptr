@@ -26,9 +26,18 @@ void op_invoke(Receptor *r, Xaddr invokee, FunctionName function) {
     surface = element_surface_for_xaddr(r, invokee);
     p = getProcess(surface, function);
     if (p) {
-        (((YagnArgsProcess *) p)->function)(r);
+        (( p)->function)(r,invokee.noun,surface,surface);
         return;
+    }
+    else {
+	// If the function isn't in the instance, look for it in it's spec
+	Xaddr spec = spec_xaddr_for_xaddr(r,invokee);
+	ElementSurface *spec_surface = element_surface_for_xaddr(r, spec);
+	p = getProcess(spec_surface, function);
+	if (p) {
+	    ((p)->function)(r,invokee.noun,surface,surface);
+	    return;
+	}
     }
     raise_error2("No function %d for key %d\n", function, invokee.key);
 }
-
