@@ -23,12 +23,8 @@ void testInt() {
     spec_is_equal(*v, 9);
 
     val = 99;
-    Xaddr my_int2_xaddr = preop_new(r, MY_INT, &val);
-    int *v2 = surface_for_xaddr(r, my_int2_xaddr);
-    spec_is_equal(*v2, 99);
-
-    stack_push(r,MY_INT,v);
-    op_invoke(r, my_int2_xaddr, ADD);
+    stack_push(r,MY_INT,&val);
+    op_invoke(r, my_int_xaddr, ADD);
     stack_pop(r, MY_INT, &val);
     spec_is_equal(val, 108);
 
