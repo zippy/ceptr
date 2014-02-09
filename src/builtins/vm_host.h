@@ -2,13 +2,12 @@
 
 #define MAX_RECEPTORS 4
 
-enum { VM, STDIN, STDOUT };
-
-typedef int Address;
+enum { VM, STDOUT };
 
 typedef struct {
     Receptor receptors[MAX_RECEPTORS];
     int receptor_count;
+    pthread_t stdin_thread;
     pthread_t threads[MAX_RECEPTORS];
 } HostReceptor;
 
@@ -26,10 +25,6 @@ Receptor *resolve(HostReceptor *r, Address addr) {
     return dr;
 }
 
-LogProc getLogProc(Receptor *r) {
-    return r->logProc;
-}
-
 void wakeup(Receptor *r){
     r->logChange = true;
 }
@@ -40,7 +35,7 @@ void data_write_log(HostReceptor *h, Receptor *r, Symbol noun, void *surface, si
     assert( pthread_mutex_lock( &r->data.log_mutex) == 0);
 
     r->data.log[r->data.log_head].noun = noun;
-    memcpy( r->data.log[r->data.log_head].content, surface, length);
+    memcpy( r->data.log[r->data.log_head].surface, surface, length);
 
     int new_log_head = r->data.log_head + 1;
     if (new_log_head >= MAX_LOG_ENTRIES) {
@@ -95,15 +90,20 @@ void dump_named_surface(Receptor *r, Symbol noun, void *surface) {
     }
 }
 
-void stdin_poll_proc(Receptor *r){
-//    printf("stdin_poll_proc\n");
+void stdin_run_proc(Receptor *r){
+    //    printf("stdin_run_proc\n");
     int c;
     c = getchar();
-    write_out((HostReceptor *)r->parent, r, r->charIntNoun, &c, 4);
+    while(c != EOF) {
+	c = getchar();
+	write_out((HostReceptor *)r->parent, r, r->charIntNoun, &c, 4);
+    }
 }
 
-void stdout_log_proc(Receptor *r, LogEntry *le) {
-    dump_named_surface(r, le->noun, &le->content );
+void stdout_log_proc(Receptor *r, Signal *s) {
+    //    printf("stdout_log_proc in\n");
+    dump_named_surface(r, s->noun, &s->surface );
+    //    printf("stdout_log_proc out\n");
 }
 
 
@@ -112,12 +112,9 @@ void *receptor_task(void *arg) {
     // r->initProc;
     r->alive = true;
     while(r->alive) {
-        if (r->pollProc != 0) {
-            (r->pollProc)(r);
-        }
-        if (logChange(r) && r->logProc) {
-            LogEntry *le = &r->data.log[r->data.log_tail];
-            (r->logProc)(r, le);
+        if (logChange(r) && r->signalProc) {
+            Signal *s = &r->data.log[r->data.log_tail];
+            (r->signalProc)(r, s);
             int new_log_tail = r->data.log_tail + 1;
             if (new_log_tail >= MAX_LOG_ENTRIES) {
                 new_log_tail = 0;
@@ -128,10 +125,9 @@ void *receptor_task(void *arg) {
     }
     return NULL;
 }
-void _vmh_receptor_new(HostReceptor *r, Address addr, LogProc lp, LogProc pp) {
+void _vmh_receptor_new(HostReceptor *r, Address addr, SignalProc sp) {
     init(&r->receptors[addr]);
-    r->receptors[addr].logProc = lp;
-    r->receptors[addr].pollProc = pp;
+    r->receptors[addr].signalProc = sp;
     r->receptors[addr].parent = r;
 
     int rc;
@@ -142,8 +138,8 @@ printf("creating thread for addr %d\n", addr);
 
 }
 
-Receptor *vmh_receptor_new(HostReceptor *r, LogProc lp) {
-    _vmh_receptor_new(r, ++r->receptor_count, lp, 0);
+Receptor *vmh_receptor_new(HostReceptor *r, SignalProc sp) {
+    _vmh_receptor_new(r, ++r->receptor_count, sp);
     return &r->receptors[r->receptor_count];
 }
 
@@ -151,28 +147,26 @@ void vm_host_init(HostReceptor *r){
     r->receptor_count = 0;
     init(&r->receptors[VM]);
 
-    _vmh_receptor_new(r, STDIN, null_proc, stdin_poll_proc);
-    r->receptor_count = STDIN;
+    int rc;
+    printf("creating stdin thread \n");
+    rc = pthread_create(&r->stdin_thread, NULL, stdin_run_proc, (void *) &r);
+    assert(0 == rc);
 
-    _vmh_receptor_new(r, STDOUT, stdout_log_proc, 0);
+    _vmh_receptor_new(r, STDOUT, stdout_log_proc);
     r->receptor_count = STDOUT;
 
 }
 
 
 void vm_host_run(HostReceptor *h) {
-//    for (int i=0; i < h->receptor_count; i++){
-//        if (h->receptors[i].pollProc != 0) {
-//            (h->receptors[i].pollProc)(&h->receptors[i]);
-//        }
-//    }
 
     int rc;
     for (int i = 1; i < h->receptor_count; i++) {
         rc = pthread_join(h->threads[i], NULL);
         assert(0 == rc);
     }
-
+    rc = pthread_join(h->stdin_thread,NULL);
+    assert(0 == rc);
     //
 //    repl {
 //        Code c;

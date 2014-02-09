@@ -12,7 +12,8 @@
 
 #include <pthread.h>
 #include <stdlib.h>
-#include <sys/queue.h>
+
+#include "conversation.h"
 
 #define raise_error0(error_msg)        \
     printf(error_msg);            \
@@ -27,11 +28,8 @@
     printf("\n"); \
     raise(SIGINT);
 
-typedef int Symbol;
-
 #define MAX_LOG_ENTRIES 30
 #define BUFFER_SIZE 10000
-#define SMALL_BUFFER_SIZE 500
 
 typedef enum { false, true } bool;
 
@@ -47,6 +45,7 @@ enum Symbols {
 typedef int FunctionName;
 
 typedef void (* voidVoidFn)(void *);
+
 
 typedef struct {
     int key;
@@ -68,10 +67,6 @@ typedef struct {
     size_t size;
 } SemStackFrame;
 
-typedef struct {
-    Symbol noun;
-    char content[SMALL_BUFFER_SIZE];
-} LogEntry;
 
 typedef struct {
     Xaddr xaddrs[DEFAULT_CACHE_SIZE];
@@ -81,7 +76,7 @@ typedef struct {
 
     int log_head;
     int log_tail;
-    LogEntry log[MAX_LOG_ENTRIES];
+    Signal log[MAX_LOG_ENTRIES];
     pthread_mutex_t log_mutex;
 
     size_t cache_index;
@@ -100,8 +95,7 @@ typedef struct {
 
 typedef struct Receptor;
 
-typedef void (* LogProc)(struct Receptor *, LogEntry *);
-typedef void (* PollProc)(struct Receptor *);
+typedef void (* SignalProc)(struct Receptor *, Signal *);
 
 typedef struct {
     SemStackFrame semStack[STACK_SIZE];
@@ -126,8 +120,7 @@ typedef struct {
 
     struct Receptor *parent;
 
-    LogProc logProc;
-    PollProc pollProc;
+    SignalProc signalProc;
     Data data;
 
     int listenerCount;

@@ -3,10 +3,11 @@
 #define MAX_FAILURES 1000
 int spec_failures = 0;
 int spec_total = 0;
-char failures[MAX_FAILURES][255];
+char failures[MAX_FAILURES][512];
 
 #define spec_is_true(x) spec_total++;if (x){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be true",__FUNCTION__,__LINE__,#x);}
 #define spec_is_equal(got, expected) spec_total++; if (expected==got){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %d but was %d",__FUNCTION__,__LINE__,#got,expected,got);}
+#define spec_is_str_equal(got, expected) spec_total++; if (strcmp(got,expected)==0){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %s but was %s",__FUNCTION__,__LINE__,#got,expected,got);}
 #define spec_is_long_equal(got, expected) spec_total++; if (expected==got){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %ld but was %ld",__FUNCTION__,__LINE__,#got,expected,got);}
 
 typedef size_t (*intSizeFunction)(Receptor *, Symbol, void *);

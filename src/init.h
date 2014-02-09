@@ -17,8 +17,7 @@ void init_elements(Receptor *r) {
 
 void init_processing(Receptor *r) {
     r->listenerCount = 0;
-    r->logProc = 0;
-    r->pollProc = 0;
+    r->signalProc = 0;
     r->logChange = false;
 
     r->data.log_head = 0;

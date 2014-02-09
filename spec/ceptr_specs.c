@@ -13,6 +13,7 @@
 #include "builtins/array_spec.h"
 #include "builtins/stream_spec.h"
 #include "builtins/receptor_spec.h"
+#include "conversation_spec.h"
 #include "receptor_util_spec.h"
 #include "builtins/vm_host_spec.h"
 
@@ -71,8 +72,10 @@ int main(int argc, const char **argv) {
     testReceptorUtil();
 //    testLine();
 //    testArray();
+
+    testConversation();
 //    testReceptor();
-    testVmHost();
+//    testVmHost();
 //    testThreads();
     report_tests();
     return 0;
