@@ -77,6 +77,17 @@ void proc_pattern_instance_new(Receptor *r) {
     stack_push(r, XADDR_NOUN, &pattern_xaddr);
 }
 
+void dump_children_array(Offset *children, int count) {
+    int i = 0;
+    while (i < count) {
+        if (i != 0) {
+            printf(",");
+        }
+        printf("{ %d, %d }(%d)", children[i].noun.key, children[i].noun.noun, children[i].offset);
+        i++;
+    }
+}
+
 void dump_pattern_spec(Receptor *r, void *surface) {
     ElementSurface *ps = (ElementSurface *)surface;
 
@@ -101,7 +112,6 @@ void dump_pattern_value(Receptor *r, void *pattern_surface, void *surface) {
         hexDump("hexDump of surface", surface, _pattern_get_size(ps));
     }
 }
-
 
 void pattern_init(Receptor *r){
     Symbol newNoun = data_new_noun(r, r->cspecXaddr, "PATTERN");

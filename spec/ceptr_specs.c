@@ -67,12 +67,12 @@ int main(int argc, const char **argv) {
     testStack();
     testInit();
     testConversation();
-
     //    testThreads();
 
     //**** builtins tests
     testNoun();
     testPattern();
+    //testArray();
     //    testStream();
     testInt();
     testReceptorUtil();
@@ -82,7 +82,6 @@ int main(int argc, const char **argv) {
     //**** examples test
     testPoint();
     //    testLine();
-    //    testArray();
 
 
     report_tests();

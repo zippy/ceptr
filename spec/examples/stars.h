@@ -17,7 +17,7 @@ Xaddr _make_zodiac(Receptor *r,Symbol CONSTELLATION,Symbol *ZODIAC,void *sky) {
     return preop_new(r, *ZODIAC, sky);
 }
 
-void testArray() {
+void testStars() {
     Receptor tr;init(&tr);Receptor *r = &tr;
     Symbol CONSTELLATION;
     int stars[] = { 3,   1,2,  10,20,  100,200 };
