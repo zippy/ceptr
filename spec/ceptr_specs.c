@@ -9,6 +9,7 @@
 #include "stack_spec.h"
 
 #include "builtins/noun_spec.h"
+#include "builtins/pattern_spec.h"
 #include "builtins/int_spec.h"
 #include "builtins/array_spec.h"
 #include "builtins/stream_spec.h"
@@ -62,21 +63,28 @@ int testThreads(void)
 int main(int argc, const char **argv) {
     printf("Running all tests...\n\n");
 
+    //**** core tests
     testStack();
-    testGetSymbol();
     testInit();
-
-    testInt();
-    testPoint();
-//    testStream();
-    testReceptorUtil();
-//    testLine();
-//    testArray();
-
     testConversation();
-//    testReceptor();
-//    testVmHost();
-//    testThreads();
+
+    //    testThreads();
+
+    //**** builtins tests
+    testNoun();
+    testPattern();
+    //    testStream();
+    testInt();
+    testReceptorUtil();
+    //    testReceptor();
+    //    testVmHost();
+
+    //**** examples test
+    testPoint();
+    //    testLine();
+    //    testArray();
+
+
     report_tests();
     return 0;
 }

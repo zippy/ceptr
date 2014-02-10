@@ -208,6 +208,8 @@ void dump_xaddrs(Receptor *r);
 //
 #include "receptor_util.h"
 
+#include "builtins/command.h"
+
 //
 #include "builtins/vm_host.h"
 

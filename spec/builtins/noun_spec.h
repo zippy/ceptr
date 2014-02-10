@@ -13,3 +13,7 @@ void testGetSymbol() {
     spec_is_true( getSymbol(r, "NOUN") == 0);
     spec_is_true( getSymbol(r, "PATTERN") == 40);
 }
+
+void testNoun() {
+    testGetSymbol();
+}
