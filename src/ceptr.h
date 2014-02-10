@@ -117,6 +117,7 @@ typedef struct {
     Xaddr receptorSpecXaddr;
     Xaddr membraneXaddr;
     Xaddr xaddrXaddr;
+    Xaddr str255PatternSpecXaddr;
 
     struct Receptor *parent;
 
@@ -198,6 +199,9 @@ void dump_xaddrs(Receptor *r);
 
 //
 #include "builtins/int.h"
+
+//
+#include "builtins/str255.h"
 
 //
 #include "builtins/receptor.h"

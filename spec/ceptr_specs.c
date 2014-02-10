@@ -11,7 +11,9 @@
 #include "builtins/noun_spec.h"
 #include "builtins/pattern_spec.h"
 #include "builtins/int_spec.h"
+#include "builtins/str255_spec.h"
 #include "builtins/array_spec.h"
+#include "builtins/command_spec.h"
 #include "builtins/stream_spec.h"
 #include "builtins/receptor_spec.h"
 #include "conversation_spec.h"
@@ -66,6 +68,7 @@ int main(int argc, const char **argv) {
     //**** core tests
     testStack();
     testInit();
+    testCommand();
     testConversation();
     //    testThreads();
 
@@ -75,6 +78,7 @@ int main(int argc, const char **argv) {
     //testArray();
     //    testStream();
     testInt();
+    testStr255();
     testReceptorUtil();
     //    testReceptor();
     //    testVmHost();
