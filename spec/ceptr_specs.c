@@ -83,7 +83,7 @@ int main(int argc, const char **argv) {
     testCfunc();
     testReceptorUtil();
     //    testReceptor();
-    //    testVmHost();
+    testVmHost();
 
     //**** examples test
     testPoint();

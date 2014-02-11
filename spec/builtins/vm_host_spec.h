@@ -46,12 +46,21 @@ void echo_log_proc(Receptor *r, Signal *s) {
     vm_host_init(vm);
     Receptor *echo_r = vmh_receptor_new(vm, echo_log_proc);
     listen(echo_r, STDIN);
-    Vm_host_run(vm);
+    vm_host_run(vm);
     // spec:  should do the echo loop
     }*/
 
+void testCmds() {
+    HostReceptor vmHostReceptor, *vm = &vmHostReceptor;
+    vm_host_init(vm);
+    op_invoke(vm,vm->cmdDump,RUN);
+    op_invoke(vm,vm->cmdStop,RUN);
+}
+
 void testVmHost(){
-    testSendMessageFromEchoToStdoutLog();
+    testCmds();
+
+    //    testSendMessageFromEchoToStdoutLog();
     //  testPlantListenerOnStdinSendsMessagestoEcho();
     //testEcho();
     pthread_exit(0);

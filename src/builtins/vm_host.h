@@ -6,6 +6,10 @@ enum { VM, STDOUT };
 
 typedef struct {
     Receptor receptors[MAX_RECEPTORS];
+    Xaddr cmdPatternSpecXaddr;
+    Xaddr cmdDump;
+    Xaddr cmdStop;
+    Symbol host_command;
     int receptor_count;
     pthread_t stdin_thread;
     pthread_t threads[MAX_RECEPTORS];
@@ -94,7 +98,7 @@ void stdin_run_proc(Receptor *r){
     //    printf("stdin_run_proc\n");
     int c;
     c = getchar();
-    while(c != EOF) {
+    while(c != EOF && r->alive) {
 	c = getchar();
 	write_out((HostReceptor *)r->parent, r, r->charIntNoun, &c, 4);
     }
@@ -143,9 +147,28 @@ Receptor *vmh_receptor_new(HostReceptor *r, SignalProc sp) {
     return &r->receptors[r->receptor_count];
 }
 
+int vm_host_cmd_stop(HostReceptor *h) {
+    //    printf("Issuing STOP\n");
+    for (int i = 0; i <= h->receptor_count; i++) {
+	h->receptors[i].alive = false;
+    }
+}
+int vm_host_cmd_dump(HostReceptor *h) {
+    for (int i = 0; i <= h->receptor_count; i++) {
+	printf("\n\n Receptor %d:\n",i);
+	dump_xaddrs((Receptor *)&h->receptors[i]);
+    }
+}
+
 void vm_host_init(HostReceptor *r){
     r->receptor_count = 0;
     init(&r->receptors[VM]);
+
+    r->cmdPatternSpecXaddr = command_init((Receptor *)r);
+    r->host_command = preop_new_noun(r, r->cmdPatternSpecXaddr, "Host Command");
+
+    r->cmdStop = make_command(r,r->host_command,"stop","s",vm_host_cmd_stop);
+    r->cmdDump = make_command(r,r->host_command,"dump","d",vm_host_cmd_dump);
 
     int rc;
     printf("creating stdin thread \n");
