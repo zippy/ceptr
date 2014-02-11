@@ -34,6 +34,25 @@ size_t pattern_get_spec_size(Receptor *r, Symbol noun, ElementSurface *es) {
     return ELEMENT_HEADER_SIZE(es) + sizeof(PatternBody) - sizeof(Offset) + sizeof(Offset) * PATTERN_GET_CHILDREN_COUNT(es);
 }
 
+int _pattern_child_offset(void *ps, Symbol child_noun) {
+    int count = PATTERN_GET_CHILDREN_COUNT(ps);
+    Offset *o = PATTERN_GET_CHILDREN(ps);
+    int i=0;
+    for(i=0;i < count && (o[i].noun.key != child_noun);i++);
+    if (i == count) {raise_error("Child of noun type %d not found\n",child_noun);}
+    return o[i].offset;
+}
+
+void _pattern_set_child(Receptor *r,void *ps, void *surface,Symbol child_noun,void *set_surface) {
+    int o = _pattern_child_offset(ps,child_noun);
+    memcpy(surface+o,set_surface,size_of_named_surface(r,child_noun,surface));
+}
+
+void *_pattern_get_child_surface(void *ps, void *surface,Symbol child_noun) {
+    int o = _pattern_child_offset(ps,child_noun);
+    return surface+o;
+}
+
 Xaddr preop_new_pattern(Receptor *r, char *label, int child_count_or_size, Xaddr *children, int processCount, Process *processes) {
     char ps[BUFFER_SIZE];
     memset(ps, 0, BUFFER_SIZE);
@@ -102,12 +121,12 @@ void dump_pattern_spec(Receptor *r, void *surface) {
     printf("\n");
 }
 
-void dump_pattern_value(Receptor *r, void *pattern_surface, void *surface) {
+void dump_pattern_value(Receptor *r, void *pattern_surface, Symbol noun, void *surface) {
     ElementSurface *ps = (ElementSurface *)pattern_surface;
     Process *print_proc;
     print_proc = getProcess(ps, PRINT);
     if (print_proc) {
-        (((LegacyProcess *)print_proc)->function)(r, surface);
+        (print_proc->function)(r,noun, surface, surface);
     } else {
         hexDump("hexDump of surface", surface, _pattern_get_size(ps));
     }

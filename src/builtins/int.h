@@ -1,19 +1,19 @@
 #include "../ceptr.h"
 
 
-int proc_int_inc(Receptor *r,Symbol noun, void *this) {
+int proc_int_inc(Receptor *r, Symbol noun, void *this) {
     ++*(int *) (this);
     return 0;
 }
 
-int proc_int_add(Receptor *r,Symbol noun, void *this) {
+int proc_int_add(Receptor *r, Symbol noun, void *this) {
     int *i;
     stack_peek(r, noun, (void **)&i);
     *i += *(int *)this;
     return 0;
 }
 
-int proc_int_print(Receptor *r, void *this) {
+int proc_int_print(Receptor *r, Symbol noun, void *this) {
     printf("%d", *(int *) this);
     return 0;
 }

@@ -34,7 +34,7 @@
 typedef enum { false, true } bool;
 
 enum FunctionNames {
-    INSTANCE_SIZE, INSTANCE_NEW, PRINT, INC, ADD
+    INSTANCE_SIZE, INSTANCE_NEW, PRINT, INC, ADD, RUN
 };
 
 enum Symbols {
@@ -118,6 +118,7 @@ typedef struct {
     Xaddr membraneXaddr;
     Xaddr xaddrXaddr;
     Xaddr str255PatternSpecXaddr;
+    Xaddr cfuncPatternSpecXaddr;
 
     struct Receptor *parent;
 
@@ -202,6 +203,9 @@ void dump_xaddrs(Receptor *r);
 
 //
 #include "builtins/str255.h"
+
+//
+#include "builtins/cfunc.h"
 
 //
 #include "builtins/receptor.h"

@@ -37,4 +37,3 @@ void test_stack_dump() {
     stack_push(r, inTheSand, &myLine);
     stack_dump(r);
 }
-

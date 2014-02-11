@@ -45,7 +45,7 @@ void dump_xaddr(Receptor *r, Xaddr xaddr, int indent_level) {
             printf("%s : ", &ns->label);
             es = element_surface_for_xaddr(r, ns->specXaddr);
             if (typeTypeNoun == r->patternSpecXaddr.noun) {
-                dump_pattern_value(r, es, surface_for_xaddr(r, xaddr));
+                dump_pattern_value(r, es, noun, surface_for_xaddr(r, xaddr));
             } else if (typeTypeNoun == r->arraySpecXaddr.noun) {
                 dump_array_value(r, es, surface_for_xaddr(r, xaddr));
             }

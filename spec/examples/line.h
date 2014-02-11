@@ -1,6 +1,6 @@
 #include "../../src/ceptr.h"
 
-int proc_line_print(Receptor *r, void *this) {
+int proc_line_print(Receptor *r, Symbol noun, void *this) {
     int *surface = (int *) this;
     printf("[%d,%d - %d,%d] ", *surface, *(surface + 1), *(surface + 2), *(surface + 3));
     return 0;

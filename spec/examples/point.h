@@ -1,6 +1,6 @@
 #include "../../src/ceptr.h"
 
-int proc_point_print(Receptor *r, void *this) {
+int proc_point_print(Receptor *r, Symbol noun, void *this) {
     printf("%d,%d", *(int *) this, *(((int *) this) + 1));
     return 0;
 }

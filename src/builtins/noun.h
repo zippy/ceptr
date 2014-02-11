@@ -55,3 +55,11 @@ void dump_noun(Receptor *r, NounSurface *ns) {
     printf("Noun      { %d, %5d } %s", ns->specXaddr.key, ns->specXaddr.noun, &ns->label);
 }
 
+Xaddr new_noun(Receptor *r,Xaddr type, char * label) {
+    stack_push(r, XADDR_NOUN, &type);
+    stack_push(r, CSTRING_NOUN, label);
+    op_invoke(r, r->nounSpecXaddr, INSTANCE_NEW);
+    Xaddr x;
+    stack_pop(r, XADDR_NOUN, &x);
+    return x;
+}

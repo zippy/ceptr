@@ -32,6 +32,7 @@ void init_builtins(Receptor *r) {
     array_init(r);
     int_init(r);
     str255_init(r);
+    cfunc_init(r);
 
     r->charIntNoun = preop_new_noun(r, r->intPatternSpecXaddr, "CHAR_INT");
 

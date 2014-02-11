@@ -14,6 +14,11 @@ void op_new(Receptor *r) {
     stack_push(r,XADDR_NOUN,&new_xaddr);
 }
 
+//TODO: fixme!! this is clearly bogus
+int is_spec(Receptor *r, Xaddr x) {
+    return util_xaddr_eq(x,r->nounSpecXaddr) || util_xaddr_eq(x,r->patternSpecXaddr);
+}
+
 //  This really should be in ops.h.
 //  it's here until we implement fake surfaces for the builtin specs so that we don't refer to the procs by name in op_invoke.
 void op_invoke(Receptor *r, Xaddr invokee, FunctionName function) {
@@ -21,23 +26,23 @@ void op_invoke(Receptor *r, Xaddr invokee, FunctionName function) {
     if (invokee.key < 0) {
         raise_error("run op invoke for invokee %d", invokee.key);
     }
-    ElementSurface *surface;
+
+    ElementSurface *surface = element_surface_for_xaddr(r, invokee);
+    ElementSurface *spec_surface;
     Process *p;
-    surface = element_surface_for_xaddr(r, invokee);
-    p = getProcess(surface, function);
-    if (p) {
-        (( p)->function)(r,invokee.noun,surface,surface);
-        return;
+    if (is_spec(r,invokee)) {
+	spec_surface = surface;
     }
     else {
-	// If the function isn't in the instance, look for it in it's spec
 	Xaddr spec = spec_xaddr_for_xaddr(r,invokee);
-	ElementSurface *spec_surface = element_surface_for_xaddr(r, spec);
-	p = getProcess(spec_surface, function);
-	if (p) {
-	    ((p)->function)(r,invokee.noun,surface,surface);
-	    return;
-	}
+	spec_surface = element_surface_for_xaddr(r, spec);
+    }
+    p = getProcess(spec_surface, function);
+
+    if (p) {
+        ((p)->function)(r,invokee.noun,surface,spec_surface);
+        return;
     }
     raise_error2("No function %d for key %d\n", function, invokee.key);
+
 }

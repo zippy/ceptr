@@ -83,7 +83,7 @@ void dump_named_surface(Receptor *r, Symbol noun, void *surface) {
     if (spec_noun_for_noun(r, noun) == r->patternSpecXaddr.noun) {
         dump_pattern_spec(r, surface);
     } else if (spec_noun_for_noun(r, noun) == r->intPatternSpecXaddr.noun) {
-        proc_int_print(r, surface);
+        proc_int_print(r, noun, surface);
     } else {
         dump_xaddrs(r);
         raise_error("dunno how to dump named surface %d\n", noun);

@@ -120,7 +120,7 @@ void dump_array_value(Receptor *r, ElementSurface *rs, void *surface) {
         size = _pattern_get_size(es);
         while (count > 0) {
             printf("    ");
-            dump_pattern_value(r, es, surface);
+            dump_pattern_value(r, es, arrayItemType, surface);
             printf("\n");
             surface += size;
             count--;
@@ -145,5 +145,3 @@ void array_init(Receptor *r){
     ElementSurface specSurface = { newNoun, 1, processes};
     r->arraySpecXaddr = data_new(r, newNoun, &specSurface,  element_header_size((void *)&specSurface));
 }
-
-

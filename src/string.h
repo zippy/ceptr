@@ -32,7 +32,7 @@ void dump_string_value(Receptor *r, ElementSurface *rs, void *surface) {
             surface += sizeof(int);
         }
         printf("    ");
-        dump_pattern_value(r,ps,surface);
+        dump_pattern_value(r,ps,repsNoun,surface);
         printf("\n");
         surface += _pattern_get_size(ps);
         count++;

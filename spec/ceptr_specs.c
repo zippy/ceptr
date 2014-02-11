@@ -12,6 +12,7 @@
 #include "builtins/pattern_spec.h"
 #include "builtins/int_spec.h"
 #include "builtins/str255_spec.h"
+#include "builtins/cfunc_spec.h"
 #include "builtins/array_spec.h"
 #include "builtins/command_spec.h"
 #include "builtins/stream_spec.h"
@@ -79,6 +80,7 @@ int main(int argc, const char **argv) {
     //    testStream();
     testInt();
     testStr255();
+    testCfunc();
     testReceptorUtil();
     //    testReceptor();
     //    testVmHost();
