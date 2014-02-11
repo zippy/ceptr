@@ -126,7 +126,7 @@ void dump_pattern_value(Receptor *r, void *pattern_surface, Symbol noun, void *s
     Process *print_proc;
     print_proc = getProcess(ps, PRINT);
     if (print_proc) {
-        (print_proc->function)(r,noun, surface, surface);
+        (print_proc->function)(r,noun, surface, pattern_surface);
     } else {
         hexDump("hexDump of surface", surface, _pattern_get_size(ps));
     }

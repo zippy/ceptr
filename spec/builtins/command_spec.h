@@ -1,25 +1,30 @@
 #include "../../src/ceptr.h"
 
+int cmd_func(Receptor *r) {
+    stack_push(r, CSTRING_NOUN, "cmd_func");
+}
 
 void testCommand() {
     Receptor tr;init(&tr);Receptor *r = &tr;
 
     Xaddr cmdPatternSpecXaddr = command_init(r);
-    char buf[1000];
 
     Symbol CMD = preop_new_noun(r, cmdPatternSpecXaddr, "CMD");
-    Symbol CMD_STR = getSymbol(r,"CMD_STR");
-    Symbol CMD_ALIAS_STR = getSymbol(r,"CMD_ALIAS_STR");
+
+    Xaddr my_c = make_command(r,CMD,"go","g",cmd_func);
+
+    char *s = surface_for_xaddr(r,my_c);
+    spec_is_str_equal(s,"go");
 
     Symbol nounType;
     ElementSurface *ps = spec_surface_for_noun(r, &nounType, CMD);
 
-    _pattern_set_child(r,ps,buf,CMD_STR,"go");
-    _pattern_set_child(r,ps,buf,CMD_ALIAS_STR,"g");
-    stack_push(r,CMD,buf);
-    op_new(r);
-    Xaddr my_c;
-    stack_pop(r,XADDR_NOUN,&my_c);
-    char *s = surface_for_xaddr(r,my_c);
-    spec_is_str_equal(s,"go");
+    void *fs =_pattern_get_child_surface(ps,s,getSymbol(r,"CMD_PROCESS"));
+    spec_is_long_equal(*(long *)fs,cmd_func);
+
+    op_invoke(r,my_c,RUN);
+    char *peek_surface;
+    stack_peek(r, CSTRING_NOUN, (void **)&peek_surface);
+    spec_is_true( strcmp("cmd_func", peek_surface) == 0);
+
 }
