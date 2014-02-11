@@ -1,4 +1,5 @@
 #include "../ceptr.h"
+#include <unistd.h>
 
 #define MAX_RECEPTORS 4
 
@@ -95,13 +96,25 @@ void dump_named_surface(Receptor *r, Symbol noun, void *surface) {
 }
 
 void stdin_run_proc(Receptor *r){
-    //    printf("stdin_run_proc\n");
+    ssize_t read = 0;
+    char *line = NULL;
+    size_t len = 0;
+    printf("Welcome to ceptr\n");
+    while(read != -1 && r->alive) {
+	printf("> ");
+	read = getline(&line,&len,stdin);
+	printf("Retrieved line of length %zu :\n", read);
+	printf("%s", line);
+    }
+    printf("Stdin closing down\n");
+    free(line);
+/*    //    printf("stdin_run_proc\n");
     int c;
     c = getchar();
     while(c != EOF && r->alive) {
 	c = getchar();
 	write_out((HostReceptor *)r->parent, r, r->charIntNoun, &c, 4);
-    }
+    }*/
 }
 
 void stdout_log_proc(Receptor *r, Signal *s) {
@@ -148,7 +161,7 @@ Receptor *vmh_receptor_new(HostReceptor *r, SignalProc sp) {
 }
 
 int vm_host_cmd_stop(HostReceptor *h) {
-    //    printf("Issuing STOP\n");
+    printf("Stopping all receptors...\n");
     for (int i = 0; i <= h->receptor_count; i++) {
 	h->receptors[i].alive = false;
     }
@@ -163,6 +176,7 @@ int vm_host_cmd_dump(HostReceptor *h) {
 void vm_host_init(HostReceptor *r){
     r->receptor_count = 0;
     init(&r->receptors[VM]);
+    ((Receptor *)r)->alive = true;
 
     r->cmdPatternSpecXaddr = command_init((Receptor *)r);
     r->host_command = preop_new_noun(r, r->cmdPatternSpecXaddr, "Host Command");
@@ -172,7 +186,7 @@ void vm_host_init(HostReceptor *r){
 
     int rc;
     printf("creating stdin thread \n");
-    rc = pthread_create(&r->stdin_thread, NULL, stdin_run_proc, (void *) &r);
+    rc = pthread_create(&r->stdin_thread, NULL, stdin_run_proc, (void *) r);
     assert(0 == rc);
 
     _vmh_receptor_new(r, STDOUT, stdout_log_proc);

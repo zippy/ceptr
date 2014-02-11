@@ -53,8 +53,9 @@ void echo_log_proc(Receptor *r, Signal *s) {
 void testCmds() {
     HostReceptor vmHostReceptor, *vm = &vmHostReceptor;
     vm_host_init(vm);
-    op_invoke(vm,vm->cmdDump,RUN);
+    //op_invoke(vm,vm->cmdDump,RUN);
     op_invoke(vm,vm->cmdStop,RUN);
+    vm_host_run(vm);
 }
 
 void testVmHost(){
@@ -63,7 +64,7 @@ void testVmHost(){
     //    testSendMessageFromEchoToStdoutLog();
     //  testPlantListenerOnStdinSendsMessagestoEcho();
     //testEcho();
-    pthread_exit(0);
+
 }
 
 
