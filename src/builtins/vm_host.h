@@ -1,12 +1,17 @@
 #include "../ceptr.h"
 #include <unistd.h>
 
-#define MAX_RECEPTORS 4
+#define MAX_RECEPTORS 100
 
-enum { VM, STDOUT };
+// addresses
+enum { STDOUT };
+
+// receptor addresses
+enum {VM};
 
 typedef struct {
-    Receptor receptors[MAX_RECEPTORS];
+    Receptor receptor;
+    Receptor *receptors[MAX_RECEPTORS];
     Xaddr cmdPatternSpecXaddr;
     Xaddr cmdDump;
     Xaddr cmdStop;
@@ -21,7 +26,7 @@ void null_proc(Receptor *r) {
 }
 
 Receptor *resolve(HostReceptor *r, Address addr) {
-    Receptor *dr = &r->receptors[addr];
+    Receptor *dr = r->receptors[addr];
     if (dr == 0) {
         raise_error("whatchu talking about addred %d\n", addr );
         return 0;
@@ -179,34 +184,36 @@ void *receptor_task(void *arg) {
     }
     return NULL;
 }
-void _vmh_receptor_new(HostReceptor *r, Address addr, SignalProc sp) {
-    init(&r->receptors[addr]);
-    r->receptors[addr].signalProc = sp;
-    r->receptors[addr].parent = r;
+void _vmh_receptor_new(HostReceptor *h, Address addr, SignalProc sp) {
+    Receptor *r = malloc(sizeof(Receptor));
+    if (r == NULL) {raise_error0("couldn't allocate receptor\n");}
+    h->receptors[addr] = r;
+    init(r);
+    r->signalProc = sp;
+    r->parent = h;
 
     int rc;
     //printf("creating thread for addr %d\n", addr);
 
-    rc = pthread_create(&r->threads[addr], NULL, receptor_task, (void *) &r->receptors[addr]);
+    rc = pthread_create(&h->threads[addr], NULL, receptor_task, (void *) h->receptors[addr]);
     assert(0 == rc);
-
 }
 
 Receptor *vmh_receptor_new(HostReceptor *r, SignalProc sp) {
     _vmh_receptor_new(r, ++r->receptor_count, sp);
-    return &r->receptors[r->receptor_count];
+    return r->receptors[r->receptor_count];
 }
 
 int vm_host_cmd_stop(HostReceptor *h) {
     printf("Stopping all receptors...\n");
     for (int i = 0; i <= h->receptor_count; i++) {
-	h->receptors[i].alive = false;
+	h->receptors[i]->alive = false;
     }
 }
 int vm_host_cmd_dump(HostReceptor *h) {
     for (int i = 0; i <= h->receptor_count; i++) {
 	printf("\n\n Receptor %d:\n",i);
-	dump_xaddrs((Receptor *)&h->receptors[i]);
+	dump_xaddrs(h->receptors[i]);
     }
 }
 
@@ -219,9 +226,9 @@ void vm_host_log_proc(Receptor *r, Signal *s) {
 
 void vm_host_init(HostReceptor *r){
     r->receptor_count = 0;
-    init(&r->receptors[VM]);
-    ((Receptor *)r)->alive = true;
-    ((Receptor *)r)->signalProc = vm_host_log_proc;
+    init(&r->receptor);
+    r->receptor.alive = true;
+    r->receptor.signalProc = vm_host_log_proc;
 
     r->cmdPatternSpecXaddr = command_init((Receptor *)r);
     r->host_command = preop_new_noun(r, r->cmdPatternSpecXaddr, "Host Command");

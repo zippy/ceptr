@@ -1,6 +1,6 @@
 #include "../../src/ceptr.h"
 
-void testSendMessageFromEchoToStdoutLog() {
+/*void testSendMessageFromEchoToStdoutLog() {
     HostReceptor vmHostReceptor;
     HostReceptor *vm = &vmHostReceptor;
     vm_host_init(vm);
@@ -17,7 +17,7 @@ void testSendMessageFromEchoToStdoutLog() {
 
     spec_is_equal( s->noun, echo_r->intPatternSpecXaddr.noun);
     printf("\nshould have printed 'Int Spec'\n");
-}
+    }*/
 /*
 void testPlantListenerOnStdinSendsMessagestoEcho() {
     HostReceptor vmHostReceptor, *vm = &vmHostReceptor;
