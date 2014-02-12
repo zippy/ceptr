@@ -25,7 +25,7 @@ void null_proc(Receptor *r) {
     printf("Got a log message.  I do nothing\n");
 }
 
-Receptor *resolve(HostReceptor *r, Address addr) {
+Receptor *resolve(HostReceptor *r, ReceptorAddress addr) {
     Receptor *dr = r->receptors[addr];
     if (dr == 0) {
         raise_error("whatchu talking about addred %d\n", addr );
@@ -109,7 +109,7 @@ typedef struct {
 } Packet;
 
 void _send_message(HostReceptor *r, Address destination, Symbol noun, void *surface, size_t size) {
-    Receptor *dest_receptor = resolve(r, destination);
+    Receptor *dest_receptor = resolve(r, destination.addr);
     data_write_log(r, dest_receptor, noun, surface, size);
 }
 
@@ -119,7 +119,7 @@ void send_message(Receptor *r, Packet *p) {
     _send_message(r->parent, p->destination, p->value.noun, surface, size);
 }
 
-void listen(Receptor *r, Address addr) {
+void listen(Receptor *r, ReceptorAddress addr) {
     HostReceptor *h = (HostReceptor *)r->parent;
     Receptor *l = resolve(h, addr);
     l->listeners[l->listenerCount++] = r;
@@ -147,7 +147,9 @@ void stdin_run_proc(HostReceptor *h){
 	printf("> ");
 	read = getline(&line,&len,stdin);
 	if (read != -1) {
-            start_conversation(h,RAW_COMMAND,signal_new(h,VM,VM,CSTRING_NOUN,line));
+	    Address from = {VM,0};
+	    Address to = {VM,0};
+            start_conversation(h,RAW_COMMAND,signal_new(h,from,to,CSTRING_NOUN,line));
 	}
     }
     printf("Stdin closing down\n");
@@ -184,7 +186,7 @@ void *receptor_task(void *arg) {
     }
     return NULL;
 }
-void _vmh_receptor_new(HostReceptor *h, Address addr, SignalProc sp) {
+void _vmh_receptor_new(HostReceptor *h, ReceptorAddress addr, SignalProc sp) {
     Receptor *r = malloc(sizeof(Receptor));
     if (r == NULL) {raise_error0("couldn't allocate receptor\n");}
     h->receptors[addr] = r;

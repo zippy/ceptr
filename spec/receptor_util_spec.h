@@ -11,7 +11,9 @@ void testReceptorUtil(){
 
     //****  signal_new
     time_t t = time(NULL);
-    Signal *s = signal_new(r,1,2,CSTRING_NOUN,"fish");
+    Address from = {VM,0};
+    Address to = {VM,0};
+    Signal *s = signal_new(r,from,to,CSTRING_NOUN,"fish");
     spec_is_str_equal(&s->surface,"fish");
     spec_is_equal(s->timestamp,t);
     free(s);

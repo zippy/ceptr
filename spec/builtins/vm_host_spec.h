@@ -34,14 +34,13 @@ void testPlantListenerOnStdinSendsMessagestoEcho() {
     }*/
 
 
-void echo_log_proc(Receptor *r, Signal *s) {
+/*void echo_log_proc(Receptor *r, Signal *s) {
     //    printf("in echo log proc!\n");
     size_t size = size_of_named_surface(r, s->noun, s->surface);
     _send_message((HostReceptor *)r->parent, STDOUT, s->noun, s->surface, size);
 }
 
-
-/*void testEcho(){
+void testEcho(){
     HostReceptor vmHostReceptor, *vm = &vmHostReceptor;
     vm_host_init(vm);
     Receptor *echo_r = vmh_receptor_new(vm, echo_log_proc);
@@ -61,9 +60,10 @@ void testCmds() {
 void testConversationLog() {
     HostReceptor vmHostReceptor, *vm = &vmHostReceptor;
     vm_host_init(vm);
+    Address from = {VM,0};
 
     spec_is_equal(conversations_active(vm),0);
-    ConversationID id = start_conversation((Receptor *)vm,1234,signal_new(vm,VM,VM,CSTRING_NOUN,"Hello!"));
+    ConversationID id = start_conversation((Receptor *)vm,1234,signal_new(vm,from,from,CSTRING_NOUN,"Hello!"));
     spec_is_equal(conversations_active(vm),1);
     Conversation *c = get_conversation(vm,id);
     spec_is_equal(conversation_signals(c),1);

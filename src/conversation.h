@@ -6,8 +6,13 @@
 
 #include <time.h>
 
-typedef int Address;
 typedef int Symbol;
+typedef int ReceptorAddress;
+typedef int Aspect;
+typedef struct {
+    ReceptorAddress addr;
+    Aspect aspect;
+} Address;
 
 typedef struct {
     Address from;
