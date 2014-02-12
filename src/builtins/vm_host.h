@@ -30,10 +30,6 @@ Receptor *resolve(HostReceptor *r, Address addr) {
     return dr;
 }
 
-void wakeup(Receptor *r){
-    r->logChange = true;
-}
-
 void data_write_log(HostReceptor *h, Receptor *r, Symbol noun, void *surface, size_t length) {
     // HostReceptor h is here just to make it clear this isn't internal operation on r
 
@@ -95,16 +91,17 @@ void dump_named_surface(Receptor *r, Symbol noun, void *surface) {
     }
 }
 
-void stdin_run_proc(Receptor *r){
+void stdin_run_proc(HostReceptor *h){
     ssize_t read = 0;
     char *line = NULL;
     size_t len = 0;
-    printf("Welcome to ceptr\n");
-    while(read != -1 && r->alive) {
+    printf("Welcome to the ceptr command line\n");
+    while(read != -1 && ((Receptor *)h)->alive) {
 	printf("> ");
 	read = getline(&line,&len,stdin);
-	printf("Retrieved line of length %zu :\n", read);
-	printf("%s", line);
+	if (read != -1){
+	    //	    start_conversation(h,RAW_COMMAND,signal_new(VM,VM,CSTRING_NOUN,line));
+	}
     }
     printf("Stdin closing down\n");
     free(line);

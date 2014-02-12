@@ -130,7 +130,6 @@ typedef struct {
 
     Symbol charIntNoun;
     bool alive;
-    bool logChange;
 } Receptor;
 
 
