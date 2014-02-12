@@ -3,11 +3,11 @@
 
 #define MAX_RECEPTORS 100
 
-// addresses
-enum { STDOUT };
+// receptor aspects
+enum {NULL_ASPECT=-1,STDIN};
 
 // receptor addresses
-enum {VM};
+enum {_HOST=-2,VM = -1,STDOUT};
 
 typedef struct {
     Receptor receptor;
@@ -32,34 +32,6 @@ Receptor *resolve(HostReceptor *r, ReceptorAddress addr) {
         return 0;
     }
     return dr;
-}
-
-void data_write_log(HostReceptor *h, Receptor *r, Symbol noun, void *surface, size_t length) {
-    // HostReceptor h is here just to make it clear this isn't internal operation on r
-
-    assert( pthread_mutex_lock( &r->data.log_mutex) == 0);
-
-    r->data.log[r->data.log_head].noun = noun;
-    memcpy( r->data.log[r->data.log_head].surface, surface, length);
-
-    int new_log_head = r->data.log_head + 1;
-    if (new_log_head >= MAX_LOG_ENTRIES) {
-        new_log_head = 0;
-    }
-    if (new_log_head == r->data.log_tail) {
-        raise_error0("buffer overflow");
-    }
-    r->data.log_head = new_log_head;
-
-    assert( pthread_mutex_unlock( &r->data.log_mutex) == 0);
-
-//    wakeup(r);
-}
-
-void write_out(HostReceptor *h, Receptor *r, Symbol noun, void *surface, size_t length) {
-    for (int i=0; i < r->listenerCount; i++){
-        data_write_log(h, r->listeners[i], noun, surface, length);
-    }
 }
 
 ConversationID data_add_conversation(Receptor *r,Conversation *c) {
@@ -98,7 +70,7 @@ Conversation *get_conversation(Receptor *r,ConversationID id) {
 
 ConversationID start_conversation(Receptor *r,SignalKey key, Signal *s)
 {
-    Conversation *c = conversation_new(s);
+    Conversation *c = conversation_new(key,s);
     ConversationID i = data_add_conversation(r,c);
     return i;
 }
@@ -110,7 +82,8 @@ typedef struct {
 
 void _send_message(HostReceptor *r, Address destination, Symbol noun, void *surface, size_t size) {
     Receptor *dest_receptor = resolve(r, destination.addr);
-    data_write_log(r, dest_receptor, noun, surface, size);
+    raise_error0("UNIMPLEMENTED\n");
+//    data_write_log(r, dest_receptor, noun, surface, size);
 }
 
 void send_message(Receptor *r, Packet *p) {
@@ -147,26 +120,18 @@ void stdin_run_proc(HostReceptor *h){
 	printf("> ");
 	read = getline(&line,&len,stdin);
 	if (read != -1) {
-	    Address from = {VM,0};
-	    Address to = {VM,0};
+	    Address from = {_HOST,NULL_ASPECT};
+	    Address to = {VM,STDIN};
             start_conversation(h,RAW_COMMAND,signal_new(h,from,to,CSTRING_NOUN,line));
 	}
     }
     printf("Stdin closing down\n");
     free(line);
-/*    //    printf("stdin_run_proc\n");
-    int c;
-    c = getchar();
-    while(c != EOF && r->alive) {
-	c = getchar();
-	write_out((HostReceptor *)r->parent, r, r->charIntNoun, &c, 4);
-    }*/
+
 }
 
 void stdout_log_proc(Receptor *r, Signal *s) {
-    //    printf("stdout_log_proc in\n");
     dump_named_surface(r, s->noun, &s->surface );
-    //    printf("stdout_log_proc out\n");
 }
 
 
@@ -180,7 +145,7 @@ void *receptor_task(void *arg) {
         if (r->signalProc) {
 	    ConversationEntry *ce = r->data.conversations_last;
             Signal *s = ce->c->signals[0];
-            (r->signalProc)(r, s);
+            (r->signalProc)(r,ce->c, s);
         }
 	assert( pthread_mutex_unlock( &r->data.log_mutex) == 0);
     }
@@ -219,11 +184,12 @@ int vm_host_cmd_dump(HostReceptor *h) {
     }
 }
 
-void vm_host_log_proc(Receptor *r, Signal *s) {
+void vm_host_log_proc(Receptor *r,Conversation *c, Signal *s) {
+
     if (strcmp(&s->surface,"quit")) {
 	r->alive = false;
     }
-    printf("got a signal: from %d; to %d; noun %d; surface: %s \n",s->from,s->to,s->noun,&s->surface);
+    printf("got a signal: from %d.%d; to %d.%d; noun %d; surface: %s \n",s->from.addr,s->from.aspect,s->to.addr,s->to.aspect,s->noun,&s->surface);
 }
 
 void vm_host_init(HostReceptor *r){

@@ -68,7 +68,6 @@ typedef struct {
 } SemStackFrame;
 
 typedef int ConversationID;
-typedef int SignalKey;
 
 struct conversation_entry {
     Conversation *c;
@@ -109,7 +108,7 @@ typedef struct {
 
 typedef struct Receptor;
 
-typedef void (* SignalProc)(struct Receptor *, Signal *);
+typedef void (* SignalProc)(struct Receptor *,Conversation *, Signal *);
 
 typedef struct {
     SemStackFrame semStack[STACK_SIZE];

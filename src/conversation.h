@@ -22,9 +22,12 @@ typedef struct {
     char surface;
 } Signal;
 
+typedef int SignalKey;
+
 typedef struct {
     unsigned int signal_count;
     Signal *signals[CONVERSATION_MAX_SIGNALS];
+    SignalKey keys[CONVERSATION_MAX_SIGNALS];
 } Conversation;
 
 Signal *_signal_new(Address from, Address to,time_t time,Symbol noun,void *surface, size_t size){
@@ -40,18 +43,19 @@ Signal *_signal_new(Address from, Address to,time_t time,Symbol noun,void *surfa
     return s;
 }
 
-Conversation *conversation_new(Signal *s) {
+Conversation *conversation_new(SignalKey k,Signal *s) {
     Conversation *c = malloc(sizeof(Conversation));
     if (c != NULL){
 	c->signal_count = 0;
-	conversation_append(c,s);
+	conversation_append(c,k,s);
     }
     return c;
 }
 
-int conversation_append(Conversation *c,Signal *s) {
+int conversation_append(Conversation *c,SignalKey k,Signal *s) {
     if (c->signal_count+1 == CONVERSATION_MAX_SIGNALS) return -1;
     c->signals[c->signal_count] = s;
+    c->keys[c->signal_count] = k;
     return c->signal_count++;
 }
 
