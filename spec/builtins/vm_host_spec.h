@@ -54,13 +54,26 @@ void testCmds() {
     HostReceptor vmHostReceptor, *vm = &vmHostReceptor;
     vm_host_init(vm);
     //op_invoke(vm,vm->cmdDump,RUN);
-    op_invoke(vm,vm->cmdStop,RUN);
-    vm_host_run(vm);
+    // op_invoke(vm,vm->cmdStop,RUN);
+        vm_host_run(vm);
+}
+
+void testConversationLog() {
+    HostReceptor vmHostReceptor, *vm = &vmHostReceptor;
+    vm_host_init(vm);
+
+    spec_is_equal(conversations_active(vm),0);
+    ConversationID id = start_conversation((Receptor *)vm,1234,signal_new(vm,VM,VM,CSTRING_NOUN,"Hello!"));
+    spec_is_equal(conversations_active(vm),1);
+    Conversation *c = get_conversation(vm,id);
+    spec_is_equal(conversation_signals(c),1);
+    spec_is_str_equal(&c->signals[0]->surface,"Hello!");
+
 }
 
 void testVmHost(){
     testCmds();
-
+    testConversationLog();
     //    testSendMessageFromEchoToStdoutLog();
     //  testPlantListenerOnStdinSendsMessagestoEcho();
     //testEcho();

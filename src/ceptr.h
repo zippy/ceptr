@@ -67,6 +67,15 @@ typedef struct {
     size_t size;
 } SemStackFrame;
 
+typedef int ConversationID;
+typedef int SignalKey;
+
+struct conversation_entry {
+    Conversation *c;
+    ConversationID id;
+    struct conversation_entry *prev;
+};
+typedef struct conversation_entry ConversationEntry;
 
 typedef struct {
     Xaddr xaddrs[DEFAULT_CACHE_SIZE];
@@ -77,7 +86,12 @@ typedef struct {
     int log_head;
     int log_tail;
     Signal log[MAX_LOG_ENTRIES];
+    int conversations_active;
+    ConversationEntry *conversations_first;
+    ConversationEntry *conversations_last;
+
     pthread_mutex_t log_mutex;
+    pthread_cond_t log_changed_cv;
 
     size_t cache_index;
 } Data;

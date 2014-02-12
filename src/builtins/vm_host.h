@@ -16,7 +16,6 @@ typedef struct {
     pthread_t threads[MAX_RECEPTORS];
 } HostReceptor;
 
-
 void null_proc(Receptor *r) {
     printf("Got a log message.  I do nothing\n");
 }
@@ -58,6 +57,47 @@ void write_out(HostReceptor *h, Receptor *r, Symbol noun, void *surface, size_t 
     }
 }
 
+ConversationID data_add_conversation(Receptor *r,Conversation *c) {
+    ConversationID i;
+    ConversationEntry *ce = malloc(sizeof(ConversationEntry));
+    if (ce) {
+	assert( pthread_mutex_lock( &r->data.log_mutex) == 0);
+	ce->id =  r->data.conversations_active++;
+	ce->c = c;
+	ce->prev = r->data.conversations_last;
+	r->data.conversations_last = ce;
+	if (r->data.conversations_first ==NULL) {
+	    r->data.conversations_first = ce;
+	}
+
+	assert( pthread_cond_broadcast( &r->data.log_changed_cv) == 0);
+
+	assert( pthread_mutex_unlock( &r->data.log_mutex) == 0);
+	return ce->id;
+    }
+    return -1;
+}
+
+int conversations_active(Receptor *r) {
+    return r->data.conversations_active;
+}
+
+Conversation *get_conversation(Receptor *r,ConversationID id) {
+    ConversationEntry *ce = r->data.conversations_last;
+    while (ce != NULL && ce->id != id) {
+	ce = ce->prev;
+    }
+    if (ce != NULL) return ce->c;
+    return NULL;
+}
+
+ConversationID start_conversation(Receptor *r,SignalKey key, Signal *s)
+{
+    Conversation *c = conversation_new(s);
+    ConversationID i = data_add_conversation(r,c);
+    return i;
+}
+
 typedef struct {
     Address destination;
     Xaddr value;
@@ -91,6 +131,8 @@ void dump_named_surface(Receptor *r, Symbol noun, void *surface) {
     }
 }
 
+enum {RAW_COMMAND};
+
 void stdin_run_proc(HostReceptor *h){
     ssize_t read = 0;
     char *line = NULL;
@@ -99,8 +141,8 @@ void stdin_run_proc(HostReceptor *h){
     while(read != -1 && ((Receptor *)h)->alive) {
 	printf("> ");
 	read = getline(&line,&len,stdin);
-	if (read != -1){
-	    //	    start_conversation(h,RAW_COMMAND,signal_new(VM,VM,CSTRING_NOUN,line));
+	if (read != -1) {
+            start_conversation(h,RAW_COMMAND,signal_new(h,VM,VM,CSTRING_NOUN,line));
 	}
     }
     printf("Stdin closing down\n");
@@ -126,16 +168,14 @@ void *receptor_task(void *arg) {
     // r->initProc;
     r->alive = true;
     while(r->alive) {
-        if (logChange(r) && r->signalProc) {
-            Signal *s = &r->data.log[r->data.log_tail];
+	assert( pthread_mutex_lock( &r->data.log_mutex) == 0);
+	assert( pthread_cond_wait(&r->data.log_changed_cv, &r->data.log_mutex) == 0);
+        if (r->signalProc) {
+	    ConversationEntry *ce = r->data.conversations_last;
+            Signal *s = ce->c->signals[0];
             (r->signalProc)(r, s);
-            int new_log_tail = r->data.log_tail + 1;
-            if (new_log_tail >= MAX_LOG_ENTRIES) {
-                new_log_tail = 0;
-            }
-            r->data.log_tail = new_log_tail;
         }
-        // onLogChange  r->logProc;
+	assert( pthread_mutex_unlock( &r->data.log_mutex) == 0);
     }
     return NULL;
 }
@@ -145,7 +185,7 @@ void _vmh_receptor_new(HostReceptor *r, Address addr, SignalProc sp) {
     r->receptors[addr].parent = r;
 
     int rc;
-printf("creating thread for addr %d\n", addr);
+    //printf("creating thread for addr %d\n", addr);
 
     rc = pthread_create(&r->threads[addr], NULL, receptor_task, (void *) &r->receptors[addr]);
     assert(0 == rc);
@@ -170,10 +210,18 @@ int vm_host_cmd_dump(HostReceptor *h) {
     }
 }
 
+void vm_host_log_proc(Receptor *r, Signal *s) {
+    if (strcmp(&s->surface,"quit")) {
+	r->alive = false;
+    }
+    printf("got a signal: from %d; to %d; noun %d; surface: %s \n",s->from,s->to,s->noun,&s->surface);
+}
+
 void vm_host_init(HostReceptor *r){
     r->receptor_count = 0;
     init(&r->receptors[VM]);
     ((Receptor *)r)->alive = true;
+    ((Receptor *)r)->signalProc = vm_host_log_proc;
 
     r->cmdPatternSpecXaddr = command_init((Receptor *)r);
     r->host_command = preop_new_noun(r, r->cmdPatternSpecXaddr, "Host Command");
@@ -194,6 +242,7 @@ void vm_host_init(HostReceptor *r){
 
 void vm_host_run(HostReceptor *h) {
 
+    receptor_task(h);
     int rc;
     for (int i = 1; i < h->receptor_count; i++) {
         rc = pthread_join(h->threads[i], NULL);

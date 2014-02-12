@@ -121,4 +121,5 @@ void data_init(Receptor *r) {
 
     r->data.cache_index = 0;
     r->data.current_xaddr = -1;
+    r->data.conversations_active = 0;
 }

@@ -25,18 +25,22 @@ typedef struct {
 Signal *_signal_new(Address from, Address to,time_t time,Symbol noun,void *surface, size_t size){
     size_t total_size = size + sizeof(Signal);
     Signal *s = malloc(total_size);
-    s->from = from;
-    s->to = to;
-    s->noun = noun;
-    s->timestamp = time;
-    memcpy(&s->surface,surface,size);
+    if (s != NULL) {
+	s->from = from;
+	s->to = to;
+	s->noun = noun;
+	s->timestamp = time;
+	memcpy(&s->surface,surface,size);
+    }
     return s;
 }
 
 Conversation *conversation_new(Signal *s) {
     Conversation *c = malloc(sizeof(Conversation));
-    c->signal_count = 0;
-    conversation_append(c,s);
+    if (c != NULL){
+	c->signal_count = 0;
+	conversation_append(c,s);
+    }
     return c;
 }
 
