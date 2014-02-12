@@ -108,7 +108,7 @@ typedef struct {
 
 typedef struct Receptor;
 
-typedef void (* SignalProc)(struct Receptor *,Conversation *, Signal *);
+typedef void (* SignalProc)(struct Receptor *,Conversation *,SignalKey , Signal *);
 
 typedef struct {
     SemStackFrame semStack[STACK_SIZE];

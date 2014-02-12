@@ -145,7 +145,7 @@ void *receptor_task(void *arg) {
         if (r->signalProc) {
 	    ConversationEntry *ce = r->data.conversations_last;
             Signal *s = ce->c->signals[0];
-            (r->signalProc)(r,ce->c, s);
+            (r->signalProc)(r,ce->c,ce->c->keys[0], s);
         }
 	assert( pthread_mutex_unlock( &r->data.log_mutex) == 0);
     }
@@ -167,29 +167,45 @@ void _vmh_receptor_new(HostReceptor *h, ReceptorAddress addr, SignalProc sp) {
 }
 
 Receptor *vmh_receptor_new(HostReceptor *r, SignalProc sp) {
-    _vmh_receptor_new(r, ++r->receptor_count, sp);
-    return r->receptors[r->receptor_count];
+    _vmh_receptor_new(r, r->receptor_count++, sp);
+    return r->receptors[r->receptor_count-1];
 }
 
 int vm_host_cmd_stop(HostReceptor *h) {
     printf("Stopping all receptors...\n");
-    for (int i = 0; i <= h->receptor_count; i++) {
+    for (int i = 0; i < h->receptor_count; i++) {
 	h->receptors[i]->alive = false;
     }
+    h->receptor.alive = false;
 }
 int vm_host_cmd_dump(HostReceptor *h) {
-    for (int i = 0; i <= h->receptor_count; i++) {
+    printf("\n\n HOST Receptor:\n");
+    dump_xaddrs(&h->receptor);
+    printf("Receptor count: %d\n",h->receptor_count);
+    for (int i = 0; i < h->receptor_count; i++) {
 	printf("\n\n Receptor %d:\n",i);
 	dump_xaddrs(h->receptors[i]);
     }
 }
 
-void vm_host_log_proc(Receptor *r,Conversation *c, Signal *s) {
+void vm_host_log_proc(Receptor *r,Conversation *c,SignalKey key, Signal *s) {
 
-    if (strcmp(&s->surface,"quit")) {
-	r->alive = false;
+    if (s->to.addr == VM) {
+	if (s->to.aspect == STDIN) {
+	    //	    Xaddr c = scape_lookup(command_text_scape,CSTRING_NOUN,&s->surface);
+	    Xaddr c = ((HostReceptor *)r)->cmdDump;
+	    if (c.noun == -99) {
+		printf("Unable to make sense of: %s !\n",&s->surface);
+	    }
+	    else {
+		op_invoke(r,c,RUN);
+	    }
+	}
     }
-    printf("got a signal: from %d.%d; to %d.%d; noun %d; surface: %s \n",s->from.addr,s->from.aspect,s->to.addr,s->to.aspect,s->noun,&s->surface);
+    //    if (strcmp(&s->surface,"quit")) {
+    //	r->alive = false;
+    //}
+    printf("got a signal: key:%d; from %d.%d; to %d.%d; noun %d; surface: %s \n",key,s->from.addr,s->from.aspect,s->to.addr,s->to.aspect,s->noun,&s->surface);
 }
 
 void vm_host_init(HostReceptor *r){
@@ -209,8 +225,7 @@ void vm_host_init(HostReceptor *r){
     rc = pthread_create(&r->stdin_thread, NULL, stdin_run_proc, (void *) r);
     assert(0 == rc);
 
-    _vmh_receptor_new(r, STDOUT, stdout_log_proc);
-    r->receptor_count = STDOUT;
+    vmh_receptor_new(r, stdout_log_proc);
 
 }
 
@@ -219,7 +234,7 @@ void vm_host_run(HostReceptor *h) {
 
     receptor_task(h);
     int rc;
-    for (int i = 1; i < h->receptor_count; i++) {
+    for (int i = 0; i < h->receptor_count; i++) {
         rc = pthread_join(h->threads[i], NULL);
         assert(0 == rc);
     }

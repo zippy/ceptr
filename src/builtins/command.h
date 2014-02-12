@@ -24,8 +24,8 @@ Xaddr make_command(Receptor *r,Symbol cmd_noun,char *str, char* alias, cfuncFn f
     ElementSurface *ps = spec_surface_for_noun(r, &nounType, cmd_noun);
     char buf[1000];
 
-    _pattern_set_child(r,ps,buf,CMD_STR,"go");
-    _pattern_set_child(r,ps,buf,CMD_ALIAS_STR,"g");
+    _pattern_set_child(r,ps,buf,CMD_STR,str);
+    _pattern_set_child(r,ps,buf,CMD_ALIAS_STR,alias);
     _pattern_set_child(r,ps,buf,CMD_PROCESS,&fn);
     stack_push(r,cmd_noun,buf);
     op_new(r);
