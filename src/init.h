@@ -46,5 +46,5 @@ void init(Receptor *r) {
     data_init(r);
     init_elements(r);
     init_builtins(r);
-
+    init_scapes(r);
 }

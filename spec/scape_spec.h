@@ -19,7 +19,9 @@ void testScapeLookup() {
 }
 
 void testNewScape() {
-    Scape *s = _new_scape("scape_name",1,2,3,str_match);
+    Receptor tr;init(&tr);Receptor *r = &tr;
+    ScapeID si = new_scape(r,"scape_name",1,2,3,str_match);
+    Scape *s = get_scape(r,si);
     spec_is_str_equal(s->name,"scape_name");
     spec_is_equal(s->data_source,1);
     spec_is_equal(s->key_source,2);

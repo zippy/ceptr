@@ -4,6 +4,7 @@
 #define DEFAULT_CACHE_SIZE 100000
 #define STACK_SIZE 10000
 #define OPERANDS_SIZE (sizeof(Xaddr) * 2)
+#define MAX_SCAPES 50
 
 #define _GNU_SOURCE
 #include <signal.h>
@@ -107,6 +108,16 @@ typedef struct {
     UntypedProcess processes;
 } ElementSurface;
 
+typedef bool (* ScapeMatchFn)();
+typedef int ScapeID;
+
+typedef struct {
+    char name[255];
+    Symbol data_source;
+    Symbol key_source;
+    Symbol key_geometry;
+    ScapeMatchFn matchfn;
+} Scape;
 
 typedef struct Receptor Receptor;
 
@@ -145,6 +156,8 @@ struct Receptor {
 
     Symbol charIntNoun;
     bool alive;
+    int scape_count;
+    Scape *scapes[MAX_SCAPES];
 }
 ;
 
