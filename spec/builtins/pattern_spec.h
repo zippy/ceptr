@@ -5,7 +5,7 @@ void testPatternHelpers() {
 
     //**** pattern_get_size
     Symbol MY_INT = preop_new_noun(r, r->intPatternSpecXaddr, "MY_INT");
-    spec_is_equal(pattern_get_size(r,MY_INT,0),4); // don't need an actual surface to get a pattern's size
+    spec_is_equal((int)pattern_get_size(r,MY_INT,0),4); // don't need an actual surface to get a pattern's size
 
 
     //*** pattern child functions
@@ -23,8 +23,8 @@ void testPatternHelpers() {
     spec_is_equal(_pattern_child_offset(ps,CMD_ALIAS_STR),256);
     _pattern_set_child(r,ps,buf,CMD_STR,"go");
     _pattern_set_child(r,ps,buf,CMD_ALIAS_STR,"g");
-    spec_is_str_equal(_pattern_get_child_surface(ps,buf,CMD_STR),"go");
-    spec_is_str_equal(_pattern_get_child_surface(ps,buf,CMD_ALIAS_STR),"g");
+    spec_is_str_equal((char *)_pattern_get_child_surface(ps,buf,CMD_STR),"go");
+    spec_is_str_equal((char *)_pattern_get_child_surface(ps,buf,CMD_ALIAS_STR),"g");
 
 }
 

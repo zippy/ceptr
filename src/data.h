@@ -12,6 +12,19 @@ sizeFunction size_table_get(Symbol noun) {
     return size_table[noun];
 }
 
+int data_sem_check(Receptor *r, Xaddr xaddr) {
+    if (xaddr.key < 0) {
+        if (xaddr.noun == -4) {
+            return 1;
+        }
+        if (util_xaddr_eq(xaddr, r->cspecXaddr)) {
+            return 1;
+        }
+    }
+    Symbol noun = r->data.xaddr_scape[xaddr.key];
+    return (noun == xaddr.noun);
+}
+
 void *data_get(Receptor *r, Xaddr xaddr) {
     if (util_xaddr_eq(xaddr, r->rootXaddr)){
         return &r->rootSurface;
@@ -24,19 +37,6 @@ void *data_get(Receptor *r, Xaddr xaddr) {
 
 void size_table_set(Symbol noun, sizeFunction func) {
     size_table[noun] = func;
-}
-
-int data_sem_check(Receptor *r, Xaddr xaddr) {
-    if (xaddr.key < 0) {
-        if (xaddr.noun == -4) {
-            return 1;
-        }
-        if (util_xaddr_eq(xaddr, r->cspecXaddr)) {
-            return 1;
-        }
-    }
-    Symbol noun = r->data.xaddr_scape[xaddr.key];
-    return (noun == xaddr.noun);
 }
 
 void data_record_existence(Receptor *r, size_t current_index, Symbol noun) {

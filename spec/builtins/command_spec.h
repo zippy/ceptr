@@ -20,7 +20,7 @@ void testCommand() {
     ElementSurface *ps = spec_surface_for_noun(r, &nounType, CMD);
 
     void *fs =_pattern_get_child_surface(ps,s,getSymbol(r,"CMD_PROCESS"));
-    spec_is_long_equal(*(long *)fs,cmd_func);
+    spec_is_long_equal(*(long *)fs,(long)cmd_func);
 
     op_invoke(r,my_c,RUN);
     char *peek_surface;

@@ -89,7 +89,7 @@ void _send_message(HostReceptor *r, Address destination, Symbol noun, void *surf
 void send_message(Receptor *r, Packet *p) {
     void *surface = surface_for_xaddr(r, p->value);
     size_t size = size_of_named_surface(r, p->value.noun, surface);
-    _send_message(r->parent, p->destination, p->value.noun, surface, size);
+    _send_message((HostReceptor *)r->parent, p->destination, p->value.noun, surface, size);
 }
 
 void listen(Receptor *r, ReceptorAddress addr) {
@@ -111,7 +111,7 @@ void dump_named_surface(Receptor *r, Symbol noun, void *surface) {
 
 enum {RAW_COMMAND};
 
-void stdin_run_proc(HostReceptor *h){
+void * stdin_run_proc(void *h){
     ssize_t read = 0;
     char *line = NULL;
     size_t len = 0;
@@ -122,7 +122,7 @@ void stdin_run_proc(HostReceptor *h){
 	if (read != -1) {
 	    Address from = {_HOST,NULL_ASPECT};
 	    Address to = {VM,STDIN};
-            start_conversation(h,RAW_COMMAND,signal_new(h,from,to,CSTRING_NOUN,line));
+            start_conversation((Receptor *)h,RAW_COMMAND,signal_new((Receptor *)h,from,to,CSTRING_NOUN,line));
 	}
     }
     printf("Stdin closing down\n");
@@ -130,7 +130,7 @@ void stdin_run_proc(HostReceptor *h){
 
 }
 
-void stdout_log_proc(Receptor *r, Signal *s) {
+void stdout_log_proc(Receptor *r, Conversation *c, SignalKey k, Signal *s) {
     dump_named_surface(r, s->noun, &s->surface );
 }
 
@@ -157,7 +157,7 @@ void _vmh_receptor_new(HostReceptor *h, ReceptorAddress addr, SignalProc sp) {
     h->receptors[addr] = r;
     init(r);
     r->signalProc = sp;
-    r->parent = h;
+    r->parent = (Receptor *)h;
 
     int rc;
     //printf("creating thread for addr %d\n", addr);
@@ -171,14 +171,16 @@ Receptor *vmh_receptor_new(HostReceptor *r, SignalProc sp) {
     return r->receptors[r->receptor_count-1];
 }
 
-int vm_host_cmd_stop(HostReceptor *h) {
+int vm_host_cmd_stop(Receptor *r) {
+    HostReceptor *h = (HostReceptor *)r;
     printf("Stopping all receptors...\n");
     for (int i = 0; i < h->receptor_count; i++) {
 	h->receptors[i]->alive = false;
     }
     h->receptor.alive = false;
 }
-int vm_host_cmd_dump(HostReceptor *h) {
+int vm_host_cmd_dump(Receptor *r) {
+    HostReceptor *h = (HostReceptor *)r;
     printf("\n\n HOST Receptor:\n");
     dump_xaddrs(&h->receptor);
     printf("Receptor count: %d\n",h->receptor_count);
@@ -215,10 +217,10 @@ void vm_host_init(HostReceptor *r){
     r->receptor.signalProc = vm_host_log_proc;
 
     r->cmdPatternSpecXaddr = command_init((Receptor *)r);
-    r->host_command = preop_new_noun(r, r->cmdPatternSpecXaddr, "Host Command");
+    r->host_command = preop_new_noun((Receptor *)r, r->cmdPatternSpecXaddr, "Host Command");
 
-    r->cmdStop = make_command(r,r->host_command,"stop","s",vm_host_cmd_stop);
-    r->cmdDump = make_command(r,r->host_command,"dump","d",vm_host_cmd_dump);
+    r->cmdStop = make_command((Receptor *)r,r->host_command,"stop","s",vm_host_cmd_stop);
+    r->cmdDump = make_command((Receptor *)r,r->host_command,"dump","d",vm_host_cmd_dump);
 
     int rc;
     printf("creating stdin thread \n");

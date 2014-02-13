@@ -47,7 +47,7 @@ void dump_process_array(Process *process, int count) {
         if (i != 0) {
             printf(",");
         }
-        printf("{ %d, %zu }", process[i].name, (size_t) process[i].function);
+        printf("{ %d, %p }", process[i].name, process[i].function);
         i++;
     }
 }

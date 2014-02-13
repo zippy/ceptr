@@ -1,7 +1,7 @@
 #include "../ceptr.h"
 
 int proc_str255_print(Receptor *r, Symbol noun, void *this){
-    printf("String is: %s",this);
+    printf("String is: %s",(char *)this);
 }
 
 void str255_init(Receptor *r) {

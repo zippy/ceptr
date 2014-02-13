@@ -2,10 +2,10 @@
 
 
 int proc_command_print(Receptor *r, Symbol noun, void *this,void *ps){
-    printf("String: %s; Alias:%s; Func:0x%08x",
+    printf("String: %s; Alias:%s; Func:%p",
 	   (char *)_pattern_get_child_surface(ps, this,getSymbol(r,"CMD_STR")),
 	   (char *)_pattern_get_child_surface(ps, this,getSymbol(r,"CMD_ALIAS_STR")),
-	   (long *)_pattern_get_child_surface(ps, this,getSymbol(r,"CMD_PROCESS"))
+	   *(void **)_pattern_get_child_surface(ps, this,getSymbol(r,"CMD_PROCESS"))
 	   );
 }
 

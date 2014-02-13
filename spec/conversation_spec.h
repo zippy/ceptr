@@ -10,8 +10,8 @@ void testNewConversation() {
     spec_is_equal(conversation_signals(c),1);
     spec_is_equal(c->signals[0]->from.aspect,0);
     spec_is_equal(c->signals[0]->to.aspect,1);
-    spec_is_equal(c->signals[0]->timestamp,10234);
-    spec_is_long_equal(c->signals[0]->noun,CSTRING_NOUN);
+    spec_is_equal((int)c->signals[0]->timestamp,10234);
+    spec_is_equal(c->signals[0]->noun,CSTRING_NOUN);
     spec_is_str_equal(&c->signals[0]->surface,"hello");
     conversation_delete(c);
 }
@@ -28,8 +28,8 @@ void testAppendConversation() {
     spec_is_equal(c->keys[id],99);
     spec_is_equal(c->signals[id]->from.addr,VM);
     spec_is_equal(c->signals[id]->to.aspect,0);
-    spec_is_equal(c->signals[id]->timestamp,10235);
-    spec_is_long_equal(c->signals[id]->noun,CSTRING_NOUN);
+    spec_is_equal((int)c->signals[id]->timestamp,10235);
+    spec_is_equal(c->signals[id]->noun,CSTRING_NOUN);
     spec_is_str_equal(&c->signals[id]->surface,"bye");
     conversation_delete(c);
 }

@@ -15,7 +15,7 @@ void testNewScape() {
     spec_is_equal(s->key_source,CMD_STR);
     spec_is_equal(s->data_source,CMD);
     spec_is_equal(s->key_geometry,CSTRING_NOUN);
-    spec_is_long_equal(s->matchfn,str_match);
+    spec_is_long_equal((long)s->matchfn,(long)str_match);
 
     Xaddr my_c = make_command(r,CMD,"go","g",0);
     Xaddr c = scape_lookup(s,"go");

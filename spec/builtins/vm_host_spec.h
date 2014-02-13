@@ -62,10 +62,10 @@ void testConversationLog() {
     vm_host_init(vm);
     Address from = {VM,0};
 
-    spec_is_equal(conversations_active(vm),0);
-    ConversationID id = start_conversation((Receptor *)vm,1234,signal_new(vm,from,from,CSTRING_NOUN,"Hello!"));
-    spec_is_equal(conversations_active(vm),1);
-    Conversation *c = get_conversation(vm,id);
+    spec_is_equal(conversations_active((Receptor *)vm),0);
+    ConversationID id = start_conversation((Receptor *)vm,1234,signal_new((Receptor *)vm,from,from,CSTRING_NOUN,"Hello!"));
+    spec_is_equal(conversations_active((Receptor *)vm),1);
+    Conversation *c = get_conversation((Receptor *)vm,id);
     spec_is_equal(conversation_signals(c),1);
     spec_is_str_equal(&c->signals[0]->surface,"Hello!");
 

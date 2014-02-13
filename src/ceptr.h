@@ -5,6 +5,7 @@
 #define STACK_SIZE 10000
 #define OPERANDS_SIZE (sizeof(Xaddr) * 2)
 
+#define _GNU_SOURCE
 #include <signal.h>
 #include <string.h>
 #include <stdio.h>
@@ -106,9 +107,12 @@ typedef struct {
     UntypedProcess processes;
 } ElementSurface;
 
-typedef void (* SignalProc)(struct Receptor *,Conversation *,SignalKey , Signal *);
 
-typedef struct {
+typedef struct Receptor Receptor;
+
+typedef void (* SignalProc)(Receptor *,Conversation *,SignalKey , Signal *);
+
+struct Receptor {
     SemStackFrame semStack[STACK_SIZE];
     Symbol nounStack[STACK_SIZE];
     int semStackPointer;
@@ -141,7 +145,8 @@ typedef struct {
 
     Symbol charIntNoun;
     bool alive;
-} Receptor;
+}
+;
 
 
 typedef struct {

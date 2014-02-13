@@ -1,7 +1,7 @@
 #include "../ceptr.h"
 
 int proc_cfunc_print(Receptor *r, Symbol noun, void *this){
-    printf("address of function: 0x%08x",*(long *)this);
+    printf("address of function: %p",this);
     return 0;
 }
 
