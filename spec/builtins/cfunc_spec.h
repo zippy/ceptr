@@ -12,8 +12,8 @@ void testCfunc() {
     op_new(r);
     Xaddr my;
     stack_pop(r,XADDR_NOUN,&my);
-    long *s = surface_for_xaddr(r,my);
-    spec_is_long_equal(*s,(long)func);
+    cfuncFn *s = surface_for_xaddr(r,my);
+    spec_is_ptr_equal(*s,func);
     op_invoke(r,my,RUN);
     char *peek_surface;
     stack_peek(r, CSTRING_NOUN, (void **)&peek_surface);
