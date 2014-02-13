@@ -192,7 +192,7 @@ void vm_host_log_proc(Receptor *r,Conversation *c,SignalKey key, Signal *s) {
 
     if (s->to.addr == VM) {
 	if (s->to.aspect == STDIN) {
-	    //	    Xaddr c = scape_lookup(command_text_scape,CSTRING_NOUN,&s->surface);
+	    //	    Xaddr c = scape_lookup(command_text_scape,&s->surface);
 	    Xaddr c = ((HostReceptor *)r)->cmdDump;
 	    if (c.noun == -99) {
 		printf("Unable to make sense of: %s !\n",&s->surface);

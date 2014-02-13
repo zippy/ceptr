@@ -106,8 +106,6 @@ typedef struct {
     UntypedProcess processes;
 } ElementSurface;
 
-typedef struct Receptor;
-
 typedef void (* SignalProc)(struct Receptor *,Conversation *,SignalKey , Signal *);
 
 typedef struct {
@@ -197,6 +195,9 @@ void dump_xaddrs(Receptor *r);
 
 //
 #include "ops.h"
+
+//
+#include "scape.h"
 
 //
 #include "builtins/noun.h"

@@ -43,6 +43,13 @@ Signal *_signal_new(Address from, Address to,time_t time,Symbol noun,void *surfa
     return s;
 }
 
+int conversation_append(Conversation *c,SignalKey k,Signal *s) {
+    if (c->signal_count+1 == CONVERSATION_MAX_SIGNALS) return -1;
+    c->signals[c->signal_count] = s;
+    c->keys[c->signal_count] = k;
+    return c->signal_count++;
+}
+
 Conversation *conversation_new(SignalKey k,Signal *s) {
     Conversation *c = malloc(sizeof(Conversation));
     if (c != NULL){
@@ -50,13 +57,6 @@ Conversation *conversation_new(SignalKey k,Signal *s) {
 	conversation_append(c,k,s);
     }
     return c;
-}
-
-int conversation_append(Conversation *c,SignalKey k,Signal *s) {
-    if (c->signal_count+1 == CONVERSATION_MAX_SIGNALS) return -1;
-    c->signals[c->signal_count] = s;
-    c->keys[c->signal_count] = k;
-    return c->signal_count++;
 }
 
 int conversation_delete(Conversation *c){

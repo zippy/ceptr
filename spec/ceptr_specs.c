@@ -7,6 +7,7 @@
 
 #include "init_spec.h"
 #include "stack_spec.h"
+#include "scape_spec.h"
 
 #include "builtins/noun_spec.h"
 #include "builtins/pattern_spec.h"
@@ -71,6 +72,7 @@ int main(int argc, const char **argv) {
     testInit();
     testCommand();
     testConversation();
+    testScape();
     //    testThreads();
 
     //**** builtins tests
@@ -83,7 +85,7 @@ int main(int argc, const char **argv) {
     testCfunc();
     testReceptorUtil();
     //    testReceptor();
-    testVmHost();
+    //   testVmHost();
 
     //**** examples test
     testPoint();
