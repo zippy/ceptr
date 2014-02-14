@@ -3,6 +3,7 @@
 // OPS. one level lower than PROCS which live on specs and are invoked there, ops are globally defined
 //  operations that manipulate the stack and/or interface with the data engine in some way.
 
+void *_pattern_get_child_surface(void *ps, void *surface,Symbol child_noun);
 
 // given:  surface on stack
 // result: new xaddr on stack
@@ -11,16 +12,27 @@ void op_new(Receptor *r) {
     void *surface;
     stack_peek_unchecked(r, &noun, &surface);
     Xaddr new_xaddr = data_new(r, noun, surface, size_of_named_surface(r, noun, surface));
+    //find scapes whose data source is the same noun as the xaddr being set:
+    //TODO: this is bogus because it creates a new item for every update, but it works for now
+    for(int i=0;i<r->scape_count;i++) {
+	Scape *s = r->scapes[i];
+	if (s->data_source == noun) {
+	    Symbol nounType;
+	    // TODO: This is bogus, not everything is a pattern!!
+	    ElementSurface *ps = spec_surface_for_noun(r, &nounType, noun);
+	    void *key_surface = _pattern_get_child_surface(ps, surface , s->key_source);
+	    size_t key_len = size_of_named_surface(r,s->key_source,key_surface);
+	    _add_scape_item(s,key_surface,key_len,new_xaddr);
+	}
+    }
     stack_push(r,XADDR_NOUN,&new_xaddr);
 }
 
-//TODO: fixme!! this is clearly bogus
+//TODO: fixme!! this is clearly bogus.  We need to differentiate between instances and specs ontologically
 int is_spec(Receptor *r, Xaddr x) {
     return util_xaddr_eq(x,r->nounSpecXaddr) || util_xaddr_eq(x,r->patternSpecXaddr);
 }
 
-//  This really should be in ops.h.
-//  it's here until we implement fake surfaces for the builtin specs so that we don't refer to the procs by name in op_invoke.
 void op_invoke(Receptor *r, Xaddr invokee, FunctionName function) {
     // record call on stack?
     if (invokee.key < 0) {

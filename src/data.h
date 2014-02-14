@@ -118,7 +118,7 @@ Symbol data_new_noun(Receptor *r, Xaddr xaddr, char *label) {
 void data_init(Receptor *r) {
     int i;
     for (i = 0; i < DEFAULT_CACHE_SIZE; i++) r->data.xaddr_scape[i] = CSPEC;
-
+    init_scapes(r);
     r->data.cache_index = 0;
     r->data.current_xaddr = -1;
     r->data.conversations_active = 0;
