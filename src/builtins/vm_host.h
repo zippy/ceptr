@@ -17,6 +17,7 @@ typedef struct {
     Xaddr cmdStop;
     Symbol host_command;
     int receptor_count;
+    Scape *command_scape;
     pthread_t stdin_thread;
     pthread_t threads[MAX_RECEPTORS];
 } HostReceptor;
@@ -194,9 +195,9 @@ void vm_host_log_proc(Receptor *r,Conversation *c,SignalKey key, Signal *s) {
 
     if (s->to.addr == VM) {
 	if (s->to.aspect == STDIN) {
-	    //	    Xaddr c = scape_lookup(command_text_scape,&s->surface);
-	    Xaddr c = ((HostReceptor *)r)->cmdDump;
-	    if (c.noun == -99) {
+	    Xaddr c = _scape_lookup(((HostReceptor *)r)->command_scape,&s->surface,0);
+	    //  Xaddr c = ((HostReceptor *)r)->cmdDump;
+	    if ((c.noun == -1) && (c.key == -1)) {
 		printf("Unable to make sense of: %s !\n",&s->surface);
 	    }
 	    else {
@@ -210,6 +211,18 @@ void vm_host_log_proc(Receptor *r,Conversation *c,SignalKey key, Signal *s) {
     printf("got a signal: key:%d; from %d.%d; to %d.%d; noun %d; surface: %s \n",key,s->from.addr,s->from.aspect,s->to.addr,s->to.aspect,s->noun,&s->surface);
 }
 
+bool first_word_match(void *match_surface,size_t match_len, void *key_surface, size_t key_len) {
+    char *m = (char *)match_surface;
+    char *k = (char *)key_surface;
+    while(*k != 0) {
+	if (*m == *k) {
+	    m++;k++;
+	}
+	else return false;
+    }
+    return (*m==0 || *m == ' ' || *m==0xA);
+}
+
 void vm_host_init(HostReceptor *r){
     r->receptor_count = 0;
     init(&r->receptor);
@@ -218,6 +231,8 @@ void vm_host_init(HostReceptor *r){
 
     r->cmdPatternSpecXaddr = command_init((Receptor *)r);
     r->host_command = preop_new_noun((Receptor *)r, r->cmdPatternSpecXaddr, "Host Command");
+
+    r->command_scape = get_scape((Receptor *)r,new_scape((Receptor *)r,"command_scape_name",r->host_command,getSymbol((Receptor *)r,"CMD_STR"),CSTRING_NOUN,first_word_match));
 
     r->cmdStop = make_command((Receptor *)r,r->host_command,"stop","s",vm_host_cmd_stop);
     r->cmdDump = make_command((Receptor *)r,r->host_command,"dump","d",vm_host_cmd_dump);

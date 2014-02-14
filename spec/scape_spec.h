@@ -26,11 +26,6 @@ void testScapeContents() {
     spec_is_equal(si->xaddr.noun,2);
 }
 
-bool str_match(void *match_surface,size_t match_len, void *key_surface, size_t key_len) {
-    char *m = (char *)match_surface;
-    char *k = (char *)key_surface;
-    return (strcmp(m,k) == 0);
-}
 void testScapeLookup() {
     Receptor tr;init(&tr);Receptor *r = &tr;
     Xaddr cmdPatternSpecXaddr = command_init(r);
