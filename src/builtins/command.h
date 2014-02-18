@@ -10,8 +10,12 @@ int proc_command_print(Receptor *r, Symbol noun, void *this,void *ps){
 }
 
 int proc_command_run(Receptor *r, Symbol noun, void *this, void *ps){
-    //TODO: gotta be a better way to get the symbol
+    //TODO: Note, getting the symbol this way is wonky because the actual offest would
+    //      have been able to be compiled into the bytecode directly.
     cfuncFn *fn =  _pattern_get_child_surface(ps, this,getSymbol(r,"CMD_PROCESS"));
+
+    //TODO: get the reset of the stdin in an parse parameters, and push them on stack.
+
     return (*fn)(r);
 }
 

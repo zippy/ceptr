@@ -3,7 +3,7 @@
 bool str_match(void *match_surface,size_t match_len, void *key_surface, size_t key_len) {
     char *m = (char *)match_surface;
     char *k = (char *)key_surface;
-    printf("comparing: %s to %s\n",m,k);
+    //    printf("comparing: %s to %s\n",m,k);
     return (strcmp(m,k) == 0);
 }
 

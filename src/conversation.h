@@ -5,8 +5,8 @@
 #define CONVERSATION_MAX_SIGNALS 100
 
 #include <time.h>
+#include "tree.h"
 
-typedef int Symbol;
 typedef int ReceptorAddress;
 typedef int Aspect;
 typedef struct {
