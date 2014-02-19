@@ -79,8 +79,23 @@ void testTreePath() {
     _t_free(tt);
 }
 
+void testTreeUtils() {
+    Tnode *t = _makeTestTree();
+    spec_is_str_equal((char *)_t_get_child_surface(t,2),"t2");
+
+    Tnode *t2 = _t_get_child(t,2);
+    spec_is_str_equal((char *)_t_surface(t2),"t2");
+
+    _t_free(t);
+
+    t = _t_new_root();
+    spec_is_equal(_t_children(t),0);
+    _t_free(t);
+}
+
 void testTree() {
     testNewTreeNode();
     testTreeRealloc();
     testTreePath();
+    testTreeUtils();
 }

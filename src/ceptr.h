@@ -18,7 +18,6 @@
 #include "tree.h"
 #include "conversation.h"
 
-#define MAX_LOG_ENTRIES 30
 #define BUFFER_SIZE 10000
 
 typedef enum { false, true } bool;
@@ -93,9 +92,6 @@ typedef struct {
 typedef bool (* ScapeMatchFn)(void *match_surface,size_t match_len, void *key_surface, size_t key_len);
 typedef int ScapeID;
 
-#define MAX_SCAPES 50
-#define MAX_SCAPE_ITEMS 100
-
 typedef struct {
     Xaddr xaddr;
     size_t surface_len;
@@ -103,13 +99,12 @@ typedef struct {
 } ScapeItem;
 
 typedef struct {
+    Tnode *items;
     char name[255];
     Symbol data_source;
     Symbol key_source;
     Symbol key_geometry;
     ScapeMatchFn matchfn;
-    int item_count;
-    ScapeItem *items[MAX_SCAPE_ITEMS];
 } Scape;
 
 typedef struct Receptor Receptor;
@@ -149,8 +144,7 @@ struct Receptor {
 
     Symbol charIntNoun;
     bool alive;
-    int scape_count;
-    Scape *scapes[MAX_SCAPES];
+    Tnode *scapes;
 }
 ;
 

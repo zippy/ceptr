@@ -8,6 +8,12 @@
 typedef int Symbol;
 #define TREE_PATH_TERMINATOR 10
 
+#define TREE_ROOT_NOUN -999
+
+typedef struct {
+    int placeholder;
+} Troot;
+
 struct Tnode {
     struct Tnode *parent;
     int child_count;
@@ -95,6 +101,19 @@ void * _t_get_surface(Tnode *t,int *p) {
 Tnode *_t_get_child(Tnode *t,int c) {
     int p[2] = {c,TREE_PATH_TERMINATOR};
     return _t_get(t,p);
+}
+
+void *_t_get_child_surface(Tnode *t,int i) {
+    Tnode *c = _t_get_child(t,i);
+    if (c) {
+	return _t_surface(c);
+    }
+    return NULL;
+}
+
+Tnode *_t_new_root() {
+    Troot t;
+    return _t_new(0,TREE_ROOT_NOUN,&t,sizeof(Troot));
 }
 
 #endif

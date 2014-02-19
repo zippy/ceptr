@@ -13,8 +13,8 @@ void op_new(Receptor *r) {
     stack_peek_unchecked(r, &noun, &surface);
     Xaddr new_xaddr = data_new(r, noun, surface, size_of_named_surface(r, noun, surface));
     //find scapes whose data source is the same noun as the xaddr being set:
-    for(int i=0;i<r->scape_count;i++) {
-	Scape *s = r->scapes[i];
+    for(int i=1;i<=scape_count(r);i++) {
+	Scape *s = get_scape(r,i);
 	if (s->data_source == noun) {
 	    Symbol nounType;
 	    // TODO: This is bogus, not everything is a pattern!!

@@ -26,39 +26,53 @@ Scape *_new_scape(char *name,Symbol data_source,Symbol key_source, Symbol key_ge
 	s->key_source = key_source;
 	s->key_geometry = key_geometry;
 	s->matchfn = (matchfn == 0)?surface_match:matchfn;
-	s->item_count = 0;
+	s->items = _t_new_root();
     }
     return s;
 }
 
+int scape_count(Receptor *r) {
+    return _t_children(r->scapes);
+}
+
+#define SCAPE_NOUN -105
+
 ScapeID new_scape(Receptor *r,char *name,Symbol data_source,Symbol key_source, Symbol key_geometry, ScapeMatchFn matchfn) {
-    if (r->scape_count == MAX_SCAPES) {raise_error0("No more scapes can be allocated\n");}
-    r->scapes[r->scape_count] = _new_scape(name,data_source,key_source,key_geometry,matchfn);
-    return r->scape_count++;
+    Scape *s = _new_scape(name,data_source,key_source,key_geometry,matchfn);
+    Tnode *t = _t_new(r->scapes,SCAPE_NOUN,s,sizeof(Scape));
+    free(s); //TODO: it would be better if this didn't require two allocs.
+    return scape_count(r);
 }
 
 void _delete_scape_items(Scape *s) {
-    while(s->item_count-- > 0) {
-	free(s->items[s->item_count]);
-    }
-}
-
-void delete_scapes(Receptor *r) {
-    while(r->scape_count-- > 0) {
-	Scape *s = r->scapes[r->scape_count];
-	_delete_scape_items(s);
-	free(s);
-    }
+    _t_free(s->items);
 }
 
 Scape *get_scape(Receptor *r,ScapeID i) {
-    return r->scapes[i];
+    return _t_get_child_surface(r->scapes,i);
+}
+
+void delete_scapes(Receptor *r) {
+    for (int i=1; i<=scape_count(r);i++) {
+	Scape *s = get_scape(r,i);
+	_delete_scape_items(s);
+    }
+    _t_free(r->scapes);
+}
+
+int scape_item_count(Scape *s) {
+    return _t_children(s->items);
+}
+
+//TODO: refactor same as get_scape
+ScapeItem *get_scape_item(Scape *s,int id) {
+    return _t_get_child_surface(s->items,id);
 }
 
 Xaddr _scape_lookup(Scape *s,void *match_surface,size_t match_len) {
     ScapeMatchFn f = s->matchfn;
-    for(int i=0;i<s->item_count;i++) {
-	ScapeItem *si = s->items[i];
+    for(int i=1;i<=scape_item_count(s);i++) {
+	ScapeItem *si = get_scape_item(s,i);
 	if ((*f)(match_surface,match_len,&si->surface,si->surface_len))
 	    return si->xaddr;
     }
@@ -66,18 +80,18 @@ Xaddr _scape_lookup(Scape *s,void *match_surface,size_t match_len) {
     return x;
 }
 
+
 void init_scapes(Receptor *r) {
-    r->scape_count = 0;
+    r->scapes = _t_new_root();
 }
 
+#define SCAPE_ITEM_NOUN -107
 void _add_scape_item(Scape *s,void *surface,size_t surface_len,Xaddr xaddr) {
-    if (s->item_count == MAX_SCAPE_ITEMS) {raise_error0("No more scape items can be allocated\n");}
     ScapeItem *si = malloc(sizeof(ScapeItem)+surface_len);
     if (si != NULL) {
 	si->xaddr = xaddr;
 	si->surface_len = surface_len;
 	memcpy(&si->surface,surface,surface_len);
-	s->items[s->item_count] = si;
-	s->item_count++;
+	_t_new(s->items,SCAPE_ITEM_NOUN,si,sizeof(ScapeItem)+surface_len);
     }
 }

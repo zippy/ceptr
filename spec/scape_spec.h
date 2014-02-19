@@ -2,9 +2,9 @@
 
 void testNewScape() {
     Receptor tr;init(&tr);Receptor *r = &tr;
-    spec_is_equal(r->scape_count,0);
+    spec_is_equal(scape_count(r),0);
     ScapeID si = new_scape(r,"scape_name",1,2,3,0);
-    spec_is_equal(r->scape_count,1);
+    spec_is_equal(scape_count(r),1);
     Scape *s = get_scape(r,si);
     spec_is_str_equal(s->name,"scape_name");
     spec_is_equal(s->data_source,1);
@@ -16,10 +16,10 @@ void testNewScape() {
 void testScapeContents() {
     Scape *s = _new_scape("scape_name",1,2,3,0);
     Xaddr x = {1,2};
-    spec_is_equal(s->item_count,0);
+    spec_is_equal(scape_item_count(s),0);
     _add_scape_item(s,"fish",6,x);
-    spec_is_equal(s->item_count,1);
-    ScapeItem *si = s->items[0];
+    spec_is_equal(scape_item_count(s),1);
+    ScapeItem *si = get_scape_item(s,1);
     spec_is_long_equal((long)si->surface_len,(long)6);
     spec_is_str_equal((char*)&si->surface,"fish");
     spec_is_equal(si->xaddr.key,1);
