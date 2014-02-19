@@ -9,15 +9,15 @@ typedef int Symbol;
 #define TREE_PATH_TERMINATOR 10
 
 struct Tnode {
-    Symbol noun;
     struct Tnode *parent;
     int child_count;
     struct Tnode **children;
+    Symbol noun;
     char surface;
 };
 typedef struct Tnode Tnode;
 
-void _t_append_child(Tnode *t,Tnode *c) {
+int __t_append_child(Tnode *t,Tnode *c) {
     if (t->child_count == 0) {
 	t->children = malloc(sizeof(Tnode *)*TREE_CHILDREN_BLOCK);
     } else if (!(t->child_count % TREE_CHILDREN_BLOCK)){
@@ -35,7 +35,7 @@ Tnode * _t_new(Tnode *parent,Symbol noun,void *surface,size_t size) {
     t->parent = parent;
     t->noun = noun;
     if (parent != NULL) {
-	_t_append_child(parent,t);
+	__t_append_child(parent,t);
     }
     return t;
 }
@@ -90,6 +90,11 @@ void * _t_get_surface(Tnode *t,int *p) {
     Tnode *c = _t_get(t,p);
     if (c == NULL) return NULL;
     return _t_surface(c);
+}
+
+Tnode *_t_get_child(Tnode *t,int c) {
+    int p[2] = {c,TREE_PATH_TERMINATOR};
+    return _t_get(t,p);
 }
 
 #endif

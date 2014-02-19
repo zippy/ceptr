@@ -67,7 +67,9 @@ void testConversationLog() {
     spec_is_equal(conversations_active((Receptor *)vm),1);
     Conversation *c = get_conversation((Receptor *)vm,id);
     spec_is_equal(conversation_signals(c),1);
-    spec_is_str_equal(&c->signals[0]->surface,"Hello!");
+
+    Signal *sr = conversation_get_signal(c,1);
+    spec_is_str_equal(&sr->surface,"Hello!");
 
 }
 

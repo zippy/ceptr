@@ -18,12 +18,6 @@ void init_elements(Receptor *r) {
 void init_processing(Receptor *r) {
     r->listenerCount = 0;
     r->signalProc = 0;
-
-    r->data.log_head = 0;
-    r->data.log_tail = 0;
-    assert( pthread_mutex_init(&r->data.log_mutex, NULL) == 0);
-    assert( pthread_cond_init(&r->data.log_changed_cv, NULL) == 0);
-
 }
 
 void init_builtins(Receptor *r) {

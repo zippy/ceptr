@@ -35,44 +35,25 @@ Receptor *resolve(HostReceptor *r, ReceptorAddress addr) {
     return dr;
 }
 
-ConversationID data_add_conversation(Receptor *r,Conversation *c) {
-    ConversationID i;
-    ConversationEntry *ce = malloc(sizeof(ConversationEntry));
-    if (ce) {
-	assert( pthread_mutex_lock( &r->data.log_mutex) == 0);
-	ce->id =  r->data.conversations_active++;
-	ce->c = c;
-	ce->prev = r->data.conversations_last;
-	r->data.conversations_last = ce;
-	if (r->data.conversations_first ==NULL) {
-	    r->data.conversations_first = ce;
-	}
-
-	assert( pthread_cond_broadcast( &r->data.log_changed_cv) == 0);
-
-	assert( pthread_mutex_unlock( &r->data.log_mutex) == 0);
-	return ce->id;
-    }
-    return -1;
-}
-
 int conversations_active(Receptor *r) {
-    return r->data.conversations_active;
+    return _t_children(r->data.log);
 }
 
 Conversation *get_conversation(Receptor *r,ConversationID id) {
-    ConversationEntry *ce = r->data.conversations_last;
-    while (ce != NULL && ce->id != id) {
-	ce = ce->prev;
-    }
-    if (ce != NULL) return ce->c;
-    return NULL;
+    return _t_get_child(r->data.log,id);
 }
 
 ConversationID start_conversation(Receptor *r,SignalKey key, Signal *s)
 {
-    Conversation *c = conversation_new(key,s);
-    ConversationID i = data_add_conversation(r,c);
+    ConversationID i = 0;
+    assert( pthread_mutex_lock( &r->data.log_mutex) == 0);
+    Conversation *c = conversation_new(r->data.log);
+    if (c) {
+	conversation_append(c,key,s);
+	assert( pthread_cond_broadcast( &r->data.log_changed_cv) == 0);
+	i =  _t_children(r->data.log);
+    }
+    assert( pthread_mutex_unlock( &r->data.log_mutex) == 0);
     return i;
 }
 
@@ -144,9 +125,10 @@ void *receptor_task(void *arg) {
 	assert( pthread_mutex_lock( &r->data.log_mutex) == 0);
 	assert( pthread_cond_wait(&r->data.log_changed_cv, &r->data.log_mutex) == 0);
         if (r->signalProc) {
-	    ConversationEntry *ce = r->data.conversations_last;
-            Signal *s = ce->c->signals[0];
-            (r->signalProc)(r,ce->c,ce->c->keys[0], s);
+	    ConversationID id = conversations_active(r);
+	    Conversation *c = get_conversation(r,id);
+            SignalEntry *se = conversation_get_signalentry(c,1);
+            (r->signalProc)(r,c,se->k,se->s);
         }
 	assert( pthread_mutex_unlock( &r->data.log_mutex) == 0);
     }
@@ -192,9 +174,9 @@ int vm_host_cmd_dump(Receptor *r) {
 }
 
 void vm_host_log_proc(Receptor *r,Conversation *c,SignalKey key, Signal *s) {
-
-    if (s->to.addr == VM) {
-	if (s->to.aspect == STDIN) {
+    SignalHeader h = _s_header(s);
+    if (h.to.addr == VM) {
+	if (h.to.aspect == STDIN) {
 	    Xaddr c = _scape_lookup(((HostReceptor *)r)->command_scape,&s->surface,0);
 	    //  Xaddr c = ((HostReceptor *)r)->cmdDump;
 	    if ((c.noun == -1) && (c.key == -1)) {
@@ -208,7 +190,7 @@ void vm_host_log_proc(Receptor *r,Conversation *c,SignalKey key, Signal *s) {
     //    if (strcmp(&s->surface,"quit")) {
     //	r->alive = false;
     //}
-    printf("got a signal: key:%d; from %d.%d; to %d.%d; noun %d; surface: %s \n",key,s->from.addr,s->from.aspect,s->to.addr,s->to.aspect,s->noun,&s->surface);
+    printf("got a signal: key:%d; from %d.%d; to %d.%d; noun %d; surface: %s \n",key,h.from.addr,h.from.aspect,h.to.addr,h.to.aspect,s->noun,&s->surface);
 }
 
 bool first_word_match(void *match_surface,size_t match_len, void *key_surface, size_t key_len) {

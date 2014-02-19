@@ -121,5 +121,12 @@ void data_init(Receptor *r) {
     init_scapes(r);
     r->data.cache_index = 0;
     r->data.current_xaddr = -1;
-    r->data.conversations_active = 0;
+
+    r->data.log_head = 0;
+    r->data.log_tail = 0;
+    assert( pthread_mutex_init(&r->data.log_mutex, NULL) == 0);
+    assert( pthread_cond_init(&r->data.log_changed_cv, NULL) == 0);
+
+    LogMeta lm;
+    r->data.log = _t_new(0,LOG_META_NOUN,&lm,sizeof(LogMeta));
 }

@@ -59,12 +59,11 @@ typedef struct {
 
 typedef int ConversationID;
 
-struct conversation_entry {
-    Conversation *c;
-    ConversationID id;
-    struct conversation_entry *prev;
-};
-typedef struct conversation_entry ConversationEntry;
+#define LOG_META_NOUN -103
+// placeholder surface for log root node
+typedef struct {
+    int meta;
+} LogMeta;
 
 typedef struct {
     Xaddr xaddrs[DEFAULT_CACHE_SIZE];
@@ -74,10 +73,8 @@ typedef struct {
 
     int log_head;
     int log_tail;
-    Signal log[MAX_LOG_ENTRIES];
-    int conversations_active;
-    ConversationEntry *conversations_first;
-    ConversationEntry *conversations_last;
+
+    Tnode *log;
 
     pthread_mutex_t log_mutex;
     pthread_cond_t log_changed_cv;

@@ -18,6 +18,10 @@ typedef struct {
     Address from;
     Address to;
     time_t timestamp;
+} SignalHeader;
+
+typedef struct {
+    SignalHeader header;
     Symbol noun;
     char surface;
 } Signal;
@@ -25,49 +29,65 @@ typedef struct {
 typedef int SignalKey;
 
 typedef struct {
-    unsigned int signal_count;
-    Signal *signals[CONVERSATION_MAX_SIGNALS];
-    SignalKey keys[CONVERSATION_MAX_SIGNALS];
-} Conversation;
+    SignalKey k;
+    Signal *s;
+} SignalEntry;
+
+typedef struct {
+    int meta;
+} ConversationMeta;
+
+
+typedef Tnode Conversation;
 
 Signal *_signal_new(Address from, Address to,time_t time,Symbol noun,void *surface, size_t size){
     size_t total_size = size + sizeof(Signal);
     Signal *s = malloc(total_size);
     if (s != NULL) {
-	s->from = from;
-	s->to = to;
+	s->header.from = from;
+	s->header.to = to;
+	s->header.timestamp = time;
 	s->noun = noun;
-	s->timestamp = time;
 	memcpy(&s->surface,surface,size);
     }
     return s;
 }
 
-int conversation_append(Conversation *c,SignalKey k,Signal *s) {
-    if (c->signal_count+1 == CONVERSATION_MAX_SIGNALS) return -1;
-    c->signals[c->signal_count] = s;
-    c->keys[c->signal_count] = k;
-    return c->signal_count++;
+SignalHeader _s_header(Signal *s) {
+    return s->header;
 }
 
-Conversation *conversation_new(SignalKey k,Signal *s) {
-    Conversation *c = malloc(sizeof(Conversation));
-    if (c != NULL){
-	c->signal_count = 0;
-	conversation_append(c,k,s);
-    }
+#define SIGNAL_ENTRY_NOUN -100
+int conversation_append(Conversation *c,SignalKey k,Signal *s) {
+    SignalEntry se = {k,s};
+    Tnode *t = _t_new(c,SIGNAL_ENTRY_NOUN,&se,sizeof(SignalEntry));
+    return _t_children(c);
+}
+
+#define CONVERSATION_META_NOUN -101
+
+Conversation *conversation_new(Tnode *log) {
+    ConversationMeta cm;
+    Conversation *c = _t_new(log,CONVERSATION_META_NOUN,&cm,sizeof(ConversationMeta));
     return c;
 }
 
 int conversation_delete(Conversation *c){
-    while(c->signal_count > 0) {
-	free(c->signals[--c->signal_count]);
-    }
-    free(c);
+    _t_free(c);
     return 0;
 }
 
+SignalEntry *conversation_get_signalentry(Conversation *c,int signal_id) {
+    int p[2] = {signal_id,TREE_PATH_TERMINATOR};
+    return _t_get_surface(c,p);
+}
+
+Signal *conversation_get_signal(Conversation *c,int signal_id) {
+    SignalEntry *se = conversation_get_signalentry(c,signal_id);
+    return se->s;
+}
+
 int conversation_signals(Conversation *c) {
-    return c->signal_count;
+    return _t_children(c);
 }
 #endif

@@ -9,6 +9,7 @@ void testReceptorUtil(){
     Address to = {VM,0};
     Signal *s = signal_new(r,from,to,CSTRING_NOUN,"fish");
     spec_is_str_equal(&s->surface,"fish");
-    spec_is_equal((int)s->timestamp,(int)t);
+    SignalHeader h = _s_header(s);
+    spec_is_equal((int)h.timestamp,(int)t);
     free(s);
 }
