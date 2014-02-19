@@ -60,9 +60,9 @@ typedef struct {
 typedef int ConversationID;
 
 #define LOG_META_NOUN -103
-// placeholder surface for log root node
 typedef struct {
-    int meta;
+    pthread_mutex_t mutex;
+    pthread_cond_t changed;
 } LogMeta;
 
 typedef struct {
@@ -75,9 +75,6 @@ typedef struct {
     int log_tail;
 
     Tnode *log;
-
-    pthread_mutex_t log_mutex;
-    pthread_cond_t log_changed_cv;
 
     size_t cache_index;
 } Data;

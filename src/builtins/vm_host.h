@@ -46,14 +46,15 @@ Conversation *get_conversation(Receptor *r,ConversationID id) {
 ConversationID start_conversation(Receptor *r,SignalKey key, Signal *s)
 {
     ConversationID i = 0;
-    assert( pthread_mutex_lock( &r->data.log_mutex) == 0);
+    LogMeta *lm = _t_surface(r->data.log);
+    assert( pthread_mutex_lock(&lm->mutex) == 0);
     Conversation *c = conversation_new(r->data.log);
     if (c) {
 	conversation_append(c,key,s);
-	assert( pthread_cond_broadcast( &r->data.log_changed_cv) == 0);
+	assert( pthread_cond_broadcast( &lm->changed) == 0);
 	i =  _t_children(r->data.log);
     }
-    assert( pthread_mutex_unlock( &r->data.log_mutex) == 0);
+    assert( pthread_mutex_unlock( &lm->mutex) == 0);
     return i;
 }
 
@@ -121,16 +122,17 @@ void *receptor_task(void *arg) {
     Receptor *r = (Receptor *)arg;
     // r->initProc;
     r->alive = true;
+    LogMeta *lm = _t_surface(r->data.log);
     while(r->alive) {
-	assert( pthread_mutex_lock( &r->data.log_mutex) == 0);
-	assert( pthread_cond_wait(&r->data.log_changed_cv, &r->data.log_mutex) == 0);
+	assert( pthread_mutex_lock( &lm->mutex) == 0);
+	assert( pthread_cond_wait(&lm->changed, &lm->mutex) == 0);
         if (r->signalProc) {
 	    ConversationID id = conversations_active(r);
 	    Conversation *c = get_conversation(r,id);
             SignalEntry *se = conversation_get_signalentry(c,1);
             (r->signalProc)(r,c,se->k,se->s);
         }
-	assert( pthread_mutex_unlock( &r->data.log_mutex) == 0);
+	assert( pthread_mutex_unlock( &lm->mutex) == 0);
     }
     return NULL;
 }

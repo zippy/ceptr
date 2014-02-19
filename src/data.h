@@ -124,9 +124,11 @@ void data_init(Receptor *r) {
 
     r->data.log_head = 0;
     r->data.log_tail = 0;
-    assert( pthread_mutex_init(&r->data.log_mutex, NULL) == 0);
-    assert( pthread_cond_init(&r->data.log_changed_cv, NULL) == 0);
 
-    LogMeta lm;
+    LogMeta lm,*l;
     r->data.log = _t_new(0,LOG_META_NOUN,&lm,sizeof(LogMeta));
+    l = _t_surface(r->data.log);
+    assert( pthread_mutex_init(&l->mutex, NULL) == 0);
+    assert( pthread_cond_init(&l->changed, NULL) == 0);
+
 }
