@@ -1,8 +1,6 @@
 #include "../ceptr.h"
 #include <unistd.h>
 
-#define MAX_RECEPTORS 100
-
 // receptor aspects
 enum {NULL_ASPECT=-1,STDIN};
 
@@ -11,28 +9,17 @@ enum {_HOST=-2,VM = -1,STDOUT};
 
 typedef struct {
     Receptor receptor;
-    Receptor *receptors[MAX_RECEPTORS];
+    Tnode *receptors;
     Xaddr cmdPatternSpecXaddr;
     Xaddr cmdDump;
     Xaddr cmdStop;
     Symbol host_command;
-    int receptor_count;
     Scape *command_scape;
     pthread_t stdin_thread;
-    pthread_t threads[MAX_RECEPTORS];
 } HostReceptor;
 
 void null_proc(Receptor *r) {
     printf("Got a log message.  I do nothing\n");
-}
-
-Receptor *resolve(HostReceptor *r, ReceptorAddress addr) {
-    Receptor *dr = r->receptors[addr];
-    if (dr == 0) {
-        raise_error("whatchu talking about addred %d\n", addr );
-        return 0;
-    }
-    return dr;
 }
 
 int conversations_active(Receptor *r) {
@@ -58,28 +45,6 @@ ConversationID start_conversation(Receptor *r,SignalKey key, Signal *s)
     return i;
 }
 
-typedef struct {
-    Address destination;
-    Xaddr value;
-} Packet;
-
-void _send_message(HostReceptor *r, Address destination, Symbol noun, void *surface, size_t size) {
-    Receptor *dest_receptor = resolve(r, destination.addr);
-    raise_error0("UNIMPLEMENTED\n");
-//    data_write_log(r, dest_receptor, noun, surface, size);
-}
-
-void send_message(Receptor *r, Packet *p) {
-    void *surface = surface_for_xaddr(r, p->value);
-    size_t size = size_of_named_surface(r, p->value.noun, surface);
-    _send_message((HostReceptor *)r->parent, p->destination, p->value.noun, surface, size);
-}
-
-void listen(Receptor *r, ReceptorAddress addr) {
-    HostReceptor *h = (HostReceptor *)r->parent;
-    Receptor *l = resolve(h, addr);
-    l->listeners[l->listenerCount++] = r;
-}
 
 void dump_named_surface(Receptor *r, Symbol noun, void *surface) {
     if (spec_noun_for_noun(r, noun) == r->patternSpecXaddr.noun) {
@@ -136,31 +101,32 @@ void *receptor_task(void *arg) {
     }
     return NULL;
 }
-void _vmh_receptor_new(HostReceptor *h, ReceptorAddress addr, SignalProc sp) {
-    Receptor *r = malloc(sizeof(Receptor));
-    if (r == NULL) {raise_error0("couldn't allocate receptor\n");}
-    h->receptors[addr] = r;
-    init(r);
-    r->signalProc = sp;
-    r->parent = (Receptor *)h;
-
-    int rc;
-    //printf("creating thread for addr %d\n", addr);
-
-    rc = pthread_create(&h->threads[addr], NULL, receptor_task, (void *) h->receptors[addr]);
-    assert(0 == rc);
+#define NOUN_RECEPTOR -998
+Receptor *get_receptor(HostReceptor *h,int id) {
+    return _t_get_child_surface(h->receptors,id);
 }
 
-Receptor *vmh_receptor_new(HostReceptor *r, SignalProc sp) {
-    _vmh_receptor_new(r, r->receptor_count++, sp);
-    return r->receptors[r->receptor_count-1];
+int receptor_count(HostReceptor *h) {
+    return _t_children(h->receptors);
+}
+
+void vmh_receptor_new(HostReceptor *h, SignalProc sp) {
+    Receptor rb,*r;
+    Tnode *t = _t_new(h->receptors,NOUN_RECEPTOR,&rb,sizeof(Receptor));
+    r = _t_surface(t);
+    r->signalProc = sp;
+    r->parent = (Receptor *)h;
+    init(r);
+    int rc;
+    rc = pthread_create(&r->thread, NULL, receptor_task, (void *)r);
+    assert(0 == rc);
 }
 
 int vm_host_cmd_stop(Receptor *r) {
     HostReceptor *h = (HostReceptor *)r;
     printf("Stopping all receptors...\n");
-    for (int i = 0; i < h->receptor_count; i++) {
-	h->receptors[i]->alive = false;
+    for (int i = 1; i <= receptor_count(h); i++) {
+	get_receptor(h,i)->alive = false;
     }
     h->receptor.alive = false;
 }
@@ -168,10 +134,10 @@ int vm_host_cmd_dump(Receptor *r) {
     HostReceptor *h = (HostReceptor *)r;
     printf("\n\n HOST Receptor:\n");
     dump_xaddrs(&h->receptor);
-    printf("Receptor count: %d\n",h->receptor_count);
-    for (int i = 0; i < h->receptor_count; i++) {
+    printf("Receptor count: %d\n",receptor_count(h));
+    for (int i = 1; i <= receptor_count(h); i++) {
 	printf("\n\n Receptor %d:\n",i);
-	dump_xaddrs(h->receptors[i]);
+	dump_xaddrs(get_receptor(h,i));
     }
 }
 
@@ -208,7 +174,7 @@ bool first_word_match(void *match_surface,size_t match_len, void *key_surface, s
 }
 
 void vm_host_init(HostReceptor *r){
-    r->receptor_count = 0;
+    r->receptors = _t_new_root();
     init(&r->receptor);
     r->receptor.alive = true;
     r->receptor.signalProc = vm_host_log_proc;
@@ -230,13 +196,13 @@ void vm_host_init(HostReceptor *r){
 
 }
 
-
 void vm_host_run(HostReceptor *h) {
 
     receptor_task(h);
     int rc;
-    for (int i = 0; i < h->receptor_count; i++) {
-        rc = pthread_join(h->threads[i], NULL);
+    for (int i = 1; i <= receptor_count(h); i++) {
+	Receptor *r = get_receptor(h,i);
+        rc = pthread_join(r->thread, NULL);
         assert(0 == rc);
     }
     rc = pthread_join(h->stdin_thread,NULL);
@@ -255,4 +221,39 @@ void vm_host_run(HostReceptor *h) {
 //        }
 //    }
 
+}
+
+
+
+typedef struct {
+    Address destination;
+    Xaddr value;
+} Packet;
+
+
+Receptor *resolve(HostReceptor *r, ReceptorAddress addr) {
+    Receptor *dr = get_receptor(r,addr);
+    if (dr == 0) {
+        raise_error("whatchu talking about addred %d\n", addr );
+        return 0;
+    }
+    return dr;
+}
+
+void _send_message(HostReceptor *r, Address destination, Symbol noun, void *surface, size_t size) {
+    Receptor *dest_receptor = resolve(r, destination.addr);
+    raise_error0("UNIMPLEMENTED\n");
+    //    data_write_log(r, dest_receptor, noun, surface, size);
+}
+
+void send_message(Receptor *r, Packet *p) {
+    void *surface = surface_for_xaddr(r, p->value);
+    size_t size = size_of_named_surface(r, p->value.noun, surface);
+    _send_message((HostReceptor *)r->parent, p->destination, p->value.noun, surface, size);
+}
+
+void listen(Receptor *r, ReceptorAddress addr) {
+    HostReceptor *h = (HostReceptor *)r->parent;
+    Receptor *l = resolve(h, addr);
+    l->listeners[l->listenerCount++] = r;
 }

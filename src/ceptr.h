@@ -145,8 +145,8 @@ struct Receptor {
     Symbol charIntNoun;
     bool alive;
     Tnode *scapes;
-}
-;
+    pthread_t thread;
+};
 
 
 typedef struct {
