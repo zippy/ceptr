@@ -32,8 +32,8 @@ void testScapeLookup() {
     Symbol CMD = preop_new_noun(r, cmdPatternSpecXaddr, "CMD");
 
     Symbol CMD_STR = getSymbol(r,"CMD_STR");
-    ScapeID si = new_scape(r,"scape_name",CMD,CMD_STR,CSTRING_NOUN,str_match);
-    Scape *s = get_scape(r,si);
+    ScapeID i = new_scape(r,"scape_name",CMD,CMD_STR,CSTRING_NOUN,str_match);
+    Scape *s = get_scape(r,i);
 
     Xaddr c = _scape_lookup(s,"go",3);
     spec_is_equal(c.noun,-1);
@@ -43,6 +43,13 @@ void testScapeLookup() {
     c = _scape_lookup(s,"go",3);
     spec_is_equal(c.noun,my_c.noun);
     spec_is_equal(c.key,my_c.key);
+
+    int p[4] = {1,0,1,TREE_PATH_TERMINATOR};
+    Tnode *t = _t_get(r->scapes,p);
+    ScapeItem *si = _t_surface(t);
+
+    spec_is_equal(si->xaddr.key,c.key);
+    spec_is_equal(si->xaddr.noun,c.noun);
 }
 
 void testScape() {
