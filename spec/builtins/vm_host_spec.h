@@ -57,8 +57,10 @@ void testCmds() {
         vm_host_run(vm);
 }
 
+
 void testConversationLog() {
     HostReceptor vmHostReceptor, *vm = &vmHostReceptor;
+
     vm_host_init(vm);
     Address from = {VM,0};
 
@@ -72,10 +74,12 @@ void testConversationLog() {
     Signal *sr = conversation_get_signal(c,1);
     spec_is_str_equal(&sr->surface,"Hello!");
 
+    //    vm_host_cmd_stop((Receptor *)vm);
+
 }
 
 void testVmHost(){
-      testCmds();
+    testCmds();
     testConversationLog();
     //    testSendMessageFromEchoToStdoutLog();
     //  testPlantListenerOnStdinSendsMessagestoEcho();

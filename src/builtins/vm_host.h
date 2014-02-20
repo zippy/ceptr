@@ -75,7 +75,6 @@ void * stdin_run_proc(void *h){
     }
     printf("Stdin closing down\n");
     free(line);
-
 }
 
 void stdout_log_proc(Receptor *r) {
@@ -90,11 +89,12 @@ void *receptor_task(void *arg) {
     while(r->alive) {
 	assert( pthread_mutex_lock( &lm->mutex) == 0);
 	assert( pthread_cond_wait(&lm->changed, &lm->mutex) == 0);
-        if (r->signalProc) {
+        if (r->alive && r->signalProc) {
             (r->signalProc)(r);
         }
 	assert( pthread_mutex_unlock( &lm->mutex) == 0);
     }
+    printf("receptor task complete \n");
     return NULL;
 }
 #define RECEPTOR_NOUN -998
@@ -118,6 +118,7 @@ void vmh_receptor_new(HostReceptor *h, SignalProc sp) {
     r->parent = (Receptor *)h;
     init(r);
     int rc;
+    printf("creating thread\n");
     rc = pthread_create(&r->thread, NULL, receptor_task, (void *)r);
     assert(0 == rc);
 }
@@ -206,19 +207,19 @@ void vm_host_init(HostReceptor *r){
     rc = pthread_create(&r->stdin_thread, NULL, stdin_run_proc, (void *) r);
     assert(0 == rc);
 
-    vmh_receptor_new(r, stdout_log_proc);
+    //    vmh_receptor_new(r, stdout_log_proc);
 
 }
 
 void vm_host_run(HostReceptor *h) {
 
     receptor_task(h);
-    int rc;
-    for (int i = 1; i <= receptor_count(h); i++) {
+   int rc;
+   for (int i = 1; i <= receptor_count(h); i++) {
 	Receptor *r = get_receptor(h,i);
         rc = pthread_join(r->thread, NULL);
         assert(0 == rc);
-    }
+   }
     rc = pthread_join(h->stdin_thread,NULL);
     assert(0 == rc);
     //
