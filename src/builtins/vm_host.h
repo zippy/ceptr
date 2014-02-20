@@ -82,7 +82,6 @@ void stdout_log_proc(Receptor *r, Conversation *c, SignalKey k, Signal *s) {
     dump_named_surface(r, s->noun, &s->surface );
 }
 
-
 void *receptor_task(void *arg) {
     Receptor *r = (Receptor *)arg;
     // r->initProc;
@@ -101,7 +100,7 @@ void *receptor_task(void *arg) {
     }
     return NULL;
 }
-#define NOUN_RECEPTOR -998
+#define RECEPTOR_NOUN -998
 Receptor *get_receptor(HostReceptor *h,int id) {
     return _t_get_child_surface(h->receptors,id);
 }
@@ -110,9 +109,13 @@ int receptor_count(HostReceptor *h) {
     return _t_children(h->receptors);
 }
 
+void iter_receptors(HostReceptor *h,tIterFn fn,void *param) {
+    _t_iter_children(h->receptors,fn,param);
+}
+
 void vmh_receptor_new(HostReceptor *h, SignalProc sp) {
     Receptor rb,*r;
-    Tnode *t = _t_new(h->receptors,NOUN_RECEPTOR,&rb,sizeof(Receptor));
+    Tnode *t = _t_new(h->receptors,RECEPTOR_NOUN,&rb,sizeof(Receptor));
     r = _t_surface(t);
     r->signalProc = sp;
     r->parent = (Receptor *)h;
@@ -122,23 +125,28 @@ void vmh_receptor_new(HostReceptor *h, SignalProc sp) {
     assert(0 == rc);
 }
 
+void stopfunc(Receptor *r,int i,void *param) {
+    r->alive = false;
+}
+
 int vm_host_cmd_stop(Receptor *r) {
     HostReceptor *h = (HostReceptor *)r;
     printf("Stopping all receptors...\n");
-    for (int i = 1; i <= receptor_count(h); i++) {
-	get_receptor(h,i)->alive = false;
-    }
+    iter_receptors(h,(tIterFn)stopfunc,0);
     h->receptor.alive = false;
 }
+
+void dumpfunc(Receptor *r,int i,void *param) {
+    printf("\n\n Receptor %d:\n",i);
+    dump_xaddrs(r);
+}
+
 int vm_host_cmd_dump(Receptor *r) {
     HostReceptor *h = (HostReceptor *)r;
     printf("\n\n HOST Receptor:\n");
     dump_xaddrs(&h->receptor);
     printf("Receptor count: %d\n",receptor_count(h));
-    for (int i = 1; i <= receptor_count(h); i++) {
-	printf("\n\n Receptor %d:\n",i);
-	dump_xaddrs(get_receptor(h,i));
-    }
+    iter_receptors(h,(tIterFn)dumpfunc,0);
 }
 
 void vm_host_log_proc(Receptor *r,Conversation *c,SignalKey key, Signal *s) {

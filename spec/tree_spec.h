@@ -79,12 +79,31 @@ void testTreePath() {
     _t_free(tt);
 }
 
+typedef struct {
+    int len;
+    char buf[20];
+} iterTest;
+
+
+void iterfunc(void *s,int id,void *param) {
+    iterTest *i = param;
+    int l = strlen((char *)s);
+    strcpy(i->buf+i->len,(char *)s);
+    i->len += l;
+    i->buf[i->len] = 0;
+}
+
 void testTreeUtils() {
     Tnode *t = _makeTestTree();
     spec_is_str_equal((char *)_t_get_child_surface(t,2),"t2");
 
     Tnode *t2 = _t_get_child(t,2);
     spec_is_str_equal((char *)_t_surface(t2),"t2");
+
+    iterTest i;
+    i.len = 0;
+    _t_iter_children(t,iterfunc,&i);
+    spec_is_str_equal(i.buf,"t1t2");
 
     _t_free(t);
 

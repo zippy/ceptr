@@ -64,7 +64,6 @@ int scape_item_count(Scape *s) {
     return _t_children(s->items);
 }
 
-//TODO: refactor same as get_scape
 ScapeItem *get_scape_item(Scape *s,int id) {
     return _t_get_child_surface(s->items,id);
 }

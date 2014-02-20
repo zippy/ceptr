@@ -116,4 +116,14 @@ Tnode *_t_new_root() {
     return _t_new(0,TREE_ROOT_NOUN,&t,sizeof(Troot));
 }
 
+typedef void (*tIterFn)(void *, int, void *param);
+
+void _t_iter_children(Tnode *t, tIterFn fn, void * param) {
+    int count = _t_children(t);
+    for (int i = 1; i <= count; i++) {
+	Tnode *c = _t_get_child(t,i);
+	(fn)(_t_surface(c),i,param);
+    }
+}
+
 #endif

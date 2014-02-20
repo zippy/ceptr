@@ -33,8 +33,12 @@ typedef struct {
     Signal *s;
 } SignalEntry;
 
+typedef int ConversationStatus;
+
+enum {CSTAT_NEW, CSTAT_PENDING};
+
 typedef struct {
-    int meta;
+    ConversationStatus status;
 } ConversationMeta;
 
 
@@ -67,7 +71,7 @@ int conversation_append(Conversation *c,SignalKey k,Signal *s) {
 #define CONVERSATION_META_NOUN -101
 
 Conversation *conversation_new(Tnode *log) {
-    ConversationMeta cm;
+    ConversationMeta cm = {CSTAT_NEW};
     Conversation *c = _t_new(log,CONVERSATION_META_NOUN,&cm,sizeof(ConversationMeta));
     return c;
 }
