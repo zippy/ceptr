@@ -93,6 +93,15 @@ void iterfunc(void *s,int id,void *param) {
     i->buf[i->len] = 0;
 }
 
+void itersfunc(Tnode *t,int id,void *param) {
+    char *s = _t_surface(t);
+    iterTest *i = param;
+    int l = strlen((char *)s);
+    strcpy(i->buf+i->len,(char *)s);
+    i->len += l;
+    i->buf[i->len] = 0;
+}
+
 void testTreeUtils() {
     Tnode *t = _makeTestTree();
     spec_is_str_equal((char *)_t_get_child_surface(t,2),"t2");
@@ -102,7 +111,12 @@ void testTreeUtils() {
 
     iterTest i;
     i.len = 0;
-    _t_iter_children(t,iterfunc,&i);
+    _t_iter_children_surface(t,iterfunc,&i);
+    spec_is_str_equal(i.buf,"t1t2");
+
+
+    i.len = 0;
+    _t_iter_children(t,itersfunc,&i);
     spec_is_str_equal(i.buf,"t1t2");
 
     _t_free(t);

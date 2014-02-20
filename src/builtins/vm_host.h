@@ -78,8 +78,8 @@ void * stdin_run_proc(void *h){
 
 }
 
-void stdout_log_proc(Receptor *r, Conversation *c, SignalKey k, Signal *s) {
-    dump_named_surface(r, s->noun, &s->surface );
+void stdout_log_proc(Receptor *r) {
+    //    dump_named_surface(r, s->noun, &s->surface );
 }
 
 void *receptor_task(void *arg) {
@@ -91,10 +91,7 @@ void *receptor_task(void *arg) {
 	assert( pthread_mutex_lock( &lm->mutex) == 0);
 	assert( pthread_cond_wait(&lm->changed, &lm->mutex) == 0);
         if (r->signalProc) {
-	    ConversationID id = conversations_active(r);
-	    Conversation *c = get_conversation(r,id);
-            SignalEntry *se = conversation_get_signalentry(c,1);
-            (r->signalProc)(r,c,se->k,se->s);
+            (r->signalProc)(r);
         }
 	assert( pthread_mutex_unlock( &lm->mutex) == 0);
     }
@@ -109,8 +106,8 @@ int receptor_count(HostReceptor *h) {
     return _t_children(h->receptors);
 }
 
-void iter_receptors(HostReceptor *h,tIterFn fn,void *param) {
-    _t_iter_children(h->receptors,fn,param);
+void iter_receptors(HostReceptor *h,tIterSurfaceFn fn,void *param) {
+    _t_iter_children_surface(h->receptors,fn,param);
 }
 
 void vmh_receptor_new(HostReceptor *h, SignalProc sp) {
@@ -132,7 +129,7 @@ void stopfunc(Receptor *r,int i,void *param) {
 int vm_host_cmd_stop(Receptor *r) {
     HostReceptor *h = (HostReceptor *)r;
     printf("Stopping all receptors...\n");
-    iter_receptors(h,(tIterFn)stopfunc,0);
+    iter_receptors(h,(tIterSurfaceFn)stopfunc,0);
     h->receptor.alive = false;
 }
 
@@ -146,27 +143,36 @@ int vm_host_cmd_dump(Receptor *r) {
     printf("\n\n HOST Receptor:\n");
     dump_xaddrs(&h->receptor);
     printf("Receptor count: %d\n",receptor_count(h));
-    iter_receptors(h,(tIterFn)dumpfunc,0);
+    iter_receptors(h,(tIterSurfaceFn)dumpfunc,0);
 }
 
-void vm_host_log_proc(Receptor *r,Conversation *c,SignalKey key, Signal *s) {
-    SignalHeader h = _s_header(s);
-    if (h.to.addr == VM) {
-	if (h.to.aspect == STDIN) {
-	    Xaddr c = _scape_lookup(((HostReceptor *)r)->command_scape,&s->surface,0);
-	    //  Xaddr c = ((HostReceptor *)r)->cmdDump;
-	    if ((c.noun == -1) && (c.key == -1)) {
-		printf("Unable to make sense of: %s !\n",&s->surface);
-	    }
-	    else {
-		op_invoke(r,c,RUN);
+void newconvfunc(Conversation *c,int i, HostReceptor *r) {
+    ConversationMeta *cm = _t_surface(c);
+    if (cm->status == CSTAT_NEW) {
+	cm->status = CSTAT_PENDING;
+	Signal *s = conversation_get_signal(c,1);
+	SignalKey key = 1111;
+
+	SignalHeader h = _s_header(s);
+	printf("got a signal: key:%d; from %d.%d; to %d.%d; noun %d; surface: %s \n",key,h.from.addr,h.from.aspect,h.to.addr,h.to.aspect,s->noun,&s->surface);
+
+	if (h.to.addr == VM) {
+	    if (h.to.aspect == STDIN) {
+		Xaddr c = _scape_lookup(r->command_scape,&s->surface,0);
+		//  Xaddr c = ((HostReceptor *)r)->cmdDump;
+		if ((c.noun == -1) && (c.key == -1)) {
+		    printf("Unable to make sense of: %s !\n",&s->surface);
+		}
+		else {
+		    op_invoke(&r->receptor,c,RUN);
+		}
 	    }
 	}
     }
-    //    if (strcmp(&s->surface,"quit")) {
-    //	r->alive = false;
-    //}
-    printf("got a signal: key:%d; from %d.%d; to %d.%d; noun %d; surface: %s \n",key,h.from.addr,h.from.aspect,h.to.addr,h.to.aspect,s->noun,&s->surface);
+}
+
+void vm_host_log_proc(Receptor *r) {
+    _t_iter_children(r->data.log,(tIterFn)newconvfunc,r);
 }
 
 bool first_word_match(void *match_surface,size_t match_len, void *key_surface, size_t key_len) {

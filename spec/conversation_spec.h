@@ -18,6 +18,8 @@ void testNewSignal() {
 void testNewConversation() {
     Conversation *c = conversation_new(0);
     spec_is_equal(conversation_signals(c),0);
+    ConversationMeta *cm = _t_surface(c);
+    spec_is_equal(cm->status,CSTAT_NEW);
     conversation_delete(c);
 }
 

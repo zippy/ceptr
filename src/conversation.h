@@ -35,7 +35,7 @@ typedef struct {
 
 typedef int ConversationStatus;
 
-enum {CSTAT_NEW, CSTAT_PENDING};
+enum {CSTAT_NEW=-99, CSTAT_PENDING};
 
 typedef struct {
     ConversationStatus status;
@@ -82,8 +82,7 @@ int conversation_delete(Conversation *c){
 }
 
 SignalEntry *conversation_get_signalentry(Conversation *c,int signal_id) {
-    int p[2] = {signal_id,TREE_PATH_TERMINATOR};
-    return _t_get_surface(c,p);
+    return _t_get_child_surface(c,signal_id);
 }
 
 Signal *conversation_get_signal(Conversation *c,int signal_id) {
@@ -93,5 +92,9 @@ Signal *conversation_get_signal(Conversation *c,int signal_id) {
 
 int conversation_signals(Conversation *c) {
     return _t_children(c);
+}
+
+ConversationStatus conversation_status(Conversation *c) {
+    return ((ConversationMeta *)_t_surface(c))->status;
 }
 #endif
