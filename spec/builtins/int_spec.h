@@ -30,5 +30,4 @@ void testInt() {
     op_invoke(r, my_int_xaddr, ADD);
     stack_pop(r, MY_INT, &val);
     spec_is_equal(val, 108);
-
 }

@@ -28,7 +28,7 @@ Symbol getSymbol(Receptor *r, char *label) {
     for (i = 0; i <= r->data.current_xaddr; i++) {
         if (r->data.xaddrs[i].noun == r->nounSpecXaddr.noun) {
             noun = r->data.xaddrs[i].key;
-            ns = (NounSurface *) _t_get_child_surface(r->data.root,noun);
+            ns = (NounSurface *) _data_get(&r->data,noun);
             if (!strcmp(label, &ns->label)) {
                 return noun;
             }

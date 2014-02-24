@@ -19,24 +19,24 @@ void dump_xaddr(Receptor *r, Xaddr xaddr, int indent_level) {
     int key = xaddr.key;
     int noun = xaddr.noun;
     if (noun == 0 && key == 16) {
-        dump_spec_spec(r, _t_get_child_surface(r->data.root,key));
+        dump_spec_spec(r, _data_get(&r->data,key));
     }
     else if (noun == r->nounSpecXaddr.noun) {
-        dump_noun(r, (NounSurface *) _t_get_child_surface(r->data.root,key));
+        dump_noun(r, (NounSurface *) _data_get(&r->data,key));
 
     } else if (typeNoun == CSPEC_NOUN) {
-        dump_spec_spec(r, _t_get_child_surface(r->data.root,key));
+        dump_spec_spec(r, _data_get(&r->data,key));
 
     } else if (typeNoun == r->patternSpecXaddr.noun) {
-        dump_pattern_spec(r, _t_get_child_surface(r->data.root,key));
+        dump_pattern_spec(r, _data_get(&r->data,key));
 
     } else if (typeNoun == r->arraySpecXaddr.noun) {
-        dump_reps_spec(r, _t_get_child_surface(r->data.root,key));
+        dump_reps_spec(r, _data_get(&r->data,key));
 
     } else {
         Symbol typeTypeNoun = spec_noun_for_noun(r, typeNoun);
         if (typeTypeNoun == r->nounSpecXaddr.noun) {
-            ns = (NounSurface *) _t_get_child_surface(r->data.root,key);;
+            ns = (NounSurface *) _data_get(&r->data,key);;
             dump_noun(r, ns);
         }
         else {
