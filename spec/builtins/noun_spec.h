@@ -10,8 +10,8 @@ void testGetSymbol() {
     noun_init(r);
     pattern_init(r);
 
-    spec_is_true( getSymbol(r, "NOUN") == 0);
-    spec_is_true( getSymbol(r, "PATTERN") == 40);
+    spec_is_equal( getSymbol(r, "NOUN"),1);
+    spec_is_equal( getSymbol(r, "PATTERN"), 3);
 }
 
 void testNoun() {

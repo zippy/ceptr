@@ -65,9 +65,9 @@ typedef struct {
 } LogMeta;
 
 typedef struct {
+    Tnode *root;
     Xaddr xaddrs[DEFAULT_CACHE_SIZE];
     Symbol xaddr_scape[DEFAULT_CACHE_SIZE];
-    char cache[DEFAULT_CACHE_SIZE];
     int current_xaddr;
 
     int log_head;
@@ -75,7 +75,6 @@ typedef struct {
 
     Tnode *log;
 
-    size_t cache_index;
 } Data;
 
 typedef struct {

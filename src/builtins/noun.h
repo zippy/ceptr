@@ -28,7 +28,7 @@ Symbol getSymbol(Receptor *r, char *label) {
     for (i = 0; i <= r->data.current_xaddr; i++) {
         if (r->data.xaddrs[i].noun == r->nounSpecXaddr.noun) {
             noun = r->data.xaddrs[i].key;
-            ns = (NounSurface *) &r->data.cache[noun];
+            ns = (NounSurface *) _t_get_child_surface(r->data.root,noun);
             if (!strcmp(label, &ns->label)) {
                 return noun;
             }
@@ -41,10 +41,10 @@ Symbol getSymbol(Receptor *r, char *label) {
 void noun_init(Receptor *r){
     // we know this is the first Xaddr in system and it will try to look itself up and that
     // breaks if we don't initialize it.
-    r->nounSpecXaddr.key = 16;
-    r->nounSpecXaddr.noun = 0;
+    r->nounSpecXaddr.key = 2;
+    r->nounSpecXaddr.noun = 1;
 
-    size_table_set(0, noun_get_size);
+    size_table_set(1, noun_get_size);
     data_new_noun(r, r->cspecXaddr, "NOUN");
     UntypedProcess noun_processes = {INSTANCE_NEW, (voidVoidFn)proc_noun_instance_new };
     ElementSurface nounSpecSurface = {0, 1, noun_processes};

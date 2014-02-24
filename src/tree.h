@@ -41,7 +41,7 @@ void __t_init(Tnode *t,Tnode *parent,Symbol noun) {
 
 Tnode * _t_new(Tnode *parent,Symbol noun,void *surface,size_t size) {
     Tnode *t = malloc(sizeof(Tnode)-sizeof(int)+size);
-    if (size)
+    if (size && surface)
 	memcpy(&t->surface,surface,size);
     __t_init(t,parent,noun);
     return t;

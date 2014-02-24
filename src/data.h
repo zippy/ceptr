@@ -32,7 +32,7 @@ void *data_get(Receptor *r, Xaddr xaddr) {
     if (!data_sem_check(r, xaddr)) {
         raise_error2("semcheck failed getting xaddr { %d, %d }\n", xaddr.key, xaddr.noun );
     }
-    return &r->data.cache[xaddr.key];
+    return _t_get_child_surface(r->data.root,xaddr.key);
 }
 
 void size_table_set(Symbol noun, sizeFunction func) {
@@ -47,11 +47,11 @@ void data_record_existence(Receptor *r, size_t current_index, Symbol noun) {
 }
 
 void *data_new_uninitialized(Receptor *r, Xaddr *new_xaddr, Symbol noun, size_t size) {
-    data_record_existence(r, r->data.cache_index, noun);
-    new_xaddr->key = r->data.cache_index;
+    Tnode *n = _t_new(r->data.root,noun,0,size);
+    new_xaddr->key = _t_children(r->data.root);
     new_xaddr->noun = noun;
-    r->data.cache_index += size;
-    return &r->data.cache[new_xaddr->key];
+    data_record_existence(r, new_xaddr->key, noun);
+    return _t_surface(n);
 }
 
 
@@ -83,7 +83,7 @@ size_t size_of_named_surface(Receptor *r, Symbol instanceNoun, void *surface) {
 
 
 void data_set(Receptor *r, Xaddr xaddr, void *value, size_t size) {
-    void *surface = &r->data.cache[xaddr.key];
+    void *surface = _t_get_child_surface(r->data.root,xaddr.key);
     if (xaddr.key == 0 || !data_sem_check(r, xaddr)) {
         raise_error("I do not think that word (%d) means what you think it means!\n", xaddr.noun);
     }
@@ -104,14 +104,15 @@ void data_new_by_reference(Receptor *r, Xaddr *new_xaddr, Symbol noun, void *sur
 }
 
 Symbol data_new_noun(Receptor *r, Xaddr xaddr, char *label) {
-    size_t current_index = r->data.cache_index;
-    NounSurface *ns = (NounSurface *)&r->data.cache[current_index];
+    size_t s = sizeof(NounSurface)+strlen(label)+1;
+    Tnode *n = _t_new(r->data.root,r->nounSpecXaddr.noun,0,s);
+    int key = _t_children(r->data.root);
+    NounSurface *ns = (NounSurface *)_t_surface(n);
     ns->specXaddr.key = xaddr.key;
     ns->specXaddr.noun = xaddr.noun;
     memcpy(&ns->label,label,strlen(label)+1);
-    r->data.cache_index += sizeof(NounSurface)+strlen(&ns->label);
-    data_record_existence(r, current_index, r->nounSpecXaddr.noun);
-    return current_index;
+    data_record_existence(r, key, r->nounSpecXaddr.noun);
+    return key;
 }
 
 
@@ -119,7 +120,8 @@ void data_init(Receptor *r) {
     int i;
     for (i = 0; i < DEFAULT_CACHE_SIZE; i++) r->data.xaddr_scape[i] = CSPEC;
     init_scapes(r);
-    r->data.cache_index = 0;
+    r->data.root = _t_new_root();
+
     r->data.current_xaddr = -1;
 
     r->data.log_head = 0;
@@ -130,5 +132,9 @@ void data_init(Receptor *r) {
     l = _t_surface(r->data.log);
     assert( pthread_mutex_init(&l->mutex, NULL) == 0);
     assert( pthread_cond_init(&l->changed, NULL) == 0);
+}
 
+void data_free(Receptor *r) {
+    _t_free(r->data.log);
+    _t_free(r->data.root);
 }

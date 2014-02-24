@@ -15,9 +15,9 @@ void testInit() {
 
     spec_is_equal( r->cspecXaddr.key, CSPEC );
     spec_is_equal( r->cspecXaddr.noun, CSPEC_NOUN );
-    spec_is_equal( r->nounSpecXaddr.key, 16 );
-    spec_is_equal( r->nounSpecXaddr.noun, 0 );
-    spec_is_equal( getSymbol(r, "NOUN"), 0);
+    spec_is_equal( r->nounSpecXaddr.key, 2 );
+    spec_is_equal( r->nounSpecXaddr.noun, 1 );
+    spec_is_equal( getSymbol(r, "NOUN"), 1);
     spec_is_long_equal( (long)size_table_get(getSymbol(r, "NOUN")), (long)noun_get_size );
     spec_is_equal( element_surface_for_xaddr(r, r->nounSpecXaddr)->process_count, 1 );
 
