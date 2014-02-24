@@ -18,7 +18,7 @@ void dump_xaddr(Receptor *r, Xaddr xaddr, int indent_level) {
     void *surface;
     int key = xaddr.key;
     int noun = xaddr.noun;
-    if (noun == 0 && key == 16) {
+    if (noun == 1 && key == 2) {
         dump_spec_spec(r, _data_get(&r->data,key));
     }
     else if (noun == r->nounSpecXaddr.noun) {

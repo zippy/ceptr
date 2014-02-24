@@ -47,7 +47,7 @@ void noun_init(Receptor *r){
     size_table_set(1, noun_get_size);
     data_new_noun(r, r->cspecXaddr, "NOUN");
     UntypedProcess noun_processes = {INSTANCE_NEW, (voidVoidFn)proc_noun_instance_new };
-    ElementSurface nounSpecSurface = {0, 1, noun_processes};
+    ElementSurface nounSpecSurface = {1, 1, noun_processes};
     data_new(r, r->nounSpecXaddr.noun, &nounSpecSurface,  element_header_size((void *)&nounSpecSurface));
 }
 
