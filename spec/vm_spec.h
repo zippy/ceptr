@@ -32,7 +32,7 @@ Tnode *_testCP(Tnode *parent,int v1,int v2,int result) {
 
 void testVMReduceCondPair() {
     Tnode *t = _testCP(0,1,2,99);
-    spec_is_equal(reduce(t),REDUCE_ERR);
+    spec_is_equal(reduce(t),REDUCE_OK);
     spec_is_equal(_t_children(t),2);
     spec_is_equal(*(int *)_t_surface(t),I_COND_PAIR);
     spec_is_equal(_t_noun(t),INSTRUCTION_NOUN);
@@ -46,10 +46,15 @@ void testVMReduceCondPair() {
     _t_free(t);
 }
 
-void testVMReduceCond() {
-    Tnode *c = _t_newi(0,INSTRUCTION_NOUN,I_COND);
+Tnode *_testC(Tnode *parent) {
+    Tnode *c = _t_newi(parent,INSTRUCTION_NOUN,I_COND);
     _testCP(c,1,2,99);
     _testCP(c,3,2,98);
+    return c;
+}
+
+void testVMReduceCond() {
+    Tnode *c = _testC(0);
     _testCP(c,2,2,22);
 
     spec_is_equal(reduce(c),REDUCE_OK);
@@ -61,8 +66,35 @@ void testVMReduceCond() {
     _t_free(c);
 }
 
+void testVMReduceRecursive() {
+    Tnode *cp = _t_newi(0,INSTRUCTION_NOUN,I_COND_PAIR);
+    _testEQ(cp,2,2);
+    Tnode *cp1 = _t_newi(cp,INSTRUCTION_NOUN,I_COND_PAIR);
+    _testEQ(cp1,2,2);
+    Tnode *i = _t_newi(cp1,INTEGER_NOUN,99);
+
+    spec_is_equal(reduce(cp),REDUCE_OK);
+    spec_is_equal(*(int *)_t_surface(cp),99);
+    spec_is_equal(_t_noun(cp),INTEGER_NOUN);
+    _t_free(cp);
+
+    Tnode *c = _testC(0);
+
+    cp = _t_newi(c,INSTRUCTION_NOUN,I_COND_PAIR);
+    _testEQ(cp,4,4);
+    Tnode *c2 = _testC(cp);
+    _testCP(c2,3,3,33);
+
+    spec_is_equal(reduce(c),REDUCE_OK);
+    spec_is_equal(*(int *)_t_surface(c),33);
+    spec_is_equal(_t_noun(c),INTEGER_NOUN);
+    _t_free(c);
+
+}
+
 void testVM() {
     testVMReduceEQ();
     testVMReduceCondPair();
     testVMReduceCond();
+    testVMReduceRecursive();
 }

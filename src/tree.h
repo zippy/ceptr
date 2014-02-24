@@ -143,6 +143,17 @@ void _t_iter_children(Tnode *t, tIterFn fn, void * param) {
     }
 }
 
+
+#define __lspc(l) for(int i=0;i<l;i++) printf("  ");
+
+void __t_dump(Tnode *t,int level) {
+    __lspc(level);
+    printf("noun: %d; sfc: %d; children: %d\n",_t_noun(t),t->surface,_t_children(t));
+    for(int i=1;i<=_t_children(t);i++) __t_dump(_t_get_child(t,i),level+1);
+}
+
+void _t_dump(Tnode *t) { printf("Tree Dump:\n");__t_dump(t,0);}
+
 //TODO: write a spec for this
 void _t_become(Tnode *t, Tnode *src_t) {
     t->child_count = src_t->child_count;
