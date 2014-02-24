@@ -21,6 +21,8 @@
 #include "builtins/receptor_spec.h"
 #include "conversation_spec.h"
 #include "receptor_util_spec.h"
+
+#include "vm_spec.h"
 #include "builtins/vm_host_spec.h"
 
 #include "examples/point.h"
@@ -75,6 +77,8 @@ int main(int argc, const char **argv) {
     testCommand();
     testConversation();
     testScape();
+
+    testVM();
     //    testThreads();
 
     //**** builtins tests
@@ -87,7 +91,7 @@ int main(int argc, const char **argv) {
     testCfunc();
     testReceptorUtil();
     //    testReceptor();
-    testVmHost();
+    //   testVmHost();
 
     //**** examples test
     testPoint();

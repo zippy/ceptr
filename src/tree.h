@@ -10,16 +10,12 @@ typedef int Symbol;
 
 #define TREE_ROOT_NOUN -999
 
-typedef struct {
-    int placeholder;
-} Troot;
-
 struct Tnode {
     struct Tnode *parent;
     int child_count;
     struct Tnode **children;
     Symbol noun;
-    char surface;
+    int surface;
 };
 typedef struct Tnode Tnode;
 
@@ -34,17 +30,30 @@ int __t_append_child(Tnode *t,Tnode *c) {
     t->children[t->child_count++] = c;
 }
 
-Tnode * _t_new(Tnode *parent,Symbol noun,void *surface,size_t size) {
-    Tnode *t = malloc(sizeof(Tnode)+size);
+void __t_init(Tnode *t,Tnode *parent,Symbol noun) {
     t->child_count = 0;
-    memcpy(&t->surface,surface,size);
     t->parent = parent;
     t->noun = noun;
     if (parent != NULL) {
 	__t_append_child(parent,t);
     }
+}
+
+Tnode * _t_new(Tnode *parent,Symbol noun,void *surface,size_t size) {
+    Tnode *t = malloc(sizeof(Tnode)-sizeof(int)+size);
+    if (size)
+	memcpy(&t->surface,surface,size);
+    __t_init(t,parent,noun);
     return t;
 }
+
+Tnode * _t_newi(Tnode *parent,Symbol noun,int surface) {
+    Tnode *t = malloc(sizeof(Tnode));
+    t->surface = surface;
+    __t_init(t,parent,noun);
+    return t;
+}
+
 
 int _t_children(Tnode *t) {
     return t->child_count;
@@ -112,8 +121,7 @@ void *_t_get_child_surface(Tnode *t,int i) {
 }
 
 Tnode *_t_new_root() {
-    Troot t;
-    return _t_new(0,TREE_ROOT_NOUN,&t,sizeof(Troot));
+    return _t_new(0,TREE_ROOT_NOUN,0,0);
 }
 
 typedef void (*tIterSurfaceFn)(void *, int, void *param);
@@ -133,6 +141,18 @@ void _t_iter_children(Tnode *t, tIterFn fn, void * param) {
 	Tnode *c = _t_get_child(t,i);
 	(fn)(c,i,param);
     }
+}
+
+//TODO: write a spec for this
+void _t_become(Tnode *t, Tnode *src_t) {
+    t->child_count = src_t->child_count;
+    t->noun = src_t->noun;
+    for(int i=0; i< t->child_count;i++) {
+	t->children[i] = src_t->children[i];
+    }
+    //TODO: This has to become a realloc + memcopy but right now we don't know the size!
+    t->surface = src_t->surface;
+    free(src_t);  //NOTE: this is not a t_free because don't want to free the children
 }
 
 #endif

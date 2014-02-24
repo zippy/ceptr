@@ -18,6 +18,11 @@ void testNewTreeNode() {
     spec_is_equal(_t_children(t),2);
     spec_is_ptr_equal(_t_child(t,2),t2);
 
+    Tnode *t3 = _t_newi(t,99,101);
+    spec_is_ptr_equal(_t_parent(t3),t);
+    spec_is_equal(_t_children(t),3);
+    spec_is_equal(_t_child(t,3)->surface,101);
+
     _t_free(t);
 }
 

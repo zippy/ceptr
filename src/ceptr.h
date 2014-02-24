@@ -237,6 +237,7 @@ void dump_xaddrs(Receptor *r);
 #include "builtins/command.h"
 
 //
+#include "vm.h"
 #include "builtins/vm_host.h"
 
 //
