@@ -87,7 +87,7 @@ size_t size_of_named_surface(Receptor *r, Symbol instanceNoun, void *surface) {
 
 
 void data_set(Receptor *r, Xaddr xaddr, void *value, size_t size) {
-    void *surface = _t_get_child_surface(r->data.root,xaddr.key);
+    void *surface = _data_get(&r->data,xaddr.key);
     if (xaddr.key == 0 || !data_sem_check(r, xaddr)) {
         raise_error("I do not think that word (%d) means what you think it means!\n", xaddr.noun);
     }
