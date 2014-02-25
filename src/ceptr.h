@@ -66,7 +66,6 @@ typedef struct {
 
 typedef struct {
     Tnode *root;
-    Tnode *xaddrs;
     Tnode *log;
     Tnode *scapes;
 } Data;

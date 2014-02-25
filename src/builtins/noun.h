@@ -26,10 +26,11 @@ Symbol getSymbol(Receptor *r, char *label) {
     Symbol noun;
     Data *d = &r->data;
     //TODO: convert to using itterator when we have short-circuiting
-    for (int i = 1; i <= _t_children(d->xaddrs); i++) {
-	Xaddr *x = _t_get_child_surface(d->xaddrs,i);
-        if (x->noun == r->nounSpecXaddr.noun) {
-            noun = x->key;
+    for (int i = 1; i <= _t_children(d->root); i++) {
+	Tnode *t = _t_get_child(d->root,i);
+	Xaddr x = {i,_t_noun(t)};
+        if (x.noun == r->nounSpecXaddr.noun) {
+            noun = x.key;
             ns = (NounSurface *) _data_get(d,noun);
             if (!strcmp(label, &ns->label)) {
                 return noun;

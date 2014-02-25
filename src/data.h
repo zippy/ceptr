@@ -35,18 +35,12 @@ void size_table_set(Symbol noun, sizeFunction func) {
     size_table[noun] = func;
 }
 
-void _data_record_existence(Data *d, Xaddr x) {
-    Tnode *t = _t_new(d->xaddrs,XADDR_NOUN,&x,sizeof(Xaddr));
-}
-
 void *_data_new_uninitialized(Data *d, Xaddr *new_xaddr, Symbol noun, size_t size) {
     Tnode *n = _t_new(d->root,noun,0,size);
     new_xaddr->key = _t_children(d->root);
     new_xaddr->noun = noun;
-    _data_record_existence(d, *new_xaddr);
     return _t_surface(n);
 }
-
 
 // this should go somewhere once the dependencies are better resolved.  right now it depends on everything.
 size_t size_of_named_surface(Receptor *r, Symbol instanceNoun, void *surface) {
@@ -105,8 +99,6 @@ Symbol data_new_noun(Receptor *r, Xaddr xaddr, char *label) {
     ns->specXaddr.key = xaddr.key;
     ns->specXaddr.noun = xaddr.noun;
     memcpy(&ns->label,label,strlen(label)+1);
-    Xaddr x = {key,r->nounSpecXaddr.noun};
-    _data_record_existence(&r->data, x);
     return key;
 }
 
@@ -114,7 +106,6 @@ Symbol data_new_noun(Receptor *r, Xaddr xaddr, char *label) {
 void _data_init(Data *d) {
     scapes_init(d);
     d->root = _t_new_root();
-    d->xaddrs = _t_new_root();
 
     LogMeta lm,*l;
     d->log = _t_new(0,LOG_META_NOUN,&lm,sizeof(LogMeta));
@@ -126,6 +117,5 @@ void _data_init(Data *d) {
 void _data_free(Data *d) {
     _t_free(d->log);
     _t_free(d->root);
-    _t_free(d->xaddrs);
     scapes_free(d);
 }
