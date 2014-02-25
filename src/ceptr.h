@@ -2,7 +2,6 @@
 #define _CEPTR_H
 
 #define DEFAULT_CACHE_SIZE 100000
-#define STACK_SIZE 10000
 #define OPERANDS_SIZE (sizeof(Xaddr) * 2)
 
 #define _GNU_SOURCE
@@ -51,9 +50,11 @@ typedef struct {
     char label;
 } NounSurface;
 
+#define SEMSTACK_FRAME_NOUN -107
 typedef struct {
     Symbol noun;
     size_t size;
+    int surface;
 } SemStackFrame;
 
 typedef int ConversationID;
@@ -111,11 +112,8 @@ typedef struct Receptor Receptor;
 typedef void (* SignalProc)(Receptor *);
 
 struct Receptor {
-    SemStackFrame semStack[STACK_SIZE];
-    Symbol nounStack[STACK_SIZE];
-    int semStackPointer;
-    char valStack[DEFAULT_CACHE_SIZE];
-    int valStackPointer;
+    Tnode *sem_stack;
+
     ElementSurface rootSurface;
 
     //built in xaddrs:

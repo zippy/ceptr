@@ -5,11 +5,9 @@ void testStack() {
     Symbol noun;
     char *peek_surface;
     stack_init(r);
-    spec_is_true(r->valStackPointer == 0);
-    spec_is_true(r->semStackPointer == -1);
+    spec_is_true(_t_children(r->sem_stack) == 0);
     stack_push(r, CSTRING_NOUN, "Hello, Stack");
-    spec_is_true(r->valStackPointer == 13);
-    spec_is_true(r->semStackPointer == 0);
+    spec_is_true(_t_children(r->sem_stack) == 1);
 
     stack_peek_unchecked(r, &noun, (void **)&peek_surface);
     spec_is_true( noun == CSTRING_NOUN );
@@ -21,8 +19,7 @@ void testStack() {
     char pop_surface[BUFFER_SIZE];
     stack_pop(r, CSTRING_NOUN, pop_surface);
     spec_is_true( strcmp("Hello, Stack", pop_surface) == 0 );
-    spec_is_true(r->valStackPointer == 0);
-    spec_is_true(r->semStackPointer == -1);
+    spec_is_true(_t_children(r->sem_stack) == 0);
 }
 
 
@@ -35,5 +32,5 @@ void test_stack_dump() {
     int myLine[4] = {1, 2, 3, 4};
     Symbol inTheSand = preop_new_noun(r, r->linePatternSpecXaddr, "in the sand");
     stack_push(r, inTheSand, &myLine);
-    stack_dump(r);
+    //stack_dump(r);
 }

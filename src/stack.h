@@ -2,18 +2,21 @@
 
 
 void stack_peek_unchecked(Receptor *r, Symbol *name, void **surface) {
-    assert(r->semStackPointer >= 0);
-    SemStackFrame *ssf = &r->semStack[r->semStackPointer];
+    assert( _t_children(r->sem_stack) > 0);
+    int last = _t_children(r->sem_stack);
+    SemStackFrame *ssf = _t_get_child_surface(r->sem_stack,last);
     *name = ssf->noun;
-    *surface = &r->valStack[r->valStackPointer - ssf->size];
+    *surface = &ssf->surface;
 }
 
 void stack_pop_unchecked(Receptor *r, Symbol *name, void *surface) {
-    SemStackFrame *ssf = &r->semStack[r->semStackPointer];
+    int last = _t_children(r->sem_stack);
+    Tnode *s = _t_get_child(r->sem_stack,last);
+    SemStackFrame *ssf = _t_surface(s);
     *name = ssf->noun;
-    memcpy(surface, &r->valStack[r->valStackPointer - ssf->size], ssf->size);
-    r->valStackPointer -= ssf->size;
-    r->semStackPointer--;
+    memcpy(surface, &ssf->surface, ssf->size);
+    _t_free(s);
+    r->sem_stack->child_count--;
 }
 
 void stack_peek(Receptor *r, Symbol expectedNoun, void **surface){
@@ -29,13 +32,16 @@ void stack_pop(Receptor *r, Symbol expectedNoun, void *surface) {
 }
 
 void stack_push(Receptor *r, Symbol name, void *surface) {
-    SemStackFrame *ssf = &r->semStack[++r->semStackPointer];
+    size_t size = size_of_named_surface(r, name, surface);
+    Tnode *s = _t_new(r->sem_stack,SEMSTACK_FRAME_NOUN,0,size+sizeof(SemStackFrame)-sizeof(int));
+
+    SemStackFrame *ssf = _t_surface(s);
     ssf->noun = name;
-    ssf->size = size_of_named_surface(r, name, surface);
-    memcpy(&r->valStack[r->valStackPointer], surface, ssf->size);
-    r->valStackPointer += ssf->size;
+    ssf->size = size;
+    memcpy(&ssf->surface, surface, size);
 }
 
+/*
 void stack_dump(Receptor *r) {
     int i, v = 0;
     char *unknown = "<unknown>";
@@ -47,9 +53,12 @@ void stack_dump(Receptor *r) {
         printf("\nStack frame: %d is a %s(%d) size:%d\n", i, label_for_noun(r, ssf->noun), ssf->noun, (int)ssf->size);
         printf("\n");
     }
-}
+    }*/
 
 void stack_init(Receptor *r) {
-    r->semStackPointer = -1;
-    r->valStackPointer = 0;
+    r->sem_stack = _t_new_root();
+}
+
+void stack_free(Receptor *r) {
+    _t_free(r->sem_stack);
 }

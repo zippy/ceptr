@@ -11,6 +11,7 @@ Signal *signal_new(Receptor *r,Address from, Address to,Symbol noun,void *surfac
 
 void receptor_free(Receptor *r) {
     data_free(r);
+    stack_free(r);
     _t_free(r->scapes);
 
 }
