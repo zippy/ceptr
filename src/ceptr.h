@@ -72,7 +72,7 @@ typedef struct {
     int current_xaddr;
 
     Tnode *log;
-
+    Tnode *scapes;
 } Data;
 
 typedef struct {
@@ -138,7 +138,6 @@ struct Receptor {
 
     Symbol charIntNoun;
     bool alive;
-    Tnode *scapes;
     pthread_t thread;
 };
 

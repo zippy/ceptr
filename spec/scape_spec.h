@@ -2,10 +2,11 @@
 
 void testNewScape() {
     Receptor tr;init(&tr);Receptor *r = &tr;
-    spec_is_equal(scape_count(r),0);
-    ScapeID si = new_scape(r,"scape_name",1,2,3,0);
-    spec_is_equal(scape_count(r),1);
-    Scape *s = get_scape(r,si);
+    Data *d = &r->data;
+    spec_is_equal(scape_count(d),0);
+    ScapeID si = new_scape(d,"scape_name",1,2,3,0);
+    spec_is_equal(scape_count(d),1);
+    Scape *s = get_scape(d,si);
     spec_is_str_equal(s->name,"scape_name");
     spec_is_equal(s->data_source,1);
     spec_is_equal(s->key_source,2);
@@ -28,12 +29,13 @@ void testScapeContents() {
 
 void testScapeLookup() {
     Receptor tr;init(&tr);Receptor *r = &tr;
+    Data *d = &r->data;
     Xaddr cmdPatternSpecXaddr = command_init(r);
     Symbol CMD = preop_new_noun(r, cmdPatternSpecXaddr, "CMD");
 
     Symbol CMD_STR = getSymbol(r,"CMD_STR");
-    ScapeID i = new_scape(r,"scape_name",CMD,CMD_STR,CSTRING_NOUN,str_match);
-    Scape *s = get_scape(r,i);
+    ScapeID i = new_scape(d,"scape_name",CMD,CMD_STR,CSTRING_NOUN,str_match);
+    Scape *s = get_scape(d,i);
 
     Xaddr c = _scape_lookup(s,"go",3);
     spec_is_equal(c.noun,-1);
@@ -45,7 +47,7 @@ void testScapeLookup() {
     spec_is_equal(c.key,my_c.key);
 
     int p[4] = {1,0,1,TREE_PATH_TERMINATOR};
-    Tnode *t = _t_get(r->scapes,p);
+    Tnode *t = _t_get(d->scapes,p);
     ScapeItem *si = _t_surface(t);
 
     spec_is_equal(si->xaddr.key,c.key);

@@ -37,8 +37,7 @@ void init_builtins(Receptor *r) {
 void init(Receptor *r) {
     stack_init(r);
     init_processing(r);
-    init_scapes(r);
-    data_init(r);
+    _data_init(&r->data);
     init_elements(r);
     init_builtins(r);
 }

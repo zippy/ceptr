@@ -8,6 +8,4 @@ Signal *signal_new(Receptor *r,Address from, Address to,Symbol noun,void *surfac
 void receptor_free(Receptor *r) {
     _data_free(&r->data);
     stack_free(r);
-    _t_free(r->scapes);
-
 }

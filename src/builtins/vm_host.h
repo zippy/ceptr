@@ -197,7 +197,8 @@ void vm_host_init(HostReceptor *r){
     r->cmdPatternSpecXaddr = command_init((Receptor *)r);
     r->host_command = preop_new_noun((Receptor *)r, r->cmdPatternSpecXaddr, "Host Command");
 
-    r->command_scape = get_scape((Receptor *)r,new_scape((Receptor *)r,"command_scape_name",r->host_command,getSymbol((Receptor *)r,"CMD_STR"),CSTRING_NOUN,first_word_match));
+    Data *d = &((Receptor *)r)->data;
+    r->command_scape = get_scape(d,new_scape(d,"command_scape_name",r->host_command,getSymbol((Receptor *)r,"CMD_STR"),CSTRING_NOUN,first_word_match));
 
     r->cmdStop = make_command((Receptor *)r,r->host_command,"stop","s",vm_host_cmd_stop);
     r->cmdDump = make_command((Receptor *)r,r->host_command,"dump","d",vm_host_cmd_dump);

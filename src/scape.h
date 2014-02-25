@@ -31,33 +31,33 @@ Scape *_new_scape(char *name,Symbol data_source,Symbol key_source, Symbol key_ge
     return s;
 }
 
-int scape_count(Receptor *r) {
-    return _t_children(r->scapes);
+int scape_count(Data *d) {
+    return _t_children(d->scapes);
 }
 
 #define SCAPE_NOUN -105
 
-ScapeID new_scape(Receptor *r,char *name,Symbol data_source,Symbol key_source, Symbol key_geometry, ScapeMatchFn matchfn) {
+ScapeID new_scape(Data *d,char *name,Symbol data_source,Symbol key_source, Symbol key_geometry, ScapeMatchFn matchfn) {
     Scape *s = _new_scape(name,data_source,key_source,key_geometry,matchfn);
-    Tnode *t = _t_new(r->scapes,SCAPE_NOUN,s,sizeof(Scape));
+    Tnode *t = _t_new(d->scapes,SCAPE_NOUN,s,sizeof(Scape));
     free(s); //TODO: it would be better if this didn't require two allocs.
-    return scape_count(r);
+    return scape_count(d);
 }
 
-void _delete_scape_items(Scape *s) {
+void _scape_items_free(Scape *s) {
     _t_free(s->items);
 }
 
-Scape *get_scape(Receptor *r,ScapeID i) {
-    return _t_get_child_surface(r->scapes,i);
+Scape *get_scape(Data *d,ScapeID i) {
+    return _t_get_child_surface(d->scapes,i);
 }
 
-void delete_scapes(Receptor *r) {
-    for (int i=1; i<=scape_count(r);i++) {
-	Scape *s = get_scape(r,i);
-	_delete_scape_items(s);
+void scapes_free(Data *d) {
+    for (int i=1; i<=scape_count(d);i++) {
+	Scape *s = get_scape(d,i);
+	_scape_items_free(s);
     }
-    _t_free(r->scapes);
+    _t_free(d->scapes);
 }
 
 int scape_item_count(Scape *s) {
@@ -80,8 +80,8 @@ Xaddr _scape_lookup(Scape *s,void *match_surface,size_t match_len) {
 }
 
 
-void init_scapes(Receptor *r) {
-    r->scapes = _t_new_root();
+void scapes_init(Data *d) {
+    d->scapes = _t_new_root();
 }
 
 #define SCAPE_ITEM_NOUN -107

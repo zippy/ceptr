@@ -120,17 +120,17 @@ Symbol data_new_noun(Receptor *r, Xaddr xaddr, char *label) {
 }
 
 
-void data_init(Receptor *r) {
+void _data_init(Data *d) {
     int i;
-    for (i = 0; i < DEFAULT_CACHE_SIZE; i++) r->data.xaddr_scape[i] = CSPEC;
-    init_scapes(r);
-    r->data.root = _t_new_root();
+    for (i = 0; i < DEFAULT_CACHE_SIZE; i++) d->xaddr_scape[i] = CSPEC;
+    scapes_init(d);
+    d->root = _t_new_root();
 
-    r->data.current_xaddr = -1;
+    d->current_xaddr = -1;
 
     LogMeta lm,*l;
-    r->data.log = _t_new(0,LOG_META_NOUN,&lm,sizeof(LogMeta));
-    l = _t_surface(r->data.log);
+    d->log = _t_new(0,LOG_META_NOUN,&lm,sizeof(LogMeta));
+    l = _t_surface(d->log);
     assert( pthread_mutex_init(&l->mutex, NULL) == 0);
     assert( pthread_cond_init(&l->changed, NULL) == 0);
 }
@@ -138,4 +138,5 @@ void data_init(Receptor *r) {
 void _data_free(Data *d) {
     _t_free(d->log);
     _t_free(d->root);
+    scapes_free(d);
 }

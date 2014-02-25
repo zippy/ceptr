@@ -6,7 +6,7 @@ void testInit() {
     Receptor *r = &tr;
 
     stack_init(r);
-    data_init(r);
+    _data_init(&r->data);
     init_elements(r);
 
     noun_init(r);
