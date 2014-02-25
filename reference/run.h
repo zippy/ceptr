@@ -1,3 +1,4 @@
+#define OPERANDS_SIZE (sizeof(Xaddr) * 2)
 
 enum Opcodes {
     RETURN, PUSH_IMMEDIATE

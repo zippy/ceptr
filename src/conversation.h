@@ -1,9 +1,6 @@
 #ifndef _CONVERSATION_H
 #define _CONVERSATION_H
 
-#define SIGNAL_BUFFER_SIZE 500
-#define CONVERSATION_MAX_SIGNALS 100
-
 #include <time.h>
 #include "tree.h"
 

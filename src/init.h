@@ -5,8 +5,6 @@ void init_elements(Receptor *r) {
     r->cspecXaddr.key = CSPEC;
     r->cspecXaddr.noun = CSPEC_NOUN;
 
-    r->membraneXaddr.key = MEMBRANE;
-    r->membraneXaddr.noun = CSPEC;
     r->xaddrXaddr.key = XADDR_NOUN;
     r->xaddrXaddr.noun = CSPEC;
 }

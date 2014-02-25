@@ -1,8 +1,6 @@
 #ifndef _CEPTR_H
 #define _CEPTR_H
 
-#define OPERANDS_SIZE (sizeof(Xaddr) * 2)
-
 #define _GNU_SOURCE
 #include <signal.h>
 #include <string.h>
@@ -26,7 +24,7 @@ enum FunctionNames {
 
 enum Symbols {
     CSPEC = -1, CSPEC_NOUN = -2, XADDR_NOUN = -3,
-    CSTRING_NOUN = -4, PATTERN_SPEC_DATA_NOUN = -5, MEMBRANE = -6
+    CSTRING_NOUN = -4, PATTERN_SPEC_DATA_NOUN = -5
 };
 
 typedef int FunctionName;
@@ -116,7 +114,6 @@ struct Receptor {
     Xaddr linePatternSpecXaddr;
     Xaddr streamSpecXaddr;
     Xaddr receptorSpecXaddr;
-    Xaddr membraneXaddr;
     Xaddr xaddrXaddr;
     Xaddr str255PatternSpecXaddr;
     Xaddr cfuncPatternSpecXaddr;

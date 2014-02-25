@@ -20,7 +20,7 @@ size_t noun_get_spec_size(Receptor *r, Symbol noun, void *surface) {
     return element_header_size((ElementSurface *) surface);
 }
 
-
+//TODO: this should really be discoverable through a scape?
 Symbol getSymbol(Receptor *r, char *label) {
     NounSurface *ns;
     Symbol noun;
