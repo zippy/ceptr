@@ -71,9 +71,6 @@ typedef struct {
     Symbol xaddr_scape[DEFAULT_CACHE_SIZE];
     int current_xaddr;
 
-    int log_head;
-    int log_tail;
-
     Tnode *log;
 
 } Data;

@@ -128,9 +128,6 @@ void data_init(Receptor *r) {
 
     r->data.current_xaddr = -1;
 
-    r->data.log_head = 0;
-    r->data.log_tail = 0;
-
     LogMeta lm,*l;
     r->data.log = _t_new(0,LOG_META_NOUN,&lm,sizeof(LogMeta));
     l = _t_surface(r->data.log);
@@ -138,7 +135,7 @@ void data_init(Receptor *r) {
     assert( pthread_cond_init(&l->changed, NULL) == 0);
 }
 
-void data_free(Receptor *r) {
-    _t_free(r->data.log);
-    _t_free(r->data.root);
+void _data_free(Data *d) {
+    _t_free(d->log);
+    _t_free(d->root);
 }
