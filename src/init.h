@@ -1,10 +1,6 @@
 #include "ceptr.h"
 
 void init_elements(Receptor *r) {
-    r->rootXaddr.key = ROOT;
-    r->rootXaddr.noun = ROOT;
-    r->rootSurface.name = ROOT;
-    r->rootSurface.process_count = 0;
 
     r->cspecXaddr.key = CSPEC;
     r->cspecXaddr.noun = CSPEC_NOUN;

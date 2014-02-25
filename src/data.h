@@ -22,9 +22,6 @@ void *_data_get(Data *d,int key) {
 }
 
 void *data_get(Receptor *r, Xaddr xaddr) {
-    if (util_xaddr_eq(xaddr, r->rootXaddr)){
-        return &r->rootSurface;
-    }
     if (!_data_sem_check(&r->data, xaddr)) {
         raise_error2("semcheck failed getting xaddr { %d, %d }\n", xaddr.key, xaddr.noun );
     }
@@ -92,9 +89,10 @@ void data_new_by_reference(Receptor *r, Xaddr *new_xaddr, Symbol noun, void *sur
 }
 
 Symbol data_new_noun(Receptor *r, Xaddr xaddr, char *label) {
+    Data *d = &r->data;
     size_t s = sizeof(NounSurface)+strlen(label)+1;
-    Tnode *n = _t_new(r->data.root,r->nounSpecXaddr.noun,0,s);
-    int key = _t_children(r->data.root);
+    Tnode *n = _t_new(d->root,r->nounSpecXaddr.noun,0,s);
+    int key = _t_children(d->root);
     NounSurface *ns = (NounSurface *)_t_surface(n);
     ns->specXaddr.key = xaddr.key;
     ns->specXaddr.noun = xaddr.noun;

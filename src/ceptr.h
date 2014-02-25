@@ -26,7 +26,7 @@ enum FunctionNames {
 
 enum Symbols {
     CSPEC = -1, CSPEC_NOUN = -2, XADDR_NOUN = -3,
-    CSTRING_NOUN = -4, PATTERN_SPEC_DATA_NOUN = -5, MEMBRANE = -6,  ROOT = -100
+    CSTRING_NOUN = -4, PATTERN_SPEC_DATA_NOUN = -5, MEMBRANE = -6
 };
 
 typedef int FunctionName;
@@ -68,6 +68,7 @@ typedef struct {
     Tnode *root;
     Tnode *log;
     Tnode *scapes;
+    Tnode *nouns;
 } Data;
 
 typedef struct {
@@ -106,10 +107,7 @@ typedef void (* SignalProc)(Receptor *);
 struct Receptor {
     Tnode *sem_stack;
 
-    ElementSurface rootSurface;
-
     //built in xaddrs:
-    Xaddr rootXaddr;
     Xaddr cspecXaddr;
     Xaddr nounSpecXaddr;
     Xaddr patternSpecXaddr;
