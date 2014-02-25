@@ -13,7 +13,7 @@ sizeFunction size_table_get(Symbol noun) {
 }
 
 int _data_sem_check(Data *d, Xaddr xaddr) {
-    Symbol noun = d->xaddr_scape[xaddr.key];
+    Symbol noun = _t_noun(_t_get_child(d->root,xaddr.key));
     return (noun == xaddr.noun);
 }
 
@@ -35,20 +35,15 @@ void size_table_set(Symbol noun, sizeFunction func) {
     size_table[noun] = func;
 }
 
-void _data_record_existence(Data *d, size_t current_index, Symbol noun) {
-    d->current_xaddr++;
-    Tnode *t = _t_new(d->xaddrs,XADDR_NOUN,0,sizeof(Xaddr));
-    Xaddr *x = (Xaddr *)_t_surface(t);
-    x->key = current_index;
-    x->noun = noun;
-    d->xaddr_scape[current_index] = noun;
+void _data_record_existence(Data *d, Xaddr x) {
+    Tnode *t = _t_new(d->xaddrs,XADDR_NOUN,&x,sizeof(Xaddr));
 }
 
 void *_data_new_uninitialized(Data *d, Xaddr *new_xaddr, Symbol noun, size_t size) {
     Tnode *n = _t_new(d->root,noun,0,size);
     new_xaddr->key = _t_children(d->root);
     new_xaddr->noun = noun;
-    _data_record_existence(d, new_xaddr->key, noun);
+    _data_record_existence(d, *new_xaddr);
     return _t_surface(n);
 }
 
@@ -110,19 +105,16 @@ Symbol data_new_noun(Receptor *r, Xaddr xaddr, char *label) {
     ns->specXaddr.key = xaddr.key;
     ns->specXaddr.noun = xaddr.noun;
     memcpy(&ns->label,label,strlen(label)+1);
-    _data_record_existence(&r->data, key, r->nounSpecXaddr.noun);
+    Xaddr x = {key,r->nounSpecXaddr.noun};
+    _data_record_existence(&r->data, x);
     return key;
 }
 
 
 void _data_init(Data *d) {
-    int i;
-    for (i = 0; i < DEFAULT_CACHE_SIZE; i++) d->xaddr_scape[i] = CSPEC;
     scapes_init(d);
     d->root = _t_new_root();
     d->xaddrs = _t_new_root();
-
-    d->current_xaddr = -1;
 
     LogMeta lm,*l;
     d->log = _t_new(0,LOG_META_NOUN,&lm,sizeof(LogMeta));

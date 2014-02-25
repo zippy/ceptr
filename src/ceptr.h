@@ -1,7 +1,6 @@
 #ifndef _CEPTR_H
 #define _CEPTR_H
 
-#define DEFAULT_CACHE_SIZE 100000
 #define OPERANDS_SIZE (sizeof(Xaddr) * 2)
 
 #define _GNU_SOURCE
@@ -68,9 +67,6 @@ typedef struct {
 typedef struct {
     Tnode *root;
     Tnode *xaddrs;
-    Symbol xaddr_scape[DEFAULT_CACHE_SIZE];
-    int current_xaddr;
-
     Tnode *log;
     Tnode *scapes;
 } Data;

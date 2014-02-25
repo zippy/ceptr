@@ -24,10 +24,10 @@ size_t noun_get_spec_size(Receptor *r, Symbol noun, void *surface) {
 Symbol getSymbol(Receptor *r, char *label) {
     NounSurface *ns;
     Symbol noun;
-    int i;
     Data *d = &r->data;
-    for (i = 0; i <= d->current_xaddr; i++) {
-	Xaddr *x = _t_get_child_surface(d->xaddrs,i+1);
+    //TODO: convert to using itterator when we have short-circuiting
+    for (int i = 1; i <= _t_children(d->xaddrs); i++) {
+	Xaddr *x = _t_get_child_surface(d->xaddrs,i);
         if (x->noun == r->nounSpecXaddr.noun) {
             noun = x->key;
             ns = (NounSurface *) _data_get(d,noun);
