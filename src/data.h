@@ -12,16 +12,8 @@ sizeFunction size_table_get(Symbol noun) {
     return size_table[noun];
 }
 
-int data_sem_check(Receptor *r, Xaddr xaddr) {
-    if (xaddr.key < 0) {
-        if (xaddr.noun == -4) {
-            return 1;
-        }
-        if (util_xaddr_eq(xaddr, r->cspecXaddr)) {
-            return 1;
-        }
-    }
-    Symbol noun = r->data.xaddr_scape[xaddr.key];
+int _data_sem_check(Data *d, Xaddr xaddr) {
+    Symbol noun = d->xaddr_scape[xaddr.key];
     return (noun == xaddr.noun);
 }
 
@@ -33,7 +25,7 @@ void *data_get(Receptor *r, Xaddr xaddr) {
     if (util_xaddr_eq(xaddr, r->rootXaddr)){
         return &r->rootSurface;
     }
-    if (!data_sem_check(r, xaddr)) {
+    if (!_data_sem_check(&r->data, xaddr)) {
         raise_error2("semcheck failed getting xaddr { %d, %d }\n", xaddr.key, xaddr.noun );
     }
     return _data_get(&r->data,xaddr.key);
@@ -45,8 +37,10 @@ void size_table_set(Symbol noun, sizeFunction func) {
 
 void _data_record_existence(Data *d, size_t current_index, Symbol noun) {
     d->current_xaddr++;
-    d->xaddrs[d->current_xaddr].key = current_index;
-    d->xaddrs[d->current_xaddr].noun = noun;
+    Tnode *t = _t_new(d->xaddrs,XADDR_NOUN,0,sizeof(Xaddr));
+    Xaddr *x = (Xaddr *)_t_surface(t);
+    x->key = current_index;
+    x->noun = noun;
     d->xaddr_scape[current_index] = noun;
 }
 
@@ -87,8 +81,9 @@ size_t size_of_named_surface(Receptor *r, Symbol instanceNoun, void *surface) {
 
 
 void data_set(Receptor *r, Xaddr xaddr, void *value, size_t size) {
-    void *surface = _data_get(&r->data,xaddr.key);
-    if (xaddr.key == 0 || !data_sem_check(r, xaddr)) {
+    Data *d = &r->data;
+    void *surface = _data_get(d,xaddr.key);
+    if (xaddr.key == 0 || !_data_sem_check(d, xaddr)) {
         raise_error("I do not think that word (%d) means what you think it means!\n", xaddr.noun);
     }
     memcpy(surface, value, size);
@@ -125,6 +120,7 @@ void _data_init(Data *d) {
     for (i = 0; i < DEFAULT_CACHE_SIZE; i++) d->xaddr_scape[i] = CSPEC;
     scapes_init(d);
     d->root = _t_new_root();
+    d->xaddrs = _t_new_root();
 
     d->current_xaddr = -1;
 
@@ -138,5 +134,6 @@ void _data_init(Data *d) {
 void _data_free(Data *d) {
     _t_free(d->log);
     _t_free(d->root);
+    _t_free(d->xaddrs);
     scapes_free(d);
 }

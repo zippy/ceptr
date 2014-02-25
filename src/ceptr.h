@@ -67,7 +67,7 @@ typedef struct {
 
 typedef struct {
     Tnode *root;
-    Xaddr xaddrs[DEFAULT_CACHE_SIZE];
+    Tnode *xaddrs;
     Symbol xaddr_scape[DEFAULT_CACHE_SIZE];
     int current_xaddr;
 

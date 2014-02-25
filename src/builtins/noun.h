@@ -25,10 +25,12 @@ Symbol getSymbol(Receptor *r, char *label) {
     NounSurface *ns;
     Symbol noun;
     int i;
-    for (i = 0; i <= r->data.current_xaddr; i++) {
-        if (r->data.xaddrs[i].noun == r->nounSpecXaddr.noun) {
-            noun = r->data.xaddrs[i].key;
-            ns = (NounSurface *) _data_get(&r->data,noun);
+    Data *d = &r->data;
+    for (i = 0; i <= d->current_xaddr; i++) {
+	Xaddr *x = _t_get_child_surface(d->xaddrs,i+1);
+        if (x->noun == r->nounSpecXaddr.noun) {
+            noun = x->key;
+            ns = (NounSurface *) _data_get(d,noun);
             if (!strcmp(label, &ns->label)) {
                 return noun;
             }

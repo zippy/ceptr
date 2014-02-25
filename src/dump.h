@@ -57,9 +57,11 @@ void dump_xaddrs(Receptor *r) {
     int i;
     NounSurface *ns;
     void *surface;
-    for (i = 0; i <= r->data.current_xaddr; i++) {
-        printf("Xaddr { %5d, %5d } - ", r->data.xaddrs[i].key, r->data.xaddrs[i].noun);
-        dump_xaddr(r, r->data.xaddrs[i], 0);
+    Data *d = &r->data;
+    for (i = 0; i <= d->current_xaddr; i++) {
+ 	Xaddr *x = _t_get_child_surface(d->xaddrs,i+1);
+	printf("Xaddr { %5d, %5d } - ", x->key, x->noun);
+        dump_xaddr(r, *x, 0);
         printf("\n");
     }
 }
