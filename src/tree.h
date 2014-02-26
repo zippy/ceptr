@@ -1,5 +1,5 @@
-#ifndef _TREE_H
-#define _TREE_H
+#ifndef _CEPTR_TREE_H
+#define _CEPTR_TREE_H
 
 #include "ceptr_error.h"
 
@@ -162,7 +162,7 @@ void _t_iter_children(Tnode *t, tIterFn fn, void * param) {
 }
 
 
-#define __lspc(l) for(int i=0;i<l;i++) printf("  ");
+#define __lspc(l) for(int i=0;i<l;i++) printf("   ");
 
 void __t_dump(Tnode *t,int level) {
     __lspc(level);

@@ -12,6 +12,7 @@
 
 #include "ceptr_error.h"
 #include "tree.h"
+#include "def.h"
 #include "conversation.h"
 
 #define BUFFER_SIZE 10000
@@ -20,11 +21,6 @@ typedef enum { false, true } bool;
 
 enum FunctionNames {
     INSTANCE_SIZE, INSTANCE_NEW, PRINT, INC, ADD, RUN
-};
-
-enum Symbols {
-    CSPEC = -1, CSPEC_NOUN = -2, XADDR_NOUN = -3,
-    CSTRING_NOUN = -4, PATTERN_SPEC_DATA_NOUN = -5
 };
 
 typedef int FunctionName;
