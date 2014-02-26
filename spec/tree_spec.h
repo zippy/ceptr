@@ -2,6 +2,7 @@
 
 void testNewTreeNode() {
     Tnode *t = _t_new(0,CSTRING_NOUN,"hello",6);
+    spec_is_long_equal(_t_size(t),(long)6);
     spec_is_equal(_t_children(t),0);
     spec_is_str_equal((char *)_t_surface(t),"hello");
     spec_is_ptr_equal(_t_parent(t),NULL);
@@ -21,7 +22,7 @@ void testNewTreeNode() {
     Tnode *t3 = _t_newi(t,99,101);
     spec_is_ptr_equal(_t_parent(t3),t);
     spec_is_equal(_t_children(t),3);
-    spec_is_equal(_t_child(t,3)->surface,101);
+    spec_is_equal(*(int *)_t_surface(_t_child(t,3)),101);
 
     _t_free(t);
 }
@@ -132,9 +133,24 @@ void testTreeUtils() {
     _t_free(t);
 }
 
+void testTreeBecome() {
+    Tnode *t = _t_newi(0,INTEGER_NOUN,314);
+    Tnode *x = _t_new(t,CSTRING_NOUN,"goodbye",8);
+    Tnode *y = _t_new(t,CSTRING_NOUN,"doggy",6);
+    Tnode *z = _t_new(y,CSTRING_NOUN,"fish",5);
+    spec_is_equal(_t_children(t),2);
+    spec_is_equal(*(int *)_t_surface(t),314);
+    spec_is_str_equal((char *)_t_get_child_surface(t,1),"goodbye");
+    _t_become(t,y);
+    spec_is_equal(_t_children(t),1);
+    spec_is_str_equal((char *)_t_surface(t),"doggy");
+    spec_is_str_equal((char *)_t_get_child_surface(t,1),"fish");
+}
+
 void testTree() {
     testNewTreeNode();
     testTreeRealloc();
     testTreePath();
     testTreeUtils();
+    testTreeBecome();
 }

@@ -8,12 +8,16 @@
 typedef int Symbol;
 #define TREE_PATH_TERMINATOR 10
 
+#define TFLAG_ALLOCATED 0x0001
+
 struct Tnode {
     struct Tnode *parent;
+    size_t size;
+    int flags;
     int child_count;
     struct Tnode **children;
     Symbol noun;
-    int surface;
+    void *surface;
 };
 typedef struct Tnode Tnode;
 
@@ -32,22 +36,29 @@ void __t_init(Tnode *t,Tnode *parent,Symbol noun) {
     t->child_count = 0;
     t->parent = parent;
     t->noun = noun;
+    t->flags = 0;
     if (parent != NULL) {
 	__t_append_child(parent,t);
     }
 }
 
 Tnode * _t_new(Tnode *parent,Symbol noun,void *surface,size_t size) {
-    Tnode *t = malloc(sizeof(Tnode)-sizeof(int)+size);
-    if (size && surface)
-	memcpy(&t->surface,surface,size);
+    Tnode *t = malloc(sizeof(Tnode));
     __t_init(t,parent,noun);
+    if (size) {
+	t->flags |= TFLAG_ALLOCATED;
+	t->surface = malloc(size);
+	if (surface)
+	    memcpy(t->surface,surface,size);
+    }
+    t->size = size;
     return t;
 }
 
 Tnode * _t_newi(Tnode *parent,Symbol noun,int surface) {
     Tnode *t = malloc(sizeof(Tnode));
-    t->surface = surface;
+    *((int *)&t->surface) = surface;
+    t->size = sizeof(int);
     __t_init(t,parent,noun);
     return t;
 }
@@ -58,7 +69,10 @@ int _t_children(Tnode *t) {
 }
 
 void * _t_surface(Tnode *t) {
-    return &t->surface;
+    if (t->flags & TFLAG_ALLOCATED)
+	return t->surface;
+    else
+	return &t->surface;
 }
 
 Tnode * _t_parent(Tnode *t) {
@@ -67,6 +81,10 @@ Tnode * _t_parent(Tnode *t) {
 
 Symbol _t_noun(Tnode *t) {
     return t->noun;
+}
+
+size_t _t_size(Tnode *t) {
+    return t->size;
 }
 
 Tnode *_t_child(Tnode *t,int i) {
@@ -83,6 +101,8 @@ void _t_free(Tnode *t) {
 	}
 	free(t->children);
     }
+    if (t->flags & TFLAG_ALLOCATED)
+	free(t->surface);
     free(t);
 }
 
@@ -146,21 +166,22 @@ void _t_iter_children(Tnode *t, tIterFn fn, void * param) {
 
 void __t_dump(Tnode *t,int level) {
     __lspc(level);
-    printf("noun: %d; sfc: %d; children: %d\n",_t_noun(t),t->surface,_t_children(t));
+    printf("noun: %d; sfc: %p; children: %d\n",_t_noun(t),t->surface,_t_children(t));
     for(int i=1;i<=_t_children(t);i++) __t_dump(_t_get_child(t,i),level+1);
 }
 
 void _t_dump(Tnode *t) { printf("Tree Dump:\n");__t_dump(t,0);}
 
-//TODO: write a spec for this
 void _t_become(Tnode *t, Tnode *src_t) {
     t->child_count = src_t->child_count;
     t->noun = src_t->noun;
     for(int i=0; i< t->child_count;i++) {
 	t->children[i] = src_t->children[i];
     }
-    //TODO: This has to become a realloc + memcopy but right now we don't know the size!
+    if (t->flags & TFLAG_ALLOCATED)
+	free(t->surface);
     t->surface = src_t->surface;
+    t->flags = src_t->flags;
     free(src_t);  //NOTE: this is not a t_free because don't want to free the children
 }
 

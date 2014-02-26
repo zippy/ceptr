@@ -14,7 +14,7 @@ int reduce(Tnode *t) {
     Tnode *t1;
     Tnode *t2;
     if (_t_noun(t) == INSTRUCTION_NOUN) {
-	switch(t->surface) {
+	switch(*(int *)&t->surface) {
 	case I_COND:
 	    p[1] = 1;
 	    for(i=1;i<=_t_children(t);i++) { //change to iterator when we have a break early one?
@@ -52,7 +52,7 @@ int reduce(Tnode *t) {
 	    }
 	    t1 = _t_get_child(t,1);
 	    t2 = _t_get_child(t,2);
-	    t->surface = (*(int *)_t_surface(t1)==*(int *)_t_surface(t2)) ? TRUE_VALUE : FALSE_VALUE;
+	    (*(int *)&t->surface) = (*(int *)_t_surface(t1)==*(int*)_t_surface(t2)) ? TRUE_VALUE : FALSE_VALUE;
 	    t->noun = BOOLEAN_NOUN;
 	    _t_free(t1);
 	    _t_free(t2);
