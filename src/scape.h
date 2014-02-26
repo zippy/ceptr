@@ -18,6 +18,8 @@ bool surface_match(void *match_surface,size_t match_len, void *key_surface, size
     return true;
 }
 
+#define SCAPE_ITEMS_ARRAY_NOUN -997
+
 Scape *_new_scape(char *name,Symbol data_source,Symbol key_source, Symbol key_geometry, ScapeMatchFn matchfn) {
     Scape *s = malloc(sizeof(Scape));
     if (s != NULL) {
@@ -26,7 +28,7 @@ Scape *_new_scape(char *name,Symbol data_source,Symbol key_source, Symbol key_ge
 	s->key_source = key_source;
 	s->key_geometry = key_geometry;
 	s->matchfn = (matchfn == 0)?surface_match:matchfn;
-	s->items = _t_new_root();
+	s->items = _t_new_root(SCAPE_ITEMS_ARRAY_NOUN);
     }
     return s;
 }
@@ -80,8 +82,9 @@ Xaddr _scape_lookup(Scape *s,void *match_surface,size_t match_len) {
 }
 
 
+#define SCAPES_ARRAY_NOUN -998
 void scapes_init(Data *d) {
-    d->scapes = _t_new_root();
+    d->scapes = _t_new_root(SCAPES_ARRAY_NOUN);
 }
 
 #define SCAPE_ITEM_NOUN -107

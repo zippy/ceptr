@@ -71,12 +71,14 @@ Symbol data_new_noun(Receptor *r, Xaddr xaddr, char *label) {
     return x.key;
 }
 
+#define SURFACES_ARRAY_NOUN -999
+
 void _data_init(Data *d) {
     scapes_init(d);
-    d->root = _t_new_root();
+    d->root = _t_new_root(SURFACES_ARRAY_NOUN);
 
-    LogMeta lm,*l;
-    d->log = _t_new(0,LOG_META_NOUN,&lm,sizeof(LogMeta));
+    LogMeta *l;
+    d->log = _t_new(0,LOG_META_NOUN,0,sizeof(LogMeta));
     l = _t_surface(d->log);
     assert( pthread_mutex_init(&l->mutex, NULL) == 0);
     assert( pthread_cond_init(&l->changed, NULL) == 0);

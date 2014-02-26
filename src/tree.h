@@ -8,8 +8,6 @@
 typedef int Symbol;
 #define TREE_PATH_TERMINATOR 10
 
-#define TREE_ROOT_NOUN -999
-
 struct Tnode {
     struct Tnode *parent;
     int child_count;
@@ -120,8 +118,8 @@ void *_t_get_child_surface(Tnode *t,int i) {
     return NULL;
 }
 
-Tnode *_t_new_root() {
-    return _t_new(0,TREE_ROOT_NOUN,0,0);
+Tnode *_t_new_root(Symbol noun) {
+    return _t_new(0,noun,0,0);
 }
 
 typedef void (*tIterSurfaceFn)(void *, int, void *param);

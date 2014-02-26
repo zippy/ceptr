@@ -188,8 +188,9 @@ bool first_word_match(void *match_surface,size_t match_len, void *key_surface, s
     return (*m==0 || *m == ' ' || *m==0xA);
 }
 
+#define RECEPTORS_ARRAY_NOUN -987
 void vm_host_init(HostReceptor *r){
-    r->receptors = _t_new_root();
+    r->receptors = _t_new_root(RECEPTORS_ARRAY_NOUN);
     init(&r->receptor);
     r->receptor.alive = true;
     r->receptor.signalProc = vm_host_log_proc;

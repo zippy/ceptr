@@ -126,8 +126,9 @@ void testTreeUtils() {
 
     _t_free(t);
 
-    t = _t_new_root();
+    t = _t_new_root(-99);
     spec_is_equal(_t_children(t),0);
+    spec_is_equal(_t_noun(t),-99);
     _t_free(t);
 }
 
