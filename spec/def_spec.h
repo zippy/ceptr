@@ -8,6 +8,6 @@ void testDefDumpSurface() {
 
 void testDef() {
     sys_defs_init();
-    //    testDefDumpSurface();
+        testDefDumpSurface();
     sys_defs_free();
 }

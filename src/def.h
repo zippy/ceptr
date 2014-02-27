@@ -3,13 +3,13 @@
 #include "tree.h"
 
 enum Symbols {
-CSPEC = -1, CSPEC_NOUN = -2, XADDR_NOUN = -3,
-    CSTRING_NOUN = -4, PATTERN_SPEC_DATA_NOUN = -5
+    CSPEC = -1, CSPEC_NOUN = -2, XADDR_NOUN = -3,
+    CSTRING_NOUN = -4, PATTERN_SPEC_DATA_NOUN = -5,
+    NOUN_NOUN = -6
 };
 
-
 char dump_buf[1000];
-#define SYS_DEFS_NOUN -799
+#define DEFS_ARRAY_NOUN -799
 #define META_NOUN -800
 #define DEF_NOUN -888
 #define DEF_DUMP_FUNC_NOUN -801
@@ -23,11 +23,8 @@ Tnode *__d_get_def(Symbol noun) {
 	    if (noun == *(int *)_t_surface(d))
 		return d;
 	}
-	return NULL;
     }
-    else {
-	raise_error0("NOT IMPLEMENTED\n");
-    }
+    return NULL;
 }
 
 Tnode *_d_get_def(Tnode *t) {
@@ -49,7 +46,13 @@ void __d_dump_surface(Tnode *t,int level) {
 	dumpFn f = *(dumpFn *) _t_get_child_surface(d,2);
 	void *s = _t_surface(t);
 	printf(" ");
-	if (f) printf("%s\n",(*f)(s));
+	if (f) {
+	    char *text = (*f)(s);
+	    if (text)
+		printf("%s\n",text);
+	    else
+		printf("\n");
+	}
 	else printf("%p\n",s);
     }
     for(int i=1;i<=_t_children(t);i++) __d_dump_surface(_t_get_child(t,i),level+1);
@@ -64,35 +67,54 @@ char *_dump_cstring(void *surface) {
     return dump_buf;
 }
 
+char *_dump_xaddr(void *surface) {
+    struct {int key;int noun;} *x = surface;
+    sprintf(dump_buf,"key:%d,noun:%d",x->key,x->noun);
+    return dump_buf;
+}
+
 char *_dump_def(void *surface) {
     Symbol noun = *(Symbol *)surface;
     Tnode *d = __d_get_def(noun);
-    return (char *)_t_get_child_surface(d,1);
+    if (d)
+	return (char *)_t_get_child_surface(d,1);
+    else {
+	sprintf(dump_buf,"<%d>",noun);
+	return dump_buf;
+    }
+    return 0;
 }
 
-Tnode *__sys_def(char *label,Symbol noun,dumpFn fn) {
+Tnode *_d_def(Tnode *t,char *label,Symbol noun,dumpFn fn) {
     Tnode *d;
-    d = _t_newi(G_sys_defs,DEF_NOUN,noun);
+    d = _t_newi(t,DEF_NOUN,noun);
     _t_new(d,CSTRING_NOUN,label,strlen(label)+1);
     _t_newi(d,DEF_DUMP_FUNC_NOUN,(long)fn);
-    return d;
+    return _t_newi(d,META_NOUN,noun);
+}
+
+Tnode *_d_sys_def(char *label,Symbol noun,dumpFn fn) {
+    return _d_def(G_sys_defs,label,noun,fn);
 }
 
 void sys_defs_init() {
-    G_sys_defs = _t_new_root(SYS_DEFS_NOUN);
+    G_sys_defs = _t_new_root(DEFS_ARRAY_NOUN);
 
     Tnode *d;
-    d = __sys_def("DEF",DEF_NOUN,_dump_def);
-    _t_newi(d,META_NOUN,META_NOUN);
+    _d_sys_def("DEF",DEF_NOUN,_dump_def);
 
-    d = __sys_def("META",META_NOUN,_dump_def);
-    _t_newi(d,META_NOUN,META_NOUN);
+    _d_sys_def("META",META_NOUN,_dump_def);
 
-    d = __sys_def("DEF_DUMP_FUNC",DEF_DUMP_FUNC_NOUN,0);
-    _t_newi(d,META_NOUN,DEF_DUMP_FUNC_NOUN);
+    _d_sys_def("DEF_DUMP_FUNC",DEF_DUMP_FUNC_NOUN,0);
 
-    d = __sys_def("CSTRING",CSTRING_NOUN,_dump_cstring);
+    _d_sys_def("CSTRING",CSTRING_NOUN,_dump_cstring);
+
+    _d_sys_def("XADDR",XADDR_NOUN,_dump_xaddr);
+
+    d = _d_sys_def("NOUN",NOUN_NOUN,0);
+    _t_newi(d,META_NOUN,XADDR_NOUN);
     _t_newi(d,META_NOUN,CSTRING_NOUN);
+
 }
 
 void sys_defs_free() {
