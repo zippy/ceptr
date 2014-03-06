@@ -173,16 +173,50 @@ void __t_dump(Tnode *t,int level) {
 void _t_dump(Tnode *t) { printf("Tree Dump:\n");__t_dump(t,0);}
 
 void _t_become(Tnode *t, Tnode *src_t) {
+    // free my own children but not if my child is what I'm about to become
+    // NOTE: this means that you have to detach a child of a child or it will be double freed!
+    for(int i=1; i<=_t_children(t);i++) {
+	Tnode *c = _t_get_child(t,i);
+	if (c != src_t) _t_free(c);
+    }
+
+    // copy over src children
     t->child_count = src_t->child_count;
     t->noun = src_t->noun;
     for(int i=0; i< t->child_count;i++) {
 	t->children[i] = src_t->children[i];
     }
+
+    // free my surface if it was alloced
     if (t->flags & TFLAG_ALLOCATED)
 	free(t->surface);
     t->surface = src_t->surface;
     t->flags = src_t->flags;
-    free(src_t);  //NOTE: this is not a t_free because don't want to free the children
+
+    // free the source because it's now me, but not it's children (i.e. not _t_free)
+    free(src_t);
+}
+
+enum {PTR_NOUN = -999999};
+
+Tnode *_t_build(Tnode *parent,Tnode *t,Tnode *m) {
+    Tnode *n,*src;
+    Symbol noun;
+    if (_t_noun(t) == PTR_NOUN) {
+	src = _t_get_child(m,*(int *)_t_surface(t));
+    }
+    else {
+	src = t;
+    }
+    if (src->flags & TFLAG_ALLOCATED) {
+	n = _t_new(parent,_t_noun(src),_t_surface(src),_t_size(src));
+    } else {
+	n = _t_newi(parent,_t_noun(src),*(int *)_t_surface(src));
+    }
+    for(int i=0; i< t->child_count;i++) {
+	_t_build(n,src->children[i],m);
+    }
+    return n;
 }
 
 #endif

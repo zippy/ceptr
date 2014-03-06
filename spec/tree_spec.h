@@ -152,6 +152,25 @@ void testTreeBecome() {
     spec_is_equal(_t_children(t),1);
     spec_is_str_equal((char *)_t_surface(t),"doggy");
     spec_is_str_equal((char *)_t_get_child_surface(t,1),"fish");
+    _t_free(t);
+}
+
+void testTreeBuild() {
+    Tnode *i = _t_newi(0,BOOLEAN_NOUN,TRUE_VALUE);
+    _t_newi(i,PTR_NOUN,1);
+    Tnode *r = _t_newi(0,RUNTREE_NOUN,0);
+    _t_newi(r,INTEGER_NOUN,42);
+
+    Tnode *n = _t_build(0,i,r);
+    spec_is_equal(_t_noun(n),BOOLEAN_NOUN);
+    spec_is_equal(*(int *)_t_surface(n),TRUE_VALUE);
+
+    Tnode *t = _t_get_child(n,1);
+    spec_is_equal(_t_noun(t),INTEGER_NOUN);
+    spec_is_equal(*(int *)_t_surface(t),42);
+    _t_free(i);
+    _t_free(r);
+    _t_free(n);
 }
 
 void testTree() {
@@ -162,4 +181,5 @@ void testTree() {
     testTreeNewRoot();
     testTreeIterate();
     testTreeBecome();
+    testTreeBuild();
 }
