@@ -6,7 +6,7 @@
 #define TREE_CHILDREN_BLOCK 5
 
 typedef int Symbol;
-#define TREE_PATH_TERMINATOR 10
+#define TREE_PATH_TERMINATOR -9999
 
 #define TFLAG_ALLOCATED 0x0001
 
@@ -217,6 +217,53 @@ Tnode *_t_build(Tnode *parent,Tnode *t,Tnode *m) {
 	_t_build(n,src->children[i],m);
     }
     return n;
+}
+
+enum {WALK_DEPTH_FIRST,WALK_BREADTH_FIRST};
+
+typedef struct {
+    int type;
+    int depth;
+    int p[20];
+} TreeWalker;
+
+void _t_init_walk(Tnode *t,TreeWalker *w, int type) {
+    w->type = type;
+    w->depth = 1;
+    w->p[0] = 1;
+    w->p[1] = TREE_PATH_TERMINATOR;
+}
+
+Tnode *__t_walkdf(Tnode *t,TreeWalker *w) {
+    Tnode *i;
+    while ((i = _t_get(t,w->p))==NULL) {
+	// if we got to last child try to go up a level and go to next child.
+	if (--w->depth == 0) return NULL;
+	w->p[w->depth] = TREE_PATH_TERMINATOR;
+	w->p[w->depth-1]++;
+
+    }
+    // set up for next iteration
+
+    if (_t_children(i) == 0) {
+	w->p[w->depth-1]++;
+    }
+    else {
+	w->p[w->depth++] = 1;
+	w->p[w->depth] =  TREE_PATH_TERMINATOR;
+    }
+    return i;
+}
+
+Tnode *__t_walkbf(Tnode *t,TreeWalker *w) {
+    raise_error("NOT IMPLEMENTED!\n");
+}
+
+Tnode *_t_walk(Tnode *t,TreeWalker *w) {
+    if (w->type == WALK_DEPTH_FIRST)
+	return __t_walkdf(t,w);
+    else
+	return __t_walkbf(t,w);
 }
 
 #endif

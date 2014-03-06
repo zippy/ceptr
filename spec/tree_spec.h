@@ -45,10 +45,9 @@ Tnode *_makeTestTree() {
     Tnode *t = _t_new(0,CSTRING_NOUN,"t",2);
     Tnode *t1 = _t_new(t,CSTRING_NOUN,"t1",3);
     Tnode *t2 = _t_new(t,CSTRING_NOUN,"t2",3);
-    spec_is_equal(_t_children(t),2);
-
     Tnode *t11 = _t_new(t1,CSTRING_NOUN,"t11",4);
-    Tnode *t12 = _t_new(t1,CSTRING_NOUN,"t12",4);
+    Tnode *t111 = _t_new(t11,CSTRING_NOUN,"t111",5);
+     Tnode *t12 = _t_new(t1,CSTRING_NOUN,"t12",4);
     Tnode *t21 = _t_new(t2,CSTRING_NOUN,"t21",4);
     Tnode *t211 = _t_new(t21,CSTRING_NOUN,"t211",5);
     return t;
@@ -173,6 +172,48 @@ void testTreeBuild() {
     _t_free(n);
 }
 
+void testTreeWalk() {
+    Tnode *t = _makeTestTree();
+    Tnode *i;
+    TreeWalker w;
+    _t_init_walk(t,&w,WALK_DEPTH_FIRST);
+    i = _t_walk(t,&w);
+    spec_is_str_equal((char *)_t_surface(i),"t1");
+    i = _t_walk(t,&w);
+    spec_is_str_equal((char *)_t_surface(i),"t11");
+    i = _t_walk(t,&w);
+    spec_is_str_equal((char *)_t_surface(i),"t111");
+    i = _t_walk(t,&w);
+    spec_is_str_equal((char *)_t_surface(i),"t12");
+    i = _t_walk(t,&w);
+    spec_is_str_equal((char *)_t_surface(i),"t2");
+    i = _t_walk(t,&w);
+    spec_is_str_equal((char *)_t_surface(i),"t21");
+    i = _t_walk(t,&w);
+    spec_is_str_equal((char *)_t_surface(i),"t211");
+    i = _t_walk(t,&w);
+    spec_is_ptr_equal(i,(void *)0);
+/*
+    _t_init_walk(t,&w,WALK_BREADTH_FIRST);
+    i = _t_walk(t,&w);
+    spec_is_str_equal((char *)_t_surface(i),"t1");
+    i = _t_walk(t,&w);
+    spec_is_str_equal((char *)_t_surface(i),"t2");
+     i = _t_walk(t,&w);
+    spec_is_str_equal((char *)_t_surface(i),"t11");
+    i = _t_walk(t,&w);
+    spec_is_str_equal((char *)_t_surface(i),"t12");
+    i = _t_walk(t,&w);
+    spec_is_str_equal((char *)_t_surface(i),"t21");
+    i = _t_walk(t,&w);
+    spec_is_str_equal((char *)_t_surface(i),"t111");
+    i = _t_walk(t,&w);
+    spec_is_str_equal((char *)_t_surface(i),"t211");
+    i = _t_walk(t,&w);
+    spec_is_ptr_equal(i,(void *)0);*/
+
+}
+
 void testTree() {
     testNewTreeNode();
     testTreeRealloc();
@@ -182,4 +223,5 @@ void testTree() {
     testTreeIterate();
     testTreeBecome();
     testTreeBuild();
+    testTreeWalk();
 }
