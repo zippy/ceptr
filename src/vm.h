@@ -8,6 +8,20 @@ enum {I_RETURN,I_ITER,I_COND,I_COND_PAIR,I_EQ};
 enum {TRANSFORM_ERR = -1,TRANSFORM_OK};
 enum {FALSE_VALUE = 0,TRUE_VALUE = 1};
 
+int t(Tnode *i,Tnode *r)  {
+    Tnode *t;
+    if (_t_noun(i) != INSTRUCTION_NOUN) {
+	t = _t_build(0,i,r);
+	_t_become(r,t);
+	return TRANSFORM_OK;
+    }
+    TreeWalker w;
+    _t_init_walk(i,&w,WALK_DEPTH_FIRST);
+    while(t = _t_walk(t,&w)) {
+
+    }
+}
+
 int transform(Tnode *i,Tnode *r);
 
 int _transform(Tnode *t) {
@@ -70,7 +84,11 @@ int _transform(Tnode *t) {
 }
 
 int transform(Tnode *i,Tnode *r) {
-    Tnode *t = _t_build(0,i,r);
+    Tnode *t = _t_buildx(0,i,r);
+    printf("OLD:\n");
+    _t_dump(t);
+    t = _t_build(0,i,r);
+    printf("NEW:\n");    _t_dump(t);
     //  if (_t_noun(i) == INSTRUCTION_NOUN) {
     _transform(t);
     // }

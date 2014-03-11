@@ -56,6 +56,9 @@ Tnode *_makeTestTree() {
 void testTreePath() {
     Tnode *t = _makeTestTree();
 
+    int p0[] = {TREE_PATH_TERMINATOR};
+    spec_is_ptr_equal(_t_get(t,p0),t);
+
     int p1[] = {1,TREE_PATH_TERMINATOR};
     spec_is_str_equal((char *)_t_get_surface(t,p1),"t1");
 
@@ -79,6 +82,16 @@ void testTreePath() {
 
     int p5[] = {3,0,2,1,1,TREE_PATH_TERMINATOR};
     spec_is_str_equal((char *)_t_get_surface(t,p5),"t211");
+
+    int p6[6];
+    _t_path_parent(p6,p5);
+    for(int i=0;i<3;i++) {
+	spec_is_equal(p6[i],p5[i]);
+    }
+    spec_is_equal(p6[4],TREE_PATH_TERMINATOR);
+
+    _t_path_parent(p6,p1);
+    spec_is_equal(p6[0],TREE_PATH_TERMINATOR);
 
     _t_free(t);
     _t_free(tt);
@@ -161,6 +174,7 @@ void testTreeBuild() {
     _t_newi(r,INTEGER_NOUN,42);
 
     Tnode *n = _t_build(0,i,r);
+
     spec_is_equal(_t_noun(n),BOOLEAN_NOUN);
     spec_is_equal(*(int *)_t_surface(n),TRUE_VALUE);
 
@@ -172,14 +186,46 @@ void testTreeBuild() {
     _t_free(n);
 }
 
+void testTreePathNext() {
+    Tnode *t = _makeTestTree();
+    int p[20];
+    Tnode *r;
+    p[0] = TREE_PATH_TERMINATOR;
+    //t1
+    r = _t_next_df(t,p);spec_is_ptr_equal(r,_t_get(t,p));
+    spec_is_equal(p[1],TREE_PATH_TERMINATOR);
+    //t11
+    r = _t_next_df(t,p);spec_is_ptr_equal(r,_t_get(t,p));
+    spec_is_equal(p[0],1); spec_is_equal(p[1],1); spec_is_equal(p[2],TREE_PATH_TERMINATOR);
+    //t111
+    r = _t_next_df(t,p);spec_is_ptr_equal(r,_t_get(t,p));
+    spec_is_equal(p[0],1); spec_is_equal(p[1],1);spec_is_equal(p[2],1); spec_is_equal(p[3],TREE_PATH_TERMINATOR);
+    //t12
+    r = _t_next_df(t,p);spec_is_ptr_equal(r,_t_get(t,p));
+    spec_is_equal(p[0],1); spec_is_equal(p[1],2); spec_is_equal(p[2],TREE_PATH_TERMINATOR);
+    //t2
+    r = _t_next_df(t,p);spec_is_ptr_equal(r,_t_get(t,p));
+    spec_is_equal(p[0],2); spec_is_equal(p[1],TREE_PATH_TERMINATOR);
+    //t21
+    r = _t_next_df(t,p);spec_is_ptr_equal(r,_t_get(t,p));
+    spec_is_equal(p[0],2); spec_is_equal(p[1],1); spec_is_equal(p[2],TREE_PATH_TERMINATOR);
+    //t211
+    r = _t_next_df(t,p);spec_is_ptr_equal(r,_t_get(t,p));
+    spec_is_equal(p[0],2); spec_is_equal(p[1],1);spec_is_equal(p[2],1); spec_is_equal(p[3],TREE_PATH_TERMINATOR);
+    r = _t_next_df(t,p);
+    spec_is_ptr_equal(r,NULL);
+}
+
 void testTreeWalk() {
     Tnode *t = _makeTestTree();
     Tnode *i;
     TreeWalker w;
     _t_init_walk(t,&w,WALK_DEPTH_FIRST);
     i = _t_walk(t,&w);
+    spec_is_equal(w.p[0],1); spec_is_equal(w.p[1],TREE_PATH_TERMINATOR);
     spec_is_str_equal((char *)_t_surface(i),"t1");
     i = _t_walk(t,&w);
+    spec_is_equal(w.p[0],1); spec_is_equal(w.p[1],1); spec_is_equal(w.p[2],TREE_PATH_TERMINATOR);
     spec_is_str_equal((char *)_t_surface(i),"t11");
     i = _t_walk(t,&w);
     spec_is_str_equal((char *)_t_surface(i),"t111");
@@ -223,5 +269,6 @@ void testTree() {
     testTreeIterate();
     testTreeBecome();
     testTreeBuild();
+    testTreePathNext();
     testTreeWalk();
 }

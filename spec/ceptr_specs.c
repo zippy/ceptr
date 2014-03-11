@@ -80,7 +80,7 @@ int main(int argc, const char **argv) {
     testConversation();
     testScape();
 
-    testVM();
+    //    testVM();
     //    testThreads();
 
     //**** builtins tests

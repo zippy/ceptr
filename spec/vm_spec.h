@@ -151,11 +151,11 @@ void testVMTransformRecursive() {
     }*/
 
 void testVM() {
-    testVMTransformData();
-    testVMTransformEQ();
-    testVMTransformReturn();
+    //  testVMTransformData();
+    //testVMTransformEQ();
+    //testVMTransformReturn();
     testVMTransformCondPair();
-    testVMTransformIter();
+    //testVMTransformIter();
        /*
     testVMTransformRecursive();*/
 }
