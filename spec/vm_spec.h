@@ -72,8 +72,8 @@ void testVMTransformCondPair() {
 
     spec_is_equal(transform(t,r),TRANSFORM_OK);
     spec_is_equal(_t_children(r),2);
-    spec_is_equal(*(int *)_t_surface(r),I_COND_PAIR);
     spec_is_equal(_t_noun(r),INSTRUCTION_NOUN);
+    spec_is_equal(*(int *)_t_surface(r),I_COND_PAIR);
     _t_free(r);
 
     r = _t_newi(0,RUNTREE_NOUN,0);

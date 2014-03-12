@@ -8,6 +8,6 @@ void testDefDumpSurface() {
 
 void testDef() {
     sys_defs_init();
-        testDefDumpSurface();
+    //        testDefDumpSurface(); commented out to not have to see this all the time... should be tested against a string or something
     sys_defs_free();
 }

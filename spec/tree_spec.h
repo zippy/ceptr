@@ -173,7 +173,7 @@ void testTreeBuild() {
     Tnode *r = _t_newi(0,RUNTREE_NOUN,0);
     _t_newi(r,INTEGER_NOUN,42);
 
-    Tnode *n = _t_build(0,i,r);
+    Tnode *n = _t_build(i,r);
 
     spec_is_equal(_t_noun(n),BOOLEAN_NOUN);
     spec_is_equal(*(int *)_t_surface(n),TRUE_VALUE);

@@ -284,7 +284,7 @@ Tnode *_t_build_one(Tnode *parent,Tnode *t,Tnode *m) {
     return n;
 }
 
-Tnode *_t_build(Tnode *parent,Tnode *t,Tnode *m) {
+Tnode *_t_build(Tnode *t,Tnode *m) {
     int p[20];
     Tnode *i,*n = _t_build_one(0,t,m);
     TreeWalker w;
