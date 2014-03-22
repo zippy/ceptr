@@ -16,7 +16,7 @@ typedef struct {
     Symbol host_command;
     Scape *command_scape;
     pthread_t stdin_thread;
-    ConversationID stdout;
+    ConversationID std_out;
 } HostReceptor;
 
 void null_proc(Receptor *r) {
@@ -60,7 +60,7 @@ Address stdin_a = {VM,STDIN};
 enum {RAW_COMMAND,STDOUT_LINE};
 
 void cs_out(HostReceptor *h,char *s) {
-    add_to_conversation((Receptor *)h,h->stdout,STDOUT_LINE,signal_new((Receptor *)h,vm_a,stdout_a,CSTRING_NOUN,s));
+    add_to_conversation((Receptor *)h,h->std_out,STDOUT_LINE,signal_new((Receptor *)h,vm_a,stdout_a,CSTRING_NOUN,s));
 }
 
 void * stdin_run_proc(void *v){
@@ -71,7 +71,7 @@ void * stdin_run_proc(void *v){
     char prompt[] = {'>',' ',0};
     size_t len = 0;
 
-    h->stdout = start_conversation((Receptor *)h,STDOUT_LINE,signal_new((Receptor *)h,vm_a,stdout_a,CSTRING_NOUN,welcome));
+    h->std_out = start_conversation((Receptor *)h,STDOUT_LINE,signal_new((Receptor *)h,vm_a,stdout_a,CSTRING_NOUN,welcome));
 
     while(read != -1 && ((Receptor *)h)->alive) {
 	cs_out((HostReceptor *)h,prompt);

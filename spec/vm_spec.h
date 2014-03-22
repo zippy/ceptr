@@ -150,11 +150,151 @@ void testVMTransformRecursive() {
 
     }*/
 
+void testVMCreateContext() {
+    Tnode *c = _context_create(2);
+    spec_is_equal(_t_noun(c),CONTEXT_TREE_NOUN);
+    Tnode *fp = _t_get_child(c,C_FLOW_PATH);
+    spec_is_equal(_t_noun(fp),PATH_NOUN);
+    spec_is_long_equal(fp->size,sizeof(int)*3);
+    int *p = (int *)_t_surface(fp);
+    spec_is_ptr_equal(p,__f_cur_flow_path(c));
+    spec_is_equal(p[0],TREE_PATH_TERMINATOR);
+    Tnode *rt = _t_get_child(c,C_RUNTREE);
+    spec_is_ptr_equal(rt,NULL);
+}
+
+void testVMCycleLoad() {
+    Tnode *c = _context_create(2);
+    Tnode *t = _t_newi(0,FLOW_NOUN,F_IF);
+    Tnode *t1 = _t_newi(t,BOOLEAN_NOUN,FALSE_VALUE);
+    spec_is_ptr_equal(__run_tree(c),NULL);
+
+    // on first call allocates top node in run tree
+    Tnode *rtn = _vm_cycle_load(c,t);
+    Tnode *rt = __run_tree(c);
+    int *fp = __f_cur_flow_path(c);
+    // fp points to correct place on source and run trees and
+    // run-tree has a node in initial state
+    spec_is_ptr_equal(_t_get(rt,fp),rtn);
+    Tnode *s = _t_get(t,fp);
+
+    spec_is_ptr_equal(s,t);  // should be pointing to root
+    spec_is_equal(_t_noun(rtn),FLOW_STATE_NOUN);
+    Flow *f = (Flow *)_t_surface(rtn);
+    spec_is_equal(f->phase,FLOW_PHASE_NULL);
+
+    // works the same on second call (i.e. without allocating run node)
+    Tnode *rtn2 = _vm_cycle_load(c,t);
+    spec_is_ptr_equal(rtn2,rtn);
+
+    // after descend creates a child
+    _vm_cycle_descend(fp,rtn,t);
+    rtn2 = _vm_cycle_load(c,t);
+    spec_is_ptr_equal(_t_get(rt,fp),rtn2);
+    spec_is_true(_t_parent(rtn2)==rtn);
+}
+
+void testVMCycleDescend() {
+    Tnode *c = _context_create(2);
+    Tnode *t = _t_newi(0,FLOW_NOUN,F_IF);
+    Tnode *t1 = _t_newi(t,BOOLEAN_NOUN,FALSE_VALUE);
+
+    Tnode *rtn = _vm_cycle_load(c,t);
+    int *fp = __f_cur_flow_path(c);
+    spec_is_equal(fp[0],TREE_PATH_TERMINATOR);
+    spec_is_true(_vm_cycle_descend(fp,rtn,t));
+    spec_is_equal(fp[0],1);spec_is_equal(fp[1],TREE_PATH_TERMINATOR);
+    Flow *f = (Flow *)_t_surface(rtn);
+    spec_is_equal(f->phase,1);
+    spec_is_false(_vm_cycle_descend(fp,rtn,t));
+}
+
+void testVMCycleEval() {
+    Tnode *c = _context_create(2);
+    Tnode *t = _t_newi(0,FLOW_NOUN,F_IF);
+    Tnode *t1 = _t_newi(t,BOOLEAN_NOUN,FALSE_VALUE);
+    Tnode *t2 = _t_newi(t,INTEGER_NOUN,1);
+    Tnode *t3 = _t_newi(t,INTEGER_NOUN,2);
+
+    // simulate cycling up to the point of first eval
+    Tnode *rtn = _vm_cycle_load(c,t);
+    int *fp = __f_cur_flow_path(c);
+    _vm_cycle_descend(fp,rtn,t);
+    rtn = _vm_cycle_load(c,t);
+    Tnode *stn = _t_get(t,fp);
+    spec_is_ptr_equal(stn,t1);
+    _vm_cycle_descend(fp,rtn,t);
+
+    _vm_cycle_eval(fp,rtn,stn);
+    Flow *f = (Flow *)_t_surface(rtn);
+    spec_is_equal(f->phase,FLOW_PHASE_COMPLETE);
+    spec_is_equal(fp[0],TREE_PATH_TERMINATOR);
+    spec_is_equal(_f_noun(f),BOOLEAN_NOUN);
+    spec_is_equal(*(int *)_f_surface(f),FALSE_VALUE);
+
+    rtn = _vm_cycle_load(c,t);
+    spec_is_false(_vm_cycle_descend(fp,rtn,t));
+    stn = _t_get(t,fp);
+    spec_is_ptr_equal(stn,t);
+    _vm_cycle_eval(fp,rtn,stn);
+    f = (Flow *)_t_surface(rtn);
+    spec_is_equal(f->phase,3);
+    spec_is_equal(fp[0],3);spec_is_equal(fp[1],TREE_PATH_TERMINATOR);
+
+    rtn = _vm_cycle_load(c,t);
+    spec_is_false(_vm_cycle_descend(fp,rtn,t));
+    stn = _t_get(t,fp);
+    spec_is_ptr_equal(stn,t3);
+    _vm_cycle_eval(fp,rtn,stn);
+    f = (Flow *)_t_surface(rtn);
+    spec_is_equal(f->phase,FLOW_PHASE_COMPLETE);
+    spec_is_equal(fp[0],TREE_PATH_TERMINATOR);
+    spec_is_equal(_f_noun(f),INTEGER_NOUN);
+    spec_is_equal(*(int *)_f_surface(f),2);
+
+    rtn = _vm_cycle_load(c,t);
+    spec_is_false(_vm_cycle_descend(fp,rtn,t));
+    stn = _t_get(t,fp);
+    spec_is_ptr_equal(stn,t);
+    _vm_cycle_eval(fp,rtn,stn);
+    f = (Flow *)_t_surface(rtn);
+    spec_is_equal(f->phase,FLOW_PHASE_COMPLETE);
+    spec_is_equal(_f_noun(f),INTEGER_NOUN);
+    spec_is_equal(*(int *)_f_surface(f),2);
+    spec_is_equal(_t_children(rtn),0);
+
+}
+
+void testVMCycle() {
+    Tnode *c = _context_create(2);
+    Tnode *t = _t_newi(0,FLOW_NOUN,F_IF);
+    Tnode *t1 = _t_newi(t,BOOLEAN_NOUN,FALSE_VALUE);
+    Tnode *t2 = _t_newi(t,INTEGER_NOUN,1);
+    Tnode *t3 = _t_newi(t,INTEGER_NOUN,2);
+
+
+    Tnode *rtn,*stn;
+    int *fp;
+    fp = __f_cur_flow_path(c);
+    while (cycle(c,t));
+    rtn = _t_get(__run_tree(c),fp);
+    Flow *f = (Flow *)_t_surface(rtn);
+    spec_is_equal(f->phase,FLOW_PHASE_COMPLETE);
+    spec_is_equal(_f_noun(f),INTEGER_NOUN);
+    spec_is_equal(*(int *)_f_surface(f),2);
+    spec_is_equal(_t_children(rtn),0);
+}
+
 void testVM() {
+    testVMCreateContext();
+    testVMCycleLoad();
+    testVMCycleDescend();
+    testVMCycleEval();
+    testVMCycle();
     //  testVMTransformData();
     //testVMTransformEQ();
     //testVMTransformReturn();
-    testVMTransformCondPair();
+    // testVMTransformCondPair();
     //testVMTransformIter();
        /*
     testVMTransformRecursive();*/

@@ -23,6 +23,8 @@
 #include "conversation_spec.h"
 #include "receptor_util_spec.h"
 
+#include "flow_spec.h"
+
 #include "vm_spec.h"
 #include "builtins/vm_host_spec.h"
 
@@ -80,6 +82,7 @@ int main(int argc, const char **argv) {
     testConversation();
     testScape();
 
+    testFlow();
     testVM();
 
 

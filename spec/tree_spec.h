@@ -47,7 +47,7 @@ Tnode *_makeTestTree() {
     Tnode *t2 = _t_new(t,CSTRING_NOUN,"t2",3);
     Tnode *t11 = _t_new(t1,CSTRING_NOUN,"t11",4);
     Tnode *t111 = _t_new(t11,CSTRING_NOUN,"t111",5);
-     Tnode *t12 = _t_new(t1,CSTRING_NOUN,"t12",4);
+    Tnode *t12 = _t_new(t1,CSTRING_NOUN,"t12",4);
     Tnode *t21 = _t_new(t2,CSTRING_NOUN,"t21",4);
     Tnode *t211 = _t_new(t21,CSTRING_NOUN,"t211",5);
     return t;

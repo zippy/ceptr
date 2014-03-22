@@ -2,11 +2,26 @@
 #define _VM_H
 
 #include "tree.h"
+#include "flow.h"
 
-enum {RUNTREE_NOUN=-199,INSTRUCTION_NOUN=-200,INTEGER_NOUN=-201,BOOLEAN_NOUN=-202};
+enum {RUNTREE_NOUN=-199,INSTRUCTION_NOUN=-200,INTEGER_NOUN=-201};
 enum {I_RETURN,I_ITER,I_COND,I_COND_PAIR,I_EQ};
 enum {TRANSFORM_ERR = -1,TRANSFORM_OK};
-enum {FALSE_VALUE = 0,TRUE_VALUE = 1};
+
+/*  VM execution cycle
+- load flow at flow ptr from the run tree
+- if no flow in run tree, instantiate it from the source tree
+- get flow phase
+- if flow phase is null, set phase to executing child 1, advance ptr to first child if exists and new cycle,
+- load flow function and execute (which updates state)
+-
+n = _t_get(t,fp);
+if (!n) BAD_PATH_FAULT;
+ffn = _f_get_flow_fn(n);
+f = _f_get_flow(r,fp);
+fp = (ffn)(c,t,fp,f);
+*/
+
 /*
 int t(Tnode *i,Tnode *r)  {
     Tnode *t,*n,*pp;
@@ -27,6 +42,91 @@ int t(Tnode *i,Tnode *r)  {
     } while(_t_walk(i,&w));
 }
 */
+
+Tnode *_context_create(int max_depth) {
+    Tnode *c = _t_new_root(CONTEXT_TREE_NOUN);
+    Tnode *fp = _t_new(c,PATH_NOUN,0,sizeof(int)*(max_depth+1));
+    *(int *)fp->surface = TREE_PATH_TERMINATOR;
+    return c;
+}
+
+
+Tnode *_vm_cycle_load(Tnode *c,Tnode *s) {
+    Tnode *r = __run_tree(c);
+    int *fp = __f_cur_flow_path(c);
+    Tnode *n = _t_get(r,fp);
+    // if current node doesn't exist in the run-tree allocate one
+    if (!n) {
+	// first find the parent to which to attach the new run tree node
+	Tnode *r_parent;
+	if (r == NULL) {
+	    r_parent = c;
+	}
+	else {
+	    int p[10]; //TODO: dynamic size?
+	    _t_path_parent(p,fp);
+	    r_parent = _t_get(r,p);
+	}
+	n = _f_new(r_parent);
+    }
+    return n;
+}
+
+int _vm_cycle_descend(int *fp,Tnode *r,Tnode *s) {
+    Flow *f = (Flow *)_t_surface(r);
+    if (f->phase == FLOW_PHASE_NULL) {
+	int d = _t_path_depth(fp);
+	fp[d] = 1;
+	fp[d+1] = TREE_PATH_TERMINATOR;
+	if (_t_get(s,fp)) {
+	    f->phase = 1;
+	    return true;
+	}
+	fp[d] = TREE_PATH_TERMINATOR;
+    }
+    return false;
+}
+
+void _vm_cycle_eval(int *fp,Tnode *r,Tnode *s) {
+    Flow *f = (Flow *)_t_surface(r);
+    if (_t_noun(s) != FLOW_NOUN) {
+	f->phase = FLOW_PHASE_COMPLETE;
+	f->surface = _t_surface(s);
+	f->noun = _t_noun(s);
+	_t_path_parent(fp,fp);
+    }
+    else {
+	char *err = 0;
+	switch(*(int *)&s->surface) {
+	case F_IF:
+	    err = _f_if(fp,f,r);
+	    break;
+	default:
+	    raise_error("Flow %d not implemented\n",*(int *)&s->surface);
+	}
+	if (err == (char *)-1) {
+	    raise_error2("Bad phase %d for instruction %d\n",f->phase,*(int *)&s->surface);
+	}
+	if (err) {
+	    raise_error0(err);
+	}
+    }
+}
+
+int cycle(Tnode *c, Tnode *s) {
+    Tnode *rtn = _vm_cycle_load(c,s);
+    int *fp = __f_cur_flow_path(c);
+    if (((Flow *)_t_surface(rtn))->phase == FLOW_PHASE_COMPLETE && _t_path_depth(fp) == 0)
+	return 0;
+    if (!_vm_cycle_descend(fp,rtn,s)) {
+	Tnode *stn = _t_get(s,fp);
+	_vm_cycle_eval(fp,rtn,stn);
+    }
+    return 1;
+}
+
+
+
 int transform(Tnode *i,Tnode *r);
 
 int _transform(Tnode *t) {

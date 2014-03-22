@@ -92,8 +92,9 @@ Tnode *_t_child(Tnode *t,int i) {
     return t->children[i-1];
 }
 
-//TODO: make this remove the child from the parent's child-list?
-void _t_free(Tnode *t) {
+void _t_free(Tnode *t);
+
+void __t_free_children(Tnode *t) {
     int c = t->child_count;
     if (c > 0) {
 	while(--c>=0) {
@@ -101,6 +102,12 @@ void _t_free(Tnode *t) {
 	}
 	free(t->children);
     }
+    t->child_count = 0;
+}
+
+//TODO: make this remove the child from the parent's child-list?
+void _t_free(Tnode *t) {
+    __t_free_children(t);
     if (t->flags & TFLAG_ALLOCATED)
 	free(t->surface);
     free(t);

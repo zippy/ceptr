@@ -91,6 +91,7 @@ void _data_free(Data *d) {
 }
 
 // this should go somewhere once the dependencies are better resolved.  right now it depends on everything.
+Symbol spec_noun_for_noun(Receptor *r, Symbol noun);
 size_t size_of_named_surface(Receptor *r, Symbol instanceNoun, void *surface) {
     size_t result = 0;
     if (instanceNoun <= 0){
