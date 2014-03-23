@@ -6,6 +6,7 @@
 #include "test_framework.h"
 
 #include "tree_spec.h"
+#include "parse_spec.h"
 #include "def_spec.h"
 #include "init_spec.h"
 #include "stack_spec.h"
@@ -75,6 +76,7 @@ int main(int argc, const char **argv) {
 
     //**** core tests
     testTree();
+    testParse();
     testDef();
     testStack();
     testInit();

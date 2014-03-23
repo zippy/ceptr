@@ -2,6 +2,7 @@
 #define _CEPTR_TREE_H
 
 #include "ceptr_error.h"
+#include <ctype.h>
 
 #define TREE_CHILDREN_BLOCK 5
 
@@ -323,5 +324,6 @@ Tnode *_t_buildx(Tnode *parent,Tnode *t,Tnode *m) {
     }
     return n;
 }
+
 
 #endif

@@ -4,7 +4,6 @@
 #include "tree.h"
 #include "flow.h"
 
-enum {RUNTREE_NOUN=-199,INSTRUCTION_NOUN=-200,INTEGER_NOUN=-201};
 enum {I_RETURN,I_ITER,I_COND,I_COND_PAIR,I_EQ};
 enum {TRANSFORM_ERR = -1,TRANSFORM_OK};
 

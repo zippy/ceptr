@@ -12,6 +12,7 @@
 
 #include "ceptr_error.h"
 #include "tree.h"
+#include "parse.h"
 #include "def.h"
 #include "conversation.h"
 
