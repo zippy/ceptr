@@ -161,6 +161,7 @@ void testVMCreateContext() {
     spec_is_equal(p[0],TREE_PATH_TERMINATOR);
     Tnode *rt = _t_get_child(c,C_RUNTREE);
     spec_is_ptr_equal(rt,NULL);
+    _t_free(c);
 }
 
 void testVMCycleLoad() {
@@ -192,6 +193,7 @@ void testVMCycleLoad() {
     rtn2 = _vm_cycle_load(c,t);
     spec_is_ptr_equal(_t_get(rt,fp),rtn2);
     spec_is_true(_t_parent(rtn2)==rtn);
+    _t_free(t);_t_free(c);
 }
 
 void testVMCycleDescend() {
@@ -207,6 +209,7 @@ void testVMCycleDescend() {
     Flow *f = (Flow *)_t_surface(rtn);
     spec_is_equal(f->phase,1);
     spec_is_false(_vm_cycle_descend(fp,rtn,t));
+    _t_free(t);_t_free(c);
 }
 
 void testVMCycleEval() {
@@ -262,16 +265,13 @@ void testVMCycleEval() {
     spec_is_equal(_f_noun(f),INTEGER_NOUN);
     spec_is_equal(*(int *)_f_surface(f),2);
     spec_is_equal(_t_children(rtn),0);
+    _t_free(t);_t_free(c);
 
 }
 
 void testVMCycle() {
     Tnode *c = _context_create(2);
-    Tnode *t = _t_newi(0,FLOW_NOUN,F_IF);
-    Tnode *t1 = _t_newi(t,BOOLEAN_NOUN,FALSE_VALUE);
-    Tnode *t2 = _t_newi(t,INTEGER_NOUN,1);
-    Tnode *t3 = _t_newi(t,INTEGER_NOUN,2);
-
+    Tnode *t = _t_parse("(FLOW:IF (BOOLEAN:FALSE) (INTEGER:1)(INTEGER:2))");
 
     Tnode *rtn,*stn;
     int *fp;
@@ -283,6 +283,7 @@ void testVMCycle() {
     spec_is_equal(_f_noun(f),INTEGER_NOUN);
     spec_is_equal(*(int *)_f_surface(f),2);
     spec_is_equal(_t_children(rtn),0);
+    _t_free(t);_t_free(c);
 }
 
 void testVM() {

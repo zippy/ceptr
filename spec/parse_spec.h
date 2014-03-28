@@ -14,4 +14,5 @@ void testParse() {
     Tnode *t3 = _t_get_child(t,3);
     spec_is_equal(_t_noun(t3),INTEGER_NOUN);
     spec_is_equal(*(int *)_t_surface(t3),2);
+    _t_free(t);
 }
