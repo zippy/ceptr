@@ -4,8 +4,9 @@ void testFlowIf() {
     Tnode *r = _f_new(0);
     int fp[3] = {TREE_PATH_TERMINATOR};
     Flow *f = _t_surface(r);
-    spec_is_ptr_equal(_f_if(fp,f,r),(char *)-1);
 
+    //null phase must throw bad phase error
+    spec_is_ptr_equal(_f_if(fp,f,r),(char *)-1);
 
     Tnode *r1 = _f_new(r);
 
@@ -31,7 +32,6 @@ void testFlowIf() {
     spec_is_equal(f->phase,3);
     spec_is_equal(_t_children(r),2); // should have made dummy item for true branch
 
-
     // return val
     Tnode *r3 = _f_new(r);
     Flow *f3 = _t_surface(r3);
@@ -48,6 +48,22 @@ void testFlowIf() {
     _t_free(r);
 }
 
+void testFlowDef() {
+    Tnode *r = _f_new(0);
+    int fp[3] = {TREE_PATH_TERMINATOR};
+    Flow *f = _t_surface(r);
+
+    //null phase must throw bad phase error
+    spec_is_ptr_equal(_f_def(fp,f,r),(char *)-1);
+
+    f->phase = 1;
+    //   spec_is_str_equal(_f_def(fp,f,r),"DEF requires a Def Noun");
+
+
+
+}
+
 void testFlow() {
     testFlowIf();
+    testFlowDef();
 }

@@ -3,6 +3,12 @@
 
 #include "tree.h"
 
+enum Symbols {
+    CSPEC = -1, CSPEC_NOUN = -2, XADDR_NOUN = -3,
+    CSTRING_NOUN = -4, PATTERN_SPEC_DATA_NOUN = -5,
+    NOUN_NOUN = -6
+};
+
 enum {RUNTREE_NOUN=-199,INSTRUCTION_NOUN=-200,INTEGER_NOUN=-201};
 enum {FLOW_NOUN = -31410,PATH_NOUN,CONTEXT_TREE_NOUN,BOOLEAN_NOUN,FLOW_STATE_NOUN};
 enum {C_FLOW_PATH = 1,C_RUNTREE};
@@ -69,6 +75,10 @@ char *_f_if(int *fp,Flow *f,Tnode *r) {
     }
     else return (char *)-1;
     return 0;
+}
+
+char *_f_def(int *fp,Flow *f,Tnode *r) {
+    return (char *)-1;
 }
 
 #endif

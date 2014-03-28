@@ -2,11 +2,7 @@
 #define _CEPTR_DEF_H
 #include "tree.h"
 
-enum Symbols {
-    CSPEC = -1, CSPEC_NOUN = -2, XADDR_NOUN = -3,
-    CSTRING_NOUN = -4, PATTERN_SPEC_DATA_NOUN = -5,
-    NOUN_NOUN = -6
-};
+
 
 char dump_buf[1000];
 #define DEFS_ARRAY_NOUN -799
@@ -82,7 +78,7 @@ char *_dump_def(void *surface) {
 	sprintf(dump_buf,"<%d>",noun);
 	return dump_buf;
     }
-    return 0;
+   return 0;
 }
 
 Tnode *_d_def(Tnode *t,char *label,Symbol noun,dumpFn fn) {
