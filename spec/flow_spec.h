@@ -56,14 +56,18 @@ void testFlowDef() {
     //null phase must throw bad phase error
     spec_is_ptr_equal(_f_def(fp,f,r),(char *)-1);
 
-    f->phase = 1;
-    //   spec_is_str_equal(_f_def(fp,f,r),"DEF requires a Def Noun");
+    Tnode *d = _t_parse("(DEF (CSTRING:\"FISH\") (DEF_DUMP_FUNC:0) (DEF_PARSEVAL_FUNC:0) (META:CSTRING))");
 
+    f->phase = 1;
+
+    //spec_is_str_equal(_f_def(fp,f,r),"DEF requires a Def Noun");
 
 
 }
 
 void testFlow() {
+    sys_defs_init();
     testFlowIf();
     testFlowDef();
+    sys_defs_free();
 }

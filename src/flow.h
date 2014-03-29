@@ -2,20 +2,11 @@
 #define _FLOW_H
 
 #include "tree.h"
+#include "def.h"
 
-enum Symbols {
-    CSPEC = -1, CSPEC_NOUN = -2, XADDR_NOUN = -3,
-    CSTRING_NOUN = -4, PATTERN_SPEC_DATA_NOUN = -5,
-    NOUN_NOUN = -6
-};
-
-enum {RUNTREE_NOUN=-199,INSTRUCTION_NOUN=-200,INTEGER_NOUN=-201};
-enum {FLOW_NOUN = -31410,PATH_NOUN,CONTEXT_TREE_NOUN,BOOLEAN_NOUN,FLOW_STATE_NOUN};
 enum {C_FLOW_PATH = 1,C_RUNTREE};
-enum {F_IF};
-enum {FLOW_PHASE_NULL,FLOW_PHASE_COMPLETE = -1};
 
-enum {FALSE_VALUE = 0,TRUE_VALUE = 1};
+enum {FLOW_PHASE_NULL,FLOW_PHASE_COMPLETE = -1};
 
 typedef struct {
     int phase;

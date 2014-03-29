@@ -21,7 +21,7 @@ void testDefSysDefs() {
     spec_is_str_equal((char *)_t_get_child_surface(t,1),"XADDR");
     t = __d_get_def(NOUN_NOUN);
     spec_is_str_equal((char *)_t_get_child_surface(t,1),"NOUN");
-    Tnode *n = _t_get_child(t,3);
+    Tnode *n = _t_get_child(t,4);
     spec_is_equal(_t_noun(n),META_NOUN);
     spec_is_equal(*(int *)_t_surface(n),NOUN_NOUN);
     spec_is_equal(_t_children(n),2);

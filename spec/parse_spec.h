@@ -30,6 +30,8 @@ void testParseCstring() {
 }
 
 void testParse() {
+    sys_defs_init();
     testParseIf();
     testParseCstring();
+    sys_defs_free();
 }

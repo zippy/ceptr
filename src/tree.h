@@ -64,6 +64,13 @@ Tnode * _t_newi(Tnode *parent,Symbol noun,int surface) {
     return t;
 }
 
+Tnode * _t_newp(Tnode *parent,Symbol noun,void *surface) {
+    Tnode *t = malloc(sizeof(Tnode));
+    t->surface = surface;
+    t->size = sizeof(void *);
+    __t_init(t,parent,noun);
+    return t;
+}
 
 int _t_children(Tnode *t) {
     return t->child_count;

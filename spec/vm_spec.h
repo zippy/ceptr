@@ -287,6 +287,7 @@ void testVMCycle() {
 }
 
 void testVM() {
+    sys_defs_init();
     testVMCreateContext();
     testVMCycleLoad();
     testVMCycleDescend();
@@ -299,4 +300,5 @@ void testVM() {
     //testVMTransformIter();
        /*
     testVMTransformRecursive();*/
+    sys_defs_free();
 }

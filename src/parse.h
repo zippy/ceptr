@@ -2,6 +2,7 @@
 #define _PARSE_H
 
 #include "flow.h"
+#include "def.h"
 
 enum {P_START,P_IGNOREWS,P_READ_NOUN,P_READ_VALUE,P_CHILDREN,P_READ_STR,P_READ_ESCAPE};
 
@@ -14,14 +15,13 @@ int strcicmp(char const *a, char const *b)
     }
 }
 int __t_parse_noun(char *n) {
-    if (!strcicmp(n,"flow"))
-	return FLOW_NOUN;
-    if (!strcicmp(n,"boolean"))
-	return BOOLEAN_NOUN;
-    if (!strcicmp(n,"integer"))
-	return INTEGER_NOUN;
-    if (!strcicmp(n,"cstring"))
-	return CSTRING_NOUN;
+   for(int i=1;i<=_t_children(G_sys_defs);i++){
+	Tnode *d = _t_get_child(G_sys_defs,i);
+	char *s = (char *)_t_get_child_surface(d,1);
+	if (!strcicmp(n,s)) {
+	    return *(int *)_t_surface(d);
+	}
+    }
     raise_error("unknown noun %s\n",n);
 }
 
@@ -49,11 +49,13 @@ int __t_parse_value(Tnode *t,char *v) {
 Tnode *_t_parse(char *s) {
     char word[255];
     char val[255];
-    int i;
-    Tnode *t = 0,*r;
+    int i,parse_result;
+    Tnode *t = 0,*r,*d;
     int state = P_IGNOREWS;
     int next = P_START;
     char c;
+    parseValFn pf;
+
     while (c = *s++) {
 	switch(state) {
 	case P_IGNOREWS:
@@ -131,12 +133,22 @@ Tnode *_t_parse(char *s) {
 		break;
 	    }
 	    word[i] = 0;
-	    if (t->noun == CSTRING_NOUN) {
-		t->surface = malloc(i);
-		memcpy(t->surface,word,i);
-		t->flags |= TFLAG_ALLOCATED;
+
+	    d = _d_get_def(t);
+	    pf = *(parseValFn*)_t_get_child_surface(d,3);
+	    if (pf == 0) {
+		t->surface = 0;
 	    }
-	    else *(int *)&t->surface = __t_parse_value(t,word);
+	    else {
+		parse_result = (*pf)(word,i,&t->surface);
+
+		if (parse_result > 0) {
+		    t->flags |= TFLAG_ALLOCATED;
+		}
+		if (parse_result < 0) {
+		    raise_error2("unparseable value %s for noun %d\n",word,_t_noun(t));
+		}
+	    }
 
 	    i = 0;
 	    state = P_IGNOREWS;
