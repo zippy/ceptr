@@ -140,36 +140,28 @@ int _d_parse_cstring(char *v,int l,void *s) {
     return 1;
 }
 
-int _d_parse_bool(char *v,int l,void *s) {
-    if (!strcicmp(v,"true")) {
-	*(int *)s =  TRUE_VALUE;
-	return 0;
-    }
-    else if (!strcicmp(v,"false")) {
-	*(int *)s =  FALSE_VALUE;
-	return 0;
+int __d_strmatch(char *v,int *s,char **s_list,int *i_list,int l) {
+    for(int i=0;i < l;i++) {
+	if (!strcicmp(v,*s_list++)) {*s = *i_list;return 0;}
+	i_list++;
     }
     return -1;
+}
+
+int _d_parse_bool(char *v,int l,void *s) {
+    char *sl[] = {"true","false"};
+    int il[] = {TRUE_VALUE,FALSE_VALUE};
+    return __d_strmatch(v,(int *)s,sl,il,2);
 }
 
 int _d_parse_flow(char *v,int l,void *s) {
-    if (!strcicmp(v,"if")) {
-	*(int *)s = F_IF;
-	return 0;
-    }
-    if (!strcicmp(v,"def")) {
-	*(int *)s = F_DEF;
-	return 0;
-    }
-    return -1;
+    char *sl[] = {"if","def"};
+    int il[] = {F_IF,F_DEF};
+    return __d_strmatch(v,(int *)s,sl,il,2);
 }
 
 int _d_parse_noun(char *v,int l,void *s) {
-    char buf[1000];
-    if (l>=1000) {raise_error0("noun length too big to parse\n");}
-    memcpy(buf,v,l);
-    buf[l]=0;
-    int n = __t_parse_noun(buf); //TODO: refactor so we can return when no noun matches instead of throwing err
+    int n = __t_parse_noun(v); //TODO: refactor so we can return when no noun matches instead of throwing err
     *(int *)s = n;
     return 0;
 }
