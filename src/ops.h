@@ -27,6 +27,11 @@ void op_new(Receptor *r) {
     stack_push(r,XADDR_NOUN,&new_xaddr);
 }
 
+
+int util_xaddr_eq(Xaddr x1, Xaddr x2) {
+    return x1.key == x2.key && x1.noun == x2.noun;
+}
+
 //TODO: fixme!! this is clearly bogus.  We need to differentiate between instances and specs ontologically
 int is_spec(Receptor *r, Xaddr x) {
     return util_xaddr_eq(x,r->nounSpecXaddr) || util_xaddr_eq(x,r->patternSpecXaddr);

@@ -1,6 +1,8 @@
 #include "../ceptr.h"
 
 #define _preop_get_array_length(surface) (*((int*)surface))
+#define REPS_GET_NOUN(reps) (((RepsBody *)SKIP_ELEM_HEADER(reps))->noun)
+#define REPS_SET_NOUN(reps,n) (((RepsBody *)SKIP_ELEM_HEADER(reps))->noun = n)
 
 size_t array_get_spec_size(void *es) {
     return element_header_size((ElementSurface *) es) + sizeof(RepsBody);

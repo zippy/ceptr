@@ -78,14 +78,15 @@ int main(int argc, const char **argv) {
     testTree();
     testParse();
     testDef();
+    testFlow();
+    testVM();
+
+
     testStack();
     testInit();
     testCommand();
     testConversation();
     testScape();
-
-    testFlow();
-    testVM();
 
 
 //    testThreads();

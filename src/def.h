@@ -1,6 +1,7 @@
 #ifndef _CEPTR_DEF_H
 #define _CEPTR_DEF_H
 #include "tree.h"
+#include "util.h"
 
 enum Symbols {
     CSPEC = -1, CSPEC_NOUN = -2, XADDR_NOUN = -3,
@@ -19,8 +20,6 @@ enum Symbols {
 
 };
 
-
-
 enum {DEF_LABEL_CHILD=1,DEF_NOUNTREE_CHILD,DEF_DUMP_CHILD,DEF_PARSE_CHILD};
 
 enum {F_IF,F_DEF}; //flows
@@ -29,19 +28,9 @@ char dump_buf[1000];
 
 enum {FALSE_VALUE = 0,TRUE_VALUE = 1};
 
-int strcicmp(char const *a, char const *b);
-
 Tnode *G_sys_defs;
 int G_sys_noun_id = -300;
 
-int strcicmp(char const *a, char const *b)
-{
-    for (;; a++, b++) {
-        int d = tolower(*a) - tolower(*b);
-        if (d != 0 || !*a)
-            return d;
-    }
-}
 int __t_parse_noun(char *n) {
     if (!G_sys_defs) {raise_error0("Sys defs not initialized!\n");}
     for(int i=1;i<=_t_children(G_sys_defs);i++){

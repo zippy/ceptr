@@ -1,13 +1,7 @@
-#include "ceptr.h"
+#ifndef _CEPTR_UTIL_H
+#define _CEPTR_UTIL_H
 
-
-#define REPS_GET_NOUN(reps) (((RepsBody *)SKIP_ELEM_HEADER(reps))->noun)
-#define REPS_SET_NOUN(reps,n) (((RepsBody *)SKIP_ELEM_HEADER(reps))->noun = n)
-
-
-int util_xaddr_eq(Xaddr x1, Xaddr x2) {
-    return x1.key == x2.key && x1.noun == x2.noun;
-}
+// some basic c utility function.  Functions in this file have no dependencies on any other files
 
 void hexDump(char *desc, void *addr, int len) {
     int i;
@@ -41,3 +35,14 @@ void hexDump(char *desc, void *addr, int len) {
         buff[(i % 16) + 1] = '\0';
     }
 }
+
+int strcicmp(char const *a, char const *b)
+{
+    for (;; a++, b++) {
+        int d = tolower(*a) - tolower(*b);
+        if (d != 0 || !*a)
+            return d;
+    }
+}
+
+#endif
