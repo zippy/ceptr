@@ -6,25 +6,6 @@
 
 enum {P_START,P_IGNOREWS,P_READ_NOUN,P_READ_VALUE,P_CHILDREN,P_READ_STR,P_READ_ESCAPE};
 
-int strcicmp(char const *a, char const *b)
-{
-    for (;; a++, b++) {
-        int d = tolower(*a) - tolower(*b);
-        if (d != 0 || !*a)
-            return d;
-    }
-}
-int __t_parse_noun(char *n) {
-   for(int i=1;i<=_t_children(G_sys_defs);i++){
-	Tnode *d = _t_get_child(G_sys_defs,i);
-	char *s = (char *)_t_get_child_surface(d,1);
-	if (!strcicmp(n,s)) {
-	    return *(int *)_t_surface(d);
-	}
-    }
-    raise_error("unknown noun %s\n",n);
-}
-
 int __t_parse_value(Tnode *t,char *v) {
     switch(_t_noun(t)) {
     case FLOW_NOUN:

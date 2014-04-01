@@ -280,7 +280,29 @@ void testTreeNounEQ() {
     _t_free(t1);
 }
 
+void testTreeMap() {
+    char *mt  = "(META:INTEGER (META:CSTRING) (META:BOOLEAN (META:INTEGER)))";
+    Tnode *t = _t_parse(mt);
+    Tnode *t1 = _t_parse(mt);
+    spec_is_true(_t_map(t,t1,meta_eq_mapfn));
+    _t_newi(t,META_NOUN,1);
+    spec_is_true(!_t_map(t,t1,meta_eq_mapfn));
+    _t_newi(t1,META_NOUN,1);
+    spec_is_true(_t_map(t,t1,meta_eq_mapfn));
+    _t_newi(t,META_NOUN,INTEGER_NOUN);
+    Tnode *x = _t_newi(t1,META_NOUN,PTR_NOUN);
+    spec_is_true(!_t_map(t,t1,meta_eq_mapfn));
+    *(int *)(_t_surface(x)) = INTEGER_NOUN;
+    spec_is_true(_t_map(t,t1,meta_eq_mapfn));
+    x->noun = INTEGER_NOUN;
+    spec_is_true(!_t_map(t,t1,meta_eq_mapfn));
+    _t_free(t);
+    _t_free(t1);
+}
+
+
 void testTree() {
+    sys_defs_init();
     testNewTreeNode();
     testTreeRealloc();
     testTreePath();
@@ -292,4 +314,6 @@ void testTree() {
     testTreePathNext();
     testTreeWalk();
     testTreeNounEQ();
+    testTreeMap();
+    sys_defs_free();
 }

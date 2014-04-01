@@ -70,27 +70,29 @@ void testFlowDef() {
     spec_is_true(f->phase == 2);
 
 
-    spec_is_str_equal(_f_def(fp,f,r),"DEF requires a META tree as 2nd child");
+    spec_is_str_equal(_f_def(fp,f,r),"DEF requires a NOUNTREE as 2nd child");
 
     Tnode *r2 = _f_new(r);
     Flow *f2 = _t_surface(r2);
-    f2->noun = META_NOUN;
-    *(int *)&f2->surface = CSTRING_NOUN;
+    f2->noun = NOUNTREE_NOUN;
+
+    Tnode *r3 = _f_new(r2);
+    Flow *f3 = _t_surface(r3);
+    f3->noun = META_NOUN;
+
+    *(int *)&f3->surface = CSTRING_NOUN;
 
     spec_is_ptr_equal(_f_def(fp,f,r),(char *)0);
     spec_is_true(f->phase == FLOW_PHASE_COMPLETE);
 
     // The new noun def should be in the flow state as a result
     Tnode *d = __d_get_def(f->noun);
-    //    _d_dump(G_sys_defs);
+    spec_is_equal(f->noun,G_sys_noun_id);
     char *label = (char *)_t_get_child_surface(d,DEF_LABEL_CHILD);
     spec_is_str_equal(label,"Fish");
-    //TODO: add checking that the structure was added into the def
 
-
-   //    Tnode *d = _t_parse("(FLOW:DEF (CSTRING:\"FISH\") (META:CSTRING))");
-
-
+    Tnode *noun_tree = _t_parse("(META:Fish (META:CSTRING))");
+    spec_is_true(_t_nouns_eq(noun_tree,_t_get_child(d,DEF_NOUNTREE_CHILD)));
 
 }
 

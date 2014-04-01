@@ -22,6 +22,9 @@ struct Tnode {
 };
 typedef struct Tnode Tnode;
 
+
+typedef int (*treeMapFn)(Tnode *,Tnode *);
+
 int __t_append_child(Tnode *t,Tnode *c) {
     if (t->child_count == 0) {
 	t->children = malloc(sizeof(Tnode *)*TREE_CHILDREN_BLOCK);
@@ -340,6 +343,16 @@ int _t_nouns_eq(Tnode *t1,Tnode *t2) {
     }
     return 1;
 }
+
+int _t_map(Tnode *t1,Tnode *t2,treeMapFn mf) {
+    int c;
+    if (((c = _t_children(t1)) != _t_children(t2)) || !(mf)(t1,t2)) return 0;
+    for (int i=1;i<=c;i++) {
+	if (!_t_map(_t_get_child(t1,i),_t_get_child(t2,i),mf)) return 0;
+    }
+    return 1;
+}
+
 
 
 #endif

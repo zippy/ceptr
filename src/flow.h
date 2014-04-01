@@ -17,7 +17,9 @@ typedef struct {
 char *_dump_flow_state(void *surface) {
 
     Flow *f = (Flow *)surface;
-    sprintf(dump_buf,"phase: %d noun: %d",f->phase,f->noun);
+    Tnode *d = __d_get_def(f->noun);
+    char *label = (char *)_t_get_child_surface(d,DEF_LABEL_CHILD);
+    sprintf(dump_buf,"phase: %d noun: %s",f->phase,label);
     return dump_buf;
 }
 
@@ -80,6 +82,19 @@ int next_id() {
     G_sys_noun_id--;
 }
 
+int __copy_meta(Tnode *ft,Tnode *dt) {
+    int c = _t_children(ft);
+    for(int i=1;i<=c;i++) {
+	Tnode *fn = _t_get_child(ft,i);
+	Flow *f = (Flow *)_t_surface(fn);
+	int n = _f_noun(f);
+	if (n != META_NOUN) return 0;
+	Tnode *d = _t_newi(dt,META_NOUN,*(int *)&f->surface);
+	if (_t_children(fn) > 0) if (!__copy_meta(fn,d)) return 0;
+    }
+    return 1;
+}
+
 char *_f_def(int *fp,Flow *f,Tnode *r) {
     if (f->phase == 1) {
 	Flow *l = (Flow *)_t_get_child_surface(r,1);
@@ -92,14 +107,18 @@ char *_f_def(int *fp,Flow *f,Tnode *r) {
 	return 0;
     }
     else if (f->phase == 2) {
-	Flow *m = (Flow *)_t_get_child_surface(r,2);
-	if (!m || _f_noun(m) != META_NOUN) {
-	    return "DEF requires a META tree as 2nd child";
+	Tnode *mt = _t_get_child(r,2);
+	Flow *m = mt ? (Flow *)_t_surface(mt) : 0;
+	if (!m || _f_noun(m) != NOUNTREE_NOUN) {
+	    return "DEF requires a NOUNTREE as 2nd child";
 	}
 	Flow *l = (Flow *)_t_get_child_surface(r,1);
 	char *label = (char *)_f_surface(l);
 	int def_id = next_id();
-	_d_sys_def(label,def_id,0,0);
+	Tnode *d = _d_sys_def(label,def_id,0,0);
+	if (!__copy_meta(mt,d)) return "bad meta tree";
+	//	_d_dump(mt);
+	//_d_dump(d);
 	f->noun = def_id;
 	f->phase = FLOW_PHASE_COMPLETE;
 	return 0;
@@ -107,6 +126,11 @@ char *_f_def(int *fp,Flow *f,Tnode *r) {
     return (char *)-1;
 }
 
+int meta_eq_mapfn(Tnode *t1,Tnode *t2) {
+    if ((_t_noun(t1) != META_NOUN) || (_t_noun(t2) != META_NOUN) ||
+	(*(int *)_t_surface(t1) != *(int *)_t_surface(t2))) return 0;
+    return 1;
+}
 
 
 

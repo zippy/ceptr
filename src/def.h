@@ -8,7 +8,7 @@ enum Symbols {
     NOUN_NOUN = -6,INSTRUCTION_NOUN=-7,
 
     FLOW_NOUN = -100,PATH_NOUN,CONTEXT_TREE_NOUN,FLOW_STATE_NOUN,RUNTREE_NOUN,
-    DEFS_ARRAY_NOUN,META_NOUN,DEF_NOUN,DEF_DUMP_FUNC_NOUN,DEF_PARSEVAL_FUNC_NOUN,
+    DEFS_ARRAY_NOUN,META_NOUN,NOUNTREE_NOUN,DEF_NOUN,DEF_DUMP_FUNC_NOUN,DEF_PARSEVAL_FUNC_NOUN,
 
     BOOLEAN_NOUN,INTEGER_NOUN,
 
@@ -21,7 +21,7 @@ enum Symbols {
 
 
 
-enum {DEF_LABEL_CHILD=1,DEF_METANOUN_CHILD,DEF_DUMP_CHILD,DEF_PARSE_CHILD};
+enum {DEF_LABEL_CHILD=1,DEF_NOUNTREE_CHILD,DEF_DUMP_CHILD,DEF_PARSE_CHILD};
 
 enum {F_IF,F_DEF}; //flows
 
@@ -33,6 +33,27 @@ int strcicmp(char const *a, char const *b);
 
 Tnode *G_sys_defs;
 int G_sys_noun_id = -300;
+
+int strcicmp(char const *a, char const *b)
+{
+    for (;; a++, b++) {
+        int d = tolower(*a) - tolower(*b);
+        if (d != 0 || !*a)
+            return d;
+    }
+}
+int __t_parse_noun(char *n) {
+    if (!G_sys_defs) {raise_error0("Sys defs not initialized!\n");}
+    for(int i=1;i<=_t_children(G_sys_defs);i++){
+	Tnode *d = _t_get_child(G_sys_defs,i);
+	char *s = (char *)_t_get_child_surface(d,1);
+	if (!strcicmp(n,s)) {
+	    return *(int *)_t_surface(d);
+	}
+    }
+    raise_error("unknown noun %s\n",n);
+}
+
 
 Tnode *__d_get_def(Symbol noun) {
     if (noun < 0) {
@@ -143,6 +164,15 @@ int _d_parse_flow(char *v,int l,void *s) {
     return -1;
 }
 
+int _d_parse_noun(char *v,int l,void *s) {
+    char buf[1000];
+    if (l>=1000) {raise_error0("noun length too big to parse\n");}
+    memcpy(buf,v,l);
+    buf[l]=0;
+    int n = __t_parse_noun(buf); //TODO: refactor so we can return when no noun matches instead of throwing err
+    *(int *)s = n;
+    return 0;
+}
 
 Tnode *_d_def(Tnode *t,char *label,Symbol noun,dumpFn df,parseValFn pf) {
     Tnode *d,*nt;
@@ -164,7 +194,7 @@ void sys_defs_init() {
     Tnode *d;
     _d_sys_def("DEF",DEF_NOUN,_dump_def,0);
 
-    _d_sys_def("META",META_NOUN,_dump_def,_d_parse_int);
+    _d_sys_def("META",META_NOUN,_dump_def,_d_parse_noun);
 
     _d_sys_def("DEF_DUMP_FUNC",DEF_DUMP_FUNC_NOUN,0,0);
 
