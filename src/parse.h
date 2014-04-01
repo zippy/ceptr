@@ -135,7 +135,7 @@ Tnode *_t_parse(char *s) {
 	    word[i] = 0;
 
 	    d = _d_get_def(t);
-	    pf = *(parseValFn*)_t_get_child_surface(d,3);
+	    pf = *(parseValFn*)_t_get_child_surface(d,DEF_PARSE_CHILD);
 	    if (pf == 0) {
 		t->surface = 0;
 	    }

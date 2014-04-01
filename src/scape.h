@@ -18,8 +18,6 @@ bool surface_match(void *match_surface,size_t match_len, void *key_surface, size
     return true;
 }
 
-#define SCAPE_ITEMS_ARRAY_NOUN -997
-
 Scape *_new_scape(char *name,Symbol data_source,Symbol key_source, Symbol key_geometry, ScapeMatchFn matchfn) {
     Scape *s = malloc(sizeof(Scape));
     if (s != NULL) {
@@ -36,8 +34,6 @@ Scape *_new_scape(char *name,Symbol data_source,Symbol key_source, Symbol key_ge
 int scape_count(Data *d) {
     return _t_children(d->scapes);
 }
-
-#define SCAPE_NOUN -105
 
 ScapeID new_scape(Data *d,char *name,Symbol data_source,Symbol key_source, Symbol key_geometry, ScapeMatchFn matchfn) {
     Scape *s = _new_scape(name,data_source,key_source,key_geometry,matchfn);
@@ -81,13 +77,10 @@ Xaddr _scape_lookup(Scape *s,void *match_surface,size_t match_len) {
     return x;
 }
 
-
-#define SCAPES_ARRAY_NOUN -998
 void scapes_init(Data *d) {
     d->scapes = _t_new_root(SCAPES_ARRAY_NOUN);
 }
 
-#define SCAPE_ITEM_NOUN -107
 void _add_scape_item(Scape *s,void *surface,size_t surface_len,Xaddr xaddr) {
     ScapeItem *si = malloc(sizeof(ScapeItem)+surface_len);
     if (si != NULL) {

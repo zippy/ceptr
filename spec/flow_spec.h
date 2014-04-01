@@ -56,11 +56,40 @@ void testFlowDef() {
     //null phase must throw bad phase error
     spec_is_ptr_equal(_f_def(fp,f,r),(char *)-1);
 
-    Tnode *d = _t_parse("(DEF (CSTRING:\"FISH\") (DEF_DUMP_FUNC:0) (DEF_PARSEVAL_FUNC:0) (META:CSTRING))");
-
     f->phase = 1;
+    fp[0] = 1;
+    fp[1] = TREE_PATH_TERMINATOR;
+    spec_is_str_equal(_f_def(fp,f,r),"DEF requires a CSTRING as 1st child");
+    Tnode *r1 = _f_new(r);
+    Flow *f1 = _t_surface(r1);
+    f1->noun = CSTRING_NOUN;
+    f1->surface = "Fish";
 
-    //spec_is_str_equal(_f_def(fp,f,r),"DEF requires a Def Noun");
+    spec_is_ptr_equal(_f_def(fp,f,r),(char *)0);
+    spec_is_equal(fp[0],2);
+    spec_is_true(f->phase == 2);
+
+
+    spec_is_str_equal(_f_def(fp,f,r),"DEF requires a META tree as 2nd child");
+
+    Tnode *r2 = _f_new(r);
+    Flow *f2 = _t_surface(r2);
+    f2->noun = META_NOUN;
+    *(int *)&f2->surface = CSTRING_NOUN;
+
+    spec_is_ptr_equal(_f_def(fp,f,r),(char *)0);
+    spec_is_true(f->phase == FLOW_PHASE_COMPLETE);
+
+    // The new noun def should be in the flow state as a result
+    Tnode *d = __d_get_def(f->noun);
+    //    _d_dump(G_sys_defs);
+    char *label = (char *)_t_get_child_surface(d,DEF_LABEL_CHILD);
+    spec_is_str_equal(label,"Fish");
+    //TODO: add checking that the structure was added into the def
+
+
+   //    Tnode *d = _t_parse("(FLOW:DEF (CSTRING:\"FISH\") (META:CSTRING))");
+
 
 
 }

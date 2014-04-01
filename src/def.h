@@ -5,26 +5,34 @@
 enum Symbols {
     CSPEC = -1, CSPEC_NOUN = -2, XADDR_NOUN = -3,
     CSTRING_NOUN = -4, PATTERN_SPEC_DATA_NOUN = -5,
-    NOUN_NOUN = -6
+    NOUN_NOUN = -6,INSTRUCTION_NOUN=-7,
+
+    FLOW_NOUN = -100,PATH_NOUN,CONTEXT_TREE_NOUN,FLOW_STATE_NOUN,RUNTREE_NOUN,
+    DEFS_ARRAY_NOUN,META_NOUN,DEF_NOUN,DEF_DUMP_FUNC_NOUN,DEF_PARSEVAL_FUNC_NOUN,
+
+    BOOLEAN_NOUN,INTEGER_NOUN,
+
+    SURFACES_ARRAY_NOUN = -200,SCAPE_ITEMS_ARRAY_NOUN,SCAPE_NOUN,SCAPES_ARRAY_NOUN,SCAPE_ITEM_NOUN,
+    SIGNAL_ENTRY_NOUN,CONVERSATION_META_NOUN,
+    SEMSTACK_FRAMES_ARRAY_NOUN,SEMSTACK_FRAME_NOUN,
+    LOG_META_NOUN,
+
 };
 
-enum {RUNTREE_NOUN=-199,INSTRUCTION_NOUN=-200,INTEGER_NOUN=-201};
-enum {FLOW_NOUN = -31410,PATH_NOUN,CONTEXT_TREE_NOUN,BOOLEAN_NOUN,FLOW_STATE_NOUN};
 
-enum {F_IF}; //flows
+
+enum {DEF_LABEL_CHILD=1,DEF_METANOUN_CHILD,DEF_DUMP_CHILD,DEF_PARSE_CHILD};
+
+enum {F_IF,F_DEF}; //flows
 
 char dump_buf[1000];
-#define DEFS_ARRAY_NOUN -799
-#define META_NOUN -800
-#define DEF_NOUN -888
-#define DEF_DUMP_FUNC_NOUN -801
-#define DEF_PARSEVAL_FUNC_NOUN -802
 
 enum {FALSE_VALUE = 0,TRUE_VALUE = 1};
 
 int strcicmp(char const *a, char const *b);
 
 Tnode *G_sys_defs;
+int G_sys_noun_id = -300;
 
 Tnode *__d_get_def(Symbol noun) {
     if (noun < 0) {
@@ -35,7 +43,7 @@ Tnode *__d_get_def(Symbol noun) {
 	}
     }
     return NULL;
-}
+    }
 
 Tnode *_d_get_def(Tnode *t) {
     Symbol noun = _t_noun(t);
@@ -45,16 +53,16 @@ Tnode *_d_get_def(Tnode *t) {
 typedef char * (*dumpFn)(void *);
 typedef int (*parseValFn)(char *,int,void *);
 
-void __d_dump_surface(Tnode *t,int level) {
+void __d_dump(Tnode *t,int level) {
     __lspc(level);
     Tnode *d = _d_get_def(t);
     if (d == NULL) {
 	printf("<noun: %d> sfc: %p; children: %d\n",_t_noun(t),t->surface,_t_children(t));
     }
     else {
-	char *label = (char *)_t_get_child_surface(d,1);
+	char *label = (char *)_t_get_child_surface(d,DEF_LABEL_CHILD);
 	printf("%s_NOUN:",label);
-	dumpFn f = *(dumpFn *) _t_get_child_surface(d,2);
+	dumpFn f = *(dumpFn *) _t_get_child_surface(d,DEF_DUMP_CHILD);
 	void *s = _t_surface(t);
 	printf(" ");
 	if (f) {
@@ -66,11 +74,11 @@ void __d_dump_surface(Tnode *t,int level) {
 	}
 	else printf("%p\n",s);
     }
-    for(int i=1;i<=_t_children(t);i++) __d_dump_surface(_t_get_child(t,i),level+1);
+    for(int i=1;i<=_t_children(t);i++) __d_dump(_t_get_child(t,i),level+1);
 }
 
-void _d_dump_surface(Tnode *surface) {
-    __d_dump_surface(surface,0);
+void _d_dump(Tnode *surface) {
+    __d_dump(surface,0);
 }
 
 char *_dump_cstring(void *surface) {
@@ -95,6 +103,8 @@ char *_dump_def(void *surface) {
     }
    return 0;
 }
+
+char *_dump_flow_state(void *surface);
 
 int _d_parse_int(char *v,int l,void *s) {
     *(int *)s = atoi(v);
@@ -126,17 +136,22 @@ int _d_parse_flow(char *v,int l,void *s) {
 	*(int *)s = F_IF;
 	return 0;
     }
+    if (!strcicmp(v,"def")) {
+	*(int *)s = F_DEF;
+	return 0;
+    }
     return -1;
 }
 
 
 Tnode *_d_def(Tnode *t,char *label,Symbol noun,dumpFn df,parseValFn pf) {
-    Tnode *d;
+    Tnode *d,*nt;
     d = _t_newi(t,DEF_NOUN,noun);
     _t_new(d,CSTRING_NOUN,label,strlen(label)+1);
-    _t_newi(d,DEF_DUMP_FUNC_NOUN,(long)df);
-    _t_newi(d,DEF_PARSEVAL_FUNC_NOUN,(long)pf);
-    return _t_newi(d,META_NOUN,noun);
+    nt = _t_newi(d,META_NOUN,noun);
+    _t_newp(d,DEF_DUMP_FUNC_NOUN,(void *)df);
+    _t_newp(d,DEF_PARSEVAL_FUNC_NOUN,(void *)pf);
+    return nt;
 }
 
 Tnode *_d_sys_def(char *label,Symbol noun,dumpFn df,parseValFn pf) {
@@ -166,6 +181,8 @@ void sys_defs_init() {
     _d_sys_def("BOOLEAN",BOOLEAN_NOUN,0,_d_parse_bool);
     _d_sys_def("INTEGER",INTEGER_NOUN,0,_d_parse_int);
     _d_sys_def("FLOW",FLOW_NOUN,0,_d_parse_flow);
+
+    _d_sys_def("FLOW_STATE",FLOW_STATE_NOUN,_dump_flow_state,0);
 
 }
 

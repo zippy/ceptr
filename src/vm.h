@@ -94,6 +94,9 @@ void _vm_cycle_eval(int *fp,Tnode *r,Tnode *s) {
 	f->noun = _t_noun(s);
 	_t_path_parent(fp,fp);
     }
+    else if (f->phase == FLOW_PHASE_COMPLETE) {
+	_t_path_parent(fp,fp);
+    }
     else {
 	char *err = 0;
 	switch(*(int *)&s->surface) {
@@ -112,15 +115,27 @@ void _vm_cycle_eval(int *fp,Tnode *r,Tnode *s) {
     }
 }
 
+void ppath(int *fp) {
+    int d=_t_path_depth(fp);
+    for(int i=0;i<d;i++) {printf("%d",fp[i]);}
+}
+
 int cycle(Tnode *c, Tnode *s) {
     Tnode *rtn = _vm_cycle_load(c,s);
     int *fp = __f_cur_flow_path(c);
     if (((Flow *)_t_surface(rtn))->phase == FLOW_PHASE_COMPLETE && _t_path_depth(fp) == 0)
 	return 0;
+
     if (!_vm_cycle_descend(fp,rtn,s)) {
 	Tnode *stn = _t_get(s,fp);
 	_vm_cycle_eval(fp,rtn,stn);
     }
+/*    printf("FP: ");ppath(fp);
+    puts("\n");
+    _d_dump(s);
+    printf("-\n");
+    _d_dump(__run_tree(c));
+    printf("----------------\n");*/
     return 1;
 }
 

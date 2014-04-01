@@ -54,7 +54,7 @@ void stack_dump(Receptor *r) {
         printf("\n");
     }
     }*/
-#define SEMSTACK_FRAMES_ARRAY_NOUN -996
+
 void stack_init(Receptor *r) {
     r->sem_stack = _t_new_root(SEMSTACK_FRAMES_ARRAY_NOUN);
 }

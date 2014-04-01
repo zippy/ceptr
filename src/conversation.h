@@ -58,14 +58,11 @@ SignalHeader _s_header(Signal *s) {
     return s->header;
 }
 
-#define SIGNAL_ENTRY_NOUN -100
 int conversation_append(Conversation *c,SignalKey k,Signal *s) {
     SignalEntry se = {k,s};
     Tnode *t = _t_new(c,SIGNAL_ENTRY_NOUN,&se,sizeof(SignalEntry));
     return _t_children(c);
 }
-
-#define CONVERSATION_META_NOUN -101
 
 Conversation *conversation_new(Tnode *log) {
     ConversationMeta cm = {CSTAT_NEW};

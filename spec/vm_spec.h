@@ -271,7 +271,7 @@ void testVMCycleEval() {
 
 void testVMCycle() {
     Tnode *c = _context_create(2);
-    Tnode *t = _t_parse("(FLOW:IF (BOOLEAN:FALSE) (INTEGER:1)(INTEGER:2))");
+    Tnode *t = _t_parse("(FLOW:IF (FLOW:IF (BOOLEAN:TRUE) (BOOLEAN:FALSE) (BOOLEAN:TRUE )) (INTEGER:1)(INTEGER:2))");
 
     Tnode *rtn,*stn;
     int *fp;

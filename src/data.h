@@ -71,8 +71,6 @@ Symbol data_new_noun(Receptor *r, Xaddr xaddr, char *label) {
     return x.key;
 }
 
-#define SURFACES_ARRAY_NOUN -999
-
 void _data_init(Data *d) {
     scapes_init(d);
     d->root = _t_new_root(SURFACES_ARRAY_NOUN);

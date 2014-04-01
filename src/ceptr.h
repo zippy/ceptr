@@ -44,7 +44,6 @@ typedef struct {
     char label;
 } NounSurface;
 
-#define SEMSTACK_FRAME_NOUN -107
 typedef struct {
     Symbol noun;
     size_t size;
@@ -53,7 +52,6 @@ typedef struct {
 
 typedef int ConversationID;
 
-#define LOG_META_NOUN -103
 typedef struct {
     pthread_mutex_t mutex;
     pthread_cond_t changed;
