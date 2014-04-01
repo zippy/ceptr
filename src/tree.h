@@ -332,5 +332,14 @@ Tnode *_t_buildx(Tnode *parent,Tnode *t,Tnode *m) {
     return n;
 }
 
+int _t_nouns_eq(Tnode *t1,Tnode *t2) {
+    int c;
+    if ((_t_noun(t1) != _t_noun(t2)) || ((c = _t_children(t1)) != _t_children(t2))) return 0;
+    for (int i=1;i<=c;i++) {
+	if (!_t_nouns_eq(_t_get_child(t1,i),_t_get_child(t2,i))) return 0;
+    }
+    return 1;
+}
+
 
 #endif

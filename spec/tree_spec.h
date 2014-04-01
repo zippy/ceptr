@@ -265,6 +265,21 @@ void testTreeWalk() {
 
 }
 
+void testTreeNounEQ() {
+    Tnode *t = _makeTestTree();
+    Tnode *t1 = _makeTestTree();
+    spec_is_true(_t_nouns_eq(t,t1));
+    _t_newi(t,PTR_NOUN,1);
+    spec_is_true(!_t_nouns_eq(t,t1));
+    _t_newi(t1,PTR_NOUN,2);
+    spec_is_true(_t_nouns_eq(t,t1));
+    _t_newi(t,INTEGER_NOUN,1);
+    _t_newi(t1,PTR_NOUN,2);
+    spec_is_true(!_t_nouns_eq(t,t1));
+    _t_free(t);
+    _t_free(t1);
+}
+
 void testTree() {
     testNewTreeNode();
     testTreeRealloc();
@@ -276,4 +291,5 @@ void testTree() {
     testTreeBuild();
     testTreePathNext();
     testTreeWalk();
+    testTreeNounEQ();
 }
