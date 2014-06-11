@@ -1,0 +1,65 @@
+send (RESPONSE 220)
+expect (HELO|EHLO) {send (RESPONSE 250 "HELO blah blah")}
+loop
+        expect_seq MAIL,RCPT {send (RESPONSE 250)}
+        expect DATA {send (RESPONSE 354)}
+        expect LINE* {send (RESPONSE 354)} until EOM {send (RESPONSE 250), deliver}
+until QUIT {send (RESPONSE 250); close}
+
+
+CRLF_LINE on octect {
+       0xD,0xA -> CRLF
+       .*{CRLF_LIN},CRLF -> CRLF_LINE
+}
+
+Instantiate SMTP on LINES from SOCKET_EDGE_RECEPTOR
+
+<Protocol> listens for <carrier> [ on <carrier>]...
+
+SMTP listens for LINES on CONNECTION {
+     
+     SMTP session semtrexs:
+          (MAIL,RCPT,DATA/'SMTP_DATA'/CRLF_LINE*,EOM) -> MESSAGE
+          (HELO|EHLO):"greeting",MESSAGE+,QUIT -> SESSION
+
+     _DATA add to CRLF_LINES
+          \.,CRLF -> EOM
+
+     _COMMAND on CRLF_LINE
+          M,A,I,L,( ,F,R,O,M){0-1}, ,EMAIL -> MAIL
+          R,C,P,T,( ,T,O){0-1}, ,EMAIL -> RCPT
+          D,A,T,A -> DATA
+          Q,U,I,T -> QUIT
+
+     SMTP response semtrex:
+          5,0,0 500 -> SYNTAX_ERR_CMD
+          501 -> SYNTAX_ERR_PARAMS
+          220 -> SERVICE_READY
+          250 -> OK
+     
+     expect SESSION
+       on "greeting" {respond SERVICE_READY "HELO blah blah"}
+       on MAIL {blacklist_check, respond OK}
+       on RCPT {deliverable, respond OK}
+       on DATA|LINE {respond 354}
+       on MESSAGE {
+          spam_check
+          if (deliver) { respond OK }
+          else {respond ERROR}
+          }
+       on QUIT {respond 221}
+       on "SMTP session" {close}
+
+     def blacklist_check
+     def spam_check
+     def deliverable
+     def deliver
+          
+}
+
+
+
+email semtrexes:
+      USER,'@',DOMAIN -> EMAIL
+
+
