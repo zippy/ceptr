@@ -3,34 +3,14 @@
 
 #include "flow.h"
 #include "def.h"
+#include "word.h"
 
 enum {P_START,P_IGNOREWS,P_READ_NOUN,P_READ_VALUE,P_CHILDREN,P_READ_STR,P_READ_ESCAPE};
-
-int __t_parse_value(Tnode *t,char *v) {
-    switch(_t_noun(t)) {
-    case FLOW_NOUN:
-	if (!strcicmp(v,"if"))
-	    return F_IF;
-	break;
-    case BOOLEAN_NOUN:
-	if (!strcicmp(v,"true"))
-	    return TRUE_VALUE;
-	if (!strcicmp(v,"false"))
-	    return FALSE_VALUE;
-	break;
-    case INTEGER_NOUN:
-	return atoi(v);
-	break;
-    case CSTRING_NOUN:
-	return 0;
-    }
-    raise_error2("unparseable value %s for noun %d\n",v,_t_noun(t));
-}
 
 Tnode *_t_parse(char *s) {
     char word[255];
     char val[255];
-    int i,parse_result;
+    int i,parse_result,n;
     Tnode *t = 0,*r,*d;
     int state = P_IGNOREWS;
     int next = P_START;
@@ -60,7 +40,25 @@ Tnode *_t_parse(char *s) {
 	    }
 	    word[i] = 0;
 	    i = 0;
-	    t = _t_newi(t,__t_parse_noun(word),0);
+
+	    if (__d_parse_noun(word,&n)) {
+		int r = 1;
+	        if (G_sys_words) {
+		    int c = _t_children(G_sys_words);
+		    for(int l = 1;l<=c;l++) {
+			if(!strcicmp(word,_w_get_label(G_sys_words,l))) {
+			    Tnode *d = _w_get_def(G_sys_words,l);
+			    n = *(int *)_t_surface(d);
+			    r = 0;break;
+			}
+		    }
+		}
+		if (r) {raise_error("unknown noun %s\n",word);}
+	    }
+
+
+
+	    t = _t_newi(t,n,0);
 	    if (c == ':') {
 		state = P_READ_VALUE;
 		break;
@@ -86,7 +84,7 @@ Tnode *_t_parse(char *s) {
 		break;
 	    }
 	    else {
-		raise_error("unexpected token: %c\n",c);
+		raise_error("expecting open or close paren, got: %c\n",c);
 	    }
 	    break;
 	case P_READ_ESCAPE:

@@ -8,6 +8,7 @@
 #include "tree_spec.h"
 #include "parse_spec.h"
 #include "def_spec.h"
+#include "word_spec.h"
 #include "init_spec.h"
 #include "stack_spec.h"
 #include "scape_spec.h"
@@ -78,6 +79,7 @@ int main(int argc, const char **argv) {
     testTree();
     testParse();
     testDef();
+    testWord();
     testFlow();
     testVM();
 

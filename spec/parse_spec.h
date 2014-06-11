@@ -1,7 +1,9 @@
 #include "../src/ceptr.h"
 
 void testParseIf() {
-    Tnode *t = _t_parse("(FLOW:IF (BOOLEAN:TRUE) (INTEGER:1)(INTEGER:2))");
+    _w_sys_new(INTEGER_NOUN,"AGE");
+    _w_sys_new(BOOLEAN_NOUN,"FINISHED");
+    Tnode *t = _t_parse("(FLOW:IF (FINISHED:TRUE) (AGE:1)(INTEGER:2))");
     spec_is_equal(_t_children(t),3);
     spec_is_equal(_t_noun(t),FLOW_NOUN);
     spec_is_equal(*(int *)_t_surface(t),F_IF);

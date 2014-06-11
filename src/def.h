@@ -10,6 +10,7 @@ enum Symbols {
 
     FLOW_NOUN = -100,PATH_NOUN,CONTEXT_TREE_NOUN,FLOW_STATE_NOUN,RUNTREE_NOUN,
     DEFS_ARRAY_NOUN,META_NOUN,NOUNTREE_NOUN,DEF_NOUN,DEF_DUMP_FUNC_NOUN,DEF_PARSEVAL_FUNC_NOUN,
+    WORDS_ARRAY_NOUN,WORD_NOUN,
 
     BOOLEAN_NOUN,INTEGER_NOUN,
 
@@ -31,16 +32,18 @@ enum {FALSE_VALUE = 0,TRUE_VALUE = 1};
 Tnode *G_sys_defs;
 int G_sys_noun_id = -300;
 
-int __t_parse_noun(char *n) {
+int __d_parse_noun(char *n,int *noun) {
     if (!G_sys_defs) {raise_error0("Sys defs not initialized!\n");}
-    for(int i=1;i<=_t_children(G_sys_defs);i++){
+    int c=_t_children(G_sys_defs);
+    for(int i=1;i<=c;i++){
 	Tnode *d = _t_get_child(G_sys_defs,i);
 	char *s = (char *)_t_get_child_surface(d,1);
 	if (!strcicmp(n,s)) {
-	    return *(int *)_t_surface(d);
+	    *noun = *(int *)_t_surface(d);
+	    return 0;
 	}
     }
-    raise_error("unknown noun %s\n",n);
+    return 1;
 }
 
 
@@ -53,7 +56,7 @@ Tnode *__d_get_def(Symbol noun) {
 	}
     }
     return NULL;
-    }
+}
 
 Tnode *_d_get_def(Tnode *t) {
     Symbol noun = _t_noun(t);
@@ -150,7 +153,8 @@ int _d_parse_flow(char *v,int l,void *s) {
 }
 
 int _d_parse_noun(char *v,int l,void *s) {
-    int n = __t_parse_noun(v); //TODO: refactor so we can return when no noun matches instead of throwing err
+    int n;
+    if (__d_parse_noun(v,&n)) return -1;
     *(int *)s = n;
     return 0;
 }

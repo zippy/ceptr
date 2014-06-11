@@ -2,7 +2,6 @@
 #define _CEPTR_TREE_H
 
 #include "ceptr_error.h"
-#include <ctype.h>
 
 #define TREE_CHILDREN_BLOCK 5
 

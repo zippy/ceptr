@@ -14,6 +14,7 @@
 #include "tree.h"
 #include "parse.h"
 #include "def.h"
+#include "word.h"
 #include "conversation.h"
 
 #define BUFFER_SIZE 10000

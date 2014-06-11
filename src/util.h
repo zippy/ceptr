@@ -1,7 +1,8 @@
 #ifndef _CEPTR_UTIL_H
 #define _CEPTR_UTIL_H
 
-// some basic c utility function.  Functions in this file have no dependencies on any other files
+#include <ctype.h>
+// some basic c utility functions.  Functions in this file have no dependencies on any other src files
 
 void hexDump(char *desc, void *addr, int len) {
     int i;
