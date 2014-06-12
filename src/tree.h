@@ -56,13 +56,13 @@ Tnode * _t_next_sibling(Tnode *t);
 /*
 _t_new();
 _t_free();
-_t_parse(); //semtrex style parsing
 _t_get_child(t,nth_child)
 _t_get_surface()
 _t_get_parent()
 _t_get_root()
 _t_get_next_sibling()
 
+_t_parse(); //semtrex style parsing
 _t_match()
 */
 #endif

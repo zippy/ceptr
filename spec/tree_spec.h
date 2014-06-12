@@ -27,13 +27,29 @@ void testCreateTreeNodes() {
     spec_is_ptr_equal(_t_root(t2),t);
 
     spec_is_ptr_equal(_t_next_sibling(t1),t2);
-    spec_is_ptr_equal(_t_next_sibling(t),0);
-    spec_is_ptr_equal(_t_next_sibling(t2),0);
+    spec_is_ptr_equal(_t_next_sibling(t),NULL);
+    spec_is_ptr_equal(_t_next_sibling(t2),NULL);
 
     _t_free(t);
 
 }
 
+void testTreeRealloc() {
+    Tnode *ts[12];
+    Tnode *t = _t_new(0,TEST_SYMBOL,"t",2);
+    char tname[3];
+    tname[0] = 't';
+    tname[2] = 0;
+    for (int i=0;i<12;i++){
+	tname[1] = 'a'+i;
+	ts[i] = _t_new(t,TEST_SYMBOL,tname,3);
+    }
+    spec_is_str_equal((char *)_t_surface(ts[11]),"tl");
+    _t_free(t);
+}
+
+
 void testTree() {
     testCreateTreeNodes();
+    testTreeRealloc();
 }
