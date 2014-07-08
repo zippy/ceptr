@@ -1,8 +1,5 @@
-#include <string.h>
-#include <stdlib.h>
-
 #include "tree.h"
-
+#include "ceptr_error.h"
 
 /*****************  Node creation */
 int __t_append_child(Tnode *t,Tnode *c) {
@@ -36,6 +33,14 @@ Tnode * _t_new(Tnode *parent,Symbol symbol,void *surface,size_t size) {
 	    memcpy(t->contents.surface,surface,size);
     }
     t->contents.size = size;
+    return t;
+}
+
+Tnode * _t_newi(Tnode *parent,Symbol symbol,int surface) {
+    Tnode *t = malloc(sizeof(Tnode));
+    *((int *)&t->contents.surface) = surface;
+    t->contents.size = sizeof(int);
+    __t_init(t,parent,symbol);
     return t;
 }
 
@@ -109,4 +114,65 @@ Tnode * _t_next_sibling(Tnode *t) {
 	}
     }
     return 0;
+}
+
+/*****************  Tree path based accesses */
+int _t_path_equal(int *p1,int *p2){
+    while(*p1 != TREE_PATH_TERMINATOR && *p2 != TREE_PATH_TERMINATOR)
+	if (*(p1++) != *(p2++)) return 0;
+    return *p1 == TREE_PATH_TERMINATOR && *p2 == TREE_PATH_TERMINATOR;
+}
+
+int _t_path_depth(int *p) {
+    int i=0;
+    while(*p++ != TREE_PATH_TERMINATOR) i++;
+    return i;
+}
+
+void _t_pathcpy(int *dst_p,int *src_p) {
+    while(*src_p != TREE_PATH_TERMINATOR) {
+	*dst_p++ = *src_p++;
+    }
+    *dst_p = TREE_PATH_TERMINATOR;
+}
+
+void _t_path_parent(int *n,int *p) {
+    if (*p == TREE_PATH_TERMINATOR) {
+	raise_error0("unable to take parent of root\n");
+    }
+    while(*p != TREE_PATH_TERMINATOR) {
+	*n++ = *p++;
+    }
+    *--n = TREE_PATH_TERMINATOR;
+}
+
+Tnode * _t_get(Tnode *t,int *p) {
+    int i = *p++;
+    Tnode *c;
+    if (i == TREE_PATH_TERMINATOR)
+	return t;
+    else if (i == 0)
+	//TODO: semantic check to make sure surface is a tree?
+	c = *(Tnode **)(_t_surface(t));
+    else
+	c = _t_child(t,i);
+    if (c == NULL ) return NULL;
+    if (*p == TREE_PATH_TERMINATOR) return c;
+    return _t_get(c,p);
+}
+
+void * _t_get_surface(Tnode *t,int *p) {
+    Tnode *c = _t_get(t,p);
+    if (c == NULL) return NULL;
+    return _t_surface(c);
+}
+
+char * _t_sprint_path(int *fp,char *buf) {
+    char *b = buf;
+    int d=_t_path_depth(fp);
+    for(int i=0;i<d;i++) {
+	sprintf(b,"/%d",fp[i]);
+	b += strlen(b);
+    }
+    return buf;
 }

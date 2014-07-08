@@ -1,10 +1,13 @@
 #ifndef _CEPTR_TREE_H
 #define _CEPTR_TREE_H
 
+#include <string.h>
+#include <stdlib.h>
 #include "ceptr_error.h"
-#define TREE_CHILDREN_BLOCK 5
+#include "symbol.h"
 
-typedef int Symbol;
+#define TREE_CHILDREN_BLOCK 5
+#define TREE_PATH_TERMINATOR -9999
 
 struct Tstruct {
     struct Tnode *parent;
@@ -38,6 +41,7 @@ typedef struct Tnode Tnode;
 
 /*****************  Node creation and deletion*/
 Tnode * _t_new(Tnode *t,Symbol symbol, void *surface, size_t size);
+Tnode * _t_newi(Tnode *parent,Symbol noun,int surface);
 void _t_free(Tnode *t);
 
 /******************** Node data accessors */
@@ -52,6 +56,14 @@ Tnode *_t_child(Tnode *t,int i);
 Tnode * _t_root(Tnode *t);
 Tnode * _t_next_sibling(Tnode *t);
 
+/*****************  Tree path based accesses */
+int _t_path_equal(int *p1,int *p2);
+int _t_path_depth(int *p);
+void _t_pathcpy(int *dst_p,int *src_p);
+void _t_path_parent(int *n,int *p);
+Tnode * _t_get(Tnode *t,int *p);
+void * _t_get_surface(Tnode *t,int *p);
+char * _t_sprint_path(int *fp,char *buf);
 
 /*
 _t_new();

@@ -1,5 +1,8 @@
 #ifndef _CEPTR_ERROR_H
 #define _CEPTR_ERROR_H
+#include <stdio.h>
+#include <signal.h>
+#include <assert.h>
 
 #define raise_error0(error_msg)			\
     puts(error_msg);				\
