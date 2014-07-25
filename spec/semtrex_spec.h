@@ -1,8 +1,6 @@
 #include "../src/ceptr.h"
 #include "../src/hashfn.h"
 #include "../src/semtrex.h"
-#define OTHER_TEST_SYMBOL (TEST_SYMBOL+999)
-
 
 /*
 Semtrex BNF:
@@ -34,13 +32,13 @@ Tnode *_makeTestTree1() {
 }
 
 Tnode *_makeTestSemtrex1(Tnode *t) {
-    // make a tree that matches same root and first two children as test tree1
     Tnode *s = _t_newi(0,SEMTREX_SYMBOL_LITERAL,0);
-    Tnode *s1 = _t_newi(s,SEMTREX_SYMBOL_LITERAL,1);
+    Tnode *ss = _t_newi(s,SEMTREX_SEQUENCE,0);
+    Tnode *s1 = _t_newi(ss,SEMTREX_SYMBOL_LITERAL,1);
     Tnode *s11 = _t_newi(s1,SEMTREX_SYMBOL_LITERAL,11);
     Tnode *s111 = _t_newi(s11,SEMTREX_SYMBOL_LITERAL,111);
-    Tnode *s2 = _t_newi(s,SEMTREX_SYMBOL_LITERAL,2);
-    Tnode *s3 = _t_newi(s,SEMTREX_SYMBOL_LITERAL,3);
+    Tnode *s2 = _t_newi(ss,SEMTREX_SYMBOL_LITERAL,2);
+    Tnode *s3 = _t_newi(ss,SEMTREX_SYMBOL_LITERAL,3);
     return s;
 }
 
@@ -70,7 +68,10 @@ void testMakeFA() {
     __t_dump(s,0,buf);
     puts(buf);
 
-    SState *sa = _s_makeFA(s);
+    int states;
+    SState *sa = _s_makeFA(s,&states);
+    spec_is_equal(states,6);
+
     spec_state_equal(sa,StateSymbol,TransitionDown,0);
 
     SState *s1 = sa->out;
@@ -84,15 +85,15 @@ void testMakeFA() {
 
     SState *s4 = s3->out;
     spec_state_equal(s4,StateSymbol,TransitionNextChild,2);
-/*
+
     SState *s5 = s4->out;
     spec_state_equal(s5,StateSymbol,TransitionNextChild,3);
 
     SState *s6 = s5->out;
-    spec_state_equal(s6,StateMatch,TransitionNextChild,0);
+    spec_is_equal(s6->type,StateMatch);
 
     spec_is_ptr_equal(s6->out,NULL);
-*/
+
 
 
     _s_freeFA(sa);
@@ -106,7 +107,7 @@ void testMatchTrees() {
 
     spec_is_true(_t_match(s,t));
 
-    Tnode *s2 = _t_newi(s,SEMTREX_SYMBOL_LITERAL,OTHER_TEST_SYMBOL);
+    Tnode *s2 = _t_newi(_t_child(s,1),SEMTREX_SYMBOL_LITERAL,99);
 
     spec_is_true(!_t_match(s,t));
 

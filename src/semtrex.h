@@ -17,10 +17,11 @@ struct SState {
     Symbol symbol;
     struct SState *out;
     struct SState *out1;
+    int lastlist;
 };
 typedef struct SState SState;
 
-SState * _s_makeFA(Tnode *s);
+SState * _s_makeFA(Tnode *s,int *statesP);
 void _s_freeFA(SState *s);
 int _t_match(Tnode *semtrex,Tnode *t);
 

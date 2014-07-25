@@ -67,7 +67,7 @@ char * _t_sprint_path(int *fp,char *buf);
 
 /*
 _t_new();
-_t_free();
+_t_free()
 _t_get_child(t,nth_child)
 _t_get_surface()
 _t_get_parent()
