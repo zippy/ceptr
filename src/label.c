@@ -40,3 +40,5 @@ void labelSet(char *s,int *path) {
 int *labelGet(char *s) {
     return _labelGet(str2label(s));
 }
+
+// TODO: label delete

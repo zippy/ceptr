@@ -15,7 +15,7 @@ int main(int argc, const char **argv) {
     //**** core tests
     testTree();
     testLabel();
-    //    testSemtrex();
+    testSemtrex();
 
     report_tests();
     return 0;
