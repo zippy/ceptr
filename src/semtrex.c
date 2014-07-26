@@ -123,6 +123,18 @@ char * __s_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP) {
 	patch(o,s,level);
 	*out = list1(&s->out1);
 	break;
+    case SEMTREX_PLUS:
+	if (c != 1) return "Plus must have 1 child";
+	s = malloc(sizeof(SState));
+	(*statesP)++;
+	s->type = StateSplit;
+	err = __s_makeFA(_t_child(t,1),&i,&o,level,statesP);
+	if (err) return err;
+	*in = i;
+	s->out = i;
+	patch(o,s,level);
+	*out = list1(&s->out1);
+	break;
     default:
 	return "Unknown SEMTREX SYMBOL";
     }

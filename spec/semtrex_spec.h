@@ -185,9 +185,37 @@ void testMatchStar() {
     Tnode *t1 = _t_new(t,1,"t1",3);
     spec_is_true(_t_match(s,t));
 
+    Tnode *t1x = _t_new(t,1,"t1",3);
+    Tnode *t1y = _t_new(t,2,"t2",3);
+    spec_is_true(_t_match(s,t));
+
+    Tnode *s2 = _t_newi(ss,SEMTREX_SYMBOL_LITERAL,2);
+    spec_is_true(_t_match(s,t));
+    (*(int *)_t_surface(s2)) = 3;
+
+    spec_is_true(!_t_match(s,t));
     _t_free(t);
     _t_free(s);
 }
+
+void testMatchPlus() {
+    Tnode *s = _t_newi(0,SEMTREX_SYMBOL_LITERAL,0);
+    Tnode *ss = _t_newi(s,SEMTREX_SEQUENCE,0);
+    Tnode *sss = _t_newi(ss,SEMTREX_PLUS,0);
+    Tnode *s1 = _t_newi(sss,SEMTREX_SYMBOL_LITERAL,1);
+
+    Tnode *t = _t_new(0,0,"t",2);
+    spec_is_true(!_t_match(s,t));
+
+    Tnode *t1 = _t_new(t,1,"t1",3);
+    spec_is_true(_t_match(s,t));
+
+    Tnode *t1x = _t_new(t,1,"t1",3);
+    Tnode *t1y = _t_new(t,2,"t2",3);
+    spec_is_true(_t_match(s,t));
+
+    _t_free(t);
+    _t_free(s);}
 
 void testSemtrex() {
     testMakeFA();
@@ -195,5 +223,6 @@ void testSemtrex() {
     testMatchOr();
     testMatchAny();
     testMatchStar();
+    testMatchPlus();
 
 }
