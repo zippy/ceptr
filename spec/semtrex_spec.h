@@ -31,7 +31,7 @@ Tnode *_makeTestTree1() {
     return t;
 }
 
-Tnode *_makeTestSemtrex1(Tnode *t) {
+Tnode *_makeTestSemtrex1() {
     Tnode *s = _t_newi(0,SEMTREX_SYMBOL_LITERAL,0);
     Tnode *ss = _t_newi(s,SEMTREX_SEQUENCE,0);
     Tnode *s1 = _t_newi(ss,SEMTREX_SYMBOL_LITERAL,1);
@@ -55,6 +55,37 @@ void __t_dump(Tnode *t,int level,char *buf) {
     sprintf(buf+strlen(buf),")");
 }
 
+static int dump_id = 99;
+
+
+void __s_dump(SState *s) {
+    if (s->id == dump_id) {printf("X");return;}
+    s->id = dump_id;
+    switch (s->type) {
+    case StateMatch:
+	printf("(M)");
+	break;
+    case StateSymbol:
+	printf("(%d:%d)",s->symbol,s->transition);
+	break;
+    case StateAny:
+	printf("(.:%d)",s->transition);
+	break;
+    case StateSplit:
+	printf("S");
+	break;
+    }
+    if (s->out) {printf("->");__s_dump(s->out);}
+    if (s->out1) {printf("[->");__s_dump(s->out1);printf("]");}
+    //        printf("\n");
+}
+
+void _s_dump(SState *s) {
+    ++dump_id;
+    __s_dump(s);
+}
+
+
 #define spec_state_equal(sa,st,tt,s) \
     spec_is_equal(sa->type,st);\
     spec_is_equal(sa->transition,tt);\
@@ -63,12 +94,9 @@ void __t_dump(Tnode *t,int level,char *buf) {
 
 
 void testMakeFA() {
-    Tnode *t = _makeTestTree1();
-    Tnode *s = _makeTestSemtrex1(t);
-    __t_dump(s,0,buf);
-    puts(buf);
+    Tnode *s = _makeTestSemtrex1();
 
-    int states;
+    int states = 0;
     SState *sa = _s_makeFA(s,&states);
     spec_is_equal(states,6);
 
@@ -87,17 +115,14 @@ void testMakeFA() {
     spec_state_equal(s4,StateSymbol,TransitionNextChild,2);
 
     SState *s5 = s4->out;
-    spec_state_equal(s5,StateSymbol,TransitionNextChild,3);
+    spec_state_equal(s5,StateSymbol,TransitionUp,3);
 
     SState *s6 = s5->out;
     spec_is_equal(s6->type,StateMatch);
 
     spec_is_ptr_equal(s6->out,NULL);
 
-
-
     _s_freeFA(sa);
-    _t_free(t);
     _t_free(s);
 }
 
@@ -115,7 +140,60 @@ void testMatchTrees() {
     _t_free(s);
 }
 
+void testMatchOr() {
+    Tnode *t = _makeTestTree1();
+    Tnode *s = _t_newi(0,SEMTREX_OR,0);
+    Tnode *s1 = _t_newi(s,SEMTREX_SYMBOL_LITERAL,1);
+    Tnode *s11 = _t_newi(s1,SEMTREX_SYMBOL_LITERAL,11);
+    Tnode *s2 = _t_newi(s,SEMTREX_SYMBOL_LITERAL,0);
+
+    spec_is_true(_t_match(s,t));
+
+    Tnode *s3 = _t_newi(s2,SEMTREX_SYMBOL_LITERAL,99);
+
+    spec_is_true(!_t_match(s,t));
+
+    _t_free(t);
+    _t_free(s);
+}
+
+void testMatchAny() {
+    Tnode *t = _t_new(0,0,"t",2);
+    Tnode *t1 = _t_new(t,1,"t1",3);
+
+    Tnode *s = _t_newi(0,SEMTREX_SYMBOL_ANY,0);
+    Tnode *ss = _t_newi(s,SEMTREX_SEQUENCE,0);
+    Tnode *s1 = _t_newi(ss,SEMTREX_SYMBOL_LITERAL,1);
+
+    spec_is_true(_t_match(s,t));
+    t->contents.symbol = 99;
+    spec_is_true(_t_match(s,t));
+
+    _t_free(t);
+    _t_free(s);
+}
+
+void testMatchStar() {
+    Tnode *s = _t_newi(0,SEMTREX_SYMBOL_LITERAL,0);
+    Tnode *ss = _t_newi(s,SEMTREX_SEQUENCE,0);
+    Tnode *sss = _t_newi(ss,SEMTREX_STAR,0);
+    Tnode *s1 = _t_newi(sss,SEMTREX_SYMBOL_LITERAL,1);
+
+    Tnode *t = _t_new(0,0,"t",2);
+    spec_is_true(_t_match(s,t));
+
+    Tnode *t1 = _t_new(t,1,"t1",3);
+    spec_is_true(_t_match(s,t));
+
+    _t_free(t);
+    _t_free(s);
+}
+
 void testSemtrex() {
-    testMatchTrees();
     testMakeFA();
+    testMatchTrees();
+    testMatchOr();
+    testMatchAny();
+    testMatchStar();
+
 }

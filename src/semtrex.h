@@ -3,7 +3,7 @@
 
 #include "tree.h"
 
-enum {StateSymbol,StateSplit,StateMatch};
+enum {StateSymbol,StateAny,StateSplit,StateMatch};
 
 typedef int StateType;
 
@@ -13,11 +13,12 @@ typedef int TransitionType;
 
 struct SState {
     StateType type;
-    TransitionType transition;
     Symbol symbol;
     struct SState *out;
+    TransitionType transition;
     struct SState *out1;
     int lastlist;
+    int id;
 };
 typedef struct SState SState;
 
