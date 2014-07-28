@@ -3,7 +3,19 @@
 #include "../src/semtrex.h"
 
 /*
-Semtrex BNF:
+Semtrex TGF:
+
+Semtrex ::= Root [ / Child]
+Root ::= Literal | Or | Any | Question | Group
+Child ::=  Root | Plus | Star | Sequence
+Plus ::= "PLUS" / Semtrex
+Star ::= "STAR" / Semtrex
+Question ::= "QUESTION" / Semtrex
+Sequence ::= "SEQUENCE" / Semtrex [, Semtrex]...
+Or ::= "OR" / Semtrex1 , Semtrex2
+Literal ::= "LITERAL(symbol)" [ / Semtrex]
+Any ::= "ANY" [ / Semtrex]
+Group ::= "GROUP(group_name)" / Semtrex
 
 <STX>            ::= <union> | <simple-STX>
 <union>          ::= <STX> "|" <simple-STX>
