@@ -44,6 +44,37 @@ Tnode * _t_newi(Tnode *parent,Symbol symbol,int surface) {
     return t;
 }
 
+Tnode *_t_new_root(Symbol symbol) {
+    return _t_new(0,symbol,0,0);
+}
+
+void _t_add(Tnode *t,Tnode *c) {
+    if (c->structure.parent != 0) {
+	raise_error0("can't add a node that isn't a root!");
+    }
+    c->structure.parent = t;
+    __t_append_child(t,c);
+}
+
+// NOTE: does not free the memory occupied by c
+void _t_remove(Tnode *t,Tnode *c) {
+    int i;
+    int l = _t_children(t);
+
+    // search for the child to be removed
+    for(i=0;i<=l;i++) {
+	if (_t_child(t,i) == c) break;
+    }
+
+    // if found remove it by decreasing the child count and shift all the other children down
+    if (i <= l) {
+	t->structure.child_count--;
+	for(;i<l;i++) {
+	    t->structure.children[i-1] = t->structure.children[i];
+	}
+    }
+}
+
 /*****************  Node deletion */
 
 void __t_free_children(Tnode *t) {
@@ -102,6 +133,18 @@ Tnode * _t_root(Tnode *t) {
     return t;
 }
 
+int _t_node_index(Tnode *t) {
+    Tnode *p = _t_parent(t);
+    if (p==0) return 0;
+    int c = _t_children(p);
+    for(int i=0;i<c;i++) {
+	if (p->structure.children[i] == t) {
+	    return i+1;
+	}
+    }
+    return 0;
+}
+
 //TODO: this is very expensive if called all the time!!!
 Tnode * _t_next_sibling(Tnode *t) {
     Tnode *p = _t_parent(t);
@@ -127,6 +170,36 @@ int _t_path_depth(int *p) {
     int i=0;
     while(*p++ != TREE_PATH_TERMINATOR) i++;
     return i;
+}
+
+//TODO: implement jumping into orthogonal trees  (i.e. return paths with 0 in them)
+int * _t_get_path(Tnode *t) {
+    Tnode *n;
+    // allocate an array to hold the
+    int s = sizeof(int)*10; // assume most trees are shallower than 10 nodes to prevent realloc
+    int *p = malloc(s);
+    int j,k,l,i=0,temp;
+
+    // store the children's path index values into the array as we walk back up the tree to the root
+    for(n=t;n;) {
+	p[i] = _t_node_index(n);
+	n =_t_parent(n);
+	if (++i >= s) {s*=2;p=realloc(p,s);} // realloc array if tree too deep
+    }
+    if (i > 2) {
+	// reverse the list by swapping elements going from the outside to the center
+	i-=2;
+	l = i+1;
+	k = i/2;
+	for(j=0;j<k;j++) {
+	    temp = p[j];
+	    p[j] = p[i];
+	    p[i--] = temp;
+	}
+    }
+    else l = i-1;
+    p[l]= TREE_PATH_TERMINATOR;
+    return p;
 }
 
 void _t_pathcpy(int *dst_p,int *src_p) {
@@ -175,4 +248,43 @@ char * _t_sprint_path(int *fp,char *buf) {
 	b += strlen(b);
     }
     return buf;
+}
+
+/*****************  Tree debugging utilities */
+
+char __t_dump_buf[10000];
+
+void __t_dump(Tnode *t,int level,char *buf) {
+    Symbol s = _t_symbol(t);
+    char b[255];
+    switch(s) {
+    case TEST_SYMBOL:
+	sprintf(buf,"(TEST_SYMBOL:%s",(char *)_t_surface(t));
+	break;
+    case TREE_PATH:
+	sprintf(buf,"(TREE_PATH:%s",_t_sprint_path((int *)_t_surface(t),b));
+	break;
+    case SEMTREX_SYMBOL_LITERAL:
+	sprintf(buf,"(LITERAL:%d",*(int *)_t_surface(t));
+	break;
+    case SEMTREX_MATCH:
+	sprintf(buf," (STX-MATCH:%d",*(int *)_t_surface(t));
+	break;
+    case SEMTREX_MATCH_SIBLINGS_COUNT:
+	sprintf(buf," (STX-M-SIBS:%d",*(int *)_t_surface(t));
+	break;
+    case SEMTREX_MATCH_RESULTS:
+	sprintf(buf," (STX-MATCH-RESULTS");
+	break;
+    default:
+	sprintf(buf," (%d",s);
+    }
+
+    for(int i=1;i<=_t_children(t);i++) __t_dump(_t_child(t,i),level+1,buf+strlen(buf));
+    sprintf(buf+strlen(buf),")");
+}
+
+char *_td(Tnode *t) {
+    __t_dump(t,0,__t_dump_buf);
+    return __t_dump_buf;
 }

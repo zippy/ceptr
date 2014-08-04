@@ -1,6 +1,6 @@
 #include "../src/ceptr.h"
 
-#define TEST_SYMBOL 99
+
 void testCreateTreeNodes() {
     /* test the creation of trees and the various function that give access to created data elements
        and basic tree structure navigation
@@ -35,6 +35,16 @@ void testCreateTreeNodes() {
     spec_is_ptr_equal(_t_next_sibling(t),NULL);
     spec_is_ptr_equal(_t_next_sibling(t2),t3);
     spec_is_ptr_equal(_t_next_sibling(t3),NULL);
+
+    Tnode *t4 = _t_new_root(TEST_SYMBOL);
+    _t_add(t,t4);
+    spec_is_equal(_t_children(t),4);
+    spec_is_ptr_equal(_t_child(t,4),t4);
+
+    _t_remove(t,t3);
+    spec_is_equal(_t_children(t),3);
+    spec_is_ptr_equal(_t_child(t,3),t4);
+    spec_is_ptr_equal(_t_child(t,2),t2);
 
     _t_free(t);
 
@@ -81,6 +91,17 @@ void testTreePath() {
     int p3[] = {2,1,1,TREE_PATH_TERMINATOR};
     spec_is_str_equal((char *)_t_get_surface(t,p3),"t211");
 
+    int *path;
+    path = _t_get_path(_t_get(t,p0));
+    spec_is_path_equal(path,p0);
+    free(path);
+    path = _t_get_path(_t_get(t,p1));
+    spec_is_path_equal(path,p1);
+    free(path);
+    path = _t_get_path(_t_get(t,p3));
+    spec_is_path_equal(path,p3);
+    free(path);
+
     p3[2] = 2;
     spec_is_ptr_equal(_t_get(t,p3),NULL);
 
@@ -114,6 +135,11 @@ void testTreePath() {
 
     char buf[255];
     spec_is_str_equal(_t_sprint_path(p5,buf),"/3/0/2/1/1");
+
+    spec_is_equal(_t_node_index(_t_child(t,1)),1);
+    spec_is_equal(_t_node_index(_t_child(t,2)),2);
+    spec_is_equal(_t_node_index(_t_child(t,3)),3);
+    spec_is_equal(_t_node_index(t),0);
 
     int pp[10];
     _t_pathcpy(pp,p5);

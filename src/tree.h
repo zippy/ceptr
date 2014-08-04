@@ -41,7 +41,10 @@ typedef struct Tnode Tnode;
 
 /*****************  Node creation and deletion*/
 Tnode * _t_new(Tnode *t,Symbol symbol, void *surface, size_t size);
-Tnode * _t_newi(Tnode *parent,Symbol noun,int surface);
+Tnode * _t_newi(Tnode *parent,Symbol symbol,int surface);
+Tnode *_t_new_root(Symbol symbol);
+void _t_add(Tnode *t,Tnode *c);
+void _t_remove(Tnode *t,Tnode *c);
 void _t_free(Tnode *t);
 
 /******************** Node data accessors */
@@ -55,6 +58,7 @@ Tnode * _t_parent(Tnode *t);
 Tnode *_t_child(Tnode *t,int i);
 Tnode * _t_root(Tnode *t);
 Tnode * _t_next_sibling(Tnode *t);
+int _t_node_index(Tnode *t);
 
 /*****************  Tree path based accesses */
 int _t_path_equal(int *p1,int *p2);
@@ -62,8 +66,12 @@ int _t_path_depth(int *p);
 void _t_pathcpy(int *dst_p,int *src_p);
 void _t_path_parent(int *n,int *p);
 Tnode * _t_get(Tnode *t,int *p);
+int *_t_get_path(Tnode *t);
 void * _t_get_surface(Tnode *t,int *p);
 char * _t_sprint_path(int *fp,char *buf);
+
+/*****************  Tree debugging utilities */
+char *_td(Tnode *t);
 
 /*
 _t_new();
