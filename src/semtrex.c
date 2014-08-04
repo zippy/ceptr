@@ -53,6 +53,7 @@ append(Ptrlist *l1, Ptrlist *l2)
     return oldl1;
 }
 
+// utility routine to initialize a state struct
 SState *state(StateType type,int *statesP) {
     SState *s = malloc(sizeof(SState));
     s->out = NULL;
@@ -162,7 +163,10 @@ char * __s_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP,int 
     }
     return 0;
 }
+
 void _s_dump(SState *s);
+
+// wrapper for building the finite state automata recursively and patching it to the final match state
 SState * _s_makeFA(Tnode *t,int *statesP) {
     SState *in;
     Ptrlist *o;
@@ -173,6 +177,8 @@ SState * _s_makeFA(Tnode *t,int *statesP) {
     return in;
 }
 
+//TODO:
+// walks through a state diagram freeing states
 void _s_freeFA(SState *s) {
 }
 
@@ -207,8 +213,9 @@ int __t_match(SState *s,Tnode *t,Tnode *r) {
 	break;
     case StateGroup:
 	if (!t) return 0;
-	// if we aren't collecting up match results simply follow groups through
-	if (!r) return __t_match(s->out,t,r);
+	if (!r)
+	    // if we aren't collecting up match results simply follow groups through
+	    return __t_match(s->out,t,r);
 	else {
 	    int match_id = s->symbol & 0xFFF;
 	    if (s->symbol & GroupOpen) {
@@ -216,6 +223,7 @@ int __t_match(SState *s,Tnode *t,Tnode *r) {
 		Tnode *m = _t_newi(r,SEMTREX_MATCH,match_id);
 		int *p = _t_get_path(t);
 		_t_new(m,TREE_PATH,p,sizeof(int)*(_t_path_depth(p)+1));
+		free(p);
 		int matched = __t_match(s->out,t,r);
 		if (!matched) {
 		    _t_remove(r,m);
@@ -245,6 +253,7 @@ int __t_match(SState *s,Tnode *t,Tnode *r) {
 		    int d = _t_path_depth(p_start);
 		    d--;
 		    _t_newi(m,SEMTREX_MATCH_SIBLINGS_COUNT,p_end[d]-p_start[d]);
+		    free(p_end);
 		}
 		return matched;
 	    }
@@ -257,6 +266,7 @@ int __t_match(SState *s,Tnode *t,Tnode *r) {
     raise_error("unimplemented state type: %d",s->type);
 }
 
+// semtrex matching where you care about the matched results
 int _t_matchr(Tnode *semtrex,Tnode *t,Tnode **rP) {
     int states;
     SState *fa = _s_makeFA(semtrex,&states);
@@ -272,6 +282,8 @@ int _t_matchr(Tnode *semtrex,Tnode *t,Tnode **rP) {
     }
     return m;
 }
+
+// semtrex matching where you just care about whether a match exists
 int _t_match(Tnode *semtrex,Tnode *t) {
     return _t_matchr(semtrex,t,NULL);
 }
