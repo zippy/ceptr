@@ -68,14 +68,26 @@ char * __s_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP,int 
     SState *s,*i,*last;
     Ptrlist *o,*o1;
     char *err;
+    int state_type = -1;
 
     int c = _t_children(t);
     Symbol sym = _t_symbol(t);
     switch(sym) {
+    case SEMTREX_VALUE_LITERAL:
+	state_type = StateValue;
     case SEMTREX_SYMBOL_LITERAL:
+	if (state_type == -1) state_type = StateSymbol;
     case SEMTREX_SYMBOL_ANY:
+	if (state_type == -1) state_type = StateAny;
 	if (c > 1) return "Literal must have 0 or 1 children";
-	s = state((sym == SEMTREX_SYMBOL_LITERAL) ? StateSymbol :StateAny,statesP);
+	s = state(state_type,statesP);
+	if (state_type == StateValue) {
+	    // copy the value from the semtrex into the state
+	    Svalue *sv = (Svalue *)_t_surface(t);
+	    s->length = sv->length;
+	    s->value = malloc(s->length);
+	    memcpy(s->value,&sv->value,s->length);
+	}
 	*in = s;
 	s->symbol = *(Symbol *)_t_surface(t);
 	if (c > 0) {
@@ -173,21 +185,33 @@ SState * _s_makeFA(Tnode *t,int *statesP) {
     char *err = __s_makeFA(t,&in,&o,0,statesP,1);
     if (err != 0) {raise_error0(err);}
     patch(o,&matchstate,0);
-    _s_dump(in);
+    //    _s_dump(in);
     return in;
 }
 
 //TODO:
 // walks through a state diagram freeing states
+// and malloced values of StateValue states
 void _s_freeFA(SState *s) {
 }
 
 // Walk the FSA in s using a recursive backtracing algorithm to match the tree in t.  Returns matched portions in a match results tree if one is provided in r.
 int __t_match(SState *s,Tnode *t,Tnode *r) {
-    printf("tm: s:%d t:%d\n",s->symbol,t ? _t_symbol(t) : -1);
+    char *p1,*p2;
+    //printf("tm: s:%d t:%d\n",s->symbol,t ? _t_symbol(t) : -1);
     switch(s->type) {
+    case StateValue:
+	if (!t) return 0;
+	if (s->length != _t_size(t));
+	p1 = s->value;
+	p2 = _t_surface(t);
+	for(size_t i=s->length;i>0;i--) {
+	    if (*p1++ != *p2++) return 0;
+	}
+	// no break to fall through and check symbol
     case StateSymbol:
 	if (!t || (s->symbol != _t_symbol(t))) return 0;
+	// no break to fall through and handle transition and recursive calls
     case StateAny:
 	if (!t) return 0;
 	//	if (s->out == &matchstate) return 1;

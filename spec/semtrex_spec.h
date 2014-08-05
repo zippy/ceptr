@@ -278,7 +278,7 @@ void testMatchGroup() {
     int rp1[] = {1,TREE_PATH_TERMINATOR};
     Tnode *p1c = _t_child(p1,2);
 
-    printf("%s\n",_td(r));
+    //    printf("%s\n",_td(r));
     spec_is_equal(_t_symbol(p1c),SEMTREX_MATCH_SIBLINGS_COUNT);
     spec_is_equal(*(int *)_t_surface(p1c),3);
     spec_is_path_equal(_t_surface(_t_child(p1,1)),rp1);
@@ -298,6 +298,43 @@ void testMatchGroup() {
     _t_free(s);
 }
 
+void testMatchLiteralValue() {
+    Tnode *t = _makeTestTree1();
+    Svalue sv;
+    sv.symbol = 0;
+    sv.length = 2;
+    ((char *)&sv.value)[0] = 't';
+    ((char *)&sv.value)[1] = 0;
+    Tnode *s = _t_new(0,SEMTREX_VALUE_LITERAL,&sv,sizeof(Svalue));
+    spec_is_true(_t_match(s,t));
+    _t_free(s);
+
+    // don't match if value is wrong
+    ((char *)&sv.value)[0] = 'x';
+    s = _t_new(0,SEMTREX_VALUE_LITERAL,&sv,sizeof(Svalue));
+    spec_is_true(!_t_match(s,t));
+    _t_free(s);
+
+    // don't match on wrong symbol
+    ((char *)&sv.value)[0] = 't';
+    sv.symbol = 1;
+    s = _t_new(0,SEMTREX_VALUE_LITERAL,&sv,sizeof(Svalue));
+    spec_is_true(!_t_match(s,t));
+    _t_free(s);
+
+    // don't match if value length is wrong
+    ((char *)&sv.value)[0] = 't';
+    sv.length = 1;
+    s = _t_new(0,SEMTREX_VALUE_LITERAL,&sv,sizeof(Svalue));
+    spec_is_true(!_t_match(s,t));
+    _t_free(s);
+
+
+    _t_free(t);
+
+
+}
+
 void testSemtrex() {
     testMakeFA();
     testMatchTrees();
@@ -307,4 +344,5 @@ void testSemtrex() {
     testMatchPlus();
     testMatchQ();
     testMatchGroup();
+    testMatchLiteralValue();
 }
