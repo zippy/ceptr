@@ -5,7 +5,9 @@ void testCreateTreeNodes() {
     /* test the creation of trees and the various function that give access to created data elements
        and basic tree structure navigation
      */
-    Tnode *t = _t_new(0,TEST_SYMBOL,"hello",6);
+    Tnode *t, *t1, *t2, *t3, *t4;
+
+    t = _t_new(0,TEST_SYMBOL,"hello",6);
     spec_is_long_equal(_t_size(t),(long)6);
     spec_is_equal(_t_children(t),0);
     spec_is_str_equal((char *)_t_surface(t),"hello");
@@ -14,19 +16,19 @@ void testCreateTreeNodes() {
     spec_is_ptr_equal(_t_child(t,1),NULL);
     spec_is_equal(_t_symbol(t),TEST_SYMBOL);
 
-    Tnode *t1 = _t_new(t,TEST_SYMBOL,"t1",3);
+    t1 = _t_new(t,TEST_SYMBOL,"t1",3);
     spec_is_ptr_equal(_t_parent(t1),t);
     spec_is_equal(_t_children(t),1);
     spec_is_ptr_equal(_t_child(t,1),t1);
     spec_is_ptr_equal(_t_root(t1),t);
 
-    Tnode *t2 = _t_new(t,TEST_SYMBOL,"t2",3);
+    t2 = _t_new(t,TEST_SYMBOL,"t2",3);
     spec_is_ptr_equal(_t_parent(t2),t);
     spec_is_equal(_t_children(t),2);
     spec_is_ptr_equal(_t_child(t,2),t2);
     spec_is_ptr_equal(_t_root(t2),t);
 
-    Tnode *t3 = _t_newi(t,99,101);
+    t3 = _t_newi(t,99,101);
     spec_is_ptr_equal(_t_parent(t3),t);
     spec_is_equal(_t_children(t),3);
     spec_is_equal(*(int *)_t_surface(_t_child(t,3)),101);
@@ -36,7 +38,7 @@ void testCreateTreeNodes() {
     spec_is_ptr_equal(_t_next_sibling(t2),t3);
     spec_is_ptr_equal(_t_next_sibling(t3),NULL);
 
-    Tnode *t4 = _t_new_root(TEST_SYMBOL);
+    t4 = _t_new_root(TEST_SYMBOL);
     _t_add(t,t4);
     spec_is_equal(_t_children(t),4);
     spec_is_ptr_equal(_t_child(t,4),t4);
@@ -54,9 +56,9 @@ void testTreeRealloc() {
     Tnode *ts[12];
     Tnode *t = _t_new(0,TEST_SYMBOL,"t",2);
     char tname[3];
+    int i;
     tname[0] = 't';
     tname[2] = 0;
-    int i;
     for (i=0;i<12;i++){
 	tname[1] = 'a'+i;
 	ts[i] = _t_new(t,TEST_SYMBOL,tname,3);
@@ -79,20 +81,29 @@ Tnode *_makeTestTree() {
 
 void testTreePath() {
     Tnode *t = _makeTestTree();
+    int *path;
+    int i;
+    char buf[255];
 
     int p0[] = {TREE_PATH_TERMINATOR};
+    int p1[] = {1,TREE_PATH_TERMINATOR};
+    int p2[] = {2,TREE_PATH_TERMINATOR};
+    int p3[] = {2,1,1,TREE_PATH_TERMINATOR};
+    int p4[] = {3,0,TREE_PATH_TERMINATOR};
+    int p5[] = {3,0,2,1,1,TREE_PATH_TERMINATOR};
+    int p6[6];
+    int pp[10];
+
+    Tnode *tt, *t3;
+
     spec_is_ptr_equal(_t_get(t,p0),t);
 
-    int p1[] = {1,TREE_PATH_TERMINATOR};
     spec_is_str_equal((char *)_t_get_surface(t,p1),"t1");
 
-    int p2[] = {2,TREE_PATH_TERMINATOR};
     spec_is_str_equal((char *)_t_get_surface(t,p2),"t2");
 
-    int p3[] = {2,1,1,TREE_PATH_TERMINATOR};
     spec_is_str_equal((char *)_t_get_surface(t,p3),"t211");
 
-    int *path;
     path = _t_get_path(_t_get(t,p0));
     spec_is_path_equal(path,p0);
     free(path);
@@ -106,21 +117,17 @@ void testTreePath() {
     p3[2] = 2;
     spec_is_ptr_equal(_t_get(t,p3),NULL);
 
-    Tnode *tt = _makeTestTree();
-    Tnode *t3 = _t_new(t,TEST_SYMBOL,&tt,sizeof(Tnode *));
+    tt = _makeTestTree();
+    t3 = _t_new(t,TEST_SYMBOL,&tt,sizeof(Tnode *));
 
     p1[0] = 3;
     spec_is_ptr_equal(*(Tnode **)_t_get_surface(t,p1),tt);
 
-    int p4[] = {3,0,TREE_PATH_TERMINATOR};
     spec_is_ptr_equal(_t_get(t,p4),tt);
 
-    int p5[] = {3,0,2,1,1,TREE_PATH_TERMINATOR};
     spec_is_str_equal((char *)_t_get_surface(t,p5),"t211");
 
-    int p6[6];
     _t_path_parent(p6,p5);
-    int i;
     for(i=0;i<3;i++) {
 	spec_is_equal(p6[i],p5[i]);
     }
@@ -135,7 +142,6 @@ void testTreePath() {
 
     spec_is_equal(_t_path_depth(p3),3);
 
-    char buf[255];
     spec_is_str_equal(_t_sprint_path(p5,buf),"/3/0/2/1/1");
 
     spec_is_equal(_t_node_index(_t_child(t,1)),1);
@@ -143,7 +149,6 @@ void testTreePath() {
     spec_is_equal(_t_node_index(_t_child(t,3)),3);
     spec_is_equal(_t_node_index(t),0);
 
-    int pp[10];
     _t_pathcpy(pp,p5);
     spec_is_path_equal(pp,p5);
 

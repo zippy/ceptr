@@ -2,7 +2,7 @@
 #include "ceptr_error.h"
 
 /*****************  Node creation */
-int __t_append_child(Tnode *t,Tnode *c) {
+void __t_append_child(Tnode *t,Tnode *c) {
     if (t->structure.child_count == 0) {
 	t->structure.children = malloc(sizeof(Tnode *)*TREE_CHILDREN_BLOCK);
     } else if (!(t->structure.child_count % TREE_CHILDREN_BLOCK)){
@@ -134,10 +134,11 @@ Tnode * _t_root(Tnode *t) {
 }
 
 int _t_node_index(Tnode *t) {
+	int c;
+    int i;
     Tnode *p = _t_parent(t);
     if (p==0) return 0;
-    int c = _t_children(p);
-    int i;
+    c = _t_children(p);
     for(i=0;i<c;i++) {
 	if (p->structure.children[i] == t) {
 	    return i+1;
@@ -148,10 +149,11 @@ int _t_node_index(Tnode *t) {
 
 //TODO: this is very expensive if called all the time!!!
 Tnode * _t_next_sibling(Tnode *t) {
+	int c;
+    int i;
     Tnode *p = _t_parent(t);
     if (p==0) return 0;
-    int c = _t_children(p);
-    int i;
+    c = _t_children(p);
     for(i=0;i<c;i++) {
 	if (p->structure.children[i] == t) {
 	    i++;
@@ -260,6 +262,7 @@ char __t_dump_buf[10000];
 void __t_dump(Tnode *t,int level,char *buf) {
     Symbol s = _t_symbol(t);
     char b[255];
+    int i;
     switch(s) {
     case TEST_SYMBOL:
 	sprintf(buf," (TEST_SYMBOL:%s",(char *)_t_surface(t));
@@ -300,7 +303,6 @@ void __t_dump(Tnode *t,int level,char *buf) {
     default:
 	sprintf(buf," (%d",s);
     }
-    int i;
     for(i=1;i<=_t_children(t);i++) __t_dump(_t_child(t,i),level+1,buf+strlen(buf));
     sprintf(buf+strlen(buf),")");
 }

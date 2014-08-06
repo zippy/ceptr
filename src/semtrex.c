@@ -69,6 +69,7 @@ char * __s_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP,int 
     Ptrlist *o,*o1;
     char *err;
     int state_type = -1;
+	int x;
 
     int c = _t_children(t);
     Symbol sym = _t_symbol(t);
@@ -104,19 +105,16 @@ char * __s_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP,int 
 	break;
     case SEMTREX_SEQUENCE:
 	if (c == 0) return "Sequence must have children";
-	else {
-	    last = 0;
-	    int x;
-	    for(x=c;x>=1;x--) {
-		err = __s_makeFA(_t_child(t,x),&i,&o,level,statesP,gid);
-		if (err) return err;
+	last = 0;
+	for(x=c;x>=1;x--) {
+	err = __s_makeFA(_t_child(t,x),&i,&o,level,statesP,gid);
+	if (err) return err;
 
-		// if (o1->transition < 0) o1->transition += -level;
-		if (last) patch(o,last,level);
-		else *out = o;
-		last = i;
-	    }
-	    *in = i;
+	// if (o1->transition < 0) o1->transition += -level;
+	if (last) patch(o,last,level);
+	else *out = o;
+	last = i;
+    *in = i;
 	}
 	break;
     case SEMTREX_OR:
@@ -131,7 +129,7 @@ char * __s_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP,int 
 	s->out1 = i;
 	*out = append(o,o1);
 	break;
-    case SEMTREX_STAR:
+    case SEMTREX_ZERO_OR_MORE:
 	if (c != 1) return "Star must have 1 child";
 	s = state(StateSplit,statesP);
 	*in = s;
@@ -141,7 +139,7 @@ char * __s_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP,int 
 	patch(o,s,level);
 	*out = list1(&s->out1);
 	break;
-    case SEMTREX_PLUS:
+    case SEMTREX_ONE_OR_MORE:
 	if (c != 1) return "Plus must have 1 child";
 	s = state(StateSplit,statesP);
 	err = __s_makeFA(_t_child(t,1),&i,&o,level,statesP,gid);
@@ -151,7 +149,7 @@ char * __s_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP,int 
 	patch(o,s,level);
 	*out = list1(&s->out1);
 	break;
-    case SEMTREX_QUESTION:
+    case SEMTREX_ZERO_OR_ONE:
 	if (c != 1) return "Question must have 1 child";
 	s = state(StateSplit,statesP);
 	*in = s;
@@ -207,10 +205,10 @@ int __t_match(SState *s,Tnode *t,Tnode *r) {
     case StateValue:
 	if (!t) return 0;
 	else {
+	    size_t i;
 	    if (s->length != _t_size(t));
 	    p1 = s->value;
 	    p2 = _t_surface(t);
-	    size_t i;
 	    for(i=s->length;i>0;i--) {
 		if (*p1++ != *p2++) return 0;
 	    }
@@ -249,13 +247,14 @@ int __t_match(SState *s,Tnode *t,Tnode *r) {
 	    return __t_match(s->out,t,r);
 	else {
 	    int match_id = s->symbol & 0xFFF;
+		int matched;
 	    if (s->symbol & GroupOpen) {
 		// add on the semtrex match nodes and path to list of matches.
 		Tnode *m = _t_newi(r,SEMTREX_MATCH,match_id);
 		int *p = _t_get_path(t);
 		_t_new(m,TREE_PATH,p,sizeof(int)*(_t_path_depth(p)+1));
 		free(p);
-		int matched = __t_match(s->out,t,r);
+		matched = __t_match(s->out,t,r);
 		if (!matched) {
 		    _t_remove(r,m);
 		    _t_free(m);
@@ -268,21 +267,26 @@ int __t_match(SState *s,Tnode *t,Tnode *r) {
 
 		if (matched) {
 		    // find the Match item that this is a CloseGroup of
+			int* p_start;
+			int* p_end;
+			int d;
 		    Tnode *m =0;
 		    int i;
 		    for(i=1;i<=_t_children(r);i++) {
-			Tnode *n = _t_child(r,i);
-			if (*(int *)_t_surface(n) == match_id) {
-			    m = n;
-			    break;
-			}
+				Tnode *n = _t_child(r,i);
+				if (*(int *)_t_surface(n) == match_id) {
+				    m = n;
+					break;
+				}
 		    }
+
 		    if (m == 0) {
-			raise_error("couldn't find match for %d",match_id);
+				raise_error("couldn't find match for %d",match_id);
 		    }
-		    int *p_start = (int *)_t_surface(_t_child(m,1));
-		    int *p_end = _t_get_path(t);
-		    int d = _t_path_depth(p_start);
+
+		    p_start = (int *)_t_surface(_t_child(m,1));
+		    p_end = _t_get_path(t);
+		    d = _t_path_depth(p_start);
 		    d--;
 		    _t_newi(m,SEMTREX_MATCH_SIBLINGS_COUNT,p_end[d]-p_start[d]);
 		    free(p_end);
@@ -296,17 +300,19 @@ int __t_match(SState *s,Tnode *t,Tnode *r) {
 	break;
     }
     raise_error("unimplemented state type: %d",s->type);
+    return 0;
 }
 
 // semtrex matching where you care about the matched results
 int _t_matchr(Tnode *semtrex,Tnode *t,Tnode **rP) {
     int states;
+    int m;
     SState *fa = _s_makeFA(semtrex,&states);
     Tnode *r = 0;
     if (rP) {
 	r = _t_new_root(SEMTREX_MATCH_RESULTS);
     }
-    int m = __t_match(fa,t,r);
+    m = __t_match(fa,t,r);
     _s_freeFA(fa);
     if (rP) {
 	if (!m) {_t_free(r);*rP = NULL;}
