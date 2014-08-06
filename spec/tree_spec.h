@@ -56,7 +56,8 @@ void testTreeRealloc() {
     char tname[3];
     tname[0] = 't';
     tname[2] = 0;
-    for (int i=0;i<12;i++){
+    int i;
+    for (i=0;i<12;i++){
 	tname[1] = 'a'+i;
 	ts[i] = _t_new(t,TEST_SYMBOL,tname,3);
     }
@@ -119,7 +120,8 @@ void testTreePath() {
 
     int p6[6];
     _t_path_parent(p6,p5);
-    for(int i=0;i<3;i++) {
+    int i;
+    for(i=0;i<3;i++) {
 	spec_is_equal(p6[i],p5[i]);
     }
     spec_is_equal(p6[4],TREE_PATH_TERMINATOR);

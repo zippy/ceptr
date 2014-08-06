@@ -137,7 +137,8 @@ int _t_node_index(Tnode *t) {
     Tnode *p = _t_parent(t);
     if (p==0) return 0;
     int c = _t_children(p);
-    for(int i=0;i<c;i++) {
+    int i;
+    for(i=0;i<c;i++) {
 	if (p->structure.children[i] == t) {
 	    return i+1;
 	}
@@ -150,7 +151,8 @@ Tnode * _t_next_sibling(Tnode *t) {
     Tnode *p = _t_parent(t);
     if (p==0) return 0;
     int c = _t_children(p);
-    for(int i=0;i<c;i++) {
+    int i;
+    for(i=0;i<c;i++) {
 	if (p->structure.children[i] == t) {
 	    i++;
 	    return i<c ? p->structure.children[i] : 0;
@@ -243,7 +245,8 @@ void * _t_get_surface(Tnode *t,int *p) {
 char * _t_sprint_path(int *fp,char *buf) {
     char *b = buf;
     int d=_t_path_depth(fp);
-    for(int i=0;i<d;i++) {
+    int i;
+    for(i=0;i<d;i++) {
 	sprintf(b,"/%d",fp[i]);
 	b += strlen(b);
     }
@@ -259,13 +262,13 @@ void __t_dump(Tnode *t,int level,char *buf) {
     char b[255];
     switch(s) {
     case TEST_SYMBOL:
-	sprintf(buf,"(TEST_SYMBOL:%s",(char *)_t_surface(t));
+	sprintf(buf," (TEST_SYMBOL:%s",(char *)_t_surface(t));
 	break;
     case TREE_PATH:
-	sprintf(buf,"(TREE_PATH:%s",_t_sprint_path((int *)_t_surface(t),b));
+	sprintf(buf," (TREE_PATH:%s",_t_sprint_path((int *)_t_surface(t),b));
 	break;
     case SEMTREX_SYMBOL_LITERAL:
-	sprintf(buf,"(LITERAL:%d",*(int *)_t_surface(t));
+	sprintf(buf," (LITERAL:%d",*(int *)_t_surface(t));
 	break;
     case SEMTREX_MATCH:
 	sprintf(buf," (STX-MATCH:%d",*(int *)_t_surface(t));
@@ -276,11 +279,29 @@ void __t_dump(Tnode *t,int level,char *buf) {
     case SEMTREX_MATCH_RESULTS:
 	sprintf(buf," (STX-MATCH-RESULTS");
 	break;
+    case RECEPTOR:
+	sprintf(buf," (RECEPTOR");
+	break;
+    case FLUX:
+	sprintf(buf," (FLUX");
+	break;
+    case ASPECT:
+	sprintf(buf," (ASPECT:%d",*(int *)_t_surface(t));
+	break;
+    case ACTION:
+	sprintf(buf," (ACTION");
+	break;
+    case EXPECTATION:
+	sprintf(buf," (EXPECTATION");
+	break;
+    case EXPECTATIONS:
+	sprintf(buf," (EXPECTATIONS");
+	break;
     default:
 	sprintf(buf," (%d",s);
     }
-
-    for(int i=1;i<=_t_children(t);i++) __t_dump(_t_child(t,i),level+1,buf+strlen(buf));
+    int i;
+    for(i=1;i<=_t_children(t);i++) __t_dump(_t_child(t,i),level+1,buf+strlen(buf));
     sprintf(buf+strlen(buf),")");
 }
 

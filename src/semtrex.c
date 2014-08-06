@@ -104,17 +104,20 @@ char * __s_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP,int 
 	break;
     case SEMTREX_SEQUENCE:
 	if (c == 0) return "Sequence must have children";
-	last = 0;
-	for(int x=c;x>=1;x--) {
-	    err = __s_makeFA(_t_child(t,x),&i,&o,level,statesP,gid);
-	    if (err) return err;
+	else {
+	    last = 0;
+	    int x;
+	    for(x=c;x>=1;x--) {
+		err = __s_makeFA(_t_child(t,x),&i,&o,level,statesP,gid);
+		if (err) return err;
 
-	    // if (o1->transition < 0) o1->transition += -level;
-	    if (last) patch(o,last,level);
-	    else *out = o;
-	    last = i;
+		// if (o1->transition < 0) o1->transition += -level;
+		if (last) patch(o,last,level);
+		else *out = o;
+		last = i;
+	    }
+	    *in = i;
 	}
-	*in = i;
 	break;
     case SEMTREX_OR:
 	if (c != 2) return "Or must have 2 children";
@@ -198,15 +201,19 @@ void _s_freeFA(SState *s) {
 // Walk the FSA in s using a recursive backtracing algorithm to match the tree in t.  Returns matched portions in a match results tree if one is provided in r.
 int __t_match(SState *s,Tnode *t,Tnode *r) {
     char *p1,*p2;
+    int i;
     //printf("tm: s:%d t:%d\n",s->symbol,t ? _t_symbol(t) : -1);
     switch(s->type) {
     case StateValue:
 	if (!t) return 0;
-	if (s->length != _t_size(t));
-	p1 = s->value;
-	p2 = _t_surface(t);
-	for(size_t i=s->length;i>0;i--) {
-	    if (*p1++ != *p2++) return 0;
+	else {
+	    if (s->length != _t_size(t));
+	    p1 = s->value;
+	    p2 = _t_surface(t);
+	    size_t i;
+	    for(i=s->length;i>0;i--) {
+		if (*p1++ != *p2++) return 0;
+	    }
 	}
 	// no break to fall through and check symbol
     case StateSymbol:
@@ -223,7 +230,7 @@ int __t_match(SState *s,Tnode *t,Tnode *r) {
 	    return __t_match(s->out,_t_child(t,1),r);
 	    break;
 	default:
-	    for(int i=s->transition;i<0;i++) {
+	    for(i=s->transition;i<0;i++) {
 		t = _t_parent(t);
 	    }
 	    t = _t_next_sibling(t);
@@ -262,7 +269,8 @@ int __t_match(SState *s,Tnode *t,Tnode *r) {
 		if (matched) {
 		    // find the Match item that this is a CloseGroup of
 		    Tnode *m =0;
-		    for(int i=1;i<=_t_children(r);i++) {
+		    int i;
+		    for(i=1;i<=_t_children(r);i++) {
 			Tnode *n = _t_child(r,i);
 			if (*(int *)_t_surface(n) == match_id) {
 			    m = n;

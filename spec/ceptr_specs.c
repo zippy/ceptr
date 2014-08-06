@@ -8,6 +8,7 @@
 #include "tree_spec.h"
 #include "label_spec.h"
 #include "semtrex_spec.h"
+#include "receptor_spec.h"
 
 int main(int argc, const char **argv) {
     printf("Running all tests...\n\n");
@@ -16,6 +17,7 @@ int main(int argc, const char **argv) {
     testTree();
     testLabel();
     testSemtrex();
+    testReceptor();
 
     report_tests();
     return 0;
