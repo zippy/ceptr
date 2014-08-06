@@ -305,16 +305,21 @@ void testMatchLiteralValue() {
     sv.length = 2;
     ((char *)&sv.value)[0] = 't';
     ((char *)&sv.value)[1] = 0;
+
+    //# /0="t"
     Tnode *s = _t_new(0,SEMTREX_VALUE_LITERAL,&sv,sizeof(Svalue));
     spec_is_true(_t_match(s,t));
     _t_free(s);
 
+
+    //# /0="x"
     // don't match if value is wrong
     ((char *)&sv.value)[0] = 'x';
     s = _t_new(0,SEMTREX_VALUE_LITERAL,&sv,sizeof(Svalue));
     spec_is_true(!_t_match(s,t));
     _t_free(s);
 
+    //# /1="t"
     // don't match on wrong symbol
     ((char *)&sv.value)[0] = 't';
     sv.symbol = 1;
@@ -322,6 +327,7 @@ void testMatchLiteralValue() {
     spec_is_true(!_t_match(s,t));
     _t_free(s);
 
+    //# /0=""
     // don't match if value length is wrong
     ((char *)&sv.value)[0] = 't';
     sv.length = 1;
