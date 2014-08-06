@@ -31,7 +31,7 @@ Group ::= "GROUP(group_name)" / Semtrex
 */
 
 Tnode *_makeTestTree1() {
-    Tnode *t = _t_new(0,0,"t",2);
+	Tnode *t = _t_new(0,TEST_SYMBOL,"t",2);
     Tnode *t1 = _t_new(t,1,"t1",3);
     Tnode *t11 = _t_new(t1,11,"t11",4);
     Tnode *t111 = _t_new(t11,111,"t111",5);
@@ -44,8 +44,8 @@ Tnode *_makeTestTree1() {
 }
 
 Tnode *_makeTestSemtrex1() {
-    //#  /0/(1/11/111),2,3
-    Tnode *s = _t_newi(0,SEMTREX_SYMBOL_LITERAL,0);
+    //  /TEST_SYMBOL/(1/11/111),2,3
+    Tnode *s = _t_newi(0,SEMTREX_SYMBOL_LITERAL,TEST_SYMBOL);
     Tnode *ss = _t_newi(s,SEMTREX_SEQUENCE,0);
     Tnode *s1 = _t_newi(ss,SEMTREX_SYMBOL_LITERAL,1);
     Tnode *s11 = _t_newi(s1,SEMTREX_SYMBOL_LITERAL,11);
@@ -301,36 +301,35 @@ void testMatchGroup() {
 void testMatchLiteralValue() {
     Tnode *t = _makeTestTree1();
     Svalue sv;
-    sv.symbol = 0;
+	sv.symbol = TEST_SYMBOL;
     sv.length = 2;
     ((char *)&sv.value)[0] = 't';
-    ((char *)&sv.value)[1] = 0;
+    ((char *)&sv.value)[1] = 0;				// string terminator
 
-    //# /0="t"
+    // /TEST_SYMBOL="t"
     Tnode *s = _t_new(0,SEMTREX_VALUE_LITERAL,&sv,sizeof(Svalue));
     spec_is_true(_t_match(s,t));
     _t_free(s);
 
-
-    //# /0="x"
+    // /TEST_SYMBOL="x"
     // don't match if value is wrong
     ((char *)&sv.value)[0] = 'x';
     s = _t_new(0,SEMTREX_VALUE_LITERAL,&sv,sizeof(Svalue));
     spec_is_true(!_t_match(s,t));
     _t_free(s);
 
-    //# /1="t"
+    // /TEST_SYMBOL2="t"
     // don't match on wrong symbol
     ((char *)&sv.value)[0] = 't';
-    sv.symbol = 1;
+    sv.symbol = TEST_SYMBOL;
     s = _t_new(0,SEMTREX_VALUE_LITERAL,&sv,sizeof(Svalue));
     spec_is_true(!_t_match(s,t));
     _t_free(s);
 
-    //# /0=""
+    // /TEST_SYMBOL=""
     // don't match if value length is wrong
-    ((char *)&sv.value)[0] = 't';
-    sv.length = 1;
+    ((char *)&sv.value)[0] = 0;
+    sv.length = 1;			// length of data is 1, string length is 0.
     s = _t_new(0,SEMTREX_VALUE_LITERAL,&sv,sizeof(Svalue));
     spec_is_true(!_t_match(s,t));
     _t_free(s);
