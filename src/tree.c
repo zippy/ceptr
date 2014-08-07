@@ -259,49 +259,89 @@ char * _t_sprint_path(int *fp,char *buf) {
 
 char __t_dump_buf[10000];
 
+char *__t_get_symbol_name(Symbol s) {
+    char *n;
+    switch(s) {
+    case TEST_SYMBOL:
+	n = "TEST_SYMBOL";
+	break;
+    case TREE_PATH:
+	n = "TREE_PATH";
+	break;
+    case SEMTREX_SYMBOL_LITERAL:
+	n = "LITERAL";
+	break;
+    case SEMTREX_MATCH:
+	n = "STX-MATCH";
+	break;
+    case SEMTREX_MATCH_SIBLINGS_COUNT:
+	n = "STX-M-SIBS";
+	break;
+    case SEMTREX_MATCH_RESULTS:
+	n = "STX-MATCH-RESULTS";
+	break;
+    case RECEPTOR:
+	n = "RECEPTOR";
+	break;
+    case FLUX:
+	n = "FLUX";
+	break;
+    case ASPECT:
+	n = "ASPECT";
+	break;
+    case ACTION:
+	n = "ACTION";
+	break;
+    case EXPECTATION:
+	n = "EXPECTATION";
+	break;
+    case LISTENERS:
+	n = "LISTENERS";
+	break;
+    case LISTENER:
+	n = "LISTENER";
+	break;
+    default:
+	n = 0;
+    }
+    return n;
+}
+
+
 void __t_dump(Tnode *t,int level,char *buf) {
     Symbol s = _t_symbol(t);
     char b[255];
     int i;
+    char *n = __t_get_symbol_name(s);
+    char *c;
     switch(s) {
     case TEST_SYMBOL:
-	sprintf(buf," (TEST_SYMBOL:%s",(char *)_t_surface(t));
+	sprintf(buf," (%s:%s",n,(char *)_t_surface(t));
 	break;
     case TREE_PATH:
-	sprintf(buf," (TREE_PATH:%s",_t_sprint_path((int *)_t_surface(t),b));
+	sprintf(buf," (%s:%s",n,_t_sprint_path((int *)_t_surface(t),b));
 	break;
     case SEMTREX_SYMBOL_LITERAL:
-	sprintf(buf," (LITERAL:%d",*(int *)_t_surface(t));
+	sprintf(buf," (%s:%d",n,*(int *)_t_surface(t));
 	break;
     case SEMTREX_MATCH:
-	sprintf(buf," (STX-MATCH:%d",*(int *)_t_surface(t));
+	sprintf(buf," (%s:%d",n,*(int *)_t_surface(t));
 	break;
     case SEMTREX_MATCH_SIBLINGS_COUNT:
-	sprintf(buf," (STX-M-SIBS:%d",*(int *)_t_surface(t));
-	break;
-    case SEMTREX_MATCH_RESULTS:
-	sprintf(buf," (STX-MATCH-RESULTS");
-	break;
-    case RECEPTOR:
-	sprintf(buf," (RECEPTOR");
-	break;
-    case FLUX:
-	sprintf(buf," (FLUX");
+	sprintf(buf," (%s:%d",n,*(int *)_t_surface(t));
 	break;
     case ASPECT:
-	sprintf(buf," (ASPECT:%d",*(int *)_t_surface(t));
+	sprintf(buf," (%s:%d",n,*(int *)_t_surface(t));
 	break;
-    case ACTION:
-	sprintf(buf," (ACTION");
-	break;
-    case EXPECTATION:
-	sprintf(buf," (EXPECTATION");
-	break;
-    case EXPECTATIONS:
-	sprintf(buf," (EXPECTATIONS");
+    case LISTENER:
+	c = __t_get_symbol_name(*(int *)_t_surface(t));
+	sprintf(buf," (%s on %s",n,c?c:"<unknown>");
 	break;
     default:
-	sprintf(buf," (%d",s);
+	if (n == 0)
+	    sprintf(buf," (<unknown:%d>",s);
+	else
+	    sprintf(buf," (%s",n);
     }
     for(i=1;i<=_t_children(t);i++) __t_dump(_t_child(t,i),level+1,buf+strlen(buf));
     sprintf(buf+strlen(buf),")");

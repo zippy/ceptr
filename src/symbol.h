@@ -5,23 +5,28 @@
 #define TEST_SYMBOL2 100
 
 // System defined symbols.
-// In a regex, there are two things match -- actual literal, and "." (any)
 enum
 {
-	SEMTREX_SYMBOL_LITERAL = -999,				// This system symbol matches on the semantic type.         Ex: /TEST_SYMBOL
-	SEMTREX_SEQUENCE,                           // Match on a sequence of child nodes which are any valid semtrex's.  Ex: comma separated nodes
-	SEMTREX_OR,                                 // Logical OR between two Semtrex expressions.      Ex: |
-	SEMTREX_SYMBOL_ANY,                         // Match any symbol or value of the node.           Ex: .
-	SEMTREX_ZERO_OR_MORE,                       // Requires one child Semtrex and matches on zero or more of that Semtrex.  Ex: /0/TestSemtrex*
-	SEMTREX_ONE_OR_MORE,                      // Requires one child Semtrex and matches on one or more of that Semtrex.   Ex: /0/TestSemtrex+
-	SEMTREX_ZERO_OR_ONE,                        // Requires one child Semtrex and matches on zero or one of that Semtrex.   Ex: /0/TestSemtrex?
-	SEMTREX_VALUE_LITERAL,				        // Matches on the semantic type and the data value.
-	SEMTREX_GROUP,                              // Grouping                                 Ex: (...)operator
-	SEMTREX_MATCH,                              // Returns result and sibling count.        Ex: {name:expr} (verify this is what it's supposed to do)
-	SEMTREX_MATCH_RESULTS,                      // In the FSA, keeps track of which part matches so it can be referenced
-	SEMTREX_MATCH_SIBLINGS_COUNT,               // In the FSA, it's the length of the match
-	TREE_PATH,
-	RECEPTOR,FLUX,ASPECT,ACTION,EXPECTATION,EXPECTATIONS
+    SEMTREX_SYMBOL_LITERAL = -999,     // This system symbol matches on the semantic type.         Ex: /TEST_SYMBOL
+    SEMTREX_SEQUENCE,                  // Match on a sequence of child nodes which are any valid semtrex's.  Ex: comma separated nodes
+    SEMTREX_OR,                        // Logical OR between two Semtrex expressions.      Ex: |
+    SEMTREX_SYMBOL_ANY,                // Match any symbol or value of the node.           Ex: .
+    SEMTREX_ZERO_OR_MORE,              // Requires one child Semtrex and matches on zero or more of that Semtrex.  Ex: /0/TestSemtrex*
+    SEMTREX_ONE_OR_MORE,               // Requires one child Semtrex and matches on one or more of that Semtrex.   Ex: /0/TestSemtrex+
+    SEMTREX_ZERO_OR_ONE,               // Requires one child Semtrex and matches on zero or one of that Semtrex.   Ex: /0/TestSemtrex?
+    SEMTREX_VALUE_LITERAL,	       // Matches on the semantic type and the data value.
+    SEMTREX_GROUP,                     // Grouping                                 Ex: (...)operator
+    SEMTREX_MATCH,                     // Returns result and sibling count.        Ex: {name:expr} (verify this is what it's supposed to do)
+    SEMTREX_MATCH_RESULTS,             // In the FSA, keeps track of which part matches so it can be referenced
+    SEMTREX_MATCH_SIBLINGS_COUNT,      // In the FSA, it's the length of the match
+    TREE_PATH,
+    RECEPTOR,
+    FLUX,
+    ASPECT,
+    LISTENERS,                         // list of carrier/expectation/action tress that "listen" to changes on the flux
+    LISTENER,                          // surface of the listener is the carrier symbol, and it has two children, expectation semtrex and action code tree
+    EXPECTATION,                       // expectation is a semtrex (thus has one child which is the first part of the semtrex)
+    ACTION                             // code tree, which specifies the action to perform when an expectation's semtrex matches
 };
 
 typedef int Symbol;
@@ -41,8 +46,6 @@ typedef int Symbol;
 //      Paren-group: A group to which you apply some function.
 //      SMTP: mail from         where "from is optional"
 //      Ex: /ascii-line/char='M'...etc..., (F R O M)?
-//      
+//
 //  Curly brace is a named (or referenced) group
 //      Ex: /ascii-line/char='M'...etc..., (F R O M)?{email-address:.*}
-
-
