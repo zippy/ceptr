@@ -308,9 +308,11 @@ void testMatchGroup() {
     spec_is_equal(*(int *)_t_surface(p2c),1);
     spec_is_path_equal(_t_surface(_t_child(p2,1)),rp2);
 
+
     // you should also be able to find the matched group semantically
-    //    spec_is_ptr_equal(_t_get_match(r,TEST_GROUP_SYMBOL1),p1);
-    //spec_is_ptr_equal(_t_get_match(r,TEST_GROUP_SYMBOL2),p2);
+    spec_is_ptr_equal(_t_get_match(r,TEST_GROUP_SYMBOL1),p1);
+    spec_is_ptr_equal(_t_get_match(r,TEST_GROUP_SYMBOL2),p2);
+
 
     _t_free(r);
     _t_free(t);

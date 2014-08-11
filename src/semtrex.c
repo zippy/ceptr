@@ -64,12 +64,12 @@ SState *state(StateType type,int *statesP) {
 }
 
 // Given a Semtrex tree, build a partial FSA (returned via in as a pointer to the starting state, a list of output states, and a count of the total number of states created).
-char * __s_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP,int gid) {
+char * __s_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP) {
     SState *s,*i,*last;
     Ptrlist *o,*o1;
     char *err;
     int state_type = -1;
-	int x;
+    int x;
 
     int c = _t_children(t);
     Symbol sym = _t_symbol(t);
@@ -96,7 +96,7 @@ char * __s_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP,int 
 	*in = s;
 	if (c > 0) {
 	    s->transition = TransitionDown;
-	    err = __s_makeFA(_t_child(t,1),&i,&o,level-1,statesP,gid);
+	    err = __s_makeFA(_t_child(t,1),&i,&o,level-1,statesP);
 	    if (err) return err;
 	    s->out = i;
 	    *out = o;
@@ -110,7 +110,7 @@ char * __s_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP,int 
 	if (c == 0) return "Sequence must have children";
 	last = 0;
 	for(x=c;x>=1;x--) {
-	err = __s_makeFA(_t_child(t,x),&i,&o,level,statesP,gid);
+	err = __s_makeFA(_t_child(t,x),&i,&o,level,statesP);
 	if (err) return err;
 
 	// if (o1->transition < 0) o1->transition += -level;
@@ -124,10 +124,10 @@ char * __s_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP,int 
 	if (c != 2) return "Or must have 2 children";
 	s = state(StateSplit,statesP);
 	*in = s;
-	err = __s_makeFA(_t_child(t,1),&i,&o,level,statesP,gid);
+	err = __s_makeFA(_t_child(t,1),&i,&o,level,statesP);
 	if (err) return err;
 	s->out = i;
-	err = __s_makeFA(_t_child(t,2),&i,&o1,level,statesP,gid);
+	err = __s_makeFA(_t_child(t,2),&i,&o1,level,statesP);
 	if (err) return err;
 	s->out1 = i;
 	*out = append(o,o1);
@@ -136,7 +136,7 @@ char * __s_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP,int 
 	if (c != 1) return "Star must have 1 child";
 	s = state(StateSplit,statesP);
 	*in = s;
-	err = __s_makeFA(_t_child(t,1),&i,&o,level,statesP,gid);
+	err = __s_makeFA(_t_child(t,1),&i,&o,level,statesP);
 	if (err) return err;
 	s->out = i;
 	patch(o,s,level);
@@ -145,7 +145,7 @@ char * __s_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP,int 
     case SEMTREX_ONE_OR_MORE:
 	if (c != 1) return "Plus must have 1 child";
 	s = state(StateSplit,statesP);
-	err = __s_makeFA(_t_child(t,1),&i,&o,level,statesP,gid);
+	err = __s_makeFA(_t_child(t,1),&i,&o,level,statesP);
 	if (err) return err;
 	*in = i;
 	s->out = i;
@@ -156,7 +156,7 @@ char * __s_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP,int 
 	if (c != 1) return "Question must have 1 child";
 	s = state(StateSplit,statesP);
 	*in = s;
-	err = __s_makeFA(_t_child(t,1),&i,&o,level,statesP,gid);
+	err = __s_makeFA(_t_child(t,1),&i,&o,level,statesP);
 	if (err) return err;
 	s->out = i;
 	*out = append(o,list1(&s->out1));
@@ -165,14 +165,15 @@ char * __s_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP,int 
 	if (c != 1) return "Group must have 1 child";
 	s = state(StateGroup,statesP);
 	*in = s;
-	s->data.group.id = gid;
+	x = *(int *)_t_surface(t);
+	s->data.group.id = x;
 	s->data.group.type = GroupOpen;
-	err = __s_makeFA(_t_child(t,1),&i,&o,level,statesP,gid+1);
+	err = __s_makeFA(_t_child(t,1),&i,&o,level,statesP);
 	if (err) return err;
 	s->out = i;
 	s = state(StateGroup,statesP);
 	patch(o,s,level);
-	s->data.group.id = gid;
+	s->data.group.id = x;
 	s->data.group.type = GroupClose;
 	*out = list1(&s->out);
 	break;
@@ -188,7 +189,7 @@ void _s_dump(SState *s);
 SState * _s_makeFA(Tnode *t,int *statesP) {
     SState *in;
     Ptrlist *o;
-    char *err = __s_makeFA(t,&in,&o,0,statesP,1);
+    char *err = __s_makeFA(t,&in,&o,0,statesP);
     if (err != 0) {raise_error0(err);}
     patch(o,&matchstate,0);
     //    _s_dump(in);
@@ -329,4 +330,16 @@ int _t_matchr(Tnode *semtrex,Tnode *t,Tnode **rP) {
 // semtrex matching where you just care about whether a match exists
 int _t_match(Tnode *semtrex,Tnode *t) {
     return _t_matchr(semtrex,t,NULL);
+}
+
+// return the semtrex match that matches the symbol
+Tnode *_t_get_match(Tnode *result,Symbol group)
+{
+    int i,c=_t_children(result);
+    Tnode *t;
+    for (i=1;i<=c;i++) {
+	if (*(int *)_t_surface(t = _t_child(result,i)) == group)
+	    return t;
+    }
+    return 0;
 }
