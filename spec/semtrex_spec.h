@@ -59,20 +59,23 @@ static int dump_id = 99;
 
 
 void __s_dump(SState *s) {
-    if (s->id == dump_id) {printf("X");return;}
-    s->id = dump_id;
+    if (s->_did == dump_id) {printf("X");return;}
+    s->_did = dump_id;
     switch (s->type) {
     case StateMatch:
 	printf("(M)");
 	break;
     case StateGroup:
-	if (s->symbol & GroupOpen)
-	    printf("{%d",s->symbol&0xFFF);
+	if (s->data.group.type == GroupOpen)
+	    printf("{%d",s->data.group.id);
 	else
-	    printf("%d}",s->symbol);
+	    printf("%d}",s->data.group.id);
 	break;
     case StateSymbol:
-	printf("(%d:%d)",s->symbol,s->transition);
+	printf("(%d:%d)",s->data.symbol,s->transition);
+	break;
+    case StateValue:
+	printf("(%d:%d=)",s->data.value.symbol,s->transition);
 	break;
     case StateAny:
 	printf("(.:%d)",s->transition);
@@ -95,7 +98,7 @@ void _s_dump(SState *s) {
 #define spec_state_equal(sa,st,tt,s) \
     spec_is_equal(sa->type,st);\
     spec_is_equal(sa->transition,tt);\
-    spec_is_equal(sa->symbol,s);\
+    spec_is_equal(sa->data.symbol,s);\
     spec_is_ptr_equal(sa->out1,NULL);
 
 
@@ -257,12 +260,15 @@ void testMatchQ() {
     _t_free(s);
 }
 
+#define TEST_GROUP_SYMBOL1 1234
+#define TEST_GROUP_SYMBOL2 1235
+
 void testMatchGroup() {
 
     // /TEST_SYMBOL/(.*,(.)),4
     Tnode *s = _t_newi(0,SEMTREX_SYMBOL_LITERAL,TEST_SYMBOL);
     Tnode *ss = _t_newi(s,SEMTREX_SEQUENCE,0);
-    Tnode *sg = _t_newi(ss,SEMTREX_GROUP,0);
+    Tnode *sg = _t_newi(ss,SEMTREX_GROUP,TEST_GROUP_SYMBOL1);
     Tnode *ss2 = _t_newi(sg,SEMTREX_SEQUENCE,0);
     Tnode *st = _t_newi(ss2,SEMTREX_ZERO_OR_MORE,0);
     Tnode *sg2, *s3, *t, *r, *p1, *p2, *p1c, *p2c;
@@ -270,7 +276,7 @@ void testMatchGroup() {
     int rp2[] = {3,TREE_PATH_TERMINATOR};
 
     _t_newi(st,SEMTREX_SYMBOL_ANY,0);
-    sg2 = _t_newi(ss2,SEMTREX_GROUP,0);
+    sg2 = _t_newi(ss2,SEMTREX_GROUP,TEST_GROUP_SYMBOL2);
     _t_newi(sg2,SEMTREX_SYMBOL_ANY,0);
     s3 = _t_newi(ss,SEMTREX_SYMBOL_LITERAL,4);
 
@@ -280,7 +286,9 @@ void testMatchGroup() {
     spec_is_equal(_t_symbol(r),SEMTREX_MATCH_RESULTS);
     spec_is_equal(_t_children(r),2);
 
+    // you should be able to find the matched group positionaly
     p1 = _t_child(r,1);
+
     spec_is_equal(_t_symbol(p1),SEMTREX_MATCH);
     spec_is_equal(_t_children(p1),2);
 
@@ -299,6 +307,10 @@ void testMatchGroup() {
     spec_is_equal(_t_symbol(p2c),SEMTREX_MATCH_SIBLINGS_COUNT);
     spec_is_equal(*(int *)_t_surface(p2c),1);
     spec_is_path_equal(_t_surface(_t_child(p2,1)),rp2);
+
+    // you should also be able to find the matched group semantically
+    //    spec_is_ptr_equal(_t_get_match(r,TEST_GROUP_SYMBOL1),p1);
+    //spec_is_ptr_equal(_t_get_match(r,TEST_GROUP_SYMBOL2),p2);
 
     _t_free(r);
     _t_free(t);
@@ -319,17 +331,17 @@ void testMatchLiteralValue() {
     spec_is_true(_t_match(s,t));
     _t_free(s);
 
-    // /TEST_SYMBOL="x"
-    // don't match if value is wrong
-    ((char *)&sv.value)[0] = 'x';
+    // /TEST_SYMBOL2="t"
+    // don't match on wrong symbol
+    sv.symbol = TEST_SYMBOL2;
     s = _t_new(0,SEMTREX_VALUE_LITERAL,&sv,sizeof(Svalue));
     spec_is_true(!_t_match(s,t));
     _t_free(s);
+    sv.symbol = TEST_SYMBOL; // restore correct symbol
 
-    // /TEST_SYMBOL2="t"
-    // don't match on wrong symbol
-    ((char *)&sv.value)[0] = 't';
-    sv.symbol = TEST_SYMBOL2;
+    // /TEST_SYMBOL="x"
+    // don't match if value is wrong
+    ((char *)&sv.value)[0] = 'x';
     s = _t_new(0,SEMTREX_VALUE_LITERAL,&sv,sizeof(Svalue));
     spec_is_true(!_t_match(s,t));
     _t_free(s);

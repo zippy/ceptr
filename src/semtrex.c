@@ -85,12 +85,15 @@ char * __s_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP,int 
 	if (state_type == StateValue) {
 	    // copy the value from the semtrex into the state
 	    Svalue *sv = (Svalue *)_t_surface(t);
-	    s->length = sv->length;
-	    s->value = malloc(s->length);
-	    memcpy(s->value,&sv->value,s->length);
+	    s->data.value.symbol = sv->symbol;
+	    s->data.value.length = sv->length;
+	    s->data.value.value = malloc(sv->length);
+	    memcpy(s->data.value.value,&sv->value,sv->length);
+	}
+	else if (state_type == StateSymbol) {
+	    s->data.symbol = *(Symbol *)_t_surface(t);
 	}
 	*in = s;
-	s->symbol = *(Symbol *)_t_surface(t);
 	if (c > 0) {
 	    s->transition = TransitionDown;
 	    err = __s_makeFA(_t_child(t,1),&i,&o,level-1,statesP,gid);
@@ -162,13 +165,15 @@ char * __s_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP,int 
 	if (c != 1) return "Group must have 1 child";
 	s = state(StateGroup,statesP);
 	*in = s;
-	s->symbol = GroupOpen | gid; // reuse symbol to hold the group type + id
+	s->data.group.id = gid;
+	s->data.group.type = GroupOpen;
 	err = __s_makeFA(_t_child(t,1),&i,&o,level,statesP,gid+1);
 	if (err) return err;
 	s->out = i;
 	s = state(StateGroup,statesP);
 	patch(o,s,level);
-	s->symbol = gid; // reuse symbol to hold the group type + id
+	s->data.group.id = gid;
+	s->data.group.type = GroupClose;
 	*out = list1(&s->out);
 	break;
     default:
@@ -206,16 +211,16 @@ int __t_match(SState *s,Tnode *t,Tnode *r) {
 	if (!t) return 0;
 	else {
 	    size_t i;
-	    if (s->length != _t_size(t));
-	    p1 = s->value;
+	    if (s->data.value.length != _t_size(t));
+	    p1 = s->data.value.value;
 	    p2 = _t_surface(t);
-	    for(i=s->length;i>0;i--) {
+	    for(i=s->data.value.length;i>0;i--) {
 		if (*p1++ != *p2++) return 0;
 	    }
 	}
 	// no break to fall through and check symbol
     case StateSymbol:
-	if (!t || (s->symbol != _t_symbol(t))) return 0;
+	if (!t || (s->data.symbol != _t_symbol(t))) return 0;
 	// no break to fall through and handle transition and recursive calls
     case StateAny:
 	if (!t) return 0;
@@ -246,9 +251,9 @@ int __t_match(SState *s,Tnode *t,Tnode *r) {
 	    // if we aren't collecting up match results simply follow groups through
 	    return __t_match(s->out,t,r);
 	else {
-	    int match_id = s->symbol & 0xFFF;
-		int matched;
-	    if (s->symbol & GroupOpen) {
+	    int match_id = s->data.group.id;
+	    int matched;
+	    if (s->data.group.type == GroupOpen) {
 		// add on the semtrex match nodes and path to list of matches.
 		Tnode *m = _t_newi(r,SEMTREX_MATCH,match_id);
 		int *p = _t_get_path(t);
@@ -266,22 +271,22 @@ int __t_match(SState *s,Tnode *t,Tnode *r) {
 		int matched = __t_match(s->out,t,r);
 
 		if (matched) {
-		    // find the Match item that this is a CloseGroup of
-			int* p_start;
-			int* p_end;
-			int d;
+		    // use the match_id find the Match item that this is a CloseGroup of this item
+		    int* p_start;
+		    int* p_end;
+		    int d;
 		    Tnode *m =0;
 		    int i;
 		    for(i=1;i<=_t_children(r);i++) {
-				Tnode *n = _t_child(r,i);
-				if (*(int *)_t_surface(n) == match_id) {
-				    m = n;
-					break;
-				}
+			Tnode *n = _t_child(r,i);
+			if (*(int *)_t_surface(n) == match_id) {
+			    m = n;
+			    break;
+			}
 		    }
 
 		    if (m == 0) {
-				raise_error("couldn't find match for %d",match_id);
+			raise_error("couldn't find match for %d",match_id);
 		    }
 
 		    p_start = (int *)_t_surface(_t_child(m,1));

@@ -34,7 +34,7 @@ enum
     LISTENERS,                         // list of carrier/expectation/action tress that "listen" to changes on the flux
     LISTENER,                          // surface of the listener is the carrier symbol, and it has two children, expectation semtrex and action code tree
     EXPECTATION,                       // expectation is a semtrex (thus has one child which is the first part of the semtrex)
-    ACTION                             // code tree, which specifies the action to perform when an expectation's semtrex matches
+    ACTION,                            // code tree, which specifies the action to perform when an expectation's semtrex matches
 };
 
 typedef int Symbol;
