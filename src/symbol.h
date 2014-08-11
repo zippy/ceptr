@@ -7,7 +7,12 @@
 // System defined symbols.
 enum
 {
-    SEMTREX_SYMBOL_LITERAL = -999,     // This system symbol matches on the semantic type.         Ex: /TEST_SYMBOL
+    //-----  Basic symbols for underlying data types
+    NULL_SYMBOL = -999,
+    TREE_PATH,
+
+    //-----  Symbols for the different semantic parts of semtrexes
+    SEMTREX_SYMBOL_LITERAL,            // This system symbol matches on the semantic type.         Ex: /TEST_SYMBOL
     SEMTREX_SEQUENCE,                  // Match on a sequence of child nodes which are any valid semtrex's.  Ex: comma separated nodes
     SEMTREX_OR,                        // Logical OR between two Semtrex expressions.      Ex: |
     SEMTREX_SYMBOL_ANY,                // Match any symbol or value of the node.           Ex: .
@@ -19,10 +24,13 @@ enum
     SEMTREX_MATCH,                     // Returns result and sibling count.        Ex: {name:expr} (verify this is what it's supposed to do)
     SEMTREX_MATCH_RESULTS,             // In the FSA, keeps track of which part matches so it can be referenced
     SEMTREX_MATCH_SIBLINGS_COUNT,      // In the FSA, it's the length of the match
-    TREE_PATH,
+
+    //-----  Symbols for receptors
     RECEPTOR,
-    FLUX,
+    FLUX,                              // tree to hold all incoming and in process signals on the various aspects
     ASPECT,
+    SIGNALS,                           // list of signals on an aspect in the flux
+    SIGNAL,                            // a signal on the flux.  It's first child is the contents of the signal
     LISTENERS,                         // list of carrier/expectation/action tress that "listen" to changes on the flux
     LISTENER,                          // surface of the listener is the carrier symbol, and it has two children, expectation semtrex and action code tree
     EXPECTATION,                       // expectation is a semtrex (thus has one child which is the first part of the semtrex)

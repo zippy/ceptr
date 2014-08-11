@@ -7,7 +7,6 @@
 struct Receptor {
     Tnode *root;
     Tnode *flux;
-    Tnode *listeners;
 };
 typedef struct Receptor Receptor;
 
@@ -17,11 +16,16 @@ typedef int Aspect;
 
 /******************  create and destroy receptors */
 Receptor * _r_new();
-void _r_add_expect(Receptor *r,Symbol carrier,Tnode *semtrex,Tnode *action);
+void _r_add_expect(Receptor *r,Aspect aspect,Symbol carrier,Tnode *semtrex,Tnode *action);
 void _r_free(Receptor *r);
 
 /******************  receptor signaling */
 //*TODO: for now the signal is appended directly to the flux.  Later it should probably be copied
 void _r_send(Receptor *r,Receptor *from,Aspect aspect, Tnode *signal);
+
+/******************  internal utilities */
+Tnode *__r_get_aspect(Receptor *r,Aspect aspect);
+Tnode *__r_get_listeners(Receptor *r,Aspect aspect);
+Tnode *__r_get_signals(Receptor *r,Aspect aspect);
 
 #endif
