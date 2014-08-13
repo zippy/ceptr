@@ -192,7 +192,7 @@ SState * _s_makeFA(Tnode *t,int *statesP) {
     char *err = __s_makeFA(t,&in,&o,0,statesP);
     if (err != 0) {raise_error0(err);}
     patch(o,&matchstate,0);
-    //    _s_dump(in);
+    //        _s_dump(in);
     return in;
 }
 
@@ -206,7 +206,7 @@ void _s_freeFA(SState *s) {
 int __t_match(SState *s,Tnode *t,Tnode *r) {
     char *p1,*p2;
     int i;
-    //printf("tm: s:%d t:%d\n",s->symbol,t ? _t_symbol(t) : -1);
+    //printf("tm: s:%d t:%d\n",s->data.symbol,t ? _t_symbol(t) : -1);
     switch(s->type) {
     case StateValue:
 	if (!t) return 0;
@@ -225,7 +225,7 @@ int __t_match(SState *s,Tnode *t,Tnode *r) {
 	// no break to fall through and handle transition and recursive calls
     case StateAny:
 	if (!t) return 0;
-	//	if (s->out == &matchstate) return 1;
+	if (s->out == &matchstate) return 1;
 	switch(s->transition) {
 	case TransitionNextChild:
 	    return __t_match(s->out,_t_next_sibling(t),r);
@@ -247,7 +247,6 @@ int __t_match(SState *s,Tnode *t,Tnode *r) {
 	else return __t_match(s->out1,t,r);
 	break;
     case StateGroup:
-	if (!t) return 0;
 	if (!r)
 	    // if we aren't collecting up match results simply follow groups through
 	    return __t_match(s->out,t,r);
@@ -255,10 +254,11 @@ int __t_match(SState *s,Tnode *t,Tnode *r) {
 	    int match_id = s->data.group.id;
 	    int matched;
 	    if (s->data.group.type == GroupOpen) {
+		if (!t) return 0;
 		// add on the semtrex match nodes and path to list of matches.
 		Tnode *m = _t_newi(r,SEMTREX_MATCH,match_id);
 		int *p = _t_get_path(t);
-		_t_new(m,TREE_PATH,p,sizeof(int)*(_t_path_depth(p)+1));
+		Tnode *pp = _t_new(m,TREE_PATH,p,sizeof(int)*(_t_path_depth(p)+1));
 		free(p);
 		matched = __t_match(s->out,t,r);
 		if (!matched) {
@@ -270,7 +270,6 @@ int __t_match(SState *s,Tnode *t,Tnode *r) {
 	    else {
 		// make sure that what follows the group also matches
 		int matched = __t_match(s->out,t,r);
-
 		if (matched) {
 		    // use the match_id find the Match item that this is a CloseGroup of this item
 		    int* p_start;
@@ -290,12 +289,16 @@ int __t_match(SState *s,Tnode *t,Tnode *r) {
 			raise_error("couldn't find match for %d",match_id);
 		    }
 
-		    p_start = (int *)_t_surface(_t_child(m,1));
-		    p_end = _t_get_path(t);
-		    d = _t_path_depth(p_start);
-		    d--;
-		    _t_newi(m,SEMTREX_MATCH_SIBLINGS_COUNT,p_end[d]-p_start[d]);
-		    free(p_end);
+		    if (!t) i=1;
+		    else {
+			p_start = (int *)_t_surface(_t_child(m,1));
+			p_end = _t_get_path(t);
+			d = _t_path_depth(p_start);
+			d--;
+			i = p_end[d]-p_start[d];
+			free(p_end);
+		    }
+		    _t_newi(m,SEMTREX_MATCH_SIBLINGS_COUNT,i);
 		}
 		return matched;
 	    }

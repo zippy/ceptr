@@ -52,6 +52,16 @@ void testCreateTreeNodes() {
 
 }
 
+void testTreeOrthogonal() {
+    Tnode *t = _t_newi(0,TEST_SYMBOL,1234);
+    Tnode *t2 = _t_new_root(TEST_SYMBOL2);
+    Tnode *o = _t_newt(t,TEST_TREE_SYMBOL,t2);
+    char buf[2000];
+    __t_dump(t,0,buf);
+    spec_is_str_equal(buf," (TEST_SYMBOL:1234 (TEST_TREE_SYMBOL:{ (TEST_SYMBOL2)}))");
+}
+
+
 void testTreeRealloc() {
     Tnode *ts[12];
     Tnode *t = _t_new(0,TEST_SYMBOL,"t",2);
@@ -68,14 +78,14 @@ void testTreeRealloc() {
 }
 
 Tnode *_makeTestTree() {
-    Tnode *t = _t_new(0,TEST_SYMBOL,"t",2);
-    Tnode *t1 = _t_new(t,TEST_SYMBOL,"t1",3);
-    Tnode *t2 = _t_new(t,TEST_SYMBOL,"t2",3);
-    Tnode *t11 = _t_new(t1,TEST_SYMBOL,"t11",4);
-    Tnode *t111 = _t_new(t11,TEST_SYMBOL,"t111",5);
-    Tnode *t12 = _t_new(t1,TEST_SYMBOL,"t12",4);
-    Tnode *t21 = _t_new(t2,TEST_SYMBOL,"t21",4);
-    Tnode *t211 = _t_new(t21,TEST_SYMBOL,"t211",5);
+    Tnode *t = _t_new(0,TEST_STR_SYMBOL,"t",2);
+    Tnode *t1 = _t_new(t,TEST_STR_SYMBOL,"t1",3);
+    Tnode *t2 = _t_new(t,TEST_STR_SYMBOL,"t2",3);
+    Tnode *t11 = _t_new(t1,TEST_STR_SYMBOL,"t11",4);
+    Tnode *t111 = _t_new(t11,TEST_STR_SYMBOL,"t111",5);
+    Tnode *t12 = _t_new(t1,TEST_STR_SYMBOL,"t12",4);
+    Tnode *t21 = _t_new(t2,TEST_STR_SYMBOL,"t21",4);
+    Tnode *t211 = _t_new(t21,TEST_STR_SYMBOL,"t211",5);
     return t;
 }
 
@@ -156,8 +166,31 @@ void testTreePath() {
     _t_free(tt);
 }
 
+void testTreeClone() {
+    Tnode *t = _makeTestTree();
+    Tnode *c = _t_clone(t);
+
+    spec_is_true(t!=c);
+    spec_is_equal(_t_children(c),_t_children(t));
+    //    puts("\n"); puts(_td(t));
+    //    puts("\n"); puts(_td(c));
+
+    _t_free(t);
+    _t_free(c);
+}
+
+void testTreeModify() {
+    Tnode *t = _makeTestTree();
+    Tnode *x = _t_newi(0,TEST_SYMBOL,123);
+    _t_replace(t,1,x);
+    spec_is_ptr_equal(_t_child(t,1),x)
+}
+
 void testTree() {
     testCreateTreeNodes();
+    testTreeOrthogonal();
     testTreeRealloc();
     testTreePath();
+    testTreeClone();
+    testTreeModify();
 }

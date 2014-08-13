@@ -44,6 +44,15 @@ Tnode * _t_newi(Tnode *parent,Symbol symbol,int surface) {
     return t;
 }
 
+Tnode * _t_newt(Tnode *parent,Symbol symbol,Tnode *surface) {
+    Tnode *t = malloc(sizeof(Tnode));
+    *((Tnode **)&t->contents.surface) = surface;
+    t->contents.size = sizeof(Tnode *);
+    __t_init(t,parent,symbol);
+    t->context.flags |= TFLAG_SURFACE_IS_TREE;
+    return t;
+}
+
 Tnode *_t_new_root(Symbol symbol) {
     return _t_new(0,symbol,0,0);
 }
@@ -54,6 +63,12 @@ void _t_add(Tnode *t,Tnode *c) {
     }
     c->structure.parent = t;
     __t_append_child(t,c);
+}
+
+Tnode *_t_detach(Tnode *t,int i) {
+    Tnode *x = _t_child(t,i);
+    _t_remove(t,x);
+    return x;
 }
 
 // NOTE: does not free the memory occupied by c
@@ -75,6 +90,14 @@ void _t_remove(Tnode *t,Tnode *c) {
     }
 }
 
+// replaces the specified child with the given value.
+// NOTE: Does not free the memory of what was replaced!
+void _t_replace(Tnode *t,int i,Tnode *r) {
+    //TODO: add sanity checking to make sure child actually exists?
+    _t_free(t->structure.children[i-1]);
+    t->structure.children[i-1] = r;
+}
+
 /*****************  Node deletion */
 
 void __t_free_children(Tnode *t) {
@@ -93,7 +116,22 @@ void _t_free(Tnode *t) {
     __t_free_children(t);
     if (t->context.flags & TFLAG_ALLOCATED)
 	free(t->contents.surface);
+    if (t->context.flags & TFLAG_SURFACE_IS_TREE)
+	_t_free((Tnode *)t->contents.surface);
     free(t);
+}
+
+Tnode *__t_clone(Tnode *t,Tnode *p) {
+    int i,c=_t_children(t);
+    Tnode *nt = _t_new(p,_t_symbol(t),_t_surface(t),_t_size(t));
+    for(i=1;i<=c;i++) {
+	__t_clone(_t_child(t,i),nt);
+    }
+    return nt;
+}
+
+Tnode *_t_clone(Tnode *t) {
+    return __t_clone(t,0);
 }
 
 /******************** Node data accessors */
@@ -102,7 +140,7 @@ int _t_children(Tnode *t) {
 }
 
 void * _t_surface(Tnode *t) {
-    if (t->context.flags & TFLAG_ALLOCATED)
+    if (t->context.flags & (TFLAG_ALLOCATED|TFLAG_SURFACE_IS_TREE))
 	return t->contents.surface;
     else
 	return &t->contents.surface;
@@ -259,83 +297,57 @@ char * _t_sprint_path(int *fp,char *buf) {
 
 char __t_dump_buf[10000];
 
-char *__t_get_symbol_name(Symbol s) {
-    char *n;
+char *_s_get_symbol_name(Symbol s) {
+    if (s>NULL_SYMBOL && s <_LAST_SYS_SYMBOL )
+	return G_sys_symbol_names[s-NULL_SYMBOL];
     switch(s) {
     case TEST_SYMBOL:
-	n = "TEST_SYMBOL";
-	break;
-    case TREE_PATH:
-	n = "TREE_PATH";
-	break;
-    case SEMTREX_SYMBOL_LITERAL:
-	n = "LITERAL";
-	break;
-    case SEMTREX_MATCH:
-	n = "STX-MATCH";
-	break;
-    case SEMTREX_MATCH_SIBLINGS_COUNT:
-	n = "STX-M-SIBS";
-	break;
-    case SEMTREX_MATCH_RESULTS:
-	n = "STX-MATCH-RESULTS";
-	break;
-    case RECEPTOR:
-	n = "RECEPTOR";
-	break;
-    case FLUX:
-	n = "FLUX";
-	break;
-    case ASPECT:
-	n = "ASPECT";
-	break;
-    case ACTION:
-	n = "ACTION";
-	break;
-    case EXPECTATION:
-	n = "EXPECTATION";
-	break;
-    case LISTENERS:
-	n = "LISTENERS";
-	break;
-    case LISTENER:
-	n = "LISTENER";
-	break;
+	return "TEST_SYMBOL";
+    case TEST_SYMBOL2:
+	return "TEST_SYMBOL2";
+    case TEST_STR_SYMBOL:
+	return "TEST_STR_SYMBOL";
+    case TEST_TREE_SYMBOL:
+	return "TEST_TREE_SYMBOL";
     default:
-	n = 0;
+	"<unknown symbol>";
     }
-    return n;
+    return 0;
 }
 
-
-void __t_dump(Tnode *t,int level,char *buf) {
+char * __t_dump(Tnode *t,int level,char *buf) {
     Symbol s = _t_symbol(t);
     char b[255];
+    char tbuf[2000];
     int i;
-    char *n = __t_get_symbol_name(s);
+    char *n = _s_get_symbol_name(s);
     char *c;
     switch(s) {
-    case TEST_SYMBOL:
+    case TEST_STR_SYMBOL:
 	sprintf(buf," (%s:%s",n,(char *)_t_surface(t));
+	break;
+    case TEST_TREE_SYMBOL:
+	c = __t_dump((Tnode *)_t_surface(t),0,tbuf);
+	sprintf(buf," (%s:{%s}",n,c);
+	//	sprintf(buf," (%s:%s",n,);
 	break;
     case TREE_PATH:
 	sprintf(buf," (%s:%s",n,_t_sprint_path((int *)_t_surface(t),b));
 	break;
+    case TEST_SYMBOL:
     case SEMTREX_SYMBOL_LITERAL:
-	sprintf(buf," (%s:%d",n,*(int *)_t_surface(t));
-	break;
     case SEMTREX_MATCH:
-	sprintf(buf," (%s:%d",n,*(int *)_t_surface(t));
-	break;
     case SEMTREX_MATCH_SIBLINGS_COUNT:
-	sprintf(buf," (%s:%d",n,*(int *)_t_surface(t));
-	break;
     case ASPECT:
 	sprintf(buf," (%s:%d",n,*(int *)_t_surface(t));
 	break;
     case LISTENER:
-	c = __t_get_symbol_name(*(int *)_t_surface(t));
+	c = _s_get_symbol_name(*(int *)_t_surface(t));
 	sprintf(buf," (%s on %s",n,c?c:"<unknown>");
+	break;
+    case INTERPOLATE_SYMBOL:
+	c = _s_get_symbol_name(*(int *)_t_surface(t));
+	sprintf(buf," (%s:%s",n,c?c:"<unknown>");
 	break;
     default:
 	if (n == 0)
@@ -345,9 +357,12 @@ void __t_dump(Tnode *t,int level,char *buf) {
     }
     for(i=1;i<=_t_children(t);i++) __t_dump(_t_child(t,i),level+1,buf+strlen(buf));
     sprintf(buf+strlen(buf),")");
+    return buf;
 }
 
 char *_td(Tnode *t) {
-    __t_dump(t,0,__t_dump_buf);
+    if (!t) sprintf(__t_dump_buf,"<null-tree>");
+    else
+	__t_dump(t,0,__t_dump_buf);
     return __t_dump_buf;
 }

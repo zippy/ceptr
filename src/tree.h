@@ -25,6 +25,7 @@ typedef struct Tcontents Tcontents;
 
 //Flags:
 #define TFLAG_ALLOCATED 0x0001
+#define TFLAG_SURFACE_IS_TREE 0x0002
 
 struct Tcontext {
     int flags;
@@ -42,10 +43,14 @@ typedef struct Tnode Tnode;
 /*****************  Node creation and deletion*/
 Tnode * _t_new(Tnode *t,Symbol symbol, void *surface, size_t size);
 Tnode * _t_newi(Tnode *parent,Symbol symbol,int surface);
+Tnode * _t_newt(Tnode *parent,Symbol symbol,Tnode *t);
 Tnode *_t_new_root(Symbol symbol);
 void _t_add(Tnode *t,Tnode *c);
 void _t_remove(Tnode *t,Tnode *c);
+Tnode *_t_detach(Tnode *t,int i);
+void _t_replace(Tnode *t,int i,Tnode *r);
 void _t_free(Tnode *t);
+Tnode *_t_clone(Tnode *t);
 
 /******************** Node data accessors */
 int _t_children(Tnode *t);

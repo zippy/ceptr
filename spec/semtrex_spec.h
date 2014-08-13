@@ -31,7 +31,7 @@ Group ::= "GROUP(group_name)" / Semtrex
 */
 
 Tnode *_makeTestTree1() {
-	Tnode *t = _t_new(0,TEST_SYMBOL,"t",2);
+    Tnode *t = _t_new(0,TEST_STR_SYMBOL,"t",2);
     Tnode *t1 = _t_new(t,1,"t1",3);             // 1, 11, etc., are chosen symbols to match where the nodes are in the tree structure.  3 is length of t1....etc...
     Tnode *t11 = _t_new(t1,11,"t11",4);
     Tnode *t111 = _t_new(t11,111,"t111",5);
@@ -44,8 +44,8 @@ Tnode *_makeTestTree1() {
 }
 
 Tnode *_makeTestSemtrex1() {
-    //  /TEST_SYMBOL/(1/11/111),2,3
-    Tnode *s = _t_newi(0,SEMTREX_SYMBOL_LITERAL,TEST_SYMBOL);
+    //  /TEST_STR_SYMBOL/(1/11/111),2,3
+    Tnode *s = _t_newi(0,SEMTREX_SYMBOL_LITERAL,TEST_STR_SYMBOL);
     Tnode *ss = _t_newi(s,SEMTREX_SEQUENCE,0);
     Tnode *s1 = _t_newi(ss,SEMTREX_SYMBOL_LITERAL,1);
     Tnode *s11 = _t_newi(s1,SEMTREX_SYMBOL_LITERAL,11);
@@ -98,7 +98,7 @@ void _s_dump(SState *s) {
 #define spec_state_equal(sa,st,tt,s) \
     spec_is_equal(sa->type,st);\
     spec_is_equal(sa->transition,tt);\
-    spec_is_equal(sa->data.symbol,s);\
+    spec_is_symbol_equal(sa->data.symbol,s);\
     spec_is_ptr_equal(sa->out1,NULL);
 
 
@@ -110,7 +110,7 @@ void testMakeFA() {
     SState *sa = _s_makeFA(s,&states);
     spec_is_equal(states,6);
 
-    spec_state_equal(sa,StateSymbol,TransitionDown,TEST_SYMBOL);
+    spec_state_equal(sa,StateSymbol,TransitionDown,TEST_STR_SYMBOL);
 
     s1 = sa->out;
     spec_state_equal(s1,StateSymbol,TransitionDown,1);
@@ -156,7 +156,7 @@ void testMatchOr() {
     Tnode *s = _t_newi(0,SEMTREX_OR,0);
     Tnode *s1 = _t_newi(s,SEMTREX_SYMBOL_LITERAL,1);
     Tnode *s11 = _t_newi(s1,SEMTREX_SYMBOL_LITERAL,11);
-    Tnode *s2 = _t_newi(s,SEMTREX_SYMBOL_LITERAL,TEST_SYMBOL);
+    Tnode *s2 = _t_newi(s,SEMTREX_SYMBOL_LITERAL,TEST_STR_SYMBOL);
     Tnode *s3;
 
     spec_is_true(_t_match(s,t));
@@ -264,14 +264,21 @@ void testMatchQ() {
 #define TEST_GROUP_SYMBOL2 1235
 
 void testMatchGroup() {
+    Tnode *sg2, *s3, *t, *r, *p1, *p2, *p1c, *p2c;
+    t = _makeTestTree1();
 
-    // /TEST_SYMBOL/(.*,(.)),4
-    Tnode *s = _t_newi(0,SEMTREX_SYMBOL_LITERAL,TEST_SYMBOL);
+    // /{TEST_STR_SYMBOL}           <- the most simple group semtrex
+    Tnode *g = _t_newi(0,SEMTREX_GROUP,TEST_STR_SYMBOL);
+    _t_newi(g,SEMTREX_SYMBOL_LITERAL,TEST_STR_SYMBOL);
+
+    spec_is_true(_t_matchr(g,t,&r));
+
+    // /TEST_STR_SYMBOL/{.*,{.}},4  <- a more complicated group semtrex
+    Tnode *s = _t_newi(0,SEMTREX_SYMBOL_LITERAL,TEST_STR_SYMBOL);
     Tnode *ss = _t_newi(s,SEMTREX_SEQUENCE,0);
     Tnode *sg = _t_newi(ss,SEMTREX_GROUP,TEST_GROUP_SYMBOL1);
     Tnode *ss2 = _t_newi(sg,SEMTREX_SEQUENCE,0);
     Tnode *st = _t_newi(ss2,SEMTREX_ZERO_OR_MORE,0);
-    Tnode *sg2, *s3, *t, *r, *p1, *p2, *p1c, *p2c;
     int rp1[] = {1,TREE_PATH_TERMINATOR};
     int rp2[] = {3,TREE_PATH_TERMINATOR};
 
@@ -280,31 +287,29 @@ void testMatchGroup() {
     _t_newi(sg2,SEMTREX_SYMBOL_ANY,0);
     s3 = _t_newi(ss,SEMTREX_SYMBOL_LITERAL,4);
 
-    t = _makeTestTree1();
-
     spec_is_true(_t_matchr(s,t,&r));
-    spec_is_equal(_t_symbol(r),SEMTREX_MATCH_RESULTS);
+    spec_is_symbol_equal(_t_symbol(r),SEMTREX_MATCH_RESULTS);
     spec_is_equal(_t_children(r),2);
 
     // you should be able to find the matched group positionaly
     p1 = _t_child(r,1);
 
-    spec_is_equal(_t_symbol(p1),SEMTREX_MATCH);
+    spec_is_symbol_equal(_t_symbol(p1),SEMTREX_MATCH);
     spec_is_equal(_t_children(p1),2);
 
     p1c = _t_child(p1,2);
 
     //    printf("%s\n",_td(r));
-    spec_is_equal(_t_symbol(p1c),SEMTREX_MATCH_SIBLINGS_COUNT);
+    spec_is_symbol_equal(_t_symbol(p1c),SEMTREX_MATCH_SIBLINGS_COUNT);
     spec_is_equal(*(int *)_t_surface(p1c),3);
     spec_is_path_equal(_t_surface(_t_child(p1,1)),rp1);
 
 
     p2 = _t_child(r,2);
-    spec_is_equal(_t_symbol(p2),SEMTREX_MATCH);
+    spec_is_symbol_equal(_t_symbol(p2),SEMTREX_MATCH);
 
     p2c = _t_child(p2,2);
-    spec_is_equal(_t_symbol(p2c),SEMTREX_MATCH_SIBLINGS_COUNT);
+    spec_is_symbol_equal(_t_symbol(p2c),SEMTREX_MATCH_SIBLINGS_COUNT);
     spec_is_equal(*(int *)_t_surface(p2c),1);
     spec_is_path_equal(_t_surface(_t_child(p2,1)),rp2);
 
@@ -312,7 +317,6 @@ void testMatchGroup() {
     // you should also be able to find the matched group semantically
     spec_is_ptr_equal(_t_get_match(r,TEST_GROUP_SYMBOL1),p1);
     spec_is_ptr_equal(_t_get_match(r,TEST_GROUP_SYMBOL2),p2);
-
 
     _t_free(r);
     _t_free(t);
@@ -323,7 +327,7 @@ void testMatchLiteralValue() {
     Tnode *t = _makeTestTree1();
     Tnode *s;
     Svalue sv;
-    sv.symbol = TEST_SYMBOL;
+    sv.symbol = TEST_STR_SYMBOL;
     sv.length = 2;
     ((char *)&sv.value)[0] = 't';
     ((char *)&sv.value)[1] = 0;				// string terminator
