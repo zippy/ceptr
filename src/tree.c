@@ -335,7 +335,6 @@ char * __t_dump(Tnode *t,int level,char *buf) {
 	sprintf(buf," (%s:%s",n,_t_sprint_path((int *)_t_surface(t),b));
 	break;
     case TEST_SYMBOL:
-    case SEMTREX_SYMBOL_LITERAL:
     case SEMTREX_MATCH:
     case SEMTREX_MATCH_SIBLINGS_COUNT:
     case ASPECT:
@@ -346,6 +345,8 @@ char * __t_dump(Tnode *t,int level,char *buf) {
 	sprintf(buf," (%s on %s",n,c?c:"<unknown>");
 	break;
     case INTERPOLATE_SYMBOL:
+    case SEMTREX_GROUP:
+    case SEMTREX_SYMBOL_LITERAL:
 	c = _s_get_symbol_name(*(int *)_t_surface(t));
 	sprintf(buf," (%s:%s",n,c?c:"<unknown>");
 	break;
