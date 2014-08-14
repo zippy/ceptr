@@ -132,9 +132,12 @@ void testActionReceptor() {
     spec_is_true(_t_match(sg,signal));
 
     _r_add_listener(r,DEFAULT_ASPECT,TEST_SYMBOL,expect,act);
-    Tnode *result = _r_send(r,r,DEFAULT_ASPECT,signal);
+    Tnode *s = _r_send(r,r,DEFAULT_ASPECT,signal);
 
-    // the result should be a tree with the matched TEST_SYMBOL value interpolated
+    spec_is_symbol_equal(_t_symbol(s),SIGNAL);
+    Tnode *result = _t_child(_t_child(s,1),1);
+    puts(_td(r->root));
+    // the result should be signal tree with  the matched TEST_SYMBOL value interpolated
     // in the right place
     spec_is_symbol_equal(_t_symbol(result),TEST_SYMBOL2);
     Tnode *r1 = _t_child(result,1);

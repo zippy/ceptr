@@ -106,7 +106,7 @@ Tnode *_r_make_run_tree(Tnode *code,int num_params,...) {
 
 /* send a signal to a receptor on a given aspect */
 Tnode * _r_send(Receptor *r,Receptor *from,Aspect aspect, Tnode *signal_contents) {
-    Tnode *m,*e,*l,*result = 0;
+    Tnode *m,*e,*l,*rt=0;
 
     Tnode *as = __r_get_signals(r,aspect);
     Tnode *s = _t_newt(as,SIGNAL,signal_contents);
@@ -119,16 +119,17 @@ Tnode * _r_send(Receptor *r,Receptor *from,Aspect aspect, Tnode *signal_contents
 	e = _t_child(l,1);
 	// if we get a match, create a run tree from the action, using the match and signal as the parameters
 	if (_t_matchr(_t_child(e,1),signal_contents,&m)) {
-	    result = _r_make_run_tree(_t_child(l,2),2,m,signal_contents);
-	    _t_add(s,result);
+	    rt = _r_make_run_tree(_t_child(l,2),2,m,signal_contents);
+	    _t_add(s,rt);
 	    // for now just reduce the tree in place
 	    // TODO: move this to adding the runtree to the thread pool
-	    result = _r_reduce(result);
+	    rt = _r_reduce(rt);
 	}
     }
-    //TODO: results should actually be a what? success/failure of send
 
-    return result;
+    //TODO: results should actually be a what? success/failure of send
+    if (rt == 0) return 0;
+    else return s;
 }
 
 
