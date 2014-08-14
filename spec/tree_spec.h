@@ -181,14 +181,18 @@ void testTreeModify() {
     Tnode *t = _makeTestTree();
     Tnode *x = _t_newi(0,TEST_SYMBOL,123);
     char buf[2000];
-    _t_replace(t,2,x);
-    spec_is_ptr_equal(_t_child(t,2),x);
+    _t_replace(t,1,x);
+    spec_is_ptr_equal(_t_child(t,1),x);
 
     __t_dump(t,0,buf);
-    spec_is_str_equal(_td(t)," (TEST_STR_SYMBOL:t (TEST_STR_SYMBOL:t1 (TEST_STR_SYMBOL:t11 (TEST_STR_SYMBOL:t111)) (TEST_STR_SYMBOL:t12)) (TEST_SYMBOL:123))");
-    _t_detach(t,1);
+    spec_is_str_equal(_td(t)," (TEST_STR_SYMBOL:t (TEST_SYMBOL:123) (TEST_STR_SYMBOL:t2 (TEST_STR_SYMBOL:t21 (TEST_STR_SYMBOL:t211))))");
+    Tnode *y = _t_detach(t,1);
     __t_dump(t,0,buf);
-    spec_is_str_equal(buf," (TEST_STR_SYMBOL:t (TEST_SYMBOL:123))");
+    spec_is_str_equal(buf," (TEST_STR_SYMBOL:t (TEST_STR_SYMBOL:t2 (TEST_STR_SYMBOL:t21 (TEST_STR_SYMBOL:t211))))");
+    spec_is_ptr_equal(x,y);
+
+    _t_free(t);
+    _t_free(x);
 }
 
 void testTree() {
