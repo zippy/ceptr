@@ -172,8 +172,6 @@ void testTreeClone() {
 
     spec_is_true(t!=c);
     spec_is_equal(_t_children(c),_t_children(t));
-    //    puts("\n"); puts(_td(t));
-    //    puts("\n"); puts(_td(c));
 
     _t_free(t);
     _t_free(c);
@@ -182,8 +180,15 @@ void testTreeClone() {
 void testTreeModify() {
     Tnode *t = _makeTestTree();
     Tnode *x = _t_newi(0,TEST_SYMBOL,123);
-    _t_replace(t,1,x);
-    spec_is_ptr_equal(_t_child(t,1),x)
+    char buf[2000];
+    _t_replace(t,2,x);
+    spec_is_ptr_equal(_t_child(t,2),x);
+
+    __t_dump(t,0,buf);
+    spec_is_str_equal(_td(t)," (TEST_STR_SYMBOL:t (TEST_STR_SYMBOL:t1 (TEST_STR_SYMBOL:t11 (TEST_STR_SYMBOL:t111)) (TEST_STR_SYMBOL:t12)) (TEST_SYMBOL:123))");
+    _t_detach(t,1);
+    __t_dump(t,0,buf);
+    spec_is_str_equal(buf," (TEST_STR_SYMBOL:t (TEST_SYMBOL:123))");
 }
 
 void testTree() {
