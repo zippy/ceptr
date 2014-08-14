@@ -113,25 +113,27 @@ void testActionReceptor() {
 
     Receptor *r = _r_new();
 
-    // The signal is a very simple symbol: TEST_SYMBOL with a value
-    Tnode *signal = _t_newi(0,TEST_SYMBOL,314);
+    // The signal is a name with a child that is the first name
+    Tnode *signal = _t_new_root(TEST_NAME_SYMBOL);
+    _t_new(signal,TEST_FIRST_NAME_SYMBOL,"eric",5);
 
-    // The listener just matches on signal of TEST_SYMBOL type and responds with
-    // a tree of the matched value, kind of like a ping.
+    // The listener just matches on signal TEST_NAME_TYPE type and responds with
+    // converted tree to: /TEST_SYMBOL2/TEST_FIRST_NAME
     Tnode *expect = _t_new_root(EXPECTATION);
-    Tnode *sg = _t_newi(expect,SEMTREX_GROUP,TEST_SYMBOL);
-    _t_newi(sg,SEMTREX_SYMBOL_LITERAL,TEST_SYMBOL);
+    Tnode *sa = _t_newi(expect,SEMTREX_SYMBOL_ANY,0);
+    Tnode *sg = _t_newi(sa,SEMTREX_GROUP,TEST_FIRST_NAME_SYMBOL);
+    _t_newi(sg,SEMTREX_SYMBOL_LITERAL,TEST_FIRST_NAME_SYMBOL);
     Tnode *act = _t_new_root(ACTION);
     Tnode *resp = _t_newi(act,RESPOND,0);
     Tnode *n = _t_newi(resp,INTERPOLATE_FROM_MATCH,0);
     Tnode *t = _t_newi(n,TEST_SYMBOL2,0);
-    _t_newi(t,INTERPOLATE_SYMBOL,TEST_SYMBOL);
+    _t_newi(t,INTERPOLATE_SYMBOL,TEST_FIRST_NAME_SYMBOL);
 
 
     // confirm that the signal will match on our expectation
-    spec_is_true(_t_match(sg,signal));
+    spec_is_true(_t_match(sa,signal));
 
-    _r_add_listener(r,DEFAULT_ASPECT,TEST_SYMBOL,expect,act);
+    _r_add_listener(r,DEFAULT_ASPECT,TEST_NAME_SYMBOL,expect,act);
     Tnode *s = _r_send(r,r,DEFAULT_ASPECT,signal);
 
     spec_is_symbol_equal(_t_symbol(s),SIGNAL);
@@ -141,8 +143,8 @@ void testActionReceptor() {
     // in the right place
     spec_is_symbol_equal(_t_symbol(result),TEST_SYMBOL2);
     Tnode *r1 = _t_child(result,1);
-    spec_is_symbol_equal(_t_symbol(r1),TEST_SYMBOL);
-    spec_is_equal(*(int *)_t_surface(r1),314);
+    spec_is_symbol_equal(_t_symbol(r1),TEST_FIRST_NAME_SYMBOL);
+    spec_is_str_equal((char *)_t_surface(r1),"eric");
     _t_free(result);
 
     // TODO: a signal that has no matches should return a null result?

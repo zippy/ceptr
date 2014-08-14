@@ -300,19 +300,9 @@ char __t_dump_buf[10000];
 char *_s_get_symbol_name(Symbol s) {
     if (s>NULL_SYMBOL && s <_LAST_SYS_SYMBOL )
 	return G_sys_symbol_names[s-NULL_SYMBOL];
-    switch(s) {
-    case TEST_SYMBOL:
-	return "TEST_SYMBOL";
-    case TEST_SYMBOL2:
-	return "TEST_SYMBOL2";
-    case TEST_STR_SYMBOL:
-	return "TEST_STR_SYMBOL";
-    case TEST_TREE_SYMBOL:
-	return "TEST_TREE_SYMBOL";
-    default:
-	"<unknown symbol>";
-    }
-    return 0;
+    if (s>=TEST_SYMBOL && s < _LAST_TEST_SYMBOL)
+	return G_test_symbol_names[s-TEST_SYMBOL];
+    return "<unknown symbol>";
 }
 
 char * __t_dump(Tnode *t,int level,char *buf) {
@@ -324,6 +314,7 @@ char * __t_dump(Tnode *t,int level,char *buf) {
     char *c;
     switch(s) {
     case TEST_STR_SYMBOL:
+    case TEST_FIRST_NAME_SYMBOL:
 	sprintf(buf," (%s:%s",n,(char *)_t_surface(t));
 	break;
     case TEST_TREE_SYMBOL:
@@ -335,7 +326,6 @@ char * __t_dump(Tnode *t,int level,char *buf) {
 	sprintf(buf," (%s:%s",n,_t_sprint_path((int *)_t_surface(t),b));
 	break;
     case TEST_SYMBOL:
-    case SEMTREX_MATCH:
     case SEMTREX_MATCH_SIBLINGS_COUNT:
     case ASPECT:
 	sprintf(buf," (%s:%d",n,*(int *)_t_surface(t));
@@ -346,6 +336,7 @@ char * __t_dump(Tnode *t,int level,char *buf) {
 	break;
     case INTERPOLATE_SYMBOL:
     case SEMTREX_GROUP:
+    case SEMTREX_MATCH:
     case SEMTREX_SYMBOL_LITERAL:
 	c = _s_get_symbol_name(*(int *)_t_surface(t));
 	sprintf(buf," (%s:%s",n,c?c:"<unknown>");
