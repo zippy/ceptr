@@ -232,7 +232,7 @@ int * _t_get_path(Tnode *t) {
 	// reverse the list by swapping elements going from the outside to the center
 	i-=2;
 	l = i+1;
-	k = i/2;
+	k = i/2+1;
 	for(j=0;j<k;j++) {
 	    temp = p[j];
 	    p[j] = p[i];

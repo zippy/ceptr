@@ -124,6 +124,11 @@ void testTreePath() {
     spec_is_path_equal(path,p3);
     free(path);
 
+    int px[] = {2,1,TREE_PATH_TERMINATOR};
+    path = _t_get_path(_t_get(t,px));
+    spec_is_path_equal(path,px);
+    free(path);
+
     p3[2] = 2;
     spec_is_ptr_equal(_t_get(t,p3),NULL);
 
