@@ -8,8 +8,20 @@ enum {TEST_SYMBOL= 99,TEST_SYMBOL2,TEST_STR_SYMBOL,TEST_TREE_SYMBOL,
 static char *G_test_symbol_names[] = {
     "TEST_SYMBOL","TEST_SYMBOL2","TEST_STR_SYMBOL","TEST_TREE_SYMBOL",
     "TEST_NAME_SYMBOL","TEST_FIRST_NAME_SYMBOL"};
-// System defined symbols.
 
+// System defined structures
+enum
+{
+    NULL_STRUCTURE = -999,
+    SEMTREX,
+    INTEGER,
+    FLOAT,
+    _LAST_SYS_STRUCTURE
+
+};
+typedef int Structure;
+
+// System defined symbols.
 enum
 {
     //-----  Basic symbols for underlying data types
@@ -33,6 +45,11 @@ enum
     //-----  Symbols for receptors
     RECEPTOR,
     FLUX,                              // tree to hold all incoming and in process signals on the various aspects
+    STRUCTURES,
+    STRUCTURE_DEF,
+    STRUCTURE_PART,
+    SYMBOLS,
+    SYMBOL_DEF,
     ASPECT,
     SIGNALS,                           // list of signals on an aspect in the flux
     SIGNAL,                            // a signal on the flux.  It's first child is the contents of the signal
@@ -64,6 +81,11 @@ static char *G_sys_symbol_names[] = {
     "SEMTREX_MATCH_SIBLINGS_COUNT",
     "RECEPTOR",
     "FLUX",
+    "STRUCTURES",
+    "STRUCTURE_DEF",
+    "STRUCTURE_PART",
+    "SYMBOLS",
+    "SYMBOL_DEF",
     "ASPECT",
     "SIGNALS",
     "SIGNAL",

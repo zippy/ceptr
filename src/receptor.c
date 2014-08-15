@@ -8,9 +8,12 @@ Receptor *_r_new() {
     Receptor *r = malloc(sizeof(Receptor));
     r->root = _t_new_root(RECEPTOR);
     r->flux = _t_newi(r->root,FLUX,0);
+    r->structures = _t_newi(r->root,STRUCTURES,0);
+    r->symbols = _t_newi(r->root,SYMBOLS,0);
     Tnode *a = _t_newi(r->flux,ASPECT,DEFAULT_ASPECT);
     _t_newi(a,LISTENERS,0);
     _t_newi(a,SIGNALS,0);
+    r->table = NULL;
     return r;
 }
 
@@ -29,6 +32,45 @@ void _r_free(Receptor *r) {
     free(r);
 }
 
+/*****************  receptor symbols and structures */
+
+Symbol _r_def_symbol(Receptor *r,Structure s,char *label){
+    Tnode *def = _t_new(r->symbols,SYMBOL_DEF,label,strlen(label)+1);
+    int *path = _t_get_path(def);
+    int i = path[_t_path_depth(path)-1];
+
+    labelSet(&r->table,label,path);
+    free(path);
+    return i;
+}
+
+Structure _r_def_structure(Receptor *r,char *label,int num_params,...) {
+    va_list params;
+    Tnode *def = _t_new(r->structures,STRUCTURE_DEF,label,strlen(label)+1);
+    int i;
+
+    va_start(params,num_params);
+    for(i=0;i<num_params;i++) {
+	_t_newi(def,STRUCTURE_PART,va_arg(params,Symbol));
+    }
+    va_end(params);
+    int *path = _t_get_path(def);
+    labelSet(&r->table,label,path);
+    i = path[_t_path_depth(path)-1];
+    free(path);
+    return i;
+}
+
+Symbol _r_get_symbol_by_label(Receptor *r,char *label) {
+    int *path = labelGet(&r->table,label);
+    int i = path[_t_path_depth(path)-1];
+}
+
+Structure _r_get_structure_by_label(Receptor *r,char *label){
+    int *path = labelGet(&r->table,label);
+    int i = path[_t_path_depth(path)-1];
+}
+
 /******************  receptor signaling */
 
 Tnode * _r_interpolate_from_match(Tnode *t,Tnode *mr,Tnode *v) {
@@ -44,7 +86,8 @@ Tnode * _r_interpolate_from_match(Tnode *t,Tnode *mr,Tnode *v) {
 	    raise_error0("expecting to get a value from match!!");
 	}
 
-	//TODO: fix, this should be in tree.c and should deal with children too
+	// TODO: fix, this should be in tree.c and should deal with children too
+	// TODO: also, what to do if match has sibs??
 	size_t l = t->contents.size = _t_size(x);
         if (x->context.flags & TFLAG_ALLOCATED) {
 	    t->contents.surface = malloc(l);

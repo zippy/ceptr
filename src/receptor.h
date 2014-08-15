@@ -7,6 +7,9 @@
 struct Receptor {
     Tnode *root;
     Tnode *flux;
+    Tnode *structures;
+    Tnode *symbols;
+    LabelTable table;
 };
 typedef struct Receptor Receptor;
 
@@ -18,6 +21,12 @@ typedef int Aspect;
 Receptor * _r_new();
 void _r_add_listener(Receptor *r,Aspect aspect,Symbol carrier,Tnode *semtrex,Tnode *action);
 void _r_free(Receptor *r);
+
+/*****************  receptor symbols and structures */
+Symbol _r_def_symbol(Receptor *r,Structure s,char *label);
+Symbol _r_get_symbol_by_label(Receptor *r,char *label);
+Structure _r_def_structure(Receptor *r,char *label,int num_params,...);
+Structure _r_get_structure_by_label(Receptor *r,char *label);
 
 /******************  receptor signaling */
 Tnode *_r_reduce(Tnode *run_tree);

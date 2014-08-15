@@ -315,6 +315,8 @@ char * __t_dump(Tnode *t,int level,char *buf) {
     switch(s) {
     case TEST_STR_SYMBOL:
     case TEST_FIRST_NAME_SYMBOL:
+    case STRUCTURE_DEF:
+    case SYMBOL_DEF:
 	sprintf(buf," (%s:%s",n,(char *)_t_surface(t));
 	break;
     case TEST_TREE_SYMBOL:
@@ -334,6 +336,7 @@ char * __t_dump(Tnode *t,int level,char *buf) {
 	c = _s_get_symbol_name(*(int *)_t_surface(t));
 	sprintf(buf," (%s on %s",n,c?c:"<unknown>");
 	break;
+    case STRUCTURE_PART:
     case INTERPOLATE_SYMBOL:
     case SEMTREX_GROUP:
     case SEMTREX_MATCH:

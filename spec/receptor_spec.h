@@ -1,7 +1,7 @@
 #include "../src/ceptr.h"
 #include "../src/receptor.h"
 
-void testCreateReceptor() {
+void testReceptorCreate() {
     Receptor *r;
     r = _r_new();
     spec_is_symbol_equal(_t_symbol(r->root),RECEPTOR);
@@ -14,11 +14,26 @@ void testCreateReceptor() {
     spec_is_symbol_equal(_t_symbol(t),ASPECT);
     spec_is_equal(*(int *)_t_surface(t),DEFAULT_ASPECT);
 
+    // test that the symbols and structures tress are set up correctly
+    t = _t_child(r->root,2);
+    spec_is_symbol_equal(_t_symbol(r->structures),STRUCTURES);
+    spec_is_ptr_equal(t,r->structures);
+    t = _t_child(r->root,3);
+    spec_is_symbol_equal(_t_symbol(r->symbols),SYMBOLS);
+    spec_is_ptr_equal(t,r->symbols);
+
     // test that listeners and signals are set up correctly on the default aspect
     t = __r_get_listeners(r,DEFAULT_ASPECT);
     spec_is_symbol_equal(_t_symbol(t),LISTENERS);
     t = __r_get_signals(r,DEFAULT_ASPECT);
     spec_is_symbol_equal(_t_symbol(t),SIGNALS);
+
+    _r_free(r);
+}
+
+void testReceptorAddListener() {
+    Receptor *r;
+    r = _r_new();
 
     // test that you can add a listener to a receptor's aspect
     Tnode *s = _t_new_root(EXPECTATION);
@@ -35,7 +50,7 @@ void testCreateReceptor() {
     _r_free(r);
 }
 
-void testSignalReceptor() {
+void testReceptorSignal() {
     Receptor *r = _r_new();
     Tnode *signal = _t_newi(0,TEST_SYMBOL,314);
     _r_send(r,r,DEFAULT_ASPECT,signal);
@@ -109,7 +124,7 @@ void testRunTreeReduce() {
 
 //TODO: when interpolating from a match, how do we handle non-leaf interpollations, i.e. where do you hook children onto?
 
-void testActionReceptor() {
+void testReceptorAction() {
 
     Receptor *r = _r_new();
 
@@ -138,7 +153,7 @@ void testActionReceptor() {
 
     spec_is_symbol_equal(_t_symbol(s),SIGNAL);
     Tnode *result = _t_child(_t_child(s,1),1);
-    puts(_td(r->root));
+
     // the result should be signal tree with  the matched TEST_SYMBOL value interpolated
     // in the right place
     spec_is_symbol_equal(_t_symbol(result),TEST_SYMBOL2);
@@ -155,11 +170,37 @@ void testActionReceptor() {
     _r_free(r);
 }
 
+void testReceptorDef() {
+    Receptor *r = _r_new();
+
+    Symbol lat = _r_def_symbol(r,FLOAT,"latitude");
+    Symbol lon = _r_def_symbol(r,FLOAT,"longitude");
+    Tnode *def;
+
+    spec_is_str_equal("latitude",(char *)_t_surface(def = _t_child(r->symbols,lat)));
+    spec_is_str_equal("longitude",(char *)_t_surface(_t_child(r->symbols,lon)));
+
+    int *path = labelGet(&r->table,"latitude");
+    spec_is_ptr_equal(_t_get(r->root,path),def);
+    spec_is_equal(_r_get_symbol_by_label(r,"latitude"),lat);
+
+    Structure latlong = _r_def_structure(r,"latlong",2,lat,lon);
+
+    def = _t_child(r->structures,latlong);
+    spec_is_str_equal("latlong",(char *)_t_surface(def));
+
+    path = labelGet(&r->table,"latlong");
+    spec_is_ptr_equal(_t_get(r->root,path),def);
+
+    spec_is_equal(_r_get_structure_by_label(r,"latlong"),latlong);
+}
 
 void testReceptor() {
-    testCreateReceptor();
-    testSignalReceptor();
+    testReceptorCreate();
+    testReceptorAddListener();
+    testReceptorSignal();
     testRunTree();
     testRunTreeReduce();
-    testActionReceptor();
+    testReceptorAction();
+    testReceptorDef();
 }
