@@ -34,41 +34,43 @@ void _r_free(Receptor *r) {
 
 /*****************  receptor symbols and structures */
 
-Symbol _r_def_symbol(Receptor *r,Structure s,char *label){
-    Tnode *def = _t_new(r->symbols,SYMBOL_DEF,label,strlen(label)+1);
+int __set_label_for_def(Receptor *r,char *label,Tnode *def) {
     int *path = _t_get_path(def);
-    int i = path[_t_path_depth(path)-1];
-
     labelSet(&r->table,label,path);
+    int i = path[_t_path_depth(path)-1];
     free(path);
     return i;
+}
+
+int __get_label_idx(Receptor *r,char *label) {
+    int *path = labelGet(&r->table,label);
+    return path[_t_path_depth(path)-1];
+}
+
+Symbol _r_def_symbol(Receptor *r,Structure s,char *label){
+    Tnode *def = _t_new(r->symbols,SYMBOL_DEF,label,strlen(label)+1);
+    return __set_label_for_def(r,label,def);
 }
 
 Structure _r_def_structure(Receptor *r,char *label,int num_params,...) {
     va_list params;
     Tnode *def = _t_new(r->structures,STRUCTURE_DEF,label,strlen(label)+1);
     int i;
-
     va_start(params,num_params);
     for(i=0;i<num_params;i++) {
 	_t_newi(def,STRUCTURE_PART,va_arg(params,Symbol));
     }
     va_end(params);
-    int *path = _t_get_path(def);
-    labelSet(&r->table,label,path);
-    i = path[_t_path_depth(path)-1];
-    free(path);
-    return i;
+
+    return __set_label_for_def(r,label,def);
 }
 
 Symbol _r_get_symbol_by_label(Receptor *r,char *label) {
-    int *path = labelGet(&r->table,label);
-    int i = path[_t_path_depth(path)-1];
+    return __get_label_idx(r,label);
 }
 
 Structure _r_get_structure_by_label(Receptor *r,char *label){
-    int *path = labelGet(&r->table,label);
-    int i = path[_t_path_depth(path)-1];
+    return __get_label_idx(r,label);
 }
 
 /******************  receptor signaling */
