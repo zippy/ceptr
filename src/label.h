@@ -20,4 +20,6 @@ void _labelSet(LabelTable *table, Label l,int *path);
 int *labelGet(LabelTable *table, char * l);
 int *_labelGet(LabelTable *table, Label l);
 
+void lableTableFree(LabelTable *table);
+
 #endif

@@ -12,4 +12,5 @@ void testLabel() {
     pp = labelGet(&table,"fish");
     spec_is_path_equal(p,pp);
 
+    lableTableFree(&table);
 }

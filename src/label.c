@@ -9,7 +9,7 @@ Label str2label(char* s) {
 }
 
 void _labelSet(LabelTable *table,Label l,int *path){
-    struct table_elem *e;
+    table_elem *e;
 
     e = malloc(sizeof(struct table_elem));
     e->label = l;
@@ -19,7 +19,7 @@ void _labelSet(LabelTable *table,Label l,int *path){
 }
 
 int *_labelGet(LabelTable *table, Label l){
-    struct table_elem *e;
+    table_elem *e;
     HASH_FIND_INT( *table, &l, e );
     return e->path;
 }
@@ -33,3 +33,15 @@ int *labelGet(LabelTable *table, char *s) {
 }
 
 // TODO: label delete
+void _labelDelete(LabelTable *table,Label l) {
+}
+void lableDelete(LabelTable *table,char *s) {
+}
+
+void lableTableFree(LabelTable *table) {
+    table_elem *cur,*tmp;
+    HASH_ITER(hh, *table, cur, tmp) {
+	HASH_DEL(*table,cur);  /* delete; cur advances to next */
+	free(cur);
+    }
+}
