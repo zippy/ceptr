@@ -75,9 +75,6 @@ int *_t_get_path(Tnode *t);
 void * _t_get_surface(Tnode *t,int *p);
 char * _t_sprint_path(int *fp,char *buf);
 
-/*****************  Tree debugging utilities */
-char *_td(Tnode *t);
-
 /*
 _t_new();
 _t_free()

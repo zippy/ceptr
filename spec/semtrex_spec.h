@@ -1,6 +1,7 @@
 #include "../src/ceptr.h"
 #include "../src/hashfn.h"
 #include "../src/semtrex.h"
+#include "../src/receptor.h"
 
 /*
 Semtrex TGF:
@@ -98,7 +99,7 @@ void _s_dump(SState *s) {
 #define spec_state_equal(sa,st,tt,s) \
     spec_is_equal(sa->type,st);\
     spec_is_equal(sa->transition,tt);\
-    spec_is_symbol_equal(sa->data.symbol,s);\
+    spec_is_symbol_equal(0,sa->data.symbol,s);	\
     spec_is_ptr_equal(sa->out1,NULL);
 
 
@@ -288,28 +289,28 @@ void testMatchGroup() {
     s3 = _t_newi(ss,SEMTREX_SYMBOL_LITERAL,4);
 
     spec_is_true(_t_matchr(s,t,&r));
-    spec_is_symbol_equal(_t_symbol(r),SEMTREX_MATCH_RESULTS);
+    spec_is_symbol_equal(0,_t_symbol(r),SEMTREX_MATCH_RESULTS);
     spec_is_equal(_t_children(r),2);
 
     // you should be able to find the matched group positionaly
     p1 = _t_child(r,1);
 
-    spec_is_symbol_equal(_t_symbol(p1),SEMTREX_MATCH);
+    spec_is_symbol_equal(0,_t_symbol(p1),SEMTREX_MATCH);
     spec_is_equal(_t_children(p1),2);
 
     p1c = _t_child(p1,2);
 
     //    printf("%s\n",_td(r));
-    spec_is_symbol_equal(_t_symbol(p1c),SEMTREX_MATCH_SIBLINGS_COUNT);
+    spec_is_symbol_equal(0,_t_symbol(p1c),SEMTREX_MATCH_SIBLINGS_COUNT);
     spec_is_equal(*(int *)_t_surface(p1c),3);
     spec_is_path_equal(_t_surface(_t_child(p1,1)),rp1);
 
 
     p2 = _t_child(r,2);
-    spec_is_symbol_equal(_t_symbol(p2),SEMTREX_MATCH);
+    spec_is_symbol_equal(0,_t_symbol(p2),SEMTREX_MATCH);
 
     p2c = _t_child(p2,2);
-    spec_is_symbol_equal(_t_symbol(p2c),SEMTREX_MATCH_SIBLINGS_COUNT);
+    spec_is_symbol_equal(0,_t_symbol(p2c),SEMTREX_MATCH_SIBLINGS_COUNT);
     spec_is_equal(*(int *)_t_surface(p2c),1);
     spec_is_path_equal(_t_surface(_t_child(p2,1)),rp2);
 

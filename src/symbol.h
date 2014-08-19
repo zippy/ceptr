@@ -16,10 +16,18 @@ enum
     SEMTREX,
     INTEGER,
     FLOAT,
+    CSTRING,
     _LAST_SYS_STRUCTURE
 
 };
 typedef int Structure;
+static char *G_sys_structure_names[] = {
+    "NULL_STRUCTURE",
+    "SEMTREX",
+    "INTEGER",
+    "FLOAT",
+    "CSTRING"
+};
 
 // System defined symbols.
 enum
@@ -50,6 +58,9 @@ enum
     STRUCTURE_PART,
     SYMBOLS,
     SYMBOL_DEF,
+    SYMBOL_STRUCTURE,
+    SYMBOL_LABEL,
+    INSTANCE,
     ASPECT,
     SIGNALS,                           // list of signals on an aspect in the flux
     SIGNAL,                            // a signal on the flux.  It's first child is the contents of the signal
@@ -86,6 +97,9 @@ static char *G_sys_symbol_names[] = {
     "STRUCTURE_PART",
     "SYMBOLS",
     "SYMBOL_DEF",
+    "SYMBOL_STRUCTURE",
+    "SYMBOL_LABEL",
+    "INSTANCE",
     "ASPECT",
     "SIGNALS",
     "SIGNAL",
@@ -101,12 +115,8 @@ static char *G_sys_symbol_names[] = {
 };
 
 
-#define spec_is_symbol_equal(got, expected) spec_total++; if (expected==got){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %s but was %s",__FUNCTION__,__LINE__,#got,_s_get_symbol_name(expected),_s_get_symbol_name(got));}
 
 typedef int Symbol;
-
-char *_s_get_symbol_name(Symbol s);
-
 
 #endif
 

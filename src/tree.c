@@ -226,7 +226,9 @@ int * _t_get_path(Tnode *t) {
     for(n=t;n;) {
 	p[i] = _t_node_index(n);
 	n =_t_parent(n);
-	if (++i >= s) {s*=2;p=realloc(p,s);} // realloc array if tree too deep
+	if (++i >= s) {
+	    raise(SIGINT);
+	    s*=2;p=realloc(p,s);} // realloc array if tree too deep
     }
     if (i > 2) {
 	// reverse the list by swapping elements going from the outside to the center
@@ -291,73 +293,4 @@ char * _t_sprint_path(int *fp,char *buf) {
 	b += strlen(b);
     }
     return buf;
-}
-
-/*****************  Tree debugging utilities */
-
-char __t_dump_buf[10000];
-
-char *_s_get_symbol_name(Symbol s) {
-    if (s>NULL_SYMBOL && s <_LAST_SYS_SYMBOL )
-	return G_sys_symbol_names[s-NULL_SYMBOL];
-    if (s>=TEST_SYMBOL && s < _LAST_TEST_SYMBOL)
-	return G_test_symbol_names[s-TEST_SYMBOL];
-    return "<unknown symbol>";
-}
-
-char * __t_dump(Tnode *t,int level,char *buf) {
-    Symbol s = _t_symbol(t);
-    char b[255];
-    char tbuf[2000];
-    int i;
-    char *n = _s_get_symbol_name(s);
-    char *c;
-    switch(s) {
-    case TEST_STR_SYMBOL:
-    case TEST_FIRST_NAME_SYMBOL:
-    case STRUCTURE_DEF:
-    case SYMBOL_DEF:
-	sprintf(buf," (%s:%s",n,(char *)_t_surface(t));
-	break;
-    case TEST_TREE_SYMBOL:
-	c = __t_dump((Tnode *)_t_surface(t),0,tbuf);
-	sprintf(buf," (%s:{%s}",n,c);
-	//	sprintf(buf," (%s:%s",n,);
-	break;
-    case TREE_PATH:
-	sprintf(buf," (%s:%s",n,_t_sprint_path((int *)_t_surface(t),b));
-	break;
-    case TEST_SYMBOL:
-    case SEMTREX_MATCH_SIBLINGS_COUNT:
-    case ASPECT:
-	sprintf(buf," (%s:%d",n,*(int *)_t_surface(t));
-	break;
-    case LISTENER:
-	c = _s_get_symbol_name(*(int *)_t_surface(t));
-	sprintf(buf," (%s on %s",n,c?c:"<unknown>");
-	break;
-    case STRUCTURE_PART:
-    case INTERPOLATE_SYMBOL:
-    case SEMTREX_GROUP:
-    case SEMTREX_MATCH:
-    case SEMTREX_SYMBOL_LITERAL:
-	c = _s_get_symbol_name(*(int *)_t_surface(t));
-	sprintf(buf," (%s:%s",n,c?c:"<unknown>");
-	break;
-    default:
-	if (n == 0)
-	    sprintf(buf," (<unknown:%d>",s);
-	else
-	    sprintf(buf," (%s",n);
-    }
-    for(i=1;i<=_t_children(t);i++) __t_dump(_t_child(t,i),level+1,buf+strlen(buf));
-    sprintf(buf+strlen(buf),")");
-    return buf;
-}
-
-char *_td(Tnode *t) {
-    if (!t) sprintf(__t_dump_buf,"<null-tree>");
-    else
-	__t_dump(t,0,__t_dump_buf);
-    return __t_dump_buf;
 }

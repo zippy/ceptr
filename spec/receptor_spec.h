@@ -4,29 +4,29 @@
 void testReceptorCreate() {
     Receptor *r;
     r = _r_new();
-    spec_is_symbol_equal(_t_symbol(r->root),RECEPTOR);
+    spec_is_symbol_equal(r,_t_symbol(r->root),RECEPTOR);
 
     // test that the flux is set up correctly
     Tnode *t = _t_child(r->root,1);
-    spec_is_symbol_equal(_t_symbol(r->flux),FLUX);
+    spec_is_symbol_equal(r,_t_symbol(r->flux),FLUX);
     spec_is_ptr_equal(t,r->flux);
     t = _t_child(r->flux,1);
-    spec_is_symbol_equal(_t_symbol(t),ASPECT);
+    spec_is_symbol_equal(r,_t_symbol(t),ASPECT);
     spec_is_equal(*(int *)_t_surface(t),DEFAULT_ASPECT);
 
     // test that the symbols and structures tress are set up correctly
     t = _t_child(r->root,2);
-    spec_is_symbol_equal(_t_symbol(r->structures),STRUCTURES);
+    spec_is_symbol_equal(r,_t_symbol(r->structures),STRUCTURES);
     spec_is_ptr_equal(t,r->structures);
     t = _t_child(r->root,3);
-    spec_is_symbol_equal(_t_symbol(r->symbols),SYMBOLS);
+    spec_is_symbol_equal(r,_t_symbol(r->symbols),SYMBOLS);
     spec_is_ptr_equal(t,r->symbols);
 
     // test that listeners and signals are set up correctly on the default aspect
     t = __r_get_listeners(r,DEFAULT_ASPECT);
-    spec_is_symbol_equal(_t_symbol(t),LISTENERS);
+    spec_is_symbol_equal(r,_t_symbol(t),LISTENERS);
     t = __r_get_signals(r,DEFAULT_ASPECT);
-    spec_is_symbol_equal(_t_symbol(t),SIGNALS);
+    spec_is_symbol_equal(r,_t_symbol(t),SIGNALS);
 
     _r_free(r);
 }
@@ -42,7 +42,7 @@ void testReceptorAddListener() {
     _r_add_listener(r,DEFAULT_ASPECT,TEST_SYMBOL,s,a);
 
     Tnode *l = _t_child(__r_get_listeners(r,DEFAULT_ASPECT),1);      // listener should have been added as first child of listeners
-    spec_is_symbol_equal(_t_symbol(l),LISTENER);
+    spec_is_symbol_equal(r,_t_symbol(l),LISTENER);
     spec_is_equal(*(int *)_t_surface(l),TEST_SYMBOL); // carrier should be TEST_SYMBOL
     spec_is_ptr_equal(_t_child(l,1),s);       // our expectation semtrex should be first child of the listener
     spec_is_ptr_equal(_t_child(l,2),a);       // our action code tree should be the second child of the listener
@@ -57,7 +57,7 @@ void testReceptorSignal() {
 
     // the first node on the default aspect signals should be the signal
     Tnode *s = _t_child(__r_get_signals(r,DEFAULT_ASPECT),1);
-    spec_is_symbol_equal(_t_symbol(s),SIGNAL);
+    spec_is_symbol_equal(r,_t_symbol(s),SIGNAL);
     Tnode *t = (Tnode *)_t_surface(s);  // whose surface should be the contents
     spec_is_equal(*(int *)_t_surface(t),314);
     spec_is_ptr_equal(signal,t);  // at some point this should probably fail, because we should have cloned the signal, not added it directly
@@ -74,21 +74,21 @@ void testRunTree() {
 
     Tnode *r = _r_make_run_tree(act,2,p1,p2);
 
-    spec_is_symbol_equal(_t_symbol(r),RUN_TREE);
+    spec_is_symbol_equal(0,_t_symbol(r),RUN_TREE);
 
     t = _t_child(r,1);  // first child should be clone of code
-    spec_is_symbol_equal(_t_symbol(t),RESPOND);
+    spec_is_symbol_equal(0,_t_symbol(t),RESPOND);
     spec_is_true(t!=resp); // should be a clone
 
     Tnode *p = _t_child(r,2); //second child should be params
-    spec_is_symbol_equal(_t_symbol(p),PARAMS);
+    spec_is_symbol_equal(0,_t_symbol(p),PARAMS);
 
     t = _t_child(p,1);
-    spec_is_symbol_equal(_t_symbol(t),TEST_SYMBOL);
+    spec_is_symbol_equal(0,_t_symbol(t),TEST_SYMBOL);
     spec_is_true(t!=p1);  //should be a clone
 
     t = _t_child(p,2);  // third child should be params
-    spec_is_symbol_equal(_t_symbol(t),TEST_SYMBOL2);
+    spec_is_symbol_equal(0,_t_symbol(t),TEST_SYMBOL2);
     spec_is_true(t!=p2);  //should be a clone
 
     _t_free(act);
@@ -116,7 +116,7 @@ void testRunTreeReduce() {
 
     t = _r_reduce(t);
     char buf[2000];
-    __t_dump(t,0,buf);
+    __t_dump(0,t,0,buf);
     spec_is_str_equal(buf," (TEST_SYMBOL2 (TEST_SYMBOL:314))");
 
     _t_free(t);
@@ -151,14 +151,14 @@ void testReceptorAction() {
     _r_add_listener(r,DEFAULT_ASPECT,TEST_NAME_SYMBOL,expect,act);
     Tnode *s = _r_send(r,r,DEFAULT_ASPECT,signal);
 
-    spec_is_symbol_equal(_t_symbol(s),SIGNAL);
+    spec_is_symbol_equal(r,_t_symbol(s),SIGNAL);
     Tnode *result = _t_child(_t_child(s,1),1);
 
     // the result should be signal tree with  the matched TEST_SYMBOL value interpolated
     // in the right place
-    spec_is_symbol_equal(_t_symbol(result),TEST_SYMBOL2);
+    spec_is_symbol_equal(r,_t_symbol(result),TEST_SYMBOL2);
     Tnode *r1 = _t_child(result,1);
-    spec_is_symbol_equal(_t_symbol(r1),TEST_FIRST_NAME_SYMBOL);
+    spec_is_symbol_equal(r,_t_symbol(r1),TEST_FIRST_NAME_SYMBOL);
     spec_is_str_equal((char *)_t_surface(r1),"eric");
     _t_free(result);
 
@@ -177,6 +177,8 @@ void testReceptorDef() {
     Symbol lon = _r_def_symbol(r,FLOAT,"longitude");
     Tnode *def;
 
+    spec_is_structure_equal(r,__r_get_symbol_structure(r,lat),FLOAT);
+
     spec_is_str_equal("latitude",(char *)_t_surface(def = _t_child(r->symbols,lat)));
     spec_is_str_equal("longitude",(char *)_t_surface(_t_child(r->symbols,lon)));
 
@@ -192,7 +194,41 @@ void testReceptorDef() {
     path = labelGet(&r->table,"latlong");
     spec_is_ptr_equal(_t_get(r->root,path),def);
 
-    spec_is_equal(_r_get_structure_by_label(r,"latlong"),latlong);
+    spec_is_structure_equal(r,_r_get_structure_by_label(r,"latlong"),latlong);
+    spec_is_long_equal(__r_get_symbol_size(r,lat,0),sizeof(float));
+
+    Symbol house_loc = _r_def_symbol(r,latlong,"house location");
+    spec_is_equal(__r_get_symbol_structure(r,house_loc),latlong);
+    spec_is_long_equal(__r_get_symbol_size(r,house_loc,0),sizeof(float)*2);
+
+    Symbol name = _r_def_symbol(r,CSTRING,"name");
+    spec_is_long_equal(__r_get_symbol_size(r,name,"zippy"),(long)6);
+
+    Structure namedhouse = _r_def_structure(r,"namedhouse",2,house_loc,name);
+
+    Symbol home = _r_def_symbol(r,namedhouse,"home");
+    char surface[] ={1,2,3,4,5,6,7,8,'b','o','b','b','y',0};
+    spec_is_long_equal(__r_get_symbol_size(r,home,surface),sizeof(float)*2+6);
+
+    _r_free(r);
+}
+
+void testReceptorInstances() {
+    Receptor *r = _r_new();
+    Symbol lat = _r_def_symbol(r,FLOAT,"latitude");
+    Symbol lon = _r_def_symbol(r,FLOAT,"longitude");
+    Structure latlong = _r_def_structure(r,"latlong",2,lat,lon);
+    Symbol house_loc = _r_def_symbol(r,latlong,"house location");
+    float ll[] = {132.5,92.3};
+    Xaddr x = _r_new_instance(r,house_loc,ll);
+
+    float *ill;
+    Instance i = _r_get_instance(r,x);
+    ill = (float *)i.surface;
+
+    spec_is_float_equal(ill[0],ll[0]);
+    spec_is_float_equal(ill[1],ll[1]);
+    _r_free(r);
 }
 
 void testReceptor() {
@@ -203,4 +239,5 @@ void testReceptor() {
     testRunTreeReduce();
     testReceptorAction();
     testReceptorDef();
+    testReceptorInstances();
 }

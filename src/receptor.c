@@ -29,11 +29,13 @@ void _r_add_listener(Receptor *r,Aspect aspect,Symbol carrier,Tnode *expectation
 /* destroys a receptor freeing all memory it uses */
 void _r_free(Receptor *r) {
     _t_free(r->root);
+    lableTableFree(&r->table);
     free(r);
 }
 
 /*****************  receptor symbols and structures */
 
+// we use this for both defining symbols and structures because labels store the full path to the labeled item
 int __set_label_for_def(Receptor *r,char *label,Tnode *def) {
     int *path = _t_get_path(def);
     labelSet(&r->table,label,path);
@@ -42,6 +44,8 @@ int __set_label_for_def(Receptor *r,char *label,Tnode *def) {
     return i;
 }
 
+// get the child index for a given label.  This works for retrieving symbols and structures
+// because the symbol and structure values is just the child index.
 int __get_label_idx(Receptor *r,char *label) {
     int *path = labelGet(&r->table,label);
     return path[_t_path_depth(path)-1];
@@ -49,6 +53,8 @@ int __get_label_idx(Receptor *r,char *label) {
 
 Symbol _r_def_symbol(Receptor *r,Structure s,char *label){
     Tnode *def = _t_new(r->symbols,SYMBOL_DEF,label,strlen(label)+1);
+    _t_newi(def,SYMBOL_STRUCTURE,s);
+    _t_new(def,SYMBOL_LABEL,label,strlen(label)+1);
     return __set_label_for_def(r,label,def);
 }
 
@@ -71,6 +77,60 @@ Symbol _r_get_symbol_by_label(Receptor *r,char *label) {
 
 Structure _r_get_structure_by_label(Receptor *r,char *label){
     return __get_label_idx(r,label);
+}
+
+Structure __r_get_symbol_structure(Receptor *r,Symbol s){
+    Tnode *def = _t_child(r->symbols,s);
+    Tnode *t = _t_child(def,1);
+    return *(Structure *)_t_surface(t);
+}
+
+size_t __r_get_structure_size(Receptor *r,Structure s,void *surface) {
+    if (s>NULL_STRUCTURE && s <_LAST_SYS_STRUCTURE) {
+	switch(s) {
+	case NULL_STRUCTURE: return 0;
+	    //	case SEMTREX: return
+	case INTEGER: return sizeof(int);
+	case FLOAT: return sizeof(float);
+	case CSTRING: return strlen(surface)+1;
+	default: raise_error0("FISH");
+	}
+    }
+    else {
+	Tnode *structure = _t_child(r->structures,s);
+	size_t size = 0;
+	int i,c = _t_children(structure);
+	for(i=1;i<=c;i++) {
+	    Tnode *p = _t_child(structure,i);
+	    size += __r_get_symbol_size(r,*(Symbol *)_t_surface(p),surface +size);
+	}
+	return size;
+    }
+}
+
+size_t __r_get_symbol_size(Receptor *r,Symbol s,void *surface) {
+    Structure st = __r_get_symbol_structure(r,s);
+    return __r_get_structure_size(r,st,surface);
+}
+
+/*****************  receptor instances and xaddrs */
+// TODO: currently this implementation of instances, just stores each instance as tree node
+//       of type INSTANCE as a child of the symbol.  This is way inefficient and needs to be
+//       replaced.  But this is just here to create the API...
+Xaddr _r_new_instance(Receptor *r,Symbol s,void *surface) {
+    Xaddr result;
+    Tnode *sym = _t_child(r->symbols,s);
+    _t_new(sym,INSTANCE,surface,__r_get_symbol_size(r,s,surface));
+    result.symbol = s;
+    result.addr = _t_children(sym);
+    return result;
+}
+
+Instance _r_get_instance(Receptor *r,Xaddr x) {
+    Tnode *s = _t_child(r->symbols,x.symbol);
+    Instance i;
+    i.surface = _t_surface(_t_child(s,x.addr));
+    return i;
 }
 
 /******************  receptor signaling */
@@ -128,7 +188,7 @@ Tnode *_r_reduce(Tnode *t) {
 	_t_replace(t,1,_r_interpolate_from_match(x,m,v));
 	break;
     default:
-	raise_error("unknown instruction: %s",_s_get_symbol_name(s));
+	raise_error("unknown instruction: %s",_s_get_symbol_name(0,s));
     }
     return _t_child(t,1);
 }
@@ -188,4 +248,92 @@ Tnode *__r_get_listeners(Receptor *r,Aspect aspect) {
 }
 Tnode *__r_get_signals(Receptor *r,Aspect aspect) {
     return _t_child(__r_get_aspect(r,aspect),2);
+}
+
+
+/*****************  Tree debugging utilities */
+
+char __t_dump_buf[10000];
+
+char *_s_get_symbol_name(Receptor *r,Symbol s) {
+    if (s>NULL_SYMBOL && s <_LAST_SYS_SYMBOL )
+	return G_sys_symbol_names[s-NULL_SYMBOL];
+    if (s>=TEST_SYMBOL && s < _LAST_TEST_SYMBOL)
+	return G_test_symbol_names[s-TEST_SYMBOL];
+    else if (r) {
+	Tnode *def = _t_child(r->symbols,s);
+	return (char *)_t_surface(_t_child(def,2));
+    }
+    return "<unknown symbol>";
+}
+
+char *_s_get_structure_name(Receptor *r,Structure s) {
+    if (s>NULL_STRUCTURE && s <_LAST_SYS_STRUCTURE )
+	return G_sys_structure_names[s-NULL_STRUCTURE];
+    else if (r) {
+	Tnode *def = _t_child(r->structures,s);
+	return (char *)_t_surface(def);
+    }
+    return "<unknown structure>";
+}
+
+char * __t_dump(Receptor *r,Tnode *t,int level,char *buf) {
+    Symbol s = _t_symbol(t);
+    char b[255];
+    char tbuf[2000];
+    int i;
+    char *n = _s_get_symbol_name(r,s);
+    char *c;
+    switch(s) {
+    case TEST_STR_SYMBOL:
+    case TEST_FIRST_NAME_SYMBOL:
+    case STRUCTURE_DEF:
+    case SYMBOL_LABEL:
+	sprintf(buf," (%s:%s",n,(char *)_t_surface(t));
+	break;
+    case TEST_TREE_SYMBOL:
+	c = __t_dump(r,(Tnode *)_t_surface(t),0,tbuf);
+	sprintf(buf," (%s:{%s}",n,c);
+	//	sprintf(buf," (%s:%s",n,);
+	break;
+    case TREE_PATH:
+	sprintf(buf," (%s:%s",n,_t_sprint_path((int *)_t_surface(t),b));
+	break;
+    case TEST_SYMBOL:
+    case SEMTREX_MATCH_SIBLINGS_COUNT:
+    case ASPECT:
+	sprintf(buf," (%s:%d",n,*(int *)_t_surface(t));
+	break;
+    case LISTENER:
+	c = _s_get_symbol_name(r,*(int *)_t_surface(t));
+	sprintf(buf," (%s on %s",n,c?c:"<unknown>");
+	break;
+    case STRUCTURE_PART:
+    case INTERPOLATE_SYMBOL:
+    case SEMTREX_GROUP:
+    case SEMTREX_MATCH:
+    case SEMTREX_SYMBOL_LITERAL:
+	c = _s_get_symbol_name(r,*(int *)_t_surface(t));
+	sprintf(buf," (%s:%s",n,c?c:"<unknown>");
+	break;
+    case SYMBOL_STRUCTURE:
+	c = _s_get_structure_name(r,*(int *)_t_surface(t));
+	sprintf(buf," (%s:%s",n,c?c:"<unknown>");
+	break;
+    default:
+	if (n == 0)
+	    sprintf(buf," (<unknown:%d>",s);
+	else
+	    sprintf(buf," (%s",n);
+    }
+    for(i=1;i<=_t_children(t);i++) __t_dump(r,_t_child(t,i),level+1,buf+strlen(buf));
+    sprintf(buf+strlen(buf),")");
+    return buf;
+}
+
+char *_td(Receptor *r,Tnode *t) {
+    if (!t) sprintf(__t_dump_buf,"<null-tree>");
+    else
+	__t_dump(r,t,0,__t_dump_buf);
+    return __t_dump_buf;
 }

@@ -1,5 +1,5 @@
 #include "../src/ceptr.h"
-
+#include "../src/receptor.h"
 
 void testCreateTreeNodes() {
     /* test the creation of trees and the various function that give access to created data elements
@@ -57,7 +57,7 @@ void testTreeOrthogonal() {
     Tnode *t2 = _t_new_root(TEST_SYMBOL2);
     Tnode *o = _t_newt(t,TEST_TREE_SYMBOL,t2);
     char buf[2000];
-    __t_dump(t,0,buf);
+    __t_dump(0,t,0,buf);
     spec_is_str_equal(buf," (TEST_SYMBOL:1234 (TEST_TREE_SYMBOL:{ (TEST_SYMBOL2)}))");
 }
 
@@ -189,10 +189,10 @@ void testTreeModify() {
     _t_replace(t,1,x);
     spec_is_ptr_equal(_t_child(t,1),x);
 
-    __t_dump(t,0,buf);
-    spec_is_str_equal(_td(t)," (TEST_STR_SYMBOL:t (TEST_SYMBOL:123) (TEST_STR_SYMBOL:t2 (TEST_STR_SYMBOL:t21 (TEST_STR_SYMBOL:t211))))");
+    __t_dump(0,t,0,buf);
+    spec_is_str_equal(_td(0,t)," (TEST_STR_SYMBOL:t (TEST_SYMBOL:123) (TEST_STR_SYMBOL:t2 (TEST_STR_SYMBOL:t21 (TEST_STR_SYMBOL:t211))))");
     Tnode *y = _t_detach(t,1);
-    __t_dump(t,0,buf);
+    __t_dump(0,t,0,buf);
     spec_is_str_equal(buf," (TEST_STR_SYMBOL:t (TEST_STR_SYMBOL:t2 (TEST_STR_SYMBOL:t21 (TEST_STR_SYMBOL:t211))))");
     spec_is_ptr_equal(x,y);
 
