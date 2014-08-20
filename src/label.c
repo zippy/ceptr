@@ -19,9 +19,10 @@ void _labelSet(LabelTable *table,Label l,int *path){
 }
 
 int *_labelGet(LabelTable *table, Label l){
-    table_elem *e;
+    table_elem *e = 0;
     HASH_FIND_INT( *table, &l, e );
-    return e->path;
+    if (e) return e->path;
+    return 0;
 }
 
 void labelSet(LabelTable *table, char *s,int *path) {

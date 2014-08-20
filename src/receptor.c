@@ -48,6 +48,7 @@ int __set_label_for_def(Receptor *r,char *label,Tnode *def) {
 // because the symbol and structure values is just the child index.
 int __get_label_idx(Receptor *r,char *label) {
     int *path = labelGet(&r->table,label);
+    if (!path) return 0;
     return path[_t_path_depth(path)-1];
 }
 
