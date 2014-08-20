@@ -87,6 +87,9 @@ void _t_remove(Tnode *t,Tnode *c) {
     // if found remove it by decreasing the child count and shift all the other children down
     if (i <= l) {
 	t->structure.child_count--;
+	if (t->structure.child_count == 0) {
+	    free(t->structure.children);
+	}
 	for(;i<l;i++) {
 	    t->structure.children[i-1] = t->structure.children[i];
 	}
