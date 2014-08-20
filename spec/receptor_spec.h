@@ -116,12 +116,10 @@ void testRunTreeReduce() {
     _t_new(sm,TREE_PATH,path,2*sizeof(int));
     _t_newi(sm,SEMTREX_MATCH_SIBLINGS_COUNT,1);
     Tnode *p2 = _t_newi(p,TEST_SYMBOL,314);
-    //    puts(_td(0,t));
     _r_reduce(t);
     char buf[2000];
     __t_dump(0,_t_child(t,1),0,buf);
     spec_is_str_equal(buf," (TEST_SYMBOL2 (TEST_SYMBOL:314))");
-    //puts(_td(0,t));
     _t_free(t);
 }
 
@@ -146,7 +144,6 @@ void testReceptorAction() {
     Tnode *n = _t_newi(resp,INTERPOLATE_FROM_MATCH,0);
     Tnode *t = _t_newi(n,TEST_SYMBOL2,0);
     _t_newi(t,INTERPOLATE_SYMBOL,TEST_FIRST_NAME_SYMBOL);
-
 
     // confirm that the signal will match on our expectation
     spec_is_true(_t_match(sa,signal));

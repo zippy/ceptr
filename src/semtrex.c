@@ -193,7 +193,7 @@ SState * _s_makeFA(Tnode *t,int *statesP) {
     char *err = __s_makeFA(t,&in,&o,0,statesP);
     if (err != 0) {raise_error0(err);}
     patch(o,&matchstate,0);
-    //        _s_dump(in);
+    //printf("\n");_s_dump(in);
     return in;
 }
 
