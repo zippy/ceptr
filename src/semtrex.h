@@ -6,15 +6,22 @@
 enum {StateSymbol,StateAny,StateValue,StateSplit,StateMatch,StateGroup};
 typedef int StateType;
 
-enum {TransitionNextChild=0,TransitionUp=-1,TransitionDown=1};
+// These are the possible transitions in the match tree when advancing through
+// states in the FSA.  In an old fashioned regex, the transition is implicit because it's
+// always "NextCharacter" for semtrex we need to expand the possibilities.
+// NOTE: the actual value stored in the SState structure may be a negative number less
+// than -1, because you can pop up multiple level, but you never pop down more than once
+enum {
+    TransitionNextChild=0,  // advance to next sibling in the match tree
+    TransitionUp=-1,        // move up the tree in the match tree
+    TransitionDown=1        // move to child in the match tree
+};
 typedef int TransitionType;
 
 typedef void *ValueData;
 
 #define GroupOpen 0x1000
 #define GroupClose 0
-
-
 
 // The Svalue represents the surface of a semtrex value literal.
 // "value" is not a pointer to another memory location but just a key to the beginning for where the value starts in this struct.
@@ -50,9 +57,8 @@ union STypeData
 struct SState {
     StateType type;
     struct SState *out;
-    TransitionType transition;
+    TransitionType transition;  // will be: TransitionNextChild=0,TransitionUp=-1,TransitionDown=1
     struct SState *out1;
-    int lastlist;
     int _did; // used only for freeing and printing out FSA to prevent looping.
     STypeData data;
 };
