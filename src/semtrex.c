@@ -199,22 +199,32 @@ SState * _s_makeFA(Tnode *t,int *statesP) {
 
 static int free_id = 0;
 
-void __s_freeFA(SState *s,int id) {
+// walk through the FSA clearing pointers to marked states
+int __s_freeFA(SState *s,int id) {
     if ((s->_did != id) && (s != &matchstate)) {
 	s->_did = id;
-	if (s->out) __s_freeFA(s->out,id);
-	if (s->out1) __s_freeFA(s->out1,id);
-	if (s->type == StateValue) {
-	    free(s->data.value.value);
-	}
-	free(s);
+	if (s->out) if (__s_freeFA(s->out,id)) s->out = 0;
+	if (s->out1) if (__s_freeFA(s->out1,id)) s->out1 = 0;
+	return 0;
     }
+    return 1;
+}
+
+// walk through again freeing the states
+__s_freeFA2(SState *s) {
+    if (s->out) __s_freeFA2(s->out);
+    if (s->out1) __s_freeFA2(s->out1);
+    if (s->type == StateValue) {
+	free(s->data.value.value);
+    }
+    free(s);
 }
 
 // walks through a state diagram freeing states
 // and malloced values of StateValue states
 void _s_freeFA(SState *s) {
     __s_freeFA(s,++free_id);
+    __s_freeFA2(s);
 }
 
 // Walk the FSA in s using a recursive backtracing algorithm to match the tree in t.  Returns matched portions in a match results tree if one is provided in r.
