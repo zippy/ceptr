@@ -59,6 +59,7 @@ SState *state(StateType type,int *statesP) {
     s->out = NULL;
     s->out1 = NULL;
     s->type = type;
+    s->_did = 0;
     (*statesP)++;
     return s;
 }
@@ -196,10 +197,24 @@ SState * _s_makeFA(Tnode *t,int *statesP) {
     return in;
 }
 
-//TODO:
+static int free_id = 0;
+
+void __s_freeFA(SState *s,int id) {
+    if ((s->_did != id) && (s != &matchstate)) {
+	s->_did = id;
+	if (s->out) __s_freeFA(s->out,id);
+	if (s->out1) __s_freeFA(s->out1,id);
+	if (s->type == StateValue) {
+	    free(s->data.value.value);
+	}
+	free(s);
+    }
+}
+
 // walks through a state diagram freeing states
 // and malloced values of StateValue states
 void _s_freeFA(SState *s) {
+    __s_freeFA(s,++free_id);
 }
 
 // Walk the FSA in s using a recursive backtracing algorithm to match the tree in t.  Returns matched portions in a match results tree if one is provided in r.

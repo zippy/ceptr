@@ -58,7 +58,6 @@ Tnode *_makeTestSemtrex1() {
 
 static int dump_id = 99;
 
-
 void __s_dump(SState *s) {
     if (s->_did == dump_id) {printf("X");return;}
     s->_did = dump_id;
@@ -288,6 +287,8 @@ void testMatchGroup() {
     _t_newi(sg2,SEMTREX_SYMBOL_ANY,0);
     s3 = _t_newi(ss,SEMTREX_SYMBOL_LITERAL,4);
 
+    _t_free(r);
+
     spec_is_true(_t_matchr(s,t,&r));
     spec_is_symbol_equal(0,_t_symbol(r),SEMTREX_MATCH_RESULTS);
     spec_is_equal(_t_children(r),2);
@@ -314,7 +315,6 @@ void testMatchGroup() {
     spec_is_equal(*(int *)_t_surface(p2c),1);
     spec_is_path_equal(_t_surface(_t_child(p2,1)),rp2);
 
-
     // you should also be able to find the matched group semantically
     spec_is_ptr_equal(_t_get_match(r,TEST_GROUP_SYMBOL1),p1);
     spec_is_ptr_equal(_t_get_match(r,TEST_GROUP_SYMBOL2),p2);
@@ -322,6 +322,7 @@ void testMatchGroup() {
     _t_free(r);
     _t_free(t);
     _t_free(s);
+    _t_free(g);
 }
 
 void testMatchLiteralValue() {

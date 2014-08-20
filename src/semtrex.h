@@ -53,7 +53,7 @@ struct SState {
     TransitionType transition;
     struct SState *out1;
     int lastlist;
-    int _did; // used only for printing out state diagrams to prevent looping.
+    int _did; // used only for freeing and printing out FSA to prevent looping.
     STypeData data;
 };
 typedef struct SState SState;

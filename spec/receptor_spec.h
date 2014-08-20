@@ -6,19 +6,13 @@ void testReceptorCreate() {
     r = _r_new();
     spec_is_symbol_equal(r,_t_symbol(r->root),RECEPTOR);
 
-    // test that the flux is set up correctly
-    Tnode *t = _t_child(r->root,1);
-    spec_is_symbol_equal(r,_t_symbol(r->flux),FLUX);
-    spec_is_ptr_equal(t,r->flux);
-    t = _t_child(r->flux,1);
-    spec_is_symbol_equal(r,_t_symbol(t),ASPECT);
-    spec_is_equal(*(int *)_t_surface(t),DEFAULT_ASPECT);
+    Tnode *t;
 
     // test that the symbols and structures tress are set up correctly
-    t = _t_child(r->root,2);
+    t = _t_child(r->root,1);
     spec_is_symbol_equal(r,_t_symbol(r->structures),STRUCTURES);
     spec_is_ptr_equal(t,r->structures);
-    t = _t_child(r->root,3);
+    t = _t_child(r->root,2);
     spec_is_symbol_equal(r,_t_symbol(r->symbols),SYMBOLS);
     spec_is_ptr_equal(t,r->symbols);
 
@@ -27,6 +21,15 @@ void testReceptorCreate() {
     spec_is_symbol_equal(r,_t_symbol(t),LISTENERS);
     t = __r_get_signals(r,DEFAULT_ASPECT);
     spec_is_symbol_equal(r,_t_symbol(t),SIGNALS);
+
+    // test that the flux is set up correctly
+    t = _t_child(r->root,3);
+    spec_is_symbol_equal(r,_t_symbol(r->flux),FLUX);
+    spec_is_ptr_equal(t,r->flux);
+    t = _t_child(r->flux,1);
+    spec_is_symbol_equal(r,_t_symbol(t),ASPECT);
+    spec_is_equal(*(int *)_t_surface(t),DEFAULT_ASPECT);
+
 
     _r_free(r);
 }
@@ -113,12 +116,12 @@ void testRunTreeReduce() {
     _t_new(sm,TREE_PATH,path,2*sizeof(int));
     _t_newi(sm,SEMTREX_MATCH_SIBLINGS_COUNT,1);
     Tnode *p2 = _t_newi(p,TEST_SYMBOL,314);
-
-    t = _r_reduce(t);
+    //    puts(_td(0,t));
+    _r_reduce(t);
     char buf[2000];
-    __t_dump(0,t,0,buf);
+    __t_dump(0,_t_child(t,1),0,buf);
     spec_is_str_equal(buf," (TEST_SYMBOL2 (TEST_SYMBOL:314))");
-
+    //puts(_td(0,t));
     _t_free(t);
 }
 
@@ -160,7 +163,6 @@ void testReceptorAction() {
     Tnode *r1 = _t_child(result,1);
     spec_is_symbol_equal(r,_t_symbol(r1),TEST_FIRST_NAME_SYMBOL);
     spec_is_str_equal((char *)_t_surface(r1),"eric");
-    _t_free(result);
 
     // TODO: a signal that has no matches should return a null result?
     signal = _t_newi(0,TEST_SYMBOL2,3141);

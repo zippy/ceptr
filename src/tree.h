@@ -49,6 +49,8 @@ void _t_add(Tnode *t,Tnode *c);
 void _t_remove(Tnode *t,Tnode *c);
 Tnode *_t_detach(Tnode *t,int i);
 void _t_replace(Tnode *t,int i,Tnode *r);
+void _t_morph(Tnode *dst,Tnode *src);
+void __t_morph(Tnode *t,Symbol s,void *surface,size_t length,int allocate);
 void _t_free(Tnode *t);
 Tnode *_t_clone(Tnode *t);
 

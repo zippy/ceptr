@@ -6,9 +6,9 @@
 
 struct Receptor {
     Tnode *root;
-    Tnode *flux;
     Tnode *structures;
     Tnode *symbols;
+    Tnode *flux;
     LabelTable table;
 };
 typedef struct Receptor Receptor;
@@ -45,7 +45,7 @@ Xaddr _r_new_instance(Receptor *r,Symbol s,void * surface);
 Instance _r_get_instance(Receptor *r,Xaddr x);
 
 /******************  receptor signaling */
-Tnode *_r_reduce(Tnode *run_tree);
+void _r_reduce(Tnode *run_tree);
 Tnode *_r_make_run_tree(Tnode *code,int num_params,...);
 //*TODO: for now the signal is appended directly to the flux.  Later it should probably be copied
 Tnode * _r_send(Receptor *r,Receptor *from,Aspect aspect, Tnode *signal);

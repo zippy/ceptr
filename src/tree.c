@@ -65,19 +65,22 @@ void _t_add(Tnode *t,Tnode *c) {
     __t_append_child(t,c);
 }
 
+
+// detach and return a child
 Tnode *_t_detach(Tnode *t,int i) {
     Tnode *x = _t_child(t,i);
     _t_remove(t,x);
     return x;
 }
 
+// search for a child (c) of a node and remove it if found
 // NOTE: does not free the memory occupied by c
 void _t_remove(Tnode *t,Tnode *c) {
     int i;
     int l = _t_children(t);
 
     // search for the child to be removed
-    for(i=0;i<=l;i++) {
+    for(i=1;i<=l;i++) {
 	if (_t_child(t,i) == c) break;
     }
 
@@ -88,14 +91,43 @@ void _t_remove(Tnode *t,Tnode *c) {
 	    t->structure.children[i-1] = t->structure.children[i];
 	}
     }
+    c->structure.parent = 0;
 }
 
-// replaces the specified child with the given value.
-// NOTE: Does not free the memory of what was replaced!
+void __t_morph(Tnode *t,Symbol s,void *surface,size_t size,int allocate) {
+    t->contents.size = size;
+    if (t->context.flags & TFLAG_ALLOCATED) {
+	free(t->contents.surface);
+    }
+
+    if (allocate) {
+	t->contents.surface = malloc(size);
+	memcpy(t->contents.surface,surface,size);
+	t->context.flags = TFLAG_ALLOCATED; //TODO: what if the surface is a tree?
+    }
+    else {
+	*((int *)&t->contents.surface) = *(int *)surface;
+	t->context.flags = 0;
+    }
+
+    t->contents.symbol = s;
+}
+
+// convert the surface of one node to that of the other
+// this will free the original surface value if it was allocated.
+// it does nothing about the children or parent, just changes the surface and symbol
+void _t_morph(Tnode *dst,Tnode *src) {
+    __t_morph(dst,_t_symbol(src),_t_surface(src),_t_size(src),src->context.flags & TFLAG_ALLOCATED);
+}
+
+// replaces the specified child with the given node.
+// Note: frees the replaced child.
 void _t_replace(Tnode *t,int i,Tnode *r) {
-    //TODO: add sanity checking to make sure child actually exists?
-    _t_free(t->structure.children[i-1]);
+    Tnode *c = _t_child(t,i);
+    if (!c) {raise_error("tree doesn't have child %d",i);}
+    _t_free(c);
     t->structure.children[i-1] = r;
+    r->structure.parent = t;
 }
 
 /*****************  Node deletion */
@@ -287,10 +319,14 @@ void * _t_get_surface(Tnode *t,int *p) {
 char * _t_sprint_path(int *fp,char *buf) {
     char *b = buf;
     int d=_t_path_depth(fp);
-    int i;
-    for(i=0;i<d;i++) {
-	sprintf(b,"/%d",fp[i]);
-	b += strlen(b);
+    if (d > 0) {
+	int i;
+	for(i=0;i<d;i++) {
+	    sprintf(b,"/%d",fp[i]);
+	    b += strlen(b);
+	}
     }
+    else buf[0] = 0;
+
     return buf;
 }

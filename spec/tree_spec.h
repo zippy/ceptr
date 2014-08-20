@@ -44,6 +44,7 @@ void testCreateTreeNodes() {
     spec_is_ptr_equal(_t_child(t,4),t4);
 
     _t_remove(t,t3);
+    _t_free(t3);  // remove doesn't free the memory of the removed node
     spec_is_equal(_t_children(t),3);
     spec_is_ptr_equal(_t_child(t,3),t4);
     spec_is_ptr_equal(_t_child(t,2),t2);
@@ -59,6 +60,7 @@ void testTreeOrthogonal() {
     char buf[2000];
     __t_dump(0,t,0,buf);
     spec_is_str_equal(buf," (TEST_SYMBOL:1234 (TEST_TREE_SYMBOL:{ (TEST_SYMBOL2)}))");
+    _t_free(t);
 }
 
 
@@ -188,16 +190,29 @@ void testTreeModify() {
     char buf[2000];
     _t_replace(t,1,x);
     spec_is_ptr_equal(_t_child(t,1),x);
+    spec_is_ptr_equal(_t_parent(x),t);
 
     __t_dump(0,t,0,buf);
     spec_is_str_equal(_td(0,t)," (TEST_STR_SYMBOL:t (TEST_SYMBOL:123) (TEST_STR_SYMBOL:t2 (TEST_STR_SYMBOL:t21 (TEST_STR_SYMBOL:t211))))");
     Tnode *y = _t_detach(t,1);
+    spec_is_ptr_equal(_t_parent(y),NULL);
     __t_dump(0,t,0,buf);
     spec_is_str_equal(buf," (TEST_STR_SYMBOL:t (TEST_STR_SYMBOL:t2 (TEST_STR_SYMBOL:t21 (TEST_STR_SYMBOL:t211))))");
     spec_is_ptr_equal(x,y);
 
+    Tnode *z = _t_new(0,TEST_STR_SYMBOL,"fish",5);
+    _t_morph(x,z);
+    __t_dump(0,x,0,buf);
+    spec_is_str_equal(buf," (TEST_STR_SYMBOL:fish)");
+
+    int i = 789;
+    __t_morph(x,TEST_SYMBOL,&i,sizeof(int),0);
+    __t_dump(0,x,0,buf);
+    spec_is_str_equal(buf," (TEST_SYMBOL:789)");
+
     _t_free(t);
     _t_free(x);
+    _t_free(z);
 }
 
 void testTree() {
