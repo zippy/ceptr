@@ -44,6 +44,11 @@ typedef struct Xaddr Xaddr;
 Xaddr _r_new_instance(Receptor *r,Symbol s,void * surface);
 Instance _r_get_instance(Receptor *r,Xaddr x);
 
+/******************  receptor serialization */
+size_t __t_serialize(Receptor *r,Tnode *t,void **bufferP,size_t offset,size_t current_size);
+void _r_serialize(Receptor *r,void **surfaceP,size_t *lengthP);
+Receptor * _r_unserialize(void *surface,size_t length);
+
 /******************  receptor signaling */
 void _r_reduce(Tnode *run_tree);
 Tnode *_r_make_run_tree(Tnode *code,int num_params,...);

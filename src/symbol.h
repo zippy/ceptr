@@ -17,6 +17,7 @@ enum
     INTEGER,
     FLOAT,
     CSTRING,
+    SURFACE,
     _LAST_SYS_STRUCTURE
 
 };
@@ -26,7 +27,8 @@ static char *G_sys_structure_names[] = {
     "SEMTREX",
     "INTEGER",
     "FLOAT",
-    "CSTRING"
+    "CSTRING",
+    "SURFACE"
 };
 
 // System defined symbols.

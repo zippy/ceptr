@@ -81,20 +81,35 @@ Structure _r_get_structure_by_label(Receptor *r,char *label){
 }
 
 Structure __r_get_symbol_structure(Receptor *r,Symbol s){
+    if (s>=NULL_SYMBOL && s <_LAST_SYS_SYMBOL) {
+	switch(s) {
+	case SYMBOL_LABEL:
+	case STRUCTURE_DEF:
+	    return CSTRING;
+	case LISTENER:
+	case ASPECT:
+	case SYMBOL_STRUCTURE:
+	case STRUCTURE_PART:
+	    return INTEGER;
+	case INSTANCE:
+	    return SURFACE;
+	default: return NULL_STRUCTURE;
+	}
+    }
     Tnode *def = _t_child(r->symbols,s);
     Tnode *t = _t_child(def,1);
     return *(Structure *)_t_surface(t);
 }
 
 size_t __r_get_structure_size(Receptor *r,Structure s,void *surface) {
-    if (s>NULL_STRUCTURE && s <_LAST_SYS_STRUCTURE) {
+    if (s>=NULL_STRUCTURE && s <_LAST_SYS_STRUCTURE) {
 	switch(s) {
 	case NULL_STRUCTURE: return 0;
 	    //	case SEMTREX: return
 	case INTEGER: return sizeof(int);
 	case FLOAT: return sizeof(float);
 	case CSTRING: return strlen(surface)+1;
-	default: raise_error0("FISH");
+	default: raise_error2("DON'T HAVE A SIZE FOR STRUCTURE '%s' (%d)",_s_get_structure_name(r,s),s);
 	}
     }
     else {
@@ -132,6 +147,98 @@ Instance _r_get_instance(Receptor *r,Xaddr x) {
     Instance i;
     i.surface = _t_surface(_t_child(s,x.addr));
     return i;
+}
+
+/******************  receptor serialization */
+
+// macro to write data by type into *bufferP and increment offset by the size of the type
+#define SWRITE(type,value) type * type##P = (type *)(*bufferP +offset); *type##P=value;offset += sizeof(type);
+
+
+// serialize a tree (t) by recursive descent.
+// Buffer (bufferP) must be a pointer to a malloced ptr of "current_size" which will be realloced if serialized tree is bigger than initial buffer allocation.
+// returns the length that was added to the buffer
+size_t __t_serialize(Receptor *r,Tnode *t,void **bufferP,size_t offset,size_t current_size) {
+    size_t cl =0,l = _t_size(t);
+    int i, c = _t_children(t);
+
+    //    printf("\ncurrent_size:%ld offset:%ld  size:%ld symbol:%s",current_size,offset,l,_s_get_symbol_name(r,_t_symbol(t)));
+    while ((offset+l+sizeof(Symbol)) > current_size) {
+	current_size*=2;
+	*bufferP = realloc(*bufferP,current_size);
+    }
+    Symbol s = _t_symbol(t);
+    SWRITE(Symbol,s);
+    SWRITE(int,c);
+    if(s == INSTANCE) {
+	SWRITE(size_t,l);
+    }
+    if (l) {
+	memcpy(*bufferP+offset,_t_surface(t),l);
+	offset += l;
+    }
+
+    for (i=1;i<=c;i++) {
+	offset = __t_serialize(r,_t_child(t,i),bufferP,offset,current_size);
+    }
+    return offset;
+}
+
+void _r_serialize(Receptor *r,void **surfaceP,size_t *lengthP) {
+}
+
+// macro to read typed date from the surface and update length and surface values
+#define SREAD(type,var_name) type var_name = *(type *)*surfaceP;*lengthP -= sizeof(type);*surfaceP += sizeof(type);
+#define _SREAD(type,var_name) var_name = *(type *)*surfaceP;*lengthP -= sizeof(type);*surfaceP += sizeof(type);
+
+Tnode * _t_unserialize(Receptor *r,void **surfaceP,size_t *lengthP,Tnode *t) {
+    size_t size;
+
+    SREAD(Symbol,s);
+    //    printf("\nSymbol:%s",_s_get_symbol_name(r,s));
+
+    SREAD(int,c);
+
+    if (s == INSTANCE) {
+	_SREAD(size_t,size);
+    }
+    else size = __r_get_symbol_size(r,s,*surfaceP);
+    //printf(" reading: %ld bytes",size);
+    Structure st = __r_get_symbol_structure(r,s);
+    if (st == INTEGER)
+	t = _t_newi(t,s,*(int *)*surfaceP);
+    else
+	t = _t_new(t,s,*surfaceP,size);
+    *lengthP -= size;
+    *surfaceP += size;
+    int i;
+    for(i=1;i<=c;i++) {
+	_t_unserialize(r,surfaceP,lengthP,t);
+    }
+    return t;
+}
+
+Receptor * _r_unserialize(void *surface,size_t length) {
+    Receptor *r = _r_new();
+    Tnode *t =  _t_unserialize(r,&surface,&length,0);
+    _t_free(r->root);
+    r->root = t;
+    r->structures = _t_child(t,1);
+    r->symbols = _t_child(t,2);
+    r->flux = _t_child(t,2);
+    int c = _t_children(r->symbols);
+    int i;
+    for(i=1;i<=c;i++){
+	Tnode *def = _t_child(r->symbols,i);
+	Tnode *sl = _t_child(def,2);
+	__set_label_for_def(r,_t_surface(sl),def);
+    }
+    c = _t_children(r->structures);
+    for(i=1;i<=c;i++){
+	Tnode *def = _t_child(r->structures,i);
+	__set_label_for_def(r,_t_surface(def),def);
+    }
+    return r;
 }
 
 /******************  receptor signaling */

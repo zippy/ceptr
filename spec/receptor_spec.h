@@ -230,6 +230,45 @@ void testReceptorInstances() {
     _r_free(r);
 }
 
+void testReceptorSerialize() {
+    Receptor *r = _r_new();
+    Symbol lat = _r_def_symbol(r,FLOAT,"latitude");
+    Symbol lon = _r_def_symbol(r,FLOAT,"longitude");
+    Structure latlong = _r_def_structure(r,"latlong",2,lat,lon);
+    Symbol house_loc = _r_def_symbol(r,latlong,"house location");
+    float ll[] = {132.5,92.3};
+    Xaddr x = _r_new_instance(r,house_loc,ll);
+
+    size_t buf_size = 10000;
+
+    void *surface = malloc(buf_size);
+    size_t length;
+    char buf[2000];
+    char buf1[2000];
+
+    length = __t_serialize(r,r->root,&surface,0,buf_size);
+
+    spec_is_long_equal(length,(long)242);
+
+    _r_serialize(r,&surface,&length);
+    Receptor *r1 = _r_unserialize(surface,length);
+
+    __t_dump(r,r->root,0,buf);
+    __t_dump(r1,r1->root,0,buf1);
+
+    //    puts(_td(r,r1->root));
+    spec_is_str_equal(buf1,buf);
+
+    int *path = labelGet(&r1->table,"latitude");
+    int p[] = {2,1,TREE_PATH_TERMINATOR};
+    spec_is_path_equal(path,p);
+    spec_is_equal(_r_get_symbol_by_label(r1,"latitude"),lat);
+    spec_is_equal(_r_get_structure_by_label(r1,"latlong"),latlong);
+
+    _r_free(r);
+    _r_free(r1);
+
+}
 void testReceptor() {
     testReceptorCreate();
     testReceptorAddListener();
@@ -239,4 +278,5 @@ void testReceptor() {
     testReceptorAction();
     testReceptorDef();
     testReceptorInstances();
+    testReceptorSerialize();
 }
