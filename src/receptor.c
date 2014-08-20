@@ -244,7 +244,7 @@ Tnode *__r_get_signals(Receptor *r,Aspect aspect) {
 /*****************  Tree debugging utilities */
 
 char __t_dump_buf[10000];
-
+char __t_extra_buf[50];
 char *_s_get_symbol_name(Receptor *r,Symbol s) {
     if (s>NULL_SYMBOL && s <_LAST_SYS_SYMBOL )
 	return G_sys_symbol_names[s-NULL_SYMBOL];
@@ -254,7 +254,8 @@ char *_s_get_symbol_name(Receptor *r,Symbol s) {
 	Tnode *def = _t_child(r->symbols,s);
 	return (char *)_t_surface(_t_child(def,2));
     }
-    return "<unknown symbol>";
+    sprintf(__t_extra_buf,"<unknown symbol:%d>",s);
+    return __t_extra_buf;
 }
 
 char *_s_get_structure_name(Receptor *r,Structure s) {
