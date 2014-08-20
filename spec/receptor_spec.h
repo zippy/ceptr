@@ -104,7 +104,7 @@ void testRunTree() {
 void testRunTreeReduce() {
     Tnode *t = _t_new_root(RUN_TREE);
     // test INTERPOLATE_FROM_MATCH which takes two params, the stx-match and the tree it matched on
-    Tnode *n = _t_newi(t,INTERPOLATE_FROM_MATCH,0);
+    Tnode *n = _t_newr(t,INTERPOLATE_FROM_MATCH);
     Tnode *t2 = _t_newi(n,TEST_SYMBOL2,0);
     _t_newi(t2,INTERPOLATE_SYMBOL,TEST_SYMBOL);
 
@@ -181,8 +181,8 @@ void testReceptorDef() {
 
     spec_is_structure_equal(r,__r_get_symbol_structure(r,lat),FLOAT);
 
-    spec_is_str_equal("latitude",(char *)_t_surface(def = _t_child(r->symbols,lat)));
-    spec_is_str_equal("longitude",(char *)_t_surface(_t_child(r->symbols,lon)));
+    spec_is_str_equal((char *)_t_surface(_t_child(def = _t_child(r->symbols,lat),2)),"latitude");
+    spec_is_str_equal((char *)_t_surface(_t_child(_t_child(r->symbols,lon),2)),"longitude");
 
     int *path = labelGet(&r->table,"latitude");
     spec_is_ptr_equal(_t_get(r->root,path),def);

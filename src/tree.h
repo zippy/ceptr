@@ -45,6 +45,7 @@ Tnode * _t_new(Tnode *t,Symbol symbol, void *surface, size_t size);
 Tnode * _t_newi(Tnode *parent,Symbol symbol,int surface);
 Tnode * _t_newt(Tnode *parent,Symbol symbol,Tnode *t);
 Tnode *_t_new_root(Symbol symbol);
+Tnode *_t_newr(Tnode *parent,Symbol symbol);
 void _t_add(Tnode *t,Tnode *c);
 void _t_remove(Tnode *t,Tnode *c);
 Tnode *_t_detach(Tnode *t,int i);

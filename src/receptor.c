@@ -7,12 +7,12 @@
 Receptor *_r_new() {
     Receptor *r = malloc(sizeof(Receptor));
     r->root = _t_new_root(RECEPTOR);
-    r->structures = _t_newi(r->root,STRUCTURES,0);
-    r->symbols = _t_newi(r->root,SYMBOLS,0);
-    r->flux = _t_newi(r->root,FLUX,0);
+    r->structures = _t_newr(r->root,STRUCTURES);
+    r->symbols = _t_newr(r->root,SYMBOLS);
+    r->flux = _t_newr(r->root,FLUX);
     Tnode *a = _t_newi(r->flux,ASPECT,DEFAULT_ASPECT);
-    _t_newi(a,LISTENERS,0);
-    _t_newi(a,SIGNALS,0);
+    _t_newr(a,LISTENERS);
+    _t_newr(a,SIGNALS);
     r->table = NULL;
     return r;
 }
@@ -52,7 +52,7 @@ int __get_label_idx(Receptor *r,char *label) {
 }
 
 Symbol _r_def_symbol(Receptor *r,Structure s,char *label){
-    Tnode *def = _t_new(r->symbols,SYMBOL_DEF,label,strlen(label)+1);
+    Tnode *def = _t_newr(r->symbols,SYMBOL_DEF);
     _t_newi(def,SYMBOL_STRUCTURE,s);
     _t_new(def,SYMBOL_LABEL,label,strlen(label)+1);
     return __set_label_for_def(r,label,def);
@@ -191,7 +191,7 @@ Tnode *_r_make_run_tree(Tnode *code,int num_params,...) {
     Tnode *t = _t_new_root(RUN_TREE);
     Tnode *c = _t_clone(_t_child(code,1));
     _t_add(t,c);
-    Tnode *p = _t_newi(t,PARAMS,0);
+    Tnode *p = _t_newr(t,PARAMS);
     va_start(params,num_params);
     for(i=0;i<num_params;i++) {
 	_t_add(p,_t_clone(va_arg(params,Tnode *)));

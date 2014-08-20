@@ -57,6 +57,10 @@ Tnode *_t_new_root(Symbol symbol) {
     return _t_new(0,symbol,0,0);
 }
 
+Tnode *_t_newr(Tnode *parent,Symbol symbol) {
+    return _t_new(parent,symbol,0,0);
+}
+
 void _t_add(Tnode *t,Tnode *c) {
     if (c->structure.parent != 0) {
 	raise_error0("can't add a node that isn't a root!");

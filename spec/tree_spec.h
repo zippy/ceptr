@@ -5,7 +5,7 @@ void testCreateTreeNodes() {
     /* test the creation of trees and the various function that give access to created data elements
        and basic tree structure navigation
      */
-    Tnode *t, *t1, *t2, *t3, *t4;
+    Tnode *t, *t1, *t2, *t3, *t4, *t5;
 
     t = _t_new(0,TEST_SYMBOL,"hello",6);
     spec_is_long_equal(_t_size(t),(long)6);
@@ -45,6 +45,11 @@ void testCreateTreeNodes() {
 
     _t_remove(t,t3);
     _t_free(t3);  // remove doesn't free the memory of the removed node
+    t5 = _t_newr(t4,TEST_SYMBOL2);
+    spec_is_ptr_equal(_t_parent(t5),t4);
+    spec_is_long_equal(_t_size(t5),(long)0);
+    spec_is_symbol_equal(0,_t_symbol(t5),TEST_SYMBOL2);
+
     spec_is_equal(_t_children(t),3);
     spec_is_ptr_equal(_t_child(t,3),t4);
     spec_is_ptr_equal(_t_child(t,2),t2);
