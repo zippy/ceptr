@@ -166,7 +166,7 @@ void _r_reduce(Tnode *run_tree) {
     switch(s) {
     case RESPOND:
 	// for now we just remove the RESPOND instruction and replace it with it's own child
-	x = _t_detach(code,1);
+	x = _t_detach_by_idx(code,1);
 	_t_replace(run_tree,1,x);
 	_r_reduce(run_tree);
 	break;
@@ -174,9 +174,8 @@ void _r_reduce(Tnode *run_tree) {
 	params = _t_child(run_tree,2);
 	match_results = _t_child(params,1);
 	match_tree = _t_child(params,2);
-	x = _t_child(code,1);
+	x = _t_detach_by_idx(code,1);
 	_r_interpolate_from_match(x,match_results,match_tree);
-	x = _t_detach(code,1);
 	_t_replace(run_tree,1,x);
 	break;
     default:

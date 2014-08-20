@@ -71,15 +71,15 @@ void _t_add(Tnode *t,Tnode *c) {
 
 
 // detach and return a child
-Tnode *_t_detach(Tnode *t,int i) {
+Tnode *_t_detach_by_idx(Tnode *t,int i) {
     Tnode *x = _t_child(t,i);
-    _t_remove(t,x);
+    _t_detach_by_ptr(t,x);
     return x;
 }
 
 // search for a child (c) of a node and remove it if found
 // NOTE: does not free the memory occupied by c
-void _t_remove(Tnode *t,Tnode *c) {
+void _t_detach_by_ptr(Tnode *t,Tnode *c) {
     int i;
     int l = _t_children(t);
 

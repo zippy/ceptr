@@ -287,7 +287,7 @@ int __t_match(SState *s,Tnode *t,Tnode *r) {
 		free(p);
 		matched = __t_match(s->out,t,r);
 		if (!matched) {
-		    _t_remove(r,m);
+		    _t_detach_by_ptr(r,m);
 		    _t_free(m);
 		}
 		return matched;

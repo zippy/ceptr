@@ -43,13 +43,13 @@ void testCreateTreeNodes() {
     spec_is_equal(_t_children(t),4);
     spec_is_ptr_equal(_t_child(t,4),t4);
 
-    _t_remove(t,t3);
-    _t_free(t3);  // remove doesn't free the memory of the removed node
     t5 = _t_newr(t4,TEST_SYMBOL2);
     spec_is_ptr_equal(_t_parent(t5),t4);
     spec_is_long_equal(_t_size(t5),(long)0);
     spec_is_symbol_equal(0,_t_symbol(t5),TEST_SYMBOL2);
 
+    _t_detach_by_ptr(t,t3);
+    _t_free(t3);  // detatch doesn't free the memory of the removed node
     spec_is_equal(_t_children(t),3);
     spec_is_ptr_equal(_t_child(t,3),t4);
     spec_is_ptr_equal(_t_child(t,2),t2);
@@ -199,7 +199,7 @@ void testTreeModify() {
 
     __t_dump(0,t,0,buf);
     spec_is_str_equal(_td(0,t)," (TEST_STR_SYMBOL:t (TEST_SYMBOL:123) (TEST_STR_SYMBOL:t2 (TEST_STR_SYMBOL:t21 (TEST_STR_SYMBOL:t211))))");
-    Tnode *y = _t_detach(t,1);
+    Tnode *y = _t_detach_by_idx(t,1);
     spec_is_ptr_equal(_t_parent(y),NULL);
     __t_dump(0,t,0,buf);
     spec_is_str_equal(buf," (TEST_STR_SYMBOL:t (TEST_STR_SYMBOL:t2 (TEST_STR_SYMBOL:t21 (TEST_STR_SYMBOL:t211))))");
