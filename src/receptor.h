@@ -50,8 +50,6 @@ void _r_serialize(Receptor *r,void **surfaceP,size_t *lengthP);
 Receptor * _r_unserialize(void *surface,size_t length);
 
 /******************  receptor signaling */
-void _r_reduce(Tnode *run_tree);
-Tnode *_r_make_run_tree(Tnode *code,int num_params,...);
 //*TODO: for now the signal is appended directly to the flux.  Later it should probably be copied
 Tnode * _r_send(Receptor *r,Receptor *from,Aspect aspect, Tnode *signal);
 
