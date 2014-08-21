@@ -239,18 +239,15 @@ void testReceptorSerialize() {
     float ll[] = {132.5,92.3};
     Xaddr x = _r_new_instance(r,house_loc,ll);
 
-    size_t buf_size = 10000;
-
-    void *surface = malloc(buf_size);
+    void *surface;
     size_t length;
     char buf[2000];
     char buf1[2000];
 
-    length = __t_serialize(r,r->root,&surface,0,buf_size);
+    _r_serialize(r,&surface,&length);
 
     spec_is_long_equal(length,(long)242);
 
-    _r_serialize(r,&surface,&length);
     Receptor *r1 = _r_unserialize(surface,length);
 
     __t_dump(r,r->root,0,buf);
@@ -265,6 +262,7 @@ void testReceptorSerialize() {
     spec_is_equal(_r_get_symbol_by_label(r1,"latitude"),lat);
     spec_is_equal(_r_get_structure_by_label(r1,"latlong"),latlong);
 
+    free(surface);
     _r_free(r);
     _r_free(r1);
 

@@ -185,6 +185,9 @@ size_t __t_serialize(Receptor *r,Tnode *t,void **bufferP,size_t offset,size_t cu
 }
 
 void _r_serialize(Receptor *r,void **surfaceP,size_t *lengthP) {
+    size_t buf_size = 10000;
+    *surfaceP  = malloc(buf_size);
+    *lengthP = __t_serialize(r,r->root,surfaceP,0,buf_size);
 }
 
 // macro to read typed date from the surface and update length and surface values
