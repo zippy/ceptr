@@ -267,6 +267,29 @@ void testReceptorSerialize() {
     _r_free(r1);
 
 }
+
+void testSemtrexDump() {
+    Tnode *s = _makeTestSemtrex1();
+    char buf[2000];
+    spec_is_str_equal(_dump_semtrex(s,buf),"/(TEST_STR_SYMBOL/(1/(11/111)),2,3)");
+
+    _t_free(s);
+
+    // /TEST_STR_SYMBOL/{.*,{.}},4  <- a more complicated group semtrex
+    s = _t_newi(0,SEMTREX_SYMBOL_LITERAL,TEST_STR_SYMBOL);
+    Tnode *ss = _t_newi(s,SEMTREX_SEQUENCE,0);
+    Tnode *sg = _t_newi(ss,SEMTREX_GROUP,TEST_GROUP_SYMBOL1);
+    Tnode *ss2 = _t_newi(sg,SEMTREX_SEQUENCE,0);
+    Tnode *st = _t_newi(ss2,SEMTREX_ZERO_OR_MORE,0);
+    _t_newi(st,SEMTREX_SYMBOL_ANY,0);
+    Tnode *sg2 = _t_newi(ss2,SEMTREX_GROUP,TEST_GROUP_SYMBOL2);
+    _t_newi(sg2,SEMTREX_SYMBOL_ANY,0);
+    Tnode *s3 = _t_newi(ss,SEMTREX_SYMBOL_LITERAL,4);
+    spec_is_str_equal(_dump_semtrex(s,buf),"/(TEST_STR_SYMBOL/{.*,{.}},4)");
+    _t_free(s);
+
+}
+
 void testReceptor() {
     testReceptorCreate();
     testReceptorAddListener();
@@ -277,4 +300,6 @@ void testReceptor() {
     testReceptorDef();
     testReceptorInstances();
     testReceptorSerialize();
+    testSemtrexDump();
+
 }

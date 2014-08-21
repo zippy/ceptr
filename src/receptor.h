@@ -71,5 +71,6 @@ char *_td(Receptor *r,Tnode *t);
 char *_s_get_symbol_name(Receptor *r,Symbol s);
 char *_s_get_structure_name(Receptor *r,Structure s);
 
+char * _dump_semtrex(Tnode *s,char *buf);
 
 #endif

@@ -362,10 +362,7 @@ void testMatchLiteralValue() {
     spec_is_true(!_t_match(s,t));
     _t_free(s);
 
-
     _t_free(t);
-
-
 }
 
 void testSemtrex() {
