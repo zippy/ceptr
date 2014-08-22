@@ -8,6 +8,10 @@ There are currently no dependencies, so just clone this repo.
 
 ## Usage
 
+## Documentation
+
+You can read the code and API documentation here: http://zippy.github.io/ceptr/
+
 ## Architecture
 
 ## Streamscapes
