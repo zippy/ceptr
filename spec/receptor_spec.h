@@ -155,6 +155,40 @@ void testReceptorDef() {
     _r_free(r);
 }
 
+void testReceptorDefMatch() {
+    Receptor *r = _r_new();
+    Symbol lat = _r_def_symbol(r,FLOAT,"latitude");
+    Symbol lon = _r_def_symbol(r,FLOAT,"longitude");
+    Structure latlong = _r_def_structure(r,"latlong",2,lat,lon);
+    Symbol house_loc = _r_def_symbol(r,latlong,"house location");
+
+    Tnode *t = _t_new_root(house_loc);
+    float x = 99.0;
+    Tnode *t_lat = _t_new(t,lat,&x,sizeof(x));
+    Tnode *t_lon = _t_new(t,lon,&x,sizeof(x));
+
+    Tnode *stx = _r_build_def_semtrex(r,house_loc,0);
+    char buf[2000];
+    spec_is_str_equal(_dump_semtrex(stx,buf),"/(3/1,2)");
+    __t_dump(r,stx,0,buf);
+    spec_is_str_equal(buf," (SEMTREX_SYMBOL_LITERAL:house location (SEMTREX_SEQUENCE (SEMTREX_SYMBOL_LITERAL:latitude) (SEMTREX_SYMBOL_LITERAL:longitude)))");
+
+    // a correctly structured tree should match its definition
+    spec_is_true(_r_def_match(r,house_loc,t));
+
+    // a correctly structured tree with different semantics shouldn't match its definition
+    t_lon->contents.symbol = lat;
+    spec_is_true(!_r_def_match(r,house_loc,t));
+
+    // an incorrectly structured tree (i.e. missing a child) shouldn't match its definition
+    _t_detach_by_idx(t,2);
+    spec_is_true(!_r_def_match(r,house_loc,t));
+
+    _t_free(t);
+    _t_free(t_lon);
+    _r_free(r);
+}
+
 void testReceptorInstances() {
     Receptor *r = _r_new();
     Symbol lat = _r_def_symbol(r,FLOAT,"latitude");
@@ -239,6 +273,7 @@ void testReceptor() {
     testReceptorSignal();
     testReceptorAction();
     testReceptorDef();
+    testReceptorDefMatch();
     testReceptorInstances();
     testReceptorSerialize();
     testSemtrexDump();

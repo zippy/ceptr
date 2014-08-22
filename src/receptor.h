@@ -40,6 +40,8 @@ Structure _r_def_structure(Receptor *r,char *label,int num_params,...);
 Structure _r_get_structure_by_label(Receptor *r,char *label);
 Structure __r_get_symbol_structure(Receptor *r,Symbol s);
 size_t __r_get_symbol_size(Receptor *r,Symbol s,void *surface);
+Tnode * _r_build_def_semtrex(Receptor *r,Symbol s,Tnode *parent);
+int _r_def_match(Receptor *r,Symbol s,Tnode *t);
 
 /*****************  receptor instances and xaddrs */
 struct Instance {
