@@ -167,6 +167,10 @@ Structure&#160;</td><td class="memItemRight" valign="bottom"><b>__r_get_symbol_s
 <tr class="memitem:ad886d976f8621ebb22d02c61f454265c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad886d976f8621ebb22d02c61f454265c"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>__r_get_symbol_size</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, Symbol s, void *surface)</td></tr>
 <tr class="separator:ad886d976f8621ebb22d02c61f454265c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7ed83880a8bb8be0de01ae73b44d13a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTnode.html">Tnode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="receptor_8h.html#ad7ed83880a8bb8be0de01ae73b44d13a">_r_build_def_semtrex</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, Symbol s, <a class="el" href="structTnode.html">Tnode</a> *parent)</td></tr>
+<tr class="separator:ad7ed83880a8bb8be0de01ae73b44d13a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8978934f20256d927a9f035c2eeafd8d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="receptor_8h.html#a8978934f20256d927a9f035c2eeafd8d">_r_def_match</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, Symbol s, <a class="el" href="structTnode.html">Tnode</a> *t)</td></tr>
+<tr class="separator:a8978934f20256d927a9f035c2eeafd8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7518a44dda01af81556bb6657f18ead4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structXaddr.html">Xaddr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="receptor_8h.html#a7518a44dda01af81556bb6657f18ead4">_r_new_instance</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, Symbol s, void *surface)</td></tr>
 <tr class="separator:a7518a44dda01af81556bb6657f18ead4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5861d52f36fafa1f5d5a4ba1268ce1b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae5861d52f36fafa1f5d5a4ba1268ce1b"></a>
@@ -307,6 +311,92 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 
 </div>
 </div>
+<a class="anchor" id="ad7ed83880a8bb8be0de01ae73b44d13a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structTnode.html">Tnode</a>* _r_build_def_semtrex </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structReceptor.html">Receptor</a> *&#160;</td>
+          <td class="paramname"><em>r</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Symbol&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTnode.html">Tnode</a> *&#160;</td>
+          <td class="paramname"><em>parent</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Walks the definition of a symbol to build a semtrex that would match that definiton</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">r</td><td>the receptor context in which things are defined </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>the symbol to build a semtrex for </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">parent</td><td>the parent semtrex node because this function calls itself recursively. Pass in 0 to start. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the completed semtrex </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>currently this won't detect an incorrect strcture with extra children. This is because we don't haven't yet implemented the equivalent of "$" for semtrex. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a8978934f20256d927a9f035c2eeafd8d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int _r_def_match </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structReceptor.html">Receptor</a> *&#160;</td>
+          <td class="paramname"><em>r</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Symbol&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTnode.html">Tnode</a> *&#160;</td>
+          <td class="paramname"><em>t</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Determine whether a tree matches a symbol definition, both structural and semantic</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">r</td><td>the receptor context in which things are defined </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">the</td><td>symbol we expect this tree to be </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">the</td><td>tree to match </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true or false depending on the match</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>currently this just matches on a semtrex. It should also look at the surface sizes to see if they meet the criteria of the structure definitions. </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="a6f650808029d4c598ebe6515d9900ef8"></a>
 <div class="memitem">
 <div class="memproto">
@@ -370,7 +460,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
       </table>
 </div><div class="memdoc">
 <p>Create a new instance of a symbol.</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>currently this implementation of instances, just stores each instance as tree node of type INSTANCE as a child of the symbol. This is way inefficient and needs to be replaced. But this is just here to create the API... </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>currently this implementation of instances, just stores each instance as tree node of type INSTANCE as a child of the symbol. This is way inefficient and needs to be replaced. But this is just here to create the API... </dd></dl>
 
 </div>
 </div>
@@ -458,7 +548,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Aug 22 2014 13:40:31 for ceptr by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Aug 22 2014 16:57:52 for ceptr by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.7
 </small></address>

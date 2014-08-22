@@ -75,6 +75,10 @@ void \hyperlink{receptor_8h_a6f650808029d4c598ebe6515d9900ef8}{\+\_\+r\+\_\+free
 \hypertarget{receptor_8h_ad886d976f8621ebb22d02c61f454265c}{size\+\_\+t {\bfseries \+\_\+\+\_\+r\+\_\+get\+\_\+symbol\+\_\+size} (\hyperlink{structReceptor}{Receptor} $\ast$r, Symbol s, void $\ast$surface)}\label{receptor_8h_ad886d976f8621ebb22d02c61f454265c}
 
 \item 
+\hyperlink{structTnode}{Tnode} $\ast$ \hyperlink{receptor_8h_ad7ed83880a8bb8be0de01ae73b44d13a}{\+\_\+r\+\_\+build\+\_\+def\+\_\+semtrex} (\hyperlink{structReceptor}{Receptor} $\ast$r, Symbol s, \hyperlink{structTnode}{Tnode} $\ast$parent)
+\item 
+int \hyperlink{receptor_8h_a8978934f20256d927a9f035c2eeafd8d}{\+\_\+r\+\_\+def\+\_\+match} (\hyperlink{structReceptor}{Receptor} $\ast$r, Symbol s, \hyperlink{structTnode}{Tnode} $\ast$t)
+\item 
 \hyperlink{structXaddr}{Xaddr} \hyperlink{receptor_8h_a7518a44dda01af81556bb6657f18ead4}{\+\_\+r\+\_\+new\+\_\+instance} (\hyperlink{structReceptor}{Receptor} $\ast$r, Symbol s, void $\ast$surface)
 \item 
 \hypertarget{receptor_8h_ae5861d52f36fafa1f5d5a4ba1268ce1b}{\hyperlink{structInstance}{Instance} {\bfseries \+\_\+r\+\_\+get\+\_\+instance} (\hyperlink{structReceptor}{Receptor} $\ast$r, \hyperlink{structXaddr}{Xaddr} x)}\label{receptor_8h_ae5861d52f36fafa1f5d5a4ba1268ce1b}
@@ -158,7 +162,57 @@ the length that was added to the buffer
 \item[{{\bf Tnode} $\ast$}]{action}
 \end{DoxyParamCaption}
 )}}\label{receptor_8h_ace908c1f9cf6df32014310dca991785b}
-Adds an expectation/action pair to a receptor's aspect. \hypertarget{receptor_8h_a6f650808029d4c598ebe6515d9900ef8}{\index{receptor.\+h@{receptor.\+h}!\+\_\+r\+\_\+free@{\+\_\+r\+\_\+free}}
+Adds an expectation/action pair to a receptor's aspect. \hypertarget{receptor_8h_ad7ed83880a8bb8be0de01ae73b44d13a}{\index{receptor.\+h@{receptor.\+h}!\+\_\+r\+\_\+build\+\_\+def\+\_\+semtrex@{\+\_\+r\+\_\+build\+\_\+def\+\_\+semtrex}}
+\index{\+\_\+r\+\_\+build\+\_\+def\+\_\+semtrex@{\+\_\+r\+\_\+build\+\_\+def\+\_\+semtrex}!receptor.\+h@{receptor.\+h}}
+\subsubsection[{\+\_\+r\+\_\+build\+\_\+def\+\_\+semtrex}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Tnode}$\ast$ \+\_\+r\+\_\+build\+\_\+def\+\_\+semtrex (
+\begin{DoxyParamCaption}
+\item[{{\bf Receptor} $\ast$}]{r, }
+\item[{Symbol}]{s, }
+\item[{{\bf Tnode} $\ast$}]{parent}
+\end{DoxyParamCaption}
+)}}\label{receptor_8h_ad7ed83880a8bb8be0de01ae73b44d13a}
+Walks the definition of a symbol to build a semtrex that would match that definiton
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em r} & the receptor context in which things are defined \\
+\hline
+\mbox{\tt in}  & {\em s} & the symbol to build a semtrex for \\
+\hline
+\mbox{\tt in}  & {\em parent} & the parent semtrex node because this function calls itself recursively. Pass in 0 to start. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the completed semtrex 
+\end{DoxyReturn}
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000002}{Todo}]currently this won't detect an incorrect strcture with extra children. This is because we don't haven't yet implemented the equivalent of \char`\"{}\$\char`\"{} for semtrex. \end{DoxyRefDesc}
+\hypertarget{receptor_8h_a8978934f20256d927a9f035c2eeafd8d}{\index{receptor.\+h@{receptor.\+h}!\+\_\+r\+\_\+def\+\_\+match@{\+\_\+r\+\_\+def\+\_\+match}}
+\index{\+\_\+r\+\_\+def\+\_\+match@{\+\_\+r\+\_\+def\+\_\+match}!receptor.\+h@{receptor.\+h}}
+\subsubsection[{\+\_\+r\+\_\+def\+\_\+match}]{\setlength{\rightskip}{0pt plus 5cm}int \+\_\+r\+\_\+def\+\_\+match (
+\begin{DoxyParamCaption}
+\item[{{\bf Receptor} $\ast$}]{r, }
+\item[{Symbol}]{s, }
+\item[{{\bf Tnode} $\ast$}]{t}
+\end{DoxyParamCaption}
+)}}\label{receptor_8h_a8978934f20256d927a9f035c2eeafd8d}
+Determine whether a tree matches a symbol definition, both structural and semantic
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em r} & the receptor context in which things are defined \\
+\hline
+\mbox{\tt in}  & {\em the} & symbol we expect this tree to be \\
+\hline
+\mbox{\tt in}  & {\em the} & tree to match \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true or false depending on the match
+\end{DoxyReturn}
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000003}{Todo}]currently this just matches on a semtrex. It should also look at the surface sizes to see if they meet the criteria of the structure definitions. \end{DoxyRefDesc}
+\hypertarget{receptor_8h_a6f650808029d4c598ebe6515d9900ef8}{\index{receptor.\+h@{receptor.\+h}!\+\_\+r\+\_\+free@{\+\_\+r\+\_\+free}}
 \index{\+\_\+r\+\_\+free@{\+\_\+r\+\_\+free}!receptor.\+h@{receptor.\+h}}
 \subsubsection[{\+\_\+r\+\_\+free}]{\setlength{\rightskip}{0pt plus 5cm}void \+\_\+r\+\_\+free (
 \begin{DoxyParamCaption}
@@ -184,7 +238,7 @@ Creates a new receptor allocating all memory needed. \hypertarget{receptor_8h_a7
 Create a new instance of a symbol.
 
 \begin{DoxyRefDesc}{Todo}
-\item[\hyperlink{todo__todo000002}{Todo}]currently this implementation of instances, just stores each instance as tree node of type I\+N\+S\+T\+A\+N\+C\+E as a child of the symbol. This is way inefficient and needs to be replaced. But this is just here to create the A\+P\+I... \end{DoxyRefDesc}
+\item[\hyperlink{todo__todo000004}{Todo}]currently this implementation of instances, just stores each instance as tree node of type I\+N\+S\+T\+A\+N\+C\+E as a child of the symbol. This is way inefficient and needs to be replaced. But this is just here to create the A\+P\+I... \end{DoxyRefDesc}
 \hypertarget{receptor_8h_ae251d0cfa84e1edbbe12d3489aa29d1e}{\index{receptor.\+h@{receptor.\+h}!\+\_\+r\+\_\+send@{\+\_\+r\+\_\+send}}
 \index{\+\_\+r\+\_\+send@{\+\_\+r\+\_\+send}!receptor.\+h@{receptor.\+h}}
 \subsubsection[{\+\_\+r\+\_\+send}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Tnode}$\ast$ \+\_\+r\+\_\+send (
