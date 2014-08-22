@@ -351,12 +351,12 @@ Tnode * _r_send(Receptor *r,Receptor *from,Aspect aspect, Tnode *signal_contents
 	    _t_free(m);
 	    _t_add(s,rt);
 	    // for now just reduce the tree in place
-	    // TODO: move this to adding the runtree to the thread pool
+	    /// @todo move this to adding the runtree to the thread pool
 	    _p_reduce(rt);
 	}
     }
 
-    //TODO: results should actually be a what? success/failure of send
+    /// @todo  results should actually be a what? success/failure of send
     if (rt == 0) return 0;
     else return s;
 }

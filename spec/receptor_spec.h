@@ -104,7 +104,7 @@ void testReceptorAction() {
     spec_is_symbol_equal(r,_t_symbol(r1),TEST_FIRST_NAME_SYMBOL);
     spec_is_str_equal((char *)_t_surface(r1),"eric");
 
-    // TODO: a signal that has no matches should return a null result?
+    /// @todo a signal that has no matches should return a null result?
     signal = _t_newi(0,TEST_SYMBOL2,3141);
     result = _r_send(r,r,DEFAULT_ASPECT,signal);
     spec_is_ptr_equal(result,NULL);

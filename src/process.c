@@ -3,7 +3,7 @@
 #include <stdarg.h>
 
 
-// TODO: what to do if match has sibs??
+/// @todo what to do if match has sibs??
 void _p_interpolate_from_match(Tnode *t,Tnode *match_results,Tnode *match_tree) {
     int i,c = _t_children(t);
     if (_t_symbol(t) == INTERPOLATE_SYMBOL) {

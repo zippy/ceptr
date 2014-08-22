@@ -33,7 +33,7 @@ int *labelGet(LabelTable *table, char *s) {
     return _labelGet(table, str2label(s));
 }
 
-// TODO: label delete
+/// @todo label delete
 void _labelDelete(LabelTable *table,Label l) {
 }
 void lableDelete(LabelTable *table,char *s) {

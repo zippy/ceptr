@@ -57,7 +57,7 @@ void testRunTreeReduce() {
     _t_free(t);
 }
 
-//TODO: when interpolating from a match, how do we handle non-leaf interpollations, i.e. where do you hook children onto?
+/// @todo when interpolating from a match, how do we handle non-leaf interpollations, i.e. where do you hook children onto?
 
 void testProcess() {
     testRunTree();

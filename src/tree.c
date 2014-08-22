@@ -184,7 +184,7 @@ void __t_free_children(Tnode *t) {
     t->structure.child_count = 0;
 }
 
-//TODO: make this remove the child from the parent's child-list?
+///@todo make this remove the child from the parent's child-list?
 void _t_free(Tnode *t) {
     __t_free_children(t);
     if (t->context.flags & TFLAG_ALLOCATED)
@@ -258,7 +258,7 @@ int _t_node_index(Tnode *t) {
     return 0;
 }
 
-//TODO: this is very expensive if called all the time!!!
+/// @todo  this is very expensive if called all the time!!!
 Tnode * _t_next_sibling(Tnode *t) {
 	int c;
     int i;
@@ -287,7 +287,7 @@ int _t_path_depth(int *p) {
     return i;
 }
 
-//TODO: implement jumping into orthogonal trees  (i.e. return paths with 0 in them)
+/// @todo  implement jumping into orthogonal trees  (i.e. return paths with 0 in them)
 int * _t_get_path(Tnode *t) {
     Tnode *n;
     // allocate an array to hold the
@@ -342,7 +342,7 @@ Tnode * _t_get(Tnode *t,int *p) {
     if (i == TREE_PATH_TERMINATOR)
 	return t;
     else if (i == 0)
-	//TODO: semantic check to make sure surface is a tree?
+	/// @todo  semantic check to make sure surface is a tree?
 	c = *(Tnode **)(_t_surface(t));
     else
 	c = _t_child(t,i);
