@@ -1,3 +1,11 @@
+/**
+ * @file tree.c
+ * @brief Semantic trees are the basic data building block for ceptr
+ *
+ * Everything in ceptr is built out of semantic trees.  In ceptr all data is assumed to be
+ * meaningfull, not just structured.
+ */
+
 #include "tree.h"
 #include "ceptr_error.h"
 
@@ -70,15 +78,29 @@ void _t_add(Tnode *t,Tnode *c) {
 }
 
 
-// detach and return a child
+/**
+ * Detatch the specified child from a node and return it
+ *
+ * @note does not free the memory occupied by the child
+ * @param[in] t node to detach from
+ * @param[in] i index of the child to detach
+ * @returns the detatched child
+ */
 Tnode *_t_detach_by_idx(Tnode *t,int i) {
     Tnode *x = _t_child(t,i);
     _t_detach_by_ptr(t,x);
     return x;
 }
 
-// search for a child (c) of a node and remove it if found
-// NOTE: does not free the memory occupied by c
+/**
+ * search for a given node in the child list of a node and detatch it if found
+ *
+ * @note does not free the memory occupied by c
+ * @param[in] t node to search
+ * @param[in] c node to search for in child list
+ */
+//
+//
 void _t_detach_by_ptr(Tnode *t,Tnode *c) {
     int i;
     int l = _t_children(t);
@@ -110,7 +132,7 @@ void __t_morph(Tnode *t,Symbol s,void *surface,size_t size,int allocate) {
     if (allocate) {
 	t->contents.surface = malloc(size);
 	memcpy(t->contents.surface,surface,size);
-	t->context.flags = TFLAG_ALLOCATED; //TODO: what if the surface is a tree?
+	t->context.flags = TFLAG_ALLOCATED; /// @todo Handle the case where the surface of the node to be morphed is itself a tree
     }
     else {
 	*((int *)&t->contents.surface) = *(int *)surface;
@@ -120,15 +142,27 @@ void __t_morph(Tnode *t,Symbol s,void *surface,size_t size,int allocate) {
     t->contents.symbol = s;
 }
 
-// convert the surface of one node to that of the other
-// this will free the original surface value if it was allocated.
-// it does nothing about the children or parent, just changes the surface and symbol
+/**
+ * Convert the surface of one node to that of another
+ *
+ * Frees the original surface value if it was allocated.
+ *
+ * @note only converts the type and surface, not the children!
+ * @param[in] dst Node to be morphed
+ * @param[in] src Node type that dst should be morephed to
+ */
 void _t_morph(Tnode *dst,Tnode *src) {
     __t_morph(dst,_t_symbol(src),_t_surface(src),_t_size(src),src->context.flags & TFLAG_ALLOCATED);
 }
 
-// replaces the specified child with the given node.
-// Note: frees the replaced child.
+/**
+ * Replace the specified child with the given node.
+
+ * @note frees the replaced child
+ * @param[in] t input node on which to operate
+ * @param[in] i index to child be replaced
+ * @param[in] r node to replace
+ */
 void _t_replace(Tnode *t,int i,Tnode *r) {
     Tnode *c = _t_child(t,i);
     if (!c) {raise_error("tree doesn't have child %d",i);}

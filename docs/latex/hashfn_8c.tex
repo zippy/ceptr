@@ -1,0 +1,41 @@
+\hypertarget{hashfn_8c}{\section{src/hashfn.c File Reference}
+\label{hashfn_8c}\index{src/hashfn.\+c@{src/hashfn.\+c}}
+}
+{\ttfamily \#include \char`\"{}hashfn.\+h\char`\"{}}\\*
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{hashfn_8c_abc7d71657be8975a51684e41029b7964}{get16bits}(d)
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+uint32\+\_\+t \hyperlink{hashfn_8c_a70988ff4ec9095bc827e253651123d49}{hashfn} (const char $\ast$data, int len)
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{hashfn_8c_abc7d71657be8975a51684e41029b7964}{\index{hashfn.\+c@{hashfn.\+c}!get16bits@{get16bits}}
+\index{get16bits@{get16bits}!hashfn.\+c@{hashfn.\+c}}
+\subsubsection[{get16bits}]{\setlength{\rightskip}{0pt plus 5cm}\#define get16bits(
+\begin{DoxyParamCaption}
+\item[{}]{d}
+\end{DoxyParamCaption}
+)}}\label{hashfn_8c_abc7d71657be8975a51684e41029b7964}
+{\bfseries Value\+:}
+\begin{DoxyCode}
+((((\textcolor{keyword}{const} uint8\_t *)(d))[1] << UINT32\_C(8))\(\backslash\)
+                      +((\textcolor{keyword}{const} uint8\_t *)(d))[0])
+\end{DoxyCode}
+
+
+\subsection{Function Documentation}
+\hypertarget{hashfn_8c_a70988ff4ec9095bc827e253651123d49}{\index{hashfn.\+c@{hashfn.\+c}!hashfn@{hashfn}}
+\index{hashfn@{hashfn}!hashfn.\+c@{hashfn.\+c}}
+\subsubsection[{hashfn}]{\setlength{\rightskip}{0pt plus 5cm}uint32\+\_\+t hashfn (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{data, }
+\item[{int}]{len}
+\end{DoxyParamCaption}
+)}}\label{hashfn_8c_a70988ff4ec9095bc827e253651123d49}

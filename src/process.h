@@ -1,3 +1,9 @@
+/**
+ * @file process.h
+ * @brief ceptr processing happen by instantiating code trees into run trees and reducing them
+ *
+ */
+
 #ifndef _CEPTR_PROCESS_H
 #define _CEPTR_PROCESS_H
 

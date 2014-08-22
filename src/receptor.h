@@ -1,15 +1,26 @@
+/**
+ * @file receptor.h
+ * @brief Receptors provide the fundamental coherence contexts for ceptr
+ *
+ */
+
 #ifndef _CEPTR_RECEPTOR_H
 #define _CEPTR_RECEPTOR_H
 
 #include "tree.h"
 #include "label.h"
 
+/**
+   A Receptor is a semantic tree, pointed to by root, but we also create c struct for
+   faster access to some parts of the tree, and to hold non-tree data, like the label
+   table.
+*/
 struct Receptor {
-    Tnode *root;
-    Tnode *structures;
-    Tnode *symbols;
-    Tnode *flux;
-    LabelTable table;
+    Tnode *root;        ///< root node of the semantic tree
+    Tnode *structures;  ///< pointer for quick access to structures
+    Tnode *symbols;     ///< pointer for quick access to symbols
+    Tnode *flux;        ///< pointer for quick access to the flux
+    LabelTable table;   ///< the label table
 };
 typedef struct Receptor Receptor;
 
@@ -36,6 +47,9 @@ struct Instance {
 };
 typedef struct Instance Instance;
 
+/**
+ * An eXistence Address consists of the semantic type (Symbol) and an address.
+ */
 struct Xaddr {
     Symbol symbol;
     int addr;

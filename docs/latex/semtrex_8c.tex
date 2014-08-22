@@ -1,0 +1,179 @@
+\hypertarget{semtrex_8c}{\section{src/semtrex.c File Reference}
+\label{semtrex_8c}\index{src/semtrex.\+c@{src/semtrex.\+c}}
+}
+{\ttfamily \#include \char`\"{}semtrex.\+h\char`\"{}}\\*
+\subsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+union \hyperlink{unionPtrlist}{Ptrlist}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef union \hyperlink{unionPtrlist}{Ptrlist} \hyperlink{semtrex_8c_af0de0b5913959a81b47d91299857f683}{Ptrlist}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{unionPtrlist}{Ptrlist} $\ast$ \hyperlink{semtrex_8c_a27270856d607cf2cc84b27b46473513b}{list1} (\hyperlink{structSState}{S\+State} $\ast$$\ast$outp)
+\item 
+void \hyperlink{semtrex_8c_ab307af6eec1425c7801b32bfbaa08f42}{patch} (\hyperlink{unionPtrlist}{Ptrlist} $\ast$l, \hyperlink{structSState}{S\+State} $\ast$s, int level)
+\item 
+\hyperlink{unionPtrlist}{Ptrlist} $\ast$ \hyperlink{semtrex_8c_a09c913ffa972c186b35e79965c08d8df}{append} (\hyperlink{unionPtrlist}{Ptrlist} $\ast$l1, \hyperlink{unionPtrlist}{Ptrlist} $\ast$l2)
+\item 
+\hyperlink{structSState}{S\+State} $\ast$ \hyperlink{semtrex_8c_a929f2c011e0ab7aa4b3737cabbe65acc}{state} (\hyperlink{semtrex_8h_a92aae910eecb34cca75fb271028bc25a}{State\+Type} type, int $\ast$states\+P)
+\item 
+char $\ast$ \hyperlink{semtrex_8c_ac02680fca617601bdaf694b7d2a2f004}{\+\_\+\+\_\+s\+\_\+make\+F\+A} (\hyperlink{structTnode}{Tnode} $\ast$t, \hyperlink{structSState}{S\+State} $\ast$$\ast$in, \hyperlink{unionPtrlist}{Ptrlist} $\ast$$\ast$out, int level, int $\ast$states\+P)
+\item 
+void \hyperlink{semtrex_8c_a9b74697af17681e4c28a4679de73fe42}{\+\_\+s\+\_\+dump} (\hyperlink{structSState}{S\+State} $\ast$s)
+\item 
+\hyperlink{structSState}{S\+State} $\ast$ \hyperlink{semtrex_8c_ad372f5dd944af0dceb4e9d8319f385af}{\+\_\+s\+\_\+make\+F\+A} (\hyperlink{structTnode}{Tnode} $\ast$t, int $\ast$states\+P)
+\item 
+int \hyperlink{semtrex_8c_ad9bad431abf9651aa03720085a6b6099}{\+\_\+\+\_\+s\+\_\+free\+F\+A} (\hyperlink{structSState}{S\+State} $\ast$s, int id)
+\item 
+\hyperlink{semtrex_8c_aace32a99d1e16839fe34820b8c2f3888}{\+\_\+\+\_\+s\+\_\+free\+F\+A2} (\hyperlink{structSState}{S\+State} $\ast$s)
+\item 
+void \hyperlink{semtrex_8c_a0ff6bb9da9a01b35d66a1a84b73fad22}{\+\_\+s\+\_\+free\+F\+A} (\hyperlink{structSState}{S\+State} $\ast$s)
+\item 
+int \hyperlink{semtrex_8c_aa587cd660fd78a9e87513ced9948a2f6}{\+\_\+\+\_\+t\+\_\+match} (\hyperlink{structSState}{S\+State} $\ast$s, \hyperlink{structTnode}{Tnode} $\ast$t, \hyperlink{structTnode}{Tnode} $\ast$r)
+\item 
+int \hyperlink{semtrex_8c_ae486b2d73bb350389dbd4624a1bdcbdc}{\+\_\+t\+\_\+matchr} (\hyperlink{structTnode}{Tnode} $\ast$semtrex, \hyperlink{structTnode}{Tnode} $\ast$t, \hyperlink{structTnode}{Tnode} $\ast$$\ast$r\+P)
+\item 
+int \hyperlink{semtrex_8c_a56c55fe5d429521c827cc67000898d0e}{\+\_\+t\+\_\+match} (\hyperlink{structTnode}{Tnode} $\ast$semtrex, \hyperlink{structTnode}{Tnode} $\ast$t)
+\item 
+\hyperlink{structTnode}{Tnode} $\ast$ \hyperlink{semtrex_8c_aa4419dc4f940274606f85a88d52949e7}{\+\_\+t\+\_\+get\+\_\+match} (\hyperlink{structTnode}{Tnode} $\ast$result, \hyperlink{symbol_8h_a6658c4c543dd5216f61805c3a2e92420}{Symbol} group)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{structSState}{S\+State} \hyperlink{semtrex_8c_a4f647929b2fa5e062bf2df67482f2e6e}{matchstate} = \{\hyperlink{semtrex_8h_adf764cbdea00d65edcd07bb9953ad2b7a96d8580295ed5a8e1a1f1552cd583f67}{State\+Match}\}
+\end{DoxyCompactItemize}
+
+
+\subsection{Typedef Documentation}
+\hypertarget{semtrex_8c_af0de0b5913959a81b47d91299857f683}{\index{semtrex.\+c@{semtrex.\+c}!Ptrlist@{Ptrlist}}
+\index{Ptrlist@{Ptrlist}!semtrex.\+c@{semtrex.\+c}}
+\subsubsection[{Ptrlist}]{\setlength{\rightskip}{0pt plus 5cm}typedef union {\bf Ptrlist} {\bf Ptrlist}}}\label{semtrex_8c_af0de0b5913959a81b47d91299857f683}
+
+
+\subsection{Function Documentation}
+\hypertarget{semtrex_8c_ad9bad431abf9651aa03720085a6b6099}{\index{semtrex.\+c@{semtrex.\+c}!\+\_\+\+\_\+s\+\_\+free\+F\+A@{\+\_\+\+\_\+s\+\_\+free\+F\+A}}
+\index{\+\_\+\+\_\+s\+\_\+free\+F\+A@{\+\_\+\+\_\+s\+\_\+free\+F\+A}!semtrex.\+c@{semtrex.\+c}}
+\subsubsection[{\+\_\+\+\_\+s\+\_\+free\+F\+A}]{\setlength{\rightskip}{0pt plus 5cm}int \+\_\+\+\_\+s\+\_\+free\+F\+A (
+\begin{DoxyParamCaption}
+\item[{{\bf S\+State} $\ast$}]{s, }
+\item[{int}]{id}
+\end{DoxyParamCaption}
+)}}\label{semtrex_8c_ad9bad431abf9651aa03720085a6b6099}
+\hypertarget{semtrex_8c_aace32a99d1e16839fe34820b8c2f3888}{\index{semtrex.\+c@{semtrex.\+c}!\+\_\+\+\_\+s\+\_\+free\+F\+A2@{\+\_\+\+\_\+s\+\_\+free\+F\+A2}}
+\index{\+\_\+\+\_\+s\+\_\+free\+F\+A2@{\+\_\+\+\_\+s\+\_\+free\+F\+A2}!semtrex.\+c@{semtrex.\+c}}
+\subsubsection[{\+\_\+\+\_\+s\+\_\+free\+F\+A2}]{\setlength{\rightskip}{0pt plus 5cm}\+\_\+\+\_\+s\+\_\+free\+F\+A2 (
+\begin{DoxyParamCaption}
+\item[{{\bf S\+State} $\ast$}]{s}
+\end{DoxyParamCaption}
+)}}\label{semtrex_8c_aace32a99d1e16839fe34820b8c2f3888}
+\hypertarget{semtrex_8c_ac02680fca617601bdaf694b7d2a2f004}{\index{semtrex.\+c@{semtrex.\+c}!\+\_\+\+\_\+s\+\_\+make\+F\+A@{\+\_\+\+\_\+s\+\_\+make\+F\+A}}
+\index{\+\_\+\+\_\+s\+\_\+make\+F\+A@{\+\_\+\+\_\+s\+\_\+make\+F\+A}!semtrex.\+c@{semtrex.\+c}}
+\subsubsection[{\+\_\+\+\_\+s\+\_\+make\+F\+A}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$ \+\_\+\+\_\+s\+\_\+make\+F\+A (
+\begin{DoxyParamCaption}
+\item[{{\bf Tnode} $\ast$}]{t, }
+\item[{{\bf S\+State} $\ast$$\ast$}]{in, }
+\item[{{\bf Ptrlist} $\ast$$\ast$}]{out, }
+\item[{int}]{level, }
+\item[{int $\ast$}]{states\+P}
+\end{DoxyParamCaption}
+)}}\label{semtrex_8c_ac02680fca617601bdaf694b7d2a2f004}
+\hypertarget{semtrex_8c_aa587cd660fd78a9e87513ced9948a2f6}{\index{semtrex.\+c@{semtrex.\+c}!\+\_\+\+\_\+t\+\_\+match@{\+\_\+\+\_\+t\+\_\+match}}
+\index{\+\_\+\+\_\+t\+\_\+match@{\+\_\+\+\_\+t\+\_\+match}!semtrex.\+c@{semtrex.\+c}}
+\subsubsection[{\+\_\+\+\_\+t\+\_\+match}]{\setlength{\rightskip}{0pt plus 5cm}int \+\_\+\+\_\+t\+\_\+match (
+\begin{DoxyParamCaption}
+\item[{{\bf S\+State} $\ast$}]{s, }
+\item[{{\bf Tnode} $\ast$}]{t, }
+\item[{{\bf Tnode} $\ast$}]{r}
+\end{DoxyParamCaption}
+)}}\label{semtrex_8c_aa587cd660fd78a9e87513ced9948a2f6}
+\hypertarget{semtrex_8c_a9b74697af17681e4c28a4679de73fe42}{\index{semtrex.\+c@{semtrex.\+c}!\+\_\+s\+\_\+dump@{\+\_\+s\+\_\+dump}}
+\index{\+\_\+s\+\_\+dump@{\+\_\+s\+\_\+dump}!semtrex.\+c@{semtrex.\+c}}
+\subsubsection[{\+\_\+s\+\_\+dump}]{\setlength{\rightskip}{0pt plus 5cm}void \+\_\+s\+\_\+dump (
+\begin{DoxyParamCaption}
+\item[{{\bf S\+State} $\ast$}]{s}
+\end{DoxyParamCaption}
+)}}\label{semtrex_8c_a9b74697af17681e4c28a4679de73fe42}
+\hypertarget{semtrex_8c_a0ff6bb9da9a01b35d66a1a84b73fad22}{\index{semtrex.\+c@{semtrex.\+c}!\+\_\+s\+\_\+free\+F\+A@{\+\_\+s\+\_\+free\+F\+A}}
+\index{\+\_\+s\+\_\+free\+F\+A@{\+\_\+s\+\_\+free\+F\+A}!semtrex.\+c@{semtrex.\+c}}
+\subsubsection[{\+\_\+s\+\_\+free\+F\+A}]{\setlength{\rightskip}{0pt plus 5cm}void \+\_\+s\+\_\+free\+F\+A (
+\begin{DoxyParamCaption}
+\item[{{\bf S\+State} $\ast$}]{s}
+\end{DoxyParamCaption}
+)}}\label{semtrex_8c_a0ff6bb9da9a01b35d66a1a84b73fad22}
+\hypertarget{semtrex_8c_ad372f5dd944af0dceb4e9d8319f385af}{\index{semtrex.\+c@{semtrex.\+c}!\+\_\+s\+\_\+make\+F\+A@{\+\_\+s\+\_\+make\+F\+A}}
+\index{\+\_\+s\+\_\+make\+F\+A@{\+\_\+s\+\_\+make\+F\+A}!semtrex.\+c@{semtrex.\+c}}
+\subsubsection[{\+\_\+s\+\_\+make\+F\+A}]{\setlength{\rightskip}{0pt plus 5cm}{\bf S\+State}$\ast$ \+\_\+s\+\_\+make\+F\+A (
+\begin{DoxyParamCaption}
+\item[{{\bf Tnode} $\ast$}]{t, }
+\item[{int $\ast$}]{states\+P}
+\end{DoxyParamCaption}
+)}}\label{semtrex_8c_ad372f5dd944af0dceb4e9d8319f385af}
+\hypertarget{semtrex_8c_aa4419dc4f940274606f85a88d52949e7}{\index{semtrex.\+c@{semtrex.\+c}!\+\_\+t\+\_\+get\+\_\+match@{\+\_\+t\+\_\+get\+\_\+match}}
+\index{\+\_\+t\+\_\+get\+\_\+match@{\+\_\+t\+\_\+get\+\_\+match}!semtrex.\+c@{semtrex.\+c}}
+\subsubsection[{\+\_\+t\+\_\+get\+\_\+match}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Tnode}$\ast$ \+\_\+t\+\_\+get\+\_\+match (
+\begin{DoxyParamCaption}
+\item[{{\bf Tnode} $\ast$}]{result, }
+\item[{{\bf Symbol}}]{group}
+\end{DoxyParamCaption}
+)}}\label{semtrex_8c_aa4419dc4f940274606f85a88d52949e7}
+\hypertarget{semtrex_8c_a56c55fe5d429521c827cc67000898d0e}{\index{semtrex.\+c@{semtrex.\+c}!\+\_\+t\+\_\+match@{\+\_\+t\+\_\+match}}
+\index{\+\_\+t\+\_\+match@{\+\_\+t\+\_\+match}!semtrex.\+c@{semtrex.\+c}}
+\subsubsection[{\+\_\+t\+\_\+match}]{\setlength{\rightskip}{0pt plus 5cm}int \+\_\+t\+\_\+match (
+\begin{DoxyParamCaption}
+\item[{{\bf Tnode} $\ast$}]{semtrex, }
+\item[{{\bf Tnode} $\ast$}]{t}
+\end{DoxyParamCaption}
+)}}\label{semtrex_8c_a56c55fe5d429521c827cc67000898d0e}
+\hypertarget{semtrex_8c_ae486b2d73bb350389dbd4624a1bdcbdc}{\index{semtrex.\+c@{semtrex.\+c}!\+\_\+t\+\_\+matchr@{\+\_\+t\+\_\+matchr}}
+\index{\+\_\+t\+\_\+matchr@{\+\_\+t\+\_\+matchr}!semtrex.\+c@{semtrex.\+c}}
+\subsubsection[{\+\_\+t\+\_\+matchr}]{\setlength{\rightskip}{0pt plus 5cm}int \+\_\+t\+\_\+matchr (
+\begin{DoxyParamCaption}
+\item[{{\bf Tnode} $\ast$}]{semtrex, }
+\item[{{\bf Tnode} $\ast$}]{t, }
+\item[{{\bf Tnode} $\ast$$\ast$}]{r\+P}
+\end{DoxyParamCaption}
+)}}\label{semtrex_8c_ae486b2d73bb350389dbd4624a1bdcbdc}
+\hypertarget{semtrex_8c_a09c913ffa972c186b35e79965c08d8df}{\index{semtrex.\+c@{semtrex.\+c}!append@{append}}
+\index{append@{append}!semtrex.\+c@{semtrex.\+c}}
+\subsubsection[{append}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Ptrlist}$\ast$ append (
+\begin{DoxyParamCaption}
+\item[{{\bf Ptrlist} $\ast$}]{l1, }
+\item[{{\bf Ptrlist} $\ast$}]{l2}
+\end{DoxyParamCaption}
+)}}\label{semtrex_8c_a09c913ffa972c186b35e79965c08d8df}
+\hypertarget{semtrex_8c_a27270856d607cf2cc84b27b46473513b}{\index{semtrex.\+c@{semtrex.\+c}!list1@{list1}}
+\index{list1@{list1}!semtrex.\+c@{semtrex.\+c}}
+\subsubsection[{list1}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Ptrlist}$\ast$ list1 (
+\begin{DoxyParamCaption}
+\item[{{\bf S\+State} $\ast$$\ast$}]{outp}
+\end{DoxyParamCaption}
+)}}\label{semtrex_8c_a27270856d607cf2cc84b27b46473513b}
+\hypertarget{semtrex_8c_ab307af6eec1425c7801b32bfbaa08f42}{\index{semtrex.\+c@{semtrex.\+c}!patch@{patch}}
+\index{patch@{patch}!semtrex.\+c@{semtrex.\+c}}
+\subsubsection[{patch}]{\setlength{\rightskip}{0pt plus 5cm}void patch (
+\begin{DoxyParamCaption}
+\item[{{\bf Ptrlist} $\ast$}]{l, }
+\item[{{\bf S\+State} $\ast$}]{s, }
+\item[{int}]{level}
+\end{DoxyParamCaption}
+)}}\label{semtrex_8c_ab307af6eec1425c7801b32bfbaa08f42}
+\hypertarget{semtrex_8c_a929f2c011e0ab7aa4b3737cabbe65acc}{\index{semtrex.\+c@{semtrex.\+c}!state@{state}}
+\index{state@{state}!semtrex.\+c@{semtrex.\+c}}
+\subsubsection[{state}]{\setlength{\rightskip}{0pt plus 5cm}{\bf S\+State}$\ast$ state (
+\begin{DoxyParamCaption}
+\item[{{\bf State\+Type}}]{type, }
+\item[{int $\ast$}]{states\+P}
+\end{DoxyParamCaption}
+)}}\label{semtrex_8c_a929f2c011e0ab7aa4b3737cabbe65acc}
+
+
+\subsection{Variable Documentation}
+\hypertarget{semtrex_8c_a4f647929b2fa5e062bf2df67482f2e6e}{\index{semtrex.\+c@{semtrex.\+c}!matchstate@{matchstate}}
+\index{matchstate@{matchstate}!semtrex.\+c@{semtrex.\+c}}
+\subsubsection[{matchstate}]{\setlength{\rightskip}{0pt plus 5cm}{\bf S\+State} matchstate = \{{\bf State\+Match}\}}}\label{semtrex_8c_a4f647929b2fa5e062bf2df67482f2e6e}

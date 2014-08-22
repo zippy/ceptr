@@ -1,3 +1,8 @@
+/**
+ * @file tree.h
+ * @brief semantic trees header file
+ */
+
 #ifndef _CEPTR_TREE_H
 #define _CEPTR_TREE_H
 
@@ -5,6 +10,7 @@
 #include <stdlib.h>
 #include "ceptr_error.h"
 #include "symbol.h"
+#include "structure.h"
 
 #define TREE_CHILDREN_BLOCK 5
 #define TREE_PATH_TERMINATOR -9999

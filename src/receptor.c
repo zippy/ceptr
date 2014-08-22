@@ -1,10 +1,18 @@
+/**
+ * @file receptor.c
+ * @brief Receptors provide the fundamental coherence contexts for ceptr
+ *
+ */
+
 #include "receptor.h"
 #include "semtrex.h"
 #include "process.h"
 #include <stdarg.h>
 /*****************  create and destroy receptors */
 
-/* creates a new receptor allocating all memory needed */
+/**
+ * Creates a new receptor allocating all memory needed.
+ */
 Receptor *_r_new() {
     Receptor *r = malloc(sizeof(Receptor));
     r->root = _t_new_root(RECEPTOR);
@@ -18,7 +26,9 @@ Receptor *_r_new() {
     return r;
 }
 
-/* adds an expectation/action pair to a receptor's aspect */
+/**
+ * Adds an expectation/action pair to a receptor's aspect.
+ */
 void _r_add_listener(Receptor *r,Aspect aspect,Symbol carrier,Tnode *expectation,Tnode *action) {
     Tnode *e = _t_newi(0,LISTENER,carrier);
     _t_add(e,expectation);
@@ -27,7 +37,9 @@ void _r_add_listener(Receptor *r,Aspect aspect,Symbol carrier,Tnode *expectation
     _t_add(a,e);
 }
 
-/* destroys a receptor freeing all memory it uses */
+/**
+ * Destroys a receptor freeing all memory it uses.
+ */
 void _r_free(Receptor *r) {
     _t_free(r->root);
     lableTableFree(&r->table);
@@ -36,7 +48,9 @@ void _r_free(Receptor *r) {
 
 /*****************  receptor symbols and structures */
 
-// we use this for both defining symbols and structures because labels store the full path to the labeled item
+/**
+ * we use this for both defining symbols and structures because labels store the full path to the labeled item
+ */
 int __set_label_for_def(Receptor *r,char *label,Tnode *def) {
     int *path = _t_get_path(def);
     labelSet(&r->table,label,path);
@@ -45,8 +59,11 @@ int __set_label_for_def(Receptor *r,char *label,Tnode *def) {
     return i;
 }
 
-// get the child index for a given label.  This works for retrieving symbols and structures
-// because the symbol and structure values is just the child index.
+/**
+ * Get the child index for a given label.
+ *
+ * This works for retrieving symbols and structures because the symbol and structure values is just the child index.
+ */
 int __get_label_idx(Receptor *r,char *label) {
     int *path = labelGet(&r->table,label);
     if (!path) return 0;
@@ -131,9 +148,14 @@ size_t __r_get_symbol_size(Receptor *r,Symbol s,void *surface) {
 }
 
 /*****************  receptor instances and xaddrs */
-// TODO: currently this implementation of instances, just stores each instance as tree node
-//       of type INSTANCE as a child of the symbol.  This is way inefficient and needs to be
-//       replaced.  But this is just here to create the API...
+
+/**
+ * Create a new instance of a symbol.
+ *
+ * @todo currently this implementation of instances, just stores each instance as tree node
+ of type INSTANCE as a child of the symbol.  This is way inefficient and needs to be
+ replaced.  But this is just here to create the API...
+*/
 Xaddr _r_new_instance(Receptor *r,Symbol s,void *surface) {
     Xaddr result;
     Tnode *sym = _t_child(r->symbols,s);
@@ -152,13 +174,20 @@ Instance _r_get_instance(Receptor *r,Xaddr x) {
 
 /******************  receptor serialization */
 
-// macro to write data by type into *bufferP and increment offset by the size of the type
+/// macro to write data by type into *bufferP and increment offset by the size of the type
 #define SWRITE(type,value) type * type##P = (type *)(*bufferP +offset); *type##P=value;offset += sizeof(type);
 
 
-// serialize a tree (t) by recursive descent.
-// Buffer (bufferP) must be a pointer to a malloced ptr of "current_size" which will be realloced if serialized tree is bigger than initial buffer allocation.
-// returns the length that was added to the buffer
+/**
+ * Serialize a tree by recursive descent.
+ *
+ * @param[in] t tree to be serialized
+ * @param[in] r receptor to provide a context for resolving symbols and structures
+ * @param[in] bufferP a pointer to a malloced ptr of "current_size" which will be realloced if serialized tree is bigger than initial buffer allocation.
+ * @param[in] offset current offset into buffer at which to put serialized data
+ * @param[in] current_size size of buffer
+ * @returns the length that was added to the buffer
+ */
 size_t __t_serialize(Receptor *r,Tnode *t,void **bufferP,size_t offset,size_t current_size) {
     size_t cl =0,l = _t_size(t);
     int i, c = _t_children(t);
@@ -185,14 +214,25 @@ size_t __t_serialize(Receptor *r,Tnode *t,void **bufferP,size_t offset,size_t cu
     return offset;
 }
 
+/**
+ * Serialize a receptor
+ *
+ * Allocates a buffer for and serializes a receptor into the buffer
+ *
+ * @param[in] r Receptor to serialize
+ * @param[inout] surfaceP pointer to a void * to hold the resulting serialized data
+ * @param[inout] lengthP pointer to a size_t to hold the resulting serialized data length
+ */
+
 void _r_serialize(Receptor *r,void **surfaceP,size_t *lengthP) {
     size_t buf_size = 10000;
     *surfaceP  = malloc(buf_size);
     *lengthP = __t_serialize(r,r->root,surfaceP,0,buf_size);
 }
 
-// macro to read typed date from the surface and update length and surface values
+/// macro to read typed date from the surface and update length and surface values
 #define SREAD(type,var_name) type var_name = *(type *)*surfaceP;*lengthP -= sizeof(type);*surfaceP += sizeof(type);
+/// macro to read typed date from the surface and update length and surface values (assumes variable has already been declared)
 #define _SREAD(type,var_name) var_name = *(type *)*surfaceP;*lengthP -= sizeof(type);*surfaceP += sizeof(type);
 
 Tnode * _t_unserialize(Receptor *r,void **surfaceP,size_t *lengthP,Tnode *t) {
@@ -247,7 +287,9 @@ Receptor * _r_unserialize(void *surface,size_t length) {
 
 /******************  receptor signaling */
 
-/* send a signal to a receptor on a given aspect */
+/**
+ * Send a signal to a receptor on a given aspect
+ */
 Tnode * _r_send(Receptor *r,Receptor *from,Aspect aspect, Tnode *signal_contents) {
     Tnode *m,*e,*l,*rt=0;
 
@@ -448,6 +490,7 @@ char * __dump_semtrex(Tnode *s,char *buf) {
     }
     return buf;
 }
+
 char * _dump_semtrex(Tnode *s,char *buf) {
     buf[0] = '/';
     __dump_semtrex(s,buf+1);
