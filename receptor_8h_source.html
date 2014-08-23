@@ -8,6 +8,13 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+  $(window).load(resizeHeight);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -38,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -64,12 +72,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>Globals</span></a></li>
     </ul>
   </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('receptor_8h_source.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -78,119 +101,119 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="headertitle">
 <div class="title">receptor.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="receptor_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#ifndef _CEPTR_RECEPTOR_H</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#define _CEPTR_RECEPTOR_H</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="tree_8h.html">tree.h</a>&quot;</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="label_8h.html">label.h</a>&quot;</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
-<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="structReceptor.html">   18</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structReceptor.html">Receptor</a> {</div>
-<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="structReceptor.html#a7a280e923e97768c67f90303bcf8c152">   19</a></span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *<a class="code" href="structReceptor.html#a7a280e923e97768c67f90303bcf8c152">root</a>;        </div>
-<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="structReceptor.html#a81c4e6049350d0577334fdda48f4260a">   20</a></span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *<a class="code" href="structReceptor.html#a81c4e6049350d0577334fdda48f4260a">structures</a>;  </div>
-<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="structReceptor.html#aeb5c0f81a92048d264308e7610ac39a3">   21</a></span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *<a class="code" href="structReceptor.html#aeb5c0f81a92048d264308e7610ac39a3">symbols</a>;     </div>
-<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="structReceptor.html#a622c4885a917e9249fa213ccf47b04ff">   22</a></span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *<a class="code" href="structReceptor.html#a622c4885a917e9249fa213ccf47b04ff">flux</a>;        </div>
-<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="structReceptor.html#a2f7dc587ff971db209316cde561d0cd0">   23</a></span>&#160;    <a class="code" href="structtable__elem.html">LabelTable</a> <a class="code" href="structReceptor.html#a2f7dc587ff971db209316cde561d0cd0">table</a>;   </div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;};</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structReceptor.html">Receptor</a> <a class="code" href="structReceptor.html">Receptor</a>;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">// for now aspects are just identified as the child index in the flux receptor</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">enum</span> {DEFAULT_ASPECT=1};</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">typedef</span> <span class="keywordtype">int</span> Aspect;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">/******************  create and destroy receptors */</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<a class="code" href="structReceptor.html">Receptor</a> * <a class="code" href="receptor_8h.html#aad12918fb4144e557b2ee5e169648c7b">_r_new</a>();</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keywordtype">void</span> <a class="code" href="receptor_8h.html#ace908c1f9cf6df32014310dca991785b">_r_add_listener</a>(<a class="code" href="structReceptor.html">Receptor</a> *r,Aspect aspect,Symbol carrier,<a class="code" href="structTnode.html">Tnode</a> *semtrex,<a class="code" href="structTnode.html">Tnode</a> *action);</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keywordtype">void</span> <a class="code" href="receptor_8h.html#a6f650808029d4c598ebe6515d9900ef8">_r_free</a>(<a class="code" href="structReceptor.html">Receptor</a> *r);</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#ifndef _CEPTR_RECEPTOR_H</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#define _CEPTR_RECEPTOR_H</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="tree_8h.html">tree.h</a>&quot;</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="label_8h.html">label.h</a>&quot;</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
+<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="structReceptor.html">   23</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structReceptor.html">Receptor</a> {</div>
+<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="structReceptor.html#a7a280e923e97768c67f90303bcf8c152">   24</a></span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *<a class="code" href="structReceptor.html#a7a280e923e97768c67f90303bcf8c152">root</a>;        </div>
+<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="structReceptor.html#a81c4e6049350d0577334fdda48f4260a">   25</a></span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *<a class="code" href="structReceptor.html#a81c4e6049350d0577334fdda48f4260a">structures</a>;  </div>
+<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="structReceptor.html#aeb5c0f81a92048d264308e7610ac39a3">   26</a></span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *<a class="code" href="structReceptor.html#aeb5c0f81a92048d264308e7610ac39a3">symbols</a>;     </div>
+<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="structReceptor.html#a622c4885a917e9249fa213ccf47b04ff">   27</a></span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *<a class="code" href="structReceptor.html#a622c4885a917e9249fa213ccf47b04ff">flux</a>;        </div>
+<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="structReceptor.html#a2f7dc587ff971db209316cde561d0cd0">   28</a></span>&#160;    <a class="code" href="structtable__elem.html">LabelTable</a> <a class="code" href="structReceptor.html#a2f7dc587ff971db209316cde561d0cd0">table</a>;   </div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;};</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structReceptor.html">Receptor</a> <a class="code" href="structReceptor.html">Receptor</a>;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">// for now aspects are just identified as the child index in the flux receptor</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">enum</span> {DEFAULT_ASPECT=1};</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">typedef</span> <span class="keywordtype">int</span> Aspect;</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">/*****************  receptor symbols and structures */</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;Symbol _r_def_symbol(<a class="code" href="structReceptor.html">Receptor</a> *r,Structure s,<span class="keywordtype">char</span> *label);</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;Symbol _r_get_symbol_by_label(<a class="code" href="structReceptor.html">Receptor</a> *r,<span class="keywordtype">char</span> *label);</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;Structure _r_def_structure(<a class="code" href="structReceptor.html">Receptor</a> *r,<span class="keywordtype">char</span> *label,<span class="keywordtype">int</span> num_params,...);</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;Structure _r_get_structure_by_label(<a class="code" href="structReceptor.html">Receptor</a> *r,<span class="keywordtype">char</span> *label);</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;Structure __r_get_symbol_structure(<a class="code" href="structReceptor.html">Receptor</a> *r,Symbol s);</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keywordtype">size_t</span> __r_get_symbol_size(<a class="code" href="structReceptor.html">Receptor</a> *r,Symbol s,<span class="keywordtype">void</span> *surface);</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<a class="code" href="structTnode.html">Tnode</a> * <a class="code" href="receptor_8h.html#ad7ed83880a8bb8be0de01ae73b44d13a">_r_build_def_semtrex</a>(<a class="code" href="structReceptor.html">Receptor</a> *r,Symbol s,<a class="code" href="structTnode.html">Tnode</a> *parent);</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keywordtype">int</span> <a class="code" href="receptor_8h.html#a8978934f20256d927a9f035c2eeafd8d">_r_def_match</a>(<a class="code" href="structReceptor.html">Receptor</a> *r,Symbol s,<a class="code" href="structTnode.html">Tnode</a> *t);</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment">/*****************  receptor instances and xaddrs */</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="structInstance.html">   47</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structInstance.html">Instance</a> {</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordtype">void</span> *surface;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;};</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structInstance.html">Instance</a> <a class="code" href="structInstance.html">Instance</a>;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="structXaddr.html">   55</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structXaddr.html">Xaddr</a> {</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    Symbol symbol;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordtype">int</span> addr;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;};</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structXaddr.html">Xaddr</a> <a class="code" href="structXaddr.html">Xaddr</a>;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<a class="code" href="structXaddr.html">Xaddr</a> <a class="code" href="receptor_8h.html#a7518a44dda01af81556bb6657f18ead4">_r_new_instance</a>(<a class="code" href="structReceptor.html">Receptor</a> *r,Symbol s,<span class="keywordtype">void</span> * surface);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<a class="code" href="structInstance.html">Instance</a> _r_get_instance(<a class="code" href="structReceptor.html">Receptor</a> *r,<a class="code" href="structXaddr.html">Xaddr</a> x);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment">/******************  receptor serialization */</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="keywordtype">size_t</span> <a class="code" href="receptor_8h.html#aaea031f81a78e2c4f6d33821af1d7c21">__t_serialize</a>(<a class="code" href="structReceptor.html">Receptor</a> *r,<a class="code" href="structTnode.html">Tnode</a> *t,<span class="keywordtype">void</span> **bufferP,<span class="keywordtype">size_t</span> offset,<span class="keywordtype">size_t</span> current_size);</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="keywordtype">void</span> <a class="code" href="receptor_8h.html#a3e737841784555574a0d90ad2eff4cc4">_r_serialize</a>(<a class="code" href="structReceptor.html">Receptor</a> *r,<span class="keywordtype">void</span> **surfaceP,<span class="keywordtype">size_t</span> *lengthP);</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<a class="code" href="structReceptor.html">Receptor</a> * _r_unserialize(<span class="keywordtype">void</span> *surface,<span class="keywordtype">size_t</span> length);</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">/******************  create and destroy receptors */</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<a class="code" href="structReceptor.html">Receptor</a> * <a class="code" href="group__receptor.html#gaad12918fb4144e557b2ee5e169648c7b">_r_new</a>();</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__receptor.html#gace908c1f9cf6df32014310dca991785b">_r_add_listener</a>(<a class="code" href="structReceptor.html">Receptor</a> *r,Aspect aspect,Symbol carrier,<a class="code" href="structTnode.html">Tnode</a> *semtrex,<a class="code" href="structTnode.html">Tnode</a> *action);</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8">_r_free</a>(<a class="code" href="structReceptor.html">Receptor</a> *r);</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">/*****************  receptor symbols and structures */</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;Symbol _r_def_symbol(<a class="code" href="structReceptor.html">Receptor</a> *r,Structure s,<span class="keywordtype">char</span> *label);</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;Symbol _r_get_symbol_by_label(<a class="code" href="structReceptor.html">Receptor</a> *r,<span class="keywordtype">char</span> *label);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;Structure _r_def_structure(<a class="code" href="structReceptor.html">Receptor</a> *r,<span class="keywordtype">char</span> *label,<span class="keywordtype">int</span> num_params,...);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;Structure _r_get_structure_by_label(<a class="code" href="structReceptor.html">Receptor</a> *r,<span class="keywordtype">char</span> *label);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;Structure __r_get_symbol_structure(<a class="code" href="structReceptor.html">Receptor</a> *r,Symbol s);</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keywordtype">size_t</span> __r_get_symbol_size(<a class="code" href="structReceptor.html">Receptor</a> *r,Symbol s,<span class="keywordtype">void</span> *surface);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<a class="code" href="structTnode.html">Tnode</a> * <a class="code" href="group__receptor.html#gad7ed83880a8bb8be0de01ae73b44d13a">_r_build_def_semtrex</a>(<a class="code" href="structReceptor.html">Receptor</a> *r,Symbol s,<a class="code" href="structTnode.html">Tnode</a> *parent);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__receptor.html#ga8978934f20256d927a9f035c2eeafd8d">_r_def_match</a>(<a class="code" href="structReceptor.html">Receptor</a> *r,Symbol s,<a class="code" href="structTnode.html">Tnode</a> *t);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment">/*****************  receptor instances and xaddrs */</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="structInstance.html">   52</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structInstance.html">Instance</a> {</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordtype">void</span> *surface;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;};</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structInstance.html">Instance</a> <a class="code" href="structInstance.html">Instance</a>;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="structXaddr.html">   60</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structXaddr.html">Xaddr</a> {</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    Symbol symbol;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordtype">int</span> addr;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;};</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structXaddr.html">Xaddr</a> <a class="code" href="structXaddr.html">Xaddr</a>;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<a class="code" href="structXaddr.html">Xaddr</a> <a class="code" href="group__receptor.html#ga7518a44dda01af81556bb6657f18ead4">_r_new_instance</a>(<a class="code" href="structReceptor.html">Receptor</a> *r,Symbol s,<span class="keywordtype">void</span> * surface);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<a class="code" href="structInstance.html">Instance</a> _r_get_instance(<a class="code" href="structReceptor.html">Receptor</a> *r,<a class="code" href="structXaddr.html">Xaddr</a> x);</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="comment">/******************  receptor signaling */</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<a class="code" href="structTnode.html">Tnode</a> * <a class="code" href="receptor_8h.html#ae251d0cfa84e1edbbe12d3489aa29d1e">_r_send</a>(<a class="code" href="structReceptor.html">Receptor</a> *r,<a class="code" href="structReceptor.html">Receptor</a> *from,Aspect aspect, <a class="code" href="structTnode.html">Tnode</a> *signal);</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment">/******************  internal utilities */</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<a class="code" href="structTnode.html">Tnode</a> *__r_get_aspect(<a class="code" href="structReceptor.html">Receptor</a> *r,Aspect aspect);</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<a class="code" href="structTnode.html">Tnode</a> *__r_get_listeners(<a class="code" href="structReceptor.html">Receptor</a> *r,Aspect aspect);</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<a class="code" href="structTnode.html">Tnode</a> *__r_get_signals(<a class="code" href="structReceptor.html">Receptor</a> *r,Aspect aspect);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="comment">/******************  receptor serialization */</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keywordtype">size_t</span> <a class="code" href="group__receptor.html#gaaea031f81a78e2c4f6d33821af1d7c21">__t_serialize</a>(<a class="code" href="structReceptor.html">Receptor</a> *r,<a class="code" href="structTnode.html">Tnode</a> *t,<span class="keywordtype">void</span> **bufferP,<span class="keywordtype">size_t</span> offset,<span class="keywordtype">size_t</span> current_size);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__receptor.html#ga3e737841784555574a0d90ad2eff4cc4">_r_serialize</a>(<a class="code" href="structReceptor.html">Receptor</a> *r,<span class="keywordtype">void</span> **surfaceP,<span class="keywordtype">size_t</span> *lengthP);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<a class="code" href="structReceptor.html">Receptor</a> * _r_unserialize(<span class="keywordtype">void</span> *surface,<span class="keywordtype">size_t</span> length);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment">/******************  receptor signaling */</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<a class="code" href="structTnode.html">Tnode</a> * <a class="code" href="group__receptor.html#gae251d0cfa84e1edbbe12d3489aa29d1e">_r_send</a>(<a class="code" href="structReceptor.html">Receptor</a> *r,<a class="code" href="structReceptor.html">Receptor</a> *from,Aspect aspect, <a class="code" href="structTnode.html">Tnode</a> *signal);</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="comment">/*****************  Tree debugging utilities */</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="keywordtype">char</span> *_td(<a class="code" href="structReceptor.html">Receptor</a> *r,<a class="code" href="structTnode.html">Tnode</a> *t);</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="preprocessor">#define spec_is_symbol_equal(r,got, expected) spec_total++; if (expected==got){putchar(&#39;.&#39;);} else {putchar(&#39;F&#39;);sprintf(failures[spec_failures++],&quot;%s:%d expected %s to be %s but was %s&quot;,__FUNCTION__,__LINE__,#got,_s_get_symbol_name(r,expected),_s_get_symbol_name(r,got));}</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="comment">/******************  internal utilities */</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<a class="code" href="structTnode.html">Tnode</a> *__r_get_aspect(<a class="code" href="structReceptor.html">Receptor</a> *r,Aspect aspect);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<a class="code" href="structTnode.html">Tnode</a> *__r_get_listeners(<a class="code" href="structReceptor.html">Receptor</a> *r,Aspect aspect);</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<a class="code" href="structTnode.html">Tnode</a> *__r_get_signals(<a class="code" href="structReceptor.html">Receptor</a> *r,Aspect aspect);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="preprocessor">#define spec_is_structure_equal(r,got, expected) spec_total++; if (expected==got){putchar(&#39;.&#39;);} else {putchar(&#39;F&#39;);sprintf(failures[spec_failures++],&quot;%s:%d expected %s to be %s but was %s&quot;,__FUNCTION__,__LINE__,#got,_s_get_symbol_name(r,expected),_s_get_structure_name(r,got));}</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="keywordtype">char</span> *_s_get_symbol_name(<a class="code" href="structReceptor.html">Receptor</a> *r,Symbol s);</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="keywordtype">char</span> *_s_get_structure_name(<a class="code" href="structReceptor.html">Receptor</a> *r,Structure s);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="comment">/*****************  Tree debugging utilities */</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="keywordtype">char</span> *_td(<a class="code" href="structReceptor.html">Receptor</a> *r,<a class="code" href="structTnode.html">Tnode</a> *t);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="preprocessor">#define spec_is_symbol_equal(r,got, expected) spec_total++; if (expected==got){putchar(&#39;.&#39;);} else {putchar(&#39;F&#39;);sprintf(failures[spec_failures++],&quot;%s:%d expected %s to be %s but was %s&quot;,__FUNCTION__,__LINE__,#got,_s_get_symbol_name(r,expected),_s_get_symbol_name(r,got));}</span></div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="keywordtype">char</span> * _dump_semtrex(<a class="code" href="structTnode.html">Tnode</a> *s,<span class="keywordtype">char</span> *buf);</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="preprocessor">#define spec_is_structure_equal(r,got, expected) spec_total++; if (expected==got){putchar(&#39;.&#39;);} else {putchar(&#39;F&#39;);sprintf(failures[spec_failures++],&quot;%s:%d expected %s to be %s but was %s&quot;,__FUNCTION__,__LINE__,#got,_s_get_symbol_name(r,expected),_s_get_structure_name(r,got));}</span></div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="receptor_8h_html_aad12918fb4144e557b2ee5e169648c7b"><div class="ttname"><a href="receptor_8h.html#aad12918fb4144e557b2ee5e169648c7b">_r_new</a></div><div class="ttdeci">Receptor * _r_new()</div><div class="ttdef"><b>Definition:</b> receptor.c:16</div></div>
-<div class="ttc" id="structReceptor_html_a7a280e923e97768c67f90303bcf8c152"><div class="ttname"><a href="structReceptor.html#a7a280e923e97768c67f90303bcf8c152">Receptor::root</a></div><div class="ttdeci">Tnode * root</div><div class="ttdoc">root node of the semantic tree </div><div class="ttdef"><b>Definition:</b> receptor.h:19</div></div>
-<div class="ttc" id="receptor_8h_html_a3e737841784555574a0d90ad2eff4cc4"><div class="ttname"><a href="receptor_8h.html#a3e737841784555574a0d90ad2eff4cc4">_r_serialize</a></div><div class="ttdeci">void _r_serialize(Receptor *r, void **surfaceP, size_t *lengthP)</div><div class="ttdef"><b>Definition:</b> receptor.c:270</div></div>
-<div class="ttc" id="receptor_8h_html_ae251d0cfa84e1edbbe12d3489aa29d1e"><div class="ttname"><a href="receptor_8h.html#ae251d0cfa84e1edbbe12d3489aa29d1e">_r_send</a></div><div class="ttdeci">Tnode * _r_send(Receptor *r, Receptor *from, Aspect aspect, Tnode *signal)</div><div class="ttdef"><b>Definition:</b> receptor.c:336</div></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="keywordtype">char</span> *_s_get_symbol_name(<a class="code" href="structReceptor.html">Receptor</a> *r,Symbol s);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="keywordtype">char</span> *_s_get_structure_name(<a class="code" href="structReceptor.html">Receptor</a> *r,Structure s);</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="keywordtype">char</span> * _dump_semtrex(<a class="code" href="structTnode.html">Tnode</a> *s,<span class="keywordtype">char</span> *buf);</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
+<div class="ttc" id="group__receptor_html_gaaea031f81a78e2c4f6d33821af1d7c21"><div class="ttname"><a href="group__receptor.html#gaaea031f81a78e2c4f6d33821af1d7c21">__t_serialize</a></div><div class="ttdeci">size_t __t_serialize(Receptor *r, Tnode *t, void **bufferP, size_t offset, size_t current_size)</div><div class="ttdef"><b>Definition:</b> receptor.c:237</div></div>
+<div class="ttc" id="group__receptor_html_ga8978934f20256d927a9f035c2eeafd8d"><div class="ttname"><a href="group__receptor.html#ga8978934f20256d927a9f035c2eeafd8d">_r_def_match</a></div><div class="ttdeci">int _r_def_match(Receptor *r, Symbol s, Tnode *t)</div><div class="ttdef"><b>Definition:</b> receptor.c:192</div></div>
+<div class="ttc" id="group__receptor_html_ga3e737841784555574a0d90ad2eff4cc4"><div class="ttname"><a href="group__receptor.html#ga3e737841784555574a0d90ad2eff4cc4">_r_serialize</a></div><div class="ttdeci">void _r_serialize(Receptor *r, void **surfaceP, size_t *lengthP)</div><div class="ttdef"><b>Definition:</b> receptor.c:273</div></div>
+<div class="ttc" id="structReceptor_html_a7a280e923e97768c67f90303bcf8c152"><div class="ttname"><a href="structReceptor.html#a7a280e923e97768c67f90303bcf8c152">Receptor::root</a></div><div class="ttdeci">Tnode * root</div><div class="ttdoc">root node of the semantic tree </div><div class="ttdef"><b>Definition:</b> receptor.h:24</div></div>
+<div class="ttc" id="group__receptor_html_gace908c1f9cf6df32014310dca991785b"><div class="ttname"><a href="group__receptor.html#gace908c1f9cf6df32014310dca991785b">_r_add_listener</a></div><div class="ttdeci">void _r_add_listener(Receptor *r, Aspect aspect, Symbol carrier, Tnode *semtrex, Tnode *action)</div><div class="ttdef"><b>Definition:</b> receptor.c:35</div></div>
+<div class="ttc" id="group__receptor_html_ga6f650808029d4c598ebe6515d9900ef8"><div class="ttname"><a href="group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8">_r_free</a></div><div class="ttdeci">void _r_free(Receptor *r)</div><div class="ttdef"><b>Definition:</b> receptor.c:46</div></div>
 <div class="ttc" id="tree_8h_html"><div class="ttname"><a href="tree_8h.html">tree.h</a></div><div class="ttdoc">semantic trees header file </div></div>
-<div class="ttc" id="structInstance_html"><div class="ttname"><a href="structInstance.html">Instance</a></div><div class="ttdef"><b>Definition:</b> receptor.h:47</div></div>
-<div class="ttc" id="structReceptor_html_a622c4885a917e9249fa213ccf47b04ff"><div class="ttname"><a href="structReceptor.html#a622c4885a917e9249fa213ccf47b04ff">Receptor::flux</a></div><div class="ttdeci">Tnode * flux</div><div class="ttdoc">pointer for quick access to the flux </div><div class="ttdef"><b>Definition:</b> receptor.h:22</div></div>
+<div class="ttc" id="group__receptor_html_gae251d0cfa84e1edbbe12d3489aa29d1e"><div class="ttname"><a href="group__receptor.html#gae251d0cfa84e1edbbe12d3489aa29d1e">_r_send</a></div><div class="ttdeci">Tnode * _r_send(Receptor *r, Receptor *from, Aspect aspect, Tnode *signal)</div><div class="ttdef"><b>Definition:</b> receptor.c:339</div></div>
+<div class="ttc" id="structInstance_html"><div class="ttname"><a href="structInstance.html">Instance</a></div><div class="ttdef"><b>Definition:</b> receptor.h:52</div></div>
+<div class="ttc" id="group__receptor_html_ga7518a44dda01af81556bb6657f18ead4"><div class="ttname"><a href="group__receptor.html#ga7518a44dda01af81556bb6657f18ead4">_r_new_instance</a></div><div class="ttdeci">Xaddr _r_new_instance(Receptor *r, Symbol s, void *surface)</div><div class="ttdef"><b>Definition:</b> receptor.c:205</div></div>
+<div class="ttc" id="structReceptor_html_a622c4885a917e9249fa213ccf47b04ff"><div class="ttname"><a href="structReceptor.html#a622c4885a917e9249fa213ccf47b04ff">Receptor::flux</a></div><div class="ttdeci">Tnode * flux</div><div class="ttdoc">pointer for quick access to the flux </div><div class="ttdef"><b>Definition:</b> receptor.h:27</div></div>
 <div class="ttc" id="structtable__elem_html"><div class="ttname"><a href="structtable__elem.html">table_elem</a></div><div class="ttdef"><b>Definition:</b> label.h:20</div></div>
-<div class="ttc" id="receptor_8h_html_aaea031f81a78e2c4f6d33821af1d7c21"><div class="ttname"><a href="receptor_8h.html#aaea031f81a78e2c4f6d33821af1d7c21">__t_serialize</a></div><div class="ttdeci">size_t __t_serialize(Receptor *r, Tnode *t, void **bufferP, size_t offset, size_t current_size)</div><div class="ttdef"><b>Definition:</b> receptor.c:234</div></div>
-<div class="ttc" id="structReceptor_html_a2f7dc587ff971db209316cde561d0cd0"><div class="ttname"><a href="structReceptor.html#a2f7dc587ff971db209316cde561d0cd0">Receptor::table</a></div><div class="ttdeci">LabelTable table</div><div class="ttdoc">the label table </div><div class="ttdef"><b>Definition:</b> receptor.h:23</div></div>
-<div class="ttc" id="receptor_8h_html_ace908c1f9cf6df32014310dca991785b"><div class="ttname"><a href="receptor_8h.html#ace908c1f9cf6df32014310dca991785b">_r_add_listener</a></div><div class="ttdeci">void _r_add_listener(Receptor *r, Aspect aspect, Symbol carrier, Tnode *semtrex, Tnode *action)</div><div class="ttdef"><b>Definition:</b> receptor.c:32</div></div>
-<div class="ttc" id="structReceptor_html"><div class="ttname"><a href="structReceptor.html">Receptor</a></div><div class="ttdef"><b>Definition:</b> receptor.h:18</div></div>
-<div class="ttc" id="structXaddr_html"><div class="ttname"><a href="structXaddr.html">Xaddr</a></div><div class="ttdef"><b>Definition:</b> receptor.h:55</div></div>
-<div class="ttc" id="structReceptor_html_a81c4e6049350d0577334fdda48f4260a"><div class="ttname"><a href="structReceptor.html#a81c4e6049350d0577334fdda48f4260a">Receptor::structures</a></div><div class="ttdeci">Tnode * structures</div><div class="ttdoc">pointer for quick access to structures </div><div class="ttdef"><b>Definition:</b> receptor.h:20</div></div>
-<div class="ttc" id="receptor_8h_html_ad7ed83880a8bb8be0de01ae73b44d13a"><div class="ttname"><a href="receptor_8h.html#ad7ed83880a8bb8be0de01ae73b44d13a">_r_build_def_semtrex</a></div><div class="ttdeci">Tnode * _r_build_def_semtrex(Receptor *r, Symbol s, Tnode *parent)</div><div class="ttdef"><b>Definition:</b> receptor.c:160</div></div>
-<div class="ttc" id="receptor_8h_html_a8978934f20256d927a9f035c2eeafd8d"><div class="ttname"><a href="receptor_8h.html#a8978934f20256d927a9f035c2eeafd8d">_r_def_match</a></div><div class="ttdeci">int _r_def_match(Receptor *r, Symbol s, Tnode *t)</div><div class="ttdef"><b>Definition:</b> receptor.c:189</div></div>
+<div class="ttc" id="structReceptor_html_a2f7dc587ff971db209316cde561d0cd0"><div class="ttname"><a href="structReceptor.html#a2f7dc587ff971db209316cde561d0cd0">Receptor::table</a></div><div class="ttdeci">LabelTable table</div><div class="ttdoc">the label table </div><div class="ttdef"><b>Definition:</b> receptor.h:28</div></div>
+<div class="ttc" id="structReceptor_html"><div class="ttname"><a href="structReceptor.html">Receptor</a></div><div class="ttdef"><b>Definition:</b> receptor.h:23</div></div>
+<div class="ttc" id="structXaddr_html"><div class="ttname"><a href="structXaddr.html">Xaddr</a></div><div class="ttdef"><b>Definition:</b> receptor.h:60</div></div>
+<div class="ttc" id="structReceptor_html_a81c4e6049350d0577334fdda48f4260a"><div class="ttname"><a href="structReceptor.html#a81c4e6049350d0577334fdda48f4260a">Receptor::structures</a></div><div class="ttdeci">Tnode * structures</div><div class="ttdoc">pointer for quick access to structures </div><div class="ttdef"><b>Definition:</b> receptor.h:25</div></div>
+<div class="ttc" id="group__receptor_html_gaad12918fb4144e557b2ee5e169648c7b"><div class="ttname"><a href="group__receptor.html#gaad12918fb4144e557b2ee5e169648c7b">_r_new</a></div><div class="ttdeci">Receptor * _r_new()</div><div class="ttdef"><b>Definition:</b> receptor.c:19</div></div>
 <div class="ttc" id="label_8h_html"><div class="ttname"><a href="label_8h.html">label.h</a></div><div class="ttdoc">Label tables map human readable text strings to symbols and structures. </div></div>
-<div class="ttc" id="structReceptor_html_aeb5c0f81a92048d264308e7610ac39a3"><div class="ttname"><a href="structReceptor.html#aeb5c0f81a92048d264308e7610ac39a3">Receptor::symbols</a></div><div class="ttdeci">Tnode * symbols</div><div class="ttdoc">pointer for quick access to symbols </div><div class="ttdef"><b>Definition:</b> receptor.h:21</div></div>
-<div class="ttc" id="receptor_8h_html_a7518a44dda01af81556bb6657f18ead4"><div class="ttname"><a href="receptor_8h.html#a7518a44dda01af81556bb6657f18ead4">_r_new_instance</a></div><div class="ttdeci">Xaddr _r_new_instance(Receptor *r, Symbol s, void *surface)</div><div class="ttdef"><b>Definition:</b> receptor.c:202</div></div>
-<div class="ttc" id="receptor_8h_html_a6f650808029d4c598ebe6515d9900ef8"><div class="ttname"><a href="receptor_8h.html#a6f650808029d4c598ebe6515d9900ef8">_r_free</a></div><div class="ttdeci">void _r_free(Receptor *r)</div><div class="ttdef"><b>Definition:</b> receptor.c:43</div></div>
-<div class="ttc" id="structTnode_html"><div class="ttname"><a href="structTnode.html">Tnode</a></div><div class="ttdef"><b>Definition:</b> tree.h:41</div></div>
+<div class="ttc" id="group__receptor_html_gad7ed83880a8bb8be0de01ae73b44d13a"><div class="ttname"><a href="group__receptor.html#gad7ed83880a8bb8be0de01ae73b44d13a">_r_build_def_semtrex</a></div><div class="ttdeci">Tnode * _r_build_def_semtrex(Receptor *r, Symbol s, Tnode *parent)</div><div class="ttdef"><b>Definition:</b> receptor.c:163</div></div>
+<div class="ttc" id="structReceptor_html_aeb5c0f81a92048d264308e7610ac39a3"><div class="ttname"><a href="structReceptor.html#aeb5c0f81a92048d264308e7610ac39a3">Receptor::symbols</a></div><div class="ttdeci">Tnode * symbols</div><div class="ttdoc">pointer for quick access to symbols </div><div class="ttdef"><b>Definition:</b> receptor.h:26</div></div>
+<div class="ttc" id="structTnode_html"><div class="ttname"><a href="structTnode.html">Tnode</a></div><div class="ttdef"><b>Definition:</b> tree.h:49</div></div>
 </div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Fri Aug 22 2014 17:48:02 for ceptr by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.7
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="receptor_8h.html">receptor.h</a></li>
+    <li class="footer">Generated on Fri Aug 22 2014 22:34:44 for ceptr by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
+  </ul>
+</div>
 </body>
 </html>

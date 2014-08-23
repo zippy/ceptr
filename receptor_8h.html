@@ -8,6 +8,13 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+  $(window).load(resizeHeight);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -38,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -64,12 +72,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>Globals</span></a></li>
     </ul>
   </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('receptor_8h.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -78,11 +101,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
@@ -91,11 +109,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">receptor.h File Reference</div>  </div>
+<div class="title">receptor.h File Reference<div class="ingroups"><a class="el" href="group__receptor.html">Receptors</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Receptors provide the fundamental coherence contexts for ceptr.  
+<p>receptor implementation header file  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="tree_8h_source.html">tree.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="label_8h_source.html">label.h</a>&quot;</code><br />
@@ -113,447 +131,112 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:aa7a993bb2e321fff32e1bc0741dddde0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa7a993bb2e321fff32e1bc0741dddde0"></a>
+<tr class="memitem:gaa7a993bb2e321fff32e1bc0741dddde0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaa7a993bb2e321fff32e1bc0741dddde0"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>spec_is_symbol_equal</b>(r, got, expected)&#160;&#160;&#160;spec_total++; if (expected==got){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],&quot;%s:%d expected %s to be %s but was %s&quot;,__FUNCTION__,__LINE__,#got,_s_get_symbol_name(r,expected),_s_get_symbol_name(r,got));}</td></tr>
-<tr class="separator:aa7a993bb2e321fff32e1bc0741dddde0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa5f33711ac4da299b54ccfa583d9378c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa5f33711ac4da299b54ccfa583d9378c"></a>
+<tr class="separator:gaa7a993bb2e321fff32e1bc0741dddde0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa5f33711ac4da299b54ccfa583d9378c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaa5f33711ac4da299b54ccfa583d9378c"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>spec_is_structure_equal</b>(r, got, expected)&#160;&#160;&#160;spec_total++; if (expected==got){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],&quot;%s:%d expected %s to be %s but was %s&quot;,__FUNCTION__,__LINE__,#got,_s_get_symbol_name(r,expected),_s_get_structure_name(r,got));}</td></tr>
-<tr class="separator:aa5f33711ac4da299b54ccfa583d9378c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:gaa5f33711ac4da299b54ccfa583d9378c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a9c3dbc0500f38f3df66af1010f368911"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9c3dbc0500f38f3df66af1010f368911"></a>
+<tr class="memitem:ga9c3dbc0500f38f3df66af1010f368911"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga9c3dbc0500f38f3df66af1010f368911"></a>
 typedef struct <a class="el" href="structReceptor.html">Receptor</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Receptor</b></td></tr>
-<tr class="separator:a9c3dbc0500f38f3df66af1010f368911"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8675b50a924c478ce5f25009d0d24e2e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8675b50a924c478ce5f25009d0d24e2e"></a>
+<tr class="separator:ga9c3dbc0500f38f3df66af1010f368911"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8675b50a924c478ce5f25009d0d24e2e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga8675b50a924c478ce5f25009d0d24e2e"></a>
 typedef int&#160;</td><td class="memItemRight" valign="bottom"><b>Aspect</b></td></tr>
-<tr class="separator:a8675b50a924c478ce5f25009d0d24e2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeadfce98b8e2394257cf05f6eb6ef949"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeadfce98b8e2394257cf05f6eb6ef949"></a>
+<tr class="separator:ga8675b50a924c478ce5f25009d0d24e2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaeadfce98b8e2394257cf05f6eb6ef949"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaeadfce98b8e2394257cf05f6eb6ef949"></a>
 typedef struct <a class="el" href="structInstance.html">Instance</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Instance</b></td></tr>
-<tr class="separator:aeadfce98b8e2394257cf05f6eb6ef949"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2dcfd79034d088d9f69f647dbebd526c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2dcfd79034d088d9f69f647dbebd526c"></a>
+<tr class="separator:gaeadfce98b8e2394257cf05f6eb6ef949"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2dcfd79034d088d9f69f647dbebd526c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga2dcfd79034d088d9f69f647dbebd526c"></a>
 typedef struct <a class="el" href="structXaddr.html">Xaddr</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Xaddr</b></td></tr>
-<tr class="separator:a2dcfd79034d088d9f69f647dbebd526c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:ga2dcfd79034d088d9f69f647dbebd526c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a06fc87d81c62e9abb8790b6e5713c55b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a06fc87d81c62e9abb8790b6e5713c55b"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>DEFAULT_ASPECT</b> =1
+<tr class="memitem:ga06fc87d81c62e9abb8790b6e5713c55b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga06fc87d81c62e9abb8790b6e5713c55b"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>DEFAULT_ASPECT</b> =1
  }</td></tr>
-<tr class="separator:a06fc87d81c62e9abb8790b6e5713c55b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:ga06fc87d81c62e9abb8790b6e5713c55b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aad12918fb4144e557b2ee5e169648c7b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structReceptor.html">Receptor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="receptor_8h.html#aad12918fb4144e557b2ee5e169648c7b">_r_new</a> ()</td></tr>
-<tr class="separator:aad12918fb4144e557b2ee5e169648c7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ace908c1f9cf6df32014310dca991785b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="receptor_8h.html#ace908c1f9cf6df32014310dca991785b">_r_add_listener</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, Aspect aspect, Symbol carrier, <a class="el" href="structTnode.html">Tnode</a> *semtrex, <a class="el" href="structTnode.html">Tnode</a> *action)</td></tr>
-<tr class="separator:ace908c1f9cf6df32014310dca991785b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6f650808029d4c598ebe6515d9900ef8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="receptor_8h.html#a6f650808029d4c598ebe6515d9900ef8">_r_free</a> (<a class="el" href="structReceptor.html">Receptor</a> *r)</td></tr>
-<tr class="separator:a6f650808029d4c598ebe6515d9900ef8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade6112556e16fb8a0512268f19f77233"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ade6112556e16fb8a0512268f19f77233"></a>
+<tr class="memitem:gaad12918fb4144e557b2ee5e169648c7b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structReceptor.html">Receptor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#gaad12918fb4144e557b2ee5e169648c7b">_r_new</a> ()</td></tr>
+<tr class="separator:gaad12918fb4144e557b2ee5e169648c7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gace908c1f9cf6df32014310dca991785b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#gace908c1f9cf6df32014310dca991785b">_r_add_listener</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, Aspect aspect, Symbol carrier, <a class="el" href="structTnode.html">Tnode</a> *semtrex, <a class="el" href="structTnode.html">Tnode</a> *action)</td></tr>
+<tr class="separator:gace908c1f9cf6df32014310dca991785b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6f650808029d4c598ebe6515d9900ef8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8">_r_free</a> (<a class="el" href="structReceptor.html">Receptor</a> *r)</td></tr>
+<tr class="separator:ga6f650808029d4c598ebe6515d9900ef8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gade6112556e16fb8a0512268f19f77233"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gade6112556e16fb8a0512268f19f77233"></a>
 Symbol&#160;</td><td class="memItemRight" valign="bottom"><b>_r_def_symbol</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, Structure s, char *label)</td></tr>
-<tr class="separator:ade6112556e16fb8a0512268f19f77233"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acce906c9de30765f458599777b72be90"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acce906c9de30765f458599777b72be90"></a>
+<tr class="separator:gade6112556e16fb8a0512268f19f77233"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacce906c9de30765f458599777b72be90"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gacce906c9de30765f458599777b72be90"></a>
 Symbol&#160;</td><td class="memItemRight" valign="bottom"><b>_r_get_symbol_by_label</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, char *label)</td></tr>
-<tr class="separator:acce906c9de30765f458599777b72be90"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0621fed839c7b2589ae87aedae9a6a7c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0621fed839c7b2589ae87aedae9a6a7c"></a>
+<tr class="separator:gacce906c9de30765f458599777b72be90"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0621fed839c7b2589ae87aedae9a6a7c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga0621fed839c7b2589ae87aedae9a6a7c"></a>
 Structure&#160;</td><td class="memItemRight" valign="bottom"><b>_r_def_structure</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, char *label, int num_params,...)</td></tr>
-<tr class="separator:a0621fed839c7b2589ae87aedae9a6a7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aba7efd4ebd9a5e6b737355fbc45d9a50"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aba7efd4ebd9a5e6b737355fbc45d9a50"></a>
+<tr class="separator:ga0621fed839c7b2589ae87aedae9a6a7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaba7efd4ebd9a5e6b737355fbc45d9a50"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaba7efd4ebd9a5e6b737355fbc45d9a50"></a>
 Structure&#160;</td><td class="memItemRight" valign="bottom"><b>_r_get_structure_by_label</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, char *label)</td></tr>
-<tr class="separator:aba7efd4ebd9a5e6b737355fbc45d9a50"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a120e66982d483fbe004fd969cf1c353f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a120e66982d483fbe004fd969cf1c353f"></a>
+<tr class="separator:gaba7efd4ebd9a5e6b737355fbc45d9a50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga120e66982d483fbe004fd969cf1c353f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga120e66982d483fbe004fd969cf1c353f"></a>
 Structure&#160;</td><td class="memItemRight" valign="bottom"><b>__r_get_symbol_structure</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, Symbol s)</td></tr>
-<tr class="separator:a120e66982d483fbe004fd969cf1c353f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad886d976f8621ebb22d02c61f454265c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad886d976f8621ebb22d02c61f454265c"></a>
+<tr class="separator:ga120e66982d483fbe004fd969cf1c353f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad886d976f8621ebb22d02c61f454265c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gad886d976f8621ebb22d02c61f454265c"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>__r_get_symbol_size</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, Symbol s, void *surface)</td></tr>
-<tr class="separator:ad886d976f8621ebb22d02c61f454265c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7ed83880a8bb8be0de01ae73b44d13a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTnode.html">Tnode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="receptor_8h.html#ad7ed83880a8bb8be0de01ae73b44d13a">_r_build_def_semtrex</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, Symbol s, <a class="el" href="structTnode.html">Tnode</a> *parent)</td></tr>
-<tr class="separator:ad7ed83880a8bb8be0de01ae73b44d13a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8978934f20256d927a9f035c2eeafd8d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="receptor_8h.html#a8978934f20256d927a9f035c2eeafd8d">_r_def_match</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, Symbol s, <a class="el" href="structTnode.html">Tnode</a> *t)</td></tr>
-<tr class="separator:a8978934f20256d927a9f035c2eeafd8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7518a44dda01af81556bb6657f18ead4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structXaddr.html">Xaddr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="receptor_8h.html#a7518a44dda01af81556bb6657f18ead4">_r_new_instance</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, Symbol s, void *surface)</td></tr>
-<tr class="separator:a7518a44dda01af81556bb6657f18ead4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae5861d52f36fafa1f5d5a4ba1268ce1b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae5861d52f36fafa1f5d5a4ba1268ce1b"></a>
+<tr class="separator:gad886d976f8621ebb22d02c61f454265c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad7ed83880a8bb8be0de01ae73b44d13a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTnode.html">Tnode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#gad7ed83880a8bb8be0de01ae73b44d13a">_r_build_def_semtrex</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, Symbol s, <a class="el" href="structTnode.html">Tnode</a> *parent)</td></tr>
+<tr class="separator:gad7ed83880a8bb8be0de01ae73b44d13a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8978934f20256d927a9f035c2eeafd8d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga8978934f20256d927a9f035c2eeafd8d">_r_def_match</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, Symbol s, <a class="el" href="structTnode.html">Tnode</a> *t)</td></tr>
+<tr class="separator:ga8978934f20256d927a9f035c2eeafd8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7518a44dda01af81556bb6657f18ead4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structXaddr.html">Xaddr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga7518a44dda01af81556bb6657f18ead4">_r_new_instance</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, Symbol s, void *surface)</td></tr>
+<tr class="separator:ga7518a44dda01af81556bb6657f18ead4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae5861d52f36fafa1f5d5a4ba1268ce1b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gae5861d52f36fafa1f5d5a4ba1268ce1b"></a>
 <a class="el" href="structInstance.html">Instance</a>&#160;</td><td class="memItemRight" valign="bottom"><b>_r_get_instance</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structXaddr.html">Xaddr</a> x)</td></tr>
-<tr class="separator:ae5861d52f36fafa1f5d5a4ba1268ce1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaea031f81a78e2c4f6d33821af1d7c21"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="receptor_8h.html#aaea031f81a78e2c4f6d33821af1d7c21">__t_serialize</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structTnode.html">Tnode</a> *t, void **bufferP, size_t offset, size_t current_size)</td></tr>
-<tr class="separator:aaea031f81a78e2c4f6d33821af1d7c21"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3e737841784555574a0d90ad2eff4cc4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="receptor_8h.html#a3e737841784555574a0d90ad2eff4cc4">_r_serialize</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, void **surfaceP, size_t *lengthP)</td></tr>
-<tr class="separator:a3e737841784555574a0d90ad2eff4cc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac9db495a601c4775b2f1c53a6d8b3faf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac9db495a601c4775b2f1c53a6d8b3faf"></a>
+<tr class="separator:gae5861d52f36fafa1f5d5a4ba1268ce1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaaea031f81a78e2c4f6d33821af1d7c21"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#gaaea031f81a78e2c4f6d33821af1d7c21">__t_serialize</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structTnode.html">Tnode</a> *t, void **bufferP, size_t offset, size_t current_size)</td></tr>
+<tr class="separator:gaaea031f81a78e2c4f6d33821af1d7c21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3e737841784555574a0d90ad2eff4cc4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga3e737841784555574a0d90ad2eff4cc4">_r_serialize</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, void **surfaceP, size_t *lengthP)</td></tr>
+<tr class="separator:ga3e737841784555574a0d90ad2eff4cc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac9db495a601c4775b2f1c53a6d8b3faf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gac9db495a601c4775b2f1c53a6d8b3faf"></a>
 <a class="el" href="structReceptor.html">Receptor</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>_r_unserialize</b> (void *surface, size_t length)</td></tr>
-<tr class="separator:ac9db495a601c4775b2f1c53a6d8b3faf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae251d0cfa84e1edbbe12d3489aa29d1e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTnode.html">Tnode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="receptor_8h.html#ae251d0cfa84e1edbbe12d3489aa29d1e">_r_send</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structReceptor.html">Receptor</a> *from, Aspect aspect, <a class="el" href="structTnode.html">Tnode</a> *signal)</td></tr>
-<tr class="separator:ae251d0cfa84e1edbbe12d3489aa29d1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a21d4509b97577b9e8e71e4e03873bd02"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a21d4509b97577b9e8e71e4e03873bd02"></a>
+<tr class="separator:gac9db495a601c4775b2f1c53a6d8b3faf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae251d0cfa84e1edbbe12d3489aa29d1e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTnode.html">Tnode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#gae251d0cfa84e1edbbe12d3489aa29d1e">_r_send</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structReceptor.html">Receptor</a> *from, Aspect aspect, <a class="el" href="structTnode.html">Tnode</a> *signal)</td></tr>
+<tr class="separator:gae251d0cfa84e1edbbe12d3489aa29d1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga21d4509b97577b9e8e71e4e03873bd02"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga21d4509b97577b9e8e71e4e03873bd02"></a>
 <a class="el" href="structTnode.html">Tnode</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>__r_get_aspect</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, Aspect aspect)</td></tr>
-<tr class="separator:a21d4509b97577b9e8e71e4e03873bd02"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab66e760e7143a7b04a49dfe71e104518"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab66e760e7143a7b04a49dfe71e104518"></a>
+<tr class="separator:ga21d4509b97577b9e8e71e4e03873bd02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab66e760e7143a7b04a49dfe71e104518"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gab66e760e7143a7b04a49dfe71e104518"></a>
 <a class="el" href="structTnode.html">Tnode</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>__r_get_listeners</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, Aspect aspect)</td></tr>
-<tr class="separator:ab66e760e7143a7b04a49dfe71e104518"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc7dcde2338776c7af71c885671e3087"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acc7dcde2338776c7af71c885671e3087"></a>
+<tr class="separator:gab66e760e7143a7b04a49dfe71e104518"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacc7dcde2338776c7af71c885671e3087"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gacc7dcde2338776c7af71c885671e3087"></a>
 <a class="el" href="structTnode.html">Tnode</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>__r_get_signals</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, Aspect aspect)</td></tr>
-<tr class="separator:acc7dcde2338776c7af71c885671e3087"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5cafc7054a5a1fc7af911904d01d45a5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5cafc7054a5a1fc7af911904d01d45a5"></a>
+<tr class="separator:gacc7dcde2338776c7af71c885671e3087"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5cafc7054a5a1fc7af911904d01d45a5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga5cafc7054a5a1fc7af911904d01d45a5"></a>
 char *&#160;</td><td class="memItemRight" valign="bottom"><b>_td</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structTnode.html">Tnode</a> *t)</td></tr>
-<tr class="separator:a5cafc7054a5a1fc7af911904d01d45a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0dd4502c465541939aa3aea2d8daea56"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0dd4502c465541939aa3aea2d8daea56"></a>
+<tr class="separator:ga5cafc7054a5a1fc7af911904d01d45a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0dd4502c465541939aa3aea2d8daea56"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga0dd4502c465541939aa3aea2d8daea56"></a>
 char *&#160;</td><td class="memItemRight" valign="bottom"><b>_s_get_symbol_name</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, Symbol s)</td></tr>
-<tr class="separator:a0dd4502c465541939aa3aea2d8daea56"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aecf1cc813af035586953c73a06d5285c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aecf1cc813af035586953c73a06d5285c"></a>
+<tr class="separator:ga0dd4502c465541939aa3aea2d8daea56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaecf1cc813af035586953c73a06d5285c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaecf1cc813af035586953c73a06d5285c"></a>
 char *&#160;</td><td class="memItemRight" valign="bottom"><b>_s_get_structure_name</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, Structure s)</td></tr>
-<tr class="separator:aecf1cc813af035586953c73a06d5285c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aad1696e79c7630020a718c2a3f3d5a37"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aad1696e79c7630020a718c2a3f3d5a37"></a>
+<tr class="separator:gaecf1cc813af035586953c73a06d5285c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaad1696e79c7630020a718c2a3f3d5a37"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaad1696e79c7630020a718c2a3f3d5a37"></a>
 char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (<a class="el" href="structTnode.html">Tnode</a> *s, char *buf)</td></tr>
-<tr class="separator:aad1696e79c7630020a718c2a3f3d5a37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:gaad1696e79c7630020a718c2a3f3d5a37"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Receptors provide the fundamental coherence contexts for ceptr. </p>
-</div><h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="aaea031f81a78e2c4f6d33821af1d7c21"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">size_t __t_serialize </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structReceptor.html">Receptor</a> *&#160;</td>
-          <td class="paramname"><em>r</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structTnode.html">Tnode</a> *&#160;</td>
-          <td class="paramname"><em>t</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void **&#160;</td>
-          <td class="paramname"><em>bufferP</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>offset</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>current_size</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Serialize a tree by recursive descent.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">t</td><td>tree to be serialized </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">r</td><td>receptor to provide a context for resolving symbols and structures </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">bufferP</td><td>a pointer to a malloced ptr of "current_size" which will be realloced if serialized tree is bigger than initial buffer allocation. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">offset</td><td>current offset into buffer at which to put serialized data </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">current_size</td><td>size of buffer </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the length that was added to the buffer </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="ace908c1f9cf6df32014310dca991785b"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void _r_add_listener </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structReceptor.html">Receptor</a> *&#160;</td>
-          <td class="paramname"><em>r</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Aspect&#160;</td>
-          <td class="paramname"><em>aspect</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Symbol&#160;</td>
-          <td class="paramname"><em>carrier</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structTnode.html">Tnode</a> *&#160;</td>
-          <td class="paramname"><em>expectation</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structTnode.html">Tnode</a> *&#160;</td>
-          <td class="paramname"><em>action</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Adds an expectation/action pair to a receptor's aspect. </p>
-
-</div>
-</div>
-<a class="anchor" id="ad7ed83880a8bb8be0de01ae73b44d13a"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structTnode.html">Tnode</a>* _r_build_def_semtrex </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structReceptor.html">Receptor</a> *&#160;</td>
-          <td class="paramname"><em>r</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Symbol&#160;</td>
-          <td class="paramname"><em>s</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structTnode.html">Tnode</a> *&#160;</td>
-          <td class="paramname"><em>parent</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Walks the definition of a symbol to build a semtrex that would match that definiton</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">r</td><td>the receptor context in which things are defined </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>the symbol to build a semtrex for </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">parent</td><td>the parent semtrex node because this function calls itself recursively. Pass in 0 to start. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the completed semtrex </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>currently this won't detect an incorrect strcture with extra children. This is because we don't haven't yet implemented the equivalent of "$" for semtrex. </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a8978934f20256d927a9f035c2eeafd8d"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int _r_def_match </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structReceptor.html">Receptor</a> *&#160;</td>
-          <td class="paramname"><em>r</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Symbol&#160;</td>
-          <td class="paramname"><em>s</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structTnode.html">Tnode</a> *&#160;</td>
-          <td class="paramname"><em>t</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Determine whether a tree matches a symbol definition, both structural and semantic</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">r</td><td>the receptor context in which things are defined </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">the</td><td>symbol we expect this tree to be </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">the</td><td>tree to match </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true or false depending on the match</dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>currently this just matches on a semtrex. It should also look at the surface sizes to see if they meet the criteria of the structure definitions. </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a6f650808029d4c598ebe6515d9900ef8"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void _r_free </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structReceptor.html">Receptor</a> *&#160;</td>
-          <td class="paramname"><em>r</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Destroys a receptor freeing all memory it uses. </p>
-
-</div>
-</div>
-<a class="anchor" id="aad12918fb4144e557b2ee5e169648c7b"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structReceptor.html">Receptor</a>* _r_new </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Creates a new receptor allocating all memory needed. </p>
-
-</div>
-</div>
-<a class="anchor" id="a7518a44dda01af81556bb6657f18ead4"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structXaddr.html">Xaddr</a> _r_new_instance </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structReceptor.html">Receptor</a> *&#160;</td>
-          <td class="paramname"><em>r</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Symbol&#160;</td>
-          <td class="paramname"><em>s</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>surface</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Create a new instance of a symbol.</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000006">Todo:</a></b></dt><dd>currently this implementation of instances, just stores each instance as tree node of type INSTANCE as a child of the symbol. This is way inefficient and needs to be replaced. But this is just here to create the API... </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="ae251d0cfa84e1edbbe12d3489aa29d1e"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structTnode.html">Tnode</a>* _r_send </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structReceptor.html">Receptor</a> *&#160;</td>
-          <td class="paramname"><em>r</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structReceptor.html">Receptor</a> *&#160;</td>
-          <td class="paramname"><em>from</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Aspect&#160;</td>
-          <td class="paramname"><em>aspect</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structTnode.html">Tnode</a> *&#160;</td>
-          <td class="paramname"><em>signal_contents</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000009">Todo:</a></b></dt><dd>for now the signal is appended directly to the flux. Later it should probably be copied </dd></dl>
-<p>Send a signal to a receptor on a given aspect </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000007">Todo:</a></b></dt><dd>move this to adding the runtree to the thread pool </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000008">Todo:</a></b></dt><dd>results should actually be a what? success/failure of send </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a3e737841784555574a0d90ad2eff4cc4"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void _r_serialize </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structReceptor.html">Receptor</a> *&#160;</td>
-          <td class="paramname"><em>r</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void **&#160;</td>
-          <td class="paramname"><em>surfaceP</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t *&#160;</td>
-          <td class="paramname"><em>lengthP</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Serialize a receptor</p>
-<p>Allocates a buffer for and serializes a receptor into the buffer</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">r</td><td><a class="el" href="structReceptor.html">Receptor</a> to serialize </td></tr>
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">surfaceP</td><td>pointer to a void * to hold the resulting serialized data </td></tr>
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">lengthP</td><td>pointer to a size_t to hold the resulting serialized data length </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-</div><!-- contents -->
+<div class="textblock"><p>receptor implementation header file </p>
+</div></div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Fri Aug 22 2014 17:48:02 for ceptr by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.7
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="receptor_8h.html">receptor.h</a></li>
+    <li class="footer">Generated on Fri Aug 22 2014 22:34:44 for ceptr by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
+  </ul>
+</div>
 </body>
 </html>

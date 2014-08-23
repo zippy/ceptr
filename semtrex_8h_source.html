@@ -8,6 +8,13 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+  $(window).load(resizeHeight);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -38,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -64,12 +72,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>Globals</span></a></li>
     </ul>
   </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('semtrex_8h_source.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Modules</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -78,99 +101,110 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="headertitle">
 <div class="title">semtrex.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="semtrex_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#ifndef _CEPTR_SEMTREX_H</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#define _CEPTR_SEMTREX_H</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="tree_8h.html">tree.h</a>&quot;</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">enum</span> FSAStates {StateSymbol,StateAny,StateValue,StateSplit,StateMatch,StateGroup};</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">typedef</span> <span class="keywordtype">int</span> StateType;</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
-<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="semtrex_8h.html#a7cce21ba007b15ca5263f3cc5ef15c11">   22</a></span>&#160;<span class="keyword">enum</span> <a class="code" href="semtrex_8h.html#a7cce21ba007b15ca5263f3cc5ef15c11">FSAStateTransitions</a> {</div>
-<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="semtrex_8h.html#a7cce21ba007b15ca5263f3cc5ef15c11a0304642b1bec42fa532a750ef23e276d">   23</a></span>&#160;    <a class="code" href="semtrex_8h.html#a7cce21ba007b15ca5263f3cc5ef15c11a0304642b1bec42fa532a750ef23e276d">TransitionNextChild</a>=0,  </div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="semtrex_8h.html#a7cce21ba007b15ca5263f3cc5ef15c11a3cea77279ce8c9665393a6cb9196acd2">   24</a></span>&#160;    <a class="code" href="semtrex_8h.html#a7cce21ba007b15ca5263f3cc5ef15c11a3cea77279ce8c9665393a6cb9196acd2">TransitionUp</a>=-1,        </div>
-<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="semtrex_8h.html#a7cce21ba007b15ca5263f3cc5ef15c11a3281a29fe6ed6c41e5b47100af5737e4">   25</a></span>&#160;    <a class="code" href="semtrex_8h.html#a7cce21ba007b15ca5263f3cc5ef15c11a3281a29fe6ed6c41e5b47100af5737e4">TransitionDown</a>=1        </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;};</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">typedef</span> <span class="keywordtype">int</span> TransitionType;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">typedef</span> <span class="keywordtype">void</span> *ValueData;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#ifndef _CEPTR_SEMTREX_H</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#define _CEPTR_SEMTREX_H</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#define GroupOpen 0x1000</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#define GroupClose 0</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="structSvalue.html">   42</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structSvalue.html">Svalue</a> {</div>
-<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="structSvalue.html#a0ad23032f404832b4ebb3d21d6ad2add">   43</a></span>&#160;    Symbol <a class="code" href="structSvalue.html#a0ad23032f404832b4ebb3d21d6ad2add">symbol</a>;      </div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="structSvalue.html#afe7d3d6c663be6c40232d73dc8aa49b8">   44</a></span>&#160;    <span class="keywordtype">size_t</span> <a class="code" href="structSvalue.html#afe7d3d6c663be6c40232d73dc8aa49b8">length</a>;  </div>
-<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="structSvalue.html#a1030fdddc0222a677b53dadf8ca4c51f">   45</a></span>&#160;    ValueData <a class="code" href="structSvalue.html#a1030fdddc0222a677b53dadf8ca4c51f">value</a>;    </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;};</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structSvalue.html">Svalue</a> <a class="code" href="structSvalue.html">Svalue</a>;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="structSgroup.html">   49</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structSgroup.html">Sgroup</a> {</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordtype">int</span> id;</div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="structSgroup.html#ab2e4e1ecc5bd0bca43c29c03b822d367">   51</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="structSgroup.html#ab2e4e1ecc5bd0bca43c29c03b822d367">type</a>;           </div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;};</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structSgroup.html">Sgroup</a> <a class="code" href="structSgroup.html">Sgroup</a>;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="semtrex_8h.html#a52153ceb2f5684e5e18eb772d8b26526">   60</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">union </span><a class="code" href="unionSTypeData.html">STypeData</a> <a class="code" href="unionSTypeData.html">STypeData</a>;</div>
-<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="unionSTypeData.html">   61</a></span>&#160;<span class="keyword">union </span><a class="code" href="unionSTypeData.html">STypeData</a></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;{</div>
-<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="unionSTypeData.html#abff54fb9a7e4ab6d493e4615bf7293de">   63</a></span>&#160;    Symbol <a class="code" href="unionSTypeData.html#abff54fb9a7e4ab6d493e4615bf7293de">symbol</a>;  </div>
-<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="unionSTypeData.html#a78d1d47572bb172f00a6cdfb3917697b">   64</a></span>&#160;    <a class="code" href="structSvalue.html">Svalue</a> <a class="code" href="unionSTypeData.html#a78d1d47572bb172f00a6cdfb3917697b">value</a>;   </div>
-<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="unionSTypeData.html#a9c3c3d0e2cdadb4f98f5ddb3bb571176">   65</a></span>&#160;    <a class="code" href="structSgroup.html">Sgroup</a> <a class="code" href="unionSTypeData.html#a9c3c3d0e2cdadb4f98f5ddb3bb571176">group</a>;   </div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;};</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="structSState.html">   68</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structSState.html">SState</a> {</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    StateType type;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keyword">struct </span><a class="code" href="structSState.html">SState</a> *out;</div>
-<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="structSState.html#a929d501094346c34a5c14e715b2f133f">   71</a></span>&#160;    TransitionType <a class="code" href="structSState.html#a929d501094346c34a5c14e715b2f133f">transition</a>;  </div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keyword">struct </span><a class="code" href="structSState.html">SState</a> *out1;</div>
-<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="structSState.html#ae22ac0f7bb019ad6aae9714be4828a8e">   73</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="structSState.html#ae22ac0f7bb019ad6aae9714be4828a8e">_did</a>; </div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <a class="code" href="unionSTypeData.html">STypeData</a> data;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;};</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structSState.html">SState</a> <a class="code" href="structSState.html">SState</a>;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<a class="code" href="structSState.html">SState</a> * _s_makeFA(<a class="code" href="structTnode.html">Tnode</a> *s,<span class="keywordtype">int</span> *statesP);</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="keywordtype">void</span> _s_freeFA(<a class="code" href="structSState.html">SState</a> *s);</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="keywordtype">int</span> _t_match(<a class="code" href="structTnode.html">Tnode</a> *semtrex,<a class="code" href="structTnode.html">Tnode</a> *t);</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="keywordtype">int</span> _t_matchr(<a class="code" href="structTnode.html">Tnode</a> *semtrex,<a class="code" href="structTnode.html">Tnode</a> *t,<a class="code" href="structTnode.html">Tnode</a> **r);</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<a class="code" href="structTnode.html">Tnode</a> *_t_get_match(<a class="code" href="structTnode.html">Tnode</a> *result,Symbol group);</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="structSState_html_ae22ac0f7bb019ad6aae9714be4828a8e"><div class="ttname"><a href="structSState.html#ae22ac0f7bb019ad6aae9714be4828a8e">SState::_did</a></div><div class="ttdeci">int _did</div><div class="ttdoc">used only for freeing and printing out FSA to prevent looping. </div><div class="ttdef"><b>Definition:</b> semtrex.h:73</div></div>
-<div class="ttc" id="structSvalue_html_afe7d3d6c663be6c40232d73dc8aa49b8"><div class="ttname"><a href="structSvalue.html#afe7d3d6c663be6c40232d73dc8aa49b8">Svalue::length</a></div><div class="ttdeci">size_t length</div><div class="ttdoc">For example, 5 (including terminating null) </div><div class="ttdef"><b>Definition:</b> semtrex.h:44</div></div>
-<div class="ttc" id="semtrex_8h_html_a7cce21ba007b15ca5263f3cc5ef15c11a3cea77279ce8c9665393a6cb9196acd2"><div class="ttname"><a href="semtrex_8h.html#a7cce21ba007b15ca5263f3cc5ef15c11a3cea77279ce8c9665393a6cb9196acd2">TransitionUp</a></div><div class="ttdoc">move up the tree in the match tree </div><div class="ttdef"><b>Definition:</b> semtrex.h:24</div></div>
-<div class="ttc" id="structSgroup_html_ab2e4e1ecc5bd0bca43c29c03b822d367"><div class="ttname"><a href="structSgroup.html#ab2e4e1ecc5bd0bca43c29c03b822d367">Sgroup::type</a></div><div class="ttdeci">int type</div><div class="ttdoc">is this an open or close group state </div><div class="ttdef"><b>Definition:</b> semtrex.h:51</div></div>
-<div class="ttc" id="unionSTypeData_html_a78d1d47572bb172f00a6cdfb3917697b"><div class="ttname"><a href="unionSTypeData.html#a78d1d47572bb172f00a6cdfb3917697b">STypeData::value</a></div><div class="ttdeci">Svalue value</div><div class="ttdoc">Value data to match on for StateValue type states. </div><div class="ttdef"><b>Definition:</b> semtrex.h:64</div></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="tree_8h.html">tree.h</a>&quot;</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">enum</span> StateType {StateSymbol,StateAny,StateValue,StateSplit,StateMatch,StateGroup};</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">typedef</span> <span class="keywordtype">int</span> StateType;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="group__semtrex.html#ga7cce21ba007b15ca5263f3cc5ef15c11">   44</a></span>&#160;<span class="keyword">enum</span> <a class="code" href="group__semtrex.html#ga7cce21ba007b15ca5263f3cc5ef15c11">FSAStateTransitions</a> {</div>
+<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="group__semtrex.html#gga7cce21ba007b15ca5263f3cc5ef15c11a0304642b1bec42fa532a750ef23e276d">   45</a></span>&#160;    <a class="code" href="group__semtrex.html#gga7cce21ba007b15ca5263f3cc5ef15c11a0304642b1bec42fa532a750ef23e276d">TransitionNextChild</a>=0,  </div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="group__semtrex.html#gga7cce21ba007b15ca5263f3cc5ef15c11a3cea77279ce8c9665393a6cb9196acd2">   46</a></span>&#160;    <a class="code" href="group__semtrex.html#gga7cce21ba007b15ca5263f3cc5ef15c11a3cea77279ce8c9665393a6cb9196acd2">TransitionUp</a>=-1,        </div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="group__semtrex.html#gga7cce21ba007b15ca5263f3cc5ef15c11a3281a29fe6ed6c41e5b47100af5737e4">   47</a></span>&#160;    <a class="code" href="group__semtrex.html#gga7cce21ba007b15ca5263f3cc5ef15c11a3281a29fe6ed6c41e5b47100af5737e4">TransitionDown</a>=1        </div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;};</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">typedef</span> <span class="keywordtype">int</span> TransitionType;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">typedef</span> <span class="keywordtype">void</span> *ValueData;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="preprocessor">#define GroupOpen 0x1000</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor">#define GroupClose 0</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="structSvalue.html">   64</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structSvalue.html">Svalue</a> {</div>
+<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="structSvalue.html#a0ad23032f404832b4ebb3d21d6ad2add">   65</a></span>&#160;    Symbol <a class="code" href="structSvalue.html#a0ad23032f404832b4ebb3d21d6ad2add">symbol</a>;      </div>
+<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="structSvalue.html#afe7d3d6c663be6c40232d73dc8aa49b8">   66</a></span>&#160;    <span class="keywordtype">size_t</span> <a class="code" href="structSvalue.html#afe7d3d6c663be6c40232d73dc8aa49b8">length</a>;  </div>
+<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="structSvalue.html#a1030fdddc0222a677b53dadf8ca4c51f">   67</a></span>&#160;    ValueData <a class="code" href="structSvalue.html#a1030fdddc0222a677b53dadf8ca4c51f">value</a>;    </div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;};</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structSvalue.html">Svalue</a> <a class="code" href="structSvalue.html">Svalue</a>;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="structSgroup.html">   74</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structSgroup.html">Sgroup</a> {</div>
+<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="structSgroup.html#a109c0dd2bd1575f6fecf8fa91e160da7">   75</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="structSgroup.html#a109c0dd2bd1575f6fecf8fa91e160da7">id</a>;             </div>
+<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="structSgroup.html#ab2e4e1ecc5bd0bca43c29c03b822d367">   76</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="structSgroup.html#ab2e4e1ecc5bd0bca43c29c03b822d367">type</a>;           </div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;};</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structSgroup.html">Sgroup</a> <a class="code" href="structSgroup.html">Sgroup</a>;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
+<div class="line"><a name="l00085"></a><span class="lineno"><a class="line" href="unionSTypeData.html">   85</a></span>&#160;<span class="keyword">union </span><a class="code" href="unionSTypeData.html">STypeData</a></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;{</div>
+<div class="line"><a name="l00087"></a><span class="lineno"><a class="line" href="unionSTypeData.html#abff54fb9a7e4ab6d493e4615bf7293de">   87</a></span>&#160;    Symbol <a class="code" href="unionSTypeData.html#abff54fb9a7e4ab6d493e4615bf7293de">symbol</a>;  </div>
+<div class="line"><a name="l00088"></a><span class="lineno"><a class="line" href="unionSTypeData.html#a78d1d47572bb172f00a6cdfb3917697b">   88</a></span>&#160;    <a class="code" href="structSvalue.html">Svalue</a> <a class="code" href="unionSTypeData.html#a78d1d47572bb172f00a6cdfb3917697b">value</a>;   </div>
+<div class="line"><a name="l00089"></a><span class="lineno"><a class="line" href="unionSTypeData.html#a9c3c3d0e2cdadb4f98f5ddb3bb571176">   89</a></span>&#160;    <a class="code" href="structSgroup.html">Sgroup</a> <a class="code" href="unionSTypeData.html#a9c3c3d0e2cdadb4f98f5ddb3bb571176">group</a>;   </div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;};</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="keyword">typedef</span> <span class="keyword">union </span><a class="code" href="unionSTypeData.html">STypeData</a> <a class="code" href="unionSTypeData.html">STypeData</a>;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
+<div class="line"><a name="l00096"></a><span class="lineno"><a class="line" href="structSState.html">   96</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structSState.html">SState</a> {</div>
+<div class="line"><a name="l00097"></a><span class="lineno"><a class="line" href="structSState.html#ac570e1a6012a5f5e9ac09e2b7a261a3c">   97</a></span>&#160;    StateType <a class="code" href="structSState.html#ac570e1a6012a5f5e9ac09e2b7a261a3c">type</a>;             </div>
+<div class="line"><a name="l00098"></a><span class="lineno"><a class="line" href="structSState.html#abe374b3ee42ca3ece234fcaafd4f8330">   98</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structSState.html">SState</a> *<a class="code" href="structSState.html#abe374b3ee42ca3ece234fcaafd4f8330">out</a>;         </div>
+<div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="structSState.html#a929d501094346c34a5c14e715b2f133f">   99</a></span>&#160;    TransitionType <a class="code" href="structSState.html#a929d501094346c34a5c14e715b2f133f">transition</a>;  </div>
+<div class="line"><a name="l00100"></a><span class="lineno"><a class="line" href="structSState.html#a6dc01f4330db9f0d04ede6c97d8b1e77">  100</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structSState.html">SState</a> *<a class="code" href="structSState.html#a6dc01f4330db9f0d04ede6c97d8b1e77">out1</a>;        </div>
+<div class="line"><a name="l00101"></a><span class="lineno"><a class="line" href="structSState.html#ae22ac0f7bb019ad6aae9714be4828a8e">  101</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="structSState.html#ae22ac0f7bb019ad6aae9714be4828a8e">_did</a>;                   </div>
+<div class="line"><a name="l00102"></a><span class="lineno"><a class="line" href="structSState.html#a4b8ede6710c740ee449445a77fc2d988">  102</a></span>&#160;    <a class="code" href="unionSTypeData.html">STypeData</a> <a class="code" href="structSState.html#a4b8ede6710c740ee449445a77fc2d988">data</a>;             </div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;};</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structSState.html">SState</a> <a class="code" href="structSState.html">SState</a>;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<a class="code" href="structSState.html">SState</a> * <a class="code" href="group__semtrex.html#gad1e1b879493749f04f1eaa57dd67bf67">_s_makeFA</a>(<a class="code" href="structTnode.html">Tnode</a> *s,<span class="keywordtype">int</span> *statesP);</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__semtrex.html#ga0ff6bb9da9a01b35d66a1a84b73fad22">_s_freeFA</a>(<a class="code" href="structSState.html">SState</a> *s);</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__semtrex.html#ga56c55fe5d429521c827cc67000898d0e">_t_match</a>(<a class="code" href="structTnode.html">Tnode</a> *semtrex,<a class="code" href="structTnode.html">Tnode</a> *t);</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__semtrex.html#gaa43317db10f85873435792afb5c1cd4a">_t_matchr</a>(<a class="code" href="structTnode.html">Tnode</a> *semtrex,<a class="code" href="structTnode.html">Tnode</a> *t,<a class="code" href="structTnode.html">Tnode</a> **r);</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<a class="code" href="structTnode.html">Tnode</a> *<a class="code" href="group__semtrex.html#gaa4419dc4f940274606f85a88d52949e7">_t_get_match</a>(<a class="code" href="structTnode.html">Tnode</a> *result,Symbol group);</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
+<div class="ttc" id="structSState_html_ae22ac0f7bb019ad6aae9714be4828a8e"><div class="ttname"><a href="structSState.html#ae22ac0f7bb019ad6aae9714be4828a8e">SState::_did</a></div><div class="ttdeci">int _did</div><div class="ttdoc">used to hold a mark when freeing and printing out FSA to prevent looping. </div><div class="ttdef"><b>Definition:</b> semtrex.h:101</div></div>
+<div class="ttc" id="group__semtrex_html_gga7cce21ba007b15ca5263f3cc5ef15c11a0304642b1bec42fa532a750ef23e276d"><div class="ttname"><a href="group__semtrex.html#gga7cce21ba007b15ca5263f3cc5ef15c11a0304642b1bec42fa532a750ef23e276d">TransitionNextChild</a></div><div class="ttdoc">advance to next sibling in the match tree </div><div class="ttdef"><b>Definition:</b> semtrex.h:45</div></div>
+<div class="ttc" id="structSvalue_html_afe7d3d6c663be6c40232d73dc8aa49b8"><div class="ttname"><a href="structSvalue.html#afe7d3d6c663be6c40232d73dc8aa49b8">Svalue::length</a></div><div class="ttdeci">size_t length</div><div class="ttdoc">For example, 5 (including terminating null) </div><div class="ttdef"><b>Definition:</b> semtrex.h:66</div></div>
+<div class="ttc" id="group__semtrex_html_ga0ff6bb9da9a01b35d66a1a84b73fad22"><div class="ttname"><a href="group__semtrex.html#ga0ff6bb9da9a01b35d66a1a84b73fad22">_s_freeFA</a></div><div class="ttdeci">void _s_freeFA(SState *s)</div><div class="ttdef"><b>Definition:</b> semtrex.c:254</div></div>
+<div class="ttc" id="structSgroup_html_ab2e4e1ecc5bd0bca43c29c03b822d367"><div class="ttname"><a href="structSgroup.html#ab2e4e1ecc5bd0bca43c29c03b822d367">Sgroup::type</a></div><div class="ttdeci">int type</div><div class="ttdoc">is this an open or close group state </div><div class="ttdef"><b>Definition:</b> semtrex.h:76</div></div>
+<div class="ttc" id="unionSTypeData_html_a78d1d47572bb172f00a6cdfb3917697b"><div class="ttname"><a href="unionSTypeData.html#a78d1d47572bb172f00a6cdfb3917697b">STypeData::value</a></div><div class="ttdeci">Svalue value</div><div class="ttdoc">Value data to match on for StateValue type states. </div><div class="ttdef"><b>Definition:</b> semtrex.h:88</div></div>
 <div class="ttc" id="tree_8h_html"><div class="ttname"><a href="tree_8h.html">tree.h</a></div><div class="ttdoc">semantic trees header file </div></div>
-<div class="ttc" id="unionSTypeData_html_a9c3c3d0e2cdadb4f98f5ddb3bb571176"><div class="ttname"><a href="unionSTypeData.html#a9c3c3d0e2cdadb4f98f5ddb3bb571176">STypeData::group</a></div><div class="ttdeci">Sgroup group</div><div class="ttdoc">Group data for matching for StateGroup type states. </div><div class="ttdef"><b>Definition:</b> semtrex.h:65</div></div>
-<div class="ttc" id="structSgroup_html"><div class="ttname"><a href="structSgroup.html">Sgroup</a></div><div class="ttdef"><b>Definition:</b> semtrex.h:49</div></div>
-<div class="ttc" id="unionSTypeData_html_abff54fb9a7e4ab6d493e4615bf7293de"><div class="ttname"><a href="unionSTypeData.html#abff54fb9a7e4ab6d493e4615bf7293de">STypeData::symbol</a></div><div class="ttdeci">Symbol symbol</div><div class="ttdoc">Symbol to match on for StateSymbol type states. </div><div class="ttdef"><b>Definition:</b> semtrex.h:63</div></div>
-<div class="ttc" id="semtrex_8h_html_a7cce21ba007b15ca5263f3cc5ef15c11"><div class="ttname"><a href="semtrex_8h.html#a7cce21ba007b15ca5263f3cc5ef15c11">FSAStateTransitions</a></div><div class="ttdeci">FSAStateTransitions</div><div class="ttdef"><b>Definition:</b> semtrex.h:22</div></div>
-<div class="ttc" id="semtrex_8h_html_a7cce21ba007b15ca5263f3cc5ef15c11a3281a29fe6ed6c41e5b47100af5737e4"><div class="ttname"><a href="semtrex_8h.html#a7cce21ba007b15ca5263f3cc5ef15c11a3281a29fe6ed6c41e5b47100af5737e4">TransitionDown</a></div><div class="ttdoc">move to child in the match tree </div><div class="ttdef"><b>Definition:</b> semtrex.h:25</div></div>
-<div class="ttc" id="structSvalue_html"><div class="ttname"><a href="structSvalue.html">Svalue</a></div><div class="ttdef"><b>Definition:</b> semtrex.h:42</div></div>
-<div class="ttc" id="structSState_html_a929d501094346c34a5c14e715b2f133f"><div class="ttname"><a href="structSState.html#a929d501094346c34a5c14e715b2f133f">SState::transition</a></div><div class="ttdeci">TransitionType transition</div><div class="ttdoc">will be: TransitionNextChild=0,TransitionUp=-1,TransitionDown=1 </div><div class="ttdef"><b>Definition:</b> semtrex.h:71</div></div>
-<div class="ttc" id="structSState_html"><div class="ttname"><a href="structSState.html">SState</a></div><div class="ttdef"><b>Definition:</b> semtrex.h:68</div></div>
-<div class="ttc" id="semtrex_8h_html_a7cce21ba007b15ca5263f3cc5ef15c11a0304642b1bec42fa532a750ef23e276d"><div class="ttname"><a href="semtrex_8h.html#a7cce21ba007b15ca5263f3cc5ef15c11a0304642b1bec42fa532a750ef23e276d">TransitionNextChild</a></div><div class="ttdoc">advance to next sibling in the match tree </div><div class="ttdef"><b>Definition:</b> semtrex.h:23</div></div>
-<div class="ttc" id="structSvalue_html_a1030fdddc0222a677b53dadf8ca4c51f"><div class="ttname"><a href="structSvalue.html#a1030fdddc0222a677b53dadf8ca4c51f">Svalue::value</a></div><div class="ttdeci">ValueData value</div><div class="ttdoc">For example, "t\0" which fits in an "int". Otherwise, Svalue needs to be malloc&#39;d to hold extra bytes...</div><div class="ttdef"><b>Definition:</b> semtrex.h:45</div></div>
-<div class="ttc" id="structSvalue_html_a0ad23032f404832b4ebb3d21d6ad2add"><div class="ttname"><a href="structSvalue.html#a0ad23032f404832b4ebb3d21d6ad2add">Svalue::symbol</a></div><div class="ttdeci">Symbol symbol</div><div class="ttdoc">Symbol is the semantic type. Here we&#39;re storing the integer that represents the semantic type...</div><div class="ttdef"><b>Definition:</b> semtrex.h:43</div></div>
-<div class="ttc" id="unionSTypeData_html"><div class="ttname"><a href="unionSTypeData.html">STypeData</a></div><div class="ttdef"><b>Definition:</b> semtrex.h:61</div></div>
-<div class="ttc" id="structTnode_html"><div class="ttname"><a href="structTnode.html">Tnode</a></div><div class="ttdef"><b>Definition:</b> tree.h:41</div></div>
+<div class="ttc" id="unionSTypeData_html_a9c3c3d0e2cdadb4f98f5ddb3bb571176"><div class="ttname"><a href="unionSTypeData.html#a9c3c3d0e2cdadb4f98f5ddb3bb571176">STypeData::group</a></div><div class="ttdeci">Sgroup group</div><div class="ttdoc">Group data for matching for StateGroup type states. </div><div class="ttdef"><b>Definition:</b> semtrex.h:89</div></div>
+<div class="ttc" id="structSgroup_html"><div class="ttname"><a href="structSgroup.html">Sgroup</a></div><div class="ttdef"><b>Definition:</b> semtrex.h:74</div></div>
+<div class="ttc" id="structSgroup_html_a109c0dd2bd1575f6fecf8fa91e160da7"><div class="ttname"><a href="structSgroup.html#a109c0dd2bd1575f6fecf8fa91e160da7">Sgroup::id</a></div><div class="ttdeci">int id</div><div class="ttdoc">the symbol that identifies this group </div><div class="ttdef"><b>Definition:</b> semtrex.h:75</div></div>
+<div class="ttc" id="unionSTypeData_html_abff54fb9a7e4ab6d493e4615bf7293de"><div class="ttname"><a href="unionSTypeData.html#abff54fb9a7e4ab6d493e4615bf7293de">STypeData::symbol</a></div><div class="ttdeci">Symbol symbol</div><div class="ttdoc">Symbol to match on for StateSymbol type states. </div><div class="ttdef"><b>Definition:</b> semtrex.h:87</div></div>
+<div class="ttc" id="group__semtrex_html_gga7cce21ba007b15ca5263f3cc5ef15c11a3cea77279ce8c9665393a6cb9196acd2"><div class="ttname"><a href="group__semtrex.html#gga7cce21ba007b15ca5263f3cc5ef15c11a3cea77279ce8c9665393a6cb9196acd2">TransitionUp</a></div><div class="ttdoc">move up the tree in the match tree </div><div class="ttdef"><b>Definition:</b> semtrex.h:46</div></div>
+<div class="ttc" id="group__semtrex_html_gad1e1b879493749f04f1eaa57dd67bf67"><div class="ttname"><a href="group__semtrex.html#gad1e1b879493749f04f1eaa57dd67bf67">_s_makeFA</a></div><div class="ttdeci">SState * _s_makeFA(Tnode *s, int *statesP)</div><div class="ttdef"><b>Definition:</b> semtrex.c:214</div></div>
+<div class="ttc" id="group__semtrex_html_ga56c55fe5d429521c827cc67000898d0e"><div class="ttname"><a href="group__semtrex.html#ga56c55fe5d429521c827cc67000898d0e">_t_match</a></div><div class="ttdeci">int _t_match(Tnode *semtrex, Tnode *t)</div><div class="ttdef"><b>Definition:</b> semtrex.c:408</div></div>
+<div class="ttc" id="group__semtrex_html_gaa4419dc4f940274606f85a88d52949e7"><div class="ttname"><a href="group__semtrex.html#gaa4419dc4f940274606f85a88d52949e7">_t_get_match</a></div><div class="ttdeci">Tnode * _t_get_match(Tnode *result, Symbol group)</div><div class="ttdef"><b>Definition:</b> semtrex.c:418</div></div>
+<div class="ttc" id="structSState_html_a4b8ede6710c740ee449445a77fc2d988"><div class="ttname"><a href="structSState.html#a4b8ede6710c740ee449445a77fc2d988">SState::data</a></div><div class="ttdeci">STypeData data</div><div class="ttdoc">a union to hold the data for which ever type of SState this is </div><div class="ttdef"><b>Definition:</b> semtrex.h:102</div></div>
+<div class="ttc" id="structSState_html_abe374b3ee42ca3ece234fcaafd4f8330"><div class="ttname"><a href="structSState.html#abe374b3ee42ca3ece234fcaafd4f8330">SState::out</a></div><div class="ttdeci">struct SState * out</div><div class="ttdoc">which state to go to next </div><div class="ttdef"><b>Definition:</b> semtrex.h:98</div></div>
+<div class="ttc" id="structSvalue_html"><div class="ttname"><a href="structSvalue.html">Svalue</a></div><div class="ttdef"><b>Definition:</b> semtrex.h:64</div></div>
+<div class="ttc" id="structSState_html_a929d501094346c34a5c14e715b2f133f"><div class="ttname"><a href="structSState.html#a929d501094346c34a5c14e715b2f133f">SState::transition</a></div><div class="ttdeci">TransitionType transition</div><div class="ttdoc">will be: TransitionNextChild=0,TransitionUp=-1,TransitionDown=1 </div><div class="ttdef"><b>Definition:</b> semtrex.h:99</div></div>
+<div class="ttc" id="group__semtrex_html_ga7cce21ba007b15ca5263f3cc5ef15c11"><div class="ttname"><a href="group__semtrex.html#ga7cce21ba007b15ca5263f3cc5ef15c11">FSAStateTransitions</a></div><div class="ttdeci">FSAStateTransitions</div><div class="ttdef"><b>Definition:</b> semtrex.h:44</div></div>
+<div class="ttc" id="structSState_html"><div class="ttname"><a href="structSState.html">SState</a></div><div class="ttdef"><b>Definition:</b> semtrex.h:96</div></div>
+<div class="ttc" id="structSvalue_html_a1030fdddc0222a677b53dadf8ca4c51f"><div class="ttname"><a href="structSvalue.html#a1030fdddc0222a677b53dadf8ca4c51f">Svalue::value</a></div><div class="ttdeci">ValueData value</div><div class="ttdoc">For example, "t\0" which fits in an "int". Otherwise, Svalue needs to be malloc&#39;d to hold extra bytes...</div><div class="ttdef"><b>Definition:</b> semtrex.h:67</div></div>
+<div class="ttc" id="structSState_html_ac570e1a6012a5f5e9ac09e2b7a261a3c"><div class="ttname"><a href="structSState.html#ac570e1a6012a5f5e9ac09e2b7a261a3c">SState::type</a></div><div class="ttdeci">StateType type</div><div class="ttdoc">what type of state this is </div><div class="ttdef"><b>Definition:</b> semtrex.h:97</div></div>
+<div class="ttc" id="group__semtrex_html_gaa43317db10f85873435792afb5c1cd4a"><div class="ttname"><a href="group__semtrex.html#gaa43317db10f85873435792afb5c1cd4a">_t_matchr</a></div><div class="ttdeci">int _t_matchr(Tnode *semtrex, Tnode *t, Tnode **r)</div><div class="ttdef"><b>Definition:</b> semtrex.c:384</div></div>
+<div class="ttc" id="structSvalue_html_a0ad23032f404832b4ebb3d21d6ad2add"><div class="ttname"><a href="structSvalue.html#a0ad23032f404832b4ebb3d21d6ad2add">Svalue::symbol</a></div><div class="ttdeci">Symbol symbol</div><div class="ttdoc">Symbol is the semantic type. Here we&#39;re storing the integer that represents the semantic type...</div><div class="ttdef"><b>Definition:</b> semtrex.h:65</div></div>
+<div class="ttc" id="group__semtrex_html_gga7cce21ba007b15ca5263f3cc5ef15c11a3281a29fe6ed6c41e5b47100af5737e4"><div class="ttname"><a href="group__semtrex.html#gga7cce21ba007b15ca5263f3cc5ef15c11a3281a29fe6ed6c41e5b47100af5737e4">TransitionDown</a></div><div class="ttdoc">move to child in the match tree </div><div class="ttdef"><b>Definition:</b> semtrex.h:47</div></div>
+<div class="ttc" id="unionSTypeData_html"><div class="ttname"><a href="unionSTypeData.html">STypeData</a></div><div class="ttdef"><b>Definition:</b> semtrex.h:85</div></div>
+<div class="ttc" id="structSState_html_a6dc01f4330db9f0d04ede6c97d8b1e77"><div class="ttname"><a href="structSState.html#a6dc01f4330db9f0d04ede6c97d8b1e77">SState::out1</a></div><div class="ttdeci">struct SState * out1</div><div class="ttdoc">which alternate state to go to next in the case this is a Split state </div><div class="ttdef"><b>Definition:</b> semtrex.h:100</div></div>
+<div class="ttc" id="structTnode_html"><div class="ttname"><a href="structTnode.html">Tnode</a></div><div class="ttdef"><b>Definition:</b> tree.h:49</div></div>
 </div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Fri Aug 22 2014 17:48:02 for ceptr by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.7
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="semtrex_8h.html">semtrex.h</a></li>
+    <li class="footer">Generated on Fri Aug 22 2014 22:34:44 for ceptr by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
+  </ul>
+</div>
 </body>
 </html>
