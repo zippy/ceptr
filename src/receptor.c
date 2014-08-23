@@ -182,8 +182,8 @@ Tnode * _r_build_def_semtrex(Receptor *r,Symbol s,Tnode *parent) {
  * Determine whether a tree matches a symbol definition, both structural and semantic
  *
  * @param[in] r the receptor context in which things are defined
- * @param[in] the symbol we expect this tree to be
- * @param[in] the tree to match
+ * @param[in] s the symbol we expect this tree to be
+ * @param[in] t the tree to match
  * @returns true or false depending on the match
  *
  * @todo currently this just matches on a semtrex.  It should also look at the surface
@@ -201,6 +201,11 @@ int _r_def_match(Receptor *r,Symbol s,Tnode *t) {
 /**
  * Create a new instance of a symbol.
  *
+ * @param[in] r the receptor context in which things are defined
+ * @param[in] s the symbol type to instantiate
+ * @param[in] surface pointer to the surface data to be instantiated
+ * @returns Xaddr that identifies the instance
+ *
  * @todo currently this implementation of instances, just stores each instance as tree node
  of type INSTANCE as a child of the symbol.  This is way inefficient and needs to be
  replaced.  But this is just here to create the API...
@@ -214,6 +219,9 @@ Xaddr _r_new_instance(Receptor *r,Symbol s,void *surface) {
     return result;
 }
 
+/**
+ * retrieve the instance data for a given xaddr
+ */
 Instance _r_get_instance(Receptor *r,Xaddr x) {
     Tnode *s = _t_child(r->symbols,x.symbol);
     Instance i;
