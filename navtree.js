@@ -29,7 +29,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"semtrex_8h.html"
+"semtrex_8c.html#af0de0b5913959a81b47d91299857f683"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

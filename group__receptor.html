@@ -197,8 +197,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>__r_get_symbol_size
 <tr class="separator:ga8978934f20256d927a9f035c2eeafd8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7518a44dda01af81556bb6657f18ead4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structXaddr.html">Xaddr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga7518a44dda01af81556bb6657f18ead4">_r_new_instance</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, Symbol s, void *surface)</td></tr>
 <tr class="separator:ga7518a44dda01af81556bb6657f18ead4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae5861d52f36fafa1f5d5a4ba1268ce1b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gae5861d52f36fafa1f5d5a4ba1268ce1b"></a>
-<a class="el" href="structInstance.html">Instance</a>&#160;</td><td class="memItemRight" valign="bottom"><b>_r_get_instance</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structXaddr.html">Xaddr</a> x)</td></tr>
+<tr class="memitem:gae5861d52f36fafa1f5d5a4ba1268ce1b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structInstance.html">Instance</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#gae5861d52f36fafa1f5d5a4ba1268ce1b">_r_get_instance</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structXaddr.html">Xaddr</a> x)</td></tr>
 <tr class="separator:gae5861d52f36fafa1f5d5a4ba1268ce1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaaea031f81a78e2c4f6d33821af1d7c21"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#gaaea031f81a78e2c4f6d33821af1d7c21">__t_serialize</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structTnode.html">Tnode</a> *t, void **bufferP, size_t offset, size_t current_size)</td></tr>
 <tr class="separator:gaaea031f81a78e2c4f6d33821af1d7c21"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -411,8 +410,8 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">r</td><td>the receptor context in which things are defined </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">the</td><td>symbol we expect this tree to be </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">the</td><td>tree to match </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>the symbol we expect this tree to be </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">t</td><td>the tree to match </td></tr>
   </table>
   </dd>
 </dl>
@@ -435,6 +434,33 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
       </table>
 </div><div class="memdoc">
 <p>Destroys a receptor freeing all memory it uses. </p>
+
+</div>
+</div>
+<a class="anchor" id="gae5861d52f36fafa1f5d5a4ba1268ce1b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structInstance.html">Instance</a> _r_get_instance </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structReceptor.html">Receptor</a> *&#160;</td>
+          <td class="paramname"><em>r</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structXaddr.html">Xaddr</a>&#160;</td>
+          <td class="paramname"><em>x</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>retrieve the instance data for a given xaddr </p>
 
 </div>
 </div>
@@ -484,6 +510,15 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
       </table>
 </div><div class="memdoc">
 <p>Create a new instance of a symbol.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">r</td><td>the receptor context in which things are defined </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>the symbol type to instantiate </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">surface</td><td>pointer to the surface data to be instantiated </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structXaddr.html">Xaddr</a> that identifies the instance</dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000006">Todo:</a></b></dt><dd>currently this implementation of instances, just stores each instance as tree node of type INSTANCE as a child of the symbol. This is way inefficient and needs to be replaced. But this is just here to create the API... </dd></dl>
 
 </div>
@@ -577,7 +612,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Aug 22 2014 22:34:44 for ceptr by
+    <li class="footer">Generated on Fri Aug 22 2014 23:06:22 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
