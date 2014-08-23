@@ -184,6 +184,7 @@ void testReceptorDefMatch() {
     _t_detach_by_idx(t,2);
     spec_is_true(!_r_def_match(r,house_loc,t));
 
+    _t_free(stx);
     _t_free(t);
     _t_free(t_lon);
     _r_free(r);

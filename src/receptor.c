@@ -190,7 +190,10 @@ Tnode * _r_build_def_semtrex(Receptor *r,Symbol s,Tnode *parent) {
  sizes to see if they meet the criteria of the structure definitions.
  */
 int _r_def_match(Receptor *r,Symbol s,Tnode *t) {
-    return _t_match(_r_build_def_semtrex(r,s,0),t);
+    Tnode *stx = _r_build_def_semtrex(r,s,0);
+    int result = _t_match(stx,t);
+    _t_free(stx);
+    return result;
 }
 
 /*****************  receptor instances and xaddrs */
