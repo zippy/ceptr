@@ -1,14 +1,36 @@
 /**
+ * @defgroup semtrex Semantic Tree Regular Expressions
+
+ Here is a pseudo BNF (what we are calling a TNF for Tree Normal Form)
+ that describes how Semtrexs can be constructed:
+
+ @code
+ Semtrex ::= Root [ / Child]
+ Root ::= Literal | Value | Or | Any | Question | Group
+ Child ::=  Root | OneOrMore | ZeroOrMore | ZeroOrOne | Sequence
+ OneOrMore ::= "+" / Semtrex
+ ZeroOrMore ::= "*" / Semtrex
+ ZeroOrOne ::= "?" / Semtrex
+ Sequence ::= "," / Semtrex [, Semtrex]...
+ Or ::= "|" / Semtrex1 , Semtrex2
+ Literal ::= "LITERAL(<symbol>)" [ / Semtrex]
+ Value ::= "VALUE(<symbol>)=<value>" [ / Semtrex]
+ Any ::= "." [ / Semtrex]
+ Group ::= "{<symbol>}" / Semtrex
+ @endcode
+ * @{
+
  * @file semtrex.h
- * @brief Semantic tree regular expressions
+ * @brief Semantic tree regular expression header file
  */
+
 
 #ifndef _CEPTR_SEMTREX_H
 #define _CEPTR_SEMTREX_H
 
 #include "tree.h"
 
-enum FSAStates {StateSymbol,StateAny,StateValue,StateSplit,StateMatch,StateGroup};
+enum StateType {StateSymbol,StateAny,StateValue,StateSplit,StateMatch,StateGroup};
 typedef int StateType;
 
 /**
@@ -46,8 +68,11 @@ struct Svalue {
 };
 typedef struct Svalue Svalue;
 
+/**
+ * data for group FSA state
+ */
 struct Sgroup {
-    int id;
+    int id;             ///< the symbol that identifies this group
     int type;           ///< is this an open or close group state
 };
 typedef struct Sgroup Sgroup;
@@ -57,21 +82,24 @@ typedef struct Sgroup Sgroup;
  *
  * @note cool coding hack: the value item of this list include a Symbol as it's first items so that we can share the code that matches on symbol!!
  */
-typedef union STypeData STypeData;
 union STypeData
 {
     Symbol symbol;  ///< Symbol to match on for StateSymbol type states
     Svalue value;   ///< Value data to match on for StateValue type states
     Sgroup group;   ///< Group data for matching for StateGroup type states
 };
+typedef union STypeData STypeData;
 
+/**
+ * This struct holds the data for each state in of the FSA generated to match a tree
+ */
 struct SState {
-    StateType type;
-    struct SState *out;
+    StateType type;             ///< what type of state this is
+    struct SState *out;         ///< which state to go to next
     TransitionType transition;  ///< will be: TransitionNextChild=0,TransitionUp=-1,TransitionDown=1
-    struct SState *out1;
-    int _did; ///< used only for freeing and printing out FSA to prevent looping.
-    STypeData data;
+    struct SState *out1;        ///< which alternate state to go to next in the case this is a Split state
+    int _did;                   ///< used to hold a mark when freeing and printing out FSA to prevent looping.
+    STypeData data;             ///< a union to hold the data for which ever type of SState this is
 };
 typedef struct SState SState;
 
@@ -80,4 +108,7 @@ void _s_freeFA(SState *s);
 int _t_match(Tnode *semtrex,Tnode *t);
 int _t_matchr(Tnode *semtrex,Tnode *t,Tnode **r);
 Tnode *_t_get_match(Tnode *result,Symbol group);
+
 #endif
+
+/** @}*/

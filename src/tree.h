@@ -1,4 +1,12 @@
 /**
+ * @defgroup tree Semantic Trees
+ *
+ * @brief Semantic trees are the basic data building block for ceptr
+ *
+ * Everything in ceptr is built out of semantic trees.  In ceptr all data is assumed to be
+ * meaningfull, not just structured.
+ *
+ * @{
  * @file tree.h
  * @brief semantic trees header file
  */
@@ -97,3 +105,4 @@ _t_parse(); //semtrex style parsing
 _t_match()
 */
 #endif
+/** @}*/

@@ -3,34 +3,6 @@
 #include "../src/semtrex.h"
 #include "../src/receptor.h"
 
-/*
-Semtrex TGF:
-
-Semtrex ::= Root [ / Child]
-Root ::= Literal | Or | Any | Question | Group
-Child ::=  Root | Plus | Star | Sequence
-Plus ::= "PLUS" / Semtrex
-Star ::= "STAR" / Semtrex
-Question ::= "QUESTION" / Semtrex
-Sequence ::= "SEQUENCE" / Semtrex [, Semtrex]...
-Or ::= "OR" / Semtrex1 , Semtrex2
-Literal ::= "LITERAL(symbol)" [ / Semtrex]
-Any ::= "ANY" [ / Semtrex]
-Group ::= "GROUP(group_name)" / Semtrex
-
-<STX>            ::= <union> | <simple-STX>
-<union>          ::= <STX> "|" <simple-STX>
-<simple-STX>     ::= <concatenation> | <basic-STX>
-<concatenation>	 ::=  <simple-STX> "," <basic-STX>
-<basic-STX>	 ::= <star> | <plus> | <elementary-STX>
-<star>	         ::= <elementary-STX> "*"
-<plus>	         ::= <elementary-STX> "+"
-<elementary-STX> ::= <group> | <any> | <symbol-tree>
-<group>	         ::= "(" <STX> ")"
-<any>	         ::= "."
-
-*/
-
 Tnode *_makeTestTree1() {
     Tnode *t = _t_new(0,TEST_STR_SYMBOL,"t",2);
     Tnode *t1 = _t_new(t,1,"t1",3);             // 1, 11, etc., are chosen symbols to match where the nodes are in the tree structure.  3 is length of t1....etc...

@@ -1,6 +1,11 @@
 /**
- * @file receptor.h
+ * @defgroup receptor Receptors
+ *
  * @brief Receptors provide the fundamental coherence contexts for ceptr
+*
+ * @{
+ * @file receptor.h
+ * @brief receptor implementation header file
  *
  */
 
@@ -88,3 +93,4 @@ char *_s_get_structure_name(Receptor *r,Structure s);
 char * _dump_semtrex(Tnode *s,char *buf);
 
 #endif
+/** @}*/

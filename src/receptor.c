@@ -1,6 +1,9 @@
 /**
+ * @ingroup receptor
+ *
+ * @{
  * @file receptor.c
- * @brief Receptors provide the fundamental coherence contexts for ceptr
+ * @brief receptor implementation
  *
  */
 
@@ -539,3 +542,4 @@ char * _dump_semtrex(Tnode *s,char *buf) {
     __dump_semtrex(s,buf+1);
     return buf;
 }
+/** @}*/

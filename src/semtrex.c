@@ -1,10 +1,22 @@
 #include "semtrex.h"
 
-// based on: http://swtch.com/~rsc/regexp/regexp1.html
+/**
+ * @ingroup semtrex
+ *
+ * @{
+ * @file semtrex.c
+ * @brief semtrex implementation
+ *
+ * This file implements a regular expression type language usefull for searching semantic trees.
+ *
+ * The code to generate finite state automata to match the trees is based heavily on
+ * based on Russ Cox's great work, see: http://swtch.com/~rsc/regexp/regexp1.html
+ */
 
+/// the final matching state in the FSA can be declared statically and globally
 SState matchstate = {StateMatch}; /* only one instance of the match state*/
 
-/*
+/**
  * Since the out pointers in the list are always
  * uninitialized, we use the pointers themselves
  * as storage for the Ptrlists.
@@ -16,7 +28,9 @@ union Ptrlist
     SState *s;
 };
 
-/* Create singleton list containing just outp. */
+/**
+ * Create singleton list containing just outp.
+*/
 Ptrlist*
 list1(SState **outp)
 {
@@ -27,7 +41,9 @@ list1(SState **outp)
     return l;
 }
 
-/* Patch the list of states at out to point to start. */
+/**
+ * Patch the list of states at out to point to start.
+ */
 void
 patch(Ptrlist *l, SState *s,int level)
 {
@@ -40,7 +56,9 @@ patch(Ptrlist *l, SState *s,int level)
     }
 }
 
-/* Join the two lists l1 and l2, returning the combination. */
+/**
+ * Join the two lists l1 and l2, returning the combination.
+ */
 Ptrlist*
 append(Ptrlist *l1, Ptrlist *l2)
 {
@@ -53,7 +71,9 @@ append(Ptrlist *l1, Ptrlist *l2)
     return oldl1;
 }
 
-// utility routine to initialize a state struct
+/**
+ * utility routine to initialize a state struct
+ */
 SState *state(StateType type,int *statesP) {
     SState *s = malloc(sizeof(SState));
     s->out = NULL;
@@ -64,7 +84,9 @@ SState *state(StateType type,int *statesP) {
     return s;
 }
 
-// Given a Semtrex tree, build a partial FSA (returned via in as a pointer to the starting state, a list of output states, and a count of the total number of states created).
+/**
+ * Given a Semtrex tree, build a partial FSA (returned via in as a pointer to the starting state, a list of output states, and a count of the total number of states created).
+ */
 char * __s_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP) {
     SState *s,*i,*last;
     Ptrlist *o,*o1;
@@ -186,7 +208,9 @@ char * __s_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP) {
 
 void _s_dump(SState *s);
 
-// wrapper for building the finite state automata recursively and patching it to the final match state
+/**
+ * wrapper function for building the finite state automata recursively and patching it to the final match state
+ */
 SState * _s_makeFA(Tnode *t,int *statesP) {
     SState *in;
     Ptrlist *o;
@@ -199,7 +223,9 @@ SState * _s_makeFA(Tnode *t,int *statesP) {
 
 static int free_id = 0;
 
-// walk through the FSA clearing pointers to marked states
+/**
+ * walks through the FSA clearing pointers that create loops
+ */
 int __s_freeFA(SState *s,int id) {
     if ((s->_did != id) && (s != &matchstate)) {
 	s->_did = id;
@@ -210,7 +236,9 @@ int __s_freeFA(SState *s,int id) {
     return 1;
 }
 
-// walk through again freeing the states
+/**
+ * walk through FSA freeing the states, assumes __s_freeFA has been called first so as not to go into loops!
+ */
 __s_freeFA2(SState *s) {
     if (s->out) __s_freeFA2(s->out);
     if (s->out1) __s_freeFA2(s->out1);
@@ -220,14 +248,22 @@ __s_freeFA2(SState *s) {
     free(s);
 }
 
-// walks through a state diagram freeing states
-// and malloced values of StateValue states
+/**
+ * free the memory allocated by an FSA
+ */
 void _s_freeFA(SState *s) {
     __s_freeFA(s,++free_id);
     __s_freeFA2(s);
 }
 
-// Walk the FSA in s using a recursive backtracing algorithm to match the tree in t.  Returns matched portions in a match results tree if one is provided in r.
+/**
+ * Walk the FSA in s using a recursive backtracing algorithm to match the tree in t.
+ *
+ * @param[in] s FSA to use for matching a tree
+ * @param[in] t tree to match against
+ * @param[inout] r match results tree being built.  (nil if no results needed)
+ * @returns 1 or 0 if matched or not
+ */
 int __t_match(SState *s,Tnode *t,Tnode *r) {
     char *p1,*p2;
     int i;
@@ -337,7 +373,14 @@ int __t_match(SState *s,Tnode *t,Tnode *r) {
     return 0;
 }
 
-// semtrex matching where you care about the matched results
+/**
+ * Match a tree against a semtrex and get back match results
+ *
+ * @param[in] semtrex the semtrex pattern tree
+ * @param[in] t the tree to match against the pattern
+ * @param[inout] rP a pointer to a Tnode to be filled with a match results tree
+ * @returns 1 or 0 if matched or not
+ */
 int _t_matchr(Tnode *semtrex,Tnode *t,Tnode **rP) {
     int states;
     int m;
@@ -355,12 +398,23 @@ int _t_matchr(Tnode *semtrex,Tnode *t,Tnode **rP) {
     return m;
 }
 
-// semtrex matching where you just care about whether a match exists
+/**
+ * Match a tree against a semtrex
+ *
+ * @param[in] semtrex the semtrex pattern tree
+ * @param[in] t the tree to match against the pattern
+ * @returns 1 or 0 if matched or not
+ */
 int _t_match(Tnode *semtrex,Tnode *t) {
     return _t_matchr(semtrex,t,NULL);
 }
 
-// return the semtrex match that matches the symbol
+/**
+ * extract the portion of a semtrex match results that corresponds with a given symbol
+ * @param[in] result match results from the _t_matchr call
+ * @param[in] group the symbol from the semtrex group that you want the result for
+ * @returns Tnode of the match or NULL if no such match found
+ */
 Tnode *_t_get_match(Tnode *result,Symbol group)
 {
     int i,c=_t_children(result);
@@ -371,3 +425,5 @@ Tnode *_t_get_match(Tnode *result,Symbol group)
     }
     return 0;
 }
+
+/**@}*/

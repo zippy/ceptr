@@ -1,9 +1,11 @@
 /**
- * @file tree.c
- * @brief Semantic trees are the basic data building block for ceptr
+ * @ingroup tree
  *
- * Everything in ceptr is built out of semantic trees.  In ceptr all data is assumed to be
- * meaningfull, not just structured.
+ * @{
+ *
+ * @file tree.c
+ * @brief semantic tree implementation
+ *
  */
 
 #include "tree.h"
@@ -371,3 +373,4 @@ char * _t_sprint_path(int *fp,char *buf) {
 
     return buf;
 }
+/** @}*/

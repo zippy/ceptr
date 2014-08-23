@@ -1,9 +1,25 @@
+/**
+ * @ingroup receptor
+ *
+ * @{
+ * @file process.c
+ * @brief implementation of ceptr processing: instructions and run tree reduction
+ */
 #include "process.h"
 #include "semtrex.h"
 #include <stdarg.h>
 
 
-/// @todo what to do if match has sibs??
+/**
+ * implements the INTERPOLATE_FROM_MATCH instruction
+ *
+ * replaces the interpolation tree with the matched sub-parts from a semtrex match results tree
+ *
+ * @param[in] t interpolation tree to be scanned for INTERPOLATE_SYMBOL nodes
+ * @param[in] match_results SEMTREX_MATCH_RESULTS tree
+ * @param[in] match_tree original tree that was matched (needed to grab the data to interpolate)
+ * @todo what to do if match has sibs??
+ */
 void _p_interpolate_from_match(Tnode *t,Tnode *match_results,Tnode *match_tree) {
     int i,c = _t_children(t);
     if (_t_symbol(t) == INTERPOLATE_SYMBOL) {
@@ -23,6 +39,13 @@ void _p_interpolate_from_match(Tnode *t,Tnode *match_results,Tnode *match_tree) 
     }
 }
 
+/**
+ * reduce a run tree by executing the instructions in it and replacing the tree values in place
+ *
+ * a run_tree is expected to have a code tree as the first child, and parameters as the second
+ *
+ * @param[in] run_tree the run tree to be reduced
+ */
 void _p_reduce(Tnode *run_tree) {
     Tnode *code = _t_child(run_tree,1);
     if (!code) {
@@ -51,6 +74,14 @@ void _p_reduce(Tnode *run_tree) {
     }
 }
 
+/**
+ * Build a run tree from a code tree and params
+ *
+ * @param[in] code code tree to be cloned into a run tree
+ * @param[in] num_params the number of parameters to add to the parameters child
+ * @param[in] ... Tnode params
+ * @returns Tnode RUN_TREE tree
+ */
 Tnode *_p_make_run_tree(Tnode *code,int num_params,...) {
     va_list params;
     int i;
@@ -66,3 +97,4 @@ Tnode *_p_make_run_tree(Tnode *code,int num_params,...) {
     va_end(params);
     return t;
 }
+/** @}*/

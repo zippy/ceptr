@@ -1,6 +1,11 @@
 /**
+ * @ingroup receptor
+ *
+ * @{
  * @file process.h
- * @brief ceptr processing happen by instantiating code trees into run trees and reducing them
+ * @brief processing header files
+ *
+ * ceptr processing happens by instantiating code trees into run trees and reducing them
  *
  */
 
@@ -13,3 +18,4 @@ void _p_reduce(Tnode *run_tree);
 Tnode *_p_make_run_tree(Tnode *code,int num_params,...);
 
 #endif
+/** @}*/
