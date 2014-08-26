@@ -1,6 +1,6 @@
-#include "semtrex.h"
-
 /**
+ * @copyright Copyright (C) 2013-2014, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
+ *
  * @ingroup semtrex
  *
  * @{
@@ -12,6 +12,8 @@
  * The code to generate finite state automata to match the trees is based heavily on
  * based on Russ Cox's great work, see: http://swtch.com/~rsc/regexp/regexp1.html
  */
+
+#include "semtrex.h"
 
 /// the final matching state in the FSA can be declared statically and globally
 SState matchstate = {StateMatch}; /* only one instance of the match state*/
