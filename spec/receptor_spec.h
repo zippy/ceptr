@@ -2,8 +2,10 @@
 #include "../src/receptor.h"
 
 void testReceptorCreate() {
+    //! [testReceptorCreate]
     Receptor *r;
     r = _r_new();
+
     spec_is_symbol_equal(r,_t_symbol(r->root),RECEPTOR);
 
     Tnode *t;
@@ -30,8 +32,8 @@ void testReceptorCreate() {
     spec_is_symbol_equal(r,_t_symbol(t),ASPECT);
     spec_is_equal(*(int *)_t_surface(t),DEFAULT_ASPECT);
 
-
     _r_free(r);
+    //! [testReceptorCreate]
 }
 
 void testReceptorAddListener() {

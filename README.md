@@ -30,8 +30,13 @@ Currently nothing runs other than a test suite which you can execute simply by t
 
 ## License
 
-Copyright (C) 2013, The MetaCurrencyProject (Eric Harris-Braun, et. al.)
+Copyright (C) 2013-2014, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al.)
 
-Distributed under the GPL for now, perhaps less restrictive later.
+This program is free software: you can redistribute it and/or modify
+it under the terms of the license provided in the LICENSE.txt file (GPLv3).
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 ## Acknowledgements

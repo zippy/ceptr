@@ -14,7 +14,14 @@
 /*****************  create and destroy receptors */
 
 /**
- * Creates a new receptor allocating all memory needed.
+ * @breif Creates a new receptor
+ *
+ * allocates all the memory needed in the heap
+ *
+ * @returns pointer to a newly allocated Receptor
+
+ * Test cases:
+ * @snippet spec/receptor_spec.h testReceptorCreate
  */
 Receptor *_r_new() {
     Receptor *r = malloc(sizeof(Receptor));

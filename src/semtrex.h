@@ -1,6 +1,8 @@
 /**
  * @defgroup semtrex Semantic Tree Regular Expressions
 
+ * @brief Semtrex provides a language for pattern matching on semtantic trees
+
  Here is a pseudo BNF (what we are calling a TNF for Tree Normal Form)
  that describes how Semtrexs can be constructed:
 
