@@ -476,8 +476,40 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Creates a new receptor allocating all memory needed. </p>
-
+<p>Creates a new receptor</p>
+<p>allocates all the memory needed in the heap</p>
+<dl class="section return"><dt>Returns</dt><dd>pointer to a newly allocated <a class="el" href="structReceptor.html">Receptor</a></dd></dl>
+<p>Test cases: </p><div class="fragment"><div class="line">    <a class="code" href="structReceptor.html">Receptor</a> *r;</div>
+<div class="line">    r = <a class="code" href="group__receptor.html#gaad12918fb4144e557b2ee5e169648c7b">_r_new</a>();</div>
+<div class="line"></div>
+<div class="line">    spec_is_symbol_equal(r,_t_symbol(r-&gt;<a class="code" href="structReceptor.html#a7a280e923e97768c67f90303bcf8c152">root</a>),RECEPTOR);</div>
+<div class="line"></div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *t;</div>
+<div class="line"></div>
+<div class="line">    <span class="comment">// test that the symbols and structures tress are set up correctly</span></div>
+<div class="line">    t = _t_child(r-&gt;<a class="code" href="structReceptor.html#a7a280e923e97768c67f90303bcf8c152">root</a>,1);</div>
+<div class="line">    spec_is_symbol_equal(r,_t_symbol(r-&gt;<a class="code" href="structReceptor.html#a81c4e6049350d0577334fdda48f4260a">structures</a>),STRUCTURES);</div>
+<div class="line">    spec_is_ptr_equal(t,r-&gt;<a class="code" href="structReceptor.html#a81c4e6049350d0577334fdda48f4260a">structures</a>);</div>
+<div class="line">    t = _t_child(r-&gt;<a class="code" href="structReceptor.html#a7a280e923e97768c67f90303bcf8c152">root</a>,2);</div>
+<div class="line">    spec_is_symbol_equal(r,_t_symbol(r-&gt;<a class="code" href="structReceptor.html#aeb5c0f81a92048d264308e7610ac39a3">symbols</a>),SYMBOLS);</div>
+<div class="line">    spec_is_ptr_equal(t,r-&gt;<a class="code" href="structReceptor.html#aeb5c0f81a92048d264308e7610ac39a3">symbols</a>);</div>
+<div class="line"></div>
+<div class="line">    <span class="comment">// test that listeners and signals are set up correctly on the default aspect</span></div>
+<div class="line">    t = __r_get_listeners(r,DEFAULT_ASPECT);</div>
+<div class="line">    spec_is_symbol_equal(r,_t_symbol(t),<a class="code" href="symbol_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a897aa439587c20afc15c9cf8a12b0611">LISTENERS</a>);</div>
+<div class="line">    t = __r_get_signals(r,DEFAULT_ASPECT);</div>
+<div class="line">    spec_is_symbol_equal(r,_t_symbol(t),<a class="code" href="symbol_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a1cad60194b57d18e09fff2a1b6c3b192">SIGNALS</a>);</div>
+<div class="line"></div>
+<div class="line">    <span class="comment">// test that the flux is set up correctly</span></div>
+<div class="line">    t = _t_child(r-&gt;<a class="code" href="structReceptor.html#a7a280e923e97768c67f90303bcf8c152">root</a>,3);</div>
+<div class="line">    spec_is_symbol_equal(r,_t_symbol(r-&gt;<a class="code" href="structReceptor.html#a622c4885a917e9249fa213ccf47b04ff">flux</a>),<a class="code" href="symbol_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3aa76c44edb76686fa1bbda9ebe69c7857">FLUX</a>);</div>
+<div class="line">    spec_is_ptr_equal(t,r-&gt;<a class="code" href="structReceptor.html#a622c4885a917e9249fa213ccf47b04ff">flux</a>);</div>
+<div class="line">    t = _t_child(r-&gt;<a class="code" href="structReceptor.html#a622c4885a917e9249fa213ccf47b04ff">flux</a>,1);</div>
+<div class="line">    spec_is_symbol_equal(r,_t_symbol(t),ASPECT);</div>
+<div class="line">    spec_is_equal(*(<span class="keywordtype">int</span> *)_t_surface(t),DEFAULT_ASPECT);</div>
+<div class="line"></div>
+<div class="line">    <a class="code" href="group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8">_r_free</a>(r);</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ga7518a44dda01af81556bb6657f18ead4"></a>
@@ -612,7 +644,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Aug 22 2014 23:06:22 for ceptr by
+    <li class="footer">Generated on Tue Aug 26 2014 14:38:26 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
