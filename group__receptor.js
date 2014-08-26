@@ -2,7 +2,6 @@ var group__receptor =
 [
     [ "process.c", "process_8c.html", null ],
     [ "process.h", "process_8h.html", null ],
-    [ "receptor.c", "receptor_8c.html", null ],
     [ "receptor.h", "receptor_8h.html", null ],
     [ "Receptor", "structReceptor.html", [
       [ "flux", "structReceptor.html#a622c4885a917e9249fa213ccf47b04ff", null ],
