@@ -16,21 +16,23 @@
 enum SystemStructure
     {
 	NULL_STRUCTURE = -999,
-	SEMTREX,
 	INTEGER,
 	FLOAT,
 	CSTRING,
 	SURFACE,
+	TREE,
+	SERIALIZED_TREE,
 	_LAST_SYS_STRUCTURE
 
     };
 typedef int Structure;
 static char *G_sys_structure_names[] = {
     "NULL_STRUCTURE",
-    "SEMTREX",
     "INTEGER",
     "FLOAT",
     "CSTRING",
-    "SURFACE"
+    "SURFACE",
+    "TREE",
+    "SERIALIZED_TREE"
 };
 #endif

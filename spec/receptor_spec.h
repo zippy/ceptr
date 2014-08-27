@@ -226,9 +226,10 @@ void testReceptorSerialize() {
 
     _r_serialize(r,&surface,&length);
 
-    spec_is_long_equal(length,(long)242);
+    spec_is_long_equal(length,250);
+    spec_is_long_equal(*(size_t *)surface,250);
 
-    Receptor *r1 = _r_unserialize(surface,length);
+    Receptor *r1 = _r_unserialize(surface);
 
     __t_dump(r,r->root,0,buf);
     __t_dump(r1,r1->root,0,buf1);

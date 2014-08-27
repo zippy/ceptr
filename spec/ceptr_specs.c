@@ -10,6 +10,7 @@
 #include "semtrex_spec.h"
 #include "receptor_spec.h"
 #include "process_spec.h"
+#include "vmhost_spec.h"
 
 int main(int argc, const char **argv) {
     printf("Running all tests...\n\n");
@@ -20,6 +21,7 @@ int main(int argc, const char **argv) {
     testSemtrex();
     testReceptor();
     testProcess();
+    testVMHost();
 
     report_tests();
     return 0;

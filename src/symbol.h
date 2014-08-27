@@ -65,6 +65,9 @@ enum SystemSymbol
     INTERPOLATE_SYMBOL,                ///< a place holder to indicate which symbol to insert into this part of the three
     RUN_TREE,
     PARAMS,
+
+    //-----  Symbols for the virtual machine host
+    RECEPTOR_PACKAGE,
     _LAST_SYS_SYMBOL
 };
 static char *G_sys_symbol_names[] = {
@@ -104,6 +107,7 @@ static char *G_sys_symbol_names[] = {
     "INTERPOLATE_SYMBOL",
     "RUN_TREE",
     "PARAMS",
+    "RECEPTOR_PACKAGE",
 };
 
 typedef int Symbol;

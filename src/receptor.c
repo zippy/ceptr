@@ -123,6 +123,8 @@ Structure __r_get_symbol_structure(Receptor *r,Symbol s){
 	    return INTEGER;
 	case INSTANCE:
 	    return SURFACE;
+	case RECEPTOR_PACKAGE:
+	    return SERIALIZED_TREE;
 	default: return NULL_STRUCTURE;
 	}
     }
@@ -139,6 +141,7 @@ size_t __r_get_structure_size(Receptor *r,Structure s,void *surface) {
 	case INTEGER: return sizeof(int);
 	case FLOAT: return sizeof(float);
 	case CSTRING: return strlen(surface)+1;
+	case SERIALIZED_TREE: return *(size_t *)surface;
 	default: raise_error2("DON'T HAVE A SIZE FOR STRUCTURE '%s' (%d)",_s_get_structure_name(r,s),s);
 	}
     }
@@ -293,7 +296,8 @@ size_t __t_serialize(Receptor *r,Tnode *t,void **bufferP,size_t offset,size_t cu
 void _r_serialize(Receptor *r,void **surfaceP,size_t *lengthP) {
     size_t buf_size = 10000;
     *surfaceP  = malloc(buf_size);
-    *lengthP = __t_serialize(r,r->root,surfaceP,0,buf_size);
+    *lengthP = __t_serialize(r,r->root,surfaceP,sizeof(size_t),buf_size);
+    *(size_t *)(*surfaceP) = *lengthP;
 }
 
 /// macro to read typed date from the surface and update length and surface values
@@ -305,7 +309,7 @@ Tnode * _t_unserialize(Receptor *r,void **surfaceP,size_t *lengthP,Tnode *t) {
     size_t size;
 
     SREAD(Symbol,s);
-    //    printf("\nSymbol:%s",_s_get_symbol_name(r,s));
+    //        printf("\nSymbol:%s",_s_get_symbol_name(r,s));
 
     SREAD(int,c);
 
@@ -313,7 +317,7 @@ Tnode * _t_unserialize(Receptor *r,void **surfaceP,size_t *lengthP,Tnode *t) {
 	_SREAD(size_t,size);
     }
     else size = __r_get_symbol_size(r,s,*surfaceP);
-    //printf(" reading: %ld bytes",size);
+    //printf(" reading: %ld bytes\n",size);
     Structure st = __r_get_symbol_structure(r,s);
     if (st == INTEGER)
 	t = _t_newi(t,s,*(int *)*surfaceP);
@@ -328,8 +332,10 @@ Tnode * _t_unserialize(Receptor *r,void **surfaceP,size_t *lengthP,Tnode *t) {
     return t;
 }
 
-Receptor * _r_unserialize(void *surface,size_t length) {
+Receptor * _r_unserialize(void *surface) {
+    size_t length = *(size_t *)surface;
     Receptor *r = _r_new();
+    surface += sizeof(size_t);
     Tnode *t =  _t_unserialize(r,&surface,&length,0);
     _t_free(r->root);
     r->root = t;

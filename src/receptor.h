@@ -68,7 +68,7 @@ Instance _r_get_instance(Receptor *r,Xaddr x);
 /******************  receptor serialization */
 size_t __t_serialize(Receptor *r,Tnode *t,void **bufferP,size_t offset,size_t current_size);
 void _r_serialize(Receptor *r,void **surfaceP,size_t *lengthP);
-Receptor * _r_unserialize(void *surface,size_t length);
+Receptor * _r_unserialize(void *surface);
 
 /******************  receptor signaling */
 /// @todo for now the signal is appended directly to the flux.  Later it should probably be copied
