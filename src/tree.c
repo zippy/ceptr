@@ -35,6 +35,16 @@ void __t_init(Tnode *t,Tnode *parent,Symbol symbol) {
     }
 }
 
+
+/**
+ * Create a new tree node
+ *
+ * @param[in] parent parent node for the node to be created.  Can be 0 if this is a root node
+ * @param[in] symbol semantic symbol for the node to be create
+ * @param[in] surface pointer to node's data
+ * @param[in] size size in bytes of the surface
+ * @returns pointer to node allocated on the heap
+*/
 Tnode * _t_new(Tnode *parent,Symbol symbol,void *surface,size_t size) {
     Tnode *t = malloc(sizeof(Tnode));
     __t_init(t,parent,symbol);
@@ -48,6 +58,14 @@ Tnode * _t_new(Tnode *parent,Symbol symbol,void *surface,size_t size) {
     return t;
 }
 
+/**
+ * Create a new tree node with an integer surface
+ *
+ * @param[in] parent parent node for the node to be created.  Can be 0 if this is a root node
+ * @param[in] symbol semantic symbol for the node to be create
+ * @param[in] surface integer value to store in the surface
+ * @returns pointer to node allocated on the heap
+ */
 Tnode * _t_newi(Tnode *parent,Symbol symbol,int surface) {
     Tnode *t = malloc(sizeof(Tnode));
     *((int *)&t->contents.surface) = surface;
@@ -56,6 +74,14 @@ Tnode * _t_newi(Tnode *parent,Symbol symbol,int surface) {
     return t;
 }
 
+/**
+ * Create a new tree node with a tree as it's surface
+ *
+ * @param[in] parent parent node for the node to be created.  Can be 0 if this is a root node
+ * @param[in] symbol semantic symbol for the node to be create
+ * @param[in] surface pointer to tree to store as an orthogonal tree in the surface
+ * @returns pointer to node allocated on the heap
+ */
 Tnode * _t_newt(Tnode *parent,Symbol symbol,Tnode *surface) {
     Tnode *t = malloc(sizeof(Tnode));
     *((Tnode **)&t->contents.surface) = surface;
@@ -65,14 +91,33 @@ Tnode * _t_newt(Tnode *parent,Symbol symbol,Tnode *surface) {
     return t;
 }
 
+/**
+ * Create a new tree root node (with null surface and no parent)
+ *
+ * @param[in] symbol semantic symbol for the node to be create
+ * @returns pointer to node allocated on the heap
+ */
 Tnode *_t_new_root(Symbol symbol) {
     return _t_new(0,symbol,0,0);
 }
 
+/**
+ * Create a new tree sub-root node (with null surface)
+ *
+ * @param[in] parent parent node for the node to be created.
+ * @param[in] symbol semantic symbol for the node to be create
+ * @returns pointer to node allocated on the heap
+ */
 Tnode *_t_newr(Tnode *parent,Symbol symbol) {
     return _t_new(parent,symbol,0,0);
 }
 
+/**
+ * add an existing tree onto another appending it as a child
+ *
+ * @param[in] t tree onto which c will be added
+ * @param[in] c tree to add onto t
+ */
 void _t_add(Tnode *t,Tnode *c) {
     if (c->structure.parent != 0) {
 	raise_error0("can't add a node that isn't a root!");
@@ -188,7 +233,14 @@ void __t_free_children(Tnode *t) {
     t->structure.child_count = 0;
 }
 
-///@todo make this remove the child from the parent's child-list?
+/**
+ * free the memory occupied by a tree
+ *
+ * free walks the tree freeing all the children and any orthogonal trees.
+ *
+ * @param[in] t tree to be freed
+ * @todo make this remove the child from the parent's child-list?
+ */
 void _t_free(Tnode *t) {
     __t_free_children(t);
     if (t->context.flags & TFLAG_ALLOCATED)
@@ -207,15 +259,35 @@ Tnode *__t_clone(Tnode *t,Tnode *p) {
     return nt;
 }
 
+/**
+ * make a copy of a tree
+ *
+ * @param[in] t tree to clone
+ * @returns Tnode duplicated tree
+ * @todo make this work with trees that have orthogonal trees!
+ * @bug doesn't properly clone trees with orthogonal trees
+ */
 Tnode *_t_clone(Tnode *t) {
     return __t_clone(t,0);
 }
 
 /******************** Node data accessors */
+/**
+ * get the number of children of a given node
+ *
+ * @param[in] t the node
+ * @returns number of children
+ */
 int _t_children(Tnode *t) {
     return t->structure.child_count;
 }
 
+/**
+ * get the data of a given node
+ *
+ * @param[in] t the node
+ * @returns pointer to node's surface
+ */
 void * _t_surface(Tnode *t) {
     if (t->context.flags & (TFLAG_ALLOCATED|TFLAG_SURFACE_IS_TREE))
 	return t->contents.surface;
@@ -223,10 +295,22 @@ void * _t_surface(Tnode *t) {
 	return &t->contents.surface;
 }
 
+/**
+ * Get a tree node's semantic symbol
+ *
+ * @param[in] t the node
+ * @returns Symbol for the given node
+ */
 Symbol _t_symbol(Tnode *t) {
     return t->contents.symbol;
 }
 
+/**
+ * Get a tree node's surface symbol
+ *
+ * @param[in] t the node
+ * @returns size
+ */
 size_t _t_size(Tnode *t) {
     return t->contents.size;
 }

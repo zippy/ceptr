@@ -10,7 +10,7 @@ void testReceptorCreate() {
 
     Tnode *t;
 
-    // test that the symbols and structures tress are set up correctly
+    // test that the symbols and structures trees are set up correctly
     t = _t_child(r->root,1);
     spec_is_symbol_equal(r,_t_symbol(r->structures),STRUCTURES);
     spec_is_ptr_equal(t,r->structures);
