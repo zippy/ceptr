@@ -115,50 +115,50 @@ $(document).ready(function(){initNavTree('tree__spec_8h_source.html','');});
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">     */</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t, *t1, *t2, *t3, *t4, *t5;</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    t = _t_new(0,TEST_SYMBOL,<span class="stringliteral">&quot;hello&quot;</span>,6);</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    spec_is_long_equal(_t_size(t),(<span class="keywordtype">long</span>)6);</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    spec_is_equal(_t_children(t),0);</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    spec_is_str_equal((<span class="keywordtype">char</span> *)_t_surface(t),<span class="stringliteral">&quot;hello&quot;</span>);</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    t = <a class="code" href="group__tree.html#ga23646bb375d548b8bdce934f694b1741">_t_new</a>(0,TEST_SYMBOL,<span class="stringliteral">&quot;hello&quot;</span>,6);</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    spec_is_long_equal(<a class="code" href="group__tree.html#ga4df2c885d019894bd8e14d2637639621">_t_size</a>(t),(<span class="keywordtype">long</span>)6);</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    spec_is_equal(<a class="code" href="group__tree.html#gaf459b3de598bba95efe941c4960f845d">_t_children</a>(t),0);</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    spec_is_str_equal((<span class="keywordtype">char</span> *)<a class="code" href="group__tree.html#ga5a292a02511c82863edfcaa72fa9698c">_t_surface</a>(t),<span class="stringliteral">&quot;hello&quot;</span>);</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    spec_is_ptr_equal(_t_parent(t),NULL);</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    spec_is_ptr_equal(_t_root(t),t);</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    spec_is_ptr_equal(_t_child(t,1),NULL);</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    spec_is_equal(_t_symbol(t),TEST_SYMBOL);</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    spec_is_equal(<a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(t),TEST_SYMBOL);</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    t1 = _t_new(t,TEST_SYMBOL,<span class="stringliteral">&quot;t1&quot;</span>,3);</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    t1 = <a class="code" href="group__tree.html#ga23646bb375d548b8bdce934f694b1741">_t_new</a>(t,TEST_SYMBOL,<span class="stringliteral">&quot;t1&quot;</span>,3);</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    spec_is_ptr_equal(_t_parent(t1),t);</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    spec_is_equal(_t_children(t),1);</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    spec_is_equal(<a class="code" href="group__tree.html#gaf459b3de598bba95efe941c4960f845d">_t_children</a>(t),1);</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    spec_is_ptr_equal(_t_child(t,1),t1);</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    spec_is_ptr_equal(_t_root(t1),t);</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    t2 = _t_new(t,TEST_SYMBOL,<span class="stringliteral">&quot;t2&quot;</span>,3);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    t2 = <a class="code" href="group__tree.html#ga23646bb375d548b8bdce934f694b1741">_t_new</a>(t,TEST_SYMBOL,<span class="stringliteral">&quot;t2&quot;</span>,3);</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    spec_is_ptr_equal(_t_parent(t2),t);</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    spec_is_equal(_t_children(t),2);</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    spec_is_equal(<a class="code" href="group__tree.html#gaf459b3de598bba95efe941c4960f845d">_t_children</a>(t),2);</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    spec_is_ptr_equal(_t_child(t,2),t2);</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    spec_is_ptr_equal(_t_root(t2),t);</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    t3 = _t_newi(t,99,101);</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    t3 = <a class="code" href="group__tree.html#gab438eeedb3eb6c1e20171b33d8ec499d">_t_newi</a>(t,99,101);</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    spec_is_ptr_equal(_t_parent(t3),t);</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    spec_is_equal(_t_children(t),3);</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    spec_is_equal(*(<span class="keywordtype">int</span> *)_t_surface(_t_child(t,3)),101);</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    spec_is_equal(<a class="code" href="group__tree.html#gaf459b3de598bba95efe941c4960f845d">_t_children</a>(t),3);</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    spec_is_equal(*(<span class="keywordtype">int</span> *)<a class="code" href="group__tree.html#ga5a292a02511c82863edfcaa72fa9698c">_t_surface</a>(_t_child(t,3)),101);</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    spec_is_ptr_equal(<a class="code" href="group__tree.html#ga49e337d9576c1f143e88a02aa9184756">_t_next_sibling</a>(t1),t2);</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    spec_is_ptr_equal(<a class="code" href="group__tree.html#ga49e337d9576c1f143e88a02aa9184756">_t_next_sibling</a>(t),NULL);</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    spec_is_ptr_equal(<a class="code" href="group__tree.html#ga49e337d9576c1f143e88a02aa9184756">_t_next_sibling</a>(t2),t3);</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    spec_is_ptr_equal(<a class="code" href="group__tree.html#ga49e337d9576c1f143e88a02aa9184756">_t_next_sibling</a>(t3),NULL);</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    t4 = _t_new_root(TEST_SYMBOL);</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    _t_add(t,t4);</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    spec_is_equal(_t_children(t),4);</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    t4 = <a class="code" href="group__tree.html#ga17676267c6fb457dd1d086f37641544a">_t_new_root</a>(TEST_SYMBOL);</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <a class="code" href="group__tree.html#gaf155629f920b45c8b3d11bb19255d69e">_t_add</a>(t,t4);</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    spec_is_equal(<a class="code" href="group__tree.html#gaf459b3de598bba95efe941c4960f845d">_t_children</a>(t),4);</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    spec_is_ptr_equal(_t_child(t,4),t4);</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    t5 = _t_newr(t4,TEST_SYMBOL2);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    t5 = <a class="code" href="group__tree.html#gaff88720dad09389f6b7f35f7985d8efd">_t_newr</a>(t4,TEST_SYMBOL2);</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    spec_is_ptr_equal(_t_parent(t5),t4);</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    spec_is_long_equal(_t_size(t5),(<span class="keywordtype">long</span>)0);</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    spec_is_symbol_equal(0,_t_symbol(t5),TEST_SYMBOL2);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    spec_is_long_equal(<a class="code" href="group__tree.html#ga4df2c885d019894bd8e14d2637639621">_t_size</a>(t5),(<span class="keywordtype">long</span>)0);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    spec_is_symbol_equal(0,<a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(t5),TEST_SYMBOL2);</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <a class="code" href="group__tree.html#gab28a85eae18cd8b29c15ab535e312902">_t_detach_by_ptr</a>(t,t3);</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <a class="code" href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a>(t3);  <span class="comment">// detatch doesn&#39;t free the memory of the removed node</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    spec_is_equal(_t_children(t),3);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    spec_is_equal(<a class="code" href="group__tree.html#gaf459b3de598bba95efe941c4960f845d">_t_children</a>(t),3);</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    spec_is_ptr_equal(_t_child(t,3),t4);</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    spec_is_ptr_equal(_t_child(t,2),t2);</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
@@ -167,9 +167,9 @@ $(document).ready(function(){initNavTree('tree__spec_8h_source.html','');});
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;}</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keywordtype">void</span> testTreeOrthogonal() {</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t = _t_newi(0,TEST_SYMBOL,1234);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t2 = _t_new_root(TEST_SYMBOL2);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *o = _t_newt(t,TEST_TREE_SYMBOL,t2);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t = <a class="code" href="group__tree.html#gab438eeedb3eb6c1e20171b33d8ec499d">_t_newi</a>(0,TEST_SYMBOL,1234);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t2 = <a class="code" href="group__tree.html#ga17676267c6fb457dd1d086f37641544a">_t_new_root</a>(TEST_SYMBOL2);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *o = <a class="code" href="group__tree.html#ga6def3ea6dde2b49d32ec7f382212d6aa">_t_newt</a>(t,TEST_TREE_SYMBOL,t2);</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordtype">char</span> buf[2000];</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    __t_dump(0,t,0,buf);</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    spec_is_str_equal(buf,<span class="stringliteral">&quot; (TEST_SYMBOL:1234 (TEST_TREE_SYMBOL:{ (TEST_SYMBOL2)}))&quot;</span>);</div>
@@ -179,28 +179,28 @@ $(document).ready(function(){initNavTree('tree__spec_8h_source.html','');});
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keywordtype">void</span> testTreeRealloc() {</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *ts[12];</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t = _t_new(0,TEST_SYMBOL,<span class="stringliteral">&quot;t&quot;</span>,2);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t = <a class="code" href="group__tree.html#ga23646bb375d548b8bdce934f694b1741">_t_new</a>(0,TEST_SYMBOL,<span class="stringliteral">&quot;t&quot;</span>,2);</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordtype">char</span> tname[3];</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordtype">int</span> i;</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    tname[0] = <span class="charliteral">&#39;t&#39;</span>;</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    tname[2] = 0;</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordflow">for</span> (i=0;i&lt;12;i++){</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    tname[1] = <span class="charliteral">&#39;a&#39;</span>+i;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    ts[i] = _t_new(t,TEST_SYMBOL,tname,3);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    ts[i] = <a class="code" href="group__tree.html#ga23646bb375d548b8bdce934f694b1741">_t_new</a>(t,TEST_SYMBOL,tname,3);</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    }</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    spec_is_str_equal((<span class="keywordtype">char</span> *)_t_surface(ts[11]),<span class="stringliteral">&quot;tl&quot;</span>);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    spec_is_str_equal((<span class="keywordtype">char</span> *)<a class="code" href="group__tree.html#ga5a292a02511c82863edfcaa72fa9698c">_t_surface</a>(ts[11]),<span class="stringliteral">&quot;tl&quot;</span>);</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <a class="code" href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a>(t);</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;}</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<a class="code" href="structTnode.html">Tnode</a> *_makeTestTree() {</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t = _t_new(0,TEST_STR_SYMBOL,<span class="stringliteral">&quot;t&quot;</span>,2);</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t1 = _t_new(t,TEST_STR_SYMBOL,<span class="stringliteral">&quot;t1&quot;</span>,3);</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t2 = _t_new(t,TEST_STR_SYMBOL,<span class="stringliteral">&quot;t2&quot;</span>,3);</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t11 = _t_new(t1,TEST_STR_SYMBOL,<span class="stringliteral">&quot;t11&quot;</span>,4);</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t111 = _t_new(t11,TEST_STR_SYMBOL,<span class="stringliteral">&quot;t111&quot;</span>,5);</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t12 = _t_new(t1,TEST_STR_SYMBOL,<span class="stringliteral">&quot;t12&quot;</span>,4);</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t21 = _t_new(t2,TEST_STR_SYMBOL,<span class="stringliteral">&quot;t21&quot;</span>,4);</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t211 = _t_new(t21,TEST_STR_SYMBOL,<span class="stringliteral">&quot;t211&quot;</span>,5);</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t = <a class="code" href="group__tree.html#ga23646bb375d548b8bdce934f694b1741">_t_new</a>(0,TEST_STR_SYMBOL,<span class="stringliteral">&quot;t&quot;</span>,2);</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t1 = <a class="code" href="group__tree.html#ga23646bb375d548b8bdce934f694b1741">_t_new</a>(t,TEST_STR_SYMBOL,<span class="stringliteral">&quot;t1&quot;</span>,3);</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t2 = <a class="code" href="group__tree.html#ga23646bb375d548b8bdce934f694b1741">_t_new</a>(t,TEST_STR_SYMBOL,<span class="stringliteral">&quot;t2&quot;</span>,3);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t11 = <a class="code" href="group__tree.html#ga23646bb375d548b8bdce934f694b1741">_t_new</a>(t1,TEST_STR_SYMBOL,<span class="stringliteral">&quot;t11&quot;</span>,4);</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t111 = <a class="code" href="group__tree.html#ga23646bb375d548b8bdce934f694b1741">_t_new</a>(t11,TEST_STR_SYMBOL,<span class="stringliteral">&quot;t111&quot;</span>,5);</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t12 = <a class="code" href="group__tree.html#ga23646bb375d548b8bdce934f694b1741">_t_new</a>(t1,TEST_STR_SYMBOL,<span class="stringliteral">&quot;t12&quot;</span>,4);</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t21 = <a class="code" href="group__tree.html#ga23646bb375d548b8bdce934f694b1741">_t_new</a>(t2,TEST_STR_SYMBOL,<span class="stringliteral">&quot;t21&quot;</span>,4);</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t211 = <a class="code" href="group__tree.html#ga23646bb375d548b8bdce934f694b1741">_t_new</a>(t21,TEST_STR_SYMBOL,<span class="stringliteral">&quot;t211&quot;</span>,5);</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keywordflow">return</span> t;</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;}</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
@@ -248,7 +248,7 @@ $(document).ready(function(){initNavTree('tree__spec_8h_source.html','');});
 <div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    spec_is_ptr_equal(<a class="code" href="group__tree.html#gad25dfd19f7a8ca955f32850fa867be0d">_t_get</a>(t,p3),NULL);</div>
 <div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;</div>
 <div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    tt = _makeTestTree();</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    t3 = _t_new(t,TEST_SYMBOL,&amp;tt,<span class="keyword">sizeof</span>(<a class="code" href="structTnode.html">Tnode</a> *));</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    t3 = <a class="code" href="group__tree.html#ga23646bb375d548b8bdce934f694b1741">_t_new</a>(t,TEST_SYMBOL,&amp;tt,<span class="keyword">sizeof</span>(<a class="code" href="structTnode.html">Tnode</a> *));</div>
 <div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;</div>
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    p1[0] = 3;</div>
 <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    spec_is_ptr_equal(*(<a class="code" href="structTnode.html">Tnode</a> **)_t_get_surface(t,p1),tt);</div>
@@ -288,10 +288,10 @@ $(document).ready(function(){initNavTree('tree__spec_8h_source.html','');});
 <div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;</div>
 <div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;<span class="keywordtype">void</span> testTreeClone() {</div>
 <div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t = _makeTestTree();</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *c = _t_clone(t);</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *c = <a class="code" href="group__tree.html#gaaeb6a7d7bf14e958d9e79c699edb8040">_t_clone</a>(t);</div>
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;</div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    spec_is_true(t!=c);</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    spec_is_equal(_t_children(c),_t_children(t));</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    spec_is_equal(<a class="code" href="group__tree.html#gaf459b3de598bba95efe941c4960f845d">_t_children</a>(c),<a class="code" href="group__tree.html#gaf459b3de598bba95efe941c4960f845d">_t_children</a>(t));</div>
 <div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;</div>
 <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    <a class="code" href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a>(t);</div>
 <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    <a class="code" href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a>(c);</div>
@@ -299,7 +299,7 @@ $(document).ready(function(){initNavTree('tree__spec_8h_source.html','');});
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;</div>
 <div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<span class="keywordtype">void</span> testTreeModify() {</div>
 <div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t = _makeTestTree();</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *x = _t_newi(0,TEST_SYMBOL,123);</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *x = <a class="code" href="group__tree.html#gab438eeedb3eb6c1e20171b33d8ec499d">_t_newi</a>(0,TEST_SYMBOL,123);</div>
 <div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    <span class="keywordtype">char</span> buf[2000];</div>
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    <a class="code" href="group__tree.html#ga571dd95ead249012211ffe5d180f56ec">_t_replace</a>(t,1,x);</div>
 <div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    spec_is_ptr_equal(_t_child(t,1),x);</div>
@@ -313,7 +313,7 @@ $(document).ready(function(){initNavTree('tree__spec_8h_source.html','');});
 <div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    spec_is_str_equal(buf,<span class="stringliteral">&quot; (TEST_STR_SYMBOL:t (TEST_STR_SYMBOL:t2 (TEST_STR_SYMBOL:t21 (TEST_STR_SYMBOL:t211))))&quot;</span>);</div>
 <div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    spec_is_ptr_equal(x,y);</div>
 <div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *z = _t_new(0,TEST_STR_SYMBOL,<span class="stringliteral">&quot;fish&quot;</span>,5);</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *z = <a class="code" href="group__tree.html#ga23646bb375d548b8bdce934f694b1741">_t_new</a>(0,TEST_STR_SYMBOL,<span class="stringliteral">&quot;fish&quot;</span>,5);</div>
 <div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    <a class="code" href="group__tree.html#ga91798c3f4945bb89b9c13e9b693ffd78">_t_morph</a>(x,z);</div>
 <div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    __t_dump(0,x,0,buf);</div>
 <div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    spec_is_str_equal(buf,<span class="stringliteral">&quot; (TEST_STR_SYMBOL:fish)&quot;</span>);</div>
@@ -336,15 +336,26 @@ $(document).ready(function(){initNavTree('tree__spec_8h_source.html','');});
 <div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    testTreeClone();</div>
 <div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    testTreeModify();</div>
 <div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;}</div>
-<div class="ttc" id="group__tree_html_gaffb8b0a4288458ba9b4788a5bbb713ef"><div class="ttname"><a href="group__tree.html#gaffb8b0a4288458ba9b4788a5bbb713ef">__t_morph</a></div><div class="ttdeci">void __t_morph(Tnode *t, Symbol s, void *surface, size_t size, int allocate)</div><div class="ttdef"><b>Definition:</b> tree.c:130</div></div>
-<div class="ttc" id="group__tree_html_gac9311eb831d86ab8395f9c1c81f584d9"><div class="ttname"><a href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a></div><div class="ttdeci">void _t_free(Tnode *t)</div><div class="ttdef"><b>Definition:</b> tree.c:192</div></div>
-<div class="ttc" id="group__tree_html_gab28a85eae18cd8b29c15ab535e312902"><div class="ttname"><a href="group__tree.html#gab28a85eae18cd8b29c15ab535e312902">_t_detach_by_ptr</a></div><div class="ttdeci">void _t_detach_by_ptr(Tnode *t, Tnode *c)</div><div class="ttdef"><b>Definition:</b> tree.c:108</div></div>
-<div class="ttc" id="group__tree_html_ga302facc6d6e2d4937d560e081c828095"><div class="ttname"><a href="group__tree.html#ga302facc6d6e2d4937d560e081c828095">_t_detach_by_idx</a></div><div class="ttdeci">Tnode * _t_detach_by_idx(Tnode *t, int i)</div><div class="ttdef"><b>Definition:</b> tree.c:93</div></div>
-<div class="ttc" id="group__tree_html_ga91798c3f4945bb89b9c13e9b693ffd78"><div class="ttname"><a href="group__tree.html#ga91798c3f4945bb89b9c13e9b693ffd78">_t_morph</a></div><div class="ttdeci">void _t_morph(Tnode *dst, Tnode *src)</div><div class="ttdef"><b>Definition:</b> tree.c:158</div></div>
-<div class="ttc" id="group__tree_html_ga49e337d9576c1f143e88a02aa9184756"><div class="ttname"><a href="group__tree.html#ga49e337d9576c1f143e88a02aa9184756">_t_next_sibling</a></div><div class="ttdeci">Tnode * _t_next_sibling(Tnode *t)</div><div class="ttdef"><b>Definition:</b> tree.c:266</div></div>
-<div class="ttc" id="group__tree_html_ga19a429819da9dcbc89ec7e259ef32db0"><div class="ttname"><a href="group__tree.html#ga19a429819da9dcbc89ec7e259ef32db0">_t_get_path</a></div><div class="ttdeci">int * _t_get_path(Tnode *t)</div><div class="ttdef"><b>Definition:</b> tree.c:295</div></div>
-<div class="ttc" id="group__tree_html_gad25dfd19f7a8ca955f32850fa867be0d"><div class="ttname"><a href="group__tree.html#gad25dfd19f7a8ca955f32850fa867be0d">_t_get</a></div><div class="ttdeci">Tnode * _t_get(Tnode *t, int *p)</div><div class="ttdef"><b>Definition:</b> tree.c:343</div></div>
-<div class="ttc" id="group__tree_html_ga571dd95ead249012211ffe5d180f56ec"><div class="ttname"><a href="group__tree.html#ga571dd95ead249012211ffe5d180f56ec">_t_replace</a></div><div class="ttdeci">void _t_replace(Tnode *t, int i, Tnode *r)</div><div class="ttdef"><b>Definition:</b> tree.c:170</div></div>
+<div class="ttc" id="group__tree_html_ga17676267c6fb457dd1d086f37641544a"><div class="ttname"><a href="group__tree.html#ga17676267c6fb457dd1d086f37641544a">_t_new_root</a></div><div class="ttdeci">Tnode * _t_new_root(Symbol symbol)</div><div class="ttdef"><b>Definition:</b> tree.c:100</div></div>
+<div class="ttc" id="group__tree_html_gaffb8b0a4288458ba9b4788a5bbb713ef"><div class="ttname"><a href="group__tree.html#gaffb8b0a4288458ba9b4788a5bbb713ef">__t_morph</a></div><div class="ttdeci">void __t_morph(Tnode *t, Symbol s, void *surface, size_t size, int allocate)</div><div class="ttdef"><b>Definition:</b> tree.c:175</div></div>
+<div class="ttc" id="group__tree_html_gaaeb6a7d7bf14e958d9e79c699edb8040"><div class="ttname"><a href="group__tree.html#gaaeb6a7d7bf14e958d9e79c699edb8040">_t_clone</a></div><div class="ttdeci">Tnode * _t_clone(Tnode *t)</div><div class="ttdef"><b>Definition:</b> tree.c:270</div></div>
+<div class="ttc" id="group__tree_html_gac9311eb831d86ab8395f9c1c81f584d9"><div class="ttname"><a href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a></div><div class="ttdeci">void _t_free(Tnode *t)</div><div class="ttdef"><b>Definition:</b> tree.c:244</div></div>
+<div class="ttc" id="group__tree_html_ga5a292a02511c82863edfcaa72fa9698c"><div class="ttname"><a href="group__tree.html#ga5a292a02511c82863edfcaa72fa9698c">_t_surface</a></div><div class="ttdeci">void * _t_surface(Tnode *t)</div><div class="ttdef"><b>Definition:</b> tree.c:291</div></div>
+<div class="ttc" id="group__tree_html_gaf459b3de598bba95efe941c4960f845d"><div class="ttname"><a href="group__tree.html#gaf459b3de598bba95efe941c4960f845d">_t_children</a></div><div class="ttdeci">int _t_children(Tnode *t)</div><div class="ttdef"><b>Definition:</b> tree.c:281</div></div>
+<div class="ttc" id="group__tree_html_gab28a85eae18cd8b29c15ab535e312902"><div class="ttname"><a href="group__tree.html#gab28a85eae18cd8b29c15ab535e312902">_t_detach_by_ptr</a></div><div class="ttdeci">void _t_detach_by_ptr(Tnode *t, Tnode *c)</div><div class="ttdef"><b>Definition:</b> tree.c:153</div></div>
+<div class="ttc" id="group__tree_html_ga23646bb375d548b8bdce934f694b1741"><div class="ttname"><a href="group__tree.html#ga23646bb375d548b8bdce934f694b1741">_t_new</a></div><div class="ttdeci">Tnode * _t_new(Tnode *parent, Symbol symbol, void *surface, size_t size)</div><div class="ttdef"><b>Definition:</b> tree.c:48</div></div>
+<div class="ttc" id="group__tree_html_ga302facc6d6e2d4937d560e081c828095"><div class="ttname"><a href="group__tree.html#ga302facc6d6e2d4937d560e081c828095">_t_detach_by_idx</a></div><div class="ttdeci">Tnode * _t_detach_by_idx(Tnode *t, int i)</div><div class="ttdef"><b>Definition:</b> tree.c:138</div></div>
+<div class="ttc" id="group__tree_html_ga6def3ea6dde2b49d32ec7f382212d6aa"><div class="ttname"><a href="group__tree.html#ga6def3ea6dde2b49d32ec7f382212d6aa">_t_newt</a></div><div class="ttdeci">Tnode * _t_newt(Tnode *parent, Symbol symbol, Tnode *surface)</div><div class="ttdef"><b>Definition:</b> tree.c:85</div></div>
+<div class="ttc" id="group__tree_html_gaf155629f920b45c8b3d11bb19255d69e"><div class="ttname"><a href="group__tree.html#gaf155629f920b45c8b3d11bb19255d69e">_t_add</a></div><div class="ttdeci">void _t_add(Tnode *t, Tnode *c)</div><div class="ttdef"><b>Definition:</b> tree.c:121</div></div>
+<div class="ttc" id="group__tree_html_gabfc4da7bf9475fb3bad4ea20b5f78fab"><div class="ttname"><a href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a></div><div class="ttdeci">Symbol _t_symbol(Tnode *t)</div><div class="ttdef"><b>Definition:</b> tree.c:304</div></div>
+<div class="ttc" id="group__tree_html_ga4df2c885d019894bd8e14d2637639621"><div class="ttname"><a href="group__tree.html#ga4df2c885d019894bd8e14d2637639621">_t_size</a></div><div class="ttdeci">size_t _t_size(Tnode *t)</div><div class="ttdef"><b>Definition:</b> tree.c:314</div></div>
+<div class="ttc" id="group__tree_html_ga91798c3f4945bb89b9c13e9b693ffd78"><div class="ttname"><a href="group__tree.html#ga91798c3f4945bb89b9c13e9b693ffd78">_t_morph</a></div><div class="ttdeci">void _t_morph(Tnode *dst, Tnode *src)</div><div class="ttdef"><b>Definition:</b> tree.c:203</div></div>
+<div class="ttc" id="group__tree_html_gaff88720dad09389f6b7f35f7985d8efd"><div class="ttname"><a href="group__tree.html#gaff88720dad09389f6b7f35f7985d8efd">_t_newr</a></div><div class="ttdeci">Tnode * _t_newr(Tnode *parent, Symbol symbol)</div><div class="ttdef"><b>Definition:</b> tree.c:111</div></div>
+<div class="ttc" id="group__tree_html_gab438eeedb3eb6c1e20171b33d8ec499d"><div class="ttname"><a href="group__tree.html#gab438eeedb3eb6c1e20171b33d8ec499d">_t_newi</a></div><div class="ttdeci">Tnode * _t_newi(Tnode *parent, Symbol symbol, int surface)</div><div class="ttdef"><b>Definition:</b> tree.c:69</div></div>
+<div class="ttc" id="group__tree_html_ga49e337d9576c1f143e88a02aa9184756"><div class="ttname"><a href="group__tree.html#ga49e337d9576c1f143e88a02aa9184756">_t_next_sibling</a></div><div class="ttdeci">Tnode * _t_next_sibling(Tnode *t)</div><div class="ttdef"><b>Definition:</b> tree.c:350</div></div>
+<div class="ttc" id="group__tree_html_ga19a429819da9dcbc89ec7e259ef32db0"><div class="ttname"><a href="group__tree.html#ga19a429819da9dcbc89ec7e259ef32db0">_t_get_path</a></div><div class="ttdeci">int * _t_get_path(Tnode *t)</div><div class="ttdef"><b>Definition:</b> tree.c:379</div></div>
+<div class="ttc" id="group__tree_html_gad25dfd19f7a8ca955f32850fa867be0d"><div class="ttname"><a href="group__tree.html#gad25dfd19f7a8ca955f32850fa867be0d">_t_get</a></div><div class="ttdeci">Tnode * _t_get(Tnode *t, int *p)</div><div class="ttdef"><b>Definition:</b> tree.c:427</div></div>
+<div class="ttc" id="group__tree_html_ga571dd95ead249012211ffe5d180f56ec"><div class="ttname"><a href="group__tree.html#ga571dd95ead249012211ffe5d180f56ec">_t_replace</a></div><div class="ttdeci">void _t_replace(Tnode *t, int i, Tnode *r)</div><div class="ttdef"><b>Definition:</b> tree.c:215</div></div>
 <div class="ttc" id="structTnode_html"><div class="ttname"><a href="structTnode.html">Tnode</a></div><div class="ttdef"><b>Definition:</b> tree.h:51</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -352,7 +363,7 @@ $(document).ready(function(){initNavTree('tree__spec_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><b>tree_spec.h</b></li>
-    <li class="footer">Generated on Tue Aug 26 2014 15:10:10 for ceptr by
+    <li class="footer">Generated on Wed Aug 27 2014 14:38:18 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

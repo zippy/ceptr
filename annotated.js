@@ -15,5 +15,6 @@ var annotated =
     [ "UT_hash_bucket", "structUT__hash__bucket.html", "structUT__hash__bucket" ],
     [ "UT_hash_handle", "structUT__hash__handle.html", "structUT__hash__handle" ],
     [ "UT_hash_table", "structUT__hash__table.html", "structUT__hash__table" ],
+    [ "VMHost", "structVMHost.html", "structVMHost" ],
     [ "Xaddr", "structXaddr.html", "structXaddr" ]
 ];

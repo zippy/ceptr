@@ -161,67 +161,71 @@ $(document).ready(function(){initNavTree('symbol_8h_source.html','');});
 <div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="symbol_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3ae0e51bb381564e3d460f0352172e0c40">   65</a></span>&#160;    <a class="code" href="symbol_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3ae0e51bb381564e3d460f0352172e0c40">INTERPOLATE_SYMBOL</a>,                </div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    RUN_TREE,</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    PARAMS,</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    _LAST_SYS_SYMBOL</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;};</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="keyword">static</span> <span class="keywordtype">char</span> *G_sys_symbol_names[] = {</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="stringliteral">&quot;NULL_SYMBOL&quot;</span>,</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="stringliteral">&quot;TREE_PATH&quot;</span>,</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="stringliteral">&quot;SEMTREX_SYMBOL_LITERAL&quot;</span>,</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="stringliteral">&quot;SEMTREX_SEQUENCE&quot;</span>,</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="stringliteral">&quot;SEMTREX_OR&quot;</span>,</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="stringliteral">&quot;SEMTREX_SYMBOL_ANY&quot;</span>,</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="stringliteral">&quot;SEMTREX_ZERO_OR_MORE&quot;</span>,</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="stringliteral">&quot;SEMTREX_ONE_OR_MORE&quot;</span>,</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="stringliteral">&quot;SEMTREX_ZERO_OR_ONE&quot;</span>,</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="stringliteral">&quot;SEMTREX_VALUE_LITERAL&quot;</span>,</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="stringliteral">&quot;SEMTREX_GROUP&quot;</span>,</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="stringliteral">&quot;SEMTREX_MATCH&quot;</span>,</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="stringliteral">&quot;SEMTREX_MATCH_RESULTS&quot;</span>,</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="stringliteral">&quot;SEMTREX_MATCH_SIBLINGS_COUNT&quot;</span>,</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="stringliteral">&quot;RECEPTOR&quot;</span>,</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="stringliteral">&quot;FLUX&quot;</span>,</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="stringliteral">&quot;STRUCTURES&quot;</span>,</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="stringliteral">&quot;STRUCTURE_DEF&quot;</span>,</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="stringliteral">&quot;STRUCTURE_PART&quot;</span>,</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="stringliteral">&quot;SYMBOLS&quot;</span>,</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="stringliteral">&quot;SYMBOL_DEF&quot;</span>,</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="stringliteral">&quot;SYMBOL_STRUCTURE&quot;</span>,</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="stringliteral">&quot;SYMBOL_LABEL&quot;</span>,</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="stringliteral">&quot;INSTANCE&quot;</span>,</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="stringliteral">&quot;ASPECT&quot;</span>,</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="stringliteral">&quot;SIGNALS&quot;</span>,</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="stringliteral">&quot;SIGNAL&quot;</span>,</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="stringliteral">&quot;LISTENERS&quot;</span>,</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="stringliteral">&quot;LISTENER&quot;</span>,</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="stringliteral">&quot;EXPECTATION&quot;</span>,</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="stringliteral">&quot;ACTION&quot;</span>,</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="stringliteral">&quot;RESPOND&quot;</span>,</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <span class="stringliteral">&quot;INTERPOLATE_FROM_MATCH&quot;</span>,</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <span class="stringliteral">&quot;INTERPOLATE_SYMBOL&quot;</span>,</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <span class="stringliteral">&quot;RUN_TREE&quot;</span>,</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    <span class="stringliteral">&quot;PARAMS&quot;</span>,</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;};</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="keyword">typedef</span> <span class="keywordtype">int</span> Symbol;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="comment">//-----  Symbols for the virtual machine host</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    RECEPTOR_PACKAGE,</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    _LAST_SYS_SYMBOL</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;};</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="keyword">static</span> <span class="keywordtype">char</span> *G_sys_symbol_names[] = {</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="stringliteral">&quot;NULL_SYMBOL&quot;</span>,</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="stringliteral">&quot;TREE_PATH&quot;</span>,</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="stringliteral">&quot;SEMTREX_SYMBOL_LITERAL&quot;</span>,</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="stringliteral">&quot;SEMTREX_SEQUENCE&quot;</span>,</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="stringliteral">&quot;SEMTREX_OR&quot;</span>,</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="stringliteral">&quot;SEMTREX_SYMBOL_ANY&quot;</span>,</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="stringliteral">&quot;SEMTREX_ZERO_OR_MORE&quot;</span>,</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="stringliteral">&quot;SEMTREX_ONE_OR_MORE&quot;</span>,</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="stringliteral">&quot;SEMTREX_ZERO_OR_ONE&quot;</span>,</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="stringliteral">&quot;SEMTREX_VALUE_LITERAL&quot;</span>,</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="stringliteral">&quot;SEMTREX_GROUP&quot;</span>,</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="stringliteral">&quot;SEMTREX_MATCH&quot;</span>,</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="stringliteral">&quot;SEMTREX_MATCH_RESULTS&quot;</span>,</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="stringliteral">&quot;SEMTREX_MATCH_SIBLINGS_COUNT&quot;</span>,</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="stringliteral">&quot;RECEPTOR&quot;</span>,</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="stringliteral">&quot;FLUX&quot;</span>,</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="stringliteral">&quot;STRUCTURES&quot;</span>,</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="stringliteral">&quot;STRUCTURE_DEF&quot;</span>,</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="stringliteral">&quot;STRUCTURE_PART&quot;</span>,</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="stringliteral">&quot;SYMBOLS&quot;</span>,</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="stringliteral">&quot;SYMBOL_DEF&quot;</span>,</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="stringliteral">&quot;SYMBOL_STRUCTURE&quot;</span>,</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="stringliteral">&quot;SYMBOL_LABEL&quot;</span>,</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="stringliteral">&quot;INSTANCE&quot;</span>,</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="stringliteral">&quot;ASPECT&quot;</span>,</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="stringliteral">&quot;SIGNALS&quot;</span>,</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="stringliteral">&quot;SIGNAL&quot;</span>,</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="stringliteral">&quot;LISTENERS&quot;</span>,</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="stringliteral">&quot;LISTENER&quot;</span>,</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <span class="stringliteral">&quot;EXPECTATION&quot;</span>,</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <span class="stringliteral">&quot;ACTION&quot;</span>,</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <span class="stringliteral">&quot;RESPOND&quot;</span>,</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    <span class="stringliteral">&quot;INTERPOLATE_FROM_MATCH&quot;</span>,</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <span class="stringliteral">&quot;INTERPOLATE_SYMBOL&quot;</span>,</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <span class="stringliteral">&quot;RUN_TREE&quot;</span>,</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    <span class="stringliteral">&quot;PARAMS&quot;</span>,</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="stringliteral">&quot;RECEPTOR_PACKAGE&quot;</span>,</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;};</div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="comment">//  Semantic Type:</span></div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="comment">//      Structures, like &quot;float&quot;, are abstract labels.</span></div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="comment">//      A semantic type is a label with a particular semantic application or implementation of that labelled structure.</span></div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="comment">//      &quot;int&quot; is a labelled structure, &quot;age&quot; is a semantic implementation.</span></div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="comment">//  Ex:</span></div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="comment">//      /TEST_SYMBOL=&quot;t&quot;        : the root&#39;s semantic type is &quot;semtrex_symbol_literal&quot; and it&#39;s literal value = &#39;t&#39;</span></div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="comment">//  SEMTREX_GROUP</span></div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="comment">//      Paren-group: A group to which you apply some function.</span></div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="comment">//      SMTP: mail from         where &quot;from is optional&quot;</span></div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="comment">//      Ex: /ascii-line/char=&#39;M&#39;...etc..., (F R O M)?</span></div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="comment">//  Curly brace is a named (or referenced) group</span></div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="comment">//      Ex: /ascii-line/char=&#39;M&#39;...etc..., (F R O M)?{email-address:.*}</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="keyword">typedef</span> <span class="keywordtype">int</span> Symbol;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="comment">//  Semantic Type:</span></div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="comment">//      Structures, like &quot;float&quot;, are abstract labels.</span></div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="comment">//      A semantic type is a label with a particular semantic application or implementation of that labelled structure.</span></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="comment">//      &quot;int&quot; is a labelled structure, &quot;age&quot; is a semantic implementation.</span></div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="comment">//  Ex:</span></div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="comment">//      /TEST_SYMBOL=&quot;t&quot;        : the root&#39;s semantic type is &quot;semtrex_symbol_literal&quot; and it&#39;s literal value = &#39;t&#39;</span></div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="comment">//  SEMTREX_GROUP</span></div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="comment">//      Paren-group: A group to which you apply some function.</span></div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="comment">//      SMTP: mail from         where &quot;from is optional&quot;</span></div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;<span class="comment">//      Ex: /ascii-line/char=&#39;M&#39;...etc..., (F R O M)?</span></div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="comment">//  Curly brace is a named (or referenced) group</span></div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="comment">//      Ex: /ascii-line/char=&#39;M&#39;...etc..., (F R O M)?{email-address:.*}</span></div>
 <div class="ttc" id="symbol_8h_html_ab0f6206b340472c7ace01d1e9d4b87f3aaf104f1158c4cffb4478bae29e964fd1"><div class="ttname"><a href="symbol_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3aaf104f1158c4cffb4478bae29e964fd1">SEMTREX_ONE_OR_MORE</a></div><div class="ttdoc">Requires one child Semtrex and matches on one or more of that Semtrex. Ex: /0/TestSemtrex+. </div><div class="ttdef"><b>Definition:</b> symbol.h:37</div></div>
 <div class="ttc" id="symbol_8h_html_ab0f6206b340472c7ace01d1e9d4b87f3a1cad60194b57d18e09fff2a1b6c3b192"><div class="ttname"><a href="symbol_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a1cad60194b57d18e09fff2a1b6c3b192">SIGNALS</a></div><div class="ttdoc">list of signals on an aspect in the flux </div><div class="ttdef"><b>Definition:</b> symbol.h:57</div></div>
 <div class="ttc" id="symbol_8h_html_ab0f6206b340472c7ace01d1e9d4b87f3a388806ffbf23acd9f4d947dcb0de01b2"><div class="ttname"><a href="symbol_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a388806ffbf23acd9f4d947dcb0de01b2">SEMTREX_ZERO_OR_MORE</a></div><div class="ttdoc">Requires one child Semtrex and matches on zero or more of that Semtrex. Ex: /0/TestSemtrex*. </div><div class="ttdef"><b>Definition:</b> symbol.h:36</div></div>
@@ -252,7 +256,7 @@ $(document).ready(function(){initNavTree('symbol_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="symbol_8h.html">symbol.h</a></li>
-    <li class="footer">Generated on Tue Aug 26 2014 15:10:10 for ceptr by
+    <li class="footer">Generated on Wed Aug 27 2014 14:38:18 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

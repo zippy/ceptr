@@ -1,9 +1,8 @@
 var searchData=
 [
-  ['running_20the_20self_2dtests',['Running the self-tests',['../howto_tests.html',1,'']]],
-  ['receptor',['Receptor',['../structReceptor.html',1,'Receptor'],['../group__receptor.html',1,'(Global Namespace)']]],
-  ['receptor_2ec',['receptor.c',['../receptor_8c.html',1,'']]],
-  ['receptor_2eh',['receptor.h',['../receptor_8h.html',1,'']]],
-  ['respond',['RESPOND',['../symbol_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a64c5ec914c978938d6ed4d420c099c8a',1,'symbol.h']]],
-  ['root',['root',['../structReceptor.html#a7a280e923e97768c67f90303bcf8c152',1,'Receptor']]]
+  ['patch',['patch',['../semtrex_8c.html#ab307af6eec1425c7801b32bfbaa08f42',1,'semtrex.c']]],
+  ['path',['path',['../structtable__elem.html#a7f0dfec61de22e76596d7c6d090ec6dd',1,'table_elem']]],
+  ['process_2ec',['process.c',['../process_8c.html',1,'']]],
+  ['process_2eh',['process.h',['../process_8h.html',1,'']]],
+  ['ptrlist',['Ptrlist',['../unionPtrlist.html',1,'Ptrlist'],['../semtrex_8c.html#af0de0b5913959a81b47d91299857f683',1,'Ptrlist():&#160;semtrex.c']]]
 ];

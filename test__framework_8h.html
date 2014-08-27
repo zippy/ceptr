@@ -135,7 +135,7 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>spec_is_str_equal</b>(got, expected)&#160;&#160;&#160;spec_total++; if (strcmp(got,expected)==0){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],&quot;%s:%d expected %s to be \&quot;%s\&quot; but was \&quot;%s\&quot;&quot;,__FUNCTION__,__LINE__,#got,expected,got);}</td></tr>
 <tr class="separator:a3eb4b8c9d968a16ff472ed402a4768ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a42cf2ec8f6d1fb8b7bca63211abd4777"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a42cf2ec8f6d1fb8b7bca63211abd4777"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>spec_is_long_equal</b>(got, expected)&#160;&#160;&#160;spec_total++; if (expected==got){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],&quot;%s:%d expected %s to be %ld but was %ld&quot;,__FUNCTION__,__LINE__,#got,expected,got);}</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>spec_is_long_equal</b>(got, expected)&#160;&#160;&#160;spec_total++; if (expected==got){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],&quot;%s:%d expected %s to be %ld but was %ld&quot;,__FUNCTION__,__LINE__,#got,(long)expected,got);}</td></tr>
 <tr class="separator:a42cf2ec8f6d1fb8b7bca63211abd4777"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e1d27b13acba9748332405135635d12"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0e1d27b13acba9748332405135635d12"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>spec_is_ptr_equal</b>(got, expected)&#160;&#160;&#160;spec_total++; if (expected==got){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],&quot;%s:%d expected %s to be %p but was %p&quot;,__FUNCTION__,__LINE__,#got,expected,got);}</td></tr>
@@ -146,6 +146,9 @@ Macros</h2></td></tr>
 <tr class="memitem:a2dfb87eee95edb34c68f45319059223e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2dfb87eee95edb34c68f45319059223e"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>spec_is_float_equal</b>(got, expected)&#160;&#160;&#160;spec_total++; if (expected==got){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],&quot;%s:%d expected %s to be %f but was %f&quot;,__FUNCTION__,__LINE__,#got,expected,got);}</td></tr>
 <tr class="separator:a2dfb87eee95edb34c68f45319059223e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad591a33ca0aa9f0806ff92a89f527035"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad591a33ca0aa9f0806ff92a89f527035"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>spec_is_buffer_equal</b>(got, expected, length)&#160;&#160;&#160;spec_total++; if (memcmp(got,expected,length)==0){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],&quot;%s:%d expected %ld bytes from %s to match %s by they didn't&quot;,__FUNCTION__,__LINE__,(long)length,#got,#expected);}</td></tr>
+<tr class="separator:ad591a33ca0aa9f0806ff92a89f527035"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -180,7 +183,7 @@ char&#160;</td><td class="memItemRight" valign="bottom"><b>buf2</b> [255]</td></
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><a class="el" href="test__framework_8h.html">test_framework.h</a></li>
-    <li class="footer">Generated on Tue Aug 26 2014 15:10:10 for ceptr by
+    <li class="footer">Generated on Wed Aug 27 2014 14:38:18 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

@@ -115,13 +115,15 @@ $(document).ready(function(){initNavTree('todo.html','');});
 <dd>currently this implementation of instances, just stores each instance as tree node of type INSTANCE as a child of the symbol. This is way inefficient and needs to be replaced. But this is just here to create the API...  </dd>
 <dt><a class="anchor" id="_todo000009"></a>Global <a class="el" href="group__receptor.html#gae251d0cfa84e1edbbe12d3489aa29d1e">_r_send</a>  (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structReceptor.html">Receptor</a> *from, Aspect aspect, <a class="el" href="structTnode.html">Tnode</a> *signal)</dt>
 <dd>for now the signal is appended directly to the flux. Later it should probably be copied  </dd>
+<dt><a class="anchor" id="_todo000012"></a>Global <a class="el" href="group__tree.html#gaaeb6a7d7bf14e958d9e79c699edb8040">_t_clone</a>  (<a class="el" href="structTnode.html">Tnode</a> *t)</dt>
+<dd>make this work with trees that have orthogonal trees!  </dd>
 <dt><a class="anchor" id="_todo000011"></a>Global <a class="el" href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a>  (<a class="el" href="structTnode.html">Tnode</a> *t)</dt>
 <dd>make this remove the child from the parent's child-list?  </dd>
-<dt><a class="anchor" id="_todo000014"></a>Global <a class="el" href="group__tree.html#gad25dfd19f7a8ca955f32850fa867be0d">_t_get</a>  (<a class="el" href="structTnode.html">Tnode</a> *t, int *p)</dt>
+<dt><a class="anchor" id="_todo000015"></a>Global <a class="el" href="group__tree.html#gad25dfd19f7a8ca955f32850fa867be0d">_t_get</a>  (<a class="el" href="structTnode.html">Tnode</a> *t, int *p)</dt>
 <dd>semantic check to make sure surface is a tree?  </dd>
-<dt><a class="anchor" id="_todo000013"></a>Global <a class="el" href="group__tree.html#ga19a429819da9dcbc89ec7e259ef32db0">_t_get_path</a>  (<a class="el" href="structTnode.html">Tnode</a> *t)</dt>
+<dt><a class="anchor" id="_todo000014"></a>Global <a class="el" href="group__tree.html#ga19a429819da9dcbc89ec7e259ef32db0">_t_get_path</a>  (<a class="el" href="structTnode.html">Tnode</a> *t)</dt>
 <dd>implement jumping into orthogonal trees (i.e. return paths with 0 in them)  </dd>
-<dt><a class="anchor" id="_todo000012"></a>Global <a class="el" href="group__tree.html#ga49e337d9576c1f143e88a02aa9184756">_t_next_sibling</a>  (<a class="el" href="structTnode.html">Tnode</a> *t)</dt>
+<dt><a class="anchor" id="_todo000013"></a>Global <a class="el" href="group__tree.html#ga49e337d9576c1f143e88a02aa9184756">_t_next_sibling</a>  (<a class="el" href="structTnode.html">Tnode</a> *t)</dt>
 <dd>this is very expensive if called all the time!!!  </dd>
 <dt><a class="anchor" id="_todo000002"></a>Class <a class="el" href="structtable__elem.html">table_elem</a>  </dt>
 <dd>convert path to variable sized item </dd>
@@ -131,7 +133,7 @@ $(document).ready(function(){initNavTree('todo.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Aug 26 2014 15:10:10 for ceptr by
+    <li class="footer">Generated on Wed Aug 27 2014 14:38:18 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

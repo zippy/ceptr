@@ -3,6 +3,7 @@ var NAVTREE =
   [ "ceptr", "index.html", [
     [ "Running the self-tests", "howto_tests.html", null ],
     [ "Todo List", "todo.html", null ],
+    [ "Bug List", "bug.html", null ],
     [ "Modules", "modules.html", "modules" ],
     [ "Data Structures", null, [
       [ "Data Structures", "annotated.html", "annotated" ],
@@ -30,7 +31,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"receptor_8c.html#a7de7680c601d02138f09f5b8e0310e48"
+"modules.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -27,7 +27,7 @@ var receptor_8h =
     [ "_r_new_instance", "group__receptor.html#ga7518a44dda01af81556bb6657f18ead4", null ],
     [ "_r_send", "group__receptor.html#gae251d0cfa84e1edbbe12d3489aa29d1e", null ],
     [ "_r_serialize", "group__receptor.html#ga3e737841784555574a0d90ad2eff4cc4", null ],
-    [ "_r_unserialize", "group__receptor.html#gac9db495a601c4775b2f1c53a6d8b3faf", null ],
+    [ "_r_unserialize", "group__receptor.html#ga300b11b12792c290fef2fb0fe07d71ee", null ],
     [ "_s_get_structure_name", "group__receptor.html#gaecf1cc813af035586953c73a06d5285c", null ],
     [ "_s_get_symbol_name", "group__receptor.html#ga0dd4502c465541939aa3aea2d8daea56", null ],
     [ "_td", "group__receptor.html#ga5cafc7054a5a1fc7af911904d01d45a5", null ]

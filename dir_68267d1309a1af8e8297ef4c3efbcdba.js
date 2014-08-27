@@ -15,5 +15,7 @@ var dir_68267d1309a1af8e8297ef4c3efbcdba =
     [ "symbol.h", "symbol_8h.html", "symbol_8h" ],
     [ "tree.c", "tree_8c.html", "tree_8c" ],
     [ "tree.h", "tree_8h.html", "tree_8h" ],
-    [ "uthash.h", "uthash_8h_source.html", null ]
+    [ "uthash.h", "uthash_8h_source.html", null ],
+    [ "vmhost.c", "vmhost_8c.html", "vmhost_8c" ],
+    [ "vmhost.h", "vmhost_8h.html", "vmhost_8h" ]
 ];

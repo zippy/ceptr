@@ -1,6 +1,7 @@
 var test__framework_8h =
 [
     [ "MAX_FAILURES", "test__framework_8h.html#aabe620f493f6c3494d219b184038c9af", null ],
+    [ "spec_is_buffer_equal", "test__framework_8h.html#ad591a33ca0aa9f0806ff92a89f527035", null ],
     [ "spec_is_equal", "test__framework_8h.html#abe366ba8cd8cf083ac550a4f2fa724d9", null ],
     [ "spec_is_false", "test__framework_8h.html#a8b5bcc69310199f9ecd056912f032e5d", null ],
     [ "spec_is_float_equal", "test__framework_8h.html#a2dfb87eee95edb34c68f45319059223e", null ],
