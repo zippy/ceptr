@@ -597,18 +597,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>pointer to surface or NULL if path not found</dd></dl>
-<p>Test Cases: </p><div class="fragment"><div class="line">    <a class="code" href="structTnode.html">Tnode</a> *t = _makeTestHTTPRequestTree(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
-<div class="line"></div>
-<div class="line">    <span class="keywordtype">int</span> p1[] = {2,1,1,TREE_PATH_TERMINATOR};</div>
-<div class="line">    <span class="keywordtype">int</span> p2[] = {2,1,2,TREE_PATH_TERMINATOR};</div>
-<div class="line">    <span class="keywordtype">int</span> p3[] = {2,3,1,2,2,TREE_PATH_TERMINATOR};</div>
-<div class="line"></div>
-<div class="line">    spec_is_str_equal((<span class="keywordtype">char</span> *)<a class="code" href="group__tree.html#ga1f03093882ea8ad3d6e88951e4fc51b5">_t_get_surface</a>(t,p1),<span class="stringliteral">&quot;groups&quot;</span>);</div>
-<div class="line">    spec_is_str_equal((<span class="keywordtype">char</span> *)<a class="code" href="group__tree.html#ga1f03093882ea8ad3d6e88951e4fc51b5">_t_get_surface</a>(t,p2),<span class="stringliteral">&quot;5&quot;</span>);</div>
-<div class="line">    spec_is_str_equal((<span class="keywordtype">char</span> *)<a class="code" href="group__tree.html#ga1f03093882ea8ad3d6e88951e4fc51b5">_t_get_surface</a>(t,p3),<span class="stringliteral">&quot;2&quot;</span>);</div>
-<div class="line"></div>
-<div class="line">    <a class="code" href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a>(t);</div>
-</div><!-- fragment -->
+<p>Test Cases: </p><div class="fragment"></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ga91798c3f4945bb89b9c13e9b693ffd78"></a>
@@ -870,7 +859,13 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
       </table>
 </div><div class="memdoc">
 <p>return the depth of a given path</p>
-<p>[in] p path </p><dl class="section return"><dt>Returns</dt><dd>int value of depth</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">p</td><td>path </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>int value of depth</dd></dl>
 <p>Test cases: </p><div class="fragment"><div class="line">    <span class="keywordtype">int</span> p0[] = {TREE_PATH_TERMINATOR};</div>
 <div class="line">    <span class="keywordtype">int</span> p1[] = {1,TREE_PATH_TERMINATOR};</div>
 <div class="line">    <span class="keywordtype">int</span> p2[] = {3,0,TREE_PATH_TERMINATOR};</div>
@@ -908,7 +903,14 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
       </table>
 </div><div class="memdoc">
 <p>compare equality of two paths</p>
-<p>[in] p1 first path [in] p2 second path </p><dl class="section return"><dt>Returns</dt><dd>1 if equal 0 if not</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">p1</td><td>first path </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">p2</td><td>second path </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>1 if equal 0 if not</dd></dl>
 <p>Test cases: </p><div class="fragment"><div class="line">    <span class="keywordtype">int</span> p0[] = {TREE_PATH_TERMINATOR};</div>
 <div class="line">    <span class="keywordtype">int</span> p1[] = {1,TREE_PATH_TERMINATOR};</div>
 <div class="line">    <span class="keywordtype">int</span> p2[] = {2,TREE_PATH_TERMINATOR};</div>
@@ -952,7 +954,13 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
       </table>
 </div><div class="memdoc">
 <p>copy a path</p>
-<p>[inout] dst_p pointer to buffer holding destination path [in] src_p path</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">dst_p</td><td>pointer to buffer holding destination path </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">src_p</td><td>path</td></tr>
+  </table>
+  </dd>
+</dl>
 <p>Test cases: </p><div class="fragment"><div class="line">    <span class="keywordtype">int</span> pp[10];</div>
 <div class="line">    <span class="keywordtype">int</span> p5[] = {3,0,2,1,1,TREE_PATH_TERMINATOR};</div>
 <div class="line">    <a class="code" href="group__tree.html#ga608555368dfdef7de1872f89b6fed637">_t_pathcpy</a>(pp,p5);</div>
@@ -1117,7 +1125,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Aug 27 2014 22:25:16 for ceptr by
+    <li class="footer">Generated on Wed Aug 27 2014 22:27:58 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
