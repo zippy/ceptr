@@ -84,6 +84,54 @@ void testTreeRealloc() {
     _t_free(t);
 }
 
+enum HTTPRequestTestSymbols {
+    TSYM_HTTP_REQUEST,
+    TSYM_HTTP_REQUEST_METHOD,
+    TSYM_HTTP_REQUEST_PATH,
+    TSYM_HTTP_REQUEST_PATH_SEGMENTS,
+    TSYM_HTTP_REQUEST_PATH_SEGMENT,
+    TSYM_HTTP_REQUEST_PATH_FILE,
+    TSYM_HTTP_REQUEST_PATH_FILE_NAME,
+    TSYM_HTTP_REQUEST_PATH_FILE_EXTENSION,
+    TSYM_HTTP_REQUEST_PATH_QUERY,
+    TSYM_HTTP_REQUEST_PATH_QUERY_PARAMS,
+    TSYM_HTTP_REQUEST_PATH_QUERY_PARAM,
+    TSYM_HTTP_REQUEST_PATH_QUERY_PARAM_KEY,
+    TSYM_HTTP_REQUEST_PATH_QUERY_PARAM_VALUE,
+    TSYM_HTTP_REQUEST_VERSION,
+    TSYM_HTTP_REQUEST_VERSION_MAJOR,
+    TSYM_HTTP_REQUEST_VERSION_MINOR,
+};
+enum {TEST_HTTP_METHOD_GET_VALUE,TEST_HTTP_METHOD_PUT_VALUE,TEST_HTTP_METHOD_POST_VALUE};
+
+//! makeTestHTTPRequestTree
+Tnode *_makeTestHTTPRequestTree() {
+    // manually build up a tree for the HTTP request:
+    //  GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
+    Tnode *t = _t_new_root(TSYM_HTTP_REQUEST);
+    Tnode *t_method = _t_newi(t,TSYM_HTTP_REQUEST_METHOD,TEST_HTTP_METHOD_GET_VALUE);
+    Tnode *t_path = _t_newr(t,TSYM_HTTP_REQUEST_PATH);
+    Tnode *t_segments = _t_newr(t_path,TSYM_HTTP_REQUEST_PATH_SEGMENTS);
+    _t_new(t_segments,TSYM_HTTP_REQUEST_PATH_SEGMENT,"groups",7);
+    _t_new(t_segments,TSYM_HTTP_REQUEST_PATH_SEGMENT,"5",2);
+    Tnode *t_file = _t_newr(t_path,TSYM_HTTP_REQUEST_PATH_FILE);
+    _t_new(t_file,TSYM_HTTP_REQUEST_PATH_FILE_NAME,"users",6);
+    _t_new(t_file,TSYM_HTTP_REQUEST_PATH_FILE_EXTENSION,"json",5);
+    Tnode *t_query = _t_newr(t_path,TSYM_HTTP_REQUEST_PATH_QUERY);
+    Tnode *t_params = _t_newr(t_query,TSYM_HTTP_REQUEST_PATH_QUERY_PARAMS);
+    Tnode *t_param1 = _t_newr(t_params,TSYM_HTTP_REQUEST_PATH_QUERY_PARAM);
+    _t_new(t_param1,TSYM_HTTP_REQUEST_PATH_QUERY_PARAM_KEY,"sort_by",8);
+    _t_new(t_param1,TSYM_HTTP_REQUEST_PATH_QUERY_PARAM_VALUE,"last_name",10);
+    Tnode *t_param2 = _t_newr(t_params,TSYM_HTTP_REQUEST_PATH_QUERY_PARAM);
+    _t_new(t_param2,TSYM_HTTP_REQUEST_PATH_QUERY_PARAM_KEY,"page",5);
+    _t_new(t_param2,TSYM_HTTP_REQUEST_PATH_QUERY_PARAM_VALUE,"2",2);
+    Tnode *t_version = _t_newr(t,TSYM_HTTP_REQUEST_VERSION);
+    _t_newi(t_version,TSYM_HTTP_REQUEST_VERSION_MAJOR,1);
+    _t_newi(t_version,TSYM_HTTP_REQUEST_VERSION_MINOR,0);
+    return t;
+}
+//! makeTestHTTPRequestTree
+
 Tnode *_makeTestTree() {
     Tnode *t = _t_new(0,TEST_STR_SYMBOL,"t",2);
     Tnode *t1 = _t_new(t,TEST_STR_SYMBOL,"t1",3);
@@ -96,9 +144,148 @@ Tnode *_makeTestTree() {
     return t;
 }
 
-void testTreePath() {
-    Tnode *t = _makeTestTree();
+void testTreePathGet() {
+    //! [testTreePathGet]
+    Tnode *t = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
+
+    int p0[] = {TREE_PATH_TERMINATOR};
+    int p1[] = {1,TREE_PATH_TERMINATOR};
+    int p2[] = {2,TREE_PATH_TERMINATOR};
+    int p23[] = {2,3,TREE_PATH_TERMINATOR};
+    int p231[] = {2,3,1,TREE_PATH_TERMINATOR};
+    int p2312[] = {2,3,1,2,TREE_PATH_TERMINATOR};
+    int p23122[] = {2,3,1,2,2,TREE_PATH_TERMINATOR};
+    int p211[] = {2,1,1,TREE_PATH_TERMINATOR};
+    int p3[] = {3,TREE_PATH_TERMINATOR};
+
+    spec_is_ptr_equal(_t_get(t,p0),t);
+    spec_is_symbol_equal(0,_t_symbol(_t_get(t,p1)),TSYM_HTTP_REQUEST_METHOD);
+    spec_is_symbol_equal(0,_t_symbol(_t_get(t,p2)),TSYM_HTTP_REQUEST_PATH);
+    spec_is_symbol_equal(0,_t_symbol(_t_get(t,p23)),TSYM_HTTP_REQUEST_PATH_QUERY);
+    spec_is_symbol_equal(0,_t_symbol(_t_get(t,p231)),TSYM_HTTP_REQUEST_PATH_QUERY_PARAMS);
+    spec_is_symbol_equal(0,_t_symbol(_t_get(t,p2312)),TSYM_HTTP_REQUEST_PATH_QUERY_PARAM);
+    spec_is_symbol_equal(0,_t_symbol(_t_get(t,p23122)),TSYM_HTTP_REQUEST_PATH_QUERY_PARAM_VALUE);
+    spec_is_symbol_equal(0,_t_symbol(_t_get(t,p211)),TSYM_HTTP_REQUEST_PATH_SEGMENT);
+    spec_is_symbol_equal(0,_t_symbol(_t_get(t,p3)),TSYM_HTTP_REQUEST_VERSION);
+
+    //  _t_get returns null if tree doesn't have a node at the given path
+    p211[2] = 3;
+    spec_is_ptr_equal(_t_get(t,p211),NULL);
+
+    _t_free(t);
+    //! [testTreePathGet]
+}
+
+void testTreePathGetSurface() {
+    //! [testTreePathGetSurface]
+    Tnode *t = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
+
+    int p1[] = {2,1,1,TREE_PATH_TERMINATOR};
+    int p2[] = {2,1,2,TREE_PATH_TERMINATOR};
+    int p3[] = {2,3,1,2,2,TREE_PATH_TERMINATOR};
+
+    spec_is_str_equal((char *)_t_get_surface(t,p1),"groups");
+    spec_is_str_equal((char *)_t_get_surface(t,p2),"5");
+    spec_is_str_equal((char *)_t_get_surface(t,p3),"2");
+
+    _t_free(t);
+    //! [testTreePathGetSurface]
+}
+
+void testTreePathGetPath() {
+    //! [testTreePathGetPath]
+    Tnode *t = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
+    int p0[] = {TREE_PATH_TERMINATOR};
+    int p1[] = {1,TREE_PATH_TERMINATOR};
+    int p2[] = {2,1,TREE_PATH_TERMINATOR};
+    int p3[] = {2,1,1,TREE_PATH_TERMINATOR};
     int *path;
+
+    path = _t_get_path(_t_get(t,p0));
+    spec_is_path_equal(path,p0);
+    free(path);
+    path = _t_get_path(_t_get(t,p1));
+    spec_is_path_equal(path,p1);
+    free(path);
+    path = _t_get_path(_t_get(t,p3));
+    spec_is_path_equal(path,p3);
+    free(path);
+    path = _t_get_path(_t_get(t,p2));
+    spec_is_path_equal(path,p2);
+    free(path);
+
+    _t_free(t);
+    //! [testTreePathGetPath]
+ }
+
+void testTreePathEqual() {
+    //! [testTreePathEqual]
+    int p0[] = {TREE_PATH_TERMINATOR};
+    int p1[] = {1,TREE_PATH_TERMINATOR};
+    int p2[] = {2,TREE_PATH_TERMINATOR};
+    int p3[] = {2,1,1,TREE_PATH_TERMINATOR};
+    int p4[] = {3,0,TREE_PATH_TERMINATOR};
+    int p5[] = {3,0,2,1,1,TREE_PATH_TERMINATOR};
+
+    spec_is_true(_t_path_equal(p0,p0));
+    spec_is_true(_t_path_equal(p1,p1));
+    spec_is_true(_t_path_equal(p2,p2));
+    spec_is_true(_t_path_equal(p3,p3));
+    spec_is_true(!_t_path_equal(p0,p1));
+    spec_is_true(!_t_path_equal(p2,p3));
+    spec_is_true(!_t_path_equal(p4,p3));
+    spec_is_true(!_t_path_equal(p0,p3));
+    spec_is_true(!_t_path_equal(p4,p5));
+    //! [testTreePathEqual]
+}
+
+void testTreePathDepth() {
+    //! [testTreePathDepth]
+    int p0[] = {TREE_PATH_TERMINATOR};
+    int p1[] = {1,TREE_PATH_TERMINATOR};
+    int p2[] = {3,0,TREE_PATH_TERMINATOR};
+    int p3[] = {2,1,1,TREE_PATH_TERMINATOR};
+    int p5[] = {3,0,2,1,1,TREE_PATH_TERMINATOR};
+    spec_is_equal(_t_path_depth(p0),0);
+    spec_is_equal(_t_path_depth(p1),1);
+    spec_is_equal(_t_path_depth(p2),2);
+    spec_is_equal(_t_path_depth(p3),3);
+    spec_is_equal(_t_path_depth(p5),5);
+    //! [testTreePathDepth]
+}
+''
+void testTreePathCopy() {
+    //! [testTreePathCopy]
+    int pp[10];
+    int p5[] = {3,0,2,1,1,TREE_PATH_TERMINATOR};
+    _t_pathcpy(pp,p5);
+    spec_is_path_equal(pp,p5);
+    //! [testTreePathCopy]
+}
+
+void testTreePathSprint() {
+    //! [testTreePathSprint]
+    char buf[255];
+    int p5[] = {3,0,2,1,1,TREE_PATH_TERMINATOR};
+    spec_is_str_equal(_t_sprint_path(p5,buf),"/3/0/2/1/1");
+    //! [testTreePathSprint]
+}
+
+void testTreeNodeIndex() {
+    //! [testTreeNodeIndex]
+    Tnode *t = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
+    spec_is_equal(_t_node_index(_t_child(t,1)),1);
+    spec_is_equal(_t_node_index(_t_child(t,2)),2);
+    spec_is_equal(_t_node_index(_t_child(t,3)),3);
+    spec_is_equal(_t_node_index(t),0);
+
+   _t_free(t);
+    //! [testTreeNodeIndex]
+}
+
+/*  still gotta move this orthogonal tree testing stuff to a test case
+void testTreePath() {
+    Tnode *t = _makeTestHTTPRequestTree();
     int i;
     char buf[255];
 
@@ -113,31 +300,6 @@ void testTreePath() {
 
     Tnode *tt, *t3;
 
-    spec_is_ptr_equal(_t_get(t,p0),t);
-
-    spec_is_str_equal((char *)_t_get_surface(t,p1),"t1");
-
-    spec_is_str_equal((char *)_t_get_surface(t,p2),"t2");
-
-    spec_is_str_equal((char *)_t_get_surface(t,p3),"t211");
-
-    path = _t_get_path(_t_get(t,p0));
-    spec_is_path_equal(path,p0);
-    free(path);
-    path = _t_get_path(_t_get(t,p1));
-    spec_is_path_equal(path,p1);
-    free(path);
-    path = _t_get_path(_t_get(t,p3));
-    spec_is_path_equal(path,p3);
-    free(path);
-
-    int px[] = {2,1,TREE_PATH_TERMINATOR};
-    path = _t_get_path(_t_get(t,px));
-    spec_is_path_equal(path,px);
-    free(path);
-
-    p3[2] = 2;
-    spec_is_ptr_equal(_t_get(t,p3),NULL);
 
     tt = _makeTestTree();
     t3 = _t_new(t,TEST_SYMBOL,&tt,sizeof(Tnode *));
@@ -149,34 +311,13 @@ void testTreePath() {
 
     spec_is_str_equal((char *)_t_get_surface(t,p5),"t211");
 
-    _t_path_parent(p6,p5);
-    for(i=0;i<3;i++) {
-	spec_is_equal(p6[i],p5[i]);
-    }
-    spec_is_equal(p6[4],TREE_PATH_TERMINATOR);
 
-    _t_path_parent(p6,p1);
-    spec_is_equal(p6[0],TREE_PATH_TERMINATOR);
 
-    spec_is_true(_t_path_equal(p3,p3));
-    spec_is_true(!_t_path_equal(p4,p3));
-    spec_is_true(!_t_path_equal(p0,p3));
-
-    spec_is_equal(_t_path_depth(p3),3);
-
-    spec_is_str_equal(_t_sprint_path(p5,buf),"/3/0/2/1/1");
-
-    spec_is_equal(_t_node_index(_t_child(t,1)),1);
-    spec_is_equal(_t_node_index(_t_child(t,2)),2);
-    spec_is_equal(_t_node_index(_t_child(t,3)),3);
-    spec_is_equal(_t_node_index(t),0);
-
-    _t_pathcpy(pp,p5);
-    spec_is_path_equal(pp,p5);
 
     _t_free(t);
-    _t_free(tt);
+    _t_free(tt)
 }
+*/
 
 void testTreeClone() {
     Tnode *t = _makeTestTree();
@@ -224,7 +365,15 @@ void testTree() {
     testCreateTreeNodes();
     testTreeOrthogonal();
     testTreeRealloc();
+    testTreeNodeIndex();
     testTreePath();
+    testTreePathGet();
+    testTreePathGetSurface();
+    testTreePathGetPath();
+    testTreePathEqual();
+    testTreePathDepth();
+    testTreePathCopy();
+    testTreePathSprint();
     testTreeClone();
     testTreeModify();
 }

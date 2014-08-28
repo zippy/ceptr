@@ -88,7 +88,6 @@ int _t_node_index(Tnode *t);
 int _t_path_equal(int *p1,int *p2);
 int _t_path_depth(int *p);
 void _t_pathcpy(int *dst_p,int *src_p);
-void _t_path_parent(int *n,int *p);
 Tnode * _t_get(Tnode *t,int *p);
 int *_t_get_path(Tnode *t);
 void * _t_get_surface(Tnode *t,int *p);

@@ -363,19 +363,50 @@ Tnode * _t_next_sibling(Tnode *t) {
 }
 
 /*****************  Tree path based accesses */
+/**
+ * compare equality of two paths
+ *
+ * @params[in] p1 first path
+ * @params[in] p2 second path
+ * @returns 1 if equal 0 if not
+ *
+ * Test cases:
+ * @snippet spec/tree_spec.h testTreePathEqual
+ */
 int _t_path_equal(int *p1,int *p2){
     while(*p1 != TREE_PATH_TERMINATOR && *p2 != TREE_PATH_TERMINATOR)
 	if (*(p1++) != *(p2++)) return 0;
     return *p1 == TREE_PATH_TERMINATOR && *p2 == TREE_PATH_TERMINATOR;
 }
 
+/**
+ * return the depth of a given path
+ *
+ * @params[in] p path
+ * @returns int value of depth
+ *
+ * Test cases:
+ * @snippet spec/tree_spec.h testTreePathDepth
+ */
 int _t_path_depth(int *p) {
     int i=0;
     while(*p++ != TREE_PATH_TERMINATOR) i++;
     return i;
 }
 
-/// @todo  implement jumping into orthogonal trees  (i.e. return paths with 0 in them)
+/**
+ * return the tree path of a given node
+ *
+ * this function allocates a buffer to hold a path of the given node which
+ * it calculates by walkinga back up the tree
+ *
+ * @todo  implement jumping into orthogonal trees  (i.e. return paths with 0 in them)
+ * @param[in] t tree node
+ * @returns path of node
+ *
+ * Test cases:
+ * @snippet spec/tree_spec.h testTreePathGetPath
+ */
 int * _t_get_path(Tnode *t) {
     Tnode *n;
     // allocate an array to hold the
@@ -407,6 +438,15 @@ int * _t_get_path(Tnode *t) {
     return p;
 }
 
+/**
+ * copy a path
+ *
+ * @params[inout] dst_p pointer to buffer holding destination path
+ * @params[in] src_p path
+ *
+ * Test cases:
+ * @snippet spec/tree_spec.h testTreePathCopy
+ */
 void _t_pathcpy(int *dst_p,int *src_p) {
     while(*src_p != TREE_PATH_TERMINATOR) {
 	*dst_p++ = *src_p++;
@@ -414,16 +454,16 @@ void _t_pathcpy(int *dst_p,int *src_p) {
     *dst_p = TREE_PATH_TERMINATOR;
 }
 
-void _t_path_parent(int *n,int *p) {
-    if (*p == TREE_PATH_TERMINATOR) {
-	raise_error0("unable to take parent of root\n");
-    }
-    while(*p != TREE_PATH_TERMINATOR) {
-	*n++ = *p++;
-    }
-    *--n = TREE_PATH_TERMINATOR;
-}
-
+/**
+ * get a node by path
+ *
+ * @param[in] t the tree to search
+ * @param[in] p the path to search for
+ * @returns pointer to a Tnode
+ *
+ * Test Cases:
+ * @snippet spec/tree_spec.h testTreePathGet
+ */
 Tnode * _t_get(Tnode *t,int *p) {
     int i = *p++;
     Tnode *c;
@@ -439,12 +479,32 @@ Tnode * _t_get(Tnode *t,int *p) {
     return _t_get(c,p);
 }
 
+/**
+ * get the surface of a node by path
+ *
+ * @param[in] t the tree to search
+ * @param[in] p the path to search for
+ * @returns pointer to surface or NULL if path not found
+ *
+ * Test Cases:
+ * @snippet spec/tree_spec.h testTreePathGetSurface
+ */
 void * _t_get_surface(Tnode *t,int *p) {
     Tnode *c = _t_get(t,p);
     if (c == NULL) return NULL;
     return _t_surface(c);
 }
 
+/**
+ * print a path to a string
+ *
+ * @param[in] p the path to print
+ * @param[inout] buf buffer to copy the string text to
+ * @returns pointer to the bufer
+ *
+ * Test Cases:
+ * @snippet spec/tree_spec.h testTreePathSprint
+ */
 char * _t_sprint_path(int *fp,char *buf) {
     char *b = buf;
     int d=_t_path_depth(fp);
