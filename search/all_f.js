@@ -10,6 +10,7 @@ var searchData=
   ['semtrex_5fone_5for_5fmore',['SEMTREX_ONE_OR_MORE',['../symbol_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3aaf104f1158c4cffb4478bae29e964fd1',1,'symbol.h']]],
   ['semtrex_5for',['SEMTREX_OR',['../symbol_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3ab048f8136e64b01fc2cb22f9dc588084',1,'symbol.h']]],
   ['semtrex_5fsequence',['SEMTREX_SEQUENCE',['../symbol_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a2bcf9a9f55a6002b167918d9657788b7',1,'symbol.h']]],
+  ['semtrex_5fspec_2eh',['semtrex_spec.h',['../semtrex__spec_8h.html',1,'']]],
   ['semtrex_5fsymbol_5fany',['SEMTREX_SYMBOL_ANY',['../symbol_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a9a67b424e6a6adfe23cd3432642109f5',1,'symbol.h']]],
   ['semtrex_5fsymbol_5fliteral',['SEMTREX_SYMBOL_LITERAL',['../symbol_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a24fed94b1bdcacc4989e256136ad750c',1,'symbol.h']]],
   ['semtrex_5fvalue_5fliteral',['SEMTREX_VALUE_LITERAL',['../symbol_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a4f31ece163a69349b0daadd9d27e4a51',1,'symbol.h']]],

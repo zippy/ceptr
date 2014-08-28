@@ -4,6 +4,8 @@ var group__receptor =
     [ "process.h", "process_8h.html", null ],
     [ "receptor.c", "receptor_8c.html", null ],
     [ "receptor.h", "receptor_8h.html", null ],
+    [ "structure.h", "structure_8h.html", null ],
+    [ "symbol.h", "symbol_8h.html", null ],
     [ "Receptor", "structReceptor.html", [
       [ "flux", "structReceptor.html#a622c4885a917e9249fa213ccf47b04ff", null ],
       [ "root", "structReceptor.html#a7a280e923e97768c67f90303bcf8c152", null ],

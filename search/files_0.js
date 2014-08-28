@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['label_2ec',['label.c',['../label_8c.html',1,'']]],
-  ['label_2eh',['label.h',['../label_8h.html',1,'']]]
+  ['ceptr_5fspecs_2ec',['ceptr_specs.c',['../ceptr__specs_8c.html',1,'']]]
 ];

@@ -132,6 +132,7 @@ typedef struct <a class="el" href="structVMHost.html">VMHost</a>&#160;</td><td c
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:gab6fbe5683628fb0d62a966316ced938d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structVMHost.html">VMHost</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vmhost.html#gab6fbe5683628fb0d62a966316ced938d">_v_new</a> ()</td></tr>
+<tr class="memdesc:gab6fbe5683628fb0d62a966316ced938d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new virtual machine host.  <a href="#gab6fbe5683628fb0d62a966316ced938d">More...</a><br /></td></tr>
 <tr class="separator:gab6fbe5683628fb0d62a966316ced938d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga44e0f6d62e38448bfa058f287cc463eb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vmhost.html#ga44e0f6d62e38448bfa058f287cc463eb">_v_free</a> (<a class="el" href="structVMHost.html">VMHost</a> *r)</td></tr>
 <tr class="separator:ga44e0f6d62e38448bfa058f287cc463eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -228,6 +229,7 @@ Functions</h2></td></tr>
 <div class="line"></div>
 <div class="line">    <a class="code" href="group__vmhost.html#ga44e0f6d62e38448bfa058f287cc463eb">_v_free</a>(v);</div>
 <div class="line">    free(surface);</div>
+<div class="line">    <a class="code" href="group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8">_r_free</a>(r);</div>
 </div><!-- fragment --></dd></dl>
 
 </div>
@@ -244,7 +246,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Creates a new virtual machine host</p>
+
+<p>Creates a new virtual machine host. </p>
 <p>allocates all the memory needed in the heap</p>
 <dl class="section return"><dt>Returns</dt><dd>pointer to a newly allocated <a class="el" href="structVMHost.html">VMHost</a></dd></dl>
 <p>Test cases: </p><div class="fragment"><div class="line">    <a class="code" href="structVMHost.html">VMHost</a> *v = <a class="code" href="group__vmhost.html#gab6fbe5683628fb0d62a966316ced938d">_v_new</a>();</div>
@@ -260,7 +263,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Aug 27 2014 22:27:58 for ceptr by
+    <li class="footer">Generated on Thu Aug 28 2014 16:38:50 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
