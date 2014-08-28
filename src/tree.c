@@ -366,8 +366,8 @@ Tnode * _t_next_sibling(Tnode *t) {
 /**
  * compare equality of two paths
  *
- * @params[in] p1 first path
- * @params[in] p2 second path
+ * @param[in] p1 first path
+ * @param[in] p2 second path
  * @returns 1 if equal 0 if not
  *
  * Test cases:
@@ -382,7 +382,7 @@ int _t_path_equal(int *p1,int *p2){
 /**
  * return the depth of a given path
  *
- * @params[in] p path
+ * @param[in] p path
  * @returns int value of depth
  *
  * Test cases:
@@ -441,8 +441,8 @@ int * _t_get_path(Tnode *t) {
 /**
  * copy a path
  *
- * @params[inout] dst_p pointer to buffer holding destination path
- * @params[in] src_p path
+ * @param[inout] dst_p pointer to buffer holding destination path
+ * @param[in] src_p path
  *
  * Test cases:
  * @snippet spec/tree_spec.h testTreePathCopy
@@ -487,7 +487,7 @@ Tnode * _t_get(Tnode *t,int *p) {
  * @returns pointer to surface or NULL if path not found
  *
  * Test Cases:
- * @snippet spec/tree_spec.h testTreePathGetSurface
+ * @snippet spec/out]tree_spec.h testTreePathGetSurface
  */
 void * _t_get_surface(Tnode *t,int *p) {
     Tnode *c = _t_get(t,p);
