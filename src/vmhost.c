@@ -14,7 +14,7 @@
 /******************  create and destroy virtual machine */
 
 /**
- * @breif Creates a new virtual machine host
+ * @brief Creates a new virtual machine host
  *
  * allocates all the memory needed in the heap
  *

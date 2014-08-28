@@ -2,6 +2,16 @@
    @page howto_tests Running the self-tests
 
    The codebase is heavily tested as we use test-driven develpment practices.
+
    To compile and run all tests simple cd into the root directory and type "make"
 
+   Also, we've set things up so that Doxygen inserts the tests for the functions right
+   in the documentation for each function.
+
 */
+
+/**
+ * @defgroup tests
+ *
+ * @brief Ceptr codebase self-tests
+ */

@@ -1,12 +1,13 @@
 /**
- * @copyright Copyright (C) 2013-2014, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
- *
  * @file symbol.h
  * @brief Defines hard-coded system defined symbols.
  *
  * Symbols are a numeric semantic indicator (like a type) for tree nodes.
 
  * This file defines the hard-coded (negative value) system defined symbols
+ *
+ * @copyright Copyright (C) 2013-2014, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
+ * @ingroup receptor
  */
 
 #ifndef _CEPTR_SYMBOL_H

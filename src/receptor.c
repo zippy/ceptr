@@ -16,7 +16,7 @@
 /*****************  create and destroy receptors */
 
 /**
- * @breif Creates a new receptor
+ * @brief Creates a new receptor
  *
  * allocates all the memory needed in the heap
  *

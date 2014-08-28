@@ -1,6 +1,4 @@
 /**
- * @copyright Copyright (C) 2013-2014, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
- *
  * @ingroup tree
  *
  * @{
@@ -8,6 +6,7 @@
  * @file tree.c
  * @brief semantic tree implementation
  *
+ * @copyright Copyright (C) 2013-2014, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
  */
 
 #include "tree.h"
@@ -469,9 +468,12 @@ Tnode * _t_get(Tnode *t,int *p) {
     Tnode *c;
     if (i == TREE_PATH_TERMINATOR)
 	return t;
-    else if (i == 0)
-	/// @todo  semantic check to make sure surface is a tree?
-	c = *(Tnode **)(_t_surface(t));
+    else if (i == 0) {
+	if (!(t->context.flags & TFLAG_SURFACE_IS_TREE)) {
+	    raise_error0("surface is not an tree!");
+	}
+	c = (Tnode *)(_t_surface(t));
+    }
     else
 	c = _t_child(t,i);
     if (c == NULL ) return NULL;
@@ -487,7 +489,7 @@ Tnode * _t_get(Tnode *t,int *p) {
  * @returns pointer to surface or NULL if path not found
  *
  * Test Cases:
- * @snippet spec/out]tree_spec.h testTreePathGetSurface
+ * @snippet spec/tree_spec.h testTreePathGetSurface
  */
 void * _t_get_surface(Tnode *t,int *p) {
     Tnode *c = _t_get(t,p);
