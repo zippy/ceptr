@@ -30,7 +30,6 @@ var tree_8h =
     [ "_t_parent", "group__tree.html#ga53f622542bf17af9d30ebd19aa339fe5", null ],
     [ "_t_path_depth", "group__tree.html#ga55270b512ed52ffe5a938a793fa5cd7f", null ],
     [ "_t_path_equal", "group__tree.html#ga1d7afbc2a405c20a83b7bee4cfcb3a29", null ],
-    [ "_t_path_parent", "group__tree.html#ga47dee9789baa40961240b88369b633bc", null ],
     [ "_t_pathcpy", "group__tree.html#ga608555368dfdef7de1872f89b6fed637", null ],
     [ "_t_replace", "group__tree.html#ga571dd95ead249012211ffe5d180f56ec", null ],
     [ "_t_root", "group__tree.html#gab7560e5488d14cb6e04deb2f611144e2", null ],

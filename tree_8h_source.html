@@ -179,37 +179,38 @@ $(document).ready(function(){initNavTree('tree_8h_source.html','');});
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="keywordtype">int</span> _t_node_index(<a class="code" href="structTnode.html">Tnode</a> *t);</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="comment">/*****************  Tree path based accesses */</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="keywordtype">int</span> _t_path_equal(<span class="keywordtype">int</span> *p1,<span class="keywordtype">int</span> *p2);</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="keywordtype">int</span> _t_path_depth(<span class="keywordtype">int</span> *p);</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="keywordtype">void</span> _t_pathcpy(<span class="keywordtype">int</span> *dst_p,<span class="keywordtype">int</span> *src_p);</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="keywordtype">void</span> _t_path_parent(<span class="keywordtype">int</span> *n,<span class="keywordtype">int</span> *p);</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<a class="code" href="structTnode.html">Tnode</a> * <a class="code" href="group__tree.html#gad25dfd19f7a8ca955f32850fa867be0d">_t_get</a>(<a class="code" href="structTnode.html">Tnode</a> *t,<span class="keywordtype">int</span> *p);</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="keywordtype">int</span> *<a class="code" href="group__tree.html#ga19a429819da9dcbc89ec7e259ef32db0">_t_get_path</a>(<a class="code" href="structTnode.html">Tnode</a> *t);</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="keywordtype">void</span> * _t_get_surface(<a class="code" href="structTnode.html">Tnode</a> *t,<span class="keywordtype">int</span> *p);</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="keywordtype">char</span> * _t_sprint_path(<span class="keywordtype">int</span> *fp,<span class="keywordtype">char</span> *buf);</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="comment">_t_new();</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="comment">_t_free()</span></div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="comment">_t_get_child(t,nth_child)</span></div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="comment">_t_get_surface()</span></div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="comment">_t_get_parent()</span></div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="comment">_t_get_root()</span></div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="comment">_t_get_next_sibling()</span></div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="comment">_t_parse(); //semtrex style parsing</span></div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="comment">_t_match()</span></div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__tree.html#ga1d7afbc2a405c20a83b7bee4cfcb3a29">_t_path_equal</a>(<span class="keywordtype">int</span> *p1,<span class="keywordtype">int</span> *p2);</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__tree.html#ga55270b512ed52ffe5a938a793fa5cd7f">_t_path_depth</a>(<span class="keywordtype">int</span> *p);</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__tree.html#ga608555368dfdef7de1872f89b6fed637">_t_pathcpy</a>(<span class="keywordtype">int</span> *dst_p,<span class="keywordtype">int</span> *src_p);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<a class="code" href="structTnode.html">Tnode</a> * <a class="code" href="group__tree.html#gad25dfd19f7a8ca955f32850fa867be0d">_t_get</a>(<a class="code" href="structTnode.html">Tnode</a> *t,<span class="keywordtype">int</span> *p);</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="keywordtype">int</span> *<a class="code" href="group__tree.html#ga19a429819da9dcbc89ec7e259ef32db0">_t_get_path</a>(<a class="code" href="structTnode.html">Tnode</a> *t);</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="keywordtype">void</span> * <a class="code" href="group__tree.html#ga1f03093882ea8ad3d6e88951e4fc51b5">_t_get_surface</a>(<a class="code" href="structTnode.html">Tnode</a> *t,<span class="keywordtype">int</span> *p);</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="keywordtype">char</span> * <a class="code" href="group__tree.html#ga0e63c83e6413f47238db7fa20373c526">_t_sprint_path</a>(<span class="keywordtype">int</span> *fp,<span class="keywordtype">char</span> *buf);</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="comment">_t_new();</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="comment">_t_free()</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="comment">_t_get_child(t,nth_child)</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="comment">_t_get_surface()</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="comment">_t_get_parent()</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="comment">_t_get_root()</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="comment">_t_get_next_sibling()</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="comment">_t_parse(); //semtrex style parsing</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="comment">_t_match()</span></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
 <div class="ttc" id="structTstruct_html"><div class="ttname"><a href="structTstruct.html">Tstruct</a></div><div class="ttdef"><b>Definition:</b> tree.h:28</div></div>
 <div class="ttc" id="symbol_8h_html"><div class="ttname"><a href="symbol_8h.html">symbol.h</a></div><div class="ttdoc">Defines hard-coded system defined symbols. </div></div>
 <div class="ttc" id="group__tree_html_ga17676267c6fb457dd1d086f37641544a"><div class="ttname"><a href="group__tree.html#ga17676267c6fb457dd1d086f37641544a">_t_new_root</a></div><div class="ttdeci">Tnode * _t_new_root(Symbol symbol)</div><div class="ttdef"><b>Definition:</b> tree.c:100</div></div>
 <div class="ttc" id="group__tree_html_gaffb8b0a4288458ba9b4788a5bbb713ef"><div class="ttname"><a href="group__tree.html#gaffb8b0a4288458ba9b4788a5bbb713ef">__t_morph</a></div><div class="ttdeci">void __t_morph(Tnode *t, Symbol s, void *surface, size_t length, int allocate)</div><div class="ttdef"><b>Definition:</b> tree.c:175</div></div>
 <div class="ttc" id="group__tree_html_gaaeb6a7d7bf14e958d9e79c699edb8040"><div class="ttname"><a href="group__tree.html#gaaeb6a7d7bf14e958d9e79c699edb8040">_t_clone</a></div><div class="ttdeci">Tnode * _t_clone(Tnode *t)</div><div class="ttdef"><b>Definition:</b> tree.c:270</div></div>
+<div class="ttc" id="group__tree_html_ga55270b512ed52ffe5a938a793fa5cd7f"><div class="ttname"><a href="group__tree.html#ga55270b512ed52ffe5a938a793fa5cd7f">_t_path_depth</a></div><div class="ttdeci">int _t_path_depth(int *p)</div><div class="ttdef"><b>Definition:</b> tree.c:391</div></div>
 <div class="ttc" id="group__tree_html_gac9311eb831d86ab8395f9c1c81f584d9"><div class="ttname"><a href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a></div><div class="ttdeci">void _t_free(Tnode *t)</div><div class="ttdef"><b>Definition:</b> tree.c:244</div></div>
 <div class="ttc" id="group__tree_html_ga5a292a02511c82863edfcaa72fa9698c"><div class="ttname"><a href="group__tree.html#ga5a292a02511c82863edfcaa72fa9698c">_t_surface</a></div><div class="ttdeci">void * _t_surface(Tnode *t)</div><div class="ttdef"><b>Definition:</b> tree.c:291</div></div>
 <div class="ttc" id="group__tree_html_gaf459b3de598bba95efe941c4960f845d"><div class="ttname"><a href="group__tree.html#gaf459b3de598bba95efe941c4960f845d">_t_children</a></div><div class="ttdeci">int _t_children(Tnode *t)</div><div class="ttdef"><b>Definition:</b> tree.c:281</div></div>
+<div class="ttc" id="group__tree_html_ga608555368dfdef7de1872f89b6fed637"><div class="ttname"><a href="group__tree.html#ga608555368dfdef7de1872f89b6fed637">_t_pathcpy</a></div><div class="ttdeci">void _t_pathcpy(int *dst_p, int *src_p)</div><div class="ttdef"><b>Definition:</b> tree.c:450</div></div>
 <div class="ttc" id="group__tree_html_gab28a85eae18cd8b29c15ab535e312902"><div class="ttname"><a href="group__tree.html#gab28a85eae18cd8b29c15ab535e312902">_t_detach_by_ptr</a></div><div class="ttdeci">void _t_detach_by_ptr(Tnode *t, Tnode *c)</div><div class="ttdef"><b>Definition:</b> tree.c:153</div></div>
 <div class="ttc" id="group__tree_html_ga23646bb375d548b8bdce934f694b1741"><div class="ttname"><a href="group__tree.html#ga23646bb375d548b8bdce934f694b1741">_t_new</a></div><div class="ttdeci">Tnode * _t_new(Tnode *t, Symbol symbol, void *surface, size_t size)</div><div class="ttdef"><b>Definition:</b> tree.c:48</div></div>
 <div class="ttc" id="group__tree_html_ga302facc6d6e2d4937d560e081c828095"><div class="ttname"><a href="group__tree.html#ga302facc6d6e2d4937d560e081c828095">_t_detach_by_idx</a></div><div class="ttdeci">Tnode * _t_detach_by_idx(Tnode *t, int i)</div><div class="ttdef"><b>Definition:</b> tree.c:138</div></div>
@@ -219,14 +220,17 @@ $(document).ready(function(){initNavTree('tree_8h_source.html','');});
 <div class="ttc" id="group__tree_html_gabfc4da7bf9475fb3bad4ea20b5f78fab"><div class="ttname"><a href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a></div><div class="ttdeci">Symbol _t_symbol(Tnode *t)</div><div class="ttdef"><b>Definition:</b> tree.c:304</div></div>
 <div class="ttc" id="structure_8h_html"><div class="ttname"><a href="structure_8h.html">structure.h</a></div><div class="ttdoc">Defines hard-coded system defined structures. </div></div>
 <div class="ttc" id="group__tree_html_ga4df2c885d019894bd8e14d2637639621"><div class="ttname"><a href="group__tree.html#ga4df2c885d019894bd8e14d2637639621">_t_size</a></div><div class="ttdeci">size_t _t_size(Tnode *t)</div><div class="ttdef"><b>Definition:</b> tree.c:314</div></div>
+<div class="ttc" id="group__tree_html_ga1f03093882ea8ad3d6e88951e4fc51b5"><div class="ttname"><a href="group__tree.html#ga1f03093882ea8ad3d6e88951e4fc51b5">_t_get_surface</a></div><div class="ttdeci">void * _t_get_surface(Tnode *t, int *p)</div><div class="ttdef"><b>Definition:</b> tree.c:492</div></div>
+<div class="ttc" id="group__tree_html_ga1d7afbc2a405c20a83b7bee4cfcb3a29"><div class="ttname"><a href="group__tree.html#ga1d7afbc2a405c20a83b7bee4cfcb3a29">_t_path_equal</a></div><div class="ttdeci">int _t_path_equal(int *p1, int *p2)</div><div class="ttdef"><b>Definition:</b> tree.c:376</div></div>
 <div class="ttc" id="group__tree_html_ga91798c3f4945bb89b9c13e9b693ffd78"><div class="ttname"><a href="group__tree.html#ga91798c3f4945bb89b9c13e9b693ffd78">_t_morph</a></div><div class="ttdeci">void _t_morph(Tnode *dst, Tnode *src)</div><div class="ttdef"><b>Definition:</b> tree.c:203</div></div>
 <div class="ttc" id="group__tree_html_gaff88720dad09389f6b7f35f7985d8efd"><div class="ttname"><a href="group__tree.html#gaff88720dad09389f6b7f35f7985d8efd">_t_newr</a></div><div class="ttdeci">Tnode * _t_newr(Tnode *parent, Symbol symbol)</div><div class="ttdef"><b>Definition:</b> tree.c:111</div></div>
 <div class="ttc" id="group__tree_html_gab438eeedb3eb6c1e20171b33d8ec499d"><div class="ttname"><a href="group__tree.html#gab438eeedb3eb6c1e20171b33d8ec499d">_t_newi</a></div><div class="ttdeci">Tnode * _t_newi(Tnode *parent, Symbol symbol, int surface)</div><div class="ttdef"><b>Definition:</b> tree.c:69</div></div>
 <div class="ttc" id="group__tree_html_ga49e337d9576c1f143e88a02aa9184756"><div class="ttname"><a href="group__tree.html#ga49e337d9576c1f143e88a02aa9184756">_t_next_sibling</a></div><div class="ttdeci">Tnode * _t_next_sibling(Tnode *t)</div><div class="ttdef"><b>Definition:</b> tree.c:350</div></div>
 <div class="ttc" id="structTcontext_html"><div class="ttname"><a href="structTcontext.html">Tcontext</a></div><div class="ttdef"><b>Definition:</b> tree.h:46</div></div>
-<div class="ttc" id="group__tree_html_ga19a429819da9dcbc89ec7e259ef32db0"><div class="ttname"><a href="group__tree.html#ga19a429819da9dcbc89ec7e259ef32db0">_t_get_path</a></div><div class="ttdeci">int * _t_get_path(Tnode *t)</div><div class="ttdef"><b>Definition:</b> tree.c:379</div></div>
-<div class="ttc" id="group__tree_html_gad25dfd19f7a8ca955f32850fa867be0d"><div class="ttname"><a href="group__tree.html#gad25dfd19f7a8ca955f32850fa867be0d">_t_get</a></div><div class="ttdeci">Tnode * _t_get(Tnode *t, int *p)</div><div class="ttdef"><b>Definition:</b> tree.c:427</div></div>
+<div class="ttc" id="group__tree_html_ga19a429819da9dcbc89ec7e259ef32db0"><div class="ttname"><a href="group__tree.html#ga19a429819da9dcbc89ec7e259ef32db0">_t_get_path</a></div><div class="ttdeci">int * _t_get_path(Tnode *t)</div><div class="ttdef"><b>Definition:</b> tree.c:410</div></div>
+<div class="ttc" id="group__tree_html_gad25dfd19f7a8ca955f32850fa867be0d"><div class="ttname"><a href="group__tree.html#gad25dfd19f7a8ca955f32850fa867be0d">_t_get</a></div><div class="ttdeci">Tnode * _t_get(Tnode *t, int *p)</div><div class="ttdef"><b>Definition:</b> tree.c:467</div></div>
 <div class="ttc" id="group__tree_html_ga571dd95ead249012211ffe5d180f56ec"><div class="ttname"><a href="group__tree.html#ga571dd95ead249012211ffe5d180f56ec">_t_replace</a></div><div class="ttdeci">void _t_replace(Tnode *t, int i, Tnode *r)</div><div class="ttdef"><b>Definition:</b> tree.c:215</div></div>
+<div class="ttc" id="group__tree_html_ga0e63c83e6413f47238db7fa20373c526"><div class="ttname"><a href="group__tree.html#ga0e63c83e6413f47238db7fa20373c526">_t_sprint_path</a></div><div class="ttdeci">char * _t_sprint_path(int *fp, char *buf)</div><div class="ttdef"><b>Definition:</b> tree.c:508</div></div>
 <div class="ttc" id="structTnode_html"><div class="ttname"><a href="structTnode.html">Tnode</a></div><div class="ttdef"><b>Definition:</b> tree.h:51</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -234,7 +238,7 @@ $(document).ready(function(){initNavTree('tree_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="tree_8h.html">tree.h</a></li>
-    <li class="footer">Generated on Wed Aug 27 2014 14:38:18 for ceptr by
+    <li class="footer">Generated on Wed Aug 27 2014 22:25:16 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

@@ -141,7 +141,7 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>spec_is_ptr_equal</b>(got, expected)&#160;&#160;&#160;spec_total++; if (expected==got){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],&quot;%s:%d expected %s to be %p but was %p&quot;,__FUNCTION__,__LINE__,#got,expected,got);}</td></tr>
 <tr class="separator:a0e1d27b13acba9748332405135635d12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af69b6b4e33b5aade4837382c3a5ae3b9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af69b6b4e33b5aade4837382c3a5ae3b9"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>spec_is_path_equal</b>(got, expected)&#160;&#160;&#160;spec_total++; if (got &amp;&amp; _t_path_equal(got,expected)){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],&quot;%s:%d expected %s to be %s but was %s&quot;,__FUNCTION__,__LINE__,#got,_t_sprint_path(expected,buf1),got ? _t_sprint_path(got,buf2) : &quot;nil&quot;);}</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>spec_is_path_equal</b>(got, expected)&#160;&#160;&#160;spec_total++; if (got &amp;&amp; <a class="el" href="group__tree.html#ga1d7afbc2a405c20a83b7bee4cfcb3a29">_t_path_equal</a>(got,expected)){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],&quot;%s:%d expected %s to be %s but was %s&quot;,__FUNCTION__,__LINE__,#got,<a class="el" href="group__tree.html#ga0e63c83e6413f47238db7fa20373c526">_t_sprint_path</a>(expected,buf1),got ? <a class="el" href="group__tree.html#ga0e63c83e6413f47238db7fa20373c526">_t_sprint_path</a>(got,buf2) : &quot;nil&quot;);}</td></tr>
 <tr class="separator:af69b6b4e33b5aade4837382c3a5ae3b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2dfb87eee95edb34c68f45319059223e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2dfb87eee95edb34c68f45319059223e"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>spec_is_float_equal</b>(got, expected)&#160;&#160;&#160;spec_total++; if (expected==got){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],&quot;%s:%d expected %s to be %f but was %f&quot;,__FUNCTION__,__LINE__,#got,expected,got);}</td></tr>
@@ -183,7 +183,7 @@ char&#160;</td><td class="memItemRight" valign="bottom"><b>buf2</b> [255]</td></
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><a class="el" href="test__framework_8h.html">test_framework.h</a></li>
-    <li class="footer">Generated on Wed Aug 27 2014 14:38:18 for ceptr by
+    <li class="footer">Generated on Wed Aug 27 2014 22:25:16 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
