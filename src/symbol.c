@@ -9,15 +9,17 @@
  */
 
 #include "tree.h"
-
-char __s_extra_buf[50];
+#include "symbol.h"
+char __s_extra_buf[10];
 
 /**
- * get symbols label
+ * get symbol's label
  *
  * @param[in] symbol_defs a symbol def tree containing symbol definitions
  * @param[in] s the Symbol to return the name for
  * @returns char * pointing to label
+ *
+ * <b>Examples (from test suite):</b>
  * @snippet spec/symbol_spec.h testSymbolGetName
  */
 char *_s_get_symbol_name(Tnode *symbol_defs,Symbol s) {
@@ -34,6 +36,28 @@ char *_s_get_symbol_name(Tnode *symbol_defs,Symbol s) {
 }
 
 /**
+ * get structure's label
+ *
+ * @param[in] structure_defs a structre def tree containing structure definitions
+ * @param[in] s the Structure to return the name for
+ * @returns char * pointing to label
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/symbol_spec.h testStructureGetName
+ */
+char *_s_get_structure_name(Tnode *structure_defs,Structure s) {
+    if (s>NULL_STRUCTURE && s <_LAST_SYS_STRUCTURE )
+	return G_sys_structure_names[s-NULL_STRUCTURE];
+    else if (structure_defs) {
+	Tnode *def = _t_child(structure_defs,s);
+	return (char *)_t_surface(def);
+    }
+    sprintf(__s_extra_buf,"<unknown structure:%d>",s);
+    return __s_extra_buf;
+}
+
+
+/**
  * add a symbol definition to a symbol defs tree
  *
  * @param[in] symbol_defs a symbol def tree containing symbol definitions
@@ -41,13 +65,44 @@ char *_s_get_symbol_name(Tnode *symbol_defs,Symbol s) {
  * @param[in] label a c-string label for this symbol
  * @returns the new symbol def
  *
- * @snippet spec/symbol_spec.h testSymbolDef
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/symbol_spec.h testDefSymbol
  */
-Tnode * _s_def(Tnode *symbol_defs,Structure s,char *label){
+Tnode * _s_def_symbol(Tnode *symbol_defs,Structure s,char *label){
     Tnode *def = _t_newr(symbol_defs,SYMBOL_DEF);
     _t_newi(def,SYMBOL_STRUCTURE,s);
     _t_new(def,SYMBOL_LABEL,label,strlen(label)+1);
     return def;
 }
+
+/**
+ * add a structure definition to a structure defs tree
+ *
+ * @param[in] structure_defs a structre def tree containing structure definitions
+ * @param[in] label a c-string label for this symbol
+ * @param[in] num_params number of symbols in the structure
+ * @param[in] ... variable list of Symbol type symbols
+ * @returns the new structure def
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/symbol_spec.h testDefStructure
+ */
+Tnode * _s_def_structure(Tnode *structure_defs,char *label,int num_params,...) {
+    va_list params;
+    va_start(params,num_params);
+    Tnode *def = _vs_def_structure(structure_defs,label,num_params,params);
+    va_end(params);
+    return def;
+}
+
+Tnode * _vs_def_structure(Tnode *structure_defs,char *label,int num_params,va_list params) {
+    Tnode *def = _t_new(structure_defs,STRUCTURE_DEF,label,strlen(label)+1);
+    int i;
+    for(i=0;i<num_params;i++) {
+	_t_newi(def,STRUCTURE_PART,va_arg(params,Symbol));
+    }
+    return def;
+}
+
 
 /** @}*/

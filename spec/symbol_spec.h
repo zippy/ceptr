@@ -13,21 +13,48 @@ void testSymbolGetName() {
     //! [testSymbolGetName]
 }
 
-void testSymbolDef() {
-    //! [testSymbolDef]
+void testStructureGetName() {
+    //! [testStructureGetName]
+    spec_is_str_equal(_s_get_structure_name(0,INTEGER),"INTEGER");
+    //! [testStructureGetName]
+}
+
+void testDefSymbol() {
+    //! [testDefSymbol]
     Tnode *defs = _t_new_root(SYMBOLS);
 
-    Tnode *def = _s_def(defs,INTEGER,"shoe size");
+    Tnode *def = _s_def_symbol(defs,INTEGER,"shoe size");
     spec_is_equal(_t_children(defs),1);
     spec_is_ptr_equal(_t_child(defs,1),def);
     spec_is_equal(_t_symbol(_t_child(defs,1)),SYMBOL_DEF);
     spec_is_equal(_t_symbol(_t_child(_t_child(defs,1),1)),SYMBOL_STRUCTURE);
     spec_is_equal(_t_symbol(_t_child(_t_child(defs,1),2)),SYMBOL_LABEL);
 
-    //! [testSymbolDef]
+    _t_free(defs);
+    //! [testDefSymbol]
+}
+
+void testDefStructure() {
+    //! [testDefStructure]
+    Tnode *defs = _t_new_root(STRUCTURES);
+
+    Tnode *def = _s_def_structure(defs,"receptor pair",2,RECEPTOR,RECEPTOR);
+    spec_is_equal(_t_children(defs),1);
+    spec_is_ptr_equal(_t_child(defs,1),def);
+    Tnode *s = _t_child(defs,1);
+    spec_is_equal(_t_symbol(s),STRUCTURE_DEF);
+    spec_is_str_equal((char *)_t_surface(s),"receptor pair")
+    spec_is_equal(_t_children(s),2);
+    spec_is_equal(_t_symbol(_t_child(s,1)),STRUCTURE_PART);
+    spec_is_equal(_t_symbol(_t_child(s,1)),STRUCTURE_PART);
+
+    _t_free(defs);
+    //! [testDefStructure]
 }
 
 void testSymbol() {
     testSymbolGetName();
-    testSymbolDef();
+    testStructureGetName();
+    testDefSymbol();
+    testDefStructure();
 }

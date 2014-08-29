@@ -83,23 +83,33 @@ int __get_label_idx(Receptor *r,char *label) {
 
 /**
  * define a new symbol
+ *
+ * @param[in] symbol_defs a symbol def tree containing symbol definitions
+ * @param[in] s the structure type for this symbol
+ * @param[in] label a c-string label for this symbol
+ * @returns the new Symbol
+ *
  */
 Symbol _r_def_symbol(Receptor *r,Structure s,char *label){
-    Tnode *def = _s_def(r->symbols,s,label);
+    Tnode *def = _s_def_symbol(r->symbols,s,label);
     return __set_label_for_def(r,label,def);
 }
 
 /**
  * define a new structure
+ *
+ * @param[in] symbol_defs a symbol def tree containing symbol definitions
+ * @param[in] s the structure type for this symbol
+ * @param[in] label a c-string label for this symbol
+ * @param[in] num_params number of symbols in the structure
+ * @param[in] ... variable list of Symbol type symbols
+ * @returns the new Structure
+ *
  */
 Structure _r_def_structure(Receptor *r,char *label,int num_params,...) {
     va_list params;
-    Tnode *def = _t_new(r->structures,STRUCTURE_DEF,label,strlen(label)+1);
-    int i;
     va_start(params,num_params);
-    for(i=0;i<num_params;i++) {
-	_t_newi(def,STRUCTURE_PART,va_arg(params,Symbol));
-    }
+    Tnode *def = _vs_def_structure(r->structures,label,num_params,params);
     va_end(params);
 
     return __set_label_for_def(r,label,def);
@@ -159,7 +169,7 @@ size_t __r_get_structure_size(Receptor *r,Structure s,void *surface) {
 	case FLOAT: return sizeof(float);
 	case CSTRING: return strlen(surface)+1;
 	case SERIALIZED_TREE: return *(size_t *)surface;
-	default: raise_error2("DON'T HAVE A SIZE FOR STRUCTURE '%s' (%d)",_s_get_structure_name(r,s),s);
+	default: raise_error2("DON'T HAVE A SIZE FOR STRUCTURE '%s' (%d)",_r_get_structure_name(r,s),s);
 	}
     }
     else {
@@ -479,14 +489,8 @@ char *_r_get_symbol_name(Receptor *r,Symbol s) {
     return _s_get_symbol_name(r?r->symbols:0,s);
 }
 
-char *_s_get_structure_name(Receptor *r,Structure s) {
-    if (s>NULL_STRUCTURE && s <_LAST_SYS_STRUCTURE )
-	return G_sys_structure_names[s-NULL_STRUCTURE];
-    else if (r) {
-	Tnode *def = _t_child(r->structures,s);
-	return (char *)_t_surface(def);
-    }
-    return "<unknown structure>";
+char *_r_get_structure_name(Receptor *r,Structure s) {
+    return _s_get_structure_name(r?r->structures:0,s);
 }
 
 char * __t_dump(Receptor *r,Tnode *t,int level,char *buf) {
@@ -529,7 +533,7 @@ char * __t_dump(Receptor *r,Tnode *t,int level,char *buf) {
 	sprintf(buf," (%s:%s",n,c?c:"<unknown>");
 	break;
     case SYMBOL_STRUCTURE:
-	c = _s_get_structure_name(r,*(int *)_t_surface(t));
+	c = _r_get_structure_name(r,*(int *)_t_surface(t));
 	sprintf(buf," (%s:%s",n,c?c:"<unknown>");
 	break;
     default:

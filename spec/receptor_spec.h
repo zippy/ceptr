@@ -6,7 +6,7 @@
 
 #include "../src/ceptr.h"
 #include "../src/receptor.h"
-
+#include "../src/symbol.h"
 void testReceptorCreate() {
     //! [testReceptorCreate]
     Receptor *r;

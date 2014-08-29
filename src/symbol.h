@@ -10,7 +10,12 @@
 #define _CEPTR_SYMBOL_H
 
 #include "tree.h"
+#include <stdarg.h>
 
 char *_s_get_symbol_name(Tnode *symbol_defs,Symbol s);
-Tnode * _s_def(Tnode *symbol_defs,Structure s,char *label);
+char *_s_get_structure_name(Tnode *structure_defs,Structure s);
+Tnode * _s_def_symbol(Tnode *symbol_defs,Structure s,char *label);
+Tnode * _s_def_structure(Tnode *structure_defs,char *label,int num_params,...);
+Tnode * _vs_def_structure(Tnode *structure_defs,char *label,int num_params,va_list params);
+
 #endif
