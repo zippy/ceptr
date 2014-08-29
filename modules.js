@@ -6,5 +6,5 @@ var modules =
     [ "Semantic Tree Regular Expressions", "group__semtrex.html", "group__semtrex" ],
     [ "Semantic Trees", "group__tree.html", "group__tree" ],
     [ "Virtual Machine Host Receptor", "group__vmhost.html", "group__vmhost" ],
-    [ "Tests", "group__tests.html", "group__tests" ]
+    [ "Test Suite", "group__tests.html", "group__tests" ]
 ];

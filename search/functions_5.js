@@ -3,6 +3,7 @@ var searchData=
   ['testprocess',['testProcess',['../process__spec_8h.html#a6740b7d84ca2f7e0027274a8c686d872',1,'process_spec.h']]],
   ['testreceptoraction',['testReceptorAction',['../receptor__spec_8h.html#a3cae92defb2178364fc0d8f7eded5089',1,'receptor_spec.h']]],
   ['testreceptorcreate',['testReceptorCreate',['../receptor__spec_8h.html#a3a764534a7cc2c00a1e15642d0554b7c',1,'receptor_spec.h']]],
+  ['testreceptorserialize',['testReceptorSerialize',['../receptor__spec_8h.html#a0c65a8eec063de14d49ae6c3fadcf0d8',1,'receptor_spec.h']]],
   ['testtreeclone',['testTreeClone',['../tree__spec_8h.html#a61b28f10ff4df871f93a9b98c2a6dbf8',1,'tree_spec.h']]],
   ['testtreedetach',['testTreeDetach',['../tree__spec_8h.html#a80fb5c03826178e4332803fb546777fc',1,'tree_spec.h']]],
   ['testtreemorph',['testTreeMorph',['../tree__spec_8h.html#aecd9cd243076dc7b034b53bed7c297a0',1,'tree_spec.h']]],

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['tests',['Tests',['../group__tests.html',1,'']]]
+  ['test_20suite',['Test Suite',['../group__tests.html',1,'']]]
 ];
