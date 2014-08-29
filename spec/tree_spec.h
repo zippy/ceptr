@@ -146,18 +146,6 @@ Tnode *_makeTestHTTPRequestTree() {
 }
 //! [makeTestHTTPRequestTree]
 
-Tnode *_makeTestTree() {
-    Tnode *t = _t_new(0,TEST_STR_SYMBOL,"t",2);
-    Tnode *t1 = _t_new(t,TEST_STR_SYMBOL,"t1",3);
-    Tnode *t2 = _t_new(t,TEST_STR_SYMBOL,"t2",3);
-    Tnode *t11 = _t_new(t1,TEST_STR_SYMBOL,"t11",4);
-    Tnode *t111 = _t_new(t11,TEST_STR_SYMBOL,"t111",5);
-    Tnode *t12 = _t_new(t1,TEST_STR_SYMBOL,"t12",4);
-    Tnode *t21 = _t_new(t2,TEST_STR_SYMBOL,"t21",4);
-    Tnode *t211 = _t_new(t21,TEST_STR_SYMBOL,"t211",5);
-    return t;
-}
-
 void testTreePathGet() {
     //! [testTreePathGet]
     Tnode *t = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
@@ -311,45 +299,89 @@ void testTreeNodeIndex() {
 }
 
 void testTreeClone() {
-    Tnode *t = _makeTestTree();
+    //! [testTreeClone]
+    Tnode *t = _makeTestHTTPRequestTree();
     Tnode *c = _t_clone(t);
 
     spec_is_true(t!=c);
     spec_is_equal(_t_children(c),_t_children(t));
 
+    char buf1[2000];
+    char buf2[2000];
+    __t_dump(0,c,0,buf1);
+    __t_dump(0,t,0,buf2);
+
+    spec_is_str_equal(buf1,buf2);
+
     _t_free(t);
     _t_free(c);
+    //! [testTreeClone]
 }
 
-void testTreeModify() {
-    Tnode *t = _makeTestTree();
-    Tnode *x = _t_newi(0,TEST_SYMBOL,123);
+void testTreeReplace() {
+    //! [testTreeReplace]
+    Tnode *t = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
+
+    // replace the version with a new version
+    Tnode *t_version = _t_newr(0,TSYM_HTTP_REQUEST_VERSION);
+    _t_newi(t_version,TSYM_HTTP_REQUEST_VERSION_MAJOR,1);
+    _t_newi(t_version,TSYM_HTTP_REQUEST_VERSION_MINOR,1);
+
+    int p[] = {1,2,TREE_PATH_TERMINATOR};
+    spec_is_equal(*(int *)_t_get_surface(t,p),0);
+    _t_replace(t,1,t_version);
+    spec_is_equal(*(int *)_t_get_surface(t,p),1);
+
+    _t_free(t);
+    //! [testTreeReplace]
+}
+
+void testTreeMorph() {
+    //! [testTreeMorph]
     char buf[2000];
-    _t_replace(t,1,x);
-    spec_is_ptr_equal(_t_child(t,1),x);
-    spec_is_ptr_equal(_t_parent(x),t);
-
-    __t_dump(0,t,0,buf);
-    spec_is_str_equal(_td(0,t)," (TEST_STR_SYMBOL:t (TEST_SYMBOL:123) (TEST_STR_SYMBOL:t2 (TEST_STR_SYMBOL:t21 (TEST_STR_SYMBOL:t211))))");
-    Tnode *y = _t_detach_by_idx(t,1);
-    spec_is_ptr_equal(_t_parent(y),NULL);
-    __t_dump(0,t,0,buf);
-    spec_is_str_equal(buf," (TEST_STR_SYMBOL:t (TEST_STR_SYMBOL:t2 (TEST_STR_SYMBOL:t21 (TEST_STR_SYMBOL:t211))))");
-    spec_is_ptr_equal(x,y);
-
+    Tnode *x = _t_newi(0,TEST_SYMBOL,123);
     Tnode *z = _t_new(0,TEST_STR_SYMBOL,"fish",5);
+
     _t_morph(x,z);
     __t_dump(0,x,0,buf);
     spec_is_str_equal(buf," (TEST_STR_SYMBOL:fish)");
 
+    _t_free(x);
+    _t_free(z);
+    //! [testTreeMorph]
+}
+
+void testTreeMorphLowLevel() {
+    //! [testTreeMorphLowLevel]
+    char buf[2000];
+    Tnode *x = _t_new(0,TEST_STR_SYMBOL,"fish",5);
     int i = 789;
+
     __t_morph(x,TEST_SYMBOL,&i,sizeof(int),0);
     __t_dump(0,x,0,buf);
     spec_is_str_equal(buf," (TEST_SYMBOL:789)");
 
-    _t_free(t);
     _t_free(x);
-    _t_free(z);
+    //! [testTreeMorphLowLevel]
+}
+
+void testTreeDetach() {
+    //! [testTreeDetach]
+    Tnode *t = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
+    char buf[2000];
+    int p1[] = {1,TREE_PATH_TERMINATOR};
+
+    // remove the version from the tree
+    spec_is_symbol_equal(0,_t_symbol(_t_get(t,p1)),TSYM_HTTP_REQUEST_VERSION);
+    Tnode *t_version = _t_detach_by_idx(t,1);
+    spec_is_symbol_equal(0,_t_symbol(_t_get(t,p1)),TSYM_HTTP_REQUEST_METHOD);
+
+    // detached nodes shouldn't have a parent
+    spec_is_ptr_equal(_t_parent(t_version),NULL);
+
+    _t_free(t);
+    _t_free(t_version);
+    //! [testTreeDetach]
 }
 
 void testTree() {
@@ -365,5 +397,8 @@ void testTree() {
     testTreePathCopy();
     testTreePathSprint();
     testTreeClone();
-    testTreeModify();
+    testTreeReplace();
+    testTreeMorph();
+    testTreeMorphLowLevel();
+    testTreeDetach();
 }
