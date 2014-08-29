@@ -203,7 +203,8 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structXaddr.html">Xaddr</a> of the instance Test cases: <div class="fragment"><div class="line">    <a class="code" href="structVMHost.html">VMHost</a> *v = <a class="code" href="group__vmhost.html#gab6fbe5683628fb0d62a966316ced938d">_v_new</a>();</div>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structXaddr.html">Xaddr</a> of the instance</dd></dl>
+<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structVMHost.html">VMHost</a> *v = <a class="code" href="group__vmhost.html#gab6fbe5683628fb0d62a966316ced938d">_v_new</a>();</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// create a test receptor that knows about house locations to be installed into</span></div>
 <div class="line">    <span class="comment">// the vmhost</span></div>
@@ -230,8 +231,7 @@ Functions</h2></td></tr>
 <div class="line">    <a class="code" href="group__vmhost.html#ga44e0f6d62e38448bfa058f287cc463eb">_v_free</a>(v);</div>
 <div class="line">    free(surface);</div>
 <div class="line">    <a class="code" href="group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8">_r_free</a>(r);</div>
-</div><!-- fragment --></dd></dl>
-
+</div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="gab6fbe5683628fb0d62a966316ced938d"></a>
@@ -250,7 +250,7 @@ Functions</h2></td></tr>
 <p>Creates a new virtual machine host. </p>
 <p>allocates all the memory needed in the heap</p>
 <dl class="section return"><dt>Returns</dt><dd>pointer to a newly allocated <a class="el" href="structVMHost.html">VMHost</a></dd></dl>
-<p>Test cases: </p><div class="fragment"><div class="line">    <a class="code" href="structVMHost.html">VMHost</a> *v = <a class="code" href="group__vmhost.html#gab6fbe5683628fb0d62a966316ced938d">_v_new</a>();</div>
+<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structVMHost.html">VMHost</a> *v = <a class="code" href="group__vmhost.html#gab6fbe5683628fb0d62a966316ced938d">_v_new</a>();</div>
 <div class="line"></div>
 <div class="line">    spec_is_symbol_equal(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,<a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>-&gt;<a class="code" href="structReceptor.html#a7a280e923e97768c67f90303bcf8c152">root</a>),RECEPTOR);</div>
 <div class="line"></div>
@@ -263,7 +263,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Aug 28 2014 16:38:50 for ceptr by
+    <li class="footer">Generated on Thu Aug 28 2014 21:32:23 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

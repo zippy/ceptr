@@ -22,11 +22,12 @@ var tree__spec_8h =
       [ "TSYM_HTTP_REQUEST_VERSION_MINOR", "tree__spec_8h.html#a3cd90f0c55224e37c2cf0447c4669b94a194729eca7031bbb449311eb9e495d17", null ]
     ] ],
     [ "_makeTestHTTPRequestTree", "tree__spec_8h.html#a00c3c0cf4519afa3c2906864d9f99c25", null ],
-    [ "_makeTestTree", "tree__spec_8h.html#a544035b20cac0a3d9f39d7452dcae707", null ],
     [ "testCreateTreeNodes", "tree__spec_8h.html#a286550bec63d29f38a427e12679f838a", null ],
     [ "testTree", "tree__spec_8h.html#a3b7a25fec254f0861dab0728feec3cce", null ],
     [ "testTreeClone", "tree__spec_8h.html#a61b28f10ff4df871f93a9b98c2a6dbf8", null ],
-    [ "testTreeModify", "tree__spec_8h.html#a99925e3da25a20000e8dc4525dda0cf6", null ],
+    [ "testTreeDetach", "tree__spec_8h.html#a80fb5c03826178e4332803fb546777fc", null ],
+    [ "testTreeMorph", "tree__spec_8h.html#aecd9cd243076dc7b034b53bed7c297a0", null ],
+    [ "testTreeMorphLowLevel", "tree__spec_8h.html#ad67357180aa840b09dfc3a37493f56e9", null ],
     [ "testTreeNodeIndex", "tree__spec_8h.html#a2135f4c00a6d218e0de5b1f63bb2a54a", null ],
     [ "testTreeOrthogonal", "tree__spec_8h.html#a661b056d3b9e868c4bb8ab505631f2d0", null ],
     [ "testTreePathCopy", "tree__spec_8h.html#a5986d99ac81ace5b68beb3d5c255ca61", null ],
@@ -36,5 +37,6 @@ var tree__spec_8h =
     [ "testTreePathGetPath", "tree__spec_8h.html#a14b70ecd723111bbe4d10b3d3e36600a", null ],
     [ "testTreePathGetSurface", "tree__spec_8h.html#ad27e0ca8287fd12eb5823170bb306c90", null ],
     [ "testTreePathSprint", "tree__spec_8h.html#a3473a2e241b0849ddfca791ffc713857", null ],
-    [ "testTreeRealloc", "tree__spec_8h.html#a5ab4f95726a96eba403ad1a978d075d6", null ]
+    [ "testTreeRealloc", "tree__spec_8h.html#a5ab4f95726a96eba403ad1a978d075d6", null ],
+    [ "testTreeReplace", "tree__spec_8h.html#a40c176590d4f13d3110238f7c50824fb", null ]
 ];

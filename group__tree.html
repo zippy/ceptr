@@ -255,7 +255,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>length</em>, </td>
+          <td class="paramname"><em>size</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -270,7 +270,29 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000010">Todo:</a></b></dt><dd>Handle the case where the surface of the node to be morphed is itself a tree </dd></dl>
+<p>Convert the surface of a node</p>
+<p>Frees the original surface value if it was allocated.</p>
+<dl class="section note"><dt>Note</dt><dd>only converts the type and surface, not the children! </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">t</td><td>Node to be morphed </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>Symbol to change the surface to </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">surface</td><td>data to copy into the surface </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">size</td><td>of data </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">allocate</td><td>boolean to know whether to allocate surface or copy the surface as an int</td></tr>
+  </table>
+  </dd>
+</dl>
+<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <span class="keywordtype">char</span> buf[2000];</div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *x = <a class="code" href="group__tree.html#ga23646bb375d548b8bdce934f694b1741">_t_new</a>(0,TEST_STR_SYMBOL,<span class="stringliteral">&quot;fish&quot;</span>,5);</div>
+<div class="line">    <span class="keywordtype">int</span> i = 789;</div>
+<div class="line"></div>
+<div class="line">    <a class="code" href="group__tree.html#gaffb8b0a4288458ba9b4788a5bbb713ef">__t_morph</a>(x,TEST_SYMBOL,&amp;i,<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>),0);</div>
+<div class="line">    __t_dump(0,x,0,buf);</div>
+<div class="line">    spec_is_str_equal(buf,<span class="stringliteral">&quot; (TEST_SYMBOL:789)&quot;</span>);</div>
+<div class="line"></div>
+<div class="line">    <a class="code" href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a>(x);</div>
+</div><!-- fragment --><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000010">Todo:</a></b></dt><dd>Handle the case where the surface of the node to be morphed is itself a tree </dd></dl>
 
 </div>
 </div>
@@ -354,8 +376,23 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structTnode.html">Tnode</a> duplicated tree </dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000012">Todo:</a></b></dt><dd>make this work with trees that have orthogonal trees! </dd></dl>
-<dl class="bug"><dt><b><a class="el" href="bug.html#_bug000001">Bug:</a></b></dt><dd>doesn't properly clone trees with orthogonal trees </dd></dl>
-
+<dl class="bug"><dt><b><a class="el" href="bug.html#_bug000001">Bug:</a></b></dt><dd>doesn't properly clone trees with orthogonal trees</dd></dl>
+<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structTnode.html">Tnode</a> *t = <a class="code" href="tree__spec_8h.html#a00c3c0cf4519afa3c2906864d9f99c25">_makeTestHTTPRequestTree</a>();</div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *c = <a class="code" href="group__tree.html#gaaeb6a7d7bf14e958d9e79c699edb8040">_t_clone</a>(t);</div>
+<div class="line"></div>
+<div class="line">    spec_is_true(t!=c);</div>
+<div class="line">    spec_is_equal(<a class="code" href="group__tree.html#gaf459b3de598bba95efe941c4960f845d">_t_children</a>(c),<a class="code" href="group__tree.html#gaf459b3de598bba95efe941c4960f845d">_t_children</a>(t));</div>
+<div class="line"></div>
+<div class="line">    <span class="keywordtype">char</span> buf1[2000];</div>
+<div class="line">    <span class="keywordtype">char</span> buf2[2000];</div>
+<div class="line">    __t_dump(0,c,0,buf1);</div>
+<div class="line">    __t_dump(0,t,0,buf2);</div>
+<div class="line"></div>
+<div class="line">    spec_is_str_equal(buf1,buf2);</div>
+<div class="line"></div>
+<div class="line">    <a class="code" href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a>(t);</div>
+<div class="line">    <a class="code" href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a>(c);</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ga302facc6d6e2d4937d560e081c828095"></a>
@@ -390,8 +427,22 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the detatched child </dd></dl>
-
+<dl class="section return"><dt>Returns</dt><dd>the detatched child</dd></dl>
+<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structTnode.html">Tnode</a> *t = <a class="code" href="tree__spec_8h.html#a00c3c0cf4519afa3c2906864d9f99c25">_makeTestHTTPRequestTree</a>(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
+<div class="line">    <span class="keywordtype">char</span> buf[2000];</div>
+<div class="line">    <span class="keywordtype">int</span> p1[] = {1,TREE_PATH_TERMINATOR};</div>
+<div class="line"></div>
+<div class="line">    <span class="comment">// remove the version from the tree</span></div>
+<div class="line">    spec_is_symbol_equal(0,<a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(<a class="code" href="group__tree.html#gad25dfd19f7a8ca955f32850fa867be0d">_t_get</a>(t,p1)),TSYM_HTTP_REQUEST_VERSION);</div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *t_version = <a class="code" href="group__tree.html#ga302facc6d6e2d4937d560e081c828095">_t_detach_by_idx</a>(t,1);</div>
+<div class="line">    spec_is_symbol_equal(0,<a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(<a class="code" href="group__tree.html#gad25dfd19f7a8ca955f32850fa867be0d">_t_get</a>(t,p1)),TSYM_HTTP_REQUEST_METHOD);</div>
+<div class="line"></div>
+<div class="line">    <span class="comment">// detached nodes shouldn&#39;t have a parent</span></div>
+<div class="line">    spec_is_ptr_equal(_t_parent(t_version),NULL);</div>
+<div class="line"></div>
+<div class="line">    <a class="code" href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a>(t);</div>
+<div class="line">    <a class="code" href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a>(t_version);</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="gab28a85eae18cd8b29c15ab535e312902"></a>
@@ -486,7 +537,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>pointer to a <a class="el" href="structTnode.html">Tnode</a></dd></dl>
-<p>Test Cases: </p><div class="fragment"><div class="line">    <a class="code" href="structTnode.html">Tnode</a> *t = <a class="code" href="tree__spec_8h.html#a00c3c0cf4519afa3c2906864d9f99c25">_makeTestHTTPRequestTree</a>(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
+<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structTnode.html">Tnode</a> *t = <a class="code" href="tree__spec_8h.html#a00c3c0cf4519afa3c2906864d9f99c25">_makeTestHTTPRequestTree</a>(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
 <div class="line"></div>
 <div class="line">    <span class="keywordtype">int</span> p0[] = {TREE_PATH_TERMINATOR};</div>
 <div class="line">    <span class="keywordtype">int</span> p1[] = {1,TREE_PATH_TERMINATOR};</div>
@@ -539,7 +590,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>path of node</dd></dl>
 </dd></dl>
-<p>Test cases: </p><div class="fragment"><div class="line">    <a class="code" href="structTnode.html">Tnode</a> *t = <a class="code" href="tree__spec_8h.html#a00c3c0cf4519afa3c2906864d9f99c25">_makeTestHTTPRequestTree</a>(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
+<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structTnode.html">Tnode</a> *t = <a class="code" href="tree__spec_8h.html#a00c3c0cf4519afa3c2906864d9f99c25">_makeTestHTTPRequestTree</a>(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
 <div class="line">    <span class="keywordtype">int</span> p0[] = {TREE_PATH_TERMINATOR};</div>
 <div class="line">    <span class="keywordtype">int</span> p1[] = {1,TREE_PATH_TERMINATOR};</div>
 <div class="line">    <span class="keywordtype">int</span> p2[] = {3,1,TREE_PATH_TERMINATOR};</div>
@@ -595,7 +646,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>pointer to surface or NULL if path not found</dd></dl>
-<p>Test Cases: </p><div class="fragment"><div class="line">    <a class="code" href="structTnode.html">Tnode</a> *t = <a class="code" href="tree__spec_8h.html#a00c3c0cf4519afa3c2906864d9f99c25">_makeTestHTTPRequestTree</a>(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
+<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structTnode.html">Tnode</a> *t = <a class="code" href="tree__spec_8h.html#a00c3c0cf4519afa3c2906864d9f99c25">_makeTestHTTPRequestTree</a>(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
 <div class="line"></div>
 <div class="line">    <span class="keywordtype">int</span> p1[] = {3,1,1,TREE_PATH_TERMINATOR};</div>
 <div class="line">    <span class="keywordtype">int</span> p2[] = {3,1,2,TREE_PATH_TERMINATOR};</div>
@@ -648,11 +699,21 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">dst</td><td>Node to be morphed </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">src</td><td>Node type that dst should be morephed to </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">src</td><td>Node type that dst should be morephed to</td></tr>
   </table>
   </dd>
 </dl>
-
+<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <span class="keywordtype">char</span> buf[2000];</div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *x = <a class="code" href="group__tree.html#gab438eeedb3eb6c1e20171b33d8ec499d">_t_newi</a>(0,TEST_SYMBOL,123);</div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *z = <a class="code" href="group__tree.html#ga23646bb375d548b8bdce934f694b1741">_t_new</a>(0,TEST_STR_SYMBOL,<span class="stringliteral">&quot;fish&quot;</span>,5);</div>
+<div class="line"></div>
+<div class="line">    <a class="code" href="group__tree.html#ga91798c3f4945bb89b9c13e9b693ffd78">_t_morph</a>(x,z);</div>
+<div class="line">    __t_dump(0,x,0,buf);</div>
+<div class="line">    spec_is_str_equal(buf,<span class="stringliteral">&quot; (TEST_STR_SYMBOL:fish)&quot;</span>);</div>
+<div class="line"></div>
+<div class="line">    <a class="code" href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a>(x);</div>
+<div class="line">    <a class="code" href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a>(z);</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ga23646bb375d548b8bdce934f694b1741"></a>
@@ -885,7 +946,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>int value of depth</dd></dl>
-<p>Test cases: </p><div class="fragment"><div class="line">    <span class="keywordtype">int</span> p0[] = {TREE_PATH_TERMINATOR};</div>
+<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <span class="keywordtype">int</span> p0[] = {TREE_PATH_TERMINATOR};</div>
 <div class="line">    <span class="keywordtype">int</span> p1[] = {1,TREE_PATH_TERMINATOR};</div>
 <div class="line">    <span class="keywordtype">int</span> p2[] = {3,0,TREE_PATH_TERMINATOR};</div>
 <div class="line">    <span class="keywordtype">int</span> p3[] = {2,1,1,TREE_PATH_TERMINATOR};</div>
@@ -931,7 +992,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>1 if equal 0 if not</dd></dl>
-<p>Test cases: </p><div class="fragment"><div class="line">    <span class="keywordtype">int</span> p0[] = {TREE_PATH_TERMINATOR};</div>
+<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <span class="keywordtype">int</span> p0[] = {TREE_PATH_TERMINATOR};</div>
 <div class="line">    <span class="keywordtype">int</span> p1[] = {1,TREE_PATH_TERMINATOR};</div>
 <div class="line">    <span class="keywordtype">int</span> p2[] = {2,TREE_PATH_TERMINATOR};</div>
 <div class="line">    <span class="keywordtype">int</span> p3[] = {2,1,1,TREE_PATH_TERMINATOR};</div>
@@ -981,7 +1042,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
   </table>
   </dd>
 </dl>
-<p>Test cases: </p><div class="fragment"><div class="line">    <span class="keywordtype">int</span> pp[10];</div>
+<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <span class="keywordtype">int</span> pp[10];</div>
 <div class="line">    <span class="keywordtype">int</span> p5[] = {3,0,2,1,1,TREE_PATH_TERMINATOR};</div>
 <div class="line">    <a class="code" href="group__tree.html#ga608555368dfdef7de1872f89b6fed637">_t_pathcpy</a>(pp,p5);</div>
 <div class="line"></div>
@@ -1024,11 +1085,24 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">t</td><td>input node on which to operate </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">i</td><td>index to child be replaced </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">r</td><td>node to replace </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">r</td><td>node to replace</td></tr>
   </table>
   </dd>
 </dl>
-
+<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structTnode.html">Tnode</a> *t = <a class="code" href="tree__spec_8h.html#a00c3c0cf4519afa3c2906864d9f99c25">_makeTestHTTPRequestTree</a>(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
+<div class="line"></div>
+<div class="line">    <span class="comment">// replace the version with a new version</span></div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *t_version = <a class="code" href="group__tree.html#gaff88720dad09389f6b7f35f7985d8efd">_t_newr</a>(0,TSYM_HTTP_REQUEST_VERSION);</div>
+<div class="line">    <a class="code" href="group__tree.html#gab438eeedb3eb6c1e20171b33d8ec499d">_t_newi</a>(t_version,TSYM_HTTP_REQUEST_VERSION_MAJOR,1);</div>
+<div class="line">    <a class="code" href="group__tree.html#gab438eeedb3eb6c1e20171b33d8ec499d">_t_newi</a>(t_version,TSYM_HTTP_REQUEST_VERSION_MINOR,1);</div>
+<div class="line"></div>
+<div class="line">    <span class="keywordtype">int</span> p[] = {1,2,TREE_PATH_TERMINATOR};</div>
+<div class="line">    spec_is_equal(*(<span class="keywordtype">int</span> *)<a class="code" href="group__tree.html#ga1f03093882ea8ad3d6e88951e4fc51b5">_t_get_surface</a>(t,p),0);</div>
+<div class="line">    <a class="code" href="group__tree.html#ga571dd95ead249012211ffe5d180f56ec">_t_replace</a>(t,1,t_version);</div>
+<div class="line">    spec_is_equal(*(<span class="keywordtype">int</span> *)<a class="code" href="group__tree.html#ga1f03093882ea8ad3d6e88951e4fc51b5">_t_get_surface</a>(t,p),1);</div>
+<div class="line"></div>
+<div class="line">    <a class="code" href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a>(t);</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="ga4df2c885d019894bd8e14d2637639621"></a>
@@ -1087,7 +1161,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>pointer to the bufer</dd></dl>
-<p>Test Cases: </p><div class="fragment"><div class="line">    <span class="keywordtype">char</span> buf[255];</div>
+<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <span class="keywordtype">char</span> buf[255];</div>
 <div class="line">    <span class="keywordtype">int</span> p5[] = {3,0,2,1,1,TREE_PATH_TERMINATOR};</div>
 <div class="line"></div>
 <div class="line">    spec_is_str_equal(<a class="code" href="group__tree.html#ga0e63c83e6413f47238db7fa20373c526">_t_sprint_path</a>(p5,buf),<span class="stringliteral">&quot;/3/0/2/1/1&quot;</span>);</div>
@@ -1147,7 +1221,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Aug 28 2014 16:38:50 for ceptr by
+    <li class="footer">Generated on Thu Aug 28 2014 21:32:23 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
