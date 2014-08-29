@@ -20,7 +20,7 @@
  *
  * @returns pointer to a newly allocated VMHost
 
- * Test cases:
+ * <b>Examples (from test suite):</b>
  * @snippet spec/vmhost_spec.h testVMHostCreate
  */
 VMHost * _v_new() {
@@ -46,7 +46,8 @@ void _v_free(VMHost *v) {
  * @param[in] r Receptor to install
  * @param[in] label label to be used for the semantic name for this receptor
  * @returns Xaddr of the instance
- * Test cases:
+ *
+ * <b>Examples (from test suite):</b>
  * @snippet spec/vmhost_spec.h testVMHostInstallReceptor
 */
 Xaddr _v_install_r(VMHost *v,Receptor *r,char *label) {

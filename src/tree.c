@@ -125,7 +125,6 @@ void _t_add(Tnode *t,Tnode *c) {
     __t_append_child(t,c);
 }
 
-
 /**
  * Detatch the specified child from a node and return it
  *
@@ -133,6 +132,9 @@ void _t_add(Tnode *t,Tnode *c) {
  * @param[in] t node to detach from
  * @param[in] i index of the child to detach
  * @returns the detatched child
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/tree_spec.h testTreeDetach
  */
 Tnode *_t_detach_by_idx(Tnode *t,int i) {
     Tnode *x = _t_child(t,i);
@@ -147,8 +149,6 @@ Tnode *_t_detach_by_idx(Tnode *t,int i) {
  * @param[in] t node to search
  * @param[in] c node to search for in child list
  */
-//
-//
 void _t_detach_by_ptr(Tnode *t,Tnode *c) {
     int i;
     int l = _t_children(t);
@@ -171,6 +171,21 @@ void _t_detach_by_ptr(Tnode *t,Tnode *c) {
     c->structure.parent = 0;
 }
 
+/**
+ * Convert the surface of a node
+ *
+ * Frees the original surface value if it was allocated.
+ *
+ * @note only converts the type and surface, not the children!
+ * @param[in] t Node to be morphed
+ * @param[in] s Symbol to change the surface to
+ * @param[in] surface data to copy into the surface
+ * @param[in] size of data
+ * @param[in] allocate boolean to know whether to allocate surface or copy the surface as an int
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/tree_spec.h testTreeMorphLowLevel
+ */
 void __t_morph(Tnode *t,Symbol s,void *surface,size_t size,int allocate) {
     t->contents.size = size;
     if (t->context.flags & TFLAG_ALLOCATED) {
@@ -198,6 +213,9 @@ void __t_morph(Tnode *t,Symbol s,void *surface,size_t size,int allocate) {
  * @note only converts the type and surface, not the children!
  * @param[in] dst Node to be morphed
  * @param[in] src Node type that dst should be morephed to
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/tree_spec.h testTreeMorph
  */
 void _t_morph(Tnode *dst,Tnode *src) {
     __t_morph(dst,_t_symbol(src),_t_surface(src),_t_size(src),src->context.flags & TFLAG_ALLOCATED);
@@ -210,6 +228,9 @@ void _t_morph(Tnode *dst,Tnode *src) {
  * @param[in] t input node on which to operate
  * @param[in] i index to child be replaced
  * @param[in] r node to replace
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/tree_spec.h testTreeReplace
  */
 void _t_replace(Tnode *t,int i,Tnode *r) {
     Tnode *c = _t_child(t,i);
@@ -265,6 +286,9 @@ Tnode *__t_clone(Tnode *t,Tnode *p) {
  * @returns Tnode duplicated tree
  * @todo make this work with trees that have orthogonal trees!
  * @bug doesn't properly clone trees with orthogonal trees
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/tree_spec.h testTreeClone
  */
 Tnode *_t_clone(Tnode *t) {
     return __t_clone(t,0);
@@ -369,7 +393,7 @@ Tnode * _t_next_sibling(Tnode *t) {
  * @param[in] p2 second path
  * @returns 1 if equal 0 if not
  *
- * Test cases:
+ * <b>Examples (from test suite):</b>
  * @snippet spec/tree_spec.h testTreePathEqual
  */
 int _t_path_equal(int *p1,int *p2){
@@ -384,7 +408,7 @@ int _t_path_equal(int *p1,int *p2){
  * @param[in] p path
  * @returns int value of depth
  *
- * Test cases:
+ * <b>Examples (from test suite):</b>
  * @snippet spec/tree_spec.h testTreePathDepth
  */
 int _t_path_depth(int *p) {
@@ -403,7 +427,7 @@ int _t_path_depth(int *p) {
  * @param[in] t tree node
  * @returns path of node
  *
- * Test cases:
+ * <b>Examples (from test suite):</b>
  * @snippet spec/tree_spec.h testTreePathGetPath
  */
 int * _t_get_path(Tnode *t) {
@@ -443,7 +467,7 @@ int * _t_get_path(Tnode *t) {
  * @param[inout] dst_p pointer to buffer holding destination path
  * @param[in] src_p path
  *
- * Test cases:
+ * <b>Examples (from test suite):</b>
  * @snippet spec/tree_spec.h testTreePathCopy
  */
 void _t_pathcpy(int *dst_p,int *src_p) {
@@ -460,7 +484,7 @@ void _t_pathcpy(int *dst_p,int *src_p) {
  * @param[in] p the path to search for
  * @returns pointer to a Tnode
  *
- * Test Cases:
+ * <b>Examples (from test suite):</b>
  * @snippet spec/tree_spec.h testTreePathGet
  */
 Tnode * _t_get(Tnode *t,int *p) {
@@ -488,7 +512,7 @@ Tnode * _t_get(Tnode *t,int *p) {
  * @param[in] p the path to search for
  * @returns pointer to surface or NULL if path not found
  *
- * Test Cases:
+ * <b>Examples (from test suite):</b>
  * @snippet spec/tree_spec.h testTreePathGetSurface
  */
 void * _t_get_surface(Tnode *t,int *p) {
@@ -504,7 +528,7 @@ void * _t_get_surface(Tnode *t,int *p) {
  * @param[inout] buf buffer to copy the string text to
  * @returns pointer to the bufer
  *
- * Test Cases:
+ * <b>Examples (from test suite):</b>
  * @snippet spec/tree_spec.h testTreePathSprint
  */
 char * _t_sprint_path(int *fp,char *buf) {

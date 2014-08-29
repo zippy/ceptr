@@ -22,7 +22,7 @@
  *
  * @returns pointer to a newly allocated Receptor
 
- * Test cases:
+ * <b>Examples (from test suite):</b>
  * @snippet spec/receptor_spec.h testReceptorCreate
  */
 Receptor *_r_new() {
