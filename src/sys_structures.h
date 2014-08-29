@@ -1,5 +1,5 @@
 /**
- * @file structure.h
+ * @file sys_structures.h
  * @brief Defines hard-coded system defined structures.
  *
  * Structures are definitons of how data is organized
@@ -10,8 +10,8 @@
  * @ingroup receptor
  */
 
-#ifndef _CEPTR_STRUCTURE_H
-#define _CEPTR_STRUCTURE_H
+#ifndef _CEPTR_SYS_STRUCTURES_H
+#define _CEPTR_SYS_STRUCTURES_H
 
 /// System defined structures
 enum SystemStructure

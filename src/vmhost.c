@@ -1,12 +1,11 @@
 /**
- * @copyright Copyright (C) 2013-2014, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
- *
- * @ingroup vmhost
+  * @ingroup vmhost
  *
  * @{
  * @file vmhost.c
  * @brief virtual machine host receptor implementation
  *
+ * @copyright Copyright (C) 2013-2014, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
  */
 
 #include "vmhost.h"
@@ -56,7 +55,7 @@ Xaddr _v_install_r(VMHost *v,Receptor *r,char *label) {
     size_t length;
     _r_serialize(r,&surface,&length);
 
-    Xaddr x =_r_new_instance(v->r,r_sym,surface);
+    Xaddr x = __r_new_instance(v->r,r_sym,surface);
     free(surface);
     return x;
 }

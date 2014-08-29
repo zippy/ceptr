@@ -51,4 +51,5 @@ void testVMHostInstallReceptor() {
 void testVMHost() {
     testVMHostCreate();
     testVMHostInstallReceptor();
+    //   testVMHostActivateReceptor();
 }

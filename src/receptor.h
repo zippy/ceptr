@@ -1,7 +1,7 @@
 /**
  * @defgroup receptor Receptors
  * @brief Receptors provide the fundamental coherence contexts for ceptr
-*
+ *
  * @{
  * @file receptor.h
  * @brief receptor implementation header file
@@ -13,6 +13,7 @@
 #define _CEPTR_RECEPTOR_H
 
 #include "tree.h"
+#include "symbol.h"
 #include "label.h"
 
 /**
@@ -62,11 +63,13 @@ struct Xaddr {
     int addr;
 };
 typedef struct Xaddr Xaddr;
-Xaddr _r_new_instance(Receptor *r,Symbol s,void * surface);
+Xaddr __r_new_instance(Receptor *r,Symbol s,void * surface);
+Xaddr _r_new_instance(Receptor *r,Tnode *t);
 Instance _r_get_instance(Receptor *r,Xaddr x);
 
 /******************  receptor serialization */
-size_t __t_serialize(Receptor *r,Tnode *t,void **bufferP,size_t offset,size_t current_size);
+size_t __t_serialize(Tnode *t,void **bufferP,size_t offset,size_t current_size,int compact);
+void _t_serialize(Tnode *t,void **surfaceP, size_t *lengthP);
 void _r_serialize(Receptor *r,void **surfaceP,size_t *lengthP);
 Receptor * _r_unserialize(void *surface);
 
@@ -83,12 +86,12 @@ Tnode *__r_get_signals(Receptor *r,Aspect aspect);
 /*****************  Tree debugging utilities */
 char *_td(Receptor *r,Tnode *t);
 
-#define spec_is_symbol_equal(r,got, expected) spec_total++; if (expected==got){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %s but was %s",__FUNCTION__,__LINE__,#got,_s_get_symbol_name(r,expected),_s_get_symbol_name(r,got));}
+#define spec_is_symbol_equal(r,got, expected) spec_total++; if (expected==got){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %s but was %s",__FUNCTION__,__LINE__,#got,_r_get_symbol_name(r,expected),_r_get_symbol_name(r,got));}
 
-#define spec_is_structure_equal(r,got, expected) spec_total++; if (expected==got){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %s but was %s",__FUNCTION__,__LINE__,#got,_s_get_symbol_name(r,expected),_s_get_structure_name(r,got));}
+#define spec_is_structure_equal(r,got, expected) spec_total++; if (expected==got){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %s but was %s",__FUNCTION__,__LINE__,#got,_s_get_structure_name(r,expected),_s_get_structure_name(r,got));}
 
-char *_s_get_symbol_name(Receptor *r,Symbol s);
 char *_s_get_structure_name(Receptor *r,Structure s);
+char *_r_get_symbol_name(Receptor *r,Symbol s);
 
 char * _dump_semtrex(Tnode *s,char *buf);
 

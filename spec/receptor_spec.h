@@ -163,12 +163,25 @@ void testReceptorDef() {
     _r_free(r);
 }
 
+/**
+ * define a "house location" symbol built out of a latlong
+ *
+ * @snippet spec/receptor_spec.h defineHouseLocation
+*/
+//! [defineHouseLocation]
+void defineHouseLocation(Receptor *r,Symbol *lat,Symbol *lon, Structure *latlong, Symbol *house_loc) {
+    *lat = _r_def_symbol(r,FLOAT,"latitude");
+    *lon = _r_def_symbol(r,FLOAT,"longitude");
+    *latlong = _r_def_structure(r,"latlong",2,*lat,*lon);
+    *house_loc = _r_def_symbol(r,*latlong,"house location");
+}
+//! [defineHouseLocation]
+
 void testReceptorDefMatch() {
     Receptor *r = _r_new();
-    Symbol lat = _r_def_symbol(r,FLOAT,"latitude");
-    Symbol lon = _r_def_symbol(r,FLOAT,"longitude");
-    Structure latlong = _r_def_structure(r,"latlong",2,lat,lon);
-    Symbol house_loc = _r_def_symbol(r,latlong,"house location");
+    Symbol lat,lon,house_loc;
+    Structure latlong;
+    defineHouseLocation(r,&lat,&lon,&latlong,&house_loc);
 
     Tnode *t = _t_new_root(house_loc);
     float x = 99.0;
@@ -198,14 +211,21 @@ void testReceptorDefMatch() {
     _r_free(r);
 }
 
-void testReceptorInstances() {
+void testReceptorInstanceNew() {
+    //! [testReceptorInstancesNew]
     Receptor *r = _r_new();
-    Symbol lat = _r_def_symbol(r,FLOAT,"latitude");
-    Symbol lon = _r_def_symbol(r,FLOAT,"longitude");
-    Structure latlong = _r_def_structure(r,"latlong",2,lat,lon);
-    Symbol house_loc = _r_def_symbol(r,latlong,"house location");
+    Symbol lat,lon,house_loc;
+    Structure latlong;
+    defineHouseLocation(r,&lat,&lon,&latlong,&house_loc);
+
+    // create a house location tree
+    Tnode *t = _t_new_root(house_loc);
     float ll[] = {132.5,92.3};
-    Xaddr x = _r_new_instance(r,house_loc,ll);
+    Tnode *t_lat = _t_new(t,lat,&ll[0],sizeof(float));
+    Tnode *t_lon = _t_new(t,lon,&ll[1],sizeof(float));
+
+    //    Xaddr x = _r_new_instance(r,house_loc,ll);
+    Xaddr x = _r_new_instance(r,t);
 
     float *ill;
     Instance i = _r_get_instance(r,x);
@@ -213,19 +233,22 @@ void testReceptorInstances() {
 
     spec_is_float_equal(ill[0],ll[0]);
     spec_is_float_equal(ill[1],ll[1]);
+
     _r_free(r);
+    _t_free(t);
+    //! [testReceptorInstancesNew]
 }
 
 void testReceptorSerialize() {
     //! [testReceptorSerialize]
 
     Receptor *r = _r_new();
-    Symbol lat = _r_def_symbol(r,FLOAT,"latitude");
-    Symbol lon = _r_def_symbol(r,FLOAT,"longitude");
-    Structure latlong = _r_def_structure(r,"latlong",2,lat,lon);
-    Symbol house_loc = _r_def_symbol(r,latlong,"house location");
+    Symbol lat,lon,house_loc;
+    Structure latlong;
+    defineHouseLocation(r,&lat,&lon,&latlong,&house_loc);
+
     float ll[] = {132.5,92.3};
-    Xaddr x = _r_new_instance(r,house_loc,ll);
+    Xaddr x = __r_new_instance(r,house_loc,ll);
 
     void *surface;
     size_t length;
@@ -285,7 +308,7 @@ void testReceptor() {
     testReceptorAction();
     testReceptorDef();
     testReceptorDefMatch();
-    testReceptorInstances();
+    testReceptorInstanceNew();
     testReceptorSerialize();
     testSemtrexDump();
 }

@@ -20,11 +20,13 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ceptr_error.h"
-#include "symbol.h"
-#include "structure.h"
+#include "sys_symbols.h"
+#include "sys_structures.h"
 
 #define TREE_CHILDREN_BLOCK 5
 #define TREE_PATH_TERMINATOR -9999
+
+typedef int Symbol;
 
 struct Tstruct {
     struct Tnode *parent;

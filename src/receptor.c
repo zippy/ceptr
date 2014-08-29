@@ -1,12 +1,11 @@
 /**
- * @copyright Copyright (C) 2013-2014, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
- *
  * @ingroup receptor
  *
  * @{
  * @file receptor.c
  * @brief receptor implementation
  *
+ * @copyright Copyright (C) 2013-2014, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
  */
 
 #include "receptor.h"
@@ -86,9 +85,7 @@ int __get_label_idx(Receptor *r,char *label) {
  * define a new symbol
  */
 Symbol _r_def_symbol(Receptor *r,Structure s,char *label){
-    Tnode *def = _t_newr(r->symbols,SYMBOL_DEF);
-    _t_newi(def,SYMBOL_STRUCTURE,s);
-    _t_new(def,SYMBOL_LABEL,label,strlen(label)+1);
+    Tnode *def = _s_def(r->symbols,s,label);
     return __set_label_for_def(r,label,def);
 }
 
@@ -235,7 +232,7 @@ int _r_def_match(Receptor *r,Symbol s,Tnode *t) {
 /*****************  receptor instances and xaddrs */
 
 /**
- * Create a new instance of a symbol.
+ * Create a new instance of a symbol given a symbol and a serialized surface.
  *
  * @param[in] r the receptor context in which things are defined
  * @param[in] s the symbol type to instantiate
@@ -243,16 +240,36 @@ int _r_def_match(Receptor *r,Symbol s,Tnode *t) {
  * @returns Xaddr that identifies the instance
  *
  * @todo currently this implementation of instances, just stores each instance as tree node
- of type INSTANCE as a child of the symbol.  This is way inefficient and needs to be
- replaced.  But this is just here to create the API...
-*/
-Xaddr _r_new_instance(Receptor *r,Symbol s,void *surface) {
+ * of type INSTANCE as a child of the symbol.  This is way inefficient and needs to be
+ * replaced.  But this is just here to create the API...
+ */
+Xaddr __r_new_instance(Receptor *r,Symbol s,void *surface) {
     Xaddr result;
     Tnode *sym = _t_child(r->symbols,s);
     _t_new(sym,INSTANCE,surface,__r_get_symbol_size(r,s,surface));
     result.symbol = s;
     result.addr = _t_children(sym);
     return result;
+}
+
+/**
+ * Create a new instance of a tree
+ *
+ * @param[in] r the receptor context in which things are defined
+ * @param[in] t the tree to instantiate
+ *
+ * @snippet spec/receptor_spec.h testReceptorInstanceNew
+ */
+Xaddr _r_new_instance(Receptor *r,Tnode *t) {
+    size_t length;
+    void *surface;
+    _t_serialize(t,&surface,&length);
+    Xaddr x =__r_new_instance(r,_t_symbol(t),surface);
+    // @todo eventually we should have a way to have this allocation be the one
+    // used in the instance, instead of yet another one being allocated, and having to
+    // free it here.
+    free(surface);
+    return x;
 }
 
 /**
@@ -270,31 +287,49 @@ Instance _r_get_instance(Receptor *r,Xaddr x) {
 /// macro to write data by type into *bufferP and increment offset by the size of the type
 #define SWRITE(type,value) type * type##P = (type *)(*bufferP +offset); *type##P=value;offset += sizeof(type);
 
+/**
+ * Serialize a tree.
+ *
+ * @param[in] t tree to be serialized
+ * @param[inout] surfaceP a pointer to a buffer that will be malloced
+ * @param[inout] lengthP the serialized length of the tree
+ */
+void _t_serialize(Tnode *t,void **surfaceP, size_t *lengthP) {
+    size_t buf_size = 1000;
+    *surfaceP = malloc(buf_size);
+    *lengthP = __t_serialize(t,surfaceP,0,buf_size,1);
+    *surfaceP = realloc(*surfaceP,*lengthP);
+}
 
 /**
  * Serialize a tree by recursive descent.
  *
  * @param[in] t tree to be serialized
- * @param[in] r receptor to provide a context for resolving symbols and structures
  * @param[in] bufferP a pointer to a malloced ptr of "current_size" which will be realloced if serialized tree is bigger than initial buffer allocation.
  * @param[in] offset current offset into buffer at which to put serialized data
  * @param[in] current_size size of buffer
+ * @param[in] compact boolean to indicate whether to add in extra information
  * @returns the length that was added to the buffer
+ *
+ * @todo compact is really a shorthand for whether this is a fixed size tree or not
+ * this should actually be determined on the fly by looking at the structure types.
  */
-size_t __t_serialize(Receptor *r,Tnode *t,void **bufferP,size_t offset,size_t current_size) {
+size_t __t_serialize(Tnode *t,void **bufferP,size_t offset,size_t current_size,int compact) {
     size_t cl =0,l = _t_size(t);
     int i, c = _t_children(t);
 
-    //    printf("\ncurrent_size:%ld offset:%ld  size:%ld symbol:%s",current_size,offset,l,_s_get_symbol_name(r,_t_symbol(t)));
+    //    printf("\ncurrent_size:%ld offset:%ld  size:%ld symbol:%s",current_size,offset,l,_r_get_symbol_name(r,_t_symbol(t)));
     while ((offset+l+sizeof(Symbol)) > current_size) {
 	current_size*=2;
 	*bufferP = realloc(*bufferP,current_size);
     }
-    Symbol s = _t_symbol(t);
-    SWRITE(Symbol,s);
-    SWRITE(int,c);
-    if(s == INSTANCE) {
-	SWRITE(size_t,l);
+    if (!compact) {
+	Symbol s = _t_symbol(t);
+	SWRITE(Symbol,s);
+	SWRITE(int,c);
+	if(s == INSTANCE) {
+	    SWRITE(size_t,l);
+	}
     }
     if (l) {
 	memcpy(*bufferP+offset,_t_surface(t),l);
@@ -302,7 +337,7 @@ size_t __t_serialize(Receptor *r,Tnode *t,void **bufferP,size_t offset,size_t cu
     }
 
     for (i=1;i<=c;i++) {
-	offset = __t_serialize(r,_t_child(t,i),bufferP,offset,current_size);
+	offset = __t_serialize(_t_child(t,i),bufferP,offset,current_size,compact);
     }
     return offset;
 }
@@ -322,7 +357,7 @@ size_t __t_serialize(Receptor *r,Tnode *t,void **bufferP,size_t offset,size_t cu
 void _r_serialize(Receptor *r,void **surfaceP,size_t *lengthP) {
     size_t buf_size = 10000;
     *surfaceP  = malloc(buf_size);
-    *lengthP = __t_serialize(r,r->root,surfaceP,sizeof(size_t),buf_size);
+    *lengthP = __t_serialize(r->root,surfaceP,sizeof(size_t),buf_size,0);
     *(size_t *)(*surfaceP) = *lengthP;
 }
 
@@ -335,7 +370,7 @@ Tnode * _t_unserialize(Receptor *r,void **surfaceP,size_t *lengthP,Tnode *t) {
     size_t size;
 
     SREAD(Symbol,s);
-    //        printf("\nSymbol:%s",_s_get_symbol_name(r,s));
+    //        printf("\nSymbol:%s",_r_get_symbol_name(r,s));
 
     SREAD(int,c);
 
@@ -440,17 +475,8 @@ Tnode *__r_get_signals(Receptor *r,Aspect aspect) {
 
 char __t_dump_buf[10000];
 char __t_extra_buf[50];
-char *_s_get_symbol_name(Receptor *r,Symbol s) {
-    if (s>NULL_SYMBOL && s <_LAST_SYS_SYMBOL )
-	return G_sys_symbol_names[s-NULL_SYMBOL];
-    if (s>=TEST_SYMBOL && s < _LAST_TEST_SYMBOL)
-	return G_test_symbol_names[s-TEST_SYMBOL];
-    else if (r) {
-	Tnode *def = _t_child(r->symbols,s);
-	return (char *)_t_surface(_t_child(def,2));
-    }
-    sprintf(__t_extra_buf,"<unknown symbol:%d>",s);
-    return __t_extra_buf;
+char *_r_get_symbol_name(Receptor *r,Symbol s) {
+    return _s_get_symbol_name(r?r->symbols:0,s);
 }
 
 char *_s_get_structure_name(Receptor *r,Structure s) {
@@ -468,7 +494,7 @@ char * __t_dump(Receptor *r,Tnode *t,int level,char *buf) {
     char b[255];
     char tbuf[2000];
     int i;
-    char *n = _s_get_symbol_name(r,s);
+    char *n = _r_get_symbol_name(r,s);
     char *c;
     switch(s) {
     case TEST_STR_SYMBOL:
@@ -491,7 +517,7 @@ char * __t_dump(Receptor *r,Tnode *t,int level,char *buf) {
 	sprintf(buf," (%s:%d",n,*(int *)_t_surface(t));
 	break;
     case LISTENER:
-	c = _s_get_symbol_name(r,*(int *)_t_surface(t));
+	c = _r_get_symbol_name(r,*(int *)_t_surface(t));
 	sprintf(buf," (%s on %s",n,c?c:"<unknown>");
 	break;
     case STRUCTURE_PART:
@@ -499,7 +525,7 @@ char * __t_dump(Receptor *r,Tnode *t,int level,char *buf) {
     case SEMTREX_GROUP:
     case SEMTREX_MATCH:
     case SEMTREX_SYMBOL_LITERAL:
-	c = _s_get_symbol_name(r,*(int *)_t_surface(t));
+	c = _r_get_symbol_name(r,*(int *)_t_surface(t));
 	sprintf(buf," (%s:%s",n,c?c:"<unknown>");
 	break;
     case SYMBOL_STRUCTURE:

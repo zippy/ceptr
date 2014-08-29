@@ -72,7 +72,7 @@ void _p_reduce(Tnode *run_tree) {
 	_t_replace(run_tree,1,x);
 	break;
     default:
-	raise_error("unknown instruction: %s",_s_get_symbol_name(0,s));
+	raise_error("unknown instruction: %s",_r_get_symbol_name(0,s));
     }
 }
 
