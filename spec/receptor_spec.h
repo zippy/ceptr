@@ -217,6 +217,8 @@ void testReceptorInstances() {
 }
 
 void testReceptorSerialize() {
+    //! [testReceptorSerialize]
+
     Receptor *r = _r_new();
     Symbol lat = _r_def_symbol(r,FLOAT,"latitude");
     Symbol lon = _r_def_symbol(r,FLOAT,"longitude");
@@ -240,7 +242,6 @@ void testReceptorSerialize() {
     __t_dump(r,r->root,0,buf);
     __t_dump(r1,r1->root,0,buf1);
 
-    //    puts(_td(r,r1->root));
     spec_is_str_equal(buf1,buf);
 
     int *path = labelGet(&r1->table,"latitude");
@@ -252,7 +253,7 @@ void testReceptorSerialize() {
     free(surface);
     _r_free(r);
     _r_free(r1);
-
+    //! [testReceptorSerialize]
 }
 
 void testSemtrexDump() {

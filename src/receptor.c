@@ -82,6 +82,9 @@ int __get_label_idx(Receptor *r,char *label) {
     return path[_t_path_depth(path)-1];
 }
 
+/**
+ * define a new symbol
+ */
 Symbol _r_def_symbol(Receptor *r,Structure s,char *label){
     Tnode *def = _t_newr(r->symbols,SYMBOL_DEF);
     _t_newi(def,SYMBOL_STRUCTURE,s);
@@ -89,6 +92,9 @@ Symbol _r_def_symbol(Receptor *r,Structure s,char *label){
     return __set_label_for_def(r,label,def);
 }
 
+/**
+ * define a new structure
+ */
 Structure _r_def_structure(Receptor *r,char *label,int num_params,...) {
     va_list params;
     Tnode *def = _t_new(r->structures,STRUCTURE_DEF,label,strlen(label)+1);
@@ -102,14 +108,24 @@ Structure _r_def_structure(Receptor *r,char *label,int num_params,...) {
     return __set_label_for_def(r,label,def);
 }
 
+/**
+ * find a symbol give its label
+ */
 Symbol _r_get_symbol_by_label(Receptor *r,char *label) {
     return __get_label_idx(r,label);
 }
 
+/**
+ * find a symbol give its label
+ */
 Structure _r_get_structure_by_label(Receptor *r,char *label){
     return __get_label_idx(r,label);
 }
 
+/**
+ * @brief find a symbol's structure
+ * @returns structure id
+ */
 Structure __r_get_symbol_structure(Receptor *r,Symbol s){
     if (s>=NULL_SYMBOL && s <_LAST_SYS_SYMBOL) {
 	switch(s) {
@@ -133,6 +149,10 @@ Structure __r_get_symbol_structure(Receptor *r,Symbol s){
     return *(Structure *)_t_surface(t);
 }
 
+/**
+ * get the size of a structure's surface
+ * @returns size
+ */
 size_t __r_get_structure_size(Receptor *r,Structure s,void *surface) {
     if (s>=NULL_STRUCTURE && s <_LAST_SYS_STRUCTURE) {
 	switch(s) {
@@ -157,6 +177,10 @@ size_t __r_get_structure_size(Receptor *r,Structure s,void *surface) {
     }
 }
 
+/**
+ * get the size of a symbol's surface
+ * @returns size
+ */
 size_t __r_get_symbol_size(Receptor *r,Symbol s,void *surface) {
     Structure st = __r_get_symbol_structure(r,s);
     return __r_get_structure_size(r,st,surface);
@@ -291,8 +315,10 @@ size_t __t_serialize(Receptor *r,Tnode *t,void **bufferP,size_t offset,size_t cu
  * @param[in] r Receptor to serialize
  * @param[inout] surfaceP pointer to a void * to hold the resulting serialized data
  * @param[inout] lengthP pointer to a size_t to hold the resulting serialized data length
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/receptor_spec.h testReceptorSerialize
  */
-
 void _r_serialize(Receptor *r,void **surfaceP,size_t *lengthP) {
     size_t buf_size = 10000;
     *surfaceP  = malloc(buf_size);
@@ -332,6 +358,14 @@ Tnode * _t_unserialize(Receptor *r,void **surfaceP,size_t *lengthP,Tnode *t) {
     return t;
 }
 
+/**
+ * Unserialize a receptor
+ *
+ * Given a serialized receptor, return an instantiated receptor tree with label table
+ *
+ * @param[in] surface serialized receptor data
+ * @returns Receptor
+ */
 Receptor * _r_unserialize(void *surface) {
     size_t length = *(size_t *)surface;
     Receptor *r = _r_new();
