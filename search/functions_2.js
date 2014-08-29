@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['list1',['list1',['../semtrex_8c.html#a27270856d607cf2cc84b27b46473513b',1,'semtrex.c']]]
+  ['definehouselocation',['defineHouseLocation',['../receptor__spec_8h.html#a98dc4c2784ade9388f0b5aad95d78aae',1,'receptor_spec.h']]]
 ];

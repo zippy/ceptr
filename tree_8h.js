@@ -4,6 +4,7 @@ var tree_8h =
     [ "TFLAG_SURFACE_IS_TREE", "group__tree.html#gae876ee2ed8140ace7d1f60942c4c8ffa", null ],
     [ "TREE_CHILDREN_BLOCK", "group__tree.html#ga8a4739b06f60e4874a3b63e0cb69be94", null ],
     [ "TREE_PATH_TERMINATOR", "group__tree.html#gaaaf3c7469b946533a203770c3657f69a", null ],
+    [ "Symbol", "group__tree.html#ga6658c4c543dd5216f61805c3a2e92420", null ],
     [ "Tcontents", "group__tree.html#ga01bbef8fe3a828c81ff546d3a3378e6d", null ],
     [ "Tcontext", "group__tree.html#ga2e3e85fc8e2e18e97dd14a1456e29456", null ],
     [ "Tnode", "group__tree.html#ga96b6c1881a6a5669fb7591226d9bd59c", null ],

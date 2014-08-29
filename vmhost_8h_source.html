@@ -107,40 +107,40 @@ $(document).ready(function(){initNavTree('vmhost_8h_source.html','');});
 </div><!--header-->
 <div class="contents">
 <a href="vmhost_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#ifndef _CEPTR_VMHOST_H</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#define _CEPTR_VMHOST_H</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="receptor_8h.html">receptor.h</a>&quot;</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#ifndef _CEPTR_VMHOST_H</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#define _CEPTR_VMHOST_H</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="receptor_8h.html">receptor.h</a>&quot;</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="structVMHost.html">   21</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structVMHost.html">VMHost</a> {</div>
-<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">   22</a></span>&#160;    <a class="code" href="structReceptor.html">Receptor</a> *<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>;         </div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;};</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structVMHost.html">VMHost</a> <a class="code" href="structVMHost.html">VMHost</a>;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">/******************  create and destroy virtual machine */</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<a class="code" href="structVMHost.html">VMHost</a> * <a class="code" href="group__vmhost.html#gab6fbe5683628fb0d62a966316ced938d">_v_new</a>();</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__vmhost.html#ga44e0f6d62e38448bfa058f287cc463eb">_v_free</a>(<a class="code" href="structVMHost.html">VMHost</a> *<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>);</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<a class="code" href="structXaddr.html">Xaddr</a> <a class="code" href="group__vmhost.html#gaa18daccf444ef47e4b7962198db49961">_v_install_r</a>(<a class="code" href="structVMHost.html">VMHost</a> *v,<a class="code" href="structReceptor.html">Receptor</a> *<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,<span class="keywordtype">char</span> *label);</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="ttc" id="group__vmhost_html_ga44e0f6d62e38448bfa058f287cc463eb"><div class="ttname"><a href="group__vmhost.html#ga44e0f6d62e38448bfa058f287cc463eb">_v_free</a></div><div class="ttdeci">void _v_free(VMHost *r)</div><div class="ttdef"><b>Definition:</b> vmhost.c:37</div></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
+<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="structVMHost.html">   22</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structVMHost.html">VMHost</a> {</div>
+<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">   23</a></span>&#160;    <a class="code" href="structReceptor.html">Receptor</a> *<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>;         </div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;};</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structVMHost.html">VMHost</a> <a class="code" href="structVMHost.html">VMHost</a>;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">/******************  create and destroy virtual machine */</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<a class="code" href="structVMHost.html">VMHost</a> * <a class="code" href="group__vmhost.html#gab6fbe5683628fb0d62a966316ced938d">_v_new</a>();</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__vmhost.html#ga44e0f6d62e38448bfa058f287cc463eb">_v_free</a>(<a class="code" href="structVMHost.html">VMHost</a> *<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>);</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<a class="code" href="structXaddr.html">Xaddr</a> <a class="code" href="group__vmhost.html#gaa18daccf444ef47e4b7962198db49961">_v_install_r</a>(<a class="code" href="structVMHost.html">VMHost</a> *v,<a class="code" href="structReceptor.html">Receptor</a> *<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,<span class="keywordtype">char</span> *label);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
+<div class="ttc" id="group__vmhost_html_ga44e0f6d62e38448bfa058f287cc463eb"><div class="ttname"><a href="group__vmhost.html#ga44e0f6d62e38448bfa058f287cc463eb">_v_free</a></div><div class="ttdeci">void _v_free(VMHost *r)</div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8c_source.html#l00036">vmhost.c:36</a></div></div>
 <div class="ttc" id="receptor_8h_html"><div class="ttname"><a href="receptor_8h.html">receptor.h</a></div><div class="ttdoc">receptor implementation header file </div></div>
-<div class="ttc" id="group__vmhost_html_gab6fbe5683628fb0d62a966316ced938d"><div class="ttname"><a href="group__vmhost.html#gab6fbe5683628fb0d62a966316ced938d">_v_new</a></div><div class="ttdeci">VMHost * _v_new()</div><div class="ttdoc">Creates a new virtual machine host. </div><div class="ttdef"><b>Definition:</b> vmhost.c:26</div></div>
-<div class="ttc" id="structVMHost_html"><div class="ttname"><a href="structVMHost.html">VMHost</a></div><div class="ttdef"><b>Definition:</b> vmhost.h:21</div></div>
-<div class="ttc" id="structReceptor_html"><div class="ttname"><a href="structReceptor.html">Receptor</a></div><div class="ttdef"><b>Definition:</b> receptor.h:23</div></div>
-<div class="ttc" id="structXaddr_html"><div class="ttname"><a href="structXaddr.html">Xaddr</a></div><div class="ttdef"><b>Definition:</b> receptor.h:60</div></div>
-<div class="ttc" id="structVMHost_html_a218d2e91e129dee7c71e1b06ff533a6e"><div class="ttname"><a href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">VMHost::r</a></div><div class="ttdeci">Receptor * r</div><div class="ttdoc">Receptor data for this vm host. </div><div class="ttdef"><b>Definition:</b> vmhost.h:22</div></div>
-<div class="ttc" id="group__vmhost_html_gaa18daccf444ef47e4b7962198db49961"><div class="ttname"><a href="group__vmhost.html#gaa18daccf444ef47e4b7962198db49961">_v_install_r</a></div><div class="ttdeci">Xaddr _v_install_r(VMHost *v, Receptor *r, char *label)</div><div class="ttdef"><b>Definition:</b> vmhost.c:53</div></div>
+<div class="ttc" id="group__vmhost_html_gab6fbe5683628fb0d62a966316ced938d"><div class="ttname"><a href="group__vmhost.html#gab6fbe5683628fb0d62a966316ced938d">_v_new</a></div><div class="ttdeci">VMHost * _v_new()</div><div class="ttdoc">Creates a new virtual machine host. </div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8c_source.html#l00025">vmhost.c:25</a></div></div>
+<div class="ttc" id="structVMHost_html"><div class="ttname"><a href="structVMHost.html">VMHost</a></div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8h_source.html#l00022">vmhost.h:22</a></div></div>
+<div class="ttc" id="structReceptor_html"><div class="ttname"><a href="structReceptor.html">Receptor</a></div><div class="ttdef"><b>Definition:</b> <a href="receptor_8h_source.html#l00024">receptor.h:24</a></div></div>
+<div class="ttc" id="structXaddr_html"><div class="ttname"><a href="structXaddr.html">Xaddr</a></div><div class="ttdef"><b>Definition:</b> <a href="receptor_8h_source.html#l00061">receptor.h:61</a></div></div>
+<div class="ttc" id="structVMHost_html_a218d2e91e129dee7c71e1b06ff533a6e"><div class="ttname"><a href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">VMHost::r</a></div><div class="ttdeci">Receptor * r</div><div class="ttdoc">Receptor data for this vm host. </div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8h_source.html#l00023">vmhost.h:23</a></div></div>
+<div class="ttc" id="group__vmhost_html_gaa18daccf444ef47e4b7962198db49961"><div class="ttname"><a href="group__vmhost.html#gaa18daccf444ef47e4b7962198db49961">_v_install_r</a></div><div class="ttdeci">Xaddr _v_install_r(VMHost *v, Receptor *r, char *label)</div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8c_source.html#l00052">vmhost.c:52</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="vmhost_8h.html">vmhost.h</a></li>
-    <li class="footer">Generated on Thu Aug 28 2014 21:55:13 for ceptr by
+    <li class="footer">Generated on Fri Aug 29 2014 16:15:20 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

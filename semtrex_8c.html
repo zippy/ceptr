@@ -112,7 +112,16 @@ $(document).ready(function(){initNavTree('semtrex_8c.html','');});
 <p>semtrex implementation  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="semtrex_8h_source.html">semtrex.h</a>&quot;</code><br />
-</div><table class="memberdecls">
+</div><div class="textblock"><div class="dynheader">
+Include dependency graph for semtrex.c:</div>
+<div class="dyncontent">
+<div class="center"><img src="semtrex_8c__incl.png" border="0" usemap="#src_2semtrex_8c" alt=""/></div>
+<map name="src_2semtrex_8c" id="src_2semtrex_8c">
+<area shape="rect" id="node2" href="semtrex_8h.html" title="Semantic tree regular expression header file. " alt="" coords="191,80,269,107"/><area shape="rect" id="node3" href="tree_8h.html" title="semantic trees header file " alt="" coords="203,155,257,181"/><area shape="rect" id="node6" href="ceptr__error_8h_source.html" title="ceptr_error.h" alt="" coords="183,229,277,256"/><area shape="rect" id="node10" href="sys__symbols_8h_source.html" title="sys_symbols.h" alt="" coords="302,229,412,256"/><area shape="rect" id="node11" href="sys__structures_8h.html" title="Defines hard&#45;coded system defined structures. " alt="" coords="437,229,555,256"/></map>
+</div>
+</div>
+<p><a href="semtrex_8c_source.html">Go to the source code of this file.</a></p>
+<table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="unionPtrlist.html">Ptrlist</a></td></tr>
@@ -158,6 +167,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_s_dump</b> (<a class
 <p>This file implements a regular expression type language usefull for searching semantic trees.</p>
 <p>The code to generate finite state automata to match the trees is based heavily on based on Russ Cox's great work, see: <a href="http://swtch.com/~rsc/regexp/regexp1.html">http://swtch.com/~rsc/regexp/regexp1.html</a></p>
 <dl class="section copyright"><dt>Copyright</dt><dd>Copyright (C) 2013-2014, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al). This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3). </dd></dl>
+
+<p>Definition in file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 </div><h2 class="groupheader">Typedef Documentation</h2>
 <a class="anchor" id="af0de0b5913959a81b47d91299857f683"></a>
 <div class="memitem">
@@ -169,6 +180,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_s_dump</b> (<a class
       </table>
 </div><div class="memdoc">
 <p>Since the out pointers in the list are always uninitialized, we use the pointers themselves as storage for the Ptrlists. </p>
+
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00026">26</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -198,6 +211,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_s_dump</b> (<a class
 </div><div class="memdoc">
 <p>walks through the FSA clearing pointers that create loops </p>
 
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00231">231</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="aace32a99d1e16839fe34820b8c2f3888"></a>
@@ -214,6 +229,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_s_dump</b> (<a class
       </table>
 </div><div class="memdoc">
 <p>walk through FSA freeing the states, assumes __s_freeFA has been called first so as not to go into loops! </p>
+
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00244">244</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -260,6 +277,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_s_dump</b> (<a class
 </div><div class="memdoc">
 <p>Given a Semtrex tree, build a partial FSA (returned via in as a pointer to the starting state, a list of output states, and a count of the total number of states created). </p>
 
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00092">92</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="aa587cd660fd78a9e87513ced9948a2f6"></a>
@@ -302,6 +321,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_s_dump</b> (<a class
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>1 or 0 if matched or not </dd></dl>
 
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00269">269</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a09c913ffa972c186b35e79965c08d8df"></a>
@@ -329,6 +350,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_s_dump</b> (<a class
 </div><div class="memdoc">
 <p>Join the two lists l1 and l2, returning the combination. </p>
 
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00065">65</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a27270856d607cf2cc84b27b46473513b"></a>
@@ -345,6 +368,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_s_dump</b> (<a class
       </table>
 </div><div class="memdoc">
 <p>Create singleton list containing just outp. </p>
+
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00037">37</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -379,6 +404,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_s_dump</b> (<a class
 </div><div class="memdoc">
 <p>Patch the list of states at out to point to start. </p>
 
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00050">50</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a929f2c011e0ab7aa4b3737cabbe65acc"></a>
@@ -406,6 +433,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_s_dump</b> (<a class
 </div><div class="memdoc">
 <p>utility routine to initialize a state struct </p>
 
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00079">79</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+
 </div>
 </div>
 </div><!-- contents -->
@@ -414,7 +443,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_s_dump</b> (<a class
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="semtrex_8c.html">semtrex.c</a></li>
-    <li class="footer">Generated on Thu Aug 28 2014 21:55:13 for ceptr by
+    <li class="footer">Generated on Fri Aug 29 2014 16:15:20 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

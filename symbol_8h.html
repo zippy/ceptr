@@ -103,177 +103,244 @@ $(document).ready(function(){initNavTree('symbol_8h.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#typedef-members">Typedefs</a> &#124;
-<a href="#enum-members">Enumerations</a>  </div>
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">symbol.h File Reference<div class="ingroups"><a class="el" href="group__receptor.html">Receptors</a></div></div>  </div>
+<div class="title">symbol.h File Reference<div class="ingroups"><a class="el" href="group__symbol.html">Symbols</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Defines hard-coded system defined symbols.  
+<p>header file for symbol related functions  
 <a href="#details">More...</a></p>
-
+<div class="textblock"><code>#include &quot;<a class="el" href="tree_8h_source.html">tree.h</a>&quot;</code><br />
+<code>#include &lt;stdarg.h&gt;</code><br />
+</div><div class="textblock"><div class="dynheader">
+Include dependency graph for symbol.h:</div>
+<div class="dyncontent">
+<div class="center"><img src="symbol_8h__incl.png" border="0" usemap="#src_2symbol_8h" alt=""/></div>
+<map name="src_2symbol_8h" id="src_2symbol_8h">
+<area shape="rect" id="node2" href="tree_8h.html" title="semantic trees header file " alt="" coords="203,80,257,107"/><area shape="rect" id="node5" href="ceptr__error_8h_source.html" title="ceptr_error.h" alt="" coords="183,155,277,181"/><area shape="rect" id="node9" href="sys__symbols_8h_source.html" title="sys_symbols.h" alt="" coords="302,155,412,181"/><area shape="rect" id="node10" href="sys__structures_8h.html" title="Defines hard&#45;coded system defined structures. " alt="" coords="437,155,555,181"/></map>
+</div>
+</div><div class="textblock"><div class="dynheader">
+This graph shows which files directly or indirectly include this file:</div>
+<div class="dyncontent">
+<div class="center"><img src="symbol_8h__dep__incl.png" border="0" usemap="#src_2symbol_8hdep" alt=""/></div>
+<map name="src_2symbol_8hdep" id="src_2symbol_8hdep">
+<area shape="rect" id="node2" href="receptor_8h.html" title="receptor implementation header file " alt="" coords="551,80,653,107"/><area shape="rect" id="node13" href="receptor__spec_8h.html" title="spec/receptor_spec.h" alt="" coords="859,155,1005,181"/><area shape="rect" id="node14" href="symbol_8c.html" title="implementation of symbol definition functions " alt="" coords="850,80,947,107"/><area shape="rect" id="node15" href="symbol__spec_8h.html" title="spec/symbol_spec.h" alt="" coords="971,80,1113,107"/><area shape="rect" id="node3" href="process_8h.html" title="processing header files " alt="" coords="188,155,289,181"/><area shape="rect" id="node5" href="receptor_8c.html" title="receptor implementation " alt="" coords="302,229,404,256"/><area shape="rect" id="node8" href="vmhost_8h.html" title="vmhost implementation header file " alt="" coords="419,155,517,181"/><area shape="rect" id="node11" href="tree__spec_8h.html" title="spec/tree_spec.h" alt="" coords="541,155,664,181"/><area shape="rect" id="node12" href="semtrex__spec_8h.html" title="spec/semtrex_spec.h" alt="" coords="688,155,835,181"/><area shape="rect" id="node4" href="process_8c.html" title="implementation of ceptr processing: instructions and run tree reduction " alt="" coords="5,229,107,256"/><area shape="rect" id="node6" href="process__spec_8h.html" title="spec/process_spec.h" alt="" coords="131,229,277,256"/><area shape="rect" id="node7" href="ceptr__specs_8c.html" title="implements a main() entry point for running all the tests " alt="" coords="691,304,825,331"/><area shape="rect" id="node9" href="vmhost_8c.html" title="virtual machine host receptor implementation " alt="" coords="429,229,528,256"/><area shape="rect" id="node10" href="vmhost__spec_8h.html" title="spec/vmhost_spec.h" alt="" coords="553,229,695,256"/></map>
+</div>
+</div>
 <p><a href="symbol_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:a6658c4c543dd5216f61805c3a2e92420"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6658c4c543dd5216f61805c3a2e92420"></a>
-typedef int&#160;</td><td class="memItemRight" valign="bottom"><b>Symbol</b></td></tr>
-<tr class="separator:a6658c4c543dd5216f61805c3a2e92420"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
-Enumerations</h2></td></tr>
-<tr class="memitem:a8225552e201b4ff8e3f55d263558e29c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8225552e201b4ff8e3f55d263558e29c"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="symbol_8h.html#a8225552e201b4ff8e3f55d263558e29c">TestSymbol</a> { <br />
-&#160;&#160;<b>TEST_SYMBOL</b> = -9999, 
-<b>TEST_SYMBOL2</b>, 
-<b>TEST_STR_SYMBOL</b>, 
-<b>TEST_TREE_SYMBOL</b>, 
-<br />
-&#160;&#160;<b>TEST_NAME_SYMBOL</b>, 
-<b>TEST_FIRST_NAME_SYMBOL</b>, 
-<b>_LAST_TEST_SYMBOL</b>
-<br />
- }</td></tr>
-<tr class="memdesc:a8225552e201b4ff8e3f55d263558e29c"><td class="mdescLeft">&#160;</td><td class="mdescRight">test symbols. These are defined only for the test suite. <br /></td></tr>
-<tr class="separator:a8225552e201b4ff8e3f55d263558e29c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab0f6206b340472c7ace01d1e9d4b87f3"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="symbol_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3">SystemSymbol</a> { <br />
-&#160;&#160;<b>NULL_SYMBOL</b> = -999, 
-<b>TREE_PATH</b>, 
-<a class="el" href="symbol_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a24fed94b1bdcacc4989e256136ad750c">SEMTREX_SYMBOL_LITERAL</a>, 
-<a class="el" href="symbol_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a2bcf9a9f55a6002b167918d9657788b7">SEMTREX_SEQUENCE</a>, 
-<br />
-&#160;&#160;<a class="el" href="symbol_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3ab048f8136e64b01fc2cb22f9dc588084">SEMTREX_OR</a>, 
-<a class="el" href="symbol_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a9a67b424e6a6adfe23cd3432642109f5">SEMTREX_SYMBOL_ANY</a>, 
-<a class="el" href="symbol_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a388806ffbf23acd9f4d947dcb0de01b2">SEMTREX_ZERO_OR_MORE</a>, 
-<a class="el" href="symbol_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3aaf104f1158c4cffb4478bae29e964fd1">SEMTREX_ONE_OR_MORE</a>, 
-<br />
-&#160;&#160;<a class="el" href="symbol_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a4b5d10ecd2c7bc7e205e4abdcc318e0c">SEMTREX_ZERO_OR_ONE</a>, 
-<a class="el" href="symbol_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a4f31ece163a69349b0daadd9d27e4a51">SEMTREX_VALUE_LITERAL</a>, 
-<a class="el" href="symbol_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a5b54d3166ed65522d1b0b557a91b5316">SEMTREX_GROUP</a>, 
-<a class="el" href="symbol_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3af50a291782e795c34991465b1ab01252">SEMTREX_MATCH</a>, 
-<br />
-&#160;&#160;<a class="el" href="symbol_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3aa9b0c09d3cb895bb572e117a5e4bd947">SEMTREX_MATCH_RESULTS</a>, 
-<a class="el" href="symbol_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a9430627803e373e4753589b0d90b6dc4">SEMTREX_MATCH_SIBLINGS_COUNT</a>, 
-<b>RECEPTOR</b>, 
-<a class="el" href="symbol_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3aa76c44edb76686fa1bbda9ebe69c7857">FLUX</a>, 
-<br />
-&#160;&#160;<b>STRUCTURES</b>, 
-<b>STRUCTURE_DEF</b>, 
-<b>STRUCTURE_PART</b>, 
-<b>SYMBOLS</b>, 
-<br />
-&#160;&#160;<b>SYMBOL_DEF</b>, 
-<b>SYMBOL_STRUCTURE</b>, 
-<b>SYMBOL_LABEL</b>, 
-<b>INSTANCE</b>, 
-<br />
-&#160;&#160;<b>ASPECT</b>, 
-<a class="el" href="symbol_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a1cad60194b57d18e09fff2a1b6c3b192">SIGNALS</a>, 
-<a class="el" href="symbol_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a480882f626731b7fa7fc7caf12d8cb66">SIGNAL</a>, 
-<a class="el" href="symbol_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a897aa439587c20afc15c9cf8a12b0611">LISTENERS</a>, 
-<br />
-&#160;&#160;<a class="el" href="symbol_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a3bc9f514d1055fbd078bdd7380d3fd90">LISTENER</a>, 
-<a class="el" href="symbol_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3af6d94b1598900ddce4908373a5f528e8">EXPECTATION</a>, 
-<a class="el" href="symbol_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3ae1bb1460cb779888412e634e983be161">ACTION</a>, 
-<a class="el" href="symbol_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a64c5ec914c978938d6ed4d420c099c8a">RESPOND</a>, 
-<br />
-&#160;&#160;<a class="el" href="symbol_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a32422b0c037a5e196f197711c8d49589">INTERPOLATE_FROM_MATCH</a>, 
-<a class="el" href="symbol_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3ae0e51bb381564e3d460f0352172e0c40">INTERPOLATE_SYMBOL</a>, 
-<b>RUN_TREE</b>, 
-<b>PARAMS</b>, 
-<br />
-&#160;&#160;<b>RECEPTOR_PACKAGE</b>, 
-<b>_LAST_SYS_SYMBOL</b>
-<br />
- }</td></tr>
-<tr class="memdesc:ab0f6206b340472c7ace01d1e9d4b87f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">System defined symbols.  <a href="symbol_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3">More...</a><br /></td></tr>
-<tr class="separator:ab0f6206b340472c7ace01d1e9d4b87f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:ac79d808dbf458dfc29b70f1737f3cf3f"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="symbol_8h.html#ac79d808dbf458dfc29b70f1737f3cf3f">_s_get_symbol_name</a> (<a class="el" href="structTnode.html">Tnode</a> *symbol_defs, Symbol s)</td></tr>
+<tr class="separator:ac79d808dbf458dfc29b70f1737f3cf3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33c57beb65760fc109cec711c7cb68a1"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="symbol_8h.html#a33c57beb65760fc109cec711c7cb68a1">_s_get_structure_name</a> (<a class="el" href="structTnode.html">Tnode</a> *structure_defs, Structure s)</td></tr>
+<tr class="separator:a33c57beb65760fc109cec711c7cb68a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0849931f541e7f882dc694ea3d37ed32"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTnode.html">Tnode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="symbol_8h.html#a0849931f541e7f882dc694ea3d37ed32">_s_def_symbol</a> (<a class="el" href="structTnode.html">Tnode</a> *symbol_defs, Structure s, char *label)</td></tr>
+<tr class="separator:a0849931f541e7f882dc694ea3d37ed32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46e3b9f4d59065aa513b30246a0314bc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTnode.html">Tnode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="symbol_8h.html#a46e3b9f4d59065aa513b30246a0314bc">_s_def_structure</a> (<a class="el" href="structTnode.html">Tnode</a> *structure_defs, char *label, int num_params,...)</td></tr>
+<tr class="separator:a46e3b9f4d59065aa513b30246a0314bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9de6bc25e5de6285cae02f5ee4960a9f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9de6bc25e5de6285cae02f5ee4960a9f"></a>
+<a class="el" href="structTnode.html">Tnode</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>_vs_def_structure</b> (<a class="el" href="structTnode.html">Tnode</a> *structure_defs, char *label, int num_params, va_list params)</td></tr>
+<tr class="separator:a9de6bc25e5de6285cae02f5ee4960a9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Defines hard-coded system defined symbols. </p>
-<p>Symbols are a numeric semantic indicator (like a type) for tree nodes.</p>
-<p>This file defines the hard-coded (negative value) system defined symbols</p>
+<div class="textblock"><p>header file for symbol related functions </p>
 <dl class="section copyright"><dt>Copyright</dt><dd>Copyright (C) 2013-2014, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al). This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3). </dd></dl>
-</div><h2 class="groupheader">Enumeration Type Documentation</h2>
-<a class="anchor" id="ab0f6206b340472c7ace01d1e9d4b87f3"></a>
+
+<p>Definition in file <a class="el" href="symbol_8h_source.html">symbol.h</a>.</p>
+</div><h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="a46e3b9f4d59065aa513b30246a0314bc"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="symbol_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3">SystemSymbol</a></td>
+          <td class="memname"><a class="el" href="structTnode.html">Tnode</a>* _s_def_structure </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structTnode.html">Tnode</a> *&#160;</td>
+          <td class="paramname"><em>structure_defs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>label</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>num_params</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>add a structure definition to a structure defs tree</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">structure_defs</td><td>a structre def tree containing structure definitions </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">label</td><td>a c-string label for this symbol </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num_params</td><td>number of symbols in the structure </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">...</td><td>variable list of Symbol type symbols </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the new structure def</dd></dl>
+<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structTnode.html">Tnode</a> *defs = <a class="code" href="group__tree.html#ga17676267c6fb457dd1d086f37641544a">_t_new_root</a>(STRUCTURES);</div>
+<div class="line"></div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *def = <a class="code" href="symbol_8c.html#a46e3b9f4d59065aa513b30246a0314bc">_s_def_structure</a>(defs,<span class="stringliteral">&quot;receptor pair&quot;</span>,2,RECEPTOR,RECEPTOR);</div>
+<div class="line">    spec_is_equal(<a class="code" href="group__tree.html#gaf459b3de598bba95efe941c4960f845d">_t_children</a>(defs),1);</div>
+<div class="line">    spec_is_ptr_equal(_t_child(defs,1),def);</div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *s = _t_child(defs,1);</div>
+<div class="line">    spec_is_equal(<a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(s),STRUCTURE_DEF);</div>
+<div class="line">    spec_is_str_equal((<span class="keywordtype">char</span> *)<a class="code" href="group__tree.html#ga5a292a02511c82863edfcaa72fa9698c">_t_surface</a>(s),<span class="stringliteral">&quot;receptor pair&quot;</span>)</div>
+<div class="line">    spec_is_equal(<a class="code" href="group__tree.html#gaf459b3de598bba95efe941c4960f845d">_t_children</a>(s),2);</div>
+<div class="line">    spec_is_equal(<a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(_t_child(s,1)),STRUCTURE_PART);</div>
+<div class="line">    spec_is_equal(<a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(_t_child(s,1)),STRUCTURE_PART);</div>
+<div class="line"></div>
+<div class="line">    <a class="code" href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a>(defs);</div>
+</div><!-- fragment -->
+<p>Definition at line <a class="el" href="symbol_8c_source.html#l00090">90</a> of file <a class="el" href="symbol_8c_source.html">symbol.c</a>.</p>
 
-<p>System defined symbols. </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="ab0f6206b340472c7ace01d1e9d4b87f3a24fed94b1bdcacc4989e256136ad750c"></a>SEMTREX_SYMBOL_LITERAL&#160;</td><td class="fielddoc">
-<p>This system symbol matches on the semantic type. Ex: /TEST_SYMBOL. </p>
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="ab0f6206b340472c7ace01d1e9d4b87f3a2bcf9a9f55a6002b167918d9657788b7"></a>SEMTREX_SEQUENCE&#160;</td><td class="fielddoc">
-<p>Match on a sequence of child nodes which are any valid semtrex's. Ex: comma separated nodes. </p>
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="ab0f6206b340472c7ace01d1e9d4b87f3ab048f8136e64b01fc2cb22f9dc588084"></a>SEMTREX_OR&#160;</td><td class="fielddoc">
-<p>Logical OR between two Semtrex expressions. Ex: |. </p>
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="ab0f6206b340472c7ace01d1e9d4b87f3a9a67b424e6a6adfe23cd3432642109f5"></a>SEMTREX_SYMBOL_ANY&#160;</td><td class="fielddoc">
-<p>Match any symbol or value of the node. Ex: . </p>
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="ab0f6206b340472c7ace01d1e9d4b87f3a388806ffbf23acd9f4d947dcb0de01b2"></a>SEMTREX_ZERO_OR_MORE&#160;</td><td class="fielddoc">
-<p>Requires one child Semtrex and matches on zero or more of that Semtrex. Ex: /0/TestSemtrex*. </p>
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="ab0f6206b340472c7ace01d1e9d4b87f3aaf104f1158c4cffb4478bae29e964fd1"></a>SEMTREX_ONE_OR_MORE&#160;</td><td class="fielddoc">
-<p>Requires one child Semtrex and matches on one or more of that Semtrex. Ex: /0/TestSemtrex+. </p>
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="ab0f6206b340472c7ace01d1e9d4b87f3a4b5d10ecd2c7bc7e205e4abdcc318e0c"></a>SEMTREX_ZERO_OR_ONE&#160;</td><td class="fielddoc">
-<p>Requires one child Semtrex and matches on zero or one of that Semtrex. Ex: /0/TestSemtrex? </p>
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="ab0f6206b340472c7ace01d1e9d4b87f3a4f31ece163a69349b0daadd9d27e4a51"></a>SEMTREX_VALUE_LITERAL&#160;</td><td class="fielddoc">
-<p>Matches on the semantic type and the data value. </p>
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="ab0f6206b340472c7ace01d1e9d4b87f3a5b54d3166ed65522d1b0b557a91b5316"></a>SEMTREX_GROUP&#160;</td><td class="fielddoc">
-<p>Grouping Ex: (...)operator. </p>
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="ab0f6206b340472c7ace01d1e9d4b87f3af50a291782e795c34991465b1ab01252"></a>SEMTREX_MATCH&#160;</td><td class="fielddoc">
-<p>Returns result and sibling count. Ex: {name:expr} (verify this is what it's supposed to do) </p>
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="ab0f6206b340472c7ace01d1e9d4b87f3aa9b0c09d3cb895bb572e117a5e4bd947"></a>SEMTREX_MATCH_RESULTS&#160;</td><td class="fielddoc">
-<p>In the FSA, keeps track of which part matches so it can be referenced. </p>
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="ab0f6206b340472c7ace01d1e9d4b87f3a9430627803e373e4753589b0d90b6dc4"></a>SEMTREX_MATCH_SIBLINGS_COUNT&#160;</td><td class="fielddoc">
-<p>In the FSA, it's the length of the match. </p>
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="ab0f6206b340472c7ace01d1e9d4b87f3aa76c44edb76686fa1bbda9ebe69c7857"></a>FLUX&#160;</td><td class="fielddoc">
-<p>tree to hold all incoming and in process signals on the various aspects </p>
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="ab0f6206b340472c7ace01d1e9d4b87f3a1cad60194b57d18e09fff2a1b6c3b192"></a>SIGNALS&#160;</td><td class="fielddoc">
-<p>list of signals on an aspect in the flux </p>
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="ab0f6206b340472c7ace01d1e9d4b87f3a480882f626731b7fa7fc7caf12d8cb66"></a>SIGNAL&#160;</td><td class="fielddoc">
-<p>a signal on the flux. It's first child is the contents of the signal </p>
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="ab0f6206b340472c7ace01d1e9d4b87f3a897aa439587c20afc15c9cf8a12b0611"></a>LISTENERS&#160;</td><td class="fielddoc">
-<p>list of carrier/expectation/action tress that "listen" to changes on the flux </p>
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="ab0f6206b340472c7ace01d1e9d4b87f3a3bc9f514d1055fbd078bdd7380d3fd90"></a>LISTENER&#160;</td><td class="fielddoc">
-<p>surface of the listener is the carrier symbol, and it has two children, expectation semtrex and action code tree </p>
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="ab0f6206b340472c7ace01d1e9d4b87f3af6d94b1598900ddce4908373a5f528e8"></a>EXPECTATION&#160;</td><td class="fielddoc">
-<p>expectation is a semtrex (thus has one child which is the first part of the semtrex) </p>
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="ab0f6206b340472c7ace01d1e9d4b87f3ae1bb1460cb779888412e634e983be161"></a>ACTION&#160;</td><td class="fielddoc">
-<p>code tree, which specifies the action to perform when an expectation's semtrex matches </p>
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="ab0f6206b340472c7ace01d1e9d4b87f3a64c5ec914c978938d6ed4d420c099c8a"></a>RESPOND&#160;</td><td class="fielddoc">
-<p>an instruction to respond to the initiating signal with the what ever the sub-tree reduced to </p>
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="ab0f6206b340472c7ace01d1e9d4b87f3a32422b0c037a5e196f197711c8d49589"></a>INTERPOLATE_FROM_MATCH&#160;</td><td class="fielddoc">
-<p>an instruction which reduces to replaced values from the match </p>
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="ab0f6206b340472c7ace01d1e9d4b87f3ae0e51bb381564e3d460f0352172e0c40"></a>INTERPOLATE_SYMBOL&#160;</td><td class="fielddoc">
-<p>a place holder to indicate which symbol to insert into this part of the three </p>
-</td></tr>
-</table>
+</div>
+</div>
+<a class="anchor" id="a0849931f541e7f882dc694ea3d37ed32"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structTnode.html">Tnode</a>* _s_def_symbol </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structTnode.html">Tnode</a> *&#160;</td>
+          <td class="paramname"><em>symbol_defs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Structure&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>label</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>add a symbol definition to a symbol defs tree</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">symbol_defs</td><td>a symbol def tree containing symbol definitions </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>the structure type for this symbol </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">label</td><td>a c-string label for this symbol </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the new symbol def</dd></dl>
+<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structTnode.html">Tnode</a> *defs = <a class="code" href="group__tree.html#ga17676267c6fb457dd1d086f37641544a">_t_new_root</a>(SYMBOLS);</div>
+<div class="line"></div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *def = <a class="code" href="symbol_8c.html#a0849931f541e7f882dc694ea3d37ed32">_s_def_symbol</a>(defs,INTEGER,<span class="stringliteral">&quot;shoe size&quot;</span>);</div>
+<div class="line">    spec_is_equal(<a class="code" href="group__tree.html#gaf459b3de598bba95efe941c4960f845d">_t_children</a>(defs),1);</div>
+<div class="line">    spec_is_ptr_equal(_t_child(defs,1),def);</div>
+<div class="line">    spec_is_equal(<a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(_t_child(defs,1)),SYMBOL_DEF);</div>
+<div class="line">    spec_is_equal(<a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(_t_child(_t_child(defs,1),1)),SYMBOL_STRUCTURE);</div>
+<div class="line">    spec_is_equal(<a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(_t_child(_t_child(defs,1),2)),SYMBOL_LABEL);</div>
+<div class="line"></div>
+<div class="line">    <a class="code" href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a>(defs);</div>
+</div><!-- fragment -->
+<p>Definition at line <a class="el" href="symbol_8c_source.html#l00071">71</a> of file <a class="el" href="symbol_8c_source.html">symbol.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a33c57beb65760fc109cec711c7cb68a1"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char* _s_get_structure_name </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structTnode.html">Tnode</a> *&#160;</td>
+          <td class="paramname"><em>structure_defs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Structure&#160;</td>
+          <td class="paramname"><em>s</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>get structure's label</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">structure_defs</td><td>a structre def tree containing structure definitions </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>the Structure to return the name for </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>char * pointing to label</dd></dl>
+<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    spec_is_str_equal(<a class="code" href="symbol_8c.html#a33c57beb65760fc109cec711c7cb68a1">_s_get_structure_name</a>(0,INTEGER),<span class="stringliteral">&quot;INTEGER&quot;</span>);</div>
+</div><!-- fragment -->
+<p>Definition at line <a class="el" href="symbol_8c_source.html#l00048">48</a> of file <a class="el" href="symbol_8c_source.html">symbol.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ac79d808dbf458dfc29b70f1737f3cf3f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char* _s_get_symbol_name </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structTnode.html">Tnode</a> *&#160;</td>
+          <td class="paramname"><em>symbol_defs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Symbol&#160;</td>
+          <td class="paramname"><em>s</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>get symbol's label</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">symbol_defs</td><td>a symbol def tree containing symbol definitions </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>the Symbol to return the name for </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>char * pointing to label</dd></dl>
+<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    spec_is_str_equal(<a class="code" href="symbol_8c.html#ac79d808dbf458dfc29b70f1737f3cf3f">_s_get_symbol_name</a>(0,TEST_SYMBOL),<span class="stringliteral">&quot;TEST_SYMBOL&quot;</span>);</div>
+</div><!-- fragment -->
+<p>Definition at line <a class="el" href="symbol_8c_source.html#l00025">25</a> of file <a class="el" href="symbol_8c_source.html">symbol.c</a>.</p>
 
 </div>
 </div>
@@ -283,7 +350,7 @@ Enumerations</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="symbol_8h.html">symbol.h</a></li>
-    <li class="footer">Generated on Thu Aug 28 2014 21:55:13 for ceptr by
+    <li class="footer">Generated on Fri Aug 29 2014 16:15:20 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
