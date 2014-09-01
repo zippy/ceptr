@@ -95,6 +95,7 @@ Tnode * _s_def_structure(Tnode *structure_defs,char *label,int num_params,...) {
     return def;
 }
 
+/// va_list version of _s_def_structure
 Tnode * _vs_def_structure(Tnode *structure_defs,char *label,int num_params,va_list params) {
     Tnode *def = _t_new(structure_defs,STRUCTURE_DEF,label,strlen(label)+1);
     int i;

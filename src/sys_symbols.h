@@ -31,6 +31,7 @@ enum SystemSymbol
 {
     //-----  Basic symbols for underlying data types
     NULL_SYMBOL = -999,
+    POINTER,
     TREE_PATH,
 
     //-----  Symbols for the different semantic parts of semtrexes
@@ -73,10 +74,12 @@ enum SystemSymbol
 
     //-----  Symbols for the virtual machine host
     RECEPTOR_PACKAGE,
+    ACTIVE_RECEPTORS,
     _LAST_SYS_SYMBOL
 };
 static char *G_sys_symbol_names[] = {
     "NULL_SYMBOL",
+    "POINTER",
     "TREE_PATH",
     "SEMTREX_SYMBOL_LITERAL",
     "SEMTREX_SEQUENCE",
@@ -113,6 +116,7 @@ static char *G_sys_symbol_names[] = {
     "RUN_TREE",
     "PARAMS",
     "RECEPTOR_PACKAGE",
+    "ACTIVE_RECEPTORS",
 };
 
 #endif

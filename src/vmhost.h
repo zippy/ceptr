@@ -20,7 +20,8 @@
  * VMHost holds all the data for an active virtual machine host
  */
 struct VMHost {
-    Receptor *r;         ///< Receptor data for this vm host
+    Receptor *r;                ///< Receptor data for this vm host
+    Tnode *active_receptors;    ///< pointer to tree that holds all currently active receptors
 };
 typedef struct VMHost VMHost;
 
@@ -29,6 +30,7 @@ VMHost * _v_new();
 void _v_free(VMHost *r);
 
 Xaddr _v_install_r(VMHost *v,Receptor *r,char *label);
+void _v_activate(VMHost *v, Xaddr x);
 
 #endif
 /** @}*/

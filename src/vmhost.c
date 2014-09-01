@@ -9,7 +9,7 @@
  */
 
 #include "vmhost.h"
-
+#include "tree.h"
 /******************  create and destroy virtual machine */
 
 /**
@@ -25,6 +25,7 @@
 VMHost * _v_new() {
     VMHost *v = malloc(sizeof(VMHost));
     v->r = _r_new();
+    v->active_receptors = _t_newr(v->r->root,ACTIVE_RECEPTORS);
     return v;
 }
 
@@ -34,6 +35,14 @@ VMHost * _v_new() {
  * @param[in] v the VMHost to free
  */
 void _v_free(VMHost *v) {
+    int c = _t_children(v->active_receptors);
+
+    // free any active receptors
+    int i;
+    for(i=1;i<=c;i++) {
+	Receptor *r = *(Receptor **)_t_surface(_t_child(v->active_receptors,i));
+	_r_free(r);
+    }
     _r_free(v->r);
     free(v);
 }
@@ -59,4 +68,23 @@ Xaddr _v_install_r(VMHost *v,Receptor *r,char *label) {
     free(surface);
     return x;
 }
+
+/**
+ * Active a receptor
+ *
+ * unserializes the receptor from the RECEPTOR_PACKAGE and installs it into the
+ * active receptors list
+ *
+ * @param[in] v VMHost
+ * @param[in] x Xaddr of receptor to activate
+ *
+ * @todo for now we are just storing the active receptors in the receptor tree
+ * later this will probably have to be optimized into a hash for faster access
+ */
+void _v_activate(VMHost *v, Xaddr x) {
+    Instance i = _r_get_instance(v->r,x);
+    Receptor *r = _r_unserialize(i.surface);
+    _t_new(v->active_receptors,POINTER,&r,sizeof(Receptor *));
+}
+
 /** @}*/
