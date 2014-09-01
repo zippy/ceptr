@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['group',['group',['../unionSTypeData.html#a9c3c3d0e2cdadb4f98f5ddb3bb571176',1,'STypeData']]]
+  ['flux',['flux',['../structReceptor.html#a622c4885a917e9249fa213ccf47b04ff',1,'Receptor']]]
 ];

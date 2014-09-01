@@ -11,7 +11,7 @@ var indexSectionsWithContent =
   1: "iprstuvx",
   2: "clprstv",
   3: "_adlpst",
-  4: "_dfghilmoprstv",
+  4: "_adfghilmoprstv",
   5: "p",
   6: "fst",
   7: "aefilrst",
