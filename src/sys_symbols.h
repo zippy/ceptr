@@ -12,6 +12,7 @@
 
 #ifndef _CEPTR_SYS_SYMBOL_H
 #define _CEPTR_SYS_SYMBOL_H
+#include "sys_structures.h"
 
 /// test symbols.  These are defined only for the test suite.
 enum TestSymbol {TEST_SYMBOL= -9999,TEST_SYMBOL2,TEST_STR_SYMBOL,TEST_TREE_SYMBOL,
@@ -19,15 +20,30 @@ enum TestSymbol {TEST_SYMBOL= -9999,TEST_SYMBOL2,TEST_STR_SYMBOL,TEST_TREE_SYMBO
 		 _LAST_TEST_SYMBOL
 };
 static char *G_test_symbol_names[] = {
-    "TEST_SYMBOL","TEST_SYMBOL2","TEST_STR_SYMBOL","TEST_TREE_SYMBOL",
-    "TEST_NAME_SYMBOL","TEST_FIRST_NAME_SYMBOL"};
+    "TEST_SYMBOL",
+    "TEST_SYMBOL2",
+    "TEST_STR_SYMBOL",
+    "TEST_TREE_SYMBOL",
+    "TEST_NAME_SYMBOL",
+    "TEST_FIRST_NAME_SYMBOL",
+    "TEST_RECEPTOR_SYMBOL"
+};
+
+static Structure G_test_symbol_structures[] = {
+    INTEGER, //"TEST_SYMBOL",
+    INTEGER, //"TEST_SYMBOL2",
+    CSTRING, //"TEST_STR_SYMBOL",
+    TREE,    //"TEST_TREE_SYMBOL",
+    TREE,    //"TEST_NAME_SYMBOL",
+    CSTRING, //"TEST_FIRST_NAME_SYMBOL",
+    NULL_STRUCTURE, //"TEST_RECEPTOR_SYMBOL"
+};
 
 /// System defined symbols.
 enum SystemSymbol
 {
     //-----  Basic symbols for underlying data types
     NULL_SYMBOL = -999,
-    POINTER,
     TREE_PATH,
 
     //-----  Symbols for the different semantic parts of semtrexes
@@ -49,6 +65,8 @@ enum SystemSymbol
     FLUX,                              ///< tree to hold all incoming and in process signals on the various aspects
     STRUCTURES,
     STRUCTURE_DEF,
+    STRUCTURE_LABEL,
+    STRUCTURE_PARTS,
     STRUCTURE_PART,
     SYMBOLS,
     SYMBOL_DEF,
@@ -75,7 +93,6 @@ enum SystemSymbol
 };
 static char *G_sys_symbol_names[] = {
     "NULL_SYMBOL",
-    "POINTER",
     "TREE_PATH",
     "SEMTREX_SYMBOL_LITERAL",
     "SEMTREX_SEQUENCE",
@@ -93,6 +110,8 @@ static char *G_sys_symbol_names[] = {
     "FLUX",
     "STRUCTURES",
     "STRUCTURE_DEF",
+    "STRUCTURE_LABEL",
+    "STRUCTURE_PARTS",
     "STRUCTURE_PART",
     "SYMBOLS",
     "SYMBOL_DEF",
@@ -113,6 +132,49 @@ static char *G_sys_symbol_names[] = {
     "PARAMS",
     "RECEPTOR_PACKAGE",
     "ACTIVE_RECEPTORS",
+};
+
+static Structure G_sys_symbol_structures[] = {
+    NULL_STRUCTURE,      //"NULL_SYMBOL",
+    NULL_STRUCTURE,      //"TREE_PATH",
+    INTEGER,             //"SEMTREX_SYMBOL_LITERAL",
+    LIST,                //"SEMTREX_SEQUENCE",
+    NULL_STRUCTURE,      //"SEMTREX_OR",
+    NULL_STRUCTURE,      //"SEMTREX_SYMBOL_ANY",
+    NULL_STRUCTURE,      //"SEMTREX_ZERO_OR_MORE",
+    NULL_STRUCTURE,      //"SEMTREX_ONE_OR_MORE",
+    NULL_STRUCTURE,      //"SEMTREX_ZERO_OR_ONE",
+    NULL_STRUCTURE,      //"SEMTREX_VALUE_LITERAL",
+    NULL_STRUCTURE,      //"SEMTREX_GROUP",
+    NULL_STRUCTURE,      //"SEMTREX_MATCH",
+    NULL_STRUCTURE,      //"SEMTREX_MATCH_RESULTS",
+    NULL_STRUCTURE,      //"SEMTREX_MATCH_SIBLINGS_COUNT",
+    NULL_STRUCTURE,      //"RECEPTOR",
+    LIST,                //"FLUX",
+    LIST,                //"STRUCTURES",
+    TREE,                //"STRUCTURE_DEF",
+    CSTRING,             //STRUCTURE_LABEL,
+    LIST,                //"STRUCTURE_PARTS",
+    INTEGER,             //"STRUCTURE_PART",
+    LIST          ,      //"SYMBOLS",
+    NULL_STRUCTURE,      //"SYMBOL_DEF",
+    NULL_STRUCTURE,      //"SYMBOL_STRUCTURE",
+    CSTRING,             //"SYMBOL_LABEL",
+    NULL_STRUCTURE,      //"INSTANCE",
+    INTEGER,             //"ASPECT",
+    LIST,                //"SIGNALS",
+    NULL_STRUCTURE,      //"SIGNAL",
+    LIST,                //"LISTENERS",
+    INTEGER,             //"LISTENER",
+    NULL_STRUCTURE,      //"EXPECTATION",
+    NULL_STRUCTURE,      //"ACTION",
+    NULL_STRUCTURE,      //"RESPOND",
+    NULL_STRUCTURE,      //"INTERPOLATE_FROM_MATCH",
+    NULL_STRUCTURE,      //"INTERPOLATE_SYMBOL",
+    NULL_STRUCTURE,      //"RUN_TREE",
+    LIST,                //"PARAMS",
+    NULL_STRUCTURE,      //"RECEPTOR_PACKAGE",
+    NULL_STRUCTURE,      //"ACTIVE_RECEPTORS",
 };
 
 #endif

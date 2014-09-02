@@ -43,10 +43,14 @@ void testDefStructure() {
     spec_is_ptr_equal(_t_child(defs,1),def);
     Tnode *s = _t_child(defs,1);
     spec_is_equal(_t_symbol(s),STRUCTURE_DEF);
-    spec_is_str_equal((char *)_t_surface(s),"receptor pair")
     spec_is_equal(_t_children(s),2);
-    spec_is_equal(_t_symbol(_t_child(s,1)),STRUCTURE_PART);
-    spec_is_equal(_t_symbol(_t_child(s,1)),STRUCTURE_PART);
+    Tnode *l = _t_child(s,1);
+    Tnode *p = _t_child(s,2);
+    spec_is_symbol_equal(0,_t_symbol(l),STRUCTURE_LABEL);
+    spec_is_str_equal((char *)_t_surface(l),"receptor pair");
+    spec_is_symbol_equal(0,_t_symbol(p),STRUCTURE_PARTS);
+    spec_is_symbol_equal(0,_t_symbol(_t_child(p,1)),STRUCTURE_PART);
+    spec_is_symbol_equal(0,_t_symbol(_t_child(p,1)),STRUCTURE_PART);
 
     _t_free(defs);
     //! [testDefStructure]
@@ -55,8 +59,8 @@ void testDefStructure() {
 void testGetSymbolStructure() {
     //! [testSymbolStructure]
     // test built-in symbols
-    spec_is_equal(_d_get_symbol_structure(0,STRUCTURE_DEF),CSTRING);
-    spec_is_equal(_d_get_symbol_structure(0,STRUCTURE_PART),INTEGER);
+    spec_is_structure_equal(0,_d_get_symbol_structure(0,STRUCTURE_DEF),TREE);
+    spec_is_structure_equal(0,_d_get_symbol_structure(0,STRUCTURE_PART),INTEGER);
 
     // test user-defined symbols
     Tnode *defs = _t_new_root(SYMBOLS);

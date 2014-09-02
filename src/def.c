@@ -29,6 +29,7 @@ char *_d_get_symbol_name(Tnode *symbol_defs,Symbol s) {
 	return G_test_symbol_names[s-TEST_SYMBOL];
     else if (symbol_defs) {
 	Tnode *def = _t_child(symbol_defs,s);
+	Tnode *l = _t_child(def,1);
 	return (char *)_t_surface(_t_child(def,2));
     }
     sprintf(__d_extra_buf,"<unknown symbol:%d>",s);
@@ -97,10 +98,12 @@ Tnode * _d_def_structure(Tnode *structure_defs,char *label,int num_params,...) {
 
 /// va_list version of _d_def_structure
 Tnode * _dv_def_structure(Tnode *structure_defs,char *label,int num_params,va_list params) {
-    Tnode *def = _t_new(structure_defs,STRUCTURE_DEF,label,strlen(label)+1);
+    Tnode *def = _t_newr(structure_defs,STRUCTURE_DEF);
+    Tnode *l = _t_new(def,STRUCTURE_LABEL,label,strlen(label)+1);
+    Tnode *p = _t_newr(def,STRUCTURE_PARTS);
     int i;
     for(i=0;i<num_params;i++) {
-	_t_newi(def,STRUCTURE_PART,va_arg(params,Symbol));
+	_t_newi(p,STRUCTURE_PART,va_arg(params,Symbol));
     }
     return def;
 }
@@ -109,31 +112,19 @@ Tnode * _dv_def_structure(Tnode *structure_defs,char *label,int num_params,va_li
  * get the structure for a given symbol
  *
  * @param[in] symbol_defs a symbol def tree containing symbol definitions
- * @param[in] symbol the symbol
+ * @param[in] s the symbol
  * @returns a Structure
  *
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testGetSymbolStructure
  */
-Structure _d_get_symbol_structure(Tnode *symbol_defs,Symbol symbol) {
-    if (symbol>=NULL_SYMBOL && symbol <_LAST_SYS_SYMBOL) {
-	switch(symbol) {
-	case SYMBOL_LABEL:
-	case STRUCTURE_DEF:
-	    return CSTRING;
-	case LISTENER:
-	case ASPECT:
-	case SYMBOL_STRUCTURE:
-	case STRUCTURE_PART:
-	    return INTEGER;
-	case INSTANCE:
-	    return SURFACE;
-	case RECEPTOR_PACKAGE:
-	    return SERIALIZED_TREE;
-	default: return NULL_STRUCTURE;
-	}
+Structure _d_get_symbol_structure(Tnode *symbol_defs,Symbol s) {
+    if (s>=NULL_SYMBOL && s <_LAST_SYS_SYMBOL) {
+	return G_sys_symbol_structures[s-NULL_SYMBOL];
     }
-    Tnode *def = _t_child(symbol_defs,symbol);
+    else if (s>=TEST_SYMBOL && s < _LAST_TEST_SYMBOL)
+	return G_test_symbol_structures[s-TEST_SYMBOL];
+    Tnode *def = _t_child(symbol_defs,s);
     Tnode *t = _t_child(def,1); // first child of the def is the structure
     return *(Structure *)_t_surface(t);
 }
@@ -170,6 +161,8 @@ size_t _d_get_symbol_size(Tnode *symbols,Tnode *structures,Symbol s,void *surfac
 size_t _d_get_structure_size(Tnode *symbols,Tnode *structures,Structure s,void *surface) {
     if (s>=NULL_STRUCTURE && s <_LAST_SYS_STRUCTURE) {
 	switch(s) {
+	case LIST:
+	case TREE:
 	case NULL_STRUCTURE: return 0;
 	    //	case SEMTREX: return
 	case INTEGER: return sizeof(int);
@@ -181,10 +174,11 @@ size_t _d_get_structure_size(Tnode *symbols,Tnode *structures,Structure s,void *
     }
     else {
 	Tnode *structure = _t_child(structures,s);
+	Tnode *parts = _t_child(structure,2);
 	size_t size = 0;
 	int i,c = _t_children(structure);
 	for(i=1;i<=c;i++) {
-	    Tnode *p = _t_child(structure,i);
+	    Tnode *p = _t_child(parts,i);
 	    size += _d_get_symbol_size(symbols,structures,*(Symbol *)_t_surface(p),surface +size);
 	}
 	return size;
