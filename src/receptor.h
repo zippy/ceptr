@@ -16,20 +16,6 @@
 #include "symbol.h"
 #include "label.h"
 
-/**
-   A Receptor is a semantic tree, pointed to by root, but we also create c struct for
-   faster access to some parts of the tree, and to hold non-tree data, like the label
-   table.
-*/
-struct Receptor {
-    Tnode *root;        ///< root node of the semantic tree
-    Tnode *structures;  ///< pointer for quick access to structures
-    Tnode *symbols;     ///< pointer for quick access to symbols
-    Tnode *flux;        ///< pointer for quick access to the flux
-    LabelTable table;   ///< the label table
-};
-typedef struct Receptor Receptor;
-
 // for now aspects are just identified as the child index in the flux receptor
 enum {DEFAULT_ASPECT=1};
 typedef int Aspect;
@@ -50,10 +36,6 @@ Tnode * _r_build_def_semtrex(Receptor *r,Symbol s,Tnode *parent);
 int _r_def_match(Receptor *r,Symbol s,Tnode *t);
 
 /*****************  receptor instances and xaddrs */
-struct Instance {
-    void *surface;
-};
-typedef struct Instance Instance;
 
 /**
  * An eXistence Address consists of the semantic type (Symbol) and an address.
@@ -63,9 +45,8 @@ struct Xaddr {
     int addr;
 };
 typedef struct Xaddr Xaddr;
-Xaddr __r_new_instance(Receptor *r,Symbol s,void * surface);
 Xaddr _r_new_instance(Receptor *r,Tnode *t);
-Instance _r_get_instance(Receptor *r,Xaddr x);
+Tnode *_r_get_instance(Receptor *r,Xaddr x);
 
 /******************  receptor serialization */
 size_t __t_serialize(Tnode *t,void **bufferP,size_t offset,size_t current_size,int compact);

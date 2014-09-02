@@ -22,42 +22,12 @@
 #include "ceptr_error.h"
 #include "sys_symbols.h"
 #include "sys_structures.h"
+#include "ceptr_types.h"
 
 #define TREE_CHILDREN_BLOCK 5
 #define TREE_PATH_TERMINATOR -9999
 
-typedef int Symbol;
-
-struct Tstruct {
-    struct Tnode *parent;
-    int child_count;
-    struct Tnode **children;
-};
-typedef struct Tstruct Tstruct;
-
-struct Tcontents {
-    Symbol symbol;
-    size_t size;
-    void *surface;
-};
-typedef struct Tcontents Tcontents;
-
-//Flags:
-#define TFLAG_ALLOCATED 0x0001
-#define TFLAG_SURFACE_IS_TREE 0x0002
-
-struct Tcontext {
-    int flags;
-};
-typedef struct Tcontext Tcontext;
-
-struct Tnode {
-    Tstruct structure;
-    Tcontext context;
-    Tcontents contents;
-};
-typedef struct Tnode Tnode;
-
+enum TreeSurfaceFlags {TFLAG_ALLOCATED=0x0001,TFLAG_SURFACE_IS_TREE=0x0002,TFLAG_SURFACE_IS_RECEPTOR = 0x0004};
 
 /*****************  Node creation and deletion*/
 Tnode * _t_new(Tnode *t,Symbol symbol, void *surface, size_t size);

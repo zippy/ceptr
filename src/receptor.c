@@ -34,6 +34,7 @@ Receptor *_r_new() {
     _t_newr(a,LISTENERS);
     _t_newr(a,SIGNALS);
     r->table = NULL;
+    r->instances = NULL;
     return r;
 }
 
@@ -48,12 +49,31 @@ void _r_add_listener(Receptor *r,Aspect aspect,Symbol carrier,Tnode *expectation
     _t_add(a,e);
 }
 
+void instanceFree(Instance *i) {
+    instance_elem *cur,*tmp;
+    HASH_ITER(hh, *i, cur, tmp) {
+	_t_free((*i)->instance);
+	HASH_DEL(*i,cur);  /* delete; cur advances to next */
+	free(cur);
+    }
+}
+
+void instancesFree(Instances *i) {
+    instances_elem *cur,*tmp;
+    HASH_ITER(hh, *i, cur, tmp) {
+	instanceFree(&(*i)->instances);
+	HASH_DEL(*i,cur);  /* delete; cur advances to next */
+	free(cur);
+    }
+}
+
 /**
  * Destroys a receptor freeing all memory it uses.
  */
 void _r_free(Receptor *r) {
     _t_free(r->root);
     lableTableFree(&r->table);
+    instancesFree(&r->instances);
     free(r);
 }
 
@@ -242,54 +262,69 @@ int _r_def_match(Receptor *r,Symbol s,Tnode *t) {
 /*****************  receptor instances and xaddrs */
 
 /**
- * Create a new instance of a symbol given a symbol and a serialized surface.
- *
- * @param[in] r the receptor context in which things are defined
- * @param[in] s the symbol type to instantiate
- * @param[in] surface pointer to the surface data to be instantiated
- * @returns Xaddr that identifies the instance
- *
- * @todo currently this implementation of instances, just stores each instance as tree node
- * of type INSTANCE as a child of the symbol.  This is way inefficient and needs to be
- * replaced.  But this is just here to create the API...
- */
-Xaddr __r_new_instance(Receptor *r,Symbol s,void *surface) {
-    Xaddr result;
-    Tnode *sym = _t_child(r->symbols,s);
-    _t_new(sym,INSTANCE,surface,__r_get_symbol_size(r,s,surface));
-    result.symbol = s;
-    result.addr = _t_children(sym);
-    return result;
-}
-
-/**
  * Create a new instance of a tree
  *
  * @param[in] r the receptor context in which things are defined
  * @param[in] t the tree to instantiate
+ * @returns xaddr of the instance
  *
+ * @todo currently stores instances as extra-children on the def tree, this will actually
+ * be handled by interacting with the data-engine!
+ *
+ * <b>Examples (from test suite):</b>
  * @snippet spec/receptor_spec.h testReceptorInstanceNew
  */
 Xaddr _r_new_instance(Receptor *r,Tnode *t) {
-    size_t length;
-    void *surface;
-    _t_serialize(t,&surface,&length);
-    Xaddr x =__r_new_instance(r,_t_symbol(t),surface);
-    // @todo eventually we should have a way to have this allocation be the one
-    // used in the instance, instead of yet another one being allocated, and having to
-    // free it here.
-    free(surface);
-    return x;
+    Symbol s = _t_symbol(t);
+    Instances *instances = &r->instances;
+    instances_elem *e;
+
+    HASH_FIND_INT( *instances, &s, e );
+    if (!e) {
+	e = malloc(sizeof(struct instances_elem));
+	e->instances = NULL;
+	e->s = s;
+	e->last_id = 0;
+	HASH_ADD_INT(*instances,s,e);
+    }
+    e->last_id++;
+    instance_elem *i;
+    i = malloc(sizeof(struct instance_elem));
+    i->instance = t;
+    i->addr = e->last_id;
+    Instance *iP = &e->instances;
+    HASH_ADD_INT(*iP,addr,i);
+
+    Xaddr result;
+    result.symbol = s;
+    result.addr = e->last_id;
+
+    return result;
 }
 
 /**
- * retrieve the instance data for a given xaddr
+ * retrieve the instance for a given xaddr
+ *
+ * @param[in] r the receptor context in which things are defined
+ * @param[in] x the xaddr of the instance
+ * @returns the instance tree
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/receptor_spec.h testReceptorInstanceNew
  */
-Instance _r_get_instance(Receptor *r,Xaddr x) {
-    Tnode *s = _t_child(r->symbols,x.symbol);
-    Instance i;
-    i.surface = _t_surface(_t_child(s,x.addr));
-    return i;
+Tnode * _r_get_instance(Receptor *r,Xaddr x) {
+    Instances *instances = &r->instances;
+    instances_elem *e = 0;
+    HASH_FIND_INT( *instances, &x.symbol, e );
+    if (e) {
+	instance_elem *i = 0;
+	Instance *iP = &e->instances;
+	HASH_FIND_INT( *iP, &x.addr, i );
+	if (i) {
+	    return i->instance;
+	}
+    }
+    return 0;
 }
 
 /******************  receptor serialization */
@@ -494,6 +529,7 @@ char *_r_get_structure_name(Receptor *r,Structure s) {
 }
 
 char * __t_dump(Receptor *r,Tnode *t,int level,char *buf) {
+    if (!t) return "";
     Symbol s = _t_symbol(t);
     char b[255];
     char tbuf[2000];

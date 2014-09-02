@@ -224,18 +224,16 @@ void testReceptorInstanceNew() {
     Tnode *t_lat = _t_new(t,lat,&ll[0],sizeof(float));
     Tnode *t_lon = _t_new(t,lon,&ll[1],sizeof(float));
 
-    //    Xaddr x = _r_new_instance(r,house_loc,ll);
     Xaddr x = _r_new_instance(r,t);
+    spec_is_equal(x.addr,1);
+    spec_is_equal(x.symbol,house_loc);
 
     float *ill;
-    Instance i = _r_get_instance(r,x);
-    ill = (float *)i.surface;
+    Tnode *i = _r_get_instance(r,x);
 
-    spec_is_float_equal(ill[0],ll[0]);
-    spec_is_float_equal(ill[1],ll[1]);
+    spec_is_ptr_equal(t,i);
 
     _r_free(r);
-    _t_free(t);
     //! [testReceptorInstancesNew]
 }
 
@@ -247,8 +245,13 @@ void testReceptorSerialize() {
     Structure latlong;
     defineHouseLocation(r,&lat,&lon,&latlong,&house_loc);
 
+    // create a house location tree
+    Tnode *t = _t_new_root(house_loc);
     float ll[] = {132.5,92.3};
-    Xaddr x = __r_new_instance(r,house_loc,ll);
+    Tnode *t_lat = _t_new(t,lat,&ll[0],sizeof(float));
+    Tnode *t_lon = _t_new(t,lon,&ll[1],sizeof(float));
+
+    Xaddr x = _r_new_instance(r,t);
 
     void *surface;
     size_t length;
@@ -262,16 +265,25 @@ void testReceptorSerialize() {
 
     Receptor *r1 = _r_unserialize(surface);
 
+    // check that the structures look the same by comparing a string dump of the two
+    // receptors
     __t_dump(r,r->root,0,buf);
     __t_dump(r1,r1->root,0,buf1);
-
     spec_is_str_equal(buf1,buf);
 
+    // check that the unserialized receptor has the labels loaded into the label table
     int *path = labelGet(&r1->table,"latitude");
     int p[] = {2,1,TREE_PATH_TERMINATOR};
     spec_is_path_equal(path,p);
     spec_is_equal(_r_get_symbol_by_label(r1,"latitude"),lat);
     spec_is_equal(_r_get_structure_by_label(r1,"latlong"),latlong);
+
+    // check that the unserialized receptor has all the instances loaded into the instance store too
+    Tnode *t1 = _r_get_instance(r1,x);
+    buf[0] = buf1[0] = 0;
+    __t_dump(r,t,0,buf);
+    __t_dump(r1,t1,0,buf1);
+    spec_is_str_equal(buf1,buf);
 
     free(surface);
     _r_free(r);

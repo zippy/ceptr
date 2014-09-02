@@ -7,25 +7,7 @@
 
 #ifndef _CEPTR_LABEL_H
 #define _CEPTR_LABEL_H
-#include <stdint.h>
-#include "uthash.h"
-
-typedef uint32_t Label;
-#define MAX_PATH_DEPTH 10
-
-/**
- * An element in the label table.
- *
- * @todo convert path to variable sized item
- */
-struct table_elem {
-    Label label;               ///< semantic key
-    int path[MAX_PATH_DEPTH];  ///< path to the labeled item in the Receptor tree
-    UT_hash_handle hh;         ///< makes this structure hashable using the uthash library
-};
-
-typedef struct table_elem table_elem;
-typedef table_elem *LabelTable;
+#include "ceptr_types.h"
 
 Label str2label(char *);
 void labelSet(LabelTable *table, char *,int *path);
