@@ -20,7 +20,7 @@ char __d_extra_buf[10];
  * @returns char * pointing to label
  *
  * <b>Examples (from test suite):</b>
- * @snippet spec/symbol_spec.h testSymbolGetName
+ * @snippet spec/def_spec.h testSymbolGetName
  */
 char *_d_get_symbol_name(Tnode *symbol_defs,Symbol s) {
     if (s>NULL_SYMBOL && s <_LAST_SYS_SYMBOL )
@@ -43,7 +43,7 @@ char *_d_get_symbol_name(Tnode *symbol_defs,Symbol s) {
  * @returns char * pointing to label
  *
  * <b>Examples (from test suite):</b>
- * @snippet spec/symbol_spec.h testStructureGetName
+ * @snippet spec/def_spec.h testStructureGetName
  */
 char *_d_get_structure_name(Tnode *structure_defs,Structure s) {
     if (s>NULL_STRUCTURE && s <_LAST_SYS_STRUCTURE )
@@ -66,7 +66,7 @@ char *_d_get_structure_name(Tnode *structure_defs,Structure s) {
  * @returns the new symbol def
  *
  * <b>Examples (from test suite):</b>
- * @snippet spec/symbol_spec.h testDefSymbol
+ * @snippet spec/def_spec.h testDefSymbol
  */
 Tnode * _d_def_symbol(Tnode *symbol_defs,Structure s,char *label){
     Tnode *def = _t_newr(symbol_defs,SYMBOL_DEF);
@@ -85,7 +85,7 @@ Tnode * _d_def_symbol(Tnode *symbol_defs,Structure s,char *label){
  * @returns the new structure def
  *
  * <b>Examples (from test suite):</b>
- * @snippet spec/symbol_spec.h testDefStructure
+ * @snippet spec/def_spec.h testDefStructure
  */
 Tnode * _d_def_structure(Tnode *structure_defs,char *label,int num_params,...) {
     va_list params;
@@ -105,5 +105,90 @@ Tnode * _dv_def_structure(Tnode *structure_defs,char *label,int num_params,va_li
     return def;
 }
 
+/**
+ * get the structure for a given symbol
+ *
+ * @param[in] symbol_defs a symbol def tree containing symbol definitions
+ * @param[in] symbol the symbol
+ * @returns a Structure
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/def_spec.h testGetSymbolStructure
+ */
+Structure _d_get_symbol_structure(Tnode *symbol_defs,Symbol symbol) {
+    if (symbol>=NULL_SYMBOL && symbol <_LAST_SYS_SYMBOL) {
+	switch(symbol) {
+	case SYMBOL_LABEL:
+	case STRUCTURE_DEF:
+	    return CSTRING;
+	case LISTENER:
+	case ASPECT:
+	case SYMBOL_STRUCTURE:
+	case STRUCTURE_PART:
+	    return INTEGER;
+	case INSTANCE:
+	    return SURFACE;
+	case RECEPTOR_PACKAGE:
+	    return SERIALIZED_TREE;
+	default: return NULL_STRUCTURE;
+	}
+    }
+    Tnode *def = _t_child(symbol_defs,symbol);
+    Tnode *t = _t_child(def,1); // first child of the def is the structure
+    return *(Structure *)_t_surface(t);
+}
+
+/**
+ * get the size of a symbol
+ *
+ * @param[in] symbols a symbol def tree containing symbol definitions
+ * @param[in] structures a structure def tree containing structure definitions
+ * @param[in] s the symbol
+ * @param[in] surface the surface of the structure (may be necessary beause some structures have length info in the data)
+ * @returns size of the structure
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/def_spec.h testGetSize
+ */
+size_t _d_get_symbol_size(Tnode *symbols,Tnode *structures,Symbol s,void *surface) {
+    Structure st = _d_get_symbol_structure(symbols,s);
+    return _d_get_structure_size(symbols,structures,st,surface);
+}
+
+/**
+ * get the size of a structure
+ *
+ * @param[in] symbols a symbol def tree containing symbol definitions
+ * @param[in] structures a structure def tree containing structure definitions
+ * @param[in] s the structure
+ * @param[in] surface the surface of the structure (may be necessary beause some structures have length info in the data)
+ * @returns size of the structure
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/def_spec.h testGetSize
+ */
+size_t _d_get_structure_size(Tnode *symbols,Tnode *structures,Structure s,void *surface) {
+    if (s>=NULL_STRUCTURE && s <_LAST_SYS_STRUCTURE) {
+	switch(s) {
+	case NULL_STRUCTURE: return 0;
+	    //	case SEMTREX: return
+	case INTEGER: return sizeof(int);
+	case FLOAT: return sizeof(float);
+	case CSTRING: return strlen(surface)+1;
+	case SERIALIZED_TREE: return *(size_t *)surface;
+	default: raise_error2("DON'T HAVE A SIZE FOR STRUCTURE '%s' (%d)",_d_get_structure_name(structures,s),s);
+	}
+    }
+    else {
+	Tnode *structure = _t_child(structures,s);
+	size_t size = 0;
+	int i,c = _t_children(structure);
+	for(i=1;i<=c;i++) {
+	    Tnode *p = _t_child(structure,i);
+	    size += _d_get_symbol_size(symbols,structures,*(Symbol *)_t_surface(p),surface +size);
+	}
+	return size;
+    }
+}
 
 /** @}*/

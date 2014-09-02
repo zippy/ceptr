@@ -154,26 +154,7 @@ Structure _r_get_structure_by_label(Receptor *r,char *label){
  * @returns structure id
  */
 Structure __r_get_symbol_structure(Receptor *r,Symbol s){
-    if (s>=NULL_SYMBOL && s <_LAST_SYS_SYMBOL) {
-	switch(s) {
-	case SYMBOL_LABEL:
-	case STRUCTURE_DEF:
-	    return CSTRING;
-	case LISTENER:
-	case ASPECT:
-	case SYMBOL_STRUCTURE:
-	case STRUCTURE_PART:
-	    return INTEGER;
-	case INSTANCE:
-	    return SURFACE;
-	case RECEPTOR_PACKAGE:
-	    return SERIALIZED_TREE;
-	default: return NULL_STRUCTURE;
-	}
-    }
-    Tnode *def = _t_child(r->symbols,s);
-    Tnode *t = _t_child(def,1);
-    return *(Structure *)_t_surface(t);
+    return _d_get_symbol_structure(r->symbols,s);
 }
 
 /**
@@ -181,36 +162,14 @@ Structure __r_get_symbol_structure(Receptor *r,Symbol s){
  * @returns size
  */
 size_t __r_get_structure_size(Receptor *r,Structure s,void *surface) {
-    if (s>=NULL_STRUCTURE && s <_LAST_SYS_STRUCTURE) {
-	switch(s) {
-	case NULL_STRUCTURE: return 0;
-	    //	case SEMTREX: return
-	case INTEGER: return sizeof(int);
-	case FLOAT: return sizeof(float);
-	case CSTRING: return strlen(surface)+1;
-	case SERIALIZED_TREE: return *(size_t *)surface;
-	default: raise_error2("DON'T HAVE A SIZE FOR STRUCTURE '%s' (%d)",_r_get_structure_name(r,s),s);
-	}
-    }
-    else {
-	Tnode *structure = _t_child(r->structures,s);
-	size_t size = 0;
-	int i,c = _t_children(structure);
-	for(i=1;i<=c;i++) {
-	    Tnode *p = _t_child(structure,i);
-	    size += __r_get_symbol_size(r,*(Symbol *)_t_surface(p),surface +size);
-	}
-	return size;
-    }
+    return _d_get_structure_size(r->symbols,r->structures,s,surface);
 }
-
 /**
  * get the size of a symbol's surface
  * @returns size
  */
 size_t __r_get_symbol_size(Receptor *r,Symbol s,void *surface) {
-    Structure st = __r_get_symbol_structure(r,s);
-    return __r_get_structure_size(r,st,surface);
+    return _d_get_symbol_size(r->symbols,r->structures,s,surface);
 }
 
 /**
