@@ -1,16 +1,16 @@
 /**
- * @ingroup symbol
+ * @ingroup def
  *
  * @{
- * @file symbol.c
- * @brief implementation of symbol definition functions
+ * @file def.c
+ * @brief implementation file for symbol and structure definition functions
  *
  * @copyright Copyright (C) 2013-2014, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
  */
 
 #include "tree.h"
-#include "symbol.h"
-char __s_extra_buf[10];
+#include "def.h"
+char __d_extra_buf[10];
 
 /**
  * get symbol's label
@@ -22,7 +22,7 @@ char __s_extra_buf[10];
  * <b>Examples (from test suite):</b>
  * @snippet spec/symbol_spec.h testSymbolGetName
  */
-char *_s_get_symbol_name(Tnode *symbol_defs,Symbol s) {
+char *_d_get_symbol_name(Tnode *symbol_defs,Symbol s) {
     if (s>NULL_SYMBOL && s <_LAST_SYS_SYMBOL )
 	return G_sys_symbol_names[s-NULL_SYMBOL];
     if (s>=TEST_SYMBOL && s < _LAST_TEST_SYMBOL)
@@ -31,8 +31,8 @@ char *_s_get_symbol_name(Tnode *symbol_defs,Symbol s) {
 	Tnode *def = _t_child(symbol_defs,s);
 	return (char *)_t_surface(_t_child(def,2));
     }
-    sprintf(__s_extra_buf,"<unknown symbol:%d>",s);
-    return __s_extra_buf;
+    sprintf(__d_extra_buf,"<unknown symbol:%d>",s);
+    return __d_extra_buf;
 }
 
 /**
@@ -45,15 +45,15 @@ char *_s_get_symbol_name(Tnode *symbol_defs,Symbol s) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/symbol_spec.h testStructureGetName
  */
-char *_s_get_structure_name(Tnode *structure_defs,Structure s) {
+char *_d_get_structure_name(Tnode *structure_defs,Structure s) {
     if (s>NULL_STRUCTURE && s <_LAST_SYS_STRUCTURE )
 	return G_sys_structure_names[s-NULL_STRUCTURE];
     else if (structure_defs) {
 	Tnode *def = _t_child(structure_defs,s);
 	return (char *)_t_surface(def);
     }
-    sprintf(__s_extra_buf,"<unknown structure:%d>",s);
-    return __s_extra_buf;
+    sprintf(__d_extra_buf,"<unknown structure:%d>",s);
+    return __d_extra_buf;
 }
 
 
@@ -68,7 +68,7 @@ char *_s_get_structure_name(Tnode *structure_defs,Structure s) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/symbol_spec.h testDefSymbol
  */
-Tnode * _s_def_symbol(Tnode *symbol_defs,Structure s,char *label){
+Tnode * _d_def_symbol(Tnode *symbol_defs,Structure s,char *label){
     Tnode *def = _t_newr(symbol_defs,SYMBOL_DEF);
     _t_newi(def,SYMBOL_STRUCTURE,s);
     _t_new(def,SYMBOL_LABEL,label,strlen(label)+1);
@@ -87,16 +87,16 @@ Tnode * _s_def_symbol(Tnode *symbol_defs,Structure s,char *label){
  * <b>Examples (from test suite):</b>
  * @snippet spec/symbol_spec.h testDefStructure
  */
-Tnode * _s_def_structure(Tnode *structure_defs,char *label,int num_params,...) {
+Tnode * _d_def_structure(Tnode *structure_defs,char *label,int num_params,...) {
     va_list params;
     va_start(params,num_params);
-    Tnode *def = _vs_def_structure(structure_defs,label,num_params,params);
+    Tnode *def = _dv_def_structure(structure_defs,label,num_params,params);
     va_end(params);
     return def;
 }
 
-/// va_list version of _s_def_structure
-Tnode * _vs_def_structure(Tnode *structure_defs,char *label,int num_params,va_list params) {
+/// va_list version of _d_def_structure
+Tnode * _dv_def_structure(Tnode *structure_defs,char *label,int num_params,va_list params) {
     Tnode *def = _t_new(structure_defs,STRUCTURE_DEF,label,strlen(label)+1);
     int i;
     for(i=0;i<num_params;i++) {

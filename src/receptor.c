@@ -111,7 +111,7 @@ int __get_label_idx(Receptor *r,char *label) {
  *
  */
 Symbol _r_def_symbol(Receptor *r,Structure s,char *label){
-    Tnode *def = _s_def_symbol(r->symbols,s,label);
+    Tnode *def = _d_def_symbol(r->symbols,s,label);
     return __set_label_for_def(r,label,def);
 }
 
@@ -129,7 +129,7 @@ Symbol _r_def_symbol(Receptor *r,Structure s,char *label){
 Structure _r_def_structure(Receptor *r,char *label,int num_params,...) {
     va_list params;
     va_start(params,num_params);
-    Tnode *def = _vs_def_structure(r->structures,label,num_params,params);
+    Tnode *def = _dv_def_structure(r->structures,label,num_params,params);
     va_end(params);
 
     return __set_label_for_def(r,label,def);
@@ -521,11 +521,11 @@ Tnode *__r_get_signals(Receptor *r,Aspect aspect) {
 char __t_dump_buf[10000];
 char __t_extra_buf[50];
 char *_r_get_symbol_name(Receptor *r,Symbol s) {
-    return _s_get_symbol_name(r?r->symbols:0,s);
+    return _d_get_symbol_name(r?r->symbols:0,s);
 }
 
 char *_r_get_structure_name(Receptor *r,Structure s) {
-    return _s_get_structure_name(r?r->structures:0,s);
+    return _d_get_structure_name(r?r->structures:0,s);
 }
 
 char * __t_dump(Receptor *r,Tnode *t,int level,char *buf) {
@@ -616,7 +616,7 @@ char * __dump_semtrex(Tnode *s,char *buf) {
     case SEMTREX_VALUE_LITERAL:
     case SEMTREX_SYMBOL_LITERAL:
 	c = *(int *)_t_surface(s);
-	sn = _s_get_symbol_name(0,c);
+	sn = _d_get_symbol_name(0,c);
 	// ignore "<unknown symbol"
 	if (*sn=='<')
 	    sprintf(b,"%d",c);
@@ -652,7 +652,7 @@ char * __dump_semtrex(Tnode *s,char *buf) {
 	__stxd_multi("?",s,buf);
 	break;
     case SEMTREX_GROUP:
-	sn = _s_get_symbol_name(0,*(int *)_t_surface(s));
+	sn = _d_get_symbol_name(0,*(int *)_t_surface(s));
 	// ignore "<unknown symbol"
 	if  (*sn=='<')
 	    sprintf(buf, "{%s}",__dump_semtrex(_t_child(s,1),b));

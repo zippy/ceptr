@@ -5,17 +5,17 @@
  */
 
 #include "../src/ceptr.h"
-#include "../src/symbol.h"
+#include "../src/def.h"
 
 void testSymbolGetName() {
     //! [testSymbolGetName]
-    spec_is_str_equal(_s_get_symbol_name(0,TEST_SYMBOL),"TEST_SYMBOL");
+    spec_is_str_equal(_d_get_symbol_name(0,TEST_SYMBOL),"TEST_SYMBOL");
     //! [testSymbolGetName]
 }
 
 void testStructureGetName() {
     //! [testStructureGetName]
-    spec_is_str_equal(_s_get_structure_name(0,INTEGER),"INTEGER");
+    spec_is_str_equal(_d_get_structure_name(0,INTEGER),"INTEGER");
     //! [testStructureGetName]
 }
 
@@ -23,7 +23,7 @@ void testDefSymbol() {
     //! [testDefSymbol]
     Tnode *defs = _t_new_root(SYMBOLS);
 
-    Tnode *def = _s_def_symbol(defs,INTEGER,"shoe size");
+    Tnode *def = _d_def_symbol(defs,INTEGER,"shoe size");
     spec_is_equal(_t_children(defs),1);
     spec_is_ptr_equal(_t_child(defs,1),def);
     spec_is_equal(_t_symbol(_t_child(defs,1)),SYMBOL_DEF);
@@ -38,7 +38,7 @@ void testDefStructure() {
     //! [testDefStructure]
     Tnode *defs = _t_new_root(STRUCTURES);
 
-    Tnode *def = _s_def_structure(defs,"receptor pair",2,RECEPTOR,RECEPTOR);
+    Tnode *def = _d_def_structure(defs,"receptor pair",2,RECEPTOR,RECEPTOR);
     spec_is_equal(_t_children(defs),1);
     spec_is_ptr_equal(_t_child(defs,1),def);
     Tnode *s = _t_child(defs,1);
@@ -52,7 +52,7 @@ void testDefStructure() {
     //! [testDefStructure]
 }
 
-void testSymbol() {
+void testDef() {
     testSymbolGetName();
     testStructureGetName();
     testDefSymbol();

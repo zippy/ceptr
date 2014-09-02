@@ -45,15 +45,15 @@ void __s_dump(SState *s) {
 	break;
     case StateGroup:
 	if (s->data.group.type == GroupOpen)
-	    printf("{%s",_s_get_symbol_name(0,s->data.group.id));
+	    printf("{%s",_d_get_symbol_name(0,s->data.group.id));
 	else
-	    printf("%s}",_s_get_symbol_name(0,s->data.group.id));
+	    printf("%s}",_d_get_symbol_name(0,s->data.group.id));
 	break;
     case StateSymbol:
-	printf("(%s:%d)",_s_get_symbol_name(0,s->data.symbol),s->transition);
+	printf("(%s:%d)",_d_get_symbol_name(0,s->data.symbol),s->transition);
 	break;
     case StateValue:
-	printf("(%s:%d=)",_s_get_symbol_name(0,s->data.value.symbol),s->transition);
+	printf("(%s:%d=)",_d_get_symbol_name(0,s->data.value.symbol),s->transition);
 	break;
     case StateAny:
 	printf("(.:%d)",s->transition);

@@ -13,7 +13,7 @@
 #define _CEPTR_RECEPTOR_H
 
 #include "tree.h"
-#include "symbol.h"
+#include "def.h"
 #include "label.h"
 
 // for now aspects are just identified as the child index in the flux receptor
