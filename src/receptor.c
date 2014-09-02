@@ -502,6 +502,11 @@ char * __t_dump(Receptor *r,Tnode *t,int level,char *buf) {
     case SYMBOL_LABEL:
 	sprintf(buf," (%s:%s",n,(char *)_t_surface(t));
 	break;
+    case TEST_RECEPTOR_SYMBOL:
+	c = __t_dump(r,((Receptor *)_t_surface(t))->root,0,tbuf);
+	sprintf(buf," (%s:{%s}",n,c);
+	//	sprintf(buf," (%s:%s",n,);
+	break;
     case TEST_TREE_SYMBOL:
 	c = __t_dump(r,(Tnode *)_t_surface(t),0,tbuf);
 	sprintf(buf," (%s:{%s}",n,c);

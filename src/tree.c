@@ -112,15 +112,34 @@ Tnode *_t_newr(Tnode *parent,Symbol symbol) {
 }
 
 /**
+ * Create a new tree node with a receptor as it's surface
+ *
+ * this is just like _t_newt except that it uses a different flag because
+ * when cleaning up we'll need to know that this is a full receptor, not just
+ * a plain tree
+ *
+ * @param[in] parent parent node for the node to be created.
+ * @param[in] symbol semantic symbol for the node to be create
+ * @param[in] r receptor
+ * @returns pointer to node allocated on the heap
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/tree_spec.h testTreeNewReceptor
+ */
+Tnode *_t_new_receptor(Tnode *parent,Symbol symbol,Receptor *r) {
+    Tnode *t = _t_newt(parent,symbol,(Tnode *)r);
+    t->context.flags |= TFLAG_SURFACE_IS_TREE+TFLAG_SURFACE_IS_RECEPTOR;
+    return t;
+}
+
+/**
  * add an existing tree onto another appending it as a child
  *
  * @param[in] t tree onto which c will be added
  * @param[in] c tree to add onto t
  */
 void _t_add(Tnode *t,Tnode *c) {
-    if (c->structure.parent != 0) {
-	raise_error0("can't add a node that isn't a root!");
-    }
+    root_check(c);
     c->structure.parent = t;
     __t_append_child(t,c);
 }
@@ -265,8 +284,12 @@ void _t_free(Tnode *t) {
     __t_free_children(t);
     if (t->context.flags & TFLAG_ALLOCATED)
 	free(t->contents.surface);
-    if (t->context.flags & TFLAG_SURFACE_IS_TREE)
-	_t_free((Tnode *)t->contents.surface);
+    else if (t->context.flags & TFLAG_SURFACE_IS_TREE) {
+	if (t->context.flags & TFLAG_SURFACE_IS_RECEPTOR)
+	    _r_free((Receptor *)t->contents.surface);
+	else
+	    _t_free((Tnode *)t->contents.surface);
+    }
     free(t);
 }
 
@@ -442,7 +465,6 @@ int * _t_get_path(Tnode *t) {
 	p[i] = _t_node_index(n);
 	n =_t_parent(n);
 	if (++i >= s) {
-	    raise(SIGINT);
 	    s*=2;p=realloc(p,s);} // realloc array if tree too deep
     }
     if (i > 2) {

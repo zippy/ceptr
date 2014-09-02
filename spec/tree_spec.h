@@ -62,7 +62,22 @@ void testCreateTreeNodes() {
     spec_is_ptr_equal(_t_child(t,2),t2);
 
     _t_free(t);
+}
 
+void testTreeNewReceptor() {
+    //! [testTreeNewReceptor]
+    Tnode *t = _t_newi(0,TEST_SYMBOL,0);
+    Receptor *r = _r_new();
+    Tnode *tr = _t_new_receptor(t,TEST_RECEPTOR_SYMBOL,r);
+
+    spec_is_ptr_equal(_t_surface(tr),r);
+
+    char buf[2000];
+    __t_dump(0,t,0,buf);
+    spec_is_str_equal(buf," (TEST_SYMBOL:0 (TEST_RECEPTOR_SYMBOL:{ (RECEPTOR (STRUCTURES) (SYMBOLS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))))}))");
+
+    _t_free(t); // note, no need to free the receptor explicitly, as _t_free knows about it
+    //! [testTreeNewReceptor]
 }
 
 void testTreeOrthogonal() {
@@ -330,6 +345,7 @@ void testTreeDetach() {
 
 void testTree() {
     testCreateTreeNodes();
+    testTreeNewReceptor();
     testTreeOrthogonal();
     testTreeRealloc();
     testTreeNodeIndex();

@@ -15,8 +15,8 @@
 
 /// test symbols.  These are defined only for the test suite.
 enum TestSymbol {TEST_SYMBOL= -9999,TEST_SYMBOL2,TEST_STR_SYMBOL,TEST_TREE_SYMBOL,
-      TEST_NAME_SYMBOL,TEST_FIRST_NAME_SYMBOL,
-      _LAST_TEST_SYMBOL
+		 TEST_NAME_SYMBOL,TEST_FIRST_NAME_SYMBOL,TEST_RECEPTOR_SYMBOL,
+		 _LAST_TEST_SYMBOL
 };
 static char *G_test_symbol_names[] = {
     "TEST_SYMBOL","TEST_SYMBOL2","TEST_STR_SYMBOL","TEST_TREE_SYMBOL",

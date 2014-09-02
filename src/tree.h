@@ -35,6 +35,8 @@ Tnode * _t_newi(Tnode *parent,Symbol symbol,int surface);
 Tnode * _t_newt(Tnode *parent,Symbol symbol,Tnode *t);
 Tnode *_t_new_root(Symbol symbol);
 Tnode *_t_newr(Tnode *parent,Symbol symbol);
+Tnode *_t_new_receptor(Tnode *parent,Symbol symbol,Receptor *r);
+
 void _t_add(Tnode *t,Tnode *c);
 void _t_detach_by_ptr(Tnode *t,Tnode *c);
 Tnode *_t_detach_by_idx(Tnode *t,int i);
@@ -66,6 +68,7 @@ int *_t_get_path(Tnode *t);
 void * _t_get_surface(Tnode *t,int *p);
 char * _t_sprint_path(int *fp,char *buf);
 
+#define root_check(c) if (c->structure.parent != 0) {raise_error0("can't add a node that isn't a root!");}
 /*
 _t_new();
 _t_free()
