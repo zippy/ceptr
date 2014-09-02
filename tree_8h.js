@@ -1,14 +1,13 @@
 var tree_8h =
 [
-    [ "TFLAG_ALLOCATED", "group__tree.html#gaa1d37fe4ad1b33ae3fe56129bc5db977", null ],
-    [ "TFLAG_SURFACE_IS_TREE", "group__tree.html#gae876ee2ed8140ace7d1f60942c4c8ffa", null ],
+    [ "root_check", "group__tree.html#ga7c44907cdc68da63693c567fd8882680", null ],
     [ "TREE_CHILDREN_BLOCK", "group__tree.html#ga8a4739b06f60e4874a3b63e0cb69be94", null ],
     [ "TREE_PATH_TERMINATOR", "group__tree.html#gaaaf3c7469b946533a203770c3657f69a", null ],
-    [ "Symbol", "group__tree.html#ga6658c4c543dd5216f61805c3a2e92420", null ],
-    [ "Tcontents", "group__tree.html#ga01bbef8fe3a828c81ff546d3a3378e6d", null ],
-    [ "Tcontext", "group__tree.html#ga2e3e85fc8e2e18e97dd14a1456e29456", null ],
-    [ "Tnode", "group__tree.html#ga96b6c1881a6a5669fb7591226d9bd59c", null ],
-    [ "Tstruct", "group__tree.html#gae7439126f349f69fb4a7c3f100303183", null ],
+    [ "TreeSurfaceFlags", "group__tree.html#gaeddfb7542c9d4915c3613083cd001c60", [
+      [ "TFLAG_ALLOCATED", "group__tree.html#ggaeddfb7542c9d4915c3613083cd001c60a4f19a56459fa0656df882de1075b0803", null ],
+      [ "TFLAG_SURFACE_IS_TREE", "group__tree.html#ggaeddfb7542c9d4915c3613083cd001c60ad0d2d91d6598bbf39d240b90d29d954a", null ],
+      [ "TFLAG_SURFACE_IS_RECEPTOR", "group__tree.html#ggaeddfb7542c9d4915c3613083cd001c60ab66fde176a815717b8766aa3c9375e3c", null ]
+    ] ],
     [ "__t_morph", "group__tree.html#gaffb8b0a4288458ba9b4788a5bbb713ef", null ],
     [ "_t_add", "group__tree.html#gaf155629f920b45c8b3d11bb19255d69e", null ],
     [ "_t_child", "group__tree.html#gab54b09e1a4cb708d81461e675d79143d", null ],
@@ -22,6 +21,7 @@ var tree_8h =
     [ "_t_get_surface", "group__tree.html#ga1f03093882ea8ad3d6e88951e4fc51b5", null ],
     [ "_t_morph", "group__tree.html#ga91798c3f4945bb89b9c13e9b693ffd78", null ],
     [ "_t_new", "group__tree.html#ga23646bb375d548b8bdce934f694b1741", null ],
+    [ "_t_new_receptor", "group__tree.html#ga26e1b609fa8a660e13d046af2bb4a32e", null ],
     [ "_t_new_root", "group__tree.html#ga17676267c6fb457dd1d086f37641544a", null ],
     [ "_t_newi", "group__tree.html#gab438eeedb3eb6c1e20171b33d8ec499d", null ],
     [ "_t_newr", "group__tree.html#gaff88720dad09389f6b7f35f7985d8efd", null ],

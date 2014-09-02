@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['table',['table',['../structReceptor.html#a2f7dc587ff971db209316cde561d0cd0',1,'Receptor']]],
-  ['transition',['transition',['../structSState.html#a929d501094346c34a5c14e715b2f133f',1,'SState']]],
-  ['type',['type',['../structSgroup.html#ab2e4e1ecc5bd0bca43c29c03b822d367',1,'Sgroup::type()'],['../structSState.html#ac570e1a6012a5f5e9ac09e2b7a261a3c',1,'SState::type()']]]
+  ['s',['s',['../structinstances__elem.html#aeeb84ef2b0bb4b596d161bc84f17937d',1,'instances_elem']]],
+  ['structures',['structures',['../structReceptor.html#a81c4e6049350d0577334fdda48f4260a',1,'Receptor']]],
+  ['symbol',['symbol',['../structSvalue.html#a0ad23032f404832b4ebb3d21d6ad2add',1,'Svalue::symbol()'],['../unionSTypeData.html#abff54fb9a7e4ab6d493e4615bf7293de',1,'STypeData::symbol()']]],
+  ['symbols',['symbols',['../structReceptor.html#aeb5c0f81a92048d264308e7610ac39a3',1,'Receptor']]]
 ];

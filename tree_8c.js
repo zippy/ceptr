@@ -17,6 +17,7 @@ var tree_8c =
     [ "_t_get_surface", "group__tree.html#ga1f03093882ea8ad3d6e88951e4fc51b5", null ],
     [ "_t_morph", "group__tree.html#ga91798c3f4945bb89b9c13e9b693ffd78", null ],
     [ "_t_new", "group__tree.html#ga23646bb375d548b8bdce934f694b1741", null ],
+    [ "_t_new_receptor", "group__tree.html#ga26e1b609fa8a660e13d046af2bb4a32e", null ],
     [ "_t_new_root", "group__tree.html#ga17676267c6fb457dd1d086f37641544a", null ],
     [ "_t_newi", "group__tree.html#gab438eeedb3eb6c1e20171b33d8ec499d", null ],
     [ "_t_newr", "group__tree.html#gaff88720dad09389f6b7f35f7985d8efd", null ],

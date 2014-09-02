@@ -11,7 +11,6 @@ var receptor_8c =
     [ "__r_get_structure_size", "receptor_8c.html#a6784a7133ab6bc8c6a105fead8843c86", null ],
     [ "__r_get_symbol_size", "group__receptor.html#gad886d976f8621ebb22d02c61f454265c", null ],
     [ "__r_get_symbol_structure", "group__receptor.html#ga120e66982d483fbe004fd969cf1c353f", null ],
-    [ "__r_new_instance", "group__receptor.html#ga293d5876527691c7b79602e80e4cecb8", null ],
     [ "__set_label_for_def", "receptor_8c.html#a308abdd9c462d90f4c05f09d894959ef", null ],
     [ "__stxd_descend", "receptor_8c.html#a3f05ec90cfbe5c8813cf72a264aa2ca0", null ],
     [ "__stxd_multi", "receptor_8c.html#a7de7680c601d02138f09f5b8e0310e48", null ],
@@ -24,7 +23,7 @@ var receptor_8c =
     [ "_r_def_structure", "group__receptor.html#ga0621fed839c7b2589ae87aedae9a6a7c", null ],
     [ "_r_def_symbol", "group__receptor.html#gade6112556e16fb8a0512268f19f77233", null ],
     [ "_r_free", "group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8", null ],
-    [ "_r_get_instance", "group__receptor.html#gae5861d52f36fafa1f5d5a4ba1268ce1b", null ],
+    [ "_r_get_instance", "group__receptor.html#ga49768dace37ae4974471268fa197f953", null ],
     [ "_r_get_structure_by_label", "group__receptor.html#gaba7efd4ebd9a5e6b737355fbc45d9a50", null ],
     [ "_r_get_structure_name", "group__receptor.html#ga337c85de8d4519ff7eae30b349baf010", null ],
     [ "_r_get_symbol_by_label", "group__receptor.html#gacce906c9de30765f458599777b72be90", null ],
@@ -37,6 +36,8 @@ var receptor_8c =
     [ "_t_serialize", "group__receptor.html#gac34a126b4fafa1ecf89ae79f3c986336", null ],
     [ "_t_unserialize", "receptor_8c.html#a211338b1340696380cafb63533f738e2", null ],
     [ "_td", "group__receptor.html#ga5cafc7054a5a1fc7af911904d01d45a5", null ],
+    [ "instanceFree", "receptor_8c.html#ab74ffd0dd1a1937c4336f27b2326ed90", null ],
+    [ "instancesFree", "receptor_8c.html#a347ce78af75454229c6878b1ec4c43e9", null ],
     [ "__t_dump_buf", "receptor_8c.html#abce160e07e3e803eb53550a4986fdb77", null ],
     [ "__t_extra_buf", "receptor_8c.html#a6abf95dd40afb02e2f8a79e6556ffb36", null ]
 ];

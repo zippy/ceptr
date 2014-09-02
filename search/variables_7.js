@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['label',['label',['../structtable__elem.html#a30d723ce3d68ee9542448f50f3e80581',1,'table_elem']]],
-  ['length',['length',['../structSvalue.html#afe7d3d6c663be6c40232d73dc8aa49b8',1,'Svalue']]]
+  ['id',['id',['../structSgroup.html#a109c0dd2bd1575f6fecf8fa91e160da7',1,'Sgroup']]],
+  ['instance',['instance',['../structinstance__elem.html#a780b13aa3ac656767d58463288bec6d9',1,'instance_elem']]],
+  ['instances',['instances',['../structinstances__elem.html#a734b66c913756eb945351222cb601a87',1,'instances_elem::instances()'],['../structReceptor.html#a6150c6bff7a9724b4dd436a75fe4cc4b',1,'Receptor::instances()']]]
 ];

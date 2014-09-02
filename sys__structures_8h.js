@@ -9,6 +9,7 @@ var sys__structures_8h =
       [ "SURFACE", "sys__structures_8h.html#ac6cf3e705e120184277267602edaa1b1aec3093f5673be2548cc7091279b429e2", null ],
       [ "TREE", "sys__structures_8h.html#ac6cf3e705e120184277267602edaa1b1a80ee3d282aa2d7af547e862568d3e240", null ],
       [ "SERIALIZED_TREE", "sys__structures_8h.html#ac6cf3e705e120184277267602edaa1b1abd101c70229024bcc6a5afd74a8a220d", null ],
+      [ "BOUND_RECEPTOR", "sys__structures_8h.html#ac6cf3e705e120184277267602edaa1b1a6330832e0bafe39ede36842961ece2dd", null ],
       [ "_LAST_SYS_STRUCTURE", "sys__structures_8h.html#ac6cf3e705e120184277267602edaa1b1a1bcd607e4efd400866e159facdd0db6d", null ]
     ] ]
 ];

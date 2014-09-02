@@ -1,6 +1,7 @@
 var structReceptor =
 [
     [ "flux", "structReceptor.html#a622c4885a917e9249fa213ccf47b04ff", null ],
+    [ "instances", "structReceptor.html#a6150c6bff7a9724b4dd436a75fe4cc4b", null ],
     [ "root", "structReceptor.html#a7a280e923e97768c67f90303bcf8c152", null ],
     [ "structures", "structReceptor.html#a81c4e6049350d0577334fdda48f4260a", null ],
     [ "symbols", "structReceptor.html#aeb5c0f81a92048d264308e7610ac39a3", null ],

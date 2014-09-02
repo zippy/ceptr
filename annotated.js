@@ -1,6 +1,7 @@
 var annotated =
 [
-    [ "Instance", "structInstance.html", "structInstance" ],
+    [ "instance_elem", "structinstance__elem.html", "structinstance__elem" ],
+    [ "instances_elem", "structinstances__elem.html", "structinstances__elem" ],
     [ "Ptrlist", "unionPtrlist.html", "unionPtrlist" ],
     [ "Receptor", "structReceptor.html", "structReceptor" ],
     [ "Sgroup", "structSgroup.html", "structSgroup" ],

@@ -2,9 +2,9 @@ var modules =
 [
     [ "Introduction", "index.html#secIntro", null ],
     [ "License", "index.html#secLicense", null ],
+    [ "Symbol and Structure Definition", "group__def.html", "group__def" ],
     [ "Receptors", "group__receptor.html", "group__receptor" ],
     [ "Semantic Tree Regular Expressions", "group__semtrex.html", "group__semtrex" ],
-    [ "Symbols", "group__symbol.html", "group__symbol" ],
     [ "Semantic Trees", "group__tree.html", "group__tree" ],
     [ "Virtual Machine Host Receptor", "group__vmhost.html", "group__vmhost" ],
     [ "Test Suite", "group__tests.html", "group__tests" ]

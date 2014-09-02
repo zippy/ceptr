@@ -103,9 +103,8 @@ $(document).ready(function(){initNavTree('tree_8h.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Data Structures</a> &#124;
 <a href="#define-members">Macros</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">tree.h File Reference<div class="ingroups"><a class="el" href="group__tree.html">Semantic Trees</a></div></div>  </div>
@@ -117,36 +116,26 @@ $(document).ready(function(){initNavTree('tree_8h.html','');});
 <div class="textblock"><code>#include &lt;string.h&gt;</code><br />
 <code>#include &lt;stdlib.h&gt;</code><br />
 <code>#include &quot;ceptr_error.h&quot;</code><br />
-<code>#include &quot;sys_symbols.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="sys__symbols_8h_source.html">sys_symbols.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="sys__structures_8h_source.html">sys_structures.h</a>&quot;</code><br />
+<code>#include &quot;ceptr_types.h&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for tree.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="tree_8h__incl.png" border="0" usemap="#src_2tree_8h" alt=""/></div>
 <map name="src_2tree_8h" id="src_2tree_8h">
-<area shape="rect" id="node4" href="ceptr__error_8h_source.html" title="ceptr_error.h" alt="" coords="183,80,277,107"/><area shape="rect" id="node8" href="sys__symbols_8h_source.html" title="sys_symbols.h" alt="" coords="302,80,412,107"/><area shape="rect" id="node9" href="sys__structures_8h.html" title="Defines hard&#45;coded system defined structures. " alt="" coords="437,80,555,107"/></map>
+<area shape="rect" id="node4" href="ceptr__error_8h_source.html" title="ceptr_error.h" alt="" coords="350,80,444,107"/><area shape="rect" id="node8" href="sys__symbols_8h.html" title="Defines hard&#45;coded system defined symbols. " alt="" coords="469,80,579,107"/><area shape="rect" id="node9" href="sys__structures_8h.html" title="Defines hard&#45;coded system defined structures. " alt="" coords="603,80,721,107"/><area shape="rect" id="node10" href="ceptr__types_8h_source.html" title="ceptr_types.h" alt="" coords="173,80,275,107"/><area shape="rect" id="node12" href="uthash_8h_source.html" title="uthash.h" alt="" coords="104,155,176,181"/></map>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="tree_8h__dep__incl.png" border="0" usemap="#src_2tree_8hdep" alt=""/></div>
 <map name="src_2tree_8hdep" id="src_2tree_8hdep">
-<area shape="rect" id="node2" href="ceptr_8h_source.html" title="src/ceptr.h" alt="" coords="347,155,431,181"/><area shape="rect" id="node13" href="label_8c.html" title="src/label.c" alt="" coords="783,80,864,107"/><area shape="rect" id="node14" href="receptor_8h.html" title="receptor implementation header file " alt="" coords="894,155,996,181"/><area shape="rect" id="node19" href="vmhost_8c.html" title="virtual machine host receptor implementation " alt="" coords="988,304,1087,331"/><area shape="rect" id="node20" href="symbol_8h.html" title="header file for symbol related functions " alt="" coords="890,80,987,107"/><area shape="rect" id="node21" href="symbol_8c.html" title="implementation of symbol definition functions " alt="" coords="1025,155,1121,181"/><area shape="rect" id="node22" href="semtrex_8h.html" title="Semantic tree regular expression header file. " alt="" coords="1378,155,1480,181"/><area shape="rect" id="node24" href="tree_8c.html" title="semantic tree implementation " alt="" coords="1416,80,1492,107"/><area shape="rect" id="node3" href="ceptr__specs_8c.html" title="implements a main() entry point for running all the tests " alt="" coords="445,379,580,405"/><area shape="rect" id="node4" href="test__framework_8h.html" title="implements the testing harness " alt="" coords="273,304,427,331"/><area shape="rect" id="node5" href="tree__spec_8h.html" title="spec/tree_spec.h" alt="" coords="452,304,575,331"/><area shape="rect" id="node6" href="tree__http__example_8h.html" title="spec/tree_http_example.h" alt="" coords="427,229,599,256"/><area shape="rect" id="node7" href="vmhost__spec_8h.html" title="spec/vmhost_spec.h" alt="" coords="599,304,741,331"/><area shape="rect" id="node8" href="symbol__spec_8h.html" title="spec/symbol_spec.h" alt="" coords="5,229,147,256"/><area shape="rect" id="node9" href="label__spec_8h.html" title="spec/label_spec.h" alt="" coords="71,304,197,331"/><area shape="rect" id="node10" href="semtrex__spec_8h.html" title="spec/semtrex_spec.h" alt="" coords="1019,229,1165,256"/><area shape="rect" id="node11" href="receptor__spec_8h.html" title="spec/receptor_spec.h" alt="" coords="675,229,821,256"/><area shape="rect" id="node12" href="process__spec_8h.html" title="spec/process_spec.h" alt="" coords="817,304,964,331"/><area shape="rect" id="node15" href="process_8h.html" title="processing header files " alt="" coords="1189,229,1291,256"/><area shape="rect" id="node17" href="receptor_8c.html" title="receptor implementation " alt="" coords="1302,304,1404,331"/><area shape="rect" id="node18" href="vmhost_8h.html" title="vmhost implementation header file " alt="" coords="896,229,995,256"/><area shape="rect" id="node16" href="process_8c.html" title="implementation of ceptr processing: instructions and run tree reduction " alt="" coords="1429,304,1531,331"/><area shape="rect" id="node23" href="semtrex_8c.html" title="semtrex implementation " alt="" coords="1518,229,1620,256"/></map>
+<area shape="rect" id="node2" href="ceptr_8h_source.html" title="src/ceptr.h" alt="" coords="498,155,581,181"/><area shape="rect" id="node13" href="def_8c.html" title="implementation file for symbol and structure definition functions " alt="" coords="349,155,421,181"/><area shape="rect" id="node14" href="def_8h.html" title="header file for symbol and structure definition functions " alt="" coords="738,80,811,107"/><area shape="rect" id="node15" href="receptor_8h.html" title="receptor implementation header file " alt="" coords="945,155,1047,181"/><area shape="rect" id="node20" href="vmhost_8c.html" title="virtual machine host receptor implementation " alt="" coords="1143,304,1241,331"/><area shape="rect" id="node21" href="label_8c.html" title="src/label.c" alt="" coords="1361,80,1443,107"/><area shape="rect" id="node22" href="semtrex_8h.html" title="Semantic tree regular expression header file. " alt="" coords="1430,155,1532,181"/><area shape="rect" id="node24" href="tree_8c.html" title="semantic tree implementation " alt="" coords="1519,80,1595,107"/><area shape="rect" id="node3" href="ceptr__specs_8c.html" title="implements a main() entry point for running all the tests " alt="" coords="511,379,645,405"/><area shape="rect" id="node4" href="test__framework_8h.html" title="implements the testing harness " alt="" coords="187,304,340,331"/><area shape="rect" id="node5" href="tree__spec_8h.html" title="spec/tree_spec.h" alt="" coords="517,304,640,331"/><area shape="rect" id="node6" href="tree__http__example_8h.html" title="spec/tree_http_example.h" alt="" coords="454,229,625,256"/><area shape="rect" id="node7" href="vmhost__spec_8h.html" title="spec/vmhost_spec.h" alt="" coords="665,304,807,331"/><area shape="rect" id="node8" href="def__spec_8h_source.html" title="spec/def_spec.h" alt="" coords="5,229,123,256"/><area shape="rect" id="node9" href="label__spec_8h.html" title="spec/label_spec.h" alt="" coords="366,304,492,331"/><area shape="rect" id="node10" href="semtrex__spec_8h.html" title="spec/semtrex_spec.h" alt="" coords="923,229,1069,256"/><area shape="rect" id="node11" href="receptor__spec_8h.html" title="spec/receptor_spec.h" alt="" coords="701,229,848,256"/><area shape="rect" id="node12" href="process__spec_8h.html" title="spec/process_spec.h" alt="" coords="933,304,1080,331"/><area shape="rect" id="node16" href="process_8h.html" title="processing header files " alt="" coords="1216,229,1317,256"/><area shape="rect" id="node18" href="receptor_8c.html" title="receptor implementation " alt="" coords="1303,304,1405,331"/><area shape="rect" id="node19" href="vmhost_8h.html" title="vmhost implementation header file " alt="" coords="1093,229,1192,256"/><area shape="rect" id="node17" href="process_8c.html" title="implementation of ceptr processing: instructions and run tree reduction " alt="" coords="1443,304,1544,331"/><area shape="rect" id="node23" href="semtrex_8c.html" title="semtrex implementation " alt="" coords="1545,229,1647,256"/></map>
 </div>
 </div>
 <p><a href="tree_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
-Data Structures</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTstruct.html">Tstruct</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTcontents.html">Tcontents</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTcontext.html">Tcontext</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTnode.html">Tnode</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:ga8a4739b06f60e4874a3b63e0cb69be94"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga8a4739b06f60e4874a3b63e0cb69be94"></a>
@@ -155,30 +144,17 @@ Macros</h2></td></tr>
 <tr class="memitem:gaaaf3c7469b946533a203770c3657f69a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaaaf3c7469b946533a203770c3657f69a"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>TREE_PATH_TERMINATOR</b>&#160;&#160;&#160;-9999</td></tr>
 <tr class="separator:gaaaf3c7469b946533a203770c3657f69a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa1d37fe4ad1b33ae3fe56129bc5db977"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaa1d37fe4ad1b33ae3fe56129bc5db977"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>TFLAG_ALLOCATED</b>&#160;&#160;&#160;0x0001</td></tr>
-<tr class="separator:gaa1d37fe4ad1b33ae3fe56129bc5db977"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae876ee2ed8140ace7d1f60942c4c8ffa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gae876ee2ed8140ace7d1f60942c4c8ffa"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>TFLAG_SURFACE_IS_TREE</b>&#160;&#160;&#160;0x0002</td></tr>
-<tr class="separator:gae876ee2ed8140ace7d1f60942c4c8ffa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7c44907cdc68da63693c567fd8882680"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga7c44907cdc68da63693c567fd8882680"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>root_check</b>(c)&#160;&#160;&#160;if (c-&gt;structure.parent != 0) {raise_error0(&quot;can't add a node that isn't a root!&quot;);}</td></tr>
+<tr class="separator:ga7c44907cdc68da63693c567fd8882680"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:ga6658c4c543dd5216f61805c3a2e92420"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga6658c4c543dd5216f61805c3a2e92420"></a>
-typedef int&#160;</td><td class="memItemRight" valign="bottom"><b>Symbol</b></td></tr>
-<tr class="separator:ga6658c4c543dd5216f61805c3a2e92420"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae7439126f349f69fb4a7c3f100303183"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gae7439126f349f69fb4a7c3f100303183"></a>
-typedef struct <a class="el" href="structTstruct.html">Tstruct</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Tstruct</b></td></tr>
-<tr class="separator:gae7439126f349f69fb4a7c3f100303183"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga01bbef8fe3a828c81ff546d3a3378e6d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga01bbef8fe3a828c81ff546d3a3378e6d"></a>
-typedef struct <a class="el" href="structTcontents.html">Tcontents</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Tcontents</b></td></tr>
-<tr class="separator:ga01bbef8fe3a828c81ff546d3a3378e6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2e3e85fc8e2e18e97dd14a1456e29456"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga2e3e85fc8e2e18e97dd14a1456e29456"></a>
-typedef struct <a class="el" href="structTcontext.html">Tcontext</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Tcontext</b></td></tr>
-<tr class="separator:ga2e3e85fc8e2e18e97dd14a1456e29456"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga96b6c1881a6a5669fb7591226d9bd59c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga96b6c1881a6a5669fb7591226d9bd59c"></a>
-typedef struct <a class="el" href="structTnode.html">Tnode</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Tnode</b></td></tr>
-<tr class="separator:ga96b6c1881a6a5669fb7591226d9bd59c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:gaeddfb7542c9d4915c3613083cd001c60"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaeddfb7542c9d4915c3613083cd001c60"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>TreeSurfaceFlags</b> { <b>TFLAG_ALLOCATED</b> =0x0001, 
+<b>TFLAG_SURFACE_IS_TREE</b> =0x0002, 
+<b>TFLAG_SURFACE_IS_RECEPTOR</b> = 0x0004
+ }</td></tr>
+<tr class="separator:gaeddfb7542c9d4915c3613083cd001c60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -192,6 +168,8 @@ Functions</h2></td></tr>
 <tr class="separator:ga17676267c6fb457dd1d086f37641544a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaff88720dad09389f6b7f35f7985d8efd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTnode.html">Tnode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tree.html#gaff88720dad09389f6b7f35f7985d8efd">_t_newr</a> (<a class="el" href="structTnode.html">Tnode</a> *parent, Symbol symbol)</td></tr>
 <tr class="separator:gaff88720dad09389f6b7f35f7985d8efd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga26e1b609fa8a660e13d046af2bb4a32e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTnode.html">Tnode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tree.html#ga26e1b609fa8a660e13d046af2bb4a32e">_t_new_receptor</a> (<a class="el" href="structTnode.html">Tnode</a> *parent, Symbol symbol, <a class="el" href="structReceptor.html">Receptor</a> *r)</td></tr>
+<tr class="separator:ga26e1b609fa8a660e13d046af2bb4a32e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf155629f920b45c8b3d11bb19255d69e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tree.html#gaf155629f920b45c8b3d11bb19255d69e">_t_add</a> (<a class="el" href="structTnode.html">Tnode</a> *t, <a class="el" href="structTnode.html">Tnode</a> *c)</td></tr>
 <tr class="separator:gaf155629f920b45c8b3d11bb19255d69e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab28a85eae18cd8b29c15ab535e312902"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tree.html#gab28a85eae18cd8b29c15ab535e312902">_t_detach_by_ptr</a> (<a class="el" href="structTnode.html">Tnode</a> *t, <a class="el" href="structTnode.html">Tnode</a> *c)</td></tr>
@@ -256,7 +234,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="tree_8h.html">tree.h</a></li>
-    <li class="footer">Generated on Mon Sep 1 2014 12:06:02 for ceptr by
+    <li class="footer">Generated on Tue Sep 2 2014 15:04:56 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

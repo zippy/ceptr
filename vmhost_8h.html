@@ -119,7 +119,7 @@ Include dependency graph for vmhost.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="vmhost_8h__incl.png" border="0" usemap="#src_2vmhost_8h" alt=""/></div>
 <map name="src_2vmhost_8h" id="src_2vmhost_8h">
-<area shape="rect" id="node2" href="receptor_8h.html" title="receptor implementation header file " alt="" coords="373,80,452,107"/><area shape="rect" id="node3" href="tree_8h.html" title="semantic trees header file " alt="" coords="303,229,357,256"/><area shape="rect" id="node12" href="symbol_8h.html" title="header file for symbol related functions " alt="" coords="376,155,449,181"/><area shape="rect" id="node14" href="label_8h.html" title="Label tables map human readable text strings to symbols and structures. " alt="" coords="493,155,552,181"/><area shape="rect" id="node6" href="ceptr__error_8h_source.html" title="ceptr_error.h" alt="" coords="147,304,241,331"/><area shape="rect" id="node10" href="sys__symbols_8h_source.html" title="sys_symbols.h" alt="" coords="266,304,376,331"/><area shape="rect" id="node11" href="sys__structures_8h.html" title="Defines hard&#45;coded system defined structures. " alt="" coords="5,304,123,331"/><area shape="rect" id="node16" href="uthash_8h_source.html" title="uthash.h" alt="" coords="487,229,559,256"/></map>
+<area shape="rect" id="node2" href="receptor_8h.html" title="receptor implementation header file " alt="" coords="261,80,340,107"/><area shape="rect" id="node3" href="tree_8h.html" title="semantic trees header file " alt="" coords="305,229,359,256"/><area shape="rect" id="node17" href="def_8h.html" title="header file for symbol and structure definition functions " alt="" coords="339,155,389,181"/><area shape="rect" id="node19" href="label_8h.html" title="Label tables map human readable text strings to symbols and structures. " alt="" coords="103,155,163,181"/><area shape="rect" id="node6" href="ceptr__error_8h_source.html" title="ceptr_error.h" alt="" coords="557,304,651,331"/><area shape="rect" id="node10" href="sys__symbols_8h.html" title="Defines hard&#45;coded system defined symbols. " alt="" coords="138,304,248,331"/><area shape="rect" id="node11" href="sys__structures_8h.html" title="Defines hard&#45;coded system defined structures. " alt="" coords="273,304,391,331"/><area shape="rect" id="node12" href="ceptr__types_8h_source.html" title="ceptr_types.h" alt="" coords="12,304,113,331"/><area shape="rect" id="node14" href="uthash_8h_source.html" title="uthash.h" alt="" coords="57,379,129,405"/></map>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -149,8 +149,10 @@ Functions</h2></td></tr>
 <tr class="separator:gab6fbe5683628fb0d62a966316ced938d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga44e0f6d62e38448bfa058f287cc463eb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vmhost.html#ga44e0f6d62e38448bfa058f287cc463eb">_v_free</a> (<a class="el" href="structVMHost.html">VMHost</a> *r)</td></tr>
 <tr class="separator:ga44e0f6d62e38448bfa058f287cc463eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa18daccf444ef47e4b7962198db49961"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structXaddr.html">Xaddr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vmhost.html#gaa18daccf444ef47e4b7962198db49961">_v_install_r</a> (<a class="el" href="structVMHost.html">VMHost</a> *v, <a class="el" href="structReceptor.html">Receptor</a> *r, char *label)</td></tr>
-<tr class="separator:gaa18daccf444ef47e4b7962198db49961"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga97c4d5a33dc94437ab001cb1a325ec75"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structXaddr.html">Xaddr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vmhost.html#ga97c4d5a33dc94437ab001cb1a325ec75">_v_load_receptor_package</a> (<a class="el" href="structVMHost.html">VMHost</a> *v, <a class="el" href="structTnode.html">Tnode</a> *manifest, <a class="el" href="structReceptor.html">Receptor</a> *r, UUID uuid)</td></tr>
+<tr class="separator:ga97c4d5a33dc94437ab001cb1a325ec75"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2fa3f1a83c18a7c6c8a5a5f7d3aa1139"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structXaddr.html">Xaddr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vmhost.html#ga2fa3f1a83c18a7c6c8a5a5f7d3aa1139">_v_install_r</a> (<a class="el" href="structVMHost.html">VMHost</a> *v, <a class="el" href="structXaddr.html">Xaddr</a> package, <a class="el" href="structTnode.html">Tnode</a> *bindings, char *label)</td></tr>
+<tr class="separator:ga2fa3f1a83c18a7c6c8a5a5f7d3aa1139"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga53694170e5452b8062ec405e6a9a3f60"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vmhost.html#ga53694170e5452b8062ec405e6a9a3f60">_v_activate</a> (<a class="el" href="structVMHost.html">VMHost</a> *v, <a class="el" href="structXaddr.html">Xaddr</a> x)</td></tr>
 <tr class="separator:ga53694170e5452b8062ec405e6a9a3f60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -165,7 +167,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="vmhost_8h.html">vmhost.h</a></li>
-    <li class="footer">Generated on Mon Sep 1 2014 12:06:02 for ceptr by
+    <li class="footer">Generated on Tue Sep 2 2014 15:04:56 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

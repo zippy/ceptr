@@ -1,15 +1,11 @@
 var searchData=
 [
-  ['testdefstructure',['testDefStructure',['../symbol__spec_8h.html#aa7427b84dd399a4ba84eea3df00c4045',1,'symbol_spec.h']]],
-  ['testdefsymbol',['testDefSymbol',['../symbol__spec_8h.html#a56a27a1c1dbaa31060bb3d6aafdcba99',1,'symbol_spec.h']]],
   ['testprocess',['testProcess',['../process__spec_8h.html#a6740b7d84ca2f7e0027274a8c686d872',1,'process_spec.h']]],
   ['testreceptoraction',['testReceptorAction',['../receptor__spec_8h.html#a3cae92defb2178364fc0d8f7eded5089',1,'receptor_spec.h']]],
   ['testreceptorcreate',['testReceptorCreate',['../receptor__spec_8h.html#a3a764534a7cc2c00a1e15642d0554b7c',1,'receptor_spec.h']]],
   ['testreceptordefmatch',['testReceptorDefMatch',['../receptor__spec_8h.html#a0f0176e080e437a43dfcc761f00ca284',1,'receptor_spec.h']]],
   ['testreceptorinstancenew',['testReceptorInstanceNew',['../receptor__spec_8h.html#a9584612d41b06b90041df77e64da66b8',1,'receptor_spec.h']]],
   ['testreceptorserialize',['testReceptorSerialize',['../receptor__spec_8h.html#a0c65a8eec063de14d49ae6c3fadcf0d8',1,'receptor_spec.h']]],
-  ['teststructuregetname',['testStructureGetName',['../symbol__spec_8h.html#aa0e4cddc1f2e6b39ce9189a855914c13',1,'symbol_spec.h']]],
-  ['testsymbolgetname',['testSymbolGetName',['../symbol__spec_8h.html#aa7f2c54366b9a6f06205565a96e83a9b',1,'symbol_spec.h']]],
   ['testtreeclone',['testTreeClone',['../tree__spec_8h.html#a61b28f10ff4df871f93a9b98c2a6dbf8',1,'tree_spec.h']]],
   ['testtreedetach',['testTreeDetach',['../tree__spec_8h.html#a80fb5c03826178e4332803fb546777fc',1,'tree_spec.h']]],
   ['testtreemorph',['testTreeMorph',['../tree__spec_8h.html#aecd9cd243076dc7b034b53bed7c297a0',1,'tree_spec.h']]],
@@ -23,7 +19,7 @@ var searchData=
   ['testtreepathgetsurface',['testTreePathGetSurface',['../tree__spec_8h.html#ad27e0ca8287fd12eb5823170bb306c90',1,'tree_spec.h']]],
   ['testtreepathsprint',['testTreePathSprint',['../tree__spec_8h.html#a3473a2e241b0849ddfca791ffc713857',1,'tree_spec.h']]],
   ['testtreereplace',['testTreeReplace',['../tree__spec_8h.html#a40c176590d4f13d3110238f7c50824fb',1,'tree_spec.h']]],
-  ['testvmhostactivatereceptor',['testVMHostActivateReceptor',['../vmhost__spec_8h.html#a9165528cd9a1193303f58f7c012ba53c',1,'vmhost_spec.h']]],
   ['testvmhostcreate',['testVMHostCreate',['../vmhost__spec_8h.html#ab22810ce6e5f9b1586db2767bfc44c64',1,'vmhost_spec.h']]],
-  ['testvmhostinstallreceptor',['testVMHostInstallReceptor',['../vmhost__spec_8h.html#ae05ae86352d299e50ad8ea91e5f5b40e',1,'vmhost_spec.h']]]
+  ['testvmhostinstallreceptor',['testVMHostInstallReceptor',['../vmhost__spec_8h.html#ae05ae86352d299e50ad8ea91e5f5b40e',1,'vmhost_spec.h']]],
+  ['testvmhostloadreceptorpackage',['testVMHostLoadReceptorPackage',['../vmhost__spec_8h.html#a5abb40133056189ce2b8f3b7ca5abbb6',1,'vmhost_spec.h']]]
 ];
