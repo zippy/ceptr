@@ -27,6 +27,7 @@ var searchData=
   ['testtreepathgetsurface',['testTreePathGetSurface',['../tree__spec_8h.html#ad27e0ca8287fd12eb5823170bb306c90',1,'tree_spec.h']]],
   ['testtreepathsprint',['testTreePathSprint',['../tree__spec_8h.html#a3473a2e241b0849ddfca791ffc713857',1,'tree_spec.h']]],
   ['testtreereplace',['testTreeReplace',['../tree__spec_8h.html#a40c176590d4f13d3110238f7c50824fb',1,'tree_spec.h']]],
+  ['testvmhostactivatereceptor',['testVMHostActivateReceptor',['../vmhost__spec_8h.html#a9165528cd9a1193303f58f7c012ba53c',1,'vmhost_spec.h']]],
   ['testvmhostcreate',['testVMHostCreate',['../vmhost__spec_8h.html#ab22810ce6e5f9b1586db2767bfc44c64',1,'vmhost_spec.h']]],
   ['testvmhostinstallreceptor',['testVMHostInstallReceptor',['../vmhost__spec_8h.html#ae05ae86352d299e50ad8ea91e5f5b40e',1,'vmhost_spec.h']]],
   ['testvmhostloadreceptorpackage',['testVMHostLoadReceptorPackage',['../vmhost__spec_8h.html#a5abb40133056189ce2b8f3b7ca5abbb6',1,'vmhost_spec.h']]],

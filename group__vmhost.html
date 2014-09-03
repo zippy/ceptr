@@ -136,8 +136,8 @@ Functions</h2></td></tr>
 <tr class="separator:gab6fbe5683628fb0d62a966316ced938d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga44e0f6d62e38448bfa058f287cc463eb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vmhost.html#ga44e0f6d62e38448bfa058f287cc463eb">_v_free</a> (<a class="el" href="structVMHost.html">VMHost</a> *r)</td></tr>
 <tr class="separator:ga44e0f6d62e38448bfa058f287cc463eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga97c4d5a33dc94437ab001cb1a325ec75"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structXaddr.html">Xaddr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vmhost.html#ga97c4d5a33dc94437ab001cb1a325ec75">_v_load_receptor_package</a> (<a class="el" href="structVMHost.html">VMHost</a> *v, <a class="el" href="structTnode.html">Tnode</a> *manifest, <a class="el" href="structReceptor.html">Receptor</a> *r, UUID uuid)</td></tr>
-<tr class="separator:ga97c4d5a33dc94437ab001cb1a325ec75"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa3dd6066c4af50e8497e8013ccc413c2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structXaddr.html">Xaddr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vmhost.html#gaa3dd6066c4af50e8497e8013ccc413c2">_v_load_receptor_package</a> (<a class="el" href="structVMHost.html">VMHost</a> *v, <a class="el" href="structTnode.html">Tnode</a> *p)</td></tr>
+<tr class="separator:gaa3dd6066c4af50e8497e8013ccc413c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2fa3f1a83c18a7c6c8a5a5f7d3aa1139"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structXaddr.html">Xaddr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vmhost.html#ga2fa3f1a83c18a7c6c8a5a5f7d3aa1139">_v_install_r</a> (<a class="el" href="structVMHost.html">VMHost</a> *v, <a class="el" href="structXaddr.html">Xaddr</a> package, <a class="el" href="structTnode.html">Tnode</a> *bindings, char *label)</td></tr>
 <tr class="separator:ga2fa3f1a83c18a7c6c8a5a5f7d3aa1139"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga53694170e5452b8062ec405e6a9a3f60"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vmhost.html#ga53694170e5452b8062ec405e6a9a3f60">_v_activate</a> (<a class="el" href="structVMHost.html">VMHost</a> *v, <a class="el" href="structXaddr.html">Xaddr</a> x)</td></tr>
@@ -178,9 +178,9 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000017">Todo:</a></b></dt><dd>for now we are just storing the active receptors in the receptor tree later this will probably have to be optimized into a hash for faster access </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000019">Todo:</a></b></dt><dd>for now we are just storing the active receptors in the receptor tree later this will probably have to be optimized into a hash for faster access </dd></dl>
 
-<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00111">111</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
+<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00104">104</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
 
 </div>
 </div>
@@ -255,34 +255,25 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structXaddr.html">Xaddr</a> of the instance</dd></dl>
-<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line"><span class="comment">/*</span></div>
-<div class="line"><span class="comment">    VMHost *v = _v_new();</span></div>
-<div class="line"><span class="comment"></span></div>
-<div class="line"><span class="comment">    Receptor *r = _makeTestHouseLocReceptor();</span></div>
-<div class="line"><span class="comment">    Xaddr x = _v_install_r(v,r,&quot;house locator&quot;);</span></div>
-<div class="line"><span class="comment"></span></div>
-<div class="line"><span class="comment">    // installing the receptor should create a RECEPTOR_PACKAGE symbol for it in the context of the vmhost</span></div>
-<div class="line"><span class="comment">    spec_is_equal(x.symbol,_r_get_symbol_by_label(v-&gt;r,&quot;house locator&quot;));</span></div>
-<div class="line"><span class="comment"></span></div>
-<div class="line"><span class="comment">    // and the instance should be a RECEPTOR_PACKAGE that holds the serialized receptor</span></div>
-<div class="line"><span class="comment">    Instance i = _r_get_instance(v-&gt;r,x);</span></div>
-<div class="line"><span class="comment"></span></div>
-<div class="line"><span class="comment">    void *surface;</span></div>
-<div class="line"><span class="comment">    size_t length;</span></div>
-<div class="line"><span class="comment">    _r_serialize(r,&amp;surface,&amp;length);</span></div>
-<div class="line"><span class="comment"></span></div>
-<div class="line"><span class="comment">    spec_is_buffer_equal(i.surface,surface,length);</span></div>
-<div class="line"><span class="comment"></span></div>
-<div class="line"><span class="comment">    _v_free(v);</span></div>
-<div class="line"><span class="comment">    free(surface);</span></div>
-<div class="line"><span class="comment">    _r_free(r);</span></div>
-<div class="line"><span class="comment">*/</span></div>
+<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structVMHost.html">VMHost</a> *v = <a class="code" href="group__vmhost.html#gab6fbe5683628fb0d62a966316ced938d">_v_new</a>();</div>
+<div class="line"></div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *p = <a class="code" href="vmhost__spec_8h.html#afb28df20c7c6c460b0ab2ad05e5e31ce">_makeTestHouseLocReceptor</a>();</div>
+<div class="line">    <a class="code" href="structXaddr.html">Xaddr</a> xp = <a class="code" href="group__vmhost.html#gaa3dd6066c4af50e8497e8013ccc413c2">_v_load_receptor_package</a>(v,p);</div>
+<div class="line"></div>
+<div class="line">    <a class="code" href="structXaddr.html">Xaddr</a> x = <a class="code" href="group__vmhost.html#ga2fa3f1a83c18a7c6c8a5a5f7d3aa1139">_v_install_r</a>(v,xp,0,<span class="stringliteral">&quot;house locator&quot;</span>);</div>
+<div class="line"></div>
+<div class="line">    <span class="comment">// installing the receptor should instantiate a receptor from the package with the given bindings and symbol label</span></div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *r = <a class="code" href="group__receptor.html#ga49768dace37ae4974471268fa197f953">_r_get_instance</a>(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,x);</div>
+<div class="line">    spec_is_symbol_equal(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,x.symbol,INSTALLED_RECEPTOR);</div>
+<div class="line">    spec_is_symbol_equal(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,<a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(_t_child(r,1)),<a class="code" href="group__receptor.html#gacce906c9de30765f458599777b72be90">_r_get_symbol_by_label</a>(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,<span class="stringliteral">&quot;house locator&quot;</span>));</div>
+<div class="line"></div>
+<div class="line">    <a class="code" href="group__vmhost.html#ga44e0f6d62e38448bfa058f287cc463eb">_v_free</a>(v);</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00086">86</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
+<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00079">79</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ga97c4d5a33dc94437ab001cb1a325ec75"></a>
+<a class="anchor" id="gaa3dd6066c4af50e8497e8013ccc413c2"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -296,19 +287,7 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="structTnode.html">Tnode</a> *&#160;</td>
-          <td class="paramname"><em>manifest</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structReceptor.html">Receptor</a> *&#160;</td>
-          <td class="paramname"><em>r</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">UUID&#160;</td>
-          <td class="paramname"><em>uuid</em>&#160;</td>
+          <td class="paramname"><em>p</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -317,28 +296,26 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Load a receptor into the local compository to make it available for installation and binding</p>
+<p>Add a receptor package into the local compository to make it available for installation and binding</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">v</td><td><a class="el" href="structVMHost.html">VMHost</a> in which to install the receptor </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">r</td><td><a class="el" href="structReceptor.html">Receptor</a> to add to the local compository </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">manifest</td><td></td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">uuid</td><td>package identifier </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">p</td><td>receptor package </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structXaddr.html">Xaddr</a> of the receptor package in the compository</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structXaddr.html">Xaddr</a> of the receptor package in the compository </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000018">Todo:</a></b></dt><dd>validate signature and checksums??</dd></dl>
 <p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structVMHost.html">VMHost</a> *v = <a class="code" href="group__vmhost.html#gab6fbe5683628fb0d62a966316ced938d">_v_new</a>();</div>
-<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *manifest = <a class="code" href="group__tree.html#ga17676267c6fb457dd1d086f37641544a">_t_new_root</a>(<a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a4a7e65f054795f03e713356fdb5fbf65">MANIFEST</a>);</div>
-<div class="line">    <a class="code" href="structReceptor.html">Receptor</a> *r = <a class="code" href="vmhost__spec_8h.html#a9d3099858ba57d608744d21435665ef5">_makeTestHouseLocReceptor</a>();</div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *p = <a class="code" href="vmhost__spec_8h.html#afb28df20c7c6c460b0ab2ad05e5e31ce">_makeTestHouseLocReceptor</a>();</div>
 <div class="line"></div>
-<div class="line">    <a class="code" href="structXaddr.html">Xaddr</a> x = <a class="code" href="group__vmhost.html#ga97c4d5a33dc94437ab001cb1a325ec75">_v_load_receptor_package</a>(v,manifest,r,1234567);</div>
-<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *p = <a class="code" href="group__receptor.html#ga49768dace37ae4974471268fa197f953">_r_get_instance</a>(v-&gt;<a class="code" href="structVMHost.html#a53bffdb41bcc4096902aabf8ab029637">c</a>,x);</div>
+<div class="line">    <a class="code" href="structXaddr.html">Xaddr</a> x = <a class="code" href="group__vmhost.html#gaa3dd6066c4af50e8497e8013ccc413c2">_v_load_receptor_package</a>(v,p);</div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *p1 = <a class="code" href="group__receptor.html#ga49768dace37ae4974471268fa197f953">_r_get_instance</a>(v-&gt;<a class="code" href="structVMHost.html#a53bffdb41bcc4096902aabf8ab029637">c</a>,x);</div>
 <div class="line"></div>
+<div class="line">    spec_is_ptr_equal(p,p1);</div>
 <div class="line">    <a class="code" href="group__vmhost.html#ga44e0f6d62e38448bfa058f287cc463eb">_v_free</a>(v);</div>
-<div class="line">    <a class="code" href="group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8">_r_free</a>(r);</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00064">64</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
+<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00061">61</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
 
 </div>
 </div>
@@ -360,7 +337,7 @@ Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>pointer to a newly allocated <a class="el" href="structVMHost.html">VMHost</a></dd></dl>
 <p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structVMHost.html">VMHost</a> *v = <a class="code" href="group__vmhost.html#gab6fbe5683628fb0d62a966316ced938d">_v_new</a>();</div>
 <div class="line"></div>
-<div class="line">    spec_is_symbol_equal(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,<a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>-&gt;<a class="code" href="structReceptor.html#a7a280e923e97768c67f90303bcf8c152">root</a>),RECEPTOR);</div>
+<div class="line">    spec_is_symbol_equal(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,<a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>-&gt;<a class="code" href="structReceptor.html#a7a280e923e97768c67f90303bcf8c152">root</a>),VM_HOST_RECEPTOR);</div>
 <div class="line">    <a class="code" href="structTnode.html">Tnode</a> *ar_tree = _t_child(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>-&gt;<a class="code" href="structReceptor.html#a7a280e923e97768c67f90303bcf8c152">root</a>,4);</div>
 <div class="line">    spec_is_symbol_equal(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,<a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(ar_tree),ACTIVE_RECEPTORS);</div>
 <div class="line">    spec_is_ptr_equal(v-&gt;<a class="code" href="structVMHost.html#a22cb54c0775fae3a10bd9d4e1ce7233e">active_receptors</a>,ar_tree);</div>
@@ -376,7 +353,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Sep 2 2014 21:25:33 for ceptr by
+    <li class="footer">Generated on Wed Sep 3 2014 13:18:57 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
