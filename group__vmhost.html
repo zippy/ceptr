@@ -257,15 +257,15 @@ Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structXaddr.html">Xaddr</a> of the instance</dd></dl>
 <p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structVMHost.html">VMHost</a> *v = <a class="code" href="group__vmhost.html#gab6fbe5683628fb0d62a966316ced938d">_v_new</a>();</div>
 <div class="line"></div>
-<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *p = <a class="code" href="vmhost__spec_8h.html#afb28df20c7c6c460b0ab2ad05e5e31ce">_makeTestHouseLocReceptor</a>();</div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *p = <a class="code" href="vmhost__spec_8h.html#ae14e37c0d39767abeecffe1e2e57b187">_makeTestReceptorPackage</a>();</div>
 <div class="line">    <a class="code" href="structXaddr.html">Xaddr</a> xp = <a class="code" href="group__vmhost.html#gaa3dd6066c4af50e8497e8013ccc413c2">_v_load_receptor_package</a>(v,p);</div>
 <div class="line"></div>
-<div class="line">    <a class="code" href="structXaddr.html">Xaddr</a> x = <a class="code" href="group__vmhost.html#ga2fa3f1a83c18a7c6c8a5a5f7d3aa1139">_v_install_r</a>(v,xp,0,<span class="stringliteral">&quot;house locator&quot;</span>);</div>
+<div class="line">    <a class="code" href="structXaddr.html">Xaddr</a> x = <a class="code" href="group__vmhost.html#ga2fa3f1a83c18a7c6c8a5a5f7d3aa1139">_v_install_r</a>(v,xp,0,<span class="stringliteral">&quot;http server&quot;</span>);</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// installing the receptor should instantiate a receptor from the package with the given bindings and symbol label</span></div>
 <div class="line">    <a class="code" href="structTnode.html">Tnode</a> *r = <a class="code" href="group__receptor.html#ga49768dace37ae4974471268fa197f953">_r_get_instance</a>(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,x);</div>
 <div class="line">    spec_is_symbol_equal(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,x.symbol,INSTALLED_RECEPTOR);</div>
-<div class="line">    spec_is_symbol_equal(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,<a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(_t_child(r,1)),<a class="code" href="group__receptor.html#gacce906c9de30765f458599777b72be90">_r_get_symbol_by_label</a>(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,<span class="stringliteral">&quot;house locator&quot;</span>));</div>
+<div class="line">    spec_is_symbol_equal(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,<a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(_t_child(r,1)),<a class="code" href="group__receptor.html#gacce906c9de30765f458599777b72be90">_r_get_symbol_by_label</a>(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,<span class="stringliteral">&quot;http server&quot;</span>));</div>
 <div class="line"></div>
 <div class="line">    <a class="code" href="group__vmhost.html#ga44e0f6d62e38448bfa058f287cc463eb">_v_free</a>(v);</div>
 </div><!-- fragment -->
@@ -307,7 +307,7 @@ Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structXaddr.html">Xaddr</a> of the receptor package in the compository </dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000018">Todo:</a></b></dt><dd>validate signature and checksums??</dd></dl>
 <p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structVMHost.html">VMHost</a> *v = <a class="code" href="group__vmhost.html#gab6fbe5683628fb0d62a966316ced938d">_v_new</a>();</div>
-<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *p = <a class="code" href="vmhost__spec_8h.html#afb28df20c7c6c460b0ab2ad05e5e31ce">_makeTestHouseLocReceptor</a>();</div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *p = <a class="code" href="vmhost__spec_8h.html#ae14e37c0d39767abeecffe1e2e57b187">_makeTestReceptorPackage</a>();</div>
 <div class="line"></div>
 <div class="line">    <a class="code" href="structXaddr.html">Xaddr</a> x = <a class="code" href="group__vmhost.html#gaa3dd6066c4af50e8497e8013ccc413c2">_v_load_receptor_package</a>(v,p);</div>
 <div class="line">    <a class="code" href="structTnode.html">Tnode</a> *p1 = <a class="code" href="group__receptor.html#ga49768dace37ae4974471268fa197f953">_r_get_instance</a>(v-&gt;<a class="code" href="structVMHost.html#a53bffdb41bcc4096902aabf8ab029637">c</a>,x);</div>
@@ -353,7 +353,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Sep 3 2014 13:18:57 for ceptr by
+    <li class="footer">Generated on Wed Sep 3 2014 15:16:57 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

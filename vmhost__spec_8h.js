@@ -1,6 +1,6 @@
 var vmhost__spec_8h =
 [
-    [ "_makeTestHouseLocReceptor", "vmhost__spec_8h.html#afb28df20c7c6c460b0ab2ad05e5e31ce", null ],
+    [ "_makeTestReceptorPackage", "vmhost__spec_8h.html#ae14e37c0d39767abeecffe1e2e57b187", null ],
     [ "testVMHost", "vmhost__spec_8h.html#af69513f35f53976dc51a241f8b076d4a", null ],
     [ "testVMHostActivateReceptor", "vmhost__spec_8h.html#a9165528cd9a1193303f58f7c012ba53c", null ],
     [ "testVMHostCreate", "vmhost__spec_8h.html#ab22810ce6e5f9b1586db2767bfc44c64", null ],

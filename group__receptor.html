@@ -167,12 +167,12 @@ Functions</h2></td></tr>
 <tr class="separator:gace908c1f9cf6df32014310dca991785b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6f650808029d4c598ebe6515d9900ef8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8">_r_free</a> (<a class="el" href="structReceptor.html">Receptor</a> *r)</td></tr>
 <tr class="separator:ga6f650808029d4c598ebe6515d9900ef8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gade6112556e16fb8a0512268f19f77233"><td class="memItemLeft" align="right" valign="top">Symbol&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#gade6112556e16fb8a0512268f19f77233">_r_def_symbol</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, Structure s, char *label)</td></tr>
-<tr class="separator:gade6112556e16fb8a0512268f19f77233"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga436d69cd861739b56bb32b7bf6f315ab"><td class="memItemLeft" align="right" valign="top">Symbol&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga436d69cd861739b56bb32b7bf6f315ab">_r_declare_symbol</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, Structure s, char *label)</td></tr>
+<tr class="separator:ga436d69cd861739b56bb32b7bf6f315ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gacce906c9de30765f458599777b72be90"><td class="memItemLeft" align="right" valign="top">Symbol&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#gacce906c9de30765f458599777b72be90">_r_get_symbol_by_label</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, char *label)</td></tr>
 <tr class="separator:gacce906c9de30765f458599777b72be90"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0621fed839c7b2589ae87aedae9a6a7c"><td class="memItemLeft" align="right" valign="top">Structure&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga0621fed839c7b2589ae87aedae9a6a7c">_r_def_structure</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, char *label, int num_params,...)</td></tr>
-<tr class="separator:ga0621fed839c7b2589ae87aedae9a6a7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae291bec8771c13074164984b08db4874"><td class="memItemLeft" align="right" valign="top">Structure&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#gae291bec8771c13074164984b08db4874">_r_define_structure</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, char *label, int num_params,...)</td></tr>
+<tr class="separator:gae291bec8771c13074164984b08db4874"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaba7efd4ebd9a5e6b737355fbc45d9a50"><td class="memItemLeft" align="right" valign="top">Structure&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#gaba7efd4ebd9a5e6b737355fbc45d9a50">_r_get_structure_by_label</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, char *label)</td></tr>
 <tr class="separator:gaba7efd4ebd9a5e6b737355fbc45d9a50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga120e66982d483fbe004fd969cf1c353f"><td class="memItemLeft" align="right" valign="top">Structure&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga120e66982d483fbe004fd969cf1c353f">__r_get_symbol_structure</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, Symbol s)</td></tr>
@@ -440,6 +440,50 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 
 </div>
 </div>
+<a class="anchor" id="ga436d69cd861739b56bb32b7bf6f315ab"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Symbol _r_declare_symbol </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structReceptor.html">Receptor</a> *&#160;</td>
+          <td class="paramname"><em>r</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Structure&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>label</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>define a new symbol</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">r</td><td>receptor to provide a structural context for symbol declarations </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>the structure type for this symbol </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">label</td><td>a c-string label for this symbol </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the new Symbol </dd></dl>
+
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00134">134</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="ga8978934f20256d927a9f035c2eeafd8d"></a>
 <div class="memitem">
 <div class="memproto">
@@ -485,12 +529,12 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 
 </div>
 </div>
-<a class="anchor" id="ga0621fed839c7b2589ae87aedae9a6a7c"></a>
+<a class="anchor" id="gae291bec8771c13074164984b08db4874"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">Structure _r_def_structure </td>
+          <td class="memname">Structure _r_define_structure </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structReceptor.html">Receptor</a> *&#160;</td>
           <td class="paramname"><em>r</em>, </td>
@@ -523,7 +567,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 <p>define a new structure</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">symbol_defs</td><td>a symbol def tree containing symbol definitions </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">r</td><td>receptor to provide a semantic context for new structure definitions </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>the structure type for this symbol </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">label</td><td>a c-string label for this symbol </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">num_params</td><td>number of symbols in the structure </td></tr>
@@ -534,50 +578,6 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 <dl class="section return"><dt>Returns</dt><dd>the new Structure </dd></dl>
 
 <p>Definition at line <a class="el" href="receptor_8c_source.html#l00150">150</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="gade6112556e16fb8a0512268f19f77233"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Symbol _r_def_symbol </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structReceptor.html">Receptor</a> *&#160;</td>
-          <td class="paramname"><em>r</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Structure&#160;</td>
-          <td class="paramname"><em>s</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>label</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>define a new symbol</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">symbol_defs</td><td>a symbol def tree containing symbol definitions </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>the structure type for this symbol </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">label</td><td>a c-string label for this symbol </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the new Symbol </dd></dl>
-
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00134">134</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -1048,7 +1048,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Sep 3 2014 13:18:57 for ceptr by
+    <li class="footer">Generated on Wed Sep 3 2014 15:16:57 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

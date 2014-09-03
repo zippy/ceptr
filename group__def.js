@@ -4,13 +4,13 @@ var group__def =
     [ "def.h", "def_8h.html", null ],
     [ "sys_structures.h", "sys__structures_8h.html", null ],
     [ "sys_symbols.h", "sys__symbols_8h.html", null ],
-    [ "__d_def_symbol", "group__def.html#ga89b726c4371a699b34f10a4a980be1a0", null ],
-    [ "_d_def_structure", "group__def.html#gaaf50f8d4b8fe343fa4501837390b76fa", null ],
-    [ "_d_def_symbol", "group__def.html#ga0570ae1e0f0b4655df0711152471bf54", null ],
-    [ "_d_get_structure_name", "group__def.html#gae777a196d77210c193f22de13cc43074", null ],
+    [ "__d_declare_symbol", "group__def.html#ga711a956190b8d06afc51a025253d663c", null ],
+    [ "_d_declare_symbol", "group__def.html#gaa80e4d75f09953b71ff49b75a8d6745e", null ],
+    [ "_d_define_structure", "group__def.html#ga4205f785c519eead8b95ec1507a96a66", null ],
+    [ "_d_get_structure_name", "group__def.html#ga766db34af870b275213a4e828d826267", null ],
     [ "_d_get_structure_size", "group__def.html#ga3c241ad06b91beb3a717054ddb525c5b", null ],
-    [ "_d_get_symbol_name", "group__def.html#ga2735571cc78066590ba91ac494861c9b", null ],
+    [ "_d_get_symbol_name", "group__def.html#gae5fc3e0b245984a477b4c13aacb2fc02", null ],
     [ "_d_get_symbol_size", "group__def.html#gafe7075c1b747aef014c7ac1161d61a29", null ],
-    [ "_d_get_symbol_structure", "group__def.html#ga66e15b333313a12580781fc07e147812", null ],
-    [ "_dv_def_structure", "group__def.html#ga1a3a8063b2343892cc13e22ec6d08c75", null ]
+    [ "_d_get_symbol_structure", "group__def.html#ga7670bc472e457eabeed706b2b43f94d3", null ],
+    [ "_dv_define_structure", "group__def.html#gade5d303272d21c276cd6826ab08c3537", null ]
 ];

@@ -211,10 +211,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>testReceptor</b> ()</
 <p>[defineHouseLocation] </p>
 <p>define a "house location" symbol built out of a latlong</p>
 <div class="fragment"><div class="line"><span class="keywordtype">void</span> <a class="code" href="receptor__spec_8h.html#a98dc4c2784ade9388f0b5aad95d78aae">defineHouseLocation</a>(<a class="code" href="structReceptor.html">Receptor</a> *<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,Symbol *lat,Symbol *lon, Structure *latlong, Symbol *house_loc) {</div>
-<div class="line">    *lat = <a class="code" href="group__receptor.html#gade6112556e16fb8a0512268f19f77233">_r_def_symbol</a>(r,FLOAT,<span class="stringliteral">&quot;latitude&quot;</span>);</div>
-<div class="line">    *lon = <a class="code" href="group__receptor.html#gade6112556e16fb8a0512268f19f77233">_r_def_symbol</a>(r,FLOAT,<span class="stringliteral">&quot;longitude&quot;</span>);</div>
-<div class="line">    *latlong = <a class="code" href="group__receptor.html#ga0621fed839c7b2589ae87aedae9a6a7c">_r_def_structure</a>(r,<span class="stringliteral">&quot;latlong&quot;</span>,2,*lat,*lon);</div>
-<div class="line">    *house_loc = <a class="code" href="group__receptor.html#gade6112556e16fb8a0512268f19f77233">_r_def_symbol</a>(r,*latlong,<span class="stringliteral">&quot;house location&quot;</span>);</div>
+<div class="line">    *lat = <a class="code" href="group__receptor.html#ga436d69cd861739b56bb32b7bf6f315ab">_r_declare_symbol</a>(r,FLOAT,<span class="stringliteral">&quot;latitude&quot;</span>);</div>
+<div class="line">    *lon = <a class="code" href="group__receptor.html#ga436d69cd861739b56bb32b7bf6f315ab">_r_declare_symbol</a>(r,FLOAT,<span class="stringliteral">&quot;longitude&quot;</span>);</div>
+<div class="line">    *latlong = <a class="code" href="group__receptor.html#gae291bec8771c13074164984b08db4874">_r_define_structure</a>(r,<span class="stringliteral">&quot;latlong&quot;</span>,2,*lat,*lon);</div>
+<div class="line">    *house_loc = <a class="code" href="group__receptor.html#ga436d69cd861739b56bb32b7bf6f315ab">_r_declare_symbol</a>(r,*latlong,<span class="stringliteral">&quot;house location&quot;</span>);</div>
 <div class="line">}</div>
 </div><!-- fragment -->
 <p>Definition at line <a class="el" href="receptor__spec_8h_source.html#l00173">173</a> of file <a class="el" href="receptor__spec_8h_source.html">receptor_spec.h</a>.</p>
@@ -302,7 +302,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>testReceptor</b> ()</
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><a class="el" href="receptor__spec_8h.html">receptor_spec.h</a></li>
-    <li class="footer">Generated on Wed Sep 3 2014 13:18:57 for ceptr by
+    <li class="footer">Generated on Wed Sep 3 2014 15:16:57 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

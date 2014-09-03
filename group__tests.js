@@ -6,7 +6,6 @@ var group__tests =
     [ "receptor_spec.h", "receptor__spec_8h.html", null ],
     [ "semtrex_spec.h", "semtrex__spec_8h.html", null ],
     [ "test_framework.h", "test__framework_8h.html", null ],
-    [ "tree_http_example.h", "tree__http__example_8h.html", null ],
     [ "tree_spec.h", "tree__spec_8h.html", null ],
     [ "vmhost_spec.h", "vmhost__spec_8h.html", null ]
 ];
