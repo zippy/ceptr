@@ -10,6 +10,7 @@ var searchData=
   ['testtreedetach',['testTreeDetach',['../tree__spec_8h.html#a80fb5c03826178e4332803fb546777fc',1,'tree_spec.h']]],
   ['testtreemorph',['testTreeMorph',['../tree__spec_8h.html#aecd9cd243076dc7b034b53bed7c297a0',1,'tree_spec.h']]],
   ['testtreemorphlowlevel',['testTreeMorphLowLevel',['../tree__spec_8h.html#ad67357180aa840b09dfc3a37493f56e9',1,'tree_spec.h']]],
+  ['testtreenewreceptor',['testTreeNewReceptor',['../tree__spec_8h.html#af273dd6bfe59ce73f16b171faa53a14c',1,'tree_spec.h']]],
   ['testtreenodeindex',['testTreeNodeIndex',['../tree__spec_8h.html#a2135f4c00a6d218e0de5b1f63bb2a54a',1,'tree_spec.h']]],
   ['testtreepathcopy',['testTreePathCopy',['../tree__spec_8h.html#a5986d99ac81ace5b68beb3d5c255ca61',1,'tree_spec.h']]],
   ['testtreepathdepth',['testTreePathDepth',['../tree__spec_8h.html#ad79851a7dc2d333e1e496c93b1c78971',1,'tree_spec.h']]],

@@ -2,8 +2,7 @@ var sys__symbols_8h =
 [
     [ "SystemSymbol", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3", [
       [ "NULL_SYMBOL", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a0f0c5131c4f239c34603d659605f00c7", null ],
-      [ "POINTER", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3aad7dce162b42b3d0968ffa57fad43512", null ],
-      [ "TREE_PATH", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a5f595a2210451d38bcdb65151fce342d", null ],
+      [ "SEMTREX_MATCHED_PATH", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3ae53584f23b67ccb4d91d943c2ffd1f32", null ],
       [ "SEMTREX_SYMBOL_LITERAL", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a24fed94b1bdcacc4989e256136ad750c", null ],
       [ "SEMTREX_SEQUENCE", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a2bcf9a9f55a6002b167918d9657788b7", null ],
       [ "SEMTREX_OR", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3ab048f8136e64b01fc2cb22f9dc588084", null ],
@@ -20,6 +19,8 @@ var sys__symbols_8h =
       [ "FLUX", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3aa76c44edb76686fa1bbda9ebe69c7857", null ],
       [ "STRUCTURES", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a0da182c924b3f9b192ea4c4721ed1e53", null ],
       [ "STRUCTURE_DEF", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3aedc8defdc189c400ff5bd5d4d186711c", null ],
+      [ "STRUCTURE_LABEL", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a9c4c0aa3610554c0facb44b56659174f", null ],
+      [ "STRUCTURE_PARTS", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3afbcfefad1bfc0e20df80fe3ea397f4ee", null ],
       [ "STRUCTURE_PART", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3ab3a808e345814cec7fa712204faf18b5", null ],
       [ "SYMBOLS", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3aaf54c87377eae7f271a3808cd41a6d41", null ],
       [ "SYMBOL_DEF", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a956a8ae3d7691567516700fa0910737d", null ],
@@ -47,12 +48,14 @@ var sys__symbols_8h =
       [ "_LAST_SYS_SYMBOL", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3ac2b88f9ed7150728e85e0e2e0a126de7", null ]
     ] ],
     [ "TestSymbol", "sys__symbols_8h.html#a8225552e201b4ff8e3f55d263558e29c", [
-      [ "TEST_SYMBOL", "sys__symbols_8h.html#a8225552e201b4ff8e3f55d263558e29ca979e5361aef74d294828aea3f50dcc1f", null ],
-      [ "TEST_SYMBOL2", "sys__symbols_8h.html#a8225552e201b4ff8e3f55d263558e29ca53a6a87ef6d49ed51d4bb89c2785f88d", null ],
+      [ "TEST_INT_SYMBOL", "sys__symbols_8h.html#a8225552e201b4ff8e3f55d263558e29ca2ae2c84a6637868c7c735cc084bae10f", null ],
+      [ "TEST_INT_SYMBOL2", "sys__symbols_8h.html#a8225552e201b4ff8e3f55d263558e29cac9ddd71c5402c7d84d73f5102b208fe3", null ],
       [ "TEST_STR_SYMBOL", "sys__symbols_8h.html#a8225552e201b4ff8e3f55d263558e29ca36b37ab96a0bfcb8904855015c7e970d", null ],
       [ "TEST_TREE_SYMBOL", "sys__symbols_8h.html#a8225552e201b4ff8e3f55d263558e29ca787d9ef7c06995a9b3e4b219306df014", null ],
+      [ "TEST_TREE_SYMBOL2", "sys__symbols_8h.html#a8225552e201b4ff8e3f55d263558e29ca9e581a3c5dc6703e08ae5e3999399052", null ],
       [ "TEST_NAME_SYMBOL", "sys__symbols_8h.html#a8225552e201b4ff8e3f55d263558e29ca3840f4ce6a22bf2669307c1d3cee8e48", null ],
       [ "TEST_FIRST_NAME_SYMBOL", "sys__symbols_8h.html#a8225552e201b4ff8e3f55d263558e29ca08a3425197d92523e36f9f95d0b6bfed", null ],
+      [ "TEST_RECEPTOR_SYMBOL", "sys__symbols_8h.html#a8225552e201b4ff8e3f55d263558e29ca0ab69625e6bcb922baafc76e80d4db05", null ],
       [ "_LAST_TEST_SYMBOL", "sys__symbols_8h.html#a8225552e201b4ff8e3f55d263558e29ca8227440a40180d8a0d0cf3ea8c850b64", null ]
     ] ]
 ];
