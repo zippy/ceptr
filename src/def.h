@@ -19,12 +19,14 @@
 
 char *_d_get_symbol_name(Tnode *symbol_defs,Symbol s);
 char *_d_get_structure_name(Tnode *structure_defs,Structure s);
-Tnode * _d_def_symbol(Tnode *symbol_defs,Structure s,char *label);
-Tnode * _d_def_structure(Tnode *structure_defs,char *label,int num_params,...);
+Tnode *__d_def_symbol(Tnode *symbol_defs,Structure s,char *label);
+Symbol _d_def_symbol(Tnode *symbol_defs,Structure s,char *label);
+Structure _d_def_structure(Tnode *structure_defs,char *label,int num_params,...);
 Tnode * _dv_def_structure(Tnode *structure_defs,char *label,int num_params,va_list params);
 Structure _d_get_symbol_structure(Tnode *symbol_defs,Symbol symbol);
 size_t _d_get_symbol_size(Tnode *symbols,Tnode *structures,Symbol s,void *surface);
 size_t _d_get_structure_size(Tnode *symbols,Tnode *structures,Symbol s,void *surface);
+char * __t_dump(Tnode *symbols,Tnode *t,int level,char *buf);
 
 #endif
 /** @}*/

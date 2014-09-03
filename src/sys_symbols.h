@@ -15,28 +15,30 @@
 #include "sys_structures.h"
 
 /// test symbols.  These are defined only for the test suite.
-enum TestSymbol {TEST_SYMBOL= -9999,TEST_SYMBOL2,TEST_STR_SYMBOL,TEST_TREE_SYMBOL,
+enum TestSymbol {TEST_INT_SYMBOL= -9999,TEST_INT_SYMBOL2,TEST_STR_SYMBOL,TEST_TREE_SYMBOL,TEST_TREE_SYMBOL2,
 		 TEST_NAME_SYMBOL,TEST_FIRST_NAME_SYMBOL,TEST_RECEPTOR_SYMBOL,
 		 _LAST_TEST_SYMBOL
 };
 static char *G_test_symbol_names[] = {
-    "TEST_SYMBOL",
-    "TEST_SYMBOL2",
+    "TEST_INT_SYMBOL",
+    "TEST_INT_SYMBOL2",
     "TEST_STR_SYMBOL",
     "TEST_TREE_SYMBOL",
+    "TEST_TREE_SYMBOL2",
     "TEST_NAME_SYMBOL",
     "TEST_FIRST_NAME_SYMBOL",
     "TEST_RECEPTOR_SYMBOL"
 };
 
 static Structure G_test_symbol_structures[] = {
-    INTEGER, //"TEST_SYMBOL",
-    INTEGER, //"TEST_SYMBOL2",
+    INTEGER, //"TEST_INT_SYMBOL",
+    INTEGER, //"TEST_INT_SYMBOL2",
     CSTRING, //"TEST_STR_SYMBOL",
     TREE,    //"TEST_TREE_SYMBOL",
+    TREE,    //"TEST_TREE_SYMBOL2",
     TREE,    //"TEST_NAME_SYMBOL",
     CSTRING, //"TEST_FIRST_NAME_SYMBOL",
-    NULL_STRUCTURE, //"TEST_RECEPTOR_SYMBOL"
+    TREE,    //"TEST_RECEPTOR_SYMBOL"
 };
 
 /// System defined symbols.
@@ -44,9 +46,9 @@ enum SystemSymbol
 {
     //-----  Basic symbols for underlying data types
     NULL_SYMBOL = -999,
-    TREE_PATH,
 
     //-----  Symbols for the different semantic parts of semtrexes
+    SEMTREX_MATCHED_PATH,              ///< path to symbol matched by semtrex
     SEMTREX_SYMBOL_LITERAL,            ///< This system symbol matches on the semantic type.         Ex: /TEST_SYMBOL
     SEMTREX_SEQUENCE,                  ///< Match on a sequence of child nodes which are any valid semtrex's.  Ex: comma separated nodes
     SEMTREX_OR,                        ///< Logical OR between two Semtrex expressions.      Ex: |
@@ -93,7 +95,7 @@ enum SystemSymbol
 };
 static char *G_sys_symbol_names[] = {
     "NULL_SYMBOL",
-    "TREE_PATH",
+    "SEMTREX_MATCHED_PATH",
     "SEMTREX_SYMBOL_LITERAL",
     "SEMTREX_SEQUENCE",
     "SEMTREX_OR",
@@ -136,8 +138,8 @@ static char *G_sys_symbol_names[] = {
 
 static Structure G_sys_symbol_structures[] = {
     NULL_STRUCTURE,      //"NULL_SYMBOL",
-    NULL_STRUCTURE,      //"TREE_PATH",
-    INTEGER,             //"SEMTREX_SYMBOL_LITERAL",
+    TREE_PATH,           //"SEMTREX_MATCHED_PATH",
+    SYMBOL,              //"SEMTREX_SYMBOL_LITERAL",
     LIST,                //"SEMTREX_SEQUENCE",
     NULL_STRUCTURE,      //"SEMTREX_OR",
     NULL_STRUCTURE,      //"SEMTREX_SYMBOL_ANY",
@@ -145,17 +147,17 @@ static Structure G_sys_symbol_structures[] = {
     NULL_STRUCTURE,      //"SEMTREX_ONE_OR_MORE",
     NULL_STRUCTURE,      //"SEMTREX_ZERO_OR_ONE",
     NULL_STRUCTURE,      //"SEMTREX_VALUE_LITERAL",
-    NULL_STRUCTURE,      //"SEMTREX_GROUP",
-    NULL_STRUCTURE,      //"SEMTREX_MATCH",
+    SYMBOL,              //"SEMTREX_GROUP",
+    SYMBOL,              //"SEMTREX_MATCH",
     NULL_STRUCTURE,      //"SEMTREX_MATCH_RESULTS",
-    NULL_STRUCTURE,      //"SEMTREX_MATCH_SIBLINGS_COUNT",
+    INTEGER,             //"SEMTREX_MATCH_SIBLINGS_COUNT",
     NULL_STRUCTURE,      //"RECEPTOR",
     LIST,                //"FLUX",
     LIST,                //"STRUCTURES",
     TREE,                //"STRUCTURE_DEF",
     CSTRING,             //STRUCTURE_LABEL,
     LIST,                //"STRUCTURE_PARTS",
-    INTEGER,             //"STRUCTURE_PART",
+    SYMBOL,              //"STRUCTURE_PART",
     LIST          ,      //"SYMBOLS",
     NULL_STRUCTURE,      //"SYMBOL_DEF",
     NULL_STRUCTURE,      //"SYMBOL_STRUCTURE",
@@ -170,7 +172,7 @@ static Structure G_sys_symbol_structures[] = {
     NULL_STRUCTURE,      //"ACTION",
     NULL_STRUCTURE,      //"RESPOND",
     NULL_STRUCTURE,      //"INTERPOLATE_FROM_MATCH",
-    NULL_STRUCTURE,      //"INTERPOLATE_SYMBOL",
+    SYMBOL,              //"INTERPOLATE_SYMBOL",
     NULL_STRUCTURE,      //"RUN_TREE",
     LIST,                //"PARAMS",
     NULL_STRUCTURE,      //"RECEPTOR_PACKAGE",

@@ -14,22 +14,22 @@ void testCreateTreeNodes() {
      */
     Tnode *t, *t1, *t2, *t3, *t4, *t5;
 
-    t = _t_new(0,TEST_SYMBOL,"hello",6);
+    t = _t_new(0,TEST_STR_SYMBOL,"hello",6);
     spec_is_long_equal(_t_size(t),(long)6);
     spec_is_equal(_t_children(t),0);
     spec_is_str_equal((char *)_t_surface(t),"hello");
     spec_is_ptr_equal(_t_parent(t),NULL);
     spec_is_ptr_equal(_t_root(t),t);
     spec_is_ptr_equal(_t_child(t,1),NULL);
-    spec_is_equal(_t_symbol(t),TEST_SYMBOL);
+    spec_is_equal(_t_symbol(t),TEST_STR_SYMBOL);
 
-    t1 = _t_new(t,TEST_SYMBOL,"t1",3);
+    t1 = _t_new(t,TEST_STR_SYMBOL,"t1",3);
     spec_is_ptr_equal(_t_parent(t1),t);
     spec_is_equal(_t_children(t),1);
     spec_is_ptr_equal(_t_child(t,1),t1);
     spec_is_ptr_equal(_t_root(t1),t);
 
-    t2 = _t_new(t,TEST_SYMBOL,"t2",3);
+    t2 = _t_new(t,TEST_STR_SYMBOL,"t2",3);
     spec_is_ptr_equal(_t_parent(t2),t);
     spec_is_equal(_t_children(t),2);
     spec_is_ptr_equal(_t_child(t,2),t2);
@@ -45,15 +45,15 @@ void testCreateTreeNodes() {
     spec_is_ptr_equal(_t_next_sibling(t2),t3);
     spec_is_ptr_equal(_t_next_sibling(t3),NULL);
 
-    t4 = _t_new_root(TEST_SYMBOL);
+    t4 = _t_new_root(TEST_TREE_SYMBOL);
     _t_add(t,t4);
     spec_is_equal(_t_children(t),4);
     spec_is_ptr_equal(_t_child(t,4),t4);
 
-    t5 = _t_newr(t4,TEST_SYMBOL2);
+    t5 = _t_newr(t4,TEST_TREE_SYMBOL2);
     spec_is_ptr_equal(_t_parent(t5),t4);
     spec_is_long_equal(_t_size(t5),(long)0);
-    spec_is_symbol_equal(0,_t_symbol(t5),TEST_SYMBOL2);
+    spec_is_symbol_equal(0,_t_symbol(t5),TEST_TREE_SYMBOL2);
 
     _t_detach_by_ptr(t,t3);
     _t_free(t3);  // detatch doesn't free the memory of the removed node
@@ -66,7 +66,7 @@ void testCreateTreeNodes() {
 
 void testTreeNewReceptor() {
     //! [testTreeNewReceptor]
-    Tnode *t = _t_newi(0,TEST_SYMBOL,0);
+    Tnode *t = _t_newi(0,TEST_INT_SYMBOL,0);
     Receptor *r = _r_new();
     Tnode *tr = _t_new_receptor(t,TEST_RECEPTOR_SYMBOL,r);
 
@@ -74,32 +74,32 @@ void testTreeNewReceptor() {
 
     char buf[2000];
     __t_dump(0,t,0,buf);
-    spec_is_str_equal(buf," (TEST_SYMBOL:0 (TEST_RECEPTOR_SYMBOL:{ (RECEPTOR (STRUCTURES) (SYMBOLS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))))}))");
+    spec_is_str_equal(buf," (TEST_INT_SYMBOL:0 (TEST_RECEPTOR_SYMBOL:{ (RECEPTOR (STRUCTURES) (SYMBOLS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))))}))");
 
     _t_free(t); // note, no need to free the receptor explicitly, as _t_free knows about it
     //! [testTreeNewReceptor]
 }
 
 void testTreeOrthogonal() {
-    Tnode *t = _t_newi(0,TEST_SYMBOL,1234);
-    Tnode *t2 = _t_new_root(TEST_SYMBOL2);
+    Tnode *t = _t_newi(0,TEST_INT_SYMBOL,1234);
+    Tnode *t2 = _t_newi(0,TEST_INT_SYMBOL2,99);
     Tnode *o = _t_newt(t,TEST_TREE_SYMBOL,t2);
     char buf[2000];
     __t_dump(0,t,0,buf);
-    spec_is_str_equal(buf," (TEST_SYMBOL:1234 (TEST_TREE_SYMBOL:{ (TEST_SYMBOL2)}))");
+    spec_is_str_equal(buf," (TEST_INT_SYMBOL:1234 (TEST_TREE_SYMBOL:{ (TEST_INT_SYMBOL2:99)}))");
     _t_free(t);
 }
 
 void testTreeRealloc() {
     Tnode *ts[12];
-    Tnode *t = _t_new(0,TEST_SYMBOL,"t",2);
+    Tnode *t = _t_new(0,TEST_STR_SYMBOL,"t",2);
     char tname[3];
     int i;
     tname[0] = 't';
     tname[2] = 0;
     for (i=0;i<12;i++){
 	tname[1] = 'a'+i;
-	ts[i] = _t_new(t,TEST_SYMBOL,tname,3);
+	ts[i] = _t_new(t,TEST_STR_SYMBOL,tname,3);
     }
     spec_is_str_equal((char *)_t_surface(ts[11]),"tl");
     _t_free(t);
@@ -267,8 +267,8 @@ void testTreeClone() {
 
     char buf1[2000];
     char buf2[2000];
-    __t_dump(0,c,0,buf1);
-    __t_dump(0,t,0,buf2);
+    __t_dump(HTTPRequest_symbols,c,0,buf1);
+    __t_dump(HTTPRequest_symbols,t,0,buf2);
 
     spec_is_str_equal(buf1,buf2);
 
@@ -298,7 +298,7 @@ void testTreeReplace() {
 void testTreeMorph() {
     //! [testTreeMorph]
     char buf[2000];
-    Tnode *x = _t_newi(0,TEST_SYMBOL,123);
+    Tnode *x = _t_newi(0,TEST_INT_SYMBOL,123);
     Tnode *z = _t_new(0,TEST_STR_SYMBOL,"fish",5);
 
     _t_morph(x,z);
@@ -316,9 +316,9 @@ void testTreeMorphLowLevel() {
     Tnode *x = _t_new(0,TEST_STR_SYMBOL,"fish",5);
     int i = 789;
 
-    __t_morph(x,TEST_SYMBOL,&i,sizeof(int),0);
+    __t_morph(x,TEST_INT_SYMBOL,&i,sizeof(int),0);
     __t_dump(0,x,0,buf);
-    spec_is_str_equal(buf," (TEST_SYMBOL:789)");
+    spec_is_str_equal(buf," (TEST_INT_SYMBOL:789)");
 
     _t_free(x);
     //! [testTreeMorphLowLevel]
@@ -344,6 +344,7 @@ void testTreeDetach() {
 }
 
 void testTree() {
+    _setup_HTTPRequest();
     testCreateTreeNodes();
     testTreeNewReceptor();
     testTreeOrthogonal();
@@ -361,4 +362,5 @@ void testTree() {
     testTreeMorph();
     testTreeMorphLowLevel();
     testTreeDetach();
+    _cleanup_HTTPRequest();
 }

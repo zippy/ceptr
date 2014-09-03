@@ -164,14 +164,14 @@ void testMatchAny() {
 }
 
 void testMatchStar() {
-    // /TEST_SYMBOL/1*
-    Tnode *s = _t_newi(0,SEMTREX_SYMBOL_LITERAL,TEST_SYMBOL);
+    // /TEST_INT_SYMBOL/1*
+    Tnode *s = _t_newi(0,SEMTREX_SYMBOL_LITERAL,TEST_INT_SYMBOL);
     Tnode *ss = _t_newi(s,SEMTREX_SEQUENCE,0);
     Tnode *sss = _t_newi(ss,SEMTREX_ZERO_OR_MORE,0);
     Tnode *s1 = _t_newi(sss,SEMTREX_SYMBOL_LITERAL,1);
     Tnode *t1, *t1x, *t1y, *s2;
 
-    Tnode *t = _t_new(0,TEST_SYMBOL,"t",2);
+    Tnode *t = _t_new(0,TEST_INT_SYMBOL,"t",2);
     spec_is_true(_t_match(s,t));
 
     t1 = _t_new(t,1,"t1",3);
@@ -181,7 +181,7 @@ void testMatchStar() {
     t1y = _t_new(t,2,"t2",3);
     spec_is_true(_t_match(s,t));
 
-    // /TEST_SYMBOL/1*,2
+    // /TEST_INT_SYMBOL/1*,2
     s2 = _t_newi(ss,SEMTREX_SYMBOL_LITERAL,2);
     spec_is_true(_t_match(s,t));
     (*(int *)_t_surface(s2)) = 3;
@@ -192,14 +192,14 @@ void testMatchStar() {
 }
 
 void testMatchPlus() {
-    // /TEST_SYMBOL/1+
-    Tnode *s = _t_newi(0,SEMTREX_SYMBOL_LITERAL,TEST_SYMBOL);
+    // /TEST_INT_SYMBOL/1+
+    Tnode *s = _t_newi(0,SEMTREX_SYMBOL_LITERAL,TEST_INT_SYMBOL);
     Tnode *ss = _t_newi(s,SEMTREX_SEQUENCE,0);
     Tnode *sss = _t_newi(ss,SEMTREX_ONE_OR_MORE,0);
     Tnode *s1 = _t_newi(sss,SEMTREX_SYMBOL_LITERAL,1);
     Tnode *t1, *t1x, *t1y;
 
-    Tnode *t = _t_new(0,TEST_SYMBOL,"t",2);
+    Tnode *t = _t_new(0,TEST_INT_SYMBOL,"t",2);
     spec_is_true(!_t_match(s,t));
 
     t1 = _t_new(t,1,"t1",3);
@@ -214,14 +214,14 @@ void testMatchPlus() {
 }
 
 void testMatchQ() {
-    // /TEST_SYMBOL/1?
-    Tnode *s = _t_newi(0,SEMTREX_SYMBOL_LITERAL,TEST_SYMBOL);
+    // /TEST_INT_SYMBOL/1?
+    Tnode *s = _t_newi(0,SEMTREX_SYMBOL_LITERAL,TEST_INT_SYMBOL);
     Tnode *ss = _t_newi(s,SEMTREX_SEQUENCE,0);
     Tnode *sss = _t_newi(ss,SEMTREX_ZERO_OR_ONE,0);
     Tnode *s1 = _t_newi(sss,SEMTREX_SYMBOL_LITERAL,1);
     Tnode *t1, *t1x, *t1y, *s2;
 
-    Tnode *t = _t_new(0,TEST_SYMBOL,"t",2);
+    Tnode *t = _t_new(0,TEST_INT_SYMBOL,"t",2);
     spec_is_true(_t_match(s,t));
 
     t1 = _t_new(t,1,"t1",3);
@@ -230,7 +230,7 @@ void testMatchQ() {
     t1x = _t_new(t,1,"t1",3);
     t1y = _t_new(t,2,"t2",3);
 
-    // /TEST_SYMBOL/1?,2
+    // /TEST_INT_SYMBOL/1?,2
     s2 = _t_newi(ss,SEMTREX_SYMBOL_LITERAL,2);
     spec_is_true(!_t_match(s,t));
 
@@ -312,27 +312,27 @@ void testMatchLiteralValue() {
     ((char *)&sv.value)[0] = 't';
     ((char *)&sv.value)[1] = 0;				// string terminator
 
-    // /TEST_SYMBOL="t"
+    // /TEST_INT_SYMBOL="t"
     s = _t_new(0,SEMTREX_VALUE_LITERAL,&sv,sizeof(Svalue));
     spec_is_true(_t_match(s,t));
     _t_free(s);
 
-    // /TEST_SYMBOL2="t"
+    // /TEST_INT_SYMBOL2="t"
     // don't match on wrong symbol
-    sv.symbol = TEST_SYMBOL2;
+    sv.symbol = TEST_INT_SYMBOL2;
     s = _t_new(0,SEMTREX_VALUE_LITERAL,&sv,sizeof(Svalue));
     spec_is_true(!_t_match(s,t));
     _t_free(s);
-    sv.symbol = TEST_SYMBOL; // restore correct symbol
+    sv.symbol = TEST_INT_SYMBOL; // restore correct symbol
 
-    // /TEST_SYMBOL="x"
+    // /TEST_INT_SYMBOL="x"
     // don't match if value is wrong
     ((char *)&sv.value)[0] = 'x';
     s = _t_new(0,SEMTREX_VALUE_LITERAL,&sv,sizeof(Svalue));
     spec_is_true(!_t_match(s,t));
     _t_free(s);
 
-    // /TEST_SYMBOL=""
+    // /TEST_INT_SYMBOL=""
     // don't match if value length is wrong
     ((char *)&sv.value)[0] = 0;
     sv.length = 1;			// length of data is 1, string length is 0.

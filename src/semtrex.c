@@ -321,7 +321,7 @@ int __t_match(SState *s,Tnode *t,Tnode *r) {
 		// add on the semtrex match nodes and path to list of matches.
 		Tnode *m = _t_newi(r,SEMTREX_MATCH,match_id);
 		int *p = _t_get_path(t);
-		Tnode *pp = _t_new(m,TREE_PATH,p,sizeof(int)*(_t_path_depth(p)+1));
+		Tnode *pp = _t_new(m,SEMTREX_MATCHED_PATH,p,sizeof(int)*(_t_path_depth(p)+1));
 		free(p);
 		matched = __t_match(s->out,t,r);
 		if (!matched) {

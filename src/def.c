@@ -25,8 +25,8 @@ char __d_extra_buf[10];
 char *_d_get_symbol_name(Tnode *symbol_defs,Symbol s) {
     if (s>NULL_SYMBOL && s <_LAST_SYS_SYMBOL )
 	return G_sys_symbol_names[s-NULL_SYMBOL];
-    if (s>=TEST_SYMBOL && s < _LAST_TEST_SYMBOL)
-	return G_test_symbol_names[s-TEST_SYMBOL];
+    if (s>=TEST_INT_SYMBOL && s < _LAST_TEST_SYMBOL)
+	return G_test_symbol_names[s-TEST_INT_SYMBOL];
     else if (symbol_defs) {
 	Tnode *def = _t_child(symbol_defs,s);
 	Tnode *l = _t_child(def,1);
@@ -69,11 +69,28 @@ char *_d_get_structure_name(Tnode *structure_defs,Structure s) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testDefSymbol
  */
-Tnode * _d_def_symbol(Tnode *symbol_defs,Structure s,char *label){
+Tnode *__d_def_symbol(Tnode *symbol_defs,Structure s,char *label){
     Tnode *def = _t_newr(symbol_defs,SYMBOL_DEF);
     _t_newi(def,SYMBOL_STRUCTURE,s);
     _t_new(def,SYMBOL_LABEL,label,strlen(label)+1);
     return def;
+}
+
+/**
+ * add a symbol definition to a symbol defs tree
+ *
+ * @param[in] symbol_defs a symbol def tree containing symbol definitions
+ * @param[in] s the structure type for this symbol
+ * @param[in] label a c-string label for this symbol
+ * @returns the new symbol
+ * @todo this is not thread safe!
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/def_spec.h testDefSymbol
+ */
+Symbol _d_def_symbol(Tnode *symbol_defs,Structure s,char *label){
+    __d_def_symbol(symbol_defs,s,label);
+    return _t_children(symbol_defs);
 }
 
 /**
@@ -88,12 +105,12 @@ Tnode * _d_def_symbol(Tnode *symbol_defs,Structure s,char *label){
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testDefStructure
  */
-Tnode * _d_def_structure(Tnode *structure_defs,char *label,int num_params,...) {
+Structure _d_def_structure(Tnode *structure_defs,char *label,int num_params,...) {
     va_list params;
     va_start(params,num_params);
     Tnode *def = _dv_def_structure(structure_defs,label,num_params,params);
     va_end(params);
-    return def;
+    return _t_children(structure_defs);
 }
 
 /// va_list version of _d_def_structure
@@ -122,8 +139,8 @@ Structure _d_get_symbol_structure(Tnode *symbol_defs,Symbol s) {
     if (s>=NULL_SYMBOL && s <_LAST_SYS_SYMBOL) {
 	return G_sys_symbol_structures[s-NULL_SYMBOL];
     }
-    else if (s>=TEST_SYMBOL && s < _LAST_TEST_SYMBOL)
-	return G_test_symbol_structures[s-TEST_SYMBOL];
+    else if (s>=TEST_INT_SYMBOL && s < _LAST_TEST_SYMBOL)
+	return G_test_symbol_structures[s-TEST_INT_SYMBOL];
     Tnode *def = _t_child(symbol_defs,s);
     Tnode *t = _t_child(def,1); // first child of the def is the structure
     return *(Structure *)_t_surface(t);
@@ -165,6 +182,7 @@ size_t _d_get_structure_size(Tnode *symbols,Tnode *structures,Structure s,void *
 	case TREE:
 	case NULL_STRUCTURE: return 0;
 	    //	case SEMTREX: return
+	case SYMBOL: return sizeof(Symbol);
 	case INTEGER: return sizeof(int);
 	case FLOAT: return sizeof(float);
 	case CSTRING: return strlen(surface)+1;
@@ -183,6 +201,60 @@ size_t _d_get_structure_size(Tnode *symbols,Tnode *structures,Structure s,void *
 	}
 	return size;
     }
+}
+
+/*****************  Tree debugging utilities */
+
+char * __t_dump(Tnode *symbols,Tnode *t,int level,char *buf) {
+    if (!t) return "";
+    Symbol s = _t_symbol(t);
+    char b[255];
+    char tbuf[2000];
+    int i;
+    char *n = _d_get_symbol_name(symbols,s);
+    char *c;
+    Structure st = _d_get_symbol_structure(symbols,s);
+    switch(st) {
+    case CSTRING:
+	sprintf(buf," (%s:%s",n,(char *)_t_surface(t));
+	break;
+    case INTEGER:
+	sprintf(buf," (%s:%d",n,*(int *)_t_surface(t));
+	break;
+    case SYMBOL:
+	c = _d_get_symbol_name(symbols,*(int *)_t_surface(t));
+	sprintf(buf," (%s:%s",n,c?c:"<unknown>");
+	break;
+    case TREE_PATH:
+	sprintf(buf," (%s:%s",n,_t_sprint_path((int *)_t_surface(t),b));
+	break;
+    case TREE:
+	if (t->context.flags == TFLAG_SURFACE_IS_TREE) {
+	    c = __t_dump(symbols,(Tnode *)_t_surface(t),0,tbuf);
+	    sprintf(buf," (%s:{%s}",n,c);
+	    break;
+	}
+	if (t->context.flags == TFLAG_SURFACE_IS_TREE+TFLAG_SURFACE_IS_RECEPTOR) {
+	    c = __t_dump(symbols,((Receptor *)_t_surface(t))->root,0,tbuf);
+	    sprintf(buf," (%s:{%s}",n,c);
+	    break;
+	}
+    default:
+	switch(s) {
+	case LISTENER:
+	    c = _d_get_symbol_name(symbols,*(int *)_t_surface(t));
+	    sprintf(buf," (%s on %s",n,c?c:"<unknown>");
+	    break;
+	default:
+	    if (n == 0)
+		sprintf(buf," (<unknown:%d>",s);
+	    else
+		sprintf(buf," (%s",n);
+	}
+    }
+    for(i=1;i<=_t_children(t);i++) __t_dump(symbols,_t_child(t,i),level+1,buf+strlen(buf));
+    sprintf(buf+strlen(buf),")");
+    return buf;
 }
 
 /** @}*/

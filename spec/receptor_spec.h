@@ -50,11 +50,11 @@ void testReceptorAddListener() {
     Tnode *s = _t_new_root(EXPECTATION);
     _t_newi(s,SEMTREX_SYMBOL_LITERAL,0);
     Tnode *a = _t_new_root(ACTION);
-    _r_add_listener(r,DEFAULT_ASPECT,TEST_SYMBOL,s,a);
+    _r_add_listener(r,DEFAULT_ASPECT,TEST_INT_SYMBOL,s,a);
 
     Tnode *l = _t_child(__r_get_listeners(r,DEFAULT_ASPECT),1);      // listener should have been added as first child of listeners
     spec_is_symbol_equal(r,_t_symbol(l),LISTENER);
-    spec_is_equal(*(int *)_t_surface(l),TEST_SYMBOL); // carrier should be TEST_SYMBOL
+    spec_is_equal(*(int *)_t_surface(l),TEST_INT_SYMBOL); // carrier should be TEST_INT_SYMBOL
     spec_is_ptr_equal(_t_child(l,1),s);       // our expectation semtrex should be first child of the listener
     spec_is_ptr_equal(_t_child(l,2),a);       // our action code tree should be the second child of the listener
 
@@ -63,7 +63,7 @@ void testReceptorAddListener() {
 
 void testReceptorSignal() {
     Receptor *r = _r_new();
-    Tnode *signal = _t_newi(0,TEST_SYMBOL,314);
+    Tnode *signal = _t_newi(0,TEST_INT_SYMBOL,314);
     _r_send(r,r,DEFAULT_ASPECT,signal);
 
     // the first node on the default aspect signals should be the signal
@@ -85,7 +85,7 @@ void testReceptorAction() {
     _t_new(signal,TEST_FIRST_NAME_SYMBOL,"eric",5);
 
     // The listener just matches on signal TEST_NAME_TYPE type and responds with
-    // converted tree to: /TEST_SYMBOL2/TEST_FIRST_NAME
+    // converted tree to: /TEST_INT_SYMBOL2/TEST_FIRST_NAME
     Tnode *expect = _t_new_root(EXPECTATION);
     Tnode *sa = _t_newi(expect,SEMTREX_SYMBOL_ANY,0);
     Tnode *sg = _t_newi(sa,SEMTREX_GROUP,TEST_FIRST_NAME_SYMBOL);
@@ -93,7 +93,7 @@ void testReceptorAction() {
     Tnode *act = _t_new_root(ACTION);
     Tnode *resp = _t_newi(act,RESPOND,0);
     Tnode *n = _t_newi(resp,INTERPOLATE_FROM_MATCH,0);
-    Tnode *t = _t_newi(n,TEST_SYMBOL2,0);
+    Tnode *t = _t_newi(n,TEST_INT_SYMBOL2,0);
     _t_newi(t,INTERPOLATE_SYMBOL,TEST_FIRST_NAME_SYMBOL);
 
     // confirm that the signal will match on our expectation
@@ -105,15 +105,15 @@ void testReceptorAction() {
     spec_is_symbol_equal(r,_t_symbol(s),SIGNAL);
     Tnode *result = _t_child(_t_child(s,1),1);
 
-    // the result should be signal tree with  the matched TEST_SYMBOL value interpolated
+    // the result should be signal tree with  the matched TEST_INT_SYMBOL value interpolated
     // in the right place
-    spec_is_symbol_equal(r,_t_symbol(result),TEST_SYMBOL2);
+    spec_is_symbol_equal(r,_t_symbol(result),TEST_INT_SYMBOL2);
     Tnode *r1 = _t_child(result,1);
     spec_is_symbol_equal(r,_t_symbol(r1),TEST_FIRST_NAME_SYMBOL);
     spec_is_str_equal((char *)_t_surface(r1),"eric");
 
     /// @todo a signal that has no matches should return a null result?
-    signal = _t_newi(0,TEST_SYMBOL2,3141);
+    signal = _t_newi(0,TEST_INT_SYMBOL2,3141);
     result = _r_send(r,r,DEFAULT_ASPECT,signal);
     spec_is_ptr_equal(result,NULL);
 
@@ -192,7 +192,7 @@ void testReceptorDefMatch() {
     Tnode *stx = _r_build_def_semtrex(r,house_loc,0);
     char buf[2000];
     spec_is_str_equal(_dump_semtrex(stx,buf),"/(3/1,2)");
-    __t_dump(r,stx,0,buf);
+    __t_dump(r->symbols,stx,0,buf);
     spec_is_str_equal(buf," (SEMTREX_SYMBOL_LITERAL:house location (SEMTREX_SEQUENCE (SEMTREX_SYMBOL_LITERAL:latitude) (SEMTREX_SYMBOL_LITERAL:longitude)))");
 
     // a correctly structured tree should match its definition
@@ -268,8 +268,8 @@ void testReceptorSerialize() {
 
     // check that the structures look the same by comparing a string dump of the two
     // receptors
-    __t_dump(r,r->root,0,buf);
-    __t_dump(r1,r1->root,0,buf1);
+    __t_dump(r->symbols,r->root,0,buf);
+    __t_dump(r1->symbols,r1->root,0,buf1);
     spec_is_str_equal(buf1,buf);
 
     // check that the unserialized receptor has the labels loaded into the label table
@@ -282,8 +282,8 @@ void testReceptorSerialize() {
     // check that the unserialized receptor has all the instances loaded into the instance store too
     Tnode *t1 = _r_get_instance(r1,x);
     buf[0] = buf1[0] = 0;
-    __t_dump(r,t,0,buf);
-    __t_dump(r1,t1,0,buf1);
+    __t_dump(r->symbols,t,0,buf);
+    __t_dump(r1->symbols,t1,0,buf1);
     spec_is_str_equal(buf1,buf);
 
     free(surface);
