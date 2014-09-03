@@ -73,7 +73,6 @@ enum SystemSymbol
     SYMBOL_DEF,
     SYMBOL_STRUCTURE,
     SYMBOL_LABEL,
-    INSTANCE,
     ASPECT,
     SIGNALS,                           ///< list of signals on an aspect in the flux
     SIGNAL,                            ///< a signal on the flux.  It's first child is the contents of the signal
@@ -91,9 +90,9 @@ enum SystemSymbol
     VM_HOST_RECEPTOR,
     COMPOSITORY,                      ///< receptor that holds available receptor packages for installation
     MANIFEST,                         ///< configuration template to be filled out for the installation of a receptor
-    RECEPTOR_PACKAGE,                 ///< a serialized receptor tree, a manifest, and an identifier
-    PACKAGED_RECEPTOR,                ///< the serialized receptor in a RECEPTOR_PACKAGE
+    RECEPTOR_PACKAGE,                 ///< a manifest, a symbol declaration tree, a structure definition tree, and an identifier
     RECEPTOR_IDENTIFIER,              ///< uuid that identifies receptors
+    INSTALLED_RECEPTOR,
     ACTIVE_RECEPTORS,
     _LAST_SYS_SYMBOL
 };
@@ -122,7 +121,6 @@ static char *G_sys_symbol_names[] = {
     "SYMBOL_DEF",
     "SYMBOL_STRUCTURE",
     "SYMBOL_LABEL",
-    "INSTANCE",
     "ASPECT",
     "SIGNALS",
     "SIGNAL",
@@ -139,8 +137,8 @@ static char *G_sys_symbol_names[] = {
     "COMPOSITORY",
     "MANIFEST",
     "RECEPTOR_PACKAGE",
-    "PACKAGED_RECEPTOR",
     "RECEPTOR_IDENTIFIER",
+    "INSTALLED_RECEPTOR",
     "ACTIVE_RECEPTORS",
 };
 
@@ -169,7 +167,6 @@ static Structure G_sys_symbol_structures[] = {
     NULL_STRUCTURE,      //"SYMBOL_DEF",
     NULL_STRUCTURE,      //"SYMBOL_STRUCTURE",
     CSTRING,             //"SYMBOL_LABEL",
-    NULL_STRUCTURE,      //"INSTANCE",
     INTEGER,             //"ASPECT",
     LIST,                //"SIGNALS",
     NULL_STRUCTURE,      //"SIGNAL",
@@ -184,11 +181,11 @@ static Structure G_sys_symbol_structures[] = {
     LIST,                //"PARAMS",
     RECEPTOR,            //"VM_HOST_RECEPTOR",
     RECEPTOR,            //"COMPOSITORY",
-    NULL_STRUCTURE,      //"MANIFEST",
-    NULL_STRUCTURE,      //"RECEPTOR_PACKAGE",
-    NULL_STRUCTURE,      //"PACKAGED_RECEPTOR",
-    NULL_STRUCTURE,      //"RECEPTOR_IDENTIFIER",
-    NULL_STRUCTURE,      //"ACTIVE_RECEPTORS",
+    TREE,                //"MANIFEST",
+    TREE,                //"RECEPTOR_PACKAGE",
+    INTEGER,             //"RECEPTOR_IDENTIFIER",
+    TREE,                //"INSTALLED_RECEPTOR,"
+    LIST,                //"ACTIVE_RECEPTORS",
 };
 
 #endif

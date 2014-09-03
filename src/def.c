@@ -186,7 +186,6 @@ size_t _d_get_structure_size(Tnode *symbols,Tnode *structures,Structure s,void *
 	case INTEGER: return sizeof(int);
 	case FLOAT: return sizeof(float);
 	case CSTRING: return strlen(surface)+1;
-	case SERIALIZED_TREE: return *(size_t *)surface;
 	default: raise_error2("DON'T HAVE A SIZE FOR STRUCTURE '%s' (%d)",_d_get_structure_name(structures,s),s);
 	}
     }

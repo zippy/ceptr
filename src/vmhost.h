@@ -30,7 +30,7 @@ typedef struct VMHost VMHost;
 VMHost * _v_new();
 void _v_free(VMHost *r);
 
-Xaddr _v_load_receptor_package(VMHost *v,Tnode *manifest,Receptor *r,UUID uuid);
+Xaddr _v_load_receptor_package(VMHost *v,Tnode *p);
 Xaddr _v_install_r(VMHost *v,Xaddr package,Tnode *bindings,char *label);
 void _v_activate(VMHost *v, Xaddr x);
 

@@ -26,8 +26,6 @@ enum SystemStructure
 	SURFACE,
 	TREE,
 	RECEPTOR,
-	SERIALIZED_TREE,
-	BOUND_RECEPTOR,
 	_LAST_SYS_STRUCTURE
 
     };
@@ -44,6 +42,5 @@ static char *G_sys_structure_names[] = {
     "TREE",
     "RECEPTOR",
     "SERIALIZED_TREE",
-    "BOUND_RECEPTOR"
 };
 #endif

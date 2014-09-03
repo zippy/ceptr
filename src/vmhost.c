@@ -39,34 +39,27 @@ VMHost * _v_new() {
 void _v_free(VMHost *v) {
     int c = _t_children(v->active_receptors);
 
-    // free any active receptors
-    int i;
-    for(i=1;i<=c;i++) {
-	Receptor *r = *(Receptor **)_t_surface(_t_child(v->active_receptors,i));
-	_r_free(r);
+    // detach any active receptors which would otherwise be doubly freed
+    while(_t_children(v->active_receptors) > 0) {
+	_t_detach_by_idx(v->active_receptors,1);
     }
     _r_free(v->r);
     free(v);
 }
 
 /**
- * Load a receptor into the local compository to make it available for installation and binding
+ * Add a receptor package into the local compository to make it available for installation and binding
  *
  * @param[in] v VMHost in which to install the receptor
- * @param[in] r Receptor to add to the local compository
- * @param[in] manifest
- * @param[in] uuid package identifier
+ * @param[in] p receptor package
  * @returns Xaddr of the receptor package in the compository
+ * @todo validate signature and checksums??
  *
  * <b>Examples (from test suite):</b>
  * @snippet spec/vmhost_spec.h testVMHostLoadReceptorPackage
  */
-Xaddr _v_load_receptor_package(VMHost *v,Tnode *manifest,Receptor *r,UUID uuid) {
+Xaddr _v_load_receptor_package(VMHost *v,Tnode *p) {
     Xaddr x;
-    Tnode *p = _t_new_root(RECEPTOR_PACKAGE);
-    _t_new(p,RECEPTOR_IDENTIFIER,&uuid,sizeof(uuid));
-    _t_add(p,manifest);
-    _t_new_receptor(p,PACKAGED_RECEPTOR,r);
     x = _r_new_instance(v->c,p);
     return x;
 }
@@ -85,14 +78,14 @@ Xaddr _v_load_receptor_package(VMHost *v,Tnode *manifest,Receptor *r,UUID uuid) 
  */
 Xaddr _v_install_r(VMHost *v,Xaddr package,Tnode *bindings,char *label) {
     Tnode *p = _r_get_instance(v->c,package);
-    Symbol r_sym = _r_def_symbol(v->r,BOUND_RECEPTOR,label);
+    Symbol s = _r_def_symbol(v->r,RECEPTOR,label);
 
-    Tnode *r = _t_new_root(r_sym);
-    _t_add(r,bindings);
-    //    _t_
-    _t_add(p,r);
+    Receptor *r = _r_new_receptor_from_package(s,p,bindings);
 
-    Xaddr x = _r_new_instance(v->r,r);
+    Tnode *i = _t_new_root(INSTALLED_RECEPTOR);
+    _t_new_receptor(i,s,r);
+
+    Xaddr x = _r_new_instance(v->r,i);
     return x;
 }
 
@@ -109,9 +102,8 @@ Xaddr _v_install_r(VMHost *v,Xaddr package,Tnode *bindings,char *label) {
  * later this will probably have to be optimized into a hash for faster access
  */
 void _v_activate(VMHost *v, Xaddr x) {
-    //    Tnode *bound_receptor = _r_get_instance(v->r,x);
-    //   Receptor *r = _t__t_surface(r);
-    //   _t_new_receptor(v->active_receptors,r);
+    Tnode *t = _r_get_instance(v->r,x);
+    _t_add(v->active_receptors,t);
 }
 
 /** @}*/

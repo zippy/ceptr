@@ -14,22 +14,12 @@
 #include <stdarg.h>
 /*****************  create and destroy receptors */
 
-/**
- * @brief Creates a new receptor
- *
- * allocates all the memory needed in the heap
- *
- * @param[in] s symbol for this receptor
- * @returns pointer to a newly allocated Receptor
 
- * <b>Examples (from test suite):</b>
- * @snippet spec/receptor_spec.h testReceptorCreate
- */
-Receptor *_r_new(Symbol s) {
+Receptor *__r_new(Symbol s,Tnode *symbols, Tnode *structures) {
     Receptor *r = malloc(sizeof(Receptor));
     r->root = _t_new_root(s);
-    r->structures = _t_newr(r->root,STRUCTURES);
-    r->symbols = _t_newr(r->root,SYMBOLS);
+    _t_add(r->root,r->structures = structures);
+    _t_add(r->root,r->symbols = symbols);
     r->flux = _t_newr(r->root,FLUX);
     Tnode *a = _t_newi(r->flux,ASPECT,DEFAULT_ASPECT);
     _t_newr(a,LISTENERS);
@@ -37,6 +27,36 @@ Receptor *_r_new(Symbol s) {
     r->table = NULL;
     r->instances = NULL;
     return r;
+}
+
+/**
+ * @brief Creates a new receptor
+ *
+ * allocates all the memory needed in the heap
+ *
+ * @param[in] s symbol for this receptor
+ * @returns pointer to a newly allocated Receptor
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/receptor_spec.h testReceptorCreate
+ */
+Receptor *_r_new(Symbol s) {
+    return __r_new(s,_t_new_root(SYMBOLS),_t_new_root(STRUCTURES));
+}
+
+/**
+ * @brief Creates a new receptor from a receptor package
+ *
+ * allocates all the memory needed in the heap, cloning the various parts from the package
+ *
+ * @param[in] s symbol for this receptor
+ * @returns pointer to a newly allocated Receptor
+ * @todo implement bindings
+ */
+Receptor *_r_new_receptor_from_package(Symbol s,Tnode *p,Tnode *bindings) {
+    Tnode *sym = _t_clone(_t_child(p,3));
+    Tnode *str = _t_clone(_t_child(p,4));
+    return __r_new(s,sym,str);
 }
 
 /**
@@ -333,9 +353,6 @@ size_t __t_serialize(Tnode *t,void **bufferP,size_t offset,size_t current_size,i
 	Symbol s = _t_symbol(t);
 	SWRITE(Symbol,s);
 	SWRITE(int,c);
-	if(s == INSTANCE) {
-	    SWRITE(size_t,l);
-	}
     }
     if (l) {
 	memcpy(*bufferP+offset,_t_surface(t),l);
@@ -380,10 +397,7 @@ Tnode * _t_unserialize(Receptor *r,void **surfaceP,size_t *lengthP,Tnode *t) {
 
     SREAD(int,c);
 
-    if (s == INSTANCE) {
-	_SREAD(size_t,size);
-    }
-    else size = __r_get_symbol_size(r,s,*surfaceP);
+    size = __r_get_symbol_size(r,s,*surfaceP);
     //printf(" reading: %ld bytes\n",size);
     Structure st = __r_get_symbol_structure(r,s);
     if (st == INTEGER)
