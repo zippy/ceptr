@@ -15,6 +15,7 @@ var sys__symbols_8h =
       [ "SEMTREX_MATCH", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3af50a291782e795c34991465b1ab01252", null ],
       [ "SEMTREX_MATCH_RESULTS", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3aa9b0c09d3cb895bb572e117a5e4bd947", null ],
       [ "SEMTREX_MATCH_SIBLINGS_COUNT", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a9430627803e373e4753589b0d90b6dc4", null ],
+      [ "RECEPTOR_XADDR", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a4314b030ea668e8d6ab11338ee8a0614", null ],
       [ "FLUX", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3aa76c44edb76686fa1bbda9ebe69c7857", null ],
       [ "STRUCTURES", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a0da182c924b3f9b192ea4c4721ed1e53", null ],
       [ "STRUCTURE_DEFINITION", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3ab942a2be3b517e96ec499e3fdbb850c6", null ],
@@ -40,10 +41,15 @@ var sys__symbols_8h =
       [ "VM_HOST_RECEPTOR", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3afad1bc068f4b6dbd98531dc6a4289c9c", null ],
       [ "COMPOSITORY", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3ac8f8ca57133383d8cfe347bce982420b", null ],
       [ "MANIFEST", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a4a7e65f054795f03e713356fdb5fbf65", null ],
+      [ "MANIFEST_PAIR", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a9036c9f51d06feb34af78ba8bcee955d", null ],
+      [ "MANIFEST_LABEL", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3ad92dd41754a81c74ce3a3aef206a3831", null ],
+      [ "MANIFEST_SPEC", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a03555dc3216653537ee5c003da2a6760", null ],
       [ "RECEPTOR_PACKAGE", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a37973f81097fb19d2dbe33e872585281", null ],
       [ "RECEPTOR_IDENTIFIER", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a3bde3ee377bd6085fe5caaaf332a2ec4", null ],
       [ "INSTALLED_RECEPTOR", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a480946102f942b1883e39520e4c5222a", null ],
       [ "ACTIVE_RECEPTORS", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a1b524210a51f2bd8f41ccf2ba7b4ba63", null ],
+      [ "BINDINGS", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3aa70a648402dcd1b180a000a2b0364708", null ],
+      [ "BINDING_PAIR", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a204e5c75f547deaa37d54f0ecb221f7f", null ],
       [ "_LAST_SYS_SYMBOL", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3ac2b88f9ed7150728e85e0e2e0a126de7", null ]
     ] ],
     [ "TestSymbol", "sys__symbols_8h.html#a8225552e201b4ff8e3f55d263558e29c", [

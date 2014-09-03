@@ -8,6 +8,7 @@ var sys__structures_8h =
       [ "CSTRING", "sys__structures_8h.html#ac6cf3e705e120184277267602edaa1b1a4edad1407dfe8280bc29c086f699877a", null ],
       [ "SYMBOL", "sys__structures_8h.html#ac6cf3e705e120184277267602edaa1b1ae3d30ffaffa3c06ed917e565dda1fbc5", null ],
       [ "TREE_PATH", "sys__structures_8h.html#ac6cf3e705e120184277267602edaa1b1a5f595a2210451d38bcdb65151fce342d", null ],
+      [ "XADDR", "sys__structures_8h.html#ac6cf3e705e120184277267602edaa1b1adc1549492c121efe1b7f03c455d022ac", null ],
       [ "LIST", "sys__structures_8h.html#ac6cf3e705e120184277267602edaa1b1a25688e799536738ea469158ef15fd1c0", null ],
       [ "SURFACE", "sys__structures_8h.html#ac6cf3e705e120184277267602edaa1b1aec3093f5673be2548cc7091279b429e2", null ],
       [ "TREE", "sys__structures_8h.html#ac6cf3e705e120184277267602edaa1b1a80ee3d282aa2d7af547e862568d3e240", null ],

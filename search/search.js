@@ -14,8 +14,8 @@ var indexSectionsWithContent =
   4: "_acdfghilmoprstv",
   5: "p",
   6: "fst",
-  7: "acefilmrst",
-  8: "_s",
+  7: "abcefilmrst",
+  8: "_hs",
   9: "rstv",
   10: "bcrt"
 };

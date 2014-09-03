@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['receptor_5fidentifier',['RECEPTOR_IDENTIFIER',['../sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a3bde3ee377bd6085fe5caaaf332a2ec4',1,'sys_symbols.h']]],
-  ['receptor_5fpackage',['RECEPTOR_PACKAGE',['../sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a37973f81097fb19d2dbe33e872585281',1,'sys_symbols.h']]],
-  ['respond',['RESPOND',['../sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a64c5ec914c978938d6ed4d420c099c8a',1,'sys_symbols.h']]]
+  ['manifest',['MANIFEST',['../sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a4a7e65f054795f03e713356fdb5fbf65',1,'sys_symbols.h']]],
+  ['manifest_5flabel',['MANIFEST_LABEL',['../sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3ad92dd41754a81c74ce3a3aef206a3831',1,'sys_symbols.h']]],
+  ['manifest_5fspec',['MANIFEST_SPEC',['../sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a03555dc3216653537ee5c003da2a6760',1,'sys_symbols.h']]]
 ];

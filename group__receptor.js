@@ -4,10 +4,6 @@ var group__receptor =
     [ "process.h", "process_8h.html", null ],
     [ "receptor.c", "receptor_8c.html", null ],
     [ "receptor.h", "receptor_8h.html", null ],
-    [ "Xaddr", "structXaddr.html", [
-      [ "addr", "structXaddr.html#ac8d1cbd8cb612f491f6271d3bbdaf325", null ],
-      [ "symbol", "structXaddr.html#a429b38f8f57ab372da80e98fc4779005", null ]
-    ] ],
     [ "__r_get_symbol_size", "group__receptor.html#gad886d976f8621ebb22d02c61f454265c", null ],
     [ "__r_get_symbol_structure", "group__receptor.html#ga120e66982d483fbe004fd969cf1c353f", null ],
     [ "__t_serialize", "group__receptor.html#gad137f4d3b94172a7a2e78c1a1c632efa", null ],

@@ -3,7 +3,6 @@ var receptor_8h =
     [ "spec_is_structure_equal", "group__receptor.html#gaa5f33711ac4da299b54ccfa583d9378c", null ],
     [ "spec_is_symbol_equal", "group__receptor.html#gaa7a993bb2e321fff32e1bc0741dddde0", null ],
     [ "Aspect", "group__receptor.html#ga8675b50a924c478ce5f25009d0d24e2e", null ],
-    [ "Xaddr", "group__receptor.html#ga2dcfd79034d088d9f69f647dbebd526c", null ],
     [ "DEFAULT_ASPECT", "group__receptor.html#gga06fc87d81c62e9abb8790b6e5713c55ba30e7bf6393286d2e1a538c288ccce24b", null ],
     [ "__r_get_aspect", "group__receptor.html#ga21d4509b97577b9e8e71e4e03873bd02", null ],
     [ "__r_get_listeners", "group__receptor.html#gab66e760e7143a7b04a49dfe71e104518", null ],
