@@ -88,7 +88,12 @@ enum SystemSymbol
     PARAMS,
 
     //-----  Symbols for the virtual machine host
-    RECEPTOR_PACKAGE,
+    VM_HOST_RECEPTOR,
+    COMPOSITORY,                      ///< receptor that holds available receptor packages for installation
+    MANIFEST,                         ///< configuration template to be filled out for the installation of a receptor
+    RECEPTOR_PACKAGE,                 ///< a serialized receptor tree, a manifest, and an identifier
+    PACKAGED_RECEPTOR,                ///< the serialized receptor in a RECEPTOR_PACKAGE
+    RECEPTOR_IDENTIFIER,              ///< uuid that identifies receptors
     ACTIVE_RECEPTORS,
     _LAST_SYS_SYMBOL
 };
@@ -131,7 +136,11 @@ static char *G_sys_symbol_names[] = {
     "RUN_TREE",
     "PARAMS",
     "VM_HOST_RECEPTOR",
+    "COMPOSITORY",
+    "MANIFEST",
     "RECEPTOR_PACKAGE",
+    "PACKAGED_RECEPTOR",
+    "RECEPTOR_IDENTIFIER",
     "ACTIVE_RECEPTORS",
 };
 
@@ -174,7 +183,11 @@ static Structure G_sys_symbol_structures[] = {
     NULL_STRUCTURE,      //"RUN_TREE",
     LIST,                //"PARAMS",
     RECEPTOR,            //"VM_HOST_RECEPTOR",
+    RECEPTOR,            //"COMPOSITORY",
+    NULL_STRUCTURE,      //"MANIFEST",
     NULL_STRUCTURE,      //"RECEPTOR_PACKAGE",
+    NULL_STRUCTURE,      //"PACKAGED_RECEPTOR",
+    NULL_STRUCTURE,      //"RECEPTOR_IDENTIFIER",
     NULL_STRUCTURE,      //"ACTIVE_RECEPTORS",
 };
 

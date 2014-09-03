@@ -37,8 +37,23 @@ Receptor * _makeTestHouseLocReceptor() {
 }
 //! [makeTestHouseLocReceptor]
 
+void testVMHostLoadReceptorPackage() {
+    //! [testVMHostLoadReceptorPackage]
+    VMHost *v = _v_new();
+    Tnode *manifest = _t_new_root(MANIFEST);
+    Receptor *r = _makeTestHouseLocReceptor();
+
+    Xaddr x = _v_load_receptor_package(v,manifest,r,1234567);
+    Tnode *p = _r_get_instance(v->c,x);
+
+    _v_free(v);
+    _r_free(r);
+    //! [testVMHostLoadReceptorPackage]
+}
+
 void testVMHostInstallReceptor() {
     //! [testVMHostInstallReceptor]
+/*
     VMHost *v = _v_new();
 
     Receptor *r = _makeTestHouseLocReceptor();
@@ -59,11 +74,12 @@ void testVMHostInstallReceptor() {
     _v_free(v);
     free(surface);
     _r_free(r);
+*/
     //! [testVMHostInstallReceptor]
 }
 
 void testVMHostActivateReceptor() {
-    //! [testVMHostActivateReceptor]
+ /*   //! [testVMHostActivateReceptor]
     VMHost *v = _v_new();
 
     Receptor *r = _makeTestHouseLocReceptor();
@@ -80,10 +96,12 @@ void testVMHostActivateReceptor() {
     _v_free(v);
 
     //! [testVMHostActivateReceptor]
+    */
 }
 
 void testVMHost() {
     testVMHostCreate();
-    testVMHostInstallReceptor();
-    testVMHostActivateReceptor();
+    //    testVMHostLoadReceptorPackage();
+    //   testVMHostInstallReceptor();
+    //    testVMHostActivateReceptor();
 }

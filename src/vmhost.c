@@ -25,7 +25,9 @@
 VMHost * _v_new() {
     VMHost *v = malloc(sizeof(VMHost));
     v->r = _r_new(VM_HOST_RECEPTOR);
+    v->c = _r_new(COMPOSITORY);
     v->active_receptors = _t_newr(v->r->root,ACTIVE_RECEPTORS);
+    _t_new_receptor(v->r->root,COMPOSITORY,v->c);
     return v;
 }
 
@@ -48,24 +50,49 @@ void _v_free(VMHost *v) {
 }
 
 /**
- * Install a receptor into vmhost, creating a symbol for it
+ * Load a receptor into the local compository to make it available for installation and binding
  *
  * @param[in] v VMHost in which to install the receptor
- * @param[in] r Receptor to install
+ * @param[in] r Receptor to add to the local compository
+ * @param[in] manifest
+ * @param[in] uuid package identifier
+ * @returns Xaddr of the receptor package in the compository
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/vmhost_spec.h testVMHostLoadReceptorPackage
+ */
+Xaddr _v_load_receptor_package(VMHost *v,Tnode *manifest,Receptor *r,UUID uuid) {
+    Xaddr x;
+    Tnode *p = _t_new_root(RECEPTOR_PACKAGE);
+    _t_new(p,RECEPTOR_IDENTIFIER,&uuid,sizeof(uuid));
+    _t_add(p,manifest);
+    _t_new_receptor(p,PACKAGED_RECEPTOR,r);
+    x = _r_new_instance(v->c,p);
+    return x;
+}
+
+/**
+ * install a receptor into vmhost, creating a symbol for it
+ *
+ * @param[in] v VMHost in which to install the receptor
+ * @param[in] package xaddr of package to install
+ * @param[in] bindings completed manifest which specifies how the receptor will be installed
  * @param[in] label label to be used for the semantic name for this receptor
  * @returns Xaddr of the instance
  *
  * <b>Examples (from test suite):</b>
  * @snippet spec/vmhost_spec.h testVMHostInstallReceptor
-*/
-Xaddr _v_install_r(VMHost *v,Receptor *r,char *label) {
-    Symbol r_sym = _r_def_symbol(v->r,SERIALIZED_TREE,label);
-    void *surface;
-    size_t length;
-    _r_serialize(r,&surface,&length);
+ */
+Xaddr _v_install_r(VMHost *v,Xaddr package,Tnode *bindings,char *label) {
+    Tnode *p = _r_get_instance(v->c,package);
+    Symbol r_sym = _r_def_symbol(v->r,BOUND_RECEPTOR,label);
 
-    Xaddr x = __r_new_instance(v->r,r_sym,surface);
-    free(surface);
+    Tnode *r = _t_new_root(r_sym);
+    _t_add(r,bindings);
+    //    _t_
+    _t_add(p,r);
+
+    Xaddr x = _r_new_instance(v->r,r);
     return x;
 }
 
@@ -82,9 +109,9 @@ Xaddr _v_install_r(VMHost *v,Receptor *r,char *label) {
  * later this will probably have to be optimized into a hash for faster access
  */
 void _v_activate(VMHost *v, Xaddr x) {
-    Instance i = _r_get_instance(v->r,x);
-    Receptor *r = _r_unserialize(i.surface);
-    _t_new(v->active_receptors,POINTER,&r,sizeof(Receptor *));
+    //    Tnode *bound_receptor = _r_get_instance(v->r,x);
+    //   Receptor *r = _t__t_surface(r);
+    //   _t_new_receptor(v->active_receptors,r);
 }
 
 /** @}*/
