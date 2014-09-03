@@ -78,14 +78,38 @@ Xaddr _v_load_receptor_package(VMHost *v,Tnode *p) {
  */
 Xaddr _v_install_r(VMHost *v,Xaddr package,Tnode *bindings,char *label) {
     Tnode *p = _r_get_instance(v->c,package);
+    // confirm that the bindings match the manifest
+    // @todo expand the manifest to allow optional binding, etc, using semtrex to do the matching instead of assuming positional matching
+    if (bindings) {
+	Tnode *m = _t_child(p,1);
+	int c = _t_children(m);
+	if (!c%2) {raise_error0("manifest must have even number of children!");}
+	int i;
+	for(i=1;i<=c;i++) {
+	    Tnode *mp = _t_child(m,i);
+	    Tnode *s = _t_child(mp,2);
+	    Tnode *bp = _t_child(bindings,i);
+	    if (!bp) {
+		raise_error("missing binding for %s",(char *)_t_surface(_t_child(mp,1)));
+	    }
+	    Tnode *v = _t_child(bp,2);
+	    Symbol spec = *(Symbol *)_t_surface(s);
+	    if (_t_symbol(v) != spec) {
+		Tnode *symbols = _t_child(p,3);
+		raise_error2("bindings symbol %s doesn't match spec %s",_d_get_symbol_name(symbols,_t_symbol(v)),_d_get_symbol_name(symbols,spec));
+	    }
+	}
+    }
+
     Symbol s = _r_declare_symbol(v->r,RECEPTOR,label);
+
 
     Receptor *r = _r_new_receptor_from_package(s,p,bindings);
 
-    Tnode *i = _t_new_root(INSTALLED_RECEPTOR);
-    _t_new_receptor(i,s,r);
+    Tnode *ir = _t_new_root(INSTALLED_RECEPTOR);
+    _t_new_receptor(ir,s,r);
 
-    Xaddr x = _r_new_instance(v->r,i);
+    Xaddr x = _r_new_instance(v->r,ir);
     return x;
 }
 

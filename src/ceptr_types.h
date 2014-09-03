@@ -92,4 +92,12 @@ typedef struct Receptor Receptor;
 
 typedef long UUID;
 
+/**
+ * An eXistence Address consists of the semantic type (Symbol) and an address.
+ */
+struct Xaddr {
+    Symbol symbol;
+    int addr;
+};
+typedef struct Xaddr Xaddr;
 #endif

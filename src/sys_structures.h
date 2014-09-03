@@ -22,6 +22,7 @@ enum SystemStructure
 	CSTRING,
 	SYMBOL,
 	TREE_PATH,
+	XADDR,
 	LIST,
 	SURFACE,
 	TREE,
@@ -36,7 +37,8 @@ static char *G_sys_structure_names[] = {
     "FLOAT",
     "CSTRING",
     "SYMBOL",
-    "TREE_PATH"
+    "TREE_PATH",
+    "XADDR",
     "LIST",
     "SURFACE",
     "TREE",

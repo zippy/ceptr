@@ -186,6 +186,7 @@ size_t _d_get_structure_size(Tnode *symbols,Tnode *structures,Structure s,void *
 	case INTEGER: return sizeof(int);
 	case FLOAT: return sizeof(float);
 	case CSTRING: return strlen(surface)+1;
+	case XADDR: return sizeof(Xaddr);
 	default: raise_error2("DON'T HAVE A SIZE FOR STRUCTURE '%s' (%d)",_d_get_structure_name(structures,s),s);
 	}
     }
@@ -212,6 +213,7 @@ char * __t_dump(Tnode *symbols,Tnode *t,int level,char *buf) {
     int i;
     char *n = _d_get_symbol_name(symbols,s);
     char *c;
+    Xaddr x;
     Structure st = _d_get_symbol_structure(symbols,s);
     switch(st) {
     case CSTRING:
@@ -226,6 +228,10 @@ char * __t_dump(Tnode *symbols,Tnode *t,int level,char *buf) {
 	break;
     case TREE_PATH:
 	sprintf(buf," (%s:%s",n,_t_sprint_path((int *)_t_surface(t),b));
+	break;
+    case XADDR:
+	x = *(Xaddr *)_t_surface(t);
+	sprintf(buf," (%s:%s.%d",n,_d_get_symbol_name(symbols,x.symbol),x.addr);
 	break;
     case TREE:
 	if (t->context.flags == TFLAG_SURFACE_IS_TREE) {

@@ -38,14 +38,6 @@ int _r_def_match(Receptor *r,Symbol s,Tnode *t);
 
 /*****************  receptor instances and xaddrs */
 
-/**
- * An eXistence Address consists of the semantic type (Symbol) and an address.
- */
-struct Xaddr {
-    Symbol symbol;
-    int addr;
-};
-typedef struct Xaddr Xaddr;
 Xaddr _r_new_instance(Receptor *r,Tnode *t);
 Tnode *_r_get_instance(Receptor *r,Xaddr x);
 

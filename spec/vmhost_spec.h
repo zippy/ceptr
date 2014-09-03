@@ -22,27 +22,52 @@ void testVMHostCreate() {
 }
 
 /**
- * generate a test receptor package
+ * generate a receptor package
  *
  * @snippet spec/vmhost_spec.h makeTestReceptorPackage
  */
 //! [makeTestReceptorPackage]
-Tnode *_makeTestReceptorPackage() {
+Tnode *_makeTestReceptorPackage(int uuid,Tnode *symbols,Tnode *structures) {
     Tnode *p = _t_new_root(RECEPTOR_PACKAGE);
-    _t_newr(p,MANIFEST);
-    _t_newi(p,RECEPTOR_IDENTIFIER,123456);
+    Tnode *m = _t_newr(p,MANIFEST);
+
+    _t_newi(p,RECEPTOR_IDENTIFIER,uuid);
+    if (symbols) _t_add(p,_t_clone(symbols));
+    else _t_newr(p,SYMBOLS);
+    if (structures) _t_add(p,_t_clone(structures));
+    else _t_newr(p,STRUCTURES);
+
+    return p;
+}
+//! [makeTestReceptorPackage]
+
+#define HTTP_RECEPTOR_UUID 12345
+/**
+ * generate an HTTP receptor package
+ *
+ * @snippet spec/vmhost_spec.h makeTestHTTPReceptorPackage
+ */
+//! [makeTestHTTPReceptorPackage]
+Tnode *_makeTestHTTPReceptorPackage() {
+    Tnode *p = _t_new_root(RECEPTOR_PACKAGE);
+    Tnode *m = _t_newr(p,MANIFEST);
+    Tnode *mp = _t_newr(m,MANIFEST_PAIR);
+    _t_new(mp,MANIFEST_LABEL,"ip_socket",10);
+    _t_newi(mp,MANIFEST_SPEC,RECEPTOR_XADDR);
+
+    _t_newi(p,RECEPTOR_IDENTIFIER,HTTP_RECEPTOR_UUID);
 
     _t_add(p,_t_clone(test_HTTP_symbols));
     _t_add(p,_t_clone(test_HTTP_structures));
 
     return p;
 }
-//! [makeTestReceptorPackage]
+//! [makeTestHTTPReceptorPackage]
 
 void testVMHostLoadReceptorPackage() {
     //! [testVMHostLoadReceptorPackage]
     VMHost *v = _v_new();
-    Tnode *p = _makeTestReceptorPackage();
+    Tnode *p = _makeTestHTTPReceptorPackage();
 
     Xaddr x = _v_load_receptor_package(v,p);
     Tnode *p1 = _r_get_instance(v->c,x);
@@ -56,7 +81,7 @@ void testVMHostInstallReceptor() {
     //! [testVMHostInstallReceptor]
     VMHost *v = _v_new();
 
-    Tnode *p = _makeTestReceptorPackage();
+    Tnode *p = _makeTestHTTPReceptorPackage();
     Xaddr xp = _v_load_receptor_package(v,p);
 
     Xaddr x = _v_install_r(v,xp,0,"http server");
@@ -70,12 +95,27 @@ void testVMHostInstallReceptor() {
     //! [testVMHostInstallReceptor]
 }
 
+#define IP_SOCKET_RECEPTOR_UUID 4321
+
 void testVMHostActivateReceptor() {
     //! [testVMHostActivateReceptor]
     VMHost *v = _v_new();
-    Tnode *p = _makeTestReceptorPackage();
+
+    // create and install a stub IP receptor
+    Tnode *ipr = _makeTestReceptorPackage(IP_SOCKET_RECEPTOR_UUID,0,0);  // no symbols or structures yet
+    Xaddr ipxp = _v_load_receptor_package(v,ipr);
+    Xaddr ipx = _v_install_r(v,ipxp,0,"server socket");
+
+    // create and install an http server bound to the IP socket
+    Tnode *p = _makeTestHTTPReceptorPackage();
     Xaddr xp = _v_load_receptor_package(v,p);
-    Xaddr x = _v_install_r(v,xp,0,"http server");
+
+    Tnode *b = _t_new_root(BINDINGS);
+    Tnode *pair = _t_newr(b,BINDING_PAIR);
+    _t_new(pair,MANIFEST_LABEL,"ip_socket",10);
+    _t_new(pair,RECEPTOR_XADDR,&ipx,sizeof(Xaddr));
+
+    Xaddr x = _v_install_r(v,xp,b,"http server");
 
     _v_activate(v,x);
 
@@ -87,6 +127,7 @@ void testVMHostActivateReceptor() {
     Tnode *r = _r_get_instance(v->r,x);
     spec_is_ptr_equal(ar,r);
 
+    _t_free(b);
     _v_free(v);
     //! [testVMHostActivateReceptor]
 }

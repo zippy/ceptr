@@ -63,6 +63,7 @@ enum SystemSymbol
     SEMTREX_MATCH_SIBLINGS_COUNT,      ///< In the FSA, it's the length of the match
 
     //-----  Symbols for receptors
+    RECEPTOR_XADDR,                    ///< An Xaddr that points to a receptor
     FLUX,                              ///< tree to hold all incoming and in process signals on the various aspects
     STRUCTURES,
     STRUCTURE_DEFINITION,
@@ -90,10 +91,15 @@ enum SystemSymbol
     VM_HOST_RECEPTOR,
     COMPOSITORY,                      ///< receptor that holds available receptor packages for installation
     MANIFEST,                         ///< configuration template to be filled out for the installation of a receptor
+    MANIFEST_PAIR,
+    MANIFEST_LABEL,                   ///< a label in the manifest to identify a binding
+    MANIFEST_SPEC,                    ///< a symbol to specify what type of data must be provided for a given manifest label
     RECEPTOR_PACKAGE,                 ///< a manifest, a symbol declaration tree, a structure definition tree, and an identifier
     RECEPTOR_IDENTIFIER,              ///< uuid that identifies receptors
-    INSTALLED_RECEPTOR,
-    ACTIVE_RECEPTORS,
+    INSTALLED_RECEPTOR,               ///< contains the installed receptor as well as state information (enabled,disabled, etc..)
+    ACTIVE_RECEPTORS,                 ///< list of currently active INSTALLED_RECEPTORS
+    BINDINGS,                         ///< specifics that match a MANIFEST and allow a receptor to be installed
+    BINDING_PAIR,                     ///< a pair that matches a MANIFEST_LABEL with a given binding
     _LAST_SYS_SYMBOL
 };
 static char *G_sys_symbol_names[] = {
@@ -111,6 +117,7 @@ static char *G_sys_symbol_names[] = {
     "SEMTREX_MATCH",
     "SEMTREX_MATCH_RESULTS",
     "SEMTREX_MATCH_SIBLINGS_COUNT",
+    "RECEPTOR_XADDR",
     "FLUX",
     "STRUCTURES",
     "STRUCTURE_DEFINITION",
@@ -136,10 +143,16 @@ static char *G_sys_symbol_names[] = {
     "VM_HOST_RECEPTOR",
     "COMPOSITORY",
     "MANIFEST",
+    "MANIFEST_PAIR",
+    "MANIFEST_LABEL",
+    "MANIFEST_SPEC",
     "RECEPTOR_PACKAGE",
     "RECEPTOR_IDENTIFIER",
     "INSTALLED_RECEPTOR",
     "ACTIVE_RECEPTORS",
+    "BINDINGS",
+    "BINDING_PAIR",
+
 };
 
 static Structure G_sys_symbol_structures[] = {
@@ -157,6 +170,7 @@ static Structure G_sys_symbol_structures[] = {
     SYMBOL,              //"SEMTREX_MATCH",
     NULL_STRUCTURE,      //"SEMTREX_MATCH_RESULTS",
     INTEGER,             //"SEMTREX_MATCH_SIBLINGS_COUNT",
+    XADDR,               //"RECEPTOR_XADDR",
     LIST,                //"FLUX",
     LIST,                //"STRUCTURES",
     TREE,                //"STRUCTURE_DEFINITION",
@@ -182,10 +196,15 @@ static Structure G_sys_symbol_structures[] = {
     RECEPTOR,            //"VM_HOST_RECEPTOR",
     RECEPTOR,            //"COMPOSITORY",
     TREE,                //"MANIFEST",
+    LIST,                //"MANIFEST_PAIR",
+    CSTRING,             //"MANIFEST_LABEL",
+    SYMBOL,              //"MANIFEST_SPEC",
     TREE,                //"RECEPTOR_PACKAGE",
     INTEGER,             //"RECEPTOR_IDENTIFIER",
     TREE,                //"INSTALLED_RECEPTOR,"
     LIST,                //"ACTIVE_RECEPTORS",
+    TREE,                //"BINDINGS",
+    LIST,                //"BINDING_PAIR"
 };
 
 #endif
