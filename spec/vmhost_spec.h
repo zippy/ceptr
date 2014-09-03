@@ -22,36 +22,27 @@ void testVMHostCreate() {
 }
 
 /**
- * generate a test receptor package with house location symbols
+ * generate a test receptor package
  *
- * @snippet spec/vmhost_spec.h makeTestHouseLocReceptor
+ * @snippet spec/vmhost_spec.h makeTestReceptorPackage
  */
-//! [makeTestHouseLocReceptor]
-Tnode *_makeTestHouseLocReceptor() {
-    Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
-    Symbol lat = _r_def_symbol(r,FLOAT,"latitude");
-    Symbol lon = _r_def_symbol(r,FLOAT,"longitude");
-    Structure latlong = _r_def_structure(r,"latlong",2,lat,lon);
-    Symbol house_loc = _r_def_symbol(r,latlong,"house location");
+//! [makeTestReceptorPackage]
+Tnode *_makeTestReceptorPackage() {
     Tnode *p = _t_new_root(RECEPTOR_PACKAGE);
     _t_newr(p,MANIFEST);
     _t_newi(p,RECEPTOR_IDENTIFIER,123456);
 
-    _t_detach_by_ptr(r->root,r->symbols);
-    _t_detach_by_ptr(r->root,r->structures);
-    _t_add(p,r->symbols);
-    _t_add(p,r->structures);
-
-    _r_free(r);
+    _t_add(p,_t_clone(test_HTTP_symbols));
+    _t_add(p,_t_clone(test_HTTP_structures));
 
     return p;
 }
-//! [makeTestHouseLocReceptor]
+//! [makeTestReceptorPackage]
 
 void testVMHostLoadReceptorPackage() {
     //! [testVMHostLoadReceptorPackage]
     VMHost *v = _v_new();
-    Tnode *p = _makeTestHouseLocReceptor();
+    Tnode *p = _makeTestReceptorPackage();
 
     Xaddr x = _v_load_receptor_package(v,p);
     Tnode *p1 = _r_get_instance(v->c,x);
@@ -65,15 +56,15 @@ void testVMHostInstallReceptor() {
     //! [testVMHostInstallReceptor]
     VMHost *v = _v_new();
 
-    Tnode *p = _makeTestHouseLocReceptor();
+    Tnode *p = _makeTestReceptorPackage();
     Xaddr xp = _v_load_receptor_package(v,p);
 
-    Xaddr x = _v_install_r(v,xp,0,"house locator");
+    Xaddr x = _v_install_r(v,xp,0,"http server");
 
     // installing the receptor should instantiate a receptor from the package with the given bindings and symbol label
     Tnode *r = _r_get_instance(v->r,x);
     spec_is_symbol_equal(v->r,x.symbol,INSTALLED_RECEPTOR);
-    spec_is_symbol_equal(v->r,_t_symbol(_t_child(r,1)),_r_get_symbol_by_label(v->r,"house locator"));
+    spec_is_symbol_equal(v->r,_t_symbol(_t_child(r,1)),_r_get_symbol_by_label(v->r,"http server"));
 
     _v_free(v);
     //! [testVMHostInstallReceptor]
@@ -82,16 +73,18 @@ void testVMHostInstallReceptor() {
 void testVMHostActivateReceptor() {
     //! [testVMHostActivateReceptor]
     VMHost *v = _v_new();
-    Tnode *p = _makeTestHouseLocReceptor();
+    Tnode *p = _makeTestReceptorPackage();
     Xaddr xp = _v_load_receptor_package(v,p);
-    Xaddr x = _v_install_r(v,xp,0,"house locator");
+    Xaddr x = _v_install_r(v,xp,0,"http server");
 
     _v_activate(v,x);
+
+    // confirm that the activate list has a new child
     spec_is_equal(_t_children(v->active_receptors),1);
 
+    // and that it is the same as the installed receptor
     Tnode *ar = _t_child(v->active_receptors,1);
     Tnode *r = _r_get_instance(v->r,x);
-
     spec_is_ptr_equal(ar,r);
 
     _v_free(v);
@@ -99,8 +92,10 @@ void testVMHostActivateReceptor() {
 }
 
 void testVMHost() {
+    _setup_HTTPDefs();
     testVMHostCreate();
     testVMHostLoadReceptorPackage();
     testVMHostInstallReceptor();
     testVMHostActivateReceptor();
+    _cleanup_HTTPDefs();
 }

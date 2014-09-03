@@ -267,8 +267,8 @@ void testTreeClone() {
 
     char buf1[2000];
     char buf2[2000];
-    __t_dump(HTTPRequest_symbols,c,0,buf1);
-    __t_dump(HTTPRequest_symbols,t,0,buf2);
+    __t_dump(test_HTTP_symbols,c,0,buf1);
+    __t_dump(test_HTTP_symbols,t,0,buf2);
 
     spec_is_str_equal(buf1,buf2);
 
@@ -344,7 +344,7 @@ void testTreeDetach() {
 }
 
 void testTree() {
-    _setup_HTTPRequest();
+    _setup_HTTPDefs();
     testCreateTreeNodes();
     testTreeNewReceptor();
     testTreeOrthogonal();
@@ -362,5 +362,5 @@ void testTree() {
     testTreeMorph();
     testTreeMorphLowLevel();
     testTreeDetach();
-    _cleanup_HTTPRequest();
+    _cleanup_HTTPDefs();
 }

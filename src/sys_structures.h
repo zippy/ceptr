@@ -41,6 +41,5 @@ static char *G_sys_structure_names[] = {
     "SURFACE",
     "TREE",
     "RECEPTOR",
-    "SERIALIZED_TREE",
 };
 #endif
