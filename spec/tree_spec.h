@@ -67,14 +67,14 @@ void testCreateTreeNodes() {
 void testTreeNewReceptor() {
     //! [testTreeNewReceptor]
     Tnode *t = _t_newi(0,TEST_INT_SYMBOL,0);
-    Receptor *r = _r_new();
+    Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
     Tnode *tr = _t_new_receptor(t,TEST_RECEPTOR_SYMBOL,r);
 
     spec_is_ptr_equal(_t_surface(tr),r);
 
     char buf[2000];
     __t_dump(0,t,0,buf);
-    spec_is_str_equal(buf," (TEST_INT_SYMBOL:0 (TEST_RECEPTOR_SYMBOL:{ (RECEPTOR (STRUCTURES) (SYMBOLS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))))}))");
+    spec_is_str_equal(buf," (TEST_INT_SYMBOL:0 (TEST_RECEPTOR_SYMBOL:{ (TEST_RECEPTOR_SYMBOL (STRUCTURES) (SYMBOLS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))))}))");
 
     _t_free(t); // note, no need to free the receptor explicitly, as _t_free knows about it
     //! [testTreeNewReceptor]

@@ -234,6 +234,7 @@ char * __t_dump(Tnode *symbols,Tnode *t,int level,char *buf) {
 	    sprintf(buf," (%s:{%s}",n,c);
 	    break;
 	}
+    case RECEPTOR:
 	if (t->context.flags == TFLAG_SURFACE_IS_TREE+TFLAG_SURFACE_IS_RECEPTOR) {
 	    c = __t_dump(symbols,((Receptor *)_t_surface(t))->root,0,tbuf);
 	    sprintf(buf," (%s:{%s}",n,c);

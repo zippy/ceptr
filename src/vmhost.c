@@ -24,7 +24,7 @@
  */
 VMHost * _v_new() {
     VMHost *v = malloc(sizeof(VMHost));
-    v->r = _r_new();
+    v->r = _r_new(VM_HOST_RECEPTOR);
     v->active_receptors = _t_newr(v->r->root,ACTIVE_RECEPTORS);
     return v;
 }

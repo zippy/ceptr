@@ -10,9 +10,9 @@
 void testReceptorCreate() {
     //! [testReceptorCreate]
     Receptor *r;
-    r = _r_new();
+    r = _r_new(TEST_RECEPTOR_SYMBOL);
 
-    spec_is_symbol_equal(r,_t_symbol(r->root),RECEPTOR);
+    spec_is_symbol_equal(r,_t_symbol(r->root),TEST_RECEPTOR_SYMBOL);
 
     Tnode *t;
 
@@ -44,7 +44,7 @@ void testReceptorCreate() {
 
 void testReceptorAddListener() {
     Receptor *r;
-    r = _r_new();
+    r = _r_new(TEST_RECEPTOR_SYMBOL);
 
     // test that you can add a listener to a receptor's aspect
     Tnode *s = _t_new_root(EXPECTATION);
@@ -62,7 +62,7 @@ void testReceptorAddListener() {
 }
 
 void testReceptorSignal() {
-    Receptor *r = _r_new();
+    Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
     Tnode *signal = _t_newi(0,TEST_INT_SYMBOL,314);
     _r_send(r,r,DEFAULT_ASPECT,signal);
 
@@ -78,7 +78,7 @@ void testReceptorSignal() {
 
 void testReceptorAction() {
 
-    Receptor *r = _r_new();
+    Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
 
     // The signal is a name with a child that is the first name
     Tnode *signal = _t_new_root(TEST_NAME_SYMBOL);
@@ -121,7 +121,7 @@ void testReceptorAction() {
 }
 
 void testReceptorDef() {
-    Receptor *r = _r_new();
+    Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
 
     Symbol lat = _r_def_symbol(r,FLOAT,"latitude");
     Symbol lon = _r_def_symbol(r,FLOAT,"longitude");
@@ -179,7 +179,7 @@ void defineHouseLocation(Receptor *r,Symbol *lat,Symbol *lon, Structure *latlong
 //! [defineHouseLocation]
 
 void testReceptorDefMatch() {
-    Receptor *r = _r_new();
+    Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
     Symbol lat,lon,house_loc;
     Structure latlong;
     defineHouseLocation(r,&lat,&lon,&latlong,&house_loc);
@@ -214,7 +214,7 @@ void testReceptorDefMatch() {
 
 void testReceptorInstanceNew() {
     //! [testReceptorInstancesNew]
-    Receptor *r = _r_new();
+    Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
     Symbol lat,lon,house_loc;
     Structure latlong;
     defineHouseLocation(r,&lat,&lon,&latlong,&house_loc);
@@ -241,7 +241,7 @@ void testReceptorInstanceNew() {
 void testReceptorSerialize() {
     //! [testReceptorSerialize]
 
-    Receptor *r = _r_new();
+    Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
     Symbol lat,lon,house_loc;
     Structure latlong;
     defineHouseLocation(r,&lat,&lon,&latlong,&house_loc);

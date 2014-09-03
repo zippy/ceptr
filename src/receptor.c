@@ -19,14 +19,15 @@
  *
  * allocates all the memory needed in the heap
  *
+ * @param[in] s symbol for this receptor
  * @returns pointer to a newly allocated Receptor
 
  * <b>Examples (from test suite):</b>
  * @snippet spec/receptor_spec.h testReceptorCreate
  */
-Receptor *_r_new() {
+Receptor *_r_new(Symbol s) {
     Receptor *r = malloc(sizeof(Receptor));
-    r->root = _t_new_root(RECEPTOR);
+    r->root = _t_new_root(s);
     r->structures = _t_newr(r->root,STRUCTURES);
     r->symbols = _t_newr(r->root,SYMBOLS);
     r->flux = _t_newr(r->root,FLUX);
@@ -408,7 +409,7 @@ Tnode * _t_unserialize(Receptor *r,void **surfaceP,size_t *lengthP,Tnode *t) {
  */
 Receptor * _r_unserialize(void *surface) {
     size_t length = *(size_t *)surface;
-    Receptor *r = _r_new();
+    Receptor *r = _r_new(*(Symbol *)(surface+sizeof(size_t)));
     surface += sizeof(size_t);
     Tnode *t =  _t_unserialize(r,&surface,&length,0);
     _t_free(r->root);

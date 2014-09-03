@@ -38,7 +38,7 @@ static Structure G_test_symbol_structures[] = {
     TREE,    //"TEST_TREE_SYMBOL2",
     TREE,    //"TEST_NAME_SYMBOL",
     CSTRING, //"TEST_FIRST_NAME_SYMBOL",
-    TREE,    //"TEST_RECEPTOR_SYMBOL"
+    RECEPTOR,//"TEST_RECEPTOR_SYMBOL"
 };
 
 /// System defined symbols.
@@ -63,7 +63,6 @@ enum SystemSymbol
     SEMTREX_MATCH_SIBLINGS_COUNT,      ///< In the FSA, it's the length of the match
 
     //-----  Symbols for receptors
-    RECEPTOR,
     FLUX,                              ///< tree to hold all incoming and in process signals on the various aspects
     STRUCTURES,
     STRUCTURE_DEF,
@@ -108,7 +107,6 @@ static char *G_sys_symbol_names[] = {
     "SEMTREX_MATCH",
     "SEMTREX_MATCH_RESULTS",
     "SEMTREX_MATCH_SIBLINGS_COUNT",
-    "RECEPTOR",
     "FLUX",
     "STRUCTURES",
     "STRUCTURE_DEF",
@@ -132,6 +130,7 @@ static char *G_sys_symbol_names[] = {
     "INTERPOLATE_SYMBOL",
     "RUN_TREE",
     "PARAMS",
+    "VM_HOST_RECEPTOR",
     "RECEPTOR_PACKAGE",
     "ACTIVE_RECEPTORS",
 };
@@ -151,7 +150,6 @@ static Structure G_sys_symbol_structures[] = {
     SYMBOL,              //"SEMTREX_MATCH",
     NULL_STRUCTURE,      //"SEMTREX_MATCH_RESULTS",
     INTEGER,             //"SEMTREX_MATCH_SIBLINGS_COUNT",
-    NULL_STRUCTURE,      //"RECEPTOR",
     LIST,                //"FLUX",
     LIST,                //"STRUCTURES",
     TREE,                //"STRUCTURE_DEF",
@@ -175,6 +173,7 @@ static Structure G_sys_symbol_structures[] = {
     SYMBOL,              //"INTERPOLATE_SYMBOL",
     NULL_STRUCTURE,      //"RUN_TREE",
     LIST,                //"PARAMS",
+    RECEPTOR,            //"VM_HOST_RECEPTOR",
     NULL_STRUCTURE,      //"RECEPTOR_PACKAGE",
     NULL_STRUCTURE,      //"ACTIVE_RECEPTORS",
 };

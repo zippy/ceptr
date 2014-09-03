@@ -12,7 +12,7 @@ void testVMHostCreate() {
     //! [testVMHostCreate]
     VMHost *v = _v_new();
 
-    spec_is_symbol_equal(v->r,_t_symbol(v->r->root),RECEPTOR);
+    spec_is_symbol_equal(v->r,_t_symbol(v->r->root),VM_HOST_RECEPTOR);
     Tnode *ar_tree = _t_child(v->r->root,4);
     spec_is_symbol_equal(v->r,_t_symbol(ar_tree),ACTIVE_RECEPTORS);
     spec_is_ptr_equal(v->active_receptors,ar_tree);
@@ -28,7 +28,7 @@ void testVMHostCreate() {
  */
 //! [makeTestHouseLocReceptor]
 Receptor * _makeTestHouseLocReceptor() {
-    Receptor *r = _r_new();
+    Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
     Symbol lat = _r_def_symbol(r,FLOAT,"latitude");
     Symbol lon = _r_def_symbol(r,FLOAT,"longitude");
     Structure latlong = _r_def_structure(r,"latlong",2,lat,lon);

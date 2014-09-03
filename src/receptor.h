@@ -21,7 +21,7 @@ enum {DEFAULT_ASPECT=1};
 typedef int Aspect;
 
 /******************  create and destroy receptors */
-Receptor * _r_new();
+Receptor * _r_new(Symbol s);
 void _r_add_listener(Receptor *r,Aspect aspect,Symbol carrier,Tnode *semtrex,Tnode *action);
 void _r_free(Receptor *r);
 
