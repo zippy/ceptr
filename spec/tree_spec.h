@@ -6,7 +6,7 @@
 
 #include "../src/ceptr.h"
 #include "../src/receptor.h"
-#include "tree_http_example.h"
+#include "http_example.h"
 
 void testCreateTreeNodes() {
     /* test the creation of trees and the various function that give access to created data elements

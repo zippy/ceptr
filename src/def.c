@@ -15,20 +15,20 @@ char __d_extra_buf[10];
 /**
  * get symbol's label
  *
- * @param[in] symbol_defs a symbol def tree containing symbol definitions
+ * @param[in] symbols a symbol def tree containing symbol definitions
  * @param[in] s the Symbol to return the name for
  * @returns char * pointing to label
  *
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testSymbolGetName
  */
-char *_d_get_symbol_name(Tnode *symbol_defs,Symbol s) {
+char *_d_get_symbol_name(Tnode *symbols,Symbol s) {
     if (s>NULL_SYMBOL && s <_LAST_SYS_SYMBOL )
 	return G_sys_symbol_names[s-NULL_SYMBOL];
     if (s>=TEST_INT_SYMBOL && s < _LAST_TEST_SYMBOL)
 	return G_test_symbol_names[s-TEST_INT_SYMBOL];
-    else if (symbol_defs) {
-	Tnode *def = _t_child(symbol_defs,s);
+    else if (symbols) {
+	Tnode *def = _t_child(symbols,s);
 	Tnode *l = _t_child(def,1);
 	return (char *)_t_surface(_t_child(def,2));
     }
@@ -39,18 +39,18 @@ char *_d_get_symbol_name(Tnode *symbol_defs,Symbol s) {
 /**
  * get structure's label
  *
- * @param[in] structure_defs a structre def tree containing structure definitions
+ * @param[in] structures a structre def tree containing structure definitions
  * @param[in] s the Structure to return the name for
  * @returns char * pointing to label
  *
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testStructureGetName
  */
-char *_d_get_structure_name(Tnode *structure_defs,Structure s) {
+char *_d_get_structure_name(Tnode *structures,Structure s) {
     if (s>NULL_STRUCTURE && s <_LAST_SYS_STRUCTURE )
 	return G_sys_structure_names[s-NULL_STRUCTURE];
-    else if (structure_defs) {
-	Tnode *def = _t_child(structure_defs,s);
+    else if (structures) {
+	Tnode *def = _t_child(structures,s);
 	return (char *)_t_surface(def);
     }
     sprintf(__d_extra_buf,"<unknown structure:%d>",s);
@@ -61,7 +61,7 @@ char *_d_get_structure_name(Tnode *structure_defs,Structure s) {
 /**
  * add a symbol definition to a symbol defs tree
  *
- * @param[in] symbol_defs a symbol def tree containing symbol definitions
+ * @param[in] symbols a symbol def tree containing symbol definitions
  * @param[in] s the structure type for this symbol
  * @param[in] label a c-string label for this symbol
  * @returns the new symbol def
@@ -69,8 +69,8 @@ char *_d_get_structure_name(Tnode *structure_defs,Structure s) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testDefSymbol
  */
-Tnode *__d_def_symbol(Tnode *symbol_defs,Structure s,char *label){
-    Tnode *def = _t_newr(symbol_defs,SYMBOL_DEF);
+Tnode *__d_declare_symbol(Tnode *symbols,Structure s,char *label){
+    Tnode *def = _t_newr(symbols,SYMBOL_DECLARATION);
     _t_newi(def,SYMBOL_STRUCTURE,s);
     _t_new(def,SYMBOL_LABEL,label,strlen(label)+1);
     return def;
@@ -79,7 +79,7 @@ Tnode *__d_def_symbol(Tnode *symbol_defs,Structure s,char *label){
 /**
  * add a symbol definition to a symbol defs tree
  *
- * @param[in] symbol_defs a symbol def tree containing symbol definitions
+ * @param[in] symbols a symbol def tree containing symbol definitions
  * @param[in] s the structure type for this symbol
  * @param[in] label a c-string label for this symbol
  * @returns the new symbol
@@ -88,15 +88,15 @@ Tnode *__d_def_symbol(Tnode *symbol_defs,Structure s,char *label){
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testDefSymbol
  */
-Symbol _d_def_symbol(Tnode *symbol_defs,Structure s,char *label){
-    __d_def_symbol(symbol_defs,s,label);
-    return _t_children(symbol_defs);
+Symbol _d_declare_symbol(Tnode *symbols,Structure s,char *label){
+    __d_declare_symbol(symbols,s,label);
+    return _t_children(symbols);
 }
 
 /**
  * add a structure definition to a structure defs tree
  *
- * @param[in] structure_defs a structre def tree containing structure definitions
+ * @param[in] structures a structre def tree containing structure definitions
  * @param[in] label a c-string label for this symbol
  * @param[in] num_params number of symbols in the structure
  * @param[in] ... variable list of Symbol type symbols
@@ -105,17 +105,17 @@ Symbol _d_def_symbol(Tnode *symbol_defs,Structure s,char *label){
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testDefStructure
  */
-Structure _d_def_structure(Tnode *structure_defs,char *label,int num_params,...) {
+Structure _d_define_structure(Tnode *structures,char *label,int num_params,...) {
     va_list params;
     va_start(params,num_params);
-    Tnode *def = _dv_def_structure(structure_defs,label,num_params,params);
+    Tnode *def = _dv_define_structure(structures,label,num_params,params);
     va_end(params);
-    return _t_children(structure_defs);
+    return _t_children(structures);
 }
 
-/// va_list version of _d_def_structure
-Tnode * _dv_def_structure(Tnode *structure_defs,char *label,int num_params,va_list params) {
-    Tnode *def = _t_newr(structure_defs,STRUCTURE_DEF);
+/// va_list version of _d_define_structure
+Tnode * _dv_define_structure(Tnode *structures,char *label,int num_params,va_list params) {
+    Tnode *def = _t_newr(structures,STRUCTURE_DEFINITION);
     Tnode *l = _t_new(def,STRUCTURE_LABEL,label,strlen(label)+1);
     Tnode *p = _t_newr(def,STRUCTURE_PARTS);
     int i;
@@ -128,20 +128,20 @@ Tnode * _dv_def_structure(Tnode *structure_defs,char *label,int num_params,va_li
 /**
  * get the structure for a given symbol
  *
- * @param[in] symbol_defs a symbol def tree containing symbol definitions
+ * @param[in] symbols a symbol def tree containing symbol definitions
  * @param[in] s the symbol
  * @returns a Structure
  *
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testGetSymbolStructure
  */
-Structure _d_get_symbol_structure(Tnode *symbol_defs,Symbol s) {
+Structure _d_get_symbol_structure(Tnode *symbols,Symbol s) {
     if (s>=NULL_SYMBOL && s <_LAST_SYS_SYMBOL) {
 	return G_sys_symbol_structures[s-NULL_SYMBOL];
     }
     else if (s>=TEST_INT_SYMBOL && s < _LAST_TEST_SYMBOL)
 	return G_test_symbol_structures[s-TEST_INT_SYMBOL];
-    Tnode *def = _t_child(symbol_defs,s);
+    Tnode *def = _t_child(symbols,s);
     Tnode *t = _t_child(def,1); // first child of the def is the structure
     return *(Structure *)_t_surface(t);
 }

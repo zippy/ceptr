@@ -27,9 +27,9 @@ void _r_add_listener(Receptor *r,Aspect aspect,Symbol carrier,Tnode *semtrex,Tno
 void _r_free(Receptor *r);
 
 /*****************  receptor symbols and structures */
-Symbol _r_def_symbol(Receptor *r,Structure s,char *label);
+Symbol _r_declare_symbol(Receptor *r,Structure s,char *label);
 Symbol _r_get_symbol_by_label(Receptor *r,char *label);
-Structure _r_def_structure(Receptor *r,char *label,int num_params,...);
+Structure _r_define_structure(Receptor *r,char *label,int num_params,...);
 Structure _r_get_structure_by_label(Receptor *r,char *label);
 Structure __r_get_symbol_structure(Receptor *r,Symbol s);
 size_t __r_get_symbol_size(Receptor *r,Symbol s,void *surface);

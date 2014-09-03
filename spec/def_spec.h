@@ -23,10 +23,10 @@ void testDefSymbol() {
     //! [testDefSymbol]
     Tnode *defs = _t_new_root(SYMBOLS);
 
-    Tnode *def = __d_def_symbol(defs,INTEGER,"shoe size");
+    Tnode *def = __d_declare_symbol(defs,INTEGER,"shoe size");
     spec_is_equal(_t_children(defs),1);
     spec_is_ptr_equal(_t_child(defs,1),def);
-    spec_is_equal(_t_symbol(_t_child(defs,1)),SYMBOL_DEF);
+    spec_is_equal(_t_symbol(_t_child(defs,1)),SYMBOL_DECLARATION);
     spec_is_equal(_t_symbol(_t_child(_t_child(defs,1),1)),SYMBOL_STRUCTURE);
     spec_is_equal(_t_symbol(_t_child(_t_child(defs,1),2)),SYMBOL_LABEL);
 
@@ -38,10 +38,10 @@ void testDefStructure() {
     //! [testDefStructure]
     Tnode *defs = _t_new_root(STRUCTURES);
 
-    Structure st = _d_def_structure(defs,"receptor pair",2,RECEPTOR,RECEPTOR);
+    Structure st = _d_define_structure(defs,"receptor pair",2,RECEPTOR,RECEPTOR);
     spec_is_equal(_t_children(defs),st);
     Tnode *s = _t_child(defs,st);
-    spec_is_equal(_t_symbol(s),STRUCTURE_DEF);
+    spec_is_equal(_t_symbol(s),STRUCTURE_DEFINITION);
     spec_is_equal(_t_children(s),2);
     Tnode *l = _t_child(s,1);
     Tnode *p = _t_child(s,2);
@@ -58,12 +58,12 @@ void testDefStructure() {
 void testGetSymbolStructure() {
     //! [testSymbolStructure]
     // test built-in symbols
-    spec_is_structure_equal(0,_d_get_symbol_structure(0,STRUCTURE_DEF),TREE);
+    spec_is_structure_equal(0,_d_get_symbol_structure(0,STRUCTURE_DEFINITION),TREE);
     spec_is_structure_equal(0,_d_get_symbol_structure(0,STRUCTURE_PART),SYMBOL);
 
     // test user-defined symbols
     Tnode *defs = _t_new_root(SYMBOLS);
-    Symbol s = _d_def_symbol(defs,INTEGER,"shoe size");
+    Symbol s = _d_declare_symbol(defs,INTEGER,"shoe size");
     spec_is_equal(_d_get_symbol_structure(defs,s),INTEGER);
     _t_free(defs);
     //! [testSymbolStructure]
@@ -81,10 +81,10 @@ void testGetSize() {
     // test user-defined symbols and structures
     Tnode *structures = _t_new_root(STRUCTURES);
     Tnode *symbols = _t_new_root(SYMBOLS);
-    Symbol lat = _d_def_symbol(symbols,FLOAT,"latitude");
-    Symbol lon = _d_def_symbol(symbols,FLOAT,"longitude");
-    Structure latlong = _d_def_structure(structures,"latlong",2,1,2);
-    Symbol house_loc = _d_def_symbol(symbols,1,"house location");
+    Symbol lat = _d_declare_symbol(symbols,FLOAT,"latitude");
+    Symbol lon = _d_declare_symbol(symbols,FLOAT,"longitude");
+    Structure latlong = _d_define_structure(structures,"latlong",2,1,2);
+    Symbol house_loc = _d_declare_symbol(symbols,1,"house location");
 
     float ll[] = {2.0,90.3};
     spec_is_long_equal(_d_get_symbol_size(symbols,structures,house_loc,ll),sizeof(ll));

@@ -78,7 +78,7 @@ Xaddr _v_load_receptor_package(VMHost *v,Tnode *p) {
  */
 Xaddr _v_install_r(VMHost *v,Xaddr package,Tnode *bindings,char *label) {
     Tnode *p = _r_get_instance(v->c,package);
-    Symbol s = _r_def_symbol(v->r,RECEPTOR,label);
+    Symbol s = _r_declare_symbol(v->r,RECEPTOR,label);
 
     Receptor *r = _r_new_receptor_from_package(s,p,bindings);
 

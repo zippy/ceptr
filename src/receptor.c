@@ -125,21 +125,21 @@ int __get_label_idx(Receptor *r,char *label) {
 /**
  * define a new symbol
  *
- * @param[in] symbol_defs a symbol def tree containing symbol definitions
+ * @param[in] r receptor to provide a structural context for symbol declarations
  * @param[in] s the structure type for this symbol
  * @param[in] label a c-string label for this symbol
  * @returns the new Symbol
  *
  */
-Symbol _r_def_symbol(Receptor *r,Structure s,char *label){
-    Tnode *def = __d_def_symbol(r->symbols,s,label);
+Symbol _r_declare_symbol(Receptor *r,Structure s,char *label){
+    Tnode *def = __d_declare_symbol(r->symbols,s,label);
     return __set_label_for_def(r,label,def);
 }
 
 /**
  * define a new structure
  *
- * @param[in] symbol_defs a symbol def tree containing symbol definitions
+ * @param[in] r receptor to provide a semantic context for new structure definitions
  * @param[in] s the structure type for this symbol
  * @param[in] label a c-string label for this symbol
  * @param[in] num_params number of symbols in the structure
@@ -147,10 +147,10 @@ Symbol _r_def_symbol(Receptor *r,Structure s,char *label){
  * @returns the new Structure
  *
  */
-Structure _r_def_structure(Receptor *r,char *label,int num_params,...) {
+Structure _r_define_structure(Receptor *r,char *label,int num_params,...) {
     va_list params;
     va_start(params,num_params);
-    Tnode *def = _dv_def_structure(r->structures,label,num_params,params);
+    Tnode *def = _dv_define_structure(r->structures,label,num_params,params);
     va_end(params);
 
     return __set_label_for_def(r,label,def);

@@ -123,8 +123,8 @@ void testReceptorAction() {
 void testReceptorDef() {
     Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
 
-    Symbol lat = _r_def_symbol(r,FLOAT,"latitude");
-    Symbol lon = _r_def_symbol(r,FLOAT,"longitude");
+    Symbol lat = _r_declare_symbol(r,FLOAT,"latitude");
+    Symbol lon = _r_declare_symbol(r,FLOAT,"longitude");
     Tnode *def;
 
     spec_is_structure_equal(r,__r_get_symbol_structure(r,lat),FLOAT);
@@ -136,7 +136,7 @@ void testReceptorDef() {
     spec_is_ptr_equal(_t_get(r->root,path),def);
     spec_is_equal(_r_get_symbol_by_label(r,"latitude"),lat);
 
-    Structure latlong = _r_def_structure(r,"latlong",2,lat,lon);
+    Structure latlong = _r_define_structure(r,"latlong",2,lat,lon);
 
     def = _t_child(r->structures,latlong);
     Tnode *l = _t_child(def,1);
@@ -148,16 +148,16 @@ void testReceptorDef() {
     spec_is_structure_equal(r,_r_get_structure_by_label(r,"latlong"),latlong);
     spec_is_long_equal(__r_get_symbol_size(r,lat,0),sizeof(float));
 
-    Symbol house_loc = _r_def_symbol(r,latlong,"house location");
+    Symbol house_loc = _r_declare_symbol(r,latlong,"house location");
     spec_is_equal(__r_get_symbol_structure(r,house_loc),latlong);
     spec_is_long_equal(__r_get_symbol_size(r,house_loc,0),sizeof(float)*2);
 
-    Symbol name = _r_def_symbol(r,CSTRING,"name");
+    Symbol name = _r_declare_symbol(r,CSTRING,"name");
     spec_is_long_equal(__r_get_symbol_size(r,name,"zippy"),(long)6);
 
-    Structure namedhouse = _r_def_structure(r,"namedhouse",2,house_loc,name);
+    Structure namedhouse = _r_define_structure(r,"namedhouse",2,house_loc,name);
 
-    Symbol home = _r_def_symbol(r,namedhouse,"home");
+    Symbol home = _r_declare_symbol(r,namedhouse,"home");
     char surface[] ={1,2,3,4,5,6,7,8,'b','o','b','b','y',0};
     spec_is_long_equal(__r_get_symbol_size(r,home,surface),sizeof(float)*2+6);
 
@@ -171,10 +171,10 @@ void testReceptorDef() {
 */
 //! [defineHouseLocation]
 void defineHouseLocation(Receptor *r,Symbol *lat,Symbol *lon, Structure *latlong, Symbol *house_loc) {
-    *lat = _r_def_symbol(r,FLOAT,"latitude");
-    *lon = _r_def_symbol(r,FLOAT,"longitude");
-    *latlong = _r_def_structure(r,"latlong",2,*lat,*lon);
-    *house_loc = _r_def_symbol(r,*latlong,"house location");
+    *lat = _r_declare_symbol(r,FLOAT,"latitude");
+    *lon = _r_declare_symbol(r,FLOAT,"longitude");
+    *latlong = _r_define_structure(r,"latlong",2,*lat,*lon);
+    *house_loc = _r_declare_symbol(r,*latlong,"house location");
 }
 //! [defineHouseLocation]
 

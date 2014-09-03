@@ -6,7 +6,7 @@
 
 #include "../src/ceptr.h"
 #include "../src/vmhost.h"
-#include "tree_http_example.h"
+#include "http_example.h"
 
 void testVMHostCreate() {
     //! [testVMHostCreate]
