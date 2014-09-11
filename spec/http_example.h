@@ -1,5 +1,5 @@
 /**
- * @file tree_http_example.h
+ * @file http_example.h
  * @copyright Copyright (C) 2013-2014, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
  * @ingroup tests
  */
@@ -69,7 +69,7 @@ enum {TEST_HTTP_METHOD_GET_VALUE,TEST_HTTP_METHOD_PUT_VALUE,TEST_HTTP_METHOD_POS
 /**
  * generate a test semantic tree that represents an HTTP request
  *
- * @snippet spec/tree_spec.h makeTestHTTPRequestTree
+ * @snippet spec/http_example.h makeTestHTTPRequestTree
  */
 //! [makeTestHTTPRequestTree]
 Tnode *_makeTestHTTPRequestTree() {
