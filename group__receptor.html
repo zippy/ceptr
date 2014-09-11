@@ -863,11 +863,69 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
       </table>
 </div><div class="memdoc">
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000012">Todo:</a></b></dt><dd>for now the signal is appended directly to the flux. Later it should probably be copied </dd></dl>
-<p>Send a signal to a receptor on a given aspect </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000010">Todo:</a></b></dt><dd>move this to adding the runtree to the thread pool </dd></dl>
+<p>Send a signal to a receptor on a given aspect</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">r</td><td><a class="el" href="structReceptor.html">Receptor</a> to serialize </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">from</td><td>source <a class="el" href="structReceptor.html">Receptor</a> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">aspect</td><td>Aspect over which the message will be sent </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">signal_contents</td><td>the message to be sent, which will be wrapped in a SIGNAL</td></tr>
+  </table>
+  </dd>
+</dl>
+<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structReceptor.html">Receptor</a> *r = <a class="code" href="group__receptor.html#ga62c253e7cc1d1ad20471913ae822ebc2">_r_new</a>(TEST_RECEPTOR_SYMBOL);</div>
+<div class="line"></div>
+<div class="line">    <span class="comment">// The signal is an HTTP request</span></div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *signal = _makeTestHTTPRequestTree(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
+<div class="line"></div>
+<div class="line">    <span class="comment">// our expectation should match on the first path segment</span></div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *expect = <a class="code" href="group__tree.html#ga17676267c6fb457dd1d086f37641544a">_t_new_root</a>(<a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3af6d94b1598900ddce4908373a5f528e8">EXPECTATION</a>);</div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *req = <a class="code" href="group__tree.html#gab438eeedb3eb6c1e20171b33d8ec499d">_t_newi</a>(expect,<a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a24fed94b1bdcacc4989e256136ad750c">SEMTREX_SYMBOL_LITERAL</a>,TSYM_HTTP_REQUEST);</div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *seq = <a class="code" href="group__tree.html#gaff88720dad09389f6b7f35f7985d8efd">_t_newr</a>(req,<a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a2bcf9a9f55a6002b167918d9657788b7">SEMTREX_SEQUENCE</a>);</div>
+<div class="line">    <a class="code" href="group__tree.html#gaff88720dad09389f6b7f35f7985d8efd">_t_newr</a>(seq,<a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a9a67b424e6a6adfe23cd3432642109f5">SEMTREX_SYMBOL_ANY</a>);  <span class="comment">// skips the Version</span></div>
+<div class="line">    <a class="code" href="group__tree.html#gaff88720dad09389f6b7f35f7985d8efd">_t_newr</a>(seq,<a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a9a67b424e6a6adfe23cd3432642109f5">SEMTREX_SYMBOL_ANY</a>);  <span class="comment">// skips over the Method</span></div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *path = <a class="code" href="group__tree.html#gab438eeedb3eb6c1e20171b33d8ec499d">_t_newi</a>(seq,<a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a24fed94b1bdcacc4989e256136ad750c">SEMTREX_SYMBOL_LITERAL</a>,TSYM_HTTP_REQUEST_PATH);</div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *segs = <a class="code" href="group__tree.html#gab438eeedb3eb6c1e20171b33d8ec499d">_t_newi</a>(path,<a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a24fed94b1bdcacc4989e256136ad750c">SEMTREX_SYMBOL_LITERAL</a>,TSYM_HTTP_REQUEST_PATH_SEGMENTS);</div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *g = <a class="code" href="group__tree.html#gab438eeedb3eb6c1e20171b33d8ec499d">_t_newi</a>(segs,<a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a5b54d3166ed65522d1b0b557a91b5316">SEMTREX_GROUP</a>,TSYM_HTTP_REQUEST_PATH_SEGMENT);</div>
+<div class="line">    <a class="code" href="group__tree.html#gab438eeedb3eb6c1e20171b33d8ec499d">_t_newi</a>(g,<a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a24fed94b1bdcacc4989e256136ad750c">SEMTREX_SYMBOL_LITERAL</a>,TSYM_HTTP_REQUEST_PATH_SEGMENT);</div>
+<div class="line"></div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *result;</div>
+<div class="line">    <span class="keywordtype">int</span> matched;</div>
+<div class="line">    <span class="comment">// make sure our expectation semtrex actually matches the signal</span></div>
+<div class="line">    spec_is_true(matched = <a class="code" href="group__semtrex.html#gaa43317db10f85873435792afb5c1cd4a">_t_matchr</a>(req,signal,&amp;result));</div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *m = <a class="code" href="group__semtrex.html#gaa4419dc4f940274606f85a88d52949e7">_t_get_match</a>(result,TSYM_HTTP_REQUEST_PATH_SEGMENT);</div>
+<div class="line">    <span class="keywordtype">char</span> buf[2000];</div>
+<div class="line">    __t_dump(test_HTTP_symbols,m,0,buf);</div>
+<div class="line">    spec_is_str_equal(buf,<span class="stringliteral">&quot; (SEMTREX_MATCH:HTTP_REQUEST_PATH_SEGMENT (SEMTREX_MATCHED_PATH:/3/1/1) (SEMTREX_MATCH_SIBLINGS_COUNT:1))&quot;</span>);</div>
+<div class="line">    <span class="keywordflow">if</span> (result) {</div>
+<div class="line">    <a class="code" href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a>(result);</div>
+<div class="line">    }</div>
+<div class="line"></div>
+<div class="line">    <span class="comment">// the action simply responds back with the method that was originally sent</span></div>
+<div class="line">    <span class="comment">// this test should be made more real... but for now it responds back with a ping</span></div>
+<div class="line">    <span class="comment">// like message that is what the first path segment was</span></div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *act = <a class="code" href="group__tree.html#ga17676267c6fb457dd1d086f37641544a">_t_new_root</a>(<a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3ae1bb1460cb779888412e634e983be161">ACTION</a>);</div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *resp = <a class="code" href="group__tree.html#gaff88720dad09389f6b7f35f7985d8efd">_t_newr</a>(act,<a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a64c5ec914c978938d6ed4d420c099c8a">RESPOND</a>);</div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *n = <a class="code" href="group__tree.html#gaff88720dad09389f6b7f35f7985d8efd">_t_newr</a>(resp,<a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a32422b0c037a5e196f197711c8d49589">INTERPOLATE_FROM_MATCH</a>);</div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *http_resp = <a class="code" href="group__tree.html#gaff88720dad09389f6b7f35f7985d8efd">_t_newr</a>(n,TSYM_HTTP_RESPONSE);</div>
+<div class="line">    <a class="code" href="group__tree.html#ga23646bb375d548b8bdce934f694b1741">_t_new</a>(http_resp,TSYM_HTTP_RESPONSE_CONTENT_TYPE,<span class="stringliteral">&quot;CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT&quot;</span>,38);</div>
+<div class="line">    <a class="code" href="group__tree.html#gab438eeedb3eb6c1e20171b33d8ec499d">_t_newi</a>(http_resp,<a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3ae0e51bb381564e3d460f0352172e0c40">INTERPOLATE_SYMBOL</a>,TSYM_HTTP_REQUEST_PATH_SEGMENT);</div>
+<div class="line"></div>
+<div class="line">    <a class="code" href="group__receptor.html#gace908c1f9cf6df32014310dca991785b">_r_add_listener</a>(r,DEFAULT_ASPECT,TSYM_HTTP_REQUEST,expect,act);</div>
+<div class="line"></div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *s = <a class="code" href="group__receptor.html#gae251d0cfa84e1edbbe12d3489aa29d1e">_r_send</a>(r,r,DEFAULT_ASPECT,signal);</div>
+<div class="line">    spec_is_symbol_equal(r,<a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(s),<a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a480882f626731b7fa7fc7caf12d8cb66">SIGNAL</a>);</div>
+<div class="line"></div>
+<div class="line">    <span class="comment">// the result should be signal tree with the matched PATH_SEGMENT returned as the body</span></div>
+<div class="line">    result = _t_child(_t_child(s,1),1);</div>
+<div class="line">    __t_dump(test_HTTP_symbols,result,0,buf);</div>
+<div class="line">    spec_is_str_equal(buf,<span class="stringliteral">&quot; (HTTP_RESPONSE (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT) (HTTP_REQUEST_PATH_SEGMENT:groups))&quot;</span>);</div>
+<div class="line"></div>
+<div class="line">    <a class="code" href="group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8">_r_free</a>(r);</div>
+</div><!-- fragment --><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000010">Todo:</a></b></dt><dd>move this to adding the runtree to the thread pool </dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000011">Todo:</a></b></dt><dd>results should actually be a what? success/failure of send </dd></dl>
 
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00454">454</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00462">462</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -1039,7 +1097,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Sep 10 2014 14:11:00 for ceptr by
+    <li class="footer">Generated on Thu Sep 11 2014 11:14:27 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

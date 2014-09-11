@@ -451,15 +451,16 @@ $(document).ready(function(){initNavTree('semtrex_8c_source.html','');});
 <div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;</div>
 <div class="line"><a name="l00420"></a><span class="lineno"><a class="line" href="group__semtrex.html#gaa4419dc4f940274606f85a88d52949e7">  420</a></span>&#160;<a class="code" href="structTnode.html">Tnode</a> *<a class="code" href="group__semtrex.html#gaa4419dc4f940274606f85a88d52949e7">_t_get_match</a>(<a class="code" href="structTnode.html">Tnode</a> *result,Symbol group)</div>
 <div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;{</div>
-<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;    <span class="keywordtype">int</span> i,c=<a class="code" href="group__tree.html#gaf459b3de598bba95efe941c4960f845d">_t_children</a>(result);</div>
-<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t;</div>
-<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;    <span class="keywordflow">for</span> (i=1;i&lt;=c;i++) {</div>
-<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;    <span class="keywordflow">if</span> (*(<span class="keywordtype">int</span> *)<a class="code" href="group__tree.html#ga5a292a02511c82863edfcaa72fa9698c">_t_surface</a>(t = _t_child(result,i)) == group)</div>
-<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;        <span class="keywordflow">return</span> t;</div>
-<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;    }</div>
-<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;    <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;}</div>
-<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;</div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;    <span class="keywordflow">if</span> (!result) <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;    <span class="keywordtype">int</span> i,c=<a class="code" href="group__tree.html#gaf459b3de598bba95efe941c4960f845d">_t_children</a>(result);</div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t;</div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;    <span class="keywordflow">for</span> (i=1;i&lt;=c;i++) {</div>
+<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;    <span class="keywordflow">if</span> (*(<span class="keywordtype">int</span> *)<a class="code" href="group__tree.html#ga5a292a02511c82863edfcaa72fa9698c">_t_surface</a>(t = _t_child(result,i)) == group)</div>
+<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;        <span class="keywordflow">return</span> t;</div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;    }</div>
+<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;    <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;}</div>
+<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;</div>
 <div class="ttc" id="sys__symbols_8h_html_ab0f6206b340472c7ace01d1e9d4b87f3a24fed94b1bdcacc4989e256136ad750c"><div class="ttname"><a href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a24fed94b1bdcacc4989e256136ad750c">SEMTREX_SYMBOL_LITERAL</a></div><div class="ttdoc">This system symbol matches on the semantic type. Ex: /TEST_SYMBOL. </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00052">sys_symbols.h:52</a></div></div>
 <div class="ttc" id="structSState_html_ae22ac0f7bb019ad6aae9714be4828a8e"><div class="ttname"><a href="structSState.html#ae22ac0f7bb019ad6aae9714be4828a8e">SState::_did</a></div><div class="ttdeci">int _did</div><div class="ttdoc">used to hold a mark when freeing and printing out FSA to prevent looping. </div><div class="ttdef"><b>Definition:</b> <a href="semtrex_8h_source.html#l00105">semtrex.h:105</a></div></div>
 <div class="ttc" id="sys__symbols_8h_html_ab0f6206b340472c7ace01d1e9d4b87f3a4f31ece163a69349b0daadd9d27e4a51"><div class="ttname"><a href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a4f31ece163a69349b0daadd9d27e4a51">SEMTREX_VALUE_LITERAL</a></div><div class="ttdoc">Matches on the semantic type and the data value. </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00059">sys_symbols.h:59</a></div></div>
@@ -526,7 +527,7 @@ $(document).ready(function(){initNavTree('semtrex_8c_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="semtrex_8c.html">semtrex.c</a></li>
-    <li class="footer">Generated on Wed Sep 10 2014 14:11:00 for ceptr by
+    <li class="footer">Generated on Thu Sep 11 2014 11:14:27 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

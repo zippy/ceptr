@@ -388,141 +388,141 @@ $(document).ready(function(){initNavTree('receptor_8c_source.html','');});
 <div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;</div>
 <div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;<span class="comment">/******************  receptor signaling */</span></div>
 <div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;</div>
-<div class="line"><a name="l00454"></a><span class="lineno"><a class="line" href="group__receptor.html#gae251d0cfa84e1edbbe12d3489aa29d1e">  454</a></span>&#160;<a class="code" href="structTnode.html">Tnode</a> * <a class="code" href="group__receptor.html#gae251d0cfa84e1edbbe12d3489aa29d1e">_r_send</a>(<a class="code" href="structReceptor.html">Receptor</a> *r,<a class="code" href="structReceptor.html">Receptor</a> *from,Aspect aspect, <a class="code" href="structTnode.html">Tnode</a> *signal_contents) {</div>
-<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *m,*e,*l,*rt=0;</div>
-<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;</div>
-<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *as = __r_get_signals(r,aspect);</div>
-<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *s = <a class="code" href="group__tree.html#ga6def3ea6dde2b49d32ec7f382212d6aa">_t_newt</a>(as,<a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a480882f626731b7fa7fc7caf12d8cb66">SIGNAL</a>,signal_contents);</div>
-<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;</div>
-<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;    <span class="comment">// walk through all the listeners on the aspect and see if any expectations match this incoming signal</span></div>
-<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *ls = __r_get_listeners(r,aspect);</div>
-<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;    <span class="keywordtype">int</span> i,c = <a class="code" href="group__tree.html#gaf459b3de598bba95efe941c4960f845d">_t_children</a>(ls);</div>
-<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;    <span class="keywordflow">for</span>(i=1;i&lt;=c;i++) {</div>
-<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;    l = _t_child(ls,i);</div>
-<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;    e = _t_child(l,1);</div>
-<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;    <span class="comment">// if we get a match, create a run tree from the action, using the match and signal as the parameters</span></div>
-<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="group__semtrex.html#gaa43317db10f85873435792afb5c1cd4a">_t_matchr</a>(_t_child(e,1),signal_contents,&amp;m)) {</div>
-<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;        rt = <a class="code" href="process_8c.html#a97838f45f23304c8eec209253ce8eac8">_p_make_run_tree</a>(_t_child(l,2),2,m,signal_contents);</div>
-<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;        <a class="code" href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a>(m);</div>
-<div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;        <a class="code" href="group__tree.html#gaf155629f920b45c8b3d11bb19255d69e">_t_add</a>(s,rt);</div>
-<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;        <span class="comment">// for now just reduce the tree in place</span></div>
-<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;<span class="comment"></span>        <a class="code" href="process_8c.html#ad7b08ea41f447a93070e13bc5e6a8deb">_p_reduce</a>(rt);</div>
-<div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;    }</div>
-<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;    }</div>
-<div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;</div>
-<div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160;    <span class="keywordflow">if</span> (rt == 0) <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">return</span> s;</div>
-<div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160;}</div>
-<div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;</div>
-<div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160;<span class="comment">/******************  internal utilities */</span></div>
-<div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;</div>
-<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;<a class="code" href="structTnode.html">Tnode</a> *__r_get_aspect(<a class="code" href="structReceptor.html">Receptor</a> *r,Aspect aspect) {</div>
-<div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;    <span class="keywordflow">return</span> _t_child(r-&gt;<a class="code" href="structReceptor.html#a622c4885a917e9249fa213ccf47b04ff">flux</a>,aspect);</div>
-<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;}</div>
-<div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160;<a class="code" href="structTnode.html">Tnode</a> *__r_get_listeners(<a class="code" href="structReceptor.html">Receptor</a> *r,Aspect aspect) {</div>
-<div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160;    <span class="keywordflow">return</span> _t_child(__r_get_aspect(r,aspect),1);</div>
-<div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;}</div>
-<div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;<a class="code" href="structTnode.html">Tnode</a> *__r_get_signals(<a class="code" href="structReceptor.html">Receptor</a> *r,Aspect aspect) {</div>
-<div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;    <span class="keywordflow">return</span> _t_child(__r_get_aspect(r,aspect),2);</div>
-<div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160;}</div>
-<div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;</div>
-<div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160;<span class="comment">/*****************  Tree debugging utilities */</span></div>
-<div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;</div>
-<div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;<span class="keywordtype">char</span> *_r_get_symbol_name(<a class="code" href="structReceptor.html">Receptor</a> *r,Symbol s) {</div>
-<div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__def.html#gae5fc3e0b245984a477b4c13aacb2fc02">_d_get_symbol_name</a>(r?r-&gt;<a class="code" href="structReceptor.html#aeb5c0f81a92048d264308e7610ac39a3">symbols</a>:0,s);</div>
-<div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;}</div>
-<div class="line"><a name="l00499"></a><span class="lineno">  499</span>&#160;</div>
-<div class="line"><a name="l00500"></a><span class="lineno">  500</span>&#160;<span class="keywordtype">char</span> *_r_get_structure_name(<a class="code" href="structReceptor.html">Receptor</a> *r,Structure s) {</div>
-<div class="line"><a name="l00501"></a><span class="lineno">  501</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__def.html#ga766db34af870b275213a4e828d826267">_d_get_structure_name</a>(r?r-&gt;<a class="code" href="structReceptor.html#a81c4e6049350d0577334fdda48f4260a">structures</a>:0,s);</div>
-<div class="line"><a name="l00502"></a><span class="lineno">  502</span>&#160;}</div>
+<div class="line"><a name="l00462"></a><span class="lineno"><a class="line" href="group__receptor.html#gae251d0cfa84e1edbbe12d3489aa29d1e">  462</a></span>&#160;<a class="code" href="structTnode.html">Tnode</a> * <a class="code" href="group__receptor.html#gae251d0cfa84e1edbbe12d3489aa29d1e">_r_send</a>(<a class="code" href="structReceptor.html">Receptor</a> *r,<a class="code" href="structReceptor.html">Receptor</a> *from,Aspect aspect, <a class="code" href="structTnode.html">Tnode</a> *signal_contents) {</div>
+<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *m,*e,*l,*rt=0;</div>
+<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;</div>
+<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *as = __r_get_signals(r,aspect);</div>
+<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *s = <a class="code" href="group__tree.html#ga6def3ea6dde2b49d32ec7f382212d6aa">_t_newt</a>(as,<a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a480882f626731b7fa7fc7caf12d8cb66">SIGNAL</a>,signal_contents);</div>
+<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;</div>
+<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;    <span class="comment">// walk through all the listeners on the aspect and see if any expectations match this incoming signal</span></div>
+<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *ls = __r_get_listeners(r,aspect);</div>
+<div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;    <span class="keywordtype">int</span> i,c = <a class="code" href="group__tree.html#gaf459b3de598bba95efe941c4960f845d">_t_children</a>(ls);</div>
+<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;    <span class="keywordflow">for</span>(i=1;i&lt;=c;i++) {</div>
+<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;    l = _t_child(ls,i);</div>
+<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;    e = _t_child(l,1);</div>
+<div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;    <span class="comment">// if we get a match, create a run tree from the action, using the match and signal as the parameters</span></div>
+<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="group__semtrex.html#gaa43317db10f85873435792afb5c1cd4a">_t_matchr</a>(_t_child(e,1),signal_contents,&amp;m)) {</div>
+<div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;        rt = <a class="code" href="process_8c.html#a97838f45f23304c8eec209253ce8eac8">_p_make_run_tree</a>(_t_child(l,2),2,m,signal_contents);</div>
+<div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;        <a class="code" href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a>(m);</div>
+<div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160;        <a class="code" href="group__tree.html#gaf155629f920b45c8b3d11bb19255d69e">_t_add</a>(s,rt);</div>
+<div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;        <span class="comment">// for now just reduce the tree in place</span></div>
+<div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;<span class="comment"></span>        <a class="code" href="process_8c.html#ad7b08ea41f447a93070e13bc5e6a8deb">_p_reduce</a>(rt);</div>
+<div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160;    }</div>
+<div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;    }</div>
+<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;</div>
+<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;    <span class="keywordflow">if</span> (rt == 0) <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">return</span> s;</div>
+<div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160;}</div>
+<div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;</div>
+<div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;<span class="comment">/******************  internal utilities */</span></div>
+<div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;</div>
+<div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160;<a class="code" href="structTnode.html">Tnode</a> *__r_get_aspect(<a class="code" href="structReceptor.html">Receptor</a> *r,Aspect aspect) {</div>
+<div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;    <span class="keywordflow">return</span> _t_child(r-&gt;<a class="code" href="structReceptor.html#a622c4885a917e9249fa213ccf47b04ff">flux</a>,aspect);</div>
+<div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160;}</div>
+<div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;<a class="code" href="structTnode.html">Tnode</a> *__r_get_listeners(<a class="code" href="structReceptor.html">Receptor</a> *r,Aspect aspect) {</div>
+<div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;    <span class="keywordflow">return</span> _t_child(__r_get_aspect(r,aspect),1);</div>
+<div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160;}</div>
+<div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;<a class="code" href="structTnode.html">Tnode</a> *__r_get_signals(<a class="code" href="structReceptor.html">Receptor</a> *r,Aspect aspect) {</div>
+<div class="line"><a name="l00499"></a><span class="lineno">  499</span>&#160;    <span class="keywordflow">return</span> _t_child(__r_get_aspect(r,aspect),2);</div>
+<div class="line"><a name="l00500"></a><span class="lineno">  500</span>&#160;}</div>
+<div class="line"><a name="l00501"></a><span class="lineno">  501</span>&#160;</div>
+<div class="line"><a name="l00502"></a><span class="lineno">  502</span>&#160;<span class="comment">/*****************  Tree debugging utilities */</span></div>
 <div class="line"><a name="l00503"></a><span class="lineno">  503</span>&#160;</div>
-<div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160;<span class="keywordtype">char</span> __t_dump_buf[10000];</div>
-<div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160;</div>
-<div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;<span class="keywordtype">char</span> *_td(<a class="code" href="structReceptor.html">Receptor</a> *r,<a class="code" href="structTnode.html">Tnode</a> *t) {</div>
-<div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160;    <span class="keywordflow">if</span> (!t) sprintf(__t_dump_buf,<span class="stringliteral">&quot;&lt;null-tree&gt;&quot;</span>);</div>
-<div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;    <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00509"></a><span class="lineno">  509</span>&#160;    __t_dump(r-&gt;<a class="code" href="structReceptor.html#aeb5c0f81a92048d264308e7610ac39a3">symbols</a>,t,0,__t_dump_buf);</div>
-<div class="line"><a name="l00510"></a><span class="lineno">  510</span>&#160;    <span class="keywordflow">return</span> __t_dump_buf;</div>
-<div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160;}</div>
-<div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160;</div>
+<div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160;<span class="keywordtype">char</span> *_r_get_symbol_name(<a class="code" href="structReceptor.html">Receptor</a> *r,Symbol s) {</div>
+<div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__def.html#gae5fc3e0b245984a477b4c13aacb2fc02">_d_get_symbol_name</a>(r?r-&gt;<a class="code" href="structReceptor.html#aeb5c0f81a92048d264308e7610ac39a3">symbols</a>:0,s);</div>
+<div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;}</div>
+<div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160;</div>
+<div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;<span class="keywordtype">char</span> *_r_get_structure_name(<a class="code" href="structReceptor.html">Receptor</a> *r,Structure s) {</div>
+<div class="line"><a name="l00509"></a><span class="lineno">  509</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__def.html#ga766db34af870b275213a4e828d826267">_d_get_structure_name</a>(r?r-&gt;<a class="code" href="structReceptor.html#a81c4e6049350d0577334fdda48f4260a">structures</a>:0,s);</div>
+<div class="line"><a name="l00510"></a><span class="lineno">  510</span>&#160;}</div>
+<div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160;</div>
+<div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160;<span class="keywordtype">char</span> __t_dump_buf[10000];</div>
 <div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;</div>
-<div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;<span class="comment">// semtrex dumping code</span></div>
-<div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160;<span class="keywordtype">char</span> * __dump_semtrex(<a class="code" href="structTnode.html">Tnode</a> *s,<span class="keywordtype">char</span> *buf);</div>
-<div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;</div>
-<div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;<span class="keywordtype">void</span> __stxd_multi(<span class="keywordtype">char</span> *x,<a class="code" href="structTnode.html">Tnode</a> *s,<span class="keywordtype">char</span> *buf) {</div>
-<div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;    <span class="keywordtype">char</span> b[1000];</div>
-<div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;    sprintf(buf,<a class="code" href="group__tree.html#gaf459b3de598bba95efe941c4960f845d">_t_children</a>(s)&gt;1 ? <span class="stringliteral">&quot;(%s)%s&quot;</span> : <span class="stringliteral">&quot;%s%s&quot;</span>,__dump_semtrex(_t_child(s,1),b),x);</div>
-<div class="line"><a name="l00520"></a><span class="lineno">  520</span>&#160;}</div>
-<div class="line"><a name="l00521"></a><span class="lineno">  521</span>&#160;<span class="keywordtype">void</span> __stxd_descend(<a class="code" href="structTnode.html">Tnode</a> *s,<span class="keywordtype">char</span> *v,<span class="keywordtype">char</span> *buf) {</div>
-<div class="line"><a name="l00522"></a><span class="lineno">  522</span>&#160;    <span class="keywordflow">if</span>(<a class="code" href="group__tree.html#gaf459b3de598bba95efe941c4960f845d">_t_children</a>(s)&gt;0) {</div>
-<div class="line"><a name="l00523"></a><span class="lineno">  523</span>&#160;    <span class="keywordtype">char</span> b[1000];</div>
-<div class="line"><a name="l00524"></a><span class="lineno">  524</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *sub = _t_child(s,1);</div>
-<div class="line"><a name="l00525"></a><span class="lineno">  525</span>&#160;    sprintf(buf,<a class="code" href="group__tree.html#gaf459b3de598bba95efe941c4960f845d">_t_children</a>(sub)&gt;0?<span class="stringliteral">&quot;(%s/%s)&quot;</span>:<span class="stringliteral">&quot;(%s/%s)&quot;</span>,v,__dump_semtrex(sub,b));</div>
-<div class="line"><a name="l00526"></a><span class="lineno">  526</span>&#160;    }</div>
-<div class="line"><a name="l00527"></a><span class="lineno">  527</span>&#160;    <span class="keywordflow">else</span> sprintf(buf,<span class="stringliteral">&quot;%s&quot;</span>,v);</div>
+<div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;<span class="keywordtype">char</span> *_td(<a class="code" href="structReceptor.html">Receptor</a> *r,<a class="code" href="structTnode.html">Tnode</a> *t) {</div>
+<div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160;    <span class="keywordflow">if</span> (!t) sprintf(__t_dump_buf,<span class="stringliteral">&quot;&lt;null-tree&gt;&quot;</span>);</div>
+<div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;    <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;    __t_dump(r-&gt;<a class="code" href="structReceptor.html#aeb5c0f81a92048d264308e7610ac39a3">symbols</a>,t,0,__t_dump_buf);</div>
+<div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;    <span class="keywordflow">return</span> __t_dump_buf;</div>
+<div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;}</div>
+<div class="line"><a name="l00520"></a><span class="lineno">  520</span>&#160;</div>
+<div class="line"><a name="l00521"></a><span class="lineno">  521</span>&#160;</div>
+<div class="line"><a name="l00522"></a><span class="lineno">  522</span>&#160;<span class="comment">// semtrex dumping code</span></div>
+<div class="line"><a name="l00523"></a><span class="lineno">  523</span>&#160;<span class="keywordtype">char</span> * __dump_semtrex(<a class="code" href="structTnode.html">Tnode</a> *s,<span class="keywordtype">char</span> *buf);</div>
+<div class="line"><a name="l00524"></a><span class="lineno">  524</span>&#160;</div>
+<div class="line"><a name="l00525"></a><span class="lineno">  525</span>&#160;<span class="keywordtype">void</span> __stxd_multi(<span class="keywordtype">char</span> *x,<a class="code" href="structTnode.html">Tnode</a> *s,<span class="keywordtype">char</span> *buf) {</div>
+<div class="line"><a name="l00526"></a><span class="lineno">  526</span>&#160;    <span class="keywordtype">char</span> b[1000];</div>
+<div class="line"><a name="l00527"></a><span class="lineno">  527</span>&#160;    sprintf(buf,<a class="code" href="group__tree.html#gaf459b3de598bba95efe941c4960f845d">_t_children</a>(s)&gt;1 ? <span class="stringliteral">&quot;(%s)%s&quot;</span> : <span class="stringliteral">&quot;%s%s&quot;</span>,__dump_semtrex(_t_child(s,1),b),x);</div>
 <div class="line"><a name="l00528"></a><span class="lineno">  528</span>&#160;}</div>
-<div class="line"><a name="l00529"></a><span class="lineno">  529</span>&#160;</div>
-<div class="line"><a name="l00530"></a><span class="lineno">  530</span>&#160;<span class="keywordtype">char</span> * __dump_semtrex(<a class="code" href="structTnode.html">Tnode</a> *s,<span class="keywordtype">char</span> *buf) {</div>
-<div class="line"><a name="l00531"></a><span class="lineno">  531</span>&#160;    Symbol sym = <a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(s);</div>
-<div class="line"><a name="l00532"></a><span class="lineno">  532</span>&#160;    <span class="keywordtype">char</span> b[1000];</div>
-<div class="line"><a name="l00533"></a><span class="lineno">  533</span>&#160;    <span class="keywordtype">char</span> *sn;</div>
-<div class="line"><a name="l00534"></a><span class="lineno">  534</span>&#160;    <span class="keywordtype">int</span> i,c;</div>
-<div class="line"><a name="l00535"></a><span class="lineno">  535</span>&#160;    <span class="keywordflow">switch</span>(sym) {</div>
-<div class="line"><a name="l00536"></a><span class="lineno">  536</span>&#160;    <span class="keywordflow">case</span> <a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a4f31ece163a69349b0daadd9d27e4a51">SEMTREX_VALUE_LITERAL</a>:</div>
-<div class="line"><a name="l00537"></a><span class="lineno">  537</span>&#160;    <span class="keywordflow">case</span> <a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a24fed94b1bdcacc4989e256136ad750c">SEMTREX_SYMBOL_LITERAL</a>:</div>
-<div class="line"><a name="l00538"></a><span class="lineno">  538</span>&#160;    c = *(<span class="keywordtype">int</span> *)<a class="code" href="group__tree.html#ga5a292a02511c82863edfcaa72fa9698c">_t_surface</a>(s);</div>
-<div class="line"><a name="l00539"></a><span class="lineno">  539</span>&#160;    sn = <a class="code" href="group__def.html#gae5fc3e0b245984a477b4c13aacb2fc02">_d_get_symbol_name</a>(0,c);</div>
-<div class="line"><a name="l00540"></a><span class="lineno">  540</span>&#160;    <span class="comment">// ignore &quot;&lt;unknown symbol&quot;</span></div>
-<div class="line"><a name="l00541"></a><span class="lineno">  541</span>&#160;    <span class="keywordflow">if</span> (*sn==<span class="charliteral">&#39;&lt;&#39;</span>)</div>
-<div class="line"><a name="l00542"></a><span class="lineno">  542</span>&#160;        sprintf(b,<span class="stringliteral">&quot;%d&quot;</span>,c);</div>
-<div class="line"><a name="l00543"></a><span class="lineno">  543</span>&#160;    <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00544"></a><span class="lineno">  544</span>&#160;        sprintf(b,<span class="stringliteral">&quot;%s&quot;</span>,sn);</div>
-<div class="line"><a name="l00545"></a><span class="lineno">  545</span>&#160;    <span class="keywordflow">if</span> (sym == <a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a4f31ece163a69349b0daadd9d27e4a51">SEMTREX_VALUE_LITERAL</a>) {</div>
-<div class="line"><a name="l00546"></a><span class="lineno">  546</span>&#160;        sprintf(b+strlen(b),<span class="stringliteral">&quot;=???&quot;</span>);</div>
-<div class="line"><a name="l00547"></a><span class="lineno">  547</span>&#160;    }</div>
-<div class="line"><a name="l00548"></a><span class="lineno">  548</span>&#160;    __stxd_descend(s,b,buf);</div>
-<div class="line"><a name="l00549"></a><span class="lineno">  549</span>&#160;    <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00550"></a><span class="lineno">  550</span>&#160;    <span class="keywordflow">case</span> <a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a9a67b424e6a6adfe23cd3432642109f5">SEMTREX_SYMBOL_ANY</a>:</div>
-<div class="line"><a name="l00551"></a><span class="lineno">  551</span>&#160;    sprintf(b,<span class="stringliteral">&quot;.&quot;</span>);</div>
-<div class="line"><a name="l00552"></a><span class="lineno">  552</span>&#160;    __stxd_descend(s,b,buf);</div>
-<div class="line"><a name="l00553"></a><span class="lineno">  553</span>&#160;    <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00554"></a><span class="lineno">  554</span>&#160;    <span class="keywordflow">case</span> <a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a2bcf9a9f55a6002b167918d9657788b7">SEMTREX_SEQUENCE</a>:</div>
-<div class="line"><a name="l00555"></a><span class="lineno">  555</span>&#160;    c = <a class="code" href="group__tree.html#gaf459b3de598bba95efe941c4960f845d">_t_children</a>(s);</div>
-<div class="line"><a name="l00556"></a><span class="lineno">  556</span>&#160;    sn = buf;</div>
-<div class="line"><a name="l00557"></a><span class="lineno">  557</span>&#160;    <span class="keywordflow">for</span>(i=1;i&lt;=c;i++) {</div>
-<div class="line"><a name="l00558"></a><span class="lineno">  558</span>&#160;        sprintf(sn,i&lt;c ? <span class="stringliteral">&quot;%s,&quot;</span>:<span class="stringliteral">&quot;%s&quot;</span>,__dump_semtrex(_t_child(s,i),b));</div>
-<div class="line"><a name="l00559"></a><span class="lineno">  559</span>&#160;        sn += strlen(sn);</div>
-<div class="line"><a name="l00560"></a><span class="lineno">  560</span>&#160;    }</div>
+<div class="line"><a name="l00529"></a><span class="lineno">  529</span>&#160;<span class="keywordtype">void</span> __stxd_descend(<a class="code" href="structTnode.html">Tnode</a> *s,<span class="keywordtype">char</span> *v,<span class="keywordtype">char</span> *buf) {</div>
+<div class="line"><a name="l00530"></a><span class="lineno">  530</span>&#160;    <span class="keywordflow">if</span>(<a class="code" href="group__tree.html#gaf459b3de598bba95efe941c4960f845d">_t_children</a>(s)&gt;0) {</div>
+<div class="line"><a name="l00531"></a><span class="lineno">  531</span>&#160;    <span class="keywordtype">char</span> b[1000];</div>
+<div class="line"><a name="l00532"></a><span class="lineno">  532</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *sub = _t_child(s,1);</div>
+<div class="line"><a name="l00533"></a><span class="lineno">  533</span>&#160;    sprintf(buf,<a class="code" href="group__tree.html#gaf459b3de598bba95efe941c4960f845d">_t_children</a>(sub)&gt;0?<span class="stringliteral">&quot;(%s/%s)&quot;</span>:<span class="stringliteral">&quot;(%s/%s)&quot;</span>,v,__dump_semtrex(sub,b));</div>
+<div class="line"><a name="l00534"></a><span class="lineno">  534</span>&#160;    }</div>
+<div class="line"><a name="l00535"></a><span class="lineno">  535</span>&#160;    <span class="keywordflow">else</span> sprintf(buf,<span class="stringliteral">&quot;%s&quot;</span>,v);</div>
+<div class="line"><a name="l00536"></a><span class="lineno">  536</span>&#160;}</div>
+<div class="line"><a name="l00537"></a><span class="lineno">  537</span>&#160;</div>
+<div class="line"><a name="l00538"></a><span class="lineno">  538</span>&#160;<span class="keywordtype">char</span> * __dump_semtrex(<a class="code" href="structTnode.html">Tnode</a> *s,<span class="keywordtype">char</span> *buf) {</div>
+<div class="line"><a name="l00539"></a><span class="lineno">  539</span>&#160;    Symbol sym = <a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(s);</div>
+<div class="line"><a name="l00540"></a><span class="lineno">  540</span>&#160;    <span class="keywordtype">char</span> b[1000];</div>
+<div class="line"><a name="l00541"></a><span class="lineno">  541</span>&#160;    <span class="keywordtype">char</span> *sn;</div>
+<div class="line"><a name="l00542"></a><span class="lineno">  542</span>&#160;    <span class="keywordtype">int</span> i,c;</div>
+<div class="line"><a name="l00543"></a><span class="lineno">  543</span>&#160;    <span class="keywordflow">switch</span>(sym) {</div>
+<div class="line"><a name="l00544"></a><span class="lineno">  544</span>&#160;    <span class="keywordflow">case</span> <a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a4f31ece163a69349b0daadd9d27e4a51">SEMTREX_VALUE_LITERAL</a>:</div>
+<div class="line"><a name="l00545"></a><span class="lineno">  545</span>&#160;    <span class="keywordflow">case</span> <a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a24fed94b1bdcacc4989e256136ad750c">SEMTREX_SYMBOL_LITERAL</a>:</div>
+<div class="line"><a name="l00546"></a><span class="lineno">  546</span>&#160;    c = *(<span class="keywordtype">int</span> *)<a class="code" href="group__tree.html#ga5a292a02511c82863edfcaa72fa9698c">_t_surface</a>(s);</div>
+<div class="line"><a name="l00547"></a><span class="lineno">  547</span>&#160;    sn = <a class="code" href="group__def.html#gae5fc3e0b245984a477b4c13aacb2fc02">_d_get_symbol_name</a>(0,c);</div>
+<div class="line"><a name="l00548"></a><span class="lineno">  548</span>&#160;    <span class="comment">// ignore &quot;&lt;unknown symbol&quot;</span></div>
+<div class="line"><a name="l00549"></a><span class="lineno">  549</span>&#160;    <span class="keywordflow">if</span> (*sn==<span class="charliteral">&#39;&lt;&#39;</span>)</div>
+<div class="line"><a name="l00550"></a><span class="lineno">  550</span>&#160;        sprintf(b,<span class="stringliteral">&quot;%d&quot;</span>,c);</div>
+<div class="line"><a name="l00551"></a><span class="lineno">  551</span>&#160;    <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00552"></a><span class="lineno">  552</span>&#160;        sprintf(b,<span class="stringliteral">&quot;%s&quot;</span>,sn);</div>
+<div class="line"><a name="l00553"></a><span class="lineno">  553</span>&#160;    <span class="keywordflow">if</span> (sym == <a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a4f31ece163a69349b0daadd9d27e4a51">SEMTREX_VALUE_LITERAL</a>) {</div>
+<div class="line"><a name="l00554"></a><span class="lineno">  554</span>&#160;        sprintf(b+strlen(b),<span class="stringliteral">&quot;=???&quot;</span>);</div>
+<div class="line"><a name="l00555"></a><span class="lineno">  555</span>&#160;    }</div>
+<div class="line"><a name="l00556"></a><span class="lineno">  556</span>&#160;    __stxd_descend(s,b,buf);</div>
+<div class="line"><a name="l00557"></a><span class="lineno">  557</span>&#160;    <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00558"></a><span class="lineno">  558</span>&#160;    <span class="keywordflow">case</span> <a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a9a67b424e6a6adfe23cd3432642109f5">SEMTREX_SYMBOL_ANY</a>:</div>
+<div class="line"><a name="l00559"></a><span class="lineno">  559</span>&#160;    sprintf(b,<span class="stringliteral">&quot;.&quot;</span>);</div>
+<div class="line"><a name="l00560"></a><span class="lineno">  560</span>&#160;    __stxd_descend(s,b,buf);</div>
 <div class="line"><a name="l00561"></a><span class="lineno">  561</span>&#160;    <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00562"></a><span class="lineno">  562</span>&#160;    <span class="keywordflow">case</span> <a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3ab048f8136e64b01fc2cb22f9dc588084">SEMTREX_OR</a>:</div>
-<div class="line"><a name="l00563"></a><span class="lineno">  563</span>&#160;    sprintf(buf,<span class="stringliteral">&quot;(%s)|(%s)&quot;</span>,__dump_semtrex(_t_child(s,1),b),__dump_semtrex(_t_child(s,2),b));</div>
-<div class="line"><a name="l00564"></a><span class="lineno">  564</span>&#160;    <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00565"></a><span class="lineno">  565</span>&#160;    <span class="keywordflow">case</span> <a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a388806ffbf23acd9f4d947dcb0de01b2">SEMTREX_ZERO_OR_MORE</a>:</div>
-<div class="line"><a name="l00566"></a><span class="lineno">  566</span>&#160;    __stxd_multi(<span class="stringliteral">&quot;*&quot;</span>,s,buf);</div>
-<div class="line"><a name="l00567"></a><span class="lineno">  567</span>&#160;    <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00568"></a><span class="lineno">  568</span>&#160;    <span class="keywordflow">case</span> <a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3aaf104f1158c4cffb4478bae29e964fd1">SEMTREX_ONE_OR_MORE</a>:</div>
-<div class="line"><a name="l00569"></a><span class="lineno">  569</span>&#160;    __stxd_multi(<span class="stringliteral">&quot;+&quot;</span>,s,buf);</div>
-<div class="line"><a name="l00570"></a><span class="lineno">  570</span>&#160;    <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00571"></a><span class="lineno">  571</span>&#160;    <span class="keywordflow">case</span> <a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a4b5d10ecd2c7bc7e205e4abdcc318e0c">SEMTREX_ZERO_OR_ONE</a>:</div>
-<div class="line"><a name="l00572"></a><span class="lineno">  572</span>&#160;    __stxd_multi(<span class="stringliteral">&quot;?&quot;</span>,s,buf);</div>
-<div class="line"><a name="l00573"></a><span class="lineno">  573</span>&#160;    <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160;    <span class="keywordflow">case</span> <a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a5b54d3166ed65522d1b0b557a91b5316">SEMTREX_GROUP</a>:</div>
-<div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160;    sn = <a class="code" href="group__def.html#gae5fc3e0b245984a477b4c13aacb2fc02">_d_get_symbol_name</a>(0,*(<span class="keywordtype">int</span> *)<a class="code" href="group__tree.html#ga5a292a02511c82863edfcaa72fa9698c">_t_surface</a>(s));</div>
-<div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160;    <span class="comment">// ignore &quot;&lt;unknown symbol&quot;</span></div>
-<div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;    <span class="keywordflow">if</span>  (*sn==<span class="charliteral">&#39;&lt;&#39;</span>)</div>
-<div class="line"><a name="l00578"></a><span class="lineno">  578</span>&#160;        sprintf(buf, <span class="stringliteral">&quot;{%s}&quot;</span>,__dump_semtrex(_t_child(s,1),b));</div>
-<div class="line"><a name="l00579"></a><span class="lineno">  579</span>&#160;    <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00580"></a><span class="lineno">  580</span>&#160;        sprintf(buf, <span class="stringliteral">&quot;{%s: %s}&quot;</span>,sn,__dump_semtrex(_t_child(s,1),b));</div>
+<div class="line"><a name="l00562"></a><span class="lineno">  562</span>&#160;    <span class="keywordflow">case</span> <a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a2bcf9a9f55a6002b167918d9657788b7">SEMTREX_SEQUENCE</a>:</div>
+<div class="line"><a name="l00563"></a><span class="lineno">  563</span>&#160;    c = <a class="code" href="group__tree.html#gaf459b3de598bba95efe941c4960f845d">_t_children</a>(s);</div>
+<div class="line"><a name="l00564"></a><span class="lineno">  564</span>&#160;    sn = buf;</div>
+<div class="line"><a name="l00565"></a><span class="lineno">  565</span>&#160;    <span class="keywordflow">for</span>(i=1;i&lt;=c;i++) {</div>
+<div class="line"><a name="l00566"></a><span class="lineno">  566</span>&#160;        sprintf(sn,i&lt;c ? <span class="stringliteral">&quot;%s,&quot;</span>:<span class="stringliteral">&quot;%s&quot;</span>,__dump_semtrex(_t_child(s,i),b));</div>
+<div class="line"><a name="l00567"></a><span class="lineno">  567</span>&#160;        sn += strlen(sn);</div>
+<div class="line"><a name="l00568"></a><span class="lineno">  568</span>&#160;    }</div>
+<div class="line"><a name="l00569"></a><span class="lineno">  569</span>&#160;    <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00570"></a><span class="lineno">  570</span>&#160;    <span class="keywordflow">case</span> <a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3ab048f8136e64b01fc2cb22f9dc588084">SEMTREX_OR</a>:</div>
+<div class="line"><a name="l00571"></a><span class="lineno">  571</span>&#160;    sprintf(buf,<span class="stringliteral">&quot;(%s)|(%s)&quot;</span>,__dump_semtrex(_t_child(s,1),b),__dump_semtrex(_t_child(s,2),b));</div>
+<div class="line"><a name="l00572"></a><span class="lineno">  572</span>&#160;    <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00573"></a><span class="lineno">  573</span>&#160;    <span class="keywordflow">case</span> <a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a388806ffbf23acd9f4d947dcb0de01b2">SEMTREX_ZERO_OR_MORE</a>:</div>
+<div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160;    __stxd_multi(<span class="stringliteral">&quot;*&quot;</span>,s,buf);</div>
+<div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160;    <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160;    <span class="keywordflow">case</span> <a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3aaf104f1158c4cffb4478bae29e964fd1">SEMTREX_ONE_OR_MORE</a>:</div>
+<div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;    __stxd_multi(<span class="stringliteral">&quot;+&quot;</span>,s,buf);</div>
+<div class="line"><a name="l00578"></a><span class="lineno">  578</span>&#160;    <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00579"></a><span class="lineno">  579</span>&#160;    <span class="keywordflow">case</span> <a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a4b5d10ecd2c7bc7e205e4abdcc318e0c">SEMTREX_ZERO_OR_ONE</a>:</div>
+<div class="line"><a name="l00580"></a><span class="lineno">  580</span>&#160;    __stxd_multi(<span class="stringliteral">&quot;?&quot;</span>,s,buf);</div>
 <div class="line"><a name="l00581"></a><span class="lineno">  581</span>&#160;    <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00582"></a><span class="lineno">  582</span>&#160;    }</div>
-<div class="line"><a name="l00583"></a><span class="lineno">  583</span>&#160;    <span class="keywordflow">return</span> buf;</div>
-<div class="line"><a name="l00584"></a><span class="lineno">  584</span>&#160;}</div>
-<div class="line"><a name="l00585"></a><span class="lineno">  585</span>&#160;</div>
-<div class="line"><a name="l00586"></a><span class="lineno">  586</span>&#160;<span class="keywordtype">char</span> * _dump_semtrex(<a class="code" href="structTnode.html">Tnode</a> *s,<span class="keywordtype">char</span> *buf) {</div>
-<div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160;    buf[0] = <span class="charliteral">&#39;/&#39;</span>;</div>
-<div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160;    __dump_semtrex(s,buf+1);</div>
-<div class="line"><a name="l00589"></a><span class="lineno">  589</span>&#160;    <span class="keywordflow">return</span> buf;</div>
-<div class="line"><a name="l00590"></a><span class="lineno">  590</span>&#160;}</div>
+<div class="line"><a name="l00582"></a><span class="lineno">  582</span>&#160;    <span class="keywordflow">case</span> <a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a5b54d3166ed65522d1b0b557a91b5316">SEMTREX_GROUP</a>:</div>
+<div class="line"><a name="l00583"></a><span class="lineno">  583</span>&#160;    sn = <a class="code" href="group__def.html#gae5fc3e0b245984a477b4c13aacb2fc02">_d_get_symbol_name</a>(0,*(<span class="keywordtype">int</span> *)<a class="code" href="group__tree.html#ga5a292a02511c82863edfcaa72fa9698c">_t_surface</a>(s));</div>
+<div class="line"><a name="l00584"></a><span class="lineno">  584</span>&#160;    <span class="comment">// ignore &quot;&lt;unknown symbol&quot;</span></div>
+<div class="line"><a name="l00585"></a><span class="lineno">  585</span>&#160;    <span class="keywordflow">if</span>  (*sn==<span class="charliteral">&#39;&lt;&#39;</span>)</div>
+<div class="line"><a name="l00586"></a><span class="lineno">  586</span>&#160;        sprintf(buf, <span class="stringliteral">&quot;{%s}&quot;</span>,__dump_semtrex(_t_child(s,1),b));</div>
+<div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160;    <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160;        sprintf(buf, <span class="stringliteral">&quot;{%s: %s}&quot;</span>,sn,__dump_semtrex(_t_child(s,1),b));</div>
+<div class="line"><a name="l00589"></a><span class="lineno">  589</span>&#160;    <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00590"></a><span class="lineno">  590</span>&#160;    }</div>
+<div class="line"><a name="l00591"></a><span class="lineno">  591</span>&#160;    <span class="keywordflow">return</span> buf;</div>
+<div class="line"><a name="l00592"></a><span class="lineno">  592</span>&#160;}</div>
+<div class="line"><a name="l00593"></a><span class="lineno">  593</span>&#160;</div>
+<div class="line"><a name="l00594"></a><span class="lineno">  594</span>&#160;<span class="keywordtype">char</span> * _dump_semtrex(<a class="code" href="structTnode.html">Tnode</a> *s,<span class="keywordtype">char</span> *buf) {</div>
+<div class="line"><a name="l00595"></a><span class="lineno">  595</span>&#160;    buf[0] = <span class="charliteral">&#39;/&#39;</span>;</div>
+<div class="line"><a name="l00596"></a><span class="lineno">  596</span>&#160;    __dump_semtrex(s,buf+1);</div>
+<div class="line"><a name="l00597"></a><span class="lineno">  597</span>&#160;    <span class="keywordflow">return</span> buf;</div>
+<div class="line"><a name="l00598"></a><span class="lineno">  598</span>&#160;}</div>
 <div class="ttc" id="structinstance__elem_html"><div class="ttname"><a href="structinstance__elem.html">instance_elem</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00057">ceptr_types.h:57</a></div></div>
 <div class="ttc" id="sys__symbols_8h_html_ab0f6206b340472c7ace01d1e9d4b87f3a24fed94b1bdcacc4989e256136ad750c"><div class="ttname"><a href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a24fed94b1bdcacc4989e256136ad750c">SEMTREX_SYMBOL_LITERAL</a></div><div class="ttdoc">This system symbol matches on the semantic type. Ex: /TEST_SYMBOL. </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00052">sys_symbols.h:52</a></div></div>
 <div class="ttc" id="group__def_html_ga766db34af870b275213a4e828d826267"><div class="ttname"><a href="group__def.html#ga766db34af870b275213a4e828d826267">_d_get_structure_name</a></div><div class="ttdeci">char * _d_get_structure_name(Tnode *structures, Structure s)</div><div class="ttdef"><b>Definition:</b> <a href="def_8c_source.html#l00049">def.c:49</a></div></div>
@@ -547,7 +547,7 @@ $(document).ready(function(){initNavTree('receptor_8c_source.html','');});
 <div class="ttc" id="sys__symbols_8h_html_ab0f6206b340472c7ace01d1e9d4b87f3a5b54d3166ed65522d1b0b557a91b5316"><div class="ttname"><a href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a5b54d3166ed65522d1b0b557a91b5316">SEMTREX_GROUP</a></div><div class="ttdoc">Grouping Ex: (...)operator. </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00060">sys_symbols.h:60</a></div></div>
 <div class="ttc" id="structinstance__elem_html_a86b4388e64f55687d1c000af2eb7b0e4"><div class="ttname"><a href="structinstance__elem.html#a86b4388e64f55687d1c000af2eb7b0e4">instance_elem::addr</a></div><div class="ttdeci">int addr</div><div class="ttdoc">key to this instance </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00058">ceptr_types.h:58</a></div></div>
 <div class="ttc" id="group__receptor_html_gacce906c9de30765f458599777b72be90"><div class="ttname"><a href="group__receptor.html#gacce906c9de30765f458599777b72be90">_r_get_symbol_by_label</a></div><div class="ttdeci">Symbol _r_get_symbol_by_label(Receptor *r, char *label)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00162">receptor.c:162</a></div></div>
-<div class="ttc" id="group__receptor_html_gae251d0cfa84e1edbbe12d3489aa29d1e"><div class="ttname"><a href="group__receptor.html#gae251d0cfa84e1edbbe12d3489aa29d1e">_r_send</a></div><div class="ttdeci">Tnode * _r_send(Receptor *r, Receptor *from, Aspect aspect, Tnode *signal_contents)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00454">receptor.c:454</a></div></div>
+<div class="ttc" id="group__receptor_html_gae251d0cfa84e1edbbe12d3489aa29d1e"><div class="ttname"><a href="group__receptor.html#gae251d0cfa84e1edbbe12d3489aa29d1e">_r_send</a></div><div class="ttdeci">Tnode * _r_send(Receptor *r, Receptor *from, Aspect aspect, Tnode *signal_contents)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00462">receptor.c:462</a></div></div>
 <div class="ttc" id="group__def_html_ga711a956190b8d06afc51a025253d663c"><div class="ttname"><a href="group__def.html#ga711a956190b8d06afc51a025253d663c">__d_declare_symbol</a></div><div class="ttdeci">Tnode * __d_declare_symbol(Tnode *symbols, Structure s, char *label)</div><div class="ttdef"><b>Definition:</b> <a href="def_8c_source.html#l00072">def.c:72</a></div></div>
 <div class="ttc" id="group__tree_html_ga5a292a02511c82863edfcaa72fa9698c"><div class="ttname"><a href="group__tree.html#ga5a292a02511c82863edfcaa72fa9698c">_t_surface</a></div><div class="ttdeci">void * _t_surface(Tnode *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00337">tree.c:337</a></div></div>
 <div class="ttc" id="structinstances__elem_html_a8de2d1f9439151657a718b405a16cae4"><div class="ttname"><a href="structinstances__elem.html#a8de2d1f9439151657a718b405a16cae4">instances_elem::last_id</a></div><div class="ttdeci">int last_id</div><div class="ttdoc">the last allocated id for instances </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00071">ceptr_types.h:71</a></div></div>
@@ -611,7 +611,7 @@ $(document).ready(function(){initNavTree('receptor_8c_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="receptor_8c.html">receptor.c</a></li>
-    <li class="footer">Generated on Wed Sep 10 2014 14:11:00 for ceptr by
+    <li class="footer">Generated on Thu Sep 11 2014 11:14:27 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

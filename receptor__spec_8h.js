@@ -3,7 +3,6 @@ var receptor__spec_8h =
     [ "defineHouseLocation", "receptor__spec_8h.html#a98dc4c2784ade9388f0b5aad95d78aae", null ],
     [ "testReceptor", "receptor__spec_8h.html#aaf972a86b5bdef0bc6a43ebf006f313c", null ],
     [ "testReceptorAction", "receptor__spec_8h.html#a3cae92defb2178364fc0d8f7eded5089", null ],
-    [ "testReceptorActionH", "receptor__spec_8h.html#ae76c4925e1d9d636bdef6a7958506676", null ],
     [ "testReceptorAddListener", "receptor__spec_8h.html#a835718c76d21df730045c682738b4a42", null ],
     [ "testReceptorCreate", "receptor__spec_8h.html#a3a764534a7cc2c00a1e15642d0554b7c", null ],
     [ "testReceptorDef", "receptor__spec_8h.html#aa07faab05f9e36cec27352a395804b52", null ],
