@@ -1,8 +1,6 @@
 var searchData=
 [
-  ['semtrex_2ec',['semtrex.c',['../semtrex_8c.html',1,'']]],
-  ['semtrex_2eh',['semtrex.h',['../semtrex_8h.html',1,'']]],
-  ['semtrex_5fspec_2eh',['semtrex_spec.h',['../semtrex__spec_8h.html',1,'']]],
-  ['sys_5fstructures_2eh',['sys_structures.h',['../sys__structures_8h.html',1,'']]],
-  ['sys_5fsymbols_2eh',['sys_symbols.h',['../sys__symbols_8h.html',1,'']]]
+  ['receptor_2ec',['receptor.c',['../receptor_8c.html',1,'']]],
+  ['receptor_2eh',['receptor.h',['../receptor_8h.html',1,'']]],
+  ['receptor_5fspec_2eh',['receptor_spec.h',['../receptor__spec_8h.html',1,'']]]
 ];

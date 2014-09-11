@@ -109,7 +109,7 @@ $(document).ready(function(){initNavTree('tree__spec_8h_source.html','');});
 <a href="tree__spec_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;../src/ceptr.h&quot;</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;../src/receptor.h&quot;</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;http_example.h&quot;</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="http__example_8h.html">http_example.h</a>&quot;</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keywordtype">void</span> testCreateTreeNodes() {</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <span class="comment">/* test the creation of trees and the various function that give access to created data elements</span></div>
@@ -207,7 +207,7 @@ $(document).ready(function(){initNavTree('tree__spec_8h_source.html','');});
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;}</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
 <div class="line"><a name="l00108"></a><span class="lineno"><a class="line" href="tree__spec_8h.html#af59a30f5d159bb08ea49baf053cb204d">  108</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="tree__spec_8h.html#af59a30f5d159bb08ea49baf053cb204d">testTreePathGet</a>() {</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t = _makeTestHTTPRequestTree(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t = <a class="code" href="http__example_8h.html#a00c3c0cf4519afa3c2906864d9f99c25">_makeTestHTTPRequestTree</a>(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="keywordtype">int</span> p0[] = {TREE_PATH_TERMINATOR};</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="keywordtype">int</span> p1[] = {1,TREE_PATH_TERMINATOR};</div>
@@ -237,7 +237,7 @@ $(document).ready(function(){initNavTree('tree__spec_8h_source.html','');});
 <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;}</div>
 <div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;</div>
 <div class="line"><a name="l00140"></a><span class="lineno"><a class="line" href="tree__spec_8h.html#ad27e0ca8287fd12eb5823170bb306c90">  140</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="tree__spec_8h.html#ad27e0ca8287fd12eb5823170bb306c90">testTreePathGetSurface</a>() {</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t = _makeTestHTTPRequestTree(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t = <a class="code" href="http__example_8h.html#a00c3c0cf4519afa3c2906864d9f99c25">_makeTestHTTPRequestTree</a>(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
 <div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;</div>
 <div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    <span class="keywordtype">int</span> p1[] = {3,1,1,TREE_PATH_TERMINATOR};</div>
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    <span class="keywordtype">int</span> p2[] = {3,1,2,TREE_PATH_TERMINATOR};</div>
@@ -261,7 +261,7 @@ $(document).ready(function(){initNavTree('tree__spec_8h_source.html','');});
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;}</div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;</div>
 <div class="line"><a name="l00166"></a><span class="lineno"><a class="line" href="tree__spec_8h.html#a14b70ecd723111bbe4d10b3d3e36600a">  166</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="tree__spec_8h.html#a14b70ecd723111bbe4d10b3d3e36600a">testTreePathGetPath</a>() {</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t = _makeTestHTTPRequestTree(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t = <a class="code" href="http__example_8h.html#a00c3c0cf4519afa3c2906864d9f99c25">_makeTestHTTPRequestTree</a>(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    <span class="keywordtype">int</span> p0[] = {TREE_PATH_TERMINATOR};</div>
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    <span class="keywordtype">int</span> p1[] = {1,TREE_PATH_TERMINATOR};</div>
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    <span class="keywordtype">int</span> p2[] = {3,1,TREE_PATH_TERMINATOR};</div>
@@ -333,7 +333,7 @@ $(document).ready(function(){initNavTree('tree__spec_8h_source.html','');});
 <div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;}</div>
 <div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;</div>
 <div class="line"><a name="l00248"></a><span class="lineno"><a class="line" href="tree__spec_8h.html#a2135f4c00a6d218e0de5b1f63bb2a54a">  248</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="tree__spec_8h.html#a2135f4c00a6d218e0de5b1f63bb2a54a">testTreeNodeIndex</a>() {</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t = _makeTestHTTPRequestTree(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t = <a class="code" href="http__example_8h.html#a00c3c0cf4519afa3c2906864d9f99c25">_makeTestHTTPRequestTree</a>(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
 <div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    spec_is_equal(_t_node_index(_t_child(t,1)),1);</div>
 <div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    spec_is_equal(_t_node_index(_t_child(t,2)),2);</div>
 <div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    spec_is_equal(_t_node_index(_t_child(t,3)),3);</div>
@@ -343,7 +343,7 @@ $(document).ready(function(){initNavTree('tree__spec_8h_source.html','');});
 <div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;}</div>
 <div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;</div>
 <div class="line"><a name="l00260"></a><span class="lineno"><a class="line" href="tree__spec_8h.html#a61b28f10ff4df871f93a9b98c2a6dbf8">  260</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="tree__spec_8h.html#a61b28f10ff4df871f93a9b98c2a6dbf8">testTreeClone</a>() {</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t = _makeTestHTTPRequestTree();</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t = <a class="code" href="http__example_8h.html#a00c3c0cf4519afa3c2906864d9f99c25">_makeTestHTTPRequestTree</a>();</div>
 <div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *c = <a class="code" href="group__tree.html#gaaeb6a7d7bf14e958d9e79c699edb8040">_t_clone</a>(t);</div>
 <div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;</div>
 <div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    spec_is_true(t!=c);</div>
@@ -361,7 +361,7 @@ $(document).ready(function(){initNavTree('tree__spec_8h_source.html','');});
 <div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;}</div>
 <div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;</div>
 <div class="line"><a name="l00280"></a><span class="lineno"><a class="line" href="tree__spec_8h.html#a40c176590d4f13d3110238f7c50824fb">  280</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="tree__spec_8h.html#a40c176590d4f13d3110238f7c50824fb">testTreeReplace</a>() {</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t = _makeTestHTTPRequestTree(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t = <a class="code" href="http__example_8h.html#a00c3c0cf4519afa3c2906864d9f99c25">_makeTestHTTPRequestTree</a>(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
 <div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;</div>
 <div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    <span class="comment">// replace the version with a new version</span></div>
 <div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t_version = <a class="code" href="group__tree.html#gaff88720dad09389f6b7f35f7985d8efd">_t_newr</a>(0,TSYM_HTTP_REQUEST_VERSION);</div>
@@ -402,7 +402,7 @@ $(document).ready(function(){initNavTree('tree__spec_8h_source.html','');});
 <div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;}</div>
 <div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;</div>
 <div class="line"><a name="l00327"></a><span class="lineno"><a class="line" href="tree__spec_8h.html#a80fb5c03826178e4332803fb546777fc">  327</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="tree__spec_8h.html#a80fb5c03826178e4332803fb546777fc">testTreeDetach</a>() {</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t = _makeTestHTTPRequestTree(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t = <a class="code" href="http__example_8h.html#a00c3c0cf4519afa3c2906864d9f99c25">_makeTestHTTPRequestTree</a>(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
 <div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;    <span class="keywordtype">char</span> buf[2000];</div>
 <div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;    <span class="keywordtype">int</span> p1[] = {1,TREE_PATH_TERMINATOR};</div>
 <div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;</div>
@@ -459,10 +459,12 @@ $(document).ready(function(){initNavTree('tree__spec_8h_source.html','');});
 <div class="ttc" id="tree__spec_8h_html_a2135f4c00a6d218e0de5b1f63bb2a54a"><div class="ttname"><a href="tree__spec_8h.html#a2135f4c00a6d218e0de5b1f63bb2a54a">testTreeNodeIndex</a></div><div class="ttdeci">void testTreeNodeIndex()</div><div class="ttdef"><b>Definition:</b> <a href="tree__spec_8h_source.html#l00248">tree_spec.h:248</a></div></div>
 <div class="ttc" id="group__tree_html_ga302facc6d6e2d4937d560e081c828095"><div class="ttname"><a href="group__tree.html#ga302facc6d6e2d4937d560e081c828095">_t_detach_by_idx</a></div><div class="ttdeci">Tnode * _t_detach_by_idx(Tnode *t, int i)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00158">tree.c:158</a></div></div>
 <div class="ttc" id="group__tree_html_ga6def3ea6dde2b49d32ec7f382212d6aa"><div class="ttname"><a href="group__tree.html#ga6def3ea6dde2b49d32ec7f382212d6aa">_t_newt</a></div><div class="ttdeci">Tnode * _t_newt(Tnode *parent, Symbol symbol, Tnode *surface)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00084">tree.c:84</a></div></div>
+<div class="ttc" id="http__example_8h_html"><div class="ttname"><a href="http__example_8h.html">http_example.h</a></div></div>
 <div class="ttc" id="group__tree_html_gaf155629f920b45c8b3d11bb19255d69e"><div class="ttname"><a href="group__tree.html#gaf155629f920b45c8b3d11bb19255d69e">_t_add</a></div><div class="ttdeci">void _t_add(Tnode *t, Tnode *c)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00141">tree.c:141</a></div></div>
 <div class="ttc" id="group__tree_html_ga26e1b609fa8a660e13d046af2bb4a32e"><div class="ttname"><a href="group__tree.html#ga26e1b609fa8a660e13d046af2bb4a32e">_t_new_receptor</a></div><div class="ttdeci">Tnode * _t_new_receptor(Tnode *parent, Symbol symbol, Receptor *r)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00129">tree.c:129</a></div></div>
 <div class="ttc" id="tree__spec_8h_html_a5986d99ac81ace5b68beb3d5c255ca61"><div class="ttname"><a href="tree__spec_8h.html#a5986d99ac81ace5b68beb3d5c255ca61">testTreePathCopy</a></div><div class="ttdeci">void testTreePathCopy()</div><div class="ttdef"><b>Definition:</b> <a href="tree__spec_8h_source.html#l00229">tree_spec.h:229</a></div></div>
 <div class="ttc" id="tree__spec_8h_html_a40c176590d4f13d3110238f7c50824fb"><div class="ttname"><a href="tree__spec_8h.html#a40c176590d4f13d3110238f7c50824fb">testTreeReplace</a></div><div class="ttdeci">void testTreeReplace()</div><div class="ttdef"><b>Definition:</b> <a href="tree__spec_8h_source.html#l00280">tree_spec.h:280</a></div></div>
+<div class="ttc" id="http__example_8h_html_a00c3c0cf4519afa3c2906864d9f99c25"><div class="ttname"><a href="http__example_8h.html#a00c3c0cf4519afa3c2906864d9f99c25">_makeTestHTTPRequestTree</a></div><div class="ttdeci">Tnode * _makeTestHTTPRequestTree()</div><div class="ttdoc">[makeTestHTTPRequestTree] </div><div class="ttdef"><b>Definition:</b> <a href="http__example_8h_source.html#l00075">http_example.h:75</a></div></div>
 <div class="ttc" id="tree__spec_8h_html_a61b28f10ff4df871f93a9b98c2a6dbf8"><div class="ttname"><a href="tree__spec_8h.html#a61b28f10ff4df871f93a9b98c2a6dbf8">testTreeClone</a></div><div class="ttdeci">void testTreeClone()</div><div class="ttdef"><b>Definition:</b> <a href="tree__spec_8h_source.html#l00260">tree_spec.h:260</a></div></div>
 <div class="ttc" id="group__tree_html_gabfc4da7bf9475fb3bad4ea20b5f78fab"><div class="ttname"><a href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a></div><div class="ttdeci">Symbol _t_symbol(Tnode *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00350">tree.c:350</a></div></div>
 <div class="ttc" id="tree__spec_8h_html_ad27e0ca8287fd12eb5823170bb306c90"><div class="ttname"><a href="tree__spec_8h.html#ad27e0ca8287fd12eb5823170bb306c90">testTreePathGetSurface</a></div><div class="ttdeci">void testTreePathGetSurface()</div><div class="ttdef"><b>Definition:</b> <a href="tree__spec_8h_source.html#l00140">tree_spec.h:140</a></div></div>
@@ -488,7 +490,7 @@ $(document).ready(function(){initNavTree('tree__spec_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><a class="el" href="tree__spec_8h.html">tree_spec.h</a></li>
-    <li class="footer">Generated on Thu Sep 11 2014 11:14:27 for ceptr by
+    <li class="footer">Generated on Thu Sep 11 2014 11:18:09 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

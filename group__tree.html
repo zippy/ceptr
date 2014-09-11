@@ -363,7 +363,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structTnode.html">Tnode</a> duplicated tree </dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000015">Todo:</a></b></dt><dd>make this work with trees that have orthogonal trees! </dd></dl>
 <dl class="bug"><dt><b><a class="el" href="bug.html#_bug000001">Bug:</a></b></dt><dd>doesn't properly clone trees with orthogonal trees</dd></dl>
-<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structTnode.html">Tnode</a> *t = _makeTestHTTPRequestTree();</div>
+<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structTnode.html">Tnode</a> *t = <a class="code" href="http__example_8h.html#a00c3c0cf4519afa3c2906864d9f99c25">_makeTestHTTPRequestTree</a>();</div>
 <div class="line">    <a class="code" href="structTnode.html">Tnode</a> *<a class="code" href="structVMHost.html#a53bffdb41bcc4096902aabf8ab029637">c</a> = <a class="code" href="group__tree.html#gaaeb6a7d7bf14e958d9e79c699edb8040">_t_clone</a>(t);</div>
 <div class="line"></div>
 <div class="line">    spec_is_true(t!=c);</div>
@@ -416,7 +416,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the detatched child</dd></dl>
-<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structTnode.html">Tnode</a> *t = _makeTestHTTPRequestTree(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
+<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structTnode.html">Tnode</a> *t = <a class="code" href="http__example_8h.html#a00c3c0cf4519afa3c2906864d9f99c25">_makeTestHTTPRequestTree</a>(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
 <div class="line">    <span class="keywordtype">char</span> buf[2000];</div>
 <div class="line">    <span class="keywordtype">int</span> p1[] = {1,TREE_PATH_TERMINATOR};</div>
 <div class="line"></div>
@@ -531,7 +531,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>pointer to a <a class="el" href="structTnode.html">Tnode</a></dd></dl>
-<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structTnode.html">Tnode</a> *t = _makeTestHTTPRequestTree(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
+<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structTnode.html">Tnode</a> *t = <a class="code" href="http__example_8h.html#a00c3c0cf4519afa3c2906864d9f99c25">_makeTestHTTPRequestTree</a>(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
 <div class="line"></div>
 <div class="line">    <span class="keywordtype">int</span> p0[] = {TREE_PATH_TERMINATOR};</div>
 <div class="line">    <span class="keywordtype">int</span> p1[] = {1,TREE_PATH_TERMINATOR};</div>
@@ -586,7 +586,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>path of node</dd></dl>
 </dd></dl>
-<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structTnode.html">Tnode</a> *t = _makeTestHTTPRequestTree(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
+<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structTnode.html">Tnode</a> *t = <a class="code" href="http__example_8h.html#a00c3c0cf4519afa3c2906864d9f99c25">_makeTestHTTPRequestTree</a>(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
 <div class="line">    <span class="keywordtype">int</span> p0[] = {TREE_PATH_TERMINATOR};</div>
 <div class="line">    <span class="keywordtype">int</span> p1[] = {1,TREE_PATH_TERMINATOR};</div>
 <div class="line">    <span class="keywordtype">int</span> p2[] = {3,1,TREE_PATH_TERMINATOR};</div>
@@ -644,7 +644,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>pointer to surface or NULL if path not found</dd></dl>
-<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structTnode.html">Tnode</a> *t = _makeTestHTTPRequestTree(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
+<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structTnode.html">Tnode</a> *t = <a class="code" href="http__example_8h.html#a00c3c0cf4519afa3c2906864d9f99c25">_makeTestHTTPRequestTree</a>(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
 <div class="line"></div>
 <div class="line">    <span class="keywordtype">int</span> p1[] = {3,1,1,TREE_PATH_TERMINATOR};</div>
 <div class="line">    <span class="keywordtype">int</span> p2[] = {3,1,2,TREE_PATH_TERMINATOR};</div>
@@ -1165,7 +1165,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
   </table>
   </dd>
 </dl>
-<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structTnode.html">Tnode</a> *t = _makeTestHTTPRequestTree(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
+<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structTnode.html">Tnode</a> *t = <a class="code" href="http__example_8h.html#a00c3c0cf4519afa3c2906864d9f99c25">_makeTestHTTPRequestTree</a>(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// replace the version with a new version</span></div>
 <div class="line">    <a class="code" href="structTnode.html">Tnode</a> *t_version = <a class="code" href="group__tree.html#gaff88720dad09389f6b7f35f7985d8efd">_t_newr</a>(0,TSYM_HTTP_REQUEST_VERSION);</div>
@@ -1307,7 +1307,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Sep 11 2014 11:14:27 for ceptr by
+    <li class="footer">Generated on Thu Sep 11 2014 11:18:09 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
