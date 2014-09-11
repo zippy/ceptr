@@ -419,6 +419,7 @@ int _t_match(Tnode *semtrex,Tnode *t) {
  */
 Tnode *_t_get_match(Tnode *result,Symbol group)
 {
+    if (!result) return 0;
     int i,c=_t_children(result);
     Tnode *t;
     for (i=1;i<=c;i++) {

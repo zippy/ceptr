@@ -450,6 +450,14 @@ Receptor * _r_unserialize(void *surface) {
 
 /**
  * Send a signal to a receptor on a given aspect
+ *
+ * @param[in] r Receptor to serialize
+ * @param[in] from source Receptor
+ * @param[in] aspect Aspect over which the message will be sent
+ * @param[in] signal_contents the message to be sent, which will be wrapped in a SIGNAL
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/receptor_spec.h testReceptorAction
  */
 Tnode * _r_send(Receptor *r,Receptor *from,Aspect aspect, Tnode *signal_contents) {
     Tnode *m,*e,*l,*rt=0;

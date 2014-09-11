@@ -7,6 +7,8 @@
 #include "../src/ceptr.h"
 #include "../src/receptor.h"
 #include "../src/def.h"
+#include "http_example.h"
+
 void testReceptorCreate() {
     //! [testReceptorCreate]
     Receptor *r;
@@ -77,47 +79,57 @@ void testReceptorSignal() {
 }
 
 void testReceptorAction() {
-
+    //! [testReceptorAction]
     Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
 
-    // The signal is a name with a child that is the first name
-    Tnode *signal = _t_new_root(TEST_NAME_SYMBOL);
-    _t_new(signal,TEST_FIRST_NAME_SYMBOL,"eric",5);
+    // The signal is an HTTP request
+    Tnode *signal = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
 
-    // The listener just matches on signal TEST_NAME_TYPE type and responds with
-    // converted tree to: /TEST_INT_SYMBOL2/TEST_FIRST_NAME
+    // our expectation should match on the first path segment
     Tnode *expect = _t_new_root(EXPECTATION);
-    Tnode *sa = _t_newi(expect,SEMTREX_SYMBOL_ANY,0);
-    Tnode *sg = _t_newi(sa,SEMTREX_GROUP,TEST_FIRST_NAME_SYMBOL);
-    _t_newi(sg,SEMTREX_SYMBOL_LITERAL,TEST_FIRST_NAME_SYMBOL);
+    Tnode *req = _t_newi(expect,SEMTREX_SYMBOL_LITERAL,TSYM_HTTP_REQUEST);
+    Tnode *seq = _t_newr(req,SEMTREX_SEQUENCE);
+    _t_newr(seq,SEMTREX_SYMBOL_ANY);  // skips the Version
+    _t_newr(seq,SEMTREX_SYMBOL_ANY);  // skips over the Method
+    Tnode *path = _t_newi(seq,SEMTREX_SYMBOL_LITERAL,TSYM_HTTP_REQUEST_PATH);
+    Tnode *segs = _t_newi(path,SEMTREX_SYMBOL_LITERAL,TSYM_HTTP_REQUEST_PATH_SEGMENTS);
+    Tnode *g = _t_newi(segs,SEMTREX_GROUP,TSYM_HTTP_REQUEST_PATH_SEGMENT);
+    _t_newi(g,SEMTREX_SYMBOL_LITERAL,TSYM_HTTP_REQUEST_PATH_SEGMENT);
+
+    Tnode *result;
+    int matched;
+    // make sure our expectation semtrex actually matches the signal
+    spec_is_true(matched = _t_matchr(req,signal,&result));
+    Tnode *m = _t_get_match(result,TSYM_HTTP_REQUEST_PATH_SEGMENT);
+    char buf[2000];
+    __t_dump(test_HTTP_symbols,m,0,buf);
+    spec_is_str_equal(buf," (SEMTREX_MATCH:HTTP_REQUEST_PATH_SEGMENT (SEMTREX_MATCHED_PATH:/3/1/1) (SEMTREX_MATCH_SIBLINGS_COUNT:1))");
+    if (result) {
+	_t_free(result);
+    }
+
+    // the action simply responds back with the method that was originally sent
+    // this test should be made more real... but for now it responds back with a ping
+    // like message that is what the first path segment was
     Tnode *act = _t_new_root(ACTION);
-    Tnode *resp = _t_newi(act,RESPOND,0);
-    Tnode *n = _t_newi(resp,INTERPOLATE_FROM_MATCH,0);
-    Tnode *t = _t_newi(n,TEST_INT_SYMBOL2,0);
-    _t_newi(t,INTERPOLATE_SYMBOL,TEST_FIRST_NAME_SYMBOL);
+    Tnode *resp = _t_newr(act,RESPOND);
+    Tnode *n = _t_newr(resp,INTERPOLATE_FROM_MATCH);
+    Tnode *http_resp = _t_newr(n,TSYM_HTTP_RESPONSE);
+    _t_new(http_resp,TSYM_HTTP_RESPONSE_CONTENT_TYPE,"CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT",38);
+    _t_newi(http_resp,INTERPOLATE_SYMBOL,TSYM_HTTP_REQUEST_PATH_SEGMENT);
 
-    // confirm that the signal will match on our expectation
-    spec_is_true(_t_match(sa,signal));
+    _r_add_listener(r,DEFAULT_ASPECT,TSYM_HTTP_REQUEST,expect,act);
 
-    _r_add_listener(r,DEFAULT_ASPECT,TEST_NAME_SYMBOL,expect,act);
     Tnode *s = _r_send(r,r,DEFAULT_ASPECT,signal);
-
     spec_is_symbol_equal(r,_t_symbol(s),SIGNAL);
-    Tnode *result = _t_child(_t_child(s,1),1);
 
-    // the result should be signal tree with  the matched TEST_INT_SYMBOL value interpolated
-    // in the right place
-    spec_is_symbol_equal(r,_t_symbol(result),TEST_INT_SYMBOL2);
-    Tnode *r1 = _t_child(result,1);
-    spec_is_symbol_equal(r,_t_symbol(r1),TEST_FIRST_NAME_SYMBOL);
-    spec_is_str_equal((char *)_t_surface(r1),"eric");
-
-    /// @todo a signal that has no matches should return a null result?
-    signal = _t_newi(0,TEST_INT_SYMBOL2,3141);
-    result = _r_send(r,r,DEFAULT_ASPECT,signal);
-    spec_is_ptr_equal(result,NULL);
+    // the result should be signal tree with the matched PATH_SEGMENT returned as the body
+    result = _t_child(_t_child(s,1),1);
+    __t_dump(test_HTTP_symbols,result,0,buf);
+    spec_is_str_equal(buf," (HTTP_RESPONSE (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT) (HTTP_REQUEST_PATH_SEGMENT:groups))");
 
     _r_free(r);
+    //! [testReceptorAction]
 }
 
 void testReceptorDef() {
@@ -315,6 +327,7 @@ void testSemtrexDump() {
 }
 
 void testReceptor() {
+    _setup_HTTPDefs();
     testReceptorCreate();
     testReceptorAddListener();
     testReceptorSignal();
@@ -324,4 +337,5 @@ void testReceptor() {
     testReceptorInstanceNew();
     //    testReceptorSerialize();
     testSemtrexDump();
+    _cleanup_HTTPDefs();
 }

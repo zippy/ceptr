@@ -27,6 +27,10 @@ Symbol TSYM_HTTP_REQUEST_VERSION;
 Symbol TSYM_HTTP_REQUEST_VERSION_MAJOR;
 Symbol TSYM_HTTP_REQUEST_VERSION_MINOR;
 
+Symbol TSYM_HTTP_RESPONSE;
+Symbol TSYM_HTTP_RESPONSE_CONTENT_TYPE;
+Symbol TSYM_HTTP_RESPONSE_BODY;
+
 Tnode *test_HTTP_symbols,*test_HTTP_structures;
 
 void _setup_HTTPDefs() {
@@ -48,6 +52,11 @@ void _setup_HTTPDefs() {
     TSYM_HTTP_REQUEST_VERSION = _d_declare_symbol(test_HTTP_symbols,TREE,"HTTP_REQUEST_VERSION");
     TSYM_HTTP_REQUEST_VERSION_MAJOR = _d_declare_symbol(test_HTTP_symbols,INTEGER,"HTTP_REQUEST_VERSION_MAJOR");
     TSYM_HTTP_REQUEST_VERSION_MINOR = _d_declare_symbol(test_HTTP_symbols,INTEGER,"HTTP_REQUEST_VERSION_MINOR");
+
+    TSYM_HTTP_RESPONSE = _d_declare_symbol(test_HTTP_symbols,TREE,"HTTP_RESPONSE");
+    TSYM_HTTP_RESPONSE = _d_declare_symbol(test_HTTP_symbols,TREE,"HTTP_RESPONSE");
+    TSYM_HTTP_RESPONSE_CONTENT_TYPE = _d_declare_symbol(test_HTTP_symbols,CSTRING,"HTTP_RESPONSE_CONTENT_TYPE");
+    TSYM_HTTP_RESPONSE_BODY = _d_declare_symbol(test_HTTP_symbols,CSTRING,"HTTP_RESPONSE_BODY");
 }
 
 void _cleanup_HTTPDefs() {
