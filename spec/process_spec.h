@@ -64,7 +64,27 @@ void testRunTreeReduce() {
 
 /// @todo when interpolating from a match, how do we handle non-leaf interpollations, i.e. where do you hook children onto?
 
+void testProcessIf() {
+    // test IF which takes three parameters, the condition, the true code tree and the false code tree
+    Tnode *t = _t_new_root(RUN_TREE);
+    Tnode *n = _t_newr(t,IF);
+
+    // setup params
+    Tnode *p = _t_newi(t,PARAMS,0);
+    Tnode *p1 = _t_newi(p,TRUE_FALSE,1);
+    Tnode *p2 = _t_newi(p,TEST_INT_SYMBOL,99);
+    Tnode *p3 = _t_newi(p,TEST_INT_SYMBOL,100);
+
+    _p_reduce(t);
+    char buf[2000];
+    __t_dump(0,_t_child(t,1),0,buf);
+    spec_is_str_equal(buf," (TEST_INT_SYMBOL:99)");
+
+    _t_free(t);
+}
+
 void testProcess() {
     testRunTree();
     testRunTreeReduce();
+    testProcessIf();
 }

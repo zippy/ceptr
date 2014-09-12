@@ -11,9 +11,8 @@
 #include "semtrex.h"
 #include <stdarg.h>
 
-
 /**
- * implements the INTERPOLATE_FROM_MATCH instruction
+ * implements the INTERPOLATE_FROM_MATCH process
  *
  * replaces the interpolation tree with the matched sub-parts from a semtrex match results tree
  *
@@ -53,10 +52,23 @@ void _p_reduce(Tnode *run_tree) {
     if (!code) {
 	raise_error0("expecting code tree as first child of run tree!");
     }
-    Symbol s = _t_symbol(code);
-    Tnode *params,*match_results,*match_tree;
+    //@todo do a symbol check to make sure this really is a process id not a symbol
+    Process s = _t_symbol(code);
+    Tnode *params,*match_results,*match_tree,*t;
+    int b;
     Tnode *x;
     switch(s) {
+    case IF:
+	params = _t_child(run_tree,2);
+	t = _t_child(params,1);
+	//@todo check to see if we need to reduce the condition
+	if (0) {
+	    // _p_reduce(t) the condition expression
+	}
+	b = (*(int *)_t_surface(t)) ? 2 : 3;
+	x = _t_detach_by_idx(params,b);
+	_t_replace(run_tree,1,x);
+	break;
     case RESPOND:
 	// for now we just remove the RESPOND instruction and replace it with it's own child
 	x = _t_detach_by_idx(code,1);

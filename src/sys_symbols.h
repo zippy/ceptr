@@ -46,6 +46,7 @@ enum SystemSymbol
 {
     //-----  Basic symbols for underlying data types
     NULL_SYMBOL = -999,
+    TRUE_FALSE,
 
     //-----  Symbols for the different semantic parts of semtrexes
     SEMTREX_MATCHED_PATH,              ///< path to symbol matched by semtrex
@@ -108,6 +109,7 @@ enum SystemSymbol
 };
 static char *G_sys_symbol_names[] = {
     "NULL_SYMBOL",
+    "TRUE_FALSE",
     "SEMTREX_MATCHED_PATH",
     "SEMTREX_SYMBOL_LITERAL",
     "SEMTREX_SEQUENCE",
@@ -165,6 +167,7 @@ static char *G_sys_symbol_names[] = {
 
 static Structure G_sys_symbol_structures[] = {
     NULL_STRUCTURE,      //"NULL_SYMBOL",
+    BOOLEAN,             //"TRUE_FALSE",
     TREE_PATH,           //"SEMTREX_MATCHED_PATH",
     SYMBOL,              //"SEMTREX_SYMBOL_LITERAL",
     LIST,                //"SEMTREX_SEQUENCE",

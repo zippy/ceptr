@@ -17,6 +17,7 @@
 enum SystemStructure
     {
 	NULL_STRUCTURE = -999,
+	BOOLEAN,
 	INTEGER,
 	FLOAT,
 	CSTRING,
@@ -34,6 +35,7 @@ enum SystemStructure
 typedef int Structure;
 static char *G_sys_structure_names[] = {
     "NULL_STRUCTURE",
+    "BOOLEAN",
     "INTEGER",
     "FLOAT",
     "CSTRING",
