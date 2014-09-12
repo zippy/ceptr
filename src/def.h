@@ -19,6 +19,7 @@
 
 char *_d_get_symbol_name(Tnode *symbols,Symbol s);
 char *_d_get_structure_name(Tnode *structures,Structure s);
+char *_d_get_process_name(Tnode *processes,Process p);
 Tnode *__d_declare_symbol(Tnode *symbols,Structure s,char *label);
 Symbol _d_declare_symbol(Tnode *symbols,Structure s,char *label);
 Structure _d_define_structure(Tnode *structures,char *label,int num_params,...);

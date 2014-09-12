@@ -51,9 +51,32 @@ char *_d_get_structure_name(Tnode *structures,Structure s) {
 	return G_sys_structure_names[s-NULL_STRUCTURE];
     else if (structures) {
 	Tnode *def = _t_child(structures,s);
-	return (char *)_t_surface(def);
+	Tnode *l = _t_child(def,1);
+	return (char *)_t_surface(l);
     }
     sprintf(__d_extra_buf,"<unknown structure:%d>",s);
+    return __d_extra_buf;
+}
+
+/**
+ * get processes's label
+ *
+ * @param[in] processes a process def tree containing structure definitions
+ * @param[in] p the Process to return the name for
+ * @returns char * pointing to label
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/def_spec.h testProcessGetName
+ */
+char *_d_get_process_name(Tnode *processes,Process p) {
+    if (p>NULL_PROCESS && p <_LAST_SYS_PROCESS )
+	return G_sys_process_names[p-NULL_PROCESS];
+    else if (processes) {
+	Tnode *def = _t_child(processes,p);
+	Tnode *l = _t_child(def,1);
+	return (char *)_t_surface(l);
+    }
+    sprintf(__d_extra_buf,"<unknown process:%d>",p);
     return __d_extra_buf;
 }
 

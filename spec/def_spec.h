@@ -19,16 +19,24 @@ void testStructureGetName() {
     //! [testStructureGetName]
 }
 
+void testProcessGetName() {
+    //! [testProcessGetName]
+    spec_is_str_equal(_d_get_process_name(0,NULL_PROCESS),"<unknown process:-999>");
+    //! [testProcessGetName]
+}
+
 void testDefSymbol() {
     //! [testDefSymbol]
     Tnode *defs = _t_new_root(SYMBOLS);
 
     Tnode *def = __d_declare_symbol(defs,INTEGER,"shoe size");
-    spec_is_equal(_t_children(defs),1);
-    spec_is_ptr_equal(_t_child(defs,1),def);
-    spec_is_equal(_t_symbol(_t_child(defs,1)),SYMBOL_DECLARATION);
-    spec_is_equal(_t_symbol(_t_child(_t_child(defs,1),1)),SYMBOL_STRUCTURE);
-    spec_is_equal(_t_symbol(_t_child(_t_child(defs,1),2)),SYMBOL_LABEL);
+    Symbol ss = 1;
+    spec_is_equal(_t_children(defs),ss);
+    spec_is_ptr_equal(_t_child(defs,ss),def);
+    spec_is_equal(_t_symbol(_t_child(defs,ss)),SYMBOL_DECLARATION);
+    spec_is_equal(_t_symbol(_t_child(_t_child(defs,ss),1)),SYMBOL_STRUCTURE);
+    spec_is_equal(_t_symbol(_t_child(_t_child(defs,ss),2)),SYMBOL_LABEL);
+    spec_is_str_equal(_d_get_symbol_name(defs,ss),"shoe size");
 
     _t_free(defs);
     //! [testDefSymbol]
@@ -50,6 +58,7 @@ void testDefStructure() {
     spec_is_symbol_equal(0,_t_symbol(p),STRUCTURE_PARTS);
     spec_is_symbol_equal(0,_t_symbol(_t_child(p,1)),STRUCTURE_PART);
     spec_is_symbol_equal(0,_t_symbol(_t_child(p,1)),STRUCTURE_PART);
+    spec_is_str_equal(_d_get_structure_name(defs,1),"receptor pair");
 
     _t_free(defs);
     //! [testDefStructure]
@@ -129,6 +138,8 @@ void testCodeProcess() {
     Tnode *out = _t_child(s,5);
     spec_is_equal(_t_symbol(out),OUTPUT_SIGNATURE);
 
+    spec_is_str_equal(_d_get_process_name(defs,p),"power");
+
     _t_free(defs);
 
     //! [testCodeProcess]
@@ -137,6 +148,7 @@ void testCodeProcess() {
 void testDef() {
     testSymbolGetName();
     testStructureGetName();
+    testProcessGetName();
     testDefSymbol();
     testDefStructure();
     testGetSymbolStructure();
