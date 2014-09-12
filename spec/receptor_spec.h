@@ -18,13 +18,16 @@ void testReceptorCreate() {
 
     Tnode *t;
 
-    // test that the symbols and structures trees are set up correctly
+    // test that the symbols, structures & process trees are set up correctly
     t = _t_child(r->root,1);
     spec_is_symbol_equal(r,_t_symbol(r->structures),STRUCTURES);
     spec_is_ptr_equal(t,r->structures);
     t = _t_child(r->root,2);
     spec_is_symbol_equal(r,_t_symbol(r->symbols),SYMBOLS);
     spec_is_ptr_equal(t,r->symbols);
+    t = _t_child(r->root,3);
+    spec_is_symbol_equal(r,_t_symbol(r->processes),PROCESSES);
+    spec_is_ptr_equal(t,r->processes);
 
     // test that listeners and signals are set up correctly on the default aspect
     t = __r_get_listeners(r,DEFAULT_ASPECT);
@@ -33,7 +36,7 @@ void testReceptorCreate() {
     spec_is_symbol_equal(r,_t_symbol(t),SIGNALS);
 
     // test that the flux is set up correctly
-    t = _t_child(r->root,3);
+    t = _t_child(r->root,4);
     spec_is_symbol_equal(r,_t_symbol(r->flux),FLUX);
     spec_is_ptr_equal(t,r->flux);
     t = _t_child(r->flux,1);
@@ -172,6 +175,12 @@ void testReceptorDef() {
     Symbol home = _r_declare_symbol(r,namedhouse,"home");
     char surface[] ={1,2,3,4,5,6,7,8,'b','o','b','b','y',0};
     spec_is_long_equal(__r_get_symbol_size(r,home,surface),sizeof(float)*2+6);
+
+    Tnode *code = _t_new_root(ACTION);
+    Tnode *input = _t_new_root(INPUT_SIGNATURE);
+    Tnode *output = _t_new_root(OUTPUT_SIGNATURE);
+    Process p = _r_code_process(r,code,"power","takes the mathematical power of the two params",input,output);
+    spec_is_equal(_t_children(r->processes),p);
 
     _r_free(r);
 }

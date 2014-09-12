@@ -203,6 +203,52 @@ size_t _d_get_structure_size(Tnode *symbols,Tnode *structures,Structure s,void *
     }
 }
 
+/**
+ * add a new process coding to the processes tree
+ *
+ * @param[inout] processes a process def tree containing process codings which will be added to
+ * @param[in] code the code tree for this process
+ * @param[in] name the name of the process
+ * @param[in] intention a description of what the process intends to do/transform
+ * @param[in] in the input signature for the process
+ * @param[in] out the output signature for the process
+ * @returns the newly defined process
+ * @todo this is not thread safe!
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/def_spec.h testCodeProcess
+ */
+Tnode *__d_code_process(Tnode *processes,Tnode *code,char *name,char *intention,Tnode *in,Tnode *out) {
+    Tnode *def = _t_newr(processes,PROCESS_CODING);
+    _t_new(def,PROCESS_NAME,name,strlen(name)+1);
+    _t_new(def,PROCESS_INTENTION,intention,strlen(intention)+1);
+    _t_add(def,code);
+    _t_add(def,in);
+    _t_add(def,out);
+    return def;
+}
+
+/**
+ * add a new process coding to the processes tree
+ *
+ * @param[inout] processes a process def tree containing process codings which will be added to
+ * @param[in] code the code tree for this process
+ * @param[in] name the name of the process
+ * @param[in] intention a description of what the process intends to do/transform
+ * @param[in] in the input signature for the process
+ * @param[in] out the output signature for the process
+ * @returns the process identifier
+ * @todo this is not thread safe!
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/def_spec.h testCodeProcess
+ */
+Process _d_code_process(Tnode *processes,Tnode *code,char *name,char *intention,Tnode *in,Tnode *out) {
+    __d_code_process(processes,code,name,intention,in,out);
+    return _t_children(processes);
+}
+
+
 /*****************  Tree debugging utilities */
 
 char * __t_dump(Tnode *symbols,Tnode *t,int level,char *buf) {

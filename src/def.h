@@ -26,6 +26,8 @@ Tnode * _dv_define_structure(Tnode *structures,char *label,int num_params,va_lis
 Structure _d_get_symbol_structure(Tnode *symbols,Symbol symbol);
 size_t _d_get_symbol_size(Tnode *symbols,Tnode *structures,Symbol s,void *surface);
 size_t _d_get_structure_size(Tnode *symbols,Tnode *structures,Symbol s,void *surface);
+Tnode *__d_code_process(Tnode *processes,Tnode *code,char *name,char *intention,Tnode *in,Tnode *out);
+Process _d_code_process(Tnode *processes,Tnode *code,char *name,char *intention,Tnode *in,Tnode *out);
 char * __t_dump(Tnode *symbols,Tnode *t,int level,char *buf);
 
 #endif

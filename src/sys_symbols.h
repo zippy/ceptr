@@ -84,6 +84,12 @@ enum SystemSymbol
     RESPOND,                           ///< an instruction to respond to the initiating signal with the what ever the sub-tree reduced to
     INTERPOLATE_FROM_MATCH,            ///< an instruction which reduces to replaced values from the match
     INTERPOLATE_SYMBOL,                ///< a place holder to indicate which symbol to insert into this part of the three
+    PROCESSES,
+    PROCESS_CODING,
+    PROCESS_NAME,
+    PROCESS_INTENTION,
+    INPUT_SIGNATURE,
+    OUTPUT_SIGNATURE,
     RUN_TREE,
     PARAMS,
 
@@ -138,6 +144,12 @@ static char *G_sys_symbol_names[] = {
     "RESPOND",
     "INTERPOLATE_FROM_MATCH",
     "INTERPOLATE_SYMBOL",
+    "PROCESSES",
+    "PROCESS_CODING",
+    "PROCESS_NAME",
+    "PROCESS_INTENTION",
+    "INPUT_SIGNATURE",
+    "OUTPUT_SIGNATURE",
     "RUN_TREE",
     "PARAMS",
     "VM_HOST_RECEPTOR",
@@ -191,7 +203,13 @@ static Structure G_sys_symbol_structures[] = {
     NULL_STRUCTURE,      //"RESPOND",
     NULL_STRUCTURE,      //"INTERPOLATE_FROM_MATCH",
     SYMBOL,              //"INTERPOLATE_SYMBOL",
-    NULL_STRUCTURE,      //"RUN_TREE",
+    LIST,                //"PROCESSES"
+    TREE,                //"PROCESS_CODING",
+    CSTRING,             //"PROCESS_NAME",
+    CSTRING,             //"PROCESS_INTENTION",
+    TREE,                //"INPUT_SIGNATURE",
+    SYMBOL,              //"OUTPUT_SIGNATURE",
+    TREE,                //"RUN_TREE",
     LIST,                //"PARAMS",
     RECEPTOR,            //"VM_HOST_RECEPTOR",
     RECEPTOR,            //"COMPOSITORY",

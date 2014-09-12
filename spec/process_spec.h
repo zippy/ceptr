@@ -9,7 +9,7 @@
 
 void testRunTree() {
     Tnode *act = _t_new_root(ACTION);
-    Tnode *resp = _t_newi(act,RESPOND,0);
+    Tnode *resp = _t_newr(act,RESPOND);
     Tnode *t = _t_newi(resp,TEST_INT_SYMBOL,0);
     Tnode *p1 = _t_newi(0,TEST_INT_SYMBOL,5413);
     Tnode *p2 = _t_newi(0,TEST_INT_SYMBOL2,3145);

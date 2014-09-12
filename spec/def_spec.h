@@ -95,6 +95,45 @@ void testGetSize() {
     //! [testGetSize]
 }
 
+void testCodeProcess() {
+    //! [testCodeProcess]
+    Tnode *defs = _t_new_root(PROCESSES);
+    Tnode *code = _t_new_root(ACTION);
+    Tnode *input = _t_new_root(INPUT_SIGNATURE);
+    Tnode *output = _t_new_root(OUTPUT_SIGNATURE);
+    Process p = _d_code_process(defs,code,"power","takes the mathematical power of the two params",input,output);
+
+    spec_is_equal(_t_children(defs),p);
+    Tnode *s = _t_child(defs,p);
+
+    spec_is_equal(_t_symbol(s),PROCESS_CODING);
+
+    // first child is the name of the process
+    Tnode *name = _t_child(s,1);
+    spec_is_equal(_t_symbol(name),PROCESS_NAME);
+    spec_is_str_equal((char *)_t_surface(name),"power");
+
+    // second child is process intention as text (documentation)
+    Tnode *intention = _t_child(s,2);
+    spec_is_equal(_t_symbol(intention),PROCESS_INTENTION);
+    spec_is_str_equal((char *)_t_surface(intention),"takes the mathematical power of the two params");
+
+    // third child is code itself
+    spec_is_ptr_equal(_t_child(s,3),code);
+
+    // fourth child is the input signature
+    Tnode *in = _t_child(s,4);
+    spec_is_equal(_t_symbol(in),INPUT_SIGNATURE);
+
+    // fifth child is the output signature
+    Tnode *out = _t_child(s,5);
+    spec_is_equal(_t_symbol(out),OUTPUT_SIGNATURE);
+
+    _t_free(defs);
+
+    //! [testCodeProcess]
+}
+
 void testDef() {
     testSymbolGetName();
     testStructureGetName();
@@ -102,4 +141,5 @@ void testDef() {
     testDefStructure();
     testGetSymbolStructure();
     testGetSize();
+    testCodeProcess();
 }

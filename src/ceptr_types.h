@@ -5,6 +5,7 @@
 #include "uthash.h"
 
 typedef int Symbol;
+typedef int Process;
 
 // ** types for trees
 struct Tstruct {
@@ -84,6 +85,7 @@ struct Receptor {
     Tnode *root;        ///< root node of the semantic tree
     Tnode *structures;  ///< pointer for quick access to structures
     Tnode *symbols;     ///< pointer for quick access to symbols
+    Tnode *processes;   ///< pointer for quick access to processes
     Tnode *flux;        ///< pointer for quick access to the flux
     LabelTable table;   ///< the label table
     Instances instances;///< the instances store

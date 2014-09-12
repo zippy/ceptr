@@ -15,11 +15,12 @@
 /*****************  create and destroy receptors */
 
 
-Receptor *__r_new(Symbol s,Tnode *symbols, Tnode *structures) {
+Receptor *__r_new(Symbol s,Tnode *symbols, Tnode *structures,Tnode *processes) {
     Receptor *r = malloc(sizeof(Receptor));
     r->root = _t_new_root(s);
     _t_add(r->root,r->structures = structures);
     _t_add(r->root,r->symbols = symbols);
+    _t_add(r->root,r->processes = processes);
     r->flux = _t_newr(r->root,FLUX);
     Tnode *a = _t_newi(r->flux,ASPECT,DEFAULT_ASPECT);
     _t_newr(a,LISTENERS);
@@ -41,7 +42,7 @@ Receptor *__r_new(Symbol s,Tnode *symbols, Tnode *structures) {
  * @snippet spec/receptor_spec.h testReceptorCreate
  */
 Receptor *_r_new(Symbol s) {
-    return __r_new(s,_t_new_root(SYMBOLS),_t_new_root(STRUCTURES));
+    return __r_new(s,_t_new_root(SYMBOLS),_t_new_root(STRUCTURES),_t_new_root(PROCESSES));
 }
 
 /**
@@ -54,9 +55,10 @@ Receptor *_r_new(Symbol s) {
  * @todo implement bindings
  */
 Receptor *_r_new_receptor_from_package(Symbol s,Tnode *p,Tnode *bindings) {
-    Tnode *sym = _t_clone(_t_child(p,3));
-    Tnode *str = _t_clone(_t_child(p,4));
-    return __r_new(s,sym,str);
+    Tnode *sym = _t_clone(_t_child(p,2));
+    Tnode *str = _t_clone(_t_child(p,3));
+    Tnode *proc = _t_clone(_t_child(p,4));
+    return __r_new(s,sym,str,proc);
 }
 
 /**
@@ -98,7 +100,7 @@ void _r_free(Receptor *r) {
     free(r);
 }
 
-/*****************  receptor symbols and structures */
+/*****************  receptor symbols, structures and processes */
 
 /**
  * we use this for both defining symbols and structures because labels store the full path to the labeled item
@@ -154,6 +156,23 @@ Structure _r_define_structure(Receptor *r,char *label,int num_params,...) {
     va_end(params);
 
     return __set_label_for_def(r,label,def);
+}
+
+/**
+ * add a new process coding to a receptor
+ *
+ * @param[in] r the receptor
+ * @param[in] code the code tree for this process
+ * @param[in] name the name of the process
+ * @param[in] intention a description of what the process intends to do/transform
+ * @param[in] in the input signature for the process
+ * @param[in] out the output signature for the process
+ * @returns the new Process
+ *
+ */
+Process _r_code_process(Receptor *r,Tnode *code,char *name,char *intention,Tnode *in,Tnode *out) {
+    Tnode *def = __d_code_process(r->processes,code,name,intention,in,out);
+    return __set_label_for_def(r,name,def);
 }
 
 /**
@@ -304,7 +323,7 @@ Tnode * _r_get_instance(Receptor *r,Xaddr x) {
 	if (i) {
 	    return i->instance;
 	}
-    }
+   }
     return 0;
 }
 
@@ -430,7 +449,8 @@ Receptor * _r_unserialize(void *surface) {
     r->root = t;
     r->structures = _t_child(t,1);
     r->symbols = _t_child(t,2);
-    r->flux = _t_child(t,2);
+    r->processes = _t_child(t,3);
+    r->flux = _t_child(t,4);
     int c = _t_children(r->symbols);
     int i;
     for(i=1;i<=c;i++){
@@ -442,6 +462,12 @@ Receptor * _r_unserialize(void *surface) {
     for(i=1;i<=c;i++){
 	Tnode *def = _t_child(r->structures,i);
 	__set_label_for_def(r,_t_surface(def),def);
+    }
+    c = _t_children(r->processes);
+    for(i=1;i<=c;i++){
+	Tnode *def = _t_child(r->processes,i);
+	Tnode *sl = _t_child(def,1);
+	__set_label_for_def(r,_t_surface(sl),def);
     }
     return r;
 }
