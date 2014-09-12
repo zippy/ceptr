@@ -133,6 +133,18 @@ Tnode *_t_new_receptor(Tnode *parent,Symbol symbol,Receptor *r) {
 }
 
 /**
+ * Create a new tree node with a Process surface
+ *
+ * @param[in] parent parent node for the node to be created.  Can be 0 if this is a root node
+ * @param[in] symbol semantic symbol for the node to be create
+ * @param[in] surface Process value
+ * @returns pointer to node allocated on the heap
+ */
+Tnode * _t_newp(Tnode *parent,Symbol symbol,Process surface) {
+    return _t_newi(parent,symbol,surface);  // for now we can just do this because Process is an int
+}
+
+/**
  * add an existing tree onto another appending it as a child
  *
  * @param[in] t tree onto which c will be added

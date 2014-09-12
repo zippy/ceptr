@@ -54,7 +54,7 @@ void testReceptorAddListener() {
     // test that you can add a listener to a receptor's aspect
     Tnode *s = _t_new_root(EXPECTATION);
     _t_newi(s,SEMTREX_SYMBOL_LITERAL,0);
-    Tnode *a = _t_new_root(ACTION);
+    Tnode *a = _t_newi(0,ACTION,NULL_PROCESS);
     _r_add_listener(r,DEFAULT_ASPECT,TEST_INT_SYMBOL,s,a);
 
     Tnode *l = _t_child(__r_get_listeners(r,DEFAULT_ASPECT),1);      // listener should have been added as first child of listeners
@@ -114,12 +114,17 @@ void testReceptorAction() {
     // the action simply responds back with the method that was originally sent
     // this test should be made more real... but for now it responds back with a ping
     // like message that is what the first path segment was
-    Tnode *act = _t_new_root(ACTION);
-    Tnode *resp = _t_newr(act,RESPOND);
+
+    Tnode *resp = _t_new_root(RESPOND);
     Tnode *n = _t_newr(resp,INTERPOLATE_FROM_MATCH);
     Tnode *http_resp = _t_newr(n,TSYM_HTTP_RESPONSE);
     _t_new(http_resp,TSYM_HTTP_RESPONSE_CONTENT_TYPE,"CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT",38);
     _t_newi(http_resp,INTERPOLATE_SYMBOL,TSYM_HTTP_REQUEST_PATH_SEGMENT);
+    Tnode *input = _t_new_root(INPUT_SIGNATURE);
+    Tnode *output = _t_new_root(OUTPUT_SIGNATURE);
+    Process p = _r_code_process(r,resp,"code path ping","respond with the first segment of the code path",input,output);
+
+    Tnode *act = _t_newp(0,ACTION,p);
 
     _r_add_listener(r,DEFAULT_ASPECT,TSYM_HTTP_REQUEST,expect,act);
 

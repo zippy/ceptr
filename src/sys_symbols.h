@@ -81,8 +81,6 @@ enum SystemSymbol
     LISTENER,                          ///< surface of the listener is the carrier symbol, and it has two children, expectation semtrex and action code tree
     EXPECTATION,                       ///< expectation is a semtrex (thus has one child which is the first part of the semtrex)
     ACTION,                            ///< code tree, which specifies the action to perform when an expectation's semtrex matches
-    RESPOND,                           ///< an instruction to respond to the initiating signal with the what ever the sub-tree reduced to
-    INTERPOLATE_FROM_MATCH,            ///< an instruction which reduces to replaced values from the match
     INTERPOLATE_SYMBOL,                ///< a place holder to indicate which symbol to insert into this part of the three
     PROCESSES,
     PROCESS_CODING,
@@ -141,8 +139,6 @@ static char *G_sys_symbol_names[] = {
     "LISTENER",
     "EXPECTATION",
     "ACTION",
-    "RESPOND",
-    "INTERPOLATE_FROM_MATCH",
     "INTERPOLATE_SYMBOL",
     "PROCESSES",
     "PROCESS_CODING",
@@ -199,7 +195,7 @@ static Structure G_sys_symbol_structures[] = {
     LIST,                //"LISTENERS",
     INTEGER,             //"LISTENER",
     NULL_STRUCTURE,      //"EXPECTATION",
-    NULL_STRUCTURE,      //"ACTION",
+    PROCESS,             //"ACTION",
     NULL_STRUCTURE,      //"RESPOND",
     NULL_STRUCTURE,      //"INTERPOLATE_FROM_MATCH",
     SYMBOL,              //"INTERPOLATE_SYMBOL",

@@ -499,7 +499,10 @@ Tnode * _r_send(Receptor *r,Receptor *from,Aspect aspect, Tnode *signal_contents
 	e = _t_child(l,1);
 	// if we get a match, create a run tree from the action, using the match and signal as the parameters
 	if (_t_matchr(_t_child(e,1),signal_contents,&m)) {
-	    rt = _p_make_run_tree(_t_child(l,2),2,m,signal_contents);
+	    Tnode *action = _t_child(l,2);
+	    Tnode *code_def = _t_child(r->processes,*(Process *)_t_surface(action));
+	    Tnode *code = _t_child(code_def,3);
+	    rt = _p_make_run_tree(code,2,m,signal_contents);
 	    _t_free(m);
 	    _t_add(s,rt);
 	    // for now just reduce the tree in place

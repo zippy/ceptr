@@ -37,6 +37,7 @@ Tnode *_t_newt(Tnode *parent,Symbol symbol,Tnode *t);
 Tnode *_t_new_root(Symbol symbol);
 Tnode *_t_newr(Tnode *parent,Symbol symbol);
 Tnode *_t_new_receptor(Tnode *parent,Symbol symbol,Receptor *r);
+Tnode *_t_newp(Tnode *parent,Symbol symbol,Process surface);
 
 void _t_add(Tnode *t,Tnode *c);
 void _t_detach_by_ptr(Tnode *t,Tnode *c);
