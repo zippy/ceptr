@@ -2,6 +2,7 @@ var sys__symbols_8h =
 [
     [ "SystemSymbol", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3", [
       [ "NULL_SYMBOL", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a0f0c5131c4f239c34603d659605f00c7", null ],
+      [ "TRUE_FALSE", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a33e0845195e58430e4d466b12f1b65f0", null ],
       [ "SEMTREX_MATCHED_PATH", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3ae53584f23b67ccb4d91d943c2ffd1f32", null ],
       [ "SEMTREX_SYMBOL_LITERAL", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a24fed94b1bdcacc4989e256136ad750c", null ],
       [ "SEMTREX_SEQUENCE", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a2bcf9a9f55a6002b167918d9657788b7", null ],
@@ -33,9 +34,13 @@ var sys__symbols_8h =
       [ "LISTENER", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a3bc9f514d1055fbd078bdd7380d3fd90", null ],
       [ "EXPECTATION", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3af6d94b1598900ddce4908373a5f528e8", null ],
       [ "ACTION", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3ae1bb1460cb779888412e634e983be161", null ],
-      [ "RESPOND", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a64c5ec914c978938d6ed4d420c099c8a", null ],
-      [ "INTERPOLATE_FROM_MATCH", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a32422b0c037a5e196f197711c8d49589", null ],
       [ "INTERPOLATE_SYMBOL", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3ae0e51bb381564e3d460f0352172e0c40", null ],
+      [ "PROCESSES", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3ab2e76f9e6e1645553bff0165eaf953a8", null ],
+      [ "PROCESS_CODING", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3ae2eff5d834cbc1ff74794aa8aa5a958e", null ],
+      [ "PROCESS_NAME", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a38d3854295573647a3a80d7617919a9f", null ],
+      [ "PROCESS_INTENTION", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3abeb6cd60cf76437e1167e80755b065bd", null ],
+      [ "INPUT_SIGNATURE", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a21c3b2f6e8d71e23e41dc7fde269d7a3", null ],
+      [ "OUTPUT_SIGNATURE", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a0e579bd1d664859e0413a9733770147f", null ],
       [ "RUN_TREE", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3ae507944efd4eac222cf6554a37e4a3d3", null ],
       [ "PARAMS", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a99aa3cfd42d906f6767e9cf05c35c261", null ],
       [ "VM_HOST_RECEPTOR", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3afad1bc068f4b6dbd98531dc6a4289c9c", null ],

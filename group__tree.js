@@ -17,6 +17,7 @@ var group__tree =
     [ "_t_new_receptor", "group__tree.html#ga26e1b609fa8a660e13d046af2bb4a32e", null ],
     [ "_t_new_root", "group__tree.html#ga17676267c6fb457dd1d086f37641544a", null ],
     [ "_t_newi", "group__tree.html#gab438eeedb3eb6c1e20171b33d8ec499d", null ],
+    [ "_t_newp", "group__tree.html#ga88b91532333a81992610dce1e0a4dbae", null ],
     [ "_t_newr", "group__tree.html#gaff88720dad09389f6b7f35f7985d8efd", null ],
     [ "_t_newt", "group__tree.html#ga6def3ea6dde2b49d32ec7f382212d6aa", null ],
     [ "_t_next_sibling", "group__tree.html#ga49e337d9576c1f143e88a02aa9184756", null ],

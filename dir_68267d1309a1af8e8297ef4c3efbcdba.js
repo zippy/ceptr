@@ -15,6 +15,7 @@ var dir_68267d1309a1af8e8297ef4c3efbcdba =
     [ "receptor.h", "receptor_8h.html", "receptor_8h" ],
     [ "semtrex.c", "semtrex_8c.html", "semtrex_8c" ],
     [ "semtrex.h", "semtrex_8h.html", "semtrex_8h" ],
+    [ "sys_processes.h", "sys__processes_8h.html", "sys__processes_8h" ],
     [ "sys_structures.h", "sys__structures_8h.html", "sys__structures_8h" ],
     [ "sys_symbols.h", "sys__symbols_8h.html", "sys__symbols_8h" ],
     [ "tree.c", "tree_8c.html", "tree_8c" ],
