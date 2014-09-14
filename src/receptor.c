@@ -500,10 +500,7 @@ Tnode * _r_send(Receptor *r,Receptor *from,Aspect aspect, Tnode *signal_contents
 	// if we get a match, create a run tree from the action, using the match and signal as the parameters
 	if (_t_matchr(_t_child(e,1),signal_contents,&m)) {
 	    Tnode *action = _t_child(l,2);
-	    //@todo this means sys_processes won't work as actions!!
-	    Tnode *code_def = _t_child(r->processes,-*(Process *)_t_surface(action));
-	    Tnode *code = _t_child(code_def,3);
-	    rt = _p_make_run_tree(code,2,m,signal_contents);
+	    rt = _p_make_run_tree(r->processes,action,2,m,signal_contents);
 	    _t_free(m);
 	    _t_add(s,rt);
 	    // for now just reduce the tree in place
@@ -537,6 +534,10 @@ char *_r_get_symbol_name(Receptor *r,Symbol s) {
 
 char *_r_get_structure_name(Receptor *r,Structure s) {
     return _d_get_structure_name(r?r->structures:0,s);
+}
+
+char *_r_get_process_name(Receptor *r,Process p) {
+    return _d_get_process_name(r?r->structures:0,p);
 }
 
 char __t_dump_buf[10000];

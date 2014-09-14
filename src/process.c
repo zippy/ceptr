@@ -93,22 +93,35 @@ void _p_reduce(Tnode *run_tree) {
 /**
  * Build a run tree from a code tree and params
  *
- * @param[in] code code tree to be cloned into a run tree
+ * @param[in] processes processes trees
+ * @param[in] process Process tree node to be turned into run tree
  * @param[in] num_params the number of parameters to add to the parameters child
  * @param[in] ... Tnode params
  * @returns Tnode RUN_TREE tree
  */
-Tnode *_p_make_run_tree(Tnode *code,int num_params,...) {
+Tnode *_p_make_run_tree(Tnode *processes,Tnode *process,int num_params,...) {
     va_list params;
     int i;
 
     Tnode *t = _t_new_root(RUN_TREE);
-    Tnode *c = _t_clone(_t_child(code,1));
+
+    Process p = *(Process *)_t_surface(process);
+    if (!is_process(p)) {
+	raise_error("%s is not a Process",_d_get_process_name(processes,p));
+    }
+    if (is_sys_process(p)) {
+	raise_error0("can't handle sys_processes!");
+    }
+
+    Tnode *code_def = _t_child(processes,-p);
+    Tnode *code = _t_child(code_def,3);
+
+    Tnode *c = _t_clone(code);
     _t_add(t,c);
-    Tnode *p = _t_newr(t,PARAMS);
+    Tnode *ps = _t_newr(t,PARAMS);
     va_start(params,num_params);
     for(i=0;i<num_params;i++) {
-	_t_add(p,_t_clone(va_arg(params,Tnode *)));
+	_t_add(ps,_t_clone(va_arg(params,Tnode *)));
     }
     va_end(params);
     return t;

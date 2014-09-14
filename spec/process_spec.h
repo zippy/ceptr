@@ -8,29 +8,35 @@
 #include "../src/process.h"
 
 void testRunTree() {
-    Tnode *act = _t_new_root(ACTION);
-    Tnode *resp = _t_newr(act,RESPOND);
-    Tnode *t = _t_newi(resp,TEST_INT_SYMBOL,0);
-    Tnode *p1 = _t_newi(0,TEST_INT_SYMBOL,5413);
-    Tnode *p2 = _t_newi(0,TEST_INT_SYMBOL2,3145);
+    Tnode *defs = _t_new_root(PROCESSES);
+    Tnode *code = _t_new_root(IF);
+    Tnode *input = _t_new_root(INPUT_SIGNATURE);
+    Tnode *output = _t_new_root(OUTPUT_SIGNATURE);
+    Process p = _d_code_process(defs,code,"myif","a duplicate of the sys if process",input,output);
 
-    Tnode *r = _p_make_run_tree(act,2,p1,p2);
+    Tnode *p1 = _t_newi(0,TRUE_FALSE,0);
+    Tnode *p2 = _t_newi(0,TEST_INT_SYMBOL,1);
+    Tnode *p3 = _t_newi(0,TEST_INT_SYMBOL,2);
+
+    Tnode *act = _t_newp(0,ACTION,p);
+
+    Tnode *r = _p_make_run_tree(defs,act,3,p1,p2,p3);
 
     spec_is_symbol_equal(0,_t_symbol(r),RUN_TREE);
 
-    t = _t_child(r,1);  // first child should be clone of code
-    spec_is_symbol_equal(0,_t_symbol(t),RESPOND);
-    spec_is_true(t!=resp); // should be a clone
+    Tnode *t = _t_child(r,1);  // first child should be clone of code
+    spec_is_equal(_t_symbol(t),IF);
+    spec_is_true(t!=code);  //should be a clone
 
-    Tnode *p = _t_child(r,2); //second child should be params
-    spec_is_symbol_equal(0,_t_symbol(p),PARAMS);
+    Tnode *ps = _t_child(r,2); //second child should be params
+    spec_is_symbol_equal(0,_t_symbol(ps),PARAMS);
 
-    t = _t_child(p,1);
-    spec_is_symbol_equal(0,_t_symbol(t),TEST_INT_SYMBOL);
+    t = _t_child(ps,1);
+    spec_is_symbol_equal(0,_t_symbol(t),TRUE_FALSE);
     spec_is_true(t!=p1);  //should be a clone
 
-    t = _t_child(p,2);  // third child should be params
-    spec_is_symbol_equal(0,_t_symbol(t),TEST_INT_SYMBOL2);
+    t = _t_child(ps,2);  // third child should be params
+    spec_is_symbol_equal(0,_t_symbol(t),TEST_INT_SYMBOL);
     spec_is_true(t!=p2);  //should be a clone
 
     _t_free(act);

@@ -66,8 +66,11 @@ char *_td(Receptor *r,Tnode *t);
 
 #define spec_is_structure_equal(r,got, expected) spec_total++; if (expected==got){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %s but was %s",__FUNCTION__,__LINE__,#got,_r_get_structure_name(r,expected),_r_get_structure_name(r,got));}
 
+#define spec_is_process_equal(r,got, expected) spec_total++; if (expected==got){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %s but was %s",__FUNCTION__,__LINE__,#got,_r_get_process_name(r,expected),_r_get_process_name(r,got));}
+
 char *_r_get_structure_name(Receptor *r,Structure s);
 char *_r_get_symbol_name(Receptor *r,Symbol s);
+char *_r_get_process_name(Receptor *r,Process p);
 
 char * _dump_semtrex(Tnode *s,char *buf);
 
