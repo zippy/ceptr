@@ -13,10 +13,13 @@
 #ifndef _CEPTR_SYS_PROCESSES_H
 #define _CEPTR_SYS_PROCESSES_H
 
+#define is_sys_process(s) (s >= NULL_PROCESS && s < _LAST_SYS_PROCESS)
+#define is_process(s) (s & 0x80000000)
+
 /// System defined processes
 enum SystemProcess
     {
-	NULL_PROCESS = -999,
+	NULL_PROCESS = 0xffff0000,
 	IF,                                ///< reduce to the left or right tree conditionally
 	RESPOND,                           ///< respond to the initiating signal with the what ever the sub-tree reduced to
 	INTERPOLATE_FROM_MATCH,            ///< reduce to replaced values from the match

@@ -52,8 +52,10 @@ void _p_reduce(Tnode *run_tree) {
     if (!code) {
 	raise_error0("expecting code tree as first child of run tree!");
     }
-    //@todo do a symbol check to make sure this really is a process id not a symbol
     Process s = _t_symbol(code);
+
+    // if this isn't a process then we've reduced the tree
+    if (!is_process(s)) return;
     Tnode *params,*match_results,*match_tree,*t;
     int b;
     Tnode *x;

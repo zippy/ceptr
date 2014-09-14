@@ -172,18 +172,18 @@ Structure _r_define_structure(Receptor *r,char *label,int num_params,...) {
  */
 Process _r_code_process(Receptor *r,Tnode *code,char *name,char *intention,Tnode *in,Tnode *out) {
     Tnode *def = __d_code_process(r->processes,code,name,intention,in,out);
-    return __set_label_for_def(r,name,def);
+    return -__set_label_for_def(r,name,def);
 }
 
 /**
- * find a symbol give its label
+ * find a symbol by its label
  */
 Symbol _r_get_symbol_by_label(Receptor *r,char *label) {
     return __get_label_idx(r,label);
 }
 
 /**
- * find a symbol give its label
+ * find a structure by its label
  */
 Structure _r_get_structure_by_label(Receptor *r,char *label){
     return __get_label_idx(r,label);
@@ -226,7 +226,7 @@ Tnode * _r_build_def_semtrex(Receptor *r,Symbol s,Tnode *parent) {
     Tnode *stx = _t_newi(parent,SEMTREX_SYMBOL_LITERAL,s);
 
     Structure st = __r_get_symbol_structure(r,s);
-    if (st > 0) {
+    if (!(is_sys_structure(st))) {
 	Tnode *structure = _t_child(r->structures,st);
 	Tnode *parts = _t_child(structure,2);
 	int i,c = _t_children(parts);
@@ -500,7 +500,8 @@ Tnode * _r_send(Receptor *r,Receptor *from,Aspect aspect, Tnode *signal_contents
 	// if we get a match, create a run tree from the action, using the match and signal as the parameters
 	if (_t_matchr(_t_child(e,1),signal_contents,&m)) {
 	    Tnode *action = _t_child(l,2);
-	    Tnode *code_def = _t_child(r->processes,*(Process *)_t_surface(action));
+	    //@todo this means sys_processes won't work as actions!!
+	    Tnode *code_def = _t_child(r->processes,-*(Process *)_t_surface(action));
 	    Tnode *code = _t_child(code_def,3);
 	    rt = _p_make_run_tree(code,2,m,signal_contents);
 	    _t_free(m);

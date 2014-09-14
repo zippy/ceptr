@@ -4,8 +4,9 @@
 #include <stdint.h>
 #include "uthash.h"
 
-typedef int Symbol;
-typedef int Process;
+typedef uint32_t Symbol;
+typedef uint32_t Process;
+typedef uint32_t Structure;
 
 // ** types for trees
 struct Tstruct {

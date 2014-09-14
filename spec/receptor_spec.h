@@ -185,7 +185,7 @@ void testReceptorDef() {
     Tnode *input = _t_new_root(INPUT_SIGNATURE);
     Tnode *output = _t_new_root(OUTPUT_SIGNATURE);
     Process p = _r_code_process(r,code,"power","takes the mathematical power of the two params",input,output);
-    spec_is_equal(_t_children(r->processes),p);
+    spec_is_equal(_t_children(r->processes),-p);
 
     _r_free(r);
 }

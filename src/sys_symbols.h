@@ -13,9 +13,14 @@
 #ifndef _CEPTR_SYS_SYMBOL_H
 #define _CEPTR_SYS_SYMBOL_H
 #include "sys_structures.h"
+#include "ceptr_types.h"
+
+#define is_sys_symbol(s) (s >= NULL_SYMBOL && s < _LAST_SYS_SYMBOL)
+#define is_sys_test_symbol(s) (s >= TEST_INT_SYMBOL && s < _LAST_TEST_SYMBOL)
+#define is_symbol(s) (!(s & 0x80000000))
 
 /// test symbols.  These are defined only for the test suite.
-enum TestSymbol {TEST_INT_SYMBOL= -9999,TEST_INT_SYMBOL2,TEST_STR_SYMBOL,TEST_TREE_SYMBOL,TEST_TREE_SYMBOL2,
+enum TestSymbol {TEST_INT_SYMBOL= 0x8fff1000,TEST_INT_SYMBOL2,TEST_STR_SYMBOL,TEST_TREE_SYMBOL,TEST_TREE_SYMBOL2,
 		 TEST_NAME_SYMBOL,TEST_FIRST_NAME_SYMBOL,TEST_RECEPTOR_SYMBOL,
 		 _LAST_TEST_SYMBOL
 };
@@ -45,7 +50,7 @@ static Structure G_test_symbol_structures[] = {
 enum SystemSymbol
 {
     //-----  Basic symbols for underlying data types
-    NULL_SYMBOL = -999,
+    NULL_SYMBOL = 0x8fff0000,
     TRUE_FALSE,
 
     //-----  Symbols for the different semantic parts of semtrexes

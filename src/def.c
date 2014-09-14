@@ -24,9 +24,9 @@ char __d_extra_buf[10];
  * @snippet spec/def_spec.h testSymbolGetName
  */
 char *_d_get_symbol_name(Tnode *symbols,Symbol s) {
-    if (s>NULL_SYMBOL && s <_LAST_SYS_SYMBOL )
+    if (is_sys_symbol(s))
 	return G_sys_symbol_names[s-NULL_SYMBOL];
-    if (s>=TEST_INT_SYMBOL && s < _LAST_TEST_SYMBOL)
+    if (is_sys_test_symbol(s))
 	return G_test_symbol_names[s-TEST_INT_SYMBOL];
     else if (symbols) {
 	Tnode *def = _t_child(symbols,s);
@@ -48,7 +48,7 @@ char *_d_get_symbol_name(Tnode *symbols,Symbol s) {
  * @snippet spec/def_spec.h testStructureGetName
  */
 char *_d_get_structure_name(Tnode *structures,Structure s) {
-    if (s>NULL_STRUCTURE && s <_LAST_SYS_STRUCTURE )
+    if (is_sys_structure(s))
 	return G_sys_structure_names[s-NULL_STRUCTURE];
     else if (structures) {
 	Tnode *def = _t_child(structures,s);
@@ -70,9 +70,10 @@ char *_d_get_structure_name(Tnode *structures,Structure s) {
  * @snippet spec/def_spec.h testProcessGetName
  */
 char *_d_get_process_name(Tnode *processes,Process p) {
-    if (p>NULL_PROCESS && p <_LAST_SYS_PROCESS )
+    if (is_sys_process(p))
 	return G_sys_process_names[p-NULL_PROCESS];
     else if (processes) {
+	p = -p;   // process id's are all negative numbers
 	Tnode *def = _t_child(processes,p);
 	Tnode *l = _t_child(def,1);
 	return (char *)_t_surface(l);
@@ -160,10 +161,10 @@ Tnode * _dv_define_structure(Tnode *structures,char *label,int num_params,va_lis
  * @snippet spec/def_spec.h testGetSymbolStructure
  */
 Structure _d_get_symbol_structure(Tnode *symbols,Symbol s) {
-    if (s>=NULL_SYMBOL && s <_LAST_SYS_SYMBOL) {
+    if (is_sys_symbol(s)) {
 	return G_sys_symbol_structures[s-NULL_SYMBOL];
     }
-    else if (s>=TEST_INT_SYMBOL && s < _LAST_TEST_SYMBOL)
+    else if (is_sys_test_symbol(s))
 	return G_test_symbol_structures[s-TEST_INT_SYMBOL];
     Tnode *def = _t_child(symbols,s);
     Tnode *t = _t_child(def,1); // first child of the def is the structure
@@ -269,7 +270,7 @@ Tnode *__d_code_process(Tnode *processes,Tnode *code,char *name,char *intention,
  */
 Process _d_code_process(Tnode *processes,Tnode *code,char *name,char *intention,Tnode *in,Tnode *out) {
     __d_code_process(processes,code,name,intention,in,out);
-    return _t_children(processes);
+    return -_t_children(processes);
 }
 
 

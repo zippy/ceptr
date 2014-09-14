@@ -21,7 +21,7 @@ void testStructureGetName() {
 
 void testProcessGetName() {
     //! [testProcessGetName]
-    spec_is_str_equal(_d_get_process_name(0,NULL_PROCESS),"<unknown process:-999>");
+    spec_is_str_equal(_d_get_process_name(0,NULL_PROCESS),"NULL_PROCESS");
     //! [testProcessGetName]
 }
 
@@ -31,6 +31,8 @@ void testDefSymbol() {
 
     Tnode *def = __d_declare_symbol(defs,INTEGER,"shoe size");
     Symbol ss = 1;
+
+    spec_is_true(is_symbol(ss));
     spec_is_equal(_t_children(defs),ss);
     spec_is_ptr_equal(_t_child(defs,ss),def);
     spec_is_equal(_t_symbol(_t_child(defs,ss)),SYMBOL_DECLARATION);
@@ -112,8 +114,10 @@ void testCodeProcess() {
     Tnode *output = _t_new_root(OUTPUT_SIGNATURE);
     Process p = _d_code_process(defs,code,"power","takes the mathematical power of the two params",input,output);
 
-    spec_is_equal(_t_children(defs),p);
-    Tnode *s = _t_child(defs,p);
+    spec_is_true(is_process(p));
+    spec_is_true(!is_symbol(p));
+    spec_is_equal(_t_children(defs),-p);
+    Tnode *s = _t_child(defs,-p);
 
     spec_is_equal(_t_symbol(s),PROCESS_CODING);
 
