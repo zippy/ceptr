@@ -285,49 +285,54 @@ char * __t_dump(Tnode *symbols,Tnode *t,int level,char *buf) {
     char *n = _d_get_symbol_name(symbols,s);
     char *c;
     Xaddr x;
-    Structure st = _d_get_symbol_structure(symbols,s);
-    switch(st) {
-    case CSTRING:
-	sprintf(buf," (%s:%s",n,(char *)_t_surface(t));
-	break;
-    case BOOLEAN:
-    case INTEGER:
-	sprintf(buf," (%s:%d",n,*(int *)_t_surface(t));
-	break;
-    case SYMBOL:
-	c = _d_get_symbol_name(symbols,*(int *)_t_surface(t));
-	sprintf(buf," (%s:%s",n,c?c:"<unknown>");
-	break;
-    case TREE_PATH:
-	sprintf(buf," (%s:%s",n,_t_sprint_path((int *)_t_surface(t),b));
-	break;
-    case XADDR:
-	x = *(Xaddr *)_t_surface(t);
-	sprintf(buf," (%s:%s.%d",n,_d_get_symbol_name(symbols,x.symbol),x.addr);
-	break;
-    case TREE:
-	if (t->context.flags == TFLAG_SURFACE_IS_TREE) {
-	    c = __t_dump(symbols,(Tnode *)_t_surface(t),0,tbuf);
-	    sprintf(buf," (%s:{%s}",n,c);
+    if (is_process(s)) {
+	sprintf(buf," (process:%s",_d_get_process_name(0,s));
+    }
+    else {
+	Structure st = _d_get_symbol_structure(symbols,s);
+	switch(st) {
+	case CSTRING:
+	    sprintf(buf," (%s:%s",n,(char *)_t_surface(t));
 	    break;
-	}
-    case RECEPTOR:
-	if (t->context.flags == TFLAG_SURFACE_IS_TREE+TFLAG_SURFACE_IS_RECEPTOR) {
-	    c = __t_dump(symbols,((Receptor *)_t_surface(t))->root,0,tbuf);
-	    sprintf(buf," (%s:{%s}",n,c);
+	case BOOLEAN:
+	case INTEGER:
+	    sprintf(buf," (%s:%d",n,*(int *)_t_surface(t));
 	    break;
-	}
-    default:
-	switch(s) {
-	case LISTENER:
+	case SYMBOL:
 	    c = _d_get_symbol_name(symbols,*(int *)_t_surface(t));
-	    sprintf(buf," (%s on %s",n,c?c:"<unknown>");
+	    sprintf(buf," (%s:%s",n,c?c:"<unknown>");
 	    break;
+	case TREE_PATH:
+	    sprintf(buf," (%s:%s",n,_t_sprint_path((int *)_t_surface(t),b));
+	    break;
+	case XADDR:
+	    x = *(Xaddr *)_t_surface(t);
+	    sprintf(buf," (%s:%s.%d",n,_d_get_symbol_name(symbols,x.symbol),x.addr);
+	    break;
+	case TREE:
+	    if (t->context.flags == TFLAG_SURFACE_IS_TREE) {
+		c = __t_dump(symbols,(Tnode *)_t_surface(t),0,tbuf);
+		sprintf(buf," (%s:{%s}",n,c);
+		break;
+	    }
+	case RECEPTOR:
+	    if (t->context.flags == TFLAG_SURFACE_IS_TREE+TFLAG_SURFACE_IS_RECEPTOR) {
+		c = __t_dump(symbols,((Receptor *)_t_surface(t))->root,0,tbuf);
+		sprintf(buf," (%s:{%s}",n,c);
+		break;
+	    }
 	default:
-	    if (n == 0)
-		sprintf(buf," (<unknown:%d>",s);
-	    else
-		sprintf(buf," (%s",n);
+	    switch(s) {
+	    case LISTENER:
+		c = _d_get_symbol_name(symbols,*(int *)_t_surface(t));
+		sprintf(buf," (%s on %s",n,c?c:"<unknown>");
+		break;
+	    default:
+		if (n == 0)
+		    sprintf(buf," (<unknown:%d>",s);
+		else
+		    sprintf(buf," (%s",n);
+	    }
 	}
     }
     for(i=1;i<=_t_children(t);i++) __t_dump(symbols,_t_child(t,i),level+1,buf+strlen(buf));

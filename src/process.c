@@ -73,81 +73,87 @@ void __p_reduce(Tnode *processes,Tnode *run_tree, Tnode *code) {
     for(i=1;i<=c;i++) {
 	__p_reduce(processes,run_tree,_t_child(code,i));
     }
-
-    int b;
-    switch(s) {
-    case IF:
-	t = _t_child(code,1);
-	b = (*(int *)_t_surface(t)) ? 2 : 3;
-	x = _t_detach_by_idx(code,b);
-	break;
-    case ADD_INT:
-	x = _t_detach_by_idx(code,1);
-	c = *(int *)_t_surface(_t_child(code,1));
-	*((int *)&x->contents.surface) = c+*((int *)&x->contents.surface);
-	break;
-    case SUB_INT:
-	x = _t_detach_by_idx(code,1);
-	c = *(int *)_t_surface(_t_child(code,1));
-	*((int *)&x->contents.surface) = *((int *)&x->contents.surface)-c;
-	break;
-    case MULT_INT:
-	x = _t_detach_by_idx(code,1);
-	c = *(int *)_t_surface(_t_child(code,1));
-	*((int *)&x->contents.surface) = *((int *)&x->contents.surface)*c;
-	break;
-    case DIV_INT:
-	x = _t_detach_by_idx(code,1);
-	c = *(int *)_t_surface(_t_child(code,1));
-	*((int *)&x->contents.surface) = *((int *)&x->contents.surface)/c;
-	break;
-    case MOD_INT:
-	x = _t_detach_by_idx(code,1);
-	c = *(int *)_t_surface(_t_child(code,1));
-	*((int *)&x->contents.surface) = *((int *)&x->contents.surface)%c;
-	break;
-    case EQ_INT:
-	x = _t_detach_by_idx(code,1);
-	c = *(int *)_t_surface(_t_child(code,1));
-	*((int *)&x->contents.surface) = *((int *)&x->contents.surface)==c;
-	x->contents.symbol = TRUE_FALSE;
-	break;
-    case LT_INT:
-	x = _t_detach_by_idx(code,1);
-	c = *(int *)_t_surface(_t_child(code,1));
-	*((int *)&x->contents.surface) = *((int *)&x->contents.surface)<c;
-	x->contents.symbol = TRUE_FALSE;
-	break;
-    case GT_INT:
-	x = _t_detach_by_idx(code,1);
-	c = *(int *)_t_surface(_t_child(code,1));
-	*((int *)&x->contents.surface) = *((int *)&x->contents.surface)>c;
-	x->contents.symbol = TRUE_FALSE;
-	break;
-    case LTE_INT:
-	x = _t_detach_by_idx(code,1);
-	c = *(int *)_t_surface(_t_child(code,1));
-	*((int *)&x->contents.surface) = *((int *)&x->contents.surface)<=c;
-	x->contents.symbol = TRUE_FALSE;
-	break;
-    case GTE_INT:
-	x = _t_detach_by_idx(code,1);
-	c = *(int *)_t_surface(_t_child(code,1));
-	*((int *)&x->contents.surface) = *((int *)&x->contents.surface)>=c;
-	x->contents.symbol = TRUE_FALSE;
-	break;
-    case RESPOND:
-	// for now we just remove the RESPOND instruction and replace it with it's own child
-	x = _t_detach_by_idx(code,1);
-	break;
-    case INTERPOLATE_FROM_MATCH:
-	match_results = _t_child(code,2);
-	match_tree = _t_child(code,3);
-	x = _t_detach_by_idx(code,1);
-	_p_interpolate_from_match(x,match_results,match_tree);
-	break;
-    default:
-	raise_error("unknown instruction: %s",_r_get_symbol_name(0,s));
+    if (!is_sys_process(s)) {
+	Tnode *rt = __p_make_run_tree(processes,s,code);
+	__p_reduce(processes,rt,_t_child(rt,1));
+	x = _t_detach_by_idx(rt,1);
+    }
+    else {
+	int b;
+	switch(s) {
+	case IF:
+	    t = _t_child(code,1);
+	    b = (*(int *)_t_surface(t)) ? 2 : 3;
+	    x = _t_detach_by_idx(code,b);
+	    break;
+	case ADD_INT:
+	    x = _t_detach_by_idx(code,1);
+	    c = *(int *)_t_surface(_t_child(code,1));
+	    *((int *)&x->contents.surface) = c+*((int *)&x->contents.surface);
+	    break;
+	case SUB_INT:
+	    x = _t_detach_by_idx(code,1);
+	    c = *(int *)_t_surface(_t_child(code,1));
+	    *((int *)&x->contents.surface) = *((int *)&x->contents.surface)-c;
+	    break;
+	case MULT_INT:
+	    x = _t_detach_by_idx(code,1);
+	    c = *(int *)_t_surface(_t_child(code,1));
+	    *((int *)&x->contents.surface) = *((int *)&x->contents.surface)*c;
+	    break;
+	case DIV_INT:
+	    x = _t_detach_by_idx(code,1);
+	    c = *(int *)_t_surface(_t_child(code,1));
+	    *((int *)&x->contents.surface) = *((int *)&x->contents.surface)/c;
+	    break;
+	case MOD_INT:
+	    x = _t_detach_by_idx(code,1);
+	    c = *(int *)_t_surface(_t_child(code,1));
+	    *((int *)&x->contents.surface) = *((int *)&x->contents.surface)%c;
+	    break;
+	case EQ_INT:
+	    x = _t_detach_by_idx(code,1);
+	    c = *(int *)_t_surface(_t_child(code,1));
+	    *((int *)&x->contents.surface) = *((int *)&x->contents.surface)==c;
+	    x->contents.symbol = TRUE_FALSE;
+	    break;
+	case LT_INT:
+	    x = _t_detach_by_idx(code,1);
+	    c = *(int *)_t_surface(_t_child(code,1));
+	    *((int *)&x->contents.surface) = *((int *)&x->contents.surface)<c;
+	    x->contents.symbol = TRUE_FALSE;
+	    break;
+	case GT_INT:
+	    x = _t_detach_by_idx(code,1);
+	    c = *(int *)_t_surface(_t_child(code,1));
+	    *((int *)&x->contents.surface) = *((int *)&x->contents.surface)>c;
+	    x->contents.symbol = TRUE_FALSE;
+	    break;
+	case LTE_INT:
+	    x = _t_detach_by_idx(code,1);
+	    c = *(int *)_t_surface(_t_child(code,1));
+	    *((int *)&x->contents.surface) = *((int *)&x->contents.surface)<=c;
+	    x->contents.symbol = TRUE_FALSE;
+	    break;
+	case GTE_INT:
+	    x = _t_detach_by_idx(code,1);
+	    c = *(int *)_t_surface(_t_child(code,1));
+	    *((int *)&x->contents.surface) = *((int *)&x->contents.surface)>=c;
+	    x->contents.symbol = TRUE_FALSE;
+	    break;
+	case RESPOND:
+	    // for now we just remove the RESPOND instruction and replace it with it's own child
+	    x = _t_detach_by_idx(code,1);
+	    break;
+	case INTERPOLATE_FROM_MATCH:
+	    match_results = _t_child(code,2);
+	    match_tree = _t_child(code,3);
+	    x = _t_detach_by_idx(code,1);
+	    _p_interpolate_from_match(x,match_results,match_tree);
+	    break;
+	default:
+	    raise_error("unknown instruction: %s",_r_get_symbol_name(0,s));
+	}
     }
     _t_replace(parent,idx,x);
 }
@@ -157,6 +163,21 @@ void _p_reduce(Tnode *processes,Tnode *run_tree) {
 	raise_error0("expecting code tree as first child of run tree!");
     }
     __p_reduce(processes,run_tree,code);
+}
+
+Tnode *__p_make_run_tree(Tnode *processes,Process p,Tnode *params) {
+    Tnode *t = _t_new_root(RUN_TREE);
+    Tnode *code_def = _t_child(processes,-p);
+    Tnode *code = _t_child(code_def,3);
+
+    Tnode *c = _t_clone(code);
+    _t_add(t,c);
+    Tnode *ps = _t_newr(t,PARAMS);
+    int i,num_params = _t_children(params);
+    for(i=1;i<=num_params;i++) {
+	_t_add(ps,_t_detach_by_idx(params,1));
+    }
+    return t;
 }
 
 /**

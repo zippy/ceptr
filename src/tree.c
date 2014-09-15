@@ -307,7 +307,11 @@ void _t_free(Tnode *t) {
 
 Tnode *__t_clone(Tnode *t,Tnode *p) {
     int i,c=_t_children(t);
-    Tnode *nt = _t_new(p,_t_symbol(t),_t_surface(t),_t_size(t));
+    Tnode *nt;
+    if (t->context.flags & TFLAG_ALLOCATED)
+	nt = _t_new(p,_t_symbol(t),_t_surface(t),_t_size(t));
+    else
+	nt = _t_newi(p,_t_symbol(t),*(int *)_t_surface(t));
     for(i=1;i<=c;i++) {
 	__t_clone(_t_child(t,i),nt);
     }
