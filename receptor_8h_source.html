@@ -163,13 +163,16 @@ $(document).ready(function(){initNavTree('receptor_8h_source.html','');});
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">#define spec_is_structure_equal(r,got, expected) spec_total++; if (expected==got){putchar(&#39;.&#39;);} else {putchar(&#39;F&#39;);sprintf(failures[spec_failures++],&quot;%s:%d expected %s to be %s but was %s&quot;,__FUNCTION__,__LINE__,#got,_r_get_structure_name(r,expected),_r_get_structure_name(r,got));}</span></div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keywordtype">char</span> *_r_get_structure_name(<a class="code" href="structReceptor.html">Receptor</a> *r,Structure s);</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="keywordtype">char</span> *_r_get_symbol_name(<a class="code" href="structReceptor.html">Receptor</a> *r,Symbol s);</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keywordtype">char</span> * _dump_semtrex(<a class="code" href="structTnode.html">Tnode</a> *s,<span class="keywordtype">char</span> *buf);</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">#define spec_is_process_equal(r,got, expected) spec_total++; if (expected==got){putchar(&#39;.&#39;);} else {putchar(&#39;F&#39;);sprintf(failures[spec_failures++],&quot;%s:%d expected %s to be %s but was %s&quot;,__FUNCTION__,__LINE__,#got,_r_get_process_name(r,expected),_r_get_process_name(r,got));}</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="keywordtype">char</span> *_r_get_structure_name(<a class="code" href="structReceptor.html">Receptor</a> *r,Structure s);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keywordtype">char</span> *_r_get_symbol_name(<a class="code" href="structReceptor.html">Receptor</a> *r,Symbol s);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="keywordtype">char</span> *_r_get_process_name(<a class="code" href="structReceptor.html">Receptor</a> *r,Process p);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="keywordtype">char</span> * _dump_semtrex(<a class="code" href="structTnode.html">Tnode</a> *s,<span class="keywordtype">char</span> *buf);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
 <div class="ttc" id="group__receptor_html_ga120e66982d483fbe004fd969cf1c353f"><div class="ttname"><a href="group__receptor.html#ga120e66982d483fbe004fd969cf1c353f">__r_get_symbol_structure</a></div><div class="ttdeci">Structure __r_get_symbol_structure(Receptor *r, Symbol s)</div><div class="ttdoc">find a symbol&#39;s structure </div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00196">receptor.c:196</a></div></div>
 <div class="ttc" id="group__receptor_html_ga8978934f20256d927a9f035c2eeafd8d"><div class="ttname"><a href="group__receptor.html#ga8978934f20256d927a9f035c2eeafd8d">_r_def_match</a></div><div class="ttdeci">int _r_def_match(Receptor *r, Symbol s, Tnode *t)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00255">receptor.c:255</a></div></div>
 <div class="ttc" id="group__receptor_html_ga3e737841784555574a0d90ad2eff4cc4"><div class="ttname"><a href="group__receptor.html#ga3e737841784555574a0d90ad2eff4cc4">_r_serialize</a></div><div class="ttdeci">void _r_serialize(Receptor *r, void **surfaceP, size_t *lengthP)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00399">receptor.c:399</a></div></div>
@@ -186,8 +189,8 @@ $(document).ready(function(){initNavTree('receptor_8h_source.html','');});
 <div class="ttc" id="group__receptor_html_gad137f4d3b94172a7a2e78c1a1c632efa"><div class="ttname"><a href="group__receptor.html#gad137f4d3b94172a7a2e78c1a1c632efa">__t_serialize</a></div><div class="ttdeci">size_t __t_serialize(Tnode *t, void **bufferP, size_t offset, size_t current_size, int compact)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00362">receptor.c:362</a></div></div>
 <div class="ttc" id="group__receptor_html_ga300b11b12792c290fef2fb0fe07d71ee"><div class="ttname"><a href="group__receptor.html#ga300b11b12792c290fef2fb0fe07d71ee">_r_unserialize</a></div><div class="ttdeci">Receptor * _r_unserialize(void *surface)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00443">receptor.c:443</a></div></div>
 <div class="ttc" id="group__receptor_html_gad886d976f8621ebb22d02c61f454265c"><div class="ttname"><a href="group__receptor.html#gad886d976f8621ebb22d02c61f454265c">__r_get_symbol_size</a></div><div class="ttdeci">size_t __r_get_symbol_size(Receptor *r, Symbol s, void *surface)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00211">receptor.c:211</a></div></div>
-<div class="ttc" id="structReceptor_html"><div class="ttname"><a href="structReceptor.html">Receptor</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00084">ceptr_types.h:84</a></div></div>
-<div class="ttc" id="structXaddr_html"><div class="ttname"><a href="structXaddr.html">Xaddr</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00100">ceptr_types.h:100</a></div></div>
+<div class="ttc" id="structReceptor_html"><div class="ttname"><a href="structReceptor.html">Receptor</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00085">ceptr_types.h:85</a></div></div>
+<div class="ttc" id="structXaddr_html"><div class="ttname"><a href="structXaddr.html">Xaddr</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00101">ceptr_types.h:101</a></div></div>
 <div class="ttc" id="group__receptor_html_ga19ac9a15990a9c657a9ad73cf768bab1"><div class="ttname"><a href="group__receptor.html#ga19ac9a15990a9c657a9ad73cf768bab1">_r_new_receptor_from_package</a></div><div class="ttdeci">Receptor * _r_new_receptor_from_package(Symbol s, Tnode *p, Tnode *bindings)</div><div class="ttdoc">Creates a new receptor from a receptor package. </div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00057">receptor.c:57</a></div></div>
 <div class="ttc" id="label_8h_html"><div class="ttname"><a href="label_8h.html">label.h</a></div><div class="ttdoc">Label tables map human readable text strings to symbols and structures. </div></div>
 <div class="ttc" id="group__receptor_html_gad7ed83880a8bb8be0de01ae73b44d13a"><div class="ttname"><a href="group__receptor.html#gad7ed83880a8bb8be0de01ae73b44d13a">_r_build_def_semtrex</a></div><div class="ttdeci">Tnode * _r_build_def_semtrex(Receptor *r, Symbol s, Tnode *parent)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00225">receptor.c:225</a></div></div>
@@ -195,14 +198,14 @@ $(document).ready(function(){initNavTree('receptor_8h_source.html','');});
 <div class="ttc" id="group__receptor_html_ga62c253e7cc1d1ad20471913ae822ebc2"><div class="ttname"><a href="group__receptor.html#ga62c253e7cc1d1ad20471913ae822ebc2">_r_new</a></div><div class="ttdeci">Receptor * _r_new(Symbol s)</div><div class="ttdoc">Creates a new receptor. </div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00044">receptor.c:44</a></div></div>
 <div class="ttc" id="group__receptor_html_ga2dbe9e8a4ca9c5b3afbb43743ab19a6b"><div class="ttname"><a href="group__receptor.html#ga2dbe9e8a4ca9c5b3afbb43743ab19a6b">_r_new_instance</a></div><div class="ttdeci">Xaddr _r_new_instance(Receptor *r, Tnode *t)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00277">receptor.c:277</a></div></div>
 <div class="ttc" id="group__receptor_html_gac34a126b4fafa1ecf89ae79f3c986336"><div class="ttname"><a href="group__receptor.html#gac34a126b4fafa1ecf89ae79f3c986336">_t_serialize</a></div><div class="ttdeci">void _t_serialize(Tnode *t, void **surfaceP, size_t *lengthP)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00342">receptor.c:342</a></div></div>
-<div class="ttc" id="structTnode_html"><div class="ttname"><a href="structTnode.html">Tnode</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00030">ceptr_types.h:30</a></div></div>
+<div class="ttc" id="structTnode_html"><div class="ttname"><a href="structTnode.html">Tnode</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00031">ceptr_types.h:31</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="receptor_8h.html">receptor.h</a></li>
-    <li class="footer">Generated on Fri Sep 12 2014 15:03:29 for ceptr by
+    <li class="footer">Generated on Mon Sep 15 2014 14:38:43 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

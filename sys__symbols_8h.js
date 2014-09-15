@@ -1,5 +1,8 @@
 var sys__symbols_8h =
 [
+    [ "is_symbol", "sys__symbols_8h.html#a4f4db0c978ccfd8a6b344b342498fefc", null ],
+    [ "is_sys_symbol", "sys__symbols_8h.html#af494e2f2b61f6d7490b61b44d5181125", null ],
+    [ "is_sys_test_symbol", "sys__symbols_8h.html#a2a30d645ebb0f30b0c503d6f5ad24967", null ],
     [ "SystemSymbol", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3", [
       [ "NULL_SYMBOL", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a0f0c5131c4f239c34603d659605f00c7", null ],
       [ "TRUE_FALSE", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a33e0845195e58430e4d466b12f1b65f0", null ],
@@ -40,8 +43,10 @@ var sys__symbols_8h =
       [ "PROCESS_NAME", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a38d3854295573647a3a80d7617919a9f", null ],
       [ "PROCESS_INTENTION", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3abeb6cd60cf76437e1167e80755b065bd", null ],
       [ "INPUT_SIGNATURE", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a21c3b2f6e8d71e23e41dc7fde269d7a3", null ],
+      [ "SIGNATURE_STRUCTURE", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3ab89b2398a23424a81927067774514985", null ],
       [ "OUTPUT_SIGNATURE", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a0e579bd1d664859e0413a9733770147f", null ],
       [ "RUN_TREE", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3ae507944efd4eac222cf6554a37e4a3d3", null ],
+      [ "PARAM_REF", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a01024e4cdc48465474a42afe32f1d95d", null ],
       [ "PARAMS", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a99aa3cfd42d906f6767e9cf05c35c261", null ],
       [ "VM_HOST_RECEPTOR", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3afad1bc068f4b6dbd98531dc6a4289c9c", null ],
       [ "COMPOSITORY", "sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3ac8f8ca57133383d8cfe347bce982420b", null ],

@@ -103,6 +103,7 @@ $(document).ready(function(){initNavTree('sys__symbols_8h.html','');});
 
 <div class="header">
   <div class="summary">
+<a href="#define-members">Macros</a> &#124;
 <a href="#enum-members">Enumerations</a>  </div>
   <div class="headertitle">
 <div class="title">sys_symbols.h File Reference<div class="ingroups"><a class="el" href="group__def.html">Symbol and Structure Definition</a></div></div>  </div>
@@ -112,12 +113,13 @@ $(document).ready(function(){initNavTree('sys__symbols_8h.html','');});
 <p>Defines hard-coded system defined symbols.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="sys__structures_8h_source.html">sys_structures.h</a>&quot;</code><br />
+<code>#include &quot;ceptr_types.h&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for sys_symbols.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="sys__symbols_8h__incl.png" border="0" usemap="#src_2sys__symbols_8h" alt=""/></div>
 <map name="src_2sys__symbols_8h" id="src_2sys__symbols_8h">
-<area shape="rect" id="node2" href="sys__structures_8h.html" title="Defines hard&#45;coded system defined structures. " alt="" coords="11,80,129,107"/></map>
+<area shape="rect" id="node2" href="sys__structures_8h.html" title="Defines hard&#45;coded system defined structures. " alt="" coords="5,80,123,107"/><area shape="rect" id="node3" href="ceptr__types_8h_source.html" title="ceptr_types.h" alt="" coords="148,80,249,107"/><area shape="rect" id="node5" href="uthash_8h_source.html" title="uthash.h" alt="" coords="209,155,281,181"/></map>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -129,10 +131,22 @@ This graph shows which files directly or indirectly include this file:</div>
 </div>
 <p><a href="sys__symbols_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:af494e2f2b61f6d7490b61b44d5181125"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af494e2f2b61f6d7490b61b44d5181125"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>is_sys_symbol</b>(s)&#160;&#160;&#160;(s &gt;= NULL_SYMBOL &amp;&amp; s &lt; _LAST_SYS_SYMBOL)</td></tr>
+<tr class="separator:af494e2f2b61f6d7490b61b44d5181125"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a30d645ebb0f30b0c503d6f5ad24967"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2a30d645ebb0f30b0c503d6f5ad24967"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>is_sys_test_symbol</b>(s)&#160;&#160;&#160;(s &gt;= TEST_INT_SYMBOL &amp;&amp; s &lt; _LAST_TEST_SYMBOL)</td></tr>
+<tr class="separator:a2a30d645ebb0f30b0c503d6f5ad24967"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f4db0c978ccfd8a6b344b342498fefc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4f4db0c978ccfd8a6b344b342498fefc"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>is_symbol</b>(s)&#160;&#160;&#160;(!(s &amp; 0x80000000))</td></tr>
+<tr class="separator:a4f4db0c978ccfd8a6b344b342498fefc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
 <tr class="memitem:a8225552e201b4ff8e3f55d263558e29c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8225552e201b4ff8e3f55d263558e29c"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sys__symbols_8h.html#a8225552e201b4ff8e3f55d263558e29c">TestSymbol</a> { <br />
-&#160;&#160;<b>TEST_INT_SYMBOL</b> = -9999, 
+&#160;&#160;<b>TEST_INT_SYMBOL</b> = 0x7ffff000, 
 <b>TEST_INT_SYMBOL2</b>, 
 <b>TEST_STR_SYMBOL</b>, 
 <b>TEST_TREE_SYMBOL</b>, 
@@ -148,7 +162,7 @@ Enumerations</h2></td></tr>
 <tr class="memdesc:a8225552e201b4ff8e3f55d263558e29c"><td class="mdescLeft">&#160;</td><td class="mdescRight">test symbols. These are defined only for the test suite. <br /></td></tr>
 <tr class="separator:a8225552e201b4ff8e3f55d263558e29c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0f6206b340472c7ace01d1e9d4b87f3"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3">SystemSymbol</a> { <br />
-&#160;&#160;<b>NULL_SYMBOL</b> = -999, 
+&#160;&#160;<b>NULL_SYMBOL</b> = 0x7fff0000, 
 <b>TRUE_FALSE</b>, 
 <a class="el" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3ae53584f23b67ccb4d91d943c2ffd1f32">SEMTREX_MATCHED_PATH</a>, 
 <a class="el" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a24fed94b1bdcacc4989e256136ad750c">SEMTREX_SYMBOL_LITERAL</a>, 
@@ -196,26 +210,29 @@ Enumerations</h2></td></tr>
 &#160;&#160;<b>PROCESS_NAME</b>, 
 <b>PROCESS_INTENTION</b>, 
 <b>INPUT_SIGNATURE</b>, 
-<b>OUTPUT_SIGNATURE</b>, 
+<b>SIGNATURE_STRUCTURE</b>, 
 <br />
-&#160;&#160;<b>RUN_TREE</b>, 
+&#160;&#160;<b>OUTPUT_SIGNATURE</b>, 
+<a class="el" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3ae507944efd4eac222cf6554a37e4a3d3">RUN_TREE</a>, 
+<a class="el" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a01024e4cdc48465474a42afe32f1d95d">PARAM_REF</a>, 
 <b>PARAMS</b>, 
-<b>VM_HOST_RECEPTOR</b>, 
+<br />
+&#160;&#160;<b>VM_HOST_RECEPTOR</b>, 
 <a class="el" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3ac8f8ca57133383d8cfe347bce982420b">COMPOSITORY</a>, 
-<br />
-&#160;&#160;<a class="el" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a4a7e65f054795f03e713356fdb5fbf65">MANIFEST</a>, 
+<a class="el" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a4a7e65f054795f03e713356fdb5fbf65">MANIFEST</a>, 
 <b>MANIFEST_PAIR</b>, 
-<a class="el" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3ad92dd41754a81c74ce3a3aef206a3831">MANIFEST_LABEL</a>, 
+<br />
+&#160;&#160;<a class="el" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3ad92dd41754a81c74ce3a3aef206a3831">MANIFEST_LABEL</a>, 
 <a class="el" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a03555dc3216653537ee5c003da2a6760">MANIFEST_SPEC</a>, 
-<br />
-&#160;&#160;<a class="el" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a37973f81097fb19d2dbe33e872585281">RECEPTOR_PACKAGE</a>, 
+<a class="el" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a37973f81097fb19d2dbe33e872585281">RECEPTOR_PACKAGE</a>, 
 <a class="el" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a3bde3ee377bd6085fe5caaaf332a2ec4">RECEPTOR_IDENTIFIER</a>, 
-<a class="el" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a480946102f942b1883e39520e4c5222a">INSTALLED_RECEPTOR</a>, 
-<a class="el" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a1b524210a51f2bd8f41ccf2ba7b4ba63">ACTIVE_RECEPTORS</a>, 
 <br />
-&#160;&#160;<a class="el" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3aa70a648402dcd1b180a000a2b0364708">BINDINGS</a>, 
+&#160;&#160;<a class="el" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a480946102f942b1883e39520e4c5222a">INSTALLED_RECEPTOR</a>, 
+<a class="el" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a1b524210a51f2bd8f41ccf2ba7b4ba63">ACTIVE_RECEPTORS</a>, 
+<a class="el" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3aa70a648402dcd1b180a000a2b0364708">BINDINGS</a>, 
 <a class="el" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a204e5c75f547deaa37d54f0ecb221f7f">BINDING_PAIR</a>, 
-<b>_LAST_SYS_SYMBOL</b>
+<br />
+&#160;&#160;<b>_LAST_SYS_SYMBOL</b>
 <br />
  }</td></tr>
 <tr class="memdesc:ab0f6206b340472c7ace01d1e9d4b87f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">System defined symbols.  <a href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3">More...</a><br /></td></tr>
@@ -307,6 +324,12 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a class="anchor" id="ab0f6206b340472c7ace01d1e9d4b87f3ae0e51bb381564e3d460f0352172e0c40"></a>INTERPOLATE_SYMBOL&#160;</td><td class="fielddoc">
 <p>a place holder to indicate which symbol to insert into this part of the three </p>
 </td></tr>
+<tr><td class="fieldname"><a class="anchor" id="ab0f6206b340472c7ace01d1e9d4b87f3ae507944efd4eac222cf6554a37e4a3d3"></a>RUN_TREE&#160;</td><td class="fielddoc">
+<p>think about this as a stack frame and it's code </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="ab0f6206b340472c7ace01d1e9d4b87f3a01024e4cdc48465474a42afe32f1d95d"></a>PARAM_REF&#160;</td><td class="fielddoc">
+<p>used in a code tree as a reference to a parameter </p>
+</td></tr>
 <tr><td class="fieldname"><a class="anchor" id="ab0f6206b340472c7ace01d1e9d4b87f3ac8f8ca57133383d8cfe347bce982420b"></a>COMPOSITORY&#160;</td><td class="fielddoc">
 <p>receptor that holds available receptor packages for installation </p>
 </td></tr>
@@ -339,7 +362,7 @@ Enumerations</h2></td></tr>
 </td></tr>
 </table>
 
-<p>Definition at line <a class="el" href="sys__symbols_8h_source.html#l00045">45</a> of file <a class="el" href="sys__symbols_8h_source.html">sys_symbols.h</a>.</p>
+<p>Definition at line <a class="el" href="sys__symbols_8h_source.html#l00050">50</a> of file <a class="el" href="sys__symbols_8h_source.html">sys_symbols.h</a>.</p>
 
 </div>
 </div>
@@ -349,7 +372,7 @@ Enumerations</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="sys__symbols_8h.html">sys_symbols.h</a></li>
-    <li class="footer">Generated on Fri Sep 12 2014 15:03:29 for ceptr by
+    <li class="footer">Generated on Mon Sep 15 2014 14:38:43 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

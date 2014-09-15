@@ -122,7 +122,7 @@ Include dependency graph for receptor.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="receptor_8h__incl.png" border="0" usemap="#src_2receptor_8h" alt=""/></div>
 <map name="src_2receptor_8h" id="src_2receptor_8h">
-<area shape="rect" id="node2" href="tree_8h.html" title="semantic trees header file " alt="" coords="302,155,356,181"/><area shape="rect" id="node17" href="def_8h.html" title="header file for symbol and structure definition functions " alt="" coords="336,80,387,107"/><area shape="rect" id="node19" href="label_8h.html" title="Label tables map human readable text strings to symbols and structures. " alt="" coords="123,80,183,107"/><area shape="rect" id="node5" href="ceptr__error_8h_source.html" title="ceptr_error.h" alt="" coords="605,229,699,256"/><area shape="rect" id="node9" href="sys__symbols_8h.html" title="Defines hard&#45;coded system defined symbols. " alt="" coords="131,229,241,256"/><area shape="rect" id="node10" href="sys__structures_8h.html" title="Defines hard&#45;coded system defined structures. " alt="" coords="221,304,339,331"/><area shape="rect" id="node11" href="sys__processes_8h.html" title="Defines hard&#45;coded system defined processes. " alt="" coords="318,229,439,256"/><area shape="rect" id="node12" href="ceptr__types_8h_source.html" title="ceptr_types.h" alt="" coords="5,229,107,256"/><area shape="rect" id="node14" href="uthash_8h_source.html" title="uthash.h" alt="" coords="124,304,196,331"/></map>
+<area shape="rect" id="node2" href="tree_8h.html" title="semantic trees header file " alt="" coords="332,155,386,181"/><area shape="rect" id="node17" href="def_8h.html" title="header file for symbol and structure definition functions " alt="" coords="414,80,465,107"/><area shape="rect" id="node19" href="label_8h.html" title="Label tables map human readable text strings to symbols and structures. " alt="" coords="588,80,648,107"/><area shape="rect" id="node5" href="ceptr__error_8h_source.html" title="ceptr_error.h" alt="" coords="94,229,188,256"/><area shape="rect" id="node9" href="sys__symbols_8h.html" title="Defines hard&#45;coded system defined symbols. " alt="" coords="264,229,374,256"/><area shape="rect" id="node10" href="sys__structures_8h.html" title="Defines hard&#45;coded system defined structures. " alt="" coords="292,304,410,331"/><area shape="rect" id="node11" href="ceptr__types_8h_source.html" title="ceptr_types.h" alt="" coords="470,304,572,331"/><area shape="rect" id="node16" href="sys__processes_8h.html" title="Defines hard&#45;coded system defined processes. " alt="" coords="399,229,520,256"/><area shape="rect" id="node13" href="uthash_8h_source.html" title="uthash.h" alt="" coords="400,379,472,405"/></map>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -142,6 +142,9 @@ Macros</h2></td></tr>
 <tr class="memitem:gaa5f33711ac4da299b54ccfa583d9378c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaa5f33711ac4da299b54ccfa583d9378c"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>spec_is_structure_equal</b>(r, got, expected)&#160;&#160;&#160;spec_total++; if (expected==got){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],&quot;%s:%d expected %s to be %s but was %s&quot;,__FUNCTION__,__LINE__,#got,_r_get_structure_name(r,expected),_r_get_structure_name(r,got));}</td></tr>
 <tr class="separator:gaa5f33711ac4da299b54ccfa583d9378c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaaf7ee981a0e2c2fc955fb32f7d6f2861"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaaf7ee981a0e2c2fc955fb32f7d6f2861"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>spec_is_process_equal</b>(r, got, expected)&#160;&#160;&#160;spec_total++; if (expected==got){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],&quot;%s:%d expected %s to be %s but was %s&quot;,__FUNCTION__,__LINE__,#got,_r_get_process_name(r,expected),_r_get_process_name(r,got));}</td></tr>
+<tr class="separator:gaaf7ee981a0e2c2fc955fb32f7d6f2861"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -218,6 +221,9 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_r_get_structure_na
 <tr class="memitem:gaf10f1cdd7f9d47e637f9034de0310bbd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaf10f1cdd7f9d47e637f9034de0310bbd"></a>
 char *&#160;</td><td class="memItemRight" valign="bottom"><b>_r_get_symbol_name</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, Symbol s)</td></tr>
 <tr class="separator:gaf10f1cdd7f9d47e637f9034de0310bbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga16d730727540e2be8140618c3e8d8026"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga16d730727540e2be8140618c3e8d8026"></a>
+char *&#160;</td><td class="memItemRight" valign="bottom"><b>_r_get_process_name</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, Process p)</td></tr>
+<tr class="separator:ga16d730727540e2be8140618c3e8d8026"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaad1696e79c7630020a718c2a3f3d5a37"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaad1696e79c7630020a718c2a3f3d5a37"></a>
 char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (<a class="el" href="structTnode.html">Tnode</a> *s, char *buf)</td></tr>
 <tr class="separator:gaad1696e79c7630020a718c2a3f3d5a37"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -233,7 +239,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="receptor_8h.html">receptor.h</a></li>
-    <li class="footer">Generated on Fri Sep 12 2014 15:03:29 for ceptr by
+    <li class="footer">Generated on Mon Sep 15 2014 14:38:43 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

@@ -103,6 +103,7 @@ $(document).ready(function(){initNavTree('sys__processes_8h.html','');});
 
 <div class="header">
   <div class="summary">
+<a href="#define-members">Macros</a> &#124;
 <a href="#enum-members">Enumerations</a>  </div>
   <div class="headertitle">
 <div class="title">sys_processes.h File Reference<div class="ingroups"><a class="el" href="group__def.html">Symbol and Structure Definition</a></div></div>  </div>
@@ -121,10 +122,19 @@ This graph shows which files directly or indirectly include this file:</div>
 </div>
 <p><a href="sys__processes_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a9ca58ba970e4682b8e666a517384a520"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9ca58ba970e4682b8e666a517384a520"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>is_sys_process</b>(s)&#160;&#160;&#160;(s &gt;= NULL_PROCESS &amp;&amp; s &lt; _LAST_SYS_PROCESS)</td></tr>
+<tr class="separator:a9ca58ba970e4682b8e666a517384a520"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6ca322ea88ea9611a476fc01323e8a4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af6ca322ea88ea9611a476fc01323e8a4"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>is_process</b>(s)&#160;&#160;&#160;(s &amp; 0x80000000)</td></tr>
+<tr class="separator:af6ca322ea88ea9611a476fc01323e8a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
 <tr class="memitem:a1e1d7c20f4c895eb9e21e7ef34708a07"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sys__processes_8h.html#a1e1d7c20f4c895eb9e21e7ef34708a07">SystemProcess</a> { <br />
-&#160;&#160;<b>NULL_PROCESS</b> = -999, 
+&#160;&#160;<b>NULL_PROCESS</b> = 0xffff0000, 
 <a class="el" href="sys__processes_8h.html#a1e1d7c20f4c895eb9e21e7ef34708a07a252802eda493fb6b4a279c4452acb547">IF</a>, 
 <a class="el" href="sys__processes_8h.html#a1e1d7c20f4c895eb9e21e7ef34708a07a64c5ec914c978938d6ed4d420c099c8a">RESPOND</a>, 
 <a class="el" href="sys__processes_8h.html#a1e1d7c20f4c895eb9e21e7ef34708a07a32422b0c037a5e196f197711c8d49589">INTERPOLATE_FROM_MATCH</a>, 
@@ -166,7 +176,7 @@ Enumerations</h2></td></tr>
 </td></tr>
 </table>
 
-<p>Definition at line <a class="el" href="sys__processes_8h_source.html#l00017">17</a> of file <a class="el" href="sys__processes_8h_source.html">sys_processes.h</a>.</p>
+<p>Definition at line <a class="el" href="sys__processes_8h_source.html#l00020">20</a> of file <a class="el" href="sys__processes_8h_source.html">sys_processes.h</a>.</p>
 
 </div>
 </div>
@@ -176,7 +186,7 @@ Enumerations</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="sys__processes_8h.html">sys_processes.h</a></li>
-    <li class="footer">Generated on Fri Sep 12 2014 15:03:29 for ceptr by
+    <li class="footer">Generated on Mon Sep 15 2014 14:38:43 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

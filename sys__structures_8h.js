@@ -1,6 +1,6 @@
 var sys__structures_8h =
 [
-    [ "Structure", "sys__structures_8h.html#a4379b9b6b11c0c0627d36a58067d57b5", null ],
+    [ "is_sys_structure", "sys__structures_8h.html#a2b06cc8277915de32048b4130fecde24", null ],
     [ "SystemStructure", "sys__structures_8h.html#ac6cf3e705e120184277267602edaa1b1", [
       [ "NULL_STRUCTURE", "sys__structures_8h.html#ac6cf3e705e120184277267602edaa1b1ac2e02902e45ecc11db4be73d36159343", null ],
       [ "BOOLEAN", "sys__structures_8h.html#ac6cf3e705e120184277267602edaa1b1a8a583f16e8d237a423c8c1d9087a4c72", null ],
@@ -15,6 +15,7 @@ var sys__structures_8h =
       [ "TREE", "sys__structures_8h.html#ac6cf3e705e120184277267602edaa1b1a80ee3d282aa2d7af547e862568d3e240", null ],
       [ "RECEPTOR", "sys__structures_8h.html#ac6cf3e705e120184277267602edaa1b1a126c2d6c3bd0c0240ddeb54da90e47d3", null ],
       [ "PROCESS", "sys__structures_8h.html#ac6cf3e705e120184277267602edaa1b1ae4f21099481eef801603441650cb6eff", null ],
+      [ "STRUCTURE", "sys__structures_8h.html#ac6cf3e705e120184277267602edaa1b1a89a52dd2b3ac56712e01fdb146e60ac2", null ],
       [ "_LAST_SYS_STRUCTURE", "sys__structures_8h.html#ac6cf3e705e120184277267602edaa1b1a1bcd607e4efd400866e159facdd0db6d", null ]
     ] ]
 ];
