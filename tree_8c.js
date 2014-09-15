@@ -2,7 +2,7 @@ var tree_8c =
 [
     [ "__t_append_child", "tree_8c.html#aa4892b9d7c5e5cc3c167c9d926ad0bfb", null ],
     [ "__t_clone", "tree_8c.html#a43217c1463568d02942703196b3a6428", null ],
-    [ "__t_free_children", "tree_8c.html#a2a7dd3d550c979c77e5fd5bb98310b54", null ],
+    [ "__t_free_children", "group__tree.html#ga2a7dd3d550c979c77e5fd5bb98310b54", null ],
     [ "__t_init", "tree_8c.html#a558ed27a40e82d2a51c8076e09f86ea5", null ],
     [ "__t_morph", "group__tree.html#gaffb8b0a4288458ba9b4788a5bbb713ef", null ],
     [ "_t_add", "group__tree.html#gaf155629f920b45c8b3d11bb19255d69e", null ],
