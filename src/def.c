@@ -290,6 +290,7 @@ char * __t_dump(Tnode *symbols,Tnode *t,int level,char *buf) {
     case CSTRING:
 	sprintf(buf," (%s:%s",n,(char *)_t_surface(t));
 	break;
+    case BOOLEAN:
     case INTEGER:
 	sprintf(buf," (%s:%d",n,*(int *)_t_surface(t));
 	break;

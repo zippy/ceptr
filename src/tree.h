@@ -45,6 +45,7 @@ Tnode *_t_detach_by_idx(Tnode *t,int i);
 void _t_replace(Tnode *t,int i,Tnode *r);
 void _t_morph(Tnode *dst,Tnode *src);
 void __t_morph(Tnode *t,Symbol s,void *surface,size_t length,int allocate);
+void __t_free_children(Tnode *t);
 void _t_free(Tnode *t);
 Tnode *_t_clone(Tnode *t);
 

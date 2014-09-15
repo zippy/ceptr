@@ -102,8 +102,134 @@ void testProcessIf() {
     _t_free(t);
 }
 
+void testProcessIntMath() {
+    char buf[2000];
+    Tnode *t = _t_new_root(RUN_TREE);
+
+    // test addition
+    Tnode *n = _t_newr(t,ADD_INT);
+    _t_newi(n,TEST_INT_SYMBOL,99);
+    _t_newi(n,TEST_INT_SYMBOL,100);
+    __p_reduce(0,t,n);
+    __t_dump(0,_t_child(t,1),0,buf);
+    spec_is_str_equal(buf," (TEST_INT_SYMBOL:199)");
+
+    // test subtraction
+    n = _t_detach_by_idx(t,1);
+    _t_free(n);
+    n = _t_newr(t,SUB_INT);
+    _t_newi(n,TEST_INT_SYMBOL,100);
+    _t_newi(n,TEST_INT_SYMBOL,98);
+
+    __p_reduce(0,t,n);
+    __t_dump(0,_t_child(t,1),0,buf);
+    spec_is_str_equal(buf," (TEST_INT_SYMBOL:2)");
+
+    // test multiplication
+    n = _t_detach_by_idx(t,1);
+    _t_free(n);
+    n = _t_newr(t,MULT_INT);
+    _t_newi(n,TEST_INT_SYMBOL,100);
+    _t_newi(n,TEST_INT_SYMBOL,98);
+
+    __p_reduce(0,t,n);
+    __t_dump(0,_t_child(t,1),0,buf);
+    spec_is_str_equal(buf," (TEST_INT_SYMBOL:9800)");
+
+    // test division
+    n = _t_detach_by_idx(t,1);
+    _t_free(n);
+    n = _t_newr(t,DIV_INT);
+    _t_newi(n,TEST_INT_SYMBOL,100);
+    _t_newi(n,TEST_INT_SYMBOL,48);
+
+    __p_reduce(0,t,n);
+    __t_dump(0,_t_child(t,1),0,buf);
+    spec_is_str_equal(buf," (TEST_INT_SYMBOL:2)");
+
+    // test modulo
+    n = _t_detach_by_idx(t,1);
+    _t_free(n);
+    n = _t_newr(t,MOD_INT);
+    _t_newi(n,TEST_INT_SYMBOL,100);
+    _t_newi(n,TEST_INT_SYMBOL,2);
+
+    __p_reduce(0,t,n);
+    __t_dump(0,_t_child(t,1),0,buf);
+    spec_is_str_equal(buf," (TEST_INT_SYMBOL:0)");
+
+    // test equals
+    n = _t_detach_by_idx(t,1);
+    _t_free(n);
+    n = _t_newr(t,EQ_INT);
+    _t_newi(n,TEST_INT_SYMBOL,100);
+    _t_newi(n,TEST_INT_SYMBOL,2);
+
+    __p_reduce(0,t,n);
+    __t_dump(0,_t_child(t,1),0,buf);
+    spec_is_str_equal(buf," (TRUE_FALSE:0)");
+
+    n = _t_detach_by_idx(t,1);
+    _t_free(n);
+    n = _t_newr(t,EQ_INT);
+    _t_newi(n,TEST_INT_SYMBOL,100);
+    _t_newi(n,TEST_INT_SYMBOL,100);
+
+    __p_reduce(0,t,n);
+    __t_dump(0,_t_child(t,1),0,buf);
+    spec_is_str_equal(buf," (TRUE_FALSE:1)");
+
+    // test <
+    n = _t_detach_by_idx(t,1);
+    _t_free(n);
+    n = _t_newr(t,LT_INT);
+    _t_newi(n,TEST_INT_SYMBOL,2);
+    _t_newi(n,TEST_INT_SYMBOL,100);
+
+    __p_reduce(0,t,n);
+    __t_dump(0,_t_child(t,1),0,buf);
+    spec_is_str_equal(buf," (TRUE_FALSE:1)");
+
+    n = _t_detach_by_idx(t,1);
+    _t_free(n);
+    n = _t_newr(t,LT_INT);
+    _t_newi(n,TEST_INT_SYMBOL,100);
+    _t_newi(n,TEST_INT_SYMBOL,100);
+
+    __p_reduce(0,t,n);
+    __t_dump(0,_t_child(t,1),0,buf);
+    spec_is_str_equal(buf," (TRUE_FALSE:0)");
+
+    // test >
+    n = _t_detach_by_idx(t,1);
+    _t_free(n);
+    n = _t_newr(t,GT_INT);
+    _t_newi(n,TEST_INT_SYMBOL,2);
+    _t_newi(n,TEST_INT_SYMBOL,100);
+
+    __p_reduce(0,t,n);
+    __t_dump(0,_t_child(t,1),0,buf);
+    spec_is_str_equal(buf," (TRUE_FALSE:0)");
+
+    n = _t_detach_by_idx(t,1);
+    _t_free(n);
+    n = _t_newr(t,GT_INT);
+    _t_newi(n,TEST_INT_SYMBOL,101);
+    _t_newi(n,TEST_INT_SYMBOL,100);
+
+    __p_reduce(0,t,n);
+    __t_dump(0,_t_child(t,1),0,buf);
+    spec_is_str_equal(buf," (TRUE_FALSE:1)");
+
+
+    _t_free(t);
+}
+
+
 void testProcess() {
     testRunTree();
     testProcessInterpolateMatch();
     testProcessIf();
+    testProcessIntMath();
+
 }

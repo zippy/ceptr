@@ -21,6 +21,16 @@ enum SystemProcess
     {
 	NULL_PROCESS = 0xffff0000,
 	IF,                                ///< reduce to the left or right tree conditionally
+	ADD_INT,
+	SUB_INT,
+	MULT_INT,
+	DIV_INT,
+	MOD_INT,
+	EQ_INT,
+	LT_INT,
+	GT_INT,
+	LTE_INT,
+	GTE_INT,
 	RESPOND,                           ///< respond to the initiating signal with the what ever the sub-tree reduced to
 	INTERPOLATE_FROM_MATCH,            ///< reduce to replaced values from the match
 	_LAST_SYS_PROCESS
@@ -29,6 +39,16 @@ enum SystemProcess
 static char *G_sys_process_names[] = {
     "NULL_PROCESS",
     "IF",
+    "ADD_INT",
+    "SUB_INT",
+    "MULT_INT",
+    "DIV_INT",
+    "MOD_INT",
+    "EQ_INT",
+    "LT_INT",
+    "GT_INT",
+    "LTE_INT",
+    "GTE_INT",
     "RESPOND",
     "INTERPOLATE_FROM_MATCH",
 };

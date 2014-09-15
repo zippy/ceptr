@@ -81,6 +81,61 @@ void __p_reduce(Tnode *processes,Tnode *run_tree, Tnode *code) {
 	b = (*(int *)_t_surface(t)) ? 2 : 3;
 	x = _t_detach_by_idx(code,b);
 	break;
+    case ADD_INT:
+	x = _t_detach_by_idx(code,1);
+	c = *(int *)_t_surface(_t_child(code,1));
+	*((int *)&x->contents.surface) = c+*((int *)&x->contents.surface);
+	break;
+    case SUB_INT:
+	x = _t_detach_by_idx(code,1);
+	c = *(int *)_t_surface(_t_child(code,1));
+	*((int *)&x->contents.surface) = *((int *)&x->contents.surface)-c;
+	break;
+    case MULT_INT:
+	x = _t_detach_by_idx(code,1);
+	c = *(int *)_t_surface(_t_child(code,1));
+	*((int *)&x->contents.surface) = *((int *)&x->contents.surface)*c;
+	break;
+    case DIV_INT:
+	x = _t_detach_by_idx(code,1);
+	c = *(int *)_t_surface(_t_child(code,1));
+	*((int *)&x->contents.surface) = *((int *)&x->contents.surface)/c;
+	break;
+    case MOD_INT:
+	x = _t_detach_by_idx(code,1);
+	c = *(int *)_t_surface(_t_child(code,1));
+	*((int *)&x->contents.surface) = *((int *)&x->contents.surface)%c;
+	break;
+    case EQ_INT:
+	x = _t_detach_by_idx(code,1);
+	c = *(int *)_t_surface(_t_child(code,1));
+	*((int *)&x->contents.surface) = *((int *)&x->contents.surface)==c;
+	x->contents.symbol = TRUE_FALSE;
+	break;
+    case LT_INT:
+	x = _t_detach_by_idx(code,1);
+	c = *(int *)_t_surface(_t_child(code,1));
+	*((int *)&x->contents.surface) = *((int *)&x->contents.surface)<c;
+	x->contents.symbol = TRUE_FALSE;
+	break;
+    case GT_INT:
+	x = _t_detach_by_idx(code,1);
+	c = *(int *)_t_surface(_t_child(code,1));
+	*((int *)&x->contents.surface) = *((int *)&x->contents.surface)>c;
+	x->contents.symbol = TRUE_FALSE;
+	break;
+    case LTE_INT:
+	x = _t_detach_by_idx(code,1);
+	c = *(int *)_t_surface(_t_child(code,1));
+	*((int *)&x->contents.surface) = *((int *)&x->contents.surface)<=c;
+	x->contents.symbol = TRUE_FALSE;
+	break;
+    case GTE_INT:
+	x = _t_detach_by_idx(code,1);
+	c = *(int *)_t_surface(_t_child(code,1));
+	*((int *)&x->contents.surface) = *((int *)&x->contents.surface)>=c;
+	x->contents.symbol = TRUE_FALSE;
+	break;
     case RESPOND:
 	// for now we just remove the RESPOND instruction and replace it with it's own child
 	x = _t_detach_by_idx(code,1);
