@@ -15,7 +15,7 @@
 
 #include "receptor.h"
 
-void _p_reduce(Tnode *run_tree);
+void __p_reduce(Tnode *processes,Tnode *run_tree, Tnode *code);
 Tnode *_p_make_run_tree(Tnode *processes,Tnode *p,int num_params,...);
 
 #endif

@@ -20,7 +20,7 @@
 #define is_symbol(s) (!(s & 0x80000000))
 
 /// test symbols.  These are defined only for the test suite.
-enum TestSymbol {TEST_INT_SYMBOL= 0x8fff1000,TEST_INT_SYMBOL2,TEST_STR_SYMBOL,TEST_TREE_SYMBOL,TEST_TREE_SYMBOL2,
+enum TestSymbol {TEST_INT_SYMBOL= 0x7ffff000,TEST_INT_SYMBOL2,TEST_STR_SYMBOL,TEST_TREE_SYMBOL,TEST_TREE_SYMBOL2,
 		 TEST_NAME_SYMBOL,TEST_FIRST_NAME_SYMBOL,TEST_RECEPTOR_SYMBOL,
 		 _LAST_TEST_SYMBOL
 };
@@ -50,7 +50,7 @@ static Structure G_test_symbol_structures[] = {
 enum SystemSymbol
 {
     //-----  Basic symbols for underlying data types
-    NULL_SYMBOL = 0x8fff0000,
+    NULL_SYMBOL = 0x7fff0000,
     TRUE_FALSE,
 
     //-----  Symbols for the different semantic parts of semtrexes
@@ -93,8 +93,10 @@ enum SystemSymbol
     PROCESS_NAME,
     PROCESS_INTENTION,
     INPUT_SIGNATURE,
+    SIGNATURE_STRUCTURE,
     OUTPUT_SIGNATURE,
-    RUN_TREE,
+    RUN_TREE,                         ///< think about this as a stack frame and it's code
+    PARAM_REF,                        ///< used in a code tree as a reference to a parameter
     PARAMS,
 
     //-----  Symbols for the virtual machine host
@@ -152,8 +154,10 @@ static char *G_sys_symbol_names[] = {
     "PROCESS_NAME",
     "PROCESS_INTENTION",
     "INPUT_SIGNATURE",
+    "SIGNATURE_STRUCTURE",
     "OUTPUT_SIGNATURE",
     "RUN_TREE",
+    "PARAM_REF",
     "PARAMS",
     "VM_HOST_RECEPTOR",
     "COMPOSITORY",
@@ -171,62 +175,64 @@ static char *G_sys_symbol_names[] = {
 };
 
 static Structure G_sys_symbol_structures[] = {
-    NULL_STRUCTURE,      //"NULL_SYMBOL",
-    BOOLEAN,             //"TRUE_FALSE",
-    TREE_PATH,           //"SEMTREX_MATCHED_PATH",
-    SYMBOL,              //"SEMTREX_SYMBOL_LITERAL",
-    LIST,                //"SEMTREX_SEQUENCE",
-    NULL_STRUCTURE,      //"SEMTREX_OR",
-    NULL_STRUCTURE,      //"SEMTREX_SYMBOL_ANY",
-    NULL_STRUCTURE,      //"SEMTREX_ZERO_OR_MORE",
-    NULL_STRUCTURE,      //"SEMTREX_ONE_OR_MORE",
-    NULL_STRUCTURE,      //"SEMTREX_ZERO_OR_ONE",
-    NULL_STRUCTURE,      //"SEMTREX_VALUE_LITERAL",
-    SYMBOL,              //"SEMTREX_GROUP",
-    SYMBOL,              //"SEMTREX_MATCH",
-    NULL_STRUCTURE,      //"SEMTREX_MATCH_RESULTS",
-    INTEGER,             //"SEMTREX_MATCH_SIBLINGS_COUNT",
-    XADDR,               //"RECEPTOR_XADDR",
-    LIST,                //"FLUX",
-    LIST,                //"STRUCTURES",
-    TREE,                //"STRUCTURE_DEFINITION",
-    CSTRING,             //STRUCTURE_LABEL,
-    LIST,                //"STRUCTURE_PARTS",
-    SYMBOL,              //"STRUCTURE_PART",
-    LIST          ,      //"SYMBOLS",
-    NULL_STRUCTURE,      //"SYMBOL_DECLARATION",
-    NULL_STRUCTURE,      //"SYMBOL_STRUCTURE",
-    CSTRING,             //"SYMBOL_LABEL",
-    INTEGER,             //"ASPECT",
-    LIST,                //"SIGNALS",
-    NULL_STRUCTURE,      //"SIGNAL",
-    LIST,                //"LISTENERS",
-    INTEGER,             //"LISTENER",
-    NULL_STRUCTURE,      //"EXPECTATION",
-    PROCESS,             //"ACTION",
-    NULL_STRUCTURE,      //"RESPOND",
-    NULL_STRUCTURE,      //"INTERPOLATE_FROM_MATCH",
-    SYMBOL,              //"INTERPOLATE_SYMBOL",
-    LIST,                //"PROCESSES"
-    TREE,                //"PROCESS_CODING",
-    CSTRING,             //"PROCESS_NAME",
-    CSTRING,             //"PROCESS_INTENTION",
-    TREE,                //"INPUT_SIGNATURE",
-    SYMBOL,              //"OUTPUT_SIGNATURE",
-    TREE,                //"RUN_TREE",
-    LIST,                //"PARAMS",
-    RECEPTOR,            //"VM_HOST_RECEPTOR",
-    RECEPTOR,            //"COMPOSITORY",
-    TREE,                //"MANIFEST",
-    LIST,                //"MANIFEST_PAIR",
-    CSTRING,             //"MANIFEST_LABEL",
-    SYMBOL,              //"MANIFEST_SPEC",
-    TREE,                //"RECEPTOR_PACKAGE",
-    INTEGER,             //"RECEPTOR_IDENTIFIER",
-    TREE,                //"INSTALLED_RECEPTOR,"
-    LIST,                //"ACTIVE_RECEPTORS",
-    TREE,                //"BINDINGS",
-    LIST,                //"BINDING_PAIR"
+    NULL_STRUCTURE,      //NULL_SYMBOL
+    BOOLEAN,             //TRUE_FALSE
+    TREE_PATH,           //SEMTREX_MATCHED_PATH
+    SYMBOL,              //SEMTREX_SYMBOL_LITERAL
+    LIST,                //SEMTREX_SEQUENCE
+    NULL_STRUCTURE,      //SEMTREX_OR
+    NULL_STRUCTURE,      //SEMTREX_SYMBOL_ANY
+    NULL_STRUCTURE,      //SEMTREX_ZERO_OR_MORE
+    NULL_STRUCTURE,      //SEMTREX_ONE_OR_MORE
+    NULL_STRUCTURE,      //SEMTREX_ZERO_OR_ONE
+    NULL_STRUCTURE,      //SEMTREX_VALUE_LITERAL
+    SYMBOL,              //SEMTREX_GROUP
+    SYMBOL,              //SEMTREX_MATCH
+    NULL_STRUCTURE,      //SEMTREX_MATCH_RESULTS
+    INTEGER,             //SEMTREX_MATCH_SIBLINGS_COUNT
+    XADDR,               //RECEPTOR_XADDR
+    LIST,                //FLUX
+    LIST,                //STRUCTURES
+    TREE,                //STRUCTURE_DEFINITION
+    CSTRING,             //STRUCTURE_LABEL
+    LIST,                //STRUCTURE_PARTS
+    SYMBOL,              //STRUCTURE_PART
+    LIST          ,      //SYMBOLS
+    NULL_STRUCTURE,      //SYMBOL_DECLARATION
+    NULL_STRUCTURE,      //SYMBOL_STRUCTURE
+    CSTRING,             //SYMBOL_LABEL
+    INTEGER,             //ASPECT
+    LIST,                //SIGNALS
+    NULL_STRUCTURE,      //SIGNAL
+    LIST,                //LISTENERS
+    INTEGER,             //LISTENER
+    NULL_STRUCTURE,      //EXPECTATION
+    PROCESS,             //ACTION
+    NULL_STRUCTURE,      //RESPOND
+    NULL_STRUCTURE,      //INTERPOLATE_FROM_MATCH
+    SYMBOL,              //INTERPOLATE_SYMBOL
+    LIST,                //PROCESSES
+    TREE,                //PROCESS_CODING
+    CSTRING,             //PROCESS_NAME
+    CSTRING,             //PROCESS_INTENTION
+    TREE,                //INPUT_SIGNATURE
+    STRUCTURE,           //SIGNATURE_STRUCTURE
+    SYMBOL,              //OUTPUT_SIGNATURE
+    TREE,                //RUN_TREE
+    INTEGER,             //PARAM_REF
+    LIST,                //PARAMS
+    RECEPTOR,            //VM_HOST_RECEPTOR
+    RECEPTOR,            //COMPOSITORY
+    TREE,                //MANIFEST
+    LIST,                //MANIFEST_PAIR
+    CSTRING,             //MANIFEST_LABEL
+    SYMBOL,              //MANIFEST_SPEC
+    TREE,                //RECEPTOR_PACKAGE
+    INTEGER,             //RECEPTOR_IDENTIFIER
+    TREE,                //INSTALLED_RECEPTOR
+    LIST,                //ACTIVE_RECEPTORS
+    TREE,                //BINDINGS
+    LIST,                //BINDING_PAIR
 };
 
 #endif

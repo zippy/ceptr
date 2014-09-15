@@ -120,6 +120,9 @@ void testReceptorAction() {
     Tnode *http_resp = _t_newr(n,TSYM_HTTP_RESPONSE);
     _t_new(http_resp,TSYM_HTTP_RESPONSE_CONTENT_TYPE,"CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT",38);
     _t_newi(http_resp,INTERPOLATE_SYMBOL,TSYM_HTTP_REQUEST_PATH_SEGMENT);
+    _t_newi(n,PARAM_REF,1);
+    _t_newi(n,PARAM_REF,2);
+
     Tnode *input = _t_new_root(INPUT_SIGNATURE);
     Tnode *output = _t_new_root(OUTPUT_SIGNATURE);
     Process p = _r_code_process(r,resp,"code path ping","respond with the first segment of the code path",input,output);

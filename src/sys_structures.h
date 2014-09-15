@@ -13,12 +13,12 @@
 #ifndef _CEPTR_SYS_STRUCTURES_H
 #define _CEPTR_SYS_STRUCTURES_H
 
-#define is_sys_structure(s) (s >= NULL_STRUCTURE && s < _LAST_SYS_SYMBOL)
+#define is_sys_structure(s) (s >= NULL_STRUCTURE && s < _LAST_SYS_STRUCTURE)
 
 /// System defined structures
 enum SystemStructure
     {
-	NULL_STRUCTURE = 0x8fff0000,
+	NULL_STRUCTURE = 0x7fff0000,
 	BOOLEAN,
 	INTEGER,
 	FLOAT,
@@ -31,6 +31,7 @@ enum SystemStructure
 	TREE,
 	RECEPTOR,
 	PROCESS,
+	STRUCTURE,
 	_LAST_SYS_STRUCTURE
 
     };
@@ -49,5 +50,6 @@ static char *G_sys_structure_names[] = {
     "TREE",
     "RECEPTOR",
     "PROCESS",
+    "STRUCTURE"
 };
 #endif

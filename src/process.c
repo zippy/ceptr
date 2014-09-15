@@ -45,49 +45,63 @@ void _p_interpolate_from_match(Tnode *t,Tnode *match_results,Tnode *match_tree) 
  *
  * a run_tree is expected to have a code tree as the first child, and parameters as the second
  *
+ * @param[in] processes context of defined processes
  * @param[in] run_tree the run tree to be reduced
  */
-void _p_reduce(Tnode *run_tree) {
-    Tnode *code = _t_child(run_tree,1);
-    if (!code) {
-	raise_error0("expecting code tree as first child of run tree!");
-    }
+void __p_reduce(Tnode *processes,Tnode *run_tree, Tnode *code) {
     Process s = _t_symbol(code);
 
+    Tnode *params = 0,*match_results,*match_tree,*t,*x;
+
+    Tnode *parent = _t_parent(code);
+    int idx = _t_node_index(code);
+
+    if (s == PARAM_REF) {
+	params = _t_child(run_tree,2);
+	int p = *(int *)_t_surface(code);
+	if (p > _t_children(params)) {
+	    raise_error("request for non-existent param: %d",p);
+	}
+	x = _t_clone(_t_child(params,p));
+	_t_replace(parent,idx,x);
+	code = x;
+	s = _t_symbol(code);
+    }
     // if this isn't a process then we've reduced the tree
     if (!is_process(s)) return;
-    Tnode *params,*match_results,*match_tree,*t;
+    int i,c = _t_children(code);
+    for(i=1;i<=c;i++) {
+	__p_reduce(processes,run_tree,_t_child(code,i));
+    }
+
     int b;
-    Tnode *x;
     switch(s) {
     case IF:
-	params = _t_child(run_tree,2);
-	t = _t_child(params,1);
-	//@todo check to see if we need to reduce the condition
-	if (0) {
-	    // _p_reduce(t) the condition expression
-	}
+	t = _t_child(code,1);
 	b = (*(int *)_t_surface(t)) ? 2 : 3;
-	x = _t_detach_by_idx(params,b);
-	_t_replace(run_tree,1,x);
+	x = _t_detach_by_idx(code,b);
 	break;
     case RESPOND:
 	// for now we just remove the RESPOND instruction and replace it with it's own child
 	x = _t_detach_by_idx(code,1);
-	_t_replace(run_tree,1,x);
-	_p_reduce(run_tree);
 	break;
     case INTERPOLATE_FROM_MATCH:
-	params = _t_child(run_tree,2);
-	match_results = _t_child(params,1);
-	match_tree = _t_child(params,2);
+	match_results = _t_child(code,2);
+	match_tree = _t_child(code,3);
 	x = _t_detach_by_idx(code,1);
 	_p_interpolate_from_match(x,match_results,match_tree);
-	_t_replace(run_tree,1,x);
 	break;
     default:
 	raise_error("unknown instruction: %s",_r_get_symbol_name(0,s));
     }
+    _t_replace(parent,idx,x);
+}
+void _p_reduce(Tnode *processes,Tnode *run_tree) {
+    Tnode *code = _t_child(run_tree,1);
+    if (!code) {
+	raise_error0("expecting code tree as first child of run tree!");
+    }
+    __p_reduce(processes,run_tree,code);
 }
 
 /**
