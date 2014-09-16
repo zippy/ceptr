@@ -77,6 +77,7 @@ void __p_reduce(Tnode *processes,Tnode *run_tree, Tnode *code) {
 	Tnode *rt = __p_make_run_tree(processes,s,code);
 	__p_reduce(processes,rt,_t_child(rt,1));
 	x = _t_detach_by_idx(rt,1);
+	_t_free(rt);
     }
     else {
 	int b;

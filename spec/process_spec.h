@@ -12,31 +12,8 @@ void testRunTree() {
     Tnode *code,*input,*output,*t;
     char buf[2000];
 
-    code = _t_new_root(IF);
-    Tnode *eq = _t_newi(code,EQ_INT,0);
-    Tnode *mod = _t_newi(eq,MOD_INT,0);
-    _t_newi(mod,PARAM_REF,1);
-    _t_newi(mod,TEST_INT_SYMBOL,2);
-    _t_newi(eq,TEST_INT_SYMBOL,0);
-    _t_newi(code,PARAM_REF,2);
-    _t_newi(code,PARAM_REF,3);
-    input = _t_new_root(INPUT_SIGNATURE);
-    _t_newi(input,SIGNATURE_STRUCTURE,INTEGER);
-    _t_newi(input,SIGNATURE_STRUCTURE,TREE);
-    _t_newi(input,SIGNATURE_STRUCTURE,TREE);
-    output = _t_new_root(OUTPUT_SIGNATURE);
-    Process if_even = _d_code_process(defs,code,"if even","return 2nd child if even, third if not",input,output);
-
-    t = _t_new_root(RUN_TREE);
-    Tnode *n = _t_newr(t,if_even);
-    _t_newi(n,TEST_INT_SYMBOL,99);
-    _t_newi(n,TEST_INT_SYMBOL,123);
-    _t_newi(n,TEST_INT_SYMBOL,124);
-
-    __p_reduce(defs,t,n);
-    __t_dump(0,_t_child(t,1),0,buf);
-    spec_is_str_equal(buf," (TEST_INT_SYMBOL:124)");
-
+    // a process that would look something like this in lisp:
+    // (defun my_if (true_branch false_branch condition) (if (condition) (true_branch) (false_branch)))
     code = _t_new_root(IF);
     _t_newi(code,PARAM_REF,3);
     _t_newi(code,PARAM_REF,1);
@@ -48,7 +25,6 @@ void testRunTree() {
 
     output = _t_new_root(OUTPUT_SIGNATURE);
     Process p = _d_code_process(defs,code,"myif","a duplicate of the sys if process with params in different order",input,output);
-
 
     Tnode *p3 = _t_newi(0,TRUE_FALSE,1);
     Tnode *p1 = _t_newi(0,TEST_INT_SYMBOL,123);
@@ -90,8 +66,44 @@ void testRunTree() {
     _t_free(p1);
     _t_free(p2);
     _t_free(p3);
-
 }
+
+void testProcessReduceDefinedProcess() {
+    Tnode *defs = _t_new_root(PROCESSES);
+    Tnode *code,*input,*output;
+    char buf[2000];
+
+    // a process that would look something like this in lisp:
+    // (defun if_even (val true_branch false_branch) (if (eq (mod val 2 ) 0) (true_branch) (false_branch)))
+    code = _t_new_root(IF);
+    Tnode *eq = _t_newi(code,EQ_INT,0);
+    Tnode *mod = _t_newi(eq,MOD_INT,0);
+    _t_newi(mod,PARAM_REF,1);
+    _t_newi(mod,TEST_INT_SYMBOL,2);
+    _t_newi(eq,TEST_INT_SYMBOL,0);
+    _t_newi(code,PARAM_REF,2);
+    _t_newi(code,PARAM_REF,3);
+    input = _t_new_root(INPUT_SIGNATURE);
+    _t_newi(input,SIGNATURE_STRUCTURE,INTEGER);
+    _t_newi(input,SIGNATURE_STRUCTURE,TREE);
+    _t_newi(input,SIGNATURE_STRUCTURE,TREE);
+    output = _t_new_root(OUTPUT_SIGNATURE);
+    Process if_even = _d_code_process(defs,code,"if even","return 2nd child if even, third if not",input,output);
+
+    Tnode *t = _t_new_root(RUN_TREE);
+    Tnode *n = _t_newr(t,if_even);
+    _t_newi(n,TEST_INT_SYMBOL,99);
+    _t_newi(n,TEST_INT_SYMBOL,123);
+    _t_newi(n,TEST_INT_SYMBOL,124);
+
+    __p_reduce(defs,t,n);
+    __t_dump(0,_t_child(t,1),0,buf);
+    spec_is_str_equal(buf," (TEST_INT_SYMBOL:124)");
+
+    _t_free(defs);
+    _t_free(t);
+}
+
 
 void testProcessInterpolateMatch() {
     Tnode *t = _t_new_root(RUN_TREE);
@@ -255,6 +267,7 @@ void testProcessIntMath() {
 
 void testProcess() {
     testRunTree();
+    testProcessReduceDefinedProcess();
     testProcessInterpolateMatch();
     testProcessIf();
     testProcessIntMath();
