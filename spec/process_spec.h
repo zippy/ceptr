@@ -68,10 +68,8 @@ void testRunTree() {
     _t_free(p3);
 }
 
-void testProcessReduceDefinedProcess() {
-    Tnode *defs = _t_new_root(PROCESSES);
+Process _defIfEven(Tnode *defs) {
     Tnode *code,*input,*output;
-    char buf[2000];
 
     // a process that would look something like this in lisp:
     // (defun if_even (val true_branch false_branch) (if (eq (mod val 2 ) 0) (true_branch) (false_branch)))
@@ -88,7 +86,15 @@ void testProcessReduceDefinedProcess() {
     _t_newi(input,SIGNATURE_STRUCTURE,TREE);
     _t_newi(input,SIGNATURE_STRUCTURE,TREE);
     output = _t_new_root(OUTPUT_SIGNATURE);
-    Process if_even = _d_code_process(defs,code,"if even","return 2nd child if even, third if not",input,output);
+    return _d_code_process(defs,code,"if even","return 2nd child if even, third if not",input,output);
+
+}
+
+void testProcessReduceDefinedProcess() {
+    Tnode *defs = _t_new_root(PROCESSES);
+    char buf[2000];
+
+    Process if_even = _defIfEven(defs);
 
     Tnode *t = _t_new_root(RUN_TREE);
     Tnode *n = _t_newr(t,if_even);
@@ -96,7 +102,7 @@ void testProcessReduceDefinedProcess() {
     _t_newi(n,TEST_INT_SYMBOL,123);
     _t_newi(n,TEST_INT_SYMBOL,124);
 
-    __p_reduce(defs,t,n);
+    spec_is_equal(__p_reduce(defs,t,n),noReductionErr);
     __t_dump(0,_t_child(t,1),0,buf);
     spec_is_str_equal(buf," (TEST_INT_SYMBOL:124)");
 
@@ -104,6 +110,29 @@ void testProcessReduceDefinedProcess() {
     _t_free(t);
 }
 
+void testProcessSignatureMatching() {
+    Tnode *defs = _t_new_root(PROCESSES);
+    Process if_even = _defIfEven(defs);
+
+    Tnode *t = _t_new_root(RUN_TREE);
+    Tnode *n = _t_newr(t,if_even);
+    _t_new(n,TEST_STR_SYMBOL,"test",5);  // this should be an INTEGER!!
+    _t_newi(n,TEST_INT_SYMBOL,123);
+    _t_newi(n,TEST_INT_SYMBOL,124);
+    spec_is_equal(__p_reduce(defs,t,n),badSignatureReductionErr);
+
+    // too few params
+    _t_free(_t_detach_by_idx(n,1));
+    spec_is_equal(__p_reduce(defs,t,n),tooFewParamsReductionErr);
+
+    // add too many params
+    _t_newi(n,TEST_INT_SYMBOL,124);
+    _t_newi(n,TEST_INT_SYMBOL,124);
+    spec_is_equal(__p_reduce(defs,t,n),tooManyParamsReductionErr);
+
+    _t_free(defs);
+    _t_free(t);
+}
 
 void testProcessInterpolateMatch() {
     Tnode *t = _t_new_root(RUN_TREE);
@@ -268,6 +297,7 @@ void testProcessIntMath() {
 void testProcess() {
     testRunTree();
     testProcessReduceDefinedProcess();
+     testProcessSignatureMatching();
     testProcessInterpolateMatch();
     testProcessIf();
     testProcessIntMath();

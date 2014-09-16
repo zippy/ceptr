@@ -103,4 +103,7 @@ struct Xaddr {
     int addr;
 };
 typedef struct Xaddr Xaddr;
+
+typedef int Error;
+
 #endif

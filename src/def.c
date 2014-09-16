@@ -82,7 +82,6 @@ char *_d_get_process_name(Tnode *processes,Process p) {
     return __d_extra_buf;
 }
 
-
 /**
  * add a symbol definition to a symbol defs tree
  *
@@ -273,6 +272,12 @@ Process _d_code_process(Tnode *processes,Tnode *code,char *name,char *intention,
     return -_t_children(processes);
 }
 
+/**
+ * get a processes code definition
+ */
+Tnode *_d_get_process_code(Tnode *processes,Process p) {
+    return _t_child(processes,-p);
+}
 
 /*****************  Tree debugging utilities */
 

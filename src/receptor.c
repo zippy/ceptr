@@ -505,7 +505,11 @@ Tnode * _r_send(Receptor *r,Receptor *from,Aspect aspect, Tnode *signal_contents
 	    _t_add(s,rt);
 	    // for now just reduce the tree in place
 	    /// @todo move this to adding the runtree to the thread pool
-	    _p_reduce(r->processes,rt);
+	    int e = _p_reduce(r->processes,rt);
+	    /// @todo runtime error handing!!!
+	    if (e) {
+		raise_error("got reduction error: %d",e);
+	    }
 	}
     }
 

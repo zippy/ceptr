@@ -15,7 +15,10 @@
 
 #include "receptor.h"
 
-void __p_reduce(Tnode *processes,Tnode *run_tree, Tnode *code);
+enum ReductionError {noReductionErr,tooFewParamsReductionErr,tooManyParamsReductionErr,badSignatureReductionErr};
+
+Error __p_reduce(Tnode *processes,Tnode *run_tree, Tnode *code);
+Error _p_reduce(Tnode *processes,Tnode *run_tree);
 Tnode *__p_make_run_tree(Tnode *processes,Process p,Tnode *params);
 Tnode *_p_make_run_tree(Tnode *processes,Tnode *p,int num_params,...);
 
