@@ -1,0 +1,100 @@
+====================================
+Building ceptr as an executable in Eclipse
+====================================
+
+File -> New -> C Project
+	Enter the project name (ceptr)
+	Select Executable -> Empty Project
+	Select MinGW GCC as the toolchain
+
+Right-click on the new project:
+New -> Source Folder
+	Enter "src"
+
+Right-click on the new project:
+New -> Source Folder
+	Enter "spec"
+
+Drag and drop the files in your ceptr folder (cloned from GitHub) into the Eclipse source folder
+Select "Link to files" so that when you rebase, Eclipse gets the changes.
+
+Do the same for the files in the "spec" folder, dropping them as links into the Eclipse "spec" folder.
+
+Build and run.
+
+Select the dropdown on the "run" icon (round green symbol with a white arrow)
+Select C/C++ Application on the left
+Click "New" (the first icon with a "+" symbol in the upper right corner)
+Click "Run"
+
+In ceptr.h, comment out:
+	#include <pthread.h>
+as I haven't figured out how to include support for pthread in Windows.  Some references:
+http://stackoverflow.com/questions/2150938/can-i-get-cs-pthread-h-to-compile-in-windows
+http://sourceware.org/pthreads-win32/
+
+You can from then on run the program, if you have more than one project in your workspace, use the dropdown on the "run" icon to select the desired project.
+
+====================================
+Building ceptr as a shared library in Eclipse
+====================================
+
+File -> New -> C Project
+	Enter the project name (ceptrlib)
+	Select Shared Library -> Empty Project
+	Select MinGW GCC as the toolchain
+
+Right-click on the new project:
+New -> Source Folder
+	Enter "src"
+
+Drag and drop the files in your ceptr folder (cloned from GitHub) into the Eclipse source folder
+Select "Link to files" so that when you rebase, Eclipse gets the changes.
+
+This create "libceptrlib.dll" (annoyingly, Eclipse added "lib" at the beginning of the project, but we can't name our project "ceptr" because it conflicts with the executable version.
+
+The resulting dll is in c:\Users\[you]\workspace\ceptrlib\Debug as libceptrlib.dll
+
+====================================
+Calling C functions from C#
+====================================
+
+Create a simple "test.c" function in ceptrlib/src:
+
+#include "stdio.h"
+
+void Test()
+{
+	printf("Hello World\r\n");
+}
+
+Create a C# console application.  Copy the libceptrlib.dll into the bin\Debug folder of your new project.
+
+Change Program.cs to read:
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ceptrlibtest
+{
+	class Program
+	{
+		[DllImport("libceptrlib.dll")]
+		extern static void Test();
+
+		static void Main(string[] args)
+		{
+			Test();
+		}
+	}
+}
+
+Run it.  The output in the console window will be:
+
+Hello World
+Press any key to continue...
+
