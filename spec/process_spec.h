@@ -23,10 +23,18 @@ void testRunTree() {
     _t_new(code,PARAM_REF,pt3,sizeof(int)*4);
     _t_new(code,PARAM_REF,pt1,sizeof(int)*4);
     _t_new(code,PARAM_REF,pt2,sizeof(int)*4);
-    input = _t_new_root(INPUT_SIGNATURE);
-    _t_newi(input,SIGNATURE_STRUCTURE,TREE);
-    _t_newi(input,SIGNATURE_STRUCTURE,TREE);
-    _t_newi(input,SIGNATURE_STRUCTURE,BOOLEAN);
+
+    input = _t_new_root(INPUT);
+    Tnode *i3 = _t_newr(input,INPUT_SIGNATURE);
+    _t_newi(i3,SIGNATURE_STRUCTURE,INTEGER);
+    _t_new(i3,INPUT_LABEL,"condition",4);
+    Tnode *i1 = _t_newr(input,INPUT_SIGNATURE);
+    _t_newi(i1,SIGNATURE_STRUCTURE,TREE);
+    _t_new(i1,INPUT_LABEL,"true_branch",4);
+    Tnode *i2 = _t_newr(input,INPUT_SIGNATURE);
+    _t_newi(i2,SIGNATURE_STRUCTURE,TREE);
+    _t_new(i2,INPUT_LABEL,"false_branch",4);
+
 
     output = _t_new_root(OUTPUT_SIGNATURE);
     Process p = _d_code_process(processes,code,"myif","a duplicate of the sys if process with params in different order",input,output);
@@ -61,7 +69,8 @@ void testRunTree() {
     spec_is_symbol_equal(0,_t_symbol(t),TRUE_FALSE);
     spec_is_true(t!=p3);  //should be a clone
 
-    _p_reduce(defs,r);
+    spec_is_equal(_p_reduce(defs,r),noReductionErr);
+
     __t_dump(0,_t_child(r,1),0,buf);
     spec_is_str_equal(buf," (TEST_INT_SYMBOL:123)");
 
@@ -89,10 +98,17 @@ Process _defIfEven(Tnode *processes) {
     _t_newi(eq,TEST_INT_SYMBOL,0);
     _t_new(code,PARAM_REF,p2,sizeof(int)*4);
     _t_new(code,PARAM_REF,p3,sizeof(int)*4);
-    input = _t_new_root(INPUT_SIGNATURE);
-    _t_newi(input,SIGNATURE_STRUCTURE,INTEGER);
-    _t_newi(input,SIGNATURE_STRUCTURE,TREE);
-    _t_newi(input,SIGNATURE_STRUCTURE,TREE);
+    input = _t_new_root(INPUT);
+    Tnode *i1 = _t_newr(input,INPUT_SIGNATURE);
+    _t_newi(i1,SIGNATURE_STRUCTURE,INTEGER);
+    _t_new(i1,INPUT_LABEL,"val",4);
+    Tnode *i2 = _t_newr(input,INPUT_SIGNATURE);
+    _t_newi(i2,SIGNATURE_STRUCTURE,TREE);
+    _t_new(i2,INPUT_LABEL,"true_branch",4);
+    Tnode *i3 = _t_newr(input,INPUT_SIGNATURE);
+    _t_newi(i3,SIGNATURE_STRUCTURE,TREE);
+    _t_new(i3,INPUT_LABEL,"false_branch",4);
+
     output = _t_new_root(OUTPUT_SIGNATURE);
 
     return _d_code_process(processes,code,"if even","return 2nd child if even, third if not",input,output);

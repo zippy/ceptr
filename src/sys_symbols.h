@@ -92,7 +92,9 @@ enum SystemSymbol
     PROCESS_CODING,
     PROCESS_NAME,
     PROCESS_INTENTION,
+    INPUT,
     INPUT_SIGNATURE,
+    INPUT_LABEL,
     SIGNATURE_STRUCTURE,
     OUTPUT_SIGNATURE,
     RUN_TREE,                         ///< think about this as a stack frame and it's code
@@ -153,7 +155,9 @@ static char *G_sys_symbol_names[] = {
     "PROCESS_CODING",
     "PROCESS_NAME",
     "PROCESS_INTENTION",
+    "INPUT",
     "INPUT_SIGNATURE",
+    "INPUT_LABEL",
     "SIGNATURE_STRUCTURE",
     "OUTPUT_SIGNATURE",
     "RUN_TREE",
@@ -213,7 +217,9 @@ static Structure G_sys_symbol_structures[] = {
     TREE,                //PROCESS_CODING
     CSTRING,             //PROCESS_NAME
     CSTRING,             //PROCESS_INTENTION
+    LIST,                //INPUT
     TREE,                //INPUT_SIGNATURE
+    CSTRING,             //INPUT_LABEL
     STRUCTURE,           //SIGNATURE_STRUCTURE
     SYMBOL,              //OUTPUT_SIGNATURE
     TREE,                //RUN_TREE

@@ -42,6 +42,37 @@ void _p_interpolate_from_match(Tnode *t,Tnode *match_results,Tnode *match_tree) 
 }
 
 /**
+ * check a group of parameters to see if they match a process input signature
+ *
+ * @param[in] defs definition trees needed for the checking
+ * @param[in] p the Process we are checking against
+ * @param[in] params list of parameters
+ *
+ * @returns Error code
+  */
+Error __p_check_signature(Defs defs,Process p,Tnode *params) {
+    Tnode *def = _d_get_process_code(defs.processes,p);
+    Tnode *input = _t_child(def,4);
+    int i = _t_children(input);
+    int c = _t_children(params);
+    if (i > c) return tooFewParamsReductionErr;
+    if (i < c) return tooManyParamsReductionErr;
+    for (i=1;i<=c;i++) {
+	Tnode *sig = _t_child(_t_child(input,i),1);
+	if(_t_symbol(sig) == SIGNATURE_STRUCTURE) {
+	    Structure ss = *(int *)_t_surface(sig);
+	    if (_d_get_symbol_structure(defs.symbols,_t_symbol(_t_child(params,i))) !=
+		ss && ss != TREE)
+		return badSignatureReductionErr;
+	}
+	else {
+	    raise_error("unknown signature checking symbol: %s",_d_get_symbol_name(0,_t_symbol(sig)));
+	}
+    }
+    return 0;
+}
+
+/**
  * reduce a run tree by executing the instructions in it and replacing the tree values in place
  *
  * a run_tree is expected to have a code tree as the first child, and parameters as the second
@@ -79,26 +110,11 @@ Error __p_reduce(Defs defs,Tnode *run_tree, Tnode *code) {
 
     // then, if this isn't a basic system level process, it's the equivalent
     // of a function call, so we need to create a new execution context (RUN_TREE)
-    // and reduce id
+    // for the process, which clones the code and adds in the params, and then
+    // recursively reduce the tree
     if (!is_sys_process(s)) {
-	Tnode *def = _d_get_process_code(defs.processes,s);
-	Tnode *input = _t_child(def,4);
-	int i = _t_children(input);
-	int c = _t_children(code);
-	if (i > c) return tooFewParamsReductionErr;
-	if (i < c) return tooManyParamsReductionErr;
-	for (i=1;i<=c;i++) {
-	    Tnode *sig = _t_child(input,i);
-	    if(_t_symbol(sig) == SIGNATURE_STRUCTURE) {
-		Structure ss = *(int *)_t_surface(sig);
-		if (_d_get_symbol_structure(defs.symbols,_t_symbol(_t_child(code,i))) !=
-		    ss && ss != TREE)
-		    return badSignatureReductionErr;
-	    }
-	    else {
-		raise_error("unknown signature checking symbol: %s",_d_get_symbol_name(0,s));
-	    }
-	}
+	Error e = __p_check_signature(defs,s,code);
+	if (e) return e;
 	Tnode *rt = __p_make_run_tree(defs.processes,s,code);
 	__p_reduce(defs,rt,_t_child(rt,1));
 	x = _t_detach_by_idx(rt,1);
