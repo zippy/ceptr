@@ -103,7 +103,7 @@ void _r_free(Receptor *r) {
 /*****************  receptor symbols, structures and processes */
 
 /**
- * we use this for both defining symbols and structures because labels store the full path to the labeled item
+ * we use this for labeling symbols, structures and processes because labels store the full path to the labeled item and we want the labels to be unique across all three
  */
 int __set_label_for_def(Receptor *r,char *label,Tnode *def) {
     int *path = _t_get_path(def);
@@ -116,7 +116,7 @@ int __set_label_for_def(Receptor *r,char *label,Tnode *def) {
 /**
  * Get the child index for a given label.
  *
- * This works for retrieving symbols and structures because the symbol and structure values is just the child index.
+ * This works for retrieving symbols, structures & processes because the symbol and structure values is just the child index.
  */
 int __get_label_idx(Receptor *r,char *label) {
     int *path = labelGet(&r->table,label);
