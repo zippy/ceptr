@@ -105,11 +105,11 @@ $(document).ready(function(){initNavTree('label_8h.html','');});
   <div class="summary">
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">label.h File Reference</div>  </div>
+<div class="title">label.h File Reference<div class="ingroups"><a class="el" href="group__tree.html">Semantic Trees</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Label tables map human readable text strings to symbols and structures.  
+<p>Label tables map human readable text strings to parts of semantic trees.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;ceptr_types.h&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
@@ -124,7 +124,7 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="label_8h__dep__incl.png" border="0" usemap="#src_2label_8hdep" alt=""/></div>
 <map name="src_2label_8hdep" id="src_2label_8hdep">
-<area shape="rect" id="node2" href="label_8c.html" title="src/label.c" alt="" coords="5,80,87,107"/><area shape="rect" id="node3" href="receptor_8h.html" title="receptor implementation header file " alt="" coords="474,80,576,107"/><area shape="rect" id="node16" href="label__spec_8h.html" title="spec/label_spec.h" alt="" coords="113,80,239,107"/><area shape="rect" id="node4" href="process_8h.html" title="processing header files " alt="" coords="404,155,505,181"/><area shape="rect" id="node6" href="receptor_8c.html" title="receptor implementation " alt="" coords="122,229,224,256"/><area shape="rect" id="node9" href="vmhost_8h.html" title="vmhost implementation header file " alt="" coords="545,155,644,181"/><area shape="rect" id="node12" href="tree__spec_8h.html" title="spec/tree_spec.h" alt="" coords="1007,229,1129,256"/><area shape="rect" id="node13" href="http__example_8h.html" title="spec/http_example.h" alt="" coords="807,155,949,181"/><area shape="rect" id="node14" href="receptor__spec_8h.html" title="spec/receptor_spec.h" alt="" coords="836,229,983,256"/><area shape="rect" id="node15" href="semtrex__spec_8h.html" title="spec/semtrex_spec.h" alt="" coords="87,155,233,181"/><area shape="rect" id="node5" href="process_8c.html" title="implementation of ceptr processing: instructions and run tree reduction " alt="" coords="420,229,521,256"/><area shape="rect" id="node7" href="process__spec_8h.html" title="spec/process_spec.h" alt="" coords="249,229,396,256"/><area shape="rect" id="node8" href="ceptr__specs_8c.html" title="implements a main() entry point for running all the tests " alt="" coords="463,304,597,331"/><area shape="rect" id="node10" href="vmhost_8c.html" title="virtual machine host receptor implementation " alt="" coords="545,229,644,256"/><area shape="rect" id="node11" href="vmhost__spec_8h.html" title="spec/vmhost_spec.h" alt="" coords="669,229,811,256"/></map>
+<area shape="rect" id="node2" href="label_8c.html" title="Implementation of label tabels for semantic reference to parts of semantic trees. ..." alt="" coords="5,80,87,107"/><area shape="rect" id="node3" href="receptor_8h.html" title="receptor implementation header file " alt="" coords="474,80,576,107"/><area shape="rect" id="node16" href="label__spec_8h.html" title="spec/label_spec.h" alt="" coords="113,80,239,107"/><area shape="rect" id="node4" href="process_8h.html" title="processing header files " alt="" coords="404,155,505,181"/><area shape="rect" id="node6" href="receptor_8c.html" title="receptor implementation " alt="" coords="122,229,224,256"/><area shape="rect" id="node9" href="vmhost_8h.html" title="vmhost implementation header file " alt="" coords="545,155,644,181"/><area shape="rect" id="node12" href="tree__spec_8h.html" title="spec/tree_spec.h" alt="" coords="1007,229,1129,256"/><area shape="rect" id="node13" href="http__example_8h.html" title="spec/http_example.h" alt="" coords="807,155,949,181"/><area shape="rect" id="node14" href="receptor__spec_8h.html" title="spec/receptor_spec.h" alt="" coords="836,229,983,256"/><area shape="rect" id="node15" href="semtrex__spec_8h.html" title="spec/semtrex_spec.h" alt="" coords="87,155,233,181"/><area shape="rect" id="node5" href="process_8c.html" title="implementation of ceptr processing: instructions and run tree reduction " alt="" coords="420,229,521,256"/><area shape="rect" id="node7" href="process__spec_8h.html" title="spec/process_spec.h" alt="" coords="249,229,396,256"/><area shape="rect" id="node8" href="ceptr__specs_8c.html" title="implements a main() entry point for running all the tests " alt="" coords="463,304,597,331"/><area shape="rect" id="node10" href="vmhost_8c.html" title="virtual machine host receptor implementation " alt="" coords="545,229,644,256"/><area shape="rect" id="node11" href="vmhost__spec_8h.html" title="spec/vmhost_spec.h" alt="" coords="669,229,811,256"/></map>
 </div>
 </div>
 <p><a href="label_8h_source.html">Go to the source code of this file.</a></p>
@@ -151,7 +151,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>lableTableFree</b> (<
 <tr class="separator:aeea007f1e240b6e6310845affe077ff0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Label tables map human readable text strings to symbols and structures. </p>
+<div class="textblock"><p>Label tables map human readable text strings to parts of semantic trees. </p>
+<p>Labeling is used to priovide human readable references for symbols, structures, processes (including locals/parameter references in process code) in receptor definitions, but is a general process for providing semantic references to parts of semantic trees</p>
 <dl class="section copyright"><dt>Copyright</dt><dd>Copyright (C) 2013-2014, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al). This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3). </dd></dl>
 
 <p>Definition in file <a class="el" href="label_8h_source.html">label.h</a>.</p>
@@ -161,7 +162,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>lableTableFree</b> (<
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="label_8h.html">label.h</a></li>
-    <li class="footer">Generated on Tue Sep 16 2014 11:26:02 for ceptr by
+    <li class="footer">Generated on Tue Sep 16 2014 16:55:39 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

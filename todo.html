@@ -103,9 +103,9 @@ $(document).ready(function(){initNavTree('todo.html','');});
 <div class="textblock"><dl class="reflist">
 <dt><a class="anchor" id="_todo000004"></a>Global <a class="el" href="group__def.html#ga1dc59ee8a878d248e706d3eac36ff3cf">__d_code_process</a>  (<a class="el" href="structTnode.html">Tnode</a> *processes, <a class="el" href="structTnode.html">Tnode</a> *code, char *name, char *intention, <a class="el" href="structTnode.html">Tnode</a> *in, <a class="el" href="structTnode.html">Tnode</a> *out)</dt>
 <dd>this is not thread safe! </dd>
-<dt><a class="anchor" id="_todo000017"></a>Global <a class="el" href="group__tree.html#gaffb8b0a4288458ba9b4788a5bbb713ef">__t_morph</a>  (<a class="el" href="structTnode.html">Tnode</a> *t, Symbol s, void *surface, size_t length, int allocate)</dt>
+<dt><a class="anchor" id="_todo000018"></a>Global <a class="el" href="group__tree.html#gaffb8b0a4288458ba9b4788a5bbb713ef">__t_morph</a>  (<a class="el" href="structTnode.html">Tnode</a> *t, Symbol s, void *surface, size_t length, int allocate)</dt>
 <dd>Handle the case where the surface of the node to be morphed is itself a tree  </dd>
-<dt><a class="anchor" id="_todo000012"></a>Global <a class="el" href="group__receptor.html#gad137f4d3b94172a7a2e78c1a1c632efa">__t_serialize</a>  (<a class="el" href="structTnode.html">Tnode</a> *t, void **bufferP, size_t offset, size_t current_size, int compact)</dt>
+<dt><a class="anchor" id="_todo000013"></a>Global <a class="el" href="group__receptor.html#gad137f4d3b94172a7a2e78c1a1c632efa">__t_serialize</a>  (<a class="el" href="structTnode.html">Tnode</a> *t, void **bufferP, size_t offset, size_t current_size, int compact)</dt>
 <dd>compact is really a shorthand for whether this is a fixed size tree or not this should actually be determined on the fly by looking at the structure types.  </dd>
 <dt><a class="anchor" id="_todo000005"></a>Global <a class="el" href="group__def.html#gae1a5dfaf9657e2ccf00edc2fb39c96c1">_d_code_process</a>  (<a class="el" href="structTnode.html">Tnode</a> *processes, <a class="el" href="structTnode.html">Tnode</a> *code, char *name, char *intention, <a class="el" href="structTnode.html">Tnode</a> *in, <a class="el" href="structTnode.html">Tnode</a> *out)</dt>
 <dd>this is not thread safe! </dd>
@@ -113,23 +113,23 @@ $(document).ready(function(){initNavTree('todo.html','');});
 <dd>this is not thread safe! </dd>
 <dt><a class="anchor" id="_todo000006"></a>Global <a class="el" href="label_8c.html#a45355417a02622e0673f368efe2b59ff">_labelDelete</a>  (LabelTable *table, Label l)</dt>
 <dd>label delete  </dd>
-<dt><a class="anchor" id="_todo000007"></a>Global <a class="el" href="process_8c.html#abb7a87ead11cded49b808bd0e95736b1">_p_interpolate_from_match</a>  (<a class="el" href="structTnode.html">Tnode</a> *t, <a class="el" href="structTnode.html">Tnode</a> *match_results, <a class="el" href="structTnode.html">Tnode</a> *match_tree)</dt>
+<dt><a class="anchor" id="_todo000008"></a>Global <a class="el" href="process_8c.html#abb7a87ead11cded49b808bd0e95736b1">_p_interpolate_from_match</a>  (<a class="el" href="structTnode.html">Tnode</a> *t, <a class="el" href="structTnode.html">Tnode</a> *match_results, <a class="el" href="structTnode.html">Tnode</a> *match_tree)</dt>
 <dd>what to do if match has sibs??  </dd>
-<dt><a class="anchor" id="_todo000009"></a>Global <a class="el" href="group__receptor.html#gad7ed83880a8bb8be0de01ae73b44d13a">_r_build_def_semtrex</a>  (<a class="el" href="structReceptor.html">Receptor</a> *r, Symbol s, <a class="el" href="structTnode.html">Tnode</a> *parent)</dt>
+<dt><a class="anchor" id="_todo000010"></a>Global <a class="el" href="group__receptor.html#gad7ed83880a8bb8be0de01ae73b44d13a">_r_build_def_semtrex</a>  (<a class="el" href="structReceptor.html">Receptor</a> *r, Symbol s, <a class="el" href="structTnode.html">Tnode</a> *parent)</dt>
 <dd>currently this won't detect an incorrect strcture with extra children. This is because we don't haven't yet implemented the equivalent of "$" for semtrex.  </dd>
-<dt><a class="anchor" id="_todo000010"></a>Global <a class="el" href="group__receptor.html#ga8978934f20256d927a9f035c2eeafd8d">_r_def_match</a>  (<a class="el" href="structReceptor.html">Receptor</a> *r, Symbol s, <a class="el" href="structTnode.html">Tnode</a> *t)</dt>
+<dt><a class="anchor" id="_todo000011"></a>Global <a class="el" href="group__receptor.html#ga8978934f20256d927a9f035c2eeafd8d">_r_def_match</a>  (<a class="el" href="structReceptor.html">Receptor</a> *r, Symbol s, <a class="el" href="structTnode.html">Tnode</a> *t)</dt>
 <dd>currently this just matches on a semtrex. It should also look at the surface sizes to see if they meet the criteria of the structure definitions.  </dd>
-<dt><a class="anchor" id="_todo000011"></a>Global <a class="el" href="group__receptor.html#ga2dbe9e8a4ca9c5b3afbb43743ab19a6b">_r_new_instance</a>  (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structTnode.html">Tnode</a> *t)</dt>
+<dt><a class="anchor" id="_todo000012"></a>Global <a class="el" href="group__receptor.html#ga2dbe9e8a4ca9c5b3afbb43743ab19a6b">_r_new_instance</a>  (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structTnode.html">Tnode</a> *t)</dt>
 <dd>currently stores instances as extra-children on the def tree, this will actually be handled by interacting with the data-engine! </dd>
-<dt><a class="anchor" id="_todo000008"></a>Global <a class="el" href="group__receptor.html#ga19ac9a15990a9c657a9ad73cf768bab1">_r_new_receptor_from_package</a>  (Symbol s, <a class="el" href="structTnode.html">Tnode</a> *p, <a class="el" href="structTnode.html">Tnode</a> *bindings)</dt>
+<dt><a class="anchor" id="_todo000009"></a>Global <a class="el" href="group__receptor.html#ga19ac9a15990a9c657a9ad73cf768bab1">_r_new_receptor_from_package</a>  (Symbol s, <a class="el" href="structTnode.html">Tnode</a> *p, <a class="el" href="structTnode.html">Tnode</a> *bindings)</dt>
 <dd>implement bindings  </dd>
-<dt><a class="anchor" id="_todo000016"></a>Global <a class="el" href="group__receptor.html#gae251d0cfa84e1edbbe12d3489aa29d1e">_r_send</a>  (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structReceptor.html">Receptor</a> *from, Aspect aspect, <a class="el" href="structTnode.html">Tnode</a> *signal)</dt>
+<dt><a class="anchor" id="_todo000017"></a>Global <a class="el" href="group__receptor.html#gae251d0cfa84e1edbbe12d3489aa29d1e">_r_send</a>  (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structReceptor.html">Receptor</a> *from, Aspect aspect, <a class="el" href="structTnode.html">Tnode</a> *signal)</dt>
 <dd>for now the signal is appended directly to the flux. Later it should probably be copied  </dd>
-<dt><a class="anchor" id="_todo000019"></a>Global <a class="el" href="group__tree.html#gaaeb6a7d7bf14e958d9e79c699edb8040">_t_clone</a>  (<a class="el" href="structTnode.html">Tnode</a> *t)</dt>
+<dt><a class="anchor" id="_todo000020"></a>Global <a class="el" href="group__tree.html#gaaeb6a7d7bf14e958d9e79c699edb8040">_t_clone</a>  (<a class="el" href="structTnode.html">Tnode</a> *t)</dt>
 <dd>make this work with trees that have orthogonal trees!  </dd>
-<dt><a class="anchor" id="_todo000018"></a>Global <a class="el" href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a>  (<a class="el" href="structTnode.html">Tnode</a> *t)</dt>
+<dt><a class="anchor" id="_todo000019"></a>Global <a class="el" href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a>  (<a class="el" href="structTnode.html">Tnode</a> *t)</dt>
 <dd>make this remove the child from the parent's child-list?  </dd>
-<dt><a class="anchor" id="_todo000021"></a>Global <a class="el" href="group__tree.html#ga19a429819da9dcbc89ec7e259ef32db0">_t_get_path</a>  (<a class="el" href="structTnode.html">Tnode</a> *t)</dt>
+<dt><a class="anchor" id="_todo000022"></a>Global <a class="el" href="group__tree.html#ga19a429819da9dcbc89ec7e259ef32db0">_t_get_path</a>  (<a class="el" href="structTnode.html">Tnode</a> *t)</dt>
 <dd>implement jumping into orthogonal trees (i.e. return paths with 0 in them) <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">t</td><td>tree node </td></tr>
@@ -138,17 +138,19 @@ $(document).ready(function(){initNavTree('todo.html','');});
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>path of node </dd></dl>
 </dd>
-<dt><a class="anchor" id="_todo000020"></a>Global <a class="el" href="group__tree.html#ga49e337d9576c1f143e88a02aa9184756">_t_next_sibling</a>  (<a class="el" href="structTnode.html">Tnode</a> *t)</dt>
+<dt><a class="anchor" id="_todo000021"></a>Global <a class="el" href="group__tree.html#ga49e337d9576c1f143e88a02aa9184756">_t_next_sibling</a>  (<a class="el" href="structTnode.html">Tnode</a> *t)</dt>
 <dd>this is very expensive if called all the time!!!  </dd>
-<dt><a class="anchor" id="_todo000023"></a>Global <a class="el" href="group__vmhost.html#ga53694170e5452b8062ec405e6a9a3f60">_v_activate</a>  (<a class="el" href="structVMHost.html">VMHost</a> *v, <a class="el" href="structXaddr.html">Xaddr</a> x)</dt>
+<dt><a class="anchor" id="_todo000024"></a>Global <a class="el" href="group__vmhost.html#ga53694170e5452b8062ec405e6a9a3f60">_v_activate</a>  (<a class="el" href="structVMHost.html">VMHost</a> *v, <a class="el" href="structXaddr.html">Xaddr</a> x)</dt>
 <dd>for now we are just storing the active receptors in the receptor tree later this will probably have to be optimized into a hash for faster access  </dd>
-<dt><a class="anchor" id="_todo000022"></a>Global <a class="el" href="group__vmhost.html#gaa3dd6066c4af50e8497e8013ccc413c2">_v_load_receptor_package</a>  (<a class="el" href="structVMHost.html">VMHost</a> *v, <a class="el" href="structTnode.html">Tnode</a> *p)</dt>
+<dt><a class="anchor" id="_todo000023"></a>Global <a class="el" href="group__vmhost.html#gaa3dd6066c4af50e8497e8013ccc413c2">_v_load_receptor_package</a>  (<a class="el" href="structVMHost.html">VMHost</a> *v, <a class="el" href="structTnode.html">Tnode</a> *p)</dt>
 <dd>validate signature and checksums?? </dd>
 <dt><a class="anchor" id="_todo000002"></a>File <a class="el" href="def_8c.html">def.c</a>  </dt>
 <dd>refactor symbol/structure/process definition mechanisms into a general definitional form </dd>
+<dt><a class="anchor" id="_todo000007"></a>File <a class="el" href="process_8c.html">process.c</a>  </dt>
+<dd>implement a way to define sys_processes input and output signatures </dd>
 <dt><a class="anchor" id="_todo000001"></a>Class <a class="el" href="structtable__elem.html">table_elem</a>  </dt>
 <dd>convert path to variable sized item  </dd>
-<dt><a class="anchor" id="_todo000024"></a>Global <a class="el" href="process__spec_8h.html#a2df9138f71c0a1fa19bcb49682d51299">testProcessIf</a>  ()</dt>
+<dt><a class="anchor" id="_todo000025"></a>Global <a class="el" href="process__spec_8h.html#a2df9138f71c0a1fa19bcb49682d51299">testProcessIf</a>  ()</dt>
 <dd>when interpolating from a match, how do we handle non-leaf interpollations, i.e. where do you hook children onto? </dd>
 </dl>
 </div></div><!-- contents -->
@@ -156,7 +158,7 @@ $(document).ready(function(){initNavTree('todo.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Sep 16 2014 11:26:02 for ceptr by
+    <li class="footer">Generated on Tue Sep 16 2014 16:55:39 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

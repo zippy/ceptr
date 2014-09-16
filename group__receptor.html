@@ -341,7 +341,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the length that was added to the buffer</dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000012">Todo:</a></b></dt><dd>compact is really a shorthand for whether this is a fixed size tree or not this should actually be determined on the fly by looking at the structure types. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000013">Todo:</a></b></dt><dd>compact is really a shorthand for whether this is a fixed size tree or not this should actually be determined on the fly by looking at the structure types. </dd></dl>
 
 <p>Definition at line <a class="el" href="receptor_8c_source.html#l00362">362</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
@@ -433,7 +433,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the completed semtrex </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000009">Todo:</a></b></dt><dd>currently this won't detect an incorrect strcture with extra children. This is because we don't haven't yet implemented the equivalent of "$" for semtrex. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000010">Todo:</a></b></dt><dd>currently this won't detect an incorrect strcture with extra children. This is because we don't haven't yet implemented the equivalent of "$" for semtrex. </dd></dl>
 
 <p>Definition at line <a class="el" href="receptor_8c_source.html#l00225">225</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
@@ -587,7 +587,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true or false depending on the match</dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000010">Todo:</a></b></dt><dd>currently this just matches on a semtrex. It should also look at the surface sizes to see if they meet the criteria of the structure definitions. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000011">Todo:</a></b></dt><dd>currently this just matches on a semtrex. It should also look at the surface sizes to see if they meet the criteria of the structure definitions. </dd></dl>
 
 <p>Definition at line <a class="el" href="receptor_8c_source.html#l00255">255</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
@@ -852,7 +852,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>xaddr of the instance</dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000011">Todo:</a></b></dt><dd>currently stores instances as extra-children on the def tree, this will actually be handled by interacting with the data-engine!</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000012">Todo:</a></b></dt><dd>currently stores instances as extra-children on the def tree, this will actually be handled by interacting with the data-engine!</dd></dl>
 <p><b>Examples (from test suite):</b> </p><div class="fragment"></div><!-- fragment -->
 <p>Definition at line <a class="el" href="receptor_8c_source.html#l00277">277</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
@@ -897,7 +897,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>pointer to a newly allocated <a class="el" href="structReceptor.html">Receptor</a> </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000008">Todo:</a></b></dt><dd>implement bindings </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000009">Todo:</a></b></dt><dd>implement bindings </dd></dl>
 
 <p>Definition at line <a class="el" href="receptor_8c_source.html#l00057">57</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
@@ -938,7 +938,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000016">Todo:</a></b></dt><dd>for now the signal is appended directly to the flux. Later it should probably be copied </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000017">Todo:</a></b></dt><dd>for now the signal is appended directly to the flux. Later it should probably be copied </dd></dl>
 <p>Send a signal to a receptor on a given aspect</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -986,8 +986,12 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 <div class="line">    <a class="code" href="structTnode.html">Tnode</a> *http_resp = <a class="code" href="group__tree.html#gaff88720dad09389f6b7f35f7985d8efd">_t_newr</a>(n,TSYM_HTTP_RESPONSE);</div>
 <div class="line">    <a class="code" href="group__tree.html#ga23646bb375d548b8bdce934f694b1741">_t_new</a>(http_resp,TSYM_HTTP_RESPONSE_CONTENT_TYPE,<span class="stringliteral">&quot;CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT&quot;</span>,38);</div>
 <div class="line">    <a class="code" href="group__tree.html#gab438eeedb3eb6c1e20171b33d8ec499d">_t_newi</a>(http_resp,<a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3ae0e51bb381564e3d460f0352172e0c40">INTERPOLATE_SYMBOL</a>,TSYM_HTTP_REQUEST_PATH_SEGMENT);</div>
-<div class="line">    <a class="code" href="group__tree.html#gab438eeedb3eb6c1e20171b33d8ec499d">_t_newi</a>(n,<a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a01024e4cdc48465474a42afe32f1d95d">PARAM_REF</a>,1);</div>
-<div class="line">    <a class="code" href="group__tree.html#gab438eeedb3eb6c1e20171b33d8ec499d">_t_newi</a>(n,<a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a01024e4cdc48465474a42afe32f1d95d">PARAM_REF</a>,2);</div>
+<div class="line"></div>
+<div class="line">    <span class="keywordtype">int</span> pt1[] = {2,1,TREE_PATH_TERMINATOR};</div>
+<div class="line">    <span class="keywordtype">int</span> pt2[] = {2,2,TREE_PATH_TERMINATOR};</div>
+<div class="line"></div>
+<div class="line">    <a class="code" href="group__tree.html#ga23646bb375d548b8bdce934f694b1741">_t_new</a>(n,<a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a01024e4cdc48465474a42afe32f1d95d">PARAM_REF</a>,pt1,<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>)*4);</div>
+<div class="line">    <a class="code" href="group__tree.html#ga23646bb375d548b8bdce934f694b1741">_t_new</a>(n,<a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a01024e4cdc48465474a42afe32f1d95d">PARAM_REF</a>,pt2,<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>)*4);</div>
 <div class="line"></div>
 <div class="line">    <a class="code" href="structTnode.html">Tnode</a> *input = <a class="code" href="group__tree.html#ga17676267c6fb457dd1d086f37641544a">_t_new_root</a>(INPUT_SIGNATURE);</div>
 <div class="line">    <a class="code" href="structTnode.html">Tnode</a> *output = <a class="code" href="group__tree.html#ga17676267c6fb457dd1d086f37641544a">_t_new_root</a>(OUTPUT_SIGNATURE);</div>
@@ -1006,9 +1010,9 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 <div class="line">    spec_is_str_equal(buf,<span class="stringliteral">&quot; (HTTP_RESPONSE (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT) (HTTP_REQUEST_PATH_SEGMENT:groups))&quot;</span>);</div>
 <div class="line"></div>
 <div class="line">    <a class="code" href="group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8">_r_free</a>(r);</div>
-</div><!-- fragment --><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000013">Todo:</a></b></dt><dd>move this to adding the runtree to the thread pool </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000014">Todo:</a></b></dt><dd>runtime error handing!!! </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000015">Todo:</a></b></dt><dd>results should actually be a what? success/failure of send </dd></dl>
+</div><!-- fragment --><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000014">Todo:</a></b></dt><dd>move this to adding the runtree to the thread pool </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000015">Todo:</a></b></dt><dd>runtime error handing!!! </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000016">Todo:</a></b></dt><dd>results should actually be a what? success/failure of send </dd></dl>
 
 <p>Definition at line <a class="el" href="receptor_8c_source.html#l00488">488</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
@@ -1182,7 +1186,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Sep 16 2014 11:26:02 for ceptr by
+    <li class="footer">Generated on Tue Sep 16 2014 16:55:39 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
