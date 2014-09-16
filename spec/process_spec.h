@@ -8,7 +8,8 @@
 #include "../src/process.h"
 
 void testRunTree() {
-    Tnode *defs = _t_new_root(PROCESSES);
+    Tnode *processes = _t_new_root(PROCESSES);
+    Defs defs = {0,0,processes};
     Tnode *code,*input,*output,*t;
     char buf[2000];
 
@@ -24,7 +25,7 @@ void testRunTree() {
     _t_newi(input,SIGNATURE_STRUCTURE,BOOLEAN);
 
     output = _t_new_root(OUTPUT_SIGNATURE);
-    Process p = _d_code_process(defs,code,"myif","a duplicate of the sys if process with params in different order",input,output);
+    Process p = _d_code_process(processes,code,"myif","a duplicate of the sys if process with params in different order",input,output);
 
     Tnode *p3 = _t_newi(0,TRUE_FALSE,1);
     Tnode *p1 = _t_newi(0,TEST_INT_SYMBOL,123);
@@ -32,7 +33,7 @@ void testRunTree() {
 
     Tnode *act = _t_newp(0,ACTION,p);
 
-    Tnode *r = _p_make_run_tree(defs,act,3,p1,p2,p3);
+    Tnode *r = _p_make_run_tree(processes,act,3,p1,p2,p3);
 
     spec_is_symbol_equal(0,_t_symbol(r),RUN_TREE);
 
@@ -62,13 +63,13 @@ void testRunTree() {
 
     _t_free(act);
     _t_free(r);
-    _t_free(defs);
+    _t_free(processes);
     _t_free(p1);
     _t_free(p2);
     _t_free(p3);
 }
 
-Process _defIfEven(Tnode *defs) {
+Process _defIfEven(Tnode *processes) {
     Tnode *code,*input,*output;
 
     // a process that would look something like this in lisp:
@@ -86,15 +87,16 @@ Process _defIfEven(Tnode *defs) {
     _t_newi(input,SIGNATURE_STRUCTURE,TREE);
     _t_newi(input,SIGNATURE_STRUCTURE,TREE);
     output = _t_new_root(OUTPUT_SIGNATURE);
-    return _d_code_process(defs,code,"if even","return 2nd child if even, third if not",input,output);
+    return _d_code_process(processes,code,"if even","return 2nd child if even, third if not",input,output);
 
 }
 
 void testProcessReduceDefinedProcess() {
-    Tnode *defs = _t_new_root(PROCESSES);
+    Tnode *processes = _t_new_root(PROCESSES);
+    Defs defs = {0,0,processes};
     char buf[2000];
 
-    Process if_even = _defIfEven(defs);
+    Process if_even = _defIfEven(processes);
 
     Tnode *t = _t_new_root(RUN_TREE);
     Tnode *n = _t_newr(t,if_even);
@@ -106,13 +108,14 @@ void testProcessReduceDefinedProcess() {
     __t_dump(0,_t_child(t,1),0,buf);
     spec_is_str_equal(buf," (TEST_INT_SYMBOL:124)");
 
-    _t_free(defs);
+    _t_free(processes);
     _t_free(t);
 }
 
 void testProcessSignatureMatching() {
-    Tnode *defs = _t_new_root(PROCESSES);
-    Process if_even = _defIfEven(defs);
+    Tnode *processes = _t_new_root(PROCESSES);
+    Defs defs = {0,0,processes};
+    Process if_even = _defIfEven(processes);
 
     Tnode *t = _t_new_root(RUN_TREE);
     Tnode *n = _t_newr(t,if_even);
@@ -130,11 +133,12 @@ void testProcessSignatureMatching() {
     _t_newi(n,TEST_INT_SYMBOL,124);
     spec_is_equal(__p_reduce(defs,t,n),tooManyParamsReductionErr);
 
-    _t_free(defs);
+    _t_free(processes);
     _t_free(t);
 }
 
 void testProcessInterpolateMatch() {
+    Defs defs;
     Tnode *t = _t_new_root(RUN_TREE);
     // test INTERPOLATE_FROM_MATCH which takes three params, the tree to interpolate, the stx-match and the tree it matched on
     Tnode *n = _t_newr(t,INTERPOLATE_FROM_MATCH);
@@ -146,7 +150,7 @@ void testProcessInterpolateMatch() {
     _t_new(sm,SEMTREX_MATCHED_PATH,path,2*sizeof(int));
     _t_newi(sm,SEMTREX_MATCH_SIBLINGS_COUNT,1);
     Tnode *p3 = _t_newi(n,TEST_INT_SYMBOL,314);
-    __p_reduce(0,t,n);
+    __p_reduce(defs,t,n);
     char buf[2000];
     __t_dump(0,_t_child(t,1),0,buf);
     spec_is_str_equal(buf," (TEST_INT_SYMBOL2:0 (TEST_INT_SYMBOL:314))");
@@ -156,6 +160,7 @@ void testProcessInterpolateMatch() {
 /// @todo when interpolating from a match, how do we handle non-leaf interpollations, i.e. where do you hook children onto?
 
 void testProcessIf() {
+    Defs defs;
     // test IF which takes three parameters, the condition, the true code tree and the false code tree
     Tnode *t = _t_new_root(RUN_TREE);
     Tnode *n = _t_newr(t,IF);
@@ -163,7 +168,7 @@ void testProcessIf() {
     Tnode *p2 = _t_newi(n,TEST_INT_SYMBOL,99);
     Tnode *p3 = _t_newi(n,TEST_INT_SYMBOL,100);
 
-    __p_reduce(0,t,n);
+    __p_reduce(defs,t,n);
     char buf[2000];
     __t_dump(0,_t_child(t,1),0,buf);
     spec_is_str_equal(buf," (TEST_INT_SYMBOL:99)");
@@ -172,6 +177,7 @@ void testProcessIf() {
 }
 
 void testProcessIntMath() {
+    Defs defs;
     char buf[2000];
     Tnode *t = _t_new_root(RUN_TREE);
 
@@ -179,7 +185,7 @@ void testProcessIntMath() {
     Tnode *n = _t_newr(t,ADD_INT);
     _t_newi(n,TEST_INT_SYMBOL,99);
     _t_newi(n,TEST_INT_SYMBOL,100);
-    __p_reduce(0,t,n);
+    __p_reduce(defs,t,n);
     __t_dump(0,_t_child(t,1),0,buf);
     spec_is_str_equal(buf," (TEST_INT_SYMBOL:199)");
 
@@ -190,7 +196,7 @@ void testProcessIntMath() {
     _t_newi(n,TEST_INT_SYMBOL,100);
     _t_newi(n,TEST_INT_SYMBOL,98);
 
-    __p_reduce(0,t,n);
+    __p_reduce(defs,t,n);
     __t_dump(0,_t_child(t,1),0,buf);
     spec_is_str_equal(buf," (TEST_INT_SYMBOL:2)");
 
@@ -201,7 +207,7 @@ void testProcessIntMath() {
     _t_newi(n,TEST_INT_SYMBOL,100);
     _t_newi(n,TEST_INT_SYMBOL,98);
 
-    __p_reduce(0,t,n);
+    __p_reduce(defs,t,n);
     __t_dump(0,_t_child(t,1),0,buf);
     spec_is_str_equal(buf," (TEST_INT_SYMBOL:9800)");
 
@@ -212,7 +218,7 @@ void testProcessIntMath() {
     _t_newi(n,TEST_INT_SYMBOL,100);
     _t_newi(n,TEST_INT_SYMBOL,48);
 
-    __p_reduce(0,t,n);
+    __p_reduce(defs,t,n);
     __t_dump(0,_t_child(t,1),0,buf);
     spec_is_str_equal(buf," (TEST_INT_SYMBOL:2)");
 
@@ -223,7 +229,7 @@ void testProcessIntMath() {
     _t_newi(n,TEST_INT_SYMBOL,100);
     _t_newi(n,TEST_INT_SYMBOL,2);
 
-    __p_reduce(0,t,n);
+    __p_reduce(defs,t,n);
     __t_dump(0,_t_child(t,1),0,buf);
     spec_is_str_equal(buf," (TEST_INT_SYMBOL:0)");
 
@@ -234,7 +240,7 @@ void testProcessIntMath() {
     _t_newi(n,TEST_INT_SYMBOL,100);
     _t_newi(n,TEST_INT_SYMBOL,2);
 
-    __p_reduce(0,t,n);
+    __p_reduce(defs,t,n);
     __t_dump(0,_t_child(t,1),0,buf);
     spec_is_str_equal(buf," (TRUE_FALSE:0)");
 
@@ -244,7 +250,7 @@ void testProcessIntMath() {
     _t_newi(n,TEST_INT_SYMBOL,100);
     _t_newi(n,TEST_INT_SYMBOL,100);
 
-    __p_reduce(0,t,n);
+    __p_reduce(defs,t,n);
     __t_dump(0,_t_child(t,1),0,buf);
     spec_is_str_equal(buf," (TRUE_FALSE:1)");
 
@@ -255,7 +261,7 @@ void testProcessIntMath() {
     _t_newi(n,TEST_INT_SYMBOL,2);
     _t_newi(n,TEST_INT_SYMBOL,100);
 
-    __p_reduce(0,t,n);
+    __p_reduce(defs,t,n);
     __t_dump(0,_t_child(t,1),0,buf);
     spec_is_str_equal(buf," (TRUE_FALSE:1)");
 
@@ -265,7 +271,7 @@ void testProcessIntMath() {
     _t_newi(n,TEST_INT_SYMBOL,100);
     _t_newi(n,TEST_INT_SYMBOL,100);
 
-    __p_reduce(0,t,n);
+    __p_reduce(defs,t,n);
     __t_dump(0,_t_child(t,1),0,buf);
     spec_is_str_equal(buf," (TRUE_FALSE:0)");
 
@@ -276,7 +282,7 @@ void testProcessIntMath() {
     _t_newi(n,TEST_INT_SYMBOL,2);
     _t_newi(n,TEST_INT_SYMBOL,100);
 
-    __p_reduce(0,t,n);
+    __p_reduce(defs,t,n);
     __t_dump(0,_t_child(t,1),0,buf);
     spec_is_str_equal(buf," (TRUE_FALSE:0)");
 
@@ -286,7 +292,7 @@ void testProcessIntMath() {
     _t_newi(n,TEST_INT_SYMBOL,101);
     _t_newi(n,TEST_INT_SYMBOL,100);
 
-    __p_reduce(0,t,n);
+    __p_reduce(defs,t,n);
     __t_dump(0,_t_child(t,1),0,buf);
     spec_is_str_equal(buf," (TRUE_FALSE:1)");
 

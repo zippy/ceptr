@@ -76,6 +76,18 @@ struct instances_elem {
 typedef struct instances_elem instances_elem;
 typedef instances_elem *Instances;
 
+// ** types for defs
+
+/**
+   a collection for passing around pointers to the various def trees
+*/
+struct Defs {
+    Tnode *structures;  ///< pointer for quick access to structures
+    Tnode *symbols;     ///< pointer for quick access to symbols
+    Tnode *processes;   ///< pointer for quick access to processes
+ };
+typedef struct Defs Defs;
+
 // ** types for receptors
 /**
    A Receptor is a semantic tree, pointed to by root, but we also create c struct for
@@ -84,9 +96,7 @@ typedef instances_elem *Instances;
 */
 struct Receptor {
     Tnode *root;        ///< root node of the semantic tree
-    Tnode *structures;  ///< pointer for quick access to structures
-    Tnode *symbols;     ///< pointer for quick access to symbols
-    Tnode *processes;   ///< pointer for quick access to processes
+    Defs defs;          ///< defs block
     Tnode *flux;        ///< pointer for quick access to the flux
     LabelTable table;   ///< the label table
     Instances instances;///< the instances store

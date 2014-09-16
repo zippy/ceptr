@@ -20,14 +20,14 @@ void testReceptorCreate() {
 
     // test that the symbols, structures & process trees are set up correctly
     t = _t_child(r->root,1);
-    spec_is_symbol_equal(r,_t_symbol(r->structures),STRUCTURES);
-    spec_is_ptr_equal(t,r->structures);
+    spec_is_symbol_equal(r,_t_symbol(r->defs.structures),STRUCTURES);
+    spec_is_ptr_equal(t,r->defs.structures);
     t = _t_child(r->root,2);
-    spec_is_symbol_equal(r,_t_symbol(r->symbols),SYMBOLS);
-    spec_is_ptr_equal(t,r->symbols);
+    spec_is_symbol_equal(r,_t_symbol(r->defs.symbols),SYMBOLS);
+    spec_is_ptr_equal(t,r->defs.symbols);
     t = _t_child(r->root,3);
-    spec_is_symbol_equal(r,_t_symbol(r->processes),PROCESSES);
-    spec_is_ptr_equal(t,r->processes);
+    spec_is_symbol_equal(r,_t_symbol(r->defs.processes),PROCESSES);
+    spec_is_ptr_equal(t,r->defs.processes);
 
     // test that listeners and signals are set up correctly on the default aspect
     t = __r_get_listeners(r,DEFAULT_ASPECT);
@@ -152,8 +152,8 @@ void testReceptorDef() {
 
     spec_is_structure_equal(r,__r_get_symbol_structure(r,lat),FLOAT);
 
-    spec_is_str_equal((char *)_t_surface(_t_child(def = _t_child(r->symbols,lat),2)),"latitude");
-    spec_is_str_equal((char *)_t_surface(_t_child(_t_child(r->symbols,lon),2)),"longitude");
+    spec_is_str_equal((char *)_t_surface(_t_child(def = _t_child(r->defs.symbols,lat),2)),"latitude");
+    spec_is_str_equal((char *)_t_surface(_t_child(_t_child(r->defs.symbols,lon),2)),"longitude");
 
     int *path = labelGet(&r->table,"latitude");
     spec_is_ptr_equal(_t_get(r->root,path),def);
@@ -161,7 +161,7 @@ void testReceptorDef() {
 
     Structure latlong = _r_define_structure(r,"latlong",2,lat,lon);
 
-    def = _t_child(r->structures,latlong);
+    def = _t_child(r->defs.structures,latlong);
     Tnode *l = _t_child(def,1);
     spec_is_str_equal((char *)_t_surface(l),"latlong");
 
@@ -188,7 +188,7 @@ void testReceptorDef() {
     Tnode *input = _t_new_root(INPUT_SIGNATURE);
     Tnode *output = _t_new_root(OUTPUT_SIGNATURE);
     Process p = _r_code_process(r,code,"power","takes the mathematical power of the two params",input,output);
-    spec_is_equal(_t_children(r->processes),-p);
+    spec_is_equal(_t_children(r->defs.processes),-p);
 
     _r_free(r);
 }
@@ -221,7 +221,7 @@ void testReceptorDefMatch() {
     Tnode *stx = _r_build_def_semtrex(r,house_loc,0);
     char buf[2000];
     spec_is_str_equal(_dump_semtrex(stx,buf),"/(3/1,2)");
-    __t_dump(r->symbols,stx,0,buf);
+    __t_dump(r->defs.symbols,stx,0,buf);
     spec_is_str_equal(buf," (SEMTREX_SYMBOL_LITERAL:house location (SEMTREX_SEQUENCE (SEMTREX_SYMBOL_LITERAL:latitude) (SEMTREX_SYMBOL_LITERAL:longitude)))");
 
     // a correctly structured tree should match its definition
@@ -297,8 +297,8 @@ void testReceptorSerialize() {
 
     // check that the structures look the same by comparing a string dump of the two
     // receptors
-    __t_dump(r->symbols,r->root,0,buf);
-    __t_dump(r1->symbols,r1->root,0,buf1);
+    __t_dump(r->defs.symbols,r->root,0,buf);
+    __t_dump(r1->defs.symbols,r1->root,0,buf1);
     spec_is_str_equal(buf1,buf);
 
     // check that the unserialized receptor has the labels loaded into the label table
@@ -311,8 +311,8 @@ void testReceptorSerialize() {
     // check that the unserialized receptor has all the instances loaded into the instance store too
     Tnode *t1 = _r_get_instance(r1,x);
     buf[0] = buf1[0] = 0;
-    __t_dump(r->symbols,t,0,buf);
-    __t_dump(r1->symbols,t1,0,buf1);
+    __t_dump(r->defs.symbols,t,0,buf);
+    __t_dump(r1->defs.symbols,t1,0,buf1);
     spec_is_str_equal(buf1,buf);
 
     free(surface);

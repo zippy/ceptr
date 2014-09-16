@@ -48,7 +48,7 @@ void _p_interpolate_from_match(Tnode *t,Tnode *match_results,Tnode *match_tree) 
  * @param[in] processes context of defined processes
  * @param[in] run_tree the run tree to be reduced
  */
-Error __p_reduce(Tnode *processes,Tnode *run_tree, Tnode *code) {
+Error __p_reduce(Defs defs,Tnode *run_tree, Tnode *code) {
     Process s = _t_symbol(code);
 
     Tnode *params = 0,*match_results,*match_tree,*t,*x;
@@ -74,14 +74,14 @@ Error __p_reduce(Tnode *processes,Tnode *run_tree, Tnode *code) {
     // otherwise, first reduce all the children
     int i,c = _t_children(code);
     for(i=1;i<=c;i++) {
-	__p_reduce(processes,run_tree,_t_child(code,i));
+	__p_reduce(defs,run_tree,_t_child(code,i));
     }
 
     // then, if this isn't a basic system level process, it's the equivalent
     // of a function call, so we need to create a new execution context (RUN_TREE)
     // and reduce id
     if (!is_sys_process(s)) {
-	Tnode *def = _d_get_process_code(processes,s);
+	Tnode *def = _d_get_process_code(defs.processes,s);
 	Tnode *input = _t_child(def,4);
 	int i = _t_children(input);
 	int c = _t_children(code);
@@ -91,7 +91,7 @@ Error __p_reduce(Tnode *processes,Tnode *run_tree, Tnode *code) {
 	    Tnode *sig = _t_child(input,i);
 	    if(_t_symbol(sig) == SIGNATURE_STRUCTURE) {
 		Structure ss = *(int *)_t_surface(sig);
-		if (_d_get_symbol_structure(0,_t_symbol(_t_child(code,i))) !=
+		if (_d_get_symbol_structure(defs.symbols,_t_symbol(_t_child(code,i))) !=
 		    ss && ss != TREE)
 		    return badSignatureReductionErr;
 	    }
@@ -99,8 +99,8 @@ Error __p_reduce(Tnode *processes,Tnode *run_tree, Tnode *code) {
 		raise_error("unknown signature checking symbol: %s",_d_get_symbol_name(0,s));
 	    }
 	}
-	Tnode *rt = __p_make_run_tree(processes,s,code);
-	__p_reduce(processes,rt,_t_child(rt,1));
+	Tnode *rt = __p_make_run_tree(defs.processes,s,code);
+	__p_reduce(defs,rt,_t_child(rt,1));
 	x = _t_detach_by_idx(rt,1);
 	_t_free(rt);
     }
@@ -185,12 +185,12 @@ Error __p_reduce(Tnode *processes,Tnode *run_tree, Tnode *code) {
     return noReductionErr;
 }
 
-Error _p_reduce(Tnode *processes,Tnode *run_tree) {
+Error _p_reduce(Defs defs,Tnode *run_tree) {
     Tnode *code = _t_child(run_tree,1);
     if (!code) {
 	raise_error0("expecting code tree as first child of run tree!");
     }
-    return __p_reduce(processes,run_tree,code);
+    return __p_reduce(defs,run_tree,code);
 }
 
 Tnode *__p_make_run_tree(Tnode *processes,Process p,Tnode *params) {

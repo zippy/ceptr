@@ -18,9 +18,9 @@
 Receptor *__r_new(Symbol s,Tnode *symbols, Tnode *structures,Tnode *processes) {
     Receptor *r = malloc(sizeof(Receptor));
     r->root = _t_new_root(s);
-    _t_add(r->root,r->structures = structures);
-    _t_add(r->root,r->symbols = symbols);
-    _t_add(r->root,r->processes = processes);
+    _t_add(r->root,r->defs.structures = structures);
+    _t_add(r->root,r->defs.symbols = symbols);
+    _t_add(r->root,r->defs.processes = processes);
     r->flux = _t_newr(r->root,FLUX);
     Tnode *a = _t_newi(r->flux,ASPECT,DEFAULT_ASPECT);
     _t_newr(a,LISTENERS);
@@ -134,7 +134,7 @@ int __get_label_idx(Receptor *r,char *label) {
  *
  */
 Symbol _r_declare_symbol(Receptor *r,Structure s,char *label){
-    Tnode *def = __d_declare_symbol(r->symbols,s,label);
+    Tnode *def = __d_declare_symbol(r->defs.symbols,s,label);
     return __set_label_for_def(r,label,def);
 }
 
@@ -152,7 +152,7 @@ Symbol _r_declare_symbol(Receptor *r,Structure s,char *label){
 Structure _r_define_structure(Receptor *r,char *label,int num_params,...) {
     va_list params;
     va_start(params,num_params);
-    Tnode *def = _dv_define_structure(r->structures,label,num_params,params);
+    Tnode *def = _dv_define_structure(r->defs.structures,label,num_params,params);
     va_end(params);
 
     return __set_label_for_def(r,label,def);
@@ -171,7 +171,7 @@ Structure _r_define_structure(Receptor *r,char *label,int num_params,...) {
  *
  */
 Process _r_code_process(Receptor *r,Tnode *code,char *name,char *intention,Tnode *in,Tnode *out) {
-    Tnode *def = __d_code_process(r->processes,code,name,intention,in,out);
+    Tnode *def = __d_code_process(r->defs.processes,code,name,intention,in,out);
     return -__set_label_for_def(r,name,def);
 }
 
@@ -194,7 +194,7 @@ Structure _r_get_structure_by_label(Receptor *r,char *label){
  * @returns structure id
  */
 Structure __r_get_symbol_structure(Receptor *r,Symbol s){
-    return _d_get_symbol_structure(r->symbols,s);
+    return _d_get_symbol_structure(r->defs.symbols,s);
 }
 
 /**
@@ -202,14 +202,14 @@ Structure __r_get_symbol_structure(Receptor *r,Symbol s){
  * @returns size
  */
 size_t __r_get_structure_size(Receptor *r,Structure s,void *surface) {
-    return _d_get_structure_size(r->symbols,r->structures,s,surface);
+    return _d_get_structure_size(r->defs.symbols,r->defs.structures,s,surface);
 }
 /**
  * get the size of a symbol's surface
  * @returns size
  */
 size_t __r_get_symbol_size(Receptor *r,Symbol s,void *surface) {
-    return _d_get_symbol_size(r->symbols,r->structures,s,surface);
+    return _d_get_symbol_size(r->defs.symbols,r->defs.structures,s,surface);
 }
 
 /**
@@ -227,7 +227,7 @@ Tnode * _r_build_def_semtrex(Receptor *r,Symbol s,Tnode *parent) {
 
     Structure st = __r_get_symbol_structure(r,s);
     if (!(is_sys_structure(st))) {
-	Tnode *structure = _t_child(r->structures,st);
+	Tnode *structure = _t_child(r->defs.structures,st);
 	Tnode *parts = _t_child(structure,2);
 	int i,c = _t_children(parts);
 	if (c > 0) {
@@ -447,25 +447,25 @@ Receptor * _r_unserialize(void *surface) {
     Tnode *t =  _t_unserialize(r,&surface,&length,0);
     _t_free(r->root);
     r->root = t;
-    r->structures = _t_child(t,1);
-    r->symbols = _t_child(t,2);
-    r->processes = _t_child(t,3);
+    r->defs.structures = _t_child(t,1);
+    r->defs.symbols = _t_child(t,2);
+    r->defs.processes = _t_child(t,3);
     r->flux = _t_child(t,4);
-    int c = _t_children(r->symbols);
+    int c = _t_children(r->defs.symbols);
     int i;
     for(i=1;i<=c;i++){
-	Tnode *def = _t_child(r->symbols,i);
+	Tnode *def = _t_child(r->defs.symbols,i);
 	Tnode *sl = _t_child(def,2);
 	__set_label_for_def(r,_t_surface(sl),def);
     }
-    c = _t_children(r->structures);
+    c = _t_children(r->defs.structures);
     for(i=1;i<=c;i++){
-	Tnode *def = _t_child(r->structures,i);
+	Tnode *def = _t_child(r->defs.structures,i);
 	__set_label_for_def(r,_t_surface(def),def);
     }
-    c = _t_children(r->processes);
+    c = _t_children(r->defs.processes);
     for(i=1;i<=c;i++){
-	Tnode *def = _t_child(r->processes,i);
+	Tnode *def = _t_child(r->defs.processes,i);
 	Tnode *sl = _t_child(def,1);
 	__set_label_for_def(r,_t_surface(sl),def);
     }
@@ -500,12 +500,12 @@ Tnode * _r_send(Receptor *r,Receptor *from,Aspect aspect, Tnode *signal_contents
 	// if we get a match, create a run tree from the action, using the match and signal as the parameters
 	if (_t_matchr(_t_child(e,1),signal_contents,&m)) {
 	    Tnode *action = _t_child(l,2);
-	    rt = _p_make_run_tree(r->processes,action,2,m,signal_contents);
+	    rt = _p_make_run_tree(r->defs.processes,action,2,m,signal_contents);
 	    _t_free(m);
 	    _t_add(s,rt);
 	    // for now just reduce the tree in place
 	    /// @todo move this to adding the runtree to the thread pool
-	    int e = _p_reduce(r->processes,rt);
+	    int e = _p_reduce(r->defs,rt);
 	    /// @todo runtime error handing!!!
 	    if (e) {
 		raise_error("got reduction error: %d",e);
@@ -533,15 +533,15 @@ Tnode *__r_get_signals(Receptor *r,Aspect aspect) {
 /*****************  Tree debugging utilities */
 
 char *_r_get_symbol_name(Receptor *r,Symbol s) {
-    return _d_get_symbol_name(r?r->symbols:0,s);
+    return _d_get_symbol_name(r?r->defs.symbols:0,s);
 }
 
 char *_r_get_structure_name(Receptor *r,Structure s) {
-    return _d_get_structure_name(r?r->structures:0,s);
+    return _d_get_structure_name(r?r->defs.structures:0,s);
 }
 
 char *_r_get_process_name(Receptor *r,Process p) {
-    return _d_get_process_name(r?r->structures:0,p);
+    return _d_get_process_name(r?r->defs.structures:0,p);
 }
 
 char __t_dump_buf[10000];
@@ -549,7 +549,7 @@ char __t_dump_buf[10000];
 char *_td(Receptor *r,Tnode *t) {
     if (!t) sprintf(__t_dump_buf,"<null-tree>");
     else
-	__t_dump(r->symbols,t,0,__t_dump_buf);
+	__t_dump(r->defs.symbols,t,0,__t_dump_buf);
     return __t_dump_buf;
 }
 
