@@ -1,5 +1,6 @@
 var annotated =
 [
+    [ "Defs", "structDefs.html", "structDefs" ],
     [ "instance_elem", "structinstance__elem.html", "structinstance__elem" ],
     [ "instances_elem", "structinstances__elem.html", "structinstances__elem" ],
     [ "Ptrlist", "unionPtrlist.html", "unionPtrlist" ],

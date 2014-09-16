@@ -277,7 +277,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
 <div class="line">    spec_is_str_equal(buf,<span class="stringliteral">&quot; (TEST_INT_SYMBOL:789)&quot;</span>);</div>
 <div class="line"></div>
 <div class="line">    <a class="code" href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a>(x);</div>
-</div><!-- fragment --><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000016">Todo:</a></b></dt><dd>Handle the case where the surface of the node to be morphed is itself a tree </dd></dl>
+</div><!-- fragment --><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000017">Todo:</a></b></dt><dd>Handle the case where the surface of the node to be morphed is itself a tree </dd></dl>
 
 <p>Definition at line <a class="el" href="tree_8c_source.html#l00220">220</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
 
@@ -366,7 +366,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structTnode.html">Tnode</a> duplicated tree </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000018">Todo:</a></b></dt><dd>make this work with trees that have orthogonal trees! </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000019">Todo:</a></b></dt><dd>make this work with trees that have orthogonal trees! </dd></dl>
 <dl class="bug"><dt><b><a class="el" href="bug.html#_bug000001">Bug:</a></b></dt><dd>doesn't properly clone trees with orthogonal trees</dd></dl>
 <p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structTnode.html">Tnode</a> *t = <a class="code" href="http__example_8h.html#a00c3c0cf4519afa3c2906864d9f99c25">_makeTestHTTPRequestTree</a>();</div>
 <div class="line">    <a class="code" href="structTnode.html">Tnode</a> *<a class="code" href="structVMHost.html#a53bffdb41bcc4096902aabf8ab029637">c</a> = <a class="code" href="group__tree.html#gaaeb6a7d7bf14e958d9e79c699edb8040">_t_clone</a>(t);</div>
@@ -498,7 +498,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
   </table>
   </dd>
 </dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000017">Todo:</a></b></dt><dd>make this remove the child from the parent's child-list? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000018">Todo:</a></b></dt><dd>make this remove the child from the parent's child-list? </dd></dl>
 
 <p>Definition at line <a class="el" href="tree_8c_source.html#l00295">295</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
 
@@ -583,7 +583,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
 </div><div class="memdoc">
 <p>return the tree path of a given node</p>
 <p>this function allocates a buffer to hold a path of the given node which it calculates by walkinga back up the tree</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000020">Todo:</a></b></dt><dd>implement jumping into orthogonal trees (i.e. return paths with 0 in them) <dl class="params"><dt>Parameters</dt><dd>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000021">Todo:</a></b></dt><dd>implement jumping into orthogonal trees (i.e. return paths with 0 in them) <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">t</td><td>tree node </td></tr>
   </table>
@@ -1038,7 +1038,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000019">Todo:</a></b></dt><dd>this is very expensive if called all the time!!! </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000020">Todo:</a></b></dt><dd>this is very expensive if called all the time!!! </dd></dl>
 
 <p>Definition at line <a class="el" href="tree_8c_source.html#l00412">412</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
 
@@ -1356,7 +1356,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Sep 15 2014 17:15:39 for ceptr by
+    <li class="footer">Generated on Tue Sep 16 2014 11:26:02 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

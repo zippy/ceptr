@@ -6,6 +6,7 @@ var def_8h =
     [ "_d_code_process", "group__def.html#gae1a5dfaf9657e2ccf00edc2fb39c96c1", null ],
     [ "_d_declare_symbol", "group__def.html#gaa80e4d75f09953b71ff49b75a8d6745e", null ],
     [ "_d_define_structure", "group__def.html#ga4205f785c519eead8b95ec1507a96a66", null ],
+    [ "_d_get_process_code", "group__def.html#ga71da1ef6e25419b52bcd7f2f19d862f2", null ],
     [ "_d_get_process_name", "group__def.html#ga7b68f64dc811afebe4b8595b1914420e", null ],
     [ "_d_get_structure_name", "group__def.html#ga766db34af870b275213a4e828d826267", null ],
     [ "_d_get_structure_size", "group__def.html#ga3c241ad06b91beb3a717054ddb525c5b", null ],
