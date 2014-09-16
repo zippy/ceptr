@@ -127,6 +127,8 @@ Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:abb7a87ead11cded49b808bd0e95736b1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="process_8c.html#abb7a87ead11cded49b808bd0e95736b1">_p_interpolate_from_match</a> (<a class="el" href="structTnode.html">Tnode</a> *t, <a class="el" href="structTnode.html">Tnode</a> *match_results, <a class="el" href="structTnode.html">Tnode</a> *match_tree)</td></tr>
 <tr class="separator:abb7a87ead11cded49b808bd0e95736b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed5f556e066d9f5f2d76a541adb823be"><td class="memItemLeft" align="right" valign="top">Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="process_8c.html#aed5f556e066d9f5f2d76a541adb823be">__p_check_signature</a> (<a class="el" href="structDefs.html">Defs</a> defs, Process p, <a class="el" href="structTnode.html">Tnode</a> *params)</td></tr>
+<tr class="separator:aed5f556e066d9f5f2d76a541adb823be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae1fdf0ff8999412d51e00154e86c2164"><td class="memItemLeft" align="right" valign="top">Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="process_8c.html#ae1fdf0ff8999412d51e00154e86c2164">__p_reduce</a> (<a class="el" href="structDefs.html">Defs</a> defs, <a class="el" href="structTnode.html">Tnode</a> *run_tree, <a class="el" href="structTnode.html">Tnode</a> *code)</td></tr>
 <tr class="separator:ae1fdf0ff8999412d51e00154e86c2164"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a18cadf450c796b221ed2f01a9f74c5fd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a18cadf450c796b221ed2f01a9f74c5fd"></a>
@@ -145,6 +147,50 @@ Error&#160;</td><td class="memItemRight" valign="bottom"><b>_p_reduce</b> (<a cl
 
 <p>Definition in file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 </div><h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="aed5f556e066d9f5f2d76a541adb823be"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Error __p_check_signature </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDefs.html">Defs</a>&#160;</td>
+          <td class="paramname"><em>defs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Process&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTnode.html">Tnode</a> *&#160;</td>
+          <td class="paramname"><em>params</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>check a group of parameters to see if they match a process input signature</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">defs</td><td>definition trees needed for the checking </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">p</td><td>the Process we are checking against </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">params</td><td>list of parameters</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Error code </dd></dl>
+
+<p>Definition at line <a class="el" href="process_8c_source.html#l00053">53</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="ae1fdf0ff8999412d51e00154e86c2164"></a>
 <div class="memitem">
 <div class="memproto">
@@ -184,7 +230,7 @@ Error&#160;</td><td class="memItemRight" valign="bottom"><b>_p_reduce</b> (<a cl
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="process_8c_source.html#l00052">52</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+<p>Definition at line <a class="el" href="process_8c_source.html#l00083">83</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
 </div>
 </div>
@@ -280,7 +326,7 @@ Error&#160;</td><td class="memItemRight" valign="bottom"><b>_p_reduce</b> (<a cl
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structTnode.html">Tnode</a> RUN_TREE tree </dd></dl>
 
-<p>Definition at line <a class="el" href="process_8c_source.html#l00220">220</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+<p>Definition at line <a class="el" href="process_8c_source.html#l00236">236</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
 </div>
 </div>
@@ -290,7 +336,7 @@ Error&#160;</td><td class="memItemRight" valign="bottom"><b>_p_reduce</b> (<a cl
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="process_8c.html">process.c</a></li>
-    <li class="footer">Generated on Tue Sep 16 2014 16:55:39 for ceptr by
+    <li class="footer">Generated on Tue Sep 16 2014 17:29:20 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
