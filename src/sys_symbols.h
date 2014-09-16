@@ -208,8 +208,6 @@ static Structure G_sys_symbol_structures[] = {
     INTEGER,             //LISTENER
     NULL_STRUCTURE,      //EXPECTATION
     PROCESS,             //ACTION
-    NULL_STRUCTURE,      //RESPOND
-    NULL_STRUCTURE,      //INTERPOLATE_FROM_MATCH
     SYMBOL,              //INTERPOLATE_SYMBOL
     LIST,                //PROCESSES
     TREE,                //PROCESS_CODING
@@ -219,7 +217,7 @@ static Structure G_sys_symbol_structures[] = {
     STRUCTURE,           //SIGNATURE_STRUCTURE
     SYMBOL,              //OUTPUT_SIGNATURE
     TREE,                //RUN_TREE
-    INTEGER,             //PARAM_REF
+    TREE_PATH,           //PARAM_REF
     LIST,                //PARAMS
     RECEPTOR,            //VM_HOST_RECEPTOR
     RECEPTOR,            //COMPOSITORY

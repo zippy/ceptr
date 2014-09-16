@@ -52,18 +52,17 @@ void _p_interpolate_from_match(Tnode *t,Tnode *match_results,Tnode *match_tree) 
 Error __p_reduce(Defs defs,Tnode *run_tree, Tnode *code) {
     Process s = _t_symbol(code);
 
-    Tnode *params = 0,*match_results,*match_tree,*t,*x;
+    Tnode *param,*match_results,*match_tree,*t,*x;
 
     Tnode *parent = _t_parent(code);
     int idx = _t_node_index(code);
 
     if (s == PARAM_REF) {
-	params = _t_child(run_tree,2);
-	int p = *(int *)_t_surface(code);
-	if (p > _t_children(params)) {
-	    raise_error("request for non-existent param: %d",p);
+	param = _t_get(run_tree,(int *)_t_surface(code));
+	if (!param) {
+	    raise_error0("request for non-existent param");
 	}
-	x = _t_clone(_t_child(params,p));
+	x = _t_clone(param);
 	_t_replace(parent,idx,x);
 	code = x;
 	s = _t_symbol(code);

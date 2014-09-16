@@ -16,9 +16,13 @@ void testRunTree() {
     // a process that would look something like this in lisp:
     // (defun my_if (true_branch false_branch condition) (if (condition) (true_branch) (false_branch)))
     code = _t_new_root(IF);
-    _t_newi(code,PARAM_REF,3);
-    _t_newi(code,PARAM_REF,1);
-    _t_newi(code,PARAM_REF,2);
+    int pt1[] = {2,1,TREE_PATH_TERMINATOR};
+    int pt2[] = {2,2,TREE_PATH_TERMINATOR};
+    int pt3[] = {2,3,TREE_PATH_TERMINATOR};
+
+    _t_new(code,PARAM_REF,pt3,sizeof(int)*4);
+    _t_new(code,PARAM_REF,pt1,sizeof(int)*4);
+    _t_new(code,PARAM_REF,pt2,sizeof(int)*4);
     input = _t_new_root(INPUT_SIGNATURE);
     _t_newi(input,SIGNATURE_STRUCTURE,TREE);
     _t_newi(input,SIGNATURE_STRUCTURE,TREE);
@@ -77,16 +81,20 @@ Process _defIfEven(Tnode *processes) {
     code = _t_new_root(IF);
     Tnode *eq = _t_newi(code,EQ_INT,0);
     Tnode *mod = _t_newi(eq,MOD_INT,0);
-    _t_newi(mod,PARAM_REF,1);
+    int p1[] = {2,1,TREE_PATH_TERMINATOR};
+    int p2[] = {2,2,TREE_PATH_TERMINATOR};
+    int p3[] = {2,3,TREE_PATH_TERMINATOR};
+    _t_new(mod,PARAM_REF,p1,sizeof(int)*4);
     _t_newi(mod,TEST_INT_SYMBOL,2);
     _t_newi(eq,TEST_INT_SYMBOL,0);
-    _t_newi(code,PARAM_REF,2);
-    _t_newi(code,PARAM_REF,3);
+    _t_new(code,PARAM_REF,p2,sizeof(int)*4);
+    _t_new(code,PARAM_REF,p3,sizeof(int)*4);
     input = _t_new_root(INPUT_SIGNATURE);
     _t_newi(input,SIGNATURE_STRUCTURE,INTEGER);
     _t_newi(input,SIGNATURE_STRUCTURE,TREE);
     _t_newi(input,SIGNATURE_STRUCTURE,TREE);
     output = _t_new_root(OUTPUT_SIGNATURE);
+
     return _d_code_process(processes,code,"if even","return 2nd child if even, third if not",input,output);
 
 }
@@ -97,6 +105,10 @@ void testProcessReduceDefinedProcess() {
     char buf[2000];
 
     Process if_even = _defIfEven(processes);
+
+    int p[] = {1,3,TREE_PATH_TERMINATOR};
+    __t_dump(0,_t_get(processes,p),0,buf);
+    spec_is_str_equal(buf," (process:IF (process:EQ_INT (process:MOD_INT (PARAM_REF:/2/1) (TEST_INT_SYMBOL:2)) (TEST_INT_SYMBOL:0)) (PARAM_REF:/2/2) (PARAM_REF:/2/3))");
 
     Tnode *t = _t_new_root(RUN_TREE);
     Tnode *n = _t_newr(t,if_even);
