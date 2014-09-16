@@ -38,17 +38,15 @@ typedef struct Tnode Tnode;
 // ** types for labels
 typedef uint32_t Label;
 
-#define MAX_PATH_DEPTH 10
-
 /**
  * An element in the label table.
  *
  * @todo convert path to variable sized item
  */
 struct table_elem {
-    Label label;               ///< semantic key
-    int path[MAX_PATH_DEPTH];  ///< path to the labeled item in the Receptor tree
     UT_hash_handle hh;         ///< makes this structure hashable using the uthash library
+    Label label;               ///< semantic key
+    int path_s;                ///< first int of the path to the labeled item in the Receptor tree
 };
 typedef struct table_elem table_elem;
 typedef table_elem *LabelTable;

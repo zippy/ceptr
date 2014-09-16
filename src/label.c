@@ -18,9 +18,9 @@ Label str2label(char* s) {
 void _labelSet(LabelTable *table,Label l,int *path){
     table_elem *e;
 
-    e = malloc(sizeof(struct table_elem));
+    e = malloc(sizeof(struct table_elem)+(_t_path_depth(path)*sizeof(int)));
     e->label = l;
-    _t_pathcpy(e->path,path);
+    _t_pathcpy(&e->path_s,path);
 
     HASH_ADD_INT(*table,label,e);
 }
@@ -28,7 +28,7 @@ void _labelSet(LabelTable *table,Label l,int *path){
 int *_labelGet(LabelTable *table, Label l){
     table_elem *e = 0;
     HASH_FIND_INT( *table, &l, e );
-    if (e) return e->path;
+    if (e) return &e->path_s;
     return 0;
 }
 
