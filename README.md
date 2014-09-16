@@ -6,6 +6,8 @@ Ceptr provides a new computing stack for semantic self-describing data, and prot
 
 There are currently no dependencies, so just clone this repo.
 
+To get ceptr running on Windows using Eclipse see: https://github.com/zippy/ceptr/blob/master/ceptr-eclipse-csharp-interface.txt
+
 ## Usage
 
 ## Documentation
