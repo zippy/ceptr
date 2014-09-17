@@ -101,4 +101,35 @@ Tnode *_makeTestHTTPRequestTree() {
     return t;
 }
 //! [makeTestHTTPRequestTree]
+
+/**
+ * generate a test process that would generate a response to an HTTP request
+ *
+ * @snippet spec/http_example.h makeTestHTTPResponseProcess
+ */
+//! [makeTestHTTPResponseProcess]
+Process _makeTestHTTPResponseProcess(Receptor *r) {
+    // the action simply responds back with the method that was originally sent
+    // this test should be made more real... but for now it responds back with a ping
+    // like message that contains what the first path segment was
+
+    Tnode *resp = _t_new_root(RESPOND);
+    Tnode *n = _t_newr(resp,INTERPOLATE_FROM_MATCH);
+    Tnode *http_resp = _t_newr(n,TSYM_HTTP_RESPONSE);
+    _t_new(http_resp,TSYM_HTTP_RESPONSE_CONTENT_TYPE,"CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT",38);
+    _t_newi(http_resp,INTERPOLATE_SYMBOL,TSYM_HTTP_REQUEST_PATH_SEGMENT);
+
+    int pt1[] = {2,1,TREE_PATH_TERMINATOR};
+    int pt2[] = {2,2,TREE_PATH_TERMINATOR};
+
+    _t_new(n,PARAM_REF,pt1,sizeof(int)*3);
+    _t_new(n,PARAM_REF,pt2,sizeof(int)*3);
+
+    Tnode *input = _t_new_root(INPUT);
+    Tnode *output = _t_new_root(OUTPUT_SIGNATURE);
+    Process p = _r_code_process(r,resp,"code path ping","respond with the first segment of the code path",input,output);
+    return p;
+}
+//! [makeTestHTTPResponseProcess]
+
 #endif
