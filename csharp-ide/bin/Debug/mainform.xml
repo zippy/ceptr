@@ -8,6 +8,15 @@
   xmlns:wfui="WeifenLuo.WinFormsUI.Docking, WeifenLuo.WinFormsUI.Docking"
   xmlns:def="def"
   xmlns:ref="ref">
-  <ixv:ApplicationFormView def:Name="applicationFormView" Text="Ceptr IDE" Size="800, 600" IsMdiContainer="true">
+  <ixv:ApplicationFormView def:Name="applicationFormView" Text="Ceptr IDE" Size="800, 600" IsMdiContainer="true" StartPosition ="Manual">
+    <ixm:ApplicationModel def:Name="applicationModel"/>
+    <ixc:ApplicationFormController def:Name="controller" View="{applicationFormView}" ApplicationModel="{applicationModel}"/>
+    
+    <!-- wire up events to the controller.  Must be done secondarily, because the controller doesn't exist when the form view is instantiated above. -->
+    <ixv:ApplicationFormView ref:Name="applicationFormView"
+                         ApplicationController="{controller}"
+                         Model="{applicationModel}"
+                         Closing="{controller.Closing}"/>
+
   </ixv:ApplicationFormView>
 </MycroXaml>

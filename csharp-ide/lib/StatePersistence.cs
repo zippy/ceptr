@@ -169,6 +169,11 @@ namespace Clifton.ApplicationStateManagement
 		/// </summary>
 		public void SaveState(string objectKey)
 		{
+			if (appState == null)
+			{
+				SaveAllStates();
+			}
+
 			SaveAndRestoreActions stateObject = stateObjects[objectKey];
 			ObjectState objState = new ObjectState();
 			objState.StateObjectKey = objectKey;
