@@ -44,7 +44,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actions\AssociatePopup.cs" />
+    <Compile Include="Actions\BindControlProperty.cs" />
+    <Compile Include="Actions\DeclarativeAction.cs" />
+    <Compile Include="Actions\IMruMenu.cs" />
+    <Compile Include="Actions\InitializeMruMenu.cs" />
+    <Compile Include="Actions\ITextController.cs" />
+    <Compile Include="Actions\SetDocumentText.cs" />
     <Compile Include="Controllers\ApplicationFormController.cs" />
+    <Compile Include="Controls\TreeViewControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Models\ApplicationModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -75,6 +85,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="Clifton.DockableWindows\WinFormsUI\WinFormsUI.csproj">
+      <Project>{c75532c4-765b-418e-b09b-46d36b2abdb1}</Project>
+      <Name>WinFormsUI</Name>
+    </ProjectReference>
     <ProjectReference Include="lib\lib.csproj">
       <Project>{270a0927-4562-48fd-a17b-4c1c4a4486f2}</Project>
       <Name>lib</Name>
@@ -83,6 +97,7 @@
   <ItemGroup>
     <Content Include="bin\Debug\mainform.xml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

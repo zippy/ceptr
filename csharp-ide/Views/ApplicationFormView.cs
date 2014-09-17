@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using WeifenLuo.WinFormsUI.Docking;
+
 using Clifton.MycroParser;
 
 using csharp_ide.Controllers;
@@ -14,6 +16,7 @@ namespace csharp_ide.Views
 {
 	public class ApplicationFormView : Form, IMycroParserInstantiatedObject
 	{
+		public DockPanel DockPanel { get; protected set; }
 		public ApplicationFormController ApplicationController { get; protected set; }
 		public ApplicationModel Model { get; protected set; }
 		public Dictionary<string, object> ObjectCollection { get; set; }
