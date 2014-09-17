@@ -201,9 +201,9 @@ static Structure G_sys_symbol_structures[] = {
     CSTRING,             //STRUCTURE_LABEL
     LIST,                //STRUCTURE_PARTS
     SYMBOL,              //STRUCTURE_PART
-    LIST          ,      //SYMBOLS
-    NULL_STRUCTURE,      //SYMBOL_DECLARATION
-    NULL_STRUCTURE,      //SYMBOL_STRUCTURE
+    LIST,                //SYMBOLS
+    TREE,                //SYMBOL_DECLARATION
+    STRUCTURE,           //SYMBOL_STRUCTURE
     CSTRING,             //SYMBOL_LABEL
     INTEGER,             //ASPECT
     LIST,                //SIGNALS
