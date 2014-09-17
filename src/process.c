@@ -78,7 +78,12 @@ Error __p_check_signature(Defs defs,Process p,Tnode *params) {
  * a run_tree is expected to have a code tree as the first child, and parameters as the second
  *
  * @param[in] processes context of defined processes
- * @param[in] run_tree the run tree to be reduced
+ * @param[in] run_tree the run tree being reduced
+ * @param[in] code the current node in the run tree we are on (for recursion)
+ * @returns Error status of the reduction
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/process_spec.h testProcessReduceDefinedProcess
  */
 Error __p_reduce(Defs defs,Tnode *run_tree, Tnode *code) {
     Process s = _t_symbol(code);

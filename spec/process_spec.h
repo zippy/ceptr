@@ -82,6 +82,12 @@ void testRunTree() {
     _t_free(p3);
 }
 
+/**
+ * generate an example process definition for acts as an if for even numbers
+ *
+ * @snippet spec/process_spec.h defIfEven
+ */
+//! [defIfEven]
 Process _defIfEven(Tnode *processes) {
     Tnode *code,*input,*output;
 
@@ -112,32 +118,37 @@ Process _defIfEven(Tnode *processes) {
     output = _t_new_root(OUTPUT_SIGNATURE);
 
     return _d_code_process(processes,code,"if even","return 2nd child if even, third if not",input,output);
-
 }
+//! [defIfEven]
 
 void testProcessReduceDefinedProcess() {
+    //! [testProcessReduceDefinedProcess]
     Tnode *processes = _t_new_root(PROCESSES);
     Defs defs = {0,0,processes};
     char buf[2000];
 
-    Process if_even = _defIfEven(processes);
+    Process if_even = _defIfEven(processes);  // add the if_even process to our defs
 
+    // check that it dumps nicely, including showing the param_refs as paths
     int p[] = {1,3,TREE_PATH_TERMINATOR};
     __t_dump(0,_t_get(processes,p),0,buf);
     spec_is_str_equal(buf," (process:IF (process:EQ_INT (process:MOD_INT (PARAM_REF:/2/1) (TEST_INT_SYMBOL:2)) (TEST_INT_SYMBOL:0)) (PARAM_REF:/2/2) (PARAM_REF:/2/3))");
 
+    // create a run tree right in the position to "call" this function
     Tnode *t = _t_new_root(RUN_TREE);
     Tnode *n = _t_newr(t,if_even);
     _t_newi(n,TEST_INT_SYMBOL,99);
     _t_newi(n,TEST_INT_SYMBOL,123);
     _t_newi(n,TEST_INT_SYMBOL,124);
 
+    // confirm that it reduces correctly
     spec_is_equal(__p_reduce(defs,t,n),noReductionErr);
     __t_dump(0,_t_child(t,1),0,buf);
     spec_is_str_equal(buf," (TEST_INT_SYMBOL:124)");
 
     _t_free(processes);
     _t_free(t);
+    //! [testProcessReduceDefinedProcess]
 }
 
 void testProcessSignatureMatching() {
