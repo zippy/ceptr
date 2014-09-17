@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<MycroXaml Name="Form"
+  xmlns:wf="System.Windows.Forms, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
+  xmlns:ixa="csharp_ide.Actions, csharp-ide"
+  xmlns:ixc="csharp_ide.Controllers, csharp-ide"
+  xmlns:ixv="csharp_ide.Views, csharp-ide"
+  xmlns:ixm="csharp_ide.Models, csharp-ide"
+  xmlns:wfui="WeifenLuo.WinFormsUI.Docking, WeifenLuo.WinFormsUI.Docking"
+  xmlns:def="def"
+  xmlns:ref="ref">
+  <ixv:ApplicationFormView def:Name="applicationFormView" Text="Ceptr IDE" Size="800, 600" IsMdiContainer="true">
+  </ixv:ApplicationFormView>
+</MycroXaml>
