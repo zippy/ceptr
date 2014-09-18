@@ -11,12 +11,45 @@
   <ixv:ApplicationFormView def:Name="applicationFormView" Text="Ceptr IDE" Size="800, 600" IsMdiContainer="true" StartPosition ="Manual">
     <ixm:ApplicationModel def:Name="applicationModel"/>
     <ixc:ApplicationFormController def:Name="controller" View="{applicationFormView}" ApplicationModel="{applicationModel}"/>
+    <ixv:Controls>
+      <wfui:DockPanel
+        def:Name="dockPanel"
+        Dock="Fill"
+        ActiveDocumentChanged="{controller.ActiveDocumentChanged}"
+        ContentRemoved="{controller.ContentRemoved}"/>
+      <wf:MenuStrip>
+        <wf:Items>
+          <wf:ToolStripMenuItem def:Name="mnuFile" Text="&amp;File">
+            <wf:DropDownItems>
+              <wf:ToolStripMenuItem Text="&amp;New" Click="{controller.New}"/>
+              <wf:ToolStripSeparator/>
+              <wf:ToolStripMenuItem Text="&amp;Load" Click="{controller.Load}"/>
+              <wf:ToolStripMenuItem Text="Sa&amp;ve" Click="{controller.Save}"/>
+              <wf:ToolStripMenuItem Text="Save As" Click="{controller.SaveAs}"/>
+              <wf:ToolStripSeparator/>
+              <wf:ToolStripMenuItem def:Name="mnuRecentFiles" Text="(Recent Files)"/>
+              <wf:ToolStripSeparator/>
+              <wf:ToolStripMenuItem Text="E&amp;xit" Click="{controller.Exit}" ShortcutKeys="Alt+X"/>
+            </wf:DropDownItems>
+          </wf:ToolStripMenuItem>
+          <wf:ToolStripMenuItem Text="&amp;View">
+            <wf:DropDownItems>
+              <wf:ToolStripMenuItem def:Name="mnuPropertyGrid" Text="&amp;Property Grid" Click="{controller.ShowPropertyGrid}"/>
+              <wf:ToolStripMenuItem def:Name="mnuSymbolTypeEditor" Text="&amp;Symbol Editor" Click="{controller.ShowSymbolEditor}"/>
+            </wf:DropDownItems>
+          </wf:ToolStripMenuItem>
+        </wf:Items>
+      </wf:MenuStrip>
+    </ixv:Controls>
     
     <!-- wire up events to the controller.  Must be done secondarily, because the controller doesn't exist when the form view is instantiated above. -->
     <ixv:ApplicationFormView ref:Name="applicationFormView"
-                         ApplicationController="{controller}"
-                         Model="{applicationModel}"
-                         Closing="{controller.Closing}"/>
+                          ApplicationController="{controller}"
+                          Load="{controller.LoadLayout}"
+                          DockPanel="{dockPanel}"
+                          Model="{applicationModel}"
+                          Closing="{controller.Closing}"/>
+    <ixa:InitializeMruMenu def:Name="MRU" MenuFile="{mnuFile}" MenuRecentFiles="{mnuRecentFiles}" ApplicationController="{controller}"/>
 
   </ixv:ApplicationFormView>
 </MycroXaml>
