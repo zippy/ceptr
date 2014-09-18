@@ -89,7 +89,7 @@ SState *state(StateType type,int *statesP) {
 /**
  * Given a Semtrex tree, build a partial FSA (returned via in as a pointer to the starting state, a list of output states, and a count of the total number of states created).
  */
-char * __s_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP) {
+char * __stx_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP) {
     SState *s,*i,*last;
     Ptrlist *o,*o1;
     char *err;
@@ -121,7 +121,7 @@ char * __s_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP) {
 	*in = s;
 	if (c > 0) {
 	    s->transition = TransitionDown;
-	    err = __s_makeFA(_t_child(t,1),&i,&o,level-1,statesP);
+	    err = __stx_makeFA(_t_child(t,1),&i,&o,level-1,statesP);
 	    if (err) return err;
 	    s->out = i;
 	    *out = o;
@@ -135,7 +135,7 @@ char * __s_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP) {
 	if (c == 0) return "Sequence must have children";
 	last = 0;
 	for(x=c;x>=1;x--) {
-	err = __s_makeFA(_t_child(t,x),&i,&o,level,statesP);
+	err = __stx_makeFA(_t_child(t,x),&i,&o,level,statesP);
 	if (err) return err;
 
 	// if (o1->transition < 0) o1->transition += -level;
@@ -149,10 +149,10 @@ char * __s_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP) {
 	if (c != 2) return "Or must have 2 children";
 	s = state(StateSplit,statesP);
 	*in = s;
-	err = __s_makeFA(_t_child(t,1),&i,&o,level,statesP);
+	err = __stx_makeFA(_t_child(t,1),&i,&o,level,statesP);
 	if (err) return err;
 	s->out = i;
-	err = __s_makeFA(_t_child(t,2),&i,&o1,level,statesP);
+	err = __stx_makeFA(_t_child(t,2),&i,&o1,level,statesP);
 	if (err) return err;
 	s->out1 = i;
 	*out = append(o,o1);
@@ -161,7 +161,7 @@ char * __s_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP) {
 	if (c != 1) return "Star must have 1 child";
 	s = state(StateSplit,statesP);
 	*in = s;
-	err = __s_makeFA(_t_child(t,1),&i,&o,level,statesP);
+	err = __stx_makeFA(_t_child(t,1),&i,&o,level,statesP);
 	if (err) return err;
 	s->out = i;
 	patch(o,s,level);
@@ -170,7 +170,7 @@ char * __s_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP) {
     case SEMTREX_ONE_OR_MORE:
 	if (c != 1) return "Plus must have 1 child";
 	s = state(StateSplit,statesP);
-	err = __s_makeFA(_t_child(t,1),&i,&o,level,statesP);
+	err = __stx_makeFA(_t_child(t,1),&i,&o,level,statesP);
 	if (err) return err;
 	*in = i;
 	s->out = i;
@@ -181,7 +181,7 @@ char * __s_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP) {
 	if (c != 1) return "Question must have 1 child";
 	s = state(StateSplit,statesP);
 	*in = s;
-	err = __s_makeFA(_t_child(t,1),&i,&o,level,statesP);
+	err = __stx_makeFA(_t_child(t,1),&i,&o,level,statesP);
 	if (err) return err;
 	s->out = i;
 	*out = append(o,list1(&s->out1));
@@ -193,7 +193,7 @@ char * __s_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP) {
 	x = *(int *)_t_surface(t);
 	s->data.group.id = x;
 	s->data.group.type = GroupOpen;
-	err = __s_makeFA(_t_child(t,1),&i,&o,level,statesP);
+	err = __stx_makeFA(_t_child(t,1),&i,&o,level,statesP);
 	if (err) return err;
 	s->out = i;
 	s = state(StateGroup,statesP);
@@ -208,18 +208,18 @@ char * __s_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP) {
     return 0;
 }
 
-void _s_dump(SState *s);
+void _stx_dump(SState *s);
 
 /**
  * wrapper function for building the finite state automata recursively and patching it to the final match state
  */
-SState * _s_makeFA(Tnode *t,int *statesP) {
+SState * _stx_makeFA(Tnode *t,int *statesP) {
     SState *in;
     Ptrlist *o;
-    char *err = __s_makeFA(t,&in,&o,0,statesP);
+    char *err = __stx_makeFA(t,&in,&o,0,statesP);
     if (err != 0) {raise_error0(err);}
     patch(o,&matchstate,0);
-    //printf("\n");_s_dump(in);
+    //printf("\n");_stx_dump(in);
     return in;
 }
 
@@ -228,22 +228,22 @@ static int free_id = 0;
 /**
  * walks through the FSA clearing pointers that create loops
  */
-int __s_freeFA(SState *s,int id) {
+int __stx_freeFA(SState *s,int id) {
     if ((s->_did != id) && (s != &matchstate)) {
 	s->_did = id;
-	if (s->out) if (__s_freeFA(s->out,id)) s->out = 0;
-	if (s->out1) if (__s_freeFA(s->out1,id)) s->out1 = 0;
+	if (s->out) if (__stx_freeFA(s->out,id)) s->out = 0;
+	if (s->out1) if (__stx_freeFA(s->out1,id)) s->out1 = 0;
 	return 0;
     }
     return 1;
 }
 
 /**
- * walk through FSA freeing the states, assumes __s_freeFA has been called first so as not to go into loops!
+ * walk through FSA freeing the states, assumes __stx_freeFA has been called first so as not to go into loops!
  */
-__s_freeFA2(SState *s) {
-    if (s->out) __s_freeFA2(s->out);
-    if (s->out1) __s_freeFA2(s->out1);
+__stx_freeFA2(SState *s) {
+    if (s->out) __stx_freeFA2(s->out);
+    if (s->out1) __stx_freeFA2(s->out1);
     if (s->type == StateValue) {
 	free(s->data.value.value);
     }
@@ -253,9 +253,9 @@ __s_freeFA2(SState *s) {
 /**
  * free the memory allocated by an FSA
  */
-void _s_freeFA(SState *s) {
-    __s_freeFA(s,++free_id);
-    __s_freeFA2(s);
+void _stx_freeFA(SState *s) {
+    __stx_freeFA(s,++free_id);
+    __stx_freeFA2(s);
 }
 
 /**
@@ -386,13 +386,13 @@ int __t_match(SState *s,Tnode *t,Tnode *r) {
 int _t_matchr(Tnode *semtrex,Tnode *t,Tnode **rP) {
     int states;
     int m;
-    SState *fa = _s_makeFA(semtrex,&states);
+    SState *fa = _stx_makeFA(semtrex,&states);
     Tnode *r = 0;
     if (rP) {
 	r = _t_new_root(SEMTREX_MATCH_RESULTS);
     }
     m = __t_match(fa,t,r);
-    _s_freeFA(fa);
+    _stx_freeFA(fa);
     if (rP) {
 	if (!m) {_t_free(r);*rP = NULL;}
 	else *rP = r;

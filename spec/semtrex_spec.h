@@ -36,7 +36,7 @@ Tnode *_makeTestSemtrex1() {
 
 static int dump_id = 99;
 
-void __s_dump(SState *s) {
+void __stx_dump(SState *s) {
     if (s->_did == dump_id) {printf("X");return;}
     s->_did = dump_id;
     switch (s->type) {
@@ -62,14 +62,14 @@ void __s_dump(SState *s) {
 	printf("S");
 	break;
     }
-    if (s->out) {printf("->");__s_dump(s->out);}
-    if (s->out1) {printf("[->");__s_dump(s->out1);printf("]");}
+    if (s->out) {printf("->");__stx_dump(s->out);}
+    if (s->out1) {printf("[->");__stx_dump(s->out1);printf("]");}
     //        printf("\n");
 }
 
-void _s_dump(SState *s) {
+void _stx_dump(SState *s) {
     ++dump_id;
-    __s_dump(s);
+    __stx_dump(s);
 }
 
 
@@ -85,7 +85,7 @@ void testMakeFA() {
     Tnode *s = _makeTestSemtrex1();
 
     int states = 0;
-    SState *sa = _s_makeFA(s,&states);
+    SState *sa = _stx_makeFA(s,&states);
     spec_is_equal(states,6);
 
     spec_state_equal(sa,StateSymbol,TransitionDown,TEST_STR_SYMBOL);
@@ -110,7 +110,7 @@ void testMakeFA() {
 
     spec_is_ptr_equal(s6->out,NULL);
 
-    _s_freeFA(sa);
+    _stx_freeFA(sa);
     _t_free(s);
 }
 
