@@ -36,7 +36,7 @@ namespace csharp_ide.Actions
 			// TODO: Check saving existing model before loading a new model.
 			//if (ApplicationController.CheckDirtyModel())
 			//{
-			//	ApplicationController.LoadApplet(filename);     <--- change this method to something appropriate for ceptr.
+			ApplicationController.LoadSymbols(filename);
 			//}
 		}
 	}

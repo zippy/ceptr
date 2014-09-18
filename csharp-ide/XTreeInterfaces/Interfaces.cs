@@ -10,4 +10,9 @@ namespace XTreeInterfaces
 		string Name { get; set; }
 		Dictionary<string, dynamic> Collection { get; }
 	}
+
+	public interface IHasFullyQualifiedName
+	{
+		string FullyQualfiedName { get; }
+	}
 }

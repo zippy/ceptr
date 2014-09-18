@@ -136,7 +136,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="bin\Debug\mainform.xml" />
+    <Content Include="bin\Debug\mainform.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="bin\Debug\propertyGrid.xml" />
     <Content Include="bin\Debug\symbolEditorTree.xml" />
     <Content Include="bin\Debug\symbolEditorTreeDef.xml" />

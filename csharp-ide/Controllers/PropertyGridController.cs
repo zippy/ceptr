@@ -33,7 +33,7 @@ namespace csharp_ide.Controllers
 		{
 			// Annoyingly, the property grid change notifier doesn't give us the property name, it gives us the display name for the property being changed.
 			// TODO: We might be better off trying to figure out how to wire up an event for the Name property when instances are created.
-			if ((e.ChangedItem.Label == "Name") || (e.ChangedItem.Label == "Semantic Type"))
+			if ((e.ChangedItem.Label == "Name") || (e.ChangedItem.Label == "Structure"))
 			{
 				ApplicationController.SymbolEditorController.IfNotNull((ctrl) =>
 				{

@@ -29,15 +29,46 @@ namespace csharp_ide.Controllers
 
 		public void UpdateView()
 		{
-			// PopulateTree();
+			PopulateTree();
 		}
 
 		public void UpdateNodeText(string text)
 		{
 			if (currentNode != null)
 			{
-				currentNode.Text = text;
+				if (((NodeInstance)currentNode.Tag).Instance.Item is IHasFullyQualifiedName)
+				{
+					currentNode.Text = ((IHasFullyQualifiedName)((NodeInstance)currentNode.Tag).Instance.Item).FullyQualfiedName;
+				}
+				else
+				{
+					currentNode.Text = text;
+				}
 			}
+		}
+
+		public void PopulateTree()
+		{
+			// TODO: For some reason, suspending / resuming layout stops the Dock mode "Fill" from working correctly.
+			// To replicate, uncomment the suspend/resume lines, load a schema, then increase the size of the pane.  The tree view
+			// control's size will no longer automatically adjust.
+			// View.SuspendLayout();
+			// Remove all existing (such as required) nodes.
+			View.TreeView.Nodes[0].Nodes.Clear();
+			NodeDef nodeDef = View.TreeView.RootNode.Nodes[0];		// Get the child of the top level node.
+			RecurseCollection(nodeDef, ApplicationController.Schema, View.TreeView.Nodes[0]);
+
+			View.TreeView.CollapseAll();
+			View.TreeView.Nodes[0].Expand();
+			// View.TreeView.ResumeLayout();
+			currentNode = View.TreeView.Nodes[0];
+
+			ApplicationController.PropertyGridController.IfNotNull(t =>
+			{
+				t.ShowObject(((NodeInstance)currentNode.Tag).Instance.Item);
+			});
+
+			View.TreeView.SelectedNode = currentNode;
 		}
 
 		protected void NodeSelected(object sender, TreeViewEventArgs e)
@@ -55,71 +86,6 @@ namespace csharp_ide.Controllers
 
 		protected void Closing()
 		{
-		}
-/*
-		protected void OnNew(object sender, EventArgs e)
-		{
-			ApplicationController.SchemaFilename = null;
-			// ClearAll();
-			// pgProperties.SelectedObject = schemaDef;
-			// sdTree.SelectedNode = sdTree.Nodes[0];
-		}
-
-		protected void OnOpen(object sender, EventArgs e)
-		{
-			OpenFileDialog ofd = new OpenFileDialog();
-			ofd.RestoreDirectory = true;
-			ofd.CheckFileExists = true;
-			ofd.Filter = "xml files (*.xml)|*.xml|All files (*.*)|*.*";
-			ofd.Title = "Load Schema";
-			DialogResult res = ofd.ShowDialog();
-
-			if (res == DialogResult.OK)
-			{
-				ApplicationController.SchemaFilename = ofd.FileName;
-				Load();
-			}
-		}
-
-		protected void OnSave(object sender, EventArgs e)
-		{
-			if (String.IsNullOrEmpty(ApplicationController.SchemaFilename))
-			{
-				OnSaveAs(sender, e);
-			}
-			else
-			{
-				Save();
-			}
-		}
-
-		protected void OnSaveAs(object sender, EventArgs e)
-		{
-			SaveFileDialog sfd = new SaveFileDialog();
-			sfd.OverwritePrompt = true;
-			sfd.Filter = "xml files (*.xml)|*.xml|All files (*.*)|*.*";
-			sfd.Title = "Save Schema";
-			DialogResult res = sfd.ShowDialog();
-
-			if (res == DialogResult.OK)
-			{
-				ApplicationController.SchemaFilename = sfd.FileName;
-				Save();
-			}
-		}
-
-		protected void Save()
-		{
-			XmlSerializer xs = new XmlSerializer(typeof(Schema));
-			TextWriter tw = new StreamWriter(ApplicationController.SchemaFilename);
-			xs.Serialize(tw, ApplicationController.Schema);
-			tw.Close();
-		}
-
-		protected void Load()
-		{
-			ApplicationController.LoadSchema();
-			PopulateTree();
 		}
 
 		protected void RecurseCollection(NodeDef node, dynamic collection, TreeNode tnCurrent)
@@ -143,37 +109,12 @@ namespace csharp_ide.Controllers
 						IXtreeNode controller = (IXtreeNode)Activator.CreateInstance(Type.GetType(nodeDef.TypeName), new object[] { false });
 						controller.Item = item;
 						TreeNode tn = View.AddNode(controller, tnCurrent);
-						string name = ((IHasCollection)item).Name;
-						tn.Text = (String.IsNullOrWhiteSpace(name) ? tn.Text : name);
+						// string name = ((IHasCollection)item).Name;
+						// tn.Text = (String.IsNullOrWhiteSpace(name) ? tn.Text : name);
 						RecurseCollection(nodeDef, item, tn);
 					}
 				}
 			}
 		}
-
-		protected void PopulateTree()
-		{
-			// TODO: For some reason, suspending / resuming layout stops the Dock mode "Fill" from working correctly.
-			// To replicate, uncomment the suspend/resume lines, load a schema, then increase the size of the pane.  The tree view
-			// control's size will no longer automatically adjust.
-			// View.SuspendLayout();
-			// Remove all existing (such as required) nodes.
-			View.TreeView.Nodes[0].Nodes.Clear();
-			NodeDef nodeDef = View.TreeView.RootNode.Nodes[0];		// Get the child of the top level node.
-			RecurseCollection(nodeDef, ApplicationController.Schema, View.TreeView.Nodes[0]);
-
-			View.TreeView.CollapseAll();
-			View.TreeView.Nodes[0].Expand();
-			// View.TreeView.ResumeLayout();
-			currentNode = View.TreeView.Nodes[0];
-
-			ApplicationController.PropertyGridController.IfNotNull(t =>
-			{
-				t.ShowObject(((NodeInstance)currentNode.Tag).Instance.Item);
-			});
-
-			View.TreeView.SelectedNode = currentNode;
-		}
- */
 	}
 }

@@ -61,6 +61,10 @@
       <Project>{270a0927-4562-48fd-a17b-4c1c4a4486f2}</Project>
       <Name>lib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\XTreeInterfaces\XTreeInterfaces.csproj">
+      <Project>{ed7a4527-b09b-4ded-9d86-18fcd1bf7a3d}</Project>
+      <Name>XTreeInterfaces</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
