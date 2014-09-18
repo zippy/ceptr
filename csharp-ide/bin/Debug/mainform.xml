@@ -32,6 +32,12 @@
               <wf:ToolStripMenuItem Text="E&amp;xit" Click="{controller.Exit}" ShortcutKeys="Alt+X"/>
             </wf:DropDownItems>
           </wf:ToolStripMenuItem>
+          <wf:ToolStripMenuItem Text="&amp;View">
+            <wf:DropDownItems>
+              <wf:ToolStripMenuItem def:Name="mnuPropertyGrid" Text="&amp;Property Grid" Click="{controller.ShowPropertyGrid}"/>
+              <wf:ToolStripMenuItem def:Name="mnuSymbolTypeEditor" Text="&amp;Symbol Editor" Click="{controller.ShowSymbolEditor}"/>
+            </wf:DropDownItems>
+          </wf:ToolStripMenuItem>
         </wf:Items>
       </wf:MenuStrip>
     </ixv:Controls>
@@ -39,6 +45,7 @@
     <!-- wire up events to the controller.  Must be done secondarily, because the controller doesn't exist when the form view is instantiated above. -->
     <ixv:ApplicationFormView ref:Name="applicationFormView"
                           ApplicationController="{controller}"
+                          Load="{controller.LoadLayout}"
                           DockPanel="{dockPanel}"
                           Model="{applicationModel}"
                           Closing="{controller.Closing}"/>

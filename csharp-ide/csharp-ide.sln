@@ -7,6 +7,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lib", "lib\lib.csproj", "{2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormsUI", "Clifton.DockableWindows\WinFormsUI\WinFormsUI.csproj", "{C75532C4-765B-418E-B09B-46D36B2ABDB1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XTree", "XTree\XTree.csproj", "{19295667-0226-4063-AC67-5BE2D62365DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XTreeInterfaces", "XTreeInterfaces\XTreeInterfaces.csproj", "{ED7A4527-B09B-4DED-9D86-18FCD1BF7A3D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clifton.Windows.Forms", "Clifton.Windows.Forms\Clifton.Windows.Forms.csproj", "{53154E00-B945-49F5-BAB6-F350211CB993}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +41,24 @@ Global
 		{C75532C4-765B-418E-B09B-46D36B2ABDB1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C75532C4-765B-418E-B09B-46D36B2ABDB1}.Release|x86.ActiveCfg = Release|x86
 		{C75532C4-765B-418E-B09B-46D36B2ABDB1}.Release|x86.Build.0 = Release|x86
+		{19295667-0226-4063-AC67-5BE2D62365DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19295667-0226-4063-AC67-5BE2D62365DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19295667-0226-4063-AC67-5BE2D62365DF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{19295667-0226-4063-AC67-5BE2D62365DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19295667-0226-4063-AC67-5BE2D62365DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19295667-0226-4063-AC67-5BE2D62365DF}.Release|x86.ActiveCfg = Release|Any CPU
+		{ED7A4527-B09B-4DED-9D86-18FCD1BF7A3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED7A4527-B09B-4DED-9D86-18FCD1BF7A3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED7A4527-B09B-4DED-9D86-18FCD1BF7A3D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{ED7A4527-B09B-4DED-9D86-18FCD1BF7A3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED7A4527-B09B-4DED-9D86-18FCD1BF7A3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED7A4527-B09B-4DED-9D86-18FCD1BF7A3D}.Release|x86.ActiveCfg = Release|Any CPU
+		{53154E00-B945-49F5-BAB6-F350211CB993}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53154E00-B945-49F5-BAB6-F350211CB993}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53154E00-B945-49F5-BAB6-F350211CB993}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{53154E00-B945-49F5-BAB6-F350211CB993}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53154E00-B945-49F5-BAB6-F350211CB993}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53154E00-B945-49F5-BAB6-F350211CB993}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
