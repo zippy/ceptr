@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <SymbolNamespaceContainer>
+    <SymbolNamespaceContainer Name="Demo Container">
+      <Symbols>
+        <Symbol Name="HouseLocation" Structure="latlon">
+          <Symbols>
+            <Symbol Name="lat" Structure="float">
+              <Symbols />
+            </Symbol>
+            <Symbol Name="lon" Structure="float">
+              <Symbols />
+            </Symbol>
+          </Symbols>
+        </Symbol>
+      </Symbols>
+    </SymbolNamespaceContainer>
+  </SymbolNamespaceContainer>
+</Schema>
