@@ -90,13 +90,18 @@ void testGetSize() {
     spec_is_long_equal(_d_get_symbol_size(0,0,SYMBOL_LABEL,"shoe_size"),10);
 
     // test user-defined symbols and structures
-    Tnode *structures = _t_new_root(STRUCTURES);
-    Tnode *symbols = _t_new_root(SYMBOLS);
-    Symbol lat = _d_declare_symbol(symbols,FLOAT,"latitude");
-    Symbol lon = _d_declare_symbol(symbols,FLOAT,"longitude");
-    Structure latlong = _d_define_structure(structures,"latlong",2,1,2);
-    Symbol house_loc = _d_declare_symbol(symbols,1,"house location");
+    Tnode *structures = _t_new_root(STRUCTURES);					// create tree that holds structures
+    Tnode *symbols = _t_new_root(SYMBOLS);							// create tree that holds symbols
+    Symbol lat = _d_declare_symbol(symbols,FLOAT,"latitude");		// symbols are declared, structures are defined
+    Symbol lon = _d_declare_symbol(symbols,FLOAT,"longitude");		// here we declare two meaningful ways to use the structure float
 
+    // Two symbols, lat and lon are assembled into the structure "latlong"
+    Structure latlong = _d_define_structure(structures,"latlong", 2, lat, lon);
+
+    // House location is a meaningful use of the structure latlong
+    Symbol house_loc = _d_declare_symbol(symbols, latlong, "house location");
+
+    // Here's the surface of the latlong.
     float ll[] = {2.0,90.3};
     spec_is_long_equal(_d_get_symbol_size(symbols,structures,house_loc,ll),sizeof(ll));
     spec_is_long_equal(_d_get_structure_size(symbols,structures,latlong,ll),sizeof(ll));
@@ -104,6 +109,9 @@ void testGetSize() {
     _t_free(symbols);
     _t_free(structures);
     //! [testGetSize]
+
+    // In the diagram on 20140806_102233.jpg, "Label" is the symbol, "Struct" is the structure.
+    // Use t_dump to display textually the resulting tree structure.  Use _td for a Tnode in the context of a given receptor.
 }
 
 void testCodeProcess() {

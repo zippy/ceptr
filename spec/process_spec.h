@@ -15,7 +15,7 @@ void testRunTree() {
 
     // a process that would look something like this in lisp:
     // (defun my_if (true_branch false_branch condition) (if (condition) (true_branch) (false_branch)))
-    code = _t_new_root(IF);
+    code = _t_new_root(IF);								// IF is a system process
     int pt1[] = {2,1,TREE_PATH_TERMINATOR};
     int pt2[] = {2,2,TREE_PATH_TERMINATOR};
     int pt3[] = {2,3,TREE_PATH_TERMINATOR};
@@ -93,17 +93,17 @@ Process _defIfEven(Tnode *processes) {
 
     // a process that would look something like this in lisp:
     // (defun if_even (val true_branch false_branch) (if (eq (mod val 2 ) 0) (true_branch) (false_branch)))
-    code = _t_new_root(IF);
+    code = _t_new_root(IF);															// IF is a system process
     Tnode *eq = _t_newi(code,EQ_INT,0);
     Tnode *mod = _t_newi(eq,MOD_INT,0);
-    int p1[] = {2,1,TREE_PATH_TERMINATOR};
-    int p2[] = {2,2,TREE_PATH_TERMINATOR};
-    int p3[] = {2,3,TREE_PATH_TERMINATOR};
-    _t_new(mod,PARAM_REF,p1,sizeof(int)*4);
+    int p1[] = {2,1,TREE_PATH_TERMINATOR};			// paths to the parameter refrences in the run tree: second branch, b1
+    int p2[] = {2,2,TREE_PATH_TERMINATOR};			// second branch, b2
+    int p3[] = {2,3,TREE_PATH_TERMINATOR};			// second branch, b3
+    _t_new(mod,PARAM_REF,p1,sizeof(int)*3);			// param_ref should be a path_param_ref, also to be added is a label_param_ref
     _t_newi(mod,TEST_INT_SYMBOL,2);
     _t_newi(eq,TEST_INT_SYMBOL,0);
-    _t_new(code,PARAM_REF,p2,sizeof(int)*4);
-    _t_new(code,PARAM_REF,p3,sizeof(int)*4);
+    _t_new(code,PARAM_REF,p2,sizeof(int)*3);
+    _t_new(code,PARAM_REF,p3,sizeof(int)*3);
     input = _t_new_root(INPUT);
     Tnode *i1 = _t_newr(input,INPUT_SIGNATURE);
     _t_newi(i1,SIGNATURE_STRUCTURE,INTEGER);
