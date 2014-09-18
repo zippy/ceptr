@@ -9,6 +9,7 @@
  * @copyright Copyright (C) 2013-2014, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
  */
 #include "process.h"
+#include "def.h"
 #include "semtrex.h"
 #include <stdarg.h>
 
@@ -199,7 +200,7 @@ Error __p_reduce(Defs defs,Tnode *run_tree, Tnode *code) {
 	    _p_interpolate_from_match(x,match_results,match_tree);
 	    break;
 	default:
-	    raise_error("unknown instruction: %s",_r_get_symbol_name(0,s));
+	    raise_error("unimplemented instruction: %s",_d_get_process_name(defs.processes,s));
 	}
     }
     _t_replace(parent,idx,x);

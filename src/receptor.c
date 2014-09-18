@@ -15,12 +15,14 @@
 /*****************  create and destroy receptors */
 
 
-Receptor *__r_new(Symbol s,Tnode *symbols, Tnode *structures,Tnode *processes) {
+Receptor *__r_new(Symbol s,Tnode *defs) {
     Receptor *r = malloc(sizeof(Receptor));
     r->root = _t_new_root(s);
-    _t_add(r->root,r->defs.structures = structures);
-    _t_add(r->root,r->defs.symbols = symbols);
-    _t_add(r->root,r->defs.processes = processes);
+    _t_add(r->root,defs);
+    r->defs.structures = _t_child(defs,1);
+    r->defs.symbols = _t_child(defs,2);
+    r->defs.processes = _t_child(defs,3);
+    r->defs.scapes = _t_child(defs,4);
     r->flux = _t_newr(r->root,FLUX);
     Tnode *a = _t_newi(r->flux,ASPECT,DEFAULT_ASPECT);
     _t_newr(a,LISTENERS);
@@ -42,7 +44,12 @@ Receptor *__r_new(Symbol s,Tnode *symbols, Tnode *structures,Tnode *processes) {
  * @snippet spec/receptor_spec.h testReceptorCreate
  */
 Receptor *_r_new(Symbol s) {
-    return __r_new(s,_t_new_root(SYMBOLS),_t_new_root(STRUCTURES),_t_new_root(PROCESSES));
+    Tnode *defs = _t_new_root(DEFINITIONS);
+    _t_newr(defs,STRUCTURES);
+    _t_newr(defs,SYMBOLS);
+    _t_newr(defs,PROCESSES);
+    _t_newr(defs,SCAPES);
+    return __r_new(s,defs);
 }
 
 /**
@@ -55,10 +62,8 @@ Receptor *_r_new(Symbol s) {
  * @todo implement bindings
  */
 Receptor *_r_new_receptor_from_package(Symbol s,Tnode *p,Tnode *bindings) {
-    Tnode *sym = _t_clone(_t_child(p,2));
-    Tnode *str = _t_clone(_t_child(p,3));
-    Tnode *proc = _t_clone(_t_child(p,4));
-    return __r_new(s,sym,str,proc);
+    Tnode *defs = _t_clone(_t_child(p,2));
+    return __r_new(s,defs);
 }
 
 /**
@@ -447,10 +452,11 @@ Receptor * _r_unserialize(void *surface) {
     Tnode *t =  _t_unserialize(r,&surface,&length,0);
     _t_free(r->root);
     r->root = t;
+    //@todo fix defs!!
     r->defs.structures = _t_child(t,1);
     r->defs.symbols = _t_child(t,2);
     r->defs.processes = _t_child(t,3);
-    r->flux = _t_child(t,4);
+    r->flux = _t_child(t,2);
     int c = _t_children(r->defs.symbols);
     int i;
     for(i=1;i<=c;i++){

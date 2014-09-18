@@ -16,18 +16,22 @@ void testReceptorCreate() {
 
     spec_is_symbol_equal(r,_t_symbol(r->root),TEST_RECEPTOR_SYMBOL);
 
-    Tnode *t;
+    Tnode *t,*d;
 
     // test that the symbols, structures & process trees are set up correctly
-    t = _t_child(r->root,1);
+    d = _t_child(r->root,1);
+    t = _t_child(d,1);
     spec_is_symbol_equal(r,_t_symbol(r->defs.structures),STRUCTURES);
     spec_is_ptr_equal(t,r->defs.structures);
-    t = _t_child(r->root,2);
+    t = _t_child(d,2);
     spec_is_symbol_equal(r,_t_symbol(r->defs.symbols),SYMBOLS);
     spec_is_ptr_equal(t,r->defs.symbols);
-    t = _t_child(r->root,3);
+    t = _t_child(d,3);
     spec_is_symbol_equal(r,_t_symbol(r->defs.processes),PROCESSES);
     spec_is_ptr_equal(t,r->defs.processes);
+    t = _t_child(d,4);
+    spec_is_symbol_equal(r,_t_symbol(r->defs.scapes),SCAPES);
+    spec_is_ptr_equal(t,r->defs.scapes);
 
     // test that listeners and signals are set up correctly on the default aspect
     t = __r_get_listeners(r,DEFAULT_ASPECT);
@@ -36,7 +40,7 @@ void testReceptorCreate() {
     spec_is_symbol_equal(r,_t_symbol(t),SIGNALS);
 
     // test that the flux is set up correctly
-    t = _t_child(r->root,4);
+    t = _t_child(r->root,2);
     spec_is_symbol_equal(r,_t_symbol(r->flux),FLUX);
     spec_is_ptr_equal(t,r->flux);
     t = _t_child(r->flux,1);

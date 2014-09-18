@@ -71,6 +71,7 @@ enum SystemSymbol
     //-----  Symbols for receptors
     RECEPTOR_XADDR,                    ///< An Xaddr that points to a receptor
     FLUX,                              ///< tree to hold all incoming and in process signals on the various aspects
+    DEFINITIONS,
     STRUCTURES,
     STRUCTURE_DEFINITION,
     STRUCTURE_LABEL,
@@ -100,6 +101,7 @@ enum SystemSymbol
     RUN_TREE,                         ///< think about this as a stack frame and it's code
     PARAM_REF,                        ///< used in a code tree as a reference to a parameter
     PARAMS,
+    SCAPES,
 
     //-----  Symbols for the virtual machine host
     VM_HOST_RECEPTOR,
@@ -134,6 +136,7 @@ static char *G_sys_symbol_names[] = {
     "SEMTREX_MATCH_SIBLINGS_COUNT",
     "RECEPTOR_XADDR",
     "FLUX",
+    "DEFINITIONS",
     "STRUCTURES",
     "STRUCTURE_DEFINITION",
     "STRUCTURE_LABEL",
@@ -163,6 +166,7 @@ static char *G_sys_symbol_names[] = {
     "RUN_TREE",
     "PARAM_REF",
     "PARAMS",
+    "SCAPES",
     "VM_HOST_RECEPTOR",
     "COMPOSITORY",
     "MANIFEST",
@@ -196,6 +200,7 @@ static Structure G_sys_symbol_structures[] = {
     INTEGER,             //SEMTREX_MATCH_SIBLINGS_COUNT
     XADDR,               //RECEPTOR_XADDR
     LIST,                //FLUX
+    LIST,                //DEFINITIONS
     LIST,                //STRUCTURES
     TREE,                //STRUCTURE_DEFINITION
     CSTRING,             //STRUCTURE_LABEL
@@ -225,6 +230,7 @@ static Structure G_sys_symbol_structures[] = {
     TREE,                //RUN_TREE
     TREE_PATH,           //PARAM_REF
     LIST,                //PARAMS
+    LIST,                //SCAPES
     RECEPTOR,            //VM_HOST_RECEPTOR
     RECEPTOR,            //COMPOSITORY
     TREE,                //MANIFEST

@@ -13,7 +13,7 @@ void testVMHostCreate() {
     VMHost *v = _v_new();
 
     spec_is_symbol_equal(v->r,_t_symbol(v->r->root),VM_HOST_RECEPTOR);
-    Tnode *ar_tree = _t_child(v->r->root,5);
+    Tnode *ar_tree = _t_child(v->r->root,3);
     spec_is_symbol_equal(v->r,_t_symbol(ar_tree),ACTIVE_RECEPTORS);
     spec_is_ptr_equal(v->active_receptors,ar_tree);
     spec_is_equal(_t_children(ar_tree),0);
@@ -36,6 +36,9 @@ Tnode *_makeTestReceptorPackage(int uuid,Tnode *symbols,Tnode *structures) {
     else _t_newr(p,SYMBOLS);
     if (structures) _t_add(p,_t_clone(structures));
     else _t_newr(p,STRUCTURES);
+
+    _t_newr(p,PROCESSES); // for now we don't have any processes
+    _t_newr(p,SCAPES); // for now we don't have any scapes
 
     return p;
 }
@@ -60,6 +63,7 @@ Tnode *_makeTestHTTPReceptorPackage() {
     _t_add(p,_t_clone(test_HTTP_symbols));
     _t_add(p,_t_clone(test_HTTP_structures));
     _t_newr(p,PROCESSES); // for now we don't have any processes
+    _t_newr(p,SCAPES); // for now we don't have any scapes
 
     return p;
 }

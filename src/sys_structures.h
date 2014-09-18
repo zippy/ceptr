@@ -32,6 +32,7 @@ enum SystemStructure
 	RECEPTOR,
 	PROCESS,
 	STRUCTURE,
+	SCAPE,
 	_LAST_SYS_STRUCTURE
 
     };
@@ -50,6 +51,7 @@ static char *G_sys_structure_names[] = {
     "TREE",
     "RECEPTOR",
     "PROCESS",
-    "STRUCTURE"
+    "STRUCTURE",
+    "SCAPE"
 };
 #endif

@@ -13,7 +13,7 @@
 #ifndef _CEPTR_PROCESS_H
 #define _CEPTR_PROCESS_H
 
-#include "receptor.h"
+#include "tree.h"
 
 enum ReductionError {noReductionErr,tooFewParamsReductionErr,tooManyParamsReductionErr,badSignatureReductionErr};
 

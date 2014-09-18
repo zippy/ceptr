@@ -18,6 +18,7 @@
 #include "semtrex_spec.h"
 #include "receptor_spec.h"
 #include "process_spec.h"
+#include "scape_spec.h"
 #include "vmhost_spec.h"
 
 int main(int argc, const char **argv) {
@@ -30,6 +31,7 @@ int main(int argc, const char **argv) {
     testSemtrex();
     testReceptor();
     testProcess();
+    testScape();
     testVMHost();
 
     report_tests();

@@ -74,7 +74,7 @@ void testTreeNewReceptor() {
 
     char buf[2000];
     __t_dump(0,t,0,buf);
-    spec_is_str_equal(buf," (TEST_INT_SYMBOL:0 (TEST_RECEPTOR_SYMBOL:{ (TEST_RECEPTOR_SYMBOL (STRUCTURES) (SYMBOLS) (PROCESSES) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))))}))");
+    spec_is_str_equal(buf," (TEST_INT_SYMBOL:0 (TEST_RECEPTOR_SYMBOL:{ (TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (SCAPES)) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))))}))");
 
     _t_free(t); // note, no need to free the receptor explicitly, as _t_free knows about it
     //! [testTreeNewReceptor]

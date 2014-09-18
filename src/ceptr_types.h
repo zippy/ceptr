@@ -83,6 +83,7 @@ struct Defs {
     Tnode *structures;  ///< pointer for quick access to structures
     Tnode *symbols;     ///< pointer for quick access to symbols
     Tnode *processes;   ///< pointer for quick access to processes
+    Tnode *scapes;      ///< pointer for quick access to scapes
  };
 typedef struct Defs Defs;
 
