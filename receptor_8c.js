@@ -11,7 +11,7 @@ var receptor_8c =
     [ "__r_get_structure_size", "receptor_8c.html#a6784a7133ab6bc8c6a105fead8843c86", null ],
     [ "__r_get_symbol_size", "group__receptor.html#gad886d976f8621ebb22d02c61f454265c", null ],
     [ "__r_get_symbol_structure", "group__receptor.html#ga120e66982d483fbe004fd969cf1c353f", null ],
-    [ "__r_new", "receptor_8c.html#a66962f6e1b6451103c72e65f5e9d253b", null ],
+    [ "__r_new", "receptor_8c.html#a4606833ebc43091e5d27f38eac8c2ce5", null ],
     [ "__set_label_for_def", "receptor_8c.html#a308abdd9c462d90f4c05f09d894959ef", null ],
     [ "__stxd_descend", "receptor_8c.html#a3f05ec90cfbe5c8813cf72a264aa2ca0", null ],
     [ "__stxd_multi", "receptor_8c.html#a7de7680c601d02138f09f5b8e0310e48", null ],

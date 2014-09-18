@@ -124,6 +124,12 @@ Files</h2></td></tr>
 <tr class="memitem:receptor_8h"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="receptor_8h.html">receptor.h</a></td></tr>
 <tr class="memdesc:receptor_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">receptor implementation header file <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:scape_8c"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="scape_8c.html">scape.c</a></td></tr>
+<tr class="memdesc:scape_8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">implementation of scapes <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:scape_8h"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="scape_8h.html">scape.h</a></td></tr>
+<tr class="memdesc:scape_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">scape header files <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
@@ -253,7 +259,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 </div><div class="memdoc">
 <p>get the size of a symbol's surface </p><dl class="section return"><dt>Returns</dt><dd>size </dd></dl>
 
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00211">211</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00216">216</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -284,7 +290,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 <p>find a symbol's structure </p>
 <dl class="section return"><dt>Returns</dt><dd>structure id </dd></dl>
 
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00196">196</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00201">201</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -343,7 +349,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 <dl class="section return"><dt>Returns</dt><dd>the length that was added to the buffer</dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000013">Todo:</a></b></dt><dd>compact is really a shorthand for whether this is a fixed size tree or not this should actually be determined on the fly by looking at the structure types. </dd></dl>
 
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00362">362</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00367">367</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -390,7 +396,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 </div><div class="memdoc">
 <p>Adds an expectation/action pair to a receptor's aspect. </p>
 
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00067">67</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00072">72</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -435,7 +441,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 <dl class="section return"><dt>Returns</dt><dd>the completed semtrex </dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000010">Todo:</a></b></dt><dd>currently this won't detect an incorrect strcture with extra children. This is because we don't haven't yet implemented the equivalent of "$" for semtrex. </dd></dl>
 
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00225">225</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00230">230</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -500,7 +506,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the new Process </dd></dl>
 
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00173">173</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00178">178</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -544,7 +550,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the new Symbol </dd></dl>
 
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00136">136</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00141">141</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -589,7 +595,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 <dl class="section return"><dt>Returns</dt><dd>true or false depending on the match</dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000011">Todo:</a></b></dt><dd>currently this just matches on a semtrex. It should also look at the surface sizes to see if they meet the criteria of the structure definitions. </dd></dl>
 
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00255">255</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00260">260</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -641,7 +647,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the new Structure </dd></dl>
 
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00152">152</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00157">157</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -660,7 +666,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 </div><div class="memdoc">
 <p>Destroys a receptor freeing all memory it uses. </p>
 
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00096">96</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00101">101</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -697,7 +703,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the instance tree</dd></dl>
 <p><b>Examples (from test suite):</b> </p><div class="fragment"></div><!-- fragment -->
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00315">315</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00320">320</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -726,7 +732,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 </div><div class="memdoc">
 <p>find a structure by its label </p>
 
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00188">188</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00193">193</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -755,7 +761,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 </div><div class="memdoc">
 <p>find a symbol by its label </p>
 
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00181">181</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00186">186</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -787,18 +793,22 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 <div class="line"></div>
 <div class="line">    spec_is_symbol_equal(r,<a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(r-&gt;<a class="code" href="structReceptor.html#a7a280e923e97768c67f90303bcf8c152">root</a>),TEST_RECEPTOR_SYMBOL);</div>
 <div class="line"></div>
-<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *t;</div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *t,*d;</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// test that the symbols, structures &amp; process trees are set up correctly</span></div>
-<div class="line">    t = _t_child(r-&gt;<a class="code" href="structReceptor.html#a7a280e923e97768c67f90303bcf8c152">root</a>,1);</div>
+<div class="line">    d = _t_child(r-&gt;<a class="code" href="structReceptor.html#a7a280e923e97768c67f90303bcf8c152">root</a>,1);</div>
+<div class="line">    t = _t_child(d,1);</div>
 <div class="line">    spec_is_symbol_equal(r,<a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(r-&gt;<a class="code" href="structReceptor.html#a56e5e37eb23a3e5debf7f24723eca9ed">defs</a>.<a class="code" href="structDefs.html#a4c975b62ce2275297aaa44cf9165c543">structures</a>),STRUCTURES);</div>
 <div class="line">    spec_is_ptr_equal(t,r-&gt;<a class="code" href="structReceptor.html#a56e5e37eb23a3e5debf7f24723eca9ed">defs</a>.<a class="code" href="structDefs.html#a4c975b62ce2275297aaa44cf9165c543">structures</a>);</div>
-<div class="line">    t = _t_child(r-&gt;<a class="code" href="structReceptor.html#a7a280e923e97768c67f90303bcf8c152">root</a>,2);</div>
+<div class="line">    t = _t_child(d,2);</div>
 <div class="line">    spec_is_symbol_equal(r,<a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(r-&gt;<a class="code" href="structReceptor.html#a56e5e37eb23a3e5debf7f24723eca9ed">defs</a>.<a class="code" href="structDefs.html#a8d6bdb404258745a4a902f9e3c710812">symbols</a>),SYMBOLS);</div>
 <div class="line">    spec_is_ptr_equal(t,r-&gt;<a class="code" href="structReceptor.html#a56e5e37eb23a3e5debf7f24723eca9ed">defs</a>.<a class="code" href="structDefs.html#a8d6bdb404258745a4a902f9e3c710812">symbols</a>);</div>
-<div class="line">    t = _t_child(r-&gt;<a class="code" href="structReceptor.html#a7a280e923e97768c67f90303bcf8c152">root</a>,3);</div>
+<div class="line">    t = _t_child(d,3);</div>
 <div class="line">    spec_is_symbol_equal(r,<a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(r-&gt;<a class="code" href="structReceptor.html#a56e5e37eb23a3e5debf7f24723eca9ed">defs</a>.<a class="code" href="structDefs.html#a3d30c385b3166b8b8beaa93563fdb597">processes</a>),PROCESSES);</div>
 <div class="line">    spec_is_ptr_equal(t,r-&gt;<a class="code" href="structReceptor.html#a56e5e37eb23a3e5debf7f24723eca9ed">defs</a>.<a class="code" href="structDefs.html#a3d30c385b3166b8b8beaa93563fdb597">processes</a>);</div>
+<div class="line">    t = _t_child(d,4);</div>
+<div class="line">    spec_is_symbol_equal(r,<a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(r-&gt;<a class="code" href="structReceptor.html#a56e5e37eb23a3e5debf7f24723eca9ed">defs</a>.<a class="code" href="structDefs.html#a42a3e1b1ac349927c8a60c3f04182542">scapes</a>),SCAPES);</div>
+<div class="line">    spec_is_ptr_equal(t,r-&gt;<a class="code" href="structReceptor.html#a56e5e37eb23a3e5debf7f24723eca9ed">defs</a>.<a class="code" href="structDefs.html#a42a3e1b1ac349927c8a60c3f04182542">scapes</a>);</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// test that listeners and signals are set up correctly on the default aspect</span></div>
 <div class="line">    t = __r_get_listeners(r,DEFAULT_ASPECT);</div>
@@ -807,7 +817,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 <div class="line">    spec_is_symbol_equal(r,<a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(t),<a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a1cad60194b57d18e09fff2a1b6c3b192">SIGNALS</a>);</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// test that the flux is set up correctly</span></div>
-<div class="line">    t = _t_child(r-&gt;<a class="code" href="structReceptor.html#a7a280e923e97768c67f90303bcf8c152">root</a>,4);</div>
+<div class="line">    t = _t_child(r-&gt;<a class="code" href="structReceptor.html#a7a280e923e97768c67f90303bcf8c152">root</a>,2);</div>
 <div class="line">    spec_is_symbol_equal(r,<a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(r-&gt;<a class="code" href="structReceptor.html#a622c4885a917e9249fa213ccf47b04ff">flux</a>),<a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3aa76c44edb76686fa1bbda9ebe69c7857">FLUX</a>);</div>
 <div class="line">    spec_is_ptr_equal(t,r-&gt;<a class="code" href="structReceptor.html#a622c4885a917e9249fa213ccf47b04ff">flux</a>);</div>
 <div class="line">    t = _t_child(r-&gt;<a class="code" href="structReceptor.html#a622c4885a917e9249fa213ccf47b04ff">flux</a>,1);</div>
@@ -816,7 +826,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 <div class="line"></div>
 <div class="line">    <a class="code" href="group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8">_r_free</a>(r);</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00044">44</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00046">46</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -854,7 +864,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 <dl class="section return"><dt>Returns</dt><dd>xaddr of the instance</dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000012">Todo:</a></b></dt><dd>currently stores instances as extra-children on the def tree, this will actually be handled by interacting with the data-engine!</dd></dl>
 <p><b>Examples (from test suite):</b> </p><div class="fragment"></div><!-- fragment -->
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00277">277</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00282">282</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -899,7 +909,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 <dl class="section return"><dt>Returns</dt><dd>pointer to a newly allocated <a class="el" href="structReceptor.html">Receptor</a> </dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000009">Todo:</a></b></dt><dd>implement bindings </dd></dl>
 
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00057">57</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00064">64</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -996,7 +1006,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000015">Todo:</a></b></dt><dd>runtime error handing!!! </dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000016">Todo:</a></b></dt><dd>results should actually be a what? success/failure of send </dd></dl>
 
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00488">488</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00494">494</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -1089,7 +1099,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 <div class="line">    <a class="code" href="group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8">_r_free</a>(r);</div>
 <div class="line">    <a class="code" href="group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8">_r_free</a>(r1);</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00399">399</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00404">404</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -1116,7 +1126,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structReceptor.html">Receptor</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00443">443</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00448">448</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -1159,7 +1169,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00342">342</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00347">347</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -1168,7 +1178,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Sep 17 2014 17:46:22 for ceptr by
+    <li class="footer">Generated on Wed Sep 17 2014 21:51:25 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

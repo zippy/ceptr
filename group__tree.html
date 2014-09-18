@@ -828,7 +828,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
 <div class="line"></div>
 <div class="line">    <span class="keywordtype">char</span> buf[2000];</div>
 <div class="line">    __t_dump(0,t,0,buf);</div>
-<div class="line">    spec_is_str_equal(buf,<span class="stringliteral">&quot; (TEST_INT_SYMBOL:0 (TEST_RECEPTOR_SYMBOL:{ (TEST_RECEPTOR_SYMBOL (STRUCTURES) (SYMBOLS) (PROCESSES) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))))}))&quot;</span>);</div>
+<div class="line">    spec_is_str_equal(buf,<span class="stringliteral">&quot; (TEST_INT_SYMBOL:0 (TEST_RECEPTOR_SYMBOL:{ (TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (SCAPES)) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))))}))&quot;</span>);</div>
 <div class="line"></div>
 <div class="line">    <a class="code" href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a>(t); <span class="comment">// note, no need to free the receptor explicitly, as _t_free knows about it</span></div>
 </div><!-- fragment -->
@@ -1362,7 +1362,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Sep 17 2014 17:46:22 for ceptr by
+    <li class="footer">Generated on Wed Sep 17 2014 21:51:25 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

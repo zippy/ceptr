@@ -16,6 +16,7 @@ var sys__structures_8h =
       [ "RECEPTOR", "sys__structures_8h.html#ac6cf3e705e120184277267602edaa1b1a126c2d6c3bd0c0240ddeb54da90e47d3", null ],
       [ "PROCESS", "sys__structures_8h.html#ac6cf3e705e120184277267602edaa1b1ae4f21099481eef801603441650cb6eff", null ],
       [ "STRUCTURE", "sys__structures_8h.html#ac6cf3e705e120184277267602edaa1b1a89a52dd2b3ac56712e01fdb146e60ac2", null ],
+      [ "SCAPE", "sys__structures_8h.html#ac6cf3e705e120184277267602edaa1b1a8bbeed4636ceeaee5346b95dec8d96b9", null ],
       [ "_LAST_SYS_STRUCTURE", "sys__structures_8h.html#ac6cf3e705e120184277267602edaa1b1a1bcd607e4efd400866e159facdd0db6d", null ]
     ] ]
 ];
