@@ -66,12 +66,12 @@ void _cleanup_HTTPDefs() {
 
 enum {TEST_HTTP_METHOD_GET_VALUE,TEST_HTTP_METHOD_PUT_VALUE,TEST_HTTP_METHOD_POST_VALUE};
 
+//! [makeTestHTTPRequestTree]
 /**
  * generate a test semantic tree that represents an HTTP request
  *
  * @snippet spec/http_example.h makeTestHTTPRequestTree
  */
-//! [makeTestHTTPRequestTree]
 Tnode *_makeTestHTTPRequestTree() {
     // manually build up a tree for the HTTP request:
     //     GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
@@ -102,12 +102,13 @@ Tnode *_makeTestHTTPRequestTree() {
 }
 //! [makeTestHTTPRequestTree]
 
+
+//! [makeTestHTTPResponseProcess]
 /**
  * generate a test process that would generate a response to an HTTP request
  *
  * @snippet spec/http_example.h makeTestHTTPResponseProcess
  */
-//! [makeTestHTTPResponseProcess]
 Process _makeTestHTTPResponseProcess(Receptor *r) {
     // the action simply responds back with the method that was originally sent
     // this test should be made more real... but for now it responds back with a ping
@@ -131,5 +132,4 @@ Process _makeTestHTTPResponseProcess(Receptor *r) {
     return p;
 }
 //! [makeTestHTTPResponseProcess]
-
 #endif
