@@ -133,6 +133,26 @@ Tnode *_t_new_receptor(Tnode *parent,Symbol symbol,Receptor *r) {
 }
 
 /**
+ * Create a new tree node with a scape as it's surface
+ *
+ * this is just like _t_newt except that it uses a different flag because
+ * when cleaning up we'll need to know that this is a scape, not just
+ * a plain tree
+ *
+ * @param[in] parent parent node for the node to be created.
+ * @param[in] symbol semantic symbol for the node to be create
+ * @param[in] s scape
+ * @returns pointer to node allocated on the heap
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/tree_spec.h testTreeNewScae
+ */
+Tnode *_t_new_scape(Tnode *parent,Symbol symbol,Scape *s) {
+    Tnode *t = _t_newt(parent,symbol,(Tnode *)s);
+    t->context.flags |= TFLAG_SURFACE_IS_TREE+TFLAG_SURFACE_IS_SCAPE;
+    return t;
+}
+/**
  * Create a new tree node with a Process surface
  *
  * @param[in] parent parent node for the node to be created.  Can be 0 if this is a root node
@@ -299,6 +319,8 @@ void _t_free(Tnode *t) {
     else if (t->context.flags & TFLAG_SURFACE_IS_TREE) {
 	if (t->context.flags & TFLAG_SURFACE_IS_RECEPTOR)
 	    _r_free((Receptor *)t->contents.surface);
+	else if (t->context.flags & TFLAG_SURFACE_IS_SCAPE)
+	    _s_free((Scape *)t->contents.surface);
 	else
 	    _t_free((Tnode *)t->contents.surface);
     }

@@ -6,6 +6,25 @@
 
 #include "../src/ceptr.h"
 #include "../src/scape.h"
+#include "../src/receptor.h"
+
+void testScapeNew() {
+    Scape *s = _s_new(TEST_ALPHABETIZE_SCAPE_SYMBOL);
+    spec_is_symbol_equal(0,_t_symbol(s->root),TEST_ALPHABETIZE_SCAPE_SYMBOL);
+    _s_free(s);
+}
+
+void testScapeAddElement() {
+    //! [testScapeAddElement]
+    Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
+    Scape *s = _s_new(TEST_ALPHABETIZE_SCAPE_SYMBOL);
+    Xaddr x;
+    //    _s_add(x);
+    //! [testScapeAddElement]
+    _r_free(r);
+}
 
 void testScape() {
+    testScapeNew();
+    testScapeAddElement();
 }

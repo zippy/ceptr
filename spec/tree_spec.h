@@ -80,6 +80,21 @@ void testTreeNewReceptor() {
     //! [testTreeNewReceptor]
 }
 
+void testTreeNewScape() {
+    //! [testTreeNewScape]
+    Scape *s = _s_new(TEST_ALPHABETIZE_SCAPE_SYMBOL);
+    Tnode *ts = _t_new_scape(0,TEST_ALPHABETIZE_SCAPE_SYMBOL,s);
+
+    spec_is_ptr_equal(_t_surface(ts),s);
+
+    char buf[2000];
+    __t_dump(0,ts,0,buf);
+    spec_is_str_equal(buf," (TEST_ALPHABETIZE_SCAPE_SYMBOL:{ (TEST_ALPHABETIZE_SCAPE_SYMBOL)})");
+
+    _t_free(ts); // note, no need to free the receptor explicitly, as _t_free knows about it
+    //! [testTreeNewScape]
+}
+
 void testTreeOrthogonal() {
     Tnode *t = _t_newi(0,TEST_INT_SYMBOL,1234);
     Tnode *t2 = _t_newi(0,TEST_INT_SYMBOL2,99);
@@ -347,6 +362,7 @@ void testTree() {
     _setup_HTTPDefs();
     testCreateTreeNodes();
     testTreeNewReceptor();
+    testTreeNewScape();
     testTreeOrthogonal();
     testTreeRealloc();
     testTreeNodeIndex();

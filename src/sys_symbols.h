@@ -21,7 +21,7 @@
 
 /// test symbols.  These are defined only for the test suite.
 enum TestSymbol {TEST_INT_SYMBOL= 0x7ffff000,TEST_INT_SYMBOL2,TEST_STR_SYMBOL,TEST_TREE_SYMBOL,TEST_TREE_SYMBOL2,
-		 TEST_NAME_SYMBOL,TEST_FIRST_NAME_SYMBOL,TEST_RECEPTOR_SYMBOL,
+		 TEST_NAME_SYMBOL,TEST_FIRST_NAME_SYMBOL,TEST_RECEPTOR_SYMBOL,TEST_ALPHABETIZE_SCAPE_SYMBOL,
 		 _LAST_TEST_SYMBOL
 };
 static char *G_test_symbol_names[] = {
@@ -32,7 +32,8 @@ static char *G_test_symbol_names[] = {
     "TEST_TREE_SYMBOL2",
     "TEST_NAME_SYMBOL",
     "TEST_FIRST_NAME_SYMBOL",
-    "TEST_RECEPTOR_SYMBOL"
+    "TEST_RECEPTOR_SYMBOL",
+    "TEST_ALPHABETIZE_SCAPE_SYMBOL",
 };
 
 static Structure G_test_symbol_structures[] = {
@@ -44,6 +45,7 @@ static Structure G_test_symbol_structures[] = {
     TREE,    //"TEST_NAME_SYMBOL",
     CSTRING, //"TEST_FIRST_NAME_SYMBOL",
     RECEPTOR,//"TEST_RECEPTOR_SYMBOL"
+    SCAPE,   //"TEST_ALPHABETIZE_SCAPE_SYMBOL",
 };
 
 /// System defined symbols.
@@ -81,6 +83,7 @@ enum SystemSymbol
     SYMBOL_DECLARATION,
     SYMBOL_STRUCTURE,
     SYMBOL_LABEL,
+    SCAPE_SPEC,
     ASPECT,
     SIGNALS,                           ///< list of signals on an aspect in the flux
     SIGNAL,                            ///< a signal on the flux.  It's first child is the contents of the signal
@@ -146,6 +149,7 @@ static char *G_sys_symbol_names[] = {
     "SYMBOL_DECLARATION",
     "SYMBOL_STRUCTURE",
     "SYMBOL_LABEL",
+    "SCAPE_SPEC",
     "ASPECT",
     "SIGNALS",
     "SIGNAL",
@@ -210,6 +214,7 @@ static Structure G_sys_symbol_structures[] = {
     TREE,                //SYMBOL_DECLARATION
     STRUCTURE,           //SYMBOL_STRUCTURE
     CSTRING,             //SYMBOL_LABEL
+    TREE,                //SCAPE_SPEC
     INTEGER,             //ASPECT
     LIST,                //SIGNALS
     NULL_STRUCTURE,      //SIGNAL

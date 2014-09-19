@@ -16,6 +16,7 @@
 #include "def.h"
 #include "label.h"
 #include "process.h"
+#include "scape.h"
 
 // for now aspects are just identified as the child index in the flux receptor
 enum {DEFAULT_ASPECT=1};

@@ -15,5 +15,9 @@
 
 #include "tree.h"
 
+Scape *_s_new(Symbol s);
+Scape *__s_new(Symbol s,Tnode *key_spec,Tnode *data_spec,Tnode *geometry_spec);
+void _s_free(Scape *s);
+
 #endif
 /** @}*/

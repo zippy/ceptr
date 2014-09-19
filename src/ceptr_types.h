@@ -115,4 +115,27 @@ typedef struct Xaddr Xaddr;
 
 typedef int Error;
 
+// ** types for scapes
+
+/**
+ * An element in the scape key value pair store
+ */
+struct scape_elem {
+    Xaddr value;
+    UT_hash_handle hh;       ///< makes this structure hashable using the uthash library
+};
+typedef struct scape_elem scape_elem;
+typedef scape_elem *ScapeData;
+
+/**
+ * A scape is a sematic tree, pointed to by a root, but we also create a c structure
+ * for faster access to some parts of the tree and to hold the non-tree like date, like
+ * hash tables for key/data access
+ */
+struct Scape {
+    Tnode *root;         ///< root node of the semantic tree
+    ScapeData data;      ///< the scape data store
+};
+typedef struct Scape Scape;
+
 #endif
