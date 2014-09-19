@@ -18,6 +18,7 @@ var group__tree =
     [ "_t_new", "group__tree.html#ga23646bb375d548b8bdce934f694b1741", null ],
     [ "_t_new_receptor", "group__tree.html#ga26e1b609fa8a660e13d046af2bb4a32e", null ],
     [ "_t_new_root", "group__tree.html#ga17676267c6fb457dd1d086f37641544a", null ],
+    [ "_t_new_scape", "group__tree.html#gab7cccfb88b455603f4e561e616723335", null ],
     [ "_t_newi", "group__tree.html#gab438eeedb3eb6c1e20171b33d8ec499d", null ],
     [ "_t_newp", "group__tree.html#ga88b91532333a81992610dce1e0a4dbae", null ],
     [ "_t_newr", "group__tree.html#gaff88720dad09389f6b7f35f7985d8efd", null ],

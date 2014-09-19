@@ -119,18 +119,73 @@ Include dependency graph for scape.c:</div>
 </div>
 </div>
 <p><a href="scape_8c_source.html">Go to the source code of this file.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr class="memitem:aa845204d8b180dcfe536ec067a514252"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa845204d8b180dcfe536ec067a514252"></a>
+<a class="el" href="structScape.html">Scape</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>__s_new</b> (Symbol sym, <a class="el" href="structTnode.html">Tnode</a> *key_spec, <a class="el" href="structTnode.html">Tnode</a> *data_spec, <a class="el" href="structTnode.html">Tnode</a> *geometry_spec)</td></tr>
+<tr class="separator:aa845204d8b180dcfe536ec067a514252"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d0d7ab375bb5ab2c647f96cc39a47f8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structScape.html">Scape</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="scape_8c.html#a0d0d7ab375bb5ab2c647f96cc39a47f8">_s_new</a> (Symbol sym)</td></tr>
+<tr class="separator:a0d0d7ab375bb5ab2c647f96cc39a47f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ee0ce1c0205037b7473c856cb216a2a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2ee0ce1c0205037b7473c856cb216a2a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>scapedataFree</b> (<a class="el" href="structscape__elem.html">ScapeData</a> *i)</td></tr>
+<tr class="separator:a2ee0ce1c0205037b7473c856cb216a2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3248dd3373ca8f722b69d385aec37d7d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="scape_8c.html#a3248dd3373ca8f722b69d385aec37d7d">_s_free</a> (<a class="el" href="structScape.html">Scape</a> *s)</td></tr>
+<tr class="separator:a3248dd3373ca8f722b69d385aec37d7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>implementation of scapes </p>
 <dl class="section copyright"><dt>Copyright</dt><dd>Copyright (C) 2013-2014, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al). This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3). </dd></dl>
 
 <p>Definition in file <a class="el" href="scape_8c_source.html">scape.c</a>.</p>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="a3248dd3373ca8f722b69d385aec37d7d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void _s_free </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structScape.html">Scape</a> *&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>free the memory allocated to a scape </p>
+
+<p>Definition at line <a class="el" href="scape_8c_source.html#l00046">46</a> of file <a class="el" href="scape_8c_source.html">scape.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a0d0d7ab375bb5ab2c647f96cc39a47f8"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structScape.html">Scape</a>* _s_new </td>
+          <td>(</td>
+          <td class="paramtype">Symbol&#160;</td>
+          <td class="paramname"><em>sym</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>create a new scape</p>
+<p>[in] name a label for the scape </p><dl class="section return"><dt>Returns</dt><dd>a pointer to a newly allocated <a class="el" href="structScape.html">Scape</a></dd></dl>
+<p><b>Examples (from test suite):</b> </p><div class="fragment"></div><!-- fragment -->
+<p>Definition at line <a class="el" href="scape_8c_source.html#l00029">29</a> of file <a class="el" href="scape_8c_source.html">scape.c</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="scape_8c.html">scape.c</a></li>
-    <li class="footer">Generated on Wed Sep 17 2014 21:51:25 for ceptr by
+    <li class="footer">Generated on Fri Sep 19 2014 10:43:00 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

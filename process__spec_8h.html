@@ -179,17 +179,17 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>testProcess</b> ()</t
 <div class="line"></div>
 <div class="line">    <span class="comment">// a process that would look something like this in lisp:</span></div>
 <div class="line">    <span class="comment">// (defun if_even (val true_branch false_branch) (if (eq (mod val 2 ) 0) (true_branch) (false_branch)))</span></div>
-<div class="line">    code = <a class="code" href="group__tree.html#ga17676267c6fb457dd1d086f37641544a">_t_new_root</a>(<a class="code" href="sys__processes_8h.html#a1e1d7c20f4c895eb9e21e7ef34708a07a252802eda493fb6b4a279c4452acb547">IF</a>);</div>
+<div class="line">    code = <a class="code" href="group__tree.html#ga17676267c6fb457dd1d086f37641544a">_t_new_root</a>(<a class="code" href="sys__processes_8h.html#a1e1d7c20f4c895eb9e21e7ef34708a07a252802eda493fb6b4a279c4452acb547">IF</a>);                                                         <span class="comment">// IF is a system process</span></div>
 <div class="line">    <a class="code" href="structTnode.html">Tnode</a> *eq = <a class="code" href="group__tree.html#gab438eeedb3eb6c1e20171b33d8ec499d">_t_newi</a>(code,EQ_INT,0);</div>
 <div class="line">    <a class="code" href="structTnode.html">Tnode</a> *mod = <a class="code" href="group__tree.html#gab438eeedb3eb6c1e20171b33d8ec499d">_t_newi</a>(eq,MOD_INT,0);</div>
-<div class="line">    <span class="keywordtype">int</span> p1[] = {2,1,TREE_PATH_TERMINATOR};</div>
-<div class="line">    <span class="keywordtype">int</span> p2[] = {2,2,TREE_PATH_TERMINATOR};</div>
-<div class="line">    <span class="keywordtype">int</span> p3[] = {2,3,TREE_PATH_TERMINATOR};</div>
-<div class="line">    <a class="code" href="group__tree.html#ga23646bb375d548b8bdce934f694b1741">_t_new</a>(mod,<a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a01024e4cdc48465474a42afe32f1d95d">PARAM_REF</a>,p1,<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>)*4);</div>
+<div class="line">    <span class="keywordtype">int</span> p1[] = {2,1,TREE_PATH_TERMINATOR};          <span class="comment">// paths to the parameter refrences in the run tree: second branch, b1</span></div>
+<div class="line">    <span class="keywordtype">int</span> p2[] = {2,2,TREE_PATH_TERMINATOR};          <span class="comment">// second branch, b2</span></div>
+<div class="line">    <span class="keywordtype">int</span> p3[] = {2,3,TREE_PATH_TERMINATOR};          <span class="comment">// second branch, b3</span></div>
+<div class="line">    <a class="code" href="group__tree.html#ga23646bb375d548b8bdce934f694b1741">_t_new</a>(mod,<a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a01024e4cdc48465474a42afe32f1d95d">PARAM_REF</a>,p1,<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>)*3);         <span class="comment">// param_ref should be a path_param_ref, also to be added is a label_param_ref</span></div>
 <div class="line">    <a class="code" href="group__tree.html#gab438eeedb3eb6c1e20171b33d8ec499d">_t_newi</a>(mod,TEST_INT_SYMBOL,2);</div>
 <div class="line">    <a class="code" href="group__tree.html#gab438eeedb3eb6c1e20171b33d8ec499d">_t_newi</a>(eq,TEST_INT_SYMBOL,0);</div>
-<div class="line">    <a class="code" href="group__tree.html#ga23646bb375d548b8bdce934f694b1741">_t_new</a>(code,<a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a01024e4cdc48465474a42afe32f1d95d">PARAM_REF</a>,p2,<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>)*4);</div>
-<div class="line">    <a class="code" href="group__tree.html#ga23646bb375d548b8bdce934f694b1741">_t_new</a>(code,<a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a01024e4cdc48465474a42afe32f1d95d">PARAM_REF</a>,p3,<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>)*4);</div>
+<div class="line">    <a class="code" href="group__tree.html#ga23646bb375d548b8bdce934f694b1741">_t_new</a>(code,<a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a01024e4cdc48465474a42afe32f1d95d">PARAM_REF</a>,p2,<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>)*3);</div>
+<div class="line">    <a class="code" href="group__tree.html#ga23646bb375d548b8bdce934f694b1741">_t_new</a>(code,<a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a01024e4cdc48465474a42afe32f1d95d">PARAM_REF</a>,p3,<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>)*3);</div>
 <div class="line">    input = <a class="code" href="group__tree.html#ga17676267c6fb457dd1d086f37641544a">_t_new_root</a>(INPUT);</div>
 <div class="line">    <a class="code" href="structTnode.html">Tnode</a> *i1 = <a class="code" href="group__tree.html#gaff88720dad09389f6b7f35f7985d8efd">_t_newr</a>(input,INPUT_SIGNATURE);</div>
 <div class="line">    <a class="code" href="group__tree.html#gab438eeedb3eb6c1e20171b33d8ec499d">_t_newi</a>(i1,SIGNATURE_STRUCTURE,INTEGER);</div>
@@ -255,7 +255,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>testProcess</b> ()</t
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><a class="el" href="process__spec_8h.html">process_spec.h</a></li>
-    <li class="footer">Generated on Wed Sep 17 2014 21:51:25 for ceptr by
+    <li class="footer">Generated on Fri Sep 19 2014 10:43:00 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

@@ -122,23 +122,75 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="scape_8h__dep__incl.png" border="0" usemap="#src_2scape_8hdep" alt=""/></div>
 <map name="src_2scape_8hdep" id="src_2scape_8hdep">
-<area shape="rect" id="node2" href="scape_8c.html" title="implementation of scapes " alt="" coords="5,80,96,107"/><area shape="rect" id="node3" href="scape__spec_8h.html" title="spec/scape_spec.h" alt="" coords="121,80,255,107"/><area shape="rect" id="node4" href="ceptr__specs_8c.html" title="implements a main() entry point for running all the tests " alt="" coords="120,155,255,181"/></map>
+<area shape="rect" id="node2" href="receptor_8h.html" title="receptor implementation header file " alt="" coords="473,80,575,107"/><area shape="rect" id="node12" href="scape__spec_8h.html" title="spec/scape_spec.h" alt="" coords="730,155,864,181"/><area shape="rect" id="node13" href="scape_8c.html" title="implementation of scapes " alt="" coords="764,80,855,107"/><area shape="rect" id="node3" href="receptor_8c.html" title="receptor implementation " alt="" coords="429,155,531,181"/><area shape="rect" id="node4" href="vmhost_8h.html" title="vmhost implementation header file " alt="" coords="607,155,705,181"/><area shape="rect" id="node8" href="tree__spec_8h.html" title="spec/tree_spec.h" alt="" coords="347,229,469,256"/><area shape="rect" id="node9" href="http__example_8h.html" title="spec/http_example.h" alt="" coords="262,155,404,181"/><area shape="rect" id="node10" href="receptor__spec_8h.html" title="spec/receptor_spec.h" alt="" coords="176,229,323,256"/><area shape="rect" id="node11" href="semtrex__spec_8h.html" title="spec/semtrex_spec.h" alt="" coords="5,229,152,256"/><area shape="rect" id="node5" href="vmhost_8c.html" title="virtual machine host receptor implementation " alt="" coords="661,229,760,256"/><area shape="rect" id="node6" href="vmhost__spec_8h.html" title="spec/vmhost_spec.h" alt="" coords="494,229,636,256"/><area shape="rect" id="node7" href="ceptr__specs_8c.html" title="implements a main() entry point for running all the tests " alt="" coords="340,304,475,331"/></map>
 </div>
 </div>
 <p><a href="scape_8h_source.html">Go to the source code of this file.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr class="memitem:a526a683679cbfb5a2551968b45aa5ffc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structScape.html">Scape</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="scape_8h.html#a526a683679cbfb5a2551968b45aa5ffc">_s_new</a> (Symbol s)</td></tr>
+<tr class="separator:a526a683679cbfb5a2551968b45aa5ffc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75cff33ce47e04e59f454018918c877e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a75cff33ce47e04e59f454018918c877e"></a>
+<a class="el" href="structScape.html">Scape</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>__s_new</b> (Symbol s, <a class="el" href="structTnode.html">Tnode</a> *key_spec, <a class="el" href="structTnode.html">Tnode</a> *data_spec, <a class="el" href="structTnode.html">Tnode</a> *geometry_spec)</td></tr>
+<tr class="separator:a75cff33ce47e04e59f454018918c877e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3248dd3373ca8f722b69d385aec37d7d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="scape_8h.html#a3248dd3373ca8f722b69d385aec37d7d">_s_free</a> (<a class="el" href="structScape.html">Scape</a> *s)</td></tr>
+<tr class="separator:a3248dd3373ca8f722b69d385aec37d7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>scape header files </p>
 <p>scapes organized and relate receptor contents</p>
 <dl class="section copyright"><dt>Copyright</dt><dd>Copyright (C) 2013-2014, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al). This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3). </dd></dl>
 
 <p>Definition in file <a class="el" href="scape_8h_source.html">scape.h</a>.</p>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="a3248dd3373ca8f722b69d385aec37d7d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void _s_free </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structScape.html">Scape</a> *&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>free the memory allocated to a scape </p>
+
+<p>Definition at line <a class="el" href="scape_8c_source.html#l00046">46</a> of file <a class="el" href="scape_8c_source.html">scape.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a526a683679cbfb5a2551968b45aa5ffc"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structScape.html">Scape</a>* _s_new </td>
+          <td>(</td>
+          <td class="paramtype">Symbol&#160;</td>
+          <td class="paramname"><em>sym</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>create a new scape</p>
+<p>[in] name a label for the scape </p><dl class="section return"><dt>Returns</dt><dd>a pointer to a newly allocated <a class="el" href="structScape.html">Scape</a></dd></dl>
+<p><b>Examples (from test suite):</b> </p><div class="fragment"></div><!-- fragment -->
+<p>Definition at line <a class="el" href="scape_8c_source.html#l00029">29</a> of file <a class="el" href="scape_8c_source.html">scape.c</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="scape_8h.html">scape.h</a></li>
-    <li class="footer">Generated on Wed Sep 17 2014 21:51:25 for ceptr by
+    <li class="footer">Generated on Fri Sep 19 2014 10:43:00 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

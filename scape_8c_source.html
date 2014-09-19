@@ -109,14 +109,49 @@ $(document).ready(function(){initNavTree('scape_8c_source.html','');});
 <a href="scape_8c.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="scape_8h.html">scape.h</a>&quot;</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<a class="code" href="structScape.html">Scape</a> *__s_new(Symbol sym,<a class="code" href="structTnode.html">Tnode</a> *key_spec,<a class="code" href="structTnode.html">Tnode</a> *data_spec,<a class="code" href="structTnode.html">Tnode</a> *geometry_spec) {</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <a class="code" href="structScape.html">Scape</a> *s = malloc(<span class="keyword">sizeof</span>(<a class="code" href="structScape.html">Scape</a>));</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    s-&gt;<a class="code" href="structScape.html#a4e277eb9e869bfc71caa7d19b3f8c0a7">root</a> = <a class="code" href="group__tree.html#ga17676267c6fb457dd1d086f37641544a">_t_new_root</a>(sym);</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    s-&gt;<a class="code" href="structScape.html#a7a89920d306b675ff635e29df3fb64dc">data</a> = NULL;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keywordflow">return</span> s;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;}</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="scape_8h.html#a526a683679cbfb5a2551968b45aa5ffc">   29</a></span>&#160;<a class="code" href="structScape.html">Scape</a> *<a class="code" href="scape_8c.html#a0d0d7ab375bb5ab2c647f96cc39a47f8">_s_new</a>(Symbol sym) {</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keywordflow">return</span> __s_new(sym,0,0,0);</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;}</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">// free the hash table data</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keywordtype">void</span> scapedataFree(<a class="code" href="structscape__elem.html">ScapeData</a> *i) {</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <a class="code" href="structscape__elem.html">scape_elem</a> *cur,*tmp;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    HASH_ITER(hh, *i, cur, tmp) {</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="comment">//@todo free the contents of the element here</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    HASH_DEL(*i,cur);  <span class="comment">/* delete; cur advances to next */</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    free(cur);</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    }</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;}</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="scape_8h.html#a3248dd3373ca8f722b69d385aec37d7d">   46</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="scape_8c.html#a3248dd3373ca8f722b69d385aec37d7d">_s_free</a>(<a class="code" href="structScape.html">Scape</a> *s) {</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <a class="code" href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a>(s-&gt;<a class="code" href="structScape.html#a4e277eb9e869bfc71caa7d19b3f8c0a7">root</a>);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    scapedataFree(&amp;s-&gt;<a class="code" href="structScape.html#a7a89920d306b675ff635e29df3fb64dc">data</a>);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    free(s);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;}</div>
+<div class="ttc" id="group__tree_html_ga17676267c6fb457dd1d086f37641544a"><div class="ttname"><a href="group__tree.html#ga17676267c6fb457dd1d086f37641544a">_t_new_root</a></div><div class="ttdeci">Tnode * _t_new_root(Symbol symbol)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00099">tree.c:99</a></div></div>
+<div class="ttc" id="structScape_html"><div class="ttname"><a href="structScape.html">Scape</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00135">ceptr_types.h:135</a></div></div>
+<div class="ttc" id="structScape_html_a4e277eb9e869bfc71caa7d19b3f8c0a7"><div class="ttname"><a href="structScape.html#a4e277eb9e869bfc71caa7d19b3f8c0a7">Scape::root</a></div><div class="ttdeci">Tnode * root</div><div class="ttdoc">root node of the semantic tree </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00136">ceptr_types.h:136</a></div></div>
+<div class="ttc" id="group__tree_html_gac9311eb831d86ab8395f9c1c81f584d9"><div class="ttname"><a href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a></div><div class="ttdeci">void _t_free(Tnode *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00315">tree.c:315</a></div></div>
+<div class="ttc" id="structScape_html_a7a89920d306b675ff635e29df3fb64dc"><div class="ttname"><a href="structScape.html#a7a89920d306b675ff635e29df3fb64dc">Scape::data</a></div><div class="ttdeci">ScapeData data</div><div class="ttdoc">the scape data store </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00137">ceptr_types.h:137</a></div></div>
+<div class="ttc" id="structscape__elem_html"><div class="ttname"><a href="structscape__elem.html">scape_elem</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00123">ceptr_types.h:123</a></div></div>
+<div class="ttc" id="scape_8c_html_a3248dd3373ca8f722b69d385aec37d7d"><div class="ttname"><a href="scape_8c.html#a3248dd3373ca8f722b69d385aec37d7d">_s_free</a></div><div class="ttdeci">void _s_free(Scape *s)</div><div class="ttdef"><b>Definition:</b> <a href="scape_8c_source.html#l00046">scape.c:46</a></div></div>
 <div class="ttc" id="scape_8h_html"><div class="ttname"><a href="scape_8h.html">scape.h</a></div><div class="ttdoc">scape header files </div></div>
+<div class="ttc" id="scape_8c_html_a0d0d7ab375bb5ab2c647f96cc39a47f8"><div class="ttname"><a href="scape_8c.html#a0d0d7ab375bb5ab2c647f96cc39a47f8">_s_new</a></div><div class="ttdeci">Scape * _s_new(Symbol sym)</div><div class="ttdef"><b>Definition:</b> <a href="scape_8c_source.html#l00029">scape.c:29</a></div></div>
+<div class="ttc" id="structTnode_html"><div class="ttname"><a href="structTnode.html">Tnode</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00031">ceptr_types.h:31</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="scape_8c.html">scape.c</a></li>
-    <li class="footer">Generated on Wed Sep 17 2014 21:51:25 for ceptr by
+    <li class="footer">Generated on Fri Sep 19 2014 10:43:00 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

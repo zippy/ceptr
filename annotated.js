@@ -5,6 +5,8 @@ var annotated =
     [ "instances_elem", "structinstances__elem.html", "structinstances__elem" ],
     [ "Ptrlist", "unionPtrlist.html", "unionPtrlist" ],
     [ "Receptor", "structReceptor.html", "structReceptor" ],
+    [ "Scape", "structScape.html", "structScape" ],
+    [ "scape_elem", "structscape__elem.html", "structscape__elem" ],
     [ "Sgroup", "structSgroup.html", "structSgroup" ],
     [ "SState", "structSState.html", "structSState" ],
     [ "STypeData", "unionSTypeData.html", "unionSTypeData" ],

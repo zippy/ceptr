@@ -2,8 +2,10 @@ var searchData=
 [
   ['symbol_20and_20structure_20definition',['Symbol and Structure Definition',['../group__def.html',1,'']]],
   ['s',['s',['../structinstances__elem.html#aeeb84ef2b0bb4b596d161bc84f17937d',1,'instances_elem']]],
+  ['scape',['Scape',['../structScape.html',1,'']]],
   ['scape_2ec',['scape.c',['../scape_8c.html',1,'']]],
   ['scape_2eh',['scape.h',['../scape_8h.html',1,'']]],
+  ['scape_5felem',['scape_elem',['../structscape__elem.html',1,'']]],
   ['scape_5fspec_2eh',['scape_spec.h',['../scape__spec_8h.html',1,'']]],
   ['scapes',['scapes',['../structDefs.html#a42a3e1b1ac349927c8a60c3f04182542',1,'Defs']]],
   ['semantic_20tree_20regular_20expressions',['Semantic Tree Regular Expressions',['../group__semtrex.html',1,'']]],

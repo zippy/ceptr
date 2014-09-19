@@ -6,7 +6,8 @@ var tree_8h =
     [ "TreeSurfaceFlags", "group__tree.html#gaeddfb7542c9d4915c3613083cd001c60", [
       [ "TFLAG_ALLOCATED", "group__tree.html#ggaeddfb7542c9d4915c3613083cd001c60a4f19a56459fa0656df882de1075b0803", null ],
       [ "TFLAG_SURFACE_IS_TREE", "group__tree.html#ggaeddfb7542c9d4915c3613083cd001c60ad0d2d91d6598bbf39d240b90d29d954a", null ],
-      [ "TFLAG_SURFACE_IS_RECEPTOR", "group__tree.html#ggaeddfb7542c9d4915c3613083cd001c60ab66fde176a815717b8766aa3c9375e3c", null ]
+      [ "TFLAG_SURFACE_IS_RECEPTOR", "group__tree.html#ggaeddfb7542c9d4915c3613083cd001c60ab66fde176a815717b8766aa3c9375e3c", null ],
+      [ "TFLAG_SURFACE_IS_SCAPE", "group__tree.html#ggaeddfb7542c9d4915c3613083cd001c60aecc073bf46663f2c91925fea3009ad8d", null ]
     ] ],
     [ "__t_free_children", "group__tree.html#ga2a7dd3d550c979c77e5fd5bb98310b54", null ],
     [ "__t_morph", "group__tree.html#gaffb8b0a4288458ba9b4788a5bbb713ef", null ],
@@ -24,6 +25,7 @@ var tree_8h =
     [ "_t_new", "group__tree.html#ga23646bb375d548b8bdce934f694b1741", null ],
     [ "_t_new_receptor", "group__tree.html#ga26e1b609fa8a660e13d046af2bb4a32e", null ],
     [ "_t_new_root", "group__tree.html#ga17676267c6fb457dd1d086f37641544a", null ],
+    [ "_t_new_scape", "group__tree.html#gab7cccfb88b455603f4e561e616723335", null ],
     [ "_t_newi", "group__tree.html#gab438eeedb3eb6c1e20171b33d8ec499d", null ],
     [ "_t_newp", "group__tree.html#ga88b91532333a81992610dce1e0a4dbae", null ],
     [ "_t_newr", "group__tree.html#gaff88720dad09389f6b7f35f7985d8efd", null ],

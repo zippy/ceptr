@@ -715,13 +715,18 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>__t_dump</b> (<a cl
 <div class="line">    spec_is_long_equal(<a class="code" href="group__def.html#gafe7075c1b747aef014c7ac1161d61a29">_d_get_symbol_size</a>(0,0,SYMBOL_LABEL,<span class="stringliteral">&quot;shoe_size&quot;</span>),10);</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// test user-defined symbols and structures</span></div>
-<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *structures = <a class="code" href="group__tree.html#ga17676267c6fb457dd1d086f37641544a">_t_new_root</a>(STRUCTURES);</div>
-<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *symbols = <a class="code" href="group__tree.html#ga17676267c6fb457dd1d086f37641544a">_t_new_root</a>(SYMBOLS);</div>
-<div class="line">    Symbol lat = <a class="code" href="group__def.html#gaa80e4d75f09953b71ff49b75a8d6745e">_d_declare_symbol</a>(symbols,FLOAT,<span class="stringliteral">&quot;latitude&quot;</span>);</div>
-<div class="line">    Symbol lon = <a class="code" href="group__def.html#gaa80e4d75f09953b71ff49b75a8d6745e">_d_declare_symbol</a>(symbols,FLOAT,<span class="stringliteral">&quot;longitude&quot;</span>);</div>
-<div class="line">    Structure latlong = <a class="code" href="group__def.html#ga4205f785c519eead8b95ec1507a96a66">_d_define_structure</a>(structures,<span class="stringliteral">&quot;latlong&quot;</span>,2,1,2);</div>
-<div class="line">    Symbol house_loc = <a class="code" href="group__def.html#gaa80e4d75f09953b71ff49b75a8d6745e">_d_declare_symbol</a>(symbols,1,<span class="stringliteral">&quot;house location&quot;</span>);</div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *structures = <a class="code" href="group__tree.html#ga17676267c6fb457dd1d086f37641544a">_t_new_root</a>(STRUCTURES);                    <span class="comment">// create tree that holds structures</span></div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *symbols = <a class="code" href="group__tree.html#ga17676267c6fb457dd1d086f37641544a">_t_new_root</a>(SYMBOLS);                          <span class="comment">// create tree that holds symbols</span></div>
+<div class="line">    Symbol lat = <a class="code" href="group__def.html#gaa80e4d75f09953b71ff49b75a8d6745e">_d_declare_symbol</a>(symbols,FLOAT,<span class="stringliteral">&quot;latitude&quot;</span>);       <span class="comment">// symbols are declared, structures are defined</span></div>
+<div class="line">    Symbol lon = <a class="code" href="group__def.html#gaa80e4d75f09953b71ff49b75a8d6745e">_d_declare_symbol</a>(symbols,FLOAT,<span class="stringliteral">&quot;longitude&quot;</span>);      <span class="comment">// here we declare two meaningful ways to use the structure float</span></div>
 <div class="line"></div>
+<div class="line">    <span class="comment">// Two symbols, lat and lon are assembled into the structure &quot;latlong&quot;</span></div>
+<div class="line">    Structure latlong = <a class="code" href="group__def.html#ga4205f785c519eead8b95ec1507a96a66">_d_define_structure</a>(structures,<span class="stringliteral">&quot;latlong&quot;</span>, 2, lat, lon);</div>
+<div class="line"></div>
+<div class="line">    <span class="comment">// House location is a meaningful use of the structure latlong</span></div>
+<div class="line">    Symbol house_loc = <a class="code" href="group__def.html#gaa80e4d75f09953b71ff49b75a8d6745e">_d_declare_symbol</a>(symbols, latlong, <span class="stringliteral">&quot;house location&quot;</span>);</div>
+<div class="line"></div>
+<div class="line">    <span class="comment">// Here&#39;s the surface of the latlong.</span></div>
 <div class="line">    <span class="keywordtype">float</span> ll[] = {2.0,90.3};</div>
 <div class="line">    spec_is_long_equal(<a class="code" href="group__def.html#gafe7075c1b747aef014c7ac1161d61a29">_d_get_symbol_size</a>(symbols,structures,house_loc,ll),<span class="keyword">sizeof</span>(ll));</div>
 <div class="line">    spec_is_long_equal(<a class="code" href="group__def.html#ga3c241ad06b91beb3a717054ddb525c5b">_d_get_structure_size</a>(symbols,structures,latlong,ll),<span class="keyword">sizeof</span>(ll));</div>
@@ -825,13 +830,18 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>__t_dump</b> (<a cl
 <div class="line">    spec_is_long_equal(<a class="code" href="group__def.html#gafe7075c1b747aef014c7ac1161d61a29">_d_get_symbol_size</a>(0,0,SYMBOL_LABEL,<span class="stringliteral">&quot;shoe_size&quot;</span>),10);</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// test user-defined symbols and structures</span></div>
-<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *structures = <a class="code" href="group__tree.html#ga17676267c6fb457dd1d086f37641544a">_t_new_root</a>(STRUCTURES);</div>
-<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *symbols = <a class="code" href="group__tree.html#ga17676267c6fb457dd1d086f37641544a">_t_new_root</a>(SYMBOLS);</div>
-<div class="line">    Symbol lat = <a class="code" href="group__def.html#gaa80e4d75f09953b71ff49b75a8d6745e">_d_declare_symbol</a>(symbols,FLOAT,<span class="stringliteral">&quot;latitude&quot;</span>);</div>
-<div class="line">    Symbol lon = <a class="code" href="group__def.html#gaa80e4d75f09953b71ff49b75a8d6745e">_d_declare_symbol</a>(symbols,FLOAT,<span class="stringliteral">&quot;longitude&quot;</span>);</div>
-<div class="line">    Structure latlong = <a class="code" href="group__def.html#ga4205f785c519eead8b95ec1507a96a66">_d_define_structure</a>(structures,<span class="stringliteral">&quot;latlong&quot;</span>,2,1,2);</div>
-<div class="line">    Symbol house_loc = <a class="code" href="group__def.html#gaa80e4d75f09953b71ff49b75a8d6745e">_d_declare_symbol</a>(symbols,1,<span class="stringliteral">&quot;house location&quot;</span>);</div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *structures = <a class="code" href="group__tree.html#ga17676267c6fb457dd1d086f37641544a">_t_new_root</a>(STRUCTURES);                    <span class="comment">// create tree that holds structures</span></div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *symbols = <a class="code" href="group__tree.html#ga17676267c6fb457dd1d086f37641544a">_t_new_root</a>(SYMBOLS);                          <span class="comment">// create tree that holds symbols</span></div>
+<div class="line">    Symbol lat = <a class="code" href="group__def.html#gaa80e4d75f09953b71ff49b75a8d6745e">_d_declare_symbol</a>(symbols,FLOAT,<span class="stringliteral">&quot;latitude&quot;</span>);       <span class="comment">// symbols are declared, structures are defined</span></div>
+<div class="line">    Symbol lon = <a class="code" href="group__def.html#gaa80e4d75f09953b71ff49b75a8d6745e">_d_declare_symbol</a>(symbols,FLOAT,<span class="stringliteral">&quot;longitude&quot;</span>);      <span class="comment">// here we declare two meaningful ways to use the structure float</span></div>
 <div class="line"></div>
+<div class="line">    <span class="comment">// Two symbols, lat and lon are assembled into the structure &quot;latlong&quot;</span></div>
+<div class="line">    Structure latlong = <a class="code" href="group__def.html#ga4205f785c519eead8b95ec1507a96a66">_d_define_structure</a>(structures,<span class="stringliteral">&quot;latlong&quot;</span>, 2, lat, lon);</div>
+<div class="line"></div>
+<div class="line">    <span class="comment">// House location is a meaningful use of the structure latlong</span></div>
+<div class="line">    Symbol house_loc = <a class="code" href="group__def.html#gaa80e4d75f09953b71ff49b75a8d6745e">_d_declare_symbol</a>(symbols, latlong, <span class="stringliteral">&quot;house location&quot;</span>);</div>
+<div class="line"></div>
+<div class="line">    <span class="comment">// Here&#39;s the surface of the latlong.</span></div>
 <div class="line">    <span class="keywordtype">float</span> ll[] = {2.0,90.3};</div>
 <div class="line">    spec_is_long_equal(<a class="code" href="group__def.html#gafe7075c1b747aef014c7ac1161d61a29">_d_get_symbol_size</a>(symbols,structures,house_loc,ll),<span class="keyword">sizeof</span>(ll));</div>
 <div class="line">    spec_is_long_equal(<a class="code" href="group__def.html#ga3c241ad06b91beb3a717054ddb525c5b">_d_get_structure_size</a>(symbols,structures,latlong,ll),<span class="keyword">sizeof</span>(ll));</div>
@@ -885,7 +895,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>__t_dump</b> (<a cl
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Sep 17 2014 21:51:25 for ceptr by
+    <li class="footer">Generated on Fri Sep 19 2014 10:43:00 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
