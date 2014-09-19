@@ -40,6 +40,8 @@ using System.Text;					// -- used by drag & drop stuff.
 using System.Windows.Forms;
 using System.Xml;
 
+using XTreeInterfaces;
+
 using Clifton.MycroParser;
 using Clifton.Windows.Forms.XmlTree;
 
@@ -357,6 +359,10 @@ namespace Clifton.Windows.Forms
 				{
 					// if it's not null!
 					tn.Text = inst.Name;
+				}
+				else if (inst.Item is IHasFullyQualifiedName)
+				{
+					tn.Text = ((IHasFullyQualifiedName)inst.Item).FullyQualfiedName;
 				}
 			}
 

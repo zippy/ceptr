@@ -45,11 +45,13 @@
     <!-- wire up events to the controller.  Must be done secondarily, because the controller doesn't exist when the form view is instantiated above. -->
     <ixv:ApplicationFormView ref:Name="applicationFormView"
                           ApplicationController="{controller}"
-                          Load="{controller.LoadLayout}"
                           DockPanel="{dockPanel}"
                           Model="{applicationModel}"
+                          Load="{controller.LoadLayout}"
+                          Shown="{controller.Shown}"
                           Closing="{controller.Closing}"/>
     <ixa:InitializeMruMenu def:Name="MRU" MenuFile="{mnuFile}" MenuRecentFiles="{mnuRecentFiles}" ApplicationController="{controller}"/>
+    <ixc:ApplicationFormController ref:Name="controller" MruMenu="{MRU}"/>
 
   </ixv:ApplicationFormView>
 </MycroXaml>

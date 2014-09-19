@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 
 using WeifenLuo.WinFormsUI.Docking;
 
@@ -16,7 +17,10 @@ using Clifton.ExtensionMethods;
 using Clifton.MycroParser;
 using Clifton.Tools.Strings.Extensions;
 
+using XTreeController;
+
 using csharp_ide.Actions;
+using csharp_ide.Models;
 using csharp_ide.Views;
 
 namespace csharp_ide.Controllers
@@ -26,6 +30,21 @@ namespace csharp_ide.Controllers
 		public IMruMenu MruMenu { get; protected set; }
 		public SymbolEditorController SymbolEditorController { get; protected set; }
 		public PropertyGridController PropertyGridController { get; protected set; }
+		public GenericController<Schema> schemaController;
+		public string SchemaFilename { get; set; }
+
+		public Schema Schema
+		{
+			get { return schema; }
+			set
+			{
+				schema = value;
+				schemaController.Instance = Schema;
+				// ((Schema)((GenericController<Schema>)sc).Instance) = Schema;
+			}
+		}
+
+		protected Schema schema;
 
 		public ApplicationFormController()
 		{
@@ -76,24 +95,67 @@ namespace csharp_ide.Controllers
 
 		protected void New(object sender, EventArgs args)
 		{
+			SchemaFilename = null;
+			CreateSymbolsRootNode();
 		}
 
 		protected void Load(object sender, EventArgs args)
 		{
+			OpenFileDialog ofd = new OpenFileDialog();
+			ofd.RestoreDirectory = true;
+			ofd.CheckFileExists = true;
+			ofd.Filter = "ceptr files (*.ceptr)|*.xml|All files (*.*)|*.*";
+			ofd.Title = "Load Ceptr Symbols";
+			DialogResult res = ofd.ShowDialog();
+
+			if (res == DialogResult.OK)
+			{
+				SchemaFilename = ofd.FileName;
+				LoadSymbols();
+			}
 		}
 
 		protected void Save(object sender, EventArgs args)
 		{
+			if (String.IsNullOrEmpty(SchemaFilename))
+			{
+				SaveAs(sender, args);
+			}
+			else
+			{
+				SaveSymbols();
+			}
 		}
 
 		protected void SaveAs(object sender, EventArgs args)
 		{
+			SaveFileDialog sfd = new SaveFileDialog();
+			sfd.OverwritePrompt = true;
+			sfd.Filter = "ceptr files (*.ceptr)|*.ceptr|All files (*.*)|*.*";
+			sfd.Title = "Save Ceptr Symbols";
+			DialogResult res = sfd.ShowDialog();
+
+			if (res == DialogResult.OK)
+			{
+				SchemaFilename = sfd.FileName;
+				SaveSymbols();
+			}
 		}
 
 		protected void Exit(object sender, EventArgs args)
 		{
 			// TODO: If the model is dirty, check if user wants to save changes before exiting.
 			View.Close();
+		}
+
+		/// <summary>
+		/// The first time the form is displayed, do some initialization of internal models and exposed UI's.
+		/// </summary>
+		protected void Shown(object sender, EventArgs args)
+		{
+			// Because I get tired of doing this manually.
+			CreateSymbolsRootNode();
+			SymbolEditorController.IfNotNull(ctrl => ctrl.UpdateView());
 		}
 
 		// Docking panel events
@@ -241,6 +303,50 @@ namespace csharp_ide.Controllers
 		public void SetMenuEnabledState(string menuName, bool state)
 		{
 			View.SetMenuEnabledState(menuName, state);
+		}
+
+		protected void CreateSymbolsRootNode()
+		{
+			SymbolEditorController.IfNotNull(ctrl => ctrl.View.Clear());
+			schemaController = new GenericController<Schema>();
+			Schema = (Schema)schemaController.Instance;
+
+			SymbolEditorController.IfNotNull(ctrl =>
+			{
+				ctrl.View.AddNode(schemaController, null);
+				PropertyGridController.IfNotNull(pgrid => pgrid.View.ShowObject(Schema));
+			});
+		}
+
+		// Helper functions
+
+		/// <summary>
+		/// Called from MRU menu selection.
+		/// </summary>
+		public void LoadSymbols(string fn)
+		{
+			SchemaFilename = fn;
+			LoadSymbols();
+		}
+
+		protected void LoadSymbols()
+		{
+			XmlSerializer xs = new XmlSerializer(typeof(Schema));
+			StreamReader sr = new StreamReader(SchemaFilename);
+			Schema = (Schema)xs.Deserialize(sr);
+			sr.Close();
+			SymbolEditorController.IfNotNull(ctrl => ctrl.PopulateTree());
+			PropertyGridController.IfNotNull(pgrid => pgrid.View.ShowObject(Schema));
+			MruMenu.AddFile(SchemaFilename);
+		}
+
+		protected void SaveSymbols()
+		{
+			XmlSerializer xs = new XmlSerializer(typeof(Schema));
+			TextWriter tw = new StreamWriter(SchemaFilename);
+			xs.Serialize(tw, Schema);
+			tw.Close();
+			MruMenu.AddFile(SchemaFilename);
 		}
 	}
 }

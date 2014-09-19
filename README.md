@@ -10,13 +10,19 @@ To get ceptr running on Windows using Eclipse see: https://github.com/zippy/cept
 
 ## Usage
 
+See "Testing" below.
+
 ## Documentation
 
 You can read the code and API documentation here: http://zippy.github.io/ceptr/
 
 ## Architecture
 
+For a technical overview see [the Ceptr Apocalypse] (http://ceptr.org/apocalypse/)
+
 ## Streamscapes
+
+TBD..
 
 ## Testing
 

@@ -3,6 +3,24 @@
   <Nodes>
     <NodeDef Name="SymbolEditorTree" Text="Symbol Tree" IsReadOnly="true" IsRequired="true" TypeName="XTreeController.GenericController`1[[csharp_ide.Models.Schema, csharp-ide, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], XTree">
       <Nodes>
+        <NodeDef Name="SymbolNamespace" Text="Symbol Namespace" IsReadOnly="true" IsRequired="true" TypeName="XTreeController.GenericController`1[[csharp_ide.Models.SymbolNamespaceContainer, csharp-ide, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], XTree">
+          <ParentPopupItems>
+            <Popup Text="Add Symbol Collection" IsAdd="true" Tag="Add"/>
+          </ParentPopupItems>
+          <PopupItems>
+            <Popup Text="Delete Symbol Collection" IsRemove="true"/>
+          </PopupItems>
+          <Nodes>
+            <NodeDef Name="Symbol" Text="Symbol" IsReadOnly="true" Recurse="true" TypeName="XTreeController.GenericController`1[[csharp_ide.Models.Symbol, csharp-ide, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], XTree">
+              <ParentPopupItems>
+                <Popup Text="Add Symbol" IsAdd="true" Tag="Add"/>
+              </ParentPopupItems>
+              <PopupItems>
+                <Popup Text="Delete Symbol" IsRemove="true"/>
+              </PopupItems>
+            </NodeDef>
+          </Nodes>
+        </NodeDef>
       </Nodes>
     </NodeDef>
   </Nodes>
