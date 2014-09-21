@@ -35,6 +35,8 @@ struct Tnode {
 };
 typedef struct Tnode Tnode;
 
+typedef uint32_t TreeHash;
+
 // ** types for labels
 typedef uint32_t Label;
 

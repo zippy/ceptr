@@ -72,6 +72,10 @@ int *_t_get_path(Tnode *t);
 void * _t_get_surface(Tnode *t,int *p);
 char * _t_sprint_path(int *fp,char *buf);
 
+/*****************  Tree hashing utilities */
+TreeHash _t_hash(Tnode *symbols,Tnode *structures,Tnode *t);
+int _t_hash_equal(TreeHash h1,TreeHash h2);
+
 #define root_check(c) if (c->structure.parent != 0) {raise_error0("can't add a node that isn't a root!");}
 /*
 _t_new();

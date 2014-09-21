@@ -358,6 +358,33 @@ void testTreeDetach() {
     //! [testTreeDetach]
 }
 
+void testTreeHash() {
+    //! [testTreeHash]
+    Tnode *t = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
+    TreeHash h = _t_hash(test_HTTP_symbols,test_HTTP_structures,t);
+
+    // test that changing a symbol changes the hash
+    t->contents.symbol++;
+    spec_is_true(!_t_hash_equal(h,_t_hash(test_HTTP_symbols,test_HTTP_structures,t)));
+    t->contents.symbol--;
+
+    // test that changing a surface changes the hash
+    int p[] = {1,2,TREE_PATH_TERMINATOR};
+    Tnode *v = _t_get(t,p);
+    int orig_version = *(int *)&v->contents.surface;
+    *(int *)&v->contents.surface = orig_version + 1;
+    spec_is_true(!_t_hash_equal(h,_t_hash(test_HTTP_symbols,test_HTTP_structures,t)));
+    *(int *)&v->contents.surface = orig_version; // change value back
+
+    // test that changing child order changes the hash
+    Tnode *t_version = _t_detach_by_idx(t,1);
+    _t_add(t,t_version);
+    spec_is_true(!_t_hash_equal(h,_t_hash(test_HTTP_symbols,test_HTTP_structures,t)));
+
+    _t_free(t);
+    //! [testTreeHash]
+}
+
 void testTree() {
     _setup_HTTPDefs();
     testCreateTreeNodes();
@@ -378,5 +405,6 @@ void testTree() {
     testTreeMorph();
     testTreeMorphLowLevel();
     testTreeDetach();
+    testTreeHash();
     _cleanup_HTTPDefs();
 }

@@ -605,4 +605,54 @@ char * _t_sprint_path(int *fp,char *buf) {
 
     return buf;
 }
+
+
+/*****************  Tree hashing utilities */
+
+/**
+ * reduce a tree to a hash value
+ *
+ * @param[in] symbols declarations of symbols
+ * @param[in] structures definitions of structures
+ * @param[in] t the tree to hash
+ * @returns TreeHash value
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/tree_spec.h testTreeHash
+ */
+TreeHash _t_hash(Tnode *symbols,Tnode *structures,Tnode *t) {
+    int i,c = _t_children(t);
+    TreeHash result;
+    if (c == 0) {
+	uint32_t h[2];
+	void *surface = _t_surface(t);
+	h[0] = _t_symbol(t);
+	h[1] = hashfn((char *)surface,_d_get_symbol_size(symbols,structures,h[0]));
+	result = hashfn(h,sizeof(uint32_t)*2);
+    }
+    else {
+	uint32_t l = sizeof(uint32_t)*c+sizeof(Symbol);
+	uint32_t *h,*hashes = malloc(l);
+	h = hashes;
+	for(i=1;i<=c;i++) {
+	    *h = _t_hash(symbols,structures,_t_child(t,i));
+	    h++;
+	}
+	(*(Symbol *)h) = _t_symbol(t);
+	result = hashfn(hashes,l);
+	free(hashes);
+    }
+    return result;
+}
+
+/**
+ * comparison function for hash tree equality
+ *
+ * we have this because TreeHash may become a larger structure
+ * not subject to direct equality testing.
+ */
+int _t_hash_equal(TreeHash h1,TreeHash h2) {
+    return h1 == h2;
+}
+
 /** @}*/
