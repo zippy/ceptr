@@ -135,9 +135,7 @@ Tnode *_t_new_receptor(Tnode *parent,Symbol symbol,Receptor *r) {
 /**
  * Create a new tree node with a scape as it's surface
  *
- * this is just like _t_newt except that it uses a different flag because
- * when cleaning up we'll need to know that this is a scape, not just
- * a plain tree
+ * when cleaning up we'll need to know that this is a scape
  *
  * @param[in] parent parent node for the node to be created.
  * @param[in] symbol semantic symbol for the node to be create
@@ -148,8 +146,11 @@ Tnode *_t_new_receptor(Tnode *parent,Symbol symbol,Receptor *r) {
  * @snippet spec/tree_spec.h testTreeNewScae
  */
 Tnode *_t_new_scape(Tnode *parent,Symbol symbol,Scape *s) {
-    Tnode *t = _t_newt(parent,symbol,(Tnode *)s);
-    t->context.flags |= TFLAG_SURFACE_IS_TREE+TFLAG_SURFACE_IS_SCAPE;
+    Tnode *t = malloc(sizeof(Tnode));
+    t->contents.surface = s;
+    t->contents.size = sizeof(Scape);
+    __t_init(t,parent,symbol);
+    t->context.flags |= TFLAG_SURFACE_IS_SCAPE;
     return t;
 }
 /**
@@ -319,11 +320,11 @@ void _t_free(Tnode *t) {
     else if (t->context.flags & TFLAG_SURFACE_IS_TREE) {
 	if (t->context.flags & TFLAG_SURFACE_IS_RECEPTOR)
 	    _r_free((Receptor *)t->contents.surface);
-	else if (t->context.flags & TFLAG_SURFACE_IS_SCAPE)
-	    _s_free((Scape *)t->contents.surface);
 	else
 	    _t_free((Tnode *)t->contents.surface);
     }
+    else if (t->context.flags & TFLAG_SURFACE_IS_SCAPE)
+	_s_free((Scape *)t->contents.surface);
     free(t);
 }
 
@@ -373,7 +374,7 @@ int _t_children(Tnode *t) {
  * @returns pointer to node's surface
  */
 void * _t_surface(Tnode *t) {
-    if (t->context.flags & (TFLAG_ALLOCATED|TFLAG_SURFACE_IS_TREE))
+    if (t->context.flags & (TFLAG_ALLOCATED|TFLAG_SURFACE_IS_TREE|TFLAG_SURFACE_IS_SCAPE))
 	return t->contents.surface;
     else
 	return &t->contents.surface;

@@ -123,20 +123,22 @@ typedef int Error;
  * An element in the scape key value pair store
  */
 struct scape_elem {
-    Xaddr value;
+    TreeHash key;            ///< has of the key tree that maps to a given data value
+    Xaddr value;             ///< instance of data_source pointed to by the key
     UT_hash_handle hh;       ///< makes this structure hashable using the uthash library
 };
 typedef struct scape_elem scape_elem;
 typedef scape_elem *ScapeData;
 
 /**
- * A scape is a sematic tree, pointed to by a root, but we also create a c structure
- * for faster access to some parts of the tree and to hold the non-tree like date, like
- * hash tables for key/data access
+ * A scape provides indexed, i.e. random access to data sources.  The key source is
+ * usually a sub-portion of a the data source, i.e. if the data source is a PROFILE
+ * the key_source might be a FIRST_NAME within the profile
  */
 struct Scape {
-    Tnode *root;         ///< root node of the semantic tree
-    ScapeData data;      ///< the scape data store
+    Symbol key_source;
+    Symbol data_source;
+    ScapeData data;      ///< the scape data store (hash table)
 };
 typedef struct Scape Scape;
 

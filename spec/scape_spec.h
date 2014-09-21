@@ -9,19 +9,37 @@
 #include "../src/receptor.h"
 
 void testScapeNew() {
-    Scape *s = _s_new(TEST_ALPHABETIZE_SCAPE_SYMBOL);
-    spec_is_symbol_equal(0,_t_symbol(s->root),TEST_ALPHABETIZE_SCAPE_SYMBOL);
+    //! [testScapeNew]
+    Scape *s = _s_new(TEST_INT_SYMBOL,TEST_STR_SYMBOL);
+    spec_is_symbol_equal(0,s->key_source,TEST_INT_SYMBOL);
+    spec_is_symbol_equal(0,s->data_source,TEST_STR_SYMBOL);
     _s_free(s);
+    //! [testScapeNew]
 }
 
 void testScapeAddElement() {
     //! [testScapeAddElement]
-    Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
-    Scape *s = _s_new(TEST_ALPHABETIZE_SCAPE_SYMBOL);
-    Xaddr x;
-    //    _s_add(x);
+    Scape *s = _s_new(TEST_INT_SYMBOL,TEST_STR_SYMBOL);
+    Xaddr x = {1,3};  // DUMMY XADDR
+    Tnode *t = _t_newi(0,TEST_INT_SYMBOL,31415);
+    TreeHash h = _t_hash(0,0,t);
+    _s_add(s,h,x);
+
+    // check that element was added
+    Xaddr xg = _s_get(s,h);
+    spec_is_equal(xg.symbol,x.symbol);
+    spec_is_equal(xg.addr,x.addr);
+
+    // check that a different hash returns the null xaddr
+    t->contents.symbol = TEST_INT_SYMBOL2;
+    h = _t_hash(0,0,t);
+    xg = _s_get(s,h);
+    spec_is_equal(xg.symbol,0);
+    spec_is_equal(xg.addr,0);
+
+    _s_free(s);
+    _t_free(t);
     //! [testScapeAddElement]
-    _r_free(r);
 }
 
 void testScape() {

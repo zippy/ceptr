@@ -15,9 +15,10 @@
 
 #include "tree.h"
 
-Scape *_s_new(Symbol s);
-Scape *__s_new(Symbol s,Tnode *key_spec,Tnode *data_spec,Tnode *geometry_spec);
+Scape *_s_new(Symbol key_source,Symbol data_source);
 void _s_free(Scape *s);
+void _s_add(Scape *s,TreeHash h,Xaddr x);
+Xaddr _s_get(Scape *s,TreeHash h);
 
 #endif
 /** @}*/

@@ -315,21 +315,21 @@ char * __t_dump(Tnode *symbols,Tnode *t,int level,char *buf) {
 	    sprintf(buf," (%s:%s.%d",n,_d_get_symbol_name(symbols,x.symbol),x.addr);
 	    break;
 	case TREE:
-	    if (t->context.flags == TFLAG_SURFACE_IS_TREE) {
+	    if (t->context.flags & TFLAG_SURFACE_IS_TREE) {
 		c = __t_dump(symbols,(Tnode *)_t_surface(t),0,tbuf);
 		sprintf(buf," (%s:{%s}",n,c);
 		break;
 	    }
 	case RECEPTOR:
-	    if (t->context.flags == TFLAG_SURFACE_IS_TREE+TFLAG_SURFACE_IS_RECEPTOR) {
+	    if (t->context.flags & (TFLAG_SURFACE_IS_TREE+TFLAG_SURFACE_IS_RECEPTOR)) {
 		c = __t_dump(symbols,((Receptor *)_t_surface(t))->root,0,tbuf);
 		sprintf(buf," (%s:{%s}",n,c);
 		break;
 	    }
 	case SCAPE:
-	    if (t->context.flags == TFLAG_SURFACE_IS_TREE+TFLAG_SURFACE_IS_SCAPE) {
-		c = __t_dump(symbols,((Scape *)_t_surface(t))->root,0,tbuf);
-		sprintf(buf," (%s:{%s}",n,c);
+	    if (t->context.flags & TFLAG_SURFACE_IS_SCAPE) {
+		Scape *sc = (Scape *)_t_surface(t);
+		sprintf(buf," (%s:key %s,data %s",n,_d_get_symbol_name(symbols,sc->key_source),_d_get_symbol_name(symbols,sc->data_source));
 		break;
 	    }
 	default:
