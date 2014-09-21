@@ -76,5 +76,10 @@ char *_r_get_process_name(Receptor *r,Process p);
 
 char * _dump_semtrex(Tnode *s,char *buf);
 
+Xaddr G_null_xaddr;
+
+#define is_null_xaddr(x) ((x).symbol == 0 && (x).addr == 0)
+
 #endif
+
 /** @}*/

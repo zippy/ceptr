@@ -34,8 +34,7 @@ void testScapeAddElement() {
     t->contents.symbol = TEST_INT_SYMBOL2;
     h = _t_hash(0,0,t);
     xg = _s_get(s,h);
-    spec_is_equal(xg.symbol,0);
-    spec_is_equal(xg.addr,0);
+    spec_is_true(is_null_xaddr(xg));
 
     _s_free(s);
     _t_free(t);

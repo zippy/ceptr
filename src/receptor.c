@@ -12,6 +12,8 @@
 #include "semtrex.h"
 #include "process.h"
 #include <stdarg.h>
+
+Xaddr G_null_xaddr  = {0,0};
 /*****************  create and destroy receptors */
 
 

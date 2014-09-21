@@ -27,6 +27,7 @@ VMHost * _v_new() {
     v->r = _r_new(VM_HOST_RECEPTOR);
     v->c = _r_new(COMPOSITORY);
     v->active_receptors = _t_newr(v->r->root,ACTIVE_RECEPTORS);
+    v->installed_receptors = _s_new(RECEPTOR_IDENTIFIER,RECEPTOR);
     _t_new_receptor(v->r->root,COMPOSITORY,v->c);
     return v;
 }
@@ -44,6 +45,7 @@ void _v_free(VMHost *v) {
 	_t_detach_by_idx(v->active_receptors,1);
     }
     _r_free(v->r);
+    _s_free(v->installed_receptors);
     free(v);
 }
 
@@ -78,6 +80,14 @@ Xaddr _v_load_receptor_package(VMHost *v,Tnode *p) {
  */
 Xaddr _v_install_r(VMHost *v,Xaddr package,Tnode *bindings,char *label) {
     Tnode *p = _r_get_instance(v->c,package);
+    Tnode *id = _t_child(p,2);
+    TreeHash h = _t_hash(v->r->defs.symbols,v->r->defs.structures,id);
+
+    // make sure we aren't re-installing an already installed receptor
+    Xaddr x = _s_get(v->installed_receptors,h);
+    if (!(is_null_xaddr(x))) return G_null_xaddr;
+    _s_add(v->installed_receptors,h,package);
+
     // confirm that the bindings match the manifest
     // @todo expand the manifest to allow optional binding, etc, using semtrex to do the matching instead of assuming positional matching
     if (bindings) {
@@ -109,7 +119,7 @@ Xaddr _v_install_r(VMHost *v,Xaddr package,Tnode *bindings,char *label) {
     Tnode *ir = _t_new_root(INSTALLED_RECEPTOR);
     _t_new_receptor(ir,s,r);
 
-    Xaddr x = _r_new_instance(v->r,ir);
+    x = _r_new_instance(v->r,ir);
     return x;
 }
 

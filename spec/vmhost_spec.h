@@ -96,6 +96,10 @@ void testVMHostInstallReceptor() {
     spec_is_symbol_equal(v->r,x.symbol,INSTALLED_RECEPTOR);
     spec_is_symbol_equal(v->r,_t_symbol(_t_child(r,1)),_r_get_symbol_by_label(v->r,"http server"));
 
+    // trying to re-install the receptor should fail
+    x = _v_install_r(v,xp,0,"http server");
+    spec_is_true(is_null_xaddr(x));
+
     _v_free(v);
     //! [testVMHostInstallReceptor]
 }

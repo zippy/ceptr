@@ -23,6 +23,7 @@ struct VMHost {
     Receptor *r;                ///< Receptor data for this vm host
     Receptor *c;                ///< Receptor data for the vm host's local version of the compository
     Tnode *active_receptors;    ///< pointer to tree that holds all currently active receptors
+    Scape *installed_receptors;
 };
 typedef struct VMHost VMHost;
 
