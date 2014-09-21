@@ -41,5 +41,6 @@ var receptor_8c =
     [ "_td", "group__receptor.html#ga5cafc7054a5a1fc7af911904d01d45a5", null ],
     [ "instanceFree", "receptor_8c.html#ab74ffd0dd1a1937c4336f27b2326ed90", null ],
     [ "instancesFree", "receptor_8c.html#a347ce78af75454229c6878b1ec4c43e9", null ],
-    [ "__t_dump_buf", "receptor_8c.html#abce160e07e3e803eb53550a4986fdb77", null ]
+    [ "__t_dump_buf", "receptor_8c.html#abce160e07e3e803eb53550a4986fdb77", null ],
+    [ "G_null_xaddr", "receptor_8c.html#a30f156c899683f59a13cfb7b4df6fbd6", null ]
 ];

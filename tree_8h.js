@@ -21,6 +21,8 @@ var tree_8h =
     [ "_t_get", "group__tree.html#gad25dfd19f7a8ca955f32850fa867be0d", null ],
     [ "_t_get_path", "group__tree.html#ga19a429819da9dcbc89ec7e259ef32db0", null ],
     [ "_t_get_surface", "group__tree.html#ga1f03093882ea8ad3d6e88951e4fc51b5", null ],
+    [ "_t_hash", "group__tree.html#ga332d1aad29070157407968f743b16256", null ],
+    [ "_t_hash_equal", "group__tree.html#ga11e689c8dea5c022fe0e4c20652e5af5", null ],
     [ "_t_morph", "group__tree.html#ga91798c3f4945bb89b9c13e9b693ffd78", null ],
     [ "_t_new", "group__tree.html#ga23646bb375d548b8bdce934f694b1741", null ],
     [ "_t_new_receptor", "group__tree.html#ga26e1b609fa8a660e13d046af2bb4a32e", null ],

@@ -4,6 +4,7 @@ var tree__spec_8h =
     [ "testTree", "tree__spec_8h.html#a3b7a25fec254f0861dab0728feec3cce", null ],
     [ "testTreeClone", "tree__spec_8h.html#a61b28f10ff4df871f93a9b98c2a6dbf8", null ],
     [ "testTreeDetach", "tree__spec_8h.html#a80fb5c03826178e4332803fb546777fc", null ],
+    [ "testTreeHash", "tree__spec_8h.html#a2a36cde88a26d81f883c8650e3981379", null ],
     [ "testTreeMorph", "tree__spec_8h.html#aecd9cd243076dc7b034b53bed7c297a0", null ],
     [ "testTreeMorphLowLevel", "tree__spec_8h.html#ad67357180aa840b09dfc3a37493f56e9", null ],
     [ "testTreeNewReceptor", "tree__spec_8h.html#af273dd6bfe59ce73f16b171faa53a14c", null ],

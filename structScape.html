@@ -116,24 +116,26 @@ Collaboration diagram for Scape:</div>
 <div class="dyncontent">
 <div class="center"><img src="structScape__coll__graph.png" border="0" usemap="#Scape_coll__map" alt="Collaboration graph"/></div>
 <map name="Scape_coll__map" id="Scape_coll__map">
-<area shape="rect" id="node2" href="structTnode.html" title="Tnode" alt="" coords="97,99,155,125"/><area shape="rect" id="node3" href="structTstruct.html" title="Tstruct" alt="" coords="71,203,133,229"/><area shape="rect" id="node4" href="structTcontext.html" title="Tcontext" alt="" coords="110,7,183,33"/><area shape="rect" id="node5" href="structTcontents.html" title="Tcontents" alt="" coords="5,7,84,33"/><area shape="rect" id="node6" href="structscape__elem.html" title="scape_elem" alt="" coords="214,99,305,125"/><area shape="rect" id="node7" href="structXaddr.html" title="Xaddr" alt="" coords="227,7,281,33"/><area shape="rect" id="node8" href="structUT__hash__handle.html" title="UT_hash_handle" alt="" coords="341,7,461,33"/><area shape="rect" id="node9" href="structUT__hash__table.html" title="UT_hash_table" alt="" coords="411,203,521,229"/><area shape="rect" id="node10" href="structUT__hash__bucket.html" title="UT_hash_bucket" alt="" coords="406,99,527,125"/></map>
+<area shape="rect" id="node2" href="structscape__elem.html" title="scape_elem" alt="" coords="5,99,96,125"/><area shape="rect" id="node3" href="structXaddr.html" title="Xaddr" alt="" coords="17,7,72,33"/><area shape="rect" id="node4" href="structUT__hash__handle.html" title="UT_hash_handle" alt="" coords="131,7,251,33"/><area shape="rect" id="node5" href="structUT__hash__table.html" title="UT_hash_table" alt="" coords="202,189,312,216"/><area shape="rect" id="node6" href="structUT__hash__bucket.html" title="UT_hash_bucket" alt="" coords="197,99,317,125"/></map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:a4e277eb9e869bfc71caa7d19b3f8c0a7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4e277eb9e869bfc71caa7d19b3f8c0a7"></a>
-<a class="el" href="structTnode.html">Tnode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structScape.html#a4e277eb9e869bfc71caa7d19b3f8c0a7">root</a></td></tr>
-<tr class="memdesc:a4e277eb9e869bfc71caa7d19b3f8c0a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">root node of the semantic tree <br /></td></tr>
-<tr class="separator:a4e277eb9e869bfc71caa7d19b3f8c0a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae99ecf0dce6d2c1883f517b7457a7545"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae99ecf0dce6d2c1883f517b7457a7545"></a>
+Symbol&#160;</td><td class="memItemRight" valign="bottom"><b>key_source</b></td></tr>
+<tr class="separator:ae99ecf0dce6d2c1883f517b7457a7545"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae049242562d0408c20660b074271240e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae049242562d0408c20660b074271240e"></a>
+Symbol&#160;</td><td class="memItemRight" valign="bottom"><b>data_source</b></td></tr>
+<tr class="separator:ae049242562d0408c20660b074271240e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7a89920d306b675ff635e29df3fb64dc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7a89920d306b675ff635e29df3fb64dc"></a>
 <a class="el" href="structscape__elem.html">ScapeData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structScape.html#a7a89920d306b675ff635e29df3fb64dc">data</a></td></tr>
-<tr class="memdesc:a7a89920d306b675ff635e29df3fb64dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">the scape data store <br /></td></tr>
+<tr class="memdesc:a7a89920d306b675ff635e29df3fb64dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">the scape data store (hash table) <br /></td></tr>
 <tr class="separator:a7a89920d306b675ff635e29df3fb64dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A scape is a sematic tree, pointed to by a root, but we also create a c structure for faster access to some parts of the tree and to hold the non-tree like date, like hash tables for key/data access </p>
+<div class="textblock"><p>A scape provides indexed, i.e. random access to data sources. The key source is usually a sub-portion of a the data source, i.e. if the data source is a PROFILE the key_source might be a FIRST_NAME within the profile </p>
 
-<p>Definition at line <a class="el" href="ceptr__types_8h_source.html#l00135">135</a> of file <a class="el" href="ceptr__types_8h_source.html">ceptr_types.h</a>.</p>
+<p>Definition at line <a class="el" href="ceptr__types_8h_source.html#l00138">138</a> of file <a class="el" href="ceptr__types_8h_source.html">ceptr_types.h</a>.</p>
 </div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li>src/<a class="el" href="ceptr__types_8h_source.html">ceptr_types.h</a></li>
 </ul>
@@ -143,7 +145,7 @@ Data Fields</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="structScape.html">Scape</a></li>
-    <li class="footer">Generated on Fri Sep 19 2014 10:43:00 for ceptr by
+    <li class="footer">Generated on Sun Sep 21 2014 17:05:59 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

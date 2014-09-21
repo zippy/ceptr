@@ -1,5 +1,6 @@
 var receptor_8h =
 [
+    [ "is_null_xaddr", "group__receptor.html#gaebca30e5763de19a93797f180d5b217e", null ],
     [ "spec_is_process_equal", "group__receptor.html#gaaf7ee981a0e2c2fc955fb32f7d6f2861", null ],
     [ "spec_is_structure_equal", "group__receptor.html#gaa5f33711ac4da299b54ccfa583d9378c", null ],
     [ "spec_is_symbol_equal", "group__receptor.html#gaa7a993bb2e321fff32e1bc0741dddde0", null ],
@@ -32,5 +33,6 @@ var receptor_8h =
     [ "_r_serialize", "group__receptor.html#ga3e737841784555574a0d90ad2eff4cc4", null ],
     [ "_r_unserialize", "group__receptor.html#ga300b11b12792c290fef2fb0fe07d71ee", null ],
     [ "_t_serialize", "group__receptor.html#gac34a126b4fafa1ecf89ae79f3c986336", null ],
-    [ "_td", "group__receptor.html#ga5cafc7054a5a1fc7af911904d01d45a5", null ]
+    [ "_td", "group__receptor.html#ga5cafc7054a5a1fc7af911904d01d45a5", null ],
+    [ "G_null_xaddr", "group__receptor.html#ga30f156c899683f59a13cfb7b4df6fbd6", null ]
 ];

@@ -111,41 +111,58 @@ $(document).ready(function(){initNavTree('scape__spec_8h_source.html','');});
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;../src/scape.h&quot;</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;../src/receptor.h&quot;</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keywordtype">void</span> testScapeNew() {</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <a class="code" href="structScape.html">Scape</a> *s = <a class="code" href="scape_8c.html#a0d0d7ab375bb5ab2c647f96cc39a47f8">_s_new</a>(TEST_ALPHABETIZE_SCAPE_SYMBOL);</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    spec_is_symbol_equal(0,<a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(s-&gt;<a class="code" href="structScape.html#a4e277eb9e869bfc71caa7d19b3f8c0a7">root</a>),TEST_ALPHABETIZE_SCAPE_SYMBOL);</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <a class="code" href="scape_8c.html#a3248dd3373ca8f722b69d385aec37d7d">_s_free</a>(s);</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;}</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
-<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="scape__spec_8h.html#a6d5ce3afd114532201a79937f6fb1247">   17</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="scape__spec_8h.html#a6d5ce3afd114532201a79937f6fb1247">testScapeAddElement</a>() {</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <a class="code" href="structReceptor.html">Receptor</a> *r = <a class="code" href="group__receptor.html#ga62c253e7cc1d1ad20471913ae822ebc2">_r_new</a>(TEST_RECEPTOR_SYMBOL);</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <a class="code" href="structScape.html">Scape</a> *s = <a class="code" href="scape_8c.html#a0d0d7ab375bb5ab2c647f96cc39a47f8">_s_new</a>(TEST_ALPHABETIZE_SCAPE_SYMBOL);</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <a class="code" href="structXaddr.html">Xaddr</a> x;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="comment">//    _s_add(x);</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment"></span>    <a class="code" href="group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8">_r_free</a>(r);</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;}</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keywordtype">void</span> testScape() {</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    testScapeNew();</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <a class="code" href="scape__spec_8h.html#a6d5ce3afd114532201a79937f6fb1247">testScapeAddElement</a>();</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;}</div>
-<div class="ttc" id="structScape_html"><div class="ttname"><a href="structScape.html">Scape</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00135">ceptr_types.h:135</a></div></div>
-<div class="ttc" id="scape__spec_8h_html_a6d5ce3afd114532201a79937f6fb1247"><div class="ttname"><a href="scape__spec_8h.html#a6d5ce3afd114532201a79937f6fb1247">testScapeAddElement</a></div><div class="ttdeci">void testScapeAddElement()</div><div class="ttdef"><b>Definition:</b> <a href="scape__spec_8h_source.html#l00017">scape_spec.h:17</a></div></div>
-<div class="ttc" id="structScape_html_a4e277eb9e869bfc71caa7d19b3f8c0a7"><div class="ttname"><a href="structScape.html#a4e277eb9e869bfc71caa7d19b3f8c0a7">Scape::root</a></div><div class="ttdeci">Tnode * root</div><div class="ttdoc">root node of the semantic tree </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00136">ceptr_types.h:136</a></div></div>
-<div class="ttc" id="group__receptor_html_ga6f650808029d4c598ebe6515d9900ef8"><div class="ttname"><a href="group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8">_r_free</a></div><div class="ttdeci">void _r_free(Receptor *r)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00101">receptor.c:101</a></div></div>
-<div class="ttc" id="scape_8c_html_a3248dd3373ca8f722b69d385aec37d7d"><div class="ttname"><a href="scape_8c.html#a3248dd3373ca8f722b69d385aec37d7d">_s_free</a></div><div class="ttdeci">void _s_free(Scape *s)</div><div class="ttdef"><b>Definition:</b> <a href="scape_8c_source.html#l00046">scape.c:46</a></div></div>
-<div class="ttc" id="group__tree_html_gabfc4da7bf9475fb3bad4ea20b5f78fab"><div class="ttname"><a href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a></div><div class="ttdeci">Symbol _t_symbol(Tnode *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00388">tree.c:388</a></div></div>
-<div class="ttc" id="structReceptor_html"><div class="ttname"><a href="structReceptor.html">Receptor</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00096">ceptr_types.h:96</a></div></div>
-<div class="ttc" id="structXaddr_html"><div class="ttname"><a href="structXaddr.html">Xaddr</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00110">ceptr_types.h:110</a></div></div>
-<div class="ttc" id="scape_8c_html_a0d0d7ab375bb5ab2c647f96cc39a47f8"><div class="ttname"><a href="scape_8c.html#a0d0d7ab375bb5ab2c647f96cc39a47f8">_s_new</a></div><div class="ttdeci">Scape * _s_new(Symbol sym)</div><div class="ttdef"><b>Definition:</b> <a href="scape_8c_source.html#l00029">scape.c:29</a></div></div>
-<div class="ttc" id="group__receptor_html_ga62c253e7cc1d1ad20471913ae822ebc2"><div class="ttname"><a href="group__receptor.html#ga62c253e7cc1d1ad20471913ae822ebc2">_r_new</a></div><div class="ttdeci">Receptor * _r_new(Symbol s)</div><div class="ttdoc">Creates a new receptor. </div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00046">receptor.c:46</a></div></div>
+<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="scape__spec_8h.html#a895ab132a0a1e72c8e1c5c63bc1ae4dd">   11</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="scape__spec_8h.html#a895ab132a0a1e72c8e1c5c63bc1ae4dd">testScapeNew</a>() {</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <a class="code" href="structScape.html">Scape</a> *s = <a class="code" href="scape_8c.html#a4262c29b48e99f7254b1ceef9bae0436">_s_new</a>(TEST_INT_SYMBOL,TEST_STR_SYMBOL);</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    spec_is_symbol_equal(0,s-&gt;key_source,TEST_INT_SYMBOL);</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    spec_is_symbol_equal(0,s-&gt;data_source,TEST_STR_SYMBOL);</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <a class="code" href="scape_8c.html#a3248dd3373ca8f722b69d385aec37d7d">_s_free</a>(s);</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;}</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
+<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="scape__spec_8h.html#a6d5ce3afd114532201a79937f6fb1247">   20</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="scape__spec_8h.html#a6d5ce3afd114532201a79937f6fb1247">testScapeAddElement</a>() {</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <a class="code" href="structScape.html">Scape</a> *s = <a class="code" href="scape_8c.html#a4262c29b48e99f7254b1ceef9bae0436">_s_new</a>(TEST_INT_SYMBOL,TEST_STR_SYMBOL);</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <a class="code" href="structXaddr.html">Xaddr</a> x = {1,3};  <span class="comment">// DUMMY XADDR</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <a class="code" href="structTnode.html">Tnode</a> *t = <a class="code" href="group__tree.html#gab438eeedb3eb6c1e20171b33d8ec499d">_t_newi</a>(0,TEST_INT_SYMBOL,31415);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    TreeHash h = <a class="code" href="group__tree.html#ga332d1aad29070157407968f743b16256">_t_hash</a>(0,0,t);</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <a class="code" href="scape_8c.html#a1bfbd4c58bd2c951e11434efb3936506">_s_add</a>(s,h,x);</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="comment">// check that element was added</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <a class="code" href="structXaddr.html">Xaddr</a> xg = <a class="code" href="scape_8c.html#a94d326b6bc334bd6bcfdcd4fdcd29439">_s_get</a>(s,h);</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    spec_is_equal(xg.symbol,x.symbol);</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    spec_is_equal(xg.addr,x.addr);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="comment">// check that a different hash returns the null xaddr</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    t-&gt;contents.symbol = TEST_INT_SYMBOL2;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    h = <a class="code" href="group__tree.html#ga332d1aad29070157407968f743b16256">_t_hash</a>(0,0,t);</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    xg = <a class="code" href="scape_8c.html#a94d326b6bc334bd6bcfdcd4fdcd29439">_s_get</a>(s,h);</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    spec_is_true(is_null_xaddr(xg));</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <a class="code" href="scape_8c.html#a3248dd3373ca8f722b69d385aec37d7d">_s_free</a>(s);</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <a class="code" href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a>(t);</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;}</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keywordtype">void</span> testScape() {</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <a class="code" href="scape__spec_8h.html#a895ab132a0a1e72c8e1c5c63bc1ae4dd">testScapeNew</a>();</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <a class="code" href="scape__spec_8h.html#a6d5ce3afd114532201a79937f6fb1247">testScapeAddElement</a>();</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;}</div>
+<div class="ttc" id="scape_8c_html_a4262c29b48e99f7254b1ceef9bae0436"><div class="ttname"><a href="scape_8c.html#a4262c29b48e99f7254b1ceef9bae0436">_s_new</a></div><div class="ttdeci">Scape * _s_new(Symbol key_source, Symbol data_source)</div><div class="ttdef"><b>Definition:</b> <a href="scape_8c_source.html#l00023">scape.c:23</a></div></div>
+<div class="ttc" id="scape_8c_html_a94d326b6bc334bd6bcfdcd4fdcd29439"><div class="ttname"><a href="scape_8c.html#a94d326b6bc334bd6bcfdcd4fdcd29439">_s_get</a></div><div class="ttdeci">Xaddr _s_get(Scape *s, TreeHash h)</div><div class="ttdef"><b>Definition:</b> <a href="scape_8c_source.html#l00083">scape.c:83</a></div></div>
+<div class="ttc" id="structScape_html"><div class="ttname"><a href="structScape.html">Scape</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00138">ceptr_types.h:138</a></div></div>
+<div class="ttc" id="scape__spec_8h_html_a6d5ce3afd114532201a79937f6fb1247"><div class="ttname"><a href="scape__spec_8h.html#a6d5ce3afd114532201a79937f6fb1247">testScapeAddElement</a></div><div class="ttdeci">void testScapeAddElement()</div><div class="ttdef"><b>Definition:</b> <a href="scape__spec_8h_source.html#l00020">scape_spec.h:20</a></div></div>
+<div class="ttc" id="group__tree_html_gac9311eb831d86ab8395f9c1c81f584d9"><div class="ttname"><a href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a></div><div class="ttdeci">void _t_free(Tnode *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00316">tree.c:316</a></div></div>
+<div class="ttc" id="scape_8c_html_a3248dd3373ca8f722b69d385aec37d7d"><div class="ttname"><a href="scape_8c.html#a3248dd3373ca8f722b69d385aec37d7d">_s_free</a></div><div class="ttdeci">void _s_free(Scape *s)</div><div class="ttdef"><b>Definition:</b> <a href="scape_8c_source.html#l00043">scape.c:43</a></div></div>
+<div class="ttc" id="scape__spec_8h_html_a895ab132a0a1e72c8e1c5c63bc1ae4dd"><div class="ttname"><a href="scape__spec_8h.html#a895ab132a0a1e72c8e1c5c63bc1ae4dd">testScapeNew</a></div><div class="ttdeci">void testScapeNew()</div><div class="ttdef"><b>Definition:</b> <a href="scape__spec_8h_source.html#l00011">scape_spec.h:11</a></div></div>
+<div class="ttc" id="group__tree_html_ga332d1aad29070157407968f743b16256"><div class="ttname"><a href="group__tree.html#ga332d1aad29070157407968f743b16256">_t_hash</a></div><div class="ttdeci">TreeHash _t_hash(Tnode *symbols, Tnode *structures, Tnode *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00624">tree.c:624</a></div></div>
+<div class="ttc" id="structXaddr_html"><div class="ttname"><a href="structXaddr.html">Xaddr</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00112">ceptr_types.h:112</a></div></div>
+<div class="ttc" id="group__tree_html_gab438eeedb3eb6c1e20171b33d8ec499d"><div class="ttname"><a href="group__tree.html#gab438eeedb3eb6c1e20171b33d8ec499d">_t_newi</a></div><div class="ttdeci">Tnode * _t_newi(Tnode *parent, Symbol symbol, int surface)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00068">tree.c:68</a></div></div>
+<div class="ttc" id="scape_8c_html_a1bfbd4c58bd2c951e11434efb3936506"><div class="ttname"><a href="scape_8c.html#a1bfbd4c58bd2c951e11434efb3936506">_s_add</a></div><div class="ttdeci">void _s_add(Scape *s, TreeHash h, Xaddr x)</div><div class="ttdef"><b>Definition:</b> <a href="scape_8c_source.html#l00057">scape.c:57</a></div></div>
+<div class="ttc" id="structTnode_html"><div class="ttname"><a href="structTnode.html">Tnode</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00031">ceptr_types.h:31</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><a class="el" href="scape__spec_8h.html">scape_spec.h</a></li>
-    <li class="footer">Generated on Fri Sep 19 2014 10:43:00 for ceptr by
+    <li class="footer">Generated on Sun Sep 21 2014 17:05:59 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
