@@ -23,6 +23,8 @@ using csharp_ide.Actions;
 using csharp_ide.Models;
 using csharp_ide.Views;
 
+using ceptrlib;
+
 namespace csharp_ide.Controllers
 {
 	public class ApplicationFormController : ViewController<ApplicationFormView>
@@ -45,10 +47,12 @@ namespace csharp_ide.Controllers
 		}
 
 		protected Schema schema;
+		protected CeptrInterface ceptrInterface;
 
 		public ApplicationFormController()
 		{
 			RegisterUserStateOperations();
+			ceptrInterface = new CeptrInterface();
 		}
 
 		public override void EndInit()
@@ -347,6 +351,17 @@ namespace csharp_ide.Controllers
 			xs.Serialize(tw, Schema);
 			tw.Close();
 			MruMenu.AddFile(SchemaFilename);
+		}
+
+		// Ceptr menu events
+
+		protected void BuildSemanticTree(object sender, EventArgs args)
+		{
+			Guid structures = ceptrInterface.CreateRootNode(SystemSymbol.STRUCTURES);
+			Guid symbols = ceptrInterface.CreateRootNode(SystemSymbol.SYMBOLS);
+			Guid latitude = ceptrInterface.DeclareSymbol(symbols, (UInt32)SystemStructure.FLOAT, "latitude");
+			Guid longitude = ceptrInterface.DeclareSymbol(symbols, (UInt32)SystemStructure.FLOAT, "longitude");
+			Guid latlong = ceptrInterface.DefineStructure(structures, "latlong", new Guid[] {latitude, longitude});
 		}
 	}
 }
