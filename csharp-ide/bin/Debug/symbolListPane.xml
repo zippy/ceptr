@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<MycroXaml Name="Form"
+  xmlns:wf="System.Windows.Forms, System.Windows.Forms, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
+  xmlns:ix="csharp_ide, csharp-ide"
+  xmlns:ixctrl="csharp_ide.Controls, csharp-ide"
+  xmlns:cwf="Clifton.Windows.Forms, Clifton.Windows.Forms"
+  xmlns:ixc="csharp_ide.Controllers, csharp-ide"
+  xmlns:ixv="csharp_ide.Views, csharp-ide"
+  xmlns:ixa="csharp_ide.Actions, csharp-ide"
+  xmlns:def="def"
+  xmlns:ref="ref">
+  <ix:GenericPane ref:Name="Container"
+    TabText="Symbols"
+    ClientSize="400, 190"
+    BackColor="White"
+    ShowHint="DockRight">
+    <ixc:SymbolListController def:Name="controller" ApplicationController="{ApplicationFormController}" ApplicationModel="{ApplicationModel}"/>
+    <ixc:ApplicationFormController ref:Name="ApplicationFormController" SymbolListController="{controller}"/>
+    <ix:Controls>
+      <ixv:SymbolListView def:Name="symbolListView"
+                      Dock="Fill"
+                      Model="{ApplicationModel}"
+                      ApplicationController="{ApplicationFormController}">
+        <ixv:Controls>
+          <wf:ListView def:Name="lvSymbols" View="Details" FullRowSelect="true" AllowColumnReorder="false" CheckBoxes="false" GridLines="true" Sorting="Ascending" Dock="Fill"/>
+        </ixv:Controls>
+      </ixv:SymbolListView>
+    </ix:Controls>
+    <ixc:SymbolListController ref:Name="controller" View="{symbolListView}"/>
+    <ixv:SymbolListView ref:Name="symbolListView" SymbolList="{lvSymbols}" DockContent="{Container}" Opening="{controller.Opening}" Closing="{controller.Closing}"/>
+    <!-- context menu gets assigned here if there was one -->
+    <!-- <ixa:AssociatePopup Control="{treeView}" ContextMenu="{tocContextMenu}"/> -->
+  </ix:GenericPane>
+</MycroXaml>
+

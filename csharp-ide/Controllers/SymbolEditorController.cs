@@ -109,6 +109,13 @@ namespace csharp_ide.Controllers
 						IXtreeNode controller = (IXtreeNode)Activator.CreateInstance(Type.GetType(nodeDef.TypeName), new object[] { false });
 						controller.Item = item;
 						TreeNode tn = View.AddNode(controller, tnCurrent);
+
+						// If the item is a symbol, then we want to also show in the symbol and structure lists the associated symbol and structure!
+						if (item is Symbol)
+						{
+							ApplicationController.SymbolListController.IfNotNull(ctrl => ctrl.AddSymbol(item.Name));
+							ApplicationController.StructureListController.IfNotNull(ctrl => ctrl.AddStructure(item.Structure));
+						}
 						// string name = ((IHasCollection)item).Name;
 						// tn.Text = (String.IsNullOrWhiteSpace(name) ? tn.Text : name);
 						RecurseCollection(nodeDef, item, tn);

@@ -32,6 +32,8 @@ namespace csharp_ide.Controllers
 		public IMruMenu MruMenu { get; protected set; }
 		public SymbolEditorController SymbolEditorController { get; protected set; }
 		public PropertyGridController PropertyGridController { get; protected set; }
+		public SymbolListController SymbolListController { get; protected set; }
+		public StructureListController StructureListController { get; protected set; }
 		public GenericController<Schema> schemaController;
 		public string SchemaFilename { get; set; }
 
@@ -184,6 +186,14 @@ namespace csharp_ide.Controllers
 			{
 				PropertyGridController = null;
 			}
+			else if (pane is SymbolListView)
+			{
+				SymbolListController = null;
+			}
+			else if (pane is StructureListView)
+			{
+				StructureListController = null;
+			}
 			else
 			{
 				throw new ApplicationException("Unknown pane : " + pane.GetType().FullName);
@@ -203,6 +213,22 @@ namespace csharp_ide.Controllers
 			SymbolEditorController.IfNull(() =>
 			{
 				NewDocument("symbolEditorTree.xml");
+			});
+		}
+
+		protected void ShowSymbolList(object sender, EventArgs args)
+		{
+			SymbolListController.IfNull(() =>
+			{
+				NewDocument("symbolListPane.xml");
+			});
+		}
+
+		protected void ShowStructureList(object sender, EventArgs args)
+		{
+			StructureListController.IfNull(() =>
+			{
+				NewDocument("structureListPane.xml");
 			});
 		}
 
@@ -362,6 +388,27 @@ namespace csharp_ide.Controllers
 			Guid latitude = ceptrInterface.DeclareSymbol(symbols, (UInt32)SystemStructure.FLOAT, "latitude");
 			Guid longitude = ceptrInterface.DeclareSymbol(symbols, (UInt32)SystemStructure.FLOAT, "longitude");
 			Guid latlong = ceptrInterface.DefineStructure(structures, "latlong", new Guid[] {latitude, longitude});
+			ceptrInterface.Dump(symbols, structures);
+		}
+
+		// Static helpers
+
+		/// <summary>
+		/// Increment the reference count to the specified name, returning the new count.
+		/// </summary>
+		static public int IncrementReference(Dictionary<string, int> dict, string name)
+		{
+			int count;
+
+			if (!dict.TryGetValue(name, out count))
+			{
+				dict[name] = 0;
+				count = 0;
+			}
+
+			dict[name] = ++count;
+
+			return count;
 		}
 	}
 }

@@ -156,10 +156,14 @@ namespace ceptrlib
 		extern static unsafe Tnode* _t_new_root(Symbol symbol);
 
 		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
-		extern static unsafe Symbol _d_declare_symbol(Tnode *symbols, Structure st, char *label);
+		extern static unsafe Symbol _d_declare_symbol(Tnode* symbols, Structure st, char* label);
 
 		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
-		extern static unsafe Symbol _d_define_structure(Tnode *structures, char *label, int num_params, __arglist);
+		extern static unsafe Symbol _d_define_structure(Tnode* structures, char* label, int num_params, __arglist);
+
+		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
+		[return: MarshalAs(UnmanagedType.LPStr)]
+		extern static unsafe string __t_dump(Tnode* symbols, Tnode* t, int level, char* buf);
 
 		protected Dictionary<Guid, IntPtr> nodes = new Dictionary<Guid, IntPtr>();
 		protected Dictionary<Guid, Symbol> symbols = new Dictionary<Guid, Symbol>();
@@ -213,6 +217,20 @@ namespace ceptrlib
 			}
 
 			return guid;
+		}
+
+		public unsafe string Dump(Guid g_symbols, Guid g_structures)
+		{
+			Tnode *symnode = (Tnode*)nodes[g_symbols];
+			Tnode *structnode = (Tnode*)nodes[g_structures];
+			string ret;
+
+			fixed (char* buf = new char[10000])
+			{
+				__t_dump(symnode, structnode, 0, buf);
+			}
+
+			return "";
 		}
 
 		/// <summary>
