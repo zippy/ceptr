@@ -231,7 +231,7 @@ static Structure G_sys_symbol_structures[] = {
     TREE,                //INPUT_SIGNATURE
     CSTRING,             //INPUT_LABEL
     STRUCTURE,           //SIGNATURE_STRUCTURE
-    SYMBOL,              //OUTPUT_SIGNATURE
+    NULL_STRUCTURE,      //OUTPUT_SIGNATURE
     TREE,                //RUN_TREE
     TREE_PATH,           //PARAM_REF
     LIST,                //PARAMS

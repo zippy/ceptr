@@ -11,7 +11,7 @@
 
 #include "tree.h"
 #include "def.h"
-char __d_extra_buf[10];
+char __d_extra_buf[100];
 
 /**
  * get symbol's label
@@ -30,8 +30,8 @@ char *_d_get_symbol_name(Tnode *symbols,Symbol s) {
 	return G_test_symbol_names[s-TEST_INT_SYMBOL];
     else if (symbols) {
 	int c = _t_children(symbols);
-	if (s > c) {
-	    raise_error2("Symbol %d is greater than number of symbols (%d) in decl list!",s,c);
+	if (s > c || s < 1)  {
+	    raise_error2("Bad symbol:%d--%d symbols in decl list",s,c);
 	}
 	Tnode *def = _t_child(symbols,s);
 	Tnode *l = _t_child(def,1);
