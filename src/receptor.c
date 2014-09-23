@@ -477,7 +477,8 @@ Receptor * _r_unserialize(void *surface) {
     r->defs.processes = _t_child(t,3);
     r->flux = _t_child(t,2);
 
-    int i,c = _t_children(_t_child(r->root,1));
+    Tnode *defs = _t_child(r->root,1);
+    int i,c = _t_children(defs);
     for(i=1;i<=c;i++)
 	__r_set_labels(r,_t_child(defs,i));
 

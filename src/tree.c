@@ -628,7 +628,11 @@ TreeHash _t_hash(Tnode *symbols,Tnode *structures,Tnode *t) {
 	uint32_t h[2];
 	void *surface = _t_surface(t);
 	h[0] = _t_symbol(t);
-	h[1] = hashfn((char *)surface,_d_get_symbol_size(symbols,structures,h[0]));
+	size_t l = _d_get_symbol_size(symbols,structures,h[0]);
+	if (l > 0)
+	    h[1] = hashfn((char *)surface,l);
+	else
+	    h[1] = 0;
 	result = hashfn(h,sizeof(uint32_t)*2);
     }
     else {
