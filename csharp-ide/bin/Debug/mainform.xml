@@ -36,6 +36,13 @@
             <wf:DropDownItems>
               <wf:ToolStripMenuItem def:Name="mnuPropertyGrid" Text="&amp;Property Grid" Click="{controller.ShowPropertyGrid}"/>
               <wf:ToolStripMenuItem def:Name="mnuSymbolTypeEditor" Text="&amp;Symbol Editor" Click="{controller.ShowSymbolEditor}"/>
+              <wf:ToolStripMenuItem def:Name="mnuSymbolList" Text="S&amp;ymbols" Click="{controller.ShowSymbolList}"/>
+              <wf:ToolStripMenuItem def:Name="mnuStructureList" Text="S&amp;tructures" Click="{controller.ShowStructureList}"/>
+            </wf:DropDownItems>
+          </wf:ToolStripMenuItem>
+          <wf:ToolStripMenuItem Text="&amp;Ceptr">
+            <wf:DropDownItems>
+              <wf:ToolStripMenuItem def:Name="mnuBuildSemanticTree" Text="&amp;Build Semantic Tree" Click="{controller.BuildSemanticTree}"/>
             </wf:DropDownItems>
           </wf:ToolStripMenuItem>
         </wf:Items>

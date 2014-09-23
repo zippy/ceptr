@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -53,7 +54,9 @@
     <Compile Include="Actions\SetDocumentText.cs" />
     <Compile Include="Controllers\ApplicationFormController.cs" />
     <Compile Include="Controllers\PropertyGridController.cs" />
+    <Compile Include="Controllers\StructureListController.cs" />
     <Compile Include="Controllers\SymbolEditorController.cs" />
+    <Compile Include="Controllers\SymbolListController.cs" />
     <Compile Include="Controls\TreeViewControl.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -78,6 +81,12 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\IPaneView.cs" />
+    <Compile Include="Views\StructureListView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\SymbolListView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Views\PaneView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -114,6 +123,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="ceptrlib\ceptrlib.csproj">
+      <Project>{0ca064de-e9e2-4e10-bbb1-7055a154aa46}</Project>
+      <Name>ceptrlib</Name>
+    </ProjectReference>
     <ProjectReference Include="Clifton.DockableWindows\WinFormsUI\WinFormsUI.csproj">
       <Project>{c75532c4-765b-418e-b09b-46d36b2abdb1}</Project>
       <Name>WinFormsUI</Name>
@@ -140,8 +153,12 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="bin\Debug\propertyGrid.xml" />
+    <Content Include="bin\Debug\structureListPane.xml" />
     <Content Include="bin\Debug\symbolEditorTree.xml" />
-    <Content Include="bin\Debug\symbolEditorTreeDef.xml" />
+    <Content Include="bin\Debug\symbolEditorTreeDef.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="bin\Debug\symbolListPane.xml" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

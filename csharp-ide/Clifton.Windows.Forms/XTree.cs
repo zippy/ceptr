@@ -120,30 +120,46 @@ namespace Clifton.Windows.Forms
 
 	public class NewNodeEventArgs
 	{
-		protected TreeNode treeNode;
 		protected IXtreeNode instanceNode;
 		protected NodeDef nodeDef;
-		
-		public NodeDef NodeDef
-		{
-			get { return nodeDef; }
-		}
+		protected TreeNode treeNode;
 		
 		public IXtreeNode InstanceNode
 		{
 			get { return instanceNode; }
 		}
 
+		public NodeDef NodeDef
+		{
+			get { return nodeDef; }
+		}
+
 		public TreeNode TreeNode
 		{
 			get { return treeNode; }
 		}
-		
+
 		public NewNodeEventArgs(IXtreeNode instanceNode, NodeDef nodeDef, TreeNode treeNode)
 		{
 			this.instanceNode = instanceNode;
 			this.nodeDef = nodeDef;
 			this.treeNode = treeNode;
+		}
+	}
+
+	// TODO: DeletingNodeEventArgs and NewNodeEventArgs might be unified into, say, NodeEventArgs.
+	public class DeletingNodeEventArgs
+	{
+		protected IXtreeNode instanceNode;
+
+		public IXtreeNode InstanceNode
+		{
+			get { return instanceNode; }
+		}
+
+		public DeletingNodeEventArgs(IXtreeNode instanceNode)
+		{
+			this.instanceNode = instanceNode;
 		}
 	}
 
@@ -195,10 +211,12 @@ namespace Clifton.Windows.Forms
 	public class XTree : TreeView, ISupportInitialize
 	{
 		public delegate void NewNodeDlgt(object sender, NewNodeEventArgs args);
+		public delegate void DeletingNodeDlgt(object sender, DeletingNodeEventArgs args);
 		public delegate void CustomPopupCommandDlgt(object sender, CustomPopupEventArgs args);
 
 		public event EventHandler DisplayContextMenu;
 		public event NewNodeDlgt NewNode;
+		public event DeletingNodeDlgt DeletingNode;
 		public event CustomPopupCommandDlgt CustomPopupCommand;
 		public event EventHandler TreeDoubleClick;
 
@@ -862,6 +880,9 @@ namespace Clifton.Windows.Forms
 					parentInst = ((NodeInstance)parentNode.Tag).Instance;
 				}
 
+				// Fire event that a node has been created.
+				OnDeletingNode(new DeletingNodeEventArgs(inst));
+
 				bool success = inst.DeleteNode(parentInst);
 
 				if (success)
@@ -1353,6 +1374,14 @@ namespace Clifton.Windows.Forms
 			if (NewNode != null)
 			{
 				NewNode(this, args);
+			}
+		}
+
+		protected virtual void OnDeletingNode(DeletingNodeEventArgs args)
+		{
+			if (DeletingNode != null)
+			{
+				DeletingNode(this, args);
 			}
 		}
 	}

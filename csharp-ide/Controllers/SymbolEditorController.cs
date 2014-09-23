@@ -16,6 +16,7 @@ using Clifton.ApplicationStateManagement;
 using Clifton.ExtensionMethods;
 using Clifton.Tools.Data;
 using Clifton.Tools.Strings.Extensions;
+using Clifton.Windows.Forms;
 using Clifton.Windows.Forms.XmlTree;
 
 using XTreeController;
@@ -26,6 +27,8 @@ namespace csharp_ide.Controllers
 	public class SymbolEditorController : ViewController<SymbolEditorView>
 	{
 		protected TreeNode currentNode;
+		protected string symbolName;
+		protected string structureName;
 
 		public void UpdateView()
 		{
@@ -36,13 +39,34 @@ namespace csharp_ide.Controllers
 		{
 			if (currentNode != null)
 			{
-				if (((NodeInstance)currentNode.Tag).Instance.Item is IHasFullyQualifiedName)
+				object item = ((NodeInstance)currentNode.Tag).Instance.Item;
+
+				if (item is IHasFullyQualifiedName)
 				{
-					currentNode.Text = ((IHasFullyQualifiedName)((NodeInstance)currentNode.Tag).Instance.Item).FullyQualfiedName;
+					currentNode.Text = ((IHasFullyQualifiedName)item).FullyQualfiedName;
 				}
 				else
 				{
 					currentNode.Text = text;
+				}
+
+				if (item is Symbol)
+				{
+					string newSymbolName = ((Symbol)item).Name;
+					string newStructureName = ((Symbol)item).Structure;
+
+					// Update the symbol list if it has changed.
+					if (symbolName != newSymbolName)
+					{
+						ApplicationController.SymbolListController.IfNotNull(ctrl => ctrl.ReplaceSymbol(symbolName, newSymbolName));
+						symbolName = newSymbolName;
+					}
+
+					if (structureName != newStructureName)
+					{
+						ApplicationController.StructureListController.IfNotNull(ctrl => ctrl.ReplaceStructure(structureName, newStructureName));
+						structureName = newStructureName;
+					}
 				}
 			}
 		}
@@ -76,8 +100,29 @@ namespace csharp_ide.Controllers
 			ApplicationController.PropertyGridController.IfNotNull(t =>
 			{
 				currentNode = e.Node;
-				t.ShowObject(((NodeInstance)e.Node.Tag).Instance.Item);
+				object item = ((NodeInstance)e.Node.Tag).Instance.Item;
+				t.ShowObject(item);
+
+				if (item is Symbol)
+				{
+					// Save the current symbol and structure name so that, if it changes, we can update the symbol and structure lists.
+					symbolName = ((Symbol)item).Name;
+					structureName = ((Symbol)item).Structure;
+				}
 			});
+		}
+
+		protected void DeletingNode(object sender, DeletingNodeEventArgs args)
+		{
+			object item = args.InstanceNode.Item;
+
+			if (item is Symbol)
+			{
+				symbolName = ((Symbol)item).Name;
+				structureName = ((Symbol)item).Structure;
+				ApplicationController.SymbolListController.IfNotNull(ctrl => ctrl.RemoveSymbol(symbolName));
+				ApplicationController.StructureListController.IfNotNull(ctrl => ctrl.RemoveStructure(structureName));
+			}
 		}
 
 		protected void Opening()
@@ -109,6 +154,13 @@ namespace csharp_ide.Controllers
 						IXtreeNode controller = (IXtreeNode)Activator.CreateInstance(Type.GetType(nodeDef.TypeName), new object[] { false });
 						controller.Item = item;
 						TreeNode tn = View.AddNode(controller, tnCurrent);
+
+						// If the item is a symbol, then we want to also show in the symbol and structure lists the associated symbol and structure!
+						if (item is Symbol)
+						{
+							ApplicationController.SymbolListController.IfNotNull(ctrl => ctrl.AddSymbol(item.Name));
+							ApplicationController.StructureListController.IfNotNull(ctrl => ctrl.AddStructure(item.Structure));
+						}
 						// string name = ((IHasCollection)item).Name;
 						// tn.Text = (String.IsNullOrWhiteSpace(name) ? tn.Text : name);
 						RecurseCollection(nodeDef, item, tn);

@@ -10,24 +10,24 @@
   xmlns:def="def"
   xmlns:ref="ref">
   <ix:GenericPane ref:Name="Container"
-    TabText="Semantic Types"
+    TabText="Structures"
     ClientSize="400, 190"
     BackColor="White"
-    ShowHint="DockLeft">
-    <ixc:SymbolEditorController def:Name="controller" ApplicationController="{ApplicationFormController}" ApplicationModel="{ApplicationModel}"/>
-    <ixc:ApplicationFormController ref:Name="ApplicationFormController" SymbolEditorController="{controller}"/>
+    ShowHint="DockRight">
+    <ixc:StructureListController def:Name="controller" ApplicationController="{ApplicationFormController}" ApplicationModel="{ApplicationModel}"/>
+    <ixc:ApplicationFormController ref:Name="ApplicationFormController" StructureListController="{controller}"/>
     <ix:Controls>
-      <ixv:SymbolEditorView def:Name="symbolEditorView"
+      <ixv:StructureListView def:Name="structureListView"
                             Dock="Fill"
                             Model="{ApplicationModel}"
                             ApplicationController="{ApplicationFormController}">
         <ixv:Controls>
-          <cwf:XTree def:Name="stTree" Dock="Fill" TreeDefinitionFileName="symbolEditorTreeDef.xml" FullRowSelect="true" HideSelection="false" AfterSelect="{controller.NodeSelected}" DeletingNode="{controller.DeletingNode}"/>
+          <wf:ListView def:Name="lvStructures" View="Details" FullRowSelect="true" AllowColumnReorder="false" CheckBoxes="false" GridLines="true" Sorting="Ascending" Dock="Fill"/>
         </ixv:Controls>
-      </ixv:SymbolEditorView>
-    </ix:Controls>
-    <ixc:SymbolEditorController ref:Name="controller" View="{symbolEditorView}"/>
-    <ixv:SymbolEditorView ref:Name="symbolEditorView" TreeView="{stTree}" DockContent="{Container}" Opening="{controller.Opening}" Closing="{controller.Closing}"/>
+      </ixv:StructureListView>
+      </ix:Controls>
+    <ixc:StructureListController ref:Name="controller" View="{structureListView}"/>
+    <ixv:StructureListView ref:Name="structureListView" StructureList="{lvStructures}" DockContent="{Container}" Opening="{controller.Opening}" Closing="{controller.Closing}"/>
     <!-- context menu gets assigned here if there was one -->
     <!-- <ixa:AssociatePopup Control="{treeView}" ContextMenu="{tocContextMenu}"/> -->
   </ix:GenericPane>

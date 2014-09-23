@@ -13,6 +13,42 @@
             </Symbol>
           </Symbols>
         </Symbol>
+        <Symbol Name="CustomerName" Structure="name">
+          <Symbols>
+            <Symbol Name="FirstName" Structure="string">
+              <Symbols />
+            </Symbol>
+            <Symbol Name="LastName" Structure="string">
+              <Symbols />
+            </Symbol>
+          </Symbols>
+        </Symbol>
+        <Symbol Name="CustomerAddress" Structure="physicalAddress">
+          <Symbols>
+            <Symbol Name="StreetNo" Structure="string">
+              <Symbols />
+            </Symbol>
+            <Symbol Name="StreetName" Structure="string">
+              <Symbols />
+            </Symbol>
+            <Symbol Name="City" Structure="string">
+              <Symbols />
+            </Symbol>
+            <Symbol Name="State" Structure="USState">
+              <Symbols />
+            </Symbol>
+            <Symbol Name="Zip" Structure="zip5+4">
+              <Symbols>
+                <Symbol Name="Zip5" Structure="string">
+                  <Symbols />
+                </Symbol>
+                <Symbol Name="Zip4" Structure="string">
+                  <Symbols />
+                </Symbol>
+              </Symbols>
+            </Symbol>
+          </Symbols>
+        </Symbol>
       </Symbols>
     </SymbolNamespaceContainer>
   </SymbolNamespaceContainer>
