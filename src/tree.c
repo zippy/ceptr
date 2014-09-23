@@ -636,8 +636,8 @@ TreeHash _t_hash(Tnode *symbols,Tnode *structures,Tnode *t) {
 	result = hashfn(h,sizeof(uint32_t)*2);
     }
     else {
-	uint32_t l = sizeof(uint32_t)*c+sizeof(Symbol);
-	uint32_t *h,*hashes = malloc(l);
+	size_t l = sizeof(TreeHash)*c+sizeof(Symbol);
+	TreeHash *h,*hashes = malloc(l);
 	h = hashes;
 	for(i=1;i<=c;i++) {
 	    *h = _t_hash(symbols,structures,_t_child(t,i));
