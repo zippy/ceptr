@@ -43,7 +43,6 @@ typedef uint32_t Label;
 /**
  * An element in the label table.
  *
- * @todo convert path to variable sized item
  */
 struct table_elem {
     UT_hash_handle hh;         ///< makes this structure hashable using the uthash library

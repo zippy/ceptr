@@ -29,6 +29,10 @@ char *_d_get_symbol_name(Tnode *symbols,Symbol s) {
     if (is_sys_test_symbol(s))
 	return G_test_symbol_names[s-TEST_INT_SYMBOL];
     else if (symbols) {
+	int c = _t_children(symbols);
+	if (s > c) {
+	    raise_error2("Symbol %d is greater than number of symbols (%d) in decl list!",s,c);
+	}
 	Tnode *def = _t_child(symbols,s);
 	Tnode *l = _t_child(def,1);
 	return (char *)_t_surface(_t_child(def,2));
@@ -287,13 +291,13 @@ char * __t_dump(Tnode *symbols,Tnode *t,int level,char *buf) {
     char b[255];
     char tbuf[2000];
     int i;
-    char *n = _d_get_symbol_name(symbols,s);
     char *c;
     Xaddr x;
     if (is_process(s)) {
 	sprintf(buf," (process:%s",_d_get_process_name(0,s));
     }
     else {
+	char *n = _d_get_symbol_name(symbols,s);
 	Structure st = _d_get_symbol_structure(symbols,s);
 	switch(st) {
 	case CSTRING:

@@ -17,6 +17,8 @@ void testVMHostCreate() {
     spec_is_symbol_equal(v->r,_t_symbol(ar_tree),ACTIVE_RECEPTORS);
     spec_is_ptr_equal(v->active_receptors,ar_tree);
     spec_is_equal(_t_children(ar_tree),0);
+    spec_is_equal(v->installed_receptors->key_source,RECEPTOR_IDENTIFIER);
+    spec_is_equal(v->installed_receptors->data_source,RECEPTOR);
     _v_free(v);
     //! [testVMHostCreate]
 }
@@ -32,13 +34,15 @@ Tnode *_makeTestReceptorPackage(int uuid,Tnode *symbols,Tnode *structures) {
     Tnode *m = _t_newr(p,MANIFEST);
 
     _t_newi(p,RECEPTOR_IDENTIFIER,uuid);
-    if (symbols) _t_add(p,_t_clone(symbols));
-    else _t_newr(p,SYMBOLS);
-    if (structures) _t_add(p,_t_clone(structures));
-    else _t_newr(p,STRUCTURES);
+    Tnode *defs = _t_newr(p,DEFINITIONS);
+    if (structures) _t_add(defs,_t_clone(structures));
+    else _t_newr(defs,STRUCTURES);
 
-    _t_newr(p,PROCESSES); // for now we don't have any processes
-    _t_newr(p,SCAPES); // for now we don't have any scapes
+    if (symbols) _t_add(defs,_t_clone(symbols));
+    else _t_newr(defs,SYMBOLS);
+
+    _t_newr(defs,PROCESSES); // for now we don't have any processes
+    _t_newr(defs,SCAPES); // for now we don't have any scapes
 
     return p;
 }
@@ -60,10 +64,11 @@ Tnode *_makeTestHTTPReceptorPackage() {
 
     _t_newi(p,RECEPTOR_IDENTIFIER,HTTP_RECEPTOR_UUID);
 
-    _t_add(p,_t_clone(test_HTTP_symbols));
-    _t_add(p,_t_clone(test_HTTP_structures));
-    _t_newr(p,PROCESSES); // for now we don't have any processes
-    _t_newr(p,SCAPES); // for now we don't have any scapes
+    Tnode *defs = _t_newr(p,DEFINITIONS);
+    _t_add(defs,_t_clone(test_HTTP_structures));
+    _t_add(defs,_t_clone(test_HTTP_symbols));
+    _t_newr(defs,PROCESSES); // for now we don't have any processes
+    _t_newr(defs,SCAPES); // for now we don't have any scapes
 
     return p;
 }
@@ -126,14 +131,19 @@ void testVMHostActivateReceptor() {
 
     Xaddr x = _v_install_r(v,xp,b,"http server");
 
+    _v_activate(v,ipx);
     _v_activate(v,x);
 
-    // confirm that the activate list has a new child
-    spec_is_equal(_t_children(v->active_receptors),1);
+    // confirm that the activate list has a new children
+    spec_is_equal(_t_children(v->active_receptors),2);
 
-    // and that it is the same as the installed receptor
-    Tnode *ar = _t_child(v->active_receptors,1);
-    Tnode *r = _r_get_instance(v->r,x);
+    // and that they are the same as the installed receptors
+    Tnode *ar,*r;
+    ar = _t_child(v->active_receptors,1);
+    r = _r_get_instance(v->r,ipx);
+    spec_is_ptr_equal(ar,r);
+    ar = _t_child(v->active_receptors,2);
+    r = _r_get_instance(v->r,x);
     spec_is_ptr_equal(ar,r);
 
     _t_free(b);

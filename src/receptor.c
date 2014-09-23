@@ -58,13 +58,14 @@ Receptor *_r_new(Symbol s) {
  * @brief Creates a new receptor from a receptor package
  *
  * allocates all the memory needed in the heap, cloning the various parts from the package
+ * and binding the new receptor to the provided bindings
  *
  * @param[in] s symbol for this receptor
  * @returns pointer to a newly allocated Receptor
  * @todo implement bindings
  */
 Receptor *_r_new_receptor_from_package(Symbol s,Tnode *p,Tnode *bindings) {
-    Tnode *defs = _t_clone(_t_child(p,2));
+    Tnode *defs = _t_clone(_t_child(p,3));
     return __r_new(s,defs);
 }
 
