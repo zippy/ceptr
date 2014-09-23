@@ -625,7 +625,7 @@ TreeHash _t_hash(Tnode *symbols,Tnode *structures,Tnode *t) {
     int i,c = _t_children(t);
     TreeHash result;
     if (c == 0) {
-	uint32_t h[2];
+	TreeHash h[2];
 	void *surface = _t_surface(t);
 	h[0] = _t_symbol(t);
 	size_t l = _d_get_symbol_size(symbols,structures,h[0]);
@@ -633,15 +633,14 @@ TreeHash _t_hash(Tnode *symbols,Tnode *structures,Tnode *t) {
 	    h[1] = hashfn((char *)surface,l);
 	else
 	    h[1] = 0;
-	result = hashfn(h,sizeof(uint32_t)*2);
+	result = hashfn(h,sizeof(h));
     }
     else {
-	uint32_t l = sizeof(uint32_t)*c+sizeof(Symbol);
-	uint32_t *h,*hashes = malloc(l);
+	size_t l = sizeof(TreeHash)*c+sizeof(Symbol);
+	TreeHash *h,*hashes = malloc(l);
 	h = hashes;
 	for(i=1;i<=c;i++) {
-	    *h = _t_hash(symbols,structures,_t_child(t,i));
-	    h++;
+	    *(h++) = _t_hash(symbols,structures,_t_child(t,i));
 	}
 	(*(Symbol *)h) = _t_symbol(t);
 	result = hashfn(hashes,l);
