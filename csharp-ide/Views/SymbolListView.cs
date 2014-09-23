@@ -56,6 +56,21 @@ namespace csharp_ide.Views
 			}
 		}
 
+		public void RemoveSymbol(string name)
+		{
+			if (ApplicationFormController.DecrementReference(symbolRefCount, name) == 0)
+			{
+				foreach (ListViewItem lvi in SymbolList.Items)
+				{
+					if (lvi.Text == name)
+					{
+						SymbolList.Items.Remove(lvi);
+						break;
+					}
+				}
+			}
+		}
+
 		protected override void WhenHandleDestroyed(object sender, EventArgs e)
 		{
 			Closing.IfNotNull().Then(() => Closing());

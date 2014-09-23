@@ -56,6 +56,21 @@ namespace csharp_ide.Views
 			}
 		}
 
+		public void RemoveStructure(string name)
+		{
+			if (ApplicationFormController.DecrementReference(structureRefCount, name) == 0)
+			{
+				foreach (ListViewItem lvi in StructureList.Items)
+				{
+					if (lvi.Text == name)
+					{
+						StructureList.Items.Remove(lvi);
+						break;
+					}
+				}
+			}
+		}
+
 		protected override void WhenHandleDestroyed(object sender, EventArgs e)
 		{
 			Closing.IfNotNull().Then(() => Closing());

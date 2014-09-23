@@ -30,6 +30,17 @@ namespace csharp_ide.Controllers
 			View.AddDistinctSymbol(name);
 		}
 
+		public void ReplaceSymbol(string oldName, string newName)
+		{
+			View.RemoveSymbol(oldName);
+			View.AddDistinctSymbol(newName);
+		}
+
+		public void RemoveSymbol(string name)
+		{
+			View.RemoveSymbol(name);
+		}
+
 		protected void Opening()
 		{
 		}

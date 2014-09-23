@@ -22,7 +22,7 @@
                             Model="{ApplicationModel}"
                             ApplicationController="{ApplicationFormController}">
         <ixv:Controls>
-          <cwf:XTree def:Name="stTree" Dock="Fill" TreeDefinitionFileName="symbolEditorTreeDef.xml" FullRowSelect="true" HideSelection="false" AfterSelect="{controller.NodeSelected}"/>
+          <cwf:XTree def:Name="stTree" Dock="Fill" TreeDefinitionFileName="symbolEditorTreeDef.xml" FullRowSelect="true" HideSelection="false" AfterSelect="{controller.NodeSelected}" DeletingNode="{controller.DeletingNode}"/>
         </ixv:Controls>
       </ixv:SymbolEditorView>
     </ix:Controls>

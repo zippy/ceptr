@@ -30,6 +30,17 @@ namespace csharp_ide.Controllers
 			View.AddDistinctStructure(name);
 		}
 
+		public void ReplaceStructure(string oldName, string newName)
+		{
+			View.RemoveStructure(oldName);
+			View.AddDistinctStructure(newName);
+		}
+
+		public void RemoveStructure(string name)
+		{
+			View.RemoveStructure(name);
+		}
+
 		protected void Opening()
 		{
 		}

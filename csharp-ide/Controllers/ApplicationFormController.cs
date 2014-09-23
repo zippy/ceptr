@@ -410,5 +410,25 @@ namespace csharp_ide.Controllers
 
 			return count;
 		}
+
+		/// <summary>
+		/// Decrement the reference.  If it doesn't exist, which is possible, return -1.
+		/// If it does exist, return the decremented count.
+		/// </summary>
+		static public int DecrementReference(Dictionary<string, int> dict, string name)
+		{
+			int count = 0;
+
+			if (dict.TryGetValue(name, out count))
+			{
+				dict[name] = --count;
+			}
+			else
+			{
+				count = -1;
+			}
+
+			return count;
+		}
 	}
 }
