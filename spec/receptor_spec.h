@@ -142,8 +142,8 @@ void testReceptorDef() {
 
     spec_is_structure_equal(r,__r_get_symbol_structure(r,lat),FLOAT);
 
-    spec_is_str_equal((char *)_t_surface(_t_child(def = _t_child(r->defs.symbols,lat),2)),"latitude");
-    spec_is_str_equal((char *)_t_surface(_t_child(_t_child(r->defs.symbols,lon),2)),"longitude");
+    spec_is_str_equal((char *)_t_surface(_t_child(def = _t_child(r->defs.symbols,lat),1)),"latitude");
+    spec_is_str_equal((char *)_t_surface(_t_child(_t_child(r->defs.symbols,lon),1)),"longitude");
 
     int *path = labelGet(&r->table,"latitude");
     spec_is_ptr_equal(_t_get(r->root,path),def);

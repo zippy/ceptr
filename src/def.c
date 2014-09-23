@@ -35,7 +35,7 @@ char *_d_get_symbol_name(Tnode *symbols,Symbol s) {
 	}
 	Tnode *def = _t_child(symbols,s);
 	Tnode *l = _t_child(def,1);
-	return (char *)_t_surface(_t_child(def,2));
+	return (char *)_t_surface(_t_child(def,1));
     }
     sprintf(__d_extra_buf,"<unknown symbol:%d>",s);
     return __d_extra_buf;
@@ -99,8 +99,8 @@ char *_d_get_process_name(Tnode *processes,Process p) {
  */
 Tnode *__d_declare_symbol(Tnode *symbols,Structure s,char *label){
     Tnode *def = _t_newr(symbols,SYMBOL_DECLARATION);
-    _t_newi(def,SYMBOL_STRUCTURE,s);
     _t_new(def,SYMBOL_LABEL,label,strlen(label)+1);
+    _t_newi(def,SYMBOL_STRUCTURE,s);
     return def;
 }
 
@@ -170,7 +170,7 @@ Structure _d_get_symbol_structure(Tnode *symbols,Symbol s) {
     else if (is_sys_test_symbol(s))
 	return G_test_symbol_structures[s-TEST_INT_SYMBOL];
     Tnode *def = _t_child(symbols,s);
-    Tnode *t = _t_child(def,1); // first child of the def is the structure
+    Tnode *t = _t_child(def,2); // second child of the def is the structure
     return *(Structure *)_t_surface(t);
 }
 

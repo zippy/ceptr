@@ -67,7 +67,16 @@ Tnode *_makeTestHTTPReceptorPackage() {
     Tnode *defs = _t_newr(p,DEFINITIONS);
     _t_add(defs,_t_clone(test_HTTP_structures));
     _t_add(defs,_t_clone(test_HTTP_symbols));
-    _t_newr(defs,PROCESSES); // for now we don't have any processes
+    Tnode *procs = _t_newr(defs,PROCESSES);
+    // a process that simply reduces to an HTTP_RESPONSE indicating an off-line status
+    Tnode *resp = _t_new_root(RESPOND);
+    Tnode *http_resp = _t_newr(resp,TSYM_HTTP_RESPONSE);
+    _t_new(http_resp,TSYM_HTTP_RESPONSE_CONTENT_TYPE,"Text/Plain",11);
+    _t_new(http_resp,TEST_STR_SYMBOL,"System offline!",16);
+    Tnode *input = _t_new_root(INPUT);
+    Tnode *output = _t_new_root(OUTPUT_SIGNATURE);
+    _d_code_process(procs,resp,"off-line response","respond with system offline",input,output);
+
     _t_newr(defs,SCAPES); // for now we don't have any scapes
 
     return p;
@@ -100,6 +109,11 @@ void testVMHostInstallReceptor() {
     Tnode *r = _r_get_instance(v->r,x);
     spec_is_symbol_equal(v->r,x.symbol,INSTALLED_RECEPTOR);
     spec_is_symbol_equal(v->r,_t_symbol(_t_child(r,1)),_r_get_symbol_by_label(v->r,"http server"));
+
+    // and the definition labels of the instantiated receptor should all be set up properly
+    Receptor *httpr = (Receptor *)_t_surface(_t_child(r,1));
+    spec_is_equal(_r_get_symbol_by_label(httpr,"HTTP_REQUEST"),TSYM_HTTP_REQUEST);
+    spec_is_equal(_r_get_symbol_by_label(httpr,"off-line response"),-1); // hard-coded process symbol
 
     // trying to re-install the receptor should fail
     x = _v_install_r(v,xp,0,"http server");
@@ -146,6 +160,23 @@ void testVMHostActivateReceptor() {
     r = _r_get_instance(v->r,x);
     spec_is_ptr_equal(ar,r);
 
+    Receptor *httpr = (Receptor *)_t_surface(_t_child(r,1));
+
+    Tnode *act = _t_newp(0,ACTION,-1);
+
+    // our expectation should matches on any HTTP_REQUEST
+    Tnode *expect = _t_new_root(EXPECTATION);
+    Tnode *req = _t_newi(expect,SEMTREX_SYMBOL_LITERAL,TSYM_HTTP_REQUEST);
+
+    _r_add_listener(httpr,DEFAULT_ASPECT,TSYM_HTTP_REQUEST,expect,act);
+
+    Tnode *signal = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
+    Tnode *s = _r_send(httpr,httpr,DEFAULT_ASPECT,signal);
+    Tnode *result = _t_child(_t_child(s,1),1);
+
+    spec_is_str_equal(_td(httpr,result)," (HTTP_RESPONSE (HTTP_RESPONSE_CONTENT_TYPE:Text/Plain) (TEST_STR_SYMBOL:System offline!))");
+
+    //    puts(_td(httpr,httpr->root));
     _t_free(b);
     _v_free(v);
     //! [testVMHostActivateReceptor]

@@ -54,6 +54,17 @@ Receptor *_r_new(Symbol s) {
     return __r_new(s,defs);
 }
 
+// set the labels in the label table for the given def
+void __r_set_labels(Receptor *r,Tnode *defs) {
+    int c = _t_children(defs);
+    int i;
+    for(i=1;i<=c;i++){
+	Tnode *def = _t_child(defs,i);
+	Tnode *sl = _t_child(def,1);
+	__set_label_for_def(r,_t_surface(sl),def);
+    }
+}
+
 /**
  * @brief Creates a new receptor from a receptor package
  *
@@ -66,7 +77,11 @@ Receptor *_r_new(Symbol s) {
  */
 Receptor *_r_new_receptor_from_package(Symbol s,Tnode *p,Tnode *bindings) {
     Tnode *defs = _t_clone(_t_child(p,3));
-    return __r_new(s,defs);
+    Receptor * r = __r_new(s,defs);
+    int i,c = _t_children(defs);
+    for(i=1;i<=c;i++)
+	__r_set_labels(r,_t_child(defs,i));
+    return r;
 }
 
 /**
@@ -129,7 +144,8 @@ int __set_label_for_def(Receptor *r,char *label,Tnode *def) {
 int __get_label_idx(Receptor *r,char *label) {
     int *path = labelGet(&r->table,label);
     if (!path) return 0;
-    return path[_t_path_depth(path)-1];
+    int x = path[_t_path_depth(path)-1];
+    return (path[1] == 3) ? -x : x; // process labels are negative!!
 }
 
 /**
@@ -460,24 +476,11 @@ Receptor * _r_unserialize(void *surface) {
     r->defs.symbols = _t_child(t,2);
     r->defs.processes = _t_child(t,3);
     r->flux = _t_child(t,2);
-    int c = _t_children(r->defs.symbols);
-    int i;
-    for(i=1;i<=c;i++){
-	Tnode *def = _t_child(r->defs.symbols,i);
-	Tnode *sl = _t_child(def,2);
-	__set_label_for_def(r,_t_surface(sl),def);
-    }
-    c = _t_children(r->defs.structures);
-    for(i=1;i<=c;i++){
-	Tnode *def = _t_child(r->defs.structures,i);
-	__set_label_for_def(r,_t_surface(def),def);
-    }
-    c = _t_children(r->defs.processes);
-    for(i=1;i<=c;i++){
-	Tnode *def = _t_child(r->defs.processes,i);
-	Tnode *sl = _t_child(def,1);
-	__set_label_for_def(r,_t_surface(sl),def);
-    }
+
+    int i,c = _t_children(_t_child(r->root,1));
+    for(i=1;i<=c;i++)
+	__r_set_labels(r,_t_child(defs,i));
+
     return r;
 }
 

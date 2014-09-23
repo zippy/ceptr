@@ -36,8 +36,8 @@ void testDefSymbol() {
     spec_is_equal(_t_children(defs),ss);
     spec_is_ptr_equal(_t_child(defs,ss),def);
     spec_is_equal(_t_symbol(_t_child(defs,ss)),SYMBOL_DECLARATION);
-    spec_is_equal(_t_symbol(_t_child(_t_child(defs,ss),1)),SYMBOL_STRUCTURE);
-    spec_is_equal(_t_symbol(_t_child(_t_child(defs,ss),2)),SYMBOL_LABEL);
+    spec_is_equal(_t_symbol(_t_child(_t_child(defs,ss),2)),SYMBOL_STRUCTURE);
+    spec_is_equal(_t_symbol(_t_child(_t_child(defs,ss),1)),SYMBOL_LABEL);
     spec_is_str_equal(_d_get_symbol_name(defs,ss),"shoe size");
 
     _t_free(defs);
