@@ -133,6 +133,8 @@ void testVMHostActivateReceptor() {
     Tnode *ipr = _makeTestReceptorPackage(IP_SOCKET_RECEPTOR_UUID,0,0);  // no symbols or structures yet
     Xaddr ipxp = _v_load_receptor_package(v,ipr);
     Xaddr ipx = _v_install_r(v,ipxp,0,"server socket");
+    Tnode *installed_ip = _r_get_instance(v->r,ipx);
+    Receptor *ipsocketr = (Receptor *)_t_surface(_t_child(installed_ip,1));
 
     // create and install an http server bound to the IP socket
     Tnode *p = _makeTestHTTPReceptorPackage();
@@ -144,39 +146,44 @@ void testVMHostActivateReceptor() {
     _t_new(pair,RECEPTOR_XADDR,&ipx,sizeof(Xaddr));
 
     Xaddr x = _v_install_r(v,xp,b,"http server");
+    Tnode *installed_http = _r_get_instance(v->r,x);
+    Receptor *httpr = (Receptor *)_t_surface(_t_child(installed_http,1));
 
+    // add a listener that matches on any request and returns the "offline" response
+    Tnode *act = _t_newp(0,ACTION,-1);
+    Tnode *expect = _t_new_root(EXPECTATION);
+    Tnode *req = _t_newi(expect,SEMTREX_SYMBOL_LITERAL,TSYM_HTTP_REQUEST);
+    _r_add_listener(httpr,DEFAULT_ASPECT,TSYM_HTTP_REQUEST,expect,act);
+
+    // create a signal and add it to the sockets sending processing queue
+    Tnode *signal = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
+
+    //@todo
+    // confirm that the signal has not been sent (receptor is not active)
+
+    // activate the two receptors
     _v_activate(v,ipx);
     _v_activate(v,x);
 
-    // confirm that the activate list has a new children
+    // confirm that the activate list has new children
     spec_is_equal(_t_children(v->active_receptors),2);
 
     // and that they are the same as the installed receptors
-    Tnode *ar,*r;
+    Tnode *ar;
     ar = _t_child(v->active_receptors,1);
-    r = _r_get_instance(v->r,ipx);
-    spec_is_ptr_equal(ar,r);
+    spec_is_ptr_equal(ar,installed_ip);
     ar = _t_child(v->active_receptors,2);
-    r = _r_get_instance(v->r,x);
-    spec_is_ptr_equal(ar,r);
+    spec_is_ptr_equal(ar,installed_http);
 
-    Receptor *httpr = (Receptor *)_t_surface(_t_child(r,1));
+    // now confirm that the signal was sent and processed and that a response is back at the socket
+    //@todo
 
-    Tnode *act = _t_newp(0,ACTION,-1);
-
-    // our expectation should matches on any HTTP_REQUEST
-    Tnode *expect = _t_new_root(EXPECTATION);
-    Tnode *req = _t_newi(expect,SEMTREX_SYMBOL_LITERAL,TSYM_HTTP_REQUEST);
-
-    _r_add_listener(httpr,DEFAULT_ASPECT,TSYM_HTTP_REQUEST,expect,act);
-
-    Tnode *signal = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
-    Tnode *s = _r_send(httpr,httpr,DEFAULT_ASPECT,signal);
+    Tnode *s = _r_send(httpr,ipsocketr,DEFAULT_ASPECT,signal);
     Tnode *result = _t_child(_t_child(s,1),1);
 
     spec_is_str_equal(_td(httpr,result)," (HTTP_RESPONSE (HTTP_RESPONSE_CONTENT_TYPE:Text/Plain) (TEST_STR_SYMBOL:System offline!))");
 
-    //    puts(_td(httpr,httpr->root));
+    //        puts(_td(httpr,httpr->root));
     _t_free(b);
     _v_free(v);
     //! [testVMHostActivateReceptor]
