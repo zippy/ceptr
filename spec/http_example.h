@@ -10,6 +10,10 @@
 #include "../src/ceptr.h"
 #include "../src/receptor.h"
 
+Structure TSTR_HTTP_REQUEST;
+Structure TSTR_HTTP_REQUEST_VERSION;
+Structure TSTR_HTTP_REQUEST_PATH;
+
 Symbol TSYM_HTTP_REQUEST;
 Symbol TSYM_HTTP_REQUEST_METHOD;
 Symbol TSYM_HTTP_REQUEST_PATH;
@@ -38,9 +42,8 @@ void _setup_HTTPDefs() {
     test_HTTP_defs.symbols = test_HTTP_symbols = _t_new_root(SYMBOLS);
     test_HTTP_defs.structures = test_HTTP_structures = _t_new_root(STRUCTURES);
 
-    TSYM_HTTP_REQUEST = _d_declare_symbol(test_HTTP_symbols,TREE,"HTTP_REQUEST");
     TSYM_HTTP_REQUEST_METHOD = _d_declare_symbol(test_HTTP_symbols,INTEGER,"HTTP_REQUEST_METHOD");
-    TSYM_HTTP_REQUEST_PATH = _d_declare_symbol(test_HTTP_symbols,TREE,"HTTP_REQUEST_PATH");
+
     TSYM_HTTP_REQUEST_PATH_SEGMENTS = _d_declare_symbol(test_HTTP_symbols,LIST,"HTTP_REQUEST_PATH_SEGMENTS");
     TSYM_HTTP_REQUEST_PATH_SEGMENT = _d_declare_symbol(test_HTTP_symbols,CSTRING,"HTTP_REQUEST_PATH_SEGMENT");
     TSYM_HTTP_REQUEST_PATH_FILE = _d_declare_symbol(test_HTTP_symbols,LIST,"HTTP_REQUEST_PATH_FILE");
@@ -51,14 +54,35 @@ void _setup_HTTPDefs() {
     TSYM_HTTP_REQUEST_PATH_QUERY_PARAM = _d_declare_symbol(test_HTTP_symbols,TREE,"HTTP_REQUEST_PATH_QUERY_PARAM");
     TSYM_HTTP_REQUEST_PATH_QUERY_PARAM_KEY = _d_declare_symbol(test_HTTP_symbols,CSTRING,"HTTP_REQUEST_PATH_QUERY_PARAM_KEY");
     TSYM_HTTP_REQUEST_PATH_QUERY_PARAM_VALUE = _d_declare_symbol(test_HTTP_symbols,CSTRING,"HTTP_REQUEST_PATH_QUERY_PARAM_VALUE");
-    TSYM_HTTP_REQUEST_VERSION = _d_declare_symbol(test_HTTP_symbols,TREE,"HTTP_REQUEST_VERSION");
+
+    TSTR_HTTP_REQUEST_PATH =  _d_define_structure(test_HTTP_structures,"HTTP_REQUEST_PATH_STRUCTURE",
+						   TSYM_HTTP_REQUEST_PATH_SEGMENTS,
+						   TSYM_HTTP_REQUEST_PATH_FILE,
+						   TSYM_HTTP_REQUEST_PATH_QUERY
+						   );
+
+    TSYM_HTTP_REQUEST_PATH = _d_declare_symbol(test_HTTP_symbols,TSTR_HTTP_REQUEST_PATH,"HTTP_REQUEST_PATH");
+
     TSYM_HTTP_REQUEST_VERSION_MAJOR = _d_declare_symbol(test_HTTP_symbols,INTEGER,"HTTP_REQUEST_VERSION_MAJOR");
     TSYM_HTTP_REQUEST_VERSION_MINOR = _d_declare_symbol(test_HTTP_symbols,INTEGER,"HTTP_REQUEST_VERSION_MINOR");
+    TSTR_HTTP_REQUEST_VERSION = _d_define_structure(test_HTTP_structures,"HTTP_REQUEST_VERSION_STRUCTURE",2,
+					    TSYM_HTTP_REQUEST_VERSION_MAJOR,TSYM_HTTP_REQUEST_VERSION_MINOR);
+
+    TSYM_HTTP_REQUEST_VERSION = _d_declare_symbol(test_HTTP_symbols,TSTR_HTTP_REQUEST_VERSION,"HTTP_REQUEST_VERSION");
 
     TSYM_HTTP_RESPONSE = _d_declare_symbol(test_HTTP_symbols,TREE,"HTTP_RESPONSE");
     TSYM_HTTP_RESPONSE = _d_declare_symbol(test_HTTP_symbols,TREE,"HTTP_RESPONSE");
     TSYM_HTTP_RESPONSE_CONTENT_TYPE = _d_declare_symbol(test_HTTP_symbols,CSTRING,"HTTP_RESPONSE_CONTENT_TYPE");
     TSYM_HTTP_RESPONSE_BODY = _d_declare_symbol(test_HTTP_symbols,CSTRING,"HTTP_RESPONSE_BODY");
+
+    TSTR_HTTP_REQUEST = _d_define_structure(test_HTTP_structures,"HTTP_REQUEST_STRUCTURE",3,
+					    TSYM_HTTP_REQUEST_VERSION,
+					    TSYM_HTTP_REQUEST_METHOD,
+					    TSYM_HTTP_REQUEST_PATH
+					    );
+    TSYM_HTTP_REQUEST = _d_declare_symbol(test_HTTP_symbols,TREE,"HTTP_REQUEST");
+
+
 }
 
 void _cleanup_HTTPDefs() {
