@@ -135,14 +135,14 @@ void testTreePathGet() {
     int p311[] = {3,1,1,TREE_PATH_TERMINATOR};
 
     spec_is_ptr_equal(_t_get(t,p0),t);
-    spec_is_symbol_equal(0,_t_symbol(_t_get(t,p1)),TSYM_HTTP_REQUEST_VERSION);
-    spec_is_symbol_equal(0,_t_symbol(_t_get(t,p2)),TSYM_HTTP_REQUEST_METHOD);
-    spec_is_symbol_equal(0,_t_symbol(_t_get(t,p3)),TSYM_HTTP_REQUEST_PATH);
-    spec_is_symbol_equal(0,_t_symbol(_t_get(t,p33)),TSYM_HTTP_REQUEST_PATH_QUERY);
-    spec_is_symbol_equal(0,_t_symbol(_t_get(t,p331)),TSYM_HTTP_REQUEST_PATH_QUERY_PARAMS);
-    spec_is_symbol_equal(0,_t_symbol(_t_get(t,p3312)),TSYM_HTTP_REQUEST_PATH_QUERY_PARAM);
-    spec_is_symbol_equal(0,_t_symbol(_t_get(t,p33122)),TSYM_HTTP_REQUEST_PATH_QUERY_PARAM_VALUE);
-    spec_is_symbol_equal(0,_t_symbol(_t_get(t,p311)),TSYM_HTTP_REQUEST_PATH_SEGMENT);
+    spec_is_symbol_equal(0,_t_symbol(_t_get(t,p1)),HTTP_REQUEST_VERSION);
+    spec_is_symbol_equal(0,_t_symbol(_t_get(t,p2)),HTTP_REQUEST_METHOD);
+    spec_is_symbol_equal(0,_t_symbol(_t_get(t,p3)),HTTP_REQUEST_PATH);
+    spec_is_symbol_equal(0,_t_symbol(_t_get(t,p33)),HTTP_REQUEST_PATH_QUERY);
+    spec_is_symbol_equal(0,_t_symbol(_t_get(t,p331)),HTTP_REQUEST_PATH_QUERY_PARAMS);
+    spec_is_symbol_equal(0,_t_symbol(_t_get(t,p3312)),HTTP_REQUEST_PATH_QUERY_PARAM);
+    spec_is_symbol_equal(0,_t_symbol(_t_get(t,p33122)),PARAM_VALUE);
+    spec_is_symbol_equal(0,_t_symbol(_t_get(t,p311)),HTTP_REQUEST_PATH_SEGMENT);
 
     //  _t_get returns null if tree doesn't have a node at the given path
     p311[2] = 3;
@@ -297,9 +297,9 @@ void testTreeReplace() {
     Tnode *t = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
 
     // replace the version with a new version
-    Tnode *t_version = _t_newr(0,TSYM_HTTP_REQUEST_VERSION);
-    _t_newi(t_version,TSYM_HTTP_REQUEST_VERSION_MAJOR,1);
-    _t_newi(t_version,TSYM_HTTP_REQUEST_VERSION_MINOR,1);
+    Tnode *t_version = _t_newr(0,HTTP_REQUEST_VERSION);
+    _t_newi(t_version,VERSION_MAJOR,1);
+    _t_newi(t_version,VERSION_MINOR,1);
 
     int p[] = {1,2,TREE_PATH_TERMINATOR};
     spec_is_equal(*(int *)_t_get_surface(t,p),0);
@@ -346,9 +346,9 @@ void testTreeDetach() {
     int p1[] = {1,TREE_PATH_TERMINATOR};
 
     // remove the version from the tree
-    spec_is_symbol_equal(0,_t_symbol(_t_get(t,p1)),TSYM_HTTP_REQUEST_VERSION);
+    spec_is_symbol_equal(0,_t_symbol(_t_get(t,p1)),HTTP_REQUEST_VERSION);
     Tnode *t_version = _t_detach_by_idx(t,1);
-    spec_is_symbol_equal(0,_t_symbol(_t_get(t,p1)),TSYM_HTTP_REQUEST_METHOD);
+    spec_is_symbol_equal(0,_t_symbol(_t_get(t,p1)),HTTP_REQUEST_METHOD);
 
     // detached nodes shouldn't have a parent
     spec_is_ptr_equal(_t_parent(t_version),NULL);

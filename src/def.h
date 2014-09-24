@@ -17,6 +17,9 @@
 #include "tree.h"
 #include <stdarg.h>
 
+#define ST(defs,name,num,...) name = _d_define_structure(defs.structures,"" #name "",num,__VA_ARGS__)
+#define SY(defs,name,str) name = _d_declare_symbol(defs.symbols,str,"" #name "")
+
 char *_d_get_symbol_name(Tnode *symbols,Symbol s);
 char *_d_get_structure_name(Tnode *structures,Structure s);
 char *_d_get_process_name(Tnode *processes,Process p);

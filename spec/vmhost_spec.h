@@ -70,8 +70,8 @@ Tnode *_makeTestHTTPReceptorPackage() {
     Tnode *procs = _t_newr(defs,PROCESSES);
     // a process that simply reduces to an HTTP_RESPONSE indicating an off-line status
     Tnode *resp = _t_new_root(RESPOND);
-    Tnode *http_resp = _t_newr(resp,TSYM_HTTP_RESPONSE);
-    _t_new(http_resp,TSYM_HTTP_RESPONSE_CONTENT_TYPE,"Text/Plain",11);
+    Tnode *http_resp = _t_newr(resp,HTTP_RESPONSE);
+    _t_new(http_resp,HTTP_RESPONSE_CONTENT_TYPE,"Text/Plain",11);
     _t_new(http_resp,TEST_STR_SYMBOL,"System offline!",16);
     Tnode *input = _t_new_root(INPUT);
     Tnode *output = _t_new_root(OUTPUT_SIGNATURE);
@@ -112,7 +112,7 @@ void testVMHostInstallReceptor() {
 
     // and the definition labels of the instantiated receptor should all be set up properly
     Receptor *httpr = (Receptor *)_t_surface(_t_child(r,1));
-    spec_is_equal(_r_get_symbol_by_label(httpr,"HTTP_REQUEST"),TSYM_HTTP_REQUEST);
+    spec_is_equal(_r_get_symbol_by_label(httpr,"HTTP_REQUEST"),HTTP_REQUEST);
     spec_is_equal(_r_get_symbol_by_label(httpr,"off-line response"),-1); // hard-coded process symbol
 
     // trying to re-install the receptor should fail
@@ -152,8 +152,8 @@ void testVMHostActivateReceptor() {
     // add a listener that matches on any request and returns the "offline" response
     Tnode *act = _t_newp(0,ACTION,-1);
     Tnode *expect = _t_new_root(EXPECTATION);
-    Tnode *req = _t_newi(expect,SEMTREX_SYMBOL_LITERAL,TSYM_HTTP_REQUEST);
-    _r_add_listener(httpr,DEFAULT_ASPECT,TSYM_HTTP_REQUEST,expect,act);
+    Tnode *req = _t_newi(expect,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST);
+    _r_add_listener(httpr,DEFAULT_ASPECT,HTTP_REQUEST,expect,act);
 
     // create a signal and add it to the sockets sending processing queue
     Tnode *signal = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0

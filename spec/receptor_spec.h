@@ -94,20 +94,20 @@ void testReceptorAction() {
 
     // our expectation should match on the first path segment
     Tnode *expect = _t_new_root(EXPECTATION);
-    Tnode *req = _t_newi(expect,SEMTREX_SYMBOL_LITERAL,TSYM_HTTP_REQUEST);
+    Tnode *req = _t_newi(expect,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST);
     Tnode *seq = _t_newr(req,SEMTREX_SEQUENCE);
     _t_newr(seq,SEMTREX_SYMBOL_ANY);  // skips the Version
     _t_newr(seq,SEMTREX_SYMBOL_ANY);  // skips over the Method
-    Tnode *path = _t_newi(seq,SEMTREX_SYMBOL_LITERAL,TSYM_HTTP_REQUEST_PATH);
-    Tnode *segs = _t_newi(path,SEMTREX_SYMBOL_LITERAL,TSYM_HTTP_REQUEST_PATH_SEGMENTS);
-    Tnode *g = _t_newi(segs,SEMTREX_GROUP,TSYM_HTTP_REQUEST_PATH_SEGMENT);
-    _t_newi(g,SEMTREX_SYMBOL_LITERAL,TSYM_HTTP_REQUEST_PATH_SEGMENT);
+    Tnode *path = _t_newi(seq,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST_PATH);
+    Tnode *segs = _t_newi(path,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST_PATH_SEGMENTS);
+    Tnode *g = _t_newi(segs,SEMTREX_GROUP,HTTP_REQUEST_PATH_SEGMENT);
+    _t_newi(g,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST_PATH_SEGMENT);
 
     Tnode *result;
     int matched;
     // make sure our expectation semtrex actually matches the signal
     spec_is_true(matched = _t_matchr(req,signal,&result));
-    Tnode *m = _t_get_match(result,TSYM_HTTP_REQUEST_PATH_SEGMENT);
+    Tnode *m = _t_get_match(result,HTTP_REQUEST_PATH_SEGMENT);
     char buf[2000];
     __t_dump(&test_HTTP_defs,m,0,buf);
     spec_is_str_equal(buf," (SEMTREX_MATCH:HTTP_REQUEST_PATH_SEGMENT (SEMTREX_MATCHED_PATH:/3/1/1) (SEMTREX_MATCH_SIBLINGS_COUNT:1))");
@@ -119,7 +119,7 @@ void testReceptorAction() {
 
     Tnode *act = _t_newp(0,ACTION,p);
 
-    _r_add_listener(r,DEFAULT_ASPECT,TSYM_HTTP_REQUEST,expect,act);
+    _r_add_listener(r,DEFAULT_ASPECT,HTTP_REQUEST,expect,act);
 
     Tnode *s = _r_send(r,r,DEFAULT_ASPECT,signal);
     spec_is_symbol_equal(r,_t_symbol(s),SIGNAL);

@@ -10,77 +10,87 @@
 #include "../src/ceptr.h"
 #include "../src/receptor.h"
 
-Structure TSTR_HTTP_REQUEST;
-Structure TSTR_HTTP_REQUEST_VERSION;
-Structure TSTR_HTTP_REQUEST_PATH;
+Structure HTTP_REQUEST_V11;
 
-Symbol TSYM_HTTP_REQUEST;
-Symbol TSYM_HTTP_REQUEST_METHOD;
-Symbol TSYM_HTTP_REQUEST_PATH;
-Symbol TSYM_HTTP_REQUEST_PATH_SEGMENTS;
-Symbol TSYM_HTTP_REQUEST_PATH_SEGMENT;
-Symbol TSYM_HTTP_REQUEST_PATH_FILE;
-Symbol TSYM_HTTP_REQUEST_PATH_FILE_NAME;
-Symbol TSYM_HTTP_REQUEST_PATH_FILE_EXTENSION;
-Symbol TSYM_HTTP_REQUEST_PATH_QUERY;
-Symbol TSYM_HTTP_REQUEST_PATH_QUERY_PARAMS;
-Symbol TSYM_HTTP_REQUEST_PATH_QUERY_PARAM;
-Symbol TSYM_HTTP_REQUEST_PATH_QUERY_PARAM_KEY;
-Symbol TSYM_HTTP_REQUEST_PATH_QUERY_PARAM_VALUE;
-Symbol TSYM_HTTP_REQUEST_VERSION;
-Symbol TSYM_HTTP_REQUEST_VERSION_MAJOR;
-Symbol TSYM_HTTP_REQUEST_VERSION_MINOR;
+Structure URI;
+Symbol HTTP_REQUEST_PATH_SEGMENTS;
+Symbol HTTP_REQUEST_PATH_SEGMENT;
+Symbol HTTP_REQUEST_PATH_FILE;
+Symbol FILE_NAME;
+Symbol FILE_EXTENSION;
+Structure FILE_HANDLE;
 
-Symbol TSYM_HTTP_RESPONSE;
-Symbol TSYM_HTTP_RESPONSE_CONTENT_TYPE;
-Symbol TSYM_HTTP_RESPONSE_BODY;
+Symbol HTTP_REQUEST_PATH_QUERY;
+Symbol HTTP_REQUEST_PATH_QUERY_PARAMS;
+Symbol HTTP_REQUEST_PATH_QUERY_PARAM;
+Structure KEY_VALUE_PARAM;
+Symbol PARAM_KEY;
+Symbol PARAM_VALUE;
+
+Symbol HTTP_REQUEST;
+Symbol HTTP_REQUEST_METHOD;
+Symbol HTTP_REQUEST_PATH;
+
+Structure VERSION;
+Symbol HTTP_REQUEST_VERSION;
+Symbol VERSION_MAJOR;
+Symbol VERSION_MINOR;
+
+Symbol HTTP_RESPONSE;
+Symbol HTTP_RESPONSE_CONTENT_TYPE;
+Symbol HTTP_RESPONSE_BODY;
 
 Tnode *test_HTTP_symbols,*test_HTTP_structures;
 Defs test_HTTP_defs;
 
+//SY(HTTP_REQUEST,HTTP_REQUEST_V11)
+
+void _setup_version_defs(Defs d) {
+    SY(d,VERSION_MAJOR,INTEGER);
+    SY(d,VERSION_MINOR,INTEGER);
+    ST(d,VERSION,2,VERSION_MAJOR,VERSION_MINOR);
+}
+
+//@todo make this actually match request-URI rather than just the path
+void _setup_uri_defs(Defs d) {
+    SY(d,HTTP_REQUEST_PATH_SEGMENTS,LIST);
+    SY(d,HTTP_REQUEST_PATH_SEGMENT,CSTRING);
+    SY(d,FILE_NAME,CSTRING);
+    SY(d,FILE_EXTENSION,CSTRING);
+    ST(d,FILE_HANDLE,2,FILE_NAME,FILE_EXTENSION);
+    SY(d,HTTP_REQUEST_PATH_FILE,FILE_HANDLE);
+    SY(d,HTTP_REQUEST_PATH_QUERY,LIST);
+    SY(d,HTTP_REQUEST_PATH_QUERY_PARAMS,LIST);
+    SY(d,PARAM_KEY,CSTRING);
+    SY(d,PARAM_VALUE,CSTRING);
+    ST(d,KEY_VALUE_PARAM,2,PARAM_KEY,PARAM_VALUE);
+    SY(d,HTTP_REQUEST_PATH_QUERY_PARAM,KEY_VALUE_PARAM);
+    ST(d,URI,
+       HTTP_REQUEST_PATH_SEGMENTS,
+       HTTP_REQUEST_PATH_FILE,
+       HTTP_REQUEST_PATH_QUERY
+       );
+}
+
 void _setup_HTTPDefs() {
     test_HTTP_defs.symbols = test_HTTP_symbols = _t_new_root(SYMBOLS);
     test_HTTP_defs.structures = test_HTTP_structures = _t_new_root(STRUCTURES);
+    Defs d = test_HTTP_defs;
 
-    TSYM_HTTP_REQUEST_METHOD = _d_declare_symbol(test_HTTP_symbols,INTEGER,"HTTP_REQUEST_METHOD");
+    SY(d,HTTP_REQUEST_METHOD,INTEGER);
 
-    TSYM_HTTP_REQUEST_PATH_SEGMENTS = _d_declare_symbol(test_HTTP_symbols,LIST,"HTTP_REQUEST_PATH_SEGMENTS");
-    TSYM_HTTP_REQUEST_PATH_SEGMENT = _d_declare_symbol(test_HTTP_symbols,CSTRING,"HTTP_REQUEST_PATH_SEGMENT");
-    TSYM_HTTP_REQUEST_PATH_FILE = _d_declare_symbol(test_HTTP_symbols,LIST,"HTTP_REQUEST_PATH_FILE");
-    TSYM_HTTP_REQUEST_PATH_FILE_NAME = _d_declare_symbol(test_HTTP_symbols,CSTRING,"HTTP_REQUEST_PATH_FILE_NAME");
-    TSYM_HTTP_REQUEST_PATH_FILE_EXTENSION = _d_declare_symbol(test_HTTP_symbols,CSTRING,"HTTP_REQUEST_PATH_FILE_EXTENSION");
-    TSYM_HTTP_REQUEST_PATH_QUERY = _d_declare_symbol(test_HTTP_symbols,LIST,"HTTP_REQUEST_PATH_QUERY");
-    TSYM_HTTP_REQUEST_PATH_QUERY_PARAMS = _d_declare_symbol(test_HTTP_symbols,LIST,"HTTP_REQUEST_PATH_QUERY_PARAMS");
-    TSYM_HTTP_REQUEST_PATH_QUERY_PARAM = _d_declare_symbol(test_HTTP_symbols,TREE,"HTTP_REQUEST_PATH_QUERY_PARAM");
-    TSYM_HTTP_REQUEST_PATH_QUERY_PARAM_KEY = _d_declare_symbol(test_HTTP_symbols,CSTRING,"HTTP_REQUEST_PATH_QUERY_PARAM_KEY");
-    TSYM_HTTP_REQUEST_PATH_QUERY_PARAM_VALUE = _d_declare_symbol(test_HTTP_symbols,CSTRING,"HTTP_REQUEST_PATH_QUERY_PARAM_VALUE");
+    _setup_uri_defs(d);
+    SY(d,HTTP_REQUEST_PATH,URI);
 
-    TSTR_HTTP_REQUEST_PATH =  _d_define_structure(test_HTTP_structures,"HTTP_REQUEST_PATH_STRUCTURE",
-						   TSYM_HTTP_REQUEST_PATH_SEGMENTS,
-						   TSYM_HTTP_REQUEST_PATH_FILE,
-						   TSYM_HTTP_REQUEST_PATH_QUERY
-						   );
+    _setup_version_defs(d);
+    SY(d,HTTP_REQUEST_VERSION,VERSION);
 
-    TSYM_HTTP_REQUEST_PATH = _d_declare_symbol(test_HTTP_symbols,TSTR_HTTP_REQUEST_PATH,"HTTP_REQUEST_PATH");
+    SY(d,HTTP_RESPONSE,TREE);
+    SY(d,HTTP_RESPONSE_CONTENT_TYPE,CSTRING);
+    SY(d,HTTP_RESPONSE_BODY,CSTRING);
 
-    TSYM_HTTP_REQUEST_VERSION_MAJOR = _d_declare_symbol(test_HTTP_symbols,INTEGER,"HTTP_REQUEST_VERSION_MAJOR");
-    TSYM_HTTP_REQUEST_VERSION_MINOR = _d_declare_symbol(test_HTTP_symbols,INTEGER,"HTTP_REQUEST_VERSION_MINOR");
-    TSTR_HTTP_REQUEST_VERSION = _d_define_structure(test_HTTP_structures,"HTTP_REQUEST_VERSION_STRUCTURE",2,
-					    TSYM_HTTP_REQUEST_VERSION_MAJOR,TSYM_HTTP_REQUEST_VERSION_MINOR);
-
-    TSYM_HTTP_REQUEST_VERSION = _d_declare_symbol(test_HTTP_symbols,TSTR_HTTP_REQUEST_VERSION,"HTTP_REQUEST_VERSION");
-
-    TSYM_HTTP_RESPONSE = _d_declare_symbol(test_HTTP_symbols,TREE,"HTTP_RESPONSE");
-    TSYM_HTTP_RESPONSE = _d_declare_symbol(test_HTTP_symbols,TREE,"HTTP_RESPONSE");
-    TSYM_HTTP_RESPONSE_CONTENT_TYPE = _d_declare_symbol(test_HTTP_symbols,CSTRING,"HTTP_RESPONSE_CONTENT_TYPE");
-    TSYM_HTTP_RESPONSE_BODY = _d_declare_symbol(test_HTTP_symbols,CSTRING,"HTTP_RESPONSE_BODY");
-
-    TSTR_HTTP_REQUEST = _d_define_structure(test_HTTP_structures,"HTTP_REQUEST_STRUCTURE",3,
-					    TSYM_HTTP_REQUEST_VERSION,
-					    TSYM_HTTP_REQUEST_METHOD,
-					    TSYM_HTTP_REQUEST_PATH
-					    );
-    TSYM_HTTP_REQUEST = _d_declare_symbol(test_HTTP_symbols,TREE,"HTTP_REQUEST");
+    ST(d,HTTP_REQUEST_V11,3,HTTP_REQUEST_VERSION,HTTP_REQUEST_METHOD,HTTP_REQUEST_PATH);
+    SY(d,HTTP_REQUEST,HTTP_REQUEST_V11);
 
 
 }
@@ -104,26 +114,26 @@ Tnode *_makeTestHTTPRequestTree() {
     // Note that we put the version at the beginning of our tree just because in ceptr we
     // do that as a best practice so that semtrex expectation matching can efficiently
     // switch to different processing based on version numbers.
-    Tnode *t = _t_new_root(TSYM_HTTP_REQUEST);
-    Tnode *t_version = _t_newr(t,TSYM_HTTP_REQUEST_VERSION);
-    _t_newi(t_version,TSYM_HTTP_REQUEST_VERSION_MAJOR,1);
-    _t_newi(t_version,TSYM_HTTP_REQUEST_VERSION_MINOR,0);
-    Tnode *t_method = _t_newi(t,TSYM_HTTP_REQUEST_METHOD,TEST_HTTP_METHOD_GET_VALUE);
-    Tnode *t_path = _t_newr(t,TSYM_HTTP_REQUEST_PATH);
-    Tnode *t_segments = _t_newr(t_path,TSYM_HTTP_REQUEST_PATH_SEGMENTS);
-    _t_new(t_segments,TSYM_HTTP_REQUEST_PATH_SEGMENT,"groups",7);
-    _t_new(t_segments,TSYM_HTTP_REQUEST_PATH_SEGMENT,"5",2);
-    Tnode *t_file = _t_newr(t_path,TSYM_HTTP_REQUEST_PATH_FILE);
-    _t_new(t_file,TSYM_HTTP_REQUEST_PATH_FILE_NAME,"users",6);
-    _t_new(t_file,TSYM_HTTP_REQUEST_PATH_FILE_EXTENSION,"json",5);
-    Tnode *t_query = _t_newr(t_path,TSYM_HTTP_REQUEST_PATH_QUERY);
-    Tnode *t_params = _t_newr(t_query,TSYM_HTTP_REQUEST_PATH_QUERY_PARAMS);
-    Tnode *t_param1 = _t_newr(t_params,TSYM_HTTP_REQUEST_PATH_QUERY_PARAM);
-    _t_new(t_param1,TSYM_HTTP_REQUEST_PATH_QUERY_PARAM_KEY,"sort_by",8);
-    _t_new(t_param1,TSYM_HTTP_REQUEST_PATH_QUERY_PARAM_VALUE,"last_name",10);
-    Tnode *t_param2 = _t_newr(t_params,TSYM_HTTP_REQUEST_PATH_QUERY_PARAM);
-    _t_new(t_param2,TSYM_HTTP_REQUEST_PATH_QUERY_PARAM_KEY,"page",5);
-    _t_new(t_param2,TSYM_HTTP_REQUEST_PATH_QUERY_PARAM_VALUE,"2",2);
+    Tnode *t = _t_new_root(HTTP_REQUEST);
+    Tnode *t_version = _t_newr(t,HTTP_REQUEST_VERSION);
+    _t_newi(t_version,VERSION_MAJOR,1);
+    _t_newi(t_version,VERSION_MINOR,0);
+    Tnode *t_method = _t_newi(t,HTTP_REQUEST_METHOD,TEST_HTTP_METHOD_GET_VALUE);
+    Tnode *t_path = _t_newr(t,HTTP_REQUEST_PATH);
+    Tnode *t_segments = _t_newr(t_path,HTTP_REQUEST_PATH_SEGMENTS);
+    _t_new(t_segments,HTTP_REQUEST_PATH_SEGMENT,"groups",7);
+    _t_new(t_segments,HTTP_REQUEST_PATH_SEGMENT,"5",2);
+    Tnode *t_file = _t_newr(t_path,HTTP_REQUEST_PATH_FILE);
+    _t_new(t_file,FILE_NAME,"users",6);
+    _t_new(t_file,FILE_EXTENSION,"json",5);
+    Tnode *t_query = _t_newr(t_path,HTTP_REQUEST_PATH_QUERY);
+    Tnode *t_params = _t_newr(t_query,HTTP_REQUEST_PATH_QUERY_PARAMS);
+    Tnode *t_param1 = _t_newr(t_params,HTTP_REQUEST_PATH_QUERY_PARAM);
+    _t_new(t_param1,PARAM_KEY,"sort_by",8);
+    _t_new(t_param1,PARAM_VALUE,"last_name",10);
+    Tnode *t_param2 = _t_newr(t_params,HTTP_REQUEST_PATH_QUERY_PARAM);
+    _t_new(t_param2,PARAM_KEY,"page",5);
+    _t_new(t_param2,PARAM_VALUE,"2",2);
     return t;
 }
 //! [makeTestHTTPRequestTree]
@@ -142,9 +152,9 @@ Process _makeTestHTTPResponseProcess(Receptor *r) {
 
     Tnode *resp = _t_new_root(RESPOND);
     Tnode *n = _t_newr(resp,INTERPOLATE_FROM_MATCH);
-    Tnode *http_resp = _t_newr(n,TSYM_HTTP_RESPONSE);
-    _t_new(http_resp,TSYM_HTTP_RESPONSE_CONTENT_TYPE,"CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT",38);
-    _t_newi(http_resp,INTERPOLATE_SYMBOL,TSYM_HTTP_REQUEST_PATH_SEGMENT);
+    Tnode *http_resp = _t_newr(n,HTTP_RESPONSE);
+    _t_new(http_resp,HTTP_RESPONSE_CONTENT_TYPE,"CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT",38);
+    _t_newi(http_resp,INTERPOLATE_SYMBOL,HTTP_REQUEST_PATH_SEGMENT);
 
     int pt1[] = {2,1,TREE_PATH_TERMINATOR};
     int pt2[] = {2,2,TREE_PATH_TERMINATOR};
