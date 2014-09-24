@@ -96,11 +96,27 @@ void testGetSize() {
     Symbol lat = _d_declare_symbol(symbols,FLOAT,"latitude");		// symbols are declared, structures are defined
     Symbol lon = _d_declare_symbol(symbols,FLOAT,"longitude");		// here we declare two meaningful ways to use the structure float
 
+    Defs defs = {structures, symbols, 0, 0};
+
     // Two symbols, lat and lon are assembled into the structure "latlong"
     Structure latlong = _d_define_structure(structures,"latlong", 2, lat, lon);
 
     // House location is a meaningful use of the structure latlong
     Symbol house_loc = _d_declare_symbol(symbols, latlong, "house location");
+
+    char buf[1000];
+    __t_dump(&defs, structures, 0, buf);
+    puts("\r\n");
+    puts(buf);
+
+    __t_dump(&defs, symbols, 0, buf);
+    puts("\r\n");
+    puts(buf);
+
+    Tnode* latlonDef = _t_child(structures, latlong);
+    __t_dump(&defs, latlonDef, 0, buf);
+    puts("\r\n");
+    puts(buf);
 
     // Here's the surface of the latlong.
     float ll[] = {2.0,90.3};
