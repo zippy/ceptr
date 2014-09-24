@@ -297,7 +297,7 @@ char * __t_dump(Defs *defs,Tnode *t,int level,char *buf) {
     char *c;
     Xaddr x;
     if (is_process(s)) {
-	sprintf(buf," (process:%s",_d_get_process_name(0,s));
+	sprintf(buf," (process:%s",_d_get_process_name(processes,s));
     }
     else {
 	char *n = _d_get_symbol_name(symbols,s);
@@ -315,7 +315,11 @@ char * __t_dump(Defs *defs,Tnode *t,int level,char *buf) {
 	    sprintf(buf," (%s:%s",n,c?c:"<unknown>");
 	    break;
 	case STRUCTURE:
-	    c = _d_get_structure_name(0,*(int *)_t_surface(t));
+	    c = _d_get_structure_name(structures,*(int *)_t_surface(t));
+	    sprintf(buf," (%s:%s",n,c?c:"<unknown>");
+	    break;
+	case PROCESS:
+	    c = _d_get_process_name(processes,*(int *)_t_surface(t));
 	    sprintf(buf," (%s:%s",n,c?c:"<unknown>");
 	    break;
 	case TREE_PATH:
