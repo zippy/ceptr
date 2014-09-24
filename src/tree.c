@@ -11,6 +11,8 @@
 
 #include "tree.h"
 #include "ceptr_error.h"
+#include "hashfn.h"
+#include "def.h"
 
 /*****************  Node creation */
 void __t_append_child(Tnode *t,Tnode *c) {
@@ -628,12 +630,12 @@ TreeHash _t_hash(Tnode *symbols,Tnode *structures,Tnode *t) {
 	TreeHash h[2];
 	void *surface = _t_surface(t);
 	h[0] = _t_symbol(t);
-	size_t l = _d_get_symbol_size(symbols,structures,h[0]);
+	size_t l = _d_get_symbol_size(symbols,structures,h[0],surface);
 	if (l > 0)
 	    h[1] = hashfn((char *)surface,l);
 	else
 	    h[1] = 0;
-	result = hashfn(h,sizeof(h));
+	result = hashfn((char *)h,sizeof(h));
     }
     else {
 	size_t l = sizeof(TreeHash)*c+sizeof(Symbol);
@@ -643,7 +645,7 @@ TreeHash _t_hash(Tnode *symbols,Tnode *structures,Tnode *t) {
 	    *(h++) = _t_hash(symbols,structures,_t_child(t,i));
 	}
 	(*(Symbol *)h) = _t_symbol(t);
-	result = hashfn(hashes,l);
+	result = hashfn((char *)hashes,l);
 	free(hashes);
     }
     return result;
