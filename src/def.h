@@ -30,7 +30,7 @@ size_t _d_get_structure_size(Tnode *symbols,Tnode *structures,Symbol s,void *sur
 Tnode *__d_code_process(Tnode *processes,Tnode *code,char *name,char *intention,Tnode *in,Tnode *out);
 Process _d_code_process(Tnode *processes,Tnode *code,char *name,char *intention,Tnode *in,Tnode *out);
 Tnode *_d_get_process_code(Tnode *processes,Process p);
-char * __t_dump(Tnode *symbols,Tnode *t,int level,char *buf);
+char * __t_dump(Defs *defs,Tnode *t,int level,char *buf);
 
 #endif
 /** @}*/

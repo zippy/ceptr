@@ -562,7 +562,7 @@ char __t_dump_buf[10000];
 char *_td(Receptor *r,Tnode *t) {
     if (!t) sprintf(__t_dump_buf,"<null-tree>");
     else
-	__t_dump(r->defs.symbols,t,0,__t_dump_buf);
+	__t_dump(&r->defs,t,0,__t_dump_buf);
     return __t_dump_buf;
 }
 

@@ -32,10 +32,12 @@ Symbol TSYM_HTTP_RESPONSE_CONTENT_TYPE;
 Symbol TSYM_HTTP_RESPONSE_BODY;
 
 Tnode *test_HTTP_symbols,*test_HTTP_structures;
+Defs test_HTTP_defs;
 
 void _setup_HTTPDefs() {
-    test_HTTP_symbols = _t_new_root(SYMBOLS);
-    test_HTTP_structures = _t_new_root(STRUCTURES);
+    test_HTTP_defs.symbols = test_HTTP_symbols = _t_new_root(SYMBOLS);
+    test_HTTP_defs.structures = test_HTTP_structures = _t_new_root(STRUCTURES);
+
     TSYM_HTTP_REQUEST = _d_declare_symbol(test_HTTP_symbols,TREE,"HTTP_REQUEST");
     TSYM_HTTP_REQUEST_METHOD = _d_declare_symbol(test_HTTP_symbols,INTEGER,"HTTP_REQUEST_METHOD");
     TSYM_HTTP_REQUEST_PATH = _d_declare_symbol(test_HTTP_symbols,TREE,"HTTP_REQUEST_PATH");

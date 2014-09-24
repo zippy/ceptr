@@ -282,8 +282,8 @@ void testTreeClone() {
 
     char buf1[2000];
     char buf2[2000];
-    __t_dump(test_HTTP_symbols,c,0,buf1);
-    __t_dump(test_HTTP_symbols,t,0,buf2);
+    __t_dump(&test_HTTP_defs,c,0,buf1);
+    __t_dump(&test_HTTP_defs,t,0,buf2);
 
     spec_is_str_equal(buf1,buf2);
 

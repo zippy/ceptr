@@ -109,7 +109,7 @@ void testReceptorAction() {
     spec_is_true(matched = _t_matchr(req,signal,&result));
     Tnode *m = _t_get_match(result,TSYM_HTTP_REQUEST_PATH_SEGMENT);
     char buf[2000];
-    __t_dump(test_HTTP_symbols,m,0,buf);
+    __t_dump(&test_HTTP_defs,m,0,buf);
     spec_is_str_equal(buf," (SEMTREX_MATCH:HTTP_REQUEST_PATH_SEGMENT (SEMTREX_MATCHED_PATH:/3/1/1) (SEMTREX_MATCH_SIBLINGS_COUNT:1))");
     if (result) {
 	_t_free(result);
@@ -126,7 +126,7 @@ void testReceptorAction() {
 
     // the result should be signal tree with the matched PATH_SEGMENT returned as the body
     result = _t_child(_t_child(s,1),1);
-    __t_dump(test_HTTP_symbols,result,0,buf);
+    __t_dump(&test_HTTP_defs,result,0,buf);
     spec_is_str_equal(buf," (HTTP_RESPONSE (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT) (HTTP_REQUEST_PATH_SEGMENT:groups))");
 
     _r_free(r);
@@ -211,7 +211,7 @@ void testReceptorDefMatch() {
     Tnode *stx = _r_build_def_semtrex(r,house_loc,0);
     char buf[2000];
     spec_is_str_equal(_dump_semtrex(stx,buf),"/(3/1,2)");
-    __t_dump(r->defs.symbols,stx,0,buf);
+    __t_dump(&r->defs,stx,0,buf);
     spec_is_str_equal(buf," (SEMTREX_SYMBOL_LITERAL:house location (SEMTREX_SEQUENCE (SEMTREX_SYMBOL_LITERAL:latitude) (SEMTREX_SYMBOL_LITERAL:longitude)))");
 
     // a correctly structured tree should match its definition
@@ -287,8 +287,8 @@ void testReceptorSerialize() {
 
     // check that the structures look the same by comparing a string dump of the two
     // receptors
-    __t_dump(r->defs.symbols,r->root,0,buf);
-    __t_dump(r1->defs.symbols,r1->root,0,buf1);
+    __t_dump(&r->defs,r->root,0,buf);
+    __t_dump(&r1->defs,r1->root,0,buf1);
     spec_is_str_equal(buf1,buf);
 
     // check that the unserialized receptor has the labels loaded into the label table
@@ -301,8 +301,8 @@ void testReceptorSerialize() {
     // check that the unserialized receptor has all the instances loaded into the instance store too
     Tnode *t1 = _r_get_instance(r1,x);
     buf[0] = buf1[0] = 0;
-    __t_dump(r->defs.symbols,t,0,buf);
-    __t_dump(r1->defs.symbols,t1,0,buf1);
+    __t_dump(&r->defs,t,0,buf);
+    __t_dump(&r1->defs,t1,0,buf1);
     spec_is_str_equal(buf1,buf);
 
     free(surface);

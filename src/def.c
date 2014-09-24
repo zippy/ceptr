@@ -285,7 +285,10 @@ Tnode *_d_get_process_code(Tnode *processes,Process p) {
 
 /*****************  Tree debugging utilities */
 
-char * __t_dump(Tnode *symbols,Tnode *t,int level,char *buf) {
+char * __t_dump(Defs *defs,Tnode *t,int level,char *buf) {
+    Tnode *structures = defs ? defs->structures : 0;
+    Tnode *symbols = defs ? defs->symbols : 0;
+    Tnode *processes = defs ? defs->processes : 0;
     if (!t) return "";
     Symbol s = _t_symbol(t);
     char b[255];
@@ -311,6 +314,10 @@ char * __t_dump(Tnode *symbols,Tnode *t,int level,char *buf) {
 	    c = _d_get_symbol_name(symbols,*(int *)_t_surface(t));
 	    sprintf(buf," (%s:%s",n,c?c:"<unknown>");
 	    break;
+	case STRUCTURE:
+	    c = _d_get_structure_name(0,*(int *)_t_surface(t));
+	    sprintf(buf," (%s:%s",n,c?c:"<unknown>");
+	    break;
 	case TREE_PATH:
 	    sprintf(buf," (%s:%s",n,_t_sprint_path((int *)_t_surface(t),b));
 	    break;
@@ -320,13 +327,13 @@ char * __t_dump(Tnode *symbols,Tnode *t,int level,char *buf) {
 	    break;
 	case TREE:
 	    if (t->context.flags & TFLAG_SURFACE_IS_TREE) {
-		c = __t_dump(symbols,(Tnode *)_t_surface(t),0,tbuf);
+		c = __t_dump(defs,(Tnode *)_t_surface(t),0,tbuf);
 		sprintf(buf," (%s:{%s}",n,c);
 		break;
 	    }
 	case RECEPTOR:
 	    if (t->context.flags & (TFLAG_SURFACE_IS_TREE+TFLAG_SURFACE_IS_RECEPTOR)) {
-		c = __t_dump(symbols,((Receptor *)_t_surface(t))->root,0,tbuf);
+		c = __t_dump(defs,((Receptor *)_t_surface(t))->root,0,tbuf);
 		sprintf(buf," (%s:{%s}",n,c);
 		break;
 	    }
@@ -350,7 +357,7 @@ char * __t_dump(Tnode *symbols,Tnode *t,int level,char *buf) {
 	    }
 	}
     }
-    for(i=1;i<=_t_children(t);i++) __t_dump(symbols,_t_child(t,i),level+1,buf+strlen(buf));
+    for(i=1;i<=_t_children(t);i++) __t_dump(defs,_t_child(t,i),level+1,buf+strlen(buf));
     sprintf(buf+strlen(buf),")");
     return buf;
 }
