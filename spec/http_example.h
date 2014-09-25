@@ -9,6 +9,7 @@
 
 #include "../src/ceptr.h"
 #include "../src/receptor.h"
+#include "../src/def.h"
 
 Structure HTTP_REQUEST_V11;
 
@@ -65,7 +66,7 @@ void _setup_uri_defs(Defs d) {
     SY(d,PARAM_VALUE,CSTRING);
     ST(d,KEY_VALUE_PARAM,2,PARAM_KEY,PARAM_VALUE);
     SY(d,HTTP_REQUEST_PATH_QUERY_PARAM,KEY_VALUE_PARAM);
-    ST(d,URI,
+    ST(d,URI,3,
        HTTP_REQUEST_PATH_SEGMENTS,
        HTTP_REQUEST_PATH_FILE,
        HTTP_REQUEST_PATH_QUERY
@@ -85,13 +86,12 @@ void _setup_HTTPDefs() {
     _setup_version_defs(d);
     SY(d,HTTP_REQUEST_VERSION,VERSION);
 
-    SY(d,HTTP_RESPONSE,TREE);
-    SY(d,HTTP_RESPONSE_CONTENT_TYPE,CSTRING);
-    SY(d,HTTP_RESPONSE_BODY,CSTRING);
-
     ST(d,HTTP_REQUEST_V11,3,HTTP_REQUEST_VERSION,HTTP_REQUEST_METHOD,HTTP_REQUEST_PATH);
     SY(d,HTTP_REQUEST,HTTP_REQUEST_V11);
 
+    SY(d,HTTP_RESPONSE,TREE);
+    SY(d,HTTP_RESPONSE_CONTENT_TYPE,CSTRING);
+    SY(d,HTTP_RESPONSE_BODY,CSTRING);
 
 }
 
@@ -134,6 +134,12 @@ Tnode *_makeTestHTTPRequestTree() {
     Tnode *t_param2 = _t_newr(t_params,HTTP_REQUEST_PATH_QUERY_PARAM);
     _t_new(t_param2,PARAM_KEY,"page",5);
     _t_new(t_param2,PARAM_VALUE,"2",2);
+
+    // confirm that we built the request right!
+     Tnode *stx = _d_build_def_semtrex(test_HTTP_defs,HTTP_REQUEST,0);
+     if (!_t_match(stx,t)) {raise_error0("BAD HTTP_REQUEST");}
+     _t_free(stx);
+
     return t;
 }
 //! [makeTestHTTPRequestTree]

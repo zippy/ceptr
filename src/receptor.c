@@ -241,28 +241,10 @@ size_t __r_get_symbol_size(Receptor *r,Symbol s,void *surface) {
  *
  * @param[in] r the receptor context in which things are defined
  * @param[in] s the symbol to build a semtrex for
- * @param[in] parent the parent semtrex node because this function calls itself recursively.  Pass in 0 to start.
  * @returns the completed semtrex
- * @todo currently this won't detect an incorrect strcture with extra children.
- This is because we don't haven't yet implemented the equivalent of "$" for semtrex.
  */
-Tnode * _r_build_def_semtrex(Receptor *r,Symbol s,Tnode *parent) {
-    Tnode *stx = _t_newi(parent,SEMTREX_SYMBOL_LITERAL,s);
-
-    Structure st = __r_get_symbol_structure(r,s);
-    if (!(is_sys_structure(st))) {
-	Tnode *structure = _t_child(r->defs.structures,st);
-	Tnode *parts = _t_child(structure,2);
-	int i,c = _t_children(parts);
-	if (c > 0) {
-	    Tnode *seq = _t_newr(stx,SEMTREX_SEQUENCE);
-	    for(i=1;i<=c;i++) {
-		Tnode *p = _t_child(parts,i);
-		_r_build_def_semtrex(r,*(Symbol *)_t_surface(p),seq);
-	    }
-	}
-    }
-    return stx;
+Tnode * _r_build_def_semtrex(Receptor *r,Symbol s) {
+    return _d_build_def_semtrex(r->defs,s,0);
 }
 
 /**
@@ -275,9 +257,12 @@ Tnode * _r_build_def_semtrex(Receptor *r,Symbol s,Tnode *parent) {
  *
  * @todo currently this just matches on a semtrex.  It should also look at the surface
  sizes to see if they meet the criteria of the structure definitions.
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/receptor_spec.h testReceptorDefMatch
  */
 int _r_def_match(Receptor *r,Symbol s,Tnode *t) {
-    Tnode *stx = _r_build_def_semtrex(r,s,0);
+    Tnode *stx = _r_build_def_semtrex(r,s);
     int result = _t_match(stx,t);
     _t_free(stx);
     return result;

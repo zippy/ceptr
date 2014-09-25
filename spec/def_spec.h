@@ -157,6 +157,26 @@ void testCodeProcess() {
     //! [testCodeProcess]
 }
 
+void testDefSemtrex() {
+    //! [testDefSemtrex]
+    Defs d = {_t_newr(0,STRUCTURES),_t_newr(0,SYMBOLS),0,0};
+    Symbol SY(d,lat,FLOAT);
+    Symbol SY(d,lon,FLOAT);
+    Structure ST(d,latlong,2,lat,lon);
+    Symbol SY(d,house_loc,latlong);
+
+    Tnode *stx = _d_build_def_semtrex(d,house_loc,0);
+    char buf[2000];
+    spec_is_str_equal(_dump_semtrex(stx,buf),"/(3/1,2)");
+    __t_dump(&d,stx,0,buf);
+    spec_is_str_equal(buf," (SEMTREX_SYMBOL_LITERAL:house_loc (SEMTREX_SEQUENCE (SEMTREX_SYMBOL_LITERAL:lat) (SEMTREX_SYMBOL_LITERAL:lon)))");
+
+    _t_free(stx);
+    _t_free(d.structures);
+    _t_free(d.symbols);
+    //! [testDefSemtrex]
+}
+
 void testDef() {
     testSymbolGetName();
     testStructureGetName();
@@ -166,4 +186,5 @@ void testDef() {
     testGetSymbolStructure();
     testGetSize();
     testCodeProcess();
+    testDefSemtrex();
 }

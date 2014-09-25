@@ -283,6 +283,38 @@ Tnode *_d_get_process_code(Tnode *processes,Process p) {
     return _t_child(processes,-p);
 }
 
+/**
+ * Walks the definition of a symbol to build a semtrex that would match that definiton
+ *
+ * @param[in] defs the definition context
+ * @param[in] s the symbol to build a semtrex for
+ * @param[in] parent the parent semtrex node because this function calls itself recursively.  Pass in 0 to start.
+ * @returns the completed semtrex
+ * @todo currently this won't detect an incorrect strcture with extra children.
+ This is because we don't haven't yet implemented the equivalent of "$" for semtrex.
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/def_spec.h testDefSemtrex
+*/
+Tnode * _d_build_def_semtrex(Defs defs,Symbol s,Tnode *parent) {
+    Tnode *stx = _t_newi(parent,SEMTREX_SYMBOL_LITERAL,s);
+
+    Structure st = _d_get_symbol_structure(defs.symbols,s);
+    if (!(is_sys_structure(st))) {
+	Tnode *structure = _t_child(defs.structures,st);
+	Tnode *parts = _t_child(structure,2);
+	int i,c = _t_children(parts);
+	if (c > 0) {
+	    Tnode *seq = _t_newr(stx,SEMTREX_SEQUENCE);
+	    for(i=1;i<=c;i++) {
+		Tnode *p = _t_child(parts,i);
+		_d_build_def_semtrex(defs,*(Symbol *)_t_surface(p),seq);
+	    }
+	}
+    }
+    return stx;
+}
+
 /*****************  Tree debugging utilities */
 
 char * __t_dump(Defs *defs,Tnode *t,int level,char *buf) {

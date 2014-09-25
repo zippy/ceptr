@@ -198,6 +198,7 @@ void defineHouseLocation(Receptor *r,Symbol *lat,Symbol *lon, Structure *latlong
 //! [defineHouseLocation]
 
 void testReceptorDefMatch() {
+    //! [testReceptorDefMatch]
     Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
     Symbol lat,lon,house_loc;
     Structure latlong;
@@ -208,7 +209,7 @@ void testReceptorDefMatch() {
     Tnode *t_lat = _t_new(t,lat,&x,sizeof(x));
     Tnode *t_lon = _t_new(t,lon,&x,sizeof(x));
 
-    Tnode *stx = _r_build_def_semtrex(r,house_loc,0);
+    Tnode *stx = _r_build_def_semtrex(r,house_loc);
     char buf[2000];
     spec_is_str_equal(_dump_semtrex(stx,buf),"/(3/1,2)");
     __t_dump(&r->defs,stx,0,buf);
@@ -229,6 +230,7 @@ void testReceptorDefMatch() {
     _t_free(t);
     _t_free(t_lon);
     _r_free(r);
+    //! [testReceptorDefMatch]
 }
 
 void testReceptorInstanceNew() {
