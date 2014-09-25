@@ -63,6 +63,13 @@ Tnode *__r_get_signals(Receptor *r,Aspect aspect);
 
 /*****************  Tree debugging utilities */
 char *_td(Receptor *r,Tnode *t);
+char *_r_get_structure_name(Receptor *r,Structure s);
+char *_r_get_symbol_name(Receptor *r,Symbol s);
+char *_r_get_process_name(Receptor *r,Process p);
+
+Xaddr G_null_xaddr;
+#define is_null_xaddr(x) ((x).symbol == 0 && (x).addr == 0)
+#define is_xaddr_eq(x,y) ((x).symbol == (y).symbol && (x).addr == (y).addr)
 
 #define spec_is_symbol_equal(r,got, expected) spec_total++; if (expected==got){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %s but was %s",__FUNCTION__,__LINE__,#got,_r_get_symbol_name(r,expected),_r_get_symbol_name(r,got));}
 
@@ -70,13 +77,7 @@ char *_td(Receptor *r,Tnode *t);
 
 #define spec_is_process_equal(r,got, expected) spec_total++; if (expected==got){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %s but was %s",__FUNCTION__,__LINE__,#got,_r_get_process_name(r,expected),_r_get_process_name(r,got));}
 
-char *_r_get_structure_name(Receptor *r,Structure s);
-char *_r_get_symbol_name(Receptor *r,Symbol s);
-char *_r_get_process_name(Receptor *r,Process p);
-
-Xaddr G_null_xaddr;
-
-#define is_null_xaddr(x) ((x).symbol == 0 && (x).addr == 0)
+#define spec_is_xaddr_equal(r,got,expected)  spec_total++; if (is_xaddr_eq(got,expected)){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %s.%d but was %s.%d",__FUNCTION__,__LINE__,#got,expected.symbol?_r_get_symbol_name(r,expected.symbol):"0",expected.addr,got.symbol ? _r_get_symbol_name(r,got.symbol):"0",got.addr);}
 
 #endif
 

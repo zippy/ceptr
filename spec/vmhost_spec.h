@@ -119,6 +119,12 @@ void testVMHostInstallReceptor() {
     x = _v_install_r(v,xp,0,"http server");
     spec_is_true(is_null_xaddr(x));
 
+    // because the receptor's id is in the installed_receptors scape
+    Tnode *pack = _r_get_instance(v->c,xp);
+    Tnode *id = _t_child(pack,2);
+    TreeHash h = _t_hash(v->r->defs.symbols,v->r->defs.structures,id);
+    spec_is_xaddr_equal(v->r,_s_get(v->installed_receptors,h),xp);
+
     _v_free(v);
     //! [testVMHostInstallReceptor]
 }

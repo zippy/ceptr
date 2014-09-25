@@ -48,7 +48,7 @@ void _s_free(Scape *s) {
  * add a new element into a scape
  *
  * @params[in] s the scape
- * @params[in] key the tree node which is the key
+ * @params[in] h a hash of the tree node which is the key
  * @params[in] xaddr the instance address to be scaped
  *
  * <b>Examples (from test suite):</b>
