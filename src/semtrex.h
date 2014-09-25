@@ -112,6 +112,7 @@ void _stx_freeFA(SState *s);
 int _t_match(Tnode *semtrex,Tnode *t);
 int _t_matchr(Tnode *semtrex,Tnode *t,Tnode **r);
 Tnode *_t_get_match(Tnode *result,Symbol group);
+char * _dump_semtrex(Defs defs,Tnode *s,char *buf);
 
 #endif
 

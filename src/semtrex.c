@@ -14,6 +14,7 @@
  */
 
 #include "semtrex.h"
+#include "def.h"
 
 /// the final matching state in the FSA can be declared statically and globally
 SState matchstate = {StateMatch}; /* only one instance of the match state*/
@@ -429,4 +430,81 @@ Tnode *_t_get_match(Tnode *result,Symbol group)
     return 0;
 }
 
+// semtrex dumping code
+char * __dump_semtrex(Defs defs,Tnode *s,char *buf);
+
+void __stxd_multi(Defs defs,char *x,Tnode *s,char *buf) {
+    char b[1000];
+    sprintf(buf,_t_children(s)>1 ? "(%s)%s" : "%s%s",__dump_semtrex(defs,_t_child(s,1),b),x);
+}
+void __stxd_descend(Defs defs,Tnode *s,char *v,char *buf) {
+    if(_t_children(s)>0) {
+	char b[1000];
+	Tnode *sub = _t_child(s,1);
+	sprintf(buf,_t_children(sub)>0?"(%s/%s)":"(%s/%s)",v,__dump_semtrex(defs,sub,b));
+    }
+    else sprintf(buf,"%s",v);
+}
+
+char * __dump_semtrex(Defs defs,Tnode *s,char *buf) {
+    Symbol sym = _t_symbol(s);
+    char b[1000];
+    char *sn;
+    int i,c;
+    switch(sym) {
+    case SEMTREX_VALUE_LITERAL:
+    case SEMTREX_SYMBOL_LITERAL:
+	c = *(int *)_t_surface(s);
+	sn = _d_get_symbol_name(defs.symbols,c);
+	// ignore "<unknown symbol"
+	if (*sn=='<')
+	    sprintf(b,"%d",c);
+	else
+	    sprintf(b,"%s",sn);
+	if (sym == SEMTREX_VALUE_LITERAL) {
+	    sprintf(b+strlen(b),"=???");
+	}
+	__stxd_descend(defs,s,b,buf);
+	break;
+    case SEMTREX_SYMBOL_ANY:
+	sprintf(b,".");
+	__stxd_descend(defs,s,b,buf);
+	break;
+    case SEMTREX_SEQUENCE:
+	c = _t_children(s);
+	sn = buf;
+	for(i=1;i<=c;i++) {
+	    sprintf(sn,i<c ? "%s,":"%s",__dump_semtrex(defs,_t_child(s,i),b));
+	    sn += strlen(sn);
+	}
+	break;
+    case SEMTREX_OR:
+	sprintf(buf,"(%s)|(%s)",__dump_semtrex(defs,_t_child(s,1),b),__dump_semtrex(defs,_t_child(s,2),b));
+	break;
+    case SEMTREX_ZERO_OR_MORE:
+	__stxd_multi(defs,"*",s,buf);
+	break;
+    case SEMTREX_ONE_OR_MORE:
+	__stxd_multi(defs,"+",s,buf);
+	break;
+    case SEMTREX_ZERO_OR_ONE:
+	__stxd_multi(defs,"?",s,buf);
+	break;
+    case SEMTREX_GROUP:
+	sn = _d_get_symbol_name(defs.symbols,*(int *)_t_surface(s));
+	// ignore "<unknown symbol"
+	if  (*sn=='<')
+	    sprintf(buf, "{%s}",__dump_semtrex(defs,_t_child(s,1),b));
+	else
+	    sprintf(buf, "{%s: %s}",sn,__dump_semtrex(defs,_t_child(s,1),b));
+	break;
+    }
+    return buf;
+}
+
+char * _dump_semtrex(Defs defs,Tnode *s,char *buf) {
+    buf[0] = '/';
+    __dump_semtrex(defs,s,buf+1);
+    return buf;
+}
 /**@}*/

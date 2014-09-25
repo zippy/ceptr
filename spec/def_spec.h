@@ -6,6 +6,7 @@
 
 #include "../src/ceptr.h"
 #include "../src/def.h"
+#include "../src/semtrex.h"
 
 void testSymbolGetName() {
     //! [testSymbolGetName]
@@ -167,7 +168,7 @@ void testDefSemtrex() {
 
     Tnode *stx = _d_build_def_semtrex(d,house_loc,0);
     char buf[2000];
-    spec_is_str_equal(_dump_semtrex(stx,buf),"/(3/1,2)");
+    spec_is_str_equal(_dump_semtrex(d,stx,buf),"/(house_loc/lat,lon)");
     __t_dump(&d,stx,0,buf);
     spec_is_str_equal(buf," (SEMTREX_SYMBOL_LITERAL:house_loc (SEMTREX_SEQUENCE (SEMTREX_SYMBOL_LITERAL:lat) (SEMTREX_SYMBOL_LITERAL:lon)))");
 
