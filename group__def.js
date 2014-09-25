@@ -7,6 +7,7 @@ var group__def =
     [ "sys_symbols.h", "sys__symbols_8h.html", null ],
     [ "__d_code_process", "group__def.html#ga1dc59ee8a878d248e706d3eac36ff3cf", null ],
     [ "__d_declare_symbol", "group__def.html#ga711a956190b8d06afc51a025253d663c", null ],
+    [ "_d_build_def_semtrex", "group__def.html#ga1aea8bf1dcd0afaaf4545ceff6b95f2f", null ],
     [ "_d_code_process", "group__def.html#gae1a5dfaf9657e2ccf00edc2fb39c96c1", null ],
     [ "_d_declare_symbol", "group__def.html#gaa80e4d75f09953b71ff49b75a8d6745e", null ],
     [ "_d_define_structure", "group__def.html#ga4205f785c519eead8b95ec1507a96a66", null ],

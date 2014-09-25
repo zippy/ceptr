@@ -117,7 +117,7 @@ Include dependency graph for vmhost_spec.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="vmhost__spec_8h__incl.png" border="0" usemap="#spec_2vmhost__spec_8h" alt=""/></div>
 <map name="spec_2vmhost__spec_8h" id="spec_2vmhost__spec_8h">
-<area shape="rect" id="node2" href="ceptr_8h_source.html" title="../src/ceptr.h" alt="" coords="209,229,305,256"/><area shape="rect" id="node18" href="vmhost_8h.html" title="vmhost implementation header file " alt="" coords="430,80,540,107"/><area shape="rect" id="node25" href="http__example_8h.html" title="http_example.h" alt="" coords="295,80,405,107"/><area shape="rect" id="node6" href="ceptr__error_8h_source.html" title="ceptr_error.h" alt="" coords="193,379,287,405"/><area shape="rect" id="node9" href="tree_8h.html" title="semantic trees header file " alt="" coords="442,304,496,331"/><area shape="rect" id="node10" href="sys__symbols_8h.html" title="Defines hard&#45;coded system defined symbols. " alt="" coords="661,379,771,405"/><area shape="rect" id="node11" href="sys__structures_8h.html" title="Defines hard&#45;coded system defined structures. " alt="" coords="494,453,612,480"/><area shape="rect" id="node12" href="ceptr__types_8h_source.html" title="ceptr_types.h" alt="" coords="665,453,767,480"/><area shape="rect" id="node17" href="sys__processes_8h.html" title="Defines hard&#45;coded system defined processes. " alt="" coords="515,379,636,405"/><area shape="rect" id="node14" href="uthash_8h_source.html" title="uthash.h" alt="" coords="611,528,683,555"/><area shape="rect" id="node19" href="receptor_8h.html" title="receptor implementation header file " alt="" coords="445,155,524,181"/><area shape="rect" id="node20" href="def_8h.html" title="header file for symbol and structure definition functions " alt="" coords="619,229,669,256"/><area shape="rect" id="node22" href="label_8h.html" title="Label tables map human readable text strings to parts of semantic trees. " alt="" coords="762,304,821,331"/><area shape="rect" id="node23" href="process_8h.html" title="processing header files " alt="" coords="423,229,501,256"/><area shape="rect" id="node24" href="scape_8h.html" title="scape header files " alt="" coords="526,229,593,256"/></map>
+<area shape="rect" id="node2" href="ceptr_8h_source.html" title="../src/ceptr.h" alt="" coords="148,229,244,256"/><area shape="rect" id="node18" href="vmhost_8h.html" title="vmhost implementation header file " alt="" coords="373,80,483,107"/><area shape="rect" id="node25" href="http__example_8h.html" title="http_example.h" alt="" coords="238,80,348,107"/><area shape="rect" id="node6" href="ceptr__error_8h_source.html" title="ceptr_error.h" alt="" coords="166,379,260,405"/><area shape="rect" id="node9" href="tree_8h.html" title="semantic trees header file " alt="" coords="406,304,460,331"/><area shape="rect" id="node10" href="sys__symbols_8h.html" title="Defines hard&#45;coded system defined symbols. " alt="" coords="661,379,771,405"/><area shape="rect" id="node11" href="sys__structures_8h.html" title="Defines hard&#45;coded system defined structures. " alt="" coords="494,453,612,480"/><area shape="rect" id="node12" href="ceptr__types_8h_source.html" title="ceptr_types.h" alt="" coords="665,453,767,480"/><area shape="rect" id="node17" href="sys__processes_8h.html" title="Defines hard&#45;coded system defined processes. " alt="" coords="515,379,636,405"/><area shape="rect" id="node14" href="uthash_8h_source.html" title="uthash.h" alt="" coords="611,528,683,555"/><area shape="rect" id="node19" href="receptor_8h.html" title="receptor implementation header file " alt="" coords="388,155,467,181"/><area shape="rect" id="node20" href="def_8h.html" title="header file for symbol and structure definition functions " alt="" coords="272,229,323,256"/><area shape="rect" id="node22" href="label_8h.html" title="Label tables map human readable text strings to parts of semantic trees. " alt="" coords="771,304,831,331"/><area shape="rect" id="node23" href="process_8h.html" title="processing header files " alt="" coords="398,229,476,256"/><area shape="rect" id="node24" href="scape_8h.html" title="scape header files " alt="" coords="501,229,568,256"/></map>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -189,15 +189,25 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>testVMHost</b> ()</td
 <div class="line"></div>
 <div class="line">    <a class="code" href="group__tree.html#gab438eeedb3eb6c1e20171b33d8ec499d">_t_newi</a>(p,<a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a3bde3ee377bd6085fe5caaaf332a2ec4">RECEPTOR_IDENTIFIER</a>,<a class="code" href="vmhost__spec_8h.html#a6c1d54ae50d06239a1620966011a094d">HTTP_RECEPTOR_UUID</a>);</div>
 <div class="line"></div>
-<div class="line">    <a class="code" href="group__tree.html#gaf155629f920b45c8b3d11bb19255d69e">_t_add</a>(p,<a class="code" href="group__tree.html#gaaeb6a7d7bf14e958d9e79c699edb8040">_t_clone</a>(test_HTTP_symbols));</div>
-<div class="line">    <a class="code" href="group__tree.html#gaf155629f920b45c8b3d11bb19255d69e">_t_add</a>(p,<a class="code" href="group__tree.html#gaaeb6a7d7bf14e958d9e79c699edb8040">_t_clone</a>(test_HTTP_structures));</div>
-<div class="line">    <a class="code" href="group__tree.html#gaff88720dad09389f6b7f35f7985d8efd">_t_newr</a>(p,PROCESSES); <span class="comment">// for now we don&#39;t have any processes</span></div>
-<div class="line">    <a class="code" href="group__tree.html#gaff88720dad09389f6b7f35f7985d8efd">_t_newr</a>(p,SCAPES); <span class="comment">// for now we don&#39;t have any scapes</span></div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *defs = <a class="code" href="group__tree.html#gaff88720dad09389f6b7f35f7985d8efd">_t_newr</a>(p,DEFINITIONS);</div>
+<div class="line">    <a class="code" href="group__tree.html#gaf155629f920b45c8b3d11bb19255d69e">_t_add</a>(defs,<a class="code" href="group__tree.html#gaaeb6a7d7bf14e958d9e79c699edb8040">_t_clone</a>(test_HTTP_structures));</div>
+<div class="line">    <a class="code" href="group__tree.html#gaf155629f920b45c8b3d11bb19255d69e">_t_add</a>(defs,<a class="code" href="group__tree.html#gaaeb6a7d7bf14e958d9e79c699edb8040">_t_clone</a>(test_HTTP_symbols));</div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *procs = <a class="code" href="group__tree.html#gaff88720dad09389f6b7f35f7985d8efd">_t_newr</a>(defs,PROCESSES);</div>
+<div class="line">    <span class="comment">// a process that simply reduces to an HTTP_RESPONSE indicating an off-line status</span></div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *resp = <a class="code" href="group__tree.html#ga17676267c6fb457dd1d086f37641544a">_t_new_root</a>(<a class="code" href="sys__processes_8h.html#a1e1d7c20f4c895eb9e21e7ef34708a07a64c5ec914c978938d6ed4d420c099c8a">RESPOND</a>);</div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *http_resp = <a class="code" href="group__tree.html#gaff88720dad09389f6b7f35f7985d8efd">_t_newr</a>(resp,HTTP_RESPONSE);</div>
+<div class="line">    <a class="code" href="group__tree.html#ga23646bb375d548b8bdce934f694b1741">_t_new</a>(http_resp,HTTP_RESPONSE_CONTENT_TYPE,<span class="stringliteral">&quot;Text/Plain&quot;</span>,11);</div>
+<div class="line">    <a class="code" href="group__tree.html#ga23646bb375d548b8bdce934f694b1741">_t_new</a>(http_resp,TEST_STR_SYMBOL,<span class="stringliteral">&quot;System offline!&quot;</span>,16);</div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *input = <a class="code" href="group__tree.html#ga17676267c6fb457dd1d086f37641544a">_t_new_root</a>(INPUT);</div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *output = <a class="code" href="group__tree.html#ga17676267c6fb457dd1d086f37641544a">_t_new_root</a>(OUTPUT_SIGNATURE);</div>
+<div class="line">    <a class="code" href="group__def.html#gae1a5dfaf9657e2ccf00edc2fb39c96c1">_d_code_process</a>(procs,resp,<span class="stringliteral">&quot;off-line response&quot;</span>,<span class="stringliteral">&quot;respond with system offline&quot;</span>,input,output);</div>
+<div class="line"></div>
+<div class="line">    <a class="code" href="group__tree.html#gaff88720dad09389f6b7f35f7985d8efd">_t_newr</a>(defs,SCAPES); <span class="comment">// for now we don&#39;t have any scapes</span></div>
 <div class="line"></div>
 <div class="line">    <span class="keywordflow">return</span> p;</div>
 <div class="line">}</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="vmhost__spec_8h_source.html#l00056">56</a> of file <a class="el" href="vmhost__spec_8h_source.html">vmhost_spec.h</a>.</p>
+<p>Definition at line <a class="el" href="vmhost__spec_8h_source.html#l00058">58</a> of file <a class="el" href="vmhost__spec_8h_source.html">vmhost_spec.h</a>.</p>
 
 </div>
 </div>
@@ -238,13 +248,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>testVMHost</b> ()</td
 <div class="line">    <a class="code" href="structTnode.html">Tnode</a> *m = <a class="code" href="group__tree.html#gaff88720dad09389f6b7f35f7985d8efd">_t_newr</a>(p,<a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a4a7e65f054795f03e713356fdb5fbf65">MANIFEST</a>);</div>
 <div class="line"></div>
 <div class="line">    <a class="code" href="group__tree.html#gab438eeedb3eb6c1e20171b33d8ec499d">_t_newi</a>(p,<a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a3bde3ee377bd6085fe5caaaf332a2ec4">RECEPTOR_IDENTIFIER</a>,uuid);</div>
-<div class="line">    <span class="keywordflow">if</span> (symbols) <a class="code" href="group__tree.html#gaf155629f920b45c8b3d11bb19255d69e">_t_add</a>(p,<a class="code" href="group__tree.html#gaaeb6a7d7bf14e958d9e79c699edb8040">_t_clone</a>(symbols));</div>
-<div class="line">    <span class="keywordflow">else</span> <a class="code" href="group__tree.html#gaff88720dad09389f6b7f35f7985d8efd">_t_newr</a>(p,SYMBOLS);</div>
-<div class="line">    <span class="keywordflow">if</span> (structures) <a class="code" href="group__tree.html#gaf155629f920b45c8b3d11bb19255d69e">_t_add</a>(p,<a class="code" href="group__tree.html#gaaeb6a7d7bf14e958d9e79c699edb8040">_t_clone</a>(structures));</div>
-<div class="line">    <span class="keywordflow">else</span> <a class="code" href="group__tree.html#gaff88720dad09389f6b7f35f7985d8efd">_t_newr</a>(p,STRUCTURES);</div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *defs = <a class="code" href="group__tree.html#gaff88720dad09389f6b7f35f7985d8efd">_t_newr</a>(p,DEFINITIONS);</div>
+<div class="line">    <span class="keywordflow">if</span> (structures) <a class="code" href="group__tree.html#gaf155629f920b45c8b3d11bb19255d69e">_t_add</a>(defs,<a class="code" href="group__tree.html#gaaeb6a7d7bf14e958d9e79c699edb8040">_t_clone</a>(structures));</div>
+<div class="line">    <span class="keywordflow">else</span> <a class="code" href="group__tree.html#gaff88720dad09389f6b7f35f7985d8efd">_t_newr</a>(defs,STRUCTURES);</div>
 <div class="line"></div>
-<div class="line">    <a class="code" href="group__tree.html#gaff88720dad09389f6b7f35f7985d8efd">_t_newr</a>(p,PROCESSES); <span class="comment">// for now we don&#39;t have any processes</span></div>
-<div class="line">    <a class="code" href="group__tree.html#gaff88720dad09389f6b7f35f7985d8efd">_t_newr</a>(p,SCAPES); <span class="comment">// for now we don&#39;t have any scapes</span></div>
+<div class="line">    <span class="keywordflow">if</span> (symbols) <a class="code" href="group__tree.html#gaf155629f920b45c8b3d11bb19255d69e">_t_add</a>(defs,<a class="code" href="group__tree.html#gaaeb6a7d7bf14e958d9e79c699edb8040">_t_clone</a>(symbols));</div>
+<div class="line">    <span class="keywordflow">else</span> <a class="code" href="group__tree.html#gaff88720dad09389f6b7f35f7985d8efd">_t_newr</a>(defs,SYMBOLS);</div>
+<div class="line"></div>
+<div class="line">    <a class="code" href="group__tree.html#gaff88720dad09389f6b7f35f7985d8efd">_t_newr</a>(defs,PROCESSES); <span class="comment">// for now we don&#39;t have any processes</span></div>
+<div class="line">    <a class="code" href="group__tree.html#gaff88720dad09389f6b7f35f7985d8efd">_t_newr</a>(defs,SCAPES); <span class="comment">// for now we don&#39;t have any scapes</span></div>
 <div class="line"></div>
 <div class="line">    <span class="keywordflow">return</span> p;</div>
 <div class="line">}</div>
@@ -268,7 +280,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>testVMHost</b> ()</td
 <p>[testVMHostActivateReceptor]</p>
 <p>[testVMHostActivateReceptor] </p>
 
-<p>Definition at line <a class="el" href="vmhost__spec_8h_source.html#l00111">111</a> of file <a class="el" href="vmhost__spec_8h_source.html">vmhost_spec.h</a>.</p>
+<p>Definition at line <a class="el" href="vmhost__spec_8h_source.html#l00128">128</a> of file <a class="el" href="vmhost__spec_8h_source.html">vmhost_spec.h</a>.</p>
 
 </div>
 </div>
@@ -306,7 +318,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>testVMHost</b> ()</td
 <p>[testVMHostInstallReceptor]</p>
 <p>[testVMHostInstallReceptor] </p>
 
-<p>Definition at line <a class="el" href="vmhost__spec_8h_source.html#l00087">87</a> of file <a class="el" href="vmhost__spec_8h_source.html">vmhost_spec.h</a>.</p>
+<p>Definition at line <a class="el" href="vmhost__spec_8h_source.html#l00099">99</a> of file <a class="el" href="vmhost__spec_8h_source.html">vmhost_spec.h</a>.</p>
 
 </div>
 </div>
@@ -327,7 +339,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>testVMHost</b> ()</td
 <p>[testVMHostLoadReceptorPackage]</p>
 <p>[testVMHostLoadReceptorPackage] </p>
 
-<p>Definition at line <a class="el" href="vmhost__spec_8h_source.html#l00074">74</a> of file <a class="el" href="vmhost__spec_8h_source.html">vmhost_spec.h</a>.</p>
+<p>Definition at line <a class="el" href="vmhost__spec_8h_source.html#l00086">86</a> of file <a class="el" href="vmhost__spec_8h_source.html">vmhost_spec.h</a>.</p>
 
 </div>
 </div>
@@ -337,7 +349,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>testVMHost</b> ()</td
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><a class="el" href="vmhost__spec_8h.html">vmhost_spec.h</a></li>
-    <li class="footer">Generated on Sun Sep 21 2014 17:05:59 for ceptr by
+    <li class="footer">Generated on Thu Sep 25 2014 10:21:42 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

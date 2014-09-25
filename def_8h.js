@@ -1,8 +1,11 @@
 var def_8h =
 [
+    [ "ST", "group__def.html#ga7b1d66b49e535253a63dfbcdd7824092", null ],
+    [ "SY", "group__def.html#gac76d6c38e944bff5cd2715506e3f8efd", null ],
     [ "__d_code_process", "group__def.html#ga1dc59ee8a878d248e706d3eac36ff3cf", null ],
     [ "__d_declare_symbol", "group__def.html#ga711a956190b8d06afc51a025253d663c", null ],
-    [ "__t_dump", "group__def.html#gaf632b653d41c6203187121f8e66878f1", null ],
+    [ "__t_dump", "group__def.html#ga4fce439dd11e882402da21816c3aa4b5", null ],
+    [ "_d_build_def_semtrex", "group__def.html#ga1aea8bf1dcd0afaaf4545ceff6b95f2f", null ],
     [ "_d_code_process", "group__def.html#gae1a5dfaf9657e2ccf00edc2fb39c96c1", null ],
     [ "_d_declare_symbol", "group__def.html#gaa80e4d75f09953b71ff49b75a8d6745e", null ],
     [ "_d_define_structure", "group__def.html#ga4205f785c519eead8b95ec1507a96a66", null ],

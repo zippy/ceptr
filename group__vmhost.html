@@ -178,9 +178,9 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000024">Todo:</a></b></dt><dd>for now we are just storing the active receptors in the receptor tree later this will probably have to be optimized into a hash for faster access </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000023">Todo:</a></b></dt><dd>for now we are just storing the active receptors in the receptor tree later this will probably have to be optimized into a hash for faster access </dd></dl>
 
-<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00137">137</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
+<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00136">136</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
 
 </div>
 </div>
@@ -267,6 +267,11 @@ Functions</h2></td></tr>
 <div class="line">    spec_is_symbol_equal(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,x.symbol,<a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a480946102f942b1883e39520e4c5222a">INSTALLED_RECEPTOR</a>);</div>
 <div class="line">    spec_is_symbol_equal(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,<a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(_t_child(r,1)),<a class="code" href="group__receptor.html#gacce906c9de30765f458599777b72be90">_r_get_symbol_by_label</a>(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,<span class="stringliteral">&quot;http server&quot;</span>));</div>
 <div class="line"></div>
+<div class="line">    <span class="comment">// and the definition labels of the instantiated receptor should all be set up properly</span></div>
+<div class="line">    <a class="code" href="structReceptor.html">Receptor</a> *httpr = (<a class="code" href="structReceptor.html">Receptor</a> *)<a class="code" href="group__tree.html#ga5a292a02511c82863edfcaa72fa9698c">_t_surface</a>(_t_child(r,1));</div>
+<div class="line">    spec_is_equal(<a class="code" href="group__receptor.html#gacce906c9de30765f458599777b72be90">_r_get_symbol_by_label</a>(httpr,<span class="stringliteral">&quot;HTTP_REQUEST&quot;</span>),HTTP_REQUEST);</div>
+<div class="line">    spec_is_equal(<a class="code" href="group__receptor.html#gacce906c9de30765f458599777b72be90">_r_get_symbol_by_label</a>(httpr,<span class="stringliteral">&quot;off-line response&quot;</span>),-1); <span class="comment">// hard-coded process symbol</span></div>
+<div class="line"></div>
 <div class="line">    <span class="comment">// trying to re-install the receptor should fail</span></div>
 <div class="line">    x = <a class="code" href="group__vmhost.html#ga2fa3f1a83c18a7c6c8a5a5f7d3aa1139">_v_install_r</a>(v,xp,0,<span class="stringliteral">&quot;http server&quot;</span>);</div>
 <div class="line">    spec_is_true(is_null_xaddr(x));</div>
@@ -309,7 +314,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structXaddr.html">Xaddr</a> of the receptor package in the compository </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000023">Todo:</a></b></dt><dd>validate signature and checksums??</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000022">Todo:</a></b></dt><dd>validate signature and checksums??</dd></dl>
 <p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structVMHost.html">VMHost</a> *v = <a class="code" href="group__vmhost.html#gab6fbe5683628fb0d62a966316ced938d">_v_new</a>();</div>
 <div class="line">    <a class="code" href="structTnode.html">Tnode</a> *p = <a class="code" href="vmhost__spec_8h.html#a6aed16c49efbdc84ecb2162c7336ac07">_makeTestHTTPReceptorPackage</a>();</div>
 <div class="line"></div>
@@ -359,7 +364,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Sep 21 2014 17:05:59 for ceptr by
+    <li class="footer">Generated on Thu Sep 25 2014 10:21:42 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

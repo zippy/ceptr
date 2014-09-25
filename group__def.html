@@ -98,6 +98,7 @@ $(document).ready(function(){initNavTree('group__def.html','');});
 <div class="header">
   <div class="summary">
 <a href="#files">Files</a> &#124;
+<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">Symbol and Structure Definition</div>  </div>
@@ -124,6 +125,15 @@ Files</h2></td></tr>
 <tr class="memitem:sys__symbols_8h"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sys__symbols_8h.html">sys_symbols.h</a></td></tr>
 <tr class="memdesc:sys__symbols_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines hard-coded system defined symbols. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ga7b1d66b49e535253a63dfbcdd7824092"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga7b1d66b49e535253a63dfbcdd7824092"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ST</b>(defs, name, num,...)&#160;&#160;&#160;name = <a class="el" href="group__def.html#ga4205f785c519eead8b95ec1507a96a66">_d_define_structure</a>(defs.structures,&quot;&quot; #name &quot;&quot;,num,__VA_ARGS__)</td></tr>
+<tr class="separator:ga7b1d66b49e535253a63dfbcdd7824092"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac76d6c38e944bff5cd2715506e3f8efd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gac76d6c38e944bff5cd2715506e3f8efd"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>SY</b>(defs, name, str)&#160;&#160;&#160;name = <a class="el" href="group__def.html#gaa80e4d75f09953b71ff49b75a8d6745e">_d_declare_symbol</a>(defs.symbols,str,&quot;&quot; #name &quot;&quot;)</td></tr>
+<tr class="separator:gac76d6c38e944bff5cd2715506e3f8efd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -155,9 +165,11 @@ Functions</h2></td></tr>
 <tr class="separator:gae1a5dfaf9657e2ccf00edc2fb39c96c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga71da1ef6e25419b52bcd7f2f19d862f2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTnode.html">Tnode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__def.html#ga71da1ef6e25419b52bcd7f2f19d862f2">_d_get_process_code</a> (<a class="el" href="structTnode.html">Tnode</a> *processes, Process p)</td></tr>
 <tr class="separator:ga71da1ef6e25419b52bcd7f2f19d862f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf632b653d41c6203187121f8e66878f1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaf632b653d41c6203187121f8e66878f1"></a>
-char *&#160;</td><td class="memItemRight" valign="bottom"><b>__t_dump</b> (<a class="el" href="structTnode.html">Tnode</a> *symbols, <a class="el" href="structTnode.html">Tnode</a> *t, int level, char *buf)</td></tr>
-<tr class="separator:gaf632b653d41c6203187121f8e66878f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1aea8bf1dcd0afaaf4545ceff6b95f2f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTnode.html">Tnode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__def.html#ga1aea8bf1dcd0afaaf4545ceff6b95f2f">_d_build_def_semtrex</a> (<a class="el" href="structDefs.html">Defs</a> defs, Symbol s, <a class="el" href="structTnode.html">Tnode</a> *parent)</td></tr>
+<tr class="separator:ga1aea8bf1dcd0afaaf4545ceff6b95f2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4fce439dd11e882402da21816c3aa4b5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga4fce439dd11e882402da21816c3aa4b5"></a>
+char *&#160;</td><td class="memItemRight" valign="bottom"><b>__t_dump</b> (<a class="el" href="structDefs.html">Defs</a> *defs, <a class="el" href="structTnode.html">Tnode</a> *t, int level, char *buf)</td></tr>
+<tr class="separator:ga4fce439dd11e882402da21816c3aa4b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Data has both meaningful and structural aspects, both of which must be defined. </p>
@@ -223,7 +235,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>__t_dump</b> (<a cl
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the newly defined process </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>this is not thread safe!</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>this is not thread safe!</dd></dl>
 <p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structTnode.html">Tnode</a> *defs = <a class="code" href="group__tree.html#ga17676267c6fb457dd1d086f37641544a">_t_new_root</a>(PROCESSES);</div>
 <div class="line">    <a class="code" href="structTnode.html">Tnode</a> *code = <a class="code" href="group__tree.html#ga17676267c6fb457dd1d086f37641544a">_t_new_root</a>(<a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3ae1bb1460cb779888412e634e983be161">ACTION</a>);</div>
 <div class="line">    <a class="code" href="structTnode.html">Tnode</a> *input = <a class="code" href="group__tree.html#ga17676267c6fb457dd1d086f37641544a">_t_new_root</a>(INPUT_SIGNATURE);</div>
@@ -263,7 +275,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>__t_dump</b> (<a cl
 <div class="line">    <a class="code" href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a>(defs);</div>
 <div class="line"></div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="def_8c_source.html#l00245">245</a> of file <a class="el" href="def_8c_source.html">def.c</a>.</p>
+<p>Definition at line <a class="el" href="def_8c_source.html#l00249">249</a> of file <a class="el" href="def_8c_source.html">def.c</a>.</p>
 
 </div>
 </div>
@@ -315,13 +327,73 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>__t_dump</b> (<a cl
 <div class="line">    spec_is_equal(<a class="code" href="group__tree.html#gaf459b3de598bba95efe941c4960f845d">_t_children</a>(defs),ss);</div>
 <div class="line">    spec_is_ptr_equal(_t_child(defs,ss),def);</div>
 <div class="line">    spec_is_equal(<a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(_t_child(defs,ss)),SYMBOL_DECLARATION);</div>
-<div class="line">    spec_is_equal(<a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(_t_child(_t_child(defs,ss),1)),SYMBOL_STRUCTURE);</div>
-<div class="line">    spec_is_equal(<a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(_t_child(_t_child(defs,ss),2)),SYMBOL_LABEL);</div>
+<div class="line">    spec_is_equal(<a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(_t_child(_t_child(defs,ss),2)),SYMBOL_STRUCTURE);</div>
+<div class="line">    spec_is_equal(<a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(_t_child(_t_child(defs,ss),1)),SYMBOL_LABEL);</div>
 <div class="line">    spec_is_str_equal(<a class="code" href="group__def.html#gae5fc3e0b245984a477b4c13aacb2fc02">_d_get_symbol_name</a>(defs,ss),<span class="stringliteral">&quot;shoe size&quot;</span>);</div>
 <div class="line"></div>
 <div class="line">    <a class="code" href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a>(defs);</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="def_8c_source.html#l00096">96</a> of file <a class="el" href="def_8c_source.html">def.c</a>.</p>
+<p>Definition at line <a class="el" href="def_8c_source.html#l00100">100</a> of file <a class="el" href="def_8c_source.html">def.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga1aea8bf1dcd0afaaf4545ceff6b95f2f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structTnode.html">Tnode</a>* _d_build_def_semtrex </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDefs.html">Defs</a>&#160;</td>
+          <td class="paramname"><em>defs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Symbol&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTnode.html">Tnode</a> *&#160;</td>
+          <td class="paramname"><em>parent</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Walks the definition of a symbol to build a semtrex that would match that definiton</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">defs</td><td>the definition context </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>the symbol to build a semtrex for </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">parent</td><td>the parent semtrex node because this function calls itself recursively. Pass in 0 to start. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the completed semtrex </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>currently this won't detect an incorrect strcture with extra children. This is because we don't haven't yet implemented the equivalent of "$" for semtrex.</dd></dl>
+<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structDefs.html">Defs</a> d = {<a class="code" href="group__tree.html#gaff88720dad09389f6b7f35f7985d8efd">_t_newr</a>(0,STRUCTURES),<a class="code" href="group__tree.html#gaff88720dad09389f6b7f35f7985d8efd">_t_newr</a>(0,SYMBOLS),0,0};</div>
+<div class="line">    Symbol SY(d,lat,FLOAT);</div>
+<div class="line">    Symbol SY(d,lon,FLOAT);</div>
+<div class="line">    Structure ST(d,latlong,2,lat,lon);</div>
+<div class="line">    Symbol SY(d,house_loc,latlong);</div>
+<div class="line"></div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *stx = <a class="code" href="group__def.html#ga1aea8bf1dcd0afaaf4545ceff6b95f2f">_d_build_def_semtrex</a>(d,house_loc,0);</div>
+<div class="line">    <span class="keywordtype">char</span> buf[2000];</div>
+<div class="line">    spec_is_str_equal(_dump_semtrex(stx,buf),<span class="stringliteral">&quot;/(3/1,2)&quot;</span>);</div>
+<div class="line">    __t_dump(&amp;d,stx,0,buf);</div>
+<div class="line">    spec_is_str_equal(buf,<span class="stringliteral">&quot; (SEMTREX_SYMBOL_LITERAL:house_loc (SEMTREX_SEQUENCE (SEMTREX_SYMBOL_LITERAL:lat) (SEMTREX_SYMBOL_LITERAL:lon)))&quot;</span>);</div>
+<div class="line"></div>
+<div class="line">    <a class="code" href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a>(stx);</div>
+<div class="line">    <a class="code" href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a>(d.<a class="code" href="structDefs.html#a4c975b62ce2275297aaa44cf9165c543">structures</a>);</div>
+<div class="line">    <a class="code" href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a>(d.<a class="code" href="structDefs.html#a8d6bdb404258745a4a902f9e3c710812">symbols</a>);</div>
+</div><!-- fragment -->
+<p>Definition at line <a class="el" href="def_8c_source.html#l00299">299</a> of file <a class="el" href="def_8c_source.html">def.c</a>.</p>
 
 </div>
 </div>
@@ -385,7 +457,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>__t_dump</b> (<a cl
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the process identifier </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>this is not thread safe!</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>this is not thread safe!</dd></dl>
 <p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structTnode.html">Tnode</a> *defs = <a class="code" href="group__tree.html#ga17676267c6fb457dd1d086f37641544a">_t_new_root</a>(PROCESSES);</div>
 <div class="line">    <a class="code" href="structTnode.html">Tnode</a> *code = <a class="code" href="group__tree.html#ga17676267c6fb457dd1d086f37641544a">_t_new_root</a>(<a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3ae1bb1460cb779888412e634e983be161">ACTION</a>);</div>
 <div class="line">    <a class="code" href="structTnode.html">Tnode</a> *input = <a class="code" href="group__tree.html#ga17676267c6fb457dd1d086f37641544a">_t_new_root</a>(INPUT_SIGNATURE);</div>
@@ -425,7 +497,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>__t_dump</b> (<a cl
 <div class="line">    <a class="code" href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a>(defs);</div>
 <div class="line"></div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="def_8c_source.html#l00270">270</a> of file <a class="el" href="def_8c_source.html">def.c</a>.</p>
+<p>Definition at line <a class="el" href="def_8c_source.html#l00274">274</a> of file <a class="el" href="def_8c_source.html">def.c</a>.</p>
 
 </div>
 </div>
@@ -468,7 +540,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>__t_dump</b> (<a cl
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the new symbol </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>this is not thread safe!</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>this is not thread safe!</dd></dl>
 <p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structTnode.html">Tnode</a> *defs = <a class="code" href="group__tree.html#ga17676267c6fb457dd1d086f37641544a">_t_new_root</a>(SYMBOLS);</div>
 <div class="line"></div>
 <div class="line">    <a class="code" href="structTnode.html">Tnode</a> *def = <a class="code" href="group__def.html#ga711a956190b8d06afc51a025253d663c">__d_declare_symbol</a>(defs,INTEGER,<span class="stringliteral">&quot;shoe size&quot;</span>);</div>
@@ -478,13 +550,13 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>__t_dump</b> (<a cl
 <div class="line">    spec_is_equal(<a class="code" href="group__tree.html#gaf459b3de598bba95efe941c4960f845d">_t_children</a>(defs),ss);</div>
 <div class="line">    spec_is_ptr_equal(_t_child(defs,ss),def);</div>
 <div class="line">    spec_is_equal(<a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(_t_child(defs,ss)),SYMBOL_DECLARATION);</div>
-<div class="line">    spec_is_equal(<a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(_t_child(_t_child(defs,ss),1)),SYMBOL_STRUCTURE);</div>
-<div class="line">    spec_is_equal(<a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(_t_child(_t_child(defs,ss),2)),SYMBOL_LABEL);</div>
+<div class="line">    spec_is_equal(<a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(_t_child(_t_child(defs,ss),2)),SYMBOL_STRUCTURE);</div>
+<div class="line">    spec_is_equal(<a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(_t_child(_t_child(defs,ss),1)),SYMBOL_LABEL);</div>
 <div class="line">    spec_is_str_equal(<a class="code" href="group__def.html#gae5fc3e0b245984a477b4c13aacb2fc02">_d_get_symbol_name</a>(defs,ss),<span class="stringliteral">&quot;shoe size&quot;</span>);</div>
 <div class="line"></div>
 <div class="line">    <a class="code" href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a>(defs);</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="def_8c_source.html#l00115">115</a> of file <a class="el" href="def_8c_source.html">def.c</a>.</p>
+<p>Definition at line <a class="el" href="def_8c_source.html#l00119">119</a> of file <a class="el" href="def_8c_source.html">def.c</a>.</p>
 
 </div>
 </div>
@@ -552,7 +624,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>__t_dump</b> (<a cl
 <div class="line"></div>
 <div class="line">    <a class="code" href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a>(defs);</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="def_8c_source.html#l00132">132</a> of file <a class="el" href="def_8c_source.html">def.c</a>.</p>
+<p>Definition at line <a class="el" href="def_8c_source.html#l00136">136</a> of file <a class="el" href="def_8c_source.html">def.c</a>.</p>
 
 </div>
 </div>
@@ -581,7 +653,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>__t_dump</b> (<a cl
 </div><div class="memdoc">
 <p>get a processes code definition </p>
 
-<p>Definition at line <a class="el" href="def_8c_source.html#l00278">278</a> of file <a class="el" href="def_8c_source.html">def.c</a>.</p>
+<p>Definition at line <a class="el" href="def_8c_source.html#l00282">282</a> of file <a class="el" href="def_8c_source.html">def.c</a>.</p>
 
 </div>
 </div>
@@ -619,7 +691,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>__t_dump</b> (<a cl
 <dl class="section return"><dt>Returns</dt><dd>char * pointing to label</dd></dl>
 <p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    spec_is_str_equal(<a class="code" href="group__def.html#ga7b68f64dc811afebe4b8595b1914420e">_d_get_process_name</a>(0,NULL_PROCESS),<span class="stringliteral">&quot;NULL_PROCESS&quot;</span>);</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="def_8c_source.html#l00072">72</a> of file <a class="el" href="def_8c_source.html">def.c</a>.</p>
+<p>Definition at line <a class="el" href="def_8c_source.html#l00076">76</a> of file <a class="el" href="def_8c_source.html">def.c</a>.</p>
 
 </div>
 </div>
@@ -657,7 +729,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>__t_dump</b> (<a cl
 <dl class="section return"><dt>Returns</dt><dd>char * pointing to label</dd></dl>
 <p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    spec_is_str_equal(<a class="code" href="group__def.html#ga766db34af870b275213a4e828d826267">_d_get_structure_name</a>(0,INTEGER),<span class="stringliteral">&quot;INTEGER&quot;</span>);</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="def_8c_source.html#l00050">50</a> of file <a class="el" href="def_8c_source.html">def.c</a>.</p>
+<p>Definition at line <a class="el" href="def_8c_source.html#l00054">54</a> of file <a class="el" href="def_8c_source.html">def.c</a>.</p>
 
 </div>
 </div>
@@ -734,7 +806,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>__t_dump</b> (<a cl
 <div class="line">    <a class="code" href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a>(symbols);</div>
 <div class="line">    <a class="code" href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a>(structures);</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="def_8c_source.html#l00202">202</a> of file <a class="el" href="def_8c_source.html">def.c</a>.</p>
+<p>Definition at line <a class="el" href="def_8c_source.html#l00206">206</a> of file <a class="el" href="def_8c_source.html">def.c</a>.</p>
 
 </div>
 </div>
@@ -849,7 +921,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>__t_dump</b> (<a cl
 <div class="line">    <a class="code" href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a>(symbols);</div>
 <div class="line">    <a class="code" href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a>(structures);</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="def_8c_source.html#l00185">185</a> of file <a class="el" href="def_8c_source.html">def.c</a>.</p>
+<p>Definition at line <a class="el" href="def_8c_source.html#l00189">189</a> of file <a class="el" href="def_8c_source.html">def.c</a>.</p>
 
 </div>
 </div>
@@ -886,7 +958,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>__t_dump</b> (<a cl
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a Structure</dd></dl>
 <p><b>Examples (from test suite):</b> </p><div class="fragment"></div><!-- fragment -->
-<p>Definition at line <a class="el" href="def_8c_source.html#l00162">162</a> of file <a class="el" href="def_8c_source.html">def.c</a>.</p>
+<p>Definition at line <a class="el" href="def_8c_source.html#l00166">166</a> of file <a class="el" href="def_8c_source.html">def.c</a>.</p>
 
 </div>
 </div>
@@ -895,7 +967,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>__t_dump</b> (<a cl
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Sep 21 2014 17:05:59 for ceptr by
+    <li class="footer">Generated on Thu Sep 25 2014 10:21:42 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

@@ -147,6 +147,9 @@ char&#160;</td><td class="memItemRight" valign="bottom"><b>__t_dump_buf</b> [100
 <tr class="memitem:ga62c253e7cc1d1ad20471913ae822ebc2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structReceptor.html">Receptor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga62c253e7cc1d1ad20471913ae822ebc2">_r_new</a> (Symbol s)</td></tr>
 <tr class="memdesc:ga62c253e7cc1d1ad20471913ae822ebc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new receptor.  <a href="group__receptor.html#ga62c253e7cc1d1ad20471913ae822ebc2">More...</a><br /></td></tr>
 <tr class="separator:ga62c253e7cc1d1ad20471913ae822ebc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38ca1325c2be3e5a41a1be46232a5fd2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a38ca1325c2be3e5a41a1be46232a5fd2"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>__r_set_labels</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structTnode.html">Tnode</a> *defs)</td></tr>
+<tr class="separator:a38ca1325c2be3e5a41a1be46232a5fd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga19ac9a15990a9c657a9ad73cf768bab1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structReceptor.html">Receptor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga19ac9a15990a9c657a9ad73cf768bab1">_r_new_receptor_from_package</a> (Symbol s, <a class="el" href="structTnode.html">Tnode</a> *p, <a class="el" href="structTnode.html">Tnode</a> *bindings)</td></tr>
 <tr class="memdesc:ga19ac9a15990a9c657a9ad73cf768bab1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new receptor from a receptor package.  <a href="group__receptor.html#ga19ac9a15990a9c657a9ad73cf768bab1">More...</a><br /></td></tr>
 <tr class="separator:ga19ac9a15990a9c657a9ad73cf768bab1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -181,8 +184,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>instancesFree</b> (<a
 <tr class="separator:a6784a7133ab6bc8c6a105fead8843c86"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad886d976f8621ebb22d02c61f454265c"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#gad886d976f8621ebb22d02c61f454265c">__r_get_symbol_size</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, Symbol s, void *surface)</td></tr>
 <tr class="separator:gad886d976f8621ebb22d02c61f454265c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad7ed83880a8bb8be0de01ae73b44d13a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTnode.html">Tnode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#gad7ed83880a8bb8be0de01ae73b44d13a">_r_build_def_semtrex</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, Symbol s, <a class="el" href="structTnode.html">Tnode</a> *parent)</td></tr>
-<tr class="separator:gad7ed83880a8bb8be0de01ae73b44d13a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9680206c1ad1b128d79d63308379df71"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTnode.html">Tnode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga9680206c1ad1b128d79d63308379df71">_r_build_def_semtrex</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, Symbol s)</td></tr>
+<tr class="separator:ga9680206c1ad1b128d79d63308379df71"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga8978934f20256d927a9f035c2eeafd8d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga8978934f20256d927a9f035c2eeafd8d">_r_def_match</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, Symbol s, <a class="el" href="structTnode.html">Tnode</a> *t)</td></tr>
 <tr class="separator:ga8978934f20256d927a9f035c2eeafd8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2dbe9e8a4ca9c5b3afbb43743ab19a6b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structXaddr.html">Xaddr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga2dbe9e8a4ca9c5b3afbb43743ab19a6b">_r_new_instance</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structTnode.html">Tnode</a> *t)</td></tr>
@@ -268,7 +271,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 <p>Get the child index for a given label.</p>
 <p>This works for retrieving symbols, structures &amp; processes because the symbol and structure values is just the child index. </p>
 
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00128">128</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00144">144</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -303,7 +306,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 </div><div class="memdoc">
 <p>get the size of a structure's surface </p><dl class="section return"><dt>Returns</dt><dd>size </dd></dl>
 
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00211">211</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00228">228</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -338,7 +341,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 </div><div class="memdoc">
 <p>we use this for labeling symbols, structures and processes because labels store the full path to the labeled item and we want the labels to be unique across all three </p>
 
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00115">115</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00131">131</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -348,7 +351,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="receptor_8c.html">receptor.c</a></li>
-    <li class="footer">Generated on Sun Sep 21 2014 17:05:59 for ceptr by
+    <li class="footer">Generated on Thu Sep 25 2014 10:21:42 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

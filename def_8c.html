@@ -121,9 +121,9 @@ Include dependency graph for def.c:</div>
 </div>
 <p><a href="def_8c_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="memitem:ad768c14de6836696b8577cd392de1879"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad768c14de6836696b8577cd392de1879"></a>
-char&#160;</td><td class="memItemRight" valign="bottom"><b>__d_extra_buf</b> [10]</td></tr>
-<tr class="separator:ad768c14de6836696b8577cd392de1879"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5be22a5bd16c6abb74f4887c35cac4c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad5be22a5bd16c6abb74f4887c35cac4c"></a>
+char&#160;</td><td class="memItemRight" valign="bottom"><b>__d_extra_buf</b> [100]</td></tr>
+<tr class="separator:ad5be22a5bd16c6abb74f4887c35cac4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gae5fc3e0b245984a477b4c13aacb2fc02"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__def.html#gae5fc3e0b245984a477b4c13aacb2fc02">_d_get_symbol_name</a> (<a class="el" href="structTnode.html">Tnode</a> *symbols, Symbol s)</td></tr>
 <tr class="separator:gae5fc3e0b245984a477b4c13aacb2fc02"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga766db34af870b275213a4e828d826267"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__def.html#ga766db34af870b275213a4e828d826267">_d_get_structure_name</a> (<a class="el" href="structTnode.html">Tnode</a> *structures, Structure s)</td></tr>
@@ -152,13 +152,15 @@ char&#160;</td><td class="memItemRight" valign="bottom"><b>__d_extra_buf</b> [10
 <tr class="separator:gae1a5dfaf9657e2ccf00edc2fb39c96c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga71da1ef6e25419b52bcd7f2f19d862f2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTnode.html">Tnode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__def.html#ga71da1ef6e25419b52bcd7f2f19d862f2">_d_get_process_code</a> (<a class="el" href="structTnode.html">Tnode</a> *processes, Process p)</td></tr>
 <tr class="separator:ga71da1ef6e25419b52bcd7f2f19d862f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf632b653d41c6203187121f8e66878f1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaf632b653d41c6203187121f8e66878f1"></a>
-char *&#160;</td><td class="memItemRight" valign="bottom"><b>__t_dump</b> (<a class="el" href="structTnode.html">Tnode</a> *symbols, <a class="el" href="structTnode.html">Tnode</a> *t, int level, char *buf)</td></tr>
-<tr class="separator:gaf632b653d41c6203187121f8e66878f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1aea8bf1dcd0afaaf4545ceff6b95f2f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTnode.html">Tnode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__def.html#ga1aea8bf1dcd0afaaf4545ceff6b95f2f">_d_build_def_semtrex</a> (<a class="el" href="structDefs.html">Defs</a> defs, Symbol s, <a class="el" href="structTnode.html">Tnode</a> *parent)</td></tr>
+<tr class="separator:ga1aea8bf1dcd0afaaf4545ceff6b95f2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4fce439dd11e882402da21816c3aa4b5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga4fce439dd11e882402da21816c3aa4b5"></a>
+char *&#160;</td><td class="memItemRight" valign="bottom"><b>__t_dump</b> (<a class="el" href="structDefs.html">Defs</a> *defs, <a class="el" href="structTnode.html">Tnode</a> *t, int level, char *buf)</td></tr>
+<tr class="separator:ga4fce439dd11e882402da21816c3aa4b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>implementation file for symbol and structure definition functions </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>refactor symbol/structure/process definition mechanisms into a general definitional form</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>refactor symbol/structure/process definition mechanisms into a general definitional form</dd></dl>
 <dl class="section copyright"><dt>Copyright</dt><dd>Copyright (C) 2013-2014, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al). This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3). </dd></dl>
 
 <p>Definition in file <a class="el" href="def_8c_source.html">def.c</a>.</p>
@@ -168,7 +170,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>__t_dump</b> (<a cl
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="def_8c.html">def.c</a></li>
-    <li class="footer">Generated on Sun Sep 21 2014 17:05:59 for ceptr by
+    <li class="footer">Generated on Thu Sep 25 2014 10:21:42 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
