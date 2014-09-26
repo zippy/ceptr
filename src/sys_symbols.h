@@ -87,6 +87,8 @@ enum SystemSymbol
     ASPECT,
     SIGNALS,                           ///< list of signals on an aspect in the flux
     SIGNAL,                            ///< a signal on the flux.  It's first child is the contents of the signal
+    ENVELOPE,
+    BODY,
     LISTENERS,                         ///< list of carrier/expectation/action tress that "listen" to changes on the flux
     LISTENER,                          ///< surface of the listener is the carrier symbol, and it has two children, expectation semtrex and action code tree
     EXPECTATION,                       ///< expectation is a semtrex (thus has one child which is the first part of the semtrex)
@@ -117,6 +119,7 @@ enum SystemSymbol
     RECEPTOR_IDENTIFIER,              ///< uuid that identifies receptors
     INSTALLED_RECEPTOR,               ///< contains the installed receptor as well as state information (enabled,disabled, etc..)
     ACTIVE_RECEPTORS,                 ///< list of currently active INSTALLED_RECEPTORS
+    PENDING_SIGNALS,                  ///< list of currently active INSTALLED_RECEPTORS
     BINDINGS,                         ///< specifics that match a MANIFEST and allow a receptor to be installed
     BINDING_PAIR,                     ///< a pair that matches a MANIFEST_LABEL with a given binding
     _LAST_SYS_SYMBOL
@@ -153,6 +156,8 @@ static char *G_sys_symbol_names[] = {
     "ASPECT",
     "SIGNALS",
     "SIGNAL",
+    "ENVELOPE",
+    "BODY",
     "LISTENERS",
     "LISTENER",
     "EXPECTATION",
@@ -181,6 +186,7 @@ static char *G_sys_symbol_names[] = {
     "RECEPTOR_IDENTIFIER",
     "INSTALLED_RECEPTOR",
     "ACTIVE_RECEPTORS",
+    "PENDING_SIGNALS",
     "BINDINGS",
     "BINDING_PAIR",
 
@@ -217,7 +223,9 @@ static Structure G_sys_symbol_structures[] = {
     TREE,                //SCAPE_SPEC
     INTEGER,             //ASPECT
     LIST,                //SIGNALS
-    NULL_STRUCTURE,      //SIGNAL
+    TREE,                //SIGNAL
+    LIST,                //ENVELOPE
+    TREE,                //BODY
     LIST,                //LISTENERS
     INTEGER,             //LISTENER
     NULL_STRUCTURE,      //EXPECTATION
@@ -246,6 +254,7 @@ static Structure G_sys_symbol_structures[] = {
     INTEGER,             //RECEPTOR_IDENTIFIER
     TREE,                //INSTALLED_RECEPTOR
     LIST,                //ACTIVE_RECEPTORS
+    LIST,                //PENDING_SIGNALS
     TREE,                //BINDINGS
     LIST,                //BINDING_PAIR
 };

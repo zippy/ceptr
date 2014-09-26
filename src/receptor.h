@@ -44,6 +44,7 @@ int _r_def_match(Receptor *r,Symbol s,Tnode *t);
 
 Xaddr _r_new_instance(Receptor *r,Tnode *t);
 Tnode *_r_get_instance(Receptor *r,Xaddr x);
+TreeHash _r_hash(Receptor *r,Xaddr t);
 
 /******************  receptor serialization */
 size_t __t_serialize(Tnode *t,void **bufferP,size_t offset,size_t current_size,int compact);
@@ -52,14 +53,15 @@ void _r_serialize(Receptor *r,void **surfaceP,size_t *lengthP);
 Receptor * _r_unserialize(void *surface);
 
 /******************  receptor signaling */
+
+Tnode * __r_make_signal(Xaddr from,Xaddr to,Aspect aspect,Tnode *signal_contents);
 /// @todo for now the signal is appended directly to the flux.  Later it should probably be copied
-Tnode * _r_send(Receptor *r,Receptor *from,Aspect aspect, Tnode *signal);
+Tnode * _r_deliver(Receptor *r, Tnode *signal);
 
 /******************  internal utilities */
 Tnode *__r_get_aspect(Receptor *r,Aspect aspect);
 Tnode *__r_get_listeners(Receptor *r,Aspect aspect);
 Tnode *__r_get_signals(Receptor *r,Aspect aspect);
-
 
 /*****************  Tree debugging utilities */
 char *_td(Receptor *r,Tnode *t);

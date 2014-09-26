@@ -72,15 +72,32 @@ void testReceptorAddListener() {
 
 void testReceptorSignal() {
     Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
-    Tnode *signal = _t_newi(0,TEST_INT_SYMBOL,314);
-    _r_send(r,r,DEFAULT_ASPECT,signal);
+    Tnode *signal_contents = _t_newi(0,TEST_INT_SYMBOL,314);
+    Xaddr f = {RECEPTOR_XADDR,3};  // DUMMY XADDR
+    Xaddr t = {RECEPTOR_XADDR,4};  // DUMMY XADDR
 
-    // the first node on the default aspect signals should be the signal
-    Tnode *s = _t_child(__r_get_signals(r,DEFAULT_ASPECT),1);
+    Tnode *s = __r_make_signal(f,t,DEFAULT_ASPECT,signal_contents);
+
     spec_is_symbol_equal(r,_t_symbol(s),SIGNAL);
-    Tnode *t = (Tnode *)_t_surface(s);  // whose surface should be the contents
-    spec_is_equal(*(int *)_t_surface(t),314);
-    spec_is_ptr_equal(signal,t);  // at some point this should probably fail, because we should have cloned the signal, not added it directly
+
+    Tnode *envelope = _t_child(s,1);
+    spec_is_symbol_equal(r,_t_symbol(envelope),ENVELOPE);
+    Tnode *body = _t_child(s,2);
+    spec_is_symbol_equal(r,_t_symbol(body),BODY);
+    Tnode *contents = (Tnode*)_t_surface(body);
+    spec_is_ptr_equal(signal_contents,contents);
+
+    //@todo symbol check??? FROM_RECEPTOR_XADDR???
+    Xaddr from = *(Xaddr *)_t_surface(_t_child(envelope,1));
+    spec_is_xaddr_equal(r,from,f);
+    Xaddr to = *(Xaddr *)_t_surface(_t_child(envelope,2));
+    spec_is_xaddr_equal(r,to,t);
+    Aspect a = *(Aspect *)_t_surface(_t_child(envelope,3));
+    spec_is_equal(a,DEFAULT_ASPECT);
+
+    char buf[2000];
+    __t_dump(0,s,0,buf);
+    spec_is_str_equal(buf," (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (RECEPTOR_XADDR:RECEPTOR_XADDR.4) (ASPECT:1)) (BODY:{ (TEST_INT_SYMBOL:314)}))");
 
     _r_free(r);
 }
@@ -90,7 +107,12 @@ void testReceptorAction() {
     Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
 
     // The signal is an HTTP request
-    Tnode *signal = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
+    Tnode *signal_contents = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
+
+    Xaddr f = {RECEPTOR_XADDR,3};  // DUMMY XADDR
+    Xaddr t = {RECEPTOR_XADDR,4};  // DUMMY XADDR
+
+    Tnode *signal = __r_make_signal(f,t,DEFAULT_ASPECT,signal_contents);
 
     // our expectation should match on the first path segment
     Tnode *expect = _t_new_root(EXPECTATION);
@@ -106,7 +128,7 @@ void testReceptorAction() {
     Tnode *result;
     int matched;
     // make sure our expectation semtrex actually matches the signal
-    spec_is_true(matched = _t_matchr(req,signal,&result));
+    spec_is_true(matched = _t_matchr(req,signal_contents,&result));
     Tnode *m = _t_get_match(result,HTTP_REQUEST_PATH_SEGMENT);
     char buf[2000];
     __t_dump(&test_HTTP_defs,m,0,buf);
@@ -121,11 +143,10 @@ void testReceptorAction() {
 
     _r_add_listener(r,DEFAULT_ASPECT,HTTP_REQUEST,expect,act);
 
-    Tnode *s = _r_send(r,r,DEFAULT_ASPECT,signal);
-    spec_is_symbol_equal(r,_t_symbol(s),SIGNAL);
+    result = _r_deliver(r,signal);
+    spec_is_symbol_equal(r,_t_symbol(result),HTTP_RESPONSE);
 
     // the result should be signal tree with the matched PATH_SEGMENT returned as the body
-    result = _t_child(_t_child(s,1),1);
     __t_dump(&test_HTTP_defs,result,0,buf);
     spec_is_str_equal(buf," (HTTP_RESPONSE (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT) (HTTP_REQUEST_PATH_SEGMENT:groups))");
 

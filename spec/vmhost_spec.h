@@ -17,6 +17,12 @@ void testVMHostCreate() {
     spec_is_symbol_equal(v->r,_t_symbol(ar_tree),ACTIVE_RECEPTORS);
     spec_is_ptr_equal(v->active_receptors,ar_tree);
     spec_is_equal(_t_children(ar_tree),0);
+
+    Tnode *s_tree = _t_child(v->r->root,4);
+    spec_is_symbol_equal(v->r,_t_symbol(s_tree),PENDING_SIGNALS);
+    spec_is_ptr_equal(v->pending_signals,s_tree);
+    spec_is_equal(_t_children(s_tree),0);
+
     spec_is_equal(v->installed_receptors->key_source,RECEPTOR_IDENTIFIER);
     spec_is_equal(v->installed_receptors->data_source,RECEPTOR);
     _v_free(v);
@@ -161,11 +167,12 @@ void testVMHostActivateReceptor() {
     Tnode *req = _t_newi(expect,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST);
     _r_add_listener(httpr,DEFAULT_ASPECT,HTTP_REQUEST,expect,act);
 
-    // create a signal and add it to the sockets sending processing queue
+    // simulate that an HTTP_Request signal from the socket receptor to the http_server receptor had been sent
     Tnode *signal = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
+    Xaddr xs = _v_send(v,x,ipx,DEFAULT_ASPECT,signal);
 
-    //@todo
-    // confirm that the signal has not been sent (receptor is not active)
+    // confirm that the signal has not been delivered and is still in pending list (because receptors aren't active)
+    spec_is_equal(_t_children(v->pending_signals),1);
 
     // activate the two receptors
     _v_activate(v,ipx);
@@ -181,15 +188,16 @@ void testVMHostActivateReceptor() {
     ar = _t_child(v->active_receptors,2);
     spec_is_ptr_equal(ar,installed_http);
 
-    // now confirm that the signal was sent and processed and that a response is back at the socket
+    // simulate round-robin processing of signals
+    _v_process_signals(v);
+
+    // now confirm that the signal was sent,
+    // first that the pending signals list is empty
+    spec_is_equal(_t_children(v->pending_signals),0);
+
+    // and second, that a response is back at the socket
     //@todo
 
-    Tnode *s = _r_send(httpr,ipsocketr,DEFAULT_ASPECT,signal);
-    Tnode *result = _t_child(_t_child(s,1),1);
-
-    spec_is_str_equal(_td(httpr,result)," (HTTP_RESPONSE (HTTP_RESPONSE_CONTENT_TYPE:Text/Plain) (TEST_STR_SYMBOL:System offline!))");
-
-    //        puts(_td(httpr,httpr->root));
     _t_free(b);
     _v_free(v);
     //! [testVMHostActivateReceptor]

@@ -277,8 +277,8 @@ int _r_def_match(Receptor *r,Symbol s,Tnode *t) {
  * @param[in] t the tree to instantiate
  * @returns xaddr of the instance
  *
- * @todo currently stores instances as extra-children on the def tree, this will actually
- * be handled by interacting with the data-engine!
+ * @todo currently stores instances in a hash of hashes, this will later
+ * be handled by interacting with the data-engine.
  *
  * <b>Examples (from test suite):</b>
  * @snippet spec/receptor_spec.h testReceptorInstanceNew
@@ -334,6 +334,13 @@ Tnode * _r_get_instance(Receptor *r,Xaddr x) {
 	}
    }
     return 0;
+}
+
+/**
+ * get the hash of a tree by Xaddr
+ */
+TreeHash _r_hash(Receptor *r,Xaddr t) {
+    return _t_hash(r->defs.symbols,r->defs.structures,_r_get_instance(r,t));
 }
 
 /******************  receptor serialization */
@@ -473,9 +480,23 @@ Receptor * _r_unserialize(void *surface) {
 /******************  receptor signaling */
 
 /**
+ * build a signal
+ * @todo signal should have timestamps and other meta info
+ */
+Tnode* __r_make_signal(Xaddr from,Xaddr to,Aspect aspect,Tnode *signal_contents) {
+    Tnode *s = _t_new_root(SIGNAL);
+    Tnode *e = _t_newr(s,ENVELOPE);
+    _t_new(e,RECEPTOR_XADDR,&from,sizeof(from));
+    _t_new(e,RECEPTOR_XADDR,&to,sizeof(to));
+    _t_newi(e,ASPECT,aspect);
+    Tnode *b = _t_newt(s,BODY,signal_contents);
+    return s;
+}
+
+/**
  * Send a signal to a receptor on a given aspect
  *
- * @param[in] r Receptor to serialize
+ * @param[in] r destination receptor
  * @param[in] from source Receptor
  * @param[in] aspect Aspect over which the message will be sent
  * @param[in] signal_contents the message to be sent, which will be wrapped in a SIGNAL
@@ -483,11 +504,16 @@ Receptor * _r_unserialize(void *surface) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/receptor_spec.h testReceptorAction
  */
-Tnode * _r_send(Receptor *r,Receptor *from,Aspect aspect, Tnode *signal_contents) {
+Tnode * _r_deliver(Receptor *r, Tnode *signal) {
     Tnode *m,*e,*l,*rt=0;
 
+    Tnode *signal_contents = (Tnode *)_t_surface(_t_child(signal,2));
+    Tnode *envelope = _t_child(signal,1);
+    Aspect aspect = *(Aspect *)_t_surface(_t_child(envelope,3));
+
     Tnode *as = __r_get_signals(r,aspect);
-    Tnode *s = _t_newt(as,SIGNAL,signal_contents);
+
+    _t_add(as,signal);
 
     // walk through all the listeners on the aspect and see if any expectations match this incoming signal
     Tnode *ls = __r_get_listeners(r,aspect);
@@ -500,7 +526,7 @@ Tnode * _r_send(Receptor *r,Receptor *from,Aspect aspect, Tnode *signal_contents
 	    Tnode *action = _t_child(l,2);
 	    rt = _p_make_run_tree(r->defs.processes,action,2,m,signal_contents);
 	    _t_free(m);
-	    _t_add(s,rt);
+	    _t_add(signal,rt);
 	    // for now just reduce the tree in place
 	    /// @todo move this to adding the runtree to the thread pool
 	    int e = _p_reduce(r->defs,rt);
@@ -511,9 +537,9 @@ Tnode * _r_send(Receptor *r,Receptor *from,Aspect aspect, Tnode *signal_contents
 	}
     }
 
-    /// @todo  results should actually be a what? success/failure of send
+    /// @todo  results should actually be a what? success/failure of send (currently is reduced runtree)
     if (rt == 0) return 0;
-    else return s;
+    else return _t_child(_t_child(signal,3),1);
 }
 
 /******************  internal utilities */
