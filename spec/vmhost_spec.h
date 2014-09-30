@@ -54,21 +54,21 @@ Tnode *_makeTestReceptorPackage(int uuid,Tnode *symbols,Tnode *structures) {
 }
 //! [makeTestReceptorPackage]
 
-#define HTTP_RECEPTOR_UUID 12345
+#define HELLO_WORLD_UUID 12345
 /**
  * generate an HTTP receptor package
  *
- * @snippet spec/vmhost_spec.h makeTestHTTPReceptorPackage
+ * @snippet spec/vmhost_spec.h makeTestHTTPAppReceptorPackage
  */
-//! [makeTestHTTPReceptorPackage]
-Tnode *_makeTestHTTPReceptorPackage() {
+//! [makeTestHTTPAppReceptorPackage]
+Tnode *_makeTestHTTPAppReceptorPackage() {
     Tnode *p = _t_new_root(RECEPTOR_PACKAGE);
     Tnode *m = _t_newr(p,MANIFEST);
     Tnode *mp = _t_newr(m,MANIFEST_PAIR);
-    _t_new(mp,MANIFEST_LABEL,"ip_socket",10);
+    _t_new(mp,MANIFEST_LABEL,"http_server",12);  // must bind with an http server
     _t_newi(mp,MANIFEST_SPEC,RECEPTOR_XADDR);
 
-    _t_newi(p,RECEPTOR_IDENTIFIER,HTTP_RECEPTOR_UUID);
+    _t_newi(p,RECEPTOR_IDENTIFIER,HELLO_WORLD_UUID);
 
     Tnode *defs = _t_newr(p,DEFINITIONS);
     _t_add(defs,_t_clone(test_HTTP_structures));
@@ -78,21 +78,21 @@ Tnode *_makeTestHTTPReceptorPackage() {
     Tnode *resp = _t_new_root(RESPOND);
     Tnode *http_resp = _t_newr(resp,HTTP_RESPONSE);
     _t_new(http_resp,HTTP_RESPONSE_CONTENT_TYPE,"Text/Plain",11);
-    _t_new(http_resp,TEST_STR_SYMBOL,"System offline!",16);
+    _t_new(http_resp,TEST_STR_SYMBOL,"Hello World!",13);
     Tnode *input = _t_new_root(INPUT);
     Tnode *output = _t_new_root(OUTPUT_SIGNATURE);
-    _d_code_process(procs,resp,"off-line response","respond with system offline",input,output);
+    _d_code_process(procs,resp,"hellow","respond with hello",input,output);
 
     _t_newr(defs,SCAPES); // for now we don't have any scapes
 
     return p;
 }
-//! [makeTestHTTPReceptorPackage]
+//! [makeTestHTTPAppReceptorPackage]
 
 void testVMHostLoadReceptorPackage() {
     //! [testVMHostLoadReceptorPackage]
     VMHost *v = _v_new();
-    Tnode *p = _makeTestHTTPReceptorPackage();
+    Tnode *p = _makeTestHTTPAppReceptorPackage();
 
     Xaddr x = _v_load_receptor_package(v,p);
     Tnode *p1 = _r_get_instance(v->c,x);
@@ -106,23 +106,23 @@ void testVMHostInstallReceptor() {
     //! [testVMHostInstallReceptor]
     VMHost *v = _v_new();
 
-    Tnode *p = _makeTestHTTPReceptorPackage();
+    Tnode *p = _makeTestHTTPAppReceptorPackage();
     Xaddr xp = _v_load_receptor_package(v,p);
 
-    Xaddr x = _v_install_r(v,xp,0,"http server");
+    Xaddr x = _v_install_r(v,xp,0,"hello world");
 
     // installing the receptor should instantiate a receptor from the package with the given bindings and symbol label
     Tnode *r = _r_get_instance(v->r,x);
     spec_is_symbol_equal(v->r,x.symbol,INSTALLED_RECEPTOR);
-    spec_is_symbol_equal(v->r,_t_symbol(_t_child(r,1)),_r_get_symbol_by_label(v->r,"http server"));
+    spec_is_symbol_equal(v->r,_t_symbol(_t_child(r,1)),_r_get_symbol_by_label(v->r,"hello world"));
 
     // and the definition labels of the instantiated receptor should all be set up properly
     Receptor *httpr = (Receptor *)_t_surface(_t_child(r,1));
     spec_is_equal(_r_get_symbol_by_label(httpr,"HTTP_REQUEST"),HTTP_REQUEST);
-    spec_is_equal(_r_get_symbol_by_label(httpr,"off-line response"),-1); // hard-coded process symbol
+    spec_is_equal(_r_get_symbol_by_label(httpr,"hellow"),-1); // hard-coded process symbol
 
     // trying to re-install the receptor should fail
-    x = _v_install_r(v,xp,0,"http server");
+    x = _v_install_r(v,xp,0,"hellow world");
     spec_is_true(is_null_xaddr(x));
 
     // because the receptor's id is in the installed_receptors scape
@@ -135,47 +135,66 @@ void testVMHostInstallReceptor() {
     //! [testVMHostInstallReceptor]
 }
 
-#define IP_SOCKET_RECEPTOR_UUID 4321
+#define HTTP_SERVER_RECEPTOR_UUID 4321
 
 void testVMHostActivateReceptor() {
     //! [testVMHostActivateReceptor]
     VMHost *v = _v_new();
 
-    // create and install a stub IP receptor
-    Tnode *ipr = _makeTestReceptorPackage(IP_SOCKET_RECEPTOR_UUID,0,0);  // no symbols or structures yet
-    Xaddr ipxp = _v_load_receptor_package(v,ipr);
-    Xaddr ipx = _v_install_r(v,ipxp,0,"server socket");
-    Tnode *installed_ip = _r_get_instance(v->r,ipx);
-    Receptor *ipsocketr = (Receptor *)_t_surface(_t_child(installed_ip,1));
+    // create and install a stub HTTP server receptor
+    Tnode *httpd_rp = _makeTestReceptorPackage(HTTP_SERVER_RECEPTOR_UUID,0,0);  // no symbols or structures yet
+    Xaddr httpd_px = _v_load_receptor_package(v,httpd_rp);
+    Xaddr httpd_x = _v_install_r(v,httpd_px,0,"hhtp server");
+    Tnode *installed_httpd = _r_get_instance(v->r,httpd_x);
+    Receptor *httpd_r = (Receptor *)_t_surface(_t_child(installed_httpd,1));
 
-    // create and install an http server bound to the IP socket
-    Tnode *p = _makeTestHTTPReceptorPackage();
+    // create and install an app bound to a URL
+    Tnode *p = _makeTestHTTPAppReceptorPackage();
     Xaddr xp = _v_load_receptor_package(v,p);
 
     Tnode *b = _t_new_root(BINDINGS);
     Tnode *pair = _t_newr(b,BINDING_PAIR);
-    _t_new(pair,MANIFEST_LABEL,"ip_socket",10);
-    _t_new(pair,RECEPTOR_XADDR,&ipx,sizeof(Xaddr));
+    _t_new(pair,MANIFEST_LABEL,"http_server",12);
+    _t_new(pair,RECEPTOR_XADDR,&httpd_x,sizeof(Xaddr));
 
-    Xaddr x = _v_install_r(v,xp,b,"http server");
-    Tnode *installed_http = _r_get_instance(v->r,x);
-    Receptor *httpr = (Receptor *)_t_surface(_t_child(installed_http,1));
+    Xaddr x = _v_install_r(v,xp,b,"hello world app");
+    Tnode *installed_hellow = _r_get_instance(v->r,x);
+    Receptor *hello_r = (Receptor *)_t_surface(_t_child(installed_hellow,1));
 
-    // add a listener that matches on any request and returns the "offline" response
+    // add a listener that matches on any request with "Host: helloworld.org"
+    // /HTTP_REQUEST/.*,HTTP_REQUEST_HOST=helloworld.org
     Tnode *act = _t_newp(0,ACTION,-1);
     Tnode *expect = _t_new_root(EXPECTATION);
     Tnode *req = _t_newi(expect,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST);
-    _r_add_listener(httpr,DEFAULT_ASPECT,HTTP_REQUEST,expect,act);
+    Tnode *ss = _t_newi(req,SEMTREX_SEQUENCE,0);
+    Tnode *sss = _t_newi(ss,SEMTREX_ZERO_OR_MORE,0);
+    _t_newi(sss,SEMTREX_SYMBOL_ANY,0);
 
-    // simulate that an HTTP_Request signal from the socket receptor to the http_server receptor had been sent
-    Tnode *signal = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
-    Xaddr xs = _v_send(v,x,ipx,DEFAULT_ASPECT,signal);
+    char *host = "helloworld.com";
+    int size = sizeof(Svalue)+strlen(host)+1;
+    Svalue *sv = malloc(size);
+    sv->symbol = HTTP_REQUEST_HOST;
+    sv->length = strlen(host);
+    _t_new(ss,SEMTREX_VALUE_LITERAL,sv,size);
+    free(sv);
+    _r_add_listener(hello_r,DEFAULT_ASPECT,HTTP_REQUEST,expect,act);
+
+    // simulate that an HTTP_Request signal from the http_server receptor has been sent
+    Tnode *s = _t_new_root(HTTP_REQUEST);
+    Tnode *s_version = _t_newr(s,HTTP_REQUEST_VERSION);
+    _t_newi(s_version,VERSION_MAJOR,1);
+    _t_newi(s_version,VERSION_MINOR,1);
+    Tnode *s_method = _t_newi(s,HTTP_REQUEST_METHOD,TEST_HTTP_METHOD_GET_VALUE);
+    Tnode *s_path = _t_newr(s,HTTP_REQUEST_PATH);
+    Tnode *s_host = _t_new(s,HTTP_REQUEST_HOST,"helloworld.com",15);
+
+    Xaddr xs = _v_send(v,x,httpd_x,DEFAULT_ASPECT,s);
 
     // confirm that the signal has not been delivered and is still in pending list (because receptors aren't active)
     spec_is_equal(_t_children(v->pending_signals),1);
 
     // activate the two receptors
-    _v_activate(v,ipx);
+    _v_activate(v,httpd_x);
     _v_activate(v,x);
 
     // confirm that the activate list has new children
@@ -184,9 +203,9 @@ void testVMHostActivateReceptor() {
     // and that they are the same as the installed receptors
     Tnode *ar;
     ar = _t_child(v->active_receptors,1);
-    spec_is_ptr_equal(ar,installed_ip);
+    spec_is_ptr_equal(ar,installed_httpd);
     ar = _t_child(v->active_receptors,2);
-    spec_is_ptr_equal(ar,installed_http);
+    spec_is_ptr_equal(ar,installed_hellow);
 
     // simulate round-robin processing of signals
     _v_process_signals(v);
@@ -195,7 +214,7 @@ void testVMHostActivateReceptor() {
     // first that the pending signals list is empty
     spec_is_equal(_t_children(v->pending_signals),0);
 
-    // and second, that a response is back at the socket
+    // and second, that a response is back at the http_server
     //@todo
 
     _t_free(b);

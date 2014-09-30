@@ -99,6 +99,7 @@ void testReceptorSignal() {
     __t_dump(0,s,0,buf);
     spec_is_str_equal(buf," (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (RECEPTOR_XADDR:RECEPTOR_XADDR.4) (ASPECT:1)) (BODY:{ (TEST_INT_SYMBOL:314)}))");
 
+    _t_free(s);
     _r_free(r);
 }
 
