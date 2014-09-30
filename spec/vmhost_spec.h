@@ -175,8 +175,14 @@ void testVMHostActivateReceptor() {
     Svalue *sv = malloc(size);
     sv->symbol = HTTP_REQUEST_HOST;
     sv->length = strlen(host);
+    strcpy((char *)&sv->value,host);
     _t_new(ss,SEMTREX_VALUE_LITERAL,sv,size);
+
+    char buf[2000];
+    // just check that we got our semtrex right
+    spec_is_str_equal(_dump_semtrex(test_HTTP_defs,req,buf),"/(HTTP_REQUEST/.*,HTTP_REQUEST_HOST=helloworld.com)");
     free(sv);
+
     _r_add_listener(hello_r,DEFAULT_ASPECT,HTTP_REQUEST,expect,act);
 
     // simulate that an HTTP_Request signal from the http_server receptor has been sent

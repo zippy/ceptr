@@ -462,7 +462,11 @@ char * __dump_semtrex(Defs defs,Tnode *s,char *buf) {
 	else
 	    sprintf(b,"%s",sn);
 	if (sym == SEMTREX_VALUE_LITERAL) {
-	    sprintf(b+strlen(b),"=???");
+	    Svalue *sv = (Svalue *)_t_surface(s);
+	    Structure st = _d_get_symbol_structure(defs.symbols,sv->symbol);
+	    if (st == CSTRING)
+		sprintf(b+strlen(b),"=%s",(char *)&sv->value);
+	    else sprintf(b+strlen(b),"=???x");
 	}
 	__stxd_descend(defs,s,b,buf);
 	break;
