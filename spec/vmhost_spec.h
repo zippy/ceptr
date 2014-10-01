@@ -185,7 +185,7 @@ void testVMHostActivateReceptor() {
 
     _r_add_listener(hello_r,DEFAULT_ASPECT,HTTP_REQUEST,expect,act);
 
-    // simulate that an HTTP_Request signal from the http_server receptor has been sent
+    // build up an HTTP_REQUEST tree that corresponds with a simple get for host helloworld.com
     Tnode *s = _t_new_root(HTTP_REQUEST);
     Tnode *s_version = _t_newr(s,HTTP_REQUEST_VERSION);
     _t_newi(s_version,VERSION_MAJOR,1);
@@ -193,6 +193,16 @@ void testVMHostActivateReceptor() {
     Tnode *s_method = _t_newi(s,HTTP_REQUEST_METHOD,TEST_HTTP_METHOD_GET_VALUE);
     Tnode *s_path = _t_newr(s,HTTP_REQUEST_PATH);
     Tnode *s_host = _t_new(s,HTTP_REQUEST_HOST,"helloworld.com",15);
+
+    // put it on the flux to simulate that it has just been parsed out of an octet stream from a TCP/IP receptor
+    // @todo
+    //int path[] = {1,2,TREE_PATH_TERMINATOR};
+    //Tnode *fs = _t_get(httpd_r->flux,path);
+
+
+
+    //simulate that an HTTP_Request signal from the http_server receptor has been sent
+
 
     Xaddr xs = _v_send(v,x,httpd_x,DEFAULT_ASPECT,s);
 
