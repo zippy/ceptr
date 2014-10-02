@@ -17,14 +17,16 @@ Xaddr G_null_xaddr  = {0,0};
 /*****************  create and destroy receptors */
 
 
-Receptor *__r_new(Symbol s,Tnode *defs) {
+Receptor *__r_new(Symbol s,Tnode *defs,Tnode *aspects) {
     Receptor *r = malloc(sizeof(Receptor));
     r->root = _t_new_root(s);
     _t_add(r->root,defs);
     r->defs.structures = _t_child(defs,1);
     r->defs.symbols = _t_child(defs,2);
     r->defs.processes = _t_child(defs,3);
-    r->defs.scapes = _t_child(defs,4);
+    r->defs.protocols = _t_child(defs,4);
+    r->defs.scapes = _t_child(defs,5);
+    _t_add(r->root,aspects);
     r->flux = _t_newr(r->root,FLUX);
     Tnode *a = _t_newi(r->flux,ASPECT,DEFAULT_ASPECT);
     _t_newr(a,LISTENERS);
@@ -50,8 +52,10 @@ Receptor *_r_new(Symbol s) {
     _t_newr(defs,STRUCTURES);
     _t_newr(defs,SYMBOLS);
     _t_newr(defs,PROCESSES);
+    _t_newr(defs,PROTOCOLS);
     _t_newr(defs,SCAPES);
-    return __r_new(s,defs);
+    Tnode *aspects = _t_new_root(ASPECTS);
+    return __r_new(s,defs,aspects);
 }
 
 // set the labels in the label table for the given def
@@ -77,7 +81,8 @@ void __r_set_labels(Receptor *r,Tnode *defs) {
  */
 Receptor *_r_new_receptor_from_package(Symbol s,Tnode *p,Tnode *bindings) {
     Tnode *defs = _t_clone(_t_child(p,3));
-    Receptor * r = __r_new(s,defs);
+    Tnode *aspects = _t_clone(_t_child(p,4));
+    Receptor * r = __r_new(s,defs,aspects);
     int i,c = _t_children(defs);
     for(i=1;i<=c;i++)
 	__r_set_labels(r,_t_child(defs,i));
@@ -266,6 +271,47 @@ int _r_def_match(Receptor *r,Symbol s,Tnode *t) {
     int result = _t_match(stx,t);
     _t_free(stx);
     return result;
+}
+
+/**
+ * Install listeners on an aspect for a given role in a protocol
+ *
+ * @param[in] r the receptor
+ * @param[in] idx the index of the protocol in the definition tree
+ * @param[in] role the name of the role to install
+ * @param[in] aspect the aspect on which to install listeners for this protocol
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/receptor_spec.h testReceptorProtocol
+ */
+void _r_install_protocol(Receptor *r,int idx,char *role,Aspect aspect) {
+    Tnode *p = _t_child(r->defs.protocols,idx);
+    //@todo check that role exists
+    Tnode *aspects = _t_child(r->root,2);
+    Tnode *a = _t_child(aspects,aspect);
+
+    // get the aspects input carrier
+    Symbol a_ic = *(Symbol *)_t_surface(_t_child(a,2));
+
+    Tnode *interactions = _t_child(p,2);
+    int j,c = _t_children(interactions);
+    for(j=1;j<=c;j++) {
+
+	Tnode *i = _t_child(interactions,j);
+	//	raise(SIGINT);
+	// the TO_ROLE indicates the expectation actions we must install
+	if (!strcmp(role,(char *)_t_surface(_t_child(i,3)))) {
+	    // get the protocols input_carrier
+	    Symbol ic = *(Symbol *)_t_surface(_t_child(i,4));
+	    if (a_ic != ic) {
+		//		raise_error2("input carriers don't match: aspect=%s protocol=%s",_r_get_symbol_name(r,a_ic),_r_get_symbol_name(r,ic));
+raise_error2("input carriers don't match: aspect=%d protocol=%d",a_ic,ic);
+	    }
+	    Tnode *expect = _t_clone(_t_child(i,6));
+	    Tnode *act = _t_clone(_t_child(i,7));
+	    _r_add_listener(r,aspect,ic,expect,act);
+	}
+    }
 }
 
 /*****************  receptor instances and xaddrs */

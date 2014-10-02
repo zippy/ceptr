@@ -20,6 +20,8 @@
 
 // for now aspects are just identified as the child index in the flux receptor
 enum {DEFAULT_ASPECT=1};
+// aspects appear on either side of the membrane
+enum AspectType {EXTERNAL_ASPECT=0,INTERNAL_ASPECT};
 typedef int Aspect;
 
 /******************  create and destroy receptors */
@@ -39,6 +41,8 @@ Process _r_code_process(Receptor *r,Tnode *code,char *name,char *intention,Tnode
 
 Tnode *_r_build_def_semtrex(Receptor *r,Symbol s);
 int _r_def_match(Receptor *r,Symbol s,Tnode *t);
+
+void _r_install_protocol(Receptor *r,int idx,char *role,Aspect aspect);
 
 /*****************  receptor instances and xaddrs */
 

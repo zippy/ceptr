@@ -94,7 +94,7 @@ Xaddr _v_install_r(VMHost *v,Xaddr package,Tnode *bindings,char *label) {
     if (bindings) {
 	Tnode *m = _t_child(p,1);
 	int c = _t_children(m);
-	if (!c%2) {raise_error0("manifest must have even number of children!");}
+	if (c%2) {raise_error0("manifest must have even number of children!");}
 	int i;
 	for(i=1;i<=c;i++) {
 	    Tnode *mp = _t_child(m,i);

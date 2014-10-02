@@ -84,6 +84,10 @@ enum SystemSymbol
     SYMBOL_STRUCTURE,
     SYMBOL_LABEL,
     SCAPE_SPEC,
+    ASPECTS,
+    ASPECT_DEF,
+    ASPECT_TYPE,
+    CARRIER,
     ASPECT,
     SIGNALS,                           ///< list of signals on an aspect in the flux
     SIGNAL,                            ///< a signal on the flux.  It's first child is the contents of the signal
@@ -103,9 +107,19 @@ enum SystemSymbol
     INPUT_LABEL,
     SIGNATURE_STRUCTURE,
     OUTPUT_SIGNATURE,
-    RUN_TREE,                         ///< think about this as a stack frame and it's code
+    RUN_TREE,                         ///< think about this as a stack frame and its code
     PARAM_REF,                        ///< used in a code tree as a reference to a parameter
     PARAMS,
+    PROTOCOLS,
+    PROTOCOL,
+    ROLES,
+    ROLE,
+    INTERACTIONS,
+    INTERACTION,
+    STEP,
+    FROM_ROLE,
+    TO_ROLE,
+    RESPONSE_STEPS,
     SCAPES,
 
     //-----  Symbols for the virtual machine host
@@ -153,6 +167,10 @@ static char *G_sys_symbol_names[] = {
     "SYMBOL_STRUCTURE",
     "SYMBOL_LABEL",
     "SCAPE_SPEC",
+    "ASPECTS",
+    "ASPECT_DEF",
+    "ASPECT_TYPE",
+    "CARRIER",
     "ASPECT",
     "SIGNALS",
     "SIGNAL",
@@ -175,6 +193,16 @@ static char *G_sys_symbol_names[] = {
     "RUN_TREE",
     "PARAM_REF",
     "PARAMS",
+    "PROTOCOLS",
+    "PROTOCOL",
+    "ROLES",
+    "ROLE",
+    "INTERACTIONS",
+    "INTERACTION",
+    "STEP",
+    "FROM_ROLE",
+    "TO_ROLE",
+    "RESPONSE_STEPS",
     "SCAPES",
     "VM_HOST_RECEPTOR",
     "COMPOSITORY",
@@ -221,6 +249,10 @@ static Structure G_sys_symbol_structures[] = {
     STRUCTURE,           //SYMBOL_STRUCTURE
     CSTRING,             //SYMBOL_LABEL
     TREE,                //SCAPE_SPEC
+    LIST,                //ASPECTS
+    TREE,                //ASPECT_DEF
+    BOOLEAN,             //ASPECT_TYPE,
+    SYMBOL,              //CARRIER
     INTEGER,             //ASPECT
     LIST,                //SIGNALS
     TREE,                //SIGNAL
@@ -243,6 +275,16 @@ static Structure G_sys_symbol_structures[] = {
     TREE,                //RUN_TREE
     TREE_PATH,           //PARAM_REF
     LIST,                //PARAMS
+    LIST,//PROTOCOLS,
+    TREE,//PROTOCOL,
+    LIST,//ROLES,
+    CSTRING,//ROLE,
+    LIST,//INTERACTIONS,
+    LIST,//INTERACTION
+    CSTRING,//STEP,
+    ENUM,//FROM_ROLE,
+    ENUM,//TO_ROLE,
+    LIST,//RESPONSE_STEPS,
     LIST,                //SCAPES
     RECEPTOR,            //VM_HOST_RECEPTOR
     RECEPTOR,            //COMPOSITORY

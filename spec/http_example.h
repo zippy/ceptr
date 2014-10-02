@@ -11,6 +11,9 @@
 #include "../src/receptor.h"
 #include "../src/def.h"
 
+
+Symbol OCTET_STREAM;
+
 Structure HTTP_REQUEST_V11;
 
 Structure URI;
@@ -79,6 +82,8 @@ void _setup_HTTPDefs() {
     test_HTTP_defs.structures = test_HTTP_structures = _t_new_root(STRUCTURES);
     Defs d = test_HTTP_defs;
 
+    SY(d,OCTET_STREAM,CSTRING);
+
     SY(d,HTTP_REQUEST_METHOD,INTEGER);
 
     _setup_uri_defs(d);
@@ -95,7 +100,6 @@ void _setup_HTTPDefs() {
     SY(d,HTTP_RESPONSE,TREE);
     SY(d,HTTP_RESPONSE_CONTENT_TYPE,CSTRING);
     SY(d,HTTP_RESPONSE_BODY,CSTRING);
-
 }
 
 void _cleanup_HTTPDefs() {

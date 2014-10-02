@@ -30,6 +30,9 @@ void testReceptorCreate() {
     spec_is_symbol_equal(r,_t_symbol(r->defs.processes),PROCESSES);
     spec_is_ptr_equal(t,r->defs.processes);
     t = _t_child(d,4);
+    spec_is_symbol_equal(r,_t_symbol(r->defs.protocols),PROTOCOLS);
+    spec_is_ptr_equal(t,r->defs.protocols);
+    t = _t_child(d,5);
     spec_is_symbol_equal(r,_t_symbol(r->defs.scapes),SCAPES);
     spec_is_ptr_equal(t,r->defs.scapes);
 
@@ -39,8 +42,12 @@ void testReceptorCreate() {
     t = __r_get_signals(r,DEFAULT_ASPECT);
     spec_is_symbol_equal(r,_t_symbol(t),SIGNALS);
 
-    // test that the flux is set up correctly
+    // test that the aspects specs are set up correctly
     t = _t_child(r->root,2);
+    spec_is_symbol_equal(r,_t_symbol(t),ASPECTS);
+
+    // test that the flux is set up correctly
+    t = _t_child(r->root,3);
     spec_is_symbol_equal(r,_t_symbol(r->flux),FLUX);
     spec_is_ptr_equal(t,r->flux);
     t = _t_child(r->flux,1);
@@ -255,6 +262,76 @@ void testReceptorDefMatch() {
     //! [testReceptorDefMatch]
 }
 
+void testReceptorProtocol() {
+    //! [testReceptorProtocol]
+    Receptor *r;
+    r = _r_new(TEST_RECEPTOR_SYMBOL);
+
+    Symbol ping = _r_declare_symbol(r,BOOLEAN,"ping");
+
+    // define a ping protocol with two roles and two interactions
+    Tnode *ps = r->defs.protocols;
+    Tnode *p = _t_newr(ps,PROTOCOL);
+    Tnode *roles = _t_newr(p,ROLES);
+    _t_new(roles,ROLE,"server",7);
+    _t_new(roles,ROLE,"client",7);
+    Tnode *interactions = _t_newr(p,INTERACTIONS);
+
+    // initial ping request interaction
+    Tnode *i,*s,*e;
+    i = _t_newr(interactions,INTERACTION);
+    _t_new(i,STEP,"ping",5);
+    _t_new(i,FROM_ROLE,"client",7);
+    _t_new(i,TO_ROLE,"server",7);
+    _t_newi(i,CARRIER,ping); // input carrier
+    _t_newi(i,CARRIER,ping); // output carrier
+    e = _t_newr(i,EXPECTATION);
+    Tnode *req = _t_newi(e,SEMTREX_SYMBOL_LITERAL,ping);
+
+    Tnode *ping_resp = _t_new_root(RESPOND);
+    _t_newi(ping_resp,ping,1);
+    Tnode *input = _t_new_root(INPUT);
+    Tnode *output = _t_new_root(OUTPUT_SIGNATURE);
+    Process proc = _r_code_process(r,ping_resp,"send ping response","long desc...",input,output);
+
+    _t_newp(i,ACTION,proc);
+
+    s = _t_newr(i,RESPONSE_STEPS);
+    _t_new(s,STEP,"ping_response",13);
+
+    // ping response interaction
+    i = _t_newr(interactions,INTERACTION);
+    _t_new(i,STEP,"ping_response",13);
+    _t_new(i,FROM_ROLE,"server",7);
+    _t_new(i,TO_ROLE,"client",7);
+    _t_newi(i,CARRIER,ping); // input carrier
+    _t_newi(i,CARRIER,ping); // output carrier
+    e = _t_newr(i,EXPECTATION);
+    _t_newi(e,SEMTREX_SYMBOL_LITERAL,ping);
+    //    s = _t_newr(i,RESPONSE_STEPS);
+
+    Tnode *aspects = _t_child(r->root,2);
+    Tnode *a = _t_newr(aspects,ASPECT_DEF);
+    _t_newi(a,ASPECT_TYPE,EXTERNAL_ASPECT);
+    _t_newi(a,CARRIER,ping);
+    _t_newi(a,CARRIER,ping);
+    _r_install_protocol(r,1,"server",DEFAULT_ASPECT);
+
+    char *d = _td(r,r->root);
+    spec_is_str_equal(d," (TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS (SYMBOL_DECLARATION (SYMBOL_LABEL:ping) (SYMBOL_STRUCTURE:BOOLEAN))) (PROCESSES (PROCESS_CODING (PROCESS_NAME:send ping response) (PROCESS_INTENTION:long desc...) (process:RESPOND (ping:1)) (INPUT) (OUTPUT_SIGNATURE))) (PROTOCOLS (PROTOCOL (ROLES (ROLE:server) (ROLE:client)) (INTERACTIONS (INTERACTION (STEP:ping) (FROM_ROLE) (TO_ROLE) (CARRIER:ping) (CARRIER:ping) (EXPECTATION (SEMTREX_SYMBOL_LITERAL:ping)) (ACTION:send ping response) (RESPONSE_STEPS (STEP:ping_response))) (INTERACTION (STEP:ping_response) (FROM_ROLE) (TO_ROLE) (CARRIER:ping) (CARRIER:ping) (EXPECTATION (SEMTREX_SYMBOL_LITERAL:ping)))))) (SCAPES)) (ASPECTS (ASPECT_DEF (ASPECT_TYPE:0) (CARRIER:ping) (CARRIER:ping))) (FLUX (ASPECT:1 (LISTENERS (LISTENER:1 (EXPECTATION (SEMTREX_SYMBOL_LITERAL:ping)) (ACTION:send ping response))) (SIGNALS))))");
+
+    // delivering a fake signal should return a ping
+    Xaddr f = {RECEPTOR_XADDR,3};  // DUMMY XADDR
+    Xaddr t = {RECEPTOR_XADDR,4};  // DUMMY XADDR
+    Tnode *signal = __r_make_signal(f,t,DEFAULT_ASPECT,_t_newi(0,ping,0));
+    Tnode *result = _r_deliver(r,signal);
+    d = _td(r,result);
+    spec_is_str_equal(d," (ping:1)");
+
+    _r_free(r);
+    //! [testReceptorProtocol]
+}
+
 void testReceptorInstanceNew() {
     //! [testReceptorInstancesNew]
     Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
@@ -343,6 +420,7 @@ void testReceptor() {
     testReceptorAction();
     testReceptorDef();
     testReceptorDefMatch();
+    testReceptorProtocol();
     testReceptorInstanceNew();
     //    testReceptorSerialize();
     _cleanup_HTTPDefs();
