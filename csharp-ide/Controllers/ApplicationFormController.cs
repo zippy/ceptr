@@ -385,9 +385,9 @@ namespace csharp_ide.Controllers
 		{
 			Guid structures = ceptrInterface.CreateRootNode(SystemSymbol.STRUCTURES);
 			Guid symbols = ceptrInterface.CreateRootNode(SystemSymbol.SYMBOLS);
-			Guid latitude = ceptrInterface.DeclareSymbol(symbols, (UInt32)SystemStructure.FLOAT, "latitude");
-			Guid longitude = ceptrInterface.DeclareSymbol(symbols, (UInt32)SystemStructure.FLOAT, "longitude");
-			Guid latlong = ceptrInterface.DefineStructure(structures, "latlong", new Guid[] {latitude, longitude});
+			uint latitude = ceptrInterface.DeclareSymbol(symbols, (UInt32)SystemStructure.FLOAT, "latitude");
+			uint longitude = ceptrInterface.DeclareSymbol(symbols, (UInt32)SystemStructure.FLOAT, "longitude");
+			uint latlong = ceptrInterface.DefineStructure(structures, "latlong", new uint[] {latitude, longitude});
 			ceptrInterface.Dump(symbols, structures);
 		}
 
