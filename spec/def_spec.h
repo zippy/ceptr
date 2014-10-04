@@ -103,7 +103,7 @@ void testGetSize() {
 
     // House location is a meaningful use of the structure latlong
     Symbol house_loc = _d_declare_symbol(symbols, latlong, "house location");
-
+/*
     char buf[1000];
     __t_dump(&defs, structures, 0, buf);
     puts("\r\n");
@@ -117,7 +117,7 @@ void testGetSize() {
     __t_dump(&defs, latlonDef, 0, buf);
     puts("\r\n");
     puts(buf);
-
+*/
     // Here's the surface of the latlong.
     float ll[] = {2.0,90.3};
     spec_is_long_equal(_d_get_symbol_size(symbols,structures,house_loc,ll),sizeof(ll));
