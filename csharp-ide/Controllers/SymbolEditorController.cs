@@ -97,10 +97,11 @@ namespace csharp_ide.Controllers
 
 		protected void NodeSelected(object sender, TreeViewEventArgs e)
 		{
+			currentNode = e.Node;
+			object item = ((NodeInstance)e.Node.Tag).Instance.Item;
+
 			ApplicationController.PropertyGridController.IfNotNull(t =>
 			{
-				currentNode = e.Node;
-				object item = ((NodeInstance)e.Node.Tag).Instance.Item;
 				t.ShowObject(item);
 
 				if (item is Symbol)
@@ -110,6 +111,14 @@ namespace csharp_ide.Controllers
 					structureName = ((Symbol)item).Structure;
 				}
 			});
+
+			ApplicationController.DumpOutputController.IfNotNull(t => 
+				{
+					if (item is Symbol)
+					{
+						t.ShowSymbolDump((Symbol)item);
+					}
+				});
 		}
 
 		protected void DeletingNode(object sender, DeletingNodeEventArgs args)

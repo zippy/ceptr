@@ -226,12 +226,8 @@ namespace ceptrlib
 			return st;
 		}
 
-		public unsafe string Dump(Guid g_symbols, Guid g_structures)
+		public unsafe string DumpStructures(Guid g_symbols, Guid g_structures)
 		{
-			//testGetSize();
-
-			//return "";
-
 			Defs defs = new Defs() 
 			{ 
 				structures = (Tnode*)nodes[g_structures], 
@@ -246,8 +242,35 @@ namespace ceptrlib
 			{
 				fixed (char* buf = new char[10000])
 				{
-					// __t_dump(&defs, defs.structures, 0, buf);
 					__t_dump(&defs, defs.structures, 0, buf);
+					ret = Marshal.PtrToStringAnsi((IntPtr)buf);
+				}
+			}
+			catch (Exception ex)
+			{
+				System.Diagnostics.Debugger.Break();
+			}
+
+			return ret;
+		}
+
+		public unsafe string DumpSymbols(Guid g_symbols, Guid g_structures)
+		{
+			Defs defs = new Defs()
+			{
+				structures = (Tnode*)nodes[g_structures],
+				symbols = (Tnode*)nodes[g_symbols],
+				processes = (Tnode*)0,
+				scapes = (Tnode*)0
+			};
+
+			string ret = String.Empty;
+
+			try
+			{
+				fixed (char* buf = new char[10000])
+				{
+					__t_dump(&defs, defs.symbols, 0, buf);
 					ret = Marshal.PtrToStringAnsi((IntPtr)buf);
 				}
 			}

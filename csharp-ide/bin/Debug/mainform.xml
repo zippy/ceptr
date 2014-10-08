@@ -38,6 +38,8 @@
               <wf:ToolStripMenuItem def:Name="mnuSymbolTypeEditor" Text="&amp;Symbol Editor" Click="{controller.ShowSymbolEditor}"/>
               <wf:ToolStripMenuItem def:Name="mnuSymbolList" Text="S&amp;ymbols" Click="{controller.ShowSymbolList}"/>
               <wf:ToolStripMenuItem def:Name="mnuStructureList" Text="S&amp;tructures" Click="{controller.ShowStructureList}"/>
+              <wf:ToolStripSeparator/>
+              <wf:ToolStripMenuItem def:Name="mnuDump" Text="Stuctures/Symbols" Click="{controller.ShowDump}"/>
             </wf:DropDownItems>
           </wf:ToolStripMenuItem>
           <wf:ToolStripMenuItem Text="&amp;Ceptr">
