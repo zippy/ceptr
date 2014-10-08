@@ -34,7 +34,8 @@ namespace csharp_ide.Controllers
 		public PropertyGridController PropertyGridController { get; protected set; }
 		public SymbolListController SymbolListController { get; protected set; }
 		public StructureListController StructureListController { get; protected set; }
-		public DumpOutputController DumpOutputController { get; set; }
+		public SymbolOutputController SymbolOutputController { get; set; }
+		public StructureOutputController StructureOutputController { get; set; }
 		public GenericController<Schema> schemaController;
 		public string SchemaFilename { get; set; }
 
@@ -269,11 +270,19 @@ namespace csharp_ide.Controllers
 			}
 		}
 
-		protected void ShowDump(object sender, EventArgs args)
+		protected void ShowSymbols(object sender, EventArgs args)
 		{
-			DumpOutputController.IfNull(() =>
+			SymbolOutputController.IfNull(() =>
 			{
-				NewDocument("dumpOutput.xml");
+				NewDocument("symbolOutput.xml");
+			});
+		}
+
+		protected void ShowStructures(object sender, EventArgs args)
+		{
+			StructureOutputController.IfNull(() =>
+			{
+				NewDocument("structureOutput.xml");
 			});
 		}
 

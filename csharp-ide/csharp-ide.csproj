@@ -56,7 +56,8 @@
     <Compile Include="Actions\ITextController.cs" />
     <Compile Include="Actions\SetDocumentText.cs" />
     <Compile Include="Controllers\ApplicationFormController.cs" />
-    <Compile Include="Controllers\DumpOutputController.cs" />
+    <Compile Include="Controllers\StructureOutputController.cs" />
+    <Compile Include="Controllers\SymbolOutputController.cs" />
     <Compile Include="Controllers\PropertyGridController.cs" />
     <Compile Include="Controllers\StructureListController.cs" />
     <Compile Include="Controllers\SymbolEditorController.cs" />
@@ -84,7 +85,10 @@
     <Compile Include="Views\ApplicationFormView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\DumpOutputView.cs">
+    <Compile Include="Views\StructureOutputView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\SymbolOutputView.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Views\IPaneView.cs" />
@@ -156,17 +160,18 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="bin\Debug\dumpOutput.xml" />
     <Content Include="bin\Debug\mainform.xml">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="bin\Debug\propertyGrid.xml" />
     <Content Include="bin\Debug\structureListPane.xml" />
+    <Content Include="bin\Debug\structureOutput.xml" />
     <Content Include="bin\Debug\symbolEditorTree.xml" />
     <Content Include="bin\Debug\symbolEditorTreeDef.xml">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="bin\Debug\symbolListPane.xml" />
+    <Content Include="bin\Debug\symbolOutput.xml" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -112,13 +112,21 @@ namespace csharp_ide.Controllers
 				}
 			});
 
-			ApplicationController.DumpOutputController.IfNotNull(t => 
+			ApplicationController.SymbolOutputController.IfNotNull(t => 
 				{
 					if (item is Symbol)
 					{
 						t.ShowSymbolDump((Symbol)item);
 					}
 				});
+
+			ApplicationController.StructureOutputController.IfNotNull(t =>
+			{
+				if (item is Symbol)
+				{
+					t.ShowStructureDump((Symbol)item);
+				}
+			});
 		}
 
 		protected void DeletingNode(object sender, DeletingNodeEventArgs args)
