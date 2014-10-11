@@ -27,7 +27,7 @@ void testScapeAddElement() {
 
     // check that element was added
     Xaddr xg = _s_get(s,h);
-    spec_is_equal(xg.symbol,x.symbol);
+    spec_is_sem_equal(xg.symbol,x.symbol);
     spec_is_equal(xg.addr,x.addr);
 
     // check that a different hash returns the null xaddr

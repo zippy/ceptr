@@ -105,7 +105,7 @@ Xaddr _v_install_r(VMHost *v,Xaddr package,Tnode *bindings,char *label) {
 	    }
 	    Tnode *v = _t_child(bp,2);
 	    Symbol spec = *(Symbol *)_t_surface(s);
-	    if (_t_symbol(v) != spec) {
+	    if (semeq(_t_symbol(v),spec)) {
 		Tnode *symbols = _t_child(p,3);
 		raise_error2("bindings symbol %s doesn't match spec %s",_d_get_symbol_name(symbols,_t_symbol(v)),_d_get_symbol_name(symbols,spec));
 	    }

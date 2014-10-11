@@ -167,7 +167,7 @@ Process _makeTestHTTPResponseProcess(Receptor *r) {
     Tnode *n = _t_newr(resp,INTERPOLATE_FROM_MATCH);
     Tnode *http_resp = _t_newr(n,HTTP_RESPONSE);
     _t_new(http_resp,HTTP_RESPONSE_CONTENT_TYPE,"CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT",38);
-    _t_newi(http_resp,INTERPOLATE_SYMBOL,HTTP_REQUEST_PATH_SEGMENT);
+    _t_news(http_resp,INTERPOLATE_SYMBOL,HTTP_REQUEST_PATH_SEGMENT);
 
     int pt1[] = {2,1,TREE_PATH_TERMINATOR};
     int pt2[] = {2,2,TREE_PATH_TERMINATOR};

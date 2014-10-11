@@ -13,6 +13,10 @@
 #include "def.h"
 char __d_extra_buf[100];
 
+int semeq(SemanticID s1,SemanticID s2) {
+    return (memcmp(&s1,&s2,sizeof(SemanticID))==0);
+}
+
 /**
  * get symbol's label
  *
@@ -24,20 +28,22 @@ char __d_extra_buf[100];
  * @snippet spec/def_spec.h testSymbolGetName
  */
 char *_d_get_symbol_name(Tnode *symbols,Symbol s) {
-    if (is_sys_symbol(s))
-	return G_sys_symbol_names[s-NULL_SYMBOL];
+    if (is_sys_symbol(s)) {
+	if (s.id == 0) return "NULL_SYMBOL";
+	symbols = G_sys_defs.symbols;
+    }
     if (is_sys_test_symbol(s))
-	return G_test_symbol_names[s-TEST_INT_SYMBOL];
-    else if (symbols) {
+	symbols = G_sys_defs.symbols;
+    if (symbols) {
 	int c = _t_children(symbols);
-	if (s > c || s < 1)  {
-	    raise_error2("Bad symbol:%d--%d symbols in decl list",s,c);
+	if (s.id > c || s.id < 1)  {
+	    raise_error2("Bad symbol:%d--%d symbols in decl list",s.id,c);
 	}
-	Tnode *def = _t_child(symbols,s);
+	Tnode *def = _t_child(symbols,s.id);
 	Tnode *l = _t_child(def,1);
 	return (char *)_t_surface(_t_child(def,1));
     }
-    sprintf(__d_extra_buf,"<unknown symbol:%d>",s);
+    sprintf(__d_extra_buf,"<unknown symbol:%d.%d.%d>",s.context,s.flags,s.id);
     return __d_extra_buf;
 }
 
@@ -52,14 +58,16 @@ char *_d_get_symbol_name(Tnode *symbols,Symbol s) {
  * @snippet spec/def_spec.h testStructureGetName
  */
 char *_d_get_structure_name(Tnode *structures,Structure s) {
-    if (is_sys_structure(s))
-	return G_sys_structure_names[s-NULL_STRUCTURE];
-    else if (structures) {
-	Tnode *def = _t_child(structures,s);
+    if (is_sys_structure(s)) {
+	if (s.id == 0) return "NULL_STRUCTURE";
+	structures = G_sys_defs.structures;
+    }
+    if (structures) {
+	Tnode *def = _t_child(structures,s.id);
 	Tnode *l = _t_child(def,1);
 	return (char *)_t_surface(l);
     }
-    sprintf(__d_extra_buf,"<unknown structure:%d>",s);
+    sprintf(__d_extra_buf,"<unknown structure:%d.%d.%d>",s.context,s.flags,s.id);
     return __d_extra_buf;
 }
 
@@ -74,15 +82,16 @@ char *_d_get_structure_name(Tnode *structures,Structure s) {
  * @snippet spec/def_spec.h testProcessGetName
  */
 char *_d_get_process_name(Tnode *processes,Process p) {
-    if (is_sys_process(p))
-	return G_sys_process_names[p-NULL_PROCESS];
-    else if (processes) {
-	p = -p;   // process id's are all negative numbers
-	Tnode *def = _t_child(processes,p);
+    if (is_sys_process(p)) {
+	if (p.id == 0) return "NULL_PROCESS";
+	processes = G_sys_defs.processes;
+    }
+    if (processes) {
+	Tnode *def = _t_child(processes,p.id);
 	Tnode *l = _t_child(def,1);
 	return (char *)_t_surface(l);
     }
-    sprintf(__d_extra_buf,"<unknown process:%d>",p);
+    sprintf(__d_extra_buf,"<unknown process:%d.%d.%d>",p.context,p.flags,p.id);
     return __d_extra_buf;
 }
 
@@ -100,7 +109,7 @@ char *_d_get_process_name(Tnode *processes,Process p) {
 Tnode *__d_declare_symbol(Tnode *symbols,Structure s,char *label){
     Tnode *def = _t_newr(symbols,SYMBOL_DECLARATION);
     _t_new(def,SYMBOL_LABEL,label,strlen(label)+1);
-    _t_newi(def,SYMBOL_STRUCTURE,s);
+    _t_news(def,SYMBOL_STRUCTURE,s);
     return def;
 }
 
@@ -110,15 +119,17 @@ Tnode *__d_declare_symbol(Tnode *symbols,Structure s,char *label){
  * @param[in] symbols a symbol def tree containing symbol definitions
  * @param[in] s the structure type for this symbol
  * @param[in] label a c-string label for this symbol
+ * @param[in] the context in which this symbol is being declared
  * @returns the new symbol
  * @todo this is not thread safe!
  *
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testDefSymbol
  */
-Symbol _d_declare_symbol(Tnode *symbols,Structure s,char *label){
+Symbol _d_declare_symbol(Tnode *symbols,Structure s,char *label,Context c){
     __d_declare_symbol(symbols,s,label);
-    return _t_children(symbols);
+    Symbol sym = {c,SEM_TYPE_SYMBOL,_t_children(symbols)};
+    return sym;
 }
 
 /**
@@ -133,12 +144,13 @@ Symbol _d_declare_symbol(Tnode *symbols,Structure s,char *label){
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testDefStructure
  */
-Structure _d_define_structure(Tnode *structures,char *label,int num_params,...) {
+Structure _d_define_structure(Tnode *structures,char *label,Context c,int num_params,...) {
     va_list params;
     va_start(params,num_params);
     Tnode *def = _dv_define_structure(structures,label,num_params,params);
     va_end(params);
-    return _t_children(structures);
+    Symbol sym = {c,SEM_TYPE_STRUCTURE,_t_children(structures)};
+    return sym;
 }
 
 /// va_list version of _d_define_structure
@@ -148,7 +160,7 @@ Tnode * _dv_define_structure(Tnode *structures,char *label,int num_params,va_lis
     Tnode *p = _t_newr(def,STRUCTURE_PARTS);
     int i;
     for(i=0;i<num_params;i++) {
-	_t_newi(p,STRUCTURE_PART,va_arg(params,Symbol));
+	_t_news(p,STRUCTURE_PART,va_arg(params,Symbol));
     }
     return def;
 }
@@ -164,12 +176,9 @@ Tnode * _dv_define_structure(Tnode *structures,char *label,int num_params,va_lis
  * @snippet spec/def_spec.h testGetSymbolStructure
  */
 Structure _d_get_symbol_structure(Tnode *symbols,Symbol s) {
-    if (is_sys_symbol(s)) {
-	return G_sys_symbol_structures[s-NULL_SYMBOL];
-    }
-    else if (is_sys_test_symbol(s))
-	return G_test_symbol_structures[s-TEST_INT_SYMBOL];
-    Tnode *def = _t_child(symbols,s);
+    if (is_sys_symbol(s) || is_sys_test_symbol(s))
+	symbols = G_sys_defs.symbols;
+    Tnode *def = _t_child(symbols,s.id);
     Tnode *t = _t_child(def,2); // second child of the def is the structure
     return *(Structure *)_t_surface(t);
 }
@@ -204,22 +213,23 @@ size_t _d_get_symbol_size(Tnode *symbols,Tnode *structures,Symbol s,void *surfac
  * @snippet spec/def_spec.h testGetSize
  */
 size_t _d_get_structure_size(Tnode *symbols,Tnode *structures,Structure s,void *surface) {
-    if (s>=NULL_STRUCTURE && s <_LAST_SYS_STRUCTURE) {
-	switch(s) {
-	case LIST:
-	case TREE:
-	case NULL_STRUCTURE: return 0;
+    if (is_sys_structure(s)) {
+	switch(s.id) {
+	case LIST_ID:
+	case TREE_ID:
+	case NULL_STRUCTURE_ID: return 0;
 	    //	case SEMTREX: return
-	case SYMBOL: return sizeof(Symbol);
-	case INTEGER: return sizeof(int);
-	case FLOAT: return sizeof(float);
-	case CSTRING: return strlen(surface)+1;
-	case XADDR: return sizeof(Xaddr);
-	default: raise_error2("DON'T HAVE A SIZE FOR STRUCTURE '%s' (%d)",_d_get_structure_name(structures,s),s);
+	case SYMBOL_ID: return sizeof(Symbol);
+	case BOOLEAN_ID:
+	case INTEGER_ID: return sizeof(int);
+	case FLOAT_ID: return sizeof(float);
+	case CSTRING_ID: return strlen(surface)+1;
+	case XADDR_ID: return sizeof(Xaddr);
+	default: raise_error2("DON'T HAVE A SIZE FOR STRUCTURE '%s' (%d)",_d_get_structure_name(structures,s),s.id);
 	}
     }
     else {
-	Tnode *structure = _t_child(structures,s);
+	Tnode *structure = _t_child(structures,s.id);
 	Tnode *parts = _t_child(structure,2);
 	size_t size = 0;
 	int i,c = _t_children(structure);
@@ -250,9 +260,9 @@ Tnode *__d_code_process(Tnode *processes,Tnode *code,char *name,char *intention,
     Tnode *def = _t_newr(processes,PROCESS_CODING);
     _t_new(def,PROCESS_NAME,name,strlen(name)+1);
     _t_new(def,PROCESS_INTENTION,intention,strlen(intention)+1);
-    _t_add(def,code);
-    _t_add(def,in);
-    _t_add(def,out);
+    if (code) _t_add(def,code);
+    if (in) _t_add(def,in);
+    if (out) _t_add(def,out);
     return def;
 }
 
@@ -271,16 +281,10 @@ Tnode *__d_code_process(Tnode *processes,Tnode *code,char *name,char *intention,
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testCodeProcess
  */
-Process _d_code_process(Tnode *processes,Tnode *code,char *name,char *intention,Tnode *in,Tnode *out) {
+Process _d_code_process(Tnode *processes,Tnode *code,char *name,char *intention,Tnode *in,Tnode *out,Context c) {
     __d_code_process(processes,code,name,intention,in,out);
-    return -_t_children(processes);
-}
-
-/**
- * get a processes code definition
- */
-Tnode *_d_get_process_code(Tnode *processes,Process p) {
-    return _t_child(processes,-p);
+    Symbol sym = {c,SEM_TYPE_PROCESS,_t_children(processes)};
+    return sym;
 }
 
 /**
@@ -297,11 +301,11 @@ Tnode *_d_get_process_code(Tnode *processes,Process p) {
  * @snippet spec/def_spec.h testDefSemtrex
 */
 Tnode * _d_build_def_semtrex(Defs defs,Symbol s,Tnode *parent) {
-    Tnode *stx = _t_newi(parent,SEMTREX_SYMBOL_LITERAL,s);
+    Tnode *stx = _t_news(parent,SEMTREX_SYMBOL_LITERAL,s);
 
     Structure st = _d_get_symbol_structure(defs.symbols,s);
     if (!(is_sys_structure(st))) {
-	Tnode *structure = _t_child(defs.structures,st);
+	Tnode *structure = _d_get_structure_def(defs.structures,st);
 	Tnode *parts = _t_child(structure,2);
 	int i,c = _t_children(parts);
 	if (c > 0) {
@@ -334,60 +338,60 @@ char * __t_dump(Defs *defs,Tnode *t,int level,char *buf) {
     else {
 	char *n = _d_get_symbol_name(symbols,s);
 	Structure st = _d_get_symbol_structure(symbols,s);
-	switch(st) {
-	case CSTRING:
-	    sprintf(buf," (%s:%s",n,(char *)_t_surface(t));
-	    break;
-	case BOOLEAN:
-	case INTEGER:
-	    sprintf(buf," (%s:%d",n,*(int *)_t_surface(t));
-	    break;
-	case SYMBOL:
-	    c = _d_get_symbol_name(symbols,*(int *)_t_surface(t));
-	    sprintf(buf," (%s:%s",n,c?c:"<unknown>");
-	    break;
-	case STRUCTURE:
-	    c = _d_get_structure_name(structures,*(int *)_t_surface(t));
-	    sprintf(buf," (%s:%s",n,c?c:"<unknown>");
-	    break;
-	case PROCESS:
-	    c = _d_get_process_name(processes,*(int *)_t_surface(t));
-	    sprintf(buf," (%s:%s",n,c?c:"<unknown>");
-	    break;
-	case TREE_PATH:
-	    sprintf(buf," (%s:%s",n,_t_sprint_path((int *)_t_surface(t),b));
-	    break;
-	case XADDR:
-	    x = *(Xaddr *)_t_surface(t);
-	    sprintf(buf," (%s:%s.%d",n,_d_get_symbol_name(symbols,x.symbol),x.addr);
-	    break;
-	case TREE:
-	    if (t->context.flags & TFLAG_SURFACE_IS_TREE) {
-		c = __t_dump(defs,(Tnode *)_t_surface(t),0,tbuf);
-		sprintf(buf," (%s:{%s}",n,c);
+	if (!is_sys_structure(st)) {
+	    // if it's not a system structure, it's composed, so all we need to do is
+	    // print out the symbol name, and the reset will take care of itself
+	    sprintf(buf," (%s",n);
+    	}
+	else {
+	    switch(st.id) {
+	    case CSTRING_ID:
+		sprintf(buf," (%s:%s",n,(char *)_t_surface(t));
 		break;
-	    }
-	case RECEPTOR:
-	    if (t->context.flags & (TFLAG_SURFACE_IS_TREE+TFLAG_SURFACE_IS_RECEPTOR)) {
-		c = __t_dump(defs,((Receptor *)_t_surface(t))->root,0,tbuf);
-		sprintf(buf," (%s:{%s}",n,c);
+	    case BOOLEAN_ID:
+	    case INTEGER_ID:
+		sprintf(buf," (%s:%d",n,*(int *)_t_surface(t));
 		break;
-	    }
-	case SCAPE:
-	    if (t->context.flags & TFLAG_SURFACE_IS_SCAPE) {
-		Scape *sc = (Scape *)_t_surface(t);
-		sprintf(buf," (%s:key %s,data %s",n,_d_get_symbol_name(symbols,sc->key_source),_d_get_symbol_name(symbols,sc->data_source));
+	    case SYMBOL_ID:
+		c = _d_get_symbol_name(symbols,*(Symbol *)_t_surface(t));
+		sprintf(buf," (%s:%s",n,c?c:"<unknown>");
 		break;
-	    }
-	default:
-	    switch(s) {
-	    case LISTENER:
-		c = _d_get_symbol_name(symbols,*(int *)_t_surface(t));
-		sprintf(buf," (%s on %s",n,c?c:"<unknown>");
+	    case STRUCTURE_ID:
+		c = _d_get_structure_name(structures,*(Structure *)_t_surface(t));
+		sprintf(buf," (%s:%s",n,c?c:"<unknown>");
 		break;
+	    case PROCESS_ID:
+		c = _d_get_process_name(processes,*(Process *)_t_surface(t));
+		sprintf(buf," (%s:%s",n,c?c:"<unknown>");
+		break;
+	    case TREE_PATH_ID:
+		sprintf(buf," (%s:%s",n,_t_sprint_path((int *)_t_surface(t),b));
+		break;
+	    case XADDR_ID:
+		x = *(Xaddr *)_t_surface(t);
+		sprintf(buf," (%s:%s.%d",n,_d_get_symbol_name(symbols,x.symbol),x.addr);
+		break;
+	    case TREE_ID:
+		if (t->context.flags & TFLAG_SURFACE_IS_TREE) {
+		    c = __t_dump(defs,(Tnode *)_t_surface(t),0,tbuf);
+		    sprintf(buf," (%s:{%s}",n,c);
+		    break;
+		}
+	    case RECEPTOR_ID:
+		if (t->context.flags & (TFLAG_SURFACE_IS_TREE+TFLAG_SURFACE_IS_RECEPTOR)) {
+		    c = __t_dump(defs,((Receptor *)_t_surface(t))->root,0,tbuf);
+		    sprintf(buf," (%s:{%s}",n,c);
+		    break;
+		}
+	    case SCAPE_ID:
+		if (t->context.flags & TFLAG_SURFACE_IS_SCAPE) {
+		    Scape *sc = (Scape *)_t_surface(t);
+		    sprintf(buf," (%s:key %s,data %s",n,_d_get_symbol_name(symbols,sc->key_source),_d_get_symbol_name(symbols,sc->data_source));
+		    break;
+		}
 	    default:
 		if (n == 0)
-		    sprintf(buf," (<unknown:%d>",s);
+		    sprintf(buf," (<unknown:%d.%d.%d>",s.context,s.flags,s.id);
 		else
 		    sprintf(buf," (%s",n);
 	    }

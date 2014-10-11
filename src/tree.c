@@ -76,6 +76,18 @@ Tnode * _t_newi(Tnode *parent,Symbol symbol,int surface) {
 }
 
 /**
+ * Create a new tree node with a SemanticID surface
+ *
+ * @param[in] parent parent node for the node to be created.  Can be 0 if this is a root node
+ * @param[in] symbol semantic symbol for the node to be create
+ * @param[in] surface semanticID value to store in the surface
+ * @returns pointer to node allocated on the heap
+ */
+Tnode *_t_news(Tnode *parent,Symbol symbol,SemanticID surface){
+    return _t_new(parent,symbol,&surface,sizeof(SemanticID));
+}
+
+/**
  * Create a new tree node with a tree as it's surface
  *
  * @param[in] parent parent node for the node to be created.  Can be 0 if this is a root node
@@ -164,7 +176,7 @@ Tnode *_t_new_scape(Tnode *parent,Symbol symbol,Scape *s) {
  * @returns pointer to node allocated on the heap
  */
 Tnode * _t_newp(Tnode *parent,Symbol symbol,Process surface) {
-    return _t_newi(parent,symbol,surface);  // for now we can just do this because Process is an int
+    return _t_news(parent,symbol,surface);
 }
 
 /**
@@ -627,15 +639,15 @@ TreeHash _t_hash(Tnode *symbols,Tnode *structures,Tnode *t) {
     int i,c = _t_children(t);
     TreeHash result;
     if (c == 0) {
-	TreeHash h[2];
+	struct {Symbol s;TreeHash h;} h;
 	void *surface = _t_surface(t);
-	h[0] = _t_symbol(t);
-	size_t l = _d_get_symbol_size(symbols,structures,h[0],surface);
+	h.s = _t_symbol(t);
+	size_t l = _d_get_symbol_size(symbols,structures,h.s,surface);
 	if (l > 0)
-	    h[1] = hashfn((char *)surface,l);
+	    h.h = hashfn((char *)surface,l);
 	else
-	    h[1] = 0;
-	result = hashfn((char *)h,sizeof(h));
+	    h.h = 0;
+	result = hashfn((char *)&h,sizeof(h));
     }
     else {
 	size_t l = sizeof(TreeHash)*c+sizeof(Symbol);

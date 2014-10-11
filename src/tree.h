@@ -33,6 +33,7 @@ enum TreeSurfaceFlags {TFLAG_ALLOCATED=0x0001,TFLAG_SURFACE_IS_TREE=0x0002,TFLAG
 /*****************  Node creation and deletion*/
 Tnode *_t_new(Tnode *t,Symbol symbol, void *surface, size_t size);
 Tnode *_t_newi(Tnode *parent,Symbol symbol,int surface);
+Tnode *_t_news(Tnode *parent,Symbol symbol,SemanticID surface);
 Tnode *_t_newt(Tnode *parent,Symbol symbol,Tnode *t);
 Tnode *_t_new_root(Symbol symbol);
 Tnode *_t_newr(Tnode *parent,Symbol symbol);

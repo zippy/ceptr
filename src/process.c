@@ -25,7 +25,7 @@
  */
 void _p_interpolate_from_match(Tnode *t,Tnode *match_results,Tnode *match_tree) {
     int i,c = _t_children(t);
-    if (_t_symbol(t) == INTERPOLATE_SYMBOL) {
+    if (semeq(_t_symbol(t),INTERPOLATE_SYMBOL)) {
 	Symbol s = *(Symbol *)_t_surface(t);
 	Tnode *m = _t_get_match(match_results,s);
 	int *path = (int *)_t_surface(_t_child(m,1));
@@ -60,10 +60,9 @@ Error __p_check_signature(Defs defs,Process p,Tnode *params) {
     if (i < c) return tooManyParamsReductionErr;
     for (i=1;i<=c;i++) {
 	Tnode *sig = _t_child(_t_child(input,i),1);
-	if(_t_symbol(sig) == SIGNATURE_STRUCTURE) {
-	    Structure ss = *(int *)_t_surface(sig);
-	    if (_d_get_symbol_structure(defs.symbols,_t_symbol(_t_child(params,i))) !=
-		ss && ss != TREE)
+	if(semeq(_t_symbol(sig),SIGNATURE_STRUCTURE)) {
+	    Structure ss = *(Symbol *)_t_surface(sig);
+	    if (!semeq(_d_get_symbol_structure(defs.symbols,_t_symbol(_t_child(params,i))),ss) && !semeq(ss,TREE))
 		return badSignatureReductionErr;
 	}
 	else {
@@ -94,7 +93,7 @@ Error __p_reduce(Defs defs,Tnode *run_tree, Tnode *code) {
     Tnode *parent = _t_parent(code);
     int idx = _t_node_index(code);
 
-    if (s == PARAM_REF) {
+    if (semeq(s,PARAM_REF)) {
 	param = _t_get(run_tree,(int *)_t_surface(code));
 	if (!param) {
 	    raise_error0("request for non-existent param");
@@ -128,72 +127,72 @@ Error __p_reduce(Defs defs,Tnode *run_tree, Tnode *code) {
     }
     else {
 	int b;
-	switch(s) {
-	case IF:
+	switch(s.id) {
+	case IF_ID:
 	    t = _t_child(code,1);
 	    b = (*(int *)_t_surface(t)) ? 2 : 3;
 	    x = _t_detach_by_idx(code,b);
 	    break;
-	case ADD_INT:
+	case ADD_INT_ID:
 	    x = _t_detach_by_idx(code,1);
 	    c = *(int *)_t_surface(_t_child(code,1));
 	    *((int *)&x->contents.surface) = c+*((int *)&x->contents.surface);
 	    break;
-	case SUB_INT:
+	case SUB_INT_ID:
 	    x = _t_detach_by_idx(code,1);
 	    c = *(int *)_t_surface(_t_child(code,1));
 	    *((int *)&x->contents.surface) = *((int *)&x->contents.surface)-c;
 	    break;
-	case MULT_INT:
+	case MULT_INT_ID:
 	    x = _t_detach_by_idx(code,1);
 	    c = *(int *)_t_surface(_t_child(code,1));
 	    *((int *)&x->contents.surface) = *((int *)&x->contents.surface)*c;
 	    break;
-	case DIV_INT:
+	case DIV_INT_ID:
 	    x = _t_detach_by_idx(code,1);
 	    c = *(int *)_t_surface(_t_child(code,1));
 	    *((int *)&x->contents.surface) = *((int *)&x->contents.surface)/c;
 	    break;
-	case MOD_INT:
+	case MOD_INT_ID:
 	    x = _t_detach_by_idx(code,1);
 	    c = *(int *)_t_surface(_t_child(code,1));
 	    *((int *)&x->contents.surface) = *((int *)&x->contents.surface)%c;
 	    break;
-	case EQ_INT:
+	case EQ_INT_ID:
 	    x = _t_detach_by_idx(code,1);
 	    c = *(int *)_t_surface(_t_child(code,1));
 	    *((int *)&x->contents.surface) = *((int *)&x->contents.surface)==c;
 	    x->contents.symbol = TRUE_FALSE;
 	    break;
-	case LT_INT:
+	case LT_INT_ID:
 	    x = _t_detach_by_idx(code,1);
 	    c = *(int *)_t_surface(_t_child(code,1));
 	    *((int *)&x->contents.surface) = *((int *)&x->contents.surface)<c;
 	    x->contents.symbol = TRUE_FALSE;
 	    break;
-	case GT_INT:
+	case GT_INT_ID:
 	    x = _t_detach_by_idx(code,1);
 	    c = *(int *)_t_surface(_t_child(code,1));
 	    *((int *)&x->contents.surface) = *((int *)&x->contents.surface)>c;
 	    x->contents.symbol = TRUE_FALSE;
 	    break;
-	case LTE_INT:
+	case LTE_INT_ID:
 	    x = _t_detach_by_idx(code,1);
 	    c = *(int *)_t_surface(_t_child(code,1));
 	    *((int *)&x->contents.surface) = *((int *)&x->contents.surface)<=c;
 	    x->contents.symbol = TRUE_FALSE;
 	    break;
-	case GTE_INT:
+	case GTE_INT_ID:
 	    x = _t_detach_by_idx(code,1);
 	    c = *(int *)_t_surface(_t_child(code,1));
 	    *((int *)&x->contents.surface) = *((int *)&x->contents.surface)>=c;
 	    x->contents.symbol = TRUE_FALSE;
 	    break;
-	case RESPOND:
+	case RESPOND_ID:
 	    // for now we just remove the RESPOND instruction and replace it with it's own child
 	    x = _t_detach_by_idx(code,1);
 	    break;
-	case INTERPOLATE_FROM_MATCH:
+	case INTERPOLATE_FROM_MATCH_ID:
 	    match_results = _t_child(code,2);
 	    match_tree = _t_child(code,3);
 	    x = _t_detach_by_idx(code,1);

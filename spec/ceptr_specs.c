@@ -23,7 +23,7 @@
 
 int main(int argc, const char **argv) {
     printf("Running all tests...\n\n");
-
+    def_sys();
     //**** core tests
     testTree();
     testDef();
@@ -34,6 +34,7 @@ int main(int argc, const char **argv) {
     testScape();
     testVMHost();
 
+    sys_free();
     report_tests();
     return 0;
 }

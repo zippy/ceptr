@@ -76,7 +76,7 @@ typedef struct Svalue Svalue;
  * data for group FSA state
  */
 struct Sgroup {
-    int id;             ///< the symbol that identifies this group
+    SemanticID id;      ///< the symbol that identifies this group
     int type;           ///< is this an open or close group state
 };
 typedef struct Sgroup Sgroup;

@@ -31,6 +31,8 @@ void _r_add_listener(Receptor *r,Aspect aspect,Symbol carrier,Tnode *semtrex,Tno
 void _r_free(Receptor *r);
 
 /*****************  receptor symbols, structures, and processes */
+SemanticID __set_label_for_def(Receptor *r,char *label,Tnode *def,int type);
+
 Symbol _r_declare_symbol(Receptor *r,Structure s,char *label);
 Symbol _r_get_symbol_by_label(Receptor *r,char *label);
 Structure _r_define_structure(Receptor *r,char *label,int num_params,...);
@@ -74,16 +76,17 @@ char *_r_get_symbol_name(Receptor *r,Symbol s);
 char *_r_get_process_name(Receptor *r,Process p);
 
 Xaddr G_null_xaddr;
-#define is_null_xaddr(x) ((x).symbol == 0 && (x).addr == 0)
-#define is_xaddr_eq(x,y) ((x).symbol == (y).symbol && (x).addr == (y).addr)
+#define is_null_symbol(s) ((s).flags == 0 && (s).context == 0 && (s).id == 0)
+#define is_null_xaddr(x) (is_null_symbol(x.symbol) && (x).addr == 0)
+#define is_xaddr_eq(x,y) (semeq(x.symbol,y.symbol) && (x).addr == (y).addr)
 
-#define spec_is_symbol_equal(r,got, expected) spec_total++; if (expected==got){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %s but was %s",__FUNCTION__,__LINE__,#got,_r_get_symbol_name(r,expected),_r_get_symbol_name(r,got));}
+#define spec_is_symbol_equal(r,got, expected) spec_total++; if (semeq(expected,got)){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %s but was %s",__FUNCTION__,__LINE__,#got,_r_get_symbol_name(r,expected),_r_get_symbol_name(r,got));}
 
-#define spec_is_structure_equal(r,got, expected) spec_total++; if (expected==got){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %s but was %s",__FUNCTION__,__LINE__,#got,_r_get_structure_name(r,expected),_r_get_structure_name(r,got));}
+#define spec_is_structure_equal(r,got, expected) spec_total++; if (semeq(expected,got)){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %s but was %s",__FUNCTION__,__LINE__,#got,_r_get_structure_name(r,expected),_r_get_structure_name(r,got));}
 
-#define spec_is_process_equal(r,got, expected) spec_total++; if (expected==got){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %s but was %s",__FUNCTION__,__LINE__,#got,_r_get_process_name(r,expected),_r_get_process_name(r,got));}
+#define spec_is_process_equal(r,got, expected) spec_total++; if (semeq(expected,got)){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %s but was %s",__FUNCTION__,__LINE__,#got,_r_get_process_name(r,expected),_r_get_process_name(r,got));}
 
-#define spec_is_xaddr_equal(r,got,expected)  spec_total++; if (is_xaddr_eq(got,expected)){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %s.%d but was %s.%d",__FUNCTION__,__LINE__,#got,expected.symbol?_r_get_symbol_name(r,expected.symbol):"0",expected.addr,got.symbol ? _r_get_symbol_name(r,got.symbol):"0",got.addr);}
+#define spec_is_xaddr_equal(r,got,expected)  spec_total++; if (is_xaddr_eq(got,expected)){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %s.%d but was %s.%d",__FUNCTION__,__LINE__,#got,!is_null_symbol(expected.symbol)?_r_get_symbol_name(r,expected.symbol):"0",expected.addr,!is_null_symbol(got.symbol) ? _r_get_symbol_name(r,got.symbol):"0",got.addr);}
 
 #endif
 

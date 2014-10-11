@@ -13,29 +13,29 @@
 #ifndef _CEPTR_SYS_STRUCTURES_H
 #define _CEPTR_SYS_STRUCTURES_H
 
-#define is_sys_structure(s) (s >= NULL_STRUCTURE && s < _LAST_SYS_STRUCTURE)
+#include "ceptr_types.h"
+
+#define is_sys_structure(s) (is_structure(s) && (s.context == SYS_CONTEXT))
 
 /// System defined structures
-enum SystemStructure
+enum SystemStructureID
     {
-	NULL_STRUCTURE = 0x7fff0000,
-	BOOLEAN,
-	INTEGER,
-	FLOAT,
-	CSTRING,
-	SYMBOL,
-	ENUM,
-	TREE_PATH,
-	XADDR,
-	LIST,
-	SURFACE,
-	TREE,
-	RECEPTOR,
-	PROCESS,
-	STRUCTURE,
-	SCAPE,
-	_LAST_SYS_STRUCTURE
-
+	NULL_STRUCTURE_ID,
+	BOOLEAN_ID,
+	INTEGER_ID,
+	FLOAT_ID,
+	CSTRING_ID,
+	SYMBOL_ID,
+	ENUM_ID,
+	TREE_PATH_ID,
+	XADDR_ID,
+	LIST_ID,
+	SURFACE_ID,
+	TREE_ID,
+	RECEPTOR_ID,
+	PROCESS_ID,
+	STRUCTURE_ID,
+	SCAPE_ID,
     };
 
 static char *G_sys_structure_names[] = {
@@ -56,4 +56,21 @@ static char *G_sys_structure_names[] = {
     "STRUCTURE",
     "SCAPE"
 };
+
+Structure NULL_STRUCTURE;
+Structure BOOLEAN;
+Structure INTEGER;
+Structure FLOAT;
+Structure CSTRING;
+Structure SYMBOL;
+Structure ENUM;
+Structure TREE_PATH;
+Structure XADDR;
+Structure LIST;
+Structure SURFACE;
+Structure TREE;
+Structure RECEPTOR;
+Structure PROCESS;
+Structure STRUCTURE;
+Structure SCAPE;
 #endif

@@ -62,15 +62,16 @@ void testReceptorAddListener() {
     Receptor *r;
     r = _r_new(TEST_RECEPTOR_SYMBOL);
 
+    Symbol dummy = {0,0,0};
     // test that you can add a listener to a receptor's aspect
     Tnode *s = _t_new_root(EXPECTATION);
-    _t_newi(s,SEMTREX_SYMBOL_LITERAL,0);
-    Tnode *a = _t_newi(0,ACTION,NULL_PROCESS);
+    _t_news(s,SEMTREX_SYMBOL_LITERAL,dummy);
+    Tnode *a = _t_news(0,ACTION,NULL_PROCESS);
     _r_add_listener(r,DEFAULT_ASPECT,TEST_INT_SYMBOL,s,a);
 
     Tnode *l = _t_child(__r_get_listeners(r,DEFAULT_ASPECT),1);      // listener should have been added as first child of listeners
     spec_is_symbol_equal(r,_t_symbol(l),LISTENER);
-    spec_is_equal(*(int *)_t_surface(l),TEST_INT_SYMBOL); // carrier should be TEST_INT_SYMBOL
+    spec_is_sem_equal(*(Symbol *)_t_surface(l),TEST_INT_SYMBOL); // carrier should be TEST_INT_SYMBOL
     spec_is_ptr_equal(_t_child(l,1),s);       // our expectation semtrex should be first child of the listener
     spec_is_ptr_equal(_t_child(l,2),a);       // our action code tree should be the second child of the listener
 
@@ -124,14 +125,14 @@ void testReceptorAction() {
 
     // our expectation should match on the first path segment
     Tnode *expect = _t_new_root(EXPECTATION);
-    Tnode *req = _t_newi(expect,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST);
+    Tnode *req = _t_news(expect,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST);
     Tnode *seq = _t_newr(req,SEMTREX_SEQUENCE);
     _t_newr(seq,SEMTREX_SYMBOL_ANY);  // skips the Version
     _t_newr(seq,SEMTREX_SYMBOL_ANY);  // skips over the Method
-    Tnode *path = _t_newi(seq,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST_PATH);
-    Tnode *segs = _t_newi(path,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST_PATH_SEGMENTS);
-    Tnode *g = _t_newi(segs,SEMTREX_GROUP,HTTP_REQUEST_PATH_SEGMENT);
-    _t_newi(g,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST_PATH_SEGMENT);
+    Tnode *path = _t_news(seq,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST_PATH);
+    Tnode *segs = _t_news(path,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST_PATH_SEGMENTS);
+    Tnode *g = _t_news(segs,SEMTREX_GROUP,HTTP_REQUEST_PATH_SEGMENT);
+    _t_news(g,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST_PATH_SEGMENT);
 
     Tnode *result;
     int matched;
@@ -171,16 +172,16 @@ void testReceptorDef() {
 
     spec_is_structure_equal(r,__r_get_symbol_structure(r,lat),FLOAT);
 
-    spec_is_str_equal((char *)_t_surface(_t_child(def = _t_child(r->defs.symbols,lat),1)),"latitude");
-    spec_is_str_equal((char *)_t_surface(_t_child(_t_child(r->defs.symbols,lon),1)),"longitude");
+    spec_is_str_equal((char *)_t_surface(_t_child(def = _t_child(r->defs.symbols,lat.id),1)),"latitude");
+    spec_is_str_equal((char *)_t_surface(_t_child(_t_child(r->defs.symbols,lon.id),1)),"longitude");
 
     int *path = labelGet(&r->table,"latitude");
     spec_is_ptr_equal(_t_get(r->root,path),def);
-    spec_is_equal(_r_get_symbol_by_label(r,"latitude"),lat);
+    spec_is_sem_equal(_r_get_symbol_by_label(r,"latitude"),lat);
 
     Structure latlong = _r_define_structure(r,"latlong",2,lat,lon);
 
-    def = _t_child(r->defs.structures,latlong);
+    def = _t_child(r->defs.structures,latlong.id);
     Tnode *l = _t_child(def,1);
     spec_is_str_equal((char *)_t_surface(l),"latlong");
 
@@ -191,7 +192,7 @@ void testReceptorDef() {
     spec_is_long_equal(__r_get_symbol_size(r,lat,0),sizeof(float));
 
     Symbol house_loc = _r_declare_symbol(r,latlong,"house location");
-    spec_is_equal(__r_get_symbol_structure(r,house_loc),latlong);
+    spec_is_sem_equal(__r_get_symbol_structure(r,house_loc),latlong);
     spec_is_long_equal(__r_get_symbol_size(r,house_loc,0),sizeof(float)*2);
 
     Symbol name = _r_declare_symbol(r,CSTRING,"name");
@@ -207,7 +208,7 @@ void testReceptorDef() {
     Tnode *input = _t_new_root(INPUT_SIGNATURE);
     Tnode *output = _t_new_root(OUTPUT_SIGNATURE);
     Process p = _r_code_process(r,code,"power","takes the mathematical power of the two params",input,output);
-    spec_is_equal(_t_children(r->defs.processes),-p);
+    spec_is_equal(_t_children(r->defs.processes),p.id);
 
     _r_free(r);
 }
@@ -283,10 +284,10 @@ void testReceptorProtocol() {
     _t_new(i,STEP,"ping",5);
     _t_new(i,FROM_ROLE,"client",7);
     _t_new(i,TO_ROLE,"server",7);
-    _t_newi(i,CARRIER,ping); // input carrier
-    _t_newi(i,CARRIER,ping); // output carrier
+    _t_news(i,CARRIER,ping); // input carrier
+    _t_news(i,CARRIER,ping); // output carrier
     e = _t_newr(i,EXPECTATION);
-    Tnode *req = _t_newi(e,SEMTREX_SYMBOL_LITERAL,ping);
+    Tnode *req = _t_news(e,SEMTREX_SYMBOL_LITERAL,ping);
 
     Tnode *ping_resp = _t_new_root(RESPOND);
     _t_newi(ping_resp,ping,1);
@@ -297,28 +298,28 @@ void testReceptorProtocol() {
     _t_newp(i,ACTION,proc);
 
     s = _t_newr(i,RESPONSE_STEPS);
-    _t_new(s,STEP,"ping_response",13);
+    _t_new(s,STEP,"ping_response",14);
 
     // ping response interaction
     i = _t_newr(interactions,INTERACTION);
-    _t_new(i,STEP,"ping_response",13);
+    _t_new(i,STEP,"ping_response",14);
     _t_new(i,FROM_ROLE,"server",7);
     _t_new(i,TO_ROLE,"client",7);
-    _t_newi(i,CARRIER,ping); // input carrier
-    _t_newi(i,CARRIER,ping); // output carrier
+    _t_news(i,CARRIER,ping); // input carrier
+    _t_news(i,CARRIER,ping); // output carrier
     e = _t_newr(i,EXPECTATION);
-    _t_newi(e,SEMTREX_SYMBOL_LITERAL,ping);
+    _t_news(e,SEMTREX_SYMBOL_LITERAL,ping);
     //    s = _t_newr(i,RESPONSE_STEPS);
 
     Tnode *aspects = _t_child(r->root,2);
     Tnode *a = _t_newr(aspects,ASPECT_DEF);
     _t_newi(a,ASPECT_TYPE,EXTERNAL_ASPECT);
-    _t_newi(a,CARRIER,ping);
-    _t_newi(a,CARRIER,ping);
+    _t_news(a,CARRIER,ping);
+    _t_news(a,CARRIER,ping);
     _r_install_protocol(r,1,"server",DEFAULT_ASPECT);
 
     char *d = _td(r,r->root);
-    spec_is_str_equal(d," (TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS (SYMBOL_DECLARATION (SYMBOL_LABEL:ping) (SYMBOL_STRUCTURE:BOOLEAN))) (PROCESSES (PROCESS_CODING (PROCESS_NAME:send ping response) (PROCESS_INTENTION:long desc...) (process:RESPOND (ping:1)) (INPUT) (OUTPUT_SIGNATURE))) (PROTOCOLS (PROTOCOL (ROLES (ROLE:server) (ROLE:client)) (INTERACTIONS (INTERACTION (STEP:ping) (FROM_ROLE) (TO_ROLE) (CARRIER:ping) (CARRIER:ping) (EXPECTATION (SEMTREX_SYMBOL_LITERAL:ping)) (ACTION:send ping response) (RESPONSE_STEPS (STEP:ping_response))) (INTERACTION (STEP:ping_response) (FROM_ROLE) (TO_ROLE) (CARRIER:ping) (CARRIER:ping) (EXPECTATION (SEMTREX_SYMBOL_LITERAL:ping)))))) (SCAPES)) (ASPECTS (ASPECT_DEF (ASPECT_TYPE:0) (CARRIER:ping) (CARRIER:ping))) (FLUX (ASPECT:1 (LISTENERS (LISTENER:1 (EXPECTATION (SEMTREX_SYMBOL_LITERAL:ping)) (ACTION:send ping response))) (SIGNALS))))");
+    spec_is_str_equal(d," (TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS (SYMBOL_DECLARATION (SYMBOL_LABEL:ping) (SYMBOL_STRUCTURE:BOOLEAN))) (PROCESSES (PROCESS_CODING (PROCESS_NAME:send ping response) (PROCESS_INTENTION:long desc...) (process:RESPOND (ping:1)) (INPUT) (OUTPUT_SIGNATURE))) (PROTOCOLS (PROTOCOL (ROLES (ROLE:server) (ROLE:client)) (INTERACTIONS (INTERACTION (STEP:ping) (FROM_ROLE) (TO_ROLE) (CARRIER:ping) (CARRIER:ping) (EXPECTATION (SEMTREX_SYMBOL_LITERAL:ping)) (ACTION:send ping response) (RESPONSE_STEPS (STEP:ping_response))) (INTERACTION (STEP:ping_response) (FROM_ROLE) (TO_ROLE) (CARRIER:ping) (CARRIER:ping) (EXPECTATION (SEMTREX_SYMBOL_LITERAL:ping)))))) (SCAPES)) (ASPECTS (ASPECT_DEF (ASPECT_TYPE:0) (CARRIER:ping) (CARRIER:ping))) (FLUX (ASPECT:1 (LISTENERS (LISTENER:ping (EXPECTATION (SEMTREX_SYMBOL_LITERAL:ping)) (ACTION:send ping response))) (SIGNALS))))");
 
     // delivering a fake signal should return a ping
     Xaddr f = {RECEPTOR_XADDR,3};  // DUMMY XADDR
@@ -347,7 +348,7 @@ void testReceptorInstanceNew() {
 
     Xaddr x = _r_new_instance(r,t);
     spec_is_equal(x.addr,1);
-    spec_is_equal(x.symbol,house_loc);
+    spec_is_sem_equal(x.symbol,house_loc);
 
     float *ill;
     Tnode *i = _r_get_instance(r,x);
@@ -396,8 +397,8 @@ void testReceptorSerialize() {
     int *path = labelGet(&r1->table,"latitude");
     int p[] = {2,1,TREE_PATH_TERMINATOR};
     spec_is_path_equal(path,p);
-    spec_is_equal(_r_get_symbol_by_label(r1,"latitude"),lat);
-    spec_is_equal(_r_get_structure_by_label(r1,"latlong"),latlong);
+    spec_is_sem_equal(_r_get_symbol_by_label(r1,"latitude"),lat);
+    spec_is_sem_equal(_r_get_structure_by_label(r1,"latlong"),latlong);
 
     // check that the unserialized receptor has all the instances loaded into the instance store too
     Tnode *t1 = _r_get_instance(r1,x);

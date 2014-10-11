@@ -4,9 +4,25 @@
 #include <stdint.h>
 #include "uthash.h"
 
-typedef uint32_t Symbol;
-typedef uint32_t Process;
-typedef uint32_t Structure;
+enum SemanticContexts {SYS_CONTEXT,RECEPTOR_CONTEXT,TEST_CONTEXT};
+
+enum SemanticTypes {SEM_TYPE_STRUCTURE=1,SEM_TYPE_SYMBOL,SEM_TYPE_PROCESS};
+#define SEM_TYPE_MASK 0x00FF
+#define is_symbol(s) (((s).flags & SEM_TYPE_MASK) == SEM_TYPE_SYMBOL)
+#define is_process(s) (((s).flags & SEM_TYPE_MASK) == SEM_TYPE_PROCESS)
+#define is_structure(s) (((s).flags & SEM_TYPE_MASK) == SEM_TYPE_STRUCTURE)
+
+typedef uint16_t Context;
+struct SemanticID {
+    Context context;
+    uint16_t flags;
+    uint32_t id;
+};
+typedef struct SemanticID SemanticID;
+
+typedef SemanticID Symbol;
+typedef SemanticID Process;
+typedef SemanticID Structure;
 
 // ** types for trees
 struct Tstruct {

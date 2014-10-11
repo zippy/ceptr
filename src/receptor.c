@@ -59,13 +59,13 @@ Receptor *_r_new(Symbol s) {
 }
 
 // set the labels in the label table for the given def
-void __r_set_labels(Receptor *r,Tnode *defs) {
+void __r_set_labels(Receptor *r,Tnode *defs,int sem_type) {
     int c = _t_children(defs);
     int i;
     for(i=1;i<=c;i++){
 	Tnode *def = _t_child(defs,i);
 	Tnode *sl = _t_child(def,1);
-	__set_label_for_def(r,_t_surface(sl),def);
+	__set_label_for_def(r,_t_surface(sl),def,sem_type);
     }
 }
 
@@ -85,7 +85,7 @@ Receptor *_r_new_receptor_from_package(Symbol s,Tnode *p,Tnode *bindings) {
     Receptor * r = __r_new(s,defs,aspects);
     int i,c = _t_children(defs);
     for(i=1;i<=c;i++)
-	__r_set_labels(r,_t_child(defs,i));
+	__r_set_labels(r,_t_child(defs,i),i); //@todo fix this because it relies on SemanticTypes value matching the index order in the definitions.
     return r;
 }
 
@@ -93,7 +93,7 @@ Receptor *_r_new_receptor_from_package(Symbol s,Tnode *p,Tnode *bindings) {
  * Adds an expectation/action pair to a receptor's aspect.
  */
 void _r_add_listener(Receptor *r,Aspect aspect,Symbol carrier,Tnode *expectation,Tnode *action) {
-    Tnode *e = _t_newi(0,LISTENER,carrier);
+    Tnode *e = _t_news(0,LISTENER,carrier);
     _t_add(e,expectation);
     _t_add(e,action);
     Tnode *a = __r_get_listeners(r,aspect);
@@ -133,12 +133,13 @@ void _r_free(Receptor *r) {
 /**
  * we use this for labeling symbols, structures and processes because labels store the full path to the labeled item and we want the labels to be unique across all three
  */
-int __set_label_for_def(Receptor *r,char *label,Tnode *def) {
+SemanticID __set_label_for_def(Receptor *r,char *label,Tnode *def,int type) {
     int *path = _t_get_path(def);
     labelSet(&r->table,label,path);
     int i = path[_t_path_depth(path)-1];
     free(path);
-    return i;
+    SemanticID s = {RECEPTOR_CONTEXT,type,i};
+    return s;
 }
 
 /**
@@ -146,11 +147,14 @@ int __set_label_for_def(Receptor *r,char *label,Tnode *def) {
  *
  * This works for retrieving symbols, structures & processes because the symbol and structure values is just the child index.
  */
-int __get_label_idx(Receptor *r,char *label) {
+SemanticID  __get_label_idx(Receptor *r,char *label) {
+    SemanticID s = {RECEPTOR_CONTEXT,0,0};
     int *path = labelGet(&r->table,label);
-    if (!path) return 0;
-    int x = path[_t_path_depth(path)-1];
-    return (path[1] == 3) ? -x : x; // process labels are negative!!
+    if (path) {
+	s.id = path[_t_path_depth(path)-1];
+	s.flags = path[1]; // definitions index == semantic type!!
+    }
+    return s;
 }
 
 /**
@@ -164,7 +168,7 @@ int __get_label_idx(Receptor *r,char *label) {
  */
 Symbol _r_declare_symbol(Receptor *r,Structure s,char *label){
     Tnode *def = __d_declare_symbol(r->defs.symbols,s,label);
-    return __set_label_for_def(r,label,def);
+    return __set_label_for_def(r,label,def,SEM_TYPE_SYMBOL);
 }
 
 /**
@@ -184,7 +188,7 @@ Structure _r_define_structure(Receptor *r,char *label,int num_params,...) {
     Tnode *def = _dv_define_structure(r->defs.structures,label,num_params,params);
     va_end(params);
 
-    return __set_label_for_def(r,label,def);
+    return __set_label_for_def(r,label,def,SEM_TYPE_STRUCTURE);
 }
 
 /**
@@ -201,7 +205,7 @@ Structure _r_define_structure(Receptor *r,char *label,int num_params,...) {
  */
 Process _r_code_process(Receptor *r,Tnode *code,char *name,char *intention,Tnode *in,Tnode *out) {
     Tnode *def = __d_code_process(r->defs.processes,code,name,intention,in,out);
-    return -__set_label_for_def(r,name,def);
+    return __set_label_for_def(r,name,def,SEM_TYPE_PROCESS);
 }
 
 /**
@@ -303,9 +307,9 @@ void _r_install_protocol(Receptor *r,int idx,char *role,Aspect aspect) {
 	if (!strcmp(role,(char *)_t_surface(_t_child(i,3)))) {
 	    // get the protocols input_carrier
 	    Symbol ic = *(Symbol *)_t_surface(_t_child(i,4));
-	    if (a_ic != ic) {
+	    if (!semeq(a_ic,ic)) {
 		//		raise_error2("input carriers don't match: aspect=%s protocol=%s",_r_get_symbol_name(r,a_ic),_r_get_symbol_name(r,ic));
-raise_error2("input carriers don't match: aspect=%d protocol=%d",a_ic,ic);
+raise_error2("input carriers don't match: aspect=%d protocol=%d",a_ic.id,ic.id);
 	    }
 	    Tnode *expect = _t_clone(_t_child(i,6));
 	    Tnode *act = _t_clone(_t_child(i,7));
@@ -481,7 +485,7 @@ Tnode * _t_unserialize(Receptor *r,void **surfaceP,size_t *lengthP,Tnode *t) {
     size = __r_get_symbol_size(r,s,*surfaceP);
     //printf(" reading: %ld bytes\n",size);
     Structure st = __r_get_symbol_structure(r,s);
-    if (st == INTEGER)
+    if (semeq(st,INTEGER))
 	t = _t_newi(t,s,*(int *)*surfaceP);
     else
 	t = _t_new(t,s,*surfaceP,size);
@@ -518,7 +522,7 @@ Receptor * _r_unserialize(void *surface) {
     Tnode *defs = _t_child(r->root,1);
     int i,c = _t_children(defs);
     for(i=1;i<=c;i++)
-	__r_set_labels(r,_t_child(defs,i));
+	__r_set_labels(r,_t_child(defs,i),i);
 
     return r;
 }

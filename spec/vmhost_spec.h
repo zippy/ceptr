@@ -23,8 +23,8 @@ void testVMHostCreate() {
     spec_is_ptr_equal(v->pending_signals,s_tree);
     spec_is_equal(_t_children(s_tree),0);
 
-    spec_is_equal(v->installed_receptors->key_source,RECEPTOR_IDENTIFIER);
-    spec_is_equal(v->installed_receptors->data_source,RECEPTOR);
+    spec_is_sem_equal(v->installed_receptors->key_source,RECEPTOR_IDENTIFIER);
+    spec_is_sem_equal(v->installed_receptors->data_source,RECEPTOR);
     _v_free(v);
     //! [testVMHostCreate]
 }

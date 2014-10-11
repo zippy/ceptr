@@ -13,43 +13,40 @@
 #ifndef _CEPTR_SYS_PROCESSES_H
 #define _CEPTR_SYS_PROCESSES_H
 
-#define is_sys_process(s) (s >= NULL_PROCESS && s < _LAST_SYS_PROCESS)
-#define is_process(s) (s & 0x80000000)
+#define is_sys_process(s) (is_process(s) && (s.context == SYS_CONTEXT))
 
 /// System defined processes
-enum SystemProcess
+enum SystemProcessID
     {
-	NULL_PROCESS = 0xffff0000,
-	IF,                                ///< reduce to the left or right tree conditionally
-	ADD_INT,
-	SUB_INT,
-	MULT_INT,
-	DIV_INT,
-	MOD_INT,
-	EQ_INT,
-	LT_INT,
-	GT_INT,
-	LTE_INT,
-	GTE_INT,
-	RESPOND,                           ///< respond to the initiating signal with the what ever the sub-tree reduced to
-	INTERPOLATE_FROM_MATCH,            ///< reduce to replaced values from the match
-	_LAST_SYS_PROCESS
+	IF_ID=1,                         ///< reduce to the left or right tree conditionally
+	ADD_INT_ID,
+	SUB_INT_ID,
+	MULT_INT_ID,
+	DIV_INT_ID,
+	MOD_INT_ID,
+	EQ_INT_ID,
+	LT_INT_ID,
+	GT_INT_ID,
+	LTE_INT_ID,
+	GTE_INT_ID,
+	RESPOND_ID,                   ///< respond to the initiating signal with the what ever the sub-tree reduced to
+	INTERPOLATE_FROM_MATCH_ID,    ///< reduce to replaced values from the match*/
+	    };
 
-    };
-static char *G_sys_process_names[] = {
-    "NULL_PROCESS",
-    "IF",
-    "ADD_INT",
-    "SUB_INT",
-    "MULT_INT",
-    "DIV_INT",
-    "MOD_INT",
-    "EQ_INT",
-    "LT_INT",
-    "GT_INT",
-    "LTE_INT",
-    "GTE_INT",
-    "RESPOND",
-    "INTERPOLATE_FROM_MATCH",
-};
+Process NULL_PROCESS;
+Process IF;
+Process ADD_INT;
+Process SUB_INT;
+Process MULT_INT;
+Process DIV_INT;
+Process MOD_INT;
+Process EQ_INT;
+Process LT_INT;
+Process GT_INT;
+Process LTE_INT;
+Process GTE_INT;
+Process RESPOND;
+Process INTERPOLATE_FROM_MATCH;
+
+
 #endif

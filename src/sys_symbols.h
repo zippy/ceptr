@@ -15,15 +15,14 @@
 #include "sys_structures.h"
 #include "ceptr_types.h"
 
-#define is_sys_symbol(s) (s >= NULL_SYMBOL && s < _LAST_SYS_SYMBOL)
-#define is_sys_test_symbol(s) (s >= TEST_INT_SYMBOL && s < _LAST_TEST_SYMBOL)
-#define is_symbol(s) (!(s & 0x80000000))
+#define is_sys_symbol(s) (s.context == SYS_CONTEXT)
+#define is_sys_test_symbol(s) (s.context == TEST_CONTEXT)
 
 /// test symbols.  These are defined only for the test suite.
-enum TestSymbol {TEST_INT_SYMBOL= 0x7ffff000,TEST_INT_SYMBOL2,TEST_STR_SYMBOL,TEST_TREE_SYMBOL,TEST_TREE_SYMBOL2,
+/*enum TestSymbol {TEST_INT_SYMBOL= 0x7ffff000,TEST_INT_SYMBOL2,TEST_STR_SYMBOL,TEST_TREE_SYMBOL,TEST_TREE_SYMBOL2,
 		 TEST_NAME_SYMBOL,TEST_FIRST_NAME_SYMBOL,TEST_RECEPTOR_SYMBOL,TEST_ALPHABETIZE_SCAPE_SYMBOL,
 		 _LAST_TEST_SYMBOL
-};
+		 };*/
 static char *G_test_symbol_names[] = {
     "TEST_INT_SYMBOL",
     "TEST_INT_SYMBOL2",
@@ -37,7 +36,7 @@ static char *G_test_symbol_names[] = {
 };
 
 static Structure G_test_symbol_structures[] = {
-    INTEGER, //"TEST_INT_SYMBOL",
+/*    INTEGER, //"TEST_INT_SYMBOL",
     INTEGER, //"TEST_INT_SYMBOL2",
     CSTRING, //"TEST_STR_SYMBOL",
     TREE,    //"TEST_TREE_SYMBOL",
@@ -45,183 +44,112 @@ static Structure G_test_symbol_structures[] = {
     TREE,    //"TEST_NAME_SYMBOL",
     CSTRING, //"TEST_FIRST_NAME_SYMBOL",
     RECEPTOR,//"TEST_RECEPTOR_SYMBOL"
-    SCAPE,   //"TEST_ALPHABETIZE_SCAPE_SYMBOL",
+    SCAPE,   //"TEST_ALPHABETIZE_SCAPE_SYMBOL",*/
 };
 
-/// System defined symbols.
-enum SystemSymbol
+Symbol TEST_INT_SYMBOL;
+Symbol TEST_INT_SYMBOL2;
+Symbol TEST_STR_SYMBOL;
+Symbol TEST_TREE_SYMBOL;
+Symbol TEST_TREE_SYMBOL2;
+Symbol TEST_NAME_SYMBOL;
+Symbol TEST_FIRST_NAME_SYMBOL;
+Symbol TEST_RECEPTOR_SYMBOL;
+Symbol TEST_ALPHABETIZE_SCAPE_SYMBOL;
+
+enum SystemSymbolIDs
 {
     //-----  Basic symbols for underlying data types
-    NULL_SYMBOL = 0x7fff0000,
-    TRUE_FALSE,
+    NULL_SYMBOL_ID = 0,
+    DEFINITIONS_ID,
+    STRUCTURES_ID,
+    STRUCTURE_DEFINITION_ID,
+    STRUCTURE_LABEL_ID,
+    STRUCTURE_PARTS_ID,
+    STRUCTURE_PART_ID,
+    SYMBOLS_ID,
+    SYMBOL_DECLARATION_ID,
+    SYMBOL_STRUCTURE_ID,
+    SYMBOL_LABEL_ID,
+
+    TRUE_FALSE_ID,
 
     //-----  Symbols for the different semantic parts of semtrexes
-    SEMTREX_MATCHED_PATH,              ///< path to symbol matched by semtrex
-    SEMTREX_SYMBOL_LITERAL,            ///< This system symbol matches on the semantic type.         Ex: /TEST_SYMBOL
-    SEMTREX_SEQUENCE,                  ///< Match on a sequence of child nodes which are any valid semtrex's.  Ex: comma separated nodes
-    SEMTREX_OR,                        ///< Logical OR between two Semtrex expressions.      Ex: |
-    SEMTREX_SYMBOL_ANY,                ///< Match any symbol or value of the node.           Ex: .
-    SEMTREX_ZERO_OR_MORE,              ///< Requires one child Semtrex and matches on zero or more of that Semtrex.  Ex: /0/TestSemtrex*
-    SEMTREX_ONE_OR_MORE,               ///< Requires one child Semtrex and matches on one or more of that Semtrex.   Ex: /0/TestSemtrex+
-    SEMTREX_ZERO_OR_ONE,               ///< Requires one child Semtrex and matches on zero or one of that Semtrex.   Ex: /0/TestSemtrex?
-    SEMTREX_VALUE_LITERAL,	       ///< Matches on the semantic type and the data value.
-    SEMTREX_GROUP,                     ///< Grouping                                 Ex: (...)operator
-    SEMTREX_MATCH,                     ///< Returns result and sibling count.        Ex: {name:expr} (verify this is what it's supposed to do)
-    SEMTREX_MATCH_RESULTS,             ///< In the FSA, keeps track of which part matches so it can be referenced
-    SEMTREX_MATCH_SIBLINGS_COUNT,      ///< In the FSA, it's the length of the match
+    SEMTREX_MATCHED_PATH_ID,              ///< path to symbol matched by semtrex
+    SEMTREX_SYMBOL_LITERAL_ID,            ///< This system symbol matches on the semantic type.         Ex: /TEST_SYMBOL
+    SEMTREX_SEQUENCE_ID,                  ///< Match on a sequence of child nodes which are any valid semtrex's.  Ex: comma separated nodes
+    SEMTREX_OR_ID,                        ///< Logical OR between two Semtrex expressions.      Ex: |
+    SEMTREX_SYMBOL_ANY_ID,                ///< Match any symbol or value of the node.           Ex: .
+    SEMTREX_ZERO_OR_MORE_ID,              ///< Requires one child Semtrex and matches on zero or more of that Semtrex.  Ex: /0/TestSemtrex*
+    SEMTREX_ONE_OR_MORE_ID,               ///< Requires one child Semtrex and matches on one or more of that Semtrex.   Ex: /0/TestSemtrex+
+    SEMTREX_ZERO_OR_ONE_ID,               ///< Requires one child Semtrex and matches on zero or one of that Semtrex.   Ex: /0/TestSemtrex?
+    SEMTREX_VALUE_LITERAL_ID,	       ///< Matches on the semantic type and the data value.
+    SEMTREX_GROUP_ID,                     ///< Grouping                                 Ex: (...)operator
+    SEMTREX_MATCH_ID,                     ///< Returns result and sibling count.        Ex: {name:expr} (verify this is what it's supposed to do)
+    SEMTREX_MATCH_RESULTS_ID,             ///< In the FSA_ID, keeps track of which part matches so it can be referenced
+    SEMTREX_MATCH_SIBLINGS_COUNT_ID,      ///< In the FSA_ID, it's the length of the match
 
     //-----  Symbols for receptors
-    RECEPTOR_XADDR,                    ///< An Xaddr that points to a receptor
-    FLUX,                              ///< tree to hold all incoming and in process signals on the various aspects
-    DEFINITIONS,
-    STRUCTURES,
-    STRUCTURE_DEFINITION,
-    STRUCTURE_LABEL,
-    STRUCTURE_PARTS,
-    STRUCTURE_PART,
-    SYMBOLS,
-    SYMBOL_DECLARATION,
-    SYMBOL_STRUCTURE,
-    SYMBOL_LABEL,
-    SCAPE_SPEC,
-    ASPECTS,
-    ASPECT_DEF,
-    ASPECT_TYPE,
-    CARRIER,
-    ASPECT,
-    SIGNALS,                           ///< list of signals on an aspect in the flux
-    SIGNAL,                            ///< a signal on the flux.  It's first child is the contents of the signal
-    ENVELOPE,
-    BODY,
-    LISTENERS,                         ///< list of carrier/expectation/action tress that "listen" to changes on the flux
-    LISTENER,                          ///< surface of the listener is the carrier symbol, and it has two children, expectation semtrex and action code tree
-    EXPECTATION,                       ///< expectation is a semtrex (thus has one child which is the first part of the semtrex)
-    ACTION,                            ///< code tree, which specifies the action to perform when an expectation's semtrex matches
-    INTERPOLATE_SYMBOL,                ///< a place holder to indicate which symbol to insert into this part of the three
-    PROCESSES,
-    PROCESS_CODING,
-    PROCESS_NAME,
-    PROCESS_INTENTION,
-    INPUT,
-    INPUT_SIGNATURE,
-    INPUT_LABEL,
-    SIGNATURE_STRUCTURE,
-    OUTPUT_SIGNATURE,
-    RUN_TREE,                         ///< think about this as a stack frame and its code
-    PARAM_REF,                        ///< used in a code tree as a reference to a parameter
-    PARAMS,
-    PROTOCOLS,
-    PROTOCOL,
-    ROLES,
-    ROLE,
-    INTERACTIONS,
-    INTERACTION,
-    STEP,
-    FROM_ROLE,
-    TO_ROLE,
-    RESPONSE_STEPS,
-    SCAPES,
+    RECEPTOR_XADDR_ID,                    ///< An Xaddr that points to a receptor
+    FLUX_ID,                              ///< tree to hold all incoming and in process signals on the various aspects
+    SCAPE_SPEC_ID,
+    ASPECTS_ID,
+    ASPECT_DEF_ID,
+    ASPECT_TYPE_ID,
+    CARRIER_ID,
+    ASPECT_ID,
+    SIGNALS_ID,                           ///< list of signals on an aspect in the flux
+    SIGNAL_ID,                            ///< a signal on the flux.  It's first child is the contents of the signal
+    ENVELOPE_ID,
+    BODY_ID,
+    LISTENERS_ID,                         ///< list of carrier/expectation/action tress that "listen" to changes on the flux
+    LISTENER_ID,                          ///< surface of the listener is the carrier symbol, and it has two children_ID, expectation semtrex and action code tree
+    EXPECTATION_ID,                       ///< expectation is a semtrex (thus has one child which is the first part of the semtrex)
+    ACTION_ID,                            ///< code tree_ID, which specifies the action to perform when an expectation's semtrex matches
+    INTERPOLATE_SYMBOL_ID,                ///< a place holder to indicate which symbol to insert into this part of the three
+    PROCESSES_ID,
+    PROCESS_CODING_ID,
+    PROCESS_NAME_ID,
+    PROCESS_INTENTION_ID,
+    INPUT_ID,
+    INPUT_SIGNATURE_ID,
+    INPUT_LABEL_ID,
+    SIGNATURE_STRUCTURE_ID,
+    OUTPUT_SIGNATURE_ID,
+    RUN_TREE_ID,                         ///< think about this as a stack frame and its code
+    PARAM_REF_ID,                        ///< used in a code tree as a reference to a parameter
+    PARAMS_ID,
+    PROTOCOLS_ID,
+    PROTOCOL_ID,
+    ROLES_ID,
+    ROLE_ID,
+    INTERACTIONS_ID,
+    INTERACTION_ID,
+    STEP_ID,
+    FROM_ROLE_ID,
+    TO_ROLE_ID,
+    RESPONSE_STEPS_ID,
+    SCAPES_ID,
 
     //-----  Symbols for the virtual machine host
-    VM_HOST_RECEPTOR,
-    COMPOSITORY,                      ///< receptor that holds available receptor packages for installation
-    MANIFEST,                         ///< configuration template to be filled out for the installation of a receptor
-    MANIFEST_PAIR,
-    MANIFEST_LABEL,                   ///< a label in the manifest to identify a binding
-    MANIFEST_SPEC,                    ///< a symbol to specify what type of data must be provided for a given manifest label
-    RECEPTOR_PACKAGE,                 ///< a manifest, a symbol declaration tree, a structure definition tree, and an identifier
-    RECEPTOR_IDENTIFIER,              ///< uuid that identifies receptors
-    INSTALLED_RECEPTOR,               ///< contains the installed receptor as well as state information (enabled,disabled, etc..)
-    ACTIVE_RECEPTORS,                 ///< list of currently active INSTALLED_RECEPTORS
-    PENDING_SIGNALS,                  ///< list of currently active INSTALLED_RECEPTORS
-    BINDINGS,                         ///< specifics that match a MANIFEST and allow a receptor to be installed
-    BINDING_PAIR,                     ///< a pair that matches a MANIFEST_LABEL with a given binding
-    _LAST_SYS_SYMBOL
+    VM_HOST_RECEPTOR_ID,
+    COMPOSITORY_ID,                      ///< receptor that holds available receptor packages for installation
+    MANIFEST_ID,                         ///< configuration template to be filled out for the installation of a receptor
+    MANIFEST_PAIR_ID,
+    MANIFEST_LABEL_ID,                   ///< a label in the manifest to identify a binding
+    MANIFEST_SPEC_ID,                    ///< a symbol to specify what type of data must be provided for a given manifest label
+    RECEPTOR_PACKAGE_ID,                 ///< a manifest, a symbol declaration tree, a structure definition tree_ID, and an identifier
+    RECEPTOR_IDENTIFIER_ID,              ///< uuid that identifies receptors
+    INSTALLED_RECEPTOR_ID,               ///< contains the installed receptor as well as state information (enabled,disabled_ID, etc..)
+    ACTIVE_RECEPTORS_ID,                 ///< list of currently active INSTALLED_RECEPTORS
+    PENDING_SIGNALS_ID,                  ///< list of currently active INSTALLED_RECEPTORS
+    BINDINGS_ID,                         ///< specifics that match a MANIFEST and allow a receptor to be installed
+    BINDING_PAIR_ID,                     ///< a pair that matches a MANIFEST_LABEL with a given binding
 };
-static char *G_sys_symbol_names[] = {
-    "NULL_SYMBOL",
-    "TRUE_FALSE",
-    "SEMTREX_MATCHED_PATH",
-    "SEMTREX_SYMBOL_LITERAL",
-    "SEMTREX_SEQUENCE",
-    "SEMTREX_OR",
-    "SEMTREX_SYMBOL_ANY",
-    "SEMTREX_ZERO_OR_MORE",
-    "SEMTREX_ONE_OR_MORE",
-    "SEMTREX_ZERO_OR_ONE",
-    "SEMTREX_VALUE_LITERAL",
-    "SEMTREX_GROUP",
-    "SEMTREX_MATCH",
-    "SEMTREX_MATCH_RESULTS",
-    "SEMTREX_MATCH_SIBLINGS_COUNT",
-    "RECEPTOR_XADDR",
-    "FLUX",
-    "DEFINITIONS",
-    "STRUCTURES",
-    "STRUCTURE_DEFINITION",
-    "STRUCTURE_LABEL",
-    "STRUCTURE_PARTS",
-    "STRUCTURE_PART",
-    "SYMBOLS",
-    "SYMBOL_DECLARATION",
-    "SYMBOL_STRUCTURE",
-    "SYMBOL_LABEL",
-    "SCAPE_SPEC",
-    "ASPECTS",
-    "ASPECT_DEF",
-    "ASPECT_TYPE",
-    "CARRIER",
-    "ASPECT",
-    "SIGNALS",
-    "SIGNAL",
-    "ENVELOPE",
-    "BODY",
-    "LISTENERS",
-    "LISTENER",
-    "EXPECTATION",
-    "ACTION",
-    "INTERPOLATE_SYMBOL",
-    "PROCESSES",
-    "PROCESS_CODING",
-    "PROCESS_NAME",
-    "PROCESS_INTENTION",
-    "INPUT",
-    "INPUT_SIGNATURE",
-    "INPUT_LABEL",
-    "SIGNATURE_STRUCTURE",
-    "OUTPUT_SIGNATURE",
-    "RUN_TREE",
-    "PARAM_REF",
-    "PARAMS",
-    "PROTOCOLS",
-    "PROTOCOL",
-    "ROLES",
-    "ROLE",
-    "INTERACTIONS",
-    "INTERACTION",
-    "STEP",
-    "FROM_ROLE",
-    "TO_ROLE",
-    "RESPONSE_STEPS",
-    "SCAPES",
-    "VM_HOST_RECEPTOR",
-    "COMPOSITORY",
-    "MANIFEST",
-    "MANIFEST_PAIR",
-    "MANIFEST_LABEL",
-    "MANIFEST_SPEC",
-    "RECEPTOR_PACKAGE",
-    "RECEPTOR_IDENTIFIER",
-    "INSTALLED_RECEPTOR",
-    "ACTIVE_RECEPTORS",
-    "PENDING_SIGNALS",
-    "BINDINGS",
-    "BINDING_PAIR",
 
-};
 
 static Structure G_sys_symbol_structures[] = {
-    NULL_STRUCTURE,      //NULL_SYMBOL
+ /*   NULL_STRUCTURE,      //NULL_SYMBOL
     BOOLEAN,             //TRUE_FALSE
     TREE_PATH,           //SEMTREX_MATCHED_PATH
     SYMBOL,              //SEMTREX_SYMBOL_LITERAL
@@ -299,6 +227,7 @@ static Structure G_sys_symbol_structures[] = {
     LIST,                //PENDING_SIGNALS
     TREE,                //BINDINGS
     LIST,                //BINDING_PAIR
+ */
 };
 
 #endif
@@ -319,3 +248,88 @@ static Structure G_sys_symbol_structures[] = {
 //
 //  Curly brace is a named (or referenced) group
 //      Ex: /ascii-line/char='M'...etc..., (F R O M)?{email-address:.*}
+
+Tnode *G_sys_root;
+Defs G_sys_defs;
+
+Symbol NULL_SYMBOL;
+Symbol DEFINITIONS;
+Symbol STRUCTURES;
+Symbol STRUCTURE_DEFINITION;
+Symbol STRUCTURE_LABEL;
+Symbol STRUCTURE_PARTS;
+Symbol STRUCTURE_PART;
+Symbol SYMBOLS;
+Symbol PROCESSES;
+Symbol SYMBOL_DECLARATION;
+Symbol SYMBOL_STRUCTURE;
+Symbol SYMBOL_LABEL;
+
+Symbol TRUE_FALSE;
+
+
+Symbol SEMTREX_MATCHED_PATH;
+Symbol SEMTREX_SYMBOL_LITERAL;
+Symbol SEMTREX_SEQUENCE;
+Symbol SEMTREX_OR;
+Symbol SEMTREX_SYMBOL_ANY;
+Symbol SEMTREX_ZERO_OR_MORE;
+Symbol SEMTREX_ONE_OR_MORE;
+Symbol SEMTREX_ZERO_OR_ONE;
+Symbol SEMTREX_VALUE_LITERAL;
+Symbol SEMTREX_GROUP;
+Symbol SEMTREX_MATCH;
+Symbol SEMTREX_MATCH_RESULTS;
+Symbol SEMTREX_MATCH_SIBLINGS_COUNT;
+Symbol RECEPTOR_XADDR;
+Symbol FLUX;
+Symbol SCAPE_SPEC;
+Symbol ASPECTS;
+Symbol ASPECT_DEF;
+Symbol ASPECT_TYPE;
+Symbol CARRIER;
+Symbol ASPECT;
+Symbol SIGNALS;
+Symbol SIGNAL;
+Symbol ENVELOPE;
+Symbol BODY;
+Symbol LISTENERS;
+Symbol LISTENER;
+Symbol EXPECTATION;
+Symbol ACTION;
+Symbol INTERPOLATE_SYMBOL;
+Symbol PROCESS_CODING;
+Symbol PROCESS_NAME;
+Symbol PROCESS_INTENTION;
+Symbol INPUT;
+Symbol INPUT_SIGNATURE;
+Symbol INPUT_LABEL;
+Symbol SIGNATURE_STRUCTURE;
+Symbol OUTPUT_SIGNATURE;
+Symbol RUN_TREE;
+Symbol PARAM_REF;
+Symbol PARAMS;
+Symbol PROTOCOLS;
+Symbol PROTOCOL;
+Symbol ROLES;
+Symbol ROLE;
+Symbol INTERACTIONS;
+Symbol INTERACTION;
+Symbol STEP;
+Symbol FROM_ROLE;
+Symbol TO_ROLE;
+Symbol RESPONSE_STEPS;
+Symbol SCAPES;
+Symbol VM_HOST_RECEPTOR;
+Symbol COMPOSITORY;
+Symbol MANIFEST;
+Symbol MANIFEST_PAIR;
+Symbol MANIFEST_LABEL;
+Symbol MANIFEST_SPEC;
+Symbol RECEPTOR_PACKAGE;
+Symbol RECEPTOR_IDENTIFIER;
+Symbol INSTALLED_RECEPTOR;
+Symbol ACTIVE_RECEPTORS;
+Symbol PENDING_SIGNALS;
+Symbol BINDINGS;
+Symbol BINDING_PAIR;

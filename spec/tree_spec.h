@@ -21,7 +21,7 @@ void testCreateTreeNodes() {
     spec_is_ptr_equal(_t_parent(t),NULL);
     spec_is_ptr_equal(_t_root(t),t);
     spec_is_ptr_equal(_t_child(t,1),NULL);
-    spec_is_equal(_t_symbol(t),TEST_STR_SYMBOL);
+    spec_is_true(semeq(_t_symbol(t),TEST_STR_SYMBOL));
 
     t1 = _t_new(t,TEST_STR_SYMBOL,"t1",3);
     spec_is_ptr_equal(_t_parent(t1),t);
@@ -35,7 +35,9 @@ void testCreateTreeNodes() {
     spec_is_ptr_equal(_t_child(t,2),t2);
     spec_is_ptr_equal(_t_root(t2),t);
 
-    t3 = _t_newi(t,99,101);
+    Symbol s99 = {0,0,99};
+
+    t3 = _t_newi(t,s99,101);
     spec_is_ptr_equal(_t_parent(t3),t);
     spec_is_equal(_t_children(t),3);
     spec_is_equal(*(int *)_t_surface(_t_child(t,3)),101);
@@ -364,9 +366,9 @@ void testTreeHash() {
     TreeHash h = _t_hash(test_HTTP_symbols,test_HTTP_structures,t);
 
     // test that changing a symbol changes the hash
-    t->contents.symbol++;
+    t->contents.symbol.id++;
     spec_is_true(!_t_hash_equal(h,_t_hash(test_HTTP_symbols,test_HTTP_structures,t)));
-    t->contents.symbol--;
+    t->contents.symbol.id--;
 
     // test that changing a surface changes the hash
     int p[] = {1,2,TREE_PATH_TERMINATOR};

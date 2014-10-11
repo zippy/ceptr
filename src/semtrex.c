@@ -96,15 +96,16 @@ char * __stx_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP) {
     char *err;
     int state_type = -1;
     int x;
+    SemanticID group_id;
 
     int c = _t_children(t);
     Symbol sym = _t_symbol(t);
-    switch(sym) {
-    case SEMTREX_VALUE_LITERAL:
+    switch(sym.id) {
+    case SEMTREX_VALUE_LITERAL_ID:
 	state_type = StateValue;
-    case SEMTREX_SYMBOL_LITERAL:
+    case SEMTREX_SYMBOL_LITERAL_ID:
 	if (state_type == -1) state_type = StateSymbol;
-    case SEMTREX_SYMBOL_ANY:
+    case SEMTREX_SYMBOL_ANY_ID:
 	if (state_type == -1) state_type = StateAny;
 	if (c > 1) return "Literal must have 0 or 1 children";
 	s = state(state_type,statesP);
@@ -132,7 +133,7 @@ char * __stx_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP) {
 	    *out = list1(&s->out);
 	}
 	break;
-    case SEMTREX_SEQUENCE:
+    case SEMTREX_SEQUENCE_ID:
 	if (c == 0) return "Sequence must have children";
 	last = 0;
 	for(x=c;x>=1;x--) {
@@ -146,7 +147,7 @@ char * __stx_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP) {
     *in = i;
 	}
 	break;
-    case SEMTREX_OR:
+    case SEMTREX_OR_ID:
 	if (c != 2) return "Or must have 2 children";
 	s = state(StateSplit,statesP);
 	*in = s;
@@ -158,7 +159,7 @@ char * __stx_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP) {
 	s->out1 = i;
 	*out = append(o,o1);
 	break;
-    case SEMTREX_ZERO_OR_MORE:
+    case SEMTREX_ZERO_OR_MORE_ID:
 	if (c != 1) return "Star must have 1 child";
 	s = state(StateSplit,statesP);
 	*in = s;
@@ -168,7 +169,7 @@ char * __stx_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP) {
 	patch(o,s,level);
 	*out = list1(&s->out1);
 	break;
-    case SEMTREX_ONE_OR_MORE:
+    case SEMTREX_ONE_OR_MORE_ID:
 	if (c != 1) return "Plus must have 1 child";
 	s = state(StateSplit,statesP);
 	err = __stx_makeFA(_t_child(t,1),&i,&o,level,statesP);
@@ -178,7 +179,7 @@ char * __stx_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP) {
 	patch(o,s,level);
 	*out = list1(&s->out1);
 	break;
-    case SEMTREX_ZERO_OR_ONE:
+    case SEMTREX_ZERO_OR_ONE_ID:
 	if (c != 1) return "Question must have 1 child";
 	s = state(StateSplit,statesP);
 	*in = s;
@@ -187,19 +188,19 @@ char * __stx_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP) {
 	s->out = i;
 	*out = append(o,list1(&s->out1));
 	break;
-    case SEMTREX_GROUP:
+    case SEMTREX_GROUP_ID:
 	if (c != 1) return "Group must have 1 child";
 	s = state(StateGroup,statesP);
 	*in = s;
-	x = *(int *)_t_surface(t);
-	s->data.group.id = x;
+	group_id = *(SemanticID *)_t_surface(t);
+	s->data.group.id = group_id;
 	s->data.group.type = GroupOpen;
 	err = __stx_makeFA(_t_child(t,1),&i,&o,level,statesP);
 	if (err) return err;
 	s->out = i;
 	s = state(StateGroup,statesP);
 	patch(o,s,level);
-	s->data.group.id = x;
+	s->data.group.id = group_id;
 	s->data.group.type = GroupClose;
 	*out = list1(&s->out);
 	break;
@@ -285,7 +286,7 @@ int __t_match(SState *s,Tnode *t,Tnode *r) {
 	}
 	// no break to fall through and check symbol
     case StateSymbol:
-	if (!t || (s->data.symbol != _t_symbol(t))) return 0;
+	if (!t || (!semeq(s->data.symbol,_t_symbol(t)))) return 0;
 	// no break to fall through and handle transition and recursive calls
     case StateAny:
 	if (!t) return 0;
@@ -315,12 +316,12 @@ int __t_match(SState *s,Tnode *t,Tnode *r) {
 	    // if we aren't collecting up match results simply follow groups through
 	    return __t_match(s->out,t,r);
 	else {
-	    int match_id = s->data.group.id;
+	    SemanticID match_id = s->data.group.id;
 	    int matched;
 	    if (s->data.group.type == GroupOpen) {
 		if (!t) return 0;
 		// add on the semtrex match nodes and path to list of matches.
-		Tnode *m = _t_newi(r,SEMTREX_MATCH,match_id);
+		Tnode *m = _t_news(r,SEMTREX_MATCH,match_id);
 		int *p = _t_get_path(t);
 		Tnode *pp = _t_new(m,SEMTREX_MATCHED_PATH,p,sizeof(int)*(_t_path_depth(p)+1));
 		free(p);
@@ -343,14 +344,14 @@ int __t_match(SState *s,Tnode *t,Tnode *r) {
 		    int i;
 		    for(i=1;i<=_t_children(r);i++) {
 			Tnode *n = _t_child(r,i);
-			if (*(int *)_t_surface(n) == match_id) {
+			if (semeq(*(SemanticID *)_t_surface(n),match_id)) {
 			    m = n;
 			    break;
 			}
 		    }
 
 		    if (m == 0) {
-			raise_error("couldn't find match for %d",match_id);
+			raise_error("couldn't find match for %d",match_id.id);
 		    }
 
 		    if (!t) i=1;
@@ -424,7 +425,7 @@ Tnode *_t_get_match(Tnode *result,Symbol group)
     int i,c=_t_children(result);
     Tnode *t;
     for (i=1;i<=c;i++) {
-	if (*(int *)_t_surface(t = _t_child(result,i)) == group)
+	if (semeq(*(SemanticID *)_t_surface(t = _t_child(result,i)),group))
 	    return t;
     }
     return 0;
@@ -451,30 +452,31 @@ char * __dump_semtrex(Defs defs,Tnode *s,char *buf) {
     char b[1000];
     char *sn;
     int i,c;
-    switch(sym) {
-    case SEMTREX_VALUE_LITERAL:
-    case SEMTREX_SYMBOL_LITERAL:
-	c = *(int *)_t_surface(s);
-	sn = _d_get_symbol_name(defs.symbols,c);
+    SemanticID sem;
+    switch(sym.id) {
+    case SEMTREX_VALUE_LITERAL_ID:
+    case SEMTREX_SYMBOL_LITERAL_ID:
+	sem = *(SemanticID *)_t_surface(s);
+	sn = _d_get_symbol_name(defs.symbols,sem);
 	// ignore "<unknown symbol"
 	if (*sn=='<')
-	    sprintf(b,"%d",c);
+	    sprintf(b,"%d.%d.%d",sem.flags,sem.context,sem.id);
 	else
 	    sprintf(b,"%s",sn);
-	if (sym == SEMTREX_VALUE_LITERAL) {
+	if (semeq(sym, SEMTREX_VALUE_LITERAL)) {
 	    Svalue *sv = (Svalue *)_t_surface(s);
 	    Structure st = _d_get_symbol_structure(defs.symbols,sv->symbol);
-	    if (st == CSTRING)
+	    if (semeq(st,CSTRING))
 		sprintf(b+strlen(b),"=%s",(char *)&sv->value);
 	    else sprintf(b+strlen(b),"=???x");
 	}
 	__stxd_descend(defs,s,b,buf);
 	break;
-    case SEMTREX_SYMBOL_ANY:
+    case SEMTREX_SYMBOL_ANY_ID:
 	sprintf(b,".");
 	__stxd_descend(defs,s,b,buf);
 	break;
-    case SEMTREX_SEQUENCE:
+    case SEMTREX_SEQUENCE_ID:
 	c = _t_children(s);
 	sn = buf;
 	for(i=1;i<=c;i++) {
@@ -482,25 +484,25 @@ char * __dump_semtrex(Defs defs,Tnode *s,char *buf) {
 	    sn += strlen(sn);
 	}
 	break;
-    case SEMTREX_OR:
+    case SEMTREX_OR_ID:
 	sprintf(buf,"(%s)|(%s)",__dump_semtrex(defs,_t_child(s,1),b),__dump_semtrex(defs,_t_child(s,2),b));
 	break;
-    case SEMTREX_ZERO_OR_MORE:
+    case SEMTREX_ZERO_OR_MORE_ID:
 	__stxd_multi(defs,"*",s,buf);
 	break;
-    case SEMTREX_ONE_OR_MORE:
+    case SEMTREX_ONE_OR_MORE_ID:
 	__stxd_multi(defs,"+",s,buf);
 	break;
-    case SEMTREX_ZERO_OR_ONE:
+    case SEMTREX_ZERO_OR_ONE_ID:
 	__stxd_multi(defs,"?",s,buf);
 	break;
-    case SEMTREX_GROUP:
-	sn = _d_get_symbol_name(defs.symbols,*(int *)_t_surface(s));
+    case SEMTREX_GROUP_ID:
+	sn = _d_get_symbol_name(defs.symbols,*(Symbol *)_t_surface(s));
 	// ignore "<unknown symbol"
 	if  (*sn=='<')
 	    sprintf(buf, "{%s}",__dump_semtrex(defs,_t_child(s,1),b));
 	else
-	    sprintf(buf, "{%s: %s}",sn,__dump_semtrex(defs,_t_child(s,1),b));
+	    sprintf(buf, "{%s:%s}",sn,__dump_semtrex(defs,_t_child(s,1),b));
 	break;
     }
     return buf;
