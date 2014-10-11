@@ -36,6 +36,7 @@ namespace ceptrlib
 		//-----  Symbols for receptors
 		RECEPTOR_XADDR,                    ///< An Xaddr that points to a receptor
 		FLUX,                              ///< tree to hold all incoming and in process signals on the various aspects
+		DEFINITIONS,
 		STRUCTURES,
 		STRUCTURE_DEFINITION,
 		STRUCTURE_LABEL,
@@ -45,6 +46,7 @@ namespace ceptrlib
 		SYMBOL_DECLARATION,
 		SYMBOL_STRUCTURE,
 		SYMBOL_LABEL,
+		SCAPE_SPEC,
 		ASPECT,
 		SIGNALS,                           ///< list of signals on an aspect in the flux
 		SIGNAL,                            ///< a signal on the flux.  It's first child is the contents of the signal
@@ -57,12 +59,15 @@ namespace ceptrlib
 		PROCESS_CODING,
 		PROCESS_NAME,
 		PROCESS_INTENTION,
+		INPUT,
 		INPUT_SIGNATURE,
+		INPUT_LABEL,
 		SIGNATURE_STRUCTURE,
 		OUTPUT_SIGNATURE,
 		RUN_TREE,                         ///< think about this as a stack frame and it's code
 		PARAM_REF,                        ///< used in a code tree as a reference to a parameter
 		PARAMS,
+		SCAPES,
 
 		//-----  Symbols for the virtual machine host
 		VM_HOST_RECEPTOR,
@@ -147,8 +152,20 @@ namespace ceptrlib
 		public Tcontents contents;
 	}
 
+	[StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
+	public unsafe struct Defs 
+	{
+		public Tnode *structures;
+		public Tnode *symbols;   
+		public Tnode *processes; 
+		public Tnode *scapes;    
+	};
+
 	public class CeptrInterface
 	{
+		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
+		extern static unsafe void testGetSize();
+
 		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
 		extern static unsafe Tnode* _t_new(IntPtr parent, Symbol symbol, IntPtr surface, int size);
 
@@ -156,18 +173,24 @@ namespace ceptrlib
 		extern static unsafe Tnode* _t_new_root(Symbol symbol);
 
 		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
-		extern static unsafe Symbol _d_declare_symbol(Tnode* symbols, Structure st, char* label);
+		extern static unsafe Symbol _d_declare_symbol(Tnode* symbols, Structure st, string label);
 
 		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
-		extern static unsafe Symbol _d_define_structure(Tnode* structures, char* label, int num_params, __arglist);
+		extern static unsafe Symbol _d_define_structure(Tnode* structures, [MarshalAs(UnmanagedType.LPStr)] string label, int num_params, __arglist);
 
 		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
-		[return: MarshalAs(UnmanagedType.LPStr)]
-		extern static unsafe string __t_dump(Tnode* symbols, Tnode* t, int level, char* buf);
+		extern static unsafe Symbol _dv_define_structure(Tnode* structures, [MarshalAs(UnmanagedType.LPStr)] string label, int num_params, __arglist);
+
+		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
+		extern static unsafe Structure _t_children(Tnode* structures);
+
+		// extern static unsafe Symbol _d_define_structure(Tnode* structures, char* label, int num_params, UInt32 p1, UInt32 p2);
+
+		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
+		// [return: MarshalAs(UnmanagedType.LPStr)]
+		extern static unsafe void __t_dump(Defs* defs, Tnode* t, int level, char* buf);
 
 		protected Dictionary<Guid, IntPtr> nodes = new Dictionary<Guid, IntPtr>();
-		protected Dictionary<Guid, Symbol> symbols = new Dictionary<Guid, Symbol>();
-		protected Dictionary<Guid, Structure> structures = new Dictionary<Guid, Structure>();
 
 		/// <summary>
 		/// Create a root node.
@@ -185,52 +208,78 @@ namespace ceptrlib
 		/// <summary>
 		/// Declare a symbol having the specified structure.
 		/// </summary>
-		public unsafe Guid DeclareSymbol(Guid symbols, Structure st, string label)
+		public unsafe uint DeclareSymbol(Guid symbols, Structure st, string label)
 		{
 			Tnode *pnode = (Tnode*)nodes[symbols];
-			Guid guid;
-			
-			fixed (char* s = label)
-			{
-				Symbol symbol = _d_declare_symbol(pnode, st, s);
-				guid = RegisterSymbol(symbol);
-			}
+			Symbol symbol = _d_declare_symbol(pnode, st, label);
 
-			return guid;
+			return symbol;
 		}
 
-		public unsafe Guid DefineStructure(Guid structures, string name, Guid[] symbolArray)
+		public unsafe uint DefineStructure(Guid structures, string name, uint[] symbolArray)
 		{
-			Tnode *pnode = (Tnode*)nodes[structures];
-			List<Symbol> slookups = new List<Structure>();
-			Guid guid;
+			Tnode *structs = (Tnode*)nodes[structures];
 
-			for (int i = 0; i < symbolArray.Length; i++)
-			{
-				slookups.Add(symbols[symbolArray[i]]);
-			}
+			_dv_define_structure(structs, name, symbolArray.Length, __arglist(symbolArray));
+			Structure st = _t_children(structs);
 
-			fixed (char *s = name)
-			{
-				Structure st = _d_define_structure(pnode, s, symbolArray.Length, __arglist(slookups.ToArray()));
-				guid = RegisterStructure(st);
-			}
-
-			return guid;
+			return st;
 		}
 
-		public unsafe string Dump(Guid g_symbols, Guid g_structures)
+		public unsafe string DumpStructures(Guid g_symbols, Guid g_structures)
 		{
-			Tnode *symnode = (Tnode*)nodes[g_symbols];
-			Tnode *structnode = (Tnode*)nodes[g_structures];
-			string ret;
+			Defs defs = new Defs() 
+			{ 
+				structures = (Tnode*)nodes[g_structures], 
+				symbols = (Tnode*)nodes[g_symbols], 
+				processes = (Tnode*)0, 
+				scapes = (Tnode*)0 
+			};
 
-			fixed (char* buf = new char[10000])
+			string ret = String.Empty;
+
+			try
 			{
-				__t_dump(symnode, structnode, 0, buf);
+				fixed (char* buf = new char[10000])
+				{
+					__t_dump(&defs, defs.structures, 0, buf);
+					ret = Marshal.PtrToStringAnsi((IntPtr)buf);
+				}
+			}
+			catch (Exception ex)
+			{
+				System.Diagnostics.Debugger.Break();
 			}
 
-			return "";
+			return ret;
+		}
+
+		public unsafe string DumpSymbols(Guid g_symbols, Guid g_structures)
+		{
+			Defs defs = new Defs()
+			{
+				structures = (Tnode*)nodes[g_structures],
+				symbols = (Tnode*)nodes[g_symbols],
+				processes = (Tnode*)0,
+				scapes = (Tnode*)0
+			};
+
+			string ret = String.Empty;
+
+			try
+			{
+				fixed (char* buf = new char[10000])
+				{
+					__t_dump(&defs, defs.symbols, 0, buf);
+					ret = Marshal.PtrToStringAnsi((IntPtr)buf);
+				}
+			}
+			catch (Exception ex)
+			{
+				System.Diagnostics.Debugger.Break();
+			}
+
+			return ret;
 		}
 
 		/// <summary>
@@ -240,28 +289,6 @@ namespace ceptrlib
 		{
 			Guid guid = Guid.NewGuid();
 			nodes[guid] = (IntPtr)node;
-
-			return guid;
-		}
-
-		/// <summary>
-		/// Return a Guid associated with the symbol value.
-		/// </summary>
-		protected Guid RegisterSymbol(Symbol symbol)
-		{
-			Guid guid = Guid.NewGuid();
-			symbols[guid] = symbol;
-
-			return guid;
-		}
-
-		/// <summary>
-		/// Return a Guid associated with the structure value.
-		/// </summary>
-		protected Guid RegisterStructure(Structure st)
-		{
-			Guid guid = Guid.NewGuid();
-			structures[guid] = st;
 
 			return guid;
 		}

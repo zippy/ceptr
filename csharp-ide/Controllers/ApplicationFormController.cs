@@ -34,6 +34,8 @@ namespace csharp_ide.Controllers
 		public PropertyGridController PropertyGridController { get; protected set; }
 		public SymbolListController SymbolListController { get; protected set; }
 		public StructureListController StructureListController { get; protected set; }
+		public SymbolOutputController SymbolOutputController { get; set; }
+		public StructureOutputController StructureOutputController { get; set; }
 		public GenericController<Schema> schemaController;
 		public string SchemaFilename { get; set; }
 
@@ -49,12 +51,12 @@ namespace csharp_ide.Controllers
 		}
 
 		protected Schema schema;
-		protected CeptrInterface ceptrInterface;
+		public CeptrInterface CeptrInterface;
 
 		public ApplicationFormController()
 		{
 			RegisterUserStateOperations();
-			ceptrInterface = new CeptrInterface();
+			CeptrInterface = new CeptrInterface();
 		}
 
 		public override void EndInit()
@@ -200,6 +202,8 @@ namespace csharp_ide.Controllers
 			}
 		}
 
+		// View management (menu handlers)
+
 		protected void ShowPropertyGrid(object sender, EventArgs args)
 		{
 			PropertyGridController.IfNull(() =>
@@ -264,6 +268,22 @@ namespace csharp_ide.Controllers
 				CloseAllDockContent();
 				LoadTheLayout("defaultLayout.xml");
 			}
+		}
+
+		protected void ShowSymbols(object sender, EventArgs args)
+		{
+			SymbolOutputController.IfNull(() =>
+			{
+				NewDocument("symbolOutput.xml");
+			});
+		}
+
+		protected void ShowStructures(object sender, EventArgs args)
+		{
+			StructureOutputController.IfNull(() =>
+			{
+				NewDocument("structureOutput.xml");
+			});
 		}
 
 		protected void SaveLayout()
@@ -383,12 +403,14 @@ namespace csharp_ide.Controllers
 
 		protected void BuildSemanticTree(object sender, EventArgs args)
 		{
-			Guid structures = ceptrInterface.CreateRootNode(SystemSymbol.STRUCTURES);
-			Guid symbols = ceptrInterface.CreateRootNode(SystemSymbol.SYMBOLS);
-			Guid latitude = ceptrInterface.DeclareSymbol(symbols, (UInt32)SystemStructure.FLOAT, "latitude");
-			Guid longitude = ceptrInterface.DeclareSymbol(symbols, (UInt32)SystemStructure.FLOAT, "longitude");
-			Guid latlong = ceptrInterface.DefineStructure(structures, "latlong", new Guid[] {latitude, longitude});
-			ceptrInterface.Dump(symbols, structures);
+			//Guid structures = CeptrInterface.CreateRootNode(SystemSymbol.STRUCTURES);
+			//Guid symbols = CeptrInterface.CreateRootNode(SystemSymbol.SYMBOLS);
+			//uint latitude = CeptrInterface.DeclareSymbol(symbols, (UInt32)SystemStructure.FLOAT, "latitude");
+			//uint longitude = CeptrInterface.DeclareSymbol(symbols, (UInt32)SystemStructure.FLOAT, "longitude");
+			//uint latlong = CeptrInterface.DefineStructure(structures, "latlong", new uint[] {latitude, longitude});
+			//string ret = CeptrInterface.Dump(symbols, structures);
+
+			//DumpOutputController.IfNotNull(ctrl => ctrl.View.Output.Text = FormatDump(ret));
 		}
 
 		// Static helpers

@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<MycroXaml Name="Form"
+  xmlns:wf="System.Windows.Forms, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
+  xmlns:ix="csharp_ide, csharp-ide"
+  xmlns:ixc="csharp_ide.Controllers, csharp-ide"
+  xmlns:ixv="csharp_ide.Views, csharp-ide"
+  xmlns:ixa="csharp_ide.Actions, csharp-ide"
+  xmlns:def="def"
+  xmlns:ref="ref">
+  <ix:GenericDocument ref:Name="Container" Text="Symbols">
+    <ixc:SymbolOutputController def:Name="controller" ApplicationController="{ApplicationFormController}" ApplicationModel="{ApplicationModel}"/>
+    <!-- <ix:GenericDocument ref:Name="Container"/> FormClosing="{controller.Closing}" Activated="{controller.Activated}"/> -->
+    <ix:Controls>
+      <ixv:SymbolOutputView def:Name="SymbolOutputView" Dock="Fill"
+        ApplicationController="{ApplicationFormController}"
+        Controller="{controller}">
+        <ixv:Controls>
+          <wf:TextBox def:Name="tbText" Dock="Fill" Multiline="true" WordWrap="true" ReadOnly="true" ScrollBars="Vertical"/>
+        </ixv:Controls>
+      </ixv:SymbolOutputView>
+    </ix:Controls>
+    <ixc:SymbolOutputController ref:Name="controller" View="{SymbolOutputView}"/>
+    <ixv:SymbolOutputView ref:Name="SymbolOutputView" Output="{tbText}"/>
+  </ix:GenericDocument>
+</MycroXaml>

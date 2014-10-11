@@ -97,10 +97,11 @@ namespace csharp_ide.Controllers
 
 		protected void NodeSelected(object sender, TreeViewEventArgs e)
 		{
+			currentNode = e.Node;
+			object item = ((NodeInstance)e.Node.Tag).Instance.Item;
+
 			ApplicationController.PropertyGridController.IfNotNull(t =>
 			{
-				currentNode = e.Node;
-				object item = ((NodeInstance)e.Node.Tag).Instance.Item;
 				t.ShowObject(item);
 
 				if (item is Symbol)
@@ -108,6 +109,22 @@ namespace csharp_ide.Controllers
 					// Save the current symbol and structure name so that, if it changes, we can update the symbol and structure lists.
 					symbolName = ((Symbol)item).Name;
 					structureName = ((Symbol)item).Structure;
+				}
+			});
+
+			ApplicationController.SymbolOutputController.IfNotNull(t => 
+				{
+					if (item is Symbol)
+					{
+						t.ShowSymbolDump((Symbol)item);
+					}
+				});
+
+			ApplicationController.StructureOutputController.IfNotNull(t =>
+			{
+				if (item is Symbol)
+				{
+					t.ShowStructureDump((Symbol)item);
 				}
 			});
 		}

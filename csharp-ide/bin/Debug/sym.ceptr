@@ -35,7 +35,11 @@
               <Symbols />
             </Symbol>
             <Symbol Name="State" Structure="USState">
-              <Symbols />
+              <Symbols>
+                <Symbol Name="Name" Structure="string">
+                  <Symbols />
+                </Symbol>
+              </Symbols>
             </Symbol>
             <Symbol Name="Zip" Structure="zip5+4">
               <Symbols>
