@@ -403,6 +403,7 @@ namespace csharp_ide.Controllers
 
 		protected void BuildSemanticTree(object sender, EventArgs args)
 		{
+			CeptrInterface.Initialize();
 			SemanticID structures = new SemanticID() { context = (UInt16)SemanticContexts.SYS_CONTEXT, flags = (UInt16)SemanticTypes.SEM_TYPE_SYMBOL, id = (UInt32)SystemSymbolIDs.STRUCTURES_ID };
 			SemanticID symbols = new SemanticID() { context = (UInt16)SemanticContexts.SYS_CONTEXT, flags = (UInt16)SemanticTypes.SEM_TYPE_SYMBOL, id = (UInt32)SystemSymbolIDs.SYMBOLS_ID };
 			Guid gStructures = CeptrInterface.CreateRootNode(structures);
@@ -413,7 +414,7 @@ namespace csharp_ide.Controllers
 
 			// Structure latlong = _d_define_structure(structures,"latlong",RECEPTOR_CONTEXT, 2, lat, lon);
 			// SemanticID latlong = CeptrInterface.DefineStructure(gStructures, "latlong", SemanticContexts.RECEPTOR_CONTEXT, new SemanticID[] { latitude, longitude });
-			string ret = CeptrInterface.DumpStructures(gSymbols, gStructures);
+			string ret = CeptrInterface.DumpSymbols(gSymbols, gStructures);
 
 			//DumpOutputController.IfNotNull(ctrl => ctrl.View.Output.Text = FormatDump(ret));
 		}

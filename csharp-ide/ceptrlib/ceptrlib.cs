@@ -136,7 +136,7 @@ namespace ceptrlib
 	// ======= Enums ==========
 
 	[StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
-	public struct SemanticID
+	public unsafe struct SemanticID
 	{
 		public UInt16 context;
 		public UInt16 flags;
@@ -185,6 +185,12 @@ namespace ceptrlib
 	public class CeptrInterface
 	{
 		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
+		extern static void def_sys();
+
+		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
+		extern static void sys_free();
+
+		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
 		extern static unsafe void testGetSize();
 
 		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -212,6 +218,16 @@ namespace ceptrlib
 		extern static unsafe void __t_dump(Defs* defs, Tnode* t, int level, char* buf);
 
 		protected Dictionary<Guid, IntPtr> nodes = new Dictionary<Guid, IntPtr>();
+
+		public unsafe void Initialize()
+		{
+			def_sys();
+		}
+
+		public unsafe void Terminate()
+		{
+			sys_free();
+		}
 
 		/// <summary>
 		/// Create a root node.
