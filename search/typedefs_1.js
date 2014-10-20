@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['sgroup',['Sgroup',['../group__semtrex.html#ga4e795c61d12f6bb8f08d65961b813e39',1,'semtrex.h']]],
-  ['sstate',['SState',['../group__semtrex.html#ga54c5ea60f89b8d13b11d8dfc6ec3b94e',1,'semtrex.h']]],
-  ['stypedata',['STypeData',['../group__semtrex.html#ga52153ceb2f5684e5e18eb772d8b26526',1,'semtrex.h']]],
-  ['svalue',['Svalue',['../group__semtrex.html#gada3c34b268cf77b15278df530da719b0',1,'semtrex.h']]]
+  ['sgroupclose',['SgroupClose',['../group__semtrex.html#gab4bc67d51970ec75875c2e9e135c4bf3',1,'semtrex.h']]],
+  ['sgroupopen',['SgroupOpen',['../group__semtrex.html#ga09de53f7ae900c6cb78a22c19af533ff',1,'semtrex.h']]],
+  ['stypedata',['STypeData',['../group__semtrex.html#ga8dced199acb1f24ff8f91e409aa6d1cb',1,'semtrex.h']]],
+  ['svalue',['Svalue',['../group__semtrex.html#ga886f61851b2c5a479cf7bed2ba78cd7d',1,'semtrex.h']]]
 ];

@@ -1,8 +1,8 @@
 var structDefs =
 [
-    [ "processes", "structDefs.html#a3d30c385b3166b8b8beaa93563fdb597", null ],
-    [ "protocols", "structDefs.html#a6b3ee5d6ed4f2db9bec4aa194099be66", null ],
-    [ "scapes", "structDefs.html#a42a3e1b1ac349927c8a60c3f04182542", null ],
-    [ "structures", "structDefs.html#a4c975b62ce2275297aaa44cf9165c543", null ],
-    [ "symbols", "structDefs.html#a8d6bdb404258745a4a902f9e3c710812", null ]
+    [ "processes", "structDefs.html#a80e876ed085ca3f40c11c6dced4bff9a", null ],
+    [ "protocols", "structDefs.html#aa0cf913c12ec27ee0027c64ee146c27d", null ],
+    [ "scapes", "structDefs.html#a2c74d8ba3b0f1972a6527cb96c0be65d", null ],
+    [ "structures", "structDefs.html#a6f9d3b3e38fff31326b7d27f730ae95c", null ],
+    [ "symbols", "structDefs.html#a172e45e131e197571ba1a36a136d35f8", null ]
 ];

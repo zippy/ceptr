@@ -174,8 +174,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>scapedataFree</b> (<a
 <p>[in] s the scape [in] h a hash of the tree node which is the key [in] xaddr the instance address to be scaped</p>
 <p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structScape.html">Scape</a> *s = <a class="code" href="scape_8c.html#a4262c29b48e99f7254b1ceef9bae0436">_s_new</a>(TEST_INT_SYMBOL,TEST_STR_SYMBOL);</div>
 <div class="line">    <a class="code" href="structXaddr.html">Xaddr</a> x = {1,3};  <span class="comment">// DUMMY XADDR</span></div>
-<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *t = <a class="code" href="group__tree.html#gab438eeedb3eb6c1e20171b33d8ec499d">_t_newi</a>(0,TEST_INT_SYMBOL,31415);</div>
-<div class="line">    TreeHash h = <a class="code" href="group__tree.html#ga332d1aad29070157407968f743b16256">_t_hash</a>(0,0,t);</div>
+<div class="line">    <a class="code" href="structT.html">T</a> *t = <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(0,TEST_INT_SYMBOL,31415);</div>
+<div class="line">    TreeHash h = <a class="code" href="group__tree.html#ga19506af36bcdf713253dabd47ecaa6e4">_t_hash</a>(0,0,t);</div>
 <div class="line">    <a class="code" href="scape_8c.html#a1bfbd4c58bd2c951e11434efb3936506">_s_add</a>(s,h,x);</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// check that element was added</span></div>
@@ -185,12 +185,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>scapedataFree</b> (<a
 <div class="line"></div>
 <div class="line">    <span class="comment">// check that a different hash returns the null xaddr</span></div>
 <div class="line">    t-&gt;contents.symbol = TEST_INT_SYMBOL2;</div>
-<div class="line">    h = <a class="code" href="group__tree.html#ga332d1aad29070157407968f743b16256">_t_hash</a>(0,0,t);</div>
+<div class="line">    h = <a class="code" href="group__tree.html#ga19506af36bcdf713253dabd47ecaa6e4">_t_hash</a>(0,0,t);</div>
 <div class="line">    xg = <a class="code" href="scape_8c.html#a94d326b6bc334bd6bcfdcd4fdcd29439">_s_get</a>(s,h);</div>
 <div class="line">    spec_is_true(is_null_xaddr(xg));</div>
 <div class="line"></div>
 <div class="line">    <a class="code" href="scape_8c.html#a3248dd3373ca8f722b69d385aec37d7d">_s_free</a>(s);</div>
-<div class="line">    <a class="code" href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a>(t);</div>
+<div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
 </div><!-- fragment -->
 <p>Definition at line <a class="el" href="scape_8c_source.html#l00057">57</a> of file <a class="el" href="scape_8c_source.html">scape.c</a>.</p>
 
@@ -242,8 +242,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>scapedataFree</b> (<a
 <p>[in] s the scape [in] key the tree node which is the key </p><dl class="section return"><dt>Returns</dt><dd><a class="el" href="structXaddr.html">Xaddr</a> to the scape item</dd></dl>
 <p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structScape.html">Scape</a> *s = <a class="code" href="scape_8c.html#a4262c29b48e99f7254b1ceef9bae0436">_s_new</a>(TEST_INT_SYMBOL,TEST_STR_SYMBOL);</div>
 <div class="line">    <a class="code" href="structXaddr.html">Xaddr</a> x = {1,3};  <span class="comment">// DUMMY XADDR</span></div>
-<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *t = <a class="code" href="group__tree.html#gab438eeedb3eb6c1e20171b33d8ec499d">_t_newi</a>(0,TEST_INT_SYMBOL,31415);</div>
-<div class="line">    TreeHash h = <a class="code" href="group__tree.html#ga332d1aad29070157407968f743b16256">_t_hash</a>(0,0,t);</div>
+<div class="line">    <a class="code" href="structT.html">T</a> *t = <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(0,TEST_INT_SYMBOL,31415);</div>
+<div class="line">    TreeHash h = <a class="code" href="group__tree.html#ga19506af36bcdf713253dabd47ecaa6e4">_t_hash</a>(0,0,t);</div>
 <div class="line">    <a class="code" href="scape_8c.html#a1bfbd4c58bd2c951e11434efb3936506">_s_add</a>(s,h,x);</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// check that element was added</span></div>
@@ -253,12 +253,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>scapedataFree</b> (<a
 <div class="line"></div>
 <div class="line">    <span class="comment">// check that a different hash returns the null xaddr</span></div>
 <div class="line">    t-&gt;contents.symbol = TEST_INT_SYMBOL2;</div>
-<div class="line">    h = <a class="code" href="group__tree.html#ga332d1aad29070157407968f743b16256">_t_hash</a>(0,0,t);</div>
+<div class="line">    h = <a class="code" href="group__tree.html#ga19506af36bcdf713253dabd47ecaa6e4">_t_hash</a>(0,0,t);</div>
 <div class="line">    xg = <a class="code" href="scape_8c.html#a94d326b6bc334bd6bcfdcd4fdcd29439">_s_get</a>(s,h);</div>
 <div class="line">    spec_is_true(is_null_xaddr(xg));</div>
 <div class="line"></div>
 <div class="line">    <a class="code" href="scape_8c.html#a3248dd3373ca8f722b69d385aec37d7d">_s_free</a>(s);</div>
-<div class="line">    <a class="code" href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a>(t);</div>
+<div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
 </div><!-- fragment -->
 <p>Definition at line <a class="el" href="scape_8c_source.html#l00083">83</a> of file <a class="el" href="scape_8c_source.html">scape.c</a>.</p>
 
@@ -304,7 +304,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>scapedataFree</b> (<a
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="scape_8c.html">scape.c</a></li>
-    <li class="footer">Generated on Mon Oct 20 2014 10:49:24 for ceptr by
+    <li class="footer">Generated on Mon Oct 20 2014 12:45:19 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

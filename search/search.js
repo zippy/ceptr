@@ -12,7 +12,7 @@ var indexSectionsWithContent =
   2: "cdhlprstv",
   3: "_adlpst",
   4: "_acdfghiklmoprstuv",
-  5: "p",
+  5: "ps",
   6: "fs",
   7: "abcefilmprst",
   8: "_s",

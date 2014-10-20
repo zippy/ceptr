@@ -9,7 +9,7 @@ var group__semtrex =
     ] ],
     [ "SgroupOpen", "structSgroupOpen.html", [
       [ "match_count", "structSgroupOpen.html#a9f6e05d9a8e1c06fe214feabe12eade5", null ],
-      [ "matches", "structSgroupOpen.html#add07caa7710f981545fb5eab1dc15afd", null ],
+      [ "matches", "structSgroupOpen.html#a9281b98fd50f8ee1ffe6675cdd3cda7e", null ],
       [ "symbol", "structSgroupOpen.html#a1daccf55b781d3df990334af45339d10", null ],
       [ "uid", "structSgroupOpen.html#a498c3ea885c19b632ff633ebc0ddd06c", null ]
     ] ],
@@ -30,15 +30,19 @@ var group__semtrex =
       [ "transition", "structSState.html#a929d501094346c34a5c14e715b2f133f", null ],
       [ "type", "structSState.html#ac570e1a6012a5f5e9ac09e2b7a261a3c", null ]
     ] ],
+    [ "SgroupClose", "group__semtrex.html#gab4bc67d51970ec75875c2e9e135c4bf3", null ],
+    [ "SgroupOpen", "group__semtrex.html#ga09de53f7ae900c6cb78a22c19af533ff", null ],
+    [ "STypeData", "group__semtrex.html#ga8dced199acb1f24ff8f91e409aa6d1cb", null ],
+    [ "Svalue", "group__semtrex.html#ga886f61851b2c5a479cf7bed2ba78cd7d", null ],
     [ "FSAStateTransitions", "group__semtrex.html#ga7cce21ba007b15ca5263f3cc5ef15c11", [
       [ "TransitionNextChild", "group__semtrex.html#gga7cce21ba007b15ca5263f3cc5ef15c11a0304642b1bec42fa532a750ef23e276d", null ],
       [ "TransitionUp", "group__semtrex.html#gga7cce21ba007b15ca5263f3cc5ef15c11a3cea77279ce8c9665393a6cb9196acd2", null ],
       [ "TransitionDown", "group__semtrex.html#gga7cce21ba007b15ca5263f3cc5ef15c11a3281a29fe6ed6c41e5b47100af5737e4", null ]
     ] ],
     [ "_stx_freeFA", "group__semtrex.html#gacbce8db372cc051950f8d684af47c39a", null ],
-    [ "_stx_makeFA", "group__semtrex.html#gaf5414357c680a8e2f318235c057bf76a", null ],
-    [ "_t_get_match", "group__semtrex.html#gaa4419dc4f940274606f85a88d52949e7", null ],
-    [ "_t_match", "group__semtrex.html#ga56c55fe5d429521c827cc67000898d0e", null ],
-    [ "_t_matchr", "group__semtrex.html#gaa43317db10f85873435792afb5c1cd4a", null ],
-    [ "parseSemtrex", "group__semtrex.html#ga1f66d06977618586bbdab0a41ee4a8fb", null ]
+    [ "_stx_makeFA", "group__semtrex.html#ga23ed44c9e7a1637d5f7d49e6114af83a", null ],
+    [ "_t_get_match", "group__semtrex.html#gada90f89374f4577e3ac8819e500a97a7", null ],
+    [ "_t_match", "group__semtrex.html#ga8e580d7393964e5df55e92aebf587e3f", null ],
+    [ "_t_matchr", "group__semtrex.html#ga27540c8e1822da3160a0cc4717df410f", null ],
+    [ "parseSemtrex", "group__semtrex.html#ga6c769bcd5236ab8d9001a61877e9227c", null ]
 ];
