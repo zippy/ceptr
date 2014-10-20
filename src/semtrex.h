@@ -121,7 +121,7 @@ int _t_match(T *semtrex,T *t);
 int _t_matchr(T *semtrex,T *t,T **r);
 T *_t_get_match(T *result,Symbol group);
 char * _dump_semtrex(Defs defs,T *s,char *buf);
-T *parseSemtrex(Receptor *r,char *stx);
+T *parseSemtrex(Defs *d,char *stx);
 
 #endif
 

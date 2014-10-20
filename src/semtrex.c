@@ -601,17 +601,26 @@ void _stxl(T *stxx) {
 }
 
 // temporary function until we get system label table operational
-Symbol get_symbol(char *symbol_name) {
-    int i,c = _t_children(G_sys_defs.symbols);
-    for(i=1;i<=c;i++) {
-	T *t = _t_child(G_sys_defs.symbols,i);
-	T *c = _t_child(t,1);
-	if (!strcmp(symbol_name,(char *)_t_surface(c))) {
-	    Symbol r = {SYS_CONTEXT,SEM_TYPE_SYMBOL,i};
-	    return r;
+Symbol _get_symbol(char *symbol_name,Defs *d,Context ctx) {
+    if (d->symbols) {
+	int i,c = _t_children(d->symbols);
+	for(i=1;i<=c;i++) {
+	    T *t = _t_child(d->symbols,i);
+	    T *c = _t_child(t,1);
+	    if (!strcmp(symbol_name,(char *)_t_surface(c))) {
+		Symbol r = {ctx,SEM_TYPE_SYMBOL,i};
+		return r;
+	    }
 	}
     }
     return NULL_SYMBOL;
+}
+
+Symbol get_symbol(char *symbol_name,Defs *d) {
+    Symbol s = _get_symbol(symbol_name,&G_sys_defs,SYS_CONTEXT);
+    if (!semeq(s,NULL_SYMBOL))
+	return s;
+    return _get_symbol(symbol_name,d,RECEPTOR_CONTEXT);
 }
 
 //#define DUMP_TOKENS
@@ -660,7 +669,7 @@ T *wrap(T *tokens,T *results, Symbol contents_s, Symbol open_s) {
  * @param[in] stx the cstring representation of a semtrex tree
  * @returns T semtrex tree
  */
-T *parseSemtrex(Receptor *r,char *stx) {
+T *parseSemtrex(Defs *d,char *stx) {
     // convert the string into a tree
     #ifdef DUMP_TOKENS
     printf("\nPARSING:%s\n",stx);
@@ -722,7 +731,7 @@ T *parseSemtrex(Receptor *r,char *stx) {
     t = _t_news(o,SEMTREX_GROUP,STX_LABEL);
     _stxl(t);
 
-     sq = _t_newr(o,SEMTREX_SEQUENCE);
+    sq = _t_newr(o,SEMTREX_SEQUENCE);
     __stxcv(sq,'{');
     t = _t_news(sq,SEMTREX_GROUP,STX_OG);
     _stxl(t);
@@ -807,7 +816,7 @@ T *parseSemtrex(Receptor *r,char *stx) {
 
 	    // convert the STX_OG to SEMTREX_GROUP children and free the STX_CG
 	    char *symbol_name = (char *)_t_surface(g);
-	    Symbol sy = get_symbol(symbol_name);
+	    Symbol sy = get_symbol(symbol_name,d);
 	    __t_morph(g,SEMTREX_GROUP,&sy,sizeof(Symbol),1);
 
 	    _t_free(results);
@@ -1032,7 +1041,7 @@ T *parseSemtrex(Receptor *r,char *stx) {
 	    int *path = (int *)_t_surface(_t_child(m,2));
 	    t = _t_get(tokens,path);
 	    char *symbol_name = (char *)_t_surface(t);
-	    Symbol sy = get_symbol(symbol_name);
+	    Symbol sy = get_symbol(symbol_name,d);
 	    __t_morph(t,semeq(t->contents.symbol,STX_LABEL)?SEMTREX_SYMBOL_LITERAL:SEMTREX_SYMBOL_EXCEPT,&sy,sizeof(Symbol),1);
 
 	    _t_free(results);

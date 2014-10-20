@@ -565,31 +565,37 @@ void testSemtrexDump() {
 }
 
 void testSemtrexParse() {
-    Receptor *r = _r_new(NULL_SYMBOL);
     Defs d = {0,0,0,0};
     char buf[5000];
 
     char *stx = "/(TEST_STR_SYMBOL/(sy1/sy11/sy111),sy2,sy3)";
-    T *s = parseSemtrex(r,stx);
+    T *s = parseSemtrex(&d,stx);
     spec_is_str_equal(_dump_semtrex(d,s,buf),stx);
     _t_free(s);
 
     stx = "/STX_STAR|STX_PLUS|STX_Q";
-    s = parseSemtrex(r,stx);
+    s = parseSemtrex(&d,stx);
     spec_is_str_equal(_dump_semtrex(d,s,buf),"/(STX_STAR|STX_PLUS)|STX_Q");
     _t_free(s);
 
     stx = "/(TEST_STR_SYMBOL/.+,sy1,.*,sy2,.?)";
-    s = parseSemtrex(r,stx);
+    s = parseSemtrex(&d,stx);
     spec_is_str_equal(_dump_semtrex(d,s,buf),stx);
     _t_free(s);
 
     stx = "/(STX_TOKENS/%{SEMTREX_SEQUENCE:(!STX_COMMA,STX_COMMA)+,!STX_COMMA})";
-    s = parseSemtrex(r,stx);
+    s = parseSemtrex(&d,stx);
     spec_is_str_equal(_dump_semtrex(d,s,buf),stx);
     _t_free(s);
 
-    _r_free(r);
+    _setup_HTTPDefs();
+
+    stx = "/(HTTP_REQUEST/.,.,HTTP_REQUEST_PATH,(HTTP_REQUEST_PATH_SEGMENTS/{HTTP_REQUEST_PATH_SEGMENT:HTTP_REQUEST_PATH_SEGMENT}))";
+    s = parseSemtrex(&test_HTTP_defs,stx);
+    spec_is_str_equal(_dump_semtrex(test_HTTP_defs,s,buf),stx);
+    _t_free(s);
+
+    _cleanup_HTTPDefs();
 }
 
 void testSemtrex() {
