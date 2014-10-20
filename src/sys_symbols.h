@@ -89,6 +89,10 @@ enum SystemSymbolIDs
     SEMTREX_MATCH_RESULTS_ID,             ///< In the FSA_ID, keeps track of which part matches so it can be referenced
     SEMTREX_MATCH_SIBLINGS_COUNT_ID,      ///< In the FSA_ID, it's the length of the match
 
+    //----- Symbols for parsing  matching string representation of semtrex
+    ASCII_CHAR_ID,
+    ASCII_CHARS_ID,
+
     //-----  Symbols for receptors
     RECEPTOR_XADDR_ID,                    ///< An Xaddr that points to a receptor
     FLUX_ID,                              ///< tree to hold all incoming and in process signals on the various aspects
@@ -281,6 +285,9 @@ Symbol SEMTREX_GROUP;
 Symbol SEMTREX_MATCH;
 Symbol SEMTREX_MATCH_RESULTS;
 Symbol SEMTREX_MATCH_SIBLINGS_COUNT;
+Symbol ASCII_CHAR;
+Symbol ASCII_CHARS;
+
 Symbol RECEPTOR_XADDR;
 Symbol FLUX;
 Symbol SCAPE_SPEC;

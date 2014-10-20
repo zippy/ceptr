@@ -24,6 +24,7 @@ enum SystemStructureID
 	BOOLEAN_ID,
 	INTEGER_ID,
 	FLOAT_ID,
+	CHAR_ID,
 	CSTRING_ID,
 	SYMBOL_ID,
 	ENUM_ID,
@@ -38,29 +39,12 @@ enum SystemStructureID
 	SCAPE_ID,
     };
 
-static char *G_sys_structure_names[] = {
-    "NULL_STRUCTURE",
-    "BOOLEAN",
-    "INTEGER",
-    "FLOAT",
-    "CSTRING",
-    "SYMBOL",
-    "ENUM",
-    "TREE_PATH",
-    "XADDR",
-    "LIST",
-    "SURFACE",
-    "TREE",
-    "RECEPTOR",
-    "PROCESS",
-    "STRUCTURE",
-    "SCAPE"
-};
 
 Structure NULL_STRUCTURE;
 Structure BOOLEAN;
 Structure INTEGER;
 Structure FLOAT;
+Structure CHAR;
 Structure CSTRING;
 Structure SYMBOL;
 Structure ENUM;

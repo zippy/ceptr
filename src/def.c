@@ -348,6 +348,9 @@ char * __t_dump(Defs *defs,Tnode *t,int level,char *buf) {
 	    case CSTRING_ID:
 		sprintf(buf," (%s:%s",n,(char *)_t_surface(t));
 		break;
+	    case CHAR_ID:
+		sprintf(buf," (%s:'%c'",n,*(char *)_t_surface(t));
+		break;
 	    case BOOLEAN_ID:
 	    case INTEGER_ID:
 		sprintf(buf," (%s:%d",n,*(int *)_t_surface(t));
