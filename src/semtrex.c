@@ -479,13 +479,14 @@ char * __dump_semtrex(Defs defs,Tnode *s,char *buf);
 
 void __stxd_multi(Defs defs,char *x,Tnode *s,char *buf) {
     char b[4000];
-    sprintf(buf,(_t_children(s)>1 || _t_symbol(_t_child(s,1)).id==SEMTREX_SEQUENCE_ID) ? "(%s)%s" : "%s%s",__dump_semtrex(defs,_t_child(s,1),b),x);
+    Tnode *sub = _t_child(s,1);
+    sprintf(buf,(_t_children(s)>1 || _t_symbol(sub).id==SEMTREX_SEQUENCE_ID) ? "(%s)%s" : "%s%s",__dump_semtrex(defs,sub,b),x);
 }
 void __stxd_descend(Defs defs,Tnode *s,char *v,char *buf) {
     if(_t_children(s)>0) {
 	char b[4000];
 	Tnode *sub = _t_child(s,1);
-	sprintf(buf,_t_children(sub)>0?"(%s/%s)":"(%s/%s)",v,__dump_semtrex(defs,sub,b));
+	sprintf(buf,_t_children(sub)>0?"(%s/%s)":"%s/%s",v,__dump_semtrex(defs,sub,b));
     }
     else sprintf(buf,"%s",v);
 }
@@ -495,6 +496,7 @@ char * __dump_semtrex(Defs defs,Tnode *s,char *buf) {
     char b[5000];
     char b1[5000];
     char *sn,*bx;
+    Tnode *t;
     int i,c;
     SemanticID sem;
     switch(sym.id) {
@@ -537,8 +539,12 @@ char * __dump_semtrex(Defs defs,Tnode *s,char *buf) {
 	}
 	break;
     case SEMTREX_OR_ID:
-
-	sprintf(buf,"(%s)|(%s)",__dump_semtrex(defs,_t_child(s,1),b),__dump_semtrex(defs,_t_child(s,2),b1));
+	t = _t_child(s,1);
+	sn = __dump_semtrex(defs,t,b);
+	sprintf(buf,(_t_children(t) > 0) ? "(%s)|":"%s|",sn);
+	t = _t_child(s,2);
+	sn = __dump_semtrex(defs,t,b);
+	sprintf(buf+strlen(buf),(_t_children(t) > 0) ? "(%s)":"%s",sn);
 	break;
     case SEMTREX_ZERO_OR_MORE_ID:
 	__stxd_multi(defs,"*",s,buf);
@@ -594,9 +600,7 @@ void _stxl(Tnode *stxx) {
     __stxcv(label,'_');
 }
 
-void label2tok() {
-}
-
+// temporary function until we get system label table operational
 Symbol get_symbol(char *symbol_name) {
     int i,c = _t_children(G_sys_defs.symbols);
     for(i=1;i<=c;i++) {
@@ -944,9 +948,12 @@ Tnode *parseSemtrex(Receptor *r,char *stx) {
 	/////////////////////////////////////////////////////
 	// convert things following slashes to children of things preceeding slashes
 	// EXPECTATION
-	// /%{STX_CHILD:!STX_SL,STX_SL,!STX_SL}
+	// /%.*,{STX_CHILD:!STX_SL,STX_SL,!STX_SL}
 	sxx = _t_new_root(SEMTREX_WALK);
-	g = _t_news(sxx,SEMTREX_GROUP,STX_CHILD);
+	sq = _t_newr(sxx,SEMTREX_SEQUENCE);
+	any = _t_newr(sq,SEMTREX_ZERO_OR_MORE);
+	_t_newr(any,SEMTREX_SYMBOL_ANY);
+	g = _t_news(sq,SEMTREX_GROUP,STX_CHILD);
 	sq = _t_newr(g,SEMTREX_SEQUENCE);
 	_t_news(sq,SEMTREX_SYMBOL_EXCEPT,STX_SL);
 	_t_news(sq,SEMTREX_SYMBOL_LITERAL,STX_SL);

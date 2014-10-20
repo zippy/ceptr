@@ -540,7 +540,7 @@ void testSemtrexDump() {
     char buf[2000];
     Defs d = {0,0,0,0};
 
-    spec_is_str_equal(_dump_semtrex(d,s,buf),"/(TEST_STR_SYMBOL/(sy1/(sy11/sy111)),sy2,sy3)");
+    spec_is_str_equal(_dump_semtrex(d,s,buf),"/(TEST_STR_SYMBOL/(sy1/sy11/sy111),sy2,sy3)");
     _t_free(s);
 
     // /TEST_STR_SYMBOL/{.*,{.}},4  <- a more complicated group semtrex
@@ -560,23 +560,23 @@ void testSemtrexDump() {
     s = _t_new_root(SEMTREX_OR);
     _t_news(s,SEMTREX_SYMBOL_LITERAL,TEST_STR_SYMBOL);
     _t_news(s,SEMTREX_SYMBOL_LITERAL,TEST_INT_SYMBOL);
-    spec_is_str_equal(_dump_semtrex(d,s,buf),"/(TEST_STR_SYMBOL)|(TEST_INT_SYMBOL)");
+    spec_is_str_equal(_dump_semtrex(d,s,buf),"/TEST_STR_SYMBOL|TEST_INT_SYMBOL");
     _t_free(s);
 }
 
-void testSemtrexSemtrex() {
+void testSemtrexParse() {
     Receptor *r = _r_new(NULL_SYMBOL);
     Defs d = {0,0,0,0};
     char buf[5000];
 
-    char *stx = "/(TEST_STR_SYMBOL/(sy1/(sy11/sy111)),sy2,sy3)";
+    char *stx = "/(TEST_STR_SYMBOL/(sy1/sy11/sy111),sy2,sy3)";
     Tnode *s = parseSemtrex(r,stx);
     spec_is_str_equal(_dump_semtrex(d,s,buf),stx);
     _t_free(s);
 
     stx = "/STX_STAR|STX_PLUS|STX_Q";
     s = parseSemtrex(r,stx);
-    spec_is_str_equal(_dump_semtrex(d,s,buf),"/((STX_STAR)|(STX_PLUS))|(STX_Q)");
+    spec_is_str_equal(_dump_semtrex(d,s,buf),"/(STX_STAR|STX_PLUS)|STX_Q");
     _t_free(s);
 
     stx = "/(TEST_STR_SYMBOL/.+,sy1,.*,sy2,.?)";
@@ -608,5 +608,5 @@ void testSemtrex() {
     testMatchDescend();
     testMatchWalk();
     testSemtrexDump();
-    testSemtrexSemtrex();
+    testSemtrexParse();
 }
