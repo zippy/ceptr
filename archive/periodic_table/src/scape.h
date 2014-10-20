@@ -37,7 +37,7 @@ int scape_count(Data *d) {
 
 ScapeID new_scape(Data *d,char *name,Symbol data_source,Symbol key_source, Symbol key_geometry, ScapeMatchFn matchfn) {
     Scape *s = _new_scape(name,data_source,key_source,key_geometry,matchfn);
-    Tnode *t = _t_new(d->scapes,SCAPE_NOUN,s,sizeof(Scape));
+    T *t = _t_new(d->scapes,SCAPE_NOUN,s,sizeof(Scape));
     free(s); //TODO: it would be better if this didn't require two allocs.
     return scape_count(d);
 }

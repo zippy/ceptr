@@ -16,7 +16,7 @@ void testReceptorCreate() {
 
     spec_is_symbol_equal(r,_t_symbol(r->root),TEST_RECEPTOR_SYMBOL);
 
-    Tnode *t,*d;
+    T *t,*d;
 
     // test that the symbols, structures & process trees are set up correctly
     d = _t_child(r->root,1);
@@ -64,12 +64,12 @@ void testReceptorAddListener() {
 
     Symbol dummy = {0,0,0};
     // test that you can add a listener to a receptor's aspect
-    Tnode *s = _t_new_root(EXPECTATION);
+    T *s = _t_new_root(EXPECTATION);
     _t_news(s,SEMTREX_SYMBOL_LITERAL,dummy);
-    Tnode *a = _t_news(0,ACTION,NULL_PROCESS);
+    T *a = _t_news(0,ACTION,NULL_PROCESS);
     _r_add_listener(r,DEFAULT_ASPECT,TEST_INT_SYMBOL,s,a);
 
-    Tnode *l = _t_child(__r_get_listeners(r,DEFAULT_ASPECT),1);      // listener should have been added as first child of listeners
+    T *l = _t_child(__r_get_listeners(r,DEFAULT_ASPECT),1);      // listener should have been added as first child of listeners
     spec_is_symbol_equal(r,_t_symbol(l),LISTENER);
     spec_is_sem_equal(*(Symbol *)_t_surface(l),TEST_INT_SYMBOL); // carrier should be TEST_INT_SYMBOL
     spec_is_ptr_equal(_t_child(l,1),s);       // our expectation semtrex should be first child of the listener
@@ -80,19 +80,19 @@ void testReceptorAddListener() {
 
 void testReceptorSignal() {
     Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
-    Tnode *signal_contents = _t_newi(0,TEST_INT_SYMBOL,314);
+    T *signal_contents = _t_newi(0,TEST_INT_SYMBOL,314);
     Xaddr f = {RECEPTOR_XADDR,3};  // DUMMY XADDR
     Xaddr t = {RECEPTOR_XADDR,4};  // DUMMY XADDR
 
-    Tnode *s = __r_make_signal(f,t,DEFAULT_ASPECT,signal_contents);
+    T *s = __r_make_signal(f,t,DEFAULT_ASPECT,signal_contents);
 
     spec_is_symbol_equal(r,_t_symbol(s),SIGNAL);
 
-    Tnode *envelope = _t_child(s,1);
+    T *envelope = _t_child(s,1);
     spec_is_symbol_equal(r,_t_symbol(envelope),ENVELOPE);
-    Tnode *body = _t_child(s,2);
+    T *body = _t_child(s,2);
     spec_is_symbol_equal(r,_t_symbol(body),BODY);
-    Tnode *contents = (Tnode*)_t_surface(body);
+    T *contents = (T*)_t_surface(body);
     spec_is_ptr_equal(signal_contents,contents);
 
     //@todo symbol check??? FROM_RECEPTOR_XADDR???
@@ -116,29 +116,29 @@ void testReceptorAction() {
     Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
 
     // The signal is an HTTP request
-    Tnode *signal_contents = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
+    T *signal_contents = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
 
     Xaddr f = {RECEPTOR_XADDR,3};  // DUMMY XADDR
     Xaddr t = {RECEPTOR_XADDR,4};  // DUMMY XADDR
 
-    Tnode *signal = __r_make_signal(f,t,DEFAULT_ASPECT,signal_contents);
+    T *signal = __r_make_signal(f,t,DEFAULT_ASPECT,signal_contents);
 
     // our expectation should match on the first path segment
-    Tnode *expect = _t_new_root(EXPECTATION);
-    Tnode *req = _t_news(expect,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST);
-    Tnode *seq = _t_newr(req,SEMTREX_SEQUENCE);
+    T *expect = _t_new_root(EXPECTATION);
+    T *req = _t_news(expect,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST);
+    T *seq = _t_newr(req,SEMTREX_SEQUENCE);
     _t_newr(seq,SEMTREX_SYMBOL_ANY);  // skips the Version
     _t_newr(seq,SEMTREX_SYMBOL_ANY);  // skips over the Method
-    Tnode *path = _t_news(seq,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST_PATH);
-    Tnode *segs = _t_news(path,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST_PATH_SEGMENTS);
-    Tnode *g = _t_news(segs,SEMTREX_GROUP,HTTP_REQUEST_PATH_SEGMENT);
+    T *path = _t_news(seq,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST_PATH);
+    T *segs = _t_news(path,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST_PATH_SEGMENTS);
+    T *g = _t_news(segs,SEMTREX_GROUP,HTTP_REQUEST_PATH_SEGMENT);
     _t_news(g,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST_PATH_SEGMENT);
 
-    Tnode *result;
+    T *result;
     int matched;
     // make sure our expectation semtrex actually matches the signal
     spec_is_true(matched = _t_matchr(req,signal_contents,&result));
-    Tnode *m = _t_get_match(result,HTTP_REQUEST_PATH_SEGMENT);
+    T *m = _t_get_match(result,HTTP_REQUEST_PATH_SEGMENT);
     char buf[2000];
     __t_dump(&test_HTTP_defs,m,0,buf);
     spec_is_str_equal(buf," (SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:HTTP_REQUEST_PATH_SEGMENT) (SEMTREX_MATCHED_PATH:/3/1/1) (SEMTREX_MATCH_SIBLINGS_COUNT:1))");
@@ -148,7 +148,7 @@ void testReceptorAction() {
 
     Process p = _makeTestHTTPResponseProcess(r);
 
-    Tnode *act = _t_newp(0,ACTION,p);
+    T *act = _t_newp(0,ACTION,p);
 
     _r_add_listener(r,DEFAULT_ASPECT,HTTP_REQUEST,expect,act);
 
@@ -168,7 +168,7 @@ void testReceptorDef() {
 
     Symbol lat = _r_declare_symbol(r,FLOAT,"latitude");
     Symbol lon = _r_declare_symbol(r,FLOAT,"longitude");
-    Tnode *def;
+    T *def;
 
     spec_is_structure_equal(r,__r_get_symbol_structure(r,lat),FLOAT);
 
@@ -182,7 +182,7 @@ void testReceptorDef() {
     Structure latlong = _r_define_structure(r,"latlong",2,lat,lon);
 
     def = _t_child(r->defs.structures,latlong.id);
-    Tnode *l = _t_child(def,1);
+    T *l = _t_child(def,1);
     spec_is_str_equal((char *)_t_surface(l),"latlong");
 
     path = labelGet(&r->table,"latlong");
@@ -204,9 +204,9 @@ void testReceptorDef() {
     char surface[] ={1,2,3,4,5,6,7,8,'b','o','b','b','y',0};
     spec_is_long_equal(__r_get_symbol_size(r,home,surface),sizeof(float)*2+6);
 
-    Tnode *code = _t_new_root(ACTION);
-    Tnode *input = _t_new_root(INPUT_SIGNATURE);
-    Tnode *output = _t_new_root(OUTPUT_SIGNATURE);
+    T *code = _t_new_root(ACTION);
+    T *input = _t_new_root(INPUT_SIGNATURE);
+    T *output = _t_new_root(OUTPUT_SIGNATURE);
     Process p = _r_code_process(r,code,"power","takes the mathematical power of the two params",input,output);
     spec_is_equal(_t_children(r->defs.processes),p.id);
 
@@ -234,12 +234,12 @@ void testReceptorDefMatch() {
     Structure latlong;
     defineHouseLocation(r,&lat,&lon,&latlong,&house_loc);
 
-    Tnode *t = _t_new_root(house_loc);
+    T *t = _t_new_root(house_loc);
     float x = 99.0;
-    Tnode *t_lat = _t_new(t,lat,&x,sizeof(x));
-    Tnode *t_lon = _t_new(t,lon,&x,sizeof(x));
+    T *t_lat = _t_new(t,lat,&x,sizeof(x));
+    T *t_lon = _t_new(t,lon,&x,sizeof(x));
 
-    Tnode *stx = _r_build_def_semtrex(r,house_loc);
+    T *stx = _r_build_def_semtrex(r,house_loc);
     char buf[2000];
     spec_is_str_equal(_dump_semtrex(r->defs,stx,buf),"/(house location/latitude,longitude)");
     __t_dump(&r->defs,stx,0,buf);
@@ -271,15 +271,15 @@ void testReceptorProtocol() {
     Symbol ping = _r_declare_symbol(r,BOOLEAN,"ping");
 
     // define a ping protocol with two roles and two interactions
-    Tnode *ps = r->defs.protocols;
-    Tnode *p = _t_newr(ps,PROTOCOL);
-    Tnode *roles = _t_newr(p,ROLES);
+    T *ps = r->defs.protocols;
+    T *p = _t_newr(ps,PROTOCOL);
+    T *roles = _t_newr(p,ROLES);
     _t_new(roles,ROLE,"server",7);
     _t_new(roles,ROLE,"client",7);
-    Tnode *interactions = _t_newr(p,INTERACTIONS);
+    T *interactions = _t_newr(p,INTERACTIONS);
 
     // initial ping request interaction
-    Tnode *i,*s,*e;
+    T *i,*s,*e;
     i = _t_newr(interactions,INTERACTION);
     _t_new(i,STEP,"ping",5);
     _t_new(i,FROM_ROLE,"client",7);
@@ -287,12 +287,12 @@ void testReceptorProtocol() {
     _t_news(i,CARRIER,ping); // input carrier
     _t_news(i,CARRIER,ping); // output carrier
     e = _t_newr(i,EXPECTATION);
-    Tnode *req = _t_news(e,SEMTREX_SYMBOL_LITERAL,ping);
+    T *req = _t_news(e,SEMTREX_SYMBOL_LITERAL,ping);
 
-    Tnode *ping_resp = _t_new_root(RESPOND);
+    T *ping_resp = _t_new_root(RESPOND);
     _t_newi(ping_resp,ping,1);
-    Tnode *input = _t_new_root(INPUT);
-    Tnode *output = _t_new_root(OUTPUT_SIGNATURE);
+    T *input = _t_new_root(INPUT);
+    T *output = _t_new_root(OUTPUT_SIGNATURE);
     Process proc = _r_code_process(r,ping_resp,"send ping response","long desc...",input,output);
 
     _t_newp(i,ACTION,proc);
@@ -311,8 +311,8 @@ void testReceptorProtocol() {
     _t_news(e,SEMTREX_SYMBOL_LITERAL,ping);
     //    s = _t_newr(i,RESPONSE_STEPS);
 
-    Tnode *aspects = _t_child(r->root,2);
-    Tnode *a = _t_newr(aspects,ASPECT_DEF);
+    T *aspects = _t_child(r->root,2);
+    T *a = _t_newr(aspects,ASPECT_DEF);
     _t_newi(a,ASPECT_TYPE,EXTERNAL_ASPECT);
     _t_news(a,CARRIER,ping);
     _t_news(a,CARRIER,ping);
@@ -324,8 +324,8 @@ void testReceptorProtocol() {
     // delivering a fake signal should return a ping
     Xaddr f = {RECEPTOR_XADDR,3};  // DUMMY XADDR
     Xaddr t = {RECEPTOR_XADDR,4};  // DUMMY XADDR
-    Tnode *signal = __r_make_signal(f,t,DEFAULT_ASPECT,_t_newi(0,ping,0));
-    Tnode *result = _r_deliver(r,signal);
+    T *signal = __r_make_signal(f,t,DEFAULT_ASPECT,_t_newi(0,ping,0));
+    T *result = _r_deliver(r,signal);
     d = _td(r,result);
     spec_is_str_equal(d," (ping:1)");
 
@@ -341,17 +341,17 @@ void testReceptorInstanceNew() {
     defineHouseLocation(r,&lat,&lon,&latlong,&house_loc);
 
     // create a house location tree
-    Tnode *t = _t_new_root(house_loc);
+    T *t = _t_new_root(house_loc);
     float ll[] = {132.5,92.3};
-    Tnode *t_lat = _t_new(t,lat,&ll[0],sizeof(float));
-    Tnode *t_lon = _t_new(t,lon,&ll[1],sizeof(float));
+    T *t_lat = _t_new(t,lat,&ll[0],sizeof(float));
+    T *t_lon = _t_new(t,lon,&ll[1],sizeof(float));
 
     Xaddr x = _r_new_instance(r,t);
     spec_is_equal(x.addr,1);
     spec_is_sem_equal(x.symbol,house_loc);
 
     float *ill;
-    Tnode *i = _r_get_instance(r,x);
+    T *i = _r_get_instance(r,x);
 
     spec_is_ptr_equal(t,i);
 
@@ -368,10 +368,10 @@ void testReceptorSerialize() {
     defineHouseLocation(r,&lat,&lon,&latlong,&house_loc);
 
     // create a house location tree
-    Tnode *t = _t_new_root(house_loc);
+    T *t = _t_new_root(house_loc);
     float ll[] = {132.5,92.3};
-    Tnode *t_lat = _t_new(t,lat,&ll[0],sizeof(float));
-    Tnode *t_lon = _t_new(t,lon,&ll[1],sizeof(float));
+    T *t_lat = _t_new(t,lat,&ll[0],sizeof(float));
+    T *t_lon = _t_new(t,lon,&ll[1],sizeof(float));
 
     Xaddr x = _r_new_instance(r,t);
 
@@ -401,7 +401,7 @@ void testReceptorSerialize() {
     spec_is_sem_equal(_r_get_structure_by_label(r1,"latlong"),latlong);
 
     // check that the unserialized receptor has all the instances loaded into the instance store too
-    Tnode *t1 = _r_get_instance(r1,x);
+    T *t1 = _r_get_instance(r1,x);
     buf[0] = buf1[0] = 0;
     __t_dump(&r->defs,t,0,buf);
     __t_dump(&r1->defs,t1,0,buf1);

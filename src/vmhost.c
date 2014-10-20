@@ -61,7 +61,7 @@ void _v_free(VMHost *v) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/vmhost_spec.h testVMHostLoadReceptorPackage
  */
-Xaddr _v_load_receptor_package(VMHost *v,Tnode *p) {
+Xaddr _v_load_receptor_package(VMHost *v,T *p) {
     Xaddr x;
     x = _r_new_instance(v->c,p);
     return x;
@@ -79,9 +79,9 @@ Xaddr _v_load_receptor_package(VMHost *v,Tnode *p) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/vmhost_spec.h testVMHostInstallReceptor
  */
-Xaddr _v_install_r(VMHost *v,Xaddr package,Tnode *bindings,char *label) {
-    Tnode *p = _r_get_instance(v->c,package);
-    Tnode *id = _t_child(p,2);
+Xaddr _v_install_r(VMHost *v,Xaddr package,T *bindings,char *label) {
+    T *p = _r_get_instance(v->c,package);
+    T *id = _t_child(p,2);
     TreeHash h = _t_hash(v->r->defs.symbols,v->r->defs.structures,id);
 
     // make sure we aren't re-installing an already installed receptor
@@ -92,21 +92,21 @@ Xaddr _v_install_r(VMHost *v,Xaddr package,Tnode *bindings,char *label) {
     // confirm that the bindings match the manifest
     // @todo expand the manifest to allow optional binding, etc, using semtrex to do the matching instead of assuming positional matching
     if (bindings) {
-	Tnode *m = _t_child(p,1);
+	T *m = _t_child(p,1);
 	int c = _t_children(m);
 	if (c%2) {raise_error0("manifest must have even number of children!");}
 	int i;
 	for(i=1;i<=c;i++) {
-	    Tnode *mp = _t_child(m,i);
-	    Tnode *s = _t_child(mp,2);
-	    Tnode *bp = _t_child(bindings,i);
+	    T *mp = _t_child(m,i);
+	    T *s = _t_child(mp,2);
+	    T *bp = _t_child(bindings,i);
 	    if (!bp) {
 		raise_error("missing binding for %s",(char *)_t_surface(_t_child(mp,1)));
 	    }
-	    Tnode *v = _t_child(bp,2);
+	    T *v = _t_child(bp,2);
 	    Symbol spec = *(Symbol *)_t_surface(s);
 	    if (semeq(_t_symbol(v),spec)) {
-		Tnode *symbols = _t_child(p,3);
+		T *symbols = _t_child(p,3);
 		raise_error2("bindings symbol %s doesn't match spec %s",_d_get_symbol_name(symbols,_t_symbol(v)),_d_get_symbol_name(symbols,spec));
 	    }
 	}
@@ -115,7 +115,7 @@ Xaddr _v_install_r(VMHost *v,Xaddr package,Tnode *bindings,char *label) {
     Symbol s = _r_declare_symbol(v->r,RECEPTOR,label);
 
     Receptor *r = _r_new_receptor_from_package(s,p,bindings);
-    Tnode *ir = _t_new_root(INSTALLED_RECEPTOR);
+    T *ir = _t_new_root(INSTALLED_RECEPTOR);
     _t_new_receptor(ir,s,r);
 
     x = _r_new_instance(v->r,ir);
@@ -135,7 +135,7 @@ Xaddr _v_install_r(VMHost *v,Xaddr package,Tnode *bindings,char *label) {
  * later this will probably have to be optimized into a hash/scape for faster access
  */
 void _v_activate(VMHost *v, Xaddr x) {
-    Tnode *t = _r_get_instance(v->r,x);
+    T *t = _r_get_instance(v->r,x);
     _t_add(v->active_receptors,t);
 }
 
@@ -148,8 +148,8 @@ void _v_activate(VMHost *v, Xaddr x) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/vmhost_spec.h testVMHostActivateReceptor
  */
-Xaddr _v_send(VMHost *v,Xaddr to,Xaddr from,Aspect aspect,Tnode *contents) {
-    Tnode *s = __r_make_signal(from,to,aspect,contents);
+Xaddr _v_send(VMHost *v,Xaddr to,Xaddr from,Aspect aspect,T *contents) {
+    T *s = __r_make_signal(from,to,aspect,contents);
     Xaddr xs = _r_new_instance(v->r,s);
 
     _t_add(v->pending_signals,s);
@@ -160,15 +160,15 @@ Xaddr _v_send(VMHost *v,Xaddr to,Xaddr from,Aspect aspect,Tnode *contents) {
  * walk through the list of pending signals and deliver them
  */
 void _v_process_signals(VMHost *v) {
-    Tnode *signals = v->pending_signals;
+    T *signals = v->pending_signals;
     while(_t_children(signals)>0) {
-	Tnode *s = _t_detach_by_idx(signals,1);
-	Tnode *envelope = _t_child(s,1);
-	//	Tnode *contents = _t_child(s,2);
+	T *s = _t_detach_by_idx(signals,1);
+	T *envelope = _t_child(s,1);
+	//	T *contents = _t_child(s,2);
 	Xaddr to = *(Xaddr *)_t_surface(_t_child(envelope,2));
 	Receptor *r = (Receptor *)_t_surface(_t_child(_r_get_instance(v->r,to),1)); // the receptor itself is the surface of the first child of the INSTALLED_RECEPTOR (bleah)
 	Aspect a = *(Aspect *)_t_surface(_t_child(envelope,3));
-	Tnode *result = _r_deliver(r,s);
+	T *result = _r_deliver(r,s);
 	//@todo handle results
     }
 }

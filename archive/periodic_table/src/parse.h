@@ -7,11 +7,11 @@
 
 enum {P_START,P_IGNOREWS,P_READ_NOUN,P_READ_VALUE,P_CHILDREN,P_READ_STR,P_READ_ESCAPE};
 
-Tnode *_t_parse(char *s) {
+T *_t_parse(char *s) {
     char word[255];
     char val[255];
     int i,parse_result,n;
-    Tnode *t = 0,*r,*d;
+    T *t = 0,*r,*d;
     int state = P_IGNOREWS;
     int next = P_START;
     char c;
@@ -47,7 +47,7 @@ Tnode *_t_parse(char *s) {
 		    int c = _t_children(G_sys_words);
 		    for(int l = 1;l<=c;l++) {
 			if(!strcicmp(word,_w_get_label(G_sys_words,l))) {
-			    Tnode *d = _w_get_def(G_sys_words,l);
+			    T *d = _w_get_def(G_sys_words,l);
 			    n = *(int *)_t_surface(d);
 			    r = 0;break;
 			}

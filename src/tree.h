@@ -31,51 +31,51 @@
 enum TreeSurfaceFlags {TFLAG_ALLOCATED=0x0001,TFLAG_SURFACE_IS_TREE=0x0002,TFLAG_SURFACE_IS_RECEPTOR = 0x0004,TFLAG_SURFACE_IS_SCAPE=0x0008};
 
 /*****************  Node creation and deletion*/
-Tnode *_t_new(Tnode *t,Symbol symbol, void *surface, size_t size);
-Tnode *_t_newi(Tnode *parent,Symbol symbol,int surface);
-Tnode *_t_news(Tnode *parent,Symbol symbol,SemanticID surface);
-Tnode *_t_newt(Tnode *parent,Symbol symbol,Tnode *t);
-Tnode *_t_new_root(Symbol symbol);
-Tnode *_t_newr(Tnode *parent,Symbol symbol);
-Tnode *_t_new_receptor(Tnode *parent,Symbol symbol,Receptor *r);
-Tnode *_t_new_scape(Tnode *parent,Symbol symbol,Scape *r);
-Tnode *_t_newp(Tnode *parent,Symbol symbol,Process surface);
+T *_t_new(T *t,Symbol symbol, void *surface, size_t size);
+T *_t_newi(T *parent,Symbol symbol,int surface);
+T *_t_news(T *parent,Symbol symbol,SemanticID surface);
+T *_t_newt(T *parent,Symbol symbol,T *t);
+T *_t_new_root(Symbol symbol);
+T *_t_newr(T *parent,Symbol symbol);
+T *_t_new_receptor(T *parent,Symbol symbol,Receptor *r);
+T *_t_new_scape(T *parent,Symbol symbol,Scape *r);
+T *_t_newp(T *parent,Symbol symbol,Process surface);
 
-void _t_add(Tnode *t,Tnode *c);
-void _t_detach_by_ptr(Tnode *t,Tnode *c);
-Tnode *_t_detach_by_idx(Tnode *t,int i);
-void _t_replace(Tnode *t,int i,Tnode *r);
-void _t_insert_at(Tnode *t, int *path, Tnode *i);
-void _t_morph(Tnode *dst,Tnode *src);
-void __t_morph(Tnode *t,Symbol s,void *surface,size_t length,int allocate);
-void __t_free_children(Tnode *t);
-void _t_free(Tnode *t);
-Tnode *_t_clone(Tnode *t);
+void _t_add(T *t,T *c);
+void _t_detach_by_ptr(T *t,T *c);
+T *_t_detach_by_idx(T *t,int i);
+void _t_replace(T *t,int i,T *r);
+void _t_insert_at(T *t, int *path, T *i);
+void _t_morph(T *dst,T *src);
+void __t_morph(T *t,Symbol s,void *surface,size_t length,int allocate);
+void __t_free_children(T *t);
+void _t_free(T *t);
+T *_t_clone(T *t);
 
 /******************** Node data accessors */
-int _t_children(Tnode *t);
-void * _t_surface(Tnode *t);
-Symbol _t_symbol(Tnode *t);
-size_t _t_size(Tnode *t);
+int _t_children(T *t);
+void * _t_surface(T *t);
+Symbol _t_symbol(T *t);
+size_t _t_size(T *t);
 
 /*****************  Tree navigation */
-Tnode * _t_parent(Tnode *t);
-Tnode *_t_child(Tnode *t,int i);
-Tnode * _t_root(Tnode *t);
-Tnode * _t_next_sibling(Tnode *t);
-int _t_node_index(Tnode *t);
+T * _t_parent(T *t);
+T *_t_child(T *t,int i);
+T * _t_root(T *t);
+T * _t_next_sibling(T *t);
+int _t_node_index(T *t);
 
 /*****************  Tree path based accesses */
 int _t_path_equal(int *p1,int *p2);
 int _t_path_depth(int *p);
 void _t_pathcpy(int *dst_p,int *src_p);
-Tnode * _t_get(Tnode *t,int *p);
-int *_t_get_path(Tnode *t);
-void * _t_get_surface(Tnode *t,int *p);
+T * _t_get(T *t,int *p);
+int *_t_get_path(T *t);
+void * _t_get_surface(T *t,int *p);
 char * _t_sprint_path(int *fp,char *buf);
 
 /*****************  Tree hashing utilities */
-TreeHash _t_hash(Tnode *symbols,Tnode *structures,Tnode *t);
+TreeHash _t_hash(T *symbols,T *structures,T *t);
 int _t_hash_equal(TreeHash h1,TreeHash h2);
 
 #define root_check(c) if (c->structure.parent != 0) {raise_error0("can't add a node that isn't a root!");}

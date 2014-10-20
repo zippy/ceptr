@@ -27,7 +27,7 @@ int semeq(SemanticID s1,SemanticID s2) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testSymbolGetName
  */
-char *_d_get_symbol_name(Tnode *symbols,Symbol s) {
+char *_d_get_symbol_name(T *symbols,Symbol s) {
     if (is_sys_symbol(s)) {
 	if (s.id == 0) return "NULL_SYMBOL";
 	symbols = G_sys_defs.symbols;
@@ -39,8 +39,8 @@ char *_d_get_symbol_name(Tnode *symbols,Symbol s) {
 	if (s.id > c || s.id < 1)  {
 	    raise_error2("Bad symbol:%d--%d symbols in decl list",s.id,c);
 	}
-	Tnode *def = _t_child(symbols,s.id);
-	Tnode *l = _t_child(def,1);
+	T *def = _t_child(symbols,s.id);
+	T *l = _t_child(def,1);
 	return (char *)_t_surface(_t_child(def,1));
     }
     sprintf(__d_extra_buf,"<unknown symbol:%d.%d.%d>",s.context,s.flags,s.id);
@@ -57,14 +57,14 @@ char *_d_get_symbol_name(Tnode *symbols,Symbol s) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testStructureGetName
  */
-char *_d_get_structure_name(Tnode *structures,Structure s) {
+char *_d_get_structure_name(T *structures,Structure s) {
     if (is_sys_structure(s)) {
 	if (s.id == 0) return "NULL_STRUCTURE";
 	structures = G_sys_defs.structures;
     }
     if (structures) {
-	Tnode *def = _t_child(structures,s.id);
-	Tnode *l = _t_child(def,1);
+	T *def = _t_child(structures,s.id);
+	T *l = _t_child(def,1);
 	return (char *)_t_surface(l);
     }
     sprintf(__d_extra_buf,"<unknown structure:%d.%d.%d>",s.context,s.flags,s.id);
@@ -81,14 +81,14 @@ char *_d_get_structure_name(Tnode *structures,Structure s) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testProcessGetName
  */
-char *_d_get_process_name(Tnode *processes,Process p) {
+char *_d_get_process_name(T *processes,Process p) {
     if (is_sys_process(p)) {
 	if (p.id == 0) return "NULL_PROCESS";
 	processes = G_sys_defs.processes;
     }
     if (processes) {
-	Tnode *def = _t_child(processes,p.id);
-	Tnode *l = _t_child(def,1);
+	T *def = _t_child(processes,p.id);
+	T *l = _t_child(def,1);
 	return (char *)_t_surface(l);
     }
     sprintf(__d_extra_buf,"<unknown process:%d.%d.%d>",p.context,p.flags,p.id);
@@ -106,8 +106,8 @@ char *_d_get_process_name(Tnode *processes,Process p) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testDefSymbol
  */
-Tnode *__d_declare_symbol(Tnode *symbols,Structure s,char *label){
-    Tnode *def = _t_newr(symbols,SYMBOL_DECLARATION);
+T *__d_declare_symbol(T *symbols,Structure s,char *label){
+    T *def = _t_newr(symbols,SYMBOL_DECLARATION);
     _t_new(def,SYMBOL_LABEL,label,strlen(label)+1);
     _t_news(def,SYMBOL_STRUCTURE,s);
     return def;
@@ -126,7 +126,7 @@ Tnode *__d_declare_symbol(Tnode *symbols,Structure s,char *label){
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testDefSymbol
  */
-Symbol _d_declare_symbol(Tnode *symbols,Structure s,char *label,Context c){
+Symbol _d_declare_symbol(T *symbols,Structure s,char *label,Context c){
     __d_declare_symbol(symbols,s,label);
     Symbol sym = {c,SEM_TYPE_SYMBOL,_t_children(symbols)};
     return sym;
@@ -144,20 +144,20 @@ Symbol _d_declare_symbol(Tnode *symbols,Structure s,char *label,Context c){
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testDefStructure
  */
-Structure _d_define_structure(Tnode *structures,char *label,Context c,int num_params,...) {
+Structure _d_define_structure(T *structures,char *label,Context c,int num_params,...) {
     va_list params;
     va_start(params,num_params);
-    Tnode *def = _dv_define_structure(structures,label,num_params,params);
+    T *def = _dv_define_structure(structures,label,num_params,params);
     va_end(params);
     Symbol sym = {c,SEM_TYPE_STRUCTURE,_t_children(structures)};
     return sym;
 }
 
 /// va_list version of _d_define_structure
-Tnode * _dv_define_structure(Tnode *structures,char *label,int num_params,va_list params) {
-    Tnode *def = _t_newr(structures,STRUCTURE_DEFINITION);
-    Tnode *l = _t_new(def,STRUCTURE_LABEL,label,strlen(label)+1);
-    Tnode *p = _t_newr(def,STRUCTURE_PARTS);
+T * _dv_define_structure(T *structures,char *label,int num_params,va_list params) {
+    T *def = _t_newr(structures,STRUCTURE_DEFINITION);
+    T *l = _t_new(def,STRUCTURE_LABEL,label,strlen(label)+1);
+    T *p = _t_newr(def,STRUCTURE_PARTS);
     int i;
     for(i=0;i<num_params;i++) {
 	_t_news(p,STRUCTURE_PART,va_arg(params,Symbol));
@@ -175,11 +175,11 @@ Tnode * _dv_define_structure(Tnode *structures,char *label,int num_params,va_lis
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testGetSymbolStructure
  */
-Structure _d_get_symbol_structure(Tnode *symbols,Symbol s) {
+Structure _d_get_symbol_structure(T *symbols,Symbol s) {
     if (is_sys_symbol(s) || is_sys_test_symbol(s))
 	symbols = G_sys_defs.symbols;
-    Tnode *def = _t_child(symbols,s.id);
-    Tnode *t = _t_child(def,2); // second child of the def is the structure
+    T *def = _t_child(symbols,s.id);
+    T *t = _t_child(def,2); // second child of the def is the structure
     return *(Structure *)_t_surface(t);
 }
 
@@ -195,7 +195,7 @@ Structure _d_get_symbol_structure(Tnode *symbols,Symbol s) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testGetSize
  */
-size_t _d_get_symbol_size(Tnode *symbols,Tnode *structures,Symbol s,void *surface) {
+size_t _d_get_symbol_size(T *symbols,T *structures,Symbol s,void *surface) {
     Structure st = _d_get_symbol_structure(symbols,s);
     return _d_get_structure_size(symbols,structures,st,surface);
 }
@@ -212,7 +212,7 @@ size_t _d_get_symbol_size(Tnode *symbols,Tnode *structures,Symbol s,void *surfac
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testGetSize
  */
-size_t _d_get_structure_size(Tnode *symbols,Tnode *structures,Structure s,void *surface) {
+size_t _d_get_structure_size(T *symbols,T *structures,Structure s,void *surface) {
     if (is_sys_structure(s)) {
 	switch(s.id) {
 	case LIST_ID:
@@ -229,12 +229,12 @@ size_t _d_get_structure_size(Tnode *symbols,Tnode *structures,Structure s,void *
 	}
     }
     else {
-	Tnode *structure = _t_child(structures,s.id);
-	Tnode *parts = _t_child(structure,2);
+	T *structure = _t_child(structures,s.id);
+	T *parts = _t_child(structure,2);
 	size_t size = 0;
 	int i,c = _t_children(structure);
 	for(i=1;i<=c;i++) {
-	    Tnode *p = _t_child(parts,i);
+	    T *p = _t_child(parts,i);
 	    size += _d_get_symbol_size(symbols,structures,*(Symbol *)_t_surface(p),surface +size);
 	}
 	return size;
@@ -256,8 +256,8 @@ size_t _d_get_structure_size(Tnode *symbols,Tnode *structures,Structure s,void *
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testCodeProcess
  */
-Tnode *__d_code_process(Tnode *processes,Tnode *code,char *name,char *intention,Tnode *in,Tnode *out) {
-    Tnode *def = _t_newr(processes,PROCESS_CODING);
+T *__d_code_process(T *processes,T *code,char *name,char *intention,T *in,T *out) {
+    T *def = _t_newr(processes,PROCESS_CODING);
     _t_new(def,PROCESS_NAME,name,strlen(name)+1);
     _t_new(def,PROCESS_INTENTION,intention,strlen(intention)+1);
     if (code) _t_add(def,code);
@@ -281,7 +281,7 @@ Tnode *__d_code_process(Tnode *processes,Tnode *code,char *name,char *intention,
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testCodeProcess
  */
-Process _d_code_process(Tnode *processes,Tnode *code,char *name,char *intention,Tnode *in,Tnode *out,Context c) {
+Process _d_code_process(T *processes,T *code,char *name,char *intention,T *in,T *out,Context c) {
     __d_code_process(processes,code,name,intention,in,out);
     Symbol sym = {c,SEM_TYPE_PROCESS,_t_children(processes)};
     return sym;
@@ -300,18 +300,18 @@ Process _d_code_process(Tnode *processes,Tnode *code,char *name,char *intention,
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testDefSemtrex
 */
-Tnode * _d_build_def_semtrex(Defs defs,Symbol s,Tnode *parent) {
-    Tnode *stx = _t_news(parent,SEMTREX_SYMBOL_LITERAL,s);
+T * _d_build_def_semtrex(Defs defs,Symbol s,T *parent) {
+    T *stx = _t_news(parent,SEMTREX_SYMBOL_LITERAL,s);
 
     Structure st = _d_get_symbol_structure(defs.symbols,s);
     if (!(is_sys_structure(st))) {
-	Tnode *structure = _d_get_structure_def(defs.structures,st);
-	Tnode *parts = _t_child(structure,2);
+	T *structure = _d_get_structure_def(defs.structures,st);
+	T *parts = _t_child(structure,2);
 	int i,c = _t_children(parts);
 	if (c > 0) {
-	    Tnode *seq = _t_newr(stx,SEMTREX_SEQUENCE);
+	    T *seq = _t_newr(stx,SEMTREX_SEQUENCE);
 	    for(i=1;i<=c;i++) {
-		Tnode *p = _t_child(parts,i);
+		T *p = _t_child(parts,i);
 		_d_build_def_semtrex(defs,*(Symbol *)_t_surface(p),seq);
 	    }
 	}
@@ -321,10 +321,10 @@ Tnode * _d_build_def_semtrex(Defs defs,Symbol s,Tnode *parent) {
 
 /*****************  Tree debugging utilities */
 
-char * __t_dump(Defs *defs,Tnode *t,int level,char *buf) {
-    Tnode *structures = defs ? defs->structures : 0;
-    Tnode *symbols = defs ? defs->symbols : 0;
-    Tnode *processes = defs ? defs->processes : 0;
+char * __t_dump(Defs *defs,T *t,int level,char *buf) {
+    T *structures = defs ? defs->structures : 0;
+    T *symbols = defs ? defs->symbols : 0;
+    T *processes = defs ? defs->processes : 0;
     if (!t) return "";
     Symbol s = _t_symbol(t);
     char b[255];
@@ -376,7 +376,7 @@ char * __t_dump(Defs *defs,Tnode *t,int level,char *buf) {
 		break;
 	    case TREE_ID:
 		if (t->context.flags & TFLAG_SURFACE_IS_TREE) {
-		    c = __t_dump(defs,(Tnode *)_t_surface(t),0,tbuf);
+		    c = __t_dump(defs,(T *)_t_surface(t),0,tbuf);
 		    sprintf(buf," (%s:{%s}",n,c);
 		    break;
 		}

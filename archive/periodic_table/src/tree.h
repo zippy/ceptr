@@ -10,32 +10,32 @@ typedef int Symbol;
 
 #define TFLAG_ALLOCATED 0x0001
 
-struct Tnode {
-    struct Tnode *parent;
+struct T {
+    struct T *parent;
     size_t size;
     int flags;
     int child_count;
-    struct Tnode **children;
+    struct T **children;
     Symbol noun;
     void *surface;
 };
-typedef struct Tnode Tnode;
+typedef struct T T;
 
 
-typedef int (*treeMapFn)(Tnode *,Tnode *);
+typedef int (*treeMapFn)(T *,T *);
 
-int __t_append_child(Tnode *t,Tnode *c) {
+int __t_append_child(T *t,T *c) {
     if (t->child_count == 0) {
-	t->children = malloc(sizeof(Tnode *)*TREE_CHILDREN_BLOCK);
+	t->children = malloc(sizeof(T *)*TREE_CHILDREN_BLOCK);
     } else if (!(t->child_count % TREE_CHILDREN_BLOCK)){
 	int b = t->child_count/TREE_CHILDREN_BLOCK + 1;
-	t->children = realloc(t->children,sizeof(Tnode *)*(TREE_CHILDREN_BLOCK*b));
+	t->children = realloc(t->children,sizeof(T *)*(TREE_CHILDREN_BLOCK*b));
     }
 
     t->children[t->child_count++] = c;
 }
 
-void __t_init(Tnode *t,Tnode *parent,Symbol noun) {
+void __t_init(T *t,T *parent,Symbol noun) {
     t->child_count = 0;
     t->parent = parent;
     t->noun = noun;
@@ -45,8 +45,8 @@ void __t_init(Tnode *t,Tnode *parent,Symbol noun) {
     }
 }
 
-Tnode * _t_new(Tnode *parent,Symbol noun,void *surface,size_t size) {
-    Tnode *t = malloc(sizeof(Tnode));
+T * _t_new(T *parent,Symbol noun,void *surface,size_t size) {
+    T *t = malloc(sizeof(T));
     __t_init(t,parent,noun);
     if (size) {
 	t->flags |= TFLAG_ALLOCATED;
@@ -58,53 +58,53 @@ Tnode * _t_new(Tnode *parent,Symbol noun,void *surface,size_t size) {
     return t;
 }
 
-Tnode * _t_newi(Tnode *parent,Symbol noun,int surface) {
-    Tnode *t = malloc(sizeof(Tnode));
+T * _t_newi(T *parent,Symbol noun,int surface) {
+    T *t = malloc(sizeof(T));
     *((int *)&t->surface) = surface;
     t->size = sizeof(int);
     __t_init(t,parent,noun);
     return t;
 }
 
-Tnode * _t_newp(Tnode *parent,Symbol noun,void *surface) {
-    Tnode *t = malloc(sizeof(Tnode));
+T * _t_newp(T *parent,Symbol noun,void *surface) {
+    T *t = malloc(sizeof(T));
     t->surface = surface;
     t->size = sizeof(void *);
     __t_init(t,parent,noun);
     return t;
 }
 
-int _t_children(Tnode *t) {
+int _t_children(T *t) {
     return t->child_count;
 }
 
-void * _t_surface(Tnode *t) {
+void * _t_surface(T *t) {
     if (t->flags & TFLAG_ALLOCATED)
 	return t->surface;
     else
 	return &t->surface;
 }
 
-Tnode * _t_parent(Tnode *t) {
+T * _t_parent(T *t) {
     return t->parent;
 }
 
-Symbol _t_noun(Tnode *t) {
+Symbol _t_noun(T *t) {
     return t->noun;
 }
 
-size_t _t_size(Tnode *t) {
+size_t _t_size(T *t) {
     return t->size;
 }
 
-Tnode *_t_child(Tnode *t,int i) {
+T *_t_child(T *t,int i) {
     if (i>t->child_count || i < 1) return 0;
     return t->children[i-1];
 }
 
-void _t_free(Tnode *t);
+void _t_free(T *t);
 
-void __t_free_children(Tnode *t) {
+void __t_free_children(T *t) {
     int c = t->child_count;
     if (c > 0) {
 	while(--c>=0) {
@@ -116,7 +116,7 @@ void __t_free_children(Tnode *t) {
 }
 
 //TODO: make this remove the child from the parent's child-list?
-void _t_free(Tnode *t) {
+void _t_free(T *t) {
     __t_free_children(t);
     if (t->flags & TFLAG_ALLOCATED)
 	free(t->surface);
@@ -133,14 +133,14 @@ void _t_path_parent(int *n,int *p) {
     *--n = TREE_PATH_TERMINATOR;
 }
 
-Tnode * _t_get(Tnode *t,int *p) {
+T * _t_get(T *t,int *p) {
     int i = *p++;
-    Tnode *c;
+    T *c;
     if (i == TREE_PATH_TERMINATOR)
 	return t;
     else if (i == 0)
 	//TODO: semantic check to make sure surface is a tree?
-	c = *(Tnode **)(_t_surface(t));
+	c = *(T **)(_t_surface(t));
     else
 	c = _t_child(t,i);
     if (c == NULL ) return NULL;
@@ -148,44 +148,44 @@ Tnode * _t_get(Tnode *t,int *p) {
     return _t_get(c,p);
 }
 
-void * _t_get_surface(Tnode *t,int *p) {
-    Tnode *c = _t_get(t,p);
+void * _t_get_surface(T *t,int *p) {
+    T *c = _t_get(t,p);
     if (c == NULL) return NULL;
     return _t_surface(c);
 }
 
-Tnode *_t_get_child(Tnode *t,int c) {
+T *_t_get_child(T *t,int c) {
     int p[2] = {c,TREE_PATH_TERMINATOR};
     return _t_get(t,p);
 }
 
-void *_t_get_child_surface(Tnode *t,int i) {
-    Tnode *c = _t_get_child(t,i);
+void *_t_get_child_surface(T *t,int i) {
+    T *c = _t_get_child(t,i);
     if (c) {
 	return _t_surface(c);
     }
     return NULL;
 }
 
-Tnode *_t_new_root(Symbol noun) {
+T *_t_new_root(Symbol noun) {
     return _t_new(0,noun,0,0);
 }
 
 typedef void (*tIterSurfaceFn)(void *, int, void *param);
-typedef void (*tIterFn)(Tnode *, int, void *param);
+typedef void (*tIterFn)(T *, int, void *param);
 
-void _t_iter_children_surface(Tnode *t, tIterSurfaceFn fn, void * param) {
+void _t_iter_children_surface(T *t, tIterSurfaceFn fn, void * param) {
     int count = _t_children(t);
     for (int i = 1; i <= count; i++) {
-	Tnode *c = _t_get_child(t,i);
+	T *c = _t_get_child(t,i);
 	(fn)(_t_surface(c),i,param);
     }
 }
 
-void _t_iter_children(Tnode *t, tIterFn fn, void * param) {
+void _t_iter_children(T *t, tIterFn fn, void * param) {
     int count = _t_children(t);
     for (int i = 1; i <= count; i++) {
-	Tnode *c = _t_get_child(t,i);
+	T *c = _t_get_child(t,i);
 	(fn)(c,i,param);
     }
 }
@@ -193,19 +193,19 @@ void _t_iter_children(Tnode *t, tIterFn fn, void * param) {
 
 #define __lspc(l) for(int i=0;i<l;i++) printf("   ");
 
-void __t_dump(Tnode *t,int level) {
+void __t_dump(T *t,int level) {
     __lspc(level);
     printf("noun: %d; sfc: %p; children: %d\n",_t_noun(t),t->surface,_t_children(t));
     for(int i=1;i<=_t_children(t);i++) __t_dump(_t_get_child(t,i),level+1);
 }
 
-void _t_dump(Tnode *t) { printf("Tree Dump:\n");__t_dump(t,0);}
+void _t_dump(T *t) { printf("Tree Dump:\n");__t_dump(t,0);}
 
-void _t_become(Tnode *t, Tnode *src_t) {
+void _t_become(T *t, T *src_t) {
     // free my own children but not if my child is what I'm about to become
     // NOTE: this means that you have to detach a child of a child or it will be double freed!
     for(int i=1; i<=_t_children(t);i++) {
-	Tnode *c = _t_get_child(t,i);
+	T *c = _t_get_child(t,i);
 	if (c != src_t) _t_free(c);
     }
 
@@ -232,8 +232,8 @@ int _t_path_depth(int *p) {
     return i;
 }
 
-Tnode *_t_next_df(Tnode *t,int *p) {
-    Tnode *i = _t_get(t,p);
+T *_t_next_df(T *t,int *p) {
+    T *i = _t_get(t,p);
     int d = _t_path_depth(p);
 
     //   raise(SIGINT);
@@ -267,16 +267,16 @@ typedef struct {
     int p[20];
 } TreeWalker;
 
-void _t_init_walk(Tnode *t,TreeWalker *w, int type) {
+void _t_init_walk(T *t,TreeWalker *w, int type) {
     w->type = type;
     w->p[0] = TREE_PATH_TERMINATOR;
 }
 
-Tnode *__t_next_bf(Tnode *t,int *p) {
+T *__t_next_bf(T *t,int *p) {
     raise_error0("NOT IMPLEMENTED!\n");
 }
 
-Tnode *_t_walk(Tnode *t,TreeWalker *w) {
+T *_t_walk(T *t,TreeWalker *w) {
     if (w->type == WALK_DEPTH_FIRST)
 	return _t_next_df(t,w->p);
     else
@@ -285,8 +285,8 @@ Tnode *_t_walk(Tnode *t,TreeWalker *w) {
 
 enum {PTR_NOUN = -999999};
 
-Tnode *_t_build_one(Tnode *parent,Tnode *t,Tnode *m) {
-    Tnode *n,*src;
+T *_t_build_one(T *parent,T *t,T *m) {
+    T *n,*src;
     if (_t_noun(t) == PTR_NOUN) {
 	src = _t_get_child(m,*(int *)_t_surface(t));
     }
@@ -301,21 +301,21 @@ Tnode *_t_build_one(Tnode *parent,Tnode *t,Tnode *m) {
     return n;
 }
 
-Tnode *_t_build(Tnode *t,Tnode *m) {
+T *_t_build(T *t,T *m) {
     int p[20];
-    Tnode *i,*n = _t_build_one(0,t,m);
+    T *i,*n = _t_build_one(0,t,m);
     TreeWalker w;
     _t_init_walk(t,&w,WALK_DEPTH_FIRST);
     while(i = _t_walk(t,&w)) {
 	_t_path_parent(p,w.p);
-	Tnode *pp = _t_get(n,p);
-	Tnode *c = _t_build_one(pp,i,m);
+	T *pp = _t_get(n,p);
+	T *c = _t_build_one(pp,i,m);
     }
     return n;
 }
 
-Tnode *_t_buildx(Tnode *parent,Tnode *t,Tnode *m) {
-    Tnode *n,*src;
+T *_t_buildx(T *parent,T *t,T *m) {
+    T *n,*src;
     Symbol noun;
     if (_t_noun(t) == PTR_NOUN) {
 	src = _t_get_child(m,*(int *)_t_surface(t));
@@ -334,7 +334,7 @@ Tnode *_t_buildx(Tnode *parent,Tnode *t,Tnode *m) {
     return n;
 }
 
-int _t_nouns_eq(Tnode *t1,Tnode *t2) {
+int _t_nouns_eq(T *t1,T *t2) {
     int c;
     if ((_t_noun(t1) != _t_noun(t2)) || ((c = _t_children(t1)) != _t_children(t2))) return 0;
     for (int i=1;i<=c;i++) {
@@ -343,7 +343,7 @@ int _t_nouns_eq(Tnode *t1,Tnode *t2) {
     return 1;
 }
 
-int _t_map(Tnode *t1,Tnode *t2,treeMapFn mf) {
+int _t_map(T *t1,T *t2,treeMapFn mf) {
     int c;
     if (((c = _t_children(t1)) != _t_children(t2)) || !(mf)(t1,t2)) return 0;
     for (int i=1;i<=c;i++) {

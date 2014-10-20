@@ -58,7 +58,7 @@ void dump_xaddrs(Receptor *r) {
     void *surface;
     Data *d = &r->data;
     for (int i = 1; i <= _t_children(d->root); i++) {
-	Tnode *t = _t_get_child(d->root,i);
+	T *t = _t_get_child(d->root,i);
 	Xaddr x = {i,_t_noun(t)};
 	printf("Xaddr { %5d, %5d } - ", x.key, x.noun);
         dump_xaddr(r, x, 0);

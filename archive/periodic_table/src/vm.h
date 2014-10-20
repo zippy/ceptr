@@ -22,16 +22,16 @@ fp = (ffn)(c,t,fp,f);
 */
 
 /*
-int t(Tnode *i,Tnode *r)  {
-    Tnode *t,*n,*pp;
+int t(T *i,T *r)  {
+    T *t,*n,*pp;
     int p[20];
     TreeWalker w;
     _t_init_walk(i,&w,WALK_DEPTH_FIRST);
     n = _t_build_one(0,i,r);
     do {
 	_t_path_parent(p,w.p);
-	Tnode *pp = _t_get(n,p);
-	Tnode *c = _t_build_one(pp,i,m);
+	T *pp = _t_get(n,p);
+	T *c = _t_build_one(pp,i,m);
 
 	if (_t_noun(n) != INSTRUCTION_NOUN) {
 	    t = _t_build(i,r);
@@ -42,22 +42,22 @@ int t(Tnode *i,Tnode *r)  {
 }
 */
 
-Tnode *_context_create(int max_depth) {
-    Tnode *c = _t_new_root(CONTEXT_TREE_NOUN);
-    Tnode *fp = _t_new(c,PATH_NOUN,0,sizeof(int)*(max_depth+1));
+T *_context_create(int max_depth) {
+    T *c = _t_new_root(CONTEXT_TREE_NOUN);
+    T *fp = _t_new(c,PATH_NOUN,0,sizeof(int)*(max_depth+1));
     *(int *)fp->surface = TREE_PATH_TERMINATOR;
     return c;
 }
 
 
-Tnode *_vm_cycle_load(Tnode *c,Tnode *s) {
-    Tnode *r = __run_tree(c);
+T *_vm_cycle_load(T *c,T *s) {
+    T *r = __run_tree(c);
     int *fp = __f_cur_flow_path(c);
-    Tnode *n = _t_get(r,fp);
+    T *n = _t_get(r,fp);
     // if current node doesn't exist in the run-tree allocate one
     if (!n) {
 	// first find the parent to which to attach the new run tree node
-	Tnode *r_parent;
+	T *r_parent;
 	if (r == NULL) {
 	    r_parent = c;
 	}
@@ -71,7 +71,7 @@ Tnode *_vm_cycle_load(Tnode *c,Tnode *s) {
     return n;
 }
 
-int _vm_cycle_descend(int *fp,Tnode *r,Tnode *s) {
+int _vm_cycle_descend(int *fp,T *r,T *s) {
     Flow *f = (Flow *)_t_surface(r);
     if (f->phase == FLOW_PHASE_NULL) {
 	int d = _t_path_depth(fp);
@@ -86,7 +86,7 @@ int _vm_cycle_descend(int *fp,Tnode *r,Tnode *s) {
     return false;
 }
 
-void _vm_cycle_eval(int *fp,Tnode *r,Tnode *s) {
+void _vm_cycle_eval(int *fp,T *r,T *s) {
     Flow *f = (Flow *)_t_surface(r);
     if (_t_noun(s) != FLOW_NOUN) {
 	f->phase = FLOW_PHASE_COMPLETE;
@@ -120,14 +120,14 @@ void ppath(int *fp) {
     for(int i=0;i<d;i++) {printf("%d",fp[i]);}
 }
 
-int cycle(Tnode *c, Tnode *s) {
-    Tnode *rtn = _vm_cycle_load(c,s);
+int cycle(T *c, T *s) {
+    T *rtn = _vm_cycle_load(c,s);
     int *fp = __f_cur_flow_path(c);
     if (((Flow *)_t_surface(rtn))->phase == FLOW_PHASE_COMPLETE && _t_path_depth(fp) == 0)
 	return 0;
 
     if (!_vm_cycle_descend(fp,rtn,s)) {
-	Tnode *stn = _t_get(s,fp);
+	T *stn = _t_get(s,fp);
 	_vm_cycle_eval(fp,rtn,stn);
     }
 /*    printf("FP: ");ppath(fp);
@@ -141,14 +141,14 @@ int cycle(Tnode *c, Tnode *s) {
 
 
 
-int transform(Tnode *i,Tnode *r);
+int transform(T *i,T *r);
 
-int _transform(Tnode *t) {
+int _transform(T *t) {
     int p[3] ={0,0,TREE_PATH_TERMINATOR};
     int i,j;
-    Tnode *t1;
-    Tnode *t2;
-    Tnode *r;
+    T *t1;
+    T *t2;
+    T *r;
     if (_t_noun(t) == INSTRUCTION_NOUN) {
 	switch(*(int *)&t->surface) {
 	case I_RETURN:
@@ -202,8 +202,8 @@ int _transform(Tnode *t) {
     return TRANSFORM_OK;
 }
 
-int transform(Tnode *i,Tnode *r) {
-    Tnode *t = _t_build(i,r);
+int transform(T *i,T *r) {
+    T *t = _t_build(i,r);
     _transform(t);
     _t_become(r,t);
     return TRANSFORM_OK;

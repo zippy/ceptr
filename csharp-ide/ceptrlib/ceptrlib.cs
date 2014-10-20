@@ -146,9 +146,9 @@ namespace ceptrlib
 	[StructLayout(LayoutKind.Sequential, Pack=1), Serializable]
 	public unsafe struct Tstruct
 	{
-		public Tnode* node;
+		public T* node;
 		public int child_count;
-		public Tnode** children;
+		public T** children;
 	}
 
 	[StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
@@ -166,7 +166,7 @@ namespace ceptrlib
 	}
 
 	[StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
-	public unsafe struct Tnode
+	public unsafe struct T
 	{
 		public Tstruct structure;
 		public Tcontext context;
@@ -176,10 +176,10 @@ namespace ceptrlib
 	[StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
 	public unsafe struct Defs 
 	{
-		public Tnode *structures;
-		public Tnode *symbols;   
-		public Tnode *processes; 
-		public Tnode *scapes;    
+		public T *structures;
+		public T *symbols;   
+		public T *processes; 
+		public T *scapes;    
 	};
 
 	public class CeptrInterface
@@ -194,28 +194,28 @@ namespace ceptrlib
 		extern static unsafe void testGetSize();
 
 		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
-		extern static unsafe Tnode* _t_new(IntPtr parent, SemanticID sid, IntPtr surface, int size);
+		extern static unsafe T* _t_new(IntPtr parent, SemanticID sid, IntPtr surface, int size);
 
 		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
-		extern static unsafe Tnode* _t_new_root(SemanticID sid);
+		extern static unsafe T* _t_new_root(SemanticID sid);
 
 		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
-		extern static unsafe SemanticID _d_declare_symbol(Tnode* symbols, SemanticID sid, string label, UInt16 context);
+		extern static unsafe SemanticID _d_declare_symbol(T* symbols, SemanticID sid, string label, UInt16 context);
 
 		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
-		extern static unsafe SemanticID _d_define_structure(Tnode* structures, [MarshalAs(UnmanagedType.LPStr)] string label, int num_params, __arglist);
+		extern static unsafe SemanticID _d_define_structure(T* structures, [MarshalAs(UnmanagedType.LPStr)] string label, int num_params, __arglist);
 
 		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
-		extern static unsafe SemanticID _dv_define_structure(Tnode* structures, [MarshalAs(UnmanagedType.LPStr)] string label, UInt16 context, int num_params, __arglist);
+		extern static unsafe SemanticID _dv_define_structure(T* structures, [MarshalAs(UnmanagedType.LPStr)] string label, UInt16 context, int num_params, __arglist);
 
 		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
-		extern static unsafe SemanticID _t_children(Tnode* structures);
+		extern static unsafe SemanticID _t_children(T* structures);
 
-		// extern static unsafe Symbol _d_define_structure(Tnode* structures, char* label, int num_params, UInt32 p1, UInt32 p2);
+		// extern static unsafe Symbol _d_define_structure(T* structures, char* label, int num_params, UInt32 p1, UInt32 p2);
 
 		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
 		// [return: MarshalAs(UnmanagedType.LPStr)]
-		extern static unsafe void __t_dump(Defs* defs, Tnode* t, int level, char* buf);
+		extern static unsafe void __t_dump(Defs* defs, T* t, int level, char* buf);
 
 		protected Dictionary<Guid, IntPtr> nodes = new Dictionary<Guid, IntPtr>();
 
@@ -236,7 +236,7 @@ namespace ceptrlib
 		/// <returns>A GUID associated with this node instance.</returns>
 		public unsafe Guid CreateRootNode(SemanticID structures)
 		{
-			Tnode *node = _t_new_root(structures);
+			T *node = _t_new_root(structures);
 			Guid guid = RegisterNode(node);
 
 			return guid;
@@ -247,7 +247,7 @@ namespace ceptrlib
 		/// </summary>
 		public unsafe SemanticID DeclareSymbol(Guid symbols, SemanticID st, string label, SemanticContexts sc)
 		{
-			Tnode *pnode = (Tnode*)nodes[symbols];
+			T *pnode = (T*)nodes[symbols];
 			SemanticID symbol = _d_declare_symbol(pnode, st, label, (UInt16)sc);
 
 			return symbol;
@@ -255,7 +255,7 @@ namespace ceptrlib
 
 		public unsafe SemanticID DefineStructure(Guid structures, string name, SemanticContexts sc, SemanticID[] symbolArray)
 		{
-			Tnode *structs = (Tnode*)nodes[structures];
+			T *structs = (T*)nodes[structures];
 
 			_dv_define_structure(structs, name, (UInt16)sc, symbolArray.Length, __arglist(symbolArray));
 			SemanticID st = _t_children(structs);
@@ -267,10 +267,10 @@ namespace ceptrlib
 		{
 			Defs defs = new Defs() 
 			{ 
-				structures = (Tnode*)nodes[g_structures], 
-				symbols = (Tnode*)nodes[g_symbols], 
-				processes = (Tnode*)0, 
-				scapes = (Tnode*)0 
+				structures = (T*)nodes[g_structures], 
+				symbols = (T*)nodes[g_symbols], 
+				processes = (T*)0, 
+				scapes = (T*)0 
 			};
 
 			string ret = String.Empty;
@@ -295,10 +295,10 @@ namespace ceptrlib
 		{
 			Defs defs = new Defs()
 			{
-				structures = (Tnode*)nodes[g_structures],
-				symbols = (Tnode*)nodes[g_symbols],
-				processes = (Tnode*)0,
-				scapes = (Tnode*)0
+				structures = (T*)nodes[g_structures],
+				symbols = (T*)nodes[g_symbols],
+				processes = (T*)0,
+				scapes = (T*)0
 			};
 
 			string ret = String.Empty;
@@ -320,9 +320,9 @@ namespace ceptrlib
 		}
 
 		/// <summary>
-		/// Return a Guid associated with the Tnode* instance.
+		/// Return a Guid associated with the T* instance.
 		/// </summary>
-		protected unsafe Guid RegisterNode(Tnode* node)
+		protected unsafe Guid RegisterNode(T* node)
 		{
 			Guid guid = Guid.NewGuid();
 			nodes[guid] = (IntPtr)node;

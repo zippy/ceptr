@@ -12,7 +12,7 @@ void testCreateTreeNodes() {
     /* test the creation of trees and the various function that give access to created data elements
        and basic tree structure navigation
      */
-    Tnode *t, *t1, *t2, *t3, *t4, *t5;
+    T *t, *t1, *t2, *t3, *t4, *t5;
 
     t = _t_new(0,TEST_STR_SYMBOL,"hello",6);
     spec_is_long_equal(_t_size(t),(long)6);
@@ -68,9 +68,9 @@ void testCreateTreeNodes() {
 
 void testTreeNewReceptor() {
     //! [testTreeNewReceptor]
-    Tnode *t = _t_newi(0,TEST_INT_SYMBOL,0);
+    T *t = _t_newi(0,TEST_INT_SYMBOL,0);
     Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
-    Tnode *tr = _t_new_receptor(t,TEST_RECEPTOR_SYMBOL,r);
+    T *tr = _t_new_receptor(t,TEST_RECEPTOR_SYMBOL,r);
 
     spec_is_ptr_equal(_t_surface(tr),r);
 
@@ -85,7 +85,7 @@ void testTreeNewReceptor() {
 void testTreeNewScape() {
     //! [testTreeNewScape]
     Scape *s = _s_new(TEST_INT_SYMBOL,TEST_STR_SYMBOL);
-    Tnode *ts = _t_new_scape(0,TEST_ALPHABETIZE_SCAPE_SYMBOL,s);
+    T *ts = _t_new_scape(0,TEST_ALPHABETIZE_SCAPE_SYMBOL,s);
 
     spec_is_ptr_equal(_t_surface(ts),s);
 
@@ -98,9 +98,9 @@ void testTreeNewScape() {
 }
 
 void testTreeOrthogonal() {
-    Tnode *t = _t_newi(0,TEST_INT_SYMBOL,1234);
-    Tnode *t2 = _t_newi(0,TEST_INT_SYMBOL2,99);
-    Tnode *o = _t_newt(t,TEST_TREE_SYMBOL,t2);
+    T *t = _t_newi(0,TEST_INT_SYMBOL,1234);
+    T *t2 = _t_newi(0,TEST_INT_SYMBOL2,99);
+    T *o = _t_newt(t,TEST_TREE_SYMBOL,t2);
     char buf[2000];
     __t_dump(0,t,0,buf);
     spec_is_str_equal(buf," (TEST_INT_SYMBOL:1234 (TEST_TREE_SYMBOL:{ (TEST_INT_SYMBOL2:99)}))");
@@ -108,8 +108,8 @@ void testTreeOrthogonal() {
 }
 
 void testTreeRealloc() {
-    Tnode *ts[12];
-    Tnode *t = _t_new(0,TEST_STR_SYMBOL,"t",2);
+    T *ts[12];
+    T *t = _t_new(0,TEST_STR_SYMBOL,"t",2);
     char tname[3];
     int i;
     tname[0] = 't';
@@ -124,7 +124,7 @@ void testTreeRealloc() {
 
 void testTreePathGet() {
     //! [testTreePathGet]
-    Tnode *t = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
+    T *t = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
 
     int p0[] = {TREE_PATH_TERMINATOR};
     int p1[] = {1,TREE_PATH_TERMINATOR};
@@ -156,7 +156,7 @@ void testTreePathGet() {
 
 void testTreePathGetSurface() {
     //! [testTreePathGetSurface]
-    Tnode *t = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
+    T *t = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
 
     int p1[] = {3,1,1,TREE_PATH_TERMINATOR};
     int p2[] = {3,1,2,TREE_PATH_TERMINATOR};
@@ -167,12 +167,12 @@ void testTreePathGetSurface() {
     spec_is_str_equal((char *)_t_get_surface(t,p3),"2");
 
     // make a test tree with the HTTP request tree as an orthogonal tree
-    Tnode *tt = _t_newt(0,TEST_TREE_SYMBOL,t);
+    T *tt = _t_newt(0,TEST_TREE_SYMBOL,t);
     int po[] = {0,TREE_PATH_TERMINATOR};
     int po1[] = {0,3,1,1,TREE_PATH_TERMINATOR};
 
     // using 0 in the path should "dive" into the orthogonal tree
-    Tnode *x =_t_get(tt,po);
+    T *x =_t_get(tt,po);
     spec_is_ptr_equal(x,t);
     spec_is_str_equal((char *)_t_get_surface(tt,po1),"groups");
 
@@ -182,7 +182,7 @@ void testTreePathGetSurface() {
 
 void testTreePathGetPath() {
     //! [testTreePathGetPath]
-    Tnode *t = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
+    T *t = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
     int p0[] = {TREE_PATH_TERMINATOR};
     int p1[] = {1,TREE_PATH_TERMINATOR};
     int p2[] = {3,1,TREE_PATH_TERMINATOR};
@@ -264,7 +264,7 @@ void testTreePathSprint() {
 
 void testTreeNodeIndex() {
     //! [testTreeNodeIndex]
-    Tnode *t = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
+    T *t = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
     spec_is_equal(_t_node_index(_t_child(t,1)),1);
     spec_is_equal(_t_node_index(_t_child(t,2)),2);
     spec_is_equal(_t_node_index(_t_child(t,3)),3);
@@ -276,8 +276,8 @@ void testTreeNodeIndex() {
 
 void testTreeClone() {
     //! [testTreeClone]
-    Tnode *t = _makeTestHTTPRequestTree();
-    Tnode *c = _t_clone(t);
+    T *t = _makeTestHTTPRequestTree();
+    T *c = _t_clone(t);
 
     spec_is_true(t!=c);
     spec_is_equal(_t_children(c),_t_children(t));
@@ -296,10 +296,10 @@ void testTreeClone() {
 
 void testTreeReplace() {
     //! [testTreeReplace]
-    Tnode *t = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
+    T *t = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
 
     // replace the version with a new version
-    Tnode *t_version = _t_newr(0,HTTP_REQUEST_VERSION);
+    T *t_version = _t_newr(0,HTTP_REQUEST_VERSION);
     _t_newi(t_version,VERSION_MAJOR,1);
     _t_newi(t_version,VERSION_MINOR,1);
 
@@ -314,9 +314,9 @@ void testTreeReplace() {
 
 void testTreeInsertAt() {
     //! [testTreeInsertAt]
-    Tnode *t = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
+    T *t = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
     int p[] = {3,1,2,TREE_PATH_TERMINATOR};
-    Tnode *c = _t_new(0,HTTP_REQUEST_PATH_SEGMENT,"a",2);
+    T *c = _t_new(0,HTTP_REQUEST_PATH_SEGMENT,"a",2);
     _t_insert_at(t,p,c);
     char buf[2000];
     p[2] = TREE_PATH_TERMINATOR;
@@ -330,8 +330,8 @@ void testTreeInsertAt() {
 void testTreeMorph() {
     //! [testTreeMorph]
     char buf[2000];
-    Tnode *x = _t_newi(0,TEST_INT_SYMBOL,123);
-    Tnode *z = _t_new(0,TEST_STR_SYMBOL,"fish",5);
+    T *x = _t_newi(0,TEST_INT_SYMBOL,123);
+    T *z = _t_new(0,TEST_STR_SYMBOL,"fish",5);
 
     _t_morph(x,z);
     __t_dump(0,x,0,buf);
@@ -345,7 +345,7 @@ void testTreeMorph() {
 void testTreeMorphLowLevel() {
     //! [testTreeMorphLowLevel]
     char buf[2000];
-    Tnode *x = _t_new(0,TEST_STR_SYMBOL,"fish",5);
+    T *x = _t_new(0,TEST_STR_SYMBOL,"fish",5);
     int i = 789;
 
     __t_morph(x,TEST_INT_SYMBOL,&i,sizeof(int),0);
@@ -358,13 +358,13 @@ void testTreeMorphLowLevel() {
 
 void testTreeDetach() {
     //! [testTreeDetach]
-    Tnode *t = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
+    T *t = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
     char buf[2000];
     int p1[] = {1,TREE_PATH_TERMINATOR};
 
     // remove the version from the tree
     spec_is_symbol_equal(0,_t_symbol(_t_get(t,p1)),HTTP_REQUEST_VERSION);
-    Tnode *t_version = _t_detach_by_idx(t,1);
+    T *t_version = _t_detach_by_idx(t,1);
     spec_is_symbol_equal(0,_t_symbol(_t_get(t,p1)),HTTP_REQUEST_METHOD);
 
     // detached nodes shouldn't have a parent
@@ -377,7 +377,7 @@ void testTreeDetach() {
 
 void testTreeHash() {
     //! [testTreeHash]
-    Tnode *t = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
+    T *t = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
     TreeHash h = _t_hash(test_HTTP_symbols,test_HTTP_structures,t);
 
     // test that changing a symbol changes the hash
@@ -387,14 +387,14 @@ void testTreeHash() {
 
     // test that changing a surface changes the hash
     int p[] = {1,2,TREE_PATH_TERMINATOR};
-    Tnode *v = _t_get(t,p);
+    T *v = _t_get(t,p);
     int orig_version = *(int *)&v->contents.surface;
     *(int *)&v->contents.surface = orig_version + 1;
     spec_is_true(!_t_hash_equal(h,_t_hash(test_HTTP_symbols,test_HTTP_structures,t)));
     *(int *)&v->contents.surface = orig_version; // change value back
 
     // test that changing child order changes the hash
-    Tnode *t_version = _t_detach_by_idx(t,1);
+    T *t_version = _t_detach_by_idx(t,1);
     _t_add(t,t_version);
     spec_is_true(!_t_hash_equal(h,_t_hash(test_HTTP_symbols,test_HTTP_structures,t)));
 

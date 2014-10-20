@@ -23,14 +23,14 @@
  * @param[in] match_tree original tree that was matched (needed to grab the data to interpolate)
  * @todo what to do if match has sibs??
  */
-void _p_interpolate_from_match(Tnode *t,Tnode *match_results,Tnode *match_tree) {
+void _p_interpolate_from_match(T *t,T *match_results,T *match_tree) {
     int i,c = _t_children(t);
     if (semeq(_t_symbol(t),INTERPOLATE_SYMBOL)) {
 	Symbol s = *(Symbol *)_t_surface(t);
-	Tnode *m = _t_get_match(match_results,s);
+	T *m = _t_get_match(match_results,s);
 	int *path = (int *)_t_surface(_t_child(m,2));
 	int sibs = *(int*)_t_surface(_t_child(m,3));
-	Tnode *x = _t_get(match_tree,path);
+	T *x = _t_get(match_tree,path);
 
 	if (!x) {
 	    raise_error0("expecting to get a value from match!!");
@@ -51,15 +51,15 @@ void _p_interpolate_from_match(Tnode *t,Tnode *match_results,Tnode *match_tree) 
  *
  * @returns Error code
   */
-Error __p_check_signature(Defs defs,Process p,Tnode *params) {
-    Tnode *def = _d_get_process_code(defs.processes,p);
-    Tnode *input = _t_child(def,4);
+Error __p_check_signature(Defs defs,Process p,T *params) {
+    T *def = _d_get_process_code(defs.processes,p);
+    T *input = _t_child(def,4);
     int i = _t_children(input);
     int c = _t_children(params);
     if (i > c) return tooFewParamsReductionErr;
     if (i < c) return tooManyParamsReductionErr;
     for (i=1;i<=c;i++) {
-	Tnode *sig = _t_child(_t_child(input,i),1);
+	T *sig = _t_child(_t_child(input,i),1);
 	if(semeq(_t_symbol(sig),SIGNATURE_STRUCTURE)) {
 	    Structure ss = *(Symbol *)_t_surface(sig);
 	    if (!semeq(_d_get_symbol_structure(defs.symbols,_t_symbol(_t_child(params,i))),ss) && !semeq(ss,TREE))
@@ -85,12 +85,12 @@ Error __p_check_signature(Defs defs,Process p,Tnode *params) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/process_spec.h testProcessReduceDefinedProcess
  */
-Error __p_reduce(Defs defs,Tnode *run_tree, Tnode *code) {
+Error __p_reduce(Defs defs,T *run_tree, T *code) {
     Process s = _t_symbol(code);
 
-    Tnode *param,*match_results,*match_tree,*t,*x;
+    T *param,*match_results,*match_tree,*t,*x;
 
-    Tnode *parent = _t_parent(code);
+    T *parent = _t_parent(code);
     int idx = _t_node_index(code);
 
     if (semeq(s,PARAM_REF)) {
@@ -120,7 +120,7 @@ Error __p_reduce(Defs defs,Tnode *run_tree, Tnode *code) {
     if (!is_sys_process(s)) {
 	Error e = __p_check_signature(defs,s,code);
 	if (e) return e;
-	Tnode *rt = __p_make_run_tree(defs.processes,s,code);
+	T *rt = __p_make_run_tree(defs.processes,s,code);
 	__p_reduce(defs,rt,_t_child(rt,1));
 	x = _t_detach_by_idx(rt,1);
 	_t_free(rt);
@@ -206,22 +206,22 @@ Error __p_reduce(Defs defs,Tnode *run_tree, Tnode *code) {
     return noReductionErr;
 }
 
-Error _p_reduce(Defs defs,Tnode *run_tree) {
-    Tnode *code = _t_child(run_tree,1);
+Error _p_reduce(Defs defs,T *run_tree) {
+    T *code = _t_child(run_tree,1);
     if (!code) {
 	raise_error0("expecting code tree as first child of run tree!");
     }
     return __p_reduce(defs,run_tree,code);
 }
 
-Tnode *__p_make_run_tree(Tnode *processes,Process p,Tnode *params) {
-    Tnode *t = _t_new_root(RUN_TREE);
-    Tnode *code_def = _d_get_process_code(processes,p);
-    Tnode *code = _t_child(code_def,3);
+T *__p_make_run_tree(T *processes,Process p,T *params) {
+    T *t = _t_new_root(RUN_TREE);
+    T *code_def = _d_get_process_code(processes,p);
+    T *code = _t_child(code_def,3);
 
-    Tnode *c = _t_clone(code);
+    T *c = _t_clone(code);
     _t_add(t,c);
-    Tnode *ps = _t_newr(t,PARAMS);
+    T *ps = _t_newr(t,PARAMS);
     int i,num_params = _t_children(params);
     for(i=1;i<=num_params;i++) {
 	_t_add(ps,_t_detach_by_idx(params,1));
@@ -235,14 +235,14 @@ Tnode *__p_make_run_tree(Tnode *processes,Process p,Tnode *params) {
  * @param[in] processes processes trees
  * @param[in] process Process tree node to be turned into run tree
  * @param[in] num_params the number of parameters to add to the parameters child
- * @param[in] ... Tnode params
- * @returns Tnode RUN_TREE tree
+ * @param[in] ... T params
+ * @returns T RUN_TREE tree
  */
-Tnode *_p_make_run_tree(Tnode *processes,Tnode *process,int num_params,...) {
+T *_p_make_run_tree(T *processes,T *process,int num_params,...) {
     va_list params;
     int i;
 
-    Tnode *t = _t_new_root(RUN_TREE);
+    T *t = _t_new_root(RUN_TREE);
 
     Process p = *(Process *)_t_surface(process);
     if (!is_process(p)) {
@@ -252,15 +252,15 @@ Tnode *_p_make_run_tree(Tnode *processes,Tnode *process,int num_params,...) {
 	raise_error0("can't handle sys_processes!");
     }
 
-    Tnode *code_def = _d_get_process_code(processes,p);
-    Tnode *code = _t_child(code_def,3);
+    T *code_def = _d_get_process_code(processes,p);
+    T *code = _t_child(code_def,3);
 
-    Tnode *c = _t_clone(code);
+    T *c = _t_clone(code);
     _t_add(t,c);
-    Tnode *ps = _t_newr(t,PARAMS);
+    T *ps = _t_newr(t,PARAMS);
     va_start(params,num_params);
     for(i=0;i<num_params;i++) {
-	_t_add(ps,_t_clone(va_arg(params,Tnode *)));
+	_t_add(ps,_t_clone(va_arg(params,T *)));
     }
     va_end(params);
     return t;

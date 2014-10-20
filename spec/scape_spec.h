@@ -21,7 +21,7 @@ void testScapeAddElement() {
     //! [testScapeAddElement]
     Scape *s = _s_new(TEST_INT_SYMBOL,TEST_STR_SYMBOL);
     Xaddr x = {1,3};  // DUMMY XADDR
-    Tnode *t = _t_newi(0,TEST_INT_SYMBOL,31415);
+    T *t = _t_newi(0,TEST_INT_SYMBOL,31415);
     TreeHash h = _t_hash(0,0,t);
     _s_add(s,h,x);
 

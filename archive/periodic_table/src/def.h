@@ -29,14 +29,14 @@ char dump_buf[1000];
 
 enum {FALSE_VALUE = 0,TRUE_VALUE = 1};
 
-Tnode *G_sys_defs;
+T *G_sys_defs;
 int G_sys_noun_id = -300;
 
 int __d_parse_noun(char *n,int *noun) {
     if (!G_sys_defs) {raise_error0("Sys defs not initialized!\n");}
     int c=_t_children(G_sys_defs);
     for(int i=1;i<=c;i++){
-	Tnode *d = _t_get_child(G_sys_defs,i);
+	T *d = _t_get_child(G_sys_defs,i);
 	char *s = (char *)_t_get_child_surface(d,1);
 	if (!strcicmp(n,s)) {
 	    *noun = *(int *)_t_surface(d);
@@ -47,10 +47,10 @@ int __d_parse_noun(char *n,int *noun) {
 }
 
 
-Tnode *__d_get_def(Symbol noun) {
+T *__d_get_def(Symbol noun) {
     if (noun < 0) {
 	for(int i=1;i<=_t_children(G_sys_defs);i++){
-	    Tnode *d = _t_get_child(G_sys_defs,i);
+	    T *d = _t_get_child(G_sys_defs,i);
 	    if (noun == *(int *)_t_surface(d))
 		return d;
 	}
@@ -58,7 +58,7 @@ Tnode *__d_get_def(Symbol noun) {
     return NULL;
 }
 
-Tnode *_d_get_def(Tnode *t) {
+T *_d_get_def(T *t) {
     Symbol noun = _t_noun(t);
     return __d_get_def(noun);
 }
@@ -66,9 +66,9 @@ Tnode *_d_get_def(Tnode *t) {
 typedef char * (*dumpFn)(void *);
 typedef int (*parseValFn)(char *,int,void *);
 
-void __d_dump(Tnode *t,int level) {
+void __d_dump(T *t,int level) {
     __lspc(level);
-    Tnode *d = _d_get_def(t);
+    T *d = _d_get_def(t);
     if (d == NULL) {
 	printf("<noun: %d> sfc: %p; children: %d\n",_t_noun(t),t->surface,_t_children(t));
     }
@@ -90,7 +90,7 @@ void __d_dump(Tnode *t,int level) {
     for(int i=1;i<=_t_children(t);i++) __d_dump(_t_get_child(t,i),level+1);
 }
 
-void _d_dump(Tnode *surface) {
+void _d_dump(T *surface) {
     __d_dump(surface,0);
 }
 
@@ -107,7 +107,7 @@ char *_dump_xaddr(void *surface) {
 
 char *_dump_def(void *surface) {
     Symbol noun = *(Symbol *)surface;
-    Tnode *d = __d_get_def(noun);
+    T *d = __d_get_def(noun);
     if (d)
 	return (char *)_t_get_child_surface(d,1);
     else {
@@ -159,8 +159,8 @@ int _d_parse_noun(char *v,int l,void *s) {
     return 0;
 }
 
-Tnode *_d_def(Tnode *t,char *label,Symbol noun,dumpFn df,parseValFn pf) {
-    Tnode *d,*nt;
+T *_d_def(T *t,char *label,Symbol noun,dumpFn df,parseValFn pf) {
+    T *d,*nt;
     d = _t_newi(t,DEF_NOUN,noun);
     _t_new(d,CSTRING_NOUN,label,strlen(label)+1);
     nt = _t_newi(d,META_NOUN,noun);
@@ -169,14 +169,14 @@ Tnode *_d_def(Tnode *t,char *label,Symbol noun,dumpFn df,parseValFn pf) {
     return nt;
 }
 
-Tnode *_d_sys_def(char *label,Symbol noun,dumpFn df,parseValFn pf) {
+T *_d_sys_def(char *label,Symbol noun,dumpFn df,parseValFn pf) {
     return _d_def(G_sys_defs,label,noun,df,pf);
 }
 
 void sys_defs_init() {
     G_sys_defs = _t_new_root(DEFS_ARRAY_NOUN);
 
-    Tnode *d;
+    T *d;
     _d_sys_def("DEF",DEF_NOUN,_dump_def,0);
 
     _d_sys_def("META",META_NOUN,_dump_def,_d_parse_noun);

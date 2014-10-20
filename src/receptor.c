@@ -17,7 +17,7 @@ Xaddr G_null_xaddr  = {0,0};
 /*****************  create and destroy receptors */
 
 
-Receptor *__r_new(Symbol s,Tnode *defs,Tnode *aspects) {
+Receptor *__r_new(Symbol s,T *defs,T *aspects) {
     Receptor *r = malloc(sizeof(Receptor));
     r->root = _t_new_root(s);
     _t_add(r->root,defs);
@@ -28,7 +28,7 @@ Receptor *__r_new(Symbol s,Tnode *defs,Tnode *aspects) {
     r->defs.scapes = _t_child(defs,5);
     _t_add(r->root,aspects);
     r->flux = _t_newr(r->root,FLUX);
-    Tnode *a = _t_newi(r->flux,ASPECT,DEFAULT_ASPECT);
+    T *a = _t_newi(r->flux,ASPECT,DEFAULT_ASPECT);
     _t_newr(a,LISTENERS);
     _t_newr(a,SIGNALS);
     r->table = NULL;
@@ -48,23 +48,23 @@ Receptor *__r_new(Symbol s,Tnode *defs,Tnode *aspects) {
  * @snippet spec/receptor_spec.h testReceptorCreate
  */
 Receptor *_r_new(Symbol s) {
-    Tnode *defs = _t_new_root(DEFINITIONS);
+    T *defs = _t_new_root(DEFINITIONS);
     _t_newr(defs,STRUCTURES);
     _t_newr(defs,SYMBOLS);
     _t_newr(defs,PROCESSES);
     _t_newr(defs,PROTOCOLS);
     _t_newr(defs,SCAPES);
-    Tnode *aspects = _t_new_root(ASPECTS);
+    T *aspects = _t_new_root(ASPECTS);
     return __r_new(s,defs,aspects);
 }
 
 // set the labels in the label table for the given def
-void __r_set_labels(Receptor *r,Tnode *defs,int sem_type) {
+void __r_set_labels(Receptor *r,T *defs,int sem_type) {
     int c = _t_children(defs);
     int i;
     for(i=1;i<=c;i++){
-	Tnode *def = _t_child(defs,i);
-	Tnode *sl = _t_child(def,1);
+	T *def = _t_child(defs,i);
+	T *sl = _t_child(def,1);
 	__set_label_for_def(r,_t_surface(sl),def,sem_type);
     }
 }
@@ -79,9 +79,9 @@ void __r_set_labels(Receptor *r,Tnode *defs,int sem_type) {
  * @returns pointer to a newly allocated Receptor
  * @todo implement bindings
  */
-Receptor *_r_new_receptor_from_package(Symbol s,Tnode *p,Tnode *bindings) {
-    Tnode *defs = _t_clone(_t_child(p,3));
-    Tnode *aspects = _t_clone(_t_child(p,4));
+Receptor *_r_new_receptor_from_package(Symbol s,T *p,T *bindings) {
+    T *defs = _t_clone(_t_child(p,3));
+    T *aspects = _t_clone(_t_child(p,4));
     Receptor * r = __r_new(s,defs,aspects);
     int i,c = _t_children(defs);
     for(i=1;i<=c;i++)
@@ -92,11 +92,11 @@ Receptor *_r_new_receptor_from_package(Symbol s,Tnode *p,Tnode *bindings) {
 /**
  * Adds an expectation/action pair to a receptor's aspect.
  */
-void _r_add_listener(Receptor *r,Aspect aspect,Symbol carrier,Tnode *expectation,Tnode *action) {
-    Tnode *e = _t_news(0,LISTENER,carrier);
+void _r_add_listener(Receptor *r,Aspect aspect,Symbol carrier,T *expectation,T *action) {
+    T *e = _t_news(0,LISTENER,carrier);
     _t_add(e,expectation);
     _t_add(e,action);
-    Tnode *a = __r_get_listeners(r,aspect);
+    T *a = __r_get_listeners(r,aspect);
     _t_add(a,e);
 }
 
@@ -133,7 +133,7 @@ void _r_free(Receptor *r) {
 /**
  * we use this for labeling symbols, structures and processes because labels store the full path to the labeled item and we want the labels to be unique across all three
  */
-SemanticID __set_label_for_def(Receptor *r,char *label,Tnode *def,int type) {
+SemanticID __set_label_for_def(Receptor *r,char *label,T *def,int type) {
     int *path = _t_get_path(def);
     labelSet(&r->table,label,path);
     int i = path[_t_path_depth(path)-1];
@@ -167,7 +167,7 @@ SemanticID  __get_label_idx(Receptor *r,char *label) {
  *
  */
 Symbol _r_declare_symbol(Receptor *r,Structure s,char *label){
-    Tnode *def = __d_declare_symbol(r->defs.symbols,s,label);
+    T *def = __d_declare_symbol(r->defs.symbols,s,label);
     return __set_label_for_def(r,label,def,SEM_TYPE_SYMBOL);
 }
 
@@ -185,7 +185,7 @@ Symbol _r_declare_symbol(Receptor *r,Structure s,char *label){
 Structure _r_define_structure(Receptor *r,char *label,int num_params,...) {
     va_list params;
     va_start(params,num_params);
-    Tnode *def = _dv_define_structure(r->defs.structures,label,num_params,params);
+    T *def = _dv_define_structure(r->defs.structures,label,num_params,params);
     va_end(params);
 
     return __set_label_for_def(r,label,def,SEM_TYPE_STRUCTURE);
@@ -203,8 +203,8 @@ Structure _r_define_structure(Receptor *r,char *label,int num_params,...) {
  * @returns the new Process
  *
  */
-Process _r_code_process(Receptor *r,Tnode *code,char *name,char *intention,Tnode *in,Tnode *out) {
-    Tnode *def = __d_code_process(r->defs.processes,code,name,intention,in,out);
+Process _r_code_process(Receptor *r,T *code,char *name,char *intention,T *in,T *out) {
+    T *def = __d_code_process(r->defs.processes,code,name,intention,in,out);
     return __set_label_for_def(r,name,def,SEM_TYPE_PROCESS);
 }
 
@@ -252,7 +252,7 @@ size_t __r_get_symbol_size(Receptor *r,Symbol s,void *surface) {
  * @param[in] s the symbol to build a semtrex for
  * @returns the completed semtrex
  */
-Tnode * _r_build_def_semtrex(Receptor *r,Symbol s) {
+T * _r_build_def_semtrex(Receptor *r,Symbol s) {
     return _d_build_def_semtrex(r->defs,s,0);
 }
 
@@ -270,8 +270,8 @@ Tnode * _r_build_def_semtrex(Receptor *r,Symbol s) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/receptor_spec.h testReceptorDefMatch
  */
-int _r_def_match(Receptor *r,Symbol s,Tnode *t) {
-    Tnode *stx = _r_build_def_semtrex(r,s);
+int _r_def_match(Receptor *r,Symbol s,T *t) {
+    T *stx = _r_build_def_semtrex(r,s);
     int result = _t_match(stx,t);
     _t_free(stx);
     return result;
@@ -289,19 +289,19 @@ int _r_def_match(Receptor *r,Symbol s,Tnode *t) {
  * @snippet spec/receptor_spec.h testReceptorProtocol
  */
 void _r_install_protocol(Receptor *r,int idx,char *role,Aspect aspect) {
-    Tnode *p = _t_child(r->defs.protocols,idx);
+    T *p = _t_child(r->defs.protocols,idx);
     //@todo check that role exists
-    Tnode *aspects = _t_child(r->root,2);
-    Tnode *a = _t_child(aspects,aspect);
+    T *aspects = _t_child(r->root,2);
+    T *a = _t_child(aspects,aspect);
 
     // get the aspects input carrier
     Symbol a_ic = *(Symbol *)_t_surface(_t_child(a,2));
 
-    Tnode *interactions = _t_child(p,2);
+    T *interactions = _t_child(p,2);
     int j,c = _t_children(interactions);
     for(j=1;j<=c;j++) {
 
-	Tnode *i = _t_child(interactions,j);
+	T *i = _t_child(interactions,j);
 	//	raise(SIGINT);
 	// the TO_ROLE indicates the expectation actions we must install
 	if (!strcmp(role,(char *)_t_surface(_t_child(i,3)))) {
@@ -311,8 +311,8 @@ void _r_install_protocol(Receptor *r,int idx,char *role,Aspect aspect) {
 		//		raise_error2("input carriers don't match: aspect=%s protocol=%s",_r_get_symbol_name(r,a_ic),_r_get_symbol_name(r,ic));
 raise_error2("input carriers don't match: aspect=%d protocol=%d",a_ic.id,ic.id);
 	    }
-	    Tnode *expect = _t_clone(_t_child(i,6));
-	    Tnode *act = _t_clone(_t_child(i,7));
+	    T *expect = _t_clone(_t_child(i,6));
+	    T *act = _t_clone(_t_child(i,7));
 	    _r_add_listener(r,aspect,ic,expect,act);
 	}
     }
@@ -333,7 +333,7 @@ raise_error2("input carriers don't match: aspect=%d protocol=%d",a_ic.id,ic.id);
  * <b>Examples (from test suite):</b>
  * @snippet spec/receptor_spec.h testReceptorInstanceNew
  */
-Xaddr _r_new_instance(Receptor *r,Tnode *t) {
+Xaddr _r_new_instance(Receptor *r,T *t) {
     Symbol s = _t_symbol(t);
     Instances *instances = &r->instances;
     instances_elem *e;
@@ -371,7 +371,7 @@ Xaddr _r_new_instance(Receptor *r,Tnode *t) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/receptor_spec.h testReceptorInstanceNew
  */
-Tnode * _r_get_instance(Receptor *r,Xaddr x) {
+T * _r_get_instance(Receptor *r,Xaddr x) {
     Instances *instances = &r->instances;
     instances_elem *e = 0;
     HASH_FIND_INT( *instances, &x.symbol, e );
@@ -405,7 +405,7 @@ TreeHash _r_hash(Receptor *r,Xaddr t) {
  * @param[inout] surfaceP a pointer to a buffer that will be malloced
  * @param[inout] lengthP the serialized length of the tree
  */
-void _t_serialize(Tnode *t,void **surfaceP, size_t *lengthP) {
+void _t_serialize(T *t,void **surfaceP, size_t *lengthP) {
     size_t buf_size = 1000;
     *surfaceP = malloc(buf_size);
     *lengthP = __t_serialize(t,surfaceP,0,buf_size,1);
@@ -425,7 +425,7 @@ void _t_serialize(Tnode *t,void **surfaceP, size_t *lengthP) {
  * @todo compact is really a shorthand for whether this is a fixed size tree or not
  * this should actually be determined on the fly by looking at the structure types.
  */
-size_t __t_serialize(Tnode *t,void **bufferP,size_t offset,size_t current_size,int compact) {
+size_t __t_serialize(T *t,void **bufferP,size_t offset,size_t current_size,int compact) {
     size_t cl =0,l = _t_size(t);
     int i, c = _t_children(t);
 
@@ -474,7 +474,7 @@ void _r_serialize(Receptor *r,void **surfaceP,size_t *lengthP) {
 /// macro to read typed date from the surface and update length and surface values (assumes variable has already been declared)
 #define _SREAD(type,var_name) var_name = *(type *)*surfaceP;*lengthP -= sizeof(type);*surfaceP += sizeof(type);
 
-Tnode * _t_unserialize(Receptor *r,void **surfaceP,size_t *lengthP,Tnode *t) {
+T * _t_unserialize(Receptor *r,void **surfaceP,size_t *lengthP,T *t) {
     size_t size;
 
     SREAD(Symbol,s);
@@ -510,7 +510,7 @@ Receptor * _r_unserialize(void *surface) {
     size_t length = *(size_t *)surface;
     Receptor *r = _r_new(*(Symbol *)(surface+sizeof(size_t)));
     surface += sizeof(size_t);
-    Tnode *t =  _t_unserialize(r,&surface,&length,0);
+    T *t =  _t_unserialize(r,&surface,&length,0);
     _t_free(r->root);
     r->root = t;
     //@todo fix defs!!
@@ -519,7 +519,7 @@ Receptor * _r_unserialize(void *surface) {
     r->defs.processes = _t_child(t,3);
     r->flux = _t_child(t,2);
 
-    Tnode *defs = _t_child(r->root,1);
+    T *defs = _t_child(r->root,1);
     int i,c = _t_children(defs);
     for(i=1;i<=c;i++)
 	__r_set_labels(r,_t_child(defs,i),i);
@@ -533,13 +533,13 @@ Receptor * _r_unserialize(void *surface) {
  * build a signal
  * @todo signal should have timestamps and other meta info
  */
-Tnode* __r_make_signal(Xaddr from,Xaddr to,Aspect aspect,Tnode *signal_contents) {
-    Tnode *s = _t_new_root(SIGNAL);
-    Tnode *e = _t_newr(s,ENVELOPE);
+T* __r_make_signal(Xaddr from,Xaddr to,Aspect aspect,T *signal_contents) {
+    T *s = _t_new_root(SIGNAL);
+    T *e = _t_newr(s,ENVELOPE);
     _t_new(e,RECEPTOR_XADDR,&from,sizeof(from));
     _t_new(e,RECEPTOR_XADDR,&to,sizeof(to));
     _t_newi(e,ASPECT,aspect);
-    Tnode *b = _t_newt(s,BODY,signal_contents);
+    T *b = _t_newt(s,BODY,signal_contents);
     return s;
 }
 
@@ -554,26 +554,26 @@ Tnode* __r_make_signal(Xaddr from,Xaddr to,Aspect aspect,Tnode *signal_contents)
  * <b>Examples (from test suite):</b>
  * @snippet spec/receptor_spec.h testReceptorAction
  */
-Tnode * _r_deliver(Receptor *r, Tnode *signal) {
-    Tnode *m,*e,*l,*rt=0;
+T * _r_deliver(Receptor *r, T *signal) {
+    T *m,*e,*l,*rt=0;
 
-    Tnode *signal_contents = (Tnode *)_t_surface(_t_child(signal,2));
-    Tnode *envelope = _t_child(signal,1);
+    T *signal_contents = (T *)_t_surface(_t_child(signal,2));
+    T *envelope = _t_child(signal,1);
     Aspect aspect = *(Aspect *)_t_surface(_t_child(envelope,3));
 
-    Tnode *as = __r_get_signals(r,aspect);
+    T *as = __r_get_signals(r,aspect);
 
     _t_add(as,signal);
 
     // walk through all the listeners on the aspect and see if any expectations match this incoming signal
-    Tnode *ls = __r_get_listeners(r,aspect);
+    T *ls = __r_get_listeners(r,aspect);
     int i,c = _t_children(ls);
     for(i=1;i<=c;i++) {
 	l = _t_child(ls,i);
 	e = _t_child(l,1);
 	// if we get a match, create a run tree from the action, using the match and signal as the parameters
 	if (_t_matchr(_t_child(e,1),signal_contents,&m)) {
-	    Tnode *action = _t_child(l,2);
+	    T *action = _t_child(l,2);
 	    rt = _p_make_run_tree(r->defs.processes,action,2,m,signal_contents);
 	    _t_free(m);
 	    _t_add(signal,rt);
@@ -594,13 +594,13 @@ Tnode * _r_deliver(Receptor *r, Tnode *signal) {
 
 /******************  internal utilities */
 
-Tnode *__r_get_aspect(Receptor *r,Aspect aspect) {
+T *__r_get_aspect(Receptor *r,Aspect aspect) {
     return _t_child(r->flux,aspect);
 }
-Tnode *__r_get_listeners(Receptor *r,Aspect aspect) {
+T *__r_get_listeners(Receptor *r,Aspect aspect) {
     return _t_child(__r_get_aspect(r,aspect),1);
 }
-Tnode *__r_get_signals(Receptor *r,Aspect aspect) {
+T *__r_get_signals(Receptor *r,Aspect aspect) {
     return _t_child(__r_get_aspect(r,aspect),2);
 }
 
@@ -620,7 +620,7 @@ char *_r_get_process_name(Receptor *r,Process p) {
 
 char __t_dump_buf[10000];
 
-char *_td(Receptor *r,Tnode *t) {
+char *_td(Receptor *r,T *t) {
     if (!t) sprintf(__t_dump_buf,"<null-tree>");
     else
 	__t_dump(&r->defs,t,0,__t_dump_buf);

@@ -11,7 +11,7 @@ void stack_peek_unchecked(Receptor *r, Symbol *name, void **surface) {
 
 void stack_pop_unchecked(Receptor *r, Symbol *name, void *surface) {
     int last = _t_children(r->sem_stack);
-    Tnode *s = _t_get_child(r->sem_stack,last);
+    T *s = _t_get_child(r->sem_stack,last);
     SemStackFrame *ssf = _t_surface(s);
     *name = ssf->noun;
     memcpy(surface, &ssf->surface, ssf->size);
@@ -33,7 +33,7 @@ void stack_pop(Receptor *r, Symbol expectedNoun, void *surface) {
 
 void stack_push(Receptor *r, Symbol name, void *surface) {
     size_t size = size_of_named_surface(r, name, surface);
-    Tnode *s = _t_new(r->sem_stack,SEMSTACK_FRAME_NOUN,0,size+sizeof(SemStackFrame)-sizeof(int));
+    T *s = _t_new(r->sem_stack,SEMSTACK_FRAME_NOUN,0,size+sizeof(SemStackFrame)-sizeof(int));
 
     SemStackFrame *ssf = _t_surface(s);
     ssf->noun = name;

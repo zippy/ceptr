@@ -47,7 +47,7 @@ void testScapeLookup() {
     spec_is_equal(c.key,my_c.key);
 
     int p[4] = {1,0,1,TREE_PATH_TERMINATOR};
-    Tnode *t = _t_get(d->scapes,p);
+    T *t = _t_get(d->scapes,p);
     ScapeItem *si = _t_surface(t);
 
     spec_is_equal(si->xaddr.key,c.key);

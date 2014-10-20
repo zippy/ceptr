@@ -13,43 +13,38 @@ enum SemanticTypes {SEM_TYPE_STRUCTURE=1,SEM_TYPE_SYMBOL,SEM_TYPE_PROCESS};
 #define is_structure(s) (((s).flags & SEM_TYPE_MASK) == SEM_TYPE_STRUCTURE)
 
 typedef uint16_t Context;
-struct SemanticID {
+typedef struct SemanticID {
     Context context;
     uint16_t flags;
     uint32_t id;
-};
-typedef struct SemanticID SemanticID;
+} SemanticID;
 
 typedef SemanticID Symbol;
 typedef SemanticID Process;
 typedef SemanticID Structure;
 
 // ** types for trees
-struct Tstruct {
-    struct Tnode *parent;
+typedef struct Tstruct {
+    struct T *parent;
     int child_count;
-    struct Tnode **children;
-};
-typedef struct Tstruct Tstruct;
+    struct T **children;
+} Tstruct;
 
-struct Tcontents {
+typedef struct Tcontents {
     Symbol symbol;
     size_t size;
     void *surface;
-};
-typedef struct Tcontents Tcontents;
+} Tcontents;
 
-struct Tcontext {
+typedef struct Tcontext {
     int flags;
-};
-typedef struct Tcontext Tcontext;
+} Tcontext;
 
-struct Tnode {
+typedef struct T {
     Tstruct structure;
     Tcontext context;
     Tcontents contents;
-};
-typedef struct Tnode Tnode;
+} T;
 
 typedef uint32_t TreeHash;
 
@@ -60,35 +55,32 @@ typedef uint32_t Label;
  * An element in the label table.
  *
  */
-struct table_elem {
+typedef struct table_elem {
     UT_hash_handle hh;         ///< makes this structure hashable using the uthash library
     Label label;               ///< semantic key
     int path_s;                ///< first int of the path to the labeled item in the Receptor tree
-};
-typedef struct table_elem table_elem;
+} table_elem;
 typedef table_elem *LabelTable;
 
 /**
  * An element in the store of instances of one symbol type
  */
-struct instance_elem {
+typedef struct instance_elem {
     int addr;                  ///< key to this instance
-    Tnode *instance;           ///< the stored instance
+    T *instance;           ///< the stored instance
     UT_hash_handle hh;         ///< makes this structure hashable using the uthash library
-};
-typedef struct instance_elem instance_elem;
+} instance_elem;
 typedef instance_elem *Instance;
 
 /**
  * An element in the store for all the instances of one symbol type
  */
-struct instances_elem {
+typedef struct instances_elem {
     Symbol s;                ///< key to store of this symbol type
     Instance instances;      ///< instances store
     int last_id;             ///< the last allocated id for instances
     UT_hash_handle hh;       ///< makes this structure hashable using the uthash library
-};
-typedef struct instances_elem instances_elem;
+} instances_elem;
 typedef instances_elem *Instances;
 
 // ** types for defs
@@ -96,14 +88,13 @@ typedef instances_elem *Instances;
 /**
    a collection for passing around pointers to the various def trees
 */
-struct Defs {
-    Tnode *structures;  ///< pointer for quick access to structures
-    Tnode *symbols;     ///< pointer for quick access to symbols
-    Tnode *processes;   ///< pointer for quick access to processes
-    Tnode *protocols;   ///< pointer for quick access to protocols
-    Tnode *scapes;      ///< pointer for quick access to scapes
- };
-typedef struct Defs Defs;
+typedef struct Defs {
+    T *structures;  ///< pointer for quick access to structures
+    T *symbols;     ///< pointer for quick access to symbols
+    T *processes;   ///< pointer for quick access to processes
+    T *protocols;   ///< pointer for quick access to protocols
+    T *scapes;      ///< pointer for quick access to scapes
+} Defs;
 
 // ** types for receptors
 /**
@@ -111,25 +102,23 @@ typedef struct Defs Defs;
    faster access to some parts of the tree, and to hold non-tree data, like the label
    table.
 */
-struct Receptor {
-    Tnode *root;        ///< root node of the semantic tree
+typedef struct Receptor {
+    T *root;        ///< root node of the semantic tree
     Defs defs;          ///< defs block
-    Tnode *flux;        ///< pointer for quick access to the flux
+    T *flux;        ///< pointer for quick access to the flux
     LabelTable table;   ///< the label table
     Instances instances;///< the instances store
-};
-typedef struct Receptor Receptor;
+} Receptor;
 
 typedef long UUID;
 
 /**
  * An eXistence Address consists of the semantic type (Symbol) and an address.
  */
-struct Xaddr {
+typedef struct Xaddr {
     Symbol symbol;
     int addr;
-};
-typedef struct Xaddr Xaddr;
+} Xaddr;
 
 typedef int Error;
 
@@ -138,12 +127,11 @@ typedef int Error;
 /**
  * An element in the scape key value pair store
  */
-struct scape_elem {
+typedef struct scape_elem {
     TreeHash key;            ///< has of the key tree that maps to a given data value
     Xaddr value;             ///< instance of data_source pointed to by the key
     UT_hash_handle hh;       ///< makes this structure hashable using the uthash library
-};
-typedef struct scape_elem scape_elem;
+} scape_elem;
 typedef scape_elem *ScapeData;
 
 /**
@@ -151,11 +139,10 @@ typedef scape_elem *ScapeData;
  * usually a sub-portion of a the data source, i.e. if the data source is a PROFILE
  * the key_source might be a FIRST_NAME within the profile
  */
-struct Scape {
+typedef struct Scape {
     Symbol key_source;
     Symbol data_source;
     ScapeData data;      ///< the scape data store (hash table)
-};
-typedef struct Scape Scape;
+} Scape;
 
 #endif

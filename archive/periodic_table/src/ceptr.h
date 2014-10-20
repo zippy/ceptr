@@ -59,10 +59,10 @@ typedef struct {
 } LogMeta;
 
 typedef struct {
-    Tnode *root;
-    Tnode *log;
-    Tnode *scapes;
-    Tnode *nouns;
+    T *root;
+    T *log;
+    T *scapes;
+    T *nouns;
 } Data;
 
 typedef struct {
@@ -86,7 +86,7 @@ typedef struct {
 } ScapeItem;
 
 typedef struct {
-    Tnode *items;
+    T *items;
     char name[255];
     Symbol data_source;
     Symbol key_source;
@@ -99,7 +99,7 @@ typedef struct Receptor Receptor;
 typedef void (* SignalProc)(Receptor *);
 
 struct Receptor {
-    Tnode *sem_stack;
+    T *sem_stack;
 
     //built in xaddrs:
     Xaddr cspecXaddr;

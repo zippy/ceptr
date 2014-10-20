@@ -39,7 +39,7 @@ typedef struct {
 } ConversationMeta;
 
 
-typedef Tnode Conversation;
+typedef T Conversation;
 
 Signal *_signal_new(Address from, Address to,time_t time,Symbol noun,void *surface, size_t size){
     size_t total_size = size + sizeof(Signal);
@@ -60,11 +60,11 @@ SignalHeader _s_header(Signal *s) {
 
 int conversation_append(Conversation *c,SignalKey k,Signal *s) {
     SignalEntry se = {k,s};
-    Tnode *t = _t_new(c,SIGNAL_ENTRY_NOUN,&se,sizeof(SignalEntry));
+    T *t = _t_new(c,SIGNAL_ENTRY_NOUN,&se,sizeof(SignalEntry));
     return _t_children(c);
 }
 
-Conversation *conversation_new(Tnode *log) {
+Conversation *conversation_new(T *log) {
     ConversationMeta cm = {CSTAT_NEW};
     Conversation *c = _t_new(log,CONVERSATION_META_NOUN,&cm,sizeof(ConversationMeta));
     return c;

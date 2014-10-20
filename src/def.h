@@ -22,21 +22,21 @@
 #define SP(defs,code,name,intention,in,out) name = _d_code_process(defs.processes,code,"" #name "",RECEPTOR_CONTEXT,intention,in,out)
 
 int semeq(SemanticID s1,SemanticID s2);
-char *_d_get_symbol_name(Tnode *symbols,Symbol s);
-char *_d_get_structure_name(Tnode *structures,Structure s);
-char *_d_get_process_name(Tnode *processes,Process p);
-Tnode *__d_declare_symbol(Tnode *symbols,Structure s,char *label);
-Symbol _d_declare_symbol(Tnode *symbols,Structure s,char *label,Context c);
-Structure _d_define_structure(Tnode *structures,char *label,Context c,int num_params,...);
-Tnode * _dv_define_structure(Tnode *structures,char *label,int num_params,va_list params);
-Structure _d_get_symbol_structure(Tnode *symbols,Symbol symbol);
-size_t _d_get_symbol_size(Tnode *symbols,Tnode *structures,Symbol s,void *surface);
-size_t _d_get_structure_size(Tnode *symbols,Tnode *structures,Symbol s,void *surface);
-Tnode *__d_code_process(Tnode *processes,Tnode *code,char *name,char *intention,Tnode *in,Tnode *out);
-Process _d_code_process(Tnode *processes,Tnode *code,char *name,char *intention,Tnode *in,Tnode *out,Context c);
-Tnode * _d_build_def_semtrex(Defs defs,Symbol s,Tnode *parent);
+char *_d_get_symbol_name(T *symbols,Symbol s);
+char *_d_get_structure_name(T *structures,Structure s);
+char *_d_get_process_name(T *processes,Process p);
+T *__d_declare_symbol(T *symbols,Structure s,char *label);
+Symbol _d_declare_symbol(T *symbols,Structure s,char *label,Context c);
+Structure _d_define_structure(T *structures,char *label,Context c,int num_params,...);
+T * _dv_define_structure(T *structures,char *label,int num_params,va_list params);
+Structure _d_get_symbol_structure(T *symbols,Symbol symbol);
+size_t _d_get_symbol_size(T *symbols,T *structures,Symbol s,void *surface);
+size_t _d_get_structure_size(T *symbols,T *structures,Symbol s,void *surface);
+T *__d_code_process(T *processes,T *code,char *name,char *intention,T *in,T *out);
+Process _d_code_process(T *processes,T *code,char *name,char *intention,T *in,T *out,Context c);
+T * _d_build_def_semtrex(Defs defs,Symbol s,T *parent);
 
-char * __t_dump(Defs *defs,Tnode *t,int level,char *buf);
+char * __t_dump(Defs *defs,T *t,int level,char *buf);
 
 #define _d_get_def(defs,s) _t_child(defs,(s).id);
 #define _d_get_process_code(processes,p) _d_get_def(processes,p)

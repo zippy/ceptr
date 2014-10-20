@@ -17,10 +17,10 @@
 
 enum ReductionError {noReductionErr,tooFewParamsReductionErr,tooManyParamsReductionErr,badSignatureReductionErr};
 
-Error __p_reduce(Defs defs,Tnode *run_tree, Tnode *code);
-Error _p_reduce(Defs defs,Tnode *run_tree);
-Tnode *__p_make_run_tree(Tnode *processes,Process p,Tnode *params);
-Tnode *_p_make_run_tree(Tnode *processes,Tnode *p,int num_params,...);
+Error __p_reduce(Defs defs,T *run_tree, T *code);
+Error _p_reduce(Defs defs,T *run_tree);
+T *__p_make_run_tree(T *processes,Process p,T *params);
+T *_p_make_run_tree(T *processes,T *p,int num_params,...);
 
 #endif
 /** @}*/

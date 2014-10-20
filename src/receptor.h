@@ -26,12 +26,12 @@ typedef int Aspect;
 
 /******************  create and destroy receptors */
 Receptor *_r_new(Symbol s);
-Receptor *_r_new_receptor_from_package(Symbol s,Tnode *p,Tnode *bindings);
-void _r_add_listener(Receptor *r,Aspect aspect,Symbol carrier,Tnode *semtrex,Tnode *action);
+Receptor *_r_new_receptor_from_package(Symbol s,T *p,T *bindings);
+void _r_add_listener(Receptor *r,Aspect aspect,Symbol carrier,T *semtrex,T *action);
 void _r_free(Receptor *r);
 
 /*****************  receptor symbols, structures, and processes */
-SemanticID __set_label_for_def(Receptor *r,char *label,Tnode *def,int type);
+SemanticID __set_label_for_def(Receptor *r,char *label,T *def,int type);
 
 Symbol _r_declare_symbol(Receptor *r,Structure s,char *label);
 Symbol _r_get_symbol_by_label(Receptor *r,char *label);
@@ -39,38 +39,38 @@ Structure _r_define_structure(Receptor *r,char *label,int num_params,...);
 Structure _r_get_structure_by_label(Receptor *r,char *label);
 Structure __r_get_symbol_structure(Receptor *r,Symbol s);
 size_t __r_get_symbol_size(Receptor *r,Symbol s,void *surface);
-Process _r_code_process(Receptor *r,Tnode *code,char *name,char *intention,Tnode *in,Tnode *out);
+Process _r_code_process(Receptor *r,T *code,char *name,char *intention,T *in,T *out);
 
-Tnode *_r_build_def_semtrex(Receptor *r,Symbol s);
-int _r_def_match(Receptor *r,Symbol s,Tnode *t);
+T *_r_build_def_semtrex(Receptor *r,Symbol s);
+int _r_def_match(Receptor *r,Symbol s,T *t);
 
 void _r_install_protocol(Receptor *r,int idx,char *role,Aspect aspect);
 
 /*****************  receptor instances and xaddrs */
 
-Xaddr _r_new_instance(Receptor *r,Tnode *t);
-Tnode *_r_get_instance(Receptor *r,Xaddr x);
+Xaddr _r_new_instance(Receptor *r,T *t);
+T *_r_get_instance(Receptor *r,Xaddr x);
 TreeHash _r_hash(Receptor *r,Xaddr t);
 
 /******************  receptor serialization */
-size_t __t_serialize(Tnode *t,void **bufferP,size_t offset,size_t current_size,int compact);
-void _t_serialize(Tnode *t,void **surfaceP, size_t *lengthP);
+size_t __t_serialize(T *t,void **bufferP,size_t offset,size_t current_size,int compact);
+void _t_serialize(T *t,void **surfaceP, size_t *lengthP);
 void _r_serialize(Receptor *r,void **surfaceP,size_t *lengthP);
 Receptor * _r_unserialize(void *surface);
 
 /******************  receptor signaling */
 
-Tnode * __r_make_signal(Xaddr from,Xaddr to,Aspect aspect,Tnode *signal_contents);
+T * __r_make_signal(Xaddr from,Xaddr to,Aspect aspect,T *signal_contents);
 /// @todo for now the signal is appended directly to the flux.  Later it should probably be copied
-Tnode * _r_deliver(Receptor *r, Tnode *signal);
+T * _r_deliver(Receptor *r, T *signal);
 
 /******************  internal utilities */
-Tnode *__r_get_aspect(Receptor *r,Aspect aspect);
-Tnode *__r_get_listeners(Receptor *r,Aspect aspect);
-Tnode *__r_get_signals(Receptor *r,Aspect aspect);
+T *__r_get_aspect(Receptor *r,Aspect aspect);
+T *__r_get_listeners(Receptor *r,Aspect aspect);
+T *__r_get_signals(Receptor *r,Aspect aspect);
 
 /*****************  Tree debugging utilities */
-char *_td(Receptor *r,Tnode *t);
+char *_td(Receptor *r,T *t);
 char *_r_get_structure_name(Receptor *r,Structure s);
 char *_r_get_symbol_name(Receptor *r,Symbol s);
 char *_r_get_process_name(Receptor *r,Process p);

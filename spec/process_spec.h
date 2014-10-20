@@ -8,9 +8,9 @@
 #include "../src/process.h"
 
 void testRunTree() {
-    Tnode *processes = _t_new_root(PROCESSES);
+    T *processes = _t_new_root(PROCESSES);
     Defs defs = {0,0,processes};
-    Tnode *code,*input,*output,*t;
+    T *code,*input,*output,*t;
     char buf[2000];
 
     // a process that would look something like this in lisp:
@@ -25,13 +25,13 @@ void testRunTree() {
     _t_new(code,PARAM_REF,pt2,sizeof(int)*4);
 
     input = _t_new_root(INPUT);
-    Tnode *i3 = _t_newr(input,INPUT_SIGNATURE);
+    T *i3 = _t_newr(input,INPUT_SIGNATURE);
     _t_news(i3,SIGNATURE_STRUCTURE,INTEGER);
     _t_new(i3,INPUT_LABEL,"condition",4);
-    Tnode *i1 = _t_newr(input,INPUT_SIGNATURE);
+    T *i1 = _t_newr(input,INPUT_SIGNATURE);
     _t_news(i1,SIGNATURE_STRUCTURE,TREE);
     _t_new(i1,INPUT_LABEL,"true_branch",4);
-    Tnode *i2 = _t_newr(input,INPUT_SIGNATURE);
+    T *i2 = _t_newr(input,INPUT_SIGNATURE);
     _t_news(i2,SIGNATURE_STRUCTURE,TREE);
     _t_new(i2,INPUT_LABEL,"false_branch",4);
 
@@ -39,13 +39,13 @@ void testRunTree() {
     output = _t_new_root(OUTPUT_SIGNATURE);
     Process p = _d_code_process(processes,code,"myif","a duplicate of the sys if process with params in different order",input,output,RECEPTOR_CONTEXT);
 
-    Tnode *p3 = _t_newi(0,TRUE_FALSE,1);
-    Tnode *p1 = _t_newi(0,TEST_INT_SYMBOL,123);
-    Tnode *p2 = _t_newi(0,TEST_INT_SYMBOL,321);
+    T *p3 = _t_newi(0,TRUE_FALSE,1);
+    T *p1 = _t_newi(0,TEST_INT_SYMBOL,123);
+    T *p2 = _t_newi(0,TEST_INT_SYMBOL,321);
 
-    Tnode *act = _t_newp(0,ACTION,p);
+    T *act = _t_newp(0,ACTION,p);
 
-    Tnode *r = _p_make_run_tree(processes,act,3,p1,p2,p3);
+    T *r = _p_make_run_tree(processes,act,3,p1,p2,p3);
 
     spec_is_symbol_equal(0,_t_symbol(r),RUN_TREE);
 
@@ -53,7 +53,7 @@ void testRunTree() {
     spec_is_sem_equal(_t_symbol(t),IF);
     spec_is_true(t!=code);  //should be a clone
 
-    Tnode *ps = _t_child(r,2); //second child should be params
+    T *ps = _t_child(r,2); //second child should be params
     spec_is_symbol_equal(0,_t_symbol(ps),PARAMS);
 
     t = _t_child(ps,1);
@@ -88,14 +88,14 @@ void testRunTree() {
  * @snippet spec/process_spec.h defIfEven
  */
 //! [defIfEven]
-Process _defIfEven(Tnode *processes) {
-    Tnode *code,*input,*output;
+Process _defIfEven(T *processes) {
+    T *code,*input,*output;
 
     // a process that would look something like this in lisp:
     // (defun if_even (val true_branch false_branch) (if (eq (mod val 2 ) 0) (true_branch) (false_branch)))
     code = _t_new_root(IF);															// IF is a system process
-    Tnode *eq = _t_newi(code,EQ_INT,0);
-    Tnode *mod = _t_newi(eq,MOD_INT,0);
+    T *eq = _t_newi(code,EQ_INT,0);
+    T *mod = _t_newi(eq,MOD_INT,0);
     int p1[] = {2,1,TREE_PATH_TERMINATOR};			// paths to the parameter refrences in the run tree: second branch, b1
     int p2[] = {2,2,TREE_PATH_TERMINATOR};			// second branch, b2
     int p3[] = {2,3,TREE_PATH_TERMINATOR};			// second branch, b3
@@ -105,13 +105,13 @@ Process _defIfEven(Tnode *processes) {
     _t_new(code,PARAM_REF,p2,sizeof(int)*3);
     _t_new(code,PARAM_REF,p3,sizeof(int)*3);
     input = _t_new_root(INPUT);
-    Tnode *i1 = _t_newr(input,INPUT_SIGNATURE);
+    T *i1 = _t_newr(input,INPUT_SIGNATURE);
     _t_news(i1,SIGNATURE_STRUCTURE,INTEGER);
     _t_new(i1,INPUT_LABEL,"val",4);
-    Tnode *i2 = _t_newr(input,INPUT_SIGNATURE);
+    T *i2 = _t_newr(input,INPUT_SIGNATURE);
     _t_news(i2,SIGNATURE_STRUCTURE,TREE);
     _t_new(i2,INPUT_LABEL,"true_branch",4);
-    Tnode *i3 = _t_newr(input,INPUT_SIGNATURE);
+    T *i3 = _t_newr(input,INPUT_SIGNATURE);
     _t_news(i3,SIGNATURE_STRUCTURE,TREE);
     _t_new(i3,INPUT_LABEL,"false_branch",4);
 
@@ -123,7 +123,7 @@ Process _defIfEven(Tnode *processes) {
 
 void testProcessReduceDefinedProcess() {
     //! [testProcessReduceDefinedProcess]
-    Tnode *processes = _t_new_root(PROCESSES);
+    T *processes = _t_new_root(PROCESSES);
     Defs defs = {0,0,processes};
     char buf[2000];
 
@@ -135,8 +135,8 @@ void testProcessReduceDefinedProcess() {
     spec_is_str_equal(buf," (process:IF (process:EQ_INT (process:MOD_INT (PARAM_REF:/2/1) (TEST_INT_SYMBOL:2)) (TEST_INT_SYMBOL:0)) (PARAM_REF:/2/2) (PARAM_REF:/2/3))");
 
     // create a run tree right in the position to "call" this function
-    Tnode *t = _t_new_root(RUN_TREE);
-    Tnode *n = _t_newr(t,if_even);
+    T *t = _t_new_root(RUN_TREE);
+    T *n = _t_newr(t,if_even);
     _t_newi(n,TEST_INT_SYMBOL,99);
     _t_newi(n,TEST_INT_SYMBOL,123);
     _t_newi(n,TEST_INT_SYMBOL,124);
@@ -152,12 +152,12 @@ void testProcessReduceDefinedProcess() {
 }
 
 void testProcessSignatureMatching() {
-    Tnode *processes = _t_new_root(PROCESSES);
+    T *processes = _t_new_root(PROCESSES);
     Defs defs = {0,0,processes};
     Process if_even = _defIfEven(processes);
 
-    Tnode *t = _t_new_root(RUN_TREE);
-    Tnode *n = _t_newr(t,if_even);
+    T *t = _t_new_root(RUN_TREE);
+    T *n = _t_newr(t,if_even);
     _t_new(n,TEST_STR_SYMBOL,"test",5);  // this should be an INTEGER!!
     _t_newi(n,TEST_INT_SYMBOL,123);
     _t_newi(n,TEST_INT_SYMBOL,124);
@@ -178,18 +178,18 @@ void testProcessSignatureMatching() {
 
 void testProcessInterpolateMatch() {
     Defs defs;
-    Tnode *t = _t_new_root(RUN_TREE);
+    T *t = _t_new_root(RUN_TREE);
     // test INTERPOLATE_FROM_MATCH which takes three params, the tree to interpolate, the stx-match and the tree it matched on
-    Tnode *n = _t_newr(t,INTERPOLATE_FROM_MATCH);
-    Tnode *p1 = _t_newi(n,TEST_INT_SYMBOL2,0);
+    T *n = _t_newr(t,INTERPOLATE_FROM_MATCH);
+    T *p1 = _t_newi(n,TEST_INT_SYMBOL2,0);
     _t_news(p1,INTERPOLATE_SYMBOL,TEST_INT_SYMBOL);
-    Tnode *p2 = _t_newr(n,SEMTREX_MATCH_RESULTS);
-    Tnode *sm = _t_newi(p2,SEMTREX_MATCH,1);
+    T *p2 = _t_newr(n,SEMTREX_MATCH_RESULTS);
+    T *sm = _t_newi(p2,SEMTREX_MATCH,1);
     _t_news(sm,SEMTREX_MATCH,TEST_INT_SYMBOL);
     int path[] = {TREE_PATH_TERMINATOR};
     _t_new(sm,SEMTREX_MATCHED_PATH,path,2*sizeof(int));
     _t_newi(sm,SEMTREX_MATCH_SIBLINGS_COUNT,1);
-    Tnode *p3 = _t_newi(n,TEST_INT_SYMBOL,314);
+    T *p3 = _t_newi(n,TEST_INT_SYMBOL,314);
     __p_reduce(defs,t,n);
     char buf[2000];
     __t_dump(0,_t_child(t,1),0,buf);
@@ -202,11 +202,11 @@ void testProcessInterpolateMatch() {
 void testProcessIf() {
     Defs defs;
     // test IF which takes three parameters, the condition, the true code tree and the false code tree
-    Tnode *t = _t_new_root(RUN_TREE);
-    Tnode *n = _t_newr(t,IF);
-    Tnode *p1 = _t_newi(n,TRUE_FALSE,1);
-    Tnode *p2 = _t_newi(n,TEST_INT_SYMBOL,99);
-    Tnode *p3 = _t_newi(n,TEST_INT_SYMBOL,100);
+    T *t = _t_new_root(RUN_TREE);
+    T *n = _t_newr(t,IF);
+    T *p1 = _t_newi(n,TRUE_FALSE,1);
+    T *p2 = _t_newi(n,TEST_INT_SYMBOL,99);
+    T *p3 = _t_newi(n,TEST_INT_SYMBOL,100);
 
     __p_reduce(defs,t,n);
     char buf[2000];
@@ -219,10 +219,10 @@ void testProcessIf() {
 void testProcessIntMath() {
     Defs defs;
     char buf[2000];
-    Tnode *t = _t_new_root(RUN_TREE);
+    T *t = _t_new_root(RUN_TREE);
 
     // test addition
-    Tnode *n = _t_newr(t,ADD_INT);
+    T *n = _t_newr(t,ADD_INT);
     _t_newi(n,TEST_INT_SYMBOL,99);
     _t_newi(n,TEST_INT_SYMBOL,100);
     __p_reduce(defs,t,n);

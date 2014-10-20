@@ -231,7 +231,7 @@ static Structure G_sys_symbol_structures[] = {
 //  Curly brace is a named (or referenced) group
 //      Ex: /ascii-line/char='M'...etc..., (F R O M)?{email-address:.*}
 
-Tnode *G_sys_root;
+T *G_sys_root;
 Defs G_sys_defs;
 
 Symbol NULL_SYMBOL;

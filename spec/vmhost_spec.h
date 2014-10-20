@@ -13,12 +13,12 @@ void testVMHostCreate() {
     VMHost *v = _v_new();
 
     spec_is_symbol_equal(v->r,_t_symbol(v->r->root),VM_HOST_RECEPTOR);
-    Tnode *ar_tree = _t_child(v->r->root,4);
+    T *ar_tree = _t_child(v->r->root,4);
     spec_is_symbol_equal(v->r,_t_symbol(ar_tree),ACTIVE_RECEPTORS);
     spec_is_ptr_equal(v->active_receptors,ar_tree);
     spec_is_equal(_t_children(ar_tree),0);
 
-    Tnode *s_tree = _t_child(v->r->root,5);
+    T *s_tree = _t_child(v->r->root,5);
     spec_is_symbol_equal(v->r,_t_symbol(s_tree),PENDING_SIGNALS);
     spec_is_ptr_equal(v->pending_signals,s_tree);
     spec_is_equal(_t_children(s_tree),0);
@@ -36,24 +36,24 @@ void testVMHostCreate() {
 /*  * @snippet spec/vmhost_spec.h makeTestHTTPServerReceptorPackage */
 /*  *\/ */
 /* //! [makeTestReceptorPackage] */
-/* Tnode *_makeTestHTTPServerReceptorPackage() { */
-/*     Tnode *p = _t_new_root(RECEPTOR_PACKAGE); */
-/*     Tnode *m = _t_newr(p,MANIFEST); // specification for which manifest variables can be configured */
+/* T *_makeTestHTTPServerReceptorPackage() { */
+/*     T *p = _t_new_root(RECEPTOR_PACKAGE); */
+/*     T *m = _t_newr(p,MANIFEST); // specification for which manifest variables can be configured */
 
 /*     _t_newi(p,RECEPTOR_IDENTIFIER,HTTP_SERVER_RECEPTOR_UUID); */
-/*     Tnode *defs = _t_newr(p,DEFINITIONS); */
+/*     T *defs = _t_newr(p,DEFINITIONS); */
 /*     _t_add(defs,_t_clone(test_HTTP_structures)); */
 /*     _t_add(defs,_t_clone(test_HTTP_symbols)); */
 
-/*     Tnode *procs = _t_newr(defs,PROCESSES); */
+/*     T *procs = _t_newr(defs,PROCESSES); */
 /*     // initialization process installs the listener for host registration */
 /*     //@todo for now we fake this, but adding it manually as c code in the install example */
 
 /*     _t_newr(defs,SCAPES); // for now we don't have any scapes */
 
 /*     // server must be instantiated in the context of an octet stream input and output carriers */
-/*     Tnode *aspects = _t_newr(p,ASPECTS); */
-/*     Tnode *a = _t_newr(aspects,ASPECT_DEF); */
+/*     T *aspects = _t_newr(p,ASPECTS); */
+/*     T *a = _t_newr(aspects,ASPECT_DEF); */
 /*     _t_newi(a,EXTERNAL_ASPECT,DEFAULT_ASPECT); */
 /*     _t_newi(a,CARRIER,OCTET_STREAM); */
 /*     _t_newi(a,CARRIER,OCTET_STREAM); */
@@ -81,35 +81,35 @@ void testVMHostCreate() {
 /*  * @snippet spec/vmhost_spec.h makeTestHTTPAppReceptorPackage */
 /*  *\/ */
 /* //! [makeTestHTTPAppReceptorPackage] */
-/* Tnode *_makeTestHTTPAppReceptorPackage() { */
-/*     Tnode *p = _t_new_root(RECEPTOR_PACKAGE); */
-/*     Tnode *m = _t_newr(p,MANIFEST); */
-/*     Tnode *mp = _t_newr(m,MANIFEST_PAIR); */
+/* T *_makeTestHTTPAppReceptorPackage() { */
+/*     T *p = _t_new_root(RECEPTOR_PACKAGE); */
+/*     T *m = _t_newr(p,MANIFEST); */
+/*     T *mp = _t_newr(m,MANIFEST_PAIR); */
 /*     _t_new(mp,MANIFEST_LABEL,"host",5);  // binds to a host value */
 /*     _t_newi(mp,MANIFEST_SPEC,HTTP_REQUEST_HOST); */
-/*     //    Tnode *me = _t_newr(mp,EXPECTATION); */
+/*     //    T *me = _t_newr(mp,EXPECTATION); */
 
 /*     _t_newi(p,RECEPTOR_IDENTIFIER,HELLO_WORLD_UUID); */
 
-/*     Tnode *defs = _t_newr(p,DEFINITIONS); */
+/*     T *defs = _t_newr(p,DEFINITIONS); */
 /*     _t_add(defs,_t_clone(test_HTTP_structures)); */
 /*     _t_add(defs,_t_clone(test_HTTP_symbols)); */
-/*     Tnode *procs = _t_newr(defs,PROCESSES); */
+/*     T *procs = _t_newr(defs,PROCESSES); */
 /*     // a process that simply reduces to an HTTP_RESPONSE indicating an off-line status */
-/*     Tnode *resp = _t_new_root(RESPOND); */
-/*     Tnode *http_resp = _t_newr(resp,HTTP_RESPONSE); */
+/*     T *resp = _t_new_root(RESPOND); */
+/*     T *http_resp = _t_newr(resp,HTTP_RESPONSE); */
 /*     _t_new(http_resp,HTTP_RESPONSE_CONTENT_TYPE,"Text/Plain",11); */
 /*     _t_new(http_resp,TEST_STR_SYMBOL,"Hello World!",13); */
-/*     Tnode *input = _t_new_root(INPUT); */
-/*     Tnode *output = _t_new_root(OUTPUT_SIGNATURE); */
+/*     T *input = _t_new_root(INPUT); */
+/*     T *output = _t_new_root(OUTPUT_SIGNATURE); */
 /*     _d_code_process(procs,resp,"hellow","respond with hello",input,output); */
 
 /*     _t_newr(defs,SCAPES); // for now we don't have any scapes */
 
 /*     // an hello world app speaks the document provider protocol which operates on */
 /*     // a DOCUMENT_PATH input carrier and a DOCUMENT output carrier */
-/*     Tnode *aspects = _t_newr(p,ASPECTS); */
-/*     Tnode *a = _t_newr(aspects,ASPECT_DEF); */
+/*     T *aspects = _t_newr(p,ASPECTS); */
+/*     T *a = _t_newr(aspects,ASPECT_DEF); */
 /*     _t_newi(a,EXTERNAL_ASPECT,DEFAULT_ASPECT); */
 /*     _t_newi(a,CARRIER,DOCUMENT_PATH); */
 /*     _t_newi(a,CARRIER,DOCUMENT); */
@@ -121,10 +121,10 @@ void testVMHostCreate() {
 /* void testVMHostLoadReceptorPackage() { */
 /*     //! [testVMHostLoadReceptorPackage] */
 /*     VMHost *v = _v_new(); */
-/*     Tnode *p = _makeTestHTTPAppReceptorPackage(); */
+/*     T *p = _makeTestHTTPAppReceptorPackage(); */
 
 /*     Xaddr x = _v_load_receptor_package(v,p); */
-/*     Tnode *p1 = _r_get_instance(v->c,x); */
+/*     T *p1 = _r_get_instance(v->c,x); */
 
 /*     spec_is_ptr_equal(p,p1); */
 /*     _v_free(v); */
@@ -135,13 +135,13 @@ void testVMHostCreate() {
 /*     //! [testVMHostInstallReceptor] */
 /*     VMHost *v = _v_new(); */
 
-/*     Tnode *p = _makeTestHTTPServerReceptorPackage(); */
+/*     T *p = _makeTestHTTPServerReceptorPackage(); */
 /*     Xaddr xp = _v_load_receptor_package(v,p); */
 
 /*     Xaddr x = _v_install_r(v,xp,0,"hello world"); */
 
 /*     // installing the receptor should instantiate a receptor from the package with the given bindings and symbol label */
-/*     Tnode *r = _r_get_instance(v->r,x); */
+/*     T *r = _r_get_instance(v->r,x); */
 /*     spec_is_symbol_equal(v->r,x.symbol,INSTALLED_RECEPTOR); */
 /*     spec_is_symbol_equal(v->r,_t_symbol(_t_child(r,1)),_r_get_symbol_by_label(v->r,"hello world")); */
 
@@ -155,8 +155,8 @@ void testVMHostCreate() {
 /*     spec_is_true(is_null_xaddr(x)); */
 
 /*     // because the receptor's id is in the installed_receptors scape */
-/*     Tnode *pack = _r_get_instance(v->c,xp); */
-/*     Tnode *id = _t_child(pack,2); */
+/*     T *pack = _r_get_instance(v->c,xp); */
+/*     T *id = _t_child(pack,2); */
 /*     TreeHash h = _t_hash(v->r->defs.symbols,v->r->defs.structures,id); */
 /*     spec_is_xaddr_equal(v->r,_s_get(v->installed_receptors,h),xp); */
 
@@ -169,34 +169,34 @@ void testVMHostCreate() {
 /*     VMHost *v = _v_new(); */
 
 /*     // create and install a stub HTTP server receptor */
-/*     Tnode *httpd_rp = _makeTestHTTPServerReceptorPackage(); */
+/*     T *httpd_rp = _makeTestHTTPServerReceptorPackage(); */
 /*     Xaddr httpd_px = _v_load_receptor_package(v,httpd_rp); */
 /*     Xaddr httpd_x = _v_install_r(v,httpd_px,0,"http server"); */
-/*     Tnode *installed_httpd = _r_get_instance(v->r,httpd_x); */
+/*     T *installed_httpd = _r_get_instance(v->r,httpd_x); */
 /*     Receptor *httpd_r = (Receptor *)_t_surface(_t_child(installed_httpd,1)); */
 
 /*     // create and install an app bound to a HOST */
-/*     Tnode *p = _makeTestHTTPAppReceptorPackage(); */
+/*     T *p = _makeTestHTTPAppReceptorPackage(); */
 /*     Xaddr xp = _v_load_receptor_package(v,p); */
 
-/*     Tnode *b = _t_new_root(BINDINGS); */
-/*     Tnode *pair = _t_newr(b,BINDING_PAIR); */
+/*     T *b = _t_new_root(BINDINGS); */
+/*     T *pair = _t_newr(b,BINDING_PAIR); */
 /*     char *host = "helloworld.com"; */
 
 /*     _t_new(pair,MANIFEST_LABEL,"host",5); */
 /*     _t_new(pair,HTTP_REQUEST_HOST,host,strlen(host)); */
 
 /*     Xaddr x = _v_install_r(v,xp,b,"hello world app"); */
-/*     Tnode *installed_hellow = _r_get_instance(v->r,x); */
+/*     T *installed_hellow = _r_get_instance(v->r,x); */
 /*     Receptor *hello_r = (Receptor *)_t_surface(_t_child(installed_hellow,1)); */
 
 /*     // add a listener that matches on any request with "Host: helloworld.org" */
 /*     // /HTTP_REQUEST/.*,HTTP_REQUEST_HOST=helloworld.org */
-/*     Tnode *act = _t_newp(0,ACTION,-1); */
-/*     Tnode *expect = _t_new_root(EXPECTATION); */
-/*     Tnode *req = _t_newi(expect,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST); */
-/*     Tnode *ss = _t_newi(req,SEMTREX_SEQUENCE,0); */
-/*     Tnode *sss = _t_newi(ss,SEMTREX_ZERO_OR_MORE,0); */
+/*     T *act = _t_newp(0,ACTION,-1); */
+/*     T *expect = _t_new_root(EXPECTATION); */
+/*     T *req = _t_newi(expect,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST); */
+/*     T *ss = _t_newi(req,SEMTREX_SEQUENCE,0); */
+/*     T *sss = _t_newi(ss,SEMTREX_ZERO_OR_MORE,0); */
 /*     _t_newi(sss,SEMTREX_SYMBOL_ANY,0); */
 
 /*     int size = sizeof(Svalue)+strlen(host)+1; */
@@ -214,18 +214,18 @@ void testVMHostCreate() {
 /*     _r_add_listener(hello_r,DEFAULT_ASPECT,HTTP_REQUEST,expect,act); */
 
 /*     // build up an HTTP_REQUEST tree that corresponds with a simple get for host helloworld.com */
-/*     Tnode *s = _t_new_root(HTTP_REQUEST); */
-/*     Tnode *s_version = _t_newr(s,HTTP_REQUEST_VERSION); */
+/*     T *s = _t_new_root(HTTP_REQUEST); */
+/*     T *s_version = _t_newr(s,HTTP_REQUEST_VERSION); */
 /*     _t_newi(s_version,VERSION_MAJOR,1); */
 /*     _t_newi(s_version,VERSION_MINOR,1); */
-/*     Tnode *s_method = _t_newi(s,HTTP_REQUEST_METHOD,TEST_HTTP_METHOD_GET_VALUE); */
-/*     Tnode *s_path = _t_newr(s,HTTP_REQUEST_PATH); */
-/*     Tnode *s_host = _t_new(s,HTTP_REQUEST_HOST,"helloworld.com",15); */
+/*     T *s_method = _t_newi(s,HTTP_REQUEST_METHOD,TEST_HTTP_METHOD_GET_VALUE); */
+/*     T *s_path = _t_newr(s,HTTP_REQUEST_PATH); */
+/*     T *s_host = _t_new(s,HTTP_REQUEST_HOST,"helloworld.com",15); */
 
 /*     // put it on the flux to simulate that it has just been parsed out of an octet stream from a TCP/IP receptor */
 /*     // @todo */
 /*     //int path[] = {1,2,TREE_PATH_TERMINATOR}; */
-/*     //Tnode *fs = _t_get(httpd_r->flux,path); */
+/*     //T *fs = _t_get(httpd_r->flux,path); */
 
 
 
@@ -245,7 +245,7 @@ void testVMHostCreate() {
 /*     spec_is_equal(_t_children(v->active_receptors),2); */
 
 /*     // and that they are the same as the installed receptors */
-/*     Tnode *ar; */
+/*     T *ar; */
 /*     ar = _t_child(v->active_receptors,1); */
 /*     spec_is_ptr_equal(ar,installed_httpd); */
 /*     ar = _t_child(v->active_receptors,2); */

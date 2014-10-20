@@ -9,7 +9,7 @@ enum {_HOST=-2,VM = -1};
 
 typedef struct {
     Receptor receptor;
-    Tnode *receptors;
+    T *receptors;
     Xaddr cmdPatternSpecXaddr;
     Xaddr cmdDump;
     Xaddr cmdStop;
@@ -115,7 +115,7 @@ void iter_receptors(HostReceptor *h,tIterSurfaceFn fn,void *param) {
 
 void vmh_receptor_new(HostReceptor *h, SignalProc sp) {
     Receptor rb,*r;
-    Tnode *t = _t_new(h->receptors,RECEPTOR_NOUN,&rb,sizeof(Receptor));
+    T *t = _t_new(h->receptors,RECEPTOR_NOUN,&rb,sizeof(Receptor));
     r = _t_surface(t);
     r->signalProc = sp;
     r->parent = (Receptor *)h;

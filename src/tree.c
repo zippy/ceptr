@@ -15,18 +15,18 @@
 #include "def.h"
 
 /*****************  Node creation */
-void __t_append_child(Tnode *t,Tnode *c) {
+void __t_append_child(T *t,T *c) {
     if (t->structure.child_count == 0) {
-	t->structure.children = malloc(sizeof(Tnode *)*TREE_CHILDREN_BLOCK);
+	t->structure.children = malloc(sizeof(T *)*TREE_CHILDREN_BLOCK);
     } else if (!(t->structure.child_count % TREE_CHILDREN_BLOCK)){
 	int b = t->structure.child_count/TREE_CHILDREN_BLOCK + 1;
-	t->structure.children = realloc(t->structure.children,sizeof(Tnode *)*(TREE_CHILDREN_BLOCK*b));
+	t->structure.children = realloc(t->structure.children,sizeof(T *)*(TREE_CHILDREN_BLOCK*b));
     }
 
     t->structure.children[t->structure.child_count++] = c;
 }
 
-void __t_init(Tnode *t,Tnode *parent,Symbol symbol) {
+void __t_init(T *t,T *parent,Symbol symbol) {
     t->structure.child_count = 0;
     t->structure.parent = parent;
     t->contents.symbol = symbol;
@@ -46,8 +46,8 @@ void __t_init(Tnode *t,Tnode *parent,Symbol symbol) {
  * @param[in] size size in bytes of the surface
  * @returns pointer to node allocated on the heap
 */
-Tnode * _t_new(Tnode *parent,Symbol symbol,void *surface,size_t size) {
-    Tnode *t = malloc(sizeof(Tnode));
+T * _t_new(T *parent,Symbol symbol,void *surface,size_t size) {
+    T *t = malloc(sizeof(T));
     __t_init(t,parent,symbol);
     if (size) {
 	t->context.flags |= TFLAG_ALLOCATED;
@@ -67,8 +67,8 @@ Tnode * _t_new(Tnode *parent,Symbol symbol,void *surface,size_t size) {
  * @param[in] surface integer value to store in the surface
  * @returns pointer to node allocated on the heap
  */
-Tnode * _t_newi(Tnode *parent,Symbol symbol,int surface) {
-    Tnode *t = malloc(sizeof(Tnode));
+T * _t_newi(T *parent,Symbol symbol,int surface) {
+    T *t = malloc(sizeof(T));
     *((int *)&t->contents.surface) = surface;
     t->contents.size = sizeof(int);
     __t_init(t,parent,symbol);
@@ -83,7 +83,7 @@ Tnode * _t_newi(Tnode *parent,Symbol symbol,int surface) {
  * @param[in] surface semanticID value to store in the surface
  * @returns pointer to node allocated on the heap
  */
-Tnode *_t_news(Tnode *parent,Symbol symbol,SemanticID surface){
+T *_t_news(T *parent,Symbol symbol,SemanticID surface){
     return _t_new(parent,symbol,&surface,sizeof(SemanticID));
 }
 
@@ -95,10 +95,10 @@ Tnode *_t_news(Tnode *parent,Symbol symbol,SemanticID surface){
  * @param[in] surface pointer to tree to store as an orthogonal tree in the surface
  * @returns pointer to node allocated on the heap
  */
-Tnode * _t_newt(Tnode *parent,Symbol symbol,Tnode *surface) {
-    Tnode *t = malloc(sizeof(Tnode));
-    *((Tnode **)&t->contents.surface) = surface;
-    t->contents.size = sizeof(Tnode *);
+T * _t_newt(T *parent,Symbol symbol,T *surface) {
+    T *t = malloc(sizeof(T));
+    *((T **)&t->contents.surface) = surface;
+    t->contents.size = sizeof(T *);
     __t_init(t,parent,symbol);
     t->context.flags |= TFLAG_SURFACE_IS_TREE;
     return t;
@@ -110,7 +110,7 @@ Tnode * _t_newt(Tnode *parent,Symbol symbol,Tnode *surface) {
  * @param[in] symbol semantic symbol for the node to be create
  * @returns pointer to node allocated on the heap
  */
-Tnode *_t_new_root(Symbol symbol) {
+T *_t_new_root(Symbol symbol) {
     return _t_new(0,symbol,0,0);
 }
 
@@ -121,7 +121,7 @@ Tnode *_t_new_root(Symbol symbol) {
  * @param[in] symbol semantic symbol for the node to be create
  * @returns pointer to node allocated on the heap
  */
-Tnode *_t_newr(Tnode *parent,Symbol symbol) {
+T *_t_newr(T *parent,Symbol symbol) {
     return _t_new(parent,symbol,0,0);
 }
 
@@ -140,8 +140,8 @@ Tnode *_t_newr(Tnode *parent,Symbol symbol) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/tree_spec.h testTreeNewReceptor
  */
-Tnode *_t_new_receptor(Tnode *parent,Symbol symbol,Receptor *r) {
-    Tnode *t = _t_newt(parent,symbol,(Tnode *)r);
+T *_t_new_receptor(T *parent,Symbol symbol,Receptor *r) {
+    T *t = _t_newt(parent,symbol,(T *)r);
     t->context.flags |= TFLAG_SURFACE_IS_TREE+TFLAG_SURFACE_IS_RECEPTOR;
     return t;
 }
@@ -159,8 +159,8 @@ Tnode *_t_new_receptor(Tnode *parent,Symbol symbol,Receptor *r) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/tree_spec.h testTreeNewScae
  */
-Tnode *_t_new_scape(Tnode *parent,Symbol symbol,Scape *s) {
-    Tnode *t = malloc(sizeof(Tnode));
+T *_t_new_scape(T *parent,Symbol symbol,Scape *s) {
+    T *t = malloc(sizeof(T));
     t->contents.surface = s;
     t->contents.size = sizeof(Scape);
     __t_init(t,parent,symbol);
@@ -175,7 +175,7 @@ Tnode *_t_new_scape(Tnode *parent,Symbol symbol,Scape *s) {
  * @param[in] surface Process value
  * @returns pointer to node allocated on the heap
  */
-Tnode * _t_newp(Tnode *parent,Symbol symbol,Process surface) {
+T * _t_newp(T *parent,Symbol symbol,Process surface) {
     return _t_news(parent,symbol,surface);
 }
 
@@ -185,7 +185,7 @@ Tnode * _t_newp(Tnode *parent,Symbol symbol,Process surface) {
  * @param[in] t tree onto which c will be added
  * @param[in] c tree to add onto t
  */
-void _t_add(Tnode *t,Tnode *c) {
+void _t_add(T *t,T *c) {
     root_check(c);
     c->structure.parent = t;
     __t_append_child(t,c);
@@ -202,8 +202,8 @@ void _t_add(Tnode *t,Tnode *c) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/tree_spec.h testTreeDetach
  */
-Tnode *_t_detach_by_idx(Tnode *t,int i) {
-    Tnode *x = _t_child(t,i);
+T *_t_detach_by_idx(T *t,int i) {
+    T *x = _t_child(t,i);
     _t_detach_by_ptr(t,x);
     return x;
 }
@@ -215,7 +215,7 @@ Tnode *_t_detach_by_idx(Tnode *t,int i) {
  * @param[in] t node to search
  * @param[in] c node to search for in child list
  */
-void _t_detach_by_ptr(Tnode *t,Tnode *c) {
+void _t_detach_by_ptr(T *t,T *c) {
     int i;
     int l = _t_children(t);
 
@@ -252,7 +252,7 @@ void _t_detach_by_ptr(Tnode *t,Tnode *c) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/tree_spec.h testTreeMorphLowLevel
  */
-void __t_morph(Tnode *t,Symbol s,void *surface,size_t size,int allocate) {
+void __t_morph(T *t,Symbol s,void *surface,size_t size,int allocate) {
     t->contents.size = size;
     if (t->context.flags & TFLAG_ALLOCATED) {
 	free(t->contents.surface);
@@ -283,7 +283,7 @@ void __t_morph(Tnode *t,Symbol s,void *surface,size_t size,int allocate) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/tree_spec.h testTreeMorph
  */
-void _t_morph(Tnode *dst,Tnode *src) {
+void _t_morph(T *dst,T *src) {
     __t_morph(dst,_t_symbol(src),_t_surface(src),_t_size(src),src->context.flags & TFLAG_ALLOCATED);
 }
 
@@ -298,8 +298,8 @@ void _t_morph(Tnode *dst,Tnode *src) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/tree_spec.h testTreeReplace
  */
-void _t_replace(Tnode *t,int i,Tnode *r) {
-    Tnode *c = _t_child(t,i);
+void _t_replace(T *t,int i,T *r) {
+    T *c = _t_child(t,i);
     if (!c) {raise_error("tree doesn't have child %d",i);}
     _t_free(c);
     t->structure.children[i-1] = r;
@@ -316,11 +316,11 @@ void _t_replace(Tnode *t,int i,Tnode *r) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/tree_spec.h testTreeInsertAt
  */
-void _t_insert_at(Tnode *t, int *path, Tnode *i) {
-    Tnode *c = _t_get(t,path);
+void _t_insert_at(T *t, int *path, T *i) {
+    T *c = _t_get(t,path);
     int d = _t_path_depth(path)-1;
     if (c) {
-	Tnode *p = _t_parent(c);
+	T *p = _t_parent(c);
 	if (!p) {
 	    raise_error0("Can't insert into the root!");
 	}
@@ -332,7 +332,7 @@ void _t_insert_at(Tnode *t, int *path, Tnode *i) {
 	// then shift the other children over
 	int j,l = _t_children(p);
 	j = l - path[d];
-	Tnode **tp = &p->structure.children[l-1];
+	T **tp = &p->structure.children[l-1];
 	while(j--) {
 	    *tp = *(tp-1);
 	    tp--;
@@ -346,7 +346,7 @@ void _t_insert_at(Tnode *t, int *path, Tnode *i) {
 	    path[d]--;
 	    c = _t_get(t,path);
 	    if (c) {
-		Tnode *p = _t_parent(c);
+		T *p = _t_parent(c);
 		if (!p) {
 		    raise_error0("Can't insert into the root!");
 		}
@@ -360,7 +360,7 @@ void _t_insert_at(Tnode *t, int *path, Tnode *i) {
 
 /*****************  Node deletion */
 
-void __t_free_children(Tnode *t) {
+void __t_free_children(T *t) {
     int c = t->structure.child_count;
     if (c > 0) {
 	while(--c>=0) {
@@ -379,7 +379,7 @@ void __t_free_children(Tnode *t) {
  * @param[in] t tree to be freed
  * @todo make this remove the child from the parent's child-list?
  */
-void _t_free(Tnode *t) {
+void _t_free(T *t) {
     __t_free_children(t);
     if (t->context.flags & TFLAG_ALLOCATED)
 	free(t->contents.surface);
@@ -387,16 +387,16 @@ void _t_free(Tnode *t) {
 	if (t->context.flags & TFLAG_SURFACE_IS_RECEPTOR)
 	    _r_free((Receptor *)t->contents.surface);
 	else
-	    _t_free((Tnode *)t->contents.surface);
+	    _t_free((T *)t->contents.surface);
     }
     else if (t->context.flags & TFLAG_SURFACE_IS_SCAPE)
 	_s_free((Scape *)t->contents.surface);
     free(t);
 }
 
-Tnode *__t_clone(Tnode *t,Tnode *p) {
+T *__t_clone(T *t,T *p) {
     int i,c=_t_children(t);
-    Tnode *nt;
+    T *nt;
     if (t->context.flags & TFLAG_ALLOCATED)
 	nt = _t_new(p,_t_symbol(t),_t_surface(t),_t_size(t));
     else
@@ -411,14 +411,14 @@ Tnode *__t_clone(Tnode *t,Tnode *p) {
  * make a copy of a tree
  *
  * @param[in] t tree to clone
- * @returns Tnode duplicated tree
+ * @returns T duplicated tree
  * @todo make this work with trees that have orthogonal trees!
  * @bug doesn't properly clone trees with orthogonal trees
  *
  * <b>Examples (from test suite):</b>
  * @snippet spec/tree_spec.h testTreeClone
  */
-Tnode *_t_clone(Tnode *t) {
+T *_t_clone(T *t) {
     return __t_clone(t,0);
 }
 
@@ -429,7 +429,7 @@ Tnode *_t_clone(Tnode *t) {
  * @param[in] t the node
  * @returns number of children
  */
-int _t_children(Tnode *t) {
+int _t_children(T *t) {
     return t->structure.child_count;
 }
 
@@ -439,7 +439,7 @@ int _t_children(Tnode *t) {
  * @param[in] t the node
  * @returns pointer to node's surface
  */
-void * _t_surface(Tnode *t) {
+void * _t_surface(T *t) {
     if (t->context.flags & (TFLAG_ALLOCATED|TFLAG_SURFACE_IS_TREE|TFLAG_SURFACE_IS_SCAPE))
 	return t->contents.surface;
     else
@@ -452,7 +452,7 @@ void * _t_surface(Tnode *t) {
  * @param[in] t the node
  * @returns Symbol for the given node
  */
-Symbol _t_symbol(Tnode *t) {
+Symbol _t_symbol(T *t) {
     return t->contents.symbol;
 }
 
@@ -462,31 +462,31 @@ Symbol _t_symbol(Tnode *t) {
  * @param[in] t the node
  * @returns size
  */
-size_t _t_size(Tnode *t) {
+size_t _t_size(T *t) {
     return t->contents.size;
 }
 
 /*****************  Tree navigation */
 
-Tnode *_t_child(Tnode *t,int i) {
+T *_t_child(T *t,int i) {
     if (i>t->structure.child_count || i < 1) return 0;
     return t->structure.children[i-1];
 }
 
-Tnode * _t_parent(Tnode *t) {
+T * _t_parent(T *t) {
     return t->structure.parent;
 }
 
-Tnode * _t_root(Tnode *t) {
-    Tnode *p;
+T * _t_root(T *t) {
+    T *p;
     while ((p = _t_parent(t)) != 0) t = p;
     return t;
 }
 
-int _t_node_index(Tnode *t) {
+int _t_node_index(T *t) {
 	int c;
     int i;
-    Tnode *p = _t_parent(t);
+    T *p = _t_parent(t);
     if (p==0) return 0;
     c = _t_children(p);
     for(i=0;i<c;i++) {
@@ -498,10 +498,10 @@ int _t_node_index(Tnode *t) {
 }
 
 /// @todo  this is very expensive if called all the time!!!
-Tnode * _t_next_sibling(Tnode *t) {
+T * _t_next_sibling(T *t) {
 	int c;
     int i;
-    Tnode *p = _t_parent(t);
+    T *p = _t_parent(t);
     if (p==0) return 0;
     c = _t_children(p);
     for(i=0;i<c;i++) {
@@ -558,8 +558,8 @@ int _t_path_depth(int *p) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/tree_spec.h testTreePathGetPath
  */
-int * _t_get_path(Tnode *t) {
-    Tnode *n;
+int * _t_get_path(T *t) {
+    T *n;
     // allocate an array to hold the
     int s = sizeof(int)*10; // assume most trees are shallower than 10 nodes to prevent realloc
     int *p = malloc(s);
@@ -609,21 +609,21 @@ void _t_pathcpy(int *dst_p,int *src_p) {
  *
  * @param[in] t the tree to search
  * @param[in] p the path to search for
- * @returns pointer to a Tnode
+ * @returns pointer to a T
  *
  * <b>Examples (from test suite):</b>
  * @snippet spec/tree_spec.h testTreePathGet
  */
-Tnode * _t_get(Tnode *t,int *p) {
+T * _t_get(T *t,int *p) {
     int i = *p++;
-    Tnode *c;
+    T *c;
     if (i == TREE_PATH_TERMINATOR)
 	return t;
     else if (i == 0) {
 	if (!(t->context.flags & TFLAG_SURFACE_IS_TREE)) {
 	    raise_error0("surface is not a tree!");
 	}
-	c = (Tnode *)(_t_surface(t));
+	c = (T *)(_t_surface(t));
     }
     else
 	c = _t_child(t,i);
@@ -642,8 +642,8 @@ Tnode * _t_get(Tnode *t,int *p) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/tree_spec.h testTreePathGetSurface
  */
-void * _t_get_surface(Tnode *t,int *p) {
-    Tnode *c = _t_get(t,p);
+void * _t_get_surface(T *t,int *p) {
+    T *c = _t_get(t,p);
     if (c == NULL) return NULL;
     return _t_surface(c);
 }
@@ -687,7 +687,7 @@ char * _t_sprint_path(int *fp,char *buf) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/tree_spec.h testTreeHash
  */
-TreeHash _t_hash(Tnode *symbols,Tnode *structures,Tnode *t) {
+TreeHash _t_hash(T *symbols,T *structures,T *t) {
     int i,c = _t_children(t);
     TreeHash result;
     if (c == 0) {

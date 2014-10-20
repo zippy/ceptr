@@ -42,7 +42,7 @@ void data_set(Receptor *r, Xaddr xaddr, void *value, size_t size) {
 }
 
 void *_data_new_uninitialized(Data *d, Xaddr *new_xaddr, Symbol noun, size_t size) {
-    Tnode *n = _t_new(d->root,noun,0,size);
+    T *n = _t_new(d->root,noun,0,size);
     new_xaddr->key = _t_children(d->root);
     new_xaddr->noun = noun;
     return _t_surface(n);

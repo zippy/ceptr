@@ -32,9 +32,9 @@ void testProcessGetName() {
 
 void testDefSymbol() {
     //! [testDefSymbol]
-    Tnode *defs = _t_new_root(SYMBOLS);
+    T *defs = _t_new_root(SYMBOLS);
 
-    Tnode *def = __d_declare_symbol(defs,INTEGER,"shoe size");
+    T *def = __d_declare_symbol(defs,INTEGER,"shoe size");
     Symbol ss = {RECEPTOR_CONTEXT,SEM_TYPE_SYMBOL,1};
 
     spec_is_true(is_symbol(ss));
@@ -51,15 +51,15 @@ void testDefSymbol() {
 
 void testDefStructure() {
     //! [testDefStructure]
-    Tnode *defs = _t_new_root(STRUCTURES);
+    T *defs = _t_new_root(STRUCTURES);
 
     Structure st = _d_define_structure(defs,"receptor pair",RECEPTOR_CONTEXT,2,RECEPTOR,RECEPTOR);
     spec_is_equal(_t_children(defs),st.id);
-    Tnode *s = _t_child(defs,st.id);
+    T *s = _t_child(defs,st.id);
     spec_is_sem_equal(_t_symbol(s),STRUCTURE_DEFINITION);
     spec_is_equal(_t_children(s),2);
-    Tnode *l = _t_child(s,1);
-    Tnode *p = _t_child(s,2);
+    T *l = _t_child(s,1);
+    T *p = _t_child(s,2);
     spec_is_symbol_equal(0,_t_symbol(l),STRUCTURE_LABEL);
     spec_is_str_equal((char *)_t_surface(l),"receptor pair");
     spec_is_symbol_equal(0,_t_symbol(p),STRUCTURE_PARTS);
@@ -79,7 +79,7 @@ void testGetSymbolStructure() {
     spec_is_structure_equal(0,_d_get_symbol_structure(0,STRUCTURE_PART),SYMBOL);
 
     // test user-defined symbols
-    Tnode *defs = _t_new_root(SYMBOLS);
+    T *defs = _t_new_root(SYMBOLS);
     Symbol s = _d_declare_symbol(defs,INTEGER,"shoe size",RECEPTOR_CONTEXT);
     spec_is_sem_equal(_d_get_symbol_structure(defs,s),INTEGER);
     _t_free(defs);
@@ -98,8 +98,8 @@ void testGetSize() {
     spec_is_long_equal(_d_get_symbol_size(0,0,SYMBOL_LABEL,"shoe_size"),10);
 
     // test user-defined symbols and structures
-    Tnode *structures = _t_new_root(STRUCTURES);					// create tree that holds structures
-    Tnode *symbols = _t_new_root(SYMBOLS);							// create tree that holds symbols
+    T *structures = _t_new_root(STRUCTURES);					// create tree that holds structures
+    T *symbols = _t_new_root(SYMBOLS);							// create tree that holds symbols
     Symbol lat = _d_declare_symbol(symbols,FLOAT,"latitude",RECEPTOR_CONTEXT);		// symbols are declared, structures are defined
     Symbol lon = _d_declare_symbol(symbols,FLOAT,"longitude",RECEPTOR_CONTEXT);		// here we declare two meaningful ways to use the structure float
 
@@ -121,7 +121,7 @@ void testGetSize() {
     puts("\r\n");
     puts(buf);
 
-    Tnode* latlonDef = _t_child(structures, latlong);
+    T* latlonDef = _t_child(structures, latlong);
     __t_dump(&defs, latlonDef, 0, buf);
     puts("\r\n");
     puts(buf);
@@ -136,31 +136,31 @@ void testGetSize() {
     //! [testGetSize]
 
     // In the diagram on 20140806_102233.jpg, "Label" is the symbol, "Struct" is the structure.
-    // Use t_dump to display textually the resulting tree structure.  Use _td for a Tnode in the context of a given receptor.
+    // Use t_dump to display textually the resulting tree structure.  Use _td for a T in the context of a given receptor.
 }
 
 void testCodeProcess() {
     //! [testCodeProcess]
-    Tnode *defs = _t_new_root(PROCESSES);
-    Tnode *code = _t_new_root(ACTION);
-    Tnode *input = _t_new_root(INPUT_SIGNATURE);
-    Tnode *output = _t_new_root(OUTPUT_SIGNATURE);
+    T *defs = _t_new_root(PROCESSES);
+    T *code = _t_new_root(ACTION);
+    T *input = _t_new_root(INPUT_SIGNATURE);
+    T *output = _t_new_root(OUTPUT_SIGNATURE);
     Process p = _d_code_process(defs,code,"power","takes the mathematical power of the two params",input,output,RECEPTOR_CONTEXT);
 
     spec_is_true(is_process(p));
     spec_is_true(!is_symbol(p));
     spec_is_equal(_t_children(defs),p.id);
-    Tnode *s = _t_child(defs,p.id);
+    T *s = _t_child(defs,p.id);
 
     spec_is_sem_equal(_t_symbol(s),PROCESS_CODING);
 
     // first child is the name of the process
-    Tnode *name = _t_child(s,1);
+    T *name = _t_child(s,1);
     spec_is_sem_equal(_t_symbol(name),PROCESS_NAME);
     spec_is_str_equal((char *)_t_surface(name),"power");
 
     // second child is process intention as text (documentation)
-    Tnode *intention = _t_child(s,2);
+    T *intention = _t_child(s,2);
     spec_is_sem_equal(_t_symbol(intention),PROCESS_INTENTION);
     spec_is_str_equal((char *)_t_surface(intention),"takes the mathematical power of the two params");
 
@@ -168,11 +168,11 @@ void testCodeProcess() {
     spec_is_ptr_equal(_t_child(s,3),code);
 
     // fourth child is the input signature
-    Tnode *in = _t_child(s,4);
+    T *in = _t_child(s,4);
     spec_is_sem_equal(_t_symbol(in),INPUT_SIGNATURE);
 
     // fifth child is the output signature
-    Tnode *out = _t_child(s,5);
+    T *out = _t_child(s,5);
     spec_is_sem_equal(_t_symbol(out),OUTPUT_SIGNATURE);
 
     spec_is_str_equal(_d_get_process_name(defs,p),"power");
@@ -190,7 +190,7 @@ void testDefSemtrex() {
     Structure ST(d,latlong,2,lat,lon);
     Symbol SY(d,house_loc,latlong);
 
-    Tnode *stx = _d_build_def_semtrex(d,house_loc,0);
+    T *stx = _d_build_def_semtrex(d,house_loc,0);
     char buf[2000];
     spec_is_str_equal(_dump_semtrex(d,stx,buf),"/(house_loc/lat,lon)");
     __t_dump(&d,stx,0,buf);

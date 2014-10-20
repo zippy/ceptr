@@ -67,45 +67,41 @@ typedef struct SState SState;
  * to other parts of memory, because they can't be followed by ceptr utilities that manipulate trees, which include serialization, freeing,
  * cloning, etc.
  */
-struct Svalue {
+typedef struct Svalue {
     Symbol symbol;      ///< Symbol is the semantic type.  Here we're storing the integer that represents the semantic type. For example, FIRST_NAME
     size_t length;	///< For example, 5 (including terminating null)
     ValueData value;	///< For example, "t\0" which fits in an "int".  Otherwise, Svalue needs to be malloc'd to hold extra bytes.
-};
-typedef struct Svalue Svalue;
+} Svalue;
 
 /**
  * data for group open FSA state
  */
-struct SgroupOpen {
+typedef struct SgroupOpen {
     SemanticID symbol;  ///< the symbol that describes the group semantically
     int uid;             ///< unique id for the group
-    Tnode *matches[100];
+    T *matches[100];
     int match_count;
-};
-typedef struct SgroupOpen SgroupOpen;
+} SgroupOpen;
 
 /**
  * data for group close FSA state
  */
-struct SgroupClose {
+typedef struct SgroupClose {
     SState *openP;      /// pointer to the Open state
-};
-typedef struct SgroupClose SgroupClose;
+} SgroupClose;
 
 /**
  * Different state types need to store different kinds of values so we put them in a union
  *
  * @note cool coding hack: the value item of this list include a Symbol as it's first items so that we can share the code that matches on symbol!!
  */
-union STypeData
+typedef union STypeData
 {
     Symbol symbol;  ///< Symbol to match on for StateSymbol type states
     Svalue value;   ///< Value data to match on for StateValue type states
     SgroupOpen groupo;   ///< Group data for matching for StateGroup type states
     SgroupClose groupc;   ///< Group data for matching for StateGroup type states
-};
-typedef union STypeData STypeData;
+} STypeData;
 
 /**
  * This struct holds the data for each state in of the FSA generated to match a tree
@@ -119,13 +115,13 @@ struct SState {
     STypeData data;             ///< a union to hold the data for which ever type of SState this is
 };
 
-SState * _stx_makeFA(Tnode *s,int *statesP);
+SState * _stx_makeFA(T *s,int *statesP);
 void _stx_freeFA(SState *s);
-int _t_match(Tnode *semtrex,Tnode *t);
-int _t_matchr(Tnode *semtrex,Tnode *t,Tnode **r);
-Tnode *_t_get_match(Tnode *result,Symbol group);
-char * _dump_semtrex(Defs defs,Tnode *s,char *buf);
-Tnode *parseSemtrex(Receptor *r,char *stx);
+int _t_match(T *semtrex,T *t);
+int _t_matchr(T *semtrex,T *t,T **r);
+T *_t_get_match(T *result,Symbol group);
+char * _dump_semtrex(Defs defs,T *s,char *buf);
+T *parseSemtrex(Receptor *r,char *stx);
 
 #endif
 

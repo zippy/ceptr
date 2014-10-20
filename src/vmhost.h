@@ -22,8 +22,8 @@
 struct VMHost {
     Receptor *r;                ///< Receptor data for this vm host
     Receptor *c;                ///< Receptor data for the vm host's local version of the compository
-    Tnode *active_receptors;    ///< pointer to tree that holds all currently active receptors
-    Tnode *pending_signals;
+    T *active_receptors;    ///< pointer to tree that holds all currently active receptors
+    T *pending_signals;
     Scape *installed_receptors;
 };
 typedef struct VMHost VMHost;
@@ -32,10 +32,10 @@ typedef struct VMHost VMHost;
 VMHost * _v_new();
 void _v_free(VMHost *r);
 
-Xaddr _v_load_receptor_package(VMHost *v,Tnode *p);
-Xaddr _v_install_r(VMHost *v,Xaddr package,Tnode *bindings,char *label);
+Xaddr _v_load_receptor_package(VMHost *v,T *p);
+Xaddr _v_install_r(VMHost *v,Xaddr package,T *bindings,char *label);
 void _v_activate(VMHost *v, Xaddr x);
-Xaddr _v_send(VMHost *v,Xaddr to,Xaddr from,Aspect aspect,Tnode *contents);
+Xaddr _v_send(VMHost *v,Xaddr to,Xaddr from,Aspect aspect,T *contents);
 
 #endif
 /** @}*/
