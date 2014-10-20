@@ -306,6 +306,58 @@ void _t_replace(Tnode *t,int i,Tnode *r) {
     r->structure.parent = t;
 }
 
+/**
+ * Insert a tree at a given tree path position
+
+ * @param[in] t tree on which to operate
+ * @param[in] p path to position in tree to inesert
+ * @param[in] i tree to insert
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/tree_spec.h testTreeInsertAt
+ */
+void _t_insert_at(Tnode *t, int *path, Tnode *i) {
+    Tnode *c = _t_get(t,path);
+    int d = _t_path_depth(path)-1;
+    if (c) {
+	Tnode *p = _t_parent(c);
+	if (!p) {
+	    raise_error0("Can't insert into the root!");
+	}
+
+	// first insert the new tree at the end just to use the code we
+	// already have for mallocing children, etc,
+	_t_add(p,i);
+
+	// then shift the other children over
+	int j,l = _t_children(p);
+	j = l - path[d];
+	Tnode **tp = &p->structure.children[l-1];
+	while(j--) {
+	    *tp = *(tp-1);
+	    tp--;
+	}
+	// and put the new tree where it belongs
+	*tp = i;
+    }
+    else {
+	// if path points to one beyond last child, we can simply add it.
+	if (path[d]>1) {
+	    path[d]--;
+	    c = _t_get(t,path);
+	    if (c) {
+		Tnode *p = _t_parent(c);
+		if (!p) {
+		    raise_error0("Can't insert into the root!");
+		}
+		_t_add(p,i);
+		return;
+	    }
+	}
+	raise_error0("Path must lead to an existing node or one after last child.");
+    }
+}
+
 /*****************  Node deletion */
 
 void __t_free_children(Tnode *t) {
@@ -569,7 +621,7 @@ Tnode * _t_get(Tnode *t,int *p) {
 	return t;
     else if (i == 0) {
 	if (!(t->context.flags & TFLAG_SURFACE_IS_TREE)) {
-	    raise_error0("surface is not an tree!");
+	    raise_error0("surface is not a tree!");
 	}
 	c = (Tnode *)(_t_surface(t));
     }

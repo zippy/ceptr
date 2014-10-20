@@ -45,6 +45,7 @@ void _t_add(Tnode *t,Tnode *c);
 void _t_detach_by_ptr(Tnode *t,Tnode *c);
 Tnode *_t_detach_by_idx(Tnode *t,int i);
 void _t_replace(Tnode *t,int i,Tnode *r);
+void _t_insert_at(Tnode *t, int *path, Tnode *i);
 void _t_morph(Tnode *dst,Tnode *src);
 void __t_morph(Tnode *t,Symbol s,void *surface,size_t length,int allocate);
 void __t_free_children(Tnode *t);

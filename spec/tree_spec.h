@@ -312,6 +312,21 @@ void testTreeReplace() {
     //! [testTreeReplace]
 }
 
+void testTreeInsertAt() {
+    //! [testTreeInsertAt]
+    Tnode *t = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
+    int p[] = {3,1,2,TREE_PATH_TERMINATOR};
+    Tnode *c = _t_new(0,HTTP_REQUEST_PATH_SEGMENT,"a",2);
+    _t_insert_at(t,p,c);
+    char buf[2000];
+    p[2] = TREE_PATH_TERMINATOR;
+    c = _t_get(t,p);
+    __t_dump(&test_HTTP_defs,c,0,buf);
+    spec_is_str_equal(buf," (HTTP_REQUEST_PATH_SEGMENTS (HTTP_REQUEST_PATH_SEGMENT:groups) (HTTP_REQUEST_PATH_SEGMENT:a) (HTTP_REQUEST_PATH_SEGMENT:5))");
+
+    //! [testTreeInsertAt]
+}
+
 void testTreeMorph() {
     //! [testTreeMorph]
     char buf[2000];
@@ -404,6 +419,7 @@ void testTree() {
     testTreePathSprint();
     testTreeClone();
     testTreeReplace();
+    testTreeInsertAt();
     testTreeMorph();
     testTreeMorphLowLevel();
     testTreeDetach();
