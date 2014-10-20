@@ -610,14 +610,45 @@ Symbol get_symbol(char *symbol_name) {
     return NULL_SYMBOL;
 }
 
-#define sX(name,str) Symbol name = _d_declare_symbol(G_sys_defs.symbols,str,"" #name "",TEST_CONTEXT)
-
 //#define DUMP_TOKENS
 #ifdef DUMP_TOKENS
 #define dump_tokens(str) puts(str);__t_dump(0,tokens,0,buf);puts(buf);
 #else
 #define dump_tokens(str)
 #endif
+
+/*
+   a utility function to move the contents of paren/group tokens as children of the
+   open token.
+   Assumes the semtrex results was from a semtrex of the form:
+     ...  {STX_OP:STX_OP,{STX_SIBS:!STX_CP+},STX_CP}
+     where the contents is marked by one group (in the case above STX_SIBS) and the
+     the whole thing is marked by an "open" group
+
+ */
+Tnode *wrap(Tnode *tokens,Tnode *results, Symbol contents_s, Symbol open_s) {
+    Tnode *m = _t_get_match(results,contents_s);
+    Tnode *om = _t_get_match(results,open_s);
+
+    // transfer the contents nodes to the open node
+    int count = *(int *)_t_surface(_t_child(m,3));
+    int *cpath = (int *)_t_surface(_t_child(m,2));
+    int *opath = (int *)_t_surface(_t_child(om,2));
+    Tnode *o = _t_get(tokens,opath);
+    Tnode *parent = _t_parent(o);
+    int x = cpath[_t_path_depth(cpath)-1];
+    Tnode *t;
+    while(count--) {
+	t = _t_child(parent,x);
+	_t_detach_by_ptr(parent,t);
+	_t_add(o,t);
+    }
+    // free the close token
+    t = _t_child(parent,x);
+    _t_detach_by_ptr(parent,t);
+    _t_free(t);
+    return o;
+}
 
 /**
  * convert a cstring to semtrex tree
@@ -743,23 +774,9 @@ Tnode *parseSemtrex(Receptor *r,char *stx) {
 	//----------------
 	// ACTION
 	while (_t_matchr(sxx,tokens,&results)) {
-	    Tnode *m = _t_get_match(results,STX_SIBS);
-	    Tnode *opm = _t_get_match(results,STX_OP);
-	    // transfer the children to the STX_SIBS node
-	    int count = *(int *)_t_surface(_t_child(m,3));
-	    int *cpath = (int *)_t_surface(_t_child(m,2));
-	    int *oppath = (int *)_t_surface(_t_child(opm,2));
-	    Tnode *op = _t_get(tokens,oppath);
-	    while(count--) {
-		Tnode *t = _t_get(tokens,cpath);
-		_t_detach_by_ptr(tokens,t);
-		_t_add(op,t);
-	    }
-	    // convert the op to an STX children and free the close parens
-	    op->contents.symbol = STX_SIBS;
-	    op = _t_next_sibling(op);
-	    _t_detach_by_ptr(tokens,op);
-	    _t_free(op);
+	    g = wrap(tokens,results,STX_SIBS,STX_OP);
+	    // convert the STX_OP to STX_SIBS and free the STX_CP
+	    g->contents.symbol = STX_SIBS;
 	    _t_free(results);
 	}
 	_t_free(sxx);
@@ -769,7 +786,7 @@ Tnode *parseSemtrex(Receptor *r,char *stx) {
 	/////////////////////////////////////////////////////
 	// find groups
 	// EXPECTATION
-	// /%,{STX_OG:STX_OG,{SEMTREX_GROUP:!STX_CG+},STX_GP}
+	// /%,{STX_OG:STX_OG,{SEMTREX_GROUP:!STX_CG+},STX_CG}
 	sxx = _t_new_root(SEMTREX_WALK);
 	g = _t_news(sxx,SEMTREX_GROUP,STX_OG);
 	sq = _t_newr(g,SEMTREX_SEQUENCE);
@@ -782,30 +799,13 @@ Tnode *parseSemtrex(Receptor *r,char *stx) {
 	//----------------
 	// ACTION
 	while (_t_matchr(sxx,tokens,&results)) {
-	    Tnode *m = _t_get_match(results,SEMTREX_GROUP);
-	    Tnode *ogm = _t_get_match(results,STX_OG);
-	    // transfer the children to the STX_OG node
-	    int count = *(int *)_t_surface(_t_child(m,3));
-	    int *cpath = (int *)_t_surface(_t_child(m,2));
-	    int *ogpath = (int *)_t_surface(_t_child(ogm,2));
-	    Tnode *og = _t_get(tokens,ogpath);
-	    Tnode *parent = _t_parent(og);
-	    int x = cpath[_t_path_depth(cpath)-1];
+	    g = wrap(tokens,results,SEMTREX_GROUP,STX_OG);
 
-	    while(count--) {
-		Tnode *t = _t_child(parent,x);
-		_t_detach_by_ptr(parent,t);
-		_t_add(og,t);
-	    }
-	    //	    puts("GCOLLECTED:");__t_dump(0,og,0,buf);puts(buf);
-	    // convert the OG to SEMTREX_GROUP children and free the close group
-	    char *symbol_name = (char *)_t_surface(og);
+	    // convert the STX_OG to SEMTREX_GROUP children and free the STX_CG
+	    char *symbol_name = (char *)_t_surface(g);
 	    Symbol sy = get_symbol(symbol_name);
-	    __t_morph(og,SEMTREX_GROUP,&sy,sizeof(Symbol),1);
+	    __t_morph(g,SEMTREX_GROUP,&sy,sizeof(Symbol),1);
 
-	    t = _t_child(parent,x);
-	    _t_detach_by_ptr(parent,t);
-	    _t_free(t);
 	    _t_free(results);
 	}
 	_t_free(sxx);
