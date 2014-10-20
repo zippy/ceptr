@@ -403,12 +403,18 @@ namespace csharp_ide.Controllers
 
 		protected void BuildSemanticTree(object sender, EventArgs args)
 		{
-			//Guid structures = CeptrInterface.CreateRootNode(SystemSymbol.STRUCTURES);
-			//Guid symbols = CeptrInterface.CreateRootNode(SystemSymbol.SYMBOLS);
-			//uint latitude = CeptrInterface.DeclareSymbol(symbols, (UInt32)SystemStructure.FLOAT, "latitude");
-			//uint longitude = CeptrInterface.DeclareSymbol(symbols, (UInt32)SystemStructure.FLOAT, "longitude");
-			//uint latlong = CeptrInterface.DefineStructure(structures, "latlong", new uint[] {latitude, longitude});
-			//string ret = CeptrInterface.Dump(symbols, structures);
+			CeptrInterface.Initialize();
+			SemanticID structures = new SemanticID() { context = (UInt16)SemanticContexts.SYS_CONTEXT, flags = (UInt16)SemanticTypes.SEM_TYPE_SYMBOL, id = (UInt32)SystemSymbolIDs.STRUCTURES_ID };
+			SemanticID symbols = new SemanticID() { context = (UInt16)SemanticContexts.SYS_CONTEXT, flags = (UInt16)SemanticTypes.SEM_TYPE_SYMBOL, id = (UInt32)SystemSymbolIDs.SYMBOLS_ID };
+			Guid gStructures = CeptrInterface.CreateRootNode(structures);
+			Guid gSymbols = CeptrInterface.CreateRootNode(symbols);
+			SemanticID floatID = new SemanticID() {context = (UInt16)SemanticContexts.SYS_CONTEXT, flags = (UInt16)SemanticTypes.SEM_TYPE_STRUCTURE, id = (UInt32)SystemStructureID.FLOAT_ID};
+			SemanticID latitude = CeptrInterface.DeclareSymbol(gSymbols, floatID, "latitude", SemanticContexts.RECEPTOR_CONTEXT);
+			SemanticID longitude = CeptrInterface.DeclareSymbol(gSymbols, floatID, "longitude", SemanticContexts.RECEPTOR_CONTEXT);
+
+			// Structure latlong = _d_define_structure(structures,"latlong",RECEPTOR_CONTEXT, 2, lat, lon);
+			// SemanticID latlong = CeptrInterface.DefineStructure(gStructures, "latlong", SemanticContexts.RECEPTOR_CONTEXT, new SemanticID[] { latitude, longitude });
+			string ret = CeptrInterface.DumpSymbols(gSymbols, gStructures);
 
 			//DumpOutputController.IfNotNull(ctrl => ctrl.View.Output.Text = FormatDump(ret));
 		}

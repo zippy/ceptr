@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define FIXME
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -30,6 +32,8 @@ namespace csharp_ide.Controllers
 
 		public void ShowStructureDump(Symbol symbol)
 		{
+#if FIXME
+#else
 			Guid structures = ApplicationController.CeptrInterface.CreateRootNode(SystemSymbol.STRUCTURES);
 			Guid symbols = ApplicationController.CeptrInterface.CreateRootNode(SystemSymbol.SYMBOLS);
 
@@ -39,13 +43,17 @@ namespace csharp_ide.Controllers
 
 			string ret = ApplicationController.CeptrInterface.DumpStructures(symbols, structures);
 			View.Output.Text = FormatDump(ret);
+#endif
 		}
 
 		// TODO: All of what follows is a repeat of code in SymbolOutputController.
 
 		// Recurse into a symbol, creating the child symbols first and then defining the structure composed of the child symbols.
-		protected uint Recurse(Guid structures, Guid symbols, Symbol symbol, Dictionary<string, uint> structureMap)
+		protected SemanticID Recurse(Guid structures, Guid symbols, Symbol symbol, Dictionary<string, uint> structureMap)
 		{
+#if FIXME
+			return new SemanticID();
+#else
 			List<uint> syms = new List<uint>();
 			uint structure = GetStructureID(symbol.Structure, structureMap);
 
@@ -64,12 +72,15 @@ namespace csharp_ide.Controllers
 				structure = ApplicationController.CeptrInterface.DefineStructure(structures, symbol.Structure, syms.ToArray());
 				structureMap[symbol.Structure] = structure;
 			}
-
 			return structure;
+#endif
 		}
 
-		protected uint GetStructureID(string structure, Dictionary<string, uint> structureMap)
+		protected SemanticID GetStructureID(string structure, Dictionary<string, uint> structureMap)
 		{
+#if FIXME
+			return new SemanticID();
+#else
 			uint id = 0;
 
 			switch (structure.ToLower())
@@ -92,6 +103,7 @@ namespace csharp_ide.Controllers
 			}
 
 			return id;
+#endif
 		}
 
 

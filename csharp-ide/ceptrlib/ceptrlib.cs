@@ -7,116 +7,141 @@ using System.Threading.Tasks;
 
 namespace ceptrlib
 {
-	// Emulates typedefs
-	using Symbol = System.UInt32;
-	using Process = System.UInt32;
-	using Structure = System.UInt32;
+	// Enums
 
-	public enum SystemSymbol
+	public enum SemanticContexts 
+	{ 
+		SYS_CONTEXT, 
+		RECEPTOR_CONTEXT, 
+		TEST_CONTEXT 
+	}
+
+	public enum SemanticTypes 
+	{ 
+		SEM_TYPE_STRUCTURE = 1, 
+		SEM_TYPE_SYMBOL, 
+		SEM_TYPE_PROCESS 
+	}
+
+	public enum SystemSymbolIDs
 	{
 		//-----  Basic symbols for underlying data types
-		NULL_SYMBOL = 0x7fff0000,
-		TRUE_FALSE,
+		NULL_SYMBOL_ID = 0,
+		DEFINITIONS_ID,
+		STRUCTURES_ID,
+		STRUCTURE_DEFINITION_ID,
+		STRUCTURE_LABEL_ID,
+		STRUCTURE_PARTS_ID,
+		STRUCTURE_PART_ID,
+		SYMBOLS_ID,
+		SYMBOL_DECLARATION_ID,
+		SYMBOL_STRUCTURE_ID,
+		SYMBOL_LABEL_ID,
+
+		TRUE_FALSE_ID,
 
 		//-----  Symbols for the different semantic parts of semtrexes
-		SEMTREX_MATCHED_PATH,              ///< path to symbol matched by semtrex
-		SEMTREX_SYMBOL_LITERAL,            ///< This system symbol matches on the semantic type.         Ex: /TEST_SYMBOL
-		SEMTREX_SEQUENCE,                  ///< Match on a sequence of child nodes which are any valid semtrex's.  Ex: comma separated nodes
-		SEMTREX_OR,                        ///< Logical OR between two Semtrex expressions.      Ex: |
-		SEMTREX_SYMBOL_ANY,                ///< Match any symbol or value of the node.           Ex: .
-		SEMTREX_ZERO_OR_MORE,              ///< Requires one child Semtrex and matches on zero or more of that Semtrex.  Ex: /0/TestSemtrex*
-		SEMTREX_ONE_OR_MORE,               ///< Requires one child Semtrex and matches on one or more of that Semtrex.   Ex: /0/TestSemtrex+
-		SEMTREX_ZERO_OR_ONE,               ///< Requires one child Semtrex and matches on zero or one of that Semtrex.   Ex: /0/TestSemtrex?
-		SEMTREX_VALUE_LITERAL,	       ///< Matches on the semantic type and the data value.
-		SEMTREX_GROUP,                     ///< Grouping                                 Ex: (...)operator
-		SEMTREX_MATCH,                     ///< Returns result and sibling count.        Ex: {name:expr} (verify this is what it's supposed to do)
-		SEMTREX_MATCH_RESULTS,             ///< In the FSA, keeps track of which part matches so it can be referenced
-		SEMTREX_MATCH_SIBLINGS_COUNT,      ///< In the FSA, it's the length of the match
+		SEMTREX_MATCHED_PATH_ID,              ///< path to symbol matched by semtrex
+		SEMTREX_SYMBOL_LITERAL_ID,            ///< This system symbol matches on the semantic type.         Ex: /TEST_SYMBOL
+		SEMTREX_SEQUENCE_ID,                  ///< Match on a sequence of child nodes which are any valid semtrex's.  Ex: comma separated nodes
+		SEMTREX_OR_ID,                        ///< Logical OR between two Semtrex expressions.      Ex: |
+		SEMTREX_SYMBOL_ANY_ID,                ///< Match any symbol or value of the node.           Ex: .
+		SEMTREX_ZERO_OR_MORE_ID,              ///< Requires one child Semtrex and matches on zero or more of that Semtrex.  Ex: /0/TestSemtrex*
+		SEMTREX_ONE_OR_MORE_ID,               ///< Requires one child Semtrex and matches on one or more of that Semtrex.   Ex: /0/TestSemtrex+
+		SEMTREX_ZERO_OR_ONE_ID,               ///< Requires one child Semtrex and matches on zero or one of that Semtrex.   Ex: /0/TestSemtrex?
+		SEMTREX_VALUE_LITERAL_ID,	       ///< Matches on the semantic type and the data value.
+		SEMTREX_GROUP_ID,                     ///< Grouping                                 Ex: (...)operator
+		SEMTREX_MATCH_ID,                     ///< Returns result and sibling count.        Ex: {name:expr} (verify this is what it's supposed to do)
+		SEMTREX_MATCH_RESULTS_ID,             ///< In the FSA_ID, keeps track of which part matches so it can be referenced
+		SEMTREX_MATCH_SIBLINGS_COUNT_ID,      ///< In the FSA_ID, it's the length of the match
 
 		//-----  Symbols for receptors
-		RECEPTOR_XADDR,                    ///< An Xaddr that points to a receptor
-		FLUX,                              ///< tree to hold all incoming and in process signals on the various aspects
-		DEFINITIONS,
-		STRUCTURES,
-		STRUCTURE_DEFINITION,
-		STRUCTURE_LABEL,
-		STRUCTURE_PARTS,
-		STRUCTURE_PART,
-		SYMBOLS,
-		SYMBOL_DECLARATION,
-		SYMBOL_STRUCTURE,
-		SYMBOL_LABEL,
-		SCAPE_SPEC,
-		ASPECT,
-		SIGNALS,                           ///< list of signals on an aspect in the flux
-		SIGNAL,                            ///< a signal on the flux.  It's first child is the contents of the signal
-		LISTENERS,                         ///< list of carrier/expectation/action tress that "listen" to changes on the flux
-		LISTENER,                          ///< surface of the listener is the carrier symbol, and it has two children, expectation semtrex and action code tree
-		EXPECTATION,                       ///< expectation is a semtrex (thus has one child which is the first part of the semtrex)
-		ACTION,                            ///< code tree, which specifies the action to perform when an expectation's semtrex matches
-		INTERPOLATE_SYMBOL,                ///< a place holder to indicate which symbol to insert into this part of the three
-		PROCESSES,
-		PROCESS_CODING,
-		PROCESS_NAME,
-		PROCESS_INTENTION,
-		INPUT,
-		INPUT_SIGNATURE,
-		INPUT_LABEL,
-		SIGNATURE_STRUCTURE,
-		OUTPUT_SIGNATURE,
-		RUN_TREE,                         ///< think about this as a stack frame and it's code
-		PARAM_REF,                        ///< used in a code tree as a reference to a parameter
-		PARAMS,
-		SCAPES,
+		RECEPTOR_XADDR_ID,                    ///< An Xaddr that points to a receptor
+		FLUX_ID,                              ///< tree to hold all incoming and in process signals on the various aspects
+		SCAPE_SPEC_ID,
+		ASPECTS_ID,
+		ASPECT_DEF_ID,
+		ASPECT_TYPE_ID,
+		CARRIER_ID,
+		ASPECT_ID,
+		SIGNALS_ID,                           ///< list of signals on an aspect in the flux
+		SIGNAL_ID,                            ///< a signal on the flux.  It's first child is the contents of the signal
+		ENVELOPE_ID,
+		BODY_ID,
+		LISTENERS_ID,                         ///< list of carrier/expectation/action tress that "listen" to changes on the flux
+		LISTENER_ID,                          ///< surface of the listener is the carrier symbol, and it has two children_ID, expectation semtrex and action code tree
+		EXPECTATION_ID,                       ///< expectation is a semtrex (thus has one child which is the first part of the semtrex)
+		ACTION_ID,                            ///< code tree_ID, which specifies the action to perform when an expectation's semtrex matches
+		INTERPOLATE_SYMBOL_ID,                ///< a place holder to indicate which symbol to insert into this part of the three
+		PROCESSES_ID,
+		PROCESS_CODING_ID,
+		PROCESS_NAME_ID,
+		PROCESS_INTENTION_ID,
+		INPUT_ID,
+		INPUT_SIGNATURE_ID,
+		INPUT_LABEL_ID,
+		SIGNATURE_STRUCTURE_ID,
+		OUTPUT_SIGNATURE_ID,
+		RUN_TREE_ID,                         ///< think about this as a stack frame and its code
+		PARAM_REF_ID,                        ///< used in a code tree as a reference to a parameter
+		PARAMS_ID,
+		PROTOCOLS_ID,
+		PROTOCOL_ID,
+		ROLES_ID,
+		ROLE_ID,
+		INTERACTIONS_ID,
+		INTERACTION_ID,
+		STEP_ID,
+		FROM_ROLE_ID,
+		TO_ROLE_ID,
+		RESPONSE_STEPS_ID,
+		SCAPES_ID,
 
 		//-----  Symbols for the virtual machine host
-		VM_HOST_RECEPTOR,
-		COMPOSITORY,                      ///< receptor that holds available receptor packages for installation
-		MANIFEST,                         ///< configuration template to be filled out for the installation of a receptor
-		MANIFEST_PAIR,
-		MANIFEST_LABEL,                   ///< a label in the manifest to identify a binding
-		MANIFEST_SPEC,                    ///< a symbol to specify what type of data must be provided for a given manifest label
-		RECEPTOR_PACKAGE,                 ///< a manifest, a symbol declaration tree, a structure definition tree, and an identifier
-		RECEPTOR_IDENTIFIER,              ///< uuid that identifies receptors
-		INSTALLED_RECEPTOR,               ///< contains the installed receptor as well as state information (enabled,disabled, etc..)
-		ACTIVE_RECEPTORS,                 ///< list of currently active INSTALLED_RECEPTORS
-		BINDINGS,                         ///< specifics that match a MANIFEST and allow a receptor to be installed
-		BINDING_PAIR,                     ///< a pair that matches a MANIFEST_LABEL with a given binding
-		_LAST_SYS_SYMBOL
+		VM_HOST_RECEPTOR_ID,
+		COMPOSITORY_ID,                      ///< receptor that holds available receptor packages for installation
+		MANIFEST_ID,                         ///< configuration template to be filled out for the installation of a receptor
+		MANIFEST_PAIR_ID,
+		MANIFEST_LABEL_ID,                   ///< a label in the manifest to identify a binding
+		MANIFEST_SPEC_ID,                    ///< a symbol to specify what type of data must be provided for a given manifest label
+		RECEPTOR_PACKAGE_ID,                 ///< a manifest, a symbol declaration tree, a structure definition tree_ID, and an identifier
+		RECEPTOR_IDENTIFIER_ID,              ///< uuid that identifies receptors
+		INSTALLED_RECEPTOR_ID,               ///< contains the installed receptor as well as state information (enabled,disabled_ID, etc..)
+		ACTIVE_RECEPTORS_ID,                 ///< list of currently active INSTALLED_RECEPTORS
+		PENDING_SIGNALS_ID,                  ///< list of currently active INSTALLED_RECEPTORS
+		BINDINGS_ID,                         ///< specifics that match a MANIFEST and allow a receptor to be installed
+		BINDING_PAIR_ID,                     ///< a pair that matches a MANIFEST_LABEL with a given binding
 	}
 
-	public enum TestSymbol
+	public enum SystemStructureID
 	{
-		TEST_INT_SYMBOL = 0x7ffff000, 
-		TEST_INT_SYMBOL2, 
-		TEST_STR_SYMBOL, 
-		TEST_TREE_SYMBOL, 
-		TEST_TREE_SYMBOL2,
-		TEST_NAME_SYMBOL, 
-		TEST_FIRST_NAME_SYMBOL, 
-		TEST_RECEPTOR_SYMBOL,
-		_LAST_TEST_SYMBOL
+		NULL_STRUCTURE_ID,
+		BOOLEAN_ID,
+		INTEGER_ID,
+		FLOAT_ID,
+		CSTRING_ID,
+		SYMBOL_ID,
+		ENUM_ID,
+		TREE_PATH_ID,
+		XADDR_ID,
+		LIST_ID,
+		SURFACE_ID,
+		TREE_ID,
+		RECEPTOR_ID,
+		PROCESS_ID,
+		STRUCTURE_ID,
+		SCAPE_ID,
 	}
 
-	public enum SystemStructure
-    {
-		NULL_STRUCTURE = 0x7fff0000,
-		BOOLEAN,
-		INTEGER,
-		FLOAT,
-		CSTRING,
-		SYMBOL,
-		TREE_PATH,
-		XADDR,
-		LIST,
-		SURFACE,
-		TREE,
-		RECEPTOR,
-		PROCESS,
-		STRUCTURE,
-		SCAPE,
-		_LAST_SYS_STRUCTURE
-    }
+	// ======= Enums ==========
+
+	[StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
+	public unsafe struct SemanticID
+	{
+		public UInt16 context;
+		public UInt16 flags;
+		public UInt32 id;
+	};
 
 	[StructLayout(LayoutKind.Sequential, Pack=1), Serializable]
 	public unsafe struct Tstruct
@@ -124,16 +149,12 @@ namespace ceptrlib
 		public Tnode* node;
 		public int child_count;
 		public Tnode** children;
-		
-		// public Tnode* node;
-		// public int child_count;
-		// public Tnode** children;
 	}
 
 	[StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
 	public unsafe struct Tcontents
 	{
-		public Symbol symbol;
+		public SemanticID symbol;
 		public int size;
 		public IntPtr surface;
 	}
@@ -164,25 +185,31 @@ namespace ceptrlib
 	public class CeptrInterface
 	{
 		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
+		extern static void def_sys();
+
+		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
+		extern static void sys_free();
+
+		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
 		extern static unsafe void testGetSize();
 
 		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
-		extern static unsafe Tnode* _t_new(IntPtr parent, Symbol symbol, IntPtr surface, int size);
+		extern static unsafe Tnode* _t_new(IntPtr parent, SemanticID sid, IntPtr surface, int size);
 
 		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
-		extern static unsafe Tnode* _t_new_root(Symbol symbol);
+		extern static unsafe Tnode* _t_new_root(SemanticID sid);
 
 		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
-		extern static unsafe Symbol _d_declare_symbol(Tnode* symbols, Structure st, string label);
+		extern static unsafe SemanticID _d_declare_symbol(Tnode* symbols, SemanticID sid, string label, UInt16 context);
 
 		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
-		extern static unsafe Symbol _d_define_structure(Tnode* structures, [MarshalAs(UnmanagedType.LPStr)] string label, int num_params, __arglist);
+		extern static unsafe SemanticID _d_define_structure(Tnode* structures, [MarshalAs(UnmanagedType.LPStr)] string label, int num_params, __arglist);
 
 		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
-		extern static unsafe Symbol _dv_define_structure(Tnode* structures, [MarshalAs(UnmanagedType.LPStr)] string label, int num_params, __arglist);
+		extern static unsafe SemanticID _dv_define_structure(Tnode* structures, [MarshalAs(UnmanagedType.LPStr)] string label, UInt16 context, int num_params, __arglist);
 
 		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
-		extern static unsafe Structure _t_children(Tnode* structures);
+		extern static unsafe SemanticID _t_children(Tnode* structures);
 
 		// extern static unsafe Symbol _d_define_structure(Tnode* structures, char* label, int num_params, UInt32 p1, UInt32 p2);
 
@@ -192,14 +219,24 @@ namespace ceptrlib
 
 		protected Dictionary<Guid, IntPtr> nodes = new Dictionary<Guid, IntPtr>();
 
+		public unsafe void Initialize()
+		{
+			def_sys();
+		}
+
+		public unsafe void Terminate()
+		{
+			sys_free();
+		}
+
 		/// <summary>
 		/// Create a root node.
 		/// </summary>
 		/// <param name="symbol">The node symbol.</param>
 		/// <returns>A GUID associated with this node instance.</returns>
-		public unsafe Guid CreateRootNode(SystemSymbol symbol)
+		public unsafe Guid CreateRootNode(SemanticID structures)
 		{
-			Tnode *node = _t_new_root((Symbol)symbol);
+			Tnode *node = _t_new_root(structures);
 			Guid guid = RegisterNode(node);
 
 			return guid;
@@ -208,20 +245,20 @@ namespace ceptrlib
 		/// <summary>
 		/// Declare a symbol having the specified structure.
 		/// </summary>
-		public unsafe uint DeclareSymbol(Guid symbols, Structure st, string label)
+		public unsafe SemanticID DeclareSymbol(Guid symbols, SemanticID st, string label, SemanticContexts sc)
 		{
 			Tnode *pnode = (Tnode*)nodes[symbols];
-			Symbol symbol = _d_declare_symbol(pnode, st, label);
+			SemanticID symbol = _d_declare_symbol(pnode, st, label, (UInt16)sc);
 
 			return symbol;
 		}
 
-		public unsafe uint DefineStructure(Guid structures, string name, uint[] symbolArray)
+		public unsafe SemanticID DefineStructure(Guid structures, string name, SemanticContexts sc, SemanticID[] symbolArray)
 		{
 			Tnode *structs = (Tnode*)nodes[structures];
 
-			_dv_define_structure(structs, name, symbolArray.Length, __arglist(symbolArray));
-			Structure st = _t_children(structs);
+			_dv_define_structure(structs, name, (UInt16)sc, symbolArray.Length, __arglist(symbolArray));
+			SemanticID st = _t_children(structs);
 
 			return st;
 		}
