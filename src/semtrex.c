@@ -1091,6 +1091,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 
     }
     _t_free(ts);
+    _t_free(s);
 
     return t;
 }

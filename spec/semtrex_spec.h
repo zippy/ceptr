@@ -528,7 +528,7 @@ void testMatchWalk() {
     spec_is_true(_t_matchr(s,t,&results));
     char buf[1000];
     spec_is_str_equal(__t_dump(0,results,0,buf)," (SEMTREX_MATCH_RESULTS (SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:TEST_GROUP_SYMBOL1) (SEMTREX_MATCHED_PATH:/3) (SEMTREX_MATCH_SIBLINGS_COUNT:2)))");
-
+    _t_free(results);
     _t_free(s);
 
     _t_free(t);

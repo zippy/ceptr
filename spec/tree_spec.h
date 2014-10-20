@@ -324,6 +324,7 @@ void testTreeInsertAt() {
     __t_dump(&test_HTTP_defs,c,0,buf);
     spec_is_str_equal(buf," (HTTP_REQUEST_PATH_SEGMENTS (HTTP_REQUEST_PATH_SEGMENT:groups) (HTTP_REQUEST_PATH_SEGMENT:a) (HTTP_REQUEST_PATH_SEGMENT:5))");
 
+    _t_free(t);
     //! [testTreeInsertAt]
 }
 
