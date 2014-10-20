@@ -8,7 +8,7 @@ var receptor__spec_8h =
     [ "testReceptorDef", "receptor__spec_8h.html#aa07faab05f9e36cec27352a395804b52", null ],
     [ "testReceptorDefMatch", "receptor__spec_8h.html#a0f0176e080e437a43dfcc761f00ca284", null ],
     [ "testReceptorInstanceNew", "receptor__spec_8h.html#a9584612d41b06b90041df77e64da66b8", null ],
+    [ "testReceptorProtocol", "receptor__spec_8h.html#a9936252c73ecd66c0fc1f72b05494824", null ],
     [ "testReceptorSerialize", "receptor__spec_8h.html#a0c65a8eec063de14d49ae6c3fadcf0d8", null ],
-    [ "testReceptorSignal", "receptor__spec_8h.html#a30e3c3b82bdb2f5e34975e91e6106d2e", null ],
-    [ "testSemtrexDump", "receptor__spec_8h.html#aca7232031cea0653cd08aa18c72aa12b", null ]
+    [ "testReceptorSignal", "receptor__spec_8h.html#a30e3c3b82bdb2f5e34975e91e6106d2e", null ]
 ];

@@ -111,11 +111,18 @@ $(document).ready(function(){initNavTree('structSvalue.html','');});
 <div class="contents">
 
 <p><code>#include &lt;<a class="el" href="semtrex_8h_source.html">semtrex.h</a>&gt;</code></p>
+<div class="dynheader">
+Collaboration diagram for Svalue:</div>
+<div class="dyncontent">
+<div class="center"><img src="structSvalue__coll__graph.png" border="0" usemap="#Svalue_coll__map" alt="Collaboration graph"/></div>
+<map name="Svalue_coll__map" id="Svalue_coll__map">
+<area shape="rect" id="node2" href="structSemanticID.html" title="SemanticID" alt="" coords="5,5,96,32"/></map>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Data Fields</h2></td></tr>
 <tr class="memitem:a0ad23032f404832b4ebb3d21d6ad2add"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0ad23032f404832b4ebb3d21d6ad2add"></a>
-Symbol&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSvalue.html#a0ad23032f404832b4ebb3d21d6ad2add">symbol</a></td></tr>
+<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSvalue.html#a0ad23032f404832b4ebb3d21d6ad2add">symbol</a></td></tr>
 <tr class="memdesc:a0ad23032f404832b4ebb3d21d6ad2add"><td class="mdescLeft">&#160;</td><td class="mdescRight">Symbol is the semantic type. Here we're storing the integer that represents the semantic type. For example, FIRST_NAME. <br /></td></tr>
 <tr class="separator:a0ad23032f404832b4ebb3d21d6ad2add"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe7d3d6c663be6c40232d73dc8aa49b8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afe7d3d6c663be6c40232d73dc8aa49b8"></a>
@@ -131,7 +138,7 @@ ValueData&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=
 <div class="textblock"><p>The <a class="el" href="structSvalue.html">Svalue</a> represents the surface of a semtrex value literal.</p>
 <p>"value" is not a pointer to another memory location but just a key to the beginning for where the value starts in this struct. ValueData is not a pointer to some other memory space because in general, tree surfaces have to hold the actual data, not pointers to other parts of memory, because they can't be followed by ceptr utilities that manipulate trees, which include serialization, freeing, cloning, etc. </p>
 
-<p>Definition at line <a class="el" href="semtrex_8h_source.html#l00068">68</a> of file <a class="el" href="semtrex_8h_source.html">semtrex.h</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8h_source.html#l00070">70</a> of file <a class="el" href="semtrex_8h_source.html">semtrex.h</a>.</p>
 </div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li>src/<a class="el" href="semtrex_8h_source.html">semtrex.h</a></li>
 </ul>
@@ -141,7 +148,7 @@ ValueData&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="structSvalue.html">Svalue</a></li>
-    <li class="footer">Generated on Thu Sep 25 2014 10:21:42 for ceptr by
+    <li class="footer">Generated on Mon Oct 20 2014 10:49:24 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

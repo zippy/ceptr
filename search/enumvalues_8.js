@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['param_5fref',['PARAM_REF',['../sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a01024e4cdc48465474a42afe32f1d95d',1,'sys_symbols.h']]]
+  ['param_5fref_5fid',['PARAM_REF_ID',['../sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a061d417b0500f472796fdccd6a979f49',1,'sys_symbols.h']]],
+  ['pending_5fsignals_5fid',['PENDING_SIGNALS_ID',['../sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ab70e70ef75e3ccdcd72c4ef0a4d71def',1,'sys_symbols.h']]]
 ];

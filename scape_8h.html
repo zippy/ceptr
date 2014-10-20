@@ -115,7 +115,7 @@ Include dependency graph for scape.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="scape_8h__incl.png" border="0" usemap="#src_2scape_8h" alt=""/></div>
 <map name="src_2scape_8h" id="src_2scape_8h">
-<area shape="rect" id="node2" href="tree_8h.html" title="semantic trees header file " alt="" coords="281,80,335,107"/><area shape="rect" id="node5" href="ceptr__error_8h_source.html" title="ceptr_error.h" alt="" coords="397,155,491,181"/><area shape="rect" id="node9" href="sys__symbols_8h.html" title="Defines hard&#45;coded system defined symbols. " alt="" coords="159,155,269,181"/><area shape="rect" id="node10" href="sys__structures_8h.html" title="Defines hard&#45;coded system defined structures. " alt="" coords="202,229,320,256"/><area shape="rect" id="node11" href="ceptr__types_8h_source.html" title="ceptr_types.h" alt="" coords="76,229,177,256"/><area shape="rect" id="node16" href="sys__processes_8h.html" title="Defines hard&#45;coded system defined processes. " alt="" coords="515,155,636,181"/><area shape="rect" id="node13" href="uthash_8h_source.html" title="uthash.h" alt="" coords="92,304,164,331"/></map>
+<area shape="rect" id="node2" href="tree_8h.html" title="semantic trees header file " alt="" coords="249,80,303,107"/><area shape="rect" id="node5" href="ceptr__error_8h_source.html" title="ceptr_error.h" alt="" coords="369,155,463,181"/><area shape="rect" id="node9" href="sys__symbols_8h.html" title="Defines hard&#45;coded system defined symbols. " alt="" coords="127,155,237,181"/><area shape="rect" id="node10" href="sys__structures_8h.html" title="Defines hard&#45;coded system defined structures. " alt="" coords="174,229,292,256"/><area shape="rect" id="node11" href="ceptr__types_8h_source.html" title="ceptr_types.h" alt="" coords="85,304,187,331"/><area shape="rect" id="node16" href="sys__processes_8h.html" title="Defines hard&#45;coded system defined processes. " alt="" coords="487,155,608,181"/><area shape="rect" id="node13" href="uthash_8h_source.html" title="uthash.h" alt="" coords="99,379,171,405"/></map>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -130,7 +130,7 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
-<tr class="memitem:a4262c29b48e99f7254b1ceef9bae0436"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structScape.html">Scape</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="scape_8h.html#a4262c29b48e99f7254b1ceef9bae0436">_s_new</a> (Symbol key_source, Symbol data_source)</td></tr>
+<tr class="memitem:a4262c29b48e99f7254b1ceef9bae0436"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structScape.html">Scape</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="scape_8h.html#a4262c29b48e99f7254b1ceef9bae0436">_s_new</a> (<a class="el" href="structSemanticID.html">Symbol</a> key_source, <a class="el" href="structSemanticID.html">Symbol</a> data_source)</td></tr>
 <tr class="separator:a4262c29b48e99f7254b1ceef9bae0436"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3248dd3373ca8f722b69d385aec37d7d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="scape_8h.html#a3248dd3373ca8f722b69d385aec37d7d">_s_free</a> (<a class="el" href="structScape.html">Scape</a> *s)</td></tr>
 <tr class="separator:a3248dd3373ca8f722b69d385aec37d7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -176,7 +176,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>add a new element into a scape</p>
-<p>[in] s the scape [in] key the tree node which is the key [in] xaddr the instance address to be scaped</p>
+<p>[in] s the scape [in] h a hash of the tree node which is the key [in] xaddr the instance address to be scaped</p>
 <p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structScape.html">Scape</a> *s = <a class="code" href="scape_8c.html#a4262c29b48e99f7254b1ceef9bae0436">_s_new</a>(TEST_INT_SYMBOL,TEST_STR_SYMBOL);</div>
 <div class="line">    <a class="code" href="structXaddr.html">Xaddr</a> x = {1,3};  <span class="comment">// DUMMY XADDR</span></div>
 <div class="line">    <a class="code" href="structTnode.html">Tnode</a> *t = <a class="code" href="group__tree.html#gab438eeedb3eb6c1e20171b33d8ec499d">_t_newi</a>(0,TEST_INT_SYMBOL,31415);</div>
@@ -185,7 +185,7 @@ Functions</h2></td></tr>
 <div class="line"></div>
 <div class="line">    <span class="comment">// check that element was added</span></div>
 <div class="line">    <a class="code" href="structXaddr.html">Xaddr</a> xg = <a class="code" href="scape_8c.html#a94d326b6bc334bd6bcfdcd4fdcd29439">_s_get</a>(s,h);</div>
-<div class="line">    spec_is_equal(xg.symbol,x.symbol);</div>
+<div class="line">    spec_is_sem_equal(xg.symbol,x.symbol);</div>
 <div class="line">    spec_is_equal(xg.addr,x.addr);</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// check that a different hash returns the null xaddr</span></div>
@@ -253,7 +253,7 @@ Functions</h2></td></tr>
 <div class="line"></div>
 <div class="line">    <span class="comment">// check that element was added</span></div>
 <div class="line">    <a class="code" href="structXaddr.html">Xaddr</a> xg = <a class="code" href="scape_8c.html#a94d326b6bc334bd6bcfdcd4fdcd29439">_s_get</a>(s,h);</div>
-<div class="line">    spec_is_equal(xg.symbol,x.symbol);</div>
+<div class="line">    spec_is_sem_equal(xg.symbol,x.symbol);</div>
 <div class="line">    spec_is_equal(xg.addr,x.addr);</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// check that a different hash returns the null xaddr</span></div>
@@ -276,13 +276,13 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="structScape.html">Scape</a>* _s_new </td>
           <td>(</td>
-          <td class="paramtype">Symbol&#160;</td>
+          <td class="paramtype"><a class="el" href="structSemanticID.html">Symbol</a>&#160;</td>
           <td class="paramname"><em>key_source</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Symbol&#160;</td>
+          <td class="paramtype"><a class="el" href="structSemanticID.html">Symbol</a>&#160;</td>
           <td class="paramname"><em>data_source</em>&#160;</td>
         </tr>
         <tr>
@@ -309,7 +309,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="scape_8h.html">scape.h</a></li>
-    <li class="footer">Generated on Thu Sep 25 2014 10:21:42 for ceptr by
+    <li class="footer">Generated on Mon Oct 20 2014 10:49:24 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

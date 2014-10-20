@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['http_5freceptor_5fuuid',['HTTP_RECEPTOR_UUID',['../vmhost__spec_8h.html#a6c1d54ae50d06239a1620966011a094d',1,'vmhost_spec.h']]]
+  ['sread',['SREAD',['../receptor_8c.html#a3f7ee4a117ea9cd3ad10aaef8a50400a',1,'receptor.c']]],
+  ['swrite',['SWRITE',['../receptor_8c.html#a3ffbefdb57db8005ed3fc023c39763b1',1,'receptor.c']]]
 ];

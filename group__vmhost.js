@@ -6,11 +6,14 @@ var group__vmhost =
       [ "active_receptors", "structVMHost.html#a22cb54c0775fae3a10bd9d4e1ce7233e", null ],
       [ "c", "structVMHost.html#a53bffdb41bcc4096902aabf8ab029637", null ],
       [ "installed_receptors", "structVMHost.html#abc9dab8da288b7f9ad20988e545a56f9", null ],
+      [ "pending_signals", "structVMHost.html#a6a118e5497da0e700546814fdc6f840f", null ],
       [ "r", "structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e", null ]
     ] ],
     [ "_v_activate", "group__vmhost.html#ga53694170e5452b8062ec405e6a9a3f60", null ],
     [ "_v_free", "group__vmhost.html#ga44e0f6d62e38448bfa058f287cc463eb", null ],
     [ "_v_install_r", "group__vmhost.html#ga2fa3f1a83c18a7c6c8a5a5f7d3aa1139", null ],
     [ "_v_load_receptor_package", "group__vmhost.html#gaa3dd6066c4af50e8497e8013ccc413c2", null ],
-    [ "_v_new", "group__vmhost.html#gab6fbe5683628fb0d62a966316ced938d", null ]
+    [ "_v_new", "group__vmhost.html#gab6fbe5683628fb0d62a966316ced938d", null ],
+    [ "_v_process_signals", "group__vmhost.html#ga9f2392452e0f01af0e35193a804f58c5", null ],
+    [ "_v_send", "group__vmhost.html#ga32337cf7ad6431ae6834b6d1265fceec", null ]
 ];

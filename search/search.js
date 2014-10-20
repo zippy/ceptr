@@ -11,11 +11,11 @@ var indexSectionsWithContent =
   1: "diprstuvx",
   2: "cdhlprstv",
   3: "_adlpst",
-  4: "_acdfghiklmoprstv",
+  4: "_acdfghiklmoprstuv",
   5: "p",
-  6: "fst",
+  6: "fs",
   7: "abcefilmprst",
-  8: "_hs",
+  8: "_s",
   9: "rstv",
   10: "bcrt"
 };

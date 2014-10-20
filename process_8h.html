@@ -115,7 +115,7 @@ Include dependency graph for process.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="process_8h__incl.png" border="0" usemap="#src_2process_8h" alt=""/></div>
 <map name="src_2process_8h" id="src_2process_8h">
-<area shape="rect" id="node2" href="tree_8h.html" title="semantic trees header file " alt="" coords="281,80,335,107"/><area shape="rect" id="node5" href="ceptr__error_8h_source.html" title="ceptr_error.h" alt="" coords="397,155,491,181"/><area shape="rect" id="node9" href="sys__symbols_8h.html" title="Defines hard&#45;coded system defined symbols. " alt="" coords="159,155,269,181"/><area shape="rect" id="node10" href="sys__structures_8h.html" title="Defines hard&#45;coded system defined structures. " alt="" coords="202,229,320,256"/><area shape="rect" id="node11" href="ceptr__types_8h_source.html" title="ceptr_types.h" alt="" coords="76,229,177,256"/><area shape="rect" id="node16" href="sys__processes_8h.html" title="Defines hard&#45;coded system defined processes. " alt="" coords="515,155,636,181"/><area shape="rect" id="node13" href="uthash_8h_source.html" title="uthash.h" alt="" coords="92,304,164,331"/></map>
+<area shape="rect" id="node2" href="tree_8h.html" title="semantic trees header file " alt="" coords="249,80,303,107"/><area shape="rect" id="node5" href="ceptr__error_8h_source.html" title="ceptr_error.h" alt="" coords="369,155,463,181"/><area shape="rect" id="node9" href="sys__symbols_8h.html" title="Defines hard&#45;coded system defined symbols. " alt="" coords="127,155,237,181"/><area shape="rect" id="node10" href="sys__structures_8h.html" title="Defines hard&#45;coded system defined structures. " alt="" coords="174,229,292,256"/><area shape="rect" id="node11" href="ceptr__types_8h_source.html" title="ceptr_types.h" alt="" coords="85,304,187,331"/><area shape="rect" id="node16" href="sys__processes_8h.html" title="Defines hard&#45;coded system defined processes. " alt="" coords="487,155,608,181"/><area shape="rect" id="node13" href="uthash_8h_source.html" title="uthash.h" alt="" coords="99,379,171,405"/></map>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -139,7 +139,7 @@ This graph shows which files directly or indirectly include this file:</div>
 Error&#160;</td><td class="memItemRight" valign="bottom"><b>_p_reduce</b> (<a class="el" href="structDefs.html">Defs</a> defs, <a class="el" href="structTnode.html">Tnode</a> *run_tree)</td></tr>
 <tr class="separator:a18cadf450c796b221ed2f01a9f74c5fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7bf362d453b53c48ac38741d9479e54"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab7bf362d453b53c48ac38741d9479e54"></a>
-<a class="el" href="structTnode.html">Tnode</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>__p_make_run_tree</b> (<a class="el" href="structTnode.html">Tnode</a> *processes, Process p, <a class="el" href="structTnode.html">Tnode</a> *params)</td></tr>
+<a class="el" href="structTnode.html">Tnode</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>__p_make_run_tree</b> (<a class="el" href="structTnode.html">Tnode</a> *processes, <a class="el" href="structSemanticID.html">Process</a> p, <a class="el" href="structTnode.html">Tnode</a> *params)</td></tr>
 <tr class="separator:ab7bf362d453b53c48ac38741d9479e54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a998e6c95a4167aa6db0652aeb7b4d5c7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTnode.html">Tnode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="process_8h.html#a998e6c95a4167aa6db0652aeb7b4d5c7">_p_make_run_tree</a> (<a class="el" href="structTnode.html">Tnode</a> *processes, <a class="el" href="structTnode.html">Tnode</a> *p, int num_params,...)</td></tr>
 <tr class="separator:a998e6c95a4167aa6db0652aeb7b4d5c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -195,7 +195,7 @@ Error&#160;</td><td class="memItemRight" valign="bottom"><b>_p_reduce</b> (<a cl
 <div class="line">    <a class="code" href="structDefs.html">Defs</a> defs = {0,0,processes};</div>
 <div class="line">    <span class="keywordtype">char</span> buf[2000];</div>
 <div class="line"></div>
-<div class="line">    Process if_even = <a class="code" href="process__spec_8h.html#af7c71df867c868c32ede265527441f09">_defIfEven</a>(processes);  <span class="comment">// add the if_even process to our defs</span></div>
+<div class="line">    <a class="code" href="structSemanticID.html">Process</a> if_even = <a class="code" href="process__spec_8h.html#af7c71df867c868c32ede265527441f09">_defIfEven</a>(processes);  <span class="comment">// add the if_even process to our defs</span></div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// check that it dumps nicely, including showing the param_refs as paths</span></div>
 <div class="line">    <span class="keywordtype">int</span> p[] = {1,3,TREE_PATH_TERMINATOR};</div>
@@ -203,7 +203,7 @@ Error&#160;</td><td class="memItemRight" valign="bottom"><b>_p_reduce</b> (<a cl
 <div class="line">    spec_is_str_equal(buf,<span class="stringliteral">&quot; (process:IF (process:EQ_INT (process:MOD_INT (PARAM_REF:/2/1) (TEST_INT_SYMBOL:2)) (TEST_INT_SYMBOL:0)) (PARAM_REF:/2/2) (PARAM_REF:/2/3))&quot;</span>);</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// create a run tree right in the position to &quot;call&quot; this function</span></div>
-<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *t = <a class="code" href="group__tree.html#ga17676267c6fb457dd1d086f37641544a">_t_new_root</a>(<a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3ae507944efd4eac222cf6554a37e4a3d3">RUN_TREE</a>);</div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *t = <a class="code" href="group__tree.html#ga17676267c6fb457dd1d086f37641544a">_t_new_root</a>(RUN_TREE);</div>
 <div class="line">    <a class="code" href="structTnode.html">Tnode</a> *n = <a class="code" href="group__tree.html#gaff88720dad09389f6b7f35f7985d8efd">_t_newr</a>(t,if_even);</div>
 <div class="line">    <a class="code" href="group__tree.html#gab438eeedb3eb6c1e20171b33d8ec499d">_t_newi</a>(n,TEST_INT_SYMBOL,99);</div>
 <div class="line">    <a class="code" href="group__tree.html#gab438eeedb3eb6c1e20171b33d8ec499d">_t_newi</a>(n,TEST_INT_SYMBOL,123);</div>
@@ -217,7 +217,7 @@ Error&#160;</td><td class="memItemRight" valign="bottom"><b>_p_reduce</b> (<a cl
 <div class="line">    <a class="code" href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a>(processes);</div>
 <div class="line">    <a class="code" href="group__tree.html#gac9311eb831d86ab8395f9c1c81f584d9">_t_free</a>(t);</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="process_8c_source.html#l00089">89</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+<p>Definition at line <a class="el" href="process_8c_source.html#l00088">88</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
 </div>
 </div>
@@ -268,7 +268,7 @@ Error&#160;</td><td class="memItemRight" valign="bottom"><b>_p_reduce</b> (<a cl
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structTnode.html">Tnode</a> RUN_TREE tree </dd></dl>
 
-<p>Definition at line <a class="el" href="process_8c_source.html#l00242">242</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+<p>Definition at line <a class="el" href="process_8c_source.html#l00241">241</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
 </div>
 </div>
@@ -278,7 +278,7 @@ Error&#160;</td><td class="memItemRight" valign="bottom"><b>_p_reduce</b> (<a cl
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="process_8h.html">process.h</a></li>
-    <li class="footer">Generated on Thu Sep 25 2014 10:21:42 for ceptr by
+    <li class="footer">Generated on Mon Oct 20 2014 10:49:24 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

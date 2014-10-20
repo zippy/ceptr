@@ -142,6 +142,10 @@ Functions</h2></td></tr>
 <tr class="separator:ga2fa3f1a83c18a7c6c8a5a5f7d3aa1139"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga53694170e5452b8062ec405e6a9a3f60"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vmhost.html#ga53694170e5452b8062ec405e6a9a3f60">_v_activate</a> (<a class="el" href="structVMHost.html">VMHost</a> *v, <a class="el" href="structXaddr.html">Xaddr</a> x)</td></tr>
 <tr class="separator:ga53694170e5452b8062ec405e6a9a3f60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga32337cf7ad6431ae6834b6d1265fceec"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structXaddr.html">Xaddr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vmhost.html#ga32337cf7ad6431ae6834b6d1265fceec">_v_send</a> (<a class="el" href="structVMHost.html">VMHost</a> *v, <a class="el" href="structXaddr.html">Xaddr</a> to, <a class="el" href="structXaddr.html">Xaddr</a> from, Aspect aspect, <a class="el" href="structTnode.html">Tnode</a> *contents)</td></tr>
+<tr class="separator:ga32337cf7ad6431ae6834b6d1265fceec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9f2392452e0f01af0e35193a804f58c5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vmhost.html#ga9f2392452e0f01af0e35193a804f58c5">_v_process_signals</a> (<a class="el" href="structVMHost.html">VMHost</a> *v)</td></tr>
+<tr class="separator:ga9f2392452e0f01af0e35193a804f58c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>The Virtual Machine Host runs receptors and interfaces between the outside world and the cptr world. </p>
@@ -178,9 +182,9 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000023">Todo:</a></b></dt><dd>for now we are just storing the active receptors in the receptor tree later this will probably have to be optimized into a hash for faster access </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000024">Todo:</a></b></dt><dd>for now we are just storing the active receptors in the receptor tree later this will probably have to be optimized into a hash/scape for faster access </dd></dl>
 
-<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00136">136</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
+<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00137">137</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
 
 </div>
 </div>
@@ -205,7 +209,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00040">40</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
+<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00041">41</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
 
 </div>
 </div>
@@ -255,30 +259,36 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structXaddr.html">Xaddr</a> of the instance</dd></dl>
-<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structVMHost.html">VMHost</a> *v = <a class="code" href="group__vmhost.html#gab6fbe5683628fb0d62a966316ced938d">_v_new</a>();</div>
+<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line"><span class="comment">/*     VMHost *v = _v_new(); */</span></div>
 <div class="line"></div>
-<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *p = <a class="code" href="vmhost__spec_8h.html#a6aed16c49efbdc84ecb2162c7336ac07">_makeTestHTTPReceptorPackage</a>();</div>
-<div class="line">    <a class="code" href="structXaddr.html">Xaddr</a> xp = <a class="code" href="group__vmhost.html#gaa3dd6066c4af50e8497e8013ccc413c2">_v_load_receptor_package</a>(v,p);</div>
+<div class="line"><span class="comment">/*     Tnode *p = _makeTestHTTPServerReceptorPackage(); */</span></div>
+<div class="line"><span class="comment">/*     Xaddr xp = _v_load_receptor_package(v,p); */</span></div>
 <div class="line"></div>
-<div class="line">    <a class="code" href="structXaddr.html">Xaddr</a> x = <a class="code" href="group__vmhost.html#ga2fa3f1a83c18a7c6c8a5a5f7d3aa1139">_v_install_r</a>(v,xp,0,<span class="stringliteral">&quot;http server&quot;</span>);</div>
+<div class="line"><span class="comment">/*     Xaddr x = _v_install_r(v,xp,0,&quot;hello world&quot;); */</span></div>
 <div class="line"></div>
-<div class="line">    <span class="comment">// installing the receptor should instantiate a receptor from the package with the given bindings and symbol label</span></div>
-<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *r = <a class="code" href="group__receptor.html#ga49768dace37ae4974471268fa197f953">_r_get_instance</a>(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,x);</div>
-<div class="line">    spec_is_symbol_equal(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,x.symbol,<a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a480946102f942b1883e39520e4c5222a">INSTALLED_RECEPTOR</a>);</div>
-<div class="line">    spec_is_symbol_equal(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,<a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(_t_child(r,1)),<a class="code" href="group__receptor.html#gacce906c9de30765f458599777b72be90">_r_get_symbol_by_label</a>(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,<span class="stringliteral">&quot;http server&quot;</span>));</div>
+<div class="line"><span class="comment">/*     // installing the receptor should instantiate a receptor from the package with the given bindings and symbol label */</span></div>
+<div class="line"><span class="comment">/*     Tnode *r = _r_get_instance(v-&gt;r,x); */</span></div>
+<div class="line"><span class="comment">/*     spec_is_symbol_equal(v-&gt;r,x.symbol,INSTALLED_RECEPTOR); */</span></div>
+<div class="line"><span class="comment">/*     spec_is_symbol_equal(v-&gt;r,_t_symbol(_t_child(r,1)),_r_get_symbol_by_label(v-&gt;r,&quot;hello world&quot;)); */</span></div>
 <div class="line"></div>
-<div class="line">    <span class="comment">// and the definition labels of the instantiated receptor should all be set up properly</span></div>
-<div class="line">    <a class="code" href="structReceptor.html">Receptor</a> *httpr = (<a class="code" href="structReceptor.html">Receptor</a> *)<a class="code" href="group__tree.html#ga5a292a02511c82863edfcaa72fa9698c">_t_surface</a>(_t_child(r,1));</div>
-<div class="line">    spec_is_equal(<a class="code" href="group__receptor.html#gacce906c9de30765f458599777b72be90">_r_get_symbol_by_label</a>(httpr,<span class="stringliteral">&quot;HTTP_REQUEST&quot;</span>),HTTP_REQUEST);</div>
-<div class="line">    spec_is_equal(<a class="code" href="group__receptor.html#gacce906c9de30765f458599777b72be90">_r_get_symbol_by_label</a>(httpr,<span class="stringliteral">&quot;off-line response&quot;</span>),-1); <span class="comment">// hard-coded process symbol</span></div>
+<div class="line"><span class="comment">/*     // and the definition labels of the instantiated receptor should all be set up properly */</span></div>
+<div class="line"><span class="comment">/*     Receptor *httpr = (Receptor *)_t_surface(_t_child(r,1)); */</span></div>
+<div class="line"><span class="comment">/*     spec_is_equal(_r_get_symbol_by_label(httpr,&quot;HTTP_REQUEST&quot;),HTTP_REQUEST); */</span></div>
+<div class="line"><span class="comment">/*     spec_is_equal(_r_get_symbol_by_label(httpr,&quot;hellow&quot;),-1); // hard-coded process symbol */</span></div>
 <div class="line"></div>
-<div class="line">    <span class="comment">// trying to re-install the receptor should fail</span></div>
-<div class="line">    x = <a class="code" href="group__vmhost.html#ga2fa3f1a83c18a7c6c8a5a5f7d3aa1139">_v_install_r</a>(v,xp,0,<span class="stringliteral">&quot;http server&quot;</span>);</div>
-<div class="line">    spec_is_true(is_null_xaddr(x));</div>
+<div class="line"><span class="comment">/*     // trying to re-install the receptor should fail */</span></div>
+<div class="line"><span class="comment">/*     x = _v_install_r(v,xp,0,&quot;hellow world&quot;); */</span></div>
+<div class="line"><span class="comment">/*     spec_is_true(is_null_xaddr(x)); */</span></div>
 <div class="line"></div>
-<div class="line">    <a class="code" href="group__vmhost.html#ga44e0f6d62e38448bfa058f287cc463eb">_v_free</a>(v);</div>
+<div class="line"><span class="comment">/*     // because the receptor&#39;s id is in the installed_receptors scape */</span></div>
+<div class="line"><span class="comment">/*     Tnode *pack = _r_get_instance(v-&gt;c,xp); */</span></div>
+<div class="line"><span class="comment">/*     Tnode *id = _t_child(pack,2); */</span></div>
+<div class="line"><span class="comment">/*     TreeHash h = _t_hash(v-&gt;r-&gt;defs.symbols,v-&gt;r-&gt;defs.structures,id); */</span></div>
+<div class="line"><span class="comment">/*     spec_is_xaddr_equal(v-&gt;r,_s_get(v-&gt;installed_receptors,h),xp); */</span></div>
+<div class="line"></div>
+<div class="line"><span class="comment">/*     _v_free(v); */</span></div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00081">81</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
+<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00082">82</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
 
 </div>
 </div>
@@ -314,17 +324,17 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structXaddr.html">Xaddr</a> of the receptor package in the compository </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000022">Todo:</a></b></dt><dd>validate signature and checksums??</dd></dl>
-<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structVMHost.html">VMHost</a> *v = <a class="code" href="group__vmhost.html#gab6fbe5683628fb0d62a966316ced938d">_v_new</a>();</div>
-<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *p = <a class="code" href="vmhost__spec_8h.html#a6aed16c49efbdc84ecb2162c7336ac07">_makeTestHTTPReceptorPackage</a>();</div>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000023">Todo:</a></b></dt><dd>validate signature and checksums??</dd></dl>
+<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line"><span class="comment">/*     VMHost *v = _v_new(); */</span></div>
+<div class="line"><span class="comment">/*     Tnode *p = _makeTestHTTPAppReceptorPackage(); */</span></div>
 <div class="line"></div>
-<div class="line">    <a class="code" href="structXaddr.html">Xaddr</a> x = <a class="code" href="group__vmhost.html#gaa3dd6066c4af50e8497e8013ccc413c2">_v_load_receptor_package</a>(v,p);</div>
-<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *p1 = <a class="code" href="group__receptor.html#ga49768dace37ae4974471268fa197f953">_r_get_instance</a>(v-&gt;<a class="code" href="structVMHost.html#a53bffdb41bcc4096902aabf8ab029637">c</a>,x);</div>
+<div class="line"><span class="comment">/*     Xaddr x = _v_load_receptor_package(v,p); */</span></div>
+<div class="line"><span class="comment">/*     Tnode *p1 = _r_get_instance(v-&gt;c,x); */</span></div>
 <div class="line"></div>
-<div class="line">    spec_is_ptr_equal(p,p1);</div>
-<div class="line">    <a class="code" href="group__vmhost.html#ga44e0f6d62e38448bfa058f287cc463eb">_v_free</a>(v);</div>
+<div class="line"><span class="comment">/*     spec_is_ptr_equal(p,p1); */</span></div>
+<div class="line"><span class="comment">/*     _v_free(v); */</span></div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00063">63</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
+<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00064">64</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
 
 </div>
 </div>
@@ -347,15 +357,185 @@ Functions</h2></td></tr>
 <p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structVMHost.html">VMHost</a> *v = <a class="code" href="group__vmhost.html#gab6fbe5683628fb0d62a966316ced938d">_v_new</a>();</div>
 <div class="line"></div>
 <div class="line">    spec_is_symbol_equal(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,<a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>-&gt;<a class="code" href="structReceptor.html#a7a280e923e97768c67f90303bcf8c152">root</a>),VM_HOST_RECEPTOR);</div>
-<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *ar_tree = _t_child(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>-&gt;<a class="code" href="structReceptor.html#a7a280e923e97768c67f90303bcf8c152">root</a>,3);</div>
-<div class="line">    spec_is_symbol_equal(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,<a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(ar_tree),<a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a1b524210a51f2bd8f41ccf2ba7b4ba63">ACTIVE_RECEPTORS</a>);</div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *ar_tree = _t_child(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>-&gt;<a class="code" href="structReceptor.html#a7a280e923e97768c67f90303bcf8c152">root</a>,4);</div>
+<div class="line">    spec_is_symbol_equal(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,<a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(ar_tree),ACTIVE_RECEPTORS);</div>
 <div class="line">    spec_is_ptr_equal(v-&gt;<a class="code" href="structVMHost.html#a22cb54c0775fae3a10bd9d4e1ce7233e">active_receptors</a>,ar_tree);</div>
 <div class="line">    spec_is_equal(<a class="code" href="group__tree.html#gaf459b3de598bba95efe941c4960f845d">_t_children</a>(ar_tree),0);</div>
-<div class="line">    spec_is_equal(v-&gt;installed_receptors-&gt;key_source,<a class="code" href="sys__symbols_8h.html#ab0f6206b340472c7ace01d1e9d4b87f3a3bde3ee377bd6085fe5caaaf332a2ec4">RECEPTOR_IDENTIFIER</a>);</div>
-<div class="line">    spec_is_equal(v-&gt;installed_receptors-&gt;data_source,RECEPTOR);</div>
+<div class="line"></div>
+<div class="line">    <a class="code" href="structTnode.html">Tnode</a> *s_tree = _t_child(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>-&gt;<a class="code" href="structReceptor.html#a7a280e923e97768c67f90303bcf8c152">root</a>,5);</div>
+<div class="line">    spec_is_symbol_equal(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,<a class="code" href="group__tree.html#gabfc4da7bf9475fb3bad4ea20b5f78fab">_t_symbol</a>(s_tree),PENDING_SIGNALS);</div>
+<div class="line">    spec_is_ptr_equal(v-&gt;pending_signals,s_tree);</div>
+<div class="line">    spec_is_equal(<a class="code" href="group__tree.html#gaf459b3de598bba95efe941c4960f845d">_t_children</a>(s_tree),0);</div>
+<div class="line"></div>
+<div class="line">    spec_is_sem_equal(v-&gt;installed_receptors-&gt;key_source,RECEPTOR_IDENTIFIER);</div>
+<div class="line">    spec_is_sem_equal(v-&gt;installed_receptors-&gt;data_source,RECEPTOR);</div>
 <div class="line">    <a class="code" href="group__vmhost.html#ga44e0f6d62e38448bfa058f287cc463eb">_v_free</a>(v);</div>
 </div><!-- fragment -->
 <p>Definition at line <a class="el" href="vmhost_8c_source.html#l00025">25</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga9f2392452e0f01af0e35193a804f58c5"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void _v_process_signals </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structVMHost.html">VMHost</a> *&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>walk through the list of pending signals and deliver them </p>
+
+<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00162">162</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga32337cf7ad6431ae6834b6d1265fceec"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structXaddr.html">Xaddr</a> _v_send </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structVMHost.html">VMHost</a> *&#160;</td>
+          <td class="paramname"><em>v</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structXaddr.html">Xaddr</a>&#160;</td>
+          <td class="paramname"><em>to</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structXaddr.html">Xaddr</a>&#160;</td>
+          <td class="paramname"><em>from</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Aspect&#160;</td>
+          <td class="paramname"><em>aspect</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTnode.html">Tnode</a> *&#160;</td>
+          <td class="paramname"><em>contents</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>queue a signal for processing</p>
+<p>first builds a SIGNAL tree, then instantiates and scapes it </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000025">Todo:</a></b></dt><dd>understand how it makes any sense at all to make an instance of the signal in context of the vmhost in which the content tree's symbols aren't defined!!!</dd></dl>
+<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line"><span class="comment">/*     VMHost *v = _v_new(); */</span></div>
+<div class="line"></div>
+<div class="line"><span class="comment">/*     // create and install a stub HTTP server receptor */</span></div>
+<div class="line"><span class="comment">/*     Tnode *httpd_rp = _makeTestHTTPServerReceptorPackage(); */</span></div>
+<div class="line"><span class="comment">/*     Xaddr httpd_px = _v_load_receptor_package(v,httpd_rp); */</span></div>
+<div class="line"><span class="comment">/*     Xaddr httpd_x = _v_install_r(v,httpd_px,0,&quot;http server&quot;); */</span></div>
+<div class="line"><span class="comment">/*     Tnode *installed_httpd = _r_get_instance(v-&gt;r,httpd_x); */</span></div>
+<div class="line"><span class="comment">/*     Receptor *httpd_r = (Receptor *)_t_surface(_t_child(installed_httpd,1)); */</span></div>
+<div class="line"></div>
+<div class="line"><span class="comment">/*     // create and install an app bound to a HOST */</span></div>
+<div class="line"><span class="comment">/*     Tnode *p = _makeTestHTTPAppReceptorPackage(); */</span></div>
+<div class="line"><span class="comment">/*     Xaddr xp = _v_load_receptor_package(v,p); */</span></div>
+<div class="line"></div>
+<div class="line"><span class="comment">/*     Tnode *b = _t_new_root(BINDINGS); */</span></div>
+<div class="line"><span class="comment">/*     Tnode *pair = _t_newr(b,BINDING_PAIR); */</span></div>
+<div class="line"><span class="comment">/*     char *host = &quot;helloworld.com&quot;; */</span></div>
+<div class="line"></div>
+<div class="line"><span class="comment">/*     _t_new(pair,MANIFEST_LABEL,&quot;host&quot;,5); */</span></div>
+<div class="line"><span class="comment">/*     _t_new(pair,HTTP_REQUEST_HOST,host,strlen(host)); */</span></div>
+<div class="line"></div>
+<div class="line"><span class="comment">/*     Xaddr x = _v_install_r(v,xp,b,&quot;hello world app&quot;); */</span></div>
+<div class="line"><span class="comment">/*     Tnode *installed_hellow = _r_get_instance(v-&gt;r,x); */</span></div>
+<div class="line"><span class="comment">/*     Receptor *hello_r = (Receptor *)_t_surface(_t_child(installed_hellow,1)); */</span></div>
+<div class="line"></div>
+<div class="line"><span class="comment">/*     // add a listener that matches on any request with &quot;Host: helloworld.org&quot; */</span></div>
+<div class="line"><span class="comment">/*     // /HTTP_REQUEST/.*,HTTP_REQUEST_HOST=helloworld.org */</span></div>
+<div class="line"><span class="comment">/*     Tnode *act = _t_newp(0,ACTION,-1); */</span></div>
+<div class="line"><span class="comment">/*     Tnode *expect = _t_new_root(EXPECTATION); */</span></div>
+<div class="line"><span class="comment">/*     Tnode *req = _t_newi(expect,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST); */</span></div>
+<div class="line"><span class="comment">/*     Tnode *ss = _t_newi(req,SEMTREX_SEQUENCE,0); */</span></div>
+<div class="line"><span class="comment">/*     Tnode *sss = _t_newi(ss,SEMTREX_ZERO_OR_MORE,0); */</span></div>
+<div class="line"><span class="comment">/*     _t_newi(sss,SEMTREX_SYMBOL_ANY,0); */</span></div>
+<div class="line"></div>
+<div class="line"><span class="comment">/*     int size = sizeof(Svalue)+strlen(host)+1; */</span></div>
+<div class="line"><span class="comment">/*     Svalue *sv = malloc(size); */</span></div>
+<div class="line"><span class="comment">/*     sv-&gt;symbol = HTTP_REQUEST_HOST; */</span></div>
+<div class="line"><span class="comment">/*     sv-&gt;length = strlen(host); */</span></div>
+<div class="line"><span class="comment">/*     strcpy((char *)&amp;sv-&gt;value,host); */</span></div>
+<div class="line"><span class="comment">/*     _t_new(ss,SEMTREX_VALUE_LITERAL,sv,size); */</span></div>
+<div class="line"></div>
+<div class="line"><span class="comment">/*     char buf[2000]; */</span></div>
+<div class="line"><span class="comment">/*     // just check that we got our semtrex right */</span></div>
+<div class="line"><span class="comment">/*     spec_is_str_equal(_dump_semtrex(test_HTTP_defs,req,buf),&quot;/(HTTP_REQUEST/.*,HTTP_REQUEST_HOST=helloworld.com)&quot;); */</span></div>
+<div class="line"><span class="comment">/*     free(sv); */</span></div>
+<div class="line"></div>
+<div class="line"><span class="comment">/*     _r_add_listener(hello_r,DEFAULT_ASPECT,HTTP_REQUEST,expect,act); */</span></div>
+<div class="line"></div>
+<div class="line"><span class="comment">/*     // build up an HTTP_REQUEST tree that corresponds with a simple get for host helloworld.com */</span></div>
+<div class="line"><span class="comment">/*     Tnode *s = _t_new_root(HTTP_REQUEST); */</span></div>
+<div class="line"><span class="comment">/*     Tnode *s_version = _t_newr(s,HTTP_REQUEST_VERSION); */</span></div>
+<div class="line"><span class="comment">/*     _t_newi(s_version,VERSION_MAJOR,1); */</span></div>
+<div class="line"><span class="comment">/*     _t_newi(s_version,VERSION_MINOR,1); */</span></div>
+<div class="line"><span class="comment">/*     Tnode *s_method = _t_newi(s,HTTP_REQUEST_METHOD,TEST_HTTP_METHOD_GET_VALUE); */</span></div>
+<div class="line"><span class="comment">/*     Tnode *s_path = _t_newr(s,HTTP_REQUEST_PATH); */</span></div>
+<div class="line"><span class="comment">/*     Tnode *s_host = _t_new(s,HTTP_REQUEST_HOST,&quot;helloworld.com&quot;,15); */</span></div>
+<div class="line"></div>
+<div class="line"><span class="comment">/*     // put it on the flux to simulate that it has just been parsed out of an octet stream from a TCP/IP receptor */</span></div>
+<div class="line"><span class="comment">/*     // @todo */</span></div>
+<div class="line"><span class="comment">/*     //int path[] = {1,2,TREE_PATH_TERMINATOR}; */</span></div>
+<div class="line"><span class="comment">/*     //Tnode *fs = _t_get(httpd_r-&gt;flux,path); */</span></div>
+<div class="line"></div>
+<div class="line"></div>
+<div class="line"></div>
+<div class="line"><span class="comment">/*     //simulate that an HTTP_Request signal from the http_server receptor has been sent */</span></div>
+<div class="line"></div>
+<div class="line"></div>
+<div class="line"><span class="comment">/*     Xaddr xs = _v_send(v,x,httpd_x,DEFAULT_ASPECT,s); */</span></div>
+<div class="line"></div>
+<div class="line"><span class="comment">/*     // confirm that the signal has not been delivered and is still in pending list (because receptors aren&#39;t active) */</span></div>
+<div class="line"><span class="comment">/*     spec_is_equal(_t_children(v-&gt;pending_signals),1); */</span></div>
+<div class="line"></div>
+<div class="line"><span class="comment">/*     // activate the two receptors */</span></div>
+<div class="line"><span class="comment">/*     _v_activate(v,httpd_x); */</span></div>
+<div class="line"><span class="comment">/*     _v_activate(v,x); */</span></div>
+<div class="line"></div>
+<div class="line"><span class="comment">/*     // confirm that the activate list has new children */</span></div>
+<div class="line"><span class="comment">/*     spec_is_equal(_t_children(v-&gt;active_receptors),2); */</span></div>
+<div class="line"></div>
+<div class="line"><span class="comment">/*     // and that they are the same as the installed receptors */</span></div>
+<div class="line"><span class="comment">/*     Tnode *ar; */</span></div>
+<div class="line"><span class="comment">/*     ar = _t_child(v-&gt;active_receptors,1); */</span></div>
+<div class="line"><span class="comment">/*     spec_is_ptr_equal(ar,installed_httpd); */</span></div>
+<div class="line"><span class="comment">/*     ar = _t_child(v-&gt;active_receptors,2); */</span></div>
+<div class="line"><span class="comment">/*     spec_is_ptr_equal(ar,installed_hellow); */</span></div>
+<div class="line"></div>
+<div class="line"><span class="comment">/*     // simulate round-robin processing of signals */</span></div>
+<div class="line"><span class="comment">/*     _v_process_signals(v); */</span></div>
+<div class="line"></div>
+<div class="line"><span class="comment">/*     // now confirm that the signal was sent, */</span></div>
+<div class="line"><span class="comment">/*     // first that the pending signals list is empty */</span></div>
+<div class="line"><span class="comment">/*     spec_is_equal(_t_children(v-&gt;pending_signals),0); */</span></div>
+<div class="line"></div>
+<div class="line"><span class="comment">/*     // and second, that a response is back at the http_server */</span></div>
+<div class="line"><span class="comment">/*     //@todo */</span></div>
+<div class="line"></div>
+<div class="line"><span class="comment">/*     _t_free(b); */</span></div>
+<div class="line"><span class="comment">/*     _v_free(v); */</span></div>
+</div><!-- fragment -->
+<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00151">151</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
 
 </div>
 </div>
@@ -364,7 +544,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Sep 25 2014 10:21:42 for ceptr by
+    <li class="footer">Generated on Mon Oct 20 2014 10:49:24 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

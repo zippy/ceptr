@@ -7,12 +7,18 @@ var group__semtrex =
       [ "symbol", "structSvalue.html#a0ad23032f404832b4ebb3d21d6ad2add", null ],
       [ "value", "structSvalue.html#a1030fdddc0222a677b53dadf8ca4c51f", null ]
     ] ],
-    [ "Sgroup", "structSgroup.html", [
-      [ "id", "structSgroup.html#a109c0dd2bd1575f6fecf8fa91e160da7", null ],
-      [ "type", "structSgroup.html#ab2e4e1ecc5bd0bca43c29c03b822d367", null ]
+    [ "SgroupOpen", "structSgroupOpen.html", [
+      [ "match_count", "structSgroupOpen.html#a9f6e05d9a8e1c06fe214feabe12eade5", null ],
+      [ "matches", "structSgroupOpen.html#add07caa7710f981545fb5eab1dc15afd", null ],
+      [ "symbol", "structSgroupOpen.html#a1daccf55b781d3df990334af45339d10", null ],
+      [ "uid", "structSgroupOpen.html#a498c3ea885c19b632ff633ebc0ddd06c", null ]
+    ] ],
+    [ "SgroupClose", "structSgroupClose.html", [
+      [ "openP", "structSgroupClose.html#a030dd195c46af36d36754d8d94aa143a", null ]
     ] ],
     [ "STypeData", "unionSTypeData.html", [
-      [ "group", "unionSTypeData.html#a9c3c3d0e2cdadb4f98f5ddb3bb571176", null ],
+      [ "groupc", "unionSTypeData.html#a4c6c8e7324d8b29c8292a7523f4cfeff", null ],
+      [ "groupo", "unionSTypeData.html#a762fc3124cc5a68133c857ef91d18041", null ],
       [ "symbol", "unionSTypeData.html#abff54fb9a7e4ab6d493e4615bf7293de", null ],
       [ "value", "unionSTypeData.html#a78d1d47572bb172f00a6cdfb3917697b", null ]
     ] ],
@@ -33,5 +39,6 @@ var group__semtrex =
     [ "_stx_makeFA", "group__semtrex.html#gaf5414357c680a8e2f318235c057bf76a", null ],
     [ "_t_get_match", "group__semtrex.html#gaa4419dc4f940274606f85a88d52949e7", null ],
     [ "_t_match", "group__semtrex.html#ga56c55fe5d429521c827cc67000898d0e", null ],
-    [ "_t_matchr", "group__semtrex.html#gaa43317db10f85873435792afb5c1cd4a", null ]
+    [ "_t_matchr", "group__semtrex.html#gaa43317db10f85873435792afb5c1cd4a", null ],
+    [ "parseSemtrex", "group__semtrex.html#ga1f66d06977618586bbdab0a41ee4a8fb", null ]
 ];

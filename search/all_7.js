@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['group',['group',['../unionSTypeData.html#a9c3c3d0e2cdadb4f98f5ddb3bb571176',1,'STypeData']]]
+  ['groupc',['groupc',['../unionSTypeData.html#a4c6c8e7324d8b29c8292a7523f4cfeff',1,'STypeData']]],
+  ['groupo',['groupo',['../unionSTypeData.html#a762fc3124cc5a68133c857ef91d18041',1,'STypeData']]]
 ];

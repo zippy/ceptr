@@ -1,20 +1,26 @@
 var def_8h =
 [
+    [ "_d_get_def", "group__def.html#gad88fa62ddc9421691f29f84a66cbf16d", null ],
+    [ "_d_get_process_code", "group__def.html#ga49c90740d599adc7b8dcc2e5898d711b", null ],
+    [ "_d_get_structure_def", "group__def.html#ga7bf5b8bca0140e82eae208798d72b008", null ],
+    [ "_d_get_symbol_def", "group__def.html#gab68da665adb3606f0d009d64375a86da", null ],
+    [ "SP", "group__def.html#ga7e7d9f7863d8f10a6f873d96dcc30c3d", null ],
+    [ "spec_is_sem_equal", "group__def.html#ga80335a2ccd7713087ec59e6353338eeb", null ],
     [ "ST", "group__def.html#ga7b1d66b49e535253a63dfbcdd7824092", null ],
     [ "SY", "group__def.html#gac76d6c38e944bff5cd2715506e3f8efd", null ],
     [ "__d_code_process", "group__def.html#ga1dc59ee8a878d248e706d3eac36ff3cf", null ],
     [ "__d_declare_symbol", "group__def.html#ga711a956190b8d06afc51a025253d663c", null ],
     [ "__t_dump", "group__def.html#ga4fce439dd11e882402da21816c3aa4b5", null ],
     [ "_d_build_def_semtrex", "group__def.html#ga1aea8bf1dcd0afaaf4545ceff6b95f2f", null ],
-    [ "_d_code_process", "group__def.html#gae1a5dfaf9657e2ccf00edc2fb39c96c1", null ],
-    [ "_d_declare_symbol", "group__def.html#gaa80e4d75f09953b71ff49b75a8d6745e", null ],
-    [ "_d_define_structure", "group__def.html#ga4205f785c519eead8b95ec1507a96a66", null ],
-    [ "_d_get_process_code", "group__def.html#ga71da1ef6e25419b52bcd7f2f19d862f2", null ],
+    [ "_d_code_process", "group__def.html#gabcaa130d7283ffc2682f904f0c887cbd", null ],
+    [ "_d_declare_symbol", "group__def.html#ga67292294e865aeacb10e8d49dc93f077", null ],
+    [ "_d_define_structure", "group__def.html#gaa909475e4bfc179929a086b6bae03b54", null ],
     [ "_d_get_process_name", "group__def.html#ga7b68f64dc811afebe4b8595b1914420e", null ],
     [ "_d_get_structure_name", "group__def.html#ga766db34af870b275213a4e828d826267", null ],
     [ "_d_get_structure_size", "group__def.html#ga3c241ad06b91beb3a717054ddb525c5b", null ],
     [ "_d_get_symbol_name", "group__def.html#gae5fc3e0b245984a477b4c13aacb2fc02", null ],
     [ "_d_get_symbol_size", "group__def.html#gafe7075c1b747aef014c7ac1161d61a29", null ],
     [ "_d_get_symbol_structure", "group__def.html#ga7670bc472e457eabeed706b2b43f94d3", null ],
-    [ "_dv_define_structure", "group__def.html#gade5d303272d21c276cd6826ab08c3537", null ]
+    [ "_dv_define_structure", "group__def.html#gade5d303272d21c276cd6826ab08c3537", null ],
+    [ "semeq", "group__def.html#gabcf3213518bfa365ca05298f802d0dd7", null ]
 ];
