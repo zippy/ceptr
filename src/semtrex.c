@@ -87,16 +87,18 @@ SState *state(StateType type,int *statesP) {
     return s;
 }
 
+int G_group_id;
 /**
  * Given a Semtrex tree, build a partial FSA (returned via in as a pointer to the starting state, a list of output states, and a count of the total number of states created).
  */
 char * __stx_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP) {
-    SState *s,*i,*last;
+    SState *s,*i,*last,*s1,*s2;
     Ptrlist *o,*o1;
     char *err;
     int state_type = -1;
     int x;
-    SemanticID group_id;
+    SemanticID group_symbol;
+    int group_id;
 
     int c = _t_children(t);
     Symbol sym = _t_symbol(t);
@@ -105,6 +107,8 @@ char * __stx_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP) {
 	state_type = StateValue;
     case SEMTREX_SYMBOL_LITERAL_ID:
 	if (state_type == -1) state_type = StateSymbol;
+    case SEMTREX_SYMBOL_EXCEPT_ID:
+	if (state_type == -1) state_type = StateSymbolExcept;
     case SEMTREX_SYMBOL_ANY_ID:
 	if (state_type == -1) state_type = StateAny;
 	if (c > 1) return "Literal must have 0 or 1 children";
@@ -117,7 +121,7 @@ char * __stx_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP) {
 	    s->data.value.value = malloc(sv->length);
 	    memcpy(s->data.value.value,&sv->value,sv->length);
 	}
-	else if (state_type == StateSymbol) {
+	else if ((state_type == StateSymbol) || (state_type == StateSymbolExcept)) {
 	    s->data.symbol = *(Symbol *)_t_surface(t);
 	}
 	*in = s;
@@ -137,14 +141,13 @@ char * __stx_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP) {
 	if (c == 0) return "Sequence must have children";
 	last = 0;
 	for(x=c;x>=1;x--) {
-	err = __stx_makeFA(_t_child(t,x),&i,&o,level,statesP);
-	if (err) return err;
+	    err = __stx_makeFA(_t_child(t,x),&i,&o,level,statesP);
+	    if (err) return err;
 
-	// if (o1->transition < 0) o1->transition += -level;
-	if (last) patch(o,last,level);
-	else *out = o;
-	last = i;
-    *in = i;
+	    if (last) patch(o,last,level);
+	    else *out = o;
+	    last = i;
+	    *in = i;
 	}
 	break;
     case SEMTREX_OR_ID:
@@ -190,19 +193,38 @@ char * __stx_makeFA(Tnode *t,SState **in,Ptrlist **out,int level,int *statesP) {
 	break;
     case SEMTREX_GROUP_ID:
 	if (c != 1) return "Group must have 1 child";
-	s = state(StateGroup,statesP);
+	s = state(StateGroupOpen,statesP);
 	*in = s;
-	group_id = *(SemanticID *)_t_surface(t);
-	s->data.group.id = group_id;
-	s->data.group.type = GroupOpen;
+	group_symbol = *(SemanticID *)_t_surface(t);
+	group_id = ++G_group_id;
+	s->data.groupo.symbol = group_symbol;
+	s->data.groupo.uid = group_id;
+	s->data.groupo.match_count = 0;
 	err = __stx_makeFA(_t_child(t,1),&i,&o,level,statesP);
 	if (err) return err;
 	s->out = i;
-	s = state(StateGroup,statesP);
-	patch(o,s,level);
-	s->data.group.id = group_id;
-	s->data.group.type = GroupClose;
-	*out = list1(&s->out);
+	s1 = state(StateGroupClose,statesP);
+	patch(o,s1,level);
+	s1->data.groupc.openP = s;
+	*out = list1(&s1->out);
+	break;
+    case SEMTREX_DESCEND_ID:
+	if (c != 1) return "Descend must have 1 child";
+	s = state(StateDescend,statesP);
+	*in = s;
+	err = __stx_makeFA(_t_child(t,1),&i,&o,level-1,statesP);
+	if (err) return err;
+	s->out = i;
+	*out = o;
+	break;
+    case SEMTREX_WALK_ID:
+	if (c != 1) return "Walk must have 1 child";
+	s = state(StateWalk,statesP);
+	*in = s;
+	err = __stx_makeFA(_t_child(t,1),&i,&o,level,statesP);
+	if (err) return err;
+	s->out = i;
+	*out = o;
 	break;
     default:
 	return "Unknown SEMTREX SYMBOL";
@@ -218,10 +240,11 @@ void _stx_dump(SState *s);
 SState * _stx_makeFA(Tnode *t,int *statesP) {
     SState *in;
     Ptrlist *o;
+    G_group_id = 0;
     char *err = __stx_makeFA(t,&in,&o,0,statesP);
     if (err != 0) {raise_error0(err);}
     patch(o,&matchstate,0);
-    //printf("\n");_stx_dump(in);
+    //    printf("\n");_stx_dump(in);
     return in;
 }
 
@@ -270,7 +293,11 @@ void _stx_freeFA(SState *s) {
  */
 int __t_match(SState *s,Tnode *t,Tnode *r) {
     char *p1,*p2;
-    int i;
+    int i,c,sm;
+    int matched;
+    SgroupOpen *o;
+    Tnode *m,*t1;
+
     //printf("tm: s:%d t:%d\n",s->data.symbol,t ? _t_symbol(t) : -1);
     switch(s->type) {
     case StateValue:
@@ -286,7 +313,10 @@ int __t_match(SState *s,Tnode *t,Tnode *r) {
 	}
 	// no break to fall through and check symbol
     case StateSymbol:
-	if (!t || (!semeq(s->data.symbol,_t_symbol(t)))) return 0;
+    case StateSymbolExcept:
+	sm = (!t || (!semeq(s->data.symbol,_t_symbol(t))));
+	if ((s->type == StateSymbol || s->type == StateValue) && sm) return 0;
+	if (s->type == StateSymbolExcept && !sm) return 0;
 	// no break to fall through and handle transition and recursive calls
     case StateAny:
 	if (!t) return 0;
@@ -311,63 +341,74 @@ int __t_match(SState *s,Tnode *t,Tnode *r) {
 	if (__t_match(s->out,t,r)) return 1;
 	else return __t_match(s->out1,t,r);
 	break;
-    case StateGroup:
+    case StateWalk:
+	if (__t_match(s->out,t,r)) return 1;
+	t1 = _t_child(t,1);
+	if (t1 && __t_match(s,t1,r)) return 1;
+	t1 = _t_next_sibling(t);
+	if (t1 && __t_match(s,t1,r)) return 1;
+	return 0;
+	break;
+    case StateGroupOpen:
 	if (!r)
 	    // if we aren't collecting up match results simply follow groups through
 	    return __t_match(s->out,t,r);
 	else {
-	    SemanticID match_id = s->data.group.id;
-	    int matched;
-	    if (s->data.group.type == GroupOpen) {
-		if (!t) return 0;
-		// add on the semtrex match nodes and path to list of matches.
-		Tnode *m = _t_news(r,SEMTREX_MATCH,match_id);
-		int *p = _t_get_path(t);
-		Tnode *pp = _t_new(m,SEMTREX_MATCHED_PATH,p,sizeof(int)*(_t_path_depth(p)+1));
-		free(p);
-		matched = __t_match(s->out,t,r);
-		if (!matched) {
-		    _t_detach_by_ptr(r,m);
-		    _t_free(m);
+	    if (!t) return 0;
+	    // add on tree node to the list of match points
+	    s->data.groupo.matches[s->data.groupo.match_count++] = t;
+	    matched = __t_match(s->out,t,r);
+	    s->data.groupo.match_count--;
+	    return matched;
+	}
+	break;
+    case StateGroupClose:
+	// make sure that what follows the group also matches
+	matched = __t_match(s->out,t,r);
+	if (matched) {
+	    // get the match structure from the GroupOpen state pointed to by this state
+	    o = &s->data.groupc.openP->data.groupo;
+	    c = o->match_count;
+	    t1 = o->matches[c-1];
+
+	    if (t1 == 0) {
+		raise_error("couldn't find match for group: %d",o->uid);
+	    }
+
+	    SemanticID match_symbol = o->symbol;
+	    int match_id = o->uid;
+
+	    Tnode *m = _t_newi(r,SEMTREX_MATCH,match_id);
+	    _t_news(m,SEMTREX_MATCH_SYMBOL,match_symbol);
+	    int *p = _t_get_path(t1);
+	    Tnode *pp = _t_new(m,SEMTREX_MATCHED_PATH,p,sizeof(int)*(_t_path_depth(p)+1));
+
+	    int* p_end;
+	    int d = _t_path_depth(p);
+	    int i;
+
+	    d--;
+	    if (!t) {
+		Tnode *parent = _t_parent(t1);
+		if (!parent) i = 1;
+		else {
+		    int pc = _t_children(parent);
+		    i = pc - p[d] + 1;
 		}
-		return matched;
 	    }
 	    else {
-		// make sure that what follows the group also matches
-		int matched = __t_match(s->out,t,r);
-		if (matched) {
-		    // use the match_id find the Match item that this is a CloseGroup of this item
-		    int* p_start;
-		    int* p_end;
-		    int d;
-		    Tnode *m =0;
-		    int i;
-		    for(i=1;i<=_t_children(r);i++) {
-			Tnode *n = _t_child(r,i);
-			if (semeq(*(SemanticID *)_t_surface(n),match_id)) {
-			    m = n;
-			    break;
-			}
-		    }
-
-		    if (m == 0) {
-			raise_error("couldn't find match for %d",match_id.id);
-		    }
-
-		    if (!t) i=1;
-		    else {
-			p_start = (int *)_t_surface(_t_child(m,1));
-			p_end = _t_get_path(t);
-			d = _t_path_depth(p_start);
-			d--;
-			i = p_end[d]-p_start[d];
-			free(p_end);
-		    }
-		    _t_newi(m,SEMTREX_MATCH_SIBLINGS_COUNT,i);
-		}
-		return matched;
+		p_end = _t_get_path(t);
+		i = p_end[d]-p[d];
+		free(p_end);
 	    }
+	    free(p);
+
+	    _t_newi(m,SEMTREX_MATCH_SIBLINGS_COUNT,i);
 	}
+	return matched;
+	break;
+    case StateDescend:
+	return __t_match(s->out,_t_child(t,1),r);
 	break;
     case StateMatch:
 	return 1;
@@ -414,9 +455,9 @@ int _t_match(Tnode *semtrex,Tnode *t) {
 }
 
 /**
- * extract the portion of a semtrex match results that corresponds with a given symbol
+ * extract the portion of a semtrex match results that corresponds with a given group symbol
  * @param[in] result match results from the _t_matchr call
- * @param[in] group the symbol from the semtrex group that you want the result for
+ * @param[in] group the uid from the semtrex group that you want the result for
  * @returns Tnode of the match or NULL if no such match found
  */
 Tnode *_t_get_match(Tnode *result,Symbol group)
@@ -425,8 +466,10 @@ Tnode *_t_get_match(Tnode *result,Symbol group)
     int i,c=_t_children(result);
     Tnode *t;
     for (i=1;i<=c;i++) {
-	if (semeq(*(SemanticID *)_t_surface(t = _t_child(result,i)),group))
-	    return t;
+	Tnode *match = _t_child(result,i);
+	Tnode *symb = _t_child(match,1);
+	if (semeq(*(Symbol *)_t_surface(symb),group))
+	    return match;
     }
     return 0;
 }
@@ -435,12 +478,12 @@ Tnode *_t_get_match(Tnode *result,Symbol group)
 char * __dump_semtrex(Defs defs,Tnode *s,char *buf);
 
 void __stxd_multi(Defs defs,char *x,Tnode *s,char *buf) {
-    char b[1000];
-    sprintf(buf,_t_children(s)>1 ? "(%s)%s" : "%s%s",__dump_semtrex(defs,_t_child(s,1),b),x);
+    char b[4000];
+    sprintf(buf,(_t_children(s)>1 || _t_symbol(_t_child(s,1)).id==SEMTREX_SEQUENCE_ID) ? "(%s)%s" : "%s%s",__dump_semtrex(defs,_t_child(s,1),b),x);
 }
 void __stxd_descend(Defs defs,Tnode *s,char *v,char *buf) {
     if(_t_children(s)>0) {
-	char b[1000];
+	char b[4000];
 	Tnode *sub = _t_child(s,1);
 	sprintf(buf,_t_children(sub)>0?"(%s/%s)":"(%s/%s)",v,__dump_semtrex(defs,sub,b));
     }
@@ -449,25 +492,34 @@ void __stxd_descend(Defs defs,Tnode *s,char *v,char *buf) {
 
 char * __dump_semtrex(Defs defs,Tnode *s,char *buf) {
     Symbol sym = _t_symbol(s);
-    char b[1000];
-    char *sn;
+    char b[5000];
+    char b1[5000];
+    char *sn,*bx;
     int i,c;
     SemanticID sem;
     switch(sym.id) {
+    case SEMTREX_SYMBOL_EXCEPT_ID:
     case SEMTREX_VALUE_LITERAL_ID:
     case SEMTREX_SYMBOL_LITERAL_ID:
+	if (semeq(sym, SEMTREX_SYMBOL_EXCEPT)) {
+	    b[0] = '!';
+	    bx = &b[1];
+	}
+	else bx = b;
 	sem = *(SemanticID *)_t_surface(s);
 	sn = _d_get_symbol_name(defs.symbols,sem);
 	// ignore "<unknown symbol"
 	if (*sn=='<')
-	    sprintf(b,"%d.%d.%d",sem.flags,sem.context,sem.id);
+	    sprintf(bx,"%d.%d.%d",sem.context,sem.flags,sem.id);
 	else
-	    sprintf(b,"%s",sn);
+	    sprintf(bx,"%s",sn);
 	if (semeq(sym, SEMTREX_VALUE_LITERAL)) {
 	    Svalue *sv = (Svalue *)_t_surface(s);
 	    Structure st = _d_get_symbol_structure(defs.symbols,sv->symbol);
 	    if (semeq(st,CSTRING))
 		sprintf(b+strlen(b),"=%s",(char *)&sv->value);
+	    else if (semeq(st,CHAR))
+		sprintf(b+strlen(b),"='%c'",*(int *)&sv->value);
 	    else sprintf(b+strlen(b),"=???x");
 	}
 	__stxd_descend(defs,s,b,buf);
@@ -485,7 +537,8 @@ char * __dump_semtrex(Defs defs,Tnode *s,char *buf) {
 	}
 	break;
     case SEMTREX_OR_ID:
-	sprintf(buf,"(%s)|(%s)",__dump_semtrex(defs,_t_child(s,1),b),__dump_semtrex(defs,_t_child(s,2),b));
+
+	sprintf(buf,"(%s)|(%s)",__dump_semtrex(defs,_t_child(s,1),b),__dump_semtrex(defs,_t_child(s,2),b1));
 	break;
     case SEMTREX_ZERO_OR_MORE_ID:
 	__stxd_multi(defs,"*",s,buf);
@@ -504,6 +557,12 @@ char * __dump_semtrex(Defs defs,Tnode *s,char *buf) {
 	else
 	    sprintf(buf, "{%s:%s}",sn,__dump_semtrex(defs,_t_child(s,1),b));
 	break;
+    case SEMTREX_DESCEND_ID:
+	sprintf(buf, "/%s",__dump_semtrex(defs,_t_child(s,1),b));
+	break;
+    case SEMTREX_WALK_ID:
+	sprintf(buf, "/*%s",__dump_semtrex(defs,_t_child(s,1),b));
+	break;
     }
     return buf;
 }
@@ -513,4 +572,418 @@ char * _dump_semtrex(Defs defs,Tnode *s,char *buf) {
     __dump_semtrex(defs,s,buf+1);
     return buf;
 }
+
+// helper to add a stx_char value litteral to a semtrex
+Tnode *__stxcv(Tnode *stxx,char c) {
+    Svalue sv;
+    sv.symbol = ASCII_CHAR;
+    sv.length = sizeof(int);
+    *(int *)&sv.value = c;
+    return _t_new(stxx,SEMTREX_VALUE_LITERAL,&sv,sizeof(Svalue));
+}
+
+void _stxl(Tnode *stxx) {
+    char *an = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    Tnode *label = _t_newr(stxx,SEMTREX_ONE_OR_MORE);
+    label = _t_newr(label,SEMTREX_OR);
+    while(*an) {
+	__stxcv(label,*an);
+	an++;
+	if (*an) label = _t_newr(label,SEMTREX_OR);
+    }
+    __stxcv(label,'_');
+}
+
+void label2tok() {
+}
+
+Symbol get_symbol(char *symbol_name) {
+    int i,c = _t_children(G_sys_defs.symbols);
+    for(i=1;i<=c;i++) {
+	Tnode *t = _t_child(G_sys_defs.symbols,i);
+	Tnode *c = _t_child(t,1);
+	if (!strcmp(symbol_name,(char *)_t_surface(c))) {
+	    Symbol r = {SYS_CONTEXT,SEM_TYPE_SYMBOL,i};
+	    return r;
+	}
+    }
+    return NULL_SYMBOL;
+}
+
+#define sX(name,str) Symbol name = _d_declare_symbol(G_sys_defs.symbols,str,"" #name "",TEST_CONTEXT)
+
+/**
+ * convert a cstring to semtrex tree
+ * @param[in] r Receptor context for searching for symbols
+ * @param[in] stx the cstring representation of a semtrex tree
+ * @returns Tnode semtrex tree
+ */
+Tnode *parseSemtrex(Receptor *r,char *stx) {
+    // convert the string into a tree
+    printf("\nPARSING:%s\n",stx);
+    Tnode *t,*s = _t_new_root(ASCII_CHARS);
+    while(*stx) {
+	_t_newi(s,ASCII_CHAR,*stx);
+	stx++;
+    }
+
+    /////////////////////////////////////////////////////
+    // build the token stream out of an ascii stream
+    // EXPECTATION
+    // /(TEST_STR_SYMBOL/(sy1/(sy11/sy111)),sy2,sy3)" but was "/{STX_TOKENS:(ASCII_CHARS/({STX_SL:ASCII_CHAR='/'})|(({STX_OP:ASCII_CHAR='('})|(({STX_CP:ASCII_CHAR=')'})|(({STX_PLUS:ASCII_CHAR='+'})|(({STX_COMMA:ASCII_CHAR=','})|((ASCII_CHAR='!',{STX_NOT:[a-zA-Z0-9_]+})|(({STX_CG:ASCII_CHAR='}'})|(({STX_STAR:ASCII_CHAR='*'})|(({STX_LABEL:[a-zA-Z0-9_]+})|(ASCII_CHAR='{',{STX_OG:[a-zA-Z0-9_]+},ASCII_CHAR=':')))))))))+)}
+    Tnode *ts = _t_news(0,SEMTREX_GROUP,STX_TOKENS);
+    Tnode *g = _t_news(ts,SEMTREX_SYMBOL_LITERAL,ASCII_CHARS);
+    Tnode *sq = _t_newr(g,SEMTREX_SEQUENCE);
+    Tnode *p = _t_newr(sq,SEMTREX_ONE_OR_MORE);
+    Tnode *o = _t_newr(p,SEMTREX_OR);
+    t = _t_news(o,SEMTREX_GROUP,STX_SL);
+    __stxcv(t,'/');
+    o = _t_newr(o,SEMTREX_OR);
+    t = _t_news(o,SEMTREX_GROUP,STX_OP);
+    __stxcv(t,'(');
+    o = _t_newr(o,SEMTREX_OR);
+    t = _t_news(o,SEMTREX_GROUP,STX_CP);
+    __stxcv(t,')');
+    o = _t_newr(o,SEMTREX_OR);
+    t = _t_news(o,SEMTREX_GROUP,STX_OR);
+    __stxcv(t,'|');
+    o = _t_newr(o,SEMTREX_OR);
+    t = _t_news(o,SEMTREX_GROUP,STX_COMMA);
+    __stxcv(t,',');
+    o = _t_newr(o,SEMTREX_OR);
+    sq = _t_newr(o,SEMTREX_SEQUENCE);
+    __stxcv(sq,'!');
+    t = _t_news(sq,SEMTREX_GROUP,STX_NOT);
+    _stxl(t);
+
+    o = _t_newr(o,SEMTREX_OR);
+    t = _t_news(o,SEMTREX_GROUP,STX_CG);
+    __stxcv(t,'}');
+    o = _t_newr(o,SEMTREX_OR);
+    t = _t_news(o,SEMTREX_GROUP,SEMTREX_SYMBOL_ANY);
+    __stxcv(t,'.');
+    o = _t_newr(o,SEMTREX_OR);
+    t = _t_news(o,SEMTREX_GROUP,STX_STAR);
+    __stxcv(t,'*');
+    o = _t_newr(o,SEMTREX_OR);
+    t = _t_news(o,SEMTREX_GROUP,STX_PLUS);
+    __stxcv(t,'+');
+    o = _t_newr(o,SEMTREX_OR);
+    t = _t_news(o,SEMTREX_GROUP,STX_Q);
+    __stxcv(t,'?');
+    o = _t_newr(o,SEMTREX_OR);
+    t = _t_news(o,SEMTREX_GROUP,STX_LABEL);
+    _stxl(t);
+
+     sq = _t_newr(o,SEMTREX_SEQUENCE);
+    __stxcv(sq,'{');
+    t = _t_news(sq,SEMTREX_GROUP,STX_OG);
+    _stxl(t);
+    __stxcv(sq,':');
+
+    //    __stxcv(o,'X');
+    //    return stxx;
+
+
+    Tnode *results,*tokens;
+    if (_t_matchr(ts,s,&results)) {
+	char buf[10000];
+
+	//----------------
+	// ACTION
+	// @todo, this should be implemented using INTERPOLATE_MATCH
+	tokens = _t_new_root(STX_TOKENS);
+	int i,m = _t_children(results);
+	for(i=m;i>1;i--) {
+	    Tnode *c = _t_child(results,i);
+	    Tnode *sn = _t_child(c,1);
+	    Symbol ts = *(Symbol *)_t_surface(sn);
+	    if (semeq(ts,STX_LABEL) || semeq(ts,STX_OG) || semeq(ts,STX_NOT)) {
+		int sibs = *(int *)_t_surface(_t_child(c,3));
+		int *path = (int *)_t_surface(_t_child(c,2));
+		int j,d = _t_path_depth(path);
+		for(j=0;j<sibs;j++) {
+		    buf[j] = *(char *)_t_surface(_t_get(s,path));
+		    path[d-1]++;
+		}
+		buf[j]=0;
+		_t_new(tokens,ts,buf,j+1);
+	    }
+	    else
+		_t_newi(tokens,ts,0);
+	}
+	_t_free(results);
+
+	puts("TOKENS:");
+	__t_dump(0,tokens,0,buf);
+	puts(buf);
+
+	/////////////////////////////////////////////////////
+	// replace paren groups with STX_SIBS list
+	// EXPECTATION
+	// /STX_TOKENS/.*,{STX_OP:STX_OP,{STX_SIBS:!STX_CP+},STX_CP}
+	Tnode *sxx = _t_news(0,SEMTREX_SYMBOL_LITERAL,STX_TOKENS);
+	Tnode *sq = _t_newr(sxx,SEMTREX_SEQUENCE);
+	Tnode *st = _t_newr(sq,SEMTREX_ZERO_OR_MORE);
+	_t_newr(st,SEMTREX_SYMBOL_ANY);
+	Tnode *gg = _t_news(sq,SEMTREX_GROUP,STX_OP);
+	Tnode *sq1 = _t_newr(gg,SEMTREX_SEQUENCE);
+	_t_news(sq1,SEMTREX_SYMBOL_LITERAL,STX_OP);
+	Tnode *g = _t_news(sq1,SEMTREX_GROUP,STX_SIBS);
+	Tnode *any = _t_newr(g,SEMTREX_ONE_OR_MORE);
+	_t_news(any,SEMTREX_SYMBOL_EXCEPT,STX_CP);
+	_t_news(sq1,SEMTREX_SYMBOL_LITERAL,STX_CP);
+
+	//----------------
+	// ACTION
+	while (_t_matchr(sxx,tokens,&results)) {
+	    Tnode *m = _t_get_match(results,STX_SIBS);
+	    Tnode *opm = _t_get_match(results,STX_OP);
+	    // transfer the children to the STX_SIBS node
+	    int count = *(int *)_t_surface(_t_child(m,3));
+	    int *cpath = (int *)_t_surface(_t_child(m,2));
+	    int *oppath = (int *)_t_surface(_t_child(opm,2));
+	    Tnode *op = _t_get(tokens,oppath);
+	    while(count--) {
+		Tnode *t = _t_get(tokens,cpath);
+		_t_detach_by_ptr(tokens,t);
+		_t_add(op,t);
+	    }
+	    // convert the op to an STX children and free the close parens
+	    op->contents.symbol = STX_SIBS;
+	    op = _t_next_sibling(op);
+	    _t_detach_by_ptr(tokens,op);
+	    _t_free(op);
+	    _t_free(results);
+	}
+	_t_free(sxx);
+
+
+	/////////////////////////////////////////////////////
+	// if there are any parens left we raise mismatch!
+	// EXPECTATION
+	// /(STX_TOKENS/.*,(STX_OP)|(STX_CP))
+	sxx = _t_news(0,SEMTREX_SYMBOL_LITERAL,STX_TOKENS);
+	sq = _t_newr(sxx,SEMTREX_SEQUENCE);
+	st = _t_newr(sq,SEMTREX_ZERO_OR_MORE);
+	_t_newr(st,SEMTREX_SYMBOL_ANY);
+	o = _t_newr(sq,SEMTREX_OR);
+	_t_news(o,SEMTREX_SYMBOL_LITERAL,STX_OP);
+	_t_news(o,SEMTREX_SYMBOL_LITERAL,STX_CP);
+
+	//----------------
+	// ACTION
+	if (_t_match(sxx,tokens)) {
+	    __t_dump(0,tokens,0,buf);
+	    raise_error("mismatched parens! [tokens:%s]",buf);
+	}
+	_t_free(sxx);
+
+
+	puts("TOKENS_BEFORE_POSTFIX:");
+	__t_dump(0,tokens,0,buf);
+	puts(buf);
+
+	/////////////////////////////////////////////////////
+	// convert postfix groups
+	// EXPECTATION
+	// /*{STX_POSTFIX:.,STX_PLUS|STX_STAR)
+	sxx = _t_new_root(SEMTREX_WALK);
+	g = _t_news(sxx,SEMTREX_GROUP,STX_POSTFIX);
+	sq = _t_newr(g,SEMTREX_SEQUENCE);
+	_t_newr(sq,SEMTREX_SYMBOL_ANY);
+	o = _t_newr(sq,SEMTREX_OR);
+	_t_news(o,SEMTREX_SYMBOL_LITERAL,STX_PLUS);
+	_t_news(o,SEMTREX_SYMBOL_LITERAL,STX_STAR);
+
+	//----------------
+	// ACTION
+	while (_t_matchr(sxx,tokens,&results)) {
+	    Tnode *m = _t_get_match(results,STX_POSTFIX);
+	    int *path = (int *)_t_surface(_t_child(m,2));
+	    int x = path[_t_path_depth(path)-1];
+	    t = _t_get(tokens,path);
+	    Tnode *parent = _t_parent(t);
+	    t = _t_child(parent,x);
+	    _t_detach_by_ptr(parent,t);
+	    Tnode *c = _t_get(tokens,path);
+	    _t_add(c,t);
+	    if (semeq(_t_symbol(c),STX_PLUS ))
+		c->contents.symbol = SEMTREX_ONE_OR_MORE;
+	    else if (semeq(_t_symbol(c),STX_STAR ))
+		c->contents.symbol = SEMTREX_ZERO_OR_MORE;
+	    else if (semeq(_t_symbol(c),STX_Q ))
+		c->contents.symbol = SEMTREX_ZERO_OR_ONE;
+
+	    _t_free(results);
+	}
+	_t_free(sxx);
+
+	puts("TOKENS_AFTER_POSTFIX:");
+	__t_dump(0,tokens,0,buf);
+	puts(buf);
+
+
+	/////////////////////////////////////////////////////
+	// convert comma tokens to sequences
+	// EXPECTATION
+	// /*{SEMTREX_SEQUENCE:(!STX_COMMA,STX_COMMA)+,!STX_COMMA}  ->  SEMTREX_SEQUENCE
+	sxx = _t_new_root(SEMTREX_WALK);
+	g = _t_news(sxx,SEMTREX_GROUP,SEMTREX_SEQUENCE);
+	sq = _t_newr(g,SEMTREX_SEQUENCE);
+	o = _t_newr(sq,SEMTREX_ONE_OR_MORE);
+	_t_news(sq,SEMTREX_SYMBOL_EXCEPT,STX_COMMA);
+	sq = _t_newr(o,SEMTREX_SEQUENCE);
+	_t_news(sq,SEMTREX_SYMBOL_EXCEPT,STX_COMMA);
+	_t_news(sq,SEMTREX_SYMBOL_LITERAL,STX_COMMA);
+
+	//----------------
+	// ACTION
+	while (_t_matchr(sxx,tokens,&results)) {
+	    Tnode *m = _t_get_match(results,SEMTREX_SEQUENCE);
+	    int count = *(int *)_t_surface(_t_child(m,3));
+	    int *path = (int *)_t_surface(_t_child(m,2));
+	    Tnode *seq = _t_new_root(SEMTREX_SEQUENCE);
+	    Tnode *parent = _t_parent(_t_get(tokens,path));
+	    int x = path[_t_path_depth(path)-1];
+	    while(count--) {
+		t =  _t_child(parent,x);
+		_t_detach_by_ptr(parent,t);
+		if (semeq(STX_COMMA,_t_symbol(t)))
+		    _t_free(t);
+		else
+		    _t_add(seq,t);
+	    }
+	    _t_insert_at(tokens,path,seq);
+	    _t_free(results);
+	}
+	_t_free(sxx);
+
+	/////////////////////////////////////////////////////
+	// convert things following slashes to children of things preceeding slashes
+	// EXPECTATION
+	// /*{STX_CHILD:!STX_SL,STX_SL,!STX_SL}*/
+	sxx = _t_new_root(SEMTREX_WALK);
+	g = _t_news(sxx,SEMTREX_GROUP,STX_CHILD);
+	sq = _t_newr(g,SEMTREX_SEQUENCE);
+	_t_news(sq,SEMTREX_SYMBOL_EXCEPT,STX_SL);
+	_t_news(sq,SEMTREX_SYMBOL_LITERAL,STX_SL);
+	_t_news(sq,SEMTREX_SYMBOL_EXCEPT,STX_SL);
+
+	//----------------
+	// ACTION
+	while (_t_matchr(sxx,tokens,&results)) {
+	    Tnode *m = _t_get_match(results,STX_CHILD);
+	    int *path = (int *)_t_surface(_t_child(m,2));
+	    int x = path[_t_path_depth(path)-1];
+	    t = _t_get(tokens,path);
+	    Tnode *parent = _t_parent(t);
+	    // detach and free the slash token
+	    Tnode *c = _t_child(parent,++x);
+	    _t_detach_by_ptr(parent,c);
+	    _t_free(c);
+	    // detach and add the element following the slash as a child
+	    c = _t_child(parent,x);
+	    _t_detach_by_ptr(parent,c);
+	    _t_add(t,c);
+
+	    _t_free(results);
+	}
+	_t_free(sxx);
+
+	/////////////////////////////////////////////////////
+	// convert ors
+	// EXPECTATION
+	// /*{SEMTREX_OR:!STX_OR,STX_OR,!STX_OR}*/
+	sxx = _t_new_root(SEMTREX_WALK);
+	g = _t_news(sxx,SEMTREX_GROUP,SEMTREX_OR);
+	sq = _t_newr(g,SEMTREX_SEQUENCE);
+	_t_news(sq,SEMTREX_SYMBOL_EXCEPT,STX_OR);
+	_t_news(sq,SEMTREX_SYMBOL_LITERAL,STX_OR);
+	_t_news(sq,SEMTREX_SYMBOL_EXCEPT,STX_OR);
+
+	//----------------
+	// ACTION
+	while (_t_matchr(sxx,tokens,&results)) {
+	    Tnode *m = _t_get_match(results,SEMTREX_OR);
+	    int *path = (int *)_t_surface(_t_child(m,2));
+	    int x = path[_t_path_depth(path)-1];
+	    t = _t_get(tokens,path);
+	    Tnode *parent = _t_parent(t);
+	    // detach the or's children
+	    Tnode *c1 = _t_child(parent,x);
+	    _t_detach_by_ptr(parent,c1);
+	    Tnode *c2 = _t_child(parent,x+1);
+	    _t_detach_by_ptr(parent,c2);
+	    o = _t_child(parent,x);
+	    _t_add(o,c1);
+	    _t_add(o,c2);
+	    o->contents.symbol = SEMTREX_OR;
+	    _t_free(results);
+	}
+	_t_free(sxx);
+
+	/////////////////////////////////////////////////////
+	// convert labels to SEMTREX_LITERALS
+	// EXPECTATION
+	// /*STX_LABEL|STX_NOT
+	sxx = _t_new_root(SEMTREX_WALK);
+	g = _t_news(sxx,SEMTREX_GROUP,SEMTREX_SYMBOL_LITERAL);
+	o = _t_newr(g,SEMTREX_OR);
+	_t_news(o,SEMTREX_SYMBOL_LITERAL,STX_LABEL);
+	_t_news(o,SEMTREX_SYMBOL_LITERAL,STX_NOT);
+	//----------------
+	// ACTION
+	while (_t_matchr(sxx,tokens,&results)) {
+	    Tnode *m = _t_get_match(results,SEMTREX_SYMBOL_LITERAL);
+	    int *path = (int *)_t_surface(_t_child(m,2));
+	    t = _t_get(tokens,path);
+	    char *symbol_name = (char *)_t_surface(t);
+	    Symbol sy = get_symbol(symbol_name);
+	    __t_morph(t,semeq(t->contents.symbol,STX_LABEL)?SEMTREX_SYMBOL_LITERAL:SEMTREX_SYMBOL_EXCEPT,
+		&sy,sizeof(Symbol),1);
+
+	    _t_free(results);
+	}
+
+	_t_free(sxx);
+
+	/////////////////////////////////////////////////////
+	// remove stray STX_SIBS
+	// EXPECTATION
+	// /*STX_SIBS
+	sxx = _t_new_root(SEMTREX_WALK);
+	g = _t_news(sxx,SEMTREX_GROUP,STX_SIBS);
+	_t_news(g,SEMTREX_SYMBOL_LITERAL,STX_SIBS);
+	//----------------
+	// ACTION
+	while (_t_matchr(sxx,tokens,&results)) {
+	    Tnode *m = _t_get_match(results,STX_SIBS);
+	    int *path = (int *)_t_surface(_t_child(m,2));
+	    t = _t_get(tokens,path);
+	    Tnode *parent = _t_parent(t);
+	    if (_t_children(t) > 1) {
+		raise_error0("sibs with more than one child!");
+	    }
+	    int x = path[_t_path_depth(path)-1];
+	    Tnode *c = _t_child(t,1);
+	    _t_detach_by_ptr(t,c);
+	    _t_replace(parent,x,c);
+	    _t_free(results);
+	}
+	_t_free(sxx);
+
+	puts("TOKENS_FINAL:");
+	__t_dump(0,tokens,0,buf);
+	puts(buf);
+
+	t = _t_child(tokens,2);
+	_t_detach_by_ptr(tokens,t);
+
+    }
+    _t_free(ts);
+
+    return t;
+}
+
 /**@}*/

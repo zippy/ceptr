@@ -34,7 +34,7 @@
 
 #include "tree.h"
 
-enum StateType {StateSymbol,StateAny,StateValue,StateSplit,StateMatch,StateGroup};
+enum StateType {StateSymbol,StateSymbolExcept,StateAny,StateValue,StateSplit,StateMatch,StateGroupOpen,StateGroupClose,StateDescend,StateWalk};
 typedef int StateType;
 
 /**
@@ -48,7 +48,7 @@ typedef int StateType;
 enum FSAStateTransitions {
     TransitionNextChild=0,  ///< advance to next sibling in the match tree
     TransitionUp=-1,        ///< move up the tree in the match tree
-    TransitionDown=1        ///< move to child in the match tree
+    TransitionDown=1,        ///< move to child in the match tree
 };
 typedef int TransitionType;
 
@@ -56,6 +56,8 @@ typedef void *ValueData;
 
 #define GroupOpen 0x1000
 #define GroupClose 0
+
+typedef struct SState SState;
 
 /**
  * The Svalue represents the surface of a semtrex value literal.
@@ -73,13 +75,23 @@ struct Svalue {
 typedef struct Svalue Svalue;
 
 /**
- * data for group FSA state
+ * data for group open FSA state
  */
-struct Sgroup {
-    SemanticID id;      ///< the symbol that identifies this group
-    int type;           ///< is this an open or close group state
+struct SgroupOpen {
+    SemanticID symbol;  ///< the symbol that describes the group semantically
+    int uid;             ///< unique id for the group
+    Tnode *matches[100];
+    int match_count;
 };
-typedef struct Sgroup Sgroup;
+typedef struct SgroupOpen SgroupOpen;
+
+/**
+ * data for group close FSA state
+ */
+struct SgroupClose {
+    SState *openP;      /// pointer to the Open state
+};
+typedef struct SgroupClose SgroupClose;
 
 /**
  * Different state types need to store different kinds of values so we put them in a union
@@ -90,7 +102,8 @@ union STypeData
 {
     Symbol symbol;  ///< Symbol to match on for StateSymbol type states
     Svalue value;   ///< Value data to match on for StateValue type states
-    Sgroup group;   ///< Group data for matching for StateGroup type states
+    SgroupOpen groupo;   ///< Group data for matching for StateGroup type states
+    SgroupClose groupc;   ///< Group data for matching for StateGroup type states
 };
 typedef union STypeData STypeData;
 
@@ -105,7 +118,6 @@ struct SState {
     int _did;                   ///< used to hold a mark when freeing and printing out FSA to prevent looping.
     STypeData data;             ///< a union to hold the data for which ever type of SState this is
 };
-typedef struct SState SState;
 
 SState * _stx_makeFA(Tnode *s,int *statesP);
 void _stx_freeFA(SState *s);
@@ -113,6 +125,7 @@ int _t_match(Tnode *semtrex,Tnode *t);
 int _t_matchr(Tnode *semtrex,Tnode *t,Tnode **r);
 Tnode *_t_get_match(Tnode *result,Symbol group);
 char * _dump_semtrex(Defs defs,Tnode *s,char *buf);
+Tnode *parseSemtrex(Receptor *r,char *stx);
 
 #endif
 

@@ -184,7 +184,8 @@ void testProcessInterpolateMatch() {
     Tnode *p1 = _t_newi(n,TEST_INT_SYMBOL2,0);
     _t_news(p1,INTERPOLATE_SYMBOL,TEST_INT_SYMBOL);
     Tnode *p2 = _t_newr(n,SEMTREX_MATCH_RESULTS);
-    Tnode *sm = _t_news(p2,SEMTREX_MATCH,TEST_INT_SYMBOL);
+    Tnode *sm = _t_newi(p2,SEMTREX_MATCH,1);
+    _t_news(sm,SEMTREX_MATCH,TEST_INT_SYMBOL);
     int path[] = {TREE_PATH_TERMINATOR};
     _t_new(sm,SEMTREX_MATCHED_PATH,path,2*sizeof(int));
     _t_newi(sm,SEMTREX_MATCH_SIBLINGS_COUNT,1);

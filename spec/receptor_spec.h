@@ -141,7 +141,7 @@ void testReceptorAction() {
     Tnode *m = _t_get_match(result,HTTP_REQUEST_PATH_SEGMENT);
     char buf[2000];
     __t_dump(&test_HTTP_defs,m,0,buf);
-    spec_is_str_equal(buf," (SEMTREX_MATCH:HTTP_REQUEST_PATH_SEGMENT (SEMTREX_MATCHED_PATH:/3/1/1) (SEMTREX_MATCH_SIBLINGS_COUNT:1))");
+    spec_is_str_equal(buf," (SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:HTTP_REQUEST_PATH_SEGMENT) (SEMTREX_MATCHED_PATH:/3/1/1) (SEMTREX_MATCH_SIBLINGS_COUNT:1))");
     if (result) {
 	_t_free(result);
     }

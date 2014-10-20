@@ -18,35 +18,6 @@
 #define is_sys_symbol(s) (s.context == SYS_CONTEXT)
 #define is_sys_test_symbol(s) (s.context == TEST_CONTEXT)
 
-/// test symbols.  These are defined only for the test suite.
-/*enum TestSymbol {TEST_INT_SYMBOL= 0x7ffff000,TEST_INT_SYMBOL2,TEST_STR_SYMBOL,TEST_TREE_SYMBOL,TEST_TREE_SYMBOL2,
-		 TEST_NAME_SYMBOL,TEST_FIRST_NAME_SYMBOL,TEST_RECEPTOR_SYMBOL,TEST_ALPHABETIZE_SCAPE_SYMBOL,
-		 _LAST_TEST_SYMBOL
-		 };*/
-static char *G_test_symbol_names[] = {
-    "TEST_INT_SYMBOL",
-    "TEST_INT_SYMBOL2",
-    "TEST_STR_SYMBOL",
-    "TEST_TREE_SYMBOL",
-    "TEST_TREE_SYMBOL2",
-    "TEST_NAME_SYMBOL",
-    "TEST_FIRST_NAME_SYMBOL",
-    "TEST_RECEPTOR_SYMBOL",
-    "TEST_ALPHABETIZE_SCAPE_SYMBOL",
-};
-
-static Structure G_test_symbol_structures[] = {
-/*    INTEGER, //"TEST_INT_SYMBOL",
-    INTEGER, //"TEST_INT_SYMBOL2",
-    CSTRING, //"TEST_STR_SYMBOL",
-    TREE,    //"TEST_TREE_SYMBOL",
-    TREE,    //"TEST_TREE_SYMBOL2",
-    TREE,    //"TEST_NAME_SYMBOL",
-    CSTRING, //"TEST_FIRST_NAME_SYMBOL",
-    RECEPTOR,//"TEST_RECEPTOR_SYMBOL"
-    SCAPE,   //"TEST_ALPHABETIZE_SCAPE_SYMBOL",*/
-};
-
 Symbol TEST_INT_SYMBOL;
 Symbol TEST_INT_SYMBOL2;
 Symbol TEST_STR_SYMBOL;
@@ -80,13 +51,17 @@ enum SystemSymbolIDs
     SEMTREX_SEQUENCE_ID,                  ///< Match on a sequence of child nodes which are any valid semtrex's.  Ex: comma separated nodes
     SEMTREX_OR_ID,                        ///< Logical OR between two Semtrex expressions.      Ex: |
     SEMTREX_SYMBOL_ANY_ID,                ///< Match any symbol or value of the node.           Ex: .
+    SEMTREX_SYMBOL_EXCEPT_ID,                ///< Match any symbol or value of the node except.           Ex: .
     SEMTREX_ZERO_OR_MORE_ID,              ///< Requires one child Semtrex and matches on zero or more of that Semtrex.  Ex: /0/TestSemtrex*
     SEMTREX_ONE_OR_MORE_ID,               ///< Requires one child Semtrex and matches on one or more of that Semtrex.   Ex: /0/TestSemtrex+
     SEMTREX_ZERO_OR_ONE_ID,               ///< Requires one child Semtrex and matches on zero or one of that Semtrex.   Ex: /0/TestSemtrex?
     SEMTREX_VALUE_LITERAL_ID,	       ///< Matches on the semantic type and the data value.
     SEMTREX_GROUP_ID,                     ///< Grouping                                 Ex: (...)operator
+    SEMTREX_DESCEND_ID,
+    SEMTREX_WALK_ID,
     SEMTREX_MATCH_ID,                     ///< Returns result and sibling count.        Ex: {name:expr} (verify this is what it's supposed to do)
     SEMTREX_MATCH_RESULTS_ID,             ///< In the FSA_ID, keeps track of which part matches so it can be referenced
+    SEMTREX_MATCH_SYMBOL_ID,
     SEMTREX_MATCH_SIBLINGS_COUNT_ID,      ///< In the FSA_ID, it's the length of the match
 
     //----- Symbols for parsing  matching string representation of semtrex
@@ -160,13 +135,16 @@ static Structure G_sys_symbol_structures[] = {
     LIST,                //SEMTREX_SEQUENCE
     NULL_STRUCTURE,      //SEMTREX_OR
     NULL_STRUCTURE,      //SEMTREX_SYMBOL_ANY
+    SYMBOL,      //SEMTREX_SYMBOL_ANY_EXCEPT
     NULL_STRUCTURE,      //SEMTREX_ZERO_OR_MORE
     NULL_STRUCTURE,      //SEMTREX_ONE_OR_MORE
     NULL_STRUCTURE,      //SEMTREX_ZERO_OR_ONE
     NULL_STRUCTURE,      //SEMTREX_VALUE_LITERAL
     SYMBOL,              //SEMTREX_GROUP
-    SYMBOL,              //SEMTREX_MATCH
+    NULL_STRUCTURE,      //SEMTREX_DESCEND
+    INTEGER,             //SEMTREX_MATCH
     NULL_STRUCTURE,      //SEMTREX_MATCH_RESULTS
+    SYMBOL,              //SEMTREX_MATCH_SYMBOL
     INTEGER,             //SEMTREX_MATCH_SIBLINGS_COUNT
     XADDR,               //RECEPTOR_XADDR
     LIST,                //FLUX
@@ -277,13 +255,17 @@ Symbol SEMTREX_SYMBOL_LITERAL;
 Symbol SEMTREX_SEQUENCE;
 Symbol SEMTREX_OR;
 Symbol SEMTREX_SYMBOL_ANY;
+Symbol SEMTREX_SYMBOL_EXCEPT;
 Symbol SEMTREX_ZERO_OR_MORE;
 Symbol SEMTREX_ONE_OR_MORE;
 Symbol SEMTREX_ZERO_OR_ONE;
 Symbol SEMTREX_VALUE_LITERAL;
 Symbol SEMTREX_GROUP;
+Symbol SEMTREX_DESCEND;
+Symbol SEMTREX_WALK;
 Symbol SEMTREX_MATCH;
 Symbol SEMTREX_MATCH_RESULTS;
+Symbol SEMTREX_MATCH_SYMBOL;
 Symbol SEMTREX_MATCH_SIBLINGS_COUNT;
 Symbol ASCII_CHAR;
 Symbol ASCII_CHARS;
@@ -340,3 +322,22 @@ Symbol ACTIVE_RECEPTORS;
 Symbol PENDING_SIGNALS;
 Symbol BINDINGS;
 Symbol BINDING_PAIR;
+
+Symbol STX_TOKENS;
+Symbol STX_SL;
+Symbol STX_OP;
+Symbol STX_CP;
+Symbol STX_LABEL;
+Symbol STX_OG;
+Symbol STX_CG;
+Symbol STX_EQ;
+Symbol STX_STAR;
+Symbol STX_PLUS;
+Symbol STX_Q;
+Symbol STX_OR;
+Symbol STX_COMMA;
+Symbol STX_NOT;
+
+Symbol STX_SIBS;
+Symbol STX_CHILD;
+Symbol STX_POSTFIX;

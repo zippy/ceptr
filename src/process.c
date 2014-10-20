@@ -28,8 +28,8 @@ void _p_interpolate_from_match(Tnode *t,Tnode *match_results,Tnode *match_tree) 
     if (semeq(_t_symbol(t),INTERPOLATE_SYMBOL)) {
 	Symbol s = *(Symbol *)_t_surface(t);
 	Tnode *m = _t_get_match(match_results,s);
-	int *path = (int *)_t_surface(_t_child(m,1));
-	int sibs = *(int*)_t_surface(_t_child(m,2));
+	int *path = (int *)_t_surface(_t_child(m,2));
+	int sibs = *(int*)_t_surface(_t_child(m,3));
 	Tnode *x = _t_get(match_tree,path);
 
 	if (!x) {
