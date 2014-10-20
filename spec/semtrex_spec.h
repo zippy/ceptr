@@ -574,16 +574,20 @@ void testSemtrexSemtrex() {
     spec_is_str_equal(_dump_semtrex(d,s,buf),stx);
     _t_free(s);
 
-    stx = "/TEST_STR_SYMBOL|TEST_INT_SYMBOL";
+    stx = "/STX_STAR|STX_PLUS|STX_Q";
     s = parseSemtrex(r,stx);
-    spec_is_str_equal(_dump_semtrex(d,s,buf),"/(TEST_STR_SYMBOL)|(TEST_INT_SYMBOL)");
+    spec_is_str_equal(_dump_semtrex(d,s,buf),"/((STX_STAR)|(STX_PLUS))|(STX_Q)");
     _t_free(s);
 
-    stx = "/(TEST_STR_SYMBOL/.+,sy1,.*,sy2)";
+    stx = "/(TEST_STR_SYMBOL/.+,sy1,.*,sy2,.?)";
     s = parseSemtrex(r,stx);
     spec_is_str_equal(_dump_semtrex(d,s,buf),stx);
     _t_free(s);
 
+    stx = "/(STX_TOKENS/%{SEMTREX_SEQUENCE:(!STX_COMMA,STX_COMMA)+,!STX_COMMA})";
+    s = parseSemtrex(r,stx);
+    spec_is_str_equal(_dump_semtrex(d,s,buf),stx);
+    _t_free(s);
 
     _r_free(r);
 }

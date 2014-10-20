@@ -331,6 +331,7 @@ Symbol STX_LABEL;
 Symbol STX_OG;
 Symbol STX_CG;
 Symbol STX_EQ;
+Symbol STX_WALK;
 Symbol STX_STAR;
 Symbol STX_PLUS;
 Symbol STX_Q;

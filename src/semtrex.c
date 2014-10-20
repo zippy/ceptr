@@ -561,7 +561,7 @@ char * __dump_semtrex(Defs defs,Tnode *s,char *buf) {
 	sprintf(buf, "/%s",__dump_semtrex(defs,_t_child(s,1),b));
 	break;
     case SEMTREX_WALK_ID:
-	sprintf(buf, "/*%s",__dump_semtrex(defs,_t_child(s,1),b));
+	sprintf(buf, "%%%s",__dump_semtrex(defs,_t_child(s,1),b));
 	break;
     }
     return buf;
@@ -612,6 +612,13 @@ Symbol get_symbol(char *symbol_name) {
 
 #define sX(name,str) Symbol name = _d_declare_symbol(G_sys_defs.symbols,str,"" #name "",TEST_CONTEXT)
 
+//#define DUMP_TOKENS
+#ifdef DUMP_TOKENS
+#define dump_tokens(str) puts(str);__t_dump(0,tokens,0,buf);puts(buf);
+#else
+#define dump_tokens(str)
+#endif
+
 /**
  * convert a cstring to semtrex tree
  * @param[in] r Receptor context for searching for symbols
@@ -620,7 +627,9 @@ Symbol get_symbol(char *symbol_name) {
  */
 Tnode *parseSemtrex(Receptor *r,char *stx) {
     // convert the string into a tree
+    #ifdef DUMP_TOKENS
     printf("\nPARSING:%s\n",stx);
+    #endif
     Tnode *t,*s = _t_new_root(ASCII_CHARS);
     while(*stx) {
 	_t_newi(s,ASCII_CHAR,*stx);
@@ -636,6 +645,9 @@ Tnode *parseSemtrex(Receptor *r,char *stx) {
     Tnode *sq = _t_newr(g,SEMTREX_SEQUENCE);
     Tnode *p = _t_newr(sq,SEMTREX_ONE_OR_MORE);
     Tnode *o = _t_newr(p,SEMTREX_OR);
+    t = _t_news(o,SEMTREX_GROUP,STX_WALK);
+    __stxcv(t,'%');
+    o = _t_newr(o,SEMTREX_OR);
     t = _t_news(o,SEMTREX_GROUP,STX_SL);
     __stxcv(t,'/');
     o = _t_newr(o,SEMTREX_OR);
@@ -681,10 +693,6 @@ Tnode *parseSemtrex(Receptor *r,char *stx) {
     _stxl(t);
     __stxcv(sq,':');
 
-    //    __stxcv(o,'X');
-    //    return stxx;
-
-
     Tnode *results,*tokens;
     if (_t_matchr(ts,s,&results)) {
 	char buf[10000];
@@ -714,9 +722,7 @@ Tnode *parseSemtrex(Receptor *r,char *stx) {
 	}
 	_t_free(results);
 
-	puts("TOKENS:");
-	__t_dump(0,tokens,0,buf);
-	puts(buf);
+	dump_tokens("TOKENS:");
 
 	/////////////////////////////////////////////////////
 	// replace paren groups with STX_SIBS list
@@ -758,6 +764,53 @@ Tnode *parseSemtrex(Receptor *r,char *stx) {
 	}
 	_t_free(sxx);
 
+	dump_tokens("TOKENS_AFTER_SIBS:");
+
+	/////////////////////////////////////////////////////
+	// find groups
+	// EXPECTATION
+	// /%,{STX_OG:STX_OG,{SEMTREX_GROUP:!STX_CG+},STX_GP}
+	sxx = _t_new_root(SEMTREX_WALK);
+	g = _t_news(sxx,SEMTREX_GROUP,STX_OG);
+	sq = _t_newr(g,SEMTREX_SEQUENCE);
+	_t_news(sq,SEMTREX_SYMBOL_LITERAL,STX_OG);
+	gg = _t_news(sq,SEMTREX_GROUP,SEMTREX_GROUP);
+	any = _t_newr(gg,SEMTREX_ONE_OR_MORE);
+	_t_news(any,SEMTREX_SYMBOL_EXCEPT,STX_CG);
+	_t_news(sq,SEMTREX_SYMBOL_LITERAL,STX_CG);
+
+	//----------------
+	// ACTION
+	while (_t_matchr(sxx,tokens,&results)) {
+	    Tnode *m = _t_get_match(results,SEMTREX_GROUP);
+	    Tnode *ogm = _t_get_match(results,STX_OG);
+	    // transfer the children to the STX_OG node
+	    int count = *(int *)_t_surface(_t_child(m,3));
+	    int *cpath = (int *)_t_surface(_t_child(m,2));
+	    int *ogpath = (int *)_t_surface(_t_child(ogm,2));
+	    Tnode *og = _t_get(tokens,ogpath);
+	    Tnode *parent = _t_parent(og);
+	    int x = cpath[_t_path_depth(cpath)-1];
+
+	    while(count--) {
+		Tnode *t = _t_child(parent,x);
+		_t_detach_by_ptr(parent,t);
+		_t_add(og,t);
+	    }
+	    //	    puts("GCOLLECTED:");__t_dump(0,og,0,buf);puts(buf);
+	    // convert the OG to SEMTREX_GROUP children and free the close group
+	    char *symbol_name = (char *)_t_surface(og);
+	    Symbol sy = get_symbol(symbol_name);
+	    __t_morph(og,SEMTREX_GROUP,&sy,sizeof(Symbol),1);
+
+	    t = _t_child(parent,x);
+	    _t_detach_by_ptr(parent,t);
+	    _t_free(t);
+	    _t_free(results);
+	}
+	_t_free(sxx);
+
+	dump_tokens("TOKENS_AFTER_GROUPS:");
 
 	/////////////////////////////////////////////////////
 	// if there are any parens left we raise mismatch!
@@ -779,22 +832,19 @@ Tnode *parseSemtrex(Receptor *r,char *stx) {
 	}
 	_t_free(sxx);
 
-
-	puts("TOKENS_BEFORE_POSTFIX:");
-	__t_dump(0,tokens,0,buf);
-	puts(buf);
-
 	/////////////////////////////////////////////////////
 	// convert postfix groups
 	// EXPECTATION
-	// /*{STX_POSTFIX:.,STX_PLUS|STX_STAR)
+	// /*{STX_POSTFIX:.,STX_PLUS|STX_STAR|STX_Q)
 	sxx = _t_new_root(SEMTREX_WALK);
 	g = _t_news(sxx,SEMTREX_GROUP,STX_POSTFIX);
 	sq = _t_newr(g,SEMTREX_SEQUENCE);
 	_t_newr(sq,SEMTREX_SYMBOL_ANY);
 	o = _t_newr(sq,SEMTREX_OR);
 	_t_news(o,SEMTREX_SYMBOL_LITERAL,STX_PLUS);
+	o = _t_newr(o,SEMTREX_OR);
 	_t_news(o,SEMTREX_SYMBOL_LITERAL,STX_STAR);
+	_t_news(o,SEMTREX_SYMBOL_LITERAL,STX_Q);
 
 	//----------------
 	// ACTION
@@ -819,10 +869,7 @@ Tnode *parseSemtrex(Receptor *r,char *stx) {
 	}
 	_t_free(sxx);
 
-	puts("TOKENS_AFTER_POSTFIX:");
-	__t_dump(0,tokens,0,buf);
-	puts(buf);
-
+	dump_tokens("TOKENS_AFTER_POSTFIX:");
 
 	/////////////////////////////////////////////////////
 	// convert comma tokens to sequences
@@ -854,15 +901,50 @@ Tnode *parseSemtrex(Receptor *r,char *stx) {
 		else
 		    _t_add(seq,t);
 	    }
-	    _t_insert_at(tokens,path,seq);
+	    if (_t_children(parent) == 0) {
+		_t_add(parent,seq);
+	    }
+	    else {
+		_t_insert_at(tokens,path,seq);
+	    }
 	    _t_free(results);
 	}
 	_t_free(sxx);
 
+	dump_tokens("TOKENS_AFTER_COMMA:");
+
+	/////////////////////////////////////////////////////
+	// fixup STX_WALK
+	// EXPECTATION
+	// /%{SEMTREX_WALK:STX_WALK,.}
+	sxx = _t_new_root(SEMTREX_WALK);
+	g = _t_news(sxx,SEMTREX_GROUP,SEMTREX_WALK);
+	sq = _t_newr(g,SEMTREX_SEQUENCE);
+	_t_news(sq,SEMTREX_SYMBOL_LITERAL,STX_WALK);
+	_t_newr(sq,SEMTREX_SYMBOL_ANY);
+	//----------------
+	// ACTION
+	while (_t_matchr(sxx,tokens,&results)) {
+	    Tnode *m = _t_get_match(results,SEMTREX_WALK);
+	    int *path = (int *)_t_surface(_t_child(m,2));
+	    t = _t_get(tokens,path);
+	    Tnode *parent = _t_parent(t);
+	    int x = path[_t_path_depth(path)-1];
+	    Tnode *c = _t_child(parent,x+1);
+	    _t_detach_by_ptr(parent,c);
+	    _t_add(t,c);
+	    t->contents.symbol = SEMTREX_WALK;
+
+	    _t_free(results);
+	}
+	_t_free(sxx);
+
+	dump_tokens("TOKENS_AFTER_WALK:");
+
 	/////////////////////////////////////////////////////
 	// convert things following slashes to children of things preceeding slashes
 	// EXPECTATION
-	// /*{STX_CHILD:!STX_SL,STX_SL,!STX_SL}*/
+	// /%{STX_CHILD:!STX_SL,STX_SL,!STX_SL}
 	sxx = _t_new_root(SEMTREX_WALK);
 	g = _t_news(sxx,SEMTREX_GROUP,STX_CHILD);
 	sq = _t_newr(g,SEMTREX_SEQUENCE);
@@ -891,10 +973,12 @@ Tnode *parseSemtrex(Receptor *r,char *stx) {
 	}
 	_t_free(sxx);
 
+	dump_tokens("TOKENS_AFTER_SLASH:");
+
 	/////////////////////////////////////////////////////
 	// convert ors
 	// EXPECTATION
-	// /*{SEMTREX_OR:!STX_OR,STX_OR,!STX_OR}*/
+	// /%{SEMTREX_OR:!STX_OR,STX_OR,!STX_OR}*/
 	sxx = _t_new_root(SEMTREX_WALK);
 	g = _t_news(sxx,SEMTREX_GROUP,SEMTREX_OR);
 	sq = _t_newr(g,SEMTREX_SEQUENCE);
@@ -923,10 +1007,12 @@ Tnode *parseSemtrex(Receptor *r,char *stx) {
 	}
 	_t_free(sxx);
 
+	dump_tokens("TOKENS_AFTER_ORS:");
+
 	/////////////////////////////////////////////////////
 	// convert labels to SEMTREX_LITERALS
 	// EXPECTATION
-	// /*STX_LABEL|STX_NOT
+	// /%STX_LABEL|STX_NOT
 	sxx = _t_new_root(SEMTREX_WALK);
 	g = _t_news(sxx,SEMTREX_GROUP,SEMTREX_SYMBOL_LITERAL);
 	o = _t_newr(g,SEMTREX_OR);
@@ -940,18 +1026,18 @@ Tnode *parseSemtrex(Receptor *r,char *stx) {
 	    t = _t_get(tokens,path);
 	    char *symbol_name = (char *)_t_surface(t);
 	    Symbol sy = get_symbol(symbol_name);
-	    __t_morph(t,semeq(t->contents.symbol,STX_LABEL)?SEMTREX_SYMBOL_LITERAL:SEMTREX_SYMBOL_EXCEPT,
-		&sy,sizeof(Symbol),1);
+	    __t_morph(t,semeq(t->contents.symbol,STX_LABEL)?SEMTREX_SYMBOL_LITERAL:SEMTREX_SYMBOL_EXCEPT,&sy,sizeof(Symbol),1);
 
 	    _t_free(results);
 	}
-
 	_t_free(sxx);
+
+	dump_tokens("TOKENS_AFTER_LITERAL:");
 
 	/////////////////////////////////////////////////////
 	// remove stray STX_SIBS
 	// EXPECTATION
-	// /*STX_SIBS
+	// /%STX_SIBS
 	sxx = _t_new_root(SEMTREX_WALK);
 	g = _t_news(sxx,SEMTREX_GROUP,STX_SIBS);
 	_t_news(g,SEMTREX_SYMBOL_LITERAL,STX_SIBS);
@@ -973,12 +1059,19 @@ Tnode *parseSemtrex(Receptor *r,char *stx) {
 	}
 	_t_free(sxx);
 
-	puts("TOKENS_FINAL:");
-	__t_dump(0,tokens,0,buf);
-	puts(buf);
+	dump_tokens("TOKENS_FINAL:");
 
-	t = _t_child(tokens,2);
-	_t_detach_by_ptr(tokens,t);
+	int c = _t_children(tokens);
+	t =_t_child(tokens,1);
+	Symbol sy = _t_symbol(t);
+	if (c == 2 && (semeq(STX_SL,sy))) {
+	    t = _t_child(tokens,2);
+	    _t_detach_by_ptr(tokens,t);
+	}
+	else {
+	    raise_error0("unexpected tokens!")
+	}
+	_t_free(tokens);
 
     }
     _t_free(ts);
