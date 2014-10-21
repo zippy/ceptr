@@ -568,8 +568,10 @@ void testSemtrexParse() {
     Defs d = {0,0,0,0};
     char buf[5000];
 
-    char *stx = "/(TEST_STR_SYMBOL/(sy1/sy11/sy111),sy2,sy3)";
-    T *s = parseSemtrex(&d,stx);
+    char *stx;
+    T *s;
+    stx = "/(TEST_STR_SYMBOL/(sy1/sy11/sy111),sy2,sy3)";
+    s = parseSemtrex(&d,stx);
     spec_is_str_equal(_dump_semtrex(d,s,buf),stx);
     _t_free(s);
 
@@ -590,7 +592,7 @@ void testSemtrexParse() {
 
     _setup_HTTPDefs();
 
-    stx = "/(HTTP_REQUEST/.,.,HTTP_REQUEST_PATH,(HTTP_REQUEST_PATH_SEGMENTS/{HTTP_REQUEST_PATH_SEGMENT:HTTP_REQUEST_PATH_SEGMENT}))";
+    stx = "/(HTTP_REQUEST/.,.,(HTTP_REQUEST_PATH/(HTTP_REQUEST_PATH_SEGMENTS/{HTTP_REQUEST_PATH_SEGMENT:HTTP_REQUEST_PATH_SEGMENT})))";
     s = parseSemtrex(&test_HTTP_defs,stx);
     spec_is_str_equal(_dump_semtrex(test_HTTP_defs,s,buf),stx);
     _t_free(s);
