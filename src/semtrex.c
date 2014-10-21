@@ -486,7 +486,7 @@ void __stxd_descend(Defs defs,T *s,char *v,char *buf) {
     if(_t_children(s)>0) {
 	char b[4000];
 	T *sub = _t_child(s,1);
-	sprintf(buf,_t_children(sub)>0?"(%s/%s)":"%s/%s",v,__dump_semtrex(defs,sub,b));
+	sprintf(buf,_t_children(sub)>1?"%s/(%s)":"%s/%s",v,__dump_semtrex(defs,sub,b));
     }
     else sprintf(buf,"%s",v);
 }
@@ -885,6 +885,71 @@ T *parseSemtrex(Defs *d,char *stx) {
 	dump_tokens("TOKENS_AFTER_POSTFIX:");
 
 	/////////////////////////////////////////////////////
+	// fixup STX_WALK
+	// EXPECTATION
+	// /%{SEMTREX_WALK:STX_WALK,.}
+	sxx = _t_new_root(SEMTREX_WALK);
+	g = _t_news(sxx,SEMTREX_GROUP,SEMTREX_WALK);
+	sq = _t_newr(g,SEMTREX_SEQUENCE);
+	_t_news(sq,SEMTREX_SYMBOL_LITERAL,STX_WALK);
+	_t_newr(sq,SEMTREX_SYMBOL_ANY);
+	//----------------
+	// ACTION
+	while (_t_matchr(sxx,tokens,&results)) {
+	    T *m = _t_get_match(results,SEMTREX_WALK);
+	    int *path = (int *)_t_surface(_t_child(m,2));
+	    t = _t_get(tokens,path);
+	    T *parent = _t_parent(t);
+	    int x = path[_t_path_depth(path)-1];
+	    T *c = _t_child(parent,x+1);
+	    _t_detach_by_ptr(parent,c);
+	    _t_add(t,c);
+	    t->contents.symbol = SEMTREX_WALK;
+
+	    _t_free(results);
+	}
+	_t_free(sxx);
+
+	dump_tokens("TOKENS_AFTER_WALK:");
+
+	/////////////////////////////////////////////////////
+	// convert things following slashes to children of things preceeding slashes
+	// EXPECTATION
+	// /%.*,{STX_CHILD:STX_LABEL,STX_SL,!STX_SL}
+	sxx = _t_new_root(SEMTREX_WALK);
+	sq = _t_newr(sxx,SEMTREX_SEQUENCE);
+	any = _t_newr(sq,SEMTREX_ZERO_OR_MORE);
+	_t_newr(any,SEMTREX_SYMBOL_ANY);
+	g = _t_news(sq,SEMTREX_GROUP,STX_CHILD);
+	sq = _t_newr(g,SEMTREX_SEQUENCE);
+	_t_news(sq,SEMTREX_SYMBOL_LITERAL,STX_LABEL);
+	_t_news(sq,SEMTREX_SYMBOL_LITERAL,STX_SL);
+	_t_news(sq,SEMTREX_SYMBOL_EXCEPT,STX_SL);
+
+	//----------------
+	// ACTION
+	while (_t_matchr(sxx,tokens,&results)) {
+	    T *m = _t_get_match(results,STX_CHILD);
+	    int *path = (int *)_t_surface(_t_child(m,2));
+	    int x = path[_t_path_depth(path)-1];
+	    t = _t_get(tokens,path);
+	    T *parent = _t_parent(t);
+	    // detach and free the slash token
+	    T *c = _t_child(parent,++x);
+	    _t_detach_by_ptr(parent,c);
+	    _t_free(c);
+	    // detach and add the element following the slash as a child
+	    c = _t_child(parent,x);
+	    _t_detach_by_ptr(parent,c);
+	    _t_add(t,c);
+
+	    _t_free(results);
+	}
+	_t_free(sxx);
+
+	dump_tokens("TOKENS_AFTER_SLASH:");
+
+	/////////////////////////////////////////////////////
 	// convert comma tokens to sequences
 	// EXPECTATION
 	// /*{SEMTREX_SEQUENCE:(!STX_COMMA,STX_COMMA)+,!STX_COMMA}  ->  SEMTREX_SEQUENCE
@@ -925,71 +990,6 @@ T *parseSemtrex(Defs *d,char *stx) {
 	_t_free(sxx);
 
 	dump_tokens("TOKENS_AFTER_COMMA:");
-
-	/////////////////////////////////////////////////////
-	// fixup STX_WALK
-	// EXPECTATION
-	// /%{SEMTREX_WALK:STX_WALK,.}
-	sxx = _t_new_root(SEMTREX_WALK);
-	g = _t_news(sxx,SEMTREX_GROUP,SEMTREX_WALK);
-	sq = _t_newr(g,SEMTREX_SEQUENCE);
-	_t_news(sq,SEMTREX_SYMBOL_LITERAL,STX_WALK);
-	_t_newr(sq,SEMTREX_SYMBOL_ANY);
-	//----------------
-	// ACTION
-	while (_t_matchr(sxx,tokens,&results)) {
-	    T *m = _t_get_match(results,SEMTREX_WALK);
-	    int *path = (int *)_t_surface(_t_child(m,2));
-	    t = _t_get(tokens,path);
-	    T *parent = _t_parent(t);
-	    int x = path[_t_path_depth(path)-1];
-	    T *c = _t_child(parent,x+1);
-	    _t_detach_by_ptr(parent,c);
-	    _t_add(t,c);
-	    t->contents.symbol = SEMTREX_WALK;
-
-	    _t_free(results);
-	}
-	_t_free(sxx);
-
-	dump_tokens("TOKENS_AFTER_WALK:");
-
-	/////////////////////////////////////////////////////
-	// convert things following slashes to children of things preceeding slashes
-	// EXPECTATION
-	// /%.*,{STX_CHILD:!STX_SL,STX_SL,!STX_SL}
-	sxx = _t_new_root(SEMTREX_WALK);
-	sq = _t_newr(sxx,SEMTREX_SEQUENCE);
-	any = _t_newr(sq,SEMTREX_ZERO_OR_MORE);
-	_t_newr(any,SEMTREX_SYMBOL_ANY);
-	g = _t_news(sq,SEMTREX_GROUP,STX_CHILD);
-	sq = _t_newr(g,SEMTREX_SEQUENCE);
-	_t_news(sq,SEMTREX_SYMBOL_EXCEPT,STX_SL);
-	_t_news(sq,SEMTREX_SYMBOL_LITERAL,STX_SL);
-	_t_news(sq,SEMTREX_SYMBOL_EXCEPT,STX_SL);
-
-	//----------------
-	// ACTION
-	while (_t_matchr(sxx,tokens,&results)) {
-	    T *m = _t_get_match(results,STX_CHILD);
-	    int *path = (int *)_t_surface(_t_child(m,2));
-	    int x = path[_t_path_depth(path)-1];
-	    t = _t_get(tokens,path);
-	    T *parent = _t_parent(t);
-	    // detach and free the slash token
-	    T *c = _t_child(parent,++x);
-	    _t_detach_by_ptr(parent,c);
-	    _t_free(c);
-	    // detach and add the element following the slash as a child
-	    c = _t_child(parent,x);
-	    _t_detach_by_ptr(parent,c);
-	    _t_add(t,c);
-
-	    _t_free(results);
-	}
-	_t_free(sxx);
-
-	dump_tokens("TOKENS_AFTER_SLASH:");
 
 	/////////////////////////////////////////////////////
 	// convert ors

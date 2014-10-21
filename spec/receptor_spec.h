@@ -126,7 +126,7 @@ void testReceptorAction() {
     // our expectation should match on the first path segment
     // /HTTP_REQUEST/.,.,HTTP_REQUEST_PATH/HTTP_REQUEST_PATH_SEGMENTS/{HTTP_REQUEST_PATH_SEGMENT:HTTP_REQUEST_PATH_SEGMENT}
     T *expect = _t_new_root(EXPECTATION);
-    char *stx = "/(HTTP_REQUEST/.,.,(HTTP_REQUEST_PATH/HTTP_REQUEST_PATH_SEGMENTS/{HTTP_REQUEST_PATH_SEGMENT:HTTP_REQUEST_PATH_SEGMENT}))";
+    char *stx = "/HTTP_REQUEST/(.,.,HTTP_REQUEST_PATH/HTTP_REQUEST_PATH_SEGMENTS/{HTTP_REQUEST_PATH_SEGMENT:HTTP_REQUEST_PATH_SEGMENT})";
     T *req = parseSemtrex(&test_HTTP_defs,stx);
     _t_add(expect,req);
 /*    T *req = _t_news(expect,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST);
@@ -246,7 +246,7 @@ void testReceptorDefMatch() {
 
     T *stx = _r_build_def_semtrex(r,house_loc);
     char buf[2000];
-    spec_is_str_equal(_dump_semtrex(r->defs,stx,buf),"/(house location/latitude,longitude)");
+    spec_is_str_equal(_dump_semtrex(r->defs,stx,buf),"/house location/(latitude,longitude)");
     __t_dump(&r->defs,stx,0,buf);
     spec_is_str_equal(buf," (SEMTREX_SYMBOL_LITERAL:house location (SEMTREX_SEQUENCE (SEMTREX_SYMBOL_LITERAL:latitude) (SEMTREX_SYMBOL_LITERAL:longitude)))");
 
