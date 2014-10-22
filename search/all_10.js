@@ -17,6 +17,7 @@ var searchData=
   ['semtrex_5fmatch_5fresults_5fid',['SEMTREX_MATCH_RESULTS_ID',['../sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a69e885f865c25787f236288ff4878437',1,'sys_symbols.h']]],
   ['semtrex_5fmatch_5fsiblings_5fcount_5fid',['SEMTREX_MATCH_SIBLINGS_COUNT_ID',['../sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57af45b5f9b9254869d1cfef9a577ce227e',1,'sys_symbols.h']]],
   ['semtrex_5fmatched_5fpath_5fid',['SEMTREX_MATCHED_PATH_ID',['../sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a377b430529839987dac26755572ff259',1,'sys_symbols.h']]],
+  ['semtrex_5fnot_5fid',['SEMTREX_NOT_ID',['../sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57adccb671023d8f21e422119f9d3fbf189',1,'sys_symbols.h']]],
   ['semtrex_5fone_5for_5fmore_5fid',['SEMTREX_ONE_OR_MORE_ID',['../sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a5acd63899bff8737f84493db6df43e05',1,'sys_symbols.h']]],
   ['semtrex_5for_5fid',['SEMTREX_OR_ID',['../sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a7a33830ad2d624b84f481a3bfe1c3b21',1,'sys_symbols.h']]],
   ['semtrex_5fsequence_5fid',['SEMTREX_SEQUENCE_ID',['../sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a7a12034d419f575e268f3e27b86a75e9',1,'sys_symbols.h']]],

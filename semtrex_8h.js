@@ -25,7 +25,8 @@ var semtrex_8h =
       [ "StateGroupOpen", "group__semtrex.html#gga1615968a92950438f6e67a28e9d56e5ca1b7bb5969d51c71b205f0efb1d65abed", null ],
       [ "StateGroupClose", "group__semtrex.html#gga1615968a92950438f6e67a28e9d56e5ca84c30aea6c457a3f3a8a90b1e1c1f9d4", null ],
       [ "StateDescend", "group__semtrex.html#gga1615968a92950438f6e67a28e9d56e5ca11c4e026f648fa3cb0172810ceacd3bc", null ],
-      [ "StateWalk", "group__semtrex.html#gga1615968a92950438f6e67a28e9d56e5ca1541d465af63c3b5cde2b8f83b3d8068", null ]
+      [ "StateWalk", "group__semtrex.html#gga1615968a92950438f6e67a28e9d56e5ca1541d465af63c3b5cde2b8f83b3d8068", null ],
+      [ "StateNot", "group__semtrex.html#gga1615968a92950438f6e67a28e9d56e5ca5a2ec827fec4aa6cf84047878d96fd44", null ]
     ] ],
     [ "_dump_semtrex", "group__semtrex.html#gaa3ab8a942198e875464b0e9d8e7e30bf", null ],
     [ "_stx_freeFA", "group__semtrex.html#gacbce8db372cc051950f8d684af47c39a", null ],
@@ -33,5 +34,5 @@ var semtrex_8h =
     [ "_t_get_match", "group__semtrex.html#gada90f89374f4577e3ac8819e500a97a7", null ],
     [ "_t_match", "group__semtrex.html#ga8e580d7393964e5df55e92aebf587e3f", null ],
     [ "_t_matchr", "group__semtrex.html#ga27540c8e1822da3160a0cc4717df410f", null ],
-    [ "parseSemtrex", "group__semtrex.html#ga6c769bcd5236ab8d9001a61877e9227c", null ]
+    [ "parseSemtrex", "group__semtrex.html#ga17eda8e5306b5764656d7edf3f5b15bd", null ]
 ];

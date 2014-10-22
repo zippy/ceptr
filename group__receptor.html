@@ -708,7 +708,7 @@ Variables</h2></td></tr>
 <div class="line"></div>
 <div class="line">    <a class="code" href="structT.html">T</a> *stx = <a class="code" href="group__receptor.html#ga63078117d8c6850455a4419fd9b6b784">_r_build_def_semtrex</a>(r,house_loc);</div>
 <div class="line">    <span class="keywordtype">char</span> buf[2000];</div>
-<div class="line">    spec_is_str_equal(_dump_semtrex(r-&gt;<a class="code" href="structReceptor.html#a56e5e37eb23a3e5debf7f24723eca9ed">defs</a>,stx,buf),<span class="stringliteral">&quot;/(house location/latitude,longitude)&quot;</span>);</div>
+<div class="line">    spec_is_str_equal(_dump_semtrex(r-&gt;<a class="code" href="structReceptor.html#a56e5e37eb23a3e5debf7f24723eca9ed">defs</a>,stx,buf),<span class="stringliteral">&quot;/house location/(latitude,longitude)&quot;</span>);</div>
 <div class="line">    __t_dump(&amp;r-&gt;<a class="code" href="structReceptor.html#a56e5e37eb23a3e5debf7f24723eca9ed">defs</a>,stx,0,buf);</div>
 <div class="line">    spec_is_str_equal(buf,<span class="stringliteral">&quot; (SEMTREX_SYMBOL_LITERAL:house location (SEMTREX_SEQUENCE (SEMTREX_SYMBOL_LITERAL:latitude) (SEMTREX_SYMBOL_LITERAL:longitude)))&quot;</span>);</div>
 <div class="line"></div>
@@ -829,22 +829,27 @@ Variables</h2></td></tr>
 <div class="line">    <a class="code" href="structT.html">T</a> *signal = <a class="code" href="group__receptor.html#ga475101caa9d56e6398d93dc3b4c9b616">__r_make_signal</a>(f,t,DEFAULT_ASPECT,signal_contents);</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// our expectation should match on the first path segment</span></div>
+<div class="line">    <span class="comment">// /HTTP_REQUEST/.,.,HTTP_REQUEST_PATH/HTTP_REQUEST_PATH_SEGMENTS/{HTTP_REQUEST_PATH_SEGMENT:HTTP_REQUEST_PATH_SEGMENT}</span></div>
 <div class="line">    <a class="code" href="structT.html">T</a> *expect = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(EXPECTATION);</div>
-<div class="line">    <a class="code" href="structT.html">T</a> *req = <a class="code" href="group__tree.html#ga14080e3aa32b1612dabcd610b062e376">_t_news</a>(expect,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST);</div>
-<div class="line">    <a class="code" href="structT.html">T</a> *seq = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(req,SEMTREX_SEQUENCE);</div>
-<div class="line">    <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(seq,SEMTREX_SYMBOL_ANY);  <span class="comment">// skips the Version</span></div>
-<div class="line">    <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(seq,SEMTREX_SYMBOL_ANY);  <span class="comment">// skips over the Method</span></div>
-<div class="line">    <a class="code" href="structT.html">T</a> *path = <a class="code" href="group__tree.html#ga14080e3aa32b1612dabcd610b062e376">_t_news</a>(seq,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST_PATH);</div>
-<div class="line">    <a class="code" href="structT.html">T</a> *segs = <a class="code" href="group__tree.html#ga14080e3aa32b1612dabcd610b062e376">_t_news</a>(path,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST_PATH_SEGMENTS);</div>
-<div class="line">    <a class="code" href="structT.html">T</a> *g = <a class="code" href="group__tree.html#ga14080e3aa32b1612dabcd610b062e376">_t_news</a>(segs,SEMTREX_GROUP,HTTP_REQUEST_PATH_SEGMENT);</div>
-<div class="line">    <a class="code" href="group__tree.html#ga14080e3aa32b1612dabcd610b062e376">_t_news</a>(g,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST_PATH_SEGMENT);</div>
+<div class="line">    <span class="keywordtype">char</span> *stx = <span class="stringliteral">&quot;/HTTP_REQUEST/(.,.,HTTP_REQUEST_PATH/HTTP_REQUEST_PATH_SEGMENTS/{HTTP_REQUEST_PATH_SEGMENT:HTTP_REQUEST_PATH_SEGMENT})&quot;</span>;</div>
+<div class="line">    <a class="code" href="structT.html">T</a> *req = <a class="code" href="group__semtrex.html#ga17eda8e5306b5764656d7edf3f5b15bd">parseSemtrex</a>(&amp;test_HTTP_defs,stx);</div>
+<div class="line">    <a class="code" href="group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c">_t_add</a>(expect,req);</div>
+<div class="line"><span class="comment">/*    T *req = _t_news(expect,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST);</span></div>
+<div class="line"><span class="comment">    T *seq = _t_newr(req,SEMTREX_SEQUENCE);</span></div>
+<div class="line"><span class="comment">    _t_newr(seq,SEMTREX_SYMBOL_ANY);  // skips the Version</span></div>
+<div class="line"><span class="comment">    _t_newr(seq,SEMTREX_SYMBOL_ANY);  // skips over the Method</span></div>
+<div class="line"><span class="comment">    T *path = _t_news(seq,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST_PATH);</span></div>
+<div class="line"><span class="comment">    T *segs = _t_news(path,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST_PATH_SEGMENTS);</span></div>
+<div class="line"><span class="comment">    T *g = _t_news(segs,SEMTREX_GROUP,HTTP_REQUEST_PATH_SEGMENT);</span></div>
+<div class="line"><span class="comment">    _t_news(g,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST_PATH_SEGMENT);</span></div>
+<div class="line"><span class="comment">*/</span></div>
+<div class="line">    <span class="keywordtype">char</span> buf[2000];</div>
 <div class="line"></div>
 <div class="line">    <a class="code" href="structT.html">T</a> *result;</div>
 <div class="line">    <span class="keywordtype">int</span> matched;</div>
 <div class="line">    <span class="comment">// make sure our expectation semtrex actually matches the signal</span></div>
 <div class="line">    spec_is_true(matched = <a class="code" href="group__semtrex.html#ga27540c8e1822da3160a0cc4717df410f">_t_matchr</a>(req,signal_contents,&amp;result));</div>
 <div class="line">    <a class="code" href="structT.html">T</a> *m = <a class="code" href="group__semtrex.html#gada90f89374f4577e3ac8819e500a97a7">_t_get_match</a>(result,HTTP_REQUEST_PATH_SEGMENT);</div>
-<div class="line">    <span class="keywordtype">char</span> buf[2000];</div>
 <div class="line">    __t_dump(&amp;test_HTTP_defs,m,0,buf);</div>
 <div class="line">    spec_is_str_equal(buf,<span class="stringliteral">&quot; (SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:HTTP_REQUEST_PATH_SEGMENT) (SEMTREX_MATCHED_PATH:/3/1/1) (SEMTREX_MATCH_SIBLINGS_COUNT:1))&quot;</span>);</div>
 <div class="line">    <span class="keywordflow">if</span> (result) {</div>
@@ -1454,7 +1459,7 @@ Variables</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Oct 20 2014 12:45:19 for ceptr by
+    <li class="footer">Generated on Wed Oct 22 2014 12:22:26 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

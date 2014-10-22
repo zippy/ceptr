@@ -186,14 +186,17 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 <tr class="memitem:a4e1e67cfe16afae36e660e1202119b39"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4e1e67cfe16afae36e660e1202119b39"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>_stxl</b> (<a class="el" href="structT.html">T</a> *stxx)</td></tr>
 <tr class="separator:a4e1e67cfe16afae36e660e1202119b39"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad1a5a1849e98dae67bf68a7ae0b4845e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad1a5a1849e98dae67bf68a7ae0b4845e"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>get_symbol</b> (char *symbol_name)</td></tr>
-<tr class="separator:ad1a5a1849e98dae67bf68a7ae0b4845e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ba88fb597a485dc745b598fb96ea614"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3ba88fb597a485dc745b598fb96ea614"></a>
+<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>_get_symbol</b> (char *symbol_name, <a class="el" href="structDefs.html">Defs</a> *d, Context ctx)</td></tr>
+<tr class="separator:a3ba88fb597a485dc745b598fb96ea614"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c432d4d8a2f614895f8fa2f7dcd2f99"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1c432d4d8a2f614895f8fa2f7dcd2f99"></a>
+<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>get_symbol</b> (char *symbol_name, <a class="el" href="structDefs.html">Defs</a> *d)</td></tr>
+<tr class="separator:a1c432d4d8a2f614895f8fa2f7dcd2f99"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a812993c95f0eeed3dd78ad1c5f979a7f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a812993c95f0eeed3dd78ad1c5f979a7f"></a>
 <a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>wrap</b> (<a class="el" href="structT.html">T</a> *tokens, <a class="el" href="structT.html">T</a> *results, <a class="el" href="structSemanticID.html">Symbol</a> contents_s, <a class="el" href="structSemanticID.html">Symbol</a> open_s)</td></tr>
 <tr class="separator:a812993c95f0eeed3dd78ad1c5f979a7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6c769bcd5236ab8d9001a61877e9227c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga6c769bcd5236ab8d9001a61877e9227c">parseSemtrex</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, char *stx)</td></tr>
-<tr class="separator:ga6c769bcd5236ab8d9001a61877e9227c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga17eda8e5306b5764656d7edf3f5b15bd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga17eda8e5306b5764656d7edf3f5b15bd">parseSemtrex</a> (<a class="el" href="structDefs.html">Defs</a> *d, char *stx)</td></tr>
+<tr class="separator:ga17eda8e5306b5764656d7edf3f5b15bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>semtrex implementation </p>
@@ -244,7 +247,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_stxl</b> (<a class="
 </div><div class="memdoc">
 <p>walks through the FSA clearing pointers that create loops </p>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00256">256</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00265">265</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -263,7 +266,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_stxl</b> (<a class="
 </div><div class="memdoc">
 <p>walk through FSA freeing the states, assumes __stx_freeFA has been called first so as not to go into loops! </p>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00269">269</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00278">278</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -354,7 +357,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_stxl</b> (<a class="
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>1 or 0 if matched or not </dd></dl>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00294">294</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00303">303</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -476,7 +479,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_stxl</b> (<a class="
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="semtrex_8c.html">semtrex.c</a></li>
-    <li class="footer">Generated on Mon Oct 20 2014 12:45:19 for ceptr by
+    <li class="footer">Generated on Wed Oct 22 2014 12:22:26 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

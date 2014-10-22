@@ -44,5 +44,5 @@ var group__semtrex =
     [ "_t_get_match", "group__semtrex.html#gada90f89374f4577e3ac8819e500a97a7", null ],
     [ "_t_match", "group__semtrex.html#ga8e580d7393964e5df55e92aebf587e3f", null ],
     [ "_t_matchr", "group__semtrex.html#ga27540c8e1822da3160a0cc4717df410f", null ],
-    [ "parseSemtrex", "group__semtrex.html#ga6c769bcd5236ab8d9001a61877e9227c", null ]
+    [ "parseSemtrex", "group__semtrex.html#ga17eda8e5306b5764656d7edf3f5b15bd", null ]
 ];

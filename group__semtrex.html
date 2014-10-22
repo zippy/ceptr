@@ -179,7 +179,8 @@ Enumerations</h2></td></tr>
 <b>StateGroupClose</b>, 
 <br />
 &#160;&#160;<b>StateDescend</b>, 
-<b>StateWalk</b>
+<b>StateWalk</b>, 
+<b>StateNot</b>
 <br />
  }</td></tr>
 <tr class="separator:ga1615968a92950438f6e67a28e9d56e5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -204,8 +205,8 @@ Functions</h2></td></tr>
 <tr class="memitem:gaa3ab8a942198e875464b0e9d8e7e30bf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaa3ab8a942198e875464b0e9d8e7e30bf"></a>
 char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (<a class="el" href="structDefs.html">Defs</a> defs, <a class="el" href="structT.html">T</a> *s, char *buf)</td></tr>
 <tr class="separator:gaa3ab8a942198e875464b0e9d8e7e30bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6c769bcd5236ab8d9001a61877e9227c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga6c769bcd5236ab8d9001a61877e9227c">parseSemtrex</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, char *stx)</td></tr>
-<tr class="separator:ga6c769bcd5236ab8d9001a61877e9227c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga17eda8e5306b5764656d7edf3f5b15bd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga17eda8e5306b5764656d7edf3f5b15bd">parseSemtrex</a> (<a class="el" href="structDefs.html">Defs</a> *d, char *stx)</td></tr>
+<tr class="separator:ga17eda8e5306b5764656d7edf3f5b15bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Semtrex provides a language for pattern matching on semtantic trees. </p>
@@ -321,7 +322,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 </div><div class="memdoc">
 <p>free the memory allocated by an FSA </p>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00281">281</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00290">290</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -350,7 +351,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 </div><div class="memdoc">
 <p>wrapper function for building the finite state automata recursively and patching it to the final match state </p>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00240">240</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00249">249</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -386,7 +387,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structT.html">T</a> of the match or NULL if no such match found </dd></dl>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00463">463</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00476">476</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -423,7 +424,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>1 or 0 if matched or not </dd></dl>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00453">453</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00466">466</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -467,19 +468,19 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>1 or 0 if matched or not </dd></dl>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00429">429</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00442">442</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ga6c769bcd5236ab8d9001a61877e9227c"></a>
+<a class="anchor" id="ga17eda8e5306b5764656d7edf3f5b15bd"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="structT.html">T</a>* parseSemtrex </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structReceptor.html">Receptor</a> *&#160;</td>
-          <td class="paramname"><em>r</em>, </td>
+          <td class="paramtype"><a class="el" href="structDefs.html">Defs</a> *&#160;</td>
+          <td class="paramname"><em>d</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -503,7 +504,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structT.html">T</a> semtrex tree </dd></dl>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00663">663</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00692">692</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -512,7 +513,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Oct 20 2014 12:45:19 for ceptr by
+    <li class="footer">Generated on Wed Oct 22 2014 12:22:26 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

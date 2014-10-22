@@ -16,6 +16,7 @@ var semtrex__spec_8h =
     [ "testMatchGroup", "semtrex__spec_8h.html#aa63acf577c8f199c0c447376fd42b331", null ],
     [ "testMatchGroupMulti", "semtrex__spec_8h.html#a5622e59695f9c1e25e09164f612f3ca4", null ],
     [ "testMatchLiteralValue", "semtrex__spec_8h.html#ad64e028c8befbb726abda6f21fd8dd74", null ],
+    [ "testMatchNot", "semtrex__spec_8h.html#a33f4aaa8b4b86845a76e37b3889ac854", null ],
     [ "testMatchOr", "semtrex__spec_8h.html#aed0922b183dc149cdc633c169ef6f0e6", null ],
     [ "testMatchPlus", "semtrex__spec_8h.html#a3fe5f6983e634a93512fe5ac4ae899b1", null ],
     [ "testMatchQ", "semtrex__spec_8h.html#ae4caec2fa30436c30291cd4316250240", null ],

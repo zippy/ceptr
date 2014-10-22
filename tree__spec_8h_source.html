@@ -402,110 +402,111 @@ $(document).ready(function(){initNavTree('tree__spec_8h_source.html','');});
 <div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;    __t_dump(&amp;test_HTTP_defs,c,0,buf);</div>
 <div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;    spec_is_str_equal(buf,<span class="stringliteral">&quot; (HTTP_REQUEST_PATH_SEGMENTS (HTTP_REQUEST_PATH_SEGMENT:groups) (HTTP_REQUEST_PATH_SEGMENT:a) (HTTP_REQUEST_PATH_SEGMENT:5))&quot;</span>);</div>
 <div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;}</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;</div>
-<div class="line"><a name="l00330"></a><span class="lineno"><a class="line" href="tree__spec_8h.html#aecd9cd243076dc7b034b53bed7c297a0">  330</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="tree__spec_8h.html#aecd9cd243076dc7b034b53bed7c297a0">testTreeMorph</a>() {</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;    <span class="keywordtype">char</span> buf[2000];</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;    <a class="code" href="structT.html">T</a> *x = <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(0,TEST_INT_SYMBOL,123);</div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;    <a class="code" href="structT.html">T</a> *z = <a class="code" href="group__tree.html#ga6ecbb70ce62a6c61f04ff8d0707101e4">_t_new</a>(0,TEST_STR_SYMBOL,<span class="stringliteral">&quot;fish&quot;</span>,5);</div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;    <a class="code" href="group__tree.html#gac32c74deeed63ca197b3e3e3beb35a33">_t_morph</a>(x,z);</div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    __t_dump(0,x,0,buf);</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;    spec_is_str_equal(buf,<span class="stringliteral">&quot; (TEST_STR_SYMBOL:fish)&quot;</span>);</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;</div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(x);</div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(z);</div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;}</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;</div>
-<div class="line"><a name="l00345"></a><span class="lineno"><a class="line" href="tree__spec_8h.html#ad67357180aa840b09dfc3a37493f56e9">  345</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="tree__spec_8h.html#ad67357180aa840b09dfc3a37493f56e9">testTreeMorphLowLevel</a>() {</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;    <span class="keywordtype">char</span> buf[2000];</div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;    <a class="code" href="structT.html">T</a> *x = <a class="code" href="group__tree.html#ga6ecbb70ce62a6c61f04ff8d0707101e4">_t_new</a>(0,TEST_STR_SYMBOL,<span class="stringliteral">&quot;fish&quot;</span>,5);</div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;    <span class="keywordtype">int</span> i = 789;</div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;</div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;    <a class="code" href="group__tree.html#gad6597b652983165f6b2993211a598ad4">__t_morph</a>(x,TEST_INT_SYMBOL,&amp;i,<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>),0);</div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;    __t_dump(0,x,0,buf);</div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;    spec_is_str_equal(buf,<span class="stringliteral">&quot; (TEST_INT_SYMBOL:789)&quot;</span>);</div>
-<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;</div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(x);</div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;}</div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;</div>
-<div class="line"><a name="l00359"></a><span class="lineno"><a class="line" href="tree__spec_8h.html#a80fb5c03826178e4332803fb546777fc">  359</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="tree__spec_8h.html#a80fb5c03826178e4332803fb546777fc">testTreeDetach</a>() {</div>
-<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;    <a class="code" href="structT.html">T</a> *t = <a class="code" href="http__example_8h.html#a1c182b5a6e82ef49c6967183a15c3e8b">_makeTestHTTPRequestTree</a>(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;    <span class="keywordtype">char</span> buf[2000];</div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;    <span class="keywordtype">int</span> p1[] = {1,TREE_PATH_TERMINATOR};</div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;</div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;    <span class="comment">// remove the version from the tree</span></div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;    spec_is_symbol_equal(0,<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(<a class="code" href="group__tree.html#gaf019d190c9623de809d006e309a441af">_t_get</a>(t,p1)),HTTP_REQUEST_VERSION);</div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;    <a class="code" href="structT.html">T</a> *t_version = <a class="code" href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a>(t,1);</div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;    spec_is_symbol_equal(0,<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(<a class="code" href="group__tree.html#gaf019d190c9623de809d006e309a441af">_t_get</a>(t,p1)),HTTP_REQUEST_METHOD);</div>
-<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;</div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;    <span class="comment">// detached nodes shouldn&#39;t have a parent</span></div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;    spec_is_ptr_equal(_t_parent(t_version),NULL);</div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;</div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t_version);</div>
-<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;}</div>
-<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;</div>
-<div class="line"><a name="l00378"></a><span class="lineno"><a class="line" href="tree__spec_8h.html#a2a36cde88a26d81f883c8650e3981379">  378</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="tree__spec_8h.html#a2a36cde88a26d81f883c8650e3981379">testTreeHash</a>() {</div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;    <a class="code" href="structT.html">T</a> *t = <a class="code" href="http__example_8h.html#a1c182b5a6e82ef49c6967183a15c3e8b">_makeTestHTTPRequestTree</a>(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;    TreeHash h = <a class="code" href="group__tree.html#ga19506af36bcdf713253dabd47ecaa6e4">_t_hash</a>(test_HTTP_symbols,test_HTTP_structures,t);</div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;</div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;    <span class="comment">// test that changing a symbol changes the hash</span></div>
-<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;    t-&gt;contents.symbol.id++;</div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;    spec_is_true(!<a class="code" href="group__tree.html#ga11e689c8dea5c022fe0e4c20652e5af5">_t_hash_equal</a>(h,<a class="code" href="group__tree.html#ga19506af36bcdf713253dabd47ecaa6e4">_t_hash</a>(test_HTTP_symbols,test_HTTP_structures,t)));</div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;    t-&gt;contents.symbol.id--;</div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;</div>
-<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;    <span class="comment">// test that changing a surface changes the hash</span></div>
-<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;    <span class="keywordtype">int</span> p[] = {1,2,TREE_PATH_TERMINATOR};</div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;    <a class="code" href="structT.html">T</a> *v = <a class="code" href="group__tree.html#gaf019d190c9623de809d006e309a441af">_t_get</a>(t,p);</div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;    <span class="keywordtype">int</span> orig_version = *(<span class="keywordtype">int</span> *)&amp;v-&gt;contents.surface;</div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;    *(<span class="keywordtype">int</span> *)&amp;v-&gt;contents.surface = orig_version + 1;</div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;    spec_is_true(!<a class="code" href="group__tree.html#ga11e689c8dea5c022fe0e4c20652e5af5">_t_hash_equal</a>(h,<a class="code" href="group__tree.html#ga19506af36bcdf713253dabd47ecaa6e4">_t_hash</a>(test_HTTP_symbols,test_HTTP_structures,t)));</div>
-<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;    *(<span class="keywordtype">int</span> *)&amp;v-&gt;contents.surface = orig_version; <span class="comment">// change value back</span></div>
-<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;</div>
-<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;    <span class="comment">// test that changing child order changes the hash</span></div>
-<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;    <a class="code" href="structT.html">T</a> *t_version = <a class="code" href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a>(t,1);</div>
-<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;    <a class="code" href="group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c">_t_add</a>(t,t_version);</div>
-<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;    spec_is_true(!<a class="code" href="group__tree.html#ga11e689c8dea5c022fe0e4c20652e5af5">_t_hash_equal</a>(h,<a class="code" href="group__tree.html#ga19506af36bcdf713253dabd47ecaa6e4">_t_hash</a>(test_HTTP_symbols,test_HTTP_structures,t)));</div>
-<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;</div>
-<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
-<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;}</div>
-<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;</div>
-<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;<span class="keywordtype">void</span> testTree() {</div>
-<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;    _setup_HTTPDefs();</div>
-<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;    testCreateTreeNodes();</div>
-<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;    <a class="code" href="tree__spec_8h.html#af273dd6bfe59ce73f16b171faa53a14c">testTreeNewReceptor</a>();</div>
-<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;    <a class="code" href="tree__spec_8h.html#a97fd52e40235d0735c7a4de6677d9dc9">testTreeNewScape</a>();</div>
-<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;    testTreeOrthogonal();</div>
-<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;    testTreeRealloc();</div>
-<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;    <a class="code" href="tree__spec_8h.html#a2135f4c00a6d218e0de5b1f63bb2a54a">testTreeNodeIndex</a>();</div>
-<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;    <a class="code" href="tree__spec_8h.html#af59a30f5d159bb08ea49baf053cb204d">testTreePathGet</a>();</div>
-<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;    <a class="code" href="tree__spec_8h.html#ad27e0ca8287fd12eb5823170bb306c90">testTreePathGetSurface</a>();</div>
-<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;    <a class="code" href="tree__spec_8h.html#a14b70ecd723111bbe4d10b3d3e36600a">testTreePathGetPath</a>();</div>
-<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;    <a class="code" href="tree__spec_8h.html#a9bd20125366321c7321c7be127dd5239">testTreePathEqual</a>();</div>
-<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;    <a class="code" href="tree__spec_8h.html#ad79851a7dc2d333e1e496c93b1c78971">testTreePathDepth</a>();</div>
-<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;    <a class="code" href="tree__spec_8h.html#a5986d99ac81ace5b68beb3d5c255ca61">testTreePathCopy</a>();</div>
-<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;    <a class="code" href="tree__spec_8h.html#a3473a2e241b0849ddfca791ffc713857">testTreePathSprint</a>();</div>
-<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;    <a class="code" href="tree__spec_8h.html#a61b28f10ff4df871f93a9b98c2a6dbf8">testTreeClone</a>();</div>
-<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;    <a class="code" href="tree__spec_8h.html#a40c176590d4f13d3110238f7c50824fb">testTreeReplace</a>();</div>
-<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;    <a class="code" href="tree__spec_8h.html#a00b79b1fe446ede71ba59a6833a5880d">testTreeInsertAt</a>();</div>
-<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;    <a class="code" href="tree__spec_8h.html#aecd9cd243076dc7b034b53bed7c297a0">testTreeMorph</a>();</div>
-<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;    <a class="code" href="tree__spec_8h.html#ad67357180aa840b09dfc3a37493f56e9">testTreeMorphLowLevel</a>();</div>
-<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;    <a class="code" href="tree__spec_8h.html#a80fb5c03826178e4332803fb546777fc">testTreeDetach</a>();</div>
-<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;    <a class="code" href="tree__spec_8h.html#a2a36cde88a26d81f883c8650e3981379">testTreeHash</a>();</div>
-<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;    _cleanup_HTTPDefs();</div>
-<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;}</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;}</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;</div>
+<div class="line"><a name="l00331"></a><span class="lineno"><a class="line" href="tree__spec_8h.html#aecd9cd243076dc7b034b53bed7c297a0">  331</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="tree__spec_8h.html#aecd9cd243076dc7b034b53bed7c297a0">testTreeMorph</a>() {</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;    <span class="keywordtype">char</span> buf[2000];</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;    <a class="code" href="structT.html">T</a> *x = <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(0,TEST_INT_SYMBOL,123);</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;    <a class="code" href="structT.html">T</a> *z = <a class="code" href="group__tree.html#ga6ecbb70ce62a6c61f04ff8d0707101e4">_t_new</a>(0,TEST_STR_SYMBOL,<span class="stringliteral">&quot;fish&quot;</span>,5);</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    <a class="code" href="group__tree.html#gac32c74deeed63ca197b3e3e3beb35a33">_t_morph</a>(x,z);</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;    __t_dump(0,x,0,buf);</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;    spec_is_str_equal(buf,<span class="stringliteral">&quot; (TEST_STR_SYMBOL:fish)&quot;</span>);</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;</div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(x);</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(z);</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;}</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;</div>
+<div class="line"><a name="l00346"></a><span class="lineno"><a class="line" href="tree__spec_8h.html#ad67357180aa840b09dfc3a37493f56e9">  346</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="tree__spec_8h.html#ad67357180aa840b09dfc3a37493f56e9">testTreeMorphLowLevel</a>() {</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;    <span class="keywordtype">char</span> buf[2000];</div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;    <a class="code" href="structT.html">T</a> *x = <a class="code" href="group__tree.html#ga6ecbb70ce62a6c61f04ff8d0707101e4">_t_new</a>(0,TEST_STR_SYMBOL,<span class="stringliteral">&quot;fish&quot;</span>,5);</div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;    <span class="keywordtype">int</span> i = 789;</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;</div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;    <a class="code" href="group__tree.html#gad6597b652983165f6b2993211a598ad4">__t_morph</a>(x,TEST_INT_SYMBOL,&amp;i,<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>),0);</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;    __t_dump(0,x,0,buf);</div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;    spec_is_str_equal(buf,<span class="stringliteral">&quot; (TEST_INT_SYMBOL:789)&quot;</span>);</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(x);</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;}</div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;</div>
+<div class="line"><a name="l00360"></a><span class="lineno"><a class="line" href="tree__spec_8h.html#a80fb5c03826178e4332803fb546777fc">  360</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="tree__spec_8h.html#a80fb5c03826178e4332803fb546777fc">testTreeDetach</a>() {</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;    <a class="code" href="structT.html">T</a> *t = <a class="code" href="http__example_8h.html#a1c182b5a6e82ef49c6967183a15c3e8b">_makeTestHTTPRequestTree</a>(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;    <span class="keywordtype">char</span> buf[2000];</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;    <span class="keywordtype">int</span> p1[] = {1,TREE_PATH_TERMINATOR};</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;    <span class="comment">// remove the version from the tree</span></div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;    spec_is_symbol_equal(0,<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(<a class="code" href="group__tree.html#gaf019d190c9623de809d006e309a441af">_t_get</a>(t,p1)),HTTP_REQUEST_VERSION);</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;    <a class="code" href="structT.html">T</a> *t_version = <a class="code" href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a>(t,1);</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;    spec_is_symbol_equal(0,<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(<a class="code" href="group__tree.html#gaf019d190c9623de809d006e309a441af">_t_get</a>(t,p1)),HTTP_REQUEST_METHOD);</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;    <span class="comment">// detached nodes shouldn&#39;t have a parent</span></div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;    spec_is_ptr_equal(_t_parent(t_version),NULL);</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t_version);</div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;}</div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;</div>
+<div class="line"><a name="l00379"></a><span class="lineno"><a class="line" href="tree__spec_8h.html#a2a36cde88a26d81f883c8650e3981379">  379</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="tree__spec_8h.html#a2a36cde88a26d81f883c8650e3981379">testTreeHash</a>() {</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;    <a class="code" href="structT.html">T</a> *t = <a class="code" href="http__example_8h.html#a1c182b5a6e82ef49c6967183a15c3e8b">_makeTestHTTPRequestTree</a>(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;    TreeHash h = <a class="code" href="group__tree.html#ga19506af36bcdf713253dabd47ecaa6e4">_t_hash</a>(test_HTTP_symbols,test_HTTP_structures,t);</div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;</div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;    <span class="comment">// test that changing a symbol changes the hash</span></div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;    t-&gt;contents.symbol.id++;</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;    spec_is_true(!<a class="code" href="group__tree.html#ga11e689c8dea5c022fe0e4c20652e5af5">_t_hash_equal</a>(h,<a class="code" href="group__tree.html#ga19506af36bcdf713253dabd47ecaa6e4">_t_hash</a>(test_HTTP_symbols,test_HTTP_structures,t)));</div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;    t-&gt;contents.symbol.id--;</div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;</div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;    <span class="comment">// test that changing a surface changes the hash</span></div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;    <span class="keywordtype">int</span> p[] = {1,2,TREE_PATH_TERMINATOR};</div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;    <a class="code" href="structT.html">T</a> *v = <a class="code" href="group__tree.html#gaf019d190c9623de809d006e309a441af">_t_get</a>(t,p);</div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;    <span class="keywordtype">int</span> orig_version = *(<span class="keywordtype">int</span> *)&amp;v-&gt;contents.surface;</div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;    *(<span class="keywordtype">int</span> *)&amp;v-&gt;contents.surface = orig_version + 1;</div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;    spec_is_true(!<a class="code" href="group__tree.html#ga11e689c8dea5c022fe0e4c20652e5af5">_t_hash_equal</a>(h,<a class="code" href="group__tree.html#ga19506af36bcdf713253dabd47ecaa6e4">_t_hash</a>(test_HTTP_symbols,test_HTTP_structures,t)));</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;    *(<span class="keywordtype">int</span> *)&amp;v-&gt;contents.surface = orig_version; <span class="comment">// change value back</span></div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;</div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;    <span class="comment">// test that changing child order changes the hash</span></div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;    <a class="code" href="structT.html">T</a> *t_version = <a class="code" href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a>(t,1);</div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;    <a class="code" href="group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c">_t_add</a>(t,t_version);</div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;    spec_is_true(!<a class="code" href="group__tree.html#ga11e689c8dea5c022fe0e4c20652e5af5">_t_hash_equal</a>(h,<a class="code" href="group__tree.html#ga19506af36bcdf713253dabd47ecaa6e4">_t_hash</a>(test_HTTP_symbols,test_HTTP_structures,t)));</div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;</div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;}</div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;</div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;<span class="keywordtype">void</span> testTree() {</div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;    _setup_HTTPDefs();</div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;    testCreateTreeNodes();</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;    <a class="code" href="tree__spec_8h.html#af273dd6bfe59ce73f16b171faa53a14c">testTreeNewReceptor</a>();</div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;    <a class="code" href="tree__spec_8h.html#a97fd52e40235d0735c7a4de6677d9dc9">testTreeNewScape</a>();</div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;    testTreeOrthogonal();</div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;    testTreeRealloc();</div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;    <a class="code" href="tree__spec_8h.html#a2135f4c00a6d218e0de5b1f63bb2a54a">testTreeNodeIndex</a>();</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;    <a class="code" href="tree__spec_8h.html#af59a30f5d159bb08ea49baf053cb204d">testTreePathGet</a>();</div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;    <a class="code" href="tree__spec_8h.html#ad27e0ca8287fd12eb5823170bb306c90">testTreePathGetSurface</a>();</div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;    <a class="code" href="tree__spec_8h.html#a14b70ecd723111bbe4d10b3d3e36600a">testTreePathGetPath</a>();</div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;    <a class="code" href="tree__spec_8h.html#a9bd20125366321c7321c7be127dd5239">testTreePathEqual</a>();</div>
+<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;    <a class="code" href="tree__spec_8h.html#ad79851a7dc2d333e1e496c93b1c78971">testTreePathDepth</a>();</div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;    <a class="code" href="tree__spec_8h.html#a5986d99ac81ace5b68beb3d5c255ca61">testTreePathCopy</a>();</div>
+<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;    <a class="code" href="tree__spec_8h.html#a3473a2e241b0849ddfca791ffc713857">testTreePathSprint</a>();</div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;    <a class="code" href="tree__spec_8h.html#a61b28f10ff4df871f93a9b98c2a6dbf8">testTreeClone</a>();</div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;    <a class="code" href="tree__spec_8h.html#a40c176590d4f13d3110238f7c50824fb">testTreeReplace</a>();</div>
+<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;    <a class="code" href="tree__spec_8h.html#a00b79b1fe446ede71ba59a6833a5880d">testTreeInsertAt</a>();</div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;    <a class="code" href="tree__spec_8h.html#aecd9cd243076dc7b034b53bed7c297a0">testTreeMorph</a>();</div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;    <a class="code" href="tree__spec_8h.html#ad67357180aa840b09dfc3a37493f56e9">testTreeMorphLowLevel</a>();</div>
+<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;    <a class="code" href="tree__spec_8h.html#a80fb5c03826178e4332803fb546777fc">testTreeDetach</a>();</div>
+<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;    <a class="code" href="tree__spec_8h.html#a2a36cde88a26d81f883c8650e3981379">testTreeHash</a>();</div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;    _cleanup_HTTPDefs();</div>
+<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;}</div>
 <div class="ttc" id="group__tree_html_ga25dd0f385044ffbcc7c215ea80fa00b4"><div class="ttname"><a href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a></div><div class="ttdeci">T * _t_new_root(Symbol symbol)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00113">tree.c:113</a></div></div>
 <div class="ttc" id="structT_html"><div class="ttname"><a href="structT.html">T</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00043">ceptr_types.h:43</a></div></div>
 <div class="ttc" id="scape_8c_html_a4262c29b48e99f7254b1ceef9bae0436"><div class="ttname"><a href="scape_8c.html#a4262c29b48e99f7254b1ceef9bae0436">_s_new</a></div><div class="ttdeci">Scape * _s_new(Symbol key_source, Symbol data_source)</div><div class="ttdef"><b>Definition:</b> <a href="scape_8c_source.html#l00023">scape.c:23</a></div></div>
 <div class="ttc" id="group__tree_html_ga57e9b6efeca702757896ce2ca5a720af"><div class="ttname"><a href="group__tree.html#ga57e9b6efeca702757896ce2ca5a720af">_t_next_sibling</a></div><div class="ttdeci">T * _t_next_sibling(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00501">tree.c:501</a></div></div>
 <div class="ttc" id="group__tree_html_gac32c74deeed63ca197b3e3e3beb35a33"><div class="ttname"><a href="group__tree.html#gac32c74deeed63ca197b3e3e3beb35a33">_t_morph</a></div><div class="ttdeci">void _t_morph(T *dst, T *src)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00286">tree.c:286</a></div></div>
-<div class="ttc" id="tree__spec_8h_html_ad67357180aa840b09dfc3a37493f56e9"><div class="ttname"><a href="tree__spec_8h.html#ad67357180aa840b09dfc3a37493f56e9">testTreeMorphLowLevel</a></div><div class="ttdeci">void testTreeMorphLowLevel()</div><div class="ttdef"><b>Definition:</b> <a href="tree__spec_8h_source.html#l00345">tree_spec.h:345</a></div></div>
+<div class="ttc" id="tree__spec_8h_html_ad67357180aa840b09dfc3a37493f56e9"><div class="ttname"><a href="tree__spec_8h.html#ad67357180aa840b09dfc3a37493f56e9">testTreeMorphLowLevel</a></div><div class="ttdeci">void testTreeMorphLowLevel()</div><div class="ttdef"><b>Definition:</b> <a href="tree__spec_8h_source.html#l00346">tree_spec.h:346</a></div></div>
 <div class="ttc" id="tree__spec_8h_html_af59a30f5d159bb08ea49baf053cb204d"><div class="ttname"><a href="tree__spec_8h.html#af59a30f5d159bb08ea49baf053cb204d">testTreePathGet</a></div><div class="ttdeci">void testTreePathGet()</div><div class="ttdef"><b>Definition:</b> <a href="tree__spec_8h_source.html#l00125">tree_spec.h:125</a></div></div>
 <div class="ttc" id="tree__spec_8h_html_a14b70ecd723111bbe4d10b3d3e36600a"><div class="ttname"><a href="tree__spec_8h.html#a14b70ecd723111bbe4d10b3d3e36600a">testTreePathGetPath</a></div><div class="ttdeci">void testTreePathGetPath()</div><div class="ttdef"><b>Definition:</b> <a href="tree__spec_8h_source.html#l00183">tree_spec.h:183</a></div></div>
 <div class="ttc" id="group__tree_html_gaf019d190c9623de809d006e309a441af"><div class="ttname"><a href="group__tree.html#gaf019d190c9623de809d006e309a441af">_t_get</a></div><div class="ttdeci">T * _t_get(T *t, int *p)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00617">tree.c:617</a></div></div>
 <div class="ttc" id="structScape_html"><div class="ttname"><a href="structScape.html">Scape</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00142">ceptr_types.h:142</a></div></div>
-<div class="ttc" id="tree__spec_8h_html_a2a36cde88a26d81f883c8650e3981379"><div class="ttname"><a href="tree__spec_8h.html#a2a36cde88a26d81f883c8650e3981379">testTreeHash</a></div><div class="ttdeci">void testTreeHash()</div><div class="ttdef"><b>Definition:</b> <a href="tree__spec_8h_source.html#l00378">tree_spec.h:378</a></div></div>
+<div class="ttc" id="tree__spec_8h_html_a2a36cde88a26d81f883c8650e3981379"><div class="ttname"><a href="tree__spec_8h.html#a2a36cde88a26d81f883c8650e3981379">testTreeHash</a></div><div class="ttdeci">void testTreeHash()</div><div class="ttdef"><b>Definition:</b> <a href="tree__spec_8h_source.html#l00379">tree_spec.h:379</a></div></div>
 <div class="ttc" id="group__tree_html_ga11e689c8dea5c022fe0e4c20652e5af5"><div class="ttname"><a href="group__tree.html#ga11e689c8dea5c022fe0e4c20652e5af5">_t_hash_equal</a></div><div class="ttdeci">int _t_hash_equal(TreeHash h1, TreeHash h2)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00724">tree.c:724</a></div></div>
 <div class="ttc" id="group__tree_html_ga6ecbb70ce62a6c61f04ff8d0707101e4"><div class="ttname"><a href="group__tree.html#ga6ecbb70ce62a6c61f04ff8d0707101e4">_t_new</a></div><div class="ttdeci">T * _t_new(T *parent, Symbol symbol, void *surface, size_t size)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00049">tree.c:49</a></div></div>
 <div class="ttc" id="group__tree_html_ga403644d86c835ceae71dc7af0356900f"><div class="ttname"><a href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a></div><div class="ttdeci">T * _t_detach_by_idx(T *t, int i)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00205">tree.c:205</a></div></div>
@@ -514,13 +515,13 @@ $(document).ready(function(){initNavTree('tree__spec_8h_source.html','');});
 <div class="ttc" id="group__tree_html_gae4c9b743462f0a3808c9f02c3bf33da8"><div class="ttname"><a href="group__tree.html#gae4c9b743462f0a3808c9f02c3bf33da8">_t_get_path</a></div><div class="ttdeci">int * _t_get_path(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00561">tree.c:561</a></div></div>
 <div class="ttc" id="group__tree_html_ga7535eb2963c6cf5fc78cb14287581f92"><div class="ttname"><a href="group__tree.html#ga7535eb2963c6cf5fc78cb14287581f92">_t_clone</a></div><div class="ttdeci">T * _t_clone(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00421">tree.c:421</a></div></div>
 <div class="ttc" id="group__tree_html_ga3e2009f5a82889263d560d2c1479606a"><div class="ttname"><a href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a></div><div class="ttdeci">T * _t_newr(T *parent, Symbol symbol)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00124">tree.c:124</a></div></div>
-<div class="ttc" id="tree__spec_8h_html_aecd9cd243076dc7b034b53bed7c297a0"><div class="ttname"><a href="tree__spec_8h.html#aecd9cd243076dc7b034b53bed7c297a0">testTreeMorph</a></div><div class="ttdeci">void testTreeMorph()</div><div class="ttdef"><b>Definition:</b> <a href="tree__spec_8h_source.html#l00330">tree_spec.h:330</a></div></div>
+<div class="ttc" id="tree__spec_8h_html_aecd9cd243076dc7b034b53bed7c297a0"><div class="ttname"><a href="tree__spec_8h.html#aecd9cd243076dc7b034b53bed7c297a0">testTreeMorph</a></div><div class="ttdeci">void testTreeMorph()</div><div class="ttdef"><b>Definition:</b> <a href="tree__spec_8h_source.html#l00331">tree_spec.h:331</a></div></div>
 <div class="ttc" id="group__tree_html_ga946600fb570f0cc913450905f6189d49"><div class="ttname"><a href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a></div><div class="ttdeci">Symbol _t_symbol(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00455">tree.c:455</a></div></div>
 <div class="ttc" id="group__tree_html_gacca3c33cbc32d7e28bdc3c40bb330c23"><div class="ttname"><a href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a></div><div class="ttdeci">T * _t_newi(T *parent, Symbol symbol, int surface)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00070">tree.c:70</a></div></div>
 <div class="ttc" id="tree__spec_8h_html_ad79851a7dc2d333e1e496c93b1c78971"><div class="ttname"><a href="tree__spec_8h.html#ad79851a7dc2d333e1e496c93b1c78971">testTreePathDepth</a></div><div class="ttdeci">void testTreePathDepth()</div><div class="ttdef"><b>Definition:</b> <a href="tree__spec_8h_source.html#l00230">tree_spec.h:230</a></div></div>
 <div class="ttc" id="group__tree_html_ga608555368dfdef7de1872f89b6fed637"><div class="ttname"><a href="group__tree.html#ga608555368dfdef7de1872f89b6fed637">_t_pathcpy</a></div><div class="ttdeci">void _t_pathcpy(int *dst_p, int *src_p)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00600">tree.c:600</a></div></div>
 <div class="ttc" id="group__tree_html_ga96de3ae222902beccffa3c26ef1ef40a"><div class="ttname"><a href="group__tree.html#ga96de3ae222902beccffa3c26ef1ef40a">_t_insert_at</a></div><div class="ttdeci">void _t_insert_at(T *t, int *path, T *i)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00319">tree.c:319</a></div></div>
-<div class="ttc" id="tree__spec_8h_html_a80fb5c03826178e4332803fb546777fc"><div class="ttname"><a href="tree__spec_8h.html#a80fb5c03826178e4332803fb546777fc">testTreeDetach</a></div><div class="ttdeci">void testTreeDetach()</div><div class="ttdef"><b>Definition:</b> <a href="tree__spec_8h_source.html#l00359">tree_spec.h:359</a></div></div>
+<div class="ttc" id="tree__spec_8h_html_a80fb5c03826178e4332803fb546777fc"><div class="ttname"><a href="tree__spec_8h.html#a80fb5c03826178e4332803fb546777fc">testTreeDetach</a></div><div class="ttdeci">void testTreeDetach()</div><div class="ttdef"><b>Definition:</b> <a href="tree__spec_8h_source.html#l00360">tree_spec.h:360</a></div></div>
 <div class="ttc" id="tree__spec_8h_html_af273dd6bfe59ce73f16b171faa53a14c"><div class="ttname"><a href="tree__spec_8h.html#af273dd6bfe59ce73f16b171faa53a14c">testTreeNewReceptor</a></div><div class="ttdeci">void testTreeNewReceptor()</div><div class="ttdef"><b>Definition:</b> <a href="tree__spec_8h_source.html#l00069">tree_spec.h:69</a></div></div>
 <div class="ttc" id="group__tree_html_ga19506af36bcdf713253dabd47ecaa6e4"><div class="ttname"><a href="group__tree.html#ga19506af36bcdf713253dabd47ecaa6e4">_t_hash</a></div><div class="ttdeci">TreeHash _t_hash(T *symbols, T *structures, T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00690">tree.c:690</a></div></div>
 <div class="ttc" id="tree__spec_8h_html_a2135f4c00a6d218e0de5b1f63bb2a54a"><div class="ttname"><a href="tree__spec_8h.html#a2135f4c00a6d218e0de5b1f63bb2a54a">testTreeNodeIndex</a></div><div class="ttdeci">void testTreeNodeIndex()</div><div class="ttdef"><b>Definition:</b> <a href="tree__spec_8h_source.html#l00265">tree_spec.h:265</a></div></div>
@@ -556,7 +557,7 @@ $(document).ready(function(){initNavTree('tree__spec_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><a class="el" href="tree__spec_8h.html">tree_spec.h</a></li>
-    <li class="footer">Generated on Mon Oct 20 2014 12:45:18 for ceptr by
+    <li class="footer">Generated on Wed Oct 22 2014 12:22:26 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
