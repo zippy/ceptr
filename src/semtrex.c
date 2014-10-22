@@ -729,15 +729,52 @@ T *parseSemtrex(Defs *d,char *stx) {
     o = _t_newr(o,SEMTREX_OR);
     t = _t_news(o,SEMTREX_GROUP,STX_Q);
     __stxcv(t,'?');
+
+    o = _t_newr(o,SEMTREX_OR);
+    sq = _t_newr(o,SEMTREX_SEQUENCE);
+    t = _t_news(sq,SEMTREX_GROUP,STX_EQ);
+    _stxl(t);
+    __stxcv(sq,'=');
+
+    o = _t_newr(o,SEMTREX_OR);
+    sq = _t_newr(o,SEMTREX_SEQUENCE);
+    __stxcv(sq,'\'');
+    t = _t_news(sq,SEMTREX_GROUP,STX_VAL_C);
+    _t_news(t,SEMTREX_SYMBOL_LITERAL,ASCII_CHAR);
+    __stxcv(sq,'\'');
+
+    o = _t_newr(o,SEMTREX_OR);
+    sq = _t_newr(o,SEMTREX_SEQUENCE);
+    __stxcv(sq,'\"');
+    t = _t_news(sq,SEMTREX_GROUP,STX_VAL_S);
+    _stxl(t);
+    __stxcv(sq,'"');
+
+    o = _t_newr(o,SEMTREX_OR);
+    sq = _t_newr(o,SEMTREX_SEQUENCE);
+    t = _t_news(sq,SEMTREX_GROUP,STX_VAL_I);
+    t = _t_newr(t,SEMTREX_ONE_OR_MORE);
+    t = _t_newr(t,SEMTREX_OR); __stxcv(t,'0');
+    t = _t_newr(t,SEMTREX_OR); __stxcv(t,'1');
+    t = _t_newr(t,SEMTREX_OR); __stxcv(t,'2');
+    t = _t_newr(t,SEMTREX_OR); __stxcv(t,'3');
+    t = _t_newr(t,SEMTREX_OR); __stxcv(t,'4');
+    t = _t_newr(t,SEMTREX_OR); __stxcv(t,'5');
+    t = _t_newr(t,SEMTREX_OR); __stxcv(t,'6');
+    t = _t_newr(t,SEMTREX_OR); __stxcv(t,'7');
+    t = _t_newr(t,SEMTREX_OR); __stxcv(t,'8'); __stxcv(t,'9');
+
     o = _t_newr(o,SEMTREX_OR);
     t = _t_news(o,SEMTREX_GROUP,STX_LABEL);
     _stxl(t);
 
+    //  o = _t_newr(o,SEMTREX_OR);
     sq = _t_newr(o,SEMTREX_SEQUENCE);
     __stxcv(sq,'{');
     t = _t_news(sq,SEMTREX_GROUP,STX_OG);
     _stxl(t);
     __stxcv(sq,':');
+
 
     T *results,*tokens;
     if (_t_matchr(ts,s,&results)) {
@@ -752,7 +789,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 	    T *c = _t_child(results,i);
 	    T *sn = _t_child(c,1);
 	    Symbol ts = *(Symbol *)_t_surface(sn);
-	    if (semeq(ts,STX_LABEL) || semeq(ts,STX_OG) || semeq(ts,STX_NOT)) {
+	    if (semeq(ts,STX_VAL_S) || semeq(ts,STX_LABEL) || semeq(ts,STX_OG) || semeq(ts,STX_NOT)  || semeq(ts,STX_EQ)){
 		int sibs = *(int *)_t_surface(_t_child(c,3));
 		int *path = (int *)_t_surface(_t_child(c,2));
 		int j,d = _t_path_depth(path);
@@ -763,19 +800,77 @@ T *parseSemtrex(Defs *d,char *stx) {
 		buf[j]=0;
 		_t_new(tokens,ts,buf,j+1);
 	    }
+	    else if (semeq(ts,STX_VAL_C)) {
+		int *path = (int *)_t_surface(_t_child(c,2));
+		int c = *(int *)_t_surface(_t_get(s,path));
+		_t_newi(tokens,ts,c);
+	    }
+	    else if (semeq(ts,STX_VAL_I)) {
+		int sibs = *(int *)_t_surface(_t_child(c,3));
+		int *path = (int *)_t_surface(_t_child(c,2));
+		int j,d = _t_path_depth(path);
+		for(j=0;j<sibs;j++) {
+		    buf[j] = *(char *)_t_surface(_t_get(s,path));
+		    path[d-1]++;
+		}
+		buf[j]=0;
+		_t_newi(tokens,ts,atoi(buf));
+	    }
 	    else
 		_t_newi(tokens,ts,0);
 	}
 	_t_free(results);
 
 	dump_tokens("TOKENS:");
+	T *sxx,*sq;
+
+	/////////////////////////////////////////////////////
+	// convert STX_EQ to SEMTREX_VALUE_LITERALS
+	// EXPECTATION
+	// /%{SEMTREX_VALUE_LITERAL:STX_EQ,STX_VAL_I|STX_VAL_S|STX_VAL_C}
+	sxx = _t_new_root(SEMTREX_WALK);
+	g = _t_news(sxx,SEMTREX_GROUP,SEMTREX_VALUE_LITERAL);
+	sq = _t_newr(g,SEMTREX_SEQUENCE);
+	_t_news(sq,SEMTREX_SYMBOL_LITERAL,STX_EQ);
+	o = _t_newr(sq,SEMTREX_OR);
+	_t_news(o,SEMTREX_SYMBOL_LITERAL,STX_VAL_I);
+	o = _t_newr(o,SEMTREX_OR);
+	_t_news(o,SEMTREX_SYMBOL_LITERAL,STX_VAL_S);
+	_t_news(o,SEMTREX_SYMBOL_LITERAL,STX_VAL_C);
+	//----------------
+	// ACTION
+	while (_t_matchr(sxx,tokens,&results)) {
+	    T *m = _t_get_match(results,SEMTREX_VALUE_LITERAL);
+	    int *path = (int *)_t_surface(_t_child(m,2));
+	    t = _t_get(tokens,path);
+	    T *v = _t_next_sibling(t);
+	    T *p = _t_parent(v);
+	    _t_detach_by_ptr(p,v);
+
+	    size_t l = _t_size(v);  // value size
+
+	    char *symbol_name = (char *)_t_surface(t);
+	    Svalue *sv = malloc(sizeof(Svalue)+l);
+	    sv->symbol = get_symbol(symbol_name,d);
+	    sv->length = l;
+	    memcpy(&sv->value,_t_surface(v),l);
+
+	    __t_morph(t,SEMTREX_VALUE_LITERAL,sv,sizeof(Svalue)+l,1);
+	    _t_free(v);
+	    free(sv);
+
+	    _t_free(results);
+	}
+	_t_free(sxx);
+
+	dump_tokens("TOKENS_AFTER_VALUE_LITERAL:");
 
 	/////////////////////////////////////////////////////
 	// replace paren groups with STX_SIBS list
 	// EXPECTATION
 	// /STX_TOKENS/.*,{STX_OP:STX_OP,{STX_SIBS:!STX_CP+},STX_CP}
-	T *sxx = _t_news(0,SEMTREX_SYMBOL_LITERAL,STX_TOKENS);
-	T *sq = _t_newr(sxx,SEMTREX_SEQUENCE);
+	sxx = _t_news(0,SEMTREX_SYMBOL_LITERAL,STX_TOKENS);
+	sq = _t_newr(sxx,SEMTREX_SEQUENCE);
 	T *st = _t_newr(sq,SEMTREX_ZERO_OR_MORE);
 	_t_newr(st,SEMTREX_SYMBOL_ANY);
 	T *gg = _t_news(sq,SEMTREX_GROUP,STX_OP);
@@ -1067,7 +1162,8 @@ T *parseSemtrex(Defs *d,char *stx) {
 	    t = _t_get(tokens,path);
 	    T *parent = _t_parent(t);
 	    if (_t_children(t) > 1) {
-		raise_error0("sibs with more than one child!");
+		__t_dump(0,tokens,0,buf);
+		raise_error("sibs with more than one child! [tokens:%s]",buf);
 	    }
 	    int x = path[_t_path_depth(path)-1];
 	    T *c = _t_child(t,1);

@@ -338,6 +338,9 @@ Symbol STX_Q;
 Symbol STX_OR;
 Symbol STX_COMMA;
 Symbol STX_NOT;
+Symbol STX_VAL_C;
+Symbol STX_VAL_S;
+Symbol STX_VAL_I;
 
 Symbol STX_SIBS;
 Symbol STX_CHILD;

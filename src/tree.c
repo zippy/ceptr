@@ -457,7 +457,7 @@ Symbol _t_symbol(T *t) {
 }
 
 /**
- * Get a tree node's surface symbol
+ * Get a tree node's surface size
  *
  * @param[in] t the node
  * @returns size
