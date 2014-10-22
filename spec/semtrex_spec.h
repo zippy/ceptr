@@ -562,6 +562,30 @@ void testSemtrexDump() {
     _t_news(s,SEMTREX_SYMBOL_LITERAL,TEST_INT_SYMBOL);
     spec_is_str_equal(_dump_semtrex(d,s,buf),"/TEST_STR_SYMBOL|TEST_INT_SYMBOL");
     _t_free(s);
+
+    Svalue sv;
+    sv.symbol = ASCII_CHAR;
+    sv.length = sizeof(int);
+    *(int *)&sv.value = 'x';
+    s = _t_new(0,SEMTREX_VALUE_LITERAL,&sv,sizeof(Svalue));
+    spec_is_str_equal(_dump_semtrex(d,s,buf),"/ASCII_CHAR='x'");
+    _t_free(s);
+
+    sv.symbol = TEST_STR_SYMBOL;
+    sv.length = 2;
+    *((char *)&sv.value) = 'x';
+    *(1+(char *)&sv.value) = 'y';
+    s = _t_new(0,SEMTREX_VALUE_LITERAL,&sv,sizeof(Svalue));
+    spec_is_str_equal(_dump_semtrex(d,s,buf),"/TEST_STR_SYMBOL=\"xy\"");
+    _t_free(s);
+
+    sv.symbol = TEST_INT_SYMBOL;
+    sv.length = 2;
+    *(int *)&sv.value = 314;
+    s = _t_new(0,SEMTREX_VALUE_LITERAL,&sv,sizeof(Svalue));
+    spec_is_str_equal(_dump_semtrex(d,s,buf),"/TEST_INT_SYMBOL=314");
+    _t_free(s);
+
 }
 
 void testSemtrexParse() {

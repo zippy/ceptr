@@ -519,9 +519,11 @@ char * __dump_semtrex(Defs defs,T *s,char *buf) {
 	    Svalue *sv = (Svalue *)_t_surface(s);
 	    Structure st = _d_get_symbol_structure(defs.symbols,sv->symbol);
 	    if (semeq(st,CSTRING))
-		sprintf(b+strlen(b),"=%s",(char *)&sv->value);
+		sprintf(b+strlen(b),"=\"%s\"",(char *)&sv->value);
 	    else if (semeq(st,CHAR))
 		sprintf(b+strlen(b),"='%c'",*(int *)&sv->value);
+	    else if (semeq(st,INTEGER))
+		sprintf(b+strlen(b),"=%d",*(int *)&sv->value);
 	    else sprintf(b+strlen(b),"=???x");
 	}
 	__stxd_descend(defs,s,b,buf);
