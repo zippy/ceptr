@@ -50,6 +50,7 @@ enum SystemSymbolIDs
     SEMTREX_SYMBOL_LITERAL_ID,            ///< This system symbol matches on the semantic type.         Ex: /TEST_SYMBOL
     SEMTREX_SEQUENCE_ID,                  ///< Match on a sequence of child nodes which are any valid semtrex's.  Ex: comma separated nodes
     SEMTREX_OR_ID,                        ///< Logical OR between two Semtrex expressions.      Ex: |
+    SEMTREX_NOT_ID,                       ///< Logical ~ between of a Semtrex expressions.      Ex: ~
     SEMTREX_SYMBOL_ANY_ID,                ///< Match any symbol or value of the node.           Ex: .
     SEMTREX_SYMBOL_EXCEPT_ID,                ///< Match any symbol or value of the node except.           Ex: .
     SEMTREX_ZERO_OR_MORE_ID,              ///< Requires one child Semtrex and matches on zero or more of that Semtrex.  Ex: /0/TestSemtrex*
@@ -134,6 +135,7 @@ static Structure G_sys_symbol_structures[] = {
     SYMBOL,              //SEMTREX_SYMBOL_LITERAL
     LIST,                //SEMTREX_SEQUENCE
     NULL_STRUCTURE,      //SEMTREX_OR
+    NULL_STRUCTURE,      //SEMTREX_NOT
     NULL_STRUCTURE,      //SEMTREX_SYMBOL_ANY
     SYMBOL,      //SEMTREX_SYMBOL_ANY_EXCEPT
     NULL_STRUCTURE,      //SEMTREX_ZERO_OR_MORE
@@ -254,6 +256,7 @@ Symbol SEMTREX_MATCHED_PATH;
 Symbol SEMTREX_SYMBOL_LITERAL;
 Symbol SEMTREX_SEQUENCE;
 Symbol SEMTREX_OR;
+Symbol SEMTREX_NOT;
 Symbol SEMTREX_SYMBOL_ANY;
 Symbol SEMTREX_SYMBOL_EXCEPT;
 Symbol SEMTREX_ZERO_OR_MORE;
@@ -337,6 +340,7 @@ Symbol STX_PLUS;
 Symbol STX_Q;
 Symbol STX_OR;
 Symbol STX_COMMA;
+Symbol STX_EXCEPT;
 Symbol STX_NOT;
 Symbol STX_VAL_C;
 Symbol STX_VAL_S;

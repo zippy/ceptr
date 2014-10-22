@@ -217,6 +217,15 @@ char * __stx_makeFA(T *t,SState **in,Ptrlist **out,int level,int *statesP) {
 	s->out = i;
 	*out = o;
 	break;
+    case SEMTREX_NOT_ID:
+	if (c != 1) return "Star must have 1 child";
+	s = state(StateNot,statesP);
+	*in = s;
+	err = __stx_makeFA(_t_child(t,1),&i,&o,level-1,statesP);
+	if (err) return err;
+	s->out = i;
+	*out = o;
+	break;
     case SEMTREX_WALK_ID:
 	if (c != 1) return "Walk must have 1 child";
 	s = state(StateWalk,statesP);
@@ -410,6 +419,10 @@ int __t_match(SState *s,T *t,T *r) {
     case StateDescend:
 	return __t_match(s->out,_t_child(t,1),r);
 	break;
+    case StateNot:
+	if (!t) return 0;
+	return !__t_match(s->out,t,r);
+	break;
     case StateMatch:
 	return 1;
 	break;
@@ -548,6 +561,11 @@ char * __dump_semtrex(Defs defs,T *s,char *buf) {
 	sn = __dump_semtrex(defs,t,b);
 	sprintf(buf+strlen(buf),(_t_children(t) > 0) ? "(%s)":"%s",sn);
 	break;
+    case SEMTREX_NOT_ID:
+	t = _t_child(s,1);
+	sn = __dump_semtrex(defs,t,b);
+	sprintf(buf,"~%s",sn);
+	break;
     case SEMTREX_ZERO_OR_MORE_ID:
 	__stxd_multi(defs,"*",s,buf);
 	break;
@@ -685,7 +703,7 @@ T *parseSemtrex(Defs *d,char *stx) {
     /////////////////////////////////////////////////////
     // build the token stream out of an ascii stream
     // EXPECTATION
-    // /(TEST_STR_SYMBOL/(sy1/(sy11/sy111)),sy2,sy3)" but was "/{STX_TOKENS:(ASCII_CHARS/({STX_SL:ASCII_CHAR='/'})|(({STX_OP:ASCII_CHAR='('})|(({STX_CP:ASCII_CHAR=')'})|(({STX_PLUS:ASCII_CHAR='+'})|(({STX_COMMA:ASCII_CHAR=','})|((ASCII_CHAR='!',{STX_NOT:[a-zA-Z0-9_]+})|(({STX_CG:ASCII_CHAR='}'})|(({STX_STAR:ASCII_CHAR='*'})|(({STX_LABEL:[a-zA-Z0-9_]+})|(ASCII_CHAR='{',{STX_OG:[a-zA-Z0-9_]+},ASCII_CHAR=':')))))))))+)}
+    // /(TEST_STR_SYMBOL/(sy1/(sy11/sy111)),sy2,sy3)" but was "/{STX_TOKENS:(ASCII_CHARS/({STX_SL:ASCII_CHAR='/'})|(({STX_OP:ASCII_CHAR='('})|(({STX_CP:ASCII_CHAR=')'})|(({STX_PLUS:ASCII_CHAR='+'})|(({STX_COMMA:ASCII_CHAR=','})|((ASCII_CHAR='!',{STX_EXCEPT:[a-zA-Z0-9_]+})|(({STX_CG:ASCII_CHAR='}'})|(({STX_STAR:ASCII_CHAR='*'})|(({STX_LABEL:[a-zA-Z0-9_]+})|(ASCII_CHAR='{',{STX_OG:[a-zA-Z0-9_]+},ASCII_CHAR=':')))))))))+)}
     T *ts = _t_news(0,SEMTREX_GROUP,STX_TOKENS);
     T *g = _t_news(ts,SEMTREX_SYMBOL_LITERAL,ASCII_CHARS);
     T *sq = _t_newr(g,SEMTREX_SEQUENCE);
@@ -711,7 +729,7 @@ T *parseSemtrex(Defs *d,char *stx) {
     o = _t_newr(o,SEMTREX_OR);
     sq = _t_newr(o,SEMTREX_SEQUENCE);
     __stxcv(sq,'!');
-    t = _t_news(sq,SEMTREX_GROUP,STX_NOT);
+    t = _t_news(sq,SEMTREX_GROUP,STX_EXCEPT);
     _stxl(t);
 
     o = _t_newr(o,SEMTREX_OR);
@@ -729,6 +747,9 @@ T *parseSemtrex(Defs *d,char *stx) {
     o = _t_newr(o,SEMTREX_OR);
     t = _t_news(o,SEMTREX_GROUP,STX_Q);
     __stxcv(t,'?');
+    o = _t_newr(o,SEMTREX_OR);
+    t = _t_news(o,SEMTREX_GROUP,STX_NOT);
+    __stxcv(t,'~');
 
     o = _t_newr(o,SEMTREX_OR);
     sq = _t_newr(o,SEMTREX_SEQUENCE);
@@ -789,7 +810,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 	    T *c = _t_child(results,i);
 	    T *sn = _t_child(c,1);
 	    Symbol ts = *(Symbol *)_t_surface(sn);
-	    if (semeq(ts,STX_VAL_S) || semeq(ts,STX_LABEL) || semeq(ts,STX_OG) || semeq(ts,STX_NOT)  || semeq(ts,STX_EQ)){
+	    if (semeq(ts,STX_VAL_S) || semeq(ts,STX_LABEL) || semeq(ts,STX_OG) || semeq(ts,STX_EXCEPT)  || semeq(ts,STX_EQ)){
 		int sibs = *(int *)_t_surface(_t_child(c,3));
 		int *path = (int *)_t_surface(_t_child(c,2));
 		int j,d = _t_path_depth(path);
@@ -1010,6 +1031,37 @@ T *parseSemtrex(Defs *d,char *stx) {
 	dump_tokens("TOKENS_AFTER_WALK:");
 
 	/////////////////////////////////////////////////////
+	// convert not
+	// EXPECTATION
+	// /%{SEMTREX_NOT:STX_NOT,.}
+	sxx = _t_new_root(SEMTREX_WALK);
+	g = _t_news(sxx,SEMTREX_GROUP,SEMTREX_NOT);
+	sq = _t_newr(g,SEMTREX_SEQUENCE);
+	_t_news(sq,SEMTREX_SYMBOL_LITERAL,STX_NOT);
+	_t_newr(sq,SEMTREX_SYMBOL_ANY);
+
+	//----------------
+	// ACTION
+	while (_t_matchr(sxx,tokens,&results)) {
+	    T *m = _t_get_match(results,SEMTREX_NOT);
+	    int *path = (int *)_t_surface(_t_child(m,2));
+	    int x = path[_t_path_depth(path)-1];
+	    t = _t_get(tokens,path);
+	    T *parent = _t_parent(t);
+	    // detach the node to be negated
+	    T *c = _t_child(parent,x+1);
+	    _t_detach_by_ptr(parent,c);
+	    // reatach it to to the morphed STX_NOT
+	    T *n = _t_child(parent,x);
+	    n->contents.symbol = SEMTREX_NOT;
+	    _t_add(n,c);
+	    _t_free(results);
+	}
+	_t_free(sxx);
+
+	dump_tokens("TOKENS_AFTER_NOT:");
+
+	/////////////////////////////////////////////////////
 	// convert things following slashes to children of things preceeding slashes
 	// EXPECTATION
 	// /%.*,{STX_CHILD:STX_LABEL,STX_SL,!STX_SL}
@@ -1091,7 +1143,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 	/////////////////////////////////////////////////////
 	// convert ors
 	// EXPECTATION
-	// /%{SEMTREX_OR:!STX_OR,STX_OR,!STX_OR}*/
+	// /%{SEMTREX_OR:!STX_OR,STX_OR,!STX_OR}
 	sxx = _t_new_root(SEMTREX_WALK);
 	g = _t_news(sxx,SEMTREX_GROUP,SEMTREX_OR);
 	sq = _t_newr(g,SEMTREX_SEQUENCE);
@@ -1125,12 +1177,12 @@ T *parseSemtrex(Defs *d,char *stx) {
 	/////////////////////////////////////////////////////
 	// convert labels to SEMTREX_LITERALS
 	// EXPECTATION
-	// /%STX_LABEL|STX_NOT
+	// /%STX_LABEL|STX_EXCEPT
 	sxx = _t_new_root(SEMTREX_WALK);
 	g = _t_news(sxx,SEMTREX_GROUP,SEMTREX_SYMBOL_LITERAL);
 	o = _t_newr(g,SEMTREX_OR);
 	_t_news(o,SEMTREX_SYMBOL_LITERAL,STX_LABEL);
-	_t_news(o,SEMTREX_SYMBOL_LITERAL,STX_NOT);
+	_t_news(o,SEMTREX_SYMBOL_LITERAL,STX_EXCEPT);
 	//----------------
 	// ACTION
 	while (_t_matchr(sxx,tokens,&results)) {
@@ -1183,7 +1235,8 @@ T *parseSemtrex(Defs *d,char *stx) {
 	    _t_detach_by_ptr(tokens,t);
 	}
 	else {
-	    raise_error0("unexpected tokens!")
+	    __t_dump(0,tokens,0,buf);
+	    raise_error("unexpected tokens! [tokens:%s]",buf);
 	}
 	_t_free(tokens);
 

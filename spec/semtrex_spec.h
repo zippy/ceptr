@@ -90,6 +90,9 @@ void __stx_dump(SState *s) {
     case StateDescend:
 	printf("(/)");
 	break;
+    case StateNot:
+	printf("(~)");
+	break;
     case StateSplit:
 	printf("S");
 	break;
@@ -384,6 +387,7 @@ void testMatchGroup() {
 
     spec_is_true(_t_matchr(s,t,&r));
 
+
     char buf[1000];
     __t_dump(0,r,0,buf);
     spec_is_str_equal(buf, " (SEMTREX_MATCH_RESULTS (SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:TEST_GROUP_SYMBOL1) (SEMTREX_MATCHED_PATH:/3) (SEMTREX_MATCH_SIBLINGS_COUNT:2)))");
@@ -497,28 +501,28 @@ void testMatchWalk() {
     T *t = _makeTestTree1();
 
     // search for a node down the left branch
-    //  /*sy111
+    //  /%sy111
     T *s = _t_new_root(SEMTREX_WALK);
     _t_news(s,SEMTREX_SYMBOL_LITERAL,sy111);
     spec_is_true(_t_match(s,t));
     _t_free(s);
 
     // search for a node that doesn't exist
-    //  /*TEST_INT_SYMBOL
+    //  /%TEST_INT_SYMBOL
     s = _t_new_root(SEMTREX_WALK);
     _t_news(s,SEMTREX_SYMBOL_LITERAL,TEST_INT_SYMBOL);
     spec_is_true(!_t_match(s,t));
     _t_free(s);
 
     // search for a node down a right branch
-    //  /*sy22
+    //  /%sy22
     s = _t_new_root(SEMTREX_WALK);
     _t_news(s,SEMTREX_SYMBOL_LITERAL,sy22);
     spec_is_true(_t_match(s,t));
     _t_free(s);
 
     // search for a sequence
-    //  /*(sy3,sy4)
+    //  %(sy3,sy4)
     s = _t_new_root(SEMTREX_WALK);
     T *g = _t_news(s,SEMTREX_GROUP,TEST_GROUP_SYMBOL1);
     T *sq = _t_newr(g,SEMTREX_SEQUENCE);
@@ -529,6 +533,27 @@ void testMatchWalk() {
     char buf[1000];
     spec_is_str_equal(__t_dump(0,results,0,buf)," (SEMTREX_MATCH_RESULTS (SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:TEST_GROUP_SYMBOL1) (SEMTREX_MATCHED_PATH:/3) (SEMTREX_MATCH_SIBLINGS_COUNT:2)))");
     _t_free(results);
+    _t_free(s);
+
+    _t_free(t);
+
+}
+
+void testMatchNot() {
+    T *t = _makeTestTree1();
+
+    //  /TEST_STR_SYMBOL/~sy2
+    T *s = _t_news(0,SEMTREX_SYMBOL_LITERAL,TEST_STR_SYMBOL);
+    T *n = _t_newr(s,SEMTREX_NOT);
+    n = _t_news(n,SEMTREX_SYMBOL_LITERAL,sy2);
+    spec_is_true(_t_match(s,t));
+    _t_free(s);
+
+    //  /TEST_STR_SYMBOL/~sy1
+    s = _t_news(0,SEMTREX_SYMBOL_LITERAL,TEST_STR_SYMBOL);
+    n = _t_newr(s,SEMTREX_NOT);
+    n = _t_news(n,SEMTREX_SYMBOL_LITERAL,sy1);
+    spec_is_true(!_t_match(s,t));
     _t_free(s);
 
     _t_free(t);
@@ -586,6 +611,14 @@ void testSemtrexDump() {
     spec_is_str_equal(_dump_semtrex(d,s,buf),"/TEST_INT_SYMBOL=314");
     _t_free(s);
 
+
+    //  /TEST_STR_SYMBOL/~sy1
+    s = _t_news(0,SEMTREX_SYMBOL_LITERAL,TEST_STR_SYMBOL);
+    T *n = _t_newr(s,SEMTREX_NOT);
+    n = _t_news(n,SEMTREX_SYMBOL_LITERAL,sy1);
+    spec_is_str_equal(_dump_semtrex(d,s,buf),"/TEST_STR_SYMBOL/~sy1");
+    _t_free(s);
+
 }
 
 void testSemtrexParse() {
@@ -632,6 +665,12 @@ void testSemtrexParse() {
     spec_is_str_equal(__t_dump(&d,s,0,buf)," (SEMTREX_SYMBOL_LITERAL:TEST_STR_SYMBOL (SEMTREX_SEQUENCE (SEMTREX_VALUE_LITERAL:TEST_INT_SYMBOL) (SEMTREX_VALUE_LITERAL:ASCII_CHAR) (SEMTREX_VALUE_LITERAL:TEST_STR_SYMBOL)))");
     _t_free(s);
 
+    stx = "/TEST_STR_SYMBOL/~sy2";
+    s = parseSemtrex(&d,stx);
+    spec_is_str_equal(_dump_semtrex(d,s,buf),stx);
+    spec_is_str_equal(__t_dump(&d,s,0,buf)," (SEMTREX_SYMBOL_LITERAL:TEST_STR_SYMBOL (SEMTREX_NOT (SEMTREX_SYMBOL_LITERAL:sy2)))");
+    _t_free(s);
+
     _cleanup_HTTPDefs();
 }
 
@@ -650,6 +689,7 @@ void testSemtrex() {
     testMatchLiteralValue();
     testMatchDescend();
     testMatchWalk();
+    testMatchNot();
     testSemtrexDump();
     testSemtrexParse();
 }

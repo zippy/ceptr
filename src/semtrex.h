@@ -34,7 +34,7 @@
 
 #include "tree.h"
 
-enum StateType {StateSymbol,StateSymbolExcept,StateAny,StateValue,StateSplit,StateMatch,StateGroupOpen,StateGroupClose,StateDescend,StateWalk};
+enum StateType {StateSymbol,StateSymbolExcept,StateAny,StateValue,StateSplit,StateMatch,StateGroupOpen,StateGroupClose,StateDescend,StateWalk,StateNot};
 typedef int StateType;
 
 /**
