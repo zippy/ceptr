@@ -216,24 +216,21 @@ T *_t_detach_by_idx(T *t,int i) {
  * @param[in] c node to search for in child list
  */
 void _t_detach_by_ptr(T *t,T *c) {
-    int i;
-    int l = _t_children(t);
-
     // search for the child to be removed
-    for(i=1;i<=l;i++) {
-	if (_t_child(t,i) == c) break;
-    }
+    DO_KIDS(t,
+	if (_t_child(t,i) == c) {
+	    // if found remove it by decreasing the child count and shift all the other children down
+	    t->structure.child_count--;
+	    if (t->structure.child_count == 0) {
+		free(t->structure.children);
+	    }
+	    for(;i<_c;i++) {
+		t->structure.children[i-1] = t->structure.children[i];
+	    }
+	    break;
+	}
+	    );
 
-    // if found remove it by decreasing the child count and shift all the other children down
-    if (i <= l) {
-	t->structure.child_count--;
-	if (t->structure.child_count == 0) {
-	    free(t->structure.children);
-	}
-	for(;i<l;i++) {
-	    t->structure.children[i-1] = t->structure.children[i];
-	}
-    }
     c->structure.parent = 0;
 }
 
