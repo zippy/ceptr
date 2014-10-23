@@ -20,7 +20,7 @@ namespace csharp_ide.Models
 		[Category("Symbol")]
 		[XmlAttribute()]
 		//[DisplayName("Native Type")]
-		//[TypeConverter(typeof(ImplementingTypeNameConverter))]			// TODO: Implement as a lookup
+		[TypeConverter(typeof(StructureNameConverter))]
 		[Description("The name of the symbol's structure.")]
 		public string Structure { get; set; }
 
