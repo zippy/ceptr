@@ -24,7 +24,6 @@
  * @todo what to do if match has sibs??
  */
 void _p_interpolate_from_match(T *t,T *match_results,T *match_tree) {
-    int i,c = _t_children(t);
     if (semeq(_t_symbol(t),INTERPOLATE_SYMBOL)) {
 	Symbol s = *(Symbol *)_t_surface(t);
 	T *m = _t_get_match(match_results,s);
@@ -36,10 +35,8 @@ void _p_interpolate_from_match(T *t,T *match_results,T *match_tree) {
 	    raise_error0("expecting to get a value from match!!");
 	}
 	_t_morph(t,x);
-   }
-    for (i=1;i<=c;i++) {
-	_p_interpolate_from_match(_t_child(t,i),match_results,match_tree);
     }
+    DO_KIDS(t,_p_interpolate_from_match(_t_child(t,i),match_results,match_tree));
 }
 
 /**
@@ -58,7 +55,7 @@ Error __p_check_signature(Defs defs,Process p,T *params) {
     int c = _t_children(params);
     if (i > c) return tooFewParamsReductionErr;
     if (i < c) return tooManyParamsReductionErr;
-    for (i=1;i<=c;i++) {
+    for(i=1;i<=c;i++) {
 	T *sig = _t_child(_t_child(input,i),1);
 	if(semeq(_t_symbol(sig),SIGNATURE_STRUCTURE)) {
 	    Structure ss = *(Symbol *)_t_surface(sig);
@@ -108,10 +105,7 @@ Error __p_reduce(Defs defs,T *run_tree, T *code) {
     if (!is_process(s)) return;
 
     // otherwise, first reduce all the children
-    int i,c = _t_children(code);
-    for(i=1;i<=c;i++) {
-	__p_reduce(defs,run_tree,_t_child(code,i));
-    }
+    DO_KIDS(code,__p_reduce(defs,run_tree,_t_child(code,i)));
 
     // then, if this isn't a basic system level process, it's the equivalent
     // of a function call, so we need to create a new execution context (RUN_TREE)
@@ -126,7 +120,7 @@ Error __p_reduce(Defs defs,T *run_tree, T *code) {
 	_t_free(rt);
     }
     else {
-	int b;
+	int b,c;
 	switch(s.id) {
 	case IF_ID:
 	    t = _t_child(code,1);

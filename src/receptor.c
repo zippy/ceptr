@@ -60,13 +60,12 @@ Receptor *_r_new(Symbol s) {
 
 // set the labels in the label table for the given def
 void __r_set_labels(Receptor *r,T *defs,int sem_type) {
-    int c = _t_children(defs);
-    int i;
-    for(i=1;i<=c;i++){
-	T *def = _t_child(defs,i);
-	T *sl = _t_child(def,1);
-	__set_label_for_def(r,_t_surface(sl),def,sem_type);
-    }
+    DO_KIDS(
+	    defs,
+	    T *def = _t_child(defs,i);
+	    T *sl = _t_child(def,1);
+	    __set_label_for_def(r,_t_surface(sl),def,sem_type);
+	    );
 }
 
 /**
@@ -83,9 +82,10 @@ Receptor *_r_new_receptor_from_package(Symbol s,T *p,T *bindings) {
     T *defs = _t_clone(_t_child(p,3));
     T *aspects = _t_clone(_t_child(p,4));
     Receptor * r = __r_new(s,defs,aspects);
-    int i,c = _t_children(defs);
-    for(i=1;i<=c;i++)
-	__r_set_labels(r,_t_child(defs,i),i); //@todo fix this because it relies on SemanticTypes value matching the index order in the definitions.
+
+    //@todo fix this because it relies on SemanticTypes value matching the index order in the definitions.
+    DO_KIDS(defs,__r_set_labels(r,_t_child(defs,i),i));
+
     return r;
 }
 
@@ -520,9 +520,7 @@ Receptor * _r_unserialize(void *surface) {
     r->flux = _t_child(t,2);
 
     T *defs = _t_child(r->root,1);
-    int i,c = _t_children(defs);
-    for(i=1;i<=c;i++)
-	__r_set_labels(r,_t_child(defs,i),i);
+    DO_KIDS(defs,__r_set_labels(r,_t_child(defs,i),i));
 
     return r;
 }
@@ -567,8 +565,7 @@ T * _r_deliver(Receptor *r, T *signal) {
 
     // walk through all the listeners on the aspect and see if any expectations match this incoming signal
     T *ls = __r_get_listeners(r,aspect);
-    int i,c = _t_children(ls);
-    for(i=1;i<=c;i++) {
+    DO_KIDS(ls,
 	l = _t_child(ls,i);
 	e = _t_child(l,1);
 	// if we get a match, create a run tree from the action, using the match and signal as the parameters
@@ -585,7 +582,7 @@ T * _r_deliver(Receptor *r, T *signal) {
 		raise_error("got reduction error: %d",e);
 	    }
 	}
-    }
+	    );
 
     /// @todo  results should actually be a what? success/failure of send (currently is reduced runtree)
     if (rt == 0) return 0;

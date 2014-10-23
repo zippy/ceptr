@@ -395,15 +395,12 @@ void _t_free(T *t) {
 }
 
 T *__t_clone(T *t,T *p) {
-    int i,c=_t_children(t);
     T *nt;
     if (t->context.flags & TFLAG_ALLOCATED)
 	nt = _t_new(p,_t_symbol(t),_t_surface(t),_t_size(t));
     else
 	nt = _t_newi(p,_t_symbol(t),*(int *)_t_surface(t));
-    for(i=1;i<=c;i++) {
-	__t_clone(_t_child(t,i),nt);
-    }
+    DO_KIDS(t,__t_clone(_t_child(t,i),nt));
     return nt;
 }
 

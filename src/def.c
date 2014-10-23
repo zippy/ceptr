@@ -232,11 +232,10 @@ size_t _d_get_structure_size(T *symbols,T *structures,Structure s,void *surface)
 	T *structure = _t_child(structures,s.id);
 	T *parts = _t_child(structure,2);
 	size_t size = 0;
-	int i,c = _t_children(structure);
-	for(i=1;i<=c;i++) {
+	DO_KIDS(structure,
 	    T *p = _t_child(parts,i);
 	    size += _d_get_symbol_size(symbols,structures,*(Symbol *)_t_surface(p),surface +size);
-	}
+		);
 	return size;
     }
 }
@@ -400,7 +399,7 @@ char * __t_dump(Defs *defs,T *t,int level,char *buf) {
 	    }
 	}
     }
-    for(i=1;i<=_t_children(t);i++) __t_dump(defs,_t_child(t,i),level+1,buf+strlen(buf));
+    DO_KIDS(t,__t_dump(defs,_t_child(t,i),level+1,buf+strlen(buf)));
     sprintf(buf+strlen(buf),")");
     return buf;
 }

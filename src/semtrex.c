@@ -476,14 +476,13 @@ int _t_match(T *semtrex,T *t) {
 T *_t_get_match(T *result,Symbol group)
 {
     if (!result) return 0;
-    int i,c=_t_children(result);
     T *t;
-    for (i=1;i<=c;i++) {
+    DO_KIDS(result,
 	T *match = _t_child(result,i);
 	T *symb = _t_child(match,1);
 	if (semeq(*(Symbol *)_t_surface(symb),group))
 	    return match;
-    }
+	    );
     return 0;
 }
 
@@ -546,12 +545,11 @@ char * __dump_semtrex(Defs defs,T *s,char *buf) {
 	__stxd_descend(defs,s,b,buf);
 	break;
     case SEMTREX_SEQUENCE_ID:
-	c = _t_children(s);
 	sn = buf;
-	for(i=1;i<=c;i++) {
-	    sprintf(sn,i<c ? "%s,":"%s",__dump_semtrex(defs,_t_child(s,i),b));
+	DO_KIDS(s,
+	    sprintf(sn,i<_c ? "%s,":"%s",__dump_semtrex(defs,_t_child(s,i),b));
 	    sn += strlen(sn);
-	}
+		);
 	break;
     case SEMTREX_OR_ID:
 	t = _t_child(s,1);
@@ -608,8 +606,8 @@ T *__stxcv(T *stxx,char c) {
     return _t_new(stxx,SEMTREX_VALUE_LITERAL,&sv,sizeof(Svalue));
 }
 
-void _stxl(T *stxx) {
-    char *an = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+// helper to add a bunch of semtrex ors that match a character set
+void _stxcs(T *stxx,char *an) {
     T *label = _t_newr(stxx,SEMTREX_ONE_OR_MORE);
     label = _t_newr(label,SEMTREX_OR);
     while(*an) {
@@ -618,6 +616,10 @@ void _stxl(T *stxx) {
 	if (*an) label = _t_newr(label,SEMTREX_OR);
     }
     __stxcv(label,'_');
+}
+
+void _stxl(T *stxx) {
+    _stxcs(stxx,"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789");
 }
 
 // temporary function until we get system label table operational
@@ -775,15 +777,7 @@ T *parseSemtrex(Defs *d,char *stx) {
     sq = _t_newr(o,SEMTREX_SEQUENCE);
     t = _t_news(sq,SEMTREX_GROUP,STX_VAL_I);
     t = _t_newr(t,SEMTREX_ONE_OR_MORE);
-    t = _t_newr(t,SEMTREX_OR); __stxcv(t,'0');
-    t = _t_newr(t,SEMTREX_OR); __stxcv(t,'1');
-    t = _t_newr(t,SEMTREX_OR); __stxcv(t,'2');
-    t = _t_newr(t,SEMTREX_OR); __stxcv(t,'3');
-    t = _t_newr(t,SEMTREX_OR); __stxcv(t,'4');
-    t = _t_newr(t,SEMTREX_OR); __stxcv(t,'5');
-    t = _t_newr(t,SEMTREX_OR); __stxcv(t,'6');
-    t = _t_newr(t,SEMTREX_OR); __stxcv(t,'7');
-    t = _t_newr(t,SEMTREX_OR); __stxcv(t,'8'); __stxcv(t,'9');
+    _stxcs(t,"0123456789");
 
     o = _t_newr(o,SEMTREX_OR);
     t = _t_news(o,SEMTREX_GROUP,STX_LABEL);
