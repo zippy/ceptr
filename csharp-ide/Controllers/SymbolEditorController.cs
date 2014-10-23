@@ -178,6 +178,13 @@ namespace csharp_ide.Controllers
 							ApplicationController.SymbolListController.IfNotNull(ctrl => ctrl.AddSymbol(item.Name));
 							ApplicationController.StructureListController.IfNotNull(ctrl => ctrl.AddStructure(item.Structure));
 						}
+						else
+						{
+							if (!String.IsNullOrEmpty(item.Name))
+							{
+								tn.Text = item.Name;
+							}
+						}
 						// string name = ((IHasCollection)item).Name;
 						// tn.Text = (String.IsNullOrWhiteSpace(name) ? tn.Text : name);
 						RecurseCollection(nodeDef, item, tn);
