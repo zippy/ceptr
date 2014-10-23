@@ -14,12 +14,14 @@ namespace csharp_ide.Models
 	{
 		[Category("Symbol")]
 		[XmlAttribute()]
+		[Description("The name of the symbol.")]
 		public string Name { get; set; }
 
 		[Category("Symbol")]
 		[XmlAttribute()]
 		//[DisplayName("Native Type")]
 		//[TypeConverter(typeof(ImplementingTypeNameConverter))]			// TODO: Implement as a lookup
+		[Description("The name of the symbol's structure.")]
 		public string Structure { get; set; }
 
 		// Serializable list.
@@ -52,6 +54,7 @@ namespace csharp_ide.Models
 	public class SymbolNamespaceContainer : IHasCollection
 	{
 		[XmlAttribute()]
+		[Description("Container name, used for grouping symbols into a logical organization of the user's choice.")]
 		public string Name { get; set; }
 
 		[XmlIgnore]
