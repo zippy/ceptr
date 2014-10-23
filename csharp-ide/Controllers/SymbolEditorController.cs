@@ -175,8 +175,9 @@ namespace csharp_ide.Controllers
 						// If the item is a symbol, then we want to also show in the symbol and structure lists the associated symbol and structure!
 						if (item is Symbol)
 						{
-							ApplicationController.SymbolListController.IfNotNull(ctrl => ctrl.AddSymbol(item.Name));
-							ApplicationController.StructureListController.IfNotNull(ctrl => ctrl.AddStructure(item.Structure));
+							// TODO: Yuck.  Clean this up so the model is king, and drives any controller, and remove the inc/dec from the respective view!
+							ApplicationController.SymbolListController.IfNotNull(ctrl => ctrl.AddSymbol(item.Name)).Else(() => ApplicationModel.IncrementSymbolReference(item.Name));
+							ApplicationController.StructureListController.IfNotNull(ctrl => ctrl.AddStructure(item.Structure)).Else(() => ApplicationModel.IncrementStructureReference(item.Name));
 						}
 						else
 						{
