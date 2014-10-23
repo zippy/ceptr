@@ -203,13 +203,13 @@ namespace ceptrlib
 		extern static unsafe SemanticID _d_declare_symbol(T* symbols, SemanticID sid, string label, UInt16 context);
 
 		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
-		extern static unsafe SemanticID _d_define_structure(T* structures, [MarshalAs(UnmanagedType.LPStr)] string label, int num_params, __arglist);
+		extern static unsafe SemanticID _d_define_structure(T* structures, [MarshalAs(UnmanagedType.LPStr)] string label, UInt16 context, int num_params, __arglist);
 
 		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
-		extern static unsafe SemanticID _dv_define_structure(T* structures, [MarshalAs(UnmanagedType.LPStr)] string label, UInt16 context, int num_params, __arglist);
+		extern static unsafe SemanticID _dv_define_structure(T* structures, [MarshalAs(UnmanagedType.LPStr)] string label, int num_params, __arglist);
 
 		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
-		extern static unsafe SemanticID _t_children(T* structures);
+		extern static unsafe int _t_children(T* structures);
 
 		// extern static unsafe Symbol _d_define_structure(T* structures, char* label, int num_params, UInt32 p1, UInt32 p2);
 
@@ -219,6 +219,11 @@ namespace ceptrlib
 
 		protected Dictionary<Guid, IntPtr> nodes = new Dictionary<Guid, IntPtr>();
 
+		public SemanticID Structures { get; protected set; }
+		public SemanticID Symbols { get; protected set; }
+		public Guid RootStructuresNode { get; protected set; }
+		public Guid RootSymbolsNode { get; protected set; }
+
 		public unsafe void Initialize()
 		{
 			def_sys();
@@ -227,6 +232,14 @@ namespace ceptrlib
 		public unsafe void Terminate()
 		{
 			sys_free();
+		}
+
+		public void CreateStructureAndSymbolNodes()
+		{
+			Structures = new SemanticID() { context = (UInt16)SemanticContexts.SYS_CONTEXT, flags = (UInt16)SemanticTypes.SEM_TYPE_SYMBOL, id = (UInt32)SystemSymbolIDs.STRUCTURES_ID };
+			Symbols = new SemanticID() { context = (UInt16)SemanticContexts.SYS_CONTEXT, flags = (UInt16)SemanticTypes.SEM_TYPE_SYMBOL, id = (UInt32)SystemSymbolIDs.SYMBOLS_ID };
+			RootStructuresNode = CreateRootNode(Structures);
+			RootSymbolsNode = CreateRootNode(Symbols);
 		}
 
 		/// <summary>
@@ -240,6 +253,14 @@ namespace ceptrlib
 			Guid guid = RegisterNode(node);
 
 			return guid;
+		}
+
+		// TODO: We might want to change this to "GetType(Type t)" or as a generic GetType<T>/>
+		public SemanticID GetFloat()
+		{
+			SemanticID sid = new SemanticID() { context = (UInt16)SemanticContexts.SYS_CONTEXT, flags = (UInt16)SemanticTypes.SEM_TYPE_STRUCTURE, id = (UInt32)SystemStructureID.FLOAT_ID };
+
+			return sid;
 		}
 
 		/// <summary>
@@ -257,8 +278,8 @@ namespace ceptrlib
 		{
 			T *structs = (T*)nodes[structures];
 
-			_dv_define_structure(structs, name, (UInt16)sc, symbolArray.Length, __arglist(symbolArray));
-			SemanticID st = _t_children(structs);
+			_dv_define_structure(structs, name, symbolArray.Length, __arglist(symbolArray));
+			SemanticID st = new SemanticID() { context = (ushort)sc, flags = (ushort)SemanticTypes.SEM_TYPE_STRUCTURE, id = (uint)_t_children(structs) };
 
 			return st;
 		}
