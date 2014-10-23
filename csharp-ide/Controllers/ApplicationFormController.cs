@@ -406,11 +406,11 @@ namespace csharp_ide.Controllers
 		{
 			CeptrInterface.CreateStructureAndSymbolNodes();
 			SemanticID floatID = CeptrInterface.GetFloat();
-			SemanticID latitude = CeptrInterface.DeclareSymbol(CeptrInterface.RootSymbolsNode, floatID, "latitude", SemanticContexts.RECEPTOR_CONTEXT);
-			SemanticID longitude = CeptrInterface.DeclareSymbol(CeptrInterface.RootSymbolsNode, floatID, "longitude", SemanticContexts.RECEPTOR_CONTEXT);
+			SemanticID latitude = CeptrInterface.DeclareSymbol(CeptrInterface.RootSymbolsNode, floatID, "latitude");
+			SemanticID longitude = CeptrInterface.DeclareSymbol(CeptrInterface.RootSymbolsNode, floatID, "longitude");
 
 			// Structure latlong = _d_define_structure(structures,"latlong",RECEPTOR_CONTEXT, 2, lat, lon);
-			SemanticID latlong = CeptrInterface.DefineStructure(CeptrInterface.RootStructuresNode, "latlong", SemanticContexts.RECEPTOR_CONTEXT, new SemanticID[] { latitude, longitude });
+			SemanticID latlong = CeptrInterface.DefineStructure(CeptrInterface.RootStructuresNode, "latlong", new SemanticID[] { latitude, longitude });
 			
 			string retSymbols = CeptrInterface.DumpSymbols(CeptrInterface.RootSymbolsNode, CeptrInterface.RootStructuresNode);
 			string retStructures = CeptrInterface.DumpStructures(CeptrInterface.RootSymbolsNode, CeptrInterface.RootStructuresNode);
@@ -455,5 +455,100 @@ namespace csharp_ide.Controllers
 
 			return count;
 		}
+
+		// Common helpers for symbol and structure controllers:
+
+		// Recurse into a symbol, creating the child symbols first and then defining the structure composed of the child symbols.
+		public SemanticID Recurse(Symbol symbol, Dictionary<string, SemanticID> structureMap)
+		{
+			List<SemanticID> syms = new List<SemanticID>();
+			SemanticID structure = GetStructureID(symbol.Structure, structureMap);
+
+			foreach (Symbol child in symbol.Symbols)
+			{
+				// We need to recurse to get to native types, from which more complex symbols are constructed.
+				Recurse(child, structureMap);
+
+				SemanticID id = GetStructureID(child.Structure, structureMap);
+				SemanticID uchild = CeptrInterface.DeclareSymbol(CeptrInterface.RootSymbolsNode, id, child.Name);
+				syms.Add(uchild);
+			}
+
+			if (syms.Count > 0)
+			{
+				structure = CeptrInterface.DefineStructure(CeptrInterface.RootStructuresNode, symbol.Structure, syms.ToArray());
+				structureMap[symbol.Structure] = structure;
+			}
+			return structure;
+		}
+
+		public SemanticID GetStructureID(string structure, Dictionary<string, SemanticID> structureMap)
+		{
+			SemanticID id;
+
+			switch (structure.ToLower())
+			{
+				case "float":
+					id = CeptrInterface.GetFloat();
+					break;
+
+				case "string":
+					id = CeptrInterface.GetString();
+					break;
+
+				case "int":
+					id = CeptrInterface.GetInteger();
+					break;
+
+				default:
+					structureMap.TryGetValue(structure, out id);
+					break;
+			}
+
+			return id;
+		}
+
+
+		/// <summary>
+		/// Format the dump so that () are indented and separated on new lines.
+		/// </summary>
+		public string FormatDump(string dump)
+		{
+			StringBuilder sb = new StringBuilder();
+			int idx = 0;
+			int indent = 0;
+
+			// Brute force approach.
+			while (idx < dump.Length)
+			{
+				char c = dump[idx];
+
+				switch (c)
+				{
+					case '(':
+						sb.Append("\r\n");
+						sb.Append(new string(' ', indent));
+						sb.Append(c);
+						indent += 2;
+						sb.Append("\r\n");
+						sb.Append(new string(' ', indent));
+						break;
+					case ')':
+						sb.Append("\r\n");
+						indent -= 2;
+						sb.Append(new string(' ', indent));
+						sb.Append(c);
+						break;
+					default:
+						sb.Append(c);
+						break;
+				}
+
+				++idx;
+			}
+
+			return sb.ToString();
+		}
+
 	}
 }

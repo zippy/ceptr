@@ -263,10 +263,24 @@ namespace ceptrlib
 			return sid;
 		}
 
+		public SemanticID GetString()
+		{
+			SemanticID sid = new SemanticID() { context = (UInt16)SemanticContexts.SYS_CONTEXT, flags = (UInt16)SemanticTypes.SEM_TYPE_STRUCTURE, id = (UInt32)SystemStructureID.CSTRING_ID };
+
+			return sid;
+		}
+
+		public SemanticID GetInteger()
+		{
+			SemanticID sid = new SemanticID() { context = (UInt16)SemanticContexts.SYS_CONTEXT, flags = (UInt16)SemanticTypes.SEM_TYPE_STRUCTURE, id = (UInt32)SystemStructureID.INTEGER_ID };
+
+			return sid;
+		}
+
 		/// <summary>
 		/// Declare a symbol having the specified structure.
 		/// </summary>
-		public unsafe SemanticID DeclareSymbol(Guid symbols, SemanticID st, string label, SemanticContexts sc)
+		public unsafe SemanticID DeclareSymbol(Guid symbols, SemanticID st, string label, SemanticContexts sc = SemanticContexts.RECEPTOR_CONTEXT)
 		{
 			T *pnode = (T*)nodes[symbols];
 			SemanticID symbol = _d_declare_symbol(pnode, st, label, (UInt16)sc);
@@ -274,7 +288,7 @@ namespace ceptrlib
 			return symbol;
 		}
 
-		public unsafe SemanticID DefineStructure(Guid structures, string name, SemanticContexts sc, SemanticID[] symbolArray)
+		public unsafe SemanticID DefineStructure(Guid structures, string name, SemanticID[] symbolArray, SemanticContexts sc = SemanticContexts.RECEPTOR_CONTEXT)
 		{
 			T *structs = (T*)nodes[structures];
 
@@ -306,6 +320,8 @@ namespace ceptrlib
 			}
 			catch (Exception ex)
 			{
+				// TODO: Log message
+				System.Diagnostics.Debug.WriteLine(ex.Message);
 				System.Diagnostics.Debugger.Break();
 			}
 
@@ -334,6 +350,8 @@ namespace ceptrlib
 			}
 			catch (Exception ex)
 			{
+				// TODO: Log message
+				System.Diagnostics.Debug.WriteLine(ex.Message);
 				System.Diagnostics.Debugger.Break();
 			}
 
