@@ -29,6 +29,8 @@ namespace csharp_ide.Controllers
 {
 	public class ApplicationFormController : ViewController<ApplicationFormView>
 	{
+		public static ApplicationFormController Instance { get; protected set; }
+
 		public IMruMenu MruMenu { get; protected set; }
 		public SymbolEditorController SymbolEditorController { get; protected set; }
 		public PropertyGridController PropertyGridController { get; protected set; }
@@ -56,6 +58,7 @@ namespace csharp_ide.Controllers
 
 		public ApplicationFormController()
 		{
+			Instance = this;
 			RegisterUserStateOperations();
 			CeptrInterface = new CeptrInterface();
 			CeptrInterface.Initialize();
@@ -227,6 +230,7 @@ namespace csharp_ide.Controllers
 			SymbolListController.IfNull(() =>
 			{
 				NewDocument("symbolListPane.xml");
+				ApplicationModel.SymbolRefCount.Keys.ToList().ForEach(k => SymbolListController.ShowSymbol(k));
 			});
 		}
 
@@ -235,6 +239,7 @@ namespace csharp_ide.Controllers
 			StructureListController.IfNull(() =>
 			{
 				NewDocument("structureListPane.xml");
+				ApplicationModel.StructureRefCount.Keys.ToList().ForEach(k => StructureListController.ShowStructure(k));
 			});
 		}
 
@@ -425,46 +430,6 @@ namespace csharp_ide.Controllers
 			string retStructures = CeptrInterface.DumpStructures(CeptrInterface.RootSymbolsNode, CeptrInterface.RootStructuresNode);
 		}
 
-		// Static helpers
-
-		/// <summary>
-		/// Increment the reference count to the specified name, returning the new count.
-		/// </summary>
-		static public int IncrementReference(Dictionary<string, int> dict, string name)
-		{
-			int count;
-
-			if (!dict.TryGetValue(name, out count))
-			{
-				dict[name] = 0;
-				count = 0;
-			}
-
-			dict[name] = ++count;
-
-			return count;
-		}
-
-		/// <summary>
-		/// Decrement the reference.  If it doesn't exist, which is possible, return -1.
-		/// If it does exist, return the decremented count.
-		/// </summary>
-		static public int DecrementReference(Dictionary<string, int> dict, string name)
-		{
-			int count = 0;
-
-			if (dict.TryGetValue(name, out count))
-			{
-				dict[name] = --count;
-			}
-			else
-			{
-				count = -1;
-			}
-
-			return count;
-		}
-
 		// Common helpers for symbol and structure controllers:
 
 		// Recurse into a symbol, creating the child symbols first and then defining the structure composed of the child symbols.
@@ -506,6 +471,7 @@ namespace csharp_ide.Controllers
 					break;
 
 				case "int":
+				case "integer":
 					id = CeptrInterface.GetInteger();
 					break;
 

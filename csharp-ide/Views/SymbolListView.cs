@@ -17,7 +17,6 @@ namespace csharp_ide.Views
 	public class SymbolListView : PaneView
 	{
 		protected ListView symbolList;
-		protected Dictionary<string, int> symbolRefCount;
 
 		public delegate void NotificationDlgt();
 
@@ -39,7 +38,6 @@ namespace csharp_ide.Views
 
 		public SymbolListView()
 		{
-			symbolRefCount = new Dictionary<string, int>();
 		}
 
 		public override void EndInit()
@@ -48,17 +46,27 @@ namespace csharp_ide.Views
 			base.EndInit();
 		}
 
+		// TODO: This should be responding to changes in the model that the controller is affecting!
 		public void AddDistinctSymbol(string name)
 		{
-			if (ApplicationFormController.IncrementReference(symbolRefCount, name) == 1)
+			if (Model.IncrementSymbolReference(name) == 1)
 			{
 				SymbolList.Items.Add(new ListViewItem(name));
 			}
 		}
 
+		public void ShowDistinctSymbol(string name)
+		{
+			if (SymbolList.Items.Cast<ListViewItem>().None(lvi => lvi.Text == name))
+			{
+				SymbolList.Items.Add(new ListViewItem(name));
+			}
+		}
+
+		// TODO: This should be responding to changes in the model that the controller is affecting!
 		public void RemoveSymbol(string name)
 		{
-			if (ApplicationFormController.DecrementReference(symbolRefCount, name) == 0)
+			if (Model.DecrementSymbolReference(name) == 0)
 			{
 				foreach (ListViewItem lvi in SymbolList.Items)
 				{
