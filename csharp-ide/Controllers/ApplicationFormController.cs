@@ -36,6 +36,7 @@ namespace csharp_ide.Controllers
 		public StructureListController StructureListController { get; protected set; }
 		public SymbolOutputController SymbolOutputController { get; set; }
 		public StructureOutputController StructureOutputController { get; set; }
+		public SemtrexUIController SemtrexUIController { get; set; }
 		public GenericController<Schema> schemaController;
 		public string SchemaFilename { get; set; }
 
@@ -284,6 +285,14 @@ namespace csharp_ide.Controllers
 			StructureOutputController.IfNull(() =>
 			{
 				NewDocument("structureOutput.xml");
+			});
+		}
+
+		protected void ShowSemtrexUI(object sender, EventArgs args)
+		{
+			SemtrexUIController.IfNull(() =>
+			{
+				NewDocument("SemtrexUI.xml");
 			});
 		}
 
