@@ -30,13 +30,20 @@ namespace csharp_ide.Controllers
 
 		public void ShowSymbolDump(Symbol symbol)
 		{
-			ApplicationController.CeptrInterface.CreateStructureAndSymbolNodes();
-			Dictionary<string, SemanticID> structureMap = new Dictionary<string, SemanticID>();
-			SemanticID topStructure = ApplicationController.Recurse(symbol, structureMap);
-			ApplicationController.CeptrInterface.DeclareSymbol(ApplicationController.CeptrInterface.RootSymbolsNode, topStructure, symbol.Name);
+			try
+			{
+				ApplicationController.CeptrInterface.CreateStructureAndSymbolNodes();
+				Dictionary<string, SemanticID> structureMap = new Dictionary<string, SemanticID>();
+				SemanticID topStructure = ApplicationController.Recurse(symbol, structureMap);
+				ApplicationController.CeptrInterface.DeclareSymbol(ApplicationController.CeptrInterface.RootSymbolsNode, topStructure, symbol.Name);
 
-			string ret = ApplicationController.CeptrInterface.DumpSymbols(ApplicationController.CeptrInterface.RootSymbolsNode, ApplicationController.CeptrInterface.RootStructuresNode);
-			View.Output.Text = ApplicationController.FormatDump(ret);
+				string ret = ApplicationController.CeptrInterface.DumpSymbols(ApplicationController.CeptrInterface.RootSymbolsNode, ApplicationController.CeptrInterface.RootStructuresNode);
+				View.Output.Text = ApplicationController.FormatDump(ret);
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message + "\r\n\r\n" + ex.StackTrace, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
 		}
 	}
 }
