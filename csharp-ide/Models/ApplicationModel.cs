@@ -58,6 +58,7 @@ namespace csharp_ide.Models
 		/// <summary>
 		/// Decrement the reference.  If it doesn't exist, which is possible, return -1.
 		/// If it does exist, return the decremented count.
+		/// The reference count however is always guaranteed to be >= 0.
 		/// </summary>
 		protected int DecrementReference(Dictionary<string, int> dict, string name)
 		{
@@ -65,11 +66,16 @@ namespace csharp_ide.Models
 
 			if (dict.TryGetValue(name, out count))
 			{
-				dict[name] = --count;
+				// Do not store a negative count.
+				if (--count >= 0)
+				{
+					dict[name] = count;
+				}
 			}
 			else
 			{
-				count = -1;
+				dict[name] = 0;
+				count = -1;			// Indicate an error situation.
 			}
 
 			return count;

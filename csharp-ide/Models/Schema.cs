@@ -14,6 +14,7 @@ namespace csharp_ide.Models
 	{
 		[Category("Symbol")]
 		[XmlAttribute()]
+		[TypeConverter(typeof(SymbolNameConverter))]
 		[Description("The name of the symbol.")]
 		public string Name { get; set; }
 

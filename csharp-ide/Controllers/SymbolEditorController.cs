@@ -58,17 +58,157 @@ namespace csharp_ide.Controllers
 					// Update the symbol list if it has changed.
 					if (symbolName != newSymbolName)
 					{
-						ApplicationController.SymbolListController.IfNotNull(ctrl => ctrl.ReplaceSymbol(symbolName, newSymbolName));
+						// TODO: Yuck.  Clean this up so the model is king, and drives any controller, and remove the inc/dec from the respective view!
+						ApplicationController.SymbolListController.
+							IfNotNull(ctrl => ctrl.ReplaceSymbol(symbolName, newSymbolName)).
+							Else(() => 
+								{
+									ApplicationModel.DecrementSymbolReference(symbolName);
+									ApplicationModel.IncrementSymbolReference(newSymbolName);
+								});
 						symbolName = newSymbolName;
 					}
 
 					if (structureName != newStructureName)
 					{
-						ApplicationController.StructureListController.IfNotNull(ctrl => ctrl.ReplaceStructure(structureName, newStructureName));
+						ApplicationController.StructureListController.
+							IfNotNull(ctrl => ctrl.ReplaceStructure(structureName, newStructureName)).
+							Else(() =>
+							{
+								ApplicationModel.DecrementStructureReference(structureName);
+								ApplicationModel.IncrementStructureReference(newStructureName);
+							});
 						structureName = newStructureName;
+					}
+
+					// If the symbol being selected already exists, copy over the current structure here as well.
+					// TODO: What happens if the referencing structure changes?  We need to update all the types with that reference.
+					// TODO: Verify that we're at a child node -- we can't have duplicate top level symbols.
+					if (ApplicationModel.SymbolRefCount[newSymbolName] > 1)
+					{
+						CopySymbolStructure(currentNode, newSymbolName);
 					}
 				}
 			}
+		}
+
+		// TODO: Is this a new structure, are we re-using an existing structure, and if so, what happens if the user changes this structure?
+		// We then have the situation where the symbol-structure graph is different for two graphs of the same name.  Should the graph be read-only?
+		/// <summary>
+		/// Copy the symbol structure of a previously defined symbol to this node.
+		/// </summary>
+		protected void CopySymbolStructure(TreeNode node, string symbolName)
+		{
+			// Find an instance in the view model that actually has children.
+			// TODO: This should be implemented in an actual view model rather than by scanning through the list view control!
+			TreeNode sourceNode = FindDeclaringNode(View.TreeView.Nodes, symbolName);
+
+			// If we have an actual structure.
+			if (sourceNode != null)
+			{
+				// Set the structure name in the new node.  
+				// TODO: Clean up all this casting stuff.
+				((Symbol)((NodeInstance)node.Tag).Instance.Item).Structure = ((Symbol)((NodeInstance)sourceNode.Tag).Instance.Item).Structure;
+				node.Text = ((IHasFullyQualifiedName)((Symbol)((NodeInstance)node.Tag).Instance.Item)).FullyQualfiedName;
+				CopyNodes(node, sourceNode);
+			}
+			else
+			{
+				// No child nodes, just get an instance that defines the structure because the structure is a native type.
+				sourceNode = FindStructure(View.TreeView.Nodes, symbolName);
+
+				// Set the structure name in the new node.  
+				// TODO: Clean up all this casting stuff.
+				((Symbol)((NodeInstance)node.Tag).Instance.Item).Structure = ((Symbol)((NodeInstance)sourceNode.Tag).Instance.Item).Structure;
+				node.Text = ((IHasFullyQualifiedName)((Symbol)((NodeInstance)node.Tag).Instance.Item)).FullyQualfiedName;
+			}
+		}
+
+		/// <summary>
+		/// Recursively copy the tree at src into dest.
+		/// </summary>
+		protected void CopyNodes(TreeNode dest, TreeNode src)
+		{
+			foreach (TreeNode childSrcNode in src.Nodes)
+			{
+				NodeInstance childInst = (NodeInstance)childSrcNode.Tag;
+				Symbol childInstSymbol = (Symbol)childInst.Instance.Item;
+
+				// Create a new controller.
+				IXtreeNode controller = (IXtreeNode)Activator.CreateInstance(Type.GetType(childInst.NodeDef.TypeName), new object[] { false });
+				// Create a new symbol.
+				Symbol item = new Symbol() { Name = childInstSymbol.Name, Structure = childInstSymbol.Structure };
+				controller.Item = item;
+
+				// Add the new symbol to the destination symbol collection.
+				((Symbol)((NodeInstance)dest.Tag).Instance.Item).Symbols.Add(item);
+
+				TreeNode childDestNode = View.AddNode(controller, dest);
+
+				// TODO: Yuck.  Clean this up so the model is king, and drives any controller, and remove the inc/dec from the respective view!
+				ApplicationController.SymbolListController.IfNotNull(ctrl => ctrl.AddSymbol(item.Name)).Else(() => ApplicationModel.IncrementSymbolReference(item.Name));
+				ApplicationController.StructureListController.IfNotNull(ctrl => ctrl.AddStructure(item.Structure)).Else(() => ApplicationModel.IncrementStructureReference(item.Structure));
+
+				// Recurse.
+				CopyNodes(childDestNode, childSrcNode);
+			}
+		}
+
+		/// <summary>
+		/// Recurse through the tree to find a declaring node (one with children) of the specified symbol.
+		/// </summary>
+		protected TreeNode FindDeclaringNode(TreeNodeCollection nodes, string symbol)
+		{
+			TreeNode ret = null;
+
+			foreach (TreeNode node in nodes)
+			{
+				if ((node.Text.LeftOf(':').Trim() == symbol) && (node.Nodes.Count > 0))
+				{
+					ret = node;
+					break;
+				}
+				else
+				{
+					ret = FindDeclaringNode(node.Nodes, symbol);
+
+					if (ret != null)
+					{
+						break;
+					}
+				}
+			}
+
+			return ret;
+		}
+
+		/// <summary>
+		/// Recurse through the tree to find a declaring node with an actual defined structure.
+		/// </summary>
+		protected TreeNode FindStructure(TreeNodeCollection nodes, string symbol)
+		{
+			TreeNode ret = null;
+
+			foreach (TreeNode node in nodes)
+			{
+				// TODO: Change the literal string to a global const.
+				if ((node.Text.LeftOf(':').Trim() == symbol) && (node.Text.RightOf(':').Trim() != "(undefined)"))
+				{
+					ret = node;
+					break;
+				}
+				else
+				{
+					ret = FindStructure(node.Nodes, symbol);
+
+					if (ret != null)
+					{
+						break;
+					}
+				}
+			}
+
+			return ret;
 		}
 
 		public void PopulateTree()
@@ -177,7 +317,7 @@ namespace csharp_ide.Controllers
 						{
 							// TODO: Yuck.  Clean this up so the model is king, and drives any controller, and remove the inc/dec from the respective view!
 							ApplicationController.SymbolListController.IfNotNull(ctrl => ctrl.AddSymbol(item.Name)).Else(() => ApplicationModel.IncrementSymbolReference(item.Name));
-							ApplicationController.StructureListController.IfNotNull(ctrl => ctrl.AddStructure(item.Structure)).Else(() => ApplicationModel.IncrementStructureReference(item.Name));
+							ApplicationController.StructureListController.IfNotNull(ctrl => ctrl.AddStructure(item.Structure)).Else(() => ApplicationModel.IncrementStructureReference(item.Structure));
 						}
 						else
 						{

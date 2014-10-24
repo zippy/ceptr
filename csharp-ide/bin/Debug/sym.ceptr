@@ -67,15 +67,81 @@
             </Symbol>
           </Symbols>
         </Symbol>
-        <Symbol Name="HTTP_REQUEST_PATH_FILE" Structure="FILE_HANDLE">
+        <Symbol Name="HTTP_REQUEST_PATH_SEGMENT" Structure="string">
+          <Symbols />
+        </Symbol>
+        <Symbol Name="HTTP_REQUEST_PATH_QUERY_PARAMS" Structure="list">
+          <Symbols />
+        </Symbol>
+        <Symbol Name="HTTP_REQUEST_PATH_QUERY_PARAM" Structure="KEY_VALUE_PARAM">
           <Symbols>
-            <Symbol Name="FILE_NAME" Structure="string">
+            <Symbol Name="PARAM_KEY" Structure="string">
               <Symbols />
             </Symbol>
-            <Symbol Name="FILE_EXTENSION" Structure="string">
+            <Symbol Name="PARAM_VALUE" Structure="string">
               <Symbols />
             </Symbol>
           </Symbols>
+        </Symbol>
+        <Symbol Name="HTTP_REQUEST_PATH" Structure="URI">
+          <Symbols>
+            <Symbol Name="HTTP_REQUEST_PATH_SEGMENTS" Structure="list">
+              <Symbols />
+            </Symbol>
+            <Symbol Name="HTTP_REQUEST_PATH_FILE" Structure="FILE_HANDLE">
+              <Symbols>
+                <Symbol Name="FILE_NAME" Structure="string">
+                  <Symbols />
+                </Symbol>
+                <Symbol Name="FILE_EXTENSION" Structure="string">
+                  <Symbols />
+                </Symbol>
+              </Symbols>
+            </Symbol>
+            <Symbol Name="HTTP_REQUEST_PATH_QUERY" Structure="list">
+              <Symbols />
+            </Symbol>
+          </Symbols>
+        </Symbol>
+        <Symbol Name="HTTP_REQUEST" Structure="HTTP_REQUEST_V11">
+          <Symbols>
+            <Symbol Name="HTTP_REQUEST_VERSION" Structure="VERSION">
+              <Symbols>
+                <Symbol Name="VERSION_MAJOR" Structure="int">
+                  <Symbols />
+                </Symbol>
+                <Symbol Name="VERSION_MINOR" Structure="int">
+                  <Symbols />
+                </Symbol>
+              </Symbols>
+            </Symbol>
+            <Symbol Name="HTTP_REQUEST_METHOD" Structure="int">
+              <Symbols />
+            </Symbol>
+            <Symbol Name="HTTP_REQUEST_PATH" Structure="URI">
+              <Symbols>
+                <Symbol Name="HTTP_REQUEST_PATH_SEGMENTS" Structure="list">
+                  <Symbols />
+                </Symbol>
+                <Symbol Name="HTTP_REQUEST_PATH_FILE" Structure="FILE_HANDLE">
+                  <Symbols>
+                    <Symbol Name="FILE_NAME" Structure="string">
+                      <Symbols />
+                    </Symbol>
+                    <Symbol Name="FILE_EXTENSION" Structure="string">
+                      <Symbols />
+                    </Symbol>
+                  </Symbols>
+                </Symbol>
+                <Symbol Name="HTTP_REQUEST_PATH_QUERY" Structure="list">
+                  <Symbols />
+                </Symbol>
+              </Symbols>
+            </Symbol>
+          </Symbols>
+        </Symbol>
+        <Symbol Name="HTTP_REQUEST_METHOD" Structure="int">
+          <Symbols />
         </Symbol>
       </Symbols>
     </SymbolNamespaceContainer>

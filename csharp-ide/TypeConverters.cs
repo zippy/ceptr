@@ -34,4 +34,20 @@ namespace csharp_ide
 			return new StandardValuesCollection(names);
 		}
 	}
+
+	public class SymbolNameConverter : StringConverter
+	{
+		public override bool GetStandardValuesSupported(ITypeDescriptorContext context)
+		{
+			return true;
+		}
+
+		public override TypeConverter.StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
+		{
+			List<string> symbols = ApplicationFormController.Instance.ApplicationModel.SymbolRefCount.Keys.ToList();
+			symbols.Sort();
+
+			return new StandardValuesCollection(symbols);
+		}
+	}
 }

@@ -475,6 +475,10 @@ namespace csharp_ide.Controllers
 					id = CeptrInterface.GetInteger();
 					break;
 
+				case "list":
+					id = CeptrInterface.GetList();
+					break;
+
 				default:
 					structureMap.TryGetValue(structure, out id);
 					break;
@@ -511,8 +515,18 @@ namespace csharp_ide.Controllers
 					case ')':
 						sb.Append("\r\n");
 						indent -= 2;
-						sb.Append(new string(' ', indent));
-						sb.Append(c);
+
+						if (indent == 2)
+						{
+							sb.Append(new string(' ', indent));
+							sb.Append(c);
+							sb.Append("\r\n\r\n");
+						}
+						else
+						{
+							sb.Append(new string(' ', indent));
+							sb.Append(c);
+						}
 						break;
 					default:
 						sb.Append(c);

@@ -30,6 +30,8 @@ namespace csharp_ide.Controllers
 
 		public void ShowSymbolDump(Symbol symbol)
 		{
+			View.Output.Text = String.Empty;
+
 			try
 			{
 				ApplicationController.CeptrInterface.CreateStructureAndSymbolNodes();
