@@ -119,6 +119,7 @@ namespace ceptrlib
 		BOOLEAN_ID,
 		INTEGER_ID,
 		FLOAT_ID,
+		CHAR_ID,
 		CSTRING_ID,
 		SYMBOL_ID,
 		ENUM_ID,
@@ -273,6 +274,13 @@ namespace ceptrlib
 		public SemanticID GetInteger()
 		{
 			SemanticID sid = new SemanticID() { context = (UInt16)SemanticContexts.SYS_CONTEXT, flags = (UInt16)SemanticTypes.SEM_TYPE_STRUCTURE, id = (UInt32)SystemStructureID.INTEGER_ID };
+
+			return sid;
+		}
+
+		public SemanticID GetList()
+		{
+			SemanticID sid = new SemanticID() { context = (UInt16)SemanticContexts.SYS_CONTEXT, flags = (UInt16)SemanticTypes.SEM_TYPE_STRUCTURE, id = (UInt32)SystemStructureID.LIST_ID };
 
 			return sid;
 		}
