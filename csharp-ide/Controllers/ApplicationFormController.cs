@@ -433,7 +433,7 @@ namespace csharp_ide.Controllers
 		// Common helpers for symbol and structure controllers:
 
 		// Recurse into a symbol, creating the child symbols first and then defining the structure composed of the child symbols.
-		public SemanticID Recurse(Symbol symbol, Dictionary<string, SemanticID> structureMap)
+		public SemanticID Recurse(Symbol symbol, Dictionary<string, SemanticID> structureMap, Dictionary<string, SemanticID> symbolMap)
 		{
 			List<SemanticID> syms = new List<SemanticID>();
 			SemanticID structure = GetStructureID(symbol.Structure, structureMap);
@@ -441,11 +441,22 @@ namespace csharp_ide.Controllers
 			foreach (Symbol child in symbol.Symbols)
 			{
 				// We need to recurse to get to native types, from which more complex symbols are constructed.
-				Recurse(child, structureMap);
+				Recurse(child, structureMap, symbolMap);
+				SemanticID uchild;
 
-				SemanticID id = GetStructureID(child.Structure, structureMap);
-				SemanticID uchild = CeptrInterface.DeclareSymbol(CeptrInterface.RootSymbolsNode, id, child.Name);
-				syms.Add(uchild);
+				if (!symbolMap.ContainsKey(child.Name))
+				{
+					SemanticID id = GetStructureID(child.Structure, structureMap);
+					uchild = CeptrInterface.DeclareSymbol(CeptrInterface.RootSymbolsNode, id, child.Name);
+					syms.Add(uchild);
+					symbolMap[child.Name] = uchild;
+				}
+				else
+				{
+					// Re-use the symbol ID.
+					uchild = symbolMap[child.Name];
+					syms.Add(uchild);
+				}
 			}
 
 			if (syms.Count > 0)

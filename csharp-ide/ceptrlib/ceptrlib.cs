@@ -218,6 +218,15 @@ namespace ceptrlib
 		// [return: MarshalAs(UnmanagedType.LPStr)]
 		extern static unsafe void __t_dump(Defs* defs, TreeNode* t, int level, char* buf);
 
+		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
+		extern static unsafe TreeNode* parseSemtrex(Defs* d, string stx);
+
+		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
+		extern static unsafe int _t_match(TreeNode* semtrex, TreeNode* matchAgainst);
+
+		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
+		extern static unsafe int _t_matchr(TreeNode* semtrex, TreeNode* matchAgainst, TreeNode** matchResult);
+
 		protected Dictionary<Guid, IntPtr> nodes = new Dictionary<Guid, IntPtr>();
 
 		public SemanticID Structures { get; protected set; }
@@ -306,23 +315,46 @@ namespace ceptrlib
 			return st;
 		}
 
-		public unsafe string DumpStructures(Guid g_symbols, Guid g_structures)
+		public unsafe Guid ParseSemtrex(Guid g_symbols, Guid g_structures, string expression)
 		{
-			Defs defs = new Defs() 
-			{ 
-				structures = (TreeNode*)nodes[g_structures], 
-				symbols = (TreeNode*)nodes[g_symbols], 
-				processes = (TreeNode*)0, 
-				scapes = (TreeNode*)0 
+			Defs defs = CreateDefs(g_symbols, g_structures);
+			TreeNode* node = parseSemtrex(&defs, expression);
+			Dump(defs, node);
+			Guid nodeID = RegisterNode(node);
+
+			return nodeID;
+		}
+
+		public unsafe string Dump(Guid g_symbols, Guid g_structures, Guid nodeID)
+		{
+			Defs defs = CreateDefs(g_symbols, g_structures);
+			TreeNode* node = (TreeNode*)nodes[nodeID];
+
+			return Dump(defs, node);
+		}
+
+		protected unsafe Defs CreateDefs(Guid g_symbols, Guid g_structures)
+		{
+			Defs defs = new Defs()
+			{
+				structures = (TreeNode*)nodes[g_structures],
+				symbols = (TreeNode*)nodes[g_symbols],
+				processes = (TreeNode*)0,
+				scapes = (TreeNode*)0
 			};
 
+			return defs;
+		}
+
+		protected unsafe string Dump(Defs defs, TreeNode* node)
+		{
 			string ret = String.Empty;
 
 			try
 			{
 				fixed (char* buf = new char[10000])
 				{
-					__t_dump(&defs, defs.structures, 0, buf);
+					__t_dump(&defs, node, 0, buf);
 					ret = Marshal.PtrToStringAnsi((IntPtr)buf);
 				}
 			}
@@ -336,34 +368,16 @@ namespace ceptrlib
 			return ret;
 		}
 
+		public unsafe string DumpStructures(Guid g_symbols, Guid g_structures)
+		{
+			Defs defs = CreateDefs(g_symbols, g_structures);
+			return Dump(defs, defs.structures);
+		}
+
 		public unsafe string DumpSymbols(Guid g_symbols, Guid g_structures)
 		{
-			Defs defs = new Defs()
-			{
-				structures = (TreeNode*)nodes[g_structures],
-				symbols = (TreeNode*)nodes[g_symbols],
-				processes = (TreeNode*)0,
-				scapes = (TreeNode*)0
-			};
-
-			string ret = String.Empty;
-
-			try
-			{
-				fixed (char* buf = new char[10000])
-				{
-					__t_dump(&defs, defs.symbols, 0, buf);
-					ret = Marshal.PtrToStringAnsi((IntPtr)buf);
-				}
-			}
-			catch (Exception ex)
-			{
-				// TODO: Log message
-				System.Diagnostics.Debug.WriteLine(ex.Message);
-				System.Diagnostics.Debugger.Break();
-			}
-
-			return ret;
+			Defs defs = CreateDefs(g_symbols, g_structures);
+			return Dump(defs, defs.symbols);
 		}
 
 		/// <summary>

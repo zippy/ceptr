@@ -36,7 +36,8 @@ namespace csharp_ide.Controllers
 			{
 				ApplicationController.CeptrInterface.CreateStructureAndSymbolNodes();
 				Dictionary<string, SemanticID> structureMap = new Dictionary<string, SemanticID>();
-				SemanticID topStructure = ApplicationController.Recurse(symbol, structureMap);
+				Dictionary<string, SemanticID> symbolMap = new Dictionary<string, SemanticID>();
+				SemanticID topStructure = ApplicationController.Recurse(symbol, structureMap, symbolMap);
 				ApplicationController.CeptrInterface.DeclareSymbol(ApplicationController.CeptrInterface.RootSymbolsNode, topStructure, symbol.Name);
 
 				string ret = ApplicationController.CeptrInterface.DumpStructures(ApplicationController.CeptrInterface.RootSymbolsNode, ApplicationController.CeptrInterface.RootStructuresNode);

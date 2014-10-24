@@ -16,6 +16,10 @@ namespace csharp_ide.Views
 		public ApplicationFormController ApplicationController { get; protected set; }
 		public SemtrexUIController Controller { get; protected set; }
 
+		public TextBox tbInputString { get; set; }
+		public TextBox tbMatchExpression { get; set; }
+		public TextBox tbSemtrexTree { get; set; }
+
 		public SemtrexUIView()
 		{
 		}
