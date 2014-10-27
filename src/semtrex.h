@@ -59,6 +59,8 @@ typedef void *ValueData;
 
 typedef struct SState SState;
 
+#define SEMTREX_VALUE_NOT_FLAG 0x01
+
 /**
  * The Svalue represents the surface of a semtrex value literal.
  *
@@ -69,6 +71,7 @@ typedef struct SState SState;
  */
 typedef struct Svalue {
     Symbol symbol;      ///< Symbol is the semantic type.  Here we're storing the integer that represents the semantic type. For example, FIRST_NAME
+    int flags;
     size_t length;	///< For example, 5 (including terminating null)
     ValueData value;	///< For example, "t\0" which fits in an "int".  Otherwise, Svalue needs to be malloc'd to hold extra bytes.
 } Svalue;
@@ -118,6 +121,8 @@ struct SState {
 SState * _stx_makeFA(T *s,int *statesP);
 void _stx_freeFA(SState *s);
 int _t_match(T *semtrex,T *t);
+int G_debug_match;
+T *G_ts,*G_te;
 int _t_matchr(T *semtrex,T *t,T **r);
 T *_t_get_match(T *result,Symbol group);
 char * _dump_semtrex(Defs defs,T *s,char *buf);

@@ -449,12 +449,19 @@ void testMatchLiteralValue() {
     T *t = _makeTestTree1();
     T *s;
     Svalue sv;
+    sv.flags = SEMTREX_VALUE_NOT_FLAG;
     sv.symbol = TEST_STR_SYMBOL;
     sv.length = 2;
     ((char *)&sv.value)[0] = 't';
     ((char *)&sv.value)[1] = 0;				// string terminator
 
+    // /TEST_INT_SYMBOL!="t"
+    s = _t_new(0,SEMTREX_VALUE_LITERAL,&sv,sizeof(Svalue));
+    spec_is_true(!_t_match(s,t));
+    _t_free(s);
+
     // /TEST_INT_SYMBOL="t"
+    sv.flags = 0;
     s = _t_new(0,SEMTREX_VALUE_LITERAL,&sv,sizeof(Svalue));
     spec_is_true(_t_match(s,t));
     _t_free(s);
@@ -603,9 +610,15 @@ void testSemtrexDump() {
     _t_free(s);
 
     Svalue sv;
+    sv.flags = SEMTREX_VALUE_NOT_FLAG;
     sv.symbol = ASCII_CHAR;
     sv.length = sizeof(int);
     *(int *)&sv.value = 'x';
+    s = _t_new(0,SEMTREX_VALUE_LITERAL,&sv,sizeof(Svalue));
+    spec_is_str_equal(_dump_semtrex(d,s,buf),"/ASCII_CHAR!='x'");
+    _t_free(s);
+
+    sv.flags = 0;
     s = _t_new(0,SEMTREX_VALUE_LITERAL,&sv,sizeof(Svalue));
     spec_is_str_equal(_dump_semtrex(d,s,buf),"/ASCII_CHAR='x'");
     _t_free(s);

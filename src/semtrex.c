@@ -118,6 +118,7 @@ char * __stx_makeFA(T *t,SState **in,Ptrlist **out,int level,int *statesP) {
 	    Svalue *sv = (Svalue *)_t_surface(t);
 	    s->data.value.symbol = sv->symbol;
 	    s->data.value.length = sv->length;
+	    s->data.value.flags = sv->flags;
 	    s->data.value.value = malloc(sv->length);
 	    memcpy(s->data.value.value,&sv->value,sv->length);
 	}
@@ -218,10 +219,10 @@ char * __stx_makeFA(T *t,SState **in,Ptrlist **out,int level,int *statesP) {
 	*out = o;
 	break;
     case SEMTREX_NOT_ID:
-	if (c != 1) return "Star must have 1 child";
+	if (c != 1) return "Not must have 1 child";
 	s = state(StateNot,statesP);
 	*in = s;
-	err = __stx_makeFA(_t_child(t,1),&i,&o,level-1,statesP);
+	err = __stx_makeFA(_t_child(t,1),&i,&o,level,statesP);
 	if (err) return err;
 	s->out = i;
 	*out = o;
@@ -292,6 +293,45 @@ void _stx_freeFA(SState *s) {
     __stx_freeFA2(s);
 }
 
+int G_debug_match = 0;
+T *G_ts,*G_te;
+#define DEBUG_MATCH
+#ifdef DEBUG_MATCH
+#define MATCH_DEBUG(s) 	if(G_debug_match){puts("IN:" #s "");__t_dump(0,t,0,buf);printf("  with:%s\n",buf);}
+#else
+#define MATCH_DEBUG(s)
+#endif
+
+int __symbol_match(SState *s,T *t) {
+    return t && semeq(s->data.symbol,_t_symbol(t));
+}
+
+int __transition_match(SState *s,T *t,T *r) {
+    int i;
+    if (!t) return 0;
+    if (s->out == &matchstate) return 1;
+    switch(s->transition) {
+    case TransitionNextChild:
+	t = _t_next_sibling(t);
+	G_te =t;
+	return __t_match(s->out,t,r);
+	break;
+    case TransitionDown:
+	t = _t_child(t,1);
+	G_te = t;
+	return __t_match(s->out,t,r);
+	break;
+    default:
+	for(i=s->transition;i<0;i++) {
+	    t = _t_parent(t);
+	}
+	t = _t_next_sibling(t);
+	G_te = t;
+	return __t_match(s->out,t,r);
+	break;
+    }
+}
+
 /**
  * Walk the FSA in s using a recursive backtracing algorithm to match the tree in t.
  *
@@ -302,63 +342,67 @@ void _stx_freeFA(SState *s) {
  */
 int __t_match(SState *s,T *t,T *r) {
     char *p1,*p2;
-    int i,c,sm;
-    int matched;
+    int i,c,matched;
     SgroupOpen *o;
     T *m,*t1;
+    char buf[2000];
 
     //printf("tm: s:%d t:%d\n",s->data.symbol,t ? _t_symbol(t) : -1);
     switch(s->type) {
     case StateValue:
+	MATCH_DEBUG(Value);
 	if (!t) return 0;
 	else {
 	    size_t i;
-	    if (s->data.value.length != _t_size(t));
-	    p1 = s->data.value.value;
-	    p2 = _t_surface(t);
-	    for(i=s->data.value.length;i>0;i--) {
-		if (*p1++ != *p2++) return 0;
+	    matched = 1;
+	    if (!__symbol_match(s,t)) return 0;
+	    if (s->data.value.length != _t_size(t)) matched = 0;
+	    else {
+		p1 = s->data.value.value;
+		p2 = _t_surface(t);
+		for(i=s->data.value.length;i>0;i--) {
+		    if (*p1++ != *p2++) {matched = 0;break;}
+		}
 	    }
+	    if (s->data.value.flags & SEMTREX_VALUE_NOT_FLAG) {
+		matched = !matched;
+	    }
+	    if (!matched) return 0;
 	}
-	// no break to fall through and check symbol
+	return __transition_match(s,t,r);
+	break;
     case StateSymbol:
+	MATCH_DEBUG(Symbol);
+	if (!__symbol_match(s,t)) return 0;
+	return __transition_match(s,t,r);
+	break;
     case StateSymbolExcept:
-	sm = (!t || (!semeq(s->data.symbol,_t_symbol(t))));
-	if ((s->type == StateSymbol || s->type == StateValue) && sm) return 0;
-	if (s->type == StateSymbolExcept && !sm) return 0;
-	// no break to fall through and handle transition and recursive calls
+	MATCH_DEBUG(SymbolExcept);
+	if (__symbol_match(s,t)) return 0;
+	return __transition_match(s,t,r);
+	break;
     case StateAny:
-	if (!t) return 0;
-	if (s->out == &matchstate) return 1;
-	switch(s->transition) {
-	case TransitionNextChild:
-	    return __t_match(s->out,_t_next_sibling(t),r);
-	    break;
-	case TransitionDown:
-	    return __t_match(s->out,_t_child(t,1),r);
-	    break;
-	default:
-	    for(i=s->transition;i<0;i++) {
-		t = _t_parent(t);
-	    }
-	    t = _t_next_sibling(t);
-	    return __t_match(s->out,t,r);
-	    break;
-	}
+	MATCH_DEBUG(Any);
+	return __transition_match(s,t,r);
 	break;
     case StateSplit:
+	MATCH_DEBUG(Split);
 	if (__t_match(s->out,t,r)) return 1;
 	else return __t_match(s->out1,t,r);
 	break;
     case StateWalk:
+	MATCH_DEBUG(Walk);
 	if (__t_match(s->out,t,r)) return 1;
 	t1 = _t_child(t,1);
+	G_ts = t1;
 	if (t1 && __t_match(s,t1,r)) return 1;
 	t1 = _t_next_sibling(t);
+	G_ts = t1;
 	if (t1 && __t_match(s,t1,r)) return 1;
 	return 0;
 	break;
     case StateGroupOpen:
+	MATCH_DEBUG(GroupOpen);
 	if (!r)
 	    // if we aren't collecting up match results simply follow groups through
 	    return __t_match(s->out,t,r);
@@ -372,6 +416,7 @@ int __t_match(SState *s,T *t,T *r) {
 	}
 	break;
     case StateGroupClose:
+	MATCH_DEBUG(GroupClose);
 	// make sure that what follows the group also matches
 	matched = __t_match(s->out,t,r);
 	if (matched) {
@@ -386,6 +431,8 @@ int __t_match(SState *s,T *t,T *r) {
 
 	    SemanticID match_symbol = o->symbol;
 	    int match_id = o->uid;
+
+	    //	    printf("Matched:%s\n",_d_get_symbol_name(0,match_symbol));
 
 	    T *m = _t_newi(r,SEMTREX_MATCH,match_id);
 	    _t_news(m,SEMTREX_MATCH_SYMBOL,match_symbol);
@@ -417,13 +464,21 @@ int __t_match(SState *s,T *t,T *r) {
 	return matched;
 	break;
     case StateDescend:
-	return __t_match(s->out,_t_child(t,1),r);
+	MATCH_DEBUG(Descend);
+	t = _t_child(t,1);
+	G_te = t;
+	return __t_match(s->out,t,r);
 	break;
     case StateNot:
+	MATCH_DEBUG(Not);
 	if (!t) return 0;
-	return !__t_match(s->out,t,r);
+	//	if (G_debug_match) raise(SIGINT);
+	if (!__t_match(s->out,t,r)) return __t_match(s->out1,t,r);
+	else return 0;
+
 	break;
     case StateMatch:
+	MATCH_DEBUG(Match);
 	return 1;
 	break;
     }
@@ -442,6 +497,7 @@ int __t_match(SState *s,T *t,T *r) {
 int _t_matchr(T *semtrex,T *t,T **rP) {
     int states;
     int m;
+    G_ts = G_te = t;
     SState *fa = _stx_makeFA(semtrex,&states);
     T *r = 0;
     if (rP) {
@@ -530,6 +586,8 @@ char * __dump_semtrex(Defs defs,T *s,char *buf) {
 	if (semeq(sym, SEMTREX_VALUE_LITERAL)) {
 	    Svalue *sv = (Svalue *)_t_surface(s);
 	    Structure st = _d_get_symbol_structure(defs.symbols,sv->symbol);
+	    if (sv->flags & SEMTREX_VALUE_NOT_FLAG)
+		sprintf(b+strlen(b),"!");
 	    if (semeq(st,CSTRING))
 		sprintf(b+strlen(b),"=\"%s\"",(char *)&sv->value);
 	    else if (semeq(st,CHAR))
@@ -601,6 +659,7 @@ char * _dump_semtrex(Defs defs,T *s,char *buf) {
 T *__stxcv(T *stxx,char c) {
     Svalue sv;
     sv.symbol = ASCII_CHAR;
+    sv.flags = 0;
     sv.length = sizeof(int);
     *(int *)&sv.value = c;
     return _t_new(stxx,SEMTREX_VALUE_LITERAL,&sv,sizeof(Svalue));
@@ -867,6 +926,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 	    char *symbol_name = (char *)_t_surface(t);
 	    Svalue *sv = malloc(sizeof(Svalue)+l);
 	    sv->symbol = get_symbol(symbol_name,d);
+	    sv->flags = 0;
 	    sv->length = l;
 	    memcpy(&sv->value,_t_surface(v),l);
 
