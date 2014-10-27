@@ -74,11 +74,13 @@ append(Ptrlist *l1, Ptrlist *l2)
     return oldl1;
 }
 
+
+#define state(t,sP) _state(t,sP,0)
 /**
  * utility routine to initialize a state struct
  */
-SState *state(StateType type,int *statesP) {
-    SState *s = malloc(sizeof(SState));
+SState *_state(StateType type,int *statesP,int extra) {
+    SState *s = malloc(sizeof(SState)+extra);
     s->out = NULL;
     s->out1 = NULL;
     s->type = type;
@@ -112,19 +114,19 @@ char * __stx_makeFA(T *t,SState **in,Ptrlist **out,int level,int *statesP) {
     case SEMTREX_SYMBOL_ANY_ID:
 	if (state_type == -1) state_type = StateAny;
 	if (c > 1) return "Literal must have 0 or 1 children";
-	s = state(state_type,statesP);
 	if (state_type == StateValue) {
+	    size_t l = _t_size(t);
+	    s = _state(state_type,statesP,l-sizeof(Svalue));
 	    // copy the value from the semtrex into the state
 	    Svalue *sv = (Svalue *)_t_surface(t);
-	    s->data.value.symbol = sv->symbol;
-	    s->data.value.length = sv->length;
-	    s->data.value.flags = sv->flags;
-	    s->data.value.value = malloc(sv->length);
-	    memcpy(s->data.value.value,&sv->value,sv->length);
+	    memcpy(&s->data.value,sv,l);
 	}
 	else if ((state_type == StateSymbol) || (state_type == StateSymbolExcept)) {
+	    s = state(state_type,statesP);
 	    s->data.symbol = *(Symbol *)_t_surface(t);
 	}
+	else
+	    s = state(state_type,statesP);
 	*in = s;
 	if (c > 0) {
 	    s->transition = TransitionDown;
@@ -279,9 +281,6 @@ int __stx_freeFA(SState *s,int id) {
 __stx_freeFA2(SState *s) {
     if (s->out) __stx_freeFA2(s->out);
     if (s->out1) __stx_freeFA2(s->out1);
-    if (s->type == StateValue) {
-	free(s->data.value.value);
-    }
     free(s);
 }
 
@@ -358,7 +357,7 @@ int __t_match(SState *s,T *t,T *r) {
 	    if (!__symbol_match(s,t)) return 0;
 	    if (s->data.value.length != _t_size(t)) matched = 0;
 	    else {
-		p1 = s->data.value.value;
+		p1 = (char *)&s->data.value.value;
 		p2 = _t_surface(t);
 		for(i=s->data.value.length;i>0;i--) {
 		    if (*p1++ != *p2++) {matched = 0;break;}
