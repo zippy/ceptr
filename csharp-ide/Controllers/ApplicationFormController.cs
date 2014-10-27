@@ -29,6 +29,8 @@ namespace csharp_ide.Controllers
 {
 	public class ApplicationFormController : ViewController<ApplicationFormView>
 	{
+		public static ApplicationFormController Instance { get; protected set; }
+
 		public IMruMenu MruMenu { get; protected set; }
 		public SymbolEditorController SymbolEditorController { get; protected set; }
 		public PropertyGridController PropertyGridController { get; protected set; }
@@ -36,6 +38,7 @@ namespace csharp_ide.Controllers
 		public StructureListController StructureListController { get; protected set; }
 		public SymbolOutputController SymbolOutputController { get; set; }
 		public StructureOutputController StructureOutputController { get; set; }
+		public SemtrexUIController SemtrexUIController { get; set; }
 		public GenericController<Schema> schemaController;
 		public string SchemaFilename { get; set; }
 
@@ -55,8 +58,10 @@ namespace csharp_ide.Controllers
 
 		public ApplicationFormController()
 		{
+			Instance = this;
 			RegisterUserStateOperations();
 			CeptrInterface = new CeptrInterface();
+			CeptrInterface.Initialize();
 		}
 
 		public override void EndInit()
@@ -225,6 +230,7 @@ namespace csharp_ide.Controllers
 			SymbolListController.IfNull(() =>
 			{
 				NewDocument("symbolListPane.xml");
+				ApplicationModel.SymbolRefCount.Keys.ToList().ForEach(k => SymbolListController.ShowSymbol(k));
 			});
 		}
 
@@ -233,6 +239,7 @@ namespace csharp_ide.Controllers
 			StructureListController.IfNull(() =>
 			{
 				NewDocument("structureListPane.xml");
+				ApplicationModel.StructureRefCount.Keys.ToList().ForEach(k => StructureListController.ShowStructure(k));
 			});
 		}
 
@@ -283,6 +290,14 @@ namespace csharp_ide.Controllers
 			StructureOutputController.IfNull(() =>
 			{
 				NewDocument("structureOutput.xml");
+			});
+		}
+
+		protected void ShowSemtrexUI(object sender, EventArgs args)
+		{
+			SemtrexUIController.IfNull(() =>
+			{
+				NewDocument("SemtrexUI.xml");
 			});
 		}
 
@@ -403,60 +418,137 @@ namespace csharp_ide.Controllers
 
 		protected void BuildSemanticTree(object sender, EventArgs args)
 		{
-			CeptrInterface.Initialize();
-			SemanticID structures = new SemanticID() { context = (UInt16)SemanticContexts.SYS_CONTEXT, flags = (UInt16)SemanticTypes.SEM_TYPE_SYMBOL, id = (UInt32)SystemSymbolIDs.STRUCTURES_ID };
-			SemanticID symbols = new SemanticID() { context = (UInt16)SemanticContexts.SYS_CONTEXT, flags = (UInt16)SemanticTypes.SEM_TYPE_SYMBOL, id = (UInt32)SystemSymbolIDs.SYMBOLS_ID };
-			Guid gStructures = CeptrInterface.CreateRootNode(structures);
-			Guid gSymbols = CeptrInterface.CreateRootNode(symbols);
-			SemanticID floatID = new SemanticID() {context = (UInt16)SemanticContexts.SYS_CONTEXT, flags = (UInt16)SemanticTypes.SEM_TYPE_STRUCTURE, id = (UInt32)SystemStructureID.FLOAT_ID};
-			SemanticID latitude = CeptrInterface.DeclareSymbol(gSymbols, floatID, "latitude", SemanticContexts.RECEPTOR_CONTEXT);
-			SemanticID longitude = CeptrInterface.DeclareSymbol(gSymbols, floatID, "longitude", SemanticContexts.RECEPTOR_CONTEXT);
+			CeptrInterface.CreateStructureAndSymbolNodes();
+			SemanticID floatID = CeptrInterface.GetFloat();
+			SemanticID latitude = CeptrInterface.DeclareSymbol(CeptrInterface.RootSymbolsNode, floatID, "latitude");
+			SemanticID longitude = CeptrInterface.DeclareSymbol(CeptrInterface.RootSymbolsNode, floatID, "longitude");
 
 			// Structure latlong = _d_define_structure(structures,"latlong",RECEPTOR_CONTEXT, 2, lat, lon);
-			// SemanticID latlong = CeptrInterface.DefineStructure(gStructures, "latlong", SemanticContexts.RECEPTOR_CONTEXT, new SemanticID[] { latitude, longitude });
-			string ret = CeptrInterface.DumpSymbols(gSymbols, gStructures);
-
-			//DumpOutputController.IfNotNull(ctrl => ctrl.View.Output.Text = FormatDump(ret));
+			SemanticID latlong = CeptrInterface.DefineStructure(CeptrInterface.RootStructuresNode, "latlong", new SemanticID[] { latitude, longitude });
+			
+			string retSymbols = CeptrInterface.DumpSymbols(CeptrInterface.RootSymbolsNode, CeptrInterface.RootStructuresNode);
+			string retStructures = CeptrInterface.DumpStructures(CeptrInterface.RootSymbolsNode, CeptrInterface.RootStructuresNode);
 		}
 
-		// Static helpers
+		// Common helpers for symbol and structure controllers:
+
+		// Recurse into a symbol, creating the child symbols first and then defining the structure composed of the child symbols.
+		public SemanticID Recurse(Symbol symbol, Dictionary<string, SemanticID> structureMap, Dictionary<string, SemanticID> symbolMap)
+		{
+			List<SemanticID> syms = new List<SemanticID>();
+			SemanticID structure = GetStructureID(symbol.Structure, structureMap);
+
+			foreach (Symbol child in symbol.Symbols)
+			{
+				// We need to recurse to get to native types, from which more complex symbols are constructed.
+				Recurse(child, structureMap, symbolMap);
+				SemanticID uchild;
+
+				if (!symbolMap.ContainsKey(child.Name))
+				{
+					SemanticID id = GetStructureID(child.Structure, structureMap);
+					uchild = CeptrInterface.DeclareSymbol(CeptrInterface.RootSymbolsNode, id, child.Name);
+					syms.Add(uchild);
+					symbolMap[child.Name] = uchild;
+				}
+				else
+				{
+					// Re-use the symbol ID.
+					uchild = symbolMap[child.Name];
+					syms.Add(uchild);
+				}
+			}
+
+			if (syms.Count > 0)
+			{
+				structure = CeptrInterface.DefineStructure(CeptrInterface.RootStructuresNode, symbol.Structure, syms.ToArray());
+				structureMap[symbol.Structure] = structure;
+			}
+			return structure;
+		}
+
+		public SemanticID GetStructureID(string structure, Dictionary<string, SemanticID> structureMap)
+		{
+			SemanticID id;
+
+			switch (structure.ToLower())
+			{
+				case "float":
+					id = CeptrInterface.GetFloat();
+					break;
+
+				case "string":
+					id = CeptrInterface.GetString();
+					break;
+
+				case "int":
+				case "integer":
+					id = CeptrInterface.GetInteger();
+					break;
+
+				case "list":
+					id = CeptrInterface.GetList();
+					break;
+
+				default:
+					structureMap.TryGetValue(structure, out id);
+					break;
+			}
+
+			return id;
+		}
+
 
 		/// <summary>
-		/// Increment the reference count to the specified name, returning the new count.
+		/// Format the dump so that () are indented and separated on new lines.
 		/// </summary>
-		static public int IncrementReference(Dictionary<string, int> dict, string name)
+		public string FormatDump(string dump)
 		{
-			int count;
+			StringBuilder sb = new StringBuilder();
+			int idx = 0;
+			int indent = 0;
 
-			if (!dict.TryGetValue(name, out count))
+			// Brute force approach.
+			while (idx < dump.Length)
 			{
-				dict[name] = 0;
-				count = 0;
+				char c = dump[idx];
+
+				switch (c)
+				{
+					case '(':
+						sb.Append("\r\n");
+						sb.Append(new string(' ', indent));
+						sb.Append(c);
+						indent += 2;
+						sb.Append("\r\n");
+						sb.Append(new string(' ', indent));
+						break;
+					case ')':
+						sb.Append("\r\n");
+						indent -= 2;
+
+						if (indent == 2)
+						{
+							sb.Append(new string(' ', indent));
+							sb.Append(c);
+							sb.Append("\r\n\r\n");
+						}
+						else
+						{
+							sb.Append(new string(' ', indent));
+							sb.Append(c);
+						}
+						break;
+					default:
+						sb.Append(c);
+						break;
+				}
+
+				++idx;
 			}
 
-			dict[name] = ++count;
-
-			return count;
+			return sb.ToString();
 		}
 
-		/// <summary>
-		/// Decrement the reference.  If it doesn't exist, which is possible, return -1.
-		/// If it does exist, return the decremented count.
-		/// </summary>
-		static public int DecrementReference(Dictionary<string, int> dict, string name)
-		{
-			int count = 0;
-
-			if (dict.TryGetValue(name, out count))
-			{
-				dict[name] = --count;
-			}
-			else
-			{
-				count = -1;
-			}
-
-			return count;
-		}
 	}
 }

@@ -119,6 +119,7 @@ namespace ceptrlib
 		BOOLEAN_ID,
 		INTEGER_ID,
 		FLOAT_ID,
+		CHAR_ID,
 		CSTRING_ID,
 		SYMBOL_ID,
 		ENUM_ID,
@@ -146,9 +147,9 @@ namespace ceptrlib
 	[StructLayout(LayoutKind.Sequential, Pack=1), Serializable]
 	public unsafe struct Tstruct
 	{
-		public T* node;
+		public TreeNode* node;
 		public int child_count;
-		public T** children;
+		public TreeNode** children;
 	}
 
 	[StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
@@ -166,7 +167,7 @@ namespace ceptrlib
 	}
 
 	[StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
-	public unsafe struct T
+	public unsafe struct TreeNode
 	{
 		public Tstruct structure;
 		public Tcontext context;
@@ -176,10 +177,10 @@ namespace ceptrlib
 	[StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
 	public unsafe struct Defs 
 	{
-		public T *structures;
-		public T *symbols;   
-		public T *processes; 
-		public T *scapes;    
+		public TreeNode *structures;
+		public TreeNode *symbols;   
+		public TreeNode *processes; 
+		public TreeNode *scapes;    
 	};
 
 	public class CeptrInterface
@@ -194,30 +195,44 @@ namespace ceptrlib
 		extern static unsafe void testGetSize();
 
 		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
-		extern static unsafe T* _t_new(IntPtr parent, SemanticID sid, IntPtr surface, int size);
+		extern static unsafe TreeNode* _t_new(IntPtr parent, SemanticID sid, IntPtr surface, int size);
 
 		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
-		extern static unsafe T* _t_new_root(SemanticID sid);
+		extern static unsafe TreeNode* _t_new_root(SemanticID sid);
 
 		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
-		extern static unsafe SemanticID _d_declare_symbol(T* symbols, SemanticID sid, string label, UInt16 context);
+		extern static unsafe SemanticID _d_declare_symbol(TreeNode* symbols, SemanticID sid, string label, UInt16 context);
 
 		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
-		extern static unsafe SemanticID _d_define_structure(T* structures, [MarshalAs(UnmanagedType.LPStr)] string label, int num_params, __arglist);
+		extern static unsafe SemanticID _d_define_structure(TreeNode* structures, [MarshalAs(UnmanagedType.LPStr)] string label, UInt16 context, int num_params, __arglist);
 
 		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
-		extern static unsafe SemanticID _dv_define_structure(T* structures, [MarshalAs(UnmanagedType.LPStr)] string label, UInt16 context, int num_params, __arglist);
+		extern static unsafe SemanticID _dv_define_structure(TreeNode* structures, [MarshalAs(UnmanagedType.LPStr)] string label, int num_params, __arglist);
 
 		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
-		extern static unsafe SemanticID _t_children(T* structures);
+		extern static unsafe int _t_children(TreeNode* structures);
 
 		// extern static unsafe Symbol _d_define_structure(T* structures, char* label, int num_params, UInt32 p1, UInt32 p2);
 
 		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
 		// [return: MarshalAs(UnmanagedType.LPStr)]
-		extern static unsafe void __t_dump(Defs* defs, T* t, int level, char* buf);
+		extern static unsafe void __t_dump(Defs* defs, TreeNode* t, int level, char* buf);
+
+		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
+		extern static unsafe TreeNode* parseSemtrex(Defs* d, string stx);
+
+		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
+		extern static unsafe int _t_match(TreeNode* semtrex, TreeNode* matchAgainst);
+
+		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
+		extern static unsafe int _t_matchr(TreeNode* semtrex, TreeNode* matchAgainst, TreeNode** matchResult);
 
 		protected Dictionary<Guid, IntPtr> nodes = new Dictionary<Guid, IntPtr>();
+
+		public SemanticID Structures { get; protected set; }
+		public SemanticID Symbols { get; protected set; }
+		public Guid RootStructuresNode { get; protected set; }
+		public Guid RootSymbolsNode { get; protected set; }
 
 		public unsafe void Initialize()
 		{
@@ -229,6 +244,14 @@ namespace ceptrlib
 			sys_free();
 		}
 
+		public void CreateStructureAndSymbolNodes()
+		{
+			Structures = new SemanticID() { context = (UInt16)SemanticContexts.SYS_CONTEXT, flags = (UInt16)SemanticTypes.SEM_TYPE_SYMBOL, id = (UInt32)SystemSymbolIDs.STRUCTURES_ID };
+			Symbols = new SemanticID() { context = (UInt16)SemanticContexts.SYS_CONTEXT, flags = (UInt16)SemanticTypes.SEM_TYPE_SYMBOL, id = (UInt32)SystemSymbolIDs.SYMBOLS_ID };
+			RootStructuresNode = CreateRootNode(Structures);
+			RootSymbolsNode = CreateRootNode(Symbols);
+		}
+
 		/// <summary>
 		/// Create a root node.
 		/// </summary>
@@ -236,93 +259,131 @@ namespace ceptrlib
 		/// <returns>A GUID associated with this node instance.</returns>
 		public unsafe Guid CreateRootNode(SemanticID structures)
 		{
-			T *node = _t_new_root(structures);
+			TreeNode *node = _t_new_root(structures);
 			Guid guid = RegisterNode(node);
 
 			return guid;
 		}
 
+		// TODO: We might want to change this to "GetType(Type t)" or as a generic GetType<T>/>
+		public SemanticID GetFloat()
+		{
+			SemanticID sid = new SemanticID() { context = (UInt16)SemanticContexts.SYS_CONTEXT, flags = (UInt16)SemanticTypes.SEM_TYPE_STRUCTURE, id = (UInt32)SystemStructureID.FLOAT_ID };
+
+			return sid;
+		}
+
+		public SemanticID GetString()
+		{
+			SemanticID sid = new SemanticID() { context = (UInt16)SemanticContexts.SYS_CONTEXT, flags = (UInt16)SemanticTypes.SEM_TYPE_STRUCTURE, id = (UInt32)SystemStructureID.CSTRING_ID };
+
+			return sid;
+		}
+
+		public SemanticID GetInteger()
+		{
+			SemanticID sid = new SemanticID() { context = (UInt16)SemanticContexts.SYS_CONTEXT, flags = (UInt16)SemanticTypes.SEM_TYPE_STRUCTURE, id = (UInt32)SystemStructureID.INTEGER_ID };
+
+			return sid;
+		}
+
+		public SemanticID GetList()
+		{
+			SemanticID sid = new SemanticID() { context = (UInt16)SemanticContexts.SYS_CONTEXT, flags = (UInt16)SemanticTypes.SEM_TYPE_STRUCTURE, id = (UInt32)SystemStructureID.LIST_ID };
+
+			return sid;
+		}
+
 		/// <summary>
 		/// Declare a symbol having the specified structure.
 		/// </summary>
-		public unsafe SemanticID DeclareSymbol(Guid symbols, SemanticID st, string label, SemanticContexts sc)
+		public unsafe SemanticID DeclareSymbol(Guid symbols, SemanticID st, string label, SemanticContexts sc = SemanticContexts.RECEPTOR_CONTEXT)
 		{
-			T *pnode = (T*)nodes[symbols];
+			TreeNode *pnode = (TreeNode*)nodes[symbols];
 			SemanticID symbol = _d_declare_symbol(pnode, st, label, (UInt16)sc);
 
 			return symbol;
 		}
 
-		public unsafe SemanticID DefineStructure(Guid structures, string name, SemanticContexts sc, SemanticID[] symbolArray)
+		public unsafe SemanticID DefineStructure(Guid structures, string name, SemanticID[] symbolArray, SemanticContexts sc = SemanticContexts.RECEPTOR_CONTEXT)
 		{
-			T *structs = (T*)nodes[structures];
+			TreeNode *structs = (TreeNode*)nodes[structures];
 
-			_dv_define_structure(structs, name, (UInt16)sc, symbolArray.Length, __arglist(symbolArray));
-			SemanticID st = _t_children(structs);
+			_dv_define_structure(structs, name, symbolArray.Length, __arglist(symbolArray));
+			SemanticID st = new SemanticID() { context = (ushort)sc, flags = (ushort)SemanticTypes.SEM_TYPE_STRUCTURE, id = (uint)_t_children(structs) };
 
 			return st;
 		}
 
-		public unsafe string DumpStructures(Guid g_symbols, Guid g_structures)
+		public unsafe Guid ParseSemtrex(Guid g_symbols, Guid g_structures, string expression)
 		{
-			Defs defs = new Defs() 
-			{ 
-				structures = (T*)nodes[g_structures], 
-				symbols = (T*)nodes[g_symbols], 
-				processes = (T*)0, 
-				scapes = (T*)0 
+			Defs defs = CreateDefs(g_symbols, g_structures);
+			TreeNode* node = parseSemtrex(&defs, expression);
+			Dump(defs, node);
+			Guid nodeID = RegisterNode(node);
+
+			return nodeID;
+		}
+
+		public unsafe string Dump(Guid g_symbols, Guid g_structures, Guid nodeID)
+		{
+			Defs defs = CreateDefs(g_symbols, g_structures);
+			TreeNode* node = (TreeNode*)nodes[nodeID];
+
+			return Dump(defs, node);
+		}
+
+		protected unsafe Defs CreateDefs(Guid g_symbols, Guid g_structures)
+		{
+			Defs defs = new Defs()
+			{
+				structures = (TreeNode*)nodes[g_structures],
+				symbols = (TreeNode*)nodes[g_symbols],
+				processes = (TreeNode*)0,
+				scapes = (TreeNode*)0
 			};
 
+			return defs;
+		}
+
+		protected unsafe string Dump(Defs defs, TreeNode* node)
+		{
 			string ret = String.Empty;
 
 			try
 			{
 				fixed (char* buf = new char[10000])
 				{
-					__t_dump(&defs, defs.structures, 0, buf);
+					__t_dump(&defs, node, 0, buf);
 					ret = Marshal.PtrToStringAnsi((IntPtr)buf);
 				}
 			}
 			catch (Exception ex)
 			{
+				// TODO: Log message
+				System.Diagnostics.Debug.WriteLine(ex.Message);
 				System.Diagnostics.Debugger.Break();
 			}
 
 			return ret;
 		}
 
+		public unsafe string DumpStructures(Guid g_symbols, Guid g_structures)
+		{
+			Defs defs = CreateDefs(g_symbols, g_structures);
+			return Dump(defs, defs.structures);
+		}
+
 		public unsafe string DumpSymbols(Guid g_symbols, Guid g_structures)
 		{
-			Defs defs = new Defs()
-			{
-				structures = (T*)nodes[g_structures],
-				symbols = (T*)nodes[g_symbols],
-				processes = (T*)0,
-				scapes = (T*)0
-			};
-
-			string ret = String.Empty;
-
-			try
-			{
-				fixed (char* buf = new char[10000])
-				{
-					__t_dump(&defs, defs.symbols, 0, buf);
-					ret = Marshal.PtrToStringAnsi((IntPtr)buf);
-				}
-			}
-			catch (Exception ex)
-			{
-				System.Diagnostics.Debugger.Break();
-			}
-
-			return ret;
+			Defs defs = CreateDefs(g_symbols, g_structures);
+			return Dump(defs, defs.symbols);
 		}
 
 		/// <summary>
 		/// Return a Guid associated with the T* instance.
 		/// </summary>
-		protected unsafe Guid RegisterNode(T* node)
+		protected unsafe Guid RegisterNode(TreeNode* node)
 		{
 			Guid guid = Guid.NewGuid();
 			nodes[guid] = (IntPtr)node;

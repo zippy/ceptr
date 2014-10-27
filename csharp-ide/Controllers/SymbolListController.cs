@@ -30,6 +30,14 @@ namespace csharp_ide.Controllers
 			View.AddDistinctSymbol(name);
 		}
 
+		/// <summary>
+		/// Show, but do not update the symbol ref count.
+		/// </summary>
+		public void ShowSymbol(string name)
+		{
+			View.ShowDistinctSymbol(name);
+		}
+
 		public void ReplaceSymbol(string oldName, string newName)
 		{
 			View.RemoveSymbol(oldName);

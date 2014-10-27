@@ -17,7 +17,6 @@ namespace csharp_ide.Views
 	public class StructureListView : PaneView
 	{
 		protected ListView structureList;
-		protected Dictionary<string, int> structureRefCount;
 
 		public delegate void NotificationDlgt();
 
@@ -39,7 +38,6 @@ namespace csharp_ide.Views
 
 		public StructureListView()
 		{
-			structureRefCount = new Dictionary<string, int>();
 		}
 
 		public override void EndInit()
@@ -48,17 +46,27 @@ namespace csharp_ide.Views
 			base.EndInit();
 		}
 
+		// TODO: This should be responding to changes in the model that the controller is affecting!
 		public void AddDistinctStructure(string name)
 		{
-			if (ApplicationFormController.IncrementReference(structureRefCount, name) == 1)
+			if (Model.IncrementStructureReference(name) == 1)
 			{
 				StructureList.Items.Add(new ListViewItem(name));
 			}
 		}
 
+		public void ShowDistinctStructure(string name)
+		{
+			if (StructureList.Items.Cast<ListViewItem>().None(lvi => lvi.Text == name))
+			{
+				StructureList.Items.Add(new ListViewItem(name));
+			}
+		}
+
+		// TODO: This should be responding to changes in the model that the controller is affecting!
 		public void RemoveStructure(string name)
 		{
-			if (ApplicationFormController.DecrementReference(structureRefCount, name) == 0)
+			if (Model.DecrementStructureReference(name) == 0)
 			{
 				foreach (ListViewItem lvi in StructureList.Items)
 				{

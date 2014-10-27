@@ -39,8 +39,9 @@
               <wf:ToolStripMenuItem def:Name="mnuSymbolList" Text="S&amp;ymbols" Click="{controller.ShowSymbolList}"/>
               <wf:ToolStripMenuItem def:Name="mnuStructureList" Text="S&amp;tructures" Click="{controller.ShowStructureList}"/>
               <wf:ToolStripSeparator/>
-              <wf:ToolStripMenuItem def:Name="mnuSymbols" Text="Symbols" Click="{controller.ShowSymbols}"/>
-              <wf:ToolStripMenuItem def:Name="mnuStructures" Text="Structures" Click="{controller.ShowStructures}"/>
+              <wf:ToolStripMenuItem def:Name="mnuSymbols" Text="Symbol Output" Click="{controller.ShowSymbols}"/>
+              <wf:ToolStripMenuItem def:Name="mnuStructures" Text="Structure Output" Click="{controller.ShowStructures}"/>
+              <wf:ToolStripMenuItem def:Name="mnuSemtrexUI" Text="Semtrex Explorer" Click="{controller.ShowSemtrexUI}"/>
             </wf:DropDownItems>
           </wf:ToolStripMenuItem>
           <wf:ToolStripMenuItem Text="&amp;Ceptr">

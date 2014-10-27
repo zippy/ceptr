@@ -25,9 +25,21 @@ namespace csharp_ide.Controllers
 {
 	public class StructureListController : ViewController<StructureListView>
 	{
+		public StructureListController()
+		{
+		}
+
 		public void AddStructure(string name)
 		{
 			View.AddDistinctStructure(name);
+		}
+
+		/// <summary>
+		/// Show, but do not update the structure ref count.
+		/// </summary>
+		public void ShowStructure(string name)
+		{
+			View.ShowDistinctStructure(name);
 		}
 
 		public void ReplaceStructure(string oldName, string newName)
