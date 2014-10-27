@@ -82,10 +82,13 @@ void __stx_dump(SState *s) {
 	printf("(%s:%d)",_d_get_symbol_name(0,s->data.symbol),s->transition);
 	break;
     case StateValue:
-	printf("(%s:%d=)",_d_get_symbol_name(0,s->data.value.symbol),s->transition);
+	printf("(%s=:%d)",_d_get_symbol_name(0,s->data.value.symbol),s->transition);
 	break;
     case StateAny:
 	printf("(.:%d)",s->transition);
+	break;
+    case StateSymbolExcept:
+	printf("(!:%d)",s->transition);
 	break;
     case StateDescend:
 	printf("(/)");
@@ -96,6 +99,11 @@ void __stx_dump(SState *s) {
     case StateSplit:
 	printf("S");
 	break;
+    case StateWalk:
+	printf("(%%)");
+	break;
+    default:
+	printf("(\?\?)");
     }
     if (s->out) {printf("->");__stx_dump(s->out);}
     if (s->out1) {printf("[->");__stx_dump(s->out1);printf("]");}
@@ -107,6 +115,12 @@ void _stx_dump(SState *s) {
     __stx_dump(s);
 }
 
+void stx_dump(T *s) {
+    int l;
+
+    SState *f = _stx_makeFA(s,&l);    _stx_dump(f);
+    _stx_freeFA(f);
+}
 
 #define spec_state_equal(sa,st,tt,s) \
     spec_is_equal(sa->type,st);\
