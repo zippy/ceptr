@@ -331,6 +331,21 @@ int __transition_match(SState *s,T *t,T *r) {
     }
 }
 
+int _val_match(T *t,size_t *l) {
+    int i;
+    char *p1,*p2;
+    if (*l != _t_size(t)) return 0;
+    else {
+	p1 = (char *)(l+1); // the value comes right after the length
+	p2 = _t_surface(t);
+	for(i=*l;i>0;i--) {
+	    if (*p1++ != *p2++) {return 0;break;}
+	}
+    }
+    return 1;
+}
+#define _next_pair(l)     l = (size_t *)(sizeof(size_t)+*l+(void *)l);
+
 /**
  * Walk the FSA in s using a recursive backtracing algorithm to match the tree in t.
  *
@@ -340,7 +355,6 @@ int __transition_match(SState *s,T *t,T *r) {
  * @returns 1 or 0 if matched or not
  */
 int __t_match(SState *s,T *t,T *r) {
-    char *p1,*p2;
     int i,c,matched;
     SgroupOpen *o;
     T *m,*t1;
@@ -352,20 +366,20 @@ int __t_match(SState *s,T *t,T *r) {
 	MATCH_DEBUG(Value);
 	if (!t) return 0;
 	else {
-	    size_t i;
-	    matched = 1;
+	    size_t *l = &s->data.value.length;
 	    if (!__symbol_match(s,t)) return 0;
-	    if (s->data.value.length != _t_size(t)) matched = 0;
-	    else {
-		p1 = (char *)&s->data.value.value;
-		p2 = _t_surface(t);
-		for(i=s->data.value.length;i>0;i--) {
-		    if (*p1++ != *p2++) {matched = 0;break;}
+            int count = s->data.value.count;
+	    if (s->data.value.flags & SEMTREX_VALUE_NOT_FLAG) {
+		while(count-- && (matched = !_val_match(t,l))) {
+		    _next_pair(l);
 		}
 	    }
-	    if (s->data.value.flags & SEMTREX_VALUE_NOT_FLAG) {
-		matched = !matched;
+	    else {
+		while(count-- && !(matched = _val_match(t,l))) {
+		    _next_pair(l);
+		}
 	    }
+
 	    if (!matched) return 0;
 	}
 	return __transition_match(s,t,r);
@@ -659,6 +673,7 @@ T *__stxcv(T *stxx,char c) {
     Svalue sv;
     sv.symbol = ASCII_CHAR;
     sv.flags = 0;
+    sv.count = 1;
     sv.length = sizeof(int);
     *(int *)&sv.value = c;
     return _t_new(stxx,SEMTREX_VALUE_LITERAL,&sv,sizeof(Svalue));
@@ -925,8 +940,6 @@ T *parseSemtrex(Defs *d,char *stx) {
 	    char *symbol_name = (char *)_t_surface(t);
 	    Svalue *sv = malloc(sizeof(Svalue)+l);
 	    sv->symbol = get_symbol(symbol_name,d);
-	    sv->flags = 0;
-	    sv->length = l;
 	    memcpy(&sv->value,_t_surface(v),l);
 
 	    __t_morph(t,SEMTREX_VALUE_LITERAL,sv,sizeof(Svalue)+l,1);

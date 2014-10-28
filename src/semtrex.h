@@ -71,7 +71,8 @@ typedef struct SState SState;
  */
 typedef struct Svalue {
     Symbol symbol;      ///< Symbol is the semantic type.  Here we're storing the integer that represents the semantic type. For example, FIRST_NAME
-    int flags;
+    int flags;          ///< Currently only one flag: SEMTREX_VALUE_NOT_FLAG to indicate logical not of value
+    int count;          ///< Number of values to try and match
     size_t length;	///< For example, 5 (including terminating null)
     ValueData value;	///< For example, "t\0" which fits in an "int".  Otherwise, Svalue needs to be malloc'd to hold extra bytes.
 } Svalue;

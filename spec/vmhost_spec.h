@@ -202,6 +202,8 @@ void testVMHostCreate() {
 /*     int size = sizeof(Svalue)+strlen(host)+1; */
 /*     Svalue *sv = malloc(size); */
 /*     sv->symbol = HTTP_REQUEST_HOST; */
+/*     sv->flags = 0; */
+/*     sv->count = 1; */
 /*     sv->length = strlen(host); */
 /*     strcpy((char *)&sv->value,host); */
 /*     _t_new(ss,SEMTREX_VALUE_LITERAL,sv,size); */

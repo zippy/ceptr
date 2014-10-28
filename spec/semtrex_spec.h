@@ -450,6 +450,7 @@ void testMatchLiteralValue() {
     T *s;
     Svalue sv;
     sv.flags = SEMTREX_VALUE_NOT_FLAG;
+    sv.count = 1;
     sv.symbol = TEST_STR_SYMBOL;
     sv.length = 2;
     ((char *)&sv.value)[0] = 't';
@@ -488,6 +489,41 @@ void testMatchLiteralValue() {
     s = _t_new(0,SEMTREX_VALUE_LITERAL,&sv,sizeof(Svalue));
     spec_is_true(!_t_match(s,t));
     _t_free(s);
+
+    // /TEST_INT_SYMBOL=["t","q"]
+    size_t svl = sizeof(Svalue) + sizeof(size_t) + 5;
+    Svalue *svP = malloc(svl);
+    svP->flags = 0;
+    svP->count = 2;
+    svP->symbol = TEST_STR_SYMBOL;
+    size_t *l = &svP->length;
+    char *m,*m1;
+    *l = 2; m = (char *)(l+1); *m++ = 'q'; *m++ = 0;
+    l = (size_t *)m;
+    *l = 2; m1= m = (char *)(l+1); *m++ = 't'; *m++ = 0;
+    s = _t_new(0,SEMTREX_VALUE_LITERAL,svP,svl);
+    spec_is_true(_t_match(s,t));
+    _t_free(s);
+
+    // /TEST_INT_SYMBOL=["q","x"]
+    *m1 = 'x';
+    s = _t_new(0,SEMTREX_VALUE_LITERAL,svP,svl);
+    spec_is_true(!_t_match(s,t));
+    _t_free(s);
+
+    // /TEST_INT_SYMBOL!=["q","x"]
+    svP->flags = SEMTREX_VALUE_NOT_FLAG;
+    s = _t_new(0,SEMTREX_VALUE_LITERAL,svP,svl);
+    spec_is_true(_t_match(s,t));
+    _t_free(s);
+
+    // /TEST_INT_SYMBOL!=["q","t"]
+    *m1 = 't';
+    s = _t_new(0,SEMTREX_VALUE_LITERAL,svP,svl);
+    spec_is_true(!_t_match(s,t));
+    _t_free(s);
+
+    free(svP);
 
     _t_free(t);
 }
@@ -611,6 +647,7 @@ void testSemtrexDump() {
 
     Svalue sv;
     sv.flags = SEMTREX_VALUE_NOT_FLAG;
+    sv.count = 1;
     sv.symbol = ASCII_CHAR;
     sv.length = sizeof(int);
     *(int *)&sv.value = 'x';
