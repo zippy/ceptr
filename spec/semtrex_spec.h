@@ -715,8 +715,6 @@ void testSemtrexParse() {
     spec_is_str_equal(__t_dump(&d,s,0,buf)," (SEMTREX_SYMBOL_LITERAL:STX_TOKENS (SEMTREX_WALK (SEMTREX_GROUP:SEMTREX_SEQUENCE (SEMTREX_SEQUENCE (SEMTREX_ONE_OR_MORE (SEMTREX_SEQUENCE (SEMTREX_SYMBOL_EXCEPT:STX_COMMA) (SEMTREX_SYMBOL_LITERAL:STX_COMMA))) (SEMTREX_SYMBOL_EXCEPT:STX_COMMA)))))");
     _t_free(s);
 
-    _setup_HTTPDefs();
-
     stx = "/HTTP_REQUEST/(.,.,HTTP_REQUEST_PATH/HTTP_REQUEST_PATH_SEGMENTS/{HTTP_REQUEST_PATH_SEGMENT:HTTP_REQUEST_PATH_SEGMENT})";
     s = parseSemtrex(&test_HTTP_defs,stx);
     spec_is_str_equal(_dump_semtrex(test_HTTP_defs,s,buf),stx);
@@ -735,11 +733,99 @@ void testSemtrexParse() {
     spec_is_str_equal(__t_dump(&d,s,0,buf)," (SEMTREX_SYMBOL_LITERAL:TEST_STR_SYMBOL (SEMTREX_NOT (SEMTREX_SYMBOL_LITERAL:sy2)))");
     _t_free(s);
 
-    _cleanup_HTTPDefs();
+
+}
+
+T *__stxcv(T *stxx,char c);
+T *__stxcvm(T *stxx,int not,int count,...);
+
+void testSemtrexParseHHTPReq() {
+    char *req = "GET /path/file.ext?name=joe&age=30 HTTP/0.9";
+    T *t,*s = _t_new_root(ASCII_CHARS);
+    while(*req) {
+	_t_newi(s,ASCII_CHAR,*req);
+	req++;
+    }
+
+    char *stxs = "/{HTTP_REQUEST:ASCII_CHARS/({HTTP_REQUEST_METHOD:.*},ASCII_CHAR=' '+,{HTTP_REQUEST_PATH:{HTTP_REQUEST_PATH_SEGMENTS:{HTTP_REQUEST_PATH_SEGMENT:ASCII_CHAR='/',~(ASCII_CHAR='/'|ASCII_CHAR='?'|ASCII_CHAR=' ')*}+}},{HTTP_REQUEST_PATH_FILE:{FILE_NAME:~(ASCII_CHAR='?'|ASCII_CHAR=' ')+},(ASCII_CHAR='.',{FILE_EXTENSION:~(ASCII_CHAR='?'|ASCII_CHAR=' ')+})?},(ASCII_CHAR='?',{HTTP_REQUEST_PATH_QUERY:{HTTP_PATH_QUERY_PARAMS:{PARAM_KEY:~(ASCII_CHAR='='|ASCII_CHAR='&'|ASCII_CHAR=' ')},ASCII_CHAR='=',{PARAM_VALUE:~(ASCII_CHAR='&'|ASCII_CHAR=' ')*}}+})?,ASCII_CHAR=' '+,ASCII_CHAR='H',ASCII_CHAR='T',ASCII_CHAR='T',ASCII_CHAR='P',ASCII_CHAR='/',{HTTP_REQUEST_VERSION:{VERSION_MAJOR:ASCII_CHAR='0'},ASCII_CHAR='.',{VERSION_MINOR:(ASCII_CHAR='9')+}})}";
+
+    char buf[5000];
+
+    T *stx= _t_news(0,SEMTREX_SYMBOL_LITERAL,ASCII_CHARS);
+    t = _t_news(stx,SEMTREX_GROUP,HTTP_REQUEST);
+    T *sq = _t_newr(t,SEMTREX_SEQUENCE);
+    t = _t_news(sq,SEMTREX_GROUP,HTTP_REQUEST_METHOD);
+    t = _t_newr(t,SEMTREX_ONE_OR_MORE);
+    _t_newr(t,SEMTREX_SYMBOL_ANY);
+
+    t = _t_news(sq,SEMTREX_GROUP,HTTP_REQUEST_PATH);
+    T *sqq = _t_newr(t,SEMTREX_SEQUENCE);
+    __stxcv(sqq,' ');
+
+    t = _t_news(sqq,SEMTREX_GROUP,HTTP_REQUEST_PATH_SEGMENTS);
+    t = _t_newr(t,SEMTREX_ONE_OR_MORE);
+    t = _t_newr(t,SEMTREX_SEQUENCE);
+    __stxcv(t,'/');
+    t = _t_news(t,SEMTREX_GROUP,HTTP_REQUEST_PATH_SEGMENT);
+    t = _t_newr(t,SEMTREX_ZERO_OR_MORE);
+    __stxcvm(t,1,3,'/','?',' ');
+
+    t = _t_news(sq,SEMTREX_GROUP,HTTP_REQUEST_PATH_FILE);
+    T *f = _t_newr(t,SEMTREX_SEQUENCE);
+    t = _t_news(f,SEMTREX_GROUP,FILE_NAME);
+    t = _t_newr(t,SEMTREX_ONE_OR_MORE);
+    __stxcvm(t,1,2,'?',' ');
+
+    t = _t_newr(f,SEMTREX_ZERO_OR_ONE);
+    t = _t_newr(t,SEMTREX_SEQUENCE);
+    __stxcv(t,'.');
+    t = _t_news(t,SEMTREX_GROUP,FILE_EXTENSION);
+    t = _t_newr(t,SEMTREX_ONE_OR_MORE);
+    __stxcvm(t,1,2,'?',' ');
+
+    t = _t_newr(sq,SEMTREX_ZERO_OR_ONE);
+    t = _t_newr(t,SEMTREX_SEQUENCE);
+    __stxcv(t,'?');
+    t = _t_news(t,SEMTREX_GROUP,HTTP_REQUEST_PATH_QUERY);
+    t = _t_newr(t,SEMTREX_ONE_OR_MORE);
+    t = _t_news(t,SEMTREX_GROUP,HTTP_REQUEST_PATH_QUERY_PARAMS);
+    f = _t_newr(t,SEMTREX_SEQUENCE);
+    t = _t_news(f,SEMTREX_GROUP,PARAM_KEY);
+    t = _t_newr(t,SEMTREX_ONE_OR_MORE);
+    __stxcvm(t,1,3,'&',' ','=');
+
+    t = _t_news(f,SEMTREX_GROUP,PARAM_VALUE);
+    t = _t_newr(t,SEMTREX_ZERO_OR_MORE);
+    __stxcvm(t,1,2,'&',' ');
+
+    __stxcv(sq,' ');
+    __stxcv(sq,'H');
+    __stxcv(sq,'T');
+    __stxcv(sq,'T');
+    __stxcv(sq,'P');
+    __stxcv(sq,'/');
+    t = _t_news(sq,SEMTREX_GROUP,HTTP_REQUEST_VERSION);
+    t = _t_newr(t,SEMTREX_SEQUENCE);
+    f = _t_news(t,SEMTREX_GROUP,VERSION_MAJOR);
+    __stxcv(f,'0');
+    __stxcv(t,'.');
+    f = _t_news(t,SEMTREX_GROUP,VERSION_MINOR);
+    __stxcv(f,'9');
+
+    __dump_semtrex(test_HTTP_defs,stx,buf);
+    spec_is_str_equal(buf,"ASCII_CHARS/{HTTP_REQUEST:{HTTP_REQUEST_METHOD:.+},{HTTP_REQUEST_PATH:ASCII_CHAR=' ',{HTTP_REQUEST_PATH_SEGMENTS:(ASCII_CHAR='/',{HTTP_REQUEST_PATH_SEGMENT:ASCII_CHAR!=['/','?',' ']*})+}},{HTTP_REQUEST_PATH_FILE:{FILE_NAME:ASCII_CHAR!=['?',' ']+},(ASCII_CHAR='.',{FILE_EXTENSION:ASCII_CHAR!=['?',' ']+})?},(ASCII_CHAR='?',{HTTP_REQUEST_PATH_QUERY:{HTTP_REQUEST_PATH_QUERY_PARAMS:{PARAM_KEY:ASCII_CHAR!=['&',' ','=']+},{PARAM_VALUE:ASCII_CHAR!=['&',' ']*}}+})?,ASCII_CHAR=' ',ASCII_CHAR='H',ASCII_CHAR='T',ASCII_CHAR='T',ASCII_CHAR='P',ASCII_CHAR='/',{HTTP_REQUEST_VERSION:{VERSION_MAJOR:ASCII_CHAR='0'},ASCII_CHAR='.',{VERSION_MINOR:ASCII_CHAR='9'}}}");
+
+    T *results;
+    spec_is_true(_t_matchr(stx,s,&results));
+    spec_is_str_equal(__t_dump(&test_HTTP_defs,results,0,buf)," (SEMTREX_MATCH_RESULTS (SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:HTTP_REQUEST) (SEMTREX_MATCHED_PATH:/1) (SEMTREX_MATCH_SIBLINGS_COUNT:43)) (SEMTREX_MATCH:2 (SEMTREX_MATCH_SYMBOL:HTTP_REQUEST_VERSION) (SEMTREX_MATCHED_PATH:/41) (SEMTREX_MATCH_SIBLINGS_COUNT:3)) (SEMTREX_MATCH:3 (SEMTREX_MATCH_SYMBOL:VERSION_MINOR) (SEMTREX_MATCHED_PATH:/43) (SEMTREX_MATCH_SIBLINGS_COUNT:1)) (SEMTREX_MATCH:4 (SEMTREX_MATCH_SYMBOL:VERSION_MAJOR) (SEMTREX_MATCHED_PATH:/41) (SEMTREX_MATCH_SIBLINGS_COUNT:1)) (SEMTREX_MATCH:9 (SEMTREX_MATCH_SYMBOL:HTTP_REQUEST_PATH_FILE) (SEMTREX_MATCHED_PATH:/34) (SEMTREX_MATCH_SIBLINGS_COUNT:1)) (SEMTREX_MATCH:11 (SEMTREX_MATCH_SYMBOL:FILE_NAME) (SEMTREX_MATCHED_PATH:/34) (SEMTREX_MATCH_SIBLINGS_COUNT:1)) (SEMTREX_MATCH:12 (SEMTREX_MATCH_SYMBOL:HTTP_REQUEST_PATH) (SEMTREX_MATCHED_PATH:/4) (SEMTREX_MATCH_SIBLINGS_COUNT:30)) (SEMTREX_MATCH:13 (SEMTREX_MATCH_SYMBOL:HTTP_REQUEST_PATH_SEGMENTS) (SEMTREX_MATCHED_PATH:/5) (SEMTREX_MATCH_SIBLINGS_COUNT:29)) (SEMTREX_MATCH:14 (SEMTREX_MATCH_SYMBOL:HTTP_REQUEST_PATH_SEGMENT) (SEMTREX_MATCHED_PATH:/6) (SEMTREX_MATCH_SIBLINGS_COUNT:28)) (SEMTREX_MATCH:15 (SEMTREX_MATCH_SYMBOL:HTTP_REQUEST_METHOD) (SEMTREX_MATCHED_PATH:/1) (SEMTREX_MATCH_SIBLINGS_COUNT:3)))");
+
+    _t_free(s);
+    _t_free(stx);
 }
 
 void testSemtrex() {
     _stxSetup();
+    _setup_HTTPDefs();
     testMakeFA();
     testMatchTrees();
     testMatchOr();
@@ -753,7 +839,10 @@ void testSemtrex() {
     testMatchLiteralValue();
     testMatchDescend();
     testMatchWalk();
-    testMatchNot();
+    //    testMatchNot();
     testSemtrexDump();
     testSemtrexParse();
+
+    testSemtrexParseHHTPReq();
+    _cleanup_HTTPDefs();
 }

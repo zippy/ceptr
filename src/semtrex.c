@@ -599,15 +599,26 @@ char * __dump_semtrex(Defs defs,T *s,char *buf) {
 	if (semeq(sym, SEMTREX_VALUE_LITERAL)) {
 	    Svalue *sv = (Svalue *)_t_surface(s);
 	    Structure st = _d_get_symbol_structure(defs.symbols,sv->symbol);
+	    size_t *l = &sv->length;
 	    if (sv->flags & SEMTREX_VALUE_NOT_FLAG)
 		sprintf(b+strlen(b),"!");
-	    if (semeq(st,CSTRING))
-		sprintf(b+strlen(b),"=\"%s\"",(char *)&sv->value);
-	    else if (semeq(st,CHAR))
-		sprintf(b+strlen(b),"='%c'",*(int *)&sv->value);
-	    else if (semeq(st,INTEGER))
-		sprintf(b+strlen(b),"=%d",*(int *)&sv->value);
-	    else sprintf(b+strlen(b),"=???x");
+	    sprintf(b+strlen(b),"=");
+	    if ((i = sv->count) > 1)
+		sprintf(b+strlen(b),"[");
+	    while(i--) {
+		if (semeq(st,CSTRING))
+		    sprintf(b+strlen(b),"\"%s\"",(char *)(l+1));
+		else if (semeq(st,CHAR))
+		    sprintf(b+strlen(b),"'%c'",*(int *)(l+1));
+		else if (semeq(st,INTEGER))
+		    sprintf(b+strlen(b),"%d",*(int *)(l+1));
+		else sprintf(b+strlen(b),"???x");
+		l = (size_t *)(*l+(void *)(l+1));
+		if (i > 0)
+		    sprintf(b+strlen(b),",");
+	    }
+	    if (i = sv->count > 1)
+		sprintf(b+strlen(b),"]");
 	}
 	__stxd_descend(defs,s,b,buf);
 	break;
@@ -677,6 +688,30 @@ T *__stxcv(T *stxx,char c) {
     sv.length = sizeof(int);
     *(int *)&sv.value = c;
     return _t_new(stxx,SEMTREX_VALUE_LITERAL,&sv,sizeof(Svalue));
+}
+
+// helper to add a stx_char value litteral set to a semtrex
+T *__stxcvm(T *stxx,int not,int count,...) {
+    va_list chars;
+    int i;
+    T *t;
+    size_t svl = sizeof(Svalue) + (sizeof(size_t) + sizeof(char))*count;
+    Svalue *svP = malloc(svl);
+    svP->flags = not ? SEMTREX_VALUE_NOT_FLAG:0;
+    svP->count = count;
+    svP->symbol = ASCII_CHAR;
+    size_t *l = &svP->length;
+    va_start(chars,count);
+    for(i=0;i<count;i++) {
+	*l = sizeof(char);
+	*(char *)(l+1) = va_arg(chars,int);
+	l = (size_t *)(1+(char *)(l+1));
+    }
+    va_end(chars);
+    t = _t_new(stxx,SEMTREX_VALUE_LITERAL,svP,svl);
+
+    free(svP);
+    return t;
 }
 
 // helper to add a bunch of semtrex ors that match a character set
@@ -940,6 +975,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 	    char *symbol_name = (char *)_t_surface(t);
 	    Svalue *sv = malloc(sizeof(Svalue)+l);
 	    sv->symbol = get_symbol(symbol_name,d);
+	    sv->count = 1;
 	    memcpy(&sv->value,_t_surface(v),l);
 
 	    __t_morph(t,SEMTREX_VALUE_LITERAL,sv,sizeof(Svalue)+l,1);
