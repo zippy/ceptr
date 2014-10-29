@@ -329,13 +329,13 @@ void testMatchGroup() {
     T *sg2, *s3, *t, *r, *p1, *p2, *p1c, *p2c;
     t = _makeTestTree1();
 
-    // /{TEST_STR_SYMBOL}           <- the most simple group semtrex
+    // /<TEST_STR_SYMBOL:TEST_STR_SYMBOL>           <- the most simple group semtrex
     T *g = _t_news(0,SEMTREX_GROUP,TEST_STR_SYMBOL);
     _t_news(g,SEMTREX_SYMBOL_LITERAL,TEST_STR_SYMBOL);
 
     spec_is_true(_t_matchr(g,t,&r));
 
-    // /TEST_STR_SYMBOL/{.*,{.}},sy4  <- a more complicated group semtrex
+    // /TEST_STR_SYMBOL/<TEST_GROUP_SYMBOL1:.*,<TEST_GROUP_SYMBOL2:.>>,sy4  <- a more complicated group semtrex
     T *s = _t_news(0,SEMTREX_SYMBOL_LITERAL,TEST_STR_SYMBOL);
     T *ss = _t_newr(s,SEMTREX_SEQUENCE);
     T *sg = _t_news(ss,SEMTREX_GROUP,TEST_GROUP_SYMBOL1);
@@ -389,7 +389,7 @@ void testMatchGroup() {
 
     // test that the correct number of siblings is returned when the match matches a
     // sequence that includes the final sibiling
-    // /TEST_STR_SYMBOL/.*,{TEST_GROUP_SYMBOL:sy3,sy4}
+    // /TEST_STR_SYMBOL/.*,<TEST_GROUP_SYMBOL:sy3,sy4>
     s = _t_news(0,SEMTREX_SYMBOL_LITERAL,TEST_STR_SYMBOL);
     ss = _t_newr(s,SEMTREX_SEQUENCE);
     st = _t_newr(ss,SEMTREX_ZERO_OR_MORE);
@@ -625,7 +625,7 @@ void testSemtrexDump() {
     spec_is_str_equal(_dump_semtrex(d,s,buf),"/TEST_STR_SYMBOL/(sy1/sy11/sy111,sy2,sy3)");
     _t_free(s);
 
-    // /TEST_STR_SYMBOL/{.*,{.}},4  <- a more complicated group semtrex
+    // /TEST_STR_SYMBOL/<.*,<.>>,4  <- a more complicated group semtrex
     s = _t_news(0,SEMTREX_SYMBOL_LITERAL,TEST_STR_SYMBOL);
     T *ss = _t_newr(s,SEMTREX_SEQUENCE);
     T *sg = _t_news(ss,SEMTREX_GROUP,TEST_GROUP_SYMBOL1);
@@ -635,7 +635,7 @@ void testSemtrexDump() {
     T *sg2 = _t_news(ss2,SEMTREX_GROUP,TEST_GROUP_SYMBOL2);
     _t_newr(sg2,SEMTREX_SYMBOL_ANY);
     T *s3 = _t_news(ss,SEMTREX_SYMBOL_LITERAL,sy4);
-    spec_is_str_equal(_dump_semtrex(d,s,buf),"/TEST_STR_SYMBOL/({TEST_GROUP_SYMBOL1:.*,{TEST_GROUP_SYMBOL2:.}},sy4)");
+    spec_is_str_equal(_dump_semtrex(d,s,buf),"/TEST_STR_SYMBOL/(<TEST_GROUP_SYMBOL1:.*,<TEST_GROUP_SYMBOL2:.>>,sy4)");
     _t_free(s);
 
     // /TEST_STR_SYMBOL|TEST_INT_SYMBOL
@@ -709,13 +709,13 @@ void testSemtrexParse() {
     spec_is_str_equal(__t_dump(&d,s,0,buf)," (SEMTREX_SYMBOL_LITERAL:TEST_STR_SYMBOL (SEMTREX_SEQUENCE (SEMTREX_ONE_OR_MORE (SEMTREX_SYMBOL_ANY)) (SEMTREX_SYMBOL_LITERAL:sy1) (SEMTREX_ZERO_OR_MORE (SEMTREX_SYMBOL_ANY)) (SEMTREX_SYMBOL_LITERAL:sy2) (SEMTREX_ZERO_OR_ONE (SEMTREX_SYMBOL_ANY))))");
     _t_free(s);
 
-    stx = "/STX_TOKENS/%{SEMTREX_SEQUENCE:(!STX_COMMA,STX_COMMA)+,!STX_COMMA}";
+    stx = "/STX_TOKENS/%<SEMTREX_SEQUENCE:(!STX_COMMA,STX_COMMA)+,!STX_COMMA>";
     s = parseSemtrex(&d,stx);
     spec_is_str_equal(_dump_semtrex(d,s,buf),stx);
     spec_is_str_equal(__t_dump(&d,s,0,buf)," (SEMTREX_SYMBOL_LITERAL:STX_TOKENS (SEMTREX_WALK (SEMTREX_GROUP:SEMTREX_SEQUENCE (SEMTREX_SEQUENCE (SEMTREX_ONE_OR_MORE (SEMTREX_SEQUENCE (SEMTREX_SYMBOL_EXCEPT:STX_COMMA) (SEMTREX_SYMBOL_LITERAL:STX_COMMA))) (SEMTREX_SYMBOL_EXCEPT:STX_COMMA)))))");
     _t_free(s);
 
-    stx = "/HTTP_REQUEST/(.,.,HTTP_REQUEST_PATH/HTTP_REQUEST_PATH_SEGMENTS/{HTTP_REQUEST_PATH_SEGMENT:HTTP_REQUEST_PATH_SEGMENT})";
+    stx = "/HTTP_REQUEST/(.,.,HTTP_REQUEST_PATH/HTTP_REQUEST_PATH_SEGMENTS/<HTTP_REQUEST_PATH_SEGMENT:HTTP_REQUEST_PATH_SEGMENT>)";
     s = parseSemtrex(&test_HTTP_defs,stx);
     spec_is_str_equal(_dump_semtrex(test_HTTP_defs,s,buf),stx);
     spec_is_str_equal(__t_dump(&test_HTTP_defs,s,0,buf)," (SEMTREX_SYMBOL_LITERAL:HTTP_REQUEST (SEMTREX_SEQUENCE (SEMTREX_SYMBOL_ANY) (SEMTREX_SYMBOL_ANY) (SEMTREX_SYMBOL_LITERAL:HTTP_REQUEST_PATH (SEMTREX_SYMBOL_LITERAL:HTTP_REQUEST_PATH_SEGMENTS (SEMTREX_GROUP:HTTP_REQUEST_PATH_SEGMENT (SEMTREX_SYMBOL_LITERAL:HTTP_REQUEST_PATH_SEGMENT))))))");
@@ -751,7 +751,7 @@ void testSemtrexParseHHTPReq() {
     T *stx = _makeHTTPRequestSemtrex();
 
     __dump_semtrex(test_HTTP_defs,stx,buf);
-    spec_is_str_equal(buf,"ASCII_CHARS/{HTTP_REQUEST:{HTTP_REQUEST_METHOD:.+},{HTTP_REQUEST_PATH:ASCII_CHAR=' ',{HTTP_REQUEST_PATH_SEGMENTS:(ASCII_CHAR='/',{HTTP_REQUEST_PATH_SEGMENT:ASCII_CHAR!=['/','?',' ']*})+}},{HTTP_REQUEST_PATH_FILE:{FILE_NAME:ASCII_CHAR!=['?',' ']+},(ASCII_CHAR='.',{FILE_EXTENSION:ASCII_CHAR!=['?',' ']+})?},(ASCII_CHAR='?',{HTTP_REQUEST_PATH_QUERY:{HTTP_REQUEST_PATH_QUERY_PARAMS:{PARAM_KEY:ASCII_CHAR!=['&',' ','=']+},{PARAM_VALUE:ASCII_CHAR!=['&',' ']*}}+})?,ASCII_CHAR=' ',ASCII_CHAR='H',ASCII_CHAR='T',ASCII_CHAR='T',ASCII_CHAR='P',ASCII_CHAR='/',{HTTP_REQUEST_VERSION:{VERSION_MAJOR:ASCII_CHAR='0'},ASCII_CHAR='.',{VERSION_MINOR:ASCII_CHAR='9'}}}");
+    spec_is_str_equal(buf,"ASCII_CHARS/<HTTP_REQUEST:<HTTP_REQUEST_METHOD:.+>,<HTTP_REQUEST_PATH:ASCII_CHAR=' ',<HTTP_REQUEST_PATH_SEGMENTS:(ASCII_CHAR='/',<HTTP_REQUEST_PATH_SEGMENT:ASCII_CHAR!={'/','?',' '}*>)+>>,<HTTP_REQUEST_PATH_FILE:<FILE_NAME:ASCII_CHAR!={'?',' '}+>,(ASCII_CHAR='.',<FILE_EXTENSION:ASCII_CHAR!={'?',' '}+>)?>,(ASCII_CHAR='?',<HTTP_REQUEST_PATH_QUERY:<HTTP_REQUEST_PATH_QUERY_PARAMS:<PARAM_KEY:ASCII_CHAR!={'&',' ','='}+>,<PARAM_VALUE:ASCII_CHAR!={'&',' '}*>>+>)?,ASCII_CHAR=' ',ASCII_CHAR='H',ASCII_CHAR='T',ASCII_CHAR='T',ASCII_CHAR='P',ASCII_CHAR='/',<HTTP_REQUEST_VERSION:<VERSION_MAJOR:ASCII_CHAR='0'>,ASCII_CHAR='.',<VERSION_MINOR:ASCII_CHAR='9'>>>");
 
     T *results;
     spec_is_true(_t_matchr(stx,s,&results));

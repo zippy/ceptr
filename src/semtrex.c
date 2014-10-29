@@ -604,7 +604,7 @@ char * __dump_semtrex(Defs defs,T *s,char *buf) {
 		sprintf(b+strlen(b),"!");
 	    sprintf(b+strlen(b),"=");
 	    if ((i = sv->count) > 1)
-		sprintf(b+strlen(b),"[");
+		sprintf(b+strlen(b),"{");
 	    while(i--) {
 		if (semeq(st,CSTRING))
 		    sprintf(b+strlen(b),"\"%s\"",(char *)(l+1));
@@ -618,7 +618,7 @@ char * __dump_semtrex(Defs defs,T *s,char *buf) {
 		    sprintf(b+strlen(b),",");
 	    }
 	    if (i = sv->count > 1)
-		sprintf(b+strlen(b),"]");
+		sprintf(b+strlen(b),"}");
 	}
 	__stxd_descend(defs,s,b,buf);
 	break;
@@ -659,9 +659,9 @@ char * __dump_semtrex(Defs defs,T *s,char *buf) {
 	sn = _d_get_symbol_name(defs.symbols,*(Symbol *)_t_surface(s));
 	// ignore "<unknown symbol"
 	if  (*sn=='<')
-	    sprintf(buf, "{%s}",__dump_semtrex(defs,_t_child(s,1),b));
+	    sprintf(buf, "<%s>",__dump_semtrex(defs,_t_child(s,1),b));
 	else
-	    sprintf(buf, "{%s:%s}",sn,__dump_semtrex(defs,_t_child(s,1),b));
+	    sprintf(buf, "<%s:%s>",sn,__dump_semtrex(defs,_t_child(s,1),b));
 	break;
     case SEMTREX_DESCEND_ID:
 	sprintf(buf, "/%s",__dump_semtrex(defs,_t_child(s,1),b));
@@ -823,7 +823,7 @@ T *parseSemtrex(Defs *d,char *stx) {
     /////////////////////////////////////////////////////
     // build the token stream out of an ascii stream
     // EXPECTATION
-    // /(TEST_STR_SYMBOL/(sy1/(sy11/sy111)),sy2,sy3)" but was "/{STX_TOKENS:(ASCII_CHARS/({STX_SL:ASCII_CHAR='/'})|(({STX_OP:ASCII_CHAR='('})|(({STX_CP:ASCII_CHAR=')'})|(({STX_PLUS:ASCII_CHAR='+'})|(({STX_COMMA:ASCII_CHAR=','})|((ASCII_CHAR='!',{STX_EXCEPT:[a-zA-Z0-9_]+})|(({STX_CG:ASCII_CHAR='}'})|(({STX_STAR:ASCII_CHAR='*'})|(({STX_LABEL:[a-zA-Z0-9_]+})|(ASCII_CHAR='{',{STX_OG:[a-zA-Z0-9_]+},ASCII_CHAR=':')))))))))+)}
+    // "/{STX_TOKENS:(ASCII_CHARS/({STX_SL:ASCII_CHAR='/'})|(({STX_OP:ASCII_CHAR='('})|(({STX_CP:ASCII_CHAR=')'})|(({STX_PLUS:ASCII_CHAR='+'})|(({STX_COMMA:ASCII_CHAR=','})|((ASCII_CHAR='!',{STX_EXCEPT:[a-zA-Z0-9_]+})|(({STX_CG:ASCII_CHAR='}'})|(({STX_STAR:ASCII_CHAR='*'})|(({STX_LABEL:[a-zA-Z0-9_]+})|(ASCII_CHAR='{',{STX_OG:[a-zA-Z0-9_]+},ASCII_CHAR=':')))))))))+)}
     T *ts = _t_news(0,SEMTREX_GROUP,STX_TOKENS);
     T *g = _t_news(ts,SEMTREX_SYMBOL_LITERAL,ASCII_CHARS);
     T *sq = _t_newr(g,SEMTREX_SEQUENCE);
@@ -849,7 +849,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 
     o = _t_newr(o,SEMTREX_OR);
     t = _t_news(o,SEMTREX_GROUP,STX_CG);
-    __stxcv(t,'}');
+    __stxcv(t,'>');
     o = _t_newr(o,SEMTREX_OR);
     t = _t_news(o,SEMTREX_GROUP,SEMTREX_SYMBOL_ANY);
     __stxcv(t,'.');
@@ -911,7 +911,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 
     //  o = _t_newr(o,SEMTREX_OR);
     sq = _t_newr(o,SEMTREX_SEQUENCE);
-    __stxcv(sq,'{');
+    __stxcv(sq,'<');
     t = _t_news(sq,SEMTREX_GROUP,STX_OG);
     _stxl(t);
     __stxcv(sq,':');
@@ -968,7 +968,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 	/////////////////////////////////////////////////////
 	// convert STX_EQ/STX_NEQ to SEMTREX_VALUE_LITERALS
 	// EXPECTATION
-	// /%{SEMTREX_VALUE_LITERAL:STX_EQ|STX_NEQ,STX_VAL_I|STX_VAL_S|STX_VAL_C}
+	// /%<SEMTREX_VALUE_LITERAL:STX_EQ|STX_NEQ,STX_VAL_I|STX_VAL_S|STX_VAL_C>
 	sxx = _t_new_root(SEMTREX_WALK);
 	g = _t_news(sxx,SEMTREX_GROUP,SEMTREX_VALUE_LITERAL);
 	sq = _t_newr(g,SEMTREX_SEQUENCE);
@@ -1014,7 +1014,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 	/////////////////////////////////////////////////////
 	// replace paren groups with STX_SIBS list
 	// EXPECTATION
-	// /STX_TOKENS/.*,{STX_OP:STX_OP,{STX_SIBS:!STX_CP+},STX_CP}
+	// /STX_TOKENS/.*,<STX_OP:STX_OP,<STX_SIBS:!STX_CP+>,STX_CP>
 	sxx = _t_news(0,SEMTREX_SYMBOL_LITERAL,STX_TOKENS);
 	sq = _t_newr(sxx,SEMTREX_SEQUENCE);
 	T *st = _t_newr(sq,SEMTREX_ZERO_OR_MORE);
@@ -1042,7 +1042,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 	/////////////////////////////////////////////////////
 	// find groups
 	// EXPECTATION
-	// /%,{STX_OG:STX_OG,{SEMTREX_GROUP:!STX_CG+},STX_CG}
+	// /%,<STX_OG:STX_OG,<SEMTREX_GROUP:~(STX_CG|STX_OG)+>,STX_CG>
 	sxx = _t_new_root(SEMTREX_WALK);
 	g = _t_news(sxx,SEMTREX_GROUP,STX_OG);
 	sq = _t_newr(g,SEMTREX_SEQUENCE);
@@ -1091,7 +1091,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 	/////////////////////////////////////////////////////
 	// convert postfix groups
 	// EXPECTATION
-	// /*{STX_POSTFIX:.,STX_PLUS|STX_STAR|STX_Q)
+	// /*<STX_POSTFIX:.,STX_PLUS|STX_STAR|STX_Q>
 	sxx = _t_new_root(SEMTREX_WALK);
 	g = _t_news(sxx,SEMTREX_GROUP,STX_POSTFIX);
 	sq = _t_newr(g,SEMTREX_SEQUENCE);
@@ -1130,7 +1130,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 	/////////////////////////////////////////////////////
 	// fixup STX_WALK
 	// EXPECTATION
-	// /%{SEMTREX_WALK:STX_WALK,.}
+	// /%<SEMTREX_WALK:STX_WALK,.>
 	sxx = _t_new_root(SEMTREX_WALK);
 	g = _t_news(sxx,SEMTREX_GROUP,SEMTREX_WALK);
 	sq = _t_newr(g,SEMTREX_SEQUENCE);
@@ -1158,7 +1158,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 	/////////////////////////////////////////////////////
 	// convert not
 	// EXPECTATION
-	// /%{SEMTREX_NOT:STX_NOT,.}
+	// /%<SEMTREX_NOT:STX_NOT,.>
 	sxx = _t_new_root(SEMTREX_WALK);
 	g = _t_news(sxx,SEMTREX_GROUP,SEMTREX_NOT);
 	sq = _t_newr(g,SEMTREX_SEQUENCE);
@@ -1189,7 +1189,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 	/////////////////////////////////////////////////////
 	// convert things following slashes to children of things preceeding slashes
 	// EXPECTATION
-	// /%.*,{STX_CHILD:STX_LABEL,STX_SL,!STX_SL}
+	// /%.*,<STX_CHILD:STX_LABEL,STX_SL,!STX_SL>
 	sxx = _t_new_root(SEMTREX_WALK);
 	sq = _t_newr(sxx,SEMTREX_SEQUENCE);
 	any = _t_newr(sq,SEMTREX_ZERO_OR_MORE);
@@ -1226,7 +1226,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 	/////////////////////////////////////////////////////
 	// convert comma tokens to sequences
 	// EXPECTATION
-	// /*{SEMTREX_SEQUENCE:(!STX_COMMA,STX_COMMA)+,!STX_COMMA}  ->  SEMTREX_SEQUENCE
+	// /*<SEMTREX_SEQUENCE:(!STX_COMMA,STX_COMMA)+,!STX_COMMA>  ->  SEMTREX_SEQUENCE
 	sxx = _t_new_root(SEMTREX_WALK);
 	g = _t_news(sxx,SEMTREX_GROUP,SEMTREX_SEQUENCE);
 	sq = _t_newr(g,SEMTREX_SEQUENCE);
@@ -1268,7 +1268,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 	/////////////////////////////////////////////////////
 	// convert ors
 	// EXPECTATION
-	// /%{SEMTREX_OR:!STX_OR,STX_OR,!STX_OR}
+	// /%<SEMTREX_OR:!STX_OR,STX_OR,!STX_OR>
 	sxx = _t_new_root(SEMTREX_WALK);
 	g = _t_news(sxx,SEMTREX_GROUP,SEMTREX_OR);
 	sq = _t_newr(g,SEMTREX_SEQUENCE);
@@ -1278,7 +1278,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 
 	//----------------
 	// ACTION
-	while (_t_matchr(sxx,tokens,&results)) {
+ 	while (_t_matchr(sxx,tokens,&results)) {
 	    T *m = _t_get_match(results,SEMTREX_OR);
 	    int *path = (int *)_t_surface(_t_child(m,2));
 	    int x = path[_t_path_depth(path)-1];
@@ -1302,7 +1302,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 	/////////////////////////////////////////////////////
 	// convert labels to SEMTREX_LITERALS
 	// EXPECTATION
-	// /%STX_LABEL|STX_EXCEPT
+	// /%<SEMTREX_SYMBOL_LITERAL:STX_LABEL|STX_EXCEPT>
 	sxx = _t_new_root(SEMTREX_WALK);
 	g = _t_news(sxx,SEMTREX_GROUP,SEMTREX_SYMBOL_LITERAL);
 	o = _t_newr(g,SEMTREX_OR);
@@ -1327,7 +1327,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 	/////////////////////////////////////////////////////
 	// remove stray STX_SIBS
 	// EXPECTATION
-	// /%STX_SIBS
+	// /%<STX_SIBS:STX_SIBS>
 	sxx = _t_new_root(SEMTREX_WALK);
 	g = _t_news(sxx,SEMTREX_GROUP,STX_SIBS);
 	_t_news(g,SEMTREX_SYMBOL_LITERAL,STX_SIBS);
