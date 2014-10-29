@@ -612,7 +612,56 @@ void testMatchNot() {
     n = _t_news(n,SEMTREX_SYMBOL_LITERAL,sy1);
     spec_is_true(!_t_match(s,t));
     _t_free(s);
+    _t_free(t);
 
+    sX(R,TREE);
+    sX(A,NULL_STRUCTURE);
+    sX(B,NULL_STRUCTURE);
+    sX(C,NULL_STRUCTURE);
+    sX(G,NULL_STRUCTURE);
+
+    t = _t_new_root(R);
+    _t_newr(t,A);
+    _t_newr(t,B);
+    _t_newr(t,A);
+    _t_newr(t,B);
+    _t_newr(t,B);
+    _t_newr(t,C);
+
+    char buf[2000];
+    Defs d = {0,0,0,0};
+    T *g,*x,*results;
+
+    s = _t_newr(0,SEMTREX_WALK);
+    g = _t_news(s,SEMTREX_GROUP,G);
+    x = _t_newr(g,SEMTREX_SEQUENCE);
+    //   x = _t_newr(x,SEMTREX_NOT);
+    //_t_news(x,SEMTREX_SYMBOL_LITERAL,A);
+
+    _t_news(x,SEMTREX_SYMBOL_LITERAL,B);
+    n = _t_newr(x,SEMTREX_NOT);
+    _t_news(n,SEMTREX_SYMBOL_LITERAL,A);
+    n = _t_newr(x,SEMTREX_NOT);
+    _t_news(n,SEMTREX_SYMBOL_LITERAL,A);
+    spec_is_str_equal(_dump_semtrex(d,s,buf),"");
+
+    stx_dump(s);
+
+    G_debug_match = 1;
+    spec_is_true(_t_matchr(s,t,&results));
+    G_debug_match = 0;
+    spec_is_str_equal(__t_dump(0,results,0,buf),"");
+    int *p = _t_get_path(G_ts);
+    puts("MATCHPATH:");
+    puts(_t_sprint_path(p,buf));
+
+    //    _t_free(results);
+
+/*    __t_dump(0,t,0,buf);
+    puts("ABABBA:");
+    puts(buf);
+*/
+    _t_free(s);
     _t_free(t);
 
 }
@@ -777,7 +826,7 @@ void testSemtrex() {
     testMatchLiteralValue();
     testMatchDescend();
     testMatchWalk();
-    //    testMatchNot();
+    testMatchNot();
     testSemtrexDump();
     testSemtrexParse();
 

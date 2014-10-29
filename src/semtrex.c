@@ -227,7 +227,7 @@ char * __stx_makeFA(T *t,SState **in,Ptrlist **out,int level,int *statesP) {
 	err = __stx_makeFA(_t_child(t,1),&i,&o,level,statesP);
 	if (err) return err;
 	s->out = i;
-	*out = o;
+	*out = append(o,list1(&s->out1));
 	break;
     case SEMTREX_WALK_ID:
 	if (c != 1) return "Walk must have 1 child";
@@ -403,6 +403,13 @@ int __t_match(SState *s,T *t,T *r) {
 	if (__t_match(s->out,t,r)) return 1;
 	else return __t_match(s->out1,t,r);
 	break;
+    case StateNot:
+	MATCH_DEBUG(Not);
+	if (!t) return 0; // we don't want NOT to match when we ran out of tree nodes... i.e NOT should match only when there is something, not when there is nothing.
+	//	if (G_debug_match) raise(SIGINT);
+	if (!__t_match(s->out,t,r)) return 1;
+	else return __t_match(s->out1,t,r);
+	break;
     case StateWalk:
 	MATCH_DEBUG(Walk);
 	if (__t_match(s->out,t,r)) return 1;
@@ -468,6 +475,9 @@ int __t_match(SState *s,T *t,T *r) {
 	    else {
 		p_end = _t_get_path(t);
 		i = p_end[d]-p[d];
+		if (!p_end) {
+		    raise(SIGINT);
+		}
 		free(p_end);
 	    }
 	    free(p);
@@ -481,14 +491,6 @@ int __t_match(SState *s,T *t,T *r) {
 	t = _t_child(t,1);
 	G_te = t;
 	return __t_match(s->out,t,r);
-	break;
-    case StateNot:
-	MATCH_DEBUG(Not);
-	if (!t) return 0;
-	//	if (G_debug_match) raise(SIGINT);
-	if (!__t_match(s->out,t,r)) return __t_match(s->out1,t,r);
-	else return 0;
-
 	break;
     case StateMatch:
 	MATCH_DEBUG(Match);
@@ -679,7 +681,7 @@ char * _dump_semtrex(Defs defs,T *s,char *buf) {
     return buf;
 }
 
-// helper to add a stx_char value litteral to a semtrex
+// helper to add a stx_char value literal to a semtrex
 T *__stxcv(T *stxx,char c) {
     Svalue sv;
     sv.symbol = ASCII_CHAR;
@@ -690,7 +692,7 @@ T *__stxcv(T *stxx,char c) {
     return _t_new(stxx,SEMTREX_VALUE_LITERAL,&sv,sizeof(Svalue));
 }
 
-// helper to add a stx_char value litteral set to a semtrex
+// helper to add a stx_char value literal set to a semtrex
 T *__stxcvm(T *stxx,int not,int count,...) {
     va_list chars;
     int i;
@@ -773,6 +775,11 @@ T *wrap(T *tokens,T *results, Symbol contents_s, Symbol open_s) {
     T *m = _t_get_match(results,contents_s);
     T *om = _t_get_match(results,open_s);
 
+/*    char buf[2000];
+    __t_dump(0,results,0,buf);
+    puts("WRAP:");
+    puts(buf);
+*/
     // transfer the contents nodes to the open node
     int count = *(int *)_t_surface(_t_child(m,3));
     int *cpath = (int *)_t_surface(_t_child(m,2));
@@ -1049,6 +1056,11 @@ T *parseSemtrex(Defs *d,char *stx) {
 	_t_news(sq,SEMTREX_SYMBOL_LITERAL,STX_OG);
 	gg = _t_news(sq,SEMTREX_GROUP,SEMTREX_GROUP);
 	any = _t_newr(gg,SEMTREX_ONE_OR_MORE);
+
+	//	t = _t_newr(any,SEMTREX_NOT);
+	//o=  _t_newr(t,SEMTREX_OR);
+	//_t_news(o,SEMTREX_SYMBOL_LITERAL,STX_CG);
+	//_t_news(o,SEMTREX_SYMBOL_LITERAL,STX_OG);
 	_t_news(any,SEMTREX_SYMBOL_EXCEPT,STX_CG);
 	_t_news(sq,SEMTREX_SYMBOL_LITERAL,STX_CG);
 
