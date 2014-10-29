@@ -129,6 +129,9 @@ T *_t_get_match(T *result,Symbol group);
 char * _dump_semtrex(Defs defs,T *s,char *buf);
 T *parseSemtrex(Defs *d,char *stx);
 
+T *__stxcv(T *stxx,char c);
+T *__stxcvm(T *stxx,int not,int count,...);
+
 #endif
 
 /** @}*/

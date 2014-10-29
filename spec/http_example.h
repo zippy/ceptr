@@ -10,7 +10,7 @@
 #include "../src/ceptr.h"
 #include "../src/receptor.h"
 #include "../src/def.h"
-
+#include "../src/semtrex.h"
 
 Symbol OCTET_STREAM;
 
@@ -179,4 +179,74 @@ Process _makeTestHTTPResponseProcess(Receptor *r) {
     return p;
 }
 //! [makeTestHTTPResponseProcess]
+
+/**
+ * generate a semtrex that will match a valid HTTP request in an ASCII_CHARS tree
+ *
+ */
+T *_makeHTTPRequestSemtrex() {
+    T *t;
+
+    T *stx= _t_news(0,SEMTREX_SYMBOL_LITERAL,ASCII_CHARS);
+    t = _t_news(stx,SEMTREX_GROUP,HTTP_REQUEST);
+    T *sq = _t_newr(t,SEMTREX_SEQUENCE);
+    t = _t_news(sq,SEMTREX_GROUP,HTTP_REQUEST_METHOD);
+    t = _t_newr(t,SEMTREX_ONE_OR_MORE);
+    _t_newr(t,SEMTREX_SYMBOL_ANY);
+
+    t = _t_news(sq,SEMTREX_GROUP,HTTP_REQUEST_PATH);
+    T *sqq = _t_newr(t,SEMTREX_SEQUENCE);
+    __stxcv(sqq,' ');
+
+    t = _t_news(sqq,SEMTREX_GROUP,HTTP_REQUEST_PATH_SEGMENTS);
+    t = _t_newr(t,SEMTREX_ONE_OR_MORE);
+    t = _t_newr(t,SEMTREX_SEQUENCE);
+    __stxcv(t,'/');
+    t = _t_news(t,SEMTREX_GROUP,HTTP_REQUEST_PATH_SEGMENT);
+    t = _t_newr(t,SEMTREX_ZERO_OR_MORE);
+    __stxcvm(t,1,3,'/','?',' ');
+
+    t = _t_news(sq,SEMTREX_GROUP,HTTP_REQUEST_PATH_FILE);
+    T *f = _t_newr(t,SEMTREX_SEQUENCE);
+    t = _t_news(f,SEMTREX_GROUP,FILE_NAME);
+    t = _t_newr(t,SEMTREX_ONE_OR_MORE);
+    __stxcvm(t,1,2,'?',' ');
+
+    t = _t_newr(f,SEMTREX_ZERO_OR_ONE);
+    t = _t_newr(t,SEMTREX_SEQUENCE);
+    __stxcv(t,'.');
+    t = _t_news(t,SEMTREX_GROUP,FILE_EXTENSION);
+    t = _t_newr(t,SEMTREX_ONE_OR_MORE);
+    __stxcvm(t,1,2,'?',' ');
+
+    t = _t_newr(sq,SEMTREX_ZERO_OR_ONE);
+    t = _t_newr(t,SEMTREX_SEQUENCE);
+    __stxcv(t,'?');
+    t = _t_news(t,SEMTREX_GROUP,HTTP_REQUEST_PATH_QUERY);
+    t = _t_newr(t,SEMTREX_ONE_OR_MORE);
+    t = _t_news(t,SEMTREX_GROUP,HTTP_REQUEST_PATH_QUERY_PARAMS);
+    f = _t_newr(t,SEMTREX_SEQUENCE);
+    t = _t_news(f,SEMTREX_GROUP,PARAM_KEY);
+    t = _t_newr(t,SEMTREX_ONE_OR_MORE);
+    __stxcvm(t,1,3,'&',' ','=');
+
+    t = _t_news(f,SEMTREX_GROUP,PARAM_VALUE);
+    t = _t_newr(t,SEMTREX_ZERO_OR_MORE);
+    __stxcvm(t,1,2,'&',' ');
+
+    __stxcv(sq,' ');
+    __stxcv(sq,'H');
+    __stxcv(sq,'T');
+    __stxcv(sq,'T');
+    __stxcv(sq,'P');
+    __stxcv(sq,'/');
+    t = _t_news(sq,SEMTREX_GROUP,HTTP_REQUEST_VERSION);
+    t = _t_newr(t,SEMTREX_SEQUENCE);
+    f = _t_news(t,SEMTREX_GROUP,VERSION_MAJOR);
+    __stxcv(f,'0');
+    __stxcv(t,'.');
+    f = _t_news(t,SEMTREX_GROUP,VERSION_MINOR);
+    __stxcv(f,'9');
+    return stx;
+}
 #endif

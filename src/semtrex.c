@@ -836,11 +836,6 @@ T *parseSemtrex(Defs *d,char *stx) {
     o = _t_newr(o,SEMTREX_OR);
     t = _t_news(o,SEMTREX_GROUP,STX_COMMA);
     __stxcv(t,',');
-    o = _t_newr(o,SEMTREX_OR);
-    sq = _t_newr(o,SEMTREX_SEQUENCE);
-    __stxcv(sq,'!');
-    t = _t_news(sq,SEMTREX_GROUP,STX_EXCEPT);
-    _stxl(t);
 
     o = _t_newr(o,SEMTREX_OR);
     t = _t_news(o,SEMTREX_GROUP,STX_CG);
@@ -869,6 +864,13 @@ T *parseSemtrex(Defs *d,char *stx) {
 
     o = _t_newr(o,SEMTREX_OR);
     sq = _t_newr(o,SEMTREX_SEQUENCE);
+    t = _t_news(sq,SEMTREX_GROUP,STX_NEQ);
+    _stxl(t);
+    __stxcv(sq,'!');
+    __stxcv(sq,'=');
+
+    o = _t_newr(o,SEMTREX_OR);
+    sq = _t_newr(o,SEMTREX_SEQUENCE);
     __stxcv(sq,'\'');
     t = _t_news(sq,SEMTREX_GROUP,STX_VAL_C);
     _t_news(t,SEMTREX_SYMBOL_LITERAL,ASCII_CHAR);
@@ -880,6 +882,12 @@ T *parseSemtrex(Defs *d,char *stx) {
     t = _t_news(sq,SEMTREX_GROUP,STX_VAL_S);
     _stxl(t);
     __stxcv(sq,'"');
+
+    o = _t_newr(o,SEMTREX_OR);
+    sq = _t_newr(o,SEMTREX_SEQUENCE);
+    __stxcv(sq,'!');
+    t = _t_news(sq,SEMTREX_GROUP,STX_EXCEPT);
+    _stxl(t);
 
     o = _t_newr(o,SEMTREX_OR);
     sq = _t_newr(o,SEMTREX_SEQUENCE);
@@ -912,7 +920,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 	    T *c = _t_child(results,i);
 	    T *sn = _t_child(c,1);
 	    Symbol ts = *(Symbol *)_t_surface(sn);
-	    if (semeq(ts,STX_VAL_S) || semeq(ts,STX_LABEL) || semeq(ts,STX_OG) || semeq(ts,STX_EXCEPT)  || semeq(ts,STX_EQ)){
+	    if (semeq(ts,STX_VAL_S) || semeq(ts,STX_LABEL) || semeq(ts,STX_OG) || semeq(ts,STX_EXCEPT) || semeq(ts,STX_EQ) || semeq(ts,STX_NEQ)){
 		int sibs = *(int *)_t_surface(_t_child(c,3));
 		int *path = (int *)_t_surface(_t_child(c,2));
 		int j,d = _t_path_depth(path);
@@ -948,13 +956,15 @@ T *parseSemtrex(Defs *d,char *stx) {
 	T *sxx,*sq;
 
 	/////////////////////////////////////////////////////
-	// convert STX_EQ to SEMTREX_VALUE_LITERALS
+	// convert STX_EQ/STX_NEQ to SEMTREX_VALUE_LITERALS
 	// EXPECTATION
-	// /%{SEMTREX_VALUE_LITERAL:STX_EQ,STX_VAL_I|STX_VAL_S|STX_VAL_C}
+	// /%{SEMTREX_VALUE_LITERAL:STX_EQ|STX_NEQ,STX_VAL_I|STX_VAL_S|STX_VAL_C}
 	sxx = _t_new_root(SEMTREX_WALK);
 	g = _t_news(sxx,SEMTREX_GROUP,SEMTREX_VALUE_LITERAL);
 	sq = _t_newr(g,SEMTREX_SEQUENCE);
-	_t_news(sq,SEMTREX_SYMBOL_LITERAL,STX_EQ);
+        o = _t_newr(sq,SEMTREX_OR);
+	_t_news(o,SEMTREX_SYMBOL_LITERAL,STX_EQ);
+	_t_news(o,SEMTREX_SYMBOL_LITERAL,STX_NEQ);
 	o = _t_newr(sq,SEMTREX_OR);
 	_t_news(o,SEMTREX_SYMBOL_LITERAL,STX_VAL_I);
 	o = _t_newr(o,SEMTREX_OR);
@@ -966,6 +976,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 	    T *m = _t_get_match(results,SEMTREX_VALUE_LITERAL);
 	    int *path = (int *)_t_surface(_t_child(m,2));
 	    t = _t_get(tokens,path);
+	    Symbol sym = _t_symbol(t);
 	    T *v = _t_next_sibling(t);
 	    T *p = _t_parent(v);
 	    _t_detach_by_ptr(p,v);
@@ -975,7 +986,9 @@ T *parseSemtrex(Defs *d,char *stx) {
 	    char *symbol_name = (char *)_t_surface(t);
 	    Svalue *sv = malloc(sizeof(Svalue)+l);
 	    sv->symbol = get_symbol(symbol_name,d);
+	    sv->flags =  semeq(sym,STX_EQ) ? 0 : SEMTREX_VALUE_NOT_FLAG;
 	    sv->count = 1;
+	    sv->length = l;
 	    memcpy(&sv->value,_t_surface(v),l);
 
 	    __t_morph(t,SEMTREX_VALUE_LITERAL,sv,sizeof(Svalue)+l,1);
