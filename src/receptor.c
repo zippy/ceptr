@@ -395,61 +395,6 @@ TreeHash _r_hash(Receptor *r,Xaddr t) {
 
 /******************  receptor serialization */
 
-/// macro to write data by type into *bufferP and increment offset by the size of the type
-#define SWRITE(type,value) type * type##P = (type *)(*bufferP +offset); *type##P=value;offset += sizeof(type);
-
-/**
- * Serialize a tree.
- *
- * @param[in] t tree to be serialized
- * @param[inout] surfaceP a pointer to a buffer that will be malloced
- * @param[inout] lengthP the serialized length of the tree
- */
-void _t_serialize(T *t,void **surfaceP, size_t *lengthP) {
-    size_t buf_size = 1000;
-    *surfaceP = malloc(buf_size);
-    *lengthP = __t_serialize(t,surfaceP,0,buf_size,1);
-    *surfaceP = realloc(*surfaceP,*lengthP);
-}
-
-/**
- * Serialize a tree by recursive descent.
- *
- * @param[in] t tree to be serialized
- * @param[in] bufferP a pointer to a malloced ptr of "current_size" which will be realloced if serialized tree is bigger than initial buffer allocation.
- * @param[in] offset current offset into buffer at which to put serialized data
- * @param[in] current_size size of buffer
- * @param[in] compact boolean to indicate whether to add in extra information
- * @returns the length that was added to the buffer
- *
- * @todo compact is really a shorthand for whether this is a fixed size tree or not
- * this should actually be determined on the fly by looking at the structure types.
- */
-size_t __t_serialize(T *t,void **bufferP,size_t offset,size_t current_size,int compact) {
-    size_t cl =0,l = _t_size(t);
-    int i, c = _t_children(t);
-
-    //    printf("\ncurrent_size:%ld offset:%ld  size:%ld symbol:%s",current_size,offset,l,_r_get_symbol_name(r,_t_symbol(t)));
-    while ((offset+l+sizeof(Symbol)) > current_size) {
-	current_size*=2;
-	*bufferP = realloc(*bufferP,current_size);
-    }
-    if (!compact) {
-	Symbol s = _t_symbol(t);
-	SWRITE(Symbol,s);
-	SWRITE(int,c);
-    }
-    if (l) {
-	memcpy(*bufferP+offset,_t_surface(t),l);
-	offset += l;
-    }
-
-    for (i=1;i<=c;i++) {
-	offset = __t_serialize(_t_child(t,i),bufferP,offset,current_size,compact);
-    }
-    return offset;
-}
-
 /**
  * Serialize a receptor
  *
@@ -465,7 +410,7 @@ size_t __t_serialize(T *t,void **bufferP,size_t offset,size_t current_size,int c
 void _r_serialize(Receptor *r,void **surfaceP,size_t *lengthP) {
     size_t buf_size = 10000;
     *surfaceP  = malloc(buf_size);
-    *lengthP = __t_serialize(r->root,surfaceP,sizeof(size_t),buf_size,0);
+    *lengthP = __t_serialize(&r->defs,r->root,surfaceP,sizeof(size_t),buf_size,0);
     *(size_t *)(*surfaceP) = *lengthP;
 }
 

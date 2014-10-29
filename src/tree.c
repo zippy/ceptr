@@ -555,7 +555,7 @@ int _t_path_depth(int *p) {
 int * _t_get_path(T *t) {
     T *n;
     // allocate an array to hold the
-    int s = sizeof(int)*10; // assume most trees are shallower than 10 nodes to prevent realloc
+    int s = sizeof(int)*20; // assume most trees are shallower than 10 nodes to prevent realloc
     int *p = malloc(s);
     int j,k,l,i=0,temp;
 
@@ -717,6 +717,70 @@ TreeHash _t_hash(T *symbols,T *structures,T *t) {
  */
 int _t_hash_equal(TreeHash h1,TreeHash h2) {
     return h1 == h2;
+}
+
+
+/*****************  Tree serialization */
+
+/// macro to write data by type into *bufferP and increment offset by the size of the type
+#define SWRITE(type,value) type * type##P = (type *)(*bufferP +offset); *type##P=value;offset += sizeof(type);
+
+/**
+ * Serialize a tree by recursive descent.
+ *
+ * @param[in] d definitions
+ * @param[in] t tree to be serialized
+ * @param[in] bufferP a pointer to a malloced ptr of "current_size" which will be realloced if serialized tree is bigger than initial buffer allocation.
+ * @param[in] offset current offset into buffer at which to put serialized data
+ * @param[in] current_size size of buffer
+ * @param[in] compact boolean to indicate whether to add in extra information
+ * @returns the length that was added to the buffer
+ *
+ * @todo compact is really a shorthand for whether this is a fixed size tree or not
+ * this should actually be determined on the fly by looking at the structure types.
+ */
+size_t __t_serialize(Defs *d,T *t,void **bufferP,size_t offset,size_t current_size,int compact){
+    size_t cl =0,l = _t_size(t);
+    int i, c = _t_children(t);
+
+    //    printf("\ncurrent_size:%ld offset:%ld  size:%ld symbol:%s",current_size,offset,l,_r_get_symbol_name(r,_t_symbol(t)));
+    while ((offset+l+sizeof(Symbol)) > current_size) {
+	current_size*=2;
+	*bufferP = realloc(*bufferP,current_size);
+    }
+    if (!compact) {
+	Symbol s = _t_symbol(t);
+	SWRITE(Symbol,s);
+	SWRITE(int,c);
+    }
+    if (l) {
+	memcpy(*bufferP+offset,_t_surface(t),l);
+	offset += l;
+    }
+
+    for(i=1;i<=c;i++) {
+	offset = __t_serialize(d,_t_child(t,i),bufferP,offset,current_size,compact);
+    }
+    return offset;
+}
+
+
+/**
+ * Serialize a tree.
+ *
+ * @param[in] d definitions
+ * @param[in] t tree to be serialized
+ * @param[inout] surfaceP a pointer to a buffer that will be malloced
+ * @param[inout] lengthP the serialized length of the tree
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/tree_spec.h testTreeSerialize
+ */
+void _t_serialize(Defs *d,T *t,void **surfaceP,size_t *lengthP) {
+    size_t buf_size = 1000;
+    *surfaceP = malloc(buf_size);
+    *lengthP = __t_serialize(d,t,surfaceP,0,buf_size,1);
+    *surfaceP = realloc(*surfaceP,*lengthP);
 }
 
 /** @}*/

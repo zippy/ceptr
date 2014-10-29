@@ -403,6 +403,12 @@ void testTreeHash() {
     //! [testTreeHash]
 }
 
+void testTreeSerialize() {
+    //! [testTreeSerialize]
+    Defs d = {0,0,0};
+    //! [testTreeSerialize]
+}
+
 void testTree() {
     _setup_HTTPDefs();
     testCreateTreeNodes();
@@ -425,5 +431,6 @@ void testTree() {
     testTreeMorphLowLevel();
     testTreeDetach();
     testTreeHash();
+    testTreeSerialize();
     _cleanup_HTTPDefs();
 }

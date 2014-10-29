@@ -78,6 +78,10 @@ char * _t_sprint_path(int *fp,char *buf);
 TreeHash _t_hash(T *symbols,T *structures,T *t);
 int _t_hash_equal(TreeHash h1,TreeHash h2);
 
+/*****************  Tree serialization */
+size_t __t_serialize(Defs *d,T *t,void **bufferP,size_t offset,size_t current_size,int compact);
+void _t_serialize(Defs *d,T *t,void **surfaceP,size_t *sizeP);
+
 #define DO_KIDS(t,x) {int i,_c=_t_children(t);for(i=1;i<=_c;i++){x;}}
 
 #define root_check(c) if (c->structure.parent != 0) {raise_error0("can't add a node that isn't a root!");}

@@ -53,8 +53,6 @@ T *_r_get_instance(Receptor *r,Xaddr x);
 TreeHash _r_hash(Receptor *r,Xaddr t);
 
 /******************  receptor serialization */
-size_t __t_serialize(T *t,void **bufferP,size_t offset,size_t current_size,int compact);
-void _t_serialize(T *t,void **surfaceP, size_t *lengthP);
 void _r_serialize(Receptor *r,void **surfaceP,size_t *lengthP);
 Receptor * _r_unserialize(void *surface);
 
