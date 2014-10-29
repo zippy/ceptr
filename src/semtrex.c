@@ -794,6 +794,20 @@ T *wrap(T *tokens,T *results, Symbol contents_s, Symbol open_s) {
 }
 
 /**
+ * convert a cstring to an ASCII_CHARS tree
+ * @param[in] c string
+ * @returns T ASCII_CHARS tree
+ */
+T *makeASCIITree(char *c) {
+    T *s = _t_new_root(ASCII_CHARS);
+    while(*c) {
+	_t_newi(s,ASCII_CHAR,*c);
+	c++;
+    }
+    return s;
+}
+
+/**
  * convert a cstring to semtrex tree
  * @param[in] r Receptor context for searching for symbols
  * @param[in] stx the cstring representation of a semtrex tree
@@ -804,11 +818,7 @@ T *parseSemtrex(Defs *d,char *stx) {
     #ifdef DUMP_TOKENS
     printf("\nPARSING:%s\n",stx);
     #endif
-    T *t,*s = _t_new_root(ASCII_CHARS);
-    while(*stx) {
-	_t_newi(s,ASCII_CHAR,*stx);
-	stx++;
-    }
+    T *t,*s = makeASCIITree(stx);
 
     /////////////////////////////////////////////////////
     // build the token stream out of an ascii stream

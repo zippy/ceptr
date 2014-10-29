@@ -127,6 +127,7 @@ T *G_ts,*G_te;
 int _t_matchr(T *semtrex,T *t,T **r);
 T *_t_get_match(T *result,Symbol group);
 char * _dump_semtrex(Defs defs,T *s,char *buf);
+T *makeASCIITree(char *c);
 T *parseSemtrex(Defs *d,char *stx);
 
 T *__stxcv(T *stxx,char c);
