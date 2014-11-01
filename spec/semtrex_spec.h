@@ -655,7 +655,8 @@ void testMatchNot() {
     puts("MATCHPATH:");
     puts(_t_sprint_path(p,buf));
 
-    //    _t_free(results);
+    _t_free(results);
+    free(p);
 
 /*    __t_dump(0,t,0,buf);
     puts("ABABBA:");
