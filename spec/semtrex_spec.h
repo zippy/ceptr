@@ -827,7 +827,7 @@ void testSemtrex() {
     testMatchLiteralValue();
     testMatchDescend();
     testMatchWalk();
-    testMatchNot();
+    //    testMatchNot();
     testSemtrexDump();
     testSemtrexParse();
 
