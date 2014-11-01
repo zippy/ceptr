@@ -346,6 +346,10 @@ int _val_match(T *t,size_t *l) {
 }
 #define _next_pair(l)     l = (size_t *)(sizeof(size_t)+*l+(void *)l);
 
+#define FAIL {result=0;break;}
+#define MATCH {result=1;break;}
+#define MATCH_IF(x) {result=x;break;}
+
 /**
  * Walk the FSA in s using a recursive backtracing algorithm to match the tree in t.
  *
@@ -355,7 +359,7 @@ int _val_match(T *t,size_t *l) {
  * @returns 1 or 0 if matched or not
  */
 int __t_match(SState *s,T *t,T *r) {
-    int i,c,matched;
+    int i,c,matched,result = 0;
     SgroupOpen *o;
     T *m,*t1;
     char buf[2000];
@@ -364,10 +368,10 @@ int __t_match(SState *s,T *t,T *r) {
     switch(s->type) {
     case StateValue:
 	MATCH_DEBUG(Value);
-	if (!t) return 0;
+	if (!t) {FAIL;}
 	else {
 	    size_t *l = &s->data.value.length;
-	    if (!__symbol_match(s,t)) return 0;
+	    if (!__symbol_match(s,t)) FAIL;
             int count = s->data.value.count;
 	    if (s->data.value.flags & SEMTREX_VALUE_NOT_FLAG) {
 		while(count-- && (matched = !_val_match(t,l))) {
@@ -380,59 +384,59 @@ int __t_match(SState *s,T *t,T *r) {
 		}
 	    }
 
-	    if (!matched) return 0;
+	    if (!matched) FAIL;
 	}
-	return __transition_match(s,t,r);
+	MATCH_IF(__transition_match(s,t,r));
 	break;
     case StateSymbol:
 	MATCH_DEBUG(Symbol);
-	if (!__symbol_match(s,t)) return 0;
-	return __transition_match(s,t,r);
+	if (!__symbol_match(s,t)) {FAIL;}
+	MATCH_IF(__transition_match(s,t,r));
 	break;
     case StateSymbolExcept:
 	MATCH_DEBUG(SymbolExcept);
-	if (__symbol_match(s,t)) return 0;
-	return __transition_match(s,t,r);
+	if (__symbol_match(s,t)) {FAIL;}
+	MATCH_IF(__transition_match(s,t,r));
 	break;
     case StateAny:
 	MATCH_DEBUG(Any);
-	return __transition_match(s,t,r);
+	MATCH_IF(__transition_match(s,t,r));
 	break;
     case StateSplit:
 	MATCH_DEBUG(Split);
-	if (__t_match(s->out,t,r)) return 1;
-	else return __t_match(s->out1,t,r);
+	if (__t_match(s->out,t,r)) {MATCH;}
+	else MATCH_IF(__t_match(s->out1,t,r));
 	break;
     case StateNot:
 	MATCH_DEBUG(Not);
-	if (!t) return 0; // we don't want NOT to match when we ran out of tree nodes... i.e NOT should match only when there is something, not when there is nothing.
+	if (!t) FAIL; // we don't want NOT to match when we ran out of tree nodes... i.e NOT should match only when there is something, not when there is nothing.
 	//	if (G_debug_match) raise(SIGINT);
-	if (!__t_match(s->out,t,r)) return 1;
-	else return __t_match(s->out1,t,r);
+	if (!__t_match(s->out,t,r)) {MATCH;}
+	else MATCH_IF(__t_match(s->out1,t,r));
 	break;
     case StateWalk:
 	MATCH_DEBUG(Walk);
-	if (__t_match(s->out,t,r)) return 1;
+	if (__t_match(s->out,t,r)) MATCH;
 	t1 = _t_child(t,1);
 	G_ts = t1;
-	if (t1 && __t_match(s,t1,r)) return 1;
+	if (t1 && __t_match(s,t1,r)) MATCH;
 	t1 = _t_next_sibling(t);
 	G_ts = t1;
-	if (t1 && __t_match(s,t1,r)) return 1;
-	return 0;
+	if (t1 && __t_match(s,t1,r)) MATCH;
+	FAIL;
 	break;
     case StateGroupOpen:
 	MATCH_DEBUG(GroupOpen);
 	if (!r)
 	    // if we aren't collecting up match results simply follow groups through
-	    return __t_match(s->out,t,r);
+	    {MATCH_IF(__t_match(s->out,t,r));}
 	else {
-	    if (!t) return 0;
+	    if (!t) FAIL;
 	    // add on tree node to the list of match points
 	    s->data.groupo.matches[s->data.groupo.match_count++] = t;
 	    matched = __t_match(s->out,t,r);
 	    s->data.groupo.match_count--;
-	    return matched;
+	    MATCH_IF(matched);
 	}
 	break;
     case StateGroupClose:
@@ -484,21 +488,22 @@ int __t_match(SState *s,T *t,T *r) {
 
 	    _t_newi(m,SEMTREX_MATCH_SIBLINGS_COUNT,i);
 	}
-	return matched;
+	MATCH_IF(matched);
 	break;
     case StateDescend:
 	MATCH_DEBUG(Descend);
 	t = _t_child(t,1);
 	G_te = t;
-	return __t_match(s->out,t,r);
+	MATCH_IF(__t_match(s->out,t,r));
 	break;
     case StateMatch:
 	MATCH_DEBUG(Match);
-	return 1;
+	MATCH;
 	break;
+    default:
+	raise_error("unimplemented state type: %d",s->type);
     }
-    raise_error("unimplemented state type: %d",s->type);
-    return 0;
+    return result;
 }
 
 /**
