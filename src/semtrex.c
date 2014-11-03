@@ -820,6 +820,47 @@ T *makeASCIITree(char *c) {
 }
 
 /**
+ * convert ascii tokens from a match to an integer and add them to the given tree
+ */
+void asciiT_toi(T* asciiT,T* match,T *t,Symbol s) {
+    char buf[10];
+    int sibs = *(int *)_t_surface(_t_child(match,3));
+    int *path = (int *)_t_surface(_t_child(match,2));
+    int j,d = _t_path_depth(path);
+    for(j=0;j<sibs;j++) {
+	buf[j] = *(char *)_t_surface(_t_get(asciiT,path));
+	path[d-1]++;
+    }
+    buf[j]=0;
+    _t_newi(t,s,atoi(buf));
+}
+
+/**
+ * convert ascii tokens from a match to a string and add them to the given tree
+*/
+void asciiT_tos(T* asciiT,T* match,T *t,Symbol s) {
+    char buf[255];
+    int sibs = *(int *)_t_surface(_t_child(match,3));
+    int *path = (int *)_t_surface(_t_child(match,2));
+    int j,d = _t_path_depth(path);
+    for(j=0;j<sibs;j++) {
+	buf[j] = *(char *)_t_surface(_t_get(asciiT,path));
+	path[d-1]++;
+    }
+    buf[j]=0;
+    _t_new(t,s,buf,j+1);
+}
+
+/**
+ * convert ascii tokens from a match to a char and add them to the given tree
+ */
+void asciiT_toc(T* asciiT,T* match,T *t,Symbol s) {
+    int *path = (int *)_t_surface(_t_child(match,2));
+    int c = *(int *)_t_surface(_t_get(asciiT,path));
+    _t_newi(t,s,c);
+}
+
+/**
  * convert a cstring to semtrex tree
  * @param[in] r Receptor context for searching for symbols
  * @param[in] stx the cstring representation of a semtrex tree
@@ -943,31 +984,13 @@ T *parseSemtrex(Defs *d,char *stx) {
 	    T *sn = _t_child(c,1);
 	    Symbol ts = *(Symbol *)_t_surface(sn);
 	    if (semeq(ts,STX_VAL_S) || semeq(ts,STX_LABEL) || semeq(ts,STX_OG) || semeq(ts,STX_EXCEPT) || semeq(ts,STX_EQ) || semeq(ts,STX_NEQ)){
-		int sibs = *(int *)_t_surface(_t_child(c,3));
-		int *path = (int *)_t_surface(_t_child(c,2));
-		int j,d = _t_path_depth(path);
-		for(j=0;j<sibs;j++) {
-		    buf[j] = *(char *)_t_surface(_t_get(s,path));
-		    path[d-1]++;
-		}
-		buf[j]=0;
-		_t_new(tokens,ts,buf,j+1);
+		asciiT_tos(s,c,tokens,ts);
 	    }
 	    else if (semeq(ts,STX_VAL_C)) {
-		int *path = (int *)_t_surface(_t_child(c,2));
-		int c = *(int *)_t_surface(_t_get(s,path));
-		_t_newi(tokens,ts,c);
+		asciiT_toc(s,c,tokens,ts);
 	    }
 	    else if (semeq(ts,STX_VAL_I)) {
-		int sibs = *(int *)_t_surface(_t_child(c,3));
-		int *path = (int *)_t_surface(_t_child(c,2));
-		int j,d = _t_path_depth(path);
-		for(j=0;j<sibs;j++) {
-		    buf[j] = *(char *)_t_surface(_t_get(s,path));
-		    path[d-1]++;
-		}
-		buf[j]=0;
-		_t_newi(tokens,ts,atoi(buf));
+		asciiT_toi(s,c,tokens,ts);
 	    }
 	    else
 		_t_newi(tokens,ts,0);

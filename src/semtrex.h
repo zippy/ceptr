@@ -133,6 +133,10 @@ T *parseSemtrex(Defs *d,char *stx);
 T *__stxcv(T *stxx,char c);
 T *__stxcvm(T *stxx,int not,int count,...);
 
+void asciiT_toi(T* asciiT,T* match,T *t,Symbol s);
+void asciiT_tos(T* asciiT,T* match,T *t,Symbol s);
+void asciiT_toc(T* asciiT,T* match,T *t,Symbol s);
+
 #endif
 
 /** @}*/
