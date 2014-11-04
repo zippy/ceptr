@@ -29,7 +29,7 @@ int main(int argc, const char **argv) {
     testDef();
     testLabel();
     testSemtrex();
-    testReceptor();
+    //testReceptor();
     testProcess();
     testScape();
     testVMHost();

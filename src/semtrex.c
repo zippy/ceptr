@@ -296,6 +296,7 @@ int G_debug_match = 0;
 T *G_ts,*G_te;
 #define DEBUG_MATCH
 #ifdef DEBUG_MATCH
+#define MATCH_DEBUGG(s,x) 	if(G_debug_match){printf("IN:" #s " for %s\n",x);__t_dump(0,t,0,buf);printf("  with:%s\n",buf);}
 #define MATCH_DEBUG(s) 	if(G_debug_match){puts("IN:" #s "");__t_dump(0,t,0,buf);printf("  with:%s\n",buf);}
 #else
 #define MATCH_DEBUG(s)
@@ -305,7 +306,7 @@ int __symbol_match(SState *s,T *t) {
     return t && semeq(s->data.symbol,_t_symbol(t));
 }
 
-int __transition_match(SState *s,T *t,T *r) {
+int __transition_match(SState *s,T *t,T **r) {
     int i;
     if (!t) return 0;
     if (s->out == &matchstate) return 1;
@@ -348,7 +349,8 @@ int _val_match(T *t,size_t *l) {
 
 #define FAIL {result=0;break;}
 #define MATCH {result=1;break;}
-#define MATCH_IF(x) {result=x;break;}
+#define MATCH_IF(x) {result = x;if(result) break;}
+#define MATCH_ON(x) {result=x;break;}
 
 /**
  * Walk the FSA in s using a recursive backtracing algorithm to match the tree in t.
@@ -358,7 +360,7 @@ int _val_match(T *t,size_t *l) {
  * @param[inout] r match results tree being built.  (nil if no results needed)
  * @returns 1 or 0 if matched or not
  */
-int __t_match(SState *s,T *t,T *r) {
+int __t_match(SState *s,T *t,T **r) {
     int i,c,matched,result = 0;
     SgroupOpen *o;
     T *m,*t1;
@@ -386,33 +388,47 @@ int __t_match(SState *s,T *t,T *r) {
 
 	    if (!matched) FAIL;
 	}
-	MATCH_IF(__transition_match(s,t,r));
+	MATCH_ON(__transition_match(s,t,r));
 	break;
     case StateSymbol:
 	MATCH_DEBUG(Symbol);
 	if (!__symbol_match(s,t)) {FAIL;}
-	MATCH_IF(__transition_match(s,t,r));
+	MATCH_ON(__transition_match(s,t,r));
 	break;
     case StateSymbolExcept:
 	MATCH_DEBUG(SymbolExcept);
 	if (__symbol_match(s,t)) {FAIL;}
-	MATCH_IF(__transition_match(s,t,r));
+	MATCH_ON(__transition_match(s,t,r));
 	break;
     case StateAny:
 	MATCH_DEBUG(Any);
-	MATCH_IF(__transition_match(s,t,r));
+	MATCH_ON(__transition_match(s,t,r));
 	break;
     case StateSplit:
 	MATCH_DEBUG(Split);
-	if (__t_match(s->out,t,r)) {MATCH;}
-	else MATCH_IF(__t_match(s->out1,t,r));
+	MATCH_IF(__t_match(s->out,t,r));
+	MATCH_ON(__t_match(s->out1,t,r));
 	break;
     case StateNot:
 	MATCH_DEBUG(Not);
 	if (!t) FAIL; // we don't want NOT to match when we ran out of tree nodes... i.e NOT should match only when there is something, not when there is nothing.
 	//	if (G_debug_match) raise(SIGINT);
-	if (!__t_match(s->out,t,r)) {MATCH;}
-	else MATCH_IF(__t_match(s->out1,t,r));
+	{
+	    T *gr = NULL;
+	    matched = !__t_match(s->out,t,r ? &gr : 0);
+	    if (matched) {
+		if (r) {
+		    if (!*r) *r = gr;
+		    else _t_add(*r,gr);
+		}
+		MATCH;
+	    }
+	    else {
+		if (r && gr)
+		    _t_free(gr);
+		MATCH_ON(__t_match(s->out1,t,r));
+	    }
+	}
 	break;
     case StateWalk:
 	MATCH_DEBUG(Walk);
@@ -426,26 +442,35 @@ int __t_match(SState *s,T *t,T *r) {
 	FAIL;
 	break;
     case StateGroupOpen:
-	MATCH_DEBUG(GroupOpen);
+	MATCH_DEBUGG(GroupOpen,_d_get_symbol_name(0,s->data.groupo.symbol));
 	if (!r)
 	    // if we aren't collecting up match results simply follow groups through
-	    {MATCH_IF(__t_match(s->out,t,r));}
+	    {MATCH_ON(__t_match(s->out,t,r));}
 	else {
 	    if (!t) FAIL;
 	    // add on tree node to the list of match points
+	    T *gr = NULL;
+
 	    s->data.groupo.matches[s->data.groupo.match_count++] = t;
-	    matched = __t_match(s->out,t,r);
+	    matched = __t_match(s->out,t,&gr);
+	    if (matched) {
+		if (!*r) *r = gr;
+		else _t_add(*r,gr);
+	    }
+	    else if (gr)
+		_t_free(gr);
 	    s->data.groupo.match_count--;
-	    MATCH_IF(matched);
+	    MATCH_ON(matched);
 	}
 	break;
     case StateGroupClose:
-	MATCH_DEBUG(GroupClose);
+	o = &s->data.groupc.openP->data.groupo;
+	MATCH_DEBUGG(GroupClose,_d_get_symbol_name(0,o->symbol));
 	// make sure that what follows the group also matches
 	matched = __t_match(s->out,t,r);
 	if (matched) {
+
 	    // get the match structure from the GroupOpen state pointed to by this state
-	    o = &s->data.groupc.openP->data.groupo;
 	    c = o->match_count;
 	    t1 = o->matches[c-1];
 
@@ -458,7 +483,13 @@ int __t_match(SState *s,T *t,T *r) {
 
 	    //	    printf("Matched:%s\n",_d_get_symbol_name(0,match_symbol));
 
-	    T *m = _t_newi(r,SEMTREX_MATCH,match_id);
+	    T *m = _t_newi(0,SEMTREX_MATCH,match_id);
+
+	    if (!*r) *r = m;
+	    else {
+		_t_add(*r,m);
+	    }
+
 	    _t_news(m,SEMTREX_MATCH_SYMBOL,match_symbol);
 	    int *p = _t_get_path(t1);
 	    T *pp = _t_new(m,SEMTREX_MATCHED_PATH,p,sizeof(int)*(_t_path_depth(p)+1));
@@ -488,13 +519,13 @@ int __t_match(SState *s,T *t,T *r) {
 
 	    _t_newi(m,SEMTREX_MATCH_SIBLINGS_COUNT,i);
 	}
-	MATCH_IF(matched);
+	MATCH_ON(matched);
 	break;
     case StateDescend:
 	MATCH_DEBUG(Descend);
 	t = _t_child(t,1);
 	G_te = t;
-	MATCH_IF(__t_match(s->out,t,r));
+	MATCH_ON(__t_match(s->out,t,r));
 	break;
     case StateMatch:
 	MATCH_DEBUG(Match);
@@ -517,17 +548,18 @@ int __t_match(SState *s,T *t,T *r) {
 int _t_matchr(T *semtrex,T *t,T **rP) {
     int states;
     int m;
+
     G_ts = G_te = t;
     SState *fa = _stx_makeFA(semtrex,&states);
-    T *r = 0;
     if (rP) {
-	r = _t_new_root(SEMTREX_MATCH_RESULTS);
+	*rP = NULL;
+    //	r = _t_new_root(SEMTREX_MATCH_RESULTS);
     }
-    m = __t_match(fa,t,r);
+    m = __t_match(fa,t,rP);
     _stx_freeFA(fa);
     if (rP) {
-	if (!m) {_t_free(r);*rP = NULL;}
-	else *rP = r;
+	if (!m) {if (*rP) _t_free(*rP);*rP = NULL;}
+	//	else *rP = r;
     }
     return m;
 }
@@ -549,16 +581,19 @@ int _t_match(T *semtrex,T *t) {
  * @param[in] group the uid from the semtrex group that you want the result for
  * @returns T of the match or NULL if no such match found
  */
-T *_t_get_match(T *result,Symbol group)
+T *_t_get_match(T *match,Symbol group)
 {
-    if (!result) return 0;
-    T *t;
-    DO_KIDS(result,
-	T *match = _t_child(result,i);
-	T *symb = _t_child(match,1);
-	if (semeq(*(Symbol *)_t_surface(symb),group))
-	    return match;
-	    );
+    if (!match) return 0;
+    T *s = _t_child(match,1);
+    if (semeq(*(Symbol *)_t_surface(s),group)) {
+	return match;
+    };
+    int i = 4,c = _t_children(match);
+    for(i=4;i<=c;i++) {
+	s =_t_child(match,i);
+	s = _t_get_match(s,group);
+	if (s) return s;
+    }
     return 0;
 }
 
