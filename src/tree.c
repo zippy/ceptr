@@ -231,7 +231,7 @@ void _t_detach_by_ptr(T *t,T *c) {
 	}
 	    );
 
-    c->structure.parent = 0;
+    if (c) c->structure.parent = 0;
 }
 
 /**

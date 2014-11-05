@@ -297,7 +297,8 @@ T *G_ts,*G_te;
 #define DEBUG_MATCH
 #ifdef DEBUG_MATCH
 #define MATCH_DEBUGG(s,x) 	if(G_debug_match){printf("IN:" #s " for %s\n",x);__t_dump(0,t,0,buf);printf("  with:%s\n",buf);}
-#define MATCH_DEBUG(s) 	if(G_debug_match){puts("IN:" #s "");__t_dump(0,t,0,buf);printf("  with:%s\n",buf);}
+#define MATCH_DEBUG(s) 	if(G_debug_match){puts("IN:" #s "");__t_dump(0,t,0,buf);printf("  with:%s\n",!t ? "NULL" : buf);}
+
 #else
 #define MATCH_DEBUG(s)
 #endif
@@ -365,7 +366,7 @@ int __t_match(SState *s,T *t,T **r) {
     SgroupOpen *o;
     T *m,*t1;
     char buf[2000];
-
+    if(G_debug_match) {printf("In:%d\n",G_debug_match++);}
     //printf("tm: s:%d t:%d\n",s->data.symbol,t ? _t_symbol(t) : -1);
     switch(s->type) {
     case StateValue:
@@ -449,17 +450,77 @@ int __t_match(SState *s,T *t,T **r) {
 	else {
 	    if (!t) FAIL;
 	    // add on tree node to the list of match points
+
+	    o = &s->data.groupo;
 	    T *gr = NULL;
 
-	    s->data.groupo.matches[s->data.groupo.match_count++] = t;
+	    o->matches[o->match_count++] = t;
 	    matched = __t_match(s->out,t,&gr);
 	    if (matched) {
-		if (!*r) *r = gr;
-		else _t_add(*r,gr);
+		t1 = o->matches[o->match_count-1];  // get the "cursor" at match close
+
+//		if (t1 == 0) {
+//		    raise_error("couldn't find match for group: %d",o->uid);
+//		}
+
+		SemanticID match_symbol = o->symbol;
+		//	    printf("Matched:%s\n",_d_get_symbol_name(0,match_symbol));
+
+		T *m = _t_newi(0,SEMTREX_MATCH,o->uid);
+		_t_news(m,SEMTREX_MATCH_SYMBOL,match_symbol);
+		int *p = _t_get_path(t);
+		T *pp = _t_new(m,SEMTREX_MATCHED_PATH,p,sizeof(int)*(_t_path_depth(p)+1));
+
+		int* p_end;
+		int d = _t_path_depth(p);
+		int i;
+
+		d--;
+		if (!t1) {
+		    T *parent = _t_parent(t);
+		    if (!parent) i = 1;
+		    else {
+			int pc = _t_children(parent);
+			i = pc - p[d] + 1;
+		    }
+		}
+		else {
+		    p_end = _t_get_path(t1);
+		    i = p_end[d]-p[d];
+		    if (!p_end) {
+			raise(SIGINT);
+		    }
+		    free(p_end);
+		}
+		free(p);
+
+		_t_newi(m,SEMTREX_MATCH_SIBLINGS_COUNT,i);
+
+		if (!*r) {
+		    if (gr) {*r = _t_new_root(SEMTREX_MATCH_RESULTS);_t_add(*r,m);}
+		    else *r = m;
+		    puts("FIRST:");}
+		else {_t_add(*r,m);puts("ADDING:");}
+		if (gr)
+		    {char buf[1000];
+			puts("APPENDING:");
+			__t_dump(0,gr,0,buf);
+			puts(buf);
+			puts("to:");
+			__t_dump(0,*r,0,buf);
+			puts(buf);
+			if (semeq(_t_symbol(gr),SEMTREX_MATCH_RESULTS)) {
+			    T *x;
+			    while (x= _t_detach_by_idx(gr,1))
+				_t_add(*r,x);
+			    _t_free(gr);
+			}
+			else _t_add(*r,gr);
+		    }
 	    }
 	    else if (gr)
 		_t_free(gr);
-	    s->data.groupo.match_count--;
+	    o->match_count--;
 	    MATCH_ON(matched);
 	}
 	break;
@@ -469,55 +530,9 @@ int __t_match(SState *s,T *t,T **r) {
 	// make sure that what follows the group also matches
 	matched = __t_match(s->out,t,r);
 	if (matched) {
-
 	    // get the match structure from the GroupOpen state pointed to by this state
 	    c = o->match_count;
-	    t1 = o->matches[c-1];
-
-	    if (t1 == 0) {
-		raise_error("couldn't find match for group: %d",o->uid);
-	    }
-
-	    SemanticID match_symbol = o->symbol;
-	    int match_id = o->uid;
-
-	    //	    printf("Matched:%s\n",_d_get_symbol_name(0,match_symbol));
-
-	    T *m = _t_newi(0,SEMTREX_MATCH,match_id);
-
-	    if (!*r) *r = m;
-	    else {
-		_t_add(*r,m);
-	    }
-
-	    _t_news(m,SEMTREX_MATCH_SYMBOL,match_symbol);
-	    int *p = _t_get_path(t1);
-	    T *pp = _t_new(m,SEMTREX_MATCHED_PATH,p,sizeof(int)*(_t_path_depth(p)+1));
-
-	    int* p_end;
-	    int d = _t_path_depth(p);
-	    int i;
-
-	    d--;
-	    if (!t) {
-		T *parent = _t_parent(t1);
-		if (!parent) i = 1;
-		else {
-		    int pc = _t_children(parent);
-		    i = pc - p[d] + 1;
-		}
-	    }
-	    else {
-		p_end = _t_get_path(t);
-		i = p_end[d]-p[d];
-		if (!p_end) {
-		    raise(SIGINT);
-		}
-		free(p_end);
-	    }
-	    free(p);
-
-	    _t_newi(m,SEMTREX_MATCH_SIBLINGS_COUNT,i);
+	    o->matches[c-1] = t;  // store where we got to in the tree at match time
 	}
 	MATCH_ON(matched);
 	break;
@@ -534,6 +549,7 @@ int __t_match(SState *s,T *t,T **r) {
     default:
 	raise_error("unimplemented state type: %d",s->type);
     }
+    if(G_debug_match) {printf("OUT:%d %s\n",--G_debug_match,result?"MATCH":"FAIL");}
     return result;
 }
 
