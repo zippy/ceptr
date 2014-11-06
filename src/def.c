@@ -392,6 +392,12 @@ char * __t_dump(Defs *defs,T *t,int level,char *buf) {
 		    break;
 		}
 	    default:
+		if (semeq(s,SEMTREX_MATCH_CURSOR)) {
+		    c = __t_dump(defs,*(T **)_t_surface(t),0,tbuf);
+		    //c = "null";
+		    sprintf(buf," (%s:{%s}",n,c);
+		    break;
+		}
 		if (n == 0)
 		    sprintf(buf," (<unknown:%d.%d.%d>",s.context,s.flags,s.id);
 		else

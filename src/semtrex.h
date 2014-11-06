@@ -83,8 +83,6 @@ typedef struct Svalue {
 typedef struct SgroupOpen {
     SemanticID symbol;  ///< the symbol that describes the group semantically
     int uid;             ///< unique id for the group
-    T *matches[100];
-    int match_count;
 } SgroupOpen;
 
 /**

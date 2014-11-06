@@ -202,7 +202,6 @@ char * __stx_makeFA(T *t,SState **in,Ptrlist **out,int level,int *statesP) {
 	group_id = ++G_group_id;
 	s->data.groupo.symbol = group_symbol;
 	s->data.groupo.uid = group_id;
-	s->data.groupo.match_count = 0;
 	err = __stx_makeFA(_t_child(t,1),&i,&o,level,statesP);
 	if (err) return err;
 	s->out = i;
@@ -298,6 +297,8 @@ T *G_ts,*G_te;
 #ifdef DEBUG_MATCH
 #define MATCH_DEBUGG(s,x) 	if(G_debug_match){printf("IN:" #s " for %s\n",x);__t_dump(0,t,0,buf);printf("  with:%s\n",buf);}
 #define MATCH_DEBUG(s) 	if(G_debug_match){puts("IN:" #s "");__t_dump(0,t,0,buf);printf("  with:%s\n",!t ? "NULL" : buf);}
+//#define MATCH_DEBUGG(s,x) 	if(G_debug_match){printf("IN:" #s "%s with %p \n",x,t);}
+//#define MATCH_DEBUG(s) 	if(G_debug_match){printf("IN:" #s " with %p\n",t);}
 
 #else
 #define MATCH_DEBUG(s)
@@ -333,6 +334,26 @@ int __transition_match(SState *s,T *t,T **r) {
     }
 }
 
+T * __transition(SState *s,T *t) {
+    int i;
+    if (!t) return 0;
+    switch(s->transition) {
+    case TransitionNextChild:
+	t = _t_next_sibling(t);
+	break;
+    case TransitionDown:
+	t = _t_child(t,1);
+	break;
+    default:
+	for(i=s->transition;i<0;i++) {
+	    t = _t_parent(t);
+	}
+	t = _t_next_sibling(t);
+	break;
+    }
+    return t;
+}
+
 int _val_match(T *t,size_t *l) {
     int i;
     char *p1,*p2;
@@ -348,10 +369,79 @@ int _val_match(T *t,size_t *l) {
 }
 #define _next_pair(l)     l = (size_t *)(sizeof(size_t)+*l+(void *)l);
 
-#define FAIL {result=0;break;}
-#define MATCH {result=1;break;}
-#define MATCH_IF(x) {result = x;if(result) break;}
-#define MATCH_ON(x) {result=x;break;}
+#define FAIL {s=0;break;}
+
+typedef struct BranchPoint {
+    T *walk;
+    SState *s;
+    T *cursor;
+    T *match;
+    int *r_path;
+} BranchPoint;
+
+#define _PUSH_BRANCH(state,c,w) {					\
+	if(G_debug_match)puts("pushing");				\
+	if((depth+1)>=MAX_BRANCH_DEPTH) {raise_error0("MAX branch depth exceeded");} \
+	stack[depth].s = state;						\
+	stack[depth].cursor = c;					\
+	stack[depth].walk = w;						\
+	if (rP) {							\
+	    if (*rP) {							\
+		stack[depth].match = _t_clone(*rP);			\
+		stack[depth].r_path = _t_get_path(r);			\
+	    }								\
+	    else stack[depth].match = 0;				\
+	}								\
+	depth++;							\
+}
+
+// convert cpointer SEMTREX_MATCH_CURSOR elements to MATCHED_PATH and SIBLING COUNT elements
+void __fix(T *source_t,T *r) {
+    int pt[2] = {2,TREE_PATH_TERMINATOR};
+    T *m1,*m2;
+    T *t1 = *(T **)_t_surface(m1 = _t_get(r,pt));
+    pt[0] = 3;
+    T *t = *(T **)_t_surface(m2 = _t_get(r,pt));
+
+    int *p = _t_get_path(t1);
+    __t_morph(m1,SEMTREX_MATCHED_PATH,p,sizeof(int)*(_t_path_depth(p)+1),1);
+
+    int d = _t_path_depth(p);
+    int i;
+
+    d--;
+    if (!t) {
+	T *parent = _t_parent(t1);
+	if (!parent) i = 1;
+	else {
+	    int pc = _t_children(parent);
+	    i = pc - p[d] + 1;
+	}
+    }
+    else {
+	int* p_end;
+	p_end = _t_get_path(t);
+	i = p_end[d]-p[d];
+	if (!p_end) {
+	    raise(SIGINT);
+	}
+	free(p_end);
+    }
+    free(p);
+    __t_morph(m2,SEMTREX_MATCH_SIBLINGS_COUNT,&i,sizeof(int),0);
+    int c = _t_children(r);
+    for(i=4;i<=c;i++) {
+	t = _t_child(r,i);
+	__fix(source_t,t);
+    }
+}
+
+#define MAX_BRANCH_DEPTH 100
+
+#define PUSH_BRANCH(state,c) _PUSH_BRANCH(state,c,0)
+#define PUSH_WALK_POINT(state,c) _PUSH_BRANCH(state,c,c)
+
+#define TRANSITION(x) if (!t) {FAIL;}; if (x) {FAIL;}; t = __transition(s,t); s = s->out;
 
 /**
  * Walk the FSA in s using a recursive backtracing algorithm to match the tree in t.
@@ -361,196 +451,167 @@ int _val_match(T *t,size_t *l) {
  * @param[inout] r match results tree being built.  (nil if no results needed)
  * @returns 1 or 0 if matched or not
  */
-int __t_match(SState *s,T *t,T **r) {
-    int i,c,matched,result = 0;
-    SgroupOpen *o;
-    T *m,*t1;
+int __t_match(T *semtrex,T *source_t,T **rP) {
+    int states;
     char buf[2000];
-    if(G_debug_match) {printf("In:%d\n",G_debug_match++);}
-    //printf("tm: s:%d t:%d\n",s->data.symbol,t ? _t_symbol(t) : -1);
-    switch(s->type) {
-    case StateValue:
-	MATCH_DEBUG(Value);
-	if (!t) {FAIL;}
-	else {
-	    size_t *l = &s->data.value.length;
-	    if (!__symbol_match(s,t)) FAIL;
-            int count = s->data.value.count;
-	    if (s->data.value.flags & SEMTREX_VALUE_NOT_FLAG) {
-		while(count-- && (matched = !_val_match(t,l))) {
-		    _next_pair(l);
-		}
-	    }
+    BranchPoint stack[MAX_BRANCH_DEPTH];
+
+    int depth = 0;
+    T *t1,*t = source_t;
+    int matched;
+    T *r = 0;
+    if (rP) *rP = 0;
+
+    SgroupOpen *o;
+
+    SState *fa = _stx_makeFA(semtrex,&states);
+    SState *s = fa;
+
+    while (s && s != &matchstate) {
+	switch(s->type) {
+	case StateValue:
+	    MATCH_DEBUG(Value);
+	    if (!t) {FAIL;}
 	    else {
-		while(count-- && !(matched = _val_match(t,l))) {
-		    _next_pair(l);
-		}
-	    }
-
-	    if (!matched) FAIL;
-	}
-	MATCH_ON(__transition_match(s,t,r));
-	break;
-    case StateSymbol:
-	MATCH_DEBUG(Symbol);
-	if (!__symbol_match(s,t)) {FAIL;}
-	MATCH_ON(__transition_match(s,t,r));
-	break;
-    case StateSymbolExcept:
-	MATCH_DEBUG(SymbolExcept);
-	if (__symbol_match(s,t)) {FAIL;}
-	MATCH_ON(__transition_match(s,t,r));
-	break;
-    case StateAny:
-	MATCH_DEBUG(Any);
-	MATCH_ON(__transition_match(s,t,r));
-	break;
-    case StateSplit:
-	MATCH_DEBUG(Split);
-	MATCH_IF(__t_match(s->out,t,r));
-	MATCH_ON(__t_match(s->out1,t,r));
-	break;
-    case StateNot:
-	MATCH_DEBUG(Not);
-	if (!t) FAIL; // we don't want NOT to match when we ran out of tree nodes... i.e NOT should match only when there is something, not when there is nothing.
-	//	if (G_debug_match) raise(SIGINT);
-	{
-	    T *gr = NULL;
-	    matched = !__t_match(s->out,t,r ? &gr : 0);
-	    if (matched) {
-		if (r) {
-		    if (!*r) *r = gr;
-		    else _t_add(*r,gr);
-		}
-		MATCH;
-	    }
-	    else {
-		if (r && gr)
-		    _t_free(gr);
-		MATCH_ON(__t_match(s->out1,t,r));
-	    }
-	}
-	break;
-    case StateWalk:
-	MATCH_DEBUG(Walk);
-	if (__t_match(s->out,t,r)) MATCH;
-	t1 = _t_child(t,1);
-	G_ts = t1;
-	if (t1 && __t_match(s,t1,r)) MATCH;
-	t1 = _t_next_sibling(t);
-	G_ts = t1;
-	if (t1 && __t_match(s,t1,r)) MATCH;
-	FAIL;
-	break;
-    case StateGroupOpen:
-	MATCH_DEBUGG(GroupOpen,_d_get_symbol_name(0,s->data.groupo.symbol));
-	if (!r)
-	    // if we aren't collecting up match results simply follow groups through
-	    {MATCH_ON(__t_match(s->out,t,r));}
-	else {
-	    if (!t) FAIL;
-	    // add on tree node to the list of match points
-
-	    o = &s->data.groupo;
-	    T *gr = NULL;
-
-	    o->matches[o->match_count++] = t;
-	    matched = __t_match(s->out,t,&gr);
-	    if (matched) {
-		t1 = o->matches[o->match_count-1];  // get the "cursor" at match close
-
-//		if (t1 == 0) {
-//		    raise_error("couldn't find match for group: %d",o->uid);
-//		}
-
-		SemanticID match_symbol = o->symbol;
-		//	    printf("Matched:%s\n",_d_get_symbol_name(0,match_symbol));
-
-		T *m = _t_newi(0,SEMTREX_MATCH,o->uid);
-		_t_news(m,SEMTREX_MATCH_SYMBOL,match_symbol);
-		int *p = _t_get_path(t);
-		T *pp = _t_new(m,SEMTREX_MATCHED_PATH,p,sizeof(int)*(_t_path_depth(p)+1));
-
-		int* p_end;
-		int d = _t_path_depth(p);
-		int i;
-
-		d--;
-		if (!t1) {
-		    T *parent = _t_parent(t);
-		    if (!parent) i = 1;
-		    else {
-			int pc = _t_children(parent);
-			i = pc - p[d] + 1;
+		size_t *l = &s->data.value.length;
+		if (!__symbol_match(s,t)) FAIL;
+		int count = s->data.value.count;
+		if (s->data.value.flags & SEMTREX_VALUE_NOT_FLAG) {
+		    while(count-- && (matched = !_val_match(t,l))) {
+			_next_pair(l);
 		    }
 		}
 		else {
-		    p_end = _t_get_path(t1);
-		    i = p_end[d]-p[d];
-		    if (!p_end) {
-			raise(SIGINT);
+		    while(count-- && !(matched = _val_match(t,l))) {
+			_next_pair(l);
 		    }
-		    free(p_end);
 		}
-		free(p);
 
-		_t_newi(m,SEMTREX_MATCH_SIBLINGS_COUNT,i);
-
-		if (!*r) {
-		    if (gr) {*r = _t_new_root(SEMTREX_MATCH_RESULTS);_t_add(*r,m);}
-		    else *r = m;
-		    puts("FIRST:");}
-		else {_t_add(*r,m);puts("ADDING:");}
-		if (gr)
-		    {char buf[1000];
-			puts("APPENDING:");
-			__t_dump(0,gr,0,buf);
-			puts(buf);
-			puts("to:");
-			__t_dump(0,*r,0,buf);
-			puts(buf);
-			if (semeq(_t_symbol(gr),SEMTREX_MATCH_RESULTS)) {
-			    T *x;
-			    while (x= _t_detach_by_idx(gr,1))
-				_t_add(*r,x);
-			    _t_free(gr);
-			}
-			else _t_add(*r,gr);
-		    }
+		if (!matched) FAIL;
 	    }
-	    else if (gr)
-		_t_free(gr);
-	    o->match_count--;
-	    MATCH_ON(matched);
-	}
-	break;
-    case StateGroupClose:
-	o = &s->data.groupc.openP->data.groupo;
-	MATCH_DEBUGG(GroupClose,_d_get_symbol_name(0,o->symbol));
-	// make sure that what follows the group also matches
-	matched = __t_match(s->out,t,r);
-	if (matched) {
+	    t = __transition(s,t);
+	    s = s->out;
+	    break;
+	case StateSymbol:
+	    MATCH_DEBUG(Symbol);
+	    TRANSITION(!__symbol_match(s,t));
+	    break;
+	case StateSymbolExcept:
+	    MATCH_DEBUG(SymbolExcept);
+	    TRANSITION(__symbol_match(s,t));
+	    break;
+	case StateAny:
+	    MATCH_DEBUG(Any);
+	    TRANSITION(0);
+	    break;
+	case StateSplit:
+	    MATCH_DEBUG(Split);
+	    PUSH_BRANCH(s->out1,t);
+	    s = s->out;
+	    break;
+	case StateWalk:
+	    MATCH_DEBUG(Walk);
+	    s = s->out;
+	    PUSH_WALK_POINT(s,t);
+	    break;
+	case StateGroupOpen:
+	    o = &s->data.groupo;
+	    MATCH_DEBUGG(GroupOpen,_d_get_symbol_name(0,o->symbol));
+	    if (!rP) {
+		// if we aren't collecting up match results simply follow groups through
+		s = s->out;
+	    }
+	    else {
+		if (!t) FAIL;
+
+		r = _t_newi(r,SEMTREX_MATCH,o->uid);
+		if (!*rP) *rP = r;
+		T *x = _t_news(r,SEMTREX_MATCH_SYMBOL,o->symbol);
+		_t_new(r,SEMTREX_MATCH_CURSOR,&t,sizeof(t));
+		s = s->out;
+	    }
+	    break;
+	case StateGroupClose:
 	    // get the match structure from the GroupOpen state pointed to by this state
-	    c = o->match_count;
-	    o->matches[c-1] = t;  // store where we got to in the tree at match time
+	    o = &s->data.groupc.openP->data.groupo;
+	    MATCH_DEBUGG(GroupClose,_d_get_symbol_name(0,o->symbol));
+	    if (rP) {
+
+		int pt[2] = {3,TREE_PATH_TERMINATOR};
+		T *x = _t_new(0,SEMTREX_MATCH_CURSOR,&t,sizeof(t));
+		_t_insert_at(r, pt, x);
+
+		T *pp = _t_parent(r);
+		if (pp) r = pp;
+	    }
+	    s = s->out;
+	    break;
+	case StateDescend:
+	    MATCH_DEBUG(Descend);
+	    t = _t_child(t,1);
+	    G_te = t;
+	    s = s->out;
+	    break;
+	case StateMatch:
+	    MATCH_DEBUG(Match);
+	    break;
 	}
-	MATCH_ON(matched);
-	break;
-    case StateDescend:
-	MATCH_DEBUG(Descend);
-	t = _t_child(t,1);
-	G_te = t;
-	MATCH_ON(__t_match(s->out,t,r));
-	break;
-    case StateMatch:
-	MATCH_DEBUG(Match);
-	MATCH;
-	break;
-    default:
-	raise_error("unimplemented state type: %d",s->type);
+	// if we just had a fail see if there is some backtracking we can do
+	if (!s && depth) {
+	    --depth;
+	    if (rP) {
+		if (*rP) _t_free(*rP);
+		if (*rP = stack[depth].match) {
+		    r = _t_get(*rP,stack[depth].r_path);
+		    free(stack[depth].r_path);
+		}
+		else r = 0;
+	    }
+	    if (G_debug_match) {
+		puts("popping to:");
+		__t_dump(0,r,0,buf);
+		puts(buf);
+	    }
+	    s = stack[depth].s;
+	    t = stack[depth].cursor;
+	    T *walk = stack[depth].walk;
+	    if(walk) {
+		t = _t_child(walk,1);
+		if (!t) {
+		    t = _t_next_sibling(walk);
+		    if (!t) {
+			T *p = walk;
+			T *root = stack[depth].cursor;
+			while(1) {
+			    p = _t_parent(p);
+			    if (!p || p == root) {t = 0;break;}
+			    if (t = _t_next_sibling(p)) break;
+			}
+		    }
+		}
+		if (t) {stack[depth++].walk = t;}
+		else s = 0;
+	    }
+	}
     }
-    if(G_debug_match) {printf("OUT:%d %s\n",--G_debug_match,result?"MATCH":"FAIL");}
-    return result;
+    if (rP) {
+	/* puts("FIXING:"); */
+	/* __t_dump(0,*rP,0,buf); */
+	/* puts(buf); */
+	// convert the cursor pointers to matched paths/sibling counts
+	__fix(source_t,*rP);
+    }
+    // clean up any remaining stack frames
+    while (depth--) {
+	if (rP) {
+	    if (r = stack[depth].match) {
+		_t_free(r);
+		free(stack[depth].r_path);
+	    }
+	}
+    }
+    _stx_freeFA(fa);
+    return s == &matchstate;
 }
 
 /**
@@ -562,22 +623,7 @@ int __t_match(SState *s,T *t,T **r) {
  * @returns 1 or 0 if matched or not
  */
 int _t_matchr(T *semtrex,T *t,T **rP) {
-    int states;
-    int m;
-
-    G_ts = G_te = t;
-    SState *fa = _stx_makeFA(semtrex,&states);
-    if (rP) {
-	*rP = NULL;
-    //	r = _t_new_root(SEMTREX_MATCH_RESULTS);
-    }
-    m = __t_match(fa,t,rP);
-    _stx_freeFA(fa);
-    if (rP) {
-	if (!m) {if (*rP) _t_free(*rP);*rP = NULL;}
-	//	else *rP = r;
-    }
-    return m;
+    return __t_match(semtrex,t,rP);
 }
 
 /**
@@ -588,7 +634,7 @@ int _t_matchr(T *semtrex,T *t,T **rP) {
  * @returns 1 or 0 if matched or not
  */
 int _t_match(T *semtrex,T *t) {
-    return _t_matchr(semtrex,t,NULL);
+    return __t_match(semtrex,t,NULL);
 }
 
 /**

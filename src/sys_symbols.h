@@ -61,6 +61,7 @@ enum SystemSymbolIDs
     SEMTREX_DESCEND_ID,
     SEMTREX_WALK_ID,
     SEMTREX_MATCH_ID,                     ///< Returns result and sibling count.        Ex: {name:expr} (verify this is what it's supposed to do)
+    SEMTREX_MATCH_CURSOR_ID,              ///< stores c pointer to tree node at start of match
     SEMTREX_MATCH_RESULTS_ID,             ///< In the FSA_ID, keeps track of which part matches so it can be referenced
     SEMTREX_MATCH_SYMBOL_ID,
     SEMTREX_MATCH_SIBLINGS_COUNT_ID,      ///< In the FSA_ID, it's the length of the match
@@ -267,6 +268,7 @@ Symbol SEMTREX_GROUP;
 Symbol SEMTREX_DESCEND;
 Symbol SEMTREX_WALK;
 Symbol SEMTREX_MATCH;
+Symbol SEMTREX_MATCH_CURSOR;
 Symbol SEMTREX_MATCH_RESULTS;
 Symbol SEMTREX_MATCH_SYMBOL;
 Symbol SEMTREX_MATCH_SIBLINGS_COUNT;

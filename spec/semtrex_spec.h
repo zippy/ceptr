@@ -329,13 +329,16 @@ void testMatchGroup() {
     char buf[1000];
     T *sg2, *s3, *t, *r, *p1, *p2, *p1c, *p2c;
     t = _makeTestTree1();
-    //    __t_dump(0,t,0,buf);
-    // puts(buf);
+    /* __t_dump(0,t,0,buf); */
+    /* puts(buf); */
     // /<TEST_STR_SYMBOL:TEST_STR_SYMBOL>           <- the most simple group semtrex
     T *g = _t_news(0,SEMTREX_GROUP,TEST_STR_SYMBOL);
     _t_news(g,SEMTREX_SYMBOL_LITERAL,TEST_STR_SYMBOL);
 
+    //   G_debug_match = 1;
     spec_is_true(_t_matchr(g,t,&r));
+
+    _t_free(r);
 
     // /TEST_STR_SYMBOL/(<TEST_GROUP_SYMBOL1:.*,<TEST_GROUP_SYMBOL2:.>>,sy4)  <- a more complicated group semtrex
     T *s = _t_news(0,SEMTREX_SYMBOL_LITERAL,TEST_STR_SYMBOL);
@@ -348,8 +351,8 @@ void testMatchGroup() {
     _t_newr(sg2,SEMTREX_SYMBOL_ANY);
     s3 = _t_news(ss,SEMTREX_SYMBOL_LITERAL,sy4);
 
-    _t_free(r);
 
+    //   G_debug_match = 1;
     spec_is_true(_t_matchr(s,t,&r));
 
     __t_dump(0,r,0,buf);
@@ -372,10 +375,20 @@ void testMatchGroup() {
     _t_newr(sg2,SEMTREX_SYMBOL_ANY);
     s3 = _t_news(ss,SEMTREX_SYMBOL_LITERAL,sy4);
 
+    //    G_debug_match = 1;
+    /* stx_dump(s); */
+    /* Defs d = {0,0,0,0}; */
+    /* puts("\nSTX:"); */
+    /* _dump_semtrex(d,s,buf); */
+    /* puts(buf); */
     spec_is_true(_t_matchr(s,t,&r));
+    // G_debug_match = 0;
 
-    __t_dump(0,r,0,buf);
-    spec_is_str_equal(buf," (SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:TEST_GROUP_SYMBOL1) (SEMTREX_MATCHED_PATH:/1) (SEMTREX_MATCH_SIBLINGS_COUNT:3) (SEMTREX_MATCH:2 (SEMTREX_MATCH_SYMBOL:TEST_GROUP_SYMBOL2) (SEMTREX_MATCHED_PATH:/3) (SEMTREX_MATCH_SIBLINGS_COUNT:1)) (SEMTREX_MATCH:2 (SEMTREX_MATCH_SYMBOL:TEST_GROUP_SYMBOL2) (SEMTREX_MATCHED_PATH:/2) (SEMTREX_MATCH_SIBLINGS_COUNT:1)) (SEMTREX_MATCH:2 (SEMTREX_MATCH_SYMBOL:TEST_GROUP_SYMBOL2) (SEMTREX_MATCHED_PATH:/1) (SEMTREX_MATCH_SIBLINGS_COUNT:1)))");
+     __t_dump(0,r,0,buf);
+
+    spec_is_str_equal(buf," (SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:TEST_GROUP_SYMBOL1) (SEMTREX_MATCHED_PATH:/1) (SEMTREX_MATCH_SIBLINGS_COUNT:3) (SEMTREX_MATCH:2 (SEMTREX_MATCH_SYMBOL:TEST_GROUP_SYMBOL2) (SEMTREX_MATCHED_PATH:/1) (SEMTREX_MATCH_SIBLINGS_COUNT:1)) (SEMTREX_MATCH:2 (SEMTREX_MATCH_SYMBOL:TEST_GROUP_SYMBOL2) (SEMTREX_MATCHED_PATH:/2) (SEMTREX_MATCH_SIBLINGS_COUNT:1)) (SEMTREX_MATCH:2 (SEMTREX_MATCH_SYMBOL:TEST_GROUP_SYMBOL2) (SEMTREX_MATCHED_PATH:/3) (SEMTREX_MATCH_SIBLINGS_COUNT:1)))");
+    _t_free(s);
+    _t_free(r);
 
     // test that the correct number of siblings is returned when the match matches a
     // sequence that includes the final sibiling
@@ -388,7 +401,7 @@ void testMatchGroup() {
     ss2 = _t_newr(sg,SEMTREX_SEQUENCE);
     _t_news(ss2,SEMTREX_SYMBOL_LITERAL,sy3);
     _t_news(ss2,SEMTREX_SYMBOL_LITERAL,sy4);
-
+    //    G_debug_match = 1;
     spec_is_true(_t_matchr(s,t,&r));
 
     __t_dump(0,r,0,buf);
@@ -426,7 +439,7 @@ void testMatchGroupMulti() {
     _t_matchr(ts,s,&results);
     char buf[10000];
     __t_dump(0,results,0,buf);
-    spec_is_str_equal(buf, " (SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:STX_TOKENS) (SEMTREX_MATCHED_PATH:) (SEMTREX_MATCH_SIBLINGS_COUNT:1) (SEMTREX_MATCH:3 (SEMTREX_MATCH_SYMBOL:STX_OP) (SEMTREX_MATCHED_PATH:/3) (SEMTREX_MATCH_SIBLINGS_COUNT:1)) (SEMTREX_MATCH:3 (SEMTREX_MATCH_SYMBOL:STX_OP) (SEMTREX_MATCHED_PATH:/2) (SEMTREX_MATCH_SIBLINGS_COUNT:1)) (SEMTREX_MATCH:2 (SEMTREX_MATCH_SYMBOL:STX_SL) (SEMTREX_MATCHED_PATH:/1) (SEMTREX_MATCH_SIBLINGS_COUNT:1)))");
+    spec_is_str_equal(buf, " (SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:STX_TOKENS) (SEMTREX_MATCHED_PATH:) (SEMTREX_MATCH_SIBLINGS_COUNT:1) (SEMTREX_MATCH:2 (SEMTREX_MATCH_SYMBOL:STX_SL) (SEMTREX_MATCHED_PATH:/1) (SEMTREX_MATCH_SIBLINGS_COUNT:1)) (SEMTREX_MATCH:3 (SEMTREX_MATCH_SYMBOL:STX_OP) (SEMTREX_MATCHED_PATH:/2) (SEMTREX_MATCH_SIBLINGS_COUNT:1)) (SEMTREX_MATCH:3 (SEMTREX_MATCH_SYMBOL:STX_OP) (SEMTREX_MATCHED_PATH:/3) (SEMTREX_MATCH_SIBLINGS_COUNT:1)))");
 
     _t_free(s);
     _t_free(results);
@@ -548,6 +561,7 @@ void testMatchWalk() {
     // search for a node down the left branch
     //  /%sy111
     T *s = _t_new_root(SEMTREX_WALK);
+
     _t_news(s,SEMTREX_SYMBOL_LITERAL,sy111);
     spec_is_true(_t_match(s,t));
     _t_free(s);
@@ -834,7 +848,7 @@ void testSemtrex() {
     testMatchLiteralValue();
     testMatchDescend();
     testMatchWalk();
-    //    testMatchNot();
+    //testMatchNot();
     testSemtrexDump();
     //    testSemtrexParse();
 
