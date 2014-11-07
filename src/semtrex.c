@@ -1116,7 +1116,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 	// @todo, this should be implemented using INTERPOLATE_MATCH
 	tokens = _t_new_root(STX_TOKENS);
 	int i,m = _t_children(results);
-	for(i=m;i>1;i--) {
+	for(i=4;i<=m;i++) {
 	    T *c = _t_child(results,i);
 	    T *sn = _t_child(c,1);
 	    Symbol ts = *(Symbol *)_t_surface(sn);

@@ -813,7 +813,7 @@ void testSemtrexParse() {
     stx = "/TEST_STR_SYMBOL/(TEST_INT_SYMBOL=314,ASCII_CHAR='x',TEST_STR_SYMBOL=\"abc\",TEST_STR_SYMBOL!=\"abc\")";
     s = parseSemtrex(&d,stx);
     spec_is_str_equal(_dump_semtrex(d,s,buf),stx);
-    spec_is_str_equal(__t_dump(&d,s,0,buf)," (SEMTREX_SYMBOL_LITERAL:TEST_STR_SYMBOL (SEMTREX_SEQUENCE (SEMTREX_VALUE_LITERAL:TEST_INT_SYMBOL) (SEMTREX_VALUE_LITERAL:ASCII_CHAR) (SEMTREX_VALUE_LITERAL:TEST_STR_SYMBOL) (SEMTREX_VALUE_LITERAL:TEST_STR_SYMBOL)))");
+    spec_is_str_equal(__t_dump(&d,s,0,buf)," (SEMTREX_SYMBOL_LITERAL:TEST_STR_SYMBOL (SEMTREX_SEQUENCE (SEMTREX_VALUE_LITERAL:TEST_INT_SYMBOL (TEST_INT_SYMBOL:314)) (SEMTREX_VALUE_LITERAL:ASCII_CHAR (ASCII_CHAR:'x')) (SEMTREX_VALUE_LITERAL:TEST_STR_SYMBOL (TEST_STR_SYMBOL:abc)) (SEMTREX_VALUE_LITERAL:TEST_STR_SYMBOL (SEMTREX_VALUE_LITERAL_NOT) (TEST_STR_SYMBOL:abc))))");
     _t_free(s);
 
     stx = "/TEST_STR_SYMBOL/~sy2";
@@ -884,8 +884,8 @@ void testSemtrex() {
     testMatchDescend();
     testMatchWalk();
     //testMatchNot();
-    //    testSemtrexParse();
+    testSemtrexParse();
 
-        testSemtrexParseHHTPReq();
+    testSemtrexParseHHTPReq();
     _cleanup_HTTPDefs();
 }

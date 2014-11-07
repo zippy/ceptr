@@ -122,6 +122,9 @@ T *asciiT_toi(T* asciiT,T* match,T *t,Symbol s);
 T *asciiT_tos(T* asciiT,T* match,T *t,Symbol s);
 T *asciiT_toc(T* asciiT,T* match,T *t,Symbol s);
 
+
+#define DT(l,t) puts("\n" #l ":");__t_dump(0,t,0,buf);puts(buf);
+
 #endif
 
 /** @}*/

@@ -426,7 +426,7 @@ void testReceptor() {
     testReceptorAction();
     testReceptorDef();
     testReceptorDefMatch();
-    testReceptorProtocol();
+    //    testReceptorProtocol();
     testReceptorInstanceNew();
     //    testReceptorSerialize();
     _cleanup_HTTPDefs();
