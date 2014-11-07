@@ -56,7 +56,8 @@ enum SystemSymbolIDs
     SEMTREX_ZERO_OR_MORE_ID,              ///< Requires one child Semtrex and matches on zero or more of that Semtrex.  Ex: /0/TestSemtrex*
     SEMTREX_ONE_OR_MORE_ID,               ///< Requires one child Semtrex and matches on one or more of that Semtrex.   Ex: /0/TestSemtrex+
     SEMTREX_ZERO_OR_ONE_ID,               ///< Requires one child Semtrex and matches on zero or one of that Semtrex.   Ex: /0/TestSemtrex?
-    SEMTREX_VALUE_LITERAL_ID,	       ///< Matches on the semantic type and the data value.
+    SEMTREX_VALUE_LITERAL_ID,	          ///< Matches on the semantic type and the data value.
+    SEMTREX_VALUE_LITERAL_NOT_ID,	  ///< used to indicate inversion of the value literal
     SEMTREX_GROUP_ID,                     ///< Grouping                                 Ex: (...)operator
     SEMTREX_DESCEND_ID,
     SEMTREX_WALK_ID,
@@ -142,7 +143,8 @@ static Structure G_sys_symbol_structures[] = {
     NULL_STRUCTURE,      //SEMTREX_ZERO_OR_MORE
     NULL_STRUCTURE,      //SEMTREX_ONE_OR_MORE
     NULL_STRUCTURE,      //SEMTREX_ZERO_OR_ONE
-    NULL_STRUCTURE,      //SEMTREX_VALUE_LITERAL
+    SYMBOL,              //SEMTREX_VALUE_LITERAL
+    NULL_STRUCTURE,      //SEMTREX_VALUE_LITERAL_NOT
     SYMBOL,              //SEMTREX_GROUP
     NULL_STRUCTURE,      //SEMTREX_DESCEND
     INTEGER,             //SEMTREX_MATCH
@@ -264,6 +266,7 @@ Symbol SEMTREX_ZERO_OR_MORE;
 Symbol SEMTREX_ONE_OR_MORE;
 Symbol SEMTREX_ZERO_OR_ONE;
 Symbol SEMTREX_VALUE_LITERAL;
+Symbol SEMTREX_VALUE_LITERAL_NOT;
 Symbol SEMTREX_GROUP;
 Symbol SEMTREX_DESCEND;
 Symbol SEMTREX_WALK;

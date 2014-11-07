@@ -107,6 +107,15 @@ char * __stx_makeFA(T *t,SState **in,Ptrlist **out,int level,int *statesP) {
     switch(sym.id) {
     case SEMTREX_VALUE_LITERAL_ID:
 	state_type = StateValue;
+	s = state(state_type,statesP);
+	s->data.value.symbol = *(Symbol *)_t_surface(t);
+
+	// copy the value from the semtrex into the state
+	s->data.value.value = _t_clone(t);
+	*in = s;
+	s->transition = level;
+	*out = list1(&s->out);
+	break;
     case SEMTREX_SYMBOL_LITERAL_ID:
 	if (state_type == -1) state_type = StateSymbol;
     case SEMTREX_SYMBOL_EXCEPT_ID:
@@ -114,14 +123,7 @@ char * __stx_makeFA(T *t,SState **in,Ptrlist **out,int level,int *statesP) {
     case SEMTREX_SYMBOL_ANY_ID:
 	if (state_type == -1) state_type = StateAny;
 	if (c > 1) return "Literal must have 0 or 1 children";
-	if (state_type == StateValue) {
-	    size_t l = _t_size(t);
-	    s = _state(state_type,statesP,l-sizeof(Svalue));
-	    // copy the value from the semtrex into the state
-	    Svalue *sv = (Svalue *)_t_surface(t);
-	    memcpy(&s->data.value,sv,l);
-	}
-	else if ((state_type == StateSymbol) || (state_type == StateSymbolExcept)) {
+	if ((state_type == StateSymbol) || (state_type == StateSymbolExcept)) {
 	    s = state(state_type,statesP);
 	    s->data.symbol = *(Symbol *)_t_surface(t);
 	}
@@ -291,12 +293,13 @@ void _stx_freeFA(SState *s) {
     __stx_freeFA2(s);
 }
 
+Defs *G_d = 0;
 int G_debug_match = 0;
 T *G_ts,*G_te;
 #define DEBUG_MATCH
 #ifdef DEBUG_MATCH
-#define MATCH_DEBUGG(s,x) 	if(G_debug_match){printf("IN:" #s " for %s\n",x);__t_dump(0,t,0,buf);printf("  with:%s\n",buf);}
-#define MATCH_DEBUG(s) 	if(G_debug_match){puts("IN:" #s "");__t_dump(0,t,0,buf);printf("  with:%s\n",!t ? "NULL" : buf);}
+#define MATCH_DEBUGG(s,x) 	if(G_debug_match){printf("IN:" #s " for %s\n",x);__t_dump(G_d,t,0,buf);printf("  cursor:%s\n",buf);}
+#define MATCH_DEBUG(s) 	if(G_debug_match){puts("IN:" #s "");__t_dump(G_d,t,0,buf);printf("  cursor:%s\n",!t ? "NULL" : buf);}
 //#define MATCH_DEBUGG(s,x) 	if(G_debug_match){printf("IN:" #s "%s with %p \n",x,t);}
 //#define MATCH_DEBUG(s) 	if(G_debug_match){printf("IN:" #s " with %p\n",t);}
 
@@ -354,18 +357,14 @@ T * __transition(SState *s,T *t) {
     return t;
 }
 
-int _val_match(T *t,size_t *l) {
+int _val_match(T *t,T *t1) {
+
     int i;
     char *p1,*p2;
-    if (*l != _t_size(t)) return 0;
-    else {
-	p1 = (char *)(l+1); // the value comes right after the length
-	p2 = _t_surface(t);
-	for(i=*l;i>0;i--) {
-	    if (*p1++ != *p2++) {return 0;break;}
-	}
-    }
-    return 1;
+    size_t l = _t_size(t1);
+    if (l != _t_size(t)) return 0;
+
+    return memcmp(_t_surface(t),_t_surface(t1),l)==0;
 }
 #define _next_pair(l)     l = (size_t *)(sizeof(size_t)+*l+(void *)l);
 
@@ -436,7 +435,7 @@ void __fix(T *source_t,T *r) {
     }
 }
 
-#define MAX_BRANCH_DEPTH 100
+#define MAX_BRANCH_DEPTH 500
 
 #define PUSH_BRANCH(state,c) _PUSH_BRANCH(state,c,0)
 #define PUSH_WALK_POINT(state,c) _PUSH_BRANCH(state,c,c)
@@ -453,7 +452,7 @@ void __fix(T *source_t,T *r) {
  */
 int __t_match(T *semtrex,T *source_t,T **rP) {
     int states;
-    char buf[2000];
+    char buf[5000];
     BranchPoint stack[MAX_BRANCH_DEPTH];
 
     int depth = 0;
@@ -473,18 +472,22 @@ int __t_match(T *semtrex,T *source_t,T **rP) {
 	    MATCH_DEBUG(Value);
 	    if (!t) {FAIL;}
 	    else {
-		size_t *l = &s->data.value.length;
+		T *v = s->data.value.value;
+		T *n = _t_child(v,1);
+		int not;
+		not = semeq(_t_symbol(n),SEMTREX_VALUE_LITERAL_NOT);
+
 		if (!__symbol_match(s,t)) FAIL;
-		int count = s->data.value.count;
-		if (s->data.value.flags & SEMTREX_VALUE_NOT_FLAG) {
-		    while(count-- && (matched = !_val_match(t,l))) {
-			_next_pair(l);
-		    }
+		int count = _t_children(v);
+		int i;
+		if (G_debug_match) {
+		    __t_dump(G_d,v,0,buf);printf("  seeking:%s\n",buf);
+		}
+		if (not) {
+		    for(i=2;i<=count && (matched = !_val_match(t,_t_child(v,i)));i++);
 		}
 		else {
-		    while(count-- && !(matched = _val_match(t,l))) {
-			_next_pair(l);
-		    }
+		    for(i=1;i<=count && !(matched = _val_match(t,_t_child(v,i)));i++);
 		}
 
 		if (!matched) FAIL;
@@ -516,7 +519,7 @@ int __t_match(T *semtrex,T *source_t,T **rP) {
 	    break;
 	case StateGroupOpen:
 	    o = &s->data.groupo;
-	    MATCH_DEBUGG(GroupOpen,_d_get_symbol_name(0,o->symbol));
+	    MATCH_DEBUGG(GroupOpen,_d_get_symbol_name(G_d?G_d->symbols:0,o->symbol));
 	    if (!rP) {
 		// if we aren't collecting up match results simply follow groups through
 		s = s->out;
@@ -534,7 +537,7 @@ int __t_match(T *semtrex,T *source_t,T **rP) {
 	case StateGroupClose:
 	    // get the match structure from the GroupOpen state pointed to by this state
 	    o = &s->data.groupc.openP->data.groupo;
-	    MATCH_DEBUGG(GroupClose,_d_get_symbol_name(0,o->symbol));
+	    MATCH_DEBUGG(GroupClose,_d_get_symbol_name(G_d?G_d->symbols:0,o->symbol));
 	    if (rP) {
 
 		int pt[2] = {3,TREE_PATH_TERMINATOR};
@@ -560,7 +563,7 @@ int __t_match(T *semtrex,T *source_t,T **rP) {
 	if (!s && depth) {
 	    --depth;
 	    if (rP) {
-		if (*rP) _t_free(*rP);
+		//		if (*rP) _t_free(*rP);
 		if (*rP = stack[depth].match) {
 		    r = _t_get(*rP,stack[depth].r_path);
 		    free(stack[depth].r_path);
@@ -568,8 +571,8 @@ int __t_match(T *semtrex,T *source_t,T **rP) {
 		else r = 0;
 	    }
 	    if (G_debug_match) {
-		puts("popping to:");
-		__t_dump(0,r,0,buf);
+		puts("Fail: so popping to--");
+		__t_dump(G_d,r,0,buf);
 		puts(buf);
 	    }
 	    s = stack[depth].s;
@@ -594,10 +597,14 @@ int __t_match(T *semtrex,T *source_t,T **rP) {
 	    }
 	}
     }
-    if (rP) {
-	/* puts("FIXING:"); */
-	/* __t_dump(0,*rP,0,buf); */
-	/* puts(buf); */
+    if (rP && s) {
+	if (G_debug_match) {
+	puts("FIXING:");
+	__t_dump(G_d,*rP,0,buf);
+	puts(buf);
+	//	raise(SIGINT);
+	}
+
 	// convert the cursor pointers to matched paths/sibling counts
 	__fix(source_t,*rP);
     }
@@ -659,6 +666,42 @@ T *_t_get_match(T *match,Symbol group)
     return 0;
 }
 
+T *_t_embody_from_match(Defs *defs,T *match,T *t) {
+    Symbol s = *(Symbol *)_t_surface(_t_child(match,1));
+    T *e;
+    int i,j = _t_children(match);
+    if (j > 3) {
+	e = _t_new_root(s);
+	for(i=4;i<=j;i++) {
+	    T *c = _t_child(match,i);
+	    if (c) {
+		_t_add(e,_t_embody_from_match(defs,c,t));
+	    }
+	}
+    }
+    else {
+	int *p;
+	int children = *(int *)_t_surface(_t_child(match,3));
+	T *structures = defs ? defs->structures : 0;
+	T *symbols = defs ? defs->symbols : 0;
+	Structure st = _d_get_symbol_structure(symbols,s);
+	T *x;
+	switch(st.id) {
+	case CSTRING_ID:
+	    return asciiT_tos(t,match,0,s);
+	case INTEGER_ID:
+	    return asciiT_toi(t,match,0,s);
+	case CHAR_ID:
+	    return asciiT_toc(t,match,0,s);
+	default:
+	    p = (int *)_t_surface(_t_child(match,2));
+	    x = _t_get(t,p);
+	    e = _t_clone(x);
+	}
+    }
+    return e;
+}
+
 // semtrex dumping code
 char * __dump_semtrex(Defs defs,T *s,char *buf);
 
@@ -685,9 +728,42 @@ char * __dump_semtrex(Defs defs,T *s,char *buf) {
     int i,c;
     SemanticID sem;
     switch(sym.id) {
-    case SEMTREX_SYMBOL_EXCEPT_ID:
     case SEMTREX_VALUE_LITERAL_ID:
+	sem = *(SemanticID *)_t_surface(s);
+	sn = _d_get_symbol_name(defs.symbols,sem);
+	if (*sn=='<')
+	    sprintf(b,"%d.%d.%d",sem.context,sem.flags,sem.id);
+	else
+	    sprintf(b,"%s",sn);
+	Structure st = _d_get_symbol_structure(defs.symbols,sem);
+	T *n = _t_child(s,1);
+	int not;
+	if (not = semeq(_t_symbol(n),SEMTREX_VALUE_LITERAL_NOT)) {
+	    sprintf(b+strlen(b),"!");
+	}
+	sprintf(b+strlen(b),"=");
+	int count = _t_children(s);
+	if ((count-not) > 1)
+	    sprintf(b+strlen(b),"{");
+	for(i=1+not;i<=count;i++) {
+	    T *x = _t_child(s,i);
+	    if (semeq(st,CSTRING))
+		sprintf(b+strlen(b),"\"%s\"",(char *)(_t_surface(x)));
+	    else if (semeq(st,CHAR))
+		sprintf(b+strlen(b),"'%c'",*(char *)(_t_surface(x)));
+	    else if (semeq(st,INTEGER))
+		sprintf(b+strlen(b),"%d",*(int *)(_t_surface(x)));
+	    else sprintf(b+strlen(b),"???x");
+	    if (i < count)
+		sprintf(b+strlen(b),",");
+	}
+	if ((count - not) > 1)
+	    sprintf(b+strlen(b),"}");
+	sprintf(buf,"%s",b);
+	break;
+    case SEMTREX_SYMBOL_EXCEPT_ID:
     case SEMTREX_SYMBOL_LITERAL_ID:
+
 	if (semeq(sym, SEMTREX_SYMBOL_EXCEPT)) {
 	    b[0] = '!';
 	    bx = &b[1];
@@ -700,30 +776,6 @@ char * __dump_semtrex(Defs defs,T *s,char *buf) {
 	    sprintf(bx,"%d.%d.%d",sem.context,sem.flags,sem.id);
 	else
 	    sprintf(bx,"%s",sn);
-	if (semeq(sym, SEMTREX_VALUE_LITERAL)) {
-	    Svalue *sv = (Svalue *)_t_surface(s);
-	    Structure st = _d_get_symbol_structure(defs.symbols,sv->symbol);
-	    size_t *l = &sv->length;
-	    if (sv->flags & SEMTREX_VALUE_NOT_FLAG)
-		sprintf(b+strlen(b),"!");
-	    sprintf(b+strlen(b),"=");
-	    if ((i = sv->count) > 1)
-		sprintf(b+strlen(b),"{");
-	    while(i--) {
-		if (semeq(st,CSTRING))
-		    sprintf(b+strlen(b),"\"%s\"",(char *)(l+1));
-		else if (semeq(st,CHAR))
-		    sprintf(b+strlen(b),"'%c'",*(int *)(l+1));
-		else if (semeq(st,INTEGER))
-		    sprintf(b+strlen(b),"%d",*(int *)(l+1));
-		else sprintf(b+strlen(b),"???x");
-		l = (size_t *)(*l+(void *)(l+1));
-		if (i > 0)
-		    sprintf(b+strlen(b),",");
-	    }
-	    if (i = sv->count > 1)
-		sprintf(b+strlen(b),"}");
-	}
 	__stxd_descend(defs,s,b,buf);
 	break;
     case SEMTREX_SYMBOL_ANY_ID:
@@ -784,37 +836,25 @@ char * _dump_semtrex(Defs defs,T *s,char *buf) {
 }
 
 // helper to add a stx_char value literal to a semtrex
-T *__stxcv(T *stxx,char c) {
-    Svalue sv;
-    sv.symbol = ASCII_CHAR;
-    sv.flags = 0;
-    sv.count = 1;
-    sv.length = sizeof(int);
-    *(int *)&sv.value = c;
-    return _t_new(stxx,SEMTREX_VALUE_LITERAL,&sv,sizeof(Svalue));
+T *__stxcv(T *p,char c) {
+    T *t =  _t_news(p,SEMTREX_VALUE_LITERAL,ASCII_CHAR);
+    _t_newi(t,ASCII_CHAR,c);
+    return t;
 }
 
-// helper to add a stx_char value literal set to a semtrex
-T *__stxcvm(T *stxx,int not,int count,...) {
+T *__stxcvm(T *p,int not,int count,...) {
     va_list chars;
-    int i;
-    T *t;
-    size_t svl = sizeof(Svalue) + (sizeof(size_t) + sizeof(char))*count;
-    Svalue *svP = malloc(svl);
-    svP->flags = not ? SEMTREX_VALUE_NOT_FLAG:0;
-    svP->count = count;
-    svP->symbol = ASCII_CHAR;
-    size_t *l = &svP->length;
+    T *t =  _t_news(p,SEMTREX_VALUE_LITERAL,ASCII_CHAR);
+    if (not) {
+	_t_newr(t,SEMTREX_VALUE_LITERAL_NOT);
+    }
     va_start(chars,count);
+    int i;
     for(i=0;i<count;i++) {
-	*l = sizeof(char);
-	*(char *)(l+1) = va_arg(chars,int);
-	l = (size_t *)(1+(char *)(l+1));
+	_t_newi(t,ASCII_CHAR,va_arg(chars,int));
     }
     va_end(chars);
-    t = _t_new(stxx,SEMTREX_VALUE_LITERAL,svP,svl);
 
-    free(svP);
     return t;
 }
 
@@ -919,7 +959,7 @@ T *makeASCIITree(char *c) {
 /**
  * convert ascii tokens from a match to an integer and add them to the given tree
  */
-void asciiT_toi(T* asciiT,T* match,T *t,Symbol s) {
+T *asciiT_toi(T* asciiT,T* match,T *t,Symbol s) {
     char buf[10];
     int sibs = *(int *)_t_surface(_t_child(match,3));
     int *path = (int *)_t_surface(_t_child(match,2));
@@ -929,13 +969,13 @@ void asciiT_toi(T* asciiT,T* match,T *t,Symbol s) {
 	path[d-1]++;
     }
     buf[j]=0;
-    _t_newi(t,s,atoi(buf));
+    return _t_newi(t,s,atoi(buf));
 }
 
 /**
  * convert ascii tokens from a match to a string and add them to the given tree
 */
-void asciiT_tos(T* asciiT,T* match,T *t,Symbol s) {
+T *asciiT_tos(T* asciiT,T* match,T *t,Symbol s) {
     char buf[255];
     int sibs = *(int *)_t_surface(_t_child(match,3));
     int *path = (int *)_t_surface(_t_child(match,2));
@@ -945,16 +985,16 @@ void asciiT_tos(T* asciiT,T* match,T *t,Symbol s) {
 	path[d-1]++;
     }
     buf[j]=0;
-    _t_new(t,s,buf,j+1);
+    return _t_new(t,s,buf,j+1);
 }
 
 /**
  * convert ascii tokens from a match to a char and add them to the given tree
  */
-void asciiT_toc(T* asciiT,T* match,T *t,Symbol s) {
+T *asciiT_toc(T* asciiT,T* match,T *t,Symbol s) {
     int *path = (int *)_t_surface(_t_child(match,2));
     int c = *(int *)_t_surface(_t_get(asciiT,path));
-    _t_newi(t,s,c);
+    return _t_newi(t,s,c);
 }
 
 /**
@@ -1126,16 +1166,15 @@ T *parseSemtrex(Defs *d,char *stx) {
 	    size_t l = _t_size(v);  // value size
 
 	    char *symbol_name = (char *)_t_surface(t);
-	    Svalue *sv = malloc(sizeof(Svalue)+l);
-	    sv->symbol = get_symbol(symbol_name,d);
-	    sv->flags =  semeq(sym,STX_EQ) ? 0 : SEMTREX_VALUE_NOT_FLAG;
-	    sv->count = 1;
-	    sv->length = l;
-	    memcpy(&sv->value,_t_surface(v),l);
 
-	    __t_morph(t,SEMTREX_VALUE_LITERAL,sv,sizeof(Svalue)+l,1);
-	    _t_free(v);
-	    free(sv);
+	    Symbol vs = get_symbol(symbol_name,d);
+	    int not =  semeq(sym,STX_EQ) ? 0 : 1;
+	    int count = 1;
+
+	    __t_morph(t,SEMTREX_VALUE_LITERAL,&vs,sizeof(Symbol),1);
+	    if (not) _t_newr(t,SEMTREX_VALUE_LITERAL_NOT);
+	    void *val = _t_surface(v);
+	    _t_new(t,vs,val,l);
 
 	    _t_free(results);
 	}

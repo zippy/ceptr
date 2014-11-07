@@ -52,30 +52,10 @@ enum FSAStateTransitions {
 };
 typedef int TransitionType;
 
-typedef void *ValueData;
-
 #define GroupOpen 0x1000
 #define GroupClose 0
 
 typedef struct SState SState;
-
-#define SEMTREX_VALUE_NOT_FLAG 0x01
-
-/**
- * The Svalue represents the surface of a semtrex value literal.
- *
- * "value" is not a pointer to another memory location but just a key to the beginning for where the value starts in this struct.
- * ValueData is not a pointer to some other memory space because in general, tree surfaces have to hold the actual data, not pointers
- * to other parts of memory, because they can't be followed by ceptr utilities that manipulate trees, which include serialization, freeing,
- * cloning, etc.
- */
-typedef struct Svalue {
-    Symbol symbol;      ///< Symbol is the semantic type.  Here we're storing the integer that represents the semantic type. For example, FIRST_NAME
-    int flags;          ///< Currently only one flag: SEMTREX_VALUE_NOT_FLAG to indicate logical not of value
-    int count;          ///< Number of values to try and match
-    size_t length;	///< For example, 5 (including terminating null)
-    ValueData value;	///< For example, "t\0" which fits in an "int".  Otherwise, Svalue needs to be malloc'd to hold extra bytes.
-} Svalue;
 
 /**
  * data for group open FSA state
@@ -92,6 +72,11 @@ typedef struct SgroupClose {
     SState *openP;      /// pointer to the Open state
 } SgroupClose;
 
+
+typedef struct Svalue {
+    Symbol symbol;
+    T *value;
+} Svalue;
 /**
  * Different state types need to store different kinds of values so we put them in a union
  *
@@ -121,9 +106,11 @@ SState * _stx_makeFA(T *s,int *statesP);
 void _stx_freeFA(SState *s);
 int _t_match(T *semtrex,T *t);
 int G_debug_match;
+Defs *G_d;
 T *G_ts,*G_te;
 int _t_matchr(T *semtrex,T *t,T **r);
 T *_t_get_match(T *result,Symbol group);
+T *_t_embody_from_match(Defs *defs,T *match,T *t);
 char * _dump_semtrex(Defs defs,T *s,char *buf);
 T *makeASCIITree(char *c);
 T *parseSemtrex(Defs *d,char *stx);
@@ -131,9 +118,9 @@ T *parseSemtrex(Defs *d,char *stx);
 T *__stxcv(T *stxx,char c);
 T *__stxcvm(T *stxx,int not,int count,...);
 
-void asciiT_toi(T* asciiT,T* match,T *t,Symbol s);
-void asciiT_tos(T* asciiT,T* match,T *t,Symbol s);
-void asciiT_toc(T* asciiT,T* match,T *t,Symbol s);
+T *asciiT_toi(T* asciiT,T* match,T *t,Symbol s);
+T *asciiT_tos(T* asciiT,T* match,T *t,Symbol s);
+T *asciiT_toc(T* asciiT,T* match,T *t,Symbol s);
 
 #endif
 

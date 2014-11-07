@@ -82,7 +82,7 @@ void _setup_HTTPDefs() {
 
     SY(d,OCTET_STREAM,CSTRING);
 
-    SY(d,HTTP_REQUEST_METHOD,INTEGER);
+    SY(d,HTTP_REQUEST_METHOD,CSTRING);
 
     _setup_uri_defs(d);
     SY(d,HTTP_REQUEST_PATH,URI);
@@ -105,7 +105,6 @@ void _cleanup_HTTPDefs() {
     _t_free(test_HTTP_structures);
 }
 
-enum {TEST_HTTP_METHOD_GET_VALUE,TEST_HTTP_METHOD_PUT_VALUE,TEST_HTTP_METHOD_POST_VALUE};
 
 //! [makeTestHTTPRequestTree]
 /**
@@ -123,7 +122,7 @@ T *_makeTestHTTPRequestTree() {
     T *t_version = _t_newr(t,HTTP_REQUEST_VERSION);
     _t_newi(t_version,VERSION_MAJOR,1);
     _t_newi(t_version,VERSION_MINOR,0);
-    T *t_method = _t_newi(t,HTTP_REQUEST_METHOD,TEST_HTTP_METHOD_GET_VALUE);
+    T *t_method = _t_new(t,HTTP_REQUEST_METHOD,"GET",4);
     T *t_path = _t_newr(t,HTTP_REQUEST_PATH);
     T *t_segments = _t_newr(t_path,HTTP_REQUEST_PATH_SEGMENTS);
     _t_new(t_segments,HTTP_REQUEST_PATH_SEGMENT,"groups",7);
@@ -192,11 +191,11 @@ T *_makeHTTPRequestSemtrex() {
     T *sq = _t_newr(t,SEMTREX_SEQUENCE);
     t = _t_news(sq,SEMTREX_GROUP,HTTP_REQUEST_METHOD);
     t = _t_newr(t,SEMTREX_ONE_OR_MORE);
-    _t_newr(t,SEMTREX_SYMBOL_ANY);
+    __stxcvm(t,1,1,' ');  //!= ' '
+    __stxcv(sq,' ');
 
     t = _t_news(sq,SEMTREX_GROUP,HTTP_REQUEST_PATH);
     T *sqq = _t_newr(t,SEMTREX_SEQUENCE);
-    __stxcv(sqq,' ');
 
     t = _t_news(sqq,SEMTREX_GROUP,HTTP_REQUEST_PATH_SEGMENTS);
     t = _t_newr(t,SEMTREX_ONE_OR_MORE);
@@ -206,35 +205,44 @@ T *_makeHTTPRequestSemtrex() {
     t = _t_newr(t,SEMTREX_ZERO_OR_MORE);
     __stxcvm(t,1,3,'/','?',' ');
 
-    t = _t_news(sq,SEMTREX_GROUP,HTTP_REQUEST_PATH_FILE);
-    T *f = _t_newr(t,SEMTREX_SEQUENCE);
-    t = _t_news(f,SEMTREX_GROUP,FILE_NAME);
-    t = _t_newr(t,SEMTREX_ONE_OR_MORE);
-    __stxcvm(t,1,2,'?',' ');
+    /* t = _t_news(sq,SEMTREX_GROUP,HTTP_REQUEST_PATH_FILE); */
+    /* T *f = _t_newr(t,SEMTREX_SEQUENCE); */
+    /* t = _t_news(f,SEMTREX_GROUP,FILE_NAME); */
+    /* t = _t_newr(t,SEMTREX_ONE_OR_MORE); */
+    /* __stxcvm(t,1,2,'?',' '); */
 
-    t = _t_newr(f,SEMTREX_ZERO_OR_ONE);
-    t = _t_newr(t,SEMTREX_SEQUENCE);
-    __stxcv(t,'.');
-    t = _t_news(t,SEMTREX_GROUP,FILE_EXTENSION);
-    t = _t_newr(t,SEMTREX_ONE_OR_MORE);
-    __stxcvm(t,1,2,'?',' ');
+    /* t = _t_newr(f,SEMTREX_ZERO_OR_ONE); */
+    /* t = _t_newr(t,SEMTREX_SEQUENCE); */
+    /* __stxcv(t,'.'); */
+    /* t = _t_news(t,SEMTREX_GROUP,FILE_EXTENSION); */
+    /* t = _t_newr(t,SEMTREX_ONE_OR_MORE); */
+    /* __stxcvm(t,1,2,'?',' '); */
 
     t = _t_newr(sq,SEMTREX_ZERO_OR_ONE);
     t = _t_newr(t,SEMTREX_SEQUENCE);
     __stxcv(t,'?');
+
+    T *f;
     t = _t_news(t,SEMTREX_GROUP,HTTP_REQUEST_PATH_QUERY);
     t = _t_newr(t,SEMTREX_ONE_OR_MORE);
     t = _t_news(t,SEMTREX_GROUP,HTTP_REQUEST_PATH_QUERY_PARAMS);
+    t = _t_newr(t,SEMTREX_ONE_OR_MORE);
+    T *qps = _t_newr(t,SEMTREX_SEQUENCE);
+    t = _t_news(qps,SEMTREX_GROUP,HTTP_REQUEST_PATH_QUERY_PARAM);
     f = _t_newr(t,SEMTREX_SEQUENCE);
     t = _t_news(f,SEMTREX_GROUP,PARAM_KEY);
     t = _t_newr(t,SEMTREX_ONE_OR_MORE);
     __stxcvm(t,1,3,'&',' ','=');
-
+    __stxcv(f,'=');
     t = _t_news(f,SEMTREX_GROUP,PARAM_VALUE);
     t = _t_newr(t,SEMTREX_ZERO_OR_MORE);
     __stxcvm(t,1,2,'&',' ');
 
+    t = _t_newr(qps,SEMTREX_ZERO_OR_ONE);
+    __stxcv(t,'&');
+
     __stxcv(sq,' ');
+
     __stxcv(sq,'H');
     __stxcv(sq,'T');
     __stxcv(sq,'T');

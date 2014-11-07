@@ -220,7 +220,7 @@ void testVMHostCreate() {
 /*     T *s_version = _t_newr(s,HTTP_REQUEST_VERSION); */
 /*     _t_newi(s_version,VERSION_MAJOR,1); */
 /*     _t_newi(s_version,VERSION_MINOR,1); */
-/*     T *s_method = _t_newi(s,HTTP_REQUEST_METHOD,TEST_HTTP_METHOD_GET_VALUE); */
+/*     T *s_method = _t_new(s,HTTP_REQUEST_METHOD,"GET",4); */
 /*     T *s_path = _t_newr(s,HTTP_REQUEST_PATH); */
 /*     T *s_host = _t_new(s,HTTP_REQUEST_HOST,"helloworld.com",15); */
 
