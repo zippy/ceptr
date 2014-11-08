@@ -25,12 +25,12 @@ project called &quot;Ceptr.&quot;</p>
 regular expression (Regex) matcher for one-dimensional strings, a tree 
 expression matcher is needed for 2 (or more) dimensional trees.&nbsp; 
 Furthermore, because the trees incorporate meaning (semantics), the tree 
-expression matcher must be a <i>semantic</i> tree expression matcher.&nbsp; Here 
+expression matcher must be a <i>semantic</i> tree regular expression matcher.&nbsp; Here 
 we see another divergence from Regex -- Semtrex matches on the semantics of the 
 data as well as literal values, whereas Regex, having no concept of the 
 semantics on which it is matching, can match only on the literal values.</p>
 <p>This introduces some new and interesting behaviors to pattern matching -- 
-matching not just in the literal values of the data but also the semantic 
+matching not just the literal values of the data but also the semantic 
 meaning of the data.&nbsp; Thus, the while &quot;42&quot; matches with &quot;42&quot;, &quot;42 years 
 old&quot; does not match with &quot;42 is the answer to the ultimate question of life, the 
 universe, and everything.&quot;</p>
@@ -173,7 +173,7 @@ converted into an expression tree:</p>
 <pre>char *stxs = &quot;/ASCII_CHARS/&lt;HTTP_REQUEST:&lt;HTTP_REQUEST_METHOD:ASCII_CHAR!=' '+&gt; (...etc...)
 T *stx = parseSemtrex(&amp;test_HTTP_defs,stxs);</pre>
 <p>I'll explain what <code>test_HTTP_defs</code> is later.</p>
-<p>In he third step, we execute the match function to obtain the results of the 
+<p>In the third step, we execute the match function to obtain the results of the 
 expression: </p>
 <p>(C)</p>
 <pre>T *results;
@@ -182,7 +182,7 @@ _t_matchr(stx,s,&amp;results);</pre>
 can then use Semtrex again to match on the values of those results, allowing us, 
 in the example above, to do something on the specific human-readable input 
 string, for example, routing the request to a particular handler (which gets us 
-in to what Ceptr does with carriers and receptors, which is beyond the scope of 
+in to what Ceptr casll &quot;actions&quot;, which is beyond the scope of 
 this article.)</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
