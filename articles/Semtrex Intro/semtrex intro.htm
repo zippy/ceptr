@@ -1,0 +1,200 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Semtrex Article</title>
+</head>
+
+<body>
+
+<p>Semtrex Article, third try!</p>
+<h2>Introduction</h2>
+<p>In this article, I would like to introduce you to the work of Eric 
+Harris-Braun and Arthur Brock.&nbsp; They have been working on a concept that 
+they call &quot;Semtrex&quot; - a semantic tree regular expression matcher, as part of a larger 
+project called &quot;Ceptr.&quot;</p>
+<p>Two cornerstone of the Ceptr <i>concept</i> are:</p>
+<ol>
+	<li>data always carries with it its semantics, in other words, the qualities 
+	that give the data meaning</li>
+	<li>the meaning (semantics) of something is very naturally expressed as tree 
+	structures</li>
+</ol>
+<p>As a result of these premises, it became clear that, similar to how we have a 
+regular expression (Regex) matcher for one-dimensional strings, a tree 
+expression matcher is needed for 2 (or more) dimensional trees.&nbsp; 
+Furthermore, because the trees incorporate meaning (semantics), the tree 
+expression matcher must be a <i>semantic</i> tree expression matcher.&nbsp; Here 
+we see another divergence from Regex -- Semtrex matches on the semantics of the 
+data as well as literal values, whereas Regex, having no concept of the 
+semantics on which it is matching, can match only on the literal values.</p>
+<p>This introduces some new and interesting behaviors to pattern matching -- 
+matching not just in the literal values of the data but also the semantic 
+meaning of the data.&nbsp; Thus, the while &quot;42&quot; matches with &quot;42&quot;, &quot;42 years 
+old&quot; does not match with &quot;42 is the answer to the ultimate question of life, the 
+universe, and everything.&quot;</p>
+<h2>Semtrex Tokens</h2>
+<p>In Ceptr, Semtrex expressions are semantic trees because everything in Ceptr 
+is stored as semantic trees. However, Semtrex can also be represented as a 
+linear ASCII string using has a small set of tokens which should look familiar 
+to Regex users.</p>
+<h3>Value Literal and Symbol Literal</h3>
+<p>In the expression X=&quot;b&quot;, X is the symbol literal and &quot;b&quot; is the value literal 
+(the &quot;=&quot; we can call the value operator.)&nbsp; These are tokens relevant to the 
+Semtrex tree after the human-readable form has been parsed.</p>
+<h3>Except</h3>
+<p>To match any symbol except the one prefixed with &quot;!&quot; (bang or 
+exclamation) character (not to be confused with a &quot;not&quot; character.)&nbsp; </p>
+<h3>Any</h3>
+<p>Match any symbol matches, denoted with the &quot;.&quot; (period) character.</p>
+<h3>Sequence</h3>
+<p>A sequence of expressions is separated by the infix &quot;,&quot; (comma) character.</p>
+<h3>Or</h3>
+<p>Matching expression A or expression B is indicated with the infix &quot;|&quot; (pipe) 
+character.</p>
+<h3>Zero or More</h3>
+<p>Zero or more instances of an expression is indicated with the postfix &quot;*&quot; 
+(asterisk) character.</p>
+<h3>One or More</h3>
+<p>One or more instances of an expression is indicated with the postfix &quot;+&quot; (plus) 
+character.</p>
+<h3>Zero or One</h3>
+<p>Zero or more instances of an expression is indicated with the postfix &quot;?&quot; (question 
+mark) character.</p>
+<h3>Range</h3>
+<p>A range of expression occurrences is indicated with paired characters &quot;[&quot; and &quot;]&quot; 
+(open/close square bracket) characters.</p>
+<h3>Capture Group</h3>
+<p>A match can be captured (much like in Regex with the parenthesis) using the 
+paired characters &quot;&lt;&quot; and &quot;&gt;&quot; (open/close angle bracket) characters.&nbsp; This 
+syntax includes specifying a symbol name to refer to the matched expression, so a 
+capture will have the form &quot;&lt;sym:X&gt;&quot; where X is the match expression and 
+&quot;sym&quot; is a symbol that will be used to refer to the match expression.&nbsp; In 
+Semtrex, a very common thing is to convert one semantic tree into another 
+semantic tree.&nbsp; This form simplifies such transformations.</p>
+<h3>Not</h3>
+<p>Indicating that match must &quot;not have this expression&quot; is indicated with the 
+&quot;~&quot; (tilde) character.</p>
+<h3>Walk</h3>
+<p>The walk token &quot;%&quot; (percent sign) is used to walk an input tree - the tree is 
+&quot;walked&quot; until the first match expression that follows matches, then expression 
+matching continues from that point forward.</p>
+<h3>Siblings</h3>
+<p>Parentheses &quot;(&quot; and &quot;)&quot; always in pairs indicates that child expressions are 
+siblings.</p>
+<h3>Value Sets</h3>
+<p>To match on a set of values, the &quot;{&quot; and &quot;}&quot; (open/close curly brace) pairs 
+are used.&nbsp; Furthermore, string sets are double-quoted, character sets are 
+single-quoted, and numeric values are not quoted.&nbsp; Items in the set are 
+comma-delimited.&nbsp; Examples are:</p>
+<p>{&quot;ab&quot;,&quot;cd&quot;,&quot;zx&quot;}<br>
+{'a','b','c','d'}<br>
+{1,2,3,4}</p>
+<h3>Consume Everything</h3>
+<p>As in Regex, a trailing &quot;$&quot; (dollar sign) token is used to indicate that&nbsp; 
+for the expression to match, it must match the entire tree, i.e. there may not 
+be any children that don’t match.</p>
+<h2>Edge Space</h2>
+<p>A cornerstone of the Ceptr <i>architecture</i> is that it operates 
+exclusively with semantic data and therefore semantic trees.&nbsp; In the 
+broader picture, Ceptr provides a means for processing semantic data in virtual 
+machine &quot;receptors.&quot;&nbsp; Data is moved in and out of receptors as semantic 
+packages, or signals, which embody of course both the data and the semantics 
+corresponding to that data.&nbsp; In this way, receptors only process those 
+things that have semantic meaning to them.</p>
+<p>However, the rest of the world does not usually exchange semantic information 
+-- instead, it's often raw binary data or human-readable ASCII strings (like 
+this article.)&nbsp; We see some introduction of semantic meaning in XML and 
+JSON packets, both in their ability to structure the data and associate 
+attribute names (or keys) to the data.&nbsp; However, even with XML and JSON, 
+the attribute and keys are often high level abstractions, like &quot;address&quot; or 
+&quot;full name&quot;, or domain-specific, like &quot;domicile&quot; and &quot;maiden name.&quot;&nbsp; In the 
+former, a program parsing the data does not know that &quot;address&quot; actually refers, 
+semantically, a home address, vacation address, or business address (of many 
+options) and in the latter case, again a program parsing the key &quot;domicile&quot; 
+(which may have semantic meaning to the programmer that wrote the XML or JSON) 
+probably requires a &quot;translation&quot; to the semantic meaning &quot;home address.&quot;</p>
+<p>While this leaves the world with an almost infinite need for programmers to 
+constantly reformat one semantically poor data structure into another, equally 
+poor, semantic data structure, it still leaves us with the real world issue that 
+this problem does indeed exist.&nbsp; This is the &quot;edge space&quot; where &quot;data&quot; in 
+the outside world and semantic data inside of Ceptr is translated.</p>
+<h3>ASCII Tree</h3>
+<p>Interestingly though (and by intent) a Semtrex match expression can be used 
+to parse strings (and other formats) into meaningful semantic trees.&nbsp; 
+However, Semtrex is a <i>tree expression matcher.</i>&nbsp; So, how do we get, 
+say, a string, into a format that Semtrex can parse?</p>
+<p>The answer is by creating a flat tree, called and &quot;ASCII Tree&quot;, which 
+consists of nothing more than a root node and where each of the children is a 
+single character in the string.&nbsp; While this sounds silly, it allows us to 
+stay in the unified world of semantic trees as the input for Semtrex.&nbsp; 
+Another way to put it is, we are describing the string semantically with as much 
+meaning as we can give it at the moment: &quot;a string of ASCII characters&quot; which we 
+wrap into an ASCII Tree <i>representation.</i>&nbsp; We don't know what the 
+string is or what it contains, but now that we've got it in a tree structure, we 
+can parse it.</p>
+<h3>Match Expression</h3>
+<p>Now, here's the fun part -- the match expression is itself a semantic tree.&nbsp; 
+There's a certain pulling oneself up by the bootstraps going on here.&nbsp; We 
+can write a Semtrex expression in code, populating the expression tree that way, 
+or we can write a UI front-end that populates the expression tree, or, we can 
+de-serialize a &quot;human readable&quot; string that represents the match expression.&nbsp; 
+However, we use Semtrex itself to de-serialize the human readable string into an 
+expression tree!&nbsp; In other words, Semtrex can process human-readable 
+strings to create Semtrex tree expressions.</p>
+<h3>Match My Results</h3>
+<p><font color="#FF0000">Working with human-readable Semtrex strings is really a 
+three step process (much like working with Regex expressions.)&nbsp; First, we parse the input string into a semantic 
+tree--this is like any normal parsing code, only we use semtrexes internally to 
+do this!&nbsp; 
+Second, we convert the Semtrex tree into a kind of finite state automata (FSA) 
+that when run, moves around the input tree matching on the nodes and capturing 
+any values as specified in the semtrex expression.&nbsp; (For those deeply 
+interested the implementation takes lots of inspiration from http://swtch.com/~rsc/regexp/regexp1.html)
+</font> </p>
+<p><font color="#0000FF">use Semtrex again to match on the semantics and, where appropriate, 
+the value &quot;captures&quot; in the semantic graph (values which derive from 
+the original one-dimensional input string.)&nbsp; </font> </p>
+<p>For example, I want to use Semtrex to match HTTP requests (I'll use this 
+example repeatedly, so it's good to pay attention at this point.)&nbsp; Here's a 
+typical example of the human-readable string:</p>
+<pre>&quot;GET /path/to/file.ext?name=joe&amp;age=30 HTTP/0.9&quot;</pre>
+<p>The first part of the Semtrex expression to match on this string looks like 
+this:</p>
+<pre>/ASCII_CHARS/&lt;HTTP_REQUEST:&lt;HTTP_REQUEST_METHOD:ASCII_CHAR!=' '+&gt; (...etc...)</pre>
+<p>However, to accomplish this, first the human-readable string must be turned into an ASCII Tree:</p>
+<p>(C)<br>
+<pre>char *req = &quot;GET /path/to/file.ext?name=joe&amp;age=30 HTTP/0.9&quot;;<br>T *t,*s = _t_new_root(ASCII_CHARS);<br>while(*req) {<br>&nbsp; _t_newi(s,ASCII_CHAR,*req);<br>&nbsp; req++;<br>
+}</pre>
+<p>Second, the Semtrex expression (also in a &quot;human-readable&quot; form) must be 
+converted into an expression tree:</p>
+<p>(C)</p>
+<pre>char *stxs = &quot;/ASCII_CHARS/&lt;HTTP_REQUEST:&lt;HTTP_REQUEST_METHOD:ASCII_CHAR!=' '+&gt; (...etc...)
+T *stx = parseSemtrex(&amp;test_HTTP_defs,stxs);</pre>
+<p>I'll explain what <code>test_HTTP_defs</code> is later.</p>
+<p>In he third step, we execute the match function to obtain the results of the 
+expression: </p>
+<p>(C)</p>
+<pre>T *results;
+_t_matchr(stx,s,&amp;results);</pre>
+<p>The match results are themselves an expression tree.&nbsp; We 
+can then use Semtrex again to match on the values of those results, allowing us, 
+in the example above, to do something on the specific human-readable input 
+string, for example, routing the request to a particular handler (which gets us 
+in to what Ceptr does with carriers and receptors, which is beyond the scope of 
+this article.)</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+</body>
+
+</html>
