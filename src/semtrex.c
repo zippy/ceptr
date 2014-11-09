@@ -282,6 +282,9 @@ int __stx_freeFA(SState *s,int id) {
 __stx_freeFA2(SState *s) {
     if (s->out) __stx_freeFA2(s->out);
     if (s->out1) __stx_freeFA2(s->out1);
+    if (s->type == StateValue) {
+	_t_free(s->data.value.value);
+    }
     free(s);
 }
 
@@ -563,7 +566,7 @@ int __t_match(T *semtrex,T *source_t,T **rP) {
 	if (!s && depth) {
 	    --depth;
 	    if (rP) {
-		//		if (*rP) _t_free(*rP);
+		if (*rP) _t_free(*rP);
 		if (*rP = stack[depth].match) {
 		    r = _t_get(*rP,stack[depth].r_path);
 		    free(stack[depth].r_path);
@@ -597,16 +600,21 @@ int __t_match(T *semtrex,T *source_t,T **rP) {
 	    }
 	}
     }
-    if (rP && s) {
-	if (G_debug_match) {
-	puts("FIXING:");
-	__t_dump(G_d,*rP,0,buf);
-	puts(buf);
-	//	raise(SIGINT);
-	}
+    if (rP) {
+	if (s) {
+	    if (G_debug_match) {
+		puts("FIXING:");
+		__t_dump(G_d,*rP,0,buf);
+		puts(buf);
+		//	raise(SIGINT);
+	    }
 
-	// convert the cursor pointers to matched paths/sibling counts
-	__fix(source_t,*rP);
+	    // convert the cursor pointers to matched paths/sibling counts
+	    __fix(source_t,*rP);
+	}
+	else if(*rP) {
+	    _t_free(*rP);
+	}
     }
     // clean up any remaining stack frames
     while (depth--) {
@@ -1163,18 +1171,17 @@ T *parseSemtrex(Defs *d,char *stx) {
 	    T *p = _t_parent(v);
 	    _t_detach_by_ptr(p,v);
 
-	    size_t l = _t_size(v);  // value size
-
 	    char *symbol_name = (char *)_t_surface(t);
 
 	    Symbol vs = get_symbol(symbol_name,d);
 	    int not =  semeq(sym,STX_EQ) ? 0 : 1;
-	    int count = 1;
 
 	    __t_morph(t,SEMTREX_VALUE_LITERAL,&vs,sizeof(Symbol),1);
 	    if (not) _t_newr(t,SEMTREX_VALUE_LITERAL_NOT);
-	    void *val = _t_surface(v);
-	    _t_new(t,vs,val,l);
+
+	    // convert the STX_VAL structure token to the semantic type specified by the value literal
+	    v->contents.symbol = vs;
+	    _t_add(t,v);
 
 	    _t_free(results);
 	}
