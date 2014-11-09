@@ -829,11 +829,12 @@ void testSemtrexParseHHTPReq() {
     char *req = "GET /path/to/file.ext?name=joe&age=30 HTTP/0.9";
     T *r,*s = makeASCIITree(req);
 
-    //  char *stxs = "/ASCII_CHARS/<HTTP_REQUEST:<HTTP_REQUEST_METHOD:ASCII_CHAR!=' '+>,ASCII_CHAR=' ',<HTTP_REQUEST_PATH:<HTTP_REQUEST_PATH_SEGMENTS:(ASCII_CHAR='/',<HTTP_REQUEST_PATH_SEGMENT:ASCII_CHAR!={'/','?',' '}*>)+>>,<HTTP_REQUEST_PATH_FILE:<FILE_NAME:ASCII_CHAR!={'?',' '}+>,(ASCII_CHAR='.',<FILE_EXTENSION:ASCII_CHAR!={'?',' '}+>)?>,(ASCII_CHAR='?',<HTTP_REQUEST_PATH_QUERY:<HTTP_REQUEST_PATH_QUERY_PARAMS:<PARAM_KEY:ASCII_CHAR!={'&',' ','='}+>,<PARAM_VALUE:ASCII_CHAR!={'&',' '}*>>+>)?,ASCII_CHAR=' ',ASCII_CHAR='H',ASCII_CHAR='T',ASCII_CHAR='T',ASCII_CHAR='P',ASCII_CHAR='/',<HTTP_REQUEST_VERSION:<VERSION_MAJOR:ASCII_CHAR='0'>,ASCII_CHAR='.',<VERSION_MINOR:ASCII_CHAR='9'>>>";
+    //  char *stxs = "/ASCII_CHARS/<HTTP_REQUEST:<HTTP_REQUEST_METHOD:ASCII_CHAR!=' '+>,ASCII_CHAR=' ',<HTTP_REQUEST_PATH:<HTTP_REQUEST_PATH_SEGMENTS:(ASCII_CHAR='/',<HTTP_REQUEST_PATH_SEGMENT:ASCII_CHAR!={'/','?',' '}*>)+>>,(ASCII_CHAR='?',<HTTP_REQUEST_PATH_QUERY:<HTTP_REQUEST_PATH_QUERY_PARAMS:(<HTTP_REQUEST_PATH_QUERY_PARAM:<PARAM_KEY:ASCII_CHAR!={'&',' ','='}+>,ASCII_CHAR='=',<PARAM_VALUE:ASCII_CHAR!={'&',' '}*>>,ASCII_CHAR='&'?)+>+>)?,ASCII_CHAR=' ',ASCII_CHAR='H',ASCII_CHAR='T',ASCII_CHAR='T',ASCII_CHAR='P',ASCII_CHAR='/',<HTTP_REQUEST_VERSION:<VERSION_MAJOR:ASCII_CHAR='0'>,ASCII_CHAR='.',<VERSION_MINOR:ASCII_CHAR='9'>>>";
 
     char buf[5000];
-
-    T *stx = _makeHTTPRequestSemtrex();
+    T *stx;
+    //    stx = parseSemtrex(&test_HTTP_defs,stxs);
+    stx = _makeHTTPRequestSemtrex();
 
     __dump_semtrex(test_HTTP_defs,stx,buf);
     spec_is_str_equal(buf,"ASCII_CHARS/<HTTP_REQUEST:<HTTP_REQUEST_METHOD:ASCII_CHAR!=' '+>,ASCII_CHAR=' ',<HTTP_REQUEST_PATH:<HTTP_REQUEST_PATH_SEGMENTS:(ASCII_CHAR='/',<HTTP_REQUEST_PATH_SEGMENT:ASCII_CHAR!={'/','?',' '}*>)+>>,(ASCII_CHAR='?',<HTTP_REQUEST_PATH_QUERY:<HTTP_REQUEST_PATH_QUERY_PARAMS:(<HTTP_REQUEST_PATH_QUERY_PARAM:<PARAM_KEY:ASCII_CHAR!={'&',' ','='}+>,ASCII_CHAR='=',<PARAM_VALUE:ASCII_CHAR!={'&',' '}*>>,ASCII_CHAR='&'?)+>+>)?,ASCII_CHAR=' ',ASCII_CHAR='H',ASCII_CHAR='T',ASCII_CHAR='T',ASCII_CHAR='P',ASCII_CHAR='/',<HTTP_REQUEST_VERSION:<VERSION_MAJOR:ASCII_CHAR='0'>,ASCII_CHAR='.',<VERSION_MINOR:ASCII_CHAR='9'>>>");
@@ -849,6 +850,33 @@ void testSemtrexParseHHTPReq() {
     _t_free(r);
     _t_free(s);
     _t_free(stx);
+}
+
+void testEmbodyFromMatch() {
+
+    // test how embody from match ignores any capture that's identified as NULL_SYMBOL
+    char *ts = "label:abc,123";
+    T *r,*t = makeASCIITree(ts);
+    char buf[1000];
+    sX(LABELED_PAIR,LIST);
+    sX(LABEL,CSTRING);
+    sX(X1,CSTRING);
+    sX(X2,INTEGER);
+    Defs d = {0,0,0,0};
+    T *s;
+    char *stx;
+    s = parseSemtrex(&d,stx = "/ASCII_CHARS/<LABELED_PAIR:(<LABEL:ASCII_CHAR+>,<NULL_SYMBOL:ASCII_CHAR=':'>,<X1:ASCII_CHAR+>,<NULL_SYMBOL:ASCII_CHAR=','>,<X2:ASCII_CHAR+>)>");
+
+    spec_is_str_equal(__t_dump(0,s,0,buf)," (SEMTREX_SYMBOL_LITERAL:ASCII_CHARS (SEMTREX_GROUP:LABELED_PAIR (SEMTREX_SEQUENCE (SEMTREX_GROUP:LABEL (SEMTREX_ONE_OR_MORE (SEMTREX_SYMBOL_LITERAL:ASCII_CHAR))) (SEMTREX_GROUP:NULL_SYMBOL (SEMTREX_VALUE_LITERAL:ASCII_CHAR (ASCII_CHAR:':'))) (SEMTREX_GROUP:X1 (SEMTREX_ONE_OR_MORE (SEMTREX_SYMBOL_LITERAL:ASCII_CHAR))) (SEMTREX_GROUP:NULL_SYMBOL (SEMTREX_VALUE_LITERAL:ASCII_CHAR (ASCII_CHAR:','))) (SEMTREX_GROUP:X2 (SEMTREX_ONE_OR_MORE (SEMTREX_SYMBOL_LITERAL:ASCII_CHAR))))))");
+
+    spec_is_true(_t_matchr(s,t,&r));
+
+    T *e = _t_embody_from_match(0,r,t);
+    spec_is_str_equal(__t_dump(0,e,0,buf)," (LABELED_PAIR (LABEL:label) (X1:abc) (X2:123))");
+    _t_free(r);
+    _t_free(e);
+    _t_free(s);
+    _t_free(t);
 }
 
 void testSemtrex() {
@@ -870,7 +898,7 @@ void testSemtrex() {
     testMatchWalk();
     //testMatchNot();
     testSemtrexParse();
-
     testSemtrexParseHHTPReq();
+    testEmbodyFromMatch();
     _cleanup_HTTPDefs();
 }

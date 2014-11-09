@@ -676,6 +676,7 @@ T *_t_get_match(T *match,Symbol group)
 
 T *_t_embody_from_match(Defs *defs,T *match,T *t) {
     Symbol s = *(Symbol *)_t_surface(_t_child(match,1));
+    if (semeq(s,NULL_SYMBOL)) return 0;
     T *e;
     int i,j = _t_children(match);
     if (j > 3) {
@@ -683,7 +684,8 @@ T *_t_embody_from_match(Defs *defs,T *match,T *t) {
 	for(i=4;i<=j;i++) {
 	    T *c = _t_child(match,i);
 	    if (c) {
-		_t_add(e,_t_embody_from_match(defs,c,t));
+		T *r = _t_embody_from_match(defs,c,t);
+		if (r) _t_add(e,r);
 	    }
 	}
     }
