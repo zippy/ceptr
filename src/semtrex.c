@@ -101,17 +101,22 @@ char * __stx_makeFA(T *t,SState **in,Ptrlist **out,int level,int *statesP) {
     int x;
     SemanticID group_symbol;
     int group_id;
+    T *v;
 
     int c = _t_children(t);
     Symbol sym = _t_symbol(t);
     switch(sym.id) {
     case SEMTREX_VALUE_LITERAL_ID:
+    case SEMTREX_VALUE_LITERAL_NOT_ID:
 	state_type = StateValue;
 	s = state(state_type,statesP);
-	s->data.value.symbol = *(Symbol *)_t_surface(t);
-
-	// copy the value from the semtrex into the state
-	s->data.value.value = _t_clone(t);
+	s->data.value.not = sym.id == SEMTREX_VALUE_LITERAL_NOT_ID;
+	// copy the value set (which must be the first child) from the semtrex into the state
+	v = _t_child(t,1);
+	if (!v || !semeq(SEMTREX_VALUE_SET,_t_symbol(v))) {
+	    raise_error0("expecting SEMTREX_VALUE_SET as first child of SEMTREX_VALUE_LITERAL");
+	}
+	s->data.value.value = _t_clone(v);
 	*in = s;
 	s->transition = level;
 	*out = list1(&s->out);
@@ -461,7 +466,7 @@ int __t_match(T *semtrex,T *source_t,T **rP) {
     int depth = 0;
     T *t1,*t = source_t;
     int matched;
-    T *r = 0;
+    T *r = 0,*x;
     if (rP) *rP = 0;
 
     SgroupOpen *o;
@@ -476,21 +481,29 @@ int __t_match(T *semtrex,T *source_t,T **rP) {
 	    if (!t) {FAIL;}
 	    else {
 		T *v = s->data.value.value;
-		T *n = _t_child(v,1);
-		int not;
-		not = semeq(_t_symbol(n),SEMTREX_VALUE_LITERAL_NOT);
 
-		if (!__symbol_match(s,t)) FAIL;
+		if (!t) FAIL;
 		int count = _t_children(v);
 		int i;
 		if (G_debug_match) {
 		    __t_dump(G_d,v,0,buf);printf("  seeking:%s\n",buf);
 		}
-		if (not) {
-		    for(i=2;i<=count && (matched = !_val_match(t,_t_child(v,i)));i++);
+		Symbol ts = _t_symbol(t);
+		if (s->data.value.not) {
+		    // all in the set must not match
+		    matched = 1;
+		    for(i=1;i<=count && matched;i++) {
+			x = _t_child(v,i);
+			matched = !(semeq(ts,_t_symbol(x)) && _val_match(t,x));
+		    }
 		}
 		else {
-		    for(i=1;i<=count && !(matched = _val_match(t,_t_child(v,i)));i++);
+		    // at least one in the set much match
+		    matched = 0;
+		    for(i=1;i<=count && !matched; i++) {
+			x = _t_child(v,i);
+			matched = semeq(ts,_t_symbol(x)) && _val_match(t,x);
+		    }
 		}
 
 		if (!matched) FAIL;
@@ -734,29 +747,32 @@ char * __dump_semtrex(Defs defs,T *s,char *buf) {
     char b[5000];
     char b1[5000];
     char *sn,*bx;
-    T *t;
+    T *t,*v;
     int i,c;
     SemanticID sem;
     switch(sym.id) {
     case SEMTREX_VALUE_LITERAL_ID:
-	sem = *(SemanticID *)_t_surface(s);
+    case SEMTREX_VALUE_LITERAL_NOT_ID:
+	v = _t_child(s,1); //get the value set
+	// assumes type is the same for all children when dumping
+	T *v1 = _t_child(v,1);
+	if (!v1) {raise_error0("missing value set!");}
+	sem = _t_symbol(v1);
 	sn = _d_get_symbol_name(defs.symbols,sem);
 	if (*sn=='<')
 	    sprintf(b,"%d.%d.%d",sem.context,sem.flags,sem.id);
 	else
 	    sprintf(b,"%s",sn);
 	Structure st = _d_get_symbol_structure(defs.symbols,sem);
-	T *n = _t_child(s,1);
-	int not;
-	if (not = semeq(_t_symbol(n),SEMTREX_VALUE_LITERAL_NOT)) {
+	if (sym.id == SEMTREX_VALUE_LITERAL_NOT_ID) {
 	    sprintf(b+strlen(b),"!");
 	}
 	sprintf(b+strlen(b),"=");
-	int count = _t_children(s);
-	if ((count-not) > 1)
+	int count = _t_children(v);
+	if (count > 1)
 	    sprintf(b+strlen(b),"{");
-	for(i=1+not;i<=count;i++) {
-	    T *x = _t_child(s,i);
+	for(i=1;i<=count;i++) {
+	    T *x = _t_child(v,i);
 	    if (semeq(st,CSTRING))
 		sprintf(b+strlen(b),"\"%s\"",(char *)(_t_surface(x)));
 	    else if (semeq(st,CHAR))
@@ -767,7 +783,7 @@ char * __dump_semtrex(Defs defs,T *s,char *buf) {
 	    if (i < count)
 		sprintf(b+strlen(b),",");
 	}
-	if ((count - not) > 1)
+	if (count > 1)
 	    sprintf(b+strlen(b),"}");
 	sprintf(buf,"%s",b);
 	break;
@@ -847,21 +863,21 @@ char * _dump_semtrex(Defs defs,T *s,char *buf) {
 
 // helper to add a stx_char value literal to a semtrex
 T *__stxcv(T *p,char c) {
-    T *t =  _t_news(p,SEMTREX_VALUE_LITERAL,ASCII_CHAR);
-    _t_newi(t,ASCII_CHAR,c);
+    T *t =  _t_newr(p,SEMTREX_VALUE_LITERAL);
+    T *v = _t_newr(t,SEMTREX_VALUE_SET);
+    _t_newi(v,ASCII_CHAR,c);
     return t;
 }
 
 T *__stxcvm(T *p,int not,int count,...) {
     va_list chars;
-    T *t =  _t_news(p,SEMTREX_VALUE_LITERAL,ASCII_CHAR);
-    if (not) {
-	_t_newr(t,SEMTREX_VALUE_LITERAL_NOT);
-    }
+    T *t =  _t_newr(p,not?SEMTREX_VALUE_LITERAL_NOT:SEMTREX_VALUE_LITERAL);
+    T *v = _t_newr(t,SEMTREX_VALUE_SET);
+
     va_start(chars,count);
     int i;
     for(i=0;i<count;i++) {
-	_t_newi(t,ASCII_CHAR,va_arg(chars,int));
+	_t_newi(v,ASCII_CHAR,va_arg(chars,int));
     }
     va_end(chars);
 

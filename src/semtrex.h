@@ -74,13 +74,12 @@ typedef struct SgroupClose {
 
 
 typedef struct Svalue {
-    Symbol symbol;
+    int not;
     T *value;
 } Svalue;
 /**
  * Different state types need to store different kinds of values so we put them in a union
  *
- * @note cool coding hack: the value item of this list include a Symbol as it's first items so that we can share the code that matches on symbol!!
  */
 typedef union STypeData
 {
