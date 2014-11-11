@@ -969,7 +969,7 @@ Symbol get_symbol(char *symbol_name,Defs *d) {
    a utility function to move the contents of paren/group tokens as children of the
    open token.
    Assumes the semtrex results was from a semtrex of the form:
-     ...  {STX_OP:STX_OP,{STX_SIBS:!STX_CP+},STX_CP}
+     ...  <STX_OP:STX_OP,<STX_SIBS:!STX_CP+>,STX_CP>
      where the contents is marked by one group (in the case above STX_SIBS) and the
      the whole thing is marked by an "open" group
 
@@ -978,11 +978,6 @@ T *wrap(T *tokens,T *results, Symbol contents_s, Symbol open_s) {
     T *m = _t_get_match(results,contents_s);
     T *om = _t_get_match(results,open_s);
 
-/*    char buf[2000];
-    __t_dump(0,results,0,buf);
-    puts("WRAP:");
-    puts(buf);
-*/
     // transfer the contents nodes to the open node
     int count = *(int *)_t_surface(_t_child(m,3));
     int *cpath = (int *)_t_surface(_t_child(m,2));
@@ -1258,7 +1253,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 	/////////////////////////////////////////////////////
 	// replace paren groups with STX_SIBS list
 	// EXPECTATION
-	// /STX_TOKENS/.*,<STX_OP:STX_OP,<STX_SIBS:!STX_CP+>,STX_CP>
+	// /STX_TOKENS/.*,<STX_OP:STX_OP,<STX_SIBS:!{STX_CP,STX_OP}+>,STX_CP>
 	sxx = _sl(0,STX_TOKENS);
 	sq = _t_newr(sxx,SEMTREX_SEQUENCE);
 	T *st = _t_newr(sq,SEMTREX_ZERO_OR_MORE);
@@ -1268,7 +1263,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 	_sl(sq1,STX_OP);
 	T *g = _t_news(sq1,SEMTREX_GROUP,STX_SIBS);
 	T *any = _t_newr(g,SEMTREX_ONE_OR_MORE);
-	_sln(any,STX_CP);
+	__sl(any,1,2,STX_OP,STX_CP);
 	_sl(sq1,STX_CP);
 
 	//----------------
@@ -1286,7 +1281,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 	/////////////////////////////////////////////////////
 	// find groups
 	// EXPECTATION
-	// /%,<STX_OG:STX_OG,<SEMTREX_GROUP:~(STX_CG|STX_OG)+>,STX_CG>
+	// /%,<STX_OG:STX_OG,<SEMTREX_GROUP:!{STX_CG,STX_OG}+>,STX_CG>
 	sxx = _t_new_root(SEMTREX_WALK);
 	g = _t_news(sxx,SEMTREX_GROUP,STX_OG);
 	sq = _t_newr(g,SEMTREX_SEQUENCE);
@@ -1294,11 +1289,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 	gg = _t_news(sq,SEMTREX_GROUP,SEMTREX_GROUP);
 	any = _t_newr(gg,SEMTREX_ONE_OR_MORE);
 
-	//	t = _t_newr(any,SEMTREX_NOT);
-	//o=  _t_newr(t,SEMTREX_OR);
-	//_sl(o,STX_CG);
-	//_sl(o,STX_OG);
-	_sln(any,STX_CG);
+	__sl(any,1,2,STX_OG,STX_CG);
 	_sl(sq,STX_CG);
 
 	//----------------

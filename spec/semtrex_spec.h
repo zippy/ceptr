@@ -850,6 +850,12 @@ void testSemtrexParse() {
     _t_free(s);
 
 
+    stx = "/STX_TOKENS/(.*,<STX_OP:STX_OP,<STX_SIBS:!STX_CP+>,STX_CP>)";
+    s = parseSemtrex(&d,stx);
+    spec_is_str_equal(_dump_semtrex(&d,s,buf),stx);
+    spec_is_str_equal(__t_dump(&d,s,0,buf)," (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL_SET (SEMTREX_SYMBOL:STX_TOKENS)) (SEMTREX_SEQUENCE (SEMTREX_ZERO_OR_MORE (SEMTREX_SYMBOL_ANY)) (SEMTREX_GROUP:STX_OP (SEMTREX_SEQUENCE (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL_SET (SEMTREX_SYMBOL:STX_OP))) (SEMTREX_GROUP:STX_SIBS (SEMTREX_ONE_OR_MORE (SEMTREX_SYMBOL_LITERAL_NOT (SEMTREX_SYMBOL_SET (SEMTREX_SYMBOL:STX_CP))))) (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL_SET (SEMTREX_SYMBOL:STX_CP)))))))");
+    _t_free(s);
+
 }
 
 void testSemtrexParseHHTPReq() {
@@ -860,7 +866,7 @@ void testSemtrexParseHHTPReq() {
 
     char buf[5000];
     T *stx;
-    //    stx = parseSemtrex(&test_HTTP_defs,stxs);
+    //stx = parseSemtrex(&test_HTTP_defs,stxs);
     stx = _makeHTTPRequestSemtrex();
 
     __dump_semtrex(&test_HTTP_defs,stx,buf);
