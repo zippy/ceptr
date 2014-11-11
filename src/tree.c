@@ -351,6 +351,10 @@ void _t_insert_at(T *t, int *path, T *i) {
 		return;
 	    }
 	}
+	else if (d==0) { // special case to insert into first child of empty root
+	    _t_add(t,i);
+	    return;
+	}
 	raise_error0("Path must lead to an existing node or one after last child.");
     }
 }

@@ -1242,12 +1242,12 @@ T *parseSemtrex(Defs *d,char *stx) {
 	    Symbol vs = get_symbol(symbol_name,d);
 	    int not =  semeq(sym,STX_EQ) ? 0 : 1;
 
-	    __t_morph(t,SEMTREX_VALUE_LITERAL,&vs,sizeof(Symbol),1);
-	    if (not) _t_newr(t,SEMTREX_VALUE_LITERAL_NOT);
+	    t->contents.symbol = not ? SEMTREX_VALUE_LITERAL_NOT : SEMTREX_VALUE_LITERAL;
+	    T *set = _t_newr(t,SEMTREX_VALUE_SET);
 
 	    // convert the STX_VAL structure token to the semantic type specified by the value literal
 	    v->contents.symbol = vs;
-	    _t_add(t,v);
+	    _t_add(set,v);
 
 	    _t_free(results);
 	}
@@ -1565,7 +1565,11 @@ T *parseSemtrex(Defs *d,char *stx) {
 	    t = _t_get(tokens,path);
 	    char *symbol_name = (char *)_t_surface(t);
 	    Symbol sy = get_symbol(symbol_name,d);
-	    __t_morph(t,semeq(t->contents.symbol,STX_LABEL)?SEMTREX_SYMBOL_LITERAL:SEMTREX_SYMBOL_LITERAL_NOT,&sy,sizeof(Symbol),1);
+	    t->contents.symbol = semeq(t->contents.symbol,STX_LABEL)?SEMTREX_SYMBOL_LITERAL:SEMTREX_SYMBOL_LITERAL_NOT;
+	    T *ss = _t_newr(0,SEMTREX_SYMBOL_SET);
+	    _t_news(ss,SEMTREX_SYMBOL,sy);
+	    int pp[2] = {1,TREE_PATH_TERMINATOR};
+	    _t_insert_at(t,pp,ss);
 
 	    _t_free(results);
 	}

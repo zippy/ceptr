@@ -326,6 +326,14 @@ void testTreeInsertAt() {
 
     _t_free(t);
     //! [testTreeInsertAt]
+
+    t = _t_new_root(ASCII_CHARS);
+    p[0] = 1;
+    p[1] = TREE_PATH_TERMINATOR;
+    _t_insert_at(t,p,_t_newi(0,ASCII_CHAR,'x'));
+    __t_dump(0,t,0,buf);
+    spec_is_str_equal(buf," (ASCII_CHARS (ASCII_CHAR:'x'))");
+    _t_free(t);
 }
 
 void testTreeMorph() {

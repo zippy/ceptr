@@ -248,7 +248,7 @@ void testReceptorDefMatch() {
     char buf[2000];
     spec_is_str_equal(_dump_semtrex(&r->defs,stx,buf),"/house location/(latitude,longitude)");
     __t_dump(&r->defs,stx,0,buf);
-    spec_is_str_equal(buf," (SEMTREX_SYMBOL_LITERAL:house location (SEMTREX_SEQUENCE (SEMTREX_SYMBOL_LITERAL:latitude) (SEMTREX_SYMBOL_LITERAL:longitude)))");
+    spec_is_str_equal(buf," (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL_SET (SEMTREX_SYMBOL:house location)) (SEMTREX_SEQUENCE (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL_SET (SEMTREX_SYMBOL:latitude))) (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL_SET (SEMTREX_SYMBOL:longitude)))))");
 
     // a correctly structured tree should match its definition
     spec_is_true(_r_def_match(r,house_loc,t));
