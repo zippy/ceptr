@@ -141,7 +141,8 @@ T *_makeTestHTTPRequestTree() {
 
     // confirm that we built the request right!
      T *stx = _d_build_def_semtrex(test_HTTP_defs,HTTP_REQUEST,0);
-     if (!_t_match(stx,t)) {raise_error0("BAD HTTP_REQUEST");}
+
+     if (!_t_match(stx,t)) {raise_error0("BAD HTTP_REQUEST semtrex");}
      _t_free(stx);
 
     return t;
@@ -186,7 +187,7 @@ Process _makeTestHTTPResponseProcess(Receptor *r) {
 T *_makeHTTPRequestSemtrex() {
     T *t;
 
-    T *stx= _t_news(0,SEMTREX_SYMBOL_LITERAL,ASCII_CHARS);
+    T *stx= _sl(0,ASCII_CHARS);
     t = _t_news(stx,SEMTREX_GROUP,HTTP_REQUEST);
     T *sq = _t_newr(t,SEMTREX_SEQUENCE);
     t = _t_news(sq,SEMTREX_GROUP,HTTP_REQUEST_METHOD);

@@ -11,6 +11,7 @@
 
 #include "tree.h"
 #include "def.h"
+#include "semtrex.h"
 char __d_extra_buf[100];
 
 int semeq(SemanticID s1,SemanticID s2) {
@@ -300,7 +301,7 @@ Process _d_code_process(T *processes,T *code,char *name,char *intention,T *in,T 
  * @snippet spec/def_spec.h testDefSemtrex
 */
 T * _d_build_def_semtrex(Defs defs,Symbol s,T *parent) {
-    T *stx = _t_news(parent,SEMTREX_SYMBOL_LITERAL,s);
+    T *stx = _sl(parent,s);
 
     Structure st = _d_get_symbol_structure(defs.symbols,s);
     if (!(is_sys_structure(st))) {

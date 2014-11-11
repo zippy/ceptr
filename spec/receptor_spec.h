@@ -246,7 +246,7 @@ void testReceptorDefMatch() {
 
     T *stx = _r_build_def_semtrex(r,house_loc);
     char buf[2000];
-    spec_is_str_equal(_dump_semtrex(r->defs,stx,buf),"/house location/(latitude,longitude)");
+    spec_is_str_equal(_dump_semtrex(&r->defs,stx,buf),"/house location/(latitude,longitude)");
     __t_dump(&r->defs,stx,0,buf);
     spec_is_str_equal(buf," (SEMTREX_SYMBOL_LITERAL:house location (SEMTREX_SEQUENCE (SEMTREX_SYMBOL_LITERAL:latitude) (SEMTREX_SYMBOL_LITERAL:longitude)))");
 

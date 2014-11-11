@@ -48,11 +48,13 @@ enum SystemSymbolIDs
     //-----  Symbols for the different semantic parts of semtrexes
     SEMTREX_MATCHED_PATH_ID,              ///< path to symbol matched by semtrex
     SEMTREX_SYMBOL_LITERAL_ID,            ///< This system symbol matches on the semantic type.         Ex: /TEST_SYMBOL
+    SEMTREX_SYMBOL_LITERAL_NOT_ID,                ///< Match any symbol or value of the node except.           Ex: .
+    SEMTREX_SYMBOL_SET_ID,
+    SEMTREX_SYMBOL_ID,                    ///< symbols in the literal set
     SEMTREX_SEQUENCE_ID,                  ///< Match on a sequence of child nodes which are any valid semtrex's.  Ex: comma separated nodes
     SEMTREX_OR_ID,                        ///< Logical OR between two Semtrex expressions.      Ex: |
     SEMTREX_NOT_ID,                       ///< Logical ~ between of a Semtrex expressions.      Ex: ~
     SEMTREX_SYMBOL_ANY_ID,                ///< Match any symbol or value of the node.           Ex: .
-    SEMTREX_SYMBOL_EXCEPT_ID,                ///< Match any symbol or value of the node except.           Ex: .
     SEMTREX_ZERO_OR_MORE_ID,              ///< Requires one child Semtrex and matches on zero or more of that Semtrex.  Ex: /0/TestSemtrex*
     SEMTREX_ONE_OR_MORE_ID,               ///< Requires one child Semtrex and matches on one or more of that Semtrex.   Ex: /0/TestSemtrex+
     SEMTREX_ZERO_OR_ONE_ID,               ///< Requires one child Semtrex and matches on zero or one of that Semtrex.   Ex: /0/TestSemtrex?
@@ -259,11 +261,13 @@ Symbol TRUE_FALSE;
 
 Symbol SEMTREX_MATCHED_PATH;
 Symbol SEMTREX_SYMBOL_LITERAL;
+Symbol SEMTREX_SYMBOL_LITERAL_NOT;
+Symbol SEMTREX_SYMBOL_SET;
+Symbol SEMTREX_SYMBOL;
 Symbol SEMTREX_SEQUENCE;
 Symbol SEMTREX_OR;
 Symbol SEMTREX_NOT;
 Symbol SEMTREX_SYMBOL_ANY;
-Symbol SEMTREX_SYMBOL_EXCEPT;
 Symbol SEMTREX_ZERO_OR_MORE;
 Symbol SEMTREX_ONE_OR_MORE;
 Symbol SEMTREX_ZERO_OR_ONE;

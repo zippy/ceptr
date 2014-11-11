@@ -75,15 +75,22 @@ typedef struct SgroupClose {
 
 typedef struct Svalue {
     int not;
-    T *value;
+    T *values;
 } Svalue;
+
+typedef struct Sliteral {
+    int not;
+    T *symbols;
+} Sliteral;
+
+
 /**
  * Different state types need to store different kinds of values so we put them in a union
  *
  */
 typedef union STypeData
 {
-    Symbol symbol;  ///< Symbol to match on for StateSymbol type states
+    Sliteral symbol;  ///< Symbol to match on for StateSymbol type states
     Svalue value;   ///< Value data to match on for StateValue type states
     SgroupOpen groupo;   ///< Group data for matching for StateGroup type states
     SgroupClose groupc;   ///< Group data for matching for StateGroup type states
@@ -110,7 +117,7 @@ T *G_ts,*G_te;
 int _t_matchr(T *semtrex,T *t,T **r);
 T *_t_get_match(T *result,Symbol group);
 T *_t_embody_from_match(Defs *defs,T *match,T *t);
-char * _dump_semtrex(Defs defs,T *s,char *buf);
+char * _dump_semtrex(Defs *defs,T *s,char *buf);
 T *makeASCIITree(char *c);
 T *parseSemtrex(Defs *d,char *stx);
 
@@ -121,8 +128,14 @@ T *asciiT_toi(T* asciiT,T* match,T *t,Symbol s);
 T *asciiT_tos(T* asciiT,T* match,T *t,Symbol s);
 T *asciiT_toc(T* asciiT,T* match,T *t,Symbol s);
 
+#define _sl(t,s) __sl(t,0,1,s)
+#define _sln(t,s) __sl(t,1,1,s)
 
-#define DT(l,t) puts("\n" #l ":");__t_dump(0,t,0,buf);puts(buf);
+T *__sl(T *p, int not,int count, ...);
+
+#define DT(l,t) {char buf[1000];puts("\n" #l ":");__t_dump(0,t,0,buf);puts(buf);}
+
+#define DS(l,t) {Defs d = {0,0,0,0};char buf[1000];puts("\n" #l ":");_dump_semtrex(&d,t,buf);puts(buf);}
 
 #endif
 
