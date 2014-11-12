@@ -338,6 +338,12 @@ T *G_ts,*G_te;
 #define MATCH_DEBUG(s)
 #endif
 
+/**
+ * check that a SEMTREX_SYMBOL_SET contains the given symbol
+ * @param[in] s symbol
+ * @param[in] t SEMTREX_SYMBOL_SET tree
+ * @returns 1 or 0
+ */
 int __symbol_set_contains(T *s,T *t) {
     if (!t) return 0;
     int i,c = _t_children(s);
@@ -348,6 +354,12 @@ int __symbol_set_contains(T *s,T *t) {
     return 0;
 }
 
+/**
+ * check that a SEMTREX_SYMBOL_SET does not contain the given symbol
+ * @param[in] s symbol
+ * @param[in] t SEMTREX_SYMBOL_SET tree
+ * @returns 1 or 0
+ */
 int __symbol_set_does_not_contain(T *s,T *t) {
     if (!t) return 0;
     int i,c = _t_children(s);
@@ -379,6 +391,8 @@ T * __transition(SState *s,T *t) {
     return t;
 }
 
+// helper to see if the surface of given tree nodes matche
+// @todo move this to tree.c
 int _val_match(T *t,T *t1) {
 
     int i;
@@ -388,10 +402,10 @@ int _val_match(T *t,T *t1) {
 
     return memcmp(_t_surface(t),_t_surface(t1),l)==0;
 }
-#define _next_pair(l)     l = (size_t *)(sizeof(size_t)+*l+(void *)l);
 
 #define FAIL {s=0;break;}
 
+// structure to hold backtracking data for match algorithm
 typedef struct BranchPoint {
     T *walk;
     SState *s;
@@ -465,11 +479,11 @@ void __fix(T *source_t,T *r) {
 #define TRANSITION(x) if (!t) {FAIL;}; if (!x) {FAIL;}; t = __transition(s,t); s = s->out;
 
 /**
- * Walk the FSA in s using a recursive backtracing algorithm to match the tree in t.
+ * build an FSA from semtrex tree and walk it using a recursive backtracing algorithm to match the tree in t.
  *
- * @param[in] s FSA to use for matching a tree
- * @param[in] t tree to match against
- * @param[inout] r match results tree being built.  (nil if no results needed)
+ * @param[in] semtrex tree to use for matching a tree
+ * @param[in] source_t tree to match against
+ * @param[inout] rP match results tree being built.  (nil if no results needed)
  * @returns 1 or 0 if matched or not
  */
 int __t_match(T *semtrex,T *source_t,T **rP) {
@@ -681,6 +695,7 @@ int _t_match(T *semtrex,T *t) {
 
 /**
  * extract the portion of a semtrex match results that corresponds with a given group symbol
+ *
  * @param[in] result match results from the _t_matchr call
  * @param[in] group the uid from the semtrex group that you want the result for
  * @returns T of the match or NULL if no such match found
@@ -701,7 +716,15 @@ T *_t_get_match(T *match,Symbol group)
     return 0;
 }
 
-T *_t_embody_from_match(Defs *defs,T *match,T *t) {
+/**
+ * create a new tree based on the matched elements from a semtrex match
+ *
+ * @param[in] defs definitions of the semantic context
+ * @param[in] match a match from a call to _t_matchr
+ * @param[in] parent the parent tree to add the embodiment into
+ *
+ */
+T *_t_embody_from_match(Defs *defs,T *match,T *parent) {
     Symbol s = *(Symbol *)_t_surface(_t_child(match,1));
     if (semeq(s,NULL_SYMBOL)) return 0;
     T *e;
@@ -711,7 +734,7 @@ T *_t_embody_from_match(Defs *defs,T *match,T *t) {
 	for(i=4;i<=j;i++) {
 	    T *c = _t_child(match,i);
 	    if (c) {
-		T *r = _t_embody_from_match(defs,c,t);
+		T *r = _t_embody_from_match(defs,c,parent);
 		if (r) _t_add(e,r);
 	    }
 	}
@@ -725,14 +748,14 @@ T *_t_embody_from_match(Defs *defs,T *match,T *t) {
 	T *x;
 	switch(st.id) {
 	case CSTRING_ID:
-	    return asciiT_tos(t,match,0,s);
+	    return asciiT_tos(parent,match,0,s);
 	case INTEGER_ID:
-	    return asciiT_toi(t,match,0,s);
+	    return asciiT_toi(parent,match,0,s);
 	case CHAR_ID:
-	    return asciiT_toc(t,match,0,s);
+	    return asciiT_toc(parent,match,0,s);
 	default:
 	    p = (int *)_t_surface(_t_child(match,2));
-	    x = _t_get(t,p);
+	    x = _t_get(parent,p);
 	    e = _t_clone(x);
 	}
     }
@@ -895,6 +918,14 @@ char * __dump_semtrex(Defs *defs,T *s,char *buf) {
     return buf;
 }
 
+/**
+ * convert a semtrex tree into linear text format
+ *
+ * @param[in] defs pointer to definitions for printing out symbol names
+ * @param[in] s the semtrex tree
+ * @param[in] buf the string buffer to fill
+ * @returns the buffer
+ */
 char * _dump_semtrex(Defs *defs,T *s,char *buf) {
     buf[0] = '/';
     __dump_semtrex(defs,s,buf+1);
@@ -909,6 +940,7 @@ T *__stxcv(T *p,char c) {
     return t;
 }
 
+// helper to to add a semtrex literal value set of ascii chars to a semtrex
 T *__stxcvm(T *p,int not,int count,...) {
     va_list chars;
     T *t =  _t_newr(p,not?SEMTREX_VALUE_LITERAL_NOT:SEMTREX_VALUE_LITERAL);
@@ -956,6 +988,8 @@ Symbol _get_symbol(char *symbol_name,Defs *d,Context ctx) {
     return NULL_SYMBOL;
 }
 
+// temporary function to look up a symbol name in a defintion
+// @todo convert this to use the label table
 Symbol get_symbol(char *symbol_name,Defs *d) {
     Symbol s = _get_symbol(symbol_name,&G_sys_defs,SYS_CONTEXT);
     if (!semeq(s,NULL_SYMBOL))
@@ -1035,7 +1069,7 @@ T *asciiT_toi(T* asciiT,T* match,T *t,Symbol s) {
 
 /**
  * convert ascii tokens from a match to a string and add them to the given tree
-*/
+ */
 T *asciiT_tos(T* asciiT,T* match,T *t,Symbol s) {
     char buf[255];
     int sibs = *(int *)_t_surface(_t_child(match,3));
@@ -1058,6 +1092,9 @@ T *asciiT_toc(T* asciiT,T* match,T *t,Symbol s) {
     return _t_newi(t,s,c);
 }
 
+/**
+ * utility function to create a semtrex litteral symbol set
+ */
 T *__sl(T *p, int not,int count, ...) {
     va_list symbols;
     T *t = _t_newr(p,not ? SEMTREX_SYMBOL_LITERAL_NOT : SEMTREX_SYMBOL_LITERAL);

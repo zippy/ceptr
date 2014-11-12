@@ -1,25 +1,7 @@
 /**
  * @defgroup semtrex Semantic Tree Regular Expressions
  *
- * @brief Semtrex provides a language for pattern matching on semtantic trees
-
- Here is a pseudo BNF (what we are calling a TNF for Tree Normal Form)
- that describes how Semtrexs can be constructed:
-
- @code
- Semtrex ::= Root [ / Child]
- Root ::= Literal | Value | Or | Any | Question | Group
- Child ::=  Root | OneOrMore | ZeroOrMore | ZeroOrOne | Sequence
- OneOrMore ::= "+" / Semtrex
- ZeroOrMore ::= "*" / Semtrex
- ZeroOrOne ::= "?" / Semtrex
- Sequence ::= "," / Semtrex [, Semtrex]...
- Or ::= "|" / Semtrex1 , Semtrex2
- Literal ::= "LITERAL(<symbol>)" [ / Semtrex]
- Value ::= "VALUE(<symbol>)=<value>" [ / Semtrex]
- Any ::= "." [ / Semtrex]
- Group ::= "{<symbol>}" / Semtrex
- @endcode
+ * @brief Semtrex provides a language for pattern matching on semantic trees
  * @{
 
  * @file semtrex.h

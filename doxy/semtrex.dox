@@ -1,0 +1,33 @@
+/**
+   @page semtrex Semtrex explained
+   @ingroup semtrex
+
+   Semantic Tree Regular Expressions (Semtrex for short) provide a matching language for semantic trees that will feel familiar to anyone who has used regular expressions for matching on strings.
+
+   A Semtrex's is itself a semantic tree, but we have also created a linear textual representation of (and parser for) semtrex trees to make it easier to create them until we build better UI for processing trees in general.
+
+   Here's a BNF for the textual representation of semtrex trees:
+
+ @code
+ Semtrex ::= Root [ "/" Child...]
+ Root ::= "/" Element
+ Child ::= Element | Optional | Semtrex
+ Element ::= Walk | SymbolLiteral | ValueLiteral | Any | Capture
+ Optional ::= Or | ZeroOrMore | OneOrMore | ZeroOrOne
+ Walk ::= "%" Semtrex
+ OneOrMore ::= Semtrex "+"
+ ZeroOrMore ::= Semtrex "*"
+ ZeroOrOne ::= Semtrex "?"
+ Sequence ::= Semtrex ["," Semtrex]...
+ Siblings ::= "(" Sequence ")"
+ Or ::= Semtrex "|" Semtrex
+ SymbolLiteral ::= ["!"]_symbol_
+ SymbolLiteralSet ::= ["!"] "{" _symbol_ ["," _symbol_]... "}"
+ Value ::= StringValue|CharValue|IntValue
+ ValueLiteral ::= _symbol_ ["!"] "=" Value
+ ValueLiteralSet ::= _symbol_ ["!"] "={" Value ["," Value ]... "}"
+ Any ::= "."
+ Capture ::= "<"_symbol_ ":" Semtrex ">"
+ @endcode
+
+*/
