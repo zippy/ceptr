@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['receptor',['Receptor',['../structReceptor.html',1,'']]]
+  ['ptrlist',['Ptrlist',['../unionPtrlist.html',1,'']]]
 ];

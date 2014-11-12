@@ -102,13 +102,14 @@ $(document).ready(function(){initNavTree('group__semtrex.html','');});
 <a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">Semantic Tree Regular Expressions</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Semtrex provides a language for pattern matching on semtantic trees.  
+<p>Semtrex provides a language for pattern matching on semantic trees.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="files"></a>
@@ -122,11 +123,13 @@ Files</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSvalue.html">Svalue</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSgroupOpen.html">SgroupOpen</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSgroupClose.html">SgroupClose</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSvalue.html">Svalue</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSliteral.html">Sliteral</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="unionSTypeData.html">STypeData</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -141,6 +144,18 @@ Macros</h2></td></tr>
 <tr class="memitem:gabc00a44ebca777cfe3d7cb823bb058b5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gabc00a44ebca777cfe3d7cb823bb058b5"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>GroupClose</b>&#160;&#160;&#160;0</td></tr>
 <tr class="separator:gabc00a44ebca777cfe3d7cb823bb058b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga12e70dc3d5fde33655e8731ad3bdd935"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga12e70dc3d5fde33655e8731ad3bdd935"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>_sl</b>(t, s)&#160;&#160;&#160;<a class="el" href="group__semtrex.html#ga0eb6f4bfe908f6e8a680c56e8468b523">__sl</a>(t,0,1,s)</td></tr>
+<tr class="separator:ga12e70dc3d5fde33655e8731ad3bdd935"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac1b578cc9fc2f835ad12855698fe4cf2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gac1b578cc9fc2f835ad12855698fe4cf2"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>_sln</b>(t, s)&#160;&#160;&#160;<a class="el" href="group__semtrex.html#ga0eb6f4bfe908f6e8a680c56e8468b523">__sl</a>(t,1,1,s)</td></tr>
+<tr class="separator:gac1b578cc9fc2f835ad12855698fe4cf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8785a1bb99b5bb1f749bd37a317594e4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga8785a1bb99b5bb1f749bd37a317594e4"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>DT</b>(l, t)&#160;&#160;&#160;{char buf[1000];puts(&quot;\n&quot; #l &quot;:&quot;);__t_dump(0,t,0,buf);puts(buf);}</td></tr>
+<tr class="separator:ga8785a1bb99b5bb1f749bd37a317594e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga23a719903c25f5387274002776ae5fa1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga23a719903c25f5387274002776ae5fa1"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>DS</b>(l, t)&#160;&#160;&#160;{<a class="el" href="structDefs.html">Defs</a> d = {0,0,0,0};char buf[1000];puts(&quot;\n&quot; #l &quot;:&quot;);<a class="el" href="group__semtrex.html#ga614de2fa253b75fc34b41421a866ca62">_dump_semtrex</a>(&amp;d,t,buf);puts(buf);}</td></tr>
+<tr class="separator:ga23a719903c25f5387274002776ae5fa1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -150,18 +165,19 @@ typedef int&#160;</td><td class="memItemRight" valign="bottom"><b>StateType</b><
 <tr class="memitem:ga8fbe3b9e7b9817abdf0c2de2f180b4fd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga8fbe3b9e7b9817abdf0c2de2f180b4fd"></a>
 typedef int&#160;</td><td class="memItemRight" valign="bottom"><b>TransitionType</b></td></tr>
 <tr class="separator:ga8fbe3b9e7b9817abdf0c2de2f180b4fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga73e4e0a051cd3779fd7ff67947607ebd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga73e4e0a051cd3779fd7ff67947607ebd"></a>
-typedef void *&#160;</td><td class="memItemRight" valign="bottom"><b>ValueData</b></td></tr>
-<tr class="separator:ga73e4e0a051cd3779fd7ff67947607ebd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga54c5ea60f89b8d13b11d8dfc6ec3b94e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga54c5ea60f89b8d13b11d8dfc6ec3b94e"></a>
 typedef struct <a class="el" href="structSState.html">SState</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SState</b></td></tr>
 <tr class="separator:ga54c5ea60f89b8d13b11d8dfc6ec3b94e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga886f61851b2c5a479cf7bed2ba78cd7d"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structSvalue.html">Svalue</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga886f61851b2c5a479cf7bed2ba78cd7d">Svalue</a></td></tr>
-<tr class="separator:ga886f61851b2c5a479cf7bed2ba78cd7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga09de53f7ae900c6cb78a22c19af533ff"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structSgroupOpen.html">SgroupOpen</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga09de53f7ae900c6cb78a22c19af533ff">SgroupOpen</a></td></tr>
 <tr class="separator:ga09de53f7ae900c6cb78a22c19af533ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab4bc67d51970ec75875c2e9e135c4bf3"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structSgroupClose.html">SgroupClose</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#gab4bc67d51970ec75875c2e9e135c4bf3">SgroupClose</a></td></tr>
 <tr class="separator:gab4bc67d51970ec75875c2e9e135c4bf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga886f61851b2c5a479cf7bed2ba78cd7d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga886f61851b2c5a479cf7bed2ba78cd7d"></a>
+typedef struct <a class="el" href="structSvalue.html">Svalue</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Svalue</b></td></tr>
+<tr class="separator:ga886f61851b2c5a479cf7bed2ba78cd7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3f47626017139312d814719b254a1a0e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga3f47626017139312d814719b254a1a0e"></a>
+typedef struct <a class="el" href="structSliteral.html">Sliteral</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Sliteral</b></td></tr>
+<tr class="separator:ga3f47626017139312d814719b254a1a0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga8dced199acb1f24ff8f91e409aa6d1cb"><td class="memItemLeft" align="right" valign="top">typedef union <a class="el" href="unionSTypeData.html">STypeData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga8dced199acb1f24ff8f91e409aa6d1cb">STypeData</a></td></tr>
 <tr class="separator:ga8dced199acb1f24ff8f91e409aa6d1cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -202,28 +218,68 @@ Functions</h2></td></tr>
 <tr class="separator:ga27540c8e1822da3160a0cc4717df410f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gada90f89374f4577e3ac8819e500a97a7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#gada90f89374f4577e3ac8819e500a97a7">_t_get_match</a> (<a class="el" href="structT.html">T</a> *result, <a class="el" href="structSemanticID.html">Symbol</a> group)</td></tr>
 <tr class="separator:gada90f89374f4577e3ac8819e500a97a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa3ab8a942198e875464b0e9d8e7e30bf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaa3ab8a942198e875464b0e9d8e7e30bf"></a>
-char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (<a class="el" href="structDefs.html">Defs</a> defs, <a class="el" href="structT.html">T</a> *s, char *buf)</td></tr>
-<tr class="separator:gaa3ab8a942198e875464b0e9d8e7e30bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5e8b3f2120a2a17ca5c4724974ba3436"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga5e8b3f2120a2a17ca5c4724974ba3436">_t_embody_from_match</a> (<a class="el" href="structDefs.html">Defs</a> *defs, <a class="el" href="structT.html">T</a> *match, <a class="el" href="structT.html">T</a> *t)</td></tr>
+<tr class="separator:ga5e8b3f2120a2a17ca5c4724974ba3436"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga614de2fa253b75fc34b41421a866ca62"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga614de2fa253b75fc34b41421a866ca62">_dump_semtrex</a> (<a class="el" href="structDefs.html">Defs</a> *defs, <a class="el" href="structT.html">T</a> *s, char *buf)</td></tr>
+<tr class="separator:ga614de2fa253b75fc34b41421a866ca62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad46a0cafec3ba9ca1500ecd6f8984238"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#gad46a0cafec3ba9ca1500ecd6f8984238">makeASCIITree</a> (char *c)</td></tr>
+<tr class="separator:gad46a0cafec3ba9ca1500ecd6f8984238"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga17eda8e5306b5764656d7edf3f5b15bd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga17eda8e5306b5764656d7edf3f5b15bd">parseSemtrex</a> (<a class="el" href="structDefs.html">Defs</a> *d, char *stx)</td></tr>
 <tr class="separator:ga17eda8e5306b5764656d7edf3f5b15bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5e4a8396bf0b927fb440bc207ff44b32"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga5e4a8396bf0b927fb440bc207ff44b32"></a>
+<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>__stxcv</b> (<a class="el" href="structT.html">T</a> *stxx, char c)</td></tr>
+<tr class="separator:ga5e4a8396bf0b927fb440bc207ff44b32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaca2dea328b69197bc1f21cf8139e904d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaca2dea328b69197bc1f21cf8139e904d"></a>
+<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>__stxcvm</b> (<a class="el" href="structT.html">T</a> *stxx, int not, int count,...)</td></tr>
+<tr class="separator:gaca2dea328b69197bc1f21cf8139e904d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga95bb803d107e65b2ddcd9bde258a40be"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga95bb803d107e65b2ddcd9bde258a40be">asciiT_toi</a> (<a class="el" href="structT.html">T</a> *asciiT, <a class="el" href="structT.html">T</a> *match, <a class="el" href="structT.html">T</a> *t, <a class="el" href="structSemanticID.html">Symbol</a> s)</td></tr>
+<tr class="separator:ga95bb803d107e65b2ddcd9bde258a40be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4ff0c2f907a002cce83813f17b6481d5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga4ff0c2f907a002cce83813f17b6481d5">asciiT_tos</a> (<a class="el" href="structT.html">T</a> *asciiT, <a class="el" href="structT.html">T</a> *match, <a class="el" href="structT.html">T</a> *t, <a class="el" href="structSemanticID.html">Symbol</a> s)</td></tr>
+<tr class="separator:ga4ff0c2f907a002cce83813f17b6481d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga74a1cae16040c9c0778cb3796017036a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga74a1cae16040c9c0778cb3796017036a">asciiT_toc</a> (<a class="el" href="structT.html">T</a> *asciiT, <a class="el" href="structT.html">T</a> *match, <a class="el" href="structT.html">T</a> *t, <a class="el" href="structSemanticID.html">Symbol</a> s)</td></tr>
+<tr class="separator:ga74a1cae16040c9c0778cb3796017036a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0eb6f4bfe908f6e8a680c56e8468b523"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga0eb6f4bfe908f6e8a680c56e8468b523">__sl</a> (<a class="el" href="structT.html">T</a> *p, int not, int count,...)</td></tr>
+<tr class="separator:ga0eb6f4bfe908f6e8a680c56e8468b523"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:gaf0272e535001c2703c79a5d67a1a96ea"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaf0272e535001c2703c79a5d67a1a96ea"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>G_debug_match</b></td></tr>
+<tr class="separator:gaf0272e535001c2703c79a5d67a1a96ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga11e99630a9b6ddf002ac9a725bba7ebd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga11e99630a9b6ddf002ac9a725bba7ebd"></a>
+<a class="el" href="structDefs.html">Defs</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>G_d</b></td></tr>
+<tr class="separator:ga11e99630a9b6ddf002ac9a725bba7ebd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga82573c9fc996af7623605123964ec479"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga82573c9fc996af7623605123964ec479"></a>
+<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>G_ts</b></td></tr>
+<tr class="separator:ga82573c9fc996af7623605123964ec479"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8592201e0b95200efcedc42ec62b6676"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga8592201e0b95200efcedc42ec62b6676"></a>
+<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>G_te</b></td></tr>
+<tr class="separator:ga8592201e0b95200efcedc42ec62b6676"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Semtrex provides a language for pattern matching on semtantic trees. </p>
-<p>Here is a pseudo BNF (what we are calling a TNF for Tree Normal Form) that describes how Semtrexs can be constructed:</p>
-<div class="fragment"><div class="line">Semtrex ::= Root [ / Child]</div>
-<div class="line">Root ::= Literal | Value | Or | Any | Question | Group</div>
-<div class="line">Child ::=  Root | OneOrMore | ZeroOrMore | ZeroOrOne | Sequence</div>
-<div class="line">OneOrMore ::= <span class="stringliteral">&quot;+&quot;</span> / Semtrex</div>
-<div class="line">ZeroOrMore ::= <span class="stringliteral">&quot;*&quot;</span> / Semtrex</div>
-<div class="line">ZeroOrOne ::= <span class="stringliteral">&quot;?&quot;</span> / Semtrex</div>
-<div class="line">Sequence ::= <span class="stringliteral">&quot;,&quot;</span> / Semtrex [, Semtrex]...</div>
-<div class="line">Or ::= <span class="stringliteral">&quot;|&quot;</span> / Semtrex1 , Semtrex2</div>
-<div class="line">Literal ::= <span class="stringliteral">&quot;LITERAL(&lt;symbol&gt;)&quot;</span> [ / Semtrex]</div>
-<div class="line">Value ::= <span class="stringliteral">&quot;VALUE(&lt;symbol&gt;)=&lt;value&gt;&quot;</span> [ / Semtrex]</div>
-<div class="line">Any ::= <span class="stringliteral">&quot;.&quot;</span> [ / Semtrex]</div>
-<div class="line">Group ::= <span class="stringliteral">&quot;{&lt;symbol&gt;}&quot;</span> / Semtrex</div>
-</div><!-- fragment --> <h2 class="groupheader">Typedef Documentation</h2>
+<p>Semtrex provides a language for pattern matching on semantic trees. </p>
+
+
+<h3><a class="anchor" id="semtrex"></a>Semtrex explained</h3><div class="textblock">Semantic Tree Regular Expressions (Semtrex for short) provide a matching language for semantic trees that will feel familiar to anyone who has used regular expressions for matching on strings.A Semtrex's is itself a semantic tree, but we have also created a linear textual representation of (and parser for) semtrex trees to make it easier to create them until we build better UI for processing trees in general.Here's a BNF for the textual representation of semtrex trees:<div class="fragment"><div class="line">Semtrex ::= Root [ <span class="stringliteral">&quot;/&quot;</span> Child...]</div>
+<div class="line">Root ::= <span class="stringliteral">&quot;/&quot;</span> Element</div>
+<div class="line">Child ::= Element | Optional | Semtrex</div>
+<div class="line">Element ::= Walk | SymbolLiteral | ValueLiteral | Any | Capture</div>
+<div class="line">Optional ::= Or | ZeroOrMore | OneOrMore | ZeroOrOne</div>
+<div class="line">Walk ::= <span class="stringliteral">&quot;%&quot;</span> Semtrex</div>
+<div class="line">OneOrMore ::= Semtrex <span class="stringliteral">&quot;+&quot;</span></div>
+<div class="line">ZeroOrMore ::= Semtrex <span class="stringliteral">&quot;*&quot;</span></div>
+<div class="line">ZeroOrOne ::= Semtrex <span class="stringliteral">&quot;?&quot;</span></div>
+<div class="line">Sequence ::= Semtrex [<span class="stringliteral">&quot;,&quot;</span> Semtrex]...</div>
+<div class="line">Siblings ::= <span class="stringliteral">&quot;(&quot;</span> Sequence <span class="stringliteral">&quot;)&quot;</span></div>
+<div class="line">Or ::= Semtrex <span class="stringliteral">&quot;|&quot;</span> Semtrex</div>
+<div class="line">SymbolLiteral ::= [<span class="stringliteral">&quot;!&quot;</span>]_symbol_</div>
+<div class="line">SymbolLiteralSet ::= [<span class="stringliteral">&quot;!&quot;</span>] <span class="stringliteral">&quot;{&quot;</span> _symbol_ [<span class="stringliteral">&quot;,&quot;</span> _symbol_]... <span class="stringliteral">&quot;}&quot;</span></div>
+<div class="line">Value ::= StringValue|CharValue|IntValue</div>
+<div class="line">ValueLiteral ::= _symbol_ [<span class="stringliteral">&quot;!&quot;</span>] <span class="stringliteral">&quot;=&quot;</span> Value</div>
+<div class="line">ValueLiteralSet ::= _symbol_ [<span class="stringliteral">&quot;!&quot;</span>] <span class="stringliteral">&quot;={&quot;</span> Value [<span class="stringliteral">&quot;,&quot;</span> Value ]... <span class="stringliteral">&quot;}&quot;</span></div>
+<div class="line">Any ::= <span class="stringliteral">&quot;.&quot;</span></div>
+<div class="line">Capture ::= <span class="stringliteral">&quot;&lt;&quot;</span>_symbol_ <span class="stringliteral">&quot;:&quot;</span> Semtrex <span class="stringliteral">&quot;&gt;&quot;</span></div>
+</div><!-- fragment --> </div><h2 class="groupheader">Typedef Documentation</h2>
 <a class="anchor" id="gab4bc67d51970ec75875c2e9e135c4bf3"></a>
 <div class="memitem">
 <div class="memproto">
@@ -259,22 +315,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Different state types need to store different kinds of values so we put them in a union</p>
-<dl class="section note"><dt>Note</dt><dd>cool coding hack: the value item of this list include a Symbol as it's first items so that we can share the code that matches on symbol!! </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="ga886f61851b2c5a479cf7bed2ba78cd7d"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct <a class="el" href="structSvalue.html">Svalue</a>  <a class="el" href="structSvalue.html">Svalue</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>The <a class="el" href="structSvalue.html">Svalue</a> represents the surface of a semtrex value literal.</p>
-<p>"value" is not a pointer to another memory location but just a key to the beginning for where the value starts in this struct. ValueData is not a pointer to some other memory space because in general, tree surfaces have to hold the actual data, not pointers to other parts of memory, because they can't be followed by ceptr utilities that manipulate trees, which include serialization, freeing, cloning, etc. </p>
+<p>Different state types need to store different kinds of values so we put them in a union </p>
 
 </div>
 </div>
@@ -302,11 +343,96 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 </td></tr>
 </table>
 
-<p>Definition at line <a class="el" href="semtrex_8h_source.html#l00048">48</a> of file <a class="el" href="semtrex_8h_source.html">semtrex.h</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8h_source.html#l00030">30</a> of file <a class="el" href="semtrex_8h_source.html">semtrex.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="ga0eb6f4bfe908f6e8a680c56e8468b523"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structT.html">T</a>* __sl </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structT.html">T</a> *&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>not</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>count</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>utility function to create a semtrex litteral symbol set </p>
+
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01098">1098</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga614de2fa253b75fc34b41421a866ca62"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char* _dump_semtrex </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDefs.html">Defs</a> *&#160;</td>
+          <td class="paramname"><em>defs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structT.html">T</a> *&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>buf</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>convert a semtrex tree into linear text format</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">defs</td><td>pointer to definitions for printing out symbol names </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>the semtrex tree </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">buf</td><td>the string buffer to fill </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the buffer </dd></dl>
+
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00929">929</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="gacbce8db372cc051950f8d684af47c39a"></a>
 <div class="memitem">
 <div class="memproto">
@@ -322,7 +448,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 </div><div class="memdoc">
 <p>free the memory allocated by an FSA </p>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00290">290</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00322">322</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -351,7 +477,50 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 </div><div class="memdoc">
 <p>wrapper function for building the finite state automata recursively and patching it to the final match state </p>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00249">249</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00278">278</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga5e8b3f2120a2a17ca5c4724974ba3436"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structT.html">T</a>* _t_embody_from_match </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDefs.html">Defs</a> *&#160;</td>
+          <td class="paramname"><em>defs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structT.html">T</a> *&#160;</td>
+          <td class="paramname"><em>match</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structT.html">T</a> *&#160;</td>
+          <td class="paramname"><em>parent</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>create a new tree based on the matched elements from a semtrex match</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">defs</td><td>definitions of the semantic context </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">match</td><td>a match from a call to _t_matchr </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">parent</td><td>the parent tree to add the embodiment into </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00727">727</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -363,7 +532,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
           <td class="memname"><a class="el" href="structT.html">T</a>* _t_get_match </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structT.html">T</a> *&#160;</td>
-          <td class="paramname"><em>result</em>, </td>
+          <td class="paramname"><em>match</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -378,7 +547,8 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
         </tr>
       </table>
 </div><div class="memdoc">
-<p>extract the portion of a semtrex match results that corresponds with a given group symbol </p><dl class="params"><dt>Parameters</dt><dd>
+<p>extract the portion of a semtrex match results that corresponds with a given group symbol</p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">result</td><td>match results from the _t_matchr call </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">group</td><td>the uid from the semtrex group that you want the result for </td></tr>
@@ -387,7 +557,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structT.html">T</a> of the match or NULL if no such match found </dd></dl>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00476">476</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00703">703</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -424,7 +594,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>1 or 0 if matched or not </dd></dl>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00466">466</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00692">692</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -468,7 +638,155 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>1 or 0 if matched or not </dd></dl>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00442">442</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00681">681</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga74a1cae16040c9c0778cb3796017036a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structT.html">T</a>* asciiT_toc </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structT.html">T</a> *&#160;</td>
+          <td class="paramname"><em>asciiT</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structT.html">T</a> *&#160;</td>
+          <td class="paramname"><em>match</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structT.html">T</a> *&#160;</td>
+          <td class="paramname"><em>t</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structSemanticID.html">Symbol</a>&#160;</td>
+          <td class="paramname"><em>s</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>convert ascii tokens from a match to a char and add them to the given tree </p>
+
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01089">1089</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga95bb803d107e65b2ddcd9bde258a40be"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structT.html">T</a>* asciiT_toi </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structT.html">T</a> *&#160;</td>
+          <td class="paramname"><em>asciiT</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structT.html">T</a> *&#160;</td>
+          <td class="paramname"><em>match</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structT.html">T</a> *&#160;</td>
+          <td class="paramname"><em>t</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structSemanticID.html">Symbol</a>&#160;</td>
+          <td class="paramname"><em>s</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>convert ascii tokens from a match to an integer and add them to the given tree </p>
+
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01057">1057</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga4ff0c2f907a002cce83813f17b6481d5"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structT.html">T</a>* asciiT_tos </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structT.html">T</a> *&#160;</td>
+          <td class="paramname"><em>asciiT</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structT.html">T</a> *&#160;</td>
+          <td class="paramname"><em>match</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structT.html">T</a> *&#160;</td>
+          <td class="paramname"><em>t</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structSemanticID.html">Symbol</a>&#160;</td>
+          <td class="paramname"><em>s</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>convert ascii tokens from a match to a string and add them to the given tree </p>
+
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01073">1073</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gad46a0cafec3ba9ca1500ecd6f8984238"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structT.html">T</a>* makeASCIITree </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>convert a cstring to an ASCII_CHARS tree </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">c</td><td>string </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structT.html">T</a> ASCII_CHARS tree </dd></dl>
+
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01045">1045</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -504,7 +822,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structT.html">T</a> semtrex tree </dd></dl>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00692">692</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01117">1117</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -513,7 +831,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Oct 22 2014 12:22:26 for ceptr by
+    <li class="footer">Generated on Wed Nov 12 2014 13:42:17 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

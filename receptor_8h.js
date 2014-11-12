@@ -20,7 +20,6 @@ var receptor_8h =
     [ "__r_get_symbol_structure", "group__receptor.html#ga120e66982d483fbe004fd969cf1c353f", null ],
     [ "__r_make_signal", "group__receptor.html#ga475101caa9d56e6398d93dc3b4c9b616", null ],
     [ "__set_label_for_def", "group__receptor.html#ga645381abc5b870dd686bd6731bba3703", null ],
-    [ "__t_serialize", "group__receptor.html#ga634d348476a3d4fe5be74ed45eff4033", null ],
     [ "_r_add_listener", "group__receptor.html#ga80c1796d444a4085537ba54c2d7b10e6", null ],
     [ "_r_build_def_semtrex", "group__receptor.html#ga63078117d8c6850455a4419fd9b6b784", null ],
     [ "_r_code_process", "group__receptor.html#ga7f2d04de5c4be090823af4a3ef8ad9c1", null ],
@@ -42,7 +41,6 @@ var receptor_8h =
     [ "_r_new_receptor_from_package", "group__receptor.html#ga7a6afdc039a31cdf24bf93dd0475b72b", null ],
     [ "_r_serialize", "group__receptor.html#ga3e737841784555574a0d90ad2eff4cc4", null ],
     [ "_r_unserialize", "group__receptor.html#ga300b11b12792c290fef2fb0fe07d71ee", null ],
-    [ "_t_serialize", "group__receptor.html#gaf9db91f21518ef0c5fafc5472c8e5576", null ],
     [ "_td", "group__receptor.html#ga69b03a529a561587fd222221fb9b1751", null ],
     [ "G_null_xaddr", "group__receptor.html#ga30f156c899683f59a13cfb7b4df6fbd6", null ]
 ];

@@ -1,5 +1,6 @@
 var tree_8h =
 [
+    [ "DO_KIDS", "group__tree.html#gaad4a7e01880eca2ef88c86662acec2f1", null ],
     [ "root_check", "group__tree.html#ga7c44907cdc68da63693c567fd8882680", null ],
     [ "TREE_CHILDREN_BLOCK", "group__tree.html#ga8a4739b06f60e4874a3b63e0cb69be94", null ],
     [ "TREE_PATH_TERMINATOR", "group__tree.html#gaaaf3c7469b946533a203770c3657f69a", null ],
@@ -11,6 +12,7 @@ var tree_8h =
     ] ],
     [ "__t_free_children", "group__tree.html#ga4fb39ee561fc4b17cfb241330b835951", null ],
     [ "__t_morph", "group__tree.html#gad6597b652983165f6b2993211a598ad4", null ],
+    [ "__t_serialize", "group__tree.html#ga4b3d9a3a1c1bc4a7fb710e96faf1d437", null ],
     [ "_t_add", "group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c", null ],
     [ "_t_child", "group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b", null ],
     [ "_t_children", "group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc", null ],
@@ -42,6 +44,7 @@ var tree_8h =
     [ "_t_pathcpy", "group__tree.html#ga608555368dfdef7de1872f89b6fed637", null ],
     [ "_t_replace", "group__tree.html#ga0dcacdfd022b2a04b8fb53eb25ee367e", null ],
     [ "_t_root", "group__tree.html#ga81a9fea3df69847f0916eb4a84fe64d3", null ],
+    [ "_t_serialize", "group__tree.html#gaf5f98525f4d48c29783c7b13235958c2", null ],
     [ "_t_size", "group__tree.html#gac97d0dd9bbdeb14978735bac1eb0b25e", null ],
     [ "_t_sprint_path", "group__tree.html#ga0e63c83e6413f47238db7fa20373c526", null ],
     [ "_t_surface", "group__tree.html#gac9278e540a0d63526b60cc0591283a62", null ],

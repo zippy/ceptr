@@ -473,6 +473,8 @@ Functions</h2></td></tr>
 <div class="line"><span class="comment">/*     int size = sizeof(Svalue)+strlen(host)+1; */</span></div>
 <div class="line"><span class="comment">/*     Svalue *sv = malloc(size); */</span></div>
 <div class="line"><span class="comment">/*     sv-&gt;symbol = HTTP_REQUEST_HOST; */</span></div>
+<div class="line"><span class="comment">/*     sv-&gt;flags = 0; */</span></div>
+<div class="line"><span class="comment">/*     sv-&gt;count = 1; */</span></div>
 <div class="line"><span class="comment">/*     sv-&gt;length = strlen(host); */</span></div>
 <div class="line"><span class="comment">/*     strcpy((char *)&amp;sv-&gt;value,host); */</span></div>
 <div class="line"><span class="comment">/*     _t_new(ss,SEMTREX_VALUE_LITERAL,sv,size); */</span></div>
@@ -489,7 +491,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="comment">/*     T *s_version = _t_newr(s,HTTP_REQUEST_VERSION); */</span></div>
 <div class="line"><span class="comment">/*     _t_newi(s_version,VERSION_MAJOR,1); */</span></div>
 <div class="line"><span class="comment">/*     _t_newi(s_version,VERSION_MINOR,1); */</span></div>
-<div class="line"><span class="comment">/*     T *s_method = _t_newi(s,HTTP_REQUEST_METHOD,TEST_HTTP_METHOD_GET_VALUE); */</span></div>
+<div class="line"><span class="comment">/*     T *s_method = _t_new(s,HTTP_REQUEST_METHOD,&quot;GET&quot;,4); */</span></div>
 <div class="line"><span class="comment">/*     T *s_path = _t_newr(s,HTTP_REQUEST_PATH); */</span></div>
 <div class="line"><span class="comment">/*     T *s_host = _t_new(s,HTTP_REQUEST_HOST,&quot;helloworld.com&quot;,15); */</span></div>
 <div class="line"></div>
@@ -544,7 +546,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Oct 22 2014 12:22:26 for ceptr by
+    <li class="footer">Generated on Wed Nov 12 2014 13:42:17 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

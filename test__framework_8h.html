@@ -146,7 +146,7 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>spec_is_equal</b>(got, expected)&#160;&#160;&#160;spec_total++; if (expected==got){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],&quot;%s:%d expected %s to be %d but was %d&quot;,__FUNCTION__,__LINE__,#got,expected,got);}</td></tr>
 <tr class="separator:abe366ba8cd8cf083ac550a4f2fa724d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3eb4b8c9d968a16ff472ed402a4768ab"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3eb4b8c9d968a16ff472ed402a4768ab"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>spec_is_str_equal</b>(got, expected)&#160;&#160;&#160;spec_total++; if (strcmp(got,expected)==0){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],&quot;%s:%d expected %s to be:\n \&quot;%s\&quot; but was:\n \&quot;%s\&quot;&quot;,__FUNCTION__,__LINE__,#got,expected,got);}</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>spec_is_str_equal</b>(got, expected)&#160;&#160;&#160;spec_total++; if (strcmp(got,expected)==0){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],&quot;%s:%d expected %s to be:\n \&quot;%s\&quot;\nbut_was:\n \&quot;%s\&quot;&quot;,__FUNCTION__,__LINE__,#got,expected,got);}</td></tr>
 <tr class="separator:a3eb4b8c9d968a16ff472ed402a4768ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a42cf2ec8f6d1fb8b7bca63211abd4777"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a42cf2ec8f6d1fb8b7bca63211abd4777"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>spec_is_long_equal</b>(got, expected)&#160;&#160;&#160;spec_total++; if (expected==got){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],&quot;%s:%d expected %s to be %ld but was %ld&quot;,__FUNCTION__,__LINE__,#got,(long)expected,got);}</td></tr>
@@ -178,15 +178,15 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>spec_failures</b> = 0<
 <tr class="memitem:a4a5e487807d8d6fef73a2711bab1c83f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4a5e487807d8d6fef73a2711bab1c83f"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>spec_total</b> = 0</td></tr>
 <tr class="separator:a4a5e487807d8d6fef73a2711bab1c83f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad81c5cdf7d494245f47b8b5558919d08"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad81c5cdf7d494245f47b8b5558919d08"></a>
-char&#160;</td><td class="memItemRight" valign="bottom"><b>failures</b> [MAX_FAILURES][512]</td></tr>
-<tr class="separator:ad81c5cdf7d494245f47b8b5558919d08"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1656df1928cec3c6b2c696da442fd847"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1656df1928cec3c6b2c696da442fd847"></a>
-char&#160;</td><td class="memItemRight" valign="bottom"><b>buf1</b> [255]</td></tr>
-<tr class="separator:a1656df1928cec3c6b2c696da442fd847"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abbfed9cfc05195fced6cf730645562aa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abbfed9cfc05195fced6cf730645562aa"></a>
-char&#160;</td><td class="memItemRight" valign="bottom"><b>buf2</b> [255]</td></tr>
-<tr class="separator:abbfed9cfc05195fced6cf730645562aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6751e523a4a811243db3c2a7397b1472"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6751e523a4a811243db3c2a7397b1472"></a>
+char&#160;</td><td class="memItemRight" valign="bottom"><b>failures</b> [MAX_FAILURES][5000]</td></tr>
+<tr class="separator:a6751e523a4a811243db3c2a7397b1472"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa072521efd6622b1724e1bb6af9a5a46"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa072521efd6622b1724e1bb6af9a5a46"></a>
+char&#160;</td><td class="memItemRight" valign="bottom"><b>buf1</b> [2000]</td></tr>
+<tr class="separator:aa072521efd6622b1724e1bb6af9a5a46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9bd2566e4c7b97dfa349e2f0ab36cc17"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9bd2566e4c7b97dfa349e2f0ab36cc17"></a>
+char&#160;</td><td class="memItemRight" valign="bottom"><b>buf2</b> [2000]</td></tr>
+<tr class="separator:a9bd2566e4c7b97dfa349e2f0ab36cc17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>implements the testing harness </p>
@@ -200,7 +200,7 @@ char&#160;</td><td class="memItemRight" valign="bottom"><b>buf2</b> [255]</td></
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><a class="el" href="test__framework_8h.html">test_framework.h</a></li>
-    <li class="footer">Generated on Wed Oct 22 2014 12:22:26 for ceptr by
+    <li class="footer">Generated on Wed Nov 12 2014 13:42:17 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

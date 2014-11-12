@@ -116,15 +116,15 @@ Collaboration diagram for STypeData:</div>
 <div class="dyncontent">
 <div class="center"><img src="unionSTypeData__coll__graph.png" border="0" usemap="#STypeData_coll__map" alt="Collaboration graph"/></div>
 <map name="STypeData_coll__map" id="STypeData_coll__map">
-<area shape="rect" id="node9" href="structSState.html" title="SState" alt="" coords="5,484,67,511"/><area shape="rect" id="node2" href="structSgroupOpen.html" title="SgroupOpen" alt="" coords="89,301,183,328"/><area shape="rect" id="node3" href="structSemanticID.html" title="SemanticID" alt="" coords="99,5,189,32"/><area shape="rect" id="node7" href="structTcontents.html" title="Tcontents" alt="" coords="151,96,229,123"/><area shape="rect" id="node10" href="structSvalue.html" title="Svalue" alt="" coords="361,147,423,173"/><area shape="rect" id="node4" href="structT.html" title="T" alt="" coords="223,197,261,224"/><area shape="rect" id="node5" href="structTstruct.html" title="Tstruct" alt="" coords="250,301,312,328"/><area shape="rect" id="node6" href="structTcontext.html" title="Tcontext" alt="" coords="255,96,328,123"/><area shape="rect" id="node8" href="structSgroupClose.html" title="SgroupClose" alt="" coords="71,576,168,603"/></map>
+<area shape="rect" id="node5" href="structSState.html" title="SState" alt="" coords="5,480,68,507"/><area shape="rect" id="node2" href="structSgroupOpen.html" title="SgroupOpen" alt="" coords="15,145,109,172"/><area shape="rect" id="node3" href="structSemanticID.html" title="SemanticID" alt="" coords="55,5,146,32"/><area shape="rect" id="node10" href="structTcontents.html" title="Tcontents" alt="" coords="99,95,179,121"/><area shape="rect" id="node4" href="structSgroupClose.html" title="SgroupClose" alt="" coords="72,571,169,597"/><area shape="rect" id="node6" href="structSvalue.html" title="Svalue" alt="" coords="105,300,168,327"/><area shape="rect" id="node7" href="structT.html" title="T" alt="" coords="205,196,244,223"/><area shape="rect" id="node8" href="structTstruct.html" title="Tstruct" alt="" coords="223,300,285,327"/><area shape="rect" id="node11" href="structSliteral.html" title="Sliteral" alt="" coords="325,300,388,327"/><area shape="rect" id="node9" href="structTcontext.html" title="Tcontext" alt="" coords="204,95,277,121"/></map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:abff54fb9a7e4ab6d493e4615bf7293de"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abff54fb9a7e4ab6d493e4615bf7293de"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="unionSTypeData.html#abff54fb9a7e4ab6d493e4615bf7293de">symbol</a></td></tr>
-<tr class="memdesc:abff54fb9a7e4ab6d493e4615bf7293de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Symbol to match on for StateSymbol type states. <br /></td></tr>
-<tr class="separator:abff54fb9a7e4ab6d493e4615bf7293de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65bdc8f08ce48d9e70f07dbc815a1759"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a65bdc8f08ce48d9e70f07dbc815a1759"></a>
+<a class="el" href="structSliteral.html">Sliteral</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="unionSTypeData.html#a65bdc8f08ce48d9e70f07dbc815a1759">symbol</a></td></tr>
+<tr class="memdesc:a65bdc8f08ce48d9e70f07dbc815a1759"><td class="mdescLeft">&#160;</td><td class="mdescRight">Symbol to match on for StateSymbol type states. <br /></td></tr>
+<tr class="separator:a65bdc8f08ce48d9e70f07dbc815a1759"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78d1d47572bb172f00a6cdfb3917697b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a78d1d47572bb172f00a6cdfb3917697b"></a>
 <a class="el" href="structSvalue.html">Svalue</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="unionSTypeData.html#a78d1d47572bb172f00a6cdfb3917697b">value</a></td></tr>
 <tr class="memdesc:a78d1d47572bb172f00a6cdfb3917697b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value data to match on for StateValue type states. <br /></td></tr>
@@ -139,10 +139,9 @@ Data Fields</h2></td></tr>
 <tr class="separator:a4c6c8e7324d8b29c8292a7523f4cfeff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Different state types need to store different kinds of values so we put them in a union</p>
-<dl class="section note"><dt>Note</dt><dd>cool coding hack: the value item of this list include a Symbol as it's first items so that we can share the code that matches on symbol!! </dd></dl>
+<div class="textblock"><p>Different state types need to store different kinds of values so we put them in a union </p>
 
-<p>Definition at line <a class="el" href="semtrex_8h_source.html#l00098">98</a> of file <a class="el" href="semtrex_8h_source.html">semtrex.h</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8h_source.html#l00073">73</a> of file <a class="el" href="semtrex_8h_source.html">semtrex.h</a>.</p>
 </div><hr/>The documentation for this union was generated from the following file:<ul>
 <li>src/<a class="el" href="semtrex_8h_source.html">semtrex.h</a></li>
 </ul>
@@ -152,7 +151,7 @@ Data Fields</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="unionSTypeData.html">STypeData</a></li>
-    <li class="footer">Generated on Wed Oct 22 2014 12:22:26 for ceptr by
+    <li class="footer">Generated on Wed Nov 12 2014 13:42:17 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

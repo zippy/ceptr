@@ -1,6 +1,7 @@
 var searchData=
 [
   ['semtrex_5fgroup_5fid',['SEMTREX_GROUP_ID',['../sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a56959b815b41df8e507247b85ae5f74c',1,'sys_symbols.h']]],
+  ['semtrex_5fmatch_5fcursor_5fid',['SEMTREX_MATCH_CURSOR_ID',['../sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a59da74ef7e2967cc49da89b599fc2b4f',1,'sys_symbols.h']]],
   ['semtrex_5fmatch_5fid',['SEMTREX_MATCH_ID',['../sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a769b6a1b74e530afda91901d70da1d22',1,'sys_symbols.h']]],
   ['semtrex_5fmatch_5fresults_5fid',['SEMTREX_MATCH_RESULTS_ID',['../sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a69e885f865c25787f236288ff4878437',1,'sys_symbols.h']]],
   ['semtrex_5fmatch_5fsiblings_5fcount_5fid',['SEMTREX_MATCH_SIBLINGS_COUNT_ID',['../sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57af45b5f9b9254869d1cfef9a577ce227e',1,'sys_symbols.h']]],
@@ -10,9 +11,12 @@ var searchData=
   ['semtrex_5for_5fid',['SEMTREX_OR_ID',['../sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a7a33830ad2d624b84f481a3bfe1c3b21',1,'sys_symbols.h']]],
   ['semtrex_5fsequence_5fid',['SEMTREX_SEQUENCE_ID',['../sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a7a12034d419f575e268f3e27b86a75e9',1,'sys_symbols.h']]],
   ['semtrex_5fsymbol_5fany_5fid',['SEMTREX_SYMBOL_ANY_ID',['../sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a51b0113b5c552639cad118d0abf2c16c',1,'sys_symbols.h']]],
-  ['semtrex_5fsymbol_5fexcept_5fid',['SEMTREX_SYMBOL_EXCEPT_ID',['../sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ae95346d520192f7b91cc9c9bb2c18687',1,'sys_symbols.h']]],
+  ['semtrex_5fsymbol_5fid',['SEMTREX_SYMBOL_ID',['../sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a73d90fbbf0b65514ae6bac6108920fb0',1,'sys_symbols.h']]],
   ['semtrex_5fsymbol_5fliteral_5fid',['SEMTREX_SYMBOL_LITERAL_ID',['../sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a9900674c2074002cece1c08d8fad7e6b',1,'sys_symbols.h']]],
+  ['semtrex_5fsymbol_5fliteral_5fnot_5fid',['SEMTREX_SYMBOL_LITERAL_NOT_ID',['../sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57aa3cb82e8787ee648f182015175f9ed6e',1,'sys_symbols.h']]],
   ['semtrex_5fvalue_5fliteral_5fid',['SEMTREX_VALUE_LITERAL_ID',['../sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57aa1092b100c01daef3a4150e80af8bacc',1,'sys_symbols.h']]],
+  ['semtrex_5fvalue_5fliteral_5fnot_5fid',['SEMTREX_VALUE_LITERAL_NOT_ID',['../sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a8fd8090d74b399686f1578865083c5c2',1,'sys_symbols.h']]],
+  ['semtrex_5fvalue_5fset_5fid',['SEMTREX_VALUE_SET_ID',['../sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57accec0ca7abe96495c1affcdb23e632de',1,'sys_symbols.h']]],
   ['semtrex_5fzero_5for_5fmore_5fid',['SEMTREX_ZERO_OR_MORE_ID',['../sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a86ff9af344c4fa4c9e801db962f86b5f',1,'sys_symbols.h']]],
   ['semtrex_5fzero_5for_5fone_5fid',['SEMTREX_ZERO_OR_ONE_ID',['../sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57aed65f903629da68029acca04414280b2',1,'sys_symbols.h']]],
   ['signal_5fid',['SIGNAL_ID',['../sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ad8b65df03b2fa04991a0a5458c87231c',1,'sys_symbols.h']]],

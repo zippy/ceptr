@@ -2,7 +2,6 @@ var receptor_8c =
 [
     [ "_SREAD", "receptor_8c.html#a5d3c75413c333021864f6378eecae847", null ],
     [ "SREAD", "receptor_8c.html#a3f7ee4a117ea9cd3ad10aaef8a50400a", null ],
-    [ "SWRITE", "receptor_8c.html#a3ffbefdb57db8005ed3fc023c39763b1", null ],
     [ "__get_label_idx", "receptor_8c.html#a9ceaf2369ba0a4548315853124865251", null ],
     [ "__r_get_aspect", "group__receptor.html#ga6d832bc4fd6b86ba0cb523166711c3a1", null ],
     [ "__r_get_listeners", "group__receptor.html#ga638aa054bbcc81cdb79a819cb0f917ac", null ],
@@ -14,7 +13,6 @@ var receptor_8c =
     [ "__r_new", "receptor_8c.html#a13d2b50e64e3b0428cee8de4c7e7c135", null ],
     [ "__r_set_labels", "receptor_8c.html#a02e7c09f119ae6ca17c70c30fb5a85c0", null ],
     [ "__set_label_for_def", "group__receptor.html#ga645381abc5b870dd686bd6731bba3703", null ],
-    [ "__t_serialize", "group__receptor.html#ga634d348476a3d4fe5be74ed45eff4033", null ],
     [ "_r_add_listener", "group__receptor.html#ga80c1796d444a4085537ba54c2d7b10e6", null ],
     [ "_r_build_def_semtrex", "group__receptor.html#ga63078117d8c6850455a4419fd9b6b784", null ],
     [ "_r_code_process", "group__receptor.html#ga7f2d04de5c4be090823af4a3ef8ad9c1", null ],
@@ -36,7 +34,6 @@ var receptor_8c =
     [ "_r_new_receptor_from_package", "group__receptor.html#ga7a6afdc039a31cdf24bf93dd0475b72b", null ],
     [ "_r_serialize", "group__receptor.html#ga3e737841784555574a0d90ad2eff4cc4", null ],
     [ "_r_unserialize", "group__receptor.html#ga300b11b12792c290fef2fb0fe07d71ee", null ],
-    [ "_t_serialize", "group__receptor.html#gaf9db91f21518ef0c5fafc5472c8e5576", null ],
     [ "_t_unserialize", "receptor_8c.html#a757aabc524dad3ec8e40d00d09aed925", null ],
     [ "_td", "group__receptor.html#ga69b03a529a561587fd222221fb9b1751", null ],
     [ "instanceFree", "receptor_8c.html#ab74ffd0dd1a1937c4336f27b2326ed90", null ],

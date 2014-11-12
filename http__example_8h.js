@@ -1,9 +1,7 @@
 var http__example_8h =
 [
-    [ "TEST_HTTP_METHOD_GET_VALUE", "http__example_8h.html#adf764cbdea00d65edcd07bb9953ad2b7a49811a87e9402baaba99360bdd9e9572", null ],
-    [ "TEST_HTTP_METHOD_PUT_VALUE", "http__example_8h.html#adf764cbdea00d65edcd07bb9953ad2b7ae48c177a70dbfb8dfc47a15531c90e87", null ],
-    [ "TEST_HTTP_METHOD_POST_VALUE", "http__example_8h.html#adf764cbdea00d65edcd07bb9953ad2b7a325a8a712f6ab890f1262cfe895143fc", null ],
     [ "_cleanup_HTTPDefs", "http__example_8h.html#ac4ea9f33298d5ba4d31f3481beef1baf", null ],
+    [ "_makeHTTPRequestSemtrex", "http__example_8h.html#af05800edd63bd301c2f47a5e846e2642", null ],
     [ "_makeTestHTTPRequestTree", "http__example_8h.html#a1c182b5a6e82ef49c6967183a15c3e8b", null ],
     [ "_makeTestHTTPResponseProcess", "http__example_8h.html#a87e12efa7860d33966ce5f89ceba1f5c", null ],
     [ "_setup_HTTPDefs", "http__example_8h.html#aa8f69139ef8347c21bbe6113b62d8620", null ],
@@ -22,7 +20,7 @@ var http__example_8h =
     [ "HTTP_REQUEST_PATH_QUERY_PARAMS", "http__example_8h.html#a69c892488bb14eaa7503befa361cb7c1", null ],
     [ "HTTP_REQUEST_PATH_SEGMENT", "http__example_8h.html#aa9e7fe5827e591407d4a3a183ca2d935", null ],
     [ "HTTP_REQUEST_PATH_SEGMENTS", "http__example_8h.html#ae4b93ef4a5451e283c96034c4c4250a7", null ],
-    [ "HTTP_REQUEST_V11", "http__example_8h.html#ad6aa772af1b2c1d05928a011f9cb7101", null ],
+    [ "HTTP_REQUEST_V09", "http__example_8h.html#aa1875d93efa9a83a4f99e533ab30b304", null ],
     [ "HTTP_REQUEST_VERSION", "http__example_8h.html#abb6ae5867be40257d0a4bc9d976c17b0", null ],
     [ "HTTP_RESPONSE", "http__example_8h.html#a41bf8d18047ad9f31eed5b9b503f502a", null ],
     [ "HTTP_RESPONSE_BODY", "http__example_8h.html#a8313d2056250fd7ee2e8c32fb01f142c", null ],

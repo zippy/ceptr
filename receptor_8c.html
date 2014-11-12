@@ -123,10 +123,6 @@ Include dependency graph for receptor.c:</div>
 </div>
 <p><a href="receptor_8c_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="memitem:a3ffbefdb57db8005ed3fc023c39763b1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3ffbefdb57db8005ed3fc023c39763b1"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="receptor_8c.html#a3ffbefdb57db8005ed3fc023c39763b1">SWRITE</a>(type, value)&#160;&#160;&#160;type * type##P = (type *)(*bufferP +offset); *type##P=value;offset += sizeof(type);</td></tr>
-<tr class="memdesc:a3ffbefdb57db8005ed3fc023c39763b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">macro to write data by type into *bufferP and increment offset by the size of the type <br /></td></tr>
-<tr class="separator:a3ffbefdb57db8005ed3fc023c39763b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f7ee4a117ea9cd3ad10aaef8a50400a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3f7ee4a117ea9cd3ad10aaef8a50400a"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="receptor_8c.html#a3f7ee4a117ea9cd3ad10aaef8a50400a">SREAD</a>(type, var_name)&#160;&#160;&#160;type var_name = *(type *)*surfaceP;*lengthP -= sizeof(type);*surfaceP += sizeof(type);</td></tr>
 <tr class="memdesc:a3f7ee4a117ea9cd3ad10aaef8a50400a"><td class="mdescLeft">&#160;</td><td class="mdescRight">macro to read typed date from the surface and update length and surface values <br /></td></tr>
@@ -196,10 +192,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>instancesFree</b> (<a
 <tr class="separator:gadc618904f81240b244e816234d1c906e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga1570f1fca510bdaf19d044592ee035ce"><td class="memItemLeft" align="right" valign="top">TreeHash&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga1570f1fca510bdaf19d044592ee035ce">_r_hash</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structXaddr.html">Xaddr</a> t)</td></tr>
 <tr class="separator:ga1570f1fca510bdaf19d044592ee035ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf9db91f21518ef0c5fafc5472c8e5576"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#gaf9db91f21518ef0c5fafc5472c8e5576">_t_serialize</a> (<a class="el" href="structT.html">T</a> *t, void **surfaceP, size_t *lengthP)</td></tr>
-<tr class="separator:gaf9db91f21518ef0c5fafc5472c8e5576"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga634d348476a3d4fe5be74ed45eff4033"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga634d348476a3d4fe5be74ed45eff4033">__t_serialize</a> (<a class="el" href="structT.html">T</a> *t, void **bufferP, size_t offset, size_t current_size, int compact)</td></tr>
-<tr class="separator:ga634d348476a3d4fe5be74ed45eff4033"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3e737841784555574a0d90ad2eff4cc4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga3e737841784555574a0d90ad2eff4cc4">_r_serialize</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, void **surfaceP, size_t *lengthP)</td></tr>
 <tr class="separator:ga3e737841784555574a0d90ad2eff4cc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a757aabc524dad3ec8e40d00d09aed925"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a757aabc524dad3ec8e40d00d09aed925"></a>
@@ -310,7 +302,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_td</b> (<a class="
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="receptor_8c.html">receptor.c</a></li>
-    <li class="footer">Generated on Wed Oct 22 2014 12:22:26 for ceptr by
+    <li class="footer">Generated on Wed Nov 12 2014 13:42:17 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

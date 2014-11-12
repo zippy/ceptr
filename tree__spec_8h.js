@@ -20,5 +20,6 @@ var tree__spec_8h =
     [ "testTreePathGetSurface", "tree__spec_8h.html#ad27e0ca8287fd12eb5823170bb306c90", null ],
     [ "testTreePathSprint", "tree__spec_8h.html#a3473a2e241b0849ddfca791ffc713857", null ],
     [ "testTreeRealloc", "tree__spec_8h.html#a5ab4f95726a96eba403ad1a978d075d6", null ],
-    [ "testTreeReplace", "tree__spec_8h.html#a40c176590d4f13d3110238f7c50824fb", null ]
+    [ "testTreeReplace", "tree__spec_8h.html#a40c176590d4f13d3110238f7c50824fb", null ],
+    [ "testTreeSerialize", "tree__spec_8h.html#a012d7007d9b10f6e1ed85ff1b4c3919c", null ]
 ];

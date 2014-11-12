@@ -107,7 +107,8 @@ $(document).ready(function(){initNavTree('semtrex_8h.html','');});
 <a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">semtrex.h File Reference<div class="ingroups"><a class="el" href="group__semtrex.html">Semantic Tree Regular Expressions</a></div></div>  </div>
 </div><!--header-->
@@ -128,18 +129,20 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="semtrex_8h__dep__incl.png" border="0" usemap="#src_2semtrex_8hdep" alt=""/></div>
 <map name="src_2semtrex_8hdep" id="src_2semtrex_8hdep">
-<area shape="rect" id="node2" href="process_8c.html" title="implementation of ceptr processing: instructions and run tree reduction " alt="" coords="5,80,107,107"/><area shape="rect" id="node3" href="receptor_8c.html" title="receptor implementation " alt="" coords="131,80,233,107"/><area shape="rect" id="node4" href="semtrex_8c.html" title="semtrex implementation " alt="" coords="258,80,360,107"/><area shape="rect" id="node5" href="def__spec_8h_source.html" title="spec/def_spec.h" alt="" coords="385,80,503,107"/><area shape="rect" id="node7" href="semtrex__spec_8h.html" title="spec/semtrex_spec.h" alt="" coords="528,80,675,107"/><area shape="rect" id="node6" href="ceptr__specs_8c.html" title="implements a main() entry point for running all the tests " alt="" coords="455,155,589,181"/></map>
+<area shape="rect" id="node2" href="def_8c.html" title="implementation file for symbol and structure definition functions " alt="" coords="5,80,79,107"/><area shape="rect" id="node3" href="process_8c.html" title="implementation of ceptr processing: instructions and run tree reduction " alt="" coords="103,80,205,107"/><area shape="rect" id="node4" href="receptor_8c.html" title="receptor implementation " alt="" coords="229,80,332,107"/><area shape="rect" id="node5" href="semtrex_8c.html" title="semtrex implementation " alt="" coords="356,80,459,107"/><area shape="rect" id="node6" href="http__example_8h.html" title="spec/http_example.h" alt="" coords="483,80,625,107"/><area shape="rect" id="node11" href="def__spec_8h_source.html" title="spec/def_spec.h" alt="" coords="649,155,768,181"/><area shape="rect" id="node12" href="semtrex__spec_8h.html" title="spec/semtrex_spec.h" alt="" coords="793,155,939,181"/><area shape="rect" id="node7" href="tree__spec_8h.html" title="spec/tree_spec.h" alt="" coords="165,155,287,181"/><area shape="rect" id="node9" href="receptor__spec_8h.html" title="spec/receptor_spec.h" alt="" coords="311,155,458,181"/><area shape="rect" id="node10" href="vmhost__spec_8h.html" title="spec/vmhost_spec.h" alt="" coords="483,155,625,181"/><area shape="rect" id="node8" href="ceptr__specs_8c.html" title="implements a main() entry point for running all the tests " alt="" coords="486,229,622,256"/></map>
 </div>
 </div>
 <p><a href="semtrex_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSvalue.html">Svalue</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSgroupOpen.html">SgroupOpen</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSgroupClose.html">SgroupClose</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSvalue.html">Svalue</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSliteral.html">Sliteral</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="unionSTypeData.html">STypeData</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -154,6 +157,18 @@ Macros</h2></td></tr>
 <tr class="memitem:gabc00a44ebca777cfe3d7cb823bb058b5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gabc00a44ebca777cfe3d7cb823bb058b5"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>GroupClose</b>&#160;&#160;&#160;0</td></tr>
 <tr class="separator:gabc00a44ebca777cfe3d7cb823bb058b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga12e70dc3d5fde33655e8731ad3bdd935"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga12e70dc3d5fde33655e8731ad3bdd935"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>_sl</b>(t, s)&#160;&#160;&#160;<a class="el" href="group__semtrex.html#ga0eb6f4bfe908f6e8a680c56e8468b523">__sl</a>(t,0,1,s)</td></tr>
+<tr class="separator:ga12e70dc3d5fde33655e8731ad3bdd935"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac1b578cc9fc2f835ad12855698fe4cf2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gac1b578cc9fc2f835ad12855698fe4cf2"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>_sln</b>(t, s)&#160;&#160;&#160;<a class="el" href="group__semtrex.html#ga0eb6f4bfe908f6e8a680c56e8468b523">__sl</a>(t,1,1,s)</td></tr>
+<tr class="separator:gac1b578cc9fc2f835ad12855698fe4cf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8785a1bb99b5bb1f749bd37a317594e4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga8785a1bb99b5bb1f749bd37a317594e4"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>DT</b>(l, t)&#160;&#160;&#160;{char buf[1000];puts(&quot;\n&quot; #l &quot;:&quot;);__t_dump(0,t,0,buf);puts(buf);}</td></tr>
+<tr class="separator:ga8785a1bb99b5bb1f749bd37a317594e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga23a719903c25f5387274002776ae5fa1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga23a719903c25f5387274002776ae5fa1"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>DS</b>(l, t)&#160;&#160;&#160;{<a class="el" href="structDefs.html">Defs</a> d = {0,0,0,0};char buf[1000];puts(&quot;\n&quot; #l &quot;:&quot;);<a class="el" href="group__semtrex.html#ga614de2fa253b75fc34b41421a866ca62">_dump_semtrex</a>(&amp;d,t,buf);puts(buf);}</td></tr>
+<tr class="separator:ga23a719903c25f5387274002776ae5fa1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -163,18 +178,19 @@ typedef int&#160;</td><td class="memItemRight" valign="bottom"><b>StateType</b><
 <tr class="memitem:ga8fbe3b9e7b9817abdf0c2de2f180b4fd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga8fbe3b9e7b9817abdf0c2de2f180b4fd"></a>
 typedef int&#160;</td><td class="memItemRight" valign="bottom"><b>TransitionType</b></td></tr>
 <tr class="separator:ga8fbe3b9e7b9817abdf0c2de2f180b4fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga73e4e0a051cd3779fd7ff67947607ebd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga73e4e0a051cd3779fd7ff67947607ebd"></a>
-typedef void *&#160;</td><td class="memItemRight" valign="bottom"><b>ValueData</b></td></tr>
-<tr class="separator:ga73e4e0a051cd3779fd7ff67947607ebd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga54c5ea60f89b8d13b11d8dfc6ec3b94e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga54c5ea60f89b8d13b11d8dfc6ec3b94e"></a>
 typedef struct <a class="el" href="structSState.html">SState</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SState</b></td></tr>
 <tr class="separator:ga54c5ea60f89b8d13b11d8dfc6ec3b94e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga886f61851b2c5a479cf7bed2ba78cd7d"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structSvalue.html">Svalue</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga886f61851b2c5a479cf7bed2ba78cd7d">Svalue</a></td></tr>
-<tr class="separator:ga886f61851b2c5a479cf7bed2ba78cd7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga09de53f7ae900c6cb78a22c19af533ff"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structSgroupOpen.html">SgroupOpen</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga09de53f7ae900c6cb78a22c19af533ff">SgroupOpen</a></td></tr>
 <tr class="separator:ga09de53f7ae900c6cb78a22c19af533ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab4bc67d51970ec75875c2e9e135c4bf3"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structSgroupClose.html">SgroupClose</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#gab4bc67d51970ec75875c2e9e135c4bf3">SgroupClose</a></td></tr>
 <tr class="separator:gab4bc67d51970ec75875c2e9e135c4bf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga886f61851b2c5a479cf7bed2ba78cd7d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga886f61851b2c5a479cf7bed2ba78cd7d"></a>
+typedef struct <a class="el" href="structSvalue.html">Svalue</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Svalue</b></td></tr>
+<tr class="separator:ga886f61851b2c5a479cf7bed2ba78cd7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3f47626017139312d814719b254a1a0e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga3f47626017139312d814719b254a1a0e"></a>
+typedef struct <a class="el" href="structSliteral.html">Sliteral</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Sliteral</b></td></tr>
+<tr class="separator:ga3f47626017139312d814719b254a1a0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga8dced199acb1f24ff8f91e409aa6d1cb"><td class="memItemLeft" align="right" valign="top">typedef union <a class="el" href="unionSTypeData.html">STypeData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga8dced199acb1f24ff8f91e409aa6d1cb">STypeData</a></td></tr>
 <tr class="separator:ga8dced199acb1f24ff8f91e409aa6d1cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -215,11 +231,43 @@ Functions</h2></td></tr>
 <tr class="separator:ga27540c8e1822da3160a0cc4717df410f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gada90f89374f4577e3ac8819e500a97a7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#gada90f89374f4577e3ac8819e500a97a7">_t_get_match</a> (<a class="el" href="structT.html">T</a> *result, <a class="el" href="structSemanticID.html">Symbol</a> group)</td></tr>
 <tr class="separator:gada90f89374f4577e3ac8819e500a97a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa3ab8a942198e875464b0e9d8e7e30bf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaa3ab8a942198e875464b0e9d8e7e30bf"></a>
-char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (<a class="el" href="structDefs.html">Defs</a> defs, <a class="el" href="structT.html">T</a> *s, char *buf)</td></tr>
-<tr class="separator:gaa3ab8a942198e875464b0e9d8e7e30bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5e8b3f2120a2a17ca5c4724974ba3436"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga5e8b3f2120a2a17ca5c4724974ba3436">_t_embody_from_match</a> (<a class="el" href="structDefs.html">Defs</a> *defs, <a class="el" href="structT.html">T</a> *match, <a class="el" href="structT.html">T</a> *t)</td></tr>
+<tr class="separator:ga5e8b3f2120a2a17ca5c4724974ba3436"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga614de2fa253b75fc34b41421a866ca62"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga614de2fa253b75fc34b41421a866ca62">_dump_semtrex</a> (<a class="el" href="structDefs.html">Defs</a> *defs, <a class="el" href="structT.html">T</a> *s, char *buf)</td></tr>
+<tr class="separator:ga614de2fa253b75fc34b41421a866ca62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad46a0cafec3ba9ca1500ecd6f8984238"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#gad46a0cafec3ba9ca1500ecd6f8984238">makeASCIITree</a> (char *c)</td></tr>
+<tr class="separator:gad46a0cafec3ba9ca1500ecd6f8984238"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga17eda8e5306b5764656d7edf3f5b15bd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga17eda8e5306b5764656d7edf3f5b15bd">parseSemtrex</a> (<a class="el" href="structDefs.html">Defs</a> *d, char *stx)</td></tr>
 <tr class="separator:ga17eda8e5306b5764656d7edf3f5b15bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5e4a8396bf0b927fb440bc207ff44b32"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga5e4a8396bf0b927fb440bc207ff44b32"></a>
+<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>__stxcv</b> (<a class="el" href="structT.html">T</a> *stxx, char c)</td></tr>
+<tr class="separator:ga5e4a8396bf0b927fb440bc207ff44b32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaca2dea328b69197bc1f21cf8139e904d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaca2dea328b69197bc1f21cf8139e904d"></a>
+<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>__stxcvm</b> (<a class="el" href="structT.html">T</a> *stxx, int not, int count,...)</td></tr>
+<tr class="separator:gaca2dea328b69197bc1f21cf8139e904d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga95bb803d107e65b2ddcd9bde258a40be"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga95bb803d107e65b2ddcd9bde258a40be">asciiT_toi</a> (<a class="el" href="structT.html">T</a> *asciiT, <a class="el" href="structT.html">T</a> *match, <a class="el" href="structT.html">T</a> *t, <a class="el" href="structSemanticID.html">Symbol</a> s)</td></tr>
+<tr class="separator:ga95bb803d107e65b2ddcd9bde258a40be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4ff0c2f907a002cce83813f17b6481d5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga4ff0c2f907a002cce83813f17b6481d5">asciiT_tos</a> (<a class="el" href="structT.html">T</a> *asciiT, <a class="el" href="structT.html">T</a> *match, <a class="el" href="structT.html">T</a> *t, <a class="el" href="structSemanticID.html">Symbol</a> s)</td></tr>
+<tr class="separator:ga4ff0c2f907a002cce83813f17b6481d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga74a1cae16040c9c0778cb3796017036a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga74a1cae16040c9c0778cb3796017036a">asciiT_toc</a> (<a class="el" href="structT.html">T</a> *asciiT, <a class="el" href="structT.html">T</a> *match, <a class="el" href="structT.html">T</a> *t, <a class="el" href="structSemanticID.html">Symbol</a> s)</td></tr>
+<tr class="separator:ga74a1cae16040c9c0778cb3796017036a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0eb6f4bfe908f6e8a680c56e8468b523"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga0eb6f4bfe908f6e8a680c56e8468b523">__sl</a> (<a class="el" href="structT.html">T</a> *p, int not, int count,...)</td></tr>
+<tr class="separator:ga0eb6f4bfe908f6e8a680c56e8468b523"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:gaf0272e535001c2703c79a5d67a1a96ea"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaf0272e535001c2703c79a5d67a1a96ea"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>G_debug_match</b></td></tr>
+<tr class="separator:gaf0272e535001c2703c79a5d67a1a96ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga11e99630a9b6ddf002ac9a725bba7ebd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga11e99630a9b6ddf002ac9a725bba7ebd"></a>
+<a class="el" href="structDefs.html">Defs</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>G_d</b></td></tr>
+<tr class="separator:ga11e99630a9b6ddf002ac9a725bba7ebd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga82573c9fc996af7623605123964ec479"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga82573c9fc996af7623605123964ec479"></a>
+<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>G_ts</b></td></tr>
+<tr class="separator:ga82573c9fc996af7623605123964ec479"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8592201e0b95200efcedc42ec62b6676"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga8592201e0b95200efcedc42ec62b6676"></a>
+<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>G_te</b></td></tr>
+<tr class="separator:ga8592201e0b95200efcedc42ec62b6676"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Semantic tree regular expression header file. </p>
@@ -232,7 +280,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_dump_semtrex</b> (
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="semtrex_8h.html">semtrex.h</a></li>
-    <li class="footer">Generated on Wed Oct 22 2014 12:22:26 for ceptr by
+    <li class="footer">Generated on Wed Nov 12 2014 13:42:17 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

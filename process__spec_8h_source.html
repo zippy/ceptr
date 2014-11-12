@@ -277,188 +277,187 @@ $(document).ready(function(){initNavTree('process__spec_8h_source.html','');});
 <div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    <a class="code" href="structT.html">T</a> *n = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,INTERPOLATE_FROM_MATCH);</div>
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    <a class="code" href="structT.html">T</a> *p1 = <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL2,0);</div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    <a class="code" href="group__tree.html#ga14080e3aa32b1612dabcd610b062e376">_t_news</a>(p1,INTERPOLATE_SYMBOL,TEST_INT_SYMBOL);</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    <a class="code" href="structT.html">T</a> *p2 = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(n,SEMTREX_MATCH_RESULTS);</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <a class="code" href="structT.html">T</a> *sm = <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(p2,SEMTREX_MATCH,1);</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    <a class="code" href="group__tree.html#ga14080e3aa32b1612dabcd610b062e376">_t_news</a>(sm,SEMTREX_MATCH,TEST_INT_SYMBOL);</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    <span class="keywordtype">int</span> path[] = {TREE_PATH_TERMINATOR};</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    <a class="code" href="group__tree.html#ga6ecbb70ce62a6c61f04ff8d0707101e4">_t_new</a>(sm,SEMTREX_MATCHED_PATH,path,2*<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>));</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(sm,SEMTREX_MATCH_SIBLINGS_COUNT,1);</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    <a class="code" href="structT.html">T</a> *p3 = <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,314);</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    <a class="code" href="process_8c.html#a26f4132d39d36acd79c45e2c6237564a">__p_reduce</a>(defs,t,n);</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    <span class="keywordtype">char</span> buf[2000];</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    __t_dump(0,_t_child(t,1),0,buf);</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    spec_is_str_equal(buf,<span class="stringliteral">&quot; (TEST_INT_SYMBOL2:0 (TEST_INT_SYMBOL:314))&quot;</span>);</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;}</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;</div>
-<div class="line"><a name="l00202"></a><span class="lineno"><a class="line" href="process__spec_8h.html#a2df9138f71c0a1fa19bcb49682d51299">  202</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="process__spec_8h.html#a2df9138f71c0a1fa19bcb49682d51299">testProcessIf</a>() {</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    <a class="code" href="structDefs.html">Defs</a> defs;</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    <span class="comment">// test IF which takes three parameters, the condition, the true code tree and the false code tree</span></div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    <a class="code" href="structT.html">T</a> *t = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(RUN_TREE);</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    <a class="code" href="structT.html">T</a> *n = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,IF);</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    <a class="code" href="structT.html">T</a> *p1 = <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TRUE_FALSE,1);</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    <a class="code" href="structT.html">T</a> *p2 = <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,99);</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    <a class="code" href="structT.html">T</a> *p3 = <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,100);</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    <a class="code" href="process_8c.html#a26f4132d39d36acd79c45e2c6237564a">__p_reduce</a>(defs,t,n);</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    <span class="keywordtype">char</span> buf[2000];</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    __t_dump(0,_t_child(t,1),0,buf);</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    spec_is_str_equal(buf,<span class="stringliteral">&quot; (TEST_INT_SYMBOL:99)&quot;</span>);</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;}</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;<span class="keywordtype">void</span> testProcessIntMath() {</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    <a class="code" href="structDefs.html">Defs</a> defs;</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    <span class="keywordtype">char</span> buf[2000];</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    <a class="code" href="structT.html">T</a> *t = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(RUN_TREE);</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    <span class="comment">// test addition</span></div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    <a class="code" href="structT.html">T</a> *n = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,ADD_INT);</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,99);</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,100);</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    <a class="code" href="process_8c.html#a26f4132d39d36acd79c45e2c6237564a">__p_reduce</a>(defs,t,n);</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    __t_dump(0,_t_child(t,1),0,buf);</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    spec_is_str_equal(buf,<span class="stringliteral">&quot; (TEST_INT_SYMBOL:199)&quot;</span>);</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    <span class="comment">// test subtraction</span></div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    n = <a class="code" href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a>(t,1);</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(n);</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    n = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,SUB_INT);</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,100);</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,98);</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    <a class="code" href="process_8c.html#a26f4132d39d36acd79c45e2c6237564a">__p_reduce</a>(defs,t,n);</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    __t_dump(0,_t_child(t,1),0,buf);</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    spec_is_str_equal(buf,<span class="stringliteral">&quot; (TEST_INT_SYMBOL:2)&quot;</span>);</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    <span class="comment">// test multiplication</span></div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    n = <a class="code" href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a>(t,1);</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(n);</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    n = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,MULT_INT);</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,100);</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,98);</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    <a class="code" href="process_8c.html#a26f4132d39d36acd79c45e2c6237564a">__p_reduce</a>(defs,t,n);</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    __t_dump(0,_t_child(t,1),0,buf);</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    spec_is_str_equal(buf,<span class="stringliteral">&quot; (TEST_INT_SYMBOL:9800)&quot;</span>);</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;    <span class="comment">// test division</span></div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;    n = <a class="code" href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a>(t,1);</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(n);</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;    n = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,DIV_INT);</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,100);</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,48);</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;    <a class="code" href="process_8c.html#a26f4132d39d36acd79c45e2c6237564a">__p_reduce</a>(defs,t,n);</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;    __t_dump(0,_t_child(t,1),0,buf);</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    spec_is_str_equal(buf,<span class="stringliteral">&quot; (TEST_INT_SYMBOL:2)&quot;</span>);</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    <span class="comment">// test modulo</span></div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    n = <a class="code" href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a>(t,1);</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(n);</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    n = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,MOD_INT);</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,100);</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,2);</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    <a class="code" href="process_8c.html#a26f4132d39d36acd79c45e2c6237564a">__p_reduce</a>(defs,t,n);</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    __t_dump(0,_t_child(t,1),0,buf);</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    spec_is_str_equal(buf,<span class="stringliteral">&quot; (TEST_INT_SYMBOL:0)&quot;</span>);</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    <span class="comment">// test equals</span></div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    n = <a class="code" href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a>(t,1);</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(n);</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;    n = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,EQ_INT);</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,100);</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,2);</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;    <a class="code" href="process_8c.html#a26f4132d39d36acd79c45e2c6237564a">__p_reduce</a>(defs,t,n);</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    __t_dump(0,_t_child(t,1),0,buf);</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;    spec_is_str_equal(buf,<span class="stringliteral">&quot; (TRUE_FALSE:0)&quot;</span>);</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;    n = <a class="code" href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a>(t,1);</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(n);</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;    n = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,EQ_INT);</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    <a class="code" href="structT.html">T</a> *p2 = <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,SEMTREX_MATCH,1);</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <a class="code" href="group__tree.html#ga14080e3aa32b1612dabcd610b062e376">_t_news</a>(p2,SEMTREX_MATCH,TEST_INT_SYMBOL);</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    <span class="keywordtype">int</span> path[] = {TREE_PATH_TERMINATOR};</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    <a class="code" href="group__tree.html#ga6ecbb70ce62a6c61f04ff8d0707101e4">_t_new</a>(p2,SEMTREX_MATCHED_PATH,path,2*<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>));</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(p2,SEMTREX_MATCH_SIBLINGS_COUNT,1);</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    <a class="code" href="structT.html">T</a> *p3 = <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,314);</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    <a class="code" href="process_8c.html#a26f4132d39d36acd79c45e2c6237564a">__p_reduce</a>(defs,t,n);</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    <span class="keywordtype">char</span> buf[2000];</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    __t_dump(0,_t_child(t,1),0,buf);</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    spec_is_str_equal(buf,<span class="stringliteral">&quot; (TEST_INT_SYMBOL2:0 (TEST_INT_SYMBOL:314))&quot;</span>);</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;}</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;</div>
+<div class="line"><a name="l00201"></a><span class="lineno"><a class="line" href="process__spec_8h.html#a2df9138f71c0a1fa19bcb49682d51299">  201</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="process__spec_8h.html#a2df9138f71c0a1fa19bcb49682d51299">testProcessIf</a>() {</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    <a class="code" href="structDefs.html">Defs</a> defs;</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    <span class="comment">// test IF which takes three parameters, the condition, the true code tree and the false code tree</span></div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    <a class="code" href="structT.html">T</a> *t = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(RUN_TREE);</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    <a class="code" href="structT.html">T</a> *n = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,IF);</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    <a class="code" href="structT.html">T</a> *p1 = <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TRUE_FALSE,1);</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    <a class="code" href="structT.html">T</a> *p2 = <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,99);</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    <a class="code" href="structT.html">T</a> *p3 = <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,100);</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    <a class="code" href="process_8c.html#a26f4132d39d36acd79c45e2c6237564a">__p_reduce</a>(defs,t,n);</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    <span class="keywordtype">char</span> buf[2000];</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    __t_dump(0,_t_child(t,1),0,buf);</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    spec_is_str_equal(buf,<span class="stringliteral">&quot; (TEST_INT_SYMBOL:99)&quot;</span>);</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;}</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;<span class="keywordtype">void</span> testProcessIntMath() {</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;    <a class="code" href="structDefs.html">Defs</a> defs;</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    <span class="keywordtype">char</span> buf[2000];</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    <a class="code" href="structT.html">T</a> *t = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(RUN_TREE);</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    <span class="comment">// test addition</span></div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    <a class="code" href="structT.html">T</a> *n = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,ADD_INT);</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,99);</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,100);</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    <a class="code" href="process_8c.html#a26f4132d39d36acd79c45e2c6237564a">__p_reduce</a>(defs,t,n);</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    __t_dump(0,_t_child(t,1),0,buf);</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    spec_is_str_equal(buf,<span class="stringliteral">&quot; (TEST_INT_SYMBOL:199)&quot;</span>);</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;    <span class="comment">// test subtraction</span></div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    n = <a class="code" href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a>(t,1);</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(n);</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    n = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,SUB_INT);</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,100);</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,98);</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    <a class="code" href="process_8c.html#a26f4132d39d36acd79c45e2c6237564a">__p_reduce</a>(defs,t,n);</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    __t_dump(0,_t_child(t,1),0,buf);</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    spec_is_str_equal(buf,<span class="stringliteral">&quot; (TEST_INT_SYMBOL:2)&quot;</span>);</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    <span class="comment">// test multiplication</span></div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    n = <a class="code" href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a>(t,1);</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(n);</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    n = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,MULT_INT);</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,100);</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,98);</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    <a class="code" href="process_8c.html#a26f4132d39d36acd79c45e2c6237564a">__p_reduce</a>(defs,t,n);</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    __t_dump(0,_t_child(t,1),0,buf);</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    spec_is_str_equal(buf,<span class="stringliteral">&quot; (TEST_INT_SYMBOL:9800)&quot;</span>);</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    <span class="comment">// test division</span></div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;    n = <a class="code" href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a>(t,1);</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(n);</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;    n = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,DIV_INT);</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,100);</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,48);</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;    <a class="code" href="process_8c.html#a26f4132d39d36acd79c45e2c6237564a">__p_reduce</a>(defs,t,n);</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;    __t_dump(0,_t_child(t,1),0,buf);</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;    spec_is_str_equal(buf,<span class="stringliteral">&quot; (TEST_INT_SYMBOL:2)&quot;</span>);</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;    <span class="comment">// test modulo</span></div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    n = <a class="code" href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a>(t,1);</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(n);</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;    n = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,MOD_INT);</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,100);</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,2);</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    <a class="code" href="process_8c.html#a26f4132d39d36acd79c45e2c6237564a">__p_reduce</a>(defs,t,n);</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    __t_dump(0,_t_child(t,1),0,buf);</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    spec_is_str_equal(buf,<span class="stringliteral">&quot; (TEST_INT_SYMBOL:0)&quot;</span>);</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;    <span class="comment">// test equals</span></div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    n = <a class="code" href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a>(t,1);</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(n);</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    n = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,EQ_INT);</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,100);</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,2);</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    <a class="code" href="process_8c.html#a26f4132d39d36acd79c45e2c6237564a">__p_reduce</a>(defs,t,n);</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;    __t_dump(0,_t_child(t,1),0,buf);</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    spec_is_str_equal(buf,<span class="stringliteral">&quot; (TRUE_FALSE:0)&quot;</span>);</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    n = <a class="code" href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a>(t,1);</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(n);</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;    n = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,EQ_INT);</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,100);</div>
 <div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,100);</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,100);</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;    <a class="code" href="process_8c.html#a26f4132d39d36acd79c45e2c6237564a">__p_reduce</a>(defs,t,n);</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    __t_dump(0,_t_child(t,1),0,buf);</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;    spec_is_str_equal(buf,<span class="stringliteral">&quot; (TRUE_FALSE:1)&quot;</span>);</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    <span class="comment">// test &lt;</span></div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;    n = <a class="code" href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a>(t,1);</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(n);</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;    n = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,LT_INT);</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,2);</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,100);</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;    <a class="code" href="process_8c.html#a26f4132d39d36acd79c45e2c6237564a">__p_reduce</a>(defs,t,n);</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;    __t_dump(0,_t_child(t,1),0,buf);</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;    spec_is_str_equal(buf,<span class="stringliteral">&quot; (TRUE_FALSE:1)&quot;</span>);</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    n = <a class="code" href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a>(t,1);</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(n);</div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;    n = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,LT_INT);</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;    <a class="code" href="process_8c.html#a26f4132d39d36acd79c45e2c6237564a">__p_reduce</a>(defs,t,n);</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;    __t_dump(0,_t_child(t,1),0,buf);</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    spec_is_str_equal(buf,<span class="stringliteral">&quot; (TRUE_FALSE:1)&quot;</span>);</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;    <span class="comment">// test &lt;</span></div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    n = <a class="code" href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a>(t,1);</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(n);</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;    n = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,LT_INT);</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,2);</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,100);</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;    <a class="code" href="process_8c.html#a26f4132d39d36acd79c45e2c6237564a">__p_reduce</a>(defs,t,n);</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;    __t_dump(0,_t_child(t,1),0,buf);</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;    spec_is_str_equal(buf,<span class="stringliteral">&quot; (TRUE_FALSE:1)&quot;</span>);</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;    n = <a class="code" href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a>(t,1);</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(n);</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    n = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,LT_INT);</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,100);</div>
 <div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,100);</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,100);</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;    <a class="code" href="process_8c.html#a26f4132d39d36acd79c45e2c6237564a">__p_reduce</a>(defs,t,n);</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;    __t_dump(0,_t_child(t,1),0,buf);</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;    spec_is_str_equal(buf,<span class="stringliteral">&quot; (TRUE_FALSE:0)&quot;</span>);</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;    <span class="comment">// test &gt;</span></div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;    n = <a class="code" href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a>(t,1);</div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(n);</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;    n = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,GT_INT);</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,2);</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,100);</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;    <a class="code" href="process_8c.html#a26f4132d39d36acd79c45e2c6237564a">__p_reduce</a>(defs,t,n);</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;    __t_dump(0,_t_child(t,1),0,buf);</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;    spec_is_str_equal(buf,<span class="stringliteral">&quot; (TRUE_FALSE:0)&quot;</span>);</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;    n = <a class="code" href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a>(t,1);</div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(n);</div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;    n = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,GT_INT);</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,101);</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,100);</div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;</div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;    <a class="code" href="process_8c.html#a26f4132d39d36acd79c45e2c6237564a">__p_reduce</a>(defs,t,n);</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;    __t_dump(0,_t_child(t,1),0,buf);</div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    spec_is_str_equal(buf,<span class="stringliteral">&quot; (TRUE_FALSE:1)&quot;</span>);</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;}</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;    <a class="code" href="process_8c.html#a26f4132d39d36acd79c45e2c6237564a">__p_reduce</a>(defs,t,n);</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;    __t_dump(0,_t_child(t,1),0,buf);</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;    spec_is_str_equal(buf,<span class="stringliteral">&quot; (TRUE_FALSE:0)&quot;</span>);</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;    <span class="comment">// test &gt;</span></div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;    n = <a class="code" href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a>(t,1);</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(n);</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;    n = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,GT_INT);</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,2);</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,100);</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;    <a class="code" href="process_8c.html#a26f4132d39d36acd79c45e2c6237564a">__p_reduce</a>(defs,t,n);</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;    __t_dump(0,_t_child(t,1),0,buf);</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;    spec_is_str_equal(buf,<span class="stringliteral">&quot; (TRUE_FALSE:0)&quot;</span>);</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;    n = <a class="code" href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a>(t,1);</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(n);</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;    n = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,GT_INT);</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,101);</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,100);</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;    <a class="code" href="process_8c.html#a26f4132d39d36acd79c45e2c6237564a">__p_reduce</a>(defs,t,n);</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;    __t_dump(0,_t_child(t,1),0,buf);</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;    spec_is_str_equal(buf,<span class="stringliteral">&quot; (TRUE_FALSE:1)&quot;</span>);</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;}</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;</div>
 <div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;</div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;<span class="keywordtype">void</span> testProcess() {</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;    testRunTree();</div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;    <a class="code" href="process__spec_8h.html#a144cc1bbafbf21f1ac4aa51b06c2c680">testProcessReduceDefinedProcess</a>();</div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;     testProcessSignatureMatching();</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;    testProcessInterpolateMatch();</div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;    <a class="code" href="process__spec_8h.html#a2df9138f71c0a1fa19bcb49682d51299">testProcessIf</a>();</div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;    testProcessIntMath();</div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;}</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;<span class="keywordtype">void</span> testProcess() {</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;    testRunTree();</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;    <a class="code" href="process__spec_8h.html#a144cc1bbafbf21f1ac4aa51b06c2c680">testProcessReduceDefinedProcess</a>();</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;     testProcessSignatureMatching();</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;    testProcessInterpolateMatch();</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;    <a class="code" href="process__spec_8h.html#a2df9138f71c0a1fa19bcb49682d51299">testProcessIf</a>();</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;    testProcessIntMath();</div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;}</div>
 <div class="ttc" id="group__tree_html_ga25dd0f385044ffbcc7c215ea80fa00b4"><div class="ttname"><a href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a></div><div class="ttdeci">T * _t_new_root(Symbol symbol)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00113">tree.c:113</a></div></div>
 <div class="ttc" id="structT_html"><div class="ttname"><a href="structT.html">T</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00043">ceptr_types.h:43</a></div></div>
 <div class="ttc" id="group__tree_html_ga14080e3aa32b1612dabcd610b062e376"><div class="ttname"><a href="group__tree.html#ga14080e3aa32b1612dabcd610b062e376">_t_news</a></div><div class="ttdeci">T * _t_news(T *parent, Symbol symbol, SemanticID surface)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00086">tree.c:86</a></div></div>
-<div class="ttc" id="group__tree_html_gaf019d190c9623de809d006e309a441af"><div class="ttname"><a href="group__tree.html#gaf019d190c9623de809d006e309a441af">_t_get</a></div><div class="ttdeci">T * _t_get(T *t, int *p)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00617">tree.c:617</a></div></div>
+<div class="ttc" id="group__tree_html_gaf019d190c9623de809d006e309a441af"><div class="ttname"><a href="group__tree.html#gaf019d190c9623de809d006e309a441af">_t_get</a></div><div class="ttdeci">T * _t_get(T *t, int *p)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00615">tree.c:615</a></div></div>
 <div class="ttc" id="group__tree_html_ga6ecbb70ce62a6c61f04ff8d0707101e4"><div class="ttname"><a href="group__tree.html#ga6ecbb70ce62a6c61f04ff8d0707101e4">_t_new</a></div><div class="ttdeci">T * _t_new(T *parent, Symbol symbol, void *surface, size_t size)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00049">tree.c:49</a></div></div>
 <div class="ttc" id="group__tree_html_ga403644d86c835ceae71dc7af0356900f"><div class="ttname"><a href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a></div><div class="ttdeci">T * _t_detach_by_idx(T *t, int i)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00205">tree.c:205</a></div></div>
-<div class="ttc" id="process__spec_8h_html_a2df9138f71c0a1fa19bcb49682d51299"><div class="ttname"><a href="process__spec_8h.html#a2df9138f71c0a1fa19bcb49682d51299">testProcessIf</a></div><div class="ttdeci">void testProcessIf()</div><div class="ttdef"><b>Definition:</b> <a href="process__spec_8h_source.html#l00202">process_spec.h:202</a></div></div>
+<div class="ttc" id="process__spec_8h_html_a2df9138f71c0a1fa19bcb49682d51299"><div class="ttname"><a href="process__spec_8h.html#a2df9138f71c0a1fa19bcb49682d51299">testProcessIf</a></div><div class="ttdeci">void testProcessIf()</div><div class="ttdef"><b>Definition:</b> <a href="process__spec_8h_source.html#l00201">process_spec.h:201</a></div></div>
 <div class="ttc" id="group__tree_html_ga3e2009f5a82889263d560d2c1479606a"><div class="ttname"><a href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a></div><div class="ttdeci">T * _t_newr(T *parent, Symbol symbol)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00124">tree.c:124</a></div></div>
-<div class="ttc" id="group__tree_html_ga946600fb570f0cc913450905f6189d49"><div class="ttname"><a href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a></div><div class="ttdeci">Symbol _t_symbol(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00455">tree.c:455</a></div></div>
+<div class="ttc" id="group__tree_html_ga946600fb570f0cc913450905f6189d49"><div class="ttname"><a href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a></div><div class="ttdeci">Symbol _t_symbol(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00453">tree.c:453</a></div></div>
 <div class="ttc" id="process__spec_8h_html_a3b8bbd16216de3d2c5f7ffd5f53c156e"><div class="ttname"><a href="process__spec_8h.html#a3b8bbd16216de3d2c5f7ffd5f53c156e">_defIfEven</a></div><div class="ttdeci">Process _defIfEven(T *processes)</div><div class="ttdoc">[defIfEven] </div><div class="ttdef"><b>Definition:</b> <a href="process__spec_8h_source.html#l00091">process_spec.h:91</a></div></div>
 <div class="ttc" id="group__tree_html_gacca3c33cbc32d7e28bdc3c40bb330c23"><div class="ttname"><a href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a></div><div class="ttdeci">T * _t_newi(T *parent, Symbol symbol, int surface)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00070">tree.c:70</a></div></div>
 <div class="ttc" id="group__tree_html_ga48ffc2a6e4aa4856b76fb53b97db87f3"><div class="ttname"><a href="group__tree.html#ga48ffc2a6e4aa4856b76fb53b97db87f3">_t_newp</a></div><div class="ttdeci">T * _t_newp(T *parent, Symbol symbol, Process surface)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00178">tree.c:178</a></div></div>
-<div class="ttc" id="process_8c_html_a0d7e9199c11402521a3ed08719eb92a6"><div class="ttname"><a href="process_8c.html#a0d7e9199c11402521a3ed08719eb92a6">_p_make_run_tree</a></div><div class="ttdeci">T * _p_make_run_tree(T *processes, T *process, int num_params,...)</div><div class="ttdef"><b>Definition:</b> <a href="process_8c_source.html#l00241">process.c:241</a></div></div>
+<div class="ttc" id="process_8c_html_a0d7e9199c11402521a3ed08719eb92a6"><div class="ttname"><a href="process_8c.html#a0d7e9199c11402521a3ed08719eb92a6">_p_make_run_tree</a></div><div class="ttdeci">T * _p_make_run_tree(T *processes, T *process, int num_params,...)</div><div class="ttdef"><b>Definition:</b> <a href="process_8c_source.html#l00242">process.c:242</a></div></div>
 <div class="ttc" id="process__spec_8h_html_a144cc1bbafbf21f1ac4aa51b06c2c680"><div class="ttname"><a href="process__spec_8h.html#a144cc1bbafbf21f1ac4aa51b06c2c680">testProcessReduceDefinedProcess</a></div><div class="ttdeci">void testProcessReduceDefinedProcess()</div><div class="ttdoc">[defIfEven] </div><div class="ttdef"><b>Definition:</b> <a href="process__spec_8h_source.html#l00124">process_spec.h:124</a></div></div>
-<div class="ttc" id="process_8c_html_a26f4132d39d36acd79c45e2c6237564a"><div class="ttname"><a href="process_8c.html#a26f4132d39d36acd79c45e2c6237564a">__p_reduce</a></div><div class="ttdeci">Error __p_reduce(Defs defs, T *run_tree, T *code)</div><div class="ttdef"><b>Definition:</b> <a href="process_8c_source.html#l00088">process.c:88</a></div></div>
+<div class="ttc" id="process_8c_html_a26f4132d39d36acd79c45e2c6237564a"><div class="ttname"><a href="process_8c.html#a26f4132d39d36acd79c45e2c6237564a">__p_reduce</a></div><div class="ttdeci">Error __p_reduce(Defs defs, T *run_tree, T *code)</div><div class="ttdef"><b>Definition:</b> <a href="process_8c_source.html#l00092">process.c:92</a></div></div>
 <div class="ttc" id="structDefs_html"><div class="ttname"><a href="structDefs.html">Defs</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00091">ceptr_types.h:91</a></div></div>
 <div class="ttc" id="group__def_html_ga33c6ec0c2bc81bfa149b8f883300d67d"><div class="ttname"><a href="group__def.html#ga33c6ec0c2bc81bfa149b8f883300d67d">_d_code_process</a></div><div class="ttdeci">Process _d_code_process(T *processes, T *code, char *name, char *intention, T *in, T *out, Context c)</div><div class="ttdef"><b>Definition:</b> <a href="def_8c_source.html#l00284">def.c:284</a></div></div>
-<div class="ttc" id="group__tree_html_ga31e55cdc031e5f12523b998e89080db6"><div class="ttname"><a href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a></div><div class="ttdeci">void _t_free(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00382">tree.c:382</a></div></div>
+<div class="ttc" id="group__tree_html_ga31e55cdc031e5f12523b998e89080db6"><div class="ttname"><a href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a></div><div class="ttdeci">void _t_free(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00383">tree.c:383</a></div></div>
 <div class="ttc" id="structSemanticID_html"><div class="ttname"><a href="structSemanticID.html">SemanticID</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00016">ceptr_types.h:16</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -466,7 +465,7 @@ $(document).ready(function(){initNavTree('process__spec_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><a class="el" href="process__spec_8h.html">process_spec.h</a></li>
-    <li class="footer">Generated on Wed Oct 22 2014 12:22:26 for ceptr by
+    <li class="footer">Generated on Wed Nov 12 2014 13:42:17 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

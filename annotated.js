@@ -1,5 +1,6 @@
 var annotated =
 [
+    [ "BranchPoint", "structBranchPoint.html", "structBranchPoint" ],
     [ "Defs", "structDefs.html", "structDefs" ],
     [ "instance_elem", "structinstance__elem.html", "structinstance__elem" ],
     [ "instances_elem", "structinstances__elem.html", "structinstances__elem" ],
@@ -10,6 +11,7 @@ var annotated =
     [ "SemanticID", "structSemanticID.html", "structSemanticID" ],
     [ "SgroupClose", "structSgroupClose.html", "structSgroupClose" ],
     [ "SgroupOpen", "structSgroupOpen.html", "structSgroupOpen" ],
+    [ "Sliteral", "structSliteral.html", "structSliteral" ],
     [ "SState", "structSState.html", "structSState" ],
     [ "STypeData", "unionSTypeData.html", "unionSTypeData" ],
     [ "Svalue", "structSvalue.html", "structSvalue" ],
