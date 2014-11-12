@@ -901,6 +901,7 @@ void testSemtrexParseHHTPReq() {
 
     spec_is_true(_t_match(pstx,t));
 
+    _t_free(pstx);
     _t_free(t);
     _t_free(s);
     _t_free(stx);
