@@ -342,6 +342,8 @@ Symbol STX_TOKENS;
 Symbol STX_SL;
 Symbol STX_OP;
 Symbol STX_CP;
+Symbol STX_OS;
+Symbol STX_CS;
 Symbol STX_LABEL;
 Symbol STX_OG;
 Symbol STX_CG;
