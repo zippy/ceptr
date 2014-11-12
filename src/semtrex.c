@@ -912,7 +912,7 @@ char * __dump_semtrex(Defs *defs,T *s,char *buf) {
 	sprintf(buf, "/%s",__dump_semtrex(defs,_t_child(s,1),b));
 	break;
     case SEMTREX_WALK_ID:
-	sprintf(buf, "%%%s",__dump_semtrex(defs,_t_child(s,1),b));
+	sprintf(buf, "(%%%s)",__dump_semtrex(defs,_t_child(s,1),b));
 	break;
     }
     return buf;
@@ -969,7 +969,7 @@ void _stxcs(T *stxx,char *an) {
 }
 
 void _stxl(T *stxx) {
-    _stxcs(stxx,"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789");
+    _stxcs(stxx,"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789._");
 }
 
 // temporary function until we get system label table operational
@@ -999,7 +999,7 @@ Symbol get_symbol(char *symbol_name,Defs *d) {
 
 //#define DUMP_TOKENS
 #ifdef DUMP_TOKENS
-#define dump_tokens(str) puts(str);__t_dump(0,tokens,0,buf);puts(buf);
+#define dump_tokens(str) puts(str);__t_dump(G_d,tokens,0,buf);puts(buf);
 #else
 #define dump_tokens(str)
 #endif
@@ -1190,7 +1190,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 
     o = _t_newr(o,SEMTREX_OR);
     sq = _t_newr(o,SEMTREX_SEQUENCE);
-    __stxcv(sq,'\"');
+    __stxcv(sq,'"');
     t = _t_news(sq,SEMTREX_GROUP,STX_VAL_S);
     _stxl(t);
     __stxcv(sq,'"');
@@ -1484,34 +1484,6 @@ T *parseSemtrex(Defs *d,char *stx) {
 	dump_tokens("TOKENS_AFTER_POSTFIX:");
 
 	/////////////////////////////////////////////////////
-	// fixup STX_WALK
-	// EXPECTATION
-	// /%<SEMTREX_WALK:STX_WALK,.>
-	sxx = _t_new_root(SEMTREX_WALK);
-	g = _t_news(sxx,SEMTREX_GROUP,SEMTREX_WALK);
-	sq = _t_newr(g,SEMTREX_SEQUENCE);
-	_sl(sq,STX_WALK);
-	_t_newr(sq,SEMTREX_SYMBOL_ANY);
-	//----------------
-	// ACTION
-	while (_t_matchr(sxx,tokens,&results)) {
-	    T *m = _t_get_match(results,SEMTREX_WALK);
-	    int *path = (int *)_t_surface(_t_child(m,2));
-	    t = _t_get(tokens,path);
-	    T *parent = _t_parent(t);
-	    int x = path[_t_path_depth(path)-1];
-	    T *c = _t_child(parent,x+1);
-	    _t_detach_by_ptr(parent,c);
-	    _t_add(t,c);
-	    t->contents.symbol = SEMTREX_WALK;
-
-	    _t_free(results);
-	}
-	_t_free(sxx);
-
-	dump_tokens("TOKENS_AFTER_WALK:");
-
-	/////////////////////////////////////////////////////
 	// convert not
 	// EXPECTATION
 	// /%<SEMTREX_NOT:STX_NOT,.>
@@ -1730,6 +1702,34 @@ T *parseSemtrex(Defs *d,char *stx) {
 	_t_free(sxx);
 
 	dump_tokens("TOKENS_AFTER_ORS:");
+
+	/////////////////////////////////////////////////////
+	// fixup STX_WALK
+	// EXPECTATION
+	// /%<SEMTREX_WALK:STX_WALK,.>
+	sxx = _t_new_root(SEMTREX_WALK);
+	g = _t_news(sxx,SEMTREX_GROUP,SEMTREX_WALK);
+	sq = _t_newr(g,SEMTREX_SEQUENCE);
+	_sl(sq,STX_WALK);
+	_t_newr(sq,SEMTREX_SYMBOL_ANY);
+	//----------------
+	// ACTION
+	while (_t_matchr(sxx,tokens,&results)) {
+	    T *m = _t_get_match(results,SEMTREX_WALK);
+	    int *path = (int *)_t_surface(_t_child(m,2));
+	    t = _t_get(tokens,path);
+	    T *parent = _t_parent(t);
+	    int x = path[_t_path_depth(path)-1];
+	    T *c = _t_child(parent,x+1);
+	    _t_detach_by_ptr(parent,c);
+	    _t_add(t,c);
+	    t->contents.symbol = SEMTREX_WALK;
+
+	    _t_free(results);
+	}
+	_t_free(sxx);
+
+	dump_tokens("TOKENS_AFTER_WALK:");
 
 	/////////////////////////////////////////////////////
 	// remove stray STX_SIBS
