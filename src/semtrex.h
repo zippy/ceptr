@@ -34,9 +34,6 @@ enum FSAStateTransitions {
 };
 typedef int TransitionType;
 
-#define GroupOpen 0x1000
-#define GroupClose 0
-
 typedef struct SState SState;
 
 /**
@@ -110,13 +107,18 @@ T *asciiT_toi(T* asciiT,T* match,T *t,Symbol s);
 T *asciiT_tos(T* asciiT,T* match,T *t,Symbol s);
 T *asciiT_toc(T* asciiT,T* match,T *t,Symbol s);
 
+/// macro to add a single symbol literal to semtrex tree
 #define _sl(t,s) __sl(t,0,1,s)
+
+/// macro to add a single symbol literal not to semtrex tree
 #define _sln(t,s) __sl(t,1,1,s)
 
 T *__sl(T *p, int not,int count, ...);
 
+/// debugging macro for quickly dumping out a tree
 #define DT(l,t) {char buf[1000];puts("\n" #l ":");__t_dump(0,t,0,buf);puts(buf);}
 
+/// debugging macro for quickly dumping out a semtrex text string
 #define DS(l,t) {Defs d = {0,0,0,0};char buf[1000];puts("\n" #l ":");_dump_semtrex(&d,t,buf);puts(buf);}
 
 #endif
