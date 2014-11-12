@@ -151,23 +151,21 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:gaefd7c1d3dc2dd4ae49ca10214e3605e4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaefd7c1d3dc2dd4ae49ca10214e3605e4"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>GroupOpen</b>&#160;&#160;&#160;0x1000</td></tr>
-<tr class="separator:gaefd7c1d3dc2dd4ae49ca10214e3605e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gabc00a44ebca777cfe3d7cb823bb058b5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gabc00a44ebca777cfe3d7cb823bb058b5"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>GroupClose</b>&#160;&#160;&#160;0</td></tr>
-<tr class="separator:gabc00a44ebca777cfe3d7cb823bb058b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga12e70dc3d5fde33655e8731ad3bdd935"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga12e70dc3d5fde33655e8731ad3bdd935"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>_sl</b>(t, s)&#160;&#160;&#160;<a class="el" href="group__semtrex.html#ga0eb6f4bfe908f6e8a680c56e8468b523">__sl</a>(t,0,1,s)</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga12e70dc3d5fde33655e8731ad3bdd935">_sl</a>(t, s)&#160;&#160;&#160;<a class="el" href="group__semtrex.html#ga0eb6f4bfe908f6e8a680c56e8468b523">__sl</a>(t,0,1,s)</td></tr>
+<tr class="memdesc:ga12e70dc3d5fde33655e8731ad3bdd935"><td class="mdescLeft">&#160;</td><td class="mdescRight">macro to add a single symbol literal to semtrex tree <br /></td></tr>
 <tr class="separator:ga12e70dc3d5fde33655e8731ad3bdd935"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac1b578cc9fc2f835ad12855698fe4cf2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gac1b578cc9fc2f835ad12855698fe4cf2"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>_sln</b>(t, s)&#160;&#160;&#160;<a class="el" href="group__semtrex.html#ga0eb6f4bfe908f6e8a680c56e8468b523">__sl</a>(t,1,1,s)</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#gac1b578cc9fc2f835ad12855698fe4cf2">_sln</a>(t, s)&#160;&#160;&#160;<a class="el" href="group__semtrex.html#ga0eb6f4bfe908f6e8a680c56e8468b523">__sl</a>(t,1,1,s)</td></tr>
+<tr class="memdesc:gac1b578cc9fc2f835ad12855698fe4cf2"><td class="mdescLeft">&#160;</td><td class="mdescRight">macro to add a single symbol literal not to semtrex tree <br /></td></tr>
 <tr class="separator:gac1b578cc9fc2f835ad12855698fe4cf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga8785a1bb99b5bb1f749bd37a317594e4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga8785a1bb99b5bb1f749bd37a317594e4"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>DT</b>(l, t)&#160;&#160;&#160;{char buf[1000];puts(&quot;\n&quot; #l &quot;:&quot;);__t_dump(0,t,0,buf);puts(buf);}</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga8785a1bb99b5bb1f749bd37a317594e4">DT</a>(l, t)&#160;&#160;&#160;{char buf[1000];puts(&quot;\n&quot; #l &quot;:&quot;);__t_dump(0,t,0,buf);puts(buf);}</td></tr>
+<tr class="memdesc:ga8785a1bb99b5bb1f749bd37a317594e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">debugging macro for quickly dumping out a tree <br /></td></tr>
 <tr class="separator:ga8785a1bb99b5bb1f749bd37a317594e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga23a719903c25f5387274002776ae5fa1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga23a719903c25f5387274002776ae5fa1"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>DS</b>(l, t)&#160;&#160;&#160;{<a class="el" href="structDefs.html">Defs</a> d = {0,0,0,0};char buf[1000];puts(&quot;\n&quot; #l &quot;:&quot;);<a class="el" href="group__semtrex.html#ga614de2fa253b75fc34b41421a866ca62">_dump_semtrex</a>(&amp;d,t,buf);puts(buf);}</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga23a719903c25f5387274002776ae5fa1">DS</a>(l, t)&#160;&#160;&#160;{<a class="el" href="structDefs.html">Defs</a> d = {0,0,0,0};char buf[1000];puts(&quot;\n&quot; #l &quot;:&quot;);<a class="el" href="group__semtrex.html#ga614de2fa253b75fc34b41421a866ca62">_dump_semtrex</a>(&amp;d,t,buf);puts(buf);}</td></tr>
+<tr class="memdesc:ga23a719903c25f5387274002776ae5fa1"><td class="mdescLeft">&#160;</td><td class="mdescRight">debugging macro for quickly dumping out a semtrex text string <br /></td></tr>
 <tr class="separator:ga23a719903c25f5387274002776ae5fa1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
@@ -280,7 +278,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>G_debug_match</b></td>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="semtrex_8h.html">semtrex.h</a></li>
-    <li class="footer">Generated on Wed Nov 12 2014 13:42:17 for ceptr by
+    <li class="footer">Generated on Wed Nov 12 2014 16:04:02 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

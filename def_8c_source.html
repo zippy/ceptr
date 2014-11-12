@@ -255,7 +255,7 @@ $(document).ready(function(){initNavTree('def_8c_source.html','');});
 <div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;}</div>
 <div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;</div>
 <div class="line"><a name="l00303"></a><span class="lineno"><a class="line" href="group__def.html#ga6b69968d56f5f2bc98f426c560af348d">  303</a></span>&#160;<a class="code" href="structT.html">T</a> * <a class="code" href="group__def.html#ga6b69968d56f5f2bc98f426c560af348d">_d_build_def_semtrex</a>(<a class="code" href="structDefs.html">Defs</a> defs,<a class="code" href="structSemanticID.html">Symbol</a> s,<a class="code" href="structT.html">T</a> *parent) {</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;    <a class="code" href="structT.html">T</a> *stx = _sl(parent,s);</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;    <a class="code" href="structT.html">T</a> *stx = <a class="code" href="group__semtrex.html#ga12e70dc3d5fde33655e8731ad3bdd935">_sl</a>(parent,s);</div>
 <div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;</div>
 <div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;    <a class="code" href="structSemanticID.html">Structure</a> st = <a class="code" href="group__def.html#ga41157ee3740cc54c3857ca46e2545999">_d_get_symbol_structure</a>(defs.<a class="code" href="structDefs.html#a172e45e131e197571ba1a36a136d35f8">symbols</a>,s);</div>
 <div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;    <span class="keywordflow">if</span> (!(is_sys_structure(st))) {</div>
@@ -388,6 +388,7 @@ $(document).ready(function(){initNavTree('def_8c_source.html','');});
 <div class="ttc" id="structReceptor_html"><div class="ttname"><a href="structReceptor.html">Receptor</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00105">ceptr_types.h:105</a></div></div>
 <div class="ttc" id="structXaddr_html"><div class="ttname"><a href="structXaddr.html">Xaddr</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00118">ceptr_types.h:118</a></div></div>
 <div class="ttc" id="group__def_html_ga41157ee3740cc54c3857ca46e2545999"><div class="ttname"><a href="group__def.html#ga41157ee3740cc54c3857ca46e2545999">_d_get_symbol_structure</a></div><div class="ttdeci">Structure _d_get_symbol_structure(T *symbols, Symbol s)</div><div class="ttdef"><b>Definition:</b> <a href="def_8c_source.html#l00179">def.c:179</a></div></div>
+<div class="ttc" id="group__semtrex_html_ga12e70dc3d5fde33655e8731ad3bdd935"><div class="ttname"><a href="group__semtrex.html#ga12e70dc3d5fde33655e8731ad3bdd935">_sl</a></div><div class="ttdeci">#define _sl(t, s)</div><div class="ttdoc">macro to add a single symbol literal to semtrex tree </div><div class="ttdef"><b>Definition:</b> <a href="semtrex_8h_source.html#l00111">semtrex.h:111</a></div></div>
 <div class="ttc" id="group__def_html_ga840d1e2ddf301d41e9e4d844bde6cde0"><div class="ttname"><a href="group__def.html#ga840d1e2ddf301d41e9e4d844bde6cde0">_dv_define_structure</a></div><div class="ttdeci">T * _dv_define_structure(T *structures, char *label, int num_params, va_list params)</div><div class="ttdoc">va_list version of _d_define_structure </div><div class="ttdef"><b>Definition:</b> <a href="def_8c_source.html#l00158">def.c:158</a></div></div>
 <div class="ttc" id="group__tree_html_ga3b7a6499fe49f8e6a54166d583b08d5c"><div class="ttname"><a href="group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c">_t_add</a></div><div class="ttdeci">void _t_add(T *t, T *c)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00188">tree.c:188</a></div></div>
 <div class="ttc" id="structDefs_html"><div class="ttname"><a href="structDefs.html">Defs</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00091">ceptr_types.h:91</a></div></div>
@@ -404,7 +405,7 @@ $(document).ready(function(){initNavTree('def_8c_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="def_8c.html">def.c</a></li>
-    <li class="footer">Generated on Wed Nov 12 2014 13:42:17 for ceptr by
+    <li class="footer">Generated on Wed Nov 12 2014 16:04:01 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

@@ -4,8 +4,6 @@ var semtrex_8h =
     [ "_sln", "group__semtrex.html#gac1b578cc9fc2f835ad12855698fe4cf2", null ],
     [ "DS", "group__semtrex.html#ga23a719903c25f5387274002776ae5fa1", null ],
     [ "DT", "group__semtrex.html#ga8785a1bb99b5bb1f749bd37a317594e4", null ],
-    [ "GroupClose", "group__semtrex.html#gabc00a44ebca777cfe3d7cb823bb058b5", null ],
-    [ "GroupOpen", "group__semtrex.html#gaefd7c1d3dc2dd4ae49ca10214e3605e4", null ],
     [ "SgroupClose", "group__semtrex.html#gab4bc67d51970ec75875c2e9e135c4bf3", null ],
     [ "SgroupOpen", "group__semtrex.html#ga09de53f7ae900c6cb78a22c19af533ff", null ],
     [ "Sliteral", "group__semtrex.html#ga3f47626017139312d814719b254a1a0e", null ],
