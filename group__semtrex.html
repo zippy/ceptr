@@ -258,7 +258,21 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>G_debug_match</b></td>
 <p>Semtrex provides a language for pattern matching on semantic trees. </p>
 
 
-<h3><a class="anchor" id="semtrex"></a>Semtrex explained</h3><div class="textblock">Semantic Tree Regular Expressions (Semtrex for short) provide a matching language for semantic trees that will feel familiar to anyone who has used regular expressions for matching on strings.A Semtrex's is itself a semantic tree, but we have also created a linear textual representation of (and parser for) semtrex trees to make it easier to create them until we build better UI for processing trees in general.Here's a BNF for the textual representation of semtrex trees:<div class="fragment"><div class="line">Semtrex ::= Root [ <span class="stringliteral">&quot;/&quot;</span> Child...]</div>
+<h3><a class="anchor" id="semtrex"></a>Semtrex explained</h3><div class="textblock">Semantic Tree Regular Expressions (Semtrex for short) provide a matching language for semantic trees that will feel familiar to anyone who has used regular expressions for matching on strings. <br />
+ A Semtrex's is itself a semantic tree, but we have also created a linear textual representation of (and parser for) semtrex trees to make it easier to create them until we build better UI for processing trees in general.<br />
+ <b>Examples</b> (with the parts of a tree that match in red) </p><table class="doxtable">
+<tr>
+<td><div class="dotgraph">
+<img src="dot_ex1.png" alt="dot_ex1.png" border="0" usemap="#dot_ex1.map"/>
+<map name="dot_ex1.map" id="dot_ex1.map"></map>
+</div>
+ </td><td><div class="dotgraph">
+<img src="dot_ex2.png" alt="dot_ex2.png" border="0" usemap="#dot_ex2.map"/>
+<map name="dot_ex2.map" id="dot_ex2.map"></map>
+</div>
+  </td></tr>
+</table>
+Here's a BNF for the textual representation of semtrex trees:<div class="fragment"><div class="line">Semtrex ::= Root [ <span class="stringliteral">&quot;/&quot;</span> Child...]</div>
 <div class="line">Root ::= <span class="stringliteral">&quot;/&quot;</span> Element</div>
 <div class="line">Child ::= Element | Optional | Semtrex</div>
 <div class="line">Element ::= Walk | SymbolLiteral | ValueLiteral | Any | Capture</div>
@@ -277,23 +291,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>G_debug_match</b></td>
 <div class="line">ValueLiteralSet ::= _symbol_ [<span class="stringliteral">&quot;!&quot;</span>] <span class="stringliteral">&quot;={&quot;</span> Value [<span class="stringliteral">&quot;,&quot;</span> Value ]... <span class="stringliteral">&quot;}&quot;</span></div>
 <div class="line">Any ::= <span class="stringliteral">&quot;.&quot;</span></div>
 <div class="line">Capture ::= <span class="stringliteral">&quot;&lt;&quot;</span>_symbol_ <span class="stringliteral">&quot;:&quot;</span> Semtrex <span class="stringliteral">&quot;&gt;&quot;</span></div>
-</div><!-- fragment --><b>Examples</b> </p><table class="doxtable">
-<tr>
-<td><div class="dotgraph">
-<img src="dot_ex1.png" alt="dot_ex1.png" border="0" usemap="#dot_ex1.map"/>
-<map name="dot_ex1.map" id="dot_ex1.map"></map>
-<div class="caption">
-/B/F="abc"</div>
-</div>
-  </td><td><div class="dotgraph">
-<img src="dot_ex2.png" alt="dot_ex2.png" border="0" usemap="#dot_ex2.map"/>
-<map name="dot_ex2.map" id="dot_ex2.map"></map>
-<div class="caption">
-/%{D,E}+</div>
-</div>
-  </td></tr>
-</table>
-</div><h2 class="groupheader">Typedef Documentation</h2>
+</div><!-- fragment --> </div><h2 class="groupheader">Typedef Documentation</h2>
 <a class="anchor" id="gab4bc67d51970ec75875c2e9e135c4bf3"></a>
 <div class="memitem">
 <div class="memproto">
@@ -845,7 +843,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>G_debug_match</b></td>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Nov 12 2014 21:59:44 for ceptr by
+    <li class="footer">Generated on Wed Nov 12 2014 22:17:34 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
