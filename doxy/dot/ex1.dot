@@ -1,14 +1,23 @@
+
 digraph G {
- size="3,3";
+ label="/%/B/F=\"abc\"";
+ labelloc=top;
+
+ size="4,3";
  R [shape=box];
  B [shape=box];
  C [shape=box];
  B [color=red];
  R -> "A:3.14";
-"F:\"abc\"" [color=red];
+ "F:\"abc\"" [color=red];
  R -> B;
  R -> C;
  C -> "D:'c'";
  C -> "E:1";
  B -> "F:\"abc\"";
- }
+
+ Walk->SymbolLiteral->"Symbol:B"
+ SymbolLiteral->ValueLiteral->" F:\"abc\""
+}
+
+

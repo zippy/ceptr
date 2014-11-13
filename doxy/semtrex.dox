@@ -3,8 +3,17 @@
    @ingroup semtrex
 
    Semantic Tree Regular Expressions (Semtrex for short) provide a matching language for semantic trees that will feel familiar to anyone who has used regular expressions for matching on strings.
+<br>
+   A Semtrex is itself a semantic tree, but we have also created a linear textual representation of (and parser for) semtrex trees to make it easier to create them until we build better UI for processing trees in general.
 
-   A Semtrex's is itself a semantic tree, but we have also created a linear textual representation of (and parser for) semtrex trees to make it easier to create them until we build better UI for processing trees in general.
+<br>
+\b Examples (with tree version and the parts of a sample tree that match in red)
+<table><tr>
+<td>\dotfile ex1.dot</td>
+<td>\dotfile ex2.dot</td>
+</tr>
+</table>
+
 
    Here's a BNF for the textual representation of semtrex trees:
 
@@ -29,14 +38,5 @@
  Any ::= "."
  Capture ::= "<"_symbol_ ":" Semtrex ">"
  @endcode
-
-\b Examples
-<table><tr><td>
-\dotfile ex1.dot /%B/F="abc"
-</td>
-<td>
-\dotfile ex2.dot /%{D,E}+
-</td>
-</table>
 
 */

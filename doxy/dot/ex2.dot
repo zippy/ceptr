@@ -1,14 +1,20 @@
 digraph G {
- size="3,3";
+ label="/%{D,E}+";
+ labelloc=top;
+
+ size="4,3";
  R [shape=box];
  B [shape=box];
  C [shape=box];
  R -> "A:3.14";
-"E:1" [color=red];
-"D:'c'" [color=red];
+ "E:1" [color=red];
+ "D:'c'" [color=red];
  R -> B;
  R -> C;
  C -> "D:'c'";
  C -> "E:1";
  B -> "F:\"abc\"";
- }
+
+ Walk->OneOrMore->SymbolLiteral->SymbolSet->"Symbol:D"
+ SymbolSet->"Symbol:E"
+}
