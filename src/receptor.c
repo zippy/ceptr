@@ -514,7 +514,9 @@ T * _r_deliver(Receptor *r, T *signal) {
 	l = _t_child(ls,i);
 	e = _t_child(l,1);
 	// if we get a match, create a run tree from the action, using the match and signal as the parameters
-	if (_t_matchr(_t_child(e,1),signal_contents,&m)) {
+	T *stx = _t_news(0,SEMTREX_GROUP,NULL_SYMBOL);
+	_t_add(stx,_t_clone(_t_child(e,1)));
+	if (_t_matchr(stx,signal_contents,&m)) {
 	    T *action = _t_child(l,2);
 	    rt = _p_make_run_tree(r->defs.processes,action,2,m,signal_contents);
 	    _t_free(m);
@@ -527,6 +529,7 @@ T * _r_deliver(Receptor *r, T *signal) {
 		raise_error("got reduction error: %d",e);
 	    }
 	}
+	    _t_free(stx);
 	    );
 
     /// @todo  results should actually be a what? success/failure of send (currently is reduced runtree)

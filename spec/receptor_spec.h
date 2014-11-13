@@ -65,7 +65,7 @@ void testReceptorAddListener() {
     Symbol dummy = {0,0,0};
     // test that you can add a listener to a receptor's aspect
     T *s = _t_new_root(EXPECTATION);
-    _t_news(s,SEMTREX_SYMBOL_LITERAL,dummy);
+    _sl(s,dummy);
     T *a = _t_news(0,ACTION,NULL_PROCESS);
     _r_add_listener(r,DEFAULT_ASPECT,TEST_INT_SYMBOL,s,a);
 
@@ -292,7 +292,7 @@ void testReceptorProtocol() {
     _t_news(i,CARRIER,ping); // input carrier
     _t_news(i,CARRIER,ping); // output carrier
     e = _t_newr(i,EXPECTATION);
-    T *req = _t_news(e,SEMTREX_SYMBOL_LITERAL,ping);
+    T *req = _sl(e,ping);
 
     T *ping_resp = _t_new_root(RESPOND);
     _t_newi(ping_resp,ping,1);
@@ -313,7 +313,7 @@ void testReceptorProtocol() {
     _t_news(i,CARRIER,ping); // input carrier
     _t_news(i,CARRIER,ping); // output carrier
     e = _t_newr(i,EXPECTATION);
-    _t_news(e,SEMTREX_SYMBOL_LITERAL,ping);
+    _sl(e,ping);
     //    s = _t_newr(i,RESPONSE_STEPS);
 
     T *aspects = _t_child(r->root,2);
@@ -324,12 +324,13 @@ void testReceptorProtocol() {
     _r_install_protocol(r,1,"server",DEFAULT_ASPECT);
 
     char *d = _td(r,r->root);
-    spec_is_str_equal(d," (TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS (SYMBOL_DECLARATION (SYMBOL_LABEL:ping) (SYMBOL_STRUCTURE:BOOLEAN))) (PROCESSES (PROCESS_CODING (PROCESS_NAME:send ping response) (PROCESS_INTENTION:long desc...) (process:RESPOND (ping:1)) (INPUT) (OUTPUT_SIGNATURE))) (PROTOCOLS (PROTOCOL (ROLES (ROLE:server) (ROLE:client)) (INTERACTIONS (INTERACTION (STEP:ping) (FROM_ROLE) (TO_ROLE) (CARRIER:ping) (CARRIER:ping) (EXPECTATION (SEMTREX_SYMBOL_LITERAL:ping)) (ACTION:send ping response) (RESPONSE_STEPS (STEP:ping_response))) (INTERACTION (STEP:ping_response) (FROM_ROLE) (TO_ROLE) (CARRIER:ping) (CARRIER:ping) (EXPECTATION (SEMTREX_SYMBOL_LITERAL:ping)))))) (SCAPES)) (ASPECTS (ASPECT_DEF (ASPECT_TYPE:0) (CARRIER:ping) (CARRIER:ping))) (FLUX (ASPECT:1 (LISTENERS (LISTENER:ping (EXPECTATION (SEMTREX_SYMBOL_LITERAL:ping)) (ACTION:send ping response))) (SIGNALS))))");
+    spec_is_str_equal(d," (TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS (SYMBOL_DECLARATION (SYMBOL_LABEL:ping) (SYMBOL_STRUCTURE:BOOLEAN))) (PROCESSES (PROCESS_CODING (PROCESS_NAME:send ping response) (PROCESS_INTENTION:long desc...) (process:RESPOND (ping:1)) (INPUT) (OUTPUT_SIGNATURE))) (PROTOCOLS (PROTOCOL (ROLES (ROLE:server) (ROLE:client)) (INTERACTIONS (INTERACTION (STEP:ping) (FROM_ROLE) (TO_ROLE) (CARRIER:ping) (CARRIER:ping) (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping))) (ACTION:send ping response) (RESPONSE_STEPS (STEP:ping_response))) (INTERACTION (STEP:ping_response) (FROM_ROLE) (TO_ROLE) (CARRIER:ping) (CARRIER:ping) (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping))))))) (SCAPES)) (ASPECTS (ASPECT_DEF (ASPECT_TYPE:0) (CARRIER:ping) (CARRIER:ping))) (FLUX (ASPECT:1 (LISTENERS (LISTENER:ping (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping))) (ACTION:send ping response))) (SIGNALS))))");
 
     // delivering a fake signal should return a ping
     Xaddr f = {RECEPTOR_XADDR,3};  // DUMMY XADDR
     Xaddr t = {RECEPTOR_XADDR,4};  // DUMMY XADDR
     T *signal = __r_make_signal(f,t,DEFAULT_ASPECT,_t_newi(0,ping,0));
+
     T *result = _r_deliver(r,signal);
     d = _td(r,result);
     spec_is_str_equal(d," (ping:1)");
@@ -426,7 +427,7 @@ void testReceptor() {
     testReceptorAction();
     testReceptorDef();
     testReceptorDefMatch();
-    //    testReceptorProtocol();
+    testReceptorProtocol();
     testReceptorInstanceNew();
     //    testReceptorSerialize();
     _cleanup_HTTPDefs();

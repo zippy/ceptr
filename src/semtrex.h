@@ -117,10 +117,10 @@ T *asciiT_toc(T* asciiT,T* match,T *t,Symbol s);
 T *__sl(T *p, int not,int count, ...);
 
 /// debugging macro for quickly dumping out a tree
-#define DT(l,t) {char buf[1000];puts("\n" #l ":");__t_dump(0,t,0,buf);puts(buf);}
+#define DT(l,t) {char buf[1000];puts("\n" #l ":");__t_dump(G_d,t,0,buf);puts(buf);}
 
 /// debugging macro for quickly dumping out a semtrex text string
-#define DS(l,t) {Defs d = {0,0,0,0};char buf[1000];puts("\n" #l ":");_dump_semtrex(&d,t,buf);puts(buf);}
+#define DS(l,t) {Defs _d={0,0,0,0};Defs *d = G_d?G_d:&_d;char buf[1000];puts("\n" #l ":");_dump_semtrex(d,t,buf);puts(buf);}
 
 #endif
 

@@ -663,8 +663,7 @@ int __t_match(T *semtrex,T *source_t,T **rP) {
 	if (s) {
 	    if (G_debug_match) {
 		puts("FIXING:");
-		__t_dump(G_d,*rP,0,buf);
-		puts(buf);
+		DT(RESULTS,*rP);
 		//	raise(SIGINT);
 	    }
 
