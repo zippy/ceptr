@@ -747,7 +747,7 @@ size_t __t_serialize(Defs *d,T *t,void **bufferP,size_t offset,size_t current_si
     size_t cl =0,l = _t_size(t);
     int i, c = _t_children(t);
 
-    //    printf("\ncurrent_size:%ld offset:%ld  size:%ld symbol:%s",current_size,offset,l,_r_get_symbol_name(r,_t_symbol(t)));
+    //    printf("\ncurrent_size:%ld offset:%ld  size:%ld symbol:%s",current_size,offset,l,_d_get_symbol_name(d->symbols,_t_symbol(t)));
     while ((offset+l+sizeof(Symbol)) > current_size) {
 	current_size*=2;
 	*bufferP = realloc(*bufferP,current_size);
@@ -783,8 +783,48 @@ size_t __t_serialize(Defs *d,T *t,void **bufferP,size_t offset,size_t current_si
 void _t_serialize(Defs *d,T *t,void **surfaceP,size_t *lengthP) {
     size_t buf_size = 1000;
     *surfaceP = malloc(buf_size);
-    *lengthP = __t_serialize(d,t,surfaceP,0,buf_size,1);
+    *lengthP = __t_serialize(d,t,surfaceP,0,buf_size,0);
     *surfaceP = realloc(*surfaceP,*lengthP);
+}
+
+/// macro to read typed date from the surface and update length and surface values
+#define SREAD(type,var_name) type var_name = *(type *)*surfaceP;*lengthP -= sizeof(type);*surfaceP += sizeof(type);
+/// macro to read typed date from the surface and update length and surface values (assumes variable has already been declared)
+#define _SREAD(type,var_name) var_name = *(type *)*surfaceP;*lengthP -= sizeof(type);*surfaceP += sizeof(type);
+
+T * _t_unserialize(Defs *d,void **surfaceP,size_t *lengthP,T *t) {
+    size_t size;
+
+    SREAD(Symbol,s);
+    //    printf("\nSymbol:%s",_d_get_symbol_name(d->symbols,s));
+
+    SREAD(int,c);
+
+    Structure st = _d_get_symbol_structure(d->symbols,s);
+
+    if (is_sys_structure(st)) {
+	size = _sys_structure_size(st.id,*surfaceP);
+	if (size == -1) {raise_error0("BANG!");}
+    }
+    else size = 0;
+    if (size > 0) {
+	//	printf(" reading: %ld bytes\n",size);
+	if (semeq(st,INTEGER))
+	    t = _t_newi(t,s,*(int *)*surfaceP);
+	else
+	    t = _t_new(t,s,*surfaceP,size);
+	*lengthP -= size;
+	*surfaceP += size;
+    }
+    else {
+	t = _t_newr(t,s);
+    }
+
+    int i;
+    for(i=1;i<=c;i++) {
+	_t_unserialize(d,surfaceP,lengthP,t);
+    }
+    return t;
 }
 
 /** @}*/

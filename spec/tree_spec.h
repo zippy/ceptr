@@ -413,7 +413,25 @@ void testTreeHash() {
 
 void testTreeSerialize() {
     //! [testTreeSerialize]
-    Defs d = {0,0,0};
+    char buf[2000] = {0};
+    char buf1[2000] = {0};
+    T *t1,*t = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
+    __t_dump(&test_HTTP_defs,t,0,buf);
+
+    size_t l;
+    void *surface,*s;
+    G_d = &test_HTTP_defs;
+    _t_serialize(&test_HTTP_defs,t,&surface,&l);
+    s = surface;
+    t1 = _t_unserialize(&test_HTTP_defs,&surface,&l,0);
+    __t_dump(&test_HTTP_defs,t1,0,buf1);
+
+    spec_is_str_equal(buf1,buf);
+
+    _t_free(t);
+    _t_free(t1);
+    free(s);
+
     //! [testTreeSerialize]
 }
 

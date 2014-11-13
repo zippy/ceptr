@@ -201,6 +201,22 @@ size_t _d_get_symbol_size(T *symbols,T *structures,Symbol s,void *surface) {
     return _d_get_structure_size(symbols,structures,st,surface);
 }
 
+size_t _sys_structure_size(int id,void *surface) {
+    switch(id) {
+    case LIST_ID:
+    case TREE_ID:
+    case NULL_STRUCTURE_ID: return 0;
+	//	case SEMTREX: return
+    case SYMBOL_ID: return sizeof(Symbol);
+    case BOOLEAN_ID:
+    case INTEGER_ID: return sizeof(int);
+    case FLOAT_ID: return sizeof(float);
+    case CSTRING_ID: return strlen(surface)+1;
+    case XADDR_ID: return sizeof(Xaddr);
+    default: return -1;
+    }
+}
+
 /**
  * get the size of a structure
  *
@@ -215,25 +231,16 @@ size_t _d_get_symbol_size(T *symbols,T *structures,Symbol s,void *surface) {
  */
 size_t _d_get_structure_size(T *symbols,T *structures,Structure s,void *surface) {
     if (is_sys_structure(s)) {
-	switch(s.id) {
-	case LIST_ID:
-	case TREE_ID:
-	case NULL_STRUCTURE_ID: return 0;
-	    //	case SEMTREX: return
-	case SYMBOL_ID: return sizeof(Symbol);
-	case BOOLEAN_ID:
-	case INTEGER_ID: return sizeof(int);
-	case FLOAT_ID: return sizeof(float);
-	case CSTRING_ID: return strlen(surface)+1;
-	case XADDR_ID: return sizeof(Xaddr);
-	default: raise_error2("DON'T HAVE A SIZE FOR STRUCTURE '%s' (%d)",_d_get_structure_name(structures,s),s.id);
+	size_t size = _sys_structure_size(s.id,surface);
+	if (size == -1) {
+	    raise_error2("DON'T HAVE A SIZE FOR STRUCTURE '%s' (%d)",_d_get_structure_name(structures,s),s.id);
 	}
     }
     else {
 	T *structure = _t_child(structures,s.id);
 	T *parts = _t_child(structure,2);
 	size_t size = 0;
-	DO_KIDS(structure,
+	DO_KIDS(parts,
 	    T *p = _t_child(parts,i);
 	    size += _d_get_symbol_size(symbols,structures,*(Symbol *)_t_surface(p),surface +size);
 		);

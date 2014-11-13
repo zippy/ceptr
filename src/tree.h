@@ -81,21 +81,14 @@ int _t_hash_equal(TreeHash h1,TreeHash h2);
 /*****************  Tree serialization */
 size_t __t_serialize(Defs *d,T *t,void **bufferP,size_t offset,size_t current_size,int compact);
 void _t_serialize(Defs *d,T *t,void **surfaceP,size_t *sizeP);
+T * _t_unserialize(Defs *d,void **surfaceP,size_t *lengthP,T *t);
+
+
+/*****************  Misc... */
 
 #define DO_KIDS(t,x) {int i,_c=_t_children(t);for(i=1;i<=_c;i++){x;}}
 
 #define root_check(c) if (c->structure.parent != 0) {raise_error0("can't add a node that isn't a root!");}
-/*
-_t_new();
-_t_free()
-_t_get_child(t,nth_child)
-_t_get_surface()
-_t_get_parent()
-_t_get_root()
-_t_get_next_sibling()
 
-_t_parse(); //semtrex style parsing
-_t_match()
-*/
 #endif
 /** @}*/

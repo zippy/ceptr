@@ -414,35 +414,6 @@ void _r_serialize(Receptor *r,void **surfaceP,size_t *lengthP) {
     *(size_t *)(*surfaceP) = *lengthP;
 }
 
-/// macro to read typed date from the surface and update length and surface values
-#define SREAD(type,var_name) type var_name = *(type *)*surfaceP;*lengthP -= sizeof(type);*surfaceP += sizeof(type);
-/// macro to read typed date from the surface and update length and surface values (assumes variable has already been declared)
-#define _SREAD(type,var_name) var_name = *(type *)*surfaceP;*lengthP -= sizeof(type);*surfaceP += sizeof(type);
-
-T * _t_unserialize(Receptor *r,void **surfaceP,size_t *lengthP,T *t) {
-    size_t size;
-
-    SREAD(Symbol,s);
-    //        printf("\nSymbol:%s",_r_get_symbol_name(r,s));
-
-    SREAD(int,c);
-
-    size = __r_get_symbol_size(r,s,*surfaceP);
-    //printf(" reading: %ld bytes\n",size);
-    Structure st = __r_get_symbol_structure(r,s);
-    if (semeq(st,INTEGER))
-	t = _t_newi(t,s,*(int *)*surfaceP);
-    else
-	t = _t_new(t,s,*surfaceP,size);
-    *lengthP -= size;
-    *surfaceP += size;
-    int i;
-    for(i=1;i<=c;i++) {
-	_t_unserialize(r,surfaceP,lengthP,t);
-    }
-    return t;
-}
-
 /**
  * Unserialize a receptor
  *
@@ -455,7 +426,7 @@ Receptor * _r_unserialize(void *surface) {
     size_t length = *(size_t *)surface;
     Receptor *r = _r_new(*(Symbol *)(surface+sizeof(size_t)));
     surface += sizeof(size_t);
-    T *t =  _t_unserialize(r,&surface,&length,0);
+    T *t =  _t_unserialize(&r->defs,&surface,&length,0);
     _t_free(r->root);
     r->root = t;
     //@todo fix defs!!
@@ -529,8 +500,7 @@ T * _r_deliver(Receptor *r, T *signal) {
 		raise_error("got reduction error: %d",e);
 	    }
 	}
-	    _t_free(stx);
-	    );
+	    _t_free(stx);	    );
 
     /// @todo  results should actually be a what? success/failure of send (currently is reduced runtree)
     if (rt == 0) return 0;
