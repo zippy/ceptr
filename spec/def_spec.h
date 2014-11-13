@@ -194,7 +194,7 @@ void testDefSemtrex() {
     char buf[2000];
     spec_is_str_equal(_dump_semtrex(&d,stx,buf),"/house_loc/(lat,lon)");
     __t_dump(&d,stx,0,buf);
-    spec_is_str_equal(buf," (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL_SET (SEMTREX_SYMBOL:house_loc)) (SEMTREX_SEQUENCE (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL_SET (SEMTREX_SYMBOL:lat))) (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL_SET (SEMTREX_SYMBOL:lon)))))");
+    spec_is_str_equal(buf," (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:house_loc) (SEMTREX_SEQUENCE (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:lat)) (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:lon))))");
 
     _t_free(stx);
     _t_free(d.structures);

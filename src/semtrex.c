@@ -110,31 +110,34 @@ char * __stx_makeFA(T *t,SState **in,Ptrlist **out,int level,int *statesP) {
     case SEMTREX_VALUE_LITERAL_NOT_ID:
 	state_type = StateValue;
 	s = state(state_type,statesP);
-	s->data.value.not = sym.id == SEMTREX_VALUE_LITERAL_NOT_ID;
+	s->data.value.flags = (sym.id == SEMTREX_VALUE_LITERAL_NOT_ID) ? LITERAL_NOT : 0;
 	// copy the value set (which must be the first child) from the semtrex into the state
 	v = _t_child(t,1);
 	if (!v) {
 	    raise_error0("expecting value or SEMTREX_VALUE_SET as first child of SEMTREX_VALUE_LITERAL");
 	}
+	if (semeq(_t_symbol(v),SEMTREX_VALUE_SET)) s->data.value.flags |= LITERAL_SET;
+
 	s->data.value.values = _t_clone(v);
 	*in = s;
 	s->transition = level;
 	*out = list1(&s->out);
 	break;
     case SEMTREX_SYMBOL_LITERAL_ID:
-	if (state_type == -1) state_type = StateSymbol;
     case SEMTREX_SYMBOL_LITERAL_NOT_ID:
-	if (state_type == -1) state_type = StateSymbolExcept;
+	state_type = StateSymbol;
+
 	v = _t_child(t,1);
-	if (!v || !semeq(SEMTREX_SYMBOL_SET,_t_symbol(v))) {
-	    raise_error0("expecting SEMTREX_SYMBOL_SET as first child of SEMTREX_SYMBOL_LITERAL");
+	int is_set;
+	Symbol vsym = _t_symbol(v);
+	if (!v || !((is_set = semeq(SEMTREX_SYMBOL_SET,vsym)) || semeq(SEMTREX_SYMBOL,vsym))) {
+	    raise_error0("expecting SEMTREX_SYMBOL_SET or SEMTREX_SYMBOL as first child of SEMTREX_SYMBOL_LITERAL");
 	}
-	if (state_type == -1) state_type = StateAny;
-	if (c > 2) return "Symbol literal must have 0 or 1 children other than the symbol set";
-
+	if (c > 2) return "Symbol literal must have 0 or 1 children other than the symbol/set";
 	s = state(state_type,statesP);
+	s->data.symbol.flags = (sym.id == SEMTREX_SYMBOL_LITERAL_NOT_ID) ? LITERAL_NOT : 0;
+	if (is_set) s->data.symbol.flags |= LITERAL_SET;
 	s->data.symbol.symbols = _t_clone(v);
-
 	*in = s;
 	if (c > 1) {
 	    s->transition = TransitionDown;
@@ -310,7 +313,7 @@ __stx_freeFA2(SState *s) {
     if (s->type == StateValue) {
 	_t_free(s->data.value.values);
     }
-    if (s->type == StateSymbol || s->type == StateSymbolExcept) {
+    if (s->type == StateSymbol) {
 	_t_free(s->data.symbol.symbols);
     }
     free(s);
@@ -517,11 +520,8 @@ int __t_match(T *semtrex,T *source_t,T **rP) {
 		    __t_dump(G_d,v,0,buf);printf("  seeking:%s\n",buf);
 		}
 		Symbol ts = _t_symbol(t);
-		if (s->data.value.not) {
-		    if (!count) {
-			matched = !(semeq(ts,_t_symbol(v)) && _val_match(t,v));
-		    }
-		    else {
+		if (s->data.value.flags & LITERAL_NOT) {
+		    if (s->data.value.flags & LITERAL_SET) {
 			// all in the set must not match
 			matched = 1;
 			for(i=1;i<=count && matched;i++) {
@@ -529,18 +529,21 @@ int __t_match(T *semtrex,T *source_t,T **rP) {
 			    matched = !(semeq(ts,_t_symbol(x)) && _val_match(t,x));
 			}
 		    }
+		    else {
+			matched = !(semeq(ts,_t_symbol(v)) && _val_match(t,v));
+		    }
 		}
 		else {
-		    if (!count) {
-			matched = semeq(ts,_t_symbol(v)) && _val_match(t,v);
-		    }
-		    else {
+		    if (s->data.value.flags & LITERAL_SET) {
 			// at least one in the set much match
 			matched = 0;
 			for(i=1;i<=count && !matched; i++) {
 			    x = _t_child(v,i);
 			    matched = semeq(ts,_t_symbol(x)) && _val_match(t,x);
 			}
+		    }
+		    else {
+			matched = semeq(ts,_t_symbol(v)) && _val_match(t,v);
 		    }
 		}
 
@@ -551,11 +554,16 @@ int __t_match(T *semtrex,T *source_t,T **rP) {
 	    break;
 	case StateSymbol:
 	    MATCH_DEBUG(Symbol);
-	    TRANSITION(__symbol_set_contains(s->data.symbol.symbols,t));
-	    break;
-	case StateSymbolExcept:
-	    MATCH_DEBUG(SymbolExcept);
-	    TRANSITION(__symbol_set_does_not_contain(s->data.symbol.symbols,t));
+	    if (s->data.symbol.flags & LITERAL_SET) {
+		TRANSITION((s->data.symbol.flags & LITERAL_NOT) ?
+			   __symbol_set_does_not_contain(s->data.symbol.symbols,t) :
+			   __symbol_set_contains(s->data.symbol.symbols,t));
+	    }
+	    else {
+		if (!t) FAIL;
+		int matched = semeq(_t_symbol(t),*(Symbol *)_t_surface(s->data.symbol.symbols));
+		TRANSITION(s->data.symbol.flags & LITERAL_NOT ? !matched : matched);
+	    }
 	    break;
 	case StateAny:
 	    MATCH_DEBUG(Any);
@@ -853,12 +861,19 @@ char * __dump_semtrex(Defs *defs,T *s,char *buf) {
 	}
 	else b[0] = 0;
 
+	v = _t_child(s,1); //get the symbol value or set
 
-	v = _t_child(s,1); //get the symbol set
+	if (semeq(_t_symbol(v),SEMTREX_SYMBOL_SET)) {
+	    count = _t_children(v);
+	    v1 = _t_child(v,1);
+	    if (!v1) {raise_error0("no symbols in set!");}
+	}
+	else {
+	    count = 1;
+	    v1 = v;
+	    v = s;
+	}
 
-	v1 = _t_child(v,1);
-	if (!v1) {raise_error0("no symbols in set!");}
-	count = _t_children(v);
 	if (count > 1) {
 	    sprintf(b+strlen(b),"{");
 	}
@@ -1113,7 +1128,7 @@ T *asciiT_toc(T* asciiT,T* match,T *t,Symbol s) {
 T *__sl(T *p, int not,int count, ...) {
     va_list symbols;
     T *t = _t_newr(p,not ? SEMTREX_SYMBOL_LITERAL_NOT : SEMTREX_SYMBOL_LITERAL);
-    T *ss = _t_newr(t,SEMTREX_SYMBOL_SET);
+    T *ss = count > 1 ?  _t_newr(t,SEMTREX_SYMBOL_SET) : t;
     va_start(symbols,count);
     int i;
     for(i=0;i<count;i++) {
@@ -1630,8 +1645,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 	    char *symbol_name = (char *)_t_surface(t);
 	    Symbol sy = get_symbol(symbol_name,d);
 	    t->contents.symbol = semeq(t->contents.symbol,STX_LABEL)?SEMTREX_SYMBOL_LITERAL:SEMTREX_SYMBOL_LITERAL_NOT;
-	    T *ss = _t_newr(0,SEMTREX_SYMBOL_SET);
-	    _t_news(ss,SEMTREX_SYMBOL,sy);
+	    T *ss = _t_news(0,SEMTREX_SYMBOL,sy);
 	    int pp[2] = {1,TREE_PATH_TERMINATOR};
 	    _t_insert_at(t,pp,ss);
 

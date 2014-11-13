@@ -16,7 +16,7 @@
 
 #include "tree.h"
 
-enum StateType {StateSymbol,StateSymbolExcept,StateAny,StateValue,StateSplit,StateMatch,StateGroupOpen,StateGroupClose,StateDescend,StateWalk,StateNot};
+enum StateType {StateSymbol,StateAny,StateValue,StateSplit,StateMatch,StateGroupOpen,StateGroupClose,StateDescend,StateWalk,StateNot};
 typedef int StateType;
 
 /**
@@ -51,14 +51,15 @@ typedef struct SgroupClose {
     SState *openP;      /// pointer to the Open state
 } SgroupClose;
 
-
+#define LITERAL_NOT 0x01
+#define LITERAL_SET 0x02
 typedef struct Svalue {
-    int not;
+    int flags;
     T *values;
 } Svalue;
 
 typedef struct Sliteral {
-    int not;
+    int flags;
     T *symbols;
 } Sliteral;
 
