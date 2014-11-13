@@ -273,25 +273,32 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>G_debug_match</b></td>
 <iframe scrolling="no" frameborder="0" src="dot_ex2.svg" width="340" height="288"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
   </td></tr>
 </table>
-Here's a BNF for the textual representation of semtrex trees:<div class="fragment"><div class="line">Semtrex ::= Root [ <span class="stringliteral">&quot;/&quot;</span> Child...]</div>
-<div class="line">Root ::= <span class="stringliteral">&quot;/&quot;</span> Element</div>
-<div class="line">Child ::= Element | Optional | Semtrex</div>
-<div class="line">Element ::= Walk | SymbolLiteral | ValueLiteral | Any | Capture</div>
-<div class="line">Optional ::= Or | ZeroOrMore | OneOrMore | ZeroOrOne</div>
-<div class="line">Walk ::= <span class="stringliteral">&quot;%&quot;</span> Semtrex</div>
-<div class="line">OneOrMore ::= Semtrex <span class="stringliteral">&quot;+&quot;</span></div>
-<div class="line">ZeroOrMore ::= Semtrex <span class="stringliteral">&quot;*&quot;</span></div>
-<div class="line">ZeroOrOne ::= Semtrex <span class="stringliteral">&quot;?&quot;</span></div>
-<div class="line">Sequence ::= Semtrex [<span class="stringliteral">&quot;,&quot;</span> Semtrex]...</div>
-<div class="line">Siblings ::= <span class="stringliteral">&quot;(&quot;</span> Sequence <span class="stringliteral">&quot;)&quot;</span></div>
-<div class="line">Or ::= Semtrex <span class="stringliteral">&quot;|&quot;</span> Semtrex</div>
-<div class="line">SymbolLiteral ::= [<span class="stringliteral">&quot;!&quot;</span>]_symbol_</div>
-<div class="line">SymbolLiteralSet ::= [<span class="stringliteral">&quot;!&quot;</span>] <span class="stringliteral">&quot;{&quot;</span> _symbol_ [<span class="stringliteral">&quot;,&quot;</span> _symbol_]... <span class="stringliteral">&quot;}&quot;</span></div>
-<div class="line">Value ::= StringValue|CharValue|IntValue</div>
-<div class="line">ValueLiteral ::= _symbol_ [<span class="stringliteral">&quot;!&quot;</span>] <span class="stringliteral">&quot;=&quot;</span> Value</div>
-<div class="line">ValueLiteralSet ::= _symbol_ [<span class="stringliteral">&quot;!&quot;</span>] <span class="stringliteral">&quot;={&quot;</span> Value [<span class="stringliteral">&quot;,&quot;</span> Value ]... <span class="stringliteral">&quot;}&quot;</span></div>
-<div class="line">Any ::= <span class="stringliteral">&quot;.&quot;</span></div>
-<div class="line">Capture ::= <span class="stringliteral">&quot;&lt;&quot;</span>_symbol_ <span class="stringliteral">&quot;:&quot;</span> Semtrex <span class="stringliteral">&quot;&gt;&quot;</span></div>
+Here's a BNF for the textual representation of semtrex trees:<div class="fragment"><div class="line">&lt;semtrex&gt; ::= &lt;root&gt; [ <span class="stringliteral">&quot;/&quot;</span> &lt;child&gt;...]</div>
+<div class="line">&lt;root&gt;    ::= <span class="stringliteral">&quot;/&quot;</span> &lt;element&gt;</div>
+<div class="line">&lt;child&gt;   ::= &lt;element&gt; | &lt;optional&gt; | &lt;semtrex&gt;</div>
+<div class="line">&lt;element&gt; ::= &lt;walk&gt; | &lt;symbol_literal&gt; | &lt;value_literal&gt; | &lt;symbol_literal_set&gt; | &lt;value_literal_set&gt; | &lt;any&gt; | &lt;capture&gt;</div>
+<div class="line">&lt;optional&gt; ::= &lt;or&gt; | &lt;zero_or_more&gt; | &lt;one_or_more&gt; | &lt;zero_or_one&gt;</div>
+<div class="line">&lt;walk&gt; ::= <span class="stringliteral">&quot;%&quot;</span> &lt;semtrex&gt;</div>
+<div class="line">&lt;one_or_more&gt; ::= &lt;semtrex&gt; <span class="stringliteral">&quot;+&quot;</span></div>
+<div class="line">&lt;zero_or_more&gt; ::= &lt;semtrex&gt; <span class="stringliteral">&quot;*&quot;</span></div>
+<div class="line">&lt;zero_or_one&gt; ::= &lt;semtrex&gt; <span class="stringliteral">&quot;?&quot;</span></div>
+<div class="line">&lt;sequence&gt; ::= &lt;semtrex&gt; [<span class="stringliteral">&quot;,&quot;</span> &lt;semtrex&gt;]...</div>
+<div class="line">Siblings ::= <span class="stringliteral">&quot;(&quot;</span> &lt;sequence&gt; <span class="stringliteral">&quot;)&quot;</span></div>
+<div class="line">&lt;or&gt; ::= &lt;semtrex&gt; <span class="stringliteral">&quot;|&quot;</span> &lt;semtrex&gt;</div>
+<div class="line">&lt;symbol_literal&gt; ::= [<span class="stringliteral">&quot;!&quot;</span>] &lt;symbol&gt;</div>
+<div class="line">&lt;symbol_literal_set&gt; ::= [<span class="stringliteral">&quot;!&quot;</span>] <span class="stringliteral">&quot;{&quot;</span> &lt;symbol&gt; [<span class="stringliteral">&quot;,&quot;</span> &lt;symbol&gt;]... <span class="stringliteral">&quot;}&quot;</span></div>
+<div class="line">&lt;value&gt; ::= &lt;<span class="keywordtype">string</span>&gt; | &lt;<span class="keywordtype">char</span>&gt; | Int | Fload</div>
+<div class="line">&lt;value_literal&gt; ::= &lt;symbol&gt; [<span class="stringliteral">&quot;!&quot;</span>] <span class="stringliteral">&quot;=&quot;</span> &lt;value&gt;</div>
+<div class="line">&lt;value_literal_set&gt; ::= &lt;symbol&gt; [<span class="stringliteral">&quot;!&quot;</span>] <span class="stringliteral">&quot;={&quot;</span> &lt;value&gt; [<span class="stringliteral">&quot;,&quot;</span> &lt;value&gt; ]... <span class="stringliteral">&quot;}&quot;</span></div>
+<div class="line">&lt;any&gt; ::= <span class="stringliteral">&quot;.&quot;</span></div>
+<div class="line">&lt;capture&gt; ::= <span class="stringliteral">&quot;&lt;&quot;</span> &lt;symbol&gt; <span class="stringliteral">&quot;:&quot;</span> &lt;semtrex&gt; <span class="stringliteral">&quot;&gt;&quot;</span></div>
+<div class="line">&lt;digit&gt;  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9</div>
+<div class="line">&lt;letter&gt; ::= a | b ... | z | A | B ... | Z</div>
+<div class="line">&lt;special&gt; ::= <span class="stringliteral">&quot;_&quot;</span></div>
+<div class="line">&lt;symbol&gt; ::= (&lt;letter&gt; | &lt;digit&gt; | &lt;special&gt;)+</div>
+<div class="line">&lt;<span class="keywordtype">char</span>&gt; ::= <span class="stringliteral">&quot;&#39;&quot;</span> &lt;letter&gt; | &lt;digit&gt; | &lt;special&gt; <span class="stringliteral">&quot;&#39;&quot;</span></div>
+<div class="line">&lt;<span class="keywordtype">string</span>&gt; ::= <span class="stringliteral">&quot;\&quot;&quot;</span> (&lt;letter&gt; | &lt;digit&gt; | &lt;special&gt;)+ <span class="stringliteral">&quot;\&quot;&quot;</span></div>
+<div class="line">&lt;<span class="keywordtype">float</span>&gt; ::= &lt;digit&gt;+ [<span class="stringliteral">&quot;.&quot;</span> &lt;digit&gt;+ ]</div>
 </div><!-- fragment --> </div><h2 class="groupheader">Typedef Documentation</h2>
 <a class="anchor" id="gab4bc67d51970ec75875c2e9e135c4bf3"></a>
 <div class="memitem">
@@ -844,7 +851,7 @@ Here's a BNF for the textual representation of semtrex trees:<div class="fragmen
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Nov 13 2014 11:04:30 for ceptr by
+    <li class="footer">Generated on Thu Nov 13 2014 11:43:55 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
