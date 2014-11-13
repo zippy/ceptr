@@ -48,5 +48,6 @@ var tree_8h =
     [ "_t_size", "group__tree.html#gac97d0dd9bbdeb14978735bac1eb0b25e", null ],
     [ "_t_sprint_path", "group__tree.html#ga0e63c83e6413f47238db7fa20373c526", null ],
     [ "_t_surface", "group__tree.html#gac9278e540a0d63526b60cc0591283a62", null ],
-    [ "_t_symbol", "group__tree.html#ga946600fb570f0cc913450905f6189d49", null ]
+    [ "_t_symbol", "group__tree.html#ga946600fb570f0cc913450905f6189d49", null ],
+    [ "_t_unserialize", "group__tree.html#gaf80e70368577f3c49c1651b137899659", null ]
 ];

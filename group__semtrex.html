@@ -153,11 +153,11 @@ Macros</h2></td></tr>
 <tr class="memdesc:gac1b578cc9fc2f835ad12855698fe4cf2"><td class="mdescLeft">&#160;</td><td class="mdescRight">macro to add a single symbol literal not to semtrex tree <br /></td></tr>
 <tr class="separator:gac1b578cc9fc2f835ad12855698fe4cf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga8785a1bb99b5bb1f749bd37a317594e4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga8785a1bb99b5bb1f749bd37a317594e4"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga8785a1bb99b5bb1f749bd37a317594e4">DT</a>(l, t)&#160;&#160;&#160;{char buf[1000];puts(&quot;\n&quot; #l &quot;:&quot;);__t_dump(0,t,0,buf);puts(buf);}</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga8785a1bb99b5bb1f749bd37a317594e4">DT</a>(l, t)&#160;&#160;&#160;{char buf[1000];puts(&quot;\n&quot; #l &quot;:&quot;);__t_dump(G_d,t,0,buf);puts(buf);}</td></tr>
 <tr class="memdesc:ga8785a1bb99b5bb1f749bd37a317594e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">debugging macro for quickly dumping out a tree <br /></td></tr>
 <tr class="separator:ga8785a1bb99b5bb1f749bd37a317594e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga23a719903c25f5387274002776ae5fa1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga23a719903c25f5387274002776ae5fa1"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga23a719903c25f5387274002776ae5fa1">DS</a>(l, t)&#160;&#160;&#160;{<a class="el" href="structDefs.html">Defs</a> d = {0,0,0,0};char buf[1000];puts(&quot;\n&quot; #l &quot;:&quot;);<a class="el" href="group__semtrex.html#ga614de2fa253b75fc34b41421a866ca62">_dump_semtrex</a>(&amp;d,t,buf);puts(buf);}</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga23a719903c25f5387274002776ae5fa1">DS</a>(l, t)&#160;&#160;&#160;{<a class="el" href="structDefs.html">Defs</a> _d={0,0,0,0};<a class="el" href="structDefs.html">Defs</a> *d = G_d?G_d:&amp;_d;char buf[1000];puts(&quot;\n&quot; #l &quot;:&quot;);<a class="el" href="group__semtrex.html#ga614de2fa253b75fc34b41421a866ca62">_dump_semtrex</a>(d,t,buf);puts(buf);}</td></tr>
 <tr class="memdesc:ga23a719903c25f5387274002776ae5fa1"><td class="mdescLeft">&#160;</td><td class="mdescRight">debugging macro for quickly dumping out a semtrex text string <br /></td></tr>
 <tr class="separator:ga23a719903c25f5387274002776ae5fa1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -273,32 +273,32 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>G_debug_match</b></td>
 <iframe scrolling="no" frameborder="0" src="dot_ex2.svg" width="340" height="288"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
   </td></tr>
 </table>
-Here's a BNF for the textual representation of semtrex trees:<div class="fragment"><div class="line">&lt;semtrex&gt; ::= &lt;root&gt; [ <span class="stringliteral">&quot;/&quot;</span> &lt;child&gt;...]</div>
-<div class="line">&lt;root&gt;    ::= <span class="stringliteral">&quot;/&quot;</span> &lt;element&gt;</div>
-<div class="line">&lt;child&gt;   ::= &lt;element&gt; | &lt;optional&gt; | &lt;semtrex&gt;</div>
-<div class="line">&lt;element&gt; ::= &lt;walk&gt; | &lt;symbol_literal&gt; | &lt;value_literal&gt; | &lt;symbol_literal_set&gt; | &lt;value_literal_set&gt; | &lt;any&gt; | &lt;capture&gt;</div>
-<div class="line">&lt;optional&gt; ::= &lt;or&gt; | &lt;zero_or_more&gt; | &lt;one_or_more&gt; | &lt;zero_or_one&gt;</div>
-<div class="line">&lt;walk&gt; ::= <span class="stringliteral">&quot;%&quot;</span> &lt;semtrex&gt;</div>
-<div class="line">&lt;one_or_more&gt; ::= &lt;semtrex&gt; <span class="stringliteral">&quot;+&quot;</span></div>
-<div class="line">&lt;zero_or_more&gt; ::= &lt;semtrex&gt; <span class="stringliteral">&quot;*&quot;</span></div>
-<div class="line">&lt;zero_or_one&gt; ::= &lt;semtrex&gt; <span class="stringliteral">&quot;?&quot;</span></div>
-<div class="line">&lt;sequence&gt; ::= &lt;semtrex&gt; [<span class="stringliteral">&quot;,&quot;</span> &lt;semtrex&gt;]...</div>
-<div class="line">Siblings ::= <span class="stringliteral">&quot;(&quot;</span> &lt;sequence&gt; <span class="stringliteral">&quot;)&quot;</span></div>
-<div class="line">&lt;or&gt; ::= &lt;semtrex&gt; <span class="stringliteral">&quot;|&quot;</span> &lt;semtrex&gt;</div>
+Here's a BNF for the textual representation of semtrex trees:<div class="fragment"><div class="line">&lt;semtrex&gt;        ::= &lt;root&gt; [ <span class="stringliteral">&quot;/&quot;</span> &lt;child&gt;...]</div>
+<div class="line">&lt;root&gt;           ::= <span class="stringliteral">&quot;/&quot;</span> &lt;element&gt;</div>
+<div class="line">&lt;child&gt;          ::= &lt;element&gt; | &lt;optional&gt; | &lt;semtrex&gt;</div>
+<div class="line">&lt;element&gt;        ::= &lt;walk&gt; | &lt;symbol_literal&gt; | &lt;value_literal&gt; | &lt;symbol_literal_set&gt; | &lt;value_literal_set&gt; | &lt;any&gt; | &lt;capture&gt; | &lt;siblings&gt;</div>
+<div class="line">&lt;optional&gt;       ::= &lt;or&gt; | &lt;zero_or_more&gt; | &lt;one_or_more&gt; | &lt;zero_or_one&gt;</div>
+<div class="line">&lt;walk&gt;           ::= <span class="stringliteral">&quot;%&quot;</span> &lt;semtrex&gt;</div>
+<div class="line">&lt;one_or_more&gt;    ::= &lt;semtrex&gt; <span class="stringliteral">&quot;+&quot;</span></div>
+<div class="line">&lt;zero_or_more&gt;   ::= &lt;semtrex&gt; <span class="stringliteral">&quot;*&quot;</span></div>
+<div class="line">&lt;zero_or_one&gt;    ::= &lt;semtrex&gt; <span class="stringliteral">&quot;?&quot;</span></div>
+<div class="line">&lt;sequence&gt;       ::= &lt;semtrex&gt; [<span class="stringliteral">&quot;,&quot;</span> &lt;semtrex&gt;]...</div>
+<div class="line">&lt;siblings&gt;         ::= <span class="stringliteral">&quot;(&quot;</span> &lt;sequence&gt; <span class="stringliteral">&quot;)&quot;</span></div>
+<div class="line">&lt;or&gt;             ::= &lt;semtrex&gt; <span class="stringliteral">&quot;|&quot;</span> &lt;semtrex&gt;</div>
 <div class="line">&lt;symbol_literal&gt; ::= [<span class="stringliteral">&quot;!&quot;</span>] &lt;symbol&gt;</div>
 <div class="line">&lt;symbol_literal_set&gt; ::= [<span class="stringliteral">&quot;!&quot;</span>] <span class="stringliteral">&quot;{&quot;</span> &lt;symbol&gt; [<span class="stringliteral">&quot;,&quot;</span> &lt;symbol&gt;]... <span class="stringliteral">&quot;}&quot;</span></div>
-<div class="line">&lt;value&gt; ::= &lt;<span class="keywordtype">string</span>&gt; | &lt;<span class="keywordtype">char</span>&gt; | Int | Fload</div>
-<div class="line">&lt;value_literal&gt; ::= &lt;symbol&gt; [<span class="stringliteral">&quot;!&quot;</span>] <span class="stringliteral">&quot;=&quot;</span> &lt;value&gt;</div>
+<div class="line">&lt;value&gt;          ::= &lt;<span class="keywordtype">string</span>&gt; | &lt;<span class="keywordtype">char</span>&gt; | Int | Fload</div>
+<div class="line">&lt;value_literal&gt;  ::= &lt;symbol&gt; [<span class="stringliteral">&quot;!&quot;</span>] <span class="stringliteral">&quot;=&quot;</span> &lt;value&gt;</div>
 <div class="line">&lt;value_literal_set&gt; ::= &lt;symbol&gt; [<span class="stringliteral">&quot;!&quot;</span>] <span class="stringliteral">&quot;={&quot;</span> &lt;value&gt; [<span class="stringliteral">&quot;,&quot;</span> &lt;value&gt; ]... <span class="stringliteral">&quot;}&quot;</span></div>
-<div class="line">&lt;any&gt; ::= <span class="stringliteral">&quot;.&quot;</span></div>
-<div class="line">&lt;capture&gt; ::= <span class="stringliteral">&quot;&lt;&quot;</span> &lt;symbol&gt; <span class="stringliteral">&quot;:&quot;</span> &lt;semtrex&gt; <span class="stringliteral">&quot;&gt;&quot;</span></div>
-<div class="line">&lt;digit&gt;  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9</div>
-<div class="line">&lt;letter&gt; ::= a | b ... | z | A | B ... | Z</div>
-<div class="line">&lt;special&gt; ::= <span class="stringliteral">&quot;_&quot;</span></div>
-<div class="line">&lt;symbol&gt; ::= (&lt;letter&gt; | &lt;digit&gt; | &lt;special&gt;)+</div>
-<div class="line">&lt;<span class="keywordtype">char</span>&gt; ::= <span class="stringliteral">&quot;&#39;&quot;</span> &lt;letter&gt; | &lt;digit&gt; | &lt;special&gt; <span class="stringliteral">&quot;&#39;&quot;</span></div>
-<div class="line">&lt;<span class="keywordtype">string</span>&gt; ::= <span class="stringliteral">&quot;\&quot;&quot;</span> (&lt;letter&gt; | &lt;digit&gt; | &lt;special&gt;)+ <span class="stringliteral">&quot;\&quot;&quot;</span></div>
-<div class="line">&lt;<span class="keywordtype">float</span>&gt; ::= &lt;digit&gt;+ [<span class="stringliteral">&quot;.&quot;</span> &lt;digit&gt;+ ]</div>
+<div class="line">&lt;any&gt;            ::= <span class="stringliteral">&quot;.&quot;</span></div>
+<div class="line">&lt;capture&gt;        ::= <span class="stringliteral">&quot;&lt;&quot;</span> &lt;symbol&gt; <span class="stringliteral">&quot;:&quot;</span> &lt;semtrex&gt; <span class="stringliteral">&quot;&gt;&quot;</span></div>
+<div class="line">&lt;digit&gt;          ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9</div>
+<div class="line">&lt;letter&gt;         ::= a | b ... | z | A | B ... | Z</div>
+<div class="line">&lt;special&gt;        ::= <span class="stringliteral">&quot;_&quot;</span></div>
+<div class="line">&lt;symbol&gt;         ::= (&lt;letter&gt; | &lt;digit&gt; | &lt;special&gt;)+</div>
+<div class="line">&lt;<span class="keywordtype">char</span>&gt;           ::= <span class="stringliteral">&quot;&#39;&quot;</span> &lt;letter&gt; | &lt;digit&gt; | &lt;special&gt; <span class="stringliteral">&quot;&#39;&quot;</span></div>
+<div class="line">&lt;<span class="keywordtype">string</span>&gt;         ::= <span class="stringliteral">&quot;\&quot;&quot;</span> (&lt;letter&gt; | &lt;digit&gt; | &lt;special&gt;)+ <span class="stringliteral">&quot;\&quot;&quot;</span></div>
+<div class="line">&lt;<span class="keywordtype">float</span>&gt;          ::= &lt;digit&gt;+ [<span class="stringliteral">&quot;.&quot;</span> &lt;digit&gt;+ ]</div>
 </div><!-- fragment --> </div><h2 class="groupheader">Typedef Documentation</h2>
 <a class="anchor" id="gab4bc67d51970ec75875c2e9e135c4bf3"></a>
 <div class="memitem">
@@ -405,7 +405,7 @@ Here's a BNF for the textual representation of semtrex trees:<div class="fragmen
 </div><div class="memdoc">
 <p>utility function to create a semtrex litteral symbol set </p>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01128">1128</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01127">1127</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -449,7 +449,7 @@ Here's a BNF for the textual representation of semtrex trees:<div class="fragmen
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the buffer </dd></dl>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00960">960</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00959">959</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -540,7 +540,7 @@ Here's a BNF for the textual representation of semtrex trees:<div class="fragmen
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00745">745</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00744">744</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -577,7 +577,7 @@ Here's a BNF for the textual representation of semtrex trees:<div class="fragmen
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structT.html">T</a> of the match or NULL if no such match found </dd></dl>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00721">721</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00720">720</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -614,7 +614,7 @@ Here's a BNF for the textual representation of semtrex trees:<div class="fragmen
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>1 or 0 if matched or not </dd></dl>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00710">710</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00709">709</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -658,7 +658,7 @@ Here's a BNF for the textual representation of semtrex trees:<div class="fragmen
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>1 or 0 if matched or not </dd></dl>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00699">699</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00698">698</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -699,7 +699,7 @@ Here's a BNF for the textual representation of semtrex trees:<div class="fragmen
 </div><div class="memdoc">
 <p>convert ascii tokens from a match to a char and add them to the given tree </p>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01119">1119</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01118">1118</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -740,7 +740,7 @@ Here's a BNF for the textual representation of semtrex trees:<div class="fragmen
 </div><div class="memdoc">
 <p>convert ascii tokens from a match to an integer and add them to the given tree </p>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01087">1087</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01086">1086</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -781,7 +781,7 @@ Here's a BNF for the textual representation of semtrex trees:<div class="fragmen
 </div><div class="memdoc">
 <p>convert ascii tokens from a match to a string and add them to the given tree </p>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01103">1103</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01102">1102</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -806,7 +806,7 @@ Here's a BNF for the textual representation of semtrex trees:<div class="fragmen
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structT.html">T</a> ASCII_CHARS tree </dd></dl>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01075">1075</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01074">1074</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -842,7 +842,7 @@ Here's a BNF for the textual representation of semtrex trees:<div class="fragmen
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structT.html">T</a> semtrex tree </dd></dl>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01147">1147</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01146">1146</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -851,7 +851,7 @@ Here's a BNF for the textual representation of semtrex trees:<div class="fragmen
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Nov 13 2014 11:43:55 for ceptr by
+    <li class="footer">Generated on Thu Nov 13 2014 17:30:46 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

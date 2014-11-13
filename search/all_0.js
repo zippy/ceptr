@@ -63,7 +63,7 @@ var searchData=
   ['_5fs_5fnew',['_s_new',['../scape_8c.html#a4262c29b48e99f7254b1ceef9bae0436',1,'_s_new(Symbol key_source, Symbol data_source):&#160;scape.c'],['../scape_8h.html#a4262c29b48e99f7254b1ceef9bae0436',1,'_s_new(Symbol key_source, Symbol data_source):&#160;scape.c']]],
   ['_5fsl',['_sl',['../group__semtrex.html#ga12e70dc3d5fde33655e8731ad3bdd935',1,'semtrex.h']]],
   ['_5fsln',['_sln',['../group__semtrex.html#gac1b578cc9fc2f835ad12855698fe4cf2',1,'semtrex.h']]],
-  ['_5fsread',['_SREAD',['../receptor_8c.html#a5d3c75413c333021864f6378eecae847',1,'receptor.c']]],
+  ['_5fsread',['_SREAD',['../tree_8c.html#a5d3c75413c333021864f6378eecae847',1,'tree.c']]],
   ['_5fstate',['_state',['../semtrex_8c.html#a9c70cc9ba8fb4a508360a8ee4178ab85',1,'semtrex.c']]],
   ['_5fstx_5ffreefa',['_stx_freeFA',['../group__semtrex.html#gacbce8db372cc051950f8d684af47c39a',1,'_stx_freeFA(SState *s):&#160;semtrex.c'],['../group__semtrex.html#gacbce8db372cc051950f8d684af47c39a',1,'_stx_freeFA(SState *s):&#160;semtrex.c']]],
   ['_5fstx_5fmakefa',['_stx_makeFA',['../group__semtrex.html#ga23ed44c9e7a1637d5f7d49e6114af83a',1,'_stx_makeFA(T *t, int *statesP):&#160;semtrex.c'],['../group__semtrex.html#ga23ed44c9e7a1637d5f7d49e6114af83a',1,'_stx_makeFA(T *s, int *statesP):&#160;semtrex.c']]],

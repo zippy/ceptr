@@ -355,7 +355,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>build a signal </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000012">Todo:</a></b></dt><dd>signal should have timestamps and other meta info </dd></dl>
 
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00479">479</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00450">450</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -811,7 +811,7 @@ Variables</h2></td></tr>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000014">Todo:</a></b></dt><dd>runtime error handing!!! </dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000015">Todo:</a></b></dt><dd>results should actually be a what? success/failure of send (currently is reduced runtree) </dd></dl>
 
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00500">500</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00471">471</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -1025,7 +1025,7 @@ Variables</h2></td></tr>
 <div class="line">    <a class="code" href="group__tree.html#ga14080e3aa32b1612dabcd610b062e376">_t_news</a>(i,CARRIER,ping); <span class="comment">// input carrier</span></div>
 <div class="line">    <a class="code" href="group__tree.html#ga14080e3aa32b1612dabcd610b062e376">_t_news</a>(i,CARRIER,ping); <span class="comment">// output carrier</span></div>
 <div class="line">    e = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(i,EXPECTATION);</div>
-<div class="line">    <a class="code" href="structT.html">T</a> *req = <a class="code" href="group__tree.html#ga14080e3aa32b1612dabcd610b062e376">_t_news</a>(e,SEMTREX_SYMBOL_LITERAL,ping);</div>
+<div class="line">    <a class="code" href="structT.html">T</a> *req = <a class="code" href="group__semtrex.html#ga12e70dc3d5fde33655e8731ad3bdd935">_sl</a>(e,ping);</div>
 <div class="line"></div>
 <div class="line">    <a class="code" href="structT.html">T</a> *ping_resp = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(RESPOND);</div>
 <div class="line">    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(ping_resp,ping,1);</div>
@@ -1046,7 +1046,7 @@ Variables</h2></td></tr>
 <div class="line">    <a class="code" href="group__tree.html#ga14080e3aa32b1612dabcd610b062e376">_t_news</a>(i,CARRIER,ping); <span class="comment">// input carrier</span></div>
 <div class="line">    <a class="code" href="group__tree.html#ga14080e3aa32b1612dabcd610b062e376">_t_news</a>(i,CARRIER,ping); <span class="comment">// output carrier</span></div>
 <div class="line">    e = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(i,EXPECTATION);</div>
-<div class="line">    <a class="code" href="group__tree.html#ga14080e3aa32b1612dabcd610b062e376">_t_news</a>(e,SEMTREX_SYMBOL_LITERAL,ping);</div>
+<div class="line">    <a class="code" href="group__semtrex.html#ga12e70dc3d5fde33655e8731ad3bdd935">_sl</a>(e,ping);</div>
 <div class="line">    <span class="comment">//    s = _t_newr(i,RESPONSE_STEPS);</span></div>
 <div class="line"></div>
 <div class="line">    <a class="code" href="structT.html">T</a> *aspects = _t_child(r-&gt;<a class="code" href="structReceptor.html#aec6f1eee133a993b59baf50e75620fb6">root</a>,2);</div>
@@ -1057,12 +1057,13 @@ Variables</h2></td></tr>
 <div class="line">    <a class="code" href="group__receptor.html#ga33902456689b691f4094c48bd676ed68">_r_install_protocol</a>(r,1,<span class="stringliteral">&quot;server&quot;</span>,DEFAULT_ASPECT);</div>
 <div class="line"></div>
 <div class="line">    <span class="keywordtype">char</span> *d = _td(r,r-&gt;<a class="code" href="structReceptor.html#aec6f1eee133a993b59baf50e75620fb6">root</a>);</div>
-<div class="line">    spec_is_str_equal(d,<span class="stringliteral">&quot; (TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS (SYMBOL_DECLARATION (SYMBOL_LABEL:ping) (SYMBOL_STRUCTURE:BOOLEAN))) (PROCESSES (PROCESS_CODING (PROCESS_NAME:send ping response) (PROCESS_INTENTION:long desc...) (process:RESPOND (ping:1)) (INPUT) (OUTPUT_SIGNATURE))) (PROTOCOLS (PROTOCOL (ROLES (ROLE:server) (ROLE:client)) (INTERACTIONS (INTERACTION (STEP:ping) (FROM_ROLE) (TO_ROLE) (CARRIER:ping) (CARRIER:ping) (EXPECTATION (SEMTREX_SYMBOL_LITERAL:ping)) (ACTION:send ping response) (RESPONSE_STEPS (STEP:ping_response))) (INTERACTION (STEP:ping_response) (FROM_ROLE) (TO_ROLE) (CARRIER:ping) (CARRIER:ping) (EXPECTATION (SEMTREX_SYMBOL_LITERAL:ping)))))) (SCAPES)) (ASPECTS (ASPECT_DEF (ASPECT_TYPE:0) (CARRIER:ping) (CARRIER:ping))) (FLUX (ASPECT:1 (LISTENERS (LISTENER:ping (EXPECTATION (SEMTREX_SYMBOL_LITERAL:ping)) (ACTION:send ping response))) (SIGNALS))))&quot;</span>);</div>
+<div class="line">    spec_is_str_equal(d,<span class="stringliteral">&quot; (TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS (SYMBOL_DECLARATION (SYMBOL_LABEL:ping) (SYMBOL_STRUCTURE:BOOLEAN))) (PROCESSES (PROCESS_CODING (PROCESS_NAME:send ping response) (PROCESS_INTENTION:long desc...) (process:RESPOND (ping:1)) (INPUT) (OUTPUT_SIGNATURE))) (PROTOCOLS (PROTOCOL (ROLES (ROLE:server) (ROLE:client)) (INTERACTIONS (INTERACTION (STEP:ping) (FROM_ROLE) (TO_ROLE) (CARRIER:ping) (CARRIER:ping) (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping))) (ACTION:send ping response) (RESPONSE_STEPS (STEP:ping_response))) (INTERACTION (STEP:ping_response) (FROM_ROLE) (TO_ROLE) (CARRIER:ping) (CARRIER:ping) (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping))))))) (SCAPES)) (ASPECTS (ASPECT_DEF (ASPECT_TYPE:0) (CARRIER:ping) (CARRIER:ping))) (FLUX (ASPECT:1 (LISTENERS (LISTENER:ping (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping))) (ACTION:send ping response))) (SIGNALS))))&quot;</span>);</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// delivering a fake signal should return a ping</span></div>
 <div class="line">    <a class="code" href="structXaddr.html">Xaddr</a> f = {RECEPTOR_XADDR,3};  <span class="comment">// DUMMY XADDR</span></div>
 <div class="line">    <a class="code" href="structXaddr.html">Xaddr</a> t = {RECEPTOR_XADDR,4};  <span class="comment">// DUMMY XADDR</span></div>
 <div class="line">    <a class="code" href="structT.html">T</a> *signal = <a class="code" href="group__receptor.html#ga475101caa9d56e6398d93dc3b4c9b616">__r_make_signal</a>(f,t,DEFAULT_ASPECT,<a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(0,ping,0));</div>
+<div class="line"></div>
 <div class="line">    <a class="code" href="structT.html">T</a> *result = <a class="code" href="group__receptor.html#gaa6111b5348cffbc1e1aad1d9d6c1e4ff">_r_deliver</a>(r,signal);</div>
 <div class="line">    d = _td(r,result);</div>
 <div class="line">    spec_is_str_equal(d,<span class="stringliteral">&quot; (ping:1)&quot;</span>);</div>
@@ -1344,7 +1345,7 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structReceptor.html">Receptor</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00454">454</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00425">425</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -1353,7 +1354,7 @@ Variables</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Nov 13 2014 11:43:55 for ceptr by
+    <li class="footer">Generated on Thu Nov 13 2014 17:30:46 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

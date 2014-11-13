@@ -174,24 +174,17 @@ $(document).ready(function(){initNavTree('tree_8h_source.html','');});
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="comment">/*****************  Tree serialization */</span></div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="keywordtype">size_t</span> <a class="code" href="group__tree.html#ga4b3d9a3a1c1bc4a7fb710e96faf1d437">__t_serialize</a>(<a class="code" href="structDefs.html">Defs</a> *d,<a class="code" href="structT.html">T</a> *t,<span class="keywordtype">void</span> **bufferP,<span class="keywordtype">size_t</span> offset,<span class="keywordtype">size_t</span> current_size,<span class="keywordtype">int</span> compact);</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__tree.html#gaf5f98525f4d48c29783c7b13235958c2">_t_serialize</a>(<a class="code" href="structDefs.html">Defs</a> *d,<a class="code" href="structT.html">T</a> *t,<span class="keywordtype">void</span> **surfaceP,<span class="keywordtype">size_t</span> *sizeP);</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="preprocessor">#define DO_KIDS(t,x) {int i,_c=_t_children(t);for(i=1;i&lt;=_c;i++){x;}}</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<a class="code" href="structT.html">T</a> * _t_unserialize(<a class="code" href="structDefs.html">Defs</a> *d,<span class="keywordtype">void</span> **surfaceP,<span class="keywordtype">size_t</span> *lengthP,<a class="code" href="structT.html">T</a> *t);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="preprocessor">#define root_check(c) if (c-&gt;structure.parent != 0) {raise_error0(&quot;can&#39;t add a node that isn&#39;t a root!&quot;);}</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="comment">_t_new();</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="comment">_t_free()</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="comment">_t_get_child(t,nth_child)</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="comment">_t_get_surface()</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="comment">_t_get_parent()</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="comment">_t_get_root()</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="comment">_t_get_next_sibling()</span></div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="comment">_t_parse(); //semtrex style parsing</span></div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="comment">_t_match()</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="comment">/*****************  Misc... */</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="preprocessor">#define DO_KIDS(t,x) {int i,_c=_t_children(t);for(i=1;i&lt;=_c;i++){x;}}</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="preprocessor">#define root_check(c) if (c-&gt;structure.parent != 0) {raise_error0(&quot;can&#39;t add a node that isn&#39;t a root!&quot;);}</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
 <div class="ttc" id="group__tree_html_ga25dd0f385044ffbcc7c215ea80fa00b4"><div class="ttname"><a href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a></div><div class="ttdeci">T * _t_new_root(Symbol symbol)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00113">tree.c:113</a></div></div>
 <div class="ttc" id="structT_html"><div class="ttname"><a href="structT.html">T</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00043">ceptr_types.h:43</a></div></div>
 <div class="ttc" id="group__tree_html_ga14080e3aa32b1612dabcd610b062e376"><div class="ttname"><a href="group__tree.html#ga14080e3aa32b1612dabcd610b062e376">_t_news</a></div><div class="ttdeci">T * _t_news(T *parent, Symbol symbol, SemanticID surface)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00086">tree.c:86</a></div></div>
@@ -240,7 +233,7 @@ $(document).ready(function(){initNavTree('tree_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="tree_8h.html">tree.h</a></li>
-    <li class="footer">Generated on Thu Nov 13 2014 11:43:54 for ceptr by
+    <li class="footer">Generated on Thu Nov 13 2014 17:30:46 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

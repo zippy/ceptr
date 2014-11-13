@@ -544,7 +544,7 @@ $(document).ready(function(){initNavTree('tree_8c_source.html','');});
 <div class="line"><a name="l00747"></a><span class="lineno">  747</span>&#160;    <span class="keywordtype">size_t</span> cl =0,l = <a class="code" href="group__tree.html#gac97d0dd9bbdeb14978735bac1eb0b25e">_t_size</a>(t);</div>
 <div class="line"><a name="l00748"></a><span class="lineno">  748</span>&#160;    <span class="keywordtype">int</span> i, c = <a class="code" href="group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc">_t_children</a>(t);</div>
 <div class="line"><a name="l00749"></a><span class="lineno">  749</span>&#160;</div>
-<div class="line"><a name="l00750"></a><span class="lineno">  750</span>&#160;    <span class="comment">//    printf(&quot;\ncurrent_size:%ld offset:%ld  size:%ld symbol:%s&quot;,current_size,offset,l,_r_get_symbol_name(r,_t_symbol(t)));</span></div>
+<div class="line"><a name="l00750"></a><span class="lineno">  750</span>&#160;    <span class="comment">//    printf(&quot;\ncurrent_size:%ld offset:%ld  size:%ld symbol:%s&quot;,current_size,offset,l,_d_get_symbol_name(d-&gt;symbols,_t_symbol(t)));</span></div>
 <div class="line"><a name="l00751"></a><span class="lineno">  751</span>&#160;    <span class="keywordflow">while</span> ((offset+l+<span class="keyword">sizeof</span>(<a class="code" href="structSemanticID.html">Symbol</a>)) &gt; current_size) {</div>
 <div class="line"><a name="l00752"></a><span class="lineno">  752</span>&#160;    current_size*=2;</div>
 <div class="line"><a name="l00753"></a><span class="lineno">  753</span>&#160;    *bufferP = realloc(*bufferP,current_size);</div>
@@ -569,10 +569,48 @@ $(document).ready(function(){initNavTree('tree_8c_source.html','');});
 <div class="line"><a name="l00783"></a><span class="lineno"><a class="line" href="group__tree.html#gaf5f98525f4d48c29783c7b13235958c2">  783</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__tree.html#gaf5f98525f4d48c29783c7b13235958c2">_t_serialize</a>(<a class="code" href="structDefs.html">Defs</a> *d,<a class="code" href="structT.html">T</a> *t,<span class="keywordtype">void</span> **surfaceP,<span class="keywordtype">size_t</span> *lengthP) {</div>
 <div class="line"><a name="l00784"></a><span class="lineno">  784</span>&#160;    <span class="keywordtype">size_t</span> buf_size = 1000;</div>
 <div class="line"><a name="l00785"></a><span class="lineno">  785</span>&#160;    *surfaceP = malloc(buf_size);</div>
-<div class="line"><a name="l00786"></a><span class="lineno">  786</span>&#160;    *lengthP = <a class="code" href="group__tree.html#ga4b3d9a3a1c1bc4a7fb710e96faf1d437">__t_serialize</a>(d,t,surfaceP,0,buf_size,1);</div>
+<div class="line"><a name="l00786"></a><span class="lineno">  786</span>&#160;    *lengthP = <a class="code" href="group__tree.html#ga4b3d9a3a1c1bc4a7fb710e96faf1d437">__t_serialize</a>(d,t,surfaceP,0,buf_size,0);</div>
 <div class="line"><a name="l00787"></a><span class="lineno">  787</span>&#160;    *surfaceP = realloc(*surfaceP,*lengthP);</div>
 <div class="line"><a name="l00788"></a><span class="lineno">  788</span>&#160;}</div>
 <div class="line"><a name="l00789"></a><span class="lineno">  789</span>&#160;</div>
+<div class="line"><a name="l00791"></a><span class="lineno"><a class="line" href="tree_8c.html#a3f7ee4a117ea9cd3ad10aaef8a50400a">  791</a></span>&#160;<span class="preprocessor">#define SREAD(type,var_name) type var_name = *(type *)*surfaceP;*lengthP -= sizeof(type);*surfaceP += sizeof(type);</span></div>
+<div class="line"><a name="l00792"></a><span class="lineno">  792</span>&#160;<span class="preprocessor">#define _SREAD(type,var_name) var_name = *(type *)*surfaceP;*lengthP -= sizeof(type);*surfaceP += sizeof(type);</span></div>
+<div class="line"><a name="l00794"></a><span class="lineno">  794</span>&#160;</div>
+<div class="line"><a name="l00795"></a><span class="lineno">  795</span>&#160;<a class="code" href="structT.html">T</a> * _t_unserialize(<a class="code" href="structDefs.html">Defs</a> *d,<span class="keywordtype">void</span> **surfaceP,<span class="keywordtype">size_t</span> *lengthP,<a class="code" href="structT.html">T</a> *t) {</div>
+<div class="line"><a name="l00796"></a><span class="lineno">  796</span>&#160;    <span class="keywordtype">size_t</span> size;</div>
+<div class="line"><a name="l00797"></a><span class="lineno">  797</span>&#160;</div>
+<div class="line"><a name="l00798"></a><span class="lineno">  798</span>&#160;    <a class="code" href="tree_8c.html#a3f7ee4a117ea9cd3ad10aaef8a50400a">SREAD</a>(<a class="code" href="structSemanticID.html">Symbol</a>,s);</div>
+<div class="line"><a name="l00799"></a><span class="lineno">  799</span>&#160;    <span class="comment">//    printf(&quot;\nSymbol:%s&quot;,_d_get_symbol_name(d-&gt;symbols,s));</span></div>
+<div class="line"><a name="l00800"></a><span class="lineno">  800</span>&#160;</div>
+<div class="line"><a name="l00801"></a><span class="lineno">  801</span>&#160;    <a class="code" href="tree_8c.html#a3f7ee4a117ea9cd3ad10aaef8a50400a">SREAD</a>(<span class="keywordtype">int</span>,c);</div>
+<div class="line"><a name="l00802"></a><span class="lineno">  802</span>&#160;</div>
+<div class="line"><a name="l00803"></a><span class="lineno">  803</span>&#160;    <a class="code" href="structSemanticID.html">Structure</a> st = <a class="code" href="group__def.html#ga41157ee3740cc54c3857ca46e2545999">_d_get_symbol_structure</a>(d-&gt;<a class="code" href="structDefs.html#a172e45e131e197571ba1a36a136d35f8">symbols</a>,s);</div>
+<div class="line"><a name="l00804"></a><span class="lineno">  804</span>&#160;</div>
+<div class="line"><a name="l00805"></a><span class="lineno">  805</span>&#160;    <span class="keywordflow">if</span> (is_sys_structure(st)) {</div>
+<div class="line"><a name="l00806"></a><span class="lineno">  806</span>&#160;    size = _sys_structure_size(st.id,*surfaceP);</div>
+<div class="line"><a name="l00807"></a><span class="lineno">  807</span>&#160;    <span class="keywordflow">if</span> (size == -1) {raise_error0(<span class="stringliteral">&quot;BANG!&quot;</span>);}</div>
+<div class="line"><a name="l00808"></a><span class="lineno">  808</span>&#160;    }</div>
+<div class="line"><a name="l00809"></a><span class="lineno">  809</span>&#160;    <span class="keywordflow">else</span> size = 0;</div>
+<div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160;    <span class="keywordflow">if</span> (size &gt; 0) {</div>
+<div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160;    <span class="comment">//  printf(&quot; reading: %ld bytes\n&quot;,size);</span></div>
+<div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160;    <span class="keywordflow">if</span> (semeq(st,INTEGER))</div>
+<div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160;        t = <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(t,s,*(<span class="keywordtype">int</span> *)*surfaceP);</div>
+<div class="line"><a name="l00814"></a><span class="lineno">  814</span>&#160;    <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00815"></a><span class="lineno">  815</span>&#160;        t = <a class="code" href="group__tree.html#ga6ecbb70ce62a6c61f04ff8d0707101e4">_t_new</a>(t,s,*surfaceP,size);</div>
+<div class="line"><a name="l00816"></a><span class="lineno">  816</span>&#160;    *lengthP -= size;</div>
+<div class="line"><a name="l00817"></a><span class="lineno">  817</span>&#160;    *surfaceP += size;</div>
+<div class="line"><a name="l00818"></a><span class="lineno">  818</span>&#160;    }</div>
+<div class="line"><a name="l00819"></a><span class="lineno">  819</span>&#160;    <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00820"></a><span class="lineno">  820</span>&#160;    t = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,s);</div>
+<div class="line"><a name="l00821"></a><span class="lineno">  821</span>&#160;    }</div>
+<div class="line"><a name="l00822"></a><span class="lineno">  822</span>&#160;</div>
+<div class="line"><a name="l00823"></a><span class="lineno">  823</span>&#160;    <span class="keywordtype">int</span> i;</div>
+<div class="line"><a name="l00824"></a><span class="lineno">  824</span>&#160;    <span class="keywordflow">for</span>(i=1;i&lt;=c;i++) {</div>
+<div class="line"><a name="l00825"></a><span class="lineno">  825</span>&#160;    _t_unserialize(d,surfaceP,lengthP,t);</div>
+<div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160;    }</div>
+<div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160;    <span class="keywordflow">return</span> t;</div>
+<div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160;}</div>
+<div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;</div>
 <div class="ttc" id="group__tree_html_ga25dd0f385044ffbcc7c215ea80fa00b4"><div class="ttname"><a href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a></div><div class="ttdeci">T * _t_new_root(Symbol symbol)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00113">tree.c:113</a></div></div>
 <div class="ttc" id="group__def_html_ga1678fa0990fae85360a6f92a0bfb37ec"><div class="ttname"><a href="group__def.html#ga1678fa0990fae85360a6f92a0bfb37ec">_d_get_symbol_size</a></div><div class="ttdeci">size_t _d_get_symbol_size(T *symbols, T *structures, Symbol s, void *surface)</div><div class="ttdef"><b>Definition:</b> <a href="def_8c_source.html#l00199">def.c:199</a></div></div>
 <div class="ttc" id="structT_html"><div class="ttname"><a href="structT.html">T</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00043">ceptr_types.h:43</a></div></div>
@@ -603,10 +641,12 @@ $(document).ready(function(){initNavTree('tree_8c_source.html','');});
 <div class="ttc" id="group__tree_html_ga79cff1b1b9d692acc297634be059c6a9"><div class="ttname"><a href="group__tree.html#ga79cff1b1b9d692acc297634be059c6a9">_t_newt</a></div><div class="ttdeci">T * _t_newt(T *parent, Symbol symbol, T *surface)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00098">tree.c:98</a></div></div>
 <div class="ttc" id="group__tree_html_gaa319e62d901e50041b97ac198fb7f276"><div class="ttname"><a href="group__tree.html#gaa319e62d901e50041b97ac198fb7f276">_t_new_scape</a></div><div class="ttdeci">T * _t_new_scape(T *parent, Symbol symbol, Scape *s)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00162">tree.c:162</a></div></div>
 <div class="ttc" id="group__tree_html_ga4b3d9a3a1c1bc4a7fb710e96faf1d437"><div class="ttname"><a href="group__tree.html#ga4b3d9a3a1c1bc4a7fb710e96faf1d437">__t_serialize</a></div><div class="ttdeci">size_t __t_serialize(Defs *d, T *t, void **bufferP, size_t offset, size_t current_size, int compact)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00746">tree.c:746</a></div></div>
+<div class="ttc" id="tree_8c_html_a3f7ee4a117ea9cd3ad10aaef8a50400a"><div class="ttname"><a href="tree_8c.html#a3f7ee4a117ea9cd3ad10aaef8a50400a">SREAD</a></div><div class="ttdeci">#define SREAD(type, var_name)</div><div class="ttdoc">macro to read typed date from the surface and update length and surface values </div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00791">tree.c:791</a></div></div>
 <div class="ttc" id="tree_8c_html_a3ffbefdb57db8005ed3fc023c39763b1"><div class="ttname"><a href="tree_8c.html#a3ffbefdb57db8005ed3fc023c39763b1">SWRITE</a></div><div class="ttdeci">#define SWRITE(type, value)</div><div class="ttdoc">macro to write data by type into *bufferP and increment offset by the size of the type ...</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00730">tree.c:730</a></div></div>
 <div class="ttc" id="group__tree_html_gaf5f98525f4d48c29783c7b13235958c2"><div class="ttname"><a href="group__tree.html#gaf5f98525f4d48c29783c7b13235958c2">_t_serialize</a></div><div class="ttdeci">void _t_serialize(Defs *d, T *t, void **surfaceP, size_t *lengthP)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00783">tree.c:783</a></div></div>
 <div class="ttc" id="group__tree_html_ga81b96d2e950c7ac5ae8d17364f2fc49f"><div class="ttname"><a href="group__tree.html#ga81b96d2e950c7ac5ae8d17364f2fc49f">_t_get_surface</a></div><div class="ttdeci">void * _t_get_surface(T *t, int *p)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00643">tree.c:643</a></div></div>
 <div class="ttc" id="structReceptor_html"><div class="ttname"><a href="structReceptor.html">Receptor</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00105">ceptr_types.h:105</a></div></div>
+<div class="ttc" id="group__def_html_ga41157ee3740cc54c3857ca46e2545999"><div class="ttname"><a href="group__def.html#ga41157ee3740cc54c3857ca46e2545999">_d_get_symbol_structure</a></div><div class="ttdeci">Structure _d_get_symbol_structure(T *symbols, Symbol s)</div><div class="ttdef"><b>Definition:</b> <a href="def_8c_source.html#l00179">def.c:179</a></div></div>
 <div class="ttc" id="group__tree_html_ga1d7afbc2a405c20a83b7bee4cfcb3a29"><div class="ttname"><a href="group__tree.html#ga1d7afbc2a405c20a83b7bee4cfcb3a29">_t_path_equal</a></div><div class="ttdeci">int _t_path_equal(int *p1, int *p2)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00525">tree.c:525</a></div></div>
 <div class="ttc" id="group__tree_html_ga3b7a6499fe49f8e6a54166d583b08d5c"><div class="ttname"><a href="group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c">_t_add</a></div><div class="ttdeci">void _t_add(T *t, T *c)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00188">tree.c:188</a></div></div>
 <div class="ttc" id="structDefs_html"><div class="ttname"><a href="structDefs.html">Defs</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00091">ceptr_types.h:91</a></div></div>
@@ -615,6 +655,7 @@ $(document).ready(function(){initNavTree('tree_8c_source.html','');});
 <div class="ttc" id="group__tree_html_ga0dcacdfd022b2a04b8fb53eb25ee367e"><div class="ttname"><a href="group__tree.html#ga0dcacdfd022b2a04b8fb53eb25ee367e">_t_replace</a></div><div class="ttdeci">void _t_replace(T *t, int i, T *r)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00298">tree.c:298</a></div></div>
 <div class="ttc" id="group__tree_html_gad718449607421d4b572315be630cbf75"><div class="ttname"><a href="group__tree.html#gad718449607421d4b572315be630cbf75">_t_detach_by_ptr</a></div><div class="ttdeci">void _t_detach_by_ptr(T *t, T *c)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00218">tree.c:218</a></div></div>
 <div class="ttc" id="group__tree_html_ga31e55cdc031e5f12523b998e89080db6"><div class="ttname"><a href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a></div><div class="ttdeci">void _t_free(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00383">tree.c:383</a></div></div>
+<div class="ttc" id="structDefs_html_a172e45e131e197571ba1a36a136d35f8"><div class="ttname"><a href="structDefs.html#a172e45e131e197571ba1a36a136d35f8">Defs::symbols</a></div><div class="ttdeci">T * symbols</div><div class="ttdoc">pointer for quick access to symbols </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00093">ceptr_types.h:93</a></div></div>
 <div class="ttc" id="structSemanticID_html"><div class="ttname"><a href="structSemanticID.html">SemanticID</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00016">ceptr_types.h:16</a></div></div>
 <div class="ttc" id="group__tree_html_gac97d0dd9bbdeb14978735bac1eb0b25e"><div class="ttname"><a href="group__tree.html#gac97d0dd9bbdeb14978735bac1eb0b25e">_t_size</a></div><div class="ttdeci">size_t _t_size(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00463">tree.c:463</a></div></div>
 <div class="ttc" id="group__tree_html_ga0e63c83e6413f47238db7fa20373c526"><div class="ttname"><a href="group__tree.html#ga0e63c83e6413f47238db7fa20373c526">_t_sprint_path</a></div><div class="ttdeci">char * _t_sprint_path(int *fp, char *buf)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00659">tree.c:659</a></div></div>
@@ -624,7 +665,7 @@ $(document).ready(function(){initNavTree('tree_8c_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="tree_8c.html">tree.c</a></li>
-    <li class="footer">Generated on Thu Nov 13 2014 11:43:54 for ceptr by
+    <li class="footer">Generated on Thu Nov 13 2014 17:30:46 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

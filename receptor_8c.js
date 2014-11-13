@@ -1,7 +1,5 @@
 var receptor_8c =
 [
-    [ "_SREAD", "receptor_8c.html#a5d3c75413c333021864f6378eecae847", null ],
-    [ "SREAD", "receptor_8c.html#a3f7ee4a117ea9cd3ad10aaef8a50400a", null ],
     [ "__get_label_idx", "receptor_8c.html#a9ceaf2369ba0a4548315853124865251", null ],
     [ "__r_get_aspect", "group__receptor.html#ga6d832bc4fd6b86ba0cb523166711c3a1", null ],
     [ "__r_get_listeners", "group__receptor.html#ga638aa054bbcc81cdb79a819cb0f917ac", null ],
@@ -34,7 +32,6 @@ var receptor_8c =
     [ "_r_new_receptor_from_package", "group__receptor.html#ga7a6afdc039a31cdf24bf93dd0475b72b", null ],
     [ "_r_serialize", "group__receptor.html#ga3e737841784555574a0d90ad2eff4cc4", null ],
     [ "_r_unserialize", "group__receptor.html#ga300b11b12792c290fef2fb0fe07d71ee", null ],
-    [ "_t_unserialize", "receptor_8c.html#a757aabc524dad3ec8e40d00d09aed925", null ],
     [ "_td", "group__receptor.html#ga69b03a529a561587fd222221fb9b1751", null ],
     [ "instanceFree", "receptor_8c.html#ab74ffd0dd1a1937c4336f27b2326ed90", null ],
     [ "instancesFree", "receptor_8c.html#a347ce78af75454229c6878b1ec4c43e9", null ],
