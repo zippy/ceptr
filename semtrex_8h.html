@@ -147,6 +147,12 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
+<tr class="memitem:ga29222c0e3cd15e9abd80d8a7430dd71c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga29222c0e3cd15e9abd80d8a7430dd71c"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>LITERAL_NOT</b>&#160;&#160;&#160;0x01</td></tr>
+<tr class="separator:ga29222c0e3cd15e9abd80d8a7430dd71c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8db8df11b2ba92a05c72c50106fb4ec0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga8db8df11b2ba92a05c72c50106fb4ec0"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>LITERAL_SET</b>&#160;&#160;&#160;0x02</td></tr>
+<tr class="separator:ga8db8df11b2ba92a05c72c50106fb4ec0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga12e70dc3d5fde33655e8731ad3bdd935"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga12e70dc3d5fde33655e8731ad3bdd935"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga12e70dc3d5fde33655e8731ad3bdd935">_sl</a>(t, s)&#160;&#160;&#160;<a class="el" href="group__semtrex.html#ga0eb6f4bfe908f6e8a680c56e8468b523">__sl</a>(t,0,1,s)</td></tr>
 <tr class="memdesc:ga12e70dc3d5fde33655e8731ad3bdd935"><td class="mdescLeft">&#160;</td><td class="mdescRight">macro to add a single symbol literal to semtrex tree <br /></td></tr>
@@ -192,17 +198,16 @@ typedef struct <a class="el" href="structSliteral.html">Sliteral</a>&#160;</td><
 Enumerations</h2></td></tr>
 <tr class="memitem:ga1615968a92950438f6e67a28e9d56e5c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga1615968a92950438f6e67a28e9d56e5c"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>StateType</b> { <br />
 &#160;&#160;<b>StateSymbol</b>, 
-<b>StateSymbolExcept</b>, 
 <b>StateAny</b>, 
 <b>StateValue</b>, 
+<b>StateSplit</b>, 
 <br />
-&#160;&#160;<b>StateSplit</b>, 
-<b>StateMatch</b>, 
+&#160;&#160;<b>StateMatch</b>, 
 <b>StateGroupOpen</b>, 
 <b>StateGroupClose</b>, 
+<b>StateDescend</b>, 
 <br />
-&#160;&#160;<b>StateDescend</b>, 
-<b>StateWalk</b>, 
+&#160;&#160;<b>StateWalk</b>, 
 <b>StateNot</b>
 <br />
  }</td></tr>
@@ -274,7 +279,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>G_debug_match</b></td>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="semtrex_8h.html">semtrex.h</a></li>
-    <li class="footer">Generated on Wed Nov 12 2014 22:40:49 for ceptr by
+    <li class="footer">Generated on Thu Nov 13 2014 11:04:30 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

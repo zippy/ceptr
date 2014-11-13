@@ -4,6 +4,8 @@ var semtrex_8h =
     [ "_sln", "group__semtrex.html#gac1b578cc9fc2f835ad12855698fe4cf2", null ],
     [ "DS", "group__semtrex.html#ga23a719903c25f5387274002776ae5fa1", null ],
     [ "DT", "group__semtrex.html#ga8785a1bb99b5bb1f749bd37a317594e4", null ],
+    [ "LITERAL_NOT", "group__semtrex.html#ga29222c0e3cd15e9abd80d8a7430dd71c", null ],
+    [ "LITERAL_SET", "group__semtrex.html#ga8db8df11b2ba92a05c72c50106fb4ec0", null ],
     [ "SgroupClose", "group__semtrex.html#gab4bc67d51970ec75875c2e9e135c4bf3", null ],
     [ "SgroupOpen", "group__semtrex.html#ga09de53f7ae900c6cb78a22c19af533ff", null ],
     [ "Sliteral", "group__semtrex.html#ga3f47626017139312d814719b254a1a0e", null ],
@@ -19,7 +21,6 @@ var semtrex_8h =
     ] ],
     [ "StateType", "group__semtrex.html#ga1615968a92950438f6e67a28e9d56e5c", [
       [ "StateSymbol", "group__semtrex.html#gga1615968a92950438f6e67a28e9d56e5cafe6260b41f5531e021f29fd308c0395f", null ],
-      [ "StateSymbolExcept", "group__semtrex.html#gga1615968a92950438f6e67a28e9d56e5ca6c0cca0abddfe38e468cbe4afd7c5bf4", null ],
       [ "StateAny", "group__semtrex.html#gga1615968a92950438f6e67a28e9d56e5ca0779141668964da164673db1e0467ef1", null ],
       [ "StateValue", "group__semtrex.html#gga1615968a92950438f6e67a28e9d56e5ca5f4f9123372847736aeb1f58844ddca0", null ],
       [ "StateSplit", "group__semtrex.html#gga1615968a92950438f6e67a28e9d56e5ca1d51af85878cc8ed28033532fea63464", null ],

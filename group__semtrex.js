@@ -10,11 +10,11 @@ var group__semtrex =
       [ "openP", "structSgroupClose.html#a030dd195c46af36d36754d8d94aa143a", null ]
     ] ],
     [ "Svalue", "structSvalue.html", [
-      [ "not", "structSvalue.html#a8df49fa2d8e83778362b742acf6c1f3b", null ],
+      [ "flags", "structSvalue.html#a1a07bdfdaf4cdf37cc0323ba8e288c2b", null ],
       [ "values", "structSvalue.html#a15b4c6d2864b7b65602acf697dfe1e03", null ]
     ] ],
     [ "Sliteral", "structSliteral.html", [
-      [ "not", "structSliteral.html#a5c9f04aeb30ba62fce904ab48e5d49cd", null ],
+      [ "flags", "structSliteral.html#acdb167b9e95c566f79ad404edffce07d", null ],
       [ "symbols", "structSliteral.html#a062a8967e25fe8db64e9d38e9d15fba2", null ]
     ] ],
     [ "STypeData", "unionSTypeData.html", [

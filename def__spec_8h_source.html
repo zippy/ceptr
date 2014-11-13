@@ -280,7 +280,7 @@ $(document).ready(function(){initNavTree('def__spec_8h_source.html','');});
 <div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    <span class="keywordtype">char</span> buf[2000];</div>
 <div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    spec_is_str_equal(<a class="code" href="group__semtrex.html#ga614de2fa253b75fc34b41421a866ca62">_dump_semtrex</a>(&amp;d,stx,buf),<span class="stringliteral">&quot;/house_loc/(lat,lon)&quot;</span>);</div>
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    __t_dump(&amp;d,stx,0,buf);</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    spec_is_str_equal(buf,<span class="stringliteral">&quot; (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL_SET (SEMTREX_SYMBOL:house_loc)) (SEMTREX_SEQUENCE (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL_SET (SEMTREX_SYMBOL:lat))) (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL_SET (SEMTREX_SYMBOL:lon)))))&quot;</span>);</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    spec_is_str_equal(buf,<span class="stringliteral">&quot; (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:house_loc) (SEMTREX_SEQUENCE (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:lat)) (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:lon))))&quot;</span>);</div>
 <div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;</div>
 <div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(stx);</div>
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(d.<a class="code" href="structDefs.html#a6f9d3b3e38fff31326b7d27f730ae95c">structures</a>);</div>
@@ -311,7 +311,7 @@ $(document).ready(function(){initNavTree('def__spec_8h_source.html','');});
 <div class="ttc" id="group__tree_html_gac9278e540a0d63526b60cc0591283a62"><div class="ttname"><a href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a></div><div class="ttdeci">void * _t_surface(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00440">tree.c:440</a></div></div>
 <div class="ttc" id="group__def_html_ga434ff1353a4f55f4f61b95fe8d9cff43"><div class="ttname"><a href="group__def.html#ga434ff1353a4f55f4f61b95fe8d9cff43">_d_get_symbol_name</a></div><div class="ttdeci">char * _d_get_symbol_name(T *symbols, Symbol s)</div><div class="ttdef"><b>Definition:</b> <a href="def_8c_source.html#l00031">def.c:31</a></div></div>
 <div class="ttc" id="group__def_html_ga6f3cb2769c1e266a5c0652afdf8c45c5"><div class="ttname"><a href="group__def.html#ga6f3cb2769c1e266a5c0652afdf8c45c5">_d_get_structure_size</a></div><div class="ttdeci">size_t _d_get_structure_size(T *symbols, T *structures, Structure s, void *surface)</div><div class="ttdef"><b>Definition:</b> <a href="def_8c_source.html#l00216">def.c:216</a></div></div>
-<div class="ttc" id="group__semtrex_html_ga614de2fa253b75fc34b41421a866ca62"><div class="ttname"><a href="group__semtrex.html#ga614de2fa253b75fc34b41421a866ca62">_dump_semtrex</a></div><div class="ttdeci">char * _dump_semtrex(Defs *defs, T *s, char *buf)</div><div class="ttdef"><b>Definition:</b> <a href="semtrex_8c_source.html#l00929">semtrex.c:929</a></div></div>
+<div class="ttc" id="group__semtrex_html_ga614de2fa253b75fc34b41421a866ca62"><div class="ttname"><a href="group__semtrex.html#ga614de2fa253b75fc34b41421a866ca62">_dump_semtrex</a></div><div class="ttdeci">char * _dump_semtrex(Defs *defs, T *s, char *buf)</div><div class="ttdef"><b>Definition:</b> <a href="semtrex_8c_source.html#l00960">semtrex.c:960</a></div></div>
 <div class="ttc" id="group__def_html_ga398a0288bf8fb4695c955832e8fc7fc8"><div class="ttname"><a href="group__def.html#ga398a0288bf8fb4695c955832e8fc7fc8">__d_declare_symbol</a></div><div class="ttdeci">T * __d_declare_symbol(T *symbols, Structure s, char *label)</div><div class="ttdef"><b>Definition:</b> <a href="def_8c_source.html#l00110">def.c:110</a></div></div>
 <div class="ttc" id="structXaddr_html"><div class="ttname"><a href="structXaddr.html">Xaddr</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00118">ceptr_types.h:118</a></div></div>
 <div class="ttc" id="group__def_html_ga41157ee3740cc54c3857ca46e2545999"><div class="ttname"><a href="group__def.html#ga41157ee3740cc54c3857ca46e2545999">_d_get_symbol_structure</a></div><div class="ttdeci">Structure _d_get_symbol_structure(T *symbols, Symbol s)</div><div class="ttdef"><b>Definition:</b> <a href="def_8c_source.html#l00179">def.c:179</a></div></div>
@@ -328,7 +328,7 @@ $(document).ready(function(){initNavTree('def__spec_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><b>def_spec.h</b></li>
-    <li class="footer">Generated on Wed Nov 12 2014 22:40:48 for ceptr by
+    <li class="footer">Generated on Thu Nov 13 2014 11:04:30 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
