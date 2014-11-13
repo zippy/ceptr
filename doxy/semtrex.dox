@@ -30,13 +30,20 @@
  Sequence ::= Semtrex ["," Semtrex]...
  Siblings ::= "(" Sequence ")"
  Or ::= Semtrex "|" Semtrex
- SymbolLiteral ::= ["!"]_symbol_
- SymbolLiteralSet ::= ["!"] "{" _symbol_ ["," _symbol_]... "}"
- Value ::= StringValue|CharValue|IntValue
- ValueLiteral ::= _symbol_ ["!"] "=" Value
- ValueLiteralSet ::= _symbol_ ["!"] "={" Value ["," Value ]... "}"
+ SymbolLiteral ::= ["!"] Symbol
+ SymbolLiteralSet ::= ["!"] "{" Symbol ["," Symbol]... "}"
+ Value ::= String | Char | Int | Fload
+ ValueLiteral ::= Symbol ["!"] "=" Value
+ ValueLiteralSet ::= Symbol ["!"] "={" Value ["," Value ]... "}"
  Any ::= "."
- Capture ::= "<"_symbol_ ":" Semtrex ">"
+ Capture ::= "<" Symbol ":" Semtrex ">"
+ Digit  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+ Letter ::= a | b ... | z | A | B ... | Z
+ Special ::= "_"
+ Symbol ::= (Letter | Digit | Special)+
+ Char ::= "'" Letter | Digit | Special "'"
+ String ::= "\"" (Letter | Digit | Special)+ "\""
+ Float ::= Digit+ ["." Digit+ ]
  @endcode
 
 */
