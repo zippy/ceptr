@@ -30,4 +30,13 @@
  Capture ::= "<"_symbol_ ":" Semtrex ">"
  @endcode
 
+\b Examples
+<table><tr><td>
+\dotfile ex1.dot /%B/F="abc"
+</td>
+<td>
+\dotfile ex2.dot /%{D,E}+
+</td>
+</table>
+
 */

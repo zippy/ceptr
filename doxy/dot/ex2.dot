@@ -1,0 +1,14 @@
+digraph G {
+ size="3,3";
+ R [shape=box];
+ B [shape=box];
+ C [shape=box];
+ R -> "A:3.14";
+"E:1" [color=red];
+"D:'c'" [color=red];
+ R -> B;
+ R -> C;
+ C -> "D:'c'";
+ C -> "E:1";
+ B -> "F:\"abc\"";
+ }
