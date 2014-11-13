@@ -113,8 +113,8 @@ char * __stx_makeFA(T *t,SState **in,Ptrlist **out,int level,int *statesP) {
 	s->data.value.not = sym.id == SEMTREX_VALUE_LITERAL_NOT_ID;
 	// copy the value set (which must be the first child) from the semtrex into the state
 	v = _t_child(t,1);
-	if (!v || !semeq(SEMTREX_VALUE_SET,_t_symbol(v))) {
-	    raise_error0("expecting SEMTREX_VALUE_SET as first child of SEMTREX_VALUE_LITERAL");
+	if (!v) {
+	    raise_error0("expecting value or SEMTREX_VALUE_SET as first child of SEMTREX_VALUE_LITERAL");
 	}
 	s->data.value.values = _t_clone(v);
 	*in = s;
@@ -518,19 +518,29 @@ int __t_match(T *semtrex,T *source_t,T **rP) {
 		}
 		Symbol ts = _t_symbol(t);
 		if (s->data.value.not) {
-		    // all in the set must not match
-		    matched = 1;
-		    for(i=1;i<=count && matched;i++) {
-			x = _t_child(v,i);
-			matched = !(semeq(ts,_t_symbol(x)) && _val_match(t,x));
+		    if (!count) {
+			matched = !(semeq(ts,_t_symbol(v)) && _val_match(t,v));
+		    }
+		    else {
+			// all in the set must not match
+			matched = 1;
+			for(i=1;i<=count && matched;i++) {
+			    x = _t_child(v,i);
+			    matched = !(semeq(ts,_t_symbol(x)) && _val_match(t,x));
+			}
 		    }
 		}
 		else {
-		    // at least one in the set much match
-		    matched = 0;
-		    for(i=1;i<=count && !matched; i++) {
-			x = _t_child(v,i);
-			matched = semeq(ts,_t_symbol(x)) && _val_match(t,x);
+		    if (!count) {
+			matched = semeq(ts,_t_symbol(v)) && _val_match(t,v);
+		    }
+		    else {
+			// at least one in the set much match
+			matched = 0;
+			for(i=1;i<=count && !matched; i++) {
+			    x = _t_child(v,i);
+			    matched = semeq(ts,_t_symbol(x)) && _val_match(t,x);
+			}
 		    }
 		}
 
@@ -794,11 +804,18 @@ char * __dump_semtrex(Defs *defs,T *s,char *buf) {
     switch(sym.id) {
     case SEMTREX_VALUE_LITERAL_ID:
     case SEMTREX_VALUE_LITERAL_NOT_ID:
-	v = _t_child(s,1); //get the value set
-	// assumes type is the same for all children when dumping
-	v1 = _t_child(v,1);
-	if (!v1) {raise_error0("no values in set!");}
-	sem = _t_symbol(v1);
+	v = _t_child(s,1); //get the value or set
+	if (semeq(_t_symbol(v),SEMTREX_VALUE_SET)) {
+	    count = _t_children(v);
+	    v1 = _t_child(v,1);
+	    if (!v1) {raise_error0("no values in set!");}
+	}
+	else {
+	    count = 1;
+	    v1 = v;
+	    v = s;
+	}
+	sem = _t_symbol(v1);  // if set assume values are all the same type
 	sn = _d_get_symbol_name(defs->symbols,sem);
 	if (*sn=='<')
 	    sprintf(b,"%d.%d.%d",sem.context,sem.flags,sem.id);
@@ -809,7 +826,6 @@ char * __dump_semtrex(Defs *defs,T *s,char *buf) {
 	    sprintf(b+strlen(b),"!");
 	}
 	sprintf(b+strlen(b),"=");
-	count = _t_children(v);
 	if (count > 1)
 	    sprintf(b+strlen(b),"{");
 	for(i=1;i<=count;i++) {
@@ -935,8 +951,7 @@ char * _dump_semtrex(Defs *defs,T *s,char *buf) {
 // helper to add a stx_char value literal to a semtrex
 T *__stxcv(T *p,char c) {
     T *t =  _t_newr(p,SEMTREX_VALUE_LITERAL);
-    T *v = _t_newr(t,SEMTREX_VALUE_SET);
-    _t_newi(v,ASCII_CHAR,c);
+    _t_newi(t,ASCII_CHAR,c);
     return t;
 }
 
@@ -1351,12 +1366,12 @@ T *parseSemtrex(Defs *d,char *stx) {
 		_t_add(t,set);
 	    }
 	    else {
-		set = _t_newr(t,SEMTREX_VALUE_SET);
+		//		set = _t_newr(t,SEMTREX_VALUE_SET);
 		char *symbol_name = (char *)_t_surface(t);
 		Symbol vs = get_symbol(symbol_name,d);
 		// convert the STX_VAL structure token to the semantic type specified by the value literal
 		v->contents.symbol = vs;
-		_t_add(set,v);
+		_t_add(t,v);
 	    }
 
 
