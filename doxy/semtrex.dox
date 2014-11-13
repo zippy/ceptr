@@ -18,32 +18,32 @@
    Here's a BNF for the textual representation of semtrex trees:
 
  @code
- Semtrex ::= Root [ "/" Child...]
- Root ::= "/" Element
- Child ::= Element | Optional | Semtrex
- Element ::= Walk | SymbolLiteral | ValueLiteral | Any | Capture
- Optional ::= Or | ZeroOrMore | OneOrMore | ZeroOrOne
- Walk ::= "%" Semtrex
- OneOrMore ::= Semtrex "+"
- ZeroOrMore ::= Semtrex "*"
- ZeroOrOne ::= Semtrex "?"
- Sequence ::= Semtrex ["," Semtrex]...
- Siblings ::= "(" Sequence ")"
- Or ::= Semtrex "|" Semtrex
- SymbolLiteral ::= ["!"] Symbol
- SymbolLiteralSet ::= ["!"] "{" Symbol ["," Symbol]... "}"
- Value ::= String | Char | Int | Fload
- ValueLiteral ::= Symbol ["!"] "=" Value
- ValueLiteralSet ::= Symbol ["!"] "={" Value ["," Value ]... "}"
- Any ::= "."
- Capture ::= "<" Symbol ":" Semtrex ">"
- Digit  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
- Letter ::= a | b ... | z | A | B ... | Z
- Special ::= "_"
- Symbol ::= (Letter | Digit | Special)+
- Char ::= "'" Letter | Digit | Special "'"
- String ::= "\"" (Letter | Digit | Special)+ "\""
- Float ::= Digit+ ["." Digit+ ]
+ <semtrex> ::= <root> [ "/" <child>...]
+ <root>    ::= "/" <element>
+ <child>   ::= <element> | <optional> | <semtrex>
+ <element> ::= <walk> | <symbol_literal> | <value_literal> | <symbol_literal_set> | <value_literal_set> | <any> | <capture>
+ <optional> ::= <or> | <zero_or_more> | <one_or_more> | <zero_or_one>
+ <walk> ::= "%" <semtrex>
+ <one_or_more> ::= <semtrex> "+"
+ <zero_or_more> ::= <semtrex> "*"
+ <zero_or_one> ::= <semtrex> "?"
+ <sequence> ::= <semtrex> ["," <semtrex>]...
+ Siblings ::= "(" <sequence> ")"
+ <or> ::= <semtrex> "|" <semtrex>
+ <symbol_literal> ::= ["!"] <symbol>
+ <symbol_literal_set> ::= ["!"] "{" <symbol> ["," <symbol>]... "}"
+ <value> ::= <string> | <char> | Int | Fload
+ <value_literal> ::= <symbol> ["!"] "=" <value>
+ <value_literal_set> ::= <symbol> ["!"] "={" <value> ["," <value> ]... "}"
+ <any> ::= "."
+ <capture> ::= "<" <symbol> ":" <semtrex> ">"
+ <digit>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+ <letter> ::= a | b ... | z | A | B ... | Z
+ <special> ::= "_"
+ <symbol> ::= (<letter> | <digit> | <special>)+
+ <char> ::= "'" <letter> | <digit> | <special> "'"
+ <string> ::= "\"" (<letter> | <digit> | <special>)+ "\""
+ <float> ::= <digit>+ ["." <digit>+ ]
  @endcode
 
 */
