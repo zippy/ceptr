@@ -21,14 +21,14 @@
  <semtrex>        ::= <root> [ "/" <child>...]
  <root>           ::= "/" <element>
  <child>          ::= <element> | <optional> | <semtrex>
- <element>        ::= <walk> | <symbol_literal> | <value_literal> | <symbol_literal_set> | <value_literal_set> | <any> | <capture>
+ <element>        ::= <walk> | <symbol_literal> | <value_literal> | <symbol_literal_set> | <value_literal_set> | <any> | <capture> | <siblings>
  <optional>       ::= <or> | <zero_or_more> | <one_or_more> | <zero_or_one>
  <walk>           ::= "%" <semtrex>
  <one_or_more>    ::= <semtrex> "+"
  <zero_or_more>   ::= <semtrex> "*"
  <zero_or_one>    ::= <semtrex> "?"
  <sequence>       ::= <semtrex> ["," <semtrex>]...
- Siblings         ::= "(" <sequence> ")"
+ <siblings>         ::= "(" <sequence> ")"
  <or>             ::= <semtrex> "|" <semtrex>
  <symbol_literal> ::= ["!"] <symbol>
  <symbol_literal_set> ::= ["!"] "{" <symbol> ["," <symbol>]... "}"
