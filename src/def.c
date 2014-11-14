@@ -328,6 +328,10 @@ T * _d_build_def_semtrex(Defs defs,Symbol s,T *parent) {
 
 /*****************  Tree debugging utilities */
 
+/**
+ * tree 2 string: returns a string representation of a tree
+ * @TODO make this actually not break on large trees!
+ */
 char * _t2s(Defs *defs,T *t) {
     static char buf[10000];
     buf[0] = 0;
