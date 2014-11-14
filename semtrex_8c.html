@@ -116,7 +116,8 @@ $(document).ready(function(){initNavTree('semtrex_8c.html','');});
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for semtrex.c:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="semtrex_8c__incl.svg" width="620" height="560"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="semtrex_8c__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 </div>
 <p><a href="semtrex_8c_source.html">Go to the source code of this file.</a></p>
@@ -134,10 +135,10 @@ Data Structures</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>DEBUG_MATCH</b></td></tr>
 <tr class="separator:a66a4121e62d28a147c0e78f4e16fd492"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a959463d1cd705c41ed1128f0ca858e05"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a959463d1cd705c41ed1128f0ca858e05"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MATCH_DEBUGG</b>(s, x)&#160;&#160;&#160;if(G_debug_match){printf(&quot;IN:&quot; #s &quot; for %s\n&quot;,x);__t_dump(G_d,t,0,buf);printf(&quot;  cursor:%s\n&quot;,buf);}</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MATCH_DEBUGG</b>(s, x)&#160;&#160;&#160;if(G_debug_match){printf(&quot;IN:&quot; #s &quot; for %s\n&quot;,x);printf(&quot;  cursor:%s\n&quot;,_t2s(G_d,t));}</td></tr>
 <tr class="separator:a959463d1cd705c41ed1128f0ca858e05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:affcc9333f8972aaf7a059cf255763568"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="affcc9333f8972aaf7a059cf255763568"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MATCH_DEBUG</b>(s)&#160;&#160;&#160;if(G_debug_match){puts(&quot;IN:&quot; #s &quot;&quot;);__t_dump(G_d,t,0,buf);printf(&quot;  cursor:%s\n&quot;,!t ? &quot;NULL&quot; : buf);}</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MATCH_DEBUG</b>(s)&#160;&#160;&#160;if(G_debug_match){puts(&quot;IN:&quot; #s &quot;&quot;);printf(&quot;  cursor:%s\n&quot;,!t ? &quot;NULL&quot; : _t2s(G_d,t));}</td></tr>
 <tr class="separator:affcc9333f8972aaf7a059cf255763568"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb508ea8227673f419e9fe3a86c30d8e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abb508ea8227673f419e9fe3a86c30d8e"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>FAIL</b>&#160;&#160;&#160;{s=0;break;}</td></tr>
@@ -685,7 +686,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_stxl</b> (<a class="
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="semtrex_8c.html">semtrex.c</a></li>
-    <li class="footer">Generated on Thu Nov 13 2014 17:30:46 for ceptr by
+    <li class="footer">Generated on Fri Nov 14 2014 18:22:36 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

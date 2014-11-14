@@ -1,5 +1,13 @@
 var NAVTREEINDEX3 =
 {
+"structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e":[3,6,2,4],
+"structVMHost.html#a53bffdb41bcc4096902aabf8ab029637":[3,6,2,1],
+"structVMHost.html#a7f54e9e9ace8ddf7100167ebff3f0e4f":[3,6,2,3],
+"structVMHost.html#aa7b4b8b391039f62980e8d52d75df7eb":[3,6,2,0],
+"structVMHost.html#abc9dab8da288b7f9ad20988e545a56f9":[3,6,2,2],
+"structXaddr.html":[4,0,24],
+"structXaddr.html#a429b38f8f57ab372da80e98fc4779005":[4,0,24,1],
+"structXaddr.html#ac8d1cbd8cb612f491f6271d3bbdaf325":[4,0,24,0],
 "structinstance__elem.html":[4,0,2],
 "structinstance__elem.html#a1032278ed4df88774c734d299ba29981":[4,0,2,1],
 "structinstance__elem.html#a7a42321cb232ac42535157a9e654127f":[4,0,2,2],
@@ -241,13 +249,5 @@ var NAVTREEINDEX3 =
 "sys__symbols_8h.html#ad391489117409a67956de2b87b152f99":[5,0,1,20,9],
 "sys__symbols_8h.html#ad3de59e6d5d414d08fc372153f328200":[5,0,1,20,109],
 "sys__symbols_8h.html#ad44c9b557220a7bbb559d54cc4d6f3f2":[5,0,1,20,47],
-"sys__symbols_8h.html#ad518f00f261c2449ee6af3d5a943f88d":[5,0,1,20,23],
-"sys__symbols_8h.html#ad71ae8bfaa28a7190a6d99141c95fd79":[5,0,1,20,6],
-"sys__symbols_8h.html#ad73f7316fe839b7f47ae14d3943a2ea2":[5,0,1,20,78],
-"sys__symbols_8h.html#ad9ab667bbe67922a30f339acf572f1eb":[5,0,1,20,123],
-"sys__symbols_8h.html#adac713115b056bd409e1d4eb289fff0f":[5,0,1,20,100],
-"sys__symbols_8h.html#adae69265c74bfe6acda95cca6b8c4794":[5,0,1,20,106],
-"sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57":[5,0,1,20,2],
-"sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a029ecc116e86b662ba340329d0368341":[5,0,1,20,2,0],
-"sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a03b44a2d84d0b88ecc42b51c7d6acdec":[5,0,1,20,2,84]
+"sys__symbols_8h.html#ad518f00f261c2449ee6af3d5a943f88d":[5,0,1,20,23]
 };

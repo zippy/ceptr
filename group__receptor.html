@@ -164,9 +164,9 @@ typedef int&#160;</td><td class="memItemRight" valign="bottom"><b>Aspect</b></td
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:ga06fc87d81c62e9abb8790b6e5713c55b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga06fc87d81c62e9abb8790b6e5713c55b"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>DEFAULT_ASPECT</b> =1
+<tr class="memitem:gadf764cbdea00d65edcd07bb9953ad2b7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gadf764cbdea00d65edcd07bb9953ad2b7"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>DEFAULT_ASPECT</b> =1
  }</td></tr>
-<tr class="separator:ga06fc87d81c62e9abb8790b6e5713c55b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:gadf764cbdea00d65edcd07bb9953ad2b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga74b55187933c4b54ef8ed7b7423b8f28"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga74b55187933c4b54ef8ed7b7423b8f28"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>AspectType</b> { <b>EXTERNAL_ASPECT</b> =0, 
 <b>INTERNAL_ASPECT</b>
  }</td></tr>
@@ -647,7 +647,7 @@ Variables</h2></td></tr>
 <div class="line">    <span class="keywordtype">char</span> buf[2000];</div>
 <div class="line">    spec_is_str_equal(<a class="code" href="group__semtrex.html#ga614de2fa253b75fc34b41421a866ca62">_dump_semtrex</a>(&amp;r-&gt;<a class="code" href="structReceptor.html#a56e5e37eb23a3e5debf7f24723eca9ed">defs</a>,stx,buf),<span class="stringliteral">&quot;/house location/(latitude,longitude)&quot;</span>);</div>
 <div class="line">    __t_dump(&amp;r-&gt;<a class="code" href="structReceptor.html#a56e5e37eb23a3e5debf7f24723eca9ed">defs</a>,stx,0,buf);</div>
-<div class="line">    spec_is_str_equal(buf,<span class="stringliteral">&quot; (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:house location) (SEMTREX_SEQUENCE (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:latitude)) (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:longitude))))&quot;</span>);</div>
+<div class="line">    spec_is_str_equal(buf,<span class="stringliteral">&quot;(SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:house location) (SEMTREX_SEQUENCE (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:latitude)) (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:longitude))))&quot;</span>);</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// a correctly structured tree should match its definition</span></div>
 <div class="line">    spec_is_true(<a class="code" href="group__receptor.html#gaa8c97a2acf18af02e4e582d15932640c">_r_def_match</a>(r,house_loc,t));</div>
@@ -788,7 +788,7 @@ Variables</h2></td></tr>
 <div class="line">    spec_is_true(matched = <a class="code" href="group__semtrex.html#ga27540c8e1822da3160a0cc4717df410f">_t_matchr</a>(req,signal_contents,&amp;result));</div>
 <div class="line">    <a class="code" href="structT.html">T</a> *m = <a class="code" href="group__semtrex.html#gada90f89374f4577e3ac8819e500a97a7">_t_get_match</a>(result,HTTP_REQUEST_PATH_SEGMENT);</div>
 <div class="line">    __t_dump(&amp;test_HTTP_defs,m,0,buf);</div>
-<div class="line">    spec_is_str_equal(buf,<span class="stringliteral">&quot; (SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:HTTP_REQUEST_PATH_SEGMENT) (SEMTREX_MATCHED_PATH:/3/1/1) (SEMTREX_MATCH_SIBLINGS_COUNT:1))&quot;</span>);</div>
+<div class="line">    spec_is_str_equal(buf,<span class="stringliteral">&quot;(SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:HTTP_REQUEST_PATH_SEGMENT) (SEMTREX_MATCHED_PATH:/3/1/1) (SEMTREX_MATCH_SIBLINGS_COUNT:1))&quot;</span>);</div>
 <div class="line">    <span class="keywordflow">if</span> (result) {</div>
 <div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(result);</div>
 <div class="line">    }</div>
@@ -804,7 +804,7 @@ Variables</h2></td></tr>
 <div class="line"></div>
 <div class="line">    <span class="comment">// the result should be signal tree with the matched PATH_SEGMENT returned as the body</span></div>
 <div class="line">    __t_dump(&amp;test_HTTP_defs,result,0,buf);</div>
-<div class="line">    spec_is_str_equal(buf,<span class="stringliteral">&quot; (HTTP_RESPONSE (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT) (HTTP_REQUEST_PATH_SEGMENT:groups))&quot;</span>);</div>
+<div class="line">    spec_is_str_equal(buf,<span class="stringliteral">&quot;(HTTP_RESPONSE (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT) (HTTP_REQUEST_PATH_SEGMENT:groups))&quot;</span>);</div>
 <div class="line"></div>
 <div class="line">    <a class="code" href="group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8">_r_free</a>(r);</div>
 </div><!-- fragment --><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000013">Todo:</a></b></dt><dd>move this to adding the runtree to the thread pool </dd></dl>
@@ -1057,7 +1057,8 @@ Variables</h2></td></tr>
 <div class="line">    <a class="code" href="group__receptor.html#ga33902456689b691f4094c48bd676ed68">_r_install_protocol</a>(r,1,<span class="stringliteral">&quot;server&quot;</span>,DEFAULT_ASPECT);</div>
 <div class="line"></div>
 <div class="line">    <span class="keywordtype">char</span> *d = _td(r,r-&gt;<a class="code" href="structReceptor.html#aec6f1eee133a993b59baf50e75620fb6">root</a>);</div>
-<div class="line">    spec_is_str_equal(d,<span class="stringliteral">&quot; (TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS (SYMBOL_DECLARATION (SYMBOL_LABEL:ping) (SYMBOL_STRUCTURE:BOOLEAN))) (PROCESSES (PROCESS_CODING (PROCESS_NAME:send ping response) (PROCESS_INTENTION:long desc...) (process:RESPOND (ping:1)) (INPUT) (OUTPUT_SIGNATURE))) (PROTOCOLS (PROTOCOL (ROLES (ROLE:server) (ROLE:client)) (INTERACTIONS (INTERACTION (STEP:ping) (FROM_ROLE) (TO_ROLE) (CARRIER:ping) (CARRIER:ping) (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping))) (ACTION:send ping response) (RESPONSE_STEPS (STEP:ping_response))) (INTERACTION (STEP:ping_response) (FROM_ROLE) (TO_ROLE) (CARRIER:ping) (CARRIER:ping) (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping))))))) (SCAPES)) (ASPECTS (ASPECT_DEF (ASPECT_TYPE:0) (CARRIER:ping) (CARRIER:ping))) (FLUX (ASPECT:1 (LISTENERS (LISTENER:ping (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping))) (ACTION:send ping response))) (SIGNALS))))&quot;</span>);</div>
+<div class="line"></div>
+<div class="line">    spec_is_str_equal(d,<span class="stringliteral">&quot;(TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS (SYMBOL_DECLARATION (SYMBOL_LABEL:ping) (SYMBOL_STRUCTURE:BOOLEAN))) (PROCESSES (PROCESS_CODING (PROCESS_NAME:send ping response) (PROCESS_INTENTION:long desc...) (process:RESPOND (ping:1)) (INPUT) (OUTPUT_SIGNATURE))) (PROTOCOLS (PROTOCOL (ROLES (ROLE:server) (ROLE:client)) (INTERACTIONS (INTERACTION (STEP:ping) (FROM_ROLE) (TO_ROLE) (CARRIER:ping) (CARRIER:ping) (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping))) (ACTION:send ping response) (RESPONSE_STEPS (STEP:ping_response))) (INTERACTION (STEP:ping_response) (FROM_ROLE) (TO_ROLE) (CARRIER:ping) (CARRIER:ping) (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping))))))) (SCAPES)) (ASPECTS (ASPECT_DEF (ASPECT_TYPE:0) (CARRIER:ping) (CARRIER:ping))) (FLUX (ASPECT:1 (LISTENERS (LISTENER:ping (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping))) (ACTION:send ping response))) (SIGNALS))))&quot;</span>);</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// delivering a fake signal should return a ping</span></div>
 <div class="line">    <a class="code" href="structXaddr.html">Xaddr</a> f = {RECEPTOR_XADDR,3};  <span class="comment">// DUMMY XADDR</span></div>
@@ -1066,7 +1067,7 @@ Variables</h2></td></tr>
 <div class="line"></div>
 <div class="line">    <a class="code" href="structT.html">T</a> *result = <a class="code" href="group__receptor.html#gaa6111b5348cffbc1e1aad1d9d6c1e4ff">_r_deliver</a>(r,signal);</div>
 <div class="line">    d = _td(r,result);</div>
-<div class="line">    spec_is_str_equal(d,<span class="stringliteral">&quot; (ping:1)&quot;</span>);</div>
+<div class="line">    spec_is_str_equal(d,<span class="stringliteral">&quot;(ping:1)&quot;</span>);</div>
 <div class="line"></div>
 <div class="line">    <a class="code" href="group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8">_r_free</a>(r);</div>
 </div><!-- fragment -->
@@ -1354,7 +1355,7 @@ Variables</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Nov 13 2014 17:30:46 for ceptr by
+    <li class="footer">Generated on Fri Nov 14 2014 18:22:36 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

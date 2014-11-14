@@ -16,6 +16,7 @@ var searchData=
   ['_5f_5fstx_5fmakefa',['__stx_makeFA',['../semtrex_8c.html#a95e1be9f36172c065e8d25778d02083c',1,'semtrex.c']]],
   ['_5f_5fsymbol_5fset_5fcontains',['__symbol_set_contains',['../semtrex_8c.html#a20d17539eacbbdd071de52fc6b61a1b6',1,'semtrex.c']]],
   ['_5f_5fsymbol_5fset_5fdoes_5fnot_5fcontain',['__symbol_set_does_not_contain',['../semtrex_8c.html#a2eb893146f3bc68cefa2bb2e730ea395',1,'semtrex.c']]],
+  ['_5f_5ft2s',['__t2s',['../group__def.html#gaa7033f5f1b8553022a5a26b35b4056ac',1,'__t2s(Defs *defs, T *t, int indent):&#160;def.c'],['../group__def.html#gaa7033f5f1b8553022a5a26b35b4056ac',1,'__t2s(Defs *defs, T *t, int indent):&#160;def.c']]],
   ['_5f_5ft_5fmatch',['__t_match',['../semtrex_8c.html#a7ade3cd653f90e74d5c0581b1b3575b7',1,'semtrex.c']]],
   ['_5f_5ft_5fmorph',['__t_morph',['../group__tree.html#gad6597b652983165f6b2993211a598ad4',1,'__t_morph(T *t, Symbol s, void *surface, size_t size, int allocate):&#160;tree.c'],['../group__tree.html#gad6597b652983165f6b2993211a598ad4',1,'__t_morph(T *t, Symbol s, void *surface, size_t length, int allocate):&#160;tree.c']]],
   ['_5f_5ft_5fserialize',['__t_serialize',['../group__tree.html#ga4b3d9a3a1c1bc4a7fb710e96faf1d437',1,'__t_serialize(Defs *d, T *t, void **bufferP, size_t offset, size_t current_size, int compact):&#160;tree.c'],['../group__tree.html#ga4b3d9a3a1c1bc4a7fb710e96faf1d437',1,'__t_serialize(Defs *d, T *t, void **bufferP, size_t offset, size_t current_size, int compact):&#160;tree.c']]],

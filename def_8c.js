@@ -2,6 +2,7 @@ var def_8c =
 [
     [ "__d_code_process", "group__def.html#ga1d2aa234fafcdaef75d7197343d5ba66", null ],
     [ "__d_declare_symbol", "group__def.html#ga398a0288bf8fb4695c955832e8fc7fc8", null ],
+    [ "__t2s", "group__def.html#gaa7033f5f1b8553022a5a26b35b4056ac", null ],
     [ "__t_dump", "group__def.html#gafa2a4161d0689358ee7fdb8256955db0", null ],
     [ "_d_build_def_semtrex", "group__def.html#ga6b69968d56f5f2bc98f426c560af348d", null ],
     [ "_d_code_process", "group__def.html#ga33c6ec0c2bc81bfa149b8f883300d67d", null ],

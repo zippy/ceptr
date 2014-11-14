@@ -104,6 +104,7 @@ $(document).ready(function(){initNavTree('def_8h.html','');});
 <div class="header">
   <div class="summary">
 <a href="#define-members">Macros</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">def.h File Reference<div class="ingroups"><a class="el" href="group__def.html">Symbol and Structure Definition</a></div></div>  </div>
@@ -117,7 +118,8 @@ $(document).ready(function(){initNavTree('def_8h.html','');});
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for def.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="def_8h__incl.svg" width="620" height="486"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="def_8h__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -138,6 +140,12 @@ Macros</h2></td></tr>
 <tr class="memitem:ga7e7d9f7863d8f10a6f873d96dcc30c3d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga7e7d9f7863d8f10a6f873d96dcc30c3d"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>SP</b>(defs, code, name, intention, in, out)&#160;&#160;&#160;name = <a class="el" href="group__def.html#ga33c6ec0c2bc81bfa149b8f883300d67d">_d_code_process</a>(defs.processes,code,&quot;&quot; #name &quot;&quot;,RECEPTOR_CONTEXT,intention,in,out)</td></tr>
 <tr class="separator:ga7e7d9f7863d8f10a6f873d96dcc30c3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf64194bb4f202d37a561867d6c8c6a1f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaf64194bb4f202d37a561867d6c8c6a1f"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>t2s</b>(t)&#160;&#160;&#160;_t2s(0,t)</td></tr>
+<tr class="separator:gaf64194bb4f202d37a561867d6c8c6a1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga565e2013041b995120d6772e50fb2925"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga565e2013041b995120d6772e50fb2925"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>_t2s</b>(d, t)&#160;&#160;&#160;<a class="el" href="group__def.html#gaa7033f5f1b8553022a5a26b35b4056ac">__t2s</a>(d,t,NO_INDENT)</td></tr>
+<tr class="separator:ga565e2013041b995120d6772e50fb2925"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad88fa62ddc9421691f29f84a66cbf16d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gad88fa62ddc9421691f29f84a66cbf16d"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>_d_get_def</b>(defs, s)&#160;&#160;&#160;_t_child(defs,(s).id);</td></tr>
 <tr class="separator:gad88fa62ddc9421691f29f84a66cbf16d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -153,6 +161,13 @@ Macros</h2></td></tr>
 <tr class="memitem:ga80335a2ccd7713087ec59e6353338eeb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga80335a2ccd7713087ec59e6353338eeb"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>spec_is_sem_equal</b>(got, expected)&#160;&#160;&#160;spec_total++; if (semeq(expected,got)){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],&quot;%s:%d expected %s to be %d.%d.%d but was %d.%d.%d&quot;,__FUNCTION__,__LINE__,#got,(expected).flags,(expected).context,(expected).id,(got).flags,(got).context,(got).id);}</td></tr>
 <tr class="separator:ga80335a2ccd7713087ec59e6353338eeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:ga06fc87d81c62e9abb8790b6e5713c55b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga06fc87d81c62e9abb8790b6e5713c55b"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>NO_INDENT</b> =0, 
+<b>INDENT</b> =-1
+ }</td></tr>
+<tr class="separator:ga06fc87d81c62e9abb8790b6e5713c55b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -187,6 +202,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>semeq</b> (<a class="e
 <tr class="separator:ga33c6ec0c2bc81bfa149b8f883300d67d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6b69968d56f5f2bc98f426c560af348d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__def.html#ga6b69968d56f5f2bc98f426c560af348d">_d_build_def_semtrex</a> (<a class="el" href="structDefs.html">Defs</a> defs, <a class="el" href="structSemanticID.html">Symbol</a> s, <a class="el" href="structT.html">T</a> *parent)</td></tr>
 <tr class="separator:ga6b69968d56f5f2bc98f426c560af348d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa7033f5f1b8553022a5a26b35b4056ac"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__def.html#gaa7033f5f1b8553022a5a26b35b4056ac">__t2s</a> (<a class="el" href="structDefs.html">Defs</a> *defs, <a class="el" href="structT.html">T</a> *t, int indent)</td></tr>
+<tr class="separator:gaa7033f5f1b8553022a5a26b35b4056ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gafa2a4161d0689358ee7fdb8256955db0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gafa2a4161d0689358ee7fdb8256955db0"></a>
 char *&#160;</td><td class="memItemRight" valign="bottom"><b>__t_dump</b> (<a class="el" href="structDefs.html">Defs</a> *defs, <a class="el" href="structT.html">T</a> *t, int level, char *buf)</td></tr>
 <tr class="separator:gafa2a4161d0689358ee7fdb8256955db0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -202,7 +219,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>__t_dump</b> (<a cl
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="def_8h.html">def.h</a></li>
-    <li class="footer">Generated on Thu Nov 13 2014 17:30:46 for ceptr by
+    <li class="footer">Generated on Fri Nov 14 2014 18:22:36 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

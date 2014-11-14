@@ -116,7 +116,8 @@ $(document).ready(function(){initNavTree('process_8c.html','');});
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for process.c:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="process_8c__incl.svg" width="620" height="560"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="process_8c__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 </div>
 <p><a href="process_8c_source.html">Go to the source code of this file.</a></p>
@@ -186,7 +187,7 @@ Error&#160;</td><td class="memItemRight" valign="bottom"><b>_p_reduce</b> (<a cl
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Error code </dd></dl>
 
-<p>Definition at line <a class="el" href="process_8c_source.html#l00058">58</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+<p>Definition at line <a class="el" href="process_8c_source.html#l00054">54</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
 </div>
 </div>
@@ -232,16 +233,15 @@ Error&#160;</td><td class="memItemRight" valign="bottom"><b>_p_reduce</b> (<a cl
 <dl class="section return"><dt>Returns</dt><dd>Error status of the reduction</dd></dl>
 <p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structT.html">T</a> *processes = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(PROCESSES);</div>
 <div class="line">    <a class="code" href="structDefs.html">Defs</a> defs = {0,0,processes};</div>
-<div class="line">    <span class="keywordtype">char</span> buf[2000];</div>
 <div class="line"></div>
 <div class="line">    <a class="code" href="structSemanticID.html">Process</a> if_even = <a class="code" href="process__spec_8h.html#a3b8bbd16216de3d2c5f7ffd5f53c156e">_defIfEven</a>(processes);  <span class="comment">// add the if_even process to our defs</span></div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// check that it dumps nicely, including showing the param_refs as paths</span></div>
 <div class="line">    <span class="keywordtype">int</span> p[] = {1,3,TREE_PATH_TERMINATOR};</div>
-<div class="line">    __t_dump(0,<a class="code" href="group__tree.html#gaf019d190c9623de809d006e309a441af">_t_get</a>(processes,p),0,buf);</div>
-<div class="line">    spec_is_str_equal(buf,<span class="stringliteral">&quot; (process:IF (process:EQ_INT (process:MOD_INT (PARAM_REF:/2/1) (TEST_INT_SYMBOL:2)) (TEST_INT_SYMBOL:0)) (PARAM_REF:/2/2) (PARAM_REF:/2/3))&quot;</span>);</div>
 <div class="line"></div>
-<div class="line">    <span class="comment">// create a run tree right in the position to &quot;call&quot; this function</span></div>
+<div class="line">    spec_is_str_equal(t2s(<a class="code" href="group__tree.html#gaf019d190c9623de809d006e309a441af">_t_get</a>(processes,p)),<span class="stringliteral">&quot;(process:IF (process:EQ_INT (process:MOD_INT (PARAM_REF:/2/1) (TEST_INT_SYMBOL:2)) (TEST_INT_SYMBOL:0)) (PARAM_REF:/2/2) (PARAM_REF:/2/3))&quot;</span>);</div>
+<div class="line"></div>
+<div class="line">    <span class="comment">// create a run tree right in the position to &quot;call&quot;this function</span></div>
 <div class="line">    <a class="code" href="structT.html">T</a> *t = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(RUN_TREE);</div>
 <div class="line">    <a class="code" href="structT.html">T</a> *n = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,if_even);</div>
 <div class="line">    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(n,TEST_INT_SYMBOL,99);</div>
@@ -250,13 +250,12 @@ Error&#160;</td><td class="memItemRight" valign="bottom"><b>_p_reduce</b> (<a cl
 <div class="line"></div>
 <div class="line">    <span class="comment">// confirm that it reduces correctly</span></div>
 <div class="line">    spec_is_equal(<a class="code" href="process_8c.html#a26f4132d39d36acd79c45e2c6237564a">__p_reduce</a>(defs,t,n),noReductionErr);</div>
-<div class="line">    __t_dump(0,_t_child(t,1),0,buf);</div>
-<div class="line">    spec_is_str_equal(buf,<span class="stringliteral">&quot; (TEST_INT_SYMBOL:124)&quot;</span>);</div>
+<div class="line">    spec_is_str_equal(t2s(_t_child(t,1)),<span class="stringliteral">&quot;(TEST_INT_SYMBOL:124)&quot;</span>);</div>
 <div class="line"></div>
 <div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(processes);</div>
 <div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="process_8c_source.html#l00092">92</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+<p>Definition at line <a class="el" href="process_8c_source.html#l00088">88</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
 </div>
 </div>
@@ -352,7 +351,7 @@ Error&#160;</td><td class="memItemRight" valign="bottom"><b>_p_reduce</b> (<a cl
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structT.html">T</a> RUN_TREE tree </dd></dl>
 
-<p>Definition at line <a class="el" href="process_8c_source.html#l00242">242</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+<p>Definition at line <a class="el" href="process_8c_source.html#l00238">238</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
 </div>
 </div>
@@ -362,7 +361,7 @@ Error&#160;</td><td class="memItemRight" valign="bottom"><b>_p_reduce</b> (<a cl
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="process_8c.html">process.c</a></li>
-    <li class="footer">Generated on Thu Nov 13 2014 17:30:46 for ceptr by
+    <li class="footer">Generated on Fri Nov 14 2014 18:22:36 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

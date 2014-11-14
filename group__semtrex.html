@@ -153,7 +153,7 @@ Macros</h2></td></tr>
 <tr class="memdesc:gac1b578cc9fc2f835ad12855698fe4cf2"><td class="mdescLeft">&#160;</td><td class="mdescRight">macro to add a single symbol literal not to semtrex tree <br /></td></tr>
 <tr class="separator:gac1b578cc9fc2f835ad12855698fe4cf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga8785a1bb99b5bb1f749bd37a317594e4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga8785a1bb99b5bb1f749bd37a317594e4"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga8785a1bb99b5bb1f749bd37a317594e4">DT</a>(l, t)&#160;&#160;&#160;{char buf[1000];puts(&quot;\n&quot; #l &quot;:&quot;);__t_dump(G_d,t,0,buf);puts(buf);}</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga8785a1bb99b5bb1f749bd37a317594e4">DT</a>(l, t)&#160;&#160;&#160;{puts(&quot;\n&quot; #l &quot;:&quot;);puts(<a class="el" href="group__def.html#gaa7033f5f1b8553022a5a26b35b4056ac">__t2s</a>(G_d,t,INDENT));}</td></tr>
 <tr class="memdesc:ga8785a1bb99b5bb1f749bd37a317594e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">debugging macro for quickly dumping out a tree <br /></td></tr>
 <tr class="separator:ga8785a1bb99b5bb1f749bd37a317594e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga23a719903c25f5387274002776ae5fa1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga23a719903c25f5387274002776ae5fa1"></a>
@@ -283,7 +283,7 @@ Here's a BNF for the textual representation of semtrex trees:<div class="fragmen
 <div class="line">&lt;zero_or_more&gt;   ::= &lt;semtrex&gt; <span class="stringliteral">&quot;*&quot;</span></div>
 <div class="line">&lt;zero_or_one&gt;    ::= &lt;semtrex&gt; <span class="stringliteral">&quot;?&quot;</span></div>
 <div class="line">&lt;sequence&gt;       ::= &lt;semtrex&gt; [<span class="stringliteral">&quot;,&quot;</span> &lt;semtrex&gt;]...</div>
-<div class="line">&lt;siblings&gt;         ::= <span class="stringliteral">&quot;(&quot;</span> &lt;sequence&gt; <span class="stringliteral">&quot;)&quot;</span></div>
+<div class="line">&lt;siblings&gt;       ::= <span class="stringliteral">&quot;(&quot;</span> &lt;sequence&gt; <span class="stringliteral">&quot;)&quot;</span></div>
 <div class="line">&lt;or&gt;             ::= &lt;semtrex&gt; <span class="stringliteral">&quot;|&quot;</span> &lt;semtrex&gt;</div>
 <div class="line">&lt;symbol_literal&gt; ::= [<span class="stringliteral">&quot;!&quot;</span>] &lt;symbol&gt;</div>
 <div class="line">&lt;symbol_literal_set&gt; ::= [<span class="stringliteral">&quot;!&quot;</span>] <span class="stringliteral">&quot;{&quot;</span> &lt;symbol&gt; [<span class="stringliteral">&quot;,&quot;</span> &lt;symbol&gt;]... <span class="stringliteral">&quot;}&quot;</span></div>
@@ -851,7 +851,7 @@ Here's a BNF for the textual representation of semtrex trees:<div class="fragmen
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Nov 13 2014 17:30:46 for ceptr by
+    <li class="footer">Generated on Fri Nov 14 2014 18:22:36 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

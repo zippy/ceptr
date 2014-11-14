@@ -295,13 +295,11 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
   </table>
   </dd>
 </dl>
-<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <span class="keywordtype">char</span> buf[2000];</div>
-<div class="line">    <a class="code" href="structT.html">T</a> *x = <a class="code" href="group__tree.html#ga6ecbb70ce62a6c61f04ff8d0707101e4">_t_new</a>(0,TEST_STR_SYMBOL,<span class="stringliteral">&quot;fish&quot;</span>,5);</div>
+<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structT.html">T</a> *x = <a class="code" href="group__tree.html#ga6ecbb70ce62a6c61f04ff8d0707101e4">_t_new</a>(0,TEST_STR_SYMBOL,<span class="stringliteral">&quot;fish&quot;</span>,5);</div>
 <div class="line">    <span class="keywordtype">int</span> i = 789;</div>
 <div class="line"></div>
 <div class="line">    <a class="code" href="group__tree.html#gad6597b652983165f6b2993211a598ad4">__t_morph</a>(x,TEST_INT_SYMBOL,&amp;i,<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>),0);</div>
-<div class="line">    __t_dump(0,x,0,buf);</div>
-<div class="line">    spec_is_str_equal(buf,<span class="stringliteral">&quot; (TEST_INT_SYMBOL:789)&quot;</span>);</div>
+<div class="line">    spec_is_str_equal(t2s(x),<span class="stringliteral">&quot;(TEST_INT_SYMBOL:789)&quot;</span>);</div>
 <div class="line"></div>
 <div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(x);</div>
 </div><!-- fragment --><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000017">Todo:</a></b></dt><dd>Handle the case where the surface of the node to be morphed is itself a tree </dd></dl>
@@ -757,7 +755,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
 <div class="line">    <span class="keywordtype">int</span> po[] = {0,TREE_PATH_TERMINATOR};</div>
 <div class="line">    <span class="keywordtype">int</span> po1[] = {0,3,1,1,TREE_PATH_TERMINATOR};</div>
 <div class="line"></div>
-<div class="line">    <span class="comment">// using 0 in the path should &quot;dive&quot; into the orthogonal tree</span></div>
+<div class="line">    <span class="comment">// using 0 in the path should &quot;dive&quot;into the orthogonal tree</span></div>
 <div class="line">    <a class="code" href="structT.html">T</a> *x =<a class="code" href="group__tree.html#gaf019d190c9623de809d006e309a441af">_t_get</a>(tt,po);</div>
 <div class="line">    spec_is_ptr_equal(x,t);</div>
 <div class="line">    spec_is_str_equal((<span class="keywordtype">char</span> *)<a class="code" href="group__tree.html#ga81b96d2e950c7ac5ae8d17364f2fc49f">_t_get_surface</a>(tt,po1),<span class="stringliteral">&quot;groups&quot;</span>);</div>
@@ -910,7 +908,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
 <div class="line">    p[2] = TREE_PATH_TERMINATOR;</div>
 <div class="line">    c = <a class="code" href="group__tree.html#gaf019d190c9623de809d006e309a441af">_t_get</a>(t,p);</div>
 <div class="line">    __t_dump(&amp;test_HTTP_defs,c,0,buf);</div>
-<div class="line">    spec_is_str_equal(buf,<span class="stringliteral">&quot; (HTTP_REQUEST_PATH_SEGMENTS (HTTP_REQUEST_PATH_SEGMENT:groups) (HTTP_REQUEST_PATH_SEGMENT:a) (HTTP_REQUEST_PATH_SEGMENT:5))&quot;</span>);</div>
+<div class="line">    spec_is_str_equal(buf,<span class="stringliteral">&quot;(HTTP_REQUEST_PATH_SEGMENTS (HTTP_REQUEST_PATH_SEGMENT:groups) (HTTP_REQUEST_PATH_SEGMENT:a) (HTTP_REQUEST_PATH_SEGMENT:5))&quot;</span>);</div>
 <div class="line"></div>
 <div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
 </div><!-- fragment -->
@@ -951,13 +949,11 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
   </table>
   </dd>
 </dl>
-<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <span class="keywordtype">char</span> buf[2000];</div>
-<div class="line">    <a class="code" href="structT.html">T</a> *x = <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(0,TEST_INT_SYMBOL,123);</div>
+<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structT.html">T</a> *x = <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(0,TEST_INT_SYMBOL,123);</div>
 <div class="line">    <a class="code" href="structT.html">T</a> *z = <a class="code" href="group__tree.html#ga6ecbb70ce62a6c61f04ff8d0707101e4">_t_new</a>(0,TEST_STR_SYMBOL,<span class="stringliteral">&quot;fish&quot;</span>,5);</div>
 <div class="line"></div>
 <div class="line">    <a class="code" href="group__tree.html#gac32c74deeed63ca197b3e3e3beb35a33">_t_morph</a>(x,z);</div>
-<div class="line">    __t_dump(0,x,0,buf);</div>
-<div class="line">    spec_is_str_equal(buf,<span class="stringliteral">&quot; (TEST_STR_SYMBOL:fish)&quot;</span>);</div>
+<div class="line">    spec_is_str_equal(t2s(x),<span class="stringliteral">&quot;(TEST_STR_SYMBOL:fish)&quot;</span>);</div>
 <div class="line"></div>
 <div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(x);</div>
 <div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(z);</div>
@@ -1063,9 +1059,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
 <div class="line"></div>
 <div class="line">    spec_is_ptr_equal(<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(tr),r);</div>
 <div class="line"></div>
-<div class="line">    <span class="keywordtype">char</span> buf[2000];</div>
-<div class="line">    __t_dump(0,t,0,buf);</div>
-<div class="line">    spec_is_str_equal(buf,<span class="stringliteral">&quot; (TEST_INT_SYMBOL:0 (TEST_RECEPTOR_SYMBOL:{ (TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))))}))&quot;</span>);</div>
+<div class="line">    spec_is_str_equal(t2s(t),<span class="stringliteral">&quot;(TEST_INT_SYMBOL:0 (TEST_RECEPTOR_SYMBOL:{(TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))))}))&quot;</span>);</div>
 <div class="line"></div>
 <div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t); <span class="comment">// note, no need to free the receptor explicitly, as _t_free knows about it</span></div>
 </div><!-- fragment -->
@@ -1757,7 +1751,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Nov 13 2014 17:30:46 for ceptr by
+    <li class="footer">Generated on Fri Nov 14 2014 18:22:36 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
