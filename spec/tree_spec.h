@@ -74,9 +74,7 @@ void testTreeNewReceptor() {
 
     spec_is_ptr_equal(_t_surface(tr),r);
 
-    char buf[2000];
-    __t_dump(0,t,0,buf);
-    spec_is_str_equal(buf," (TEST_INT_SYMBOL:0 (TEST_RECEPTOR_SYMBOL:{ (TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))))}))");
+    spec_is_str_equal(t2s(t)," (TEST_INT_SYMBOL:0 (TEST_RECEPTOR_SYMBOL:{ (TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))))}))");
 
     _t_free(t); // note, no need to free the receptor explicitly, as _t_free knows about it
     //! [testTreeNewReceptor]
@@ -88,10 +86,7 @@ void testTreeNewScape() {
     T *ts = _t_new_scape(0,TEST_ALPHABETIZE_SCAPE_SYMBOL,s);
 
     spec_is_ptr_equal(_t_surface(ts),s);
-
-    char buf[2000];
-    __t_dump(0,ts,0,buf);
-    spec_is_str_equal(buf," (TEST_ALPHABETIZE_SCAPE_SYMBOL:key TEST_INT_SYMBOL,data TEST_STR_SYMBOL)");
+    spec_is_str_equal(t2s(ts)," (TEST_ALPHABETIZE_SCAPE_SYMBOL:key TEST_INT_SYMBOL,data TEST_STR_SYMBOL)");
 
     _t_free(ts); // note, no need to free the scape explicitly, as _t_free knows about it
     //! [testTreeNewScape]
@@ -101,9 +96,8 @@ void testTreeOrthogonal() {
     T *t = _t_newi(0,TEST_INT_SYMBOL,1234);
     T *t2 = _t_newi(0,TEST_INT_SYMBOL2,99);
     T *o = _t_newt(t,TEST_TREE_SYMBOL,t2);
-    char buf[2000];
-    __t_dump(0,t,0,buf);
-    spec_is_str_equal(buf," (TEST_INT_SYMBOL:1234 (TEST_TREE_SYMBOL:{ (TEST_INT_SYMBOL2:99)}))");
+
+    spec_is_str_equal(t2s(t)," (TEST_INT_SYMBOL:1234 (TEST_TREE_SYMBOL:{ (TEST_INT_SYMBOL2:99)}))");
     _t_free(t);
 }
 
@@ -331,20 +325,18 @@ void testTreeInsertAt() {
     p[0] = 1;
     p[1] = TREE_PATH_TERMINATOR;
     _t_insert_at(t,p,_t_newi(0,ASCII_CHAR,'x'));
-    __t_dump(0,t,0,buf);
-    spec_is_str_equal(buf," (ASCII_CHARS (ASCII_CHAR:'x'))");
+
+    spec_is_str_equal(t2s(t)," (ASCII_CHARS (ASCII_CHAR:'x'))");
     _t_free(t);
 }
 
 void testTreeMorph() {
     //! [testTreeMorph]
-    char buf[2000];
     T *x = _t_newi(0,TEST_INT_SYMBOL,123);
     T *z = _t_new(0,TEST_STR_SYMBOL,"fish",5);
 
     _t_morph(x,z);
-    __t_dump(0,x,0,buf);
-    spec_is_str_equal(buf," (TEST_STR_SYMBOL:fish)");
+    spec_is_str_equal(t2s(x)," (TEST_STR_SYMBOL:fish)");
 
     _t_free(x);
     _t_free(z);
@@ -353,13 +345,11 @@ void testTreeMorph() {
 
 void testTreeMorphLowLevel() {
     //! [testTreeMorphLowLevel]
-    char buf[2000];
     T *x = _t_new(0,TEST_STR_SYMBOL,"fish",5);
     int i = 789;
 
     __t_morph(x,TEST_INT_SYMBOL,&i,sizeof(int),0);
-    __t_dump(0,x,0,buf);
-    spec_is_str_equal(buf," (TEST_INT_SYMBOL:789)");
+    spec_is_str_equal(t2s(x)," (TEST_INT_SYMBOL:789)");
 
     _t_free(x);
     //! [testTreeMorphLowLevel]

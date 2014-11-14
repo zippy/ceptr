@@ -328,6 +328,12 @@ T * _d_build_def_semtrex(Defs defs,Symbol s,T *parent) {
 
 /*****************  Tree debugging utilities */
 
+char * _t2s(Defs *defs,T *t) {
+    static char buf[10000];
+    buf[0] = 0;
+    return __t_dump(defs,t,0,buf);
+}
+
 char * __t_dump(Defs *defs,T *t,int level,char *buf) {
     T *structures = defs ? defs->structures : 0;
     T *symbols = defs ? defs->symbols : 0;

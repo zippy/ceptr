@@ -332,8 +332,8 @@ int G_debug_match = 0;
 T *G_ts,*G_te;
 #define DEBUG_MATCH
 #ifdef DEBUG_MATCH
-#define MATCH_DEBUGG(s,x) 	if(G_debug_match){printf("IN:" #s " for %s\n",x);__t_dump(G_d,t,0,buf);printf("  cursor:%s\n",buf);}
-#define MATCH_DEBUG(s) 	if(G_debug_match){puts("IN:" #s "");__t_dump(G_d,t,0,buf);printf("  cursor:%s\n",!t ? "NULL" : buf);}
+#define MATCH_DEBUGG(s,x) 	if(G_debug_match){printf("IN:" #s " for %s\n",x);printf("  cursor:%s\n",_t2s(G_d,t));}
+#define MATCH_DEBUG(s) 	if(G_debug_match){puts("IN:" #s "");printf("  cursor:%s\n",!t ? "NULL" : _t2s(G_d,t));}
 //#define MATCH_DEBUGG(s,x) 	if(G_debug_match){printf("IN:" #s "%s with %p \n",x,t);}
 //#define MATCH_DEBUG(s) 	if(G_debug_match){printf("IN:" #s " with %p\n",t);}
 
@@ -1028,7 +1028,7 @@ Symbol get_symbol(char *symbol_name,Defs *d) {
 
 //#define DUMP_TOKENS
 #ifdef DUMP_TOKENS
-#define dump_tokens(str) puts(str);__t_dump(G_d,tokens,0,buf);puts(buf);
+#define dump_tokens(str) puts(str);puts(_t2s(G_d,tokens));
 #else
 #define dump_tokens(str)
 #endif
@@ -1468,8 +1468,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 	//----------------
 	// ACTION
 	if (_t_match(sxx,tokens)) {
-	    __t_dump(0,tokens,0,buf);
-	    raise_error("mismatched parens! [tokens:%s]",buf);
+	    raise_error("mismatched parens! [tokens:%s]",_t2s(G_d,tokens));
 	}
 	_t_free(sxx);
 

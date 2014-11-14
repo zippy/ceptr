@@ -27,6 +27,9 @@ void _p_interpolate_from_match(T *t,T *match_results,T *match_tree) {
     if (semeq(_t_symbol(t),INTERPOLATE_SYMBOL)) {
 	Symbol s = *(Symbol *)_t_surface(t);
 	T *m = _t_get_match(match_results,s);
+	if (!m) {
+	    raise_error0("expected to have match!");
+	}
 	int *path = (int *)_t_surface(_t_child(m,2));
 	int sibs = *(int*)_t_surface(_t_child(m,3));
 	T *x = _t_get(match_tree,path);

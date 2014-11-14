@@ -125,14 +125,13 @@ void testProcessReduceDefinedProcess() {
     //! [testProcessReduceDefinedProcess]
     T *processes = _t_new_root(PROCESSES);
     Defs defs = {0,0,processes};
-    char buf[2000];
 
     Process if_even = _defIfEven(processes);  // add the if_even process to our defs
 
     // check that it dumps nicely, including showing the param_refs as paths
     int p[] = {1,3,TREE_PATH_TERMINATOR};
-    __t_dump(0,_t_get(processes,p),0,buf);
-    spec_is_str_equal(buf," (process:IF (process:EQ_INT (process:MOD_INT (PARAM_REF:/2/1) (TEST_INT_SYMBOL:2)) (TEST_INT_SYMBOL:0)) (PARAM_REF:/2/2) (PARAM_REF:/2/3))");
+
+    spec_is_str_equal(t2s(_t_get(processes,p))," (process:IF (process:EQ_INT (process:MOD_INT (PARAM_REF:/2/1) (TEST_INT_SYMBOL:2)) (TEST_INT_SYMBOL:0)) (PARAM_REF:/2/2) (PARAM_REF:/2/3))");
 
     // create a run tree right in the position to "call" this function
     T *t = _t_new_root(RUN_TREE);
@@ -143,8 +142,7 @@ void testProcessReduceDefinedProcess() {
 
     // confirm that it reduces correctly
     spec_is_equal(__p_reduce(defs,t,n),noReductionErr);
-    __t_dump(0,_t_child(t,1),0,buf);
-    spec_is_str_equal(buf," (TEST_INT_SYMBOL:124)");
+    spec_is_str_equal(t2s(_t_child(t,1))," (TEST_INT_SYMBOL:124)");
 
     _t_free(processes);
     _t_free(t);
@@ -190,9 +188,8 @@ void testProcessInterpolateMatch() {
     _t_newi(p2,SEMTREX_MATCH_SIBLINGS_COUNT,1);
     T *p3 = _t_newi(n,TEST_INT_SYMBOL,314);
     __p_reduce(defs,t,n);
-    char buf[2000];
-    __t_dump(0,_t_child(t,1),0,buf);
-    spec_is_str_equal(buf," (TEST_INT_SYMBOL2:0 (TEST_INT_SYMBOL:314))");
+
+    spec_is_str_equal(t2s(_t_child(t,1))," (TEST_INT_SYMBOL2:0 (TEST_INT_SYMBOL:314))");
     _t_free(t);
 }
 
@@ -208,16 +205,14 @@ void testProcessIf() {
     T *p3 = _t_newi(n,TEST_INT_SYMBOL,100);
 
     __p_reduce(defs,t,n);
-    char buf[2000];
-    __t_dump(0,_t_child(t,1),0,buf);
-    spec_is_str_equal(buf," (TEST_INT_SYMBOL:99)");
+    spec_is_str_equal(t2s(_t_child(t,1))," (TEST_INT_SYMBOL:99)");
 
     _t_free(t);
 }
 
 void testProcessIntMath() {
     Defs defs;
-    char buf[2000];
+
     T *t = _t_new_root(RUN_TREE);
 
     // test addition
@@ -225,8 +220,8 @@ void testProcessIntMath() {
     _t_newi(n,TEST_INT_SYMBOL,99);
     _t_newi(n,TEST_INT_SYMBOL,100);
     __p_reduce(defs,t,n);
-    __t_dump(0,_t_child(t,1),0,buf);
-    spec_is_str_equal(buf," (TEST_INT_SYMBOL:199)");
+
+    spec_is_str_equal(t2s(_t_child(t,1))," (TEST_INT_SYMBOL:199)");
 
     // test subtraction
     n = _t_detach_by_idx(t,1);
@@ -236,8 +231,7 @@ void testProcessIntMath() {
     _t_newi(n,TEST_INT_SYMBOL,98);
 
     __p_reduce(defs,t,n);
-    __t_dump(0,_t_child(t,1),0,buf);
-    spec_is_str_equal(buf," (TEST_INT_SYMBOL:2)");
+    spec_is_str_equal(t2s(_t_child(t,1))," (TEST_INT_SYMBOL:2)");
 
     // test multiplication
     n = _t_detach_by_idx(t,1);
@@ -247,8 +241,7 @@ void testProcessIntMath() {
     _t_newi(n,TEST_INT_SYMBOL,98);
 
     __p_reduce(defs,t,n);
-    __t_dump(0,_t_child(t,1),0,buf);
-    spec_is_str_equal(buf," (TEST_INT_SYMBOL:9800)");
+    spec_is_str_equal(t2s(_t_child(t,1))," (TEST_INT_SYMBOL:9800)");
 
     // test division
     n = _t_detach_by_idx(t,1);
@@ -258,8 +251,7 @@ void testProcessIntMath() {
     _t_newi(n,TEST_INT_SYMBOL,48);
 
     __p_reduce(defs,t,n);
-    __t_dump(0,_t_child(t,1),0,buf);
-    spec_is_str_equal(buf," (TEST_INT_SYMBOL:2)");
+    spec_is_str_equal(t2s(_t_child(t,1))," (TEST_INT_SYMBOL:2)");
 
     // test modulo
     n = _t_detach_by_idx(t,1);
@@ -269,8 +261,7 @@ void testProcessIntMath() {
     _t_newi(n,TEST_INT_SYMBOL,2);
 
     __p_reduce(defs,t,n);
-    __t_dump(0,_t_child(t,1),0,buf);
-    spec_is_str_equal(buf," (TEST_INT_SYMBOL:0)");
+    spec_is_str_equal(t2s(_t_child(t,1))," (TEST_INT_SYMBOL:0)");
 
     // test equals
     n = _t_detach_by_idx(t,1);
@@ -280,8 +271,7 @@ void testProcessIntMath() {
     _t_newi(n,TEST_INT_SYMBOL,2);
 
     __p_reduce(defs,t,n);
-    __t_dump(0,_t_child(t,1),0,buf);
-    spec_is_str_equal(buf," (TRUE_FALSE:0)");
+    spec_is_str_equal(t2s(_t_child(t,1))," (TRUE_FALSE:0)");
 
     n = _t_detach_by_idx(t,1);
     _t_free(n);
@@ -290,8 +280,7 @@ void testProcessIntMath() {
     _t_newi(n,TEST_INT_SYMBOL,100);
 
     __p_reduce(defs,t,n);
-    __t_dump(0,_t_child(t,1),0,buf);
-    spec_is_str_equal(buf," (TRUE_FALSE:1)");
+    spec_is_str_equal(t2s(_t_child(t,1))," (TRUE_FALSE:1)");
 
     // test <
     n = _t_detach_by_idx(t,1);
@@ -301,8 +290,7 @@ void testProcessIntMath() {
     _t_newi(n,TEST_INT_SYMBOL,100);
 
     __p_reduce(defs,t,n);
-    __t_dump(0,_t_child(t,1),0,buf);
-    spec_is_str_equal(buf," (TRUE_FALSE:1)");
+    spec_is_str_equal(t2s(_t_child(t,1))," (TRUE_FALSE:1)");
 
     n = _t_detach_by_idx(t,1);
     _t_free(n);
@@ -311,8 +299,7 @@ void testProcessIntMath() {
     _t_newi(n,TEST_INT_SYMBOL,100);
 
     __p_reduce(defs,t,n);
-    __t_dump(0,_t_child(t,1),0,buf);
-    spec_is_str_equal(buf," (TRUE_FALSE:0)");
+    spec_is_str_equal(t2s(_t_child(t,1))," (TRUE_FALSE:0)");
 
     // test >
     n = _t_detach_by_idx(t,1);
@@ -322,8 +309,7 @@ void testProcessIntMath() {
     _t_newi(n,TEST_INT_SYMBOL,100);
 
     __p_reduce(defs,t,n);
-    __t_dump(0,_t_child(t,1),0,buf);
-    spec_is_str_equal(buf," (TRUE_FALSE:0)");
+    spec_is_str_equal(t2s(_t_child(t,1))," (TRUE_FALSE:0)");
 
     n = _t_detach_by_idx(t,1);
     _t_free(n);
@@ -332,8 +318,7 @@ void testProcessIntMath() {
     _t_newi(n,TEST_INT_SYMBOL,100);
 
     __p_reduce(defs,t,n);
-    __t_dump(0,_t_child(t,1),0,buf);
-    spec_is_str_equal(buf," (TRUE_FALSE:1)");
+    spec_is_str_equal(t2s(_t_child(t,1))," (TRUE_FALSE:1)");
 
     _t_free(t);
 }
