@@ -21,20 +21,31 @@
 #include "scape_spec.h"
 #include "vmhost_spec.h"
 
+#include <setjmp.h>
+
+jmp_buf G_err;
+
 int main(int argc, const char **argv) {
     printf("Running all tests...\n\n");
-    def_sys();
-    //**** core tests
-    testTree();
-    testDef();
-    testLabel();
-    testSemtrex();
-    testReceptor();
-    testProcess();
-    testScape();
-    testVMHost();
 
-    sys_free();
-    report_tests();
+    int err;
+    if (err = setjmp(G_err)) {
+	printf("ERROR: %d\n",err);
+    }
+    else {
+	def_sys();
+	//**** core tests
+	testTree();
+	testDef();
+	testLabel();
+	testSemtrex();
+	testReceptor();
+	testProcess();
+	testScape();
+	testVMHost();
+
+	sys_free();
+	report_tests();
+    }
     return 0;
 }

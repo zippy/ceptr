@@ -28,7 +28,7 @@
  <zero_or_more>   ::= <semtrex> "*"
  <zero_or_one>    ::= <semtrex> "?"
  <sequence>       ::= <semtrex> ["," <semtrex>]...
- <siblings>         ::= "(" <sequence> ")"
+ <siblings>       ::= "(" <sequence> ")"
  <or>             ::= <semtrex> "|" <semtrex>
  <symbol_literal> ::= ["!"] <symbol>
  <symbol_literal_set> ::= ["!"] "{" <symbol> ["," <symbol>]... "}"
