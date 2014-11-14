@@ -36,8 +36,10 @@ T *__d_code_process(T *processes,T *code,char *name,char *intention,T *in,T *out
 Process _d_code_process(T *processes,T *code,char *name,char *intention,T *in,T *out,Context c);
 T * _d_build_def_semtrex(Defs defs,Symbol s,T *parent);
 
+enum{NO_INDENT=0,INDENT=-1};
 #define t2s(t) _t2s(0,t)
-char * _t2s(Defs *defs,T *t);
+#define _t2s(d,t) __t2s(d,t,NO_INDENT)
+char * __t2s(Defs *defs,T *t,int indent);
 char * __t_dump(Defs *defs,T *t,int level,char *buf);
 
 #define _d_get_def(defs,s) _t_child(defs,(s).id);

@@ -332,10 +332,10 @@ T * _d_build_def_semtrex(Defs defs,Symbol s,T *parent) {
  * tree 2 string: returns a string representation of a tree
  * @TODO make this actually not break on large trees!
  */
-char * _t2s(Defs *defs,T *t) {
+char * __t2s(Defs *defs,T *t,int indent) {
     static char buf[10000];
     buf[0] = 0;
-    return __t_dump(defs,t,0,buf);
+    return __t_dump(defs,t,indent,buf);
 }
 
 char * __t_dump(Defs *defs,T *t,int level,char *buf) {
@@ -349,8 +349,18 @@ char * __t_dump(Defs *defs,T *t,int level,char *buf) {
     int i;
     char *c;
     Xaddr x;
+    if (level < -1) {
+	int j = (-level - 1)*3;
+	*buf++ = '\n';
+	while(j--) *buf++ = ' ';
+	*buf = 0;
+    }
+    else if (level > 0) {
+	*buf++ = ' ';
+    }
+
     if (is_process(s)) {
-	sprintf(buf," (process:%s",_d_get_process_name(processes,s));
+	sprintf(buf,"(process:%s",_d_get_process_name(processes,s));
     }
     else {
 	char *n = _d_get_symbol_name(symbols,s);
@@ -358,72 +368,72 @@ char * __t_dump(Defs *defs,T *t,int level,char *buf) {
 	if (!is_sys_structure(st)) {
 	    // if it's not a system structure, it's composed, so all we need to do is
 	    // print out the symbol name, and the reset will take care of itself
-	    sprintf(buf," (%s",n);
+	    sprintf(buf,"(%s",n);
     	}
 	else {
 	    switch(st.id) {
 	    case CSTRING_ID:
-		sprintf(buf," (%s:%s",n,(char *)_t_surface(t));
+		sprintf(buf,"(%s:%s",n,(char *)_t_surface(t));
 		break;
 	    case CHAR_ID:
-		sprintf(buf," (%s:'%c'",n,*(char *)_t_surface(t));
+		sprintf(buf,"(%s:'%c'",n,*(char *)_t_surface(t));
 		break;
 	    case BOOLEAN_ID:
 	    case INTEGER_ID:
-		sprintf(buf," (%s:%d",n,*(int *)_t_surface(t));
+		sprintf(buf,"(%s:%d",n,*(int *)_t_surface(t));
 		break;
 	    case SYMBOL_ID:
 		c = _d_get_symbol_name(symbols,*(Symbol *)_t_surface(t));
-		sprintf(buf," (%s:%s",n,c?c:"<unknown>");
+		sprintf(buf,"(%s:%s",n,c?c:"<unknown>");
 		break;
 	    case STRUCTURE_ID:
 		c = _d_get_structure_name(structures,*(Structure *)_t_surface(t));
-		sprintf(buf," (%s:%s",n,c?c:"<unknown>");
+		sprintf(buf,"(%s:%s",n,c?c:"<unknown>");
 		break;
 	    case PROCESS_ID:
 		c = _d_get_process_name(processes,*(Process *)_t_surface(t));
-		sprintf(buf," (%s:%s",n,c?c:"<unknown>");
+		sprintf(buf,"(%s:%s",n,c?c:"<unknown>");
 		break;
 	    case TREE_PATH_ID:
-		sprintf(buf," (%s:%s",n,_t_sprint_path((int *)_t_surface(t),b));
+		sprintf(buf,"(%s:%s",n,_t_sprint_path((int *)_t_surface(t),b));
 		break;
 	    case XADDR_ID:
 		x = *(Xaddr *)_t_surface(t);
-		sprintf(buf," (%s:%s.%d",n,_d_get_symbol_name(symbols,x.symbol),x.addr);
+		sprintf(buf,"(%s:%s.%d",n,_d_get_symbol_name(symbols,x.symbol),x.addr);
 		break;
 	    case TREE_ID:
 		if (t->context.flags & TFLAG_SURFACE_IS_TREE) {
 		    c = __t_dump(defs,(T *)_t_surface(t),0,tbuf);
-		    sprintf(buf," (%s:{%s}",n,c);
+		    sprintf(buf,"(%s:{%s}",n,c);
 		    break;
 		}
 	    case RECEPTOR_ID:
 		if (t->context.flags & (TFLAG_SURFACE_IS_TREE+TFLAG_SURFACE_IS_RECEPTOR)) {
 		    c = __t_dump(defs,((Receptor *)_t_surface(t))->root,0,tbuf);
-		    sprintf(buf," (%s:{%s}",n,c);
+		    sprintf(buf,"(%s:{%s}",n,c);
 		    break;
 		}
 	    case SCAPE_ID:
 		if (t->context.flags & TFLAG_SURFACE_IS_SCAPE) {
 		    Scape *sc = (Scape *)_t_surface(t);
-		    sprintf(buf," (%s:key %s,data %s",n,_d_get_symbol_name(symbols,sc->key_source),_d_get_symbol_name(symbols,sc->data_source));
+		    sprintf(buf,"(%s:key %s,data %s",n,_d_get_symbol_name(symbols,sc->key_source),_d_get_symbol_name(symbols,sc->data_source));
 		    break;
 		}
 	    default:
 		if (semeq(s,SEMTREX_MATCH_CURSOR)) {
 		    c = __t_dump(defs,*(T **)_t_surface(t),0,tbuf);
 		    //c = "null";
-		    sprintf(buf," (%s:{%s}",n,c);
+		    sprintf(buf,"(%s:{%s}",n,c);
 		    break;
 		}
 		if (n == 0)
-		    sprintf(buf," (<unknown:%d.%d.%d>",s.context,s.flags,s.id);
+		    sprintf(buf,"(<unknown:%d.%d.%d>",s.context,s.flags,s.id);
 		else
-		    sprintf(buf," (%s",n);
+		    sprintf(buf,"(%s",n);
 	    }
 	}
     }
-    DO_KIDS(t,__t_dump(defs,_t_child(t,i),level+1,buf+strlen(buf)));
+    DO_KIDS(t,__t_dump(defs,_t_child(t,i),level < 0 ? level-1 : level+1,buf+strlen(buf)));
     sprintf(buf+strlen(buf),")");
     return buf;
 }
