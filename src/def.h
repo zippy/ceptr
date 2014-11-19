@@ -11,8 +11,8 @@
  * @copyright Copyright (C) 2013-2014, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
  */
 
-#ifndef _CEPTR_SYMBOL_H
-#define _CEPTR_SYMBOL_H
+#ifndef _CEPTR_DEF_H
+#define _CEPTR_DEF_H
 
 #include "tree.h"
 #include <stdarg.h>
