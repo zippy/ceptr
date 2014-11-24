@@ -8,6 +8,27 @@
 #include "../src/receptor.h"
 #include "http_example.h"
 
+
+#define TT(t) ((t) && (*((int *)t) == matrixImpl))
+#define TE(t,te,me) ((TT(t)) ? (me):(te))
+#define TNEW(impl,parent,symbol,surface,size) ((impl == matrixImpl) ? (GT)_m_new(parent,symbol,surface,size) : (GT)_t_new(parent,symbol,surface,size))
+#define TFREE(t) TE(t,_t_free((T*)t),_m_free((M*)t))
+#define TSIZE(t) TE(t,_t_size((T *)t),_m_size((M *)t))
+#define TKIDS(t) TE(t,_t_children((T *)t),_m_children((M *)t))
+#define TSURFACE(t) TE(t,_t_surface((T *)t),_m_surface((M *)t))
+
+void testCreateTreeNodesT() {
+    uint32_t impl;
+    for(impl=FIRST_TREE_IMPL_TYPE;impl != 0;impl++) {
+	GT t = TNEW(impl,0,TEST_STR_SYMBOL,"hello",6);
+	spec_is_long_equal(TSIZE(t),(size_t)6);
+	spec_is_equal(TKIDS(t),0);
+	spec_is_str_equal((char *)TSURFACE(t),"hello");
+
+	TFREE(t);
+    }
+}
+
 void testCreateTreeNodes() {
     /* test the creation of trees and the various function that give access to created data elements
        and basic tree structure navigation
@@ -427,6 +448,8 @@ void testTreeSerialize() {
 
 void testTree() {
     _setup_HTTPDefs();
+    testCreateTreeNodesT();
+
     testCreateTreeNodes();
     testTreeNewReceptor();
     testTreeNewScape();

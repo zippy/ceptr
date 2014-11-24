@@ -23,10 +23,32 @@ typedef SemanticID Symbol;
 typedef SemanticID Process;
 typedef SemanticID Structure;
 
-// ** types for trees
+// ** types for matrix trees
+typedef struct M {
+    int magic;
+    size_t size;
+} M;
+
+typedef struct Maddr {
+    int l;
+    int i;
+} Maddr;
+
+// ** generic tree type defs
+typedef struct H {
+    void *t;
+    Maddr a;
+} H;
+
+enum treeImplementations {ptrImpl=0xfffffffe,matrixImpl=0xffffffff};
+#define FIRST_TREE_IMPL_TYPE ptrImpl
+#define LAST_TREE_IMPL_TYPE matrixImpl
+
+
+// ** types for pointer trees
 typedef struct Tstruct {
+    uint32_t child_count;
     struct T *parent;
-    int child_count;
     struct T **children;
 } Tstruct;
 
