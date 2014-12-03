@@ -8,7 +8,7 @@
 #include "../src/receptor.h"
 #include "http_example.h"
 
-
+/*
 #define TT(t) ((t) && (*((int *)t) == matrixImpl))
 #define TE(t,te,me) ((TT(t)) ? (me):(te))
 #define TNEW(impl,parent,symbol,surface,size) ((impl == matrixImpl) ? (GT)_m_new(parent,symbol,surface,size) : (GT)_t_new(parent,symbol,surface,size))
@@ -27,6 +27,44 @@ void testCreateTreeNodesT() {
 
 	TFREE(t);
     }
+}
+*/
+const H null_H = {0,{NULL_ADDR,NULL_ADDR}};
+void testCreateTreeNodesT(){
+    H h,h1,h2,h21;
+    h = _m_new(null_H,TEST_STR_SYMBOL,"hello",6);
+    spec_is_equal(h.a.l,0);
+    spec_is_equal(h.a.i,0);
+    spec_is_equal(h.m->levels,1);
+    spec_is_long_equal(_m_size(h),(size_t)6);
+    spec_is_equal(_m_children(h),0);
+    spec_is_str_equal((char *)_m_surface(h),"hello");
+    spec_is_maddr_equal(_m_parent(h),null_H.a);
+    spec_is_maddr_equal(_m_child(h,1),null_H.a);
+    spec_is_true(semeq(_m_symbol(h),TEST_STR_SYMBOL));
+
+    h1 = _m_new(h,TEST_STR_SYMBOL,"t1",3);
+    spec_is_equal(h.m->levels,2);
+    spec_is_str_equal((char *)_m_surface(h1),"t1");
+    spec_is_maddr_equal(_m_parent(h1),h.a);
+    spec_is_equal(_m_children(h),1);
+    spec_is_maddr_equal(_m_child(h,1),h1.a);
+
+    h2 = _m_new(h,TEST_STR_SYMBOL,"t2",3);
+    spec_is_equal(h.m->levels,2);
+    spec_is_str_equal((char *)_m_surface(h2),"t2");
+    spec_is_maddr_equal(_m_parent(h2),h.a);
+    spec_is_equal(_m_children(h),2);
+    spec_is_maddr_equal(_m_child(h,2),h2.a);
+    spec_is_equal(_m_children(h2),0);
+
+    h21 = _m_new(h2,TEST_STR_SYMBOL,"t21",4);
+    spec_is_equal(h.m->levels,3);
+    spec_is_str_equal((char *)_m_surface(h21),"t21");
+    spec_is_maddr_equal(_m_parent(h21),h2.a);
+    spec_is_equal(_m_children(h2),1);
+    spec_is_maddr_equal(_m_child(h2,1),h21.a);
+
 }
 
 void testCreateTreeNodes() {

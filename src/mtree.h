@@ -20,12 +20,19 @@
 #include "sys_processes.h"
 #include "ceptr_types.h"
 
-M *_m_new(Mpath parent,Symbol symbol,void *surface,size_t size);
-size_t _m_size(M *addr);
-void _m_free(M *m);
-int _m_children(M *m);
-void * _m_surface(M *m);
+H _m_new(H parent,Symbol symbol,void *surface,size_t size);
+size_t _m_size(H h);
+void _m_free(H h);
+int _m_children(H h);
+void * _m_surface(H h);
+Maddr _m_parent(H h);
+Maddr _m_child(H h,Mindex i);
+Symbol _m_symbol(H h);
 
+
+#define maddreq(x,y) ((x).i == (y).i && (x).l == (y).l)
+
+#define spec_is_maddr_equal(got, expected) spec_total++; if (maddreq(expected,got)){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %d.%d but was %d.%d",__FUNCTION__,__LINE__,#got,expected.l,expected.i,got.l,got.i);}
 
 #endif
 /** @}*/

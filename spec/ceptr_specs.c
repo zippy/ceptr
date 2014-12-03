@@ -36,13 +36,13 @@ int main(int argc, const char **argv) {
 	def_sys();
 	//**** core tests
 	testTree();
-	testDef();
-	testLabel();
-	testSemtrex();
-	testReceptor();
-	testProcess();
-	testScape();
-	testVMHost();
+	/* testDef(); */
+	/* testLabel(); */
+	/* testSemtrex(); */
+	/* testReceptor(); */
+	/* testProcess(); */
+	/* testScape(); */
+	/* testVMHost(); */
 
 	sys_free();
 	report_tests();

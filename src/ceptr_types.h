@@ -23,20 +23,39 @@ typedef SemanticID Symbol;
 typedef SemanticID Process;
 typedef SemanticID Structure;
 
+typedef uint16_t Mlevel;
+typedef uint32_t Mindex;
+
 // ** types for matrix trees
+typedef struct N {
+    void *surface;
+    Symbol symbol;
+    size_t size;
+    Mindex parenti;
+    int flags;
+} N;
+
+typedef struct L {
+    Mindex nodes;
+    N *nP;
+} L;
+
 typedef struct M {
     int magic;
+    int levels;
     size_t size;
+    L *lP;
 } M;
 
+#define NULL_ADDR -1
 typedef struct Maddr {
-    int l;
-    int i;
+    Mlevel l;
+    Mindex i;
 } Maddr;
 
 // ** generic tree type defs
 typedef struct H {
-    void *t;
+    M *m;
     Maddr a;
 } H;
 
