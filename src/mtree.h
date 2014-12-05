@@ -21,6 +21,7 @@
 #include "ceptr_types.h"
 
 H _m_new(H parent,Symbol symbol,void *surface,size_t size);
+H _m_newi(H h,Symbol symbol,int surface);
 size_t _m_size(H h);
 void _m_free(H h);
 int _m_children(H h);
@@ -28,7 +29,10 @@ void * _m_surface(H h);
 Maddr _m_parent(H h);
 Maddr _m_child(H h,Mindex i);
 Symbol _m_symbol(H h);
+Maddr _m_next_sibling(H h);
 
+
+const H null_H;
 
 #define maddreq(x,y) ((x).i == (y).i && (x).l == (y).l)
 

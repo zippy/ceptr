@@ -14,6 +14,8 @@
 #include "hashfn.h"
 #include "def.h"
 
+const H null_H = {0,{NULL_ADDR,NULL_ADDR}};
+
 void __m_add_level(M *m) {
     if (!m->levels++) {
 	m->lP = malloc(sizeof(L));
@@ -84,16 +86,26 @@ H _m_new(H parent,Symbol symbol,void *surface,size_t size) {
     n->size = size;
     n->parenti = parent.m ? parent.a.i : 0;
     if (size) {
-    	n->flags = TFLAG_ALLOCATED;
-    	n->surface = malloc(size);
-    	if (surface)
-    	    memcpy(n->surface,surface,size);
+	if (size == sizeof(int)) {
+	    n->flags = 0;
+	    *((int *)&n->surface) = *(int *)surface;
+	}
+	else {
+	    n->flags = TFLAG_ALLOCATED;
+	    n->surface = malloc(size);
+	    if (surface)
+		memcpy(n->surface,surface,size);
+	}
     }
     else {
 	n->flags = 0;
     }
 
     return h;
+}
+
+H _m_newi(H parent,Symbol symbol,int surface) {
+    return _m_new(parent,symbol,&surface,sizeof(int));
 }
 
 N *__m_get(H h) {
@@ -190,4 +202,18 @@ Symbol _m_symbol(H h) {
     return n->symbol;
 }
 
+Maddr _m_next_sibling(H h) {
+    L *l = &h.m->lP[h.a.l];
+    int i = h.a.i+1;
+    Maddr r;
+    if (i<l->nodes) {
+	N *n = &l->nP[i], *no = &l->nP[h.a.i];
+	if (n->parenti == no->parenti) {
+	    r.l = h.a.l;
+	    r.i = i;
+	    return r;
+	}
+    }
+    return null_H.a;
+}
 /** @}*/

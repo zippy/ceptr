@@ -29,9 +29,8 @@ void testCreateTreeNodesT() {
     }
 }
 */
-const H null_H = {0,{NULL_ADDR,NULL_ADDR}};
 void testCreateTreeNodesT(){
-    H h,h1,h11,h2,h21,h22;
+    H h,h1,h11,h2,h21,h22,h3;
     h = _m_new(null_H,TEST_STR_SYMBOL,"hello",6);
     spec_is_equal(h.a.l,0);
     spec_is_equal(h.a.i,0);
@@ -94,6 +93,22 @@ void testCreateTreeNodesT(){
     spec_is_equal(_m_children(h2),2);
     spec_is_maddr_equal(_m_child(h2,2),h22.a);
     spec_is_maddr_equal(_m_child(h2,NULL_ADDR),h22.a);
+
+    Symbol s99 = {0,0,99};
+
+    h3 = _m_newi(h,s99,101);
+    spec_is_maddr_equal(_m_parent(h3),h.a);
+    spec_is_equal(_m_children(h),3);
+    spec_is_equal(*(int *)_m_surface(h3),101);
+
+    spec_is_maddr_equal(_m_next_sibling(h1),h2.a);
+    spec_is_maddr_equal(_m_next_sibling(h2),h3.a);
+    spec_is_maddr_equal(_m_next_sibling(h3),null_H.a);
+    spec_is_maddr_equal(_m_next_sibling(h),null_H.a);
+
+    h21.a = _m_child(h2,1);
+    spec_is_maddr_equal(_m_next_sibling(h21),h22.a);
+    spec_is_maddr_equal(_m_next_sibling(h11),null_H.a);
 
 }
 
