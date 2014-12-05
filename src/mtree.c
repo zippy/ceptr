@@ -47,12 +47,12 @@ H _m_new(H parent,Symbol symbol,void *surface,size_t size) {
 	else if (parent.a.l == parent.m->levels-1) {
 	    h.a.i = 0;
 	    __m_add_level(h.m);
-	    l = &h.m->lP[h.a.l];
 	}
 	else {
-	    l = &h.m->lP[h.a.l];
-	    h.a.i = l->nodes;
+	    Maddr x = _m_child(parent,NULL_ADDR);
+	    h.a.i = x.i+1;
 	}
+	l = &h.m->lP[h.a.l];
     }
     else {
 	h.m  = malloc(sizeof(M));
@@ -66,13 +66,20 @@ H _m_new(H parent,Symbol symbol,void *surface,size_t size) {
 
     // add a node
     // @todo make this not realloc each time!!
+    N *n,*nl;
     if (!l->nodes++) {
     	l->nP = malloc(sizeof(N));
+	n = &l->nP[h.a.i];
     }
     else {
     	l->nP = realloc(l->nP,sizeof(N)*l->nodes);
+	n = &l->nP[h.a.i];
+	nl =  &l->nP[l->nodes-1];
+	while (nl != n) {
+	    *nl = *(nl-1);
+	    nl--;
+	}
     }
-    N *n = &l->nP[h.a.i];
     n->symbol = symbol;
     n->size = size;
     n->parenti = parent.m ? parent.a.i : 0;
@@ -154,13 +161,27 @@ Maddr _m_child(H h,Mindex c) {
     a.i = 0;
     Mindex max = l->nodes;
     N *n = &l->nP[0];
-    while (a.i < max && n->parenti != h.a.i) {
+
+    //skip past nodes of children of parents before our parent
+    while (a.i < max && n->parenti < h.a.i) {
 	a.i++;n++;
     }
-    if (a.i+c > l->nodes) {
-	raise_error0("address too deep!");
+
+    // if you pass in NULL_ADDR for the child,
+    // this routine returns the last child address
+    if (c == NULL_ADDR) {
+	while (a.i < max && n->parenti == h.a.i) {
+	    a.i++;n++;
+	}
+	a.i--;
+	if (a.i == -1) a.l = NULL_ADDR;
     }
-    a.i += c-1;
+    else {
+	if (a.i+c > l->nodes) {
+	    raise_error0("address too deep!");
+	}
+	a.i += c-1;
+    }
     return a;
 }
 

@@ -31,7 +31,7 @@ void testCreateTreeNodesT() {
 */
 const H null_H = {0,{NULL_ADDR,NULL_ADDR}};
 void testCreateTreeNodesT(){
-    H h,h1,h2,h21;
+    H h,h1,h11,h2,h21,h22;
     h = _m_new(null_H,TEST_STR_SYMBOL,"hello",6);
     spec_is_equal(h.a.l,0);
     spec_is_equal(h.a.i,0);
@@ -41,6 +41,7 @@ void testCreateTreeNodesT(){
     spec_is_str_equal((char *)_m_surface(h),"hello");
     spec_is_maddr_equal(_m_parent(h),null_H.a);
     spec_is_maddr_equal(_m_child(h,1),null_H.a);
+    spec_is_maddr_equal(_m_child(h,NULL_ADDR),null_H.a);
     spec_is_true(semeq(_m_symbol(h),TEST_STR_SYMBOL));
 
     h1 = _m_new(h,TEST_STR_SYMBOL,"t1",3);
@@ -49,6 +50,8 @@ void testCreateTreeNodesT(){
     spec_is_maddr_equal(_m_parent(h1),h.a);
     spec_is_equal(_m_children(h),1);
     spec_is_maddr_equal(_m_child(h,1),h1.a);
+    spec_is_maddr_equal(_m_child(h,NULL_ADDR),h1.a);
+    spec_is_maddr_equal(_m_child(h1,NULL_ADDR),null_H.a);
 
     h2 = _m_new(h,TEST_STR_SYMBOL,"t2",3);
     spec_is_equal(h.m->levels,2);
@@ -56,14 +59,41 @@ void testCreateTreeNodesT(){
     spec_is_maddr_equal(_m_parent(h2),h.a);
     spec_is_equal(_m_children(h),2);
     spec_is_maddr_equal(_m_child(h,2),h2.a);
+    spec_is_maddr_equal(_m_child(h,NULL_ADDR),h2.a);
     spec_is_equal(_m_children(h2),0);
 
     h21 = _m_new(h2,TEST_STR_SYMBOL,"t21",4);
+    spec_is_equal(h21.a.l,2);
+    spec_is_equal(h21.a.i,0);
     spec_is_equal(h.m->levels,3);
     spec_is_str_equal((char *)_m_surface(h21),"t21");
     spec_is_maddr_equal(_m_parent(h21),h2.a);
     spec_is_equal(_m_children(h2),1);
     spec_is_maddr_equal(_m_child(h2,1),h21.a);
+    spec_is_maddr_equal(_m_child(h2,NULL_ADDR),h21.a);
+
+    spec_is_maddr_equal(_m_child(h1,NULL_ADDR),null_H.a);
+    h11 = _m_new(h1,TEST_STR_SYMBOL,"t11",4);
+    spec_is_equal(h11.a.l,2);
+    spec_is_equal(h11.a.i,0);  //should be inserted before the t21 node
+    spec_is_equal(h.m->levels,3);
+    spec_is_str_equal((char *)_m_surface(h11),"t11");
+    spec_is_maddr_equal(_m_parent(h11),h1.a);
+    spec_is_equal(_m_children(h1),1);
+    spec_is_maddr_equal(_m_child(h1,1),h11.a);
+    spec_is_maddr_equal(_m_child(h1,NULL_ADDR),h11.a);
+
+    // this test is here because it makes sure that things work even
+    // if nodes are inserted out of order
+    h22 = _m_new(h2,TEST_STR_SYMBOL,"t22",4);
+    spec_is_equal(h22.a.l,2);
+    spec_is_equal(h22.a.i,2);  //should be inserted after the t21 node
+    spec_is_equal(h.m->levels,3);
+    spec_is_str_equal((char *)_m_surface(h22),"t22");
+    spec_is_maddr_equal(_m_parent(h22),h2.a);
+    spec_is_equal(_m_children(h2),2);
+    spec_is_maddr_equal(_m_child(h2,2),h22.a);
+    spec_is_maddr_equal(_m_child(h2,NULL_ADDR),h22.a);
 
 }
 
