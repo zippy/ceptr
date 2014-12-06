@@ -26,6 +26,10 @@ void __m_add_level(M *m) {
     int i = m->levels-1;
     m->lP[i].nodes = 0;
 }
+#define _GET_LEVEL(h,l) (&(h).m->lP[l])
+#define _GET_NODE(h,l,i) (&(l)->nP[i])
+#define GET_LEVEL(h) _GET_LEVEL(h,(h).a.l)
+#define GET_NODE(h,l) _GET_NODE(h,l,(h).a.i)
 /**
  * Create a new tree node
  *
@@ -54,7 +58,6 @@ H _m_new(H parent,Symbol symbol,void *surface,size_t size) {
 	    Maddr x = _m_child(parent,NULL_ADDR);
 	    h.a.i = x.i+1;
 	}
-	l = &h.m->lP[h.a.l];
     }
     else {
 	h.m  = malloc(sizeof(M));
@@ -63,19 +66,19 @@ H _m_new(H parent,Symbol symbol,void *surface,size_t size) {
 	h.a.l = 0;
 	h.a.i = 0;
 	__m_add_level(h.m);
-	l = &h.m->lP[h.a.l];
     }
+    l = GET_LEVEL(h);
 
     // add a node
     // @todo make this not realloc each time!!
     N *n,*nl;
     if (!l->nodes++) {
     	l->nP = malloc(sizeof(N));
-	n = &l->nP[h.a.i];
+	n = GET_NODE(h,l);
     }
     else {
     	l->nP = realloc(l->nP,sizeof(N)*l->nodes);
-	n = &l->nP[h.a.i];
+	n = GET_NODE(h,l);
 	nl =  &l->nP[l->nodes-1];
 	while (nl != n) {
 	    *nl = *(nl-1);
@@ -109,8 +112,8 @@ H _m_newi(H parent,Symbol symbol,int surface) {
 }
 
 N *__m_get(H h) {
-    L *l = &h.m->lP[h.a.l];
-    N *n = &l->nP[h.a.i];
+    L *l = GET_LEVEL(h);
+    N *n = GET_NODE(h,l);
     return n;
 }
 
@@ -127,7 +130,7 @@ int _m_children(H h) {
     else if (h.a.l == levels-1) {
 	return 0;
     }
-    L *l = &h.m->lP[h.a.l+1];
+    L *l = _GET_LEVEL(h,h.a.l+1);
     Mindex c = 0;
     Mindex i = 0;
     Mindex max = l->nodes;
@@ -203,12 +206,11 @@ Symbol _m_symbol(H h) {
 }
 
 Maddr _m_next_sibling(H h) {
-    L *l = &h.m->lP[h.a.l];
+    L *l = GET_LEVEL(h);
     int i = h.a.i+1;
     Maddr r;
     if (i<l->nodes) {
-	N *n = &l->nP[i], *no = &l->nP[h.a.i];
-	if (n->parenti == no->parenti) {
+	if (_GET_NODE(h,l,i)->parenti == GET_NODE(h,l)->parenti) {
 	    r.l = h.a.l;
 	    r.i = i;
 	    return r;

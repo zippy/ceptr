@@ -30,7 +30,10 @@ void testCreateTreeNodesT() {
 }
 */
 void testCreateTreeNodesT(){
+
     H h,h1,h11,h2,h21,h22,h3;
+
+    // test adding a new root
     h = _m_new(null_H,TEST_STR_SYMBOL,"hello",6);
     spec_is_equal(h.a.l,0);
     spec_is_equal(h.a.i,0);
@@ -43,6 +46,7 @@ void testCreateTreeNodesT(){
     spec_is_maddr_equal(_m_child(h,NULL_ADDR),null_H.a);
     spec_is_true(semeq(_m_symbol(h),TEST_STR_SYMBOL));
 
+    // test adding first child
     h1 = _m_new(h,TEST_STR_SYMBOL,"t1",3);
     spec_is_equal(h.m->levels,2);
     spec_is_str_equal((char *)_m_surface(h1),"t1");
@@ -52,6 +56,7 @@ void testCreateTreeNodesT(){
     spec_is_maddr_equal(_m_child(h,NULL_ADDR),h1.a);
     spec_is_maddr_equal(_m_child(h1,NULL_ADDR),null_H.a);
 
+    // test adding second child
     h2 = _m_new(h,TEST_STR_SYMBOL,"t2",3);
     spec_is_equal(h.m->levels,2);
     spec_is_str_equal((char *)_m_surface(h2),"t2");
@@ -61,6 +66,7 @@ void testCreateTreeNodesT(){
     spec_is_maddr_equal(_m_child(h,NULL_ADDR),h2.a);
     spec_is_equal(_m_children(h2),0);
 
+    // test adding child to second child
     h21 = _m_new(h2,TEST_STR_SYMBOL,"t21",4);
     spec_is_equal(h21.a.l,2);
     spec_is_equal(h21.a.i,0);
@@ -71,6 +77,7 @@ void testCreateTreeNodesT(){
     spec_is_maddr_equal(_m_child(h2,1),h21.a);
     spec_is_maddr_equal(_m_child(h2,NULL_ADDR),h21.a);
 
+    // now adding in a child to the first child (i.e. out of order)
     spec_is_maddr_equal(_m_child(h1,NULL_ADDR),null_H.a);
     h11 = _m_new(h1,TEST_STR_SYMBOL,"t11",4);
     spec_is_equal(h11.a.l,2);
@@ -96,17 +103,19 @@ void testCreateTreeNodesT(){
 
     Symbol s99 = {0,0,99};
 
+    // test adding in non allocated integer surface
     h3 = _m_newi(h,s99,101);
     spec_is_maddr_equal(_m_parent(h3),h.a);
     spec_is_equal(_m_children(h),3);
     spec_is_equal(*(int *)_m_surface(h3),101);
 
+    // test next sibling
     spec_is_maddr_equal(_m_next_sibling(h1),h2.a);
     spec_is_maddr_equal(_m_next_sibling(h2),h3.a);
     spec_is_maddr_equal(_m_next_sibling(h3),null_H.a);
     spec_is_maddr_equal(_m_next_sibling(h),null_H.a);
 
-    h21.a = _m_child(h2,1);
+    h21.a = _m_child(h2,1); // we have to do this because the h21 handle is stale
     spec_is_maddr_equal(_m_next_sibling(h21),h22.a);
     spec_is_maddr_equal(_m_next_sibling(h11),null_H.a);
 
