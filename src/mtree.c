@@ -41,7 +41,7 @@ void __m_add_level(M *m) {
  */
 H _m_new(H parent,Symbol symbol,void *surface,size_t size) {
     H h;
-    L *l;
+    L *l = 0;
 
     if (parent.m) {
 	h.m = parent.m;
@@ -55,8 +55,8 @@ H _m_new(H parent,Symbol symbol,void *surface,size_t size) {
 	    __m_add_level(h.m);
 	}
 	else {
-	    Maddr x = _m_child(parent,NULL_ADDR);
-	    h.a.i = x.i+1;
+	    l = GET_LEVEL(h);
+	    h.a.i = l->nodes;
 	}
     }
     else {
@@ -67,7 +67,7 @@ H _m_new(H parent,Symbol symbol,void *surface,size_t size) {
 	h.a.i = 0;
 	__m_add_level(h.m);
     }
-    l = GET_LEVEL(h);
+    if (!l) l = GET_LEVEL(h);
 
     // add a node
     // @todo make this not realloc each time!!
@@ -78,12 +78,7 @@ H _m_new(H parent,Symbol symbol,void *surface,size_t size) {
     }
     else {
     	l->nP = realloc(l->nP,sizeof(N)*l->nodes);
-	n = GET_NODE(h,l);
-	nl =  &l->nP[l->nodes-1];
-	while (nl != n) {
-	    *nl = *(nl-1);
-	    nl--;
-	}
+	n = _GET_NODE(h,l,l->nodes-1);
     }
     n->symbol = symbol;
     n->size = size;
@@ -132,15 +127,23 @@ int _m_children(H h) {
     }
     L *l = _GET_LEVEL(h,h.a.l+1);
     Mindex c = 0;
-    Mindex i = 0;
+    Mindex i = 0,pi = h.a.i;
     Mindex max = l->nodes;
     N *n = &l->nP[0];
+
+/* this works if nodes are sorted
     while (i < max && n->parenti != h.a.i) {
 	n++;i++;
     }
     while (i < max && n->parenti == h.a.i) {
 	n++;i++;c++;
     }
+*/
+    while (i < max) {
+	if (pi == n->parenti) c++;
+	n++;i++;
+    }
+
     return c;
 }
 
@@ -173,10 +176,29 @@ Maddr _m_child(H h,Mindex c) {
     }
     a.l = h.a.l+1;
     L *l = &h.m->lP[a.l];
-    a.i = 0;
-    Mindex max = l->nodes;
+    Mindex ci = 0,max = l->nodes;
     N *n = &l->nP[0];
-
+    if (c == NULL_ADDR) {
+	a.i = NULL_ADDR;
+	while(ci < max) {
+	    if (n->parenti == h.a.i) a.i = ci;
+	    ci++;
+	    n++;
+	}
+	if (a.i == NULL_ADDR)
+	    a.l = NULL_ADDR;
+    }
+    else {
+	a.i = 0;
+	while(a.i < max) {
+	    if (n->parenti == h.a.i) ci++;
+	    if (ci == c) return a;
+	    a.i++;n++;
+	}
+	a.l = NULL_ADDR;
+	a.i = NULL_ADDR;
+    }
+/* works if nodes are sorted
     //skip past nodes of children of parents before our parent
     while (a.i < max && n->parenti < h.a.i) {
 	a.i++;n++;
@@ -197,6 +219,8 @@ Maddr _m_child(H h,Mindex c) {
 	}
 	a.i += c-1;
     }
+*/
+
     return a;
 }
 
@@ -209,12 +233,16 @@ Maddr _m_next_sibling(H h) {
     L *l = GET_LEVEL(h);
     int i = h.a.i+1;
     Maddr r;
-    if (i<l->nodes) {
-	if (_GET_NODE(h,l,i)->parenti == GET_NODE(h,l)->parenti) {
+    N *n = GET_NODE(h,l);
+    Mindex pi = n->parenti;
+    while (i<l->nodes) {
+	n++;
+	if (n->parenti == pi) {
 	    r.l = h.a.l;
 	    r.i = i;
 	    return r;
 	}
+	i++;
     }
     return null_H.a;
 }
