@@ -29,6 +29,26 @@ void testCreateTreeNodesT() {
     }
 }
 */
+
+mtd(H h) {
+    H hh;
+    int i;
+    printf("\n");
+    for(i=0;i<h.m->levels;i++) {
+	hh.m = h.m;
+	hh.a.l = i;
+	L *l = _GET_LEVEL(h,i);
+	int j;
+	printf("%d:",i);
+	for(j=0;j<l->nodes;j++) {
+	    hh.a.i = j;
+	    N *n = _GET_NODE(h,l,j);
+	    printf("%s:%d, ",(char *)_m_surface(hh),n->parenti);
+	}
+	printf("\n");
+    }
+}
+
 void testCreateTreeNodesT(){
 
     H h,h1,h11,h2,h21,h22,h3;

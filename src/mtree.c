@@ -269,9 +269,8 @@ H _m_add(H parent,H h) {
     int x = _m_children(parent)+1;
     int i,levels = h.m->levels;
     H p = parent;
-    raise(SIGINT);
+    Mindex d = parent.a.i;
     for (i=0;i<levels;i++) {
-	Mindex d = GET_LEVEL(p)->nodes;
 	__m_new_init(p,&r,&pl);
 	l = _GET_LEVEL(h,i);
 	N *np = __m_add_nodes(r,pl,l->nodes);
@@ -279,9 +278,10 @@ H _m_add(H parent,H h) {
 	Mindex j = l->nodes;
 	while (j--)  {
 	    *np = *n;
-	    np++; n++;
 	    np->parenti += d;
+	    np++; n++;
 	}
+	d = pl->nodes-l->nodes;
 	p.a.l++;
     }
     r.a = _m_child(parent,x);
