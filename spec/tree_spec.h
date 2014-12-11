@@ -166,7 +166,7 @@ void testCreateTreeNodesT(){
     H h121;
     h121.m = h.m;
     h121.a = _m_child(h12,1);
-    //    spec_is_str_equal((char *)_m_surface(h121),"t121");
+    spec_is_str_equal((char *)_m_surface(h121),"t121");
     spec_is_equal(h121.a.l,3);
     spec_is_equal(h121.a.i,1);  //should be last because it was appended by add
 }
