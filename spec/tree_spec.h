@@ -119,6 +119,36 @@ void testCreateTreeNodesT(){
     spec_is_maddr_equal(_m_next_sibling(h21),h22.a);
     spec_is_maddr_equal(_m_next_sibling(h11),null_H.a);
 
+    // test add
+    H h12 = _m_new(null_H,TEST_TREE_SYMBOL,"t12",4);
+    spec_is_str_equal((char *)_m_surface(h12),"t12");
+    _m_new(h12,TEST_STR_SYMBOL,"t121",4);
+    H h221 = _m_new(h22,TEST_STR_SYMBOL,"t221",5);
+    spec_is_equal(h221.a.l,3);
+    spec_is_equal(h221.a.i,0);  //should be first and only node on third level
+    spec_is_equal(GET_LEVEL(h221)->nodes,1);
+
+    h12 = _m_add(h1,h12);
+    spec_is_equal(h12.a.l,2);
+    spec_is_equal(h12.a.i,3);  //should have been appended
+    spec_is_equal(_m_children(h1),2);
+    spec_is_maddr_equal(_m_child(h1,2),h12.a);
+    h22.a = _m_child(h2,2);
+    spec_is_equal(h22.a.l,2);
+    spec_is_equal(h22.a.i,2);  //should remain the same
+
+    spec_is_equal(GET_LEVEL(h221)->nodes,2);
+    spec_is_str_equal((char *)_m_surface(h221),"t221");
+
+    h221.a = _m_child(h22,1);
+    spec_is_str_equal((char *)_m_surface(h221),"t221");
+
+    H h121;
+    h121.m = h.m;
+    h121.a = _m_child(h12,1);
+    //    spec_is_str_equal((char *)_m_surface(h121),"t121");
+    spec_is_equal(h121.a.l,3);
+    spec_is_equal(h121.a.i,1);  //should be last because it was appended by add
 }
 
 void testCreateTreeNodes() {

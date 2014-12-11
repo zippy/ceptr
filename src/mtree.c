@@ -16,6 +16,7 @@
 
 const H null_H = {0,{NULL_ADDR,NULL_ADDR}};
 
+// @todo make this not realloc each time?
 void __m_add_level(M *m) {
     if (!m->levels++) {
 	m->lP = malloc(sizeof(L));
@@ -26,10 +27,41 @@ void __m_add_level(M *m) {
     int i = m->levels-1;
     m->lP[i].nodes = 0;
 }
-#define _GET_LEVEL(h,l) (&(h).m->lP[l])
-#define _GET_NODE(h,l,i) (&(l)->nP[i])
-#define GET_LEVEL(h) _GET_LEVEL(h,(h).a.l)
-#define GET_NODE(h,l) _GET_NODE(h,l,(h).a.i)
+
+// @todo make this not realloc each time!!
+N *__m_add_nodes(H h,L *l,int c) {
+    N *n;
+    Mindex i = l->nodes;
+    if (!i) {
+    	l->nP = malloc(sizeof(N)*c);
+	l->nodes = c;
+    }
+    else {
+	l->nodes += c;
+    	l->nP = realloc(l->nP,sizeof(N)*l->nodes);
+    }
+    n = _GET_NODE(h,l,i);
+    return n;
+}
+
+void __m_new_init(H parent,H *h,L **l) {
+    h->m = parent.m;
+    h->a.l = parent.a.l+1;
+
+    if (parent.a.l >= parent.m->levels) {
+	raise_error0("address too deep!");
+    }
+    else if (parent.a.l == parent.m->levels-1) {
+	h->a.i = 0;
+	__m_add_level(h->m);
+	*l = GET_LEVEL(*h);
+    }
+    else {
+	*l = GET_LEVEL(*h);
+	h->a.i = (*l)->nodes;
+    }
+}
+
 /**
  * Create a new tree node
  *
@@ -44,20 +76,7 @@ H _m_new(H parent,Symbol symbol,void *surface,size_t size) {
     L *l = 0;
 
     if (parent.m) {
-	h.m = parent.m;
-	h.a.l = parent.a.l+1;
-
-	if (parent.a.l >= parent.m->levels) {
-	    raise_error0("address too deep!");
-	}
-	else if (parent.a.l == parent.m->levels-1) {
-	    h.a.i = 0;
-	    __m_add_level(h.m);
-	}
-	else {
-	    l = GET_LEVEL(h);
-	    h.a.i = l->nodes;
-	}
+	__m_new_init(parent,&h,&l);
     }
     else {
 	h.m  = malloc(sizeof(M));
@@ -66,30 +85,23 @@ H _m_new(H parent,Symbol symbol,void *surface,size_t size) {
 	h.a.l = 0;
 	h.a.i = 0;
 	__m_add_level(h.m);
+	l = GET_LEVEL(h);
     }
-    if (!l) l = GET_LEVEL(h);
 
     // add a node
-    // @todo make this not realloc each time!!
     N *n,*nl;
-    if (!l->nodes++) {
-    	l->nP = malloc(sizeof(N));
-	n = GET_NODE(h,l);
-    }
-    else {
-    	l->nP = realloc(l->nP,sizeof(N)*l->nodes);
-	n = _GET_NODE(h,l,l->nodes-1);
-    }
+    n = __m_add_nodes(h,l,1);
+
     n->symbol = symbol;
     n->size = size;
     n->parenti = parent.m ? parent.a.i : 0;
+    n->flags = 0;
     if (size) {
 	if (size == sizeof(int)) {
-	    n->flags = 0;
 	    *((int *)&n->surface) = *(int *)surface;
 	}
 	else {
-	    n->flags = TFLAG_ALLOCATED;
+	    n->flags |= TFLAG_ALLOCATED;
 	    n->surface = malloc(size);
 	    if (surface)
 		memcpy(n->surface,surface,size);
@@ -245,5 +257,36 @@ Maddr _m_next_sibling(H h) {
 	i++;
     }
     return null_H.a;
+}
+
+H _m_new_root(Symbol s) {
+    return _m_new(null_H,s,0,0);
+}
+
+H _m_add(H parent,H h) {
+    L *pl,*l;
+    H r;
+    int x = _m_children(parent)+1;
+    int i,levels = h.m->levels;
+    H p = parent;
+    raise(SIGINT);
+    for (i=0;i<levels;i++) {
+	Mindex d = GET_LEVEL(p)->nodes;
+	__m_new_init(p,&r,&pl);
+	l = _GET_LEVEL(h,i);
+	N *np = __m_add_nodes(r,pl,l->nodes);
+	N *n = &l->nP[0];
+	Mindex j = l->nodes;
+	while (j--)  {
+	    *np = *n;
+	    np++; n++;
+	    np->parenti += d;
+	}
+	p.a.l++;
+    }
+    r.a = _m_child(parent,x);
+    // @todo free the h levels
+    return r;
+
 }
 /** @}*/
