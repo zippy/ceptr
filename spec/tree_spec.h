@@ -169,6 +169,8 @@ void testCreateTreeNodesT(){
     spec_is_str_equal((char *)_m_surface(h121),"t121");
     spec_is_equal(h121.a.l,3);
     spec_is_equal(h121.a.i,1);  //should be last because it was appended by add
+
+    _m_free(h);
 }
 
 void testCreateTreeNodes() {

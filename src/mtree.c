@@ -126,7 +126,24 @@ N *__m_get(H h) {
 
 size_t _m_size(H h) {return __m_get(h)->size;}
 
-void _m_free(H h) { free(h.m);}
+void __m_free(H h,int free_surface) {
+    int i = h.m->levels;
+    while(i--) {
+	L *l = _GET_LEVEL(h,i);
+	Mindex j = l->nodes;
+	if (free_surface) {
+	    while(j--) {
+		N *n = _GET_NODE(h,l,j);
+		if (n->flags & TFLAG_ALLOCATED) {
+		    free(n->surface);
+		}
+	    }
+	}
+	free(l->nP);
+    }
+    free(h.m->lP);
+    free(h.m);
+}
 
 int _m_children(H h) {
     Mlevel levels = h.m->levels;
@@ -285,8 +302,10 @@ H _m_add(H parent,H h) {
 	p.a.l++;
     }
     r.a = _m_child(parent,x);
-    // @todo free the h levels
+
+    __m_free(h,0);  //free h but not it's surfaces which were copied into the parent
     return r;
+}
 
 }
 /** @}*/

@@ -23,7 +23,8 @@
 H _m_new(H parent,Symbol symbol,void *surface,size_t size);
 H _m_newi(H h,Symbol symbol,int surface);
 size_t _m_size(H h);
-void _m_free(H h);
+#define _m_free(h) __m_free(h,1)
+void __m_free(H h,int free_surface);
 int _m_children(H h);
 void * _m_surface(H h);
 Maddr _m_parent(H h);
