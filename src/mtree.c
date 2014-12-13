@@ -280,6 +280,10 @@ H _m_new_root(Symbol s) {
     return _m_new(null_H,s,0,0);
 }
 
+H _m_newr(H parent,Symbol s) {
+    return _m_new(parent,s,0,0);
+}
+
 H _m_add(H parent,H h) {
     L *pl,*l;
     H r;

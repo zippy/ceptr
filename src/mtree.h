@@ -32,6 +32,7 @@ Maddr _m_child(H h,Mindex i);
 Symbol _m_symbol(H h);
 Maddr _m_next_sibling(H h);
 H _m_new_root(Symbol s);
+H _m_newr(H parent,Symbol s);
 H _m_add(H parent,H h);
 
 const H null_H;
