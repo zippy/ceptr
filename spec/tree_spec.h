@@ -39,11 +39,14 @@ mtd(H h) {
 	hh.a.l = i;
 	L *l = _GET_LEVEL(h,i);
 	int j;
-	printf("%d:",i);
+	printf("%d(%d):",i,l->nodes);
 	for(j=0;j<l->nodes;j++) {
 	    hh.a.i = j;
 	    N *n = _GET_NODE(h,l,j);
-	    printf("%s:%d, ",(char *)_m_surface(hh),n->parenti);
+	    if (!(n->flags & TFLAG_DELETED))
+		printf("%s:%d, ",(char *)_m_surface(hh),n->parenti);
+	    else
+		printf("X, ");
 	}
 	printf("\n");
     }
@@ -169,6 +172,17 @@ void testCreateTreeNodesT(){
     spec_is_str_equal((char *)_m_surface(h121),"t121");
     spec_is_equal(h121.a.l,3);
     spec_is_equal(h121.a.i,1);  //should be last because it was appended by add
+
+    //    mtd(h);
+    spec_is_equal(_m_children(h),3);
+    h2 = _m_detatch(h2);
+    //    mtd(h2);
+    //    mtd(h);
+
+    spec_is_true(h2.m != h.m);
+    spec_is_equal(_m_children(h2),2);
+    spec_is_equal(_m_children(h),2);
+    //    _m_free(h22);
 
     _m_free(h);
 }

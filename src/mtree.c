@@ -62,6 +62,16 @@ void __m_new_init(H parent,H *h,L **l) {
     }
 }
 
+void __m_new_root(H *h, L **l) {
+    M *m = h->m = malloc(sizeof(M));
+    m->magic = matrixImpl;
+    m->levels = 0;
+    h->a.l = 0;
+    h->a.i = 0;
+    __m_add_level(m);
+    *l = GET_LEVEL(*h);
+}
+
 /**
  * Create a new tree node
  *
@@ -79,13 +89,7 @@ H _m_new(H parent,Symbol symbol,void *surface,size_t size) {
 	__m_new_init(parent,&h,&l);
     }
     else {
-	h.m  = malloc(sizeof(M));
-	h.m->magic = matrixImpl;
-	h.m->levels = 0;
-	h.a.l = 0;
-	h.a.i = 0;
-	__m_add_level(h.m);
-	l = GET_LEVEL(h);
+	__m_new_root(&h,&l);
     }
 
     // add a node
@@ -169,7 +173,7 @@ int _m_children(H h) {
     }
 */
     while (i < max) {
-	if (pi == n->parenti) c++;
+	if (!(n->flags & TFLAG_DELETED) && pi == n->parenti) c++;
 	n++;i++;
     }
 
@@ -311,5 +315,71 @@ H _m_add(H parent,H h) {
     return r;
 }
 
+void _m_walk(H h,void (*walkfn)(H ,N *,void *,Maddr,Maddr),void *user_data,Maddr ac,Maddr ap) {
+    int levels = h.m->levels;
+    L *l = GET_LEVEL(h);
+    N *n = GET_NODE(h,l);
+    (*walkfn)(h,n,user_data,ac,ap);
+    h.a.l++;
+    Maddr a = ac;
+    Mindex pi = h.a.i;
+    if(h.a.l<levels) {
+	a.l++;
+
+	l = GET_LEVEL(h);
+	h.a.i = 0;
+	n = GET_NODE(h,l);
+	int f = 1;
+	while(h.a.i<l->nodes) {
+	    if (n->parenti == pi) {
+		_m_walk(h,walkfn,user_data,a,ac);
+		a.i++;
+	    }
+	    n++;
+	    h.a.i++;
+	    f = 0;
+	}
+    }
 }
+
+void _m_detatchfn(H oh,N *on,void *data,Maddr ac,Maddr ap) {
+    struct {M *m;} *d = data;
+    //    printf("\noh:%d.%d  ",oh.a.l,oh.a.i);
+    // printf("a:%d.%d",ac.l,ac.i);
+
+    H parent;
+
+    H h;
+    L *l;
+    if (!d->m) {
+	__m_new_root(&h,&l);
+	parent.m = 0;
+	d->m = h.m;
+    }
+    else {
+	parent.m = d->m;
+	parent.a = ap;
+	__m_new_init(parent,&h,&l);
+    }
+
+    N *n,*nl;
+    n = __m_add_nodes(h,l,1);
+
+    // everything is the same except the parenti
+    *n = *on;
+    on->flags = TFLAG_DELETED;
+    on->surface = 0;
+    n->parenti = parent.m ? parent.a.i : 0;
+    //   mtd(h);
+
+}
+
+H _m_detatch(H oh) {
+    struct {M *m;} d = {NULL};
+    Maddr ac = {0,0};
+    _m_walk(oh,_m_detatchfn,&d,ac,null_H.a);
+    H h = {d.m,{0,0}};
+    return h;
+}
+
 /** @}*/

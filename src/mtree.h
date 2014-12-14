@@ -34,10 +34,16 @@ Maddr _m_next_sibling(H h);
 H _m_new_root(Symbol s);
 H _m_newr(H parent,Symbol s);
 H _m_add(H parent,H h);
+H _m_detatch(H h);
 
 const H null_H;
 
 #define maddreq(x,y) ((x).i == (y).i && (x).l == (y).l)
+
+
+/*****************  Misc... */
+
+#define DO_KIDSM(h,x) {int i,_c=_m_children(h);for(i=1;i<=_c;i++){x;}}
 
 #define _GET_LEVEL(h,l) (&(h).m->lP[l])
 #define _GET_NODE(h,l,i) (&(l)->nP[i])
