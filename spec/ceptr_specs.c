@@ -13,6 +13,7 @@
 #include "test_framework.h"
 
 #include "tree_spec.h"
+#include "mtree_spec.h"
 #include "def_spec.h"
 #include "label_spec.h"
 #include "semtrex_spec.h"
@@ -35,7 +36,8 @@ int main(int argc, const char **argv) {
     else {
 	def_sys();
 	//**** core tests
-	testTree();
+	//testTree();
+	testMTree();
 	/* testDef(); */
 	/* testLabel(); */
 	/* testSemtrex(); */
