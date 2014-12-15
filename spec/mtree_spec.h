@@ -182,7 +182,7 @@ void testCreateTreeNodesM(){
     spec_is_true(h2.m != h.m);
     spec_is_equal(_m_children(h2),2);
     spec_is_equal(_m_children(h),2);
-    //    _m_free(h22);
+    _m_free(h2);
 
     _m_free(h);
 }
