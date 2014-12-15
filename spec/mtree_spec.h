@@ -187,6 +187,39 @@ void testCreateTreeNodesM(){
     _m_free(h);
 }
 
+void testTreeConvert() {
+    //! [testMTreeSerialize]
+    T *t = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
+    H h = _m_new_from_t(t);
+
+    spec_is_symbol_equal(0,_m_symbol(h),HTTP_REQUEST);
+    H hh = h;
+    hh.a.l = 1;
+    spec_is_symbol_equal(0,_m_symbol(hh),HTTP_REQUEST_VERSION);
+    hh.a.l = 5;
+    hh.a.i = 2;
+    spec_is_str_equal((char *)_m_surface(hh),"page");
+    //    mtd(h);
+    //    puts(__t2s(&test_HTTP_defs,t,INDENT));
+    T *t1 = _t_new_from_m(h);
+
+    char buf[2000] = {0};
+    char buf1[2000] = {0};
+
+    __t_dump(&test_HTTP_defs,t,0,buf);
+    __t_dump(&test_HTTP_defs,t1,0,buf1);
+
+    spec_is_str_equal(buf1,buf);
+
+    _m_free(h);
+    _t_free(t);
+    _t_free(t1);
+    //! [testMTreeSerialize]
+}
+
 void testMTree() {
+    _setup_HTTPDefs();
     testCreateTreeNodesM();
+    testTreeConvert();
+    _cleanup_HTTPDefs();
 }

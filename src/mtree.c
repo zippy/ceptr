@@ -122,6 +122,27 @@ H _m_newi(H parent,Symbol symbol,int surface) {
     return _m_new(parent,symbol,&surface,sizeof(int));
 }
 
+H __mnft(H parent,T *t) {
+    int i, c = _t_children(t);
+    H h = _m_new(parent,_t_symbol(t),_t_surface(t),_t_size(t));
+    for(i=1;i<=c;i++) {
+	__mnft(h,_t_child(t,i));
+    }
+    return h;
+}
+
+H _m_new_from_t(T *t) {
+    H h = null_H;
+    h = __mnft(h,t);
+    h.a.l = 0;
+    h.a.i = 0;
+    return h;
+}
+
+T *_t_new_from_m(H h) {
+    return _t_new_root(TEST_INT_SYMBOL);
+}
+
 N *__m_get(H h) {
     L *l = GET_LEVEL(h);
     N *n = GET_NODE(h,l);

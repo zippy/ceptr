@@ -22,6 +22,8 @@
 
 H _m_new(H parent,Symbol symbol,void *surface,size_t size);
 H _m_newi(H h,Symbol symbol,int surface);
+H _m_new_from_t(T *t);
+T *_t_new_from_m(H h);
 size_t _m_size(H h);
 #define _m_free(h) __m_free(h,1)
 void __m_free(H h,int free_surface);
