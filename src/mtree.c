@@ -98,7 +98,7 @@ H _m_new(H parent,Symbol symbol,void *surface,size_t size) {
 
     n->symbol = symbol;
     n->size = size;
-    n->parenti = parent.m ? parent.a.i : 0;
+    n->parenti = parent.m ? parent.a.i : NULL_ADDR;
     n->flags = 0;
     if (size) {
 	if (size == sizeof(int)) {
@@ -139,8 +139,19 @@ H _m_new_from_t(T *t) {
     return h;
 }
 
+void _m_2tfn(H h,N *n,void *data,MwalkState *s,Maddr ap) {
+
+    T **tP = (T**) &(((struct {T *t;} *)data)->t);
+    T *t =  h.a.l ? (s[h.a.l-1].t) : NULL;
+    *tP = _t_new(t,n->symbol,(n->flags & TFLAG_ALLOCATED)?n->surface:&n->surface,n->size);
+    s[h.a.l].t = *tP;
+}
+
 T *_t_new_from_m(H h) {
-    return _t_new_root(TEST_INT_SYMBOL);
+    struct {T *t;} d = {NULL};
+    Maddr ac = {0,0};
+    _m_walk(h,_m_2tfn,&d);
+    return _t_root(d.t);
 }
 
 N *__m_get(H h) {
@@ -324,6 +335,7 @@ H _m_add(H parent,H h) {
 	Mindex j = l->nodes;
 	while (j--)  {
 	    *np = *n;
+	    if (np->parenti == NULL_ADDR) np->parenti = 0;
 	    np->parenti += d;
 	    np++; n++;
 	}
@@ -336,38 +348,76 @@ H _m_add(H parent,H h) {
     return r;
 }
 
-void _m_walk(H h,void (*walkfn)(H ,N *,void *,Maddr,Maddr),void *user_data,Maddr ac,Maddr ap) {
+void _m_walk(H h,void (*walkfn)(H ,N *,void *,MwalkState *,Maddr),void *user_data) {
     int levels = h.m->levels;
+    MwalkState state[levels];
+    int i,root;
+    //    for(i=0;i<levels;i++) {state[i]=0;};
+    Maddr ap = _m_parent(h);
+    root = h.a.l;
+    int done = 0;
+    // @todo checks to make sure root isn't deleted or null?
     L *l = GET_LEVEL(h);
-    N *n = GET_NODE(h,l);
-    (*walkfn)(h,n,user_data,ac,ap);
-    h.a.l++;
-    Maddr a = ac;
-    Mindex pi = h.a.i;
-    if(h.a.l<levels) {
-	a.l++;
+    N *n;
+    int backup,nodes = h.a.i+1; // at root level pretend we are at last node
+    //    raise(SIGINT);
 
-	l = GET_LEVEL(h);
-	h.a.i = 0;
+    while(!done) {
+	backup = 0;
 	n = GET_NODE(h,l);
-	int f = 1;
-	while(h.a.i<l->nodes) {
-	    if (n->parenti == pi) {
-		_m_walk(h,walkfn,user_data,a,ac);
-		a.i++;
+	// look for child of parent at this level (may be node at current handle address)
+	while ((h.a.i < nodes)  && ((n->flags & TFLAG_DELETED) || (n->parenti != ap.i))) {
+	    n++;h.a.i++;
+	};
+
+	// if we got one, then call the walk function
+	if (h.a.i != nodes) {
+	    (*walkfn)(h,n,user_data,state,ap);
+	    // and go down looking for children
+	    if (h.a.l+1 < levels) {
+		state[h.a.l].i = h.a.i;
+		ap = h.a;
+		h.a.l++;
+		h.a.i = 0;
+		l = GET_LEVEL(h);
+		nodes = l->nodes;
 	    }
-	    n++;
-	    h.a.i++;
-	    f = 0;
+	    else {
+		// if no more levels, then backup if no more nodes
+		if (++h.a.i == nodes)
+		    backup = 1;
+	    }
+	}
+	else backup = 1;
+
+	while(backup) {
+	    // if current node is at root level we are done
+	    if (h.a.l == root) {backup = 0;done = 1;}
+	    else {
+		// otherwise move up a level
+		h.a.l--;
+		// new node index is next node at that level from stored state
+		h.a.i = state[h.a.l].i+1;
+		l = GET_LEVEL(h);
+		nodes = l->nodes;
+		// if we still have nodes to check then we have finished backing up otherwise
+		// we'll loop to go back up another level
+		if (h.a.i < nodes) {
+		    backup = 0;
+		    ap.l = h.a.l -1;
+		    ap.i = state[ap.l].i;
+		}
+	    }
 	}
     }
 }
 
-void _m_detatchfn(H oh,N *on,void *data,Maddr ac,Maddr ap) {
-    struct {M *m;} *d = data;
+void _m_detatchfn(H oh,N *on,void *data,MwalkState *s,Maddr ap) {
+    struct {M *m;int l;} *d = data;
     //    printf("\noh:%d.%d  ",oh.a.l,oh.a.i);
     // printf("a:%d.%d",ac.l,ac.i);
 
+    Mindex pi = oh.a.l ? (s[oh.a.l-1].i) : NULL_ADDR;
     H parent;
 
     H h;
@@ -379,7 +429,8 @@ void _m_detatchfn(H oh,N *on,void *data,Maddr ac,Maddr ap) {
     }
     else {
 	parent.m = d->m;
-	parent.a = ap;
+	parent.a.i = s[oh.a.l-1].pi;
+	parent.a.l = oh.a.l-1-d->l;
 	__m_new_init(parent,&h,&l);
     }
 
@@ -390,15 +441,15 @@ void _m_detatchfn(H oh,N *on,void *data,Maddr ac,Maddr ap) {
     *n = *on;
     on->flags = TFLAG_DELETED;
     on->surface = 0;
-    n->parenti = parent.m ? parent.a.i : 0;
-    //   mtd(h);
+    n->parenti = parent.m ? parent.a.i : NULL_ADDR;
+    s[oh.a.l].pi = l->nodes-1;
+    //
 
 }
 
 H _m_detatch(H oh) {
-    struct {M *m;} d = {NULL};
-    Maddr ac = {0,0};
-    _m_walk(oh,_m_detatchfn,&d,ac,null_H.a);
+    struct {M *m;int l;} d = {NULL,oh.a.l};
+    _m_walk(oh,_m_detatchfn,&d);
     H h = {d.m,{0,0}};
     return h;
 }

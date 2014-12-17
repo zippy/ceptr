@@ -52,6 +52,13 @@ mtd(H h) {
     }
 }
 
+
+void _walkfn(H h,N *n,void *data,MwalkState *state,Maddr ap) {
+    char *s = (char *)data;
+    s += strlen(s);
+    //    sprintf(s,(char *)"%d.%d:%s, ",ac.l,ac.i,(char *) (on->flags &TFLAG_ALLOCATED?on->surface:&on->surface));
+    sprintf(s,(char *)"%d.%d, ",h.a.l,h.a.i);
+}
 void testCreateTreeNodesM(){
 
     H h,h1,h11,h2,h21,h22,h3;
@@ -151,9 +158,17 @@ void testCreateTreeNodesM(){
     spec_is_equal(h221.a.i,0);  //should be first and only node on third level
     spec_is_equal(GET_LEVEL(h221)->nodes,1);
 
+    //mtd(h);
+    char buf[2000] ={0};
+    Maddr ac = {0,0};
+
+    _m_walk(h,_walkfn,buf);
+    spec_is_str_equal(buf,"0.0, 1.0, 2.1, 1.1, 2.0, 2.2, 3.0, 1.2, ");
+
     h12 = _m_add(h1,h12);
     spec_is_equal(h12.a.l,2);
     spec_is_equal(h12.a.i,3);  //should have been appended
+    // mtd(h);
     spec_is_equal(_m_children(h1),2);
     spec_is_maddr_equal(_m_child(h1,2),h12.a);
     h22.a = _m_child(h2,2);
@@ -173,9 +188,14 @@ void testCreateTreeNodesM(){
     spec_is_equal(h121.a.l,3);
     spec_is_equal(h121.a.i,1);  //should be last because it was appended by add
 
-    //    mtd(h);
+
+    buf[0] = 0;
+    _m_walk(h2,_walkfn,buf);
+    spec_is_str_equal(buf,"1.1, 2.0, 2.2, 3.0, ");
+
     spec_is_equal(_m_children(h),3);
     h2 = _m_detatch(h2);
+    spec_is_maddr_equal(_m_parent(h2),null_H.a);
     //    mtd(h2);
     //    mtd(h);
 
@@ -185,6 +205,29 @@ void testCreateTreeNodesM(){
     _m_free(h2);
 
     _m_free(h);
+}
+
+
+void testMTreeWalk() {
+    //! [testMTreeWalk]
+    T *t = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
+    // puts(__t2s(&test_HTTP_defs,t,INDENT));
+    H h = _m_new_from_t(t);
+    char buf[2000] ={0};
+    Maddr ac = {0,0};
+    _m_walk(h,_walkfn,buf);
+    spec_is_str_equal(buf,"0.0, 1.0, 2.0, 2.1, 1.1, 1.2, 2.2, 3.0, 3.1, 2.3, 3.2, 3.3, 2.4, 3.4, 4.0, 5.0, 5.1, 4.1, 5.2, 5.3, ");
+
+    //start walk from a node
+    h.a.l = 1;
+    h.a.i = 2;
+    buf[0] = 0;
+    _m_walk(h,_walkfn,buf);
+    spec_is_str_equal(buf,"1.2, 2.2, 3.0, 3.1, 2.3, 3.2, 3.3, 2.4, 3.4, 4.0, 5.0, 5.1, 4.1, 5.2, 5.3, ");
+
+    _m_free(h);
+    _t_free(t);
+    //! [testMTreeWalk]
 }
 
 void testTreeConvert() {
@@ -220,6 +263,7 @@ void testTreeConvert() {
 void testMTree() {
     _setup_HTTPDefs();
     testCreateTreeNodesM();
+    testMTreeWalk();
     testTreeConvert();
     _cleanup_HTTPDefs();
 }
