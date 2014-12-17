@@ -142,9 +142,9 @@ H _m_new_from_t(T *t) {
 void _m_2tfn(H h,N *n,void *data,MwalkState *s,Maddr ap) {
 
     T **tP = (T**) &(((struct {T *t;} *)data)->t);
-    T *t =  h.a.l ? (s[h.a.l-1].t) : NULL;
+    T *t =  h.a.l ? (s[h.a.l-1].user.t) : NULL;
     *tP = _t_new(t,n->symbol,(n->flags & TFLAG_ALLOCATED)?n->surface:&n->surface,n->size);
-    s[h.a.l].t = *tP;
+    s[h.a.l].user.t = *tP;
 }
 
 T *_t_new_from_m(H h) {
@@ -414,12 +414,8 @@ void _m_walk(H h,void (*walkfn)(H ,N *,void *,MwalkState *,Maddr),void *user_dat
 
 void _m_detatchfn(H oh,N *on,void *data,MwalkState *s,Maddr ap) {
     struct {M *m;int l;} *d = data;
-    //    printf("\noh:%d.%d  ",oh.a.l,oh.a.i);
-    // printf("a:%d.%d",ac.l,ac.i);
 
-    Mindex pi = oh.a.l ? (s[oh.a.l-1].i) : NULL_ADDR;
     H parent;
-
     H h;
     L *l;
     if (!d->m) {
@@ -429,7 +425,10 @@ void _m_detatchfn(H oh,N *on,void *data,MwalkState *s,Maddr ap) {
     }
     else {
 	parent.m = d->m;
-	parent.a.i = s[oh.a.l-1].pi;
+	parent.a.i = s[oh.a.l-1].user.pi;
+	// we use d->l here to give us a level offset because the root of
+	// the detached tree is not necessarily the same as the root of
+	// the whole tree.
 	parent.a.l = oh.a.l-1-d->l;
 	__m_new_init(parent,&h,&l);
     }
@@ -437,13 +436,13 @@ void _m_detatchfn(H oh,N *on,void *data,MwalkState *s,Maddr ap) {
     N *n,*nl;
     n = __m_add_nodes(h,l,1);
 
-    // everything is the same except the parenti
+    // everything in the node is the same except the parenti
     *n = *on;
     on->flags = TFLAG_DELETED;
     on->surface = 0;
+    // which we got from the user portion of the state data
     n->parenti = parent.m ? parent.a.i : NULL_ADDR;
-    s[oh.a.l].pi = l->nodes-1;
-    //
+    s[oh.a.l].user.pi = l->nodes-1;
 
 }
 

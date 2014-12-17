@@ -20,11 +20,12 @@
 #include "sys_processes.h"
 #include "ceptr_types.h"
 
-//@todo make pi, and t be part of a user data generic thing
 typedef struct MwalkState {
     Mindex i;
-    Mindex pi;
-    T *t;
+    union {
+	Mindex pi;
+	T *t;
+    } user;
 } MwalkState;
 
 H _m_new(H parent,Symbol symbol,void *surface,size_t size);
