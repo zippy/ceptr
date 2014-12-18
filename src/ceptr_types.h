@@ -25,14 +25,16 @@ typedef SemanticID Structure;
 
 typedef uint16_t Mlevel;
 typedef uint32_t Mindex;
+typedef uint32_t Mmagic;
+
 
 // ** types for matrix trees
 typedef struct N {
-    void *surface;
     Symbol symbol;
     size_t size;
     Mindex parenti;
     int flags;
+    void *surface;  // this item must be last!!!
 } N;
 
 typedef struct L {
@@ -41,11 +43,23 @@ typedef struct L {
 } L;
 
 typedef struct M {
-    int magic;
-    int levels;
-    size_t size;
+    Mmagic magic;
+    Mlevel levels;
     L *lP;
 } M;
+
+// node entries are fixed size but the surface when serialized is an offset
+// in the blob not a pointer
+#define SERIALIZED_NODE_SIZE (sizeof(N)-sizeof(void *)+sizeof(size_t))
+#define SERIALIZED_LEVEL_SIZE(l) sizeof(Mindex)+SERIALIZED_NODE_SIZE*l->nodes
+#define SERIALIZED_HEADER_SIZE(levels) sizeof(S)+sizeof(Mlevel)*(levels);
+
+typedef struct S {
+    Mmagic magic;
+    Mlevel levels;
+    size_t blob_offset;
+    size_t level_offsets[];
+} S;
 
 #define NULL_ADDR -1
 typedef struct Maddr {

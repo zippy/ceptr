@@ -440,6 +440,7 @@ void _m_detatchfn(H oh,N *on,void *data,MwalkState *s,Maddr ap) {
     *n = *on;
     on->flags = TFLAG_DELETED;
     on->surface = 0;
+    on->size = 0;
     // which we got from the user portion of the state data
     n->parenti = parent.m ? parent.a.i : NULL_ADDR;
     s[oh.a.l].user.pi = l->nodes-1;
@@ -452,5 +453,100 @@ H _m_detatch(H oh) {
     H h = {d.m,{0,0}};
     return h;
 }
+
+
+void * _m_serialize(M *m) {
+
+    size_t s_size = SERIALIZED_HEADER_SIZE(m->levels);
+    size_t levels_size = 0;
+    size_t blob_size = 0;
+
+    Mlevel j;
+    Mindex i;
+    H h = {m,{0,0}};
+
+    // calculate level and blob sizes so we can allocate
+    for(h.a.l=0; h.a.l<m->levels; h.a.l++) {
+	L *l = GET_LEVEL(h);
+
+	levels_size +=  SERIALIZED_LEVEL_SIZE(l);
+
+	for(h.a.i=0;h.a.i < l->nodes;h.a.i++) {
+	    N *n = GET_NODE(h,l);
+	    blob_size+=n->size;
+	}
+    }
+
+    S *s = malloc(s_size+levels_size+blob_size);
+    s->magic = m->magic;
+    s->levels = m->levels;
+    s->blob_offset = s_size+levels_size;
+
+    void *blob = s->blob_offset + (void *)s;
+
+    levels_size = 0;
+    blob_size = 0;
+
+    for(h.a.l=0; h.a.l<m->levels; h.a.l++) {
+	s->level_offsets[h.a.l] = levels_size;
+	L *sl = (L *) (((void *)s) + s_size + levels_size);
+
+	L *l = GET_LEVEL(h);
+	levels_size +=  SERIALIZED_LEVEL_SIZE(l);
+
+	sl->nodes = l->nodes;
+
+	N *sn = (N *)&sl->nP;
+	for(h.a.i=0;h.a.i < l->nodes;h.a.i++) {
+	    N *n = GET_NODE(h,l);
+	    *sn = *n;
+	    if (n->flags & TFLAG_ALLOCATED) {
+		*(size_t *)&sn->surface = blob_size;
+		memcpy(blob+blob_size,n->surface,n->size);
+		blob_size+=n->size;
+	    }
+	    else {
+		*((int *)&sn->surface) = *((int *)&n->surface);
+	    }
+
+	    sn = (N *) (SERIALIZED_NODE_SIZE + ((void*)sn));
+	}
+    }
+    return s;
+}
+
+H _m_unserialize(void *s) {
+    M *m = malloc(sizeof(M));
+    m->magic = ((M *)s)->magic;
+    m->levels = ((M *)s)->levels;
+    m->lP = malloc(sizeof(L)*m->levels);
+    H h = {m,{0,0}};
+    void *blob = ((S *)s)->blob_offset + (void *)s;
+
+    size_t s_size = SERIALIZED_HEADER_SIZE(m->levels);
+    for(h.a.l=0; h.a.l<m->levels; h.a.l++) {
+	L *sl = (L *) (((void *)s) + s_size + ((S *)s)->level_offsets[h.a.l]);
+	L *l = GET_LEVEL(h);
+	l->nodes = sl->nodes;
+	l->nP = malloc(sizeof(N)*l->nodes);
+	N *sn = (N *)&sl->nP;
+	for(h.a.i=0;h.a.i < l->nodes;h.a.i++) {
+	    N *n = GET_NODE(h,l);
+	    *n = *sn;
+	    void *surface = blob+*(size_t *)&sn->surface;
+	    if (n->flags & TFLAG_ALLOCATED) {
+		n->surface = malloc(sn->size);
+		memcpy(n->surface,surface,sn->size);
+	    }
+	    else {
+		*((int *)&n->surface) = *((int *)&sn->surface);
+	    }
+	    sn = (N *) (SERIALIZED_NODE_SIZE + ((void*)sn));
+	}
+    }
+    h.a.i = h.a.l = 0;
+    return h;
+}
+
 
 /** @}*/

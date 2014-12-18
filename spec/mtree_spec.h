@@ -260,10 +260,40 @@ void testTreeConvert() {
     //! [testMTreeSerialize]
 }
 
+testMTreeSerialize() {
+    T *t = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
+    H h = _m_new_from_t(t);
+    S *s = _m_serialize(h.m);
+
+    spec_is_equal(s->magic,h.m->magic);
+    spec_is_equal(s->levels,h.m->levels);
+    spec_is_long_equal(s->level_offsets[0],0);
+    L *l = GET_LEVEL(h);
+    spec_is_long_equal(s->level_offsets[1], SERIALIZED_LEVEL_SIZE(l));
+
+    H h1 = _m_unserialize(s);
+    T *t1 = _t_new_from_m(h);
+
+    char buf[2000] = {0};
+    char buf1[2000] = {0};
+
+    __t_dump(&test_HTTP_defs,t,0,buf);
+    __t_dump(&test_HTTP_defs,t1,0,buf1);
+
+    spec_is_str_equal(buf1,buf);
+    _m_free(h1);
+    _t_free(t1);
+    free(s);
+    _m_free(h);
+    _t_free(t);
+}
+
+
 void testMTree() {
     _setup_HTTPDefs();
     testCreateTreeNodesM();
     testMTreeWalk();
     testTreeConvert();
+    testMTreeSerialize();
     _cleanup_HTTPDefs();
 }
