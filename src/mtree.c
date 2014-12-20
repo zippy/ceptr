@@ -455,10 +455,10 @@ H _m_detatch(H oh) {
 }
 
 
-void * _m_serialize(M *m) {
+void * _m_serialize(M *m,size_t *sizeP) {
 
-    size_t s_size = SERIALIZED_HEADER_SIZE(m->levels);
-    size_t levels_size = 0;
+    uint32_t s_size = SERIALIZED_HEADER_SIZE(m->levels);
+    uint32_t levels_size = 0;
     size_t blob_size = 0;
 
     Mlevel j;
@@ -477,7 +477,8 @@ void * _m_serialize(M *m) {
 	}
     }
 
-    S *s = malloc(s_size+levels_size+blob_size);
+
+    S *s = malloc(*sizeP = s_size+levels_size+blob_size);
     s->magic = m->magic;
     s->levels = m->levels;
     s->blob_offset = s_size+levels_size;
@@ -496,10 +497,12 @@ void * _m_serialize(M *m) {
 
 	sl->nodes = l->nodes;
 
-	N *sn = (N *)&sl->nP;
+	N *sn = sizeof(Mindex)+(void *)sl;
 	for(h.a.i=0;h.a.i < l->nodes;h.a.i++) {
 	    N *n = GET_NODE(h,l);
 	    *sn = *n;
+	    //	    raise(SIGINT);
+
 	    if (n->flags & TFLAG_ALLOCATED) {
 		*(size_t *)&sn->surface = blob_size;
 		memcpy(blob+blob_size,n->surface,n->size);
@@ -523,13 +526,13 @@ H _m_unserialize(void *s) {
     H h = {m,{0,0}};
     void *blob = ((S *)s)->blob_offset + (void *)s;
 
-    size_t s_size = SERIALIZED_HEADER_SIZE(m->levels);
+    uint32_t s_size = SERIALIZED_HEADER_SIZE(m->levels);
     for(h.a.l=0; h.a.l<m->levels; h.a.l++) {
 	L *sl = (L *) (((void *)s) + s_size + ((S *)s)->level_offsets[h.a.l]);
 	L *l = GET_LEVEL(h);
 	l->nodes = sl->nodes;
 	l->nP = malloc(sizeof(N)*l->nodes);
-	N *sn = (N *)&sl->nP;
+	N *sn = sizeof(Mindex)+(void *)sl;
 	for(h.a.i=0;h.a.i < l->nodes;h.a.i++) {
 	    N *n = GET_NODE(h,l);
 	    *n = *sn;

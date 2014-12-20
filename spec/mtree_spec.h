@@ -189,6 +189,22 @@ void testCreateTreeNodesM(){
     spec_is_equal(h121.a.i,1);  //should be last because it was appended by add
 
 
+    size_t size;
+    S *s = _m_serialize(h.m,&size);
+    FILE *ofp;
+    char outputFilename[] = "test1.cmt";
+
+    ofp = fopen(outputFilename, "w");
+    if (ofp == NULL) {
+	fprintf(stderr, "Can't open output file %s!\n",outputFilename);
+    }
+    else {
+	fwrite(s, 1,size, ofp);
+	fclose(ofp);
+    }
+
+
+
     buf[0] = 0;
     _m_walk(h2,_walkfn,buf);
     spec_is_str_equal(buf,"1.1, 2.0, 2.2, 3.0, ");
@@ -263,13 +279,14 @@ void testTreeConvert() {
 testMTreeSerialize() {
     T *t = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
     H h = _m_new_from_t(t);
-    S *s = _m_serialize(h.m);
+    size_t size;
+    S *s = _m_serialize(h.m,&size);
 
     spec_is_equal(s->magic,h.m->magic);
     spec_is_equal(s->levels,h.m->levels);
-    spec_is_long_equal(s->level_offsets[0],0);
+    spec_is_equal(s->level_offsets[0],0);
     L *l = GET_LEVEL(h);
-    spec_is_long_equal(s->level_offsets[1], SERIALIZED_LEVEL_SIZE(l));
+    spec_is_equal(s->level_offsets[1], (int)SERIALIZED_LEVEL_SIZE(l));
 
     H h1 = _m_unserialize(s);
     T *t1 = _t_new_from_m(h);
@@ -281,6 +298,19 @@ testMTreeSerialize() {
     __t_dump(&test_HTTP_defs,t1,0,buf1);
 
     spec_is_str_equal(buf1,buf);
+
+    FILE *ofp;
+    char outputFilename[] = "test.cmt";
+
+    ofp = fopen(outputFilename, "w");
+    if (ofp == NULL) {
+	fprintf(stderr, "Can't open output file %s!\n",outputFilename);
+    }
+    else {
+	fwrite(s, 1,size, ofp);
+	fclose(ofp);
+    }
+
     _m_free(h1);
     _t_free(t1);
     free(s);
