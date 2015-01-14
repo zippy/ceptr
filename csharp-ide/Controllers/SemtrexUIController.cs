@@ -21,6 +21,14 @@ namespace csharp_ide.Controllers
 {
 	public class SemtrexUIController : ViewController<SemtrexUIView>
 	{
+		protected Dictionary<string, SemanticID> symbolMap;
+		protected Dictionary<string, SemanticID> structureMap;
+		protected Guid asciiTreeID;
+		protected Guid parseExprID;
+		protected Guid matchResultTreeID;
+		protected Guid embodyID;
+		protected Guid matchAgainstID;
+
 		public SemtrexUIController()
 		{
 		}
@@ -31,11 +39,12 @@ namespace csharp_ide.Controllers
 			base.EndInit();
 		}
 
-		public void Go(object sender, EventArgs args)
+		public void CreateStructuresAndSymbols()
 		{
+			symbolMap = new Dictionary<string, SemanticID>();
+			structureMap = new Dictionary<string, SemanticID>();
+
 			ApplicationController.CeptrInterface.CreateStructureAndSymbolNodes();
-			Dictionary<string, SemanticID> symbolMap = new Dictionary<string, SemanticID>();
-			Dictionary<string, SemanticID> structureMap = new Dictionary<string, SemanticID>();
 
 			foreach (string symbolName in ApplicationModel.SymbolRefCount.Keys)
 			{
@@ -54,7 +63,74 @@ namespace csharp_ide.Controllers
 					symbolMap[symbolName] = symbolID;
 				}
 			}
+		}
+		
+		public void ToTree(object sender, EventArgs args)
+		{
+			CreateStructuresAndSymbols();
 
+			asciiTreeID = ApplicationController.CeptrInterface.GetTree(View.tbInputString.Text);
+			DumpOutput(asciiTreeID);
+		}
+
+		public void ToSemtrex(object sender, EventArgs args)
+		{
+			parseExprID = ApplicationController.CeptrInterface.ParseSemtrex(
+				ApplicationController.CeptrInterface.RootSymbolsNode,
+				ApplicationController.CeptrInterface.RootStructuresNode,
+				View.tbParseExpr.Text
+				);
+			DumpOutput(parseExprID);
+		}
+
+		public void Match(object sender, EventArgs args)
+		{
+			Tuple<bool, Guid> result = ApplicationController.CeptrInterface.Match(parseExprID, asciiTreeID);
+
+			if (result.Item1)
+			{
+				View.tbMatchResult.Text = "True";
+				matchResultTreeID = result.Item2;
+				DumpOutput(matchResultTreeID);
+			}
+			else
+			{
+				View.tbMatchResult.Text = "False";
+				View.tbSemtrexTree.Text = "";
+			}
+		}
+
+		public void Embody(object sender, EventArgs args)
+		{
+			embodyID = ApplicationController.CeptrInterface.Embody(
+				ApplicationController.CeptrInterface.RootSymbolsNode,
+				ApplicationController.CeptrInterface.RootStructuresNode,
+				matchResultTreeID,
+				asciiTreeID
+				);
+
+			DumpOutput(embodyID);
+		}
+
+		public void ToMatchAgainst(object sender, EventArgs args)
+		{
+			matchAgainstID = ApplicationController.CeptrInterface.ParseSemtrex(
+				ApplicationController.CeptrInterface.RootSymbolsNode,
+				ApplicationController.CeptrInterface.RootStructuresNode,
+				View.tbMatchAgainst.Text
+				);
+			DumpOutput(matchAgainstID);
+		}
+
+		public void MatchAgainstMatches(object sender, EventArgs args)
+		{
+			bool ret = ApplicationController.CeptrInterface.MatchTest(matchAgainstID, embodyID);
+
+			View.tbMatchResult2.Text=(ret ? "True" : "False");
+		}
+/*
+		public void AsciiParserToTree(object swender, EventArgs args)
+		{
 			Guid treeID = ApplicationController.CeptrInterface.ParseSemtrex(
 				ApplicationController.CeptrInterface.RootSymbolsNode,
 				ApplicationController.CeptrInterface.RootStructuresNode,
@@ -64,6 +140,17 @@ namespace csharp_ide.Controllers
 				ApplicationController.CeptrInterface.RootSymbolsNode,
 				ApplicationController.CeptrInterface.RootStructuresNode,
 				treeID);
+
+			View.tbSemtrexTree.Text = ApplicationController.FormatDump(dump);
+		}
+*/
+		// Formatted output of the resulting tree.
+		public void DumpOutput(Guid id)
+		{
+			string dump = ApplicationController.CeptrInterface.Dump(
+				ApplicationController.CeptrInterface.RootSymbolsNode,
+				ApplicationController.CeptrInterface.RootStructuresNode,
+				id);
 
 			View.tbSemtrexTree.Text = ApplicationController.FormatDump(dump);
 		}

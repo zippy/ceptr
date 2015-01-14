@@ -219,6 +219,9 @@ namespace ceptrlib
 		extern static unsafe void __t_dump(Defs* defs, TreeNode* t, int level, char* buf);
 
 		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
+		extern static unsafe TreeNode* makeASCIITree(string stx);
+
+		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
 		extern static unsafe TreeNode* parseSemtrex(Defs* d, string stx);
 
 		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -226,6 +229,9 @@ namespace ceptrlib
 
 		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
 		extern static unsafe int _t_matchr(TreeNode* semtrex, TreeNode* matchAgainst, TreeNode** matchResult);
+
+		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
+		extern static unsafe TreeNode* _t_embody_from_match(Defs* d, TreeNode* matchResult, TreeNode* semtrex);
 
 		protected Dictionary<Guid, IntPtr> nodes = new Dictionary<Guid, IntPtr>();
 
@@ -315,14 +321,71 @@ namespace ceptrlib
 			return st;
 		}
 
+		/// <summary>
+		/// Returns a GUID for the associated TreeNode* of a string converted into a tree.
+		/// </summary>
+		public unsafe Guid GetTree(string str)
+		{
+			TreeNode* node = makeASCIITree(str);
+			Guid nodeID = RegisterNode(node);
+
+			return nodeID;
+		}
+
 		public unsafe Guid ParseSemtrex(Guid g_symbols, Guid g_structures, string expression)
 		{
 			Defs defs = CreateDefs(g_symbols, g_structures);
 			TreeNode* node = parseSemtrex(&defs, expression);
-			Dump(defs, node);
 			Guid nodeID = RegisterNode(node);
 
 			return nodeID;
+		}
+
+		/* create a new tree based on the matched elements from a semtrex match
+		*
+		* @param[in] defs definitions of the semantic context
+		* @param[in] match a match from a call to _t_matchr
+		* @param[in] parent the parent tree to add the embodiment into
+		*
+		*/
+		public unsafe Guid Embody(Guid g_symbols, Guid g_structures, Guid matchID, Guid semtrexID)
+		{
+			Defs defs = CreateDefs(g_symbols, g_structures);
+			TreeNode* match = GetNode(matchID);
+			TreeNode* semtrex = GetNode(semtrexID);
+			TreeNode* resultTree = _t_embody_from_match(&defs, match, semtrex);
+
+			return RegisterNode(resultTree);
+		}
+
+		// Match a tree against a semtrex and get back match results
+		//	* @param[in] semtrex the semtrex pattern tree
+		//	* @param[in] t the tree to match against the pattern
+		//	* @param[inout] rP a pointer to a T to be filled with a match results tree
+		// * @returns 1 or 0 if matched or not
+		public unsafe Tuple<bool, Guid> Match(Guid semtrexID, Guid treeToMatchID)
+		{
+			TreeNode* semtrex = GetNode(semtrexID);
+			TreeNode* treeToMatch = GetNode(treeToMatchID);
+			TreeNode* resultTree;
+			int matchState = _t_matchr(semtrex, treeToMatch, &resultTree);
+			Guid guid = Guid.Empty;
+
+			if (matchState == 1)
+			{
+				guid = RegisterNode(resultTree);
+			}
+
+			return new Tuple<bool, Guid>(matchState == 1, guid);
+		}
+
+		public unsafe bool MatchTest(Guid semtrexID, Guid matchAgainstID)
+		{
+			TreeNode* semtrex = GetNode(semtrexID);
+			TreeNode* matchAgainst = GetNode(matchAgainstID);
+			int ret = _t_match(semtrex, matchAgainst);
+
+			return ret == 1;
 		}
 
 		public unsafe string Dump(Guid g_symbols, Guid g_structures, Guid nodeID)
@@ -389,6 +452,11 @@ namespace ceptrlib
 			nodes[guid] = (IntPtr)node;
 
 			return guid;
+		}
+
+		protected unsafe TreeNode* GetNode(Guid id)
+		{
+			return (TreeNode*)nodes[id];
 		}
 	}
 }

@@ -415,7 +415,7 @@ namespace csharp_ide.Controllers
 		}
 
 		// Ceptr menu events
-
+/*
 		protected void BuildSemanticTree(object sender, EventArgs args)
 		{
 			CeptrInterface.CreateStructureAndSymbolNodes();
@@ -429,7 +429,7 @@ namespace csharp_ide.Controllers
 			string retSymbols = CeptrInterface.DumpSymbols(CeptrInterface.RootSymbolsNode, CeptrInterface.RootStructuresNode);
 			string retStructures = CeptrInterface.DumpStructures(CeptrInterface.RootSymbolsNode, CeptrInterface.RootStructuresNode);
 		}
-
+*/
 		// Common helpers for symbol and structure controllers:
 
 		// Recurse into a symbol, creating the child symbols first and then defining the structure composed of the child symbols.
