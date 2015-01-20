@@ -1265,15 +1265,19 @@ T *parseSemtrex(Defs *d,char *stx) {
 
     o = _t_newr(o,SEMTREX_OR);
     sq = _t_newr(o,SEMTREX_SEQUENCE);
-    t = _t_news(sq,SEMTREX_GROUP,STX_VAL_I);
-    t = _t_newr(t,SEMTREX_ONE_OR_MORE);
+    t = _t_news(sq,SEMTREX_GROUP,STX_VAL_F);
+    T *sq2 = _t_newr(t,SEMTREX_SEQUENCE);
+    t = _t_newr(sq2,SEMTREX_ZERO_OR_MORE);
+    _stxcs(t,"0123456789");
+    __stxcv(sq2,'.');
+    t = _t_newr(sq2,SEMTREX_ONE_OR_MORE);
     _stxcs(t,"0123456789");
 
     o = _t_newr(o,SEMTREX_OR);
     sq = _t_newr(o,SEMTREX_SEQUENCE);
-    t = _t_news(sq,SEMTREX_GROUP,STX_VAL_F);
+    t = _t_news(sq,SEMTREX_GROUP,STX_VAL_I);
     t = _t_newr(t,SEMTREX_ONE_OR_MORE);
-    _stxcs(t,"0123456789.");
+    _stxcs(t,"0123456789");
 
     o = _t_newr(o,SEMTREX_OR);
     t = _t_news(o,SEMTREX_GROUP,STX_LABEL);

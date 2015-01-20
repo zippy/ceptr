@@ -871,9 +871,18 @@ void testEmbodyFromMatch() {
 
     T *e = _t_embody_from_match(0,r,t);
     spec_is_str_equal(t2s(e),"(LABELED_TRIPLET (LABEL:label) (X1:abc) (X2:123) (X3:3.141500))");
+
     _t_free(r);
-    _t_free(e);
     _t_free(s);
+
+    s =  parseSemtrex(&d,"/LABELED_TRIPLET/(.*,X3=3.1415)");
+    spec_is_str_equal(t2s(s),"(SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:LABELED_TRIPLET) (SEMTREX_SEQUENCE (SEMTREX_ZERO_OR_MORE (SEMTREX_SYMBOL_ANY)) (SEMTREX_VALUE_LITERAL (X3:3.141500))))");
+    spec_is_true(_t_match(s,e));
+
+    //    _t_free(r);
+    _t_free(s);
+
+    _t_free(e);
     _t_free(t);
 }
 
