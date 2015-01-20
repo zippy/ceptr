@@ -61,16 +61,59 @@ standard components in my &quot;toolkit.&quot;&nbsp; The IDE consists of:</p>
 <h3>Symbol List</h3>
 <h3>Structure List</h3>
 <h3>Semtrex Explorer</h3>
-<p>&nbsp;</p>
 <h2>Semantics: Symbols and Structures</h2>
-<p><i>(Explain symbols and structures and how this folds into Semtrex)</i></p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<h2>Semtrex Tokens</h2>
+<p>How do we build meaning?&nbsp; What is meaning?&nbsp; </p>
+<p>Eric: Meaning comes from having a social context in which symbols are applied 
+to embodied forms (structures!)&nbsp;&nbsp; </p>
+<p>Arthur: Meaning comes from understanding the use of a symbol in a specific 
+context.&nbsp; A context means a collection of symbols used in a particular way.</p>
+<p>A context becomes a structure, and with an associated symbol, allows you to 
+build new structures.</p>
+<p>The structure contextualizes the meaning.</p>
+<p>A structure constructs a context by giving meaning to other structures, by 
+naming them.</p>
+<p>Context is the relationship of named structures.&nbsp; </p>
+<p>Instance vs. Definition</p>
+<p>The structure is providing a context of instances of definitions.</p>
+<p><b>To express context (the relationship of named structures) we use a tree!</b></p>
+<p>We use a tree to embody both hierarchical and sibling relationships (the 
+semantic and structural relationship)</p>
+<p><b>The &quot;tree&quot; in the IDE is the embodied tree of a definition tree.</b></p>
+<p>Alternation???&nbsp; <b>That new structure can also be named and used in 
+other context.</b>&nbsp; It becomes named and applied collectively into another 
+structure / context.</p>
+<p>E: This is an important pattern in the real world and in programming (&quot;has a&quot; 
+relationship).&nbsp; This pattern of alternation is a fundamental pattern 
+(programming languages, real world, etc) what we're trying to do in ceptr is 
+make that fundamental pattern explicit and have some self knowledge of what 
+we're doing.</p>
+<p>A: What we're doing in Ceptr ... when you program, the programmer has to deal 
+with these things as meaningful units (variable names) but then when we compile 
+it, it all goes away, collapsed down to structured data in memory addresses.&nbsp;
+<i>We then have difficulty sharing the meaning, we have to then construct a 
+semantic layer where we &quot;hydrate&quot; the meaning back into the structure.</i></p>
+<p>With Semtrex serialization, you never lose the meaning when during the 
+process of serialization / deserialization.</p>
+<p>JSON/XML - added value in serialization?&nbsp; Performance?&nbsp; Using ASCII 
+vs. binary formatting.&nbsp; The &quot;structure&quot; of something can be changed within 
+the larger structure.&nbsp; Talk about this idea more.</p>
+<h2>Semtrex Tokens - Detail Section for Regular Express Geeks</h2>
 <p>In Ceptr, Semtrex expressions are semantic trees because everything in Ceptr 
 is stored as semantic trees. However, Semtrex can also be represented as a 
 linear ASCII string using has a small set of tokens which should look familiar 
 to Regex users.</p>
+<p>Here's what it is, and this is what it looks like when you serialize it.</p>
+<p>Semtrex starts as a tree and gets serialized to ASCII for easy reading.</p>
+<p>/*<br>
+stx = &quot;/HTTP_REQUEST/(.,.,HTTP_REQUEST_PATH/HTTP_REQUEST_PATH_SEGMENTS/{HTTP_REQUEST_PATH_SEGMENT:HTTP_REQUEST_PATH_SEGMENT})&quot;;<br>
+s = parseSemtrex(&amp;test_HTTP_defs,stx);<br>
+spec_is_str_equal(_dump_semtrex(test_HTTP_defs,s,buf),stx);<br>
+spec_is_str_equal(__t_dump(&amp;test_HTTP_defs,s,0,buf),&quot; (SEMTREX_SYMBOL_LITERAL:HTTP_REQUEST 
+(SEMTREX_SEQUENCE (SEMTREX_SYMBOL_ANY) (SEMTREX_SYMBOL_ANY) (SEMTREX_SYMBOL_LITERAL:HTTP_REQUEST_PATH 
+(SEMTREX_SYMBOL_LITERAL:HTTP_REQUEST_PATH_SEGMENTS (SEMTREX_GROUP:HTTP_REQUEST_PATH_SEGMENT 
+(SEMTREX_SYMBOL_LITERAL:HTTP_REQUEST_PATH_SEGMENT))))))&quot;);<br>
+*/</p>
+<p>A regex gets parsed into a tree before it's used!!!!</p>
 <p><font color="#FF0000">[ Need example: a simple ASCII string Semtrex and the 
 corresponding semantic tree ]</font></p>
 <h3>Value Literal and Symbol Literal</h3>
