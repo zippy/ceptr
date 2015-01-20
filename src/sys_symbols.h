@@ -362,6 +362,7 @@ Symbol STX_NOT;
 Symbol STX_VAL_C;
 Symbol STX_VAL_S;
 Symbol STX_VAL_I;
+Symbol STX_VAL_F;
 
 Symbol STX_SIBS;
 Symbol STX_CHILD;

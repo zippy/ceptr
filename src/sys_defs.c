@@ -227,6 +227,7 @@ void def_sys() {
     sY(STX_VAL_S,CSTRING);
     sY(STX_VAL_C,CHAR);
     sY(STX_VAL_I,INTEGER);
+    sY(STX_VAL_F,FLOAT);
 
     sY(STX_SIBS,LIST);
     sY(STX_CHILD,TREE);

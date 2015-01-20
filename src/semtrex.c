@@ -845,6 +845,8 @@ char * __dump_semtrex(Defs *defs,T *s,char *buf) {
 		sprintf(b+strlen(b),"'%c'",*(char *)(_t_surface(x)));
 	    else if (semeq(st,INTEGER))
 		sprintf(b+strlen(b),"%d",*(int *)(_t_surface(x)));
+	    else if (semeq(st,FLOAT))
+		sprintf(b+strlen(b),"%f",*(float *)(_t_surface(x)));
 	    else sprintf(b+strlen(b),"???x");
 	    if (i < count)
 		sprintf(b+strlen(b),",");
@@ -1268,6 +1270,12 @@ T *parseSemtrex(Defs *d,char *stx) {
     _stxcs(t,"0123456789");
 
     o = _t_newr(o,SEMTREX_OR);
+    sq = _t_newr(o,SEMTREX_SEQUENCE);
+    t = _t_news(sq,SEMTREX_GROUP,STX_VAL_F);
+    t = _t_newr(t,SEMTREX_ONE_OR_MORE);
+    _stxcs(t,"0123456789.");
+
+    o = _t_newr(o,SEMTREX_OR);
     t = _t_news(o,SEMTREX_GROUP,STX_LABEL);
     _stxl(t);
 
@@ -1300,6 +1308,9 @@ T *parseSemtrex(Defs *d,char *stx) {
 	    }
 	    else if (semeq(ts,STX_VAL_I)) {
 		asciiT_toi(s,c,tokens,ts);
+	    }
+	    else if (semeq(ts,STX_VAL_F)) {
+		asciiT_tof(s,c,tokens,ts);
 	    }
 	    else
 		_t_newi(tokens,ts,0);
@@ -1350,7 +1361,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 	/////////////////////////////////////////////////////
 	// convert STX_EQ/STX_NEQ to SEMTREX_VALUE_LITERALS
 	// EXPECTATION
-	// /%<SEMTREX_VALUE_LITERAL:STX_EQ|STX_NEQ,<SEMTREX_VALUE_SET:STX_VAL_I|STX_VAL_S|STX_VAL_C|STX_SET)>>
+	// /%<SEMTREX_VALUE_LITERAL:STX_EQ|STX_NEQ,<SEMTREX_VALUE_SET:STX_VAL_I|STX_VAL_F|STX_VAL_S|STX_VAL_C|STX_SET)>>
 	sxx = _t_new_root(SEMTREX_WALK);
 	g = _t_news(sxx,SEMTREX_GROUP,SEMTREX_VALUE_LITERAL);
 	sq = _t_newr(g,SEMTREX_SEQUENCE);
@@ -1361,6 +1372,8 @@ T *parseSemtrex(Defs *d,char *stx) {
 	g = _t_news(sq,SEMTREX_GROUP,SEMTREX_VALUE_SET);
 	o = _t_newr(g,SEMTREX_OR);
 	_sl(o,STX_VAL_I);
+	o = _t_newr(o,SEMTREX_OR);
+	_sl(o,STX_VAL_F);
 	o = _t_newr(o,SEMTREX_OR);
 	_sl(o,STX_VAL_S);
 	o = _t_newr(o,SEMTREX_OR);
