@@ -382,6 +382,9 @@ char * __t_dump(Defs *defs,T *t,int level,char *buf) {
 	    case INTEGER_ID:
 		sprintf(buf,"(%s:%d",n,*(int *)_t_surface(t));
 		break;
+	    case FLOAT_ID:
+		sprintf(buf,"(%s:%f",n,*(float *)_t_surface(t));
+		break;
 	    case SYMBOL_ID:
 		c = _d_get_symbol_name(symbols,*(Symbol *)_t_surface(t));
 		sprintf(buf,"(%s:%s",n,c?c:"<unknown>");
