@@ -768,6 +768,8 @@ T *_t_embody_from_match(Defs *defs,T *match,T *parent) {
 	    return asciiT_tos(parent,match,0,s);
 	case INTEGER_ID:
 	    return asciiT_toi(parent,match,0,s);
+	case FLOAT_ID:
+	    return asciiT_tof(parent,match,0,s);
 	case CHAR_ID:
 	    return asciiT_toc(parent,match,0,s);
 	default:
@@ -1094,6 +1096,23 @@ T *asciiT_toi(T* asciiT,T* match,T *t,Symbol s) {
     }
     buf[j]=0;
     return _t_newi(t,s,atoi(buf));
+}
+
+/**
+ * convert ascii tokens from a match to an float and add them to the given tree
+ */
+T *asciiT_tof(T* asciiT,T* match,T *t,Symbol s) {
+    char buf[10];
+    int sibs = *(int *)_t_surface(_t_child(match,3));
+    int *path = (int *)_t_surface(_t_child(match,2));
+    int j,d = _t_path_depth(path);
+    for(j=0;j<sibs;j++) {
+	buf[j] = *(char *)_t_surface(_t_get(asciiT,path));
+	path[d-1]++;
+    }
+    buf[j]=0;
+    float f = atof(buf);
+    return _t_new(t,s,&f,sizeof(float));
 }
 
 /**
