@@ -23,7 +23,7 @@ project called &quot;Ceptr.&quot;</p>
 </ol>
 <p>As a result of these premises, it became clear that, similar to how we have a 
 regular expression (Regex) matcher for one-dimensional strings, a tree 
-expression matcher is needed for 2 (or more) dimensional trees.&nbsp; 
+expression matcher is needed for two (or more) dimensional trees.&nbsp; 
 Furthermore, because the trees incorporate meaning (semantics), the tree 
 expression matcher must be a <i>semantic</i> tree regular expression matcher.&nbsp; Here 
 we see another divergence from Regex -- Semtrex matches on the semantics of the 
@@ -34,12 +34,48 @@ matching not just the literal values of the data but also the semantic
 meaning of the data.&nbsp; Thus, the while &quot;42&quot; matches with &quot;42&quot;, &quot;42 years 
 old&quot; does not match with &quot;42 is the answer to the ultimate question of life, the 
 universe, and everything.&quot;</p>
+<h2>The Code</h2>
+<p>Semtrex (the parser, specs, and symbol management) are written in 'C'.&nbsp; 
+Eric chose the 'C' language because it is ubiquitous among a wide variety of 
+platforms, everything from Arduino's to, of course, Windows and Linux.&nbsp; </p>
+<h3>Compiling the C Code</h3>
+<p>The simplest way to build the 'C' code is to download Eclipse and open the 
+Eclipse project in the Ceptr GitHub repository.&nbsp; The resulting dll file can 
+be copied into the C# bin\Debug or bin\Release folder.</p>
+<h2>The IDE</h2>
+<p>I opted to put a front-end on Eric's code, which is implemented in C#.&nbsp; 
+The IDE project's solution is compatible with Visual Studio 2013 Community 
+Edition. The IDE utilizes Weifen Luo's docking manager as well as several 
+standard components in my &quot;toolkit.&quot;&nbsp; The IDE consists of:</p>
+<ul>
+	<li>a symbol tree editor with property pane</li>
+	<li>symbol output document</li>
+	<li>structure output document</li>
+	<li>Semtrex explorer</li>
+	<li>symbol list</li>
+	<li>structure list</li>
+</ul>
+<h3>Symbol Tree Editor with Property Pane</h3>
+<h3>Symbol Output Document</h3>
+<h3>Structure Output Document</h3>
+<h3>Symbol List</h3>
+<h3>Structure List</h3>
+<h3>Semtrex Explorer</h3>
+<p>&nbsp;</p>
+<h2>Semantics: Symbols and Structures</h2>
+<p><i>(Explain symbols and structures and how this folds into Semtrex)</i></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <h2>Semtrex Tokens</h2>
 <p>In Ceptr, Semtrex expressions are semantic trees because everything in Ceptr 
 is stored as semantic trees. However, Semtrex can also be represented as a 
 linear ASCII string using has a small set of tokens which should look familiar 
 to Regex users.</p>
+<p><font color="#FF0000">[ Need example: a simple ASCII string Semtrex and the 
+corresponding semantic tree ]</font></p>
 <h3>Value Literal and Symbol Literal</h3>
+<p><font color="#FF0000">For each of these, provide a simple example and the 
+corresponding semantic tree</font></p>
 <p>In the expression X=&quot;b&quot;, X is the symbol literal and &quot;b&quot; is the value literal 
 (the &quot;=&quot; we can call the value operator.)&nbsp; These are tokens relevant to the 
 Semtrex tree after the human-readable form has been parsed.</p>
@@ -73,6 +109,7 @@ capture will have the form &quot;&lt;sym:X&gt;&quot; where X is the match expres
 &quot;sym&quot; is a symbol that will be used to refer to the match expression.&nbsp; In 
 Semtrex, a very common thing is to convert one semantic tree into another 
 semantic tree.&nbsp; This form simplifies such transformations.</p>
+<p><font color="#FF0000">Example!</font></p>
 <h3>Not</h3>
 <p>Indicating that match must &quot;not have this expression&quot; is indicated with the 
 &quot;~&quot; (tilde) character.</p>
@@ -134,6 +171,7 @@ meaning as we can give it at the moment: &quot;a string of ASCII characters&quot
 wrap into an ASCII Tree <i>representation.</i>&nbsp; We don't know what the 
 string is or what it contains, but now that we've got it in a tree structure, we 
 can parse it.</p>
+<p><font color="#FF0000">Example string and tree</font></p>
 <h3>Match Expression</h3>
 <p>Now, here's the fun part -- the match expression is itself a semantic tree.&nbsp; 
 There's a certain pulling oneself up by the bootstraps going on here.&nbsp; We 
