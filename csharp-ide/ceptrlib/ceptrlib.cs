@@ -192,27 +192,16 @@ namespace ceptrlib
 		extern static void sys_free();
 
 		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
-		extern static unsafe void testGetSize();
-
-		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
-		extern static unsafe TreeNode* _t_new(IntPtr parent, SemanticID sid, IntPtr surface, int size);
-
-		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
 		extern static unsafe TreeNode* _t_new_root(SemanticID sid);
 
 		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
 		extern static unsafe SemanticID _d_declare_symbol(TreeNode* symbols, SemanticID sid, string label, UInt16 context);
 
 		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
-		extern static unsafe SemanticID _d_define_structure(TreeNode* structures, [MarshalAs(UnmanagedType.LPStr)] string label, UInt16 context, int num_params, __arglist);
-
-		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
 		extern static unsafe SemanticID _dv_define_structure(TreeNode* structures, [MarshalAs(UnmanagedType.LPStr)] string label, int num_params, __arglist);
 
 		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
 		extern static unsafe int _t_children(TreeNode* structures);
-
-		// extern static unsafe Symbol _d_define_structure(T* structures, char* label, int num_params, UInt32 p1, UInt32 p2);
 
 		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
 		// [return: MarshalAs(UnmanagedType.LPStr)]

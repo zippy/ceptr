@@ -13,7 +13,7 @@
 <p>In this article, I would like to introduce you to the work of Eric 
 Harris-Braun and Arthur Brock.&nbsp; They have been working on a concept that 
 they call &quot;Semtrex&quot; - a semantic tree regular expression matcher, as part of a larger 
-project called &quot;Ceptr.&quot;</p>
+project called &quot;Ceptr.&quot; </p>
 <p>Two cornerstone of the Ceptr <i>concept</i> are:</p>
 <ol>
 	<li>data always carries with it its semantics, in other words, the qualities 
@@ -233,13 +233,27 @@ expression to match against the tree:</p>
 <p>Note how this expression not only matches against the format of the input 
 string but also specifies the symbols associated with the structural components 
 of the tree-ified string.</p>
-<p><font color="#FF0000">Need more discussion here</font></p>
+<p>What the above Semtrex expression is doing is as follows:</p>
+<ul>
+	<li>The angle brackets indicate that we are on the fly naming (or assigning 
+	a semantic symbol) the matching part of the input string. </li>
+<li>In this case, we're creating a symbol:&quot;lat&quot;&nbsp;which will hold the ASCII_CHARS 
+preceding the comma, and one called &quot;lon&quot; which will hold the symbols after the 
+comma.</li>
+	<li>Then &quot;HomeLocation&quot; is a symbol tree with &quot;lat&quot; and &quot;lon&quot; as its two 
+	children.</li>
+<li>Those named symbols (assuming there are definitions in the system for how 
+they're structured) can be used in later Semtrex matches on the match output 
+they produce.</li>
+</ul>
 <p>We enter the Semtrex expression in the next line and click on Parse:</p>
 <p><img border="0" src="parse3.png" width="562" height="143"></p>
+<p><img border="0" src="key-small.png" width="94" height="33"></p>
 <p>Why do we do this?&nbsp; Because we've specified a Semtrex expression as a 
 string, which itself must be first converted into a tree!&nbsp; So you can see 
-the pattern here: <b>inputs are semantic trees, expressions are semantic trees, 
-and Semtrex matches input trees against expression trees.</b></p>
+the pattern here: inputs are semantic trees, expressions are semantic trees, 
+and Semtrex matches input trees against expression trees.&nbsp; In fact, all 
+output from Semtrex is a semantic tree as well.</p>
 <p>The result of the parse operation can be viewed as well, shown here in full:</p>
 <pre>
 (
@@ -382,25 +396,458 @@ input string into a Semtrex expression:</p>
 )</pre>
 <p>So here you finally see the whole playground:</p>
 <p><img border="0" src="parse8.png" width="553" height="661"></p>
-<h2>Building The Semtrex Code</h2>
-<p>Semtrex (the parser, specs, and symbol management) are written in 'C'.&nbsp; 
-Eric chose the 'C' language because it is ubiquitous among a wide variety of 
+<h2>Building The Semtrex C Code</h2>
+<p>Semtrex (the parser, specs, and symbol management) are written in C.&nbsp; 
+Eric chose the C language because it is ubiquitous among a wide variety of 
 platforms, everything from Arduino's to, of course, Windows and Linux.&nbsp; </p>
 <h3>Compiling the C Code</h3>
-<p>The simplest way to build the 'C' code is to download Eclipse and open the 
+<p>The simplest way to build the C code is to download Eclipse and open the 
 Eclipse project in the Ceptr GitHub repository.&nbsp; The resulting dll file can 
 be copied into the C# bin\Debug or bin\Release folder.</p>
-<h2>The C# / C Interface</h2>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h2>The C# IDE</h2>
+<p>The IDE is organized into two projects -- &quot;csharp-ide&quot; is the IDE UI.&nbsp; 
+Readers may be familiar with other articles written by Marc Clifton which take 
+advantage of the same approach:</p>
+<ul>
+	<li>WeifenLuo's Docking Manager.</li>
+	<li>MycroParser used for the UI definition and event wire-up.</li>
+	<li>MVC pattern for separating out the model, view, and controllers for each 
+	of the dockable panes.</li>
+	<li>XTree - a general purpose tree builder.</li>
+</ul>
+<p>The second project (&quot;ceptrlib&quot;) is the interface 
+to Eric's C code, which must be built with the &quot;allow unsafe code&quot; option.&nbsp; 
+There are several structures, for example:</p>
+<pre>[StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
+public unsafe struct Defs 
+{
+  public TreeNode *structures;
+  public TreeNode *symbols; 
+  public TreeNode *processes; 
+  public TreeNode *scapes; 
+};</pre>
+<p>These must be marked as unsafe to fix the error &quot;Pointers and fixed size 
+buffers may only be used in an unsafe context.&quot;</p>
+<h3>The C# / C Interface</h3>
+<p>The C calls are made using the DllImport attribute.&nbsp; There are a few:</p>
+<pre>// Initialize the the 'C' library.
+[DllImport(&quot;libceptrlib.dll&quot;, CallingConvention = CallingConvention.Cdecl)]
+extern static void def_sys();
+
+// Free any allocated memory.
+[DllImport(&quot;libceptrlib.dll&quot;, CallingConvention = CallingConvention.Cdecl)]
+extern static void sys_free();
+
+// Create the root of a tree.
+[DllImport(&quot;libceptrlib.dll&quot;, CallingConvention = CallingConvention.Cdecl)]
+extern static unsafe TreeNode* _t_new_root(SemanticID sid);
+
+// Declare a symbol.
+[DllImport(&quot;libceptrlib.dll&quot;, CallingConvention = CallingConvention.Cdecl)]
+extern static unsafe SemanticID _d_declare_symbol(TreeNode* symbols, SemanticID sid, string label, UInt16 context);
+
+// Define a structure with a variable # of parameters.
+[DllImport(&quot;libceptrlib.dll&quot;, CallingConvention = CallingConvention.Cdecl)]
+extern static unsafe SemanticID _dv_define_structure(TreeNode* structures, [MarshalAs(UnmanagedType.LPStr)] string label, int num_params, __arglist);
+
+// Return the number of children in a node.
+[DllImport(&quot;libceptrlib.dll&quot;, CallingConvention = CallingConvention.Cdecl)]
+extern static unsafe int _t_children(TreeNode* structures);
+
+// Generate a human-readable dump of a tree.
+[DllImport(&quot;libceptrlib.dll&quot;, CallingConvention = CallingConvention.Cdecl)]
+// [return: MarshalAs(UnmanagedType.LPStr)]
+extern static unsafe void __t_dump(Defs* defs, TreeNode* t, int level, char* buf);
+
+// Create an ASCII tree from an input string.
+[DllImport(&quot;libceptrlib.dll&quot;, CallingConvention = CallingConvention.Cdecl)]
+extern static unsafe TreeNode* makeASCIITree(string stx);
+
+// Parse a Semtrex string into a Semtrex tree.
+[DllImport(&quot;libceptrlib.dll&quot;, CallingConvention = CallingConvention.Cdecl)]
+extern static unsafe TreeNode* parseSemtrex(Defs* d, string stx);
+
+[DllImport(&quot;libceptrlib.dll&quot;, CallingConvention = CallingConvention.Cdecl)]
+extern static unsafe int _t_match(TreeNode* semtrex, TreeNode* matchAgainst);
+
+[DllImport(&quot;libceptrlib.dll&quot;, CallingConvention = CallingConvention.Cdecl)]
+extern static unsafe int _t_matchr(TreeNode* semtrex, TreeNode* matchAgainst, TreeNode** matchResult);
+
+[DllImport(&quot;libceptrlib.dll&quot;, CallingConvention = CallingConvention.Cdecl)]
+extern static unsafe TreeNode* _t_embody_from_match(Defs* d, TreeNode* matchResult, TreeNode* semtrex);</pre>
+<h4>Initialization and Termination</h4>
+<p>Having the necessary imported 'C' functions above, we can implement all that 
+is necessary for initializing and terminating the 'C' library:</p>
+<pre>public unsafe void Initialize()
+{
+  def_sys();
+}
+
+public unsafe void Terminate()
+{
+  sys_free();
+}</pre>
+<h4>Initializing Structure and Symbol Trees</h4>
+<p>These are stored as separate trees, and we initialize them with:</p>
+<pre>public void CreateStructureAndSymbolNodes()
+{
+  Structures = new SemanticID() 
+    { 
+      context = (UInt16)SemanticContexts.SYS_CONTEXT, 
+      flags = (UInt16)SemanticTypes.SEM_TYPE_SYMBOL, 
+      id = (UInt32)SystemSymbolIDs.STRUCTURES_ID 
+    };
+
+  Symbols = new SemanticID() 
+    { 
+      context = (UInt16)SemanticContexts.SYS_CONTEXT, 
+      flags = (UInt16)SemanticTypes.SEM_TYPE_SYMBOL, 
+      id = (UInt32)SystemSymbolIDs.SYMBOLS_ID 
+    };
+
+  RootStructuresNode = CreateRootNode(Structures);
+  RootSymbolsNode = CreateRootNode(Symbols);
+}</pre>
+<p>In the C implementation, a SemanticID consists of: </p>
+<ul>
+	<li>A context in which it is defined (16 bits). This may specify a local 
+	receptor, the code installed in a system or from a compository of code and 
+	receptors.</li>
+	<li>Flags are a middle 16 bits reserved for flags about the symbol.</li>
+<li>ID is a unique identifier to that context and type.</li>
+</ul>
+<p>In other words, a symbol ID is 64 bits. 16 reserved for identifying context 
+of identifier, 16 reserved for markers about the type of symbol (like is it a 
+process, structure or a symbol, or scape or receptor or something else) and 32 
+for the identifier unique to that context and type, like a structure ID or 
+symbol ID.&nbsp; Note that one of the confusing things is that there is a symbol 
+		SYMBOLS_ID (plural) which holds the list of all SYMBOL_ID's. &nbsp;</p>
+<p>From the C# perspective, and not wanting to require unsafe support for every 
+assembly that references this interface assembly, the C pointers are mapped to GUID's:</p>
+<pre>public unsafe Guid CreateRootNode(SemanticID structures)
+{
+  TreeNode *node = _t_new_root(structures);
+  Guid guid = RegisterNode(node);
+
+  return guid;
+}
+
+protected unsafe Guid RegisterNode(TreeNode* node)
+{
+  Guid guid = Guid.NewGuid();
+  nodes[guid] = (IntPtr)node;
+
+  return guid;
+}</pre>
+<p>This way, all other assemblies can reference tree nodes using a Guid rather 
+than a C-style TreeNode*.&nbsp; Any node, given the Guid, can in this assembly 
+be restored to the TreeNode*:</p>
+<pre>protected unsafe TreeNode* GetNode(Guid id)
+{
+  return (TreeNode*)nodes[id];
+}</pre>
+<h4>Internal Types</h4>
+<p>There is of course a limit to how much one can realistically drill down into 
+the symbol-structure space, so there are several internal value types to 
+represent basic machine-understandable types.&nbsp; Remember, you're look at an 
+interface to C code here, and C has no concept of things like generics or 
+reflection, so all of the meaning (funny how we are talking about meaning at 
+both the semantic level and the code level) has to be expressed in structures 
+and enumerations.</p>
+<pre>public SemanticID GetFloat()
+{
+  SemanticID sid = new SemanticID() 
+  { 
+    context = (UInt16)SemanticContexts.SYS_CONTEXT, 
+    flags = (UInt16)SemanticTypes.SEM_TYPE_STRUCTURE, 
+    id = (UInt32)SystemStructureID.FLOAT_ID 
+  };
+
+  return sid;
+}
+
+public SemanticID GetString()
+{
+  SemanticID sid = new SemanticID() 
+  { 
+    context = (UInt16)SemanticContexts.SYS_CONTEXT, 
+    flags = (UInt16)SemanticTypes.SEM_TYPE_STRUCTURE, 
+    id = (UInt32)SystemStructureID.CSTRING_ID 
+  };
+
+  return sid;
+}
+
+public SemanticID GetInteger()
+{
+  SemanticID sid = new SemanticID() 
+  { 
+    context = (UInt16)SemanticContexts.SYS_CONTEXT, 
+    flags = (UInt16)SemanticTypes.SEM_TYPE_STRUCTURE, 
+    id = (UInt32)SystemStructureID.INTEGER_ID 
+  };
+
+  return sid;
+}
+
+public SemanticID GetList()
+{
+  SemanticID sid = new SemanticID() 
+  { 
+    context = (UInt16)SemanticContexts.SYS_CONTEXT, 
+    flags = (UInt16)SemanticTypes.SEM_TYPE_STRUCTURE, 
+    id = (UInt32)SystemStructureID.LIST_ID 
+  };
+
+  return sid;
+}</pre>
+<h4>Declaring Symbol and Structures</h4>
+<p>Here we declare a symbol:</p>
+<pre>public unsafe SemanticID DeclareSymbol(Guid symbols, SemanticID st, string label, SemanticContexts sc = SemanticContexts.RECEPTOR_CONTEXT)
+{
+  TreeNode *pnode = (TreeNode*)nodes[symbols];
+  SemanticID symbol = _d_declare_symbol(pnode, st, label, (UInt16)sc);
+
+  return symbol;
+}</pre>
+<p>and a structure:</p>
+<pre>public unsafe SemanticID DefineStructure(Guid structures, string name, SemanticID[] symbolArray, SemanticContexts sc = SemanticContexts.RECEPTOR_CONTEXT)
+{
+  TreeNode *structs = (TreeNode*)nodes[structures];
+
+  _dv_define_structure(structs, name, symbolArray.Length, __arglist(symbolArray));
+  SemanticID st = new SemanticID() { context = (ushort)sc, flags = (ushort)SemanticTypes.SEM_TYPE_STRUCTURE, id = (uint)_t_children(structs) };
+
+  return st;
+}</pre>
+<p>Remember that a structure (like &quot;latlon&quot;) is actually a collection of symbols 
+(&quot;lat&quot; and &quot;lon&quot;), therefore we pass in the symbols that comprise the structure.</p>
+<p><img border="0" src="note.png" width="24" height="32">&nbsp; You should start to see a pattern here -- every piece of symbol and structure 
+is an instance of <code>SemanticID</code>, whether it is a user defined symbol/structure or a 
+system defined symbol/structure.</p>
+<h4>Converting a String to an ASCII Tree</h4>
+<p>This is a straight forward process now:</p>
+<pre>public unsafe Guid GetTree(string str)
+{
+  TreeNode* node = makeASCIITree(str);
+  Guid nodeID = RegisterNode(node);
+
+  return nodeID;
+}</pre>
+<h4>Parse the Semtrex Expression</h4>
+<pre>public unsafe Guid ParseSemtrex(Guid g_symbols, Guid g_structures, string expression)
+{
+  Defs defs = CreateDefs(g_symbols, g_structures);
+  TreeNode* node = parseSemtrex(&amp;defs, expression);
+  Guid nodeID = RegisterNode(node);
+
+  return nodeID;
+}</pre>
+<h4>Embody the Match Results</h4>
+<pre>public unsafe Guid Embody(Guid g_symbols, Guid g_structures, Guid matchID, Guid semtrexID)
+{
+  Defs defs = CreateDefs(g_symbols, g_structures);
+  TreeNode* match = GetNode(matchID);
+  TreeNode* semtrex = GetNode(semtrexID);
+  TreeNode* resultTree = _t_embody_from_match(&amp;defs, match, semtrex);
+
+  return RegisterNode(resultTree);
+}</pre>
+<h4>Match A Tree</h4>
+<pre>public unsafe Tuple&lt;bool, Guid&gt; Match(Guid semtrexID, Guid treeToMatchID)
+{
+  TreeNode* semtrex = GetNode(semtrexID);
+  TreeNode* treeToMatch = GetNode(treeToMatchID);
+  TreeNode* resultTree;
+  int matchState = _t_matchr(semtrex, treeToMatch, &amp;resultTree);
+  Guid guid = Guid.Empty;
+
+  if (matchState == 1)
+  {
+    guid = RegisterNode(resultTree);
+  }
+
+  return new Tuple&lt;bool, Guid&gt;(matchState == 1, guid);
+}</pre>
+<h4>Testing the Match</h4>
+<pre>public unsafe bool MatchTest(Guid semtrexID, Guid matchAgainstID)
+{
+  TreeNode* semtrex = GetNode(semtrexID);
+  TreeNode* matchAgainst = GetNode(matchAgainstID);
+  int ret = _t_match(semtrex, matchAgainst);
+
+  return ret == 1;
+}</pre>
+<h3>Putting the Pieces Together</h3>
+<p>In SemanticUIController.cs, you can see how all of these pieces are put 
+together when handling the UI events.</p>
+<h4>Parsing A String to an ASCII Tree</h4>
+<pre>public void CreateStructuresAndSymbols()
+{
+  symbolMap = new Dictionary&lt;string, SemanticID&gt;();
+  structureMap = new Dictionary&lt;string, SemanticID&gt;();
+
+  ApplicationController.CeptrInterface.CreateStructureAndSymbolNodes();
+
+  foreach (string symbolName in ApplicationModel.SymbolRefCount.Keys)
+  {
+    if (!symbolMap.ContainsKey(symbolName))
+    {
+      // Find the symbol in the tree.
+      Symbol symbol = FindSymbolInTree(symbolName, ApplicationController.SymbolEditorController.View.TreeView.Nodes);
+
+      if (symbol == null)
+      {
+        throw new Exception(&quot;The symbol &quot; + symbolName + &quot; should have been found in the tree.&quot;);
+      }
+
+    SemanticID topStructure = ApplicationController.Recurse(symbol, structureMap, symbolMap);
+    SemanticID symbolID = ApplicationController.CeptrInterface.DeclareSymbol(
+        ApplicationController.CeptrInterface.RootSymbolsNode, topStructure, symbolName);
+    symbolMap[symbolName] = symbolID;
+    }
+  }
+}
+
+// Convert a string to an ASCII tree.
+public void ToTree(object sender, EventArgs args)
+{
+  CreateStructuresAndSymbols();
+
+  asciiTreeID = ApplicationController.CeptrInterface.GetTree(View.tbInputString.Text);
+  DumpOutput(asciiTreeID);
+}</pre>
+<p>The above code maps the symbol tree (managed simply be the .NET <code>TreeView</code> 
+control) into a dictionary of symbols and structures suitable for the C code to 
+digest.&nbsp; Once the symbols and structures have been initialized, the 
+interface function <code>GetTree</code> is called to return a <code>Guid</code> of the ASCII tree.</p>
+<h4>Creating a Semtrex Tree from an ASCII String</h4>
+<pre>public void ToSemtrex(object sender, EventArgs args)
+{
+  parseExprID = ApplicationController.CeptrInterface.ParseSemtrex(
+    ApplicationController.CeptrInterface.RootSymbolsNode,
+    ApplicationController.CeptrInterface.RootStructuresNode,
+    View.tbParseExpr.Text
+  );
+
+  DumpOutput(parseExprID);
+}</pre>
+<h4>Matching the ASCII Input String</h4>
+<p>Using the tree ID's obtained from the methods described above, we match the latlon input string against the parsed Semtrex 
+tree, :</p>
+<pre>public void Match(object sender, EventArgs args)
+{
+  Tuple&lt;bool, Guid&gt; result = ApplicationController.CeptrInterface.Match(parseExprID, asciiTreeID);
+
+  if (result.Item1)
+  {
+    View.tbMatchResult.Text = &quot;True&quot;;
+    matchResultTreeID = result.Item2;
+    DumpOutput(matchResultTreeID);
+  }
+  else
+  {
+    View.tbMatchResult.Text = &quot;False&quot;;
+    View.tbSemtrexTree.Text = &quot;&quot;;
+  }
+}</pre>
+<h4>Embody the Result</h4>
+<p>We embody the match result tree with the input values:</p>
+<pre>public void Embody(object sender, EventArgs args)
+{
+  embodyID = ApplicationController.CeptrInterface.Embody(
+    ApplicationController.CeptrInterface.RootSymbolsNode,
+    ApplicationController.CeptrInterface.RootStructuresNode,
+    matchResultTreeID,
+    asciiTreeID
+  );
+
+  DumpOutput(embodyID);
+}</pre>
+<h4>Parsing the Match String</h4>
+<p>As mentioned earlier, we again need to parse the human-readable string 
+representing our match expression into a Semtrex expression:</p>
+<pre>public void ToMatchAgainst(object sender, EventArgs args)
+{
+  matchAgainstID = ApplicationController.CeptrInterface.ParseSemtrex(
+    ApplicationController.CeptrInterface.RootSymbolsNode,
+    ApplicationController.CeptrInterface.RootStructuresNode,
+    View.tbMatchAgainst.Text
+  );
+  
+  DumpOutput(matchAgainstID);
+}</pre>
+<h4>Matching Against the Embodied Semtrex</h4>
+<p>Finally, in our last step, we use the <code>embodyID</code> from above along with the <code>matchAgainstID</code> 
+to match the embodied tree to the Semtrex match expression:</p>
+<pre>public void MatchAgainstMatches(object sender, EventArgs args)
+{
+  bool ret = ApplicationController.CeptrInterface.MatchTest(matchAgainstID, embodyID);
+
+  View.tbMatchResult2.Text=(ret ? &quot;True&quot; : &quot;False&quot;);
+}
+</pre>
+<h2>Semtrex Tokens - Detail Section for Regular Express Geeks</h2>
+<p>In Ceptr, Semtrex expressions are semantic trees because everything in Ceptr 
+is stored as semantic trees. However, Semtrex can also be represented as a 
+linear ASCII string using has a small set of tokens which should look familiar 
+to Regex users.</p>
+<h3>Value Literal and Symbol Literal</h3>
+<p>In the expression X=&quot;b&quot;, X is the symbol literal and &quot;b&quot; is the value literal 
+(the &quot;=&quot; we can call the value operator.)&nbsp; These are tokens relevant to the 
+Semtrex tree after the human-readable form has been parsed.</p>
+<h3>Except</h3>
+<p>To match any symbol except the one prefixed with &quot;!&quot; (bang or 
+exclamation) character (not to be confused with a &quot;not&quot; character.)&nbsp; </p>
+<h3>Any</h3>
+<p>Match any symbol matches, denoted with the &quot;.&quot; (period) character.</p>
+<h3>Sequence</h3>
+<p>A sequence of expressions is separated by the infix &quot;,&quot; (comma) character.</p>
+<h3>Or</h3>
+<p>Matching expression A or expression B is indicated with the infix &quot;|&quot; (pipe) 
+character.</p>
+<h3>Zero or More</h3>
+<p>Zero or more instances of an expression is indicated with the postfix &quot;*&quot; 
+(asterisk) character.</p>
+<h3>One or More</h3>
+<p>One or more instances of an expression is indicated with the postfix &quot;+&quot; (plus) 
+character.</p>
+<h3>Zero or One</h3>
+<p>Zero or more instances of an expression is indicated with the postfix &quot;?&quot; (question 
+mark) character.</p>
+<h3>Range</h3>
+<p>A range of expression occurrences is indicated with paired characters &quot;[&quot; and &quot;]&quot; 
+(open/close square bracket) characters.</p>
+<h3>Capture Group</h3>
+<p>A match can be captured (much like in Regex with the parenthesis) using the 
+paired characters &quot;&lt;&quot; and &quot;&gt;&quot; (open/close angle bracket) characters.&nbsp; This 
+syntax includes specifying a symbol name to refer to the matched expression, so a 
+capture will have the form &quot;&lt;sym:X&gt;&quot; where X is the match expression and 
+&quot;sym&quot; is a symbol that will be used to refer to the match expression.&nbsp; In 
+Semtrex, a very common thing is to convert one semantic tree into another 
+semantic tree.&nbsp; This form simplifies such transformations.</p>
+<h3>Not</h3>
+<p>Indicating that match must &quot;not have this expression&quot; is indicated with the 
+&quot;~&quot; (tilde) character.</p>
+<h3>Walk</h3>
+<p>The walk token &quot;%&quot; (percent sign) is used to walk an input tree - the tree is 
+&quot;walked&quot; until the first match expression that follows matches, then expression 
+matching continues from that point forward.</p>
+<h3>Siblings</h3>
+<p>Parentheses &quot;(&quot; and &quot;)&quot; always in pairs indicates that child expressions are 
+siblings.</p>
+<h3>Value Sets</h3>
+<p>To match on a set of values, the &quot;{&quot; and &quot;}&quot; (open/close curly brace) pairs 
+are used.&nbsp; Furthermore, string sets are double-quoted, character sets are 
+single-quoted, and numeric values are not quoted.&nbsp; Items in the set are 
+comma-delimited.&nbsp; Examples are:</p>
+<p>{&quot;ab&quot;,&quot;cd&quot;,&quot;zx&quot;}<br>
+{'a','b','c','d'}<br>
+{1,2,3,4}</p>
+<h3>Consume Everything</h3>
+<p>As in Regex, a trailing &quot;$&quot; (dollar sign) token is used to indicate that&nbsp; 
+for the expression to match, it must match the entire tree, i.e. there may not 
+be any children that don’t match.</p>
 
 <h2>References</h2>
 
