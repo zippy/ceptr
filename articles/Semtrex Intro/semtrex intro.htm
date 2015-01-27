@@ -8,7 +8,6 @@
 
 <body>
 
-<p>Semtrex Article, third try!</p>
 <h2>Introduction</h2>
 <p>In this article, I would like to introduce you to the work of Eric 
 Harris-Braun and Arthur Brock.&nbsp; They have been working on a concept that 
@@ -23,7 +22,7 @@ project called &quot;Ceptr.&quot;</p>
 </ol>
 <p>As a result of these premises, it became clear that, similar to how we have a 
 regular expression (Regex) matcher for one-dimensional strings, a tree 
-expression matcher is needed for two (or more) dimensional trees.&nbsp; 
+expression matcher is needed for trees of two or more dimensions.&nbsp; 
 Furthermore, because the trees incorporate meaning (semantics), the tree 
 expression matcher must be a <i>semantic</i> tree regular expression matcher.&nbsp; Here 
 we see another divergence from Regex -- Semtrex matches on the semantics of the 
@@ -31,10 +30,246 @@ data as well as literal values, whereas Regex, having no concept of the
 semantics on which it is matching, can match only on the literal values.</p>
 <p>This introduces some new and interesting behaviors to pattern matching -- 
 matching not just the literal values of the data but also the semantic 
-meaning of the data.&nbsp; Thus, the while &quot;42&quot; matches with &quot;42&quot;, &quot;42 years 
+meaning of the data.&nbsp; Thus, the while &quot;42&quot; matches with the 
+literal &quot;42&quot;, &quot;42 years 
 old&quot; does not match with &quot;42 is the answer to the ultimate question of life, the 
 universe, and everything.&quot;</p>
-<h2>The Code</h2>
+<h2>The Nature of Nature</h2>
+<p>Let's consider why semantic trees are important and, to be rather bold about 
+it, actually necessary for the future evolution of computing, communication, and 
+data exchange.&nbsp; There are both philosophical and concrete, computational 
+reasons, each guiding the other in understanding.&nbsp; We will consider how 
+everything in nature (though our focus is on data) has two characteristics: 
+meaning and structure (relationship.)&nbsp; </p>
+<h3>The Nature of Meaning</h3>
+<p>&quot;Semantics is the study of meaning.&quot;<sup>1</sup> In order for 
+information to have value, that information must have meaning.&nbsp; The term 
+&quot;value&quot; can be interpreted as meaning both &quot;valuable&quot; and &quot;computable.&quot;&nbsp; 
+Information is not <i>valuable</i> unless it is meaningful.&nbsp; Information 
+has values on which to base computations.&nbsp; So, by value, 
+we mean in part that computations can be performed on that value or that the 
+value is itself part of a computation involving many other values, and that we 
+find both the values and the computations <i>valuable.</i> Take, 
+for example, the Semantic Web<sup>3</sup> which &quot;provides a common framework that allows 
+data to be shared and reused across application, enterprise, and community 
+boundaries.&quot;<sup>3</sup>&nbsp; Note that the term itself was coined by Tim 
+Berners-Lee<sup>4</sup> for a web of data that can be processed by machines.<sup>5</sup></p>
+<h3>The Meaning of Nature</h3>
+<p>Nature is relational -- from the most fundamental theoretical models of quantum physics 
+to largest macrocosmic scale of physical galaxies, we constantly see that &quot;things&quot; are in 
+relationship with other &quot;things.&quot;&nbsp; Furthermore, these relationships have 
+structure which we humans, with great frequency, map into a hierarchical, 
+tree-like space.&nbsp; We do this with organizational charts, phylogeny, and 
+family trees.&nbsp; We use parse trees<sup>7</sup> for parsing a 
+context-free grammar.&nbsp; Compilers take our linear code and parse it into BNF<sup>8</sup> 
+trees to generate (again linear) machine code. </p>
+<p>Structure (the relationship between values) is also a necessary component of 
+meaning and therefore of computation.&nbsp; Just as you cannot perform a 
+computation on a value without at least an implicit semantic understanding of 
+what that value is, you cannot perform computations on groups of values without 
+having a defined structure that relates those values to each other.&nbsp; 
+Furthermore, that structure (the defining of relationships) itself creates new 
+meaning.</p>
+<h3>Meaning: Symbols and Structures</h3>
+<p>Eric Harris-Braun: &quot;Meaning comes from having a social context in which 
+symbols are applied to embodied forms (structures!)&quot;</p>
+<p>Arthur Brock: &quot;Meaning comes from understanding the use of a symbol in a 
+specific context.&nbsp; A context means a collection of symbols used in a 
+particular way.&quot;</p>
+<p>Structure (the defining of relationships) creates new meaning is a key point, and while it is (and in fact must be) self-reflective or 
+&quot;fractal&quot;, 
+it explains why we explicitly (or implicitly) create hierarchical structures.&nbsp; 
+For example, given something we want to measure, we assign a symbol to 
+it--inches, feet, kilograms, light-years.&nbsp; This gives the measurement a 
+semantic context.&nbsp; We see this &quot;thing&quot; in relationship with other &quot;things&quot; that also 
+have semantic meaning, and so we create a structure that maps the relationship 
+of those &quot;things.&quot;&nbsp; That structure is itself assigned a semantic meaning, 
+and so on, recursing in a fractal manner either up or down the hierarchies that 
+we are creating, allowing us to express more and more complex and interesting 
+concepts and relationships between those concepts.&nbsp; </p>
+<p>Eric Harris-Braun: &quot;This is an important pattern in the real world and in programming (&quot;has a&quot; 
+relationship).&nbsp; This pattern of alternation is a fundamental pattern 
+(programming languages, real world, etc) what we're trying to do in Ceptr is 
+make that fundamental pattern explicit and have some self knowledge of what 
+we're doing.&quot;</p>
+<p>Arthur Brock: &quot;What we're doing in Ceptr ... when you program, the programmer has to deal 
+with these things as meaningful units (variable names) but then when we compile 
+it, it all goes away, collapsed down to structured data in memory addresses.&nbsp; We then have difficulty sharing the meaning, we have to then construct a 
+semantic layer where we &quot;hydrate&quot; the meaning back into the structure.&quot;</p>
+<h3>Living Meaning</h3>
+<p>Meaning is not static and this is a major contributor to why software 
+becomes obsolete: software is incapable of adapting, beyond a certain limit, to 
+changes in meaning.&nbsp;&nbsp; </p>
+<ul>
+	<li>Values change -- they are created, destroyed, and changed.&nbsp; This 
+	happens with the greatest frequency and is the only change that modern day 
+	software typically handles well (without programmer intervention.)</li>
+	<li>Relationships between values change -- old relationships become 
+	&quot;meaningless&quot;, and new relationships are necessary between new values.&nbsp; 
+	While this happens slower, it could be argued to be the primary reason for 
+	why software needs to be updated and eventually replaced.&nbsp; For example, 
+	the lifetime of a relational database, which is expressing fixed 
+	relationship in tables and foreign keys, is limited by the ability to 
+	accommodate new relationships (new tables, changes in foreign keys, etc.)</li>
+	<li>Meaning itself changes, albeit very slowly over time.&nbsp; For example, 
+	consider how the meaning of the word &quot;gay&quot; has changed over time.</li>
+	<li>New structures are formed and given semantic meaning.&nbsp; One can observe 
+	how computer languages have evolved as new structures are incorporated into the 
+	language, such as lambda expressions, anonymous methods, and C#'s async/await 
+	keywords, all of which express older concepts in more efficient semantics.</li>
+</ul>
+<h3>Semtrex</h3>
+<p>Realizing that meaning involves semantics and structure, Semtrex is a 
+cornerstone to a much larger &quot;rewrite&quot; of the computing space in which we currently live.&nbsp; At present, our computational space takes semantically 
+structured data, decouples the semantic meaning and structure into raw data 
+streams or storage (with or without a separate schema), and then re-assembles that data into 
+either the same or different semantic structures.&nbsp; Ironically, this is the 
+impetus for a new field of information and computer science called ontology 
+engineering &quot;which studies the methods and methodologies for building ontologies: 
+formal representations of a set of concepts within a domain and the 
+relationships between those concepts.&quot;<sup>9</sup></p>
+<p>For example, the SMTP Specification<sup>10</sup> defines, among other things, 
+the structure and semantics of email addresses.&nbsp; When we write &quot;foo@biz.eu&quot;, 
+we strip off the structure and semantic meaning and in fact store and transmit 
+the email address with none of its original structure or semantics.&nbsp; When 
+we write a mail server, we have to &quot;parse&quot; the email address, &quot;hydrating&quot; its 
+structure and the semantics of its constituent parts so that we can perform 
+computations on the address such as validation, verification, checking against 
+white lists, black lists, perform billing, and so forth.&nbsp; Furthermore, the 
+system is very rigid.&nbsp; For example, we cannot send an email to a physical 
+address which could be handled by a system that physically prints and mails the 
+content.&nbsp; We cannot send an email to a phone number which would then dial 
+the phone and read the content with text-to-speech synthesis.&nbsp; We cannot 
+send an email to a mobile phone's text messaging service.&nbsp; Why?&nbsp; 
+Because the mail server must <i>assume</i> a specific semantic meaning to the 
+value in the &quot;mail-to&quot; slot--it must be an email address--because the &quot;mail-to&quot; 
+slot does not carry along with it the semantics of its value.</p>
+<h3>Edge Space</h3>
+<p>A cornerstone of the Ceptr <i>architecture</i> is that it operates 
+exclusively with semantic data and therefore semantic trees.&nbsp; In the 
+broader picture, Ceptr provides a means for processing semantic data in virtual 
+machine &quot;receptors.&quot;&nbsp; Data is moved in and out of receptors as semantic 
+packages, or signals, which embody of course both the data and the semantics 
+corresponding to that data.&nbsp; In this way, receptors only process those 
+things that have semantic meaning to them.</p>
+<p>However, the rest of the world does not usually exchange semantic information 
+-- instead, it's often raw binary data or human-readable ASCII strings (like 
+this article.)&nbsp; We see some introduction of semantic meaning in XML and 
+JSON packets, both in their ability to structure the data and associate 
+attribute names (or keys) to the data.&nbsp; However, even with XML and JSON, 
+the attribute and keys are often high level abstractions, like &quot;address&quot; or 
+&quot;full name&quot;, or domain-specific, like &quot;domicile&quot; and &quot;maiden name.&quot;&nbsp; In the 
+former, a program parsing the data does not know that &quot;address&quot; actually refers, 
+semantically, to a home address, vacation address, or business address (of many 
+options) and in the latter case, again a program parsing the key &quot;domicile&quot; 
+(which may have semantic meaning to the programmer that wrote the XML or JSON) 
+probably requires a &quot;translation&quot; to the semantic meaning &quot;home address.&quot;</p>
+<p>While this leaves the world with an almost infinite need for programmers to 
+constantly reformat one semantically poor data structure into another, equally 
+poor, semantic data structure, it still leaves us with the real world issue that 
+this problem does indeed exist.&nbsp; This is the &quot;edge space&quot; where &quot;data&quot; in 
+the outside world and semantic data inside of Ceptr is translated.</p>
+<h2>Starting with an Example</h2>
+<p>Marc Clifton has built a simple IDE (implemented in C#) around the C code to 
+provide a playground for working with Semtrex expression matching.&nbsp; We take 
+the example of parsing a latitude and longitude from an ASCII string into a 
+Semtrex and performing some match tests on it.</p>
+<h3>Building the Symbol and Structure Tree</h3>
+<p>The first step is to define the structures and their symbols.&nbsp; When we 
+fire up the IDE, we're presented with an empty Symbol Tree.&nbsp; Let's create a 
+container for our demo lat/lon symbols &amp; structures:</p>
+<p><img border="0" src="namespace1.png" width="510" height="113"></p>
+<p>Click on &quot;Symbol Namespace&quot; and provide a name for the container.&nbsp; Here, 
+I use &quot;latlon demo&quot;:</p>
+<p><img border="0" src="namespace2.png" width="510" height="111"></p>
+<p>Right-click on the &quot;latlon demo&quot; container and select &quot;Add Symbol&quot; from the 
+popup menu:</p>
+<p><img border="0" src="addSymbol.png" width="338" height="227"></p>
+<p>We can now define the symbol and structure names in the Properties pane:</p>
+<p><img border="0" src="addSymbol2.png" width="510" height="129"></p>
+<p>We'll assume that this is a &quot;home location&quot;, so we give name the <i>symbol</i> 
+&quot;HomeLocation&quot; and specify that the <i>structure</i> is a &quot;latlon&quot;:</p>
+<p><img border="0" src="latlon1.png" width="512" height="135"></p>
+<p>We also see the symbol and structure listed in the Symbols and Structures 
+panes:</p>
+<p><img border="0" src="symstruct1.png" width="324" height="76"></p>
+<p>Next, we define the &quot;latlon&quot; structure.&nbsp; This structure consists of two 
+symbols whose structure is &quot;float&quot;:</p>
+<p><img border="0" src="latlon2.png" width="505" height="195"></p>
+<p>As the above screenshot illustrates, there is a short list of built-in 
+structures from which one can also choose.&nbsp; Keep in mind that we could even 
+define what we mean by the structure &quot;float&quot; -- we could in fact define it as 
+two integers (again structures of bits) with the symbols &quot;mantissa&quot; and 
+&quot;exponent.&quot;&nbsp; This process can be repeated down to the atomic level (and 
+further) of capacitance charge in memory cells.</p>
+<p><img border="0" src="symstruct2.png" width="325" height="98"></p>
+<p>We now have our symbols and structures defined for parsing a latlon string.</p>
+<h3>ASCII Tree</h3>
+<p>Interestingly though (and by intent) a Semtrex match expression can be used 
+to parse strings (and other formats) into meaningful semantic trees.&nbsp; 
+However, Semtrex is a <i>tree expression matcher.</i>&nbsp; So, how do we get, 
+say, a string, into a format that Semtrex can parse?</p>
+<p>The answer is by creating a flat tree, called and &quot;ASCII Tree&quot;, which 
+consists of nothing more than a root node and where each of the children is a 
+single character in the string.&nbsp; While this sounds silly, it allows us to 
+stay in the unified world of semantic trees as the input for Semtrex.&nbsp; 
+Another way to put it is, we are describing the string semantically with as much 
+meaning as we can give it at the moment: &quot;a string of ASCII characters&quot; which we 
+wrap into an ASCII Tree <i>representation.</i>&nbsp; We don't know what the 
+string is or what it contains, but now that we've got it in a tree structure, we 
+can parse it.</p>
+<p><font color="#FF0000">Example string and tree</font></p>
+<h3>Match Expression</h3>
+<p>Now, here's the fun part -- the match expression is itself a semantic tree.&nbsp; 
+There's a certain pulling oneself up by the bootstraps going on here.&nbsp; We 
+can write a Semtrex expression in code, populating the expression tree that way, 
+or we can write a UI front-end that populates the expression tree, or, we can 
+de-serialize a &quot;human readable&quot; string that represents the match expression.&nbsp; 
+However, we use Semtrex itself to de-serialize the human readable string into an 
+expression tree!&nbsp; In other words, Semtrex can process human-readable 
+strings to create Semtrex tree expressions.</p>
+<h3>Match My Results</h3>
+<p><font color="#FF0000">Working with human-readable Semtrex strings is really a 
+three step process (much like working with Regex expressions.)&nbsp; First, we parse the input string into a semantic 
+tree--this is like any normal parsing code, only we use semtrexes internally to 
+do this!&nbsp; 
+Second, we convert the Semtrex tree into a kind of finite state automata (FSA) 
+that when run, moves around the input tree matching on the nodes and capturing 
+any values as specified in the semtrex expression.&nbsp; (For those deeply 
+interested the implementation takes lots of inspiration from http://swtch.com/~rsc/regexp/regexp1.html)
+</font> </p>
+<p><font color="#0000FF">use Semtrex again to match on the semantics and, where appropriate, 
+the value &quot;captures&quot; in the semantic graph (values which derive from 
+the original one-dimensional input string.)&nbsp; </font> </p>
+<p>For example, I want to use Semtrex to match HTTP requests (I'll use this 
+example repeatedly, so it's good to pay attention at this point.)&nbsp; Here's a 
+typical example of the human-readable string:</p>
+<pre>&quot;GET /path/to/file.ext?name=joe&amp;age=30 HTTP/0.9&quot;</pre>
+<p>The first part of the Semtrex expression to match on this string looks like 
+this:</p>
+<pre>/ASCII_CHARS/&lt;HTTP_REQUEST:&lt;HTTP_REQUEST_METHOD:ASCII_CHAR!=' '+&gt; (...etc...)</pre>
+<p>However, to accomplish this, first the human-readable string must be turned into an ASCII Tree:</p>
+<p>(C)<br>
+<pre>char *req = &quot;GET /path/to/file.ext?name=joe&amp;age=30 HTTP/0.9&quot;;<br>T *t,*s = _t_new_root(ASCII_CHARS);<br>while(*req) {<br>&nbsp; _t_newi(s,ASCII_CHAR,*req);<br>&nbsp; req++;<br>
+}</pre>
+<p>Second, the Semtrex expression (also in a &quot;human-readable&quot; form) must be 
+converted into an expression tree:</p>
+<p>(C)</p>
+<pre>char *stxs = &quot;/ASCII_CHARS/&lt;HTTP_REQUEST:&lt;HTTP_REQUEST_METHOD:ASCII_CHAR!=' '+&gt; (...etc...)
+T *stx = parseSemtrex(&amp;test_HTTP_defs,stxs);</pre>
+<p>I'll explain what <code>test_HTTP_defs</code> is later.</p>
+<p>In the third step, we execute the match function to obtain the results of the 
+expression: </p>
+<p>(C)</p>
+<pre>T *results;
+_t_matchr(stx,s,&amp;results);</pre>
+<p>The match results are themselves an expression tree.&nbsp; We 
+can then use Semtrex again to match on the values of those results, allowing us, 
+in the example above, to do something on the specific human-readable input 
+string, for example, routing the request to a particular handler (which gets us 
+in to what Ceptr casll &quot;actions&quot;, which is beyond the scope of 
+this article.)</p>
+<h2>Building The Semtrex Code</h2>
 <p>Semtrex (the parser, specs, and symbol management) are written in 'C'.&nbsp; 
 Eric chose the 'C' language because it is ubiquitous among a wide variety of 
 platforms, everything from Arduino's to, of course, Windows and Linux.&nbsp; </p>
@@ -42,25 +277,51 @@ platforms, everything from Arduino's to, of course, Windows and Linux.&nbsp; </p
 <p>The simplest way to build the 'C' code is to download Eclipse and open the 
 Eclipse project in the Ceptr GitHub repository.&nbsp; The resulting dll file can 
 be copied into the C# bin\Debug or bin\Release folder.</p>
-<h2>The IDE</h2>
-<p>I opted to put a front-end on Eric's code, which is implemented in C#.&nbsp; 
-The IDE project's solution is compatible with Visual Studio 2013 Community 
-Edition. The IDE utilizes Weifen Luo's docking manager as well as several 
-standard components in my &quot;toolkit.&quot;&nbsp; The IDE consists of:</p>
-<ul>
-	<li>a symbol tree editor with property pane</li>
-	<li>symbol output document</li>
-	<li>structure output document</li>
-	<li>Semtrex explorer</li>
-	<li>symbol list</li>
-	<li>structure list</li>
-</ul>
-<h3>Symbol Tree Editor with Property Pane</h3>
-<h3>Symbol Output Document</h3>
-<h3>Structure Output Document</h3>
-<h3>Symbol List</h3>
-<h3>Structure List</h3>
-<h3>Semtrex Explorer</h3>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<h2>References</h2>
+
+<p>1.&nbsp; <a href="http://en.wikipedia.org/wiki/Semantics">
+http://en.wikipedia.org/wiki/Semantics</a><br>
+2.&nbsp; <a href="http://en.wikipedia.org/wiki/Great-circle_distance">
+http://en.wikipedia.org/wiki/Great-circle_distance</a> <br>
+3. <span class="reference-text"><span class="citation web">
+<a rel="nofollow" class="external text" href="http://www.w3.org/2001/sw/">&quot;W3C 
+Semantic Web Activity&quot;</a>.
+<a title="World Wide Web Consortium" href="http://en.wikipedia.org/wiki/World_Wide_Web_Consortium">
+World Wide Web Consortium</a> (W3C). November 7, 2011<span class="reference-accessdate">. 
+Retrieved November 26, 2011</span>.<br>
+</span></span><span class="citation web">4.
+<a href="http://en.wikipedia.org/wiki/Tim_Berners-Lee">
+http://en.wikipedia.org/wiki/Tim_Berners-Lee</a> <br>
+</span>5. <span class="reference-text"><span class="citation journal">Berners-Lee, 
+Tim; James Hendler; Ora Lassila (May 17, 2001).
+<a rel="nofollow" class="external text" href="http://www.sciam.com/article.cfm?id=the-semantic-web&print=true">
+&quot;The Semantic Web&quot;</a>. <i>Scientific American Magazine</i><span class="reference-accessdate">. 
+Retrieved March 26, 2008</span>.<br>
+</span></span>6. <a href="http://dictionary.reference.com/browse/Phylogeny">
+http://dictionary.reference.com/browse/Phylogeny</a> <br>
+7. <a href="http://en.wikipedia.org/wiki/Parse_tree">
+http://en.wikipedia.org/wiki/Parse_tree</a> <br>
+8. <a href="http://en.wikipedia.org/wiki/Backus–Naur_Form">
+http://en.wikipedia.org/wiki/Backus%E2%80%93Naur_Form</a> <br>
+9. <a href="http://en.wikipedia.org/wiki/Ontology_engineering">
+http://en.wikipedia.org/wiki/Ontology_engineering</a> <br>
+10. <a href="http://tools.ietf.org/html/rfc5321">
+http://tools.ietf.org/html/rfc5321</a> <br>
+11. <a href="http://json.org/">http://json.org/</a> </p>
+
+<p>------------ Other Notes and Tidbits I Want To Keep -------------</p>
+<p>&nbsp;</p>
 <h2>Semantics: Symbols and Structures</h2>
 <p>How do we build meaning?&nbsp; What is meaning?&nbsp; </p>
 <p>Eric: Meaning comes from having a social context in which symbols are applied 
@@ -97,6 +358,8 @@ process of serialization / deserialization.</p>
 <p>JSON/XML - added value in serialization?&nbsp; Performance?&nbsp; Using ASCII 
 vs. binary formatting.&nbsp; The &quot;structure&quot; of something can be changed within 
 the larger structure.&nbsp; Talk about this idea more.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <h2>Semtrex Tokens - Detail Section for Regular Express Geeks</h2>
 <p>In Ceptr, Semtrex expressions are semantic trees because everything in Ceptr 
 is stored as semantic trees. However, Semtrex can also be represented as a 
@@ -175,106 +438,28 @@ comma-delimited.&nbsp; Examples are:</p>
 <p>As in Regex, a trailing &quot;$&quot; (dollar sign) token is used to indicate that&nbsp; 
 for the expression to match, it must match the entire tree, i.e. there may not 
 be any children that don’t match.</p>
-<h2>Edge Space</h2>
-<p>A cornerstone of the Ceptr <i>architecture</i> is that it operates 
-exclusively with semantic data and therefore semantic trees.&nbsp; In the 
-broader picture, Ceptr provides a means for processing semantic data in virtual 
-machine &quot;receptors.&quot;&nbsp; Data is moved in and out of receptors as semantic 
-packages, or signals, which embody of course both the data and the semantics 
-corresponding to that data.&nbsp; In this way, receptors only process those 
-things that have semantic meaning to them.</p>
-<p>However, the rest of the world does not usually exchange semantic information 
--- instead, it's often raw binary data or human-readable ASCII strings (like 
-this article.)&nbsp; We see some introduction of semantic meaning in XML and 
-JSON packets, both in their ability to structure the data and associate 
-attribute names (or keys) to the data.&nbsp; However, even with XML and JSON, 
-the attribute and keys are often high level abstractions, like &quot;address&quot; or 
-&quot;full name&quot;, or domain-specific, like &quot;domicile&quot; and &quot;maiden name.&quot;&nbsp; In the 
-former, a program parsing the data does not know that &quot;address&quot; actually refers, 
-semantically, a home address, vacation address, or business address (of many 
-options) and in the latter case, again a program parsing the key &quot;domicile&quot; 
-(which may have semantic meaning to the programmer that wrote the XML or JSON) 
-probably requires a &quot;translation&quot; to the semantic meaning &quot;home address.&quot;</p>
-<p>While this leaves the world with an almost infinite need for programmers to 
-constantly reformat one semantically poor data structure into another, equally 
-poor, semantic data structure, it still leaves us with the real world issue that 
-this problem does indeed exist.&nbsp; This is the &quot;edge space&quot; where &quot;data&quot; in 
-the outside world and semantic data inside of Ceptr is translated.</p>
-<h3>ASCII Tree</h3>
-<p>Interestingly though (and by intent) a Semtrex match expression can be used 
-to parse strings (and other formats) into meaningful semantic trees.&nbsp; 
-However, Semtrex is a <i>tree expression matcher.</i>&nbsp; So, how do we get, 
-say, a string, into a format that Semtrex can parse?</p>
-<p>The answer is by creating a flat tree, called and &quot;ASCII Tree&quot;, which 
-consists of nothing more than a root node and where each of the children is a 
-single character in the string.&nbsp; While this sounds silly, it allows us to 
-stay in the unified world of semantic trees as the input for Semtrex.&nbsp; 
-Another way to put it is, we are describing the string semantically with as much 
-meaning as we can give it at the moment: &quot;a string of ASCII characters&quot; which we 
-wrap into an ASCII Tree <i>representation.</i>&nbsp; We don't know what the 
-string is or what it contains, but now that we've got it in a tree structure, we 
-can parse it.</p>
-<p><font color="#FF0000">Example string and tree</font></p>
-<h3>Match Expression</h3>
-<p>Now, here's the fun part -- the match expression is itself a semantic tree.&nbsp; 
-There's a certain pulling oneself up by the bootstraps going on here.&nbsp; We 
-can write a Semtrex expression in code, populating the expression tree that way, 
-or we can write a UI front-end that populates the expression tree, or, we can 
-de-serialize a &quot;human readable&quot; string that represents the match expression.&nbsp; 
-However, we use Semtrex itself to de-serialize the human readable string into an 
-expression tree!&nbsp; In other words, Semtrex can process human-readable 
-strings to create Semtrex tree expressions.</p>
-<h3>Match My Results</h3>
-<p><font color="#FF0000">Working with human-readable Semtrex strings is really a 
-three step process (much like working with Regex expressions.)&nbsp; First, we parse the input string into a semantic 
-tree--this is like any normal parsing code, only we use semtrexes internally to 
-do this!&nbsp; 
-Second, we convert the Semtrex tree into a kind of finite state automata (FSA) 
-that when run, moves around the input tree matching on the nodes and capturing 
-any values as specified in the semtrex expression.&nbsp; (For those deeply 
-interested the implementation takes lots of inspiration from http://swtch.com/~rsc/regexp/regexp1.html)
-</font> </p>
-<p><font color="#0000FF">use Semtrex again to match on the semantics and, where appropriate, 
-the value &quot;captures&quot; in the semantic graph (values which derive from 
-the original one-dimensional input string.)&nbsp; </font> </p>
-<p>For example, I want to use Semtrex to match HTTP requests (I'll use this 
-example repeatedly, so it's good to pay attention at this point.)&nbsp; Here's a 
-typical example of the human-readable string:</p>
-<pre>&quot;GET /path/to/file.ext?name=joe&amp;age=30 HTTP/0.9&quot;</pre>
-<p>The first part of the Semtrex expression to match on this string looks like 
-this:</p>
-<pre>/ASCII_CHARS/&lt;HTTP_REQUEST:&lt;HTTP_REQUEST_METHOD:ASCII_CHAR!=' '+&gt; (...etc...)</pre>
-<p>However, to accomplish this, first the human-readable string must be turned into an ASCII Tree:</p>
-<p>(C)<br>
-<pre>char *req = &quot;GET /path/to/file.ext?name=joe&amp;age=30 HTTP/0.9&quot;;<br>T *t,*s = _t_new_root(ASCII_CHARS);<br>while(*req) {<br>&nbsp; _t_newi(s,ASCII_CHAR,*req);<br>&nbsp; req++;<br>
-}</pre>
-<p>Second, the Semtrex expression (also in a &quot;human-readable&quot; form) must be 
-converted into an expression tree:</p>
-<p>(C)</p>
-<pre>char *stxs = &quot;/ASCII_CHARS/&lt;HTTP_REQUEST:&lt;HTTP_REQUEST_METHOD:ASCII_CHAR!=' '+&gt; (...etc...)
-T *stx = parseSemtrex(&amp;test_HTTP_defs,stxs);</pre>
-<p>I'll explain what <code>test_HTTP_defs</code> is later.</p>
-<p>In the third step, we execute the match function to obtain the results of the 
-expression: </p>
-<p>(C)</p>
-<pre>T *results;
-_t_matchr(stx,s,&amp;results);</pre>
-<p>The match results are themselves an expression tree.&nbsp; We 
-can then use Semtrex again to match on the values of those results, allowing us, 
-in the example above, to do something on the specific human-readable input 
-string, for example, routing the request to a particular handler (which gets us 
-in to what Ceptr casll &quot;actions&quot;, which is beyond the scope of 
-this article.)</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h2>The IDE</h2>
+<p>I opted to put a front-end on Eric's code, which is implemented in C#.&nbsp; 
+The IDE project's solution is compatible with Visual Studio 2013 Community 
+Edition. The IDE utilizes Weifen Luo's docking manager as well as several 
+standard components in my &quot;toolkit.&quot;&nbsp; The IDE consists of:</p>
+<ul>
+	<li>a symbol tree editor with property pane</li>
+	<li>symbol output document</li>
+	<li>structure output document</li>
+	<li>Semtrex explorer</li>
+	<li>symbol list</li>
+	<li>structure list</li>
+</ul>
+<h3>Symbol Tree Editor with Property Pane</h3>
+<h3>Symbol Output Document</h3>
+<h3>Structure Output Document</h3>
+<h3>Symbol List</h3>
+<h3>Structure List</h3>
+<h3>Semtrex Explorer</h3>
 
 </body>
 
