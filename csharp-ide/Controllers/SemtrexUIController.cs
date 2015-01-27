@@ -81,6 +81,7 @@ namespace csharp_ide.Controllers
 				ApplicationController.CeptrInterface.RootStructuresNode,
 				View.tbParseExpr.Text
 				);
+
 			DumpOutput(parseExprID);
 		}
 
