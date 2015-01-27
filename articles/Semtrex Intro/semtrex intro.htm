@@ -8,6 +8,7 @@
 
 <body>
 
+<p><img border="0" src="ide.png" width="917" height="507"></p>
 <h2>Introduction</h2>
 <p>In this article, I would like to introduce you to the work of Eric 
 Harris-Braun and Arthur Brock.&nbsp; They have been working on a concept that 
@@ -195,80 +196,192 @@ panes:</p>
 <p><img border="0" src="symstruct1.png" width="324" height="76"></p>
 <p>Next, we define the &quot;latlon&quot; structure.&nbsp; This structure consists of two 
 symbols whose structure is &quot;float&quot;:</p>
-<p><img border="0" src="latlon2.png" width="505" height="195"></p>
+<p><img border="0" src="latlon2.png" width="425" height="225"></p>
 <p>As the above screenshot illustrates, there is a short list of built-in 
 structures from which one can also choose.&nbsp; Keep in mind that we could even 
 define what we mean by the structure &quot;float&quot; -- we could in fact define it as 
 two integers (again structures of bits) with the symbols &quot;mantissa&quot; and 
 &quot;exponent.&quot;&nbsp; This process can be repeated down to the atomic level (and 
 further) of capacitance charge in memory cells.</p>
-<p><img border="0" src="symstruct2.png" width="325" height="98"></p>
+<p><img border="0" src="symstruct2.png" width="299" height="100"></p>
 <p>We now have our symbols and structures defined for parsing a latlon string.</p>
-<h3>ASCII Tree</h3>
-<p>Interestingly though (and by intent) a Semtrex match expression can be used 
-to parse strings (and other formats) into meaningful semantic trees.&nbsp; 
-However, Semtrex is a <i>tree expression matcher.</i>&nbsp; So, how do we get, 
-say, a string, into a format that Semtrex can parse?</p>
-<p>The answer is by creating a flat tree, called and &quot;ASCII Tree&quot;, which 
+<h3>Converting a String to an ASCII Tree</h3>
+<p>Because, Semtrex is a <i>tree expression matcher,</i> any input string must 
+be converted to an ASCII tree.&nbsp; This is by intent, as it keeps the parser 
+code uniform in that it is always working with trees.&nbsp; An &quot;ASCII Tree&quot;, which 
 consists of nothing more than a root node and where each of the children is a 
-single character in the string.&nbsp; While this sounds silly, it allows us to 
+single character in the string, is necessary to convert strings into a tree 
+structure on which Semtrex can operate.&nbsp; While this sounds silly, it allows us to 
 stay in the unified world of semantic trees as the input for Semtrex.&nbsp; 
 Another way to put it is, we are describing the string semantically with as much 
 meaning as we can give it at the moment: &quot;a string of ASCII characters&quot; which we 
 wrap into an ASCII Tree <i>representation.</i>&nbsp; We don't know what the 
 string is or what it contains, but now that we've got it in a tree structure, we 
 can parse it.</p>
-<p><font color="#FF0000">Example string and tree</font></p>
-<h3>Match Expression</h3>
-<p>Now, here's the fun part -- the match expression is itself a semantic tree.&nbsp; 
-There's a certain pulling oneself up by the bootstraps going on here.&nbsp; We 
-can write a Semtrex expression in code, populating the expression tree that way, 
-or we can write a UI front-end that populates the expression tree, or, we can 
-de-serialize a &quot;human readable&quot; string that represents the match expression.&nbsp; 
-However, we use Semtrex itself to de-serialize the human readable string into an 
-expression tree!&nbsp; In other words, Semtrex can process human-readable 
-strings to create Semtrex tree expressions.</p>
-<h3>Match My Results</h3>
-<p><font color="#FF0000">Working with human-readable Semtrex strings is really a 
-three step process (much like working with Regex expressions.)&nbsp; First, we parse the input string into a semantic 
-tree--this is like any normal parsing code, only we use semtrexes internally to 
-do this!&nbsp; 
-Second, we convert the Semtrex tree into a kind of finite state automata (FSA) 
-that when run, moves around the input tree matching on the nodes and capturing 
-any values as specified in the semtrex expression.&nbsp; (For those deeply 
-interested the implementation takes lots of inspiration from http://swtch.com/~rsc/regexp/regexp1.html)
-</font> </p>
-<p><font color="#0000FF">use Semtrex again to match on the semantics and, where appropriate, 
-the value &quot;captures&quot; in the semantic graph (values which derive from 
-the original one-dimensional input string.)&nbsp; </font> </p>
-<p>For example, I want to use Semtrex to match HTTP requests (I'll use this 
-example repeatedly, so it's good to pay attention at this point.)&nbsp; Here's a 
-typical example of the human-readable string:</p>
-<pre>&quot;GET /path/to/file.ext?name=joe&amp;age=30 HTTP/0.9&quot;</pre>
-<p>The first part of the Semtrex expression to match on this string looks like 
-this:</p>
-<pre>/ASCII_CHARS/&lt;HTTP_REQUEST:&lt;HTTP_REQUEST_METHOD:ASCII_CHAR!=' '+&gt; (...etc...)</pre>
-<p>However, to accomplish this, first the human-readable string must be turned into an ASCII Tree:</p>
-<p>(C)<br>
-<pre>char *req = &quot;GET /path/to/file.ext?name=joe&amp;age=30 HTTP/0.9&quot;;<br>T *t,*s = _t_new_root(ASCII_CHARS);<br>while(*req) {<br>&nbsp; _t_newi(s,ASCII_CHAR,*req);<br>&nbsp; req++;<br>
-}</pre>
-<p>Second, the Semtrex expression (also in a &quot;human-readable&quot; form) must be 
-converted into an expression tree:</p>
-<p>(C)</p>
-<pre>char *stxs = &quot;/ASCII_CHARS/&lt;HTTP_REQUEST:&lt;HTTP_REQUEST_METHOD:ASCII_CHAR!=' '+&gt; (...etc...)
-T *stx = parseSemtrex(&amp;test_HTTP_defs,stxs);</pre>
-<p>I'll explain what <code>test_HTTP_defs</code> is later.</p>
-<p>In the third step, we execute the match function to obtain the results of the 
-expression: </p>
-<p>(C)</p>
-<pre>T *results;
-_t_matchr(stx,s,&amp;results);</pre>
-<p>The match results are themselves an expression tree.&nbsp; We 
-can then use Semtrex again to match on the values of those results, allowing us, 
-in the example above, to do something on the specific human-readable input 
-string, for example, routing the request to a particular handler (which gets us 
-in to what Ceptr casll &quot;actions&quot;, which is beyond the scope of 
-this article.)</p>
+<p>Given a latlon input string:</p>
+<p><img border="0" src="parse1.png" width="549" height="94"></p>
+<p>We can parse this into an ASCII Tree by clicking &quot;Parse to ASCII Tree&quot;.&nbsp; 
+The result is displayed in the Semtrex Tree textbox (only a piece is shown here, 
+you get the idea):</p>
+<p><img border="0" src="parse2.png" width="408" height="322"></p>
+<p>The root of the tree is a symbol &quot;ASCII_CHARS&quot; and each element of the tree 
+is a structure-value pair &quot;ASCII_CHAR&quot; and the value of the char.</p>
+<h4>Matching on the ASCII Tree</h4>
+<p>Now that we have the string represented as a tree, we can write a Semtrex 
+expression to match against the tree:</p>
+<pre>/ASCII_CHARS/&lt;HomeLocation:&lt;lat:ASCII_CHAR+&gt;,ASCII_CHAR=',',&lt;lon:ASCII_CHAR+&gt;&gt;</pre>
+<p>Note how this expression not only matches against the format of the input 
+string but also specifies the symbols associated with the structural components 
+of the tree-ified string.</p>
+<p><font color="#FF0000">Need more discussion here</font></p>
+<p>We enter the Semtrex expression in the next line and click on Parse:</p>
+<p><img border="0" src="parse3.png" width="562" height="143"></p>
+<p>Why do we do this?&nbsp; Because we've specified a Semtrex expression as a 
+string, which itself must be first converted into a tree!&nbsp; So you can see 
+the pattern here: <b>inputs are semantic trees, expressions are semantic trees, 
+and Semtrex matches input trees against expression trees.</b></p>
+<p>The result of the parse operation can be viewed as well, shown here in full:</p>
+<pre>
+(
+  SEMTREX_SYMBOL_LITERAL 
+  (
+    SEMTREX_SYMBOL:ASCII_CHARS
+  )
+  (
+    SEMTREX_GROUP:HomeLocation 
+    (
+      SEMTREX_SEQUENCE 
+      (
+        SEMTREX_GROUP:lat 
+        (
+          SEMTREX_ONE_OR_MORE 
+          (
+            SEMTREX_SYMBOL_LITERAL 
+            (
+              SEMTREX_SYMBOL:ASCII_CHAR
+            )
+          )
+        )
+      ) 
+      (
+        SEMTREX_VALUE_LITERAL 
+        (
+          ASCII_CHAR:','
+        )
+      ) 
+      (
+        SEMTREX_GROUP:NULL_SYMBOL 
+        (
+          SEMTREX_ONE_OR_MORE 
+          (
+            SEMTREX_SYMBOL_LITERAL 
+            (
+              SEMTREX_SYMBOL:ASCII_CHAR
+            )
+          )
+        )
+      )
+    )
+  )
+)</pre>
+<h3>Does The Input Match?</h3>
+<p>Now we can ask, &quot;does the input tree match the expected format as specified 
+by the Semtrex match expression?&quot;&nbsp; We ask this by clicking on the 
+&quot;Matches?&quot; button:</p>
+<p><img border="0" src="parse4.png" width="549" height="186"></p>
+<p>And the answer is True:</p>
+<p><img border="0" src="parse5.png" width="546" height="185"></p>
+<p>Furthermore, we also can also ask Semtrex <i>how</i> it matches, which is 
+also a tree:</p>
+<pre>(
+  SEMTREX_MATCH:1 
+  (
+    SEMTREX_MATCH_SYMBOL:HomeLocation
+  )
+  (
+    SEMTREX_MATCHED_PATH:/1
+  )
+  (
+    SEMTREX_MATCH_SIBLINGS_COUNT:11
+  )
+  (
+    SEMTREX_MATCH:3 
+    (
+      SEMTREX_MATCH_SYMBOL:lat
+    ) 
+    (
+      SEMTREX_MATCHED_PATH:/1
+    ) 
+    (
+      SEMTREX_MATCH_SIBLINGS_COUNT:5
+    )
+  )
+  (
+    SEMTREX_MATCH:2 
+    (
+      SEMTREX_MATCH_SYMBOL:lon
+    ) 
+    (
+      SEMTREX_MATCHED_PATH:/7
+    ) 
+    (
+      SEMTREX_MATCH_SIBLINGS_COUNT:5
+    )
+  )
+)</pre>
+<p>Notice how the above match result expression tells us with which symbol the 
+structure and it's data is associated.</p>
+<h3>Embodiment</h3>
+<p>We can now &quot;embody&quot; the symbols with their values.&nbsp; We now have a 
+structure with meaning -- a semantic structure.&nbsp; We do this by clicking on 
+the &quot;Embody&quot; button:</p>
+<p><img border="0" src="parse6.png" width="547" height="231"></p>
+<p>and we see the result:</p>
+<p><img border="0" src="parse7.png" width="117" height="212"></p>
+<h3>Matching Against An Embodied Tree</h3>
+<p>All of the steps above were actually necessary simply to convert an input 
+string into a semantic tree.&nbsp; The nifty thing is that this was done using 
+Semtrex itself.&nbsp; However, now we arrive at the meat and potatoes of the 
+matter.&nbsp; Let's say data was always semantic -- in other words, what you 
+received as your input was not a relatively meaningless string (albeit perhaps 
+human readable after some training) but a structure that was meaningful <i>to 
+the machine</i>.&nbsp; This:</p>
+<p><img border="0" src="parse7.png" width="117" height="212"></p>
+<p>is meaningful to the machine.&nbsp; We can now ask the machine to match 
+against it, both structurally and the values it contains.&nbsp; Here's a Semtrex 
+expression that matches:</p>
+<pre>/%HomeLocation/(lat=42.25,lon=73.25)</pre>
+<p>And we can test this with the Matches? button, which returns true.&nbsp; The 
+astute reader will say, but wait!&nbsp; That input is a string an must, like the 
+previous match expression, be turned into a Semtrex expression first!&nbsp; And 
+you are correct, which is why we must first parse the (sort of) human readable 
+input string into a Semtrex expression:</p>
+<pre>(
+  SEMTREX_WALK 
+  (
+    SEMTREX_SYMBOL_LITERAL 
+    (
+      SEMTREX_SYMBOL:HomeLocation
+    ) 
+    (
+      SEMTREX_SEQUENCE 
+      (
+        SEMTREX_VALUE_LITERAL 
+        (
+          lat:42.250000
+        )
+      ) 
+      (
+        SEMTREX_VALUE_LITERAL 
+        (
+          lon:73.250000
+        )
+      )
+    )
+  )
+)</pre>
+<p>So here you finally see the whole playground:</p>
+<p><img border="0" src="parse8.png" width="553" height="661"></p>
 <h2>Building The Semtrex Code</h2>
 <p>Semtrex (the parser, specs, and symbol management) are written in 'C'.&nbsp; 
 Eric chose the 'C' language because it is ubiquitous among a wide variety of 
@@ -277,6 +390,7 @@ platforms, everything from Arduino's to, of course, Windows and Linux.&nbsp; </p
 <p>The simplest way to build the 'C' code is to download Eclipse and open the 
 Eclipse project in the Ceptr GitHub repository.&nbsp; The resulting dll file can 
 be copied into the C# bin\Debug or bin\Release folder.</p>
+<h2>The C# / C Interface</h2>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
