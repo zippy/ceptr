@@ -44,13 +44,6 @@
               <wf:ToolStripMenuItem def:Name="mnuSemtrexUI" Text="Semtrex Explorer" Click="{controller.ShowSemtrexUI}"/>
             </wf:DropDownItems>
           </wf:ToolStripMenuItem>
-          <wf:ToolStripMenuItem Text="&amp;Ceptr">
-            <!--
-            <wf:DropDownItems>
-              <wf:ToolStripMenuItem def:Name="mnuBuildSemanticTree" Text="&amp;Build Semantic Tree" Click="{controller.BuildSemanticTree}"/>
-            </wf:DropDownItems>
-            -->
-          </wf:ToolStripMenuItem>
         </wf:Items>
       </wf:MenuStrip>
     </ixv:Controls>

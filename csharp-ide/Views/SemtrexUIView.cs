@@ -27,5 +27,16 @@ namespace csharp_ide.Views
 		public SemtrexUIView()
 		{
 		}
+
+		public void Clear()
+		{
+			tbInputString.Text = "";
+			tbParseExpr.Text = "";
+			// tbMatchExpression.Text = "";
+			tbSemtrexTree.Text = "";
+			tbMatchResult.Text = "";
+			tbMatchResult2.Text = "";
+			tbMatchAgainst.Text = "";
+		}
 	}
 }

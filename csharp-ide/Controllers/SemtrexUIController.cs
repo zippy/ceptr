@@ -28,6 +28,7 @@ namespace csharp_ide.Controllers
 		protected Guid matchResultTreeID;
 		protected Guid embodyID;
 		protected Guid matchAgainstID;
+		protected string fnPlayground;
 
 		public SemtrexUIController()
 		{
@@ -183,6 +184,60 @@ namespace csharp_ide.Controllers
 			}
 
 			return ret;
+		}
+
+		// UI 
+
+		protected void New(object sender, EventArgs args)
+		{
+			View.Clear();
+		}
+
+		protected void Load(object sender, EventArgs args)
+		{
+			OpenFileDialog ofd = new OpenFileDialog();
+			DialogResult ret = ofd.ShowDialog();
+
+			if (ret == DialogResult.OK)
+			{
+				fnPlayground = ofd.FileName;
+
+				string[] lines = File.ReadAllLines(fnPlayground);
+				// string text = View.tbInputString.Text + "\r\n" + View.tbParseExpr.Text + "\r\n" + View.tbMatchAgainst.Text;
+				View.tbInputString.Text = lines[0];
+				View.tbParseExpr.Text = lines[1];
+				View.tbMatchAgainst.Text = lines[2];
+			}
+		}
+
+		protected void Save(object sender, EventArgs args)
+		{
+			if (String.IsNullOrEmpty(fnPlayground))
+			{
+				SaveAs(sender, args);
+			}
+			else
+			{
+				InternalSave();
+			}
+		}
+
+		protected void SaveAs(object sender, EventArgs args)
+		{
+			SaveFileDialog sfd = new SaveFileDialog();
+			DialogResult ret = sfd.ShowDialog();
+
+			if (ret == DialogResult.OK)
+			{
+				fnPlayground = sfd.FileName;
+				InternalSave();
+			}
+		}
+
+		protected void InternalSave()
+		{
+			string text = View.tbInputString.Text + "\r\n" + View.tbParseExpr.Text + "\r\n" + View.tbMatchAgainst.Text;
+			File.WriteAllText(fnPlayground, text);
 		}
 	}
 }
