@@ -16,6 +16,7 @@
 
 const H null_H = {0,{NULL_ADDR,NULL_ADDR}};
 
+// low-level function to allocate a new tree level to an mtree
 // @todo make this not realloc each time?
 void __m_add_level(M *m) {
     if (!m->levels++) {
@@ -28,6 +29,7 @@ void __m_add_level(M *m) {
     m->lP[i].nodes = 0;
 }
 
+// low-level function to add c nodes to given level
 // @todo make this not realloc each time!!
 N *__m_add_nodes(H h,L *l,int c) {
     N *n;
@@ -44,6 +46,7 @@ N *__m_add_nodes(H h,L *l,int c) {
     return n;
 }
 
+// low level function to initialize a new node under a parent
 void __m_new_init(H parent,H *h,L **l) {
     h->m = parent.m;
     h->a.l = parent.a.l+1;
@@ -62,6 +65,7 @@ void __m_new_init(H parent,H *h,L **l) {
     }
 }
 
+// low level function to initialize a new node as a root node
 void __m_new_root(H *h, L **l) {
     M *m = h->m = malloc(sizeof(M));
     m->magic = matrixImpl;
@@ -118,10 +122,41 @@ H _m_new(H parent,Symbol symbol,void *surface,size_t size) {
     return h;
 }
 
+/**
+ * Create a new tree
+ *
+ * @param[in] symbol semantic symbol for the node to be create
+ * @returns handle to root node
+ */
+H _m_new_root(Symbol s) {
+    return _m_new(null_H,s,0,0);
+}
+
+/**
+ * Create a new mtree node with no surface value
+ *
+ * @param[in] parent parent node handle for the node to be created.  Can be 0 if this is a root node
+ * @param[in] symbol semantic symbol for the node to be create
+ * @returns handle to node
+ */
+H _m_newr(H parent,Symbol s) {
+    return _m_new(parent,s,0,0);
+}
+
+/**
+ * Create a new mtree node with an integer surface
+ *
+ * @param[in] parent parent node handle for the node to be created.  Can be 0 if this is a root node
+ * @param[in] symbol semantic symbol for the node to be create
+ * @param[in] surface integer value to store in the surface
+ * @returns handle to node
+ */
 H _m_newi(H parent,Symbol symbol,int surface) {
     return _m_new(parent,symbol,&surface,sizeof(int));
 }
 
+// helper function to recursively travers a ttree and build an mtree out of it
+// used by _m_new_from_t
 H __mnft(H parent,T *t) {
     int i, c = _t_children(t);
     H h = _m_new(parent,_t_symbol(t),_t_surface(t),_t_size(t));
@@ -131,6 +166,12 @@ H __mnft(H parent,T *t) {
     return h;
 }
 
+/**
+ * Create a new mtree that is a copy of a ttree
+ *
+ * @param[in] t pointer to source ttree
+ * @returns handle to mtree
+ */
 H _m_new_from_t(T *t) {
     H h = null_H;
     h = __mnft(h,t);
@@ -139,6 +180,8 @@ H _m_new_from_t(T *t) {
     return h;
 }
 
+// mtree walk function for creating ttree nodes
+// used by _t_new_from_m
 void _m_2tfn(H h,N *n,void *data,MwalkState *s,Maddr ap) {
 
     T **tP = (T**) &(((struct {T *t;} *)data)->t);
@@ -147,6 +190,12 @@ void _m_2tfn(H h,N *n,void *data,MwalkState *s,Maddr ap) {
     s[h.a.l].user.t = *tP;
 }
 
+/**
+ * Create a new ttree that is a copy of an mtree
+ *
+ * @param[in] h handle to source mtree
+ * @returns handle to mtree
+ */
 T *_t_new_from_m(H h) {
     struct {T *t;} d = {NULL};
     Maddr ac = {0,0};
@@ -154,14 +203,33 @@ T *_t_new_from_m(H h) {
     return _t_root(d.t);
 }
 
+/**
+ * get an mtree node by handle
+ *
+ * @param[in] h the handle to an mtree node
+ * @returns pointer to an N (the node)
+
+ */
 N *__m_get(H h) {
     L *l = GET_LEVEL(h);
     N *n = GET_NODE(h,l);
     return n;
 }
 
+/**
+ * Get an mtree node's surface size
+ *
+ * @param[in] h handle to the node
+ * @returns size
+ */
 size_t _m_size(H h) {return __m_get(h)->size;}
 
+/**
+ * free the memory used by an mtree
+ *
+ * @param[in] h handle to mtree to free
+ * @param[in] free_surface boolean to indicate whether to free the surface values
+ */
 void __m_free(H h,int free_surface) {
     int i = h.m->levels;
     while(i--) {
@@ -181,6 +249,12 @@ void __m_free(H h,int free_surface) {
     free(h.m);
 }
 
+/**
+ * return the number of children of a given mtree node
+ *
+ * @param[in] h handle to the node
+ * @returns child count
+ */
 int _m_children(H h) {
     Mlevel levels = h.m->levels;
 
@@ -212,6 +286,12 @@ int _m_children(H h) {
     return c;
 }
 
+/**
+ * get the data of a given mtree node
+ *
+ * @param[in] h handle to the node
+ * @returns pointer to node's surface
+ */
 void * _m_surface(H h) {
     N *n = __m_get(h);
     if (n->flags & TFLAG_ALLOCATED)
@@ -220,6 +300,12 @@ void * _m_surface(H h) {
 	return &n->surface;
 }
 
+/**
+ * get matrix address of a mtree node's parent
+ *
+ * @param[in] h handle to the node
+ * @returns Maddr of parent node
+ */
 Maddr _m_parent(H h) {
     Maddr a = {NULL_ADDR,NULL_ADDR};
     if (h.a.l > 0) {
@@ -230,6 +316,13 @@ Maddr _m_parent(H h) {
     return a;
 }
 
+/**
+ * get matrix address of a child of a given mtree node
+ *
+ * @param[in] h handle to the node
+ * @param[in] c index of child
+ * @returns Maddr of child
+ */
 Maddr _m_child(H h,Mindex c) {
     Maddr a = {NULL_ADDR,NULL_ADDR};
     Mlevel levels = h.m->levels;
@@ -289,11 +382,23 @@ Maddr _m_child(H h,Mindex c) {
     return a;
 }
 
+/**
+ * get the symbol of a given mtree node
+ *
+ * @param[in] h handle to the node
+ * @returns node's Symbol
+ */
 Symbol _m_symbol(H h) {
     N *n = __m_get(h);
     return n->symbol;
 }
 
+/**
+ * get matrix address of a node's next sibling
+ *
+ * @param[in] h handle to the node
+ * @returns Maddr of next sibling child
+ */
 Maddr _m_next_sibling(H h) {
     L *l = GET_LEVEL(h);
     int i = h.a.i+1;
@@ -312,14 +417,17 @@ Maddr _m_next_sibling(H h) {
     return null_H.a;
 }
 
-H _m_new_root(Symbol s) {
-    return _m_new(null_H,s,0,0);
-}
-
-H _m_newr(H parent,Symbol s) {
-    return _m_new(parent,s,0,0);
-}
-
+/**
+ * add an mtree into an existing tree
+ *
+ * @param[in] parent handle to the parent to be added to
+ * @param[in] h handle to the tree to add in
+ * @returns handle of newly added (sub) tree
+ *
+ * this function is destructive in that the task is accomplished by copying
+ * the values from the tree at h, and then freeing it.
+ *
+ */
 H _m_add(H parent,H h) {
     L *pl,*l;
     H r;
@@ -348,6 +456,14 @@ H _m_add(H parent,H h) {
     return r;
 }
 
+/**
+ * walk an mtree
+ *
+ * @param[in] h mtree to walk
+ * @param[in] walkfn function pointer to function to be executed on each node of the tree
+ * @param[in] user_data data to pass to the waklfn
+ *
+ */
 void _m_walk(H h,void (*walkfn)(H ,N *,void *,MwalkState *,Maddr),void *user_data) {
     int levels = h.m->levels;
     MwalkState state[levels];
@@ -412,6 +528,7 @@ void _m_walk(H h,void (*walkfn)(H ,N *,void *,MwalkState *,Maddr),void *user_dat
     }
 }
 
+// walkfn used by _m_detach to detach a branch of a tree
 void _m_detatchfn(H oh,N *on,void *data,MwalkState *s,Maddr ap) {
     struct {M *m;int l;} *d = data;
 
@@ -447,6 +564,13 @@ void _m_detatchfn(H oh,N *on,void *data,MwalkState *s,Maddr ap) {
 
 }
 
+/**
+ * detach a branch of a tree
+ *
+ * @param[in] oh handle of mtree node to detach from the mtree
+ * @returns hande to newly detached tree
+ *
+ */
 H _m_detatch(H oh) {
     struct {M *m;int l;} d = {NULL,oh.a.l};
     _m_walk(oh,_m_detatchfn,&d);
@@ -454,7 +578,13 @@ H _m_detatch(H oh) {
     return h;
 }
 
-
+/**
+ * create a serialized version of an mtree
+ *
+ * @param[in] oh handle of mtree node to detach from the mtree
+ * @param[inout] sizeP pointer to size_t value to return length of serialized data
+ * @returns pointer to newly malloced buffer of serialized tree data
+ */
 void * _m_serialize(M *m,size_t *sizeP) {
 
     uint32_t s_size = SERIALIZED_HEADER_SIZE(m->levels);
@@ -518,6 +648,14 @@ void * _m_serialize(M *m,size_t *sizeP) {
     return s;
 }
 
+
+/**
+ * build mtree from serialized mtree data
+ *
+ * @params[in] pointer to serialized data
+ * @returns handle to new mtree
+ *
+ */
 H _m_unserialize(void *s) {
     M *m = malloc(sizeof(M));
     m->magic = ((M *)s)->magic;
