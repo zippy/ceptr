@@ -195,6 +195,7 @@ void def_sys() {
 
     sYt(TEST_INT_SYMBOL,INTEGER);
     sYt(TEST_INT_SYMBOL2,INTEGER);
+    sYt(TEST_FLOAT_SYMBOL,FLOAT);
     sYt(TEST_STR_SYMBOL,CSTRING);
     sYt(TEST_TREE_SYMBOL,TREE);
     sYt(TEST_TREE_SYMBOL2,TREE);
@@ -226,6 +227,7 @@ void def_sys() {
     sY(STX_VAL_S,CSTRING);
     sY(STX_VAL_C,CHAR);
     sY(STX_VAL_I,INTEGER);
+    sY(STX_VAL_F,FLOAT);
 
     sY(STX_SIBS,LIST);
     sY(STX_CHILD,TREE);

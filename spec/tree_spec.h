@@ -65,6 +65,12 @@ void testCreateTreeNodes() {
     spec_is_ptr_equal(_t_child(t,2),t2);
 
     _t_free(t);
+
+    float f = 3.1415;
+    T *tf = _t_new(0,TEST_FLOAT_SYMBOL,&f,sizeof(float));
+
+    spec_is_str_equal(t2s(tf),"(TEST_FLOAT_SYMBOL:3.141500)");
+    _t_free(tf);
 }
 
 void testTreeNewReceptor() {
