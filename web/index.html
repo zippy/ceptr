@@ -35,7 +35,7 @@
 
 <!-- load the d3.js library -->
 <script src="http://d3js.org/d3.v3.min.js"></script>
-<script src="file:///home/eric/code/metacurrency/ceptr/js/ceptr.js"></script>
+<script src="/js/ceptr.js"></script>
 <script src="http://jdataview.github.io/dist/jdataview.js"></script>
 <script>
 if (window.File && window.FileReader && window.FileList && window.Blob) {
@@ -49,7 +49,7 @@ if (window.File && window.FileReader && window.FileList && window.Blob) {
 // ************** Generate the tree diagram	 *****************
 var margin = {top: 20, right: 120, bottom: 20, left: 120},
 	width = 960 - margin.right - margin.left,
-	height = 500 - margin.top - margin.bottom;
+	height = 900 - margin.top - margin.bottom;
 
 var i = 0,
 	duration = 750,
@@ -73,6 +73,10 @@ update(root);
 
 d3.select(self.frameElement).style("height", "500px");
 
+function nodeText(n) {
+   return n.symbol +":"+n.value;
+}
+
 function update(source) {
 
   // Compute the new tree layout.
@@ -80,7 +84,7 @@ function update(source) {
 	  links = tree.links(nodes);
 
   // Normalize for fixed-depth.
-  nodes.forEach(function(d) { d.y = d.depth * 50; });
+  nodes.forEach(function(d) { d.y = d.depth * 100; });
 
   // Update the nodes
   var node = svg.selectAll("g.node")
@@ -100,7 +104,7 @@ function update(source) {
 	  .attr("x", function(d) { return d.children || d._children ? -13 : 13; })
 	  .attr("dy", ".35em")
 	  .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
-	  .text(function(d) { return d.name; })
+	  .text(nodeText)
 	  .style("fill-opacity", 1e-6);
 
   // Transition nodes to their new position.
@@ -113,8 +117,7 @@ function update(source) {
 	  .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
 
   nodeUpdate.select("text")
-	  .text(function(d) { return d.name; })
-
+	  .text(nodeText)
 	  .style("fill-opacity", 1);
 
   // Transition exiting nodes to the parent's new position.
@@ -182,6 +185,8 @@ function click(d) {
 
 <script>
   var TF;
+  var mtree;
+var raw;
   function handleFileSelect(evt) {
      var files = evt.target.files; // FileList object
      var file = files[0];
@@ -195,9 +200,10 @@ function click(d) {
 
            var span = document.createElement('span');
            span.innerHTML = e.target.result;
+            raw = e.target.result;
            TF = e.target.result;
            document.getElementById('list').insertBefore(span, null);
-           var mtree = unserialize(e.target.result);
+           mtree = unserialize(e.target.result);
            treeData = [];
            walk(mtree,m_2tfn,treeData);
            set_root();
@@ -210,6 +216,28 @@ function click(d) {
 
 
   document.getElementById('files').addEventListener('change', handleFileSelect, false);
+
+  function g(f) {
+      xmlhttp=new XMLHttpRequest();
+      xmlhttp.onreadystatechange=function()
+      {
+          if (xmlhttp.readyState==4 && xmlhttp.status==200)
+          {
+              mtree = unserialize(xmlhttp.responseText);
+              treeData = [];
+              walk(mtree,m_2tfn,treeData);
+              set_root();
+              update(root);
+
+              document.getElementById("list").innerHTML=xmlhttp.responseText;
+          }
+      }
+      xmlhttp.open("GET",fm,true);
+      xmlhttp.send();
+
+
+  }
+
 </script>
   </body>
 </html>

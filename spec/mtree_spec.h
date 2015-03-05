@@ -30,6 +30,19 @@ void testCreateTreeNodesT() {
 }
 */
 
+void writeFile(char *fn,void *data,size_t size) {
+    FILE *ofp;
+
+    ofp = fopen(fn, "w");
+    if (ofp == NULL) {
+	fprintf(stderr, "Can't open output file %s!\n",fn);
+    }
+    else {
+	fwrite(data, 1,size, ofp);
+	fclose(ofp);
+    }
+}
+
 mtd(H h) {
     H hh;
     int i;
@@ -184,26 +197,18 @@ void testCreateTreeNodesM(){
     H h121;
     h121.m = h.m;
     h121.a = _m_child(h12,1);
-    spec_is_str_equal((char *)_m_surface(h121),"t121");
+    char *xx = (char *)_m_surface(h121);
+    spec_is_str_equal(xx,"t121");
     spec_is_equal(h121.a.l,3);
     spec_is_equal(h121.a.i,1);  //should be last because it was appended by add
 
 
     size_t size;
     S *s = _m_serialize(h.m,&size);
-    FILE *ofp;
-    char outputFilename[] = "test1.cmt";
 
-    ofp = fopen(outputFilename, "w");
-    if (ofp == NULL) {
-	fprintf(stderr, "Can't open output file %s!\n",outputFilename);
-    }
-    else {
-	fwrite(s, 1,size, ofp);
-	fclose(ofp);
-    }
+    //    writeFile("web/test1.cmt",s,size);
 
-
+    free(s);
 
     buf[0] = 0;
     _m_walk(h2,_walkfn,buf);
@@ -299,22 +304,31 @@ testMTreeSerialize() {
 
     spec_is_str_equal(buf1,buf);
 
-    FILE *ofp;
-    char outputFilename[] = "test.cmt";
+    writeFile("web/test.cmt",s,size);
+    _m_free(h);free(s);
 
-    ofp = fopen(outputFilename, "w");
-    if (ofp == NULL) {
-	fprintf(stderr, "Can't open output file %s!\n",outputFilename);
-    }
-    else {
-	fwrite(s, 1,size, ofp);
-	fclose(ofp);
-    }
+    h = _m_new_from_t(test_HTTP_defs.structures);
+    s = _m_serialize(h.m,&size);
+    writeFile("web/httpstructures.cmt",s,size);
+    _m_free(h);free(s);
+
+    h = _m_new_from_t(test_HTTP_defs.symbols);
+    s = _m_serialize(h.m,&size);
+    writeFile("web/httpsymbols.cmt",s,size);
+    _m_free(h);free(s);
+
+    h = _m_new_from_t(G_sys_defs.structures);
+    s = _m_serialize(h.m,&size);
+    writeFile("web/sysstructures.cmt",s,size);
+    _m_free(h);free(s);
+
+    h = _m_new_from_t(G_sys_defs.symbols);
+    s = _m_serialize(h.m,&size);
+    writeFile("web/syssymbols.cmt",s,size);
+    _m_free(h);free(s);
 
     _m_free(h1);
     _t_free(t1);
-    free(s);
-    _m_free(h);
     _t_free(t);
 }
 

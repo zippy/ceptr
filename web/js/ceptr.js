@@ -155,7 +155,7 @@ function walk(mtree,fn,data) {
 
 function  m_2tfn(l,i,n,data,state,pl,pi) {
     var t = l ? state[l-1].t : null;
-    var x = {"name": n.value};
+    var x = {"value": n.value,"symbol":n.symbol.id};
     if (data.length == 0) {data.push(x);}
     if (t) {
         var c = t.children;

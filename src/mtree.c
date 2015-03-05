@@ -35,12 +35,17 @@ N *__m_add_nodes(H h,L *l,int c) {
     N *n;
     Mindex i = l->nodes;
     if (!i) {
-    	l->nP = malloc(sizeof(N)*c);
+	size_t s = sizeof(N)*c;
+    	l->nP = malloc(s);
+	memset(l->nP,0,s);
 	l->nodes = c;
     }
     else {
+	//	size_t os = sizeof(N)*l->nodes;
 	l->nodes += c;
-    	l->nP = realloc(l->nP,sizeof(N)*l->nodes);
+	size_t ns = sizeof(N)*l->nodes;
+    	l->nP = realloc(l->nP,ns);
+	//	memset(l->nP+ns,0,sizeof(N)*c);
     }
     n = _GET_NODE(h,l,i);
     return n;
@@ -106,6 +111,7 @@ H _m_new(H parent,Symbol symbol,void *surface,size_t size) {
     n->flags = 0;
     if (size) {
 	if (size == sizeof(int)) {
+	    n->surface = 0;
 	    *((int *)&n->surface) = *(int *)surface;
 	}
 	else {
@@ -609,6 +615,7 @@ void * _m_serialize(M *m,size_t *sizeP) {
 
 
     S *s = malloc(*sizeP = s_size+levels_size+blob_size);
+    memset(s,0,*sizeP);
     s->magic = m->magic;
     s->levels = m->levels;
     s->blob_offset = s_size+levels_size;
