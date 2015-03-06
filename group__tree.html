@@ -117,8 +117,14 @@ Files</h2></td></tr>
 <tr class="memitem:label_8h"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="label_8h.html">label.h</a></td></tr>
 <tr class="memdesc:label_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">Label tables map human readable text strings to parts of semantic trees. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:mtree_8c"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mtree_8c.html">mtree.c</a></td></tr>
+<tr class="memdesc:mtree_8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">semantic tree matrix implementation <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:mtree_8h"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mtree_8h.html">mtree.h</a></td></tr>
+<tr class="memdesc:mtree_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">semantic tree matrix header file `` <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:tree_8c"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tree_8c.html">tree.c</a></td></tr>
-<tr class="memdesc:tree_8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">semantic tree implementation <br /></td></tr>
+<tr class="memdesc:tree_8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">semantic tree pointer implementation <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:tree_8h"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tree_8h.html">tree.h</a></td></tr>
 <tr class="memdesc:tree_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">semantic trees header file <br /></td></tr>
@@ -141,10 +147,14 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:gaeddfb7542c9d4915c3613083cd001c60"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaeddfb7542c9d4915c3613083cd001c60"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>TreeSurfaceFlags</b> { <b>TFLAG_ALLOCATED</b> =0x0001, 
+<tr class="memitem:gaeddfb7542c9d4915c3613083cd001c60"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaeddfb7542c9d4915c3613083cd001c60"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>TreeSurfaceFlags</b> { <br />
+&#160;&#160;<b>TFLAG_ALLOCATED</b> =0x0001, 
 <b>TFLAG_SURFACE_IS_TREE</b> =0x0002, 
 <b>TFLAG_SURFACE_IS_RECEPTOR</b> = 0x0004, 
-<b>TFLAG_SURFACE_IS_SCAPE</b> =0x0008
+<b>TFLAG_SURFACE_IS_SCAPE</b> =0x0008, 
+<br />
+&#160;&#160;<b>TFLAG_DELETED</b> =0x0010
+<br />
  }</td></tr>
 <tr class="separator:gaeddfb7542c9d4915c3613083cd001c60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -1751,7 +1761,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Nov 14 2014 18:22:36 for ceptr by
+    <li class="footer">Generated on Fri Mar 6 2015 08:19:08 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

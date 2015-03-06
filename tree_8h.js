@@ -8,7 +8,8 @@ var tree_8h =
       [ "TFLAG_ALLOCATED", "group__tree.html#ggaeddfb7542c9d4915c3613083cd001c60a4f19a56459fa0656df882de1075b0803", null ],
       [ "TFLAG_SURFACE_IS_TREE", "group__tree.html#ggaeddfb7542c9d4915c3613083cd001c60ad0d2d91d6598bbf39d240b90d29d954a", null ],
       [ "TFLAG_SURFACE_IS_RECEPTOR", "group__tree.html#ggaeddfb7542c9d4915c3613083cd001c60ab66fde176a815717b8766aa3c9375e3c", null ],
-      [ "TFLAG_SURFACE_IS_SCAPE", "group__tree.html#ggaeddfb7542c9d4915c3613083cd001c60aecc073bf46663f2c91925fea3009ad8d", null ]
+      [ "TFLAG_SURFACE_IS_SCAPE", "group__tree.html#ggaeddfb7542c9d4915c3613083cd001c60aecc073bf46663f2c91925fea3009ad8d", null ],
+      [ "TFLAG_DELETED", "group__tree.html#ggaeddfb7542c9d4915c3613083cd001c60a35cdb148e02bf5d9b23d69a409c0502a", null ]
     ] ],
     [ "__t_free_children", "group__tree.html#ga4fb39ee561fc4b17cfb241330b835951", null ],
     [ "__t_morph", "group__tree.html#gad6597b652983165f6b2993211a598ad4", null ],

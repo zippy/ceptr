@@ -1,15 +1,14 @@
 var searchData=
 [
-  ['running_20the_20self_2dtests',['Running the self-tests',['../howto_tests.html',1,'']]],
-  ['r',['r',['../structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e',1,'VMHost']]],
-  ['receptor',['Receptor',['../structReceptor.html',1,'Receptor'],['../group__receptor.html',1,'(Global Namespace)']]],
-  ['receptor_2ec',['receptor.c',['../receptor_8c.html',1,'']]],
-  ['receptor_2eh',['receptor.h',['../receptor_8h.html',1,'']]],
-  ['receptor_5fidentifier_5fid',['RECEPTOR_IDENTIFIER_ID',['../sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a03b44a2d84d0b88ecc42b51c7d6acdec',1,'sys_symbols.h']]],
-  ['receptor_5fpackage_5fid',['RECEPTOR_PACKAGE_ID',['../sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a58d85cf1d289fb98ca4b4e74d629ddd1',1,'sys_symbols.h']]],
-  ['receptor_5fspec_2eh',['receptor_spec.h',['../receptor__spec_8h.html',1,'']]],
-  ['receptor_5fxaddr_5fid',['RECEPTOR_XADDR_ID',['../sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a3b9f0366fea6d7bcbc95c71bd7999a38',1,'sys_symbols.h']]],
-  ['respond_5fid',['RESPOND_ID',['../sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8ea8c6120c4ab760098de5bef78806ad2fd',1,'sys_processes.h']]],
-  ['root',['root',['../structReceptor.html#aec6f1eee133a993b59baf50e75620fb6',1,'Receptor']]],
-  ['run_5ftree_5fid',['RUN_TREE_ID',['../sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57af8edacaa56cabee660631d1a0723e6ee',1,'sys_symbols.h']]]
+  ['param_5fref_5fid',['PARAM_REF_ID',['../sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a061d417b0500f472796fdccd6a979f49',1,'sys_symbols.h']]],
+  ['parsesemtrex',['parseSemtrex',['../group__semtrex.html#ga17eda8e5306b5764656d7edf3f5b15bd',1,'parseSemtrex(Defs *d, char *stx):&#160;semtrex.c'],['../group__semtrex.html#ga17eda8e5306b5764656d7edf3f5b15bd',1,'parseSemtrex(Defs *d, char *stx):&#160;semtrex.c']]],
+  ['patch',['patch',['../semtrex_8c.html#ab307af6eec1425c7801b32bfbaa08f42',1,'semtrex.c']]],
+  ['path_5fs',['path_s',['../structtable__elem.html#a7e5968fd30d0a7c15f12ed8231a7b415',1,'table_elem']]],
+  ['pending_5fsignals_5fid',['PENDING_SIGNALS_ID',['../sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ab70e70ef75e3ccdcd72c4ef0a4d71def',1,'sys_symbols.h']]],
+  ['process_2ec',['process.c',['../process_8c.html',1,'']]],
+  ['process_2eh',['process.h',['../process_8h.html',1,'']]],
+  ['process_5fspec_2eh',['process_spec.h',['../process__spec_8h.html',1,'']]],
+  ['processes',['processes',['../structDefs.html#a80e876ed085ca3f40c11c6dced4bff9a',1,'Defs']]],
+  ['protocols',['protocols',['../structDefs.html#aa0cf913c12ec27ee0027c64ee146c27d',1,'Defs']]],
+  ['ptrlist',['Ptrlist',['../unionPtrlist.html',1,'Ptrlist'],['../semtrex_8c.html#af0de0b5913959a81b47d91299857f683',1,'Ptrlist():&#160;semtrex.c']]]
 ];

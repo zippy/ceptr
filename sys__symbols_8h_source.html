@@ -118,403 +118,405 @@ $(document).ready(function(){initNavTree('sys__symbols_8h_source.html','');});
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> TEST_INT_SYMBOL;</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> TEST_INT_SYMBOL2;</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> TEST_STR_SYMBOL;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> TEST_TREE_SYMBOL;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> TEST_TREE_SYMBOL2;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> TEST_NAME_SYMBOL;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> TEST_FIRST_NAME_SYMBOL;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> TEST_RECEPTOR_SYMBOL;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> TEST_ALPHABETIZE_SCAPE_SYMBOL;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57">   31</a></span>&#160;<span class="keyword">enum</span> <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57">SystemSymbolIDs</a></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;{</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="comment">//-----  Basic symbols for underlying data types</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    NULL_SYMBOL_ID = 0,</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    DEFINITIONS_ID,</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    STRUCTURES_ID,</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    STRUCTURE_DEFINITION_ID,</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    STRUCTURE_LABEL_ID,</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    STRUCTURE_PARTS_ID,</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    STRUCTURE_PART_ID,</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    SYMBOLS_ID,</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    SYMBOL_DECLARATION_ID,</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    SYMBOL_STRUCTURE_ID,</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    SYMBOL_LABEL_ID,</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    TRUE_FALSE_ID,</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="comment">//-----  Symbols for the different semantic parts of semtrexes</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a377b430529839987dac26755572ff259">   49</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a377b430529839987dac26755572ff259">SEMTREX_MATCHED_PATH_ID</a>,              </div>
-<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a9900674c2074002cece1c08d8fad7e6b">   50</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a9900674c2074002cece1c08d8fad7e6b">SEMTREX_SYMBOL_LITERAL_ID</a>,            </div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57aa3cb82e8787ee648f182015175f9ed6e">   51</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57aa3cb82e8787ee648f182015175f9ed6e">SEMTREX_SYMBOL_LITERAL_NOT_ID</a>,                </div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    SEMTREX_SYMBOL_SET_ID,</div>
-<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a73d90fbbf0b65514ae6bac6108920fb0">   53</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a73d90fbbf0b65514ae6bac6108920fb0">SEMTREX_SYMBOL_ID</a>,                    </div>
-<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a7a12034d419f575e268f3e27b86a75e9">   54</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a7a12034d419f575e268f3e27b86a75e9">SEMTREX_SEQUENCE_ID</a>,                  </div>
-<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a7a33830ad2d624b84f481a3bfe1c3b21">   55</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a7a33830ad2d624b84f481a3bfe1c3b21">SEMTREX_OR_ID</a>,                        </div>
-<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57adccb671023d8f21e422119f9d3fbf189">   56</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57adccb671023d8f21e422119f9d3fbf189">SEMTREX_NOT_ID</a>,                       </div>
-<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a51b0113b5c552639cad118d0abf2c16c">   57</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a51b0113b5c552639cad118d0abf2c16c">SEMTREX_SYMBOL_ANY_ID</a>,                </div>
-<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a86ff9af344c4fa4c9e801db962f86b5f">   58</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a86ff9af344c4fa4c9e801db962f86b5f">SEMTREX_ZERO_OR_MORE_ID</a>,              </div>
-<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a5acd63899bff8737f84493db6df43e05">   59</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a5acd63899bff8737f84493db6df43e05">SEMTREX_ONE_OR_MORE_ID</a>,               </div>
-<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57aed65f903629da68029acca04414280b2">   60</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57aed65f903629da68029acca04414280b2">SEMTREX_ZERO_OR_ONE_ID</a>,               </div>
-<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57aa1092b100c01daef3a4150e80af8bacc">   61</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57aa1092b100c01daef3a4150e80af8bacc">SEMTREX_VALUE_LITERAL_ID</a>,             </div>
-<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a8fd8090d74b399686f1578865083c5c2">   62</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a8fd8090d74b399686f1578865083c5c2">SEMTREX_VALUE_LITERAL_NOT_ID</a>,     </div>
-<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57accec0ca7abe96495c1affcdb23e632de">   63</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57accec0ca7abe96495c1affcdb23e632de">SEMTREX_VALUE_SET_ID</a>,                 </div>
-<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a56959b815b41df8e507247b85ae5f74c">   64</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a56959b815b41df8e507247b85ae5f74c">SEMTREX_GROUP_ID</a>,                     </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    SEMTREX_DESCEND_ID,</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    SEMTREX_WALK_ID,</div>
-<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a769b6a1b74e530afda91901d70da1d22">   67</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a769b6a1b74e530afda91901d70da1d22">SEMTREX_MATCH_ID</a>,                     </div>
-<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a59da74ef7e2967cc49da89b599fc2b4f">   68</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a59da74ef7e2967cc49da89b599fc2b4f">SEMTREX_MATCH_CURSOR_ID</a>,              </div>
-<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a69e885f865c25787f236288ff4878437">   69</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a69e885f865c25787f236288ff4878437">SEMTREX_MATCH_RESULTS_ID</a>,             </div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    SEMTREX_MATCH_SYMBOL_ID,</div>
-<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57af45b5f9b9254869d1cfef9a577ce227e">   71</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57af45b5f9b9254869d1cfef9a577ce227e">SEMTREX_MATCH_SIBLINGS_COUNT_ID</a>,      </div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="comment">//----- Symbols for parsing  matching string representation of semtrex</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    ASCII_CHAR_ID,</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    ASCII_CHARS_ID,</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="comment">//-----  Symbols for receptors</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a3b9f0366fea6d7bcbc95c71bd7999a38">   78</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a3b9f0366fea6d7bcbc95c71bd7999a38">RECEPTOR_XADDR_ID</a>,                    </div>
-<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ac8614452da7c46ee7c8f7a41fd5f67ae">   79</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ac8614452da7c46ee7c8f7a41fd5f67ae">FLUX_ID</a>,                              </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    SCAPE_SPEC_ID,</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    ASPECTS_ID,</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    ASPECT_DEF_ID,</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    ASPECT_TYPE_ID,</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    CARRIER_ID,</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    ASPECT_ID,</div>
-<div class="line"><a name="l00086"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a2526241b3257dfa3dbaaf4120af722f1">   86</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a2526241b3257dfa3dbaaf4120af722f1">SIGNALS_ID</a>,                           </div>
-<div class="line"><a name="l00087"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ad8b65df03b2fa04991a0a5458c87231c">   87</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ad8b65df03b2fa04991a0a5458c87231c">SIGNAL_ID</a>,                            </div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    ENVELOPE_ID,</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    BODY_ID,</div>
-<div class="line"><a name="l00090"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ac810f96e3b4572f097ed8c75b5678687">   90</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ac810f96e3b4572f097ed8c75b5678687">LISTENERS_ID</a>,                         </div>
-<div class="line"><a name="l00091"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a4bfbdf9928c1480a79fc3d031c666ae7">   91</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a4bfbdf9928c1480a79fc3d031c666ae7">LISTENER_ID</a>,                          </div>
-<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ad49eae0ac73fd22522aa81ec49c69d60">   92</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ad49eae0ac73fd22522aa81ec49c69d60">EXPECTATION_ID</a>,                       </div>
-<div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a7865540da043e76605122c4d861399ab">   93</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a7865540da043e76605122c4d861399ab">ACTION_ID</a>,                            </div>
-<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a182b16baff0e5ab5c676de4c308fdfec">   94</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a182b16baff0e5ab5c676de4c308fdfec">INTERPOLATE_SYMBOL_ID</a>,                </div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    PROCESSES_ID,</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    PROCESS_CODING_ID,</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    PROCESS_NAME_ID,</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    PROCESS_INTENTION_ID,</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    INPUT_ID,</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    INPUT_SIGNATURE_ID,</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    INPUT_LABEL_ID,</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    SIGNATURE_STRUCTURE_ID,</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    OUTPUT_SIGNATURE_ID,</div>
-<div class="line"><a name="l00104"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57af8edacaa56cabee660631d1a0723e6ee">  104</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57af8edacaa56cabee660631d1a0723e6ee">RUN_TREE_ID</a>,                         </div>
-<div class="line"><a name="l00105"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a061d417b0500f472796fdccd6a979f49">  105</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a061d417b0500f472796fdccd6a979f49">PARAM_REF_ID</a>,                        </div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    PARAMS_ID,</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    PROTOCOLS_ID,</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    PROTOCOL_ID,</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    ROLES_ID,</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    ROLE_ID,</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    INTERACTIONS_ID,</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    INTERACTION_ID,</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    STEP_ID,</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    FROM_ROLE_ID,</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    TO_ROLE_ID,</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    RESPONSE_STEPS_ID,</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    SCAPES_ID,</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    <span class="comment">//-----  Symbols for the virtual machine host</span></div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    VM_HOST_RECEPTOR_ID,</div>
-<div class="line"><a name="l00121"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ace2e7d62e4e69a8e1b3c5ce4f5d13482">  121</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ace2e7d62e4e69a8e1b3c5ce4f5d13482">COMPOSITORY_ID</a>,                      </div>
-<div class="line"><a name="l00122"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57af5b5cb822b4808efdc92005845f02d46">  122</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57af5b5cb822b4808efdc92005845f02d46">MANIFEST_ID</a>,                         </div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    MANIFEST_PAIR_ID,</div>
-<div class="line"><a name="l00124"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a6a9de44feb162044713a08bcd53d87d2">  124</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a6a9de44feb162044713a08bcd53d87d2">MANIFEST_LABEL_ID</a>,                   </div>
-<div class="line"><a name="l00125"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ac82077aa5abb2ffcb8ebd8d0a9e40499">  125</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ac82077aa5abb2ffcb8ebd8d0a9e40499">MANIFEST_SPEC_ID</a>,                    </div>
-<div class="line"><a name="l00126"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a58d85cf1d289fb98ca4b4e74d629ddd1">  126</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a58d85cf1d289fb98ca4b4e74d629ddd1">RECEPTOR_PACKAGE_ID</a>,                 </div>
-<div class="line"><a name="l00127"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a03b44a2d84d0b88ecc42b51c7d6acdec">  127</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a03b44a2d84d0b88ecc42b51c7d6acdec">RECEPTOR_IDENTIFIER_ID</a>,              </div>
-<div class="line"><a name="l00128"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57aacf54d92cfdd54c9aebba00207b0ea95">  128</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57aacf54d92cfdd54c9aebba00207b0ea95">INSTALLED_RECEPTOR_ID</a>,               </div>
-<div class="line"><a name="l00129"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a6e7b9621c3ccacbd7b5215811e8307eb">  129</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a6e7b9621c3ccacbd7b5215811e8307eb">ACTIVE_RECEPTORS_ID</a>,                 </div>
-<div class="line"><a name="l00130"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ab70e70ef75e3ccdcd72c4ef0a4d71def">  130</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ab70e70ef75e3ccdcd72c4ef0a4d71def">PENDING_SIGNALS_ID</a>,                  </div>
-<div class="line"><a name="l00131"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a965cab3dff3f22a41653608c97589f89">  131</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a965cab3dff3f22a41653608c97589f89">BINDINGS_ID</a>,                         </div>
-<div class="line"><a name="l00132"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ae71c12f7c3306bae16ac5872c43e6e00">  132</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ae71c12f7c3306bae16ac5872c43e6e00">BINDING_PAIR_ID</a>,                     </div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;};</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> TEST_FLOAT_SYMBOL;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> TEST_TREE_SYMBOL;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> TEST_TREE_SYMBOL2;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> TEST_NAME_SYMBOL;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> TEST_FIRST_NAME_SYMBOL;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> TEST_RECEPTOR_SYMBOL;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> TEST_ALPHABETIZE_SCAPE_SYMBOL;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57">   32</a></span>&#160;<span class="keyword">enum</span> <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57">SystemSymbolIDs</a></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;{</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="comment">//-----  Basic symbols for underlying data types</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    NULL_SYMBOL_ID = 0,</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    DEFINITIONS_ID,</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    STRUCTURES_ID,</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    STRUCTURE_DEFINITION_ID,</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    STRUCTURE_LABEL_ID,</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    STRUCTURE_PARTS_ID,</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    STRUCTURE_PART_ID,</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    SYMBOLS_ID,</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    SYMBOL_DECLARATION_ID,</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    SYMBOL_STRUCTURE_ID,</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    SYMBOL_LABEL_ID,</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    TRUE_FALSE_ID,</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="comment">//-----  Symbols for the different semantic parts of semtrexes</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a377b430529839987dac26755572ff259">   50</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a377b430529839987dac26755572ff259">SEMTREX_MATCHED_PATH_ID</a>,              </div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a9900674c2074002cece1c08d8fad7e6b">   51</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a9900674c2074002cece1c08d8fad7e6b">SEMTREX_SYMBOL_LITERAL_ID</a>,            </div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57aa3cb82e8787ee648f182015175f9ed6e">   52</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57aa3cb82e8787ee648f182015175f9ed6e">SEMTREX_SYMBOL_LITERAL_NOT_ID</a>,                </div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    SEMTREX_SYMBOL_SET_ID,</div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a73d90fbbf0b65514ae6bac6108920fb0">   54</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a73d90fbbf0b65514ae6bac6108920fb0">SEMTREX_SYMBOL_ID</a>,                    </div>
+<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a7a12034d419f575e268f3e27b86a75e9">   55</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a7a12034d419f575e268f3e27b86a75e9">SEMTREX_SEQUENCE_ID</a>,                  </div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a7a33830ad2d624b84f481a3bfe1c3b21">   56</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a7a33830ad2d624b84f481a3bfe1c3b21">SEMTREX_OR_ID</a>,                        </div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57adccb671023d8f21e422119f9d3fbf189">   57</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57adccb671023d8f21e422119f9d3fbf189">SEMTREX_NOT_ID</a>,                       </div>
+<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a51b0113b5c552639cad118d0abf2c16c">   58</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a51b0113b5c552639cad118d0abf2c16c">SEMTREX_SYMBOL_ANY_ID</a>,                </div>
+<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a86ff9af344c4fa4c9e801db962f86b5f">   59</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a86ff9af344c4fa4c9e801db962f86b5f">SEMTREX_ZERO_OR_MORE_ID</a>,              </div>
+<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a5acd63899bff8737f84493db6df43e05">   60</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a5acd63899bff8737f84493db6df43e05">SEMTREX_ONE_OR_MORE_ID</a>,               </div>
+<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57aed65f903629da68029acca04414280b2">   61</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57aed65f903629da68029acca04414280b2">SEMTREX_ZERO_OR_ONE_ID</a>,               </div>
+<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57aa1092b100c01daef3a4150e80af8bacc">   62</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57aa1092b100c01daef3a4150e80af8bacc">SEMTREX_VALUE_LITERAL_ID</a>,             </div>
+<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a8fd8090d74b399686f1578865083c5c2">   63</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a8fd8090d74b399686f1578865083c5c2">SEMTREX_VALUE_LITERAL_NOT_ID</a>,     </div>
+<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57accec0ca7abe96495c1affcdb23e632de">   64</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57accec0ca7abe96495c1affcdb23e632de">SEMTREX_VALUE_SET_ID</a>,                 </div>
+<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a56959b815b41df8e507247b85ae5f74c">   65</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a56959b815b41df8e507247b85ae5f74c">SEMTREX_GROUP_ID</a>,                     </div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    SEMTREX_DESCEND_ID,</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    SEMTREX_WALK_ID,</div>
+<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a769b6a1b74e530afda91901d70da1d22">   68</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a769b6a1b74e530afda91901d70da1d22">SEMTREX_MATCH_ID</a>,                     </div>
+<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a59da74ef7e2967cc49da89b599fc2b4f">   69</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a59da74ef7e2967cc49da89b599fc2b4f">SEMTREX_MATCH_CURSOR_ID</a>,              </div>
+<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a69e885f865c25787f236288ff4878437">   70</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a69e885f865c25787f236288ff4878437">SEMTREX_MATCH_RESULTS_ID</a>,             </div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    SEMTREX_MATCH_SYMBOL_ID,</div>
+<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57af45b5f9b9254869d1cfef9a577ce227e">   72</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57af45b5f9b9254869d1cfef9a577ce227e">SEMTREX_MATCH_SIBLINGS_COUNT_ID</a>,      </div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="comment">//----- Symbols for parsing  matching string representation of semtrex</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    ASCII_CHAR_ID,</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    ASCII_CHARS_ID,</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="comment">//-----  Symbols for receptors</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a3b9f0366fea6d7bcbc95c71bd7999a38">   79</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a3b9f0366fea6d7bcbc95c71bd7999a38">RECEPTOR_XADDR_ID</a>,                    </div>
+<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ac8614452da7c46ee7c8f7a41fd5f67ae">   80</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ac8614452da7c46ee7c8f7a41fd5f67ae">FLUX_ID</a>,                              </div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    SCAPE_SPEC_ID,</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    ASPECTS_ID,</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    ASPECT_DEF_ID,</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    ASPECT_TYPE_ID,</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    CARRIER_ID,</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    ASPECT_ID,</div>
+<div class="line"><a name="l00087"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a2526241b3257dfa3dbaaf4120af722f1">   87</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a2526241b3257dfa3dbaaf4120af722f1">SIGNALS_ID</a>,                           </div>
+<div class="line"><a name="l00088"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ad8b65df03b2fa04991a0a5458c87231c">   88</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ad8b65df03b2fa04991a0a5458c87231c">SIGNAL_ID</a>,                            </div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    ENVELOPE_ID,</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    BODY_ID,</div>
+<div class="line"><a name="l00091"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ac810f96e3b4572f097ed8c75b5678687">   91</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ac810f96e3b4572f097ed8c75b5678687">LISTENERS_ID</a>,                         </div>
+<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a4bfbdf9928c1480a79fc3d031c666ae7">   92</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a4bfbdf9928c1480a79fc3d031c666ae7">LISTENER_ID</a>,                          </div>
+<div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ad49eae0ac73fd22522aa81ec49c69d60">   93</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ad49eae0ac73fd22522aa81ec49c69d60">EXPECTATION_ID</a>,                       </div>
+<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a7865540da043e76605122c4d861399ab">   94</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a7865540da043e76605122c4d861399ab">ACTION_ID</a>,                            </div>
+<div class="line"><a name="l00095"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a182b16baff0e5ab5c676de4c308fdfec">   95</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a182b16baff0e5ab5c676de4c308fdfec">INTERPOLATE_SYMBOL_ID</a>,                </div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    PROCESSES_ID,</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    PROCESS_CODING_ID,</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    PROCESS_NAME_ID,</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    PROCESS_INTENTION_ID,</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    INPUT_ID,</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    INPUT_SIGNATURE_ID,</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    INPUT_LABEL_ID,</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    SIGNATURE_STRUCTURE_ID,</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    OUTPUT_SIGNATURE_ID,</div>
+<div class="line"><a name="l00105"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57af8edacaa56cabee660631d1a0723e6ee">  105</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57af8edacaa56cabee660631d1a0723e6ee">RUN_TREE_ID</a>,                         </div>
+<div class="line"><a name="l00106"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a061d417b0500f472796fdccd6a979f49">  106</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a061d417b0500f472796fdccd6a979f49">PARAM_REF_ID</a>,                        </div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    PARAMS_ID,</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    PROTOCOLS_ID,</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    PROTOCOL_ID,</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    ROLES_ID,</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    ROLE_ID,</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    INTERACTIONS_ID,</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    INTERACTION_ID,</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    STEP_ID,</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    FROM_ROLE_ID,</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    TO_ROLE_ID,</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    RESPONSE_STEPS_ID,</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    SCAPES_ID,</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    <span class="comment">//-----  Symbols for the virtual machine host</span></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    VM_HOST_RECEPTOR_ID,</div>
+<div class="line"><a name="l00122"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ace2e7d62e4e69a8e1b3c5ce4f5d13482">  122</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ace2e7d62e4e69a8e1b3c5ce4f5d13482">COMPOSITORY_ID</a>,                      </div>
+<div class="line"><a name="l00123"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57af5b5cb822b4808efdc92005845f02d46">  123</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57af5b5cb822b4808efdc92005845f02d46">MANIFEST_ID</a>,                         </div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    MANIFEST_PAIR_ID,</div>
+<div class="line"><a name="l00125"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a6a9de44feb162044713a08bcd53d87d2">  125</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a6a9de44feb162044713a08bcd53d87d2">MANIFEST_LABEL_ID</a>,                   </div>
+<div class="line"><a name="l00126"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ac82077aa5abb2ffcb8ebd8d0a9e40499">  126</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ac82077aa5abb2ffcb8ebd8d0a9e40499">MANIFEST_SPEC_ID</a>,                    </div>
+<div class="line"><a name="l00127"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a58d85cf1d289fb98ca4b4e74d629ddd1">  127</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a58d85cf1d289fb98ca4b4e74d629ddd1">RECEPTOR_PACKAGE_ID</a>,                 </div>
+<div class="line"><a name="l00128"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a03b44a2d84d0b88ecc42b51c7d6acdec">  128</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a03b44a2d84d0b88ecc42b51c7d6acdec">RECEPTOR_IDENTIFIER_ID</a>,              </div>
+<div class="line"><a name="l00129"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57aacf54d92cfdd54c9aebba00207b0ea95">  129</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57aacf54d92cfdd54c9aebba00207b0ea95">INSTALLED_RECEPTOR_ID</a>,               </div>
+<div class="line"><a name="l00130"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a6e7b9621c3ccacbd7b5215811e8307eb">  130</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a6e7b9621c3ccacbd7b5215811e8307eb">ACTIVE_RECEPTORS_ID</a>,                 </div>
+<div class="line"><a name="l00131"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ab70e70ef75e3ccdcd72c4ef0a4d71def">  131</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ab70e70ef75e3ccdcd72c4ef0a4d71def">PENDING_SIGNALS_ID</a>,                  </div>
+<div class="line"><a name="l00132"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a965cab3dff3f22a41653608c97589f89">  132</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a965cab3dff3f22a41653608c97589f89">BINDINGS_ID</a>,                         </div>
+<div class="line"><a name="l00133"></a><span class="lineno"><a class="line" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ae71c12f7c3306bae16ac5872c43e6e00">  133</a></span>&#160;    <a class="code" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ae71c12f7c3306bae16ac5872c43e6e00">BINDING_PAIR_ID</a>,                     </div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;};</div>
 <div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="keyword">static</span> <a class="code" href="structSemanticID.html">Structure</a> G_sys_symbol_structures[] = {</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160; <span class="comment">/*   NULL_STRUCTURE,      //NULL_SYMBOL</span></div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;<span class="comment">    BOOLEAN,             //TRUE_FALSE</span></div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;<span class="comment">    TREE_PATH,           //SEMTREX_MATCHED_PATH</span></div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;<span class="comment">    SYMBOL,              //SEMTREX_SYMBOL_LITERAL</span></div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;<span class="comment">    LIST,                //SEMTREX_SEQUENCE</span></div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;<span class="comment">    NULL_STRUCTURE,      //SEMTREX_OR</span></div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;<span class="comment">    NULL_STRUCTURE,      //SEMTREX_NOT</span></div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;<span class="comment">    NULL_STRUCTURE,      //SEMTREX_SYMBOL_ANY</span></div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="comment">    SYMBOL,      //SEMTREX_SYMBOL_ANY_EXCEPT</span></div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="comment">    NULL_STRUCTURE,      //SEMTREX_ZERO_OR_MORE</span></div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="comment">    NULL_STRUCTURE,      //SEMTREX_ONE_OR_MORE</span></div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="comment">    NULL_STRUCTURE,      //SEMTREX_ZERO_OR_ONE</span></div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="comment">    TREE,                //SEMTREX_VALUE_LITERAL</span></div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="comment">    TREE,                //SEMTREX_VALUE_LITERAL_NOT</span></div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="comment">    VALUE_SET,           //LIST</span></div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;<span class="comment">    SYMBOL,              //SEMTREX_GROUP</span></div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="comment">    NULL_STRUCTURE,      //SEMTREX_DESCEND</span></div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="comment">    INTEGER,             //SEMTREX_MATCH</span></div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="comment">    NULL_STRUCTURE,      //SEMTREX_MATCH_RESULTS</span></div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="comment">    SYMBOL,              //SEMTREX_MATCH_SYMBOL</span></div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="comment">    INTEGER,             //SEMTREX_MATCH_SIBLINGS_COUNT</span></div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;<span class="comment">    XADDR,               //RECEPTOR_XADDR</span></div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="comment">    LIST,                //FLUX</span></div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="comment">    LIST,                //DEFINITIONS</span></div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="comment">    LIST,                //STRUCTURES</span></div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="comment">    TREE,                //STRUCTURE_DEFINITION</span></div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="comment">    CSTRING,             //STRUCTURE_LABEL</span></div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="comment">    LIST,                //STRUCTURE_PARTS</span></div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;<span class="comment">    SYMBOL,              //STRUCTURE_PART</span></div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="comment">    LIST,                //SYMBOLS</span></div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="comment">    TREE,                //SYMBOL_DECLARATION</span></div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="comment">    STRUCTURE,           //SYMBOL_STRUCTURE</span></div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="comment">    CSTRING,             //SYMBOL_LABEL</span></div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;<span class="comment">    TREE,                //SCAPE_SPEC</span></div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="comment">    LIST,                //ASPECTS</span></div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="comment">    TREE,                //ASPECT_DEF</span></div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;<span class="comment">    BOOLEAN,             //ASPECT_TYPE,</span></div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<span class="comment">    SYMBOL,              //CARRIER</span></div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;<span class="comment">    INTEGER,             //ASPECT</span></div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;<span class="comment">    LIST,                //SIGNALS</span></div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;<span class="comment">    TREE,                //SIGNAL</span></div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;<span class="comment">    LIST,                //ENVELOPE</span></div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;<span class="comment">    TREE,                //BODY</span></div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;<span class="comment">    LIST,                //LISTENERS</span></div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;<span class="comment">    INTEGER,             //LISTENER</span></div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;<span class="comment">    NULL_STRUCTURE,      //EXPECTATION</span></div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;<span class="comment">    PROCESS,             //ACTION</span></div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;<span class="comment">    SYMBOL,              //INTERPOLATE_SYMBOL</span></div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;<span class="comment">    LIST,                //PROCESSES</span></div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;<span class="comment">    TREE,                //PROCESS_CODING</span></div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;<span class="comment">    CSTRING,             //PROCESS_NAME</span></div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;<span class="comment">    CSTRING,             //PROCESS_INTENTION</span></div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;<span class="comment">    LIST,                //INPUT</span></div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;<span class="comment">    TREE,                //INPUT_SIGNATURE</span></div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;<span class="comment">    CSTRING,             //INPUT_LABEL</span></div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<span class="comment">    STRUCTURE,           //SIGNATURE_STRUCTURE</span></div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;<span class="comment">    NULL_STRUCTURE,      //OUTPUT_SIGNATURE</span></div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;<span class="comment">    TREE,                //RUN_TREE</span></div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;<span class="comment">    TREE_PATH,           //PARAM_REF</span></div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;<span class="comment">    LIST,                //PARAMS</span></div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;<span class="comment">    LIST,//PROTOCOLS,</span></div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;<span class="comment">    TREE,//PROTOCOL,</span></div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;<span class="comment">    LIST,//ROLES,</span></div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;<span class="comment">    CSTRING,//ROLE,</span></div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;<span class="comment">    LIST,//INTERACTIONS,</span></div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;<span class="comment">    LIST,//INTERACTION</span></div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;<span class="comment">    CSTRING,//STEP,</span></div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;<span class="comment">    ENUM,//FROM_ROLE,</span></div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;<span class="comment">    ENUM,//TO_ROLE,</span></div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;<span class="comment">    LIST,//RESPONSE_STEPS,</span></div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;<span class="comment">    LIST,                //SCAPES</span></div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;<span class="comment">    RECEPTOR,            //VM_HOST_RECEPTOR</span></div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;<span class="comment">    RECEPTOR,            //COMPOSITORY</span></div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;<span class="comment">    TREE,                //MANIFEST</span></div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;<span class="comment">    LIST,                //MANIFEST_PAIR</span></div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;<span class="comment">    CSTRING,             //MANIFEST_LABEL</span></div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;<span class="comment">    SYMBOL,              //MANIFEST_SPEC</span></div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;<span class="comment">    TREE,                //RECEPTOR_PACKAGE</span></div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;<span class="comment">    INTEGER,             //RECEPTOR_IDENTIFIER</span></div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;<span class="comment">    TREE,                //INSTALLED_RECEPTOR</span></div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;<span class="comment">    LIST,                //ACTIVE_RECEPTORS</span></div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;<span class="comment">    LIST,                //PENDING_SIGNALS</span></div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;<span class="comment">    TREE,                //BINDINGS</span></div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;<span class="comment">    LIST,                //BINDING_PAIR</span></div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;};</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="keyword">static</span> <a class="code" href="structSemanticID.html">Structure</a> G_sys_symbol_structures[] = {</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160; <span class="comment">/*   NULL_STRUCTURE,      //NULL_SYMBOL</span></div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;<span class="comment">    BOOLEAN,             //TRUE_FALSE</span></div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;<span class="comment">    TREE_PATH,           //SEMTREX_MATCHED_PATH</span></div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;<span class="comment">    SYMBOL,              //SEMTREX_SYMBOL_LITERAL</span></div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;<span class="comment">    LIST,                //SEMTREX_SEQUENCE</span></div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;<span class="comment">    NULL_STRUCTURE,      //SEMTREX_OR</span></div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;<span class="comment">    NULL_STRUCTURE,      //SEMTREX_NOT</span></div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="comment">    NULL_STRUCTURE,      //SEMTREX_SYMBOL_ANY</span></div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="comment">    SYMBOL,      //SEMTREX_SYMBOL_ANY_EXCEPT</span></div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="comment">    NULL_STRUCTURE,      //SEMTREX_ZERO_OR_MORE</span></div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="comment">    NULL_STRUCTURE,      //SEMTREX_ONE_OR_MORE</span></div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="comment">    NULL_STRUCTURE,      //SEMTREX_ZERO_OR_ONE</span></div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="comment">    TREE,                //SEMTREX_VALUE_LITERAL</span></div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="comment">    TREE,                //SEMTREX_VALUE_LITERAL_NOT</span></div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;<span class="comment">    VALUE_SET,           //LIST</span></div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="comment">    SYMBOL,              //SEMTREX_GROUP</span></div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="comment">    NULL_STRUCTURE,      //SEMTREX_DESCEND</span></div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="comment">    INTEGER,             //SEMTREX_MATCH</span></div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="comment">    NULL_STRUCTURE,      //SEMTREX_MATCH_RESULTS</span></div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="comment">    SYMBOL,              //SEMTREX_MATCH_SYMBOL</span></div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;<span class="comment">    INTEGER,             //SEMTREX_MATCH_SIBLINGS_COUNT</span></div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="comment">    XADDR,               //RECEPTOR_XADDR</span></div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="comment">    LIST,                //FLUX</span></div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="comment">    LIST,                //DEFINITIONS</span></div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="comment">    LIST,                //STRUCTURES</span></div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="comment">    TREE,                //STRUCTURE_DEFINITION</span></div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="comment">    CSTRING,             //STRUCTURE_LABEL</span></div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;<span class="comment">    LIST,                //STRUCTURE_PARTS</span></div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="comment">    SYMBOL,              //STRUCTURE_PART</span></div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="comment">    LIST,                //SYMBOLS</span></div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="comment">    TREE,                //SYMBOL_DECLARATION</span></div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="comment">    STRUCTURE,           //SYMBOL_STRUCTURE</span></div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;<span class="comment">    CSTRING,             //SYMBOL_LABEL</span></div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="comment">    TREE,                //SCAPE_SPEC</span></div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="comment">    LIST,                //ASPECTS</span></div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;<span class="comment">    TREE,                //ASPECT_DEF</span></div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<span class="comment">    BOOLEAN,             //ASPECT_TYPE,</span></div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;<span class="comment">    SYMBOL,              //CARRIER</span></div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;<span class="comment">    INTEGER,             //ASPECT</span></div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;<span class="comment">    LIST,                //SIGNALS</span></div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;<span class="comment">    TREE,                //SIGNAL</span></div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;<span class="comment">    LIST,                //ENVELOPE</span></div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;<span class="comment">    TREE,                //BODY</span></div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;<span class="comment">    LIST,                //LISTENERS</span></div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;<span class="comment">    INTEGER,             //LISTENER</span></div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;<span class="comment">    NULL_STRUCTURE,      //EXPECTATION</span></div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;<span class="comment">    PROCESS,             //ACTION</span></div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;<span class="comment">    SYMBOL,              //INTERPOLATE_SYMBOL</span></div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;<span class="comment">    LIST,                //PROCESSES</span></div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;<span class="comment">    TREE,                //PROCESS_CODING</span></div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;<span class="comment">    CSTRING,             //PROCESS_NAME</span></div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;<span class="comment">    CSTRING,             //PROCESS_INTENTION</span></div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;<span class="comment">    LIST,                //INPUT</span></div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;<span class="comment">    TREE,                //INPUT_SIGNATURE</span></div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<span class="comment">    CSTRING,             //INPUT_LABEL</span></div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;<span class="comment">    STRUCTURE,           //SIGNATURE_STRUCTURE</span></div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;<span class="comment">    NULL_STRUCTURE,      //OUTPUT_SIGNATURE</span></div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;<span class="comment">    TREE,                //RUN_TREE</span></div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;<span class="comment">    TREE_PATH,           //PARAM_REF</span></div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;<span class="comment">    LIST,                //PARAMS</span></div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;<span class="comment">    LIST,//PROTOCOLS,</span></div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;<span class="comment">    TREE,//PROTOCOL,</span></div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;<span class="comment">    LIST,//ROLES,</span></div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;<span class="comment">    CSTRING,//ROLE,</span></div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;<span class="comment">    LIST,//INTERACTIONS,</span></div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;<span class="comment">    LIST,//INTERACTION</span></div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;<span class="comment">    CSTRING,//STEP,</span></div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;<span class="comment">    ENUM,//FROM_ROLE,</span></div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;<span class="comment">    ENUM,//TO_ROLE,</span></div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;<span class="comment">    LIST,//RESPONSE_STEPS,</span></div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;<span class="comment">    LIST,                //SCAPES</span></div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;<span class="comment">    RECEPTOR,            //VM_HOST_RECEPTOR</span></div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;<span class="comment">    RECEPTOR,            //COMPOSITORY</span></div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;<span class="comment">    TREE,                //MANIFEST</span></div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;<span class="comment">    LIST,                //MANIFEST_PAIR</span></div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;<span class="comment">    CSTRING,             //MANIFEST_LABEL</span></div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;<span class="comment">    SYMBOL,              //MANIFEST_SPEC</span></div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;<span class="comment">    TREE,                //RECEPTOR_PACKAGE</span></div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;<span class="comment">    INTEGER,             //RECEPTOR_IDENTIFIER</span></div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;<span class="comment">    TREE,                //INSTALLED_RECEPTOR</span></div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;<span class="comment">    LIST,                //ACTIVE_RECEPTORS</span></div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;<span class="comment">    LIST,                //PENDING_SIGNALS</span></div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;<span class="comment">    TREE,                //BINDINGS</span></div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;<span class="comment">    LIST,                //BINDING_PAIR</span></div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;};</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;<span class="comment">//  Semantic Type:</span></div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;<span class="comment">//      Structures, like &quot;float&quot;, are abstract labels.</span></div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;<span class="comment">//      A semantic type is a label with a particular semantic application or implementation of that labelled structure.</span></div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;<span class="comment">//      &quot;int&quot; is a labelled structure, &quot;age&quot; is a semantic implementation.</span></div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;<span class="comment">//  Ex:</span></div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;<span class="comment">//      /TEST_SYMBOL=&quot;t&quot;        : the root&#39;s semantic type is &quot;semtrex_symbol_literal&quot; and it&#39;s literal value = &#39;t&#39;</span></div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;<span class="comment">//  SEMTREX_GROUP</span></div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;<span class="comment">//      Paren-group: A group to which you apply some function.</span></div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;<span class="comment">//      SMTP: mail from         where &quot;from is optional&quot;</span></div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;<span class="comment">//      Ex: /ascii-line/char=&#39;M&#39;...etc..., (F R O M)?</span></div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;<span class="comment">//  Curly brace is a named (or referenced) group</span></div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;<span class="comment">//      Ex: /ascii-line/char=&#39;M&#39;...etc..., (F R O M)?{email-address:.*}</span></div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;<a class="code" href="structT.html">T</a> *G_sys_root;</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;<a class="code" href="structDefs.html">Defs</a> G_sys_defs;</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> NULL_SYMBOL;</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> DEFINITIONS;</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STRUCTURES;</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STRUCTURE_DEFINITION;</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STRUCTURE_LABEL;</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STRUCTURE_PARTS;</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STRUCTURE_PART;</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SYMBOLS;</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> PROCESSES;</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SYMBOL_DECLARATION;</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SYMBOL_STRUCTURE;</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SYMBOL_LABEL;</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> TRUE_FALSE;</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;<span class="comment">//  Semantic Type:</span></div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;<span class="comment">//      Structures, like &quot;float&quot;, are abstract labels.</span></div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;<span class="comment">//      A semantic type is a label with a particular semantic application or implementation of that labelled structure.</span></div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;<span class="comment">//      &quot;int&quot; is a labelled structure, &quot;age&quot; is a semantic implementation.</span></div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;<span class="comment">//  Ex:</span></div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;<span class="comment">//      /TEST_SYMBOL=&quot;t&quot;        : the root&#39;s semantic type is &quot;semtrex_symbol_literal&quot; and it&#39;s literal value = &#39;t&#39;</span></div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;<span class="comment">//  SEMTREX_GROUP</span></div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;<span class="comment">//      Paren-group: A group to which you apply some function.</span></div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;<span class="comment">//      SMTP: mail from         where &quot;from is optional&quot;</span></div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;<span class="comment">//      Ex: /ascii-line/char=&#39;M&#39;...etc..., (F R O M)?</span></div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;<span class="comment">//  Curly brace is a named (or referenced) group</span></div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;<span class="comment">//      Ex: /ascii-line/char=&#39;M&#39;...etc..., (F R O M)?{email-address:.*}</span></div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;<a class="code" href="structT.html">T</a> *G_sys_root;</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;<a class="code" href="structDefs.html">Defs</a> G_sys_defs;</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> NULL_SYMBOL;</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> DEFINITIONS;</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STRUCTURES;</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STRUCTURE_DEFINITION;</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STRUCTURE_LABEL;</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STRUCTURE_PARTS;</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STRUCTURE_PART;</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SYMBOLS;</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> PROCESSES;</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SYMBOL_DECLARATION;</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SYMBOL_STRUCTURE;</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SYMBOL_LABEL;</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> TRUE_FALSE;</div>
 <div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_MATCHED_PATH;</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_SYMBOL_LITERAL;</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_SYMBOL_LITERAL_NOT;</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_SYMBOL_SET;</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_SYMBOL;</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_SEQUENCE;</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_OR;</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_NOT;</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_SYMBOL_ANY;</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_ZERO_OR_MORE;</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_ONE_OR_MORE;</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_ZERO_OR_ONE;</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_VALUE_LITERAL;</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_VALUE_LITERAL_NOT;</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_VALUE_SET;</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_GROUP;</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_DESCEND;</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_WALK;</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_MATCH;</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_MATCH_CURSOR;</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_MATCH_RESULTS;</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_MATCH_SYMBOL;</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_MATCH_SIBLINGS_COUNT;</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> ASCII_CHAR;</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> ASCII_CHARS;</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> RECEPTOR_XADDR;</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> FLUX;</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SCAPE_SPEC;</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> ASPECTS;</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> ASPECT_DEF;</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> ASPECT_TYPE;</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> CARRIER;</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> ASPECT;</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SIGNALS;</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SIGNAL;</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> ENVELOPE;</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> BODY;</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> LISTENERS;</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> LISTENER;</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> EXPECTATION;</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> ACTION;</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> INTERPOLATE_SYMBOL;</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> PROCESS_CODING;</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> PROCESS_NAME;</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> PROCESS_INTENTION;</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> INPUT;</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> INPUT_SIGNATURE;</div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> INPUT_LABEL;</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SIGNATURE_STRUCTURE;</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> OUTPUT_SIGNATURE;</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> RUN_TREE;</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> PARAM_REF;</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> PARAMS;</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> PROTOCOLS;</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> PROTOCOL;</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> ROLES;</div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> ROLE;</div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> INTERACTIONS;</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> INTERACTION;</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STEP;</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> FROM_ROLE;</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> TO_ROLE;</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> RESPONSE_STEPS;</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SCAPES;</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> VM_HOST_RECEPTOR;</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> COMPOSITORY;</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> MANIFEST;</div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> MANIFEST_PAIR;</div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> MANIFEST_LABEL;</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> MANIFEST_SPEC;</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> RECEPTOR_PACKAGE;</div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> RECEPTOR_IDENTIFIER;</div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> INSTALLED_RECEPTOR;</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> ACTIVE_RECEPTORS;</div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> PENDING_SIGNALS;</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> BINDINGS;</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> BINDING_PAIR;</div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;</div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_TOKENS;</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_SL;</div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_OP;</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_CP;</div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_SET;</div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_OS;</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_CS;</div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_LABEL;</div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_OG;</div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_CG;</div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_EQ;</div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_NEQ;</div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_WALK;</div>
-<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_STAR;</div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_PLUS;</div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_Q;</div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_OR;</div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_COMMA;</div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_EXCEPT;</div>
-<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_NOT;</div>
-<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_VAL_C;</div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_VAL_S;</div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_VAL_I;</div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;</div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_SIBS;</div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_CHILD;</div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_POSTFIX;</div>
-<div class="ttc" id="structT_html"><div class="ttname"><a href="structT.html">T</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00043">ceptr_types.h:43</a></div></div>
-<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a69e885f865c25787f236288ff4878437"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a69e885f865c25787f236288ff4878437">SEMTREX_MATCH_RESULTS_ID</a></div><div class="ttdoc">In the FSA_ID, keeps track of which part matches so it can be referenced. </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00069">sys_symbols.h:69</a></div></div>
-<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57ac8614452da7c46ee7c8f7a41fd5f67ae"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ac8614452da7c46ee7c8f7a41fd5f67ae">FLUX_ID</a></div><div class="ttdoc">tree to hold all incoming and in process signals on the various aspects </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00079">sys_symbols.h:79</a></div></div>
-<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57aacf54d92cfdd54c9aebba00207b0ea95"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57aacf54d92cfdd54c9aebba00207b0ea95">INSTALLED_RECEPTOR_ID</a></div><div class="ttdoc">contains the installed receptor as well as state information (enabled,disabled_ID, etc..) </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00128">sys_symbols.h:128</a></div></div>
-<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a03b44a2d84d0b88ecc42b51c7d6acdec"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a03b44a2d84d0b88ecc42b51c7d6acdec">RECEPTOR_IDENTIFIER_ID</a></div><div class="ttdoc">uuid that identifies receptors </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00127">sys_symbols.h:127</a></div></div>
-<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57">SystemSymbolIDs</a></div><div class="ttdeci">SystemSymbolIDs</div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00031">sys_symbols.h:31</a></div></div>
-<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57aed65f903629da68029acca04414280b2"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57aed65f903629da68029acca04414280b2">SEMTREX_ZERO_OR_ONE_ID</a></div><div class="ttdoc">Requires one child Semtrex and matches on zero or one of that Semtrex. Ex: /0/TestSemtrex? </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00060">sys_symbols.h:60</a></div></div>
-<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a182b16baff0e5ab5c676de4c308fdfec"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a182b16baff0e5ab5c676de4c308fdfec">INTERPOLATE_SYMBOL_ID</a></div><div class="ttdoc">a place holder to indicate which symbol to insert into this part of the three </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00094">sys_symbols.h:94</a></div></div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_MATCHED_PATH;</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_SYMBOL_LITERAL;</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_SYMBOL_LITERAL_NOT;</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_SYMBOL_SET;</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_SYMBOL;</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_SEQUENCE;</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_OR;</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_NOT;</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_SYMBOL_ANY;</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_ZERO_OR_MORE;</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_ONE_OR_MORE;</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_ZERO_OR_ONE;</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_VALUE_LITERAL;</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_VALUE_LITERAL_NOT;</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_VALUE_SET;</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_GROUP;</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_DESCEND;</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_WALK;</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_MATCH;</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_MATCH_CURSOR;</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_MATCH_RESULTS;</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_MATCH_SYMBOL;</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SEMTREX_MATCH_SIBLINGS_COUNT;</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> ASCII_CHAR;</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> ASCII_CHARS;</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> RECEPTOR_XADDR;</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> FLUX;</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SCAPE_SPEC;</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> ASPECTS;</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> ASPECT_DEF;</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> ASPECT_TYPE;</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> CARRIER;</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> ASPECT;</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SIGNALS;</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SIGNAL;</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> ENVELOPE;</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> BODY;</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> LISTENERS;</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> LISTENER;</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> EXPECTATION;</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> ACTION;</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> INTERPOLATE_SYMBOL;</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> PROCESS_CODING;</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> PROCESS_NAME;</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> PROCESS_INTENTION;</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> INPUT;</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> INPUT_SIGNATURE;</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> INPUT_LABEL;</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SIGNATURE_STRUCTURE;</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> OUTPUT_SIGNATURE;</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> RUN_TREE;</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> PARAM_REF;</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> PARAMS;</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> PROTOCOLS;</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> PROTOCOL;</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> ROLES;</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> ROLE;</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> INTERACTIONS;</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> INTERACTION;</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STEP;</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> FROM_ROLE;</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> TO_ROLE;</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> RESPONSE_STEPS;</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> SCAPES;</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> VM_HOST_RECEPTOR;</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> COMPOSITORY;</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> MANIFEST;</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> MANIFEST_PAIR;</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> MANIFEST_LABEL;</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> MANIFEST_SPEC;</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> RECEPTOR_PACKAGE;</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> RECEPTOR_IDENTIFIER;</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> INSTALLED_RECEPTOR;</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> ACTIVE_RECEPTORS;</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> PENDING_SIGNALS;</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> BINDINGS;</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> BINDING_PAIR;</div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_TOKENS;</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_SL;</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_OP;</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_CP;</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_SET;</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_OS;</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_CS;</div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_LABEL;</div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_OG;</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_CG;</div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_EQ;</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_NEQ;</div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_WALK;</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_STAR;</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_PLUS;</div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_Q;</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_OR;</div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_COMMA;</div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_EXCEPT;</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_NOT;</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_VAL_C;</div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_VAL_S;</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_VAL_I;</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_VAL_F;</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;</div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_SIBS;</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_CHILD;</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STX_POSTFIX;</div>
+<div class="ttc" id="structT_html"><div class="ttname"><a href="structT.html">T</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00097">ceptr_types.h:97</a></div></div>
+<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a69e885f865c25787f236288ff4878437"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a69e885f865c25787f236288ff4878437">SEMTREX_MATCH_RESULTS_ID</a></div><div class="ttdoc">In the FSA_ID, keeps track of which part matches so it can be referenced. </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00070">sys_symbols.h:70</a></div></div>
+<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57ac8614452da7c46ee7c8f7a41fd5f67ae"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ac8614452da7c46ee7c8f7a41fd5f67ae">FLUX_ID</a></div><div class="ttdoc">tree to hold all incoming and in process signals on the various aspects </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00080">sys_symbols.h:80</a></div></div>
+<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57aacf54d92cfdd54c9aebba00207b0ea95"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57aacf54d92cfdd54c9aebba00207b0ea95">INSTALLED_RECEPTOR_ID</a></div><div class="ttdoc">contains the installed receptor as well as state information (enabled,disabled_ID, etc..) </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00129">sys_symbols.h:129</a></div></div>
+<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a03b44a2d84d0b88ecc42b51c7d6acdec"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a03b44a2d84d0b88ecc42b51c7d6acdec">RECEPTOR_IDENTIFIER_ID</a></div><div class="ttdoc">uuid that identifies receptors </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00128">sys_symbols.h:128</a></div></div>
+<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57">SystemSymbolIDs</a></div><div class="ttdeci">SystemSymbolIDs</div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00032">sys_symbols.h:32</a></div></div>
+<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57aed65f903629da68029acca04414280b2"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57aed65f903629da68029acca04414280b2">SEMTREX_ZERO_OR_ONE_ID</a></div><div class="ttdoc">Requires one child Semtrex and matches on zero or one of that Semtrex. Ex: /0/TestSemtrex? </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00061">sys_symbols.h:61</a></div></div>
+<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a182b16baff0e5ab5c676de4c308fdfec"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a182b16baff0e5ab5c676de4c308fdfec">INTERPOLATE_SYMBOL_ID</a></div><div class="ttdoc">a place holder to indicate which symbol to insert into this part of the three </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00095">sys_symbols.h:95</a></div></div>
 <div class="ttc" id="sys__structures_8h_html"><div class="ttname"><a href="sys__structures_8h.html">sys_structures.h</a></div><div class="ttdoc">Defines hard-coded system defined structures. </div></div>
-<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a377b430529839987dac26755572ff259"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a377b430529839987dac26755572ff259">SEMTREX_MATCHED_PATH_ID</a></div><div class="ttdoc">path to symbol matched by semtrex </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00049">sys_symbols.h:49</a></div></div>
-<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a86ff9af344c4fa4c9e801db962f86b5f"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a86ff9af344c4fa4c9e801db962f86b5f">SEMTREX_ZERO_OR_MORE_ID</a></div><div class="ttdoc">Requires one child Semtrex and matches on zero or more of that Semtrex. Ex: /0/TestSemtrex*. </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00058">sys_symbols.h:58</a></div></div>
-<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a8fd8090d74b399686f1578865083c5c2"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a8fd8090d74b399686f1578865083c5c2">SEMTREX_VALUE_LITERAL_NOT_ID</a></div><div class="ttdoc">Matches on logical not of semantic type and data values. </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00062">sys_symbols.h:62</a></div></div>
-<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a769b6a1b74e530afda91901d70da1d22"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a769b6a1b74e530afda91901d70da1d22">SEMTREX_MATCH_ID</a></div><div class="ttdoc">Returns result and sibling count. Ex: {name:expr} (verify this is what it&#39;s supposed to do) ...</div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00067">sys_symbols.h:67</a></div></div>
-<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57ae71c12f7c3306bae16ac5872c43e6e00"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ae71c12f7c3306bae16ac5872c43e6e00">BINDING_PAIR_ID</a></div><div class="ttdoc">a pair that matches a MANIFEST_LABEL with a given binding </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00132">sys_symbols.h:132</a></div></div>
-<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a6e7b9621c3ccacbd7b5215811e8307eb"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a6e7b9621c3ccacbd7b5215811e8307eb">ACTIVE_RECEPTORS_ID</a></div><div class="ttdoc">list of currently active INSTALLED_RECEPTORS </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00129">sys_symbols.h:129</a></div></div>
-<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57af8edacaa56cabee660631d1a0723e6ee"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57af8edacaa56cabee660631d1a0723e6ee">RUN_TREE_ID</a></div><div class="ttdoc">think about this as a stack frame and its code </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00104">sys_symbols.h:104</a></div></div>
-<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57adccb671023d8f21e422119f9d3fbf189"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57adccb671023d8f21e422119f9d3fbf189">SEMTREX_NOT_ID</a></div><div class="ttdoc">Logical ~ between of a Semtrex expressions. Ex: ~. </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00056">sys_symbols.h:56</a></div></div>
-<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57ace2e7d62e4e69a8e1b3c5ce4f5d13482"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ace2e7d62e4e69a8e1b3c5ce4f5d13482">COMPOSITORY_ID</a></div><div class="ttdoc">receptor that holds available receptor packages for installation </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00121">sys_symbols.h:121</a></div></div>
-<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a4bfbdf9928c1480a79fc3d031c666ae7"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a4bfbdf9928c1480a79fc3d031c666ae7">LISTENER_ID</a></div><div class="ttdoc">surface of the listener is the carrier symbol, and it has two children_ID, expectation semtrex and ac...</div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00091">sys_symbols.h:91</a></div></div>
-<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57aa3cb82e8787ee648f182015175f9ed6e"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57aa3cb82e8787ee648f182015175f9ed6e">SEMTREX_SYMBOL_LITERAL_NOT_ID</a></div><div class="ttdoc">Match any symbol or value of the node except. Ex: . </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00051">sys_symbols.h:51</a></div></div>
-<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a73d90fbbf0b65514ae6bac6108920fb0"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a73d90fbbf0b65514ae6bac6108920fb0">SEMTREX_SYMBOL_ID</a></div><div class="ttdoc">symbols in the literal set </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00053">sys_symbols.h:53</a></div></div>
-<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57af45b5f9b9254869d1cfef9a577ce227e"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57af45b5f9b9254869d1cfef9a577ce227e">SEMTREX_MATCH_SIBLINGS_COUNT_ID</a></div><div class="ttdoc">In the FSA_ID, it&#39;s the length of the match. </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00071">sys_symbols.h:71</a></div></div>
-<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57ac82077aa5abb2ffcb8ebd8d0a9e40499"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ac82077aa5abb2ffcb8ebd8d0a9e40499">MANIFEST_SPEC_ID</a></div><div class="ttdoc">a symbol to specify what type of data must be provided for a given manifest label ...</div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00125">sys_symbols.h:125</a></div></div>
-<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a3b9f0366fea6d7bcbc95c71bd7999a38"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a3b9f0366fea6d7bcbc95c71bd7999a38">RECEPTOR_XADDR_ID</a></div><div class="ttdoc">An Xaddr that points to a receptor. </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00078">sys_symbols.h:78</a></div></div>
-<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a5acd63899bff8737f84493db6df43e05"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a5acd63899bff8737f84493db6df43e05">SEMTREX_ONE_OR_MORE_ID</a></div><div class="ttdoc">Requires one child Semtrex and matches on one or more of that Semtrex. Ex: /0/TestSemtrex+. </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00059">sys_symbols.h:59</a></div></div>
-<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57ad49eae0ac73fd22522aa81ec49c69d60"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ad49eae0ac73fd22522aa81ec49c69d60">EXPECTATION_ID</a></div><div class="ttdoc">expectation is a semtrex (thus has one child which is the first part of the semtrex) ...</div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00092">sys_symbols.h:92</a></div></div>
-<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a59da74ef7e2967cc49da89b599fc2b4f"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a59da74ef7e2967cc49da89b599fc2b4f">SEMTREX_MATCH_CURSOR_ID</a></div><div class="ttdoc">stores c pointer to tree node at start of match </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00068">sys_symbols.h:68</a></div></div>
-<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a2526241b3257dfa3dbaaf4120af722f1"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a2526241b3257dfa3dbaaf4120af722f1">SIGNALS_ID</a></div><div class="ttdoc">list of signals on an aspect in the flux </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00086">sys_symbols.h:86</a></div></div>
-<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57af5b5cb822b4808efdc92005845f02d46"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57af5b5cb822b4808efdc92005845f02d46">MANIFEST_ID</a></div><div class="ttdoc">configuration template to be filled out for the installation of a receptor </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00122">sys_symbols.h:122</a></div></div>
-<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a51b0113b5c552639cad118d0abf2c16c"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a51b0113b5c552639cad118d0abf2c16c">SEMTREX_SYMBOL_ANY_ID</a></div><div class="ttdoc">Match any symbol or value of the node. Ex: . </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00057">sys_symbols.h:57</a></div></div>
-<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a061d417b0500f472796fdccd6a979f49"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a061d417b0500f472796fdccd6a979f49">PARAM_REF_ID</a></div><div class="ttdoc">used in a code tree as a reference to a parameter </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00105">sys_symbols.h:105</a></div></div>
-<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57aa1092b100c01daef3a4150e80af8bacc"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57aa1092b100c01daef3a4150e80af8bacc">SEMTREX_VALUE_LITERAL_ID</a></div><div class="ttdoc">Matches on the semantic type and the data values. </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00061">sys_symbols.h:61</a></div></div>
-<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57ab70e70ef75e3ccdcd72c4ef0a4d71def"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ab70e70ef75e3ccdcd72c4ef0a4d71def">PENDING_SIGNALS_ID</a></div><div class="ttdoc">list of currently active INSTALLED_RECEPTORS </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00130">sys_symbols.h:130</a></div></div>
-<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a56959b815b41df8e507247b85ae5f74c"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a56959b815b41df8e507247b85ae5f74c">SEMTREX_GROUP_ID</a></div><div class="ttdoc">Grouping Ex: (...)operator. </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00064">sys_symbols.h:64</a></div></div>
-<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a9900674c2074002cece1c08d8fad7e6b"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a9900674c2074002cece1c08d8fad7e6b">SEMTREX_SYMBOL_LITERAL_ID</a></div><div class="ttdoc">This system symbol matches on the semantic type. Ex: /TEST_SYMBOL. </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00050">sys_symbols.h:50</a></div></div>
-<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a7a33830ad2d624b84f481a3bfe1c3b21"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a7a33830ad2d624b84f481a3bfe1c3b21">SEMTREX_OR_ID</a></div><div class="ttdoc">Logical OR between two Semtrex expressions. Ex: |. </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00055">sys_symbols.h:55</a></div></div>
-<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57ac810f96e3b4572f097ed8c75b5678687"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ac810f96e3b4572f097ed8c75b5678687">LISTENERS_ID</a></div><div class="ttdoc">list of carrier/expectation/action tress that "listen" to changes on the flux </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00090">sys_symbols.h:90</a></div></div>
-<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a7865540da043e76605122c4d861399ab"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a7865540da043e76605122c4d861399ab">ACTION_ID</a></div><div class="ttdoc">code tree_ID, which specifies the action to perform when an expectation&#39;s semtrex matches ...</div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00093">sys_symbols.h:93</a></div></div>
-<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a7a12034d419f575e268f3e27b86a75e9"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a7a12034d419f575e268f3e27b86a75e9">SEMTREX_SEQUENCE_ID</a></div><div class="ttdoc">Match on a sequence of child nodes which are any valid semtrex&#39;s. Ex: comma separated nodes...</div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00054">sys_symbols.h:54</a></div></div>
-<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a58d85cf1d289fb98ca4b4e74d629ddd1"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a58d85cf1d289fb98ca4b4e74d629ddd1">RECEPTOR_PACKAGE_ID</a></div><div class="ttdoc">a manifest, a symbol declaration tree, a structure definition tree_ID, and an identifier ...</div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00126">sys_symbols.h:126</a></div></div>
-<div class="ttc" id="structDefs_html"><div class="ttname"><a href="structDefs.html">Defs</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00091">ceptr_types.h:91</a></div></div>
-<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a965cab3dff3f22a41653608c97589f89"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a965cab3dff3f22a41653608c97589f89">BINDINGS_ID</a></div><div class="ttdoc">specifics that match a MANIFEST and allow a receptor to be installed </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00131">sys_symbols.h:131</a></div></div>
-<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57accec0ca7abe96495c1affcdb23e632de"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57accec0ca7abe96495c1affcdb23e632de">SEMTREX_VALUE_SET_ID</a></div><div class="ttdoc">list containing the values to match on </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00063">sys_symbols.h:63</a></div></div>
-<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a6a9de44feb162044713a08bcd53d87d2"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a6a9de44feb162044713a08bcd53d87d2">MANIFEST_LABEL_ID</a></div><div class="ttdoc">a label in the manifest to identify a binding </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00124">sys_symbols.h:124</a></div></div>
+<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a377b430529839987dac26755572ff259"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a377b430529839987dac26755572ff259">SEMTREX_MATCHED_PATH_ID</a></div><div class="ttdoc">path to symbol matched by semtrex </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00050">sys_symbols.h:50</a></div></div>
+<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a86ff9af344c4fa4c9e801db962f86b5f"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a86ff9af344c4fa4c9e801db962f86b5f">SEMTREX_ZERO_OR_MORE_ID</a></div><div class="ttdoc">Requires one child Semtrex and matches on zero or more of that Semtrex. Ex: /0/TestSemtrex*. </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00059">sys_symbols.h:59</a></div></div>
+<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a8fd8090d74b399686f1578865083c5c2"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a8fd8090d74b399686f1578865083c5c2">SEMTREX_VALUE_LITERAL_NOT_ID</a></div><div class="ttdoc">Matches on logical not of semantic type and data values. </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00063">sys_symbols.h:63</a></div></div>
+<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a769b6a1b74e530afda91901d70da1d22"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a769b6a1b74e530afda91901d70da1d22">SEMTREX_MATCH_ID</a></div><div class="ttdoc">Returns result and sibling count. Ex: {name:expr} (verify this is what it&#39;s supposed to do) ...</div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00068">sys_symbols.h:68</a></div></div>
+<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57ae71c12f7c3306bae16ac5872c43e6e00"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ae71c12f7c3306bae16ac5872c43e6e00">BINDING_PAIR_ID</a></div><div class="ttdoc">a pair that matches a MANIFEST_LABEL with a given binding </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00133">sys_symbols.h:133</a></div></div>
+<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a6e7b9621c3ccacbd7b5215811e8307eb"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a6e7b9621c3ccacbd7b5215811e8307eb">ACTIVE_RECEPTORS_ID</a></div><div class="ttdoc">list of currently active INSTALLED_RECEPTORS </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00130">sys_symbols.h:130</a></div></div>
+<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57af8edacaa56cabee660631d1a0723e6ee"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57af8edacaa56cabee660631d1a0723e6ee">RUN_TREE_ID</a></div><div class="ttdoc">think about this as a stack frame and its code </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00105">sys_symbols.h:105</a></div></div>
+<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57adccb671023d8f21e422119f9d3fbf189"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57adccb671023d8f21e422119f9d3fbf189">SEMTREX_NOT_ID</a></div><div class="ttdoc">Logical ~ between of a Semtrex expressions. Ex: ~. </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00057">sys_symbols.h:57</a></div></div>
+<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57ace2e7d62e4e69a8e1b3c5ce4f5d13482"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ace2e7d62e4e69a8e1b3c5ce4f5d13482">COMPOSITORY_ID</a></div><div class="ttdoc">receptor that holds available receptor packages for installation </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00122">sys_symbols.h:122</a></div></div>
+<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a4bfbdf9928c1480a79fc3d031c666ae7"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a4bfbdf9928c1480a79fc3d031c666ae7">LISTENER_ID</a></div><div class="ttdoc">surface of the listener is the carrier symbol, and it has two children_ID, expectation semtrex and ac...</div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00092">sys_symbols.h:92</a></div></div>
+<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57aa3cb82e8787ee648f182015175f9ed6e"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57aa3cb82e8787ee648f182015175f9ed6e">SEMTREX_SYMBOL_LITERAL_NOT_ID</a></div><div class="ttdoc">Match any symbol or value of the node except. Ex: . </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00052">sys_symbols.h:52</a></div></div>
+<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a73d90fbbf0b65514ae6bac6108920fb0"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a73d90fbbf0b65514ae6bac6108920fb0">SEMTREX_SYMBOL_ID</a></div><div class="ttdoc">symbols in the literal set </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00054">sys_symbols.h:54</a></div></div>
+<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57af45b5f9b9254869d1cfef9a577ce227e"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57af45b5f9b9254869d1cfef9a577ce227e">SEMTREX_MATCH_SIBLINGS_COUNT_ID</a></div><div class="ttdoc">In the FSA_ID, it&#39;s the length of the match. </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00072">sys_symbols.h:72</a></div></div>
+<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57ac82077aa5abb2ffcb8ebd8d0a9e40499"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ac82077aa5abb2ffcb8ebd8d0a9e40499">MANIFEST_SPEC_ID</a></div><div class="ttdoc">a symbol to specify what type of data must be provided for a given manifest label ...</div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00126">sys_symbols.h:126</a></div></div>
+<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a3b9f0366fea6d7bcbc95c71bd7999a38"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a3b9f0366fea6d7bcbc95c71bd7999a38">RECEPTOR_XADDR_ID</a></div><div class="ttdoc">An Xaddr that points to a receptor. </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00079">sys_symbols.h:79</a></div></div>
+<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a5acd63899bff8737f84493db6df43e05"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a5acd63899bff8737f84493db6df43e05">SEMTREX_ONE_OR_MORE_ID</a></div><div class="ttdoc">Requires one child Semtrex and matches on one or more of that Semtrex. Ex: /0/TestSemtrex+. </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00060">sys_symbols.h:60</a></div></div>
+<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57ad49eae0ac73fd22522aa81ec49c69d60"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ad49eae0ac73fd22522aa81ec49c69d60">EXPECTATION_ID</a></div><div class="ttdoc">expectation is a semtrex (thus has one child which is the first part of the semtrex) ...</div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00093">sys_symbols.h:93</a></div></div>
+<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a59da74ef7e2967cc49da89b599fc2b4f"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a59da74ef7e2967cc49da89b599fc2b4f">SEMTREX_MATCH_CURSOR_ID</a></div><div class="ttdoc">stores c pointer to tree node at start of match </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00069">sys_symbols.h:69</a></div></div>
+<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a2526241b3257dfa3dbaaf4120af722f1"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a2526241b3257dfa3dbaaf4120af722f1">SIGNALS_ID</a></div><div class="ttdoc">list of signals on an aspect in the flux </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00087">sys_symbols.h:87</a></div></div>
+<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57af5b5cb822b4808efdc92005845f02d46"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57af5b5cb822b4808efdc92005845f02d46">MANIFEST_ID</a></div><div class="ttdoc">configuration template to be filled out for the installation of a receptor </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00123">sys_symbols.h:123</a></div></div>
+<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a51b0113b5c552639cad118d0abf2c16c"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a51b0113b5c552639cad118d0abf2c16c">SEMTREX_SYMBOL_ANY_ID</a></div><div class="ttdoc">Match any symbol or value of the node. Ex: . </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00058">sys_symbols.h:58</a></div></div>
+<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a061d417b0500f472796fdccd6a979f49"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a061d417b0500f472796fdccd6a979f49">PARAM_REF_ID</a></div><div class="ttdoc">used in a code tree as a reference to a parameter </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00106">sys_symbols.h:106</a></div></div>
+<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57aa1092b100c01daef3a4150e80af8bacc"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57aa1092b100c01daef3a4150e80af8bacc">SEMTREX_VALUE_LITERAL_ID</a></div><div class="ttdoc">Matches on the semantic type and the data values. </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00062">sys_symbols.h:62</a></div></div>
+<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57ab70e70ef75e3ccdcd72c4ef0a4d71def"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ab70e70ef75e3ccdcd72c4ef0a4d71def">PENDING_SIGNALS_ID</a></div><div class="ttdoc">list of currently active INSTALLED_RECEPTORS </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00131">sys_symbols.h:131</a></div></div>
+<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a56959b815b41df8e507247b85ae5f74c"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a56959b815b41df8e507247b85ae5f74c">SEMTREX_GROUP_ID</a></div><div class="ttdoc">Grouping Ex: (...)operator. </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00065">sys_symbols.h:65</a></div></div>
+<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a9900674c2074002cece1c08d8fad7e6b"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a9900674c2074002cece1c08d8fad7e6b">SEMTREX_SYMBOL_LITERAL_ID</a></div><div class="ttdoc">This system symbol matches on the semantic type. Ex: /TEST_SYMBOL. </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00051">sys_symbols.h:51</a></div></div>
+<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a7a33830ad2d624b84f481a3bfe1c3b21"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a7a33830ad2d624b84f481a3bfe1c3b21">SEMTREX_OR_ID</a></div><div class="ttdoc">Logical OR between two Semtrex expressions. Ex: |. </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00056">sys_symbols.h:56</a></div></div>
+<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57ac810f96e3b4572f097ed8c75b5678687"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ac810f96e3b4572f097ed8c75b5678687">LISTENERS_ID</a></div><div class="ttdoc">list of carrier/expectation/action tress that "listen" to changes on the flux </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00091">sys_symbols.h:91</a></div></div>
+<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a7865540da043e76605122c4d861399ab"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a7865540da043e76605122c4d861399ab">ACTION_ID</a></div><div class="ttdoc">code tree_ID, which specifies the action to perform when an expectation&#39;s semtrex matches ...</div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00094">sys_symbols.h:94</a></div></div>
+<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a7a12034d419f575e268f3e27b86a75e9"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a7a12034d419f575e268f3e27b86a75e9">SEMTREX_SEQUENCE_ID</a></div><div class="ttdoc">Match on a sequence of child nodes which are any valid semtrex&#39;s. Ex: comma separated nodes...</div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00055">sys_symbols.h:55</a></div></div>
+<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a58d85cf1d289fb98ca4b4e74d629ddd1"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a58d85cf1d289fb98ca4b4e74d629ddd1">RECEPTOR_PACKAGE_ID</a></div><div class="ttdoc">a manifest, a symbol declaration tree, a structure definition tree_ID, and an identifier ...</div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00127">sys_symbols.h:127</a></div></div>
+<div class="ttc" id="structDefs_html"><div class="ttname"><a href="structDefs.html">Defs</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00145">ceptr_types.h:145</a></div></div>
+<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a965cab3dff3f22a41653608c97589f89"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a965cab3dff3f22a41653608c97589f89">BINDINGS_ID</a></div><div class="ttdoc">specifics that match a MANIFEST and allow a receptor to be installed </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00132">sys_symbols.h:132</a></div></div>
+<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57accec0ca7abe96495c1affcdb23e632de"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57accec0ca7abe96495c1affcdb23e632de">SEMTREX_VALUE_SET_ID</a></div><div class="ttdoc">list containing the values to match on </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00064">sys_symbols.h:64</a></div></div>
+<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57a6a9de44feb162044713a08bcd53d87d2"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a6a9de44feb162044713a08bcd53d87d2">MANIFEST_LABEL_ID</a></div><div class="ttdoc">a label in the manifest to identify a binding </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00125">sys_symbols.h:125</a></div></div>
 <div class="ttc" id="structSemanticID_html"><div class="ttname"><a href="structSemanticID.html">SemanticID</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00016">ceptr_types.h:16</a></div></div>
-<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57ad8b65df03b2fa04991a0a5458c87231c"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ad8b65df03b2fa04991a0a5458c87231c">SIGNAL_ID</a></div><div class="ttdoc">a signal on the flux. It&#39;s first child is the contents of the signal </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00087">sys_symbols.h:87</a></div></div>
+<div class="ttc" id="sys__symbols_8h_html_ae02415b3ffc3dd832ab0ae0b9923fe57ad8b65df03b2fa04991a0a5458c87231c"><div class="ttname"><a href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ad8b65df03b2fa04991a0a5458c87231c">SIGNAL_ID</a></div><div class="ttdoc">a signal on the flux. It&#39;s first child is the contents of the signal </div><div class="ttdef"><b>Definition:</b> <a href="sys__symbols_8h_source.html#l00088">sys_symbols.h:88</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="sys__symbols_8h.html">sys_symbols.h</a></li>
-    <li class="footer">Generated on Fri Nov 14 2014 18:22:36 for ceptr by
+    <li class="footer">Generated on Fri Mar 6 2015 08:19:07 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

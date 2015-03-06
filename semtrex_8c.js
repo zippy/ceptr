@@ -44,6 +44,7 @@ var semtrex_8c =
     [ "_val_match", "semtrex_8c.html#a364e12f36aed45985a0262a58d27cb06", null ],
     [ "append", "semtrex_8c.html#a09c913ffa972c186b35e79965c08d8df", null ],
     [ "asciiT_toc", "group__semtrex.html#ga74a1cae16040c9c0778cb3796017036a", null ],
+    [ "asciiT_tof", "group__semtrex.html#ga439277cec19476888483166d06bf8460", null ],
     [ "asciiT_toi", "group__semtrex.html#ga95bb803d107e65b2ddcd9bde258a40be", null ],
     [ "asciiT_tos", "group__semtrex.html#ga4ff0c2f907a002cce83813f17b6481d5", null ],
     [ "get_symbol", "semtrex_8c.html#a1c432d4d8a2f614895f8fa2f7dcd2f99", null ],

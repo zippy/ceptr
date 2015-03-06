@@ -53,6 +53,7 @@ var group__semtrex =
     [ "_t_match", "group__semtrex.html#ga8e580d7393964e5df55e92aebf587e3f", null ],
     [ "_t_matchr", "group__semtrex.html#ga27540c8e1822da3160a0cc4717df410f", null ],
     [ "asciiT_toc", "group__semtrex.html#ga74a1cae16040c9c0778cb3796017036a", null ],
+    [ "asciiT_tof", "group__semtrex.html#ga439277cec19476888483166d06bf8460", null ],
     [ "asciiT_toi", "group__semtrex.html#ga95bb803d107e65b2ddcd9bde258a40be", null ],
     [ "asciiT_tos", "group__semtrex.html#ga4ff0c2f907a002cce83813f17b6481d5", null ],
     [ "makeASCIITree", "group__semtrex.html#gad46a0cafec3ba9ca1500ecd6f8984238", null ],

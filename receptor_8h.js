@@ -8,7 +8,7 @@ var receptor_8h =
     [ "spec_is_symbol_equal", "group__receptor.html#gaa7a993bb2e321fff32e1bc0741dddde0", null ],
     [ "spec_is_xaddr_equal", "group__receptor.html#ga4db8f49b8fa0a099ba5ad2797ba1d33e", null ],
     [ "Aspect", "group__receptor.html#ga8675b50a924c478ce5f25009d0d24e2e", null ],
-    [ "DEFAULT_ASPECT", "group__receptor.html#ggadf764cbdea00d65edcd07bb9953ad2b7a30e7bf6393286d2e1a538c288ccce24b", null ],
+    [ "DEFAULT_ASPECT", "group__receptor.html#gga99fb83031ce9923c84392b4e92f956b5a30e7bf6393286d2e1a538c288ccce24b", null ],
     [ "AspectType", "group__receptor.html#ga74b55187933c4b54ef8ed7b7423b8f28", [
       [ "EXTERNAL_ASPECT", "group__receptor.html#gga74b55187933c4b54ef8ed7b7423b8f28a8421bd963f01243d5658eedc3d179fdb", null ],
       [ "INTERNAL_ASPECT", "group__receptor.html#gga74b55187933c4b54ef8ed7b7423b8f28a339fc3b75c7ee5bfe422d282097da944", null ]

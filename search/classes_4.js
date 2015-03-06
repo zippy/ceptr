@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['receptor',['Receptor',['../structReceptor.html',1,'']]]
+  ['l',['L',['../structL.html',1,'']]]
 ];

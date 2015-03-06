@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['vmhost',['VMHost',['../structVMHost.html',1,'']]]
+  ['receptor',['Receptor',['../structReceptor.html',1,'']]]
 ];
