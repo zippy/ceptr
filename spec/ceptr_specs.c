@@ -36,15 +36,15 @@ int main(int argc, const char **argv) {
     else {
 	def_sys();
 	//**** core tests
-	//testTree();
+	testTree();
 	testMTree();
-	/* testDef(); */
-	/* testLabel(); */
-	/* testSemtrex(); */
-	/* testReceptor(); */
-	/* testProcess(); */
-	/* testScape(); */
-	/* testVMHost(); */
+	testDef();
+	testLabel();
+	testSemtrex();
+	testReceptor();
+	testProcess();
+	testScape();
+	testVMHost();
 
 	sys_free();
 	report_tests();
