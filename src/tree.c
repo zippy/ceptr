@@ -940,7 +940,7 @@ char * _t2json(Defs *defs,T *t,int level,char *buf) {
     buf += strlen(buf);
     int _c = _t_children(t);
     if ( _c > 0) {
-	sprintf(buf,"\"kids\":[");
+	sprintf(buf,"\"children\":[");
 	buf += strlen(buf);
 	for(i=1;i<=_c;i++){
 	    _t2json(defs,_t_child(t,i),level < 0 ? level-1 : level+1,buf);

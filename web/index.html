@@ -35,8 +35,11 @@
 
 <!-- load the d3.js library -->
 <script src="http://d3js.org/d3.v3.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
 <script src="/js/ceptr.js"></script>
 <script src="http://jdataview.github.io/dist/jdataview.js"></script>
+
+
 <script>
 if (window.File && window.FileReader && window.FileList && window.Blob) {
   // Great success! All the File APIs are supported.
@@ -67,6 +70,18 @@ var svg = d3.select("body").append("svg")
   .append("g")
 	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+function load_tree(){
+    $.get("test.json", {},function(data,status) {
+        treeData = [data];
+        set_root();
+        update(root);
+    }).fail(function(x) {
+        console.log(JSON.stringify(x));
+    });
+}
+
+
+load_tree();
 set_root();
 
 update(root);
@@ -74,7 +89,11 @@ update(root);
 d3.select(self.frameElement).style("height", "500px");
 
 function nodeText(n) {
-   return n.symbol +":"+n.value;
+   var t = n.name;
+   if (n.surface) {
+      t +=":"+n.surface;
+   }
+   return t;
 }
 
 function update(source) {
@@ -223,6 +242,7 @@ var raw;
       {
           if (xmlhttp.readyState==4 && xmlhttp.status==200)
           {
+  alert(xmlhttp.responseText);
               mtree = unserialize(xmlhttp.responseText);
               treeData = [];
               walk(mtree,m_2tfn,treeData);
@@ -232,10 +252,8 @@ var raw;
               document.getElementById("list").innerHTML=xmlhttp.responseText;
           }
       }
-      xmlhttp.open("GET",fm,true);
+      xmlhttp.open("GET",f,true);
       xmlhttp.send();
-
-
   }
 
 </script>
