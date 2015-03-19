@@ -165,7 +165,7 @@ void testMakeFA() {
 
 void testMatchTrees() {
     T *t = _makeTestTree1();
-    T *s = _makeTestSemtrex1(t);
+    T *s = _makeTestSemtrex1();
     T *s2;
 
     spec_is_true(_t_match(s,t));
