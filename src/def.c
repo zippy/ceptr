@@ -326,6 +326,7 @@ T * _d_build_def_semtrex(Defs defs,Symbol s,T *parent) {
     return stx;
 }
 
+
 /*****************  Tree debugging utilities */
 
 /**
@@ -336,6 +337,19 @@ char * __t2s(Defs *defs,T *t,int indent) {
     static char buf[10000];
     buf[0] = 0;
     return __t_dump(defs,t,indent,buf);
+}
+
+char *_indent_line(int level,char *buf) {
+    if (level < -1) {
+	int j = (-level - 1)*3;
+	*buf++ = '\n';
+	while(j--) *buf++ = ' ';
+	*buf = 0;
+    }
+    else if (level > 0) {
+	*buf++ = ' ';
+    }
+    return buf;
 }
 
 char * __t_dump(Defs *defs,T *t,int level,char *buf) {
@@ -349,15 +363,7 @@ char * __t_dump(Defs *defs,T *t,int level,char *buf) {
     int i;
     char *c;
     Xaddr x;
-    if (level < -1) {
-	int j = (-level - 1)*3;
-	*buf++ = '\n';
-	while(j--) *buf++ = ' ';
-	*buf = 0;
-    }
-    else if (level > 0) {
-	*buf++ = ' ';
-    }
+    buf = _indent_line(level,buf);
 
     if (is_process(s)) {
 	sprintf(buf,"(process:%s",_d_get_process_name(processes,s));

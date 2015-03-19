@@ -827,4 +827,132 @@ T * _t_unserialize(Defs *d,void **surfaceP,size_t *lengthP,T *t) {
     return t;
 }
 
+
+#define _add_char2buf(c,buf) *buf=c;buf++;*buf=0
+/**
+ * dump tree in JSON format
+ *
+ * @param[in] defs the definition context
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/tree_spec.h testTreeJSON
+ */
+char * _t2json(Defs *defs,T *t,int level,char *buf) {
+    T *structures = defs ? defs->structures : 0;
+    T *symbols = defs ? defs->symbols : 0;
+    T *processes = defs ? defs->processes : 0;
+    if (!t) return "";
+    Symbol s = _t_symbol(t);
+    char b[255];
+    char tbuf[2000];
+    int i;
+    char *c;
+    Xaddr x;
+    buf = _indent_line(level,buf);
+
+    if (is_process(s)) {
+	sprintf(buf,"{ \"type\":\"process\",{\"name\" :\"%s\"}",_d_get_process_name(processes,s));
+    }
+    else {
+	char *n = _d_get_symbol_name(symbols,s);
+	Structure st = _d_get_symbol_structure(symbols,s);
+	sprintf(buf,"{ \"symbol\":{ \"context\":%d,\"id\":%d },",s.context,s.id);
+	buf+= strlen(buf);
+
+	if (!is_sys_structure(st)) {
+	    // if it's not a system structure, it's composed, so all we need to do is
+	    // print out the symbol name, and the reset will take care of itself
+	    sprintf(buf,"\"type\":\"composed\",\"name\":\"%s\",",n);
+    	}
+	else {
+
+	    switch(st.id) {
+	    case CSTRING_ID:
+		sprintf(buf,"\"type\":\"CSTRING\",\"name\":\"%s\",\"surface\":\"%s\"",n,(char *)_t_surface(t));
+		break;
+	    case CHAR_ID:
+		sprintf(buf,"\"type\":\"CHAR\",\"name\":\"%s\",\"surface\":\"%c\"",n,*(char *)_t_surface(t));
+		break;
+	    case BOOLEAN_ID:
+		sprintf(buf,"\"type\":\"BOOLEAN\",\"name\":\"%s\",\"surface\":%s",n,(*(int *)_t_surface(t)) ? "true" : "false");
+		break;
+	    case INTEGER_ID:
+		sprintf(buf,"\"type\":\"INTEGER\",\"name\":\"%s\",\"surface\":%d",n,*(int *)_t_surface(t));
+		break;
+	    case FLOAT_ID:
+		sprintf(buf,"\"type\":\"FLOAT\",\"name\":\"%s\",\"surface\":%f",n,*(float *)_t_surface(t));
+		break;
+	    case SYMBOL_ID:
+		c = _d_get_symbol_name(symbols,*(Symbol *)_t_surface(t));
+		sprintf(buf,"\"type\":\"SYMBOL\",\"name\":\"%s\",\"surface\":\"%s\"",n,c?c:"<unknown>");
+		break;
+	    case STRUCTURE_ID:
+		c = _d_get_structure_name(structures,*(Structure *)_t_surface(t));
+		sprintf(buf,"\"type\":\"STRUCTURE\",\"name\":\"%s\",\"surface\":\"%s\"",n,c?c:"<unknown>");
+		break;
+	    case PROCESS_ID:
+		c = _d_get_process_name(processes,*(Process *)_t_surface(t));
+		sprintf(buf,"\"type\":\"PROCESS\",\"name\":\"%s\",\"surface\":\"%s\"",n,c?c:"<unknown>");
+		break;
+	    case TREE_PATH_ID:
+		sprintf(buf,"\"type\":\"TREE_PATH\",\"name\":\"%s\",\"surface\":\"%s\"",n,_t_sprint_path((int *)_t_surface(t),b));
+		break;
+	    case XADDR_ID:
+		x = *(Xaddr *)_t_surface(t);
+		sprintf(buf,"\"type\":\"XADDR\",\"name\":\"%s\",\"surface\":{ \"symbol\":\"%s\",\"addr\":%d }",n,_d_get_symbol_name(symbols,x.symbol),x.addr);
+		break;
+	    case TREE_ID:
+		if (t->context.flags & TFLAG_SURFACE_IS_TREE) {
+		    c = _t2json(defs,(T *)_t_surface(t),0,tbuf);
+		    sprintf(buf,"\"type\":\"TREE\",\"name\":\"%s\",\"surface\":%s",n,c);
+		    break;
+		}
+	    case RECEPTOR_ID:
+		if (t->context.flags & (TFLAG_SURFACE_IS_TREE+TFLAG_SURFACE_IS_RECEPTOR)) {
+		    c = _t2json(defs,((Receptor *)_t_surface(t))->root,0,tbuf);
+		    sprintf(buf,"\"type\":\"RECEPTOR\",\"name\":\"%s\",\"surface\":%s",n,c);
+		    break;
+		}
+	    case SCAPE_ID:
+		if (t->context.flags & TFLAG_SURFACE_IS_SCAPE) {
+		    Scape *sc = (Scape *)_t_surface(t);
+		    //TODO: fixme!
+		    sprintf(buf,"(%s:key %s,data %s",n,_d_get_symbol_name(symbols,sc->key_source),_d_get_symbol_name(symbols,sc->data_source));
+		    break;
+		}
+	    case LIST_ID:
+		sprintf(buf,"\"type\":\"LIST\",\"name\":\"%s\",",n);
+		break;
+	    default:
+		if (semeq(s,SEMTREX_MATCH_CURSOR)) {
+		    c = _t2json(defs,*(T **)_t_surface(t),0,tbuf);
+		    //c = "null";
+		    sprintf(buf,"(%s:{%s}",n,c);
+		    break;
+		}
+		if (n == 0)
+		    sprintf(buf,"(<unknown:%d.%d.%d>",s.context,s.flags,s.id);
+		else
+		    sprintf(buf,"(%s",n);
+	    }
+	}
+    }
+    buf += strlen(buf);
+    int _c = _t_children(t);
+    if ( _c > 0) {
+	sprintf(buf,"\"kids\":[");
+	buf += strlen(buf);
+	for(i=1;i<=_c;i++){
+	    _t2json(defs,_t_child(t,i),level < 0 ? level-1 : level+1,buf);
+	    buf += strlen(buf);
+	    if (i<_c) {
+		_add_char2buf(',',buf);
+	    }
+	}
+	_add_char2buf(']',buf);
+    }
+    _add_char2buf('}',buf);
+    return buf;
+}
+
 /** @}*/

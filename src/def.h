@@ -40,6 +40,7 @@ enum{NO_INDENT=0,INDENT=-1};
 #define t2s(t) _t2s(0,t)
 #define _t2s(d,t) __t2s(d,t,NO_INDENT)
 char * __t2s(Defs *defs,T *t,int indent);
+char *_indent_line(int level,char *buf);
 char * __t_dump(Defs *defs,T *t,int level,char *buf);
 
 #define _d_get_def(defs,s) _t_child(defs,(s).id);
