@@ -32,7 +32,7 @@ Currently nothing runs other than a test suite which you can execute simply by t
 
 ## Development
 
-[issue tracking](https://github.com/zippy/ceptr/issue)
+[issue tracking](https://github.com/zippy/ceptr/issues)
 
 [wiki](https://github.com/zippy/ceptr/wiki)
 
