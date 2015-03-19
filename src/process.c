@@ -105,7 +105,7 @@ Error __p_reduce(Defs defs,T *run_tree, T *code) {
     }
 
     // if this isn't a process then we've reduced the tree
-    if (!is_process(s)) return;
+    if (!is_process(s)) return notProcessReductionError;
 
     // otherwise, first reduce all the children
     DO_KIDS(code,__p_reduce(defs,run_tree,_t_child(code,i)));

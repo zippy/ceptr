@@ -14,6 +14,9 @@
 #include "hashfn.h"
 #include "def.h"
 
+#include "receptor.h"
+#include "scape.h"
+
 /*****************  Node creation */
 void __t_append_child(T *t,T *c) {
     if (t->structure.child_count == 0) {

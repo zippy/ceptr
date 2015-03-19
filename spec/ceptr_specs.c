@@ -30,7 +30,7 @@ int main(int argc, const char **argv) {
     printf("Running all tests...\n\n");
 
     int err;
-    if (err = setjmp(G_err)) {
+    if ((err = setjmp(G_err))) {
 	printf("ERROR: %d\n",err);
     }
     else {

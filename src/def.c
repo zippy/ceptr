@@ -230,8 +230,9 @@ size_t _sys_structure_size(int id,void *surface) {
  * @snippet spec/def_spec.h testGetSize
  */
 size_t _d_get_structure_size(T *symbols,T *structures,Structure s,void *surface) {
+    size_t size = 0;
     if (is_sys_structure(s)) {
-	size_t size = _sys_structure_size(s.id,surface);
+	size = _sys_structure_size(s.id,surface);
 	if (size == -1) {
 	    raise_error2("DON'T HAVE A SIZE FOR STRUCTURE '%s' (%d)",_d_get_structure_name(structures,s),s.id);
 	}
@@ -239,13 +240,12 @@ size_t _d_get_structure_size(T *symbols,T *structures,Structure s,void *surface)
     else {
 	T *structure = _t_child(structures,s.id);
 	T *parts = _t_child(structure,2);
-	size_t size = 0;
 	DO_KIDS(parts,
 	    T *p = _t_child(parts,i);
 	    size += _d_get_symbol_size(symbols,structures,*(Symbol *)_t_surface(p),surface +size);
 		);
-	return size;
     }
+    return size;
 }
 
 /**

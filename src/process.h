@@ -15,7 +15,7 @@
 
 #include "tree.h"
 
-enum ReductionError {noReductionErr,tooFewParamsReductionErr,tooManyParamsReductionErr,badSignatureReductionErr};
+enum ReductionError {noReductionErr,tooFewParamsReductionErr,tooManyParamsReductionErr,badSignatureReductionErr,notProcessReductionError};
 
 Error __p_reduce(Defs defs,T *run_tree, T *code);
 Error _p_reduce(Defs defs,T *run_tree);

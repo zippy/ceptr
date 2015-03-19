@@ -307,7 +307,7 @@ int __stx_freeFA(SState *s,int id) {
 /**
  * walk through FSA freeing the states, assumes __stx_freeFA has been called first so as not to go into loops!
  */
-__stx_freeFA2(SState *s) {
+void __stx_freeFA2(SState *s) {
     if (s->out) __stx_freeFA2(s->out);
     if (s->out1) __stx_freeFA2(s->out1);
     if (s->type == StateValue) {
@@ -626,7 +626,7 @@ int __t_match(T *semtrex,T *source_t,T **rP) {
 	    --depth;
 	    if (rP) {
 		if (*rP) _t_free(*rP);
-		if (*rP = stack[depth].match) {
+		if ((*rP = stack[depth].match)) {
 		    r = _t_get(*rP,stack[depth].r_path);
 		    free(stack[depth].r_path);
 		}
@@ -650,7 +650,7 @@ int __t_match(T *semtrex,T *source_t,T **rP) {
 			while(1) {
 			    p = _t_parent(p);
 			    if (!p || p == root) {t = 0;break;}
-			    if (t = _t_next_sibling(p)) break;
+			    if ((t = _t_next_sibling(p))) break;
 			}
 		    }
 		}
@@ -677,7 +677,7 @@ int __t_match(T *semtrex,T *source_t,T **rP) {
     // clean up any remaining stack frames
     while (depth--) {
 	if (rP) {
-	    if (r = stack[depth].match) {
+	    if ((r = stack[depth].match)) {
 		_t_free(r);
 		free(stack[depth].r_path);
 	    }

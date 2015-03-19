@@ -43,7 +43,7 @@ void writeFile(char *fn,void *data,size_t size) {
     }
 }
 
-mtd(H h) {
+void mtd(H h) {
     H hh;
     int i;
     printf("\n");
@@ -281,7 +281,7 @@ void testTreeConvert() {
     //! [testMTreeSerialize]
 }
 
-testMTreeSerialize() {
+void testMTreeSerialize() {
     T *t = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
     H h = _m_new_from_t(t);
     size_t size;
