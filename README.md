@@ -18,7 +18,7 @@ You can read the code and API documentation here: http://zippy.github.io/ceptr/
 
 ## Architecture
 
-For a technical overview see [the Ceptr Apocalypse] (http://ceptr.org/apocalypse/)
+For a broad overview of the project see [the Ceptr Revelation] (http://ceptr.org/revelation/)
 
 ## Streamscapes
 
@@ -32,7 +32,7 @@ Currently nothing runs other than a test suite which you can execute simply by t
 
 ## Development
 
-[issue tracking](https://github.com/zippy/ceptr/issue)
+[issue tracking](https://github.com/zippy/ceptr/issues)
 
 [wiki](https://github.com/zippy/ceptr/wiki)
 

@@ -23,10 +23,64 @@ typedef SemanticID Symbol;
 typedef SemanticID Process;
 typedef SemanticID Structure;
 
-// ** types for trees
+typedef uint16_t Mlevel;
+typedef uint32_t Mindex;
+typedef uint32_t Mmagic;
+
+// ** types for matrix trees
+typedef struct N {
+    Symbol symbol;
+    Mindex parenti;
+    uint32_t flags;
+    size_t size;
+    void *surface;  // this item must be last!!!
+} N;
+
+typedef struct L {
+    Mindex nodes;
+    N *nP;
+} L;
+
+typedef struct M {
+    Mmagic magic;
+    Mlevel levels;
+    L *lP;
+} M;
+
+// node entries are fixed size but the surface when serialized is an offset
+// in the blob not a pointer
+#define SERIALIZED_NODE_SIZE (sizeof(N)-sizeof(void *)+sizeof(size_t))
+#define SERIALIZED_LEVEL_SIZE(l) (sizeof(Mindex)+SERIALIZED_NODE_SIZE*l->nodes)
+#define SERIALIZED_HEADER_SIZE(levels) (sizeof(S)+sizeof(uint32_t)*(levels));
+
+typedef struct S {
+    Mmagic magic;
+    Mlevel levels;
+    uint32_t blob_offset;
+    uint32_t level_offsets[];
+} S;
+
+#define NULL_ADDR -1
+typedef struct Maddr {
+    Mlevel l;
+    Mindex i;
+} Maddr;
+
+// ** generic tree type defs
+typedef struct H {
+    M *m;
+    Maddr a;
+} H;
+
+enum treeImplementations {ptrImpl=0xfffffffe,matrixImpl=0xffffffff};
+#define FIRST_TREE_IMPL_TYPE ptrImpl
+#define LAST_TREE_IMPL_TYPE matrixImpl
+
+
+// ** types for pointer trees
 typedef struct Tstruct {
+    uint32_t child_count;
     struct T *parent;
-    int child_count;
     struct T **children;
 } Tstruct;
 

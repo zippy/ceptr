@@ -143,7 +143,7 @@ void testReceptorAction() {
     T *result;
     int matched;
     // make sure our expectation semtrex actually matches the signal
-    spec_is_true(matched = _t_matchr(req,signal_contents,&result));
+    spec_is_true(_t_matchr(req,signal_contents,&result));
     T *m = _t_get_match(result,HTTP_REQUEST_PATH_SEGMENT);
     __t_dump(&test_HTTP_defs,m,0,buf);
     spec_is_str_equal(buf,"(SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:HTTP_REQUEST_PATH_SEGMENT) (SEMTREX_MATCHED_PATH:/3/1/1) (SEMTREX_MATCH_SIBLINGS_COUNT:1))");

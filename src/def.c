@@ -230,8 +230,9 @@ size_t _sys_structure_size(int id,void *surface) {
  * @snippet spec/def_spec.h testGetSize
  */
 size_t _d_get_structure_size(T *symbols,T *structures,Structure s,void *surface) {
+    size_t size = 0;
     if (is_sys_structure(s)) {
-	size_t size = _sys_structure_size(s.id,surface);
+	size = _sys_structure_size(s.id,surface);
 	if (size == -1) {
 	    raise_error2("DON'T HAVE A SIZE FOR STRUCTURE '%s' (%d)",_d_get_structure_name(structures,s),s.id);
 	}
@@ -239,13 +240,12 @@ size_t _d_get_structure_size(T *symbols,T *structures,Structure s,void *surface)
     else {
 	T *structure = _t_child(structures,s.id);
 	T *parts = _t_child(structure,2);
-	size_t size = 0;
 	DO_KIDS(parts,
 	    T *p = _t_child(parts,i);
 	    size += _d_get_symbol_size(symbols,structures,*(Symbol *)_t_surface(p),surface +size);
 		);
-	return size;
     }
+    return size;
 }
 
 /**
@@ -326,6 +326,7 @@ T * _d_build_def_semtrex(Defs defs,Symbol s,T *parent) {
     return stx;
 }
 
+
 /*****************  Tree debugging utilities */
 
 /**
@@ -336,6 +337,19 @@ char * __t2s(Defs *defs,T *t,int indent) {
     static char buf[10000];
     buf[0] = 0;
     return __t_dump(defs,t,indent,buf);
+}
+
+char *_indent_line(int level,char *buf) {
+    if (level < -1) {
+	int j = (-level - 1)*3;
+	*buf++ = '\n';
+	while(j--) *buf++ = ' ';
+	*buf = 0;
+    }
+    else if (level > 0) {
+	*buf++ = ' ';
+    }
+    return buf;
 }
 
 char * __t_dump(Defs *defs,T *t,int level,char *buf) {
@@ -349,15 +363,7 @@ char * __t_dump(Defs *defs,T *t,int level,char *buf) {
     int i;
     char *c;
     Xaddr x;
-    if (level < -1) {
-	int j = (-level - 1)*3;
-	*buf++ = '\n';
-	while(j--) *buf++ = ' ';
-	*buf = 0;
-    }
-    else if (level > 0) {
-	*buf++ = ' ';
-    }
+    buf = _indent_line(level,buf);
 
     if (is_process(s)) {
 	sprintf(buf,"(process:%s",_d_get_process_name(processes,s));
@@ -381,6 +387,9 @@ char * __t_dump(Defs *defs,T *t,int level,char *buf) {
 	    case BOOLEAN_ID:
 	    case INTEGER_ID:
 		sprintf(buf,"(%s:%d",n,*(int *)_t_surface(t));
+		break;
+	    case FLOAT_ID:
+		sprintf(buf,"(%s:%f",n,*(float *)_t_surface(t));
 		break;
 	    case SYMBOL_ID:
 		c = _d_get_symbol_name(symbols,*(Symbol *)_t_surface(t));

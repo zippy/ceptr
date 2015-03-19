@@ -28,7 +28,7 @@
 #define TREE_CHILDREN_BLOCK 5
 #define TREE_PATH_TERMINATOR -9999
 
-enum TreeSurfaceFlags {TFLAG_ALLOCATED=0x0001,TFLAG_SURFACE_IS_TREE=0x0002,TFLAG_SURFACE_IS_RECEPTOR = 0x0004,TFLAG_SURFACE_IS_SCAPE=0x0008};
+enum TreeSurfaceFlags {TFLAG_ALLOCATED=0x0001,TFLAG_SURFACE_IS_TREE=0x0002,TFLAG_SURFACE_IS_RECEPTOR = 0x0004,TFLAG_SURFACE_IS_SCAPE=0x0008,TFLAG_DELETED=0x0010};
 
 /*****************  Node creation and deletion*/
 T *_t_new(T *t,Symbol symbol, void *surface, size_t size);
@@ -83,6 +83,7 @@ size_t __t_serialize(Defs *d,T *t,void **bufferP,size_t offset,size_t current_si
 void _t_serialize(Defs *d,T *t,void **surfaceP,size_t *sizeP);
 T * _t_unserialize(Defs *d,void **surfaceP,size_t *lengthP,T *t);
 
+char * _t2json(Defs *defs,T *t,int level,char *buf);
 
 /*****************  Misc... */
 

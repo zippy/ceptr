@@ -13,6 +13,7 @@
 #include "test_framework.h"
 
 #include "tree_spec.h"
+#include "mtree_spec.h"
 #include "def_spec.h"
 #include "label_spec.h"
 #include "semtrex_spec.h"
@@ -30,13 +31,14 @@ int main(int argc, const char **argv) {
     printf("Running all tests...\n\n");
 
     int err;
-    if (err = setjmp(G_err)) {
+    if ((err = setjmp(G_err))) {
 	printf("ERROR: %d\n",err);
     }
     else {
 	def_sys();
 	//**** core tests
 	testTree();
+	testMTree();
 	testDef();
 	testLabel();
 	testSemtrex();

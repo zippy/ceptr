@@ -307,7 +307,7 @@ int __stx_freeFA(SState *s,int id) {
 /**
  * walk through FSA freeing the states, assumes __stx_freeFA has been called first so as not to go into loops!
  */
-__stx_freeFA2(SState *s) {
+void __stx_freeFA2(SState *s) {
     if (s->out) __stx_freeFA2(s->out);
     if (s->out1) __stx_freeFA2(s->out1);
     if (s->type == StateValue) {
@@ -626,7 +626,7 @@ int __t_match(T *semtrex,T *source_t,T **rP) {
 	    --depth;
 	    if (rP) {
 		if (*rP) _t_free(*rP);
-		if (*rP = stack[depth].match) {
+		if ((*rP = stack[depth].match)) {
 		    r = _t_get(*rP,stack[depth].r_path);
 		    free(stack[depth].r_path);
 		}
@@ -650,7 +650,7 @@ int __t_match(T *semtrex,T *source_t,T **rP) {
 			while(1) {
 			    p = _t_parent(p);
 			    if (!p || p == root) {t = 0;break;}
-			    if (t = _t_next_sibling(p)) break;
+			    if ((t = _t_next_sibling(p))) break;
 			}
 		    }
 		}
@@ -677,7 +677,7 @@ int __t_match(T *semtrex,T *source_t,T **rP) {
     // clean up any remaining stack frames
     while (depth--) {
 	if (rP) {
-	    if (r = stack[depth].match) {
+	    if ((r = stack[depth].match)) {
 		_t_free(r);
 		free(stack[depth].r_path);
 	    }
@@ -768,6 +768,8 @@ T *_t_embody_from_match(Defs *defs,T *match,T *parent) {
 	    return asciiT_tos(parent,match,0,s);
 	case INTEGER_ID:
 	    return asciiT_toi(parent,match,0,s);
+	case FLOAT_ID:
+	    return asciiT_tof(parent,match,0,s);
 	case CHAR_ID:
 	    return asciiT_toc(parent,match,0,s);
 	default:
@@ -843,6 +845,8 @@ char * __dump_semtrex(Defs *defs,T *s,char *buf) {
 		sprintf(b+strlen(b),"'%c'",*(char *)(_t_surface(x)));
 	    else if (semeq(st,INTEGER))
 		sprintf(b+strlen(b),"%d",*(int *)(_t_surface(x)));
+	    else if (semeq(st,FLOAT))
+		sprintf(b+strlen(b),"%f",*(float *)(_t_surface(x)));
 	    else sprintf(b+strlen(b),"???x");
 	    if (i < count)
 		sprintf(b+strlen(b),",");
@@ -1097,6 +1101,23 @@ T *asciiT_toi(T* asciiT,T* match,T *t,Symbol s) {
 }
 
 /**
+ * convert ascii tokens from a match to an float and add them to the given tree
+ */
+T *asciiT_tof(T* asciiT,T* match,T *t,Symbol s) {
+    char buf[10];
+    int sibs = *(int *)_t_surface(_t_child(match,3));
+    int *path = (int *)_t_surface(_t_child(match,2));
+    int j,d = _t_path_depth(path);
+    for(j=0;j<sibs;j++) {
+	buf[j] = *(char *)_t_surface(_t_get(asciiT,path));
+	path[d-1]++;
+    }
+    buf[j]=0;
+    float f = atof(buf);
+    return _t_new(t,s,&f,sizeof(float));
+}
+
+/**
  * convert ascii tokens from a match to a string and add them to the given tree
  */
 T *asciiT_tos(T* asciiT,T* match,T *t,Symbol s) {
@@ -1244,6 +1265,16 @@ T *parseSemtrex(Defs *d,char *stx) {
 
     o = _t_newr(o,SEMTREX_OR);
     sq = _t_newr(o,SEMTREX_SEQUENCE);
+    t = _t_news(sq,SEMTREX_GROUP,STX_VAL_F);
+    T *sq2 = _t_newr(t,SEMTREX_SEQUENCE);
+    t = _t_newr(sq2,SEMTREX_ZERO_OR_MORE);
+    _stxcs(t,"0123456789");
+    __stxcv(sq2,'.');
+    t = _t_newr(sq2,SEMTREX_ONE_OR_MORE);
+    _stxcs(t,"0123456789");
+
+    o = _t_newr(o,SEMTREX_OR);
+    sq = _t_newr(o,SEMTREX_SEQUENCE);
     t = _t_news(sq,SEMTREX_GROUP,STX_VAL_I);
     t = _t_newr(t,SEMTREX_ONE_OR_MORE);
     _stxcs(t,"0123456789");
@@ -1281,6 +1312,9 @@ T *parseSemtrex(Defs *d,char *stx) {
 	    }
 	    else if (semeq(ts,STX_VAL_I)) {
 		asciiT_toi(s,c,tokens,ts);
+	    }
+	    else if (semeq(ts,STX_VAL_F)) {
+		asciiT_tof(s,c,tokens,ts);
 	    }
 	    else
 		_t_newi(tokens,ts,0);
@@ -1331,7 +1365,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 	/////////////////////////////////////////////////////
 	// convert STX_EQ/STX_NEQ to SEMTREX_VALUE_LITERALS
 	// EXPECTATION
-	// /%<SEMTREX_VALUE_LITERAL:STX_EQ|STX_NEQ,<SEMTREX_VALUE_SET:STX_VAL_I|STX_VAL_S|STX_VAL_C|STX_SET)>>
+	// /%<SEMTREX_VALUE_LITERAL:STX_EQ|STX_NEQ,<SEMTREX_VALUE_SET:STX_VAL_I|STX_VAL_F|STX_VAL_S|STX_VAL_C|STX_SET)>>
 	sxx = _t_new_root(SEMTREX_WALK);
 	g = _t_news(sxx,SEMTREX_GROUP,SEMTREX_VALUE_LITERAL);
 	sq = _t_newr(g,SEMTREX_SEQUENCE);
@@ -1342,6 +1376,8 @@ T *parseSemtrex(Defs *d,char *stx) {
 	g = _t_news(sq,SEMTREX_GROUP,SEMTREX_VALUE_SET);
 	o = _t_newr(g,SEMTREX_OR);
 	_sl(o,STX_VAL_I);
+	o = _t_newr(o,SEMTREX_OR);
+	_sl(o,STX_VAL_F);
 	o = _t_newr(o,SEMTREX_OR);
 	_sl(o,STX_VAL_S);
 	o = _t_newr(o,SEMTREX_OR);

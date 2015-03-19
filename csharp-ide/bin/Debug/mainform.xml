@@ -8,7 +8,7 @@
   xmlns:wfui="WeifenLuo.WinFormsUI.Docking, WeifenLuo.WinFormsUI.Docking"
   xmlns:def="def"
   xmlns:ref="ref">
-  <ixv:ApplicationFormView def:Name="applicationFormView" Text="Ceptr IDE" Size="800, 600" IsMdiContainer="true" StartPosition ="Manual">
+  <ixv:ApplicationFormView def:Name="applicationFormView" Text="Semtrex IDE" Size="800, 600" IsMdiContainer="true" StartPosition ="Manual">
     <ixm:ApplicationModel def:Name="applicationModel"/>
     <ixc:ApplicationFormController def:Name="controller" View="{applicationFormView}" ApplicationModel="{applicationModel}"/>
     <ixv:Controls>
@@ -42,11 +42,6 @@
               <wf:ToolStripMenuItem def:Name="mnuSymbols" Text="Symbol Output" Click="{controller.ShowSymbols}"/>
               <wf:ToolStripMenuItem def:Name="mnuStructures" Text="Structure Output" Click="{controller.ShowStructures}"/>
               <wf:ToolStripMenuItem def:Name="mnuSemtrexUI" Text="Semtrex Explorer" Click="{controller.ShowSemtrexUI}"/>
-            </wf:DropDownItems>
-          </wf:ToolStripMenuItem>
-          <wf:ToolStripMenuItem Text="&amp;Ceptr">
-            <wf:DropDownItems>
-              <wf:ToolStripMenuItem def:Name="mnuBuildSemanticTree" Text="&amp;Build Semantic Tree" Click="{controller.BuildSemanticTree}"/>
             </wf:DropDownItems>
           </wf:ToolStripMenuItem>
         </wf:Items>

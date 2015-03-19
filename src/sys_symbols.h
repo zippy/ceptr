@@ -21,6 +21,7 @@
 Symbol TEST_INT_SYMBOL;
 Symbol TEST_INT_SYMBOL2;
 Symbol TEST_STR_SYMBOL;
+Symbol TEST_FLOAT_SYMBOL;
 Symbol TEST_TREE_SYMBOL;
 Symbol TEST_TREE_SYMBOL2;
 Symbol TEST_NAME_SYMBOL;
@@ -361,6 +362,7 @@ Symbol STX_NOT;
 Symbol STX_VAL_C;
 Symbol STX_VAL_S;
 Symbol STX_VAL_I;
+Symbol STX_VAL_F;
 
 Symbol STX_SIBS;
 Symbol STX_CHILD;

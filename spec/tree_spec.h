@@ -8,6 +8,7 @@
 #include "../src/receptor.h"
 #include "http_example.h"
 
+
 void testCreateTreeNodes() {
     /* test the creation of trees and the various function that give access to created data elements
        and basic tree structure navigation
@@ -64,6 +65,12 @@ void testCreateTreeNodes() {
     spec_is_ptr_equal(_t_child(t,2),t2);
 
     _t_free(t);
+
+    float f = 3.1415;
+    T *tf = _t_new(0,TEST_FLOAT_SYMBOL,&f,sizeof(float));
+
+    spec_is_str_equal(t2s(tf),"(TEST_FLOAT_SYMBOL:3.141500)");
+    _t_free(tf);
 }
 
 void testTreeNewReceptor() {
@@ -425,8 +432,20 @@ void testTreeSerialize() {
     //! [testTreeSerialize]
 }
 
+void testTreeJSON() {
+    //! [testTreeJSON]
+    char buf[5000] = {0};
+    T *t = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
+    _t2json(&test_HTTP_defs,t,INDENT,buf);
+
+    spec_is_str_equal(buf,"{ \"symbol\":{ \"context\":1,\"id\":17 },\"type\":\"composed\",\"name\":\"HTTP_REQUEST\",\"children\":[\n   { \"symbol\":{ \"context\":1,\"id\":16 },\"type\":\"composed\",\"name\":\"HTTP_REQUEST_VERSION\",\"children\":[\n      { \"symbol\":{ \"context\":1,\"id\":14 },\"type\":\"INTEGER\",\"name\":\"VERSION_MAJOR\",\"surface\":1},\n      { \"symbol\":{ \"context\":1,\"id\":15 },\"type\":\"INTEGER\",\"name\":\"VERSION_MINOR\",\"surface\":0}]},\n   { \"symbol\":{ \"context\":1,\"id\":2 },\"type\":\"CSTRING\",\"name\":\"HTTP_REQUEST_METHOD\",\"surface\":\"GET\"},\n   { \"symbol\":{ \"context\":1,\"id\":13 },\"type\":\"composed\",\"name\":\"HTTP_REQUEST_PATH\",\"children\":[\n      { \"symbol\":{ \"context\":1,\"id\":3 },\"type\":\"LIST\",\"name\":\"HTTP_REQUEST_PATH_SEGMENTS\",\"children\":[\n         { \"symbol\":{ \"context\":1,\"id\":4 },\"type\":\"CSTRING\",\"name\":\"HTTP_REQUEST_PATH_SEGMENT\",\"surface\":\"groups\"},\n         { \"symbol\":{ \"context\":1,\"id\":4 },\"type\":\"CSTRING\",\"name\":\"HTTP_REQUEST_PATH_SEGMENT\",\"surface\":\"5\"}]},\n      { \"symbol\":{ \"context\":1,\"id\":7 },\"type\":\"composed\",\"name\":\"HTTP_REQUEST_PATH_FILE\",\"children\":[\n         { \"symbol\":{ \"context\":1,\"id\":5 },\"type\":\"CSTRING\",\"name\":\"FILE_NAME\",\"surface\":\"users\"},\n         { \"symbol\":{ \"context\":1,\"id\":6 },\"type\":\"CSTRING\",\"name\":\"FILE_EXTENSION\",\"surface\":\"json\"}]},\n      { \"symbol\":{ \"context\":1,\"id\":8 },\"type\":\"LIST\",\"name\":\"HTTP_REQUEST_PATH_QUERY\",\"children\":[\n         { \"symbol\":{ \"context\":1,\"id\":9 },\"type\":\"LIST\",\"name\":\"HTTP_REQUEST_PATH_QUERY_PARAMS\",\"children\":[\n            { \"symbol\":{ \"context\":1,\"id\":12 },\"type\":\"composed\",\"name\":\"HTTP_REQUEST_PATH_QUERY_PARAM\",\"children\":[\n               { \"symbol\":{ \"context\":1,\"id\":10 },\"type\":\"CSTRING\",\"name\":\"PARAM_KEY\",\"surface\":\"sort_by\"},\n               { \"symbol\":{ \"context\":1,\"id\":11 },\"type\":\"CSTRING\",\"name\":\"PARAM_VALUE\",\"surface\":\"last_name\"}]},\n            { \"symbol\":{ \"context\":1,\"id\":12 },\"type\":\"composed\",\"name\":\"HTTP_REQUEST_PATH_QUERY_PARAM\",\"children\":[\n               { \"symbol\":{ \"context\":1,\"id\":10 },\"type\":\"CSTRING\",\"name\":\"PARAM_KEY\",\"surface\":\"page\"},\n               { \"symbol\":{ \"context\":1,\"id\":11 },\"type\":\"CSTRING\",\"name\":\"PARAM_VALUE\",\"surface\":\"2\"}]}]}]}]}]}");
+    _t_free(t);
+    //! [testTreeJSON]
+}
+
 void testTree() {
     _setup_HTTPDefs();
+
     testCreateTreeNodes();
     testTreeNewReceptor();
     testTreeNewScape();
@@ -448,5 +467,6 @@ void testTree() {
     testTreeDetach();
     testTreeHash();
     testTreeSerialize();
+    testTreeJSON();
     _cleanup_HTTPDefs();
 }

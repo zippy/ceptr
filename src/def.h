@@ -35,11 +35,13 @@ size_t _d_get_structure_size(T *symbols,T *structures,Symbol s,void *surface);
 T *__d_code_process(T *processes,T *code,char *name,char *intention,T *in,T *out);
 Process _d_code_process(T *processes,T *code,char *name,char *intention,T *in,T *out,Context c);
 T * _d_build_def_semtrex(Defs defs,Symbol s,T *parent);
+size_t _sys_structure_size(int id,void *surface);
 
 enum{NO_INDENT=0,INDENT=-1};
 #define t2s(t) _t2s(0,t)
 #define _t2s(d,t) __t2s(d,t,NO_INDENT)
 char * __t2s(Defs *defs,T *t,int indent);
+char *_indent_line(int level,char *buf);
 char * __t_dump(Defs *defs,T *t,int level,char *buf);
 
 #define _d_get_def(defs,s) _t_child(defs,(s).id);
@@ -48,5 +50,8 @@ char * __t_dump(Defs *defs,T *t,int level,char *buf);
 #define _d_get_structure_def(structures,s) _d_get_def(structures,s)
 
 #define spec_is_sem_equal(got, expected) spec_total++; if (semeq(expected,got)){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %d.%d.%d but was %d.%d.%d",__FUNCTION__,__LINE__,#got,(expected).flags,(expected).context,(expected).id,(got).flags,(got).context,(got).id);}
+
+void def_sys();
+void sys_free();
 #endif
 /** @}*/
