@@ -27,5 +27,9 @@ var def_8h =
     [ "_d_get_symbol_size", "group__def.html#ga1678fa0990fae85360a6f92a0bfb37ec", null ],
     [ "_d_get_symbol_structure", "group__def.html#ga41157ee3740cc54c3857ca46e2545999", null ],
     [ "_dv_define_structure", "group__def.html#ga840d1e2ddf301d41e9e4d844bde6cde0", null ],
-    [ "semeq", "group__def.html#gabcf3213518bfa365ca05298f802d0dd7", null ]
+    [ "_indent_line", "group__def.html#gaee4f12240e5b7b65311d3bd7ba361f29", null ],
+    [ "_sys_structure_size", "group__def.html#gaf8aa0bc822a3388973c0753b060ad146", null ],
+    [ "def_sys", "group__def.html#ga5ccb057498c54090bb65ba72f1876489", null ],
+    [ "semeq", "group__def.html#gabcf3213518bfa365ca05298f802d0dd7", null ],
+    [ "sys_free", "group__def.html#ga7ce90bc0d2880d34c8df6f7bfdac0ac7", null ]
 ];

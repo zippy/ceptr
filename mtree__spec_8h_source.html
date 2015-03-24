@@ -146,7 +146,7 @@ $(document).ready(function(){initNavTree('mtree__spec_8h_source.html','');});
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    }</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;}</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;mtd(<a class="code" href="structH.html">H</a> h) {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keywordtype">void</span> mtd(<a class="code" href="structH.html">H</a> h) {</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <a class="code" href="structH.html">H</a> hh;</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordtype">int</span> i;</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    printf(<span class="stringliteral">&quot;\n&quot;</span>);</div>
@@ -380,7 +380,7 @@ $(document).ready(function(){initNavTree('mtree__spec_8h_source.html','');});
 <div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t1);</div>
 <div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;}</div>
 <div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;testMTreeSerialize() {</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;<span class="keywordtype">void</span> testMTreeSerialize() {</div>
 <div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;    <a class="code" href="structT.html">T</a> *t = <a class="code" href="http__example_8h.html#a1c182b5a6e82ef49c6967183a15c3e8b">_makeTestHTTPRequestTree</a>(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
 <div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    <a class="code" href="structH.html">H</a> h = <a class="code" href="mtree_8c.html#a0c5bd733621f48184a13a1202bd24fed">_m_new_from_t</a>(t);</div>
 <div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;    <span class="keywordtype">size_t</span> size;</div>
@@ -467,7 +467,7 @@ $(document).ready(function(){initNavTree('mtree__spec_8h_source.html','');});
 <div class="ttc" id="structH_html"><div class="ttname"><a href="structH.html">H</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00070">ceptr_types.h:70</a></div></div>
 <div class="ttc" id="mtree_8c_html_ad49f52a39bf6ec9d31d476a25de088f3"><div class="ttname"><a href="mtree_8c.html#ad49f52a39bf6ec9d31d476a25de088f3">_m_parent</a></div><div class="ttdeci">Maddr _m_parent(H h)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00315">mtree.c:315</a></div></div>
 <div class="ttc" id="mtree_8c_html_a810511f76ba90cfb41460732ef11bcb0"><div class="ttname"><a href="mtree_8c.html#a810511f76ba90cfb41460732ef11bcb0">_m_children</a></div><div class="ttdeci">int _m_children(H h)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00264">mtree.c:264</a></div></div>
-<div class="ttc" id="group__tree_html_ga31e55cdc031e5f12523b998e89080db6"><div class="ttname"><a href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a></div><div class="ttdeci">void _t_free(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00383">tree.c:383</a></div></div>
+<div class="ttc" id="group__tree_html_ga31e55cdc031e5f12523b998e89080db6"><div class="ttname"><a href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a></div><div class="ttdeci">void _t_free(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00386">tree.c:386</a></div></div>
 <div class="ttc" id="mtree_8c_html_a59cab39e0fcd896b39158cb0c81bbd1a"><div class="ttname"><a href="mtree_8c.html#a59cab39e0fcd896b39158cb0c81bbd1a">_m_next_sibling</a></div><div class="ttdeci">Maddr _m_next_sibling(H h)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00408">mtree.c:408</a></div></div>
 <div class="ttc" id="structDefs_html_a172e45e131e197571ba1a36a136d35f8"><div class="ttname"><a href="structDefs.html#a172e45e131e197571ba1a36a136d35f8">Defs::symbols</a></div><div class="ttdeci">T * symbols</div><div class="ttdoc">pointer for quick access to symbols </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00147">ceptr_types.h:147</a></div></div>
 <div class="ttc" id="structSemanticID_html"><div class="ttname"><a href="structSemanticID.html">SemanticID</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00016">ceptr_types.h:16</a></div></div>
@@ -477,7 +477,7 @@ $(document).ready(function(){initNavTree('mtree__spec_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><a class="el" href="mtree__spec_8h.html">mtree_spec.h</a></li>
-    <li class="footer">Generated on Fri Mar 6 2015 08:25:25 for ceptr by
+    <li class="footer">Generated on Tue Mar 24 2015 14:23:04 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

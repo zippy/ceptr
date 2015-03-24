@@ -113,10 +113,13 @@ $(document).ready(function(){initNavTree('tree_8c.html','');});
 <code>#include &quot;ceptr_error.h&quot;</code><br />
 <code>#include &quot;hashfn.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="def_8h_source.html">def.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="receptor_8h_source.html">receptor.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="scape_8h_source.html">scape.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for tree.c:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="tree_8c__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="tree_8c__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 </div>
 <p><a href="tree_8c_source.html">Go to the source code of this file.</a></p>
@@ -133,6 +136,9 @@ Include dependency graph for tree.c:</div>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tree_8c.html#a5d3c75413c333021864f6378eecae847">_SREAD</a>(type, var_name)&#160;&#160;&#160;var_name = *(type *)*surfaceP;*lengthP -= sizeof(type);*surfaceP += sizeof(type);</td></tr>
 <tr class="memdesc:a5d3c75413c333021864f6378eecae847"><td class="mdescLeft">&#160;</td><td class="mdescRight">macro to read typed date from the surface and update length and surface values (assumes variable has already been declared) <br /></td></tr>
 <tr class="separator:a5d3c75413c333021864f6378eecae847"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae6c77d050471f16b91ca8cfa0cf502b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aae6c77d050471f16b91ca8cfa0cf502b"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>_add_char2buf</b>(c, buf)&#160;&#160;&#160;*buf=c;buf++;*buf=0</td></tr>
+<tr class="separator:aae6c77d050471f16b91ca8cfa0cf502b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af21b76c958222e81554b63041256c662"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af21b76c958222e81554b63041256c662"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>__t_append_child</b> (<a class="el" href="structT.html">T</a> *t, <a class="el" href="structT.html">T</a> *c)</td></tr>
 <tr class="separator:af21b76c958222e81554b63041256c662"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -228,6 +234,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
 <tr class="memitem:gaf80e70368577f3c49c1651b137899659"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaf80e70368577f3c49c1651b137899659"></a>
 <a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>_t_unserialize</b> (<a class="el" href="structDefs.html">Defs</a> *d, void **surfaceP, size_t *lengthP, <a class="el" href="structT.html">T</a> *t)</td></tr>
 <tr class="separator:gaf80e70368577f3c49c1651b137899659"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga34e1f5a651d1a582e3cd7bb3e885ffde"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tree.html#ga34e1f5a651d1a582e3cd7bb3e885ffde">_t2json</a> (<a class="el" href="structDefs.html">Defs</a> *defs, <a class="el" href="structT.html">T</a> *t, int level, char *buf)</td></tr>
+<tr class="separator:ga34e1f5a651d1a582e3cd7bb3e885ffde"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>semantic tree pointer implementation </p>
@@ -240,7 +248,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_t_node_index</b> (<a 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="tree_8c.html">tree.c</a></li>
-    <li class="footer">Generated on Fri Mar 6 2015 08:25:25 for ceptr by
+    <li class="footer">Generated on Tue Mar 24 2015 14:23:04 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

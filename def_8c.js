@@ -15,7 +15,8 @@ var def_8c =
     [ "_d_get_symbol_size", "group__def.html#ga1678fa0990fae85360a6f92a0bfb37ec", null ],
     [ "_d_get_symbol_structure", "group__def.html#ga41157ee3740cc54c3857ca46e2545999", null ],
     [ "_dv_define_structure", "group__def.html#ga840d1e2ddf301d41e9e4d844bde6cde0", null ],
-    [ "_sys_structure_size", "def_8c.html#af8aa0bc822a3388973c0753b060ad146", null ],
+    [ "_indent_line", "group__def.html#gaee4f12240e5b7b65311d3bd7ba361f29", null ],
+    [ "_sys_structure_size", "group__def.html#gaf8aa0bc822a3388973c0753b060ad146", null ],
     [ "semeq", "group__def.html#gabcf3213518bfa365ca05298f802d0dd7", null ],
     [ "__d_extra_buf", "def_8c.html#ad5be22a5bd16c6abb74f4887c35cac4c", null ]
 ];

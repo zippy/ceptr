@@ -353,9 +353,19 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>build a signal </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000012">Todo:</a></b></dt><dd>signal should have timestamps and other meta info </dd></dl>
+<p>build a signal</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">from</td><td>source <a class="el" href="structReceptor.html">Receptor</a> <a class="el" href="structXaddr.html">Xaddr</a> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">to</td><td>destination <a class="el" href="structReceptor.html">Receptor</a> <a class="el" href="structXaddr.html">Xaddr</a> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">aspect</td><td>Aspect over which the message will be sent </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">signal_contents</td><td>the message to be sent, which will be wrapped in a SIGNAL </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000012">Todo:</a></b></dt><dd>signal should have timestamps and other meta info </dd></dl>
 
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00450">450</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00455">455</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -749,12 +759,11 @@ Variables</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">r</td><td>destination receptor </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">from</td><td>source <a class="el" href="structReceptor.html">Receptor</a> </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">aspect</td><td>Aspect over which the message will be sent </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">signal_contents</td><td>the message to be sent, which will be wrapped in a SIGNAL</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">signal</td><td>signal to be delivered to the receptor</td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>signals that were caused to be sent by processing the signal (reponses or side-effects)</dd></dl>
 <p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structReceptor.html">Receptor</a> *r = <a class="code" href="group__receptor.html#ga62c253e7cc1d1ad20471913ae822ebc2">_r_new</a>(TEST_RECEPTOR_SYMBOL);</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// The signal is an HTTP request</span></div>
@@ -785,7 +794,7 @@ Variables</h2></td></tr>
 <div class="line">    <a class="code" href="structT.html">T</a> *result;</div>
 <div class="line">    <span class="keywordtype">int</span> matched;</div>
 <div class="line">    <span class="comment">// make sure our expectation semtrex actually matches the signal</span></div>
-<div class="line">    spec_is_true(matched = <a class="code" href="group__semtrex.html#ga27540c8e1822da3160a0cc4717df410f">_t_matchr</a>(req,signal_contents,&amp;result));</div>
+<div class="line">    spec_is_true(<a class="code" href="group__semtrex.html#ga27540c8e1822da3160a0cc4717df410f">_t_matchr</a>(req,signal_contents,&amp;result));</div>
 <div class="line">    <a class="code" href="structT.html">T</a> *m = <a class="code" href="group__semtrex.html#gada90f89374f4577e3ac8819e500a97a7">_t_get_match</a>(result,HTTP_REQUEST_PATH_SEGMENT);</div>
 <div class="line">    __t_dump(&amp;test_HTTP_defs,m,0,buf);</div>
 <div class="line">    spec_is_str_equal(buf,<span class="stringliteral">&quot;(SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:HTTP_REQUEST_PATH_SEGMENT) (SEMTREX_MATCHED_PATH:/3/1/1) (SEMTREX_MATCH_SIBLINGS_COUNT:1))&quot;</span>);</div>
@@ -800,18 +809,18 @@ Variables</h2></td></tr>
 <div class="line">    <a class="code" href="group__receptor.html#ga80c1796d444a4085537ba54c2d7b10e6">_r_add_listener</a>(r,DEFAULT_ASPECT,HTTP_REQUEST,expect,act);</div>
 <div class="line"></div>
 <div class="line">    result = <a class="code" href="group__receptor.html#gaa6111b5348cffbc1e1aad1d9d6c1e4ff">_r_deliver</a>(r,signal);</div>
-<div class="line">    spec_is_symbol_equal(r,<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(result),HTTP_RESPONSE);</div>
+<div class="line">    <span class="comment">//    spec_is_symbol_equal(r,_t_symbol(result),HTTP_RESPONSE);</span></div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// the result should be signal tree with the matched PATH_SEGMENT returned as the body</span></div>
 <div class="line">    __t_dump(&amp;test_HTTP_defs,result,0,buf);</div>
-<div class="line">    spec_is_str_equal(buf,<span class="stringliteral">&quot;(HTTP_RESPONSE (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT) (HTTP_REQUEST_PATH_SEGMENT:groups))&quot;</span>);</div>
-<div class="line"></div>
+<div class="line">    spec_is_str_equal(buf,<span class="stringliteral">&quot;(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.4) (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (ASPECT:1)) (BODY:{(HTTP_RESPONSE (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT) (HTTP_REQUEST_PATH_SEGMENT:groups))})))&quot;</span>);</div>
+<div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(result);</div>
 <div class="line">    <a class="code" href="group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8">_r_free</a>(r);</div>
 </div><!-- fragment --><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000013">Todo:</a></b></dt><dd>move this to adding the runtree to the thread pool </dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000014">Todo:</a></b></dt><dd>runtime error handing!!! </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000015">Todo:</a></b></dt><dd>results should actually be a what? success/failure of send (currently is reduced runtree) </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000015">Todo:</a></b></dt><dd>we shouldn't assume that all reductions are response signals... but this will take coordination with the _p_reduce, to tell us which signals result </dd></dl>
 
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00471">471</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00476">476</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -1067,8 +1076,8 @@ Variables</h2></td></tr>
 <div class="line"></div>
 <div class="line">    <a class="code" href="structT.html">T</a> *result = <a class="code" href="group__receptor.html#gaa6111b5348cffbc1e1aad1d9d6c1e4ff">_r_deliver</a>(r,signal);</div>
 <div class="line">    d = _td(r,result);</div>
-<div class="line">    spec_is_str_equal(d,<span class="stringliteral">&quot;(ping:1)&quot;</span>);</div>
-<div class="line"></div>
+<div class="line">    spec_is_str_equal(d,<span class="stringliteral">&quot;(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.4) (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (ASPECT:1)) (BODY:{(ping:1)})))&quot;</span>);</div>
+<div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(result);</div>
 <div class="line">    <a class="code" href="group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8">_r_free</a>(r);</div>
 </div><!-- fragment -->
 <p>Definition at line <a class="el" href="receptor_8c_source.html#l00291">291</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
@@ -1140,6 +1149,8 @@ Variables</h2></td></tr>
 <div class="line">    t = _t_child(r-&gt;<a class="code" href="structReceptor.html#af8aee3ef6d1d93b80427faa57e6f1468">flux</a>,1);</div>
 <div class="line">    spec_is_symbol_equal(r,<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(t),ASPECT);</div>
 <div class="line">    spec_is_equal(*(<span class="keywordtype">int</span> *)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(t),DEFAULT_ASPECT);</div>
+<div class="line"></div>
+<div class="line">    spec_is_str_equal(t2s(r-&gt;<a class="code" href="structReceptor.html#aec6f1eee133a993b59baf50e75620fb6">root</a>),<span class="stringliteral">&quot;(TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))))&quot;</span>);</div>
 <div class="line"></div>
 <div class="line">    <a class="code" href="group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8">_r_free</a>(r);</div>
 </div><!-- fragment -->
@@ -1355,7 +1366,7 @@ Variables</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Mar 6 2015 08:25:25 for ceptr by
+    <li class="footer">Generated on Tue Mar 24 2015 14:23:04 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

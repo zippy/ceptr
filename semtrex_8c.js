@@ -19,7 +19,7 @@ var semtrex_8c =
     [ "__fix", "semtrex_8c.html#a1cbd0ac19b8e3f15384fbe2104ace75a", null ],
     [ "__sl", "group__semtrex.html#ga0eb6f4bfe908f6e8a680c56e8468b523", null ],
     [ "__stx_freeFA", "semtrex_8c.html#ad44d1e71b6b1d1f610a68183989eeb11", null ],
-    [ "__stx_freeFA2", "semtrex_8c.html#a92582bfca5f42b11212e2b0c30fbcce3", null ],
+    [ "__stx_freeFA2", "semtrex_8c.html#acdfb2e0d19321387d7755c6fc416f7eb", null ],
     [ "__stx_makeFA", "semtrex_8c.html#a95e1be9f36172c065e8d25778d02083c", null ],
     [ "__stxcv", "group__semtrex.html#ga5e4a8396bf0b927fb440bc207ff44b32", null ],
     [ "__stxcvm", "group__semtrex.html#gaca2dea328b69197bc1f21cf8139e904d", null ],

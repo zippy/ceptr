@@ -14,6 +14,7 @@ var tree_8h =
     [ "__t_free_children", "group__tree.html#ga4fb39ee561fc4b17cfb241330b835951", null ],
     [ "__t_morph", "group__tree.html#gad6597b652983165f6b2993211a598ad4", null ],
     [ "__t_serialize", "group__tree.html#ga4b3d9a3a1c1bc4a7fb710e96faf1d437", null ],
+    [ "_t2json", "group__tree.html#ga34e1f5a651d1a582e3cd7bb3e885ffde", null ],
     [ "_t_add", "group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c", null ],
     [ "_t_child", "group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b", null ],
     [ "_t_children", "group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc", null ],
