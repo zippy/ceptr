@@ -445,6 +445,11 @@ Receptor * _r_unserialize(void *surface) {
 
 /**
  * build a signal
+ *
+ * @param[in] from source Receptor Xaddr
+ * @param[in] to destination Receptor Xaddr
+ * @param[in] aspect Aspect over which the message will be sent
+ * @param[in] signal_contents the message to be sent, which will be wrapped in a SIGNAL
  * @todo signal should have timestamps and other meta info
  */
 T* __r_make_signal(Xaddr from,Xaddr to,Aspect aspect,T *signal_contents) {
@@ -461,19 +466,20 @@ T* __r_make_signal(Xaddr from,Xaddr to,Aspect aspect,T *signal_contents) {
  * Send a signal to a receptor on a given aspect
  *
  * @param[in] r destination receptor
- * @param[in] from source Receptor
- * @param[in] aspect Aspect over which the message will be sent
- * @param[in] signal_contents the message to be sent, which will be wrapped in a SIGNAL
+ * @param[in] signal signal to be delivered to the receptor
+ *
+ * @returns signals that were caused to be sent by processing the signal (reponses or side-effects)
  *
  * <b>Examples (from test suite):</b>
  * @snippet spec/receptor_spec.h testReceptorAction
  */
 T * _r_deliver(Receptor *r, T *signal) {
     T *m,*e,*l,*rt=0;
-
     T *signal_contents = (T *)_t_surface(_t_child(signal,2));
     T *envelope = _t_child(signal,1);
     Aspect aspect = *(Aspect *)_t_surface(_t_child(envelope,3));
+    Xaddr from = *(Xaddr *)_t_surface(_t_child(envelope,1));
+    Xaddr to = *(Xaddr *)_t_surface(_t_child(envelope,2));
 
     T *as = __r_get_signals(r,aspect);
 
@@ -481,6 +487,8 @@ T * _r_deliver(Receptor *r, T *signal) {
 
     // walk through all the listeners on the aspect and see if any expectations match this incoming signal
     T *ls = __r_get_listeners(r,aspect);
+    T *signals = _t_new_root(SIGNALS);
+
     DO_KIDS(ls,
 	l = _t_child(ls,i);
 	e = _t_child(l,1);
@@ -499,12 +507,16 @@ T * _r_deliver(Receptor *r, T *signal) {
 	    if (e) {
 		raise_error("got reduction error: %d",e);
 	    }
-	}
-	    _t_free(stx);	    );
+	    /// @todo we shouldn't assume that all reductions are response signals...
+	    /// but this will take coordination with the _p_reduce, to tell us which signals result
+	    _t_add(signals,__r_make_signal(to,from,aspect,_t_clone(_t_child(rt,1))));
 
-    /// @todo  results should actually be a what? success/failure of send (currently is reduced runtree)
-    if (rt == 0) return 0;
-    else return _t_child(_t_child(signal,3),1);
+	}
+	    _t_free(stx);
+	    );
+
+    //    else return _t_child(_t_child(signal,3),1);
+    return signals;
 }
 
 /******************  internal utilities */

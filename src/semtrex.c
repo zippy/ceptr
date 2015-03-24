@@ -448,7 +448,8 @@ void __fix(T *source_t,T *r) {
     int i;
 
     d--;
-    if (!t) {
+    if (d < 0) { i = 1;}
+    else if (!t) {
 	T *parent = _t_parent(t1);
 	if (!parent) i = 1;
 	else {
@@ -459,10 +460,10 @@ void __fix(T *source_t,T *r) {
     else {
 	int* p_end;
 	p_end = _t_get_path(t);
-	i = p_end[d]-p[d];
 	if (!p_end) {
 	    raise(SIGINT);
 	}
+	i = p_end[d]- p[d];
 	free(p_end);
     }
     free(p);

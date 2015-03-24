@@ -54,6 +54,8 @@ void testReceptorCreate() {
     spec_is_symbol_equal(r,_t_symbol(t),ASPECT);
     spec_is_equal(*(int *)_t_surface(t),DEFAULT_ASPECT);
 
+    spec_is_str_equal(t2s(r->root),"(TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))))");
+
     _r_free(r);
     //! [testReceptorCreate]
 }
@@ -158,12 +160,12 @@ void testReceptorAction() {
     _r_add_listener(r,DEFAULT_ASPECT,HTTP_REQUEST,expect,act);
 
     result = _r_deliver(r,signal);
-    spec_is_symbol_equal(r,_t_symbol(result),HTTP_RESPONSE);
+    //    spec_is_symbol_equal(r,_t_symbol(result),HTTP_RESPONSE);
 
     // the result should be signal tree with the matched PATH_SEGMENT returned as the body
     __t_dump(&test_HTTP_defs,result,0,buf);
-    spec_is_str_equal(buf,"(HTTP_RESPONSE (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT) (HTTP_REQUEST_PATH_SEGMENT:groups))");
-
+    spec_is_str_equal(buf,"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.4) (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (ASPECT:1)) (BODY:{(HTTP_RESPONSE (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT) (HTTP_REQUEST_PATH_SEGMENT:groups))})))");
+    _t_free(result);
     _r_free(r);
     //! [testReceptorAction]
 }
@@ -334,8 +336,8 @@ void testReceptorProtocol() {
 
     T *result = _r_deliver(r,signal);
     d = _td(r,result);
-    spec_is_str_equal(d,"(ping:1)");
-
+    spec_is_str_equal(d,"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.4) (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (ASPECT:1)) (BODY:{(ping:1)})))");
+    _t_free(result);
     _r_free(r);
     //! [testReceptorProtocol]
 }
