@@ -1,6 +1,6 @@
 /**
  * @defgroup data Data Engine
- * @brief All data in ceptr is handled by our data engine, which also takes care of synchronizing between vmhost instance
+ * @brief All data in ceptr is handled by our data engine, which also takes care of synchronizing between vmhost instances
  *
  * @{
  * @file de.h
@@ -13,6 +13,11 @@
 #define _CEPTR_DE_H
 
 #include "tree.h"
+#include "vmhost.h"
+
+void _de_boot();
+void _de_start_vmhost();
+VMHost *G_vm;
 
 #endif
 /** @}*/
