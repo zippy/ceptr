@@ -157,11 +157,11 @@ typedef struct Defs {
    table.
 */
 typedef struct Receptor {
-    T *root;        ///< root node of the semantic tree
-    Defs defs;          ///< defs block
-    T *flux;        ///< pointer for quick access to the flux
-    LabelTable table;   ///< the label table
-    Instances instances;///< the instances store
+    T *root;             ///< root node of the semantic tree
+    Defs defs;           ///< defs block
+    T *flux;             ///< pointer for quick access to the flux
+    LabelTable table;    ///< the label table
+    Instances instances; ///< the instances store
 } Receptor;
 
 typedef long UUID;

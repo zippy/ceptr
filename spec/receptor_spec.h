@@ -140,15 +140,18 @@ void testReceptorAction() {
     T *g = _t_news(segs,SEMTREX_GROUP,HTTP_REQUEST_PATH_SEGMENT);
     _t_news(g,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST_PATH_SEGMENT);
 */
-    char buf[2000];
+
+    // gotta load the defs into the receptor for printing things out to work right.
+    r->defs.symbols = _t_clone(test_HTTP_defs.symbols);
+    r->defs.structures = _t_clone(test_HTTP_defs.structures);
 
     T *result;
     int matched;
     // make sure our expectation semtrex actually matches the signal
     spec_is_true(_t_matchr(req,signal_contents,&result));
     T *m = _t_get_match(result,HTTP_REQUEST_PATH_SEGMENT);
-    __t_dump(&test_HTTP_defs,m,0,buf);
-    spec_is_str_equal(buf,"(SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:HTTP_REQUEST_PATH_SEGMENT) (SEMTREX_MATCHED_PATH:/3/1/1) (SEMTREX_MATCH_SIBLINGS_COUNT:1))");
+
+    spec_is_str_equal(_td(r,m),"(SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:HTTP_REQUEST_PATH_SEGMENT) (SEMTREX_MATCHED_PATH:/3/1/1) (SEMTREX_MATCH_SIBLINGS_COUNT:1))");
     if (result) {
 	_t_free(result);
     }
@@ -163,8 +166,7 @@ void testReceptorAction() {
     //    spec_is_symbol_equal(r,_t_symbol(result),HTTP_RESPONSE);
 
     // the result should be signal tree with the matched PATH_SEGMENT returned as the body
-    __t_dump(&test_HTTP_defs,result,0,buf);
-    spec_is_str_equal(buf,"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.4) (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (ASPECT:1)) (BODY:{(HTTP_RESPONSE (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT) (HTTP_REQUEST_PATH_SEGMENT:groups))})))");
+    spec_is_str_equal(_td(r,result),"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.4) (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (ASPECT:1)) (BODY:{(HTTP_RESPONSE (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT) (HTTP_REQUEST_PATH_SEGMENT:groups))})))");
     _t_free(result);
     _r_free(r);
     //! [testReceptorAction]
@@ -270,12 +272,12 @@ void testReceptorDefMatch() {
     //! [testReceptorDefMatch]
 }
 
-void testReceptorProtocol() {
-    //! [testReceptorProtocol]
+Receptor *_makePingProtocolReceptor(Symbol *pingP) {
     Receptor *r;
     r = _r_new(TEST_RECEPTOR_SYMBOL);
 
     Symbol ping = _r_declare_symbol(r,BOOLEAN,"ping");
+    *pingP = ping;
 
     // define a ping protocol with two roles and two interactions
     T *ps = r->defs.protocols;
@@ -323,6 +325,15 @@ void testReceptorProtocol() {
     _t_newi(a,ASPECT_TYPE,EXTERNAL_ASPECT);
     _t_news(a,CARRIER,ping);
     _t_news(a,CARRIER,ping);
+
+    return r;
+}
+
+void testReceptorProtocol() {
+    //! [testReceptorProtocol]
+    Symbol ping;
+    Receptor *r = _makePingProtocolReceptor(&ping);
+
     _r_install_protocol(r,1,"server",DEFAULT_ASPECT);
 
     char *d = _td(r,r->root);
@@ -333,6 +344,9 @@ void testReceptorProtocol() {
     Xaddr f = {RECEPTOR_XADDR,3};  // DUMMY XADDR
     Xaddr t = {RECEPTOR_XADDR,4};  // DUMMY XADDR
     T *signal = __r_make_signal(f,t,DEFAULT_ASPECT,_t_newi(0,ping,0));
+
+    d = _td(r,signal);
+    spec_is_str_equal(d,"(SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (RECEPTOR_XADDR:RECEPTOR_XADDR.4) (ASPECT:1)) (BODY:{(ping:0)}))");
 
     T *result = _r_deliver(r,signal);
     d = _td(r,result);

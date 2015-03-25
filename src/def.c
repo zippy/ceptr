@@ -89,8 +89,10 @@ char *_d_get_process_name(T *processes,Process p) {
     }
     if (processes) {
 	T *def = _t_child(processes,p.id);
-	T *l = _t_child(def,1);
-	return (char *)_t_surface(l);
+	if (def) {
+	    T *l = _t_child(def,1);
+	    return (char *)_t_surface(l);
+	}
     }
     sprintf(__d_extra_buf,"<unknown process:%d.%d.%d>",p.context,p.flags,p.id);
     return __d_extra_buf;

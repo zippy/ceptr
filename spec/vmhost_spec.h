@@ -243,36 +243,60 @@ void testVMHostCreate() {
 /*     _v_activate(v,httpd_x); */
 /*     _v_activate(v,x); */
 
-/*     // confirm that the activate list has new children */
-/*     spec_is_equal(_t_children(v->active_receptors),2); */
 
-/*     // and that they are the same as the installed receptors */
-/*     T *ar; */
-/*     ar = _t_child(v->active_receptors,1); */
-/*     spec_is_ptr_equal(ar,installed_httpd); */
-/*     ar = _t_child(v->active_receptors,2); */
-/*     spec_is_ptr_equal(ar,installed_hellow); */
+void testVMHostActivateReceptor() {
+    //! [testVMHostActivateReceptor]
+    VMHost *v = _v_new();
 
-/*     // simulate round-robin processing of signals */
-/*     _v_process_signals(v); */
+    Symbol ping;
+    Receptor *server = _makePingProtocolReceptor(&ping);
+    _r_install_protocol(server,1,"server",DEFAULT_ASPECT);
 
-/*     // now confirm that the signal was sent, */
-/*     // first that the pending signals list is empty */
-/*     spec_is_equal(_t_children(v->pending_signals),0); */
+    Receptor *client = _makePingProtocolReceptor(&ping);
+    //    _r_install_protocol(client,1,"client",DEFAULT_ASPECT);
 
-/*     // and second, that a response is back at the http_server */
-/*     //@todo */
+    Symbol ss = _r_declare_symbol(v->r,RECEPTOR,"ping server");
+    Symbol cs = _r_declare_symbol(v->r,RECEPTOR,"ping client");
 
-/*     _t_free(b); */
-/*     _v_free(v); */
-/*     //! [testVMHostActivateReceptor] */
-/* } */
+    Xaddr sx = _v_new_receptor(v,ss,server);
+    Xaddr cx = _v_new_receptor(v,cs,client);
+    __v_activate(v,server);
+    __v_activate(v,client);
+
+    // confirm that the activate list has new children
+    spec_is_equal(_t_children(v->active_receptors),2);
+
+    // and that they are the same as the installed receptors
+    T *ar;
+    ar = _t_child(v->active_receptors,1);
+    spec_is_ptr_equal(ar,server->root);
+    ar = _t_child(v->active_receptors,2);
+    spec_is_ptr_equal(ar,client->root);
+
+    _v_send(v,cx,sx,DEFAULT_ASPECT,_t_newi(0,ping,0));
+
+    spec_is_str_equal(_td(client,v->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:INSTALLED_RECEPTOR.2) (RECEPTOR_XADDR:INSTALLED_RECEPTOR.1) (ASPECT:1)) (BODY:{(ping:0)})))");
+
+    // simulate round-robin processing of signals
+    __v_process_signals(v);
+
+    // now confirm that the signal was sent,
+    // first that the pending signals list is empty
+    spec_is_equal(_t_children(v->pending_signals),0);
+
+    // and that the client now has a newly arrived response ping signal
+    T *t = __r_get_signals(client,DEFAULT_ASPECT);
+    spec_is_str_equal(_td(client,t),"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:INSTALLED_RECEPTOR.1) (RECEPTOR_XADDR:INSTALLED_RECEPTOR.2) (ASPECT:1)) (BODY:{(ping:1)})))");
+
+    _v_free(v);
+    //! [testVMHostActivateReceptor]
+}
 
 void testVMHost() {
     _setup_HTTPDefs();
     testVMHostCreate();
-    //``    testVMHostLoadReceptorPackage();
+    //    testVMHostLoadReceptorPackage();
     //    testVMHostInstallReceptor();
-    // testVMHostActivateReceptor();
+    testVMHostActivateReceptor();
     _cleanup_HTTPDefs();
 }

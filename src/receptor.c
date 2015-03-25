@@ -507,6 +507,7 @@ T * _r_deliver(Receptor *r, T *signal) {
 	    if (e) {
 		raise_error("got reduction error: %d",e);
 	    }
+
 	    /// @todo we shouldn't assume that all reductions are response signals...
 	    /// but this will take coordination with the _p_reduce, to tell us which signals result
 	    _t_add(signals,__r_make_signal(to,from,aspect,_t_clone(_t_child(rt,1))));
@@ -514,6 +515,9 @@ T * _r_deliver(Receptor *r, T *signal) {
 	}
 	    _t_free(stx);
 	    );
+
+    //    printf("\n    signals after:"); puts(_td(r,signals));
+
 
     //    else return _t_child(_t_child(signal,3),1);
     return signals;
