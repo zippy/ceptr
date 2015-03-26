@@ -842,6 +842,7 @@ T * _t_unserialize(Defs *d,void **surfaceP,size_t *lengthP,T *t) {
  * @snippet spec/tree_spec.h testTreeJSON
  */
 char * _t2json(Defs *defs,T *t,int level,char *buf) {
+    char *result = buf;
     T *structures = defs ? defs->structures : 0;
     T *symbols = defs ? defs->symbols : 0;
     T *processes = defs ? defs->processes : 0;
@@ -866,7 +867,7 @@ char * _t2json(Defs *defs,T *t,int level,char *buf) {
 	if (!is_sys_structure(st)) {
 	    // if it's not a system structure, it's composed, so all we need to do is
 	    // print out the symbol name, and the reset will take care of itself
-	    sprintf(buf,"\"type\":\"composed\",\"name\":\"%s\",",n);
+	    sprintf(buf,"\"type\":\"composed\",\"name\":\"%s\"",n);
     	}
 	else {
 
@@ -956,7 +957,7 @@ char * _t2json(Defs *defs,T *t,int level,char *buf) {
 	_add_char2buf(']',buf);
     }
     _add_char2buf('}',buf);
-    return buf;
+    return result;
 }
 
 /** @}*/
