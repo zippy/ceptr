@@ -30,19 +30,6 @@ void testCreateTreeNodesT() {
 }
 */
 
-void writeFile(char *fn,void *data,size_t size) {
-    FILE *ofp;
-
-    ofp = fopen(fn, "w");
-    if (ofp == NULL) {
-	fprintf(stderr, "Can't open output file %s!\n",fn);
-    }
-    else {
-	fwrite(data, 1,size, ofp);
-	fclose(ofp);
-    }
-}
-
 void mtd(H h) {
     H hh;
     int i;

@@ -337,7 +337,7 @@ Symbol getTag(char *otag,Symbol tag_sym[],char *tag_str[]) {
     Symbol ts = NULL_SYMBOL;
     int i;
     for(i=0;i<15;i++) {
-	if (!strcmp(otag,tag_str[i])) {ts = tag_sym[i];break;}
+	if (!strcicmp(otag,tag_str[i])) {ts = tag_sym[i];break;}
     }
     if (semeq(ts,NULL_SYMBOL)) {raise_error("invalid tag: %s",otag);}
     return ts;
@@ -353,7 +353,6 @@ T *parseHTML(char *html) {
     Defs *d = &test_HTTP_defs;
     T *t,*h = makeASCIITree(html);
 
-    //<HTML_ATTRIBUTES:ASCII_CHAR=' ',<PARAM_KEY:ASCII_CHAR!={'>',' '}+>)*>
     /////////////////////////////////////////////////////
     // build the token stream out of an ascii stream
     // EXPECTATION

@@ -925,7 +925,7 @@ char * _t2json(Defs *defs,T *t,int level,char *buf) {
 		    break;
 		}
 	    case LIST_ID:
-		sprintf(buf,"\"type\":\"LIST\",\"name\":\"%s\",",n);
+		sprintf(buf,"\"type\":\"LIST\",\"name\":\"%s\"",n);
 		break;
 	    default:
 		if (semeq(s,SEMTREX_MATCH_CURSOR)) {
@@ -937,14 +937,14 @@ char * _t2json(Defs *defs,T *t,int level,char *buf) {
 		if (n == 0)
 		    sprintf(buf,"(<unknown:%d.%d.%d>",s.context,s.flags,s.id);
 		else
-		    sprintf(buf,"(%s",n);
+		    sprintf(buf,"\"type\":\"TREE\",\"name\":\"%s\"",n);
 	    }
 	}
     }
     buf += strlen(buf);
     int _c = _t_children(t);
     if ( _c > 0) {
-	sprintf(buf,"\"children\":[");
+	sprintf(buf,",\"children\":[");
 	buf += strlen(buf);
 	for(i=1;i<=_c;i++){
 	    _t2json(defs,_t_child(t,i),level < 0 ? level-1 : level+1,buf);
