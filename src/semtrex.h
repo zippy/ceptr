@@ -109,6 +109,8 @@ T *asciiT_tof(T* asciiT,T* match,T *t,Symbol s);
 T *asciiT_tos(T* asciiT,T* match,T *t,Symbol s);
 T *asciiT_toc(T* asciiT,T* match,T *t,Symbol s);
 
+T *wrap(T *tokens,T *results, Symbol contents_s, Symbol open_s);
+
 /// macro to add a single symbol literal to semtrex tree
 #define _sl(t,s) __sl(t,0,1,s)
 

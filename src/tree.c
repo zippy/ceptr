@@ -264,7 +264,8 @@ void __t_morph(T *t,Symbol s,void *surface,size_t size,int allocate) {
 	t->context.flags = TFLAG_ALLOCATED; /// @todo Handle the case where the surface of the node to be morphed is itself a tree
     }
     else {
-	*((int *)&t->contents.surface) = *(int *)surface;
+	if (surface)
+	    *((int *)&t->contents.surface) = *(int *)surface;
 	t->context.flags = 0;
     }
 

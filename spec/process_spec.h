@@ -321,7 +321,6 @@ void testProcessIntMath() {
     _t_free(t);
 }
 
-
 void testProcess() {
     testRunTree();
     testProcessReduceDefinedProcess();
