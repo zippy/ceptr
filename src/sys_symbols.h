@@ -47,7 +47,7 @@ enum SystemSymbolIDs
     TRUE_FALSE_ID,
 
     //-----  Symbols for the different semantic parts of semtrexes
-    SEMTREX_MATCHED_PATH_ID,              ///< path to symbol matched by semtrex
+    SEMTREX_MATCH_PATH_ID,              ///< path to symbol matched by semtrex
     SEMTREX_SYMBOL_LITERAL_ID,            ///< This system symbol matches on the semantic type.         Ex: /TEST_SYMBOL
     SEMTREX_SYMBOL_LITERAL_NOT_ID,                ///< Match any symbol or value of the node except.           Ex: .
     SEMTREX_SYMBOL_SET_ID,
@@ -137,7 +137,7 @@ enum SystemSymbolIDs
 static Structure G_sys_symbol_structures[] = {
  /*   NULL_STRUCTURE,      //NULL_SYMBOL
     BOOLEAN,             //TRUE_FALSE
-    TREE_PATH,           //SEMTREX_MATCHED_PATH
+    TREE_PATH,           //SEMTREX_MATCH_PATH
     SYMBOL,              //SEMTREX_SYMBOL_LITERAL
     LIST,                //SEMTREX_SEQUENCE
     NULL_STRUCTURE,      //SEMTREX_OR
@@ -260,7 +260,7 @@ Symbol SYMBOL_LABEL;
 Symbol TRUE_FALSE;
 
 
-Symbol SEMTREX_MATCHED_PATH;
+Symbol SEMTREX_MATCH_PATH;
 Symbol SEMTREX_SYMBOL_LITERAL;
 Symbol SEMTREX_SYMBOL_LITERAL_NOT;
 Symbol SEMTREX_SYMBOL_SET;

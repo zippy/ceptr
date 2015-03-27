@@ -41,7 +41,7 @@ namespace ceptrlib
 		TRUE_FALSE_ID,
 
 		//-----  Symbols for the different semantic parts of semtrexes
-		SEMTREX_MATCHED_PATH_ID,              ///< path to symbol matched by semtrex
+		SEMTREX_MATCH_PATH_ID,              ///< path to symbol matched by semtrex
 		SEMTREX_SYMBOL_LITERAL_ID,            ///< This system symbol matches on the semantic type.         Ex: /TEST_SYMBOL
 		SEMTREX_SEQUENCE_ID,                  ///< Match on a sequence of child nodes which are any valid semtrex's.  Ex: comma separated nodes
 		SEMTREX_OR_ID,                        ///< Logical OR between two Semtrex expressions.      Ex: |

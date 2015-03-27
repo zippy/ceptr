@@ -182,7 +182,7 @@ void testProcessInterpolateMatch() {
     T *p2 = _t_newi(n,SEMTREX_MATCH,1);
     _t_news(p2,SEMTREX_MATCH,TEST_INT_SYMBOL);
     int path[] = {TREE_PATH_TERMINATOR};
-    _t_new(p2,SEMTREX_MATCHED_PATH,path,2*sizeof(int));
+    _t_new(p2,SEMTREX_MATCH_PATH,path,2*sizeof(int));
     _t_newi(p2,SEMTREX_MATCH_SIBLINGS_COUNT,1);
     T *p3 = _t_newi(n,TEST_INT_SYMBOL,314);
     __p_reduce(defs,t,n);

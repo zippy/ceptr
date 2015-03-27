@@ -10,285 +10,285 @@
 
 <p><img border="0" src="ide.png" width="917" height="507"></p>
 <h2>Introduction</h2>
-<p>In this article, I would like to introduce you to the work of Eric 
-Harris-Braun and Arthur Brock.&nbsp; They have been working on a concept that 
-they call &quot;Semtrex&quot; - a semantic tree regular expression matcher, as part of a larger 
+<p>In this article, I would like to introduce you to the work of Eric
+Harris-Braun and Arthur Brock.&nbsp; They have been working on a concept that
+they call &quot;Semtrex&quot; - a semantic tree regular expression matcher, as part of a larger
 project called &quot;Ceptr.&quot; </p>
 <p>Two cornerstone of the Ceptr <i>concept</i> are:</p>
 <ol>
-	<li>data always carries with it its semantics, in other words, the qualities 
+	<li>data always carries with it its semantics, in other words, the qualities
 	that give the data meaning</li>
-	<li>the meaning (semantics) of something is very naturally expressed as tree 
+	<li>the meaning (semantics) of something is very naturally expressed as tree
 	structures</li>
 </ol>
-<p>As a result of these premises, it became clear that, similar to how we have a 
-regular expression (Regex) matcher for one-dimensional strings, a tree 
-expression matcher is needed for trees of two or more dimensions.&nbsp; 
-Furthermore, because the trees incorporate meaning (semantics), the tree 
-expression matcher must be a <i>semantic</i> tree regular expression matcher.&nbsp; Here 
-we see another divergence from Regex -- Semtrex matches on the semantics of the 
-data as well as literal values, whereas Regex, having no concept of the 
+<p>As a result of these premises, it became clear that, similar to how we have a
+regular expression (Regex) matcher for one-dimensional strings, a tree
+expression matcher is needed for trees of two or more dimensions.&nbsp;
+Furthermore, because the trees incorporate meaning (semantics), the tree
+expression matcher must be a <i>semantic</i> tree regular expression matcher.&nbsp; Here
+we see another divergence from Regex -- Semtrex matches on the semantics of the
+data as well as literal values, whereas Regex, having no concept of the
 semantics on which it is matching, can match only on the literal values.</p>
-<p>This introduces some new and interesting behaviors to pattern matching -- 
-matching not just the literal values of the data but also the semantic 
-meaning of the data.&nbsp; Thus, the while &quot;42&quot; matches with the 
-literal &quot;42&quot;, &quot;42 years 
-old&quot; does not match with &quot;42 is the answer to the ultimate question of life, the 
+<p>This introduces some new and interesting behaviors to pattern matching --
+matching not just the literal values of the data but also the semantic
+meaning of the data.&nbsp; Thus, the while &quot;42&quot; matches with the
+literal &quot;42&quot;, &quot;42 years
+old&quot; does not match with &quot;42 is the answer to the ultimate question of life, the
 universe, and everything.&quot;</p>
 <h2>The Nature of Nature</h2>
-<p>Let's consider why semantic trees are important and, to be rather bold about 
-it, actually necessary for the future evolution of computing, communication, and 
-data exchange.&nbsp; There are both philosophical and concrete, computational 
-reasons, each guiding the other in understanding.&nbsp; We will consider how 
-everything in nature (though our focus is on data) has two characteristics: 
+<p>Let's consider why semantic trees are important and, to be rather bold about
+it, actually necessary for the future evolution of computing, communication, and
+data exchange.&nbsp; There are both philosophical and concrete, computational
+reasons, each guiding the other in understanding.&nbsp; We will consider how
+everything in nature (though our focus is on data) has two characteristics:
 meaning and structure (relationship.)&nbsp; </p>
 <h3>The Nature of Meaning</h3>
-<p>&quot;Semantics is the study of meaning.&quot;<sup>1</sup> In order for 
-information to have value, that information must have meaning.&nbsp; The term 
-&quot;value&quot; can be interpreted as meaning both &quot;valuable&quot; and &quot;computable.&quot;&nbsp; 
-Information is not <i>valuable</i> unless it is meaningful.&nbsp; Information 
-has values on which to base computations.&nbsp; So, by value, 
-we mean in part that computations can be performed on that value or that the 
-value is itself part of a computation involving many other values, and that we 
-find both the values and the computations <i>valuable.</i> Take, 
-for example, the Semantic Web<sup>3</sup> which &quot;provides a common framework that allows 
-data to be shared and reused across application, enterprise, and community 
-boundaries.&quot;<sup>3</sup>&nbsp; Note that the term itself was coined by Tim 
+<p>&quot;Semantics is the study of meaning.&quot;<sup>1</sup> In order for
+information to have value, that information must have meaning.&nbsp; The term
+&quot;value&quot; can be interpreted as meaning both &quot;valuable&quot; and &quot;computable.&quot;&nbsp;
+Information is not <i>valuable</i> unless it is meaningful.&nbsp; Information
+has values on which to base computations.&nbsp; So, by value,
+we mean in part that computations can be performed on that value or that the
+value is itself part of a computation involving many other values, and that we
+find both the values and the computations <i>valuable.</i> Take,
+for example, the Semantic Web<sup>3</sup> which &quot;provides a common framework that allows
+data to be shared and reused across application, enterprise, and community
+boundaries.&quot;<sup>3</sup>&nbsp; Note that the term itself was coined by Tim
 Berners-Lee<sup>4</sup> for a web of data that can be processed by machines.<sup>5</sup></p>
 <h3>The Meaning of Nature</h3>
-<p>Nature is relational -- from the most fundamental theoretical models of quantum physics 
-to largest macrocosmic scale of physical galaxies, we constantly see that &quot;things&quot; are in 
-relationship with other &quot;things.&quot;&nbsp; Furthermore, these relationships have 
-structure which we humans, with great frequency, map into a hierarchical, 
-tree-like space.&nbsp; We do this with organizational charts, phylogeny, and 
-family trees.&nbsp; We use parse trees<sup>7</sup> for parsing a 
-context-free grammar.&nbsp; Compilers take our linear code and parse it into BNF<sup>8</sup> 
+<p>Nature is relational -- from the most fundamental theoretical models of quantum physics
+to largest macrocosmic scale of physical galaxies, we constantly see that &quot;things&quot; are in
+relationship with other &quot;things.&quot;&nbsp; Furthermore, these relationships have
+structure which we humans, with great frequency, map into a hierarchical,
+tree-like space.&nbsp; We do this with organizational charts, phylogeny, and
+family trees.&nbsp; We use parse trees<sup>7</sup> for parsing a
+context-free grammar.&nbsp; Compilers take our linear code and parse it into BNF<sup>8</sup>
 trees to generate (again linear) machine code. </p>
-<p>Structure (the relationship between values) is also a necessary component of 
-meaning and therefore of computation.&nbsp; Just as you cannot perform a 
-computation on a value without at least an implicit semantic understanding of 
-what that value is, you cannot perform computations on groups of values without 
-having a defined structure that relates those values to each other.&nbsp; 
-Furthermore, that structure (the defining of relationships) itself creates new 
+<p>Structure (the relationship between values) is also a necessary component of
+meaning and therefore of computation.&nbsp; Just as you cannot perform a
+computation on a value without at least an implicit semantic understanding of
+what that value is, you cannot perform computations on groups of values without
+having a defined structure that relates those values to each other.&nbsp;
+Furthermore, that structure (the defining of relationships) itself creates new
 meaning.</p>
 <h3>Meaning: Symbols and Structures</h3>
-<p>Eric Harris-Braun: &quot;Meaning comes from having a social context in which 
+<p>Eric Harris-Braun: &quot;Meaning comes from having a social context in which
 symbols are applied to embodied forms (structures!)&quot;</p>
-<p>Arthur Brock: &quot;Meaning comes from understanding the use of a symbol in a 
-specific context.&nbsp; A context means a collection of symbols used in a 
+<p>Arthur Brock: &quot;Meaning comes from understanding the use of a symbol in a
+specific context.&nbsp; A context means a collection of symbols used in a
 particular way.&quot;</p>
-<p>Structure (the defining of relationships) creates new meaning is a key point, and while it is (and in fact must be) self-reflective or 
-&quot;fractal&quot;, 
-it explains why we explicitly (or implicitly) create hierarchical structures.&nbsp; 
-For example, given something we want to measure, we assign a symbol to 
-it--inches, feet, kilograms, light-years.&nbsp; This gives the measurement a 
-semantic context.&nbsp; We see this &quot;thing&quot; in relationship with other &quot;things&quot; that also 
-have semantic meaning, and so we create a structure that maps the relationship 
-of those &quot;things.&quot;&nbsp; That structure is itself assigned a semantic meaning, 
-and so on, recursing in a fractal manner either up or down the hierarchies that 
-we are creating, allowing us to express more and more complex and interesting 
+<p>Structure (the defining of relationships) creates new meaning is a key point, and while it is (and in fact must be) self-reflective or
+&quot;fractal&quot;,
+it explains why we explicitly (or implicitly) create hierarchical structures.&nbsp;
+For example, given something we want to measure, we assign a symbol to
+it--inches, feet, kilograms, light-years.&nbsp; This gives the measurement a
+semantic context.&nbsp; We see this &quot;thing&quot; in relationship with other &quot;things&quot; that also
+have semantic meaning, and so we create a structure that maps the relationship
+of those &quot;things.&quot;&nbsp; That structure is itself assigned a semantic meaning,
+and so on, recursing in a fractal manner either up or down the hierarchies that
+we are creating, allowing us to express more and more complex and interesting
 concepts and relationships between those concepts.&nbsp; </p>
-<p>Eric Harris-Braun: &quot;This is an important pattern in the real world and in programming (&quot;has a&quot; 
-relationship).&nbsp; This pattern of alternation is a fundamental pattern 
-(programming languages, real world, etc) what we're trying to do in Ceptr is 
-make that fundamental pattern explicit and have some self knowledge of what 
+<p>Eric Harris-Braun: &quot;This is an important pattern in the real world and in programming (&quot;has a&quot;
+relationship).&nbsp; This pattern of alternation is a fundamental pattern
+(programming languages, real world, etc) what we're trying to do in Ceptr is
+make that fundamental pattern explicit and have some self knowledge of what
 we're doing.&quot;</p>
-<p>Arthur Brock: &quot;What we're doing in Ceptr ... when you program, the programmer has to deal 
-with these things as meaningful units (variable names) but then when we compile 
-it, it all goes away, collapsed down to structured data in memory addresses.&nbsp; We then have difficulty sharing the meaning, we have to then construct a 
+<p>Arthur Brock: &quot;What we're doing in Ceptr ... when you program, the programmer has to deal
+with these things as meaningful units (variable names) but then when we compile
+it, it all goes away, collapsed down to structured data in memory addresses.&nbsp; We then have difficulty sharing the meaning, we have to then construct a
 semantic layer where we &quot;hydrate&quot; the meaning back into the structure.&quot;</p>
 <h3>Living Meaning</h3>
-<p>Meaning is not static and this is a major contributor to why software 
-becomes obsolete: software is incapable of adapting, beyond a certain limit, to 
+<p>Meaning is not static and this is a major contributor to why software
+becomes obsolete: software is incapable of adapting, beyond a certain limit, to
 changes in meaning.&nbsp;&nbsp; </p>
 <ul>
-	<li>Values change -- they are created, destroyed, and changed.&nbsp; This 
-	happens with the greatest frequency and is the only change that modern day 
+	<li>Values change -- they are created, destroyed, and changed.&nbsp; This
+	happens with the greatest frequency and is the only change that modern day
 	software typically handles well (without programmer intervention.)</li>
-	<li>Relationships between values change -- old relationships become 
-	&quot;meaningless&quot;, and new relationships are necessary between new values.&nbsp; 
-	While this happens slower, it could be argued to be the primary reason for 
-	why software needs to be updated and eventually replaced.&nbsp; For example, 
-	the lifetime of a relational database, which is expressing fixed 
-	relationship in tables and foreign keys, is limited by the ability to 
+	<li>Relationships between values change -- old relationships become
+	&quot;meaningless&quot;, and new relationships are necessary between new values.&nbsp;
+	While this happens slower, it could be argued to be the primary reason for
+	why software needs to be updated and eventually replaced.&nbsp; For example,
+	the lifetime of a relational database, which is expressing fixed
+	relationship in tables and foreign keys, is limited by the ability to
 	accommodate new relationships (new tables, changes in foreign keys, etc.)</li>
-	<li>Meaning itself changes, albeit very slowly over time.&nbsp; For example, 
+	<li>Meaning itself changes, albeit very slowly over time.&nbsp; For example,
 	consider how the meaning of the word &quot;gay&quot; has changed over time.</li>
-	<li>New structures are formed and given semantic meaning.&nbsp; One can observe 
-	how computer languages have evolved as new structures are incorporated into the 
-	language, such as lambda expressions, anonymous methods, and C#'s async/await 
+	<li>New structures are formed and given semantic meaning.&nbsp; One can observe
+	how computer languages have evolved as new structures are incorporated into the
+	language, such as lambda expressions, anonymous methods, and C#'s async/await
 	keywords, all of which express older concepts in more efficient semantics.</li>
 </ul>
 <h3>Semtrex</h3>
-<p>Realizing that meaning involves semantics and structure, Semtrex is a 
-cornerstone to a much larger &quot;rewrite&quot; of the computing space in which we currently live.&nbsp; At present, our computational space takes semantically 
-structured data, decouples the semantic meaning and structure into raw data 
-streams or storage (with or without a separate schema), and then re-assembles that data into 
-either the same or different semantic structures.&nbsp; Ironically, this is the 
-impetus for a new field of information and computer science called ontology 
-engineering &quot;which studies the methods and methodologies for building ontologies: 
-formal representations of a set of concepts within a domain and the 
+<p>Realizing that meaning involves semantics and structure, Semtrex is a
+cornerstone to a much larger &quot;rewrite&quot; of the computing space in which we currently live.&nbsp; At present, our computational space takes semantically
+structured data, decouples the semantic meaning and structure into raw data
+streams or storage (with or without a separate schema), and then re-assembles that data into
+either the same or different semantic structures.&nbsp; Ironically, this is the
+impetus for a new field of information and computer science called ontology
+engineering &quot;which studies the methods and methodologies for building ontologies:
+formal representations of a set of concepts within a domain and the
 relationships between those concepts.&quot;<sup>9</sup></p>
-<p>For example, the SMTP Specification<sup>10</sup> defines, among other things, 
-the structure and semantics of email addresses.&nbsp; When we write &quot;foo@biz.eu&quot;, 
-we strip off the structure and semantic meaning and in fact store and transmit 
-the email address with none of its original structure or semantics.&nbsp; When 
-we write a mail server, we have to &quot;parse&quot; the email address, &quot;hydrating&quot; its 
-structure and the semantics of its constituent parts so that we can perform 
-computations on the address such as validation, verification, checking against 
-white lists, black lists, perform billing, and so forth.&nbsp; Furthermore, the 
-system is very rigid.&nbsp; For example, we cannot send an email to a physical 
-address which could be handled by a system that physically prints and mails the 
-content.&nbsp; We cannot send an email to a phone number which would then dial 
-the phone and read the content with text-to-speech synthesis.&nbsp; We cannot 
-send an email to a mobile phone's text messaging service.&nbsp; Why?&nbsp; 
-Because the mail server must <i>assume</i> a specific semantic meaning to the 
-value in the &quot;mail-to&quot; slot--it must be an email address--because the &quot;mail-to&quot; 
+<p>For example, the SMTP Specification<sup>10</sup> defines, among other things,
+the structure and semantics of email addresses.&nbsp; When we write &quot;foo@biz.eu&quot;,
+we strip off the structure and semantic meaning and in fact store and transmit
+the email address with none of its original structure or semantics.&nbsp; When
+we write a mail server, we have to &quot;parse&quot; the email address, &quot;hydrating&quot; its
+structure and the semantics of its constituent parts so that we can perform
+computations on the address such as validation, verification, checking against
+white lists, black lists, perform billing, and so forth.&nbsp; Furthermore, the
+system is very rigid.&nbsp; For example, we cannot send an email to a physical
+address which could be handled by a system that physically prints and mails the
+content.&nbsp; We cannot send an email to a phone number which would then dial
+the phone and read the content with text-to-speech synthesis.&nbsp; We cannot
+send an email to a mobile phone's text messaging service.&nbsp; Why?&nbsp;
+Because the mail server must <i>assume</i> a specific semantic meaning to the
+value in the &quot;mail-to&quot; slot--it must be an email address--because the &quot;mail-to&quot;
 slot does not carry along with it the semantics of its value.</p>
 <h3>Edge Space</h3>
-<p>A cornerstone of the Ceptr <i>architecture</i> is that it operates 
-exclusively with semantic data and therefore semantic trees.&nbsp; In the 
-broader picture, Ceptr provides a means for processing semantic data in virtual 
-machine &quot;receptors.&quot;&nbsp; Data is moved in and out of receptors as semantic 
-packages, or signals, which embody of course both the data and the semantics 
-corresponding to that data.&nbsp; In this way, receptors only process those 
+<p>A cornerstone of the Ceptr <i>architecture</i> is that it operates
+exclusively with semantic data and therefore semantic trees.&nbsp; In the
+broader picture, Ceptr provides a means for processing semantic data in virtual
+machine &quot;receptors.&quot;&nbsp; Data is moved in and out of receptors as semantic
+packages, or signals, which embody of course both the data and the semantics
+corresponding to that data.&nbsp; In this way, receptors only process those
 things that have semantic meaning to them.</p>
-<p>However, the rest of the world does not usually exchange semantic information 
--- instead, it's often raw binary data or human-readable ASCII strings (like 
-this article.)&nbsp; We see some introduction of semantic meaning in XML and 
-JSON packets, both in their ability to structure the data and associate 
-attribute names (or keys) to the data.&nbsp; However, even with XML and JSON, 
-the attribute and keys are often high level abstractions, like &quot;address&quot; or 
-&quot;full name&quot;, or domain-specific, like &quot;domicile&quot; and &quot;maiden name.&quot;&nbsp; In the 
-former, a program parsing the data does not know that &quot;address&quot; actually refers, 
-semantically, to a home address, vacation address, or business address (of many 
-options) and in the latter case, again a program parsing the key &quot;domicile&quot; 
-(which may have semantic meaning to the programmer that wrote the XML or JSON) 
+<p>However, the rest of the world does not usually exchange semantic information
+-- instead, it's often raw binary data or human-readable ASCII strings (like
+this article.)&nbsp; We see some introduction of semantic meaning in XML and
+JSON packets, both in their ability to structure the data and associate
+attribute names (or keys) to the data.&nbsp; However, even with XML and JSON,
+the attribute and keys are often high level abstractions, like &quot;address&quot; or
+&quot;full name&quot;, or domain-specific, like &quot;domicile&quot; and &quot;maiden name.&quot;&nbsp; In the
+former, a program parsing the data does not know that &quot;address&quot; actually refers,
+semantically, to a home address, vacation address, or business address (of many
+options) and in the latter case, again a program parsing the key &quot;domicile&quot;
+(which may have semantic meaning to the programmer that wrote the XML or JSON)
 probably requires a &quot;translation&quot; to the semantic meaning &quot;home address.&quot;</p>
-<p>While this leaves the world with an almost infinite need for programmers to 
-constantly reformat one semantically poor data structure into another, equally 
-poor, semantic data structure, it still leaves us with the real world issue that 
-this problem does indeed exist.&nbsp; This is the &quot;edge space&quot; where &quot;data&quot; in 
+<p>While this leaves the world with an almost infinite need for programmers to
+constantly reformat one semantically poor data structure into another, equally
+poor, semantic data structure, it still leaves us with the real world issue that
+this problem does indeed exist.&nbsp; This is the &quot;edge space&quot; where &quot;data&quot; in
 the outside world and semantic data inside of Ceptr is translated.</p>
 <h2>Starting with an Example</h2>
-<p>Marc Clifton has built a simple IDE (implemented in C#) around the C code to 
-provide a playground for working with Semtrex expression matching.&nbsp; We take 
-the example of parsing a latitude and longitude from an ASCII string into a 
+<p>Marc Clifton has built a simple IDE (implemented in C#) around the C code to
+provide a playground for working with Semtrex expression matching.&nbsp; We take
+the example of parsing a latitude and longitude from an ASCII string into a
 Semtrex and performing some match tests on it.</p>
 <h3>Building the Symbol and Structure Tree</h3>
-<p>The first step is to define the structures and their symbols.&nbsp; When we 
-fire up the IDE, we're presented with an empty Symbol Tree.&nbsp; Let's create a 
+<p>The first step is to define the structures and their symbols.&nbsp; When we
+fire up the IDE, we're presented with an empty Symbol Tree.&nbsp; Let's create a
 container for our demo lat/lon symbols &amp; structures:</p>
 <p><img border="0" src="namespace1.png" width="510" height="113"></p>
-<p>Click on &quot;Symbol Namespace&quot; and provide a name for the container.&nbsp; Here, 
+<p>Click on &quot;Symbol Namespace&quot; and provide a name for the container.&nbsp; Here,
 I use &quot;latlon demo&quot;:</p>
 <p><img border="0" src="namespace2.png" width="510" height="111"></p>
-<p>Right-click on the &quot;latlon demo&quot; container and select &quot;Add Symbol&quot; from the 
+<p>Right-click on the &quot;latlon demo&quot; container and select &quot;Add Symbol&quot; from the
 popup menu:</p>
 <p><img border="0" src="addSymbol.png" width="338" height="227"></p>
 <p>We can now define the symbol and structure names in the Properties pane:</p>
 <p><img border="0" src="addSymbol2.png" width="510" height="129"></p>
-<p>We'll assume that this is a &quot;home location&quot;, so we give name the <i>symbol</i> 
+<p>We'll assume that this is a &quot;home location&quot;, so we give name the <i>symbol</i>
 &quot;HomeLocation&quot; and specify that the <i>structure</i> is a &quot;latlon&quot;:</p>
 <p><img border="0" src="latlon1.png" width="512" height="135"></p>
-<p>We also see the symbol and structure listed in the Symbols and Structures 
+<p>We also see the symbol and structure listed in the Symbols and Structures
 panes:</p>
 <p><img border="0" src="symstruct1.png" width="324" height="76"></p>
-<p>Next, we define the &quot;latlon&quot; structure.&nbsp; This structure consists of two 
+<p>Next, we define the &quot;latlon&quot; structure.&nbsp; This structure consists of two
 symbols whose structure is &quot;float&quot;:</p>
 <p><img border="0" src="latlon2.png" width="425" height="225"></p>
-<p>As the above screenshot illustrates, there is a short list of built-in 
-structures from which one can also choose.&nbsp; Keep in mind that we could even 
-define what we mean by the structure &quot;float&quot; -- we could in fact define it as 
-two integers (again structures of bits) with the symbols &quot;mantissa&quot; and 
-&quot;exponent.&quot;&nbsp; This process can be repeated down to the atomic level (and 
+<p>As the above screenshot illustrates, there is a short list of built-in
+structures from which one can also choose.&nbsp; Keep in mind that we could even
+define what we mean by the structure &quot;float&quot; -- we could in fact define it as
+two integers (again structures of bits) with the symbols &quot;mantissa&quot; and
+&quot;exponent.&quot;&nbsp; This process can be repeated down to the atomic level (and
 further) of capacitance charge in memory cells.</p>
 <p><img border="0" src="symstruct2.png" width="299" height="100"></p>
 <p>We now have our symbols and structures defined for parsing a latlon string.</p>
 <h3>Converting a String to an ASCII Tree</h3>
-<p>Because, Semtrex is a <i>tree expression matcher,</i> any input string must 
-be converted to an ASCII tree.&nbsp; This is by intent, as it keeps the parser 
-code uniform in that it is always working with trees.&nbsp; An &quot;ASCII Tree&quot;, which 
-consists of nothing more than a root node and where each of the children is a 
-single character in the string, is necessary to convert strings into a tree 
-structure on which Semtrex can operate.&nbsp; While this sounds silly, it allows us to 
-stay in the unified world of semantic trees as the input for Semtrex.&nbsp; 
-Another way to put it is, we are describing the string semantically with as much 
-meaning as we can give it at the moment: &quot;a string of ASCII characters&quot; which we 
-wrap into an ASCII Tree <i>representation.</i>&nbsp; We don't know what the 
-string is or what it contains, but now that we've got it in a tree structure, we 
+<p>Because, Semtrex is a <i>tree expression matcher,</i> any input string must
+be converted to an ASCII tree.&nbsp; This is by intent, as it keeps the parser
+code uniform in that it is always working with trees.&nbsp; An &quot;ASCII Tree&quot;, which
+consists of nothing more than a root node and where each of the children is a
+single character in the string, is necessary to convert strings into a tree
+structure on which Semtrex can operate.&nbsp; While this sounds silly, it allows us to
+stay in the unified world of semantic trees as the input for Semtrex.&nbsp;
+Another way to put it is, we are describing the string semantically with as much
+meaning as we can give it at the moment: &quot;a string of ASCII characters&quot; which we
+wrap into an ASCII Tree <i>representation.</i>&nbsp; We don't know what the
+string is or what it contains, but now that we've got it in a tree structure, we
 can parse it.</p>
 <p>Given a latlon input string:</p>
 <p><img border="0" src="parse1.png" width="549" height="94"></p>
-<p>We can parse this into an ASCII Tree by clicking &quot;Parse to ASCII Tree&quot;.&nbsp; 
-The result is displayed in the Semtrex Tree textbox (only a piece is shown here, 
+<p>We can parse this into an ASCII Tree by clicking &quot;Parse to ASCII Tree&quot;.&nbsp;
+The result is displayed in the Semtrex Tree textbox (only a piece is shown here,
 you get the idea):</p>
 <p><img border="0" src="parse2.png" width="408" height="322"></p>
-<p>The root of the tree is a symbol &quot;ASCII_CHARS&quot; and each element of the tree 
+<p>The root of the tree is a symbol &quot;ASCII_CHARS&quot; and each element of the tree
 is a structure-value pair &quot;ASCII_CHAR&quot; and the value of the char.</p>
 <h4>Matching on the ASCII Tree</h4>
-<p>Now that we have the string represented as a tree, we can write a Semtrex 
+<p>Now that we have the string represented as a tree, we can write a Semtrex
 expression to match against the tree:</p>
 <pre>/ASCII_CHARS/&lt;HomeLocation:&lt;lat:ASCII_CHAR+&gt;,ASCII_CHAR=',',&lt;lon:ASCII_CHAR+&gt;&gt;</pre>
-<p>Note how this expression not only matches against the format of the input 
-string but also specifies the symbols associated with the structural components 
+<p>Note how this expression not only matches against the format of the input
+string but also specifies the symbols associated with the structural components
 of the tree-ified string.</p>
 <p>What the above Semtrex expression is doing is as follows:</p>
 <ul>
-	<li>The angle brackets indicate that we are on the fly naming (or assigning 
+	<li>The angle brackets indicate that we are on the fly naming (or assigning
 	a semantic symbol) the matching part of the input string. </li>
-<li>In this case, we're creating a symbol:&quot;lat&quot;&nbsp;which will hold the ASCII_CHARS 
-preceding the comma, and one called &quot;lon&quot; which will hold the symbols after the 
+<li>In this case, we're creating a symbol:&quot;lat&quot;&nbsp;which will hold the ASCII_CHARS
+preceding the comma, and one called &quot;lon&quot; which will hold the symbols after the
 comma.</li>
-	<li>Then &quot;HomeLocation&quot; is a symbol tree with &quot;lat&quot; and &quot;lon&quot; as its two 
+	<li>Then &quot;HomeLocation&quot; is a symbol tree with &quot;lat&quot; and &quot;lon&quot; as its two
 	children.</li>
-<li>Those named symbols (assuming there are definitions in the system for how 
-they're structured) can be used in later Semtrex matches on the match output 
+<li>Those named symbols (assuming there are definitions in the system for how
+they're structured) can be used in later Semtrex matches on the match output
 they produce.</li>
 </ul>
 <p>We enter the Semtrex expression in the next line and click on Parse:</p>
 <p><img border="0" src="parse3.png" width="562" height="143"></p>
 <p><img border="0" src="key-small.png" width="94" height="33"></p>
-<p>Why do we do this?&nbsp; Because we've specified a Semtrex expression as a 
-string, which itself must be first converted into a tree!&nbsp; So you can see 
-the pattern here: inputs are semantic trees, expressions are semantic trees, 
-and Semtrex matches input trees against expression trees.&nbsp; In fact, all 
+<p>Why do we do this?&nbsp; Because we've specified a Semtrex expression as a
+string, which itself must be first converted into a tree!&nbsp; So you can see
+the pattern here: inputs are semantic trees, expressions are semantic trees,
+and Semtrex matches input trees against expression trees.&nbsp; In fact, all
 output from Semtrex is a semantic tree as well.</p>
 <p>The result of the parse operation can be viewed as well, shown here in full:</p>
 <pre>
 (
-  SEMTREX_SYMBOL_LITERAL 
+  SEMTREX_SYMBOL_LITERAL
   (
     SEMTREX_SYMBOL:ASCII_CHARS
   )
   (
-    SEMTREX_GROUP:HomeLocation 
+    SEMTREX_GROUP:HomeLocation
     (
-      SEMTREX_SEQUENCE 
+      SEMTREX_SEQUENCE
       (
-        SEMTREX_GROUP:lat 
+        SEMTREX_GROUP:lat
         (
-          SEMTREX_ONE_OR_MORE 
+          SEMTREX_ONE_OR_MORE
           (
-            SEMTREX_SYMBOL_LITERAL 
+            SEMTREX_SYMBOL_LITERAL
             (
               SEMTREX_SYMBOL:ASCII_CHAR
             )
           )
         )
-      ) 
+      )
       (
-        SEMTREX_VALUE_LITERAL 
+        SEMTREX_VALUE_LITERAL
         (
           ASCII_CHAR:','
         )
-      ) 
+      )
       (
-        SEMTREX_GROUP:NULL_SYMBOL 
+        SEMTREX_GROUP:NULL_SYMBOL
         (
-          SEMTREX_ONE_OR_MORE 
+          SEMTREX_ONE_OR_MORE
           (
-            SEMTREX_SYMBOL_LITERAL 
+            SEMTREX_SYMBOL_LITERAL
             (
               SEMTREX_SYMBOL:ASCII_CHAR
             )
@@ -299,94 +299,94 @@ output from Semtrex is a semantic tree as well.</p>
   )
 )</pre>
 <h3>Does The Input Match?</h3>
-<p>Now we can ask, &quot;does the input tree match the expected format as specified 
-by the Semtrex match expression?&quot;&nbsp; We ask this by clicking on the 
+<p>Now we can ask, &quot;does the input tree match the expected format as specified
+by the Semtrex match expression?&quot;&nbsp; We ask this by clicking on the
 &quot;Matches?&quot; button:</p>
 <p><img border="0" src="parse4.png" width="549" height="186"></p>
 <p>And the answer is True:</p>
 <p><img border="0" src="parse5.png" width="546" height="185"></p>
-<p>Furthermore, we also can also ask Semtrex <i>how</i> it matches, which is 
+<p>Furthermore, we also can also ask Semtrex <i>how</i> it matches, which is
 also a tree:</p>
 <pre>(
-  SEMTREX_MATCH:1 
+  SEMTREX_MATCH:1
   (
     SEMTREX_MATCH_SYMBOL:HomeLocation
   )
   (
-    SEMTREX_MATCHED_PATH:/1
+    SEMTREX_MATCH_PATH:/1
   )
   (
     SEMTREX_MATCH_SIBLINGS_COUNT:11
   )
   (
-    SEMTREX_MATCH:3 
+    SEMTREX_MATCH:3
     (
       SEMTREX_MATCH_SYMBOL:lat
-    ) 
+    )
     (
-      SEMTREX_MATCHED_PATH:/1
-    ) 
+      SEMTREX_MATCH_PATH:/1
+    )
     (
       SEMTREX_MATCH_SIBLINGS_COUNT:5
     )
   )
   (
-    SEMTREX_MATCH:2 
+    SEMTREX_MATCH:2
     (
       SEMTREX_MATCH_SYMBOL:lon
-    ) 
+    )
     (
-      SEMTREX_MATCHED_PATH:/7
-    ) 
+      SEMTREX_MATCH_PATH:/7
+    )
     (
       SEMTREX_MATCH_SIBLINGS_COUNT:5
     )
   )
 )</pre>
-<p>Notice how the above match result expression tells us with which symbol the 
+<p>Notice how the above match result expression tells us with which symbol the
 structure and it's data is associated.</p>
 <h3>Embodiment</h3>
-<p>We can now &quot;embody&quot; the symbols with their values.&nbsp; We now have a 
-structure with meaning -- a semantic structure.&nbsp; We do this by clicking on 
+<p>We can now &quot;embody&quot; the symbols with their values.&nbsp; We now have a
+structure with meaning -- a semantic structure.&nbsp; We do this by clicking on
 the &quot;Embody&quot; button:</p>
 <p><img border="0" src="parse6.png" width="547" height="231"></p>
 <p>and we see the result:</p>
 <p><img border="0" src="parse7.png" width="117" height="212"></p>
 <h3>Matching Against An Embodied Tree</h3>
-<p>All of the steps above were actually necessary simply to convert an input 
-string into a semantic tree.&nbsp; The nifty thing is that this was done using 
-Semtrex itself.&nbsp; However, now we arrive at the meat and potatoes of the 
-matter.&nbsp; Let's say data was always semantic -- in other words, what you 
-received as your input was not a relatively meaningless string (albeit perhaps 
-human readable after some training) but a structure that was meaningful <i>to 
+<p>All of the steps above were actually necessary simply to convert an input
+string into a semantic tree.&nbsp; The nifty thing is that this was done using
+Semtrex itself.&nbsp; However, now we arrive at the meat and potatoes of the
+matter.&nbsp; Let's say data was always semantic -- in other words, what you
+received as your input was not a relatively meaningless string (albeit perhaps
+human readable after some training) but a structure that was meaningful <i>to
 the machine</i>.&nbsp; This:</p>
 <p><img border="0" src="parse7.png" width="117" height="212"></p>
-<p>is meaningful to the machine.&nbsp; We can now ask the machine to match 
-against it, both structurally and the values it contains.&nbsp; Here's a Semtrex 
+<p>is meaningful to the machine.&nbsp; We can now ask the machine to match
+against it, both structurally and the values it contains.&nbsp; Here's a Semtrex
 expression that matches:</p>
 <pre>/%HomeLocation/(lat=42.25,lon=73.25)</pre>
-<p>And we can test this with the Matches? button, which returns true.&nbsp; The 
-astute reader will say, but wait!&nbsp; That input is a string an must, like the 
-previous match expression, be turned into a Semtrex expression first!&nbsp; And 
-you are correct, which is why we must first parse the (sort of) human readable 
+<p>And we can test this with the Matches? button, which returns true.&nbsp; The
+astute reader will say, but wait!&nbsp; That input is a string an must, like the
+previous match expression, be turned into a Semtrex expression first!&nbsp; And
+you are correct, which is why we must first parse the (sort of) human readable
 input string into a Semtrex expression:</p>
 <pre>(
-  SEMTREX_WALK 
+  SEMTREX_WALK
   (
-    SEMTREX_SYMBOL_LITERAL 
+    SEMTREX_SYMBOL_LITERAL
     (
       SEMTREX_SYMBOL:HomeLocation
-    ) 
+    )
     (
-      SEMTREX_SEQUENCE 
+      SEMTREX_SEQUENCE
       (
-        SEMTREX_VALUE_LITERAL 
+        SEMTREX_VALUE_LITERAL
         (
           lat:42.250000
         )
-      ) 
+      )
       (
-        SEMTREX_VALUE_LITERAL 
+        SEMTREX_VALUE_LITERAL
         (
           lon:73.250000
         )
@@ -397,36 +397,36 @@ input string into a Semtrex expression:</p>
 <p>So here you finally see the whole playground:</p>
 <p><img border="0" src="parse8.png" width="553" height="661"></p>
 <h2>Building The Semtrex C Code</h2>
-<p>Semtrex (the parser, specs, and symbol management) are written in C.&nbsp; 
-Eric chose the C language because it is ubiquitous among a wide variety of 
+<p>Semtrex (the parser, specs, and symbol management) are written in C.&nbsp;
+Eric chose the C language because it is ubiquitous among a wide variety of
 platforms, everything from Arduino's to, of course, Windows and Linux.&nbsp; </p>
 <h3>Compiling the C Code</h3>
-<p>The simplest way to build the C code is to download Eclipse and open the 
-Eclipse project in the Ceptr GitHub repository.&nbsp; The resulting dll file can 
+<p>The simplest way to build the C code is to download Eclipse and open the
+Eclipse project in the Ceptr GitHub repository.&nbsp; The resulting dll file can
 be copied into the C# bin\Debug or bin\Release folder.</p>
 <h2>The C# IDE</h2>
-<p>The IDE is organized into two projects -- &quot;csharp-ide&quot; is the IDE UI.&nbsp; 
-Readers may be familiar with other articles written by Marc Clifton which take 
+<p>The IDE is organized into two projects -- &quot;csharp-ide&quot; is the IDE UI.&nbsp;
+Readers may be familiar with other articles written by Marc Clifton which take
 advantage of the same approach:</p>
 <ul>
 	<li>WeifenLuo's Docking Manager.</li>
 	<li>MycroParser used for the UI definition and event wire-up.</li>
-	<li>MVC pattern for separating out the model, view, and controllers for each 
+	<li>MVC pattern for separating out the model, view, and controllers for each
 	of the dockable panes.</li>
 	<li>XTree - a general purpose tree builder.</li>
 </ul>
-<p>The second project (&quot;ceptrlib&quot;) is the interface 
-to Eric's C code, which must be built with the &quot;allow unsafe code&quot; option.&nbsp; 
+<p>The second project (&quot;ceptrlib&quot;) is the interface
+to Eric's C code, which must be built with the &quot;allow unsafe code&quot; option.&nbsp;
 There are several structures, for example:</p>
 <pre>[StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
-public unsafe struct Defs 
+public unsafe struct Defs
 {
   public TreeNode *structures;
-  public TreeNode *symbols; 
-  public TreeNode *processes; 
-  public TreeNode *scapes; 
+  public TreeNode *symbols;
+  public TreeNode *processes;
+  public TreeNode *scapes;
 };</pre>
-<p>These must be marked as unsafe to fix the error &quot;Pointers and fixed size 
+<p>These must be marked as unsafe to fix the error &quot;Pointers and fixed size
 buffers may only be used in an unsafe context.&quot;</p>
 <h3>The C# / C Interface</h3>
 <p>The C calls are made using the DllImport attribute.&nbsp; There are a few:</p>
@@ -476,7 +476,7 @@ extern static unsafe int _t_matchr(TreeNode* semtrex, TreeNode* matchAgainst, Tr
 [DllImport(&quot;libceptrlib.dll&quot;, CallingConvention = CallingConvention.Cdecl)]
 extern static unsafe TreeNode* _t_embody_from_match(Defs* d, TreeNode* matchResult, TreeNode* semtrex);</pre>
 <h4>Initialization and Termination</h4>
-<p>Having the necessary imported 'C' functions above, we can implement all that 
+<p>Having the necessary imported 'C' functions above, we can implement all that
 is necessary for initializing and terminating the 'C' library:</p>
 <pre>public unsafe void Initialize()
 {
@@ -491,18 +491,18 @@ public unsafe void Terminate()
 <p>These are stored as separate trees, and we initialize them with:</p>
 <pre>public void CreateStructureAndSymbolNodes()
 {
-  Structures = new SemanticID() 
-    { 
-      context = (UInt16)SemanticContexts.SYS_CONTEXT, 
-      flags = (UInt16)SemanticTypes.SEM_TYPE_SYMBOL, 
-      id = (UInt32)SystemSymbolIDs.STRUCTURES_ID 
+  Structures = new SemanticID()
+    {
+      context = (UInt16)SemanticContexts.SYS_CONTEXT,
+      flags = (UInt16)SemanticTypes.SEM_TYPE_SYMBOL,
+      id = (UInt32)SystemSymbolIDs.STRUCTURES_ID
     };
 
-  Symbols = new SemanticID() 
-    { 
-      context = (UInt16)SemanticContexts.SYS_CONTEXT, 
-      flags = (UInt16)SemanticTypes.SEM_TYPE_SYMBOL, 
-      id = (UInt32)SystemSymbolIDs.SYMBOLS_ID 
+  Symbols = new SemanticID()
+    {
+      context = (UInt16)SemanticContexts.SYS_CONTEXT,
+      flags = (UInt16)SemanticTypes.SEM_TYPE_SYMBOL,
+      id = (UInt32)SystemSymbolIDs.SYMBOLS_ID
     };
 
   RootStructuresNode = CreateRootNode(Structures);
@@ -510,19 +510,19 @@ public unsafe void Terminate()
 }</pre>
 <p>In the C implementation, a SemanticID consists of: </p>
 <ul>
-	<li>A context in which it is defined (16 bits). This may specify a local 
-	receptor, the code installed in a system or from a compository of code and 
+	<li>A context in which it is defined (16 bits). This may specify a local
+	receptor, the code installed in a system or from a compository of code and
 	receptors.</li>
 	<li>Flags are a middle 16 bits reserved for flags about the symbol.</li>
 <li>ID is a unique identifier to that context and type.</li>
 </ul>
-<p>In other words, a symbol ID is 64 bits. 16 reserved for identifying context 
-of identifier, 16 reserved for markers about the type of symbol (like is it a 
-process, structure or a symbol, or scape or receptor or something else) and 32 
-for the identifier unique to that context and type, like a structure ID or 
-symbol ID.&nbsp; Note that one of the confusing things is that there is a symbol 
+<p>In other words, a symbol ID is 64 bits. 16 reserved for identifying context
+of identifier, 16 reserved for markers about the type of symbol (like is it a
+process, structure or a symbol, or scape or receptor or something else) and 32
+for the identifier unique to that context and type, like a structure ID or
+symbol ID.&nbsp; Note that one of the confusing things is that there is a symbol
 		SYMBOLS_ID (plural) which holds the list of all SYMBOL_ID's. &nbsp;</p>
-<p>From the C# perspective, and not wanting to require unsafe support for every 
+<p>From the C# perspective, and not wanting to require unsafe support for every
 assembly that references this interface assembly, the C pointers are mapped to GUID's:</p>
 <pre>public unsafe Guid CreateRootNode(SemanticID structures)
 {
@@ -539,28 +539,28 @@ protected unsafe Guid RegisterNode(TreeNode* node)
 
   return guid;
 }</pre>
-<p>This way, all other assemblies can reference tree nodes using a Guid rather 
-than a C-style TreeNode*.&nbsp; Any node, given the Guid, can in this assembly 
+<p>This way, all other assemblies can reference tree nodes using a Guid rather
+than a C-style TreeNode*.&nbsp; Any node, given the Guid, can in this assembly
 be restored to the TreeNode*:</p>
 <pre>protected unsafe TreeNode* GetNode(Guid id)
 {
   return (TreeNode*)nodes[id];
 }</pre>
 <h4>Internal Types</h4>
-<p>There is of course a limit to how much one can realistically drill down into 
-the symbol-structure space, so there are several internal value types to 
-represent basic machine-understandable types.&nbsp; Remember, you're look at an 
-interface to C code here, and C has no concept of things like generics or 
-reflection, so all of the meaning (funny how we are talking about meaning at 
-both the semantic level and the code level) has to be expressed in structures 
+<p>There is of course a limit to how much one can realistically drill down into
+the symbol-structure space, so there are several internal value types to
+represent basic machine-understandable types.&nbsp; Remember, you're look at an
+interface to C code here, and C has no concept of things like generics or
+reflection, so all of the meaning (funny how we are talking about meaning at
+both the semantic level and the code level) has to be expressed in structures
 and enumerations.</p>
 <pre>public SemanticID GetFloat()
 {
-  SemanticID sid = new SemanticID() 
-  { 
-    context = (UInt16)SemanticContexts.SYS_CONTEXT, 
-    flags = (UInt16)SemanticTypes.SEM_TYPE_STRUCTURE, 
-    id = (UInt32)SystemStructureID.FLOAT_ID 
+  SemanticID sid = new SemanticID()
+  {
+    context = (UInt16)SemanticContexts.SYS_CONTEXT,
+    flags = (UInt16)SemanticTypes.SEM_TYPE_STRUCTURE,
+    id = (UInt32)SystemStructureID.FLOAT_ID
   };
 
   return sid;
@@ -568,11 +568,11 @@ and enumerations.</p>
 
 public SemanticID GetString()
 {
-  SemanticID sid = new SemanticID() 
-  { 
-    context = (UInt16)SemanticContexts.SYS_CONTEXT, 
-    flags = (UInt16)SemanticTypes.SEM_TYPE_STRUCTURE, 
-    id = (UInt32)SystemStructureID.CSTRING_ID 
+  SemanticID sid = new SemanticID()
+  {
+    context = (UInt16)SemanticContexts.SYS_CONTEXT,
+    flags = (UInt16)SemanticTypes.SEM_TYPE_STRUCTURE,
+    id = (UInt32)SystemStructureID.CSTRING_ID
   };
 
   return sid;
@@ -580,11 +580,11 @@ public SemanticID GetString()
 
 public SemanticID GetInteger()
 {
-  SemanticID sid = new SemanticID() 
-  { 
-    context = (UInt16)SemanticContexts.SYS_CONTEXT, 
-    flags = (UInt16)SemanticTypes.SEM_TYPE_STRUCTURE, 
-    id = (UInt32)SystemStructureID.INTEGER_ID 
+  SemanticID sid = new SemanticID()
+  {
+    context = (UInt16)SemanticContexts.SYS_CONTEXT,
+    flags = (UInt16)SemanticTypes.SEM_TYPE_STRUCTURE,
+    id = (UInt32)SystemStructureID.INTEGER_ID
   };
 
   return sid;
@@ -592,11 +592,11 @@ public SemanticID GetInteger()
 
 public SemanticID GetList()
 {
-  SemanticID sid = new SemanticID() 
-  { 
-    context = (UInt16)SemanticContexts.SYS_CONTEXT, 
-    flags = (UInt16)SemanticTypes.SEM_TYPE_STRUCTURE, 
-    id = (UInt32)SystemStructureID.LIST_ID 
+  SemanticID sid = new SemanticID()
+  {
+    context = (UInt16)SemanticContexts.SYS_CONTEXT,
+    flags = (UInt16)SemanticTypes.SEM_TYPE_STRUCTURE,
+    id = (UInt32)SystemStructureID.LIST_ID
   };
 
   return sid;
@@ -620,10 +620,10 @@ public SemanticID GetList()
 
   return st;
 }</pre>
-<p>Remember that a structure (like &quot;latlon&quot;) is actually a collection of symbols 
+<p>Remember that a structure (like &quot;latlon&quot;) is actually a collection of symbols
 (&quot;lat&quot; and &quot;lon&quot;), therefore we pass in the symbols that comprise the structure.</p>
-<p><img border="0" src="note.png" width="24" height="32">&nbsp; You should start to see a pattern here -- every piece of symbol and structure 
-is an instance of <code>SemanticID</code>, whether it is a user defined symbol/structure or a 
+<p><img border="0" src="note.png" width="24" height="32">&nbsp; You should start to see a pattern here -- every piece of symbol and structure
+is an instance of <code>SemanticID</code>, whether it is a user defined symbol/structure or a
 system defined symbol/structure.</p>
 <h4>Converting a String to an ASCII Tree</h4>
 <p>This is a straight forward process now:</p>
@@ -679,7 +679,7 @@ system defined symbol/structure.</p>
   return ret == 1;
 }</pre>
 <h3>Putting the Pieces Together</h3>
-<p>In SemanticUIController.cs, you can see how all of these pieces are put 
+<p>In SemanticUIController.cs, you can see how all of these pieces are put
 together when handling the UI events.</p>
 <h4>Parsing A String to an ASCII Tree</h4>
 <pre>public void CreateStructuresAndSymbols()
@@ -717,9 +717,9 @@ public void ToTree(object sender, EventArgs args)
   asciiTreeID = ApplicationController.CeptrInterface.GetTree(View.tbInputString.Text);
   DumpOutput(asciiTreeID);
 }</pre>
-<p>The above code maps the symbol tree (managed simply be the .NET <code>TreeView</code> 
-control) into a dictionary of symbols and structures suitable for the C code to 
-digest.&nbsp; Once the symbols and structures have been initialized, the 
+<p>The above code maps the symbol tree (managed simply be the .NET <code>TreeView</code>
+control) into a dictionary of symbols and structures suitable for the C code to
+digest.&nbsp; Once the symbols and structures have been initialized, the
 interface function <code>GetTree</code> is called to return a <code>Guid</code> of the ASCII tree.</p>
 <h4>Creating a Semtrex Tree from an ASCII String</h4>
 <pre>public void ToSemtrex(object sender, EventArgs args)
@@ -733,7 +733,7 @@ interface function <code>GetTree</code> is called to return a <code>Guid</code> 
   DumpOutput(parseExprID);
 }</pre>
 <h4>Matching the ASCII Input String</h4>
-<p>Using the tree ID's obtained from the methods described above, we match the latlon input string against the parsed Semtrex 
+<p>Using the tree ID's obtained from the methods described above, we match the latlon input string against the parsed Semtrex
 tree, :</p>
 <pre>public void Match(object sender, EventArgs args)
 {
@@ -765,7 +765,7 @@ tree, :</p>
   DumpOutput(embodyID);
 }</pre>
 <h4>Parsing the Match String</h4>
-<p>As mentioned earlier, we again need to parse the human-readable string 
+<p>As mentioned earlier, we again need to parse the human-readable string
 representing our match expression into a Semtrex expression:</p>
 <pre>public void ToMatchAgainst(object sender, EventArgs args)
 {
@@ -774,11 +774,11 @@ representing our match expression into a Semtrex expression:</p>
     ApplicationController.CeptrInterface.RootStructuresNode,
     View.tbMatchAgainst.Text
   );
-  
+
   DumpOutput(matchAgainstID);
 }</pre>
 <h4>Matching Against the Embodied Semtrex</h4>
-<p>Finally, in our last step, we use the <code>embodyID</code> from above along with the <code>matchAgainstID</code> 
+<p>Finally, in our last step, we use the <code>embodyID</code> from above along with the <code>matchAgainstID</code>
 to match the embodied tree to the Semtrex match expression:</p>
 <pre>public void MatchAgainstMatches(object sender, EventArgs args)
 {
@@ -788,65 +788,65 @@ to match the embodied tree to the Semtrex match expression:</p>
 }
 </pre>
 <h2>Semtrex Tokens - Detail Section for Regular Express Geeks</h2>
-<p>In Ceptr, Semtrex expressions are semantic trees because everything in Ceptr 
-is stored as semantic trees. However, Semtrex can also be represented as a 
-linear ASCII string using has a small set of tokens which should look familiar 
+<p>In Ceptr, Semtrex expressions are semantic trees because everything in Ceptr
+is stored as semantic trees. However, Semtrex can also be represented as a
+linear ASCII string using has a small set of tokens which should look familiar
 to Regex users.</p>
 <h3>Value Literal and Symbol Literal</h3>
-<p>In the expression X=&quot;b&quot;, X is the symbol literal and &quot;b&quot; is the value literal 
-(the &quot;=&quot; we can call the value operator.)&nbsp; These are tokens relevant to the 
+<p>In the expression X=&quot;b&quot;, X is the symbol literal and &quot;b&quot; is the value literal
+(the &quot;=&quot; we can call the value operator.)&nbsp; These are tokens relevant to the
 Semtrex tree after the human-readable form has been parsed.</p>
 <h3>Except</h3>
-<p>To match any symbol except the one prefixed with &quot;!&quot; (bang or 
+<p>To match any symbol except the one prefixed with &quot;!&quot; (bang or
 exclamation) character (not to be confused with a &quot;not&quot; character.)&nbsp; </p>
 <h3>Any</h3>
 <p>Match any symbol matches, denoted with the &quot;.&quot; (period) character.</p>
 <h3>Sequence</h3>
 <p>A sequence of expressions is separated by the infix &quot;,&quot; (comma) character.</p>
 <h3>Or</h3>
-<p>Matching expression A or expression B is indicated with the infix &quot;|&quot; (pipe) 
+<p>Matching expression A or expression B is indicated with the infix &quot;|&quot; (pipe)
 character.</p>
 <h3>Zero or More</h3>
-<p>Zero or more instances of an expression is indicated with the postfix &quot;*&quot; 
+<p>Zero or more instances of an expression is indicated with the postfix &quot;*&quot;
 (asterisk) character.</p>
 <h3>One or More</h3>
-<p>One or more instances of an expression is indicated with the postfix &quot;+&quot; (plus) 
+<p>One or more instances of an expression is indicated with the postfix &quot;+&quot; (plus)
 character.</p>
 <h3>Zero or One</h3>
-<p>Zero or more instances of an expression is indicated with the postfix &quot;?&quot; (question 
+<p>Zero or more instances of an expression is indicated with the postfix &quot;?&quot; (question
 mark) character.</p>
 <h3>Range</h3>
-<p>A range of expression occurrences is indicated with paired characters &quot;[&quot; and &quot;]&quot; 
+<p>A range of expression occurrences is indicated with paired characters &quot;[&quot; and &quot;]&quot;
 (open/close square bracket) characters.</p>
 <h3>Capture Group</h3>
-<p>A match can be captured (much like in Regex with the parenthesis) using the 
-paired characters &quot;&lt;&quot; and &quot;&gt;&quot; (open/close angle bracket) characters.&nbsp; This 
-syntax includes specifying a symbol name to refer to the matched expression, so a 
-capture will have the form &quot;&lt;sym:X&gt;&quot; where X is the match expression and 
-&quot;sym&quot; is a symbol that will be used to refer to the match expression.&nbsp; In 
-Semtrex, a very common thing is to convert one semantic tree into another 
+<p>A match can be captured (much like in Regex with the parenthesis) using the
+paired characters &quot;&lt;&quot; and &quot;&gt;&quot; (open/close angle bracket) characters.&nbsp; This
+syntax includes specifying a symbol name to refer to the matched expression, so a
+capture will have the form &quot;&lt;sym:X&gt;&quot; where X is the match expression and
+&quot;sym&quot; is a symbol that will be used to refer to the match expression.&nbsp; In
+Semtrex, a very common thing is to convert one semantic tree into another
 semantic tree.&nbsp; This form simplifies such transformations.</p>
 <h3>Not</h3>
-<p>Indicating that match must &quot;not have this expression&quot; is indicated with the 
+<p>Indicating that match must &quot;not have this expression&quot; is indicated with the
 &quot;~&quot; (tilde) character.</p>
 <h3>Walk</h3>
-<p>The walk token &quot;%&quot; (percent sign) is used to walk an input tree - the tree is 
-&quot;walked&quot; until the first match expression that follows matches, then expression 
+<p>The walk token &quot;%&quot; (percent sign) is used to walk an input tree - the tree is
+&quot;walked&quot; until the first match expression that follows matches, then expression
 matching continues from that point forward.</p>
 <h3>Siblings</h3>
-<p>Parentheses &quot;(&quot; and &quot;)&quot; always in pairs indicates that child expressions are 
+<p>Parentheses &quot;(&quot; and &quot;)&quot; always in pairs indicates that child expressions are
 siblings.</p>
 <h3>Value Sets</h3>
-<p>To match on a set of values, the &quot;{&quot; and &quot;}&quot; (open/close curly brace) pairs 
-are used.&nbsp; Furthermore, string sets are double-quoted, character sets are 
-single-quoted, and numeric values are not quoted.&nbsp; Items in the set are 
+<p>To match on a set of values, the &quot;{&quot; and &quot;}&quot; (open/close curly brace) pairs
+are used.&nbsp; Furthermore, string sets are double-quoted, character sets are
+single-quoted, and numeric values are not quoted.&nbsp; Items in the set are
 comma-delimited.&nbsp; Examples are:</p>
 <p>{&quot;ab&quot;,&quot;cd&quot;,&quot;zx&quot;}<br>
 {'a','b','c','d'}<br>
 {1,2,3,4}</p>
 <h3>Consume Everything</h3>
-<p>As in Regex, a trailing &quot;$&quot; (dollar sign) token is used to indicate that&nbsp; 
-for the expression to match, it must match the entire tree, i.e. there may not 
+<p>As in Regex, a trailing &quot;$&quot; (dollar sign) token is used to indicate that&nbsp;
+for the expression to match, it must match the entire tree, i.e. there may not
 be any children that don’t match.</p>
 
 <h2>References</h2>
@@ -856,18 +856,18 @@ http://en.wikipedia.org/wiki/Semantics</a><br>
 2.&nbsp; <a href="http://en.wikipedia.org/wiki/Great-circle_distance">
 http://en.wikipedia.org/wiki/Great-circle_distance</a> <br>
 3. <span class="reference-text"><span class="citation web">
-<a rel="nofollow" class="external text" href="http://www.w3.org/2001/sw/">&quot;W3C 
+<a rel="nofollow" class="external text" href="http://www.w3.org/2001/sw/">&quot;W3C
 Semantic Web Activity&quot;</a>.
 <a title="World Wide Web Consortium" href="http://en.wikipedia.org/wiki/World_Wide_Web_Consortium">
-World Wide Web Consortium</a> (W3C). November 7, 2011<span class="reference-accessdate">. 
+World Wide Web Consortium</a> (W3C). November 7, 2011<span class="reference-accessdate">.
 Retrieved November 26, 2011</span>.<br>
 </span></span><span class="citation web">4.
 <a href="http://en.wikipedia.org/wiki/Tim_Berners-Lee">
 http://en.wikipedia.org/wiki/Tim_Berners-Lee</a> <br>
-</span>5. <span class="reference-text"><span class="citation journal">Berners-Lee, 
+</span>5. <span class="reference-text"><span class="citation journal">Berners-Lee,
 Tim; James Hendler; Ora Lassila (May 17, 2001).
 <a rel="nofollow" class="external text" href="http://www.sciam.com/article.cfm?id=the-semantic-web&print=true">
-&quot;The Semantic Web&quot;</a>. <i>Scientific American Magazine</i><span class="reference-accessdate">. 
+&quot;The Semantic Web&quot;</a>. <i>Scientific American Magazine</i><span class="reference-accessdate">.
 Retrieved March 26, 2008</span>.<br>
 </span></span>6. <a href="http://dictionary.reference.com/browse/Phylogeny">
 http://dictionary.reference.com/browse/Phylogeny</a> <br>
@@ -885,46 +885,46 @@ http://tools.ietf.org/html/rfc5321</a> <br>
 <p>&nbsp;</p>
 <h2>Semantics: Symbols and Structures</h2>
 <p>How do we build meaning?&nbsp; What is meaning?&nbsp; </p>
-<p>Eric: Meaning comes from having a social context in which symbols are applied 
+<p>Eric: Meaning comes from having a social context in which symbols are applied
 to embodied forms (structures!)&nbsp;&nbsp; </p>
-<p>Arthur: Meaning comes from understanding the use of a symbol in a specific 
+<p>Arthur: Meaning comes from understanding the use of a symbol in a specific
 context.&nbsp; A context means a collection of symbols used in a particular way.</p>
-<p>A context becomes a structure, and with an associated symbol, allows you to 
+<p>A context becomes a structure, and with an associated symbol, allows you to
 build new structures.</p>
 <p>The structure contextualizes the meaning.</p>
-<p>A structure constructs a context by giving meaning to other structures, by 
+<p>A structure constructs a context by giving meaning to other structures, by
 naming them.</p>
 <p>Context is the relationship of named structures.&nbsp; </p>
 <p>Instance vs. Definition</p>
 <p>The structure is providing a context of instances of definitions.</p>
 <p><b>To express context (the relationship of named structures) we use a tree!</b></p>
-<p>We use a tree to embody both hierarchical and sibling relationships (the 
+<p>We use a tree to embody both hierarchical and sibling relationships (the
 semantic and structural relationship)</p>
 <p><b>The &quot;tree&quot; in the IDE is the embodied tree of a definition tree.</b></p>
-<p>Alternation???&nbsp; <b>That new structure can also be named and used in 
-other context.</b>&nbsp; It becomes named and applied collectively into another 
+<p>Alternation???&nbsp; <b>That new structure can also be named and used in
+other context.</b>&nbsp; It becomes named and applied collectively into another
 structure / context.</p>
-<p>E: This is an important pattern in the real world and in programming (&quot;has a&quot; 
-relationship).&nbsp; This pattern of alternation is a fundamental pattern 
-(programming languages, real world, etc) what we're trying to do in ceptr is 
-make that fundamental pattern explicit and have some self knowledge of what 
+<p>E: This is an important pattern in the real world and in programming (&quot;has a&quot;
+relationship).&nbsp; This pattern of alternation is a fundamental pattern
+(programming languages, real world, etc) what we're trying to do in ceptr is
+make that fundamental pattern explicit and have some self knowledge of what
 we're doing.</p>
-<p>A: What we're doing in Ceptr ... when you program, the programmer has to deal 
-with these things as meaningful units (variable names) but then when we compile 
+<p>A: What we're doing in Ceptr ... when you program, the programmer has to deal
+with these things as meaningful units (variable names) but then when we compile
 it, it all goes away, collapsed down to structured data in memory addresses.&nbsp;
-<i>We then have difficulty sharing the meaning, we have to then construct a 
+<i>We then have difficulty sharing the meaning, we have to then construct a
 semantic layer where we &quot;hydrate&quot; the meaning back into the structure.</i></p>
-<p>With Semtrex serialization, you never lose the meaning when during the 
+<p>With Semtrex serialization, you never lose the meaning when during the
 process of serialization / deserialization.</p>
-<p>JSON/XML - added value in serialization?&nbsp; Performance?&nbsp; Using ASCII 
-vs. binary formatting.&nbsp; The &quot;structure&quot; of something can be changed within 
+<p>JSON/XML - added value in serialization?&nbsp; Performance?&nbsp; Using ASCII
+vs. binary formatting.&nbsp; The &quot;structure&quot; of something can be changed within
 the larger structure.&nbsp; Talk about this idea more.</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <h2>Semtrex Tokens - Detail Section for Regular Express Geeks</h2>
-<p>In Ceptr, Semtrex expressions are semantic trees because everything in Ceptr 
-is stored as semantic trees. However, Semtrex can also be represented as a 
-linear ASCII string using has a small set of tokens which should look familiar 
+<p>In Ceptr, Semtrex expressions are semantic trees because everything in Ceptr
+is stored as semantic trees. However, Semtrex can also be represented as a
+linear ASCII string using has a small set of tokens which should look familiar
 to Regex users.</p>
 <p>Here's what it is, and this is what it looks like when you serialize it.</p>
 <p>Semtrex starts as a tree and gets serialized to ASCII for easy reading.</p>
@@ -932,80 +932,80 @@ to Regex users.</p>
 stx = &quot;/HTTP_REQUEST/(.,.,HTTP_REQUEST_PATH/HTTP_REQUEST_PATH_SEGMENTS/{HTTP_REQUEST_PATH_SEGMENT:HTTP_REQUEST_PATH_SEGMENT})&quot;;<br>
 s = parseSemtrex(&amp;test_HTTP_defs,stx);<br>
 spec_is_str_equal(_dump_semtrex(test_HTTP_defs,s,buf),stx);<br>
-spec_is_str_equal(__t_dump(&amp;test_HTTP_defs,s,0,buf),&quot; (SEMTREX_SYMBOL_LITERAL:HTTP_REQUEST 
-(SEMTREX_SEQUENCE (SEMTREX_SYMBOL_ANY) (SEMTREX_SYMBOL_ANY) (SEMTREX_SYMBOL_LITERAL:HTTP_REQUEST_PATH 
-(SEMTREX_SYMBOL_LITERAL:HTTP_REQUEST_PATH_SEGMENTS (SEMTREX_GROUP:HTTP_REQUEST_PATH_SEGMENT 
+spec_is_str_equal(__t_dump(&amp;test_HTTP_defs,s,0,buf),&quot; (SEMTREX_SYMBOL_LITERAL:HTTP_REQUEST
+(SEMTREX_SEQUENCE (SEMTREX_SYMBOL_ANY) (SEMTREX_SYMBOL_ANY) (SEMTREX_SYMBOL_LITERAL:HTTP_REQUEST_PATH
+(SEMTREX_SYMBOL_LITERAL:HTTP_REQUEST_PATH_SEGMENTS (SEMTREX_GROUP:HTTP_REQUEST_PATH_SEGMENT
 (SEMTREX_SYMBOL_LITERAL:HTTP_REQUEST_PATH_SEGMENT))))))&quot;);<br>
 */</p>
 <p>A regex gets parsed into a tree before it's used!!!!</p>
-<p><font color="#FF0000">[ Need example: a simple ASCII string Semtrex and the 
+<p><font color="#FF0000">[ Need example: a simple ASCII string Semtrex and the
 corresponding semantic tree ]</font></p>
 <h3>Value Literal and Symbol Literal</h3>
-<p><font color="#FF0000">For each of these, provide a simple example and the 
+<p><font color="#FF0000">For each of these, provide a simple example and the
 corresponding semantic tree</font></p>
-<p>In the expression X=&quot;b&quot;, X is the symbol literal and &quot;b&quot; is the value literal 
-(the &quot;=&quot; we can call the value operator.)&nbsp; These are tokens relevant to the 
+<p>In the expression X=&quot;b&quot;, X is the symbol literal and &quot;b&quot; is the value literal
+(the &quot;=&quot; we can call the value operator.)&nbsp; These are tokens relevant to the
 Semtrex tree after the human-readable form has been parsed.</p>
 <h3>Except</h3>
-<p>To match any symbol except the one prefixed with &quot;!&quot; (bang or 
+<p>To match any symbol except the one prefixed with &quot;!&quot; (bang or
 exclamation) character (not to be confused with a &quot;not&quot; character.)&nbsp; </p>
 <h3>Any</h3>
 <p>Match any symbol matches, denoted with the &quot;.&quot; (period) character.</p>
 <h3>Sequence</h3>
 <p>A sequence of expressions is separated by the infix &quot;,&quot; (comma) character.</p>
 <h3>Or</h3>
-<p>Matching expression A or expression B is indicated with the infix &quot;|&quot; (pipe) 
+<p>Matching expression A or expression B is indicated with the infix &quot;|&quot; (pipe)
 character.</p>
 <h3>Zero or More</h3>
-<p>Zero or more instances of an expression is indicated with the postfix &quot;*&quot; 
+<p>Zero or more instances of an expression is indicated with the postfix &quot;*&quot;
 (asterisk) character.</p>
 <h3>One or More</h3>
-<p>One or more instances of an expression is indicated with the postfix &quot;+&quot; (plus) 
+<p>One or more instances of an expression is indicated with the postfix &quot;+&quot; (plus)
 character.</p>
 <h3>Zero or One</h3>
-<p>Zero or more instances of an expression is indicated with the postfix &quot;?&quot; (question 
+<p>Zero or more instances of an expression is indicated with the postfix &quot;?&quot; (question
 mark) character.</p>
 <h3>Range</h3>
-<p>A range of expression occurrences is indicated with paired characters &quot;[&quot; and &quot;]&quot; 
+<p>A range of expression occurrences is indicated with paired characters &quot;[&quot; and &quot;]&quot;
 (open/close square bracket) characters.</p>
 <h3>Capture Group</h3>
-<p>A match can be captured (much like in Regex with the parenthesis) using the 
-paired characters &quot;&lt;&quot; and &quot;&gt;&quot; (open/close angle bracket) characters.&nbsp; This 
-syntax includes specifying a symbol name to refer to the matched expression, so a 
-capture will have the form &quot;&lt;sym:X&gt;&quot; where X is the match expression and 
-&quot;sym&quot; is a symbol that will be used to refer to the match expression.&nbsp; In 
-Semtrex, a very common thing is to convert one semantic tree into another 
+<p>A match can be captured (much like in Regex with the parenthesis) using the
+paired characters &quot;&lt;&quot; and &quot;&gt;&quot; (open/close angle bracket) characters.&nbsp; This
+syntax includes specifying a symbol name to refer to the matched expression, so a
+capture will have the form &quot;&lt;sym:X&gt;&quot; where X is the match expression and
+&quot;sym&quot; is a symbol that will be used to refer to the match expression.&nbsp; In
+Semtrex, a very common thing is to convert one semantic tree into another
 semantic tree.&nbsp; This form simplifies such transformations.</p>
 <p><font color="#FF0000">Example!</font></p>
 <h3>Not</h3>
-<p>Indicating that match must &quot;not have this expression&quot; is indicated with the 
+<p>Indicating that match must &quot;not have this expression&quot; is indicated with the
 &quot;~&quot; (tilde) character.</p>
 <h3>Walk</h3>
-<p>The walk token &quot;%&quot; (percent sign) is used to walk an input tree - the tree is 
-&quot;walked&quot; until the first match expression that follows matches, then expression 
+<p>The walk token &quot;%&quot; (percent sign) is used to walk an input tree - the tree is
+&quot;walked&quot; until the first match expression that follows matches, then expression
 matching continues from that point forward.</p>
 <h3>Siblings</h3>
-<p>Parentheses &quot;(&quot; and &quot;)&quot; always in pairs indicates that child expressions are 
+<p>Parentheses &quot;(&quot; and &quot;)&quot; always in pairs indicates that child expressions are
 siblings.</p>
 <h3>Value Sets</h3>
-<p>To match on a set of values, the &quot;{&quot; and &quot;}&quot; (open/close curly brace) pairs 
-are used.&nbsp; Furthermore, string sets are double-quoted, character sets are 
-single-quoted, and numeric values are not quoted.&nbsp; Items in the set are 
+<p>To match on a set of values, the &quot;{&quot; and &quot;}&quot; (open/close curly brace) pairs
+are used.&nbsp; Furthermore, string sets are double-quoted, character sets are
+single-quoted, and numeric values are not quoted.&nbsp; Items in the set are
 comma-delimited.&nbsp; Examples are:</p>
 <p>{&quot;ab&quot;,&quot;cd&quot;,&quot;zx&quot;}<br>
 {'a','b','c','d'}<br>
 {1,2,3,4}</p>
 <h3>Consume Everything</h3>
-<p>As in Regex, a trailing &quot;$&quot; (dollar sign) token is used to indicate that&nbsp; 
-for the expression to match, it must match the entire tree, i.e. there may not 
+<p>As in Regex, a trailing &quot;$&quot; (dollar sign) token is used to indicate that&nbsp;
+for the expression to match, it must match the entire tree, i.e. there may not
 be any children that don’t match.</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <h2>The IDE</h2>
-<p>I opted to put a front-end on Eric's code, which is implemented in C#.&nbsp; 
-The IDE project's solution is compatible with Visual Studio 2013 Community 
-Edition. The IDE utilizes Weifen Luo's docking manager as well as several 
+<p>I opted to put a front-end on Eric's code, which is implemented in C#.&nbsp;
+The IDE project's solution is compatible with Visual Studio 2013 Community
+Edition. The IDE utilizes Weifen Luo's docking manager as well as several
 standard components in my &quot;toolkit.&quot;&nbsp; The IDE consists of:</p>
 <ul>
 	<li>a symbol tree editor with property pane</li>

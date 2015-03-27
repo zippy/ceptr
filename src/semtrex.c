@@ -442,7 +442,7 @@ void __fix(T *source_t,T *r) {
     T *t = *(T **)_t_surface(m2 = _t_get(r,pt));
 
     int *p = _t_get_path(t1);
-    __t_morph(m1,SEMTREX_MATCHED_PATH,p,sizeof(int)*(_t_path_depth(p)+1),1);
+    __t_morph(m1,SEMTREX_MATCH_PATH,p,sizeof(int)*(_t_path_depth(p)+1),1);
 
     int d = _t_path_depth(p);
     int i;
