@@ -78,7 +78,7 @@ var treeData = sampleTree;
 // ************** Generate the tree diagram	 *****************
 var margin = {top: 20, right: 120, bottom: 20, left: 120},
 	width =1500 - margin.right - margin.left,
-	height = 1000 - margin.top - margin.bottom;
+	height = 900 - margin.top - margin.bottom;
 
 var i = 0,
 	duration = 750,
@@ -268,10 +268,29 @@ function click(d) {
   update(d);
 }
 
+load_all();
+
+var cur = 0;
+function cycle(dir) {
+    if (trees.length == 0) {
+        load_all();
+    }
+    cur+=dir;
+    if (cur == trees.length) {cur = 0};
+    if (cur < 0) {cur = trees.length-1};
+    set_tree(trees[cur]);
+}
+
 </script>
 <br />
-<input type="file" id="files" name="files[]" multiple />
+<!-- <input type="file" id="files" name="files[]" multiple /> -->
 <div id="list"></output>
+    <input type="button" onclick="cycle(1)" value="next">
+    <input type="button" onclick="cycle(-1)" value="prev">
+    <input type="button" onclick="tree_prefix='XXX';set_tree(trees[18]);cur=18;" value="source">
+    <input type="button" onclick="tree_prefix='';set_tree(trees[19]);cur=19;" value="semtrex">
+    <input type="button" onclick="tree_prefix='SEMTREX_MATCH';set_tree(trees[20]);cur=20;" value="semtrex match">
+    <input type="button" onclick="t_stx_hilight(trees[18],trees[20],'red'),set_tree(trees[18]);" value="semtrex hilight">
 
 <script>
   var TF;
@@ -306,7 +325,7 @@ var raw;
   }
 
 
-  document.getElementById('files').addEventListener('change', handleFileSelect, false);
+//  document.getElementById('files').addEventListener('change', handleFileSelect, false);
 
   function g(f) {
       xmlhttp=new XMLHttpRequest();

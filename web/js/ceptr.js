@@ -21,25 +21,25 @@ function p2a(path) {
 }
 
 // given a string path get the element out of the tree
-function get(tree,path) {
+function t_get(tree,path) {
     var p = p2a(path);
     while(p.length > 0) {tree = tree.children[p[0]-1];p.shift();}
     return tree;
 }
 
 // applies a function to a tree node and all it's children recursively
-function applyt(tree,f) {
+function t_apply(tree,f) {
     f(tree);
     var i,nodes = tree.children ? tree.children.length : 0;
     for(i = 0;i<nodes;i++) {
-        applyt(tree.children[i],f);
+        t_apply(tree.children[i],f);
     }
 }
 
 // give a semtrex results tree and the source tree, hilight the matched portion
-function hilight(tree,stxresults,color) {
+function t_stx_hilight(tree,stxresults,color) {
     var path = stxresults.children[1].surface;
-    applyt(get(tree,path),function(t){t.color = color});
+    t_apply(t_get(tree,path),function(t){t.color = color});
     svg.selectAll("g.node text").style("fill",function(d){return d.color})
 }
 
