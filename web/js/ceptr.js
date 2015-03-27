@@ -1,9 +1,15 @@
-var sizeof_S = 12;
-var Mlevel_size = 2;
-var Mindex_size = 4;
-var Symbol_size = 8;
-var size_t_size = 8;
-var serialized_node_size = 32;
+/**
+ * @defgroup js
+ *
+ * @brief Javascript tools for interfacing with ceptr
+ *
+ * @{
+ * @file ceptr.js
+ * @brief javascript
+ *
+ * @copyright Copyright (C) 2013-2015, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
+ *
+ */
 
 // convert a string path like "/1/2/5/3" to an array
 function p2a(path) {
@@ -21,6 +27,7 @@ function get(tree,path) {
     return tree;
 }
 
+// applies a function to a tree node and all it's children recursively
 function applyt(tree,f) {
     f(tree);
     var i,nodes = tree.children ? tree.children.length : 0;
@@ -29,11 +36,22 @@ function applyt(tree,f) {
     }
 }
 
+// give a semtrex results tree and the source tree, hilight the matched portion
 function hilight(tree,stxresults,color) {
     var path = stxresults.children[1].surface;
     applyt(get(tree,path),function(t){t.color = color});
     svg.selectAll("g.node text").style("fill",function(d){return d.color})
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+////  mtree unserialization routines
+
+var sizeof_S = 12;
+var Mlevel_size = 2;
+var Mindex_size = 4;
+var Symbol_size = 8;
+var size_t_size = 8;
+var serialized_node_size = 32;
 
 function serialized_header_size(levels) {
     return sizeof_S+4*levels;
@@ -162,3 +180,4 @@ function  m_2tfn(l,i,n,data,state,pl,pi) {
 //        *tP = _t_new(t,n->symbol,(n->flags & TFLAG_ALLOCATED)?n->surface:&n->surface,n->size);
     state[l].t = x;
 }
+/** @}*/

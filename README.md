@@ -43,7 +43,7 @@ Currently nothing runs other than a test suite which you can execute simply by t
 
 ## License
 
-Copyright (C) 2013-2014, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al.)
+Copyright (C) 2013-2015, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al.)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the license provided in the LICENSE file (GPLv3).
