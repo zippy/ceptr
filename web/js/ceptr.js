@@ -1,42 +1,39 @@
-var treeData = [
-    {
-        "name": "Top Level",
-        "parent": "null",
-        "children": [
-            {
-                "name": "COWS 2: A",
-                //     "parent": "Top Level",
-                "children": [
-                    {
-                        "name": "Son of A",
-                        //         "parent": "Level 2: A"
-                    },
-                    {
-                        "name": "Daughter of A",
-                        //         "parent": "Level 2: A"
-                    }
-                ]
-            },
-            {
-                "name": "Level 2: B",
-                //      "parent": "Top Level"
-            }
-        ]
-    }
-];
-
-function set_root() {
-    root = treeData[0];
-    root.x0 = height / 2;
-    root.y0 = 0;
-};
-
 var sizeof_S = 12;
 var Mlevel_size = 2;
 var Mindex_size = 4;
 var Symbol_size = 8;
 var size_t_size = 8;
 var serialized_node_size = 32;
+
+// convert a string path like "/1/2/5/3" to an array
+function p2a(path) {
+    var p = path.split("/");
+    p.shift();
+    var r = [];
+    p.forEach(function(x){r.push(parseInt(x))});
+    return r;
+}
+
+// given a string path get the element out of the tree
+function get(tree,path) {
+    var p = p2a(path);
+    while(p.length > 0) {tree = tree.children[p[0]-1];p.shift();}
+    return tree;
+}
+
+function applyt(tree,f) {
+    f(tree);
+    var i,nodes = tree.children ? tree.children.length : 0;
+    for(i = 0;i<nodes;i++) {
+        applyt(tree.children[i],f);
+    }
+}
+
+function hilight(tree,stxresults,color) {
+    var path = stxresults.children[1].surface;
+    applyt(get(tree,path),function(t){t.color = color});
+    svg.selectAll("g.node text").style("fill",function(d){return d.color})
+}
 
 function serialized_header_size(levels) {
     return sizeof_S+4*levels;

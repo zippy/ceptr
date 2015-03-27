@@ -851,7 +851,7 @@ char * _t2json(Defs *defs,T *t,int level,char *buf) {
     char b[255];
     char tbuf[2000];
     int i;
-    char *c;
+    char *c,cr;
     Xaddr x;
     buf = _indent_line(level,buf);
 
@@ -876,7 +876,12 @@ char * _t2json(Defs *defs,T *t,int level,char *buf) {
 		sprintf(buf,"\"type\":\"CSTRING\",\"name\":\"%s\",\"surface\":\"%s\"",n,(char *)_t_surface(t));
 		break;
 	    case CHAR_ID:
-		sprintf(buf,"\"type\":\"CHAR\",\"name\":\"%s\",\"surface\":\"%c\"",n,*(char *)_t_surface(t));
+		cr = *(char *)_t_surface(t);
+		if (cr == '"') {
+		    sprintf(buf,"\"type\":\"CHAR\",\"name\":\"%s\",\"surface\":\"\\\"\"",n);
+		} else {
+		    sprintf(buf,"\"type\":\"CHAR\",\"name\":\"%s\",\"surface\":\"%c\"",n,cr);
+		}
 		break;
 	    case BOOLEAN_ID:
 		sprintf(buf,"\"type\":\"BOOLEAN\",\"name\":\"%s\",\"surface\":%s",n,(*(int *)_t_surface(t)) ? "true" : "false");

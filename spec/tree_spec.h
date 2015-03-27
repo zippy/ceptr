@@ -445,7 +445,7 @@ void testTreeJSON() {
 
 void testProcessHTML() {
     T *t = parseHTML("<html><body><div id=\"314\" class=\"contents\">Hello world<img src=\"test.png\"/></div></body></html>");
-    spec_is_str_equal(_t2s(&test_HTTP_defs,t),"(HTML_HTML (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_BODY (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_DIV (HTML_ATTRIBUTES (HTML_ATTRIBUTE (PARAM_KEY:id) (PARAM_VALUE:\"314\")) (HTML_ATTRIBUTE (PARAM_KEY:class) (PARAM_VALUE:\"contents\"))) (HTML_CONTENT (HTML_TOK_TEXT:Hello world) (HTML_IMG (HTML_ATTRIBUTES (HTML_ATTRIBUTE (PARAM_KEY:src) (PARAM_VALUE:\"test.png\"))) (HTML_CONTENT))))))))");
+    spec_is_str_equal(_t2s(&test_HTTP_defs,t),"(HTML_HTML (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_BODY (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_DIV (HTML_ATTRIBUTES (HTML_ATTRIBUTE (PARAM_KEY:id) (PARAM_VALUE:314)) (HTML_ATTRIBUTE (PARAM_KEY:class) (PARAM_VALUE:contents))) (HTML_CONTENT (HTML_TEXT:Hello world) (HTML_IMG (HTML_ATTRIBUTES (HTML_ATTRIBUTE (PARAM_KEY:src) (PARAM_VALUE:test.png))) (HTML_CONTENT))))))))");
     _t_free(t);
 }
 
