@@ -39,6 +39,7 @@ namespace csharp_ide.Controllers
 		public SymbolOutputController SymbolOutputController { get; set; }
 		public StructureOutputController StructureOutputController { get; set; }
 		public SemtrexUIController SemtrexUIController { get; set; }
+		public VisualTreeController VisualTreeController { get; set; }
 		public GenericController<Schema> schemaController;
 		public string SchemaFilename { get; set; }
 
@@ -299,6 +300,11 @@ namespace csharp_ide.Controllers
 			{
 				NewDocument("SemtrexUI.xml");
 			});
+		}
+
+		protected void ShowVisualTree(object sender, EventArgs args)
+		{
+			VisualTreeController.IfNull(() => NewDocument("VisualTree.xml"));
 		}
 
 		protected void SaveLayout()

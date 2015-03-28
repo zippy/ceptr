@@ -222,6 +222,9 @@ namespace ceptrlib
 		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
 		extern static unsafe TreeNode* _t_embody_from_match(Defs* d, TreeNode* matchResult, TreeNode* semtrex);
 
+		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
+		extern static unsafe void _t2json(Defs* d, TreeNode* tree, int indent, char* buf);
+
 		protected Dictionary<Guid, IntPtr> nodes = new Dictionary<Guid, IntPtr>();
 
 		public SemanticID Structures { get; protected set; }
@@ -345,6 +348,21 @@ namespace ceptrlib
 			TreeNode* resultTree = _t_embody_from_match(&defs, match, semtrex);
 
 			return RegisterNode(resultTree);
+		}
+
+		public unsafe string CreateVisualTree(Guid g_symbols, Guid g_structures, Guid g_tree)
+		{
+			Defs defs = CreateDefs(g_symbols, g_structures);
+			TreeNode* tree = GetNode(g_tree);
+			string ret = String.Empty;
+			
+			fixed (char* buf = new char[10000])
+			{
+				_t2json(&defs, tree, -1, buf);
+				ret = Marshal.PtrToStringAnsi((IntPtr)buf);
+			}
+
+			return ret;
 		}
 
 		// Match a tree against a semtrex and get back match results
