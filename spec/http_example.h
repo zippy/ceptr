@@ -488,9 +488,14 @@ T *parseHTML(char *html) {
 	    delta = makeDelta(TREE_DELTA_REPLACE,path,t,1);
 	    wjson(d,delta,"html",fnc++);
 	    _t_free(delta);
+	    _t_free(results);
+
 	}
 	_t_free(s);
-	return _t_child(tokens,1);
+	results = _t_detach_by_idx(tokens,1);
+	_t_free(tokens);
+	_t_free(h);
+	return results;
     }
     raise_error0("HTML doesn't match");
 }
