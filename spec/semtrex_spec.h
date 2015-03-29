@@ -822,10 +822,13 @@ void testSemtrexParseHHTPReq() {
 
     char *stxs = "/ASCII_CHARS/<HTTP_REQUEST:<HTTP_REQUEST_METHOD:ASCII_CHAR!=' '+>,ASCII_CHAR=' ',<HTTP_REQUEST_PATH:<HTTP_REQUEST_PATH_SEGMENTS:(ASCII_CHAR='/',<HTTP_REQUEST_PATH_SEGMENT:ASCII_CHAR!={'/','?',' '}*>)+>>,(ASCII_CHAR='?',<HTTP_REQUEST_PATH_QUERY:<HTTP_REQUEST_PATH_QUERY_PARAMS:(<HTTP_REQUEST_PATH_QUERY_PARAM:<PARAM_KEY:ASCII_CHAR!={'&',' ','='}+>,ASCII_CHAR='=',<PARAM_VALUE:ASCII_CHAR!={'&',' '}*>>,ASCII_CHAR='&'?)+>+>)?,ASCII_CHAR=' ',ASCII_CHAR='H',ASCII_CHAR='T',ASCII_CHAR='T',ASCII_CHAR='P',ASCII_CHAR='/',<HTTP_REQUEST_VERSION:<VERSION_MAJOR:ASCII_CHAR='0'>,ASCII_CHAR='.',<VERSION_MINOR:ASCII_CHAR='9'>>>";
 
-    char buf[5000];
+    char buf[50000];
     T *stx;
     stx = parseSemtrex(&test_HTTP_defs,stxs);
     //  stx = _makeHTTPRequestSemtrex();
+
+    _t2json(&test_HTTP_defs,stx,0,buf);
+    writeFile("web/httpreqstx.json",buf,strlen(buf));
 
     _dump_semtrex(&test_HTTP_defs,stx,buf);
     spec_is_str_equal(stxs,buf);
