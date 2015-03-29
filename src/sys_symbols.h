@@ -131,6 +131,11 @@ enum SystemSymbolIDs
     PENDING_SIGNALS_ID,                  ///< list of currently active INSTALLED_RECEPTORS
     BINDINGS_ID,                         ///< specifics that match a MANIFEST and allow a receptor to be installed
     BINDING_PAIR_ID,                     ///< a pair that matches a MANIFEST_LABEL with a given binding
+
+    //----- symbols for tree deltas
+    TREE_DELTA_ADD_ID,
+    TREE_DELTA_PATH_ID,
+    TREE_DELTA_VALUE_ID,
 };
 
 
@@ -367,3 +372,9 @@ Symbol STX_VAL_F;
 Symbol STX_SIBS;
 Symbol STX_CHILD;
 Symbol STX_POSTFIX;
+
+Symbol TREE_DELTA_PATH;
+Symbol TREE_DELTA_VALUE;
+Symbol TREE_DELTA_COUNT;
+Symbol TREE_DELTA_ADD;
+Symbol TREE_DELTA_REPLACE;

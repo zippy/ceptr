@@ -331,6 +331,34 @@ T *_makeHTTPRequestSemtrex() {
     return stx;
 }
 
+wjson(Defs *d,T *t,char *n,int i) {
+    char fn[100];
+    char json[100000] = {0};
+    _t2json(d,t,0,json);
+    if (i >= 0)
+	sprintf(fn,"web/%s_%d.json",n,i);
+    else
+	sprintf(fn,"web/%s.json",n);
+    writeFile(fn,json,strlen(json));
+}
+
+T *makeDelta(Symbol sym,int *path,T *t,int count) {
+    T *d = _t_new_root(sym);
+    _t_new(d,TREE_DELTA_PATH,path,sizeof(int)*(_t_path_depth(path)+1));
+    _t_add(_t_newr(d,TREE_DELTA_VALUE),_t_clone(t));
+    if (count)
+	_t_newi(d,TREE_DELTA_COUNT,count);
+    return d;
+}
+
+
+T *makeDeltaAdd(T *src,T *t) {
+    int *path = _t_get_path(src);
+    T *d = makeDelta(TREE_DELTA_ADD,path,t,0);
+    free(path);
+    return d;
+}
+
 Symbol getTag(char *otag,Symbol tag_sym[],char *tag_str[]) {
     Symbol ts = NULL_SYMBOL;
     int i;
@@ -342,6 +370,7 @@ Symbol getTag(char *otag,Symbol tag_sym[],char *tag_str[]) {
 }
 
 T *parseHTML(char *html) {
+
     Symbol G_tag_sym[] = {HTML_HTML,HTML_HEAD,HTML_TITLE,HTML_BODY,HTML_DIV,HTML_P,HTML_UL,HTML_OL,HTML_LI,HTML_SPAN,HTML_H1,HTML_H2,HTML_H3,HTML_H4,HTML_FORM};
     char *G_tag_str[] ={"html","head","title","body","div","p","ul","ol","li","span","h1","h2","h3","h4","form"};
 
@@ -356,11 +385,19 @@ T *parseHTML(char *html) {
     // EXPECTATION
     T *s;
     char *stx = "/ASCII_CHARS/<HTML_TOKENS:(ASCII_CHAR='<',<HTML_TOK_TAG_SELFCLOSE:ASCII_CHAR!={'>',' '}+>,<HTML_ATTRIBUTES:(ASCII_CHAR=' ',<HTML_ATTRIBUTE:<PARAM_KEY:ASCII_CHAR!={'>',' ','='}+>,ASCII_CHAR='=',ASCII_CHAR='\"',<PARAM_VALUE:ASCII_CHAR!='\"'+>,ASCII_CHAR='\"'>)*>,ASCII_CHAR='/',ASCII_CHAR='>'|ASCII_CHAR='<',ASCII_CHAR='/',<HTML_TOK_TAG_CLOSE:ASCII_CHAR!='>'+>,ASCII_CHAR='>'|ASCII_CHAR='<',<HTML_TOK_TAG_OPEN:ASCII_CHAR!={'>',' '}+>,<HTML_ATTRIBUTES:(ASCII_CHAR=' ',<HTML_ATTRIBUTE:<PARAM_KEY:ASCII_CHAR!={'>',' ','='}+>,ASCII_CHAR='=',ASCII_CHAR='\"',<PARAM_VALUE:ASCII_CHAR!='\"'+>,ASCII_CHAR='\"'>)*>,ASCII_CHAR='>'|<HTML_TEXT:ASCII_CHAR!='<'+>)+>";
+
     s = parseSemtrex(d,stx);
+
+    int fnc = 0;
+    wjson(d,s,"htmlparse",-1);
+    wjson(d,h,"htmlascii",-1);
+
     T *results,*tokens;
     if (_t_matchr(s,h,&results)) {
 	tokens = _t_new_root(HTML_TOKENS);
 	int i,m = _t_children(results);
+	wjson(d,tokens,"html",fnc++);
+	T *delta,*src;
 	for(i=4;i<=m;i++) {
 	    T *c = _t_child(results,i);
 	    T *sn = _t_child(c,1);
@@ -377,11 +414,17 @@ T *parseHTML(char *html) {
 		    asciiT_tos(h,m,attr,PARAM_VALUE);
 		}
 		// we can just add the attribute directly to the previous token which will be the open tag tokens
-		_t_add(_t_child(tokens,_t_children(tokens)),a);
+		src = _t_child(tokens,_t_children(tokens));
+		delta = a;
+		_t_add(src,a);
 	    }
 	    else {
-		asciiT_tos(h,c,tokens,ts);
+		src = tokens;
+		delta = asciiT_tos(h,c,tokens,ts);
 	    }
+	    delta = makeDeltaAdd(src,delta);
+	    wjson(d,delta,"html",fnc++);
+	    _t_free(delta);
 	}
 	_t_free(results);
 	_t_free(s);
@@ -422,6 +465,9 @@ T *parseHTML(char *html) {
 	    _t_add(tag,attributes);
 	    _t_add(tag,content);
 	    _t_insert_at(tokens,path,tag);
+	    delta = makeDelta(TREE_DELTA_REPLACE,path,tag,count);
+	    wjson(d,delta,"html",fnc++);
+	    _t_free(delta);
 	    _t_free(results);
 	}
 	_t_free(s);
@@ -429,7 +475,9 @@ T *parseHTML(char *html) {
 	s = _t_new_root(SEMTREX_WALK);
 	g = _t_news(s,SEMTREX_GROUP,HTML_TAG);
 	_sl(g,HTML_TOK_TAG_SELFCLOSE);
+	wjson(d,s,"htmlstx",0);
 	while (_t_matchr(s,tokens,&results)) {
+	    wjson(d,results,"htmlstx",1);
 	    T *m = _t_get_match(results,HTML_TAG);
 	    int *path = _t_surface(_t_child(m,2));
 	    T *t = _t_get(tokens,path);
@@ -437,6 +485,9 @@ T *parseHTML(char *html) {
 	    Symbol ts = getTag(otag,G_stag_sym,G_stag_str);
 	    __t_morph(t,ts,0,0,0);
 	    _t_newr(t,HTML_CONTENT);
+	    delta = makeDelta(TREE_DELTA_REPLACE,path,t,1);
+	    wjson(d,delta,"html",fnc++);
+	    _t_free(delta);
 	}
 	_t_free(s);
 	return _t_child(tokens,1);

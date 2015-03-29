@@ -280,11 +280,40 @@ function cycle(dir) {
     $(".file")[0].innerHTML = parseInt(cur);
 }
 
+function delta() {
+    if (cur == 0) {
+        set_tree(trees[0]);
+    }
+    else {
+        var t = trees[cur];
+        if (t) {
+            var path = t.children[0].surface;
+            var tree = t.children[1].children[0]; // the value is the first child
+            var n = t_get(root,path);
+            if (t.name == "TREE_DELTA_ADD") {
+                t_add(n,tree);
+                update(root);
+            } else if (t.name == "TREE_DELTA_REPLACE") {
+                var p = p2a(path);
+                var count = t.children[2].surface;
+                var op = p.slice(0);
+                var start = p.pop();
+                var np = _t_get(root,p);
+                np.children.splice(start,count-1);
+                np.children[start-1] = tree;
+                update(root);
+            }
+        }
+    }
+    cur += 1;
+}
+
 </script>
 <br />
-<span class="file"></p>
+<span class="file"></span>
 <!-- <input type="file" id="files" name="files[]" multiple /> -->
 <div id="list"></output>
+    <input type="button" onclick="delta()" value="delta">
     <input type="button" onclick="cycle(1)" value="next">
     <input type="button" onclick="cycle(-1)" value="prev">
     <input type="button" onclick="tree_prefix='XXX';set_tree(trees[15]);cur=15;" value="source">

@@ -23,8 +23,19 @@ function p2a(path) {
 // given a string path get the element out of the tree
 function t_get(tree,path) {
     var p = p2a(path);
+    return _t_get(tree,p);
+}
+
+// given a string path get the element out of the tree
+function _t_get(tree,p) {
     while(p.length > 0) {tree = tree.children[p[0]-1];p.shift();}
     return tree;
+}
+
+// add a tree as the last child of the given tree
+function t_add(t,n) {
+    if (!t.children) t.children = [];
+    t.children[t.children.length] = n;
 }
 
 // applies a function to a tree node and all it's children recursively

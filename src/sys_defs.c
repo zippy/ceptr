@@ -68,7 +68,6 @@ void def_sys() {
     G_sys_defs.structures = _t_newr(G_sys_root,STRUCTURES);
     G_sys_defs.processes = _t_newr(G_sys_root,PROCESSES);
 
-
     sT(BOOLEAN,1,NULL_SYMBOL);
     sT(INTEGER,1,NULL_SYMBOL);
     sT(FLOAT,1,NULL_SYMBOL);
@@ -179,6 +178,8 @@ void def_sys() {
     sY(BINDINGS,TREE);
     sY(BINDING_PAIR,LIST);
 
+    sY(TREE_DELTA_ADD,TREE_DELTA);
+
     sP(IF,"if",0,0);
     sP(ADD_INT,"addition",0,0);
     sP(SUB_INT,"subtract",0,0);
@@ -232,6 +233,13 @@ void def_sys() {
     sY(STX_SIBS,LIST);
     sY(STX_CHILD,TREE);
     sY(STX_POSTFIX,TREE);
+
+    sY(TREE_DELTA_PATH,TREE_PATH);
+    sY(TREE_DELTA_VALUE,TREE);
+    sY(TREE_DELTA_COUNT,INTEGER);
+    sT(TREE_DELTA,3,TREE_DELTA_PATH,TREE_DELTA_VALUE,TREE_DELTA_COUNT);
+    sY(TREE_DELTA_ADD,TREE_DELTA);
+    sY(TREE_DELTA_REPLACE,TREE_DELTA);
 
 }
 void sys_free() {
