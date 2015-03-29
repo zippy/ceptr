@@ -22,6 +22,8 @@
 #include "scape_spec.h"
 #include "vmhost_spec.h"
 
+#include "profile_example.h"
+
 #include <setjmp.h>
 
 jmp_buf G_err;
@@ -45,6 +47,9 @@ int main(int argc, const char **argv) {
 	testProcess();
 	testScape();
 	testVMHost();
+
+	//***** examples
+	testProfileExample();
 
 	sys_free();
 	report_tests();
