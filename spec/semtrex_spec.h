@@ -827,7 +827,7 @@ void testSemtrexParseHHTPReq() {
     stx = parseSemtrex(&test_HTTP_defs,stxs);
     //  stx = _makeHTTPRequestSemtrex();
 
-    _t2json(&test_HTTP_defs,stx,0,buf);
+    _t2json(&test_HTTP_defs,stx,INDENT,buf);
     writeFile("web/httpreqstx.json",buf,strlen(buf));
 
     _dump_semtrex(&test_HTTP_defs,stx,buf);

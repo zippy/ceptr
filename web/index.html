@@ -105,39 +105,40 @@ function set_root(t) {
     root.y0 = 0;
 };
 
-var trees = [];
-function load_trees(file_name,next,completedFN) {
-    trees = [];
-    _load_trees(file_name,next,completedFN);
-}
-function _load_trees(file_name,next,completedFN) {
-    var fn = file_name;
+var trees;
+function load_trees(file_name,count,completedFN) {
+    var _trees = new Array();
 
-    $.get(file_name, {},function(data,status) {
-        console.log("loaded:"+fn);
-        trees.push(data);
-        if (next && next.length > 0) {
-            _load_trees("html_"+next.shift()+".json",next,completedFN);
-        }
-        else {
-            if (completedFN) {completedFN()};
-        }
-    }).fail(function(x) {
-        console.log("failed to load:"+fn);
-        console.log(JSON.stringify(x));
-    });
+    function _load_trees(file_name,count,completedFN) {
+        var fn = (count == undefined) ? file_name+".json" : file_name+"_"+parseInt(count)+".json";
+        $.get(fn, {},function(data,status) {
+            console.log("loading:"+fn);
+            _trees[count==undefined?0:count] = data;
+            if (count != undefined && count > 0) {
+                _load_trees(file_name,count-1,completedFN);
+            }
+            else {
+                if (completedFN) {completedFN(_trees)};
+            }
+        }).fail(function(x) {
+            console.log("failed to load:"+file_name);
+            console.log(JSON.stringify(x));
+        });
+    }
+    _load_trees(file_name,count,completedFN);
+    return _trees;
 }
 
 function load_tree(fn){
-    load_trees(fn,undefined,function(){
-        if (trees.length>0) {
-            set_tree(trees[0]);
+    load_trees(fn,undefined,function(_trees){
+        if (_trees.length>0) {
+            set_tree(_trees[0]);
         }
     });
 }
 
 function load_all() {
-   load_trees("html_a.json","bcdefghijklmnopqrstu".split(""));
+   trees = load_trees("html",16);
 }
 
 var tree_prefix = "HTTP_REQUEST";
@@ -147,11 +148,8 @@ function set_tree(t) {
    update(root);
 }
 
-
-load_tree("test.json");
-set_root();
-
-update(root);
+var htmlstx = load_trees("htmlstx",1);
+load_tree("test");
 
 d3.select(self.frameElement).style("height", "500px");
 
@@ -279,18 +277,20 @@ function cycle(dir) {
     if (cur == trees.length) {cur = 0};
     if (cur < 0) {cur = trees.length-1};
     set_tree(trees[cur]);
+    $(".file")[0].innerHTML = parseInt(cur);
 }
 
 </script>
 <br />
+<span class="file"></p>
 <!-- <input type="file" id="files" name="files[]" multiple /> -->
 <div id="list"></output>
     <input type="button" onclick="cycle(1)" value="next">
     <input type="button" onclick="cycle(-1)" value="prev">
-    <input type="button" onclick="tree_prefix='XXX';set_tree(trees[18]);cur=18;" value="source">
-    <input type="button" onclick="tree_prefix='';set_tree(trees[19]);cur=19;" value="semtrex">
-    <input type="button" onclick="tree_prefix='SEMTREX_MATCH';set_tree(trees[20]);cur=20;" value="semtrex match">
-    <input type="button" onclick="t_stx_hilight(trees[18],trees[20],'red'),set_tree(trees[18]);" value="semtrex hilight">
+    <input type="button" onclick="tree_prefix='XXX';set_tree(trees[15]);cur=15;" value="source">
+    <input type="button" onclick="tree_prefix='';set_tree(htmlstx[0]);" value="semtrex">
+    <input type="button" onclick="tree_prefix='SEMTREX_MATCH';set_tree(htmlstx[1]);" value="semtrex match">
+    <input type="button" onclick="t_stx_hilight(trees[15],htmlstx[1],'red'),set_tree(trees[15]);" value="semtrex hilight">
 
 <script>
   var TF;
