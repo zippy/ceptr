@@ -356,7 +356,7 @@ namespace ceptrlib
 			TreeNode* tree = GetNode(g_tree);
 			string ret = String.Empty;
 			
-			fixed (char* buf = new char[10000])
+			fixed (char* buf = new char[50000])
 			{
 				_t2json(&defs, tree, -1, buf);
 				ret = Marshal.PtrToStringAnsi((IntPtr)buf);

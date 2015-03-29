@@ -160,6 +160,9 @@ namespace csharp_ide.Controllers
 				ApplicationController.CeptrInterface.RootStructuresNode,
 				id);
 
+			json = json.Replace("SEMTREX_", "");
+			json = json.Replace("HTTP_REQUEST_", "");
+
 			View.tbSemtrexTree.Text = ApplicationController.FormatDump(dump);
 
 			if (ApplicationController.VisualTreeController != null)
