@@ -153,14 +153,15 @@ load_tree("test");
 
 d3.select(self.frameElement).style("height", "500px");
 
-function nodeText(n) {
+function nodeSemType(n) {
    var t = n.name;
    var a = t.split(tree_prefix);
    if (a.length == 2 && a[1] != "") {t = a[1];}
-   if (n.surface) {
-      t +=":"+n.surface;
-   }
    return t;
+}
+
+function nodeSurface(n) {
+    return n.surface ? n.surface : "";
 }
 
 function update(source) {
@@ -187,10 +188,23 @@ function update(source) {
 	  .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
 
   nodeEnter.append("text")
-	  .attr("x", function(d) { return d.children || d._children ? -13 : 13; })
-	  .attr("dy", ".35em")
-	  .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
-	  .text(nodeText)
+          .attr("class","sem-type")
+//	  .attr("x", function(d) { return d.children || d._children ? -13 : 13; })
+//  	  .attr("dy",  function(d) { return d.children || d._children ? "-1em" : ".35em"; })
+//	  .attr("text-anchor", function(d) { return d.children || d._children ? "middle" : "start"; })
+        .attr("dy", "-1.2em")
+        .attr("text-anchor", "middle")
+	  .text(nodeSemType)
+	  .style("fill-opacity", 1e-6)
+          .style("fill",function(d) { return d.color ? d.color : "steelblue"})
+;
+  nodeEnter.append("text")
+          .attr("class","surface")
+//	  .attr("x", function(d) { return d.children || d._children ? -13 : 13; })
+        .attr("text-anchor", "middle")
+	  .attr("dy", "2em")
+//	  .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
+	  .text(nodeSurface)
 	  .style("fill-opacity", 1e-6)
           .style("fill",function(d) { return d.color ? d.color : "black"})
 ;
@@ -204,9 +218,13 @@ function update(source) {
 	  .attr("r", 10)
 	  .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
 
-  nodeUpdate.select("text")
-	  .text(nodeText)
-	  .style("fill-opacity", 1);
+    nodeUpdate.select(".sem-type")
+	.text(nodeSemType)
+	.style("fill-opacity", 1);
+
+    nodeUpdate.select(".surface")
+	.text(nodeSurface)
+	.style("fill-opacity", 1);
 
   // Transition exiting nodes to the parent's new position.
   var nodeExit = node.exit().transition()
@@ -217,7 +235,7 @@ function update(source) {
   nodeExit.select("circle")
 	  .attr("r", 1e-6);
 
-  nodeExit.select("text")
+  nodeExit.selectAll("text")
 	  .style("fill-opacity", 1e-6);
 
   // Update the links
