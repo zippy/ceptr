@@ -7,6 +7,12 @@
 
     <style>
 
+
+    .overlay {
+        fill: none;
+        pointer-events: all;
+    }
+
 	.node {
 		cursor: pointer;
 	}
@@ -93,8 +99,19 @@ var diagonal = d3.svg.diagonal()
 var svg = d3.select("body").append("svg")
 	.attr("width", width + margin.right + margin.left)
 	.attr("height", height + margin.top + margin.bottom)
-  .append("g")
+    .append("g")
+    .call(d3.behavior.zoom().scaleExtent([-8, 8]).on("zoom", zoom))
+    .append("g")
 	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+svg.append("rect")
+    .attr("class", "overlay")
+    .attr("width", width)
+    .attr("height", height);
+
+function zoom() {
+    svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+}
 
 function set_root(t) {
     if (t) {
