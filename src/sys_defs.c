@@ -59,6 +59,7 @@ Process LT_INT = {SYS_CONTEXT,SEM_TYPE_PROCESS,LT_INT_ID};
 Process GT_INT = {SYS_CONTEXT,SEM_TYPE_PROCESS,GT_INT_ID};
 Process LTE_INT = {SYS_CONTEXT,SEM_TYPE_PROCESS,LTE_INT_ID};
 Process GTE_INT = {SYS_CONTEXT,SEM_TYPE_PROCESS,GTE_INT_ID};
+Process CONCAT_STR = {SYS_CONTEXT,SEM_TYPE_PROCESS,CONCAT_STR_ID};
 Process RESPOND = {SYS_CONTEXT,SEM_TYPE_PROCESS,RESPOND_ID};
 Process INTERPOLATE_FROM_MATCH = {SYS_CONTEXT,SEM_TYPE_PROCESS,INTERPOLATE_FROM_MATCH_ID};
 
@@ -153,6 +154,8 @@ void def_sys() {
     sY(RUN_TREE,TREE);
     sY(PARAM_REF,TREE_PATH);
     sY(PARAMS,LIST);
+    sY(RESULT_SYMBOL,SYMBOL);
+
     sY(PROTOCOLS,LIST);
     sY(PROTOCOL,TREE);
     sY(ROLES,LIST);
@@ -178,8 +181,6 @@ void def_sys() {
     sY(BINDINGS,TREE);
     sY(BINDING_PAIR,LIST);
 
-    sY(TREE_DELTA_ADD,TREE_DELTA);
-
     sP(IF,"if",0,0);
     sP(ADD_INT,"addition",0,0);
     sP(SUB_INT,"subtract",0,0);
@@ -191,6 +192,7 @@ void def_sys() {
     sP(GT_INT,"test greater than",0,0);
     sP(LTE_INT,"test less than or equal",0,0);
     sP(GTE_INT,"test greater than or equal",0,0);
+    sP(CONCAT_STR,"concatinate strings",0,0);
     sP(RESPOND,"respond to signal",0,0);
     sP(INTERPOLATE_FROM_MATCH,"interploate match result in place",0,0);
 
@@ -200,8 +202,7 @@ void def_sys() {
     sYt(TEST_STR_SYMBOL,CSTRING);
     sYt(TEST_TREE_SYMBOL,TREE);
     sYt(TEST_TREE_SYMBOL2,TREE);
-    sYt(TEST_NAME_SYMBOL,TREE);
-    sYt(TEST_FIRST_NAME_SYMBOL,CSTRING);
+    sYt(TEST_NAME_SYMBOL,CSTRING);
     sYt(TEST_RECEPTOR_SYMBOL,RECEPTOR);
     sYt(TEST_ALPHABETIZE_SCAPE_SYMBOL,SCAPE);
 

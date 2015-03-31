@@ -35,6 +35,7 @@ T *_t_new(T *t,Symbol symbol, void *surface, size_t size);
 T *_t_newi(T *parent,Symbol symbol,int surface);
 T *_t_news(T *parent,Symbol symbol,SemanticID surface);
 T *_t_newt(T *parent,Symbol symbol,T *t);
+T *_t_new_str(T *parent,Symbol symbol,char *str);
 T *_t_new_root(Symbol symbol);
 T *_t_newr(T *parent,Symbol symbol);
 T *_t_new_receptor(T *parent,Symbol symbol,Receptor *r);

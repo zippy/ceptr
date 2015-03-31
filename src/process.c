@@ -50,6 +50,8 @@ void _p_interpolate_from_match(T *t,T *match_results,T *match_tree) {
  * @param[in] params list of parameters
  *
  * @returns Error code
+ *
+ * @todo add SIGNATURE_SYMBOL for setting up process signatures by Symbol not just Structure
   */
 Error __p_check_signature(Defs defs,Process p,T *params) {
     T *def = _d_get_process_code(defs.processes,p);
@@ -88,7 +90,7 @@ Error __p_check_signature(Defs defs,Process p,T *params) {
 Error __p_reduce(Defs defs,T *run_tree, T *code) {
     Process s = _t_symbol(code);
 
-    T *param,*match_results,*match_tree,*t,*x;
+    T *param,*match_results,*match_tree,*t,*x,*y;
 
     T *parent = _t_parent(code);
     int idx = _t_node_index(code);
@@ -124,6 +126,8 @@ Error __p_reduce(Defs defs,T *run_tree, T *code) {
     }
     else {
 	int b,c;
+	char *str;
+	Symbol sy;
 	switch(s.id) {
 	case IF_ID:
 	    t = _t_child(code,1);
@@ -146,6 +150,7 @@ Error __p_reduce(Defs defs,T *run_tree, T *code) {
 	    *((int *)&x->contents.surface) = *((int *)&x->contents.surface)*c;
 	    break;
 	case DIV_INT_ID:
+	    //@todo handle divide by zero errors.
 	    x = _t_detach_by_idx(code,1);
 	    c = *(int *)_t_surface(_t_child(code,1));
 	    *((int *)&x->contents.surface) = *((int *)&x->contents.surface)/c;
@@ -184,6 +189,42 @@ Error __p_reduce(Defs defs,T *run_tree, T *code) {
 	    c = *(int *)_t_surface(_t_child(code,1));
 	    *((int *)&x->contents.surface) = *((int *)&x->contents.surface)>=c;
 	    x->contents.symbol = TRUE_FALSE;
+	    break;
+	case CONCAT_STR_ID:
+
+	    // first parameter should give us the new symbol type for the resulting
+	    // concatination.
+	    x = _t_detach_by_idx(code,1);
+	    sy = _t_symbol(x);
+	    if (!semeq(RESULT_SYMBOL,sy)) return badParamReductionErr;
+	    sy = *(Symbol *)_t_surface(x);
+	    _t_free(x);
+
+	    x = _t_detach_by_idx(code,1);
+	    //@todo, add a bunch of sanity checking here to make sure the
+	    // parameters are of the right type and structure
+	    c = _t_children(code);
+	    // make sure the surface was allocated and if not, converted to an alloced surface
+	    if (c > 0) {
+		if (!(x->context.flags & TFLAG_ALLOCATED)) {
+		    int v = *((int *)&x->contents.surface); // copy the string as an integer
+		    str = (char *)&v; // calculate the length
+		    int size = strlen(str)+1;
+		    x->contents.surface = malloc(size);
+		    memcpy(x->contents.surface,str,size);
+		    t->context.flags = TFLAG_ALLOCATED;
+		}
+	    }
+	    // @todo this is probably faster with just one total realloc for all children
+	    for(b=1;b<=c;b++) {
+		str = (char *)_t_surface(_t_child(code,b));
+		int size = strlen(str);
+		x->contents.surface = realloc(x->contents.surface,x->contents.size+size);
+		memcpy(x->contents.surface+x->contents.size-1,str,size);
+		x->contents.size+=size;
+		*( (char *)x->contents.surface + x->contents.size -1) = 0;
+	    }
+	    x->contents.symbol = sy;
 	    break;
 	case RESPOND_ID:
 	    // for now we just remove the RESPOND instruction and replace it with it's own child

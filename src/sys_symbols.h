@@ -25,7 +25,6 @@ Symbol TEST_FLOAT_SYMBOL;
 Symbol TEST_TREE_SYMBOL;
 Symbol TEST_TREE_SYMBOL2;
 Symbol TEST_NAME_SYMBOL;
-Symbol TEST_FIRST_NAME_SYMBOL;
 Symbol TEST_RECEPTOR_SYMBOL;
 Symbol TEST_ALPHABETIZE_SCAPE_SYMBOL;
 
@@ -105,6 +104,8 @@ enum SystemSymbolIDs
     RUN_TREE_ID,                         ///< think about this as a stack frame and its code
     PARAM_REF_ID,                        ///< used in a code tree as a reference to a parameter
     PARAMS_ID,
+    RESULT_SYMBOL_ID,
+
     PROTOCOLS_ID,
     PROTOCOL_ID,
     ROLES_ID,
@@ -200,6 +201,7 @@ static Structure G_sys_symbol_structures[] = {
     TREE,                //RUN_TREE
     TREE_PATH,           //PARAM_REF
     LIST,                //PARAMS
+    SYMBOL,              //RESULT_SYMBOL
     LIST,//PROTOCOLS,
     TREE,//PROTOCOL,
     LIST,//ROLES,
@@ -319,6 +321,7 @@ Symbol OUTPUT_SIGNATURE;
 Symbol RUN_TREE;
 Symbol PARAM_REF;
 Symbol PARAMS;
+Symbol RESULT_SYMBOL;
 Symbol PROTOCOLS;
 Symbol PROTOCOL;
 Symbol ROLES;

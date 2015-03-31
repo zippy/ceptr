@@ -321,11 +321,31 @@ void testProcessIntMath() {
     _t_free(t);
 }
 
+void testProcessString() {
+    Defs defs;
+
+    T *t = _t_new_root(RUN_TREE);
+
+    // test string concatenation
+    T *n = _t_newr(t,CONCAT_STR);
+    _t_news(n,RESULT_SYMBOL,TEST_NAME_SYMBOL);
+    _t_new_str(n,TEST_STR_SYMBOL,"Fred");
+    _t_new_str(n,TEST_STR_SYMBOL," ");
+    _t_new_str(n,TEST_STR_SYMBOL,"Smith");
+
+    __p_reduce(defs,t,n);
+
+    spec_is_str_equal(t2s(_t_child(t,1)),"(TEST_NAME_SYMBOL:Fred Smith)");
+
+    _t_free(t);
+}
+
 void testProcess() {
     testRunTree();
     testProcessReduceDefinedProcess();
-     testProcessSignatureMatching();
+    testProcessSignatureMatching();
     testProcessInterpolateMatch();
     testProcessIf();
     testProcessIntMath();
+    testProcessString();
 }

@@ -108,6 +108,19 @@ T * _t_newt(T *parent,Symbol symbol,T *surface) {
 }
 
 /**
+ * Create a new tree node with a cstring surface
+ *
+ * @param[in] parent parent node for the node to be created.  Can be 0 if this is a root node
+ * @param[in] symbol semantic symbol for the node to be create
+ * @param[in] surface string value to store in the surface
+ * @returns pointer to node allocated on the heap
+ */
+T * _t_new_str(T *parent,Symbol symbol,char *surface) {
+    return _t_new(parent,symbol,surface,strlen(surface)+1);
+}
+T *_t_new_str(T *parent,Symbol symbol,char *str);
+
+/**
  * Create a new tree root node (with null surface and no parent)
  *
  * @param[in] symbol semantic symbol for the node to be create
