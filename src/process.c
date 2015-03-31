@@ -13,6 +13,8 @@
 #include "semtrex.h"
 #include <stdarg.h>
 
+#include "../spec/spec_utils.h"
+
 /**
  * implements the INTERPOLATE_FROM_MATCH process
  *
@@ -73,6 +75,9 @@ Error __p_check_signature(Defs defs,Process p,T *params) {
     }
     return 0;
 }
+
+char *G_reduce_fn = 0;
+int G_reduce_count = 0;
 
 /**
  * reduce a run tree by executing the instructions in it and replacing the tree values in place
@@ -191,18 +196,16 @@ Error __p_reduce(Defs defs,T *run_tree, T *code) {
 	    x->contents.symbol = TRUE_FALSE;
 	    break;
 	case CONCAT_STR_ID:
-
-	    // first parameter should give us the new symbol type for the resulting
-	    // concatination.
+	    // if the first parameter is a RESULT SYMBOL then we use that as the symbol type for the result tree.
 	    x = _t_detach_by_idx(code,1);
 	    sy = _t_symbol(x);
-	    if (!semeq(RESULT_SYMBOL,sy)) return badParamReductionErr;
-	    sy = *(Symbol *)_t_surface(x);
-	    _t_free(x);
-
-	    x = _t_detach_by_idx(code,1);
+	    if (semeq(RESULT_SYMBOL,sy)) {
+		sy = *(Symbol *)_t_surface(x);
+		_t_free(x);
+		x = _t_detach_by_idx(code,1);
+	    }
 	    //@todo, add a bunch of sanity checking here to make sure the
-	    // parameters are of the right type and structure
+	    // parameters are all CSTRINGS
 	    c = _t_children(code);
 	    // make sure the surface was allocated and if not, converted to an alloced surface
 	    if (c > 0) {
@@ -215,7 +218,7 @@ Error __p_reduce(Defs defs,T *run_tree, T *code) {
 		    t->context.flags = TFLAG_ALLOCATED;
 		}
 	    }
-	    // @todo this is probably faster with just one total realloc for all children
+	    // @todo this would probably be faster with just one total realloc for all children
 	    for(b=1;b<=c;b++) {
 		str = (char *)_t_surface(_t_child(code,b));
 		int size = strlen(str);
@@ -240,7 +243,16 @@ Error __p_reduce(Defs defs,T *run_tree, T *code) {
 	    raise_error("unimplemented instruction: %s",_d_get_process_name(defs.processes,s));
 	}
     }
+
     _t_replace(parent,idx,x);
+    if (G_reduce_count) {
+	int *path = _t_get_path(x);
+
+	T *delta = makeDelta(TREE_DELTA_REPLACE,path,x,1);
+	wjson(&defs,delta,G_reduce_fn,G_reduce_count++);
+	free(path);
+	_t_free(delta);
+    }
     return noReductionErr;
 }
 

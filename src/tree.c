@@ -869,7 +869,7 @@ char * _t2json(Defs *defs,T *t,int level,char *buf) {
     buf = _indent_line(level,buf);
 
     if (is_process(s)) {
-	sprintf(buf,"{ \"type\":\"process\",{\"name\" :\"%s\"}",_d_get_process_name(processes,s));
+	sprintf(buf,"{ \"type\":\"process\",\"name\" :\"%s\"",_d_get_process_name(processes,s));
     }
     else {
 	char *n = _d_get_symbol_name(symbols,s);
@@ -886,7 +886,8 @@ char * _t2json(Defs *defs,T *t,int level,char *buf) {
 
 	    switch(st.id) {
 	    case CSTRING_ID:
-		sprintf(buf,"\"type\":\"CSTRING\",\"name\":\"%s\",\"surface\":\"%s\"",n,(char *)_t_surface(t));
+		//@todo add escaping of quotes, carriage returns, etc...
+		sprintf(buf,"\"type\":\"CSTRING\",\"name\":\"%s\",\"surface\":\"\\\"%s\\\"\"",n,(char *)_t_surface(t));
 		break;
 	    case CHAR_ID:
 		cr = *(char *)_t_surface(t);

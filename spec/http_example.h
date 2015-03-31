@@ -11,6 +11,7 @@
 #include "../src/receptor.h"
 #include "../src/def.h"
 #include "../src/semtrex.h"
+#include "spec_utils.h"
 
 Symbol OCTET_STREAM;
 
@@ -330,27 +331,6 @@ T *_makeHTTPRequestSemtrex() {
     __stxcv(f,'9');
     return stx;
 }
-
-wjson(Defs *d,T *t,char *n,int i) {
-    char fn[100];
-    char json[100000] = {0};
-    _t2json(d,t,0,json);
-    if (i >= 0)
-	sprintf(fn,"web/%s_%d.json",n,i);
-    else
-	sprintf(fn,"web/%s.json",n);
-    writeFile(fn,json,strlen(json));
-}
-
-T *makeDelta(Symbol sym,int *path,T *t,int count) {
-    T *d = _t_new_root(sym);
-    _t_new(d,TREE_DELTA_PATH,path,sizeof(int)*(_t_path_depth(path)+1));
-    _t_add(_t_newr(d,TREE_DELTA_VALUE),_t_clone(t));
-    if (count)
-	_t_newi(d,TREE_DELTA_COUNT,count);
-    return d;
-}
-
 
 T *makeDeltaAdd(T *src,T *t) {
     int *path = _t_get_path(src);

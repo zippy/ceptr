@@ -138,7 +138,7 @@ function load_trees(file_name,count,completedFN) {
                 if (completedFN) {completedFN(_trees)};
             }
         }).fail(function(x) {
-            console.log("failed to load:"+file_name);
+            console.log("failed to load:"+fn);
             console.log(JSON.stringify(x));
         });
     }
@@ -188,7 +188,7 @@ function update(source) {
 	  links = tree.links(nodes);
 
   // Normalize for fixed-depth.
-  nodes.forEach(function(d) { d.y = d.depth * 100; });
+  nodes.forEach(function(d) { d.y = d.depth * 150; });
 
   // Update the nodes
   var node = svg.selectAll("g.node")

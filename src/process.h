@@ -22,5 +22,8 @@ Error _p_reduce(Defs defs,T *run_tree);
 T *__p_make_run_tree(T *processes,Process p,T *params);
 T *_p_make_run_tree(T *processes,T *p,int num_params,...);
 
+char *G_reduce_fn;
+int G_reduce_count;
+
 #endif
 /** @}*/
