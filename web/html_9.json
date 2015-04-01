@@ -2,6 +2,6 @@
    { "symbol":{ "context":0,"id":127 },"type":"TREE_PATH","name":"TREE_DELTA_PATH","surface":"/5"},
    { "symbol":{ "context":0,"id":128 },"type":"LIST","name":"TREE_DELTA_VALUE","children":[
       { "symbol":{ "context":1,"id":27 },"type":"LIST","name":"HTML_ATTRIBUTES","children":[
-         { "symbol":{ "context":1,"id":28 },"type":"composed","name":"HTML_ATTRIBUTE","children":[
-            { "symbol":{ "context":1,"id":10 },"type":"CSTRING","name":"PARAM_KEY","surface":"\"src\""},
-            { "symbol":{ "context":1,"id":11 },"type":"CSTRING","name":"PARAM_VALUE","surface":"\"test.png\""}]}]}]}]}
+         { "symbol":{ "context":1,"id":28 },"type":"HTML_ATTRIBUTE","name":"KEY_VALUE_PARAM","children":[
+            { "symbol":{ "context":1,"id":10 },"type":"CSTRING","name":"PARAM_KEY","surface":"src"},
+            { "symbol":{ "context":1,"id":11 },"type":"CSTRING","name":"PARAM_VALUE","surface":"test.png"}]}]}]}]}

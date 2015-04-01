@@ -27,3 +27,20 @@ T *makeDelta(Symbol sym,int *path,T *t,int count) {
 	_t_newi(d,TREE_DELTA_COUNT,count);
     return d;
 }
+
+char *G_visdump_fn = 0;
+int G_visdump_count = 0;
+
+void _visdump(Defs *defs,T *x,int *path) {
+    T *delta = makeDelta(TREE_DELTA_REPLACE,path,x,1);
+    wjson(defs,delta,G_visdump_fn,G_visdump_count++);
+    _t_free(delta);
+}
+
+void visdump(Defs *defs,T *x) {
+    if (G_visdump_count) {
+	int *path = _t_get_path(x);
+	_visdump(defs,x,path);
+	free(path);
+    }
+}

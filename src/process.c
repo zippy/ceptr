@@ -76,9 +76,6 @@ Error __p_check_signature(Defs defs,Process p,T *params) {
     return 0;
 }
 
-char *G_reduce_fn = 0;
-int G_reduce_count = 0;
-
 /**
  * reduce a run tree by executing the instructions in it and replacing the tree values in place
  *
@@ -107,6 +104,7 @@ Error __p_reduce(Defs defs,T *run_tree, T *code) {
 	}
 	x = _t_clone(param);
 	_t_replace(parent,idx,x);
+	visdump(&defs,x);
 	code = x;
 	s = _t_symbol(code);
     }
@@ -245,14 +243,7 @@ Error __p_reduce(Defs defs,T *run_tree, T *code) {
     }
 
     _t_replace(parent,idx,x);
-    if (G_reduce_count) {
-	int *path = _t_get_path(x);
-
-	T *delta = makeDelta(TREE_DELTA_REPLACE,path,x,1);
-	wjson(&defs,delta,G_reduce_fn,G_reduce_count++);
-	free(path);
-	_t_free(delta);
-    }
+    visdump(&defs,x);
     return noReductionErr;
 }
 

@@ -880,14 +880,14 @@ char * _t2json(Defs *defs,T *t,int level,char *buf) {
 	if (!is_sys_structure(st)) {
 	    // if it's not a system structure, it's composed, so all we need to do is
 	    // print out the symbol name, and the reset will take care of itself
-	    sprintf(buf,"\"type\":\"composed\",\"name\":\"%s\"",n);
+	    sprintf(buf,"\"type\":\"%s\",\"name\":\"%s\"",n,_d_get_structure_name(structures,st));
     	}
 	else {
 
 	    switch(st.id) {
 	    case CSTRING_ID:
 		//@todo add escaping of quotes, carriage returns, etc...
-		sprintf(buf,"\"type\":\"CSTRING\",\"name\":\"%s\",\"surface\":\"\\\"%s\\\"\"",n,(char *)_t_surface(t));
+		sprintf(buf,"\"type\":\"CSTRING\",\"name\":\"%s\",\"surface\":\"\%s\"",n,(char *)_t_surface(t));
 		break;
 	    case CHAR_ID:
 		cr = *(char *)_t_surface(t);

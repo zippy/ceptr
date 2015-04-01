@@ -49,8 +49,17 @@ function t_apply(tree,f) {
 
 // give a semtrex results tree and the source tree, hilight the matched portion
 function t_stx_hilight(tree,stxresults,color) {
-    var path = stxresults.children[1].surface;
-    t_apply(t_get(tree,path),function(t){t.color = color});
+    var path = p2a(stxresults.children[1].surface);
+    var count = stxresults.children[2].surface;
+    while(count>0) {
+        var pp = path.slice(0);
+        t_apply(_t_get(tree,path),function(t){t.color = color});
+        var p = pp.pop();
+        p+=1;
+        pp.push(p);
+        path = pp;
+        count-=1;
+    }
     svg.selectAll("g.node text").style("fill",function(d){return d.color})
 }
 

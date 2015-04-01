@@ -11,5 +11,12 @@
 
 void wjson(Defs *d,T *t,char *n,int i);
 T *makeDelta(Symbol sym,int *path,T *t,int count);
+void visdump(Defs *defs,T *x);
+
+#define startVisdump(n) G_visdump_fn = n;G_visdump_count = 1;
+#define endVisdump() G_visdump_count = 0;
+
+char *G_visdump_fn;
+int G_visdump_count;
 
 #endif

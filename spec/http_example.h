@@ -455,9 +455,7 @@ T *parseHTML(char *html) {
 	s = _t_new_root(SEMTREX_WALK);
 	g = _t_news(s,SEMTREX_GROUP,HTML_TAG);
 	_sl(g,HTML_TOK_TAG_SELFCLOSE);
-	wjson(d,s,"htmlstx",0);
 	while (_t_matchr(s,tokens,&results)) {
-	    wjson(d,results,"htmlstx",1);
 	    T *m = _t_get_match(results,HTML_TAG);
 	    int *path = _t_surface(_t_child(m,2));
 	    T *t = _t_get(tokens,path);

@@ -92,6 +92,8 @@ void testProfileExample() {
     _t_new_str(a,ZIP,"12345");
     _t_new_str(a,COUNTRY,"USA");
 
+    wjson(&test_profile_defs,t,"user_profile",-1);
+
     spec_is_str_equal(_t2s(&test_profile_defs,t),"(USER_PROFILE (PROFILE_NAME (FIRST_NAME:Jane) (LAST_NAME:Smith)) (PROFILE_ADDRESS (STREET_ADDRESS:126 Main Street) (CITY:Smallville) (STATE:CA) (ZIP:12345) (COUNTRY:USA)) (PROFILE_EMAIL:test@example.com))");
 
     T *input = _t_new_root(INPUT);
@@ -144,10 +146,12 @@ void testProfileExample() {
 
     //    spec_is_str_equal(_t2s(&test_profile_defs,r),"");
 
-    G_reduce_fn = "profile";
-    G_reduce_count = 1;
+    startVisdump("profile");
     spec_is_equal(_p_reduce(test_profile_defs,r),noReductionErr);
-    G_reduce_count = 0;
+    int pt[] = {TREE_PATH_TERMINATOR};
+
+    _visdump(&test_profile_defs,_t_child(r,1),pt);
+    endVisdump();
 
     spec_is_str_equal(_t2s(&test_profile_defs,_t_child(r,1)),"(MAILING_LABEL:Jane Smith\\n126 Main Street\\nSmallville, CA 12345)");
 

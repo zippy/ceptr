@@ -7,7 +7,9 @@
 
     <style>
 
-
+    body {
+        font: 14px sans-serif;
+    }
     .overlay {
         fill: none;
         pointer-events: all;
@@ -38,7 +40,7 @@
   </head>
 
   <body>
-
+    <div id="stx" style="display:none">/%&lt;HTTP_REQUEST_PATH_SEGMENTS:HTTP_REQUEST_PATH_SEGMENTS,HTTP_REQUEST_PATH_FILE&gt;</div>
 <!-- load the d3.js library -->
 <script src="/js/d3.v3.min.js"></script>
 <script type="text/javascript" src="/js/jquery.min.js"></script>
@@ -87,8 +89,9 @@ var margin = {top: 20, right: 120, bottom: 20, left: 120},
 	height = 900 - margin.top - margin.bottom;
 
 var i = 0,
-	duration = 750,
-	root;
+  duration = 750,
+  depth_space = 200,
+  root;
 
 var tree = d3.layout.tree()
 	.size([height, width]);
@@ -146,10 +149,12 @@ function load_trees(file_name,count,completedFN) {
     return _trees;
 }
 
-function load_tree(fn){
-    load_trees(fn,undefined,function(_trees){
+function load_tree(fn,count){
+    cur = 0;
+    load_trees(fn,count,function(_trees){
         if (_trees.length>0) {
             set_tree(_trees[0]);
+            trees = _trees;
         }
     });
 }
@@ -158,6 +163,8 @@ function load_all() {
    trees = load_trees("html",16);
 }
 
+var httpreq = load_trees("httpreq",2);
+
 var tree_prefix = "HTTP_REQUEST";
 
 function set_tree(t) {
@@ -165,30 +172,41 @@ function set_tree(t) {
    update(root);
 }
 
-var htmlstx = load_trees("htmlstx",1);
-load_tree("test");
+load_tree("profile",10);
 
 d3.select(self.frameElement).style("height", "500px");
-
+var show_type = false;
 function nodeSemType(n) {
-   var t = n.name;
-   var a = t.split(tree_prefix);
-   if (a.length == 2 && a[1] != "") {t = a[1];}
-   return t;
+    var t = n.name;
+    var a = t.split(tree_prefix);
+    if (a.length == 2 && a[1] != "") {t = a[1];}
+    if (show_type) {
+        t += ": "+n.type;
+    }
+    return t;
 }
 
 function nodeSurface(n) {
-    return n.surface ? n.surface : "";
+    var r = "";
+    if (n.surface) {
+        r = n.surface;
+        if (n.type == "CSTRING") {
+          r = r.split("\n").join("\\n");
+          if (r == "\n") r = "\\n";
+          r = '"'+r+'"';
+        }
+    }
+    return r;
 }
 
-function update(source) {
+function update(source,pt) {
 
   // Compute the new tree layout.
   var nodes = tree.nodes(root).reverse(),
 	  links = tree.links(nodes);
 
   // Normalize for fixed-depth.
-  nodes.forEach(function(d) { d.y = d.depth * 150; });
+  nodes.forEach(function(d) { d.y = d.depth * depth_space; });
 
   // Update the nodes
   var node = svg.selectAll("g.node")
@@ -246,7 +264,7 @@ function update(source) {
   // Transition exiting nodes to the parent's new position.
   var nodeExit = node.exit().transition()
 	  .duration(duration)
-	  .attr("transform", function(d) { return "translate(" + source.y + "," + source.x + ")"; })
+	  .attr("transform", function(d) { return "translate(" + (pt?pt.y:source.y) + "," + (pt?pt.x:source.x) + ")"; })
 	  .remove();
 
   nodeExit.select("circle")
@@ -263,7 +281,7 @@ function update(source) {
   link.enter().insert("path", "g")
 	  .attr("class", "link")
 	  .attr("d", function(d) {
-		var o = {x: source.x0, y: source.y0};
+		var o = pt ? {x:pt.x, y:pt.y} :  {x: source.x0, y: source.y0};
 		return diagonal({source: o, target: o});
 	  });
 
@@ -276,7 +294,7 @@ function update(source) {
   link.exit().transition()
 	  .duration(duration)
 	  .attr("d", function(d) {
-		var o = {x: source.x, y: source.y};
+	        var o = pt ? {x:pt.x, y:pt.y} :  {x: source.x, y: source.y};
 		return diagonal({source: o, target: o});
 	  })
 	  .remove();
@@ -301,8 +319,6 @@ function click(d) {
   update(d);
 }
 
-load_all();
-
 var cur = 0;
 function cycle(dir) {
     if (trees.length == 0) {
@@ -325,18 +341,24 @@ function delta() {
             var path = t.children[0].surface;
             var tree = t.children[1].children[0]; // the value is the first child
             var n = t_get(root,path);
+            var pt = {x:n.x0,y:n.y0};
             if (t.name == "TREE_DELTA_ADD") {
                 t_add(n,tree);
                 update(root);
             } else if (t.name == "TREE_DELTA_REPLACE") {
                 var p = p2a(path);
-                var count = t.children[2].surface;
-                var op = p.slice(0);
-                var start = p.pop();
-                var np = _t_get(root,p);
-                np.children.splice(start,count-1);
-                np.children[start-1] = tree;
-                update(root);
+                if (p.length==0) {
+                    root = tree;
+                }
+                else {
+                    var count = t.children[2].surface;
+                    var op = p.slice(0);
+                    var start = p.pop();
+                    var np = _t_get(root,p);
+                    np.children.splice(start,count-1);
+                    np.children[start-1] = tree;
+                }
+                update(root,pt);
             }
         }
     }
@@ -351,10 +373,14 @@ function delta() {
     <input type="button" onclick="delta()" value="delta">
     <input type="button" onclick="cycle(1)" value="next">
     <input type="button" onclick="cycle(-1)" value="prev">
-    <input type="button" onclick="tree_prefix='XXX';set_tree(trees[15]);cur=15;" value="source">
-    <input type="button" onclick="tree_prefix='';set_tree(htmlstx[0]);" value="semtrex">
-    <input type="button" onclick="tree_prefix='SEMTREX_MATCH';set_tree(htmlstx[1]);" value="semtrex match">
-    <input type="button" onclick="t_stx_hilight(trees[15],htmlstx[1],'red'),set_tree(trees[15]);" value="semtrex hilight">
+    <input type="button" onclick="depth_space=200;load_tree('user_profile');" value="profile">
+    <input type="button" onclick="depth_space=200;load_tree('profile',10);" value="mailing label">
+    <input type="button" onclick="tree_prefix='HTML';depth_space=110;load_tree('html',16);" value="html">
+
+    <input type="button" onclick="tree_prefix='HTTP_REQUEST';depth_space=150;load_tree('httpreq',2)" value="http request">
+    <input type="button" onclick="depth_space=200;tree_prefix='SEMTREX';set_tree(httpreq[1]);$('#stx').show()" value="semtrex">
+    <input type="button" onclick="depth_space=150;tree_prefix='SEMTREX_MATCH';set_tree(httpreq[2]);" value="semtrex match">
+    <input type="button" onclick="tree_prefix='HTTP_REQUEST';depth_space=150;t_stx_hilight(httpreq[0],httpreq[2],'red'),set_tree(httpreq[0]);" value="semtrex hilight">
 
 <script>
   var TF;

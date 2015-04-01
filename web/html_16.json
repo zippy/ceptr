@@ -1,10 +1,10 @@
 { "symbol":{ "context":0,"id":131 },"type":"TREE","name":"TREE_DELTA_REPLACE","children":[
    { "symbol":{ "context":0,"id":127 },"type":"TREE_PATH","name":"TREE_DELTA_PATH","surface":"/1/2/1/2/1/2/2"},
    { "symbol":{ "context":0,"id":128 },"type":"LIST","name":"TREE_DELTA_VALUE","children":[
-      { "symbol":{ "context":1,"id":37 },"type":"composed","name":"HTML_IMG","children":[
+      { "symbol":{ "context":1,"id":37 },"type":"HTML_IMG","name":"HTML_ELEMENT","children":[
          { "symbol":{ "context":1,"id":27 },"type":"LIST","name":"HTML_ATTRIBUTES","children":[
-            { "symbol":{ "context":1,"id":28 },"type":"composed","name":"HTML_ATTRIBUTE","children":[
-               { "symbol":{ "context":1,"id":10 },"type":"CSTRING","name":"PARAM_KEY","surface":"\"src\""},
-               { "symbol":{ "context":1,"id":11 },"type":"CSTRING","name":"PARAM_VALUE","surface":"\"test.png\""}]}]},
+            { "symbol":{ "context":1,"id":28 },"type":"HTML_ATTRIBUTE","name":"KEY_VALUE_PARAM","children":[
+               { "symbol":{ "context":1,"id":10 },"type":"CSTRING","name":"PARAM_KEY","surface":"src"},
+               { "symbol":{ "context":1,"id":11 },"type":"CSTRING","name":"PARAM_VALUE","surface":"test.png"}]}]},
          { "symbol":{ "context":1,"id":29 },"type":"LIST","name":"HTML_CONTENT"}]}]},
    { "symbol":{ "context":0,"id":129 },"type":"INTEGER","name":"TREE_DELTA_COUNT","surface":1}]}
