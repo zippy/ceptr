@@ -45,6 +45,11 @@ Symbol VERSION_MINOR;
 Symbol HTTP_RESPONSE;
 Symbol HTTP_RESPONSE_CONTENT_TYPE;
 Symbol HTTP_RESPONSE_BODY;
+Symbol HTTP_RESPONSE_STATUS;
+Structure STATUS;
+Symbol STATUS_VALUE;
+Symbol STATUS_TEXT;
+
 
 T *test_HTTP_symbols,*test_HTTP_structures;
 Defs test_HTTP_defs;
@@ -54,6 +59,13 @@ void _setup_version_defs(Defs d) {
     SY(d,VERSION_MINOR,INTEGER);
     ST(d,VERSION,2,VERSION_MAJOR,VERSION_MINOR);
 }
+
+void _setup_status_defs(Defs d) {
+    SY(d,STATUS_VALUE,INTEGER);
+    SY(d,STATUS_TEXT,CSTRING);
+    ST(d,STATUS,2,STATUS_VALUE,STATUS_TEXT);
+}
+
 
 //@todo make this actually match request-URI rather than just the path
 void _setup_uri_defs(Defs d) {
@@ -76,6 +88,7 @@ void _setup_uri_defs(Defs d) {
        );
 }
 
+Symbol HTML_DOCUMENT;
 Structure HTML_ELEMENT;
 Symbol HTML_ATTRIBUTES;
 Symbol HTML_ATTRIBUTE;
@@ -89,6 +102,7 @@ Symbol HTML_DIV;
 Symbol HTML_P;
 Symbol HTML_IMG;
 Symbol HTML_A;
+Symbol HTML_B;
 Symbol HTML_UL;
 Symbol HTML_OL;
 Symbol HTML_LI;
@@ -110,6 +124,7 @@ Symbol HTML_TOK_TAG_SELFCLOSE;
 Symbol HTML_TAG;
 
 void _setup_html_defs(Defs d) {
+    SY(d,HTML_DOCUMENT,TREE);
     SY(d,HTML_TOKENS,LIST);
     SY(d,HTML_TOK_TAG_OPEN,CSTRING);
     SY(d,HTML_TOK_TAG_CLOSE,CSTRING);
@@ -133,6 +148,7 @@ void _setup_html_defs(Defs d) {
     SY(d,HTML_P,HTML_ELEMENT);
     SY(d,HTML_IMG,HTML_ELEMENT);
     SY(d,HTML_A,HTML_ELEMENT);
+    SY(d,HTML_B,HTML_ELEMENT);
     SY(d,HTML_UL,HTML_ELEMENT);
     SY(d,HTML_OL,HTML_ELEMENT);
     SY(d,HTML_LI,HTML_ELEMENT);
@@ -169,6 +185,9 @@ void _setup_HTTPDefs() {
     SY(d,HTTP_RESPONSE,TREE);
     SY(d,HTTP_RESPONSE_CONTENT_TYPE,CSTRING);
     SY(d,HTTP_RESPONSE_BODY,CSTRING);
+
+    _setup_status_defs(d);
+    SY(d,HTTP_RESPONSE_STATUS,STATUS);
 
     _setup_html_defs(d);
 }
@@ -351,8 +370,8 @@ Symbol getTag(char *otag,Symbol tag_sym[],char *tag_str[]) {
 
 T *parseHTML(char *html) {
 
-    Symbol G_tag_sym[] = {HTML_HTML,HTML_HEAD,HTML_TITLE,HTML_BODY,HTML_DIV,HTML_P,HTML_UL,HTML_OL,HTML_LI,HTML_SPAN,HTML_H1,HTML_H2,HTML_H3,HTML_H4,HTML_FORM};
-    char *G_tag_str[] ={"html","head","title","body","div","p","ul","ol","li","span","h1","h2","h3","h4","form"};
+    Symbol G_tag_sym[] = {HTML_HTML,HTML_HEAD,HTML_TITLE,HTML_BODY,HTML_DIV,HTML_P,HTML_A,HTML_B,HTML_UL,HTML_OL,HTML_LI,HTML_SPAN,HTML_H1,HTML_H2,HTML_H3,HTML_H4,HTML_FORM};
+    char *G_tag_str[] ={"html","head","title","body","div","p","a","b","ul","ol","li","span","h1","h2","h3","h4","form"};
 
     Symbol G_stag_sym[] = {HTML_IMG,HTML_INPUT,HTML_BUTTON};
     char *G_stag_str[] ={"img","input","button"};
@@ -476,6 +495,24 @@ T *parseHTML(char *html) {
 	return results;
     }
     raise_error0("HTML doesn't match");
+}
+
+void testHTTPExample() {
+    _setup_HTTPDefs();
+    T *t = parseHTML("<html><body><div>Hello <b>world!</b></div></body></html>");
+    T *r = _t_new_root(HTTP_RESPONSE);
+    T *s = _t_newr(r,HTTP_RESPONSE_STATUS);
+    _t_newi(s,STATUS_VALUE,200);
+    _t_new_str(s,STATUS_TEXT,"OK");
+    _t_new_str(r,HTTP_RESPONSE_CONTENT_TYPE,"CeptrSymbol/HTML_DOCUMENT");
+    T *d = _t_newr(r,HTML_DOCUMENT);
+    _t_add(d,t);
+    spec_is_str_equal(_t2s(&test_HTTP_defs,r),"");
+    wjson(&test_HTTP_defs,r,"httpresp",-1);
+
+    _t_free(r);
+    _cleanup_HTTPDefs();
+
 }
 
 #endif

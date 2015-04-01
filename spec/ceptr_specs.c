@@ -50,6 +50,7 @@ int main(int argc, const char **argv) {
 
 	//***** examples
 	testProfileExample();
+	testHTTPExample();
 
 	sys_free();
 	report_tests();

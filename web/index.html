@@ -370,6 +370,7 @@ function delta() {
 <span class="file"></span>
 <!-- <input type="file" id="files" name="files[]" multiple /> -->
 <div id="list"></output>
+    <input type="button" onclick="show_type = !show_type;update(root)" value="struct">
     <input type="button" onclick="delta()" value="delta">
     <input type="button" onclick="cycle(1)" value="next">
     <input type="button" onclick="cycle(-1)" value="prev">
@@ -381,6 +382,9 @@ function delta() {
     <input type="button" onclick="depth_space=200;tree_prefix='SEMTREX';set_tree(httpreq[1]);$('#stx').show()" value="semtrex">
     <input type="button" onclick="depth_space=150;tree_prefix='SEMTREX_MATCH';set_tree(httpreq[2]);" value="semtrex match">
     <input type="button" onclick="tree_prefix='HTTP_REQUEST';depth_space=150;t_stx_hilight(httpreq[0],httpreq[2],'red'),set_tree(httpreq[0]);" value="semtrex hilight">
+
+    <input type="button" onclick="tree_prefix='HTTP_RESPONSE';depth_space=100;load_tree('httpresp')" value="http response">
+
 
 <script>
   var TF;
