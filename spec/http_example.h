@@ -507,7 +507,7 @@ void testHTTPExample() {
     _t_new_str(r,HTTP_RESPONSE_CONTENT_TYPE,"CeptrSymbol/HTML_DOCUMENT");
     T *d = _t_newr(r,HTML_DOCUMENT);
     _t_add(d,t);
-    spec_is_str_equal(_t2s(&test_HTTP_defs,r),"");
+    spec_is_str_equal(_t2s(&test_HTTP_defs,r),"(HTTP_RESPONSE (HTTP_RESPONSE_STATUS (STATUS_VALUE:200) (STATUS_TEXT:OK)) (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTML_DOCUMENT) (HTML_DOCUMENT (HTML_HTML (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_BODY (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_DIV (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_TEXT:Hello ) (HTML_B (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_TEXT:world!)))))))))))");
     wjson(&test_HTTP_defs,r,"httpresp",-1);
 
     _t_free(r);

@@ -380,6 +380,7 @@ char * __t_dump(Defs *defs,T *t,int level,char *buf) {
     	}
 	else {
 	    switch(st.id) {
+	    case ENUM_ID: // for now enum surfaces are just strings so we can see the text value
 	    case CSTRING_ID:
 		sprintf(buf,"(%s:%s",n,(char *)_t_surface(t));
 		break;

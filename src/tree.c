@@ -885,6 +885,7 @@ char * _t2json(Defs *defs,T *t,int level,char *buf) {
 	else {
 
 	    switch(st.id) {
+	    case ENUM_ID: // for now enum surfaces are just strings so we can see the text value
 	    case CSTRING_ID:
 		//@todo add escaping of quotes, carriage returns, etc...
 		sprintf(buf,"\"type\":\"CSTRING\",\"name\":\"%s\",\"surface\":\"\%s\"",n,(char *)_t_surface(t));
