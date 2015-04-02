@@ -899,7 +899,7 @@ char * _t2json(Defs *defs,T *t,int level,char *buf) {
 		}
 		break;
 	    case BIT_ID:
-		sprintf(buf,"\"type\":\"BIT\",\"name\":\"%s\",\"surface\":%s",n,(*(int *)_t_surface(t)) ? "true" : "false");
+		sprintf(buf,"\"type\":\"BIT\",\"name\":\"%s\",\"surface\":%s",n,(*(int *)_t_surface(t)) ? "1" : "0");
 		break;
 	    case INTEGER_ID:
 		sprintf(buf,"\"type\":\"INTEGER\",\"name\":\"%s\",\"surface\":%d",n,*(int *)_t_surface(t));

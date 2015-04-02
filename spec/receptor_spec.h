@@ -376,6 +376,7 @@ void testReceptorInstanceNew() {
     float *ill;
     T *i = _r_get_instance(r,x);
 
+    wjson(&r->defs,i,"houseloc",-1);
     spec_is_ptr_equal(t,i);
 
     _r_free(r);
@@ -436,6 +437,62 @@ void testReceptorSerialize() {
     //! [testReceptorSerialize]
 }
 
+
+Symbol mantissa;
+Symbol exponent;
+Symbol exps[16];
+Structure flt;
+Structure integer;
+Symbol latitude;
+Symbol longitude;
+Structure lat_long;
+Symbol home_location;
+
+void defineNums(Receptor *r) {
+    int i = 0;
+    char buf[10];
+    for(i=0;i<16;i++){
+	sprintf(buf,"exp%d",i);
+	exps[i] = _r_declare_symbol(r,BIT,buf);
+    }
+    integer = _r_define_structure(r,"integer",16,exps[0],exps[1],exps[2],exps[3],exps[4],exps[5],exps[6],exps[7],exps[8],exps[9],exps[10],exps[11],exps[12],exps[13],exps[14],exps[15]);
+    mantissa = _r_declare_symbol(r,integer,"mantissa");
+    exponent = _r_declare_symbol(r,integer,"exponent");
+    flt = _r_define_structure(r,"float",2,mantissa,exponent);
+    latitude = _r_declare_symbol(r,flt,"latitude");
+    longitude = _r_declare_symbol(r,flt,"longitude");
+    lat_long = _r_define_structure(r,"latlong",2,latitude,longitude);
+    home_location = _r_declare_symbol(r,lat_long,"home_location");
+}
+
+void makeInt(T *t,int v) {
+    int i;
+    for(i=0;i<16;i++){
+	_t_newi(t,exps[i],(v>>i)&1);
+    }
+}
+void testReceptorNums() {
+    Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
+    defineNums(r);
+
+    // create a home location tree
+    T *t = _t_new_root(home_location);
+    T *lat = _t_newr(t,latitude);
+    T *lon = _t_newr(t,longitude);
+    T *m = _t_newr(lat,mantissa);
+    T *e = _t_newr(lat,exponent);
+    makeInt(m,22);
+    makeInt(e,1);
+    m = _t_newr(lon,mantissa);
+    e = _t_newr(lon,exponent);
+    makeInt(m,1);
+    makeInt(e,2);
+    spec_is_str_equal(_t2s(&r->defs,t),"(home_location (latitude (mantissa (exp0:0) (exp1:1) (exp2:1) (exp3:0) (exp4:1) (exp5:0) (exp6:0) (exp7:0) (exp8:0) (exp9:0) (exp10:0) (exp11:0) (exp12:0) (exp13:0) (exp14:0) (exp15:0)) (exponent (exp0:1) (exp1:0) (exp2:0) (exp3:0) (exp4:0) (exp5:0) (exp6:0) (exp7:0) (exp8:0) (exp9:0) (exp10:0) (exp11:0) (exp12:0) (exp13:0) (exp14:0) (exp15:0))) (longitude (mantissa (exp0:1) (exp1:0) (exp2:0) (exp3:0) (exp4:0) (exp5:0) (exp6:0) (exp7:0) (exp8:0) (exp9:0) (exp10:0) (exp11:0) (exp12:0) (exp13:0) (exp14:0) (exp15:0)) (exponent (exp0:0) (exp1:1) (exp2:0) (exp3:0) (exp4:0) (exp5:0) (exp6:0) (exp7:0) (exp8:0) (exp9:0) (exp10:0) (exp11:0) (exp12:0) (exp13:0) (exp14:0) (exp15:0))))");
+    wjson(&r->defs,t,"homeloc",-1);
+
+    _r_free(r);
+}
+
 void testReceptor() {
     _setup_HTTPDefs();
     testReceptorCreate();
@@ -447,5 +504,6 @@ void testReceptor() {
     testReceptorProtocol();
     testReceptorInstanceNew();
     //    testReceptorSerialize();
+    testReceptorNums();
     _cleanup_HTTPDefs();
 }

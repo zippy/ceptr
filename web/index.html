@@ -99,18 +99,23 @@ var tree = d3.layout.tree()
 var diagonal = d3.svg.diagonal()
 	.projection(function(d) { return [d.y, d.x]; });
 
-var svg = d3.select("body").append("svg")
+var svg;
+function makeSVG() {
+    svg = d3.select("body").append("svg")
 	.attr("width", width + margin.right + margin.left)
 	.attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .call(d3.behavior.zoom().scaleExtent([-8, 8]).on("zoom", zoom))
-    .append("g")
+        .append("g")
+        .call(d3.behavior.zoom().scaleExtent([-8, 8]).on("zoom", zoom))
+        .append("g")
 	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-svg.append("rect")
-    .attr("class", "overlay")
-    .attr("width", width)
-    .attr("height", height);
+    svg.append("rect")
+        .attr("class", "overlay")
+        .attr("width", width)
+        .attr("height", height);
+}
+
+makeSVG();
 
 function zoom() {
     svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
@@ -160,7 +165,7 @@ function load_tree(fn,count){
 }
 
 function load_all() {
-   trees = load_trees("html",16);
+   trees = load_trees("html",19);
 }
 
 var httpreq = load_trees("httpreq",2);
@@ -188,7 +193,7 @@ function nodeSemType(n) {
 
 function nodeSurface(n) {
     var r = "";
-    if (n.surface) {
+    if (n.surface!=undefined) {
         r = n.surface;
         if (n.type == "CSTRING") {
           r = r.split("\n").join("\\n");
@@ -215,7 +220,7 @@ function update(source,pt) {
   // Enter any new nodes at the parent's previous position.
   var nodeEnter = node.enter().append("g")
 	  .attr("class", "node")
-	  .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
+	.attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
 	  .on("click", click);
 
   nodeEnter.append("circle")
@@ -235,9 +240,9 @@ function update(source,pt) {
 ;
   nodeEnter.append("text")
           .attr("class","surface")
-//	  .attr("x", function(d) { return d.children || d._children ? -13 : 13; })
-        .attr("text-anchor", "middle")
-	  .attr("dy", "2em")
+	  .attr("x", function(d) { return d.children || d._children ? -13 : 13; })
+        .attr("text-anchor", "start")
+	.attr("dy", function(d) {return (d.type == "BIT") ? ".25em" : ".25em"})
 //	  .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
 	  .text(nodeSurface)
 	  .style("fill-opacity", 1e-6)
@@ -376,7 +381,7 @@ function delta() {
     <input type="button" onclick="cycle(-1)" value="prev">
     <input type="button" onclick="depth_space=200;load_tree('user_profile');" value="profile">
     <input type="button" onclick="depth_space=200;load_tree('profile',10);" value="mailing label">
-    <input type="button" onclick="tree_prefix='HTML';depth_space=110;load_tree('html',16);" value="html">
+    <input type="button" onclick="tree_prefix='HTML';depth_space=110;load_tree('html',19);" value="html">
 
     <input type="button" onclick="tree_prefix='HTTP_REQUEST';depth_space=150;load_tree('httpreq',2)" value="http request">
     <input type="button" onclick="depth_space=200;tree_prefix='SEMTREX';set_tree(httpreq[1]);$('#stx').show()" value="semtrex">
@@ -384,6 +389,7 @@ function delta() {
     <input type="button" onclick="tree_prefix='HTTP_REQUEST';depth_space=150;t_stx_hilight(httpreq[0],httpreq[2],'red'),set_tree(httpreq[0]);" value="semtrex hilight">
 
     <input type="button" onclick="tree_prefix='HTTP_RESPONSE';depth_space=100;load_tree('httpresp')" value="http response">
+    <input type="button" onclick="depth_space=150;load_tree('homeloc')" value="home location">
 
 
 <script>
