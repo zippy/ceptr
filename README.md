@@ -26,9 +26,13 @@ TBD..
 
 ## Testing
 
-Currently nothing runs other than a test suite which you can execute simply by typing make from the root directory.  To compile and run all tests simple cd into the root directory and:
+To compile and run all tests simple cd into the root directory and type:
 
     make
+
+This runs all of the tests, which live in the specs sub-directory.
+
+The tests also produce a bunch semantic trees dumped out to json for visualization in a testing web-app.  To be able to see these, you need to place the contents of the "web" sub-directory into a web server somewhere, and then just point your browser to that directory.  Please note that this isn't a comprehensive testing environment, just a space we've used for creating visuals for presentation purposes.
 
 ## Development
 
