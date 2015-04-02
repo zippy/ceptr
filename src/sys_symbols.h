@@ -43,7 +43,7 @@ enum SystemSymbolIDs
     SYMBOL_STRUCTURE_ID,
     SYMBOL_LABEL_ID,
 
-    TRUE_FALSE_ID,
+    BOOLEAN_ID,
 
     //-----  Symbols for the different semantic parts of semtrexes
     SEMTREX_MATCH_PATH_ID,              ///< path to symbol matched by semtrex
@@ -142,7 +142,7 @@ enum SystemSymbolIDs
 
 static Structure G_sys_symbol_structures[] = {
  /*   NULL_STRUCTURE,      //NULL_SYMBOL
-    BOOLEAN,             //TRUE_FALSE
+    BIT,             //BOOLEAN
     TREE_PATH,           //SEMTREX_MATCH_PATH
     SYMBOL,              //SEMTREX_SYMBOL_LITERAL
     LIST,                //SEMTREX_SEQUENCE
@@ -177,7 +177,7 @@ static Structure G_sys_symbol_structures[] = {
     TREE,                //SCAPE_SPEC
     LIST,                //ASPECTS
     TREE,                //ASPECT_DEF
-    BOOLEAN,             //ASPECT_TYPE,
+    BIT,                 //ASPECT_TYPE,
     SYMBOL,              //CARRIER
     INTEGER,             //ASPECT
     LIST,                //SIGNALS
@@ -264,7 +264,7 @@ Symbol SYMBOL_DECLARATION;
 Symbol SYMBOL_STRUCTURE;
 Symbol SYMBOL_LABEL;
 
-Symbol TRUE_FALSE;
+Symbol BOOLEAN;
 
 
 Symbol SEMTREX_MATCH_PATH;

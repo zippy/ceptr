@@ -167,31 +167,31 @@ Error __p_reduce(Defs defs,T *run_tree, T *code) {
 	    x = _t_detach_by_idx(code,1);
 	    c = *(int *)_t_surface(_t_child(code,1));
 	    *((int *)&x->contents.surface) = *((int *)&x->contents.surface)==c;
-	    x->contents.symbol = TRUE_FALSE;
+	    x->contents.symbol = BOOLEAN;
 	    break;
 	case LT_INT_ID:
 	    x = _t_detach_by_idx(code,1);
 	    c = *(int *)_t_surface(_t_child(code,1));
 	    *((int *)&x->contents.surface) = *((int *)&x->contents.surface)<c;
-	    x->contents.symbol = TRUE_FALSE;
+	    x->contents.symbol = BOOLEAN;
 	    break;
 	case GT_INT_ID:
 	    x = _t_detach_by_idx(code,1);
 	    c = *(int *)_t_surface(_t_child(code,1));
 	    *((int *)&x->contents.surface) = *((int *)&x->contents.surface)>c;
-	    x->contents.symbol = TRUE_FALSE;
+	    x->contents.symbol = BOOLEAN;
 	    break;
 	case LTE_INT_ID:
 	    x = _t_detach_by_idx(code,1);
 	    c = *(int *)_t_surface(_t_child(code,1));
 	    *((int *)&x->contents.surface) = *((int *)&x->contents.surface)<=c;
-	    x->contents.symbol = TRUE_FALSE;
+	    x->contents.symbol = BOOLEAN;
 	    break;
 	case GTE_INT_ID:
 	    x = _t_detach_by_idx(code,1);
 	    c = *(int *)_t_surface(_t_child(code,1));
 	    *((int *)&x->contents.surface) = *((int *)&x->contents.surface)>=c;
-	    x->contents.symbol = TRUE_FALSE;
+	    x->contents.symbol = BOOLEAN;
 	    break;
 	case CONCAT_STR_ID:
 	    // if the first parameter is a RESULT SYMBOL then we use that as the symbol type for the result tree.

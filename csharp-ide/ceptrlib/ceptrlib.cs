@@ -38,7 +38,7 @@ namespace ceptrlib
 		SYMBOL_STRUCTURE_ID,
 		SYMBOL_LABEL_ID,
 
-		TRUE_FALSE_ID,
+		BOOLEAN_ID,
 
 		//-----  Symbols for the different semantic parts of semtrexes
 		SEMTREX_MATCH_PATH_ID,              ///< path to symbol matched by semtrex
@@ -116,7 +116,7 @@ namespace ceptrlib
 	public enum SystemStructureID
 	{
 		NULL_STRUCTURE_ID,
-		BOOLEAN_ID,
+		BIT_ID,
 		INTEGER_ID,
 		FLOAT_ID,
 		CHAR_ID,

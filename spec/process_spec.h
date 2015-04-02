@@ -38,7 +38,7 @@ void testRunTree() {
     output = _t_new_root(OUTPUT_SIGNATURE);
     Process p = _d_code_process(processes,code,"myif","a duplicate of the sys if process with params in different order",input,output,RECEPTOR_CONTEXT);
 
-    T *p3 = _t_newi(0,TRUE_FALSE,1);
+    T *p3 = _t_newi(0,BOOLEAN,1);
     T *p1 = _t_newi(0,TEST_INT_SYMBOL,123);
     T *p2 = _t_newi(0,TEST_INT_SYMBOL,321);
 
@@ -65,7 +65,7 @@ void testRunTree() {
 
 
     t = _t_child(ps,3);  // third child should be params
-    spec_is_symbol_equal(0,_t_symbol(t),TRUE_FALSE);
+    spec_is_symbol_equal(0,_t_symbol(t),BOOLEAN);
     spec_is_true(t!=p3);  //should be a clone
 
     spec_is_equal(_p_reduce(defs,r),noReductionErr);
@@ -198,7 +198,7 @@ void testProcessIf() {
     // test IF which takes three parameters, the condition, the true code tree and the false code tree
     T *t = _t_new_root(RUN_TREE);
     T *n = _t_newr(t,IF);
-    T *p1 = _t_newi(n,TRUE_FALSE,1);
+    T *p1 = _t_newi(n,BOOLEAN,1);
     T *p2 = _t_newi(n,TEST_INT_SYMBOL,99);
     T *p3 = _t_newi(n,TEST_INT_SYMBOL,100);
 
@@ -269,7 +269,7 @@ void testProcessIntMath() {
     _t_newi(n,TEST_INT_SYMBOL,2);
 
     __p_reduce(defs,t,n);
-    spec_is_str_equal(t2s(_t_child(t,1)),"(TRUE_FALSE:0)");
+    spec_is_str_equal(t2s(_t_child(t,1)),"(BOOLEAN:0)");
 
     n = _t_detach_by_idx(t,1);
     _t_free(n);
@@ -278,7 +278,7 @@ void testProcessIntMath() {
     _t_newi(n,TEST_INT_SYMBOL,100);
 
     __p_reduce(defs,t,n);
-    spec_is_str_equal(t2s(_t_child(t,1)),"(TRUE_FALSE:1)");
+    spec_is_str_equal(t2s(_t_child(t,1)),"(BOOLEAN:1)");
 
     // test <
     n = _t_detach_by_idx(t,1);
@@ -288,7 +288,7 @@ void testProcessIntMath() {
     _t_newi(n,TEST_INT_SYMBOL,100);
 
     __p_reduce(defs,t,n);
-    spec_is_str_equal(t2s(_t_child(t,1)),"(TRUE_FALSE:1)");
+    spec_is_str_equal(t2s(_t_child(t,1)),"(BOOLEAN:1)");
 
     n = _t_detach_by_idx(t,1);
     _t_free(n);
@@ -297,7 +297,7 @@ void testProcessIntMath() {
     _t_newi(n,TEST_INT_SYMBOL,100);
 
     __p_reduce(defs,t,n);
-    spec_is_str_equal(t2s(_t_child(t,1)),"(TRUE_FALSE:0)");
+    spec_is_str_equal(t2s(_t_child(t,1)),"(BOOLEAN:0)");
 
     // test >
     n = _t_detach_by_idx(t,1);
@@ -307,7 +307,7 @@ void testProcessIntMath() {
     _t_newi(n,TEST_INT_SYMBOL,100);
 
     __p_reduce(defs,t,n);
-    spec_is_str_equal(t2s(_t_child(t,1)),"(TRUE_FALSE:0)");
+    spec_is_str_equal(t2s(_t_child(t,1)),"(BOOLEAN:0)");
 
     n = _t_detach_by_idx(t,1);
     _t_free(n);
@@ -316,7 +316,7 @@ void testProcessIntMath() {
     _t_newi(n,TEST_INT_SYMBOL,100);
 
     __p_reduce(defs,t,n);
-    spec_is_str_equal(t2s(_t_child(t,1)),"(TRUE_FALSE:1)");
+    spec_is_str_equal(t2s(_t_child(t,1)),"(BOOLEAN:1)");
 
     _t_free(t);
 }

@@ -21,7 +21,7 @@
 enum SystemStructureID
     {
 	NULL_STRUCTURE_ID,
-	BOOLEAN_ID,
+	BIT_ID,
 	INTEGER_ID,
 	FLOAT_ID,
 	CHAR_ID,
@@ -42,7 +42,7 @@ enum SystemStructureID
 
 
 Structure NULL_STRUCTURE;
-Structure BOOLEAN;
+Structure BIT;
 Structure INTEGER;
 Structure FLOAT;
 Structure CHAR;

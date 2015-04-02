@@ -91,7 +91,7 @@ void testGetSize() {
 
     // test built-in symbols and structures
     spec_is_long_equal(_d_get_structure_size(0,0,INTEGER,0),sizeof(int));
-    spec_is_long_equal(_d_get_structure_size(0,0,BOOLEAN,0),sizeof(int));
+    spec_is_long_equal(_d_get_structure_size(0,0,BIT,0),sizeof(int));
     spec_is_long_equal(_d_get_structure_size(0,0,FLOAT,0),sizeof(float));
     spec_is_long_equal(_d_get_structure_size(0,0,XADDR,0),sizeof(Xaddr));
     spec_is_long_equal(_d_get_symbol_size(0,0,STRUCTURE_PART,0),sizeof(Symbol));

@@ -898,8 +898,8 @@ char * _t2json(Defs *defs,T *t,int level,char *buf) {
 		    sprintf(buf,"\"type\":\"CHAR\",\"name\":\"%s\",\"surface\":\"%c\"",n,cr);
 		}
 		break;
-	    case BOOLEAN_ID:
-		sprintf(buf,"\"type\":\"BOOLEAN\",\"name\":\"%s\",\"surface\":%s",n,(*(int *)_t_surface(t)) ? "true" : "false");
+	    case BIT_ID:
+		sprintf(buf,"\"type\":\"BIT\",\"name\":\"%s\",\"surface\":%s",n,(*(int *)_t_surface(t)) ? "true" : "false");
 		break;
 	    case INTEGER_ID:
 		sprintf(buf,"\"type\":\"INTEGER\",\"name\":\"%s\",\"surface\":%d",n,*(int *)_t_surface(t));

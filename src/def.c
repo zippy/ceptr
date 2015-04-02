@@ -210,7 +210,7 @@ size_t _sys_structure_size(int id,void *surface) {
     case NULL_STRUCTURE_ID: return 0;
 	//	case SEMTREX: return
     case SYMBOL_ID: return sizeof(Symbol);
-    case BOOLEAN_ID:
+    case BIT_ID:
     case INTEGER_ID: return sizeof(int);
     case FLOAT_ID: return sizeof(float);
     case CSTRING_ID: return strlen(surface)+1;
@@ -387,7 +387,7 @@ char * __t_dump(Defs *defs,T *t,int level,char *buf) {
 	    case CHAR_ID:
 		sprintf(buf,"(%s:'%c'",n,*(char *)_t_surface(t));
 		break;
-	    case BOOLEAN_ID:
+	    case BIT_ID:
 	    case INTEGER_ID:
 		sprintf(buf,"(%s:%d",n,*(int *)_t_surface(t));
 		break;
