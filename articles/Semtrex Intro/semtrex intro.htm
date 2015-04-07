@@ -9,6 +9,14 @@
 <body>
 
 <p><img border="0" src="ide.png" width="917" height="507"></p>
+<h2>Source Code</h2>
+<p>The C and C# code discussed in this article can be found here:</p>
+<p><a href="https://github.com/zippy/ceptr">https://github.com/zippy/ceptr</a>
+</p>
+<p>A good blog post (including a couple videos!) on the concept of Ceptr and 
+Semtrex can be found here:</p>
+<p><a href="http://ceptr.org/2015/04/06/semantic-trees/">
+http://ceptr.org/2015/04/06/semantic-trees/</a> </p>
 <h2>Introduction</h2>
 <p>In this article, I would like to introduce you to the work of Eric
 Harris-Braun and Arthur Brock.&nbsp; They have been working on a concept that
@@ -224,6 +232,8 @@ can parse it.</p>
 The result is displayed in the Semtrex Tree textbox (only a piece is shown here,
 you get the idea):</p>
 <p><img border="0" src="parse2.png" width="408" height="322"></p>
+<p>Or, visualized with a D3 tree (fragment shown):</p>
+<p><img border="0" src="tree1.png" width="236" height="379"></p>
 <p>The root of the tree is a symbol &quot;ASCII_CHARS&quot; and each element of the tree
 is a structure-value pair &quot;ASCII_CHAR&quot; and the value of the char.</p>
 <h4>Matching on the ASCII Tree</h4>
@@ -298,6 +308,8 @@ output from Semtrex is a semantic tree as well.</p>
     )
   )
 )</pre>
+<p>Again, as a D3 tree:</p>
+<p><img border="0" src="tree2.png" width="414" height="444"></p>
 <h3>Does The Input Match?</h3>
 <p>Now we can ask, &quot;does the input tree match the expected format as specified
 by the Semtrex match expression?&quot;&nbsp; We ask this by clicking on the
@@ -343,6 +355,8 @@ also a tree:</p>
     )
   )
 )</pre>
+<p>In D3:</p>
+<p><img border="0" src="tree3.png" width="262" height="576"></p>
 <p>Notice how the above match result expression tells us with which symbol the
 structure and it's data is associated.</p>
 <h3>Embodiment</h3>
@@ -352,6 +366,8 @@ the &quot;Embody&quot; button:</p>
 <p><img border="0" src="parse6.png" width="547" height="231"></p>
 <p>and we see the result:</p>
 <p><img border="0" src="parse7.png" width="117" height="212"></p>
+<p>Again, as a D3 tree:</p>
+<p><img border="0" src="tree4.png" width="125" height="337"></p>
 <h3>Matching Against An Embodied Tree</h3>
 <p>All of the steps above were actually necessary simply to convert an input
 string into a semantic tree.&nbsp; The nifty thing is that this was done using
@@ -394,6 +410,8 @@ input string into a Semtrex expression:</p>
     )
   )
 )</pre>
+<p>And the last D3 graph rendering:</p>
+<p><img border="0" src="tree5.png" width="365" height="403"></p>
 <p>So here you finally see the whole playground:</p>
 <p><img border="0" src="parse8.png" width="553" height="661"></p>
 <h2>Building The Semtrex C Code</h2>
