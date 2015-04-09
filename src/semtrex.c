@@ -7,8 +7,8 @@
  *
  * This file implements a regular expression type language usefull for searching semantic trees.
  *
- * The code to generate finite state automata to match the trees is based heavily on
- * based on Russ Cox's great work, see https://github.com/zippy/ceptr/blob/master/articles/cox2007.pdf
+ * The code to generate finite state automata to match the trees is based heavily on Russ Cox's
+ * great work see https://github.com/zippy/ceptr/blob/master/articles/cox2007.pdf
  *
  * @copyright Copyright (C) 2013-2015, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
  */
