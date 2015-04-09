@@ -170,9 +170,9 @@ Include dependency graph for sys_defs.c:</div>
 <tr class="memitem:a9a0f519a69d0b11547ea79544670e9ca"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9a0f519a69d0b11547ea79544670e9ca"></a>
 <a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><b>NULL_STRUCTURE</b> = {0,SEM_TYPE_STRUCTURE,0}</td></tr>
 <tr class="separator:a9a0f519a69d0b11547ea79544670e9ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a470c7e8096f35edf54c2675f19fc5580"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a470c7e8096f35edf54c2675f19fc5580"></a>
-<a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><b>BOOLEAN</b> = {SYS_CONTEXT,SEM_TYPE_STRUCTURE,BOOLEAN_ID}</td></tr>
-<tr class="separator:a470c7e8096f35edf54c2675f19fc5580"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4811cbdcc46c6fff9fd88c8c5e2cd895"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4811cbdcc46c6fff9fd88c8c5e2cd895"></a>
+<a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><b>BIT</b> = {SYS_CONTEXT,SEM_TYPE_STRUCTURE,BIT_ID}</td></tr>
+<tr class="separator:a4811cbdcc46c6fff9fd88c8c5e2cd895"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70ff10d7013e01e7f4ce44003a5ce3cd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a70ff10d7013e01e7f4ce44003a5ce3cd"></a>
 <a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><b>INTEGER</b> = {SYS_CONTEXT,SEM_TYPE_STRUCTURE,INTEGER_ID}</td></tr>
 <tr class="separator:a70ff10d7013e01e7f4ce44003a5ce3cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -254,6 +254,9 @@ Include dependency graph for sys_defs.c:</div>
 <tr class="memitem:aa61fed07881df1326b687fa328f5a642"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa61fed07881df1326b687fa328f5a642"></a>
 <a class="el" href="structSemanticID.html">Process</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GTE_INT</b> = {SYS_CONTEXT,SEM_TYPE_PROCESS,GTE_INT_ID}</td></tr>
 <tr class="separator:aa61fed07881df1326b687fa328f5a642"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0be22488950f4208136a60eafe2993d8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0be22488950f4208136a60eafe2993d8"></a>
+<a class="el" href="structSemanticID.html">Process</a>&#160;</td><td class="memItemRight" valign="bottom"><b>CONCAT_STR</b> = {SYS_CONTEXT,SEM_TYPE_PROCESS,CONCAT_STR_ID}</td></tr>
+<tr class="separator:a0be22488950f4208136a60eafe2993d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0220cf3ab749a41050ab56e0417d610f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0220cf3ab749a41050ab56e0417d610f"></a>
 <a class="el" href="structSemanticID.html">Process</a>&#160;</td><td class="memItemRight" valign="bottom"><b>RESPOND</b> = {SYS_CONTEXT,SEM_TYPE_PROCESS,<a class="el" href="sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8ea8c6120c4ab760098de5bef78806ad2fd">RESPOND_ID</a>}</td></tr>
 <tr class="separator:a0220cf3ab749a41050ab56e0417d610f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -269,7 +272,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>sys_free</b> ()</td><
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>definition of system semantic elements for bootstrapping </p>
-<dl class="section copyright"><dt>Copyright</dt><dd>Copyright (C) 2013-2014, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al). This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3). </dd></dl>
+<dl class="section copyright"><dt>Copyright</dt><dd>Copyright (C) 2013-2015, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al). This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3). </dd></dl>
 
 <p>Definition in file <a class="el" href="sys__defs_8c_source.html">sys_defs.c</a>.</p>
 </div></div><!-- contents -->
@@ -278,7 +281,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>sys_free</b> ()</td><
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="sys__defs_8c.html">sys_defs.c</a></li>
-    <li class="footer">Generated on Tue Mar 24 2015 14:23:04 for ceptr by
+    <li class="footer">Generated on Thu Apr 9 2015 09:57:05 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

@@ -184,18 +184,20 @@ $(document).ready(function(){initNavTree('semtrex_8h_source.html','');});
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<a class="code" href="structT.html">T</a> *<a class="code" href="group__semtrex.html#ga4ff0c2f907a002cce83813f17b6481d5">asciiT_tos</a>(<a class="code" href="structT.html">T</a>* asciiT,<a class="code" href="structT.html">T</a>* match,<a class="code" href="structT.html">T</a> *t,<a class="code" href="structSemanticID.html">Symbol</a> s);</div>
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<a class="code" href="structT.html">T</a> *<a class="code" href="group__semtrex.html#ga74a1cae16040c9c0778cb3796017036a">asciiT_toc</a>(<a class="code" href="structT.html">T</a>* asciiT,<a class="code" href="structT.html">T</a>* match,<a class="code" href="structT.html">T</a> *t,<a class="code" href="structSemanticID.html">Symbol</a> s);</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
-<div class="line"><a name="l00113"></a><span class="lineno"><a class="line" href="group__semtrex.html#ga12e70dc3d5fde33655e8731ad3bdd935">  113</a></span>&#160;<span class="preprocessor">#define _sl(t,s) __sl(t,0,1,s)</span></div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
-<div class="line"><a name="l00116"></a><span class="lineno"><a class="line" href="group__semtrex.html#gac1b578cc9fc2f835ad12855698fe4cf2">  116</a></span>&#160;<span class="preprocessor">#define _sln(t,s) __sl(t,1,1,s)</span></div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<a class="code" href="structT.html">T</a> *<a class="code" href="group__semtrex.html#ga0eb6f4bfe908f6e8a680c56e8468b523">__sl</a>(<a class="code" href="structT.html">T</a> *p, <span class="keywordtype">int</span> not,<span class="keywordtype">int</span> count, ...);</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<a class="code" href="structT.html">T</a> *wrap(<a class="code" href="structT.html">T</a> *tokens,<a class="code" href="structT.html">T</a> *results, <a class="code" href="structSemanticID.html">Symbol</a> contents_s, <a class="code" href="structSemanticID.html">Symbol</a> open_s);</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
+<div class="line"><a name="l00115"></a><span class="lineno"><a class="line" href="group__semtrex.html#ga12e70dc3d5fde33655e8731ad3bdd935">  115</a></span>&#160;<span class="preprocessor">#define _sl(t,s) __sl(t,0,1,s)</span></div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
+<div class="line"><a name="l00118"></a><span class="lineno"><a class="line" href="group__semtrex.html#gac1b578cc9fc2f835ad12855698fe4cf2">  118</a></span>&#160;<span class="preprocessor">#define _sln(t,s) __sl(t,1,1,s)</span></div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;</div>
-<div class="line"><a name="l00121"></a><span class="lineno"><a class="line" href="group__semtrex.html#ga8785a1bb99b5bb1f749bd37a317594e4">  121</a></span>&#160;<span class="preprocessor">#define DT(l,t) {puts(&quot;\n&quot; #l &quot;:&quot;);puts(__t2s(G_d,t,INDENT));}</span></div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;</div>
-<div class="line"><a name="l00124"></a><span class="lineno"><a class="line" href="group__semtrex.html#ga23a719903c25f5387274002776ae5fa1">  124</a></span>&#160;<span class="preprocessor">#define DS(l,t) {Defs _d={0,0,0,0};Defs *d = G_d?G_d:&amp;_d;char buf[1000];puts(&quot;\n&quot; #l &quot;:&quot;);_dump_semtrex(d,t,buf);puts(buf);}</span></div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<a class="code" href="structT.html">T</a> *<a class="code" href="group__semtrex.html#ga0eb6f4bfe908f6e8a680c56e8468b523">__sl</a>(<a class="code" href="structT.html">T</a> *p, <span class="keywordtype">int</span> not,<span class="keywordtype">int</span> count, ...);</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;</div>
+<div class="line"><a name="l00123"></a><span class="lineno"><a class="line" href="group__semtrex.html#ga8785a1bb99b5bb1f749bd37a317594e4">  123</a></span>&#160;<span class="preprocessor">#define DT(l,t) {puts(&quot;\n&quot; #l &quot;:&quot;);puts(__t2s(G_d,t,INDENT));}</span></div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;</div>
+<div class="line"><a name="l00126"></a><span class="lineno"><a class="line" href="group__semtrex.html#ga23a719903c25f5387274002776ae5fa1">  126</a></span>&#160;<span class="preprocessor">#define DS(l,t) {Defs _d={0,0,0,0};Defs *d = G_d?G_d:&amp;_d;char buf[1000];puts(&quot;\n&quot; #l &quot;:&quot;);_dump_semtrex(d,t,buf);puts(buf);}</span></div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;</div>
 <div class="ttc" id="structSState_html_ae22ac0f7bb019ad6aae9714be4828a8e"><div class="ttname"><a href="structSState.html#ae22ac0f7bb019ad6aae9714be4828a8e">SState::_did</a></div><div class="ttdeci">int _did</div><div class="ttdoc">used to hold a mark when freeing and printing out FSA to prevent looping. </div><div class="ttdef"><b>Definition:</b> <a href="semtrex_8h_source.html#l00087">semtrex.h:87</a></div></div>
 <div class="ttc" id="group__semtrex_html_gga7cce21ba007b15ca5263f3cc5ef15c11a0304642b1bec42fa532a750ef23e276d"><div class="ttname"><a href="group__semtrex.html#gga7cce21ba007b15ca5263f3cc5ef15c11a0304642b1bec42fa532a750ef23e276d">TransitionNextChild</a></div><div class="ttdoc">advance to next sibling in the match tree </div><div class="ttdef"><b>Definition:</b> <a href="semtrex_8h_source.html#l00031">semtrex.h:31</a></div></div>
 <div class="ttc" id="structT_html"><div class="ttname"><a href="structT.html">T</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00097">ceptr_types.h:97</a></div></div>
@@ -245,7 +247,7 @@ $(document).ready(function(){initNavTree('semtrex_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="semtrex_8h.html">semtrex.h</a></li>
-    <li class="footer">Generated on Tue Mar 24 2015 14:23:04 for ceptr by
+    <li class="footer">Generated on Thu Apr 9 2015 09:57:05 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

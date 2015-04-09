@@ -113,10 +113,12 @@ $(document).ready(function(){initNavTree('process_8c.html','');});
 <code>#include &quot;<a class="el" href="def_8h_source.html">def.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="semtrex_8h_source.html">semtrex.h</a>&quot;</code><br />
 <code>#include &lt;stdarg.h&gt;</code><br />
+<code>#include &quot;<a class="el" href="spec__utils_8h_source.html">../spec/spec_utils.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for process.c:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="process_8c__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="process_8c__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 </div>
 <p><a href="process_8c_source.html">Go to the source code of this file.</a></p>
@@ -142,7 +144,7 @@ Error&#160;</td><td class="memItemRight" valign="bottom"><b>_p_reduce</b> (<a cl
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>implementation of ceptr processing: instructions and run tree reduction </p>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000007">Todo:</a></b></dt><dd>implement a way to define sys_processes input and output signatures</dd></dl>
-<dl class="section copyright"><dt>Copyright</dt><dd>Copyright (C) 2013-2014, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al). This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3). </dd></dl>
+<dl class="section copyright"><dt>Copyright</dt><dd>Copyright (C) 2013-2015, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al). This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3). </dd></dl>
 
 <p>Definition in file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 </div><h2 class="groupheader">Function Documentation</h2>
@@ -184,9 +186,10 @@ Error&#160;</td><td class="memItemRight" valign="bottom"><b>_p_reduce</b> (<a cl
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Error code </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Error code</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000009">Todo:</a></b></dt><dd>add SIGNATURE_SYMBOL for setting up process signatures by Symbol not just Structure </dd></dl>
 
-<p>Definition at line <a class="el" href="process_8c_source.html#l00054">54</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+<p>Definition at line <a class="el" href="process_8c_source.html#l00058">58</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
 </div>
 </div>
@@ -254,7 +257,7 @@ Error&#160;</td><td class="memItemRight" valign="bottom"><b>_p_reduce</b> (<a cl
 <div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(processes);</div>
 <div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="process_8c_source.html#l00088">88</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+<p>Definition at line <a class="el" href="process_8c_source.html#l00092">92</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
 </div>
 </div>
@@ -299,7 +302,7 @@ Error&#160;</td><td class="memItemRight" valign="bottom"><b>_p_reduce</b> (<a cl
 </dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000008">Todo:</a></b></dt><dd>what to do if match has sibs?? </dd></dl>
 
-<p>Definition at line <a class="el" href="process_8c_source.html#l00026">26</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+<p>Definition at line <a class="el" href="process_8c_source.html#l00028">28</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
 </div>
 </div>
@@ -350,7 +353,7 @@ Error&#160;</td><td class="memItemRight" valign="bottom"><b>_p_reduce</b> (<a cl
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structT.html">T</a> RUN_TREE tree </dd></dl>
 
-<p>Definition at line <a class="el" href="process_8c_source.html#l00238">238</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+<p>Definition at line <a class="el" href="process_8c_source.html#l00282">282</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
 </div>
 </div>
@@ -360,7 +363,7 @@ Error&#160;</td><td class="memItemRight" valign="bottom"><b>_p_reduce</b> (<a cl
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="process_8c.html">process.c</a></li>
-    <li class="footer">Generated on Tue Mar 24 2015 14:23:04 for ceptr by
+    <li class="footer">Generated on Thu Apr 9 2015 09:57:05 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

@@ -138,7 +138,7 @@ Macros</h2></td></tr>
 Enumerations</h2></td></tr>
 <tr class="memitem:af887cae23bd72d21c0f4bd1d69dda7e1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af887cae23bd72d21c0f4bd1d69dda7e1"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sys__structures_8h.html#af887cae23bd72d21c0f4bd1d69dda7e1">SystemStructureID</a> { <br />
 &#160;&#160;<b>NULL_STRUCTURE_ID</b>, 
-<b>BOOLEAN_ID</b>, 
+<b>BIT_ID</b>, 
 <b>INTEGER_ID</b>, 
 <b>FLOAT_ID</b>, 
 <br />
@@ -157,7 +157,8 @@ Enumerations</h2></td></tr>
 <b>PROCESS_ID</b>, 
 <b>STRUCTURE_ID</b>, 
 <br />
-&#160;&#160;<b>SCAPE_ID</b>
+&#160;&#160;<b>SCAPE_ID</b>, 
+<b>TREE_DELTA_ID</b>
 <br />
  }</td></tr>
 <tr class="memdesc:af887cae23bd72d21c0f4bd1d69dda7e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">System defined structures. <br /></td></tr>
@@ -168,9 +169,9 @@ Variables</h2></td></tr>
 <tr class="memitem:a9a0f519a69d0b11547ea79544670e9ca"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9a0f519a69d0b11547ea79544670e9ca"></a>
 <a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><b>NULL_STRUCTURE</b></td></tr>
 <tr class="separator:a9a0f519a69d0b11547ea79544670e9ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a470c7e8096f35edf54c2675f19fc5580"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a470c7e8096f35edf54c2675f19fc5580"></a>
-<a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><b>BOOLEAN</b></td></tr>
-<tr class="separator:a470c7e8096f35edf54c2675f19fc5580"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4811cbdcc46c6fff9fd88c8c5e2cd895"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4811cbdcc46c6fff9fd88c8c5e2cd895"></a>
+<a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><b>BIT</b></td></tr>
+<tr class="separator:a4811cbdcc46c6fff9fd88c8c5e2cd895"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70ff10d7013e01e7f4ce44003a5ce3cd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a70ff10d7013e01e7f4ce44003a5ce3cd"></a>
 <a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><b>INTEGER</b></td></tr>
 <tr class="separator:a70ff10d7013e01e7f4ce44003a5ce3cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -216,12 +217,15 @@ Variables</h2></td></tr>
 <tr class="memitem:a13ecd44890d37eece9debd87d963cb9f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a13ecd44890d37eece9debd87d963cb9f"></a>
 <a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SCAPE</b></td></tr>
 <tr class="separator:a13ecd44890d37eece9debd87d963cb9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1157b785d003ccf55ff9d7ca05299b5c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1157b785d003ccf55ff9d7ca05299b5c"></a>
+<a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TREE_DELTA</b></td></tr>
+<tr class="separator:a1157b785d003ccf55ff9d7ca05299b5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Defines hard-coded system defined structures. </p>
 <p>Structures are definitons of how data is organized</p>
 <p>This file defines the hard-coded (negative value) system defined structures</p>
-<dl class="section copyright"><dt>Copyright</dt><dd>Copyright (C) 2013-2014, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al). This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3). </dd></dl>
+<dl class="section copyright"><dt>Copyright</dt><dd>Copyright (C) 2013-2015, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al). This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3). </dd></dl>
 
 <p>Definition in file <a class="el" href="sys__structures_8h_source.html">sys_structures.h</a>.</p>
 </div></div><!-- contents -->
@@ -230,7 +234,7 @@ Variables</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="sys__structures_8h.html">sys_structures.h</a></li>
-    <li class="footer">Generated on Tue Mar 24 2015 14:23:04 for ceptr by
+    <li class="footer">Generated on Thu Apr 9 2015 09:57:05 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

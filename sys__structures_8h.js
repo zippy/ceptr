@@ -3,7 +3,7 @@ var sys__structures_8h =
     [ "is_sys_structure", "sys__structures_8h.html#a2b06cc8277915de32048b4130fecde24", null ],
     [ "SystemStructureID", "sys__structures_8h.html#af887cae23bd72d21c0f4bd1d69dda7e1", [
       [ "NULL_STRUCTURE_ID", "sys__structures_8h.html#af887cae23bd72d21c0f4bd1d69dda7e1adfbe9c6bccbe7c0519499b26b09359f2", null ],
-      [ "BOOLEAN_ID", "sys__structures_8h.html#af887cae23bd72d21c0f4bd1d69dda7e1ae7d58c676bf81378005e1a7d95543767", null ],
+      [ "BIT_ID", "sys__structures_8h.html#af887cae23bd72d21c0f4bd1d69dda7e1a8e1cda7710c7d31a7a478dccf13511fa", null ],
       [ "INTEGER_ID", "sys__structures_8h.html#af887cae23bd72d21c0f4bd1d69dda7e1a0d90fa84431dc3b8ea5bb0bbd9781c60", null ],
       [ "FLOAT_ID", "sys__structures_8h.html#af887cae23bd72d21c0f4bd1d69dda7e1a070f1261ed54d2e2f22a6bb5283ee4cc", null ],
       [ "CHAR_ID", "sys__structures_8h.html#af887cae23bd72d21c0f4bd1d69dda7e1a14ca6551d7566dc00f859abdbd394982", null ],
@@ -18,9 +18,10 @@ var sys__structures_8h =
       [ "RECEPTOR_ID", "sys__structures_8h.html#af887cae23bd72d21c0f4bd1d69dda7e1aa92b090ce5d1d35fb484240f4d380bb5", null ],
       [ "PROCESS_ID", "sys__structures_8h.html#af887cae23bd72d21c0f4bd1d69dda7e1a4c7e1ff1dece179076614384702cfd45", null ],
       [ "STRUCTURE_ID", "sys__structures_8h.html#af887cae23bd72d21c0f4bd1d69dda7e1a54e67b97d3939b59c6ccb3d719cea768", null ],
-      [ "SCAPE_ID", "sys__structures_8h.html#af887cae23bd72d21c0f4bd1d69dda7e1a6c60a378f0d5379440c412db19e5c651", null ]
+      [ "SCAPE_ID", "sys__structures_8h.html#af887cae23bd72d21c0f4bd1d69dda7e1a6c60a378f0d5379440c412db19e5c651", null ],
+      [ "TREE_DELTA_ID", "sys__structures_8h.html#af887cae23bd72d21c0f4bd1d69dda7e1a9128fdd5826a5165cec82f3050a9d7a8", null ]
     ] ],
-    [ "BOOLEAN", "sys__structures_8h.html#a470c7e8096f35edf54c2675f19fc5580", null ],
+    [ "BIT", "sys__structures_8h.html#a4811cbdcc46c6fff9fd88c8c5e2cd895", null ],
     [ "CHAR", "sys__structures_8h.html#a8d08e5362940617184520cafb993d66a", null ],
     [ "CSTRING", "sys__structures_8h.html#a53a72c49df4a794c3bb5fd57c5e6318f", null ],
     [ "ENUM", "sys__structures_8h.html#a0a887edf6392a07865d9ea4e17514c0a", null ],
@@ -35,6 +36,7 @@ var sys__structures_8h =
     [ "SURFACE", "sys__structures_8h.html#a7f6687ae36fcac5b43cff8aa90993d08", null ],
     [ "SYMBOL", "sys__structures_8h.html#aca16530b0700ac7a2df9c3e8fe138712", null ],
     [ "TREE", "sys__structures_8h.html#a6fa7b4b789c12ac4ab62a46c0990e72e", null ],
+    [ "TREE_DELTA", "sys__structures_8h.html#a1157b785d003ccf55ff9d7ca05299b5c", null ],
     [ "TREE_PATH", "sys__structures_8h.html#a048ccdc232c9b7ea6175bbd56b4193bf", null ],
     [ "XADDR", "sys__structures_8h.html#ac22edd8def959d6aa87de16b9ad254f6", null ]
 ];

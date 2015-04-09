@@ -7,5 +7,6 @@ var process__spec_8h =
     [ "testProcessIntMath", "process__spec_8h.html#a5ab85708c742161c5c045e3d45accd36", null ],
     [ "testProcessReduceDefinedProcess", "process__spec_8h.html#a144cc1bbafbf21f1ac4aa51b06c2c680", null ],
     [ "testProcessSignatureMatching", "process__spec_8h.html#a631f59b6dead13d3e5de6645af9c05ba", null ],
+    [ "testProcessString", "process__spec_8h.html#ad4216f4d7ecefcc81d04327546953a9b", null ],
     [ "testRunTree", "process__spec_8h.html#ac4571cec1a9f70eded22140be940cc54", null ]
 ];

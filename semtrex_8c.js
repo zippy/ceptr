@@ -52,7 +52,7 @@ var semtrex_8c =
     [ "makeASCIITree", "group__semtrex.html#gad46a0cafec3ba9ca1500ecd6f8984238", null ],
     [ "parseSemtrex", "group__semtrex.html#ga17eda8e5306b5764656d7edf3f5b15bd", null ],
     [ "patch", "semtrex_8c.html#ab307af6eec1425c7801b32bfbaa08f42", null ],
-    [ "wrap", "semtrex_8c.html#a812993c95f0eeed3dd78ad1c5f979a7f", null ],
+    [ "wrap", "group__semtrex.html#ga812993c95f0eeed3dd78ad1c5f979a7f", null ],
     [ "G_d", "semtrex_8c.html#a11e99630a9b6ddf002ac9a725bba7ebd", null ],
     [ "G_debug_match", "semtrex_8c.html#af0272e535001c2703c79a5d67a1a96ea", null ],
     [ "G_group_id", "semtrex_8c.html#a5c0d150e5a03fb2bb7fa5720c8eedf3a", null ],
