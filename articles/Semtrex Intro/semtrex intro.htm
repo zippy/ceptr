@@ -80,11 +80,16 @@ having a defined structure that relates those values to each other.&nbsp;
 Furthermore, that structure (the defining of relationships) itself creates new
 meaning.</p>
 <h3>Meaning: Symbols and Structures</h3>
-<p>Eric Harris-Braun: &quot;Meaning comes from having a social context in which
+<p>Eric Harris-Braun: &quot;Meaning comes from having a social context in which 
 symbols are applied to embodied forms (structures!)&quot;</p>
-<p>Arthur Brock: &quot;Meaning comes from understanding the use of a symbol in a
-specific context.&nbsp; A context means a collection of symbols used in a
+<p>Arthur Brock: &quot;Meaning comes from understanding the use of a symbol in a 
+specific context.&nbsp; A context means a collection of symbols used in a 
 particular way.&quot;</p>
+<p>For example, here is an ottoman used as a table, a footstool, and a chair.&nbsp; </p>
+<p><img border="0" src="ott1.png" width="256" height="455"><img border="0" src="ott2.png" width="256" height="455"><img border="0" src="ott3.png" width="455" height="256"></p>
+<p align="center">(Arthur Brock working, relaxing, and play chess with Eric 
+Harris-Braun)</p>
+<p>The context provides essential additional meaning to the symbol &quot;ottoman.&quot;</p>
 <p>Structure (the defining of relationships) creates new meaning is a key point, and while it is (and in fact must be) self-reflective or
 &quot;fractal&quot;,
 it explains why we explicitly (or implicitly) create hierarchical structures.&nbsp;
@@ -805,68 +810,78 @@ to match the embodied tree to the Semtrex match expression:</p>
   View.tbMatchResult2.Text=(ret ? &quot;True&quot; : &quot;False&quot;);
 }
 </pre>
-<h2>Semtrex Tokens - Detail Section for Regular Express Geeks</h2>
-<p>In Ceptr, Semtrex expressions are semantic trees because everything in Ceptr
-is stored as semantic trees. However, Semtrex can also be represented as a
-linear ASCII string using has a small set of tokens which should look familiar
-to Regex users.</p>
-<h3>Value Literal and Symbol Literal</h3>
-<p>In the expression X=&quot;b&quot;, X is the symbol literal and &quot;b&quot; is the value literal
-(the &quot;=&quot; we can call the value operator.)&nbsp; These are tokens relevant to the
-Semtrex tree after the human-readable form has been parsed.</p>
-<h3>Except</h3>
-<p>To match any symbol except the one prefixed with &quot;!&quot; (bang or
-exclamation) character (not to be confused with a &quot;not&quot; character.)&nbsp; </p>
-<h3>Any</h3>
-<p>Match any symbol matches, denoted with the &quot;.&quot; (period) character.</p>
-<h3>Sequence</h3>
-<p>A sequence of expressions is separated by the infix &quot;,&quot; (comma) character.</p>
-<h3>Or</h3>
-<p>Matching expression A or expression B is indicated with the infix &quot;|&quot; (pipe)
-character.</p>
-<h3>Zero or More</h3>
-<p>Zero or more instances of an expression is indicated with the postfix &quot;*&quot;
-(asterisk) character.</p>
-<h3>One or More</h3>
-<p>One or more instances of an expression is indicated with the postfix &quot;+&quot; (plus)
-character.</p>
-<h3>Zero or One</h3>
-<p>Zero or more instances of an expression is indicated with the postfix &quot;?&quot; (question
-mark) character.</p>
-<h3>Range</h3>
-<p>A range of expression occurrences is indicated with paired characters &quot;[&quot; and &quot;]&quot;
-(open/close square bracket) characters.</p>
-<h3>Capture Group</h3>
-<p>A match can be captured (much like in Regex with the parenthesis) using the
-paired characters &quot;&lt;&quot; and &quot;&gt;&quot; (open/close angle bracket) characters.&nbsp; This
-syntax includes specifying a symbol name to refer to the matched expression, so a
-capture will have the form &quot;&lt;sym:X&gt;&quot; where X is the match expression and
-&quot;sym&quot; is a symbol that will be used to refer to the match expression.&nbsp; In
-Semtrex, a very common thing is to convert one semantic tree into another
-semantic tree.&nbsp; This form simplifies such transformations.</p>
-<h3>Not</h3>
-<p>Indicating that match must &quot;not have this expression&quot; is indicated with the
-&quot;~&quot; (tilde) character.</p>
-<h3>Walk</h3>
-<p>The walk token &quot;%&quot; (percent sign) is used to walk an input tree - the tree is
-&quot;walked&quot; until the first match expression that follows matches, then expression
-matching continues from that point forward.</p>
-<h3>Siblings</h3>
-<p>Parentheses &quot;(&quot; and &quot;)&quot; always in pairs indicates that child expressions are
-siblings.</p>
-<h3>Value Sets</h3>
-<p>To match on a set of values, the &quot;{&quot; and &quot;}&quot; (open/close curly brace) pairs
-are used.&nbsp; Furthermore, string sets are double-quoted, character sets are
-single-quoted, and numeric values are not quoted.&nbsp; Items in the set are
-comma-delimited.&nbsp; Examples are:</p>
-<p>{&quot;ab&quot;,&quot;cd&quot;,&quot;zx&quot;}<br>
-{'a','b','c','d'}<br>
-{1,2,3,4}</p>
-<h3>Consume Everything</h3>
-<p>As in Regex, a trailing &quot;$&quot; (dollar sign) token is used to indicate that&nbsp;
-for the expression to match, it must match the entire tree, i.e. there may not
-be any children that don’t match.</p>
-
+<h2>On the 'C' Side</h2>
+<p>Some of the Semtrex parsing was inspired by Russ Cox' article
+<a href="https://web.archive.org/web/20150218105004/http:/swtch.com/~rsc/regexp/regexp1.html">
+Regular Expression Matching Can Be Simple and Fast</a>, and in particular the 
+algorithm for flattening an non-finite automata (NFA) to a finite one.</p>
+<p>&nbsp;</p>
+<h2>Semtrex Tokens - Detail Section for Regular Expression Geeks</h2>
+<p>The format for this section describes each:</p>
+<ul>
+	<li>Semantic symbol (the sub-header in this section)</li>
+	<li>Its textual representation</li>
+	<li>What it matches</li>
+	<li>Example</li>
+	<li>Additional explanation</li>
+</ul>
+<h3>SEMTREX_SYMBOL_LITERAL</h3>
+<p>The name of the symbol that it matches</p>
+<p>It matches a tree node of a specific symbol</p>
+<pre>/%HomeLocation/(lat=42.25,lon=73.25)</pre>
+		<p>HomeLocation is the symbol literal<h3>SEMTREX_VALUE_LITERAL</h3>
+<p>The name of the symbol = a value (quoted from text)</p>
+<p>It matches a tree node of the given symbol and a 
+		specific value</p><pre>/%HomeLocation/(lat=42.25,lon=73.25)</pre><p>lat=42.25 
+		matches on both the symbol &quot;lat&quot; and the value &quot;42.25&quot;<h3>SEMTREX_SYMBOL_LITERAL_NOT</h3>
+<p>! followed by the symbol name</p>
+<p>It matches a tree node of any symbol except the given one</p>
+<p>!PUNCTUATION</p>
+<h3>SEMTREX_VALUE_LITERAL_NOT</h3>
+<p>The name of the symbol != a value</p>
+<p>It matches a tree node of the given symbol&nbsp; and any 
+		value that doesn't match it</p><pre>ASCII_CHAR!=' '+</pre>Matches any ASCII character node whose 
+		value doesn't equal space<h3>SEMTREX_SYMBOL_SET</h3>
+{comma delimited symbols}<p>It matches a tree node in the given set of symbols</p><pre>{lat, lon}</pre><p>Matches a lat or lon node<h3>SEMTREX_VALUE_SET</h3>
+<p>symbol = { comma delimited values }<br>
+				symbol != { comma delimited values }<p>It matches a tree node whose symbol is the given type 
+		and whose value matches (or doesn't match) a value in the set</p><pre>ASCII_CHAR!={'/','?',' '}</pre><p>Matches an ASCII character 
+		with one of /, ?, or space</p>
+<h3>SEMTREX_ZERO_OR_MORE</h3>
+<p>The textual representation is a * (asterisk)</p>
+<p>It matches zero or more sibling nodes</p><pre>ASCII_CHAR!={'/','?',' '}*</pre><p>Matches zero or more ASCII 
+		characters nodes whose value is not in the set /, ?, and space<h3>SEMTREX_ONE_OR_MORE</h3>
+<p>The textual representation is a + (plus)</p>
+<p>It matches one or more sibling nodes</p><pre>ASCII_CHAR!={'/','?',' '}+</pre><p>Matches one or more ASCII 
+		characters nodes whose value is not in the set /, ?, and space<h3>SEMTREX_ZERO_OR_ONE</h3>
+<p>The textual representation is a ? (questionmark)<p>It matches zero one sibling nodes</p><pre>ASCII_CHAR!={'/','?',' '}?</pre><p>Matches zero or one ASCII 
+		characters nodes whose value is not in the set /, ?, and space<h3>SEMTREX_SYMBOL_ANY</h3>
+<p>The textual representation is a . (dot)</p>
+<p>It matches a tree node of any symbol</p><pre>.*</pre><p>Zero or more of any symbol<h3>SEMTREX_OR</h3>
+<p>The textual representation is a | (pipe)</p>
+<p>It matches a tree that matches one expression or another 
+		express.&nbsp; On either side of the or can be any Semtrex expression</p><pre>lon=72.25 | lon=68.32
+HomeLocation | BusinessLocation</pre><p>The above illustrates matching two 
+		different expressions.&nbsp; The first one is a value literal match, the 
+		second one is a symbol match.</p>
+<h3>SEMTREX_SEQUENCE</h3>
+<p>The textual representation is a , (comma)</p>
+<p>Matches a sibling tree followed by another sibling tree, 
+		etc.</p><pre>ASCII_CHAR='H',ASCII_CHAR='T',ASCII_CHAR='T',ASCII_CHAR='P'</pre><p>Matches on the four ASCII characters HTTP<h3>SEMTREX_GROUP</h3>
+<p>&lt;name : expr&gt;</p>
+<p>Allows you to associate a symbolic name with what 
+		matched or group larger expressions for use as part of other semtrex 
+		expressions.</p><pre>&lt;HomeLocation:&lt;lat:ASCII_CHAR+&gt;,ASCII_CHAR=',',&lt;lon:ASCII_CHAR+&gt;&gt;</pre><p>
+		This a naming of a sequence of a named group, a comma, and another named 
+		group.<h3>SEMTREX_WALK</h3>
+<p>The textual representation is a % (percent sign)</p>
+<p>The following Semtrex expression can match anywhere in 
+		the tree rather than the current matching node position.</p><pre>/%HomeLocation/(lat=42.25,lon=73.25)</pre><p>This would match 
+		on a specific home location found somewhere in the tree rather at the 
+		root (in this example.)<h3>Siblings</h3>
+<p>() Parentheses for disambiguating what's a sibling and 
+		what's a child.&nbsp; There is no Semtrex symbol for this because a tree 
+		encodes this information directly.</p>
 <h2>References</h2>
 
 <p>1.&nbsp; <a href="http://en.wikipedia.org/wiki/Semantics">
