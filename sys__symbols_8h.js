@@ -71,7 +71,6 @@ var sys__symbols_8h =
       [ "PARAMS_ID", "sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57aa20b8dc833e5681f6623f87acbe9e69f", null ],
       [ "RESULT_SYMBOL_ID", "sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a2efed668967bc3fa152f48d31b3b4cd7", null ],
       [ "PROTOCOLS_ID", "sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a1b43acef78ff5d758f6d2186206cbab4", null ],
-      [ "PROTOCOL_ID", "sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a814603e8ed744ee88965d7f1aec629eb", null ],
       [ "ROLES_ID", "sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57aeb2dbe42354756daf29ed36b309b586d", null ],
       [ "ROLE_ID", "sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57af7d551c5aeca2d365891895f350a0e05", null ],
       [ "INTERACTIONS_ID", "sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a71954b1f8391022a4bd2f8bf4b179768", null ],
