@@ -282,7 +282,7 @@ Receptor *_makePingProtocolReceptor(Symbol *pingP) {
 
     // define a ping protocol with two roles and two interactions
     T *ps = r->defs.protocols;
-    T *p = _t_newr(ps,ping);
+    T *p = _t_newr(ps,ping_protocol);
     T *roles = _t_newr(p,ROLES);
     _t_new(roles,ROLE,"server",7);
     _t_new(roles,ROLE,"client",7);
@@ -339,7 +339,7 @@ void testReceptorProtocol() {
 
     char *d = _td(r,r->root);
 
-    spec_is_str_equal(d,"(TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS (SYMBOL_DECLARATION (SYMBOL_LABEL:ping) (SYMBOL_STRUCTURE:PROTOCOL)) (SYMBOL_DECLARATION (SYMBOL_LABEL:ping_message) (SYMBOL_STRUCTURE:BIT))) (PROCESSES (PROCESS_CODING (PROCESS_NAME:send ping response) (PROCESS_INTENTION:long desc...) (process:RESPOND (ping_message:1)) (INPUT) (OUTPUT_SIGNATURE))) (PROTOCOLS (ping_message:108 (ROLES (ROLE:server) (ROLE:client)) (INTERACTIONS (INTERACTION (STEP:ping) (FROM_ROLE:client) (TO_ROLE:server) (CARRIER:ping_message) (CARRIER:ping_message) (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping_message))) (ACTION:send ping response) (RESPONSE_STEPS (STEP:ping_response))) (INTERACTION (STEP:ping_response) (FROM_ROLE:server) (TO_ROLE:client) (CARRIER:ping_message) (CARRIER:ping_message) (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping_message))))))) (SCAPES)) (ASPECTS (ASPECT_DEF (ASPECT_TYPE:0) (CARRIER:ping_message) (CARRIER:ping_message))) (FLUX (ASPECT:1 (LISTENERS (LISTENER:ping_message (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping_message))) (ACTION:send ping response))) (SIGNALS))))");
+    spec_is_str_equal(d,"(TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS (SYMBOL_DECLARATION (SYMBOL_LABEL:ping) (SYMBOL_STRUCTURE:PROTOCOL)) (SYMBOL_DECLARATION (SYMBOL_LABEL:ping_message) (SYMBOL_STRUCTURE:BIT))) (PROCESSES (PROCESS_CODING (PROCESS_NAME:send ping response) (PROCESS_INTENTION:long desc...) (process:RESPOND (ping_message:1)) (INPUT) (OUTPUT_SIGNATURE))) (PROTOCOLS (ping (ROLES (ROLE:server) (ROLE:client)) (INTERACTIONS (INTERACTION (STEP:ping) (FROM_ROLE:client) (TO_ROLE:server) (CARRIER:ping_message) (CARRIER:ping_message) (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping_message))) (ACTION:send ping response) (RESPONSE_STEPS (STEP:ping_response))) (INTERACTION (STEP:ping_response) (FROM_ROLE:server) (TO_ROLE:client) (CARRIER:ping_message) (CARRIER:ping_message) (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping_message))))))) (SCAPES)) (ASPECTS (ASPECT_DEF (ASPECT_TYPE:0) (CARRIER:ping_message) (CARRIER:ping_message))) (FLUX (ASPECT:1 (LISTENERS (LISTENER:ping_message (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping_message))) (ACTION:send ping response))) (SIGNALS))))");
 
     // delivering a fake signal should return a ping
     Xaddr f = {RECEPTOR_XADDR,3};  // DUMMY XADDR
