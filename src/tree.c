@@ -957,8 +957,10 @@ char * _t2json(Defs *defs,T *t,int level,char *buf) {
 		}
 		if (n == 0)
 		    sprintf(buf,"(<unknown:%d.%d.%d>",s.context,s.flags,s.id);
-		else
-		    sprintf(buf,"\"type\":\"TREE\",\"name\":\"%s\"",n);
+		else {
+		    c = _d_get_structure_name(structures,st);
+		    sprintf(buf,"\"type\":\"%s\",\"name\":\"%s\"",c,n);
+		}
 	    }
 	}
     }

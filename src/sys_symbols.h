@@ -107,7 +107,6 @@ enum SystemSymbolIDs
     RESULT_SYMBOL_ID,
 
     PROTOCOLS_ID,
-    PROTOCOL_ID,
     ROLES_ID,
     ROLE_ID,
     INTERACTIONS_ID,

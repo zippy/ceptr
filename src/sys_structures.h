@@ -37,6 +37,8 @@ enum SystemStructureID
 	PROCESS_ID,
 	STRUCTURE_ID,
 	SCAPE_ID,
+	PROTOCOL_ID,
+	SEMTREX_ID,
 	TREE_DELTA_ID,
     };
 
@@ -58,5 +60,7 @@ Structure RECEPTOR;
 Structure PROCESS;
 Structure STRUCTURE;
 Structure SCAPE;
+Structure PROTOCOL;
+Structure SEMTREX;
 Structure TREE_DELTA;
 #endif
