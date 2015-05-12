@@ -1,4 +1,3 @@
-[![Ready](https://badge.waffle.io/zippy/ceptr.svg?label=ready&title=Ready)](http://waffle.io/zippy/ceptr)
 # ceptr
 
 Ceptr provides a new computing stack for semantic self-describing data, and protocols.
@@ -36,6 +35,8 @@ This runs all of the tests, which live in the specs sub-directory.
 The tests also produce a bunch semantic trees dumped out to json for visualization in a testing web-app.  To be able to see these, you need to place the contents of the "web" sub-directory into a web server somewhere, and then just point your browser to that directory.  Please note that this isn't a comprehensive testing environment, just a space we've used for creating visuals for presentation purposes.
 
 ## Development
+
+[![Ready](https://badge.waffle.io/zippy/ceptr.svg?label=ready&title=Ready)](http://waffle.io/zippy/ceptr)
 
 [issue tracking](https://github.com/zippy/ceptr/issues)
 
