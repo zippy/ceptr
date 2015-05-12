@@ -1,3 +1,4 @@
+[![Ready](https://badge.waffle.io/zippy/ceptr.svg?label=ready&title=Ready)](http://waffle.io/zippy/ceptr)
 # ceptr
 
 Ceptr provides a new computing stack for semantic self-describing data, and protocols.
