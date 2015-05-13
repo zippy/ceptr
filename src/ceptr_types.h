@@ -94,6 +94,10 @@ typedef struct Tcontext {
     int flags;
 } Tcontext;
 
+/**
+ * A tree node
+ *
+ */
 typedef struct T {
     Tstruct structure;
     Tcontext context;
@@ -103,14 +107,20 @@ typedef struct T {
 #define RUN_TREE_NOT_EVAULATED 0
 #define RUN_TREE_EVALUATED 0xffffffff
 
-// run tree nodes just like T nodes but with run state data appended
-// used in rclone
+/**
+ * A run tree node
+ *  just like T nodes but with run state data appended
+ * used in rclone
+ **/
 typedef struct rT {
     Tstruct structure;
     Tcontext context;
     Tcontents contents;
     uint32_t cur_child;
 } rT;
+
+// macro helper to get at the cur_child element of a run-tree node when given a regular
+// node (does the casting to make code look cleaner)
 #define rt_cur_child(tP) (((rT *)tP)->cur_child)
 
 typedef uint32_t TreeHash;

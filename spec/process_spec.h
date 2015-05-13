@@ -348,6 +348,32 @@ void testProcessReduce() {
 
     T *c = _t_rclone(n);
     _t_add(t,c);
+
+    R context;
+    _p_init_context(t,&context);
+
+    spec_is_equal(rt_cur_child(c),0);
+    _p_step(defs,t,&context);
+    // first step goes into the boolean
+    spec_is_equal(rt_cur_child(c),1);
+    spec_is_ptr_equal(context.node_pointer,_t_child(c,1));
+
+    // second step ascends back to top if and marks boolean complete
+    _p_step(defs,t,&context);
+    spec_is_equal(rt_cur_child(_t_child(c,1)),RUN_TREE_EVALUATED);
+    spec_is_ptr_equal(context.node_pointer,c);
+
+    // third step goes into the second level if
+    _p_step(defs,t,&context);
+    spec_is_equal(rt_cur_child(c),2);
+    spec_is_ptr_equal(context.node_pointer,_t_child(c,2));
+
+    // not specing out all the steps because there are soooo many...
+
+    // just re-running them all for final result
+    _t_free(_t_detach_by_idx(t,1));
+    c = _t_rclone(n);
+    _t_add(t,c);
     _p_reduce(defs,t);
 
     spec_is_str_equal(t2s(c),"(TEST_INT_SYMBOL:99)");

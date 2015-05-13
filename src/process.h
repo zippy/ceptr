@@ -17,6 +17,14 @@
 
 enum ReductionError {noReductionErr,tooFewParamsReductionErr,tooManyParamsReductionErr,badSignatureReductionErr,notProcessReductionError,badParamReductionErr};
 
+typedef struct R {
+    T *node_pointer;
+    T *parent;
+    int idx;
+} R;
+
+void _p_init_context(T *run_tree,R *context);
+Error _p_step(Defs defs,T *run_tree, R *context);
 Error __p_reduce_sys_proc(Defs *defs,Symbol s,T *code);
 Error _p_reduce(Defs defs,T *run_tree);
 Error __p_reduceR(Defs defs,T *run_tree, T *code);

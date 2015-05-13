@@ -204,63 +204,94 @@ Error __p_reduce_sys_proc(Defs *defs,Symbol s,T *code) {
     return noReductionErr;
 }
 
-// testing iterative (as opposed to recursive) run tree reduction
-Error _p_reduce(Defs defs,T *run_tree) {
-    T *np = _t_child(run_tree,1); // current node pointer
-    //    raise(SIGINT);
-    while(np != run_tree) { //while(rt_cur_child(node_pointer) != RUN_TREE_EVALUATED)
+enum {Ascend,Descend};
 
-	Process s = _t_symbol(np);
-	T *parent = _t_parent(np);
-	int idx = _t_node_index(np);
+Error _p_step(Defs defs,T *run_tree, R *context) {
+    T *np = context->node_pointer;
+    T *parent = context->parent;
 
-	if (semeq(s,PARAM_REF)) {
-	    T *param = _t_get(run_tree,(int *)_t_surface(np));
-	    if (!param) {
-		raise_error0("request for non-existent param");
-	    }
-	    np = _t_rclone(param);
-	    _t_replace(parent,idx,np);
-	    s = _t_symbol(np);
+    Process s = _t_symbol(np);
+
+    int next ;
+
+    if (semeq(s,PARAM_REF)) {
+	T *param = _t_get(run_tree,(int *)_t_surface(np));
+	if (!param) {
+	    raise_error0("request for non-existent param");
 	}
-	// @todo what if the replaced parameter is a PARAM_REF tree ??
+	context->node_pointer = np = _t_rclone(param);
+	_t_replace(parent,context->idx,np);
+	s = _t_symbol(np);
+    }
+    // @todo what if the replaced parameter is a PARAM_REF tree ??
 
-	// if this node is not a process, then ascend
-	if (!is_process(s)) {
-	    rt_cur_child(np) = RUN_TREE_EVALUATED;
-	    np = parent;
-	}
-	else {
-	    int c = _t_children(np);
-	    if (c == rt_cur_child(np)) {
-		// all the children have been processed, so we can evaluate this process
-		if (!is_sys_process(s)) {
-		    Error e = __p_check_signature(defs,s,np);
-		    if (e) return e;
-		    T *rt = __p_make_run_tree(defs.processes,s,np);
-		    _p_reduce(defs,rt);
+    // if this node is not a process, then ascend
+    if (!is_process(s)) {
+	rt_cur_child(np) = RUN_TREE_EVALUATED;
+        next = Ascend;
+    }
+    else {
+	int c = _t_children(np);
+	if (c == rt_cur_child(np)) {
+	    // all the children have been processed, so we can evaluate this process
+	    if (!is_sys_process(s)) {
+		Error e = __p_check_signature(defs,s,np);
+		if (e) return e;
+		T *rt = __p_make_run_tree(defs.processes,s,np);
+		_p_reduce(defs,rt);
 
-		    np = _t_detach_by_idx(rt,1);
-		    _t_free(rt);
-		    _t_replace(parent,idx,np);
-		}
-		else {
-		    Error e = __p_reduce_sys_proc(&defs,s,np);
-		    if (e) return e;
-		}
-		rt_cur_child(np) = RUN_TREE_EVALUATED;
-		np = parent;
-	    }
-	    else if(c) {
-		//descend and store the current child we're working on!
-		np = _t_child(np,++rt_cur_child(np));
+		context->node_pointer = np = _t_detach_by_idx(rt,1);
+		_t_free(rt);
+		_t_replace(parent,context->idx,np);
 	    }
 	    else {
-		raise_error0("whoa! brain fart!");
+		Error e = __p_reduce_sys_proc(&defs,s,np);
+		if (e) return e;
 	    }
+	    rt_cur_child(np) = RUN_TREE_EVALUATED;
+            next = Ascend;
+	}
+	else if(c) {
+	    //descend and increment the current child we're working on!
+            next = Descend;
+	}
+	else {
+	    raise_error0("whoa! brain fart!");
 	}
     }
+
+    if (next == Ascend) {
+	context->node_pointer = context->parent;
+	context->parent = _t_parent(context->node_pointer);
+	if (!context->parent || context->parent == run_tree) {
+	    context->idx = 1;
+	}
+	else context->idx = rt_cur_child(context->parent);
+    }
+    else if (next == Descend) {
+	context->parent = context->node_pointer;
+	context->idx = ++rt_cur_child(np);
+	context->node_pointer = _t_child(context->node_pointer,context->idx);
+    }
+
     return noReductionErr;
+}
+
+void _p_init_context(T *run_tree,R *context) {
+    context->node_pointer = _t_child(run_tree,1);
+    context->parent = run_tree;
+    context->idx = 1;
+}
+
+// testing iterative (as opposed to recursive) run tree reduction
+Error _p_reduce(Defs defs,T *run_tree) {
+    Error e = noReductionErr;
+    R context;
+    _p_init_context(run_tree,&context);
+    while(context.node_pointer != run_tree && !e) {
+	e = _p_step(defs,run_tree,&context);
+    }
+    return e;
 }
 
 /**
