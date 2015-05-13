@@ -49,8 +49,8 @@ void __t_init(T *t,T *parent,Symbol symbol) {
  * @param[in] size size in bytes of the surface
  * @returns pointer to node allocated on the heap
 */
-T * _t_new(T *parent,Symbol symbol,void *surface,size_t size) {
-    T *t = malloc(sizeof(T));
+T * __t_new(T *parent,Symbol symbol,void *surface,size_t size,size_t alloc_size) {
+    T *t = malloc(alloc_size);
     __t_init(t,parent,symbol);
     if (size) {
 	t->context.flags |= TFLAG_ALLOCATED;
@@ -70,8 +70,8 @@ T * _t_new(T *parent,Symbol symbol,void *surface,size_t size) {
  * @param[in] surface integer value to store in the surface
  * @returns pointer to node allocated on the heap
  */
-T * _t_newi(T *parent,Symbol symbol,int surface) {
-    T *t = malloc(sizeof(T));
+T * __t_newi(T *parent,Symbol symbol,int surface,size_t alloc_size) {
+    T *t = malloc(alloc_size);
     *((int *)&t->contents.surface) = surface;
     t->contents.size = sizeof(int);
     __t_init(t,parent,symbol);
@@ -389,15 +389,8 @@ void __t_free_children(T *t) {
     t->structure.child_count = 0;
 }
 
-/**
- * free the memory occupied by a tree
- *
- * free walks the tree freeing all the children and any orthogonal trees.
- *
- * @param[in] t tree to be freed
- * @todo make this remove the child from the parent's child-list?
- */
-void _t_free(T *t) {
+// free everything except the node itself
+void __t_free(T *t) {
     __t_free_children(t);
     if (t->context.flags & TFLAG_ALLOCATED)
 	free(t->contents.surface);
@@ -409,6 +402,18 @@ void _t_free(T *t) {
     }
     else if (t->context.flags & TFLAG_SURFACE_IS_SCAPE)
 	_s_free((Scape *)t->contents.surface);
+}
+
+/**
+ * free the memory occupied by a tree
+ *
+ * free walks the tree freeing all the children and any orthogonal trees.
+ *
+ * @param[in] t tree to be freed
+ * @todo make this remove the child from the parent's child-list?
+ */
+void _t_free(T *t) {
+    __t_free(t);
     free(t);
 }
 
@@ -419,6 +424,17 @@ T *__t_clone(T *t,T *p) {
     else
 	nt = _t_newi(p,_t_symbol(t),*(int *)_t_surface(t));
     DO_KIDS(t,__t_clone(_t_child(t,i),nt));
+    return nt;
+}
+
+T *__t_rclone(T *t,T *p) {
+    T *nt;
+    if (t->context.flags & TFLAG_ALLOCATED)
+	nt = __t_new(p,_t_symbol(t),_t_surface(t),_t_size(t),sizeof(rT));
+    else
+	nt = __t_newi(p,_t_symbol(t),*(int *)_t_surface(t),sizeof(rT));
+    ((rT *)nt)->cur_child =  RUN_TREE_NOT_EVAULATED;
+    DO_KIDS(t,__t_rclone(_t_child(t,i),nt));
     return nt;
 }
 
@@ -435,6 +451,10 @@ T *__t_clone(T *t,T *p) {
  */
 T *_t_clone(T *t) {
     return __t_clone(t,0);
+}
+
+T *_t_rclone(T *t) {
+    return __t_rclone(t,0);
 }
 
 /******************** Node data accessors */

@@ -133,17 +133,19 @@ void testProcessReduceDefinedProcess() {
 
     // create a run tree right in the position to "call"this function
     T *t = _t_new_root(RUN_TREE);
-    T *n = _t_newr(t,if_even);
+    T *n = _t_new_root(if_even);
     _t_newi(n,TEST_INT_SYMBOL,99);
     _t_newi(n,TEST_INT_SYMBOL,123);
     _t_newi(n,TEST_INT_SYMBOL,124);
 
+    T *c = _t_rclone(n);
+    _t_add(t,c);
     // confirm that it reduces correctly
-    spec_is_equal(__p_reduce(defs,t,n),noReductionErr);
+    spec_is_equal(_p_reduce(defs,t),noReductionErr);
     spec_is_str_equal(t2s(_t_child(t,1)),"(TEST_INT_SYMBOL:124)");
 
     _t_free(processes);
-    _t_free(t);
+    _t_free(t);_t_free(n);
     //! [testProcessReduceDefinedProcess]
 }
 
@@ -153,30 +155,39 @@ void testProcessSignatureMatching() {
     Process if_even = _defIfEven(processes);
 
     T *t = _t_new_root(RUN_TREE);
-    T *n = _t_newr(t,if_even);
+    T *n = _t_new_root(if_even);
     _t_new(n,TEST_STR_SYMBOL,"test",5);  // this should be an INTEGER!!
     _t_newi(n,TEST_INT_SYMBOL,123);
     _t_newi(n,TEST_INT_SYMBOL,124);
-    spec_is_equal(__p_reduce(defs,t,n),badSignatureReductionErr);
+
+    T *c = _t_rclone(n);
+    _t_add(t,c);
+    spec_is_equal(_p_reduce(defs,t),badSignatureReductionErr);
+    _t_free(_t_detach_by_idx(t,1));
 
     // too few params
-    _t_free(_t_detach_by_idx(n,1));
-    spec_is_equal(__p_reduce(defs,t,n),tooFewParamsReductionErr);
+    c = _t_rclone(n);
+    _t_add(t,c);
+    _t_free(_t_detach_by_idx(c,1));
+    spec_is_equal(_p_reduce(defs,t),tooFewParamsReductionErr);
+    _t_free(_t_detach_by_idx(t,1));
 
     // add too many params
-    _t_newi(n,TEST_INT_SYMBOL,124);
-    _t_newi(n,TEST_INT_SYMBOL,124);
-    spec_is_equal(__p_reduce(defs,t,n),tooManyParamsReductionErr);
+    c = _t_rclone(n);
+    _t_add(t,c);
+    __t_newi(c,TEST_INT_SYMBOL,124,sizeof(rT));
+    spec_is_equal(_p_reduce(defs,t),tooManyParamsReductionErr);
 
     _t_free(processes);
     _t_free(t);
+    _t_free(n);
 }
 
 void testProcessInterpolateMatch() {
     Defs defs;
     T *t = _t_new_root(RUN_TREE);
     // test INTERPOLATE_FROM_MATCH which takes three params, the tree to interpolate, the stx-match and the tree it matched on
-    T *n = _t_newr(t,INTERPOLATE_FROM_MATCH);
+    T *n = _t_new_root(INTERPOLATE_FROM_MATCH);
     T *p1 = _t_newi(n,TEST_INT_SYMBOL2,0);
     _t_news(p1,INTERPOLATE_SYMBOL,TEST_INT_SYMBOL);
     T *p2 = _t_newi(n,SEMTREX_MATCH,1);
@@ -185,10 +196,14 @@ void testProcessInterpolateMatch() {
     _t_new(p2,SEMTREX_MATCH_PATH,path,2*sizeof(int));
     _t_newi(p2,SEMTREX_MATCH_SIBLINGS_COUNT,1);
     T *p3 = _t_newi(n,TEST_INT_SYMBOL,314);
-    __p_reduce(defs,t,n);
+
+    T *c = _t_rclone(n);
+    _t_add(t,c);
+    _p_reduce(defs,t);
 
     spec_is_str_equal(t2s(_t_child(t,1)),"(TEST_INT_SYMBOL2:0 (TEST_INT_SYMBOL:314))");
     _t_free(t);
+    _t_free(n);
 }
 
 /// @todo when interpolating from a match, how do we handle non-leaf interpollations, i.e. where do you hook children onto?
@@ -196,147 +211,148 @@ void testProcessInterpolateMatch() {
 void testProcessIf() {
     Defs defs;
     // test IF which takes three parameters, the condition, the true code tree and the false code tree
-    T *t = _t_new_root(RUN_TREE);
-    T *n = _t_newr(t,IF);
+    T *n = _t_new_root(IF);
     T *p1 = _t_newi(n,BOOLEAN,1);
     T *p2 = _t_newi(n,TEST_INT_SYMBOL,99);
     T *p3 = _t_newi(n,TEST_INT_SYMBOL,100);
 
-    __p_reduce(defs,t,n);
-    spec_is_str_equal(t2s(_t_child(t,1)),"(TEST_INT_SYMBOL:99)");
+    __p_reduce_sys_proc(&defs,IF,n);
+    spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:99)");
 
-    _t_free(t);
+    _t_free(n);
 }
 
 void testProcessIntMath() {
     Defs defs;
 
-    T *t = _t_new_root(RUN_TREE);
+    T *t;
 
     // test addition
-    T *n = _t_newr(t,ADD_INT);
+    T *n = _t_new_root(ADD_INT);
     _t_newi(n,TEST_INT_SYMBOL,99);
     _t_newi(n,TEST_INT_SYMBOL,100);
-    __p_reduce(defs,t,n);
-
-    spec_is_str_equal(t2s(_t_child(t,1)),"(TEST_INT_SYMBOL:199)");
+    __p_reduce_sys_proc(&defs,ADD_INT,n);
+    spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:199)");
+    _t_free(n);
 
     // test subtraction
-    n = _t_detach_by_idx(t,1);
-    _t_free(n);
-    n = _t_newr(t,SUB_INT);
+    n = _t_new_root(SUB_INT);
     _t_newi(n,TEST_INT_SYMBOL,100);
     _t_newi(n,TEST_INT_SYMBOL,98);
-
-    __p_reduce(defs,t,n);
-    spec_is_str_equal(t2s(_t_child(t,1)),"(TEST_INT_SYMBOL:2)");
+    __p_reduce_sys_proc(&defs,SUB_INT,n);
+    spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:2)");
+    _t_free(n);
 
     // test multiplication
-    n = _t_detach_by_idx(t,1);
-    _t_free(n);
-    n = _t_newr(t,MULT_INT);
+    n = _t_new_root(MULT_INT);
     _t_newi(n,TEST_INT_SYMBOL,100);
     _t_newi(n,TEST_INT_SYMBOL,98);
-
-    __p_reduce(defs,t,n);
-    spec_is_str_equal(t2s(_t_child(t,1)),"(TEST_INT_SYMBOL:9800)");
+    __p_reduce_sys_proc(&defs,MULT_INT,n);
+    spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:9800)");
+    _t_free(n);
 
     // test division
-    n = _t_detach_by_idx(t,1);
-    _t_free(n);
-    n = _t_newr(t,DIV_INT);
+    n = _t_new_root(DIV_INT);
     _t_newi(n,TEST_INT_SYMBOL,100);
     _t_newi(n,TEST_INT_SYMBOL,48);
-
-    __p_reduce(defs,t,n);
-    spec_is_str_equal(t2s(_t_child(t,1)),"(TEST_INT_SYMBOL:2)");
+    __p_reduce_sys_proc(&defs,DIV_INT,n);
+    spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:2)");
+    _t_free(n);
 
     // test modulo
-    n = _t_detach_by_idx(t,1);
-    _t_free(n);
-    n = _t_newr(t,MOD_INT);
+    n = _t_new_root(MOD_INT);
     _t_newi(n,TEST_INT_SYMBOL,100);
     _t_newi(n,TEST_INT_SYMBOL,2);
-
-    __p_reduce(defs,t,n);
-    spec_is_str_equal(t2s(_t_child(t,1)),"(TEST_INT_SYMBOL:0)");
+    __p_reduce_sys_proc(&defs,MOD_INT,n);
+    spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:0)");
+    _t_free(n);
 
     // test equals
-    n = _t_detach_by_idx(t,1);
-    _t_free(n);
-    n = _t_newr(t,EQ_INT);
+    n = _t_new_root(EQ_INT);
     _t_newi(n,TEST_INT_SYMBOL,100);
     _t_newi(n,TEST_INT_SYMBOL,2);
-
-    __p_reduce(defs,t,n);
-    spec_is_str_equal(t2s(_t_child(t,1)),"(BOOLEAN:0)");
-
-    n = _t_detach_by_idx(t,1);
+    __p_reduce_sys_proc(&defs,EQ_INT,n);
+    spec_is_str_equal(t2s(n),"(BOOLEAN:0)");
     _t_free(n);
-    n = _t_newr(t,EQ_INT);
-    _t_newi(n,TEST_INT_SYMBOL,100);
-    _t_newi(n,TEST_INT_SYMBOL,100);
 
-    __p_reduce(defs,t,n);
-    spec_is_str_equal(t2s(_t_child(t,1)),"(BOOLEAN:1)");
+    n = _t_new_root(EQ_INT);
+    _t_newi(n,TEST_INT_SYMBOL,100);
+    _t_newi(n,TEST_INT_SYMBOL,100);
+    __p_reduce_sys_proc(&defs,EQ_INT,n);
+    spec_is_str_equal(t2s(n),"(BOOLEAN:1)");
+    _t_free(n);
 
     // test <
-    n = _t_detach_by_idx(t,1);
-    _t_free(n);
-    n = _t_newr(t,LT_INT);
+    n = _t_new_root(LT_INT);
     _t_newi(n,TEST_INT_SYMBOL,2);
     _t_newi(n,TEST_INT_SYMBOL,100);
-
-    __p_reduce(defs,t,n);
-    spec_is_str_equal(t2s(_t_child(t,1)),"(BOOLEAN:1)");
-
-    n = _t_detach_by_idx(t,1);
+    __p_reduce_sys_proc(&defs,LT_INT,n);
+    spec_is_str_equal(t2s(n),"(BOOLEAN:1)");
     _t_free(n);
-    n = _t_newr(t,LT_INT);
-    _t_newi(n,TEST_INT_SYMBOL,100);
-    _t_newi(n,TEST_INT_SYMBOL,100);
 
-    __p_reduce(defs,t,n);
-    spec_is_str_equal(t2s(_t_child(t,1)),"(BOOLEAN:0)");
+    n = _t_new_root(LT_INT);
+    _t_newi(n,TEST_INT_SYMBOL,100);
+    _t_newi(n,TEST_INT_SYMBOL,100);
+    __p_reduce_sys_proc(&defs,LT_INT,n);
+    spec_is_str_equal(t2s(n),"(BOOLEAN:0)");
+   _t_free(n);
 
     // test >
-    n = _t_detach_by_idx(t,1);
-    _t_free(n);
-    n = _t_newr(t,GT_INT);
+    n = _t_new_root(GT_INT);
     _t_newi(n,TEST_INT_SYMBOL,2);
     _t_newi(n,TEST_INT_SYMBOL,100);
-
-    __p_reduce(defs,t,n);
-    spec_is_str_equal(t2s(_t_child(t,1)),"(BOOLEAN:0)");
-
-    n = _t_detach_by_idx(t,1);
+    __p_reduce_sys_proc(&defs,GT_INT,n);
+    spec_is_str_equal(t2s(n),"(BOOLEAN:0)");
     _t_free(n);
-    n = _t_newr(t,GT_INT);
+
+    n = _t_new_root(GT_INT);
     _t_newi(n,TEST_INT_SYMBOL,101);
     _t_newi(n,TEST_INT_SYMBOL,100);
+    __p_reduce_sys_proc(&defs,GT_INT,n);
+    spec_is_str_equal(t2s(n),"(BOOLEAN:1)");
+    _t_free(n);
 
-    __p_reduce(defs,t,n);
-    spec_is_str_equal(t2s(_t_child(t,1)),"(BOOLEAN:1)");
-
-    _t_free(t);
 }
 
 void testProcessString() {
     Defs defs;
 
-    T *t = _t_new_root(RUN_TREE);
-
     // test string concatenation
-    T *n = _t_newr(t,CONCAT_STR);
+    T *n = _t_new_root(CONCAT_STR);
     _t_news(n,RESULT_SYMBOL,TEST_NAME_SYMBOL);
     _t_new_str(n,TEST_STR_SYMBOL,"Fred");
     _t_new_str(n,TEST_STR_SYMBOL," ");
     _t_new_str(n,TEST_STR_SYMBOL,"Smith");
 
-    __p_reduce(defs,t,n);
+    __p_reduce_sys_proc(&defs,CONCAT_STR,n);
 
-    spec_is_str_equal(t2s(_t_child(t,1)),"(TEST_NAME_SYMBOL:Fred Smith)");
+    spec_is_str_equal(t2s(n),"(TEST_NAME_SYMBOL:Fred Smith)");
 
+    _t_free(n);
+}
+
+void testProcessReduce() {
+    Defs defs;
+    T *t = _t_new_root(RUN_TREE);
+
+    T *n = _t_new_root(IF); // multi-level IF to test descending a number of levels
+    _t_newi(n,BOOLEAN,1);
+    T *n1 = _t_newr(n,IF);
+    T *n2 = _t_newr(n1,IF);
+    _t_newi(n2,BOOLEAN,0);
+    _t_newi(n2,BOOLEAN,1);
+    _t_newi(n2,BOOLEAN,0);
+    _t_newi(n1,TEST_INT_SYMBOL,98);
+    _t_newi(n1,TEST_INT_SYMBOL,99);
+    _t_newi(n,TEST_INT_SYMBOL,100);
+
+    T *c = _t_rclone(n);
+    _t_add(t,c);
+    _p_reduce(defs,t);
+
+    spec_is_str_equal(t2s(c),"(TEST_INT_SYMBOL:99)");
+
+    _t_free(n);
     _t_free(t);
 }
 
@@ -348,4 +364,5 @@ void testProcess() {
     testProcessIf();
     testProcessIntMath();
     testProcessString();
+    testProcessReduce();
 }

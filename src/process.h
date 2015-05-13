@@ -17,8 +17,10 @@
 
 enum ReductionError {noReductionErr,tooFewParamsReductionErr,tooManyParamsReductionErr,badSignatureReductionErr,notProcessReductionError,badParamReductionErr};
 
-Error __p_reduce(Defs defs,T *run_tree, T *code);
+Error __p_reduce_sys_proc(Defs *defs,Symbol s,T *code);
 Error _p_reduce(Defs defs,T *run_tree);
+Error __p_reduceR(Defs defs,T *run_tree, T *code);
+Error _p_reduceR(Defs defs,T *run_tree);
 T *__p_make_run_tree(T *processes,Process p,T *params);
 T *_p_make_run_tree(T *processes,T *p,int num_params,...);
 
