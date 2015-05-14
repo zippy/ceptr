@@ -21,7 +21,8 @@ var sys__structures_8h =
       [ "SCAPE_ID", "sys__structures_8h.html#af887cae23bd72d21c0f4bd1d69dda7e1a6c60a378f0d5379440c412db19e5c651", null ],
       [ "PROTOCOL_ID", "sys__structures_8h.html#af887cae23bd72d21c0f4bd1d69dda7e1a814603e8ed744ee88965d7f1aec629eb", null ],
       [ "SEMTREX_ID", "sys__structures_8h.html#af887cae23bd72d21c0f4bd1d69dda7e1ab2813e7309d5346edef5940eea1a766a", null ],
-      [ "TREE_DELTA_ID", "sys__structures_8h.html#af887cae23bd72d21c0f4bd1d69dda7e1a9128fdd5826a5165cec82f3050a9d7a8", null ]
+      [ "TREE_DELTA_ID", "sys__structures_8h.html#af887cae23bd72d21c0f4bd1d69dda7e1a9128fdd5826a5165cec82f3050a9d7a8", null ],
+      [ "REDUCTION_ERROR_ID", "sys__structures_8h.html#af887cae23bd72d21c0f4bd1d69dda7e1a983cc9f5cb26d121fb3bcb8b690cb0db", null ]
     ] ],
     [ "BIT", "sys__structures_8h.html#a4811cbdcc46c6fff9fd88c8c5e2cd895", null ],
     [ "CHAR", "sys__structures_8h.html#a8d08e5362940617184520cafb993d66a", null ],
@@ -34,6 +35,7 @@ var sys__structures_8h =
     [ "PROCESS", "sys__structures_8h.html#ad9b468aebfbd6eb4f46a5cf8313944bf", null ],
     [ "PROTOCOL", "sys__structures_8h.html#abb9ea9d53bf9af76a76cc87aa165f21a", null ],
     [ "RECEPTOR", "sys__structures_8h.html#a147436288d7c7bf278dc0895bd32e2b7", null ],
+    [ "REDUCTION_ERROR", "sys__structures_8h.html#a83b024eab8fe3090af80ef2080b5edcc", null ],
     [ "SCAPE", "sys__structures_8h.html#a13ecd44890d37eece9debd87d963cb9f", null ],
     [ "SEMTREX", "sys__structures_8h.html#a409ffcea8555d7a225065a5776b920ec", null ],
     [ "STRUCTURE", "sys__structures_8h.html#a3362d33ffe0db0ac6a52c83ca7a56cd5", null ],

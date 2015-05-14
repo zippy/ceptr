@@ -123,7 +123,8 @@ Include dependency graph for sys_symbols.h:</div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="sys__symbols_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="sys__symbols_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 </div>
 <p><a href="sys__symbols_8h_source.html">Go to the source code of this file.</a></p>
@@ -252,10 +253,13 @@ Enumerations</h2></td></tr>
 <br />
 &#160;&#160;<a class="el" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a965cab3dff3f22a41653608c97589f89">BINDINGS_ID</a>, 
 <a class="el" href="sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ae71c12f7c3306bae16ac5872c43e6e00">BINDING_PAIR_ID</a>, 
-<b>TREE_DELTA_ADD_ID</b>, 
-<b>TREE_DELTA_PATH_ID</b>, 
+<b>ERROR_LOCATION_ID</b>, 
+<b>ZERO_DIVIDE_ERR_ID</b>, 
 <br />
-&#160;&#160;<b>TREE_DELTA_VALUE_ID</b>
+&#160;&#160;<b>TOO_FEW_PARAMS_ERR_ID</b>, 
+<b>TOO_MANY_PARAMS_ERR_ID</b>, 
+<b>BAD_SIGNATURE_ERR_ID</b>, 
+<b>NOT_A_PROCESS_ERR_ID</b>
 <br />
  }</td></tr>
 <tr class="separator:ae02415b3ffc3dd832ab0ae0b9923fe57"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -499,9 +503,6 @@ Variables</h2></td></tr>
 <tr class="memitem:ac001e197d0efba53a33b2396546e522b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac001e197d0efba53a33b2396546e522b"></a>
 <a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PROTOCOLS</b></td></tr>
 <tr class="separator:ac001e197d0efba53a33b2396546e522b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeea2e97577b14fc7750be840fd7dce70"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeea2e97577b14fc7750be840fd7dce70"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PROTOCOL</b></td></tr>
-<tr class="separator:aeea2e97577b14fc7750be840fd7dce70"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5efb06d1257c4ec3baae6cdcf7ca7540"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5efb06d1257c4ec3baae6cdcf7ca7540"></a>
 <a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ROLES</b></td></tr>
 <tr class="separator:a5efb06d1257c4ec3baae6cdcf7ca7540"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -568,6 +569,24 @@ Variables</h2></td></tr>
 <tr class="memitem:afca9f2c21484766413702a2ade48e4a2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afca9f2c21484766413702a2ade48e4a2"></a>
 <a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>BINDING_PAIR</b></td></tr>
 <tr class="separator:afca9f2c21484766413702a2ade48e4a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a077e849710a64fdcd0032b61c390ba7b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a077e849710a64fdcd0032b61c390ba7b"></a>
+<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ERROR_LOCATION</b></td></tr>
+<tr class="separator:a077e849710a64fdcd0032b61c390ba7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf2485a86878828dc6008d9b8be8ce09"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adf2485a86878828dc6008d9b8be8ce09"></a>
+<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ZERO_DIVIDE_ERR</b></td></tr>
+<tr class="separator:adf2485a86878828dc6008d9b8be8ce09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58b100958bb61844fabd09cae47c636c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a58b100958bb61844fabd09cae47c636c"></a>
+<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TOO_FEW_PARAMS_ERR</b></td></tr>
+<tr class="separator:a58b100958bb61844fabd09cae47c636c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61e4b5484f1497ca62d79ca67f045fd8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a61e4b5484f1497ca62d79ca67f045fd8"></a>
+<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TOO_MANY_PARAMS_ERR</b></td></tr>
+<tr class="separator:a61e4b5484f1497ca62d79ca67f045fd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10abc85d1d116b6c84e77b7c1be65f65"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a10abc85d1d116b6c84e77b7c1be65f65"></a>
+<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>BAD_SIGNATURE_ERR</b></td></tr>
+<tr class="separator:a10abc85d1d116b6c84e77b7c1be65f65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f481188f97a61b8d2466f5df06747a5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2f481188f97a61b8d2466f5df06747a5"></a>
+<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>NOT_A_PROCESS_ERR</b></td></tr>
+<tr class="separator:a2f481188f97a61b8d2466f5df06747a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3de59e6d5d414d08fc372153f328200"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad3de59e6d5d414d08fc372153f328200"></a>
 <a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STX_TOKENS</b></td></tr>
 <tr class="separator:ad3de59e6d5d414d08fc372153f328200"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -818,7 +837,7 @@ Variables</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="sys__symbols_8h.html">sys_symbols.h</a></li>
-    <li class="footer">Generated on Thu Apr 16 2015 11:33:18 for ceptr by
+    <li class="footer">Generated on Thu May 14 2015 09:29:29 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

@@ -1,6 +1,7 @@
 var dir_937849c47cd127d593123ed6329d29aa =
 [
     [ "ceptr_specs.c", "ceptr__specs_8c.html", "ceptr__specs_8c" ],
+    [ "de_spec.h", "de__spec_8h.html", "de__spec_8h" ],
     [ "def_spec.h", "def__spec_8h.html", "def__spec_8h" ],
     [ "http_example.h", "http__example_8h.html", "http__example_8h" ],
     [ "label_spec.h", "label__spec_8h.html", "label__spec_8h" ],

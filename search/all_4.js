@@ -1,6 +1,9 @@
 var searchData=
 [
-  ['data',['data',['../structScape.html#a7a89920d306b675ff635e29df3fb64dc',1,'Scape::data()'],['../structSState.html#a4b8ede6710c740ee449445a77fc2d988',1,'SState::data()']]],
+  ['data',['data',['../structScape.html#a7a89920d306b675ff635e29df3fb64dc',1,'Scape::data()'],['../structSState.html#a4b8ede6710c740ee449445a77fc2d988',1,'SState::data()'],['../group__data.html',1,'(Global Namespace)']]],
+  ['de_2ec',['de.c',['../de_8c.html',1,'']]],
+  ['de_2eh',['de.h',['../de_8h.html',1,'']]],
+  ['de_5fspec_2eh',['de_spec.h',['../de__spec_8h.html',1,'']]],
   ['def_2ec',['def.c',['../def_8c.html',1,'']]],
   ['def_2eh',['def.h',['../def_8h.html',1,'']]],
   ['def_5fspec_2eh',['def_spec.h',['../def__spec_8h.html',1,'']]],

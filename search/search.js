@@ -16,7 +16,7 @@ var indexSectionsWithContent =
   6: "fs",
   7: "abcefilmprst",
   8: "_s",
-  9: "rstv",
+  9: "drstv",
   10: "bcrst"
 };
 

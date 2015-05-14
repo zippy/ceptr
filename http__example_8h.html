@@ -414,24 +414,24 @@ Variables</h2></td></tr>
 <div class="line">    <span class="comment">// switch to different processing based on version numbers.</span></div>
 <div class="line">    <a class="code" href="structT.html">T</a> *t = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(HTTP_REQUEST);</div>
 <div class="line">    <a class="code" href="structT.html">T</a> *t_version = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,HTTP_REQUEST_VERSION);</div>
-<div class="line">    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(t_version,VERSION_MAJOR,1);</div>
-<div class="line">    <a class="code" href="group__tree.html#gacca3c33cbc32d7e28bdc3c40bb330c23">_t_newi</a>(t_version,VERSION_MINOR,0);</div>
-<div class="line">    <a class="code" href="structT.html">T</a> *t_method = <a class="code" href="group__tree.html#ga6ecbb70ce62a6c61f04ff8d0707101e4">_t_new</a>(t,HTTP_REQUEST_METHOD,<span class="stringliteral">&quot;GET&quot;</span>,4);</div>
+<div class="line">    _t_newi(t_version,VERSION_MAJOR,1);</div>
+<div class="line">    _t_newi(t_version,VERSION_MINOR,0);</div>
+<div class="line">    <a class="code" href="structT.html">T</a> *t_method = _t_new(t,HTTP_REQUEST_METHOD,<span class="stringliteral">&quot;GET&quot;</span>,4);</div>
 <div class="line">    <a class="code" href="structT.html">T</a> *t_path = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,HTTP_REQUEST_PATH);</div>
 <div class="line">    <a class="code" href="structT.html">T</a> *t_segments = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t_path,HTTP_REQUEST_PATH_SEGMENTS);</div>
-<div class="line">    <a class="code" href="group__tree.html#ga6ecbb70ce62a6c61f04ff8d0707101e4">_t_new</a>(t_segments,HTTP_REQUEST_PATH_SEGMENT,<span class="stringliteral">&quot;groups&quot;</span>,7);</div>
-<div class="line">    <a class="code" href="group__tree.html#ga6ecbb70ce62a6c61f04ff8d0707101e4">_t_new</a>(t_segments,HTTP_REQUEST_PATH_SEGMENT,<span class="stringliteral">&quot;5&quot;</span>,2);</div>
+<div class="line">    _t_new(t_segments,HTTP_REQUEST_PATH_SEGMENT,<span class="stringliteral">&quot;groups&quot;</span>,7);</div>
+<div class="line">    _t_new(t_segments,HTTP_REQUEST_PATH_SEGMENT,<span class="stringliteral">&quot;5&quot;</span>,2);</div>
 <div class="line">    <a class="code" href="structT.html">T</a> *t_file = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t_path,HTTP_REQUEST_PATH_FILE);</div>
-<div class="line">    <a class="code" href="group__tree.html#ga6ecbb70ce62a6c61f04ff8d0707101e4">_t_new</a>(t_file,FILE_NAME,<span class="stringliteral">&quot;users&quot;</span>,6);</div>
-<div class="line">    <a class="code" href="group__tree.html#ga6ecbb70ce62a6c61f04ff8d0707101e4">_t_new</a>(t_file,FILE_EXTENSION,<span class="stringliteral">&quot;json&quot;</span>,5);</div>
+<div class="line">    _t_new(t_file,FILE_NAME,<span class="stringliteral">&quot;users&quot;</span>,6);</div>
+<div class="line">    _t_new(t_file,FILE_EXTENSION,<span class="stringliteral">&quot;json&quot;</span>,5);</div>
 <div class="line">    <a class="code" href="structT.html">T</a> *t_query = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t_path,HTTP_REQUEST_PATH_QUERY);</div>
 <div class="line">    <a class="code" href="structT.html">T</a> *t_params = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t_query,HTTP_REQUEST_PATH_QUERY_PARAMS);</div>
 <div class="line">    <a class="code" href="structT.html">T</a> *t_param1 = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t_params,HTTP_REQUEST_PATH_QUERY_PARAM);</div>
-<div class="line">    <a class="code" href="group__tree.html#ga6ecbb70ce62a6c61f04ff8d0707101e4">_t_new</a>(t_param1,PARAM_KEY,<span class="stringliteral">&quot;sort_by&quot;</span>,8);</div>
-<div class="line">    <a class="code" href="group__tree.html#ga6ecbb70ce62a6c61f04ff8d0707101e4">_t_new</a>(t_param1,PARAM_VALUE,<span class="stringliteral">&quot;last_name&quot;</span>,10);</div>
+<div class="line">    _t_new(t_param1,PARAM_KEY,<span class="stringliteral">&quot;sort_by&quot;</span>,8);</div>
+<div class="line">    _t_new(t_param1,PARAM_VALUE,<span class="stringliteral">&quot;last_name&quot;</span>,10);</div>
 <div class="line">    <a class="code" href="structT.html">T</a> *t_param2 = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t_params,HTTP_REQUEST_PATH_QUERY_PARAM);</div>
-<div class="line">    <a class="code" href="group__tree.html#ga6ecbb70ce62a6c61f04ff8d0707101e4">_t_new</a>(t_param2,PARAM_KEY,<span class="stringliteral">&quot;page&quot;</span>,5);</div>
-<div class="line">    <a class="code" href="group__tree.html#ga6ecbb70ce62a6c61f04ff8d0707101e4">_t_new</a>(t_param2,PARAM_VALUE,<span class="stringliteral">&quot;2&quot;</span>,2);</div>
+<div class="line">    _t_new(t_param2,PARAM_KEY,<span class="stringliteral">&quot;page&quot;</span>,5);</div>
+<div class="line">    _t_new(t_param2,PARAM_VALUE,<span class="stringliteral">&quot;2&quot;</span>,2);</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// confirm that we built the request right!</span></div>
 <div class="line">     <a class="code" href="structT.html">T</a> *stx = <a class="code" href="group__def.html#ga6b69968d56f5f2bc98f426c560af348d">_d_build_def_semtrex</a>(test_HTTP_defs,HTTP_REQUEST,0);</div>
@@ -471,14 +471,14 @@ Variables</h2></td></tr>
 <div class="line">    <a class="code" href="structT.html">T</a> *resp = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(RESPOND);</div>
 <div class="line">    <a class="code" href="structT.html">T</a> *n = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(resp,INTERPOLATE_FROM_MATCH);</div>
 <div class="line">    <a class="code" href="structT.html">T</a> *http_resp = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(n,HTTP_RESPONSE);</div>
-<div class="line">    <a class="code" href="group__tree.html#ga6ecbb70ce62a6c61f04ff8d0707101e4">_t_new</a>(http_resp,HTTP_RESPONSE_CONTENT_TYPE,<span class="stringliteral">&quot;CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT&quot;</span>,38);</div>
+<div class="line">    _t_new(http_resp,HTTP_RESPONSE_CONTENT_TYPE,<span class="stringliteral">&quot;CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT&quot;</span>,38);</div>
 <div class="line">    <a class="code" href="group__tree.html#ga14080e3aa32b1612dabcd610b062e376">_t_news</a>(http_resp,INTERPOLATE_SYMBOL,HTTP_REQUEST_PATH_SEGMENT);</div>
 <div class="line"></div>
 <div class="line">    <span class="keywordtype">int</span> pt1[] = {2,1,TREE_PATH_TERMINATOR};</div>
 <div class="line">    <span class="keywordtype">int</span> pt2[] = {2,2,TREE_PATH_TERMINATOR};</div>
 <div class="line"></div>
-<div class="line">    <a class="code" href="group__tree.html#ga6ecbb70ce62a6c61f04ff8d0707101e4">_t_new</a>(n,PARAM_REF,pt1,<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>)*3);</div>
-<div class="line">    <a class="code" href="group__tree.html#ga6ecbb70ce62a6c61f04ff8d0707101e4">_t_new</a>(n,PARAM_REF,pt2,<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>)*3);</div>
+<div class="line">    _t_new(n,PARAM_REF,pt1,<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>)*3);</div>
+<div class="line">    _t_new(n,PARAM_REF,pt2,<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>)*3);</div>
 <div class="line"></div>
 <div class="line">    <a class="code" href="structT.html">T</a> *input = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(INPUT);</div>
 <div class="line">    <a class="code" href="structT.html">T</a> *output = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(OUTPUT_SIGNATURE);</div>
@@ -496,7 +496,7 @@ Variables</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><a class="el" href="http__example_8h.html">http_example.h</a></li>
-    <li class="footer">Generated on Thu Apr 16 2015 11:33:18 for ceptr by
+    <li class="footer">Generated on Thu May 14 2015 09:29:29 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
