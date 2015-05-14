@@ -6,7 +6,7 @@
  *
  * This file defines the hard-coded (negative value) system defined processes
  *
- * @copyright Copyright (C) 2013-2014, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
+ * @copyright Copyright (C) 2013-2015, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
  * @ingroup def
  */
 
@@ -29,6 +29,7 @@ enum SystemProcessID
 	GT_INT_ID,
 	LTE_INT_ID,
 	GTE_INT_ID,
+	CONCAT_STR_ID,
 	RESPOND_ID,                   ///< respond to the initiating signal with the what ever the sub-tree reduced to
 	INTERPOLATE_FROM_MATCH_ID,    ///< reduce to replaced values from the match*/
 	    };
@@ -45,6 +46,7 @@ Process LT_INT;
 Process GT_INT;
 Process LTE_INT;
 Process GTE_INT;
+Process CONCAT_STR;
 Process RESPOND;
 Process INTERPOLATE_FROM_MATCH;
 

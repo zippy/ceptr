@@ -6,12 +6,14 @@
  * @brief implementation of ceptr processing: instructions and run tree reduction
  * @todo implement a way to define sys_processes input and output signatures
  *
- * @copyright Copyright (C) 2013-2014, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
+ * @copyright Copyright (C) 2013-2015, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
  */
 #include "process.h"
 #include "def.h"
 #include "semtrex.h"
 #include <stdarg.h>
+
+#include "../spec/spec_utils.h"
 
 /**
  * implements the INTERPOLATE_FROM_MATCH process
@@ -50,6 +52,8 @@ void _p_interpolate_from_match(T *t,T *match_results,T *match_tree) {
  * @param[in] params list of parameters
  *
  * @returns Error code
+ *
+ * @todo add SIGNATURE_SYMBOL for setting up process signatures by Symbol not just Structure
   */
 Error __p_check_signature(Defs defs,Process p,T *params) {
     T *def = _d_get_process_code(defs.processes,p);
@@ -72,6 +76,266 @@ Error __p_check_signature(Defs defs,Process p,T *params) {
     return 0;
 }
 
+
+/**
+ * reduce system level processes in a run tree.  Assumes that the children have already been
+ * reduced and all parameters have been filled in
+ */
+Error __p_reduce_sys_proc(Defs *defs,Symbol s,T *code) {
+    int b,c;
+    char *str;
+    Symbol sy;
+    T *x,*t,*match_results,*match_tree;
+    switch(s.id) {
+    case IF_ID:
+	t = _t_child(code,1);
+	b = (*(int *)_t_surface(t)) ? 2 : 3;
+	x = _t_detach_by_idx(code,b);
+	break;
+    case ADD_INT_ID:
+	x = _t_detach_by_idx(code,1);
+	c = *(int *)_t_surface(_t_child(code,1));
+	*((int *)&x->contents.surface) = c+*((int *)&x->contents.surface);
+	break;
+    case SUB_INT_ID:
+	x = _t_detach_by_idx(code,1);
+	c = *(int *)_t_surface(_t_child(code,1));
+	*((int *)&x->contents.surface) = *((int *)&x->contents.surface)-c;
+	break;
+    case MULT_INT_ID:
+	x = _t_detach_by_idx(code,1);
+	c = *(int *)_t_surface(_t_child(code,1));
+	*((int *)&x->contents.surface) = *((int *)&x->contents.surface)*c;
+	break;
+    case DIV_INT_ID:
+	//@todo handle divide by zero errors.
+	x = _t_detach_by_idx(code,1);
+	c = *(int *)_t_surface(_t_child(code,1));
+	if (!c) return divideByZeroReductionErr;
+	*((int *)&x->contents.surface) = *((int *)&x->contents.surface)/c;
+	break;
+    case MOD_INT_ID:
+	x = _t_detach_by_idx(code,1);
+	c = *(int *)_t_surface(_t_child(code,1));
+	*((int *)&x->contents.surface) = *((int *)&x->contents.surface)%c;
+	break;
+    case EQ_INT_ID:
+	x = _t_detach_by_idx(code,1);
+	c = *(int *)_t_surface(_t_child(code,1));
+	*((int *)&x->contents.surface) = *((int *)&x->contents.surface)==c;
+	x->contents.symbol = BOOLEAN;
+	break;
+    case LT_INT_ID:
+	x = _t_detach_by_idx(code,1);
+	c = *(int *)_t_surface(_t_child(code,1));
+	*((int *)&x->contents.surface) = *((int *)&x->contents.surface)<c;
+	x->contents.symbol = BOOLEAN;
+	break;
+    case GT_INT_ID:
+	x = _t_detach_by_idx(code,1);
+	c = *(int *)_t_surface(_t_child(code,1));
+	*((int *)&x->contents.surface) = *((int *)&x->contents.surface)>c;
+	x->contents.symbol = BOOLEAN;
+	break;
+    case LTE_INT_ID:
+	x = _t_detach_by_idx(code,1);
+	c = *(int *)_t_surface(_t_child(code,1));
+	*((int *)&x->contents.surface) = *((int *)&x->contents.surface)<=c;
+	x->contents.symbol = BOOLEAN;
+	break;
+    case GTE_INT_ID:
+	x = _t_detach_by_idx(code,1);
+	c = *(int *)_t_surface(_t_child(code,1));
+	*((int *)&x->contents.surface) = *((int *)&x->contents.surface)>=c;
+	x->contents.symbol = BOOLEAN;
+	break;
+    case CONCAT_STR_ID:
+	// if the first parameter is a RESULT SYMBOL then we use that as the symbol type for the result tree.
+	x = _t_detach_by_idx(code,1);
+	sy = _t_symbol(x);
+	if (semeq(RESULT_SYMBOL,sy)) {
+	    sy = *(Symbol *)_t_surface(x);
+	    _t_free(x);
+	    x = _t_detach_by_idx(code,1);
+	}
+	//@todo, add a bunch of sanity checking here to make sure the
+	// parameters are all CSTRINGS
+	c = _t_children(code);
+	// make sure the surface was allocated and if not, converted to an alloced surface
+	if (c > 0) {
+	    if (!(x->context.flags & TFLAG_ALLOCATED)) {
+		int v = *((int *)&x->contents.surface); // copy the string as an integer
+		str = (char *)&v; // calculate the length
+		int size = strlen(str)+1;
+		x->contents.surface = malloc(size);
+		memcpy(x->contents.surface,str,size);
+		t->context.flags = TFLAG_ALLOCATED;
+	    }
+	}
+	// @todo this would probably be faster with just one total realloc for all children
+	for(b=1;b<=c;b++) {
+	    str = (char *)_t_surface(_t_child(code,b));
+	    int size = strlen(str);
+	    x->contents.surface = realloc(x->contents.surface,x->contents.size+size);
+	    memcpy(x->contents.surface+x->contents.size-1,str,size);
+	    x->contents.size+=size;
+	    *( (char *)x->contents.surface + x->contents.size -1) = 0;
+	}
+	x->contents.symbol = sy;
+	break;
+    case RESPOND_ID:
+	// for now we just remove the RESPOND instruction and replace it with it's own child
+	x = _t_detach_by_idx(code,1);
+	break;
+    case INTERPOLATE_FROM_MATCH_ID:
+	match_results = _t_child(code,2);
+	match_tree = _t_child(code,3);
+	x = _t_detach_by_idx(code,1);
+	// @todo interpolation errors?
+	_p_interpolate_from_match(x,match_results,match_tree);
+	break;
+    default:
+	raise_error("unimplemented instruction: %s",_d_get_process_name(defs->processes,s));
+    }
+    __t_free(code);
+    code->structure.child_count = x->structure.child_count;
+    code->structure.children = x->structure.children;
+    code->contents = x->contents;
+    code->context = x->context;
+    free(x);
+    return noReductionErr;
+}
+
+enum {Ascend,Descend};
+
+Error _p_step(Defs defs,T *run_tree, R *context) {
+    T *np = context->node_pointer;
+    T *parent = context->parent;
+
+    Process s = _t_symbol(np);
+
+    int next ;
+
+    if (semeq(s,PARAM_REF)) {
+	T *param = _t_get(run_tree,(int *)_t_surface(np));
+	if (!param) {
+	    raise_error0("request for non-existent param");
+	}
+	context->node_pointer = np = _t_rclone(param);
+	_t_replace(parent,context->idx,np);
+	s = _t_symbol(np);
+    }
+    // @todo what if the replaced parameter is a PARAM_REF tree ??
+
+    // if this node is not a process, then ascend
+    if (!is_process(s)) {
+	rt_cur_child(np) = RUN_TREE_EVALUATED;
+        next = Ascend;
+    }
+    else {
+	int c = _t_children(np);
+	if (c == rt_cur_child(np)) {
+	    // all the children have been processed, so we can evaluate this process
+	    if (!is_sys_process(s)) {
+		Error e = __p_check_signature(defs,s,np);
+		if (e) return e;
+		T *rt = __p_make_run_tree(defs.processes,s,np);
+		e = _p_reduce(defs,rt);
+		if (e) return e;
+		context->node_pointer = np = _t_detach_by_idx(rt,1);
+		_t_free(rt);
+		_t_replace(parent,context->idx,np);
+	    }
+	    else {
+		Error e = __p_reduce_sys_proc(&defs,s,np);
+		if (e) return e;
+	    }
+	    rt_cur_child(np) = RUN_TREE_EVALUATED;
+            next = Ascend;
+	}
+	else if(c) {
+	    //descend and increment the current child we're working on!
+            next = Descend;
+	}
+	else {
+	    raise_error0("whoa! brain fart!");
+	}
+    }
+
+    if (next == Ascend) {
+	context->node_pointer = context->parent;
+	context->parent = _t_parent(context->node_pointer);
+	if (!context->parent || context->parent == run_tree) {
+	    context->idx = 1;
+	}
+	else context->idx = rt_cur_child(context->parent);
+    }
+    else if (next == Descend) {
+	context->parent = context->node_pointer;
+	context->idx = ++rt_cur_child(np);
+	context->node_pointer = _t_child(context->node_pointer,context->idx);
+    }
+
+    return noReductionErr;
+}
+
+void _p_init_context(T *run_tree,R *context) {
+    context->node_pointer = _t_child(run_tree,1);
+    context->parent = run_tree;
+    context->idx = 1;
+}
+
+// testing iterative (as opposed to recursive) run tree reduction
+Error _p_reduce(Defs defs,T *run_tree) {
+    Error e = noReductionErr;
+    R context;
+    _p_init_context(run_tree,&context);
+    while(context.node_pointer != run_tree) {
+	e = _p_step(defs,run_tree,&context);
+	if (e) {
+	    if (_t_children(run_tree) <= 2) {
+		// no error handler so just return the error
+		return e;
+	    }
+	    else {
+		T *rt = _t_new_root(RUN_TREE);
+		T *c = _t_rclone(_t_child(run_tree,3));
+		_t_add(rt,c);
+
+		// the parameter to the error code is always a reduction error
+		T *ps = _t_newr(rt,PARAMS);
+
+		//@todo: fix this so we don't actually use an error value that
+		// then has to be translated into a symbol, but rather so that we
+		// can programatically calculate the symbol.
+		Symbol se;
+		switch(e) {
+		case tooFewParamsReductionErr: se=TOO_FEW_PARAMS_ERR;break;
+		case tooManyParamsReductionErr: se=TOO_MANY_PARAMS_ERR;break;
+		case badSignatureReductionErr: se=BAD_SIGNATURE_ERR;break;
+		case notProcessReductionError: se=NOT_A_PROCESS_ERR;break;
+		case divideByZeroReductionErr: se=ZERO_DIVIDE_ERR;break;
+		default: raise_error("unknown reduction error: %d",e);
+		}
+		T *err = __t_new(ps,se,0,0,sizeof(rT));
+		int *path = _t_get_path(context.node_pointer);
+		_t_new(err,ERROR_LOCATION,path,sizeof(int)*(_t_path_depth(path)+1));
+		free(path);
+
+		e = _p_reduce(defs,rt);
+		if (e) return e; // @todo handle errors within error handler
+
+		// replace the code that produce an error with the results of the error handler
+		T *t = _t_detach_by_idx(rt,1);
+		_t_free(rt);
+		_t_replace(run_tree,1,t);
+		break;
+	    }
+	}
+    }
+    return e;
+}
+
 /**
  * reduce a run tree by executing the instructions in it and replacing the tree values in place
  *
@@ -85,10 +349,10 @@ Error __p_check_signature(Defs defs,Process p,T *params) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/process_spec.h testProcessReduceDefinedProcess
  */
-Error __p_reduce(Defs defs,T *run_tree, T *code) {
+Error __p_reduceR(Defs defs,T *run_tree, T *code) {
     Process s = _t_symbol(code);
 
-    T *param,*match_results,*match_tree,*t,*x;
+    T *param,*t,*x;
 
     T *parent = _t_parent(code);
     int idx = _t_node_index(code);
@@ -98,8 +362,9 @@ Error __p_reduce(Defs defs,T *run_tree, T *code) {
 	if (!param) {
 	    raise_error0("request for non-existent param");
 	}
-	x = _t_clone(param);
+	x = _t_rclone(param);
 	_t_replace(parent,idx,x);
+	//	visdump(&defs,x);
 	code = x;
 	s = _t_symbol(code);
     }
@@ -108,7 +373,7 @@ Error __p_reduce(Defs defs,T *run_tree, T *code) {
     if (!is_process(s)) return notProcessReductionError;
 
     // otherwise, first reduce all the children
-    DO_KIDS(code,__p_reduce(defs,run_tree,_t_child(code,i)));
+    DO_KIDS(code,__p_reduceR(defs,run_tree,_t_child(code,i)));
 
     // then, if this isn't a basic system level process, it's the equivalent
     // of a function call, so we need to create a new execution context (RUN_TREE)
@@ -118,105 +383,39 @@ Error __p_reduce(Defs defs,T *run_tree, T *code) {
 	Error e = __p_check_signature(defs,s,code);
 	if (e) return e;
 	T *rt = __p_make_run_tree(defs.processes,s,code);
-	__p_reduce(defs,rt,_t_child(rt,1));
+	__p_reduceR(defs,rt,_t_child(rt,1));
+
 	x = _t_detach_by_idx(rt,1);
 	_t_free(rt);
+	_t_replace(parent,idx,x);
+	return noReductionErr;
     }
     else {
-	int b,c;
-	switch(s.id) {
-	case IF_ID:
-	    t = _t_child(code,1);
-	    b = (*(int *)_t_surface(t)) ? 2 : 3;
-	    x = _t_detach_by_idx(code,b);
-	    break;
-	case ADD_INT_ID:
-	    x = _t_detach_by_idx(code,1);
-	    c = *(int *)_t_surface(_t_child(code,1));
-	    *((int *)&x->contents.surface) = c+*((int *)&x->contents.surface);
-	    break;
-	case SUB_INT_ID:
-	    x = _t_detach_by_idx(code,1);
-	    c = *(int *)_t_surface(_t_child(code,1));
-	    *((int *)&x->contents.surface) = *((int *)&x->contents.surface)-c;
-	    break;
-	case MULT_INT_ID:
-	    x = _t_detach_by_idx(code,1);
-	    c = *(int *)_t_surface(_t_child(code,1));
-	    *((int *)&x->contents.surface) = *((int *)&x->contents.surface)*c;
-	    break;
-	case DIV_INT_ID:
-	    x = _t_detach_by_idx(code,1);
-	    c = *(int *)_t_surface(_t_child(code,1));
-	    *((int *)&x->contents.surface) = *((int *)&x->contents.surface)/c;
-	    break;
-	case MOD_INT_ID:
-	    x = _t_detach_by_idx(code,1);
-	    c = *(int *)_t_surface(_t_child(code,1));
-	    *((int *)&x->contents.surface) = *((int *)&x->contents.surface)%c;
-	    break;
-	case EQ_INT_ID:
-	    x = _t_detach_by_idx(code,1);
-	    c = *(int *)_t_surface(_t_child(code,1));
-	    *((int *)&x->contents.surface) = *((int *)&x->contents.surface)==c;
-	    x->contents.symbol = TRUE_FALSE;
-	    break;
-	case LT_INT_ID:
-	    x = _t_detach_by_idx(code,1);
-	    c = *(int *)_t_surface(_t_child(code,1));
-	    *((int *)&x->contents.surface) = *((int *)&x->contents.surface)<c;
-	    x->contents.symbol = TRUE_FALSE;
-	    break;
-	case GT_INT_ID:
-	    x = _t_detach_by_idx(code,1);
-	    c = *(int *)_t_surface(_t_child(code,1));
-	    *((int *)&x->contents.surface) = *((int *)&x->contents.surface)>c;
-	    x->contents.symbol = TRUE_FALSE;
-	    break;
-	case LTE_INT_ID:
-	    x = _t_detach_by_idx(code,1);
-	    c = *(int *)_t_surface(_t_child(code,1));
-	    *((int *)&x->contents.surface) = *((int *)&x->contents.surface)<=c;
-	    x->contents.symbol = TRUE_FALSE;
-	    break;
-	case GTE_INT_ID:
-	    x = _t_detach_by_idx(code,1);
-	    c = *(int *)_t_surface(_t_child(code,1));
-	    *((int *)&x->contents.surface) = *((int *)&x->contents.surface)>=c;
-	    x->contents.symbol = TRUE_FALSE;
-	    break;
-	case RESPOND_ID:
-	    // for now we just remove the RESPOND instruction and replace it with it's own child
-	    x = _t_detach_by_idx(code,1);
-	    break;
-	case INTERPOLATE_FROM_MATCH_ID:
-	    match_results = _t_child(code,2);
-	    match_tree = _t_child(code,3);
-	    x = _t_detach_by_idx(code,1);
-	    _p_interpolate_from_match(x,match_results,match_tree);
-	    break;
-	default:
-	    raise_error("unimplemented instruction: %s",_d_get_process_name(defs.processes,s));
-	}
+	return __p_reduce_sys_proc(&defs,s,code);
     }
-    _t_replace(parent,idx,x);
-    return noReductionErr;
+    //    visdump(&defs,x);
 }
 
-Error _p_reduce(Defs defs,T *run_tree) {
+Error _p_reduceR(Defs defs,T *run_tree) {
     T *code = _t_child(run_tree,1);
     if (!code) {
 	raise_error0("expecting code tree as first child of run tree!");
     }
-    return __p_reduce(defs,run_tree,code);
+    return __p_reduceR(defs,run_tree,code);
 }
 
+/*
+   special runtree builder that uses the actual params tree node.  This is used
+   in the process of reduction because we don't have to clone the param values, we
+   can use the actual tree nodes that are being reduced as they are already rT nodes
+   and they are only used once, i.e. in this reduction
+*/
 T *__p_make_run_tree(T *processes,Process p,T *params) {
     T *t = _t_new_root(RUN_TREE);
     T *code_def = _d_get_process_code(processes,p);
     T *code = _t_child(code_def,3);
 
-    T *c = _t_clone(code);
+    T *c = _t_rclone(code);
     _t_add(t,c);
     T *ps = _t_newr(t,PARAMS);
     int i,num_params = _t_children(params);
@@ -252,7 +451,7 @@ T *_p_make_run_tree(T *processes,T *process,int num_params,...) {
     T *code_def = _d_get_process_code(processes,p);
     T *code = _t_child(code_def,3);
 
-    T *c = _t_clone(code);
+    T *c = _t_rclone(code);
     _t_add(t,c);
     T *ps = _t_newr(t,PARAMS);
     va_start(params,num_params);

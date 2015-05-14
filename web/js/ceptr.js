@@ -1,35 +1,70 @@
-var treeData = [
-    {
-        "name": "Top Level",
-        "parent": "null",
-        "children": [
-            {
-                "name": "COWS 2: A",
-                //     "parent": "Top Level",
-                "children": [
-                    {
-                        "name": "Son of A",
-                        //         "parent": "Level 2: A"
-                    },
-                    {
-                        "name": "Daughter of A",
-                        //         "parent": "Level 2: A"
-                    }
-                ]
-            },
-            {
-                "name": "Level 2: B",
-                //      "parent": "Top Level"
-            }
-        ]
-    }
-];
+/**
+ * @defgroup js
+ *
+ * @brief Javascript tools for interfacing with ceptr
+ *
+ * @{
+ * @file ceptr.js
+ * @brief javascript
+ *
+ * @copyright Copyright (C) 2013-2015, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
+ *
+ */
 
-function set_root() {
-    root = treeData[0];
-    root.x0 = height / 2;
-    root.y0 = 0;
-};
+// convert a string path like "/1/2/5/3" to an array
+function p2a(path) {
+    var p = path.split("/");
+    p.shift();
+    var r = [];
+    p.forEach(function(x){r.push(parseInt(x))});
+    return r;
+}
+
+// given a string path get the element out of the tree
+function t_get(tree,path) {
+    var p = p2a(path);
+    return _t_get(tree,p);
+}
+
+// given a string path get the element out of the tree
+function _t_get(tree,p) {
+    while(p.length > 0) {tree = tree.children[p[0]-1];p.shift();}
+    return tree;
+}
+
+// add a tree as the last child of the given tree
+function t_add(t,n) {
+    if (!t.children) t.children = [];
+    t.children[t.children.length] = n;
+}
+
+// applies a function to a tree node and all it's children recursively
+function t_apply(tree,f) {
+    f(tree);
+    var i,nodes = tree.children ? tree.children.length : 0;
+    for(i = 0;i<nodes;i++) {
+        t_apply(tree.children[i],f);
+    }
+}
+
+// give a semtrex results tree and the source tree, hilight the matched portion
+function t_stx_hilight(tree,stxresults,color) {
+    var path = p2a(stxresults.children[1].surface);
+    var count = stxresults.children[2].surface;
+    while(count>0) {
+        var pp = path.slice(0);
+        t_apply(_t_get(tree,path),function(t){t.color = color});
+        var p = pp.pop();
+        p+=1;
+        pp.push(p);
+        path = pp;
+        count-=1;
+    }
+    svg.selectAll("g.node text").style("fill",function(d){return d.color})
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+////  mtree unserialization routines
 
 var sizeof_S = 12;
 var Mlevel_size = 2;
@@ -165,3 +200,4 @@ function  m_2tfn(l,i,n,data,state,pl,pi) {
 //        *tP = _t_new(t,n->symbol,(n->flags & TFLAG_ALLOCATED)?n->surface:&n->surface,n->size);
     state[l].t = x;
 }
+/** @}*/

@@ -1,6 +1,6 @@
 /**
  * @file mtree_spec.h
- * @copyright Copyright (C) 2013-2014, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
+ * @copyright Copyright (C) 2013-2015, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
  * @ingroup tests
  */
 
@@ -29,19 +29,6 @@ void testCreateTreeNodesT() {
     }
 }
 */
-
-void writeFile(char *fn,void *data,size_t size) {
-    FILE *ofp;
-
-    ofp = fopen(fn, "w");
-    if (ofp == NULL) {
-	fprintf(stderr, "Can't open output file %s!\n",fn);
-    }
-    else {
-	fwrite(data, 1,size, ofp);
-	fclose(ofp);
-    }
-}
 
 void mtd(H h) {
     H hh;

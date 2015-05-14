@@ -6,7 +6,7 @@
  *
  * This file defines the hard-coded (negative value) system defined symbols
  *
- * @copyright Copyright (C) 2013-2014, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
+ * @copyright Copyright (C) 2013-2015, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
  * @ingroup def
  */
 
@@ -25,7 +25,6 @@ Symbol TEST_FLOAT_SYMBOL;
 Symbol TEST_TREE_SYMBOL;
 Symbol TEST_TREE_SYMBOL2;
 Symbol TEST_NAME_SYMBOL;
-Symbol TEST_FIRST_NAME_SYMBOL;
 Symbol TEST_RECEPTOR_SYMBOL;
 Symbol TEST_ALPHABETIZE_SCAPE_SYMBOL;
 
@@ -44,10 +43,10 @@ enum SystemSymbolIDs
     SYMBOL_STRUCTURE_ID,
     SYMBOL_LABEL_ID,
 
-    TRUE_FALSE_ID,
+    BOOLEAN_ID,
 
     //-----  Symbols for the different semantic parts of semtrexes
-    SEMTREX_MATCHED_PATH_ID,              ///< path to symbol matched by semtrex
+    SEMTREX_MATCH_PATH_ID,              ///< path to symbol matched by semtrex
     SEMTREX_SYMBOL_LITERAL_ID,            ///< This system symbol matches on the semantic type.         Ex: /TEST_SYMBOL
     SEMTREX_SYMBOL_LITERAL_NOT_ID,                ///< Match any symbol or value of the node except.           Ex: .
     SEMTREX_SYMBOL_SET_ID,
@@ -105,8 +104,9 @@ enum SystemSymbolIDs
     RUN_TREE_ID,                         ///< think about this as a stack frame and its code
     PARAM_REF_ID,                        ///< used in a code tree as a reference to a parameter
     PARAMS_ID,
+    RESULT_SYMBOL_ID,
+
     PROTOCOLS_ID,
-    PROTOCOL_ID,
     ROLES_ID,
     ROLE_ID,
     INTERACTIONS_ID,
@@ -131,13 +131,22 @@ enum SystemSymbolIDs
     PENDING_SIGNALS_ID,                  ///< list of currently active INSTALLED_RECEPTORS
     BINDINGS_ID,                         ///< specifics that match a MANIFEST and allow a receptor to be installed
     BINDING_PAIR_ID,                     ///< a pair that matches a MANIFEST_LABEL with a given binding
+
+    //----- symbols for reduction errors
+    ERROR_LOCATION_ID,
+    ZERO_DIVIDE_ERR_ID,
+    TOO_FEW_PARAMS_ERR_ID,
+    TOO_MANY_PARAMS_ERR_ID,
+    BAD_SIGNATURE_ERR_ID,
+    NOT_A_PROCESS_ERR_ID,
+
 };
 
 
 static Structure G_sys_symbol_structures[] = {
  /*   NULL_STRUCTURE,      //NULL_SYMBOL
-    BOOLEAN,             //TRUE_FALSE
-    TREE_PATH,           //SEMTREX_MATCHED_PATH
+    BIT,             //BOOLEAN
+    TREE_PATH,           //SEMTREX_MATCH_PATH
     SYMBOL,              //SEMTREX_SYMBOL_LITERAL
     LIST,                //SEMTREX_SEQUENCE
     NULL_STRUCTURE,      //SEMTREX_OR
@@ -171,7 +180,7 @@ static Structure G_sys_symbol_structures[] = {
     TREE,                //SCAPE_SPEC
     LIST,                //ASPECTS
     TREE,                //ASPECT_DEF
-    BOOLEAN,             //ASPECT_TYPE,
+    BIT,                 //ASPECT_TYPE,
     SYMBOL,              //CARRIER
     INTEGER,             //ASPECT
     LIST,                //SIGNALS
@@ -195,6 +204,7 @@ static Structure G_sys_symbol_structures[] = {
     TREE,                //RUN_TREE
     TREE_PATH,           //PARAM_REF
     LIST,                //PARAMS
+    SYMBOL,              //RESULT_SYMBOL
     LIST,//PROTOCOLS,
     TREE,//PROTOCOL,
     LIST,//ROLES,
@@ -257,10 +267,10 @@ Symbol SYMBOL_DECLARATION;
 Symbol SYMBOL_STRUCTURE;
 Symbol SYMBOL_LABEL;
 
-Symbol TRUE_FALSE;
+Symbol BOOLEAN;
 
 
-Symbol SEMTREX_MATCHED_PATH;
+Symbol SEMTREX_MATCH_PATH;
 Symbol SEMTREX_SYMBOL_LITERAL;
 Symbol SEMTREX_SYMBOL_LITERAL_NOT;
 Symbol SEMTREX_SYMBOL_SET;
@@ -314,8 +324,9 @@ Symbol OUTPUT_SIGNATURE;
 Symbol RUN_TREE;
 Symbol PARAM_REF;
 Symbol PARAMS;
+Symbol RESULT_SYMBOL;
+
 Symbol PROTOCOLS;
-Symbol PROTOCOL;
 Symbol ROLES;
 Symbol ROLE;
 Symbol INTERACTIONS;
@@ -338,6 +349,13 @@ Symbol ACTIVE_RECEPTORS;
 Symbol PENDING_SIGNALS;
 Symbol BINDINGS;
 Symbol BINDING_PAIR;
+
+Symbol ERROR_LOCATION;
+Symbol ZERO_DIVIDE_ERR;
+Symbol TOO_FEW_PARAMS_ERR;
+Symbol TOO_MANY_PARAMS_ERR;
+Symbol BAD_SIGNATURE_ERR;
+Symbol NOT_A_PROCESS_ERR;
 
 Symbol STX_TOKENS;
 Symbol STX_SL;
@@ -367,3 +385,9 @@ Symbol STX_VAL_F;
 Symbol STX_SIBS;
 Symbol STX_CHILD;
 Symbol STX_POSTFIX;
+
+Symbol TREE_DELTA_PATH;
+Symbol TREE_DELTA_VALUE;
+Symbol TREE_DELTA_COUNT;
+Symbol TREE_DELTA_ADD;
+Symbol TREE_DELTA_REPLACE;

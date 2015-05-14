@@ -35,7 +35,42 @@
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CefSharp">
+      <HintPath>..\..\HOPE\TypeSystemExplorer\bin\Debug\CefSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="CefSharp.BrowserSubprocess">
+      <HintPath>..\..\HOPE\TypeSystemExplorer\bin\Debug\CefSharp.BrowserSubprocess.exe</HintPath>
+    </Reference>
+    <Reference Include="CefSharp.BrowserSubprocess.Core">
+      <HintPath>..\..\HOPE\TypeSystemExplorer\bin\Debug\CefSharp.BrowserSubprocess.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CefSharp.Core">
+      <HintPath>..\..\HOPE\TypeSystemExplorer\bin\Debug\CefSharp.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CefSharp.WinForms">
+      <HintPath>..\..\HOPE\TypeSystemExplorer\bin\Debug\CefSharp.WinForms.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -55,6 +90,9 @@
     <Compile Include="Actions\InitializeMruMenu.cs" />
     <Compile Include="Actions\ITextController.cs" />
     <Compile Include="Actions\SetDocumentText.cs" />
+    <Compile Include="ChromiumWebBrowser.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controllers\ApplicationFormController.cs" />
     <Compile Include="Controllers\SemtrexUIController.cs" />
     <Compile Include="Controllers\StructureOutputController.cs" />
@@ -63,9 +101,11 @@
     <Compile Include="Controllers\StructureListController.cs" />
     <Compile Include="Controllers\SymbolEditorController.cs" />
     <Compile Include="Controllers\SymbolListController.cs" />
+    <Compile Include="Controllers\VisualTreeController.cs" />
     <Compile Include="Controls\TreeViewControl.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="DefaultFocusHandler.cs" />
     <Compile Include="GenericDockContent\GenericDocument.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -84,6 +124,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TypeConverters.cs" />
+    <Compile Include="User32.cs" />
     <Compile Include="Views\ApplicationFormView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -113,6 +154,9 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Views\ViewController.cs" />
+    <Compile Include="Views\VisualTreeView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <EmbeddedResource Include="GenericDockContent\ToolWindow.resx">
       <DependentUpon>ToolWindow.cs</DependentUpon>
     </EmbeddedResource>
@@ -182,6 +226,20 @@
     </Content>
     <Content Include="bin\Debug\symbolListPane.xml" />
     <Content Include="bin\Debug\symbolOutput.xml" />
+    <Content Include="bin\Debug\VisualTree.xml" />
+    <Content Include="bin\x86\Debug\appState.xml" />
+    <Content Include="bin\x86\Debug\dumpOutput.xml" />
+    <Content Include="bin\x86\Debug\layout.xml" />
+    <Content Include="bin\x86\Debug\mainform.xml" />
+    <Content Include="bin\x86\Debug\propertyGrid.xml" />
+    <Content Include="bin\x86\Debug\semtrexUI.xml" />
+    <Content Include="bin\x86\Debug\structureListPane.xml" />
+    <Content Include="bin\x86\Debug\structureOutput.xml" />
+    <Content Include="bin\x86\Debug\symbolEditorTree.xml" />
+    <Content Include="bin\x86\Debug\symbolEditorTreeDef.xml" />
+    <Content Include="bin\x86\Debug\symbolListPane.xml" />
+    <Content Include="bin\x86\Debug\symbolOutput.xml" />
+    <Content Include="bin\x86\Debug\VisualTree.xml" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

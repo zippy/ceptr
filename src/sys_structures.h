@@ -6,7 +6,7 @@
  *
  * This file defines the hard-coded (negative value) system defined structures
  *
- * @copyright Copyright (C) 2013-2014, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
+ * @copyright Copyright (C) 2013-2015, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
  * @ingroup def
  */
 
@@ -21,7 +21,7 @@
 enum SystemStructureID
     {
 	NULL_STRUCTURE_ID,
-	BOOLEAN_ID,
+	BIT_ID,
 	INTEGER_ID,
 	FLOAT_ID,
 	CHAR_ID,
@@ -37,11 +37,15 @@ enum SystemStructureID
 	PROCESS_ID,
 	STRUCTURE_ID,
 	SCAPE_ID,
+	PROTOCOL_ID,
+	SEMTREX_ID,
+	TREE_DELTA_ID,
+	REDUCTION_ERROR_ID
     };
 
 
 Structure NULL_STRUCTURE;
-Structure BOOLEAN;
+Structure BIT;
 Structure INTEGER;
 Structure FLOAT;
 Structure CHAR;
@@ -57,4 +61,8 @@ Structure RECEPTOR;
 Structure PROCESS;
 Structure STRUCTURE;
 Structure SCAPE;
+Structure PROTOCOL;
+Structure SEMTREX;
+Structure TREE_DELTA;
+Structure REDUCTION_ERROR;
 #endif

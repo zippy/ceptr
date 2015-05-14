@@ -7,6 +7,14 @@
 
     <style>
 
+    body {
+        font: 14px sans-serif;
+    }
+    .overlay {
+        fill: none;
+        pointer-events: all;
+    }
+
 	.node {
 		cursor: pointer;
 	}
@@ -32,12 +40,12 @@
   </head>
 
   <body>
-
+    <div id="stx" style="display:none">/%&lt;HTTP_REQUEST_PATH_SEGMENTS:HTTP_REQUEST_PATH_SEGMENTS,HTTP_REQUEST_PATH_FILE&gt;</div>
 <!-- load the d3.js library -->
-<script src="http://d3js.org/d3.v3.min.js"></script>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+<script src="/js/d3.v3.min.js"></script>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
 <script src="/js/ceptr.js"></script>
-<script src="http://jdataview.github.io/dist/jdataview.js"></script>
+<script src="/js/jdataview.js"></script>
 
 
 <script>
@@ -47,16 +55,43 @@ if (window.File && window.FileReader && window.FileList && window.Blob) {
   alert('The File APIs are not fully supported in this browser.');
 }
 
-
+var sampleTree =
+    {
+        "name": "Top Level",
+        "parent": "null",
+        "children": [
+            {
+                "name": "COWS 2: A",
+                //     "parent": "Top Level",
+                "children": [
+                    {
+                        "name": "Son of A",
+                        //         "parent": "Level 2: A"
+                    },
+                    {
+                        "name": "Daughter of A",
+                        //         "parent": "Level 2: A"
+                    }
+                ]
+            },
+            {
+                "name": "Level 2: B",
+                //      "parent": "Top Level"
+            }
+        ]
+    }
+;
+var treeData = sampleTree;
 
 // ************** Generate the tree diagram	 *****************
 var margin = {top: 20, right: 120, bottom: 20, left: 120},
-	width = 960 - margin.right - margin.left,
+	width =1500 - margin.right - margin.left,
 	height = 900 - margin.top - margin.bottom;
 
 var i = 0,
-	duration = 750,
-	root;
+  duration = 750,
+  depth_space = 200,
+  root;
 
 var tree = d3.layout.tree()
 	.size([height, width]);
@@ -64,46 +99,119 @@ var tree = d3.layout.tree()
 var diagonal = d3.svg.diagonal()
 	.projection(function(d) { return [d.y, d.x]; });
 
-var svg = d3.select("body").append("svg")
+var svg;
+function makeSVG() {
+    svg = d3.select("body").append("svg")
 	.attr("width", width + margin.right + margin.left)
 	.attr("height", height + margin.top + margin.bottom)
-  .append("g")
+        .append("g")
+        .call(d3.behavior.zoom().scaleExtent([-8, 8]).on("zoom", zoom))
+        .append("g")
 	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-function load_tree(){
-    $.get("test.json", {},function(data,status) {
-        treeData = [data];
-        set_root();
-        update(root);
-    }).fail(function(x) {
-        console.log(JSON.stringify(x));
+    svg.append("rect")
+        .attr("class", "overlay")
+        .attr("width", width)
+        .attr("height", height);
+}
+
+makeSVG();
+
+function zoom() {
+    svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+}
+
+function set_root(t) {
+    if (t) {
+        treeData = t;
+    }
+    root = treeData;
+    root.x0 = height / 2;
+    root.y0 = 0;
+};
+
+var trees;
+function load_trees(file_name,count,completedFN) {
+    var _trees = new Array();
+
+    function _load_trees(file_name,count,completedFN) {
+        var fn = (count == undefined) ? file_name+".json" : file_name+"_"+parseInt(count)+".json";
+        $.get(fn, {},function(data,status) {
+            console.log("loading:"+fn);
+            _trees[count==undefined?0:count] = data;
+            if (count != undefined && count > 0) {
+                _load_trees(file_name,count-1,completedFN);
+            }
+            else {
+                if (completedFN) {completedFN(_trees)};
+            }
+        }).fail(function(x) {
+            console.log("failed to load:"+fn);
+            console.log(JSON.stringify(x));
+        });
+    }
+    _load_trees(file_name,count,completedFN);
+    return _trees;
+}
+
+function load_tree(fn,count){
+    cur = 0;
+    load_trees(fn,count,function(_trees){
+        if (_trees.length>0) {
+            set_tree(_trees[0]);
+            trees = _trees;
+        }
     });
 }
 
-
-load_tree();
-set_root();
-
-update(root);
-
-d3.select(self.frameElement).style("height", "500px");
-
-function nodeText(n) {
-   var t = n.name;
-   if (n.surface) {
-      t +=":"+n.surface;
-   }
-   return t;
+function load_all() {
+   trees = load_trees("html",19);
 }
 
-function update(source) {
+var httpreq = load_trees("httpreq",2);
+
+var tree_prefix = "HTTP_REQUEST";
+
+function set_tree(t) {
+   set_root(t);
+   update(root);
+}
+
+load_tree("profile",10);
+
+d3.select(self.frameElement).style("height", "500px");
+var show_type = false;
+function nodeSemType(n) {
+    var t = n.name;
+    var a = t.split(tree_prefix);
+    if (a.length == 2 && a[1] != "") {t = a[1];}
+    if (show_type) {
+        t += ": "+n.type;
+    }
+    return t;
+}
+
+function nodeSurface(n) {
+    var r = "";
+    if (n.surface!=undefined) {
+        r = n.surface;
+        if (n.type == "CSTRING") {
+          r = r.split("\n").join("\\n");
+          if (r == "\n") r = "\\n";
+          r = '"'+r+'"';
+        }
+    }
+    return r;
+}
+
+function update(source,pt) {
 
   // Compute the new tree layout.
   var nodes = tree.nodes(root).reverse(),
 	  links = tree.links(nodes);
 
   // Normalize for fixed-depth.
-  nodes.forEach(function(d) { d.y = d.depth * 100; });
+  nodes.forEach(function(d) { d.y = d.depth * depth_space; });
 
   // Update the nodes
   var node = svg.selectAll("g.node")
@@ -112,7 +220,7 @@ function update(source) {
   // Enter any new nodes at the parent's previous position.
   var nodeEnter = node.enter().append("g")
 	  .attr("class", "node")
-	  .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
+	.attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
 	  .on("click", click);
 
   nodeEnter.append("circle")
@@ -120,11 +228,26 @@ function update(source) {
 	  .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
 
   nodeEnter.append("text")
+          .attr("class","sem-type")
+//	  .attr("x", function(d) { return d.children || d._children ? -13 : 13; })
+//  	  .attr("dy",  function(d) { return d.children || d._children ? "-1em" : ".35em"; })
+//	  .attr("text-anchor", function(d) { return d.children || d._children ? "middle" : "start"; })
+        .attr("dy", "-1.2em")
+        .attr("text-anchor", "middle")
+	  .text(nodeSemType)
+	  .style("fill-opacity", 1e-6)
+          .style("fill",function(d) { return d.color ? d.color : "steelblue"})
+;
+  nodeEnter.append("text")
+          .attr("class","surface")
 	  .attr("x", function(d) { return d.children || d._children ? -13 : 13; })
-	  .attr("dy", ".35em")
-	  .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
-	  .text(nodeText)
-	  .style("fill-opacity", 1e-6);
+        .attr("text-anchor", "start")
+	.attr("dy", function(d) {return (d.type == "BIT") ? ".25em" : ".25em"})
+//	  .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
+	  .text(nodeSurface)
+	  .style("fill-opacity", 1e-6)
+          .style("fill",function(d) { return d.color ? d.color : "black"})
+;
 
   // Transition nodes to their new position.
   var nodeUpdate = node.transition()
@@ -135,20 +258,24 @@ function update(source) {
 	  .attr("r", 10)
 	  .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
 
-  nodeUpdate.select("text")
-	  .text(nodeText)
-	  .style("fill-opacity", 1);
+    nodeUpdate.select(".sem-type")
+	.text(nodeSemType)
+	.style("fill-opacity", 1);
+
+    nodeUpdate.select(".surface")
+	.text(nodeSurface)
+	.style("fill-opacity", 1);
 
   // Transition exiting nodes to the parent's new position.
   var nodeExit = node.exit().transition()
 	  .duration(duration)
-	  .attr("transform", function(d) { return "translate(" + source.y + "," + source.x + ")"; })
+	  .attr("transform", function(d) { return "translate(" + (pt?pt.y:source.y) + "," + (pt?pt.x:source.x) + ")"; })
 	  .remove();
 
   nodeExit.select("circle")
 	  .attr("r", 1e-6);
 
-  nodeExit.select("text")
+  nodeExit.selectAll("text")
 	  .style("fill-opacity", 1e-6);
 
   // Update the links
@@ -159,7 +286,7 @@ function update(source) {
   link.enter().insert("path", "g")
 	  .attr("class", "link")
 	  .attr("d", function(d) {
-		var o = {x: source.x0, y: source.y0};
+		var o = pt ? {x:pt.x, y:pt.y} :  {x: source.x0, y: source.y0};
 		return diagonal({source: o, target: o});
 	  });
 
@@ -172,7 +299,7 @@ function update(source) {
   link.exit().transition()
 	  .duration(duration)
 	  .attr("d", function(d) {
-		var o = {x: source.x, y: source.y};
+	        var o = pt ? {x:pt.x, y:pt.y} :  {x: source.x, y: source.y};
 		return diagonal({source: o, target: o});
 	  })
 	  .remove();
@@ -197,10 +324,73 @@ function click(d) {
   update(d);
 }
 
+var cur = 0;
+function cycle(dir) {
+    if (trees.length == 0) {
+        load_all();
+    }
+    cur+=dir;
+    if (cur == trees.length) {cur = 0};
+    if (cur < 0) {cur = trees.length-1};
+    set_tree(trees[cur]);
+    $(".file")[0].innerHTML = parseInt(cur);
+}
+
+function delta() {
+    if (cur == 0) {
+        set_tree(trees[0]);
+    }
+    else {
+        var t = trees[cur];
+        if (t) {
+            var path = t.children[0].surface;
+            var tree = t.children[1].children[0]; // the value is the first child
+            var n = t_get(root,path);
+            var pt = {x:n.x0,y:n.y0};
+            if (t.name == "TREE_DELTA_ADD") {
+                t_add(n,tree);
+                update(root);
+            } else if (t.name == "TREE_DELTA_REPLACE") {
+                var p = p2a(path);
+                if (p.length==0) {
+                    root = tree;
+                }
+                else {
+                    var count = t.children[2].surface;
+                    var op = p.slice(0);
+                    var start = p.pop();
+                    var np = _t_get(root,p);
+                    np.children.splice(start,count-1);
+                    np.children[start-1] = tree;
+                }
+                update(root,pt);
+            }
+        }
+    }
+    cur += 1;
+}
+
 </script>
 <br />
-<input type="file" id="files" name="files[]" multiple />
+<span class="file"></span>
+<!-- <input type="file" id="files" name="files[]" multiple /> -->
 <div id="list"></output>
+    <input type="button" onclick="show_type = !show_type;update(root)" value="struct">
+    <input type="button" onclick="delta()" value="delta">
+    <input type="button" onclick="cycle(1)" value="next">
+    <input type="button" onclick="cycle(-1)" value="prev">
+    <input type="button" onclick="depth_space=200;load_tree('user_profile');" value="profile">
+    <input type="button" onclick="depth_space=200;load_tree('profile',10);" value="mailing label">
+    <input type="button" onclick="tree_prefix='HTML';depth_space=110;load_tree('html',19);" value="html">
+
+    <input type="button" onclick="tree_prefix='HTTP_REQUEST';depth_space=150;load_tree('httpreq',2)" value="http request">
+    <input type="button" onclick="depth_space=200;tree_prefix='SEMTREX';set_tree(httpreq[1]);$('#stx').show()" value="semtrex">
+    <input type="button" onclick="depth_space=150;tree_prefix='SEMTREX_MATCH';set_tree(httpreq[2]);" value="semtrex match">
+    <input type="button" onclick="tree_prefix='HTTP_REQUEST';depth_space=150;t_stx_hilight(httpreq[0],httpreq[2],'red'),set_tree(httpreq[0]);" value="semtrex hilight">
+
+    <input type="button" onclick="tree_prefix='HTTP_RESPONSE';depth_space=100;load_tree('httpresp')" value="http response">
+    <input type="button" onclick="depth_space=150;load_tree('homeloc')" value="home location">
+
 
 <script>
   var TF;
@@ -225,6 +415,7 @@ var raw;
            mtree = unserialize(e.target.result);
            treeData = [];
            walk(mtree,m_2tfn,treeData);
+           treeData = treeData[0];
            set_root();
            update(root);
           };
@@ -234,7 +425,7 @@ var raw;
   }
 
 
-  document.getElementById('files').addEventListener('change', handleFileSelect, false);
+//  document.getElementById('files').addEventListener('change', handleFileSelect, false);
 
   function g(f) {
       xmlhttp=new XMLHttpRequest();
@@ -246,6 +437,7 @@ var raw;
               mtree = unserialize(xmlhttp.responseText);
               treeData = [];
               walk(mtree,m_2tfn,treeData);
+              treeData = treeData[0];
               set_root();
               update(root);
 

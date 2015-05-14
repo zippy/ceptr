@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using CefSharp;
+
 using Clifton.ApplicationStateManagement;
 using Clifton.MycroParser;
 
@@ -22,6 +24,7 @@ namespace csharp_ide
 		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
+			Cef.Initialize();
 
 			try
 			{

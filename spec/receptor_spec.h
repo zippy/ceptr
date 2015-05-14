@@ -1,6 +1,6 @@
 /**
  * @file receptor_spec.h
- * @copyright Copyright (C) 2013-2014, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
+ * @copyright Copyright (C) 2013-2015, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
  * @ingroup tests
  */
 
@@ -53,6 +53,8 @@ void testReceptorCreate() {
     t = _t_child(r->flux,1);
     spec_is_symbol_equal(r,_t_symbol(t),ASPECT);
     spec_is_equal(*(int *)_t_surface(t),DEFAULT_ASPECT);
+
+    spec_is_str_equal(t2s(r->root),"(TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))))");
 
     _r_free(r);
     //! [testReceptorCreate]
@@ -138,15 +140,18 @@ void testReceptorAction() {
     T *g = _t_news(segs,SEMTREX_GROUP,HTTP_REQUEST_PATH_SEGMENT);
     _t_news(g,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST_PATH_SEGMENT);
 */
-    char buf[2000];
+
+    // gotta load the defs into the receptor for printing things out to work right.
+    r->defs.symbols = _t_clone(test_HTTP_defs.symbols);
+    r->defs.structures = _t_clone(test_HTTP_defs.structures);
 
     T *result;
     int matched;
     // make sure our expectation semtrex actually matches the signal
     spec_is_true(_t_matchr(req,signal_contents,&result));
     T *m = _t_get_match(result,HTTP_REQUEST_PATH_SEGMENT);
-    __t_dump(&test_HTTP_defs,m,0,buf);
-    spec_is_str_equal(buf,"(SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:HTTP_REQUEST_PATH_SEGMENT) (SEMTREX_MATCHED_PATH:/3/1/1) (SEMTREX_MATCH_SIBLINGS_COUNT:1))");
+
+    spec_is_str_equal(_td(r,m),"(SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:HTTP_REQUEST_PATH_SEGMENT) (SEMTREX_MATCH_PATH:/3/1/1) (SEMTREX_MATCH_SIBLINGS_COUNT:1))");
     if (result) {
 	_t_free(result);
     }
@@ -158,12 +163,11 @@ void testReceptorAction() {
     _r_add_listener(r,DEFAULT_ASPECT,HTTP_REQUEST,expect,act);
 
     result = _r_deliver(r,signal);
-    spec_is_symbol_equal(r,_t_symbol(result),HTTP_RESPONSE);
+    //    spec_is_symbol_equal(r,_t_symbol(result),HTTP_RESPONSE);
 
     // the result should be signal tree with the matched PATH_SEGMENT returned as the body
-    __t_dump(&test_HTTP_defs,result,0,buf);
-    spec_is_str_equal(buf,"(HTTP_RESPONSE (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT) (HTTP_REQUEST_PATH_SEGMENT:groups))");
-
+    spec_is_str_equal(_td(r,result),"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.4) (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (ASPECT:1)) (BODY:{(HTTP_RESPONSE (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT) (HTTP_REQUEST_PATH_SEGMENT:groups))})))");
+    _t_free(result);
     _r_free(r);
     //! [testReceptorAction]
 }
@@ -268,16 +272,17 @@ void testReceptorDefMatch() {
     //! [testReceptorDefMatch]
 }
 
-void testReceptorProtocol() {
-    //! [testReceptorProtocol]
+Receptor *_makePingProtocolReceptor(Symbol *pingP) {
     Receptor *r;
     r = _r_new(TEST_RECEPTOR_SYMBOL);
 
-    Symbol ping = _r_declare_symbol(r,BOOLEAN,"ping");
+    Symbol ping_protocol = _r_declare_symbol(r,PROTOCOL,"ping");
+    Symbol ping = _r_declare_symbol(r,BIT,"ping_message");
+    *pingP = ping;
 
     // define a ping protocol with two roles and two interactions
     T *ps = r->defs.protocols;
-    T *p = _t_newr(ps,PROTOCOL);
+    T *p = _t_newr(ps,ping_protocol);
     T *roles = _t_newr(p,ROLES);
     _t_new(roles,ROLE,"server",7);
     _t_new(roles,ROLE,"client",7);
@@ -321,21 +326,33 @@ void testReceptorProtocol() {
     _t_newi(a,ASPECT_TYPE,EXTERNAL_ASPECT);
     _t_news(a,CARRIER,ping);
     _t_news(a,CARRIER,ping);
+    wjson(&r->defs,p,"protocol",-1);
+    return r;
+}
+
+void testReceptorProtocol() {
+    //! [testReceptorProtocol]
+    Symbol ping;
+    Receptor *r = _makePingProtocolReceptor(&ping);
+
     _r_install_protocol(r,1,"server",DEFAULT_ASPECT);
 
     char *d = _td(r,r->root);
 
-    spec_is_str_equal(d,"(TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS (SYMBOL_DECLARATION (SYMBOL_LABEL:ping) (SYMBOL_STRUCTURE:BOOLEAN))) (PROCESSES (PROCESS_CODING (PROCESS_NAME:send ping response) (PROCESS_INTENTION:long desc...) (process:RESPOND (ping:1)) (INPUT) (OUTPUT_SIGNATURE))) (PROTOCOLS (PROTOCOL (ROLES (ROLE:server) (ROLE:client)) (INTERACTIONS (INTERACTION (STEP:ping) (FROM_ROLE) (TO_ROLE) (CARRIER:ping) (CARRIER:ping) (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping))) (ACTION:send ping response) (RESPONSE_STEPS (STEP:ping_response))) (INTERACTION (STEP:ping_response) (FROM_ROLE) (TO_ROLE) (CARRIER:ping) (CARRIER:ping) (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping))))))) (SCAPES)) (ASPECTS (ASPECT_DEF (ASPECT_TYPE:0) (CARRIER:ping) (CARRIER:ping))) (FLUX (ASPECT:1 (LISTENERS (LISTENER:ping (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping))) (ACTION:send ping response))) (SIGNALS))))");
+    spec_is_str_equal(d,"(TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS (SYMBOL_DECLARATION (SYMBOL_LABEL:ping) (SYMBOL_STRUCTURE:PROTOCOL)) (SYMBOL_DECLARATION (SYMBOL_LABEL:ping_message) (SYMBOL_STRUCTURE:BIT))) (PROCESSES (PROCESS_CODING (PROCESS_NAME:send ping response) (PROCESS_INTENTION:long desc...) (process:RESPOND (ping_message:1)) (INPUT) (OUTPUT_SIGNATURE))) (PROTOCOLS (ping (ROLES (ROLE:server) (ROLE:client)) (INTERACTIONS (INTERACTION (STEP:ping) (FROM_ROLE:client) (TO_ROLE:server) (CARRIER:ping_message) (CARRIER:ping_message) (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping_message))) (ACTION:send ping response) (RESPONSE_STEPS (STEP:ping_response))) (INTERACTION (STEP:ping_response) (FROM_ROLE:server) (TO_ROLE:client) (CARRIER:ping_message) (CARRIER:ping_message) (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping_message))))))) (SCAPES)) (ASPECTS (ASPECT_DEF (ASPECT_TYPE:0) (CARRIER:ping_message) (CARRIER:ping_message))) (FLUX (ASPECT:1 (LISTENERS (LISTENER:ping_message (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping_message))) (ACTION:send ping response))) (SIGNALS))))");
 
     // delivering a fake signal should return a ping
     Xaddr f = {RECEPTOR_XADDR,3};  // DUMMY XADDR
     Xaddr t = {RECEPTOR_XADDR,4};  // DUMMY XADDR
     T *signal = __r_make_signal(f,t,DEFAULT_ASPECT,_t_newi(0,ping,0));
 
+    d = _td(r,signal);
+    spec_is_str_equal(d,"(SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (RECEPTOR_XADDR:RECEPTOR_XADDR.4) (ASPECT:1)) (BODY:{(ping_message:0)}))");
+
     T *result = _r_deliver(r,signal);
     d = _td(r,result);
-    spec_is_str_equal(d,"(ping:1)");
-
+    spec_is_str_equal(d,"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.4) (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (ASPECT:1)) (BODY:{(ping_message:1)})))");
+    _t_free(result);
     _r_free(r);
     //! [testReceptorProtocol]
 }
@@ -360,6 +377,7 @@ void testReceptorInstanceNew() {
     float *ill;
     T *i = _r_get_instance(r,x);
 
+    wjson(&r->defs,i,"houseloc",-1);
     spec_is_ptr_equal(t,i);
 
     _r_free(r);
@@ -420,6 +438,62 @@ void testReceptorSerialize() {
     //! [testReceptorSerialize]
 }
 
+
+Symbol mantissa;
+Symbol exponent;
+Symbol exps[16];
+Structure flt;
+Structure integer;
+Symbol latitude;
+Symbol longitude;
+Structure lat_long;
+Symbol home_location;
+
+void defineNums(Receptor *r) {
+    int i = 0;
+    char buf[10];
+    for(i=0;i<16;i++){
+	sprintf(buf,"exp%d",i);
+	exps[i] = _r_declare_symbol(r,BIT,buf);
+    }
+    integer = _r_define_structure(r,"integer",16,exps[0],exps[1],exps[2],exps[3],exps[4],exps[5],exps[6],exps[7],exps[8],exps[9],exps[10],exps[11],exps[12],exps[13],exps[14],exps[15]);
+    mantissa = _r_declare_symbol(r,integer,"mantissa");
+    exponent = _r_declare_symbol(r,integer,"exponent");
+    flt = _r_define_structure(r,"float",2,mantissa,exponent);
+    latitude = _r_declare_symbol(r,flt,"latitude");
+    longitude = _r_declare_symbol(r,flt,"longitude");
+    lat_long = _r_define_structure(r,"latlong",2,latitude,longitude);
+    home_location = _r_declare_symbol(r,lat_long,"home_location");
+}
+
+void makeInt(T *t,int v) {
+    int i;
+    for(i=0;i<16;i++){
+	_t_newi(t,exps[i],(v>>i)&1);
+    }
+}
+void testReceptorNums() {
+    Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
+    defineNums(r);
+
+    // create a home location tree
+    T *t = _t_new_root(home_location);
+    T *lat = _t_newr(t,latitude);
+    T *lon = _t_newr(t,longitude);
+    T *m = _t_newr(lat,mantissa);
+    T *e = _t_newr(lat,exponent);
+    makeInt(m,22);
+    makeInt(e,1);
+    m = _t_newr(lon,mantissa);
+    e = _t_newr(lon,exponent);
+    makeInt(m,1);
+    makeInt(e,2);
+    spec_is_str_equal(_t2s(&r->defs,t),"(home_location (latitude (mantissa (exp0:0) (exp1:1) (exp2:1) (exp3:0) (exp4:1) (exp5:0) (exp6:0) (exp7:0) (exp8:0) (exp9:0) (exp10:0) (exp11:0) (exp12:0) (exp13:0) (exp14:0) (exp15:0)) (exponent (exp0:1) (exp1:0) (exp2:0) (exp3:0) (exp4:0) (exp5:0) (exp6:0) (exp7:0) (exp8:0) (exp9:0) (exp10:0) (exp11:0) (exp12:0) (exp13:0) (exp14:0) (exp15:0))) (longitude (mantissa (exp0:1) (exp1:0) (exp2:0) (exp3:0) (exp4:0) (exp5:0) (exp6:0) (exp7:0) (exp8:0) (exp9:0) (exp10:0) (exp11:0) (exp12:0) (exp13:0) (exp14:0) (exp15:0)) (exponent (exp0:0) (exp1:1) (exp2:0) (exp3:0) (exp4:0) (exp5:0) (exp6:0) (exp7:0) (exp8:0) (exp9:0) (exp10:0) (exp11:0) (exp12:0) (exp13:0) (exp14:0) (exp15:0))))");
+    wjson(&r->defs,t,"homeloc",-1);
+
+    _r_free(r);
+}
+
 void testReceptor() {
     _setup_HTTPDefs();
     testReceptorCreate();
@@ -431,5 +505,6 @@ void testReceptor() {
     testReceptorProtocol();
     testReceptorInstanceNew();
     //    testReceptorSerialize();
+    testReceptorNums();
     _cleanup_HTTPDefs();
 }

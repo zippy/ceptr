@@ -1,6 +1,6 @@
 /**
  * @file http_example.h
- * @copyright Copyright (C) 2013-2014, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
+ * @copyright Copyright (C) 2013-2015, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
  * @ingroup tests
  */
 
@@ -11,6 +11,7 @@
 #include "../src/receptor.h"
 #include "../src/def.h"
 #include "../src/semtrex.h"
+#include "spec_utils.h"
 
 Symbol OCTET_STREAM;
 
@@ -44,6 +45,11 @@ Symbol VERSION_MINOR;
 Symbol HTTP_RESPONSE;
 Symbol HTTP_RESPONSE_CONTENT_TYPE;
 Symbol HTTP_RESPONSE_BODY;
+Symbol HTTP_RESPONSE_STATUS;
+Structure STATUS;
+Symbol STATUS_VALUE;
+Symbol STATUS_TEXT;
+
 
 T *test_HTTP_symbols,*test_HTTP_structures;
 Defs test_HTTP_defs;
@@ -53,6 +59,13 @@ void _setup_version_defs(Defs d) {
     SY(d,VERSION_MINOR,INTEGER);
     ST(d,VERSION,2,VERSION_MAJOR,VERSION_MINOR);
 }
+
+void _setup_status_defs(Defs d) {
+    SY(d,STATUS_VALUE,INTEGER);
+    SY(d,STATUS_TEXT,CSTRING);
+    ST(d,STATUS,2,STATUS_VALUE,STATUS_TEXT);
+}
+
 
 //@todo make this actually match request-URI rather than just the path
 void _setup_uri_defs(Defs d) {
@@ -73,6 +86,80 @@ void _setup_uri_defs(Defs d) {
        HTTP_REQUEST_PATH_FILE,
        HTTP_REQUEST_PATH_QUERY
        );
+}
+
+Symbol HTML_DOCUMENT;
+Structure HTML_ELEMENT;
+Symbol HTML_ATTRIBUTES;
+Symbol HTML_ATTRIBUTE;
+Symbol HTML_CONTENT;
+Symbol HTML_TEXT;
+Symbol HTML_HTML;
+Symbol HTML_HEAD;
+Symbol HTML_TITLE;
+Symbol HTML_BODY;
+Symbol HTML_DIV;
+Symbol HTML_P;
+Symbol HTML_IMG;
+Symbol HTML_A;
+Symbol HTML_B;
+Symbol HTML_UL;
+Symbol HTML_OL;
+Symbol HTML_LI;
+Symbol HTML_SPAN;
+Symbol HTML_H1;
+Symbol HTML_H2;
+Symbol HTML_H3;
+Symbol HTML_H4;
+Symbol HTML_FORM;
+Symbol HTML_INPUT;
+Symbol HTML_BUTTON;
+
+//semtrex html symbols
+
+Symbol HTML_TOKENS;
+Symbol HTML_TOK_TAG_OPEN;
+Symbol HTML_TOK_TAG_CLOSE;
+Symbol HTML_TOK_TAG_SELFCLOSE;
+Symbol HTML_TAG;
+
+void _setup_html_defs(Defs d) {
+    SY(d,HTML_DOCUMENT,TREE);
+    SY(d,HTML_TOKENS,LIST);
+    SY(d,HTML_TOK_TAG_OPEN,CSTRING);
+    SY(d,HTML_TOK_TAG_CLOSE,CSTRING);
+    SY(d,HTML_TOK_TAG_SELFCLOSE,CSTRING);
+    SY(d,HTML_TAG,CSTRING);
+
+
+    SY(d,HTML_ATTRIBUTES,LIST);
+    SY(d,HTML_ATTRIBUTE,KEY_VALUE_PARAM);
+    SY(d,HTML_CONTENT,LIST);  // really should be semtrex: /(HTML_ELEMENT|HTML_TEXT)+
+    SY(d,HTML_TEXT,CSTRING);
+    ST(d,HTML_ELEMENT,2,
+       HTML_ATTRIBUTES,
+       HTML_CONTENT
+       );
+    SY(d,HTML_HTML,HTML_ELEMENT);
+    SY(d,HTML_HEAD,HTML_ELEMENT);
+    SY(d,HTML_TITLE,HTML_ELEMENT);
+    SY(d,HTML_BODY,HTML_ELEMENT);
+    SY(d,HTML_DIV,HTML_ELEMENT);
+    SY(d,HTML_P,HTML_ELEMENT);
+    SY(d,HTML_IMG,HTML_ELEMENT);
+    SY(d,HTML_A,HTML_ELEMENT);
+    SY(d,HTML_B,HTML_ELEMENT);
+    SY(d,HTML_UL,HTML_ELEMENT);
+    SY(d,HTML_OL,HTML_ELEMENT);
+    SY(d,HTML_LI,HTML_ELEMENT);
+    SY(d,HTML_SPAN,HTML_ELEMENT);
+    SY(d,HTML_H1,HTML_ELEMENT);
+    SY(d,HTML_H2,HTML_ELEMENT);
+    SY(d,HTML_H3,HTML_ELEMENT);
+    SY(d,HTML_H4,HTML_ELEMENT);
+    SY(d,HTML_FORM,HTML_ELEMENT);
+    SY(d,HTML_INPUT,HTML_ELEMENT);
+    SY(d,HTML_BUTTON,HTML_ELEMENT);
 }
 
 void _setup_HTTPDefs() {
@@ -98,6 +185,11 @@ void _setup_HTTPDefs() {
     SY(d,HTTP_RESPONSE,TREE);
     SY(d,HTTP_RESPONSE_CONTENT_TYPE,CSTRING);
     SY(d,HTTP_RESPONSE_BODY,CSTRING);
+
+    _setup_status_defs(d);
+    SY(d,HTTP_RESPONSE_STATUS,STATUS);
+
+    _setup_html_defs(d);
 }
 
 void _cleanup_HTTPDefs() {
@@ -258,4 +350,170 @@ T *_makeHTTPRequestSemtrex() {
     __stxcv(f,'9');
     return stx;
 }
+
+T *makeDeltaAdd(T *src,T *t) {
+    int *path = _t_get_path(src);
+    T *d = makeDelta(TREE_DELTA_ADD,path,t,0);
+    free(path);
+    return d;
+}
+
+Symbol getTag(char *otag,Symbol tag_sym[],char *tag_str[]) {
+    Symbol ts = NULL_SYMBOL;
+    int i;
+    for(i=0;i<15;i++) {
+	if (!strcicmp(otag,tag_str[i])) {ts = tag_sym[i];break;}
+    }
+    if (semeq(ts,NULL_SYMBOL)) {raise_error("invalid tag: %s",otag);}
+    return ts;
+}
+
+T *parseHTML(char *html) {
+
+    Symbol G_tag_sym[] = {HTML_HTML,HTML_HEAD,HTML_TITLE,HTML_BODY,HTML_DIV,HTML_P,HTML_A,HTML_B,HTML_UL,HTML_OL,HTML_LI,HTML_SPAN,HTML_H1,HTML_H2,HTML_H3,HTML_H4,HTML_FORM};
+    char *G_tag_str[] ={"html","head","title","body","div","p","a","b","ul","ol","li","span","h1","h2","h3","h4","form"};
+
+    Symbol G_stag_sym[] = {HTML_IMG,HTML_INPUT,HTML_BUTTON};
+    char *G_stag_str[] ={"img","input","button"};
+
+    Defs *d = &test_HTTP_defs;
+    T *t,*h = makeASCIITree(html);
+
+    /////////////////////////////////////////////////////
+    // build the token stream out of an ascii stream
+    // EXPECTATION
+    T *s;
+    char *stx = "/ASCII_CHARS/<HTML_TOKENS:(ASCII_CHAR='<',<HTML_TOK_TAG_SELFCLOSE:ASCII_CHAR!={'>',' '}+>,<HTML_ATTRIBUTES:(ASCII_CHAR=' ',<HTML_ATTRIBUTE:<PARAM_KEY:ASCII_CHAR!={'>',' ','='}+>,ASCII_CHAR='=',ASCII_CHAR='\"',<PARAM_VALUE:ASCII_CHAR!='\"'+>,ASCII_CHAR='\"'>)*>,ASCII_CHAR='/',ASCII_CHAR='>'|ASCII_CHAR='<',ASCII_CHAR='/',<HTML_TOK_TAG_CLOSE:ASCII_CHAR!='>'+>,ASCII_CHAR='>'|ASCII_CHAR='<',<HTML_TOK_TAG_OPEN:ASCII_CHAR!={'>',' '}+>,<HTML_ATTRIBUTES:(ASCII_CHAR=' ',<HTML_ATTRIBUTE:<PARAM_KEY:ASCII_CHAR!={'>',' ','='}+>,ASCII_CHAR='=',ASCII_CHAR='\"',<PARAM_VALUE:ASCII_CHAR!='\"'+>,ASCII_CHAR='\"'>)*>,ASCII_CHAR='>'|<HTML_TEXT:ASCII_CHAR!='<'+>)+>";
+
+    s = parseSemtrex(d,stx);
+
+    int fnc = 0;
+    wjson(d,s,"htmlparse",-1);
+    wjson(d,h,"htmlascii",-1);
+
+    T *results,*tokens;
+    if (_t_matchr(s,h,&results)) {
+	tokens = _t_new_root(HTML_TOKENS);
+	int i,m = _t_children(results);
+	wjson(d,tokens,"html",fnc++);
+	T *delta,*src;
+	for(i=4;i<=m;i++) {
+	    T *c = _t_child(results,i);
+	    T *sn = _t_child(c,1);
+	    Symbol ts = *(Symbol *)_t_surface(sn);
+	    if (semeq(ts,HTML_ATTRIBUTES)) {
+		T *a = _t_new_root(HTML_ATTRIBUTES);
+		int j,ac = _t_children(c);
+		for(j=4;j<=ac;j++) {
+		    T *attr = _t_newr(a,HTML_ATTRIBUTE);
+		    T *at = _t_child(c,j);
+		    T *m = _t_get_match(at,PARAM_KEY);
+		    asciiT_tos(h,m,attr,PARAM_KEY);
+		    m = _t_get_match(at,PARAM_VALUE);
+		    asciiT_tos(h,m,attr,PARAM_VALUE);
+		}
+		// we can just add the attribute directly to the previous token which will be the open tag tokens
+		src = _t_child(tokens,_t_children(tokens));
+		delta = a;
+		_t_add(src,a);
+	    }
+	    else {
+		src = tokens;
+		delta = asciiT_tos(h,c,tokens,ts);
+	    }
+	    delta = makeDeltaAdd(src,delta);
+	    wjson(d,delta,"html",fnc++);
+	    _t_free(delta);
+	}
+	_t_free(results);
+	_t_free(s);
+
+	s = _t_new_root(SEMTREX_WALK);
+	//	T *st = _t_newr(sq,SEMTREX_ZERO_OR_MORE);
+	//	_t_newr(st,SEMTREX_SYMBOL_ANY);
+	T *g = 	_t_news(s,SEMTREX_GROUP,HTML_TAG);
+	T *sq = _t_newr(g,SEMTREX_SEQUENCE);
+	_sl(sq,HTML_TOK_TAG_OPEN);
+	g = _t_news(sq,SEMTREX_GROUP,HTML_CONTENT);
+	T* st = _t_newr(g,SEMTREX_ZERO_OR_MORE);
+	__sl(st,1,2,HTML_TOK_TAG_OPEN,HTML_TOK_TAG_CLOSE);
+	_sl(sq,HTML_TOK_TAG_CLOSE);
+
+	//	stx = "%<HTML_TAG:HTML_TOK_TAG_OPEN,!{HTML_TOK_TAG_OPEN,HTML_TOK_TAG_CLOSE},HTML_TOK_TAG_CLOSE>";
+	//s = parseSemtrex(d,stx);
+	//	return tokens;
+	while (_t_matchr(s,tokens,&results)) {
+	    T *m = _t_get_match(results,HTML_TAG);
+	    int *path = _t_surface(_t_child(m,2));
+	    int count = *(int *)_t_surface(_t_child(results,3));
+	    T *ot = _t_get(tokens,path);
+	    path[_t_path_depth(path)-1] += count-1;
+	    T *ct = _t_get(tokens,path);
+	    char *otag = _t_surface(ot);
+	    char *ctag = _t_surface(ct);
+	    if (strcmp(otag,ctag)) {raise_error2("Mismatched tags %s,%s",otag,ctag)};
+
+	    Symbol ts = getTag(otag,G_tag_sym,G_tag_str);
+	    path[_t_path_depth(path)-1] -= count-1;
+	    T *content = wrap(tokens,results,HTML_CONTENT,HTML_TAG);
+	    T *attributes = _t_detach_by_idx(content,1);
+	    __t_morph(content,HTML_CONTENT,0,0,0);
+	    T *p = _t_parent(content);
+	    _t_detach_by_ptr(p,content);
+	    T *tag = _t_new_root(ts);
+	    _t_add(tag,attributes);
+	    _t_add(tag,content);
+	    _t_insert_at(tokens,path,tag);
+	    delta = makeDelta(TREE_DELTA_REPLACE,path,tag,count);
+	    wjson(d,delta,"html",fnc++);
+	    _t_free(delta);
+	    _t_free(results);
+	}
+	_t_free(s);
+
+	s = _t_new_root(SEMTREX_WALK);
+	g = _t_news(s,SEMTREX_GROUP,HTML_TAG);
+	_sl(g,HTML_TOK_TAG_SELFCLOSE);
+	while (_t_matchr(s,tokens,&results)) {
+	    T *m = _t_get_match(results,HTML_TAG);
+	    int *path = _t_surface(_t_child(m,2));
+	    T *t = _t_get(tokens,path);
+	    char *otag = _t_surface(t);
+	    Symbol ts = getTag(otag,G_stag_sym,G_stag_str);
+	    __t_morph(t,ts,0,0,0);
+	    _t_newr(t,HTML_CONTENT);
+	    delta = makeDelta(TREE_DELTA_REPLACE,path,t,1);
+	    wjson(d,delta,"html",fnc++);
+	    _t_free(delta);
+	    _t_free(results);
+
+	}
+	_t_free(s);
+	results = _t_detach_by_idx(tokens,1);
+	_t_free(tokens);
+	_t_free(h);
+	return results;
+    }
+    raise_error0("HTML doesn't match");
+}
+
+void testHTTPExample() {
+    _setup_HTTPDefs();
+    T *t = parseHTML("<html><body><div>Hello <b>world!</b></div></body></html>");
+    T *r = _t_new_root(HTTP_RESPONSE);
+    T *s = _t_newr(r,HTTP_RESPONSE_STATUS);
+    _t_newi(s,STATUS_VALUE,200);
+    _t_new_str(s,STATUS_TEXT,"OK");
+    _t_new_str(r,HTTP_RESPONSE_CONTENT_TYPE,"CeptrSymbol/HTML_DOCUMENT");
+    T *d = _t_newr(r,HTML_DOCUMENT);
+    _t_add(d,t);
+    spec_is_str_equal(_t2s(&test_HTTP_defs,r),"(HTTP_RESPONSE (HTTP_RESPONSE_STATUS (STATUS_VALUE:200) (STATUS_TEXT:OK)) (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTML_DOCUMENT) (HTML_DOCUMENT (HTML_HTML (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_BODY (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_DIV (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_TEXT:Hello ) (HTML_B (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_TEXT:world!)))))))))))");
+    wjson(&test_HTTP_defs,r,"httpresp",-1);
+
+    _t_free(r);
+    _cleanup_HTTPDefs();
+
+}
+
 #endif
+//

@@ -121,6 +121,7 @@ namespace csharp_ide.Controllers
 				ApplicationController.CeptrInterface.RootStructuresNode,
 				View.tbMatchAgainst.Text
 				);
+
 			DumpOutput(matchAgainstID);
 		}
 
@@ -154,7 +155,20 @@ namespace csharp_ide.Controllers
 				ApplicationController.CeptrInterface.RootStructuresNode,
 				id);
 
+			string json = ApplicationController.CeptrInterface.CreateVisualTree(
+				ApplicationController.CeptrInterface.RootSymbolsNode,
+				ApplicationController.CeptrInterface.RootStructuresNode,
+				id);
+
+			json = json.Replace("SEMTREX_", "");
+			json = json.Replace("HTTP_REQUEST_", "");
+
 			View.tbSemtrexTree.Text = ApplicationController.FormatDump(dump);
+
+			if (ApplicationController.VisualTreeController != null)
+			{
+				ApplicationController.VisualTreeController.ShowTree(json);
+			}
 		}
 
 		// TODO: As per other comments, we need an actual model separate from the view!

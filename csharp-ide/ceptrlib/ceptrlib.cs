@@ -38,10 +38,10 @@ namespace ceptrlib
 		SYMBOL_STRUCTURE_ID,
 		SYMBOL_LABEL_ID,
 
-		TRUE_FALSE_ID,
+		BOOLEAN_ID,
 
 		//-----  Symbols for the different semantic parts of semtrexes
-		SEMTREX_MATCHED_PATH_ID,              ///< path to symbol matched by semtrex
+		SEMTREX_MATCH_PATH_ID,              ///< path to symbol matched by semtrex
 		SEMTREX_SYMBOL_LITERAL_ID,            ///< This system symbol matches on the semantic type.         Ex: /TEST_SYMBOL
 		SEMTREX_SEQUENCE_ID,                  ///< Match on a sequence of child nodes which are any valid semtrex's.  Ex: comma separated nodes
 		SEMTREX_OR_ID,                        ///< Logical OR between two Semtrex expressions.      Ex: |
@@ -116,7 +116,7 @@ namespace ceptrlib
 	public enum SystemStructureID
 	{
 		NULL_STRUCTURE_ID,
-		BOOLEAN_ID,
+		BIT_ID,
 		INTEGER_ID,
 		FLOAT_ID,
 		CHAR_ID,
@@ -221,6 +221,9 @@ namespace ceptrlib
 
 		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
 		extern static unsafe TreeNode* _t_embody_from_match(Defs* d, TreeNode* matchResult, TreeNode* semtrex);
+
+		[DllImport("libceptrlib.dll", CallingConvention = CallingConvention.Cdecl)]
+		extern static unsafe void _t2json(Defs* d, TreeNode* tree, int indent, char* buf);
 
 		protected Dictionary<Guid, IntPtr> nodes = new Dictionary<Guid, IntPtr>();
 
@@ -345,6 +348,21 @@ namespace ceptrlib
 			TreeNode* resultTree = _t_embody_from_match(&defs, match, semtrex);
 
 			return RegisterNode(resultTree);
+		}
+
+		public unsafe string CreateVisualTree(Guid g_symbols, Guid g_structures, Guid g_tree)
+		{
+			Defs defs = CreateDefs(g_symbols, g_structures);
+			TreeNode* tree = GetNode(g_tree);
+			string ret = String.Empty;
+			
+			fixed (char* buf = new char[50000])
+			{
+				_t2json(&defs, tree, -1, buf);
+				ret = Marshal.PtrToStringAnsi((IntPtr)buf);
+			}
+
+			return ret;
 		}
 
 		// Match a tree against a semtrex and get back match results

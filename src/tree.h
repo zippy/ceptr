@@ -10,7 +10,7 @@
  * @file tree.h
  * @brief semantic trees header file
  *
- * @copyright Copyright (C) 2013-2014, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
+ * @copyright Copyright (C) 2013-2015, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
  *
  */
 
@@ -31,10 +31,13 @@
 enum TreeSurfaceFlags {TFLAG_ALLOCATED=0x0001,TFLAG_SURFACE_IS_TREE=0x0002,TFLAG_SURFACE_IS_RECEPTOR = 0x0004,TFLAG_SURFACE_IS_SCAPE=0x0008,TFLAG_DELETED=0x0010};
 
 /*****************  Node creation and deletion*/
-T *_t_new(T *t,Symbol symbol, void *surface, size_t size);
-T *_t_newi(T *parent,Symbol symbol,int surface);
+T *__t_new(T *t,Symbol symbol, void *surface, size_t size,size_t alloc_size);
+#define _t_new(p,sy,su,s) __t_new(p,sy,su,s,sizeof(T))
+T *__t_newi(T *parent,Symbol symbol,int surface,size_t alloc_size);
+#define _t_newi(p,sy,su) __t_newi(p,sy,su,sizeof(T))
 T *_t_news(T *parent,Symbol symbol,SemanticID surface);
 T *_t_newt(T *parent,Symbol symbol,T *t);
+T *_t_new_str(T *parent,Symbol symbol,char *str);
 T *_t_new_root(Symbol symbol);
 T *_t_newr(T *parent,Symbol symbol);
 T *_t_new_receptor(T *parent,Symbol symbol,Receptor *r);
@@ -49,8 +52,10 @@ void _t_insert_at(T *t, int *path, T *i);
 void _t_morph(T *dst,T *src);
 void __t_morph(T *t,Symbol s,void *surface,size_t length,int allocate);
 void __t_free_children(T *t);
+void __t_free(T *t);
 void _t_free(T *t);
 T *_t_clone(T *t);
+T *_t_rclone(T *t);
 
 /******************** Node data accessors */
 int _t_children(T *t);

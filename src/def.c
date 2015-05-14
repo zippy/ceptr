@@ -6,7 +6,7 @@
  * @brief implementation file for symbol and structure definition functions
  * @todo refactor symbol/structure/process definition mechanisms into a general definitional form
  *
- * @copyright Copyright (C) 2013-2014, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
+ * @copyright Copyright (C) 2013-2015, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
  */
 
 #include "tree.h"
@@ -89,8 +89,10 @@ char *_d_get_process_name(T *processes,Process p) {
     }
     if (processes) {
 	T *def = _t_child(processes,p.id);
-	T *l = _t_child(def,1);
-	return (char *)_t_surface(l);
+	if (def) {
+	    T *l = _t_child(def,1);
+	    return (char *)_t_surface(l);
+	}
     }
     sprintf(__d_extra_buf,"<unknown process:%d.%d.%d>",p.context,p.flags,p.id);
     return __d_extra_buf;
@@ -208,7 +210,7 @@ size_t _sys_structure_size(int id,void *surface) {
     case NULL_STRUCTURE_ID: return 0;
 	//	case SEMTREX: return
     case SYMBOL_ID: return sizeof(Symbol);
-    case BOOLEAN_ID:
+    case BIT_ID:
     case INTEGER_ID: return sizeof(int);
     case FLOAT_ID: return sizeof(float);
     case CSTRING_ID: return strlen(surface)+1;
@@ -378,13 +380,14 @@ char * __t_dump(Defs *defs,T *t,int level,char *buf) {
     	}
 	else {
 	    switch(st.id) {
+	    case ENUM_ID: // for now enum surfaces are just strings so we can see the text value
 	    case CSTRING_ID:
 		sprintf(buf,"(%s:%s",n,(char *)_t_surface(t));
 		break;
 	    case CHAR_ID:
 		sprintf(buf,"(%s:'%c'",n,*(char *)_t_surface(t));
 		break;
-	    case BOOLEAN_ID:
+	    case BIT_ID:
 	    case INTEGER_ID:
 		sprintf(buf,"(%s:%d",n,*(int *)_t_surface(t));
 		break;

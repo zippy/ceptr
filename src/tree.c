@@ -6,7 +6,7 @@
  * @file tree.c
  * @brief semantic tree pointer implementation
  *
- * @copyright Copyright (C) 2013-2014, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
+ * @copyright Copyright (C) 2013-2015, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
  */
 
 #include "tree.h"
@@ -49,8 +49,8 @@ void __t_init(T *t,T *parent,Symbol symbol) {
  * @param[in] size size in bytes of the surface
  * @returns pointer to node allocated on the heap
 */
-T * _t_new(T *parent,Symbol symbol,void *surface,size_t size) {
-    T *t = malloc(sizeof(T));
+T * __t_new(T *parent,Symbol symbol,void *surface,size_t size,size_t alloc_size) {
+    T *t = malloc(alloc_size);
     __t_init(t,parent,symbol);
     if (size) {
 	t->context.flags |= TFLAG_ALLOCATED;
@@ -70,8 +70,8 @@ T * _t_new(T *parent,Symbol symbol,void *surface,size_t size) {
  * @param[in] surface integer value to store in the surface
  * @returns pointer to node allocated on the heap
  */
-T * _t_newi(T *parent,Symbol symbol,int surface) {
-    T *t = malloc(sizeof(T));
+T * __t_newi(T *parent,Symbol symbol,int surface,size_t alloc_size) {
+    T *t = malloc(alloc_size);
     *((int *)&t->contents.surface) = surface;
     t->contents.size = sizeof(int);
     __t_init(t,parent,symbol);
@@ -106,6 +106,19 @@ T * _t_newt(T *parent,Symbol symbol,T *surface) {
     t->context.flags |= TFLAG_SURFACE_IS_TREE;
     return t;
 }
+
+/**
+ * Create a new tree node with a cstring surface
+ *
+ * @param[in] parent parent node for the node to be created.  Can be 0 if this is a root node
+ * @param[in] symbol semantic symbol for the node to be create
+ * @param[in] surface string value to store in the surface
+ * @returns pointer to node allocated on the heap
+ */
+T * _t_new_str(T *parent,Symbol symbol,char *surface) {
+    return _t_new(parent,symbol,surface,strlen(surface)+1);
+}
+T *_t_new_str(T *parent,Symbol symbol,char *str);
 
 /**
  * Create a new tree root node (with null surface and no parent)
@@ -264,7 +277,8 @@ void __t_morph(T *t,Symbol s,void *surface,size_t size,int allocate) {
 	t->context.flags = TFLAG_ALLOCATED; /// @todo Handle the case where the surface of the node to be morphed is itself a tree
     }
     else {
-	*((int *)&t->contents.surface) = *(int *)surface;
+	if (surface)
+	    *((int *)&t->contents.surface) = *(int *)surface;
 	t->context.flags = 0;
     }
 
@@ -375,15 +389,8 @@ void __t_free_children(T *t) {
     t->structure.child_count = 0;
 }
 
-/**
- * free the memory occupied by a tree
- *
- * free walks the tree freeing all the children and any orthogonal trees.
- *
- * @param[in] t tree to be freed
- * @todo make this remove the child from the parent's child-list?
- */
-void _t_free(T *t) {
+// free everything except the node itself
+void __t_free(T *t) {
     __t_free_children(t);
     if (t->context.flags & TFLAG_ALLOCATED)
 	free(t->contents.surface);
@@ -395,6 +402,18 @@ void _t_free(T *t) {
     }
     else if (t->context.flags & TFLAG_SURFACE_IS_SCAPE)
 	_s_free((Scape *)t->contents.surface);
+}
+
+/**
+ * free the memory occupied by a tree
+ *
+ * free walks the tree freeing all the children and any orthogonal trees.
+ *
+ * @param[in] t tree to be freed
+ * @todo make this remove the child from the parent's child-list?
+ */
+void _t_free(T *t) {
+    __t_free(t);
     free(t);
 }
 
@@ -405,6 +424,17 @@ T *__t_clone(T *t,T *p) {
     else
 	nt = _t_newi(p,_t_symbol(t),*(int *)_t_surface(t));
     DO_KIDS(t,__t_clone(_t_child(t,i),nt));
+    return nt;
+}
+
+T *__t_rclone(T *t,T *p) {
+    T *nt;
+    if (t->context.flags & TFLAG_ALLOCATED)
+	nt = __t_new(p,_t_symbol(t),_t_surface(t),_t_size(t),sizeof(rT));
+    else
+	nt = __t_newi(p,_t_symbol(t),*(int *)_t_surface(t),sizeof(rT));
+    ((rT *)nt)->cur_child =  RUN_TREE_NOT_EVAULATED;
+    DO_KIDS(t,__t_rclone(_t_child(t,i),nt));
     return nt;
 }
 
@@ -421,6 +451,10 @@ T *__t_clone(T *t,T *p) {
  */
 T *_t_clone(T *t) {
     return __t_clone(t,0);
+}
+
+T *_t_rclone(T *t) {
+    return __t_rclone(t,0);
 }
 
 /******************** Node data accessors */
@@ -841,6 +875,7 @@ T * _t_unserialize(Defs *d,void **surfaceP,size_t *lengthP,T *t) {
  * @snippet spec/tree_spec.h testTreeJSON
  */
 char * _t2json(Defs *defs,T *t,int level,char *buf) {
+    char *result = buf;
     T *structures = defs ? defs->structures : 0;
     T *symbols = defs ? defs->symbols : 0;
     T *processes = defs ? defs->processes : 0;
@@ -849,12 +884,12 @@ char * _t2json(Defs *defs,T *t,int level,char *buf) {
     char b[255];
     char tbuf[2000];
     int i;
-    char *c;
+    char *c,cr;
     Xaddr x;
     buf = _indent_line(level,buf);
 
     if (is_process(s)) {
-	sprintf(buf,"{ \"type\":\"process\",{\"name\" :\"%s\"}",_d_get_process_name(processes,s));
+	sprintf(buf,"{ \"type\":\"process\",\"name\" :\"%s\"",_d_get_process_name(processes,s));
     }
     else {
 	char *n = _d_get_symbol_name(symbols,s);
@@ -865,19 +900,26 @@ char * _t2json(Defs *defs,T *t,int level,char *buf) {
 	if (!is_sys_structure(st)) {
 	    // if it's not a system structure, it's composed, so all we need to do is
 	    // print out the symbol name, and the reset will take care of itself
-	    sprintf(buf,"\"type\":\"composed\",\"name\":\"%s\",",n);
+	    sprintf(buf,"\"type\":\"%s\",\"name\":\"%s\"",_d_get_structure_name(structures,st),n);
     	}
 	else {
 
 	    switch(st.id) {
+	    case ENUM_ID: // for now enum surfaces are just strings so we can see the text value
 	    case CSTRING_ID:
-		sprintf(buf,"\"type\":\"CSTRING\",\"name\":\"%s\",\"surface\":\"%s\"",n,(char *)_t_surface(t));
+		//@todo add escaping of quotes, carriage returns, etc...
+		sprintf(buf,"\"type\":\"CSTRING\",\"name\":\"%s\",\"surface\":\"\%s\"",n,(char *)_t_surface(t));
 		break;
 	    case CHAR_ID:
-		sprintf(buf,"\"type\":\"CHAR\",\"name\":\"%s\",\"surface\":\"%c\"",n,*(char *)_t_surface(t));
+		cr = *(char *)_t_surface(t);
+		if (cr == '"') {
+		    sprintf(buf,"\"type\":\"CHAR\",\"name\":\"%s\",\"surface\":\"\\\"\"",n);
+		} else {
+		    sprintf(buf,"\"type\":\"CHAR\",\"name\":\"%s\",\"surface\":\"%c\"",n,cr);
+		}
 		break;
-	    case BOOLEAN_ID:
-		sprintf(buf,"\"type\":\"BOOLEAN\",\"name\":\"%s\",\"surface\":%s",n,(*(int *)_t_surface(t)) ? "true" : "false");
+	    case BIT_ID:
+		sprintf(buf,"\"type\":\"BIT\",\"name\":\"%s\",\"surface\":%s",n,(*(int *)_t_surface(t)) ? "1" : "0");
 		break;
 	    case INTEGER_ID:
 		sprintf(buf,"\"type\":\"INTEGER\",\"name\":\"%s\",\"surface\":%d",n,*(int *)_t_surface(t));
@@ -924,7 +966,7 @@ char * _t2json(Defs *defs,T *t,int level,char *buf) {
 		    break;
 		}
 	    case LIST_ID:
-		sprintf(buf,"\"type\":\"LIST\",\"name\":\"%s\",",n);
+		sprintf(buf,"\"type\":\"LIST\",\"name\":\"%s\"",n);
 		break;
 	    default:
 		if (semeq(s,SEMTREX_MATCH_CURSOR)) {
@@ -935,15 +977,17 @@ char * _t2json(Defs *defs,T *t,int level,char *buf) {
 		}
 		if (n == 0)
 		    sprintf(buf,"(<unknown:%d.%d.%d>",s.context,s.flags,s.id);
-		else
-		    sprintf(buf,"(%s",n);
+		else {
+		    c = _d_get_structure_name(structures,st);
+		    sprintf(buf,"\"type\":\"%s\",\"name\":\"%s\"",c,n);
+		}
 	    }
 	}
     }
     buf += strlen(buf);
     int _c = _t_children(t);
     if ( _c > 0) {
-	sprintf(buf,"\"children\":[");
+	sprintf(buf,",\"children\":[");
 	buf += strlen(buf);
 	for(i=1;i<=_c;i++){
 	    _t2json(defs,_t_child(t,i),level < 0 ? level-1 : level+1,buf);
@@ -955,7 +999,7 @@ char * _t2json(Defs *defs,T *t,int level,char *buf) {
 	_add_char2buf(']',buf);
     }
     _add_char2buf('}',buf);
-    return buf;
+    return result;
 }
 
 /** @}*/

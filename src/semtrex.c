@@ -7,10 +7,10 @@
  *
  * This file implements a regular expression type language usefull for searching semantic trees.
  *
- * The code to generate finite state automata to match the trees is based heavily on
- * based on Russ Cox's great work, see: http://swtch.com/~rsc/regexp/regexp1.html
+ * The code to generate finite state automata to match the trees is based heavily on Russ Cox's
+ * great work see https://github.com/zippy/ceptr/blob/master/articles/cox2007.pdf
  *
- * @copyright Copyright (C) 2013-2014, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
+ * @copyright Copyright (C) 2013-2015, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
  */
 
 #include "semtrex.h"
@@ -442,13 +442,14 @@ void __fix(T *source_t,T *r) {
     T *t = *(T **)_t_surface(m2 = _t_get(r,pt));
 
     int *p = _t_get_path(t1);
-    __t_morph(m1,SEMTREX_MATCHED_PATH,p,sizeof(int)*(_t_path_depth(p)+1),1);
+    __t_morph(m1,SEMTREX_MATCH_PATH,p,sizeof(int)*(_t_path_depth(p)+1),1);
 
     int d = _t_path_depth(p);
     int i;
 
     d--;
-    if (!t) {
+    if (d < 0) { i = 1;}
+    else if (!t) {
 	T *parent = _t_parent(t1);
 	if (!parent) i = 1;
 	else {
@@ -459,10 +460,10 @@ void __fix(T *source_t,T *r) {
     else {
 	int* p_end;
 	p_end = _t_get_path(t);
-	i = p_end[d]-p[d];
 	if (!p_end) {
 	    raise(SIGINT);
 	}
+	i = p_end[d]- p[d];
 	free(p_end);
     }
     free(p);

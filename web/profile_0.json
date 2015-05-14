@@ -1,0 +1,28 @@
+{ "symbol":{ "context":0,"id":63 },"type":"LIST","name":"RUN_TREE","children":[
+   { "type":"process","name" :"CONCAT_STR","children":[
+      { "symbol":{ "context":0,"id":66 },"type":"SYMBOL","name":"RESULT_SYMBOL","surface":"MAILING_LABEL"},
+      { "type":"process","name" :"CONCAT_STR","children":[
+         { "symbol":{ "context":0,"id":64 },"type":"TREE_PATH","name":"PARAM_REF","surface":"/2/1/1/1"},
+         { "symbol":{ "context":2,"id":99 },"type":"CSTRING","name":"TEST_STR_SYMBOL","surface":" "},
+         { "symbol":{ "context":0,"id":64 },"type":"TREE_PATH","name":"PARAM_REF","surface":"/2/1/1/2"}]},
+      { "symbol":{ "context":2,"id":99 },"type":"CSTRING","name":"TEST_STR_SYMBOL","surface":"\n"},
+      { "symbol":{ "context":0,"id":64 },"type":"TREE_PATH","name":"PARAM_REF","surface":"/2/1/2/1"},
+      { "symbol":{ "context":2,"id":99 },"type":"CSTRING","name":"TEST_STR_SYMBOL","surface":"\n"},
+      { "type":"process","name" :"CONCAT_STR","children":[
+         { "symbol":{ "context":0,"id":64 },"type":"TREE_PATH","name":"PARAM_REF","surface":"/2/1/2/2"},
+         { "symbol":{ "context":2,"id":99 },"type":"CSTRING","name":"TEST_STR_SYMBOL","surface":", "},
+         { "symbol":{ "context":0,"id":64 },"type":"TREE_PATH","name":"PARAM_REF","surface":"/2/1/2/3"},
+         { "symbol":{ "context":2,"id":99 },"type":"CSTRING","name":"TEST_STR_SYMBOL","surface":" "},
+         { "symbol":{ "context":0,"id":64 },"type":"TREE_PATH","name":"PARAM_REF","surface":"/2/1/2/4"}]}]},
+   { "symbol":{ "context":0,"id":65 },"type":"LIST","name":"PARAMS","children":[
+      { "symbol":{ "context":1,"id":11 },"type":"PROFILE","name":"USER_PROFILE","children":[
+         { "symbol":{ "context":1,"id":3 },"type":"NAME","name":"PROFILE_NAME","children":[
+            { "symbol":{ "context":1,"id":1 },"type":"CSTRING","name":"FIRST_NAME","surface":"Jane"},
+            { "symbol":{ "context":1,"id":2 },"type":"CSTRING","name":"LAST_NAME","surface":"Smith"}]},
+         { "symbol":{ "context":1,"id":9 },"type":"ADDRESS","name":"PROFILE_ADDRESS","children":[
+            { "symbol":{ "context":1,"id":4 },"type":"CSTRING","name":"STREET_ADDRESS","surface":"126 Main Street"},
+            { "symbol":{ "context":1,"id":5 },"type":"CSTRING","name":"CITY","surface":"Smallville"},
+            { "symbol":{ "context":1,"id":6 },"type":"CSTRING","name":"STATE","surface":"CA"},
+            { "symbol":{ "context":1,"id":7 },"type":"CSTRING","name":"ZIP","surface":"12345"},
+            { "symbol":{ "context":1,"id":8 },"type":"CSTRING","name":"COUNTRY","surface":"USA"}]},
+         { "symbol":{ "context":1,"id":10 },"type":"CSTRING","name":"PROFILE_EMAIL","surface":"test@example.com"}]}]}]}

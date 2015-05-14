@@ -5,7 +5,7 @@
  * @file vmhost.c
  * @brief virtual machine host receptor implementation
  *
- * @copyright Copyright (C) 2013-2014, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
+ * @copyright Copyright (C) 2013-2015, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
  */
 
 #include "vmhost.h"
@@ -115,15 +115,18 @@ Xaddr _v_install_r(VMHost *v,Xaddr package,T *bindings,char *label) {
     Symbol s = _r_declare_symbol(v->r,RECEPTOR,label);
 
     Receptor *r = _r_new_receptor_from_package(s,p,bindings);
+    return _v_new_receptor(v,s,r);
+}
+
+Xaddr _v_new_receptor(VMHost *v,Symbol s, Receptor *r) {
     T *ir = _t_new_root(INSTALLED_RECEPTOR);
     _t_new_receptor(ir,s,r);
 
-    x = _r_new_instance(v->r,ir);
-    return x;
+    return _r_new_instance(v->r,ir);
 }
 
 /**
- * Active a receptor
+ * Activate a receptor from the installed packages
  *
  * unserializes the receptor from the RECEPTOR_PACKAGE and installs it into the
  * active receptors list
@@ -140,6 +143,21 @@ void _v_activate(VMHost *v, Xaddr x) {
 }
 
 /**
+ * Activate a receptor
+ *
+ * adds a receptor tree to the active receptors list
+ *
+ * @param[in] v VMHost
+ * @param[in] r receptor to activate
+ *
+ * @todo for now we are just storing the active receptors in the receptor tree
+ * later this will probably have to be optimized into a hash/scape for faster access
+ */
+void __v_activate(VMHost *v, Receptor *r) {
+    _t_add(v->active_receptors,r->root);
+}
+
+/**
  * queue a signal for processing
  *
  * first builds a SIGNAL tree, then instantiates and scapes it
@@ -148,18 +166,27 @@ void _v_activate(VMHost *v, Xaddr x) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/vmhost_spec.h testVMHostActivateReceptor
  */
-Xaddr _v_send(VMHost *v,Xaddr to,Xaddr from,Aspect aspect,T *contents) {
+void _v_send(VMHost *v,Xaddr from,Xaddr to,Aspect aspect,T *contents) {
     T *s = __r_make_signal(from,to,aspect,contents);
-    Xaddr xs = _r_new_instance(v->r,s);
+    //    Xaddr xs = _r_new_instance(v->r,s);
 
     _t_add(v->pending_signals,s);
-    return xs;
+}
+
+/**
+ * walk through the list of signals and send them
+ */
+void _v_send_signals(VMHost *v,T *signals) {
+    while(_t_children(signals)>0) {
+	T *s = _t_detach_by_idx(signals,1);
+	_t_add(v->pending_signals,s);
+    }
 }
 
 /**
  * walk through the list of pending signals and deliver them
  */
-void _v_process_signals(VMHost *v) {
+void __v_process_signals(VMHost *v) {
     T *signals = v->pending_signals;
     while(_t_children(signals)>0) {
 	T *s = _t_detach_by_idx(signals,1);
@@ -169,7 +196,7 @@ void _v_process_signals(VMHost *v) {
 	Receptor *r = (Receptor *)_t_surface(_t_child(_r_get_instance(v->r,to),1)); // the receptor itself is the surface of the first child of the INSTALLED_RECEPTOR (bleah)
 	Aspect a = *(Aspect *)_t_surface(_t_child(envelope,3));
 	T *result = _r_deliver(r,s);
-	//@todo handle results
+	_v_send_signals(v,result);
     }
 }
 /** @}*/

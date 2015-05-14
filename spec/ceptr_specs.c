@@ -1,6 +1,6 @@
 /**
  * @file ceptr_specs.c
- * @copyright Copyright (C) 2013-2014, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
+ * @copyright Copyright (C) 2013-2015, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
  * @ingroup tests
  * @brief implements a main() entry point for running all the tests
  */
@@ -22,6 +22,8 @@
 #include "scape_spec.h"
 #include "vmhost_spec.h"
 #include "de_spec.h"
+
+#include "profile_example.h"
 
 #include <setjmp.h>
 
@@ -47,6 +49,10 @@ int main(int argc, const char **argv) {
 	testScape();
 	testVMHost();
 	testDataEngine();
+
+	//***** examples
+	testProfileExample();
+	testHTTPExample();
 
 	sys_free();
 	report_tests();

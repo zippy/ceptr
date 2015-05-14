@@ -26,11 +26,17 @@ TBD..
 
 ## Testing
 
-Currently nothing runs other than a test suite which you can execute simply by typing make from the root directory.  To compile and run all tests simple cd into the root directory and:
+To compile and run all tests simple cd into the root directory and type:
 
     make
 
+This runs all of the tests, which live in the specs sub-directory.
+
+The tests also produce a bunch semantic trees dumped out to json for visualization in a testing web-app.  To be able to see these, you need to place the contents of the "web" sub-directory into a web server somewhere, and then just point your browser to that directory.  Please note that this isn't a comprehensive testing environment, just a space we've used for creating visuals for presentation purposes.
+
 ## Development
+
+[![Ready](https://badge.waffle.io/zippy/ceptr.svg?label=ready&title=Ready)](http://waffle.io/zippy/ceptr)
 
 [issue tracking](https://github.com/zippy/ceptr/issues)
 
@@ -43,7 +49,7 @@ Currently nothing runs other than a test suite which you can execute simply by t
 
 ## License
 
-Copyright (C) 2013-2014, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al.)
+Copyright (C) 2013-2015, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al.)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the license provided in the LICENSE file (GPLv3).
