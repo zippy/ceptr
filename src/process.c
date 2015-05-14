@@ -111,6 +111,7 @@ Error __p_reduce_sys_proc(Defs *defs,Symbol s,T *code) {
 	//@todo handle divide by zero errors.
 	x = _t_detach_by_idx(code,1);
 	c = *(int *)_t_surface(_t_child(code,1));
+	if (!c) return divideByZeroReductionErr;
 	*((int *)&x->contents.surface) = *((int *)&x->contents.surface)/c;
 	break;
     case MOD_INT_ID:
@@ -190,6 +191,7 @@ Error __p_reduce_sys_proc(Defs *defs,Symbol s,T *code) {
 	match_results = _t_child(code,2);
 	match_tree = _t_child(code,3);
 	x = _t_detach_by_idx(code,1);
+	// @todo interpolation errors?
 	_p_interpolate_from_match(x,match_results,match_tree);
 	break;
     default:
@@ -238,8 +240,8 @@ Error _p_step(Defs defs,T *run_tree, R *context) {
 		Error e = __p_check_signature(defs,s,np);
 		if (e) return e;
 		T *rt = __p_make_run_tree(defs.processes,s,np);
-		_p_reduce(defs,rt);
-
+		e = _p_reduce(defs,rt);
+		if (e) return e;
 		context->node_pointer = np = _t_detach_by_idx(rt,1);
 		_t_free(rt);
 		_t_replace(parent,context->idx,np);
@@ -288,8 +290,48 @@ Error _p_reduce(Defs defs,T *run_tree) {
     Error e = noReductionErr;
     R context;
     _p_init_context(run_tree,&context);
-    while(context.node_pointer != run_tree && !e) {
+    while(context.node_pointer != run_tree) {
 	e = _p_step(defs,run_tree,&context);
+	if (e) {
+	    if (_t_children(run_tree) <= 2) {
+		// no error handler so just return the error
+		return e;
+	    }
+	    else {
+		T *rt = _t_new_root(RUN_TREE);
+		T *c = _t_rclone(_t_child(run_tree,3));
+		_t_add(rt,c);
+
+		// the parameter to the error code is always a reduction error
+		T *ps = _t_newr(rt,PARAMS);
+
+		//@todo: fix this so we don't actually use an error value that
+		// then has to be translated into a symbol, but rather so that we
+		// can programatically calculate the symbol.
+		Symbol se;
+		switch(e) {
+		case tooFewParamsReductionErr: se=TOO_FEW_PARAMS_ERR;break;
+		case tooManyParamsReductionErr: se=TOO_MANY_PARAMS_ERR;break;
+		case badSignatureReductionErr: se=BAD_SIGNATURE_ERR;break;
+		case notProcessReductionError: se=NOT_A_PROCESS_ERR;break;
+		case divideByZeroReductionErr: se=ZERO_DIVIDE_ERR;break;
+		default: raise_error("unknown reduction error: %d",e);
+		}
+		T *err = __t_new(ps,se,0,0,sizeof(rT));
+		int *path = _t_get_path(context.node_pointer);
+		_t_new(err,ERROR_LOCATION,path,sizeof(int)*(_t_path_depth(path)+1));
+		free(path);
+
+		e = _p_reduce(defs,rt);
+		if (e) return e; // @todo handle errors within error handler
+
+		// replace the code that produce an error with the results of the error handler
+		T *t = _t_detach_by_idx(rt,1);
+		_t_free(rt);
+		_t_replace(run_tree,1,t);
+		break;
+	    }
+	}
     }
     return e;
 }

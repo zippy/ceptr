@@ -259,6 +259,13 @@ void testProcessIntMath() {
     spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:2)");
     _t_free(n);
 
+    // test division with divide by zero
+    n = _t_new_root(DIV_INT);
+    _t_newi(n,TEST_INT_SYMBOL,100);
+    _t_newi(n,TEST_INT_SYMBOL,0);
+    spec_is_equal(__p_reduce_sys_proc(&defs,DIV_INT,n),divideByZeroReductionErr);
+    _t_free(n);
+
     // test modulo
     n = _t_new_root(MOD_INT);
     _t_newi(n,TEST_INT_SYMBOL,100);
@@ -382,6 +389,28 @@ void testProcessReduce() {
     _t_free(t);
 }
 
+void testProcessError() {
+    Defs defs;
+    T *t = _t_new_root(RUN_TREE);
+    T *n = _t_new_root(DIV_INT);
+    _t_newi(n,TEST_INT_SYMBOL,100);
+    _t_newi(n,TEST_INT_SYMBOL,0);
+    T *c = _t_rclone(n);
+    _t_add(t,c);
+    T *ps = _t_newr(t,PARAMS);
+
+    // error routine is just a param ref to pass back the error tree
+    int pt[] = {2,1,TREE_PATH_TERMINATOR};
+    _t_new(t,PARAM_REF,pt,sizeof(int)*4);
+
+    Error e = _p_reduce(defs,t);
+    spec_is_equal(e,noReductionErr);
+    spec_is_str_equal(t2s(_t_child(t,1)),"(ZERO_DIVIDE_ERR (ERROR_LOCATION:/1))");
+    _t_free(n);
+    _t_free(t);
+
+}
+
 void testProcess() {
     testRunTree();
     testProcessReduceDefinedProcess();
@@ -391,4 +420,5 @@ void testProcess() {
     testProcessIntMath();
     testProcessString();
     testProcessReduce();
+    testProcessError();
 }

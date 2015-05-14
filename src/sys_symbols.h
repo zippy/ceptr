@@ -132,10 +132,14 @@ enum SystemSymbolIDs
     BINDINGS_ID,                         ///< specifics that match a MANIFEST and allow a receptor to be installed
     BINDING_PAIR_ID,                     ///< a pair that matches a MANIFEST_LABEL with a given binding
 
-    //----- symbols for tree deltas
-    TREE_DELTA_ADD_ID,
-    TREE_DELTA_PATH_ID,
-    TREE_DELTA_VALUE_ID,
+    //----- symbols for reduction errors
+    ERROR_LOCATION_ID,
+    ZERO_DIVIDE_ERR_ID,
+    TOO_FEW_PARAMS_ERR_ID,
+    TOO_MANY_PARAMS_ERR_ID,
+    BAD_SIGNATURE_ERR_ID,
+    NOT_A_PROCESS_ERR_ID,
+
 };
 
 
@@ -321,8 +325,8 @@ Symbol RUN_TREE;
 Symbol PARAM_REF;
 Symbol PARAMS;
 Symbol RESULT_SYMBOL;
+
 Symbol PROTOCOLS;
-Symbol PROTOCOL;
 Symbol ROLES;
 Symbol ROLE;
 Symbol INTERACTIONS;
@@ -345,6 +349,13 @@ Symbol ACTIVE_RECEPTORS;
 Symbol PENDING_SIGNALS;
 Symbol BINDINGS;
 Symbol BINDING_PAIR;
+
+Symbol ERROR_LOCATION;
+Symbol ZERO_DIVIDE_ERR;
+Symbol TOO_FEW_PARAMS_ERR;
+Symbol TOO_MANY_PARAMS_ERR;
+Symbol BAD_SIGNATURE_ERR;
+Symbol NOT_A_PROCESS_ERR;
 
 Symbol STX_TOKENS;
 Symbol STX_SL;

@@ -40,6 +40,7 @@ enum SystemStructureID
 	PROTOCOL_ID,
 	SEMTREX_ID,
 	TREE_DELTA_ID,
+	REDUCTION_ERROR_ID
     };
 
 
@@ -63,4 +64,5 @@ Structure SCAPE;
 Structure PROTOCOL;
 Structure SEMTREX;
 Structure TREE_DELTA;
+Structure REDUCTION_ERROR;
 #endif
