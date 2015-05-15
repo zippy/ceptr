@@ -426,6 +426,33 @@ void testProcessError() {
     _t_free(t);
 }
 
+
+void testProcessRaise() {
+    Defs defs;
+    T *n = _t_new_root(RAISE);
+    _t_news(n,REDUCTION_ERROR_SYMBOL,ZERO_DIVIDE_ERR);
+
+    spec_is_equal(__p_reduce_sys_proc(&defs,RAISE,n),raiseReductionErr);
+    _t_free(n);
+
+    T *t = _t_new_root(RUN_TREE);
+    n = _t_new_root(RAISE);
+    _t_news(n,REDUCTION_ERROR_SYMBOL,NOT_A_PROCESS_ERR); // pick a random error to raise
+    T *c = _t_rclone(n);
+    _t_add(t,c);
+    T *ps = _t_newr(t,PARAMS);
+
+    // error routine is just a param ref to pass back the error tree
+    int pt[] = {2,1,TREE_PATH_TERMINATOR};
+    _t_new(t,PARAM_REF,pt,sizeof(int)*4);
+
+    Error e = _p_reduce(defs,t);
+    spec_is_equal(e,noReductionErr);
+    spec_is_str_equal(t2s(_t_child(t,1)),"(NOT_A_PROCESS_ERR (ERROR_LOCATION:/1))");
+    _t_free(n);
+    _t_free(t);
+}
+
 void testProcess() {
     testRunTree();
     testProcessReduceDefinedProcess();
@@ -436,4 +463,5 @@ void testProcess() {
     testProcessString();
     testProcessReduce();
     testProcessError();
+    testProcessRaise();
 }

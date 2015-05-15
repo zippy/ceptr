@@ -15,7 +15,7 @@
 
 #include "tree.h"
 
-enum ReductionError {noReductionErr,tooFewParamsReductionErr=TOO_FEW_PARAMS_ERR_ID,tooManyParamsReductionErr=TOO_MANY_PARAMS_ERR_ID,badSignatureReductionErr=BAD_SIGNATURE_ERR_ID,notProcessReductionError=NOT_A_PROCESS_ERR_ID,divideByZeroReductionErr=ZERO_DIVIDE_ERR_ID};
+enum ReductionError {noReductionErr,raiseReductionErr,tooFewParamsReductionErr=TOO_FEW_PARAMS_ERR_ID,tooManyParamsReductionErr=TOO_MANY_PARAMS_ERR_ID,badSignatureReductionErr=BAD_SIGNATURE_ERR_ID,notProcessReductionError=NOT_A_PROCESS_ERR_ID,divideByZeroReductionErr=ZERO_DIVIDE_ERR_ID};
 
 typedef struct R {
     T *node_pointer;

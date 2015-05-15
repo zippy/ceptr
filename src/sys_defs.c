@@ -64,6 +64,7 @@ Process GTE_INT = {SYS_CONTEXT,SEM_TYPE_PROCESS,GTE_INT_ID};
 Process CONCAT_STR = {SYS_CONTEXT,SEM_TYPE_PROCESS,CONCAT_STR_ID};
 Process RESPOND = {SYS_CONTEXT,SEM_TYPE_PROCESS,RESPOND_ID};
 Process INTERPOLATE_FROM_MATCH = {SYS_CONTEXT,SEM_TYPE_PROCESS,INTERPOLATE_FROM_MATCH_ID};
+Process RAISE = {SYS_CONTEXT,SEM_TYPE_PROCESS,RAISE_ID};
 
 void def_sys() {
     G_sys_root = _t_new_root(DEFINITIONS);
@@ -158,6 +159,7 @@ void def_sys() {
     sY(PARAM_REF,TREE_PATH);
     sY(PARAMS,LIST);
     sY(RESULT_SYMBOL,SYMBOL);
+    sY(REDUCTION_ERROR_SYMBOL,SYMBOL);
 
     sY(PROTOCOLS,LIST);
     sY(ROLES,LIST);
@@ -206,6 +208,7 @@ void def_sys() {
     sP(CONCAT_STR,"concatinate strings",0,0);
     sP(RESPOND,"respond to signal",0,0);
     sP(INTERPOLATE_FROM_MATCH,"interploate match result in place",0,0);
+    sP(RAISE,"raise reduction error",0,0);
 
     sYt(TEST_INT_SYMBOL,INTEGER);
     sYt(TEST_INT_SYMBOL2,INTEGER);

@@ -32,6 +32,7 @@ enum SystemProcessID
 	CONCAT_STR_ID,
 	RESPOND_ID,                   ///< respond to the initiating signal with the what ever the sub-tree reduced to
 	INTERPOLATE_FROM_MATCH_ID,    ///< reduce to replaced values from the match*/
+	RAISE_ID,
 	    };
 
 Process NULL_PROCESS;
@@ -49,6 +50,6 @@ Process GTE_INT;
 Process CONCAT_STR;
 Process RESPOND;
 Process INTERPOLATE_FROM_MATCH;
-
+Process RAISE;
 
 #endif

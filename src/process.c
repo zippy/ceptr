@@ -195,6 +195,9 @@ Error __p_reduce_sys_proc(Defs *defs,Symbol s,T *code) {
 	// @todo interpolation errors?
 	_p_interpolate_from_match(x,match_results,match_tree);
 	break;
+    case RAISE_ID:
+	return raiseReductionErr;
+	break;
     default:
 	raise_error("unimplemented instruction: %s",_d_get_process_name(defs->processes,s));
     }
@@ -316,6 +319,9 @@ Error _p_reduce(Defs defs,T *run_tree) {
 		case badSignatureReductionErr: se=BAD_SIGNATURE_ERR;break;
 		case notProcessReductionError: se=NOT_A_PROCESS_ERR;break;
 		case divideByZeroReductionErr: se=ZERO_DIVIDE_ERR;break;
+		case raiseReductionErr:
+		    se = *(Symbol *)_t_surface(_t_child(context.node_pointer,1));
+		    break;
 		default: raise_error("unknown reduction error: %d",e);
 		}
 		T *err = __t_new(ps,se,0,0,sizeof(rT));

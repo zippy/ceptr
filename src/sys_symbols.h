@@ -105,6 +105,7 @@ enum SystemSymbolIDs
     PARAM_REF_ID,                        ///< used in a code tree as a reference to a parameter
     PARAMS_ID,
     RESULT_SYMBOL_ID,
+    REDUCTION_ERROR_SYMBOL_ID,
 
     PROTOCOLS_ID,
     ROLES_ID,
@@ -325,6 +326,7 @@ Symbol RUN_TREE;
 Symbol PARAM_REF;
 Symbol PARAMS;
 Symbol RESULT_SYMBOL;
+Symbol REDUCTION_ERROR_SYMBOL;
 
 Symbol PROTOCOLS;
 Symbol ROLES;

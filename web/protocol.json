@@ -1,24 +1,24 @@
 { "symbol":{ "context":1,"id":1 },"type":"PROTOCOL","name":"ping","children":[
-   { "symbol":{ "context":0,"id":68 },"type":"LIST","name":"ROLES","children":[
-      { "symbol":{ "context":0,"id":69 },"type":"CSTRING","name":"ROLE","surface":"server"},
-      { "symbol":{ "context":0,"id":69 },"type":"CSTRING","name":"ROLE","surface":"client"}]},
-   { "symbol":{ "context":0,"id":70 },"type":"LIST","name":"INTERACTIONS","children":[
-      { "symbol":{ "context":0,"id":71 },"type":"LIST","name":"INTERACTION","children":[
-         { "symbol":{ "context":0,"id":72 },"type":"CSTRING","name":"STEP","surface":"ping"},
-         { "symbol":{ "context":0,"id":73 },"type":"CSTRING","name":"FROM_ROLE","surface":"client"},
-         { "symbol":{ "context":0,"id":74 },"type":"CSTRING","name":"TO_ROLE","surface":"server"},
+   { "symbol":{ "context":0,"id":69 },"type":"LIST","name":"ROLES","children":[
+      { "symbol":{ "context":0,"id":70 },"type":"CSTRING","name":"ROLE","surface":"server"},
+      { "symbol":{ "context":0,"id":70 },"type":"CSTRING","name":"ROLE","surface":"client"}]},
+   { "symbol":{ "context":0,"id":71 },"type":"LIST","name":"INTERACTIONS","children":[
+      { "symbol":{ "context":0,"id":72 },"type":"LIST","name":"INTERACTION","children":[
+         { "symbol":{ "context":0,"id":73 },"type":"CSTRING","name":"STEP","surface":"ping"},
+         { "symbol":{ "context":0,"id":74 },"type":"CSTRING","name":"FROM_ROLE","surface":"client"},
+         { "symbol":{ "context":0,"id":75 },"type":"CSTRING","name":"TO_ROLE","surface":"server"},
          { "symbol":{ "context":0,"id":43 },"type":"SYMBOL","name":"CARRIER","surface":"ping_message"},
          { "symbol":{ "context":0,"id":43 },"type":"SYMBOL","name":"CARRIER","surface":"ping_message"},
          { "symbol":{ "context":0,"id":51 },"type":"SEMTREX","name":"EXPECTATION","children":[
             { "symbol":{ "context":0,"id":13 },"type":"LIST","name":"SEMTREX_SYMBOL_LITERAL","children":[
                { "symbol":{ "context":0,"id":16 },"type":"SYMBOL","name":"SEMTREX_SYMBOL","surface":"ping_message"}]}]},
          { "symbol":{ "context":0,"id":52 },"type":"PROCESS","name":"ACTION","surface":"send ping response"},
-         { "symbol":{ "context":0,"id":75 },"type":"LIST","name":"RESPONSE_STEPS","children":[
-            { "symbol":{ "context":0,"id":72 },"type":"CSTRING","name":"STEP","surface":"ping_response"}]}]},
-      { "symbol":{ "context":0,"id":71 },"type":"LIST","name":"INTERACTION","children":[
-         { "symbol":{ "context":0,"id":72 },"type":"CSTRING","name":"STEP","surface":"ping_response"},
-         { "symbol":{ "context":0,"id":73 },"type":"CSTRING","name":"FROM_ROLE","surface":"server"},
-         { "symbol":{ "context":0,"id":74 },"type":"CSTRING","name":"TO_ROLE","surface":"client"},
+         { "symbol":{ "context":0,"id":76 },"type":"LIST","name":"RESPONSE_STEPS","children":[
+            { "symbol":{ "context":0,"id":73 },"type":"CSTRING","name":"STEP","surface":"ping_response"}]}]},
+      { "symbol":{ "context":0,"id":72 },"type":"LIST","name":"INTERACTION","children":[
+         { "symbol":{ "context":0,"id":73 },"type":"CSTRING","name":"STEP","surface":"ping_response"},
+         { "symbol":{ "context":0,"id":74 },"type":"CSTRING","name":"FROM_ROLE","surface":"server"},
+         { "symbol":{ "context":0,"id":75 },"type":"CSTRING","name":"TO_ROLE","surface":"client"},
          { "symbol":{ "context":0,"id":43 },"type":"SYMBOL","name":"CARRIER","surface":"ping_message"},
          { "symbol":{ "context":0,"id":43 },"type":"SYMBOL","name":"CARRIER","surface":"ping_message"},
          { "symbol":{ "context":0,"id":51 },"type":"SEMTREX","name":"EXPECTATION","children":[
