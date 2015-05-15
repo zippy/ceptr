@@ -117,6 +117,7 @@ Error __p_reduce_sys_proc(Defs *defs,Symbol s,T *code) {
     case MOD_INT_ID:
 	x = _t_detach_by_idx(code,1);
 	c = *(int *)_t_surface(_t_child(code,1));
+	if (!c) return divideByZeroReductionErr;
 	*((int *)&x->contents.surface) = *((int *)&x->contents.surface)%c;
 	break;
     case EQ_INT_ID:

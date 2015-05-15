@@ -274,6 +274,13 @@ void testProcessIntMath() {
     spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:0)");
     _t_free(n);
 
+    // test modulo with divide by zero
+    n = _t_new_root(MOD_INT);
+    _t_newi(n,TEST_INT_SYMBOL,100);
+    _t_newi(n,TEST_INT_SYMBOL,0);
+    spec_is_equal(__p_reduce_sys_proc(&defs,MOD_INT,n),divideByZeroReductionErr);
+    _t_free(n);
+
     // test equals
     n = _t_new_root(EQ_INT);
     _t_newi(n,TEST_INT_SYMBOL,100);
@@ -392,9 +399,10 @@ void testProcessReduce() {
 void testProcessError() {
     Defs defs;
     T *t = _t_new_root(RUN_TREE);
-    T *n = _t_new_root(DIV_INT);
-    _t_newi(n,TEST_INT_SYMBOL,100);
-    _t_newi(n,TEST_INT_SYMBOL,0);
+    T *n = _t_new_root(RESPOND);
+    T *d = _t_newr(n,DIV_INT);
+    _t_newi(d,TEST_INT_SYMBOL,100);
+    _t_newi(d,TEST_INT_SYMBOL,0);
     T *c = _t_rclone(n);
     _t_add(t,c);
     T *ps = _t_newr(t,PARAMS);
@@ -405,10 +413,9 @@ void testProcessError() {
 
     Error e = _p_reduce(defs,t);
     spec_is_equal(e,noReductionErr);
-    spec_is_str_equal(t2s(_t_child(t,1)),"(ZERO_DIVIDE_ERR (ERROR_LOCATION:/1))");
+    spec_is_str_equal(t2s(_t_child(t,1)),"(ZERO_DIVIDE_ERR (ERROR_LOCATION:/1/1))");
     _t_free(n);
     _t_free(t);
-
 }
 
 void testProcess() {
