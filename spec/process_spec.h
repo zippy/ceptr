@@ -100,8 +100,8 @@ Process _defIfEven(T *processes) {
        }
     */
     code = _t_new_root(IF);                       // IF is a system process
-    T *eq = _t_newi(code,EQ_INT,0);
-    T *mod = _t_newi(eq,MOD_INT,0);
+    T *eq = _t_newr(code,EQ_INT);
+    T *mod = _t_newr(eq,MOD_INT);
     int p1[] = {2,1,TREE_PATH_TERMINATOR};        // paths to the parameter refrences in the run tree: second branch, b1
     int p2[] = {2,2,TREE_PATH_TERMINATOR};        // second branch, b2
     int p3[] = {2,3,TREE_PATH_TERMINATOR};        // second branch, b3
@@ -126,6 +126,32 @@ Process _defIfEven(T *processes) {
     return _d_code_process(processes,code,"if even","return 2nd child if even, third if not",input,output,RECEPTOR_CONTEXT);
 }
 //! [defIfEven]
+
+
+/**
+ * generate an example process definition that creates a divide by zero error
+ *
+ * @snippet spec/process_spec.h defDivZero
+ */
+//! [defDivZero]
+Process _defDivZero(T *processes) {
+    T *code,*input,*output;
+
+    /* a process that would look something like this in lisp:
+       (defun div_zero (val) (/ val 0))
+    */
+    code = _t_new_root(DIV_INT);                       // IF is a system process
+    _t_newi(code,TEST_INT_SYMBOL,2);
+    _t_newi(code,TEST_INT_SYMBOL,0);
+    input = _t_new_root(INPUT);
+    T *i1 = _t_newr(input,INPUT_SIGNATURE);
+    _t_news(i1,SIGNATURE_STRUCTURE,INTEGER);
+    _t_new(i1,INPUT_LABEL,"val",4);
+     output = _t_new_root(OUTPUT_SIGNATURE);
+
+    return _d_code_process(processes,code,"divByZero","create a divide by zero error",input,output,RECEPTOR_CONTEXT);
+}
+//! [defDivZero]
 
 void testProcessReduceDefinedProcess() {
     //! [testProcessReduceDefinedProcess]
@@ -416,8 +442,8 @@ void testProcessError() {
     T *ps = _t_newr(t,PARAMS);
 
     // error routine is just a param ref to pass back the error tree
-    int pt[] = {2,1,TREE_PATH_TERMINATOR};
-    _t_new(t,PARAM_REF,pt,sizeof(int)*4);
+    int pt[] = {4,1,TREE_PATH_TERMINATOR};
+    __t_new(t,PARAM_REF,pt,sizeof(int)*4,sizeof(rT));
 
     Error e = _p_reduce(defs,t);
     spec_is_equal(e,noReductionErr);
@@ -443,14 +469,45 @@ void testProcessRaise() {
     T *ps = _t_newr(t,PARAMS);
 
     // error routine is just a param ref to pass back the error tree
-    int pt[] = {2,1,TREE_PATH_TERMINATOR};
-    _t_new(t,PARAM_REF,pt,sizeof(int)*4);
+    int pt[] = {4,1,TREE_PATH_TERMINATOR};
+    __t_new(t,PARAM_REF,pt,sizeof(int)*4,sizeof(rT));
 
     Error e = _p_reduce(defs,t);
     spec_is_equal(e,noReductionErr);
     spec_is_str_equal(t2s(_t_child(t,1)),"(NOT_A_PROCESS_ERR (ERROR_LOCATION:/1))");
     _t_free(n);
     _t_free(t);
+}
+
+void testProcessErrorTrickleUp() {
+    //! [testProcessErrorTrickleUp]
+    T *processes = _t_new_root(PROCESSES);
+    Defs defs = {0,0,processes};
+
+    Process divz = _defDivZero(processes);  // add the if_even process to our defs
+
+    // create a run tree right in the position to "call"this function
+    T *t = _t_new_root(RUN_TREE);
+    T *n = _t_new_root(RESPOND);
+    T *d = _t_newr(n,divz);
+    _t_newi(d,TEST_INT_SYMBOL,124);
+
+    T *c = _t_rclone(n);
+    _t_add(t,c);
+    T *ps = _t_newr(t,PARAMS);
+
+    // error routine is just a param ref to pass back the error tree
+    int pt[] = {4,1,TREE_PATH_TERMINATOR};
+    __t_new(t,PARAM_REF,pt,sizeof(int)*4,sizeof(rT));
+
+
+    // confirm that it reduces correctly
+    spec_is_equal(_p_reduce(defs,t),noReductionErr);
+    spec_is_str_equal(t2s(_t_child(t,1)),"(ZERO_DIVIDE_ERR (ERROR_LOCATION:/1/1))");
+
+    _t_free(processes);
+    _t_free(t);_t_free(n);
+    //! [testProcessErrorTrickleUp]
 }
 
 void testProcess() {
@@ -464,4 +521,5 @@ void testProcess() {
     testProcessReduce();
     testProcessError();
     testProcessRaise();
+    testProcessErrorTrickleUp();
 }

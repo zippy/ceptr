@@ -111,13 +111,19 @@ Error __p_reduce_sys_proc(Defs *defs,Symbol s,T *code) {
 	//@todo handle divide by zero errors.
 	x = _t_detach_by_idx(code,1);
 	c = *(int *)_t_surface(_t_child(code,1));
-	if (!c) return divideByZeroReductionErr;
+	if (!c) {
+	    _t_free(x);
+	    return divideByZeroReductionErr;
+	}
 	*((int *)&x->contents.surface) = *((int *)&x->contents.surface)/c;
 	break;
     case MOD_INT_ID:
 	x = _t_detach_by_idx(code,1);
 	c = *(int *)_t_surface(_t_child(code,1));
-	if (!c) return divideByZeroReductionErr;
+	if (!c) {
+	    _t_free(x);
+	    return divideByZeroReductionErr;
+	}
 	*((int *)&x->contents.surface) = *((int *)&x->contents.surface)%c;
 	break;
     case EQ_INT_ID:
@@ -245,7 +251,10 @@ Error _p_step(Defs defs,T *run_tree, R *context) {
 		if (e) return e;
 		T *rt = __p_make_run_tree(defs.processes,s,np);
 		e = _p_reduce(defs,rt);
-		if (e) return e;
+		if (e) {
+		    _t_free(rt);
+		    return e;
+		}
 		context->node_pointer = np = _t_detach_by_idx(rt,1);
 		_t_free(rt);
 		_t_replace(parent,context->idx,np);
@@ -289,7 +298,19 @@ void _p_init_context(T *run_tree,R *context) {
     context->idx = 1;
 }
 
-// testing iterative (as opposed to recursive) run tree reduction
+/**
+ * reduce a run tree by executing the instructions in it and replacing the tree values in place
+ *
+ * a run_tree is expected to have a code tree as the first child, parameters as the second,
+ * and optionally an error handling routine as the third child.
+ *
+ * @param[in] processes context of defined processes
+ * @param[in] run_tree the run tree being reduced
+ * @returns Error status of the reduction
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/process_spec.h testProcessErrorTrickleUp
+ */
 Error _p_reduce(Defs defs,T *run_tree) {
     Error e = noReductionErr;
     R context;
@@ -302,12 +323,14 @@ Error _p_reduce(Defs defs,T *run_tree) {
 		return e;
 	    }
 	    else {
-		T *rt = _t_new_root(RUN_TREE);
-		T *c = _t_rclone(_t_child(run_tree,3));
-		_t_add(rt,c);
+		//		T *rt = _t_new_root(RUN_TREE);
+		//T *c = _t_rclone(_t_child(run_tree,3));
+		//_t_add(rt,c);
 
-		// the parameter to the error code is always a reduction error
-		T *ps = _t_newr(rt,PARAMS);
+		// the first parameter to the error code is always a reduction error
+		// which gets added on as the 4th child of the run tree when the
+		// error happens.
+		T *ps = _t_newr(run_tree,PARAMS);
 
 		//@todo: fix this so we don't actually use an error value that
 		// then has to be translated into a symbol, but rather so that we
@@ -329,14 +352,17 @@ Error _p_reduce(Defs defs,T *run_tree) {
 		_t_new(err,ERROR_LOCATION,path,sizeof(int)*(_t_path_depth(path)+1));
 		free(path);
 
-		e = _p_reduce(defs,rt);
-		if (e) return e; // @todo handle errors within error handler
+		// switch the node_pointer to the top of the error handling routine
+		context.node_pointer = _t_child(run_tree,3);
 
-		// replace the code that produce an error with the results of the error handler
-		T *t = _t_detach_by_idx(rt,1);
-		_t_free(rt);
-		_t_replace(run_tree,1,t);
-		break;
+		//		e = _p_reduce(defs,rt);
+		//		if (e) return e; // @todo handle errors within error handler
+
+		//		// replace the code that produce an error with the results of the error handler
+		//		T *t = _t_detach_by_idx(rt,1);
+		//		_t_free(rt);
+		//		_t_replace(run_tree,1,t);
+		//		break;
 	    }
 	}
     }
