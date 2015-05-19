@@ -34,8 +34,6 @@ R *__p_make_context(T *run_tree,R *caller);
 Error _p_step(Defs defs, R **contextP);
 Error __p_reduce_sys_proc(Defs *defs,Symbol s,T *code);
 Error _p_reduce(Defs defs,T *run_tree);
-Error __p_reduceR(Defs defs,T *run_tree, T *code);
-Error _p_reduceR(Defs defs,T *run_tree);
 T *__p_make_run_tree(T *processes,Process p,T *params);
 T *_p_make_run_tree(T *processes,T *p,int num_params,...);
 

@@ -234,6 +234,7 @@ R *__p_make_context(T *run_tree,R *caller) {
 }
 
 //#define debug_reduce
+
 /**
  * reduce a run tree by executing the instructions in it and replacing the tree values in place
  *
