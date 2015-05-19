@@ -20,10 +20,10 @@
 /*****************  Node creation */
 void __t_append_child(T *t,T *c) {
     if (t->structure.child_count == 0) {
-	t->structure.children = malloc(sizeof(T *)*TREE_CHILDREN_BLOCK);
+        t->structure.children = malloc(sizeof(T *)*TREE_CHILDREN_BLOCK);
     } else if (!(t->structure.child_count % TREE_CHILDREN_BLOCK)){
-	int b = t->structure.child_count/TREE_CHILDREN_BLOCK + 1;
-	t->structure.children = realloc(t->structure.children,sizeof(T *)*(TREE_CHILDREN_BLOCK*b));
+        int b = t->structure.child_count/TREE_CHILDREN_BLOCK + 1;
+        t->structure.children = realloc(t->structure.children,sizeof(T *)*(TREE_CHILDREN_BLOCK*b));
     }
 
     t->structure.children[t->structure.child_count++] = c;
@@ -35,7 +35,7 @@ void __t_init(T *t,T *parent,Symbol symbol) {
     t->contents.symbol = symbol;
     t->context.flags = 0;
     if (parent != NULL) {
-	__t_append_child(parent,t);
+        __t_append_child(parent,t);
     }
 }
 
@@ -48,15 +48,15 @@ void __t_init(T *t,T *parent,Symbol symbol) {
  * @param[in] surface pointer to node's data
  * @param[in] size size in bytes of the surface
  * @returns pointer to node allocated on the heap
-*/
+ */
 T * __t_new(T *parent,Symbol symbol,void *surface,size_t size,size_t alloc_size) {
     T *t = malloc(alloc_size);
     __t_init(t,parent,symbol);
     if (size) {
-	t->context.flags |= TFLAG_ALLOCATED;
-	t->contents.surface = malloc(size);
-	if (surface)
-	    memcpy(t->contents.surface,surface,size);
+        t->context.flags |= TFLAG_ALLOCATED;
+        t->contents.surface = malloc(size);
+        if (surface)
+            memcpy(t->contents.surface,surface,size);
     }
     t->contents.size = size;
     return t;
@@ -234,18 +234,18 @@ T *_t_detach_by_idx(T *t,int i) {
 void _t_detach_by_ptr(T *t,T *c) {
     // search for the child to be removed
     DO_KIDS(t,
-	if (_t_child(t,i) == c) {
-	    // if found remove it by decreasing the child count and shift all the other children down
-	    t->structure.child_count--;
-	    if (t->structure.child_count == 0) {
-		free(t->structure.children);
-	    }
-	    for(;i<_c;i++) {
-		t->structure.children[i-1] = t->structure.children[i];
-	    }
-	    break;
-	}
-	    );
+            if (_t_child(t,i) == c) {
+                // if found remove it by decreasing the child count and shift all the other children down
+                t->structure.child_count--;
+                if (t->structure.child_count == 0) {
+                    free(t->structure.children);
+                }
+                for(;i<_c;i++) {
+                    t->structure.children[i-1] = t->structure.children[i];
+                }
+                break;
+            }
+            );
 
     if (c) c->structure.parent = 0;
 }
@@ -268,18 +268,18 @@ void _t_detach_by_ptr(T *t,T *c) {
 void __t_morph(T *t,Symbol s,void *surface,size_t size,int allocate) {
     t->contents.size = size;
     if (t->context.flags & TFLAG_ALLOCATED) {
-	free(t->contents.surface);
+        free(t->contents.surface);
     }
 
     if (allocate) {
-	t->contents.surface = malloc(size);
-	memcpy(t->contents.surface,surface,size);
-	t->context.flags = TFLAG_ALLOCATED; /// @todo Handle the case where the surface of the node to be morphed is itself a tree
+        t->contents.surface = malloc(size);
+        memcpy(t->contents.surface,surface,size);
+        t->context.flags = TFLAG_ALLOCATED; /// @todo Handle the case where the surface of the node to be morphed is itself a tree
     }
     else {
-	if (surface)
-	    *((int *)&t->contents.surface) = *(int *)surface;
-	t->context.flags = 0;
+        if (surface)
+            *((int *)&t->contents.surface) = *(int *)surface;
+        t->context.flags = 0;
     }
 
     t->contents.symbol = s;
@@ -334,45 +334,45 @@ void _t_insert_at(T *t, int *path, T *i) {
     T *c = _t_get(t,path);
     int d = _t_path_depth(path)-1;
     if (c) {
-	T *p = _t_parent(c);
-	if (!p) {
-	    raise_error0("Can't insert into the root!");
-	}
+        T *p = _t_parent(c);
+        if (!p) {
+            raise_error0("Can't insert into the root!");
+        }
 
-	// first insert the new tree at the end just to use the code we
-	// already have for mallocing children, etc,
-	_t_add(p,i);
+        // first insert the new tree at the end just to use the code we
+        // already have for mallocing children, etc,
+        _t_add(p,i);
 
-	// then shift the other children over
-	int j,l = _t_children(p);
-	j = l - path[d];
-	T **tp = &p->structure.children[l-1];
-	while(j--) {
-	    *tp = *(tp-1);
-	    tp--;
-	}
-	// and put the new tree where it belongs
-	*tp = i;
+        // then shift the other children over
+        int j,l = _t_children(p);
+        j = l - path[d];
+        T **tp = &p->structure.children[l-1];
+        while(j--) {
+            *tp = *(tp-1);
+            tp--;
+        }
+        // and put the new tree where it belongs
+        *tp = i;
     }
     else {
-	// if path points to one beyond last child, we can simply add it.
-	if (path[d]>1) {
-	    path[d]--;
-	    c = _t_get(t,path);
-	    if (c) {
-		T *p = _t_parent(c);
-		if (!p) {
-		    raise_error0("Can't insert into the root!");
-		}
-		_t_add(p,i);
-		return;
-	    }
-	}
-	else if (d==0) { // special case to insert into first child of empty root
-	    _t_add(t,i);
-	    return;
-	}
-	raise_error0("Path must lead to an existing node or one after last child.");
+        // if path points to one beyond last child, we can simply add it.
+        if (path[d]>1) {
+            path[d]--;
+            c = _t_get(t,path);
+            if (c) {
+                T *p = _t_parent(c);
+                if (!p) {
+                    raise_error0("Can't insert into the root!");
+                }
+                _t_add(p,i);
+                return;
+            }
+        }
+        else if (d==0) { // special case to insert into first child of empty root
+            _t_add(t,i);
+            return;
+        }
+        raise_error0("Path must lead to an existing node or one after last child.");
     }
 }
 
@@ -381,10 +381,10 @@ void _t_insert_at(T *t, int *path, T *i) {
 void __t_free_children(T *t) {
     int c = t->structure.child_count;
     if (c > 0) {
-	while(--c>=0) {
-	    _t_free(t->structure.children[c]);
-	}
-	free(t->structure.children);
+        while(--c>=0) {
+            _t_free(t->structure.children[c]);
+        }
+        free(t->structure.children);
     }
     t->structure.child_count = 0;
 }
@@ -393,15 +393,15 @@ void __t_free_children(T *t) {
 void __t_free(T *t) {
     __t_free_children(t);
     if (t->context.flags & TFLAG_ALLOCATED)
-	free(t->contents.surface);
+        free(t->contents.surface);
     else if (t->context.flags & TFLAG_SURFACE_IS_TREE) {
-	if (t->context.flags & TFLAG_SURFACE_IS_RECEPTOR)
-	    _r_free((Receptor *)t->contents.surface);
-	else
-	    _t_free((T *)t->contents.surface);
+        if (t->context.flags & TFLAG_SURFACE_IS_RECEPTOR)
+            _r_free((Receptor *)t->contents.surface);
+        else
+            _t_free((T *)t->contents.surface);
     }
     else if (t->context.flags & TFLAG_SURFACE_IS_SCAPE)
-	_s_free((Scape *)t->contents.surface);
+        _s_free((Scape *)t->contents.surface);
 }
 
 /**
@@ -420,9 +420,9 @@ void _t_free(T *t) {
 T *__t_clone(T *t,T *p) {
     T *nt;
     if (t->context.flags & TFLAG_ALLOCATED)
-	nt = _t_new(p,_t_symbol(t),_t_surface(t),_t_size(t));
+        nt = _t_new(p,_t_symbol(t),_t_surface(t),_t_size(t));
     else
-	nt = _t_newi(p,_t_symbol(t),*(int *)_t_surface(t));
+        nt = _t_newi(p,_t_symbol(t),*(int *)_t_surface(t));
     DO_KIDS(t,__t_clone(_t_child(t,i),nt));
     return nt;
 }
@@ -430,9 +430,9 @@ T *__t_clone(T *t,T *p) {
 T *__t_rclone(T *t,T *p) {
     T *nt;
     if (t->context.flags & TFLAG_ALLOCATED)
-	nt = __t_new(p,_t_symbol(t),_t_surface(t),_t_size(t),sizeof(rT));
+        nt = __t_new(p,_t_symbol(t),_t_surface(t),_t_size(t),sizeof(rT));
     else
-	nt = __t_newi(p,_t_symbol(t),*(int *)_t_surface(t),sizeof(rT));
+        nt = __t_newi(p,_t_symbol(t),*(int *)_t_surface(t),sizeof(rT));
     ((rT *)nt)->cur_child =  RUN_TREE_NOT_EVAULATED;
     DO_KIDS(t,__t_rclone(_t_child(t,i),nt));
     return nt;
@@ -476,9 +476,9 @@ int _t_children(T *t) {
  */
 void * _t_surface(T *t) {
     if (t->context.flags & (TFLAG_ALLOCATED|TFLAG_SURFACE_IS_TREE|TFLAG_SURFACE_IS_SCAPE))
-	return t->contents.surface;
+        return t->contents.surface;
     else
-	return &t->contents.surface;
+        return &t->contents.surface;
 }
 
 /**
@@ -519,31 +519,31 @@ T * _t_root(T *t) {
 }
 
 int _t_node_index(T *t) {
-	int c;
+    int c;
     int i;
     T *p = _t_parent(t);
     if (p==0) return 0;
     c = _t_children(p);
     for(i=0;i<c;i++) {
-	if (p->structure.children[i] == t) {
-	    return i+1;
-	}
+        if (p->structure.children[i] == t) {
+            return i+1;
+        }
     }
     return 0;
 }
 
 /// @todo  this is very expensive if called all the time!!!
 T * _t_next_sibling(T *t) {
-	int c;
+    int c;
     int i;
     T *p = _t_parent(t);
     if (p==0) return 0;
     c = _t_children(p);
     for(i=0;i<c;i++) {
-	if (p->structure.children[i] == t) {
-	    i++;
-	    return i<c ? p->structure.children[i] : 0;
-	}
+        if (p->structure.children[i] == t) {
+            i++;
+            return i<c ? p->structure.children[i] : 0;
+        }
     }
     return 0;
 }
@@ -561,7 +561,7 @@ T * _t_next_sibling(T *t) {
  */
 int _t_path_equal(int *p1,int *p2){
     while(*p1 != TREE_PATH_TERMINATOR && *p2 != TREE_PATH_TERMINATOR)
-	if (*(p1++) != *(p2++)) return 0;
+        if (*(p1++) != *(p2++)) return 0;
     return *p1 == TREE_PATH_TERMINATOR && *p2 == TREE_PATH_TERMINATOR;
 }
 
@@ -602,21 +602,21 @@ int * _t_get_path(T *t) {
 
     // store the children's path index values into the array as we walk back up the tree to the root
     for(n=t;n;) {
-	p[i] = _t_node_index(n);
-	n =_t_parent(n);
-	if (++i >= s) {
-	    s*=2;p=realloc(p,s);} // realloc array if tree too deep
+        p[i] = _t_node_index(n);
+        n =_t_parent(n);
+        if (++i >= s) {
+            s*=2;p=realloc(p,s);} // realloc array if tree too deep
     }
     if (i > 2) {
-	// reverse the list by swapping elements going from the outside to the center
-	i-=2;
-	l = i+1;
-	k = i/2+1;
-	for(j=0;j<k;j++) {
-	    temp = p[j];
-	    p[j] = p[i];
-	    p[i--] = temp;
-	}
+        // reverse the list by swapping elements going from the outside to the center
+        i-=2;
+        l = i+1;
+        k = i/2+1;
+        for(j=0;j<k;j++) {
+            temp = p[j];
+            p[j] = p[i];
+            p[i--] = temp;
+        }
     }
     else l = i-1;
     p[l]= TREE_PATH_TERMINATOR;
@@ -634,7 +634,7 @@ int * _t_get_path(T *t) {
  */
 void _t_pathcpy(int *dst_p,int *src_p) {
     while(*src_p != TREE_PATH_TERMINATOR) {
-	*dst_p++ = *src_p++;
+        *dst_p++ = *src_p++;
     }
     *dst_p = TREE_PATH_TERMINATOR;
 }
@@ -653,15 +653,15 @@ T * _t_get(T *t,int *p) {
     int i = *p++;
     T *c;
     if (i == TREE_PATH_TERMINATOR)
-	return t;
+        return t;
     else if (i == 0) {
-	if (!(t->context.flags & TFLAG_SURFACE_IS_TREE)) {
-	    raise_error0("surface is not a tree!");
-	}
-	c = (T *)(_t_surface(t));
+        if (!(t->context.flags & TFLAG_SURFACE_IS_TREE)) {
+            raise_error0("surface is not a tree!");
+        }
+        c = (T *)(_t_surface(t));
     }
     else
-	c = _t_child(t,i);
+        c = _t_child(t,i);
     if (c == NULL ) return NULL;
     if (*p == TREE_PATH_TERMINATOR) return c;
     return _t_get(c,p);
@@ -697,11 +697,11 @@ char * _t_sprint_path(int *fp,char *buf) {
     char *b = buf;
     int d=_t_path_depth(fp);
     if (d > 0) {
-	int i;
-	for(i=0;i<d;i++) {
-	    sprintf(b,"/%d",fp[i]);
-	    b += strlen(b);
-	}
+        int i;
+        for(i=0;i<d;i++) {
+            sprintf(b,"/%d",fp[i]);
+            b += strlen(b);
+        }
     }
     else buf[0] = 0;
 
@@ -726,26 +726,26 @@ TreeHash _t_hash(T *symbols,T *structures,T *t) {
     int i,c = _t_children(t);
     TreeHash result;
     if (c == 0) {
-	struct {Symbol s;TreeHash h;} h;
-	void *surface = _t_surface(t);
-	h.s = _t_symbol(t);
-	size_t l = _d_get_symbol_size(symbols,structures,h.s,surface);
-	if (l > 0)
-	    h.h = hashfn((char *)surface,l);
-	else
-	    h.h = 0;
-	result = hashfn((char *)&h,sizeof(h));
+        struct {Symbol s;TreeHash h;} h;
+        void *surface = _t_surface(t);
+        h.s = _t_symbol(t);
+        size_t l = _d_get_symbol_size(symbols,structures,h.s,surface);
+        if (l > 0)
+            h.h = hashfn((char *)surface,l);
+        else
+            h.h = 0;
+        result = hashfn((char *)&h,sizeof(h));
     }
     else {
-	size_t l = sizeof(TreeHash)*c+sizeof(Symbol);
-	TreeHash *h,*hashes = malloc(l);
-	h = hashes;
-	for(i=1;i<=c;i++) {
-	    *(h++) = _t_hash(symbols,structures,_t_child(t,i));
-	}
-	(*(Symbol *)h) = _t_symbol(t);
-	result = hashfn((char *)hashes,l);
-	free(hashes);
+        size_t l = sizeof(TreeHash)*c+sizeof(Symbol);
+        TreeHash *h,*hashes = malloc(l);
+        h = hashes;
+        for(i=1;i<=c;i++) {
+            *(h++) = _t_hash(symbols,structures,_t_child(t,i));
+        }
+        (*(Symbol *)h) = _t_symbol(t);
+        result = hashfn((char *)hashes,l);
+        free(hashes);
     }
     return result;
 }
@@ -786,21 +786,21 @@ size_t __t_serialize(Defs *d,T *t,void **bufferP,size_t offset,size_t current_si
 
     //    printf("\ncurrent_size:%ld offset:%ld  size:%ld symbol:%s",current_size,offset,l,_d_get_symbol_name(d->symbols,_t_symbol(t)));
     while ((offset+l+sizeof(Symbol)) > current_size) {
-	current_size*=2;
-	*bufferP = realloc(*bufferP,current_size);
+        current_size*=2;
+        *bufferP = realloc(*bufferP,current_size);
     }
     if (!compact) {
-	Symbol s = _t_symbol(t);
-	SWRITE(Symbol,s);
-	SWRITE(int,c);
+        Symbol s = _t_symbol(t);
+        SWRITE(Symbol,s);
+        SWRITE(int,c);
     }
     if (l) {
-	memcpy(*bufferP+offset,_t_surface(t),l);
-	offset += l;
+        memcpy(*bufferP+offset,_t_surface(t),l);
+        offset += l;
     }
 
     for(i=1;i<=c;i++) {
-	offset = __t_serialize(d,_t_child(t,i),bufferP,offset,current_size,compact);
+        offset = __t_serialize(d,_t_child(t,i),bufferP,offset,current_size,compact);
     }
     return offset;
 }
@@ -840,26 +840,26 @@ T * _t_unserialize(Defs *d,void **surfaceP,size_t *lengthP,T *t) {
     Structure st = _d_get_symbol_structure(d->symbols,s);
 
     if (is_sys_structure(st)) {
-	size = _sys_structure_size(st.id,*surfaceP);
-	if (size == -1) {raise_error0("BANG!");}
+        size = _sys_structure_size(st.id,*surfaceP);
+        if (size == -1) {raise_error0("BANG!");}
     }
     else size = 0;
     if (size > 0) {
-	//	printf(" reading: %ld bytes\n",size);
-	if (semeq(st,INTEGER))
-	    t = _t_newi(t,s,*(int *)*surfaceP);
-	else
-	    t = _t_new(t,s,*surfaceP,size);
-	*lengthP -= size;
-	*surfaceP += size;
+        //    printf(" reading: %ld bytes\n",size);
+        if (semeq(st,INTEGER))
+            t = _t_newi(t,s,*(int *)*surfaceP);
+        else
+            t = _t_new(t,s,*surfaceP,size);
+        *lengthP -= size;
+        *surfaceP += size;
     }
     else {
-	t = _t_newr(t,s);
+        t = _t_newr(t,s);
     }
 
     int i;
     for(i=1;i<=c;i++) {
-	_t_unserialize(d,surfaceP,lengthP,t);
+        _t_unserialize(d,surfaceP,lengthP,t);
     }
     return t;
 }
@@ -889,114 +889,114 @@ char * _t2json(Defs *defs,T *t,int level,char *buf) {
     buf = _indent_line(level,buf);
 
     if (is_process(s)) {
-	sprintf(buf,"{ \"type\":\"process\",\"name\" :\"%s\"",_d_get_process_name(processes,s));
+        sprintf(buf,"{ \"type\":\"process\",\"name\" :\"%s\"",_d_get_process_name(processes,s));
     }
     else {
-	char *n = _d_get_symbol_name(symbols,s);
-	Structure st = _d_get_symbol_structure(symbols,s);
-	sprintf(buf,"{ \"symbol\":{ \"context\":%d,\"id\":%d },",s.context,s.id);
-	buf+= strlen(buf);
+        char *n = _d_get_symbol_name(symbols,s);
+        Structure st = _d_get_symbol_structure(symbols,s);
+        sprintf(buf,"{ \"symbol\":{ \"context\":%d,\"id\":%d },",s.context,s.id);
+        buf+= strlen(buf);
 
-	if (!is_sys_structure(st)) {
-	    // if it's not a system structure, it's composed, so all we need to do is
-	    // print out the symbol name, and the reset will take care of itself
-	    sprintf(buf,"\"type\":\"%s\",\"name\":\"%s\"",_d_get_structure_name(structures,st),n);
-    	}
-	else {
+        if (!is_sys_structure(st)) {
+            // if it's not a system structure, it's composed, so all we need to do is
+            // print out the symbol name, and the reset will take care of itself
+            sprintf(buf,"\"type\":\"%s\",\"name\":\"%s\"",_d_get_structure_name(structures,st),n);
+        }
+        else {
 
-	    switch(st.id) {
-	    case ENUM_ID: // for now enum surfaces are just strings so we can see the text value
-	    case CSTRING_ID:
-		//@todo add escaping of quotes, carriage returns, etc...
-		sprintf(buf,"\"type\":\"CSTRING\",\"name\":\"%s\",\"surface\":\"\%s\"",n,(char *)_t_surface(t));
-		break;
-	    case CHAR_ID:
-		cr = *(char *)_t_surface(t);
-		if (cr == '"') {
-		    sprintf(buf,"\"type\":\"CHAR\",\"name\":\"%s\",\"surface\":\"\\\"\"",n);
-		} else {
-		    sprintf(buf,"\"type\":\"CHAR\",\"name\":\"%s\",\"surface\":\"%c\"",n,cr);
-		}
-		break;
-	    case BIT_ID:
-		sprintf(buf,"\"type\":\"BIT\",\"name\":\"%s\",\"surface\":%s",n,(*(int *)_t_surface(t)) ? "1" : "0");
-		break;
-	    case INTEGER_ID:
-		sprintf(buf,"\"type\":\"INTEGER\",\"name\":\"%s\",\"surface\":%d",n,*(int *)_t_surface(t));
-		break;
-	    case FLOAT_ID:
-		sprintf(buf,"\"type\":\"FLOAT\",\"name\":\"%s\",\"surface\":%f",n,*(float *)_t_surface(t));
-		break;
-	    case SYMBOL_ID:
-		c = _d_get_symbol_name(symbols,*(Symbol *)_t_surface(t));
-		sprintf(buf,"\"type\":\"SYMBOL\",\"name\":\"%s\",\"surface\":\"%s\"",n,c?c:"<unknown>");
-		break;
-	    case STRUCTURE_ID:
-		c = _d_get_structure_name(structures,*(Structure *)_t_surface(t));
-		sprintf(buf,"\"type\":\"STRUCTURE\",\"name\":\"%s\",\"surface\":\"%s\"",n,c?c:"<unknown>");
-		break;
-	    case PROCESS_ID:
-		c = _d_get_process_name(processes,*(Process *)_t_surface(t));
-		sprintf(buf,"\"type\":\"PROCESS\",\"name\":\"%s\",\"surface\":\"%s\"",n,c?c:"<unknown>");
-		break;
-	    case TREE_PATH_ID:
-		sprintf(buf,"\"type\":\"TREE_PATH\",\"name\":\"%s\",\"surface\":\"%s\"",n,_t_sprint_path((int *)_t_surface(t),b));
-		break;
-	    case XADDR_ID:
-		x = *(Xaddr *)_t_surface(t);
-		sprintf(buf,"\"type\":\"XADDR\",\"name\":\"%s\",\"surface\":{ \"symbol\":\"%s\",\"addr\":%d }",n,_d_get_symbol_name(symbols,x.symbol),x.addr);
-		break;
-	    case TREE_ID:
-		if (t->context.flags & TFLAG_SURFACE_IS_TREE) {
-		    c = _t2json(defs,(T *)_t_surface(t),0,tbuf);
-		    sprintf(buf,"\"type\":\"TREE\",\"name\":\"%s\",\"surface\":%s",n,c);
-		    break;
-		}
-	    case RECEPTOR_ID:
-		if (t->context.flags & (TFLAG_SURFACE_IS_TREE+TFLAG_SURFACE_IS_RECEPTOR)) {
-		    c = _t2json(defs,((Receptor *)_t_surface(t))->root,0,tbuf);
-		    sprintf(buf,"\"type\":\"RECEPTOR\",\"name\":\"%s\",\"surface\":%s",n,c);
-		    break;
-		}
-	    case SCAPE_ID:
-		if (t->context.flags & TFLAG_SURFACE_IS_SCAPE) {
-		    Scape *sc = (Scape *)_t_surface(t);
-		    //TODO: fixme!
-		    sprintf(buf,"(%s:key %s,data %s",n,_d_get_symbol_name(symbols,sc->key_source),_d_get_symbol_name(symbols,sc->data_source));
-		    break;
-		}
-	    case LIST_ID:
-		sprintf(buf,"\"type\":\"LIST\",\"name\":\"%s\"",n);
-		break;
-	    default:
-		if (semeq(s,SEMTREX_MATCH_CURSOR)) {
-		    c = _t2json(defs,*(T **)_t_surface(t),0,tbuf);
-		    //c = "null";
-		    sprintf(buf,"(%s:{%s}",n,c);
-		    break;
-		}
-		if (n == 0)
-		    sprintf(buf,"(<unknown:%d.%d.%d>",s.context,s.flags,s.id);
-		else {
-		    c = _d_get_structure_name(structures,st);
-		    sprintf(buf,"\"type\":\"%s\",\"name\":\"%s\"",c,n);
-		}
-	    }
-	}
+            switch(st.id) {
+            case ENUM_ID: // for now enum surfaces are just strings so we can see the text value
+            case CSTRING_ID:
+                //@todo add escaping of quotes, carriage returns, etc...
+                sprintf(buf,"\"type\":\"CSTRING\",\"name\":\"%s\",\"surface\":\"\%s\"",n,(char *)_t_surface(t));
+                break;
+            case CHAR_ID:
+                cr = *(char *)_t_surface(t);
+                if (cr == '"') {
+                    sprintf(buf,"\"type\":\"CHAR\",\"name\":\"%s\",\"surface\":\"\\\"\"",n);
+                } else {
+                    sprintf(buf,"\"type\":\"CHAR\",\"name\":\"%s\",\"surface\":\"%c\"",n,cr);
+                }
+                break;
+            case BIT_ID:
+                sprintf(buf,"\"type\":\"BIT\",\"name\":\"%s\",\"surface\":%s",n,(*(int *)_t_surface(t)) ? "1" : "0");
+                break;
+            case INTEGER_ID:
+                sprintf(buf,"\"type\":\"INTEGER\",\"name\":\"%s\",\"surface\":%d",n,*(int *)_t_surface(t));
+                break;
+            case FLOAT_ID:
+                sprintf(buf,"\"type\":\"FLOAT\",\"name\":\"%s\",\"surface\":%f",n,*(float *)_t_surface(t));
+                break;
+            case SYMBOL_ID:
+                c = _d_get_symbol_name(symbols,*(Symbol *)_t_surface(t));
+                sprintf(buf,"\"type\":\"SYMBOL\",\"name\":\"%s\",\"surface\":\"%s\"",n,c?c:"<unknown>");
+                break;
+            case STRUCTURE_ID:
+                c = _d_get_structure_name(structures,*(Structure *)_t_surface(t));
+                sprintf(buf,"\"type\":\"STRUCTURE\",\"name\":\"%s\",\"surface\":\"%s\"",n,c?c:"<unknown>");
+                break;
+            case PROCESS_ID:
+                c = _d_get_process_name(processes,*(Process *)_t_surface(t));
+                sprintf(buf,"\"type\":\"PROCESS\",\"name\":\"%s\",\"surface\":\"%s\"",n,c?c:"<unknown>");
+                break;
+            case TREE_PATH_ID:
+                sprintf(buf,"\"type\":\"TREE_PATH\",\"name\":\"%s\",\"surface\":\"%s\"",n,_t_sprint_path((int *)_t_surface(t),b));
+                break;
+            case XADDR_ID:
+                x = *(Xaddr *)_t_surface(t);
+                sprintf(buf,"\"type\":\"XADDR\",\"name\":\"%s\",\"surface\":{ \"symbol\":\"%s\",\"addr\":%d }",n,_d_get_symbol_name(symbols,x.symbol),x.addr);
+                break;
+            case TREE_ID:
+                if (t->context.flags & TFLAG_SURFACE_IS_TREE) {
+                    c = _t2json(defs,(T *)_t_surface(t),0,tbuf);
+                    sprintf(buf,"\"type\":\"TREE\",\"name\":\"%s\",\"surface\":%s",n,c);
+                    break;
+                }
+            case RECEPTOR_ID:
+                if (t->context.flags & (TFLAG_SURFACE_IS_TREE+TFLAG_SURFACE_IS_RECEPTOR)) {
+                    c = _t2json(defs,((Receptor *)_t_surface(t))->root,0,tbuf);
+                    sprintf(buf,"\"type\":\"RECEPTOR\",\"name\":\"%s\",\"surface\":%s",n,c);
+                    break;
+                }
+            case SCAPE_ID:
+                if (t->context.flags & TFLAG_SURFACE_IS_SCAPE) {
+                    Scape *sc = (Scape *)_t_surface(t);
+                    //TODO: fixme!
+                    sprintf(buf,"(%s:key %s,data %s",n,_d_get_symbol_name(symbols,sc->key_source),_d_get_symbol_name(symbols,sc->data_source));
+                    break;
+                }
+            case LIST_ID:
+                sprintf(buf,"\"type\":\"LIST\",\"name\":\"%s\"",n);
+                break;
+            default:
+                if (semeq(s,SEMTREX_MATCH_CURSOR)) {
+                    c = _t2json(defs,*(T **)_t_surface(t),0,tbuf);
+                    //c = "null";
+                    sprintf(buf,"(%s:{%s}",n,c);
+                    break;
+                }
+                if (n == 0)
+                    sprintf(buf,"(<unknown:%d.%d.%d>",s.context,s.flags,s.id);
+                else {
+                    c = _d_get_structure_name(structures,st);
+                    sprintf(buf,"\"type\":\"%s\",\"name\":\"%s\"",c,n);
+                }
+            }
+        }
     }
     buf += strlen(buf);
     int _c = _t_children(t);
     if ( _c > 0) {
-	sprintf(buf,",\"children\":[");
-	buf += strlen(buf);
-	for(i=1;i<=_c;i++){
-	    _t2json(defs,_t_child(t,i),level < 0 ? level-1 : level+1,buf);
-	    buf += strlen(buf);
-	    if (i<_c) {
-		_add_char2buf(',',buf);
-	    }
-	}
-	_add_char2buf(']',buf);
+        sprintf(buf,",\"children\":[");
+        buf += strlen(buf);
+        for(i=1;i<=_c;i++){
+            _t2json(defs,_t_child(t,i),level < 0 ? level-1 : level+1,buf);
+            buf += strlen(buf);
+            if (i<_c) {
+                _add_char2buf(',',buf);
+            }
+        }
+        _add_char2buf(']',buf);
     }
     _add_char2buf('}',buf);
     return result;

@@ -30,19 +30,19 @@ int semeq(SemanticID s1,SemanticID s2) {
  */
 char *_d_get_symbol_name(T *symbols,Symbol s) {
     if (is_sys_symbol(s)) {
-	if (s.id == 0) return "NULL_SYMBOL";
-	symbols = G_sys_defs.symbols;
+        if (s.id == 0) return "NULL_SYMBOL";
+        symbols = G_sys_defs.symbols;
     }
     if (is_sys_test_symbol(s))
-	symbols = G_sys_defs.symbols;
+        symbols = G_sys_defs.symbols;
     if (symbols) {
-	int c = _t_children(symbols);
-	if (s.id > c || s.id < 1)  {
-	    raise_error2("Bad symbol:%d--%d symbols in decl list",s.id,c);
-	}
-	T *def = _t_child(symbols,s.id);
-	T *l = _t_child(def,1);
-	return (char *)_t_surface(_t_child(def,1));
+        int c = _t_children(symbols);
+        if (s.id > c || s.id < 1)  {
+            raise_error2("Bad symbol:%d--%d symbols in decl list",s.id,c);
+        }
+        T *def = _t_child(symbols,s.id);
+        T *l = _t_child(def,1);
+        return (char *)_t_surface(_t_child(def,1));
     }
     sprintf(__d_extra_buf,"<unknown symbol:%d.%d.%d>",s.context,s.flags,s.id);
     return __d_extra_buf;
@@ -60,13 +60,13 @@ char *_d_get_symbol_name(T *symbols,Symbol s) {
  */
 char *_d_get_structure_name(T *structures,Structure s) {
     if (is_sys_structure(s)) {
-	if (s.id == 0) return "NULL_STRUCTURE";
-	structures = G_sys_defs.structures;
+        if (s.id == 0) return "NULL_STRUCTURE";
+        structures = G_sys_defs.structures;
     }
     if (structures) {
-	T *def = _t_child(structures,s.id);
-	T *l = _t_child(def,1);
-	return (char *)_t_surface(l);
+        T *def = _t_child(structures,s.id);
+        T *l = _t_child(def,1);
+        return (char *)_t_surface(l);
     }
     sprintf(__d_extra_buf,"<unknown structure:%d.%d.%d>",s.context,s.flags,s.id);
     return __d_extra_buf;
@@ -84,15 +84,15 @@ char *_d_get_structure_name(T *structures,Structure s) {
  */
 char *_d_get_process_name(T *processes,Process p) {
     if (is_sys_process(p)) {
-	if (p.id == 0) return "NULL_PROCESS";
-	processes = G_sys_defs.processes;
+        if (p.id == 0) return "NULL_PROCESS";
+        processes = G_sys_defs.processes;
     }
     if (processes) {
-	T *def = _t_child(processes,p.id);
-	if (def) {
-	    T *l = _t_child(def,1);
-	    return (char *)_t_surface(l);
-	}
+        T *def = _t_child(processes,p.id);
+        if (def) {
+            T *l = _t_child(def,1);
+            return (char *)_t_surface(l);
+        }
     }
     sprintf(__d_extra_buf,"<unknown process:%d.%d.%d>",p.context,p.flags,p.id);
     return __d_extra_buf;
@@ -163,7 +163,7 @@ T * _dv_define_structure(T *structures,char *label,int num_params,va_list params
     T *p = _t_newr(def,STRUCTURE_PARTS);
     int i;
     for(i=0;i<num_params;i++) {
-	_t_news(p,STRUCTURE_PART,va_arg(params,Symbol));
+        _t_news(p,STRUCTURE_PART,va_arg(params,Symbol));
     }
     return def;
 }
@@ -180,7 +180,7 @@ T * _dv_define_structure(T *structures,char *label,int num_params,va_list params
  */
 Structure _d_get_symbol_structure(T *symbols,Symbol s) {
     if (is_sys_symbol(s) || is_sys_test_symbol(s))
-	symbols = G_sys_defs.symbols;
+        symbols = G_sys_defs.symbols;
     T *def = _t_child(symbols,s.id);
     T *t = _t_child(def,2); // second child of the def is the structure
     return *(Structure *)_t_surface(t);
@@ -208,7 +208,7 @@ size_t _sys_structure_size(int id,void *surface) {
     case LIST_ID:
     case TREE_ID:
     case NULL_STRUCTURE_ID: return 0;
-	//	case SEMTREX: return
+        //      case SEMTREX: return
     case SYMBOL_ID: return sizeof(Symbol);
     case BIT_ID:
     case INTEGER_ID: return sizeof(int);
@@ -234,18 +234,18 @@ size_t _sys_structure_size(int id,void *surface) {
 size_t _d_get_structure_size(T *symbols,T *structures,Structure s,void *surface) {
     size_t size = 0;
     if (is_sys_structure(s)) {
-	size = _sys_structure_size(s.id,surface);
-	if (size == -1) {
-	    raise_error2("DON'T HAVE A SIZE FOR STRUCTURE '%s' (%d)",_d_get_structure_name(structures,s),s.id);
-	}
+        size = _sys_structure_size(s.id,surface);
+        if (size == -1) {
+            raise_error2("DON'T HAVE A SIZE FOR STRUCTURE '%s' (%d)",_d_get_structure_name(structures,s),s.id);
+        }
     }
     else {
-	T *structure = _t_child(structures,s.id);
-	T *parts = _t_child(structure,2);
-	DO_KIDS(parts,
-	    T *p = _t_child(parts,i);
-	    size += _d_get_symbol_size(symbols,structures,*(Symbol *)_t_surface(p),surface +size);
-		);
+        T *structure = _t_child(structures,s.id);
+        T *parts = _t_child(structure,2);
+        DO_KIDS(parts,
+            T *p = _t_child(parts,i);
+            size += _d_get_symbol_size(symbols,structures,*(Symbol *)_t_surface(p),surface +size);
+                );
     }
     return size;
 }
@@ -314,16 +314,16 @@ T * _d_build_def_semtrex(Defs defs,Symbol s,T *parent) {
 
     Structure st = _d_get_symbol_structure(defs.symbols,s);
     if (!(is_sys_structure(st))) {
-	T *structure = _d_get_structure_def(defs.structures,st);
-	T *parts = _t_child(structure,2);
-	int i,c = _t_children(parts);
-	if (c > 0) {
-	    T *seq = _t_newr(stx,SEMTREX_SEQUENCE);
-	    for(i=1;i<=c;i++) {
-		T *p = _t_child(parts,i);
-		_d_build_def_semtrex(defs,*(Symbol *)_t_surface(p),seq);
-	    }
-	}
+        T *structure = _d_get_structure_def(defs.structures,st);
+        T *parts = _t_child(structure,2);
+        int i,c = _t_children(parts);
+        if (c > 0) {
+            T *seq = _t_newr(stx,SEMTREX_SEQUENCE);
+            for(i=1;i<=c;i++) {
+                T *p = _t_child(parts,i);
+                _d_build_def_semtrex(defs,*(Symbol *)_t_surface(p),seq);
+            }
+        }
     }
     return stx;
 }
@@ -343,13 +343,13 @@ char * __t2s(Defs *defs,T *t,int indent) {
 
 char *_indent_line(int level,char *buf) {
     if (level < -1) {
-	int j = (-level - 1)*3;
-	*buf++ = '\n';
-	while(j--) *buf++ = ' ';
-	*buf = 0;
+        int j = (-level - 1)*3;
+        *buf++ = '\n';
+        while(j--) *buf++ = ' ';
+        *buf = 0;
     }
     else if (level > 0) {
-	*buf++ = ' ';
+        *buf++ = ' ';
     }
     return buf;
 }
@@ -368,82 +368,82 @@ char * __t_dump(Defs *defs,T *t,int level,char *buf) {
     buf = _indent_line(level,buf);
 
     if (is_process(s)) {
-	sprintf(buf,"(process:%s",_d_get_process_name(processes,s));
+        sprintf(buf,"(process:%s",_d_get_process_name(processes,s));
     }
     else {
-	char *n = _d_get_symbol_name(symbols,s);
-	Structure st = _d_get_symbol_structure(symbols,s);
-	if (!is_sys_structure(st)) {
-	    // if it's not a system structure, it's composed, so all we need to do is
-	    // print out the symbol name, and the reset will take care of itself
-	    sprintf(buf,"(%s",n);
-    	}
-	else {
-	    switch(st.id) {
-	    case ENUM_ID: // for now enum surfaces are just strings so we can see the text value
-	    case CSTRING_ID:
-		sprintf(buf,"(%s:%s",n,(char *)_t_surface(t));
-		break;
-	    case CHAR_ID:
-		sprintf(buf,"(%s:'%c'",n,*(char *)_t_surface(t));
-		break;
-	    case BIT_ID:
-	    case INTEGER_ID:
-		sprintf(buf,"(%s:%d",n,*(int *)_t_surface(t));
-		break;
-	    case FLOAT_ID:
-		sprintf(buf,"(%s:%f",n,*(float *)_t_surface(t));
-		break;
-	    case SYMBOL_ID:
-		c = _d_get_symbol_name(symbols,*(Symbol *)_t_surface(t));
-		sprintf(buf,"(%s:%s",n,c?c:"<unknown>");
-		break;
-	    case STRUCTURE_ID:
-		c = _d_get_structure_name(structures,*(Structure *)_t_surface(t));
-		sprintf(buf,"(%s:%s",n,c?c:"<unknown>");
-		break;
-	    case PROCESS_ID:
-		c = _d_get_process_name(processes,*(Process *)_t_surface(t));
-		sprintf(buf,"(%s:%s",n,c?c:"<unknown>");
-		break;
-	    case TREE_PATH_ID:
-		sprintf(buf,"(%s:%s",n,_t_sprint_path((int *)_t_surface(t),b));
-		break;
-	    case XADDR_ID:
-		x = *(Xaddr *)_t_surface(t);
-		sprintf(buf,"(%s:%s.%d",n,_d_get_symbol_name(symbols,x.symbol),x.addr);
-		break;
-	    case TREE_ID:
-		if (t->context.flags & TFLAG_SURFACE_IS_TREE) {
-		    c = __t_dump(defs,(T *)_t_surface(t),0,tbuf);
-		    sprintf(buf,"(%s:{%s}",n,c);
-		    break;
-		}
-	    case RECEPTOR_ID:
-		if (t->context.flags & (TFLAG_SURFACE_IS_TREE+TFLAG_SURFACE_IS_RECEPTOR)) {
-		    c = __t_dump(defs,((Receptor *)_t_surface(t))->root,0,tbuf);
-		    sprintf(buf,"(%s:{%s}",n,c);
-		    break;
-		}
-	    case SCAPE_ID:
-		if (t->context.flags & TFLAG_SURFACE_IS_SCAPE) {
-		    Scape *sc = (Scape *)_t_surface(t);
-		    sprintf(buf,"(%s:key %s,data %s",n,_d_get_symbol_name(symbols,sc->key_source),_d_get_symbol_name(symbols,sc->data_source));
-		    break;
-		}
-	    default:
-		if (semeq(s,SEMTREX_MATCH_CURSOR)) {
-		    c = __t_dump(defs,*(T **)_t_surface(t),0,tbuf);
-		    //c = "null";
-		    sprintf(buf,"(%s:{%s}",n,c);
-		    break;
-		}
-		if (n == 0)
-		    sprintf(buf,"(<unknown:%d.%d.%d>",s.context,s.flags,s.id);
-		else
-		    sprintf(buf,"(%s",n);
-	    }
-	}
+        char *n = _d_get_symbol_name(symbols,s);
+        Structure st = _d_get_symbol_structure(symbols,s);
+        if (!is_sys_structure(st)) {
+            // if it's not a system structure, it's composed, so all we need to do is
+            // print out the symbol name, and the reset will take care of itself
+            sprintf(buf,"(%s",n);
+        }
+        else {
+            switch(st.id) {
+            case ENUM_ID: // for now enum surfaces are just strings so we can see the text value
+            case CSTRING_ID:
+                sprintf(buf,"(%s:%s",n,(char *)_t_surface(t));
+                break;
+            case CHAR_ID:
+                sprintf(buf,"(%s:'%c'",n,*(char *)_t_surface(t));
+                break;
+            case BIT_ID:
+            case INTEGER_ID:
+                sprintf(buf,"(%s:%d",n,*(int *)_t_surface(t));
+                break;
+            case FLOAT_ID:
+                sprintf(buf,"(%s:%f",n,*(float *)_t_surface(t));
+                break;
+            case SYMBOL_ID:
+                c = _d_get_symbol_name(symbols,*(Symbol *)_t_surface(t));
+                sprintf(buf,"(%s:%s",n,c?c:"<unknown>");
+                break;
+            case STRUCTURE_ID:
+                c = _d_get_structure_name(structures,*(Structure *)_t_surface(t));
+                sprintf(buf,"(%s:%s",n,c?c:"<unknown>");
+                break;
+            case PROCESS_ID:
+                c = _d_get_process_name(processes,*(Process *)_t_surface(t));
+                sprintf(buf,"(%s:%s",n,c?c:"<unknown>");
+                break;
+            case TREE_PATH_ID:
+                sprintf(buf,"(%s:%s",n,_t_sprint_path((int *)_t_surface(t),b));
+                break;
+            case XADDR_ID:
+                x = *(Xaddr *)_t_surface(t);
+                sprintf(buf,"(%s:%s.%d",n,_d_get_symbol_name(symbols,x.symbol),x.addr);
+                break;
+            case TREE_ID:
+                if (t->context.flags & TFLAG_SURFACE_IS_TREE) {
+                    c = __t_dump(defs,(T *)_t_surface(t),0,tbuf);
+                    sprintf(buf,"(%s:{%s}",n,c);
+                    break;
+                }
+            case RECEPTOR_ID:
+                if (t->context.flags & (TFLAG_SURFACE_IS_TREE+TFLAG_SURFACE_IS_RECEPTOR)) {
+                    c = __t_dump(defs,((Receptor *)_t_surface(t))->root,0,tbuf);
+                    sprintf(buf,"(%s:{%s}",n,c);
+                    break;
+                }
+            case SCAPE_ID:
+                if (t->context.flags & TFLAG_SURFACE_IS_SCAPE) {
+                    Scape *sc = (Scape *)_t_surface(t);
+                    sprintf(buf,"(%s:key %s,data %s",n,_d_get_symbol_name(symbols,sc->key_source),_d_get_symbol_name(symbols,sc->data_source));
+                    break;
+                }
+            default:
+                if (semeq(s,SEMTREX_MATCH_CURSOR)) {
+                    c = __t_dump(defs,*(T **)_t_surface(t),0,tbuf);
+                    //c = "null";
+                    sprintf(buf,"(%s:{%s}",n,c);
+                    break;
+                }
+                if (n == 0)
+                    sprintf(buf,"(<unknown:%d.%d.%d>",s.context,s.flags,s.id);
+                else
+                    sprintf(buf,"(%s",n);
+            }
+        }
     }
     DO_KIDS(t,__t_dump(defs,_t_child(t,i),level < 0 ? level-1 : level+1,buf+strlen(buf)));
     sprintf(buf+strlen(buf),")");

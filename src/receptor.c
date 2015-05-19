@@ -61,11 +61,11 @@ Receptor *_r_new(Symbol s) {
 // set the labels in the label table for the given def
 void __r_set_labels(Receptor *r,T *defs,int sem_type) {
     DO_KIDS(
-	    defs,
-	    T *def = _t_child(defs,i);
-	    T *sl = _t_child(def,1);
-	    __set_label_for_def(r,_t_surface(sl),def,sem_type);
-	    );
+            defs,
+            T *def = _t_child(defs,i);
+            T *sl = _t_child(def,1);
+            __set_label_for_def(r,_t_surface(sl),def,sem_type);
+            );
 }
 
 /**
@@ -103,18 +103,18 @@ void _r_add_listener(Receptor *r,Aspect aspect,Symbol carrier,T *expectation,T *
 void instanceFree(Instance *i) {
     instance_elem *cur,*tmp;
     HASH_ITER(hh, *i, cur, tmp) {
-	_t_free((*i)->instance);
-	HASH_DEL(*i,cur);  /* delete; cur advances to next */
-	free(cur);
+        _t_free((*i)->instance);
+        HASH_DEL(*i,cur);  /* delete; cur advances to next */
+        free(cur);
     }
 }
 
 void instancesFree(Instances *i) {
     instances_elem *cur,*tmp;
     HASH_ITER(hh, *i, cur, tmp) {
-	instanceFree(&(*i)->instances);
-	HASH_DEL(*i,cur);  /* delete; cur advances to next */
-	free(cur);
+        instanceFree(&(*i)->instances);
+        HASH_DEL(*i,cur);  /* delete; cur advances to next */
+        free(cur);
     }
 }
 
@@ -151,8 +151,8 @@ SemanticID  __get_label_idx(Receptor *r,char *label) {
     SemanticID s = {RECEPTOR_CONTEXT,0,0};
     int *path = labelGet(&r->table,label);
     if (path) {
-	s.id = path[_t_path_depth(path)-1];
-	s.flags = path[1]; // definitions index == semantic type!!
+        s.id = path[_t_path_depth(path)-1];
+        s.flags = path[1]; // definitions index == semantic type!!
     }
     return s;
 }
@@ -301,20 +301,20 @@ void _r_install_protocol(Receptor *r,int idx,char *role,Aspect aspect) {
     int j,c = _t_children(interactions);
     for(j=1;j<=c;j++) {
 
-	T *i = _t_child(interactions,j);
-	//	raise(SIGINT);
-	// the TO_ROLE indicates the expectation actions we must install
-	if (!strcmp(role,(char *)_t_surface(_t_child(i,3)))) {
-	    // get the protocols input_carrier
-	    Symbol ic = *(Symbol *)_t_surface(_t_child(i,4));
-	    if (!semeq(a_ic,ic)) {
-		//		raise_error2("input carriers don't match: aspect=%s protocol=%s",_r_get_symbol_name(r,a_ic),_r_get_symbol_name(r,ic));
+        T *i = _t_child(interactions,j);
+        //      raise(SIGINT);
+        // the TO_ROLE indicates the expectation actions we must install
+        if (!strcmp(role,(char *)_t_surface(_t_child(i,3)))) {
+            // get the protocols input_carrier
+            Symbol ic = *(Symbol *)_t_surface(_t_child(i,4));
+            if (!semeq(a_ic,ic)) {
+                //              raise_error2("input carriers don't match: aspect=%s protocol=%s",_r_get_symbol_name(r,a_ic),_r_get_symbol_name(r,ic));
 raise_error2("input carriers don't match: aspect=%d protocol=%d",a_ic.id,ic.id);
-	    }
-	    T *expect = _t_clone(_t_child(i,6));
-	    T *act = _t_clone(_t_child(i,7));
-	    _r_add_listener(r,aspect,ic,expect,act);
-	}
+            }
+            T *expect = _t_clone(_t_child(i,6));
+            T *act = _t_clone(_t_child(i,7));
+            _r_add_listener(r,aspect,ic,expect,act);
+        }
     }
 }
 
@@ -340,11 +340,11 @@ Xaddr _r_new_instance(Receptor *r,T *t) {
 
     HASH_FIND_INT( *instances, &s, e );
     if (!e) {
-	e = malloc(sizeof(struct instances_elem));
-	e->instances = NULL;
-	e->s = s;
-	e->last_id = 0;
-	HASH_ADD_INT(*instances,s,e);
+        e = malloc(sizeof(struct instances_elem));
+        e->instances = NULL;
+        e->s = s;
+        e->last_id = 0;
+        HASH_ADD_INT(*instances,s,e);
     }
     e->last_id++;
     instance_elem *i;
@@ -376,12 +376,12 @@ T * _r_get_instance(Receptor *r,Xaddr x) {
     instances_elem *e = 0;
     HASH_FIND_INT( *instances, &x.symbol, e );
     if (e) {
-	instance_elem *i = 0;
-	Instance *iP = &e->instances;
-	HASH_FIND_INT( *iP, &x.addr, i );
-	if (i) {
-	    return i->instance;
-	}
+        instance_elem *i = 0;
+        Instance *iP = &e->instances;
+        HASH_FIND_INT( *iP, &x.addr, i );
+        if (i) {
+            return i->instance;
+        }
    }
     return 0;
 }
@@ -490,31 +490,31 @@ T * _r_deliver(Receptor *r, T *signal) {
     T *signals = _t_new_root(SIGNALS);
 
     DO_KIDS(ls,
-	l = _t_child(ls,i);
-	e = _t_child(l,1);
-	// if we get a match, create a run tree from the action, using the match and signal as the parameters
-	T *stx = _t_news(0,SEMTREX_GROUP,NULL_SYMBOL);
-	_t_add(stx,_t_clone(_t_child(e,1)));
-	if (_t_matchr(stx,signal_contents,&m)) {
-	    T *action = _t_child(l,2);
-	    rt = _p_make_run_tree(r->defs.processes,action,2,m,signal_contents);
-	    _t_free(m);
-	    _t_add(signal,rt);
-	    // for now just reduce the tree in place
-	    /// @todo move this to adding the runtree to the thread pool
-	    int e = _p_reduce(r->defs,rt);
-	    /// @todo runtime error handing!!!
-	    if (e) {
-		raise_error("got reduction error: %d",e);
-	    }
+        l = _t_child(ls,i);
+        e = _t_child(l,1);
+        // if we get a match, create a run tree from the action, using the match and signal as the parameters
+        T *stx = _t_news(0,SEMTREX_GROUP,NULL_SYMBOL);
+        _t_add(stx,_t_clone(_t_child(e,1)));
+        if (_t_matchr(stx,signal_contents,&m)) {
+            T *action = _t_child(l,2);
+            rt = _p_make_run_tree(r->defs.processes,action,2,m,signal_contents);
+            _t_free(m);
+            _t_add(signal,rt);
+            // for now just reduce the tree in place
+            /// @todo move this to adding the runtree to the thread pool
+            int e = _p_reduce(r->defs,rt);
+            /// @todo runtime error handing!!!
+            if (e) {
+                raise_error("got reduction error: %d",e);
+            }
 
-	    /// @todo we shouldn't assume that all reductions are response signals...
-	    /// but this will take coordination with the _p_reduce, to tell us which signals result
-	    _t_add(signals,__r_make_signal(to,from,aspect,_t_clone(_t_child(rt,1))));
+            /// @todo we shouldn't assume that all reductions are response signals...
+            /// but this will take coordination with the _p_reduce, to tell us which signals result
+            _t_add(signals,__r_make_signal(to,from,aspect,_t_clone(_t_child(rt,1))));
 
-	}
-	    _t_free(stx);
-	    );
+        }
+            _t_free(stx);
+            );
 
     //    printf("\n    signals after:"); puts(_td(r,signals));
 
@@ -554,7 +554,7 @@ char __t_dump_buf[10000];
 char *_td(Receptor *r,T *t) {
     if (!t) sprintf(__t_dump_buf,"<null-tree>");
     else
-	__t_dump(&r->defs,t,0,__t_dump_buf);
+        __t_dump(&r->defs,t,0,__t_dump_buf);
     return __t_dump_buf;
 }
 

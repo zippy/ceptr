@@ -1,5 +1,5 @@
 /**
-  * @ingroup vmhost
+ * @ingroup vmhost
  *
  * @{
  * @file vmhost.c
@@ -43,7 +43,7 @@ void _v_free(VMHost *v) {
 
     // detach any active receptors which would otherwise be doubly freed
     while(_t_children(v->active_receptors) > 0) {
-	_t_detach_by_idx(v->active_receptors,1);
+        _t_detach_by_idx(v->active_receptors,1);
     }
     _r_free(v->r);
     _s_free(v->installed_receptors);
@@ -92,24 +92,24 @@ Xaddr _v_install_r(VMHost *v,Xaddr package,T *bindings,char *label) {
     // confirm that the bindings match the manifest
     // @todo expand the manifest to allow optional binding, etc, using semtrex to do the matching instead of assuming positional matching
     if (bindings) {
-	T *m = _t_child(p,1);
-	int c = _t_children(m);
-	if (c%2) {raise_error0("manifest must have even number of children!");}
-	int i;
-	for(i=1;i<=c;i++) {
-	    T *mp = _t_child(m,i);
-	    T *s = _t_child(mp,2);
-	    T *bp = _t_child(bindings,i);
-	    if (!bp) {
-		raise_error("missing binding for %s",(char *)_t_surface(_t_child(mp,1)));
-	    }
-	    T *v = _t_child(bp,2);
-	    Symbol spec = *(Symbol *)_t_surface(s);
-	    if (semeq(_t_symbol(v),spec)) {
-		T *symbols = _t_child(p,3);
-		raise_error2("bindings symbol %s doesn't match spec %s",_d_get_symbol_name(symbols,_t_symbol(v)),_d_get_symbol_name(symbols,spec));
-	    }
-	}
+        T *m = _t_child(p,1);
+        int c = _t_children(m);
+        if (c%2) {raise_error0("manifest must have even number of children!");}
+        int i;
+        for(i=1;i<=c;i++) {
+            T *mp = _t_child(m,i);
+            T *s = _t_child(mp,2);
+            T *bp = _t_child(bindings,i);
+            if (!bp) {
+                raise_error("missing binding for %s",(char *)_t_surface(_t_child(mp,1)));
+            }
+            T *v = _t_child(bp,2);
+            Symbol spec = *(Symbol *)_t_surface(s);
+            if (semeq(_t_symbol(v),spec)) {
+                T *symbols = _t_child(p,3);
+                raise_error2("bindings symbol %s doesn't match spec %s",_d_get_symbol_name(symbols,_t_symbol(v)),_d_get_symbol_name(symbols,spec));
+            }
+        }
     }
 
     Symbol s = _r_declare_symbol(v->r,RECEPTOR,label);
@@ -178,8 +178,8 @@ void _v_send(VMHost *v,Xaddr from,Xaddr to,Aspect aspect,T *contents) {
  */
 void _v_send_signals(VMHost *v,T *signals) {
     while(_t_children(signals)>0) {
-	T *s = _t_detach_by_idx(signals,1);
-	_t_add(v->pending_signals,s);
+        T *s = _t_detach_by_idx(signals,1);
+        _t_add(v->pending_signals,s);
     }
 }
 
@@ -189,14 +189,14 @@ void _v_send_signals(VMHost *v,T *signals) {
 void __v_process_signals(VMHost *v) {
     T *signals = v->pending_signals;
     while(_t_children(signals)>0) {
-	T *s = _t_detach_by_idx(signals,1);
-	T *envelope = _t_child(s,1);
-	//	T *contents = _t_child(s,2);
-	Xaddr to = *(Xaddr *)_t_surface(_t_child(envelope,2));
-	Receptor *r = (Receptor *)_t_surface(_t_child(_r_get_instance(v->r,to),1)); // the receptor itself is the surface of the first child of the INSTALLED_RECEPTOR (bleah)
-	Aspect a = *(Aspect *)_t_surface(_t_child(envelope,3));
-	T *result = _r_deliver(r,s);
-	_v_send_signals(v,result);
+        T *s = _t_detach_by_idx(signals,1);
+        T *envelope = _t_child(s,1);
+        //      T *contents = _t_child(s,2);
+        Xaddr to = *(Xaddr *)_t_surface(_t_child(envelope,2));
+        Receptor *r = (Receptor *)_t_surface(_t_child(_r_get_instance(v->r,to),1)); // the receptor itself is the surface of the first child of the INSTALLED_RECEPTOR (bleah)
+        Aspect a = *(Aspect *)_t_surface(_t_child(envelope,3));
+        T *result = _r_deliver(r,s);
+        _v_send_signals(v,result);
     }
 }
 /** @}*/
