@@ -108,7 +108,6 @@ Error __p_reduce_sys_proc(Defs *defs,Symbol s,T *code) {
         *((int *)&x->contents.surface) = *((int *)&x->contents.surface)*c;
         break;
     case DIV_INT_ID:
-        //@todo handle divide by zero errors.
         x = _t_detach_by_idx(code,1);
         c = *(int *)_t_surface(_t_child(code,1));
         if (!c) {
@@ -192,6 +191,7 @@ Error __p_reduce_sys_proc(Defs *defs,Symbol s,T *code) {
         break;
     case RESPOND_ID:
         // for now we just remove the RESPOND instruction and replace it with it's own child
+		// @todo make respond actually send it's parameter as a response signal to the sender
         x = _t_detach_by_idx(code,1);
         break;
     case INTERPOLATE_FROM_MATCH_ID:
