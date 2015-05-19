@@ -46,6 +46,7 @@ The tests also produce a bunch semantic trees dumped out to json for visualizati
 
 * We use test driven development.  Adding a new function or feature, should mean you've added a new test in the spec/ directory.  Our [testing framework] (https://github.com/zippy/ceptr/blob/master/spec/test_framework.h) provides a bunch of C macros that test an expectation with a result, and nicely print broken tests when they fail.  Check out any file in the spec directory to see how it's done.
 * We use [Doxygen] (http:/doxygen.org) to generate our API documentation.  Contributors are asked to use doxygen commenting blocks so that we can automatically generate documentation.  Additionally we have the practice of using the @snippet command to include portions of our specs as examples in the API.  We try to make our test cases meaningful so they can be so used and make good examples.
+* Elements of Style: no tabs indentation (4 spaces).  Note: if you are using emacs with prelude it specifically sets indent-tabs-mode to 't' in modules/prelude-c.el for c-mode so you have to fix that there.
 
 ## License
 
