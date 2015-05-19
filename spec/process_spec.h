@@ -397,25 +397,35 @@ void testProcessReduce() {
     T *c = _t_rclone(n);
     _t_add(t,c);
 
-    R context;
-    _p_init_context(t,&context);
+    R *context = __p_make_context(t,0);
 
     spec_is_equal(rt_cur_child(c),0);
-    _p_step(defs,t,&context);
-    // first step goes into the boolean
-    spec_is_equal(rt_cur_child(c),1);
-    spec_is_ptr_equal(context.node_pointer,_t_child(c,1));
+    // first step is Eval and next step is Descend
+    spec_is_equal(_p_step(defs,&context),Descend);
+    spec_is_equal(rt_cur_child(c),0);
 
-    // second step ascends back to top if and marks boolean complete
-    _p_step(defs,t,&context);
+    // next step after Descend changes node pointer and moved to Eval
+    spec_is_equal(_p_step(defs,&context),Eval);
+    spec_is_ptr_equal(context->node_pointer,_t_child(c,1));
+    spec_is_equal(rt_cur_child(c),1);
+
+    // after Eval next step will be Ascend
+    spec_is_equal(_p_step(defs,&context),Ascend);
+
+    // step ascends back to top if and marks boolean complete
+    spec_is_equal(_p_step(defs,&context),Eval);
+
     spec_is_equal(rt_cur_child(_t_child(c,1)),RUN_TREE_EVALUATED);
-    spec_is_ptr_equal(context.node_pointer,c);
+    spec_is_ptr_equal(context->node_pointer,c);
+
+    spec_is_equal(_p_step(defs,&context),Descend);
 
     // third step goes into the second level if
-    _p_step(defs,t,&context);
+    spec_is_equal(_p_step(defs,&context),Eval);
     spec_is_equal(rt_cur_child(c),2);
-    spec_is_ptr_equal(context.node_pointer,_t_child(c,2));
+    spec_is_ptr_equal(context->node_pointer,_t_child(c,2));
 
+    free(context);
     // not specing out all the steps because there are soooo many...
 
     // just re-running them all for final result

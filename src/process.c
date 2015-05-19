@@ -216,88 +216,24 @@ Error __p_reduce_sys_proc(Defs *defs,Symbol s,T *code) {
     return noReductionErr;
 }
 
-enum {Ascend,Descend};
-
-Error _p_step(Defs defs,T *run_tree, R *context) {
-    T *np = context->node_pointer;
-    T *parent = context->parent;
-
-    Process s = _t_symbol(np);
-
-    int next ;
-
-    if (semeq(s,PARAM_REF)) {
-	T *param = _t_get(run_tree,(int *)_t_surface(np));
-	if (!param) {
-	    raise_error0("request for non-existent param");
-	}
-	context->node_pointer = np = _t_rclone(param);
-	_t_replace(parent,context->idx,np);
-	s = _t_symbol(np);
-    }
-    // @todo what if the replaced parameter is a PARAM_REF tree ??
-
-    // if this node is not a process, then ascend
-    if (!is_process(s)) {
-	rt_cur_child(np) = RUN_TREE_EVALUATED;
-        next = Ascend;
-    }
-    else {
-	int c = _t_children(np);
-	if (c == rt_cur_child(np)) {
-	    // all the children have been processed, so we can evaluate this process
-	    if (!is_sys_process(s)) {
-		Error e = __p_check_signature(defs,s,np);
-		if (e) return e;
-		T *rt = __p_make_run_tree(defs.processes,s,np);
-		e = _p_reduce(defs,rt);
-		if (e) {
-		    _t_free(rt);
-		    return e;
-		}
-		context->node_pointer = np = _t_detach_by_idx(rt,1);
-		_t_free(rt);
-		_t_replace(parent,context->idx,np);
-	    }
-	    else {
-		Error e = __p_reduce_sys_proc(&defs,s,np);
-		if (e) return e;
-	    }
-	    rt_cur_child(np) = RUN_TREE_EVALUATED;
-            next = Ascend;
-	}
-	else if(c) {
-	    //descend and increment the current child we're working on!
-            next = Descend;
-	}
-	else {
-	    raise_error0("whoa! brain fart!");
-	}
-    }
-
-    if (next == Ascend) {
-	context->node_pointer = context->parent;
-	context->parent = _t_parent(context->node_pointer);
-	if (!context->parent || context->parent == run_tree) {
-	    context->idx = 1;
-	}
-	else context->idx = rt_cur_child(context->parent);
-    }
-    else if (next == Descend) {
-	context->parent = context->node_pointer;
-	context->idx = ++rt_cur_child(np);
-	context->node_pointer = _t_child(context->node_pointer,context->idx);
-    }
-
-    return noReductionErr;
-}
-
-void _p_init_context(T *run_tree,R *context) {
+/**
+ * create a run-tree execution context.
+*/
+R *__p_make_context(T *run_tree,R *caller) {
+    R *context = malloc(sizeof(R));
+    context->state = Eval;
+    context->err = 0;
+    context->run_tree = run_tree;
+    // start with the node_pointer at the first child of the run_tree
     context->node_pointer = _t_child(run_tree,1);
     context->parent = run_tree;
     context->idx = 1;
+    context->caller = caller;
+    if (caller) caller->callee = context;
+    return context;
 }
 
+//#define debug_reduce
 /**
  * reduce a run tree by executing the instructions in it and replacing the tree values in place
  *
@@ -311,62 +247,207 @@ void _p_init_context(T *run_tree,R *context) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/process_spec.h testProcessErrorTrickleUp
  */
-Error _p_reduce(Defs defs,T *run_tree) {
-    Error e = noReductionErr;
-    R context;
-    _p_init_context(run_tree,&context);
-    while(context.node_pointer != run_tree) {
-	e = _p_step(defs,run_tree,&context);
-	if (e) {
-	    if (_t_children(run_tree) <= 2) {
-		// no error handler so just return the error
-		return e;
-	    }
-	    else {
-		//		T *rt = _t_new_root(RUN_TREE);
-		//T *c = _t_rclone(_t_child(run_tree,3));
-		//_t_add(rt,c);
+Error _p_reduce(Defs defs,T *rt) {
+    T *run_tree = rt;
+    R *context = __p_make_context(run_tree,0);;
+    Error e = Eval;
 
-		// the first parameter to the error code is always a reduction error
-		// which gets added on as the 4th child of the run tree when the
-		// error happens.
-		T *ps = _t_newr(run_tree,PARAMS);
+#ifdef debug_reduce
+    printf("\n\nStarting reduce:\n");
+#endif
+    do {
+	e = _p_step(defs, &context);
+    } while(context);
+    return e;
+}
 
-		//@todo: fix this so we don't actually use an error value that
-		// then has to be translated into a symbol, but rather so that we
-		// can programatically calculate the symbol.
-		Symbol se;
-		switch(e) {
-		case tooFewParamsReductionErr: se=TOO_FEW_PARAMS_ERR;break;
-		case tooManyParamsReductionErr: se=TOO_MANY_PARAMS_ERR;break;
-		case badSignatureReductionErr: se=BAD_SIGNATURE_ERR;break;
-		case notProcessReductionError: se=NOT_A_PROCESS_ERR;break;
-		case divideByZeroReductionErr: se=ZERO_DIVIDE_ERR;break;
-		case raiseReductionErr:
-		    se = *(Symbol *)_t_surface(_t_child(context.node_pointer,1));
-		    break;
-		default: raise_error("unknown reduction error: %d",e);
-		}
-		T *err = __t_new(ps,se,0,0,sizeof(rT));
-		int *path = _t_get_path(context.node_pointer);
-		_t_new(err,ERROR_LOCATION,path,sizeof(int)*(_t_path_depth(path)+1));
-		free(path);
+/**
+ * take one step in the execution state machine given a run-tree context
+ *
+ * a run_tree is expected to have a code tree as the first child, parameters as the second,
+ * and optionally an error handling routine as the third child.
+ *
+ * @param[in] processes context of defined processes
+ * @param[in] pointer to context pointer
+ * @returns the next state that will be called for the context
+ */
+Error _p_step(Defs defs, R **contextP) {
+    R *context = *contextP;
+#ifdef debug_reduce
+    char *sn[]={"Ascend","Descend","Pushed","Pop","Eval","Done"};
+    char *s = context->state <= 0 ? sn[-context->state -1] : "Error";
+    printf("State %s : %d\n",s,context->state);
+    puts(t2s(context->run_tree));
+    if (context) {
+	int *path = _t_get_path(context->node_pointer);
+	char pp[255];
+	_t_sprint_path(path,pp);
+	printf("Node Pointer:%s\n",pp);
+	free(path);
+    }
+    printf("\n");
+#endif
 
-		// switch the node_pointer to the top of the error handling routine
-		context.node_pointer = _t_child(run_tree,3);
+    switch(context->state) {
+    case noReductionErr:
+	raise_error0("whoa!"); // shouldn't be calling step if Done or noErr
+	break;
+    case Pop:
 
-		//		e = _p_reduce(defs,rt);
-		//		if (e) return e; // @todo handle errors within error handler
-
-		//		// replace the code that produce an error with the results of the error handler
-		//		T *t = _t_detach_by_idx(rt,1);
-		//		_t_free(rt);
-		//		_t_replace(run_tree,1,t);
-		//		break;
+	// if this was the successful reduction by an error handler
+	// move the value to the 1st child
+	if (context->err) {
+	    T *t = _t_detach_by_idx(context->run_tree,3);
+	    if (t) {
+		_t_replace(context->run_tree,1,t);
+		context->err = noReductionErr;
 	    }
 	}
+
+	// if this is top caller on the stack then we are completely done
+	if (!context->caller) {
+	    Error e = context->err;
+	    free(context);
+	    *contextP = 0;
+	    return e;
+	}
+	else {
+	    // otherwise pop the context
+	    R *ctx = context;
+	    context = context->caller;  // set the new context
+
+	    if (!ctx->err) {
+		// get results of the run_tree
+		T *np = _t_detach_by_idx(ctx->run_tree,1);
+		_t_replace(context->parent,context->idx,np); // replace the process call node with the result
+		rt_cur_child(np) = RUN_TREE_EVALUATED;
+		context->node_pointer = np;
+		context->state = Eval;  // or possible ascend??
+	    }
+	    else context->state = ctx->err;
+	    // cleanup
+	    _t_free(ctx->run_tree);
+	    free(ctx);
+	    context->callee = 0;
+	    *contextP = context;
+	}
+
+	break;
+    case Eval:
+	{
+	    T *np = context->node_pointer;
+
+	    Process s = _t_symbol(np);
+
+	    if (semeq(s,PARAM_REF)) {
+		T *param = _t_get(context->run_tree,(int *)_t_surface(np));
+		if (!param) {
+		    raise_error0("request for non-existent param");
+		}
+		context->node_pointer = np = _t_rclone(param);
+		_t_replace(context->parent, context->idx,np);
+		s = _t_symbol(np);
+	    }
+	    // @todo what if the replaced parameter is itself a PARAM_REF tree ??
+
+	    // if this node is not a process, i.e. it's data, then we are done descending
+	    // and it will be the result so ascend
+	    if (!is_process(s)) {
+		context->state = Ascend;
+	    }
+	    else {
+		int c = _t_children(np);
+		if (c == rt_cur_child(np)) {
+		    // if the current child == the child count this means
+		    // all the children have been processed, so we can evaluate this process
+		    if (!is_sys_process(s)) {
+			// if it's user defined process then we check the signature and then make
+			// a new run-tree run that process
+			Error e = __p_check_signature(defs,s,np);
+			if (e) context->state = e;
+			else {
+			    T *run_tree = __p_make_run_tree(defs.processes,s,np);
+			    context->state = Pushed;
+			    *contextP = __p_make_context(run_tree,context);
+			}
+		    }
+		    else {
+			// if it's a sys process we can just reduce it in and then ascend
+			// or move to the error handling state
+			Error e = __p_reduce_sys_proc(&defs,s,np);
+			context->state = e ? e : Ascend;
+		    }
+		}
+		else if(c) {
+		    //descend and increment the current child we're working on!
+		    context->state = Descend;
+		}
+		else {
+		    raise_error0("whoa! brain fart!");
+		}
+	    }
+	}
+	break;
+    case Ascend:
+	rt_cur_child(context->node_pointer) = RUN_TREE_EVALUATED;
+	context->node_pointer = context->parent;
+	context->parent = _t_parent(context->node_pointer);
+	if (!context->parent || context->parent == context->run_tree) {
+	    context->idx = 1;
+	}
+	else context->idx = rt_cur_child(context->parent);
+	if (context->node_pointer == context->run_tree)
+	    context->state = Pop;
+	else
+	    context->state = Eval;
+	break;
+    case Descend:
+	context->parent = context->node_pointer;
+	context->idx = ++rt_cur_child(context->node_pointer);
+	context->node_pointer = _t_child(context->node_pointer,context->idx);
+	context->state = Eval;
+	break;
+    default:
+	context->err = context->state;
+	if (_t_children(context->run_tree) <= 2) {
+	    // no error handler so just return the error
+	    context->state = Pop;
+	}
+	else {
+	    // the first parameter to the error code is always a reduction error
+	    // which gets added on as the 4th child of the run tree when the
+	    // error happens.
+	    T *ps = _t_newr(context->run_tree,PARAMS);
+
+	    //@todo: fix this so we don't actually use an error value that
+	    // then has to be translated into a symbol, but rather so that we
+	    // can programatically calculate the symbol.
+	    Symbol se;
+	    switch(context->state) {
+	    case tooFewParamsReductionErr: se=TOO_FEW_PARAMS_ERR;break;
+	    case tooManyParamsReductionErr: se=TOO_MANY_PARAMS_ERR;break;
+	    case badSignatureReductionErr: se=BAD_SIGNATURE_ERR;break;
+	    case notProcessReductionError: se=NOT_A_PROCESS_ERR;break;
+	    case divideByZeroReductionErr: se=ZERO_DIVIDE_ERR;break;
+	    case raiseReductionErr:
+		se = *(Symbol *)_t_surface(_t_child(context->node_pointer,1));
+		break;
+	    default: raise_error("unknown reduction error: %d",context->state);
+	    }
+	    T *err = __t_new(ps,se,0,0,sizeof(rT));
+	    int *path = _t_get_path(context->node_pointer);
+	    _t_new(err,ERROR_LOCATION,path,sizeof(int)*(_t_path_depth(path)+1));
+	    free(path);
+
+	    // switch the node_pointer to the top of the error handling routine
+	    context->node_pointer = _t_child(context->run_tree,3);
+	    context->idx = 3;
+	    context->parent = context->run_tree;
+
+	    context->state = Eval;
+	}
     }
-    return e;
+    return context->state;
 }
 
 /**
