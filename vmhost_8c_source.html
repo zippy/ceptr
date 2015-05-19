@@ -127,7 +127,7 @@ $(document).ready(function(){initNavTree('vmhost_8c_source.html','');});
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="comment">// detach any active receptors which would otherwise be doubly freed</span></div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordflow">while</span>(<a class="code" href="group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc">_t_children</a>(v-&gt;<a class="code" href="structVMHost.html#aa7b4b8b391039f62980e8d52d75df7eb">active_receptors</a>) &gt; 0) {</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <a class="code" href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a>(v-&gt;<a class="code" href="structVMHost.html#aa7b4b8b391039f62980e8d52d75df7eb">active_receptors</a>,1);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <a class="code" href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a>(v-&gt;<a class="code" href="structVMHost.html#aa7b4b8b391039f62980e8d52d75df7eb">active_receptors</a>,1);</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    }</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <a class="code" href="group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8">_r_free</a>(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>);</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <a class="code" href="scape_8c.html#a3248dd3373ca8f722b69d385aec37d7d">_s_free</a>(v-&gt;installed_receptors);</div>
@@ -153,24 +153,24 @@ $(document).ready(function(){initNavTree('vmhost_8c_source.html','');});
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="comment">// confirm that the bindings match the manifest</span></div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="comment">// @todo expand the manifest to allow optional binding, etc, using semtrex to do the matching instead of assuming positional matching</span></div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keywordflow">if</span> (bindings) {</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <a class="code" href="structT.html">T</a> *m = _t_child(p,1);</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keywordtype">int</span> c = <a class="code" href="group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc">_t_children</a>(m);</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keywordflow">if</span> (c%2) {raise_error0(<span class="stringliteral">&quot;manifest must have even number of children!&quot;</span>);}</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="keywordtype">int</span> i;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keywordflow">for</span>(i=1;i&lt;=c;i++) {</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        <a class="code" href="structT.html">T</a> *mp = _t_child(m,i);</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        <a class="code" href="structT.html">T</a> *s = _t_child(mp,2);</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        <a class="code" href="structT.html">T</a> *bp = _t_child(bindings,i);</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        <span class="keywordflow">if</span> (!bp) {</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        raise_error(<span class="stringliteral">&quot;missing binding for %s&quot;</span>,(<span class="keywordtype">char</span> *)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(_t_child(mp,1)));</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        }</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        <a class="code" href="structT.html">T</a> *v = _t_child(bp,2);</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        <a class="code" href="structSemanticID.html">Symbol</a> spec = *(<a class="code" href="structSemanticID.html">Symbol</a> *)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(s);</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        <span class="keywordflow">if</span> (semeq(<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(v),spec)) {</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        <a class="code" href="structT.html">T</a> *symbols = _t_child(p,3);</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        raise_error2(<span class="stringliteral">&quot;bindings symbol %s doesn&#39;t match spec %s&quot;</span>,<a class="code" href="group__def.html#ga434ff1353a4f55f4f61b95fe8d9cff43">_d_get_symbol_name</a>(symbols,<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(v)),<a class="code" href="group__def.html#ga434ff1353a4f55f4f61b95fe8d9cff43">_d_get_symbol_name</a>(symbols,spec));</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        }</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    }</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        <a class="code" href="structT.html">T</a> *m = _t_child(p,1);</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        <span class="keywordtype">int</span> c = <a class="code" href="group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc">_t_children</a>(m);</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <span class="keywordflow">if</span> (c%2) {raise_error0(<span class="stringliteral">&quot;manifest must have even number of children!&quot;</span>);}</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        <span class="keywordtype">int</span> i;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        <span class="keywordflow">for</span>(i=1;i&lt;=c;i++) {</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            <a class="code" href="structT.html">T</a> *mp = _t_child(m,i);</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            <a class="code" href="structT.html">T</a> *s = _t_child(mp,2);</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;            <a class="code" href="structT.html">T</a> *bp = _t_child(bindings,i);</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            <span class="keywordflow">if</span> (!bp) {</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;                raise_error(<span class="stringliteral">&quot;missing binding for %s&quot;</span>,(<span class="keywordtype">char</span> *)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(_t_child(mp,1)));</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            }</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            <a class="code" href="structT.html">T</a> *v = _t_child(bp,2);</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            <a class="code" href="structSemanticID.html">Symbol</a> spec = *(<a class="code" href="structSemanticID.html">Symbol</a> *)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(s);</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;            <span class="keywordflow">if</span> (semeq(<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(v),spec)) {</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;                <a class="code" href="structT.html">T</a> *symbols = _t_child(p,3);</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                raise_error2(<span class="stringliteral">&quot;bindings symbol %s doesn&#39;t match spec %s&quot;</span>,<a class="code" href="group__def.html#ga434ff1353a4f55f4f61b95fe8d9cff43">_d_get_symbol_name</a>(symbols,<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(v)),<a class="code" href="group__def.html#ga434ff1353a4f55f4f61b95fe8d9cff43">_d_get_symbol_name</a>(symbols,spec));</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;            }</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        }</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    }</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <a class="code" href="structSemanticID.html">Symbol</a> s = <a class="code" href="group__receptor.html#ga436d69cd861739b56bb32b7bf6f315ab">_r_declare_symbol</a>(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,RECEPTOR,label);</div>
@@ -204,22 +204,22 @@ $(document).ready(function(){initNavTree('vmhost_8c_source.html','');});
 <div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;</div>
 <div class="line"><a name="l00179"></a><span class="lineno"><a class="line" href="group__vmhost.html#ga0d188e8b2a654b2e01e12c57017184cb">  179</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__vmhost.html#ga0d188e8b2a654b2e01e12c57017184cb">_v_send_signals</a>(<a class="code" href="structVMHost.html">VMHost</a> *v,<a class="code" href="structT.html">T</a> *signals) {</div>
 <div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    <span class="keywordflow">while</span>(<a class="code" href="group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc">_t_children</a>(signals)&gt;0) {</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    <a class="code" href="structT.html">T</a> *s = <a class="code" href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a>(signals,1);</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    <a class="code" href="group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c">_t_add</a>(v-&gt;pending_signals,s);</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;        <a class="code" href="structT.html">T</a> *s = <a class="code" href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a>(signals,1);</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;        <a class="code" href="group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c">_t_add</a>(v-&gt;pending_signals,s);</div>
 <div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    }</div>
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;}</div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;</div>
 <div class="line"><a name="l00189"></a><span class="lineno"><a class="line" href="group__vmhost.html#gacdfd2f8411fd885f4d8b4b1f531ec05b">  189</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__vmhost.html#gacdfd2f8411fd885f4d8b4b1f531ec05b">__v_process_signals</a>(<a class="code" href="structVMHost.html">VMHost</a> *v) {</div>
 <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    <a class="code" href="structT.html">T</a> *signals = v-&gt;pending_signals;</div>
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    <span class="keywordflow">while</span>(<a class="code" href="group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc">_t_children</a>(signals)&gt;0) {</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    <a class="code" href="structT.html">T</a> *s = <a class="code" href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a>(signals,1);</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    <a class="code" href="structT.html">T</a> *envelope = _t_child(s,1);</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    <span class="comment">//  T *contents = _t_child(s,2);</span></div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    <a class="code" href="structXaddr.html">Xaddr</a> to = *(<a class="code" href="structXaddr.html">Xaddr</a> *)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(_t_child(envelope,2));</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    <a class="code" href="structReceptor.html">Receptor</a> *r = (<a class="code" href="structReceptor.html">Receptor</a> *)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(_t_child(<a class="code" href="group__receptor.html#gadc618904f81240b244e816234d1c906e">_r_get_instance</a>(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,to),1)); <span class="comment">// the receptor itself is the surface of the first child of the INSTALLED_RECEPTOR (bleah)</span></div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    Aspect a = *(Aspect *)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(_t_child(envelope,3));</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    <a class="code" href="structT.html">T</a> *result = <a class="code" href="group__receptor.html#gaa6111b5348cffbc1e1aad1d9d6c1e4ff">_r_deliver</a>(r,s);</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    <a class="code" href="group__vmhost.html#ga0d188e8b2a654b2e01e12c57017184cb">_v_send_signals</a>(v,result);</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;        <a class="code" href="structT.html">T</a> *s = <a class="code" href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a>(signals,1);</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        <a class="code" href="structT.html">T</a> *envelope = _t_child(s,1);</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;        <span class="comment">//      T *contents = _t_child(s,2);</span></div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        <a class="code" href="structXaddr.html">Xaddr</a> to = *(<a class="code" href="structXaddr.html">Xaddr</a> *)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(_t_child(envelope,2));</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;        <a class="code" href="structReceptor.html">Receptor</a> *r = (<a class="code" href="structReceptor.html">Receptor</a> *)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(_t_child(<a class="code" href="group__receptor.html#gadc618904f81240b244e816234d1c906e">_r_get_instance</a>(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,to),1)); <span class="comment">// the receptor itself is the surface of the first child of the INSTALLED_RECEPTOR (bleah)</span></div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;        Aspect a = *(Aspect *)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(_t_child(envelope,3));</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;        <a class="code" href="structT.html">T</a> *result = <a class="code" href="group__receptor.html#gaa6111b5348cffbc1e1aad1d9d6c1e4ff">_r_deliver</a>(r,s);</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;        <a class="code" href="group__vmhost.html#ga0d188e8b2a654b2e01e12c57017184cb">_v_send_signals</a>(v,result);</div>
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    }</div>
 <div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;}</div>
 <div class="ttc" id="group__tree_html_ga25dd0f385044ffbcc7c215ea80fa00b4"><div class="ttname"><a href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a></div><div class="ttdeci">T * _t_new_root(Symbol symbol)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00129">tree.c:129</a></div></div>
@@ -273,7 +273,7 @@ $(document).ready(function(){initNavTree('vmhost_8c_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="vmhost_8c.html">vmhost.c</a></li>
-    <li class="footer">Generated on Thu May 14 2015 09:29:29 for ceptr by
+    <li class="footer">Generated on Tue May 19 2015 17:42:45 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

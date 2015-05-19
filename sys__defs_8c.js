@@ -32,6 +32,7 @@ var sys__defs_8c =
     [ "PROCESS", "sys__defs_8c.html#ad9b468aebfbd6eb4f46a5cf8313944bf", null ],
     [ "PROCESSES", "sys__defs_8c.html#af4589aba98bd643aa72b8977db15a63c", null ],
     [ "PROTOCOL", "sys__defs_8c.html#abb9ea9d53bf9af76a76cc87aa165f21a", null ],
+    [ "RAISE", "sys__defs_8c.html#a1d426c19b2d6512ae7a4e39988802491", null ],
     [ "RECEPTOR", "sys__defs_8c.html#a147436288d7c7bf278dc0895bd32e2b7", null ],
     [ "RESPOND", "sys__defs_8c.html#a0220cf3ab749a41050ab56e0417d610f", null ],
     [ "SCAPE", "sys__defs_8c.html#a13ecd44890d37eece9debd87d963cb9f", null ],

@@ -311,20 +311,20 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_stxl</b> (<a class="
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">{                   \</div>
-<div class="line">    if(G_debug_match)puts(&quot;pushing&quot;);               \</div>
-<div class="line">    if((depth+1)&gt;=MAX_BRANCH_DEPTH) {raise_error0(<span class="stringliteral">&quot;MAX branch depth exceeded&quot;</span>);} \</div>
-<div class="line">    stack[depth].s = state;                     \</div>
-<div class="line">    stack[depth].cursor = <a class="code" href="structVMHost.html#a53bffdb41bcc4096902aabf8ab029637">c</a>;                    \</div>
-<div class="line">    stack[depth].walk = w;                      \</div>
-<div class="line">    if (rP) {                           \</div>
-<div class="line">        if (*rP) {                          \</div>
-<div class="line">        stack[depth].match = <a class="code" href="group__tree.html#ga7535eb2963c6cf5fc78cb14287581f92">_t_clone</a>(*rP);         \</div>
-<div class="line">        stack[depth].r_path = <a class="code" href="group__tree.html#gae4c9b743462f0a3808c9f02c3bf33da8">_t_get_path</a>(<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>);           \</div>
-<div class="line">        }                               \</div>
-<div class="line">        else stack[depth].match = 0;                \</div>
-<div class="line">    }                               \</div>
-<div class="line">    depth++;                            \</div>
+<b>Value:</b><div class="fragment"><div class="line">{                                       \</div>
+<div class="line">        if(G_debug_match)puts(&quot;pushing&quot;);                               \</div>
+<div class="line">        if((depth+1)&gt;=MAX_BRANCH_DEPTH) {raise_error0(<span class="stringliteral">&quot;MAX branch depth exceeded&quot;</span>);} \</div>
+<div class="line">        stack[depth].s = state;                                         \</div>
+<div class="line">        stack[depth].cursor = <a class="code" href="structVMHost.html#a53bffdb41bcc4096902aabf8ab029637">c</a>;                                        \</div>
+<div class="line">        stack[depth].walk = w;                                          \</div>
+<div class="line">        if (rP) {                                                       \</div>
+<div class="line">            if (*rP) {                                                  \</div>
+<div class="line">                stack[depth].match = <a class="code" href="group__tree.html#ga7535eb2963c6cf5fc78cb14287581f92">_t_clone</a>(*rP);                     \</div>
+<div class="line">                stack[depth].r_path = <a class="code" href="group__tree.html#gae4c9b743462f0a3808c9f02c3bf33da8">_t_get_path</a>(<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>);                   \</div>
+<div class="line">            }                                                           \</div>
+<div class="line">            else stack[depth].match = 0;                                \</div>
+<div class="line">        }                                                               \</div>
+<div class="line">        depth++;                                                        \</div>
 <div class="line">}</div>
 <div class="ttc" id="group__tree_html_gae4c9b743462f0a3808c9f02c3bf33da8"><div class="ttname"><a href="group__tree.html#gae4c9b743462f0a3808c9f02c3bf33da8">_t_get_path</a></div><div class="ttdeci">int * _t_get_path(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00596">tree.c:596</a></div></div>
 <div class="ttc" id="group__tree_html_ga7535eb2963c6cf5fc78cb14287581f92"><div class="ttname"><a href="group__tree.html#ga7535eb2963c6cf5fc78cb14287581f92">_t_clone</a></div><div class="ttdeci">T * _t_clone(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00452">tree.c:452</a></div></div>
@@ -687,7 +687,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_stxl</b> (<a class="
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="semtrex_8c.html">semtrex.c</a></li>
-    <li class="footer">Generated on Thu May 14 2015 09:29:29 for ceptr by
+    <li class="footer">Generated on Tue May 19 2015 17:42:45 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

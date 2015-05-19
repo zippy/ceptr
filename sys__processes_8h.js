@@ -15,7 +15,8 @@ var sys__processes_8h =
       [ "GTE_INT_ID", "sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8ea6c7e8caa527aaa68f38087836fe4b9b9", null ],
       [ "CONCAT_STR_ID", "sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8eab9af6501940d63fa86b828e3e2219c8c", null ],
       [ "RESPOND_ID", "sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8ea8c6120c4ab760098de5bef78806ad2fd", null ],
-      [ "INTERPOLATE_FROM_MATCH_ID", "sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8ea545735a47c85dde41ea9a1ffee415e02", null ]
+      [ "INTERPOLATE_FROM_MATCH_ID", "sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8ea545735a47c85dde41ea9a1ffee415e02", null ],
+      [ "RAISE_ID", "sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8ea6fe7c016a5a6a16fb9533b61e5abe539", null ]
     ] ],
     [ "ADD_INT", "sys__processes_8h.html#a9060e4b1b2bdae067db7cea122b73179", null ],
     [ "CONCAT_STR", "sys__processes_8h.html#a0be22488950f4208136a60eafe2993d8", null ],
@@ -30,6 +31,7 @@ var sys__processes_8h =
     [ "MOD_INT", "sys__processes_8h.html#a86fbf09d41d509832b3507b635d65a46", null ],
     [ "MULT_INT", "sys__processes_8h.html#a682fc621e0ba4f67b1088f35a2bad613", null ],
     [ "NULL_PROCESS", "sys__processes_8h.html#a659145d2ab93a0f49ed8e967c0466433", null ],
+    [ "RAISE", "sys__processes_8h.html#a1d426c19b2d6512ae7a4e39988802491", null ],
     [ "RESPOND", "sys__processes_8h.html#a0220cf3ab749a41050ab56e0417d610f", null ],
     [ "SUB_INT", "sys__processes_8h.html#a39223b4cec2bcddb39ce685e28866dd7", null ]
 ];
