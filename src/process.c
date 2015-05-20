@@ -55,8 +55,8 @@ void _p_interpolate_from_match(T *t,T *match_results,T *match_tree) {
  *
  * @todo add SIGNATURE_SYMBOL for setting up process signatures by Symbol not just Structure
  */
-Error __p_check_signature(Defs defs,Process p,T *params) {
-    T *def = _d_get_process_code(defs.processes,p);
+Error __p_check_signature(Defs *defs,Process p,T *params) {
+    T *def = _d_get_process_code(defs->processes,p);
     T *input = _t_child(def,4);
     int i = _t_children(input);
     int c = _t_children(params);
@@ -66,7 +66,7 @@ Error __p_check_signature(Defs defs,Process p,T *params) {
         T *sig = _t_child(_t_child(input,i),1);
         if(semeq(_t_symbol(sig),SIGNATURE_STRUCTURE)) {
             Structure ss = *(Symbol *)_t_surface(sig);
-            if (!semeq(_d_get_symbol_structure(defs.symbols,_t_symbol(_t_child(params,i))),ss) && !semeq(ss,TREE))
+            if (!semeq(_d_get_symbol_structure(defs->symbols,_t_symbol(_t_child(params,i))),ss) && !semeq(ss,TREE))
                 return badSignatureReductionErr;
         }
         else {
@@ -248,17 +248,16 @@ R *__p_make_context(T *run_tree,R *caller) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/process_spec.h testProcessErrorTrickleUp
  */
-Error _p_reduce(Defs defs,T *rt) {
+Error _p_reduce(Defs *defs,T *rt) {
     T *run_tree = rt;
-    R *context = __p_make_context(run_tree,0);;
-    Error e = Eval;
+    R *context = __p_make_context(run_tree,0);
+    Error e;
 
-#ifdef debug_reduce
-    printf("\n\nStarting reduce:\n");
-#endif
     do {
         e = _p_step(defs, &context);
-    } while(context);
+    } while(context->state != Done);
+    e = context->err;
+    free(context);
     return e;
 }
 
@@ -272,22 +271,8 @@ Error _p_reduce(Defs defs,T *rt) {
  * @param[in] pointer to context pointer
  * @returns the next state that will be called for the context
  */
-Error _p_step(Defs defs, R **contextP) {
+Error _p_step(Defs *defs, R **contextP) {
     R *context = *contextP;
-#ifdef debug_reduce
-    char *sn[]={"Ascend","Descend","Pushed","Pop","Eval","Done"};
-    char *s = context->state <= 0 ? sn[-context->state -1] : "Error";
-    printf("State %s : %d\n",s,context->state);
-    puts(t2s(context->run_tree));
-    if (context) {
-        int *path = _t_get_path(context->node_pointer);
-        char pp[255];
-        _t_sprint_path(path,pp);
-        printf("Node Pointer:%s\n",pp);
-        free(path);
-    }
-    printf("\n");
-#endif
 
     switch(context->state) {
     case noReductionErr:
@@ -307,10 +292,8 @@ Error _p_step(Defs defs, R **contextP) {
 
         // if this is top caller on the stack then we are completely done
         if (!context->caller) {
-            Error e = context->err;
-            free(context);
-            *contextP = 0;
-            return e;
+            context->state = Done;
+            break;
         }
         else {
             // otherwise pop the context
@@ -367,7 +350,7 @@ Error _p_step(Defs defs, R **contextP) {
                         Error e = __p_check_signature(defs,s,np);
                         if (e) context->state = e;
                         else {
-                            T *run_tree = __p_make_run_tree(defs.processes,s,np);
+                            T *run_tree = __p_make_run_tree(defs->processes,s,np);
                             context->state = Pushed;
                             *contextP = __p_make_context(run_tree,context);
                         }
@@ -375,7 +358,7 @@ Error _p_step(Defs defs, R **contextP) {
                     else {
                         // if it's a sys process we can just reduce it in and then ascend
                         // or move to the error handling state
-                        Error e = __p_reduce_sys_proc(&defs,s,np);
+                        Error e = __p_reduce_sys_proc(defs,s,np);
                         context->state = e ? e : Ascend;
                     }
                 }
@@ -507,5 +490,117 @@ T *_p_make_run_tree(T *processes,T *process,int num_params,...) {
     }
     va_end(params);
     return t;
+}
+
+/**
+ * create a new processing queue
+ *
+ * @param[in] defs definitions that
+ * @returns Q the processing queue
+ */
+Q *_p_newq(Defs *defs) {
+    Q *q = malloc(sizeof(Q));
+    q->defs = defs;
+    q->contexts_count = 0;
+    q->active = NULL;
+    return q;
+}
+
+// clean up a queue element
+_p_free_elements(Qe *e) {
+    while(e) {
+        _p_free_context(e->context);
+        Qe *n = e->next;
+        free(e);
+        e = n;
+    }
+}
+
+// clean up a context including its run-trees
+_p_free_context(R *c) {
+    while(c) {
+        _t_free(c->run_tree);
+        R *n = c->caller;
+        free(c);
+        c = n;
+    }
+}
+
+/**
+ * free the resources in a queue, including any run-trees
+ *
+ * @param[in] q the queue to be freed
+ */
+void _p_freeq(Q *q) {
+    Qe *e = q->active;
+    _p_free_elements(q->active);
+    _p_free_elements(q->completed);
+    free(q);
+}
+
+
+/**
+ * add a run tree into a processing queue
+ */
+void _p_addrt2q(Q *q,T *run_tree) {
+    q->contexts_count++;
+    Qe *e = q->active;
+    Qe *n = malloc(sizeof(Qe));
+    n->prev = NULL;
+    n->context = __p_make_context(run_tree,0);
+    n->next = q->active;
+    if (e) e->prev = n;
+    q->active = n;
+    q->completed = 0;
+}
+
+/**
+ * reduce all the processes in a queue (suitable to be called by a thread)
+ *
+ * @param[in] q the queue to be processed
+ */
+Error _p_reduceq(Q *q) {
+#ifdef debug_reduce
+    printf("\n\nStarting reduce:\n");
+#endif
+    Qe *qe = q->active;
+    Error e;
+    do {
+
+#ifdef debug_reduce
+        R *context = qe->context;
+        char *sn[]={"Ascend","Descend","Pushed","Pop","Eval","Done"};
+        char *s = context->state <= 0 ? sn[-context->state -1] : "Error";
+        printf("ID:%p -- State %s : %d\n",qe,s,context->state);
+        puts(t2s(context->run_tree));
+        if (context) {
+            int *path = _t_get_path(context->node_pointer);
+            char pp[255];
+            _t_sprint_path(path,pp);
+            printf("Node Pointer:%s\n",pp);
+            free(path);
+        }
+        printf("\n");
+#endif
+
+        e = _p_step(q->defs, &qe->context);
+        Qe *next = qe->next;
+        if (qe->context->state == Done) {
+            // remove from the round-robin
+            if (!qe->prev) {
+                q->active = qe->next;
+            }
+            else {
+                qe->prev->next = qe->next;
+            }
+            // add to the completed list
+            Qe *d = q->completed;
+            qe->next = d;
+            q->completed = qe;
+            q->contexts_count--;
+        }
+        qe = next ? next : q->active;  // next in round robing or wrap
+    } while(q->contexts_count);
+    return e;
 }
 /** @}*/

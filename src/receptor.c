@@ -502,7 +502,7 @@ T * _r_deliver(Receptor *r, T *signal) {
             _t_add(signal,rt);
             // for now just reduce the tree in place
             /// @todo move this to adding the runtree to the thread pool
-            int e = _p_reduce(r->defs,rt);
+            int e = _p_reduce(&r->defs,rt);
             /// @todo runtime error handing!!!
             if (e) {
                 raise_error("got reduction error: %d",e);

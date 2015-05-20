@@ -147,7 +147,7 @@ void testProfileExample() {
     //    spec_is_str_equal(_t2s(&test_profile_defs,r),"");
 
     startVisdump("profile");
-    spec_is_equal(_p_reduce(test_profile_defs,r),noReductionErr);
+    spec_is_equal(_p_reduce(&test_profile_defs,r),noReductionErr);
     int pt[] = {TREE_PATH_TERMINATOR};
 
     _visdump(&test_profile_defs,_t_child(r,1),pt);

@@ -25,15 +25,33 @@ struct R {
     T *node_pointer;  // pointer to the tree node to execute next
     T *parent;        // node_pointer's parent      (cached here for efficiency)
     int idx;          // node pointers child index  (cached here for efficiency)
-    R *next;      // a pointer to the next context in the round robin
     R *caller;    // a pointer to the context that called this run tree
-    R *callee;   // a pointer to the context we've called
+    R *callee;    // a pointer to the context we've called
+};
+
+typedef struct Qe Qe;
+struct Qe {
+    R *context;
+    Qe *next;
+    Qe *prev;
+};
+
+typedef struct Q Q;
+struct Q {
+    Defs *defs;
+    int contexts_count;  // number of active processes
+    Qe *active;          // active processes
+    Qe *completed;       // completed processes
 };
 
 R *__p_make_context(T *run_tree,R *caller);
-Error _p_step(Defs defs, R **contextP);
+Error _p_step(Defs *defs, R **contextP);
 Error __p_reduce_sys_proc(Defs *defs,Symbol s,T *code);
-Error _p_reduce(Defs defs,T *run_tree);
+Error _p_reduce(Defs *defs,T *run_tree);
+Q *_p_newq(Defs *defs);
+void _p_freeq(Q *q);
+void _p_addrt2q(Q *q,T *t);
+Error _p_reduceq(Q *q);
 T *__p_make_run_tree(T *processes,Process p,T *params);
 T *_p_make_run_tree(T *processes,T *p,int num_params,...);
 

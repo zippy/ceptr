@@ -68,7 +68,7 @@ void testRunTree() {
     spec_is_symbol_equal(0,_t_symbol(t),BOOLEAN);
     spec_is_true(t!=p3);  //should be a clone
 
-    spec_is_equal(_p_reduce(defs,r),noReductionErr);
+    spec_is_equal(_p_reduce(&defs,r),noReductionErr);
 
     spec_is_str_equal(t2s(_t_child(r,1)),"(TEST_INT_SYMBOL:123)");
 
@@ -165,17 +165,16 @@ void testProcessReduceDefinedProcess() {
 
     spec_is_str_equal(t2s(_t_get(processes,p)),"(process:IF (process:EQ_INT (process:MOD_INT (PARAM_REF:/2/1) (TEST_INT_SYMBOL:2)) (TEST_INT_SYMBOL:0)) (PARAM_REF:/2/2) (PARAM_REF:/2/3))");
 
-    // create a run tree right in the position to "call"this function
-    T *t = _t_new_root(RUN_TREE);
-    T *n = _t_new_root(if_even);
+
+    // create a run tree right in the state to "call"this function
+    T *n = _t_new_root(PARAMS);
     _t_newi(n,TEST_INT_SYMBOL,99);
     _t_newi(n,TEST_INT_SYMBOL,123);
     _t_newi(n,TEST_INT_SYMBOL,124);
+    T *t = __p_make_run_tree(processes,if_even,n);
 
-    T *c = _t_rclone(n);
-    _t_add(t,c);
     // confirm that it reduces correctly
-    spec_is_equal(_p_reduce(defs,t),noReductionErr);
+    spec_is_equal(_p_reduce(&defs,t),noReductionErr);
     spec_is_str_equal(t2s(_t_child(t,1)),"(TEST_INT_SYMBOL:124)");
 
     _t_free(processes);
@@ -196,21 +195,21 @@ void testProcessSignatureMatching() {
 
     T *c = _t_rclone(n);
     _t_add(t,c);
-    spec_is_equal(_p_reduce(defs,t),badSignatureReductionErr);
+    spec_is_equal(_p_reduce(&defs,t),badSignatureReductionErr);
     _t_free(_t_detach_by_idx(t,1));
 
     // too few params
     c = _t_rclone(n);
     _t_add(t,c);
     _t_free(_t_detach_by_idx(c,1));
-    spec_is_equal(_p_reduce(defs,t),tooFewParamsReductionErr);
+    spec_is_equal(_p_reduce(&defs,t),tooFewParamsReductionErr);
     _t_free(_t_detach_by_idx(t,1));
 
     // add too many params
     c = _t_rclone(n);
     _t_add(t,c);
     __t_newi(c,TEST_INT_SYMBOL,124,sizeof(rT));
-    spec_is_equal(_p_reduce(defs,t),tooManyParamsReductionErr);
+    spec_is_equal(_p_reduce(&defs,t),tooManyParamsReductionErr);
 
     _t_free(processes);
     _t_free(t);
@@ -233,7 +232,7 @@ void testProcessInterpolateMatch() {
 
     T *c = _t_rclone(n);
     _t_add(t,c);
-    _p_reduce(defs,t);
+    _p_reduce(&defs,t);
 
     spec_is_str_equal(t2s(_t_child(t,1)),"(TEST_INT_SYMBOL2:0 (TEST_INT_SYMBOL:314))");
     _t_free(t);
@@ -401,27 +400,27 @@ void testProcessReduce() {
 
     spec_is_equal(rt_cur_child(c),0);
     // first step is Eval and next step is Descend
-    spec_is_equal(_p_step(defs,&context),Descend);
+    spec_is_equal(_p_step(&defs,&context),Descend);
     spec_is_equal(rt_cur_child(c),0);
 
     // next step after Descend changes node pointer and moved to Eval
-    spec_is_equal(_p_step(defs,&context),Eval);
+    spec_is_equal(_p_step(&defs,&context),Eval);
     spec_is_ptr_equal(context->node_pointer,_t_child(c,1));
     spec_is_equal(rt_cur_child(c),1);
 
     // after Eval next step will be Ascend
-    spec_is_equal(_p_step(defs,&context),Ascend);
+    spec_is_equal(_p_step(&defs,&context),Ascend);
 
     // step ascends back to top if and marks boolean complete
-    spec_is_equal(_p_step(defs,&context),Eval);
+    spec_is_equal(_p_step(&defs,&context),Eval);
 
     spec_is_equal(rt_cur_child(_t_child(c,1)),RUN_TREE_EVALUATED);
     spec_is_ptr_equal(context->node_pointer,c);
 
-    spec_is_equal(_p_step(defs,&context),Descend);
+    spec_is_equal(_p_step(&defs,&context),Descend);
 
     // third step goes into the second level if
-    spec_is_equal(_p_step(defs,&context),Eval);
+    spec_is_equal(_p_step(&defs,&context),Eval);
     spec_is_equal(rt_cur_child(c),2);
     spec_is_ptr_equal(context->node_pointer,_t_child(c,2));
 
@@ -432,7 +431,7 @@ void testProcessReduce() {
     _t_free(_t_detach_by_idx(t,1));
     c = _t_rclone(n);
     _t_add(t,c);
-    _p_reduce(defs,t);
+    _p_reduce(&defs,t);
 
     spec_is_str_equal(t2s(c),"(TEST_INT_SYMBOL:99)");
 
@@ -455,7 +454,7 @@ void testProcessError() {
     int pt[] = {4,1,TREE_PATH_TERMINATOR};
     __t_new(t,PARAM_REF,pt,sizeof(int)*4,sizeof(rT));
 
-    Error e = _p_reduce(defs,t);
+    Error e = _p_reduce(&defs,t);
     spec_is_equal(e,noReductionErr);
     spec_is_str_equal(t2s(_t_child(t,1)),"(ZERO_DIVIDE_ERR (ERROR_LOCATION:/1/1))");
     _t_free(n);
@@ -482,7 +481,7 @@ void testProcessRaise() {
     int pt[] = {4,1,TREE_PATH_TERMINATOR};
     __t_new(t,PARAM_REF,pt,sizeof(int)*4,sizeof(rT));
 
-    Error e = _p_reduce(defs,t);
+    Error e = _p_reduce(&defs,t);
     spec_is_equal(e,noReductionErr);
     spec_is_str_equal(t2s(_t_child(t,1)),"(NOT_A_PROCESS_ERR (ERROR_LOCATION:/1))");
     _t_free(n);
@@ -496,7 +495,7 @@ void testProcessErrorTrickleUp() {
 
     Process divz = _defDivZero(processes);  // add the if_even process to our defs
 
-    // create a run tree right in the position to "call"this function
+    // create a run tree right in the position to "call" this function
     T *t = _t_new_root(RUN_TREE);
     T *n = _t_new_root(RESPOND);
     T *d = _t_newr(n,divz);
@@ -510,14 +509,61 @@ void testProcessErrorTrickleUp() {
     int pt[] = {4,1,TREE_PATH_TERMINATOR};
     __t_new(t,PARAM_REF,pt,sizeof(int)*4,sizeof(rT));
 
-
     // confirm that it reduces correctly
-    spec_is_equal(_p_reduce(defs,t),noReductionErr);
+    spec_is_equal(_p_reduce(&defs,t),noReductionErr);
     spec_is_str_equal(t2s(_t_child(t,1)),"(ZERO_DIVIDE_ERR (ERROR_LOCATION:/1/1))");
 
     _t_free(processes);
     _t_free(t);_t_free(n);
     //! [testProcessErrorTrickleUp]
+}
+
+void testProcessMulti() {
+    //! [testProcessMulti]
+    T *processes = _t_new_root(PROCESSES);
+    Defs defs = {0,0,processes};
+
+    Process if_even = _defIfEven(processes);  // add the if_even process to our defs
+
+    // create two run trees
+    T *n = _t_new_root(PARAMS);
+    _t_newi(n,TEST_INT_SYMBOL,99);
+    _t_newi(n,TEST_INT_SYMBOL,123);
+    _t_newi(n,TEST_INT_SYMBOL,124);
+    T *t1 = __p_make_run_tree(processes,if_even,n);
+
+    _t_newi(n,TEST_INT_SYMBOL,100);
+    T *l2 = _t_newr(n,if_even);
+    _t_newi(l2,TEST_INT_SYMBOL,2);
+    _t_newi(l2,TEST_INT_SYMBOL,123);
+    _t_newi(l2,TEST_INT_SYMBOL,124);
+    _t_newi(n,TEST_INT_SYMBOL,314);
+
+    T *t2 = __p_make_run_tree(processes,if_even,n);
+
+    // add them to a processing queue
+    Q *q = _p_newq(&defs);
+    spec_is_equal(q->contexts_count,0);
+    spec_is_ptr_equal(q->active,NULL);
+    _p_addrt2q(q,t1);
+    spec_is_equal(q->contexts_count,1);
+    spec_is_ptr_equal(q->active->context->run_tree,t1);
+    spec_is_ptr_equal(q->active->prev,NULL);
+    _p_addrt2q(q,t2);
+    spec_is_equal(q->contexts_count,2);
+    spec_is_ptr_equal(q->active->context->run_tree,t2);
+    spec_is_ptr_equal(q->active->next->context->run_tree,t1);
+    spec_is_ptr_equal(q->active->next->prev, q->active);
+
+    // confirm that they both reduce correctly
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+
+    spec_is_str_equal(t2s(_t_child(t1,1)),"(TEST_INT_SYMBOL:124)");
+    spec_is_str_equal(t2s(_t_child(t2,1)),"(TEST_INT_SYMBOL:123)");
+
+    _p_freeq(q);
+    _t_free(processes);_t_free(n);
+    //! [testProcessMulti]
 }
 
 void testProcess() {
@@ -532,4 +578,5 @@ void testProcess() {
     testProcessError();
     testProcessRaise();
     testProcessErrorTrickleUp();
+    testProcessMulti();
 }
