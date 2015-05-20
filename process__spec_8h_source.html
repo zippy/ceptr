@@ -171,7 +171,7 @@ $(document).ready(function(){initNavTree('process__spec_8h_source.html','');});
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    spec_is_symbol_equal(0,<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(t),BOOLEAN);</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    spec_is_true(t!=p3);  <span class="comment">//should be a clone</span></div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    spec_is_equal(<a class="code" href="process_8c.html#ad42fec7e7bf05d2f966b16ea5b34da3c">_p_reduce</a>(defs,r),noReductionErr);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    spec_is_equal(<a class="code" href="process_8c.html#acc149ea5dc5c12cd12fc35a61157cfbc">_p_reduce</a>(&amp;defs,r),noReductionErr);</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    spec_is_str_equal(t2s(_t_child(r,1)),<span class="stringliteral">&quot;(TEST_INT_SYMBOL:123)&quot;</span>);</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
@@ -262,7 +262,7 @@ $(document).ready(function(){initNavTree('process__spec_8h_source.html','');});
 <div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <a class="code" href="structT.html">T</a> *t = __p_make_run_tree(processes,if_even,n);</div>
 <div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;</div>
 <div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    <span class="comment">// confirm that it reduces correctly</span></div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    spec_is_equal(<a class="code" href="process_8c.html#ad42fec7e7bf05d2f966b16ea5b34da3c">_p_reduce</a>(defs,t),noReductionErr);</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    spec_is_equal(<a class="code" href="process_8c.html#acc149ea5dc5c12cd12fc35a61157cfbc">_p_reduce</a>(&amp;defs,t),noReductionErr);</div>
 <div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    spec_is_str_equal(t2s(_t_child(t,1)),<span class="stringliteral">&quot;(TEST_INT_SYMBOL:124)&quot;</span>);</div>
 <div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;</div>
 <div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(processes);</div>
@@ -282,21 +282,21 @@ $(document).ready(function(){initNavTree('process__spec_8h_source.html','');});
 <div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;</div>
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    <a class="code" href="structT.html">T</a> *c = _t_rclone(n);</div>
 <div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    <a class="code" href="group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c">_t_add</a>(t,c);</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    spec_is_equal(<a class="code" href="process_8c.html#ad42fec7e7bf05d2f966b16ea5b34da3c">_p_reduce</a>(defs,t),badSignatureReductionErr);</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    spec_is_equal(<a class="code" href="process_8c.html#acc149ea5dc5c12cd12fc35a61157cfbc">_p_reduce</a>(&amp;defs,t),badSignatureReductionErr);</div>
 <div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(<a class="code" href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a>(t,1));</div>
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;</div>
 <div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    <span class="comment">// too few params</span></div>
 <div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    c = _t_rclone(n);</div>
 <div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    <a class="code" href="group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c">_t_add</a>(t,c);</div>
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(<a class="code" href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a>(c,1));</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    spec_is_equal(<a class="code" href="process_8c.html#ad42fec7e7bf05d2f966b16ea5b34da3c">_p_reduce</a>(defs,t),tooFewParamsReductionErr);</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    spec_is_equal(<a class="code" href="process_8c.html#acc149ea5dc5c12cd12fc35a61157cfbc">_p_reduce</a>(&amp;defs,t),tooFewParamsReductionErr);</div>
 <div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(<a class="code" href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a>(t,1));</div>
 <div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;</div>
 <div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    <span class="comment">// add too many params</span></div>
 <div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    c = _t_rclone(n);</div>
 <div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    <a class="code" href="group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c">_t_add</a>(t,c);</div>
 <div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    <a class="code" href="group__tree.html#gad19e9f2cb621a82e755f6c7796c9fe12">__t_newi</a>(c,TEST_INT_SYMBOL,124,<span class="keyword">sizeof</span>(<a class="code" href="structrT.html">rT</a>));</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    spec_is_equal(<a class="code" href="process_8c.html#ad42fec7e7bf05d2f966b16ea5b34da3c">_p_reduce</a>(defs,t),tooManyParamsReductionErr);</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    spec_is_equal(<a class="code" href="process_8c.html#acc149ea5dc5c12cd12fc35a61157cfbc">_p_reduce</a>(&amp;defs,t),tooManyParamsReductionErr);</div>
 <div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;</div>
 <div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(processes);</div>
 <div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
@@ -319,7 +319,7 @@ $(document).ready(function(){initNavTree('process__spec_8h_source.html','');});
 <div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;</div>
 <div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    <a class="code" href="structT.html">T</a> *c = _t_rclone(n);</div>
 <div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    <a class="code" href="group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c">_t_add</a>(t,c);</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    <a class="code" href="process_8c.html#ad42fec7e7bf05d2f966b16ea5b34da3c">_p_reduce</a>(defs,t);</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    <a class="code" href="process_8c.html#acc149ea5dc5c12cd12fc35a61157cfbc">_p_reduce</a>(&amp;defs,t);</div>
 <div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;</div>
 <div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    spec_is_str_equal(t2s(_t_child(t,1)),<span class="stringliteral">&quot;(TEST_INT_SYMBOL2:0 (TEST_INT_SYMBOL:314))&quot;</span>);</div>
 <div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
@@ -486,27 +486,27 @@ $(document).ready(function(){initNavTree('process__spec_8h_source.html','');});
 <div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;</div>
 <div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;    spec_is_equal(rt_cur_child(c),0);</div>
 <div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;    <span class="comment">// first step is Eval and next step is Descend</span></div>
-<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;    spec_is_equal(<a class="code" href="process_8c.html#a06f9824fa33f4a31a5f53be44cdd2a71">_p_step</a>(defs,&amp;context),Descend);</div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;    spec_is_equal(<a class="code" href="process_8c.html#a208c2bb21125a1add95c66a358800271">_p_step</a>(&amp;defs,&amp;context),Descend);</div>
 <div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;    spec_is_equal(rt_cur_child(c),0);</div>
 <div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;</div>
 <div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;    <span class="comment">// next step after Descend changes node pointer and moved to Eval</span></div>
-<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;    spec_is_equal(<a class="code" href="process_8c.html#a06f9824fa33f4a31a5f53be44cdd2a71">_p_step</a>(defs,&amp;context),Eval);</div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;    spec_is_equal(<a class="code" href="process_8c.html#a208c2bb21125a1add95c66a358800271">_p_step</a>(&amp;defs,&amp;context),Eval);</div>
 <div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;    spec_is_ptr_equal(context-&gt;node_pointer,_t_child(c,1));</div>
 <div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;    spec_is_equal(rt_cur_child(c),1);</div>
 <div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;</div>
 <div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;    <span class="comment">// after Eval next step will be Ascend</span></div>
-<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;    spec_is_equal(<a class="code" href="process_8c.html#a06f9824fa33f4a31a5f53be44cdd2a71">_p_step</a>(defs,&amp;context),Ascend);</div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;    spec_is_equal(<a class="code" href="process_8c.html#a208c2bb21125a1add95c66a358800271">_p_step</a>(&amp;defs,&amp;context),Ascend);</div>
 <div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;</div>
 <div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;    <span class="comment">// step ascends back to top if and marks boolean complete</span></div>
-<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;    spec_is_equal(<a class="code" href="process_8c.html#a06f9824fa33f4a31a5f53be44cdd2a71">_p_step</a>(defs,&amp;context),Eval);</div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;    spec_is_equal(<a class="code" href="process_8c.html#a208c2bb21125a1add95c66a358800271">_p_step</a>(&amp;defs,&amp;context),Eval);</div>
 <div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;</div>
 <div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;    spec_is_equal(rt_cur_child(_t_child(c,1)),RUN_TREE_EVALUATED);</div>
 <div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;    spec_is_ptr_equal(context-&gt;node_pointer,c);</div>
 <div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;</div>
-<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;    spec_is_equal(<a class="code" href="process_8c.html#a06f9824fa33f4a31a5f53be44cdd2a71">_p_step</a>(defs,&amp;context),Descend);</div>
+<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;    spec_is_equal(<a class="code" href="process_8c.html#a208c2bb21125a1add95c66a358800271">_p_step</a>(&amp;defs,&amp;context),Descend);</div>
 <div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;</div>
 <div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;    <span class="comment">// third step goes into the second level if</span></div>
-<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;    spec_is_equal(<a class="code" href="process_8c.html#a06f9824fa33f4a31a5f53be44cdd2a71">_p_step</a>(defs,&amp;context),Eval);</div>
+<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;    spec_is_equal(<a class="code" href="process_8c.html#a208c2bb21125a1add95c66a358800271">_p_step</a>(&amp;defs,&amp;context),Eval);</div>
 <div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;    spec_is_equal(rt_cur_child(c),2);</div>
 <div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;    spec_is_ptr_equal(context-&gt;node_pointer,_t_child(c,2));</div>
 <div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;</div>
@@ -517,7 +517,7 @@ $(document).ready(function(){initNavTree('process__spec_8h_source.html','');});
 <div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(<a class="code" href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a>(t,1));</div>
 <div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;    c = _t_rclone(n);</div>
 <div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;    <a class="code" href="group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c">_t_add</a>(t,c);</div>
-<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;    <a class="code" href="process_8c.html#ad42fec7e7bf05d2f966b16ea5b34da3c">_p_reduce</a>(defs,t);</div>
+<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;    <a class="code" href="process_8c.html#acc149ea5dc5c12cd12fc35a61157cfbc">_p_reduce</a>(&amp;defs,t);</div>
 <div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;</div>
 <div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;    spec_is_str_equal(t2s(c),<span class="stringliteral">&quot;(TEST_INT_SYMBOL:99)&quot;</span>);</div>
 <div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;</div>
@@ -540,7 +540,7 @@ $(document).ready(function(){initNavTree('process__spec_8h_source.html','');});
 <div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;    <span class="keywordtype">int</span> pt[] = {4,1,TREE_PATH_TERMINATOR};</div>
 <div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;    <a class="code" href="group__tree.html#gab4426cfa823b6fc93bb8094fdf63f8cf">__t_new</a>(t,PARAM_REF,pt,<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>)*4,<span class="keyword">sizeof</span>(<a class="code" href="structrT.html">rT</a>));</div>
 <div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;</div>
-<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;    Error e = <a class="code" href="process_8c.html#ad42fec7e7bf05d2f966b16ea5b34da3c">_p_reduce</a>(defs,t);</div>
+<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;    Error e = <a class="code" href="process_8c.html#acc149ea5dc5c12cd12fc35a61157cfbc">_p_reduce</a>(&amp;defs,t);</div>
 <div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;    spec_is_equal(e,noReductionErr);</div>
 <div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;    spec_is_str_equal(t2s(_t_child(t,1)),<span class="stringliteral">&quot;(ZERO_DIVIDE_ERR (ERROR_LOCATION:/1/1))&quot;</span>);</div>
 <div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(n);</div>
@@ -567,7 +567,7 @@ $(document).ready(function(){initNavTree('process__spec_8h_source.html','');});
 <div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;    <span class="keywordtype">int</span> pt[] = {4,1,TREE_PATH_TERMINATOR};</div>
 <div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160;    <a class="code" href="group__tree.html#gab4426cfa823b6fc93bb8094fdf63f8cf">__t_new</a>(t,PARAM_REF,pt,<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>)*4,<span class="keyword">sizeof</span>(<a class="code" href="structrT.html">rT</a>));</div>
 <div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;</div>
-<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;    Error e = <a class="code" href="process_8c.html#ad42fec7e7bf05d2f966b16ea5b34da3c">_p_reduce</a>(defs,t);</div>
+<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;    Error e = <a class="code" href="process_8c.html#acc149ea5dc5c12cd12fc35a61157cfbc">_p_reduce</a>(&amp;defs,t);</div>
 <div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;    spec_is_equal(e,noReductionErr);</div>
 <div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;    spec_is_str_equal(t2s(_t_child(t,1)),<span class="stringliteral">&quot;(NOT_A_PROCESS_ERR (ERROR_LOCATION:/1))&quot;</span>);</div>
 <div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(n);</div>
@@ -595,7 +595,7 @@ $(document).ready(function(){initNavTree('process__spec_8h_source.html','');});
 <div class="line"><a name="l00510"></a><span class="lineno">  510</span>&#160;    <a class="code" href="group__tree.html#gab4426cfa823b6fc93bb8094fdf63f8cf">__t_new</a>(t,PARAM_REF,pt,<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>)*4,<span class="keyword">sizeof</span>(<a class="code" href="structrT.html">rT</a>));</div>
 <div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160;</div>
 <div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160;    <span class="comment">// confirm that it reduces correctly</span></div>
-<div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;    spec_is_equal(<a class="code" href="process_8c.html#ad42fec7e7bf05d2f966b16ea5b34da3c">_p_reduce</a>(defs,t),noReductionErr);</div>
+<div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;    spec_is_equal(<a class="code" href="process_8c.html#acc149ea5dc5c12cd12fc35a61157cfbc">_p_reduce</a>(&amp;defs,t),noReductionErr);</div>
 <div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;    spec_is_str_equal(t2s(_t_child(t,1)),<span class="stringliteral">&quot;(ZERO_DIVIDE_ERR (ERROR_LOCATION:/1/1))&quot;</span>);</div>
 <div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160;</div>
 <div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(processes);</div>
@@ -616,56 +616,82 @@ $(document).ready(function(){initNavTree('process__spec_8h_source.html','');});
 <div class="line"><a name="l00533"></a><span class="lineno">  533</span>&#160;    <a class="code" href="structT.html">T</a> *t1 = __p_make_run_tree(processes,if_even,n);</div>
 <div class="line"><a name="l00534"></a><span class="lineno">  534</span>&#160;</div>
 <div class="line"><a name="l00535"></a><span class="lineno">  535</span>&#160;    _t_newi(n,TEST_INT_SYMBOL,100);</div>
-<div class="line"><a name="l00536"></a><span class="lineno">  536</span>&#160;    _t_newi(n,TEST_INT_SYMBOL,123);</div>
-<div class="line"><a name="l00537"></a><span class="lineno">  537</span>&#160;    _t_newi(n,TEST_INT_SYMBOL,124);</div>
-<div class="line"><a name="l00538"></a><span class="lineno">  538</span>&#160;    <a class="code" href="structT.html">T</a> *t2 = __p_make_run_tree(processes,if_even,n);</div>
-<div class="line"><a name="l00539"></a><span class="lineno">  539</span>&#160;</div>
-<div class="line"><a name="l00540"></a><span class="lineno">  540</span>&#160;    <span class="comment">// add them to a processing queue</span></div>
+<div class="line"><a name="l00536"></a><span class="lineno">  536</span>&#160;    <a class="code" href="structT.html">T</a> *l2 = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(n,if_even);</div>
+<div class="line"><a name="l00537"></a><span class="lineno">  537</span>&#160;    _t_newi(l2,TEST_INT_SYMBOL,2);</div>
+<div class="line"><a name="l00538"></a><span class="lineno">  538</span>&#160;    _t_newi(l2,TEST_INT_SYMBOL,123);</div>
+<div class="line"><a name="l00539"></a><span class="lineno">  539</span>&#160;    _t_newi(l2,TEST_INT_SYMBOL,124);</div>
+<div class="line"><a name="l00540"></a><span class="lineno">  540</span>&#160;    _t_newi(n,TEST_INT_SYMBOL,314);</div>
 <div class="line"><a name="l00541"></a><span class="lineno">  541</span>&#160;</div>
-<div class="line"><a name="l00542"></a><span class="lineno">  542</span>&#160;    <span class="comment">// confirm that they both reduce correctly</span></div>
-<div class="line"><a name="l00543"></a><span class="lineno">  543</span>&#160;    <span class="comment">//    spec_is_equal(_p_reduceq(defs,q),noReductionErr);</span></div>
-<div class="line"><a name="l00544"></a><span class="lineno">  544</span>&#160;    spec_is_str_equal(t2s(_t_child(t1,1)),<span class="stringliteral">&quot;(TEST_INT_SYMBOL:124)&quot;</span>);</div>
-<div class="line"><a name="l00546"></a><span class="lineno">  546</span>&#160;}</div>
-<div class="line"><a name="l00547"></a><span class="lineno">  547</span>&#160;</div>
-<div class="line"><a name="l00548"></a><span class="lineno">  548</span>&#160;<span class="keywordtype">void</span> testProcess() {</div>
-<div class="line"><a name="l00549"></a><span class="lineno">  549</span>&#160;    testRunTree();</div>
-<div class="line"><a name="l00550"></a><span class="lineno">  550</span>&#160;    <a class="code" href="process__spec_8h.html#a144cc1bbafbf21f1ac4aa51b06c2c680">testProcessReduceDefinedProcess</a>();</div>
-<div class="line"><a name="l00551"></a><span class="lineno">  551</span>&#160;    testProcessSignatureMatching();</div>
-<div class="line"><a name="l00552"></a><span class="lineno">  552</span>&#160;    testProcessInterpolateMatch();</div>
-<div class="line"><a name="l00553"></a><span class="lineno">  553</span>&#160;    <a class="code" href="process__spec_8h.html#a2df9138f71c0a1fa19bcb49682d51299">testProcessIf</a>();</div>
-<div class="line"><a name="l00554"></a><span class="lineno">  554</span>&#160;    testProcessIntMath();</div>
-<div class="line"><a name="l00555"></a><span class="lineno">  555</span>&#160;    testProcessString();</div>
-<div class="line"><a name="l00556"></a><span class="lineno">  556</span>&#160;    testProcessReduce();</div>
-<div class="line"><a name="l00557"></a><span class="lineno">  557</span>&#160;    testProcessError();</div>
-<div class="line"><a name="l00558"></a><span class="lineno">  558</span>&#160;    testProcessRaise();</div>
-<div class="line"><a name="l00559"></a><span class="lineno">  559</span>&#160;    <a class="code" href="process__spec_8h.html#a46990c9ddd15682d03076d589d46a0df">testProcessErrorTrickleUp</a>();</div>
-<div class="line"><a name="l00560"></a><span class="lineno">  560</span>&#160;    <a class="code" href="process__spec_8h.html#a014ab3883818d777171247160a556f70">testProcessMulti</a>();</div>
-<div class="line"><a name="l00561"></a><span class="lineno">  561</span>&#160;}</div>
+<div class="line"><a name="l00542"></a><span class="lineno">  542</span>&#160;    <a class="code" href="structT.html">T</a> *t2 = __p_make_run_tree(processes,if_even,n);</div>
+<div class="line"><a name="l00543"></a><span class="lineno">  543</span>&#160;</div>
+<div class="line"><a name="l00544"></a><span class="lineno">  544</span>&#160;    <span class="comment">// add them to a processing queue</span></div>
+<div class="line"><a name="l00545"></a><span class="lineno">  545</span>&#160;    <a class="code" href="structQ.html">Q</a> *q = <a class="code" href="process_8c.html#aa97db3dcdc186ddfb237b745a5e460f6">_p_newq</a>(&amp;defs);</div>
+<div class="line"><a name="l00546"></a><span class="lineno">  546</span>&#160;    spec_is_equal(q-&gt;contexts_count,0);</div>
+<div class="line"><a name="l00547"></a><span class="lineno">  547</span>&#160;    spec_is_ptr_equal(q-&gt;active,NULL);</div>
+<div class="line"><a name="l00548"></a><span class="lineno">  548</span>&#160;    <a class="code" href="process_8c.html#aeda111a93260aae9ed19b1c2d1d2e029">_p_addrt2q</a>(q,t1);</div>
+<div class="line"><a name="l00549"></a><span class="lineno">  549</span>&#160;    spec_is_equal(q-&gt;contexts_count,1);</div>
+<div class="line"><a name="l00550"></a><span class="lineno">  550</span>&#160;    spec_is_ptr_equal(q-&gt;active-&gt;context-&gt;run_tree,t1);</div>
+<div class="line"><a name="l00551"></a><span class="lineno">  551</span>&#160;    spec_is_ptr_equal(q-&gt;active-&gt;prev,NULL);</div>
+<div class="line"><a name="l00552"></a><span class="lineno">  552</span>&#160;    <a class="code" href="process_8c.html#aeda111a93260aae9ed19b1c2d1d2e029">_p_addrt2q</a>(q,t2);</div>
+<div class="line"><a name="l00553"></a><span class="lineno">  553</span>&#160;    spec_is_equal(q-&gt;contexts_count,2);</div>
+<div class="line"><a name="l00554"></a><span class="lineno">  554</span>&#160;    spec_is_ptr_equal(q-&gt;active-&gt;context-&gt;run_tree,t2);</div>
+<div class="line"><a name="l00555"></a><span class="lineno">  555</span>&#160;    spec_is_ptr_equal(q-&gt;active-&gt;next-&gt;context-&gt;run_tree,t1);</div>
+<div class="line"><a name="l00556"></a><span class="lineno">  556</span>&#160;    spec_is_ptr_equal(q-&gt;active-&gt;next-&gt;prev, q-&gt;active);</div>
+<div class="line"><a name="l00557"></a><span class="lineno">  557</span>&#160;</div>
+<div class="line"><a name="l00558"></a><span class="lineno">  558</span>&#160;    <span class="comment">// confirm that they both reduce correctly</span></div>
+<div class="line"><a name="l00559"></a><span class="lineno">  559</span>&#160;    spec_is_equal(<a class="code" href="process_8c.html#a64e8965291c67057b06f273db19a465d">_p_reduceq</a>(q),noReductionErr);</div>
+<div class="line"><a name="l00560"></a><span class="lineno">  560</span>&#160;</div>
+<div class="line"><a name="l00561"></a><span class="lineno">  561</span>&#160;    spec_is_str_equal(t2s(_t_child(t1,1)),<span class="stringliteral">&quot;(TEST_INT_SYMBOL:124)&quot;</span>);</div>
+<div class="line"><a name="l00562"></a><span class="lineno">  562</span>&#160;    spec_is_str_equal(t2s(_t_child(t2,1)),<span class="stringliteral">&quot;(TEST_INT_SYMBOL:123)&quot;</span>);</div>
+<div class="line"><a name="l00563"></a><span class="lineno">  563</span>&#160;</div>
+<div class="line"><a name="l00564"></a><span class="lineno">  564</span>&#160;    <a class="code" href="process_8c.html#aea59e125f10441efe75f6047ee7b35e1">_p_freeq</a>(q);</div>
+<div class="line"><a name="l00565"></a><span class="lineno">  565</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(processes);<a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(n);</div>
+<div class="line"><a name="l00567"></a><span class="lineno">  567</span>&#160;}</div>
+<div class="line"><a name="l00568"></a><span class="lineno">  568</span>&#160;</div>
+<div class="line"><a name="l00569"></a><span class="lineno">  569</span>&#160;<span class="keywordtype">void</span> testProcess() {</div>
+<div class="line"><a name="l00570"></a><span class="lineno">  570</span>&#160;    testRunTree();</div>
+<div class="line"><a name="l00571"></a><span class="lineno">  571</span>&#160;    <a class="code" href="process__spec_8h.html#a144cc1bbafbf21f1ac4aa51b06c2c680">testProcessReduceDefinedProcess</a>();</div>
+<div class="line"><a name="l00572"></a><span class="lineno">  572</span>&#160;    testProcessSignatureMatching();</div>
+<div class="line"><a name="l00573"></a><span class="lineno">  573</span>&#160;    testProcessInterpolateMatch();</div>
+<div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160;    <a class="code" href="process__spec_8h.html#a2df9138f71c0a1fa19bcb49682d51299">testProcessIf</a>();</div>
+<div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160;    testProcessIntMath();</div>
+<div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160;    testProcessString();</div>
+<div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;    testProcessReduce();</div>
+<div class="line"><a name="l00578"></a><span class="lineno">  578</span>&#160;    testProcessError();</div>
+<div class="line"><a name="l00579"></a><span class="lineno">  579</span>&#160;    testProcessRaise();</div>
+<div class="line"><a name="l00580"></a><span class="lineno">  580</span>&#160;    <a class="code" href="process__spec_8h.html#a46990c9ddd15682d03076d589d46a0df">testProcessErrorTrickleUp</a>();</div>
+<div class="line"><a name="l00581"></a><span class="lineno">  581</span>&#160;    <a class="code" href="process__spec_8h.html#a014ab3883818d777171247160a556f70">testProcessMulti</a>();</div>
+<div class="line"><a name="l00582"></a><span class="lineno">  582</span>&#160;}</div>
 <div class="ttc" id="group__tree_html_ga25dd0f385044ffbcc7c215ea80fa00b4"><div class="ttname"><a href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a></div><div class="ttdeci">T * _t_new_root(Symbol symbol)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00129">tree.c:129</a></div></div>
 <div class="ttc" id="structT_html"><div class="ttname"><a href="structT.html">T</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00101">ceptr_types.h:101</a></div></div>
 <div class="ttc" id="group__tree_html_ga14080e3aa32b1612dabcd610b062e376"><div class="ttname"><a href="group__tree.html#ga14080e3aa32b1612dabcd610b062e376">_t_news</a></div><div class="ttdeci">T * _t_news(T *parent, Symbol symbol, SemanticID surface)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00089">tree.c:89</a></div></div>
-<div class="ttc" id="process_8c_html_a06f9824fa33f4a31a5f53be44cdd2a71"><div class="ttname"><a href="process_8c.html#a06f9824fa33f4a31a5f53be44cdd2a71">_p_step</a></div><div class="ttdeci">Error _p_step(Defs defs, R **contextP)</div><div class="ttdef"><b>Definition:</b> <a href="process_8c_source.html#l00274">process.c:274</a></div></div>
 <div class="ttc" id="process_8c_html_a47b39e2358f32638d0eaeae03247ff04"><div class="ttname"><a href="process_8c.html#a47b39e2358f32638d0eaeae03247ff04">__p_reduce_sys_proc</a></div><div class="ttdeci">Error __p_reduce_sys_proc(Defs *defs, Symbol s, T *code)</div><div class="ttdef"><b>Definition:</b> <a href="process_8c_source.html#l00084">process.c:84</a></div></div>
+<div class="ttc" id="structQ_html"><div class="ttname"><a href="structQ.html">Q</a></div><div class="ttdef"><b>Definition:</b> <a href="process_8h_source.html#l00040">process.h:40</a></div></div>
+<div class="ttc" id="process_8c_html_acc149ea5dc5c12cd12fc35a61157cfbc"><div class="ttname"><a href="process_8c.html#acc149ea5dc5c12cd12fc35a61157cfbc">_p_reduce</a></div><div class="ttdeci">Error _p_reduce(Defs *defs, T *rt)</div><div class="ttdef"><b>Definition:</b> <a href="process_8c_source.html#l00251">process.c:251</a></div></div>
 <div class="ttc" id="group__tree_html_gaf019d190c9623de809d006e309a441af"><div class="ttname"><a href="group__tree.html#gaf019d190c9623de809d006e309a441af">_t_get</a></div><div class="ttdeci">T * _t_get(T *t, int *p)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00652">tree.c:652</a></div></div>
 <div class="ttc" id="group__tree_html_ga87cb5cdb608c0048c5ae7e3249780a8c"><div class="ttname"><a href="group__tree.html#ga87cb5cdb608c0048c5ae7e3249780a8c">_t_new_str</a></div><div class="ttdeci">T * _t_new_str(T *parent, Symbol symbol, char *surface)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00118">tree.c:118</a></div></div>
 <div class="ttc" id="group__tree_html_ga403644d86c835ceae71dc7af0356900f"><div class="ttname"><a href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a></div><div class="ttdeci">T * _t_detach_by_idx(T *t, int i)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00221">tree.c:221</a></div></div>
+<div class="ttc" id="process_8c_html_aea59e125f10441efe75f6047ee7b35e1"><div class="ttname"><a href="process_8c.html#aea59e125f10441efe75f6047ee7b35e1">_p_freeq</a></div><div class="ttdeci">void _p_freeq(Q *q)</div><div class="ttdef"><b>Definition:</b> <a href="process_8c_source.html#l00534">process.c:534</a></div></div>
 <div class="ttc" id="process__spec_8h_html_a2df9138f71c0a1fa19bcb49682d51299"><div class="ttname"><a href="process__spec_8h.html#a2df9138f71c0a1fa19bcb49682d51299">testProcessIf</a></div><div class="ttdeci">void testProcessIf()</div><div class="ttdef"><b>Definition:</b> <a href="process__spec_8h_source.html#l00244">process_spec.h:244</a></div></div>
+<div class="ttc" id="process_8c_html_a64e8965291c67057b06f273db19a465d"><div class="ttname"><a href="process_8c.html#a64e8965291c67057b06f273db19a465d">_p_reduceq</a></div><div class="ttdeci">Error _p_reduceq(Q *q)</div><div class="ttdef"><b>Definition:</b> <a href="process_8c_source.html#l00562">process.c:562</a></div></div>
 <div class="ttc" id="group__tree_html_ga3e2009f5a82889263d560d2c1479606a"><div class="ttname"><a href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a></div><div class="ttdeci">T * _t_newr(T *parent, Symbol symbol)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00140">tree.c:140</a></div></div>
+<div class="ttc" id="process_8c_html_a208c2bb21125a1add95c66a358800271"><div class="ttname"><a href="process_8c.html#a208c2bb21125a1add95c66a358800271">_p_step</a></div><div class="ttdeci">Error _p_step(Defs *defs, R **contextP)</div><div class="ttdef"><b>Definition:</b> <a href="process_8c_source.html#l00274">process.c:274</a></div></div>
 <div class="ttc" id="group__tree_html_ga946600fb570f0cc913450905f6189d49"><div class="ttname"><a href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a></div><div class="ttdeci">Symbol _t_symbol(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00490">tree.c:490</a></div></div>
 <div class="ttc" id="process__spec_8h_html_a3b8bbd16216de3d2c5f7ffd5f53c156e"><div class="ttname"><a href="process__spec_8h.html#a3b8bbd16216de3d2c5f7ffd5f53c156e">_defIfEven</a></div><div class="ttdeci">Process _defIfEven(T *processes)</div><div class="ttdoc">[defIfEven] </div><div class="ttdef"><b>Definition:</b> <a href="process__spec_8h_source.html#l00089">process_spec.h:89</a></div></div>
 <div class="ttc" id="group__tree_html_ga48ffc2a6e4aa4856b76fb53b97db87f3"><div class="ttname"><a href="group__tree.html#ga48ffc2a6e4aa4856b76fb53b97db87f3">_t_newp</a></div><div class="ttdeci">T * _t_newp(T *parent, Symbol symbol, Process surface)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00194">tree.c:194</a></div></div>
-<div class="ttc" id="process_8c_html_a0d7e9199c11402521a3ed08719eb92a6"><div class="ttname"><a href="process_8c.html#a0d7e9199c11402521a3ed08719eb92a6">_p_make_run_tree</a></div><div class="ttdeci">T * _p_make_run_tree(T *processes, T *process, int num_params,...)</div><div class="ttdef"><b>Definition:</b> <a href="process_8c_source.html#l00483">process.c:483</a></div></div>
+<div class="ttc" id="process_8c_html_a0d7e9199c11402521a3ed08719eb92a6"><div class="ttname"><a href="process_8c.html#a0d7e9199c11402521a3ed08719eb92a6">_p_make_run_tree</a></div><div class="ttdeci">T * _p_make_run_tree(T *processes, T *process, int num_params,...)</div><div class="ttdef"><b>Definition:</b> <a href="process_8c_source.html#l00467">process.c:467</a></div></div>
 <div class="ttc" id="process__spec_8h_html_a144cc1bbafbf21f1ac4aa51b06c2c680"><div class="ttname"><a href="process__spec_8h.html#a144cc1bbafbf21f1ac4aa51b06c2c680">testProcessReduceDefinedProcess</a></div><div class="ttdeci">void testProcessReduceDefinedProcess()</div><div class="ttdoc">[defDivZero] </div><div class="ttdef"><b>Definition:</b> <a href="process__spec_8h_source.html#l00156">process_spec.h:156</a></div></div>
 <div class="ttc" id="group__tree_html_gab4426cfa823b6fc93bb8094fdf63f8cf"><div class="ttname"><a href="group__tree.html#gab4426cfa823b6fc93bb8094fdf63f8cf">__t_new</a></div><div class="ttdeci">T * __t_new(T *parent, Symbol symbol, void *surface, size_t size, size_t alloc_size)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00052">tree.c:52</a></div></div>
+<div class="ttc" id="process_8c_html_aeda111a93260aae9ed19b1c2d1d2e029"><div class="ttname"><a href="process_8c.html#aeda111a93260aae9ed19b1c2d1d2e029">_p_addrt2q</a></div><div class="ttdeci">void _p_addrt2q(Q *q, T *run_tree)</div><div class="ttdef"><b>Definition:</b> <a href="process_8c_source.html#l00545">process.c:545</a></div></div>
 <div class="ttc" id="process__spec_8h_html_a46990c9ddd15682d03076d589d46a0df"><div class="ttname"><a href="process__spec_8h.html#a46990c9ddd15682d03076d589d46a0df">testProcessErrorTrickleUp</a></div><div class="ttdeci">void testProcessErrorTrickleUp()</div><div class="ttdef"><b>Definition:</b> <a href="process__spec_8h_source.html#l00491">process_spec.h:491</a></div></div>
 <div class="ttc" id="process__spec_8h_html_a014ab3883818d777171247160a556f70"><div class="ttname"><a href="process__spec_8h.html#a014ab3883818d777171247160a556f70">testProcessMulti</a></div><div class="ttdeci">void testProcessMulti()</div><div class="ttdef"><b>Definition:</b> <a href="process__spec_8h_source.html#l00521">process_spec.h:521</a></div></div>
-<div class="ttc" id="process_8c_html_ad42fec7e7bf05d2f966b16ea5b34da3c"><div class="ttname"><a href="process_8c.html#ad42fec7e7bf05d2f966b16ea5b34da3c">_p_reduce</a></div><div class="ttdeci">Error _p_reduce(Defs defs, T *rt)</div><div class="ttdef"><b>Definition:</b> <a href="process_8c_source.html#l00250">process.c:250</a></div></div>
 <div class="ttc" id="group__tree_html_gad19e9f2cb621a82e755f6c7796c9fe12"><div class="ttname"><a href="group__tree.html#gad19e9f2cb621a82e755f6c7796c9fe12">__t_newi</a></div><div class="ttdeci">T * __t_newi(T *parent, Symbol symbol, int surface, size_t alloc_size)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00073">tree.c:73</a></div></div>
 <div class="ttc" id="process__spec_8h_html_a4d38a76b0d2eb372b0ceb20cc65ab9ca"><div class="ttname"><a href="process__spec_8h.html#a4d38a76b0d2eb372b0ceb20cc65ab9ca">_defDivZero</a></div><div class="ttdeci">Process _defDivZero(T *processes)</div><div class="ttdoc">[defIfEven] </div><div class="ttdef"><b>Definition:</b> <a href="process__spec_8h_source.html#l00137">process_spec.h:137</a></div></div>
 <div class="ttc" id="structrT_html"><div class="ttname"><a href="structrT.html">rT</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00115">ceptr_types.h:115</a></div></div>
 <div class="ttc" id="group__tree_html_ga3b7a6499fe49f8e6a54166d583b08d5c"><div class="ttname"><a href="group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c">_t_add</a></div><div class="ttdeci">void _t_add(T *t, T *c)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00204">tree.c:204</a></div></div>
 <div class="ttc" id="structDefs_html"><div class="ttname"><a href="structDefs.html">Defs</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00168">ceptr_types.h:168</a></div></div>
 <div class="ttc" id="structR_html"><div class="ttname"><a href="structR.html">R</a></div><div class="ttdef"><b>Definition:</b> <a href="process_8h_source.html#l00021">process.h:21</a></div></div>
+<div class="ttc" id="process_8c_html_aa97db3dcdc186ddfb237b745a5e460f6"><div class="ttname"><a href="process_8c.html#aa97db3dcdc186ddfb237b745a5e460f6">_p_newq</a></div><div class="ttdeci">Q * _p_newq(Defs *defs)</div><div class="ttdef"><b>Definition:</b> <a href="process_8c_source.html#l00501">process.c:501</a></div></div>
 <div class="ttc" id="group__def_html_ga33c6ec0c2bc81bfa149b8f883300d67d"><div class="ttname"><a href="group__def.html#ga33c6ec0c2bc81bfa149b8f883300d67d">_d_code_process</a></div><div class="ttdeci">Process _d_code_process(T *processes, T *code, char *name, char *intention, T *in, T *out, Context c)</div><div class="ttdef"><b>Definition:</b> <a href="def_8c_source.html#l00293">def.c:293</a></div></div>
 <div class="ttc" id="group__tree_html_ga31e55cdc031e5f12523b998e89080db6"><div class="ttname"><a href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a></div><div class="ttdeci">void _t_free(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00415">tree.c:415</a></div></div>
 <div class="ttc" id="structSemanticID_html"><div class="ttname"><a href="structSemanticID.html">SemanticID</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00016">ceptr_types.h:16</a></div></div>
@@ -676,7 +702,7 @@ $(document).ready(function(){initNavTree('process__spec_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><a class="el" href="process__spec_8h.html">process_spec.h</a></li>
-    <li class="footer">Generated on Tue May 19 2015 17:42:45 for ceptr by
+    <li class="footer">Generated on Wed May 20 2015 16:17:27 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

@@ -11,6 +11,8 @@ var annotated =
     [ "MwalkState", "structMwalkState.html", "structMwalkState" ],
     [ "N", "structN.html", "structN" ],
     [ "Ptrlist", "unionPtrlist.html", "unionPtrlist" ],
+    [ "Q", "structQ.html", "structQ" ],
+    [ "Qe", "structQe.html", "structQe" ],
     [ "R", "structR.html", "structR" ],
     [ "Receptor", "structReceptor.html", "structReceptor" ],
     [ "rT", "structrT.html", "structrT" ],

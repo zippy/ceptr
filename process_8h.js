@@ -1,6 +1,10 @@
 var process_8h =
 [
     [ "R", "structR.html", "structR" ],
+    [ "Qe", "structQe.html", "structQe" ],
+    [ "Q", "structQ.html", "structQ" ],
+    [ "Q", "process_8h.html#a06528feca3c2b56afa4e4f8bcb3fdb31", null ],
+    [ "Qe", "process_8h.html#aa469d8acbe1a94d0ae3ed612daad1b63", null ],
     [ "R", "process_8h.html#af0d29270d068faa267b2015c47c73b00", null ],
     [ "ReductionError", "process_8h.html#aafd8125ddd0cd2cb2675dea09aacb099", [
       [ "Ascend", "process_8h.html#aafd8125ddd0cd2cb2675dea09aacb099af8e4d8d838eae6081dbcea6ceed67fbd", null ],
@@ -20,9 +24,11 @@ var process_8h =
     [ "__p_make_context", "process_8h.html#a10769075e2a74fd8825e544c6f69ea59", null ],
     [ "__p_make_run_tree", "process_8h.html#ae3613e9e24d3be687d8fc10d30994445", null ],
     [ "__p_reduce_sys_proc", "process_8h.html#a47b39e2358f32638d0eaeae03247ff04", null ],
-    [ "__p_reduceR", "process_8h.html#a33a1c6f1526510e4d51d2c2a19ddccc0", null ],
+    [ "_p_addrt2q", "process_8h.html#acd000cf38ec2232938329c07683c7b06", null ],
+    [ "_p_freeq", "process_8h.html#aea59e125f10441efe75f6047ee7b35e1", null ],
     [ "_p_make_run_tree", "process_8h.html#af2cf2d4a1356f6bd1f433286bfdeebd0", null ],
-    [ "_p_reduce", "process_8h.html#a3fdd613752673ec481debb3220860860", null ],
-    [ "_p_reduceR", "process_8h.html#aaf7cadd68a5ec42ae366b7c115cb83e4", null ],
-    [ "_p_step", "process_8h.html#a06f9824fa33f4a31a5f53be44cdd2a71", null ]
+    [ "_p_newq", "process_8h.html#aa97db3dcdc186ddfb237b745a5e460f6", null ],
+    [ "_p_reduce", "process_8h.html#ac2a3fbaf66daab11709b0f2fae5a7290", null ],
+    [ "_p_reduceq", "process_8h.html#a64e8965291c67057b06f273db19a465d", null ],
+    [ "_p_step", "process_8h.html#a208c2bb21125a1add95c66a358800271", null ]
 ];

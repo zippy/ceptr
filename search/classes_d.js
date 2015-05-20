@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['xaddr',['Xaddr',['../structXaddr.html',1,'']]]
+  ['vmhost',['VMHost',['../structVMHost.html',1,'']]]
 ];
