@@ -52,6 +52,7 @@ Q *_p_newq(Defs *defs);
 void _p_freeq(Q *q);
 void _p_addrt2q(Q *q,T *t);
 Error _p_reduceq(Q *q);
+void *_p_reduceq_thread(void *arg);
 T *__p_make_run_tree(T *processes,Process p,T *params);
 T *_p_make_run_tree(T *processes,T *p,int num_params,...);
 

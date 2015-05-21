@@ -556,7 +556,18 @@ void testProcessMulti() {
     spec_is_ptr_equal(q->active->next->prev, q->active);
 
     // confirm that they both reduce correctly
-    spec_is_equal(_p_reduceq(q),noReductionErr);
+    pthread_t thread;
+    int rc;
+    rc = pthread_create(&thread,0,_p_reduceq_thread,q);
+    if (rc){
+        raise_error("ERROR; return code from pthread_create() is %d\n", rc);
+    }
+    void *status;
+    rc = pthread_join(thread, &status);
+    if (rc) {
+        raise_error("ERROR; return code from pthread_join() is %d\n", rc);
+    }
+    spec_is_long_equal((long)status,noReductionErr);
 
     spec_is_str_equal(t2s(_t_child(t1,1)),"(TEST_INT_SYMBOL:124)");
     spec_is_str_equal(t2s(_t_child(t2,1)),"(TEST_INT_SYMBOL:123)");

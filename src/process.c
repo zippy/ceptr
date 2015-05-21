@@ -554,8 +554,22 @@ void _p_addrt2q(Q *q,T *run_tree) {
     q->completed = 0;
 }
 
+
 /**
- * reduce all the processes in a queue (suitable to be called by a thread)
+ * reduce all the processes in a queue, and terminate thread when completed
+ *
+ * @param[in] q the queue to be processed
+ */
+void *_p_reduceq_thread(void *arg){
+    Q *q = (Q*)arg;
+
+    int err;
+    err = _p_reduceq((Q *)arg);
+    pthread_exit(err);
+}
+
+/**
+ * reduce all the processes in a queue
  *
  * @param[in] q the queue to be processed
  */
@@ -601,6 +615,10 @@ Error _p_reduceq(Q *q) {
         }
         qe = next ? next : q->active;  // next in round robing or wrap
     } while(q->contexts_count);
-    return e;
+    // @todo figure out what error we should be sending back here, i.e. what if
+    // one process ended ok, but one did not.  What's the error?  Probably
+    // the errors here would be at a different level, and the caller would be
+    // expected to inspect the errors of the reduced processes.
+    return 0;
 }
 /** @}*/
