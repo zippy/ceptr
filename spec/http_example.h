@@ -362,7 +362,7 @@ Symbol getTag(char *otag,Symbol tag_sym[],char *tag_str[]) {
     Symbol ts = NULL_SYMBOL;
     int i;
     for(i=0;i<15;i++) {
-	if (!strcicmp(otag,tag_str[i])) {ts = tag_sym[i];break;}
+    if (!strcicmp(otag,tag_str[i])) {ts = tag_sym[i];break;}
     }
     if (semeq(ts,NULL_SYMBOL)) {raise_error("invalid tag: %s",otag);}
     return ts;
@@ -393,106 +393,106 @@ T *parseHTML(char *html) {
 
     T *results,*tokens;
     if (_t_matchr(s,h,&results)) {
-	tokens = _t_new_root(HTML_TOKENS);
-	int i,m = _t_children(results);
-	wjson(d,tokens,"html",fnc++);
-	T *delta,*src;
-	for(i=4;i<=m;i++) {
-	    T *c = _t_child(results,i);
-	    T *sn = _t_child(c,1);
-	    Symbol ts = *(Symbol *)_t_surface(sn);
-	    if (semeq(ts,HTML_ATTRIBUTES)) {
-		T *a = _t_new_root(HTML_ATTRIBUTES);
-		int j,ac = _t_children(c);
-		for(j=4;j<=ac;j++) {
-		    T *attr = _t_newr(a,HTML_ATTRIBUTE);
-		    T *at = _t_child(c,j);
-		    T *m = _t_get_match(at,PARAM_KEY);
-		    asciiT_tos(h,m,attr,PARAM_KEY);
-		    m = _t_get_match(at,PARAM_VALUE);
-		    asciiT_tos(h,m,attr,PARAM_VALUE);
-		}
-		// we can just add the attribute directly to the previous token which will be the open tag tokens
-		src = _t_child(tokens,_t_children(tokens));
-		delta = a;
-		_t_add(src,a);
-	    }
-	    else {
-		src = tokens;
-		delta = asciiT_tos(h,c,tokens,ts);
-	    }
-	    delta = makeDeltaAdd(src,delta);
-	    wjson(d,delta,"html",fnc++);
-	    _t_free(delta);
-	}
-	_t_free(results);
-	_t_free(s);
+    tokens = _t_new_root(HTML_TOKENS);
+    int i,m = _t_children(results);
+    wjson(d,tokens,"html",fnc++);
+    T *delta,*src;
+    for(i=4;i<=m;i++) {
+        T *c = _t_child(results,i);
+        T *sn = _t_child(c,1);
+        Symbol ts = *(Symbol *)_t_surface(sn);
+        if (semeq(ts,HTML_ATTRIBUTES)) {
+        T *a = _t_new_root(HTML_ATTRIBUTES);
+        int j,ac = _t_children(c);
+        for(j=4;j<=ac;j++) {
+            T *attr = _t_newr(a,HTML_ATTRIBUTE);
+            T *at = _t_child(c,j);
+            T *m = _t_get_match(at,PARAM_KEY);
+            asciiT_tos(h,m,attr,PARAM_KEY);
+            m = _t_get_match(at,PARAM_VALUE);
+            asciiT_tos(h,m,attr,PARAM_VALUE);
+        }
+        // we can just add the attribute directly to the previous token which will be the open tag tokens
+        src = _t_child(tokens,_t_children(tokens));
+        delta = a;
+        _t_add(src,a);
+        }
+        else {
+        src = tokens;
+        delta = asciiT_tos(h,c,tokens,ts);
+        }
+        delta = makeDeltaAdd(src,delta);
+        wjson(d,delta,"html",fnc++);
+        _t_free(delta);
+    }
+    _t_free(results);
+    _t_free(s);
 
-	s = _t_new_root(SEMTREX_WALK);
-	//	T *st = _t_newr(sq,SEMTREX_ZERO_OR_MORE);
-	//	_t_newr(st,SEMTREX_SYMBOL_ANY);
-	T *g = 	_t_news(s,SEMTREX_GROUP,HTML_TAG);
-	T *sq = _t_newr(g,SEMTREX_SEQUENCE);
-	_sl(sq,HTML_TOK_TAG_OPEN);
-	g = _t_news(sq,SEMTREX_GROUP,HTML_CONTENT);
-	T* st = _t_newr(g,SEMTREX_ZERO_OR_MORE);
-	__sl(st,1,2,HTML_TOK_TAG_OPEN,HTML_TOK_TAG_CLOSE);
-	_sl(sq,HTML_TOK_TAG_CLOSE);
+    s = _t_new_root(SEMTREX_WALK);
+    //  T *st = _t_newr(sq,SEMTREX_ZERO_OR_MORE);
+    //  _t_newr(st,SEMTREX_SYMBOL_ANY);
+    T *g =  _t_news(s,SEMTREX_GROUP,HTML_TAG);
+    T *sq = _t_newr(g,SEMTREX_SEQUENCE);
+    _sl(sq,HTML_TOK_TAG_OPEN);
+    g = _t_news(sq,SEMTREX_GROUP,HTML_CONTENT);
+    T* st = _t_newr(g,SEMTREX_ZERO_OR_MORE);
+    __sl(st,1,2,HTML_TOK_TAG_OPEN,HTML_TOK_TAG_CLOSE);
+    _sl(sq,HTML_TOK_TAG_CLOSE);
 
-	//	stx = "%<HTML_TAG:HTML_TOK_TAG_OPEN,!{HTML_TOK_TAG_OPEN,HTML_TOK_TAG_CLOSE},HTML_TOK_TAG_CLOSE>";
-	//s = parseSemtrex(d,stx);
-	//	return tokens;
-	while (_t_matchr(s,tokens,&results)) {
-	    T *m = _t_get_match(results,HTML_TAG);
-	    int *path = _t_surface(_t_child(m,2));
-	    int count = *(int *)_t_surface(_t_child(results,3));
-	    T *ot = _t_get(tokens,path);
-	    path[_t_path_depth(path)-1] += count-1;
-	    T *ct = _t_get(tokens,path);
-	    char *otag = _t_surface(ot);
-	    char *ctag = _t_surface(ct);
-	    if (strcmp(otag,ctag)) {raise_error2("Mismatched tags %s,%s",otag,ctag)};
+    //  stx = "%<HTML_TAG:HTML_TOK_TAG_OPEN,!{HTML_TOK_TAG_OPEN,HTML_TOK_TAG_CLOSE},HTML_TOK_TAG_CLOSE>";
+    //s = parseSemtrex(d,stx);
+    //  return tokens;
+    while (_t_matchr(s,tokens,&results)) {
+        T *m = _t_get_match(results,HTML_TAG);
+        int *path = _t_surface(_t_child(m,2));
+        int count = *(int *)_t_surface(_t_child(results,3));
+        T *ot = _t_get(tokens,path);
+        path[_t_path_depth(path)-1] += count-1;
+        T *ct = _t_get(tokens,path);
+        char *otag = _t_surface(ot);
+        char *ctag = _t_surface(ct);
+        if (strcmp(otag,ctag)) {raise_error2("Mismatched tags %s,%s",otag,ctag)};
 
-	    Symbol ts = getTag(otag,G_tag_sym,G_tag_str);
-	    path[_t_path_depth(path)-1] -= count-1;
-	    T *content = wrap(tokens,results,HTML_CONTENT,HTML_TAG);
-	    T *attributes = _t_detach_by_idx(content,1);
-	    __t_morph(content,HTML_CONTENT,0,0,0);
-	    T *p = _t_parent(content);
-	    _t_detach_by_ptr(p,content);
-	    T *tag = _t_new_root(ts);
-	    _t_add(tag,attributes);
-	    _t_add(tag,content);
-	    _t_insert_at(tokens,path,tag);
-	    delta = makeDelta(TREE_DELTA_REPLACE,path,tag,count);
-	    wjson(d,delta,"html",fnc++);
-	    _t_free(delta);
-	    _t_free(results);
-	}
-	_t_free(s);
+        Symbol ts = getTag(otag,G_tag_sym,G_tag_str);
+        path[_t_path_depth(path)-1] -= count-1;
+        T *content = wrap(tokens,results,HTML_CONTENT,HTML_TAG);
+        T *attributes = _t_detach_by_idx(content,1);
+        __t_morph(content,HTML_CONTENT,0,0,0);
+        T *p = _t_parent(content);
+        _t_detach_by_ptr(p,content);
+        T *tag = _t_new_root(ts);
+        _t_add(tag,attributes);
+        _t_add(tag,content);
+        _t_insert_at(tokens,path,tag);
+        delta = makeDelta(TREE_DELTA_REPLACE,path,tag,count);
+        wjson(d,delta,"html",fnc++);
+        _t_free(delta);
+        _t_free(results);
+    }
+    _t_free(s);
 
-	s = _t_new_root(SEMTREX_WALK);
-	g = _t_news(s,SEMTREX_GROUP,HTML_TAG);
-	_sl(g,HTML_TOK_TAG_SELFCLOSE);
-	while (_t_matchr(s,tokens,&results)) {
-	    T *m = _t_get_match(results,HTML_TAG);
-	    int *path = _t_surface(_t_child(m,2));
-	    T *t = _t_get(tokens,path);
-	    char *otag = _t_surface(t);
-	    Symbol ts = getTag(otag,G_stag_sym,G_stag_str);
-	    __t_morph(t,ts,0,0,0);
-	    _t_newr(t,HTML_CONTENT);
-	    delta = makeDelta(TREE_DELTA_REPLACE,path,t,1);
-	    wjson(d,delta,"html",fnc++);
-	    _t_free(delta);
-	    _t_free(results);
+    s = _t_new_root(SEMTREX_WALK);
+    g = _t_news(s,SEMTREX_GROUP,HTML_TAG);
+    _sl(g,HTML_TOK_TAG_SELFCLOSE);
+    while (_t_matchr(s,tokens,&results)) {
+        T *m = _t_get_match(results,HTML_TAG);
+        int *path = _t_surface(_t_child(m,2));
+        T *t = _t_get(tokens,path);
+        char *otag = _t_surface(t);
+        Symbol ts = getTag(otag,G_stag_sym,G_stag_str);
+        __t_morph(t,ts,0,0,0);
+        _t_newr(t,HTML_CONTENT);
+        delta = makeDelta(TREE_DELTA_REPLACE,path,t,1);
+        wjson(d,delta,"html",fnc++);
+        _t_free(delta);
+        _t_free(results);
 
-	}
-	_t_free(s);
-	results = _t_detach_by_idx(tokens,1);
-	_t_free(tokens);
-	_t_free(h);
-	return results;
+    }
+    _t_free(s);
+    results = _t_detach_by_idx(tokens,1);
+    _t_free(tokens);
+    _t_free(h);
+    return results;
     }
     raise_error0("HTML doesn't match");
 }

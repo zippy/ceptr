@@ -143,7 +143,7 @@ function walk(mtree,fn,data) {
     while(!done) {
         backup = false;
         var n = getnode(mtree,l,i);
-	// look for child of parent at this level (may be node at current handle address)
+        // look for child of parent at this level (may be node at current handle address)
         while((i<nodes) && ((n.flags&TFLAG_DELETED) || n.parenti != pi )) {
             n=getnode(mtree,l,++i);
         }
@@ -151,40 +151,40 @@ function walk(mtree,fn,data) {
         if (i != nodes) {
             fn(l,i,n,data,state,pl,pi);
             // and go down looking for children
-	    if (l+1 < levels) {
-	        state[l].i = i;
-	        pi = i;pl = l;
+            if (l+1 < levels) {
+                state[l].i = i;
+                pi = i;pl = l;
                 l++;
-	        i = 0;
-	        level = mtree[l];
-	        nodes = level.length;
-	    }
-	    else {
-	        // if no more levels, then backup if no more nodes
-	        if (++i == nodes)
-		    backup = true;
-	    }
+                i = 0;
+                level = mtree[l];
+                nodes = level.length;
+            }
+            else {
+                // if no more levels, then backup if no more nodes
+                if (++i == nodes)
+                    backup = true;
+            }
         }
         else backup = true;
-	while(backup) {
-	    // if current node is at root level we are done
-	    if (l == root) {backup = false;done = true;}
-	    else {
-		// otherwise move up a level
-		l--;
-		// new node index is next node at that level from stored state
-		i = state[l].i+1;
-		level = mtree[l];
-		nodes = level.length;
-		// if we still have nodes to check then we have finished backing up otherwise
-		// we'll loop to go back up another level
-		if (i < nodes) {
-		    backup = false;
-		    pl = l -1;
-		    pi = state[pl].i;
-		}
-	    }
-	}
+        while(backup) {
+            // if current node is at root level we are done
+            if (l == root) {backup = false;done = true;}
+            else {
+                // otherwise move up a level
+                l--;
+                // new node index is next node at that level from stored state
+                i = state[l].i+1;
+                level = mtree[l];
+                nodes = level.length;
+                // if we still have nodes to check then we have finished backing up otherwise
+                // we'll loop to go back up another level
+                if (i < nodes) {
+                    backup = false;
+                    pl = l -1;
+                    pi = state[pl].i;
+                }
+            }
+        }
     }
 }
 

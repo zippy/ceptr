@@ -20,12 +20,12 @@
 void testCreateTreeNodesT() {
     uint32_t impl;
     for(impl=FIRST_TREE_IMPL_TYPE;impl != 0;impl++) {
-	GT t = TNEW(impl,0,TEST_STR_SYMBOL,"hello",6);
-	spec_is_long_equal(TSIZE(t),(size_t)6);
-	spec_is_equal(TKIDS(t),0);
-	spec_is_str_equal((char *)TSURFACE(t),"hello");
+    GT t = TNEW(impl,0,TEST_STR_SYMBOL,"hello",6);
+    spec_is_long_equal(TSIZE(t),(size_t)6);
+    spec_is_equal(TKIDS(t),0);
+    spec_is_str_equal((char *)TSURFACE(t),"hello");
 
-	TFREE(t);
+    TFREE(t);
     }
 }
 */
@@ -35,20 +35,20 @@ void mtd(H h) {
     int i;
     printf("\n");
     for(i=0;i<h.m->levels;i++) {
-	hh.m = h.m;
-	hh.a.l = i;
-	L *l = _GET_LEVEL(h,i);
-	int j;
-	printf("%d(%d):",i,l->nodes);
-	for(j=0;j<l->nodes;j++) {
-	    hh.a.i = j;
-	    N *n = _GET_NODE(h,l,j);
-	    if (!(n->flags & TFLAG_DELETED))
-		printf("%s:%d, ",(char *)_m_surface(hh),n->parenti);
-	    else
-		printf("X, ");
-	}
-	printf("\n");
+    hh.m = h.m;
+    hh.a.l = i;
+    L *l = _GET_LEVEL(h,i);
+    int j;
+    printf("%d(%d):",i,l->nodes);
+    for(j=0;j<l->nodes;j++) {
+        hh.a.i = j;
+        N *n = _GET_NODE(h,l,j);
+        if (!(n->flags & TFLAG_DELETED))
+        printf("%s:%d, ",(char *)_m_surface(hh),n->parenti);
+        else
+        printf("X, ");
+    }
+    printf("\n");
     }
 }
 

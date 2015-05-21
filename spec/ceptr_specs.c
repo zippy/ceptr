@@ -34,28 +34,29 @@ int main(int argc, const char **argv) {
 
     int err;
     if ((err = setjmp(G_err))) {
-	printf("ERROR: %d\n",err);
+    printf("ERROR: %d\n",err);
     }
     else {
-	def_sys();
-	//**** core tests
-	testTree();
-	testMTree();
-	testDef();
-	testLabel();
-	testSemtrex();
-	testReceptor();
-	testProcess();
-	testScape();
-	testVMHost();
-	testDataEngine();
+    def_sys();
+    //**** core tests
+    testTree();
+    testMTree();
+    testDef();
+    testLabel();
+    testSemtrex();
+    testReceptor();
+    testProcess();
+    testScape();
+    testVMHost();
+    testDataEngine();
 
-	//***** examples
-	testProfileExample();
-	testHTTPExample();
+    //***** examples
+    testProfileExample();
+    testHTTPExample();
 
-	sys_free();
-	report_tests();
+    sys_free();
+    report_tests();
     }
-    return 0;
+    pthread_exit(NULL);
+    //    return 0;
 }

@@ -17,6 +17,7 @@
 
 enum ReductionError {Ascend=-1,Descend=-2,Pushed=-3,Pop=-4,Eval=-5,Done=0,noReductionErr=0,raiseReductionErr,tooFewParamsReductionErr=TOO_FEW_PARAMS_ERR_ID,tooManyParamsReductionErr=TOO_MANY_PARAMS_ERR_ID,badSignatureReductionErr=BAD_SIGNATURE_ERR_ID,notProcessReductionError=NOT_A_PROCESS_ERR_ID,divideByZeroReductionErr=ZERO_DIVIDE_ERR_ID};
 
+// run-tree context
 typedef struct R R;
 struct R {
     int err;
@@ -29,6 +30,7 @@ struct R {
     R *callee;    // a pointer to the context we've called
 };
 
+// Processing Queue element
 typedef struct Qe Qe;
 struct Qe {
     R *context;
@@ -36,6 +38,7 @@ struct Qe {
     Qe *prev;
 };
 
+// Processing Queue structure
 typedef struct Q Q;
 struct Q {
     Defs *defs;

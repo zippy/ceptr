@@ -18,22 +18,22 @@
 /// System defined processes
 enum SystemProcessID
     {
-	IF_ID=1,                         ///< reduce to the left or right tree conditionally
-	ADD_INT_ID,
-	SUB_INT_ID,
-	MULT_INT_ID,
-	DIV_INT_ID,
-	MOD_INT_ID,
-	EQ_INT_ID,
-	LT_INT_ID,
-	GT_INT_ID,
-	LTE_INT_ID,
-	GTE_INT_ID,
-	CONCAT_STR_ID,
-	RESPOND_ID,                   ///< respond to the initiating signal with the what ever the sub-tree reduced to
-	INTERPOLATE_FROM_MATCH_ID,    ///< reduce to replaced values from the match*/
-	RAISE_ID,
-	    };
+    IF_ID=1,                         ///< reduce to the left or right tree conditionally
+    ADD_INT_ID,
+    SUB_INT_ID,
+    MULT_INT_ID,
+    DIV_INT_ID,
+    MOD_INT_ID,
+    EQ_INT_ID,
+    LT_INT_ID,
+    GT_INT_ID,
+    LTE_INT_ID,
+    GTE_INT_ID,
+    CONCAT_STR_ID,
+    RESPOND_ID,                   ///< respond to the initiating signal with the what ever the sub-tree reduced to
+    INTERPOLATE_FROM_MATCH_ID,    ///< reduce to replaced values from the match*/
+    RAISE_ID,
+        };
 
 Process NULL_PROCESS;
 Process IF;

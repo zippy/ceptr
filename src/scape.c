@@ -32,8 +32,8 @@ Scape *_s_new(Symbol key_source,Symbol data_source) {
 void scapedataFree(ScapeData *i) {
     scape_elem *cur,*tmp;
     HASH_ITER(hh, *i, cur, tmp) {
-	HASH_DEL(*i,cur);  /* delete; cur advances to next */
-	free(cur);
+    HASH_DEL(*i,cur);  /* delete; cur advances to next */
+    free(cur);
     }
 }
 
@@ -60,13 +60,13 @@ void _s_add(Scape *s,TreeHash h,Xaddr x) {
 
     HASH_FIND_INT( *data, &h, e );
     if (e) {
-	raise_error0("allready there!");
+    raise_error0("allready there!");
     }
     else {
-	e = malloc(sizeof(struct scape_elem));
-	e->key = h;
-	e->value = x;
-	HASH_ADD_INT(*data,key,e);
+    e = malloc(sizeof(struct scape_elem));
+    e->key = h;
+    e->value = x;
+    HASH_ADD_INT(*data,key,e);
     }
 }
 

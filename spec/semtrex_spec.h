@@ -72,38 +72,38 @@ void __stx_dump(SState *s) {
     s->_did = dump_id;
     switch (s->type) {
     case StateMatch:
-	printf("(M)");
-	break;
+    printf("(M)");
+    break;
     case StateGroupOpen:
-	printf("{%d:%s",s->data.groupo.uid,_d_get_symbol_name(0,s->data.groupo.symbol));
-	break;
+    printf("{%d:%s",s->data.groupo.uid,_d_get_symbol_name(0,s->data.groupo.symbol));
+    break;
     case StateGroupClose:
-	printf("%d:%s}",s->data.groupc.openP->data.groupo.uid,_d_get_symbol_name(0,s->data.groupc.openP->data.groupo.symbol));
-	break;
+    printf("%d:%s}",s->data.groupc.openP->data.groupo.uid,_d_get_symbol_name(0,s->data.groupc.openP->data.groupo.symbol));
+    break;
     case StateSymbol:
-	printf("(%s%s:%d)",(s->data.symbol.flags & LITERAL_NOT) ? "!" : "",
-	       _d_get_symbol_name(0,_t_symbol(_t_child(_t_child(s->data.symbol.symbols,1),1))),s->transition);
-	break;
+    printf("(%s%s:%d)",(s->data.symbol.flags & LITERAL_NOT) ? "!" : "",
+           _d_get_symbol_name(0,_t_symbol(_t_child(_t_child(s->data.symbol.symbols,1),1))),s->transition);
+    break;
     case StateValue:
-	printf("(%s%s=:%d)",_d_get_symbol_name(0,_t_symbol(_t_child(_t_child(s->data.value.values,1),1))),(s->data.value.flags & LITERAL_NOT) ? "!" : "",s->transition);
-	break;
+    printf("(%s%s=:%d)",_d_get_symbol_name(0,_t_symbol(_t_child(_t_child(s->data.value.values,1),1))),(s->data.value.flags & LITERAL_NOT) ? "!" : "",s->transition);
+    break;
     case StateAny:
-	printf("(.:%d)",s->transition);
-	break;
+    printf("(.:%d)",s->transition);
+    break;
     case StateDescend:
-	printf("(/)");
-	break;
+    printf("(/)");
+    break;
     case StateNot:
-	printf("(~)");
-	break;
+    printf("(~)");
+    break;
     case StateSplit:
-	printf("S");
-	break;
+    printf("S");
+    break;
     case StateWalk:
-	printf("(%%)");
-	break;
+    printf("(%%)");
+    break;
     default:
-	printf("(\?\?)");
+    printf("(\?\?)");
     }
     if (s->out) {printf("->");__stx_dump(s->out);}
     if (s->out1) {printf("[->");__stx_dump(s->out1);printf("]");}
@@ -465,8 +465,8 @@ T *newvl(T *p,int not,int count,...) {
     va_start(values,count);
     int i;
     for(i=0;i<count;i++) {
-	T *x = va_arg(values,T *);
-	_t_add(v,x);
+    T *x = va_arg(values,T *);
+    _t_add(v,x);
     }
     va_end(values);
     return t;

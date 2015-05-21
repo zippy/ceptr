@@ -51,10 +51,10 @@ void writeFile(char *fn,void *data,size_t size) {
 
     ofp = fopen(fn, "w");
     if (ofp == NULL) {
-	fprintf(stderr, "Can't open output file %s!\n",fn);
+    fprintf(stderr, "Can't open output file %s!\n",fn);
     }
     else {
-	fwrite(data, 1,size, ofp);
-	fclose(ofp);
+    fwrite(data, 1,size, ofp);
+    fclose(ofp);
     }
 }

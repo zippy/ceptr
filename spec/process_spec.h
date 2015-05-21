@@ -14,7 +14,7 @@ void testRunTree() {
 
     // a process that would look something like this in lisp:
     // (defun my_if (true_branch false_branch condition) (if (condition) (true_branch) (false_branch)))
-    code = _t_new_root(IF);								// IF is a system process
+    code = _t_new_root(IF);                             // IF is a system process
     int pt1[] = {2,1,TREE_PATH_TERMINATOR};
     int pt2[] = {2,2,TREE_PATH_TERMINATOR};
     int pt3[] = {2,3,TREE_PATH_TERMINATOR};
@@ -96,7 +96,7 @@ Process _defIfEven(T *processes) {
 
        void if_even(int val,void (*true_branch)(),void (*false_branch)() ){
            if (val%2==0) (*true_branch)();
-	   else (*false_branch)();
+       else (*false_branch)();
        }
     */
     code = _t_new_root(IF);                       // IF is a system process

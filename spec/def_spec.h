@@ -98,10 +98,10 @@ void testGetSize() {
     spec_is_long_equal(_d_get_symbol_size(0,0,SYMBOL_LABEL,"shoe_size"),10);
 
     // test user-defined symbols and structures
-    T *structures = _t_new_root(STRUCTURES);					// create tree that holds structures
-    T *symbols = _t_new_root(SYMBOLS);							// create tree that holds symbols
-    Symbol lat = _d_declare_symbol(symbols,FLOAT,"latitude",RECEPTOR_CONTEXT);		// symbols are declared, structures are defined
-    Symbol lon = _d_declare_symbol(symbols,FLOAT,"longitude",RECEPTOR_CONTEXT);		// here we declare two meaningful ways to use the structure float
+    T *structures = _t_new_root(STRUCTURES);                    // create tree that holds structures
+    T *symbols = _t_new_root(SYMBOLS);                          // create tree that holds symbols
+    Symbol lat = _d_declare_symbol(symbols,FLOAT,"latitude",RECEPTOR_CONTEXT);      // symbols are declared, structures are defined
+    Symbol lon = _d_declare_symbol(symbols,FLOAT,"longitude",RECEPTOR_CONTEXT);     // here we declare two meaningful ways to use the structure float
 
     Defs defs = {structures, symbols, 0, 0};
 

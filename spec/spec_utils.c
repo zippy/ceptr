@@ -12,9 +12,9 @@ void wjson(Defs *d,T *t,char *n,int i) {
     char json[100000] = {0};
     _t2json(d,t,-1,json);
     if (i >= 0)
-	sprintf(fn,"web/%s_%d.json",n,i);
+    sprintf(fn,"web/%s_%d.json",n,i);
     else
-	sprintf(fn,"web/%s.json",n);
+    sprintf(fn,"web/%s.json",n);
     writeFile(fn,json,strlen(json));
 }
 
@@ -24,7 +24,7 @@ T *makeDelta(Symbol sym,int *path,T *t,int count) {
     _t_new(d,TREE_DELTA_PATH,path,sizeof(int)*(_t_path_depth(path)+1));
     _t_add(_t_newr(d,TREE_DELTA_VALUE),_t_clone(t));
     if (count)
-	_t_newi(d,TREE_DELTA_COUNT,count);
+    _t_newi(d,TREE_DELTA_COUNT,count);
     return d;
 }
 
@@ -39,8 +39,8 @@ void _visdump(Defs *defs,T *x,int *path) {
 
 void visdump(Defs *defs,T *x) {
     if (G_visdump_count) {
-	int *path = _t_get_path(x);
-	_visdump(defs,x,path);
-	free(path);
+    int *path = _t_get_path(x);
+    _visdump(defs,x,path);
+    free(path);
     }
 }
