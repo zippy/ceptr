@@ -195,8 +195,9 @@ void __v_process_signals(VMHost *v) {
         Xaddr to = *(Xaddr *)_t_surface(_t_child(envelope,2));
         Receptor *r = (Receptor *)_t_surface(_t_child(_r_get_instance(v->r,to),1)); // the receptor itself is the surface of the first child of the INSTALLED_RECEPTOR (bleah)
         Aspect a = *(Aspect *)_t_surface(_t_child(envelope,3));
-        T *result = _r_deliver(r,s);
-        _v_send_signals(v,result);
+        T *result;
+        Error err = _r_deliver(r,s);
+        //       _v_send_signals(v,result);
     }
 }
 /** @}*/

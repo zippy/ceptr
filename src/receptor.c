@@ -33,6 +33,7 @@ Receptor *__r_new(Symbol s,T *defs,T *aspects) {
     _t_newr(a,SIGNALS);
     r->table = NULL;
     r->instances = NULL;
+    r->q = NULL;
     return r;
 }
 
@@ -125,6 +126,7 @@ void _r_free(Receptor *r) {
     _t_free(r->root);
     lableTableFree(&r->table);
     instancesFree(&r->instances);
+    if (r->q) _p_freeq(r->q);
     free(r);
 }
 
@@ -465,15 +467,21 @@ T* __r_make_signal(Xaddr from,Xaddr to,Aspect aspect,T *signal_contents) {
 /**
  * Send a signal to a receptor on a given aspect
  *
+ * This function adds the signal to the flux, runs all the listeners on the aspect to see if the
+ * signal matches any expectation, and if so, builds action run-trees and adds them to receptor's
+ * process queue.
+ *
  * @param[in] r destination receptor
  * @param[in] signal signal to be delivered to the receptor
+ * @todo for now the signal param is added directly to the flux.  Later it should probably be cloned? or there should be a parameter to choose?
  *
- * @returns signals that were caused to be sent by processing the signal (reponses or side-effects)
+ * @returns Error
+ * @todo figure out what kinds of errors could be returned by _r_deliver
  *
  * <b>Examples (from test suite):</b>
  * @snippet spec/receptor_spec.h testReceptorAction
  */
-T * _r_deliver(Receptor *r, T *signal) {
+Error _r_deliver(Receptor *r, T *signal) {
     T *m,*e,*l,*rt=0;
     T *signal_contents = (T *)_t_surface(_t_child(signal,2));
     T *envelope = _t_child(signal,1);
@@ -490,37 +498,45 @@ T * _r_deliver(Receptor *r, T *signal) {
     T *signals = _t_new_root(SIGNALS);
 
     DO_KIDS(ls,
-        l = _t_child(ls,i);
-        e = _t_child(l,1);
-        // if we get a match, create a run tree from the action, using the match and signal as the parameters
-        T *stx = _t_news(0,SEMTREX_GROUP,NULL_SYMBOL);
-        _t_add(stx,_t_clone(_t_child(e,1)));
-        if (_t_matchr(stx,signal_contents,&m)) {
-            T *action = _t_child(l,2);
-            rt = _p_make_run_tree(r->defs.processes,action,2,m,signal_contents);
-            _t_free(m);
-            _t_add(signal,rt);
-            // for now just reduce the tree in place
-            /// @todo move this to adding the runtree to the thread pool
-            int e = _p_reduce(&r->defs,rt);
-            /// @todo runtime error handing!!!
-            if (e) {
-                raise_error("got reduction error: %d",e);
+            l = _t_child(ls,i);
+            e = _t_child(l,1);
+            // if we get a match, create a run tree from the action, using the match and signal as the parameters
+            T *stx = _t_news(0,SEMTREX_GROUP,NULL_SYMBOL);
+            _t_add(stx,_t_clone(_t_child(e,1)));
+            if (_t_matchr(stx,signal_contents,&m)) {
+                T *action = _t_child(l,2);
+                rt = _p_make_run_tree(r->defs.processes,action,2,m,signal_contents);
+                _t_free(m);
+                _t_add(signal,rt);
+
+                // if the receptor has no process queue then make one!
+                // @todo, should this really be happening here?
+                if (!r->q) {
+                    r->q = _p_newq(&r->defs);
+                }
+                _p_addrt2q(r->q,rt);
+
+                /* // for now just reduce the tree in place */
+                /* /// @todo move this to adding the runtree to the thread pool */
+                /* int e = _p_reduce(&r->defs,rt); */
+                /* /// @todo runtime error handing!!! */
+                /* if (e) { */
+                /*     raise_error("got reduction error: %d",e); */
+                /* } */
+
+                /* /// @todo we shouldn't assume that all reductions are response signals... */
+                /* /// but this will take coordination with the _p_reduce, to tell us which signals result */
+                /* _t_add(signals,__r_make_signal(to,from,aspect,_t_clone(_t_child(rt,1)))); */
+
             }
-
-            /// @todo we shouldn't assume that all reductions are response signals...
-            /// but this will take coordination with the _p_reduce, to tell us which signals result
-            _t_add(signals,__r_make_signal(to,from,aspect,_t_clone(_t_child(rt,1))));
-
-        }
             _t_free(stx);
             );
 
     //    printf("\n    signals after:"); puts(_td(r,signals));
 
 
-    //    else return _t_child(_t_child(signal,3),1);
-    return signals;
+    //return signals;
+    return noDeliveryErr;
 }
 
 /******************  internal utilities */

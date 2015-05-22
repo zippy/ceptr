@@ -18,11 +18,8 @@
 #include "process.h"
 #include "scape.h"
 
-// for now aspects are just identified as the child index in the flux receptor
-enum {DEFAULT_ASPECT=1};
-// aspects appear on either side of the membrane
-enum AspectType {EXTERNAL_ASPECT=0,INTERNAL_ASPECT};
-typedef int Aspect;
+// delivery errors
+enum {noDeliveryErr};
 
 /******************  create and destroy receptors */
 Receptor *_r_new(Symbol s);
@@ -59,8 +56,7 @@ Receptor * _r_unserialize(void *surface);
 /******************  receptor signaling */
 
 T * __r_make_signal(Xaddr from,Xaddr to,Aspect aspect,T *signal_contents);
-/// @todo for now the signal is appended directly to the flux.  Later it should probably be copied
-T * _r_deliver(Receptor *r, T *signal);
+Error _r_deliver(Receptor *r, T *signal);
 
 /******************  internal utilities */
 T *__r_get_aspect(Receptor *r,Aspect aspect);

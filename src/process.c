@@ -12,7 +12,7 @@
 #include "def.h"
 #include "semtrex.h"
 #include <stdarg.h>
-
+#include "receptor.h"
 #include "../spec/spec_utils.h"
 
 /**
@@ -80,8 +80,10 @@ Error __p_check_signature(Defs *defs,Process p,T *params) {
 /**
  * reduce system level processes in a run tree.  Assumes that the children have already been
  * reduced and all parameters have been filled in
+ *
+ * these system level processes are the equivalent of the instruction set of the ceptr virtual machine
  */
-Error __p_reduce_sys_proc(Defs *defs,Symbol s,T *code) {
+Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
     int b,c;
     char *str;
     Symbol sy;
@@ -194,9 +196,20 @@ Error __p_reduce_sys_proc(Defs *defs,Symbol s,T *code) {
         x->contents.symbol = sy;
         break;
     case RESPOND_ID:
-        // for now we just remove the RESPOND instruction and replace it with it's own child
-        // @todo make respond actually send it's parameter as a response signal to the sender
-        x = _t_detach_by_idx(code,1);
+        {
+            T *signal = _t_parent(context->run_tree);
+            if (!signal || !semeq(_t_symbol(signal),SIGNAL))
+                return notInSignalContextReductionError;
+
+            T *response_contents = _t_detach_by_idx(code,1);
+            T *envelope = _t_child(signal,1);
+            Xaddr to = *(Xaddr *)_t_surface(_t_child(envelope,1)); // reverse the from and to
+            Xaddr from = *(Xaddr *)_t_surface(_t_child(envelope,2));
+            Aspect a = *(Aspect *)_t_surface(_t_child(envelope,3));
+            x = __r_make_signal(from,to,a,response_contents);
+        }
+        // @todo figure what RESPOND should return, since really it's a side-effect instruction
+        // perhaps an error code?  but we don't do that anywhere else yet.
         break;
     case INTERPOLATE_FROM_MATCH_ID:
         match_results = _t_child(code,2);
@@ -209,8 +222,13 @@ Error __p_reduce_sys_proc(Defs *defs,Symbol s,T *code) {
         return raiseReductionErr;
         break;
     default:
-        raise_error("unimplemented instruction: %s",_d_get_process_name(defs->processes,s));
+        raise_error("unknown sys-process id: %d",s.id);
     }
+
+    // any remaining children of 'code' are the parameters which have all now been "used up"
+    // so we can call the low-level free the clean them up and then replace the contents of
+    // the 'code' node with the contents of the 'x' node that was either detached or produced
+    // by the the process that just ran
     __t_free(code);
     code->structure.child_count = x->structure.child_count;
     code->structure.children = x->structure.children;
@@ -362,7 +380,7 @@ Error _p_step(Defs *defs, R **contextP) {
                     else {
                         // if it's a sys process we can just reduce it in and then ascend
                         // or move to the error handling state
-                        Error e = __p_reduce_sys_proc(defs,s,np);
+                        Error e = __p_reduce_sys_proc(context,s,np);
                         context->state = e ? e : Ascend;
                     }
                 }
@@ -416,6 +434,7 @@ Error _p_step(Defs *defs, R **contextP) {
             case tooManyParamsReductionErr: se=TOO_MANY_PARAMS_ERR;break;
             case badSignatureReductionErr: se=BAD_SIGNATURE_ERR;break;
             case notProcessReductionError: se=NOT_A_PROCESS_ERR;break;
+            case notInSignalContextReductionError: se=NOT_IN_SIGNAL_CONTEXT_ERR;
             case divideByZeroReductionErr: se=ZERO_DIVIDE_ERR;break;
             case raiseReductionErr:
                 se = *(Symbol *)_t_surface(_t_child(context->node_pointer,1));
@@ -523,7 +542,11 @@ _p_free_elements(Qe *e) {
 // clean up a context including its run-trees
 _p_free_context(R *c) {
     while(c) {
-        _t_free(c->run_tree);
+        // free any run_trees that are roots, i.e. assume
+        // that a tree in a context that's part of another tree
+        // will get freed elsewhere.
+        if (!_t_parent(c->run_tree))
+            _t_free(c->run_tree);
         R *n = c->caller;
         free(c);
         c = n;
@@ -545,6 +568,8 @@ void _p_freeq(Q *q) {
 
 /**
  * add a run tree into a processing queue
+ *
+ * @todo make thread safe.  currently you shouldn't call this if the Q is being actively reduced
  */
 void _p_addrt2q(Q *q,T *run_tree) {
     q->contexts_count++;
@@ -557,7 +582,6 @@ void _p_addrt2q(Q *q,T *run_tree) {
     q->active = n;
     q->completed = 0;
 }
-
 
 /**
  * reduce all the processes in a queue, and terminate thread when completed

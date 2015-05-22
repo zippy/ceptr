@@ -173,6 +173,38 @@ typedef struct Defs {
     T *scapes;      ///< pointer for quick access to scapes
 } Defs;
 
+// ** types for processing
+// run-tree context
+typedef struct R R;
+struct R {
+    int err;          ///< process error value
+    int state;        ///< process state machine state
+    T *run_tree;      ///< pointer to the root of the run_tree
+    T *node_pointer;  ///< pointer to the tree node to execute next
+    T *parent;        ///< node_pointer's parent      (cached here for efficiency)
+    int idx;          ///< node pointers child index  (cached here for efficiency)
+    R *caller;        ///< a pointer to the context that called this run tree
+    R *callee;        ///< a pointer to the context we've called
+};
+
+// Processing Queue element
+typedef struct Qe Qe;
+struct Qe {
+    R *context;
+    Qe *next;
+    Qe *prev;
+};
+
+// Processing Queue structure
+typedef struct Q Q;
+struct Q {
+    Defs *defs;          ///< defs that are valid for this queue
+    int contexts_count;  ///< number of active processes
+    Qe *active;          ///< active processes
+    Qe *completed;       ///< completed processes
+};
+
+
 // ** types for receptors
 /**
    A Receptor is a semantic tree, pointed to by root, but we also create c struct for
@@ -185,9 +217,17 @@ typedef struct Receptor {
     T *flux;             ///< pointer for quick access to the flux
     LabelTable table;    ///< the label table
     Instances instances; ///< the instances store
+    Q *q;                ///< process queue
 } Receptor;
 
 typedef long UUID;
+
+// receptors receive signals on aspects
+// for now aspects are just identified as the child index in the flux receptor
+enum {DEFAULT_ASPECT=1};
+// aspects appear on either side of the membrane
+enum AspectType {EXTERNAL_ASPECT=0,INTERNAL_ASPECT};
+typedef int Aspect;
 
 /**
  * An eXistence Address consists of the semantic type (Symbol) and an address.

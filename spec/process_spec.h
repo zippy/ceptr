@@ -80,8 +80,261 @@ void testRunTree() {
     _t_free(p3);
 }
 
+//-----------------------------------------------------------------------------------------
+// tests of system processes
+
+void testProcessInterpolateMatch() {
+    Defs defs;
+    T *t = _t_new_root(RUN_TREE);
+    // test INTERPOLATE_FROM_MATCH which takes three params, the tree to interpolate, the stx-match and the tree it matched on
+    T *n = _t_new_root(INTERPOLATE_FROM_MATCH);
+    T *p1 = _t_newi(n,TEST_INT_SYMBOL2,0);
+    _t_news(p1,INTERPOLATE_SYMBOL,TEST_INT_SYMBOL);
+    T *p2 = _t_newi(n,SEMTREX_MATCH,1);
+    _t_news(p2,SEMTREX_MATCH,TEST_INT_SYMBOL);
+    int path[] = {TREE_PATH_TERMINATOR};
+    _t_new(p2,SEMTREX_MATCH_PATH,path,2*sizeof(int));
+    _t_newi(p2,SEMTREX_MATCH_SIBLINGS_COUNT,1);
+    T *p3 = _t_newi(n,TEST_INT_SYMBOL,314);
+
+    T *c = _t_rclone(n);
+    _t_add(t,c);
+    _p_reduce(&defs,t);
+
+    spec_is_str_equal(t2s(_t_child(t,1)),"(TEST_INT_SYMBOL2:0 (TEST_INT_SYMBOL:314))");
+    _t_free(t);
+    _t_free(n);
+}
+
+/// @todo when interpolating from a match, how do we handle non-leaf interpollations, i.e. where do you hook children onto?
+
+void testProcessIf() {
+    // test IF which takes three parameters, the condition, the true code tree and the false code tree
+    T *n = _t_new_root(IF);
+    T *p1 = _t_newi(n,BOOLEAN,1);
+    T *p2 = _t_newi(n,TEST_INT_SYMBOL,99);
+    T *p3 = _t_newi(n,TEST_INT_SYMBOL,100);
+
+    __p_reduce_sys_proc(0,IF,n);
+    spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:99)");
+
+    _t_free(n);
+}
+
+void testProcessIntMath() {
+    T *t;
+
+    // test addition
+    T *n = _t_new_root(ADD_INT);
+    _t_newi(n,TEST_INT_SYMBOL,99);
+    _t_newi(n,TEST_INT_SYMBOL,100);
+    __p_reduce_sys_proc(0,ADD_INT,n);
+    spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:199)");
+    _t_free(n);
+
+    // test subtraction
+    n = _t_new_root(SUB_INT);
+    _t_newi(n,TEST_INT_SYMBOL,100);
+    _t_newi(n,TEST_INT_SYMBOL,98);
+    __p_reduce_sys_proc(0,SUB_INT,n);
+    spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:2)");
+    _t_free(n);
+
+    // test multiplication
+    n = _t_new_root(MULT_INT);
+    _t_newi(n,TEST_INT_SYMBOL,100);
+    _t_newi(n,TEST_INT_SYMBOL,98);
+    __p_reduce_sys_proc(0,MULT_INT,n);
+    spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:9800)");
+    _t_free(n);
+
+    // test division
+    n = _t_new_root(DIV_INT);
+    _t_newi(n,TEST_INT_SYMBOL,100);
+    _t_newi(n,TEST_INT_SYMBOL,48);
+    __p_reduce_sys_proc(0,DIV_INT,n);
+    spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:2)");
+    _t_free(n);
+
+    // test division with divide by zero
+    n = _t_new_root(DIV_INT);
+    _t_newi(n,TEST_INT_SYMBOL,100);
+    _t_newi(n,TEST_INT_SYMBOL,0);
+    spec_is_equal(__p_reduce_sys_proc(0,DIV_INT,n),divideByZeroReductionErr);
+    _t_free(n);
+
+    // test modulo
+    n = _t_new_root(MOD_INT);
+    _t_newi(n,TEST_INT_SYMBOL,100);
+    _t_newi(n,TEST_INT_SYMBOL,2);
+    __p_reduce_sys_proc(0,MOD_INT,n);
+    spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:0)");
+    _t_free(n);
+
+    // test modulo with divide by zero
+    n = _t_new_root(MOD_INT);
+    _t_newi(n,TEST_INT_SYMBOL,100);
+    _t_newi(n,TEST_INT_SYMBOL,0);
+    spec_is_equal(__p_reduce_sys_proc(0,MOD_INT,n),divideByZeroReductionErr);
+    _t_free(n);
+
+    // test equals
+    n = _t_new_root(EQ_INT);
+    _t_newi(n,TEST_INT_SYMBOL,100);
+    _t_newi(n,TEST_INT_SYMBOL,2);
+    __p_reduce_sys_proc(0,EQ_INT,n);
+    spec_is_str_equal(t2s(n),"(BOOLEAN:0)");
+    _t_free(n);
+
+    n = _t_new_root(EQ_INT);
+    _t_newi(n,TEST_INT_SYMBOL,100);
+    _t_newi(n,TEST_INT_SYMBOL,100);
+    __p_reduce_sys_proc(0,EQ_INT,n);
+    spec_is_str_equal(t2s(n),"(BOOLEAN:1)");
+    _t_free(n);
+
+    // test <
+    n = _t_new_root(LT_INT);
+    _t_newi(n,TEST_INT_SYMBOL,2);
+    _t_newi(n,TEST_INT_SYMBOL,100);
+    __p_reduce_sys_proc(0,LT_INT,n);
+    spec_is_str_equal(t2s(n),"(BOOLEAN:1)");
+    _t_free(n);
+
+    n = _t_new_root(LT_INT);
+    _t_newi(n,TEST_INT_SYMBOL,100);
+    _t_newi(n,TEST_INT_SYMBOL,100);
+    __p_reduce_sys_proc(0,LT_INT,n);
+    spec_is_str_equal(t2s(n),"(BOOLEAN:0)");
+   _t_free(n);
+
+    // test >
+    n = _t_new_root(GT_INT);
+    _t_newi(n,TEST_INT_SYMBOL,2);
+    _t_newi(n,TEST_INT_SYMBOL,100);
+    __p_reduce_sys_proc(0,GT_INT,n);
+    spec_is_str_equal(t2s(n),"(BOOLEAN:0)");
+    _t_free(n);
+
+    n = _t_new_root(GT_INT);
+    _t_newi(n,TEST_INT_SYMBOL,101);
+    _t_newi(n,TEST_INT_SYMBOL,100);
+    __p_reduce_sys_proc(0,GT_INT,n);
+    spec_is_str_equal(t2s(n),"(BOOLEAN:1)");
+    _t_free(n);
+
+}
+
+void testProcessString() {
+    Defs defs;
+
+    // test string concatenation
+    T *n = _t_new_root(CONCAT_STR);
+    _t_news(n,RESULT_SYMBOL,TEST_NAME_SYMBOL);
+    _t_new_str(n,TEST_STR_SYMBOL,"Fred");
+    _t_new_str(n,TEST_STR_SYMBOL," ");
+    _t_new_str(n,TEST_STR_SYMBOL,"Smith");
+
+    __p_reduce_sys_proc(0,CONCAT_STR,n);
+
+    spec_is_str_equal(t2s(n),"(TEST_NAME_SYMBOL:Fred Smith)");
+
+    _t_free(n);
+}
+
+void textProcessRespond() {
+    // testing responding to a signal requires setting up a sending signal context
+
+    T *signal_contents = _t_newi(0,TEST_INT_SYMBOL,314);
+    Xaddr f = {RECEPTOR_XADDR,3};  // DUMMY XADDR
+    Xaddr t = {RECEPTOR_XADDR,4};  // DUMMY XADDR
+    T *s = __r_make_signal(f,t,DEFAULT_ASPECT,signal_contents);
+
+    T *run_tree = _t_new_root(RUN_TREE);
+    T *n = _t_newr(run_tree,RESPOND);
+    T *response_contents = _t_newi(n,TEST_INT_SYMBOL,271);
+
+    R *c = __p_make_context(run_tree,0);
+
+    // if this is a run-tree that's not a child of a signal we can't respond!
+    spec_is_equal(__p_reduce_sys_proc(c,RESPOND,n),notInSignalContextReductionError);
+
+    // no add it to the signal and try again
+    _t_add(s,run_tree);
+
+    // now it should create a signal for responding
+    spec_is_equal(__p_reduce_sys_proc(c,RESPOND,n),noReductionErr);
+
+    spec_is_str_equal(t2s(s),"(SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (RECEPTOR_XADDR:RECEPTOR_XADDR.4) (ASPECT:1)) (BODY:{(TEST_INT_SYMBOL:314)}) (RUN_TREE (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.4) (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (ASPECT:1)) (BODY:{(TEST_INT_SYMBOL:271)}))))");
+
+}
+
+//-----------------------------------------------------------------------------------------
+// tests of process execution (reduction)
+
+void testProcessReduce() {
+    Defs defs;
+    T *t = _t_new_root(RUN_TREE);
+
+    T *n = _t_new_root(IF); // multi-level IF to test descending a number of levels
+    _t_newi(n,BOOLEAN,1);
+    T *n1 = _t_newr(n,IF);
+    T *n2 = _t_newr(n1,IF);
+    _t_newi(n2,BOOLEAN,0);
+    _t_newi(n2,BOOLEAN,1);
+    _t_newi(n2,BOOLEAN,0);
+    _t_newi(n1,TEST_INT_SYMBOL,98);
+    _t_newi(n1,TEST_INT_SYMBOL,99);
+    _t_newi(n,TEST_INT_SYMBOL,100);
+
+    T *c = _t_rclone(n);
+    _t_add(t,c);
+
+    R *context = __p_make_context(t,0);
+
+    spec_is_equal(rt_cur_child(c),0);
+    // first step is Eval and next step is Descend
+    spec_is_equal(_p_step(&defs,&context),Descend);
+    spec_is_equal(rt_cur_child(c),0);
+
+    // next step after Descend changes node pointer and moved to Eval
+    spec_is_equal(_p_step(&defs,&context),Eval);
+    spec_is_ptr_equal(context->node_pointer,_t_child(c,1));
+    spec_is_equal(rt_cur_child(c),1);
+
+    // after Eval next step will be Ascend
+    spec_is_equal(_p_step(&defs,&context),Ascend);
+
+    // step ascends back to top if and marks boolean complete
+    spec_is_equal(_p_step(&defs,&context),Eval);
+
+    spec_is_equal(rt_cur_child(_t_child(c,1)),RUN_TREE_EVALUATED);
+    spec_is_ptr_equal(context->node_pointer,c);
+
+    spec_is_equal(_p_step(&defs,&context),Descend);
+
+    // third step goes into the second level if
+    spec_is_equal(_p_step(&defs,&context),Eval);
+    spec_is_equal(rt_cur_child(c),2);
+    spec_is_ptr_equal(context->node_pointer,_t_child(c,2));
+
+    free(context);
+    // not specing out all the steps because there are soooo many...
+
+    // just re-running them all for final result
+    _t_free(_t_detach_by_idx(t,1));
+    c = _t_rclone(n);
+    _t_add(t,c);
+    _p_reduce(&defs,t);
+
+    spec_is_str_equal(t2s(c),"(TEST_INT_SYMBOL:99)");
+
+    _t_free(n);
+    _t_free(t);
+}
+
 /**
- * generate an example process definition that acts as an if for even numbers
+ * helper to generate an example process definition that acts as an if for even numbers
  *
  * @snippet spec/process_spec.h defIfEven
  */
@@ -127,9 +380,8 @@ Process _defIfEven(T *processes) {
 }
 //! [defIfEven]
 
-
 /**
- * generate an example process definition that creates a divide by zero error
+ * helper to generate an example process definition that creates a divide by zero error
  *
  * @snippet spec/process_spec.h defDivZero
  */
@@ -216,229 +468,6 @@ void testProcessSignatureMatching() {
     _t_free(n);
 }
 
-void testProcessInterpolateMatch() {
-    Defs defs;
-    T *t = _t_new_root(RUN_TREE);
-    // test INTERPOLATE_FROM_MATCH which takes three params, the tree to interpolate, the stx-match and the tree it matched on
-    T *n = _t_new_root(INTERPOLATE_FROM_MATCH);
-    T *p1 = _t_newi(n,TEST_INT_SYMBOL2,0);
-    _t_news(p1,INTERPOLATE_SYMBOL,TEST_INT_SYMBOL);
-    T *p2 = _t_newi(n,SEMTREX_MATCH,1);
-    _t_news(p2,SEMTREX_MATCH,TEST_INT_SYMBOL);
-    int path[] = {TREE_PATH_TERMINATOR};
-    _t_new(p2,SEMTREX_MATCH_PATH,path,2*sizeof(int));
-    _t_newi(p2,SEMTREX_MATCH_SIBLINGS_COUNT,1);
-    T *p3 = _t_newi(n,TEST_INT_SYMBOL,314);
-
-    T *c = _t_rclone(n);
-    _t_add(t,c);
-    _p_reduce(&defs,t);
-
-    spec_is_str_equal(t2s(_t_child(t,1)),"(TEST_INT_SYMBOL2:0 (TEST_INT_SYMBOL:314))");
-    _t_free(t);
-    _t_free(n);
-}
-
-/// @todo when interpolating from a match, how do we handle non-leaf interpollations, i.e. where do you hook children onto?
-
-void testProcessIf() {
-    Defs defs;
-    // test IF which takes three parameters, the condition, the true code tree and the false code tree
-    T *n = _t_new_root(IF);
-    T *p1 = _t_newi(n,BOOLEAN,1);
-    T *p2 = _t_newi(n,TEST_INT_SYMBOL,99);
-    T *p3 = _t_newi(n,TEST_INT_SYMBOL,100);
-
-    __p_reduce_sys_proc(&defs,IF,n);
-    spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:99)");
-
-    _t_free(n);
-}
-
-void testProcessIntMath() {
-    Defs defs;
-
-    T *t;
-
-    // test addition
-    T *n = _t_new_root(ADD_INT);
-    _t_newi(n,TEST_INT_SYMBOL,99);
-    _t_newi(n,TEST_INT_SYMBOL,100);
-    __p_reduce_sys_proc(&defs,ADD_INT,n);
-    spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:199)");
-    _t_free(n);
-
-    // test subtraction
-    n = _t_new_root(SUB_INT);
-    _t_newi(n,TEST_INT_SYMBOL,100);
-    _t_newi(n,TEST_INT_SYMBOL,98);
-    __p_reduce_sys_proc(&defs,SUB_INT,n);
-    spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:2)");
-    _t_free(n);
-
-    // test multiplication
-    n = _t_new_root(MULT_INT);
-    _t_newi(n,TEST_INT_SYMBOL,100);
-    _t_newi(n,TEST_INT_SYMBOL,98);
-    __p_reduce_sys_proc(&defs,MULT_INT,n);
-    spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:9800)");
-    _t_free(n);
-
-    // test division
-    n = _t_new_root(DIV_INT);
-    _t_newi(n,TEST_INT_SYMBOL,100);
-    _t_newi(n,TEST_INT_SYMBOL,48);
-    __p_reduce_sys_proc(&defs,DIV_INT,n);
-    spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:2)");
-    _t_free(n);
-
-    // test division with divide by zero
-    n = _t_new_root(DIV_INT);
-    _t_newi(n,TEST_INT_SYMBOL,100);
-    _t_newi(n,TEST_INT_SYMBOL,0);
-    spec_is_equal(__p_reduce_sys_proc(&defs,DIV_INT,n),divideByZeroReductionErr);
-    _t_free(n);
-
-    // test modulo
-    n = _t_new_root(MOD_INT);
-    _t_newi(n,TEST_INT_SYMBOL,100);
-    _t_newi(n,TEST_INT_SYMBOL,2);
-    __p_reduce_sys_proc(&defs,MOD_INT,n);
-    spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:0)");
-    _t_free(n);
-
-    // test modulo with divide by zero
-    n = _t_new_root(MOD_INT);
-    _t_newi(n,TEST_INT_SYMBOL,100);
-    _t_newi(n,TEST_INT_SYMBOL,0);
-    spec_is_equal(__p_reduce_sys_proc(&defs,MOD_INT,n),divideByZeroReductionErr);
-    _t_free(n);
-
-    // test equals
-    n = _t_new_root(EQ_INT);
-    _t_newi(n,TEST_INT_SYMBOL,100);
-    _t_newi(n,TEST_INT_SYMBOL,2);
-    __p_reduce_sys_proc(&defs,EQ_INT,n);
-    spec_is_str_equal(t2s(n),"(BOOLEAN:0)");
-    _t_free(n);
-
-    n = _t_new_root(EQ_INT);
-    _t_newi(n,TEST_INT_SYMBOL,100);
-    _t_newi(n,TEST_INT_SYMBOL,100);
-    __p_reduce_sys_proc(&defs,EQ_INT,n);
-    spec_is_str_equal(t2s(n),"(BOOLEAN:1)");
-    _t_free(n);
-
-    // test <
-    n = _t_new_root(LT_INT);
-    _t_newi(n,TEST_INT_SYMBOL,2);
-    _t_newi(n,TEST_INT_SYMBOL,100);
-    __p_reduce_sys_proc(&defs,LT_INT,n);
-    spec_is_str_equal(t2s(n),"(BOOLEAN:1)");
-    _t_free(n);
-
-    n = _t_new_root(LT_INT);
-    _t_newi(n,TEST_INT_SYMBOL,100);
-    _t_newi(n,TEST_INT_SYMBOL,100);
-    __p_reduce_sys_proc(&defs,LT_INT,n);
-    spec_is_str_equal(t2s(n),"(BOOLEAN:0)");
-   _t_free(n);
-
-    // test >
-    n = _t_new_root(GT_INT);
-    _t_newi(n,TEST_INT_SYMBOL,2);
-    _t_newi(n,TEST_INT_SYMBOL,100);
-    __p_reduce_sys_proc(&defs,GT_INT,n);
-    spec_is_str_equal(t2s(n),"(BOOLEAN:0)");
-    _t_free(n);
-
-    n = _t_new_root(GT_INT);
-    _t_newi(n,TEST_INT_SYMBOL,101);
-    _t_newi(n,TEST_INT_SYMBOL,100);
-    __p_reduce_sys_proc(&defs,GT_INT,n);
-    spec_is_str_equal(t2s(n),"(BOOLEAN:1)");
-    _t_free(n);
-
-}
-
-void testProcessString() {
-    Defs defs;
-
-    // test string concatenation
-    T *n = _t_new_root(CONCAT_STR);
-    _t_news(n,RESULT_SYMBOL,TEST_NAME_SYMBOL);
-    _t_new_str(n,TEST_STR_SYMBOL,"Fred");
-    _t_new_str(n,TEST_STR_SYMBOL," ");
-    _t_new_str(n,TEST_STR_SYMBOL,"Smith");
-
-    __p_reduce_sys_proc(&defs,CONCAT_STR,n);
-
-    spec_is_str_equal(t2s(n),"(TEST_NAME_SYMBOL:Fred Smith)");
-
-    _t_free(n);
-}
-
-void testProcessReduce() {
-    Defs defs;
-    T *t = _t_new_root(RUN_TREE);
-
-    T *n = _t_new_root(IF); // multi-level IF to test descending a number of levels
-    _t_newi(n,BOOLEAN,1);
-    T *n1 = _t_newr(n,IF);
-    T *n2 = _t_newr(n1,IF);
-    _t_newi(n2,BOOLEAN,0);
-    _t_newi(n2,BOOLEAN,1);
-    _t_newi(n2,BOOLEAN,0);
-    _t_newi(n1,TEST_INT_SYMBOL,98);
-    _t_newi(n1,TEST_INT_SYMBOL,99);
-    _t_newi(n,TEST_INT_SYMBOL,100);
-
-    T *c = _t_rclone(n);
-    _t_add(t,c);
-
-    R *context = __p_make_context(t,0);
-
-    spec_is_equal(rt_cur_child(c),0);
-    // first step is Eval and next step is Descend
-    spec_is_equal(_p_step(&defs,&context),Descend);
-    spec_is_equal(rt_cur_child(c),0);
-
-    // next step after Descend changes node pointer and moved to Eval
-    spec_is_equal(_p_step(&defs,&context),Eval);
-    spec_is_ptr_equal(context->node_pointer,_t_child(c,1));
-    spec_is_equal(rt_cur_child(c),1);
-
-    // after Eval next step will be Ascend
-    spec_is_equal(_p_step(&defs,&context),Ascend);
-
-    // step ascends back to top if and marks boolean complete
-    spec_is_equal(_p_step(&defs,&context),Eval);
-
-    spec_is_equal(rt_cur_child(_t_child(c,1)),RUN_TREE_EVALUATED);
-    spec_is_ptr_equal(context->node_pointer,c);
-
-    spec_is_equal(_p_step(&defs,&context),Descend);
-
-    // third step goes into the second level if
-    spec_is_equal(_p_step(&defs,&context),Eval);
-    spec_is_equal(rt_cur_child(c),2);
-    spec_is_ptr_equal(context->node_pointer,_t_child(c,2));
-
-    free(context);
-    // not specing out all the steps because there are soooo many...
-
-    // just re-running them all for final result
-    _t_free(_t_detach_by_idx(t,1));
-    c = _t_rclone(n);
-    _t_add(t,c);
-    _p_reduce(&defs,t);
-
-    spec_is_str_equal(t2s(c),"(TEST_INT_SYMBOL:99)");
-
-    _t_free(n);
-    _t_free(t);
-}
-
 void testProcessError() {
     Defs defs;
     T *t = _t_new_root(RUN_TREE);
@@ -461,13 +490,12 @@ void testProcessError() {
     _t_free(t);
 }
 
-
 void testProcessRaise() {
     Defs defs;
     T *n = _t_new_root(RAISE);
     _t_news(n,REDUCTION_ERROR_SYMBOL,ZERO_DIVIDE_ERR);
 
-    spec_is_equal(__p_reduce_sys_proc(&defs,RAISE,n),raiseReductionErr);
+    spec_is_equal(__p_reduce_sys_proc(0,RAISE,n),raiseReductionErr);
     _t_free(n);
 
     T *t = _t_new_root(RUN_TREE);
@@ -579,13 +607,14 @@ void testProcessMulti() {
 
 void testProcess() {
     testRunTree();
-    testProcessReduceDefinedProcess();
-    testProcessSignatureMatching();
     testProcessInterpolateMatch();
     testProcessIf();
     testProcessIntMath();
     testProcessString();
+    textProcessRespond();
     testProcessReduce();
+    testProcessReduceDefinedProcess();
+    testProcessSignatureMatching();
     testProcessError();
     testProcessRaise();
     testProcessErrorTrickleUp();
