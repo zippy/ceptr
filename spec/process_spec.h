@@ -447,7 +447,7 @@ void testProcessSignatureMatching() {
 
     T *c = _t_rclone(n);
     _t_add(t,c);
-    spec_is_equal(_p_reduce(&defs,t),badSignatureReductionErr);
+    spec_is_equal(_p_reduce(&defs,t),signatureMismatchReductionErr);
     _t_free(_t_detach_by_idx(t,1));
 
     // too few params

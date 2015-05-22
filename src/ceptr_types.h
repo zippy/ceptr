@@ -183,8 +183,8 @@ struct R {
     T *node_pointer;  ///< pointer to the tree node to execute next
     T *parent;        ///< node_pointer's parent      (cached here for efficiency)
     int idx;          ///< node pointers child index  (cached here for efficiency)
-    R *caller;        ///< a pointer to the context that called this run tree
-    R *callee;        ///< a pointer to the context we've called
+    R *caller;        ///< a pointer to the context that invoked this run-tree/context
+    R *callee;        ///< a pointer to the context we've invoked
 };
 
 // Processing Queue element

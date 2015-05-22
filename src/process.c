@@ -67,7 +67,7 @@ Error __p_check_signature(Defs *defs,Process p,T *params) {
         if(semeq(_t_symbol(sig),SIGNATURE_STRUCTURE)) {
             Structure ss = *(Symbol *)_t_surface(sig);
             if (!semeq(_d_get_symbol_structure(defs->symbols,_t_symbol(_t_child(params,i))),ss) && !semeq(ss,TREE))
-                return badSignatureReductionErr;
+                return signatureMismatchReductionErr;
         }
         else {
             raise_error("unknown signature checking symbol: %s",_d_get_symbol_name(0,_t_symbol(sig)));
@@ -432,7 +432,7 @@ Error _p_step(Defs *defs, R **contextP) {
             switch(context->state) {
             case tooFewParamsReductionErr: se=TOO_FEW_PARAMS_ERR;break;
             case tooManyParamsReductionErr: se=TOO_MANY_PARAMS_ERR;break;
-            case badSignatureReductionErr: se=BAD_SIGNATURE_ERR;break;
+            case signatureMismatchReductionErr: se=SIGNATURE_MISMATCH_ERR;break;
             case notProcessReductionError: se=NOT_A_PROCESS_ERR;break;
             case notInSignalContextReductionError: se=NOT_IN_SIGNAL_CONTEXT_ERR;
             case divideByZeroReductionErr: se=ZERO_DIVIDE_ERR;break;
