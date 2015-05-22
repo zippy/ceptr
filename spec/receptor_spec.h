@@ -174,10 +174,10 @@ void testReceptorAction() {
     // manually run the process queue
     _p_reduceq(r->q);
 
-    result = _t_child(r->q->completed->context->run_tree,1);
+    result = r->q->completed->context->run_tree;
 
-    // the result should be signal tree with the matched PATH_SEGMENT returned as the body sent
-    spec_is_str_equal(_td(r,result),"(SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.4) (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (ASPECT:1)) (BODY:{(HTTP_RESPONSE (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT) (HTTP_REQUEST_PATH_SEGMENT:groups))}))");
+    // should add a pending signal to be sent with the matched PATH_SEGMENT returned as the response signal body
+    spec_is_str_equal(_td(r,result),"(RUN_TREE (TEST_INT_SYMBOL:0) (PARAMS (SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:NULL_SYMBOL) (SEMTREX_MATCH_PATH:) (SEMTREX_MATCH_SIBLINGS_COUNT:1) (SEMTREX_MATCH:2 (SEMTREX_MATCH_SYMBOL:HTTP_REQUEST_PATH_SEGMENT) (SEMTREX_MATCH_PATH:/3/1/1) (SEMTREX_MATCH_SIBLINGS_COUNT:1))) (HTTP_REQUEST (HTTP_REQUEST_VERSION (VERSION_MAJOR:1) (VERSION_MINOR:0)) (HTTP_REQUEST_METHOD:GET) (HTTP_REQUEST_PATH (HTTP_REQUEST_PATH_SEGMENTS (HTTP_REQUEST_PATH_SEGMENT:groups) (HTTP_REQUEST_PATH_SEGMENT:5)) (HTTP_REQUEST_PATH_FILE (FILE_NAME:users) (FILE_EXTENSION:json)) (HTTP_REQUEST_PATH_QUERY (HTTP_REQUEST_PATH_QUERY_PARAMS (HTTP_REQUEST_PATH_QUERY_PARAM (PARAM_KEY:sort_by) (PARAM_VALUE:last_name)) (HTTP_REQUEST_PATH_QUERY_PARAM (PARAM_KEY:page) (PARAM_VALUE:2))))))) (SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.4) (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (ASPECT:1)) (BODY:{(HTTP_RESPONSE (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT) (HTTP_REQUEST_PATH_SEGMENT:groups))}))))");
 
     _r_free(r);
     //! [testReceptorAction]
@@ -362,9 +362,15 @@ void testReceptorProtocol() {
 
     T *result;
     Error err = _r_deliver(r,signal);
-    d = _td(r,result);
+
+    // manually run the process queue
+    _p_reduceq(r->q);
+
+    result = r->q->completed->context->run_tree;
+
+    d = _td(r,_t_child(result,3));
     spec_is_str_equal(d,"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.4) (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (ASPECT:1)) (BODY:{(ping_message:1)})))");
-    _t_free(result);
+    //    _t_free(result);
     _r_free(r);
     //! [testReceptorProtocol]
 }
@@ -514,7 +520,7 @@ void testReceptor() {
     testReceptorAction();
     testReceptorDef();
     testReceptorDefMatch();
-    //    testReceptorProtocol();
+    testReceptorProtocol();
     testReceptorInstanceNew();
     //    testReceptorSerialize();
     testReceptorNums();

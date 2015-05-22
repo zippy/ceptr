@@ -206,10 +206,23 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
             Xaddr to = *(Xaddr *)_t_surface(_t_child(envelope,1)); // reverse the from and to
             Xaddr from = *(Xaddr *)_t_surface(_t_child(envelope,2));
             Aspect a = *(Aspect *)_t_surface(_t_child(envelope,3));
-            x = __r_make_signal(from,to,a,response_contents);
+
+            // add the response signal into the outgoing signals list of the root
+            // run-tree (which is always the last child)
+            R *root = context;
+            while (context->caller) root = context->caller;
+            int kids = _t_children(root->run_tree);
+            T *signals;
+            if (kids == 1 || (!semeq(SIGNALS,_t_symbol(signals = _t_child(root->run_tree,kids)))))
+                signals = _t_newr(root->run_tree,SIGNALS); // make signals list if it's not there
+            T *response = __r_make_signal(from,to,a,response_contents);
+            _t_add(signals,response);
+
+            x = _t_newi(0,TEST_INT_SYMBOL,0);
         }
         // @todo figure what RESPOND should return, since really it's a side-effect instruction
-        // perhaps an error code?  but we don't do that anywhere else yet.
+        // perhaps some kind of signal context symbol or something.  Right now using TEST_INT_SYMBOL
+        // as a bogus placeholder.
         break;
     case INTERPOLATE_FROM_MATCH_ID:
         match_results = _t_child(code,2);

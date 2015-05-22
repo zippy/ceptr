@@ -195,9 +195,21 @@ void __v_process_signals(VMHost *v) {
         Xaddr to = *(Xaddr *)_t_surface(_t_child(envelope,2));
         Receptor *r = (Receptor *)_t_surface(_t_child(_r_get_instance(v->r,to),1)); // the receptor itself is the surface of the first child of the INSTALLED_RECEPTOR (bleah)
         Aspect a = *(Aspect *)_t_surface(_t_child(envelope,3));
-        T *result;
         Error err = _r_deliver(r,s);
-        //       _v_send_signals(v,result);
+        if (err) {
+            raise_error("delivery error: %d",err);
+        }
+        // manually run the process queue
+        if (r->q) {
+            _p_reduceq(r->q);
+
+            T *result = r->q->completed->context->run_tree;
+            T *signals = _t_child(result,_t_children(result));
+            if (!semeq(SIGNALS,_t_symbol(signals))) {
+                raise_error0("didn't find signals on run tree!!");
+            }
+            _v_send_signals(v,signals);
+        }
     }
 }
 /** @}*/
