@@ -26,6 +26,7 @@ var sys__defs_8c =
     [ "LTE_INT", "sys__defs_8c.html#a42566644b6516f6489ffc5250f2cc242", null ],
     [ "MOD_INT", "sys__defs_8c.html#a86fbf09d41d509832b3507b635d65a46", null ],
     [ "MULT_INT", "sys__defs_8c.html#a682fc621e0ba4f67b1088f35a2bad613", null ],
+    [ "NOOP", "sys__defs_8c.html#af2db7ed4c934103d6ec245baa4186975", null ],
     [ "NULL_PROCESS", "sys__defs_8c.html#a659145d2ab93a0f49ed8e967c0466433", null ],
     [ "NULL_STRUCTURE", "sys__defs_8c.html#a9a0f519a69d0b11547ea79544670e9ca", null ],
     [ "NULL_SYMBOL", "sys__defs_8c.html#ad0408529e6c5d12d81a6545892418b29", null ],

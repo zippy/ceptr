@@ -99,7 +99,8 @@ var sys__symbols_8h =
       [ "TOO_FEW_PARAMS_ERR_ID", "sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ac742967517c710a7d5c3fee534b09345", null ],
       [ "TOO_MANY_PARAMS_ERR_ID", "sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a2eb51db221ccfce7de2b44355c0e147c", null ],
       [ "BAD_SIGNATURE_ERR_ID", "sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ae831c691bd1e38ac8d986bf00d589234", null ],
-      [ "NOT_A_PROCESS_ERR_ID", "sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a07e4f8c620e4fed440f7321e4ffc24c3", null ]
+      [ "NOT_A_PROCESS_ERR_ID", "sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a07e4f8c620e4fed440f7321e4ffc24c3", null ],
+      [ "NOT_IN_SIGNAL_CONTEXT_ERR_ID", "sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a11d4afd172280f24f51e9cf5c95d0e01", null ]
     ] ],
     [ "ACTION", "sys__symbols_8h.html#a476da6702ed178be7f6a7d4f876d194f", null ],
     [ "ACTIVE_RECEPTORS", "sys__symbols_8h.html#aadbf68b22a73453f4fcc15202b9a233e", null ],
@@ -138,6 +139,7 @@ var sys__symbols_8h =
     [ "MANIFEST_PAIR", "sys__symbols_8h.html#a58065c7098e8646458a1041a74a047fc", null ],
     [ "MANIFEST_SPEC", "sys__symbols_8h.html#a3596507037945eeb78bc5ce62407f73f", null ],
     [ "NOT_A_PROCESS_ERR", "sys__symbols_8h.html#a2f481188f97a61b8d2466f5df06747a5", null ],
+    [ "NOT_IN_SIGNAL_CONTEXT_ERR", "sys__symbols_8h.html#a335563469ee28183c93152ec196abc0c", null ],
     [ "NULL_SYMBOL", "sys__symbols_8h.html#ad0408529e6c5d12d81a6545892418b29", null ],
     [ "OUTPUT_SIGNATURE", "sys__symbols_8h.html#a52a267262fb76cabeaa1c3ceca461b96", null ],
     [ "PARAM_REF", "sys__symbols_8h.html#a2f2b5c09e4af860b09904131500e445d", null ],

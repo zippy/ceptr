@@ -1,8 +1,7 @@
 var searchData=
 [
-  ['s',['s',['../structinstances__elem.html#aeeb84ef2b0bb4b596d161bc84f17937d',1,'instances_elem']]],
-  ['scapes',['scapes',['../structDefs.html#a2c74d8ba3b0f1972a6527cb96c0be65d',1,'Defs']]],
-  ['structures',['structures',['../structDefs.html#a6f9d3b3e38fff31326b7d27f730ae95c',1,'Defs']]],
-  ['symbol',['symbol',['../structSgroupOpen.html#a1daccf55b781d3df990334af45339d10',1,'SgroupOpen::symbol()'],['../unionSTypeData.html#a65bdc8f08ce48d9e70f07dbc815a1759',1,'STypeData::symbol()']]],
-  ['symbols',['symbols',['../structDefs.html#a172e45e131e197571ba1a36a136d35f8',1,'Defs']]]
+  ['parent',['parent',['../structR.html#ade71112eb7a1872ea1fa996675977a93',1,'R']]],
+  ['path_5fs',['path_s',['../structtable__elem.html#a7e5968fd30d0a7c15f12ed8231a7b415',1,'table_elem']]],
+  ['processes',['processes',['../structDefs.html#a80e876ed085ca3f40c11c6dced4bff9a',1,'Defs']]],
+  ['protocols',['protocols',['../structDefs.html#aa0cf913c12ec27ee0027c64ee146c27d',1,'Defs']]]
 ];

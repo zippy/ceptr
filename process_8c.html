@@ -113,11 +113,13 @@ $(document).ready(function(){initNavTree('process_8c.html','');});
 <code>#include &quot;<a class="el" href="def_8h_source.html">def.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="semtrex_8h_source.html">semtrex.h</a>&quot;</code><br />
 <code>#include &lt;stdarg.h&gt;</code><br />
+<code>#include &quot;<a class="el" href="receptor_8h_source.html">receptor.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="spec__utils_8h_source.html">../spec/spec_utils.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for process.c:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="process_8c__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="process_8c__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 </div>
 <p><a href="process_8c_source.html">Go to the source code of this file.</a></p>
@@ -129,8 +131,8 @@ Functions</h2></td></tr>
 <tr class="separator:a98556348d3f5fbc7334184249fbe9127"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d31f2429d3801e91d94165974b3b80e"><td class="memItemLeft" align="right" valign="top">Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="process_8c.html#a4d31f2429d3801e91d94165974b3b80e">__p_check_signature</a> (<a class="el" href="structDefs.html">Defs</a> *defs, <a class="el" href="structSemanticID.html">Process</a> p, <a class="el" href="structT.html">T</a> *params)</td></tr>
 <tr class="separator:a4d31f2429d3801e91d94165974b3b80e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a47b39e2358f32638d0eaeae03247ff04"><td class="memItemLeft" align="right" valign="top">Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="process_8c.html#a47b39e2358f32638d0eaeae03247ff04">__p_reduce_sys_proc</a> (<a class="el" href="structDefs.html">Defs</a> *defs, <a class="el" href="structSemanticID.html">Symbol</a> s, <a class="el" href="structT.html">T</a> *code)</td></tr>
-<tr class="separator:a47b39e2358f32638d0eaeae03247ff04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acebcbe8d4caa12144a82edc18aa65492"><td class="memItemLeft" align="right" valign="top">Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="process_8c.html#acebcbe8d4caa12144a82edc18aa65492">__p_reduce_sys_proc</a> (<a class="el" href="structR.html">R</a> *context, <a class="el" href="structSemanticID.html">Symbol</a> s, <a class="el" href="structT.html">T</a> *code)</td></tr>
+<tr class="separator:acebcbe8d4caa12144a82edc18aa65492"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10769075e2a74fd8825e544c6f69ea59"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structR.html">R</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="process_8c.html#a10769075e2a74fd8825e544c6f69ea59">__p_make_context</a> (<a class="el" href="structT.html">T</a> *run_tree, <a class="el" href="structR.html">R</a> *caller)</td></tr>
 <tr class="separator:a10769075e2a74fd8825e544c6f69ea59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc149ea5dc5c12cd12fc35a61157cfbc"><td class="memItemLeft" align="right" valign="top">Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="process_8c.html#acc149ea5dc5c12cd12fc35a61157cfbc">_p_reduce</a> (<a class="el" href="structDefs.html">Defs</a> *defs, <a class="el" href="structT.html">T</a> *rt)</td></tr>
@@ -154,6 +156,8 @@ Functions</h2></td></tr>
 <tr class="separator:aea59e125f10441efe75f6047ee7b35e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeda111a93260aae9ed19b1c2d1d2e029"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="process_8c.html#aeda111a93260aae9ed19b1c2d1d2e029">_p_addrt2q</a> (<a class="el" href="structQ.html">Q</a> *q, <a class="el" href="structT.html">T</a> *run_tree)</td></tr>
 <tr class="separator:aeda111a93260aae9ed19b1c2d1d2e029"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add05ec8f9d463726351fef1ffaa938fd"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="process_8c.html#add05ec8f9d463726351fef1ffaa938fd">_p_reduceq_thread</a> (void *arg)</td></tr>
+<tr class="separator:add05ec8f9d463726351fef1ffaa938fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a64e8965291c67057b06f273db19a465d"><td class="memItemLeft" align="right" valign="top">Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="process_8c.html#a64e8965291c67057b06f273db19a465d">_p_reduceq</a> (<a class="el" href="structQ.html">Q</a> *q)</td></tr>
 <tr class="separator:a64e8965291c67057b06f273db19a465d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -234,19 +238,19 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>create a run-tree execution context. </p>
 
-<p>Definition at line <a class="el" href="process_8c_source.html#l00222">222</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+<p>Definition at line <a class="el" href="process_8c_source.html#l00244">244</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a47b39e2358f32638d0eaeae03247ff04"></a>
+<a class="anchor" id="acebcbe8d4caa12144a82edc18aa65492"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">Error __p_reduce_sys_proc </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structDefs.html">Defs</a> *&#160;</td>
-          <td class="paramname"><em>defs</em>, </td>
+          <td class="paramtype"><a class="el" href="structR.html">R</a> *&#160;</td>
+          <td class="paramname"><em>context</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -267,9 +271,10 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>reduce system level processes in a run tree. Assumes that the children have already been reduced and all parameters have been filled in </p>
+<p>reduce system level processes in a run tree. Assumes that the children have already been reduced and all parameters have been filled in</p>
+<p>these system level processes are the equivalent of the instruction set of the ceptr virtual machine </p>
 
-<p>Definition at line <a class="el" href="process_8c_source.html#l00084">84</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+<p>Definition at line <a class="el" href="process_8c_source.html#l00086">86</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
 </div>
 </div>
@@ -296,9 +301,10 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>add a run tree into a processing queue </p>
+<p>add a run tree into a processing queue</p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000010">Todo:</a></b></dt><dd>make thread safe. currently you shouldn't call this if the <a class="el" href="structQ.html">Q</a> is being actively reduced </dd></dl>
 
-<p>Definition at line <a class="el" href="process_8c_source.html#l00545">545</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+<p>Definition at line <a class="el" href="process_8c_source.html#l00574">574</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
 </div>
 </div>
@@ -323,7 +329,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="process_8c_source.html#l00534">534</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+<p>Definition at line <a class="el" href="process_8c_source.html#l00561">561</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
 </div>
 </div>
@@ -419,7 +425,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structT.html">T</a> RUN_TREE tree </dd></dl>
 
-<p>Definition at line <a class="el" href="process_8c_source.html#l00467">467</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+<p>Definition at line <a class="el" href="process_8c_source.html#l00490">490</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
 </div>
 </div>
@@ -445,7 +451,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structQ.html">Q</a> the processing queue </dd></dl>
 
-<p>Definition at line <a class="el" href="process_8c_source.html#l00501">501</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+<p>Definition at line <a class="el" href="process_8c_source.html#l00524">524</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
 </div>
 </div>
@@ -489,7 +495,7 @@ Functions</h2></td></tr>
 <div class="line"></div>
 <div class="line">    <span class="comment">// create a run tree right in the position to &quot;call&quot; this function</span></div>
 <div class="line">    <a class="code" href="structT.html">T</a> *t = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(RUN_TREE);</div>
-<div class="line">    <a class="code" href="structT.html">T</a> *n = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(RESPOND);</div>
+<div class="line">    <a class="code" href="structT.html">T</a> *n = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(NOOP);</div>
 <div class="line">    <a class="code" href="structT.html">T</a> *d = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(n,divz);</div>
 <div class="line">    _t_newi(d,TEST_INT_SYMBOL,124);</div>
 <div class="line"></div>
@@ -508,7 +514,7 @@ Functions</h2></td></tr>
 <div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(processes);</div>
 <div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);<a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(n);</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="process_8c_source.html#l00251">251</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+<p>Definition at line <a class="el" href="process_8c_source.html#l00273">273</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
 </div>
 </div>
@@ -525,7 +531,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>reduce all the processes in a queue (suitable to be called by a thread)</p>
+<p>reduce all the processes in a queue</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">q</td><td>the queue to be processed </td></tr>
@@ -533,7 +539,32 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="process_8c_source.html#l00562">562</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+<p>Definition at line <a class="el" href="process_8c_source.html#l00604">604</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="add05ec8f9d463726351fef1ffaa938fd"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void* _p_reduceq_thread </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>arg</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>reduce all the processes in a queue, and terminate thread when completed</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">q</td><td>the queue to be processed </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="process_8c_source.html#l00591">591</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
 </div>
 </div>
@@ -571,7 +602,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the next state that will be called for the context </dd></dl>
 
-<p>Definition at line <a class="el" href="process_8c_source.html#l00274">274</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+<p>Definition at line <a class="el" href="process_8c_source.html#l00296">296</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
 </div>
 </div>
@@ -581,7 +612,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="process_8c.html">process.c</a></li>
-    <li class="footer">Generated on Wed May 20 2015 16:17:27 for ceptr by
+    <li class="footer">Generated on Fri May 22 2015 12:36:56 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

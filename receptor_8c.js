@@ -17,7 +17,7 @@ var receptor_8c =
     [ "_r_declare_symbol", "group__receptor.html#ga436d69cd861739b56bb32b7bf6f315ab", null ],
     [ "_r_def_match", "group__receptor.html#gaa8c97a2acf18af02e4e582d15932640c", null ],
     [ "_r_define_structure", "group__receptor.html#gae291bec8771c13074164984b08db4874", null ],
-    [ "_r_deliver", "group__receptor.html#gaa6111b5348cffbc1e1aad1d9d6c1e4ff", null ],
+    [ "_r_deliver", "group__receptor.html#ga7d40f33135ee51640d0d24b8c9e3e046", null ],
     [ "_r_free", "group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8", null ],
     [ "_r_get_instance", "group__receptor.html#gadc618904f81240b244e816234d1c906e", null ],
     [ "_r_get_process_name", "group__receptor.html#ga16d730727540e2be8140618c3e8d8026", null ],

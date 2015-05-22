@@ -41,6 +41,7 @@ var searchData=
   ['spec_5futils_2eh',['spec_utils.h',['../spec__utils_8h.html',1,'']]],
   ['sread',['SREAD',['../tree_8c.html#a3f7ee4a117ea9cd3ad10aaef8a50400a',1,'tree.c']]],
   ['sstate',['SState',['../structSState.html',1,'']]],
+  ['state',['state',['../structR.html#a01b2db8e2a78c287f763f15ae14b2e47',1,'R']]],
   ['structures',['structures',['../structDefs.html#a6f9d3b3e38fff31326b7d27f730ae95c',1,'Defs']]],
   ['stypedata',['STypeData',['../unionSTypeData.html',1,'STypeData'],['../group__semtrex.html#ga8dced199acb1f24ff8f91e409aa6d1cb',1,'STypeData():&#160;semtrex.h']]],
   ['svalue',['Svalue',['../structSvalue.html',1,'']]],

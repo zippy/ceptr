@@ -7,12 +7,7 @@ var receptor_8h =
     [ "spec_is_structure_equal", "group__receptor.html#gaa5f33711ac4da299b54ccfa583d9378c", null ],
     [ "spec_is_symbol_equal", "group__receptor.html#gaa7a993bb2e321fff32e1bc0741dddde0", null ],
     [ "spec_is_xaddr_equal", "group__receptor.html#ga4db8f49b8fa0a099ba5ad2797ba1d33e", null ],
-    [ "Aspect", "group__receptor.html#ga8675b50a924c478ce5f25009d0d24e2e", null ],
-    [ "DEFAULT_ASPECT", "group__receptor.html#gga99fb83031ce9923c84392b4e92f956b5a30e7bf6393286d2e1a538c288ccce24b", null ],
-    [ "AspectType", "group__receptor.html#ga74b55187933c4b54ef8ed7b7423b8f28", [
-      [ "EXTERNAL_ASPECT", "group__receptor.html#gga74b55187933c4b54ef8ed7b7423b8f28a8421bd963f01243d5658eedc3d179fdb", null ],
-      [ "INTERNAL_ASPECT", "group__receptor.html#gga74b55187933c4b54ef8ed7b7423b8f28a339fc3b75c7ee5bfe422d282097da944", null ]
-    ] ],
+    [ "noDeliveryErr", "group__receptor.html#ggabc6126af1d45847bc59afa0aa3216b04a8bb5261733bd4fff6d3a68c96f286ac5", null ],
     [ "__r_get_aspect", "group__receptor.html#ga6d832bc4fd6b86ba0cb523166711c3a1", null ],
     [ "__r_get_listeners", "group__receptor.html#ga638aa054bbcc81cdb79a819cb0f917ac", null ],
     [ "__r_get_signals", "group__receptor.html#gaf76e6bfe4883569ebfb83c40fe2c37e9", null ],
@@ -26,7 +21,7 @@ var receptor_8h =
     [ "_r_declare_symbol", "group__receptor.html#ga436d69cd861739b56bb32b7bf6f315ab", null ],
     [ "_r_def_match", "group__receptor.html#gaa8c97a2acf18af02e4e582d15932640c", null ],
     [ "_r_define_structure", "group__receptor.html#gae291bec8771c13074164984b08db4874", null ],
-    [ "_r_deliver", "group__receptor.html#gaa6111b5348cffbc1e1aad1d9d6c1e4ff", null ],
+    [ "_r_deliver", "group__receptor.html#ga7d40f33135ee51640d0d24b8c9e3e046", null ],
     [ "_r_free", "group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8", null ],
     [ "_r_get_instance", "group__receptor.html#gadc618904f81240b244e816234d1c906e", null ],
     [ "_r_get_process_name", "group__receptor.html#ga16d730727540e2be8140618c3e8d8026", null ],

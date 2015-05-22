@@ -104,7 +104,6 @@ $(document).ready(function(){initNavTree('receptor_8h.html','');});
 <div class="header">
   <div class="summary">
 <a href="#define-members">Macros</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
@@ -128,7 +127,8 @@ Include dependency graph for receptor.h:</div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="receptor_8h__dep__incl.svg" width="100%" height="552"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="receptor_8h__dep__incl.svg" width="100%" height="552"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 </div>
 <p><a href="receptor_8h_source.html">Go to the source code of this file.</a></p>
@@ -157,21 +157,11 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>spec_is_xaddr_equal</b>(r, got, expected)&#160;&#160;&#160;spec_total++; if (is_xaddr_eq(got,expected)){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],&quot;%s:%d expected %s to be %s.%d but was %s.%d&quot;,__FUNCTION__,__LINE__,#got,!is_null_symbol(expected.symbol)?_r_get_symbol_name(r,expected.symbol):&quot;0&quot;,expected.addr,!is_null_symbol(got.symbol) ? _r_get_symbol_name(r,got.symbol):&quot;0&quot;,got.addr);}</td></tr>
 <tr class="separator:ga4db8f49b8fa0a099ba5ad2797ba1d33e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:ga8675b50a924c478ce5f25009d0d24e2e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga8675b50a924c478ce5f25009d0d24e2e"></a>
-typedef int&#160;</td><td class="memItemRight" valign="bottom"><b>Aspect</b></td></tr>
-<tr class="separator:ga8675b50a924c478ce5f25009d0d24e2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:ga99fb83031ce9923c84392b4e92f956b5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga99fb83031ce9923c84392b4e92f956b5"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>DEFAULT_ASPECT</b> =1
+<tr class="memitem:gabc6126af1d45847bc59afa0aa3216b04"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gabc6126af1d45847bc59afa0aa3216b04"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>noDeliveryErr</b>
  }</td></tr>
-<tr class="separator:ga99fb83031ce9923c84392b4e92f956b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga74b55187933c4b54ef8ed7b7423b8f28"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga74b55187933c4b54ef8ed7b7423b8f28"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>AspectType</b> { <b>EXTERNAL_ASPECT</b> =0, 
-<b>INTERNAL_ASPECT</b>
- }</td></tr>
-<tr class="separator:ga74b55187933c4b54ef8ed7b7423b8f28"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:gabc6126af1d45847bc59afa0aa3216b04"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -220,8 +210,8 @@ Functions</h2></td></tr>
 <tr class="separator:ga300b11b12792c290fef2fb0fe07d71ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga475101caa9d56e6398d93dc3b4c9b616"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga475101caa9d56e6398d93dc3b4c9b616">__r_make_signal</a> (<a class="el" href="structXaddr.html">Xaddr</a> from, <a class="el" href="structXaddr.html">Xaddr</a> to, Aspect aspect, <a class="el" href="structT.html">T</a> *signal_contents)</td></tr>
 <tr class="separator:ga475101caa9d56e6398d93dc3b4c9b616"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa6111b5348cffbc1e1aad1d9d6c1e4ff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#gaa6111b5348cffbc1e1aad1d9d6c1e4ff">_r_deliver</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structT.html">T</a> *signal)</td></tr>
-<tr class="separator:gaa6111b5348cffbc1e1aad1d9d6c1e4ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7d40f33135ee51640d0d24b8c9e3e046"><td class="memItemLeft" align="right" valign="top">Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga7d40f33135ee51640d0d24b8c9e3e046">_r_deliver</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structT.html">T</a> *signal)</td></tr>
+<tr class="separator:ga7d40f33135ee51640d0d24b8c9e3e046"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6d832bc4fd6b86ba0cb523166711c3a1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga6d832bc4fd6b86ba0cb523166711c3a1"></a>
 <a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>__r_get_aspect</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, Aspect aspect)</td></tr>
 <tr class="separator:ga6d832bc4fd6b86ba0cb523166711c3a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -261,7 +251,7 @@ Variables</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="receptor_8h.html">receptor.h</a></li>
-    <li class="footer">Generated on Wed May 20 2015 16:17:27 for ceptr by
+    <li class="footer">Generated on Fri May 22 2015 12:36:56 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
