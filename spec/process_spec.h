@@ -442,7 +442,7 @@ void testProcessReduce() {
 void testProcessError() {
     Defs defs;
     T *t = _t_new_root(RUN_TREE);
-    T *n = _t_new_root(RESPOND);
+    T *n = _t_new_root(NOOP);
     T *d = _t_newr(n,DIV_INT);
     _t_newi(d,TEST_INT_SYMBOL,100);
     _t_newi(d,TEST_INT_SYMBOL,0);
@@ -497,7 +497,7 @@ void testProcessErrorTrickleUp() {
 
     // create a run tree right in the position to "call" this function
     T *t = _t_new_root(RUN_TREE);
-    T *n = _t_new_root(RESPOND);
+    T *n = _t_new_root(NOOP);
     T *d = _t_newr(n,divz);
     _t_newi(d,TEST_INT_SYMBOL,124);
 

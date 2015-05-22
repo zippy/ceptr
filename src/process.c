@@ -87,6 +87,10 @@ Error __p_reduce_sys_proc(Defs *defs,Symbol s,T *code) {
     Symbol sy;
     T *x,*t,*match_results,*match_tree;
     switch(s.id) {
+    case NOOP_ID:
+        // noop simply replaces itself with it's own child
+        x = _t_detach_by_idx(code,1);
+        break;
     case IF_ID:
         t = _t_child(code,1);
         b = (*(int *)_t_surface(t)) ? 2 : 3;

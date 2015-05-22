@@ -16,9 +16,9 @@
 #define is_sys_process(s) (is_process(s) && (s.context == SYS_CONTEXT))
 
 /// System defined processes
-enum SystemProcessID
-    {
-    IF_ID=1,                         ///< reduce to the left or right tree conditionally
+enum SystemProcessID    {
+    NOOP_ID=1,
+    IF_ID,                         ///< reduce to the left or right tree conditionally
     ADD_INT_ID,
     SUB_INT_ID,
     MULT_INT_ID,
@@ -33,9 +33,10 @@ enum SystemProcessID
     RESPOND_ID,                   ///< respond to the initiating signal with the what ever the sub-tree reduced to
     INTERPOLATE_FROM_MATCH_ID,    ///< reduce to replaced values from the match*/
     RAISE_ID,
-        };
+};
 
 Process NULL_PROCESS;
+Process NOOP;
 Process IF;
 Process ADD_INT;
 Process SUB_INT;
