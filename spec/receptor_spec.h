@@ -283,6 +283,63 @@ void testReceptorDefMatch() {
     //! [testReceptorDefMatch]
 }
 
+/*
+  Protocol Startpoint <- Data Source (of type carrier type)
+     The carrier type is implicit in the first step's expectation semtrex.
+  Protocol Endpoint -> Action Handler (which can accept data of my carrier type)
+     The last step of a protocol is an "output" handler ACTION that must be provided at
+     expression time
+*/
+Receptor *_makePingProtocolReceptor2(Symbol *pingP) {
+    Receptor *r;
+    r = _r_new(TEST_RECEPTOR_SYMBOL);
+
+    Symbol ping_protocol = _r_declare_symbol(r,PROTOCOL,"alive");
+    Symbol ping = _r_declare_symbol(r,BIT,"ping_message");
+    Symbol alive = _r_declare_symbol(r,BIT,"alive_message");
+    *pingP = ping;
+
+    // define a ping protocol with server and client sequences
+    T *ps = r->defs.protocols;
+    T *p = _t_newr(ps,ping_protocol);
+
+    // define the steps that can be used in sequences
+    Symbol listen_for_ping = _r_declare_symbol(r,PROTOCOL_STEP,"listen_for_ping");
+    Symbol get_alive_response = _r_declare_symbol(r,PROTOCOL_STEP,"get_alive_response");
+
+    T *steps = _t_newr(p,STEPS);
+    T *step = _t_newr(steps,listen_for_ping);
+    T *e = _t_newr(step,EXPECTATION);
+    _sl(e,ping);
+
+    T *ping_resp = _t_new_root(RESPOND);
+    _t_newi(ping_resp,alive,1);
+    T *input = _t_new_root(INPUT);
+    T *output = _t_new_root(OUTPUT_SIGNATURE);
+    Process proc = _r_code_process(r,ping_resp,"send alive response","long desc...",input,output);
+    _t_newp(step,ACTION,proc);
+
+    step = _t_newr(steps,get_alive_response);
+    e = _t_newr(step,EXPECTATION);
+    _sl(e,alive);
+
+    // define the sequences (built of steps)
+    Symbol alive_server = _r_declare_symbol(r,SEQUENCE,"alive_server");
+    Symbol alive_client = _r_declare_symbol(r,SEQUENCE,"alive_client");
+
+    T *sequences = _t_newr(p,SEQUENCES);
+
+    // the alive_server sequence just has one step, which is to listen for the ping
+    T *seq = _t_newr(sequences,alive_server);
+    _t_news(seq,STEP_SYMBOL,listen_for_ping);
+
+    // the alive_client sequence has two steps: send the ping, and listen for the alive response
+    seq = _t_newr(sequences,alive_client);
+    _t_news(seq,STEP_SYMBOL,get_alive_response);
+
+    return r;
+}
+
 Receptor *_makePingProtocolReceptor(Symbol *pingP) {
     Receptor *r;
     r = _r_new(TEST_RECEPTOR_SYMBOL);
@@ -344,13 +401,22 @@ Receptor *_makePingProtocolReceptor(Symbol *pingP) {
 void testReceptorProtocol() {
     //! [testReceptorProtocol]
     Symbol ping;
-    Receptor *r = _makePingProtocolReceptor(&ping);
 
-    _r_install_protocol(r,1,"server",DEFAULT_ASPECT);
+    Receptor *r = _makePingProtocolReceptor2(&ping);
 
-    char *d = _td(r,r->root);
+    T *ps = r->defs.protocols;
+    char *d = _td(r,ps);
 
-    spec_is_str_equal(d,"(TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS (SYMBOL_DECLARATION (SYMBOL_LABEL:ping) (SYMBOL_STRUCTURE:PROTOCOL)) (SYMBOL_DECLARATION (SYMBOL_LABEL:ping_message) (SYMBOL_STRUCTURE:BIT))) (PROCESSES (PROCESS_CODING (PROCESS_NAME:send ping response) (PROCESS_INTENTION:long desc...) (process:RESPOND (ping_message:1)) (INPUT) (OUTPUT_SIGNATURE))) (PROTOCOLS (ping (ROLES (ROLE:server) (ROLE:client)) (INTERACTIONS (INTERACTION (STEP:ping) (FROM_ROLE:client) (TO_ROLE:server) (CARRIER:ping_message) (CARRIER:ping_message) (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping_message))) (ACTION:send ping response) (RESPONSE_STEPS (STEP:ping_response))) (INTERACTION (STEP:ping_response) (FROM_ROLE:server) (TO_ROLE:client) (CARRIER:ping_message) (CARRIER:ping_message) (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping_message))))))) (SCAPES)) (ASPECTS (ASPECT_DEF (ASPECT_TYPE:0) (CARRIER:ping_message) (CARRIER:ping_message))) (FLUX (ASPECT:1 (LISTENERS (LISTENER:ping_message (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping_message))) (ACTION:send ping response))) (SIGNALS))))");
+    spec_is_str_equal(d,"(PROTOCOLS (alive (STEPS (listen_for_ping (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping_message))) (ACTION:send alive response)) (get_alive_response (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:alive_message))))) (SEQUENCES (alive_server (STEP_SYMBOL:listen_for_ping)) (alive_client (STEP_SYMBOL:get_alive_response)))))");
+
+    Symbol alive_server = _r_get_symbol_by_label(r,"alive_server");
+    _r_express_protocol(r,1,alive_server,DEFAULT_ASPECT,NULL);
+
+    //    _r_install_protocol(r,1,"server",DEFAULT_ASPECT);
+
+    d = _td(r,r->flux);
+
+    spec_is_str_equal(d,"(FLUX (ASPECT:1 (LISTENERS (LISTENER:NULL_SYMBOL (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping_message))) (ACTION:send alive response))) (SIGNALS)))");
 
     // delivering a fake signal should return a ping
     Xaddr f = {RECEPTOR_XADDR,3};  // DUMMY XADDR
@@ -369,7 +435,7 @@ void testReceptorProtocol() {
     result = r->q->completed->context->run_tree;
 
     d = _td(r,_t_child(result,3));
-    spec_is_str_equal(d,"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.4) (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (ASPECT:1)) (BODY:{(ping_message:1)})))");
+    spec_is_str_equal(d,"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.4) (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (ASPECT:1)) (BODY:{(alive_message:1)})))");
     //    _t_free(result);
     _r_free(r);
     //! [testReceptorProtocol]

@@ -252,7 +252,7 @@ void testVMHostActivateReceptor() {
     Receptor *server = _makePingProtocolReceptor(&ping);
     _r_install_protocol(server,1,"server",DEFAULT_ASPECT);
 
-    Receptor *client = _makePingProtocolReceptor(&ping);
+    Receptor *client = _makePingProtocolReceptor2(&ping);
     //    _r_install_protocol(client,1,"client",DEFAULT_ASPECT);
 
     Symbol ss = _r_declare_symbol(v->r,RECEPTOR,"ping server");

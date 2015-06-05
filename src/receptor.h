@@ -41,6 +41,7 @@ Process _r_code_process(Receptor *r,T *code,char *name,char *intention,T *in,T *
 T *_r_build_def_semtrex(Receptor *r,Symbol s);
 int _r_def_match(Receptor *r,Symbol s,T *t);
 
+void _r_express_protocol(Receptor *r,int idx,Symbol sequence,Aspect aspect,T* handler);
 void _r_install_protocol(Receptor *r,int idx,char *role,Aspect aspect);
 
 /*****************  receptor instances and xaddrs */

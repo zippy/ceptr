@@ -110,6 +110,10 @@ enum SystemSymbolIDs
     PROTOCOLS_ID,
     ROLES_ID,
     ROLE_ID,
+    SEQUENCES_ID,
+    //    SEQUENCE_ID,
+    STEP_SYMBOL_ID,
+    STEPS_ID,
     INTERACTIONS_ID,
     INTERACTION_ID,
     STEP_ID,
@@ -141,96 +145,6 @@ enum SystemSymbolIDs
     SIGNATURE_MISMATCH_ERR_ID,
     NOT_A_PROCESS_ERR_ID,
     NOT_IN_SIGNAL_CONTEXT_ERR_ID,
-};
-
-
-static Structure G_sys_symbol_structures[] = {
- /*   NULL_STRUCTURE,      //NULL_SYMBOL
-    BIT,             //BOOLEAN
-    TREE_PATH,           //SEMTREX_MATCH_PATH
-    SYMBOL,              //SEMTREX_SYMBOL_LITERAL
-    LIST,                //SEMTREX_SEQUENCE
-    NULL_STRUCTURE,      //SEMTREX_OR
-    NULL_STRUCTURE,      //SEMTREX_NOT
-    NULL_STRUCTURE,      //SEMTREX_SYMBOL_ANY
-    SYMBOL,      //SEMTREX_SYMBOL_ANY_EXCEPT
-    NULL_STRUCTURE,      //SEMTREX_ZERO_OR_MORE
-    NULL_STRUCTURE,      //SEMTREX_ONE_OR_MORE
-    NULL_STRUCTURE,      //SEMTREX_ZERO_OR_ONE
-    TREE,                //SEMTREX_VALUE_LITERAL
-    TREE,                //SEMTREX_VALUE_LITERAL_NOT
-    VALUE_SET,           //LIST
-    SYMBOL,              //SEMTREX_GROUP
-    NULL_STRUCTURE,      //SEMTREX_DESCEND
-    INTEGER,             //SEMTREX_MATCH
-    NULL_STRUCTURE,      //SEMTREX_MATCH_RESULTS
-    SYMBOL,              //SEMTREX_MATCH_SYMBOL
-    INTEGER,             //SEMTREX_MATCH_SIBLINGS_COUNT
-    XADDR,               //RECEPTOR_XADDR
-    LIST,                //FLUX
-    LIST,                //DEFINITIONS
-    LIST,                //STRUCTURES
-    TREE,                //STRUCTURE_DEFINITION
-    CSTRING,             //STRUCTURE_LABEL
-    LIST,                //STRUCTURE_PARTS
-    SYMBOL,              //STRUCTURE_PART
-    LIST,                //SYMBOLS
-    TREE,                //SYMBOL_DECLARATION
-    STRUCTURE,           //SYMBOL_STRUCTURE
-    CSTRING,             //SYMBOL_LABEL
-    TREE,                //SCAPE_SPEC
-    LIST,                //ASPECTS
-    TREE,                //ASPECT_DEF
-    BIT,                 //ASPECT_TYPE,
-    SYMBOL,              //CARRIER
-    INTEGER,             //ASPECT
-    LIST,                //SIGNALS
-    TREE,                //SIGNAL
-    LIST,                //ENVELOPE
-    TREE,                //BODY
-    LIST,                //LISTENERS
-    INTEGER,             //LISTENER
-    NULL_STRUCTURE,      //EXPECTATION
-    PROCESS,             //ACTION
-    SYMBOL,              //INTERPOLATE_SYMBOL
-    LIST,                //PROCESSES
-    TREE,                //PROCESS_CODING
-    CSTRING,             //PROCESS_NAME
-    CSTRING,             //PROCESS_INTENTION
-    LIST,                //INPUT
-    TREE,                //INPUT_SIGNATURE
-    CSTRING,             //INPUT_LABEL
-    STRUCTURE,           //SIGNATURE_STRUCTURE
-    NULL_STRUCTURE,      //OUTPUT_SIGNATURE
-    TREE,                //RUN_TREE
-    TREE_PATH,           //PARAM_REF
-    LIST,                //PARAMS
-    SYMBOL,              //RESULT_SYMBOL
-    LIST,//PROTOCOLS,
-    TREE,//PROTOCOL,
-    LIST,//ROLES,
-    CSTRING,//ROLE,
-    LIST,//INTERACTIONS,
-    LIST,//INTERACTION
-    CSTRING,//STEP,
-    ENUM,//FROM_ROLE,
-    ENUM,//TO_ROLE,
-    LIST,//RESPONSE_STEPS,
-    LIST,                //SCAPES
-    RECEPTOR,            //VM_HOST_RECEPTOR
-    RECEPTOR,            //COMPOSITORY
-    TREE,                //MANIFEST
-    LIST,                //MANIFEST_PAIR
-    CSTRING,             //MANIFEST_LABEL
-    SYMBOL,              //MANIFEST_SPEC
-    TREE,                //RECEPTOR_PACKAGE
-    INTEGER,             //RECEPTOR_IDENTIFIER
-    TREE,                //INSTALLED_RECEPTOR
-    LIST,                //ACTIVE_RECEPTORS
-    LIST,                //PENDING_SIGNALS
-    TREE,                //BINDINGS
-    LIST,                //BINDING_PAIR
- */
 };
 
 #endif
@@ -331,6 +245,10 @@ Symbol REDUCTION_ERROR_SYMBOL;
 Symbol PROTOCOLS;
 Symbol ROLES;
 Symbol ROLE;
+Symbol SEQUENCES;
+//Symbol SEQUENCE;
+Symbol STEP_SYMBOL;
+Symbol STEPS;
 Symbol INTERACTIONS;
 Symbol INTERACTION;
 Symbol STEP;
