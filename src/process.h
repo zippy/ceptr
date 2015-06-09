@@ -15,11 +15,15 @@
 
 #include "tree.h"
 
-enum ReductionError {Ascend=-1,Descend=-2,Pushed=-3,Pop=-4,Eval=-5,Done=0,noReductionErr=0,raiseReductionErr,tooFewParamsReductionErr=TOO_FEW_PARAMS_ERR_ID,tooManyParamsReductionErr=TOO_MANY_PARAMS_ERR_ID,signatureMismatchReductionErr=SIGNATURE_MISMATCH_ERR_ID,notProcessReductionError=NOT_A_PROCESS_ERR_ID,divideByZeroReductionErr=ZERO_DIVIDE_ERR_ID,notInSignalContextReductionError=NOT_IN_SIGNAL_CONTEXT_ERR_ID};
+enum ReductionError {Ascend=-1,Descend=-2,Pushed=-3,Pop=-4,Eval=-5,Block=-6,Done=0,noReductionErr=0,raiseReductionErr,tooFewParamsReductionErr=TOO_FEW_PARAMS_ERR_ID,tooManyParamsReductionErr=TOO_MANY_PARAMS_ERR_ID,signatureMismatchReductionErr=SIGNATURE_MISMATCH_ERR_ID,notProcessReductionError=NOT_A_PROCESS_ERR_ID,divideByZeroReductionErr=ZERO_DIVIDE_ERR_ID,notInSignalContextReductionError=NOT_IN_SIGNAL_CONTEXT_ERR_ID,incompatibleTypeReductionErr=INCOMPATIBLE_TYPE_ERR_ID};
+
+enum QueueError {noErr = 0, contextNotFoundErr};
 
 R *__p_make_context(T *run_tree,R *caller);
 Error _p_step(Defs *defs, R **contextP);
 Error __p_reduce_sys_proc(R *context,Symbol s,T *code);
+void _p_enqueue(Qe **listP,Qe *e);
+Error _p_unblock(Q *q,R *context,T *match_results,T *signal_contents);
 Error _p_reduce(Defs *defs,T *run_tree);
 Q *_p_newq(Defs *defs);
 void _p_freeq(Q *q);

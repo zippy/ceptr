@@ -31,6 +31,8 @@ enum SystemProcessID    {
     GTE_INT_ID,
     CONCAT_STR_ID,
     RESPOND_ID,                   ///< respond to the initiating signal with the what ever the sub-tree reduced to
+    EXPECT_ACT_ID,
+    QUOTE_ID,
     INTERPOLATE_FROM_MATCH_ID,    ///< reduce to replaced values from the match*/
     RAISE_ID,
 };
@@ -50,6 +52,8 @@ Process LTE_INT;
 Process GTE_INT;
 Process CONCAT_STR;
 Process RESPOND;
+Process EXPECT_ACT;
+Process QUOTE;
 Process INTERPOLATE_FROM_MATCH;
 Process RAISE;
 

@@ -311,7 +311,7 @@ void _r_express_protocol(Receptor *r,int idx,Symbol sequence,Aspect aspect,T* ha
                     T *act = _t_clone(_t_child(step,2));
                     //@todo turns out we don't use the carrier for anything yet, so
                     // we can just set it to a NULL_SYMBOL.  This will have to change
-                    // once we actually use it.
+                    // once we actually get carriers figured out
                     _r_add_listener(r,aspect,NULL_SYMBOL,expect,act);
                     return;
                 }
@@ -508,6 +508,40 @@ T* __r_make_signal(Xaddr from,Xaddr to,Aspect aspect,T *signal_contents) {
 }
 
 /**
+ * low level function for matching expectations on listeners and either adding a new run tree
+ * onto the current Q or reawakening the process that's been blocked waiting for the expectation
+ * to match
+ */
+void __r_check_listener(T* processes,T *listener,T *signal,Q *q) {
+    T *signal_contents = (T *)_t_surface(_t_child(signal,2));
+
+    T *e,*m;
+    e = _t_child(listener,1);
+    // if we get a match, create a run tree from the action, using the match and signal as the parameters
+    T *stx = _t_news(0,SEMTREX_GROUP,NULL_SYMBOL);
+    _t_add(stx,_t_clone(_t_child(e,1)));
+    if (_t_matchr(stx,signal_contents,&m)) {
+        T *rt=0;
+        T *action = _t_child(listener,2);
+        if (!action) {
+            raise_error0("null action in listener!");
+        }
+        if (semeq(_t_symbol(action),ACTION)) {
+            rt = _p_make_run_tree(processes,action,2,m,signal_contents);
+            _t_add(signal,rt);
+            _p_addrt2q(q,rt);
+        }
+        else {
+            // unblock the context
+            R *context = *(R**) _t_surface(action);
+            _p_unblock(q,context,m,signal_contents);
+        }
+        _t_free(m);
+    }
+    _t_free(stx);
+}
+
+/**
  * Send a signal to a receptor on a given aspect
  *
  * This function adds the signal to the flux, runs all the listeners on the aspect to see if the
@@ -525,12 +559,10 @@ T* __r_make_signal(Xaddr from,Xaddr to,Aspect aspect,T *signal_contents) {
  * @snippet spec/receptor_spec.h testReceptorAction
  */
 Error _r_deliver(Receptor *r, T *signal) {
-    T *m,*e,*l,*rt=0;
-    T *signal_contents = (T *)_t_surface(_t_child(signal,2));
+    T *l;
+
     T *envelope = _t_child(signal,1);
     Aspect aspect = *(Aspect *)_t_surface(_t_child(envelope,3));
-    Xaddr from = *(Xaddr *)_t_surface(_t_child(envelope,1));
-    Xaddr to = *(Xaddr *)_t_surface(_t_child(envelope,2));
 
     T *as = __r_get_signals(r,aspect);
 
@@ -538,47 +570,18 @@ Error _r_deliver(Receptor *r, T *signal) {
 
     // walk through all the listeners on the aspect and see if any expectations match this incoming signal
     T *ls = __r_get_listeners(r,aspect);
-    T *signals = _t_new_root(SIGNALS);
+
+    // if the receptor has no process queue then make one!
+    // @todo, should this really be happening here?
+    if (!r->q) {
+        r->q = _p_newq(&r->defs);
+    }
 
     DO_KIDS(ls,
             l = _t_child(ls,i);
-            e = _t_child(l,1);
-            // if we get a match, create a run tree from the action, using the match and signal as the parameters
-            T *stx = _t_news(0,SEMTREX_GROUP,NULL_SYMBOL);
-            _t_add(stx,_t_clone(_t_child(e,1)));
-            if (_t_matchr(stx,signal_contents,&m)) {
-                T *action = _t_child(l,2);
-                rt = _p_make_run_tree(r->defs.processes,action,2,m,signal_contents);
-                _t_free(m);
-                _t_add(signal,rt);
-
-                // if the receptor has no process queue then make one!
-                // @todo, should this really be happening here?
-                if (!r->q) {
-                    r->q = _p_newq(&r->defs);
-                }
-                _p_addrt2q(r->q,rt);
-
-                /* // for now just reduce the tree in place */
-                /* /// @todo move this to adding the runtree to the thread pool */
-                /* int e = _p_reduce(&r->defs,rt); */
-                /* /// @todo runtime error handing!!! */
-                /* if (e) { */
-                /*     raise_error("got reduction error: %d",e); */
-                /* } */
-
-                /* /// @todo we shouldn't assume that all reductions are response signals... */
-                /* /// but this will take coordination with the _p_reduce, to tell us which signals result */
-                /* _t_add(signals,__r_make_signal(to,from,aspect,_t_clone(_t_child(rt,1)))); */
-
-            }
-            _t_free(stx);
+            __r_check_listener(r->defs.processes,l,signal,r->q);
             );
 
-    //    printf("\n    signals after:"); puts(_td(r,signals));
-
-
-    //return signals;
     return noDeliveryErr;
 }
 

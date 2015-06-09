@@ -132,6 +132,17 @@ void testProcessIntMath() {
     spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:199)");
     _t_free(n);
 
+    // @todo structure type checking for integer math?  Too expensive?
+    // where do we get the defs.  Right now they are referred to in the process q
+    // which the contexts don't have direct access to.
+    /* n = _t_new_root(ADD_INT); */
+    /* spec_is_sem_equal(_d_get_symbol_structure(defs,s),INTEGER); */
+    /* _t_newi(n,TEST_INT_SYMBOL,99); */
+    /* _t_news(n,INTERPOLATE_SYMBOL,TEST_INT_SYMBOL); */
+    /* spec_is_equal(__p_reduce_sys_proc(0,ADD_INT,n),incompatibleTypeReductionErr); */
+    /* spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:199)"); */
+    /* _t_free(n); */
+
     // test subtraction
     n = _t_new_root(SUB_INT);
     _t_newi(n,TEST_INT_SYMBOL,100);
@@ -267,6 +278,105 @@ void textProcessRespond() {
 
     spec_is_str_equal(t2s(s),"(SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (RECEPTOR_XADDR:RECEPTOR_XADDR.4) (ASPECT:1)) (BODY:{(TEST_INT_SYMBOL:314)}) (RUN_TREE (TEST_INT_SYMBOL:0) (SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.4) (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (ASPECT:1)) (BODY:{(TEST_INT_SYMBOL:271)})))))");
 
+}
+
+void testProcessQuote() {
+    Defs defs;
+    T *t = _t_new_root(RUN_TREE);
+
+    // test process quoting
+    T *n = _t_new_root(QUOTE);
+
+    T *a = _t_newr(n,ADD_INT);
+    _t_newi(a,TEST_INT_SYMBOL,99);
+    _t_newi(a,TEST_INT_SYMBOL,100);
+
+    T *c = _t_rclone(n);
+    _t_add(t,c);
+    _p_reduce(&defs,t);
+
+    spec_is_str_equal(t2s(t),"(RUN_TREE (process:ADD_INT (TEST_INT_SYMBOL:99) (TEST_INT_SYMBOL:100)))");
+
+    _t_free(n);
+    _t_free(t);
+}
+
+void testProcessExpectAct() {
+
+    T *run_tree = _t_new_root(RUN_TREE);
+    T *p = _t_newr(0,EXPECT_ACT);
+
+    // expect action pairs take the carrier (i.e. scope/flux's listeners/aspect) as the first child
+    // @fixme for now we are doing a huge cheat and just putting the c pointer to a tree node
+    // as the carrier (kind of like SEMTREX_MATCH_CURSOR).  Later we'll figure out how to
+    // deal with this.
+    T *listener =_t_news(0,LISTENER,TEST_INT_SYMBOL);
+    _t_new(p,CARRIER,&listener,sizeof(T *));
+
+    // expect action pairs take a semtrex as the second child
+    T *t = _t_news(p,SEMTREX_GROUP,TEST_INT_SYMBOL);
+    _sl(t,TEST_INT_SYMBOL);
+
+    // and some template code as the action for the third child that will
+    // be filled out by the semtrex match
+    T *n = _t_newr(p,QUOTE);
+    n = _t_newr(n,ADD_INT);
+    _t_news(n,INTERPOLATE_SYMBOL,TEST_INT_SYMBOL);
+    _t_newi(n,TEST_INT_SYMBOL,100);
+
+    T *code =_t_rclone(p);
+    _t_free(p);
+    _t_add(run_tree,code);
+
+    // add the run tree into a queue and run it
+    Defs defs;
+    Q *q = _p_newq(&defs);
+
+    _t_newr(run_tree,PARAMS);
+    _p_addrt2q(q,run_tree);
+
+    Qe *e = q->active;
+    R *c = e->context;
+
+    // after reduction the context should be in the blocked state
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+
+    spec_is_equal(q->contexts_count,0);
+    spec_is_ptr_equal(q->blocked,e);
+    spec_is_equal(c->state,Block);
+
+    // and the tree should have reduced to the Action param (which was third)
+    spec_is_str_equal(t2s(code),"(process:ADD_INT (INTERPOLATE_SYMBOL:TEST_INT_SYMBOL) (TEST_INT_SYMBOL:100))");
+
+    // and the listener should have the expectation added to it (see todo in process.c about fixing how
+    // the carrier is passed in)
+
+    spec_is_str_equal(t2s(listener),"(LISTENER:TEST_INT_SYMBOL (EXPECTATION (SEMTREX_GROUP:TEST_INT_SYMBOL (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TEST_INT_SYMBOL)))) (process:EXPECT_ACT))");
+
+    // simulate matching an incoming signal on the listener
+
+    T *signal_contents = _t_newi(0,TEST_INT_SYMBOL,314);
+
+    Xaddr from = {RECEPTOR_XADDR,3};  // DUMMY XADDR
+    Xaddr to = {RECEPTOR_XADDR,4};  // DUMMY XADDR
+
+    T *signal = __r_make_signal(from,to,DEFAULT_ASPECT,signal_contents);
+
+    __r_check_listener(NULL,listener,signal,q);
+    // checking the listener should unblock the process and move it to the active
+    // list in the processing queue
+    spec_is_equal(c->state,Eval);
+    spec_is_ptr_equal(q->blocked,NULL);
+    spec_is_ptr_equal(q->active,e);
+    // and it should also have done the interpolation from the match in the signal
+    spec_is_str_equal(t2s(code),"(process:ADD_INT (TEST_INT_SYMBOL:314) (TEST_INT_SYMBOL:100))");
+    // reducing the q, should finally give us the completed process
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (TEST_INT_SYMBOL:414) (PARAMS))");
+
+    _p_freeq(q);
+    _t_free(signal);
+    _t_free(listener);
 }
 
 //-----------------------------------------------------------------------------------------
@@ -612,6 +722,8 @@ void testProcess() {
     testProcessIntMath();
     testProcessString();
     textProcessRespond();
+    testProcessQuote();
+    testProcessExpectAct();
     testProcessReduce();
     testProcessReduceDefinedProcess();
     testProcessSignatureMatching();

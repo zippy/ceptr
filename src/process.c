@@ -15,6 +15,7 @@
 #include "receptor.h"
 #include "../spec/spec_utils.h"
 
+
 /**
  * implements the INTERPOLATE_FROM_MATCH process
  *
@@ -88,6 +89,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
     char *str;
     Symbol sy;
     T *x,*t,*match_results,*match_tree;
+    Error err = noReductionErr;
     switch(s.id) {
     case NOOP_ID:
         // noop simply replaces itself with it's own child
@@ -224,6 +226,37 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
         // perhaps some kind of signal context symbol or something.  Right now using TEST_INT_SYMBOL
         // as a bogus placeholder.
         break;
+    case QUOTE_ID:
+        x = _t_detach_by_idx(code,1);
+        break;
+    case EXPECT_ACT_ID:
+        // detach the carrier and expectation params, and enqueue the expectation and action
+        // on the carrier
+        {
+            T *carrier_param = _t_detach_by_idx(code,1);
+            T *carrier = *(T **)_t_surface(carrier_param);
+            _t_free(carrier_param);
+            T *ex = _t_detach_by_idx(code,1);
+            T *expectation = _t_new_root(EXPECTATION);
+            _t_add(expectation,ex);
+
+            //@todo: this is a fake way to add an expectation to a carrier (as a c pointer
+            // out of the params)
+            // we probably actually need a system representation for carriers and an API
+            // that will also make this thread safe.  For example, in the case of carrier being
+            // a receptor's aspect/flux then we should be using _r_add_listener here, but
+            // unfortunately we don't want to have to know about receptors this far down in the
+            // stack...  But it's not clear yet how we do know about the listening context as
+            // I don't think it should be copied into every execution context (the R struct)
+            _t_add(carrier,expectation);
+            // the action is a pointer back to this context for now were using a EXPECT_ACT
+            // with the c pointer as the surface because I don't know what else to do...  @fixme
+            _t_new(carrier,EXPECT_ACT,&context,sizeof(context));
+        }
+        rt_cur_child(code) = 1; // reset the current child count on the code
+        x = _t_detach_by_idx(code,1);
+        err = Block;
+        break;
     case INTERPOLATE_FROM_MATCH_ID:
         match_results = _t_child(code,2);
         match_tree = _t_child(code,3);
@@ -239,7 +272,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
     }
 
     // any remaining children of 'code' are the parameters which have all now been "used up"
-    // so we can call the low-level free the clean them up and then replace the contents of
+    // so we can call the low-level __t_free the clean them up and then replace the contents of
     // the 'code' node with the contents of the 'x' node that was either detached or produced
     // by the the process that just ran
     __t_free(code);
@@ -248,7 +281,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
     code->contents = x->contents;
     code->context = x->context;
     free(x);
-    return noReductionErr;
+    return err;
 }
 
 /**
@@ -266,6 +299,45 @@ R *__p_make_context(T *run_tree,R *caller) {
     context->caller = caller;
     if (caller) caller->callee = context;
     return context;
+}
+
+// unlink the queue element from the list rejoining the
+// previous with the next
+#define __p_dequeue(list,qe)                    \
+    if (!qe->prev) {                            \
+        list = qe->next;                        \
+    }                                           \
+    else {                                      \
+        qe->prev->next = qe->next;              \
+    }
+
+// add the queue element onto the head of the list
+#define __p_enqueue(list,qe) {                  \
+        Qe *d = list;                           \
+        qe->next = d;                           \
+        if (d) d->prev = qe;                    \
+        list = qe;                              \
+    }
+
+void _p_enqueue(Qe **listP,Qe *e) {
+    __p_enqueue(*listP,e);
+}
+
+/**
+ * search for the context in the q and unblock it interpolating the waiting
+ * process with the match results first
+ */
+Error _p_unblock(Q *q,R *context,T *match_results,T *signal_contents) {
+    // find the context in the queue
+    Qe *e = q->blocked;
+    while (e && e->context != context) e = e->next;
+    if (!e) {raise_error0("contextNotFoundErr");}
+    __p_dequeue(q->blocked,e);
+    __p_enqueue(q->active,e);
+    _p_interpolate_from_match(context->node_pointer,match_results,signal_contents);
+
+    q->contexts_count++;
+    context->state = Eval;
 }
 
 //#define debug_reduce
@@ -311,7 +383,8 @@ Error _p_step(Defs *defs, R **contextP) {
 
     switch(context->state) {
     case noReductionErr:
-        raise_error0("whoa!"); // shouldn't be calling step if Done or noErr
+    case Block:
+        raise_error0("whoa!"); // shouldn't be calling step if Done or noErr or Block
         break;
     case Pop:
 
@@ -355,7 +428,9 @@ Error _p_step(Defs *defs, R **contextP) {
     case Eval:
         {
             T *np = context->node_pointer;
-
+            if (!np) {
+                raise_error0("Whoa! Null node pointer");
+            }
             Process s = _t_symbol(np);
 
             if (semeq(s,PARAM_REF)) {
@@ -376,9 +451,11 @@ Error _p_step(Defs *defs, R **contextP) {
             }
             else {
                 int c = _t_children(np);
-                if (c == rt_cur_child(np)) {
+                if (c == rt_cur_child(np) || semeq(s,QUOTE)) {
                     // if the current child == the child count this means
                     // all the children have been processed, so we can evaluate this process
+                    // if the process is QUOTE that's a special case and we evaluate it
+                    // immediately without descending.
                     if (!is_sys_process(s)) {
                         // if it's user defined process then we check the signature and then make
                         // a new run-tree run that process
@@ -449,6 +526,7 @@ Error _p_step(Defs *defs, R **contextP) {
             case notProcessReductionError: se=NOT_A_PROCESS_ERR;break;
             case notInSignalContextReductionError: se=NOT_IN_SIGNAL_CONTEXT_ERR;
             case divideByZeroReductionErr: se=ZERO_DIVIDE_ERR;break;
+            case incompatibleTypeReductionErr: se=INCOMPATIBLE_TYPE_ERR;break;
             case raiseReductionErr:
                 se = *(Symbol *)_t_surface(_t_child(context->node_pointer,1));
                 break;
@@ -539,6 +617,8 @@ Q *_p_newq(Defs *defs) {
     q->defs = defs;
     q->contexts_count = 0;
     q->active = NULL;
+    q->completed = NULL;
+    q->blocked = NULL;
     return q;
 }
 
@@ -578,22 +658,17 @@ void _p_freeq(Q *q) {
     free(q);
 }
 
-
 /**
  * add a run tree into a processing queue
  *
  * @todo make thread safe.  currently you shouldn't call this if the Q is being actively reduced
  */
 void _p_addrt2q(Q *q,T *run_tree) {
-    q->contexts_count++;
-    Qe *e = q->active;
     Qe *n = malloc(sizeof(Qe));
     n->prev = NULL;
     n->context = __p_make_context(run_tree,0);
-    n->next = q->active;
-    if (e) e->prev = n;
-    q->active = n;
-    q->completed = 0;
+    __p_enqueue(q->active,n);
+    q->contexts_count++;
 }
 
 /**
@@ -620,20 +695,27 @@ Error _p_reduceq(Q *q) {
 #endif
     Qe *qe = q->active;
     Error e;
-    do {
+    while (q->contexts_count) {
 
 #ifdef debug_reduce
         R *context = qe->context;
         char *sn[]={"Ascend","Descend","Pushed","Pop","Eval","Done"};
         char *s = context->state <= 0 ? sn[-context->state -1] : "Error";
         printf("ID:%p -- State %s : %d\n",qe,s,context->state);
+        printf("  idx:%d\n",context->idx);
         puts(t2s(context->run_tree));
         if (context) {
-            int *path = _t_get_path(context->node_pointer);
-            char pp[255];
-            _t_sprint_path(path,pp);
-            printf("Node Pointer:%s\n",pp);
-            free(path);
+            if (context->node_pointer == 0) {
+                printf("Node Pointer: NULL!\n");
+            }
+            else {
+                printf("rt_cur_child:%d\n",rt_cur_child(context->node_pointer));
+                int *path = _t_get_path(context->node_pointer);
+                char pp[255];
+                _t_sprint_path(path,pp);
+                printf("Node Pointer:%s\n",pp);
+                free(path);
+            }
         }
         printf("\n");
 #endif
@@ -642,20 +724,22 @@ Error _p_reduceq(Q *q) {
         Qe *next = qe->next;
         if (qe->context->state == Done) {
             // remove from the round-robin
-            if (!qe->prev) {
-                q->active = qe->next;
-            }
-            else {
-                qe->prev->next = qe->next;
-            }
+            __p_dequeue(q->active,qe);
+
             // add to the completed list
-            Qe *d = q->completed;
-            qe->next = d;
-            q->completed = qe;
+            __p_enqueue(q->completed,qe);
+            q->contexts_count--;
+        }
+        else if (qe->context->state == Block) {
+            // remove from the round-robin
+            __p_dequeue(q->active,qe);
+
+            // add to the completed list
+            __p_enqueue(q->blocked,qe);
             q->contexts_count--;
         }
         qe = next ? next : q->active;  // next in round robing or wrap
-    } while(q->contexts_count);
+    };
     // @todo figure out what error we should be sending back here, i.e. what if
     // one process ended ok, but one did not.  What's the error?  Probably
     // the errors here would be at a different level, and the caller would be

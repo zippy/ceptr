@@ -202,6 +202,7 @@ struct Q {
     int contexts_count;  ///< number of active processes
     Qe *active;          ///< active processes
     Qe *completed;       ///< completed processes
+    Qe *blocked;         ///< blocked processes
 };
 
 

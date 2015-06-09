@@ -203,12 +203,14 @@ void __v_process_signals(VMHost *v) {
         if (r->q) {
             _p_reduceq(r->q);
 
-            T *result = r->q->completed->context->run_tree;
-            T *signals = _t_child(result,_t_children(result));
-            if (!semeq(SIGNALS,_t_symbol(signals))) {
-                raise_error0("didn't find signals on run tree!!");
+            if (r->q->completed) {
+                T *result = r->q->completed->context->run_tree;
+                T *signals = _t_child(result,_t_children(result));
+                if (!semeq(SIGNALS,_t_symbol(signals))) {
+                    raise_error0("didn't find signals on run tree!!");
+                }
+                _v_send_signals(v,signals);
             }
-            _v_send_signals(v,signals);
         }
     }
 }

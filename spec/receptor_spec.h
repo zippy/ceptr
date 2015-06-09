@@ -429,6 +429,10 @@ void testReceptorProtocol() {
     T *result;
     Error err = _r_deliver(r,signal);
 
+    // after delivery we should see the process in the active list with the semtrex match in the params
+    d = _td(r,r->q->active->context->run_tree);
+    spec_is_str_equal(d,"(RUN_TREE (process:RESPOND (alive_message:1)) (PARAMS (SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:NULL_SYMBOL) (SEMTREX_MATCH_PATH:) (SEMTREX_MATCH_SIBLINGS_COUNT:1)) (ping_message:0)))");
+
     // manually run the process queue
     _p_reduceq(r->q);
 

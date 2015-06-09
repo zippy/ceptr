@@ -64,6 +64,8 @@ Process LTE_INT = {SYS_CONTEXT,SEM_TYPE_PROCESS,LTE_INT_ID};
 Process GTE_INT = {SYS_CONTEXT,SEM_TYPE_PROCESS,GTE_INT_ID};
 Process CONCAT_STR = {SYS_CONTEXT,SEM_TYPE_PROCESS,CONCAT_STR_ID};
 Process RESPOND = {SYS_CONTEXT,SEM_TYPE_PROCESS,RESPOND_ID};
+Process EXPECT_ACT = {SYS_CONTEXT,SEM_TYPE_PROCESS,EXPECT_ACT_ID};
+Process QUOTE = {SYS_CONTEXT,SEM_TYPE_PROCESS,QUOTE_ID};
 Process INTERPOLATE_FROM_MATCH = {SYS_CONTEXT,SEM_TYPE_PROCESS,INTERPOLATE_FROM_MATCH_ID};
 Process RAISE = {SYS_CONTEXT,SEM_TYPE_PROCESS,RAISE_ID};
 
@@ -201,6 +203,7 @@ void def_sys() {
     sY(SIGNATURE_MISMATCH_ERR,REDUCTION_ERROR);
     sY(NOT_A_PROCESS_ERR,REDUCTION_ERROR);
     sY(NOT_IN_SIGNAL_CONTEXT_ERR,REDUCTION_ERROR);
+    sY(INCOMPATIBLE_TYPE_ERR,REDUCTION_ERROR);
 
     sP(NOOP,"no-op",0,0);
     sP(IF,"if",0,0);
@@ -216,6 +219,8 @@ void def_sys() {
     sP(GTE_INT,"test greater than or equal",0,0);
     sP(CONCAT_STR,"concatinate strings",0,0);
     sP(RESPOND,"respond to signal",0,0);
+    sP(EXPECT_ACT,"block run tree until expectation met and then act",0,0);
+    sP(QUOTE,"quote a process so that it can be passed as a value",0,0);
     sP(INTERPOLATE_FROM_MATCH,"interploate match result in place",0,0);
     sP(RAISE,"raise reduction error",0,0);
 
