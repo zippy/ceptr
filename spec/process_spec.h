@@ -253,7 +253,7 @@ void testProcessString() {
     _t_free(n);
 }
 
-void textProcessRespond() {
+void testProcessRespond() {
     // testing responding to a signal requires setting up a sending signal context
 
     T *signal_contents = _t_newi(0,TEST_INT_SYMBOL,314);
@@ -278,6 +278,8 @@ void textProcessRespond() {
 
     spec_is_str_equal(t2s(s),"(SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (RECEPTOR_XADDR:RECEPTOR_XADDR.4) (ASPECT:1)) (BODY:{(TEST_INT_SYMBOL:314)}) (RUN_TREE (TEST_INT_SYMBOL:0) (SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.4) (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (ASPECT:1)) (BODY:{(TEST_INT_SYMBOL:271)})))))");
 
+    _p_free_context(c);
+    _t_free(s);
 }
 
 void testProcessQuote() {
@@ -721,7 +723,7 @@ void testProcess() {
     testProcessIf();
     testProcessIntMath();
     testProcessString();
-    textProcessRespond();
+    testProcessRespond();
     testProcessQuote();
     testProcessExpectAct();
     testProcessReduce();

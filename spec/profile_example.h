@@ -158,6 +158,7 @@ void testProfileExample() {
     _t_free(r);
     _t_free(t);
     _t_free(processes);
+    _t_free(act);
     _cleanupProfileDefs();
 }
 
