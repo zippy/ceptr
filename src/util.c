@@ -58,3 +58,10 @@ void writeFile(char *fn,void *data,size_t size) {
     fclose(ofp);
     }
 }
+
+long diff_micro(struct timespec *start, struct timespec *end)
+{
+    /* us */
+    return ((end->tv_sec * (1000000)) + (end->tv_nsec / 1000)) -
+        ((start->tv_sec * 1000000) + (start->tv_nsec / 1000));
+}

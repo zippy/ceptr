@@ -14,7 +14,7 @@
 #include <stdarg.h>
 #include "receptor.h"
 #include "../spec/spec_utils.h"
-
+#include "util.h"
 
 /**
  * implements the INTERPOLATE_FROM_MATCH process
@@ -667,6 +667,7 @@ void _p_addrt2q(Q *q,T *run_tree) {
     Qe *n = malloc(sizeof(Qe));
     n->prev = NULL;
     n->context = __p_make_context(run_tree,0);
+    n->accounts.elapsed_time = 0;
     __p_enqueue(q->active,n);
     q->contexts_count++;
 }
@@ -695,6 +696,8 @@ Error _p_reduceq(Q *q) {
 #endif
     Qe *qe = q->active;
     Error e;
+    struct timespec start, end;
+
     while (q->contexts_count) {
 
 #ifdef debug_reduce
@@ -720,7 +723,11 @@ Error _p_reduceq(Q *q) {
         printf("\n");
 #endif
 
+        clock_gettime(CLOCK_MONOTONIC, &start);
         e = _p_step(q->defs, &qe->context);
+        clock_gettime(CLOCK_MONOTONIC, &end);
+        qe->accounts.elapsed_time +=  diff_micro(&start, &end);
+
         Qe *next = qe->next;
         if (qe->context->state == Done) {
             // remove from the round-robin

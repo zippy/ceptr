@@ -695,6 +695,9 @@ void testProcessMulti() {
     spec_is_ptr_equal(q->active->next->context->run_tree,t1);
     spec_is_ptr_equal(q->active->next->prev, q->active);
 
+    spec_is_long_equal(q->active->accounts.elapsed_time,0);
+    spec_is_long_equal(q->active->next->accounts.elapsed_time,0);
+
     // confirm that they both reduce correctly
     pthread_t thread;
     int rc;
@@ -708,6 +711,14 @@ void testProcessMulti() {
         raise_error("ERROR; return code from pthread_join() is %d\n", rc);
     }
     spec_is_long_equal((long)status,noReductionErr);
+
+    // contexts have been moved to the completed list and now have
+    // some elapsed time data associated with them.
+    spec_is_equal(q->contexts_count,0);
+    spec_is_ptr_equal(q->completed->context->run_tree,t2);
+    spec_is_true(q->completed->accounts.elapsed_time>0);
+    spec_is_ptr_equal(q->completed->next->context->run_tree,t1);
+    spec_is_true(q->completed->next->accounts.elapsed_time>0);
 
     spec_is_str_equal(t2s(_t_child(t1,1)),"(TEST_INT_SYMBOL:124)");
     spec_is_str_equal(t2s(_t_child(t2,1)),"(TEST_INT_SYMBOL:123)");
