@@ -1,6 +1,7 @@
 var receptor_8c =
 [
     [ "__get_label_idx", "receptor_8c.html#a9ceaf2369ba0a4548315853124865251", null ],
+    [ "__r_check_listener", "group__receptor.html#ga74ad11561e8e391a1ebed9f7474ce095", null ],
     [ "__r_get_aspect", "group__receptor.html#ga6d832bc4fd6b86ba0cb523166711c3a1", null ],
     [ "__r_get_listeners", "group__receptor.html#ga638aa054bbcc81cdb79a819cb0f917ac", null ],
     [ "__r_get_signals", "group__receptor.html#gaf76e6bfe4883569ebfb83c40fe2c37e9", null ],
@@ -18,6 +19,7 @@ var receptor_8c =
     [ "_r_def_match", "group__receptor.html#gaa8c97a2acf18af02e4e582d15932640c", null ],
     [ "_r_define_structure", "group__receptor.html#gae291bec8771c13074164984b08db4874", null ],
     [ "_r_deliver", "group__receptor.html#ga7d40f33135ee51640d0d24b8c9e3e046", null ],
+    [ "_r_express_protocol", "group__receptor.html#ga41c4e57e15ff758a44e0119a1f18ed2d", null ],
     [ "_r_free", "group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8", null ],
     [ "_r_get_instance", "group__receptor.html#gadc618904f81240b244e816234d1c906e", null ],
     [ "_r_get_process_name", "group__receptor.html#ga16d730727540e2be8140618c3e8d8026", null ],

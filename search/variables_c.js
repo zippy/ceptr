@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['node_5fpointer',['node_pointer',['../structR.html#af6f5d86ba88f08e5ee64236f4c5c107a',1,'R']]]
+  ['matchstate',['matchstate',['../semtrex_8c.html#a4f647929b2fa5e062bf2df67482f2e6e',1,'semtrex.c']]]
 ];

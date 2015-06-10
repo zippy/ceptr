@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['idx',['idx',['../structR.html#a79fed799edaa4716723ebc8c0e44dc8c',1,'R']]],
-  ['instance',['instance',['../structinstance__elem.html#a7a42321cb232ac42535157a9e654127f',1,'instance_elem']]],
-  ['instances',['instances',['../structinstances__elem.html#a734b66c913756eb945351222cb601a87',1,'instances_elem::instances()'],['../structReceptor.html#a6150c6bff7a9724b4dd436a75fe4cc4b',1,'Receptor::instances()']]]
+  ['hh',['hh',['../structtable__elem.html#a75732c638886f4e9c9f91bb5a395fa75',1,'table_elem::hh()'],['../structinstance__elem.html#a1032278ed4df88774c734d299ba29981',1,'instance_elem::hh()'],['../structinstances__elem.html#ad772585aa257fd39c3cb06ec84b73e3d',1,'instances_elem::hh()'],['../structscape__elem.html#a6633202c70eba3a437916653d373cfce',1,'scape_elem::hh()']]]
 ];

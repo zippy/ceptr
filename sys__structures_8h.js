@@ -22,7 +22,9 @@ var sys__structures_8h =
       [ "PROTOCOL_ID", "sys__structures_8h.html#af887cae23bd72d21c0f4bd1d69dda7e1a814603e8ed744ee88965d7f1aec629eb", null ],
       [ "SEMTREX_ID", "sys__structures_8h.html#af887cae23bd72d21c0f4bd1d69dda7e1ab2813e7309d5346edef5940eea1a766a", null ],
       [ "TREE_DELTA_ID", "sys__structures_8h.html#af887cae23bd72d21c0f4bd1d69dda7e1a9128fdd5826a5165cec82f3050a9d7a8", null ],
-      [ "REDUCTION_ERROR_ID", "sys__structures_8h.html#af887cae23bd72d21c0f4bd1d69dda7e1a983cc9f5cb26d121fb3bcb8b690cb0db", null ]
+      [ "REDUCTION_ERROR_ID", "sys__structures_8h.html#af887cae23bd72d21c0f4bd1d69dda7e1a983cc9f5cb26d121fb3bcb8b690cb0db", null ],
+      [ "PROTOCOL_STEP_ID", "sys__structures_8h.html#af887cae23bd72d21c0f4bd1d69dda7e1a9ef3641bb049c57904a91dfc21496460", null ],
+      [ "SEQUENCE_ID", "sys__structures_8h.html#af887cae23bd72d21c0f4bd1d69dda7e1a346848f2c3404a6419d7e70611cb730f", null ]
     ] ],
     [ "BIT", "sys__structures_8h.html#a4811cbdcc46c6fff9fd88c8c5e2cd895", null ],
     [ "CHAR", "sys__structures_8h.html#a8d08e5362940617184520cafb993d66a", null ],
@@ -34,10 +36,12 @@ var sys__structures_8h =
     [ "NULL_STRUCTURE", "sys__structures_8h.html#a9a0f519a69d0b11547ea79544670e9ca", null ],
     [ "PROCESS", "sys__structures_8h.html#ad9b468aebfbd6eb4f46a5cf8313944bf", null ],
     [ "PROTOCOL", "sys__structures_8h.html#abb9ea9d53bf9af76a76cc87aa165f21a", null ],
+    [ "PROTOCOL_STEP", "sys__structures_8h.html#aa8eba5e81338a211a5eb50ab77d57677", null ],
     [ "RECEPTOR", "sys__structures_8h.html#a147436288d7c7bf278dc0895bd32e2b7", null ],
     [ "REDUCTION_ERROR", "sys__structures_8h.html#a83b024eab8fe3090af80ef2080b5edcc", null ],
     [ "SCAPE", "sys__structures_8h.html#a13ecd44890d37eece9debd87d963cb9f", null ],
     [ "SEMTREX", "sys__structures_8h.html#a409ffcea8555d7a225065a5776b920ec", null ],
+    [ "SEQUENCE", "sys__structures_8h.html#a302aae4a871b6194a42a480da19af6e1", null ],
     [ "STRUCTURE", "sys__structures_8h.html#a3362d33ffe0db0ac6a52c83ca7a56cd5", null ],
     [ "SURFACE", "sys__structures_8h.html#a7f6687ae36fcac5b43cff8aa90993d08", null ],
     [ "SYMBOL", "sys__structures_8h.html#aca16530b0700ac7a2df9c3e8fe138712", null ],

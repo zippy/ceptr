@@ -118,8 +118,7 @@ Include dependency graph for process.h:</div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="process_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="process_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 </div>
 <p><a href="process_8h_source.html">Go to the source code of this file.</a></p>
@@ -131,26 +130,37 @@ This graph shows which files directly or indirectly include this file:</div>
 <b>Pop</b> =-4, 
 <br />
 &#160;&#160;<b>Eval</b> =-5, 
+<b>Block</b> =-6, 
 <b>Done</b> =0, 
 <b>noReductionErr</b> =0, 
-<b>raiseReductionErr</b>, 
 <br />
-&#160;&#160;<b>tooFewParamsReductionErr</b> =TOO_FEW_PARAMS_ERR_ID, 
+&#160;&#160;<b>raiseReductionErr</b>, 
+<b>tooFewParamsReductionErr</b> =TOO_FEW_PARAMS_ERR_ID, 
 <b>tooManyParamsReductionErr</b> =TOO_MANY_PARAMS_ERR_ID, 
-<b>badSignatureReductionErr</b> =BAD_SIGNATURE_ERR_ID, 
-<b>notProcessReductionError</b> =NOT_A_PROCESS_ERR_ID, 
+<b>signatureMismatchReductionErr</b> =SIGNATURE_MISMATCH_ERR_ID, 
 <br />
-&#160;&#160;<b>divideByZeroReductionErr</b> =ZERO_DIVIDE_ERR_ID, 
-<b>notInSignalContextReductionError</b> =NOT_IN_SIGNAL_CONTEXT_ERR_ID
+&#160;&#160;<b>notProcessReductionError</b> =NOT_A_PROCESS_ERR_ID, 
+<b>divideByZeroReductionErr</b> =ZERO_DIVIDE_ERR_ID, 
+<b>notInSignalContextReductionError</b> =NOT_IN_SIGNAL_CONTEXT_ERR_ID, 
+<b>incompatibleTypeReductionErr</b> =INCOMPATIBLE_TYPE_ERR_ID
 <br />
  }</td></tr>
 <tr class="separator:aafd8125ddd0cd2cb2675dea09aacb099"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0822535a60c22a2ff4e36c5f600a9826"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0822535a60c22a2ff4e36c5f600a9826"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>QueueError</b> { <b>noErr</b> = 0, 
+<b>contextNotFoundErr</b>
+ }</td></tr>
+<tr class="separator:a0822535a60c22a2ff4e36c5f600a9826"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10769075e2a74fd8825e544c6f69ea59"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structR.html">R</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="process_8h.html#a10769075e2a74fd8825e544c6f69ea59">__p_make_context</a> (<a class="el" href="structT.html">T</a> *run_tree, <a class="el" href="structR.html">R</a> *caller)</td></tr>
 <tr class="separator:a10769075e2a74fd8825e544c6f69ea59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a208c2bb21125a1add95c66a358800271"><td class="memItemLeft" align="right" valign="top">Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="process_8h.html#a208c2bb21125a1add95c66a358800271">_p_step</a> (<a class="el" href="structDefs.html">Defs</a> *defs, <a class="el" href="structR.html">R</a> **contextP)</td></tr>
 <tr class="separator:a208c2bb21125a1add95c66a358800271"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acebcbe8d4caa12144a82edc18aa65492"><td class="memItemLeft" align="right" valign="top">Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="process_8h.html#acebcbe8d4caa12144a82edc18aa65492">__p_reduce_sys_proc</a> (<a class="el" href="structR.html">R</a> *context, <a class="el" href="structSemanticID.html">Symbol</a> s, <a class="el" href="structT.html">T</a> *code)</td></tr>
 <tr class="separator:acebcbe8d4caa12144a82edc18aa65492"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39ccc64f181f96a92744969f3daca886"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a39ccc64f181f96a92744969f3daca886"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>_p_enqueue</b> (<a class="el" href="structQe.html">Qe</a> **listP, <a class="el" href="structQe.html">Qe</a> *e)</td></tr>
+<tr class="separator:a39ccc64f181f96a92744969f3daca886"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0c0884c4967a45d41cd01422b207c95"><td class="memItemLeft" align="right" valign="top">Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="process_8h.html#ae0c0884c4967a45d41cd01422b207c95">_p_unblock</a> (<a class="el" href="structQ.html">Q</a> *q, <a class="el" href="structR.html">R</a> *context, <a class="el" href="structT.html">T</a> *match_results, <a class="el" href="structT.html">T</a> *signal_contents)</td></tr>
+<tr class="separator:ae0c0884c4967a45d41cd01422b207c95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac2a3fbaf66daab11709b0f2fae5a7290"><td class="memItemLeft" align="right" valign="top">Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="process_8h.html#ac2a3fbaf66daab11709b0f2fae5a7290">_p_reduce</a> (<a class="el" href="structDefs.html">Defs</a> *defs, <a class="el" href="structT.html">T</a> *run_tree)</td></tr>
 <tr class="separator:ac2a3fbaf66daab11709b0f2fae5a7290"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa97db3dcdc186ddfb237b745a5e460f6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structQ.html">Q</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="process_8h.html#aa97db3dcdc186ddfb237b745a5e460f6">_p_newq</a> (<a class="el" href="structDefs.html">Defs</a> *defs)</td></tr>
@@ -201,7 +211,7 @@ This graph shows which files directly or indirectly include this file:</div>
 </div><div class="memdoc">
 <p>create a run-tree execution context. </p>
 
-<p>Definition at line <a class="el" href="process_8c_source.html#l00244">244</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+<p>Definition at line <a class="el" href="process_8c_source.html#l00290">290</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
 </div>
 </div>
@@ -237,7 +247,7 @@ This graph shows which files directly or indirectly include this file:</div>
 <p>reduce system level processes in a run tree. Assumes that the children have already been reduced and all parameters have been filled in</p>
 <p>these system level processes are the equivalent of the instruction set of the ceptr virtual machine </p>
 
-<p>Definition at line <a class="el" href="process_8c_source.html#l00086">86</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+<p>Definition at line <a class="el" href="process_8c_source.html#l00087">87</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
 </div>
 </div>
@@ -267,7 +277,7 @@ This graph shows which files directly or indirectly include this file:</div>
 <p>add a run tree into a processing queue</p>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000010">Todo:</a></b></dt><dd>make thread safe. currently you shouldn't call this if the <a class="el" href="structQ.html">Q</a> is being actively reduced </dd></dl>
 
-<p>Definition at line <a class="el" href="process_8c_source.html#l00574">574</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+<p>Definition at line <a class="el" href="process_8c_source.html#l00666">666</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
 </div>
 </div>
@@ -292,7 +302,7 @@ This graph shows which files directly or indirectly include this file:</div>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="process_8c_source.html#l00561">561</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+<p>Definition at line <a class="el" href="process_8c_source.html#l00654">654</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
 </div>
 </div>
@@ -343,7 +353,7 @@ This graph shows which files directly or indirectly include this file:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structT.html">T</a> RUN_TREE tree </dd></dl>
 
-<p>Definition at line <a class="el" href="process_8c_source.html#l00490">490</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+<p>Definition at line <a class="el" href="process_8c_source.html#l00581">581</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
 </div>
 </div>
@@ -369,7 +379,7 @@ This graph shows which files directly or indirectly include this file:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structQ.html">Q</a> the processing queue </dd></dl>
 
-<p>Definition at line <a class="el" href="process_8c_source.html#l00524">524</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+<p>Definition at line <a class="el" href="process_8c_source.html#l00615">615</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
 </div>
 </div>
@@ -432,7 +442,7 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(processes);</div>
 <div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);<a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(n);</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="process_8c_source.html#l00273">273</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+<p>Definition at line <a class="el" href="process_8c_source.html#l00358">358</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
 </div>
 </div>
@@ -457,7 +467,7 @@ This graph shows which files directly or indirectly include this file:</div>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="process_8c_source.html#l00604">604</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+<p>Definition at line <a class="el" href="process_8c_source.html#l00693">693</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
 </div>
 </div>
@@ -482,7 +492,7 @@ This graph shows which files directly or indirectly include this file:</div>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="process_8c_source.html#l00591">591</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+<p>Definition at line <a class="el" href="process_8c_source.html#l00680">680</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
 </div>
 </div>
@@ -520,7 +530,48 @@ This graph shows which files directly or indirectly include this file:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the next state that will be called for the context </dd></dl>
 
-<p>Definition at line <a class="el" href="process_8c_source.html#l00296">296</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+<p>Definition at line <a class="el" href="process_8c_source.html#l00381">381</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ae0c0884c4967a45d41cd01422b207c95"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Error _p_unblock </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structQ.html">Q</a> *&#160;</td>
+          <td class="paramname"><em>q</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structR.html">R</a> *&#160;</td>
+          <td class="paramname"><em>context</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structT.html">T</a> *&#160;</td>
+          <td class="paramname"><em>match_results</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structT.html">T</a> *&#160;</td>
+          <td class="paramname"><em>signal_contents</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>search for the context in the q and unblock it interpolating the waiting process with the match results first </p>
+
+<p>Definition at line <a class="el" href="process_8c_source.html#l00330">330</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
 </div>
 </div>
@@ -530,7 +581,7 @@ This graph shows which files directly or indirectly include this file:</div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="process_8h.html">process.h</a></li>
-    <li class="footer">Generated on Fri May 22 2015 12:36:56 for ceptr by
+    <li class="footer">Generated on Wed Jun 10 2015 15:52:54 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

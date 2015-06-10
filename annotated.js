@@ -1,5 +1,6 @@
 var annotated =
 [
+    [ "A", "structA.html", "structA" ],
     [ "BranchPoint", "structBranchPoint.html", "structBranchPoint" ],
     [ "Defs", "structDefs.html", "structDefs" ],
     [ "H", "structH.html", "structH" ],

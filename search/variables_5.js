@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['flux',['flux',['../structReceptor.html#af8aee3ef6d1d93b80427faa57e6f1468',1,'Receptor']]]
+  ['err',['err',['../structR.html#a162dc9bc3600d14082290d73d6e86ccc',1,'R']]]
 ];

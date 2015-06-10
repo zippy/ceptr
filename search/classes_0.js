@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['branchpoint',['BranchPoint',['../structBranchPoint.html',1,'']]]
+  ['a',['A',['../structA.html',1,'']]]
 ];

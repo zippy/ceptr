@@ -16,6 +16,8 @@ var sys__processes_8h =
       [ "GTE_INT_ID", "sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8ea6c7e8caa527aaa68f38087836fe4b9b9", null ],
       [ "CONCAT_STR_ID", "sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8eab9af6501940d63fa86b828e3e2219c8c", null ],
       [ "RESPOND_ID", "sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8ea8c6120c4ab760098de5bef78806ad2fd", null ],
+      [ "EXPECT_ACT_ID", "sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8ea85cd1966e1025349802d02da5d7f020e", null ],
+      [ "QUOTE_ID", "sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8ea9a9d4963cb21e1d7af803d292770092e", null ],
       [ "INTERPOLATE_FROM_MATCH_ID", "sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8ea545735a47c85dde41ea9a1ffee415e02", null ],
       [ "RAISE_ID", "sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8ea6fe7c016a5a6a16fb9533b61e5abe539", null ]
     ] ],
@@ -23,6 +25,7 @@ var sys__processes_8h =
     [ "CONCAT_STR", "sys__processes_8h.html#a0be22488950f4208136a60eafe2993d8", null ],
     [ "DIV_INT", "sys__processes_8h.html#a1d518b8e6ab389401ef0ff4423922cac", null ],
     [ "EQ_INT", "sys__processes_8h.html#a9f4085350f2cd6f4ffc6c55c9de1e6b1", null ],
+    [ "EXPECT_ACT", "sys__processes_8h.html#a88c4df7172bdcb056818e8814ed41a8b", null ],
     [ "GT_INT", "sys__processes_8h.html#ad86ea67a0e82b8b4ee176bc49f8a4af9", null ],
     [ "GTE_INT", "sys__processes_8h.html#aa61fed07881df1326b687fa328f5a642", null ],
     [ "IF", "sys__processes_8h.html#a7625cb880281bd77e1e1c45137f73b04", null ],
@@ -33,6 +36,7 @@ var sys__processes_8h =
     [ "MULT_INT", "sys__processes_8h.html#a682fc621e0ba4f67b1088f35a2bad613", null ],
     [ "NOOP", "sys__processes_8h.html#af2db7ed4c934103d6ec245baa4186975", null ],
     [ "NULL_PROCESS", "sys__processes_8h.html#a659145d2ab93a0f49ed8e967c0466433", null ],
+    [ "QUOTE", "sys__processes_8h.html#a9c74d7215a79640cd7ef91f4d5bcf0e7", null ],
     [ "RAISE", "sys__processes_8h.html#a1d426c19b2d6512ae7a4e39988802491", null ],
     [ "RESPOND", "sys__processes_8h.html#a0220cf3ab749a41050ab56e0417d610f", null ],
     [ "SUB_INT", "sys__processes_8h.html#a39223b4cec2bcddb39ce685e28866dd7", null ]
