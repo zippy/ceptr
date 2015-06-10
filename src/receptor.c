@@ -287,7 +287,7 @@ int _r_def_match(Receptor *r,Symbol s,T *t) {
  * @param[in] idx the index of the protocol in the definition tree
  * @param[in] sequence in the protocol to express (i.e. activate by adding to flux's listeners)
  * @param[in] aspect the aspect on which to install listeners for this protocol
- * @param[in] handler an action to be handle the sequence's endpoint
+ * @param[in] handler an action to run as the sequence's endpoint (if any)
  *
  * <b>Examples (from test suite):</b>
  * @snippet spec/receptor_spec.h testReceptorProtocol
@@ -308,7 +308,14 @@ void _r_express_protocol(Receptor *r,int idx,Symbol sequence,Aspect aspect,T* ha
                 T *step = _t_child(steps,j);
                 if (semeq(_t_symbol(step),step1)) {
                     T *expect = _t_clone(_t_child(step,1));
-                    T *act = _t_clone(_t_child(step,2));
+                    T *act = _t_child(step,2);
+                    // if there is no action, then assume its the sequence endpoint
+                    // and use the handler in its place
+                    // @todo revisit this assumption about handlers and endpoints
+                    if (act)
+                        act = _t_clone(act);
+                    else
+                        act = handler;
                     //@todo turns out we don't use the carrier for anything yet, so
                     // we can just set it to a NULL_SYMBOL.  This will have to change
                     // once we actually get carriers figured out

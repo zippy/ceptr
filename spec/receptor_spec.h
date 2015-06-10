@@ -292,7 +292,7 @@ void testReceptorDefMatch() {
      The last step of a protocol is an "output" handler ACTION that must be provided at
      expression time
 */
-Receptor *_makePingProtocolReceptor2(Symbol *pingP) {
+Receptor *_makePingProtocolReceptor(Symbol *pingP) {
     Receptor *r;
     r = _r_new(TEST_RECEPTOR_SYMBOL);
 
@@ -338,65 +338,8 @@ Receptor *_makePingProtocolReceptor2(Symbol *pingP) {
     // the alive_client sequence has two steps: send the ping, and listen for the alive response
     seq = _t_newr(sequences,alive_client);
     _t_news(seq,STEP_SYMBOL,get_alive_response);
-
-    return r;
-}
-
-Receptor *_makePingProtocolReceptor(Symbol *pingP) {
-    Receptor *r;
-    r = _r_new(TEST_RECEPTOR_SYMBOL);
-
-    Symbol ping_protocol = _r_declare_symbol(r,PROTOCOL,"ping");
-    Symbol ping = _r_declare_symbol(r,BIT,"ping_message");
-    *pingP = ping;
-
-    // define a ping protocol with two roles and two interactions
-    T *ps = r->defs.protocols;
-    T *p = _t_newr(ps,ping_protocol);
-    T *roles = _t_newr(p,ROLES);
-    _t_new(roles,ROLE,"server",7);
-    _t_new(roles,ROLE,"client",7);
-    T *interactions = _t_newr(p,INTERACTIONS);
-
-    // initial ping request interaction
-    T *i,*s,*e;
-    i = _t_newr(interactions,INTERACTION);
-    _t_new(i,STEP,"ping",5);
-    _t_new(i,FROM_ROLE,"client",7);
-    _t_new(i,TO_ROLE,"server",7);
-    _t_news(i,CARRIER,ping); // input carrier
-    _t_news(i,CARRIER,ping); // output carrier
-    e = _t_newr(i,EXPECTATION);
-    T *req = _sl(e,ping);
-
-    T *ping_resp = _t_new_root(RESPOND);
-    _t_newi(ping_resp,ping,1);
-    T *input = _t_new_root(INPUT);
-    T *output = _t_new_root(OUTPUT_SIGNATURE);
-    Process proc = _r_code_process(r,ping_resp,"send ping response","long desc...",input,output);
-
-    _t_newp(i,ACTION,proc);
-
-    s = _t_newr(i,RESPONSE_STEPS);
-    _t_new(s,STEP,"ping_response",14);
-
-    // ping response interaction
-    i = _t_newr(interactions,INTERACTION);
-    _t_new(i,STEP,"ping_response",14);
-    _t_new(i,FROM_ROLE,"server",7);
-    _t_new(i,TO_ROLE,"client",7);
-    _t_news(i,CARRIER,ping); // input carrier
-    _t_news(i,CARRIER,ping); // output carrier
-    e = _t_newr(i,EXPECTATION);
-    _sl(e,ping);
-    //    s = _t_newr(i,RESPONSE_STEPS);
-
-    T *aspects = _t_child(r->root,2);
-    T *a = _t_newr(aspects,ASPECT_DEF);
-    _t_newi(a,ASPECT_TYPE,EXTERNAL_ASPECT);
-    _t_news(a,CARRIER,ping);
-    _t_news(a,CARRIER,ping);
     wjson(&r->defs,p,"protocol",-1);
+
     return r;
 }
 
@@ -404,7 +347,7 @@ void testReceptorProtocol() {
     //! [testReceptorProtocol]
     Symbol ping;
 
-    Receptor *r = _makePingProtocolReceptor2(&ping);
+    Receptor *r = _makePingProtocolReceptor(&ping);
 
     T *ps = r->defs.protocols;
     char *d = _td(r,ps);

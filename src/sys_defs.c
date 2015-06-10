@@ -165,8 +165,6 @@ void def_sys() {
     sY(REDUCTION_ERROR_SYMBOL,SYMBOL);
 
     sY(PROTOCOLS,LIST);
-    sY(ROLES,LIST);
-    sY(ROLE,CSTRING);
     sY(SEQUENCES,LIST);
     //    sY(SEQUENCE,LIST); // @todo this should really be a structure be we don't have optional elements yet....
     sY(STEP_SYMBOL,SYMBOL);
@@ -176,10 +174,8 @@ void def_sys() {
     sY(INTERACTIONS,LIST);
     sY(INTERACTION,LIST); // @todo this should really be a structure be we don't have optional elements yet....
     sY(STEP,CSTRING);
-    sY(FROM_ROLE,ENUM);
-    sY(TO_ROLE,ENUM);
     sY(RESPONSE_STEPS,LIST);
-    sT(PROTOCOL,2,ROLES,INTERACTIONS);
+    sT(PROTOCOL,2,STEPS,SEQUENCES);
     sY(SCAPES,LIST);
     sY(VM_HOST_RECEPTOR,RECEPTOR);
     sY(COMPOSITORY,RECEPTOR);

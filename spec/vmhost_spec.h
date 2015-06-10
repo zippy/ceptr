@@ -250,13 +250,24 @@ void testVMHostActivateReceptor() {
 
     Symbol ping;
     Receptor *server = _makePingProtocolReceptor(&ping);
-    _r_install_protocol(server,1,"server",DEFAULT_ASPECT);
+    Symbol alive_server_seq = _r_get_symbol_by_label(server,"alive_server");
+    _r_express_protocol(server,1,alive_server_seq,DEFAULT_ASPECT,NULL);
 
-    Receptor *client = _makePingProtocolReceptor2(&ping);
-    //    _r_install_protocol(client,1,"client",DEFAULT_ASPECT);
+    Receptor *client = _makePingProtocolReceptor(&ping);
+    Symbol alive_client_seq = _r_get_symbol_by_label(client,"alive_client");
 
-    Symbol ss = _r_declare_symbol(v->r,RECEPTOR,"ping server");
-    Symbol cs = _r_declare_symbol(v->r,RECEPTOR,"ping client");
+
+    T *noop = _t_new_root(NOOP);
+    _t_newi(noop,TEST_INT_SYMBOL,314);
+    T *input = _t_new_root(INPUT);
+    T *output = _t_new_root(OUTPUT_SIGNATURE);
+    Process proc = _r_code_process(client,noop,"do nothing","long desc...",input,output);
+    T *handler = _t_newp(0,ACTION,proc);
+
+    _r_express_protocol(client,1,alive_client_seq,DEFAULT_ASPECT,handler);
+
+    Symbol ss = _r_declare_symbol(v->r,RECEPTOR,"alive server");
+    Symbol cs = _r_declare_symbol(v->r,RECEPTOR,"alive client");
 
     Xaddr sx = _v_new_receptor(v,ss,server);
     Xaddr cx = _v_new_receptor(v,cs,client);
@@ -284,9 +295,9 @@ void testVMHostActivateReceptor() {
     // first that the pending signals list is empty
     spec_is_equal(_t_children(v->pending_signals),0);
 
-    // and that the client now has a newly arrived response ping signal
+    // and that the client now has the arrived response ping signal, plus the reduced action run-tree
     T *t = __r_get_signals(client,DEFAULT_ASPECT);
-    spec_is_str_equal(_td(client,t),"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:INSTALLED_RECEPTOR.1) (RECEPTOR_XADDR:INSTALLED_RECEPTOR.2) (ASPECT:1)) (BODY:{(ping_message:1)})))");
+    spec_is_str_equal(_td(client,t),"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:INSTALLED_RECEPTOR.1) (RECEPTOR_XADDR:INSTALLED_RECEPTOR.2) (ASPECT:1)) (BODY:{(alive_message:1)}) (RUN_TREE (TEST_INT_SYMBOL:314) (PARAMS (SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:NULL_SYMBOL) (SEMTREX_MATCH_PATH:) (SEMTREX_MATCH_SIBLINGS_COUNT:1)) (alive_message:1)))))");
 
     _v_free(v);
     //! [testVMHostActivateReceptor]

@@ -206,10 +206,10 @@ void __v_process_signals(VMHost *v) {
             if (r->q->completed) {
                 T *result = r->q->completed->context->run_tree;
                 T *signals = _t_child(result,_t_children(result));
-                if (!semeq(SIGNALS,_t_symbol(signals))) {
-                    raise_error0("didn't find signals on run tree!!");
+                // if the results added signals then send em!
+                if (semeq(SIGNALS,_t_symbol(signals))) {
+                    _v_send_signals(v,signals);
                 }
-                _v_send_signals(v,signals);
             }
         }
     }

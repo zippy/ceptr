@@ -108,8 +108,6 @@ enum SystemSymbolIDs
     REDUCTION_ERROR_SYMBOL_ID,
 
     PROTOCOLS_ID,
-    ROLES_ID,
-    ROLE_ID,
     SEQUENCES_ID,
     //    SEQUENCE_ID,
     STEP_SYMBOL_ID,
@@ -117,8 +115,6 @@ enum SystemSymbolIDs
     INTERACTIONS_ID,
     INTERACTION_ID,
     STEP_ID,
-    FROM_ROLE_ID,
-    TO_ROLE_ID,
     RESPONSE_STEPS_ID,
     SCAPES_ID,
 
@@ -244,8 +240,6 @@ Symbol RESULT_SYMBOL;
 Symbol REDUCTION_ERROR_SYMBOL;
 
 Symbol PROTOCOLS;
-Symbol ROLES;
-Symbol ROLE;
 Symbol SEQUENCES;
 //Symbol SEQUENCE;
 Symbol STEP_SYMBOL;
@@ -253,8 +247,6 @@ Symbol STEPS;
 Symbol INTERACTIONS;
 Symbol INTERACTION;
 Symbol STEP;
-Symbol FROM_ROLE;
-Symbol TO_ROLE;
 Symbol RESPONSE_STEPS;
 Symbol SCAPES;
 Symbol VM_HOST_RECEPTOR;
