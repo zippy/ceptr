@@ -251,6 +251,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
             _t_add(carrier,expectation);
             // the action is a pointer back to this context for now were using a EXPECT_ACT
             // with the c pointer as the surface because I don't know what else to do...  @fixme
+            // perhaps this should be a BLOCKED_EXPECT_ACTION process or something...
             _t_new(carrier,EXPECT_ACT,&context,sizeof(context));
         }
         rt_cur_child(code) = 1; // reset the current child count on the code
@@ -589,20 +590,29 @@ T *_p_make_run_tree(T *processes,T *process,int num_params,...) {
         raise_error("%s is not a Process",_d_get_process_name(processes,p));
     }
     if (is_sys_process(p)) {
-        raise_error0("can't handle sys_processes!");
-    }
+        // if it's a sys process we add the parameters directly as children to the process
+        // because no sys-processes refer to PARAMS by path
+        T *c = __t_new(t,p,0,0,sizeof(rT));
 
-    T *code_def = _d_get_process_code(processes,p);
-    T *code = _t_child(code_def,3);
-
-    T *c = _t_rclone(code);
-    _t_add(t,c);
-    T *ps = _t_newr(t,PARAMS);
-    va_start(params,num_params);
-    for(i=0;i<num_params;i++) {
-        _t_add(ps,_t_clone(va_arg(params,T *)));
+        va_start(params,num_params);
+        for(i=0;i<num_params;i++) {
+            _t_add(c,_t_rclone(va_arg(params,T *)));
+        }
+        va_end(params);
     }
-    va_end(params);
+    else {
+        T *code_def = _d_get_process_code(processes,p);
+        T *code = _t_child(code_def,3);
+
+        T *c = _t_rclone(code);
+        _t_add(t,c);
+        T *ps = _t_newr(t,PARAMS);
+        va_start(params,num_params);
+        for(i=0;i<num_params;i++) {
+            _t_add(ps,_t_clone(va_arg(params,T *)));
+        }
+        va_end(params);
+    }
     return t;
 }
 

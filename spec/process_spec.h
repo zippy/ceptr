@@ -74,10 +74,20 @@ void testRunTree() {
 
     _t_free(act);
     _t_free(r);
+
+    // you can also create a run tree with a system process
+    act = _t_newp(0,ACTION,ADD_INT);
+
+    r = _p_make_run_tree(processes,act,2,p1,p2);
+    spec_is_str_equal(t2s(r),"(RUN_TREE (process:ADD_INT (TEST_INT_SYMBOL:123) (TEST_INT_SYMBOL:321)))");
+
+    _t_free(r);
     _t_free(processes);
     _t_free(p1);
     _t_free(p2);
     _t_free(p3);
+
+
 }
 
 //-----------------------------------------------------------------------------------------
@@ -301,6 +311,34 @@ void testProcessQuote() {
 
     _t_free(n);
     _t_free(t);
+}
+
+void testProcessStream() {
+    Defs defs;
+
+    T *run_tree = _t_new_root(RUN_TREE);
+    // test reading a stream
+
+    T *n = _t_new_root(READ_STREAM);
+
+    FILE *stream;
+    char buffer[] = "line1\nline2\n";
+
+    stream = fmemopen(buffer, strlen (buffer), "r");
+
+    _t_new(n,TEST_STREAM_SYMBOL,&stream,sizeof(FILE *));
+    _t_news(n,RESULT_SYMBOL,TEST_STR_SYMBOL);
+
+    T *c = _t_rclone(n);
+    _t_add(run_tree,c);
+    _p_reduce(&defs,run_tree);
+
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (TEST_STR_SYMBOL:line1))");
+
+    _t_free(n);
+    _t_free(run_tree);
+    fclose(stream);
+
 }
 
 void testProcessExpectAct() {
@@ -736,6 +774,7 @@ void testProcess() {
     testProcessString();
     testProcessRespond();
     testProcessQuote();
+    testProcessStream();
     testProcessExpectAct();
     testProcessReduce();
     testProcessReduceDefinedProcess();
@@ -744,4 +783,5 @@ void testProcess() {
     testProcessRaise();
     testProcessErrorTrickleUp();
     testProcessMulti();
+
 }
