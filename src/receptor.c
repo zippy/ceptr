@@ -311,7 +311,7 @@ void _r_express_protocol(Receptor *r,int idx,Symbol sequence,Aspect aspect,T* ha
                     T *act = _t_child(step,2);
                     // if there is no action, then assume its the sequence endpoint
                     // and use the handler in its place
-                    // @todo revisit this assumption about handlers and endpoints
+                    // @todo revisit the assumption about handlers and endpoints
                     if (act)
                         act = _t_clone(act);
                     else
@@ -533,16 +533,20 @@ void __r_check_listener(T* processes,T *listener,T *signal,Q *q) {
         if (!action) {
             raise_error0("null action in listener!");
         }
-        if (semeq(_t_symbol(action),ACTION)) {
+        if (semeq(_t_symbol(action),EXPECT_ACT)) {
+            // currently if the action is EXPECT_ACT then we assume that
+            // this is actually the blocked phase of EXPECT_ACT. This could be a
+            // problem if we ever wanted our action to be an EXPECT_ACT process
+            // see the implementation of EXPECT_ACT in process.c @fixme
+            R *context = *(R**) _t_surface(action);
+            _p_unblock(q,context,m,signal_contents);
+        }
+        else {
             rt = _p_make_run_tree(processes,action,2,m,signal_contents);
             _t_add(signal,rt);
             _p_addrt2q(q,rt);
         }
-        else {
-            // unblock the context
-            R *context = *(R**) _t_surface(action);
-            _p_unblock(q,context,m,signal_contents);
-        }
+
         _t_free(m);
     }
     _t_free(stx);
