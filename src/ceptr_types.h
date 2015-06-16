@@ -209,6 +209,7 @@ struct Q {
     Qe *active;          ///< active processes
     Qe *completed;       ///< completed processes
     Qe *blocked;         ///< blocked processes
+    T *pending_signals;  ///< slot for signals that need to be delivered for this process
 };
 
 

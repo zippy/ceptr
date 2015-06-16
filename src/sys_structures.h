@@ -37,14 +37,14 @@ enum SystemStructureID
     PROCESS_ID,
     STRUCTURE_ID,
     SCAPE_ID,
-    PROTOCOL_ID,
     SEMTREX_ID,
-    TREE_DELTA_ID,
-    REDUCTION_ERROR_ID,
+    STREAM_ID,
+    SEQUENCE_ID,
     PROTOCOL_STEP_ID,
-    SEQUENCE_ID
+    PROTOCOL_ID,
+    REDUCTION_ERROR_ID,
+    TREE_DELTA_ID
     };
-
 
 Structure NULL_STRUCTURE;
 Structure BIT;
@@ -63,10 +63,11 @@ Structure RECEPTOR;
 Structure PROCESS;
 Structure STRUCTURE;
 Structure SCAPE;
-Structure PROTOCOL;
 Structure SEMTREX;
-Structure TREE_DELTA;
-Structure REDUCTION_ERROR;
-Structure PROTOCOL_STEP;
+Structure STREAM;
 Structure SEQUENCE;
+Structure PROTOCOL_STEP;
+Structure PROTOCOL;
+Structure REDUCTION_ERROR;
+Structure TREE_DELTA;
 #endif

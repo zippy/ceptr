@@ -215,6 +215,7 @@ size_t _sys_structure_size(int id,void *surface) {
     case FLOAT_ID: return sizeof(float);
     case CSTRING_ID: return strlen(surface)+1;
     case XADDR_ID: return sizeof(Xaddr);
+    case STREAM_ID: return sizeof(FILE *);
     default: return -1;
     }
 }
@@ -412,6 +413,9 @@ char * __t_dump(Defs *defs,T *t,int level,char *buf) {
             case XADDR_ID:
                 x = *(Xaddr *)_t_surface(t);
                 sprintf(buf,"(%s:%s.%d",n,_d_get_symbol_name(symbols,x.symbol),x.addr);
+                break;
+            case STREAM_ID:
+                sprintf(buf,"(%s:%p",n,_t_surface(t));
                 break;
             case TREE_ID:
                 if (t->context.flags & TFLAG_SURFACE_IS_TREE) {

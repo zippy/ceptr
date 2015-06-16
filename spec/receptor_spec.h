@@ -357,8 +357,6 @@ void testReceptorProtocol() {
     Symbol alive_server = _r_get_symbol_by_label(r,"alive_server");
     _r_express_protocol(r,1,alive_server,DEFAULT_ASPECT,NULL);
 
-    //    _r_install_protocol(r,1,"server",DEFAULT_ASPECT);
-
     d = _td(r,r->flux);
 
     spec_is_str_equal(d,"(FLUX (ASPECT:1 (LISTENERS (LISTENER:NULL_SYMBOL (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping_message))) (ACTION:send alive response))) (SIGNALS)))");
@@ -528,6 +526,92 @@ void testReceptorNums() {
     _r_free(r);
 }
 
+Receptor *_r_makeFileReceptor(FILE *stream,Xaddr to) {
+    Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
+    Symbol line = _r_declare_symbol(r,CSTRING,"LINE");
+
+    // code is something like:
+    // lispy: (send to (read_stream stream line))
+    // clike: send(to,read_stream(stream,line))
+    T *t = _t_new_root(RUN_TREE);
+    T *p;
+    p = _t_new_root(SEND);
+
+    _t_new(p,RECEPTOR_XADDR,&to,sizeof(to));
+    //        _t_new(p,TEST_STR_SYMBOL,"fish",5);
+
+    T *s = _t_new(p,READ_STREAM,0,0);
+    _t_new(s,TEST_STREAM_SYMBOL,&stream,sizeof(FILE *));
+    _t_new(s,RESULT_SYMBOL,&line,sizeof(Symbol));
+
+    T *ps = _t_newr(0,PENDING_SIGNALS);
+    T *c = _t_rclone(p);
+    _t_add(t,c);
+    r->q = _p_newq(&r->defs,ps);
+
+    _p_addrt2q(r->q,t);
+    _t_free(p);
+    return r;
+}
+
+void testReceptorEdgeStream() {
+    FILE *stream;
+    char buffer[] = "line1\nline2\n";
+
+    stream = fmemopen(buffer, strlen (buffer), "r");
+
+    Xaddr to = {RECEPTOR_XADDR,0};  // 0 xaddr means SELF
+
+    Receptor *r = _r_makeFileReceptor(stream,to);
+    spec_is_str_equal(_td(r,r->root),"(TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS (SYMBOL_DECLARATION (SYMBOL_LABEL:LINE) (SYMBOL_STRUCTURE:CSTRING))) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))))");
+
+    T *expect = _t_new_root(EXPECTATION);
+
+    Symbol line = _r_get_symbol_by_label(r,"LINE");
+    char *stx = "/<LINE:LINE>";
+
+    // @fixme for some reason parseSemtrex doesn't clean up after itself
+    // valgrind reveals that some of the state in the FSA that match the
+    // semtrex are left un freed.  So I'm doing this one manually below.
+    /* T *t = parseSemtrex(&r->defs,stx); */
+    /*  _t_add(expect,t); */
+
+    T *t =_t_news(expect,SEMTREX_GROUP,line);
+    T *x =_t_newr(t,SEMTREX_SYMBOL_LITERAL);
+    _t_news(x,SEMTREX_SYMBOL,line);
+
+    /* char buf[1000]; */
+    /* _dump_semtrex(&r->defs,t,buf); */
+    /* puts(buf); */
+
+
+    t = _t_new_root(CONCAT_STR);
+    _t_news(t,RESULT_SYMBOL,TEST_STR_SYMBOL);
+    _t_new_str(t,TEST_STR_SYMBOL,"You said: ");
+    _t_news(t,INTERPOLATE_SYMBOL,line);
+
+    T *input = _t_new_root(INPUT);
+    T *output = _t_new_root(OUTPUT_SIGNATURE);
+    Process proc = _r_code_process(r,t,"echo what you said","long desc...",input,output);
+    T *act = _t_newp(0,ACTION,proc);
+
+    _r_add_listener(r,DEFAULT_ASPECT,line,expect,act);
+
+    spec_is_str_equal(_td(r,__r_get_listeners(r,DEFAULT_ASPECT)),"(LISTENERS (LISTENER:LINE (EXPECTATION (SEMTREX_GROUP:LINE (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:LINE)))) (ACTION:echo what you said)))");
+
+    // manually run the process queue
+    _p_reduceq(r->q);
+
+    T *result = r->q->blocked->context->run_tree;
+
+    spec_is_str_equal(_td(r,result),"(RUN_TREE (TEST_INT_SYMBOL:0))");
+    spec_is_str_equal(_td(r,r->q->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.0) (RECEPTOR_XADDR:RECEPTOR_XADDR.0) (ASPECT:1)) (BODY:{(LINE:line1)})))");
+
+    fclose(stream);
+    _r_free(r);
+}
+
+
 void testReceptor() {
     _setup_HTTPDefs();
     testReceptorCreate();
@@ -540,5 +624,6 @@ void testReceptor() {
     testReceptorInstanceNew();
     //    testReceptorSerialize();
     testReceptorNums();
+    testReceptorEdgeStream();
     _cleanup_HTTPDefs();
 }

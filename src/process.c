@@ -256,7 +256,21 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
         }
         rt_cur_child(code) = 1; // reset the current child count on the code
         x = _t_detach_by_idx(code,1);
+        // the actually blocking happens in redcueq which can remove the process from the
+        // round-robin
         err = Block;
+        break;
+    case SEND_ID:
+        {
+            T *t = _t_detach_by_idx(code,1);
+            Xaddr to = *(Xaddr *)_t_surface(t);
+            _t_free(t);
+            T* signal_contents = _t_detach_by_idx(code,1);
+
+            Xaddr from = {RECEPTOR_XADDR,0};  //@todo how do we say SELF??
+            x = __r_make_signal(from,to,DEFAULT_ASPECT,signal_contents);
+        }
+        err = Send;
         break;
     case INTERPOLATE_FROM_MATCH_ID:
         match_results = _t_child(code,2);
@@ -267,6 +281,29 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
         break;
     case RAISE_ID:
         return raiseReductionErr;
+        break;
+    case READ_STREAM_ID:
+        {
+            T *s = _t_detach_by_idx(code,1);
+            FILE *stream =*(FILE**)_t_surface(s);
+            _t_free(s);
+            s = _t_detach_by_idx(code,1);
+            sy = _t_symbol(s);
+            if (semeq(RESULT_SYMBOL,sy)) {
+                sy = *(Symbol *)_t_surface(s);
+                _t_free(s);
+                int ch;
+                char buf[1000]; //@todo handle buffer dynamically
+                int i = 0;
+                while ((ch = fgetc (stream)) != EOF && ch != '\n' && i < 1000)
+                    buf[i++] = ch;
+                if (i>=1000) {raise_error0("buffer overrun in READ_STREAM");}
+
+                buf[i++]=0;
+                x = _t_new(0,sy,buf,i);
+            }
+            else {raise_error0("expecting RESULT_SYMBOL");}
+        }
         break;
     default:
         raise_error("unknown sys-process id: %d",s.id);
@@ -361,9 +398,7 @@ Error _p_reduce(Defs *defs,T *rt) {
     R *context = __p_make_context(run_tree,0);
     Error e;
 
-    do {
-        e = _p_step(defs, &context);
-    } while(context->state != Done);
+    while(_p_step(defs, &context) != Done);
     e = context->err;
     free(context);
     return e;
@@ -385,10 +420,10 @@ Error _p_step(Defs *defs, R **contextP) {
     switch(context->state) {
     case noReductionErr:
     case Block:
-        raise_error0("whoa!"); // shouldn't be calling step if Done or noErr or Block
+    case Send:
+        raise_error0("whoa, virtual states can't be executed!"); // shouldn't be calling step if Done or noErr or Block or Send
         break;
     case Pop:
-
         // if this was the successful reduction by an error handler
         // move the value to the 1st child
         if (context->err) {
@@ -556,10 +591,9 @@ Error _p_step(Defs *defs, R **contextP) {
   and they are only used once, i.e. in this reduction
 */
 T *__p_make_run_tree(T *processes,Process p,T *params) {
-    T *t = _t_new_root(RUN_TREE);
     T *code_def = _d_get_process_code(processes,p);
     T *code = _t_child(code_def,3);
-
+    T *t = _t_new_root(RUN_TREE);
     T *c = _t_rclone(code);
     _t_add(t,c);
     T *ps = _t_newr(t,PARAMS);
@@ -567,6 +601,28 @@ T *__p_make_run_tree(T *processes,Process p,T *params) {
     for(i=1;i<=num_params;i++) {
         _t_add(ps,_t_detach_by_idx(params,1));
     }
+    return t;}
+
+/**
+ * low level functon to build a run tree from a code tree and a variable list of params
+ */
+T *__p_build_run_tree_va(T* code,int num_params,va_list params) {
+    T *t = _t_new_root(RUN_TREE);
+    T *c = _t_rclone(code);
+    _t_add(t,c);
+    T *ps = _t_newr(t,PARAMS);
+    int i;
+    for(i=1;i<=num_params;i++) {
+        _t_add(ps,_t_clone(va_arg(params,T *)));
+    }
+    return t;
+}
+
+T *__p_build_run_tree(T* code,int num_params,...) {
+    va_list params;
+    va_start(params,num_params);
+    T *t = __p_build_run_tree_va(code,num_params,params);
+    va_end(params);
     return t;
 }
 
@@ -580,21 +636,24 @@ T *__p_make_run_tree(T *processes,Process p,T *params) {
  * @returns T RUN_TREE tree
  */
 T *_p_make_run_tree(T *processes,T *process,int num_params,...) {
-    va_list params;
-    int i;
 
-    T *t = _t_new_root(RUN_TREE);
+    T *t = NULL;
+    va_list params;
 
     Process p = *(Process *)_t_surface(process);
     if (!is_process(p)) {
         raise_error("%s is not a Process",_d_get_process_name(processes,p));
     }
     if (is_sys_process(p)) {
+        t =  _t_new_root(RUN_TREE);
         // if it's a sys process we add the parameters directly as children to the process
         // because no sys-processes refer to PARAMS by path
+        // this also means we need rclone them instead of clone them because they
+        // will actually need to have space for the status marks by the processing code
         T *c = __t_new(t,p,0,0,sizeof(rT));
 
         va_start(params,num_params);
+        int i;
         for(i=0;i<num_params;i++) {
             _t_add(c,_t_rclone(va_arg(params,T *)));
         }
@@ -604,13 +663,9 @@ T *_p_make_run_tree(T *processes,T *process,int num_params,...) {
         T *code_def = _d_get_process_code(processes,p);
         T *code = _t_child(code_def,3);
 
-        T *c = _t_rclone(code);
-        _t_add(t,c);
-        T *ps = _t_newr(t,PARAMS);
+        va_list params;
         va_start(params,num_params);
-        for(i=0;i<num_params;i++) {
-            _t_add(ps,_t_clone(va_arg(params,T *)));
-        }
+        t = __p_build_run_tree_va(code,num_params,params);
         va_end(params);
     }
     return t;
@@ -622,13 +677,14 @@ T *_p_make_run_tree(T *processes,T *process,int num_params,...) {
  * @param[in] defs definitions that
  * @returns Q the processing queue
  */
-Q *_p_newq(Defs *defs) {
+Q *_p_newq(Defs *defs,T *pending_signals) {
     Q *q = malloc(sizeof(Q));
     q->defs = defs;
     q->contexts_count = 0;
     q->active = NULL;
     q->completed = NULL;
     q->blocked = NULL;
+    q->pending_signals = pending_signals;
     return q;
 }
 
@@ -665,6 +721,8 @@ void _p_freeq(Q *q) {
     Qe *e = q->active;
     _p_free_elements(q->active);
     _p_free_elements(q->completed);
+    _p_free_elements(q->blocked);
+    if (q->pending_signals) _t_free(q->pending_signals);
     free(q);
 }
 
@@ -705,18 +763,18 @@ Error _p_reduceq(Q *q) {
     printf("\n\nStarting reduce:\n");
 #endif
     Qe *qe = q->active;
-    Error e;
+    Error next_state;
     struct timespec start, end;
 
     while (q->contexts_count) {
 
 #ifdef debug_reduce
         R *context = qe->context;
-        char *sn[]={"Ascend","Descend","Pushed","Pop","Eval","Done"};
+        char *sn[]={"Ascend","Descend","Pushed","Pop","Eval","Block","Send","Done"};
         char *s = context->state <= 0 ? sn[-context->state -1] : "Error";
         printf("ID:%p -- State %s : %d\n",qe,s,context->state);
         printf("  idx:%d\n",context->idx);
-        puts(t2s(context->run_tree));
+        puts(_t2s(q->defs,context->run_tree));
         if (context) {
             if (context->node_pointer == 0) {
                 printf("Node Pointer: NULL!\n");
@@ -734,12 +792,12 @@ Error _p_reduceq(Q *q) {
 #endif
 
         clock_gettime(CLOCK_MONOTONIC, &start);
-        e = _p_step(q->defs, &qe->context);
+        next_state = _p_step(q->defs, &qe->context); // next state is set in directly in the context
         clock_gettime(CLOCK_MONOTONIC, &end);
         qe->accounts.elapsed_time +=  diff_micro(&start, &end);
 
         Qe *next = qe->next;
-        if (qe->context->state == Done) {
+        if (next_state == Done) {
             // remove from the round-robin
             __p_dequeue(q->active,qe);
 
@@ -747,11 +805,36 @@ Error _p_reduceq(Q *q) {
             __p_enqueue(q->completed,qe);
             q->contexts_count--;
         }
-        else if (qe->context->state == Block) {
+        else if (next_state == Block) {
             // remove from the round-robin
             __p_dequeue(q->active,qe);
 
-            // add to the completed list
+            // add to the blocked list
+            __p_enqueue(q->blocked,qe);
+            q->contexts_count--;
+        }
+        else if (next_state == Send) {
+            // remove from the round-robin
+            __p_dequeue(q->active,qe);
+
+            // take the signal off the run tree and send it, adding a send result in it's place
+            T *signal = qe->context->node_pointer;
+            T *parent = _t_parent(signal);
+
+            //@todo figure out what that return value should be.  Probably some result from
+            // the actual signal sending machinery, or at least what ever is going to
+            // evaluate the destination address for validity.
+            T *result = _t_newi(0,TEST_INT_SYMBOL,0);
+
+            //@todo refactor this into a version of _t_replace that swaps out the given child and returns it
+            // rather than freeing it.
+            parent->structure.children[0] = result; // 0 is the first child
+            result->structure.parent = parent;
+            signal->structure.parent = NULL;
+
+            _t_add(q->pending_signals,signal);
+
+            // add to the blocked list
             __p_enqueue(q->blocked,qe);
             q->contexts_count--;
         }

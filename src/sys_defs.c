@@ -48,6 +48,7 @@ Structure STRUCTURE = {SYS_CONTEXT,SEM_TYPE_STRUCTURE,STRUCTURE_ID};
 Structure SCAPE = {SYS_CONTEXT,SEM_TYPE_STRUCTURE,SCAPE_ID};
 Structure PROTOCOL = {SYS_CONTEXT,SEM_TYPE_STRUCTURE,PROTOCOL_ID};
 Structure SEMTREX = {SYS_CONTEXT,SEM_TYPE_STRUCTURE,SEMTREX_ID};
+Structure STREAM = {SYS_CONTEXT,SEM_TYPE_STRUCTURE,STREAM_ID};
 
 Process NULL_PROCESS = {0,SEM_TYPE_PROCESS,0};
 Process NOOP = {SYS_CONTEXT,SEM_TYPE_PROCESS,NOOP_ID};
@@ -64,10 +65,12 @@ Process LTE_INT = {SYS_CONTEXT,SEM_TYPE_PROCESS,LTE_INT_ID};
 Process GTE_INT = {SYS_CONTEXT,SEM_TYPE_PROCESS,GTE_INT_ID};
 Process CONCAT_STR = {SYS_CONTEXT,SEM_TYPE_PROCESS,CONCAT_STR_ID};
 Process RESPOND = {SYS_CONTEXT,SEM_TYPE_PROCESS,RESPOND_ID};
+Process SEND = {SYS_CONTEXT,SEM_TYPE_PROCESS,SEND_ID};
 Process EXPECT_ACT = {SYS_CONTEXT,SEM_TYPE_PROCESS,EXPECT_ACT_ID};
 Process QUOTE = {SYS_CONTEXT,SEM_TYPE_PROCESS,QUOTE_ID};
 Process INTERPOLATE_FROM_MATCH = {SYS_CONTEXT,SEM_TYPE_PROCESS,INTERPOLATE_FROM_MATCH_ID};
 Process RAISE = {SYS_CONTEXT,SEM_TYPE_PROCESS,RAISE_ID};
+Process READ_STREAM = {SYS_CONTEXT,SEM_TYPE_PROCESS,READ_STREAM_ID};
 
 void def_sys() {
     G_sys_root = _t_new_root(DEFINITIONS);
@@ -92,6 +95,7 @@ void def_sys() {
     sT(STRUCTURE,1,NULL_SYMBOL);
     sT(SCAPE,1,NULL_SYMBOL);
     sT(SEMTREX,1,NULL_SYMBOL);
+    sT(STREAM,1,NULL_SYMBOL);
 
     sY(DEFINITIONS,LIST);
     sY(STRUCTURES,LIST);
@@ -138,7 +142,7 @@ void def_sys() {
     sY(ASPECTS,LIST);
     sY(ASPECT_DEF,TREE);
     sY(ASPECT_TYPE,BIT);
-    sY(CARRIER,SYMBOL);
+    sY(CARRIER,INTEGER); //@todo fix to proper structure when we understand this  currently CARRIER is c pointer, but we have it set to an INTEGER so it prints in the tree debug dump
     sY(ASPECT,INTEGER);
     sY(SIGNALS,LIST);
     sY(SIGNAL,TREE);
@@ -215,10 +219,12 @@ void def_sys() {
     sP(GTE_INT,"test greater than or equal",0,0);
     sP(CONCAT_STR,"concatinate strings",0,0);
     sP(RESPOND,"respond to signal",0,0);
+    sP(SEND,"send a signal",0,0);
     sP(EXPECT_ACT,"block run tree until expectation met and then act",0,0);
     sP(QUOTE,"quote a process so that it can be passed as a value",0,0);
     sP(INTERPOLATE_FROM_MATCH,"interploate match result in place",0,0);
     sP(RAISE,"raise reduction error",0,0);
+    sP(READ_STREAM,"read a unix stream",0,0);
 
     sYt(TEST_INT_SYMBOL,INTEGER);
     sYt(TEST_INT_SYMBOL2,INTEGER);
@@ -226,6 +232,7 @@ void def_sys() {
     sYt(TEST_STR_SYMBOL,CSTRING);
     sYt(TEST_TREE_SYMBOL,TREE);
     sYt(TEST_TREE_SYMBOL2,TREE);
+    sYt(TEST_STREAM_SYMBOL,STREAM);
     sYt(TEST_NAME_SYMBOL,CSTRING);
     sYt(TEST_RECEPTOR_SYMBOL,RECEPTOR);
     sYt(TEST_ALPHABETIZE_SCAPE_SYMBOL,SCAPE);

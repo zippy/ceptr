@@ -81,6 +81,7 @@ void testRunTree() {
     r = _p_make_run_tree(processes,act,2,p1,p2);
     spec_is_str_equal(t2s(r),"(RUN_TREE (process:ADD_INT (TEST_INT_SYMBOL:123) (TEST_INT_SYMBOL:321)))");
 
+    _t_free(act);
     _t_free(r);
     _t_free(processes);
     _t_free(p1);
@@ -292,6 +293,56 @@ void testProcessRespond() {
     _t_free(s);
 }
 
+void testProcessSend() {
+    T *p = _t_newr(0,SEND);
+    Xaddr to = {RECEPTOR_XADDR,3};  // DUMMY XADDR
+
+    _t_new(p,RECEPTOR_XADDR,&to,sizeof(to));
+    _t_newi(p,TEST_INT_SYMBOL,314);
+
+    T *code =_t_rclone(p);
+
+    // test the basic sys_process reduction which should produce the symbol and set the state to Send
+    // for reduceq to know what to do
+    spec_is_equal(Send,__p_reduce_sys_proc(0,SEND,code));
+    spec_is_str_equal(t2s(code),"(SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.0) (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (ASPECT:1)) (BODY:{(TEST_INT_SYMBOL:314)}))");
+
+    _t_free(code);
+
+    // test the reduction at the reduceq level where it can handle taking the signal and queuing it
+    T *run_tree = _t_new_root(RUN_TREE);
+    code =_t_rclone(p);
+    _t_free(p);
+
+    _t_add(run_tree,code);
+
+    // add the run tree into a queue and run it
+    Defs defs;
+    T *ps = _t_newr(0,PENDING_SIGNALS);
+    Q *q = _p_newq(&defs,ps);
+
+    _t_newr(run_tree,PARAMS);
+    _p_addrt2q(q,run_tree);
+
+    Qe *e = q->active;
+    R *c = e->context;
+
+    // after reduction the context should be in the blocked state
+    // and the signal should be on the pending signals list
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+
+    spec_is_equal(q->contexts_count,0);
+    spec_is_ptr_equal(q->blocked,e);
+    spec_is_equal(c->state,Send);
+
+    //@todo and the tree should have reduced to:  ??? WHAT does SEND reduce to
+    // kind of the same question as for respond
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (TEST_INT_SYMBOL:0) (PARAMS))");
+    spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.0) (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (ASPECT:1)) (BODY:{(TEST_INT_SYMBOL:314)})))");
+
+    _p_freeq(q);
+}
+
 void testProcessQuote() {
     Defs defs;
     T *t = _t_new_root(RUN_TREE);
@@ -338,8 +389,8 @@ void testProcessStream() {
     _t_free(n);
     _t_free(run_tree);
     fclose(stream);
-
 }
+
 
 void testProcessExpectAct() {
 
@@ -370,7 +421,7 @@ void testProcessExpectAct() {
 
     // add the run tree into a queue and run it
     Defs defs;
-    Q *q = _p_newq(&defs);
+    Q *q = _p_newq(&defs,0);
 
     _t_newr(run_tree,PARAMS);
     _p_addrt2q(q,run_tree);
@@ -720,7 +771,7 @@ void testProcessMulti() {
     T *t2 = __p_make_run_tree(processes,if_even,n);
 
     // add them to a processing queue
-    Q *q = _p_newq(&defs);
+    Q *q = _p_newq(&defs,0);
     spec_is_equal(q->contexts_count,0);
     spec_is_ptr_equal(q->active,NULL);
     _p_addrt2q(q,t1);
@@ -773,6 +824,7 @@ void testProcess() {
     testProcessIntMath();
     testProcessString();
     testProcessRespond();
+    testProcessSend();
     testProcessQuote();
     testProcessStream();
     testProcessExpectAct();

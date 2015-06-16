@@ -946,6 +946,9 @@ char * _t2json(Defs *defs,T *t,int level,char *buf) {
                 x = *(Xaddr *)_t_surface(t);
                 sprintf(buf,"\"type\":\"XADDR\",\"name\":\"%s\",\"surface\":{ \"symbol\":\"%s\",\"addr\":%d }",n,_d_get_symbol_name(symbols,x.symbol),x.addr);
                 break;
+            case STREAM_ID:
+                sprintf(buf,"\"type\":\"STREAM\",\"name\":\"%s\",\"surface\":\"%p\"",n,_t_surface(t));
+                break;
             case TREE_ID:
                 if (t->context.flags & TFLAG_SURFACE_IS_TREE) {
                     c = _t2json(defs,(T *)_t_surface(t),0,tbuf);

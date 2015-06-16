@@ -585,7 +585,7 @@ Error _r_deliver(Receptor *r, T *signal) {
     // if the receptor has no process queue then make one!
     // @todo, should this really be happening here?
     if (!r->q) {
-        r->q = _p_newq(&r->defs);
+        r->q = _p_newq(&r->defs,0);
     }
 
     DO_KIDS(ls,
