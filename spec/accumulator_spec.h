@@ -5,15 +5,15 @@
  */
 
 #include "../src/ceptr.h"
-#include "../src/de.h"
+#include "../src/accumulator.h"
 
 void testBootStrap() {
     spec_is_ptr_equal(G_vm,NULL);
-    _de_boot();
+    _a_boot();
     spec_is_symbol_equal(G_vm->r,_t_symbol(G_vm->r->root),VM_HOST_RECEPTOR);
     _v_free(G_vm);
 }
 
-void testDataEngine() {
+void testAccumulator() {
     testBootStrap();
 }

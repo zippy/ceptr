@@ -21,7 +21,7 @@
 #include "process_spec.h"
 #include "scape_spec.h"
 #include "vmhost_spec.h"
-#include "de_spec.h"
+#include "accumulator_spec.h"
 
 #include "profile_example.h"
 
@@ -48,7 +48,7 @@ int main(int argc, const char **argv) {
     testProcess();
     testScape();
     testVMHost();
-    testDataEngine();
+    testAccumulator();
 
     //***** examples
     testProfileExample();

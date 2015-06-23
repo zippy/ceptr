@@ -11,7 +11,7 @@
 #include "receptor.h"
 #include "semtrex.h"
 #include "process.h"
-#include "de.h"
+#include "accumulator.h"
 #include <stdarg.h>
 
 Xaddr G_null_xaddr  = {0,0};
@@ -109,7 +109,7 @@ void _r_add_listener(Receptor *r,Aspect aspect,Symbol carrier,T *expectation,T* 
 void _r_free(Receptor *r) {
     _t_free(r->root);
     lableTableFree(&r->table);
-    _de_free_instances(&r->instances);
+    _a_free_instances(&r->instances);
     if (r->q) _p_freeq(r->q);
 
     free(r);
@@ -331,7 +331,7 @@ void _r_express_protocol(Receptor *r,int idx,Symbol sequence,Aspect aspect,T* ha
  * @snippet spec/receptor_spec.h testReceptorInstanceNew
  */
 Xaddr _r_new_instance(Receptor *r,T *t) {
-    return _de_new_instance(&r->instances,t);
+    return _a_new_instance(&r->instances,t);
 }
 
 /**
@@ -345,7 +345,7 @@ Xaddr _r_new_instance(Receptor *r,T *t) {
  * @snippet spec/receptor_spec.h testReceptorInstanceNew
  */
 T * _r_get_instance(Receptor *r,Xaddr x) {
-    return _de_get_instance(&r->instances,x);
+    return _a_get_instance(&r->instances,x);
 }
 
 /**
@@ -485,7 +485,7 @@ void __r_deliver_signals(Receptor *self,T *signals,Instances *receptor_instances
         Xaddr to = *(Xaddr *)_t_surface(_t_child(envelope,2));
 
         Receptor *r = (to.addr == 0) ? self :
-            (Receptor *)_t_surface(_t_child(_de_get_instance(receptor_instances,to),1)); // the receptor itself is the surface of the first child of the INSTALLED_RECEPTOR (bleah)
+            (Receptor *)_t_surface(_t_child(_a_get_instance(receptor_instances,to),1)); // the receptor itself is the surface of the first child of the INSTALLED_RECEPTOR (bleah)
 
         Error err = _r_deliver(r,s);
         if (err) {

@@ -7,7 +7,7 @@
 #include "../src/ceptr.h"
 #include "../src/receptor.h"
 #include "../src/def.h"
-#include "../src/de.h"
+#include "../src/accumulator.h"
 #include "http_example.h"
 
 void testReceptorCreate() {
@@ -576,7 +576,7 @@ void testReceptorEdgeStream() {
     // T *ir = _t_new_root(INSTALLED_RECEPTOR);
     // _t_new_receptor(ir,TEST_RECEPTOR_SYMBOL,r);
     Instances instances = NULL;
-    //    Xaddr testReceptor = _de_new_instance(&instances,ir);
+    //    Xaddr testReceptor = _a_new_instance(&instances,ir);
 
     spec_is_str_equal(_td(r,r->root),"(TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS (SYMBOL_DECLARATION (SYMBOL_LABEL:LINE) (SYMBOL_STRUCTURE:CSTRING))) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))))");
 

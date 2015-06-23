@@ -10,7 +10,7 @@
 
 #include "vmhost.h"
 #include "tree.h"
-#include "de.h"
+#include "accumulator.h"
 /******************  create and destroy virtual machine */
 
 /**

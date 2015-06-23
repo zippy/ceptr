@@ -1,14 +1,14 @@
 /**
- * @ingroup data
+ * @ingroup accumulator
  *
  * @{
- * @file de.c
- * @brief implementation file for data engine
+ * @file accumulator.c
+ * @brief implementation file for accumulator
  *
  * @copyright Copyright (C) 2013-2014, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
  */
 
-#include "de.h"
+#include "accumulator.h"
 #include "semtrex.h"
 
 VMHost *G_vm = 0;
@@ -21,19 +21,19 @@ VMHost *G_vm = 0;
  * @TODO check the compository to verify our version of the vmhost
  *
  */
-void _de_boot() {
+void _a_boot() {
     // _de_check_vm_host_version_on_the_compository();
-    _de_start_vmhost();
+    _a_start_vmhost();
 }
 
 // for now starting the vmhost just means creating a global instance of it.
-void _de_start_vmhost() {
+void _a_start_vmhost() {
     G_vm = _v_new();
 }
 
 /*------------------------------------------------------------------------*/
 
-T *_de_get_instance(Instances *instances,Xaddr x) {
+T *_a_get_instance(Instances *instances,Xaddr x) {
     instances_elem *e = 0;
     HASH_FIND_INT( *instances, &x.symbol, e );
     if (e) {
@@ -47,7 +47,7 @@ T *_de_get_instance(Instances *instances,Xaddr x) {
     return 0;
 }
 
-Xaddr _de_new_instance(Instances *instances,T *t) {
+Xaddr _a_new_instance(Instances *instances,T *t) {
     Symbol s = _t_symbol(t);
     instances_elem *e;
 
@@ -83,7 +83,7 @@ void instanceFree(Instance *i) {
     }
 }
 
-void _de_free_instances(Instances *i) {
+void _a_free_instances(Instances *i) {
     instances_elem *cur,*tmp;
     HASH_ITER(hh, *i, cur, tmp) {
         instanceFree(&(*i)->instances);
