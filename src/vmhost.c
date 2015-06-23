@@ -10,6 +10,7 @@
 
 #include "vmhost.h"
 #include "tree.h"
+#include "de.h"
 /******************  create and destroy virtual machine */
 
 /**
@@ -184,34 +185,10 @@ void _v_send_signals(VMHost *v,T *signals) {
 }
 
 /**
- * walk through the list of pending signals and deliver them
+ * scaffolding function for signal delviery
  */
-void __v_process_signals(VMHost *v) {
+void __v_deliver_signals(VMHost *v) {
     T *signals = v->pending_signals;
-    while(_t_children(signals)>0) {
-        T *s = _t_detach_by_idx(signals,1);
-        T *envelope = _t_child(s,1);
-        //      T *contents = _t_child(s,2);
-        Xaddr to = *(Xaddr *)_t_surface(_t_child(envelope,2));
-        Receptor *r = (Receptor *)_t_surface(_t_child(_r_get_instance(v->r,to),1)); // the receptor itself is the surface of the first child of the INSTALLED_RECEPTOR (bleah)
-        Aspect a = *(Aspect *)_t_surface(_t_child(envelope,3));
-        Error err = _r_deliver(r,s);
-        if (err) {
-            raise_error("delivery error: %d",err);
-        }
-        // manually run the process queue
-        if (r->q) {
-            _p_reduceq(r->q);
-
-            if (r->q->completed) {
-                T *result = r->q->completed->context->run_tree;
-                T *signals = _t_child(result,_t_children(result));
-                // if the results added signals then send em!
-                if (semeq(SIGNALS,_t_symbol(signals))) {
-                    _v_send_signals(v,signals);
-                }
-            }
-        }
-    }
+    __r_deliver_signals(v->r,signals,&v->r->instances);
 }
 /** @}*/

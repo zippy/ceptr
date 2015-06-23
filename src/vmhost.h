@@ -40,7 +40,7 @@ void __v_activate(VMHost *v, Receptor *r);
 void _v_send(VMHost *v,Xaddr from,Xaddr to,Aspect aspect,T *contents);
 void _v_send_signals(VMHost *v,T *signals);
 
-void __v_process_signals(VMHost *v);
+void __v_deliver_signals(VMHost *v);
 
 #endif
 /** @}*/

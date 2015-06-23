@@ -287,9 +287,33 @@ void testVMHostActivateReceptor() {
     _v_send(v,cx,sx,DEFAULT_ASPECT,_t_newi(0,ping,0));
 
     spec_is_str_equal(_td(client,v->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:INSTALLED_RECEPTOR.2) (RECEPTOR_XADDR:INSTALLED_RECEPTOR.1) (ASPECT:1)) (BODY:{(ping_message:0)})))");
-
     // simulate round-robin processing of signals
-    __v_process_signals(v);
+    __v_deliver_signals(v);
+    if (server->q) {
+        _p_reduceq(server->q);
+        if (server->q->completed) {
+            T *result = server->q->completed->context->run_tree;
+            T *signals = _t_child(result,_t_children(result));
+            // if the results added signals then send em!
+            if (semeq(SIGNALS,_t_symbol(signals))) {
+                _v_send_signals(v,signals);
+            }
+        }
+    }
+    __v_deliver_signals(v);
+    if (client->q) {
+        _p_reduceq(client->q);
+        if (client->q->completed) {
+            T *result = client->q->completed->context->run_tree;
+            T *signals = _t_child(result,_t_children(result));
+            // if the results added signals then send em!
+            if (semeq(SIGNALS,_t_symbol(signals))) {
+                _v_send_signals(v,signals);
+            }
+        }
+    }
+
+
 
     // now confirm that the signal was sent,
     // first that the pending signals list is empty
@@ -297,7 +321,7 @@ void testVMHostActivateReceptor() {
 
     // and that the client now has the arrived response ping signal, plus the reduced action run-tree
     T *t = __r_get_signals(client,DEFAULT_ASPECT);
-    spec_is_str_equal(_td(client,t),"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:INSTALLED_RECEPTOR.1) (RECEPTOR_XADDR:INSTALLED_RECEPTOR.2) (ASPECT:1)) (BODY:{(alive_message:1)}) (RUN_TREE (TEST_INT_SYMBOL:314) (PARAMS (SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:NULL_SYMBOL) (SEMTREX_MATCH_PATH:) (SEMTREX_MATCH_SIBLINGS_COUNT:1)) (alive_message:1)))))");
+    spec_is_str_equal(_td(client,t),"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:INSTALLED_RECEPTOR.1) (RECEPTOR_XADDR:INSTALLED_RECEPTOR.2) (ASPECT:1)) (BODY:{(alive_message:1)}) (RUN_TREE (TEST_INT_SYMBOL:314) (PARAMS))))");
 
     _v_free(v);
     //! [testVMHostActivateReceptor]

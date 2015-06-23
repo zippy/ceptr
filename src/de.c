@@ -31,4 +31,65 @@ void _de_start_vmhost() {
     G_vm = _v_new();
 }
 
+/*------------------------------------------------------------------------*/
+
+T *_de_get_instance(Instances *instances,Xaddr x) {
+    instances_elem *e = 0;
+    HASH_FIND_INT( *instances, &x.symbol, e );
+    if (e) {
+        instance_elem *i = 0;
+        Instance *iP = &e->instances;
+        HASH_FIND_INT( *iP, &x.addr, i );
+        if (i) {
+            return i->instance;
+        }
+    }
+    return 0;
+}
+
+Xaddr _de_new_instance(Instances *instances,T *t) {
+    Symbol s = _t_symbol(t);
+    instances_elem *e;
+
+    HASH_FIND_INT( *instances, &s, e );
+    if (!e) {
+        e = malloc(sizeof(struct instances_elem));
+        e->instances = NULL;
+        e->s = s;
+        e->last_id = 0;
+        HASH_ADD_INT(*instances,s,e);
+    }
+    e->last_id++;
+    instance_elem *i;
+    i = malloc(sizeof(struct instance_elem));
+    i->instance = t;
+    i->addr = e->last_id;
+    Instance *iP = &e->instances;
+    HASH_ADD_INT(*iP,addr,i);
+
+    Xaddr result;
+    result.symbol = s;
+    result.addr = e->last_id;
+
+    return result;
+}
+
+void instanceFree(Instance *i) {
+    instance_elem *cur,*tmp;
+    HASH_ITER(hh, *i, cur, tmp) {
+        _t_free((*i)->instance);
+        HASH_DEL(*i,cur);  /* delete; cur advances to next */
+        free(cur);
+    }
+}
+
+void _de_free_instances(Instances *i) {
+    instances_elem *cur,*tmp;
+    HASH_ITER(hh, *i, cur, tmp) {
+        instanceFree(&(*i)->instances);
+        HASH_DEL(*i,cur);  /* delete; cur advances to next */
+        free(cur);
+    }
+}
+
 /** @}*/

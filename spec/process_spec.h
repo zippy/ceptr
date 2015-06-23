@@ -397,7 +397,8 @@ void testProcessExpectAct() {
     T *run_tree = _t_new_root(RUN_TREE);
     T *p = _t_newr(0,EXPECT_ACT);
 
-    // expect action pairs take the carrier (i.e. scope/flux's listeners/aspect) as the first child
+    // expect action take the carrier (i.e. scope/flux's listeners/aspect) as the first child
+    // the construct params as the second child, and the code to run as the third
     // @fixme for now we are doing a huge cheat and just putting the c pointer to a tree node
     // as the carrier (kind of like SEMTREX_MATCH_CURSOR).  Later we'll figure out how to
     // deal with this.
@@ -408,11 +409,16 @@ void testProcessExpectAct() {
     T *t = _t_news(p,SEMTREX_GROUP,TEST_INT_SYMBOL);
     _sl(t,TEST_INT_SYMBOL);
 
-    // and some template code as the action for the third child that will
-    // be filled out by the semtrex match
+    // construct params that will be interpolated against the match as the third
+    T *params = _t_newr(p,PARAMS);
+    _t_news(params,INTERPOLATE_SYMBOL,TEST_INT_SYMBOL);
+
+    // and some quoted code as the action as the fourth child to be executed
+    // which can use the matched data via PARAM_REFs
     T *n = _t_newr(p,QUOTE);
     n = _t_newr(n,ADD_INT);
-    _t_news(n,INTERPOLATE_SYMBOL,TEST_INT_SYMBOL);
+    int pt[] = {2,1,1,TREE_PATH_TERMINATOR};
+    _t_new(n,PARAM_REF,pt,sizeof(int)*4);
     _t_newi(n,TEST_INT_SYMBOL,100);
 
     T *code =_t_rclone(p);
@@ -437,12 +443,12 @@ void testProcessExpectAct() {
     spec_is_equal(c->state,Block);
 
     // and the tree should have reduced to the Action param (which was third)
-    spec_is_str_equal(t2s(code),"(process:ADD_INT (INTERPOLATE_SYMBOL:TEST_INT_SYMBOL) (TEST_INT_SYMBOL:100))");
+    spec_is_str_equal(t2s(code),"(process:ADD_INT (PARAM_REF:/2/1/1) (TEST_INT_SYMBOL:100))");
 
     // and the listener should have the expectation added to it (see todo in process.c about fixing how
     // the carrier is passed in)
 
-    spec_is_str_equal(t2s(listener),"(LISTENER:TEST_INT_SYMBOL (EXPECTATION (SEMTREX_GROUP:TEST_INT_SYMBOL (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TEST_INT_SYMBOL)))) (process:EXPECT_ACT))");
+    spec_is_str_equal(t2s(listener),"(LISTENER:TEST_INT_SYMBOL (EXPECTATION (SEMTREX_GROUP:TEST_INT_SYMBOL (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TEST_INT_SYMBOL)))) (PARAMS (INTERPOLATE_SYMBOL:TEST_INT_SYMBOL)) (process:EXPECT_ACT))");
 
     // simulate matching an incoming signal on the listener
 
@@ -459,11 +465,14 @@ void testProcessExpectAct() {
     spec_is_equal(c->state,Eval);
     spec_is_ptr_equal(q->blocked,NULL);
     spec_is_ptr_equal(q->active,e);
-    // and it should also have done the interpolation from the match in the signal
-    spec_is_str_equal(t2s(code),"(process:ADD_INT (TEST_INT_SYMBOL:314) (TEST_INT_SYMBOL:100))");
+    // and it should also have done the interpolation from the match in the signal and added
+    // it to the params.  Note that there are nested PARAMS, for now that's how we are handling
+    // scoping of the the results from the expectation
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (process:ADD_INT (PARAM_REF:/2/1/1) (TEST_INT_SYMBOL:100)) (PARAMS (PARAMS (TEST_INT_SYMBOL:314))))");
+
     // reducing the q, should finally give us the completed process
     spec_is_equal(_p_reduceq(q),noReductionErr);
-    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (TEST_INT_SYMBOL:414) (PARAMS))");
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (TEST_INT_SYMBOL:414) (PARAMS (PARAMS (TEST_INT_SYMBOL:314))))");
 
     _p_freeq(q);
     _t_free(signal);

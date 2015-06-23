@@ -11,6 +11,7 @@
 #include "receptor.h"
 #include "semtrex.h"
 #include "process.h"
+#include "de.h"
 #include <stdarg.h>
 
 Xaddr G_null_xaddr  = {0,0};
@@ -93,30 +94,13 @@ Receptor *_r_new_receptor_from_package(Symbol s,T *p,T *bindings) {
 /**
  * Adds an expectation/action pair to a receptor's aspect.
  */
-void _r_add_listener(Receptor *r,Aspect aspect,Symbol carrier,T *expectation,T *action) {
-    T *e = _t_news(0,LISTENER,carrier);
-    _t_add(e,expectation);
-    _t_add(e,action);
+void _r_add_listener(Receptor *r,Aspect aspect,Symbol carrier,T *expectation,T* params,T *action) {
+    T *l = _t_news(0,LISTENER,carrier);
+    _t_add(l,expectation);
+    _t_add(l,params);
+    _t_add(l,action);
     T *a = __r_get_listeners(r,aspect);
-    _t_add(a,e);
-}
-
-void instanceFree(Instance *i) {
-    instance_elem *cur,*tmp;
-    HASH_ITER(hh, *i, cur, tmp) {
-        _t_free((*i)->instance);
-        HASH_DEL(*i,cur);  /* delete; cur advances to next */
-        free(cur);
-    }
-}
-
-void instancesFree(Instances *i) {
-    instances_elem *cur,*tmp;
-    HASH_ITER(hh, *i, cur, tmp) {
-        instanceFree(&(*i)->instances);
-        HASH_DEL(*i,cur);  /* delete; cur advances to next */
-        free(cur);
-    }
+    _t_add(a,l);
 }
 
 /**
@@ -125,8 +109,9 @@ void instancesFree(Instances *i) {
 void _r_free(Receptor *r) {
     _t_free(r->root);
     lableTableFree(&r->table);
-    instancesFree(&r->instances);
+    _de_free_instances(&r->instances);
     if (r->q) _p_freeq(r->q);
+
     free(r);
 }
 
@@ -308,7 +293,8 @@ void _r_express_protocol(Receptor *r,int idx,Symbol sequence,Aspect aspect,T* ha
                 T *step = _t_child(steps,j);
                 if (semeq(_t_symbol(step),step1)) {
                     T *expect = _t_clone(_t_child(step,1));
-                    T *act = _t_child(step,2);
+                    T *params = _t_clone(_t_child(step,2));
+                    T *act = _t_child(step,3);
                     // if there is no action, then assume its the sequence endpoint
                     // and use the handler in its place
                     // @todo revisit the assumption about handlers and endpoints
@@ -319,7 +305,7 @@ void _r_express_protocol(Receptor *r,int idx,Symbol sequence,Aspect aspect,T* ha
                     //@todo turns out we don't use the carrier for anything yet, so
                     // we can just set it to a NULL_SYMBOL.  This will have to change
                     // once we actually get carriers figured out
-                    _r_add_listener(r,aspect,NULL_SYMBOL,expect,act);
+                    _r_add_listener(r,aspect,NULL_SYMBOL,expect,params,act);
                     return;
                 }
             }
@@ -327,47 +313,6 @@ void _r_express_protocol(Receptor *r,int idx,Symbol sequence,Aspect aspect,T* ha
         }
     }
     raise_error("sequence not found:%s",_r_get_symbol_name(r,sequence));
-}
-
-/**
- * Install listeners on an aspect for a given role in a protocol
- *
- * @param[in] r the receptor
- * @param[in] idx the index of the protocol in the definition tree
- * @param[in] role the name of the role to install
- * @param[in] aspect the aspect on which to install listeners for this protocol
- *
- * <b>Examples (from test suite):</b>
- * @snippet spec/receptor_spec.h testReceptorProtocol
- */
-void _r_install_protocol(Receptor *r,int idx,char *role,Aspect aspect) {
-    T *p = _t_child(r->defs.protocols,idx);
-    //@todo check that role exists
-    T *aspects = _t_child(r->root,2);
-    T *a = _t_child(aspects,aspect);
-
-    // get the aspects input carrier
-    Symbol a_ic = *(Symbol *)_t_surface(_t_child(a,2));
-
-    T *interactions = _t_child(p,2);
-    int j,c = _t_children(interactions);
-    for(j=1;j<=c;j++) {
-
-        T *i = _t_child(interactions,j);
-        //      raise(SIGINT);
-        // the TO_ROLE indicates the expectation actions we must install
-        if (!strcmp(role,(char *)_t_surface(_t_child(i,3)))) {
-            // get the protocols input_carrier
-            Symbol ic = *(Symbol *)_t_surface(_t_child(i,4));
-            if (!semeq(a_ic,ic)) {
-                //              raise_error2("input carriers don't match: aspect=%s protocol=%s",_r_get_symbol_name(r,a_ic),_r_get_symbol_name(r,ic));
-raise_error2("input carriers don't match: aspect=%d protocol=%d",a_ic.id,ic.id);
-            }
-            T *expect = _t_clone(_t_child(i,6));
-            T *act = _t_clone(_t_child(i,7));
-            _r_add_listener(r,aspect,ic,expect,act);
-        }
-    }
 }
 
 /*****************  receptor instances and xaddrs */
@@ -386,31 +331,7 @@ raise_error2("input carriers don't match: aspect=%d protocol=%d",a_ic.id,ic.id);
  * @snippet spec/receptor_spec.h testReceptorInstanceNew
  */
 Xaddr _r_new_instance(Receptor *r,T *t) {
-    Symbol s = _t_symbol(t);
-    Instances *instances = &r->instances;
-    instances_elem *e;
-
-    HASH_FIND_INT( *instances, &s, e );
-    if (!e) {
-        e = malloc(sizeof(struct instances_elem));
-        e->instances = NULL;
-        e->s = s;
-        e->last_id = 0;
-        HASH_ADD_INT(*instances,s,e);
-    }
-    e->last_id++;
-    instance_elem *i;
-    i = malloc(sizeof(struct instance_elem));
-    i->instance = t;
-    i->addr = e->last_id;
-    Instance *iP = &e->instances;
-    HASH_ADD_INT(*iP,addr,i);
-
-    Xaddr result;
-    result.symbol = s;
-    result.addr = e->last_id;
-
-    return result;
+    return _de_new_instance(&r->instances,t);
 }
 
 /**
@@ -424,18 +345,7 @@ Xaddr _r_new_instance(Receptor *r,T *t) {
  * @snippet spec/receptor_spec.h testReceptorInstanceNew
  */
 T * _r_get_instance(Receptor *r,Xaddr x) {
-    Instances *instances = &r->instances;
-    instances_elem *e = 0;
-    HASH_FIND_INT( *instances, &x.symbol, e );
-    if (e) {
-        instance_elem *i = 0;
-        Instance *iP = &e->instances;
-        HASH_FIND_INT( *iP, &x.addr, i );
-        if (i) {
-            return i->instance;
-        }
-   }
-    return 0;
+    return _de_get_instance(&r->instances,x);
 }
 
 /**
@@ -529,20 +439,33 @@ void __r_check_listener(T* processes,T *listener,T *signal,Q *q) {
     _t_add(stx,_t_clone(_t_child(e,1)));
     if (_t_matchr(stx,signal_contents,&m)) {
         T *rt=0;
-        T *action = _t_child(listener,2);
+        T *action = _t_child(listener,3);
         if (!action) {
             raise_error0("null action in listener!");
         }
+
         if (semeq(_t_symbol(action),EXPECT_ACT)) {
             // currently if the action is EXPECT_ACT then we assume that
             // this is actually the blocked phase of EXPECT_ACT. This could be a
             // problem if we ever wanted our action to be an EXPECT_ACT process
             // see the implementation of EXPECT_ACT in process.c @fixme
             R *context = *(R**) _t_surface(action);
-            _p_unblock(q,context,m,signal_contents);
+
+            // for now we add the params to the contexts run tree
+            // @todo later this should be integrated into some kind of scoping handling
+            T *params = _t_clone(_t_child(listener,2));
+            _p_interpolate_from_match(params,m,signal_contents);
+            _t_add(_t_child(context->run_tree,2),params);
+            rt_cur_child(context->node_pointer) = RUN_TREE_NOT_EVAULATED;
+
+            _p_unblock(q,context);
         }
         else {
-            rt = _p_make_run_tree(processes,action,2,m,signal_contents);
+            Process p = *(Process*) _t_surface(action);
+            T *params = _t_clone(_t_child(listener,2));
+            _p_interpolate_from_match(params,m,signal_contents);
+            rt = __p_make_run_tree(processes,p,params);
+            _t_free(params);
             _t_add(signal,rt);
             _p_addrt2q(q,rt);
         }
@@ -550,6 +473,25 @@ void __r_check_listener(T* processes,T *listener,T *signal,Q *q) {
         _t_free(m);
     }
     _t_free(stx);
+}
+
+// low level function to deliver signals in a pending signals list
+// assumes that instances is the VMhost's receptor instances list
+void __r_deliver_signals(Receptor *self,T *signals,Instances *receptor_instances) {
+    while(_t_children(signals)>0) {
+        T *s = _t_detach_by_idx(signals,1);
+        T *envelope = _t_child(s,1);
+        //      T *contents = _t_child(s,2);
+        Xaddr to = *(Xaddr *)_t_surface(_t_child(envelope,2));
+
+        Receptor *r = (to.addr == 0) ? self :
+            (Receptor *)_t_surface(_t_child(_de_get_instance(receptor_instances,to),1)); // the receptor itself is the surface of the first child of the INSTALLED_RECEPTOR (bleah)
+
+        Error err = _r_deliver(r,s);
+        if (err) {
+            raise_error("delivery error: %d",err);
+        }
+    }
 }
 
 /**

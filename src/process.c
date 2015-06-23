@@ -230,7 +230,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
         x = _t_detach_by_idx(code,1);
         break;
     case EXPECT_ACT_ID:
-        // detach the carrier and expectation params, and enqueue the expectation and action
+        // detach the carrier and expectation and construction params, and enqueue the expectation and action
         // on the carrier
         {
             T *carrier_param = _t_detach_by_idx(code,1);
@@ -239,6 +239,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
             T *ex = _t_detach_by_idx(code,1);
             T *expectation = _t_new_root(EXPECTATION);
             _t_add(expectation,ex);
+            T *params = _t_detach_by_idx(code,1);
 
             //@todo: this is a fake way to add an expectation to a carrier (as a c pointer
             // out of the params)
@@ -249,6 +250,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
             // stack...  But it's not clear yet how we do know about the listening context as
             // I don't think it should be copied into every execution context (the R struct)
             _t_add(carrier,expectation);
+            _t_add(carrier,params);
             // the action is a pointer back to this context for now were using a EXPECT_ACT
             // with the c pointer as the surface because I don't know what else to do...  @fixme
             // perhaps this should be a BLOCKED_EXPECT_ACTION process or something...
@@ -256,6 +258,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
         }
         rt_cur_child(code) = 1; // reset the current child count on the code
         x = _t_detach_by_idx(code,1);
+
         // the actually blocking happens in redcueq which can remove the process from the
         // round-robin
         err = Block;
@@ -365,14 +368,13 @@ void _p_enqueue(Qe **listP,Qe *e) {
  * search for the context in the q and unblock it interpolating the waiting
  * process with the match results first
  */
-Error _p_unblock(Q *q,R *context,T *match_results,T *signal_contents) {
+Error _p_unblock(Q *q,R *context) {
     // find the context in the queue
     Qe *e = q->blocked;
     while (e && e->context != context) e = e->next;
     if (!e) {raise_error0("contextNotFoundErr");}
     __p_dequeue(q->blocked,e);
     __p_enqueue(q->active,e);
-    _p_interpolate_from_match(context->node_pointer,match_results,signal_contents);
 
     q->contexts_count++;
     context->state = Eval;

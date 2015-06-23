@@ -7,6 +7,7 @@
 #include "../src/ceptr.h"
 #include "../src/receptor.h"
 #include "../src/def.h"
+#include "../src/de.h"
 #include "http_example.h"
 
 void testReceptorCreate() {
@@ -69,13 +70,15 @@ void testReceptorAddListener() {
     T *s = _t_new_root(EXPECTATION);
     _sl(s,dummy);
     T *a = _t_news(0,ACTION,NULL_PROCESS);
-    _r_add_listener(r,DEFAULT_ASPECT,TEST_INT_SYMBOL,s,a);
+    T *p = _t_new_root(PARAMS);  // empty construct params list
+    _r_add_listener(r,DEFAULT_ASPECT,TEST_INT_SYMBOL,s,p,a);
 
     T *l = _t_child(__r_get_listeners(r,DEFAULT_ASPECT),1);      // listener should have been added as first child of listeners
     spec_is_symbol_equal(r,_t_symbol(l),LISTENER);
     spec_is_sem_equal(*(Symbol *)_t_surface(l),TEST_INT_SYMBOL); // carrier should be TEST_INT_SYMBOL
     spec_is_ptr_equal(_t_child(l,1),s);       // our expectation semtrex should be first child of the listener
-    spec_is_ptr_equal(_t_child(l,2),a);       // our action code tree should be the second child of the listener
+    spec_is_ptr_equal(_t_child(l,2),p);       // our params constructor should be the second child of the listener
+    spec_is_ptr_equal(_t_child(l,3),a);       // our action code tree should be the third child of the listener
 
     _r_free(r);
 }
@@ -156,11 +159,12 @@ void testReceptorAction() {
         _t_free(result);
     }
 
-    Process p = _makeTestHTTPResponseProcess(r);
-
+    T *params;
+    Process p;
+    _makeTestHTTPResponseProcess(r,&params,&p);
     T *act = _t_newp(0,ACTION,p);
 
-    _r_add_listener(r,DEFAULT_ASPECT,HTTP_REQUEST,expect,act);
+    _r_add_listener(r,DEFAULT_ASPECT,HTTP_REQUEST,expect,params,act);
 
     Error err = _r_deliver(r,signal);
     spec_is_equal(err,noDeliveryErr);
@@ -168,7 +172,7 @@ void testReceptorAction() {
     // signal and run_tree should be added and ready on the process queue
     spec_is_equal(r->q->contexts_count,1);
     spec_is_str_equal(_td(r,__r_get_signals(r,DEFAULT_ASPECT)),
-"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (RECEPTOR_XADDR:RECEPTOR_XADDR.4) (ASPECT:1)) (BODY:{(HTTP_REQUEST (HTTP_REQUEST_VERSION (VERSION_MAJOR:1) (VERSION_MINOR:0)) (HTTP_REQUEST_METHOD:GET) (HTTP_REQUEST_PATH (HTTP_REQUEST_PATH_SEGMENTS (HTTP_REQUEST_PATH_SEGMENT:groups) (HTTP_REQUEST_PATH_SEGMENT:5)) (HTTP_REQUEST_PATH_FILE (FILE_NAME:users) (FILE_EXTENSION:json)) (HTTP_REQUEST_PATH_QUERY (HTTP_REQUEST_PATH_QUERY_PARAMS (HTTP_REQUEST_PATH_QUERY_PARAM (PARAM_KEY:sort_by) (PARAM_VALUE:last_name)) (HTTP_REQUEST_PATH_QUERY_PARAM (PARAM_KEY:page) (PARAM_VALUE:2))))))}) (RUN_TREE (process:RESPOND (process:INTERPOLATE_FROM_MATCH (HTTP_RESPONSE (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT) (INTERPOLATE_SYMBOL:HTTP_REQUEST_PATH_SEGMENT)) (PARAM_REF:/2/1) (PARAM_REF:/2/2))) (PARAMS (SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:NULL_SYMBOL) (SEMTREX_MATCH_PATH:) (SEMTREX_MATCH_SIBLINGS_COUNT:1) (SEMTREX_MATCH:2 (SEMTREX_MATCH_SYMBOL:HTTP_REQUEST_PATH_SEGMENT) (SEMTREX_MATCH_PATH:/3/1/1) (SEMTREX_MATCH_SIBLINGS_COUNT:1))) (HTTP_REQUEST (HTTP_REQUEST_VERSION (VERSION_MAJOR:1) (VERSION_MINOR:0)) (HTTP_REQUEST_METHOD:GET) (HTTP_REQUEST_PATH (HTTP_REQUEST_PATH_SEGMENTS (HTTP_REQUEST_PATH_SEGMENT:groups) (HTTP_REQUEST_PATH_SEGMENT:5)) (HTTP_REQUEST_PATH_FILE (FILE_NAME:users) (FILE_EXTENSION:json)) (HTTP_REQUEST_PATH_QUERY (HTTP_REQUEST_PATH_QUERY_PARAMS (HTTP_REQUEST_PATH_QUERY_PARAM (PARAM_KEY:sort_by) (PARAM_VALUE:last_name)) (HTTP_REQUEST_PATH_QUERY_PARAM (PARAM_KEY:page) (PARAM_VALUE:2))))))))))"
+                      "(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (RECEPTOR_XADDR:RECEPTOR_XADDR.4) (ASPECT:1)) (BODY:{(HTTP_REQUEST (HTTP_REQUEST_VERSION (VERSION_MAJOR:1) (VERSION_MINOR:0)) (HTTP_REQUEST_METHOD:GET) (HTTP_REQUEST_PATH (HTTP_REQUEST_PATH_SEGMENTS (HTTP_REQUEST_PATH_SEGMENT:groups) (HTTP_REQUEST_PATH_SEGMENT:5)) (HTTP_REQUEST_PATH_FILE (FILE_NAME:users) (FILE_EXTENSION:json)) (HTTP_REQUEST_PATH_QUERY (HTTP_REQUEST_PATH_QUERY_PARAMS (HTTP_REQUEST_PATH_QUERY_PARAM (PARAM_KEY:sort_by) (PARAM_VALUE:last_name)) (HTTP_REQUEST_PATH_QUERY_PARAM (PARAM_KEY:page) (PARAM_VALUE:2))))))}) (RUN_TREE (process:RESPOND (PARAM_REF:/2/1)) (PARAMS (HTTP_RESPONSE (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT) (HTTP_REQUEST_PATH_SEGMENT:groups))))))"
                       );
 
     // manually run the process queue
@@ -177,7 +181,7 @@ void testReceptorAction() {
     result = r->q->completed->context->run_tree;
 
     // should add a pending signal to be sent with the matched PATH_SEGMENT returned as the response signal body
-    spec_is_str_equal(_td(r,result),"(RUN_TREE (TEST_INT_SYMBOL:0) (PARAMS (SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:NULL_SYMBOL) (SEMTREX_MATCH_PATH:) (SEMTREX_MATCH_SIBLINGS_COUNT:1) (SEMTREX_MATCH:2 (SEMTREX_MATCH_SYMBOL:HTTP_REQUEST_PATH_SEGMENT) (SEMTREX_MATCH_PATH:/3/1/1) (SEMTREX_MATCH_SIBLINGS_COUNT:1))) (HTTP_REQUEST (HTTP_REQUEST_VERSION (VERSION_MAJOR:1) (VERSION_MINOR:0)) (HTTP_REQUEST_METHOD:GET) (HTTP_REQUEST_PATH (HTTP_REQUEST_PATH_SEGMENTS (HTTP_REQUEST_PATH_SEGMENT:groups) (HTTP_REQUEST_PATH_SEGMENT:5)) (HTTP_REQUEST_PATH_FILE (FILE_NAME:users) (FILE_EXTENSION:json)) (HTTP_REQUEST_PATH_QUERY (HTTP_REQUEST_PATH_QUERY_PARAMS (HTTP_REQUEST_PATH_QUERY_PARAM (PARAM_KEY:sort_by) (PARAM_VALUE:last_name)) (HTTP_REQUEST_PATH_QUERY_PARAM (PARAM_KEY:page) (PARAM_VALUE:2))))))) (SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.4) (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (ASPECT:1)) (BODY:{(HTTP_RESPONSE (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT) (HTTP_REQUEST_PATH_SEGMENT:groups))}))))");
+    spec_is_str_equal(_td(r,result),"(RUN_TREE (TEST_INT_SYMBOL:0) (PARAMS (HTTP_RESPONSE (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT) (HTTP_REQUEST_PATH_SEGMENT:groups))) (SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.4) (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (ASPECT:1)) (BODY:{(HTTP_RESPONSE (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT) (HTTP_REQUEST_PATH_SEGMENT:groups))}))))");
 
     _t_free(r->defs.symbols); // normally these would be freeed by the r_free, but we hand loaded them...
     _t_free(r->defs.structures);
@@ -313,6 +317,7 @@ Receptor *_makePingProtocolReceptor(Symbol *pingP) {
     T *step = _t_newr(steps,listen_for_ping);
     T *e = _t_newr(step,EXPECTATION);
     _sl(e,ping);
+    T *params = _t_newr(step,PARAMS);
 
     T *ping_resp = _t_new_root(RESPOND);
     _t_newi(ping_resp,alive,1);
@@ -324,6 +329,7 @@ Receptor *_makePingProtocolReceptor(Symbol *pingP) {
     step = _t_newr(steps,get_alive_response);
     e = _t_newr(step,EXPECTATION);
     _sl(e,alive);
+    params = _t_newr(step,PARAMS);
 
     // define the sequences (built of steps)
     Symbol alive_server = _r_declare_symbol(r,SEQUENCE,"alive_server");
@@ -352,14 +358,14 @@ void testReceptorProtocol() {
     T *ps = r->defs.protocols;
     char *d = _td(r,ps);
 
-    spec_is_str_equal(d,"(PROTOCOLS (alive (STEPS (listen_for_ping (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping_message))) (ACTION:send alive response)) (get_alive_response (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:alive_message))))) (SEQUENCES (alive_server (STEP_SYMBOL:listen_for_ping)) (alive_client (STEP_SYMBOL:get_alive_response)))))");
+    spec_is_str_equal(d,"(PROTOCOLS (alive (STEPS (listen_for_ping (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping_message))) (PARAMS) (ACTION:send alive response)) (get_alive_response (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:alive_message))) (PARAMS))) (SEQUENCES (alive_server (STEP_SYMBOL:listen_for_ping)) (alive_client (STEP_SYMBOL:get_alive_response)))))");
 
     Symbol alive_server = _r_get_symbol_by_label(r,"alive_server");
     _r_express_protocol(r,1,alive_server,DEFAULT_ASPECT,NULL);
 
     d = _td(r,r->flux);
 
-    spec_is_str_equal(d,"(FLUX (ASPECT:1 (LISTENERS (LISTENER:NULL_SYMBOL (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping_message))) (ACTION:send alive response))) (SIGNALS)))");
+    spec_is_str_equal(d,"(FLUX (ASPECT:1 (LISTENERS (LISTENER:NULL_SYMBOL (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping_message))) (PARAMS) (ACTION:send alive response))) (SIGNALS)))");
 
     // delivering a fake signal should return a ping
     Xaddr f = {RECEPTOR_XADDR,3};  // DUMMY XADDR
@@ -374,7 +380,7 @@ void testReceptorProtocol() {
 
     // after delivery we should see the process in the active list with the semtrex match in the params
     d = _td(r,r->q->active->context->run_tree);
-    spec_is_str_equal(d,"(RUN_TREE (process:RESPOND (alive_message:1)) (PARAMS (SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:NULL_SYMBOL) (SEMTREX_MATCH_PATH:) (SEMTREX_MATCH_SIBLINGS_COUNT:1)) (ping_message:0)))");
+    spec_is_str_equal(d,"(RUN_TREE (process:RESPOND (alive_message:1)) (PARAMS))");
 
     // manually run the process queue
     _p_reduceq(r->q);
@@ -563,6 +569,15 @@ void testReceptorEdgeStream() {
     Xaddr to = {RECEPTOR_XADDR,0};  // 0 xaddr means SELF
 
     Receptor *r = _r_makeFileReceptor(stream,to);
+
+    // for now we don't need a real receptor because we are just using
+    // "self" as the destination.  Otherwise we'd need to have instances
+    // so we could route the message delivery
+    // T *ir = _t_new_root(INSTALLED_RECEPTOR);
+    // _t_new_receptor(ir,TEST_RECEPTOR_SYMBOL,r);
+    Instances instances = NULL;
+    //    Xaddr testReceptor = _de_new_instance(&instances,ir);
+
     spec_is_str_equal(_td(r,r->root),"(TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS (SYMBOL_DECLARATION (SYMBOL_LABEL:LINE) (SYMBOL_STRUCTURE:CSTRING))) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))))");
 
     T *expect = _t_new_root(EXPECTATION);
@@ -585,19 +600,24 @@ void testReceptorEdgeStream() {
     /* puts(buf); */
 
 
-    t = _t_new_root(CONCAT_STR);
-    _t_news(t,RESULT_SYMBOL,TEST_STR_SYMBOL);
-    _t_new_str(t,TEST_STR_SYMBOL,"You said: ");
-    _t_news(t,INTERPOLATE_SYMBOL,line);
+    x = _t_newr(0,CONCAT_STR);
+    Symbol echo = _r_declare_symbol(r,CSTRING,"ECHO");
+    _t_news(x,RESULT_SYMBOL,echo);
+    _t_new_str(x,TEST_STR_SYMBOL,"You said-- ");
+    int pt1[] = {2,1,TREE_PATH_TERMINATOR};
+    _t_new(x,PARAM_REF,pt1,sizeof(int)*4);
+
+    T* params = _t_new_root(PARAMS);
+    _t_news(params,INTERPOLATE_SYMBOL,line);
 
     T *input = _t_new_root(INPUT);
     T *output = _t_new_root(OUTPUT_SIGNATURE);
-    Process proc = _r_code_process(r,t,"echo what you said","long desc...",input,output);
+    Process proc = _r_code_process(r,x,"echo what you said","long desc...",input,output);
     T *act = _t_newp(0,ACTION,proc);
 
-    _r_add_listener(r,DEFAULT_ASPECT,line,expect,act);
+    _r_add_listener(r,DEFAULT_ASPECT,line,expect,params,act);
 
-    spec_is_str_equal(_td(r,__r_get_listeners(r,DEFAULT_ASPECT)),"(LISTENERS (LISTENER:LINE (EXPECTATION (SEMTREX_GROUP:LINE (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:LINE)))) (ACTION:echo what you said)))");
+    spec_is_str_equal(_td(r,__r_get_listeners(r,DEFAULT_ASPECT)),"(LISTENERS (LISTENER:LINE (EXPECTATION (SEMTREX_GROUP:LINE (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:LINE)))) (PARAMS (INTERPOLATE_SYMBOL:LINE)) (ACTION:echo what you said)))");
 
     // manually run the process queue
     _p_reduceq(r->q);
@@ -606,6 +626,17 @@ void testReceptorEdgeStream() {
 
     spec_is_str_equal(_td(r,result),"(RUN_TREE (TEST_INT_SYMBOL:0))");
     spec_is_str_equal(_td(r,r->q->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.0) (RECEPTOR_XADDR:RECEPTOR_XADDR.0) (ASPECT:1)) (BODY:{(LINE:line1)})))");
+
+    // manually run the signal sending code
+    __r_deliver_signals(r,r->q->pending_signals,&instances);
+
+    spec_is_str_equal(_td(r,r->q->pending_signals),"(PENDING_SIGNALS)");
+    spec_is_str_equal(_td(r,r->q->active->context->run_tree),"(RUN_TREE (process:CONCAT_STR (RESULT_SYMBOL:ECHO) (TEST_STR_SYMBOL:You said-- ) (PARAM_REF:/2/1)) (PARAMS (LINE:line1)))");
+
+    // manually run the process queue
+    _p_reduceq(r->q);
+
+    spec_is_str_equal(_td(r,r->q->completed->context->run_tree),"(RUN_TREE (ECHO:You said-- line1) (PARAMS (LINE:line1)))");
 
     fclose(stream);
     _r_free(r);

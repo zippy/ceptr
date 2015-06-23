@@ -248,27 +248,25 @@ T *_makeTestHTTPRequestTree() {
  *
  * @snippet spec/http_example.h makeTestHTTPResponseProcess
  */
-Process _makeTestHTTPResponseProcess(Receptor *r) {
+void _makeTestHTTPResponseProcess(Receptor *r,T **paramsP,Process *pP) {
     // the action simply responds back with the method that was originally sent
     // this test should be made more real... but for now it responds back with a ping
     // like message that contains what the first path segment was
 
     T *resp = _t_new_root(RESPOND);
-    T *n = _t_newr(resp,INTERPOLATE_FROM_MATCH);
-    T *http_resp = _t_newr(n,HTTP_RESPONSE);
-    _t_new(http_resp,HTTP_RESPONSE_CONTENT_TYPE,"CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT",38);
-    _t_news(http_resp,INTERPOLATE_SYMBOL,HTTP_REQUEST_PATH_SEGMENT);
-
     int pt1[] = {2,1,TREE_PATH_TERMINATOR};
-    int pt2[] = {2,2,TREE_PATH_TERMINATOR};
-
-    _t_new(n,PARAM_REF,pt1,sizeof(int)*3);
-    _t_new(n,PARAM_REF,pt2,sizeof(int)*3);
+    _t_new(resp,PARAM_REF,pt1,sizeof(int)*3);
 
     T *input = _t_new_root(INPUT);
     T *output = _t_new_root(OUTPUT_SIGNATURE);
-    Process p = _r_code_process(r,resp,"code path ping","respond with the first segment of the code path",input,output);
-    return p;
+    Process p = _r_code_process(r,resp,"code path ping","respond with the value of the first parameter",input,output);
+    *pP = p;
+
+    T *params = _t_new_root(PARAMS);
+    T *http_resp = _t_newr(params,HTTP_RESPONSE);
+    _t_new(http_resp,HTTP_RESPONSE_CONTENT_TYPE,"CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT",38);
+    _t_news(http_resp,INTERPOLATE_SYMBOL,HTTP_REQUEST_PATH_SEGMENT);
+    *paramsP = params;
 }
 //! [makeTestHTTPResponseProcess]
 

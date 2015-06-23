@@ -24,7 +24,7 @@ enum {noDeliveryErr};
 /******************  create and destroy receptors */
 Receptor *_r_new(Symbol s);
 Receptor *_r_new_receptor_from_package(Symbol s,T *p,T *bindings);
-void _r_add_listener(Receptor *r,Aspect aspect,Symbol carrier,T *semtrex,T *action);
+void _r_add_listener(Receptor *r,Aspect aspect,Symbol carrier,T *expectation,T* params,T *action);
 void _r_free(Receptor *r);
 
 /*****************  receptor symbols, structures, and processes */
@@ -42,7 +42,6 @@ T *_r_build_def_semtrex(Receptor *r,Symbol s);
 int _r_def_match(Receptor *r,Symbol s,T *t);
 
 void _r_express_protocol(Receptor *r,int idx,Symbol sequence,Aspect aspect,T* handler);
-void _r_install_protocol(Receptor *r,int idx,char *role,Aspect aspect);
 
 /*****************  receptor instances and xaddrs */
 
@@ -58,6 +57,7 @@ Receptor * _r_unserialize(void *surface);
 
 T * __r_make_signal(Xaddr from,Xaddr to,Aspect aspect,T *signal_contents);
 void __r_check_listener(T* processes,T *listener,T *signal,Q *q);
+void __r_deliver_signals(Receptor *r,T *signals,Instances *receptor_instances);
 Error _r_deliver(Receptor *r, T *signal);
 
 /******************  internal utilities */

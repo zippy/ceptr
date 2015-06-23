@@ -17,6 +17,11 @@
 
 void _de_boot();
 void _de_start_vmhost();
+
+T * _de_get_instance(Instances *i,Xaddr x);
+Xaddr _de_new_instance(Instances *i,T *t);
+void _de_free_instances(Instances *i);
+
 VMHost *G_vm;
 
 #endif

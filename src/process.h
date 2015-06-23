@@ -23,7 +23,7 @@ R *__p_make_context(T *run_tree,R *caller);
 Error _p_step(Defs *defs, R **contextP);
 Error __p_reduce_sys_proc(R *context,Symbol s,T *code);
 void _p_enqueue(Qe **listP,Qe *e);
-Error _p_unblock(Q *q,R *context,T *match_results,T *signal_contents);
+Error _p_unblock(Q *q,R *context);
 Error _p_reduce(Defs *defs,T *run_tree);
 Q *_p_newq(Defs *defs,T *pending_signals);
 void _p_freeq(Q *q);
