@@ -11,6 +11,7 @@ var process_8h =
       [ "Pop", "process_8h.html#aafd8125ddd0cd2cb2675dea09aacb099a0edd48b537c68d2e108bc2517b82b867", null ],
       [ "Eval", "process_8h.html#aafd8125ddd0cd2cb2675dea09aacb099a8077d50193e2ad0cb0eced2b39535402", null ],
       [ "Block", "process_8h.html#aafd8125ddd0cd2cb2675dea09aacb099aa00f801460e81f86eab56d86fe627551", null ],
+      [ "Send", "process_8h.html#aafd8125ddd0cd2cb2675dea09aacb099afc4acfd87c9c7965d3c7437519dabcac", null ],
       [ "Done", "process_8h.html#aafd8125ddd0cd2cb2675dea09aacb099aa7929b884d7db9093d6ed453feedf2a2", null ],
       [ "noReductionErr", "process_8h.html#aafd8125ddd0cd2cb2675dea09aacb099a5e14542d929b99e4ac2079c47cc35f5d", null ],
       [ "raiseReductionErr", "process_8h.html#aafd8125ddd0cd2cb2675dea09aacb099a1b4181289d3311d0003cb9fb4d76f763", null ],
@@ -29,10 +30,10 @@ var process_8h =
     [ "_p_enqueue", "process_8h.html#a39ccc64f181f96a92744969f3daca886", null ],
     [ "_p_freeq", "process_8h.html#aea59e125f10441efe75f6047ee7b35e1", null ],
     [ "_p_make_run_tree", "process_8h.html#af2cf2d4a1356f6bd1f433286bfdeebd0", null ],
-    [ "_p_newq", "process_8h.html#aa97db3dcdc186ddfb237b745a5e460f6", null ],
+    [ "_p_newq", "process_8h.html#a4653173a5ed2398c95dcc1c5d08c7346", null ],
     [ "_p_reduce", "process_8h.html#ac2a3fbaf66daab11709b0f2fae5a7290", null ],
     [ "_p_reduceq", "process_8h.html#a64e8965291c67057b06f273db19a465d", null ],
     [ "_p_reduceq_thread", "process_8h.html#add05ec8f9d463726351fef1ffaa938fd", null ],
     [ "_p_step", "process_8h.html#a208c2bb21125a1add95c66a358800271", null ],
-    [ "_p_unblock", "process_8h.html#ae0c0884c4967a45d41cd01422b207c95", null ]
+    [ "_p_unblock", "process_8h.html#ae15cddef2d7476755f0f44fe82120b02", null ]
 ];

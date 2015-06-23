@@ -715,62 +715,65 @@ $(document).ready(function(){initNavTree('tree_8c_source.html','');});
 <div class="line"><a name="l00946"></a><span class="lineno">  946</span>&#160;                x = *(<a class="code" href="structXaddr.html">Xaddr</a> *)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(t);</div>
 <div class="line"><a name="l00947"></a><span class="lineno">  947</span>&#160;                sprintf(buf,<span class="stringliteral">&quot;\&quot;type\&quot;:\&quot;XADDR\&quot;,\&quot;name\&quot;:\&quot;%s\&quot;,\&quot;surface\&quot;:{ \&quot;symbol\&quot;:\&quot;%s\&quot;,\&quot;addr\&quot;:%d }&quot;</span>,n,<a class="code" href="group__def.html#ga434ff1353a4f55f4f61b95fe8d9cff43">_d_get_symbol_name</a>(symbols,x.symbol),x.addr);</div>
 <div class="line"><a name="l00948"></a><span class="lineno">  948</span>&#160;                <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00949"></a><span class="lineno">  949</span>&#160;            <span class="keywordflow">case</span> TREE_ID:</div>
-<div class="line"><a name="l00950"></a><span class="lineno">  950</span>&#160;                <span class="keywordflow">if</span> (t-&gt;context.flags &amp; TFLAG_SURFACE_IS_TREE) {</div>
-<div class="line"><a name="l00951"></a><span class="lineno">  951</span>&#160;                    c = <a class="code" href="group__tree.html#ga34e1f5a651d1a582e3cd7bb3e885ffde">_t2json</a>(defs,(<a class="code" href="structT.html">T</a> *)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(t),0,tbuf);</div>
-<div class="line"><a name="l00952"></a><span class="lineno">  952</span>&#160;                    sprintf(buf,<span class="stringliteral">&quot;\&quot;type\&quot;:\&quot;TREE\&quot;,\&quot;name\&quot;:\&quot;%s\&quot;,\&quot;surface\&quot;:%s&quot;</span>,n,c);</div>
-<div class="line"><a name="l00953"></a><span class="lineno">  953</span>&#160;                    <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00954"></a><span class="lineno">  954</span>&#160;                }</div>
-<div class="line"><a name="l00955"></a><span class="lineno">  955</span>&#160;            <span class="keywordflow">case</span> RECEPTOR_ID:</div>
-<div class="line"><a name="l00956"></a><span class="lineno">  956</span>&#160;                <span class="keywordflow">if</span> (t-&gt;context.flags &amp; (TFLAG_SURFACE_IS_TREE+TFLAG_SURFACE_IS_RECEPTOR)) {</div>
-<div class="line"><a name="l00957"></a><span class="lineno">  957</span>&#160;                    c = <a class="code" href="group__tree.html#ga34e1f5a651d1a582e3cd7bb3e885ffde">_t2json</a>(defs,((<a class="code" href="structReceptor.html">Receptor</a> *)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(t))-&gt;root,0,tbuf);</div>
-<div class="line"><a name="l00958"></a><span class="lineno">  958</span>&#160;                    sprintf(buf,<span class="stringliteral">&quot;\&quot;type\&quot;:\&quot;RECEPTOR\&quot;,\&quot;name\&quot;:\&quot;%s\&quot;,\&quot;surface\&quot;:%s&quot;</span>,n,c);</div>
-<div class="line"><a name="l00959"></a><span class="lineno">  959</span>&#160;                    <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00960"></a><span class="lineno">  960</span>&#160;                }</div>
-<div class="line"><a name="l00961"></a><span class="lineno">  961</span>&#160;            <span class="keywordflow">case</span> SCAPE_ID:</div>
-<div class="line"><a name="l00962"></a><span class="lineno">  962</span>&#160;                <span class="keywordflow">if</span> (t-&gt;context.flags &amp; TFLAG_SURFACE_IS_SCAPE) {</div>
-<div class="line"><a name="l00963"></a><span class="lineno">  963</span>&#160;                    <a class="code" href="structScape.html">Scape</a> *sc = (<a class="code" href="structScape.html">Scape</a> *)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(t);</div>
-<div class="line"><a name="l00964"></a><span class="lineno">  964</span>&#160;                    <span class="comment">//TODO: fixme!</span></div>
-<div class="line"><a name="l00965"></a><span class="lineno">  965</span>&#160;                    sprintf(buf,<span class="stringliteral">&quot;(%s:key %s,data %s&quot;</span>,n,<a class="code" href="group__def.html#ga434ff1353a4f55f4f61b95fe8d9cff43">_d_get_symbol_name</a>(symbols,sc-&gt;key_source),<a class="code" href="group__def.html#ga434ff1353a4f55f4f61b95fe8d9cff43">_d_get_symbol_name</a>(symbols,sc-&gt;data_source));</div>
-<div class="line"><a name="l00966"></a><span class="lineno">  966</span>&#160;                    <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00967"></a><span class="lineno">  967</span>&#160;                }</div>
-<div class="line"><a name="l00968"></a><span class="lineno">  968</span>&#160;            <span class="keywordflow">case</span> LIST_ID:</div>
-<div class="line"><a name="l00969"></a><span class="lineno">  969</span>&#160;                sprintf(buf,<span class="stringliteral">&quot;\&quot;type\&quot;:\&quot;LIST\&quot;,\&quot;name\&quot;:\&quot;%s\&quot;&quot;</span>,n);</div>
-<div class="line"><a name="l00970"></a><span class="lineno">  970</span>&#160;                <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00971"></a><span class="lineno">  971</span>&#160;            <span class="keywordflow">default</span>:</div>
-<div class="line"><a name="l00972"></a><span class="lineno">  972</span>&#160;                <span class="keywordflow">if</span> (semeq(s,SEMTREX_MATCH_CURSOR)) {</div>
-<div class="line"><a name="l00973"></a><span class="lineno">  973</span>&#160;                    c = <a class="code" href="group__tree.html#ga34e1f5a651d1a582e3cd7bb3e885ffde">_t2json</a>(defs,*(<a class="code" href="structT.html">T</a> **)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(t),0,tbuf);</div>
-<div class="line"><a name="l00974"></a><span class="lineno">  974</span>&#160;                    <span class="comment">//c = &quot;null&quot;;</span></div>
-<div class="line"><a name="l00975"></a><span class="lineno">  975</span>&#160;                    sprintf(buf,<span class="stringliteral">&quot;(%s:{%s}&quot;</span>,n,c);</div>
-<div class="line"><a name="l00976"></a><span class="lineno">  976</span>&#160;                    <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00977"></a><span class="lineno">  977</span>&#160;                }</div>
-<div class="line"><a name="l00978"></a><span class="lineno">  978</span>&#160;                <span class="keywordflow">if</span> (n == 0)</div>
-<div class="line"><a name="l00979"></a><span class="lineno">  979</span>&#160;                    sprintf(buf,<span class="stringliteral">&quot;(&lt;unknown:%d.%d.%d&gt;&quot;</span>,s.context,s.flags,s.id);</div>
-<div class="line"><a name="l00980"></a><span class="lineno">  980</span>&#160;                <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00981"></a><span class="lineno">  981</span>&#160;                    c = <a class="code" href="group__def.html#ga232c2752b35c8fd708b5ba9a60da545e">_d_get_structure_name</a>(structures,st);</div>
-<div class="line"><a name="l00982"></a><span class="lineno">  982</span>&#160;                    sprintf(buf,<span class="stringliteral">&quot;\&quot;type\&quot;:\&quot;%s\&quot;,\&quot;name\&quot;:\&quot;%s\&quot;&quot;</span>,c,n);</div>
-<div class="line"><a name="l00983"></a><span class="lineno">  983</span>&#160;                }</div>
-<div class="line"><a name="l00984"></a><span class="lineno">  984</span>&#160;            }</div>
-<div class="line"><a name="l00985"></a><span class="lineno">  985</span>&#160;        }</div>
-<div class="line"><a name="l00986"></a><span class="lineno">  986</span>&#160;    }</div>
-<div class="line"><a name="l00987"></a><span class="lineno">  987</span>&#160;    buf += strlen(buf);</div>
-<div class="line"><a name="l00988"></a><span class="lineno">  988</span>&#160;    <span class="keywordtype">int</span> _c = <a class="code" href="group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc">_t_children</a>(t);</div>
-<div class="line"><a name="l00989"></a><span class="lineno">  989</span>&#160;    <span class="keywordflow">if</span> ( _c &gt; 0) {</div>
-<div class="line"><a name="l00990"></a><span class="lineno">  990</span>&#160;        sprintf(buf,<span class="stringliteral">&quot;,\&quot;children\&quot;:[&quot;</span>);</div>
-<div class="line"><a name="l00991"></a><span class="lineno">  991</span>&#160;        buf += strlen(buf);</div>
-<div class="line"><a name="l00992"></a><span class="lineno">  992</span>&#160;        <span class="keywordflow">for</span>(i=1;i&lt;=_c;i++){</div>
-<div class="line"><a name="l00993"></a><span class="lineno">  993</span>&#160;            <a class="code" href="group__tree.html#ga34e1f5a651d1a582e3cd7bb3e885ffde">_t2json</a>(defs,_t_child(t,i),level &lt; 0 ? level-1 : level+1,buf);</div>
-<div class="line"><a name="l00994"></a><span class="lineno">  994</span>&#160;            buf += strlen(buf);</div>
-<div class="line"><a name="l00995"></a><span class="lineno">  995</span>&#160;            <span class="keywordflow">if</span> (i&lt;_c) {</div>
-<div class="line"><a name="l00996"></a><span class="lineno">  996</span>&#160;                _add_char2buf(<span class="charliteral">&#39;,&#39;</span>,buf);</div>
-<div class="line"><a name="l00997"></a><span class="lineno">  997</span>&#160;            }</div>
-<div class="line"><a name="l00998"></a><span class="lineno">  998</span>&#160;        }</div>
-<div class="line"><a name="l00999"></a><span class="lineno">  999</span>&#160;        _add_char2buf(<span class="charliteral">&#39;]&#39;</span>,buf);</div>
-<div class="line"><a name="l01000"></a><span class="lineno"> 1000</span>&#160;    }</div>
-<div class="line"><a name="l01001"></a><span class="lineno"> 1001</span>&#160;    _add_char2buf(<span class="charliteral">&#39;}&#39;</span>,buf);</div>
-<div class="line"><a name="l01002"></a><span class="lineno"> 1002</span>&#160;    <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l01003"></a><span class="lineno"> 1003</span>&#160;}</div>
-<div class="line"><a name="l01004"></a><span class="lineno"> 1004</span>&#160;</div>
+<div class="line"><a name="l00949"></a><span class="lineno">  949</span>&#160;            <span class="keywordflow">case</span> STREAM_ID:</div>
+<div class="line"><a name="l00950"></a><span class="lineno">  950</span>&#160;                sprintf(buf,<span class="stringliteral">&quot;\&quot;type\&quot;:\&quot;STREAM\&quot;,\&quot;name\&quot;:\&quot;%s\&quot;,\&quot;surface\&quot;:\&quot;%p\&quot;&quot;</span>,n,<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(t));</div>
+<div class="line"><a name="l00951"></a><span class="lineno">  951</span>&#160;                <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00952"></a><span class="lineno">  952</span>&#160;            <span class="keywordflow">case</span> TREE_ID:</div>
+<div class="line"><a name="l00953"></a><span class="lineno">  953</span>&#160;                <span class="keywordflow">if</span> (t-&gt;context.flags &amp; TFLAG_SURFACE_IS_TREE) {</div>
+<div class="line"><a name="l00954"></a><span class="lineno">  954</span>&#160;                    c = <a class="code" href="group__tree.html#ga34e1f5a651d1a582e3cd7bb3e885ffde">_t2json</a>(defs,(<a class="code" href="structT.html">T</a> *)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(t),0,tbuf);</div>
+<div class="line"><a name="l00955"></a><span class="lineno">  955</span>&#160;                    sprintf(buf,<span class="stringliteral">&quot;\&quot;type\&quot;:\&quot;TREE\&quot;,\&quot;name\&quot;:\&quot;%s\&quot;,\&quot;surface\&quot;:%s&quot;</span>,n,c);</div>
+<div class="line"><a name="l00956"></a><span class="lineno">  956</span>&#160;                    <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00957"></a><span class="lineno">  957</span>&#160;                }</div>
+<div class="line"><a name="l00958"></a><span class="lineno">  958</span>&#160;            <span class="keywordflow">case</span> RECEPTOR_ID:</div>
+<div class="line"><a name="l00959"></a><span class="lineno">  959</span>&#160;                <span class="keywordflow">if</span> (t-&gt;context.flags &amp; (TFLAG_SURFACE_IS_TREE+TFLAG_SURFACE_IS_RECEPTOR)) {</div>
+<div class="line"><a name="l00960"></a><span class="lineno">  960</span>&#160;                    c = <a class="code" href="group__tree.html#ga34e1f5a651d1a582e3cd7bb3e885ffde">_t2json</a>(defs,((<a class="code" href="structReceptor.html">Receptor</a> *)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(t))-&gt;root,0,tbuf);</div>
+<div class="line"><a name="l00961"></a><span class="lineno">  961</span>&#160;                    sprintf(buf,<span class="stringliteral">&quot;\&quot;type\&quot;:\&quot;RECEPTOR\&quot;,\&quot;name\&quot;:\&quot;%s\&quot;,\&quot;surface\&quot;:%s&quot;</span>,n,c);</div>
+<div class="line"><a name="l00962"></a><span class="lineno">  962</span>&#160;                    <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00963"></a><span class="lineno">  963</span>&#160;                }</div>
+<div class="line"><a name="l00964"></a><span class="lineno">  964</span>&#160;            <span class="keywordflow">case</span> SCAPE_ID:</div>
+<div class="line"><a name="l00965"></a><span class="lineno">  965</span>&#160;                <span class="keywordflow">if</span> (t-&gt;context.flags &amp; TFLAG_SURFACE_IS_SCAPE) {</div>
+<div class="line"><a name="l00966"></a><span class="lineno">  966</span>&#160;                    <a class="code" href="structScape.html">Scape</a> *sc = (<a class="code" href="structScape.html">Scape</a> *)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(t);</div>
+<div class="line"><a name="l00967"></a><span class="lineno">  967</span>&#160;                    <span class="comment">//TODO: fixme!</span></div>
+<div class="line"><a name="l00968"></a><span class="lineno">  968</span>&#160;                    sprintf(buf,<span class="stringliteral">&quot;(%s:key %s,data %s&quot;</span>,n,<a class="code" href="group__def.html#ga434ff1353a4f55f4f61b95fe8d9cff43">_d_get_symbol_name</a>(symbols,sc-&gt;key_source),<a class="code" href="group__def.html#ga434ff1353a4f55f4f61b95fe8d9cff43">_d_get_symbol_name</a>(symbols,sc-&gt;data_source));</div>
+<div class="line"><a name="l00969"></a><span class="lineno">  969</span>&#160;                    <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00970"></a><span class="lineno">  970</span>&#160;                }</div>
+<div class="line"><a name="l00971"></a><span class="lineno">  971</span>&#160;            <span class="keywordflow">case</span> LIST_ID:</div>
+<div class="line"><a name="l00972"></a><span class="lineno">  972</span>&#160;                sprintf(buf,<span class="stringliteral">&quot;\&quot;type\&quot;:\&quot;LIST\&quot;,\&quot;name\&quot;:\&quot;%s\&quot;&quot;</span>,n);</div>
+<div class="line"><a name="l00973"></a><span class="lineno">  973</span>&#160;                <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00974"></a><span class="lineno">  974</span>&#160;            <span class="keywordflow">default</span>:</div>
+<div class="line"><a name="l00975"></a><span class="lineno">  975</span>&#160;                <span class="keywordflow">if</span> (semeq(s,SEMTREX_MATCH_CURSOR)) {</div>
+<div class="line"><a name="l00976"></a><span class="lineno">  976</span>&#160;                    c = <a class="code" href="group__tree.html#ga34e1f5a651d1a582e3cd7bb3e885ffde">_t2json</a>(defs,*(<a class="code" href="structT.html">T</a> **)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(t),0,tbuf);</div>
+<div class="line"><a name="l00977"></a><span class="lineno">  977</span>&#160;                    <span class="comment">//c = &quot;null&quot;;</span></div>
+<div class="line"><a name="l00978"></a><span class="lineno">  978</span>&#160;                    sprintf(buf,<span class="stringliteral">&quot;(%s:{%s}&quot;</span>,n,c);</div>
+<div class="line"><a name="l00979"></a><span class="lineno">  979</span>&#160;                    <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00980"></a><span class="lineno">  980</span>&#160;                }</div>
+<div class="line"><a name="l00981"></a><span class="lineno">  981</span>&#160;                <span class="keywordflow">if</span> (n == 0)</div>
+<div class="line"><a name="l00982"></a><span class="lineno">  982</span>&#160;                    sprintf(buf,<span class="stringliteral">&quot;(&lt;unknown:%d.%d.%d&gt;&quot;</span>,s.context,s.flags,s.id);</div>
+<div class="line"><a name="l00983"></a><span class="lineno">  983</span>&#160;                <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00984"></a><span class="lineno">  984</span>&#160;                    c = <a class="code" href="group__def.html#ga232c2752b35c8fd708b5ba9a60da545e">_d_get_structure_name</a>(structures,st);</div>
+<div class="line"><a name="l00985"></a><span class="lineno">  985</span>&#160;                    sprintf(buf,<span class="stringliteral">&quot;\&quot;type\&quot;:\&quot;%s\&quot;,\&quot;name\&quot;:\&quot;%s\&quot;&quot;</span>,c,n);</div>
+<div class="line"><a name="l00986"></a><span class="lineno">  986</span>&#160;                }</div>
+<div class="line"><a name="l00987"></a><span class="lineno">  987</span>&#160;            }</div>
+<div class="line"><a name="l00988"></a><span class="lineno">  988</span>&#160;        }</div>
+<div class="line"><a name="l00989"></a><span class="lineno">  989</span>&#160;    }</div>
+<div class="line"><a name="l00990"></a><span class="lineno">  990</span>&#160;    buf += strlen(buf);</div>
+<div class="line"><a name="l00991"></a><span class="lineno">  991</span>&#160;    <span class="keywordtype">int</span> _c = <a class="code" href="group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc">_t_children</a>(t);</div>
+<div class="line"><a name="l00992"></a><span class="lineno">  992</span>&#160;    <span class="keywordflow">if</span> ( _c &gt; 0) {</div>
+<div class="line"><a name="l00993"></a><span class="lineno">  993</span>&#160;        sprintf(buf,<span class="stringliteral">&quot;,\&quot;children\&quot;:[&quot;</span>);</div>
+<div class="line"><a name="l00994"></a><span class="lineno">  994</span>&#160;        buf += strlen(buf);</div>
+<div class="line"><a name="l00995"></a><span class="lineno">  995</span>&#160;        <span class="keywordflow">for</span>(i=1;i&lt;=_c;i++){</div>
+<div class="line"><a name="l00996"></a><span class="lineno">  996</span>&#160;            <a class="code" href="group__tree.html#ga34e1f5a651d1a582e3cd7bb3e885ffde">_t2json</a>(defs,_t_child(t,i),level &lt; 0 ? level-1 : level+1,buf);</div>
+<div class="line"><a name="l00997"></a><span class="lineno">  997</span>&#160;            buf += strlen(buf);</div>
+<div class="line"><a name="l00998"></a><span class="lineno">  998</span>&#160;            <span class="keywordflow">if</span> (i&lt;_c) {</div>
+<div class="line"><a name="l00999"></a><span class="lineno">  999</span>&#160;                _add_char2buf(<span class="charliteral">&#39;,&#39;</span>,buf);</div>
+<div class="line"><a name="l01000"></a><span class="lineno"> 1000</span>&#160;            }</div>
+<div class="line"><a name="l01001"></a><span class="lineno"> 1001</span>&#160;        }</div>
+<div class="line"><a name="l01002"></a><span class="lineno"> 1002</span>&#160;        _add_char2buf(<span class="charliteral">&#39;]&#39;</span>,buf);</div>
+<div class="line"><a name="l01003"></a><span class="lineno"> 1003</span>&#160;    }</div>
+<div class="line"><a name="l01004"></a><span class="lineno"> 1004</span>&#160;    _add_char2buf(<span class="charliteral">&#39;}&#39;</span>,buf);</div>
+<div class="line"><a name="l01005"></a><span class="lineno"> 1005</span>&#160;    <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l01006"></a><span class="lineno"> 1006</span>&#160;}</div>
+<div class="line"><a name="l01007"></a><span class="lineno"> 1007</span>&#160;</div>
 <div class="ttc" id="group__tree_html_ga25dd0f385044ffbcc7c215ea80fa00b4"><div class="ttname"><a href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a></div><div class="ttdeci">T * _t_new_root(Symbol symbol)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00129">tree.c:129</a></div></div>
 <div class="ttc" id="group__def_html_ga1678fa0990fae85360a6f92a0bfb37ec"><div class="ttname"><a href="group__def.html#ga1678fa0990fae85360a6f92a0bfb37ec">_d_get_symbol_size</a></div><div class="ttdeci">size_t _d_get_symbol_size(T *symbols, T *structures, Symbol s, void *surface)</div><div class="ttdef"><b>Definition:</b> <a href="def_8c_source.html#l00201">def.c:201</a></div></div>
 <div class="ttc" id="structT_html"><div class="ttname"><a href="structT.html">T</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00101">ceptr_types.h:101</a></div></div>
@@ -779,7 +782,7 @@ $(document).ready(function(){initNavTree('tree_8c_source.html','');});
 <div class="ttc" id="group__tree_html_gac32c74deeed63ca197b3e3e3beb35a33"><div class="ttname"><a href="group__tree.html#gac32c74deeed63ca197b3e3e3beb35a33">_t_morph</a></div><div class="ttdeci">void _t_morph(T *dst, T *src)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00300">tree.c:300</a></div></div>
 <div class="ttc" id="structDefs_html_a6f9d3b3e38fff31326b7d27f730ae95c"><div class="ttname"><a href="structDefs.html#a6f9d3b3e38fff31326b7d27f730ae95c">Defs::structures</a></div><div class="ttdeci">T * structures</div><div class="ttdoc">pointer for quick access to structures </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00169">ceptr_types.h:169</a></div></div>
 <div class="ttc" id="group__tree_html_gaf019d190c9623de809d006e309a441af"><div class="ttname"><a href="group__tree.html#gaf019d190c9623de809d006e309a441af">_t_get</a></div><div class="ttdeci">T * _t_get(T *t, int *p)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00652">tree.c:652</a></div></div>
-<div class="ttc" id="structScape_html"><div class="ttname"><a href="structScape.html">Scape</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00266">ceptr_types.h:266</a></div></div>
+<div class="ttc" id="structScape_html"><div class="ttname"><a href="structScape.html">Scape</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00267">ceptr_types.h:267</a></div></div>
 <div class="ttc" id="group__tree_html_ga11e689c8dea5c022fe0e4c20652e5af5"><div class="ttname"><a href="group__tree.html#ga11e689c8dea5c022fe0e4c20652e5af5">_t_hash_equal</a></div><div class="ttdeci">int _t_hash_equal(TreeHash h1, TreeHash h2)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00759">tree.c:759</a></div></div>
 <div class="ttc" id="group__tree_html_ga87cb5cdb608c0048c5ae7e3249780a8c"><div class="ttname"><a href="group__tree.html#ga87cb5cdb608c0048c5ae7e3249780a8c">_t_new_str</a></div><div class="ttdeci">T * _t_new_str(T *parent, Symbol symbol, char *surface)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00118">tree.c:118</a></div></div>
 <div class="ttc" id="group__tree_html_ga403644d86c835ceae71dc7af0356900f"><div class="ttname"><a href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a></div><div class="ttdeci">T * _t_detach_by_idx(T *t, int i)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00221">tree.c:221</a></div></div>
@@ -790,7 +793,7 @@ $(document).ready(function(){initNavTree('tree_8c_source.html','');});
 <div class="ttc" id="group__tree_html_ga7fd137a24b6795e1fc25c50ba91a767f"><div class="ttname"><a href="group__tree.html#ga7fd137a24b6795e1fc25c50ba91a767f">_t_new_receptor</a></div><div class="ttdeci">T * _t_new_receptor(T *parent, Symbol symbol, Receptor *r)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00159">tree.c:159</a></div></div>
 <div class="ttc" id="group__tree_html_gae4c9b743462f0a3808c9f02c3bf33da8"><div class="ttname"><a href="group__tree.html#gae4c9b743462f0a3808c9f02c3bf33da8">_t_get_path</a></div><div class="ttdeci">int * _t_get_path(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00596">tree.c:596</a></div></div>
 <div class="ttc" id="group__tree_html_ga7535eb2963c6cf5fc78cb14287581f92"><div class="ttname"><a href="group__tree.html#ga7535eb2963c6cf5fc78cb14287581f92">_t_clone</a></div><div class="ttdeci">T * _t_clone(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00452">tree.c:452</a></div></div>
-<div class="ttc" id="group__receptor_html_ga6f650808029d4c598ebe6515d9900ef8"><div class="ttname"><a href="group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8">_r_free</a></div><div class="ttdeci">void _r_free(Receptor *r)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00125">receptor.c:125</a></div></div>
+<div class="ttc" id="group__receptor_html_ga6f650808029d4c598ebe6515d9900ef8"><div class="ttname"><a href="group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8">_r_free</a></div><div class="ttdeci">void _r_free(Receptor *r)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00109">receptor.c:109</a></div></div>
 <div class="ttc" id="tree_8h_html"><div class="ttname"><a href="tree_8h.html">tree.h</a></div><div class="ttdoc">semantic trees header file </div></div>
 <div class="ttc" id="group__tree_html_ga3e2009f5a82889263d560d2c1479606a"><div class="ttname"><a href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a></div><div class="ttdeci">T * _t_newr(T *parent, Symbol symbol)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00140">tree.c:140</a></div></div>
 <div class="ttc" id="scape_8c_html_a3248dd3373ca8f722b69d385aec37d7d"><div class="ttname"><a href="scape_8c.html#a3248dd3373ca8f722b69d385aec37d7d">_s_free</a></div><div class="ttdeci">void _s_free(Scape *s)</div><div class="ttdef"><b>Definition:</b> <a href="scape_8c_source.html#l00043">scape.c:43</a></div></div>
@@ -813,8 +816,8 @@ $(document).ready(function(){initNavTree('tree_8c_source.html','');});
 <div class="ttc" id="group__tree_html_gaf5f98525f4d48c29783c7b13235958c2"><div class="ttname"><a href="group__tree.html#gaf5f98525f4d48c29783c7b13235958c2">_t_serialize</a></div><div class="ttdeci">void _t_serialize(Defs *d, T *t, void **surfaceP, size_t *lengthP)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00820">tree.c:820</a></div></div>
 <div class="ttc" id="scape_8h_html"><div class="ttname"><a href="scape_8h.html">scape.h</a></div><div class="ttdoc">scape header files </div></div>
 <div class="ttc" id="group__tree_html_ga81b96d2e950c7ac5ae8d17364f2fc49f"><div class="ttname"><a href="group__tree.html#ga81b96d2e950c7ac5ae8d17364f2fc49f">_t_get_surface</a></div><div class="ttdeci">void * _t_get_surface(T *t, int *p)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00680">tree.c:680</a></div></div>
-<div class="ttc" id="structReceptor_html"><div class="ttname"><a href="structReceptor.html">Receptor</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00221">ceptr_types.h:221</a></div></div>
-<div class="ttc" id="structXaddr_html"><div class="ttname"><a href="structXaddr.html">Xaddr</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00242">ceptr_types.h:242</a></div></div>
+<div class="ttc" id="structReceptor_html"><div class="ttname"><a href="structReceptor.html">Receptor</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00222">ceptr_types.h:222</a></div></div>
+<div class="ttc" id="structXaddr_html"><div class="ttname"><a href="structXaddr.html">Xaddr</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00243">ceptr_types.h:243</a></div></div>
 <div class="ttc" id="group__tree_html_gad19e9f2cb621a82e755f6c7796c9fe12"><div class="ttname"><a href="group__tree.html#gad19e9f2cb621a82e755f6c7796c9fe12">__t_newi</a></div><div class="ttdeci">T * __t_newi(T *parent, Symbol symbol, int surface, size_t alloc_size)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00073">tree.c:73</a></div></div>
 <div class="ttc" id="group__def_html_ga41157ee3740cc54c3857ca46e2545999"><div class="ttname"><a href="group__def.html#ga41157ee3740cc54c3857ca46e2545999">_d_get_symbol_structure</a></div><div class="ttdeci">Structure _d_get_symbol_structure(T *symbols, Symbol s)</div><div class="ttdef"><b>Definition:</b> <a href="def_8c_source.html#l00181">def.c:181</a></div></div>
 <div class="ttc" id="structrT_html"><div class="ttname"><a href="structrT.html">rT</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00115">ceptr_types.h:115</a></div></div>
@@ -836,7 +839,7 @@ $(document).ready(function(){initNavTree('tree_8c_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="tree_8c.html">tree.c</a></li>
-    <li class="footer">Generated on Wed Jun 10 2015 15:52:54 for ceptr by
+    <li class="footer">Generated on Tue Jun 23 2015 10:51:49 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

@@ -232,6 +232,7 @@ var sys__symbols_8h =
     [ "TEST_NAME_SYMBOL", "sys__symbols_8h.html#a1341f5507add5bd401e358263f0dba20", null ],
     [ "TEST_RECEPTOR_SYMBOL", "sys__symbols_8h.html#ad9ab667bbe67922a30f339acf572f1eb", null ],
     [ "TEST_STR_SYMBOL", "sys__symbols_8h.html#a990462c2ceec753f7e2b2e32484dea7b", null ],
+    [ "TEST_STREAM_SYMBOL", "sys__symbols_8h.html#ae67084d513c8717cb2dd89e2215ab151", null ],
     [ "TEST_TREE_SYMBOL", "sys__symbols_8h.html#a5e258b2a006239d89a5317c2ea550574", null ],
     [ "TEST_TREE_SYMBOL2", "sys__symbols_8h.html#ac93268d21341bf1e275c728aac546129", null ],
     [ "TOO_FEW_PARAMS_ERR", "sys__symbols_8h.html#a58b100958bb61844fabd09cae47c636c", null ],

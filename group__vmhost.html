@@ -151,8 +151,8 @@ Functions</h2></td></tr>
 <tr class="separator:ga6e1f1cd1889dd7f1a8601c626f2dba1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga0d188e8b2a654b2e01e12c57017184cb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vmhost.html#ga0d188e8b2a654b2e01e12c57017184cb">_v_send_signals</a> (<a class="el" href="structVMHost.html">VMHost</a> *v, <a class="el" href="structT.html">T</a> *signals)</td></tr>
 <tr class="separator:ga0d188e8b2a654b2e01e12c57017184cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gacdfd2f8411fd885f4d8b4b1f531ec05b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vmhost.html#gacdfd2f8411fd885f4d8b4b1f531ec05b">__v_process_signals</a> (<a class="el" href="structVMHost.html">VMHost</a> *v)</td></tr>
-<tr class="separator:gacdfd2f8411fd885f4d8b4b1f531ec05b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4520cf3fc8e5cfacaf641f07d0e42dbd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vmhost.html#ga4520cf3fc8e5cfacaf641f07d0e42dbd">__v_deliver_signals</a> (<a class="el" href="structVMHost.html">VMHost</a> *v)</td></tr>
+<tr class="separator:ga4520cf3fc8e5cfacaf641f07d0e42dbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>The Virtual Machine Host runs receptors and interfaces between the outside world and the cptr world. </p>
@@ -191,16 +191,16 @@ Functions</h2></td></tr>
 </dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000025">Todo:</a></b></dt><dd>for now we are just storing the active receptors in the receptor tree later this will probably have to be optimized into a hash/scape for faster access </dd></dl>
 
-<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00156">156</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
+<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00157">157</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="gacdfd2f8411fd885f4d8b4b1f531ec05b"></a>
+<a class="anchor" id="ga4520cf3fc8e5cfacaf641f07d0e42dbd"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void __v_process_signals </td>
+          <td class="memname">void __v_deliver_signals </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structVMHost.html">VMHost</a> *&#160;</td>
           <td class="paramname"><em>v</em></td><td>)</td>
@@ -208,9 +208,9 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>walk through the list of pending signals and deliver them </p>
+<p>scaffolding function for signal delviery </p>
 
-<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00189">189</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
+<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00190">190</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
 
 </div>
 </div>
@@ -248,7 +248,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000024">Todo:</a></b></dt><dd>for now we are just storing the active receptors in the receptor tree later this will probably have to be optimized into a hash/scape for faster access </dd></dl>
 
-<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00140">140</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
+<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00141">141</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
 
 </div>
 </div>
@@ -273,7 +273,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00041">41</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
+<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00042">42</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
 
 </div>
 </div>
@@ -352,7 +352,7 @@ Functions</h2></td></tr>
 <div class="line"></div>
 <div class="line"><span class="comment">/*     _v_free(v); */</span></div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00082">82</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
+<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00083">83</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
 
 </div>
 </div>
@@ -398,7 +398,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="comment">/*     spec_is_ptr_equal(p,p1); */</span></div>
 <div class="line"><span class="comment">/*     _v_free(v); */</span></div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00064">64</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
+<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00065">65</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
 
 </div>
 </div>
@@ -435,7 +435,7 @@ Functions</h2></td></tr>
 <div class="line">    spec_is_sem_equal(v-&gt;installed_receptors-&gt;data_source,RECEPTOR);</div>
 <div class="line">    <a class="code" href="group__vmhost.html#ga44e0f6d62e38448bfa058f287cc463eb">_v_free</a>(v);</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00025">25</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
+<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00026">26</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
 
 </div>
 </div>
@@ -562,7 +562,7 @@ Functions</h2></td></tr>
 <div class="line"></div>
 <div class="line"><span class="keywordtype">void</span> <a class="code" href="vmhost__spec_8h.html#a9165528cd9a1193303f58f7c012ba53c">testVMHostActivateReceptor</a>() {</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00169">169</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
+<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00170">170</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
 
 </div>
 </div>
@@ -591,7 +591,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>walk through the list of signals and send them </p>
 
-<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00179">179</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
+<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00180">180</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
 
 </div>
 </div>
@@ -600,7 +600,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Jun 10 2015 15:52:54 for ceptr by
+    <li class="footer">Generated on Tue Jun 23 2015 10:51:50 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

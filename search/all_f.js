@@ -5,6 +5,7 @@ var searchData=
   ['parsesemtrex',['parseSemtrex',['../group__semtrex.html#ga17eda8e5306b5764656d7edf3f5b15bd',1,'parseSemtrex(Defs *d, char *stx):&#160;semtrex.c'],['../group__semtrex.html#ga17eda8e5306b5764656d7edf3f5b15bd',1,'parseSemtrex(Defs *d, char *stx):&#160;semtrex.c']]],
   ['patch',['patch',['../semtrex_8c.html#ab307af6eec1425c7801b32bfbaa08f42',1,'semtrex.c']]],
   ['path_5fs',['path_s',['../structtable__elem.html#a7e5968fd30d0a7c15f12ed8231a7b415',1,'table_elem']]],
+  ['pending_5fsignals',['pending_signals',['../structQ.html#a36bba343a63fbe7649b850da2a11b9bc',1,'Q']]],
   ['pending_5fsignals_5fid',['PENDING_SIGNALS_ID',['../sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57ab70e70ef75e3ccdcd72c4ef0a4d71def',1,'sys_symbols.h']]],
   ['process_2ec',['process.c',['../process_8c.html',1,'']]],
   ['process_2eh',['process.h',['../process_8h.html',1,'']]],

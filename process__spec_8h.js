@@ -15,7 +15,9 @@ var process__spec_8h =
     [ "testProcessReduce", "process__spec_8h.html#aa69e698c7c57574c9c9b949a700e469e", null ],
     [ "testProcessReduceDefinedProcess", "process__spec_8h.html#a144cc1bbafbf21f1ac4aa51b06c2c680", null ],
     [ "testProcessRespond", "process__spec_8h.html#ad63b9b096ad0b0a66cac7206053096a7", null ],
+    [ "testProcessSend", "process__spec_8h.html#a818d9ab2c0d16b7d9c960416608e6781", null ],
     [ "testProcessSignatureMatching", "process__spec_8h.html#a631f59b6dead13d3e5de6645af9c05ba", null ],
+    [ "testProcessStream", "process__spec_8h.html#a696fff28daa19fa54a1f7c77245387fc", null ],
     [ "testProcessString", "process__spec_8h.html#ad4216f4d7ecefcc81d04327546953a9b", null ],
     [ "testRunTree", "process__spec_8h.html#ac4571cec1a9f70eded22140be940cc54", null ]
 ];

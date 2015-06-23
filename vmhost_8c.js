@@ -1,7 +1,7 @@
 var vmhost_8c =
 [
     [ "__v_activate", "group__vmhost.html#ga066ae2bbe18ed4c9357526118dd1d2b9", null ],
-    [ "__v_process_signals", "group__vmhost.html#gacdfd2f8411fd885f4d8b4b1f531ec05b", null ],
+    [ "__v_deliver_signals", "group__vmhost.html#ga4520cf3fc8e5cfacaf641f07d0e42dbd", null ],
     [ "_v_activate", "group__vmhost.html#ga53694170e5452b8062ec405e6a9a3f60", null ],
     [ "_v_free", "group__vmhost.html#ga44e0f6d62e38448bfa058f287cc463eb", null ],
     [ "_v_install_r", "group__vmhost.html#ga1af12cca486bb811908a204d9cbd19f8", null ],

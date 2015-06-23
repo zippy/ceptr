@@ -2,6 +2,7 @@ var sys__processes_8h =
 [
     [ "is_sys_process", "sys__processes_8h.html#a9ca58ba970e4682b8e666a517384a520", null ],
     [ "SystemProcessID", "sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8e", [
+      [ "NULL_PROCESS_ID", "sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8eae0d8763313d07c0fd7069016226f0ce1", null ],
       [ "NOOP_ID", "sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8ea9bc0fb0dc3c075114973bb833d98303d", null ],
       [ "IF_ID", "sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8eaa778775ecfe4f1b5d5732965af60c6de", null ],
       [ "ADD_INT_ID", "sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8ea3e8a76f3a15a957b50a6599c69a49d6e", null ],
@@ -16,10 +17,12 @@ var sys__processes_8h =
       [ "GTE_INT_ID", "sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8ea6c7e8caa527aaa68f38087836fe4b9b9", null ],
       [ "CONCAT_STR_ID", "sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8eab9af6501940d63fa86b828e3e2219c8c", null ],
       [ "RESPOND_ID", "sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8ea8c6120c4ab760098de5bef78806ad2fd", null ],
+      [ "SEND_ID", "sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8ea462d468ab1d5ca565291b0c4d1580183", null ],
       [ "EXPECT_ACT_ID", "sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8ea85cd1966e1025349802d02da5d7f020e", null ],
       [ "QUOTE_ID", "sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8ea9a9d4963cb21e1d7af803d292770092e", null ],
       [ "INTERPOLATE_FROM_MATCH_ID", "sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8ea545735a47c85dde41ea9a1ffee415e02", null ],
-      [ "RAISE_ID", "sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8ea6fe7c016a5a6a16fb9533b61e5abe539", null ]
+      [ "RAISE_ID", "sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8ea6fe7c016a5a6a16fb9533b61e5abe539", null ],
+      [ "READ_STREAM_ID", "sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8eab171c525ace377fe601e64aaf25ad787", null ]
     ] ],
     [ "ADD_INT", "sys__processes_8h.html#a9060e4b1b2bdae067db7cea122b73179", null ],
     [ "CONCAT_STR", "sys__processes_8h.html#a0be22488950f4208136a60eafe2993d8", null ],
@@ -38,6 +41,8 @@ var sys__processes_8h =
     [ "NULL_PROCESS", "sys__processes_8h.html#a659145d2ab93a0f49ed8e967c0466433", null ],
     [ "QUOTE", "sys__processes_8h.html#a9c74d7215a79640cd7ef91f4d5bcf0e7", null ],
     [ "RAISE", "sys__processes_8h.html#a1d426c19b2d6512ae7a4e39988802491", null ],
+    [ "READ_STREAM", "sys__processes_8h.html#ad72492b0cd1c8a5ed670f12eef5a2bf8", null ],
     [ "RESPOND", "sys__processes_8h.html#a0220cf3ab749a41050ab56e0417d610f", null ],
+    [ "SEND", "sys__processes_8h.html#a8ad261a6b577282fc2f04c81fb8560d3", null ],
     [ "SUB_INT", "sys__processes_8h.html#a39223b4cec2bcddb39ce685e28866dd7", null ]
 ];

@@ -122,18 +122,91 @@ $(document).ready(function(){initNavTree('de_8c_source.html','');});
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    G_vm = <a class="code" href="group__vmhost.html#gab6fbe5683628fb0d62a966316ced938d">_v_new</a>();</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;}</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment">/*------------------------------------------------------------------------*/</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<a class="code" href="structT.html">T</a> *_de_get_instance(<a class="code" href="structinstances__elem.html">Instances</a> *instances,<a class="code" href="structXaddr.html">Xaddr</a> x) {</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <a class="code" href="structinstances__elem.html">instances_elem</a> *e = 0;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    HASH_FIND_INT( *instances, &amp;x.symbol, e );</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keywordflow">if</span> (e) {</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <a class="code" href="structinstance__elem.html">instance_elem</a> *i = 0;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <a class="code" href="structinstance__elem.html">Instance</a> *iP = &amp;e-&gt;<a class="code" href="structinstances__elem.html#a734b66c913756eb945351222cb601a87">instances</a>;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        HASH_FIND_INT( *iP, &amp;x.addr, i );</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="keywordflow">if</span> (i) {</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            <span class="keywordflow">return</span> i-&gt;<a class="code" href="structinstance__elem.html#a7a42321cb232ac42535157a9e654127f">instance</a>;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        }</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    }</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;}</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<a class="code" href="structXaddr.html">Xaddr</a> _de_new_instance(<a class="code" href="structinstances__elem.html">Instances</a> *instances,<a class="code" href="structT.html">T</a> *t) {</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <a class="code" href="structSemanticID.html">Symbol</a> s = <a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(t);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <a class="code" href="structinstances__elem.html">instances_elem</a> *e;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    HASH_FIND_INT( *instances, &amp;s, e );</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordflow">if</span> (!e) {</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        e = malloc(<span class="keyword">sizeof</span>(<span class="keyword">struct</span> <a class="code" href="structinstances__elem.html">instances_elem</a>));</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        e-&gt;<a class="code" href="structinstances__elem.html#a734b66c913756eb945351222cb601a87">instances</a> = NULL;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        e-&gt;<a class="code" href="structinstances__elem.html#aeeb84ef2b0bb4b596d161bc84f17937d">s</a> = s;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        e-&gt;<a class="code" href="structinstances__elem.html#a8de2d1f9439151657a718b405a16cae4">last_id</a> = 0;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        HASH_ADD_INT(*instances,s,e);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    }</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    e-&gt;<a class="code" href="structinstances__elem.html#a8de2d1f9439151657a718b405a16cae4">last_id</a>++;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <a class="code" href="structinstance__elem.html">instance_elem</a> *i;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    i = malloc(<span class="keyword">sizeof</span>(<span class="keyword">struct</span> <a class="code" href="structinstance__elem.html">instance_elem</a>));</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    i-&gt;<a class="code" href="structinstance__elem.html#a7a42321cb232ac42535157a9e654127f">instance</a> = t;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    i-&gt;<a class="code" href="structinstance__elem.html#a86b4388e64f55687d1c000af2eb7b0e4">addr</a> = e-&gt;<a class="code" href="structinstances__elem.html#a8de2d1f9439151657a718b405a16cae4">last_id</a>;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <a class="code" href="structinstance__elem.html">Instance</a> *iP = &amp;e-&gt;<a class="code" href="structinstances__elem.html#a734b66c913756eb945351222cb601a87">instances</a>;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    HASH_ADD_INT(*iP,addr,i);</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <a class="code" href="structXaddr.html">Xaddr</a> result;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    result.symbol = s;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    result.addr = e-&gt;<a class="code" href="structinstances__elem.html#a8de2d1f9439151657a718b405a16cae4">last_id</a>;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;}</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="keywordtype">void</span> instanceFree(<a class="code" href="structinstance__elem.html">Instance</a> *i) {</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <a class="code" href="structinstance__elem.html">instance_elem</a> *cur,*tmp;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    HASH_ITER(hh, *i, cur, tmp) {</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>((*i)-&gt;instance);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        HASH_DEL(*i,cur);  <span class="comment">/* delete; cur advances to next */</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        free(cur);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    }</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;}</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="keywordtype">void</span> _de_free_instances(<a class="code" href="structinstances__elem.html">Instances</a> *i) {</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <a class="code" href="structinstances__elem.html">instances_elem</a> *cur,*tmp;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    HASH_ITER(hh, *i, cur, tmp) {</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        instanceFree(&amp;(*i)-&gt;instances);</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        HASH_DEL(*i,cur);  <span class="comment">/* delete; cur advances to next */</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        free(cur);</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    }</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;}</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
+<div class="ttc" id="structinstance__elem_html"><div class="ttname"><a href="structinstance__elem.html">instance_elem</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00145">ceptr_types.h:145</a></div></div>
+<div class="ttc" id="structT_html"><div class="ttname"><a href="structT.html">T</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00101">ceptr_types.h:101</a></div></div>
 <div class="ttc" id="semtrex_8h_html"><div class="ttname"><a href="semtrex_8h.html">semtrex.h</a></div><div class="ttdoc">Semantic tree regular expression header file. </div></div>
+<div class="ttc" id="structinstances__elem_html_a734b66c913756eb945351222cb601a87"><div class="ttname"><a href="structinstances__elem.html#a734b66c913756eb945351222cb601a87">instances_elem::instances</a></div><div class="ttdeci">Instance instances</div><div class="ttdoc">instances store </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00157">ceptr_types.h:157</a></div></div>
+<div class="ttc" id="structinstance__elem_html_a7a42321cb232ac42535157a9e654127f"><div class="ttname"><a href="structinstance__elem.html#a7a42321cb232ac42535157a9e654127f">instance_elem::instance</a></div><div class="ttdeci">T * instance</div><div class="ttdoc">the stored instance </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00147">ceptr_types.h:147</a></div></div>
+<div class="ttc" id="structinstance__elem_html_a86b4388e64f55687d1c000af2eb7b0e4"><div class="ttname"><a href="structinstance__elem.html#a86b4388e64f55687d1c000af2eb7b0e4">instance_elem::addr</a></div><div class="ttdeci">int addr</div><div class="ttdoc">key to this instance </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00146">ceptr_types.h:146</a></div></div>
+<div class="ttc" id="group__tree_html_ga946600fb570f0cc913450905f6189d49"><div class="ttname"><a href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a></div><div class="ttdeci">Symbol _t_symbol(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00490">tree.c:490</a></div></div>
+<div class="ttc" id="structinstances__elem_html_a8de2d1f9439151657a718b405a16cae4"><div class="ttname"><a href="structinstances__elem.html#a8de2d1f9439151657a718b405a16cae4">instances_elem::last_id</a></div><div class="ttdeci">int last_id</div><div class="ttdoc">the last allocated id for instances </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00158">ceptr_types.h:158</a></div></div>
 <div class="ttc" id="de_8h_html"><div class="ttname"><a href="de_8h.html">de.h</a></div><div class="ttdoc">header file for data engine </div></div>
-<div class="ttc" id="group__vmhost_html_gab6fbe5683628fb0d62a966316ced938d"><div class="ttname"><a href="group__vmhost.html#gab6fbe5683628fb0d62a966316ced938d">_v_new</a></div><div class="ttdeci">VMHost * _v_new()</div><div class="ttdoc">Creates a new virtual machine host. </div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8c_source.html#l00025">vmhost.c:25</a></div></div>
+<div class="ttc" id="group__vmhost_html_gab6fbe5683628fb0d62a966316ced938d"><div class="ttname"><a href="group__vmhost.html#gab6fbe5683628fb0d62a966316ced938d">_v_new</a></div><div class="ttdeci">VMHost * _v_new()</div><div class="ttdoc">Creates a new virtual machine host. </div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8c_source.html#l00026">vmhost.c:26</a></div></div>
 <div class="ttc" id="structVMHost_html"><div class="ttname"><a href="structVMHost.html">VMHost</a></div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8h_source.html#l00022">vmhost.h:22</a></div></div>
+<div class="ttc" id="structXaddr_html"><div class="ttname"><a href="structXaddr.html">Xaddr</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00243">ceptr_types.h:243</a></div></div>
+<div class="ttc" id="structinstances__elem_html_aeeb84ef2b0bb4b596d161bc84f17937d"><div class="ttname"><a href="structinstances__elem.html#aeeb84ef2b0bb4b596d161bc84f17937d">instances_elem::s</a></div><div class="ttdeci">Symbol s</div><div class="ttdoc">key to store of this symbol type </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00156">ceptr_types.h:156</a></div></div>
 <div class="ttc" id="group__data_html_ga1317a5989f9bc3b85c59cffefed1b7f4"><div class="ttname"><a href="group__data.html#ga1317a5989f9bc3b85c59cffefed1b7f4">_de_boot</a></div><div class="ttdeci">void _de_boot()</div><div class="ttdef"><b>Definition:</b> <a href="de_8c_source.html#l00024">de.c:24</a></div></div>
+<div class="ttc" id="structinstances__elem_html"><div class="ttname"><a href="structinstances__elem.html">instances_elem</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00155">ceptr_types.h:155</a></div></div>
+<div class="ttc" id="group__tree_html_ga31e55cdc031e5f12523b998e89080db6"><div class="ttname"><a href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a></div><div class="ttdeci">void _t_free(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00415">tree.c:415</a></div></div>
+<div class="ttc" id="structSemanticID_html"><div class="ttname"><a href="structSemanticID.html">SemanticID</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00016">ceptr_types.h:16</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="de_8c.html">de.c</a></li>
-    <li class="footer">Generated on Wed Jun 10 2015 15:52:54 for ceptr by
+    <li class="footer">Generated on Tue Jun 23 2015 10:51:49 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
