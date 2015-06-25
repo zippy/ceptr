@@ -10,6 +10,7 @@
 
 #include "accumulator.h"
 #include "semtrex.h"
+#include "mtree.h"
 
 VMHost *G_vm = 0;
 
@@ -89,6 +90,67 @@ void _a_free_instances(Instances *i) {
         instanceFree(&(*i)->instances);
         HASH_DEL(*i,cur);  /* delete; cur advances to next */
         free(cur);
+    }
+}
+
+// the quick and dirty serialization builds a new tree
+// which we will just serialize as an mtree.
+// is is very inefficient @fixme
+void _a_serialize_instances(Instances *i,char *file) {
+
+    T *t = _t_new_root(PARAMS);
+    instances_elem *cur,*tmp;
+    HASH_ITER(hh, *i, cur, tmp) {
+        T *sym = _t_news(t,STRUCTURE_PART,cur->s);
+        Instance *iP = &cur->instances;
+        instance_elem *curi,*tmpi;
+        HASH_ITER(hh, *iP, curi, tmpi) {
+            _t_add(sym,_t_clone(curi->instance));
+        }
+    }
+    size_t size;
+    H h = _m_new_from_t(t);
+    S *s = _m_serialize(h.m,&size);
+
+    FILE *ofp;
+
+    ofp = fopen(file, "w");
+    if (ofp == NULL) {
+        raise_error("Can't open output file %s!\n",file);
+    }
+    else {
+        fwrite(&size, 1,sizeof(size), ofp);
+        fwrite(s,1,size,ofp);
+        fclose(ofp);
+    }
+    _m_free(h);free(s);_t_free(t);
+}
+
+void _a_unserialize_instances(Instances *instances,char *file) {
+    FILE *ofp;
+
+    ofp = fopen(file, "r");
+    if (ofp == NULL) {
+        raise_error("Can't open input file %s!\n",file);
+    }
+    else {
+        size_t size;
+        fread(&size, 1,sizeof(size), ofp);
+        S *s = malloc(size);
+        fread(s,1,size,ofp);
+        fclose(ofp);
+        H h = _m_unserialize(s);
+        T *t = _t_new_from_m(h);
+        free(s);
+        _m_free(h);
+        int j,c = _t_children(t);
+        for(j=1;j<=c;j++) {
+            T *u = _t_child(t,j);
+            while(_t_children(u)) {
+                _a_new_instance(instances, _t_detach_by_idx(u,1));
+            }
+        }
+        _t_free(t);
     }
 }
 

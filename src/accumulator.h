@@ -18,9 +18,12 @@
 void _a_boot();
 void _a_start_vmhost();
 
-T * _a_get_instance(Instances *i,Xaddr x);
+T *_a_get_instance(Instances *i,Xaddr x);
 Xaddr _a_new_instance(Instances *i,T *t);
 void _a_free_instances(Instances *i);
+
+void _a_serialize_instances(Instances *i,char *file);
+void _a_unserialize_instances(Instances *i,char *file);
 
 VMHost *G_vm;
 

@@ -24,7 +24,42 @@ void testAccInstances() {
     _a_free_instances(&i);
 }
 
+void testAccPersistInstances() {
+    Instances i = NULL;
+
+    T *it = _t_newi(0,TEST_INT_SYMBOL,1);
+    _a_new_instance(&i,it);
+
+    it = _t_newi(0,TEST_INT_SYMBOL,2);
+    Xaddr z = _a_new_instance(&i,it);
+
+    T *t = _t_new_root(PARAMS);
+    _t_newi(t,TEST_INT_SYMBOL,314);
+    Xaddr x = _a_new_instance(&i,t);
+
+    T *ht = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
+    T *htc = _t_clone(ht);
+    Xaddr y = _a_new_instance(&i,ht);
+
+    char *file = "test/test.instances";
+
+    _a_serialize_instances(&i,file);
+    _a_free_instances(&i);
+
+    _a_unserialize_instances(&i,file);
+
+    spec_is_str_equal(_t2s(&test_HTTP_defs,_a_get_instance(&i,x)),"(PARAMS (TEST_INT_SYMBOL:314))");
+    spec_is_str_equal(_t2s(&test_HTTP_defs,_a_get_instance(&i,y)),_t2s(&test_HTTP_defs,htc));
+    spec_is_str_equal(_t2s(&test_HTTP_defs,_a_get_instance(&i,z)),"(TEST_INT_SYMBOL:2)");
+
+    _a_free_instances(&i);
+    _t_free(htc);
+}
+
 void testAccumulator() {
+    _setup_HTTPDefs();
     testAccBootStrap();
     testAccInstances();
+    testAccPersistInstances();
+    _cleanup_HTTPDefs();
 }

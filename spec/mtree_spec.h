@@ -281,7 +281,7 @@ void testMTreeSerialize() {
     spec_is_equal(s->level_offsets[1], (int)SERIALIZED_LEVEL_SIZE(l));
 
     H h1 = _m_unserialize(s);
-    T *t1 = _t_new_from_m(h);
+    T *t1 = _t_new_from_m(h1);
 
     char buf[2000] = {0};
     char buf1[2000] = {0};
