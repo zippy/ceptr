@@ -152,7 +152,7 @@ void testCreateTreeNodesM(){
     // test add
     H h12 = _m_new(null_H,TEST_TREE_SYMBOL,"t12",4);
     spec_is_str_equal((char *)_m_surface(h12),"t12");
-    _m_new(h12,TEST_STR_SYMBOL,"t121",4);
+    _m_new(h12,TEST_STR_SYMBOL,"t121",5);
     H h221 = _m_new(h22,TEST_STR_SYMBOL,"t221",5);
     spec_is_equal(h221.a.l,3);
     spec_is_equal(h221.a.i,0);  //should be first and only node on third level
