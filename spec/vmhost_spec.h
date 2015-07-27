@@ -12,17 +12,10 @@ void testVMHostCreate() {
     //! [testVMHostCreate]
     VMHost *v = _v_new();
 
-    spec_is_symbol_equal(v->r,_t_symbol(v->r->root),VM_HOST_RECEPTOR);
-    T *ar_tree = _t_child(v->r->root,4);
-    spec_is_symbol_equal(v->r,_t_symbol(ar_tree),ACTIVE_RECEPTORS);
-    spec_is_ptr_equal(v->active_receptors,ar_tree);
-    spec_is_equal(_t_children(ar_tree),0);
+    // test the structure of the VM_HOST receptor
+    spec_is_str_equal(t2s(v->r->root),"(VM_HOST_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))) (ACTIVE_RECEPTORS) (PENDING_SIGNALS) (COMPOSITORY:{(COMPOSITORY (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))))}))");
 
-    T *s_tree = _t_child(v->r->root,5);
-    spec_is_symbol_equal(v->r,_t_symbol(s_tree),PENDING_SIGNALS);
-    spec_is_ptr_equal(v->pending_signals,s_tree);
-    spec_is_equal(_t_children(s_tree),0);
-
+    // test the installed receptors scape
     spec_is_sem_equal(v->installed_receptors->key_source,RECEPTOR_IDENTIFIER);
     spec_is_sem_equal(v->installed_receptors->data_source,RECEPTOR);
     _v_free(v);
