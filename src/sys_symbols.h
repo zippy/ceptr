@@ -120,6 +120,7 @@ enum SystemSymbolIDs
 
     //-----  Symbols for the virtual machine host
     VM_HOST_RECEPTOR_ID,
+    CLOCK_RECEPTOR_ID,
     COMPOSITORY_ID,                      ///< receptor that holds available receptor packages for installation
     MANIFEST_ID,                         ///< configuration template to be filled out for the installation of a receptor
     MANIFEST_PAIR_ID,
@@ -132,6 +133,18 @@ enum SystemSymbolIDs
     PENDING_SIGNALS_ID,                  ///< list of currently active INSTALLED_RECEPTORS
     BINDINGS_ID,                         ///< specifics that match a MANIFEST and allow a receptor to be installed
     BINDING_PAIR_ID,                     ///< a pair that matches a MANIFEST_LABEL with a given binding
+
+
+    //----- date and time symbols
+    YEAR_ID,
+    MONTH_ID,
+    DAY_ID,
+    HOUR_ID,
+    MINUTE_ID,
+    SECOND_ID,
+    TODAY_ID,
+    NOW_ID,
+    TICK_ID,
 
     //----- symbols for reduction errors
     ERROR_LOCATION_ID,
@@ -250,6 +263,7 @@ Symbol STEP;
 Symbol RESPONSE_STEPS;
 Symbol SCAPES;
 Symbol VM_HOST_RECEPTOR;
+Symbol CLOCK_RECEPTOR;
 Symbol COMPOSITORY;
 Symbol MANIFEST;
 Symbol MANIFEST_PAIR;
@@ -262,6 +276,16 @@ Symbol ACTIVE_RECEPTORS;
 Symbol PENDING_SIGNALS;
 Symbol BINDINGS;
 Symbol BINDING_PAIR;
+
+Symbol YEAR;
+Symbol MONTH;
+Symbol DAY;
+Symbol HOUR;
+Symbol MINUTE;
+Symbol SECOND;
+Symbol TODAY;
+Symbol NOW;
+Symbol TICK;
 
 Symbol ERROR_LOCATION;
 Symbol ZERO_DIVIDE_ERR;

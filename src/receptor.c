@@ -13,6 +13,8 @@
 #include "process.h"
 #include "accumulator.h"
 #include <stdarg.h>
+#include <time.h>
+#include <unistd.h>
 
 Xaddr G_null_xaddr  = {0,0};
 /*****************  create and destroy receptors */
@@ -573,4 +575,74 @@ char *_td(Receptor *r,T *t) {
     return __t_dump_buf;
 }
 
+/*****************  Built-in core and edge receptors */
+Receptor *_r_makeClockReceptor() {
+    Receptor *r = _r_new(CLOCK_RECEPTOR);
+    return r;
+}
+
+/**
+    bad implementation of the clock receptor thread (but easy):
+   - wake up every second
+   - build a TICK symbol based on the current time.
+   - send this signal to the CLOCK_RECEPTOR
+   - everything else should take care of itself because __r_check_listener which
+     runs after _r_deliver will match
+
+  @todo: a better implementation would be to analyze the semtrex expectations that have been planted
+  and only wakeup when needed based on those semtrexes
+
+ *
+ * @param[in] the clock receptor
+ */
+void *___clock_thread(void *arg){
+    Receptor *r = (Receptor*)arg;
+
+    int err;
+    while (1) {
+        if (__r_get_shutdown()) pthread_exit(err);
+        T *tick =__r_make_tick();
+        //     puts(_td(r,tick));
+        Xaddr self = {RECEPTOR_XADDR,0};  // 0 xaddr means SELF
+        T *signal = __r_make_signal(self,self,DEFAULT_ASPECT,tick);
+        _r_deliver(r,signal);
+        sleep(1);
+        // @todo this will skip some seconds over time.... make more sophisticated
+        //       with nano-sleep so that we get every second?
+    }
+}
+
+T * __r_make_tick() {
+    struct tm t;
+    time_t clock;
+    time(&clock);
+    gmtime_r(&clock, &t);
+    T *tick = _t_new_root(TICK);
+    T *today = _t_newr(tick,TODAY);
+    T *now = _t_newr(tick,NOW);
+    _t_newi(today,YEAR,t.tm_year+1900);
+    _t_newi(today,MONTH,t.tm_mon);
+    _t_newi(today,DAY,t.tm_mday);
+    _t_newi(now,HOUR,t.tm_hour);
+    _t_newi(now,MINUTE,t.tm_min);
+    _t_newi(now,SECOND,t.tm_sec);
+    return tick;
+}
+
+int G_shutdown = 0;
+pthread_mutex_t shutdownMutex;
+
+int __r_get_shutdown(void) {
+    int ret = 0;
+    pthread_mutex_lock(&shutdownMutex);
+    ret = G_shutdown;
+    pthread_mutex_unlock(&shutdownMutex);
+    return ret;
+}
+
+void __r_set_shutdown(int val) {
+    pthread_mutex_lock(&shutdownMutex);
+    G_shutdown = val;
+    pthread_mutex_unlock(&shutdownMutex);
+}
 /** @}*/

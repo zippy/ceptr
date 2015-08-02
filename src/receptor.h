@@ -84,6 +84,12 @@ Xaddr G_null_xaddr;
 
 #define spec_is_xaddr_equal(r,got,expected)  spec_total++; if (is_xaddr_eq(got,expected)){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %s.%d but was %s.%d",__FUNCTION__,__LINE__,#got,!is_null_symbol(expected.symbol)?_r_get_symbol_name(r,expected.symbol):"0",expected.addr,!is_null_symbol(got.symbol) ? _r_get_symbol_name(r,got.symbol):"0",got.addr);}
 
+/*****************  Built-in core and edge receptors */
+Receptor *_r_makeClockReceptor();
+void *___clock_thread(void *arg);
+T * __r_make_tick();
+int __r_get_shutdown(void);
+void __r_set_shutdown(int val);
 #endif
 
 /** @}*/

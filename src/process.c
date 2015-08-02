@@ -41,6 +41,11 @@ void _p_interpolate_from_match(T *t,T *match_results,T *match_tree) {
             raise_error0("expecting to get a value from match!!");
         }
         _t_morph(t,x);
+        // if the match has children, then we need to clone them in.
+        // @todo determine if this should be moved into _t_morph
+        if (_t_children(t) == 0 && _t_children(x) > 0) {
+            DO_KIDS(x,_t_add(t,_t_clone(_t_child(x,i))));
+        }
     }
     DO_KIDS(t,_p_interpolate_from_match(_t_child(t,i),match_results,match_tree));
 }

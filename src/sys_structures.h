@@ -68,6 +68,9 @@ Structure STREAM;
 Structure SEQUENCE;
 Structure PROTOCOL_STEP;
 Structure PROTOCOL;
+Structure DATE;
+Structure TIME;
+Structure TIMESTAMP;
 Structure REDUCTION_ERROR;
 Structure TREE_DELTA;
 #endif
