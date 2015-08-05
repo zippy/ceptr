@@ -88,8 +88,7 @@ Xaddr G_null_xaddr;
 Receptor *_r_makeClockReceptor();
 void *___clock_thread(void *arg);
 T * __r_make_tick();
-int __r_get_shutdown(void);
-void __r_set_shutdown(int val);
+void __r_kill(Receptor *r);
 #endif
 
 /** @}*/

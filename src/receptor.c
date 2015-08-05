@@ -37,6 +37,7 @@ Receptor *__r_new(Symbol s,T *defs,T *aspects) {
     r->table = NULL;
     r->instances = NULL;
     r->q = NULL;
+    r->state = Alive;
     return r;
 }
 
@@ -597,12 +598,11 @@ Receptor *_r_makeClockReceptor() {
  */
 void *___clock_thread(void *arg){
     Receptor *r = (Receptor*)arg;
-
-    int err;
-    while (1) {
-        if (__r_get_shutdown()) pthread_exit(err);
+    //    puts("clock started");
+    int err =0;
+    while (r->state == Alive) {
         T *tick =__r_make_tick();
-        //     puts(_td(r,tick));
+        //             puts(_td(r,tick));
         Xaddr self = {RECEPTOR_XADDR,0};  // 0 xaddr means SELF
         T *signal = __r_make_signal(self,self,DEFAULT_ASPECT,tick);
         _r_deliver(r,signal);
@@ -610,6 +610,9 @@ void *___clock_thread(void *arg){
         // @todo this will skip some seconds over time.... make more sophisticated
         //       with nano-sleep so that we get every second?
     }
+    //    puts("clock stopped");
+    pthread_exit(&err); //@todo determine if we should use pthread_exit or just return 0
+    return 0;
 }
 
 T * __r_make_tick() {
@@ -629,20 +632,10 @@ T * __r_make_tick() {
     return tick;
 }
 
-int G_shutdown = 0;
-pthread_mutex_t shutdownMutex;
-
-int __r_get_shutdown(void) {
-    int ret = 0;
-    pthread_mutex_lock(&shutdownMutex);
-    ret = G_shutdown;
-    pthread_mutex_unlock(&shutdownMutex);
-    return ret;
-}
-
-void __r_set_shutdown(int val) {
-    pthread_mutex_lock(&shutdownMutex);
-    G_shutdown = val;
-    pthread_mutex_unlock(&shutdownMutex);
+void __r_kill(Receptor *r) {
+    r->state = Dead;
+    /* pthread_mutex_lock(&shutdownMutex); */
+    /* G_shutdown = val; */
+    /* pthread_mutex_unlock(&shutdownMutex); */
 }
 /** @}*/

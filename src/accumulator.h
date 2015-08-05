@@ -15,8 +15,9 @@
 #include "tree.h"
 #include "vmhost.h"
 
-void _a_boot();
+void _a_boot(char *dir_name);
 void _a_start_vmhost();
+void _a_shut_down();
 
 T *_a_get_instance(Instances *i,Xaddr x);
 Xaddr _a_new_instance(Instances *i,T *t);

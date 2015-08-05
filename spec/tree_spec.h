@@ -75,6 +75,10 @@ void testCreateTreeNodes() {
 
 void testTreeNewReceptor() {
     //! [testTreeNewReceptor]
+
+    // @fixme this is really a bogus test, because why would a TEST_INT have a receptor as a child?
+    // we should make this a rational test
+
     T *t = _t_newi(0,TEST_INT_SYMBOL,0);
     Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
     T *tr = _t_new_receptor(t,TEST_RECEPTOR_SYMBOL,r);

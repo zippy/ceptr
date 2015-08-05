@@ -15,6 +15,10 @@
 
 #include "receptor.h"
 
+typedef struct thread {
+    int state;
+    pthread_t pthread;
+} thread;
 
 /**
  * VMHost holds all the data for an active virtual machine host
@@ -25,6 +29,9 @@ struct VMHost {
     T *active_receptors;    ///< pointer to tree that holds all currently active receptors
     T *pending_signals;
     Scape *installed_receptors;
+    thread vm_thread;
+    thread clock_thread;
+    int process_state;
 };
 typedef struct VMHost VMHost;
 
@@ -41,6 +48,15 @@ void _v_send(VMHost *v,Xaddr from,Xaddr to,Aspect aspect,T *contents);
 void _v_send_signals(VMHost *v,T *signals);
 
 void __v_deliver_signals(VMHost *v);
+
+void * __v_process(void *arg);
+
+void _v_instantiate_builtins(VMHost *v);
+void _v_start_vmhost(VMHost *v);
+
+/******************  thread handling */
+void _v_start_thread(thread *t,void *(*start_routine)(void*), void *arg);
+void _v_join_thread(thread *t);
 
 #endif
 /** @}*/

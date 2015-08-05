@@ -30,6 +30,8 @@ VMHost * _v_new() {
     v->active_receptors = _t_newr(v->r->root,ACTIVE_RECEPTORS);
     v->pending_signals = _t_newr(v->r->root,PENDING_SIGNALS);
     v->installed_receptors = _s_new(RECEPTOR_IDENTIFIER,RECEPTOR);
+    v->vm_thread.state = 0;
+    v->clock_thread.state = 0;
     _t_new_receptor(v->r->root,COMPOSITORY,v->c);
     return v;
 }
@@ -141,6 +143,12 @@ Xaddr _v_new_receptor(VMHost *v,Symbol s, Receptor *r) {
 void _v_activate(VMHost *v, Xaddr x) {
     T *t = _r_get_instance(v->r,x);
     _t_add(v->active_receptors,t);
+
+    // handle special cases
+    T *rt = _t_child(t,1);
+    if (semeq(_t_symbol(rt),CLOCK_RECEPTOR)) {
+        _v_start_thread(&v->clock_thread,___clock_thread,_t_surface(rt));
+    }
 }
 
 /**
@@ -191,4 +199,93 @@ void __v_deliver_signals(VMHost *v) {
     T *signals = v->pending_signals;
     __r_deliver_signals(v->r,signals,&v->r->instances);
 }
+
+
+/**
+ * this is the VMhost main monitoring and execution thread
+ */
+void *__v_process(void *arg) {
+    VMHost *v = (VMHost *) arg;
+    int c,i;
+
+    while(v->r->state == Alive) {
+        // make sure everybody's doing the right thing...
+        // reallocate threads as necessary...
+        // do edge-receptor type stuff..
+        // what ever other watchdoggy type things are necessary...
+        //        printf ("something\n");
+        //    sleep(1);
+
+        // for now we will check all receptors for any active contexts and
+        // we will reduce them here.  Really this should be a thread pool manager
+        // where we put allocate receptor's queues for processing according to
+        // priority/etc...
+
+        c = _t_children(v->active_receptors);
+        for (i=1;i<=c;i++) {
+            // active receptors are INSTALLED_RECEPTORS, so the C Receptor struct is itself
+            // the surface of the first child
+            // @todo refactor being able to walk through all currently active receptors
+            Receptor *r = (Receptor *)_t_surface(_t_child(_t_child(v->active_receptors,i),1));
+            if (r->q && r->q->contexts_count > 0) {
+                _p_reduceq(r->q);
+            }
+        }
+    }
+
+    // close down all receptors
+    c = _t_children(v->active_receptors);
+    for (i=1;i<=c;i++) {
+        Receptor *r = (Receptor *)_t_surface(_t_child(_t_child(v->active_receptors,i),1));
+        __r_kill(r);
+        // if other receptors have threads associated with them, the possibly we should
+        // be doing a thread_join here, or maybe even inside __r_kill @fixme
+    }
+
+    int err =0;
+    pthread_exit(&err);  //@todo determine if we should use pthread_exit or just return 0
+    return 0;
+}
+
+// fire up the threads that make the vmhost work
+void _v_start_vmhost(VMHost *v) {
+    _v_start_thread(&v->vm_thread,__v_process,G_vm);
+}
+
+/**
+ * create all the built in receptors that exist in all VMhosts
+ */
+void _v_instantiate_builtins(VMHost *v) {
+    Receptor *r = _r_makeClockReceptor();
+    Xaddr clock = _v_new_receptor(v,CLOCK_RECEPTOR,r);
+    _v_activate(v,clock);
+}
+
+/******************  thread handling */
+
+void _v_start_thread(thread *t,void *(*start_routine)(void*), void *arg) {
+    int rc;
+    if (t->state) {
+        raise_error0("attempt to double-start a thread");
+    }
+    rc = pthread_create(&t->pthread,0,start_routine,arg);
+    if (rc){
+        raise_error("Error starting thread; return code from pthread_create() is %d\n", rc);
+    }
+    t->state = 1;
+}
+
+void _v_join_thread(thread *t) {
+    if (t->state) { // make sure the thread was started before trying to join it
+        void *status;
+        int rc;
+
+        rc = pthread_join(t->pthread, &status);
+        if (rc) {
+            raise_error("ERROR; return code from pthread_join() is %d\n", rc);
+        }
+        t->state = 0;
+    }
+}
+
 /** @}*/

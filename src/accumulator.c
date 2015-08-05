@@ -11,6 +11,9 @@
 #include "accumulator.h"
 #include "semtrex.h"
 #include "mtree.h"
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 VMHost *G_vm = 0;
 
@@ -22,14 +25,49 @@ VMHost *G_vm = 0;
  * @TODO check the compository to verify our version of the vmhost
  *
  */
-void _a_boot() {
-    // _de_check_vm_host_version_on_the_compository();
-    _a_start_vmhost();
+void _a_boot(char *dir_path) {
+    // _a_check_vm_host_version_on_the_compository();
+
+    // instantiate a VMHost object
+    G_vm = _v_new();
+
+    // check if the storage directory exists
+    struct stat st = {0};
+    if (stat(dir_path, &st) == -1) {
+        // if no directory we are firing up an initial instance, so
+        // create directory
+        mkdir(dir_path,0700);
+
+        // create the basic receptors that all VMHosts have
+        _v_instantiate_builtins(G_vm);
+    }
+    else {
+        raise_error0("not yet implemented");
+        // deserialize all of the vmhost's instantiated receptors and other instances
+        // ...
+    }
+    _v_start_vmhost(G_vm);
 }
 
-// for now starting the vmhost just means creating a global instance of it.
-void _a_start_vmhost() {
-    G_vm = _v_new();
+
+/**
+ * clean shutdown of the the ceptr system
+ *
+ * should be called by the thread that called _a_boot() (or _a_start_vmhost())
+ */
+void _a_shut_down() {
+    // cleanly close down any processing in the VM_Host
+    __r_kill(G_vm->r);
+
+    _v_join_thread(&G_vm->clock_thread);
+    _v_join_thread(&G_vm->vm_thread);
+
+    // make sure all receptor state info is serialized
+    // ...
+
+    // free the memory used by the VM_HOST
+    _v_free(G_vm);
+    G_vm = NULL;
 }
 
 /*------------------------------------------------------------------------*/

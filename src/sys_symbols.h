@@ -130,7 +130,7 @@ enum SystemSymbolIDs
     RECEPTOR_IDENTIFIER_ID,              ///< uuid that identifies receptors
     INSTALLED_RECEPTOR_ID,               ///< contains the installed receptor as well as state information (enabled,disabled_ID, etc..)
     ACTIVE_RECEPTORS_ID,                 ///< list of currently active INSTALLED_RECEPTORS
-    PENDING_SIGNALS_ID,                  ///< list of currently active INSTALLED_RECEPTORS
+    PENDING_SIGNALS_ID,                  ///< list of signals pending to be sent by the VM_HOST
     BINDINGS_ID,                         ///< specifics that match a MANIFEST and allow a receptor to be installed
     BINDING_PAIR_ID,                     ///< a pair that matches a MANIFEST_LABEL with a given binding
 

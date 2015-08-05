@@ -643,22 +643,12 @@ void testReceptorEdgeStream() {
     _r_free(r);
 }
 
-void testReceptorClock() {
-    Receptor *r = _r_makeClockReceptor();
-    spec_is_str_equal(_td(r,r->root),"(CLOCK_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))))");
-
-    /* The clock receptor acts as if it sends a signal with contents TICK (which is of TIMESTAMP structure) for every time.  This means you can plant listeners based on a semtrex for any kind of time you want.  If you want the current time just plant a listener for TICK.  If you want to listen for every second plant a listener on the Symbol literal SECOND, and the clock receptor will trigger the listener every time the SECOND changes.  You can also listen for particular intervals and times by adding specificity to the semtrex, so to trigger a 3:30am action a-la-cron listen for: "/<TICK:(%HOUR=3,MINUTE=30)>"
-       @todo we should also make the clock receptor also seem to send signals of other semantic formats, i.e. so it's easy to listen for things like "on Wednesdays", or other semantic date/time identifiers.
-     */
-
-    // plant a listener for any second
-    char *stx = "/<TICK:(%SECOND)>";
-    Defs d = {0,0,0,0};
-
+void _testReceptorClockAddListener(Receptor *r) {
     T *expect = _t_new_root(EXPECTATION);
 
-    // @todo figure out why looking for the second down a walk match fails
-    //    T *s = parseSemtrex(&d,stx);
+    // @todo figure out why looking for the SECOND down a walk match fails
+    // char *stx = "/<TICK:(%SECOND)>";
+    // T *s = parseSemtrex(&r->d,stx);
     T *s = _t_news(expect,SEMTREX_GROUP,TICK);
     T *x = _sl(s,TICK);
 
@@ -675,13 +665,25 @@ void testReceptorClock() {
     T *act = _t_newp(0,ACTION,proc);
 
     _r_add_listener(r,DEFAULT_ASPECT,TICK,expect,params,act);
+}
+
+void testReceptorClock() {
+    Receptor *r = _r_makeClockReceptor();
+    spec_is_str_equal(_td(r,r->root),"(CLOCK_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))))");
+
+    /* The clock receptor acts as if it sends a signal with contents TICK (which is of TIMESTAMP structure) for every time.  This means you can plant listeners based on a semtrex for any kind of time you want.  If you want the current time just plant a listener for TICK.  If you want to listen for every second plant a listener on the Symbol literal SECOND, and the clock receptor will trigger the listener every time the SECOND changes.  You can also listen for particular intervals and times by adding specificity to the semtrex, so to trigger a 3:30am action a-la-cron listen for: "/<TICK:(%HOUR=3,MINUTE=30)>"
+       @todo we should also make the clock receptor also seem to send signals of other semantic formats, i.e. so it's easy to listen for things like "on Wednesdays", or other semantic date/time identifiers.
+     */
+
+    // plant a listener for any second
+    _testReceptorClockAddListener(r);
 
     spec_is_str_equal(_td(r,__r_get_listeners(r,DEFAULT_ASPECT)),"(LISTENERS (LISTENER:TICK (EXPECTATION (SEMTREX_GROUP:TICK (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TICK)))) (PARAMS (INTERPOLATE_SYMBOL:TICK)) (ACTION:noop return param)))");
 
     // "run" the receptor and verify that listener gets activated
     T *tick = __r_make_tick();
     pthread_t thread;
-    int rc;
+    int rc = 0;
     rc = pthread_create(&thread,0,___clock_thread,r);
     if (rc){
         raise_error("ERROR; return code from pthread_create() is %d\n", rc);
@@ -691,17 +693,18 @@ void testReceptorClock() {
 
     _p_reduceq(r->q);
 
-    T *result = r->q->active->context->run_tree;
-
     spec_is_str_equal(_td(r,tick),_td(r,_t_child(r->q->completed->context->run_tree,1)));
 
-    __r_set_shutdown(1);
+    __r_kill(r);
 
     void *status;
     rc = pthread_join(thread, &status);
     if (rc) {
         raise_error("ERROR; return code from pthread_join() is %d\n", rc);
     }
+
+    _r_free(r);
+    _t_free(tick);
 }
 
 void testReceptor() {

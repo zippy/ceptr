@@ -347,15 +347,25 @@ R *__p_make_context(T *run_tree,R *caller) {
     return context;
 }
 
+void pq(Qe *qe) {
+    while(qe) {
+        printf("%p(<-%p)  -> ",qe,qe->prev);
+        qe = qe->next;
+    }
+    printf("NULL\n");
+}
+
 // unlink the queue element from the list rejoining the
 // previous with the next
 #define __p_dequeue(list,qe)                    \
+    if (qe->next) {qe->next->prev = qe->prev;}                          \
     if (!qe->prev) {                            \
         list = qe->next;                        \
     }                                           \
     else {                                      \
         qe->prev->next = qe->next;              \
     }
+
 
 // add the queue element onto the head of the list
 #define __p_enqueue(list,qe) {                  \
@@ -364,6 +374,7 @@ R *__p_make_context(T *run_tree,R *caller) {
         if (d) d->prev = qe;                    \
         list = qe;                              \
     }
+
 
 void _p_enqueue(Qe **listP,Qe *e) {
     __p_enqueue(*listP,e);
@@ -378,10 +389,13 @@ Error _p_unblock(Q *q,R *context) {
     Qe *e = q->blocked;
     while (e && e->context != context) e = e->next;
     if (!e) {raise_error0("contextNotFoundErr");}
+
+    pthread_mutex_lock(&q->mutex);
     __p_dequeue(q->blocked,e);
     __p_enqueue(q->active,e);
-
     q->contexts_count++;
+    pthread_mutex_unlock(&q->mutex);
+
     context->state = Eval;
 }
 
@@ -692,6 +706,7 @@ Q *_p_newq(Defs *defs,T *pending_signals) {
     q->completed = NULL;
     q->blocked = NULL;
     q->pending_signals = pending_signals;
+    pthread_mutex_init(&(q->mutex), NULL);
     return q;
 }
 
@@ -743,8 +758,10 @@ void _p_addrt2q(Q *q,T *run_tree) {
     n->prev = NULL;
     n->context = __p_make_context(run_tree,0);
     n->accounts.elapsed_time = 0;
+    pthread_mutex_lock(&q->mutex);
     __p_enqueue(q->active,n);
     q->contexts_count++;
+    pthread_mutex_unlock(&q->mutex);
 }
 
 /**
@@ -803,6 +820,7 @@ Error _p_reduceq(Q *q) {
         clock_gettime(CLOCK_MONOTONIC, &end);
         qe->accounts.elapsed_time +=  diff_micro(&start, &end);
 
+        pthread_mutex_lock(&q->mutex);
         Qe *next = qe->next;
         if (next_state == Done) {
             // remove from the round-robin
@@ -846,6 +864,7 @@ Error _p_reduceq(Q *q) {
             q->contexts_count--;
         }
         qe = next ? next : q->active;  // next in round robing or wrap
+        pthread_mutex_unlock(&q->mutex);
     };
     // @todo figure out what error we should be sending back here, i.e. what if
     // one process ended ok, but one did not.  What's the error?  Probably

@@ -210,10 +210,13 @@ struct Q {
     Qe *completed;       ///< completed processes
     Qe *blocked;         ///< blocked processes
     T *pending_signals;  ///< slot for signals that need to be delivered for this process
+    pthread_mutex_t mutex;
 };
 
 
 // ** types for receptors
+enum ReceptorStates {Alive=0,Dead};
+
 /**
    A Receptor is a semantic tree, pointed to by root, but we also create c struct for
    faster access to some parts of the tree, and to hold non-tree data, like the label
@@ -226,7 +229,9 @@ typedef struct Receptor {
     LabelTable table;    ///< the label table
     Instances instances; ///< the instances store
     Q *q;                ///< process queue
+    int state;           ///< state information about the receptor that the vmhost manages
 } Receptor;
+
 
 typedef long UUID;
 

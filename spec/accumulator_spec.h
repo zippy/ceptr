@@ -6,12 +6,57 @@
 
 #include "../src/ceptr.h"
 #include "../src/accumulator.h"
+#include <sys/dir.h>
+#include <errno.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
+void _testReceptorClockAddListener(Receptor *r);
 void testAccBootStrap() {
     spec_is_ptr_equal(G_vm,NULL);
-    _a_boot();
+
+    // test first boot before any initialization has occurred
+
+    // first boot should create a data directory
+    char *dname = "test_vm";
+    struct stat st = {0};
+
+    system("rm -r test_vm");  // cleanup from previous test runs
+
+    _a_boot(dname);
+    spec_is_equal(stat(dname, &st),0); // does after boot
+
     spec_is_symbol_equal(G_vm->r,_t_symbol(G_vm->r->root),VM_HOST_RECEPTOR);
-    _v_free(G_vm);
+
+    // new clock receptor should be instantiated
+    spec_is_equal(_t_children(G_vm->active_receptors),1);
+    T *r;
+    r = _t_child(_t_child(G_vm->active_receptors,1),1);
+    spec_is_symbol_equal(G_vm->r,_t_symbol(r),CLOCK_RECEPTOR);
+
+    // now add a listener in the clock
+    Receptor *clock = (Receptor *)_t_surface(r);
+    T *tick = __r_make_tick();
+    _testReceptorClockAddListener(clock);
+
+    // sleep for a bit, which should allow the clock to run for a second
+    // and reduce the tick listener to the tick it received
+    sleep(2);
+    spec_is_str_equal(_td(clock,tick),_td(clock,_t_child(clock->q->completed->context->run_tree,1)));
+
+    // now shut down the vm
+    _a_shut_down();
+    spec_is_ptr_equal(G_vm,NULL);
+
+    // boot again
+    //_a_boot(dname);
+
+    // verify that clock with planted listener and it's accumulated data are re-instantiated at boot
+    // and that they run appropriately
+
+
+    _t_free(tick);
 }
 
 void testAccInstances() {
