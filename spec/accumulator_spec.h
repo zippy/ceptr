@@ -31,12 +31,10 @@ void testAccBootStrap() {
 
     // new clock receptor should be instantiated
     spec_is_equal(_t_children(G_vm->active_receptors),1);
-    T *r;
-    r = _t_child(_t_child(G_vm->active_receptors,1),1);
-    spec_is_symbol_equal(G_vm->r,_t_symbol(r),CLOCK_RECEPTOR);
+    Receptor *clock = __r_get_receptor(_t_child(G_vm->active_receptors,1));
+    spec_is_symbol_equal(G_vm->r,_t_symbol(clock->root),CLOCK_RECEPTOR);
 
     // now add a listener in the clock
-    Receptor *clock = (Receptor *)_t_surface(r);
     T *tick = __r_make_tick();
     _testReceptorClockAddListener(clock);
 

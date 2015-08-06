@@ -223,10 +223,8 @@ void *__v_process(void *arg) {
 
         c = _t_children(v->active_receptors);
         for (i=1;i<=c;i++) {
-            // active receptors are INSTALLED_RECEPTORS, so the C Receptor struct is itself
-            // the surface of the first child
             // @todo refactor being able to walk through all currently active receptors
-            Receptor *r = (Receptor *)_t_surface(_t_child(_t_child(v->active_receptors,i),1));
+            Receptor *r = __r_get_receptor(_t_child(v->active_receptors,i));
             if (r->q && r->q->contexts_count > 0) {
                 _p_reduceq(r->q);
             }
@@ -236,7 +234,7 @@ void *__v_process(void *arg) {
     // close down all receptors
     c = _t_children(v->active_receptors);
     for (i=1;i<=c;i++) {
-        Receptor *r = (Receptor *)_t_surface(_t_child(_t_child(v->active_receptors,i),1));
+        Receptor *r = __r_get_receptor(_t_child(v->active_receptors,i));
         __r_kill(r);
         // if other receptors have threads associated with them, the possibly we should
         // be doing a thread_join here, or maybe even inside __r_kill @fixme

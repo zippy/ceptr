@@ -487,8 +487,7 @@ void __r_deliver_signals(Receptor *self,T *signals,Instances *receptor_instances
         //      T *contents = _t_child(s,2);
         Xaddr to = *(Xaddr *)_t_surface(_t_child(envelope,2));
 
-        Receptor *r = (to.addr == 0) ? self :
-            (Receptor *)_t_surface(_t_child(_a_get_instance(receptor_instances,to),1)); // the receptor itself is the surface of the first child of the INSTALLED_RECEPTOR (bleah)
+        Receptor *r = (to.addr == 0) ? self : __r_get_receptor(_a_get_instance(receptor_instances,to));
 
         Error err = _r_deliver(r,s);
         if (err) {
@@ -551,6 +550,18 @@ T *__r_get_listeners(Receptor *r,Aspect aspect) {
 }
 T *__r_get_signals(Receptor *r,Aspect aspect) {
     return _t_child(__r_get_aspect(r,aspect),2);
+}
+
+
+/**
+ * get the Receptor structure from an installed receptor
+ */
+Receptor * __r_get_receptor(T *installed_receptor) {
+    // the receptor itself is the surface of the first child of the INSTALLED_RECEPTOR (bleah)
+    if (!semeq(_t_symbol(installed_receptor),INSTALLED_RECEPTOR)) {
+        raise_error0("expecting an INSTALLED_RECEPTOR!");
+    }
+    return (Receptor *)_t_surface(_t_child(installed_receptor,1));
 }
 
 /*****************  Tree debugging utilities */

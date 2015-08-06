@@ -64,6 +64,7 @@ Error _r_deliver(Receptor *r, T *signal);
 T *__r_get_aspect(Receptor *r,Aspect aspect);
 T *__r_get_listeners(Receptor *r,Aspect aspect);
 T *__r_get_signals(Receptor *r,Aspect aspect);
+Receptor * __r_get_receptor(T *installed_receptor);
 
 /*****************  Tree debugging utilities */
 char *_td(Receptor *r,T *t);
