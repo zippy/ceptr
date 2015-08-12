@@ -15,6 +15,7 @@
 #include "receptor.h"
 #include "../spec/spec_utils.h"
 #include "util.h"
+#include <errno.h>
 
 /**
  * implements the INTERPOLATE_FROM_MATCH process
@@ -292,9 +293,11 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
         break;
     case READ_STREAM_ID:
         {
+            // get the stream param
             T *s = _t_detach_by_idx(code,1);
             FILE *stream =*(FILE**)_t_surface(s);
             _t_free(s);
+            // get the result type to use as the symbol type for the ascii data
             s = _t_detach_by_idx(code,1);
             sy = _t_symbol(s);
             if (semeq(RESULT_SYMBOL,sy)) {
@@ -303,14 +306,36 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
                 int ch;
                 char buf[1000]; //@todo handle buffer dynamically
                 int i = 0;
+
+                //@todo possible another parameter to specify if we should read lines, or specific number of bytes
+
+                //@todo integrity checks?
                 while ((ch = fgetc (stream)) != EOF && ch != '\n' && i < 1000)
                     buf[i++] = ch;
+                if (ch == EOF && errno)  {raise_error2("error reading from stream: %s (%d)",strerror(errno),errno);}
                 if (i>=1000) {raise_error0("buffer overrun in READ_STREAM");}
 
                 buf[i++]=0;
                 x = _t_new(0,sy,buf,i);
             }
             else {raise_error0("expecting RESULT_SYMBOL");}
+        }
+        break;
+    case WRITE_STREAM_ID:
+        {
+            // get the stream param
+            T *s = _t_detach_by_idx(code,1);
+            FILE *stream =*(FILE**)_t_surface(s);
+            _t_free(s);
+            // get the data to write as string
+            s = _t_detach_by_idx(code,1);
+            // @todo check the structre type to make sure it's compatible as a string (i.e. it's null terminated)
+            // @todo other integrity checks, i.e. length etc?
+            int err = fputs(_t_surface(s),stream);
+            if (err < 0) {raise_error2("error writing to stream: %s (%d)",strerror(errno),errno);}
+
+            // @todo what should this really return?
+            x = _t_news(0,REDUCTION_ERROR_SYMBOL,NULL_SYMBOL);
         }
         break;
     default:

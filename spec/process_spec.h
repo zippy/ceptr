@@ -367,15 +367,14 @@ void testProcessQuote() {
 void testProcessStream() {
     Defs defs;
 
+    FILE *stream;
+    char buffer[] = "line1\nline2\n";
+    stream = fmemopen(buffer, strlen (buffer), "r+");
+
     T *run_tree = _t_new_root(RUN_TREE);
     // test reading a stream
 
     T *n = _t_new_root(READ_STREAM);
-
-    FILE *stream;
-    char buffer[] = "line1\nline2\n";
-
-    stream = fmemopen(buffer, strlen (buffer), "r");
 
     _t_new(n,TEST_STREAM_SYMBOL,&stream,sizeof(FILE *));
     _t_news(n,RESULT_SYMBOL,TEST_STR_SYMBOL);
@@ -388,7 +387,24 @@ void testProcessStream() {
 
     _t_free(n);
     _t_free(run_tree);
+
+    // test writing to a stream
+    run_tree = _t_new_root(RUN_TREE);
+    n = _t_new_root(WRITE_STREAM);
+    _t_new(n,TEST_STREAM_SYMBOL,&stream,sizeof(FILE *));
+    _t_new_str(n,TEST_STR_SYMBOL,"fish\n");
+
+    c = _t_rclone(n);
+    _t_add(run_tree,c);
+    _p_reduce(&defs,run_tree);
+
+    fflush(stream);
+    spec_is_str_equal(buffer,"line1\nfish\n\n");
+
+    //    _t_free(n);
+    //  _t_free(run_tree);
     fclose(stream);
+
 }
 
 
