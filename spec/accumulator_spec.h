@@ -84,7 +84,7 @@ void testAccPersistInstances() {
     T *htc = _t_clone(ht);
     Xaddr y = _a_new_instance(&i,ht);
 
-    char *file = "test/test.instances";
+    char *file = "tmp/test.instances";
 
     _a_serialize_instances(&i,file);
     _a_free_instances(&i);
@@ -100,6 +100,12 @@ void testAccPersistInstances() {
 }
 
 void testAccumulator() {
+    struct stat st = {0};
+    char *temp_dir = "tmp";
+    if (stat(temp_dir, &st) == -1) {
+        mkdir(temp_dir,0700);
+    }
+
     _setup_HTTPDefs();
     testAccBootStrap();
     testAccInstances();
