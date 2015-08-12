@@ -381,7 +381,8 @@ void testProcessStream() {
 
     T *c = _t_rclone(n);
     _t_add(run_tree,c);
-    _p_reduce(&defs,run_tree);
+    int err = _p_reduce(&defs,run_tree);
+    spec_is_equal(err,noReductionErr);
 
     spec_is_str_equal(t2s(run_tree),"(RUN_TREE (TEST_STR_SYMBOL:line1))");
 
@@ -396,13 +397,33 @@ void testProcessStream() {
 
     c = _t_rclone(n);
     _t_add(run_tree,c);
-    _p_reduce(&defs,run_tree);
+    err = _p_reduce(&defs,run_tree);
+    spec_is_equal(err,noReductionErr);
 
     fflush(stream);
     spec_is_str_equal(buffer,"line1\nfish\n\n");
 
-    //    _t_free(n);
-    //  _t_free(run_tree);
+    _t_free(n);
+    _t_free(run_tree);
+    fclose(stream);
+
+    // test writing to a readonly stream
+    stream = fmemopen(buffer, strlen (buffer), "r");
+    run_tree = _t_new_root(RUN_TREE);
+    n = _t_new_root(WRITE_STREAM);
+    _t_new(n,TEST_STREAM_SYMBOL,&stream,sizeof(FILE *));
+    _t_new_str(n,TEST_STR_SYMBOL,"fish\n");
+
+    c = _t_rclone(n);
+    _t_add(run_tree,c);
+    err = _p_reduce(&defs,run_tree);
+    spec_is_equal(err,unixErrnoReductionErr);
+
+    fflush(stream);
+    spec_is_str_equal(buffer,"line1\nfish\n\n");
+
+    _t_free(n);
+    _t_free(run_tree);
     fclose(stream);
 
 }

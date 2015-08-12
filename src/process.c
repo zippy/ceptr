@@ -83,7 +83,6 @@ Error __p_check_signature(Defs *defs,Process p,T *params) {
     return 0;
 }
 
-
 /**
  * reduce system level processes in a run tree.  Assumes that the children have already been
  * reduced and all parameters have been filled in
@@ -312,7 +311,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
                 //@todo integrity checks?
                 while ((ch = fgetc (stream)) != EOF && ch != '\n' && i < 1000)
                     buf[i++] = ch;
-                if (ch == EOF && errno)  {raise_error2("error reading from stream: %s (%d)",strerror(errno),errno);}
+                if (ch == EOF && errno) return unixErrnoReductionErr;
                 if (i>=1000) {raise_error0("buffer overrun in READ_STREAM");}
 
                 buf[i++]=0;
@@ -332,7 +331,8 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
             // @todo check the structre type to make sure it's compatible as a string (i.e. it's null terminated)
             // @todo other integrity checks, i.e. length etc?
             int err = fputs(_t_surface(s),stream);
-            if (err < 0) {raise_error2("error writing to stream: %s (%d)",strerror(errno),errno);}
+            _t_free(s);
+            if (err < 0) return unixErrnoReductionErr;
 
             // @todo what should this really return?
             x = _t_news(0,REDUCTION_ERROR_SYMBOL,NULL_SYMBOL);
@@ -596,10 +596,14 @@ Error _p_step(Defs *defs, R **contextP) {
             // which gets added on as the 4th child of the run tree when the
             // error happens.
             T *ps = _t_newr(context->run_tree,PARAMS);
-
+            T *extra = NULL;
             //@todo: fix this so we don't actually use an error value that
             // then has to be translated into a symbol, but rather so that we
             // can programatically calculate the symbol.
+            // or, perhaps, the Error type should actually be the REDUCTION_ERROR
+            // symbol that we generate when we want to return an error during the
+            // reduction process (rather than here).  That way we actually have the
+            // symbol whether or not a we have an error handler for context.
             Symbol se;
             switch(context->state) {
             case tooFewParamsReductionErr: se=TOO_FEW_PARAMS_ERR;break;
@@ -609,6 +613,9 @@ Error _p_step(Defs *defs, R **contextP) {
             case notInSignalContextReductionError: se=NOT_IN_SIGNAL_CONTEXT_ERR;
             case divideByZeroReductionErr: se=ZERO_DIVIDE_ERR;break;
             case incompatibleTypeReductionErr: se=INCOMPATIBLE_TYPE_ERR;break;
+            case unixErrnoReductionErr:
+                extra = _t_new_str(0,TEST_STR_SYMBOL,strerror(errno));
+                break;
             case raiseReductionErr:
                 se = *(Symbol *)_t_surface(_t_child(context->node_pointer,1));
                 break;
@@ -618,7 +625,9 @@ Error _p_step(Defs *defs, R **contextP) {
             int *path = _t_get_path(context->node_pointer);
             _t_new(err,ERROR_LOCATION,path,sizeof(int)*(_t_path_depth(path)+1));
             free(path);
-
+            if (extra) {
+                _t_add(err,extra);
+            }
             // switch the node_pointer to the top of the error handling routine
             context->node_pointer = _t_child(context->run_tree,3);
             context->idx = 3;
