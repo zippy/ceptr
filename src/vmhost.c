@@ -200,7 +200,6 @@ void __v_deliver_signals(VMHost *v) {
     __r_deliver_signals(v->r,signals,&v->r->instances);
 }
 
-
 /**
  * this is the VMhost main monitoring and execution thread
  */
@@ -222,7 +221,7 @@ void *__v_process(void *arg) {
         // priority/etc...
 
         c = _t_children(v->active_receptors);
-        for (i=1;i<=c;i++) {
+        for (i=1;v->r->state == Alive && i<=c;i++) {
             // @todo refactor being able to walk through all currently active receptors
             Receptor *r = __r_get_receptor(_t_child(v->active_receptors,i));
             if (r->q && r->q->contexts_count > 0) {

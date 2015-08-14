@@ -98,6 +98,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
     switch(s.id) {
     case NOOP_ID:
         // noop simply replaces itself with it's own child
+        // @todo what happens if it has more than one child! validity check?
         x = _t_detach_by_idx(code,1);
         break;
     case IF_ID:
@@ -232,6 +233,8 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
         // as a bogus placeholder.
         break;
     case QUOTE_ID:
+        // @todo what happens if it has more than one child! validity check?
+        // Note that QUOTE seems to be the same as NOOP?
         x = _t_detach_by_idx(code,1);
         break;
     case EXPECT_ACT_ID:
@@ -614,6 +617,7 @@ Error _p_step(Defs *defs, R **contextP) {
             case divideByZeroReductionErr: se=ZERO_DIVIDE_ERR;break;
             case incompatibleTypeReductionErr: se=INCOMPATIBLE_TYPE_ERR;break;
             case unixErrnoReductionErr:
+                // @todo make a better error symbol here... :-P
                 extra = _t_new_str(0,TEST_STR_SYMBOL,strerror(errno));
                 break;
             case raiseReductionErr:
