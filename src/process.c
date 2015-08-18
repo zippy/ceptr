@@ -336,7 +336,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
             int err = fputs(_t_surface(s),stream);
             _t_free(s);
             if (err < 0) return unixErrnoReductionErr;
-
+            fflush(stream);
             // @todo what should this really return?
             x = _t_news(0,REDUCTION_ERROR_SYMBOL,NULL_SYMBOL);
         }

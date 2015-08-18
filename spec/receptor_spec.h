@@ -534,113 +534,66 @@ void testReceptorNums() {
 }
 
 Receptor *_r_makeFileReceptor(FILE *stream,Xaddr to) {
-    Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
-    Symbol line = _r_declare_symbol(r,CSTRING,"LINE");
-
-    // code is something like:
-    // lispy: (send to (read_stream stream line))
-    // clike: send(to,read_stream(stream,line))
-    T *t = _t_new_root(RUN_TREE);
-    T *p;
-    p = _t_new_root(SEND);
-
-    _t_new(p,RECEPTOR_XADDR,&to,sizeof(to));
-    //        _t_new(p,TEST_STR_SYMBOL,"fish",5);
-
-    T *s = _t_new(p,READ_STREAM,0,0);
-    _t_new(s,TEST_STREAM_SYMBOL,&stream,sizeof(FILE *));
-    _t_new(s,RESULT_SYMBOL,&line,sizeof(Symbol));
-
-    T *ps = _t_newr(0,PENDING_SIGNALS);
-    T *c = _t_rclone(p);
-    _t_add(t,c);
-    r->q = _p_newq(&r->defs,ps);
-
-    _p_addrt2q(r->q,t);
-    _t_free(p);
-    return r;
+    return _r_makeStreamReaderReceptor(TEST_RECEPTOR_SYMBOL,TEST_STREAM_SYMBOL,stream,to);
 }
 
 void testReceptorEdgeStream() {
-    FILE *stream;
+    FILE *stream,*writer_stream;
     char buffer[] = "line1\nline2\n";
 
     stream = fmemopen(buffer, strlen (buffer), "r");
 
     Xaddr to = {RECEPTOR_XADDR,0};  // 0 xaddr means SELF
 
-    Receptor *r = _r_makeFileReceptor(stream,to);
-
-    // for now we don't need a real receptor because we are just using
-    // "self" as the destination.  Otherwise we'd need to have instances
-    // so we could route the message delivery
-    // T *ir = _t_new_root(INSTALLED_RECEPTOR);
-    // _t_new_receptor(ir,TEST_RECEPTOR_SYMBOL,r);
     Instances instances = NULL;
-    //    Xaddr testReceptor = _a_new_instance(&instances,ir);
+
+    char *output_data;
+    size_t size;
+    writer_stream = open_memstream(&output_data,&size);
+    T *ir = _t_new_root(INSTALLED_RECEPTOR);
+    Receptor *w =_r_makeStreamWriterReceptor(TEST_RECEPTOR_SYMBOL,TEST_STREAM_SYMBOL,writer_stream);
+    _t_new_receptor(ir,TEST_RECEPTOR_SYMBOL,w);
+    Xaddr writer = _a_new_instance(&instances,ir);
+
+    Receptor *r = _r_makeStreamReaderReceptor(TEST_RECEPTOR_SYMBOL,TEST_STREAM_SYMBOL,stream,writer);
+    ir = _t_new_root(INSTALLED_RECEPTOR);
+    _t_new_receptor(ir,TEST_RECEPTOR_SYMBOL,r);
+    Xaddr testReceptor = _a_new_instance(&instances,ir);
 
     spec_is_str_equal(_td(r,r->root),"(TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS (SYMBOL_DECLARATION (SYMBOL_LABEL:LINE) (SYMBOL_STRUCTURE:CSTRING))) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))))");
 
-    T *expect = _t_new_root(EXPECTATION);
+    spec_is_str_equal(_td(w,__r_get_listeners(w,DEFAULT_ASPECT)),"(LISTENERS (LISTENER:LINE (EXPECTATION (SEMTREX_GROUP:LINE (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:LINE)))) (PARAMS (INTERPOLATE_SYMBOL:LINE)) (ACTION:echo what you said)))");
 
-    Symbol line = _r_get_symbol_by_label(r,"LINE");
-    char *stx = "/<LINE:LINE>";
-
-    // @fixme for some reason parseSemtrex doesn't clean up after itself
-    // valgrind reveals that some of the state in the FSA that match the
-    // semtrex are left un freed.  So I'm doing this one manually below.
-    /* T *t = parseSemtrex(&r->defs,stx); */
-    /*  _t_add(expect,t); */
-
-    T *t =_t_news(expect,SEMTREX_GROUP,line);
-    T *x =_t_newr(t,SEMTREX_SYMBOL_LITERAL);
-    _t_news(x,SEMTREX_SYMBOL,line);
-
-    /* char buf[1000]; */
-    /* _dump_semtrex(&r->defs,t,buf); */
-    /* puts(buf); */
-
-
-    x = _t_newr(0,CONCAT_STR);
-    Symbol echo = _r_declare_symbol(r,CSTRING,"ECHO");
-    _t_news(x,RESULT_SYMBOL,echo);
-    _t_new_str(x,TEST_STR_SYMBOL,"You said-- ");
-    int pt1[] = {2,1,TREE_PATH_TERMINATOR};
-    _t_new(x,PARAM_REF,pt1,sizeof(int)*4);
-
-    T* params = _t_new_root(PARAMS);
-    _t_news(params,INTERPOLATE_SYMBOL,line);
-
-    T *input = _t_new_root(INPUT);
-    T *output = _t_new_root(OUTPUT_SIGNATURE);
-    Process proc = _r_code_process(r,x,"echo what you said","long desc...",input,output);
-    T *act = _t_newp(0,ACTION,proc);
-
-    _r_add_listener(r,DEFAULT_ASPECT,line,expect,params,act);
-
-    spec_is_str_equal(_td(r,__r_get_listeners(r,DEFAULT_ASPECT)),"(LISTENERS (LISTENER:LINE (EXPECTATION (SEMTREX_GROUP:LINE (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:LINE)))) (PARAMS (INTERPOLATE_SYMBOL:LINE)) (ACTION:echo what you said)))");
-
-    // manually run the process queue
+    // manually run the reader's process queue
     _p_reduceq(r->q);
 
     T *result = r->q->blocked->context->run_tree;
 
     spec_is_str_equal(_td(r,result),"(RUN_TREE (TEST_INT_SYMBOL:0))");
-    spec_is_str_equal(_td(r,r->q->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.0) (RECEPTOR_XADDR:RECEPTOR_XADDR.0) (ASPECT:1)) (BODY:{(LINE:line1)})))");
+    spec_is_str_equal(_td(r,r->q->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.0) (RECEPTOR_XADDR:INSTALLED_RECEPTOR.1) (ASPECT:1)) (BODY:{(LINE:line1)})))");
 
     // manually run the signal sending code
     __r_deliver_signals(r,r->q->pending_signals,&instances);
 
+    // and see that they've shown up in the writer receptor's flux signals list
+    // stream id won't match    spec_is_str_equal(_td(w,__r_get_signals(w,DEFAULT_ASPECT)),"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:INSTALLED_RECEPTOR.2) (RECEPTOR_XADDR:INSTALLED_RECEPTOR.1) (ASPECT:1)) (BODY:{(LINE:line1)}) (RUN_TREE (process:WRITE_STREAM (TEST_STREAM_SYMBOL:0xbe6ef0) (PARAM_REF:/2/1)) (PARAMS (LINE:line1)))))");
+
+    // and that they've been removed from process queue pending signals list
     spec_is_str_equal(_td(r,r->q->pending_signals),"(PENDING_SIGNALS)");
-    spec_is_str_equal(_td(r,r->q->active->context->run_tree),"(RUN_TREE (process:CONCAT_STR (RESULT_SYMBOL:ECHO) (TEST_STR_SYMBOL:You said-- ) (PARAM_REF:/2/1)) (PARAMS (LINE:line1)))");
+
+    // stream id won't match    spec_is_str_equal(_td(w,w->q->active->context->run_tree),"(RUN_TREE (process:WRITE_STREAM (TEST_STREAM_SYMBOL:0x1c49ef0) (PARAM_REF:/2/1)) (PARAMS (LINE:line1)))");
 
     // manually run the process queue
-    _p_reduceq(r->q);
+    _p_reduceq(w->q);
 
-    spec_is_str_equal(_td(r,r->q->completed->context->run_tree),"(RUN_TREE (ECHO:You said-- line1) (PARAMS (LINE:line1)))");
+    spec_is_str_equal(_td(w,w->q->completed->context->run_tree),"(RUN_TREE (REDUCTION_ERROR_SYMBOL:NULL_SYMBOL) (PARAMS (LINE:line1)))");
+
+    spec_is_str_equal(output_data,"line1");
 
     fclose(stream);
-    _r_free(r);
+    _a_free_instances(&instances);
+    fclose(writer_stream);
+    free(output_data);
 }
 
 void _testReceptorClockAddListener(Receptor *r) {
@@ -671,7 +624,7 @@ void testReceptorClock() {
     Receptor *r = _r_makeClockReceptor();
     spec_is_str_equal(_td(r,r->root),"(CLOCK_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))))");
 
-    /* The clock receptor acts as if it sends a signal with contents TICK (which is of TIMESTAMP structure) for every time.  This means you can plant listeners based on a semtrex for any kind of time you want.  If you want the current time just plant a listener for TICK.  If you want to listen for every second plant a listener on the Symbol literal SECOND, and the clock receptor will trigger the listener every time the SECOND changes.  You can also listen for particular intervals and times by adding specificity to the semtrex, so to trigger a 3:30am action a-la-cron listen for: "/<TICK:(%HOUR=3,MINUTE=30)>"
+    /* The clock receptor acts as if it receives a signal with contents TICK (which is of TIMESTAMP structure) for every time that updates a magic scape with that time according to which listeners have been planted.  This means you can plant listeners based on a semtrex for any kind of time you want.  If you want the current time just plant a listener for TICK.  If you want to listen for every second plant a listener on the Symbol literal SECOND, and the clock receptor will trigger the listener every time the SECOND changes.  You can also listen for particular intervals and times by adding specificity to the semtrex, so to trigger a 3:30am action a-la-cron listen for: "/<TICK:(%HOUR=3,MINUTE=30)>"
        @todo we should also make the clock receptor also seem to send signals of other semantic formats, i.e. so it's easy to listen for things like "on Wednesdays", or other semantic date/time identifiers.
      */
 

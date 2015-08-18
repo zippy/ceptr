@@ -478,6 +478,27 @@ void __r_check_listener(T* processes,T *listener,T *signal,Q *q) {
     _t_free(stx);
 }
 
+// @todo this should probably be implemented in a scape but for now
+// we just loop through all instances searching for a match
+Xaddr __r_get_receptor_xaddr(Instances *instances,Receptor *r) {
+    instances_elem *e = 0;
+    Xaddr result = {INSTALLED_RECEPTOR,0};
+    HASH_FIND_INT( *instances, &INSTALLED_RECEPTOR, e );
+    if (e) {
+        Instance *iP = &e->instances;
+
+        instance_elem *curi,*tmpi;
+        HASH_ITER(hh, *iP, curi, tmpi) {
+            if (__r_get_receptor(curi->instance) == r) {
+                result.addr = curi->addr;
+                return result;
+            }
+        }
+
+    }
+    return result;
+}
+
 // low level function to deliver signals in a pending signals list
 // assumes that instances is the VMhost's receptor instances list
 void __r_deliver_signals(Receptor *self,T *signals,Instances *receptor_instances) {
@@ -485,9 +506,24 @@ void __r_deliver_signals(Receptor *self,T *signals,Instances *receptor_instances
         T *s = _t_detach_by_idx(signals,1);
         T *envelope = _t_child(s,1);
         //      T *contents = _t_child(s,2);
-        Xaddr to = *(Xaddr *)_t_surface(_t_child(envelope,2));
+        Xaddr *toP = (Xaddr *)_t_surface(_t_child(envelope,2));
+        Xaddr *fromP = (Xaddr *)_t_surface(_t_child(envelope,1));
 
-        Receptor *r = (to.addr == 0) ? self : __r_get_receptor(_a_get_instance(receptor_instances,to));
+        // fix from if needed so return path will work
+        if (fromP->addr == 0) {
+            *fromP = __r_get_receptor_xaddr(receptor_instances,self);
+        }
+        // if the xaddr is the "self" we do a reverse lookup to find which xaddr
+        // points to the self receptor so we can fix it in the signal that we are
+        // about to deliver.
+        Receptor *r;
+        if (toP->addr == 0) {
+            r = self;
+            *toP = __r_get_receptor_xaddr(receptor_instances,r);
+        }
+        else  {
+            r = __r_get_receptor(_a_get_instance(receptor_instances,*toP));
+        }
 
         Error err = _r_deliver(r,s);
         if (err) {
@@ -588,6 +624,74 @@ char *_td(Receptor *r,T *t) {
 }
 
 /*****************  Built-in core and edge receptors */
+
+Receptor *_r_makeStreamReaderReceptor(Symbol receptor_symbol,Symbol stream_symbol,FILE *stream,Xaddr to) {
+    Receptor *r = _r_new(receptor_symbol);
+    Symbol line = _r_declare_symbol(r,CSTRING,"LINE");
+
+    // code is something like:
+    // lispy: (send to (read_stream stream line))
+    // clike: send(to,read_stream(stream,line))
+    T *t = _t_new_root(RUN_TREE);
+    T *p;
+    p = _t_new_root(SEND);
+
+    _t_new(p,RECEPTOR_XADDR,&to,sizeof(to));
+
+    T *s = _t_new(p,READ_STREAM,0,0);
+    _t_new(s,stream_symbol,&stream,sizeof(FILE *));
+    _t_new(s,RESULT_SYMBOL,&line,sizeof(Symbol));
+
+    T *ps = _t_newr(0,PENDING_SIGNALS);
+    T *c = _t_rclone(p);
+    _t_add(t,c);
+    r->q = _p_newq(&r->defs,ps);
+
+    _p_addrt2q(r->q,t);
+    _t_free(p);
+    return r;
+}
+
+Receptor *_r_makeStreamWriterReceptor(Symbol receptor_symbol,Symbol stream_symbol,FILE *stream) {
+    Receptor *r = _r_new(receptor_symbol);
+
+    T *expect = _t_new_root(EXPECTATION);
+
+    Symbol line = _r_declare_symbol(r,CSTRING,"LINE");
+    char *stx = "/<LINE:LINE>";
+
+    // @fixme for some reason parseSemtrex doesn't clean up after itself
+    // valgrind reveals that some of the state in the FSA that match the
+    // semtrex are left un freed.  So I'm doing this one manually below.
+    /* T *t = parseSemtrex(&r->defs,stx); */
+    /*  _t_add(expect,t); */
+
+    T *t =_t_news(expect,SEMTREX_GROUP,line);
+    T *x =_t_newr(t,SEMTREX_SYMBOL_LITERAL);
+    _t_news(x,SEMTREX_SYMBOL,line);
+
+    /* char buf[1000]; */
+    /* _dump_semtrex(&r->defs,t,buf); */
+    /* puts(buf); */
+
+    x = _t_new_root(WRITE_STREAM);
+    _t_new(x,TEST_STREAM_SYMBOL,&stream,sizeof(FILE *));
+    int pt1[] = {2,1,TREE_PATH_TERMINATOR};
+    _t_new(x,PARAM_REF,pt1,sizeof(int)*4);
+
+    T* params = _t_new_root(PARAMS);
+    _t_news(params,INTERPOLATE_SYMBOL,line);
+
+    T *input = _t_new_root(INPUT);
+    T *output = _t_new_root(OUTPUT_SIGNATURE);
+    Process proc = _r_code_process(r,x,"echo what you said","long desc...",input,output);
+    T *act = _t_newp(0,ACTION,proc);
+
+    _r_add_listener(r,DEFAULT_ASPECT,line,expect,params,act);
+
+    return r;
+}
+
 Receptor *_r_makeClockReceptor() {
     Receptor *r = _r_new(CLOCK_RECEPTOR);
     return r;

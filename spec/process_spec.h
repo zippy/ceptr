@@ -400,7 +400,6 @@ void testProcessStream() {
     err = _p_reduce(&defs,run_tree);
     spec_is_equal(err,noReductionErr);
 
-    fflush(stream);
     spec_is_str_equal(buffer,"line1\nfish\n\n");
 
     _t_free(n);
@@ -419,7 +418,6 @@ void testProcessStream() {
     err = _p_reduce(&defs,run_tree);
     spec_is_equal(err,unixErrnoReductionErr);
 
-    fflush(stream);
     spec_is_str_equal(buffer,"line1\nfish\n\n");
 
     _t_free(n);
