@@ -573,7 +573,7 @@ void testReceptorEdgeStream() {
     spec_is_str_equal(_td(r,r->q->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.0) (RECEPTOR_XADDR:INSTALLED_RECEPTOR.1) (ASPECT:1)) (BODY:{(LINE:line1)})))");
 
     // manually run the signal sending code
-    __r_deliver_signals(r,r->q->pending_signals,&instances);
+    __v_deliver_signals(r,r->q->pending_signals,&instances);
 
     // and see that they've shown up in the writer receptor's flux signals list
     // stream id won't match    spec_is_str_equal(_td(w,__r_get_signals(w,DEFAULT_ASPECT)),"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:INSTALLED_RECEPTOR.2) (RECEPTOR_XADDR:INSTALLED_RECEPTOR.1) (ASPECT:1)) (BODY:{(LINE:line1)}) (RUN_TREE (process:WRITE_STREAM (TEST_STREAM_SYMBOL:0xbe6ef0) (PARAM_REF:/2/1)) (PARAMS (LINE:line1)))))");
@@ -603,19 +603,19 @@ void _testReceptorClockAddListener(Receptor *r) {
     // char *stx = "/<TICK:(%SECOND)>";
     // T *s = parseSemtrex(&r->d,stx);
     T *s = _t_news(expect,SEMTREX_GROUP,TICK);
-    T *x = _sl(s,TICK);
+    _sl(s,TICK);
 
-    x = _t_newr(0,NOOP);
+    T *x = _t_newr(0,NOOP);
     int pt1[] = {2,1,TREE_PATH_TERMINATOR};
     _t_new(x,PARAM_REF,pt1,sizeof(int)*4);
-
-    T* params = _t_new_root(PARAMS);
-    _t_news(params,INTERPOLATE_SYMBOL,TICK);
 
     T *input = _t_new_root(INPUT);
     T *output = _t_new_root(OUTPUT_SIGNATURE);
     Process proc = _r_code_process(r,x,"noop return param","long desc...",input,output);
     T *act = _t_newp(0,ACTION,proc);
+
+    T* params = _t_new_root(PARAMS);
+    _t_news(params,INTERPOLATE_SYMBOL,TICK);
 
     _r_add_listener(r,DEFAULT_ASPECT,TICK,expect,params,act);
 }

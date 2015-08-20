@@ -57,7 +57,6 @@ Receptor * _r_unserialize(void *surface);
 
 T * __r_make_signal(Xaddr from,Xaddr to,Aspect aspect,T *signal_contents);
 void __r_check_listener(T* processes,T *listener,T *signal,Q *q);
-void __r_deliver_signals(Receptor *r,T *signals,Instances *receptor_instances);
 Error _r_deliver(Receptor *r, T *signal);
 
 /******************  internal utilities */

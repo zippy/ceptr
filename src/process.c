@@ -279,6 +279,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
             T* signal_contents = _t_detach_by_idx(code,1);
 
             Xaddr from = {RECEPTOR_XADDR,0};  //@todo how do we say SELF??
+            //            printf("sending to %d\n",to.addr);
             x = __r_make_signal(from,to,DEFAULT_ASPECT,signal_contents);
         }
         err = Send;
@@ -318,6 +319,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
                 if (i>=1000) {raise_error0("buffer overrun in READ_STREAM");}
 
                 buf[i++]=0;
+                //                printf("just read: %s\n",buf);
                 x = _t_new(0,sy,buf,i);
             }
             else {raise_error0("expecting RESULT_SYMBOL");}
@@ -333,7 +335,9 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
             s = _t_detach_by_idx(code,1);
             // @todo check the structre type to make sure it's compatible as a string (i.e. it's null terminated)
             // @todo other integrity checks, i.e. length etc?
-            int err = fputs(_t_surface(s),stream);
+            char *str = _t_surface(s);
+            //        printf("just wrote: %s\n",str);
+            int err = fputs(str,stream);
             _t_free(s);
             if (err < 0) return unixErrnoReductionErr;
             fflush(stream);
@@ -736,14 +740,14 @@ T *_p_make_run_tree(T *processes,T *process,int num_params,...) {
  * @param[in] defs definitions that
  * @returns Q the processing queue
  */
-Q *_p_newq(Defs *defs,T *pending_signals) {
+Q *_p_newq(Defs *defs) {
     Q *q = malloc(sizeof(Q));
     q->defs = defs;
     q->contexts_count = 0;
     q->active = NULL;
     q->completed = NULL;
     q->blocked = NULL;
-    q->pending_signals = pending_signals;
+    q->pending_signals = _t_new_root(PENDING_SIGNALS);
     pthread_mutex_init(&(q->mutex), NULL);
     return q;
 }
@@ -782,7 +786,7 @@ void _p_freeq(Q *q) {
     _p_free_elements(q->active);
     _p_free_elements(q->completed);
     _p_free_elements(q->blocked);
-    if (q->pending_signals) _t_free(q->pending_signals);
+    _t_free(q->pending_signals);
     free(q);
 }
 
@@ -896,7 +900,6 @@ Error _p_reduceq(Q *q) {
             signal->structure.parent = NULL;
 
             _t_add(q->pending_signals,signal);
-
             // add to the blocked list
             __p_enqueue(q->blocked,qe);
             q->contexts_count--;

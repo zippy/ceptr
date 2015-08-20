@@ -25,7 +25,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code);
 void _p_enqueue(Qe **listP,Qe *e);
 Error _p_unblock(Q *q,R *context);
 Error _p_reduce(Defs *defs,T *run_tree);
-Q *_p_newq(Defs *defs,T *pending_signals);
+Q *_p_newq(Defs *defs);
 void _p_freeq(Q *q);
 void _p_addrt2q(Q *q,T *t);
 Error _p_reduceq(Q *q);

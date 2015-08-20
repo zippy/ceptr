@@ -318,9 +318,8 @@ void testProcessSend() {
 
     // add the run tree into a queue and run it
     Defs defs;
-    T *ps = _t_newr(0,PENDING_SIGNALS);
-    Q *q = _p_newq(&defs,ps);
-
+    Q *q = _p_newq(&defs);
+    T *ps = q->pending_signals;
     _t_newr(run_tree,PARAMS);
     _p_addrt2q(q,run_tree);
 
@@ -462,7 +461,7 @@ void testProcessExpectAct() {
 
     // add the run tree into a queue and run it
     Defs defs;
-    Q *q = _p_newq(&defs,0);
+    Q *q = _p_newq(&defs);
 
     _t_newr(run_tree,PARAMS);
     _p_addrt2q(q,run_tree);
@@ -815,7 +814,7 @@ void testProcessMulti() {
     T *t2 = __p_make_run_tree(processes,if_even,n);
 
     // add them to a processing queue
-    Q *q = _p_newq(&defs,0);
+    Q *q = _p_newq(&defs);
     spec_is_equal(q->contexts_count,0);
     spec_is_ptr_equal(q->active,NULL);
     _p_addrt2q(q,t1);

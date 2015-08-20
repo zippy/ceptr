@@ -281,7 +281,7 @@ void testVMHostActivateReceptor() {
 
     spec_is_str_equal(_td(client,v->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:INSTALLED_RECEPTOR.2) (RECEPTOR_XADDR:INSTALLED_RECEPTOR.1) (ASPECT:1)) (BODY:{(ping_message:0)})))");
     // simulate round-robin processing of signals
-    __v_deliver_signals(v);
+    _v_deliver_signals(v);
     if (server->q) {
         _p_reduceq(server->q);
         if (server->q->completed) {
@@ -293,7 +293,7 @@ void testVMHostActivateReceptor() {
             }
         }
     }
-    __v_deliver_signals(v);
+    _v_deliver_signals(v);
     if (client->q) {
         _p_reduceq(client->q);
         if (client->q->completed) {
@@ -320,11 +320,105 @@ void testVMHostActivateReceptor() {
     //! [testVMHostActivateReceptor]
 }
 
+void testVMHostShell() {
+
+    // set up the vmhost
+    G_vm = _v_new();
+    _v_instantiate_builtins(G_vm);
+
+    // create the shell receptor
+    Symbol shell = _r_declare_symbol(G_vm->r,RECEPTOR,"shell");
+    Receptor *r = _r_new(shell);
+    Symbol line = _r_declare_symbol(r,CSTRING,"LINE"); // @todo, should be shared symbol from compository, see #29...
+
+    Symbol verb = _r_declare_symbol(r,CSTRING,"verb");
+    Structure command = _r_define_structure(r,"command",1,verb); // need the optional parameters part here
+    Symbol shell_command = _r_declare_symbol(r,command,"shell command");
+
+    Xaddr shellx = _v_new_receptor(G_vm,shell,r);
+    _v_activate(G_vm,shellx);
+
+    // create stdin/out receptors
+
+    // allocate c input out streams to mimic stdin and stdout
+    FILE *input,*output;
+    char commands[] = "time\nreceptors\ntime\n";
+    input = fmemopen(commands, strlen (commands), "r");
+    char *output_data = NULL;
+    size_t size;
+    output = open_memstream(&output_data,&size);
+
+    Symbol stdin = _r_declare_symbol(G_vm->r,RECEPTOR,"stdin");
+    Receptor *i_r = _r_makeStreamReaderReceptor(stdin,TEST_STREAM_SYMBOL,input,shellx);
+    Xaddr ix = _v_new_receptor(G_vm,stdin,i_r);
+    _v_activate(G_vm,ix);
+
+    Symbol stdout = _r_declare_symbol(G_vm->r,RECEPTOR,"stdout");
+    Receptor *o_r = _r_makeStreamWriterReceptor(stdout,TEST_STREAM_SYMBOL,output);
+    Xaddr ox = _v_new_receptor(G_vm,stdout,o_r);
+    _v_activate(G_vm,ox);
+
+    // create expectations for commands
+    // (expect (on stdin LINE) action (send self (shell_command parsed from LINE))
+    T *expect = _t_new_root(EXPECTATION);
+    T *s = _t_news(expect,SEMTREX_GROUP,line);
+    _sl(s,line);
+    T *p = _t_new_root(SEND);
+    Xaddr to = {RECEPTOR_XADDR,0};  // self
+    _t_new(p,RECEPTOR_XADDR,&to,sizeof(to));
+    T *x = _t_newr(p,shell_command);
+    int pt1[] = {2,1,TREE_PATH_TERMINATOR};
+    _t_new(x,PARAM_REF,pt1,sizeof(int)*4);
+    Process proc = _r_code_process(r,p,"send self command","long desc...",NULL,NULL);
+    T *act = _t_newp(0,ACTION,proc);
+    T* params = _t_new_root(PARAMS);
+    _t_news(params,INTERPOLATE_SYMBOL,line);
+    _r_add_listener(r,DEFAULT_ASPECT,line,expect,params,act);
+
+    // (expect (on flux SHELL_COMMAND:time) action(send stdout (convert_to_lines (listen to clock)))
+    expect = _t_new_root(EXPECTATION);
+    s = _t_news(expect,SEMTREX_GROUP,shell_command);
+    _sl(s,shell_command);
+    p = _t_new_root(SEND);
+    _t_new(p,RECEPTOR_XADDR,&ox,sizeof(ox));
+    x = _t_new_str(p,line,"placeholder for time");
+    //    int pt1[] = {2,1,TREE_PATH_TERMINATOR};
+    //    _t_new(x,PARAM_REF,pt1,sizeof(int)*4);
+    proc = _r_code_process(r,p,"send time to stdout","long desc...",NULL,NULL);
+    act = _t_newp(0,ACTION,proc);
+    params = _t_new_root(PARAMS);
+    _t_news(params,INTERPOLATE_SYMBOL,shell_command);
+    _r_add_listener(r,DEFAULT_ASPECT,line,expect,params,act);
+
+    // (expect (on flux SHELL_COMMAND:receptor) action (send stdout (convert_to_lines (send vmhost (get receptor list from vmhost)))))
+
+    //    spec_is_str_equal(_td(o_r,o_r->flux),"or flux");
+    _v_start_vmhost(G_vm);
+    sleep(1);
+    //    spec_is_str_equal(_td(o_r,o_r->flux),"or flux");
+    //    spec_is_str_equal(_td(r,r->flux),"shell flux");
+
+    spec_is_str_equal(output_data,"some time representation x 2");
+    __r_kill(G_vm->r);
+
+    _v_join_thread(&G_vm->clock_thread);
+    _v_join_thread(&G_vm->vm_thread);
+    // free the memory used by the VM_HOST
+    _v_free(G_vm);
+    G_vm = NULL;
+
+
+    fclose(input);
+    fclose(output);
+    free(output_data);
+}
+
 void testVMHost() {
     _setup_HTTPDefs();
     testVMHostCreate();
     //    testVMHostLoadReceptorPackage();
     //    testVMHostInstallReceptor();
     testVMHostActivateReceptor();
+    testVMHostShell();
     _cleanup_HTTPDefs();
 }

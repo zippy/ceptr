@@ -195,9 +195,63 @@ void _v_send_signals(VMHost *v,T *signals) {
 /**
  * scaffolding function for signal delviery
  */
-void __v_deliver_signals(VMHost *v) {
+void _v_deliver_signals(VMHost *v) {
     T *signals = v->pending_signals;
-    __r_deliver_signals(v->r,signals,&v->r->instances);
+    __v_deliver_signals(v->r,signals,&v->r->instances);
+}
+
+// @todo this should probably be implemented in a scape but for now
+// we just loop through all instances searching for a match
+Xaddr __v_get_receptor_xaddr(Instances *instances,Receptor *r) {
+    instances_elem *e = 0;
+    Xaddr result = {INSTALLED_RECEPTOR,0};
+    HASH_FIND_INT( *instances, &INSTALLED_RECEPTOR, e );
+    if (e) {
+        Instance *iP = &e->instances;
+
+        instance_elem *curi,*tmpi;
+        HASH_ITER(hh, *iP, curi, tmpi) {
+            if (__r_get_receptor(curi->instance) == r) {
+                result.addr = curi->addr;
+                return result;
+            }
+        }
+
+    }
+    return result;
+}
+
+// low level function to deliver signals in a pending signals list
+// assumes that instances is the VMhost's receptor instances list
+void __v_deliver_signals(Receptor *self,T *signals,Instances *receptor_instances) {
+    while(_t_children(signals)>0) {
+        T *s = _t_detach_by_idx(signals,1);
+        T *envelope = _t_child(s,1);
+        //      T *contents = _t_child(s,2);
+        Xaddr *toP = (Xaddr *)_t_surface(_t_child(envelope,2));
+        Xaddr *fromP = (Xaddr *)_t_surface(_t_child(envelope,1));
+
+        // fix from if needed so return path will work
+        if (fromP->addr == 0) {
+            *fromP = __v_get_receptor_xaddr(receptor_instances,self);
+        }
+        // if the xaddr is the "self" we do a reverse lookup to find which xaddr
+        // points to the self receptor so we can fix it in the signal that we are
+        // about to deliver.
+        Receptor *r;
+        if (toP->addr == 0) {
+            r = self;
+            *toP = __v_get_receptor_xaddr(receptor_instances,r);
+        }
+        else  {
+            r = __r_get_receptor(_a_get_instance(receptor_instances,*toP));
+        }
+
+        Error err = _r_deliver(r,s);
+        if (err) {
+            raise_error("delivery error: %d",err);
+        }
+    }
 }
 
 /**
@@ -226,6 +280,10 @@ void *__v_process(void *arg) {
             Receptor *r = __r_get_receptor(_t_child(v->active_receptors,i));
             if (r->q && r->q->contexts_count > 0) {
                 _p_reduceq(r->q);
+            }
+            if (r->q && r->q->pending_signals && _t_children(r->q->pending_signals)> 0) {
+                //                puts("DELIVERING!");
+                __v_deliver_signals(r,r->q->pending_signals,&v->r->instances);
             }
         }
     }
