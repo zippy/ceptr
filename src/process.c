@@ -336,7 +336,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
             // @todo check the structre type to make sure it's compatible as a string (i.e. it's null terminated)
             // @todo other integrity checks, i.e. length etc?
             char *str = _t_surface(s);
-            //        printf("just wrote: %s\n",str);
+            //       printf("just wrote: %s\n",str);
             int err = fputs(str,stream);
             _t_free(s);
             if (err < 0) return unixErrnoReductionErr;
@@ -344,6 +344,38 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
             // @todo what should this really return?
             x = _t_news(0,REDUCTION_ERROR_SYMBOL,NULL_SYMBOL);
         }
+        break;
+    case REPLICATE_ID:
+        // replicate is a special case, we have to check the phase to see what to do
+        // after the children have been evaluated.
+        {
+            ReplicationState *state = *(ReplicationState **)_t_surface(code);
+            switch(state->phase) {
+            case EvalCondition:
+                break;
+            case EvalBody:
+                // temporary prevention of inifite loops until we get
+                // condition testing in place!
+                if (state->count>3) {
+                    x = _t_detach_by_idx(code,1);
+                    _t_free(state->code);
+                    free(state);
+                    code->contents.size = 0;
+                }
+                else {
+                    // detach the results of the body and throw them away
+                    x = _t_detach_by_idx(code,1);
+                    _t_free(x);
+                    // add another copy of the body on as a child
+                    _t_add(code,_t_rclone(_t_child(state->code,1)));
+                    state->count++;
+                    rt_cur_child(code) = 0; // reset the current child count on the code
+                    return Eval;
+                }
+
+            }
+        }
+
         break;
     default:
         raise_error("unknown sys-process id: %d",s.id);
@@ -539,6 +571,21 @@ Error _p_step(Defs *defs, R **contextP) {
                 context->state = Ascend;
             }
             else {
+                if (semeq(s,REPLICATE)) {
+                    // if first time we are hitting this replication
+                    // then we need to set it up
+                    //                    raise(SIGINT);
+                    if (_t_size(np) == 0) {
+                        // create a copy of the code and stick it in the replication state struct
+                        ReplicationState *state = malloc(sizeof(ReplicationState));
+                        state->phase = EvalBody;
+                        state->code = _t_rclone(np);
+                        state->count = 0;
+                        *((ReplicationState **)&np->contents.surface) = state;
+                        np->contents.size = sizeof(ReplicationState *);
+                        // @todo cleanup any portions of the tree that now don't need to be evaluated
+                    }
+                }
                 int c = _t_children(np);
                 if (c == rt_cur_child(np) || semeq(s,QUOTE)) {
                     // if the current child == the child count this means

@@ -19,6 +19,13 @@ enum ReductionError {Ascend=-1,Descend=-2,Pushed=-3,Pop=-4,Eval=-5,Block=-6,Send
 
 enum QueueError {noErr = 0, contextNotFoundErr};
 
+enum ReplicationPhase {EvalCondition,EvalBody};
+typedef struct ReplicationState {
+    T *code;
+    int phase;
+    int count;
+} ReplicationState;
+
 R *__p_make_context(T *run_tree,R *caller);
 Error _p_step(Defs *defs, R **contextP);
 Error __p_reduce_sys_proc(R *context,Symbol s,T *code);
@@ -32,6 +39,7 @@ Error _p_reduceq(Q *q);
 void *_p_reduceq_thread(void *arg);
 T *__p_make_run_tree(T *processes,Process p,T *params);
 T *_p_make_run_tree(T *processes,T *p,int num_params,...);
+T *__p_build_run_tree(T* code,int num_params,...);
 
 #endif
 /** @}*/

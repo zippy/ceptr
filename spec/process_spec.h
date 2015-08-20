@@ -760,6 +760,33 @@ void testProcessRaise() {
     _t_free(t);
 }
 
+void testProcessReplicate() {
+    Defs defs;
+    FILE *output;
+
+    char *output_data = NULL;
+    size_t size;
+    output = open_memstream(&output_data,&size);
+    T *n = _t_new_root(REPLICATE);
+    T *w = _t_newr(n,WRITE_STREAM);
+    _t_new(w,TEST_STREAM_SYMBOL,&output,sizeof(FILE *));
+    _t_new_str(w,TEST_STR_SYMBOL,"one");
+
+    T *t = __p_build_run_tree(n,0);
+
+    Error e = _p_reduce(&defs,t);
+    spec_is_equal(e,noReductionErr);
+
+    spec_is_str_equal(t2s(t),"xxx");
+
+       spec_is_str_equal(output_data,"xx");
+
+    fclose(output);
+    free(output_data);
+    //    _t_free(n);
+    //    _t_free(t);
+}
+
 void testProcessErrorTrickleUp() {
     //! [testProcessErrorTrickleUp]
     T *processes = _t_new_root(PROCESSES);
@@ -876,7 +903,7 @@ void testProcess() {
     testProcessSignatureMatching();
     testProcessError();
     testProcessRaise();
+    testProcessReplicate();
     testProcessErrorTrickleUp();
     testProcessMulti();
-
 }

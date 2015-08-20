@@ -72,6 +72,7 @@ Process INTERPOLATE_FROM_MATCH = {SYS_CONTEXT,SEM_TYPE_PROCESS,INTERPOLATE_FROM_
 Process RAISE = {SYS_CONTEXT,SEM_TYPE_PROCESS,RAISE_ID};
 Process READ_STREAM = {SYS_CONTEXT,SEM_TYPE_PROCESS,READ_STREAM_ID};
 Process WRITE_STREAM = {SYS_CONTEXT,SEM_TYPE_PROCESS,WRITE_STREAM_ID};
+Process REPLICATE = {SYS_CONTEXT,SEM_TYPE_PROCESS,REPLICATE_ID};
 
 void def_sys() {
     G_sys_root = _t_new_root(DEFINITIONS);
@@ -242,6 +243,7 @@ void def_sys() {
     sP(RAISE,"raise reduction error",0,0);
     sP(READ_STREAM,"read from a unix stream",0,0);
     sP(WRITE_STREAM,"write to a unix stream",0,0);
+    sP(REPLICATE,"replicate process",0,0);
 
     sYt(TEST_INT_SYMBOL,INTEGER);
     sYt(TEST_INT_SYMBOL2,INTEGER);

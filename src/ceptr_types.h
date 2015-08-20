@@ -104,8 +104,8 @@ typedef struct T {
     Tcontents contents;
 } T;
 
-#define RUN_TREE_NOT_EVAULATED 0
-#define RUN_TREE_EVALUATED 0xffffffff
+#define RUN_TREE_NOT_EVAULATED       0
+#define RUN_TREE_EVALUATED           0xffffffff
 
 /**
  * A run tree node

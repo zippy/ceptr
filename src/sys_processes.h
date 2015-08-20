@@ -39,6 +39,7 @@ enum SystemProcessID    {
     RAISE_ID,
     READ_STREAM_ID,
     WRITE_STREAM_ID,
+    REPLICATE_ID
 };
 
 Process NULL_PROCESS;
@@ -63,5 +64,6 @@ Process INTERPOLATE_FROM_MATCH;
 Process RAISE;
 Process READ_STREAM;
 Process WRITE_STREAM;
+Process REPLICATE;
 
 #endif
