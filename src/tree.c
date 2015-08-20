@@ -421,6 +421,8 @@ T *__t_clone(T *t,T *p) {
     T *nt;
     if (t->context.flags & TFLAG_ALLOCATED)
         nt = _t_new(p,_t_symbol(t),_t_surface(t),_t_size(t));
+    else if(_t_size(t) == 0)
+        nt = _t_newr(p,_t_symbol(t));
     else
         nt = _t_newi(p,_t_symbol(t),*(int *)_t_surface(t));
     DO_KIDS(t,__t_clone(_t_child(t,i),nt));
@@ -431,6 +433,8 @@ T *__t_rclone(T *t,T *p) {
     T *nt;
     if (t->context.flags & TFLAG_ALLOCATED)
         nt = __t_new(p,_t_symbol(t),_t_surface(t),_t_size(t),sizeof(rT));
+    else if(_t_size(t) == 0)
+        nt = __t_new(p,_t_symbol(t),_t_surface(t),0,sizeof(rT));
     else
         nt = __t_newi(p,_t_symbol(t),*(int *)_t_surface(t),sizeof(rT));
     ((rT *)nt)->cur_child =  RUN_TREE_NOT_EVAULATED;

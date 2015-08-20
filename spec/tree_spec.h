@@ -294,8 +294,11 @@ void testTreeClone() {
 
     spec_is_str_equal(buf1,buf2);
 
+    spec_is_equal((int)_t_size(t),(int)_t_size(c)); // test cloning of 0 size items (i.e. roots)
+
     _t_free(t);
     _t_free(c);
+
     //! [testTreeClone]
 }
 
