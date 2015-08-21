@@ -20,10 +20,13 @@ enum ReductionError {Ascend=-1,Descend=-2,Pushed=-3,Pop=-4,Eval=-5,Block=-6,Send
 enum QueueError {noErr = 0, contextNotFoundErr};
 
 enum ReplicationPhase {EvalCondition,EvalBody};
+enum ReplicationType {ReplicateTypeCount,ReplicateTypeUnknown,ReplicateTypeCond};
+
 typedef struct ReplicationState {
     T *code;
     int phase;
     int count;
+    int type;
 } ReplicationState;
 
 R *__p_make_context(T *run_tree,R *caller);

@@ -767,24 +767,44 @@ void testProcessReplicate() {
     char *output_data = NULL;
     size_t size;
     output = open_memstream(&output_data,&size);
-    T *n = _t_new_root(REPLICATE);
-    T *w = _t_newr(n,WRITE_STREAM);
-    _t_new(w,TEST_STREAM_SYMBOL,&output,sizeof(FILE *));
-    _t_new_str(w,TEST_STR_SYMBOL,"one");
 
-    T *t = __p_build_run_tree(n,0);
+    // a replicate process that writes to a stream and 3 times
+    T *code = _t_new_root(REPLICATE);
+    T *params = _t_newr(code,PARAMS);
+    _t_newi(code,TEST_INT_SYMBOL,3);
 
+    T *x = _t_newr(code,WRITE_STREAM);
+    _t_new(x,TEST_STREAM_SYMBOL,&output,sizeof(FILE *));
+    _t_new_str(x,TEST_STR_SYMBOL,"testing\n");
+
+    T *t = __p_build_run_tree(code,0);
     Error e = _p_reduce(&defs,t);
     spec_is_equal(e,noReductionErr);
+    spec_is_str_equal(output_data,"testing\ntesting\ntesting\n");
+    //    spec_is_str_equal(t2s(t),"xxx"); @todo something here when we figure out return value
 
-    spec_is_str_equal(t2s(t),"xxx");
+    _t_free(t);
 
-       spec_is_str_equal(output_data,"xx");
+    // now test replication with a condition instead of an INTEGER
+    //  a condition that checks to see if the param is less than 3
+    x = _t_newr(0,LT_INT);
+    int p[] = {1,1,1,TREE_PATH_TERMINATOR};
+    _t_new(x,PARAM_REF,p,sizeof(int)*4);
+    _t_newi(x,TEST_INT_SYMBOL,3);
+
+    _t_newi(params,TEST_INT_SYMBOL,314);
+
+    _t_replace(code,2,x);
+
+    t = __p_build_run_tree(code,0);
+    e = _p_reduce(&defs,t);
+    spec_is_equal(e,noReductionErr);
+    spec_is_str_equal(output_data,"testing\ntesting\ntesting\n");
 
     fclose(output);
     free(output_data);
-    //    _t_free(n);
-    //    _t_free(t);
+    _t_free(code);
+    _t_free(t);
 }
 
 void testProcessErrorTrickleUp() {

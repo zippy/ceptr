@@ -350,30 +350,77 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
         // after the children have been evaluated.
         {
             ReplicationState *state = *(ReplicationState **)_t_surface(code);
+            int done = 0;
+            int next_phase;
+            // get the condition or body results into x
+            x = _t_detach_by_idx(code,2);
             switch(state->phase) {
-            case EvalCondition:
+            case EvalCondition: {
+                // if this is the first time evaluating the cond, figure out what type
+                // of replication we are doing based on the semantics
+                if (state->type == ReplicateTypeUnknown) {
+                    Symbol c = _t_symbol(x);
+                    if (semeq(c,BOOLEAN)) {
+                        state->type = ReplicateTypeCond;
+                        state->count = 0;
+                    }
+                    else {
+                        //@todo how do we actually get the defs in here????
+                        // we'd like to do a sanity check and make sure that what
+                        // ever symbol we're given it's of an INTEGER structure
+                        // for now we just assume that it is.
+                        //Structure s = _d_get_symbol_structure(defs,c);
+                        //if (semeq(s,INTEGER)) {
+                            state->type = ReplicateTypeCount;
+                            state->count = *(int *)_t_surface(x);
+                        //}
+                        //else {
+                            //raise_error0("unable to determine replication type!");
+                        //}
+                    }
+                }
+                // evaluate condition based on replication type
+                switch(state->type) {
+                case ReplicateTypeCond:
+                    done = !*(int *)_t_surface(x);
+                    break;
+                case ReplicateTypeCount:
+                    done = (--state->count < 0);
+                    break;
+                }
+                next_phase = EvalBody;
                 break;
+            }
             case EvalBody:
-                // temporary prevention of inifite loops until we get
-                // condition testing in place!
-                if (state->count>3) {
-                    x = _t_detach_by_idx(code,1);
-                    _t_free(state->code);
-                    free(state);
-                    code->contents.size = 0;
+                // if this is count replication, just check the counter for done
+                next_phase = (state->type == ReplicateTypeCount) ? EvalBody : EvalCondition;
+                if (state->type == ReplicateTypeCount){
+                    if (--state->count < 0) done = 1;
                 }
                 else {
-                    // detach the results of the body and throw them away
-                    x = _t_detach_by_idx(code,1);
-                    _t_free(x);
-                    // add another copy of the body on as a child
-                    _t_add(code,_t_rclone(_t_child(state->code,1)));
+                    // if we aren't doing count replication, use the count var just
+                    // to keep track of how many times we've gone through the loop
                     state->count++;
-                    rt_cur_child(code) = 0; // reset the current child count on the code
-                    return Eval;
+                    if (state->count > 9) done = 1;  // temporary infinite loop breaker
                 }
-
             }
+            if (done) {
+                // we are done so free up the replication state info
+                // @todo the value returned from the loop will be what??(what's in x)
+                _t_free(state->code);
+                free(state);
+                code->contents.size = 0;
+            }
+            else {
+                _t_free(x);
+                // add a copy of the body/condition on as the last child
+                _t_add(code,_t_rclone(_t_child(state->code,next_phase == EvalBody ? 3 : 2)));
+                // and reset the current child count so it gets evaluated.
+                rt_cur_child(code) = 1; // reset the current child count on the code
+                state->phase = next_phase;
+                return Eval;
+            }
+
         }
 
         break;
@@ -576,14 +623,18 @@ Error _p_step(Defs *defs, R **contextP) {
                     // then we need to set it up
                     //                    raise(SIGINT);
                     if (_t_size(np) == 0) {
+                        // sanity check
+                        if (_t_children(np) != 3) {raise_error0("REPLICATE must have 3 params");}
                         // create a copy of the code and stick it in the replication state struct
                         ReplicationState *state = malloc(sizeof(ReplicationState));
-                        state->phase = EvalBody;
+                        state->phase = EvalCondition;
                         state->code = _t_rclone(np);
-                        state->count = 0;
+                        state->type = ReplicateTypeUnknown;
                         *((ReplicationState **)&np->contents.surface) = state;
                         np->contents.size = sizeof(ReplicationState *);
-                        // @todo cleanup any portions of the tree that now don't need to be evaluated
+                        // we start in condition phase so throw away the code copy
+                        T *x = _t_detach_by_idx(np,3);
+                        _t_free(x);
                     }
                 }
                 int c = _t_children(np);
