@@ -12,6 +12,7 @@
 #include "semtrex.h"
 #include "process.h"
 #include "accumulator.h"
+#include "debug.h"
 #include <stdarg.h>
 #include <time.h>
 #include <unistd.h>
@@ -504,7 +505,7 @@ Error _r_deliver(Receptor *r, T *signal) {
     T *as = __r_get_signals(r,aspect);
 
     _t_add(as,signal);
-
+    debug(D_SIGNALS,"Delivering: %s\n",_td(r,signal));
     // walk through all the listeners on the aspect and see if any expectations match this incoming signal
     T *ls = __r_get_listeners(r,aspect);
 
