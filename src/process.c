@@ -15,6 +15,7 @@
 #include "receptor.h"
 #include "../spec/spec_utils.h"
 #include "util.h"
+#include "debug.h"
 #include <errno.h>
 
 /**
@@ -510,8 +511,6 @@ Error _p_unblock(Q *q,R *context) {
     context->state = Eval;
 }
 
-//#define debug_reduce
-
 /**
  * reduce a run tree by executing the instructions in it and replacing the tree values in place
  *
@@ -923,36 +922,37 @@ void *_p_reduceq_thread(void *arg){
  * @param[in] q the queue to be processed
  */
 Error _p_reduceq(Q *q) {
-#ifdef debug_reduce
-    printf("\n\nStarting reduce:\n");
-#endif
+    debug(D_REDUCE,"\n\nStarting reduce:\n");
+
     Qe *qe = q->active;
     Error next_state;
     struct timespec start, end;
 
     while (q->contexts_count) {
 
-#ifdef debug_reduce
-        R *context = qe->context;
-        char *sn[]={"Ascend","Descend","Pushed","Pop","Eval","Block","Send","Done"};
-        char *s = context->state <= 0 ? sn[-context->state -1] : "Error";
-        printf("ID:%p -- State %s : %d\n",qe,s,context->state);
-        printf("  idx:%d\n",context->idx);
-        puts(_t2s(q->defs,context->run_tree));
-        if (context) {
-            if (context->node_pointer == 0) {
-                printf("Node Pointer: NULL!\n");
+#ifdef CEPTR_DEBUG
+        if (debugging(D_REDUCE)) {
+            R *context = qe->context;
+            char *sn[]={"Ascend","Descend","Pushed","Pop","Eval","Block","Send","SendAsync","Done"};
+            char *s = context->state <= 0 ? sn[-context->state -1] : "Error";
+            debug(D_REDUCE,"ID:%p -- State %s : %d\n",qe,s,context->state);
+            debug(D_REDUCE,"  idx:%d\n",context->idx);
+            debug(D_REDUCE,"%s",_t2s(q->defs,context->run_tree));
+            if (context) {
+                if (context->node_pointer == 0) {
+                    debug(D_REDUCE,"Node Pointer: NULL!\n");
+                }
+                else {
+                    debug(D_REDUCE,"rt_cur_child:%d\n",rt_cur_child(context->node_pointer));
+                    int *path = _t_get_path(context->node_pointer);
+                    char pp[255];
+                    _t_sprint_path(path,pp);
+                    debug(D_REDUCE,"Node Pointer:%s\n",pp);
+                    free(path);
+                }
             }
-            else {
-                printf("rt_cur_child:%d\n",rt_cur_child(context->node_pointer));
-                int *path = _t_get_path(context->node_pointer);
-                char pp[255];
-                _t_sprint_path(path,pp);
-                printf("Node Pointer:%s\n",pp);
-                free(path);
-            }
+            debug(D_REDUCE,"\n");
         }
-        printf("\n");
 #endif
 
         clock_gettime(CLOCK_MONOTONIC, &start);

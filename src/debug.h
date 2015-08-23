@@ -10,18 +10,31 @@
 #define CEPTR_DEBUG
 #ifdef CEPTR_DEBUG
 
-#define D_ALL 0xFFFF
-#define D_SIGNALS 0x0001
+#define D_NONE       0x0000
+#define D_ALL        0xFFFF
+#define D_SPEC       0x8000
+#define D_SIGNALS    0x0001
+#define D_REDUCE     0x0002
+#define D_STX_MATCH  0x0004
 
-#define DEBUG_MASK D_SIGNALS
+#define DEBUG_DEFAULT_MASK D_NONE;
 
 #ifndef DEBUG_MASK
 #define DEBUG_MASK 0
 #endif
 
 #include <stdio.h>
-#define _debug(...) do {fprintf(stderr,"DEBUG: ");fprintf(stderr,__VA_ARGS__);}while(0);
-#define debug(type,...) do {if (type&DEBUG_MASK) _debug(__VA_ARGS__);} while(0);
+
+#define debugging(type) (type&G_debug_mask)
+
+char *dtypestr(int type);
+void debug_enable(int type);
+void debug_disable(int type);
+int G_debug_mask;
+
+
+#define _debug(type,...) do {fprintf(stderr,"D%s: ",dtypestr(type));fprintf(stderr,__VA_ARGS__);}while(0);
+#define debug(type,...) do {if debugging(type) _debug(type,__VA_ARGS__);} while(0);
 
 #else
 

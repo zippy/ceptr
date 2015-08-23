@@ -15,6 +15,7 @@
 
 #include "semtrex.h"
 #include "def.h"
+#include "debug.h"
 
 /// the final matching state in the FSA can be declared statically and globally
 SState matchstate = {StateMatch}; /* only one instance of the match state*/
@@ -328,14 +329,11 @@ void _stx_freeFA(SState *s) {
 }
 
 Defs *G_d = 0;
-int G_debug_match = 0;
 T *G_ts,*G_te;
 #define DEBUG_MATCH
 #ifdef DEBUG_MATCH
-#define MATCH_DEBUGG(s,x)       if(G_debug_match){printf("IN:" #s " for %s\n",x);printf("  cursor:%s\n",_t2s(G_d,t));}
-#define MATCH_DEBUG(s)  if(G_debug_match){puts("IN:" #s "");printf("  cursor:%s\n",!t ? "NULL" : _t2s(G_d,t));}
-//#define MATCH_DEBUGG(s,x)     if(G_debug_match){printf("IN:" #s "%s with %p \n",x,t);}
-//#define MATCH_DEBUG(s)        if(G_debug_match){printf("IN:" #s " with %p\n",t);}
+#define MATCH_DEBUGG(s,x)       debug(D_STX_MATCH,"IN:" #s " for %s\n",x);debug(D_STX_MATCH,"  cursor:%s\n",_t2s(G_d,t));
+#define MATCH_DEBUG(s)  debug(D_STX_MATCH,"IN:" #s "\n");debug(D_STX_MATCH,"  cursor:%s\n",!t ? "NULL" : _t2s(G_d,t));
 
 #else
 #define MATCH_DEBUG(s)
@@ -418,7 +416,7 @@ typedef struct BranchPoint {
 } BranchPoint;
 
 #define _PUSH_BRANCH(state,c,w) {                                       \
-        if(G_debug_match)puts("pushing");                               \
+    debug(D_STX_MATCH,"pushing\n");                                      \
         if((depth+1)>=MAX_BRANCH_DEPTH) {raise_error0("MAX branch depth exceeded");} \
         stack[depth].s = state;                                         \
         stack[depth].cursor = c;                                        \
@@ -517,9 +515,7 @@ int __t_match(T *semtrex,T *source_t,T **rP) {
                 if (!t) FAIL;
                 int count = _t_children(v);
                 int i;
-                if (G_debug_match) {
-                    __t_dump(G_d,v,0,buf);printf("  seeking:%s\n",buf);
-                }
+                debug(D_STX_MATCH,"  seeking:%s\n",__t_dump(G_d,v,0,buf));
                 Symbol ts = _t_symbol(t);
                 if (s->data.value.flags & LITERAL_NOT) {
                     if (s->data.value.flags & LITERAL_SET) {
@@ -633,11 +629,8 @@ int __t_match(T *semtrex,T *source_t,T **rP) {
                 }
                 else r = 0;
             }
-            if (G_debug_match) {
-                puts("Fail: so popping to--");
-                __t_dump(G_d,r,0,buf);
-                puts(buf);
-            }
+            debug(D_STX_MATCH,"Fail: so popping to--%s\n", __t_dump(G_d,r,0,buf));
+
             s = stack[depth].s;
             t = stack[depth].cursor;
             T *walk = stack[depth].walk;
@@ -662,11 +655,7 @@ int __t_match(T *semtrex,T *source_t,T **rP) {
     }
     if (rP) {
         if (s) {
-            if (G_debug_match) {
-                puts("FIXING:");
-                DT(RESULTS,*rP);
-                //      raise(SIGINT);
-            }
+            debug(D_STX_MATCH,"FIXING RESULTS:\n%s\n",__t2s(G_d,*rP,INDENT));
 
             // convert the cursor pointers to matched paths/sibling counts
             __fix(source_t,*rP);

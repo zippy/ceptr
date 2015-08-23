@@ -91,7 +91,6 @@ struct SState {
 SState * _stx_makeFA(T *s,int *statesP);
 void _stx_freeFA(SState *s);
 int _t_match(T *semtrex,T *t);
-int G_debug_match;
 Defs *G_d;
 T *G_ts,*G_te;
 int _t_matchr(T *semtrex,T *t,T **r);
