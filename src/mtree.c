@@ -57,7 +57,7 @@ void __m_new_init(H parent,H *h,L **l) {
     h->a.l = parent.a.l+1;
 
     if (parent.a.l >= parent.m->levels) {
-    raise_error0("address too deep!");
+    raise_error("address too deep!");
     }
     else if (parent.a.l == parent.m->levels-1) {
     h->a.i = 0;
@@ -265,7 +265,7 @@ int _m_children(H h) {
     Mlevel levels = h.m->levels;
 
     if (h.a.l >= levels) {
-    raise_error0("address too deep!");
+    raise_error("address too deep!");
     }
     else if (h.a.l == levels-1) {
     return 0;
@@ -333,7 +333,7 @@ Maddr _m_child(H h,Mindex c) {
     Maddr a = {NULL_ADDR,NULL_ADDR};
     Mlevel levels = h.m->levels;
     if (h.a.l >= levels) {
-    raise_error0("address too deep!");
+    raise_error("address too deep!");
     }
     else if (h.a.l == levels-1) {
     return a;
@@ -379,7 +379,7 @@ Maddr _m_child(H h,Mindex c) {
     }
     else {
     if (a.i+c > l->nodes) {
-        raise_error0("address too deep!");
+        raise_error("address too deep!");
     }
     a.i += c-1;
     }

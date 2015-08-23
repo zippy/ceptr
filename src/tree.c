@@ -336,7 +336,7 @@ void _t_insert_at(T *t, int *path, T *i) {
     if (c) {
         T *p = _t_parent(c);
         if (!p) {
-            raise_error0("Can't insert into the root!");
+            raise_error("Can't insert into the root!");
         }
 
         // first insert the new tree at the end just to use the code we
@@ -362,7 +362,7 @@ void _t_insert_at(T *t, int *path, T *i) {
             if (c) {
                 T *p = _t_parent(c);
                 if (!p) {
-                    raise_error0("Can't insert into the root!");
+                    raise_error("Can't insert into the root!");
                 }
                 _t_add(p,i);
                 return;
@@ -372,7 +372,7 @@ void _t_insert_at(T *t, int *path, T *i) {
             _t_add(t,i);
             return;
         }
-        raise_error0("Path must lead to an existing node or one after last child.");
+        raise_error("Path must lead to an existing node or one after last child.");
     }
 }
 
@@ -660,7 +660,7 @@ T * _t_get(T *t,int *p) {
         return t;
     else if (i == 0) {
         if (!(t->context.flags & TFLAG_SURFACE_IS_TREE)) {
-            raise_error0("surface is not a tree!");
+            raise_error("surface is not a tree!");
         }
         c = (T *)(_t_surface(t));
     }
@@ -845,7 +845,7 @@ T * _t_unserialize(Defs *d,void **surfaceP,size_t *lengthP,T *t) {
 
     if (is_sys_structure(st)) {
         size = _sys_structure_size(st.id,*surfaceP);
-        if (size == -1) {raise_error0("BANG!");}
+        if (size == -1) {raise_error("BANG!");}
     }
     else size = 0;
     if (size > 0) {

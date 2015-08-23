@@ -97,7 +97,7 @@ Xaddr _v_install_r(VMHost *v,Xaddr package,T *bindings,char *label) {
     if (bindings) {
         T *m = _t_child(p,1);
         int c = _t_children(m);
-        if (c%2) {raise_error0("manifest must have even number of children!");}
+        if (c%2) {raise_error("manifest must have even number of children!");}
         int i;
         for(i=1;i<=c;i++) {
             T *mp = _t_child(m,i);
@@ -110,7 +110,7 @@ Xaddr _v_install_r(VMHost *v,Xaddr package,T *bindings,char *label) {
             Symbol spec = *(Symbol *)_t_surface(s);
             if (semeq(_t_symbol(v),spec)) {
                 T *symbols = _t_child(p,3);
-                raise_error2("bindings symbol %s doesn't match spec %s",_d_get_symbol_name(symbols,_t_symbol(v)),_d_get_symbol_name(symbols,spec));
+                raise_error("bindings symbol %s doesn't match spec %s",_d_get_symbol_name(symbols,_t_symbol(v)),_d_get_symbol_name(symbols,spec));
             }
         }
     }
@@ -321,7 +321,7 @@ void _v_instantiate_builtins(VMHost *v) {
 void _v_start_thread(thread *t,void *(*start_routine)(void*), void *arg) {
     int rc;
     if (t->state) {
-        raise_error0("attempt to double-start a thread");
+        raise_error("attempt to double-start a thread");
     }
     rc = pthread_create(&t->pthread,0,start_routine,arg);
     if (rc){

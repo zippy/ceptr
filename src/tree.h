@@ -94,7 +94,7 @@ char * _t2json(Defs *defs,T *t,int level,char *buf);
 
 #define DO_KIDS(t,x) {int i,_c=_t_children(t);for(i=1;i<=_c;i++){x;}}
 
-#define root_check(c) if (c->structure.parent != 0) {raise_error0("can't add a node that isn't a root!");}
+#define root_check(c) if (c->structure.parent != 0) {raise_error("can't add a node that isn't a root!");}
 
 #endif
 /** @}*/

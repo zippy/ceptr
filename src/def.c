@@ -38,7 +38,7 @@ char *_d_get_symbol_name(T *symbols,Symbol s) {
     if (symbols) {
         int c = _t_children(symbols);
         if (s.id > c || s.id < 1)  {
-            raise_error2("Bad symbol:%d--%d symbols in decl list",s.id,c);
+            raise_error("Bad symbol:%d--%d symbols in decl list",s.id,c);
         }
         T *def = _t_child(symbols,s.id);
         T *l = _t_child(def,1);
@@ -237,7 +237,7 @@ size_t _d_get_structure_size(T *symbols,T *structures,Structure s,void *surface)
     if (is_sys_structure(s)) {
         size = _sys_structure_size(s.id,surface);
         if (size == -1) {
-            raise_error2("DON'T HAVE A SIZE FOR STRUCTURE '%s' (%d)",_d_get_structure_name(structures,s),s.id);
+            raise_error("DON'T HAVE A SIZE FOR STRUCTURE '%s' (%d)",_d_get_structure_name(structures,s),s.id);
         }
     }
     else {

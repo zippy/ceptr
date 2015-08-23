@@ -33,14 +33,14 @@ void _p_interpolate_from_match(T *t,T *match_results,T *match_tree) {
         Symbol s = *(Symbol *)_t_surface(t);
         T *m = _t_get_match(match_results,s);
         if (!m) {
-            raise_error0("expected to have match!");
+            raise_error("expected to have match!");
         }
         int *path = (int *)_t_surface(_t_child(m,2));
         int sibs = *(int*)_t_surface(_t_child(m,3));
         T *x = _t_get(match_tree,path);
 
         if (!x) {
-            raise_error0("expecting to get a value from match!!");
+            raise_error("expecting to get a value from match!!");
         }
         _t_morph(t,x);
         // if the match has children, then we need to clone them in.
@@ -317,13 +317,13 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
                 while ((ch = fgetc (stream)) != EOF && ch != '\n' && i < 1000)
                     buf[i++] = ch;
                 if (ch == EOF && errno) return unixErrnoReductionErr;
-                if (i>=1000) {raise_error0("buffer overrun in READ_STREAM");}
+                if (i>=1000) {raise_error("buffer overrun in READ_STREAM");}
 
                 buf[i++]=0;
                 //                printf("just read: %s\n",buf);
                 x = _t_new(0,sy,buf,i);
             }
-            else {raise_error0("expecting RESULT_SYMBOL");}
+            else {raise_error("expecting RESULT_SYMBOL");}
         }
         break;
     case WRITE_STREAM_ID:
@@ -376,7 +376,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
                             state->count = *(int *)_t_surface(x);
                         //}
                         //else {
-                            //raise_error0("unable to determine replication type!");
+                            //raise_error("unable to determine replication type!");
                         //}
                     }
                 }
@@ -500,7 +500,7 @@ Error _p_unblock(Q *q,R *context) {
     // find the context in the queue
     Qe *e = q->blocked;
     while (e && e->context != context) e = e->next;
-    if (!e) {raise_error0("contextNotFoundErr");}
+    if (!e) {raise_error("contextNotFoundErr");}
 
     pthread_mutex_lock(&q->mutex);
     __p_dequeue(q->blocked,e);
@@ -552,7 +552,7 @@ Error _p_step(Defs *defs, R **contextP) {
     case noReductionErr:
     case Block:
     case Send:
-        raise_error0("whoa, virtual states can't be executed!"); // shouldn't be calling step if Done or noErr or Block or Send
+        raise_error("whoa, virtual states can't be executed!"); // shouldn't be calling step if Done or noErr or Block or Send
         break;
     case Pop:
         // if this was the successful reduction by an error handler
@@ -596,14 +596,14 @@ Error _p_step(Defs *defs, R **contextP) {
         {
             T *np = context->node_pointer;
             if (!np) {
-                raise_error0("Whoa! Null node pointer");
+                raise_error("Whoa! Null node pointer");
             }
             Process s = _t_symbol(np);
 
             if (semeq(s,PARAM_REF)) {
                 T *param = _t_get(context->run_tree,(int *)_t_surface(np));
                 if (!param) {
-                    raise_error0("request for non-existent param");
+                    raise_error("request for non-existent param");
                 }
                 context->node_pointer = np = _t_rclone(param);
                 _t_replace(context->parent, context->idx,np);
@@ -623,7 +623,7 @@ Error _p_step(Defs *defs, R **contextP) {
                     //                    raise(SIGINT);
                     if (_t_size(np) == 0) {
                         // sanity check
-                        if (_t_children(np) != 3) {raise_error0("REPLICATE must have 3 params");}
+                        if (_t_children(np) != 3) {raise_error("REPLICATE must have 3 params");}
                         // create a copy of the code and stick it in the replication state struct
                         ReplicationState *state = malloc(sizeof(ReplicationState));
                         state->phase = EvalCondition;
@@ -665,7 +665,7 @@ Error _p_step(Defs *defs, R **contextP) {
                     context->state = Descend;
                 }
                 else {
-                    raise_error0("whoa! brain fart!");
+                    raise_error("whoa! brain fart!");
                 }
             }
         }

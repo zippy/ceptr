@@ -445,7 +445,7 @@ void __r_check_listener(T* processes,T *listener,T *signal,Q *q) {
         T *rt=0;
         T *action = _t_child(listener,3);
         if (!action) {
-            raise_error0("null action in listener!");
+            raise_error("null action in listener!");
         }
 
         if (semeq(_t_symbol(action),EXPECT_ACT)) {
@@ -536,7 +536,7 @@ T *__r_get_signals(Receptor *r,Aspect aspect) {
 Receptor * __r_get_receptor(T *installed_receptor) {
     // the receptor itself is the surface of the first child of the INSTALLED_RECEPTOR (bleah)
     if (!semeq(_t_symbol(installed_receptor),INSTALLED_RECEPTOR)) {
-        raise_error0("expecting an INSTALLED_RECEPTOR!");
+        raise_error("expecting an INSTALLED_RECEPTOR!");
     }
     return (Receptor *)_t_surface(_t_child(installed_receptor,1));
 }

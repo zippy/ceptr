@@ -234,7 +234,7 @@ T *_makeTestHTTPRequestTree() {
     // confirm that we built the request right!
      T *stx = _d_build_def_semtrex(test_HTTP_defs,HTTP_REQUEST,0);
 
-     if (!_t_match(stx,t)) {raise_error0("BAD HTTP_REQUEST semtrex");}
+     if (!_t_match(stx,t)) {raise_error("BAD HTTP_REQUEST semtrex");}
      _t_free(stx);
 
     return t;
@@ -449,7 +449,7 @@ T *parseHTML(char *html) {
         T *ct = _t_get(tokens,path);
         char *otag = _t_surface(ot);
         char *ctag = _t_surface(ct);
-        if (strcmp(otag,ctag)) {raise_error2("Mismatched tags %s,%s",otag,ctag)};
+        if (strcmp(otag,ctag)) {raise_error("Mismatched tags %s,%s",otag,ctag)};
 
         Symbol ts = getTag(otag,G_tag_sym,G_tag_str);
         path[_t_path_depth(path)-1] -= count-1;
@@ -492,7 +492,7 @@ T *parseHTML(char *html) {
     _t_free(h);
     return results;
     }
-    raise_error0("HTML doesn't match");
+    raise_error("HTML doesn't match");
 }
 
 void testHTTPExample() {

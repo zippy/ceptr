@@ -60,7 +60,7 @@ void _s_add(Scape *s,TreeHash h,Xaddr x) {
 
     HASH_FIND_INT( *data, &h, e );
     if (e) {
-    raise_error0("allready there!");
+    raise_error("allready there!");
     }
     else {
     e = malloc(sizeof(struct scape_elem));

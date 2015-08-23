@@ -115,7 +115,7 @@ char * __stx_makeFA(T *t,SState **in,Ptrlist **out,int level,int *statesP) {
         // copy the value set (which must be the first child) from the semtrex into the state
         v = _t_child(t,1);
         if (!v) {
-            raise_error0("expecting value or SEMTREX_VALUE_SET as first child of SEMTREX_VALUE_LITERAL");
+            raise_error("expecting value or SEMTREX_VALUE_SET as first child of SEMTREX_VALUE_LITERAL");
         }
         if (semeq(_t_symbol(v),SEMTREX_VALUE_SET)) s->data.value.flags |= LITERAL_SET;
 
@@ -132,7 +132,7 @@ char * __stx_makeFA(T *t,SState **in,Ptrlist **out,int level,int *statesP) {
         int is_set;
         Symbol vsym = _t_symbol(v);
         if (!v || !((is_set = semeq(SEMTREX_SYMBOL_SET,vsym)) || semeq(SEMTREX_SYMBOL,vsym))) {
-            raise_error0("expecting SEMTREX_SYMBOL_SET or SEMTREX_SYMBOL as first child of SEMTREX_SYMBOL_LITERAL");
+            raise_error("expecting SEMTREX_SYMBOL_SET or SEMTREX_SYMBOL as first child of SEMTREX_SYMBOL_LITERAL");
         }
         if (c > 2) return "Symbol literal must have 0 or 1 children other than the symbol/set";
         s = state(state_type,statesP);
@@ -284,7 +284,7 @@ SState * _stx_makeFA(T *t,int *statesP) {
     Ptrlist *o;
     G_group_id = 0;
     char *err = __stx_makeFA(t,&in,&o,0,statesP);
-    if (err != 0) {raise_error0(err);}
+    if (err != 0) {raise_error("%s",err);}
     patch(o,&matchstate,0);
     //    printf("\n");_stx_dump(in);
     return in;
@@ -417,7 +417,7 @@ typedef struct BranchPoint {
 
 #define _PUSH_BRANCH(state,c,w) {                                       \
     debug(D_STX_MATCH,"pushing\n");                                      \
-        if((depth+1)>=MAX_BRANCH_DEPTH) {raise_error0("MAX branch depth exceeded");} \
+        if((depth+1)>=MAX_BRANCH_DEPTH) {raise_error("MAX branch depth exceeded");} \
         stack[depth].s = state;                                         \
         stack[depth].cursor = c;                                        \
         stack[depth].walk = w;                                          \
@@ -807,7 +807,7 @@ char * __dump_semtrex(Defs *defs,T *s,char *buf) {
         if (semeq(_t_symbol(v),SEMTREX_VALUE_SET)) {
             count = _t_children(v);
             v1 = _t_child(v,1);
-            if (!v1) {raise_error0("no values in set!");}
+            if (!v1) {raise_error("no values in set!");}
         }
         else {
             count = 1;
@@ -859,7 +859,7 @@ char * __dump_semtrex(Defs *defs,T *s,char *buf) {
         if (semeq(_t_symbol(v),SEMTREX_SYMBOL_SET)) {
             count = _t_children(v);
             v1 = _t_child(v,1);
-            if (!v1) {raise_error0("no symbols in set!");}
+            if (!v1) {raise_error("no symbols in set!");}
         }
         else {
             count = 1;

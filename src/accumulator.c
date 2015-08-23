@@ -42,7 +42,7 @@ void _a_boot(char *dir_path) {
         _v_instantiate_builtins(G_vm);
     }
     else {
-        raise_error0("not yet implemented");
+        raise_error("not yet implemented");
         // deserialize all of the vmhost's instantiated receptors and other instances
         // ...
     }
