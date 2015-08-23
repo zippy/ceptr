@@ -282,7 +282,6 @@ void *__v_process(void *arg) {
                 _p_reduceq(r->q);
             }
             if (r->q && r->q->pending_signals && _t_children(r->q->pending_signals)> 0) {
-                //                puts("DELIVERING!");
                 __v_deliver_signals(r,r->q->pending_signals,&v->r->instances);
             }
         }

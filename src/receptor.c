@@ -652,11 +652,11 @@ Receptor *_r_makeClockReceptor() {
  */
 void *___clock_thread(void *arg){
     Receptor *r = (Receptor*)arg;
-    //    puts("clock started");
+    debug(D_CLOCK,"clock started\n");
     int err =0;
     while (r->state == Alive) {
         T *tick =__r_make_tick();
-        //             puts(_td(r,tick));
+        debug(D_CLOCK,"%s\n",_td(r,tick));
         Xaddr self = {RECEPTOR_XADDR,0};  // 0 xaddr means SELF
         T *signal = __r_make_signal(self,self,DEFAULT_ASPECT,tick);
         _r_deliver(r,signal);
@@ -664,7 +664,7 @@ void *___clock_thread(void *arg){
         // @todo this will skip some seconds over time.... make more sophisticated
         //       with nano-sleep so that we get every second?
     }
-    //    puts("clock stopped");
+    debug(D_CLOCK,"clock stopped\n");
     pthread_exit(&err); //@todo determine if we should use pthread_exit or just return 0
     return 0;
 }

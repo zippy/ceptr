@@ -16,5 +16,5 @@
 #include "tree.h"
 #include "mtree.h"
 #include "util.h"
-
+#include "debug.h"
 #endif

@@ -9,6 +9,7 @@ char *dtypestr(int type) {
     if (type & D_REDUCE) {sprintf(s,"_REDUCE");s--;};
     if (type & D_SIGNALS) {sprintf(s,"_SIGNALS");s--;};
     if (type & D_STX_MATCH) {sprintf(s,"_STX_MATCH");s--;};
+    if (type & D_CLOCK) {sprintf(s,"_CLOCK");s--;};
     *s=0;
     return G_dtype;
 }

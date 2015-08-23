@@ -584,7 +584,9 @@ void testReceptorEdgeStream() {
     // stream id won't match    spec_is_str_equal(_td(w,w->q->active->context->run_tree),"(RUN_TREE (process:WRITE_STREAM (TEST_STREAM_SYMBOL:0x1c49ef0) (PARAM_REF:/2/1)) (PARAMS (LINE:line1)))");
 
     // manually run the process queue
+    //    debug_enable(D_REDUCE);
     _p_reduceq(w->q);
+    //    debug_disable(D_REDUCE);
 
     spec_is_str_equal(_td(w,w->q->completed->context->run_tree),"(RUN_TREE (REDUCTION_ERROR_SYMBOL:NULL_SYMBOL) (PARAMS (LINE:line1)))");
 
