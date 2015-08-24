@@ -295,7 +295,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
     case RAISE_ID:
         return raiseReductionErr;
         break;
-    case READ_STREAM_ID:
+    case STREAM_READ_ID:
         {
             // get the stream param
             T *s = _t_detach_by_idx(code,1);
@@ -316,8 +316,11 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
                 //@todo integrity checks?
                 while ((ch = fgetc (stream)) != EOF && ch != '\n' && i < 1000)
                     buf[i++] = ch;
+
+                //@todo what about the non-errno condition, just EOF.  We shouldn't really
+                // be returning and empty RESULT_SYMBOL
                 if (ch == EOF && errno) return unixErrnoReductionErr;
-                if (i>=1000) {raise_error("buffer overrun in READ_STREAM");}
+                if (i>=1000) {raise_error("buffer overrun in STREAM_READ");}
 
                 buf[i++]=0;
                 //                printf("just read: %s\n",buf);
@@ -326,7 +329,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
             else {raise_error("expecting RESULT_SYMBOL");}
         }
         break;
-    case WRITE_STREAM_ID:
+    case STREAM_WRITE_ID:
         {
             // get the stream param
             T *s = _t_detach_by_idx(code,1);
@@ -344,6 +347,15 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
             fflush(stream);
             // @todo what should this really return?
             x = _t_news(0,REDUCTION_ERROR_SYMBOL,NULL_SYMBOL);
+        }
+        break;
+    case STREAM_AVAILABLE_ID:
+        {
+            // get the stream param
+            T *s = _t_detach_by_idx(code,1);
+            FILE *stream =*(FILE**)_t_surface(s);
+            _t_free(s);
+            x = _t_newi(0,BOOLEAN,!feof(stream));
         }
         break;
     case REPLICATE_ID:

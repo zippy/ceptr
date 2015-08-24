@@ -579,7 +579,7 @@ Receptor *_r_makeStreamReaderReceptor(Symbol receptor_symbol,Symbol stream_symbo
 
     _t_new(p,RECEPTOR_XADDR,&to,sizeof(to));
 
-    T *s = _t_new(p,READ_STREAM,0,0);
+    T *s = _t_new(send,STREAM_READ,0,0);
     _t_new(s,stream_symbol,&stream,sizeof(FILE *));
     _t_new(s,RESULT_SYMBOL,&line,sizeof(Symbol));
 
@@ -613,7 +613,7 @@ Receptor *_r_makeStreamWriterReceptor(Symbol receptor_symbol,Symbol stream_symbo
     /* _dump_semtrex(&r->defs,t,buf); */
     /* puts(buf); */
 
-    x = _t_new_root(WRITE_STREAM);
+    x = _t_new_root(STREAM_WRITE);
     _t_new(x,TEST_STREAM_SYMBOL,&stream,sizeof(FILE *));
     int pt1[] = {2,1,TREE_PATH_TERMINATOR};
     _t_new(x,PARAM_REF,pt1,sizeof(int)*4);

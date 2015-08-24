@@ -576,12 +576,12 @@ void testReceptorEdgeStream() {
     __v_deliver_signals(r,r->q->pending_signals,&instances);
 
     // and see that they've shown up in the writer receptor's flux signals list
-    // stream id won't match    spec_is_str_equal(_td(w,__r_get_signals(w,DEFAULT_ASPECT)),"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:INSTALLED_RECEPTOR.2) (RECEPTOR_XADDR:INSTALLED_RECEPTOR.1) (ASPECT:1)) (BODY:{(LINE:line1)}) (RUN_TREE (process:WRITE_STREAM (TEST_STREAM_SYMBOL:0xbe6ef0) (PARAM_REF:/2/1)) (PARAMS (LINE:line1)))))");
+    // stream id won't match    spec_is_str_equal(_td(w,__r_get_signals(w,DEFAULT_ASPECT)),"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:INSTALLED_RECEPTOR.2) (RECEPTOR_XADDR:INSTALLED_RECEPTOR.1) (ASPECT:1)) (BODY:{(LINE:line1)}) (RUN_TREE (process:STREAM_WRITE (TEST_STREAM_SYMBOL:0xbe6ef0) (PARAM_REF:/2/1)) (PARAMS (LINE:line1)))))");
 
     // and that they've been removed from process queue pending signals list
     spec_is_str_equal(_td(r,r->q->pending_signals),"(PENDING_SIGNALS)");
 
-    // stream id won't match    spec_is_str_equal(_td(w,w->q->active->context->run_tree),"(RUN_TREE (process:WRITE_STREAM (TEST_STREAM_SYMBOL:0x1c49ef0) (PARAM_REF:/2/1)) (PARAMS (LINE:line1)))");
+    // stream id won't match    spec_is_str_equal(_td(w,w->q->active->context->run_tree),"(RUN_TREE (process:STREAM_WRITE (TEST_STREAM_SYMBOL:0x1c49ef0) (PARAM_REF:/2/1)) (PARAMS (LINE:line1)))");
 
     // manually run the process queue
     //    debug_enable(D_REDUCE);

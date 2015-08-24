@@ -70,8 +70,9 @@ Process EXPECT_ACT = {SYS_CONTEXT,SEM_TYPE_PROCESS,EXPECT_ACT_ID};
 Process QUOTE = {SYS_CONTEXT,SEM_TYPE_PROCESS,QUOTE_ID};
 Process INTERPOLATE_FROM_MATCH = {SYS_CONTEXT,SEM_TYPE_PROCESS,INTERPOLATE_FROM_MATCH_ID};
 Process RAISE = {SYS_CONTEXT,SEM_TYPE_PROCESS,RAISE_ID};
-Process READ_STREAM = {SYS_CONTEXT,SEM_TYPE_PROCESS,READ_STREAM_ID};
-Process WRITE_STREAM = {SYS_CONTEXT,SEM_TYPE_PROCESS,WRITE_STREAM_ID};
+Process STREAM_READ = {SYS_CONTEXT,SEM_TYPE_PROCESS,STREAM_READ_ID};
+Process STREAM_WRITE = {SYS_CONTEXT,SEM_TYPE_PROCESS,STREAM_WRITE_ID};
+Process STREAM_AVAILABLE = {SYS_CONTEXT,SEM_TYPE_PROCESS,STREAM_AVAILABLE_ID};
 Process REPLICATE = {SYS_CONTEXT,SEM_TYPE_PROCESS,REPLICATE_ID};
 
 void def_sys() {
@@ -241,8 +242,9 @@ void def_sys() {
     sP(QUOTE,"quote a process so that it can be passed as a value",0,0);
     sP(INTERPOLATE_FROM_MATCH,"interploate match result in place",0,0);
     sP(RAISE,"raise reduction error",0,0);
-    sP(READ_STREAM,"read from a unix stream",0,0);
-    sP(WRITE_STREAM,"write to a unix stream",0,0);
+    sP(STREAM_READ,"read from a unix stream",0,0);
+    sP(STREAM_WRITE,"write to a unix stream",0,0);
+    sP(STREAM_AVAILABLE,"check a unix stream for eof condition",0,0);
     sP(REPLICATE,"replicate process",0,0);
 
     sYt(TEST_INT_SYMBOL,INTEGER);

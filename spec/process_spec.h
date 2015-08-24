@@ -370,10 +370,16 @@ void testProcessStream() {
     char buffer[] = "line1\nline2\n";
     stream = fmemopen(buffer, strlen (buffer), "r+");
 
+    T *n = _t_new_root(STREAM_AVAILABLE);
+    _t_new(n,TEST_STREAM_SYMBOL,&stream,sizeof(FILE *));
+    __p_reduce_sys_proc(0,STREAM_AVAILABLE,n);
+    spec_is_str_equal(t2s(n),"(BOOLEAN:1)");
+    _t_free(n);
+
     T *run_tree = _t_new_root(RUN_TREE);
     // test reading a stream
 
-    T *n = _t_new_root(READ_STREAM);
+    n = _t_new_root(STREAM_READ);
 
     _t_new(n,TEST_STREAM_SYMBOL,&stream,sizeof(FILE *));
     _t_news(n,RESULT_SYMBOL,TEST_STR_SYMBOL);
@@ -390,7 +396,7 @@ void testProcessStream() {
 
     // test writing to a stream
     run_tree = _t_new_root(RUN_TREE);
-    n = _t_new_root(WRITE_STREAM);
+    n = _t_new_root(STREAM_WRITE);
     _t_new(n,TEST_STREAM_SYMBOL,&stream,sizeof(FILE *));
     _t_new_str(n,TEST_STR_SYMBOL,"fish\n");
 
@@ -408,7 +414,7 @@ void testProcessStream() {
     // test writing to a readonly stream
     stream = fmemopen(buffer, strlen (buffer), "r");
     run_tree = _t_new_root(RUN_TREE);
-    n = _t_new_root(WRITE_STREAM);
+    n = _t_new_root(STREAM_WRITE);
     _t_new(n,TEST_STREAM_SYMBOL,&stream,sizeof(FILE *));
     _t_new_str(n,TEST_STR_SYMBOL,"fish\n");
 
@@ -421,6 +427,15 @@ void testProcessStream() {
 
     _t_free(n);
     _t_free(run_tree);
+
+
+    while ((fgetc (stream)) != EOF);
+    n = _t_new_root(STREAM_AVAILABLE);
+    _t_new(n,TEST_STREAM_SYMBOL,&stream,sizeof(FILE *));
+    __p_reduce_sys_proc(0,STREAM_AVAILABLE,n);
+    spec_is_str_equal(t2s(n),"(BOOLEAN:0)");
+    _t_free(n);
+
     fclose(stream);
 
 }
@@ -773,7 +788,7 @@ void testProcessReplicate() {
     T *params = _t_newr(code,PARAMS);
     _t_newi(code,TEST_INT_SYMBOL,3);
 
-    T *x = _t_newr(code,WRITE_STREAM);
+    T *x = _t_newr(code,STREAM_WRITE);
     _t_new(x,TEST_STREAM_SYMBOL,&output,sizeof(FILE *));
     _t_new_str(x,TEST_STR_SYMBOL,"testing\n");
 
@@ -839,6 +854,7 @@ void testProcessErrorTrickleUp() {
 
 void testProcessMulti() {
     //! [testProcessMulti]
+
     T *processes = _t_new_root(PROCESSES);
     Defs defs = {0,0,processes};
 

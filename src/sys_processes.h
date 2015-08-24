@@ -37,8 +37,9 @@ enum SystemProcessID    {
     QUOTE_ID,
     INTERPOLATE_FROM_MATCH_ID,    ///< reduce to replaced values from the match*/
     RAISE_ID,
-    READ_STREAM_ID,
-    WRITE_STREAM_ID,
+    STREAM_READ_ID,
+    STREAM_WRITE_ID,
+    STREAM_AVAILABLE_ID,
     REPLICATE_ID
 };
 
@@ -62,8 +63,9 @@ Process EXPECT_ACT;
 Process QUOTE;
 Process INTERPOLATE_FROM_MATCH;
 Process RAISE;
-Process READ_STREAM;
-Process WRITE_STREAM;
+Process STREAM_READ;
+Process STREAM_WRITE;
+Process STREAM_AVAILABLE;
 Process REPLICATE;
 
 #endif
