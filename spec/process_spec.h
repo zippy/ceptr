@@ -812,7 +812,7 @@ void testProcessReplicate() {
 
     T *x = _t_newr(code,STREAM_WRITE);
     _t_new(x,TEST_STREAM_SYMBOL,&output,sizeof(FILE *));
-    _t_new_str(x,TEST_STR_SYMBOL,"testing\n");
+    _t_new_str(x,TEST_STR_SYMBOL,"testing");
 
     T *t = __p_build_run_tree(code,0);
     Error e = _p_reduce(&defs,t);
@@ -908,8 +908,8 @@ void testProcessMulti() {
     spec_is_ptr_equal(q->active->prev,NULL);
     _p_addrt2q(q,t2);
     spec_is_equal(q->contexts_count,2);
-    spec_is_ptr_equal(q->active->context->run_tree,t2);
-    spec_is_ptr_equal(q->active->next->context->run_tree,t1);
+    spec_is_ptr_equal(q->active->context->run_tree,t1);
+    spec_is_ptr_equal(q->active->next->context->run_tree,t2);
     spec_is_ptr_equal(q->active->next->prev, q->active);
 
     spec_is_long_equal(q->active->accounts.elapsed_time,0);

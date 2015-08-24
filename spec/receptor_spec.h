@@ -595,9 +595,10 @@ void testReceptorEdgeStream() {
     _p_reduceq(w->q);
     //    debug_disable(D_REDUCE);
 
-    spec_is_str_equal(_td(w,w->q->completed->context->run_tree),"(RUN_TREE (REDUCTION_ERROR_SYMBOL:NULL_SYMBOL) (PARAMS (LINE:line1)))");
+    // right now this show the "empty line" because it's the last of three lines to be added onto the completed queue.
+    spec_is_str_equal(_td(w,w->q->completed->context->run_tree),"(RUN_TREE (REDUCTION_ERROR_SYMBOL:NULL_SYMBOL) (PARAMS (LINE:)))");
 
-    spec_is_str_equal(output_data,"line1");
+    spec_is_str_equal(output_data,"line1\nline2\n\n");
 
     fclose(stream);
     _a_free_instances(&instances);

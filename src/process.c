@@ -350,6 +350,8 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
             int err = fputs(str,stream);
             _t_free(s);
             if (err < 0) return unixErrnoReductionErr;
+            fputs("\n",stream);
+            if (err < 0) return unixErrnoReductionErr;
             fflush(stream);
             // @todo what should this really return?
             x = _t_news(0,REDUCTION_ERROR_SYMBOL,NULL_SYMBOL);
@@ -477,6 +479,7 @@ R *__p_make_context(T *run_tree,R *caller) {
     return context;
 }
 
+#ifdef CEPTR_DEBUG
 void pq(Qe *qe) {
     while(qe) {
         printf("%p(<-%p)  -> ",qe,qe->prev);
@@ -484,6 +487,7 @@ void pq(Qe *qe) {
     }
     printf("NULL\n");
 }
+#endif
 
 // unlink the queue element from the list rejoining the
 // previous with the next
@@ -504,7 +508,19 @@ void pq(Qe *qe) {
         if (d) d->prev = qe;                    \
         list = qe;                              \
     }
-
+// add the queue element onto the tail of the list
+#define __p_append(list,qe) {                   \
+        qe->next = NULL;                        \
+        if (!list) {list=qe;}                   \
+        else {                                  \
+            Qe *d = list;                       \
+            while(d->next) {                    \
+                d = d->next;                    \
+            }                                   \
+            qe->prev = d;                       \
+            d->next = qe;                       \
+        }                                       \
+    }
 
 void _p_enqueue(Qe **listP,Qe *e) {
     __p_enqueue(*listP,e);
@@ -916,7 +932,7 @@ void _p_addrt2q(Q *q,T *run_tree) {
     n->context = __p_make_context(run_tree,0);
     n->accounts.elapsed_time = 0;
     pthread_mutex_lock(&q->mutex);
-    __p_enqueue(q->active,n);
+    __p_append(q->active,n);
     q->contexts_count++;
     pthread_mutex_unlock(&q->mutex);
 }
