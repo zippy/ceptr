@@ -928,13 +928,23 @@ void *_p_reduceq_thread(void *arg){
     pthread_exit(err);
 }
 
+#ifdef CEPTR_DEBUG
+void debug_np(int type,T *np) {
+    int *path = _t_get_path(np);
+    char pp[255];
+    _t_sprint_path(path,pp);
+    debug(type,"Node Pointer:%s\n",pp);
+    free(path);
+}
+#endif
+
 /**
  * reduce all the processes in a queue
  *
  * @param[in] q the queue to be processed
  */
 Error _p_reduceq(Q *q) {
-    debug(D_REDUCE,"\n\nStarting reduce:\n");
+    debug(D_REDUCE+D_REDUCEV,"Starting reduce:\n");
 
     Qe *qe = q->active;
     Error next_state;
@@ -943,27 +953,27 @@ Error _p_reduceq(Q *q) {
     while (q->contexts_count) {
 
 #ifdef CEPTR_DEBUG
-        if (debugging(D_REDUCE)) {
+        char *sn[]={"Ascend","Descend","Pushed","Pop","Eval","Block","Send","SendAsync","Done"};
+#define __debug_state_str(s) (s <= 0 ? sn[-s-1] : "Error")
+        if (debugging(D_REDUCEV)) {
             R *context = qe->context;
-            char *sn[]={"Ascend","Descend","Pushed","Pop","Eval","Block","Send","SendAsync","Done"};
-            char *s = context->state <= 0 ? sn[-context->state -1] : "Error";
-            debug(D_REDUCE,"ID:%p -- State %s : %d\n",qe,s,context->state);
-            debug(D_REDUCE,"  idx:%d\n",context->idx);
-            debug(D_REDUCE,"%s",_t2s(q->defs,context->run_tree));
+            char *s = __debug_state_str(context->state);
+            debug(D_REDUCEV,"ID:%p -- State %s : %d\n",qe,s,context->state);
+            debug(D_REDUCEV,"  idx:%d\n",context->idx);
+            debug(D_REDUCEV,"%s\n",_t2s(q->defs,context->run_tree));
             if (context) {
                 if (context->node_pointer == 0) {
-                    debug(D_REDUCE,"Node Pointer: NULL!\n");
+                    debug(D_REDUCEV,"Node Pointer: NULL!\n");
                 }
                 else {
-                    debug(D_REDUCE,"rt_cur_child:%d\n",rt_cur_child(context->node_pointer));
-                    int *path = _t_get_path(context->node_pointer);
-                    char pp[255];
-                    _t_sprint_path(path,pp);
-                    debug(D_REDUCE,"Node Pointer:%s\n",pp);
-                    free(path);
+                    debug(D_REDUCEV,"rt_cur_child:%d\n",rt_cur_child(context->node_pointer));
+                    debug_np(D_REDUCEV,context->node_pointer);
                 }
             }
-            debug(D_REDUCE,"\n");
+        }
+        int prev_state;
+        if (debugging(D_REDUCEV+D_REDUCE)) {
+            prev_state = qe->context->state;
         }
 #endif
 
@@ -972,6 +982,13 @@ Error _p_reduceq(Q *q) {
         clock_gettime(CLOCK_MONOTONIC, &end);
         qe->accounts.elapsed_time +=  diff_micro(&start, &end);
 
+#ifdef CEPTR_DEBUG
+        debug(D_REDUCEV,"result state:%s\n\n",__debug_state_str(qe->context->state));
+        if (debugging(D_REDUCE) && prev_state == Eval) {
+            debug_np(D_REDUCE,qe->context->node_pointer);
+            debug(D_REDUCE,"Eval: %s\n\n",_t2s(q->defs,qe->context->run_tree));
+        }
+#endif
         pthread_mutex_lock(&q->mutex);
         Qe *next = qe->next;
         if (next_state == Done) {
@@ -1021,6 +1038,7 @@ Error _p_reduceq(Q *q) {
     // one process ended ok, but one did not.  What's the error?  Probably
     // the errors here would be at a different level, and the caller would be
     // expected to inspect the errors of the reduced processes.
+    debug(D_REDUCE+D_REDUCEV,"Ending reduce\n");
     return 0;
 }
 /** @}*/

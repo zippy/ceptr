@@ -15,10 +15,12 @@
 #define D_SPEC       0x8000
 #define D_SIGNALS    0x0001
 #define D_REDUCE     0x0002
-#define D_STX_MATCH  0x0004
-#define D_CLOCK      0x0008
+#define D_REDUCEV    0x0004
+#define D_STX_MATCH  0x0008
+#define D_CLOCK      0x0010
 
-#define DEBUG_DEFAULT_MASK D_NONE;
+#define DEBUG_DEFAULT_MASK D_NONE
+//#define DEBUG_DEFAULT_MASK D_SIGNALS
 
 #ifndef DEBUG_MASK
 #define DEBUG_MASK 0

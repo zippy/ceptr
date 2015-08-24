@@ -6,7 +6,7 @@
 char G_dtype[1000];
 char *dtypestr(int type) {
     char *s = &G_dtype[0];
-    if (type & D_REDUCE) {sprintf(s,"_REDUCE");s--;};
+    if (type & (D_REDUCE+D_REDUCEV)) {sprintf(s,"_REDUCE");s--;};
     if (type & D_SIGNALS) {sprintf(s,"_SIGNALS");s--;};
     if (type & D_STX_MATCH) {sprintf(s,"_STX_MATCH");s--;};
     if (type & D_CLOCK) {sprintf(s,"_CLOCK");s--;};
