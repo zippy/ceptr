@@ -321,6 +321,27 @@ void _t_replace(T *t,int i,T *r) {
 }
 
 /**
+ * Swap out the specified child for the given node.
+
+ * @note returns the replaced child
+ * @param[in] t input node on which to operate
+ * @param[in] i index to child be replaced
+ * @param[in] r node to replace
+ * @returns pointer to node allocated on the heap
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/tree_spec.h testTreeSwap
+ */
+T *_t_swap(T *t,int i,T *r) {
+    T *c = _t_child(t,i);
+    if (!c) {raise_error("tree doesn't have child %d",i);}
+    t->structure.children[i-1] = r;
+    r->structure.parent = t;
+    c->structure.parent = NULL;
+    return c;
+}
+
+/**
  * Insert a tree at a given tree path position
 
  * @param[in] t tree on which to operate

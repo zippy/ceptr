@@ -48,6 +48,7 @@ void _t_add(T *t,T *c);
 void _t_detach_by_ptr(T *t,T *c);
 T *_t_detach_by_idx(T *t,int i);
 void _t_replace(T *t,int i,T *r);
+T *_t_swap(T *t,int i,T *r);
 void _t_insert_at(T *t, int *path, T *i);
 void _t_morph(T *dst,T *src);
 void __t_morph(T *t,Symbol s,void *surface,size_t length,int allocate);

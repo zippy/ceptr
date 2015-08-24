@@ -311,13 +311,29 @@ void testTreeReplace() {
     _t_newi(t_version,VERSION_MAJOR,1);
     _t_newi(t_version,VERSION_MINOR,1);
 
-    int p[] = {1,2,TREE_PATH_TERMINATOR};
-    spec_is_equal(*(int *)_t_get_surface(t,p),0);
     _t_replace(t,1,t_version);
-    spec_is_equal(*(int *)_t_get_surface(t,p),1);
+    int p[] = {1,TREE_PATH_TERMINATOR};
+    spec_is_str_equal(_t2s(&test_HTTP_defs,_t_get(t,p)),"(HTTP_REQUEST_VERSION (VERSION_MAJOR:1) (VERSION_MINOR:1))");
 
     _t_free(t);
     //! [testTreeReplace]
+}
+
+void testTreeSwap() {
+    //! [testTreeSwap]
+    T *t = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
+
+    // replace the version with a new version
+    T *t_version = _t_newr(0,HTTP_REQUEST_VERSION);
+    _t_newi(t_version,VERSION_MAJOR,1);
+    _t_newi(t_version,VERSION_MINOR,1);
+
+    T *s = _t_swap(t,1,t_version);
+    spec_is_str_equal(_t2s(&test_HTTP_defs,s),"(HTTP_REQUEST_VERSION (VERSION_MAJOR:1) (VERSION_MINOR:0))");
+    spec_is_ptr_equal(_t_parent(s),NULL);
+
+    _t_free(t);
+    //! [testTreeSwap]
 }
 
 void testTreeInsertAt() {
@@ -488,6 +504,7 @@ void testTree() {
     testTreePathSprint();
     testTreeClone();
     testTreeReplace();
+    testTreeSwap();
     testTreeInsertAt();
     testTreeMorph();
     testTreeMorphLowLevel();
