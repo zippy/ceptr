@@ -571,17 +571,22 @@ Receptor *_r_makeStreamReaderReceptor(Symbol receptor_symbol,Symbol stream_symbo
     Symbol line = _r_declare_symbol(r,CSTRING,"LINE"); // @todo, should be shared symbol from compository, see #29...
 
     // code is something like:
-    // lispy: (send to (read_stream stream line))
-    // clike: send(to,read_stream(stream,line))
-    T *t = _t_new_root(RUN_TREE);
-    T *p;
-    p = _t_new_root(SEND);
+    // (do (not stream eof) (send to (read_stream stream line)))
 
-    _t_new(p,RECEPTOR_XADDR,&to,sizeof(to));
+    T *t = _t_new_root(RUN_TREE);
+    T *p = _t_new_root(REPLICATE);
+    T *params = _t_newr(p,PARAMS);
+    T *eof = _t_newr(p,STREAM_AVAILABLE);
+    _t_new(eof,stream_symbol,&stream,sizeof(FILE *));
+    //    _t_newi(p,TEST_INT_SYMBOL,2);  // two repetitions
+    T *send = _t_newr(p,SEND);
+
+    _t_new(send,RECEPTOR_XADDR,&to,sizeof(to));
 
     T *s = _t_new(send,STREAM_READ,0,0);
     _t_new(s,stream_symbol,&stream,sizeof(FILE *));
     _t_new(s,RESULT_SYMBOL,&line,sizeof(Symbol));
+    _t_newi(send,BOOLEAN,1); // mark async
 
     T *c = _t_rclone(p);
     _t_add(t,c);

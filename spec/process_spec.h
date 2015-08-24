@@ -310,17 +310,12 @@ void testProcessSend() {
     _t_free(code);
 
     // test the reduction at the reduceq level where it can handle taking the signal and queuing it
-    T *run_tree = _t_new_root(RUN_TREE);
-    code =_t_rclone(p);
-    _t_free(p);
-
-    _t_add(run_tree,code);
+    T *run_tree = __p_build_run_tree(p,0);
 
     // add the run tree into a queue and run it
     Defs defs;
     Q *q = _p_newq(&defs);
     T *ps = q->pending_signals;
-    _t_newr(run_tree,PARAMS);
     _p_addrt2q(q,run_tree);
 
     Qe *e = q->active;
@@ -340,6 +335,33 @@ void testProcessSend() {
     spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.0) (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (ASPECT:1)) (BODY:{(TEST_INT_SYMBOL:314)})))");
 
     _p_freeq(q);
+
+    // now test the asynchronous send case
+    _t_newi(p,BOOLEAN,1);
+
+    run_tree = __p_build_run_tree(p,0);
+
+    _p_newq(&defs);
+    ps = q->pending_signals;
+    _p_addrt2q(q,run_tree);
+
+    e = q->active;
+    c = e->context;
+
+    // after reduction the context should be in the completed state
+    // and the signal should be on the pending signals list
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+
+    spec_is_equal(q->contexts_count,0);
+    spec_is_ptr_equal(q->completed,e);
+
+    //@todo and the tree should have reduced to:  ??? WHAT does SEND async reduce to
+    // kind of the same question as for respond
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (TEST_INT_SYMBOL:0) (PARAMS))");
+    spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.0) (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (ASPECT:1)) (BODY:{(TEST_INT_SYMBOL:314)})))");
+
+    _t_free(p);
+
 }
 
 void testProcessQuote() {

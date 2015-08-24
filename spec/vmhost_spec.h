@@ -369,6 +369,8 @@ void testVMHostShell() {
     T *x = _t_newr(p,shell_command);
     int pt1[] = {2,1,TREE_PATH_TERMINATOR};
     _t_new(x,PARAM_REF,pt1,sizeof(int)*4);
+    _t_newi(p,BOOLEAN,1); // indicate async send
+
     Process proc = _r_code_process(r,p,"send self command","long desc...",NULL,NULL);
     T *act = _t_newp(0,ACTION,proc);
     T* params = _t_new_root(PARAMS);

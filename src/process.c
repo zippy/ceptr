@@ -282,8 +282,14 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
             Xaddr from = {RECEPTOR_XADDR,0};  //@todo how do we say SELF??
             //            printf("sending to %d\n",to.addr);
             x = __r_make_signal(from,to,DEFAULT_ASPECT,signal_contents);
+            if (_t_children(code) == 0) err = Send;
+            else {
+                t = _t_detach_by_idx(code,1);
+                // @todo timeout or callback or whatever the heck in the async case
+                _t_free(t);
+                err = SendAsync;
+            }
         }
-        err = Send;
         break;
     case INTERPOLATE_FROM_MATCH_ID:
         match_results = _t_child(code,2);
@@ -1007,9 +1013,9 @@ Error _p_reduceq(Q *q) {
             __p_enqueue(q->blocked,qe);
             q->contexts_count--;
         }
-        else if (next_state == Send) {
+        else if ((next_state == Send) || (next_state == SendAsync)) {
             // remove from the round-robin
-            __p_dequeue(q->active,qe);
+            if (next_state == Send) {__p_dequeue(q->active,qe);}
 
             // take the signal off the run tree and send it, adding a send result in it's place
             T *signal = qe->context->node_pointer;
@@ -1019,19 +1025,21 @@ Error _p_reduceq(Q *q) {
             // the actual signal sending machinery, or at least what ever is going to
             // evaluate the destination address for validity.
             T *result = _t_newi(0,TEST_INT_SYMBOL,0);
+            //            result = __t_new(0,TEST_INT_SYMBOL,0,sizeof(int),sizeof(rT));
 
-            //@todo refactor this into a version of _t_replace that swaps out the given child and returns it
-            // rather than freeing it.
-            parent->structure.children[0] = result; // 0 is the first child
-            result->structure.parent = parent;
-            signal->structure.parent = NULL;
-
+            _t_swap(parent,_t_node_index(signal),result);
             _t_add(q->pending_signals,signal);
-            // add to the blocked list
-            __p_enqueue(q->blocked,qe);
-            q->contexts_count--;
+
+            // add to the blocked list if not an asynchronous send
+            if (next_state == Send) {
+                __p_enqueue(q->blocked,qe);
+                q->contexts_count--;
+            }
+            else {
+                qe->context->state = Ascend;
+            }
         }
-        qe = next ? next : q->active;  // next in round robing or wrap
+        qe = next ? next : q->active;  // next in round robin or wrap back to first
         pthread_mutex_unlock(&q->mutex);
     };
     // @todo figure out what error we should be sending back here, i.e. what if
