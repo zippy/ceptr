@@ -2,7 +2,7 @@ var modules =
 [
     [ "Introduction", "index.html#secIntro", null ],
     [ "License", "index.html#secLicense", null ],
-    [ "Data Engine", "group__data.html", "group__data" ],
+    [ "Accumulator", "group__accumulator.html", "group__accumulator" ],
     [ "Symbol and Structure Definition", "group__def.html", "group__def" ],
     [ "Receptors", "group__receptor.html", "group__receptor" ],
     [ "Semantic Tree Regular Expressions", "group__semtrex.html", "group__semtrex" ],

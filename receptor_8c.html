@@ -110,10 +110,14 @@ $(document).ready(function(){initNavTree('receptor_8c.html','');});
 <p>receptor implementation  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="receptor_8h_source.html">receptor.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="stream_8h_source.html">stream.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="semtrex_8h_source.html">semtrex.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="process_8h_source.html">process.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="de_8h_source.html">de.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="accumulator_8h_source.html">accumulator.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="debug_8h_source.html">debug.h</a>&quot;</code><br />
 <code>#include &lt;stdarg.h&gt;</code><br />
+<code>#include &lt;time.h&gt;</code><br />
+<code>#include &lt;unistd.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for receptor.c:</div>
 <div class="dyncontent">
@@ -186,9 +190,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>__r_set_labels</b> (<
 <tr class="separator:ga475101caa9d56e6398d93dc3b4c9b616"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga74ad11561e8e391a1ebed9f7474ce095"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga74ad11561e8e391a1ebed9f7474ce095">__r_check_listener</a> (<a class="el" href="structT.html">T</a> *processes, <a class="el" href="structT.html">T</a> *listener, <a class="el" href="structT.html">T</a> *signal, <a class="el" href="structQ.html">Q</a> *q)</td></tr>
 <tr class="separator:ga74ad11561e8e391a1ebed9f7474ce095"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gacd36f1f19583c1d893f7552eaf1e3806"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gacd36f1f19583c1d893f7552eaf1e3806"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>__r_deliver_signals</b> (<a class="el" href="structReceptor.html">Receptor</a> *self, <a class="el" href="structT.html">T</a> *signals, <a class="el" href="structinstances__elem.html">Instances</a> *receptor_instances)</td></tr>
-<tr class="separator:gacd36f1f19583c1d893f7552eaf1e3806"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7d40f33135ee51640d0d24b8c9e3e046"><td class="memItemLeft" align="right" valign="top">Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga7d40f33135ee51640d0d24b8c9e3e046">_r_deliver</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structT.html">T</a> *signal)</td></tr>
 <tr class="separator:ga7d40f33135ee51640d0d24b8c9e3e046"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6d832bc4fd6b86ba0cb523166711c3a1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga6d832bc4fd6b86ba0cb523166711c3a1"></a>
@@ -200,6 +201,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>__r_deliver_signals</
 <tr class="memitem:gaf76e6bfe4883569ebfb83c40fe2c37e9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaf76e6bfe4883569ebfb83c40fe2c37e9"></a>
 <a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>__r_get_signals</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, Aspect aspect)</td></tr>
 <tr class="separator:gaf76e6bfe4883569ebfb83c40fe2c37e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac438809f0d3f3add97efd49729c9027f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structReceptor.html">Receptor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#gac438809f0d3f3add97efd49729c9027f">__r_get_receptor</a> (<a class="el" href="structT.html">T</a> *installed_receptor)</td></tr>
+<tr class="separator:gac438809f0d3f3add97efd49729c9027f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf10f1cdd7f9d47e637f9034de0310bbd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaf10f1cdd7f9d47e637f9034de0310bbd"></a>
 char *&#160;</td><td class="memItemRight" valign="bottom"><b>_r_get_symbol_name</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structSemanticID.html">Symbol</a> s)</td></tr>
 <tr class="separator:gaf10f1cdd7f9d47e637f9034de0310bbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -212,6 +215,23 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_r_get_process_name
 <tr class="memitem:ga69b03a529a561587fd222221fb9b1751"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga69b03a529a561587fd222221fb9b1751"></a>
 char *&#160;</td><td class="memItemRight" valign="bottom"><b>_td</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structT.html">T</a> *t)</td></tr>
 <tr class="separator:ga69b03a529a561587fd222221fb9b1751"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa6c00fcf9178ca3b85566ee02fc7022d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaa6c00fcf9178ca3b85566ee02fc7022d"></a>
+<a class="el" href="structReceptor.html">Receptor</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>_r_makeStreamReaderReceptor</b> (<a class="el" href="structSemanticID.html">Symbol</a> receptor_symbol, <a class="el" href="structSemanticID.html">Symbol</a> stream_symbol, <a class="el" href="structStream.html">Stream</a> *st, <a class="el" href="structXaddr.html">Xaddr</a> to)</td></tr>
+<tr class="separator:gaa6c00fcf9178ca3b85566ee02fc7022d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafeb11f99c9aea801cb188cc012b62a12"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gafeb11f99c9aea801cb188cc012b62a12"></a>
+<a class="el" href="structReceptor.html">Receptor</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>_r_makeStreamWriterReceptor</b> (<a class="el" href="structSemanticID.html">Symbol</a> receptor_symbol, <a class="el" href="structSemanticID.html">Symbol</a> stream_symbol, <a class="el" href="structStream.html">Stream</a> *st)</td></tr>
+<tr class="separator:gafeb11f99c9aea801cb188cc012b62a12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacf28f044a27ea3dc698b50728b6219ce"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gacf28f044a27ea3dc698b50728b6219ce"></a>
+<a class="el" href="structReceptor.html">Receptor</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>_r_makeClockReceptor</b> ()</td></tr>
+<tr class="separator:gacf28f044a27ea3dc698b50728b6219ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4cb85b79ae4207e4595d003d11beb226"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga4cb85b79ae4207e4595d003d11beb226">___clock_thread</a> (void *arg)</td></tr>
+<tr class="separator:ga4cb85b79ae4207e4595d003d11beb226"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae85947274a039b1c98f6ed001aac9a54"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gae85947274a039b1c98f6ed001aac9a54"></a>
+<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>__r_make_tick</b> ()</td></tr>
+<tr class="separator:gae85947274a039b1c98f6ed001aac9a54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2e6346f24ce76ad12990f6863d1ff3d6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga2e6346f24ce76ad12990f6863d1ff3d6"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>__r_kill</b> (<a class="el" href="structReceptor.html">Receptor</a> *r)</td></tr>
+<tr class="separator:ga2e6346f24ce76ad12990f6863d1ff3d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>receptor implementation </p>
@@ -245,7 +265,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_td</b> (<a class="
 <p>Get the child index for a given label.</p>
 <p>This works for retrieving symbols, structures &amp; processes because the symbol and structure values is just the child index. </p>
 
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00137">137</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00142">142</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -280,7 +300,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_td</b> (<a class="
 </div><div class="memdoc">
 <p>get the size of a structure's surface </p><dl class="section return"><dt>Returns</dt><dd>size </dd></dl>
 
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00224">224</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00229">229</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -290,7 +310,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_td</b> (<a class="
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="receptor_8c.html">receptor.c</a></li>
-    <li class="footer">Generated on Tue Jun 23 2015 10:51:49 for ceptr by
+    <li class="footer">Generated on Thu Aug 27 2015 12:15:10 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

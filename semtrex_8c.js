@@ -54,7 +54,6 @@ var semtrex_8c =
     [ "patch", "semtrex_8c.html#ab307af6eec1425c7801b32bfbaa08f42", null ],
     [ "wrap", "group__semtrex.html#ga812993c95f0eeed3dd78ad1c5f979a7f", null ],
     [ "G_d", "semtrex_8c.html#a11e99630a9b6ddf002ac9a725bba7ebd", null ],
-    [ "G_debug_match", "semtrex_8c.html#af0272e535001c2703c79a5d67a1a96ea", null ],
     [ "G_group_id", "semtrex_8c.html#a5c0d150e5a03fb2bb7fa5720c8eedf3a", null ],
     [ "G_te", "semtrex_8c.html#a8592201e0b95200efcedc42ec62b6676", null ],
     [ "G_ts", "semtrex_8c.html#a82573c9fc996af7623605123964ec479", null ],

@@ -35,7 +35,6 @@ var group__semtrex =
     [ "_sl", "group__semtrex.html#ga12e70dc3d5fde33655e8731ad3bdd935", null ],
     [ "_sln", "group__semtrex.html#gac1b578cc9fc2f835ad12855698fe4cf2", null ],
     [ "DS", "group__semtrex.html#ga23a719903c25f5387274002776ae5fa1", null ],
-    [ "DT", "group__semtrex.html#ga8785a1bb99b5bb1f749bd37a317594e4", null ],
     [ "SgroupClose", "group__semtrex.html#gab4bc67d51970ec75875c2e9e135c4bf3", null ],
     [ "SgroupOpen", "group__semtrex.html#ga09de53f7ae900c6cb78a22c19af533ff", null ],
     [ "STypeData", "group__semtrex.html#ga8dced199acb1f24ff8f91e409aa6d1cb", null ],

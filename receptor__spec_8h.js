@@ -1,13 +1,14 @@
 var receptor__spec_8h =
 [
     [ "_makePingProtocolReceptor", "receptor__spec_8h.html#a7bd8dd4a9e7fa8cf5400ae22c253dbd2", null ],
-    [ "_r_makeFileReceptor", "receptor__spec_8h.html#a50742f0c5d1540b0b667d7bbba139edc", null ],
+    [ "_testReceptorClockAddListener", "receptor__spec_8h.html#a7ea907b2faa0b14f8e4858ff1b453bbf", null ],
     [ "defineHouseLocation", "receptor__spec_8h.html#a98dc4c2784ade9388f0b5aad95d78aae", null ],
     [ "defineNums", "receptor__spec_8h.html#a44646a010f12df1a62ff6017a2d6a43e", null ],
     [ "makeInt", "receptor__spec_8h.html#a104604d103dcbad0c749f873b99b0910", null ],
     [ "testReceptor", "receptor__spec_8h.html#aaf972a86b5bdef0bc6a43ebf006f313c", null ],
     [ "testReceptorAction", "receptor__spec_8h.html#a3cae92defb2178364fc0d8f7eded5089", null ],
     [ "testReceptorAddListener", "receptor__spec_8h.html#a835718c76d21df730045c682738b4a42", null ],
+    [ "testReceptorClock", "receptor__spec_8h.html#aaf6ba85eee6e79581791f16b56ca8dd2", null ],
     [ "testReceptorCreate", "receptor__spec_8h.html#a3a764534a7cc2c00a1e15642d0554b7c", null ],
     [ "testReceptorDef", "receptor__spec_8h.html#aa07faab05f9e36cec27352a395804b52", null ],
     [ "testReceptorDefMatch", "receptor__spec_8h.html#a0f0176e080e437a43dfcc761f00ca284", null ],

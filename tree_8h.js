@@ -11,7 +11,9 @@ var tree_8h =
       [ "TFLAG_SURFACE_IS_TREE", "group__tree.html#ggaeddfb7542c9d4915c3613083cd001c60ad0d2d91d6598bbf39d240b90d29d954a", null ],
       [ "TFLAG_SURFACE_IS_RECEPTOR", "group__tree.html#ggaeddfb7542c9d4915c3613083cd001c60ab66fde176a815717b8766aa3c9375e3c", null ],
       [ "TFLAG_SURFACE_IS_SCAPE", "group__tree.html#ggaeddfb7542c9d4915c3613083cd001c60aecc073bf46663f2c91925fea3009ad8d", null ],
-      [ "TFLAG_DELETED", "group__tree.html#ggaeddfb7542c9d4915c3613083cd001c60a35cdb148e02bf5d9b23d69a409c0502a", null ]
+      [ "TFLAG_SURFACE_IS_STREAM", "group__tree.html#ggaeddfb7542c9d4915c3613083cd001c60a2c33137ff60631f9c9e8728bcb1d3996", null ],
+      [ "TFLAG_DELETED", "group__tree.html#ggaeddfb7542c9d4915c3613083cd001c60a35cdb148e02bf5d9b23d69a409c0502a", null ],
+      [ "TFLAG_REFERENCE", "group__tree.html#ggaeddfb7542c9d4915c3613083cd001c60ab5c9336f35e5970951366e0e0d6fec5b", null ]
     ] ],
     [ "__t_free", "group__tree.html#ga9ae9ab4b3db34fd0ef209adafec68794", null ],
     [ "__t_free_children", "group__tree.html#ga4fb39ee561fc4b17cfb241330b835951", null ],
@@ -36,8 +38,9 @@ var tree_8h =
     [ "_t_morph", "group__tree.html#gac32c74deeed63ca197b3e3e3beb35a33", null ],
     [ "_t_new_receptor", "group__tree.html#ga7fd137a24b6795e1fc25c50ba91a767f", null ],
     [ "_t_new_root", "group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4", null ],
-    [ "_t_new_scape", "group__tree.html#gaa319e62d901e50041b97ac198fb7f276", null ],
+    [ "_t_new_scape", "group__tree.html#gab0f78fac726577a933574041c95a590d", null ],
     [ "_t_new_str", "group__tree.html#ga87cb5cdb608c0048c5ae7e3249780a8c", null ],
+    [ "_t_new_stream", "group__tree.html#ga519afafbfb5c4a13f01cc10e1f48cb28", null ],
     [ "_t_newp", "group__tree.html#ga48ffc2a6e4aa4856b76fb53b97db87f3", null ],
     [ "_t_newr", "group__tree.html#ga3e2009f5a82889263d560d2c1479606a", null ],
     [ "_t_news", "group__tree.html#ga14080e3aa32b1612dabcd610b062e376", null ],
@@ -55,6 +58,7 @@ var tree_8h =
     [ "_t_size", "group__tree.html#gac97d0dd9bbdeb14978735bac1eb0b25e", null ],
     [ "_t_sprint_path", "group__tree.html#ga0e63c83e6413f47238db7fa20373c526", null ],
     [ "_t_surface", "group__tree.html#gac9278e540a0d63526b60cc0591283a62", null ],
+    [ "_t_swap", "group__tree.html#ga6cccdd5299163ed93045c512d5e1ab9c", null ],
     [ "_t_symbol", "group__tree.html#ga946600fb570f0cc913450905f6189d49", null ],
     [ "_t_unserialize", "group__tree.html#gaf80e70368577f3c49c1651b137899659", null ]
 ];

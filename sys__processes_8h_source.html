@@ -133,36 +133,42 @@ $(document).ready(function(){initNavTree('sys__processes_8h_source.html','');});
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    QUOTE_ID,</div>
 <div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8ea545735a47c85dde41ea9a1ffee415e02">   38</a></span>&#160;    <a class="code" href="sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8ea545735a47c85dde41ea9a1ffee415e02">INTERPOLATE_FROM_MATCH_ID</a>,    </div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    RAISE_ID,</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    READ_STREAM_ID,</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;};</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<a class="code" href="structSemanticID.html">Process</a> NULL_PROCESS;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<a class="code" href="structSemanticID.html">Process</a> NOOP;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<a class="code" href="structSemanticID.html">Process</a> IF;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<a class="code" href="structSemanticID.html">Process</a> ADD_INT;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<a class="code" href="structSemanticID.html">Process</a> SUB_INT;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<a class="code" href="structSemanticID.html">Process</a> MULT_INT;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<a class="code" href="structSemanticID.html">Process</a> DIV_INT;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<a class="code" href="structSemanticID.html">Process</a> MOD_INT;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<a class="code" href="structSemanticID.html">Process</a> EQ_INT;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<a class="code" href="structSemanticID.html">Process</a> LT_INT;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<a class="code" href="structSemanticID.html">Process</a> GT_INT;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<a class="code" href="structSemanticID.html">Process</a> LTE_INT;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<a class="code" href="structSemanticID.html">Process</a> GTE_INT;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<a class="code" href="structSemanticID.html">Process</a> CONCAT_STR;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<a class="code" href="structSemanticID.html">Process</a> RESPOND;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<a class="code" href="structSemanticID.html">Process</a> SEND;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<a class="code" href="structSemanticID.html">Process</a> EXPECT_ACT;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<a class="code" href="structSemanticID.html">Process</a> QUOTE;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<a class="code" href="structSemanticID.html">Process</a> INTERPOLATE_FROM_MATCH;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<a class="code" href="structSemanticID.html">Process</a> RAISE;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<a class="code" href="structSemanticID.html">Process</a> READ_STREAM;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    STREAM_READ_ID,</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    STREAM_WRITE_ID,</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    STREAM_AVAILABLE_ID,</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    REPLICATE_ID</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;};</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<a class="code" href="structSemanticID.html">Process</a> NULL_PROCESS;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<a class="code" href="structSemanticID.html">Process</a> NOOP;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<a class="code" href="structSemanticID.html">Process</a> IF;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<a class="code" href="structSemanticID.html">Process</a> ADD_INT;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<a class="code" href="structSemanticID.html">Process</a> SUB_INT;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<a class="code" href="structSemanticID.html">Process</a> MULT_INT;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<a class="code" href="structSemanticID.html">Process</a> DIV_INT;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<a class="code" href="structSemanticID.html">Process</a> MOD_INT;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<a class="code" href="structSemanticID.html">Process</a> EQ_INT;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<a class="code" href="structSemanticID.html">Process</a> LT_INT;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<a class="code" href="structSemanticID.html">Process</a> GT_INT;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<a class="code" href="structSemanticID.html">Process</a> LTE_INT;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<a class="code" href="structSemanticID.html">Process</a> GTE_INT;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<a class="code" href="structSemanticID.html">Process</a> CONCAT_STR;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<a class="code" href="structSemanticID.html">Process</a> RESPOND;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<a class="code" href="structSemanticID.html">Process</a> SEND;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<a class="code" href="structSemanticID.html">Process</a> EXPECT_ACT;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<a class="code" href="structSemanticID.html">Process</a> QUOTE;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<a class="code" href="structSemanticID.html">Process</a> INTERPOLATE_FROM_MATCH;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<a class="code" href="structSemanticID.html">Process</a> RAISE;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<a class="code" href="structSemanticID.html">Process</a> STREAM_READ;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<a class="code" href="structSemanticID.html">Process</a> STREAM_WRITE;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<a class="code" href="structSemanticID.html">Process</a> STREAM_AVAILABLE;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<a class="code" href="structSemanticID.html">Process</a> REPLICATE;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="sys__processes_8h_html_af56900624e352e8d52f08ee677d48e8ea545735a47c85dde41ea9a1ffee415e02"><div class="ttname"><a href="sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8ea545735a47c85dde41ea9a1ffee415e02">INTERPOLATE_FROM_MATCH_ID</a></div><div class="ttdoc">reduce to replaced values from the match*/ </div><div class="ttdef"><b>Definition:</b> <a href="sys__processes_8h_source.html#l00038">sys_processes.h:38</a></div></div>
 <div class="ttc" id="sys__processes_8h_html_af56900624e352e8d52f08ee677d48e8eaa778775ecfe4f1b5d5732965af60c6de"><div class="ttname"><a href="sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8eaa778775ecfe4f1b5d5732965af60c6de">IF_ID</a></div><div class="ttdoc">reduce to the left or right tree conditionally </div><div class="ttdef"><b>Definition:</b> <a href="sys__processes_8h_source.html#l00022">sys_processes.h:22</a></div></div>
 <div class="ttc" id="sys__processes_8h_html_af56900624e352e8d52f08ee677d48e8e"><div class="ttname"><a href="sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8e">SystemProcessID</a></div><div class="ttdeci">SystemProcessID</div><div class="ttdoc">System defined processes. </div><div class="ttdef"><b>Definition:</b> <a href="sys__processes_8h_source.html#l00019">sys_processes.h:19</a></div></div>
-<div class="ttc" id="structSemanticID_html"><div class="ttname"><a href="structSemanticID.html">SemanticID</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00016">ceptr_types.h:16</a></div></div>
+<div class="ttc" id="structSemanticID_html"><div class="ttname"><a href="structSemanticID.html">SemanticID</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00017">ceptr_types.h:17</a></div></div>
 <div class="ttc" id="sys__processes_8h_html_af56900624e352e8d52f08ee677d48e8ea8c6120c4ab760098de5bef78806ad2fd"><div class="ttname"><a href="sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8ea8c6120c4ab760098de5bef78806ad2fd">RESPOND_ID</a></div><div class="ttdoc">respond to the initiating signal with the what ever the sub-tree reduced to </div><div class="ttdef"><b>Definition:</b> <a href="sys__processes_8h_source.html#l00034">sys_processes.h:34</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -170,7 +176,7 @@ $(document).ready(function(){initNavTree('sys__processes_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="sys__processes_8h.html">sys_processes.h</a></li>
-    <li class="footer">Generated on Tue Jun 23 2015 10:51:49 for ceptr by
+    <li class="footer">Generated on Thu Aug 27 2015 12:15:10 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

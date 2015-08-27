@@ -22,7 +22,10 @@ var sys__processes_8h =
       [ "QUOTE_ID", "sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8ea9a9d4963cb21e1d7af803d292770092e", null ],
       [ "INTERPOLATE_FROM_MATCH_ID", "sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8ea545735a47c85dde41ea9a1ffee415e02", null ],
       [ "RAISE_ID", "sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8ea6fe7c016a5a6a16fb9533b61e5abe539", null ],
-      [ "READ_STREAM_ID", "sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8eab171c525ace377fe601e64aaf25ad787", null ]
+      [ "STREAM_READ_ID", "sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8eae05a758a04613c6b08f198070350ed46", null ],
+      [ "STREAM_WRITE_ID", "sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8eae3842718b70e4cb1d490dd462138f07e", null ],
+      [ "STREAM_AVAILABLE_ID", "sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8ea3e4b53e8620e0399b45fb72eeca65491", null ],
+      [ "REPLICATE_ID", "sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8ea122725075aed9797bffe4ad8373d2882", null ]
     ] ],
     [ "ADD_INT", "sys__processes_8h.html#a9060e4b1b2bdae067db7cea122b73179", null ],
     [ "CONCAT_STR", "sys__processes_8h.html#a0be22488950f4208136a60eafe2993d8", null ],
@@ -41,8 +44,11 @@ var sys__processes_8h =
     [ "NULL_PROCESS", "sys__processes_8h.html#a659145d2ab93a0f49ed8e967c0466433", null ],
     [ "QUOTE", "sys__processes_8h.html#a9c74d7215a79640cd7ef91f4d5bcf0e7", null ],
     [ "RAISE", "sys__processes_8h.html#a1d426c19b2d6512ae7a4e39988802491", null ],
-    [ "READ_STREAM", "sys__processes_8h.html#ad72492b0cd1c8a5ed670f12eef5a2bf8", null ],
+    [ "REPLICATE", "sys__processes_8h.html#a956c5ded73cccb03d39dfcc400876711", null ],
     [ "RESPOND", "sys__processes_8h.html#a0220cf3ab749a41050ab56e0417d610f", null ],
     [ "SEND", "sys__processes_8h.html#a8ad261a6b577282fc2f04c81fb8560d3", null ],
+    [ "STREAM_AVAILABLE", "sys__processes_8h.html#acf089a77b201b066780c0d9283479279", null ],
+    [ "STREAM_READ", "sys__processes_8h.html#a1ce08d9f61201aab8d59959f6763bb20", null ],
+    [ "STREAM_WRITE", "sys__processes_8h.html#ae3c16e5222d94dd2318d32efba6baa8b", null ],
     [ "SUB_INT", "sys__processes_8h.html#a39223b4cec2bcddb39ce685e28866dd7", null ]
 ];

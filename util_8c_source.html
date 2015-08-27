@@ -156,11 +156,11 @@ $(document).ready(function(){initNavTree('util_8c_source.html','');});
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    ofp = fopen(fn, <span class="stringliteral">&quot;w&quot;</span>);</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordflow">if</span> (ofp == NULL) {</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    fprintf(stderr, <span class="stringliteral">&quot;Can&#39;t open output file %s!\n&quot;</span>,fn);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        fprintf(stderr, <span class="stringliteral">&quot;Can&#39;t open output file %s!\n&quot;</span>,fn);</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    }</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    fwrite(data, 1,size, ofp);</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    fclose(ofp);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        fwrite(data, 1,size, ofp);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        fclose(ofp);</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    }</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;}</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
@@ -177,7 +177,7 @@ $(document).ready(function(){initNavTree('util_8c_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="util_8c.html">util.c</a></li>
-    <li class="footer">Generated on Tue Jun 23 2015 10:51:49 for ceptr by
+    <li class="footer">Generated on Thu Aug 27 2015 12:15:10 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

@@ -1,5 +1,7 @@
 var process_8h =
 [
+    [ "ReplicationState", "structReplicationState.html", "structReplicationState" ],
+    [ "ReplicationState", "process_8h.html#ae300beb3c8ffceda9d33d4ff657bb1e3", null ],
     [ "QueueError", "process_8h.html#a0822535a60c22a2ff4e36c5f600a9826", [
       [ "noErr", "process_8h.html#a0822535a60c22a2ff4e36c5f600a9826a29314e147c76ea079f859e0db61a0dfd", null ],
       [ "contextNotFoundErr", "process_8h.html#a0822535a60c22a2ff4e36c5f600a9826abd074a6c47470b56ace2ae2af0c70474", null ]
@@ -12,6 +14,7 @@ var process_8h =
       [ "Eval", "process_8h.html#aafd8125ddd0cd2cb2675dea09aacb099a8077d50193e2ad0cb0eced2b39535402", null ],
       [ "Block", "process_8h.html#aafd8125ddd0cd2cb2675dea09aacb099aa00f801460e81f86eab56d86fe627551", null ],
       [ "Send", "process_8h.html#aafd8125ddd0cd2cb2675dea09aacb099afc4acfd87c9c7965d3c7437519dabcac", null ],
+      [ "SendAsync", "process_8h.html#aafd8125ddd0cd2cb2675dea09aacb099ac9555ccf1c97a3ccf6b90d5745d349b3", null ],
       [ "Done", "process_8h.html#aafd8125ddd0cd2cb2675dea09aacb099aa7929b884d7db9093d6ed453feedf2a2", null ],
       [ "noReductionErr", "process_8h.html#aafd8125ddd0cd2cb2675dea09aacb099a5e14542d929b99e4ac2079c47cc35f5d", null ],
       [ "raiseReductionErr", "process_8h.html#aafd8125ddd0cd2cb2675dea09aacb099a1b4181289d3311d0003cb9fb4d76f763", null ],
@@ -21,8 +24,19 @@ var process_8h =
       [ "notProcessReductionError", "process_8h.html#aafd8125ddd0cd2cb2675dea09aacb099a696cc1078de69ffe03d3ef68c6971a84", null ],
       [ "divideByZeroReductionErr", "process_8h.html#aafd8125ddd0cd2cb2675dea09aacb099a19c26d4f8a34387ce5e56150e153c96a", null ],
       [ "notInSignalContextReductionError", "process_8h.html#aafd8125ddd0cd2cb2675dea09aacb099a9c94dfac4b5bc217af2d01b7ee062d4f", null ],
-      [ "incompatibleTypeReductionErr", "process_8h.html#aafd8125ddd0cd2cb2675dea09aacb099a453a6447e521cd5caf425d6ed9cbaa95", null ]
+      [ "incompatibleTypeReductionErr", "process_8h.html#aafd8125ddd0cd2cb2675dea09aacb099a453a6447e521cd5caf425d6ed9cbaa95", null ],
+      [ "unixErrnoReductionErr", "process_8h.html#aafd8125ddd0cd2cb2675dea09aacb099a9f86d2a69eeedfc041eadaa4a34113d0", null ]
     ] ],
+    [ "ReplicationPhase", "process_8h.html#a84a48878bd9180c85c2f2dcc9f4087de", [
+      [ "EvalCondition", "process_8h.html#a84a48878bd9180c85c2f2dcc9f4087dea03e7020f0cb871e968911005aeb2de80", null ],
+      [ "EvalBody", "process_8h.html#a84a48878bd9180c85c2f2dcc9f4087dea99b37816fb44028e53b6117eb3f24523", null ]
+    ] ],
+    [ "ReplicationType", "process_8h.html#a73b86c9f87d6f9481f56bcac78f38793", [
+      [ "ReplicateTypeCount", "process_8h.html#a73b86c9f87d6f9481f56bcac78f38793ab87ca22c5afe104171970956b69afd29", null ],
+      [ "ReplicateTypeUnknown", "process_8h.html#a73b86c9f87d6f9481f56bcac78f38793ac2e80ffa646d6f381666faf0e186746d", null ],
+      [ "ReplicateTypeCond", "process_8h.html#a73b86c9f87d6f9481f56bcac78f38793a4b739ef54540a4fb677e754b8cec3dbc", null ]
+    ] ],
+    [ "__p_build_run_tree", "process_8h.html#a1d2c7b7c331d6ac0e45495de62fb1f13", null ],
     [ "__p_make_context", "process_8h.html#a10769075e2a74fd8825e544c6f69ea59", null ],
     [ "__p_make_run_tree", "process_8h.html#ae3613e9e24d3be687d8fc10d30994445", null ],
     [ "__p_reduce_sys_proc", "process_8h.html#acebcbe8d4caa12144a82edc18aa65492", null ],
@@ -30,7 +44,7 @@ var process_8h =
     [ "_p_enqueue", "process_8h.html#a39ccc64f181f96a92744969f3daca886", null ],
     [ "_p_freeq", "process_8h.html#aea59e125f10441efe75f6047ee7b35e1", null ],
     [ "_p_make_run_tree", "process_8h.html#af2cf2d4a1356f6bd1f433286bfdeebd0", null ],
-    [ "_p_newq", "process_8h.html#a4653173a5ed2398c95dcc1c5d08c7346", null ],
+    [ "_p_newq", "process_8h.html#aa97db3dcdc186ddfb237b745a5e460f6", null ],
     [ "_p_reduce", "process_8h.html#ac2a3fbaf66daab11709b0f2fae5a7290", null ],
     [ "_p_reduceq", "process_8h.html#a64e8965291c67057b06f273db19a465d", null ],
     [ "_p_reduceq_thread", "process_8h.html#add05ec8f9d463726351fef1ffaa938fd", null ],

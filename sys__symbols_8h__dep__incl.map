@@ -1,39 +1,40 @@
 <map id="src/sys_symbols.h" name="src/sys_symbols.h">
-<area shape="rect" id="node2" href="$tree_8h.html" title="semantic trees header file " alt="" coords="2280,80,2357,107"/>
-<area shape="rect" id="node38" href="$mtree_8h.html" title="semantic tree matrix header file `` " alt="" coords="1237,155,1325,181"/>
-<area shape="rect" id="node3" href="$ceptr_8h_source.html" title="src/ceptr.h" alt="" coords="715,229,799,256"/>
-<area shape="rect" id="node21" href="$de_8h.html" title="header file for data engine " alt="" coords="2079,379,2148,405"/>
-<area shape="rect" id="node24" href="$vmhost_8c.html" title="virtual machine host receptor implementation " alt="" coords="2380,453,2479,480"/>
-<area shape="rect" id="node25" href="$receptor_8h.html" title="receptor implementation header file " alt="" coords="1470,229,1573,256"/>
-<area shape="rect" id="node27" href="$tree_8c.html" title="semantic tree pointer implementation " alt="" coords="2329,304,2407,331"/>
-<area shape="rect" id="node28" href="$def_8h.html" title="header file for symbol and structure definition functions " alt="" coords="2041,155,2114,181"/>
-<area shape="rect" id="node29" href="$def_8c.html" title="implementation file for symbol and structure definition functions " alt="" coords="2762,304,2835,331"/>
-<area shape="rect" id="node32" href="$sys__defs_8c.html" title="definition of system semantic elements for bootstrapping " alt="" coords="2446,229,2554,256"/>
-<area shape="rect" id="node33" href="$process_8h.html" title="processing header files " alt="" coords="1349,155,1451,181"/>
-<area shape="rect" id="node34" href="$scape_8h.html" title="scape header files " alt="" coords="1597,155,1688,181"/>
-<area shape="rect" id="node36" href="$semtrex_8h.html" title="Semantic tree regular expression header file. " alt="" coords="2267,229,2370,256"/>
-<area shape="rect" id="node37" href="$label_8c.html" title="Implementation of label tabels for semantic reference to parts of semantic trees. ..." alt="" coords="2831,155,2913,181"/>
-<area shape="rect" id="node4" href="$spec__utils_8h.html" title="spec/spec_utils.h" alt="" coords="846,304,970,331"/>
-<area shape="rect" id="node6" href="$http__example_8h.html" title="spec/http_example.h" alt="" coords="1203,379,1346,405"/>
-<area shape="rect" id="node7" href="$tree__spec_8h.html" title="spec/tree_spec.h" alt="" coords="797,453,920,480"/>
-<area shape="rect" id="node8" href="$ceptr__specs_8c.html" title="implements a main() entry point for running all the tests " alt="" coords="1044,528,1180,555"/>
-<area shape="rect" id="node9" href="$mtree__spec_8h.html" title="spec/mtree_spec.h" alt="" coords="1045,453,1179,480"/>
-<area shape="rect" id="node10" href="$receptor__spec_8h.html" title="spec/receptor_spec.h" alt="" coords="1564,453,1711,480"/>
-<area shape="rect" id="node11" href="$vmhost__spec_8h.html" title="spec/vmhost_spec.h" alt="" coords="1203,453,1346,480"/>
-<area shape="rect" id="node13" href="$test__framework_8h.html" title="implements the testing harness " alt="" coords="211,379,365,405"/>
-<area shape="rect" id="node14" href="$def__spec_8h.html" title="spec/def_spec.h" alt="" coords="2187,304,2306,331"/>
-<area shape="rect" id="node15" href="$label__spec_8h.html" title="spec/label_spec.h" alt="" coords="390,379,517,405"/>
-<area shape="rect" id="node16" href="$semtrex__spec_8h.html" title="spec/semtrex_spec.h" alt="" coords="1307,304,1453,331"/>
-<area shape="rect" id="node17" href="$process__spec_8h.html" title="spec/process_spec.h" alt="" coords="5,304,152,331"/>
-<area shape="rect" id="node18" href="$scape__spec_8h.html" title="spec/scape_spec.h" alt="" coords="1046,304,1181,331"/>
-<area shape="rect" id="node19" href="$de__spec_8h.html" title="spec/de_spec.h" alt="" coords="1421,453,1536,480"/>
-<area shape="rect" id="node20" href="$profile__example_8h.html" title="spec/profile_example.h" alt="" coords="1782,304,1938,331"/>
-<area shape="rect" id="node5" href="$process_8c.html" title="implementation of ceptr processing: instructions and run tree reduction " alt="" coords="1504,379,1605,405"/>
-<area shape="rect" id="node12" href="$spec__utils_8c.html" title="spec/spec_utils.c" alt="" coords="846,379,970,405"/>
-<area shape="rect" id="node22" href="$de_8c.html" title="implementation file for data engine " alt="" coords="2104,453,2173,480"/>
-<area shape="rect" id="node23" href="$receptor_8c.html" title="receptor implementation " alt="" coords="1963,453,2066,480"/>
-<area shape="rect" id="node26" href="$vmhost_8h.html" title="vmhost implementation header file " alt="" coords="2064,304,2163,331"/>
-<area shape="rect" id="node30" href="$mtree_8c.html" title="semantic tree matrix implementation " alt="" coords="1256,229,1344,256"/>
-<area shape="rect" id="node31" href="$semtrex_8c.html" title="semtrex implementation " alt="" coords="2431,304,2534,331"/>
-<area shape="rect" id="node35" href="$scape_8c.html" title="implementation of scapes " alt="" coords="1597,229,1688,256"/>
+<area shape="rect" id="node2" href="$tree_8h.html" title="semantic trees header file " alt="" coords="1316,80,1393,107"/>
+<area shape="rect" id="node39" href="$mtree_8h.html" title="semantic tree matrix header file `` " alt="" coords="1693,155,1781,181"/>
+<area shape="rect" id="node3" href="$accumulator_8h.html" title="header file for the accumulator " alt="" coords="1969,379,2095,405"/>
+<area shape="rect" id="node6" href="$vmhost_8c.html" title="virtual machine host receptor implementation " alt="" coords="1816,453,1915,480"/>
+<area shape="rect" id="node10" href="$receptor_8h.html" title="receptor implementation header file " alt="" coords="482,229,585,256"/>
+<area shape="rect" id="node14" href="$tree_8c.html" title="semantic tree pointer implementation " alt="" coords="5,304,83,331"/>
+<area shape="rect" id="node21" href="$def_8h.html" title="header file for symbol and structure definition functions " alt="" coords="855,155,929,181"/>
+<area shape="rect" id="node22" href="$def_8c.html" title="implementation file for symbol and structure definition functions " alt="" coords="1031,304,1105,331"/>
+<area shape="rect" id="node25" href="$sys__defs_8c.html" title="definition of system semantic elements for bootstrapping " alt="" coords="1057,229,1165,256"/>
+<area shape="rect" id="node27" href="$process_8h.html" title="processing header files " alt="" coords="1443,155,1544,181"/>
+<area shape="rect" id="node29" href="$scape_8h.html" title="scape header files " alt="" coords="215,155,305,181"/>
+<area shape="rect" id="node31" href="$semtrex_8h.html" title="Semantic tree regular expression header file. " alt="" coords="1353,229,1455,256"/>
+<area shape="rect" id="node32" href="$ceptr_8h_source.html" title="src/ceptr.h" alt="" coords="1730,229,1814,256"/>
+<area shape="rect" id="node38" href="$label_8c.html" title="Implementation of label tabels for semantic reference to parts of semantic trees. ..." alt="" coords="1568,155,1651,181"/>
+<area shape="rect" id="node4" href="$accumulator_8c.html" title="implementation file for accumulator " alt="" coords="2134,453,2261,480"/>
+<area shape="rect" id="node5" href="$receptor_8c.html" title="receptor implementation " alt="" coords="1689,453,1791,480"/>
+<area shape="rect" id="node7" href="$accumulator__spec_8h_source.html" title="spec/accumulator_spec.h" alt="" coords="1939,453,2109,480"/>
+<area shape="rect" id="node9" href="$receptor__spec_8h.html" title="spec/receptor_spec.h" alt="" coords="1015,453,1161,480"/>
+<area shape="rect" id="node8" href="$ceptr__specs_8c.html" title="implements a main() entry point for running all the tests " alt="" coords="1740,528,1876,555"/>
+<area shape="rect" id="node11" href="$vmhost_8h.html" title="vmhost implementation header file " alt="" coords="1877,304,1976,331"/>
+<area shape="rect" id="node13" href="$process_8c.html" title="implementation of ceptr processing: instructions and run tree reduction " alt="" coords="1339,379,1440,405"/>
+<area shape="rect" id="node15" href="$tree__spec_8h.html" title="spec/tree_spec.h" alt="" coords="1192,453,1315,480"/>
+<area shape="rect" id="node16" href="$http__example_8h.html" title="spec/http_example.h" alt="" coords="1121,379,1263,405"/>
+<area shape="rect" id="node17" href="$mtree__spec_8h.html" title="spec/mtree_spec.h" alt="" coords="1353,453,1487,480"/>
+<area shape="rect" id="node18" href="$semtrex__spec_8h.html" title="spec/semtrex_spec.h" alt="" coords="2051,304,2197,331"/>
+<area shape="rect" id="node19" href="$scape__spec_8h.html" title="spec/scape_spec.h" alt="" coords="107,304,242,331"/>
+<area shape="rect" id="node20" href="$profile__example_8h.html" title="spec/profile_example.h" alt="" coords="622,304,778,331"/>
+<area shape="rect" id="node12" href="$vmhost__spec_8h.html" title="spec/vmhost_spec.h" alt="" coords="1522,453,1665,480"/>
+<area shape="rect" id="node23" href="$mtree_8c.html" title="semantic tree matrix implementation " alt="" coords="1240,229,1328,256"/>
+<area shape="rect" id="node24" href="$semtrex_8c.html" title="semtrex implementation " alt="" coords="905,304,1007,331"/>
+<area shape="rect" id="node26" href="$def__spec_8h.html" title="spec/def_spec.h" alt="" coords="1129,304,1247,331"/>
+<area shape="rect" id="node28" href="$process__spec_8h.html" title="spec/process_spec.h" alt="" coords="2576,304,2723,331"/>
+<area shape="rect" id="node30" href="$scape_8c.html" title="implementation of scapes " alt="" coords="81,229,172,256"/>
+<area shape="rect" id="node33" href="$spec__utils_8h.html" title="spec/spec_utils.h" alt="" coords="1526,304,1650,331"/>
+<area shape="rect" id="node35" href="$test__framework_8h.html" title="implements the testing harness " alt="" coords="2741,379,2896,405"/>
+<area shape="rect" id="node36" href="$stream__spec_8h.html" title="spec/stream_spec.h" alt="" coords="2273,379,2413,405"/>
+<area shape="rect" id="node37" href="$label__spec_8h.html" title="spec/label_spec.h" alt="" coords="2489,379,2615,405"/>
+<area shape="rect" id="node34" href="$spec__utils_8c.html" title="spec/spec_utils.c" alt="" coords="1465,379,1589,405"/>
 </map>

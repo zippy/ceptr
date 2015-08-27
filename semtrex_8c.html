@@ -113,10 +113,12 @@ $(document).ready(function(){initNavTree('semtrex_8c.html','');});
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="semtrex_8h_source.html">semtrex.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="def_8h_source.html">def.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="debug_8h_source.html">debug.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for semtrex.c:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="semtrex_8c__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="semtrex_8c__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 </div>
 <p><a href="semtrex_8c_source.html">Go to the source code of this file.</a></p>
@@ -134,10 +136,10 @@ Data Structures</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>DEBUG_MATCH</b></td></tr>
 <tr class="separator:a66a4121e62d28a147c0e78f4e16fd492"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a959463d1cd705c41ed1128f0ca858e05"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a959463d1cd705c41ed1128f0ca858e05"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MATCH_DEBUGG</b>(s, x)&#160;&#160;&#160;if(G_debug_match){printf(&quot;IN:&quot; #s &quot; for %s\n&quot;,x);printf(&quot;  cursor:%s\n&quot;,_t2s(G_d,t));}</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MATCH_DEBUGG</b>(s, x)&#160;&#160;&#160;debug(D_STX_MATCH,&quot;IN:&quot; #s &quot; for %s\n&quot;,x);debug(D_STX_MATCH,&quot;  cursor:%s\n&quot;,_t2s(G_d,t));</td></tr>
 <tr class="separator:a959463d1cd705c41ed1128f0ca858e05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:affcc9333f8972aaf7a059cf255763568"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="affcc9333f8972aaf7a059cf255763568"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MATCH_DEBUG</b>(s)&#160;&#160;&#160;if(G_debug_match){puts(&quot;IN:&quot; #s &quot;&quot;);printf(&quot;  cursor:%s\n&quot;,!t ? &quot;NULL&quot; : _t2s(G_d,t));}</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MATCH_DEBUG</b>(s)&#160;&#160;&#160;debug(D_STX_MATCH,&quot;IN:&quot; #s &quot;\n&quot;);debug(D_STX_MATCH,&quot;  cursor:%s\n&quot;,!t ? &quot;NULL&quot; : _t2s(G_d,t));</td></tr>
 <tr class="separator:affcc9333f8972aaf7a059cf255763568"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb508ea8227673f419e9fe3a86c30d8e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abb508ea8227673f419e9fe3a86c30d8e"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>FAIL</b>&#160;&#160;&#160;{s=0;break;}</td></tr>
@@ -174,9 +176,6 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>G_group_id</b></td></t
 <tr class="memitem:a11e99630a9b6ddf002ac9a725bba7ebd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a11e99630a9b6ddf002ac9a725bba7ebd"></a>
 <a class="el" href="structDefs.html">Defs</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>G_d</b> = 0</td></tr>
 <tr class="separator:a11e99630a9b6ddf002ac9a725bba7ebd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af0272e535001c2703c79a5d67a1a96ea"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af0272e535001c2703c79a5d67a1a96ea"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>G_debug_match</b> = 0</td></tr>
-<tr class="separator:af0272e535001c2703c79a5d67a1a96ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82573c9fc996af7623605123964ec479"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a82573c9fc996af7623605123964ec479"></a>
 <a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>G_ts</b></td></tr>
 <tr class="separator:a82573c9fc996af7623605123964ec479"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -312,8 +311,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_stxl</b> (<a class="
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">{                                       \</div>
-<div class="line">        if(G_debug_match)puts(&quot;pushing&quot;);                               \</div>
-<div class="line">        if((depth+1)&gt;=MAX_BRANCH_DEPTH) {raise_error0(<span class="stringliteral">&quot;MAX branch depth exceeded&quot;</span>);} \</div>
+<div class="line">    debug(D_STX_MATCH,<span class="stringliteral">&quot;pushing\n&quot;</span>);                                      \</div>
+<div class="line">        if((depth+1)&gt;=MAX_BRANCH_DEPTH) {raise_error(<span class="stringliteral">&quot;MAX branch depth exceeded&quot;</span>);} \</div>
 <div class="line">        stack[depth].s = state;                                         \</div>
 <div class="line">        stack[depth].cursor = <a class="code" href="structVMHost.html#a53bffdb41bcc4096902aabf8ab029637">c</a>;                                        \</div>
 <div class="line">        stack[depth].walk = w;                                          \</div>
@@ -326,12 +325,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_stxl</b> (<a class="
 <div class="line">        }                                                               \</div>
 <div class="line">        depth++;                                                        \</div>
 <div class="line">}</div>
-<div class="ttc" id="group__tree_html_gae4c9b743462f0a3808c9f02c3bf33da8"><div class="ttname"><a href="group__tree.html#gae4c9b743462f0a3808c9f02c3bf33da8">_t_get_path</a></div><div class="ttdeci">int * _t_get_path(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00596">tree.c:596</a></div></div>
-<div class="ttc" id="group__tree_html_ga7535eb2963c6cf5fc78cb14287581f92"><div class="ttname"><a href="group__tree.html#ga7535eb2963c6cf5fc78cb14287581f92">_t_clone</a></div><div class="ttdeci">T * _t_clone(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00452">tree.c:452</a></div></div>
-<div class="ttc" id="structVMHost_html_a53bffdb41bcc4096902aabf8ab029637"><div class="ttname"><a href="structVMHost.html#a53bffdb41bcc4096902aabf8ab029637">VMHost::c</a></div><div class="ttdeci">Receptor * c</div><div class="ttdoc">Receptor data for the vm host&#39;s local version of the compository. </div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8h_source.html#l00024">vmhost.h:24</a></div></div>
-<div class="ttc" id="structVMHost_html_a218d2e91e129dee7c71e1b06ff533a6e"><div class="ttname"><a href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">VMHost::r</a></div><div class="ttdeci">Receptor * r</div><div class="ttdoc">Receptor data for this vm host. </div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8h_source.html#l00023">vmhost.h:23</a></div></div>
+<div class="ttc" id="group__tree_html_gae4c9b743462f0a3808c9f02c3bf33da8"><div class="ttname"><a href="group__tree.html#gae4c9b743462f0a3808c9f02c3bf33da8">_t_get_path</a></div><div class="ttdeci">int * _t_get_path(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00657">tree.c:657</a></div></div>
+<div class="ttc" id="group__tree_html_ga7535eb2963c6cf5fc78cb14287581f92"><div class="ttname"><a href="group__tree.html#ga7535eb2963c6cf5fc78cb14287581f92">_t_clone</a></div><div class="ttdeci">T * _t_clone(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00513">tree.c:513</a></div></div>
+<div class="ttc" id="structVMHost_html_a53bffdb41bcc4096902aabf8ab029637"><div class="ttname"><a href="structVMHost.html#a53bffdb41bcc4096902aabf8ab029637">VMHost::c</a></div><div class="ttdeci">Receptor * c</div><div class="ttdoc">Receptor data for the vm host&#39;s local version of the compository. </div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8h_source.html#l00028">vmhost.h:28</a></div></div>
+<div class="ttc" id="structVMHost_html_a218d2e91e129dee7c71e1b06ff533a6e"><div class="ttname"><a href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">VMHost::r</a></div><div class="ttdeci">Receptor * r</div><div class="ttdoc">Receptor data for this vm host. </div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8h_source.html#l00027">vmhost.h:27</a></div></div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00420">420</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00418">418</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -347,7 +346,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_stxl</b> (<a class="
 </div><div class="memdoc">
 <p>Since the out pointers in the list are always uninitialized, we use the pointers themselves as storage for the Ptrlists. </p>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00027">27</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00028">28</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -377,7 +376,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_stxl</b> (<a class="
 </div><div class="memdoc">
 <p>walks through the FSA clearing pointers that create loops </p>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00297">297</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00298">298</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -396,7 +395,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_stxl</b> (<a class="
 </div><div class="memdoc">
 <p>walk through FSA freeing the states, assumes __stx_freeFA has been called first so as not to go into loops! </p>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00310">310</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00311">311</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -443,7 +442,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_stxl</b> (<a class="
 </div><div class="memdoc">
 <p>Given a Semtrex tree, build a partial FSA (returned via in as a pointer to the starting state, a list of output states, and a count of the total number of states created). </p>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00096">96</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00097">97</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -479,7 +478,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_stxl</b> (<a class="
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>1 or 0 </dd></dl>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00350">350</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00348">348</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -515,7 +514,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_stxl</b> (<a class="
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>1 or 0 </dd></dl>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00366">366</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00364">364</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -559,7 +558,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_stxl</b> (<a class="
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>1 or 0 if matched or not </dd></dl>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00493">493</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00491">491</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -594,7 +593,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_stxl</b> (<a class="
 </div><div class="memdoc">
 <p>utility routine to initialize a state struct </p>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00082">82</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00083">83</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -623,7 +622,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_stxl</b> (<a class="
 </div><div class="memdoc">
 <p>Join the two lists l1 and l2, returning the combination. </p>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00066">66</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00067">67</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -642,7 +641,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_stxl</b> (<a class="
 </div><div class="memdoc">
 <p>Create singleton list containing just outp. </p>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00038">38</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00039">39</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -677,7 +676,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_stxl</b> (<a class="
 </div><div class="memdoc">
 <p>Patch the list of states at out to point to start. </p>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00051">51</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00052">52</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -687,7 +686,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_stxl</b> (<a class="
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="semtrex_8c.html">semtrex.c</a></li>
-    <li class="footer">Generated on Tue Jun 23 2015 10:51:49 for ceptr by
+    <li class="footer">Generated on Thu Aug 27 2015 12:15:10 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

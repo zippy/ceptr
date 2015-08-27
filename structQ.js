@@ -5,5 +5,6 @@ var structQ =
     [ "completed", "structQ.html#a7ee8f0b2d1cfefac4a7e3e8704bf6069", null ],
     [ "contexts_count", "structQ.html#a6708b052b51ce11613e298bf11a26328", null ],
     [ "defs", "structQ.html#a31f7ee672b5de1fcb77cef7782f9df88", null ],
+    [ "mutex", "structQ.html#abfe3f658fe8f494e2f598bc6b4a00166", null ],
     [ "pending_signals", "structQ.html#a36bba343a63fbe7649b850da2a11b9bc", null ]
 ];

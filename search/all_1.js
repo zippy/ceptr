@@ -1,6 +1,9 @@
 var searchData=
 [
   ['a',['A',['../structA.html',1,'']]],
+  ['accumulator',['Accumulator',['../group__accumulator.html',1,'']]],
+  ['accumulator_2ec',['accumulator.c',['../accumulator_8c.html',1,'']]],
+  ['accumulator_2eh',['accumulator.h',['../accumulator_8h.html',1,'']]],
   ['action_5fid',['ACTION_ID',['../sys__symbols_8h.html#ae02415b3ffc3dd832ab0ae0b9923fe57a7865540da043e76605122c4d861399ab',1,'sys_symbols.h']]],
   ['active',['active',['../structQ.html#a986c007532c25e847896a206182ed6e9',1,'Q']]],
   ['active_5freceptors',['active_receptors',['../structVMHost.html#aa7b4b8b391039f62980e8d52d75df7eb',1,'VMHost']]],

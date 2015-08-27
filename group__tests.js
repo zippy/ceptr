@@ -1,7 +1,6 @@
 var group__tests =
 [
     [ "ceptr_specs.c", "ceptr__specs_8c.html", null ],
-    [ "de_spec.h", "de__spec_8h.html", null ],
     [ "def_spec.h", "def__spec_8h.html", null ],
     [ "http_example.h", "http__example_8h.html", null ],
     [ "label_spec.h", "label__spec_8h.html", null ],
@@ -13,6 +12,7 @@ var group__tests =
     [ "semtrex_spec.h", "semtrex__spec_8h.html", null ],
     [ "spec_utils.c", "spec__utils_8c.html", null ],
     [ "spec_utils.h", "spec__utils_8h.html", null ],
+    [ "stream_spec.h", "stream__spec_8h.html", null ],
     [ "test_framework.h", "test__framework_8h.html", null ],
     [ "tree_spec.h", "tree__spec_8h.html", null ],
     [ "vmhost_spec.h", "vmhost__spec_8h.html", null ]

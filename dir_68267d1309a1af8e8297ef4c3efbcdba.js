@@ -1,10 +1,12 @@
 var dir_68267d1309a1af8e8297ef4c3efbcdba =
 [
+    [ "accumulator.c", "accumulator_8c.html", "accumulator_8c" ],
+    [ "accumulator.h", "accumulator_8h.html", "accumulator_8h" ],
     [ "ceptr.h", "ceptr_8h_source.html", null ],
     [ "ceptr_error.h", "ceptr__error_8h_source.html", null ],
     [ "ceptr_types.h", "ceptr__types_8h_source.html", null ],
-    [ "de.c", "de_8c.html", "de_8c" ],
-    [ "de.h", "de_8h.html", "de_8h" ],
+    [ "debug.c", "debug_8c.html", "debug_8c" ],
+    [ "debug.h", "debug_8h.html", "debug_8h" ],
     [ "def.c", "def_8c.html", "def_8c" ],
     [ "def.h", "def_8h.html", "def_8h" ],
     [ "hashfn.c", "hashfn_8c_source.html", null ],
@@ -21,6 +23,8 @@ var dir_68267d1309a1af8e8297ef4c3efbcdba =
     [ "scape.h", "scape_8h.html", "scape_8h" ],
     [ "semtrex.c", "semtrex_8c.html", "semtrex_8c" ],
     [ "semtrex.h", "semtrex_8h.html", "semtrex_8h" ],
+    [ "stream.c", "stream_8c.html", "stream_8c" ],
+    [ "stream.h", "stream_8h.html", "stream_8h" ],
     [ "sys_defs.c", "sys__defs_8c.html", "sys__defs_8c" ],
     [ "sys_processes.h", "sys__processes_8h.html", "sys__processes_8h" ],
     [ "sys_structures.h", "sys__structures_8h.html", "sys__structures_8h" ],

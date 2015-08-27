@@ -120,12 +120,14 @@ $(document).ready(function(){initNavTree('semtrex_8h.html','');});
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for semtrex.h:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="semtrex_8h__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="semtrex_8h__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="semtrex_8h__dep__incl.svg" width="100%" height="496"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="semtrex_8h__dep__incl.svg" width="100%" height="496"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 </div>
 <p><a href="semtrex_8h_source.html">Go to the source code of this file.</a></p>
@@ -161,10 +163,6 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#gac1b578cc9fc2f835ad12855698fe4cf2">_sln</a>(t, s)&#160;&#160;&#160;<a class="el" href="group__semtrex.html#ga0eb6f4bfe908f6e8a680c56e8468b523">__sl</a>(t,1,1,s)</td></tr>
 <tr class="memdesc:gac1b578cc9fc2f835ad12855698fe4cf2"><td class="mdescLeft">&#160;</td><td class="mdescRight">macro to add a single symbol literal not to semtrex tree <br /></td></tr>
 <tr class="separator:gac1b578cc9fc2f835ad12855698fe4cf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8785a1bb99b5bb1f749bd37a317594e4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga8785a1bb99b5bb1f749bd37a317594e4"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga8785a1bb99b5bb1f749bd37a317594e4">DT</a>(l, t)&#160;&#160;&#160;{puts(&quot;\n&quot; #l &quot;:&quot;);puts(<a class="el" href="group__def.html#gaa7033f5f1b8553022a5a26b35b4056ac">__t2s</a>(G_d,t,INDENT));}</td></tr>
-<tr class="memdesc:ga8785a1bb99b5bb1f749bd37a317594e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">debugging macro for quickly dumping out a tree <br /></td></tr>
-<tr class="separator:ga8785a1bb99b5bb1f749bd37a317594e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga23a719903c25f5387274002776ae5fa1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga23a719903c25f5387274002776ae5fa1"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga23a719903c25f5387274002776ae5fa1">DS</a>(l, t)&#160;&#160;&#160;{<a class="el" href="structDefs.html">Defs</a> _d={0,0,0,0};<a class="el" href="structDefs.html">Defs</a> *d = G_d?G_d:&amp;_d;char buf[1000];puts(&quot;\n&quot; #l &quot;:&quot;);<a class="el" href="group__semtrex.html#ga614de2fa253b75fc34b41421a866ca62">_dump_semtrex</a>(d,t,buf);puts(buf);}</td></tr>
 <tr class="memdesc:ga23a719903c25f5387274002776ae5fa1"><td class="mdescLeft">&#160;</td><td class="mdescRight">debugging macro for quickly dumping out a semtrex text string <br /></td></tr>
@@ -260,9 +258,6 @@ Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:gaf0272e535001c2703c79a5d67a1a96ea"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaf0272e535001c2703c79a5d67a1a96ea"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>G_debug_match</b></td></tr>
-<tr class="separator:gaf0272e535001c2703c79a5d67a1a96ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga11e99630a9b6ddf002ac9a725bba7ebd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga11e99630a9b6ddf002ac9a725bba7ebd"></a>
 <a class="el" href="structDefs.html">Defs</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>G_d</b></td></tr>
 <tr class="separator:ga11e99630a9b6ddf002ac9a725bba7ebd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -284,7 +279,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>G_debug_match</b></td>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="semtrex_8h.html">semtrex.h</a></li>
-    <li class="footer">Generated on Tue Jun 23 2015 10:51:49 for ceptr by
+    <li class="footer">Generated on Thu Aug 27 2015 12:15:10 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

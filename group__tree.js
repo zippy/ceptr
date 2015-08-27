@@ -26,8 +26,9 @@ var group__tree =
     [ "_t_morph", "group__tree.html#gac32c74deeed63ca197b3e3e3beb35a33", null ],
     [ "_t_new_receptor", "group__tree.html#ga7fd137a24b6795e1fc25c50ba91a767f", null ],
     [ "_t_new_root", "group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4", null ],
-    [ "_t_new_scape", "group__tree.html#gaa319e62d901e50041b97ac198fb7f276", null ],
+    [ "_t_new_scape", "group__tree.html#gab0f78fac726577a933574041c95a590d", null ],
     [ "_t_new_str", "group__tree.html#ga87cb5cdb608c0048c5ae7e3249780a8c", null ],
+    [ "_t_new_stream", "group__tree.html#ga519afafbfb5c4a13f01cc10e1f48cb28", null ],
     [ "_t_newp", "group__tree.html#ga48ffc2a6e4aa4856b76fb53b97db87f3", null ],
     [ "_t_newr", "group__tree.html#ga3e2009f5a82889263d560d2c1479606a", null ],
     [ "_t_news", "group__tree.html#ga14080e3aa32b1612dabcd610b062e376", null ],
@@ -41,5 +42,6 @@ var group__tree =
     [ "_t_size", "group__tree.html#gac97d0dd9bbdeb14978735bac1eb0b25e", null ],
     [ "_t_sprint_path", "group__tree.html#ga0e63c83e6413f47238db7fa20373c526", null ],
     [ "_t_surface", "group__tree.html#gac9278e540a0d63526b60cc0591283a62", null ],
+    [ "_t_swap", "group__tree.html#ga6cccdd5299163ed93045c512d5e1ab9c", null ],
     [ "_t_symbol", "group__tree.html#ga946600fb570f0cc913450905f6189d49", null ]
 ];

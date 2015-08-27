@@ -111,7 +111,7 @@ $(document).ready(function(){initNavTree('vmhost_8c.html','');});
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="vmhost_8h_source.html">vmhost.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="tree_8h_source.html">tree.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="de_8h_source.html">de.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="accumulator_8h_source.html">accumulator.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for vmhost.c:</div>
 <div class="dyncontent">
@@ -144,8 +144,27 @@ Functions</h2></td></tr>
 <tr class="separator:ga6e1f1cd1889dd7f1a8601c626f2dba1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga0d188e8b2a654b2e01e12c57017184cb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vmhost.html#ga0d188e8b2a654b2e01e12c57017184cb">_v_send_signals</a> (<a class="el" href="structVMHost.html">VMHost</a> *v, <a class="el" href="structT.html">T</a> *signals)</td></tr>
 <tr class="separator:ga0d188e8b2a654b2e01e12c57017184cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4520cf3fc8e5cfacaf641f07d0e42dbd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vmhost.html#ga4520cf3fc8e5cfacaf641f07d0e42dbd">__v_deliver_signals</a> (<a class="el" href="structVMHost.html">VMHost</a> *v)</td></tr>
-<tr class="separator:ga4520cf3fc8e5cfacaf641f07d0e42dbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga035a2a36b32cc37ae7022ccee88d1aaf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vmhost.html#ga035a2a36b32cc37ae7022ccee88d1aaf">_v_deliver_signals</a> (<a class="el" href="structVMHost.html">VMHost</a> *v)</td></tr>
+<tr class="separator:ga035a2a36b32cc37ae7022ccee88d1aaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga861469ce8640d16306fb6bdbb6e43f54"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga861469ce8640d16306fb6bdbb6e43f54"></a>
+<a class="el" href="structXaddr.html">Xaddr</a>&#160;</td><td class="memItemRight" valign="bottom"><b>__v_get_receptor_xaddr</b> (<a class="el" href="structinstances__elem.html">Instances</a> *instances, <a class="el" href="structReceptor.html">Receptor</a> *r)</td></tr>
+<tr class="separator:ga861469ce8640d16306fb6bdbb6e43f54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1b76d85e3e8c9c215d9ad0ea7fe113cc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga1b76d85e3e8c9c215d9ad0ea7fe113cc"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>__v_deliver_signals</b> (<a class="el" href="structReceptor.html">Receptor</a> *self, <a class="el" href="structT.html">T</a> *signals, <a class="el" href="structinstances__elem.html">Instances</a> *receptor_instances)</td></tr>
+<tr class="separator:ga1b76d85e3e8c9c215d9ad0ea7fe113cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga19975d66a0fa04365bf89250bdede501"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vmhost.html#ga19975d66a0fa04365bf89250bdede501">__v_process</a> (void *arg)</td></tr>
+<tr class="separator:ga19975d66a0fa04365bf89250bdede501"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga39add742191ad919741aabd7a9590be6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga39add742191ad919741aabd7a9590be6"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_start_vmhost</b> (<a class="el" href="structVMHost.html">VMHost</a> *v)</td></tr>
+<tr class="separator:ga39add742191ad919741aabd7a9590be6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga74a1f49de857467af1613bb0e71b0963"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vmhost.html#ga74a1f49de857467af1613bb0e71b0963">_v_instantiate_builtins</a> (<a class="el" href="structVMHost.html">VMHost</a> *v)</td></tr>
+<tr class="separator:ga74a1f49de857467af1613bb0e71b0963"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga27024da8df02d995d7d00c63cd00286b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga27024da8df02d995d7d00c63cd00286b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_start_thread</b> (<a class="el" href="structthread.html">thread</a> *t, void *(*start_routine)(void *), void *arg)</td></tr>
+<tr class="separator:ga27024da8df02d995d7d00c63cd00286b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8edbcf5d94cd60d476c67f0431a2aa70"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga8edbcf5d94cd60d476c67f0431a2aa70"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_join_thread</b> (<a class="el" href="structthread.html">thread</a> *t)</td></tr>
+<tr class="separator:ga8edbcf5d94cd60d476c67f0431a2aa70"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>virtual machine host receptor implementation </p>
@@ -158,7 +177,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="vmhost_8c.html">vmhost.c</a></li>
-    <li class="footer">Generated on Tue Jun 23 2015 10:51:49 for ceptr by
+    <li class="footer">Generated on Thu Aug 27 2015 12:15:10 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

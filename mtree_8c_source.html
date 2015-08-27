@@ -155,7 +155,7 @@ $(document).ready(function(){initNavTree('mtree_8c_source.html','');});
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    h-&gt;a.l = parent.a.l+1;</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordflow">if</span> (parent.a.l &gt;= parent.m-&gt;levels) {</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    raise_error0(<span class="stringliteral">&quot;address too deep!&quot;</span>);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    raise_error(<span class="stringliteral">&quot;address too deep!&quot;</span>);</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    }</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (parent.a.l == parent.m-&gt;levels-1) {</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    h-&gt;a.i = 0;</div>
@@ -296,7 +296,7 @@ $(document).ready(function(){initNavTree('mtree_8c_source.html','');});
 <div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    Mlevel levels = h.m-&gt;levels;</div>
 <div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;</div>
 <div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;    <span class="keywordflow">if</span> (h.a.l &gt;= levels) {</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    raise_error0(<span class="stringliteral">&quot;address too deep!&quot;</span>);</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    raise_error(<span class="stringliteral">&quot;address too deep!&quot;</span>);</div>
 <div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;    }</div>
 <div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (h.a.l == levels-1) {</div>
 <div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    <span class="keywordflow">return</span> 0;</div>
@@ -345,7 +345,7 @@ $(document).ready(function(){initNavTree('mtree_8c_source.html','');});
 <div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;    <a class="code" href="structMaddr.html">Maddr</a> a = {NULL_ADDR,NULL_ADDR};</div>
 <div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;    Mlevel levels = h.m-&gt;levels;</div>
 <div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;    <span class="keywordflow">if</span> (h.a.l &gt;= levels) {</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;    raise_error0(<span class="stringliteral">&quot;address too deep!&quot;</span>);</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;    raise_error(<span class="stringliteral">&quot;address too deep!&quot;</span>);</div>
 <div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    }</div>
 <div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (h.a.l == levels-1) {</div>
 <div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;    <span class="keywordflow">return</span> a;</div>
@@ -391,7 +391,7 @@ $(document).ready(function(){initNavTree('mtree_8c_source.html','');});
 <div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;<span class="comment">    }</span></div>
 <div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;<span class="comment">    else {</span></div>
 <div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;<span class="comment">    if (a.i+c &gt; l-&gt;nodes) {</span></div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;<span class="comment">        raise_error0(&quot;address too deep!&quot;);</span></div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;<span class="comment">        raise_error(&quot;address too deep!&quot;);</span></div>
 <div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;<span class="comment">    }</span></div>
 <div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;<span class="comment">    a.i += c-1;</span></div>
 <div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;<span class="comment">    }</span></div>
@@ -658,24 +658,24 @@ $(document).ready(function(){initNavTree('mtree_8c_source.html','');});
 <div class="line"><a name="l00698"></a><span class="lineno">  698</span>&#160;</div>
 <div class="line"><a name="l00699"></a><span class="lineno">  699</span>&#160;</div>
 <div class="ttc" id="mtree_8c_html_ac2c4b050224da6010e036ff381f31c3e"><div class="ttname"><a href="mtree_8c.html#ac2c4b050224da6010e036ff381f31c3e">_m_walk</a></div><div class="ttdeci">void _m_walk(H h, void(*walkfn)(H, N *, void *, MwalkState *, Maddr), void *user_data)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00473">mtree.c:473</a></div></div>
-<div class="ttc" id="structT_html"><div class="ttname"><a href="structT.html">T</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00101">ceptr_types.h:101</a></div></div>
-<div class="ttc" id="structN_html"><div class="ttname"><a href="structN.html">N</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00031">ceptr_types.h:31</a></div></div>
+<div class="ttc" id="structT_html"><div class="ttname"><a href="structT.html">T</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00102">ceptr_types.h:102</a></div></div>
+<div class="ttc" id="structN_html"><div class="ttname"><a href="structN.html">N</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00032">ceptr_types.h:32</a></div></div>
 <div class="ttc" id="mtree_8c_html_ab8786adc8759967b5ab4314e7827065b"><div class="ttname"><a href="mtree_8c.html#ab8786adc8759967b5ab4314e7827065b">_m_symbol</a></div><div class="ttdeci">Symbol _m_symbol(H h)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00397">mtree.c:397</a></div></div>
 <div class="ttc" id="mtree_8c_html_a0131231a4ed8941c12b7281e7a2bce4d"><div class="ttname"><a href="mtree_8c.html#a0131231a4ed8941c12b7281e7a2bce4d">_m_surface</a></div><div class="ttdeci">void * _m_surface(H h)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00301">mtree.c:301</a></div></div>
 <div class="ttc" id="mtree_8c_html_aadcc0b49fc78411ef25fd61007acda1e"><div class="ttname"><a href="mtree_8c.html#aadcc0b49fc78411ef25fd61007acda1e">_m_detatch</a></div><div class="ttdeci">H _m_detatch(H oh)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00580">mtree.c:580</a></div></div>
 <div class="ttc" id="def_8h_html"><div class="ttname"><a href="def_8h.html">def.h</a></div><div class="ttdoc">header file for symbol and structure definition functions </div></div>
-<div class="ttc" id="structS_html"><div class="ttname"><a href="structS.html">S</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00056">ceptr_types.h:56</a></div></div>
-<div class="ttc" id="structM_html"><div class="ttname"><a href="structM.html">M</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00044">ceptr_types.h:44</a></div></div>
-<div class="ttc" id="group__tree_html_ga946600fb570f0cc913450905f6189d49"><div class="ttname"><a href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a></div><div class="ttdeci">Symbol _t_symbol(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00490">tree.c:490</a></div></div>
+<div class="ttc" id="structS_html"><div class="ttname"><a href="structS.html">S</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00057">ceptr_types.h:57</a></div></div>
+<div class="ttc" id="structM_html"><div class="ttname"><a href="structM.html">M</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00045">ceptr_types.h:45</a></div></div>
+<div class="ttc" id="group__tree_html_ga946600fb570f0cc913450905f6189d49"><div class="ttname"><a href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a></div><div class="ttdeci">Symbol _t_symbol(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00551">tree.c:551</a></div></div>
 <div class="ttc" id="mtree_8c_html_a85882e4f20f772884a5b3a3b2dd836d0"><div class="ttname"><a href="mtree_8c.html#a85882e4f20f772884a5b3a3b2dd836d0">_m_serialize</a></div><div class="ttdeci">void * _m_serialize(M *m, size_t *sizeP)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00594">mtree.c:594</a></div></div>
-<div class="ttc" id="group__tree_html_gac9278e540a0d63526b60cc0591283a62"><div class="ttname"><a href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a></div><div class="ttdeci">void * _t_surface(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00477">tree.c:477</a></div></div>
+<div class="ttc" id="group__tree_html_gac9278e540a0d63526b60cc0591283a62"><div class="ttname"><a href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a></div><div class="ttdeci">void * _t_surface(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00538">tree.c:538</a></div></div>
 <div class="ttc" id="mtree_8c_html_a8f0130ea8f017ec2aed0c72a9be77a47"><div class="ttname"><a href="mtree_8c.html#a8f0130ea8f017ec2aed0c72a9be77a47">_m_child</a></div><div class="ttdeci">Maddr _m_child(H h, Mindex c)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00332">mtree.c:332</a></div></div>
-<div class="ttc" id="structMaddr_html"><div class="ttname"><a href="structMaddr.html">Maddr</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00064">ceptr_types.h:64</a></div></div>
+<div class="ttc" id="structMaddr_html"><div class="ttname"><a href="structMaddr.html">Maddr</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00065">ceptr_types.h:65</a></div></div>
 <div class="ttc" id="mtree_8c_html_a94624993d8f2ec4ba1364343e01eedb9"><div class="ttname"><a href="mtree_8c.html#a94624993d8f2ec4ba1364343e01eedb9">_m_size</a></div><div class="ttdeci">size_t _m_size(H h)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00231">mtree.c:231</a></div></div>
 <div class="ttc" id="mtree_8c_html_af2f3d808adcb064e5120ee33f54e8c2d"><div class="ttname"><a href="mtree_8c.html#af2f3d808adcb064e5120ee33f54e8c2d">_m_new</a></div><div class="ttdeci">H _m_new(H parent, Symbol symbol, void *surface, size_t size)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00093">mtree.c:93</a></div></div>
 <div class="ttc" id="mtree_8c_html_a3c2f12a5e9758f2adc0ff5108b420676"><div class="ttname"><a href="mtree_8c.html#a3c2f12a5e9758f2adc0ff5108b420676">__m_get</a></div><div class="ttdeci">N * __m_get(H h)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00219">mtree.c:219</a></div></div>
 <div class="ttc" id="mtree_8c_html_ab0e6e5f78e7ec6f3c9165feca0eae093"><div class="ttname"><a href="mtree_8c.html#ab0e6e5f78e7ec6f3c9165feca0eae093">_t_new_from_m</a></div><div class="ttdeci">T * _t_new_from_m(H h)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00205">mtree.c:205</a></div></div>
-<div class="ttc" id="structL_html"><div class="ttname"><a href="structL.html">L</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00039">ceptr_types.h:39</a></div></div>
+<div class="ttc" id="structL_html"><div class="ttname"><a href="structL.html">L</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00040">ceptr_types.h:40</a></div></div>
 <div class="ttc" id="mtree_8c_html_a0fc6f80caad86d2920cd31b0271e3d13"><div class="ttname"><a href="mtree_8c.html#a0fc6f80caad86d2920cd31b0271e3d13">_m_new_root</a></div><div class="ttdeci">H _m_new_root(Symbol s)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00137">mtree.c:137</a></div></div>
 <div class="ttc" id="mtree_8c_html_a0c5bd733621f48184a13a1202bd24fed"><div class="ttname"><a href="mtree_8c.html#a0c5bd733621f48184a13a1202bd24fed">_m_new_from_t</a></div><div class="ttdeci">H _m_new_from_t(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00181">mtree.c:181</a></div></div>
 <div class="ttc" id="structMwalkState_html"><div class="ttname"><a href="structMwalkState.html">MwalkState</a></div><div class="ttdef"><b>Definition:</b> <a href="mtree_8h_source.html#l00023">mtree.h:23</a></div></div>
@@ -683,22 +683,22 @@ $(document).ready(function(){initNavTree('mtree_8c_source.html','');});
 <div class="ttc" id="mtree_8c_html_a8fd28bfb7cf7c6a5afceae0d9622a393"><div class="ttname"><a href="mtree_8c.html#a8fd28bfb7cf7c6a5afceae0d9622a393">_m_unserialize</a></div><div class="ttdeci">H _m_unserialize(void *s)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00666">mtree.c:666</a></div></div>
 <div class="ttc" id="mtree_8c_html_a8b69b478ffa977cc25fcca734972e376"><div class="ttname"><a href="mtree_8c.html#a8b69b478ffa977cc25fcca734972e376">_m_add</a></div><div class="ttdeci">H _m_add(H parent, H h)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00437">mtree.c:437</a></div></div>
 <div class="ttc" id="mtree_8c_html_afad9c74e15faf49c268ed9117cff0d07"><div class="ttname"><a href="mtree_8c.html#afad9c74e15faf49c268ed9117cff0d07">_m_newi</a></div><div class="ttdeci">H _m_newi(H parent, Symbol symbol, int surface)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00160">mtree.c:160</a></div></div>
-<div class="ttc" id="structH_html"><div class="ttname"><a href="structH.html">H</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00070">ceptr_types.h:70</a></div></div>
+<div class="ttc" id="structH_html"><div class="ttname"><a href="structH.html">H</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00071">ceptr_types.h:71</a></div></div>
 <div class="ttc" id="mtree_8c_html_ad49f52a39bf6ec9d31d476a25de088f3"><div class="ttname"><a href="mtree_8c.html#ad49f52a39bf6ec9d31d476a25de088f3">_m_parent</a></div><div class="ttdeci">Maddr _m_parent(H h)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00315">mtree.c:315</a></div></div>
 <div class="ttc" id="mtree_8c_html_a810511f76ba90cfb41460732ef11bcb0"><div class="ttname"><a href="mtree_8c.html#a810511f76ba90cfb41460732ef11bcb0">_m_children</a></div><div class="ttdeci">int _m_children(H h)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00264">mtree.c:264</a></div></div>
 <div class="ttc" id="mtree_8h_html"><div class="ttname"><a href="mtree_8h.html">mtree.h</a></div><div class="ttdoc">semantic tree matrix header file `` </div></div>
-<div class="ttc" id="group__tree_html_ga4b1df42f7a8edbe3a6192d64ab027ecc"><div class="ttname"><a href="group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc">_t_children</a></div><div class="ttdeci">int _t_children(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00467">tree.c:467</a></div></div>
+<div class="ttc" id="group__tree_html_ga4b1df42f7a8edbe3a6192d64ab027ecc"><div class="ttname"><a href="group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc">_t_children</a></div><div class="ttdeci">int _t_children(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00528">tree.c:528</a></div></div>
 <div class="ttc" id="mtree_8c_html_a59cab39e0fcd896b39158cb0c81bbd1a"><div class="ttname"><a href="mtree_8c.html#a59cab39e0fcd896b39158cb0c81bbd1a">_m_next_sibling</a></div><div class="ttdeci">Maddr _m_next_sibling(H h)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00408">mtree.c:408</a></div></div>
-<div class="ttc" id="structSemanticID_html"><div class="ttname"><a href="structSemanticID.html">SemanticID</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00016">ceptr_types.h:16</a></div></div>
+<div class="ttc" id="structSemanticID_html"><div class="ttname"><a href="structSemanticID.html">SemanticID</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00017">ceptr_types.h:17</a></div></div>
 <div class="ttc" id="mtree_8c_html_adb19f3ed4e8aa551480218555052e153"><div class="ttname"><a href="mtree_8c.html#adb19f3ed4e8aa551480218555052e153">_m_newr</a></div><div class="ttdeci">H _m_newr(H parent, Symbol s)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00148">mtree.c:148</a></div></div>
-<div class="ttc" id="group__tree_html_gac97d0dd9bbdeb14978735bac1eb0b25e"><div class="ttname"><a href="group__tree.html#gac97d0dd9bbdeb14978735bac1eb0b25e">_t_size</a></div><div class="ttdeci">size_t _t_size(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00500">tree.c:500</a></div></div>
+<div class="ttc" id="group__tree_html_gac97d0dd9bbdeb14978735bac1eb0b25e"><div class="ttname"><a href="group__tree.html#gac97d0dd9bbdeb14978735bac1eb0b25e">_t_size</a></div><div class="ttdeci">size_t _t_size(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00561">tree.c:561</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="mtree_8c.html">mtree.c</a></li>
-    <li class="footer">Generated on Tue Jun 23 2015 10:51:49 for ceptr by
+    <li class="footer">Generated on Thu Aug 27 2015 12:15:09 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

@@ -1,7 +1,7 @@
 var dir_937849c47cd127d593123ed6329d29aa =
 [
+    [ "accumulator_spec.h", "accumulator__spec_8h_source.html", null ],
     [ "ceptr_specs.c", "ceptr__specs_8c.html", "ceptr__specs_8c" ],
-    [ "de_spec.h", "de__spec_8h.html", "de__spec_8h" ],
     [ "def_spec.h", "def__spec_8h.html", "def__spec_8h" ],
     [ "http_example.h", "http__example_8h.html", "http__example_8h" ],
     [ "label_spec.h", "label__spec_8h.html", "label__spec_8h" ],
@@ -13,6 +13,7 @@ var dir_937849c47cd127d593123ed6329d29aa =
     [ "semtrex_spec.h", "semtrex__spec_8h.html", "semtrex__spec_8h" ],
     [ "spec_utils.c", "spec__utils_8c.html", "spec__utils_8c" ],
     [ "spec_utils.h", "spec__utils_8h.html", "spec__utils_8h" ],
+    [ "stream_spec.h", "stream__spec_8h.html", "stream__spec_8h" ],
     [ "test_framework.h", "test__framework_8h.html", "test__framework_8h" ],
     [ "tree_spec.h", "tree__spec_8h.html", "tree__spec_8h" ],
     [ "vmhost_spec.h", "vmhost__spec_8h.html", "vmhost__spec_8h" ]

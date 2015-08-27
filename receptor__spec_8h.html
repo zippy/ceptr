@@ -112,8 +112,9 @@ $(document).ready(function(){initNavTree('receptor__spec_8h.html','');});
 <div class="textblock"><code>#include &quot;../src/ceptr.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="receptor_8h_source.html">../src/receptor.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="def_8h_source.html">../src/def.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="de_8h_source.html">../src/de.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="accumulator_8h_source.html">../src/accumulator.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="http__example_8h_source.html">http_example.h</a>&quot;</code><br />
+<code>#include &lt;unistd.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for receptor_spec.h:</div>
 <div class="dyncontent">
@@ -167,12 +168,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>makeInt</b> (<a class
 <tr class="memitem:a911778bdc03a15ad22c407116d5b1345"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a911778bdc03a15ad22c407116d5b1345"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>testReceptorNums</b> ()</td></tr>
 <tr class="separator:a911778bdc03a15ad22c407116d5b1345"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50742f0c5d1540b0b667d7bbba139edc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a50742f0c5d1540b0b667d7bbba139edc"></a>
-<a class="el" href="structReceptor.html">Receptor</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>_r_makeFileReceptor</b> (FILE *stream, <a class="el" href="structXaddr.html">Xaddr</a> to)</td></tr>
-<tr class="separator:a50742f0c5d1540b0b667d7bbba139edc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afceb592c80fbad8dd4a6182b52e660fb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afceb592c80fbad8dd4a6182b52e660fb"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>testReceptorEdgeStream</b> ()</td></tr>
 <tr class="separator:afceb592c80fbad8dd4a6182b52e660fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ea907b2faa0b14f8e4858ff1b453bbf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7ea907b2faa0b14f8e4858ff1b453bbf"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>_testReceptorClockAddListener</b> (<a class="el" href="structReceptor.html">Receptor</a> *r)</td></tr>
+<tr class="separator:a7ea907b2faa0b14f8e4858ff1b453bbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf6ba85eee6e79581791f16b56ca8dd2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaf6ba85eee6e79581791f16b56ca8dd2"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>testReceptorClock</b> ()</td></tr>
+<tr class="separator:aaf6ba85eee6e79581791f16b56ca8dd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf972a86b5bdef0bc6a43ebf006f313c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaf972a86b5bdef0bc6a43ebf006f313c"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>testReceptor</b> ()</td></tr>
 <tr class="separator:aaf972a86b5bdef0bc6a43ebf006f313c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -263,7 +267,7 @@ Variables</h2></td></tr>
 <div class="line">    *house_loc = <a class="code" href="group__receptor.html#ga436d69cd861739b56bb32b7bf6f315ab">_r_declare_symbol</a>(r,*latlong,<span class="stringliteral">&quot;house location&quot;</span>);</div>
 <div class="line">}</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="receptor__spec_8h_source.html#l00248">248</a> of file <a class="el" href="receptor__spec_8h_source.html">receptor_spec.h</a>.</p>
+<p>Definition at line <a class="el" href="receptor__spec_8h_source.html#l00249">249</a> of file <a class="el" href="receptor__spec_8h_source.html">receptor_spec.h</a>.</p>
 
 </div>
 </div>
@@ -282,7 +286,7 @@ Variables</h2></td></tr>
 <p>[testReceptorAction]</p>
 <p>[testReceptorAction] </p>
 
-<p>Definition at line <a class="el" href="receptor__spec_8h_source.html#l00119">119</a> of file <a class="el" href="receptor__spec_8h_source.html">receptor_spec.h</a>.</p>
+<p>Definition at line <a class="el" href="receptor__spec_8h_source.html#l00120">120</a> of file <a class="el" href="receptor__spec_8h_source.html">receptor_spec.h</a>.</p>
 
 </div>
 </div>
@@ -301,7 +305,7 @@ Variables</h2></td></tr>
 <p>[testReceptorCreate]</p>
 <p>[testReceptorCreate] </p>
 
-<p>Definition at line <a class="el" href="receptor__spec_8h_source.html#l00013">13</a> of file <a class="el" href="receptor__spec_8h_source.html">receptor_spec.h</a>.</p>
+<p>Definition at line <a class="el" href="receptor__spec_8h_source.html#l00014">14</a> of file <a class="el" href="receptor__spec_8h_source.html">receptor_spec.h</a>.</p>
 
 </div>
 </div>
@@ -322,7 +326,7 @@ Variables</h2></td></tr>
 <p>[testReceptorDefMatch]</p>
 <p>[testReceptorDefMatch] </p>
 
-<p>Definition at line <a class="el" href="receptor__spec_8h_source.html#l00256">256</a> of file <a class="el" href="receptor__spec_8h_source.html">receptor_spec.h</a>.</p>
+<p>Definition at line <a class="el" href="receptor__spec_8h_source.html#l00257">257</a> of file <a class="el" href="receptor__spec_8h_source.html">receptor_spec.h</a>.</p>
 
 </div>
 </div>
@@ -341,7 +345,7 @@ Variables</h2></td></tr>
 <p>[testReceptorInstancesNew]</p>
 <p>[testReceptorInstancesNew] </p>
 
-<p>Definition at line <a class="el" href="receptor__spec_8h_source.html#l00397">397</a> of file <a class="el" href="receptor__spec_8h_source.html">receptor_spec.h</a>.</p>
+<p>Definition at line <a class="el" href="receptor__spec_8h_source.html#l00398">398</a> of file <a class="el" href="receptor__spec_8h_source.html">receptor_spec.h</a>.</p>
 
 </div>
 </div>
@@ -360,7 +364,7 @@ Variables</h2></td></tr>
 <p>[testReceptorProtocol]</p>
 <p>[testReceptorProtocol] </p>
 
-<p>Definition at line <a class="el" href="receptor__spec_8h_source.html#l00352">352</a> of file <a class="el" href="receptor__spec_8h_source.html">receptor_spec.h</a>.</p>
+<p>Definition at line <a class="el" href="receptor__spec_8h_source.html#l00353">353</a> of file <a class="el" href="receptor__spec_8h_source.html">receptor_spec.h</a>.</p>
 
 </div>
 </div>
@@ -379,7 +383,7 @@ Variables</h2></td></tr>
 <p>[testReceptorSerialize]</p>
 <p>[testReceptorSerialize] </p>
 
-<p>Definition at line <a class="el" href="receptor__spec_8h_source.html#l00424">424</a> of file <a class="el" href="receptor__spec_8h_source.html">receptor_spec.h</a>.</p>
+<p>Definition at line <a class="el" href="receptor__spec_8h_source.html#l00425">425</a> of file <a class="el" href="receptor__spec_8h_source.html">receptor_spec.h</a>.</p>
 
 </div>
 </div>
@@ -389,7 +393,7 @@ Variables</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><a class="el" href="receptor__spec_8h.html">receptor_spec.h</a></li>
-    <li class="footer">Generated on Tue Jun 23 2015 10:51:49 for ceptr by
+    <li class="footer">Generated on Thu Aug 27 2015 12:15:10 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
