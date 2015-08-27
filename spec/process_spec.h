@@ -393,7 +393,8 @@ void testProcessStream() {
     stream = fmemopen(buffer, strlen (buffer), "r+");
 
     T *n = _t_new_root(STREAM_AVAILABLE);
-    _t_new(n,TEST_STREAM_SYMBOL,&stream,sizeof(FILE *));
+    Stream *st = _st_new_unix_stream(stream);
+    _t_new_stream(n,TEST_STREAM_SYMBOL,st);
     __p_reduce_sys_proc(0,STREAM_AVAILABLE,n);
     spec_is_str_equal(t2s(n),"(BOOLEAN:1)");
     _t_free(n);
@@ -403,7 +404,7 @@ void testProcessStream() {
 
     n = _t_new_root(STREAM_READ);
 
-    _t_new(n,TEST_STREAM_SYMBOL,&stream,sizeof(FILE *));
+    _t_new_stream(n,TEST_STREAM_SYMBOL,st);
     _t_news(n,RESULT_SYMBOL,TEST_STR_SYMBOL);
 
     T *c = _t_rclone(n);
@@ -416,10 +417,10 @@ void testProcessStream() {
     _t_free(n);
     _t_free(run_tree);
 
-    // test writing to a stream
+    // test writing to the stream
     run_tree = _t_new_root(RUN_TREE);
     n = _t_new_root(STREAM_WRITE);
-    _t_new(n,TEST_STREAM_SYMBOL,&stream,sizeof(FILE *));
+    _t_new_stream(n,TEST_STREAM_SYMBOL,st);
     _t_new_str(n,TEST_STR_SYMBOL,"fish\n");
 
     c = _t_rclone(n);
@@ -431,13 +432,15 @@ void testProcessStream() {
 
     _t_free(n);
     _t_free(run_tree);
-    fclose(stream);
+    _st_free(st);
 
     // test writing to a readonly stream
     stream = fmemopen(buffer, strlen (buffer), "r");
+    st = _st_new_unix_stream(stream);
     run_tree = _t_new_root(RUN_TREE);
     n = _t_new_root(STREAM_WRITE);
-    _t_new(n,TEST_STREAM_SYMBOL,&stream,sizeof(FILE *));
+
+    _t_new_stream(n,TEST_STREAM_SYMBOL,st);
     _t_new_str(n,TEST_STR_SYMBOL,"fish\n");
 
     c = _t_rclone(n);
@@ -453,12 +456,12 @@ void testProcessStream() {
 
     while ((fgetc (stream)) != EOF);
     n = _t_new_root(STREAM_AVAILABLE);
-    _t_new(n,TEST_STREAM_SYMBOL,&stream,sizeof(FILE *));
+    _t_new_stream(n,TEST_STREAM_SYMBOL,st);
     __p_reduce_sys_proc(0,STREAM_AVAILABLE,n);
     spec_is_str_equal(t2s(n),"(BOOLEAN:0)");
     _t_free(n);
 
-    fclose(stream);
+    _st_free(st);
 
 }
 
@@ -811,7 +814,8 @@ void testProcessReplicate() {
     _t_newi(code,TEST_INT_SYMBOL,3);
 
     T *x = _t_newr(code,STREAM_WRITE);
-    _t_new(x,TEST_STREAM_SYMBOL,&output,sizeof(FILE *));
+    Stream *st = _st_new_unix_stream(output);
+    _t_new_stream(x,TEST_STREAM_SYMBOL,st);
     _t_new_str(x,TEST_STR_SYMBOL,"testing");
 
     T *t = __p_build_run_tree(code,0);
@@ -838,7 +842,7 @@ void testProcessReplicate() {
     spec_is_equal(e,noReductionErr);
     spec_is_str_equal(output_data,"testing\ntesting\ntesting\n");
 
-    fclose(output);
+    _st_free(st);
     free(output_data);
     _t_free(code);
     _t_free(t);

@@ -96,11 +96,34 @@ void testTreeNewScape() {
     Scape *s = _s_new(TEST_INT_SYMBOL,TEST_STR_SYMBOL);
     T *ts = _t_new_scape(0,TEST_ALPHABETIZE_SCAPE_SYMBOL,s);
 
+    spec_is_true(ts->context.flags &= TFLAG_SURFACE_IS_SCAPE);
     spec_is_ptr_equal(_t_surface(ts),s);
     spec_is_str_equal(t2s(ts),"(TEST_ALPHABETIZE_SCAPE_SYMBOL:key TEST_INT_SYMBOL,data TEST_STR_SYMBOL)");
 
     _t_free(ts); // note, no need to free the scape explicitly, as _t_free knows about it
     //! [testTreeNewScape]
+}
+
+void testTreeStream() {
+    //! [testTreeStream]
+    FILE *stream;
+    char buffer[] = "line1\nline2\n";
+    stream = fmemopen(buffer, strlen (buffer), "r+");
+
+    Stream *s = _st_new_unix_stream(stream);
+    T *ts = _t_new_stream(0,TEST_STREAM_SYMBOL,s);
+
+    spec_is_true(ts->context.flags & TFLAG_SURFACE_IS_STREAM);
+    spec_is_true(ts->context.flags & TFLAG_REFERENCE);
+    spec_is_ptr_equal(_t_surface(ts),s);
+    spec_is_str_equal(t2s(ts),"(TEST_STREAM_SYMBOL:");
+
+    _t_free(ts);
+    // note, for now we must handle all stream deallocation manually because _t_new_stream
+    // always makes the symbols as references to the Stream object
+    _st_free(s);
+
+    //! [testTreeStream]
 }
 
 void testTreeOrthogonal() {
@@ -492,6 +515,7 @@ void testTree() {
     testCreateTreeNodes();
     testTreeNewReceptor();
     testTreeNewScape();
+    testTreeStream();
     testTreeOrthogonal();
     testTreeRealloc();
     testTreeNodeIndex();

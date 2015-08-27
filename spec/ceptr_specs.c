@@ -14,6 +14,7 @@
 
 #include "tree_spec.h"
 #include "mtree_spec.h"
+#include "stream_spec.h"
 #include "def_spec.h"
 #include "label_spec.h"
 #include "semtrex_spec.h"
@@ -41,6 +42,7 @@ int main(int argc, const char **argv) {
     //**** core tests
     testTree();
     testMTree();
+    testStream();
     testDef();
     testLabel();
     testSemtrex();

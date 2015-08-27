@@ -242,9 +242,9 @@ void def_sys() {
     sP(QUOTE,"quote a process so that it can be passed as a value",0,0);
     sP(INTERPOLATE_FROM_MATCH,"interploate match result in place",0,0);
     sP(RAISE,"raise reduction error",0,0);
-    sP(STREAM_READ,"read from a unix stream",0,0);
-    sP(STREAM_WRITE,"write to a unix stream",0,0);
-    sP(STREAM_AVAILABLE,"check a unix stream for eof condition",0,0);
+    sP(STREAM_READ,"read from a stream",0,0);
+    sP(STREAM_WRITE,"write to a stream",0,0);
+    sP(STREAM_AVAILABLE,"check a stream for data availability",0,0);
     sP(REPLICATE,"replicate process",0,0);
 
     sYt(TEST_INT_SYMBOL,INTEGER);

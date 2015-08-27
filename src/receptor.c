@@ -9,6 +9,7 @@
  */
 
 #include "receptor.h"
+#include "stream.h"
 #include "semtrex.h"
 #include "process.h"
 #include "accumulator.h"
@@ -566,7 +567,7 @@ char *_td(Receptor *r,T *t) {
 
 /*****************  Built-in core and edge receptors */
 
-Receptor *_r_makeStreamReaderReceptor(Symbol receptor_symbol,Symbol stream_symbol,FILE *stream,Xaddr to) {
+Receptor *_r_makeStreamReaderReceptor(Symbol receptor_symbol,Symbol stream_symbol,Stream *st,Xaddr to) {
     Receptor *r = _r_new(receptor_symbol);
     Symbol line = _r_declare_symbol(r,CSTRING,"LINE"); // @todo, should be shared symbol from compository, see #29...
 
@@ -577,14 +578,15 @@ Receptor *_r_makeStreamReaderReceptor(Symbol receptor_symbol,Symbol stream_symbo
     T *p = _t_new_root(REPLICATE);
     T *params = _t_newr(p,PARAMS);
     T *eof = _t_newr(p,STREAM_AVAILABLE);
-    _t_new(eof,stream_symbol,&stream,sizeof(FILE *));
+
+    _t_new_stream(eof,stream_symbol,st);
     //    _t_newi(p,TEST_INT_SYMBOL,2);  // two repetitions
     T *send = _t_newr(p,SEND);
 
     _t_new(send,RECEPTOR_XADDR,&to,sizeof(to));
 
     T *s = _t_new(send,STREAM_READ,0,0);
-    _t_new(s,stream_symbol,&stream,sizeof(FILE *));
+    _t_new_stream(s,stream_symbol,st);
     _t_new(s,RESULT_SYMBOL,&line,sizeof(Symbol));
     _t_newi(send,BOOLEAN,1); // mark async
 
@@ -596,7 +598,7 @@ Receptor *_r_makeStreamReaderReceptor(Symbol receptor_symbol,Symbol stream_symbo
     return r;
 }
 
-Receptor *_r_makeStreamWriterReceptor(Symbol receptor_symbol,Symbol stream_symbol,FILE *stream) {
+Receptor *_r_makeStreamWriterReceptor(Symbol receptor_symbol,Symbol stream_symbol,Stream *st) {
     Receptor *r = _r_new(receptor_symbol);
 
     T *expect = _t_new_root(EXPECTATION);
@@ -619,7 +621,8 @@ Receptor *_r_makeStreamWriterReceptor(Symbol receptor_symbol,Symbol stream_symbo
     /* puts(buf); */
 
     x = _t_new_root(STREAM_WRITE);
-    _t_new(x,TEST_STREAM_SYMBOL,&stream,sizeof(FILE *));
+
+    _t_new_stream(x,TEST_STREAM_SYMBOL,st);
     int pt1[] = {2,1,TREE_PATH_TERMINATOR};
     _t_new(x,PARAM_REF,pt1,sizeof(int)*4);
 

@@ -162,6 +162,16 @@ T *_t_new_receptor(T *parent,Symbol symbol,Receptor *r) {
     return t;
 }
 
+/* create special tree node type */
+T *__t_new_special(T *parent,Symbol symbol,void *s,size_t size,int flag,size_t alloc_size) {
+    T *t = malloc(alloc_size);
+    t->contents.surface = s;
+    t->contents.size = size;
+    __t_init(t,parent,symbol);
+    t->context.flags |= flag;
+    return t;
+}
+
 /**
  * Create a new tree node with a scape as it's surface
  *
@@ -176,13 +186,26 @@ T *_t_new_receptor(T *parent,Symbol symbol,Receptor *r) {
  * @snippet spec/tree_spec.h testTreeNewScae
  */
 T *_t_new_scape(T *parent,Symbol symbol,Scape *s) {
-    T *t = malloc(sizeof(T));
-    t->contents.surface = s;
-    t->contents.size = sizeof(Scape);
-    __t_init(t,parent,symbol);
-    t->context.flags |= TFLAG_SURFACE_IS_SCAPE;
-    return t;
+    return __t_new_special(parent,symbol,s,sizeof(Scape),TFLAG_SURFACE_IS_SCAPE,sizeof(T));
 }
+
+/**
+ * Create a new tree node with a stream as it's surface
+ *
+ * when cleaning up we'll need to know that this is a stream
+ *
+ * @param[in] parent parent node for the node to be created.
+ * @param[in] symbol semantic symbol for the node to be create
+ * @param[in] s stream
+ * @returns pointer to node allocated on the heap
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/tree_spec.h testTreeNewStream
+ */
+T *_t_new_stream(T *parent,Symbol symbol,Stream *s) {
+    return __t_new_special(parent,symbol,s,sizeof(Stream),TFLAG_SURFACE_IS_STREAM+TFLAG_REFERENCE,sizeof(T));
+}
+
 /**
  * Create a new tree node with a Process surface
  *
@@ -423,6 +446,10 @@ void __t_free(T *t) {
     }
     else if (t->context.flags & TFLAG_SURFACE_IS_SCAPE)
         _s_free((Scape *)t->contents.surface);
+    else if ((t->context.flags & TFLAG_SURFACE_IS_STREAM) && !(t->context.flags & TFLAG_REFERENCE)) {
+        raise_error("WHAAA!");
+        _st_free((Stream *)t->contents.surface);
+    }
 }
 
 /**
@@ -438,10 +465,16 @@ void _t_free(T *t) {
     free(t);
 }
 
+// @todo, figure out how to clone trees with non-reference things, like scapes & streams...
+// convert all cloned T nodes into refs?
+
 T *__t_clone(T *t,T *p) {
     T *nt;
     if (t->context.flags & TFLAG_ALLOCATED)
         nt = _t_new(p,_t_symbol(t),_t_surface(t),_t_size(t));
+    else if (t->context.flags & TFLAG_SURFACE_IS_STREAM) {
+        nt = __t_new_special(p,_t_symbol(t),_t_surface(t),_t_size(t),t->context.flags,sizeof(rT));
+    }
     else if(_t_size(t) == 0)
         nt = _t_newr(p,_t_symbol(t));
     else
@@ -454,6 +487,9 @@ T *__t_rclone(T *t,T *p) {
     T *nt;
     if (t->context.flags & TFLAG_ALLOCATED)
         nt = __t_new(p,_t_symbol(t),_t_surface(t),_t_size(t),sizeof(rT));
+    else if (t->context.flags & TFLAG_SURFACE_IS_STREAM) {
+        nt = __t_new_special(p,_t_symbol(t),_t_surface(t),_t_size(t),t->context.flags,sizeof(rT));
+    }
     else if(_t_size(t) == 0)
         nt = __t_new(p,_t_symbol(t),_t_surface(t),0,sizeof(rT));
     else
@@ -500,7 +536,7 @@ int _t_children(T *t) {
  * @returns pointer to node's surface
  */
 void * _t_surface(T *t) {
-    if (t->context.flags & (TFLAG_ALLOCATED|TFLAG_SURFACE_IS_TREE|TFLAG_SURFACE_IS_SCAPE))
+    if (t->context.flags & (TFLAG_ALLOCATED|TFLAG_SURFACE_IS_TREE|TFLAG_SURFACE_IS_SCAPE|TFLAG_SURFACE_IS_STREAM))
         return t->contents.surface;
     else
         return &t->contents.surface;

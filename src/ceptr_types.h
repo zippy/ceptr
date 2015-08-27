@@ -2,6 +2,7 @@
 #define _CEPTR_TYPES_H
 
 #include <stdint.h>
+#include <stdio.h>
 #include "uthash.h"
 
 enum SemanticContexts {SYS_CONTEXT,RECEPTOR_CONTEXT,TEST_CONTEXT};

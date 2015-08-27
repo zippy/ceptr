@@ -15,6 +15,7 @@
 #include "ceptr_error.h"
 #include "tree.h"
 #include "mtree.h"
+#include "stream.h"
 #include "util.h"
 #include "debug.h"
 #endif

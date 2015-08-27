@@ -18,6 +18,7 @@
 #define D_REDUCEV    0x0004
 #define D_STX_MATCH  0x0008
 #define D_CLOCK      0x0010
+#define D_STREAM     0x0020
 
 #define DEBUG_DEFAULT_MASK D_NONE
 //#define DEBUG_DEFAULT_MASK D_SIGNALS

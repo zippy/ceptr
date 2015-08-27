@@ -344,22 +344,24 @@ void testVMHostShell() {
     FILE *input,*output;
     char commands[] = "time\nreceptors\ntime\n";
     input = fmemopen(commands, strlen (commands), "r");
+    Stream *input_stream = _st_new_unix_stream(input);
     char *output_data = NULL;
     size_t size;
     output = open_memstream(&output_data,&size);
+    Stream *output_stream = _st_new_unix_stream(output);
 
-    Symbol stdin = _r_declare_symbol(G_vm->r,RECEPTOR,"stdin");
-    Receptor *i_r = _r_makeStreamReaderReceptor(stdin,TEST_STREAM_SYMBOL,input,shellx);
-    Xaddr ix = _v_new_receptor(G_vm,stdin,i_r);
+    Symbol std_in = _r_declare_symbol(G_vm->r,RECEPTOR,"std_in");
+    Receptor *i_r = _r_makeStreamReaderReceptor(std_in,TEST_STREAM_SYMBOL,input_stream,shellx);
+    Xaddr ix = _v_new_receptor(G_vm,std_in,i_r);
     _v_activate(G_vm,ix);
 
-    Symbol stdout = _r_declare_symbol(G_vm->r,RECEPTOR,"stdout");
-    Receptor *o_r = _r_makeStreamWriterReceptor(stdout,TEST_STREAM_SYMBOL,output);
-    Xaddr ox = _v_new_receptor(G_vm,stdout,o_r);
+    Symbol std_out = _r_declare_symbol(G_vm->r,RECEPTOR,"std_out");
+    Receptor *o_r = _r_makeStreamWriterReceptor(std_out,TEST_STREAM_SYMBOL,output_stream);
+    Xaddr ox = _v_new_receptor(G_vm,std_out,o_r);
     _v_activate(G_vm,ox);
 
     // create expectations for commands
-    // (expect (on stdin LINE) action (send self (shell_command parsed from LINE))
+    // (expect (on std_in LINE) action (send self (shell_command parsed from LINE))
     T *expect = _t_new_root(EXPECTATION);
     T *s = _t_news(expect,SEMTREX_GROUP,line);
     _sl(s,line);
@@ -377,7 +379,7 @@ void testVMHostShell() {
     _t_news(params,INTERPOLATE_SYMBOL,line);
     _r_add_listener(r,DEFAULT_ASPECT,line,expect,params,act);
 
-    // (expect (on flux SHELL_COMMAND:time) action(send stdout (convert_to_lines (listen to clock)))
+    // (expect (on flux SHELL_COMMAND:time) action(send std_out (convert_to_lines (listen to clock)))
     expect = _t_new_root(EXPECTATION);
     s = _t_news(expect,SEMTREX_GROUP,shell_command);
     _sl(s,shell_command);
@@ -386,19 +388,21 @@ void testVMHostShell() {
     x = _t_new_str(p,line,"placeholder for time");
     //    int pt1[] = {2,1,TREE_PATH_TERMINATOR};
     //    _t_new(x,PARAM_REF,pt1,sizeof(int)*4);
-    proc = _r_code_process(r,p,"send time to stdout","long desc...",NULL,NULL);
+    proc = _r_code_process(r,p,"send time to std_out","long desc...",NULL,NULL);
     act = _t_newp(0,ACTION,proc);
     params = _t_new_root(PARAMS);
     _t_news(params,INTERPOLATE_SYMBOL,shell_command);
     _r_add_listener(r,DEFAULT_ASPECT,line,expect,params,act);
 
-    // (expect (on flux SHELL_COMMAND:receptor) action (send stdout (convert_to_lines (send vmhost (get receptor list from vmhost)))))
+    // (expect (on flux SHELL_COMMAND:receptor) action (send std_out (convert_to_lines (send vmhost (get receptor list from vmhost)))))
 
+    debug_enable(D_STREAM);
     //    spec_is_str_equal(_td(o_r,o_r->flux),"or flux");
     _v_start_vmhost(G_vm);
     sleep(1);
     //    spec_is_str_equal(_td(o_r,o_r->flux),"or flux");
     //    spec_is_str_equal(_td(r,r->flux),"shell flux");
+    debug_enable(D_STREAM);
 
     spec_is_str_equal(output_data,"some time representation x 2");
     __r_kill(G_vm->r);
@@ -409,9 +413,8 @@ void testVMHostShell() {
     _v_free(G_vm);
     G_vm = NULL;
 
-
-    fclose(input);
-    fclose(output);
+    _st_free(input_stream);
+    _st_free(output_stream);
     free(output_data);
 }
 

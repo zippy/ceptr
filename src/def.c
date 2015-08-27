@@ -10,6 +10,7 @@
  */
 
 #include "tree.h"
+#include "stream.h"
 #include "def.h"
 #include "semtrex.h"
 char __d_extra_buf[100];
@@ -215,7 +216,7 @@ size_t _sys_structure_size(int id,void *surface) {
     case FLOAT_ID: return sizeof(float);
     case CSTRING_ID: return strlen(surface)+1;
     case XADDR_ID: return sizeof(Xaddr);
-    case STREAM_ID: return sizeof(FILE *);
+    case STREAM_ID: return sizeof(Stream);
     default: return -1;
     }
 }

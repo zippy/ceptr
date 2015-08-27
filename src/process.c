@@ -305,7 +305,9 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
         {
             // get the stream param
             T *s = _t_detach_by_idx(code,1);
-            FILE *stream =*(FILE**)_t_surface(s);
+            Stream *st = _t_surface(s);
+            if (st->type != UnixStream) raise_error("unknown stream type:%d\n",st->type);
+            FILE *stream = st->data.unix_stream;
             _t_free(s);
             // get the result type to use as the symbol type for the ascii data
             s = _t_detach_by_idx(code,1);
@@ -323,9 +325,16 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
                 while ((ch = fgetc (stream)) != EOF && ch != '\n' && i < 1000)
                     buf[i++] = ch;
 
-                //@todo what about the non-errno condition, just EOF.  We shouldn't really
-                // be returning and empty RESULT_SYMBOL
-                if (ch == EOF && errno) return unixErrnoReductionErr;
+                if (ch == EOF) {
+                    if (errno) return unixErrnoReductionErr;
+
+                    //@todo what about the non-errno condition, just EOF?  If this is the first
+                    // read, i.e. and there wasn't any data, we shouldn't really be returning
+                    // an empty RESULT_SYMBOL even if we've set StreamHasData correctly
+
+                    st->flags &= ~StreamHasData;
+                    debug(D_STREAM,"Got EOF during READ\n");
+               }
                 if (i>=1000) {raise_error("buffer overrun in STREAM_READ");}
 
                 buf[i++]=0;
@@ -339,14 +348,16 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
         {
             // get the stream param
             T *s = _t_detach_by_idx(code,1);
-            FILE *stream =*(FILE**)_t_surface(s);
+            Stream *st = _t_surface(s);
+            if (st->type != UnixStream) raise_error("unknown stream type:%d\n",st->type);
+            FILE *stream = st->data.unix_stream;
             _t_free(s);
             // get the data to write as string
             s = _t_detach_by_idx(code,1);
-            // @todo check the structre type to make sure it's compatible as a string (i.e. it's null terminated)
+            // @todo check the structure type to make sure it's compatible as a string (i.e. it's null terminated)
             // @todo other integrity checks, i.e. length etc?
             char *str = _t_surface(s);
-            //       printf("just wrote: %s\n",str);
+            debug(D_STREAM,"just wrote: %s\n",str);
             int err = fputs(str,stream);
             _t_free(s);
             if (err < 0) return unixErrnoReductionErr;
@@ -361,9 +372,12 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
         {
             // get the stream param
             T *s = _t_detach_by_idx(code,1);
-            FILE *stream =*(FILE**)_t_surface(s);
+            Stream *st = _t_surface(s);
+            if (st->type != UnixStream) raise_error("unknown stream type:%d\n",st->type);
+            FILE *stream = st->data.unix_stream;
+            if (feof(stream)) st->flags &= ~StreamHasData;
+            x = _t_newi(0,BOOLEAN, (st->flags&StreamHasData)?1:0);
             _t_free(s);
-            x = _t_newi(0,BOOLEAN,!feof(stream));
         }
         break;
     case REPLICATE_ID:
