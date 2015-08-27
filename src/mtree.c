@@ -17,7 +17,7 @@
 const H null_H = {0,{NULL_ADDR,NULL_ADDR}};
 
 // low-level function to allocate a new tree level to an mtree
-// @todo make this not realloc each time?
+/// @todo make this not realloc each time?
 void __m_add_level(M *m) {
     if (!m->levels++) {
     m->lP = malloc(sizeof(L));
@@ -30,7 +30,7 @@ void __m_add_level(M *m) {
 }
 
 // low-level function to add c nodes to given level
-// @todo make this not realloc each time!!
+/// @todo make this not realloc each time!!
 N *__m_add_nodes(H h,L *l,int c) {
     N *n;
     Mindex i = l->nodes;
@@ -478,7 +478,7 @@ void _m_walk(H h,void (*walkfn)(H ,N *,void *,MwalkState *,Maddr),void *user_dat
     Maddr ap = _m_parent(h);
     root = h.a.l;
     int done = 0;
-    // @todo checks to make sure root isn't deleted or null?
+    /// @todo checks to make sure root isn't deleted or null?
     L *l = GET_LEVEL(h);
     N *n;
     int backup,nodes = h.a.i+1; // at root level pretend we are at last node

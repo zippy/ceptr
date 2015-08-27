@@ -91,8 +91,8 @@ void testTreeNewReceptor() {
     //! [testTreeNewReceptor]
 }
 
-void testTreeNewScape() {
-    //! [testTreeNewScape]
+void testTreeScape() {
+    //! [testTreeScape]
     Scape *s = _s_new(TEST_INT_SYMBOL,TEST_STR_SYMBOL);
     T *ts = _t_new_scape(0,TEST_ALPHABETIZE_SCAPE_SYMBOL,s);
 
@@ -101,7 +101,7 @@ void testTreeNewScape() {
     spec_is_str_equal(t2s(ts),"(TEST_ALPHABETIZE_SCAPE_SYMBOL:key TEST_INT_SYMBOL,data TEST_STR_SYMBOL)");
 
     _t_free(ts); // note, no need to free the scape explicitly, as _t_free knows about it
-    //! [testTreeNewScape]
+    //! [testTreeScape]
 }
 
 void testTreeStream() {
@@ -514,7 +514,7 @@ void testTree() {
 
     testCreateTreeNodes();
     testTreeNewReceptor();
-    testTreeNewScape();
+    testTreeScape();
     testTreeStream();
     testTreeOrthogonal();
     testTreeRealloc();

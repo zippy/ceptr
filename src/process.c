@@ -44,7 +44,7 @@ void _p_interpolate_from_match(T *t,T *match_results,T *match_tree) {
         }
         _t_morph(t,x);
         // if the match has children, then we need to clone them in.
-        // @todo determine if this should be moved into _t_morph
+        /// @todo determine if this should be moved into _t_morph
         if (_t_children(t) == 0 && _t_children(x) > 0) {
             DO_KIDS(x,_t_add(t,_t_clone(_t_child(x,i))));
         }
@@ -99,7 +99,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
     switch(s.id) {
     case NOOP_ID:
         // noop simply replaces itself with it's own child
-        // @todo what happens if it has more than one child! validity check?
+        /// @todo what happens if it has more than one child! validity check?
         x = _t_detach_by_idx(code,1);
         break;
     case IF_ID:
@@ -193,7 +193,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
                 t->context.flags = TFLAG_ALLOCATED;
             }
         }
-        // @todo this would probably be faster with just one total realloc for all children
+        /// @todo this would probably be faster with just one total realloc for all children
         for(b=1;b<=c;b++) {
             str = (char *)_t_surface(_t_child(code,b));
             int size = strlen(str);
@@ -229,12 +229,12 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
 
             x = _t_newi(0,TEST_INT_SYMBOL,0);
         }
-        // @todo figure what RESPOND should return, since really it's a side-effect instruction
+        /// @todo figure what RESPOND should return, since really it's a side-effect instruction
         // perhaps some kind of signal context symbol or something.  Right now using TEST_INT_SYMBOL
         // as a bogus placeholder.
         break;
     case QUOTE_ID:
-        // @todo what happens if it has more than one child! validity check?
+        /// @todo what happens if it has more than one child! validity check?
         // Note that QUOTE seems to be the same as NOOP?
         x = _t_detach_by_idx(code,1);
         break;
@@ -285,7 +285,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
             if (_t_children(code) == 0) err = Send;
             else {
                 t = _t_detach_by_idx(code,1);
-                // @todo timeout or callback or whatever the heck in the async case
+                /// @todo timeout or callback or whatever the heck in the async case
                 _t_free(t);
                 err = SendAsync;
             }
@@ -295,7 +295,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
         match_results = _t_child(code,2);
         match_tree = _t_child(code,3);
         x = _t_detach_by_idx(code,1);
-        // @todo interpolation errors?
+        /// @todo interpolation errors?
         _p_interpolate_from_match(x,match_results,match_tree);
         break;
     case RAISE_ID:
@@ -354,8 +354,8 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
             _t_free(s);
             // get the data to write as string
             s = _t_detach_by_idx(code,1);
-            // @todo check the structure type to make sure it's compatible as a string (i.e. it's null terminated)
-            // @todo other integrity checks, i.e. length etc?
+            /// @todo check the structure type to make sure it's compatible as a string (i.e. it's null terminated)
+            /// @todo other integrity checks, i.e. length etc?
             char *str = _t_surface(s);
             debug(D_STREAM,"just wrote: %s\n",str);
             int err = fputs(str,stream);
@@ -364,7 +364,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
             fputs("\n",stream);
             if (err < 0) return unixErrnoReductionErr;
             fflush(stream);
-            // @todo what should this really return?
+            /// @todo what should this really return?
             x = _t_news(0,REDUCTION_ERROR_SYMBOL,NULL_SYMBOL);
         }
         break;
@@ -441,7 +441,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
             }
             if (done) {
                 // we are done so free up the replication state info
-                // @todo the value returned from the loop will be what??(what's in x)
+                /// @todo the value returned from the loop will be what??(what's in x)
                 _t_free(state->code);
                 free(state);
                 code->contents.size = 0;
@@ -657,7 +657,7 @@ Error _p_step(Defs *defs, R **contextP) {
                 _t_replace(context->parent, context->idx,np);
                 s = _t_symbol(np);
             }
-            // @todo what if the replaced parameter is itself a PARAM_REF tree ??
+            /// @todo what if the replaced parameter is itself a PARAM_REF tree ??
 
             // if this node is not a process, i.e. it's data, then we are done descending
             // and it will be the result so ascend
@@ -766,7 +766,7 @@ Error _p_step(Defs *defs, R **contextP) {
             case divideByZeroReductionErr: se=ZERO_DIVIDE_ERR;break;
             case incompatibleTypeReductionErr: se=INCOMPATIBLE_TYPE_ERR;break;
             case unixErrnoReductionErr:
-                // @todo make a better error symbol here... :-P
+                /// @todo make a better error symbol here... :-P
                 extra = _t_new_str(0,TEST_STR_SYMBOL,strerror(errno));
                 break;
             case raiseReductionErr:
@@ -1072,7 +1072,7 @@ Error _p_reduceq(Q *q) {
         qe = next ? next : q->active;  // next in round robin or wrap back to first
         pthread_mutex_unlock(&q->mutex);
     };
-    // @todo figure out what error we should be sending back here, i.e. what if
+    /// @todo figure out what error we should be sending back here, i.e. what if
     // one process ended ok, but one did not.  What's the error?  Probably
     // the errors here would be at a different level, and the caller would be
     // expected to inspect the errors of the reduced processes.

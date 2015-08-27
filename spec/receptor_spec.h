@@ -571,10 +571,10 @@ void testReceptorEdgeStream() {
 
     T *result = r->q->completed->context->run_tree;
 
-    // @todo BOOLEAN is what's left from the replicate.  Should it be something else?
+    /// @todo BOOLEAN is what's left from the replicate.  Should it be something else?
     spec_is_str_equal(_td(r,result),"(RUN_TREE (BOOLEAN:0))");
 
-    // @todo @fixme we get an empty line signal because STREAM_AVAILABLE still reads true just before the last
+    /// @todo @fixme we get an empty line signal because STREAM_AVAILABLE still reads true just before the last
     // STREAM_READ which fails.  This shouldn't actually have produced a signal...
     spec_is_str_equal(_td(r,r->q->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.0) (RECEPTOR_XADDR:INSTALLED_RECEPTOR.1) (ASPECT:1)) (BODY:{(LINE:line1)})) (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.0) (RECEPTOR_XADDR:INSTALLED_RECEPTOR.1) (ASPECT:1)) (BODY:{(LINE:line2)})) (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.0) (RECEPTOR_XADDR:INSTALLED_RECEPTOR.1) (ASPECT:1)) (BODY:{(LINE:)})))");
 
@@ -608,7 +608,7 @@ void testReceptorEdgeStream() {
 void _testReceptorClockAddListener(Receptor *r) {
     T *expect = _t_new_root(EXPECTATION);
 
-    // @todo figure out why looking for the SECOND down a walk match fails
+    /// @todo figure out why looking for the SECOND down a walk match fails
     // char *stx = "/<TICK:(%SECOND)>";
     // T *s = parseSemtrex(&r->d,stx);
     T *s = _t_news(expect,SEMTREX_GROUP,TICK);

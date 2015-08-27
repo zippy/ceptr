@@ -393,7 +393,7 @@ T * __transition(SState *s,T *t) {
 }
 
 // helper to see if the surface of given tree nodes matche
-// @todo move this to tree.c
+/// @todo move this to tree.c
 int _val_match(T *t,T *t1) {
 
     int i;
@@ -1012,7 +1012,7 @@ Symbol _get_symbol(char *symbol_name,Defs *d,Context ctx) {
 }
 
 // temporary function to look up a symbol name in a defintion
-// @todo convert this to use the label table
+/// @todo convert this to use the label table
 Symbol get_symbol(char *symbol_name,Defs *d) {
     Symbol s = _get_symbol(symbol_name,&G_sys_defs,SYS_CONTEXT);
     if (!semeq(s,NULL_SYMBOL))
@@ -1287,7 +1287,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 
         //----------------
         // ACTION
-        // @todo, this should be implemented using INTERPOLATE_MATCH
+        /// @todo, this should be implemented using INTERPOLATE_MATCH
         tokens = _t_new_root(STX_TOKENS);
         int i,m = _t_children(results);
         for(i=4;i<=m;i++) {

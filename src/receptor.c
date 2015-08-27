@@ -302,7 +302,7 @@ void _r_express_protocol(Receptor *r,int idx,Symbol sequence,Aspect aspect,T* ha
                     T *act = _t_child(step,3);
                     // if there is no action, then assume its the sequence endpoint
                     // and use the handler in its place
-                    // @todo revisit the assumption about handlers and endpoints
+                    /// @todo revisit the assumption about handlers and endpoints
                     if (act)
                         act = _t_clone(act);
                     else
@@ -457,7 +457,7 @@ void __r_check_listener(T* processes,T *listener,T *signal,Q *q) {
             R *context = *(R**) _t_surface(action);
 
             // for now we add the params to the contexts run tree
-            // @todo later this should be integrated into some kind of scoping handling
+            /// @todo later this should be integrated into some kind of scoping handling
             T *params = _t_clone(_t_child(listener,2));
             _p_interpolate_from_match(params,m,signal_contents);
             _t_add(_t_child(context->run_tree,2),params);
@@ -569,7 +569,7 @@ char *_td(Receptor *r,T *t) {
 
 Receptor *_r_makeStreamReaderReceptor(Symbol receptor_symbol,Symbol stream_symbol,Stream *st,Xaddr to) {
     Receptor *r = _r_new(receptor_symbol);
-    Symbol line = _r_declare_symbol(r,CSTRING,"LINE"); // @todo, should be shared symbol from compository, see #29...
+    Symbol line = _r_declare_symbol(r,CSTRING,"LINE"); /// @todo, should be shared symbol from compository, see #29...
 
     // code is something like:
     // (do (not stream eof) (send to (read_stream stream line)))
@@ -603,7 +603,7 @@ Receptor *_r_makeStreamWriterReceptor(Symbol receptor_symbol,Symbol stream_symbo
 
     T *expect = _t_new_root(EXPECTATION);
 
-    Symbol line = _r_declare_symbol(r,CSTRING,"LINE"); // @todo, should be shared symbol from compository, see #29...
+    Symbol line = _r_declare_symbol(r,CSTRING,"LINE"); /// @todo, should be shared symbol from compository, see #29...
     char *stx = "/<LINE:LINE>";
 
     // @fixme for some reason parseSemtrex doesn't clean up after itself
@@ -669,7 +669,7 @@ void *___clock_thread(void *arg){
         T *signal = __r_make_signal(self,self,DEFAULT_ASPECT,tick);
         _r_deliver(r,signal);
         sleep(1);
-        // @todo this will skip some seconds over time.... make more sophisticated
+        /// @todo this will skip some seconds over time.... make more sophisticated
         //       with nano-sleep so that we get every second?
     }
     debug(D_CLOCK,"clock stopped\n");

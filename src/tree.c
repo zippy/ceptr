@@ -183,7 +183,7 @@ T *__t_new_special(T *parent,Symbol symbol,void *s,size_t size,int flag,size_t a
  * @returns pointer to node allocated on the heap
  *
  * <b>Examples (from test suite):</b>
- * @snippet spec/tree_spec.h testTreeNewScae
+ * @snippet spec/tree_spec.h testTreeScape
  */
 T *_t_new_scape(T *parent,Symbol symbol,Scape *s) {
     return __t_new_special(parent,symbol,s,sizeof(Scape),TFLAG_SURFACE_IS_SCAPE,sizeof(T));
@@ -200,7 +200,7 @@ T *_t_new_scape(T *parent,Symbol symbol,Scape *s) {
  * @returns pointer to node allocated on the heap
  *
  * <b>Examples (from test suite):</b>
- * @snippet spec/tree_spec.h testTreeNewStream
+ * @snippet spec/tree_spec.h testTreeStream
  */
 T *_t_new_stream(T *parent,Symbol symbol,Stream *s) {
     return __t_new_special(parent,symbol,s,sizeof(Stream),TFLAG_SURFACE_IS_STREAM+TFLAG_REFERENCE,sizeof(T));
@@ -465,7 +465,7 @@ void _t_free(T *t) {
     free(t);
 }
 
-// @todo, figure out how to clone trees with non-reference things, like scapes & streams...
+/// @todo, figure out how to clone trees with non-reference things, like scapes & streams...
 // convert all cloned T nodes into refs?
 
 T *__t_clone(T *t,T *p) {
@@ -564,21 +564,46 @@ size_t _t_size(T *t) {
 
 /*****************  Tree navigation */
 
+/**
+ * Get a tree node's nth child
+ *
+ * @param[in] t the node
+ * @param[in] i desired child
+ * @returns child or NULL if that child doesn't exist
+ */
 T *_t_child(T *t,int i) {
     if (i>t->structure.child_count || i < 1) return 0;
     return t->structure.children[i-1];
 }
 
+/**
+ * Get a tree node's parent
+ *
+ * @param[in] t the node
+ * @returns parent or NULL if node is root
+ */
 T * _t_parent(T *t) {
     return t->structure.parent;
 }
 
+/**
+ * Get a tree node's root parent
+ *
+ * @param[in] t the node
+ * @returns root node by walking up the parents
+ */
 T * _t_root(T *t) {
     T *p;
     while ((p = _t_parent(t)) != 0) t = p;
     return t;
 }
 
+/**
+ * Get a tree node's index position
+ *
+ * @param[in] t the node
+ * @returns the index of the node
+ */
 int _t_node_index(T *t) {
     int c;
     int i;
@@ -593,7 +618,14 @@ int _t_node_index(T *t) {
     return 0;
 }
 
-/// @todo  this is very expensive if called all the time!!!
+/**
+ * Get a tree node's index position
+ *
+ * @param[in] t the node
+ * @returns the index of the node
+ *
+ * @todo improve algorithm as this is very expensive if called all the time.
+ */
 T * _t_next_sibling(T *t) {
     int c;
     int i;

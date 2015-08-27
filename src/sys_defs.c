@@ -173,13 +173,13 @@ void def_sys() {
 
     sY(PROTOCOLS,LIST);
     sY(SEQUENCES,LIST);
-    //    sY(SEQUENCE,LIST); // @todo this should really be a structure be we don't have optional elements yet....
+    //    sY(SEQUENCE,LIST); /// @todo this should really be a structure be we don't have optional elements yet....
     sY(STEP_SYMBOL,SYMBOL);
     sY(STEPS,LIST);
     sT(SEQUENCE,1,STEP_SYMBOL); // this really should specify one or more step_symbols
     sT(PROTOCOL_STEP,3,EXPECTATION,PARAMS,ACTION);
     sY(INTERACTIONS,LIST);
-    sY(INTERACTION,LIST); // @todo this should really be a structure be we don't have optional elements yet....
+    sY(INTERACTION,LIST); /// @todo this should really be a structure be we don't have optional elements yet....
     sY(STEP,CSTRING);
     sY(RESPONSE_STEPS,LIST);
     sT(PROTOCOL,2,STEPS,SEQUENCES);

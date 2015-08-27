@@ -143,7 +143,7 @@ void testProcessIntMath() {
     spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:199)");
     _t_free(n);
 
-    // @todo structure type checking for integer math?  Too expensive?
+    /// @todo structure type checking for integer math?  Too expensive?
     // where do we get the defs.  Right now they are referred to in the process q
     // which the contexts don't have direct access to.
     /* n = _t_new_root(ADD_INT); */

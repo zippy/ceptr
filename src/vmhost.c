@@ -93,7 +93,7 @@ Xaddr _v_install_r(VMHost *v,Xaddr package,T *bindings,char *label) {
     _s_add(v->installed_receptors,h,package);
 
     // confirm that the bindings match the manifest
-    // @todo expand the manifest to allow optional binding, etc, using semtrex to do the matching instead of assuming positional matching
+    /// @todo expand the manifest to allow optional binding, etc, using semtrex to do the matching instead of assuming positional matching
     if (bindings) {
         T *m = _t_child(p,1);
         int c = _t_children(m);
@@ -200,7 +200,7 @@ void _v_deliver_signals(VMHost *v) {
     __v_deliver_signals(v->r,signals,&v->r->instances);
 }
 
-// @todo this should probably be implemented in a scape but for now
+/// @todo this should probably be implemented in a scape but for now
 // we just loop through all instances searching for a match
 Xaddr __v_get_receptor_xaddr(Instances *instances,Receptor *r) {
     instances_elem *e = 0;
@@ -276,7 +276,7 @@ void *__v_process(void *arg) {
 
         c = _t_children(v->active_receptors);
         for (i=1;v->r->state == Alive && i<=c;i++) {
-            // @todo refactor being able to walk through all currently active receptors
+            /// @todo refactor being able to walk through all currently active receptors
             Receptor *r = __r_get_receptor(_t_child(v->active_receptors,i));
             if (r->q && r->q->contexts_count > 0) {
                 _p_reduceq(r->q);

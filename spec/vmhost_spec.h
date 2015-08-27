@@ -218,7 +218,7 @@ void testVMHostCreate() {
 /*     T *s_host = _t_new(s,HTTP_REQUEST_HOST,"helloworld.com",15); */
 
 /*     // put it on the flux to simulate that it has just been parsed out of an octet stream from a TCP/IP receptor */
-/*     // @todo */
+/*     /// @todo */
 /*     //int path[] = {1,2,TREE_PATH_TERMINATOR}; */
 /*     //T *fs = _t_get(httpd_r->flux,path); */
 
@@ -329,7 +329,7 @@ void testVMHostShell() {
     // create the shell receptor
     Symbol shell = _r_declare_symbol(G_vm->r,RECEPTOR,"shell");
     Receptor *r = _r_new(shell);
-    Symbol line = _r_declare_symbol(r,CSTRING,"LINE"); // @todo, should be shared symbol from compository, see #29...
+    Symbol line = _r_declare_symbol(r,CSTRING,"LINE"); /// @todo, should be shared symbol from compository, see #29...
 
     Symbol verb = _r_declare_symbol(r,CSTRING,"verb");
     Structure command = _r_define_structure(r,"command",1,verb); // need the optional parameters part here
