@@ -26,6 +26,8 @@ var group__receptor =
     [ "_r_get_structure_by_label", "group__receptor.html#gaba7efd4ebd9a5e6b737355fbc45d9a50", null ],
     [ "_r_get_symbol_by_label", "group__receptor.html#gacce906c9de30765f458599777b72be90", null ],
     [ "_r_hash", "group__receptor.html#ga1570f1fca510bdaf19d044592ee035ce", null ],
+    [ "_r_makeStreamReaderReceptor", "group__receptor.html#gaa6c00fcf9178ca3b85566ee02fc7022d", null ],
+    [ "_r_makeStreamWriterReceptor", "group__receptor.html#gafeb11f99c9aea801cb188cc012b62a12", null ],
     [ "_r_new", "group__receptor.html#ga62c253e7cc1d1ad20471913ae822ebc2", null ],
     [ "_r_new_instance", "group__receptor.html#gadd08a3c284251a2ec7e03b8f91eddc5c", null ],
     [ "_r_new_receptor_from_package", "group__receptor.html#ga7a6afdc039a31cdf24bf93dd0475b72b", null ],

@@ -174,8 +174,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_start_thread</b> (
 <tr class="memitem:ga8edbcf5d94cd60d476c67f0431a2aa70"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga8edbcf5d94cd60d476c67f0431a2aa70"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_join_thread</b> (<a class="el" href="structthread.html">thread</a> *t)</td></tr>
 <tr class="separator:ga8edbcf5d94cd60d476c67f0431a2aa70"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga861469ce8640d16306fb6bdbb6e43f54"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga861469ce8640d16306fb6bdbb6e43f54"></a>
-<a class="el" href="structXaddr.html">Xaddr</a>&#160;</td><td class="memItemRight" valign="bottom"><b>__v_get_receptor_xaddr</b> (<a class="el" href="structinstances__elem.html">Instances</a> *instances, <a class="el" href="structReceptor.html">Receptor</a> *r)</td></tr>
+<tr class="memitem:ga861469ce8640d16306fb6bdbb6e43f54"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structXaddr.html">Xaddr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vmhost.html#ga861469ce8640d16306fb6bdbb6e43f54">__v_get_receptor_xaddr</a> (<a class="el" href="structinstances__elem.html">Instances</a> *instances, <a class="el" href="structReceptor.html">Receptor</a> *r)</td></tr>
 <tr class="separator:ga861469ce8640d16306fb6bdbb6e43f54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -213,9 +212,38 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_join_thread</b> (<
   </table>
   </dd>
 </dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000026">Todo:</a></b></dt><dd>for now we are just storing the active receptors in the receptor tree later this will probably have to be optimized into a hash/scape for faster access </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000053">Todo:</a></b></dt><dd>for now we are just storing the active receptors in the receptor tree later this will probably have to be optimized into a hash/scape for faster access </dd></dl>
 
 <p>Definition at line <a class="el" href="vmhost_8c_source.html#l00165">165</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga861469ce8640d16306fb6bdbb6e43f54"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structXaddr.html">Xaddr</a> __v_get_receptor_xaddr </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structinstances__elem.html">Instances</a> *&#160;</td>
+          <td class="paramname"><em>instances</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structReceptor.html">Receptor</a> *&#160;</td>
+          <td class="paramname"><em>r</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000055">Todo:</a></b></dt><dd>this should probably be implemented in a scape but for now </dd></dl>
+
+<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00205">205</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
 
 </div>
 </div>
@@ -233,6 +261,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_join_thread</b> (<
       </table>
 </div><div class="memdoc">
 <p>this is the VMhost main monitoring and execution thread </p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000056">Todo:</a></b></dt><dd>refactor being able to walk through all currently active receptors </dd></dl>
 
 <p>Definition at line <a class="el" href="vmhost_8c_source.html#l00260">260</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
 
@@ -270,7 +299,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_join_thread</b> (<
   </table>
   </dd>
 </dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000025">Todo:</a></b></dt><dd>for now we are just storing the active receptors in the receptor tree later this will probably have to be optimized into a hash/scape for faster access </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000052">Todo:</a></b></dt><dd>for now we are just storing the active receptors in the receptor tree later this will probably have to be optimized into a hash/scape for faster access </dd></dl>
 
 <p>Definition at line <a class="el" href="vmhost_8c_source.html#l00143">143</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
 
@@ -394,7 +423,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_join_thread</b> (<
 <div class="line"><span class="comment">/*     spec_is_xaddr_equal(v-&gt;r,_s_get(v-&gt;installed_receptors,h),xp); */</span></div>
 <div class="line"></div>
 <div class="line"><span class="comment">/*     _v_free(v); */</span></div>
-</div><!-- fragment -->
+</div><!-- fragment --><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000051">Todo:</a></b></dt><dd>expand the manifest to allow optional binding, etc, using semtrex to do the matching instead of assuming positional matching </dd></dl>
+
 <p>Definition at line <a class="el" href="vmhost_8c_source.html#l00085">85</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
 
 </div>
@@ -450,7 +480,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_join_thread</b> (<
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structXaddr.html">Xaddr</a> of the receptor package in the compository </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000024">Todo:</a></b></dt><dd>validate signature and checksums??</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000050">Todo:</a></b></dt><dd>validate signature and checksums??</dd></dl>
 <p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line"><span class="comment">/*     VMHost *v = _v_new(); */</span></div>
 <div class="line"><span class="comment">/*     T *p = _makeTestHTTPAppReceptorPackage(); */</span></div>
 <div class="line"></div>
@@ -536,7 +566,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_join_thread</b> (<
       </table>
 </div><div class="memdoc">
 <p>queue a signal for processing</p>
-<p>first builds a SIGNAL tree, then instantiates and scapes it </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000027">Todo:</a></b></dt><dd>understand how it makes any sense at all to make an instance of the signal in context of the vmhost in which the content tree's symbols aren't defined!!!</dd></dl>
+<p>first builds a SIGNAL tree, then instantiates and scapes it </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000054">Todo:</a></b></dt><dd>understand how it makes any sense at all to make an instance of the signal in context of the vmhost in which the content tree's symbols aren't defined!!!</dd></dl>
 <p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line"><span class="comment">/*     VMHost *v = _v_new(); */</span></div>
 <div class="line"></div>
 <div class="line"><span class="comment">/*     // create and install a stub HTTP server receptor */</span></div>
@@ -596,7 +626,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_join_thread</b> (<
 <div class="line"><span class="comment">/*     T *s_host = _t_new(s,HTTP_REQUEST_HOST,&quot;helloworld.com&quot;,15); */</span></div>
 <div class="line"></div>
 <div class="line"><span class="comment">/*     // put it on the flux to simulate that it has just been parsed out of an octet stream from a TCP/IP receptor */</span></div>
-<div class="line"><span class="comment">/*     // @todo */</span></div>
+<div class="line"><span class="comment">/*     /// @todo */</span></div>
 <div class="line"><span class="comment">/*     //int path[] = {1,2,TREE_PATH_TERMINATOR}; */</span></div>
 <div class="line"><span class="comment">/*     //T *fs = _t_get(httpd_r-&gt;flux,path); */</span></div>
 <div class="line"></div>
@@ -655,7 +685,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_join_thread</b> (<
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Aug 27 2015 12:15:10 for ceptr by
+    <li class="footer">Generated on Thu Aug 27 2015 12:41:29 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

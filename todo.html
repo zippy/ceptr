@@ -101,47 +101,96 @@ $(document).ready(function(){initNavTree('todo.html','');});
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><dl class="reflist">
-<dt><a class="anchor" id="_todo000017"></a>Global <a class="el" href="group__receptor.html#ga4cb85b79ae4207e4595d003d11beb226">___clock_thread</a>  (void *arg)</dt>
+<dt><a class="anchor" id="_todo000037"></a>Global <a class="el" href="group__receptor.html#ga4cb85b79ae4207e4595d003d11beb226">___clock_thread</a>  (void *arg)</dt>
 <dd>: a better implementation would be to analyze the semtrex expectations that have been planted and only wakeup when needed based on those semtrexes </dd>
 <dt><a class="anchor" id="_todo000003"></a>Global <a class="el" href="group__def.html#ga1d2aa234fafcdaef75d7197343d5ba66">__d_code_process</a>  (<a class="el" href="structT.html">T</a> *processes, <a class="el" href="structT.html">T</a> *code, char *name, char *intention, <a class="el" href="structT.html">T</a> *in, <a class="el" href="structT.html">T</a> *out)</dt>
 <dd>this is not thread safe! </dd>
-<dt><a class="anchor" id="_todo000009"></a>Global <a class="el" href="process_8c.html#a4d31f2429d3801e91d94165974b3b80e">__p_check_signature</a>  (<a class="el" href="structDefs.html">Defs</a> *defs, Process p, <a class="el" href="structT.html">T</a> *params)</dt>
+<dt><a class="anchor" id="_todo000006"></a>Global <a class="el" href="mtree_8c.html#ac998c85aa041115374dd7de3db2ad0e3">__m_add_level</a>  (<a class="el" href="structM.html">M</a> *m)</dt>
+<dd>make this not realloc each time?  </dd>
+<dt><a class="anchor" id="_todo000007"></a>Global <a class="el" href="mtree_8c.html#ad787e09f41339d2e4d72722558c6ce9e">__m_add_nodes</a>  (<a class="el" href="structH.html">H</a> h, <a class="el" href="structL.html">L</a> *l, int c)</dt>
+<dd>make this not realloc each time!!  </dd>
+<dt><a class="anchor" id="_todo000012"></a>Global <a class="el" href="process_8c.html#a4d31f2429d3801e91d94165974b3b80e">__p_check_signature</a>  (<a class="el" href="structDefs.html">Defs</a> *defs, Process p, <a class="el" href="structT.html">T</a> *params)</dt>
 <dd>add SIGNATURE_SYMBOL for setting up process signatures by Symbol not just Structure  </dd>
-<dt><a class="anchor" id="_todo000014"></a>Global <a class="el" href="group__receptor.html#ga475101caa9d56e6398d93dc3b4c9b616">__r_make_signal</a>  (<a class="el" href="structXaddr.html">Xaddr</a> from, <a class="el" href="structXaddr.html">Xaddr</a> to, Aspect aspect, <a class="el" href="structT.html">T</a> *signal_contents)</dt>
+<dt><a class="anchor" id="_todo000013"></a>Global <a class="el" href="process_8h.html#acebcbe8d4caa12144a82edc18aa65492">__p_reduce_sys_proc</a>  (<a class="el" href="structR.html">R</a> *context, Symbol s, <a class="el" href="structT.html">T</a> *code)</dt>
+<dd><p class="startdd">what happens if it has more than one child! validity check? </p>
+<p>this would probably be faster with just one total realloc for all children </p>
+<p>figure what RESPOND should return, since really it's a side-effect instruction </p>
+<p>what happens if it has more than one child! validity check? </p>
+<p>timeout or callback or whatever the heck in the async case </p>
+<p>interpolation errors? </p>
+<p>check the structure type to make sure it's compatible as a string (i.e. it's null terminated) </p>
+<p>other integrity checks, i.e. length etc? </p>
+<p>what should this really return? </p>
+<p>the value returned from the loop will be what??(what's in x) </p>
+<p>this would probably be faster with just one total realloc for all children </p>
+<p>figure what RESPOND should return, since really it's a side-effect instruction </p>
+<p>what happens if it has more than one child! validity check? </p>
+<p>timeout or callback or whatever the heck in the async case </p>
+<p>interpolation errors? </p>
+<p>check the structure type to make sure it's compatible as a string (i.e. it's null terminated) </p>
+<p>other integrity checks, i.e. length etc? </p>
+<p>what should this really return? </p>
+<p class="enddd">the value returned from the loop will be what??(what's in x)  </p>
+</dd>
+<dt><a class="anchor" id="_todo000032"></a>Global <a class="el" href="group__receptor.html#ga74ad11561e8e391a1ebed9f7474ce095">__r_check_listener</a>  (<a class="el" href="structT.html">T</a> *processes, <a class="el" href="structT.html">T</a> *listener, <a class="el" href="structT.html">T</a> *signal, <a class="el" href="structQ.html">Q</a> *q)</dt>
+<dd>later this should be integrated into some kind of scoping handling  </dd>
+<dt><a class="anchor" id="_todo000031"></a>Global <a class="el" href="group__receptor.html#ga475101caa9d56e6398d93dc3b4c9b616">__r_make_signal</a>  (<a class="el" href="structXaddr.html">Xaddr</a> from, <a class="el" href="structXaddr.html">Xaddr</a> to, Aspect aspect, <a class="el" href="structT.html">T</a> *signal_contents)</dt>
 <dd>signal should have timestamps and other meta info  </dd>
-<dt><a class="anchor" id="_todo000018"></a>Global <a class="el" href="group__tree.html#gad6597b652983165f6b2993211a598ad4">__t_morph</a>  (<a class="el" href="structT.html">T</a> *t, Symbol s, void *surface, size_t length, int allocate)</dt>
+<dt><a class="anchor" id="_todo000045"></a>Global <a class="el" href="tree_8c.html#ae39e9df3e49a81dd7abc83771a7eecee">__t_clone</a>  (<a class="el" href="structT.html">T</a> *t, <a class="el" href="structT.html">T</a> *p)</dt>
+<dd>, figure out how to clone trees with non-reference things, like scapes &amp; streams...  </dd>
+<dt><a class="anchor" id="_todo000043"></a>Global <a class="el" href="group__tree.html#gad6597b652983165f6b2993211a598ad4">__t_morph</a>  (<a class="el" href="structT.html">T</a> *t, Symbol s, void *surface, size_t length, int allocate)</dt>
 <dd>Handle the case where the surface of the node to be morphed is itself a tree  </dd>
-<dt><a class="anchor" id="_todo000023"></a>Global <a class="el" href="group__tree.html#ga4b3d9a3a1c1bc4a7fb710e96faf1d437">__t_serialize</a>  (<a class="el" href="structDefs.html">Defs</a> *d, <a class="el" href="structT.html">T</a> *t, void **bufferP, size_t offset, size_t current_size, int compact)</dt>
+<dt><a class="anchor" id="_todo000049"></a>Global <a class="el" href="group__tree.html#ga4b3d9a3a1c1bc4a7fb710e96faf1d437">__t_serialize</a>  (<a class="el" href="structDefs.html">Defs</a> *d, <a class="el" href="structT.html">T</a> *t, void **bufferP, size_t offset, size_t current_size, int compact)</dt>
 <dd>compact is really a shorthand for whether this is a fixed size tree or not this should actually be determined on the fly by looking at the structure types.  </dd>
-<dt><a class="anchor" id="_todo000026"></a>Global <a class="el" href="group__vmhost.html#ga066ae2bbe18ed4c9357526118dd1d2b9">__v_activate</a>  (<a class="el" href="structVMHost.html">VMHost</a> *v, <a class="el" href="structReceptor.html">Receptor</a> *r)</dt>
+<dt><a class="anchor" id="_todo000053"></a>Global <a class="el" href="group__vmhost.html#ga066ae2bbe18ed4c9357526118dd1d2b9">__v_activate</a>  (<a class="el" href="structVMHost.html">VMHost</a> *v, <a class="el" href="structReceptor.html">Receptor</a> *r)</dt>
 <dd>for now we are just storing the active receptors in the receptor tree later this will probably have to be optimized into a hash/scape for faster access  </dd>
+<dt><a class="anchor" id="_todo000055"></a>Global <a class="el" href="group__vmhost.html#ga861469ce8640d16306fb6bdbb6e43f54">__v_get_receptor_xaddr</a>  (Instances *instances, <a class="el" href="structReceptor.html">Receptor</a> *r)</dt>
+<dd>this should probably be implemented in a scape but for now  </dd>
+<dt><a class="anchor" id="_todo000056"></a>Global <a class="el" href="group__vmhost.html#ga19975d66a0fa04365bf89250bdede501">__v_process</a>  (void *arg)</dt>
+<dd>refactor being able to walk through all currently active receptors  </dd>
 <dt><a class="anchor" id="_todo000005"></a>Global <a class="el" href="group__def.html#ga6b69968d56f5f2bc98f426c560af348d">_d_build_def_semtrex</a>  (<a class="el" href="structDefs.html">Defs</a> defs, Symbol s, <a class="el" href="structT.html">T</a> *parent)</dt>
 <dd>currently this won't detect an incorrect strcture with extra children. This is because we don't haven't yet implemented the equivalent of "$" for semtrex. </dd>
 <dt><a class="anchor" id="_todo000004"></a>Global <a class="el" href="group__def.html#ga33c6ec0c2bc81bfa149b8f883300d67d">_d_code_process</a>  (<a class="el" href="structT.html">T</a> *processes, <a class="el" href="structT.html">T</a> *code, char *name, char *intention, <a class="el" href="structT.html">T</a> *in, <a class="el" href="structT.html">T</a> *out, Context c)</dt>
 <dd>this is not thread safe! </dd>
 <dt><a class="anchor" id="_todo000002"></a>Global <a class="el" href="group__def.html#ga5515e357743a74aaafdc6be8e7c045df">_d_declare_symbol</a>  (<a class="el" href="structT.html">T</a> *symbols, Structure s, char *label, Context c)</dt>
 <dd>this is not thread safe! </dd>
-<dt><a class="anchor" id="_todo000006"></a>Global <a class="el" href="label_8c.html#a45355417a02622e0673f368efe2b59ff">_labelDelete</a>  (LabelTable *table, Label l)</dt>
-<dd>label delete  </dd>
-<dt><a class="anchor" id="_todo000010"></a>Global <a class="el" href="process_8h.html#acd000cf38ec2232938329c07683c7b06">_p_addrt2q</a>  (<a class="el" href="structQ.html">Q</a> *q, <a class="el" href="structT.html">T</a> *t)</dt>
+<dt><a class="anchor" id="_todo000008"></a>Global <a class="el" href="mtree_8h.html#ac2c4b050224da6010e036ff381f31c3e">_m_walk</a>  (<a class="el" href="structH.html">H</a> h, void(*walkfn)(<a class="el" href="structH.html">H</a>, <a class="el" href="structN.html">N</a> *, void *, <a class="el" href="structMwalkState.html">MwalkState</a> *, <a class="el" href="structMaddr.html">Maddr</a>), void *user_data)</dt>
+<dd>checks to make sure root isn't deleted or null?  </dd>
+<dt><a class="anchor" id="_todo000025"></a>Global <a class="el" href="process_8h.html#acd000cf38ec2232938329c07683c7b06">_p_addrt2q</a>  (<a class="el" href="structQ.html">Q</a> *q, <a class="el" href="structT.html">T</a> *t)</dt>
 <dd>make thread safe. currently you shouldn't call this if the <a class="el" href="structQ.html">Q</a> is being actively reduced  </dd>
-<dt><a class="anchor" id="_todo000010"></a>Global <a class="el" href="process_8h.html#acd000cf38ec2232938329c07683c7b06">_p_addrt2q</a>  (<a class="el" href="structQ.html">Q</a> *q, <a class="el" href="structT.html">T</a> *t)</dt>
+<dt><a class="anchor" id="_todo000025"></a>Global <a class="el" href="process_8h.html#acd000cf38ec2232938329c07683c7b06">_p_addrt2q</a>  (<a class="el" href="structQ.html">Q</a> *q, <a class="el" href="structT.html">T</a> *t)</dt>
 <dd>make thread safe. currently you shouldn't call this if the <a class="el" href="structQ.html">Q</a> is being actively reduced  </dd>
-<dt><a class="anchor" id="_todo000008"></a>Global <a class="el" href="process_8c.html#a98556348d3f5fbc7334184249fbe9127">_p_interpolate_from_match</a>  (<a class="el" href="structT.html">T</a> *t, <a class="el" href="structT.html">T</a> *match_results, <a class="el" href="structT.html">T</a> *match_tree)</dt>
-<dd>what to do if match has sibs??  </dd>
-<dt><a class="anchor" id="_todo000012"></a>Global <a class="el" href="group__receptor.html#gaa8c97a2acf18af02e4e582d15932640c">_r_def_match</a>  (<a class="el" href="structReceptor.html">Receptor</a> *r, Symbol s, <a class="el" href="structT.html">T</a> *t)</dt>
+<dt><a class="anchor" id="_todo000010"></a>Global <a class="el" href="process_8c.html#a98556348d3f5fbc7334184249fbe9127">_p_interpolate_from_match</a>  (<a class="el" href="structT.html">T</a> *t, <a class="el" href="structT.html">T</a> *match_results, <a class="el" href="structT.html">T</a> *match_tree)</dt>
+<dd><p class="startdd">what to do if match has sibs?? </p>
+<p>determine if this should be moved into _t_morph </p>
+<p class="enddd">determine if this should be moved into _t_morph  </p>
+</dd>
+<dt><a class="anchor" id="_todo000026"></a>Global <a class="el" href="process_8h.html#a64e8965291c67057b06f273db19a465d">_p_reduceq</a>  (<a class="el" href="structQ.html">Q</a> *q)</dt>
+<dd>figure out what error we should be sending back here, i.e. what if  </dd>
+<dt><a class="anchor" id="_todo000023"></a>Global <a class="el" href="process_8h.html#a208c2bb21125a1add95c66a358800271">_p_step</a>  (<a class="el" href="structDefs.html">Defs</a> *defs, <a class="el" href="structR.html">R</a> **contextP)</dt>
+<dd><p class="startdd">what if the replaced parameter is itself a PARAM_REF tree ?? </p>
+<p>make a better error symbol here... :-P </p>
+<p class="enddd">make a better error symbol here... :-P  </p>
+</dd>
+<dt><a class="anchor" id="_todo000028"></a>Global <a class="el" href="group__receptor.html#gaa8c97a2acf18af02e4e582d15932640c">_r_def_match</a>  (<a class="el" href="structReceptor.html">Receptor</a> *r, Symbol s, <a class="el" href="structT.html">T</a> *t)</dt>
 <dd>currently this just matches on a semtrex. It should also look at the surface sizes to see if they meet the criteria of the structure definitions. </dd>
-<dt><a class="anchor" id="_todo000015"></a>Global <a class="el" href="group__receptor.html#ga7d40f33135ee51640d0d24b8c9e3e046">_r_deliver</a>  (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structT.html">T</a> *signal)</dt>
+<dt><a class="anchor" id="_todo000033"></a>Global <a class="el" href="group__receptor.html#ga7d40f33135ee51640d0d24b8c9e3e046">_r_deliver</a>  (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structT.html">T</a> *signal)</dt>
 <dd>for now the signal param is added directly to the flux. Later it should probably be cloned? or there should be a parameter to choose? </dd>
-<dt><a class="anchor" id="_todo000013"></a>Global <a class="el" href="group__receptor.html#gadd08a3c284251a2ec7e03b8f91eddc5c">_r_new_instance</a>  (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structT.html">T</a> *t)</dt>
+<dt><a class="anchor" id="_todo000029"></a>Global <a class="el" href="group__receptor.html#ga41c4e57e15ff758a44e0119a1f18ed2d">_r_express_protocol</a>  (<a class="el" href="structReceptor.html">Receptor</a> *r, int idx, Symbol sequence, Aspect aspect, <a class="el" href="structT.html">T</a> *handler)</dt>
+<dd>revisit the assumption about handlers and endpoints  </dd>
+<dt><a class="anchor" id="_todo000035"></a>Global <a class="el" href="group__receptor.html#gaa6c00fcf9178ca3b85566ee02fc7022d">_r_makeStreamReaderReceptor</a>  (Symbol receptor_symbol, Symbol stream_symbol, <a class="el" href="structStream.html">Stream</a> *stream, <a class="el" href="structXaddr.html">Xaddr</a> to)</dt>
+<dd>, should be shared symbol from compository, see #29...  </dd>
+<dt><a class="anchor" id="_todo000036"></a>Global <a class="el" href="group__receptor.html#gafeb11f99c9aea801cb188cc012b62a12">_r_makeStreamWriterReceptor</a>  (Symbol receptor_symbol, Symbol stream_symbol, <a class="el" href="structStream.html">Stream</a> *stream)</dt>
+<dd>, should be shared symbol from compository, see #29...  </dd>
+<dt><a class="anchor" id="_todo000030"></a>Global <a class="el" href="group__receptor.html#gadd08a3c284251a2ec7e03b8f91eddc5c">_r_new_instance</a>  (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structT.html">T</a> *t)</dt>
 <dd>currently stores instances in a hash of hashes, this will later be handled by interacting with the data-engine. </dd>
-<dt><a class="anchor" id="_todo000011"></a>Global <a class="el" href="group__receptor.html#ga7a6afdc039a31cdf24bf93dd0475b72b">_r_new_receptor_from_package</a>  (Symbol s, <a class="el" href="structT.html">T</a> *p, <a class="el" href="structT.html">T</a> *bindings)</dt>
+<dt><a class="anchor" id="_todo000027"></a>Global <a class="el" href="group__receptor.html#ga7a6afdc039a31cdf24bf93dd0475b72b">_r_new_receptor_from_package</a>  (Symbol s, <a class="el" href="structT.html">T</a> *p, <a class="el" href="structT.html">T</a> *bindings)</dt>
 <dd>implement bindings  </dd>
-<dt><a class="anchor" id="_todo000020"></a>Global <a class="el" href="group__tree.html#ga7535eb2963c6cf5fc78cb14287581f92">_t_clone</a>  (<a class="el" href="structT.html">T</a> *t)</dt>
+<dt><a class="anchor" id="_todo000046"></a>Global <a class="el" href="group__tree.html#ga7535eb2963c6cf5fc78cb14287581f92">_t_clone</a>  (<a class="el" href="structT.html">T</a> *t)</dt>
 <dd>make this work with trees that have orthogonal trees!  </dd>
-<dt><a class="anchor" id="_todo000019"></a>Global <a class="el" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>  (<a class="el" href="structT.html">T</a> *t)</dt>
+<dt><a class="anchor" id="_todo000044"></a>Global <a class="el" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>  (<a class="el" href="structT.html">T</a> *t)</dt>
 <dd>make this remove the child from the parent's child-list?  </dd>
-<dt><a class="anchor" id="_todo000022"></a>Global <a class="el" href="group__tree.html#gae4c9b743462f0a3808c9f02c3bf33da8">_t_get_path</a>  (<a class="el" href="structT.html">T</a> *t)</dt>
+<dt><a class="anchor" id="_todo000048"></a>Global <a class="el" href="group__tree.html#gae4c9b743462f0a3808c9f02c3bf33da8">_t_get_path</a>  (<a class="el" href="structT.html">T</a> *t)</dt>
 <dd>implement jumping into orthogonal trees (i.e. return paths with 0 in them) <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">t</td><td>tree node </td></tr>
@@ -150,27 +199,47 @@ $(document).ready(function(){initNavTree('todo.html','');});
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>path of node </dd></dl>
 </dd>
-<dt><a class="anchor" id="_todo000021"></a>Global <a class="el" href="group__tree.html#ga57e9b6efeca702757896ce2ca5a720af">_t_next_sibling</a>  (<a class="el" href="structT.html">T</a> *t)</dt>
-<dd>this is very expensive if called all the time!!!  </dd>
-<dt><a class="anchor" id="_todo000025"></a>Global <a class="el" href="group__vmhost.html#ga53694170e5452b8062ec405e6a9a3f60">_v_activate</a>  (<a class="el" href="structVMHost.html">VMHost</a> *v, <a class="el" href="structXaddr.html">Xaddr</a> x)</dt>
+<dt><a class="anchor" id="_todo000047"></a>Global <a class="el" href="group__tree.html#ga57e9b6efeca702757896ce2ca5a720af">_t_next_sibling</a>  (<a class="el" href="structT.html">T</a> *t)</dt>
+<dd>improve algorithm as this is very expensive if called all the time.  </dd>
+<dt><a class="anchor" id="_todo000061"></a>Global <a class="el" href="receptor__spec_8h.html#a7ea907b2faa0b14f8e4858ff1b453bbf">_testReceptorClockAddListener</a>  (<a class="el" href="structReceptor.html">Receptor</a> *r)</dt>
+<dd>figure out why looking for the SECOND down a walk match fails  </dd>
+<dt><a class="anchor" id="_todo000052"></a>Global <a class="el" href="group__vmhost.html#ga53694170e5452b8062ec405e6a9a3f60">_v_activate</a>  (<a class="el" href="structVMHost.html">VMHost</a> *v, <a class="el" href="structXaddr.html">Xaddr</a> x)</dt>
 <dd>for now we are just storing the active receptors in the receptor tree later this will probably have to be optimized into a hash/scape for faster access  </dd>
-<dt><a class="anchor" id="_todo000024"></a>Global <a class="el" href="group__vmhost.html#ga77978d4eb40c4812d4b9804dfaa31fcf">_v_load_receptor_package</a>  (<a class="el" href="structVMHost.html">VMHost</a> *v, <a class="el" href="structT.html">T</a> *p)</dt>
+<dt><a class="anchor" id="_todo000051"></a>Global <a class="el" href="group__vmhost.html#ga1af12cca486bb811908a204d9cbd19f8">_v_install_r</a>  (<a class="el" href="structVMHost.html">VMHost</a> *v, <a class="el" href="structXaddr.html">Xaddr</a> package, <a class="el" href="structT.html">T</a> *bindings, char *label)</dt>
+<dd>expand the manifest to allow optional binding, etc, using semtrex to do the matching instead of assuming positional matching  </dd>
+<dt><a class="anchor" id="_todo000050"></a>Global <a class="el" href="group__vmhost.html#ga77978d4eb40c4812d4b9804dfaa31fcf">_v_load_receptor_package</a>  (<a class="el" href="structVMHost.html">VMHost</a> *v, <a class="el" href="structT.html">T</a> *p)</dt>
 <dd>validate signature and checksums?? </dd>
-<dt><a class="anchor" id="_todo000027"></a>Global <a class="el" href="group__vmhost.html#ga6e1f1cd1889dd7f1a8601c626f2dba1f">_v_send</a>  (<a class="el" href="structVMHost.html">VMHost</a> *v, <a class="el" href="structXaddr.html">Xaddr</a> from, <a class="el" href="structXaddr.html">Xaddr</a> to, Aspect aspect, <a class="el" href="structT.html">T</a> *contents)</dt>
+<dt><a class="anchor" id="_todo000054"></a>Global <a class="el" href="group__vmhost.html#ga6e1f1cd1889dd7f1a8601c626f2dba1f">_v_send</a>  (<a class="el" href="structVMHost.html">VMHost</a> *v, <a class="el" href="structXaddr.html">Xaddr</a> from, <a class="el" href="structXaddr.html">Xaddr</a> to, Aspect aspect, <a class="el" href="structT.html">T</a> *contents)</dt>
 <dd>understand how it makes any sense at all to make an instance of the signal in context of the vmhost in which the content tree's symbols aren't defined!!! </dd>
+<dt><a class="anchor" id="_todo000039"></a>Global <a class="el" href="semtrex_8c.html#a364e12f36aed45985a0262a58d27cb06">_val_match</a>  (<a class="el" href="structT.html">T</a> *t, <a class="el" href="structT.html">T</a> *t1)</dt>
+<dd>move this to <a class="el" href="tree_8c.html" title="semantic tree pointer implementation ">tree.c</a>  </dd>
 <dt><a class="anchor" id="_todo000001"></a>File <a class="el" href="def_8c.html">def.c</a>  </dt>
 <dd>refactor symbol/structure/process definition mechanisms into a general definitional form </dd>
-<dt><a class="anchor" id="_todo000007"></a>File <a class="el" href="process_8c.html">process.c</a>  </dt>
+<dt><a class="anchor" id="_todo000042"></a>Global <a class="el" href="group__def.html#ga5ccb057498c54090bb65ba72f1876489">def_sys</a>  ()</dt>
+<dd>this should really be a structure be we don't have optional elements yet....  </dd>
+<dt><a class="anchor" id="_todo000040"></a>Global <a class="el" href="semtrex_8c.html#a1c432d4d8a2f614895f8fa2f7dcd2f99">get_symbol</a>  (char *symbol_name, <a class="el" href="structDefs.html">Defs</a> *d)</dt>
+<dd>convert this to use the label table  </dd>
+<dt><a class="anchor" id="_todo000041"></a>Global <a class="el" href="group__semtrex.html#ga17eda8e5306b5764656d7edf3f5b15bd">parseSemtrex</a>  (<a class="el" href="structDefs.html">Defs</a> *d, char *stx)</dt>
+<dd>, this should be implemented using INTERPOLATE_MATCH  </dd>
+<dt><a class="anchor" id="_todo000009"></a>File <a class="el" href="process_8c.html">process.c</a>  </dt>
 <dd>implement a way to define sys_processes input and output signatures </dd>
-<dt><a class="anchor" id="_todo000028"></a>Global <a class="el" href="process__spec_8h.html#a2df9138f71c0a1fa19bcb49682d51299">testProcessIf</a>  ()</dt>
-<dd>when interpolating from a match, how do we handle non-leaf interpollations, i.e. where do you hook children onto? </dd>
+<dt><a class="anchor" id="_todo000057"></a>Global <a class="el" href="process__spec_8h.html#a2df9138f71c0a1fa19bcb49682d51299">testProcessIf</a>  ()</dt>
+<dd>when interpolating from a match, how do we handle non-leaf interpollations, i.e. where do you hook children onto?  </dd>
+<dt><a class="anchor" id="_todo000058"></a>Global <a class="el" href="process__spec_8h.html#a5ab85708c742161c5c045e3d45accd36">testProcessIntMath</a>  ()</dt>
+<dd>structure type checking for integer math? Too expensive?  </dd>
+<dt><a class="anchor" id="_todo000059"></a>Global <a class="el" href="receptor__spec_8h.html#afceb592c80fbad8dd4a6182b52e660fb">testReceptorEdgeStream</a>  ()</dt>
+<dd><p class="startdd">BOOLEAN is what's left from the replicate. Should it be something else? </p>
+<p class="enddd">we get an empty line signal because STREAM_AVAILABLE still reads true just before the last  </p>
+</dd>
+<dt><a class="anchor" id="_todo000062"></a>Global <a class="el" href="vmhost__spec_8h.html#a52db74eb5f9806480776a35cdecda011">testVMHostShell</a>  ()</dt>
+<dd>, should be shared symbol from compository, see #29... </dd>
 </dl>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Aug 27 2015 12:15:10 for ceptr by
+    <li class="footer">Generated on Thu Aug 27 2015 12:41:28 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

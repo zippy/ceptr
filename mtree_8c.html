@@ -116,8 +116,7 @@ $(document).ready(function(){initNavTree('mtree_8c.html','');});
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for mtree.c:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="mtree_8c__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="mtree_8c__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 </div>
 <p><a href="mtree_8c_source.html">Go to the source code of this file.</a></p>
@@ -125,11 +124,9 @@ Include dependency graph for mtree.c:</div>
 <tr class="memitem:a627273d459be4796b2a1706d0fa78bba"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a627273d459be4796b2a1706d0fa78bba"></a>
 const <a class="el" href="structH.html">H</a>&#160;</td><td class="memItemRight" valign="bottom"><b>null_H</b> = {0,{NULL_ADDR,NULL_ADDR}}</td></tr>
 <tr class="separator:a627273d459be4796b2a1706d0fa78bba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac998c85aa041115374dd7de3db2ad0e3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac998c85aa041115374dd7de3db2ad0e3"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>__m_add_level</b> (<a class="el" href="structM.html">M</a> *m)</td></tr>
+<tr class="memitem:ac998c85aa041115374dd7de3db2ad0e3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mtree_8c.html#ac998c85aa041115374dd7de3db2ad0e3">__m_add_level</a> (<a class="el" href="structM.html">M</a> *m)</td></tr>
 <tr class="separator:ac998c85aa041115374dd7de3db2ad0e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad787e09f41339d2e4d72722558c6ce9e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad787e09f41339d2e4d72722558c6ce9e"></a>
-<a class="el" href="structN.html">N</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>__m_add_nodes</b> (<a class="el" href="structH.html">H</a> h, <a class="el" href="structL.html">L</a> *l, int c)</td></tr>
+<tr class="memitem:ad787e09f41339d2e4d72722558c6ce9e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structN.html">N</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mtree_8c.html#ad787e09f41339d2e4d72722558c6ce9e">__m_add_nodes</a> (<a class="el" href="structH.html">H</a> h, <a class="el" href="structL.html">L</a> *l, int c)</td></tr>
 <tr class="separator:ad787e09f41339d2e4d72722558c6ce9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a802a02a57bdc7ee9e6c771bef5541249"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a802a02a57bdc7ee9e6c771bef5541249"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>__m_new_init</b> (<a class="el" href="structH.html">H</a> parent, <a class="el" href="structH.html">H</a> *h, <a class="el" href="structL.html">L</a> **l)</td></tr>
@@ -193,6 +190,60 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_m_detatchfn</b> (<a 
 
 <p>Definition in file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
 </div><h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="ac998c85aa041115374dd7de3db2ad0e3"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void __m_add_level </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structM.html">M</a> *&#160;</td>
+          <td class="paramname"><em>m</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000006">Todo:</a></b></dt><dd>make this not realloc each time? </dd></dl>
+
+<p>Definition at line <a class="el" href="mtree_8c_source.html#l00021">21</a> of file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad787e09f41339d2e4d72722558c6ce9e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structN.html">N</a>* __m_add_nodes </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structH.html">H</a>&#160;</td>
+          <td class="paramname"><em>h</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structL.html">L</a> *&#160;</td>
+          <td class="paramname"><em>l</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>c</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000007">Todo:</a></b></dt><dd>make this not realloc each time!! </dd></dl>
+
+<p>Definition at line <a class="el" href="mtree_8c_source.html#l00034">34</a> of file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a9b501c349d7130204110933195696acb"></a>
 <div class="memitem">
 <div class="memproto">
@@ -791,6 +842,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_m_detatchfn</b> (<a 
   </table>
   </dd>
 </dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000008">Todo:</a></b></dt><dd>checks to make sure root isn't deleted or null? </dd></dl>
 
 <p>Definition at line <a class="el" href="mtree_8c_source.html#l00473">473</a> of file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
 
@@ -828,7 +880,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_m_detatchfn</b> (<a 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="mtree_8c.html">mtree.c</a></li>
-    <li class="footer">Generated on Thu Aug 27 2015 12:15:10 for ceptr by
+    <li class="footer">Generated on Thu Aug 27 2015 12:41:28 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

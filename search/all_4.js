@@ -6,6 +6,7 @@ var searchData=
   ['def_2ec',['def.c',['../def_8c.html',1,'']]],
   ['def_2eh',['def.h',['../def_8h.html',1,'']]],
   ['def_5fspec_2eh',['def_spec.h',['../def__spec_8h.html',1,'']]],
+  ['def_5fsys',['def_sys',['../group__def.html#ga5ccb057498c54090bb65ba72f1876489',1,'def_sys():&#160;sys_defs.c'],['../group__def.html#ga5ccb057498c54090bb65ba72f1876489',1,'def_sys():&#160;sys_defs.c']]],
   ['definehouselocation',['defineHouseLocation',['../receptor__spec_8h.html#a98dc4c2784ade9388f0b5aad95d78aae',1,'receptor_spec.h']]],
   ['defs',['Defs',['../structDefs.html',1,'Defs'],['../structQ.html#a31f7ee672b5de1fcb77cef7782f9df88',1,'Q::defs()'],['../structReceptor.html#a56e5e37eb23a3e5debf7f24723eca9ed',1,'Receptor::defs()']]],
   ['ds',['DS',['../group__semtrex.html#ga23a719903c25f5387274002776ae5fa1',1,'semtrex.h']]]

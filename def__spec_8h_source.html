@@ -135,10 +135,10 @@ $(document).ready(function(){initNavTree('def__spec_8h_source.html','');});
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    spec_is_true(is_symbol(ss));</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    spec_is_equal(<a class="code" href="group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc">_t_children</a>(defs),ss.id);</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    spec_is_ptr_equal(_t_child(defs,ss.id),def);</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    spec_is_sem_equal(<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(_t_child(defs,ss.id)),SYMBOL_DECLARATION);</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    spec_is_sem_equal(<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(_t_child(_t_child(defs,ss.id),2)),SYMBOL_STRUCTURE);</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    spec_is_sem_equal(<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(_t_child(_t_child(defs,ss.id),1)),SYMBOL_LABEL);</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    spec_is_ptr_equal(<a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(defs,ss.id),def);</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    spec_is_sem_equal(<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(<a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(defs,ss.id)),SYMBOL_DECLARATION);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    spec_is_sem_equal(<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(<a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(<a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(defs,ss.id),2)),SYMBOL_STRUCTURE);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    spec_is_sem_equal(<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(<a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(<a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(defs,ss.id),1)),SYMBOL_LABEL);</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    spec_is_str_equal(<a class="code" href="group__def.html#ga434ff1353a4f55f4f61b95fe8d9cff43">_d_get_symbol_name</a>(defs,ss),<span class="stringliteral">&quot;shoe size&quot;</span>);</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(defs);</div>
@@ -149,16 +149,16 @@ $(document).ready(function(){initNavTree('def__spec_8h_source.html','');});
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <a class="code" href="structSemanticID.html">Structure</a> st = <a class="code" href="group__def.html#gaad8973679986f6af6b59a95e08bdb192">_d_define_structure</a>(defs,<span class="stringliteral">&quot;receptor pair&quot;</span>,RECEPTOR_CONTEXT,2,RECEPTOR,RECEPTOR);</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    spec_is_equal(<a class="code" href="group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc">_t_children</a>(defs),st.id);</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <a class="code" href="structT.html">T</a> *s = _t_child(defs,st.id);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <a class="code" href="structT.html">T</a> *s = <a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(defs,st.id);</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    spec_is_sem_equal(<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(s),STRUCTURE_DEFINITION);</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    spec_is_equal(<a class="code" href="group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc">_t_children</a>(s),2);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <a class="code" href="structT.html">T</a> *l = _t_child(s,1);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <a class="code" href="structT.html">T</a> *p = _t_child(s,2);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <a class="code" href="structT.html">T</a> *l = <a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(s,1);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <a class="code" href="structT.html">T</a> *p = <a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(s,2);</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    spec_is_symbol_equal(0,<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(l),STRUCTURE_LABEL);</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    spec_is_str_equal((<span class="keywordtype">char</span> *)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(l),<span class="stringliteral">&quot;receptor pair&quot;</span>);</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    spec_is_symbol_equal(0,<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(p),STRUCTURE_PARTS);</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    spec_is_symbol_equal(0,<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(_t_child(p,1)),STRUCTURE_PART);</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    spec_is_symbol_equal(0,<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(_t_child(p,1)),STRUCTURE_PART);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    spec_is_symbol_equal(0,<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(<a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(p,1)),STRUCTURE_PART);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    spec_is_symbol_equal(0,<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(<a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(p,1)),STRUCTURE_PART);</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <a class="code" href="structSemanticID.html">Structure</a> x = {0,0,1};</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    spec_is_str_equal(<a class="code" href="group__def.html#ga232c2752b35c8fd708b5ba9a60da545e">_d_get_structure_name</a>(defs,x),<span class="stringliteral">&quot;receptor pair&quot;</span>);</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
@@ -223,29 +223,29 @@ $(document).ready(function(){initNavTree('def__spec_8h_source.html','');});
 <div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    spec_is_true(is_process(p));</div>
 <div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    spec_is_true(!is_symbol(p));</div>
 <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    spec_is_equal(<a class="code" href="group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc">_t_children</a>(defs),p.id);</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    <a class="code" href="structT.html">T</a> *s = _t_child(defs,p.id);</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    <a class="code" href="structT.html">T</a> *s = <a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(defs,p.id);</div>
 <div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;</div>
 <div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    spec_is_sem_equal(<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(s),PROCESS_CODING);</div>
 <div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;</div>
 <div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    <span class="comment">// first child is the name of the process</span></div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    <a class="code" href="structT.html">T</a> *name = _t_child(s,1);</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    <a class="code" href="structT.html">T</a> *name = <a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(s,1);</div>
 <div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    spec_is_sem_equal(<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(name),PROCESS_NAME);</div>
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    spec_is_str_equal((<span class="keywordtype">char</span> *)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(name),<span class="stringliteral">&quot;power&quot;</span>);</div>
 <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;</div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    <span class="comment">// second child is process intention as text (documentation)</span></div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    <a class="code" href="structT.html">T</a> *intention = _t_child(s,2);</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    <a class="code" href="structT.html">T</a> *intention = <a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(s,2);</div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    spec_is_sem_equal(<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(intention),PROCESS_INTENTION);</div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    spec_is_str_equal((<span class="keywordtype">char</span> *)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(intention),<span class="stringliteral">&quot;takes the mathematical power of the two params&quot;</span>);</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;</div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    <span class="comment">// third child is code itself</span></div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    spec_is_ptr_equal(_t_child(s,3),code);</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    spec_is_ptr_equal(<a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(s,3),code);</div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;</div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <span class="comment">// fourth child is the input signature</span></div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <a class="code" href="structT.html">T</a> *in = _t_child(s,4);</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <a class="code" href="structT.html">T</a> *in = <a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(s,4);</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    spec_is_sem_equal(<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(in),INPUT_SIGNATURE);</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;</div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    <span class="comment">// fifth child is the output signature</span></div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    <a class="code" href="structT.html">T</a> *out = _t_child(s,5);</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    <a class="code" href="structT.html">T</a> *out = <a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(s,5);</div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    spec_is_sem_equal(<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(out),OUTPUT_SIGNATURE);</div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    spec_is_str_equal(<a class="code" href="group__def.html#ga85b87c445c4541d633a4f04bb4d39e0d">_d_get_process_name</a>(defs,p),<span class="stringliteral">&quot;power&quot;</span>);</div>
@@ -296,6 +296,7 @@ $(document).ready(function(){initNavTree('def__spec_8h_source.html','');});
 <div class="ttc" id="group__tree_html_ga3e2009f5a82889263d560d2c1479606a"><div class="ttname"><a href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a></div><div class="ttdeci">T * _t_newr(T *parent, Symbol symbol)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00140">tree.c:140</a></div></div>
 <div class="ttc" id="def__spec_8h_html_a56a27a1c1dbaa31060bb3d6aafdcba99"><div class="ttname"><a href="def__spec_8h.html#a56a27a1c1dbaa31060bb3d6aafdcba99">testDefSymbol</a></div><div class="ttdeci">void testDefSymbol()</div><div class="ttdef"><b>Definition:</b> <a href="def__spec_8h_source.html#l00033">def_spec.h:33</a></div></div>
 <div class="ttc" id="group__tree_html_ga946600fb570f0cc913450905f6189d49"><div class="ttname"><a href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a></div><div class="ttdeci">Symbol _t_symbol(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00551">tree.c:551</a></div></div>
+<div class="ttc" id="group__tree_html_ga07dd808fabd8a722b417f2f5e5ca132b"><div class="ttname"><a href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a></div><div class="ttdeci">T * _t_child(T *t, int i)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00574">tree.c:574</a></div></div>
 <div class="ttc" id="group__def_html_ga232c2752b35c8fd708b5ba9a60da545e"><div class="ttname"><a href="group__def.html#ga232c2752b35c8fd708b5ba9a60da545e">_d_get_structure_name</a></div><div class="ttdeci">char * _d_get_structure_name(T *structures, Structure s)</div><div class="ttdef"><b>Definition:</b> <a href="def_8c_source.html#l00062">def.c:62</a></div></div>
 <div class="ttc" id="def__spec_8h_html_aa0e4cddc1f2e6b39ce9189a855914c13"><div class="ttname"><a href="def__spec_8h.html#aa0e4cddc1f2e6b39ce9189a855914c13">testStructureGetName</a></div><div class="ttdeci">void testStructureGetName()</div><div class="ttdef"><b>Definition:</b> <a href="def__spec_8h_source.html#l00019">def_spec.h:19</a></div></div>
 <div class="ttc" id="group__tree_html_gac9278e540a0d63526b60cc0591283a62"><div class="ttname"><a href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a></div><div class="ttdeci">void * _t_surface(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00538">tree.c:538</a></div></div>
@@ -322,7 +323,7 @@ $(document).ready(function(){initNavTree('def__spec_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><a class="el" href="def__spec_8h.html">def_spec.h</a></li>
-    <li class="footer">Generated on Thu Aug 27 2015 12:15:09 for ceptr by
+    <li class="footer">Generated on Thu Aug 27 2015 12:41:28 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

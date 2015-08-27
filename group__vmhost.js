@@ -17,6 +17,7 @@ var group__vmhost =
       [ "vm_thread", "structVMHost.html#ada4998fffaedd9669bdada5ef0ec478f", null ]
     ] ],
     [ "__v_activate", "group__vmhost.html#ga066ae2bbe18ed4c9357526118dd1d2b9", null ],
+    [ "__v_get_receptor_xaddr", "group__vmhost.html#ga861469ce8640d16306fb6bdbb6e43f54", null ],
     [ "__v_process", "group__vmhost.html#ga19975d66a0fa04365bf89250bdede501", null ],
     [ "_v_activate", "group__vmhost.html#ga53694170e5452b8062ec405e6a9a3f60", null ],
     [ "_v_deliver_signals", "group__vmhost.html#ga035a2a36b32cc37ae7022ccee88d1aaf", null ],

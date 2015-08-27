@@ -11,7 +11,6 @@ var tree__spec_8h =
     [ "testTreeMorph", "tree__spec_8h.html#aecd9cd243076dc7b034b53bed7c297a0", null ],
     [ "testTreeMorphLowLevel", "tree__spec_8h.html#ad67357180aa840b09dfc3a37493f56e9", null ],
     [ "testTreeNewReceptor", "tree__spec_8h.html#af273dd6bfe59ce73f16b171faa53a14c", null ],
-    [ "testTreeNewScape", "tree__spec_8h.html#a97fd52e40235d0735c7a4de6677d9dc9", null ],
     [ "testTreeNodeIndex", "tree__spec_8h.html#a2135f4c00a6d218e0de5b1f63bb2a54a", null ],
     [ "testTreeOrthogonal", "tree__spec_8h.html#a661b056d3b9e868c4bb8ab505631f2d0", null ],
     [ "testTreePathCopy", "tree__spec_8h.html#a5986d99ac81ace5b68beb3d5c255ca61", null ],
@@ -23,6 +22,7 @@ var tree__spec_8h =
     [ "testTreePathSprint", "tree__spec_8h.html#a3473a2e241b0849ddfca791ffc713857", null ],
     [ "testTreeRealloc", "tree__spec_8h.html#a5ab4f95726a96eba403ad1a978d075d6", null ],
     [ "testTreeReplace", "tree__spec_8h.html#a40c176590d4f13d3110238f7c50824fb", null ],
+    [ "testTreeScape", "tree__spec_8h.html#a6796662fa58d1f646024d0ca537cb8cb", null ],
     [ "testTreeSerialize", "tree__spec_8h.html#a012d7007d9b10f6e1ed85ff1b4c3919c", null ],
     [ "testTreeStream", "tree__spec_8h.html#af9b0708a3e22b06665f31f5661d97df8", null ],
     [ "testTreeSwap", "tree__spec_8h.html#a22fbd67719525409ae07f576a34816b3", null ]

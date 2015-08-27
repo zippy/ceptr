@@ -19,5 +19,6 @@ var group__def =
     [ "_d_get_symbol_name", "group__def.html#ga434ff1353a4f55f4f61b95fe8d9cff43", null ],
     [ "_d_get_symbol_size", "group__def.html#ga1678fa0990fae85360a6f92a0bfb37ec", null ],
     [ "_d_get_symbol_structure", "group__def.html#ga41157ee3740cc54c3857ca46e2545999", null ],
-    [ "_dv_define_structure", "group__def.html#ga840d1e2ddf301d41e9e4d844bde6cde0", null ]
+    [ "_dv_define_structure", "group__def.html#ga840d1e2ddf301d41e9e4d844bde6cde0", null ],
+    [ "def_sys", "group__def.html#ga5ccb057498c54090bb65ba72f1876489", null ]
 ];

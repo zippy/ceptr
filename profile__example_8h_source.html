@@ -253,10 +253,10 @@ $(document).ready(function(){initNavTree('profile__example_8h_source.html','');}
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    spec_is_equal(<a class="code" href="process_8c.html#acc149ea5dc5c12cd12fc35a61157cfbc">_p_reduce</a>(&amp;test_profile_defs,r),noReductionErr);</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    <span class="keywordtype">int</span> pt[] = {TREE_PATH_TERMINATOR};</div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    _visdump(&amp;test_profile_defs,_t_child(r,1),pt);</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    _visdump(&amp;test_profile_defs,<a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(r,1),pt);</div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    endVisdump();</div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    spec_is_str_equal(_t2s(&amp;test_profile_defs,_t_child(r,1)),<span class="stringliteral">&quot;(MAILING_LABEL:Jane Smith\\n126 Main Street\\nSmallville, CA 12345)&quot;</span>);</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    spec_is_str_equal(_t2s(&amp;test_profile_defs,<a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(r,1)),<span class="stringliteral">&quot;(MAILING_LABEL:Jane Smith\\n126 Main Street\\nSmallville, CA 12345)&quot;</span>);</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(r);</div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
@@ -273,6 +273,7 @@ $(document).ready(function(){initNavTree('profile__example_8h_source.html','');}
 <div class="ttc" id="structDefs_html_a6f9d3b3e38fff31326b7d27f730ae95c"><div class="ttname"><a href="structDefs.html#a6f9d3b3e38fff31326b7d27f730ae95c">Defs::structures</a></div><div class="ttdeci">T * structures</div><div class="ttdoc">pointer for quick access to structures </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00170">ceptr_types.h:170</a></div></div>
 <div class="ttc" id="group__tree_html_ga87cb5cdb608c0048c5ae7e3249780a8c"><div class="ttname"><a href="group__tree.html#ga87cb5cdb608c0048c5ae7e3249780a8c">_t_new_str</a></div><div class="ttdeci">T * _t_new_str(T *parent, Symbol symbol, char *surface)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00118">tree.c:118</a></div></div>
 <div class="ttc" id="group__tree_html_ga3e2009f5a82889263d560d2c1479606a"><div class="ttname"><a href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a></div><div class="ttdeci">T * _t_newr(T *parent, Symbol symbol)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00140">tree.c:140</a></div></div>
+<div class="ttc" id="group__tree_html_ga07dd808fabd8a722b417f2f5e5ca132b"><div class="ttname"><a href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a></div><div class="ttdeci">T * _t_child(T *t, int i)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00574">tree.c:574</a></div></div>
 <div class="ttc" id="group__tree_html_ga48ffc2a6e4aa4856b76fb53b97db87f3"><div class="ttname"><a href="group__tree.html#ga48ffc2a6e4aa4856b76fb53b97db87f3">_t_newp</a></div><div class="ttdeci">T * _t_newp(T *parent, Symbol symbol, Process surface)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00217">tree.c:217</a></div></div>
 <div class="ttc" id="process_8c_html_a0d7e9199c11402521a3ed08719eb92a6"><div class="ttname"><a href="process_8c.html#a0d7e9199c11402521a3ed08719eb92a6">_p_make_run_tree</a></div><div class="ttdeci">T * _p_make_run_tree(T *processes, T *process, int num_params,...)</div><div class="ttdef"><b>Definition:</b> <a href="process_8c_source.html#l00846">process.c:846</a></div></div>
 <div class="ttc" id="structDefs_html_a80e876ed085ca3f40c11c6dced4bff9a"><div class="ttname"><a href="structDefs.html#a80e876ed085ca3f40c11c6dced4bff9a">Defs::processes</a></div><div class="ttdeci">T * processes</div><div class="ttdoc">pointer for quick access to processes </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00172">ceptr_types.h:172</a></div></div>
@@ -287,7 +288,7 @@ $(document).ready(function(){initNavTree('profile__example_8h_source.html','');}
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><a class="el" href="profile__example_8h.html">profile_example.h</a></li>
-    <li class="footer">Generated on Thu Aug 27 2015 12:15:09 for ceptr by
+    <li class="footer">Generated on Thu Aug 27 2015 12:41:28 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

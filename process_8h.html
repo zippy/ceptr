@@ -115,14 +115,12 @@ $(document).ready(function(){initNavTree('process_8h.html','');});
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for process.h:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="process_8h__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="process_8h__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="process_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="process_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 </div>
 <p><a href="process_8h_source.html">Go to the source code of this file.</a></p>
@@ -273,6 +271,16 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_p_enqueue</b> (<a cl
 </div><div class="memdoc">
 <p>reduce system level processes in a run tree. Assumes that the children have already been reduced and all parameters have been filled in</p>
 <p>these system level processes are the equivalent of the instruction set of the ceptr virtual machine </p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000013">Todo:</a></b></dt><dd>what happens if it has more than one child! validity check? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000014">Todo:</a></b></dt><dd>this would probably be faster with just one total realloc for all children </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000015">Todo:</a></b></dt><dd>figure what RESPOND should return, since really it's a side-effect instruction </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000016">Todo:</a></b></dt><dd>what happens if it has more than one child! validity check? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000017">Todo:</a></b></dt><dd>timeout or callback or whatever the heck in the async case </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000018">Todo:</a></b></dt><dd>interpolation errors? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000019">Todo:</a></b></dt><dd>check the structure type to make sure it's compatible as a string (i.e. it's null terminated) </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000020">Todo:</a></b></dt><dd>other integrity checks, i.e. length etc? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000021">Todo:</a></b></dt><dd>what should this really return? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000022">Todo:</a></b></dt><dd>the value returned from the loop will be what??(what's in x) </dd></dl>
 
 <p>Definition at line <a class="el" href="process_8c_source.html#l00093">93</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
@@ -302,7 +310,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_p_enqueue</b> (<a cl
       </table>
 </div><div class="memdoc">
 <p>add a run tree into a processing queue</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000010">Todo:</a></b></dt><dd>make thread safe. currently you shouldn't call this if the <a class="el" href="structQ.html">Q</a> is being actively reduced </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000025">Todo:</a></b></dt><dd>make thread safe. currently you shouldn't call this if the <a class="el" href="structQ.html">Q</a> is being actively reduced </dd></dl>
 
 <p>Definition at line <a class="el" href="process_8c_source.html#l00943">943</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
@@ -464,7 +472,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_p_enqueue</b> (<a cl
 <div class="line"></div>
 <div class="line">    <span class="comment">// confirm that it reduces correctly</span></div>
 <div class="line">    spec_is_equal(<a class="code" href="process_8c.html#acc149ea5dc5c12cd12fc35a61157cfbc">_p_reduce</a>(&amp;defs,t),noReductionErr);</div>
-<div class="line">    spec_is_str_equal(t2s(_t_child(t,1)),<span class="stringliteral">&quot;(ZERO_DIVIDE_ERR (ERROR_LOCATION:/1/1))&quot;</span>);</div>
+<div class="line">    spec_is_str_equal(t2s(<a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(t,1)),<span class="stringliteral">&quot;(ZERO_DIVIDE_ERR (ERROR_LOCATION:/1/1))&quot;</span>);</div>
 <div class="line"></div>
 <div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(processes);</div>
 <div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);<a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(n);</div>
@@ -493,6 +501,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_p_enqueue</b> (<a cl
   </table>
   </dd>
 </dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000026">Todo:</a></b></dt><dd>figure out what error we should be sending back here, i.e. what if </dd></dl>
 
 <p>Definition at line <a class="el" href="process_8c_source.html#l00982">982</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
@@ -556,6 +565,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_p_enqueue</b> (<a cl
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the next state that will be called for the context </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000023">Todo:</a></b></dt><dd>what if the replaced parameter is itself a PARAM_REF tree ?? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000024">Todo:</a></b></dt><dd>make a better error symbol here... :-P </dd></dl>
 
 <p>Definition at line <a class="el" href="process_8c_source.html#l00596">596</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
@@ -596,7 +607,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_p_enqueue</b> (<a cl
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="process_8h.html">process.h</a></li>
-    <li class="footer">Generated on Thu Aug 27 2015 12:15:10 for ceptr by
+    <li class="footer">Generated on Thu Aug 27 2015 12:41:28 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

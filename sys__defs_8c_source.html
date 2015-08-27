@@ -174,7 +174,7 @@ $(document).ready(function(){initNavTree('sys__defs_8c_source.html','');});
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<a class="code" href="structSemanticID.html">Process</a> STREAM_AVAILABLE = {SYS_CONTEXT,SEM_TYPE_PROCESS,STREAM_AVAILABLE_ID};</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<a class="code" href="structSemanticID.html">Process</a> REPLICATE = {SYS_CONTEXT,SEM_TYPE_PROCESS,REPLICATE_ID};</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="keywordtype">void</span> def_sys() {</div>
+<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="group__def.html#ga5ccb057498c54090bb65ba72f1876489">   78</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__def.html#ga5ccb057498c54090bb65ba72f1876489">def_sys</a>() {</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    G_sys_root = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(DEFINITIONS);</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    G_sys_defs.<a class="code" href="structDefs.html#a172e45e131e197571ba1a36a136d35f8">symbols</a> = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(G_sys_root,SYMBOLS);</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    G_sys_defs.<a class="code" href="structDefs.html#a6f9d3b3e38fff31326b7d27f730ae95c">structures</a> = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(G_sys_root,STRUCTURES);</div>
@@ -272,13 +272,13 @@ $(document).ready(function(){initNavTree('sys__defs_8c_source.html','');});
 <div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;</div>
 <div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    sY(PROTOCOLS,LIST);</div>
 <div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    sY(SEQUENCES,LIST);</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    <span class="comment">//    sY(SEQUENCE,LIST); // @todo this should really be a structure be we don&#39;t have optional elements yet....</span></div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    <span class="comment">//    sY(SEQUENCE,LIST); /// @todo this should really be a structure be we don&#39;t have optional elements yet....</span></div>
 <div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    sY(STEP_SYMBOL,SYMBOL);</div>
 <div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    sY(STEPS,LIST);</div>
 <div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    sT(SEQUENCE,1,STEP_SYMBOL); <span class="comment">// this really should specify one or more step_symbols</span></div>
 <div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    sT(PROTOCOL_STEP,3,EXPECTATION,PARAMS,ACTION);</div>
 <div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    sY(INTERACTIONS,LIST);</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    sY(INTERACTION,LIST); <span class="comment">// @todo this should really be a structure be we don&#39;t have optional elements yet....</span></div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    sY(INTERACTION,LIST); </div>
 <div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    sY(STEP,CSTRING);</div>
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    sY(RESPONSE_STEPS,LIST);</div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    sT(PROTOCOL,2,STEPS,SEQUENCES);</div>
@@ -407,6 +407,7 @@ $(document).ready(function(){initNavTree('sys__defs_8c_source.html','');});
 <div class="ttc" id="group__tree_html_ga3e2009f5a82889263d560d2c1479606a"><div class="ttname"><a href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a></div><div class="ttdeci">T * _t_newr(T *parent, Symbol symbol)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00140">tree.c:140</a></div></div>
 <div class="ttc" id="structDefs_html_a80e876ed085ca3f40c11c6dced4bff9a"><div class="ttname"><a href="structDefs.html#a80e876ed085ca3f40c11c6dced4bff9a">Defs::processes</a></div><div class="ttdeci">T * processes</div><div class="ttdoc">pointer for quick access to processes </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00172">ceptr_types.h:172</a></div></div>
 <div class="ttc" id="sys__processes_8h_html_af56900624e352e8d52f08ee677d48e8eaa778775ecfe4f1b5d5732965af60c6de"><div class="ttname"><a href="sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8eaa778775ecfe4f1b5d5732965af60c6de">IF_ID</a></div><div class="ttdoc">reduce to the left or right tree conditionally </div><div class="ttdef"><b>Definition:</b> <a href="sys__processes_8h_source.html#l00022">sys_processes.h:22</a></div></div>
+<div class="ttc" id="group__def_html_ga5ccb057498c54090bb65ba72f1876489"><div class="ttname"><a href="group__def.html#ga5ccb057498c54090bb65ba72f1876489">def_sys</a></div><div class="ttdeci">void def_sys()</div><div class="ttdef"><b>Definition:</b> <a href="sys__defs_8c_source.html#l00078">sys_defs.c:78</a></div></div>
 <div class="ttc" id="group__tree_html_ga31e55cdc031e5f12523b998e89080db6"><div class="ttname"><a href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a></div><div class="ttdeci">void _t_free(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00463">tree.c:463</a></div></div>
 <div class="ttc" id="structDefs_html_a172e45e131e197571ba1a36a136d35f8"><div class="ttname"><a href="structDefs.html#a172e45e131e197571ba1a36a136d35f8">Defs::symbols</a></div><div class="ttdeci">T * symbols</div><div class="ttdoc">pointer for quick access to symbols </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00171">ceptr_types.h:171</a></div></div>
 <div class="ttc" id="structSemanticID_html"><div class="ttname"><a href="structSemanticID.html">SemanticID</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00017">ceptr_types.h:17</a></div></div>
@@ -417,7 +418,7 @@ $(document).ready(function(){initNavTree('sys__defs_8c_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="sys__defs_8c.html">sys_defs.c</a></li>
-    <li class="footer">Generated on Thu Aug 27 2015 12:15:10 for ceptr by
+    <li class="footer">Generated on Thu Aug 27 2015 12:41:28 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
