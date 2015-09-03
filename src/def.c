@@ -99,6 +99,22 @@ char *_d_get_process_name(T *processes,Process p) {
     return __d_extra_buf;
 }
 
+// internal check to see if a symbol is valid
+void __d_validate_symbol(T *symbols,Symbol s,char *n) {
+    if (!is_symbol(s)) raise_error("Bad symbol in %s def: semantic type not SEM_TYPE_SYMBOL",n);
+
+    if (is_sys_symbol(s)) {
+        if (s.id == 0) return; // NULL_SYMBOL ok
+        else symbols = G_sys_defs.symbols;
+    }
+    else if (is_sys_test_symbol(s))
+        symbols = G_sys_defs.symbols;
+    if (symbols) {
+        if (!_t_child(symbols,s.id)) raise_error("Bad symbol in %s def: definition not found in context",n);
+    }
+    else raise_error("Bad symbol in %s def: context not found",n);
+}
+
 /**
  * add a symbol definition to a symbol defs tree
  *
@@ -148,23 +164,25 @@ Symbol _d_declare_symbol(T *symbols,Structure s,char *label,Context c){
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testDefStructure
  */
-Structure _d_define_structure(T *structures,char *label,Context c,int num_params,...) {
+Structure _d_define_structure(T *symbols, T *structures,char *label,Context c,int num_params,...) {
     va_list params;
     va_start(params,num_params);
-    T *def = _dv_define_structure(structures,label,num_params,params);
+    T *def = _dv_define_structure(symbols,structures,label,num_params,params);
     va_end(params);
     Symbol sym = {c,SEM_TYPE_STRUCTURE,_t_children(structures)};
     return sym;
 }
 
 /// va_list version of _d_define_structure
-T * _dv_define_structure(T *structures,char *label,int num_params,va_list params) {
+T * _dv_define_structure(T *symbols,T *structures,char *label,int num_params,va_list params) {
     T *def = _t_newr(structures,STRUCTURE_DEFINITION);
     T *l = _t_new(def,STRUCTURE_LABEL,label,strlen(label)+1);
     T *p = _t_newr(def,STRUCTURE_PARTS);
     int i;
     for(i=0;i<num_params;i++) {
-        _t_news(p,STRUCTURE_PART,va_arg(params,Symbol));
+        Symbol s = va_arg(params,Symbol);
+        __d_validate_symbol(symbols,s,label);
+        _t_news(p,STRUCTURE_PART,s);
     }
     return def;
 }
@@ -338,7 +356,7 @@ T * _d_build_def_semtrex(Defs defs,Symbol s,T *parent) {
  * @TODO make this actually not break on large trees!
  */
 char * __t2s(Defs *defs,T *t,int indent) {
-    static char buf[10000];
+    static char buf[100000];
     buf[0] = 0;
     return __t_dump(defs,t,indent,buf);
 }

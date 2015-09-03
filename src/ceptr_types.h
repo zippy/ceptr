@@ -13,6 +13,7 @@ enum SemanticTypes {SEM_TYPE_STRUCTURE=1,SEM_TYPE_SYMBOL,SEM_TYPE_PROCESS};
 #define is_process(s) (((s).flags & SEM_TYPE_MASK) == SEM_TYPE_PROCESS)
 #define is_structure(s) (((s).flags & SEM_TYPE_MASK) == SEM_TYPE_STRUCTURE)
 
+/// @todo think about the bit allocations here, perhaps context and flags should just be a total of 8 bits with the rest left for ids
 typedef uint16_t Context;
 typedef struct SemanticID {
     Context context;
@@ -52,7 +53,7 @@ typedef struct M {
 // in the blob not a pointer
 #define SERIALIZED_NODE_SIZE (sizeof(N)-sizeof(void *)+sizeof(size_t))
 #define SERIALIZED_LEVEL_SIZE(l) (sizeof(Mindex)+SERIALIZED_NODE_SIZE*l->nodes)
-#define SERIALIZED_HEADER_SIZE(levels) (sizeof(S)+sizeof(uint32_t)*(levels));
+#define SERIALIZED_HEADER_SIZE(levels) (sizeof(S)+sizeof(uint32_t)*(levels))
 
 typedef struct S {
     Mmagic magic;

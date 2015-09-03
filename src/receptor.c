@@ -177,7 +177,7 @@ Symbol _r_declare_symbol(Receptor *r,Structure s,char *label){
 Structure _r_define_structure(Receptor *r,char *label,int num_params,...) {
     va_list params;
     va_start(params,num_params);
-    T *def = _dv_define_structure(r->defs.structures,label,num_params,params);
+    T *def = _dv_define_structure(r->defs.symbols,r->defs.structures,label,num_params,params);
     va_end(params);
 
     return __set_label_for_def(r,label,def,SEM_TYPE_STRUCTURE);
