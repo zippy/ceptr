@@ -50,7 +50,7 @@ char * __t_dump(Defs *defs,T *t,int level,char *buf);
 #define _d_get_symbol_def(symbols,s) _d_get_def(symbols,s)
 #define _d_get_structure_def(structures,s) _d_get_def(structures,s)
 
-#define spec_is_sem_equal(got, expected) spec_total++; if (semeq(expected,got)){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %d.%d.%d but was %d.%d.%d",__FUNCTION__,__LINE__,#got,(expected).flags,(expected).context,(expected).id,(got).flags,(got).context,(got).id);}
+#define spec_is_sem_equal(got, expected) spec_total++; if (semeq(expected,got)){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %d.%d.%d but was %d.%d.%d",__FUNCTION__,__LINE__,#got,(expected).semtype,(expected).context,(expected).id,(got).semtype,(got).context,(got).id);}
 
 void def_sys();
 void sys_free();

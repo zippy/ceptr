@@ -72,7 +72,7 @@ char *_r_get_symbol_name(Receptor *r,Symbol s);
 char *_r_get_process_name(Receptor *r,Process p);
 
 Xaddr G_null_xaddr;
-#define is_null_symbol(s) ((s).flags == 0 && (s).context == 0 && (s).id == 0)
+#define is_null_symbol(s) ((s).semtype == 0 && (s).context == 0 && (s).id == 0)
 #define is_null_xaddr(x) (is_null_symbol(x.symbol) && (x).addr == 0)
 #define is_xaddr_eq(x,y) (semeq(x.symbol,y.symbol) && (x).addr == (y).addr)
 

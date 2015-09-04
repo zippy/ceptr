@@ -5,20 +5,23 @@
 #include <stdio.h>
 #include "uthash.h"
 
-enum SemanticContexts {SYS_CONTEXT,RECEPTOR_CONTEXT,TEST_CONTEXT};
+enum SemanticContexts {SYS_CONTEXT,COMPOSITORY_CONTEXT,LOCAL_CONTEXT,TEST_CONTEXT,_NUM_CONTEXTS,RECEPTOR_CONTEXT=0xff};
 
+// NOTE: the actual values of the types matter because they must match the order they show
+// up in the definition trees
 enum SemanticTypes {SEM_TYPE_STRUCTURE=1,SEM_TYPE_SYMBOL,SEM_TYPE_PROCESS};
-#define SEM_TYPE_MASK 0x00FF
-#define is_symbol(s) (((s).flags & SEM_TYPE_MASK) == SEM_TYPE_SYMBOL)
-#define is_process(s) (((s).flags & SEM_TYPE_MASK) == SEM_TYPE_PROCESS)
-#define is_structure(s) (((s).flags & SEM_TYPE_MASK) == SEM_TYPE_STRUCTURE)
+#define is_symbol(s) ((s).semtype == SEM_TYPE_SYMBOL)
+#define is_process(s) ((s).semtype == SEM_TYPE_PROCESS)
+#define is_structure(s) ((s).semtype == SEM_TYPE_STRUCTURE)
 
-/// @todo think about the bit allocations here, perhaps context and flags should just be a total of 8 bits with the rest left for ids
-typedef uint16_t Context;
+typedef uint8_t Context;
+typedef uint8_t SemanticType;
+
 typedef struct SemanticID {
     Context context;
-    uint16_t flags;
+    SemanticType semtype;
     uint32_t id;
+    uint16_t _reserved; // add an extra 16 bits to make this a 64bit structure.
 } SemanticID;
 
 typedef SemanticID Symbol;

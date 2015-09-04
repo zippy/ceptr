@@ -15,9 +15,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ceptr_error.h"
-#include "sys_symbols.h"
-#include "sys_structures.h"
-#include "sys_processes.h"
+#include "sys_defs.h"
 #include "ceptr_types.h"
 
 typedef struct MwalkState {

@@ -45,7 +45,7 @@ char *_d_get_symbol_name(T *symbols,Symbol s) {
         T *l = _t_child(def,1);
         return (char *)_t_surface(_t_child(def,1));
     }
-    sprintf(__d_extra_buf,"<unknown symbol:%d.%d.%d>",s.context,s.flags,s.id);
+    sprintf(__d_extra_buf,"<unknown symbol:%d.%d.%d>",s.context,s.semtype,s.id);
     return __d_extra_buf;
 }
 
@@ -69,7 +69,7 @@ char *_d_get_structure_name(T *structures,Structure s) {
         T *l = _t_child(def,1);
         return (char *)_t_surface(l);
     }
-    sprintf(__d_extra_buf,"<unknown structure:%d.%d.%d>",s.context,s.flags,s.id);
+    sprintf(__d_extra_buf,"<unknown structure:%d.%d.%d>",s.context,s.semtype,s.id);
     return __d_extra_buf;
 }
 
@@ -95,7 +95,7 @@ char *_d_get_process_name(T *processes,Process p) {
             return (char *)_t_surface(l);
         }
     }
-    sprintf(__d_extra_buf,"<unknown process:%d.%d.%d>",p.context,p.flags,p.id);
+    sprintf(__d_extra_buf,"<unknown process:%d.%d.%d>",p.context,p.semtype,p.id);
     return __d_extra_buf;
 }
 
@@ -462,7 +462,7 @@ char * __t_dump(Defs *defs,T *t,int level,char *buf) {
                     break;
                 }
                 if (n == 0)
-                    sprintf(buf,"(<unknown:%d.%d.%d>",s.context,s.flags,s.id);
+                    sprintf(buf,"(<unknown:%d.%d.%d>",s.context,s.semtype,s.id);
                 else
                     sprintf(buf,"(%s",n);
             }

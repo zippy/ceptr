@@ -144,7 +144,7 @@ SemanticID  __get_label_idx(Receptor *r,char *label) {
     int *path = labelGet(&r->table,label);
     if (path) {
         s.id = path[_t_path_depth(path)-1];
-        s.flags = path[1]; // definitions index == semantic type!!
+        s.semtype = path[1]; // definitions index == semantic type!!
     }
     return s;
 }

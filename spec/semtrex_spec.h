@@ -429,9 +429,9 @@ void testMatchGroup() {
 }
 
 void testMatchGroupMulti() {
-    sX(STX_TOKENS,LIST);
-    sX(STX_OP,NULL_STRUCTURE);
-    sX(STX_SL,NULL_STRUCTURE);
+    sX(TSTX_TOKENS,LIST);
+    sX(TSTX_OP,NULL_STRUCTURE);
+    sX(TSTX_SL,NULL_STRUCTURE);
 
     T *s = _t_new_root(ASCII_CHARS);
     _t_newi(s,ASCII_CHAR,'/');

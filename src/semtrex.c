@@ -817,7 +817,7 @@ char * __dump_semtrex(Defs *defs,T *s,char *buf) {
         sem = _t_symbol(v1);  // if set assume values are all the same type
         sn = _d_get_symbol_name(defs->symbols,sem);
         if (*sn=='<')
-            sprintf(b,"%d.%d.%d",sem.context,sem.flags,sem.id);
+            sprintf(b,"%d.%d.%d",sem.context,sem.semtype,sem.id);
         else
             sprintf(b,"%s",sn);
         Structure st = _d_get_symbol_structure(defs->symbols,sem);
@@ -875,7 +875,7 @@ char * __dump_semtrex(Defs *defs,T *s,char *buf) {
             sn = _d_get_symbol_name(defs->symbols,sem);
             // ignore "<unknown symbol"
             if (*sn=='<')
-                sprintf(b+strlen(b),"%d.%d.%d",sem.context,sem.flags,sem.id);
+                sprintf(b+strlen(b),"%d.%d.%d",sem.context,sem.semtype,sem.id);
             else
                 sprintf(b+strlen(b),"%s",sn);
             v1 = _t_next_sibling(v1);

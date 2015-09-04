@@ -1072,7 +1072,7 @@ char * _t2json(Defs *defs,T *t,int level,char *buf) {
                     break;
                 }
                 if (n == 0)
-                    sprintf(buf,"(<unknown:%d.%d.%d>",s.context,s.flags,s.id);
+                    sprintf(buf,"(<unknown:%d.%d.%d>",s.context,s.semtype,s.id);
                 else {
                     c = _d_get_structure_name(structures,st);
                     sprintf(buf,"\"type\":\"%s\",\"name\":\"%s\"",c,n);
