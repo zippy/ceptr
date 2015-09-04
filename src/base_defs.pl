@@ -1,7 +1,7 @@
 #!/usr/local/bin/perl
 
 # This file generates c code that defines system semantic definitions.
-# it reads the file "base_defs" as a source file for creating the definition
+# it reads the file "base_defs" as a source file for creating the definitions
 #
 # Copyright (C) 2013-2015, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
 
@@ -19,9 +19,10 @@ my $defs_h_file = 'base_defs.h';
 open(my $hfh,'>:encoding(UTF-8)', $defs_h_file)
         or die "Could not open definitions c file '$defs_h_file' $!";
 
-my %d;
+my %c;
 my @d;
 my %fmap = ('Structure'=>'sT','Symbol'=>'sY','Process'=>'sP');
+my $context = "SYS";
 
 while (my $def = <$fh>) {
     chomp $def;
@@ -29,14 +30,20 @@ while (my $def = <$fh>) {
     next if ($def) =~ /^[ \t]*$/;   #ignore whitespace lines
     if ($def =~ /(.*): *(.*);(.*)/) {
         my $type = $1;
+        if ($type eq 'Context') {$context = $2;next;}
+
         my @params = split /,/,$2;
         #        my $name = shift @params;
-        push @d,[$type,@params];
+        push @d,[$type,$context.'_CONTEXT',@params];
         my $comment = $3;
-        my $h;
-        if (! exists $d{$type}) {$d{$type} = []};
 
-        my $a = $d{$type};
+        if (! exists $c{$context}) {$c{$context} = {}};
+
+        my $defs = $c{$context};
+
+        if (! exists $defs->{$type}) {$defs->{$type} = []};
+
+        my $a = $defs->{$type};
         push @$a, [@params];
     } else {
         die "unable to parse $def";
@@ -95,27 +102,32 @@ void base_defs();
 
 EOF
 
-&hout("Symbol");
-&hout("Structure");
-&hout("Process");
+&hout("SYS","Symbol");
+&hout("SYS","Structure");
+&hout("SYS","Process");
+&hout("TEST","Symbol");
 
 sub hout {
+    my $context = shift;
     my $type = shift;
     my $types = $type eq "Process" ? "Processes" : $type."s";
-    my $a = $d{$type};
+
+    my $defs = $c{$context};
+    my $a = $defs->{$type};
     print $hfh <<EOF;
-enum System${\($type)}IDs {
-    NULL_${\(uc($type))}_ID,
+enum $context${\($type)}IDs {
+    NULL_${\(($context ne 'SYS' ? $context.'_' : '').uc($type))}_ID,
 EOF
     foreach my $s (@$a) {
         print $hfh '    '.$s->[0]."_ID,\n";
 
     }
-    print $hfh "    NUM_SYS_".uc($types)."\n};\n";
+    print $hfh '    NUM_'.$context.'_'.uc($types)."\n};\n";
     foreach my $s (@$a) {
-        print $hfh '#define '.$s->[0].' G_contexts[SYS_CONTEXT].'.lc($types).'['.$s->[0]."_ID]\n";
+        print $hfh '#define '.$s->[0]." G_contexts[$context"."_CONTEXT].".lc($types).'['.$s->[0]."_ID]\n";
     }
 }
 print $hfh <<EOF;
+
 #endif
 EOF

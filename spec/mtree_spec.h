@@ -304,12 +304,12 @@ void testMTreeSerialize() {
     writeFile("web/httpsymbols.cmt",s,size);
     _m_free(h);free(s);
 
-    h = _m_new_from_t(G_sys_defs.structures);
+    h = _m_new_from_t(G_contexts[SYS_CONTEXT].defs.structures);
     s = _m_serialize(h.m,&size);
     writeFile("web/sysstructures.cmt",s,size);
     _m_free(h);free(s);
 
-    h = _m_new_from_t(G_sys_defs.symbols);
+    h = _m_new_from_t(G_contexts[SYS_CONTEXT].defs.symbols);
     s = _m_serialize(h.m,&size);
     writeFile("web/syssymbols.cmt",s,size);
     _m_free(h);free(s);

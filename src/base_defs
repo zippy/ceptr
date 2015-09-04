@@ -1,3 +1,5 @@
+########################################################################################
+Context: SYS;
 
 Structure: BIT,1,NULL_SYMBOL;
 Structure: INTEGER,1,NULL_SYMBOL;
@@ -165,17 +167,6 @@ Process: STREAM_WRITE,"write to a stream",0,0;
 Process: STREAM_AVAILABLE,"check a stream for data availability",0,0;
 Process: REPLICATE,"replicate process",0,0;
 
-Symbol: TEST_INT_SYMBOL,INTEGER;
-Symbol: TEST_INT_SYMBOL2,INTEGER;
-Symbol: TEST_FLOAT_SYMBOL,FLOAT;
-Symbol: TEST_STR_SYMBOL,CSTRING;
-Symbol: TEST_TREE_SYMBOL,TREE;
-Symbol: TEST_TREE_SYMBOL2,TREE;
-Symbol: TEST_STREAM_SYMBOL,STREAM;
-Symbol: TEST_NAME_SYMBOL,CSTRING;
-Symbol: TEST_RECEPTOR_SYMBOL,RECEPTOR;
-Symbol: TEST_ALPHABETIZE_SCAPE_SYMBOL,SCAPE;
-
 Symbol: STX_TOKENS,LIST;
 Symbol: STX_SL,NULL_STRUCTURE;
 Symbol: STX_OP,NULL_STRUCTURE;
@@ -211,3 +202,17 @@ Symbol: TREE_DELTA_COUNT,INTEGER;
 Structure: TREE_DELTA,3,TREE_DELTA_PATH,TREE_DELTA_VALUE,TREE_DELTA_COUNT;
 Symbol: TREE_DELTA_ADD,TREE_DELTA;
 Symbol: TREE_DELTA_REPLACE,TREE_DELTA;
+
+########################################################################################
+Context: TEST;
+
+Symbol: TEST_INT_SYMBOL,INTEGER;
+Symbol: TEST_INT_SYMBOL2,INTEGER;
+Symbol: TEST_FLOAT_SYMBOL,FLOAT;
+Symbol: TEST_STR_SYMBOL,CSTRING;
+Symbol: TEST_TREE_SYMBOL,TREE;
+Symbol: TEST_TREE_SYMBOL2,TREE;
+Symbol: TEST_STREAM_SYMBOL,STREAM;
+Symbol: TEST_NAME_SYMBOL,CSTRING;
+Symbol: TEST_RECEPTOR_SYMBOL,RECEPTOR;
+Symbol: TEST_ALPHABETIZE_SCAPE_SYMBOL,SCAPE;

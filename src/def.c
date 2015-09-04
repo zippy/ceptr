@@ -30,12 +30,10 @@ int semeq(SemanticID s1,SemanticID s2) {
  * @snippet spec/def_spec.h testSymbolGetName
  */
 char *_d_get_symbol_name(T *symbols,Symbol s) {
-    if (is_sys_symbol(s)) {
-        if (s.id == 0) return "NULL_SYMBOL";
-        symbols = G_sys_defs.symbols;
-    }
-    if (is_sys_test_symbol(s))
-        symbols = G_sys_defs.symbols;
+    if (s.context != RECEPTOR_CONTEXT)
+        symbols = G_contexts[s.context].defs.symbols;
+    if (is_sys_symbol(s) && (s.id == 0))
+        return "NULL_SYMBOL";
     if (symbols) {
         int c = _t_children(symbols);
         if (s.id > c || s.id < 1)  {
@@ -60,10 +58,10 @@ char *_d_get_symbol_name(T *symbols,Symbol s) {
  * @snippet spec/def_spec.h testStructureGetName
  */
 char *_d_get_structure_name(T *structures,Structure s) {
-    if (is_sys_structure(s)) {
-        if (s.id == 0) return "NULL_STRUCTURE";
-        structures = G_sys_defs.structures;
-    }
+    if (s.context != RECEPTOR_CONTEXT)
+        structures = G_contexts[s.context].defs.structures;
+    if (is_sys_structure(s) && (s.id == 0))
+        return "NULL_STRUCTURE";
     if (structures) {
         T *def = _t_child(structures,s.id);
         T *l = _t_child(def,1);
@@ -84,10 +82,10 @@ char *_d_get_structure_name(T *structures,Structure s) {
  * @snippet spec/def_spec.h testProcessGetName
  */
 char *_d_get_process_name(T *processes,Process p) {
-    if (is_sys_process(p)) {
-        if (p.id == 0) return "NULL_PROCESS";
-        processes = G_sys_defs.processes;
-    }
+    if (p.context != RECEPTOR_CONTEXT)
+        processes = G_contexts[p.context].defs.processes;
+    if (is_sys_process(p) && (p.id == 0))
+        return "NULL_PROCESS";
     if (processes) {
         T *def = _t_child(processes,p.id);
         if (def) {
@@ -102,13 +100,9 @@ char *_d_get_process_name(T *processes,Process p) {
 // internal check to see if a symbol is valid
 void __d_validate_symbol(T *symbols,Symbol s,char *n) {
     if (!is_symbol(s)) raise_error("Bad symbol in %s def: semantic type not SEM_TYPE_SYMBOL",n);
-
-    if (is_sys_symbol(s)) {
-        if (s.id == 0) return; // NULL_SYMBOL ok
-        else symbols = G_sys_defs.symbols;
-    }
-    else if (is_sys_test_symbol(s))
-        symbols = G_sys_defs.symbols;
+    if (s.context != RECEPTOR_CONTEXT)
+        symbols = G_contexts[s.context].defs.symbols;
+    if (is_sys_symbol(s) && (s.id == 0)) return; // NULL_SYMBOL ok
     if (symbols) {
         if (!_t_child(symbols,s.id)) raise_error("Bad symbol in %s def: definition not found in context",n);
     }
@@ -119,11 +113,9 @@ void __d_validate_symbol(T *symbols,Symbol s,char *n) {
 void __d_validate_structure(T *structures,Structure s,char *n) {
     if (!is_structure(s)) raise_error("Bad structure in %s def: semantic type not SEM_TYPE_STRUCTURE",n);
 
-    if (is_sys_structure(s)) {
-        if (s.id == 0) return; // NULL_STRUCTURE ok
-        else structures = G_sys_defs.structures;
-    }
-
+    if (s.context != RECEPTOR_CONTEXT)
+        structures = G_contexts[s.context].defs.structures;
+    if (is_sys_structure(s) && (s.id == 0)) return; // NULL_STRUCTURE ok
     if (structures) {
         if(s.id && !_t_child(structures,s.id)) {raise_error("Unknown structure <%d.%d.%d> in declaration of %s",s.context,s.semtype,s.id,n);}
     }
@@ -214,11 +206,19 @@ T * _dv_define_structure(T *symbols,T *structures,char *label,int num_params,va_
  * @snippet spec/def_spec.h testGetSymbolStructure
  */
 Structure _d_get_symbol_structure(T *symbols,Symbol s) {
-    if (is_sys_symbol(s) || is_sys_test_symbol(s))
-        symbols = G_sys_defs.symbols;
-    T *def = _t_child(symbols,s.id);
-    T *t = _t_child(def,2); // second child of the def is the structure
-    return *(Structure *)_t_surface(t);
+    if (!is_symbol(s)) raise_error("Bad symbol: semantic type not SEM_TYPE_SYMBOL");
+    if (s.context != RECEPTOR_CONTEXT)
+        symbols = G_contexts[s.context].defs.symbols;
+
+    // NULL_SYMBOL has NULL_STRUCTURE ??
+    if (is_sys_symbol(s) && (s.id == 0)) return NULL_STRUCTURE;
+
+    if (symbols) {
+        T *def = _t_child(symbols,s.id);
+        T *t = _t_child(def,2); // second child of the def is the structure
+        return *(Structure *)_t_surface(t);
+    }
+    raise_error("Context %d not found!",s.context);
 }
 
 /**

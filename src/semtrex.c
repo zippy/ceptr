@@ -1014,7 +1014,10 @@ Symbol _get_symbol(char *symbol_name,Defs *d,Context ctx) {
 // temporary function to look up a symbol name in a defintion
 /// @todo convert this to use the label table
 Symbol get_symbol(char *symbol_name,Defs *d) {
-    Symbol s = _get_symbol(symbol_name,&G_sys_defs,SYS_CONTEXT);
+    Symbol s = _get_symbol(symbol_name,&G_contexts[SYS_CONTEXT].defs,SYS_CONTEXT);
+    if (!semeq(s,NULL_SYMBOL))
+        return s;
+    s = _get_symbol(symbol_name,&G_contexts[TEST_CONTEXT].defs,TEST_CONTEXT);
     if (!semeq(s,NULL_SYMBOL))
         return s;
     return _get_symbol(symbol_name,d,RECEPTOR_CONTEXT);

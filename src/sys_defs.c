@@ -22,7 +22,23 @@ Process NULL_PROCESS = {0,SEM_TYPE_PROCESS,0};
 ContextStore G_contexts[_NUM_CONTEXTS];
 #define _sd(s,c,t,i); s.context = c;s.semtype=t;s.id=i;
 
+void init_defs_tree(ContextStore *cs) {
+    cs->root = _t_new_root(DEFINITIONS);
+    cs->defs.symbols = _t_newr(cs->root,SYMBOLS);
+    cs->defs.structures = _t_newr(cs->root,STRUCTURES);
+    cs->defs.processes = _t_newr(cs->root,PROCESSES);
+}
+
 void def_sys() {
+
+    int i;
+    for(i=0;i<_NUM_CONTEXTS;i++) {
+        G_contexts[i].structures = 0;
+        G_contexts[i].symbols = 0;
+        G_contexts[i].processes = 0;
+        G_contexts[i].root = 0;
+    }
+
     G_contexts[SYS_CONTEXT].structures = malloc(NUM_SYS_STRUCTURES*sizeof(Structure));
     G_contexts[SYS_CONTEXT].symbols = malloc(NUM_SYS_SYMBOLS*sizeof(Symbol));
     G_contexts[SYS_CONTEXT].processes = malloc(NUM_SYS_PROCESSES*sizeof(Process));
@@ -42,20 +58,24 @@ void def_sys() {
     _sd(SYMBOL_STRUCTURE,SYS_CONTEXT,SEM_TYPE_SYMBOL,SYMBOL_STRUCTURE_ID);
     _sd(SYMBOL_LABEL,SYS_CONTEXT,SEM_TYPE_SYMBOL,SYMBOL_LABEL_ID);
 
-    G_contexts[SYS_CONTEXT].root = _t_new_root(DEFINITIONS);
-    G_contexts[SYS_CONTEXT].defs.symbols = _t_newr(G_sys_root,SYMBOLS);
-    G_contexts[SYS_CONTEXT].defs.structures = _t_newr(G_sys_root,STRUCTURES);
-    G_contexts[SYS_CONTEXT].defs.processes = _t_newr(G_sys_root,PROCESSES);
+    // this has to happen after the _ds declarations!
+    init_defs_tree(&G_contexts[SYS_CONTEXT]);
+    init_defs_tree(&G_contexts[TEST_CONTEXT]);
+
+    G_contexts[TEST_CONTEXT].symbols = malloc(NUM_TEST_SYMBOLS*sizeof(Symbol));
 
     base_defs();
+}
+void free_context(ContextStore *cs) {
+    if (cs->structures) free(cs->structures);
+    if (cs->symbols) free(cs->symbols);
+    if (cs->processes) free(cs->processes);
+    if (cs->root) _t_free(cs->root);
 }
 
 void sys_free() {
     int i;
-    for(i=0;i<1;i++) { //_NUM_CONTEXTS
-        free(G_contexts[i].structures);
-        free(G_contexts[i].symbols);
-        free(G_contexts[i].processes);
-        _t_free(G_contexts[i].root);
+    for(i=0;i<_NUM_CONTEXTS;i++) {
+        free_context(&G_contexts[i]);
     }
 }
