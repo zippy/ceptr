@@ -45,8 +45,8 @@ ContextStore G_contexts[_NUM_CONTEXTS];
 #define G_sys_defs G_contexts[SYS_CONTEXT].defs
 
 #define sT(name,num,...) name = _d_define_structure(G_sys_defs.symbols,G_sys_defs.structures,"" #name "",SYS_CONTEXT,num,__VA_ARGS__)
-#define sY(name,str) if(str.id && !_t_child(G_sys_defs.structures,str.id)) {raise_error("Unknown structure '" #str "' in declaration of " #name "")} name = _d_declare_symbol(G_sys_defs.symbols,str,"" #name "",SYS_CONTEXT)
+#define sY(name,str) name = _d_declare_symbol(G_sys_defs.symbols,G_sys_defs.structures,str,"" #name "",SYS_CONTEXT)
 #define sP(name,intention,in,out) name = _d_code_process(G_sys_defs.processes,0,"" #name "",intention,in,out,SYS_CONTEXT)
-#define sYt(name,str) name = _d_declare_symbol(G_sys_defs.symbols,str,"" #name "",TEST_CONTEXT)
+#define sYt(name,str) name = _d_declare_symbol(G_sys_defs.symbols,G_sys_defs.structures,str,"" #name "",TEST_CONTEXT)
 
 #endif

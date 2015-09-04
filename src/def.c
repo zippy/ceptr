@@ -115,6 +115,21 @@ void __d_validate_symbol(T *symbols,Symbol s,char *n) {
     else raise_error("Bad symbol in %s def: context not found",n);
 }
 
+// internal check to see if a structure is valid
+void __d_validate_structure(T *structures,Structure s,char *n) {
+    if (!is_structure(s)) raise_error("Bad structure in %s def: semantic type not SEM_TYPE_STRUCTURE",n);
+
+    if (is_sys_structure(s)) {
+        if (s.id == 0) return; // NULL_STRUCTURE ok
+        else structures = G_sys_defs.structures;
+    }
+
+    if (structures) {
+        if(s.id && !_t_child(structures,s.id)) {raise_error("Unknown structure <%d.%d.%d> in declaration of %s",s.context,s.semtype,s.id,n);}
+    }
+    else raise_error("Bad structure in %s def: context not found",n);
+}
+
 /**
  * add a symbol definition to a symbol defs tree
  *
@@ -146,7 +161,8 @@ T *__d_declare_symbol(T *symbols,Structure s,char *label){
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testDefSymbol
  */
-Symbol _d_declare_symbol(T *symbols,Structure s,char *label,Context c){
+Symbol _d_declare_symbol(T *symbols,T *structures,Structure s,char *label,Context c){
+    __d_validate_structure(structures,s,label);
     __d_declare_symbol(symbols,s,label);
     Symbol sym = {c,SEM_TYPE_SYMBOL,_t_children(symbols)};
     return sym;

@@ -22,8 +22,8 @@ Symbol sy4 = {0,0,4};
 Symbol TEST_GROUP_SYMBOL1;
 Symbol TEST_GROUP_SYMBOL2;
 
-#define sYt(name,str) name = _d_declare_symbol(G_sys_defs.symbols,str,"" #name "",TEST_CONTEXT)
-#define sX(name,str) Symbol name = _d_declare_symbol(G_sys_defs.symbols,str,"" #name "",TEST_CONTEXT)
+#define sYt(name,str) name = _d_declare_symbol(G_sys_defs.symbols,G_sys_defs.structures,str,"" #name "",TEST_CONTEXT)
+#define sX(name,str) Symbol name = _d_declare_symbol(G_sys_defs.symbols,G_sys_defs.structures,str,"" #name "",TEST_CONTEXT)
 
 void _stxSetup() {
     sYt(sy0,CSTRING);

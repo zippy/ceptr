@@ -31,7 +31,16 @@ void testProcessGetName() {
 }
 
 void testDefValidate() {
-    //    int _d_vaildate_symbol(T *sybmols);
+    T *symbols = _t_new_root(SYMBOLS);
+    Symbol bad_symbol = {1,SEM_TYPE_SYMBOL,99};
+    T *structures = _t_new_root(STRUCTURES);
+    Structure bad_structure = {2,SEM_TYPE_STRUCTURE,22};
+
+    // commented out because for now they raise errors...
+    //    __d_validate_structure(structures,bad_structure,"test");
+    //    __d_validate_symbol(symbols,bad_symbol,"test");
+    _t_free(symbols);
+    _t_free(structures);
 }
 
 void testDefSymbol() {
@@ -83,10 +92,13 @@ void testGetSymbolStructure() {
     spec_is_structure_equal(0,_d_get_symbol_structure(0,STRUCTURE_PART),SYMBOL);
 
     // test user-defined symbols
-    T *defs = _t_new_root(SYMBOLS);
-    Symbol s = _d_declare_symbol(defs,INTEGER,"shoe size",RECEPTOR_CONTEXT);
-    spec_is_sem_equal(_d_get_symbol_structure(defs,s),INTEGER);
-    _t_free(defs);
+    T *symbols = _t_new_root(SYMBOLS);
+    T *structures = _t_new_root(STRUCTURES);
+
+    Symbol s = _d_declare_symbol(symbols,structures,INTEGER,"shoe size",RECEPTOR_CONTEXT);
+    spec_is_sem_equal(_d_get_symbol_structure(symbols,s),INTEGER);
+    _t_free(symbols);
+    _t_free(structures);
     //! [testSymbolStructure]
 }
 
@@ -104,8 +116,8 @@ void testGetSize() {
     // test user-defined symbols and structures
     T *structures = _t_new_root(STRUCTURES);                    // create tree that holds structures
     T *symbols = _t_new_root(SYMBOLS);                          // create tree that holds symbols
-    Symbol lat = _d_declare_symbol(symbols,FLOAT,"latitude",RECEPTOR_CONTEXT);      // symbols are declared, structures are defined
-    Symbol lon = _d_declare_symbol(symbols,FLOAT,"longitude",RECEPTOR_CONTEXT);     // here we declare two meaningful ways to use the structure float
+    Symbol lat = _d_declare_symbol(symbols,structures,FLOAT,"latitude",RECEPTOR_CONTEXT);      // symbols are declared, structures are defined
+    Symbol lon = _d_declare_symbol(symbols,structures,FLOAT,"longitude",RECEPTOR_CONTEXT);     // here we declare two meaningful ways to use the structure float
 
     Defs defs = {structures, symbols, 0, 0};
 
@@ -113,7 +125,7 @@ void testGetSize() {
     Structure latlong = _d_define_structure(symbols,structures,"latlong",RECEPTOR_CONTEXT, 2, lat, lon);
 
     // House location is a meaningful use of the structure latlong
-    Symbol house_loc = _d_declare_symbol(symbols, latlong, "house location",RECEPTOR_CONTEXT);
+    Symbol house_loc = _d_declare_symbol(symbols,structures, latlong, "house location",RECEPTOR_CONTEXT);
 
     // Here's the surface of the latlong.
     float ll[] = {2.0,90.3};
@@ -203,6 +215,7 @@ void testDef() {
     testDefSysDefs();
     testSymbolGetName();
     testStructureGetName();
+    testDefValidate();
     testProcessGetName();
     testDefSymbol();
     testDefStructure();

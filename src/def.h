@@ -18,7 +18,7 @@
 #include <stdarg.h>
 
 #define ST(defs,name,num,...) name = _d_define_structure(defs.symbols,defs.structures,"" #name "",RECEPTOR_CONTEXT,num,__VA_ARGS__)
-#define SY(defs,name,str) name = _d_declare_symbol(defs.symbols,str,"" #name "",RECEPTOR_CONTEXT)
+#define SY(defs,name,str) name = _d_declare_symbol(defs.symbols,defs.structures,str,"" #name "",RECEPTOR_CONTEXT)
 #define SP(defs,code,name,intention,in,out) name = _d_code_process(defs.processes,code,"" #name "",RECEPTOR_CONTEXT,intention,in,out)
 
 int semeq(SemanticID s1,SemanticID s2);
@@ -26,8 +26,9 @@ char *_d_get_symbol_name(T *symbols,Symbol s);
 char *_d_get_structure_name(T *structures,Structure s);
 char *_d_get_process_name(T *processes,Process p);
 void __d_validate_symbol(T *symbols,Symbol s,char *n);
+void __d_validate_structure(T *structures,Structure s,char *n);
 T *__d_declare_symbol(T *symbols,Structure s,char *label);
-Symbol _d_declare_symbol(T *symbols,Structure s,char *label,Context c);
+Symbol _d_declare_symbol(T *symbols,T *structures,Structure s,char *label,Context c);
 Structure _d_define_structure(T *symbols,T *structures,char *label,Context c,int num_params,...);
 T * _dv_define_structure(T *symbols,T *structures,char *label,int num_params,va_list params);
 Structure _d_get_symbol_structure(T *symbols,Symbol symbol);

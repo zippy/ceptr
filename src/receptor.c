@@ -159,6 +159,7 @@ SemanticID  __get_label_idx(Receptor *r,char *label) {
  *
  */
 Symbol _r_declare_symbol(Receptor *r,Structure s,char *label){
+    __d_validate_structure(r->defs.structures,s,label);
     T *def = __d_declare_symbol(r->defs.symbols,s,label);
     return __set_label_for_def(r,label,def,SEM_TYPE_SYMBOL);
 }
