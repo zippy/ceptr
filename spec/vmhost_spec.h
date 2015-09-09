@@ -329,7 +329,6 @@ void testVMHostShell() {
     // create the shell receptor
     Symbol shell = _r_declare_symbol(G_vm->r,RECEPTOR,"shell");
     Receptor *r = _r_new(shell);
-    Symbol line = _r_declare_symbol(r,CSTRING,"LINE"); /// @todo, should be shared symbol from compository, see #29...
 
     Symbol verb = _r_declare_symbol(r,CSTRING,"verb");
     Structure command = _r_define_structure(r,"command",1,verb); // need the optional parameters part here
@@ -363,8 +362,8 @@ void testVMHostShell() {
     // create expectations for commands
     // (expect (on std_in LINE) action (send self (shell_command parsed from LINE))
     T *expect = _t_new_root(EXPECTATION);
-    T *s = _t_news(expect,SEMTREX_GROUP,line);
-    _sl(s,line);
+    T *s = _t_news(expect,SEMTREX_GROUP,LINE);
+    _sl(s,LINE);
     T *p = _t_new_root(SEND);
     Xaddr to = {RECEPTOR_XADDR,0};  // self
     _t_new(p,RECEPTOR_XADDR,&to,sizeof(to));
@@ -376,8 +375,8 @@ void testVMHostShell() {
     Process proc = _r_code_process(r,p,"send self command","long desc...",NULL,NULL);
     T *act = _t_newp(0,ACTION,proc);
     T* params = _t_new_root(PARAMS);
-    _t_news(params,INTERPOLATE_SYMBOL,line);
-    _r_add_listener(r,DEFAULT_ASPECT,line,expect,params,act);
+    _t_news(params,INTERPOLATE_SYMBOL,LINE);
+    _r_add_listener(r,DEFAULT_ASPECT,LINE,expect,params,act);
 
     // (expect (on flux SHELL_COMMAND:time) action(send std_out (convert_to_lines (listen to clock)))
     expect = _t_new_root(EXPECTATION);
@@ -385,14 +384,14 @@ void testVMHostShell() {
     _sl(s,shell_command);
     p = _t_new_root(SEND);
     _t_new(p,RECEPTOR_XADDR,&ox,sizeof(ox));
-    x = _t_new_str(p,line,"placeholder for time");
+    x = _t_new_str(p,LINE,"placeholder for time");
     //    int pt1[] = {2,1,TREE_PATH_TERMINATOR};
     //    _t_new(x,PARAM_REF,pt1,sizeof(int)*4);
     proc = _r_code_process(r,p,"send time to std_out","long desc...",NULL,NULL);
     act = _t_newp(0,ACTION,proc);
     params = _t_new_root(PARAMS);
     _t_news(params,INTERPOLATE_SYMBOL,shell_command);
-    _r_add_listener(r,DEFAULT_ASPECT,line,expect,params,act);
+    _r_add_listener(r,DEFAULT_ASPECT,LINE,expect,params,act);
 
     // (expect (on flux SHELL_COMMAND:receptor) action (send std_out (convert_to_lines (send vmhost (get receptor list from vmhost)))))
 

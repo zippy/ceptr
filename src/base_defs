@@ -203,6 +203,13 @@ Structure: TREE_DELTA,3,TREE_DELTA_PATH,TREE_DELTA_VALUE,TREE_DELTA_COUNT;
 Symbol: TREE_DELTA_ADD,TREE_DELTA;
 Symbol: TREE_DELTA_REPLACE,TREE_DELTA;
 
+
+########################################################################################
+Context: LOCAL;
+
+Symbol: LINE,CSTRING;                 text lines from unix streams
+
+
 ########################################################################################
 Context: TEST;
 

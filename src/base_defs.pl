@@ -99,13 +99,13 @@ print $hfh <<'EOF';
 #include "sys_defs.h"
 
 void base_defs();
-
 EOF
 
 &hout("SYS","Symbol");
 &hout("SYS","Structure");
 &hout("SYS","Process");
 &hout("TEST","Symbol");
+&hout("LOCAL","Symbol");
 
 sub hout {
     my $context = shift;
@@ -115,6 +115,9 @@ sub hout {
     my $defs = $c{$context};
     my $a = $defs->{$type};
     print $hfh <<EOF;
+
+/**********************************************************************************/
+// $context:$type
 enum $context${\($type)}IDs {
     NULL_${\(($context ne 'SYS' ? $context.'_' : '').uc($type))}_ID,
 EOF

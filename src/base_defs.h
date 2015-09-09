@@ -15,6 +15,8 @@
 
 void base_defs();
 
+/**********************************************************************************/
+// SYS:Symbol
 enum SYSSymbolIDs {
     NULL_SYMBOL_ID,
     DEFINITIONS_ID,
@@ -299,6 +301,9 @@ enum SYSSymbolIDs {
 #define TREE_DELTA_COUNT G_contexts[SYS_CONTEXT].symbols[TREE_DELTA_COUNT_ID]
 #define TREE_DELTA_ADD G_contexts[SYS_CONTEXT].symbols[TREE_DELTA_ADD_ID]
 #define TREE_DELTA_REPLACE G_contexts[SYS_CONTEXT].symbols[TREE_DELTA_REPLACE_ID]
+
+/**********************************************************************************/
+// SYS:Structure
 enum SYSStructureIDs {
     NULL_STRUCTURE_ID,
     BIT_ID,
@@ -355,6 +360,9 @@ enum SYSStructureIDs {
 #define TIMESTAMP G_contexts[SYS_CONTEXT].structures[TIMESTAMP_ID]
 #define REDUCTION_ERROR G_contexts[SYS_CONTEXT].structures[REDUCTION_ERROR_ID]
 #define TREE_DELTA G_contexts[SYS_CONTEXT].structures[TREE_DELTA_ID]
+
+/**********************************************************************************/
+// SYS:Process
 enum SYSProcessIDs {
     NULL_PROCESS_ID,
     NOOP_ID,
@@ -405,6 +413,9 @@ enum SYSProcessIDs {
 #define STREAM_WRITE G_contexts[SYS_CONTEXT].processes[STREAM_WRITE_ID]
 #define STREAM_AVAILABLE G_contexts[SYS_CONTEXT].processes[STREAM_AVAILABLE_ID]
 #define REPLICATE G_contexts[SYS_CONTEXT].processes[REPLICATE_ID]
+
+/**********************************************************************************/
+// TEST:Symbol
 enum TESTSymbolIDs {
     NULL_TEST_SYMBOL_ID,
     TEST_INT_SYMBOL_ID,
@@ -429,5 +440,14 @@ enum TESTSymbolIDs {
 #define TEST_NAME_SYMBOL G_contexts[TEST_CONTEXT].symbols[TEST_NAME_SYMBOL_ID]
 #define TEST_RECEPTOR_SYMBOL G_contexts[TEST_CONTEXT].symbols[TEST_RECEPTOR_SYMBOL_ID]
 #define TEST_ALPHABETIZE_SCAPE_SYMBOL G_contexts[TEST_CONTEXT].symbols[TEST_ALPHABETIZE_SCAPE_SYMBOL_ID]
+
+/**********************************************************************************/
+// LOCAL:Symbol
+enum LOCALSymbolIDs {
+    NULL_LOCAL_SYMBOL_ID,
+    LINE_ID,
+    NUM_LOCAL_SYMBOLS
+};
+#define LINE G_contexts[LOCAL_CONTEXT].symbols[LINE_ID]
 
 #endif

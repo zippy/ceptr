@@ -58,11 +58,13 @@ void def_sys() {
     _sd(SYMBOL_STRUCTURE,SYS_CONTEXT,SEM_TYPE_SYMBOL,SYMBOL_STRUCTURE_ID);
     _sd(SYMBOL_LABEL,SYS_CONTEXT,SEM_TYPE_SYMBOL,SYMBOL_LABEL_ID);
 
-    // this has to happen after the _ds declarations!
+    // this has to happen after the _sd declarations so that the basic Symbols will be valid
     init_defs_tree(&G_contexts[SYS_CONTEXT]);
     init_defs_tree(&G_contexts[TEST_CONTEXT]);
+    init_defs_tree(&G_contexts[LOCAL_CONTEXT]);
 
     G_contexts[TEST_CONTEXT].symbols = malloc(NUM_TEST_SYMBOLS*sizeof(Symbol));
+    G_contexts[LOCAL_CONTEXT].symbols = malloc(NUM_LOCAL_SYMBOLS*sizeof(Symbol));
 
     base_defs();
 }

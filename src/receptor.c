@@ -570,7 +570,6 @@ char *_td(Receptor *r,T *t) {
 
 Receptor *_r_makeStreamReaderReceptor(Symbol receptor_symbol,Symbol stream_symbol,Stream *st,Xaddr to) {
     Receptor *r = _r_new(receptor_symbol);
-    Symbol line = _r_declare_symbol(r,CSTRING,"LINE"); /// @todo, should be shared symbol from compository, see #29...
 
     // code is something like:
     // (do (not stream eof) (send to (read_stream stream line)))
@@ -588,7 +587,7 @@ Receptor *_r_makeStreamReaderReceptor(Symbol receptor_symbol,Symbol stream_symbo
 
     T *s = _t_new(send,STREAM_READ,0,0);
     _t_new_stream(s,stream_symbol,st);
-    _t_new(s,RESULT_SYMBOL,&line,sizeof(Symbol));
+    _t_new(s,RESULT_SYMBOL,&LINE,sizeof(Symbol));
     _t_newi(send,BOOLEAN,1); // mark async
 
     T *c = _t_rclone(p);
@@ -604,7 +603,6 @@ Receptor *_r_makeStreamWriterReceptor(Symbol receptor_symbol,Symbol stream_symbo
 
     T *expect = _t_new_root(EXPECTATION);
 
-    Symbol line = _r_declare_symbol(r,CSTRING,"LINE"); /// @todo, should be shared symbol from compository, see #29...
     char *stx = "/<LINE:LINE>";
 
     // @fixme for some reason parseSemtrex doesn't clean up after itself
@@ -613,9 +611,9 @@ Receptor *_r_makeStreamWriterReceptor(Symbol receptor_symbol,Symbol stream_symbo
     /* T *t = parseSemtrex(&r->defs,stx); */
     /*  _t_add(expect,t); */
 
-    T *t =_t_news(expect,SEMTREX_GROUP,line);
+    T *t =_t_news(expect,SEMTREX_GROUP,LINE);
     T *x =_t_newr(t,SEMTREX_SYMBOL_LITERAL);
-    _t_news(x,SEMTREX_SYMBOL,line);
+    _t_news(x,SEMTREX_SYMBOL,LINE);
 
     /* char buf[1000]; */
     /* _dump_semtrex(&r->defs,t,buf); */
@@ -628,14 +626,14 @@ Receptor *_r_makeStreamWriterReceptor(Symbol receptor_symbol,Symbol stream_symbo
     _t_new(x,PARAM_REF,pt1,sizeof(int)*4);
 
     T* params = _t_new_root(PARAMS);
-    _t_news(params,INTERPOLATE_SYMBOL,line);
+    _t_news(params,INTERPOLATE_SYMBOL,LINE);
 
     T *input = _t_new_root(INPUT);
     T *output = _t_new_root(OUTPUT_SIGNATURE);
     Process proc = _r_code_process(r,x,"echo what you said","long desc...",input,output);
     T *act = _t_newp(0,ACTION,proc);
 
-    _r_add_listener(r,DEFAULT_ASPECT,line,expect,params,act);
+    _r_add_listener(r,DEFAULT_ASPECT,LINE,expect,params,act);
 
     return r;
 }
