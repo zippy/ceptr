@@ -38,7 +38,7 @@ Symbol: SEMTREX_SYMBOL_LITERAL_NOT,TREE;    Match any symbol or value of the nod
 Symbol: SEMTREX_SYMBOL_SET,LIST;
 Symbol: SEMTREX_SYMBOL,SYMBOL;              Symbols in the literal set
 Symbol: SEMTREX_SEQUENCE,LIST;              Match on a sequence of child nodes which are any valid semtrex's.  Ex: comma separated nodes
-#///@todo, this really should be something like SEMTREX_PAIR
+#///@todo, the structure really should be something like SEMTREX_PAIR
 Symbol: SEMTREX_OR,SEMTREX;                 Logical OR between two Semtrex expressions.      Ex: |
 Symbol: SEMTREX_NOT,SEMTREX;                Logical ~ between of a Semtrex expressions.      Ex: ~
 Symbol: SEMTREX_SYMBOL_ANY,NULL_STRUCTURE;  Match any symbol or value of the node.           Ex: .
@@ -94,13 +94,12 @@ Symbol: REDUCTION_ERROR_SYMBOL,SYMBOL;
 
 Symbol: PROTOCOLS,LIST;
 Symbol: SEQUENCES,LIST;
-#Symbol: SEQUENCE,LIST; /// @todo this should really be a structure be we don't have optional elements yet....
 Symbol: STEP_SYMBOL,SYMBOL;
 Symbol: STEPS,LIST;
-Structure: SEQUENCE,1,STEP_SYMBOL; // this really should specify one or more step_symbols
+Structure: SEQUENCE,1,STEP_SYMBOL; /// @todo #8 this really should specify one or more step_symbols
 Structure: PROTOCOL_STEP,3,EXPECTATION,PARAMS,ACTION;
 Symbol: INTERACTIONS,LIST;
-Symbol: INTERACTION,LIST; /// @todo this should really be a structure be we don't have optional elements yet....
+Symbol: INTERACTION,LIST; /// @todo #8 this should really be a structure be we don't have optional elements yet....
 Symbol: STEP,CSTRING;
 Symbol: RESPONSE_STEPS,LIST;
 Structure: PROTOCOL,2,STEPS,SEQUENCES;
