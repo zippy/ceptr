@@ -212,7 +212,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_join_thread</b> (<
   </table>
   </dd>
 </dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000053">Todo:</a></b></dt><dd>for now we are just storing the active receptors in the receptor tree later this will probably have to be optimized into a hash/scape for faster access </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000050">Todo:</a></b></dt><dd>for now we are just storing the active receptors in the receptor tree later this will probably have to be optimized into a hash/scape for faster access </dd></dl>
 
 <p>Definition at line <a class="el" href="vmhost_8c_source.html#l00165">165</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
 
@@ -241,7 +241,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_join_thread</b> (<
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000055">Todo:</a></b></dt><dd>this should probably be implemented in a scape but for now </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000052">Todo:</a></b></dt><dd>this should probably be implemented in a scape but for now </dd></dl>
 
 <p>Definition at line <a class="el" href="vmhost_8c_source.html#l00205">205</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
 
@@ -261,7 +261,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_join_thread</b> (<
       </table>
 </div><div class="memdoc">
 <p>this is the VMhost main monitoring and execution thread </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000056">Todo:</a></b></dt><dd>refactor being able to walk through all currently active receptors </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000053">Todo:</a></b></dt><dd>refactor being able to walk through all currently active receptors </dd></dl>
 
 <p>Definition at line <a class="el" href="vmhost_8c_source.html#l00260">260</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
 
@@ -299,7 +299,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_join_thread</b> (<
   </table>
   </dd>
 </dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000052">Todo:</a></b></dt><dd>for now we are just storing the active receptors in the receptor tree later this will probably have to be optimized into a hash/scape for faster access </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000049">Todo:</a></b></dt><dd>for now we are just storing the active receptors in the receptor tree later this will probably have to be optimized into a hash/scape for faster access </dd></dl>
 
 <p>Definition at line <a class="el" href="vmhost_8c_source.html#l00143">143</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
 
@@ -423,7 +423,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_join_thread</b> (<
 <div class="line"><span class="comment">/*     spec_is_xaddr_equal(v-&gt;r,_s_get(v-&gt;installed_receptors,h),xp); */</span></div>
 <div class="line"></div>
 <div class="line"><span class="comment">/*     _v_free(v); */</span></div>
-</div><!-- fragment --><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000051">Todo:</a></b></dt><dd>expand the manifest to allow optional binding, etc, using semtrex to do the matching instead of assuming positional matching </dd></dl>
+</div><!-- fragment --><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000048">Todo:</a></b></dt><dd>expand the manifest to allow optional binding, etc, using semtrex to do the matching instead of assuming positional matching </dd></dl>
 
 <p>Definition at line <a class="el" href="vmhost_8c_source.html#l00085">85</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
 
@@ -480,7 +480,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_join_thread</b> (<
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structXaddr.html">Xaddr</a> of the receptor package in the compository </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000050">Todo:</a></b></dt><dd>validate signature and checksums??</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000047">Todo:</a></b></dt><dd>validate signature and checksums??</dd></dl>
 <p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line"><span class="comment">/*     VMHost *v = _v_new(); */</span></div>
 <div class="line"><span class="comment">/*     T *p = _makeTestHTTPAppReceptorPackage(); */</span></div>
 <div class="line"></div>
@@ -566,7 +566,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_join_thread</b> (<
       </table>
 </div><div class="memdoc">
 <p>queue a signal for processing</p>
-<p>first builds a SIGNAL tree, then instantiates and scapes it </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000054">Todo:</a></b></dt><dd>understand how it makes any sense at all to make an instance of the signal in context of the vmhost in which the content tree's symbols aren't defined!!!</dd></dl>
+<p>first builds a SIGNAL tree, then instantiates and scapes it </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000051">Todo:</a></b></dt><dd>understand how it makes any sense at all to make an instance of the signal in context of the vmhost in which the content tree's symbols aren't defined!!!</dd></dl>
 <p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line"><span class="comment">/*     VMHost *v = _v_new(); */</span></div>
 <div class="line"></div>
 <div class="line"><span class="comment">/*     // create and install a stub HTTP server receptor */</span></div>
@@ -685,7 +685,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_join_thread</b> (<
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Aug 27 2015 12:41:29 for ceptr by
+    <li class="footer">Generated on Thu Sep 10 2015 15:47:27 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

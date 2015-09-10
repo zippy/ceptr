@@ -55,7 +55,6 @@ var searchData=
   ['testtreeswap',['testTreeSwap',['../tree__spec_8h.html#a22fbd67719525409ae07f576a34816b3',1,'tree_spec.h']]],
   ['testvmhostactivatereceptor',['testVMHostActivateReceptor',['../vmhost__spec_8h.html#a9165528cd9a1193303f58f7c012ba53c',1,'vmhost_spec.h']]],
   ['testvmhostcreate',['testVMHostCreate',['../vmhost__spec_8h.html#ab22810ce6e5f9b1586db2767bfc44c64',1,'vmhost_spec.h']]],
-  ['testvmhostshell',['testVMHostShell',['../vmhost__spec_8h.html#a52db74eb5f9806480776a35cdecda011',1,'vmhost_spec.h']]],
   ['thread',['thread',['../structthread.html',1,'']]],
   ['todo_20list',['Todo List',['../todo.html',1,'']]],
   ['transition',['transition',['../structSState.html#a929d501094346c34a5c14e715b2f133f',1,'SState']]],

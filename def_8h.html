@@ -118,12 +118,14 @@ $(document).ready(function(){initNavTree('def_8h.html','');});
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for def.h:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="def_8h__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="def_8h__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="def_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="def_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 </div>
 <p><a href="def_8h_source.html">Go to the source code of this file.</a></p>
@@ -131,10 +133,10 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:ga7b1d66b49e535253a63dfbcdd7824092"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga7b1d66b49e535253a63dfbcdd7824092"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>ST</b>(defs, name, num,...)&#160;&#160;&#160;name = <a class="el" href="group__def.html#gaad8973679986f6af6b59a95e08bdb192">_d_define_structure</a>(defs.structures,&quot;&quot; #name &quot;&quot;,RECEPTOR_CONTEXT,num,__VA_ARGS__)</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ST</b>(defs, name, num,...)&#160;&#160;&#160;name = <a class="el" href="group__def.html#ga8fac1cf57ae2bc0e1b29fd7428e317b9">_d_define_structure</a>(defs.symbols,defs.structures,&quot;&quot; #name &quot;&quot;,RECEPTOR_CONTEXT,num,__VA_ARGS__)</td></tr>
 <tr class="separator:ga7b1d66b49e535253a63dfbcdd7824092"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac76d6c38e944bff5cd2715506e3f8efd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gac76d6c38e944bff5cd2715506e3f8efd"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SY</b>(defs, name, str)&#160;&#160;&#160;name = <a class="el" href="group__def.html#ga5515e357743a74aaafdc6be8e7c045df">_d_declare_symbol</a>(defs.symbols,str,&quot;&quot; #name &quot;&quot;,RECEPTOR_CONTEXT)</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>SY</b>(defs, name, str)&#160;&#160;&#160;name = <a class="el" href="group__def.html#ga808bf3a21cbb578303f04ab2fa173d4f">_d_declare_symbol</a>(defs.symbols,defs.structures,str,&quot;&quot; #name &quot;&quot;,RECEPTOR_CONTEXT)</td></tr>
 <tr class="separator:gac76d6c38e944bff5cd2715506e3f8efd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7e7d9f7863d8f10a6f873d96dcc30c3d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga7e7d9f7863d8f10a6f873d96dcc30c3d"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>SP</b>(defs, code, name, intention, in, out)&#160;&#160;&#160;name = <a class="el" href="group__def.html#ga33c6ec0c2bc81bfa149b8f883300d67d">_d_code_process</a>(defs.processes,code,&quot;&quot; #name &quot;&quot;,RECEPTOR_CONTEXT,intention,in,out)</td></tr>
@@ -158,7 +160,7 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>_d_get_structure_def</b>(structures, s)&#160;&#160;&#160;_d_get_def(structures,s)</td></tr>
 <tr class="separator:ga7bf5b8bca0140e82eae208798d72b008"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga80335a2ccd7713087ec59e6353338eeb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga80335a2ccd7713087ec59e6353338eeb"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>spec_is_sem_equal</b>(got, expected)&#160;&#160;&#160;spec_total++; if (semeq(expected,got)){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],&quot;%s:%d expected %s to be %d.%d.%d but was %d.%d.%d&quot;,__FUNCTION__,__LINE__,#got,(expected).flags,(expected).context,(expected).id,(got).flags,(got).context,(got).id);}</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>spec_is_sem_equal</b>(got, expected)&#160;&#160;&#160;spec_total++; if (semeq(expected,got)){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],&quot;%s:%d expected %s to be %d.%d.%d but was %d.%d.%d&quot;,__FUNCTION__,__LINE__,#got,(expected).semtype,(expected).context,(expected).id,(got).semtype,(got).context,(got).id);}</td></tr>
 <tr class="separator:ga80335a2ccd7713087ec59e6353338eeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
@@ -179,16 +181,22 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>semeq</b> (<a class="e
 <tr class="separator:ga232c2752b35c8fd708b5ba9a60da545e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga85b87c445c4541d633a4f04bb4d39e0d"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__def.html#ga85b87c445c4541d633a4f04bb4d39e0d">_d_get_process_name</a> (<a class="el" href="structT.html">T</a> *processes, <a class="el" href="structSemanticID.html">Process</a> p)</td></tr>
 <tr class="separator:ga85b87c445c4541d633a4f04bb4d39e0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga867aa639a7213c544c3f37e23e53b2dd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga867aa639a7213c544c3f37e23e53b2dd"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>__d_validate_symbol</b> (<a class="el" href="structT.html">T</a> *symbols, <a class="el" href="structSemanticID.html">Symbol</a> s, char *n)</td></tr>
+<tr class="separator:ga867aa639a7213c544c3f37e23e53b2dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa65722e0c590698e4b114038f036de29"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaa65722e0c590698e4b114038f036de29"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>__d_validate_structure</b> (<a class="el" href="structT.html">T</a> *structures, <a class="el" href="structSemanticID.html">Structure</a> s, char *n)</td></tr>
+<tr class="separator:gaa65722e0c590698e4b114038f036de29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga398a0288bf8fb4695c955832e8fc7fc8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__def.html#ga398a0288bf8fb4695c955832e8fc7fc8">__d_declare_symbol</a> (<a class="el" href="structT.html">T</a> *symbols, <a class="el" href="structSemanticID.html">Structure</a> s, char *label)</td></tr>
 <tr class="separator:ga398a0288bf8fb4695c955832e8fc7fc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5515e357743a74aaafdc6be8e7c045df"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__def.html#ga5515e357743a74aaafdc6be8e7c045df">_d_declare_symbol</a> (<a class="el" href="structT.html">T</a> *symbols, <a class="el" href="structSemanticID.html">Structure</a> s, char *label, Context c)</td></tr>
-<tr class="separator:ga5515e357743a74aaafdc6be8e7c045df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaad8973679986f6af6b59a95e08bdb192"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__def.html#gaad8973679986f6af6b59a95e08bdb192">_d_define_structure</a> (<a class="el" href="structT.html">T</a> *structures, char *label, Context c, int num_params,...)</td></tr>
-<tr class="separator:gaad8973679986f6af6b59a95e08bdb192"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga840d1e2ddf301d41e9e4d844bde6cde0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga840d1e2ddf301d41e9e4d844bde6cde0"></a>
-<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__def.html#ga840d1e2ddf301d41e9e4d844bde6cde0">_dv_define_structure</a> (<a class="el" href="structT.html">T</a> *structures, char *label, int num_params, va_list params)</td></tr>
-<tr class="memdesc:ga840d1e2ddf301d41e9e4d844bde6cde0"><td class="mdescLeft">&#160;</td><td class="mdescRight">va_list version of _d_define_structure <br /></td></tr>
-<tr class="separator:ga840d1e2ddf301d41e9e4d844bde6cde0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga808bf3a21cbb578303f04ab2fa173d4f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__def.html#ga808bf3a21cbb578303f04ab2fa173d4f">_d_declare_symbol</a> (<a class="el" href="structT.html">T</a> *symbols, <a class="el" href="structT.html">T</a> *structures, <a class="el" href="structSemanticID.html">Structure</a> s, char *label, Context c)</td></tr>
+<tr class="separator:ga808bf3a21cbb578303f04ab2fa173d4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8fac1cf57ae2bc0e1b29fd7428e317b9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__def.html#ga8fac1cf57ae2bc0e1b29fd7428e317b9">_d_define_structure</a> (<a class="el" href="structT.html">T</a> *symbols, <a class="el" href="structT.html">T</a> *structures, char *label, Context c, int num_params,...)</td></tr>
+<tr class="separator:ga8fac1cf57ae2bc0e1b29fd7428e317b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga342c1e89ee3d397776b0375a038c918d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga342c1e89ee3d397776b0375a038c918d"></a>
+<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__def.html#ga342c1e89ee3d397776b0375a038c918d">_dv_define_structure</a> (<a class="el" href="structT.html">T</a> *symbols, <a class="el" href="structT.html">T</a> *structures, char *label, int num_params, va_list params)</td></tr>
+<tr class="memdesc:ga342c1e89ee3d397776b0375a038c918d"><td class="mdescLeft">&#160;</td><td class="mdescRight">va_list version of _d_define_structure <br /></td></tr>
+<tr class="separator:ga342c1e89ee3d397776b0375a038c918d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga41157ee3740cc54c3857ca46e2545999"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__def.html#ga41157ee3740cc54c3857ca46e2545999">_d_get_symbol_structure</a> (<a class="el" href="structT.html">T</a> *symbols, <a class="el" href="structSemanticID.html">Symbol</a> symbol)</td></tr>
 <tr class="separator:ga41157ee3740cc54c3857ca46e2545999"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga1678fa0990fae85360a6f92a0bfb37ec"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__def.html#ga1678fa0990fae85360a6f92a0bfb37ec">_d_get_symbol_size</a> (<a class="el" href="structT.html">T</a> *symbols, <a class="el" href="structT.html">T</a> *structures, <a class="el" href="structSemanticID.html">Symbol</a> s, void *surface)</td></tr>
@@ -212,7 +220,8 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_indent_line</b> (i
 <tr class="memitem:gafa2a4161d0689358ee7fdb8256955db0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gafa2a4161d0689358ee7fdb8256955db0"></a>
 char *&#160;</td><td class="memItemRight" valign="bottom"><b>__t_dump</b> (<a class="el" href="structDefs.html">Defs</a> *defs, <a class="el" href="structT.html">T</a> *t, int level, char *buf)</td></tr>
 <tr class="separator:gafa2a4161d0689358ee7fdb8256955db0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5ccb057498c54090bb65ba72f1876489"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__def.html#ga5ccb057498c54090bb65ba72f1876489">def_sys</a> ()</td></tr>
+<tr class="memitem:ga5ccb057498c54090bb65ba72f1876489"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga5ccb057498c54090bb65ba72f1876489"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>def_sys</b> ()</td></tr>
 <tr class="separator:ga5ccb057498c54090bb65ba72f1876489"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7ce90bc0d2880d34c8df6f7bfdac0ac7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga7ce90bc0d2880d34c8df6f7bfdac0ac7"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>sys_free</b> ()</td></tr>
@@ -229,7 +238,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>sys_free</b> ()</td><
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="def_8h.html">def.h</a></li>
-    <li class="footer">Generated on Thu Aug 27 2015 12:41:28 for ceptr by
+    <li class="footer">Generated on Thu Sep 10 2015 15:47:27 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

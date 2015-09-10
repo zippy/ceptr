@@ -111,196 +111,40 @@ $(document).ready(function(){initNavTree('sys__defs_8c.html','');});
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="tree_8h_source.html">tree.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="def_8h_source.html">def.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="base__defs_8h_source.html">base_defs.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for sys_defs.c:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="sys__defs_8c__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="sys__defs_8c__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 </div>
 <p><a href="sys__defs_8c_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="memitem:ac81238550a563017b6c624248ac5f053"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac81238550a563017b6c624248ac5f053"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>sT</b>(name, num,...)&#160;&#160;&#160;name = <a class="el" href="group__def.html#gaad8973679986f6af6b59a95e08bdb192">_d_define_structure</a>(G_sys_defs.structures,&quot;&quot; #name &quot;&quot;,SYS_CONTEXT,num,__VA_ARGS__)</td></tr>
-<tr class="separator:ac81238550a563017b6c624248ac5f053"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af9412046458697e10eb346afb5abb667"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af9412046458697e10eb346afb5abb667"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>sY</b>(name, str)&#160;&#160;&#160;name = <a class="el" href="group__def.html#ga5515e357743a74aaafdc6be8e7c045df">_d_declare_symbol</a>(G_sys_defs.symbols,str,&quot;&quot; #name &quot;&quot;,SYS_CONTEXT)</td></tr>
-<tr class="separator:af9412046458697e10eb346afb5abb667"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aee663a8a6bd83b69a9fbbe45fc148e3b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aee663a8a6bd83b69a9fbbe45fc148e3b"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>sP</b>(name, intention, in, out)&#160;&#160;&#160;name = <a class="el" href="group__def.html#ga33c6ec0c2bc81bfa149b8f883300d67d">_d_code_process</a>(G_sys_defs.processes,0,&quot;&quot; #name &quot;&quot;,intention,in,out,SYS_CONTEXT)</td></tr>
-<tr class="separator:aee663a8a6bd83b69a9fbbe45fc148e3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abf9cd2a667cb74fb48fb9bb9f4a2af99"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abf9cd2a667cb74fb48fb9bb9f4a2af99"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>sYt</b>(name, str)&#160;&#160;&#160;name = <a class="el" href="group__def.html#ga5515e357743a74aaafdc6be8e7c045df">_d_declare_symbol</a>(G_sys_defs.symbols,str,&quot;&quot; #name &quot;&quot;,TEST_CONTEXT)</td></tr>
-<tr class="separator:abf9cd2a667cb74fb48fb9bb9f4a2af99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afaa9603e6058451598a99dd34b89a9b9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afaa9603e6058451598a99dd34b89a9b9"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>_sd</b>(s, c, t, i)&#160;&#160;&#160;; s.context = c;s.semtype=t;s.id=i;</td></tr>
+<tr class="separator:afaa9603e6058451598a99dd34b89a9b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0408529e6c5d12d81a6545892418b29"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad0408529e6c5d12d81a6545892418b29"></a>
 <a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>NULL_SYMBOL</b> = {0,SEM_TYPE_SYMBOL,0}</td></tr>
 <tr class="separator:ad0408529e6c5d12d81a6545892418b29"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af9419efec345a4e0c0324ac12064ff61"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af9419efec345a4e0c0324ac12064ff61"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>DEFINITIONS</b> = {SYS_CONTEXT,SEM_TYPE_SYMBOL,DEFINITIONS_ID}</td></tr>
-<tr class="separator:af9419efec345a4e0c0324ac12064ff61"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a54c3c85e1e947e9e07a00946ce3a8dcd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a54c3c85e1e947e9e07a00946ce3a8dcd"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STRUCTURES</b> = {SYS_CONTEXT,SEM_TYPE_SYMBOL,STRUCTURES_ID}</td></tr>
-<tr class="separator:a54c3c85e1e947e9e07a00946ce3a8dcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b1eca133894847b5e2c940124bcabc3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8b1eca133894847b5e2c940124bcabc3"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STRUCTURE_DEFINITION</b> = {SYS_CONTEXT,SEM_TYPE_SYMBOL,STRUCTURE_DEFINITION_ID}</td></tr>
-<tr class="separator:a8b1eca133894847b5e2c940124bcabc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d1029e98c5dacdee2092233265893af"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4d1029e98c5dacdee2092233265893af"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STRUCTURE_LABEL</b> = {SYS_CONTEXT,SEM_TYPE_SYMBOL,STRUCTURE_LABEL_ID}</td></tr>
-<tr class="separator:a4d1029e98c5dacdee2092233265893af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a147c73a9e5822b9b4b8ba801de19e918"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a147c73a9e5822b9b4b8ba801de19e918"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STRUCTURE_PARTS</b> = {SYS_CONTEXT,SEM_TYPE_SYMBOL,STRUCTURE_PARTS_ID}</td></tr>
-<tr class="separator:a147c73a9e5822b9b4b8ba801de19e918"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a53228914a06020f5f9bdd5a35acbfc20"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a53228914a06020f5f9bdd5a35acbfc20"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STRUCTURE_PART</b> = {SYS_CONTEXT,SEM_TYPE_SYMBOL,STRUCTURE_PART_ID}</td></tr>
-<tr class="separator:a53228914a06020f5f9bdd5a35acbfc20"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a26d24c3f566bc2d4476fd6120e70175e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a26d24c3f566bc2d4476fd6120e70175e"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SYMBOLS</b> = {SYS_CONTEXT,SEM_TYPE_SYMBOL,SYMBOLS_ID}</td></tr>
-<tr class="separator:a26d24c3f566bc2d4476fd6120e70175e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af4589aba98bd643aa72b8977db15a63c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af4589aba98bd643aa72b8977db15a63c"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PROCESSES</b> = {SYS_CONTEXT,SEM_TYPE_SYMBOL,PROCESSES_ID}</td></tr>
-<tr class="separator:af4589aba98bd643aa72b8977db15a63c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af67b38e75918b250cf1b79cdadb4232f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af67b38e75918b250cf1b79cdadb4232f"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SYMBOL_DECLARATION</b> = {SYS_CONTEXT,SEM_TYPE_SYMBOL,SYMBOL_DECLARATION_ID}</td></tr>
-<tr class="separator:af67b38e75918b250cf1b79cdadb4232f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae08a5ede4c65e758830a518a584eca23"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae08a5ede4c65e758830a518a584eca23"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SYMBOL_STRUCTURE</b> = {SYS_CONTEXT,SEM_TYPE_SYMBOL,SYMBOL_STRUCTURE_ID}</td></tr>
-<tr class="separator:ae08a5ede4c65e758830a518a584eca23"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abfeb8ab6de0cdfe6bc4e34352a95fd86"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abfeb8ab6de0cdfe6bc4e34352a95fd86"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SYMBOL_LABEL</b> = {SYS_CONTEXT,SEM_TYPE_SYMBOL,SYMBOL_LABEL_ID}</td></tr>
-<tr class="separator:abfeb8ab6de0cdfe6bc4e34352a95fd86"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a0f519a69d0b11547ea79544670e9ca"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9a0f519a69d0b11547ea79544670e9ca"></a>
 <a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><b>NULL_STRUCTURE</b> = {0,SEM_TYPE_STRUCTURE,0}</td></tr>
 <tr class="separator:a9a0f519a69d0b11547ea79544670e9ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4811cbdcc46c6fff9fd88c8c5e2cd895"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4811cbdcc46c6fff9fd88c8c5e2cd895"></a>
-<a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><b>BIT</b> = {SYS_CONTEXT,SEM_TYPE_STRUCTURE,BIT_ID}</td></tr>
-<tr class="separator:a4811cbdcc46c6fff9fd88c8c5e2cd895"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a70ff10d7013e01e7f4ce44003a5ce3cd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a70ff10d7013e01e7f4ce44003a5ce3cd"></a>
-<a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><b>INTEGER</b> = {SYS_CONTEXT,SEM_TYPE_STRUCTURE,INTEGER_ID}</td></tr>
-<tr class="separator:a70ff10d7013e01e7f4ce44003a5ce3cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aedf5603437da5e4004659a887ec3eedc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aedf5603437da5e4004659a887ec3eedc"></a>
-<a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><b>FLOAT</b> = {SYS_CONTEXT,SEM_TYPE_STRUCTURE,FLOAT_ID}</td></tr>
-<tr class="separator:aedf5603437da5e4004659a887ec3eedc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8d08e5362940617184520cafb993d66a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8d08e5362940617184520cafb993d66a"></a>
-<a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><b>CHAR</b> = {SYS_CONTEXT,SEM_TYPE_STRUCTURE,CHAR_ID}</td></tr>
-<tr class="separator:a8d08e5362940617184520cafb993d66a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a53a72c49df4a794c3bb5fd57c5e6318f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a53a72c49df4a794c3bb5fd57c5e6318f"></a>
-<a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><b>CSTRING</b> = {SYS_CONTEXT,SEM_TYPE_STRUCTURE,CSTRING_ID}</td></tr>
-<tr class="separator:a53a72c49df4a794c3bb5fd57c5e6318f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca16530b0700ac7a2df9c3e8fe138712"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aca16530b0700ac7a2df9c3e8fe138712"></a>
-<a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SYMBOL</b> = {SYS_CONTEXT,SEM_TYPE_STRUCTURE,SYMBOL_ID}</td></tr>
-<tr class="separator:aca16530b0700ac7a2df9c3e8fe138712"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0a887edf6392a07865d9ea4e17514c0a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0a887edf6392a07865d9ea4e17514c0a"></a>
-<a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ENUM</b> = {SYS_CONTEXT,SEM_TYPE_STRUCTURE,ENUM_ID}</td></tr>
-<tr class="separator:a0a887edf6392a07865d9ea4e17514c0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a048ccdc232c9b7ea6175bbd56b4193bf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a048ccdc232c9b7ea6175bbd56b4193bf"></a>
-<a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TREE_PATH</b> = {SYS_CONTEXT,SEM_TYPE_STRUCTURE,TREE_PATH_ID}</td></tr>
-<tr class="separator:a048ccdc232c9b7ea6175bbd56b4193bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac22edd8def959d6aa87de16b9ad254f6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac22edd8def959d6aa87de16b9ad254f6"></a>
-<a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><b>XADDR</b> = {SYS_CONTEXT,SEM_TYPE_STRUCTURE,XADDR_ID}</td></tr>
-<tr class="separator:ac22edd8def959d6aa87de16b9ad254f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4df0edb858761666a468f72660fa99fd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4df0edb858761666a468f72660fa99fd"></a>
-<a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><b>LIST</b> = {SYS_CONTEXT,SEM_TYPE_STRUCTURE,LIST_ID}</td></tr>
-<tr class="separator:a4df0edb858761666a468f72660fa99fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f6687ae36fcac5b43cff8aa90993d08"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7f6687ae36fcac5b43cff8aa90993d08"></a>
-<a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SURFACE</b> = {SYS_CONTEXT,SEM_TYPE_STRUCTURE,SURFACE_ID}</td></tr>
-<tr class="separator:a7f6687ae36fcac5b43cff8aa90993d08"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6fa7b4b789c12ac4ab62a46c0990e72e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6fa7b4b789c12ac4ab62a46c0990e72e"></a>
-<a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TREE</b> = {SYS_CONTEXT,SEM_TYPE_STRUCTURE,TREE_ID}</td></tr>
-<tr class="separator:a6fa7b4b789c12ac4ab62a46c0990e72e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a147436288d7c7bf278dc0895bd32e2b7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a147436288d7c7bf278dc0895bd32e2b7"></a>
-<a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><b>RECEPTOR</b> = {SYS_CONTEXT,SEM_TYPE_STRUCTURE,RECEPTOR_ID}</td></tr>
-<tr class="separator:a147436288d7c7bf278dc0895bd32e2b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad9b468aebfbd6eb4f46a5cf8313944bf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad9b468aebfbd6eb4f46a5cf8313944bf"></a>
-<a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PROCESS</b> = {SYS_CONTEXT,SEM_TYPE_STRUCTURE,PROCESS_ID}</td></tr>
-<tr class="separator:ad9b468aebfbd6eb4f46a5cf8313944bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3362d33ffe0db0ac6a52c83ca7a56cd5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3362d33ffe0db0ac6a52c83ca7a56cd5"></a>
-<a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STRUCTURE</b> = {SYS_CONTEXT,SEM_TYPE_STRUCTURE,STRUCTURE_ID}</td></tr>
-<tr class="separator:a3362d33ffe0db0ac6a52c83ca7a56cd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13ecd44890d37eece9debd87d963cb9f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a13ecd44890d37eece9debd87d963cb9f"></a>
-<a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SCAPE</b> = {SYS_CONTEXT,SEM_TYPE_STRUCTURE,SCAPE_ID}</td></tr>
-<tr class="separator:a13ecd44890d37eece9debd87d963cb9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb9ea9d53bf9af76a76cc87aa165f21a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abb9ea9d53bf9af76a76cc87aa165f21a"></a>
-<a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PROTOCOL</b> = {SYS_CONTEXT,SEM_TYPE_STRUCTURE,PROTOCOL_ID}</td></tr>
-<tr class="separator:abb9ea9d53bf9af76a76cc87aa165f21a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a409ffcea8555d7a225065a5776b920ec"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a409ffcea8555d7a225065a5776b920ec"></a>
-<a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SEMTREX</b> = {SYS_CONTEXT,SEM_TYPE_STRUCTURE,SEMTREX_ID}</td></tr>
-<tr class="separator:a409ffcea8555d7a225065a5776b920ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb4b29311a7c8a85642fbdd60f581ba8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abb4b29311a7c8a85642fbdd60f581ba8"></a>
-<a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STREAM</b> = {SYS_CONTEXT,SEM_TYPE_STRUCTURE,STREAM_ID}</td></tr>
-<tr class="separator:abb4b29311a7c8a85642fbdd60f581ba8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a659145d2ab93a0f49ed8e967c0466433"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a659145d2ab93a0f49ed8e967c0466433"></a>
 <a class="el" href="structSemanticID.html">Process</a>&#160;</td><td class="memItemRight" valign="bottom"><b>NULL_PROCESS</b> = {0,SEM_TYPE_PROCESS,0}</td></tr>
 <tr class="separator:a659145d2ab93a0f49ed8e967c0466433"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af2db7ed4c934103d6ec245baa4186975"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af2db7ed4c934103d6ec245baa4186975"></a>
-<a class="el" href="structSemanticID.html">Process</a>&#160;</td><td class="memItemRight" valign="bottom"><b>NOOP</b> = {SYS_CONTEXT,SEM_TYPE_PROCESS,NOOP_ID}</td></tr>
-<tr class="separator:af2db7ed4c934103d6ec245baa4186975"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7625cb880281bd77e1e1c45137f73b04"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7625cb880281bd77e1e1c45137f73b04"></a>
-<a class="el" href="structSemanticID.html">Process</a>&#160;</td><td class="memItemRight" valign="bottom"><b>IF</b> = {SYS_CONTEXT,SEM_TYPE_PROCESS,<a class="el" href="sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8eaa778775ecfe4f1b5d5732965af60c6de">IF_ID</a>}</td></tr>
-<tr class="separator:a7625cb880281bd77e1e1c45137f73b04"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9060e4b1b2bdae067db7cea122b73179"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9060e4b1b2bdae067db7cea122b73179"></a>
-<a class="el" href="structSemanticID.html">Process</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ADD_INT</b> = {SYS_CONTEXT,SEM_TYPE_PROCESS,ADD_INT_ID}</td></tr>
-<tr class="separator:a9060e4b1b2bdae067db7cea122b73179"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a39223b4cec2bcddb39ce685e28866dd7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a39223b4cec2bcddb39ce685e28866dd7"></a>
-<a class="el" href="structSemanticID.html">Process</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SUB_INT</b> = {SYS_CONTEXT,SEM_TYPE_PROCESS,SUB_INT_ID}</td></tr>
-<tr class="separator:a39223b4cec2bcddb39ce685e28866dd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a682fc621e0ba4f67b1088f35a2bad613"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a682fc621e0ba4f67b1088f35a2bad613"></a>
-<a class="el" href="structSemanticID.html">Process</a>&#160;</td><td class="memItemRight" valign="bottom"><b>MULT_INT</b> = {SYS_CONTEXT,SEM_TYPE_PROCESS,MULT_INT_ID}</td></tr>
-<tr class="separator:a682fc621e0ba4f67b1088f35a2bad613"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d518b8e6ab389401ef0ff4423922cac"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1d518b8e6ab389401ef0ff4423922cac"></a>
-<a class="el" href="structSemanticID.html">Process</a>&#160;</td><td class="memItemRight" valign="bottom"><b>DIV_INT</b> = {SYS_CONTEXT,SEM_TYPE_PROCESS,DIV_INT_ID}</td></tr>
-<tr class="separator:a1d518b8e6ab389401ef0ff4423922cac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a86fbf09d41d509832b3507b635d65a46"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a86fbf09d41d509832b3507b635d65a46"></a>
-<a class="el" href="structSemanticID.html">Process</a>&#160;</td><td class="memItemRight" valign="bottom"><b>MOD_INT</b> = {SYS_CONTEXT,SEM_TYPE_PROCESS,MOD_INT_ID}</td></tr>
-<tr class="separator:a86fbf09d41d509832b3507b635d65a46"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9f4085350f2cd6f4ffc6c55c9de1e6b1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9f4085350f2cd6f4ffc6c55c9de1e6b1"></a>
-<a class="el" href="structSemanticID.html">Process</a>&#160;</td><td class="memItemRight" valign="bottom"><b>EQ_INT</b> = {SYS_CONTEXT,SEM_TYPE_PROCESS,EQ_INT_ID}</td></tr>
-<tr class="separator:a9f4085350f2cd6f4ffc6c55c9de1e6b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5ff2b0ba1b5bad7f03826b897d900ba4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5ff2b0ba1b5bad7f03826b897d900ba4"></a>
-<a class="el" href="structSemanticID.html">Process</a>&#160;</td><td class="memItemRight" valign="bottom"><b>LT_INT</b> = {SYS_CONTEXT,SEM_TYPE_PROCESS,LT_INT_ID}</td></tr>
-<tr class="separator:a5ff2b0ba1b5bad7f03826b897d900ba4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad86ea67a0e82b8b4ee176bc49f8a4af9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad86ea67a0e82b8b4ee176bc49f8a4af9"></a>
-<a class="el" href="structSemanticID.html">Process</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GT_INT</b> = {SYS_CONTEXT,SEM_TYPE_PROCESS,GT_INT_ID}</td></tr>
-<tr class="separator:ad86ea67a0e82b8b4ee176bc49f8a4af9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a42566644b6516f6489ffc5250f2cc242"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a42566644b6516f6489ffc5250f2cc242"></a>
-<a class="el" href="structSemanticID.html">Process</a>&#160;</td><td class="memItemRight" valign="bottom"><b>LTE_INT</b> = {SYS_CONTEXT,SEM_TYPE_PROCESS,LTE_INT_ID}</td></tr>
-<tr class="separator:a42566644b6516f6489ffc5250f2cc242"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa61fed07881df1326b687fa328f5a642"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa61fed07881df1326b687fa328f5a642"></a>
-<a class="el" href="structSemanticID.html">Process</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GTE_INT</b> = {SYS_CONTEXT,SEM_TYPE_PROCESS,GTE_INT_ID}</td></tr>
-<tr class="separator:aa61fed07881df1326b687fa328f5a642"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0be22488950f4208136a60eafe2993d8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0be22488950f4208136a60eafe2993d8"></a>
-<a class="el" href="structSemanticID.html">Process</a>&#160;</td><td class="memItemRight" valign="bottom"><b>CONCAT_STR</b> = {SYS_CONTEXT,SEM_TYPE_PROCESS,CONCAT_STR_ID}</td></tr>
-<tr class="separator:a0be22488950f4208136a60eafe2993d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0220cf3ab749a41050ab56e0417d610f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0220cf3ab749a41050ab56e0417d610f"></a>
-<a class="el" href="structSemanticID.html">Process</a>&#160;</td><td class="memItemRight" valign="bottom"><b>RESPOND</b> = {SYS_CONTEXT,SEM_TYPE_PROCESS,<a class="el" href="sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8ea8c6120c4ab760098de5bef78806ad2fd">RESPOND_ID</a>}</td></tr>
-<tr class="separator:a0220cf3ab749a41050ab56e0417d610f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ad261a6b577282fc2f04c81fb8560d3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8ad261a6b577282fc2f04c81fb8560d3"></a>
-<a class="el" href="structSemanticID.html">Process</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SEND</b> = {SYS_CONTEXT,SEM_TYPE_PROCESS,SEND_ID}</td></tr>
-<tr class="separator:a8ad261a6b577282fc2f04c81fb8560d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a88c4df7172bdcb056818e8814ed41a8b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a88c4df7172bdcb056818e8814ed41a8b"></a>
-<a class="el" href="structSemanticID.html">Process</a>&#160;</td><td class="memItemRight" valign="bottom"><b>EXPECT_ACT</b> = {SYS_CONTEXT,SEM_TYPE_PROCESS,EXPECT_ACT_ID}</td></tr>
-<tr class="separator:a88c4df7172bdcb056818e8814ed41a8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c74d7215a79640cd7ef91f4d5bcf0e7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9c74d7215a79640cd7ef91f4d5bcf0e7"></a>
-<a class="el" href="structSemanticID.html">Process</a>&#160;</td><td class="memItemRight" valign="bottom"><b>QUOTE</b> = {SYS_CONTEXT,SEM_TYPE_PROCESS,QUOTE_ID}</td></tr>
-<tr class="separator:a9c74d7215a79640cd7ef91f4d5bcf0e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a93e04caf0fa950ab8ab824681b2ba0bd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a93e04caf0fa950ab8ab824681b2ba0bd"></a>
-<a class="el" href="structSemanticID.html">Process</a>&#160;</td><td class="memItemRight" valign="bottom"><b>INTERPOLATE_FROM_MATCH</b> = {SYS_CONTEXT,SEM_TYPE_PROCESS,<a class="el" href="sys__processes_8h.html#af56900624e352e8d52f08ee677d48e8ea545735a47c85dde41ea9a1ffee415e02">INTERPOLATE_FROM_MATCH_ID</a>}</td></tr>
-<tr class="separator:a93e04caf0fa950ab8ab824681b2ba0bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d426c19b2d6512ae7a4e39988802491"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1d426c19b2d6512ae7a4e39988802491"></a>
-<a class="el" href="structSemanticID.html">Process</a>&#160;</td><td class="memItemRight" valign="bottom"><b>RAISE</b> = {SYS_CONTEXT,SEM_TYPE_PROCESS,RAISE_ID}</td></tr>
-<tr class="separator:a1d426c19b2d6512ae7a4e39988802491"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ce08d9f61201aab8d59959f6763bb20"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1ce08d9f61201aab8d59959f6763bb20"></a>
-<a class="el" href="structSemanticID.html">Process</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STREAM_READ</b> = {SYS_CONTEXT,SEM_TYPE_PROCESS,STREAM_READ_ID}</td></tr>
-<tr class="separator:a1ce08d9f61201aab8d59959f6763bb20"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3c16e5222d94dd2318d32efba6baa8b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae3c16e5222d94dd2318d32efba6baa8b"></a>
-<a class="el" href="structSemanticID.html">Process</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STREAM_WRITE</b> = {SYS_CONTEXT,SEM_TYPE_PROCESS,STREAM_WRITE_ID}</td></tr>
-<tr class="separator:ae3c16e5222d94dd2318d32efba6baa8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acf089a77b201b066780c0d9283479279"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acf089a77b201b066780c0d9283479279"></a>
-<a class="el" href="structSemanticID.html">Process</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STREAM_AVAILABLE</b> = {SYS_CONTEXT,SEM_TYPE_PROCESS,STREAM_AVAILABLE_ID}</td></tr>
-<tr class="separator:acf089a77b201b066780c0d9283479279"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a956c5ded73cccb03d39dfcc400876711"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a956c5ded73cccb03d39dfcc400876711"></a>
-<a class="el" href="structSemanticID.html">Process</a>&#160;</td><td class="memItemRight" valign="bottom"><b>REPLICATE</b> = {SYS_CONTEXT,SEM_TYPE_PROCESS,REPLICATE_ID}</td></tr>
-<tr class="separator:a956c5ded73cccb03d39dfcc400876711"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5ccb057498c54090bb65ba72f1876489"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__def.html#ga5ccb057498c54090bb65ba72f1876489">def_sys</a> ()</td></tr>
+<tr class="memitem:adeb9e80848b0d67a7484ced880f65adc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adeb9e80848b0d67a7484ced880f65adc"></a>
+<a class="el" href="structContextStore.html">ContextStore</a>&#160;</td><td class="memItemRight" valign="bottom"><b>G_contexts</b> [_NUM_CONTEXTS]</td></tr>
+<tr class="separator:adeb9e80848b0d67a7484ced880f65adc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d4bca8a21dcd168c8a5f9d181896f50"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0d4bca8a21dcd168c8a5f9d181896f50"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>init_defs_tree</b> (<a class="el" href="structContextStore.html">ContextStore</a> *cs)</td></tr>
+<tr class="separator:a0d4bca8a21dcd168c8a5f9d181896f50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5ccb057498c54090bb65ba72f1876489"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga5ccb057498c54090bb65ba72f1876489"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>def_sys</b> ()</td></tr>
 <tr class="separator:ga5ccb057498c54090bb65ba72f1876489"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a486850ab1e9d3ee9d1585944fd43144a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a486850ab1e9d3ee9d1585944fd43144a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>free_context</b> (<a class="el" href="structContextStore.html">ContextStore</a> *cs)</td></tr>
+<tr class="separator:a486850ab1e9d3ee9d1585944fd43144a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7ce90bc0d2880d34c8df6f7bfdac0ac7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga7ce90bc0d2880d34c8df6f7bfdac0ac7"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>sys_free</b> ()</td></tr>
 <tr class="separator:ga7ce90bc0d2880d34c8df6f7bfdac0ac7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -316,7 +160,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>sys_free</b> ()</td><
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="sys__defs_8c.html">sys_defs.c</a></li>
-    <li class="footer">Generated on Thu Aug 27 2015 12:41:28 for ceptr by
+    <li class="footer">Generated on Thu Sep 10 2015 15:47:27 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

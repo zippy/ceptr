@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['r',['R',['../structR.html',1,'']]],
-  ['receptor',['Receptor',['../structReceptor.html',1,'']]],
-  ['replicationstate',['ReplicationState',['../structReplicationState.html',1,'']]],
-  ['rt',['rT',['../structrT.html',1,'']]]
+  ['q',['Q',['../structQ.html',1,'']]],
+  ['qe',['Qe',['../structQe.html',1,'']]]
 ];

@@ -330,7 +330,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>__t_free</b> (<a clas
 <div class="line">    spec_is_str_equal(t2s(x),<span class="stringliteral">&quot;(TEST_INT_SYMBOL:789)&quot;</span>);</div>
 <div class="line"></div>
 <div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(x);</div>
-</div><!-- fragment --><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000043">Todo:</a></b></dt><dd>Handle the case where the surface of the node to be morphed is itself a tree </dd></dl>
+</div><!-- fragment --><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000040">Todo:</a></b></dt><dd>Handle the case where the surface of the node to be morphed is itself a tree </dd></dl>
 
 <p>Definition at line <a class="el" href="tree_8c_source.html#l00291">291</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
 
@@ -503,7 +503,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>__t_free</b> (<a clas
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the length that was added to the buffer</dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000049">Todo:</a></b></dt><dd>compact is really a shorthand for whether this is a fixed size tree or not this should actually be determined on the fly by looking at the structure types. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000046">Todo:</a></b></dt><dd>compact is really a shorthand for whether this is a fixed size tree or not this should actually be determined on the fly by looking at the structure types. </dd></dl>
 
 <p>Definition at line <a class="el" href="tree_8c_source.html#l00876">876</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
 
@@ -555,7 +555,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>__t_free</b> (<a clas
 <div class="line">    <a class="code" href="structT.html">T</a> *t = <a class="code" href="http__example_8h.html#a1c182b5a6e82ef49c6967183a15c3e8b">_makeTestHTTPRequestTree</a>(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
 <div class="line">    <a class="code" href="group__tree.html#ga34e1f5a651d1a582e3cd7bb3e885ffde">_t2json</a>(&amp;test_HTTP_defs,t,INDENT,buf);</div>
 <div class="line"></div>
-<div class="line">    spec_is_str_equal(buf,<span class="stringliteral">&quot;{ \&quot;symbol\&quot;:{ \&quot;context\&quot;:1,\&quot;id\&quot;:17 },\&quot;type\&quot;:\&quot;HTTP_REQUEST_V09\&quot;,\&quot;name\&quot;:\&quot;HTTP_REQUEST\&quot;,\&quot;children\&quot;:[\n   { \&quot;symbol\&quot;:{ \&quot;context\&quot;:1,\&quot;id\&quot;:16 },\&quot;type\&quot;:\&quot;VERSION\&quot;,\&quot;name\&quot;:\&quot;HTTP_REQUEST_VERSION\&quot;,\&quot;children\&quot;:[\n      { \&quot;symbol\&quot;:{ \&quot;context\&quot;:1,\&quot;id\&quot;:14 },\&quot;type\&quot;:\&quot;INTEGER\&quot;,\&quot;name\&quot;:\&quot;VERSION_MAJOR\&quot;,\&quot;surface\&quot;:1},\n      { \&quot;symbol\&quot;:{ \&quot;context\&quot;:1,\&quot;id\&quot;:15 },\&quot;type\&quot;:\&quot;INTEGER\&quot;,\&quot;name\&quot;:\&quot;VERSION_MINOR\&quot;,\&quot;surface\&quot;:0}]},\n   { \&quot;symbol\&quot;:{ \&quot;context\&quot;:1,\&quot;id\&quot;:2 },\&quot;type\&quot;:\&quot;CSTRING\&quot;,\&quot;name\&quot;:\&quot;HTTP_REQUEST_METHOD\&quot;,\&quot;surface\&quot;:\&quot;GET\&quot;},\n   { \&quot;symbol\&quot;:{ \&quot;context\&quot;:1,\&quot;id\&quot;:13 },\&quot;type\&quot;:\&quot;URI\&quot;,\&quot;name\&quot;:\&quot;HTTP_REQUEST_PATH\&quot;,\&quot;children\&quot;:[\n      { \&quot;symbol\&quot;:{ \&quot;context\&quot;:1,\&quot;id\&quot;:3 },\&quot;type\&quot;:\&quot;LIST\&quot;,\&quot;name\&quot;:\&quot;HTTP_REQUEST_PATH_SEGMENTS\&quot;,\&quot;children\&quot;:[\n         { \&quot;symbol\&quot;:{ \&quot;context\&quot;:1,\&quot;id\&quot;:4 },\&quot;type\&quot;:\&quot;CSTRING\&quot;,\&quot;name\&quot;:\&quot;HTTP_REQUEST_PATH_SEGMENT\&quot;,\&quot;surface\&quot;:\&quot;groups\&quot;},\n         { \&quot;symbol\&quot;:{ \&quot;context\&quot;:1,\&quot;id\&quot;:4 },\&quot;type\&quot;:\&quot;CSTRING\&quot;,\&quot;name\&quot;:\&quot;HTTP_REQUEST_PATH_SEGMENT\&quot;,\&quot;surface\&quot;:\&quot;5\&quot;}]},\n      { \&quot;symbol\&quot;:{ \&quot;context\&quot;:1,\&quot;id\&quot;:7 },\&quot;type\&quot;:\&quot;FILE_HANDLE\&quot;,\&quot;name\&quot;:\&quot;HTTP_REQUEST_PATH_FILE\&quot;,\&quot;children\&quot;:[\n         { \&quot;symbol\&quot;:{ \&quot;context\&quot;:1,\&quot;id\&quot;:5 },\&quot;type\&quot;:\&quot;CSTRING\&quot;,\&quot;name\&quot;:\&quot;FILE_NAME\&quot;,\&quot;surface\&quot;:\&quot;users\&quot;},\n         { \&quot;symbol\&quot;:{ \&quot;context\&quot;:1,\&quot;id\&quot;:6 },\&quot;type\&quot;:\&quot;CSTRING\&quot;,\&quot;name\&quot;:\&quot;FILE_EXTENSION\&quot;,\&quot;surface\&quot;:\&quot;json\&quot;}]},\n      { \&quot;symbol\&quot;:{ \&quot;context\&quot;:1,\&quot;id\&quot;:8 },\&quot;type\&quot;:\&quot;LIST\&quot;,\&quot;name\&quot;:\&quot;HTTP_REQUEST_PATH_QUERY\&quot;,\&quot;children\&quot;:[\n         { \&quot;symbol\&quot;:{ \&quot;context\&quot;:1,\&quot;id\&quot;:9 },\&quot;type\&quot;:\&quot;LIST\&quot;,\&quot;name\&quot;:\&quot;HTTP_REQUEST_PATH_QUERY_PARAMS\&quot;,\&quot;children\&quot;:[\n            { \&quot;symbol\&quot;:{ \&quot;context\&quot;:1,\&quot;id\&quot;:12 },\&quot;type\&quot;:\&quot;KEY_VALUE_PARAM\&quot;,\&quot;name\&quot;:\&quot;HTTP_REQUEST_PATH_QUERY_PARAM\&quot;,\&quot;children\&quot;:[\n               { \&quot;symbol\&quot;:{ \&quot;context\&quot;:1,\&quot;id\&quot;:10 },\&quot;type\&quot;:\&quot;CSTRING\&quot;,\&quot;name\&quot;:\&quot;PARAM_KEY\&quot;,\&quot;surface\&quot;:\&quot;sort_by\&quot;},\n               { \&quot;symbol\&quot;:{ \&quot;context\&quot;:1,\&quot;id\&quot;:11 },\&quot;type\&quot;:\&quot;CSTRING\&quot;,\&quot;name\&quot;:\&quot;PARAM_VALUE\&quot;,\&quot;surface\&quot;:\&quot;last_name\&quot;}]},\n            { \&quot;symbol\&quot;:{ \&quot;context\&quot;:1,\&quot;id\&quot;:12 },\&quot;type\&quot;:\&quot;KEY_VALUE_PARAM\&quot;,\&quot;name\&quot;:\&quot;HTTP_REQUEST_PATH_QUERY_PARAM\&quot;,\&quot;children\&quot;:[\n               { \&quot;symbol\&quot;:{ \&quot;context\&quot;:1,\&quot;id\&quot;:10 },\&quot;type\&quot;:\&quot;CSTRING\&quot;,\&quot;name\&quot;:\&quot;PARAM_KEY\&quot;,\&quot;surface\&quot;:\&quot;page\&quot;},\n               { \&quot;symbol\&quot;:{ \&quot;context\&quot;:1,\&quot;id\&quot;:11 },\&quot;type\&quot;:\&quot;CSTRING\&quot;,\&quot;name\&quot;:\&quot;PARAM_VALUE\&quot;,\&quot;surface\&quot;:\&quot;2\&quot;}]}]}]}]}]}&quot;</span>);</div>
+<div class="line">    spec_is_str_equal(buf,<span class="stringliteral">&quot;{ \&quot;symbol\&quot;:{ \&quot;context\&quot;:255,\&quot;id\&quot;:17 },\&quot;type\&quot;:\&quot;HTTP_REQUEST_V09\&quot;,\&quot;name\&quot;:\&quot;HTTP_REQUEST\&quot;,\&quot;children\&quot;:[\n   { \&quot;symbol\&quot;:{ \&quot;context\&quot;:255,\&quot;id\&quot;:16 },\&quot;type\&quot;:\&quot;VERSION\&quot;,\&quot;name\&quot;:\&quot;HTTP_REQUEST_VERSION\&quot;,\&quot;children\&quot;:[\n      { \&quot;symbol\&quot;:{ \&quot;context\&quot;:255,\&quot;id\&quot;:14 },\&quot;type\&quot;:\&quot;INTEGER\&quot;,\&quot;name\&quot;:\&quot;VERSION_MAJOR\&quot;,\&quot;surface\&quot;:1},\n      { \&quot;symbol\&quot;:{ \&quot;context\&quot;:255,\&quot;id\&quot;:15 },\&quot;type\&quot;:\&quot;INTEGER\&quot;,\&quot;name\&quot;:\&quot;VERSION_MINOR\&quot;,\&quot;surface\&quot;:0}]},\n   { \&quot;symbol\&quot;:{ \&quot;context\&quot;:255,\&quot;id\&quot;:2 },\&quot;type\&quot;:\&quot;CSTRING\&quot;,\&quot;name\&quot;:\&quot;HTTP_REQUEST_METHOD\&quot;,\&quot;surface\&quot;:\&quot;GET\&quot;},\n   { \&quot;symbol\&quot;:{ \&quot;context\&quot;:255,\&quot;id\&quot;:13 },\&quot;type\&quot;:\&quot;URI\&quot;,\&quot;name\&quot;:\&quot;HTTP_REQUEST_PATH\&quot;,\&quot;children\&quot;:[\n      { \&quot;symbol\&quot;:{ \&quot;context\&quot;:255,\&quot;id\&quot;:3 },\&quot;type\&quot;:\&quot;LIST\&quot;,\&quot;name\&quot;:\&quot;HTTP_REQUEST_PATH_SEGMENTS\&quot;,\&quot;children\&quot;:[\n         { \&quot;symbol\&quot;:{ \&quot;context\&quot;:255,\&quot;id\&quot;:4 },\&quot;type\&quot;:\&quot;CSTRING\&quot;,\&quot;name\&quot;:\&quot;HTTP_REQUEST_PATH_SEGMENT\&quot;,\&quot;surface\&quot;:\&quot;groups\&quot;},\n         { \&quot;symbol\&quot;:{ \&quot;context\&quot;:255,\&quot;id\&quot;:4 },\&quot;type\&quot;:\&quot;CSTRING\&quot;,\&quot;name\&quot;:\&quot;HTTP_REQUEST_PATH_SEGMENT\&quot;,\&quot;surface\&quot;:\&quot;5\&quot;}]},\n      { \&quot;symbol\&quot;:{ \&quot;context\&quot;:255,\&quot;id\&quot;:7 },\&quot;type\&quot;:\&quot;FILE_HANDLE\&quot;,\&quot;name\&quot;:\&quot;HTTP_REQUEST_PATH_FILE\&quot;,\&quot;children\&quot;:[\n         { \&quot;symbol\&quot;:{ \&quot;context\&quot;:255,\&quot;id\&quot;:5 },\&quot;type\&quot;:\&quot;CSTRING\&quot;,\&quot;name\&quot;:\&quot;FILE_NAME\&quot;,\&quot;surface\&quot;:\&quot;users\&quot;},\n         { \&quot;symbol\&quot;:{ \&quot;context\&quot;:255,\&quot;id\&quot;:6 },\&quot;type\&quot;:\&quot;CSTRING\&quot;,\&quot;name\&quot;:\&quot;FILE_EXTENSION\&quot;,\&quot;surface\&quot;:\&quot;json\&quot;}]},\n      { \&quot;symbol\&quot;:{ \&quot;context\&quot;:255,\&quot;id\&quot;:8 },\&quot;type\&quot;:\&quot;LIST\&quot;,\&quot;name\&quot;:\&quot;HTTP_REQUEST_PATH_QUERY\&quot;,\&quot;children\&quot;:[\n         { \&quot;symbol\&quot;:{ \&quot;context\&quot;:255,\&quot;id\&quot;:9 },\&quot;type\&quot;:\&quot;LIST\&quot;,\&quot;name\&quot;:\&quot;HTTP_REQUEST_PATH_QUERY_PARAMS\&quot;,\&quot;children\&quot;:[\n            { \&quot;symbol\&quot;:{ \&quot;context\&quot;:255,\&quot;id\&quot;:12 },\&quot;type\&quot;:\&quot;KEY_VALUE_PARAM\&quot;,\&quot;name\&quot;:\&quot;HTTP_REQUEST_PATH_QUERY_PARAM\&quot;,\&quot;children\&quot;:[\n               { \&quot;symbol\&quot;:{ \&quot;context\&quot;:255,\&quot;id\&quot;:10 },\&quot;type\&quot;:\&quot;CSTRING\&quot;,\&quot;name\&quot;:\&quot;PARAM_KEY\&quot;,\&quot;surface\&quot;:\&quot;sort_by\&quot;},\n               { \&quot;symbol\&quot;:{ \&quot;context\&quot;:255,\&quot;id\&quot;:11 },\&quot;type\&quot;:\&quot;CSTRING\&quot;,\&quot;name\&quot;:\&quot;PARAM_VALUE\&quot;,\&quot;surface\&quot;:\&quot;last_name\&quot;}]},\n            { \&quot;symbol\&quot;:{ \&quot;context\&quot;:255,\&quot;id\&quot;:12 },\&quot;type\&quot;:\&quot;KEY_VALUE_PARAM\&quot;,\&quot;name\&quot;:\&quot;HTTP_REQUEST_PATH_QUERY_PARAM\&quot;,\&quot;children\&quot;:[\n               { \&quot;symbol\&quot;:{ \&quot;context\&quot;:255,\&quot;id\&quot;:10 },\&quot;type\&quot;:\&quot;CSTRING\&quot;,\&quot;name\&quot;:\&quot;PARAM_KEY\&quot;,\&quot;surface\&quot;:\&quot;page\&quot;},\n               { \&quot;symbol\&quot;:{ \&quot;context\&quot;:255,\&quot;id\&quot;:11 },\&quot;type\&quot;:\&quot;CSTRING\&quot;,\&quot;name\&quot;:\&quot;PARAM_VALUE\&quot;,\&quot;surface\&quot;:\&quot;2\&quot;}]}]}]}]}]}&quot;</span>);</div>
 <div class="line"></div>
 <div class="line">    wjson(&amp;test_HTTP_defs,t,<span class="stringliteral">&quot;httpreq&quot;</span>,0);</div>
 <div class="line">    <span class="keywordtype">char</span> *stxs = <span class="stringliteral">&quot;/%&lt;HTTP_REQUEST_PATH_SEGMENTS:HTTP_REQUEST_PATH_SEGMENTS,HTTP_REQUEST_PATH_FILE&gt;&quot;</span>;</div>
@@ -696,7 +696,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>__t_free</b> (<a clas
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structT.html">T</a> duplicated tree </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000046">Todo:</a></b></dt><dd>make this work with trees that have orthogonal trees! </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000043">Todo:</a></b></dt><dd>make this work with trees that have orthogonal trees! </dd></dl>
 <dl class="bug"><dt><b><a class="el" href="bug.html#_bug000001">Bug:</a></b></dt><dd>doesn't properly clone trees with orthogonal trees</dd></dl>
 <p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structT.html">T</a> *t = <a class="code" href="http__example_8h.html#a1c182b5a6e82ef49c6967183a15c3e8b">_makeTestHTTPRequestTree</a>();</div>
 <div class="line">    <a class="code" href="structT.html">T</a> *<a class="code" href="structVMHost.html#a53bffdb41bcc4096902aabf8ab029637">c</a> = <a class="code" href="group__tree.html#ga7535eb2963c6cf5fc78cb14287581f92">_t_clone</a>(t);</div>
@@ -831,7 +831,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>__t_free</b> (<a clas
   </table>
   </dd>
 </dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000044">Todo:</a></b></dt><dd>make this remove the child from the parent's child-list? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000041">Todo:</a></b></dt><dd>make this remove the child from the parent's child-list? </dd></dl>
 
 <p>Definition at line <a class="el" href="tree_8c_source.html#l00463">463</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
 
@@ -916,7 +916,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>__t_free</b> (<a clas
 </div><div class="memdoc">
 <p>return the tree path of a given node</p>
 <p>this function allocates a buffer to hold a path of the given node which it calculates by walkinga back up the tree</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000048">Todo:</a></b></dt><dd>implement jumping into orthogonal trees (i.e. return paths with 0 in them) <dl class="params"><dt>Parameters</dt><dd>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000045">Todo:</a></b></dt><dd>implement jumping into orthogonal trees (i.e. return paths with 0 in them) <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">t</td><td>tree node </td></tr>
   </table>
@@ -1435,7 +1435,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>__t_free</b> (<a clas
 <div class="line">    spec_is_true(ts-&gt;context.flags &amp; TFLAG_SURFACE_IS_STREAM);</div>
 <div class="line">    spec_is_true(ts-&gt;context.flags &amp; TFLAG_REFERENCE);</div>
 <div class="line">    spec_is_ptr_equal(<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(ts),s);</div>
-<div class="line">    spec_is_str_equal(t2s(ts),<span class="stringliteral">&quot;(TEST_STREAM_SYMBOL:&quot;</span>);</div>
+<div class="line">    <span class="keywordtype">char</span> *x = t2s(ts);</div>
+<div class="line">    x[22]=0; <span class="comment">// chop off the actual address cus that changes all the time</span></div>
+<div class="line">    spec_is_str_equal(x,<span class="stringliteral">&quot;(TEST_STREAM_SYMBOL:0x&quot;</span>);</div>
 <div class="line"></div>
 <div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(ts);</div>
 <div class="line">    <span class="comment">// note, for now we must handle all stream deallocation manually because _t_new_stream</span></div>
@@ -1637,7 +1639,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>__t_free</b> (<a clas
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the index of the node</dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000047">Todo:</a></b></dt><dd>improve algorithm as this is very expensive if called all the time. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000044">Todo:</a></b></dt><dd>improve algorithm as this is very expensive if called all the time. </dd></dl>
 
 <p>Definition at line <a class="el" href="tree_8c_source.html#l00629">629</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
 
@@ -2158,7 +2160,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>__t_free</b> (<a clas
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Aug 27 2015 12:41:29 for ceptr by
+    <li class="footer">Generated on Thu Sep 10 2015 15:47:27 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

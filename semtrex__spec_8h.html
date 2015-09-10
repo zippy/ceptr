@@ -117,7 +117,8 @@ $(document).ready(function(){initNavTree('semtrex__spec_8h.html','');});
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for semtrex_spec.h:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="semtrex__spec_8h__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="semtrex__spec_8h__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -130,10 +131,10 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:abf9cd2a667cb74fb48fb9bb9f4a2af99"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abf9cd2a667cb74fb48fb9bb9f4a2af99"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>sYt</b>(name, str)&#160;&#160;&#160;name = <a class="el" href="group__def.html#ga5515e357743a74aaafdc6be8e7c045df">_d_declare_symbol</a>(G_sys_defs.symbols,str,&quot;&quot; #name &quot;&quot;,TEST_CONTEXT)</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>sYt</b>(name, str)&#160;&#160;&#160;name = <a class="el" href="group__def.html#ga808bf3a21cbb578303f04ab2fa173d4f">_d_declare_symbol</a>(G_contexts[TEST_CONTEXT].defs.symbols,G_contexts[TEST_CONTEXT].defs.structures,str,&quot;&quot; #name &quot;&quot;,TEST_CONTEXT)</td></tr>
 <tr class="separator:abf9cd2a667cb74fb48fb9bb9f4a2af99"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a187264a98e40c3fefd4087f99a1444"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1a187264a98e40c3fefd4087f99a1444"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>sX</b>(name, str)&#160;&#160;&#160;<a class="el" href="structSemanticID.html">Symbol</a> name = <a class="el" href="group__def.html#ga5515e357743a74aaafdc6be8e7c045df">_d_declare_symbol</a>(G_sys_defs.symbols,str,&quot;&quot; #name &quot;&quot;,TEST_CONTEXT)</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>sX</b>(name, str)&#160;&#160;&#160;<a class="el" href="structSemanticID.html">Symbol</a> name = <a class="el" href="group__def.html#ga808bf3a21cbb578303f04ab2fa173d4f">_d_declare_symbol</a>(G_contexts[TEST_CONTEXT].defs.symbols,G_contexts[TEST_CONTEXT].defs.structures,str,&quot;&quot; #name &quot;&quot;,TEST_CONTEXT)</td></tr>
 <tr class="separator:a1a187264a98e40c3fefd4087f99a1444"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae852e5a4f4f9a9528e4cd2a1f598752f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><b>spec_state_equal</b>(sa, st, tt, s)</td></tr>
 <tr class="separator:ae852e5a4f4f9a9528e4cd2a1f598752f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -303,7 +304,7 @@ Variables</h2></td></tr>
 <div class="line">    spec_is_symbol_equal(0,*(<a class="code" href="structSemanticID.html">Symbol</a> *)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(sa-&gt;data.symbol.symbols),s); \</div>
 <div class="line">    spec_is_ptr_equal(sa-&gt;out1,NULL);</div>
 <div class="ttc" id="group__tree_html_gac9278e540a0d63526b60cc0591283a62"><div class="ttname"><a href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a></div><div class="ttdeci">void * _t_surface(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00538">tree.c:538</a></div></div>
-<div class="ttc" id="structSemanticID_html"><div class="ttname"><a href="structSemanticID.html">SemanticID</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00017">ceptr_types.h:17</a></div></div>
+<div class="ttc" id="structSemanticID_html"><div class="ttname"><a href="structSemanticID.html">SemanticID</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00020">ceptr_types.h:20</a></div></div>
 </div><!-- fragment -->
 <p>Definition at line <a class="el" href="semtrex__spec_8h_source.html#l00125">125</a> of file <a class="el" href="semtrex__spec_8h_source.html">semtrex_spec.h</a>.</p>
 
@@ -315,7 +316,7 @@ Variables</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><a class="el" href="semtrex__spec_8h.html">semtrex_spec.h</a></li>
-    <li class="footer">Generated on Thu Aug 27 2015 12:41:28 for ceptr by
+    <li class="footer">Generated on Thu Sep 10 2015 15:47:27 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

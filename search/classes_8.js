@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['ptrlist',['Ptrlist',['../unionPtrlist.html',1,'']]]
+  ['n',['N',['../structN.html',1,'']]]
 ];

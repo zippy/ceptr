@@ -2,6 +2,7 @@ var annotated =
 [
     [ "A", "structA.html", "structA" ],
     [ "BranchPoint", "structBranchPoint.html", "structBranchPoint" ],
+    [ "ContextStore", "structContextStore.html", "structContextStore" ],
     [ "Defs", "structDefs.html", "structDefs" ],
     [ "H", "structH.html", "structH" ],
     [ "instance_elem", "structinstance__elem.html", "structinstance__elem" ],
