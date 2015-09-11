@@ -381,7 +381,12 @@ void testVMHostShell() {
     // (expect (on flux SHELL_COMMAND:time) action(send std_out (convert_to_lines (listen to clock)))
     expect = _t_new_root(EXPECTATION);
     s = _t_news(expect,SEMTREX_GROUP,shell_command);
-    _sl(s,shell_command);
+
+    T *cm = _sl(s,shell_command);
+    T *vl =  _t_newr(cm,SEMTREX_VALUE_LITERAL);
+    T *vls = _t_newr(vl,SEMTREX_VALUE_SET);
+    _t_new_str(vls,LINE,"time"); // this should be verb, the action doesn't convert the LINE to a VERB yet
+
     p = _t_new_root(SEND);
     _t_new(p,RECEPTOR_XADDR,&ox,sizeof(ox));
     x = _t_new_str(p,LINE,"placeholder for time");
@@ -395,15 +400,16 @@ void testVMHostShell() {
 
     // (expect (on flux SHELL_COMMAND:receptor) action (send std_out (convert_to_lines (send vmhost (get receptor list from vmhost)))))
 
-    debug_enable(D_STREAM);
+    debug_enable(D_STREAM+D_SIGNALS);
     //    spec_is_str_equal(_td(o_r,o_r->flux),"or flux");
     _v_start_vmhost(G_vm);
     sleep(1);
     //    spec_is_str_equal(_td(o_r,o_r->flux),"or flux");
     //    spec_is_str_equal(_td(r,r->flux),"shell flux");
-    debug_enable(D_STREAM);
+    debug_disable(D_STREAM);
 
-    spec_is_str_equal(output_data,"some time representation x 2");
+    spec_is_true(output_data != 0); // protect against seg-faults when nothing was written to the stream...
+    if (output_data != 0) {spec_is_str_equal(output_data,"some time representation x 2");}
     __r_kill(G_vm->r);
 
     _v_join_thread(&G_vm->clock_thread);

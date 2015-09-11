@@ -212,7 +212,7 @@ struct Q {
     Defs *defs;          ///< defs that are valid for this queue
     int contexts_count;  ///< number of active processes
     Qe *active;          ///< active processes
-    Qe *completed;       ///< completed processes
+    Qe *completed;       ///< completed processes (pending cleanup)
     Qe *blocked;         ///< blocked processes
     T *pending_signals;  ///< slot for signals that need to be delivered for this process
     pthread_mutex_t mutex;
