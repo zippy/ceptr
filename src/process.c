@@ -609,6 +609,7 @@ Error _p_step(Defs *defs, R **contextP) {
             T *t = _t_detach_by_idx(context->run_tree,3);
             if (t) {
                 _t_replace(context->run_tree,1,t);
+
                 context->err = noReductionErr;
             }
         }
@@ -659,12 +660,22 @@ Error _p_step(Defs *defs, R **contextP) {
             }
             /// @todo what if the replaced parameter is itself a PARAM_REF tree ??
 
-            // if this node is not a process, i.e. it's data, then we are done descending
-            // and it will be the result so ascend
+            int count = _t_children(np);
             if (!is_process(s)) {
-                context->state = Ascend;
+
+                // if this node is not a process, i.e. it's data, then either we
+                // are done descending and the current items will be the result so ascend
+                // or if we are doing deep param_ref searching, then search the entire tree
+                // @todo increase efficiency by adding some instruction to allow the coder choose, see #39
+#ifndef RUN_TREE_SHALLOW_PARAM_REF_SEARCH
+                if (count && (count != rt_cur_child(np)))
+                    context->state = Descend;
+                else
+#endif
+                    context->state = Ascend;
             }
-            else {
+            else
+                {
                 if (semeq(s,REPLICATE)) {
                     // if first time we are hitting this replication
                     // then we need to set it up
@@ -684,8 +695,7 @@ Error _p_step(Defs *defs, R **contextP) {
                         _t_free(x);
                     }
                 }
-                int c = _t_children(np);
-                if (c == rt_cur_child(np) || semeq(s,QUOTE)) {
+                if (count == rt_cur_child(np) || semeq(s,QUOTE)) {
                     // if the current child == the child count this means
                     // all the children have been processed, so we can evaluate this process
                     // if the process is QUOTE that's a special case and we evaluate it
@@ -708,7 +718,7 @@ Error _p_step(Defs *defs, R **contextP) {
                         context->state = e ? e : Ascend;
                     }
                 }
-                else if(c) {
+                else if(count) {
                     //descend and increment the current child we're working on!
                     context->state = Descend;
                 }
@@ -989,12 +999,12 @@ Error _p_reduceq(Q *q) {
     while (q->contexts_count) {
 
 #ifdef CEPTR_DEBUG
-        char *sn[]={"Ascend","Descend","Pushed","Pop","Eval","Block","Send","SendAsync","Done"};
-#define __debug_state_str(s) (s <= 0 ? sn[-s-1] : "Error")
+        char *sn[]={"Done","Ascend","Descend","Pushed","Pop","Eval","Block","Send","SendAsync"};
+#define __debug_state_str(s) (s <= 0 ? sn[-s] : "Error")
         if (debugging(D_REDUCEV)) {
             R *context = qe->context;
             char *s = __debug_state_str(context->state);
-            debug(D_REDUCEV,"ID:%p -- State %s : %d\n",qe,s,context->state);
+            debug(D_REDUCEV,"ID:%p -- State %s(%d)\n",qe,s,context->state);
             debug(D_REDUCEV,"  idx:%d\n",context->idx);
             debug(D_REDUCEV,"%s\n",_t2s(q->defs,context->run_tree));
             if (context) {

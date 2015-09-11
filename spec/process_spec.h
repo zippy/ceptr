@@ -341,14 +341,14 @@ void testProcessSend() {
 
     run_tree = __p_build_run_tree(p,0);
 
-    _p_newq(&defs);
+    q = _p_newq(&defs);
     ps = q->pending_signals;
     _p_addrt2q(q,run_tree);
 
     e = q->active;
     c = e->context;
 
-    // after reduction the context should be in the completed state
+    // after reduction the context should have been moved to the completed list
     // and the signal should be on the pending signals list
     spec_is_equal(_p_reduceq(q),noReductionErr);
 
@@ -360,6 +360,7 @@ void testProcessSend() {
     spec_is_str_equal(t2s(run_tree),"(RUN_TREE (TEST_INT_SYMBOL:0) (PARAMS))");
     spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.0) (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (ASPECT:1)) (BODY:{(TEST_INT_SYMBOL:314)})))");
 
+    _p_freeq(q);
     _t_free(p);
 
 }
