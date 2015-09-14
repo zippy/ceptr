@@ -362,7 +362,7 @@ void testVMHostShell() {
     // create expectations for commands
     // (expect (on std_in LINE) action (send self (shell_command parsed from LINE))
     T *expect = _t_new_root(EXPECTATION);
-    T *s = _t_news(expect,SEMTREX_GROUP,LINE);
+    T *s = _t_news(expect,SEMTREX_GROUP,verb);
     _sl(s,LINE);
     T *p = _t_new_root(SEND);
     Xaddr to = {RECEPTOR_XADDR,0};  // self
@@ -375,8 +375,8 @@ void testVMHostShell() {
     Process proc = _r_code_process(r,p,"send self command","long desc...",NULL,NULL);
     T *act = _t_newp(0,ACTION,proc);
     T* params = _t_new_root(PARAMS);
-    _t_news(params,INTERPOLATE_SYMBOL,LINE);
-    _r_add_listener(r,DEFAULT_ASPECT,LINE,expect,params,act);
+    _t_news(params,INTERPOLATE_SYMBOL,verb);
+    _r_add_listener(r,DEFAULT_ASPECT,verb,expect,params,act);
 
     // (expect (on flux SHELL_COMMAND:time) action(send std_out (convert_to_lines (listen to clock)))
     expect = _t_new_root(EXPECTATION);
@@ -385,7 +385,7 @@ void testVMHostShell() {
     T *cm = _sl(s,shell_command);
     T *vl =  _t_newr(cm,SEMTREX_VALUE_LITERAL);
     T *vls = _t_newr(vl,SEMTREX_VALUE_SET);
-    _t_new_str(vls,LINE,"time"); // this should be verb, the action doesn't convert the LINE to a VERB yet
+    _t_new_str(vls,verb,"time");
 
     p = _t_new_root(SEND);
     _t_new(p,RECEPTOR_XADDR,&ox,sizeof(ox));
@@ -396,7 +396,7 @@ void testVMHostShell() {
     act = _t_newp(0,ACTION,proc);
     params = _t_new_root(PARAMS);
     _t_news(params,INTERPOLATE_SYMBOL,shell_command);
-    _r_add_listener(r,DEFAULT_ASPECT,LINE,expect,params,act);
+    _r_add_listener(r,DEFAULT_ASPECT,verb,expect,params,act);
 
     // (expect (on flux SHELL_COMMAND:receptor) action (send std_out (convert_to_lines (send vmhost (get receptor list from vmhost)))))
 
@@ -423,6 +423,7 @@ void testVMHostShell() {
 
     _v_join_thread(&G_vm->clock_thread);
     _v_join_thread(&G_vm->vm_thread);
+
     // free the memory used by the VM_HOST
     _v_free(G_vm);
     G_vm = NULL;

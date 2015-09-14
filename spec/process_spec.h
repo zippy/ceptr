@@ -481,12 +481,12 @@ void testProcessExpectAct() {
     _t_new(p,CARRIER,&listener,sizeof(T *));
 
     // expect action pairs take a semtrex as the second child
-    T *t = _t_news(p,SEMTREX_GROUP,TEST_INT_SYMBOL);
+    T *t = _t_news(p,SEMTREX_GROUP,TEST_INT_SYMBOL2);
     _sl(t,TEST_INT_SYMBOL);
 
     // construct params that will be interpolated against the match as the third
     T *params = _t_newr(p,PARAMS);
-    _t_news(params,INTERPOLATE_SYMBOL,TEST_INT_SYMBOL);
+    _t_news(params,INTERPOLATE_SYMBOL,TEST_INT_SYMBOL2);
 
     // and some quoted code as the action as the fourth child to be executed
     // which can use the matched data via PARAM_REFs
@@ -523,7 +523,7 @@ void testProcessExpectAct() {
     // and the listener should have the expectation added to it (see todo in process.c about fixing how
     // the carrier is passed in)
 
-    spec_is_str_equal(t2s(listener),"(LISTENER:TEST_INT_SYMBOL (EXPECTATION (SEMTREX_GROUP:TEST_INT_SYMBOL (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TEST_INT_SYMBOL)))) (PARAMS (INTERPOLATE_SYMBOL:TEST_INT_SYMBOL)) (process:EXPECT_ACT))");
+    spec_is_str_equal(t2s(listener),"(LISTENER:TEST_INT_SYMBOL (EXPECTATION (SEMTREX_GROUP:TEST_INT_SYMBOL2 (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TEST_INT_SYMBOL)))) (PARAMS (INTERPOLATE_SYMBOL:TEST_INT_SYMBOL2)) (process:EXPECT_ACT))");
 
     // simulate matching an incoming signal on the listener
 
@@ -543,11 +543,11 @@ void testProcessExpectAct() {
     // and it should also have done the interpolation from the match in the signal and added
     // it to the params.  Note that there are nested PARAMS, for now that's how we are handling
     // scoping of the the results from the expectation
-    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (process:ADD_INT (PARAM_REF:/2/1/1) (TEST_INT_SYMBOL:100)) (PARAMS (PARAMS (TEST_INT_SYMBOL:314))))");
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (process:ADD_INT (PARAM_REF:/2/1/1) (TEST_INT_SYMBOL:100)) (PARAMS (PARAMS (TEST_INT_SYMBOL2:314))))");
 
     // reducing the q, should finally give us the completed process
     spec_is_equal(_p_reduceq(q),noReductionErr);
-    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (TEST_INT_SYMBOL:414) (PARAMS (PARAMS (TEST_INT_SYMBOL:314))))");
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (TEST_INT_SYMBOL2:414) (PARAMS (PARAMS (TEST_INT_SYMBOL2:314))))");
 
     _p_freeq(q);
     _t_free(signal);

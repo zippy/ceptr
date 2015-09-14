@@ -43,6 +43,12 @@ void _p_interpolate_from_match(T *t,T *match_results,T *match_tree) {
             raise_error("expecting to get a value from match!!");
         }
         _t_morph(t,x);
+
+        // set the symbol to the interpolate type, not the matched item type
+        // because this allows for type conversion on semtrex matching using
+        // the semtrex group name to as the indicator of which the new type will be
+        t->contents.symbol = s;
+
         // if the match has children, then we need to clone them in.
         /// @todo determine if this should be moved into _t_morph
         if (_t_children(t) == 0 && _t_children(x) > 0) {
