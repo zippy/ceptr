@@ -9,12 +9,13 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <time.h>
+#include <stdint.h>
 
 // some basic c utility functions.  Functions in this file have no dependencies on any other src files
 
 void hexDump(char *desc, void *addr, int len);
 int strcicmp(char const *a, char const *b);
 void writeFile(char *fn,void *data,size_t size);
-long diff_micro(struct timespec *start, struct timespec *end);
+uint64_t diff_micro(struct timespec *start, struct timespec *end);
 
 #endif

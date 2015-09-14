@@ -56,7 +56,7 @@ void testReceptorCreate() {
     spec_is_symbol_equal(r,_t_symbol(t),ASPECT);
     spec_is_equal(*(int *)_t_surface(t),DEFAULT_ASPECT);
 
-    spec_is_str_equal(t2s(r->root),"(TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))))");
+    spec_is_str_equal(t2s(r->root),"(TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))) (RECEPTOR_STATE))");
 
     _r_free(r);
     //! [testReceptorCreate]
@@ -629,7 +629,7 @@ void _testReceptorClockAddListener(Receptor *r) {
 
 void testReceptorClock() {
     Receptor *r = _r_makeClockReceptor();
-    spec_is_str_equal(_td(r,r->root),"(CLOCK_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))))");
+    spec_is_str_equal(_td(r,r->root),"(CLOCK_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))) (RECEPTOR_STATE))");
 
     /* The clock receptor acts as if it receives a signal with contents TICK (which is of TIMESTAMP structure) for every time that updates a magic scape with that time according to which listeners have been planted.  This means you can plant listeners based on a semtrex for any kind of time you want.  If you want the current time just plant a listener for TICK.  If you want to listen for every second plant a listener on the Symbol literal SECOND, and the clock receptor will trigger the listener every time the SECOND changes.  You can also listen for particular intervals and times by adding specificity to the semtrex, so to trigger a 3:30am action a-la-cron listen for: "/<TICK:(%HOUR=3,MINUTE=30)>"
        @todo we should also make the clock receptor also seem to send signals of other semantic formats, i.e. so it's easy to listen for things like "on Wednesdays", or other semantic date/time identifiers.

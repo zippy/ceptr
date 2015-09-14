@@ -85,7 +85,7 @@ void testTreeNewReceptor() {
 
     spec_is_ptr_equal(_t_surface(tr),r);
 
-    spec_is_str_equal(t2s(t),"(TEST_INT_SYMBOL:0 (TEST_RECEPTOR_SYMBOL:{(TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))))}))");
+    spec_is_str_equal(t2s(t),"(TEST_INT_SYMBOL:0 (TEST_RECEPTOR_SYMBOL:{(TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))) (RECEPTOR_STATE))}))");
 
     _t_free(t); // note, no need to free the receptor explicitly, as _t_free knows about it
     //! [testTreeNewReceptor]

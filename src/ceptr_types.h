@@ -192,16 +192,17 @@ struct R {
     R *callee;        ///< a pointer to the context we've invoked
 };
 
-typedef struct A A;
-struct A {
-    long elapsed_time;
+// ** structure to hold in process accounting
+typedef struct Accounting Accounting;
+struct Accounting {
+    uint64_t elapsed_time;
 };
 
 // Processing Queue element
 typedef struct Qe Qe;
 struct Qe {
     R *context;
-    A accounts;
+    Accounting accounts;
     Qe *next;
     Qe *prev;
 };

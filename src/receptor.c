@@ -36,6 +36,8 @@ Receptor *__r_new(Symbol s,T *defs,T *aspects) {
     T *a = _t_newi(r->flux,ASPECT,DEFAULT_ASPECT);
     _t_newr(a,LISTENERS);
     _t_newr(a,SIGNALS);
+    _t_newr(r->root,RECEPTOR_STATE);
+
     r->table = NULL;
     r->instances = NULL;
     r->q = _p_newq(&r->defs);

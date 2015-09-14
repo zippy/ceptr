@@ -13,7 +13,7 @@ void testVMHostCreate() {
     VMHost *v = _v_new();
 
     // test the structure of the VM_HOST receptor
-    spec_is_str_equal(t2s(v->r->root),"(VM_HOST_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))) (ACTIVE_RECEPTORS) (PENDING_SIGNALS) (COMPOSITORY:{(COMPOSITORY (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))))}))");
+    spec_is_str_equal(t2s(v->r->root),"(VM_HOST_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))) (RECEPTOR_STATE) (ACTIVE_RECEPTORS) (PENDING_SIGNALS) (COMPOSITORY:{(COMPOSITORY (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))) (RECEPTOR_STATE))}))");
 
     // test the installed receptors scape
     spec_is_sem_equal(v->installed_receptors->key_source,RECEPTOR_IDENTIFIER);
@@ -407,6 +407,15 @@ void testVMHostShell() {
     //    spec_is_str_equal(_td(o_r,o_r->flux),"or flux");
     //    spec_is_str_equal(_td(r,r->flux),"shell flux");
     debug_disable(D_STREAM);
+
+    // confirm that the completed processes get cleaned up in the course of the vmhosts processing
+    spec_is_ptr_equal(i_r->q->completed,NULL);
+    spec_is_ptr_equal(o_r->q->completed,NULL);
+
+    // kill the string after elapsed time because it's system dependent
+    char *rs = t2s(_t_child(i_r->root,4));
+    rs[39]=0;
+    spec_is_str_equal(rs,"(RECEPTOR_STATE (RECEPTOR_ELAPSED_TIME:");
 
     spec_is_true(output_data != 0); // protect against seg-faults when nothing was written to the stream...
     if (output_data != 0) {spec_is_str_equal(output_data,"some time representation x 2");}

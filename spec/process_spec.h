@@ -938,12 +938,24 @@ void testProcessMulti() {
     // some elapsed time data associated with them.
     spec_is_equal(q->contexts_count,0);
     spec_is_ptr_equal(q->completed->context->run_tree,t2);
-    spec_is_true(q->completed->accounts.elapsed_time>0);
+    uint64_t et1,et2;
+    spec_is_true((et1 = q->completed->accounts.elapsed_time)>0);
     spec_is_ptr_equal(q->completed->next->context->run_tree,t1);
-    spec_is_true(q->completed->next->accounts.elapsed_time>0);
+    spec_is_true((et2 = q->completed->next->accounts.elapsed_time)>0);
 
+    // confirm the results of the two run trees
     spec_is_str_equal(t2s(_t_child(t1,1)),"(TEST_INT_SYMBOL:124)");
     spec_is_str_equal(t2s(_t_child(t2,1)),"(TEST_INT_SYMBOL:123)");
+
+    T *rs = _t_new_root(RECEPTOR_STATE);
+    _p_cleanup(q,rs);
+
+    spec_is_ptr_equal(q->completed,NULL);
+    // confirm that after cleaning up the two processes, the accounting information
+    // is updated in a receptor state structure
+    char buf[200];
+    sprintf(buf,"(RECEPTOR_STATE (RECEPTOR_ELAPSED_TIME:%ld))",et1+et2);
+    spec_is_str_equal(t2s(rs),buf);
 
     _p_freeq(q);
     _t_free(processes);_t_free(n);

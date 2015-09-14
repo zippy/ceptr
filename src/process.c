@@ -1041,6 +1041,8 @@ Error _p_reduceq(Q *q) {
             // remove from the round-robin
             __p_dequeue(q->active,qe);
 
+            debug(D_REDUCEV,"Just completed:\n");
+
             // add to the completed list
             __p_enqueue(q->completed,qe);
             q->contexts_count--;
@@ -1089,4 +1091,30 @@ Error _p_reduceq(Q *q) {
     debug(D_REDUCE+D_REDUCEV,"Ending reduce\n");
     return 0;
 }
+
+/**
+ * cleanup any completed process from the queue, updating the receptor state data as necessary
+ *
+ * @param[in] q the queue to be cleaned up
+ * @param[in] receptor_state pointer to tree node that holds the receptor state info
+ */
+void _p_cleanup(Q *q,T* receptor_state) {
+    pthread_mutex_lock(&q->mutex);
+    Qe *e = q->completed;
+    while (e) {
+        if (_t_children(receptor_state) == 0) {
+            _t_newi(receptor_state,RECEPTOR_ELAPSED_TIME,e->accounts.elapsed_time);
+        }
+        else {
+            T *ett = _t_child(receptor_state,1);
+            int *et = (int *)_t_surface(ett);
+            (*et) += e->accounts.elapsed_time;
+        }
+        e = e->next;
+    }
+    _p_free_elements(q->completed);
+    q->completed = NULL;
+    pthread_mutex_unlock(&q->mutex);
+}
+
 /** @}*/

@@ -59,7 +59,7 @@ void writeFile(char *fn,void *data,size_t size) {
     }
 }
 
-long diff_micro(struct timespec *start, struct timespec *end)
+uint64_t diff_micro(struct timespec *start, struct timespec *end)
 {
     /* us */
     return ((end->tv_sec * (1000000)) + (end->tv_nsec / 1000)) -
