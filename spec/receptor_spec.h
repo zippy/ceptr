@@ -559,8 +559,7 @@ void testReceptorEdgeStream() {
     _t_new_receptor(ir,TEST_RECEPTOR_SYMBOL,r);
     Xaddr testReceptor = _a_new_instance(&instances,ir);
 
-    spec_is_str_equal(_td(w,__r_get_listeners(w,DEFAULT_ASPECT)),"(LISTENERS (LISTENER:LINE (EXPECTATION (SEMTREX_GROUP:LINE (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:LINE)))) (PARAMS (INTERPOLATE_SYMBOL:LINE)) (ACTION:echo what you said)))");
-
+    spec_is_str_equal(_td(w,__r_get_listeners(w,DEFAULT_ASPECT)),"(LISTENERS (LISTENER:LINE (EXPECTATION (SEMTREX_SYMBOL_ANY)) (PARAMS (INTERPOLATE_SYMBOL:NULL_SYMBOL)) (ACTION:echo input to stream)))");
 
     // manually run the reader's process queue
     //debug_enable(D_REDUCE);

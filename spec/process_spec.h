@@ -99,10 +99,10 @@ void testProcessInterpolateMatch() {
     T *t = _t_new_root(RUN_TREE);
     // test INTERPOLATE_FROM_MATCH which takes three params, the tree to interpolate, the stx-match and the tree it matched on
     T *n = _t_new_root(INTERPOLATE_FROM_MATCH);
-    T *p1 = _t_newi(n,TEST_INT_SYMBOL2,0);
-    _t_news(p1,INTERPOLATE_SYMBOL,TEST_INT_SYMBOL);
+    T *p1 = _t_newr(n,TEST_TREE_SYMBOL);
+    _t_news(p1,INTERPOLATE_SYMBOL,TEST_INT_SYMBOL2);
     T *p2 = _t_newi(n,SEMTREX_MATCH,1);
-    _t_news(p2,SEMTREX_MATCH,TEST_INT_SYMBOL);
+    _t_news(p2,SEMTREX_MATCH,TEST_INT_SYMBOL2);
     int path[] = {TREE_PATH_TERMINATOR};
     _t_new(p2,SEMTREX_MATCH_PATH,path,2*sizeof(int));
     _t_newi(p2,SEMTREX_MATCH_SIBLINGS_COUNT,1);
@@ -112,7 +112,30 @@ void testProcessInterpolateMatch() {
     _t_add(t,c);
     _p_reduce(&defs,t);
 
-    spec_is_str_equal(t2s(_t_child(t,1)),"(TEST_INT_SYMBOL2:0 (TEST_INT_SYMBOL:314))");
+    spec_is_str_equal(t2s(_t_child(t,1)),"(TEST_TREE_SYMBOL (TEST_INT_SYMBOL2:314))");
+    _t_free(t);
+    _t_free(n);
+}
+
+void testProcessInterpolateMatchFull() {
+    Defs defs;
+    T *t = _t_new_root(RUN_TREE);
+    // test INTERPOLATE_FROM_MATCH which takes three params, the tree to interpolate, the stx-match and the tree it matched on
+    T *n = _t_new_root(INTERPOLATE_FROM_MATCH);
+    T *p1 = _t_newr(n,TEST_TREE_SYMBOL);
+    _t_news(p1,INTERPOLATE_SYMBOL,NULL_SYMBOL);
+    T *p2 = _t_newi(n,SEMTREX_MATCH,1);
+    _t_news(p2,SEMTREX_MATCH,NULL_SYMBOL);
+    int path[] = {TREE_PATH_TERMINATOR};
+    _t_new(p2,SEMTREX_MATCH_PATH,path,2*sizeof(int));
+    _t_newi(p2,SEMTREX_MATCH_SIBLINGS_COUNT,1);
+    T *p3 = _t_newi(n,TEST_INT_SYMBOL,314);
+
+    T *c = _t_rclone(n);
+    _t_add(t,c);
+    _p_reduce(&defs,t);
+
+    spec_is_str_equal(t2s(_t_child(t,1)),"(TEST_TREE_SYMBOL (TEST_INT_SYMBOL:314))");
     _t_free(t);
     _t_free(n);
 }
@@ -126,7 +149,7 @@ void testProcessIf() {
     T *p2 = _t_newi(n,TEST_INT_SYMBOL,99);
     T *p3 = _t_newi(n,TEST_INT_SYMBOL,100);
 
-    __p_reduce_sys_proc(0,IF,n);
+    __p_reduce_sys_proc(0,IF,n,0);
     spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:99)");
 
     _t_free(n);
@@ -139,7 +162,7 @@ void testProcessIntMath() {
     T *n = _t_new_root(ADD_INT);
     _t_newi(n,TEST_INT_SYMBOL,99);
     _t_newi(n,TEST_INT_SYMBOL,100);
-    __p_reduce_sys_proc(0,ADD_INT,n);
+    __p_reduce_sys_proc(0,ADD_INT,n,0);
     spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:199)");
     _t_free(n);
 
@@ -150,7 +173,7 @@ void testProcessIntMath() {
     /* spec_is_sem_equal(_d_get_symbol_structure(defs,s),INTEGER); */
     /* _t_newi(n,TEST_INT_SYMBOL,99); */
     /* _t_news(n,INTERPOLATE_SYMBOL,TEST_INT_SYMBOL); */
-    /* spec_is_equal(__p_reduce_sys_proc(0,ADD_INT,n),incompatibleTypeReductionErr); */
+    /* spec_is_equal(__p_reduce_sys_proc(0,ADD_INT,n,0),incompatibleTypeReductionErr); */
     /* spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:199)"); */
     /* _t_free(n); */
 
@@ -158,7 +181,7 @@ void testProcessIntMath() {
     n = _t_new_root(SUB_INT);
     _t_newi(n,TEST_INT_SYMBOL,100);
     _t_newi(n,TEST_INT_SYMBOL,98);
-    __p_reduce_sys_proc(0,SUB_INT,n);
+    __p_reduce_sys_proc(0,SUB_INT,n,0);
     spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:2)");
     _t_free(n);
 
@@ -166,7 +189,7 @@ void testProcessIntMath() {
     n = _t_new_root(MULT_INT);
     _t_newi(n,TEST_INT_SYMBOL,100);
     _t_newi(n,TEST_INT_SYMBOL,98);
-    __p_reduce_sys_proc(0,MULT_INT,n);
+    __p_reduce_sys_proc(0,MULT_INT,n,0);
     spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:9800)");
     _t_free(n);
 
@@ -174,7 +197,7 @@ void testProcessIntMath() {
     n = _t_new_root(DIV_INT);
     _t_newi(n,TEST_INT_SYMBOL,100);
     _t_newi(n,TEST_INT_SYMBOL,48);
-    __p_reduce_sys_proc(0,DIV_INT,n);
+    __p_reduce_sys_proc(0,DIV_INT,n,0);
     spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:2)");
     _t_free(n);
 
@@ -182,14 +205,14 @@ void testProcessIntMath() {
     n = _t_new_root(DIV_INT);
     _t_newi(n,TEST_INT_SYMBOL,100);
     _t_newi(n,TEST_INT_SYMBOL,0);
-    spec_is_equal(__p_reduce_sys_proc(0,DIV_INT,n),divideByZeroReductionErr);
+    spec_is_equal(__p_reduce_sys_proc(0,DIV_INT,n,0),divideByZeroReductionErr);
     _t_free(n);
 
     // test modulo
     n = _t_new_root(MOD_INT);
     _t_newi(n,TEST_INT_SYMBOL,100);
     _t_newi(n,TEST_INT_SYMBOL,2);
-    __p_reduce_sys_proc(0,MOD_INT,n);
+    __p_reduce_sys_proc(0,MOD_INT,n,0);
     spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:0)");
     _t_free(n);
 
@@ -197,21 +220,21 @@ void testProcessIntMath() {
     n = _t_new_root(MOD_INT);
     _t_newi(n,TEST_INT_SYMBOL,100);
     _t_newi(n,TEST_INT_SYMBOL,0);
-    spec_is_equal(__p_reduce_sys_proc(0,MOD_INT,n),divideByZeroReductionErr);
+    spec_is_equal(__p_reduce_sys_proc(0,MOD_INT,n,0),divideByZeroReductionErr);
     _t_free(n);
 
     // test equals
     n = _t_new_root(EQ_INT);
     _t_newi(n,TEST_INT_SYMBOL,100);
     _t_newi(n,TEST_INT_SYMBOL,2);
-    __p_reduce_sys_proc(0,EQ_INT,n);
+    __p_reduce_sys_proc(0,EQ_INT,n,0);
     spec_is_str_equal(t2s(n),"(BOOLEAN:0)");
     _t_free(n);
 
     n = _t_new_root(EQ_INT);
     _t_newi(n,TEST_INT_SYMBOL,100);
     _t_newi(n,TEST_INT_SYMBOL,100);
-    __p_reduce_sys_proc(0,EQ_INT,n);
+    __p_reduce_sys_proc(0,EQ_INT,n,0);
     spec_is_str_equal(t2s(n),"(BOOLEAN:1)");
     _t_free(n);
 
@@ -219,14 +242,14 @@ void testProcessIntMath() {
     n = _t_new_root(LT_INT);
     _t_newi(n,TEST_INT_SYMBOL,2);
     _t_newi(n,TEST_INT_SYMBOL,100);
-    __p_reduce_sys_proc(0,LT_INT,n);
+    __p_reduce_sys_proc(0,LT_INT,n,0);
     spec_is_str_equal(t2s(n),"(BOOLEAN:1)");
     _t_free(n);
 
     n = _t_new_root(LT_INT);
     _t_newi(n,TEST_INT_SYMBOL,100);
     _t_newi(n,TEST_INT_SYMBOL,100);
-    __p_reduce_sys_proc(0,LT_INT,n);
+    __p_reduce_sys_proc(0,LT_INT,n,0);
     spec_is_str_equal(t2s(n),"(BOOLEAN:0)");
    _t_free(n);
 
@@ -234,14 +257,14 @@ void testProcessIntMath() {
     n = _t_new_root(GT_INT);
     _t_newi(n,TEST_INT_SYMBOL,2);
     _t_newi(n,TEST_INT_SYMBOL,100);
-    __p_reduce_sys_proc(0,GT_INT,n);
+    __p_reduce_sys_proc(0,GT_INT,n,0);
     spec_is_str_equal(t2s(n),"(BOOLEAN:0)");
     _t_free(n);
 
     n = _t_new_root(GT_INT);
     _t_newi(n,TEST_INT_SYMBOL,101);
     _t_newi(n,TEST_INT_SYMBOL,100);
-    __p_reduce_sys_proc(0,GT_INT,n);
+    __p_reduce_sys_proc(0,GT_INT,n,0);
     spec_is_str_equal(t2s(n),"(BOOLEAN:1)");
     _t_free(n);
 
@@ -257,7 +280,7 @@ void testProcessString() {
     _t_new_str(n,TEST_STR_SYMBOL," ");
     _t_new_str(n,TEST_STR_SYMBOL,"Smith");
 
-    __p_reduce_sys_proc(0,CONCAT_STR,n);
+    __p_reduce_sys_proc(0,CONCAT_STR,n,0);
 
     spec_is_str_equal(t2s(n),"(TEST_NAME_SYMBOL:Fred Smith)");
 
@@ -279,13 +302,13 @@ void testProcessRespond() {
     R *c = __p_make_context(run_tree,0);
 
     // if this is a run-tree that's not a child of a signal we can't respond!
-    spec_is_equal(__p_reduce_sys_proc(c,RESPOND,n),notInSignalContextReductionError);
+    spec_is_equal(__p_reduce_sys_proc(c,RESPOND,n,0),notInSignalContextReductionError);
 
     // no add it to the signal and try again
     _t_add(s,run_tree);
 
     // now it should create a signal for responding
-    spec_is_equal(__p_reduce_sys_proc(c,RESPOND,n),noReductionErr);
+    spec_is_equal(__p_reduce_sys_proc(c,RESPOND,n,0),noReductionErr);
 
     spec_is_str_equal(t2s(s),"(SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (RECEPTOR_XADDR:RECEPTOR_XADDR.4) (ASPECT:1)) (BODY:{(TEST_INT_SYMBOL:314)}) (RUN_TREE (TEST_INT_SYMBOL:0) (SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.4) (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (ASPECT:1)) (BODY:{(TEST_INT_SYMBOL:271)})))))");
 
@@ -304,7 +327,7 @@ void testProcessSend() {
 
     // test the basic sys_process reduction which should produce the symbol and set the state to Send
     // for reduceq to know what to do
-    spec_is_equal(Send,__p_reduce_sys_proc(0,SEND,code));
+    spec_is_equal(Send,__p_reduce_sys_proc(0,SEND,code,0));
     spec_is_str_equal(t2s(code),"(SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.0) (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (ASPECT:1)) (BODY:{(TEST_INT_SYMBOL:314)}))");
 
     _t_free(code);
@@ -390,13 +413,13 @@ void testProcessStream() {
     Defs defs;
 
     FILE *stream;
-    char buffer[] = "line1\nline2\n";
-    stream = fmemopen(buffer, strlen (buffer), "r+");
+    char buffer[500] = "line1\nline2\n";
+    stream = fmemopen(buffer, 500, "r+");
 
     T *n = _t_new_root(STREAM_AVAILABLE);
     Stream *st = _st_new_unix_stream(stream);
     _t_new_stream(n,TEST_STREAM_SYMBOL,st);
-    __p_reduce_sys_proc(0,STREAM_AVAILABLE,n);
+    __p_reduce_sys_proc(0,STREAM_AVAILABLE,n,0);
     spec_is_str_equal(t2s(n),"(BOOLEAN:1)");
     _t_free(n);
 
@@ -423,13 +446,15 @@ void testProcessStream() {
     n = _t_new_root(STREAM_WRITE);
     _t_new_stream(n,TEST_STREAM_SYMBOL,st);
     _t_new_str(n,TEST_STR_SYMBOL,"fish\n");
+    _t_new_str(n,LINE,"cow");
+    _t_newi(n,TEST_INT_SYMBOL,314);
 
     c = _t_rclone(n);
     _t_add(run_tree,c);
     err = _p_reduce(&defs,run_tree);
     spec_is_equal(err,noReductionErr);
 
-    spec_is_str_equal(buffer,"line1\nfish\n\n");
+    spec_is_str_equal(buffer,"line1\nfish\ncow\n(TEST_INT_SYMBOL:314)\n");
 
     _t_free(n);
     _t_free(run_tree);
@@ -449,7 +474,7 @@ void testProcessStream() {
     err = _p_reduce(&defs,run_tree);
     spec_is_equal(err,unixErrnoReductionErr);
 
-    spec_is_str_equal(buffer,"line1\nfish\n\n");
+    spec_is_str_equal(buffer,"line1\nfish\ncow\n(TEST_INT_SYMBOL:314)\n");
 
     _t_free(n);
     _t_free(run_tree);
@@ -458,7 +483,7 @@ void testProcessStream() {
     while ((fgetc (stream)) != EOF);
     n = _t_new_root(STREAM_AVAILABLE);
     _t_new_stream(n,TEST_STREAM_SYMBOL,st);
-    __p_reduce_sys_proc(0,STREAM_AVAILABLE,n);
+    __p_reduce_sys_proc(0,STREAM_AVAILABLE,n,0);
     spec_is_str_equal(t2s(n),"(BOOLEAN:0)");
     _t_free(n);
 
@@ -780,7 +805,7 @@ void testProcessRaise() {
     T *n = _t_new_root(RAISE);
     _t_news(n,REDUCTION_ERROR_SYMBOL,ZERO_DIVIDE_ERR);
 
-    spec_is_equal(__p_reduce_sys_proc(0,RAISE,n),raiseReductionErr);
+    spec_is_equal(__p_reduce_sys_proc(0,RAISE,n,0),raiseReductionErr);
     _t_free(n);
 
     T *t = _t_new_root(RUN_TREE);
@@ -817,7 +842,7 @@ void testProcessReplicate() {
     T *x = _t_newr(code,STREAM_WRITE);
     Stream *st = _st_new_unix_stream(output);
     _t_new_stream(x,TEST_STREAM_SYMBOL,st);
-    _t_new_str(x,TEST_STR_SYMBOL,"testing");
+    _t_new_str(x,LINE,"testing");
 
     T *t = __p_build_run_tree(code,0);
     Error e = _p_reduce(&defs,t);
@@ -965,6 +990,7 @@ void testProcessMulti() {
 void testProcess() {
     testRunTree();
     testProcessInterpolateMatch();
+    testProcessInterpolateMatchFull();
     testProcessIf();
     testProcessIntMath();
     testProcessString();

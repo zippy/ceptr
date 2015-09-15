@@ -613,26 +613,26 @@ Receptor *_r_makeStreamWriterReceptor(Symbol receptor_symbol,Symbol stream_symbo
     /* T *t = parseSemtrex(&r->defs,stx); */
     /*  _t_add(expect,t); */
 
-    T *t =_t_news(expect,SEMTREX_GROUP,LINE);
-    T *x =_t_newr(t,SEMTREX_SYMBOL_LITERAL);
-    _t_news(x,SEMTREX_SYMBOL,LINE);
+    //    T *t =_t_news(expect,SEMTREX_GROUP,NULL_SYMBOL);
+    T *t =_t_newr(expect,SEMTREX_SYMBOL_ANY);
+    //    _t_news(x,SEMTREX_SYMBOL,LINE);
 
     /* char buf[1000]; */
     /* _dump_semtrex(&r->defs,t,buf); */
     /* puts(buf); */
 
-    x = _t_new_root(STREAM_WRITE);
+    T *x = _t_new_root(STREAM_WRITE);
 
     _t_new_stream(x,TEST_STREAM_SYMBOL,st);
     int pt1[] = {2,1,TREE_PATH_TERMINATOR};
     _t_new(x,PARAM_REF,pt1,sizeof(int)*4);
 
     T* params = _t_new_root(PARAMS);
-    _t_news(params,INTERPOLATE_SYMBOL,LINE);
+    _t_news(params,INTERPOLATE_SYMBOL,NULL_SYMBOL);
 
     T *input = _t_new_root(INPUT);
     T *output = _t_new_root(OUTPUT_SIGNATURE);
-    Process proc = _r_code_process(r,x,"echo what you said","long desc...",input,output);
+    Process proc = _r_code_process(r,x,"echo input to stream","long desc...",input,output);
     T *act = _t_newp(0,ACTION,proc);
 
     _r_add_listener(r,DEFAULT_ASPECT,LINE,expect,params,act);
@@ -687,7 +687,7 @@ T * __r_make_tick() {
     T *today = _t_newr(tick,TODAY);
     T *now = _t_newr(tick,NOW);
     _t_newi(today,YEAR,t.tm_year+1900);
-    _t_newi(today,MONTH,t.tm_mon);
+    _t_newi(today,MONTH,t.tm_mon+1);
     _t_newi(today,DAY,t.tm_mday);
     _t_newi(now,HOUR,t.tm_hour);
     _t_newi(now,MINUTE,t.tm_min);

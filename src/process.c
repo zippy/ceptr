@@ -47,7 +47,8 @@ void _p_interpolate_from_match(T *t,T *match_results,T *match_tree) {
         // set the symbol to the interpolate type, not the matched item type
         // because this allows for type conversion on semtrex matching using
         // the semtrex group name to as the indicator of which the new type will be
-        t->contents.symbol = s;
+        if (!semeq(s,NULL_SYMBOL)) // if match was on NULL_SYMBOL it's a full results match so use what we found
+            t->contents.symbol = s;
 
         // if the match has children, then we need to clone them in.
         /// @todo determine if this should be moved into _t_morph
@@ -96,7 +97,7 @@ Error __p_check_signature(Defs *defs,Process p,T *params) {
  *
  * these system level processes are the equivalent of the instruction set of the ceptr virtual machine
  */
-Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
+Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Defs *defs) {
     int b,c;
     char *str;
     Symbol sy;
@@ -359,16 +360,30 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code) {
             FILE *stream = st->data.unix_stream;
             _t_free(s);
             // get the data to write as string
-            s = _t_detach_by_idx(code,1);
-            /// @todo check the structure type to make sure it's compatible as a string (i.e. it's null terminated)
-            /// @todo other integrity checks, i.e. length etc?
-            char *str = _t_surface(s);
-            debug(D_STREAM,"just wrote: %s\n",str);
-            int err = fputs(str,stream);
-            _t_free(s);
-            if (err < 0) return unixErrnoReductionErr;
-            fputs("\n",stream);
-            if (err < 0) return unixErrnoReductionErr;
+            while(s = _t_detach_by_idx(code,1)) {
+                /// @todo check the structure type to make sure it's compatible as a string (i.e. it's null terminated)
+                /// @todo other integrity checks, i.e. length etc?
+                char *str;
+                Symbol sym = _t_symbol(s);
+                Structure struc = _d_get_symbol_structure(defs->symbols,sym);
+                int add_nl = 1;
+                if (semeq(struc,CSTRING)) {
+                    str = _t_surface(s);
+                    if (!semeq(sym,LINE)) add_nl = 0;
+                }
+                else {
+                    str = _t2s(defs,s);
+                }
+                //str = t2s(s);
+                debug(D_STREAM,"just wrote: %s\n",str);
+                int err = fputs(str,stream);
+                _t_free(s);
+                if (err < 0) return unixErrnoReductionErr;
+                if (add_nl) {
+                    err = fputs("\n",stream);
+                    if (err < 0) return unixErrnoReductionErr;
+                }
+            }
             fflush(stream);
             /// @todo what should this really return?
             x = _t_news(0,REDUCTION_ERROR_SYMBOL,NULL_SYMBOL);
@@ -720,7 +735,7 @@ Error _p_step(Defs *defs, R **contextP) {
                     else {
                         // if it's a sys process we can just reduce it in and then ascend
                         // or move to the error handling state
-                        Error e = __p_reduce_sys_proc(context,s,np);
+                        Error e = __p_reduce_sys_proc(context,s,np,defs);
                         context->state = e ? e : Ascend;
                     }
                 }

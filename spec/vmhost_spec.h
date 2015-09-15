@@ -389,24 +389,27 @@ void testVMHostShell() {
 
     p = _t_new_root(SEND);
     _t_new(p,RECEPTOR_XADDR,&ox,sizeof(ox));
-    x = _t_new_str(p,LINE,"placeholder for time");
+
+    T *tick = __r_make_tick();
+        _t_add(p,tick);
+    //x = _t_new_str(p,LINE,t2s(tick));
     //    int pt1[] = {2,1,TREE_PATH_TERMINATOR};
     //    _t_new(x,PARAM_REF,pt1,sizeof(int)*4);
     proc = _r_code_process(r,p,"send time to std_out","long desc...",NULL,NULL);
     act = _t_newp(0,ACTION,proc);
     params = _t_new_root(PARAMS);
-    _t_news(params,INTERPOLATE_SYMBOL,shell_command);
+    //   _t_news(params,INTERPOLATE_SYMBOL,shell_command);
     _r_add_listener(r,DEFAULT_ASPECT,verb,expect,params,act);
 
     // (expect (on flux SHELL_COMMAND:receptor) action (send std_out (convert_to_lines (send vmhost (get receptor list from vmhost)))))
 
-    debug_enable(D_STREAM+D_SIGNALS);
+    //    debug_enable(D_STREAM+D_SIGNALS);
     //    spec_is_str_equal(_td(o_r,o_r->flux),"or flux");
     _v_start_vmhost(G_vm);
     sleep(1);
     //    spec_is_str_equal(_td(o_r,o_r->flux),"or flux");
     //    spec_is_str_equal(_td(r,r->flux),"shell flux");
-    debug_disable(D_STREAM);
+    //debug_disable(D_STREAM);
 
     // confirm that the completed processes get cleaned up in the course of the vmhosts processing
     spec_is_ptr_equal(i_r->q->completed,NULL);
