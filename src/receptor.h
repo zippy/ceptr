@@ -66,6 +66,7 @@ T *__r_get_signals(Receptor *r,Aspect aspect);
 Receptor * __r_get_receptor(T *installed_receptor);
 
 /*****************  Tree debugging utilities */
+char *__td(Receptor *r,T *t,char *buf);
 char *_td(Receptor *r,T *t);
 char *_r_get_structure_name(Receptor *r,Structure s);
 char *_r_get_symbol_name(Receptor *r,Symbol s);

@@ -562,10 +562,14 @@ char *_r_get_process_name(Receptor *r,Process p) {
 char __t_dump_buf[10000];
 
 char *_td(Receptor *r,T *t) {
-    if (!t) sprintf(__t_dump_buf,"<null-tree>");
+    __td(r,t,__t_dump_buf);
+}
+
+char *__td(Receptor *r,T *t,char *buf) {
+    if (!t) sprintf(buf,"<null-tree>");
     else
-        __t_dump(&r->defs,t,0,__t_dump_buf);
-    return __t_dump_buf;
+        __t_dump(&r->defs,t,0,buf);
+    return buf;
 }
 
 /*****************  Built-in core and edge receptors */

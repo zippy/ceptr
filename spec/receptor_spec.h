@@ -640,7 +640,6 @@ void testReceptorClock() {
     spec_is_str_equal(_td(r,__r_get_listeners(r,DEFAULT_ASPECT)),"(LISTENERS (LISTENER:TICK (EXPECTATION (SEMTREX_GROUP:TICK (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TICK)))) (PARAMS (INTERPOLATE_SYMBOL:TICK)) (ACTION:noop return param)))");
 
     // "run" the receptor and verify that listener gets activated
-    T *tick = __r_make_tick();
     pthread_t thread;
     int rc = 0;
     rc = pthread_create(&thread,0,___clock_thread,r);
@@ -650,9 +649,14 @@ void testReceptorClock() {
 
     sleep(2);
 
-    _p_reduceq(r->q);
 
-    spec_is_str_equal(_td(r,tick),_td(r,_t_child(r->q->completed->context->run_tree,1)));
+    _p_reduceq(r->q);
+    T *tick = __r_make_tick();
+    char buf1[100],buf2[100];
+    __td(r,tick,buf1);
+    __td(r,_t_child(r->q->completed->context->run_tree,1),buf2);
+    buf1[60]=0; buf2[60]=0; // minute and second may not match...
+    spec_is_str_equal(buf1,buf2);
 
     __r_kill(r);
 
