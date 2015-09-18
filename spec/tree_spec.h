@@ -357,6 +357,7 @@ void testTreeSwap() {
     spec_is_str_equal(_t2s(&test_HTTP_defs,s),"(HTTP_REQUEST_VERSION (VERSION_MAJOR:1) (VERSION_MINOR:0))");
     spec_is_ptr_equal(_t_parent(s),NULL);
 
+    _t_free(s);
     _t_free(t);
     //! [testTreeSwap]
 }
