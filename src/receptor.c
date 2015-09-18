@@ -40,7 +40,7 @@ Receptor *__r_new(Symbol s,T *defs,T *aspects) {
 
     r->table = NULL;
     r->instances = NULL;
-    r->q = _p_newq(&r->defs);
+    r->q = _p_newq(r);
     r->state = Alive;
     return r;
 }
