@@ -207,10 +207,12 @@ struct Qe {
     Qe *prev;
 };
 
+typedef struct Receptor Receptor;
+
 // Processing Queue structure
 typedef struct Q Q;
 struct Q {
-    Defs *defs;          ///< defs that are valid for this queue
+    Receptor *r;         ///< back-pointer to receptor in which this Q is running (for defs and more)
     int contexts_count;  ///< number of active processes
     Qe *active;          ///< active processes
     Qe *completed;       ///< completed processes (pending cleanup)
@@ -228,7 +230,7 @@ enum ReceptorStates {Alive=0,Dead};
    faster access to some parts of the tree, and to hold non-tree data, like the label
    table.
 */
-typedef struct Receptor {
+struct Receptor {
     T *root;             ///< root node of the semantic tree
     Defs defs;           ///< defs block
     T *flux;             ///< pointer for quick access to the flux
@@ -236,7 +238,7 @@ typedef struct Receptor {
     Instances instances; ///< the instances store
     Q *q;                ///< process queue
     int state;           ///< state information about the receptor that the vmhost manages
-} Receptor;
+};
 
 
 typedef long UUID;

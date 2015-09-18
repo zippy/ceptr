@@ -118,6 +118,7 @@ enum SYSSymbolIDs {
     TODAY_ID,
     NOW_ID,
     TICK_ID,
+    CLOCK_TELL_TIME_ID,
     RECEPTOR_ADDRESS_ID,
     RECEPTOR_STATE_ID,
     RECEPTOR_ELAPSED_TIME_ID,
@@ -263,6 +264,7 @@ enum SYSSymbolIDs {
 #define TODAY G_contexts[SYS_CONTEXT].symbols[TODAY_ID]
 #define NOW G_contexts[SYS_CONTEXT].symbols[NOW_ID]
 #define TICK G_contexts[SYS_CONTEXT].symbols[TICK_ID]
+#define CLOCK_TELL_TIME G_contexts[SYS_CONTEXT].symbols[CLOCK_TELL_TIME_ID]
 #define RECEPTOR_ADDRESS G_contexts[SYS_CONTEXT].symbols[RECEPTOR_ADDRESS_ID]
 #define RECEPTOR_STATE G_contexts[SYS_CONTEXT].symbols[RECEPTOR_STATE_ID]
 #define RECEPTOR_ELAPSED_TIME G_contexts[SYS_CONTEXT].symbols[RECEPTOR_ELAPSED_TIME_ID]
@@ -394,6 +396,7 @@ enum SYSProcessIDs {
     STREAM_WRITE_ID,
     STREAM_AVAILABLE_ID,
     REPLICATE_ID,
+    LISTEN_ID,
     NUM_SYS_PROCESSES
 };
 #define NOOP G_contexts[SYS_CONTEXT].processes[NOOP_ID]
@@ -419,6 +422,7 @@ enum SYSProcessIDs {
 #define STREAM_WRITE G_contexts[SYS_CONTEXT].processes[STREAM_WRITE_ID]
 #define STREAM_AVAILABLE G_contexts[SYS_CONTEXT].processes[STREAM_AVAILABLE_ID]
 #define REPLICATE G_contexts[SYS_CONTEXT].processes[REPLICATE_ID]
+#define LISTEN G_contexts[SYS_CONTEXT].processes[LISTEN_ID]
 
 /**********************************************************************************/
 // TEST:Symbol

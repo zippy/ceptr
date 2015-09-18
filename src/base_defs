@@ -131,6 +131,7 @@ Symbol: TODAY,DATE;
 Symbol: NOW,TIME;
 Structure: TIMESTAMP,2,TODAY,NOW;
 Symbol: TICK,TIMESTAMP;
+Symbol: CLOCK_TELL_TIME,NULL_STRUCTURE;
 
 Symbol: RECEPTOR_ADDRESS,TREE_PATH;
 Symbol: RECEPTOR_STATE,TREE;
@@ -170,6 +171,7 @@ Process: STREAM_READ,"read from a stream",0,0;
 Process: STREAM_WRITE,"write to a stream",0,0;
 Process: STREAM_AVAILABLE,"check a stream for data availability",0,0;
 Process: REPLICATE,"replicate process",0,0;
+Process: LISTEN,"plant a listener",0,0;
 
 Symbol: STX_TOKENS,LIST;
 Symbol: STX_SL,NULL_STRUCTURE;

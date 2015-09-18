@@ -30,12 +30,12 @@ typedef struct ReplicationState {
 } ReplicationState;
 
 R *__p_make_context(T *run_tree,R *caller);
-Error _p_step(Defs *defs, R **contextP);
-Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Defs *defs);
+Error _p_step(Q *q, R **contextP);
+Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q);
 void _p_enqueue(Qe **listP,Qe *e);
 Error _p_unblock(Q *q,R *context);
 Error _p_reduce(Defs *defs,T *run_tree);
-Q *_p_newq(Defs *defs);
+Q *_p_newq(Receptor *r);
 void _p_freeq(Q *q);
 void _p_addrt2q(Q *q,T *t);
 Error _p_reduceq(Q *q);

@@ -336,8 +336,8 @@ void testProcessSend() {
     T *run_tree = __p_build_run_tree(p,0);
 
     // add the run tree into a queue and run it
-    Defs defs;
-    Q *q = _p_newq(&defs);
+    Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
+    Q *q = r->q;
     T *ps = q->pending_signals;
     _p_addrt2q(q,run_tree);
 
@@ -364,7 +364,7 @@ void testProcessSend() {
 
     run_tree = __p_build_run_tree(p,0);
 
-    q = _p_newq(&defs);
+    r->q = q = _p_newq(r);
     ps = q->pending_signals;
     _p_addrt2q(q,run_tree);
 
@@ -383,7 +383,7 @@ void testProcessSend() {
     spec_is_str_equal(t2s(run_tree),"(RUN_TREE (TEST_INT_SYMBOL:0) (PARAMS))");
     spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.0) (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (ASPECT:1)) (BODY:{(TEST_INT_SYMBOL:314)})))");
 
-    _p_freeq(q);
+    _r_free(r);
     _t_free(p);
 
 }
@@ -410,7 +410,7 @@ void testProcessQuote() {
 }
 
 void testProcessStream() {
-    Defs defs;
+    Defs defs = {0,0,0,0,0};
 
     FILE *stream;
     char buffer[500] = "line1\nline2\n";
@@ -526,8 +526,8 @@ void testProcessExpectAct() {
     _t_add(run_tree,code);
 
     // add the run tree into a queue and run it
-    Defs defs;
-    Q *q = _p_newq(&defs);
+    Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
+    Q *q = r->q;
 
     _t_newr(run_tree,PARAMS);
     _p_addrt2q(q,run_tree);
@@ -574,16 +574,15 @@ void testProcessExpectAct() {
     spec_is_equal(_p_reduceq(q),noReductionErr);
     spec_is_str_equal(t2s(run_tree),"(RUN_TREE (TEST_INT_SYMBOL2:414) (PARAMS (PARAMS (TEST_INT_SYMBOL2:314))))");
 
-    _p_freeq(q);
     _t_free(signal);
     _t_free(listener);
+    _r_free(r);
 }
 
 //-----------------------------------------------------------------------------------------
 // tests of process execution (reduction)
 
 void testProcessReduce() {
-    Defs defs;
     T *t = _t_new_root(RUN_TREE);
 
     T *n = _t_new_root(IF); // multi-level IF to test descending a number of levels
@@ -602,29 +601,36 @@ void testProcessReduce() {
 
     R *context = __p_make_context(t,0);
 
+    // build a fake Receptor and Q on the stack so _p_step will work
+    Receptor r;
+    Q q;
+    r.root = NULL;
+    r.q = &q;
+    q.r = &r;
+
     spec_is_equal(rt_cur_child(c),0);
     // first step is Eval and next step is Descend
-    spec_is_equal(_p_step(&defs,&context),Descend);
+    spec_is_equal(_p_step(&q,&context),Descend);
     spec_is_equal(rt_cur_child(c),0);
 
     // next step after Descend changes node pointer and moved to Eval
-    spec_is_equal(_p_step(&defs,&context),Eval);
+    spec_is_equal(_p_step(&q,&context),Eval);
     spec_is_ptr_equal(context->node_pointer,_t_child(c,1));
     spec_is_equal(rt_cur_child(c),1);
 
     // after Eval next step will be Ascend
-    spec_is_equal(_p_step(&defs,&context),Ascend);
+    spec_is_equal(_p_step(&q,&context),Ascend);
 
     // step ascends back to top if and marks boolean complete
-    spec_is_equal(_p_step(&defs,&context),Eval);
+    spec_is_equal(_p_step(&q,&context),Eval);
 
     spec_is_equal(rt_cur_child(_t_child(c,1)),RUN_TREE_EVALUATED);
     spec_is_ptr_equal(context->node_pointer,c);
 
-    spec_is_equal(_p_step(&defs,&context),Descend);
+    spec_is_equal(_p_step(&q,&context),Descend);
 
     // third step goes into the second level if
-    spec_is_equal(_p_step(&defs,&context),Eval);
+    spec_is_equal(_p_step(&q,&context),Eval);
     spec_is_equal(rt_cur_child(c),2);
     spec_is_ptr_equal(context->node_pointer,_t_child(c,2));
 
@@ -635,7 +641,7 @@ void testProcessReduce() {
     _t_free(_t_detach_by_idx(t,1));
     c = _t_rclone(n);
     _t_add(t,c);
-    _p_reduce(&defs,t);
+    _p_reduce(&r.defs,t);
 
     spec_is_str_equal(t2s(c),"(TEST_INT_SYMBOL:99)");
 
@@ -874,6 +880,24 @@ void testProcessReplicate() {
     _t_free(t);
 }
 
+void testProcessListen() {
+    Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
+
+    T *n = _t_new_root(LISTEN);
+    _sl(n,TICK);
+    T *p = _t_newr(n,PARAMS);
+    T *a = _t_newp(n,ACTION,NOOP);
+
+    spec_is_equal(__p_reduce_sys_proc(0,LISTEN,n,r->q),noReductionErr);
+
+    spec_is_str_equal(t2s(n),"(REDUCTION_ERROR_SYMBOL:NULL_SYMBOL)"); //@todo is this right??
+
+    spec_is_str_equal(t2s(__r_get_listeners(r,DEFAULT_ASPECT)),"(LISTENERS (LISTENER:NULL_SYMBOL (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TICK))) (PARAMS) (ACTION:NOOP)))");
+
+    _t_free(n);
+    _r_free(r);
+}
+
 void testProcessErrorTrickleUp() {
     //! [testProcessErrorTrickleUp]
     T *processes = _t_new_root(PROCESSES);
@@ -907,8 +931,9 @@ void testProcessErrorTrickleUp() {
 void testProcessMulti() {
     //! [testProcessMulti]
 
-    T *processes = _t_new_root(PROCESSES);
-    Defs defs = {0,0,processes};
+    Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
+    T *processes = r->defs.processes;
+    Q *q = r->q;
 
     Process if_even = _defIfEven(processes);  // add the if_even process to our defs
 
@@ -929,7 +954,6 @@ void testProcessMulti() {
     T *t2 = __p_make_run_tree(processes,if_even,n);
 
     // add them to a processing queue
-    Q *q = _p_newq(&defs);
     spec_is_equal(q->contexts_count,0);
     spec_is_ptr_equal(q->active,NULL);
     _p_addrt2q(q,t1);
@@ -982,8 +1006,9 @@ void testProcessMulti() {
     sprintf(buf,"(RECEPTOR_STATE (RECEPTOR_ELAPSED_TIME:%ld))",et1+et2);
     spec_is_str_equal(t2s(rs),buf);
 
-    _p_freeq(q);
-    _t_free(processes);_t_free(n);
+    _t_free(rs);
+    _t_free(n);
+    _r_free(r);
     //! [testProcessMulti]
 }
 
@@ -1005,6 +1030,7 @@ void testProcess() {
     testProcessError();
     testProcessRaise();
     testProcessReplicate();
+    testProcessListen();
     testProcessErrorTrickleUp();
     testProcessMulti();
 }

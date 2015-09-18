@@ -97,7 +97,7 @@ Error __p_check_signature(Defs *defs,Process p,T *params) {
  *
  * these system level processes are the equivalent of the instruction set of the ceptr virtual machine
  */
-Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Defs *defs) {
+Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
     int b,c;
     char *str;
     Symbol sy;
@@ -365,14 +365,14 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Defs *defs) {
                 /// @todo other integrity checks, i.e. length etc?
                 char *str;
                 Symbol sym = _t_symbol(s);
-                Structure struc = _d_get_symbol_structure(defs->symbols,sym);
+                Structure struc = _d_get_symbol_structure(q->r->defs.symbols,sym);
                 int add_nl = 1;
                 if (semeq(struc,CSTRING)) {
                     str = _t_surface(s);
                     if (!semeq(sym,LINE)) add_nl = 0;
                 }
                 else {
-                    str = _t2s(defs,s);
+                    str = _t2s(&q->r->defs,s);
                 }
                 //str = t2s(s);
                 debug(D_STREAM,"just wrote: %s\n",str);
@@ -480,6 +480,17 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Defs *defs) {
         }
 
         break;
+    case LISTEN_ID:
+        {
+            T *expect = _t_new_root(EXPECTATION);
+            T *s = _t_detach_by_idx(code,1);
+            T *params = _t_detach_by_idx(code,1);
+            T *act = _t_detach_by_idx(code,1);
+            _t_add(expect,s);
+            _r_add_listener(q->r,DEFAULT_ASPECT,NULL_SYMBOL,expect,params,act);
+            x = _t_news(0,REDUCTION_ERROR_SYMBOL,NULL_SYMBOL);
+        }
+        break;
     default:
         raise_error("unknown sys-process id: %d",s.id);
     }
@@ -584,7 +595,9 @@ Error _p_unblock(Q *q,R *context) {
  * reduce a run tree by executing the instructions in it and replacing the tree values in place
  *
  * a run_tree is expected to have a code tree as the first child, parameters as the second,
- * and optionally an error handling routine as the third child.
+ * and optionally an error handling routine as the third child.  This is a simplified
+ * reducer for testing purposes only, as real reduction happens in the context of a processing Q.
+ * This function makes a fake processing Q and Receptor.
  *
  * @param[in] processes context of defined processes
  * @param[in] run_tree the run tree being reduced
@@ -598,7 +611,15 @@ Error _p_reduce(Defs *defs,T *rt) {
     R *context = __p_make_context(run_tree,0);
     Error e;
 
-    while(_p_step(defs, &context) != Done);
+    // build a fake Receptor and Q on the stack so _p_step will work
+    Receptor r;
+    Q q;
+    r.root = NULL;
+    r.q = &q;
+    r.defs = *defs;
+    q.r = &r;
+
+    while(_p_step(&q, &context) != Done);
     e = context->err;
     free(context);
     return e;
@@ -610,11 +631,12 @@ Error _p_reduce(Defs *defs,T *rt) {
  * a run_tree is expected to have a code tree as the first child, parameters as the second,
  * and optionally an error handling routine as the third child.
  *
- * @param[in] processes context of defined processes
+ * @param[in] Processing Q in which this step is taking place
  * @param[in] pointer to context pointer
  * @returns the next state that will be called for the context
  */
-Error _p_step(Defs *defs, R **contextP) {
+Error _p_step(Q *q, R **contextP) {
+    Defs *defs = &q->r->defs;
     R *context = *contextP;
 
     switch(context->state) {
@@ -735,7 +757,7 @@ Error _p_step(Defs *defs, R **contextP) {
                     else {
                         // if it's a sys process we can just reduce it in and then ascend
                         // or move to the error handling state
-                        Error e = __p_reduce_sys_proc(context,s,np,defs);
+                        Error e = __p_reduce_sys_proc(context,s,np,q);
                         context->state = e ? e : Ascend;
                     }
                 }
@@ -916,9 +938,9 @@ T *_p_make_run_tree(T *processes,T *process,int num_params,...) {
  * @param[in] defs definitions that
  * @returns Q the processing queue
  */
-Q *_p_newq(Defs *defs) {
+Q *_p_newq(Receptor *r) {
     Q *q = malloc(sizeof(Q));
-    q->defs = defs;
+    q->r = r;
     q->contexts_count = 0;
     q->active = NULL;
     q->completed = NULL;
@@ -1027,7 +1049,7 @@ Error _p_reduceq(Q *q) {
             char *s = __debug_state_str(context->state);
             debug(D_REDUCEV,"ID:%p -- State %s(%d)\n",qe,s,context->state);
             debug(D_REDUCEV,"  idx:%d\n",context->idx);
-            debug(D_REDUCEV,"%s\n",_t2s(q->defs,context->run_tree));
+            debug(D_REDUCEV,"%s\n",_t2s(&q->r->defs,context->run_tree));
             if (context) {
                 if (context->node_pointer == 0) {
                     debug(D_REDUCEV,"Node Pointer: NULL!\n");
@@ -1045,7 +1067,7 @@ Error _p_reduceq(Q *q) {
 #endif
 
         clock_gettime(CLOCK_MONOTONIC, &start);
-        next_state = _p_step(q->defs, &qe->context); // next state is set in directly in the context
+        next_state = _p_step(q, &qe->context); // next state is set in directly in the context
         clock_gettime(CLOCK_MONOTONIC, &end);
         qe->accounts.elapsed_time +=  diff_micro(&start, &end);
 
@@ -1053,7 +1075,7 @@ Error _p_reduceq(Q *q) {
         debug(D_REDUCEV,"result state:%s\n\n",__debug_state_str(qe->context->state));
         if (debugging(D_REDUCE) && prev_state == Eval) {
             debug_np(D_REDUCE,qe->context->node_pointer);
-            debug(D_REDUCE,"Eval: %s\n\n",_t2s(q->defs,qe->context->run_tree));
+            debug(D_REDUCE,"Eval: %s\n\n",_t2s(&q->r->defs,qe->context->run_tree));
         }
 #endif
         pthread_mutex_lock(&q->mutex);

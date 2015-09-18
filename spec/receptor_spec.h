@@ -608,8 +608,8 @@ void _testReceptorClockAddListener(Receptor *r) {
     /// @todo figure out why looking for the SECOND down a walk match fails
     // char *stx = "/<TICK:(%SECOND)>";
     // T *s = parseSemtrex(&r->d,stx);
-    T *s = _t_news(expect,SEMTREX_GROUP,TICK);
-    _sl(s,TICK);
+
+    T *s =  _sl(expect,TICK);
 
     T *x = _t_newr(0,NOOP);
     int pt1[] = {2,1,TREE_PATH_TERMINATOR};
@@ -621,7 +621,7 @@ void _testReceptorClockAddListener(Receptor *r) {
     T *act = _t_newp(0,ACTION,proc);
 
     T* params = _t_new_root(PARAMS);
-    _t_news(params,INTERPOLATE_SYMBOL,TICK);
+    _t_news(params,INTERPOLATE_SYMBOL,NULL_SYMBOL);  // NULL_SYMBOL = the full match
 
     _r_add_listener(r,DEFAULT_ASPECT,TICK,expect,params,act);
 }
@@ -637,7 +637,7 @@ void testReceptorClock() {
     // plant a listener for any second
     _testReceptorClockAddListener(r);
 
-    spec_is_str_equal(_td(r,__r_get_listeners(r,DEFAULT_ASPECT)),"(LISTENERS (LISTENER:TICK (EXPECTATION (SEMTREX_GROUP:TICK (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TICK)))) (PARAMS (INTERPOLATE_SYMBOL:TICK)) (ACTION:noop return param)))");
+    spec_is_str_equal(_td(r,__r_get_listeners(r,DEFAULT_ASPECT)),"(LISTENERS (LISTENER:TICK (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TICK))) (PARAMS (INTERPOLATE_SYMBOL:NULL_SYMBOL)) (ACTION:noop return param)))");
 
     // "run" the receptor and verify that listener gets activated
     pthread_t thread;
