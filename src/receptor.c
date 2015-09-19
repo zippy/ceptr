@@ -445,7 +445,13 @@ void __r_check_listener(T* processes,T *listener,T *signal,Q *q) {
     // if we get a match, create a run tree from the action, using the match and signal as the parameters
     T *stx = _t_news(0,SEMTREX_GROUP,NULL_SYMBOL);
     _t_add(stx,_t_clone(_t_child(e,1)));
+    debug(D_SIGNALS,"testing %s\n",t2s(signal_contents));
+    debug(D_SIGNALS,"against %s\n",t2s(stx));
+
     if (_t_matchr(stx,signal_contents,&m)) {
+
+        debug(D_SIGNALS,"got a match on %s\n",t2s(stx));
+
         T *rt=0;
         T *action = _t_child(listener,3);
         if (!action) {
@@ -646,6 +652,36 @@ Receptor *_r_makeStreamWriterReceptor(Symbol receptor_symbol,Symbol stream_symbo
 
 Receptor *_r_makeClockReceptor() {
     Receptor *r = _r_new(CLOCK_RECEPTOR);
+
+    T *expect = _t_new_root(EXPECTATION);
+    T *s = _sl(expect,CLOCK_TELL_TIME);
+    s = _t_news(s,SEMTREX_GROUP,EXPECTATION);
+    _sl(s,EXPECTATION);
+
+    T *x = _t_newr(0,LISTEN);
+    int pt1[] = {2,1,TREE_PATH_TERMINATOR};
+    _t_new(x,PARAM_REF,pt1,sizeof(int)*4);  // param is our semtrex
+    T *params =_t_newr(x,PARAMS);
+//    _t_new(params,GET_SIGNAL_SENDER);
+    Xaddr to = {RECEPTOR_XADDR,0};  // SELF
+    _t_new(params,RECEPTOR_XADDR,&to,sizeof(to));
+
+    //    _t_news(params,INTERPOLATE_SYMBOL,NULL_SYMBOL);  // the current tick
+    _t_new_str(params,TEST_STR_SYMBOL,"fish");
+
+    T *action = _t_newp(x,ACTION,SEND);
+
+    T *input = _t_new_root(INPUT);
+    T *output = _t_new_root(OUTPUT_SIGNATURE);
+    Process proc = _r_code_process(r,x,"plant a listener to send the time","long desc...",input,output);
+    T *act = _t_newp(0,ACTION,proc);
+
+    params = _t_new_root(PARAMS);
+    _t_news(params,INTERPOLATE_SYMBOL,EXPECTATION);
+
+    _r_add_listener(r,DEFAULT_ASPECT,CLOCK_TELL_TIME,expect,params,act);
+
+
     return r;
 }
 

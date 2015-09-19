@@ -628,16 +628,25 @@ void _testReceptorClockAddListener(Receptor *r) {
 
 void testReceptorClock() {
     Receptor *r = _r_makeClockReceptor();
-    spec_is_str_equal(_td(r,r->root),"(CLOCK_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))) (RECEPTOR_STATE))");
+    spec_is_str_equal(_td(r,r->root),"(CLOCK_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES (PROCESS_CODING (PROCESS_NAME:plant a listener to send the time) (PROCESS_INTENTION:long desc...) (process:LISTEN (PARAM_REF:/2/1) (PARAMS (RECEPTOR_XADDR:RECEPTOR_XADDR.0) (TEST_STR_SYMBOL:fish)) (ACTION:SEND)) (INPUT) (OUTPUT_SIGNATURE))) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS (LISTENER:CLOCK_TELL_TIME (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:CLOCK_TELL_TIME) (SEMTREX_GROUP:EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:EXPECTATION))))) (PARAMS (INTERPOLATE_SYMBOL:EXPECTATION)) (ACTION:plant a listener to send the time))) (SIGNALS))) (RECEPTOR_STATE))");
 
     /* The clock receptor acts as if it receives a signal with contents TICK (which is of TIMESTAMP structure) for every time that updates a magic scape with that time according to which listeners have been planted.  This means you can plant listeners based on a semtrex for any kind of time you want.  If you want the current time just plant a listener for TICK.  If you want to listen for every second plant a listener on the Symbol literal SECOND, and the clock receptor will trigger the listener every time the SECOND changes.  You can also listen for particular intervals and times by adding specificity to the semtrex, so to trigger a 3:30am action a-la-cron listen for: "/<TICK:(%HOUR=3,MINUTE=30)>"
        @todo we should also make the clock receptor also seem to send signals of other semantic formats, i.e. so it's easy to listen for things like "on Wednesdays", or other semantic date/time identifiers.
      */
 
-    // plant a listener for any second
-    _testReceptorClockAddListener(r);
+    // send the clock receptor a "tell me the time" request
+    Xaddr self = {RECEPTOR_XADDR,0};  // 0 xaddr means SELF
+    T *tell = _t_new_root(CLOCK_TELL_TIME);
+    T *e = _t_newr(tell,EXPECTATION);
+    _sl(e,TICK);
 
-    spec_is_str_equal(_td(r,__r_get_listeners(r,DEFAULT_ASPECT)),"(LISTENERS (LISTENER:TICK (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TICK))) (PARAMS (INTERPOLATE_SYMBOL:NULL_SYMBOL)) (ACTION:noop return param)))");
+    T *signal = __r_make_signal(self,self,DEFAULT_ASPECT,tell);
+    debug_enable(D_SIGNALS);
+    _r_deliver(r,signal);
+    _p_reduceq(r->q);
+
+    // the listener should have now been planted!
+    spec_is_str_equal(_td(r,_t_child(__r_get_listeners(r,DEFAULT_ASPECT),2)),"(LISTENER:NULL_SYMBOL (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TICK))) (PARAMS (RECEPTOR_XADDR:RECEPTOR_XADDR.0) (TEST_STR_SYMBOL:fish)) (ACTION:SEND))");
 
     // "run" the receptor and verify that listener gets activated
     pthread_t thread;
@@ -647,21 +656,26 @@ void testReceptorClock() {
         raise_error("ERROR; return code from pthread_create() is %d\n", rc);
     }
 
-    sleep(2);
-
-
+    sleep(1);
     _p_reduceq(r->q);
+    sleep(1);
+    _p_reduceq(r->q);
+
     T *tick = __r_make_tick();
     char buf1[100],buf2[100];
-    __td(r,tick,buf1);
-    __td(r,_t_child(r->q->completed->context->run_tree,1),buf2);
+        __td(r,tick,buf1);
+        //__td(r,_t_child(r->q->completed->context->run_tree,1),buf2);
     buf1[60]=0; buf2[60]=0; // minute and second may not match...
     spec_is_str_equal(buf1,buf2);
+
+    // add some test here to confirm that the listener sent back it's signal when the ticks happen
+    //   spec_is_str_equal(_td(r,r->flux),"");
 
     __r_kill(r);
 
     void *status;
     rc = pthread_join(thread, &status);
+    debug_disable(D_SIGNALS);
     if (rc) {
         raise_error("ERROR; return code from pthread_join() is %d\n", rc);
     }

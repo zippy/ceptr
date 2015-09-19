@@ -87,8 +87,6 @@ void testRunTree() {
     _t_free(p1);
     _t_free(p2);
     _t_free(p3);
-
-
 }
 
 //-----------------------------------------------------------------------------------------
@@ -884,7 +882,8 @@ void testProcessListen() {
     Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
 
     T *n = _t_new_root(LISTEN);
-    _sl(n,TICK);
+    T *expect = _t_newr(n,EXPECTATION);
+    _sl(expect,TICK);
     T *p = _t_newr(n,PARAMS);
     T *a = _t_newp(n,ACTION,NOOP);
 
@@ -1012,6 +1011,31 @@ void testProcessMulti() {
     //! [testProcessMulti]
 }
 
+void testRunTreeMaker() {
+    T *processes = _t_new_root(PROCESSES);
+
+    T *n = _t_new_root(PARAMS);
+    _t_newi(n,TEST_INT_SYMBOL,314);
+    T *t = __p_make_run_tree(processes,NOOP,n);
+    spec_is_str_equal(t2s(t),"(RUN_TREE (process:NOOP (TEST_INT_SYMBOL:314)) (PARAMS))");
+    _t_free(t);
+
+    // run-tree maker should also work on defined processes
+    Process if_even = _defIfEven(processes);  // add the if_even process to our defs
+
+    n = _t_new_root(PARAMS);
+    _t_newi(n,TEST_INT_SYMBOL,99);
+    _t_newi(n,TEST_INT_SYMBOL,123);
+    _t_newi(n,TEST_INT_SYMBOL,124);
+
+    t = __p_make_run_tree(processes,if_even,n);
+
+    spec_is_str_equal(t2s(t),"(RUN_TREE (process:IF (process:EQ_INT (process:MOD_INT (PARAM_REF:/2/1) (TEST_INT_SYMBOL:2)) (TEST_INT_SYMBOL:0)) (PARAM_REF:/2/2) (PARAM_REF:/2/3)) (PARAMS (TEST_INT_SYMBOL:99) (TEST_INT_SYMBOL:123) (TEST_INT_SYMBOL:124)))");
+
+    _t_free(t);
+    _t_free(processes);
+}
+
 void testProcess() {
     testRunTree();
     testProcessInterpolateMatch();
@@ -1033,4 +1057,5 @@ void testProcess() {
     testProcessListen();
     testProcessErrorTrickleUp();
     testProcessMulti();
+    testRunTreeMaker();
 }

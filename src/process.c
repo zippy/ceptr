@@ -281,14 +281,15 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
         break;
     case SEND_ID:
         {
+
             T *t = _t_detach_by_idx(code,1);
             Xaddr to = *(Xaddr *)_t_surface(t);
             _t_free(t);
             T* signal_contents = _t_detach_by_idx(code,1);
 
             Xaddr from = {RECEPTOR_XADDR,0};  //@todo how do we say SELF??
-            //            printf("sending to %d\n",to.addr);
             x = __r_make_signal(from,to,DEFAULT_ASPECT,signal_contents);
+            debug(D_SIGNALS,"sending %s to %d\n",t2s(signal_contents),to.addr);
             if (_t_children(code) == 0) err = Send;
             else {
                 t = _t_detach_by_idx(code,1);
@@ -482,11 +483,11 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
         break;
     case LISTEN_ID:
         {
-            T *expect = _t_new_root(EXPECTATION);
-            T *s = _t_detach_by_idx(code,1);
+            //            T *expect = _t_new_root(EXPECTATION);
+            T *expect = _t_detach_by_idx(code,1);
             T *params = _t_detach_by_idx(code,1);
             T *act = _t_detach_by_idx(code,1);
-            _t_add(expect,s);
+            //            _t_add(expect,s);
             _r_add_listener(q->r,DEFAULT_ASPECT,NULL_SYMBOL,expect,params,act);
             x = _t_news(0,REDUCTION_ERROR_SYMBOL,NULL_SYMBOL);
         }
@@ -852,17 +853,28 @@ Error _p_step(Q *q, R **contextP) {
   and they are only used once, i.e. in this reduction
 */
 T *__p_make_run_tree(T *processes,Process p,T *params) {
-    T *code_def = _d_get_process_code(processes,p);
-    T *code = _t_child(code_def,3);
     T *t = _t_new_root(RUN_TREE);
-    T *c = _t_rclone(code);
-    _t_add(t,c);
-    T *ps = _t_newr(t,PARAMS);
+    T *ps;
+    // if this is a system process, we'll just add the params right onto the process node
+    // and leave the run tree params empty
+    if (is_sys_process(p)) {
+        ps = _t_newr(t,p);
+        _t_newr(t,PARAMS);
+    }
+    else {
+        // otherwise we get the code of the process
+        T *code_def = _d_get_process_code(processes,p);
+        T *code = _t_child(code_def,3);
+        T *c = _t_rclone(code);
+        _t_add(t,c);
+        ps = _t_newr(t,PARAMS);
+    }
     int i,num_params = _t_children(params);
     for(i=1;i<=num_params;i++) {
         _t_add(ps,_t_detach_by_idx(params,1));
     }
-    return t;}
+    return t;
+}
 
 /**
  * low level functon to build a run tree from a code tree and a variable list of params
