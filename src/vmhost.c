@@ -28,7 +28,6 @@ VMHost * _v_new() {
     v->r = _r_new(VM_HOST_RECEPTOR);
     v->c = _r_new(COMPOSITORY);
     v->active_receptors = _t_newr(v->r->root,ACTIVE_RECEPTORS);
-    v->pending_signals = _t_newr(v->r->root,PENDING_SIGNALS);
     v->installed_receptors = _s_new(RECEPTOR_IDENTIFIER,RECEPTOR);
     v->vm_thread.state = 0;
     v->clock_thread.state = 0;
@@ -167,19 +166,15 @@ void __v_activate(VMHost *v, Receptor *r) {
 }
 
 /**
- * queue a signal for processing
- *
- * first builds a SIGNAL tree, then instantiates and scapes it
- * @todo understand how it makes any sense at all to make an instance of the signal in context of the vmhost in which the content tree's symbols aren't defined!!!
+ * scaffolding for send a signal from ouside the VMhost
  *
  * <b>Examples (from test suite):</b>
  * @snippet spec/vmhost_spec.h testVMHostActivateReceptor
  */
 void _v_send(VMHost *v,ReceptorAddress from,ReceptorAddress to,Aspect aspect,T *contents) {
     T *s = __r_make_signal(from,to,aspect,contents);
-    //    Xaddr xs = _r_new_instance(v->r,s);
-
-    _t_add(v->pending_signals,s);
+    T *x = __r_send_signal(v->r,s);
+    _t_free(x);
 }
 
 /**
@@ -188,7 +183,8 @@ void _v_send(VMHost *v,ReceptorAddress from,ReceptorAddress to,Aspect aspect,T *
 void _v_send_signals(VMHost *v,T *signals) {
     while(_t_children(signals)>0) {
         T *s = _t_detach_by_idx(signals,1);
-        _t_add(v->pending_signals,s);
+        T *r = __r_send_signal(v->r,s);
+        _t_free(r);  //@todo WHAT????  throwing away the rsult??
     }
 }
 
@@ -196,7 +192,7 @@ void _v_send_signals(VMHost *v,T *signals) {
  * scaffolding function for signal delviery
  */
 void _v_deliver_signals(VMHost *v) {
-    T *signals = v->pending_signals;
+    T *signals = v->r->q->pending_signals;
     __v_deliver_signals(v->r,signals,&v->r->instances);
 }
 

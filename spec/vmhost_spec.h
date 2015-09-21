@@ -13,7 +13,7 @@ void testVMHostCreate() {
     VMHost *v = _v_new();
 
     // test the structure of the VM_HOST receptor
-    spec_is_str_equal(t2s(v->r->root),"(VM_HOST_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))) (RECEPTOR_STATE) (ACTIVE_RECEPTORS) (PENDING_SIGNALS) (COMPOSITORY:{(COMPOSITORY (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))) (RECEPTOR_STATE))}))");
+    spec_is_str_equal(t2s(v->r->root),"(VM_HOST_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))) (RECEPTOR_STATE) (ACTIVE_RECEPTORS) (COMPOSITORY:{(COMPOSITORY (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))) (RECEPTOR_STATE))}))");
 
     // test the installed receptors scape
     spec_is_sem_equal(v->installed_receptors->key_source,RECEPTOR_IDENTIFIER);
@@ -279,7 +279,7 @@ void testVMHostActivateReceptor() {
 
     _v_send(v,cx.addr,sx.addr,DEFAULT_ASPECT,_t_newi(0,ping,0));
 
-    spec_is_str_equal(_td(client,v->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:2) (RECEPTOR_ADDRESS:1) (ASPECT:1)) (BODY:{(ping_message:0)})))");
+    spec_is_str_equal(_td(client,v->r->q->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:2) (RECEPTOR_ADDRESS:1) (ASPECT:1)) (BODY:{(ping_message:0)})))");
     // simulate round-robin processing of signals
     _v_deliver_signals(v);
     if (server->q) {
@@ -310,7 +310,7 @@ void testVMHostActivateReceptor() {
 
     // now confirm that the signal was sent,
     // first that the pending signals list is empty
-    spec_is_equal(_t_children(v->pending_signals),0);
+    spec_is_equal(_t_children(v->r->q->pending_signals),0);
 
     // and that the client now has the arrived response ping signal, plus the reduced action run-tree
     T *t = __r_get_signals(client,DEFAULT_ASPECT);

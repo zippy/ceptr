@@ -288,14 +288,15 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             T* signal_contents = _t_detach_by_idx(code,1);
 
             ReceptorAddress from = __r_get_self_address(q->r);
-            x = __r_make_signal(from,to,DEFAULT_ASPECT,signal_contents);
-            debug(D_SIGNALS,"sending %s to %d\n",t2s(signal_contents),to);
-            if (_t_children(code) == 0) err = Send;
+            T *signal = __r_make_signal(from,to,DEFAULT_ASPECT,signal_contents);
+            x = __r_send_signal(q->r,signal);
+
+            if (_t_children(code) == 0) err = Block;
             else {
                 t = _t_detach_by_idx(code,1);
                 /// @todo timeout or callback or whatever the heck in the async case
                 _t_free(t);
-                err = SendAsync;
+                //                err = SendAsync;
             }
         }
         break;
@@ -1112,6 +1113,7 @@ Error _p_reduceq(Q *q) {
         }
         else if ((next_state == Send) || (next_state == SendAsync)) {
             // remove from the round-robin
+            raise(SIGINT);
             if (next_state == Send) {__p_dequeue(q->active,qe);}
 
             // take the signal off the run tree and send it, adding a send result in it's place

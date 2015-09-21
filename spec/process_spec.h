@@ -327,8 +327,8 @@ void testProcessSend() {
 
     // test the basic sys_process reduction which should produce the symbol and set the state to Send
     // for reduceq to know what to do
-    spec_is_equal(Send,__p_reduce_sys_proc(0,SEND,code,r->q));
-    spec_is_str_equal(t2s(code),"(SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:3) (ASPECT:1)) (BODY:{(TEST_INT_SYMBOL:314)}))");
+    spec_is_equal(Block,__p_reduce_sys_proc(0,SEND,code,r->q));
+    spec_is_str_equal(_td(r,r->q->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:3) (ASPECT:1)) (BODY:{(TEST_INT_SYMBOL:314)})))");
 
     _t_free(code);
 
@@ -349,12 +349,12 @@ void testProcessSend() {
 
     spec_is_equal(q->contexts_count,0);
     spec_is_ptr_equal(q->blocked,e);
-    spec_is_equal(c->state,Send);
+    spec_is_equal(c->state,Block);
 
     //@todo and the tree should have reduced to:  ??? WHAT does SEND reduce to
     // kind of the same question as for respond
     spec_is_str_equal(t2s(run_tree),"(RUN_TREE (TEST_INT_SYMBOL:0) (PARAMS))");
-    spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:3) (ASPECT:1)) (BODY:{(TEST_INT_SYMBOL:314)})))");
+    spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:3) (ASPECT:1)) (BODY:{(TEST_INT_SYMBOL:314)})) (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:3) (ASPECT:1)) (BODY:{(TEST_INT_SYMBOL:314)})))");
 
     _p_freeq(q);
 

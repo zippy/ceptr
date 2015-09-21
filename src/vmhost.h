@@ -27,7 +27,6 @@ struct VMHost {
     Receptor *r;                ///< Receptor data for this vm host
     Receptor *c;                ///< Receptor data for the vm host's local version of the compository
     T *active_receptors;    ///< pointer to tree that holds all currently active receptors
-    T *pending_signals;
     Scape *installed_receptors;
     thread vm_thread;
     thread clock_thread;

@@ -434,6 +434,27 @@ T* __r_make_signal(ReceptorAddress from,ReceptorAddress to,Aspect aspect,T *sign
 }
 
 /**
+ * send a signal
+ *
+ * @param[in] r sending receptor
+ * @param[in] signal Signal tree
+ * @param[out] T result tree
+ * @todo signal should have timestamps and other meta info
+ */
+T* __r_send_signal(Receptor *r,T *signal) {
+    debug(D_SIGNALS,"sending %s\n",_t2s(&r->defs,signal));
+
+    _t_add(r->q->pending_signals,signal);
+
+    //@todo figure out what that return value should be.  Probably some result from
+    // the actual signal sending machinery, or at least what ever is going to
+    // evaluate the destination address for validity.
+
+    T *result = _t_newi(0,TEST_INT_SYMBOL,0);
+    return result;
+}
+
+/**
  * low level function for matching expectations on listeners and either adding a new run tree
  * onto the current Q or reawakening the process that's been blocked waiting for the expectation
  * to match
