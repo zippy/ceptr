@@ -21,12 +21,12 @@ char buf2[2000];
 
 #define spec_is_true(x) spec_total++;if (x){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be true",__FUNCTION__,__LINE__,#x);}
 #define spec_is_false(x) spec_total++;if (!(x)){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be false",__FUNCTION__,__LINE__,#x);}
-#define spec_is_equal(got, expected) spec_total++; if (expected==got){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %d but was %d",__FUNCTION__,__LINE__,#got,expected,got);}
-#define spec_is_str_equal(got, expected) spec_total++; if (strcmp(got,expected)==0){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be:\n \"%s\"\nbut_was:\n \"%s\"",__FUNCTION__,__LINE__,#got,expected,got);}
+#define spec_is_equal(got, expected) spec_total++; {int __ex=expected;if (__ex==got){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %d but was %d",__FUNCTION__,__LINE__,#got,__ex,got);}}
+#define spec_is_str_equal(got, expected) spec_total++; {char *__ex=expected; if (strcmp(got,__ex)==0){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be:\n \"%s\"\nbut_was:\n \"%s\"",__FUNCTION__,__LINE__,#got,__ex,got);}}
 #define spec_is_long_equal(got, expected) spec_total++; if (expected==got){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %ld but was %ld",__FUNCTION__,__LINE__,#got,(long)expected,got);}
-#define spec_is_ptr_equal(got, expected) spec_total++; if (expected==got){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %p but was %p",__FUNCTION__,__LINE__,#got,expected,got);}
-#define spec_is_path_equal(got, expected) spec_total++; if (got && _t_path_equal(got,expected)){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %s but was %s",__FUNCTION__,__LINE__,#got,_t_sprint_path(expected,buf1),got ? _t_sprint_path(got,buf2) : "nil");}
-#define spec_is_float_equal(got, expected) spec_total++; if (expected==got){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %f but was %f",__FUNCTION__,__LINE__,#got,expected,got);}
+#define spec_is_ptr_equal(got, expected) spec_total++; {void *__ex=expected;if (__ex==got){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %p but was %p",__FUNCTION__,__LINE__,#got,__ex,got);}}
+#define spec_is_path_equal(got, expected) spec_total++; {int *__ex=expected; if (got && _t_path_equal(got,__ex)){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %s but was %s",__FUNCTION__,__LINE__,#got,_t_sprint_path(__ex,buf1),got ? _t_sprint_path(got,buf2) : "nil");}}
+#define spec_is_float_equal(got, expected) spec_total++; {float __ex=expected; if (__ex==got){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %f but was %f",__FUNCTION__,__LINE__,#got,__ex,got);}}
 #define spec_is_buffer_equal(got, expected, length) spec_total++; if (memcmp(got,expected,length)==0){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %ld bytes from %s to match %s by they didn't",__FUNCTION__,__LINE__,(long)length,#got,#expected);}
 
 void report_tests() {
