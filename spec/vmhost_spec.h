@@ -279,7 +279,7 @@ void testVMHostActivateReceptor() {
 
     _v_send(v,cx.addr,sx.addr,DEFAULT_ASPECT,_t_newi(0,ping,0));
 
-    spec_is_str_equal(_td(client,v->r->q->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:2) (RECEPTOR_ADDRESS:1) (ASPECT:1)) (BODY:{(ping_message:0)})))");
+    spec_is_str_equal(_td(client,v->r->q->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:2) (RECEPTOR_ADDRESS:1) (ASPECT:1) (SIGNAL_UUID)) (BODY:{(ping_message:0)})))");
 
     // simulate round-robin processing of signals
     // @todo, fix this simulation.  Currently it relies on _v_send_signals and _v_deliver_signals
@@ -316,8 +316,9 @@ void testVMHostActivateReceptor() {
     spec_is_equal(_t_children(v->r->q->pending_signals),0);
 
     // and that the client now has the arrived response ping signal, plus the reduced action run-tree
+    // @todo, this spec is now broken because the response simulator above is failing
     T *t = __r_get_signals(client,DEFAULT_ASPECT);
-    spec_is_str_equal(_td(client,t),"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:1) (RECEPTOR_ADDRESS:2) (ASPECT:1)) (BODY:{(alive_message:1)}) (RUN_TREE (TEST_INT_SYMBOL:314) (PARAMS))))");
+    spec_is_str_equal(_td(client,t),"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:1) (RECEPTOR_ADDRESS:2) (ASPECT:1) (SIGNAL_UUID)) (BODY:{(alive_message:1)}) (RUN_TREE (TEST_INT_SYMBOL:314) (PARAMS))))");
 
     _v_free(v);
     //! [testVMHostActivateReceptor]

@@ -429,6 +429,8 @@ T* __r_make_signal(ReceptorAddress from,ReceptorAddress to,Aspect aspect,T *sign
     _t_newi(e,RECEPTOR_ADDRESS,from);
     _t_newi(e,RECEPTOR_ADDRESS,to);
     _t_newi(e,ASPECT,aspect);
+    UUIDt t = __uuid_gen();
+    _t_new(e,SIGNAL_UUID,&t,sizeof(UUIDt));
     T *b = _t_newt(s,BODY,signal_contents);
     return s;
 }

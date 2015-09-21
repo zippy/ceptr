@@ -242,8 +242,10 @@ struct Receptor {
     int state;           ///< state information about the receptor that the vmhost manages
 };
 
-
-typedef long UUID;
+typedef struct UUIDt {
+    uint64_t data;
+    uint64_t time;
+} UUIDt;
 
 // receptors receive signals on aspects
 // for now aspects are just identified as the child index in the flux receptor

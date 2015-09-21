@@ -452,6 +452,12 @@ char * __t_dump(Defs *defs,T *t,int level,char *buf) {
             case STREAM_ID:
                 sprintf(buf,"(%s:%p",n,_t_surface(t));
                 break;
+            /* case UUID_ID: */
+            /*     { */
+            /*         UUIDt x = *(UUIDt *)_t_surface(t); */
+            /*         sprintf(buf,"%s:%ld.%ld",n,x.data,x.time); */
+            /*     } */
+            /*     break; */
             case TREE_ID:
                 if (t->context.flags & TFLAG_SURFACE_IS_TREE) {
                     c = __t_dump(defs,(T *)_t_surface(t),0,tbuf);

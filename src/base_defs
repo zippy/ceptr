@@ -19,6 +19,7 @@ Structure: STRUCTURE,1,NULL_SYMBOL;
 Structure: SCAPE,1,NULL_SYMBOL;
 Structure: SEMTREX,1,NULL_SYMBOL;
 Structure: STREAM,1,NULL_SYMBOL;
+Structure: UUID,1,NULL_SYMBOL;
 
 Symbol: DEFINITIONS,LIST;
 Symbol: STRUCTURES,LIST;
@@ -72,6 +73,7 @@ Symbol: SIGNALS,LIST;                       list of signals on an aspect in the 
 Symbol: SIGNAL,TREE;                        a signal on the flux.  It's first child is the contents of the signal
 Symbol: ENVELOPE,LIST;
 Symbol: BODY,TREE;
+Symbol: SIGNAL_UUID,UUID;
 Symbol: LISTENERS,LIST;                     list of carrier/expectation/action tress that "listen" to changes on the flux
 Symbol: LISTENER,SYMBOL;                    surface of the listener is the carrier symbol, and it has two children_ID, expectation semtrex and action code tree
 Symbol: EXPECTATION,SEMTREX;                expectation is a semtrex (thus has one child which is the first part of the semtrex)

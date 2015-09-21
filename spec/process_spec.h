@@ -305,13 +305,20 @@ void testProcessRespond() {
     // no add it to the signal and try again
     _t_add(s,run_tree);
 
-    // now it should create a signal for responding
-    spec_is_equal(__p_reduce_sys_proc(c,RESPOND,n,0),noReductionErr);
+    Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
 
-    spec_is_str_equal(t2s(s),"(SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:3) (RECEPTOR_ADDRESS:4) (ASPECT:1)) (BODY:{(TEST_INT_SYMBOL:314)}) (RUN_TREE (TEST_INT_SYMBOL:0) (SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:4) (RECEPTOR_ADDRESS:3) (ASPECT:1)) (BODY:{(TEST_INT_SYMBOL:271)})))))");
+    // now it should create a response signal with the source UUID as the responding to UUID (5 position)
+    spec_is_equal(__p_reduce_sys_proc(c,RESPOND,n,r->q),noReductionErr);
+    spec_is_str_equal(_td(r,r->q->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:4) (RECEPTOR_ADDRESS:3) (ASPECT:1) (SIGNAL_UUID) (SIGNAL_UUID)) (BODY:{(TEST_INT_SYMBOL:271)})))");
+    T *u1 = _t_child(_t_child(s,1),4);
+    int p[] = {1,1,5,TREE_PATH_TERMINATOR};
+    T *u2 = _t_get(r->q->pending_signals,p);
+    spec_is_true(memcmp(_t_surface(u1),_t_surface(u2),sizeof(UUIDt))==0);
 
     _p_free_context(c);
     _t_free(s);
+
+    _r_free(r);
 }
 
 void testProcessSend() {
@@ -328,7 +335,7 @@ void testProcessSend() {
     // test the basic sys_process reduction which should produce the symbol and set the state to Send
     // for reduceq to know what to do
     spec_is_equal(Block,__p_reduce_sys_proc(0,SEND,code,r->q));
-    spec_is_str_equal(_td(r,r->q->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:3) (ASPECT:1)) (BODY:{(TEST_INT_SYMBOL:314)})))");
+    spec_is_str_equal(_td(r,r->q->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:3) (ASPECT:1) (SIGNAL_UUID)) (BODY:{(TEST_INT_SYMBOL:314)})))");
 
     _t_free(code);
 
@@ -354,7 +361,7 @@ void testProcessSend() {
     //@todo and the tree should have reduced to:  ??? WHAT does SEND reduce to
     // kind of the same question as for respond
     spec_is_str_equal(t2s(run_tree),"(RUN_TREE (TEST_INT_SYMBOL:0) (PARAMS))");
-    spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:3) (ASPECT:1)) (BODY:{(TEST_INT_SYMBOL:314)})) (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:3) (ASPECT:1)) (BODY:{(TEST_INT_SYMBOL:314)})))");
+    spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:3) (ASPECT:1) (SIGNAL_UUID)) (BODY:{(TEST_INT_SYMBOL:314)})) (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:3) (ASPECT:1) (SIGNAL_UUID)) (BODY:{(TEST_INT_SYMBOL:314)})))");
 
     _p_freeq(q);
 
@@ -380,7 +387,7 @@ void testProcessSend() {
     //@todo and the tree should have reduced to:  ??? WHAT does SEND async reduce to
     // kind of the same question as for respond
     spec_is_str_equal(t2s(run_tree),"(RUN_TREE (TEST_INT_SYMBOL:0) (PARAMS))");
-    spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:3) (ASPECT:1)) (BODY:{(TEST_INT_SYMBOL:314)})))");
+    spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:3) (ASPECT:1) (SIGNAL_UUID)) (BODY:{(TEST_INT_SYMBOL:314)})))");
 
     _r_free(r);
     _t_free(p);

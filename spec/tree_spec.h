@@ -457,6 +457,20 @@ void testTreeHash() {
     //! [testTreeHash]
 }
 
+void testUUID() {
+    spec_is_long_equal(sizeof(UUIDt),16); //128 bits
+    UUIDt u = __uuid_gen();
+
+    struct timespec c;
+    clock_gettime(CLOCK_MONOTONIC, &c);
+    uint64_t t = ((c.tv_sec * (1000000)) + (c.tv_nsec / 1000));
+
+    // time should be right about now, i.e. within X ms
+    spec_is_long_equal(u.time,t);
+
+    // @todo something else for the other bits of the UUID.
+}
+
 void testTreeSerialize() {
     //! [testTreeSerialize]
     char buf[2000] = {0};
@@ -537,6 +551,7 @@ void testTree() {
     testTreeMorphLowLevel();
     testTreeDetach();
     testTreeHash();
+    testUUID();
     testTreeSerialize();
     testTreeJSON();
     testProcessHTML();

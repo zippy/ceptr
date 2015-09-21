@@ -16,6 +16,7 @@
 
 #include "receptor.h"
 #include "scape.h"
+#include "util.h"
 
 /*****************  Node creation */
 void __t_append_child(T *t,T *c) {
@@ -853,6 +854,16 @@ int _t_hash_equal(TreeHash h1,TreeHash h2) {
     return h1 == h2;
 }
 
+// scaffolding for uuid generator
+// for now we just use the current time
+UUIDt __uuid_gen() {
+    UUIDt u;
+    struct timespec c;
+    clock_gettime(CLOCK_MONOTONIC, &c);
+    u.time = ((c.tv_sec * (1000000)) + (c.tv_nsec / 1000));
+    u.data = 0;
+    return u;
+}
 
 /*****************  Tree serialization */
 

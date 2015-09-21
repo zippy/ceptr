@@ -222,23 +222,23 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             ReceptorAddress to = *(ReceptorAddress *)_t_surface(_t_child(envelope,1)); // reverse the from and to
             ReceptorAddress from = *(ReceptorAddress *)_t_surface(_t_child(envelope,2));
             Aspect a = *(Aspect *)_t_surface(_t_child(envelope,3));
+            UUIDt uuid = *(UUIDt *)_t_surface(_t_child(envelope,4));
 
             // add the response signal into the outgoing signals list of the root
             // run-tree (which is always the last child)
-            R *root = context;
-            while (context->caller) root = context->caller;
-            int kids = _t_children(root->run_tree);
-            T *signals;
-            if (kids == 1 || (!semeq(SIGNALS,_t_symbol(signals = _t_child(root->run_tree,kids)))))
-                signals = _t_newr(root->run_tree,SIGNALS); // make signals list if it's not there
-            T *response = __r_make_signal(from,to,a,response_contents);
-            _t_add(signals,response);
+            /* R *root = context; */
+            /* while (context->caller) root = context->caller; */
+            /* int kids = _t_children(root->run_tree); */
+            /* T *signals; */
+            /* if (kids == 1 || (!semeq(SIGNALS,_t_symbol(signals = _t_child(root->run_tree,kids))))) */
+            /*     signals = _t_newr(root->run_tree,SIGNALS); // make signals list if it's not there */
 
-            x = _t_newi(0,TEST_INT_SYMBOL,0);
+            T *response = __r_make_signal(from,to,a,response_contents);
+            _t_new(_t_child(response,1),SIGNAL_UUID,&uuid,sizeof(UUIDt));
+            x = __r_send_signal(q->r,response);
+
+            //            _t_add(signals,_t_clone(response));
         }
-        /// @todo figure what RESPOND should return, since really it's a side-effect instruction
-        // perhaps some kind of signal context symbol or something.  Right now using TEST_INT_SYMBOL
-        // as a bogus placeholder.
         break;
     case QUOTE_ID:
         /// @todo what happens if it has more than one child! validity check?

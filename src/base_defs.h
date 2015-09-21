@@ -67,6 +67,7 @@ enum SYSSymbolIDs {
     SIGNAL_ID,
     ENVELOPE_ID,
     BODY_ID,
+    SIGNAL_UUID_ID,
     LISTENERS_ID,
     LISTENER_ID,
     EXPECTATION_ID,
@@ -213,6 +214,7 @@ enum SYSSymbolIDs {
 #define SIGNAL G_contexts[SYS_CONTEXT].symbols[SIGNAL_ID]
 #define ENVELOPE G_contexts[SYS_CONTEXT].symbols[ENVELOPE_ID]
 #define BODY G_contexts[SYS_CONTEXT].symbols[BODY_ID]
+#define SIGNAL_UUID G_contexts[SYS_CONTEXT].symbols[SIGNAL_UUID_ID]
 #define LISTENERS G_contexts[SYS_CONTEXT].symbols[LISTENERS_ID]
 #define LISTENER G_contexts[SYS_CONTEXT].symbols[LISTENER_ID]
 #define EXPECTATION G_contexts[SYS_CONTEXT].symbols[EXPECTATION_ID]
@@ -332,6 +334,7 @@ enum SYSStructureIDs {
     SCAPE_ID,
     SEMTREX_ID,
     STREAM_ID,
+    UUID_ID,
     SEQUENCE_ID,
     PROTOCOL_STEP_ID,
     PROTOCOL_ID,
@@ -360,6 +363,7 @@ enum SYSStructureIDs {
 #define SCAPE G_contexts[SYS_CONTEXT].structures[SCAPE_ID]
 #define SEMTREX G_contexts[SYS_CONTEXT].structures[SEMTREX_ID]
 #define STREAM G_contexts[SYS_CONTEXT].structures[STREAM_ID]
+#define UUID G_contexts[SYS_CONTEXT].structures[UUID_ID]
 #define SEQUENCE G_contexts[SYS_CONTEXT].structures[SEQUENCE_ID]
 #define PROTOCOL_STEP G_contexts[SYS_CONTEXT].structures[PROTOCOL_STEP_ID]
 #define PROTOCOL G_contexts[SYS_CONTEXT].structures[PROTOCOL_ID]

@@ -85,6 +85,9 @@ char * _t_sprint_path(int *fp,char *buf);
 TreeHash _t_hash(T *symbols,T *structures,T *t);
 int _t_hash_equal(TreeHash h1,TreeHash h2);
 
+/*****************  UUID utilities */
+UUIDt __uuid_gen();
+
 /*****************  Tree serialization */
 size_t __t_serialize(Defs *d,T *t,void **bufferP,size_t offset,size_t current_size,int compact);
 void _t_serialize(Defs *d,T *t,void **surfaceP,size_t *sizeP);
