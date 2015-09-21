@@ -207,6 +207,8 @@ struct Qe {
     Qe *prev;
 };
 
+typedef int ReceptorAddress;
+
 typedef struct Receptor Receptor;
 
 // Processing Queue structure

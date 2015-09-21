@@ -277,9 +277,9 @@ void testVMHostActivateReceptor() {
     ar = _t_child(v->active_receptors,2);
     spec_is_ptr_equal(ar,client->root);
 
-    _v_send(v,cx,sx,DEFAULT_ASPECT,_t_newi(0,ping,0));
+    _v_send(v,cx.addr,sx.addr,DEFAULT_ASPECT,_t_newi(0,ping,0));
 
-    spec_is_str_equal(_td(client,v->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:INSTALLED_RECEPTOR.2) (RECEPTOR_XADDR:INSTALLED_RECEPTOR.1) (ASPECT:1)) (BODY:{(ping_message:0)})))");
+    spec_is_str_equal(_td(client,v->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:2) (RECEPTOR_ADDRESS:1) (ASPECT:1)) (BODY:{(ping_message:0)})))");
     // simulate round-robin processing of signals
     _v_deliver_signals(v);
     if (server->q) {
@@ -314,7 +314,7 @@ void testVMHostActivateReceptor() {
 
     // and that the client now has the arrived response ping signal, plus the reduced action run-tree
     T *t = __r_get_signals(client,DEFAULT_ASPECT);
-    spec_is_str_equal(_td(client,t),"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:INSTALLED_RECEPTOR.1) (RECEPTOR_XADDR:INSTALLED_RECEPTOR.2) (ASPECT:1)) (BODY:{(alive_message:1)}) (RUN_TREE (TEST_INT_SYMBOL:314) (PARAMS))))");
+    spec_is_str_equal(_td(client,t),"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:1) (RECEPTOR_ADDRESS:2) (ASPECT:1)) (BODY:{(alive_message:1)}) (RUN_TREE (TEST_INT_SYMBOL:314) (PARAMS))))");
 
     _v_free(v);
     //! [testVMHostActivateReceptor]
@@ -350,7 +350,7 @@ void testVMHostShell() {
     Stream *output_stream = _st_new_unix_stream(output);
 
     Symbol std_in = _r_declare_symbol(G_vm->r,RECEPTOR,"std_in");
-    Receptor *i_r = _r_makeStreamReaderReceptor(std_in,TEST_STREAM_SYMBOL,input_stream,shellx);
+    Receptor *i_r = _r_makeStreamReaderReceptor(std_in,TEST_STREAM_SYMBOL,input_stream,shellx.addr);
     Xaddr ix = _v_new_receptor(G_vm,std_in,i_r);
     _v_activate(G_vm,ix);
 
@@ -365,8 +365,9 @@ void testVMHostShell() {
     T *s = _t_news(expect,SEMTREX_GROUP,verb);
     _sl(s,LINE);
     T *p = _t_new_root(SEND);
-    Xaddr to = {RECEPTOR_XADDR,0};  // self
-    _t_new(p,RECEPTOR_XADDR,&to,sizeof(to));
+    ReceptorAddress to =  __r_get_self_address(r);
+
+    _t_newi(p,RECEPTOR_ADDRESS,to);
     T *x = _t_newr(p,shell_command);
     int pt1[] = {2,1,TREE_PATH_TERMINATOR};
     _t_new(x,PARAM_REF,pt1,sizeof(int)*4);
@@ -388,7 +389,7 @@ void testVMHostShell() {
     _t_new_str(vls,verb,"time");
 
     p = _t_new_root(SEND);
-    _t_new(p,RECEPTOR_XADDR,&ox,sizeof(ox));
+    _t_newi(p,RECEPTOR_ADDRESS,ox.addr);
 
     T *tick = __r_make_tick();
         _t_add(p,tick);

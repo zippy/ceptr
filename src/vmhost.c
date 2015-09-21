@@ -175,7 +175,7 @@ void __v_activate(VMHost *v, Receptor *r) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/vmhost_spec.h testVMHostActivateReceptor
  */
-void _v_send(VMHost *v,Xaddr from,Xaddr to,Aspect aspect,T *contents) {
+void _v_send(VMHost *v,ReceptorAddress from,ReceptorAddress to,Aspect aspect,T *contents) {
     T *s = __r_make_signal(from,to,aspect,contents);
     //    Xaddr xs = _r_new_instance(v->r,s);
 
@@ -224,27 +224,29 @@ Xaddr __v_get_receptor_xaddr(Instances *instances,Receptor *r) {
 // low level function to deliver signals in a pending signals list
 // assumes that instances is the VMhost's receptor instances list
 void __v_deliver_signals(Receptor *self,T *signals,Instances *receptor_instances) {
+
     while(_t_children(signals)>0) {
         T *s = _t_detach_by_idx(signals,1);
         T *envelope = _t_child(s,1);
         //      T *contents = _t_child(s,2);
-        Xaddr *toP = (Xaddr *)_t_surface(_t_child(envelope,2));
-        Xaddr *fromP = (Xaddr *)_t_surface(_t_child(envelope,1));
+        ReceptorAddress *toP = (ReceptorAddress *)_t_surface(_t_child(envelope,2));
+        ReceptorAddress *fromP = (ReceptorAddress *)_t_surface(_t_child(envelope,1));
 
         // fix from if needed so return path will work
-        if (fromP->addr == 0) {
-            *fromP = __v_get_receptor_xaddr(receptor_instances,self);
+        if (*fromP == 0) {
+            *fromP = __v_get_receptor_xaddr(receptor_instances,self).addr;
         }
         // if the xaddr is the "self" we do a reverse lookup to find which xaddr
         // points to the self receptor so we can fix it in the signal that we are
         // about to deliver.
         Receptor *r;
-        if (toP->addr == 0) {
+        if (*toP == 0) {
             r = self;
-            *toP = __v_get_receptor_xaddr(receptor_instances,r);
+            *toP = __v_get_receptor_xaddr(receptor_instances,r).addr;
         }
         else  {
-            r = __r_get_receptor(_a_get_instance(receptor_instances,*toP));
+            Xaddr t = {INSTALLED_RECEPTOR,*toP};
+            r = __r_get_receptor(_a_get_instance(receptor_instances,t));
         }
 
         Error err = _r_deliver(r,s);

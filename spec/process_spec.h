@@ -289,8 +289,8 @@ void testProcessRespond() {
     // testing responding to a signal requires setting up a sending signal context
 
     T *signal_contents = _t_newi(0,TEST_INT_SYMBOL,314);
-    Xaddr f = {RECEPTOR_XADDR,3};  // DUMMY XADDR
-    Xaddr t = {RECEPTOR_XADDR,4};  // DUMMY XADDR
+    ReceptorAddress f = 3; // DUMMY ADDR
+    ReceptorAddress t = 4; // DUMMY ADDR
     T *s = __r_make_signal(f,t,DEFAULT_ASPECT,signal_contents);
 
     T *run_tree = _t_new_root(RUN_TREE);
@@ -308,7 +308,7 @@ void testProcessRespond() {
     // now it should create a signal for responding
     spec_is_equal(__p_reduce_sys_proc(c,RESPOND,n,0),noReductionErr);
 
-    spec_is_str_equal(t2s(s),"(SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (RECEPTOR_XADDR:RECEPTOR_XADDR.4) (ASPECT:1)) (BODY:{(TEST_INT_SYMBOL:314)}) (RUN_TREE (TEST_INT_SYMBOL:0) (SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.4) (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (ASPECT:1)) (BODY:{(TEST_INT_SYMBOL:271)})))))");
+    spec_is_str_equal(t2s(s),"(SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:3) (RECEPTOR_ADDRESS:4) (ASPECT:1)) (BODY:{(TEST_INT_SYMBOL:314)}) (RUN_TREE (TEST_INT_SYMBOL:0) (SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:4) (RECEPTOR_ADDRESS:3) (ASPECT:1)) (BODY:{(TEST_INT_SYMBOL:271)})))))");
 
     _p_free_context(c);
     _t_free(s);
@@ -316,17 +316,19 @@ void testProcessRespond() {
 
 void testProcessSend() {
     T *p = _t_newr(0,SEND);
-    Xaddr to = {RECEPTOR_XADDR,3};  // DUMMY XADDR
+    ReceptorAddress to = 3; // DUMMY ADDR
 
-    _t_new(p,RECEPTOR_XADDR,&to,sizeof(to));
+    _t_newi(p,RECEPTOR_ADDRESS,to);
     _t_newi(p,TEST_INT_SYMBOL,314);
 
     T *code =_t_rclone(p);
 
+    Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
+
     // test the basic sys_process reduction which should produce the symbol and set the state to Send
     // for reduceq to know what to do
-    spec_is_equal(Send,__p_reduce_sys_proc(0,SEND,code,0));
-    spec_is_str_equal(t2s(code),"(SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.0) (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (ASPECT:1)) (BODY:{(TEST_INT_SYMBOL:314)}))");
+    spec_is_equal(Send,__p_reduce_sys_proc(0,SEND,code,r->q));
+    spec_is_str_equal(t2s(code),"(SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:3) (ASPECT:1)) (BODY:{(TEST_INT_SYMBOL:314)}))");
 
     _t_free(code);
 
@@ -334,7 +336,6 @@ void testProcessSend() {
     T *run_tree = __p_build_run_tree(p,0);
 
     // add the run tree into a queue and run it
-    Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
     Q *q = r->q;
     T *ps = q->pending_signals;
     _p_addrt2q(q,run_tree);
@@ -353,7 +354,7 @@ void testProcessSend() {
     //@todo and the tree should have reduced to:  ??? WHAT does SEND reduce to
     // kind of the same question as for respond
     spec_is_str_equal(t2s(run_tree),"(RUN_TREE (TEST_INT_SYMBOL:0) (PARAMS))");
-    spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.0) (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (ASPECT:1)) (BODY:{(TEST_INT_SYMBOL:314)})))");
+    spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:3) (ASPECT:1)) (BODY:{(TEST_INT_SYMBOL:314)})))");
 
     _p_freeq(q);
 
@@ -379,7 +380,7 @@ void testProcessSend() {
     //@todo and the tree should have reduced to:  ??? WHAT does SEND async reduce to
     // kind of the same question as for respond
     spec_is_str_equal(t2s(run_tree),"(RUN_TREE (TEST_INT_SYMBOL:0) (PARAMS))");
-    spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.0) (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (ASPECT:1)) (BODY:{(TEST_INT_SYMBOL:314)})))");
+    spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:3) (ASPECT:1)) (BODY:{(TEST_INT_SYMBOL:314)})))");
 
     _r_free(r);
     _t_free(p);
@@ -552,8 +553,8 @@ void testProcessExpectAct() {
 
     T *signal_contents = _t_newi(0,TEST_INT_SYMBOL,314);
 
-    Xaddr from = {RECEPTOR_XADDR,3};  // DUMMY XADDR
-    Xaddr to = {RECEPTOR_XADDR,4};  // DUMMY XADDR
+    ReceptorAddress from = 3; // DUMMY ADDR
+    ReceptorAddress to = 4; // DUMMY ADDR
 
     T *signal = __r_make_signal(from,to,DEFAULT_ASPECT,signal_contents);
 

@@ -87,8 +87,8 @@ void testReceptorAddListener() {
 void testReceptorSignal() {
     Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
     T *signal_contents = _t_newi(0,TEST_INT_SYMBOL,314);
-    Xaddr f = {RECEPTOR_XADDR,3};  // DUMMY XADDR
-    Xaddr t = {RECEPTOR_XADDR,4};  // DUMMY XADDR
+    ReceptorAddress f = 3; // DUMMY ADDR
+    ReceptorAddress t = 4; // DUMMY ADDR
 
     T *s = __r_make_signal(f,t,DEFAULT_ASPECT,signal_contents);
 
@@ -102,16 +102,16 @@ void testReceptorSignal() {
     spec_is_ptr_equal(signal_contents,contents);
 
     //@todo symbol check??? FROM_RECEPTOR_XADDR???
-    Xaddr from = *(Xaddr *)_t_surface(_t_child(envelope,1));
-    spec_is_xaddr_equal(r,from,f);
-    Xaddr to = *(Xaddr *)_t_surface(_t_child(envelope,2));
-    spec_is_xaddr_equal(r,to,t);
+    ReceptorAddress from = *(ReceptorAddress *)_t_surface(_t_child(envelope,1));
+    spec_is_equal(from,f);
+    ReceptorAddress to = *(ReceptorAddress *)_t_surface(_t_child(envelope,2));
+    spec_is_equal(to,t);
     Aspect a = *(Aspect *)_t_surface(_t_child(envelope,3));
     spec_is_equal(a,DEFAULT_ASPECT);
 
     char buf[2000];
     __t_dump(0,s,0,buf);
-    spec_is_str_equal(buf,"(SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (RECEPTOR_XADDR:RECEPTOR_XADDR.4) (ASPECT:1)) (BODY:{(TEST_INT_SYMBOL:314)}))");
+    spec_is_str_equal(buf,"(SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:3) (RECEPTOR_ADDRESS:4) (ASPECT:1)) (BODY:{(TEST_INT_SYMBOL:314)}))");
 
     _t_free(s);
     _r_free(r);
@@ -124,8 +124,8 @@ void testReceptorAction() {
     // The signal is an HTTP request
     T *signal_contents = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
 
-    Xaddr f = {RECEPTOR_XADDR,3};  // DUMMY XADDR
-    Xaddr t = {RECEPTOR_XADDR,4};  // DUMMY XADDR
+    ReceptorAddress f = 3; // DUMMY ADDR
+    ReceptorAddress t = 4; // DUMMY ADDR
 
     T *signal = __r_make_signal(f,t,DEFAULT_ASPECT,signal_contents);
 
@@ -173,7 +173,7 @@ void testReceptorAction() {
     // signal and run_tree should be added and ready on the process queue
     spec_is_equal(r->q->contexts_count,1);
     spec_is_str_equal(_td(r,__r_get_signals(r,DEFAULT_ASPECT)),
-                      "(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (RECEPTOR_XADDR:RECEPTOR_XADDR.4) (ASPECT:1)) (BODY:{(HTTP_REQUEST (HTTP_REQUEST_VERSION (VERSION_MAJOR:1) (VERSION_MINOR:0)) (HTTP_REQUEST_METHOD:GET) (HTTP_REQUEST_PATH (HTTP_REQUEST_PATH_SEGMENTS (HTTP_REQUEST_PATH_SEGMENT:groups) (HTTP_REQUEST_PATH_SEGMENT:5)) (HTTP_REQUEST_PATH_FILE (FILE_NAME:users) (FILE_EXTENSION:json)) (HTTP_REQUEST_PATH_QUERY (HTTP_REQUEST_PATH_QUERY_PARAMS (HTTP_REQUEST_PATH_QUERY_PARAM (PARAM_KEY:sort_by) (PARAM_VALUE:last_name)) (HTTP_REQUEST_PATH_QUERY_PARAM (PARAM_KEY:page) (PARAM_VALUE:2))))))}) (RUN_TREE (process:RESPOND (PARAM_REF:/2/1)) (PARAMS (HTTP_RESPONSE (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT) (HTTP_REQUEST_PATH_SEGMENT:groups))))))"
+                      "(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:3) (RECEPTOR_ADDRESS:4) (ASPECT:1)) (BODY:{(HTTP_REQUEST (HTTP_REQUEST_VERSION (VERSION_MAJOR:1) (VERSION_MINOR:0)) (HTTP_REQUEST_METHOD:GET) (HTTP_REQUEST_PATH (HTTP_REQUEST_PATH_SEGMENTS (HTTP_REQUEST_PATH_SEGMENT:groups) (HTTP_REQUEST_PATH_SEGMENT:5)) (HTTP_REQUEST_PATH_FILE (FILE_NAME:users) (FILE_EXTENSION:json)) (HTTP_REQUEST_PATH_QUERY (HTTP_REQUEST_PATH_QUERY_PARAMS (HTTP_REQUEST_PATH_QUERY_PARAM (PARAM_KEY:sort_by) (PARAM_VALUE:last_name)) (HTTP_REQUEST_PATH_QUERY_PARAM (PARAM_KEY:page) (PARAM_VALUE:2))))))}) (RUN_TREE (process:RESPOND (PARAM_REF:/2/1)) (PARAMS (HTTP_RESPONSE (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT) (HTTP_REQUEST_PATH_SEGMENT:groups))))))"
                       );
 
     // manually run the process queue
@@ -182,7 +182,7 @@ void testReceptorAction() {
     result = r->q->completed->context->run_tree;
 
     // should add a pending signal to be sent with the matched PATH_SEGMENT returned as the response signal body
-    spec_is_str_equal(_td(r,result),"(RUN_TREE (TEST_INT_SYMBOL:0) (PARAMS (HTTP_RESPONSE (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT) (HTTP_REQUEST_PATH_SEGMENT:groups))) (SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.4) (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (ASPECT:1)) (BODY:{(HTTP_RESPONSE (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT) (HTTP_REQUEST_PATH_SEGMENT:groups))}))))");
+    spec_is_str_equal(_td(r,result),"(RUN_TREE (TEST_INT_SYMBOL:0) (PARAMS (HTTP_RESPONSE (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT) (HTTP_REQUEST_PATH_SEGMENT:groups))) (SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:4) (RECEPTOR_ADDRESS:3) (ASPECT:1)) (BODY:{(HTTP_RESPONSE (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT) (HTTP_REQUEST_PATH_SEGMENT:groups))}))))");
 
     _t_free(r->defs.symbols); // normally these would be freeed by the r_free, but we hand loaded them...
     _t_free(r->defs.structures);
@@ -369,12 +369,12 @@ void testReceptorProtocol() {
     spec_is_str_equal(d,"(FLUX (ASPECT:1 (LISTENERS (LISTENER:NULL_SYMBOL (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping_message))) (PARAMS) (ACTION:send alive response))) (SIGNALS)))");
 
     // delivering a fake signal should return a ping
-    Xaddr f = {RECEPTOR_XADDR,3};  // DUMMY XADDR
-    Xaddr t = {RECEPTOR_XADDR,4};  // DUMMY XADDR
+    ReceptorAddress f = 3; // DUMMY ADDR
+    ReceptorAddress t = 4; // DUMMY ADDR
     T *signal = __r_make_signal(f,t,DEFAULT_ASPECT,_t_newi(0,ping,0));
 
     d = _td(r,signal);
-    spec_is_str_equal(d,"(SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (RECEPTOR_XADDR:RECEPTOR_XADDR.4) (ASPECT:1)) (BODY:{(ping_message:0)}))");
+    spec_is_str_equal(d,"(SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:3) (RECEPTOR_ADDRESS:4) (ASPECT:1)) (BODY:{(ping_message:0)}))");
 
     T *result;
     Error err = _r_deliver(r,signal);
@@ -389,7 +389,7 @@ void testReceptorProtocol() {
     result = r->q->completed->context->run_tree;
 
     d = _td(r,_t_child(result,3));
-    spec_is_str_equal(d,"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.4) (RECEPTOR_XADDR:RECEPTOR_XADDR.3) (ASPECT:1)) (BODY:{(alive_message:1)})))");
+    spec_is_str_equal(d,"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:4) (RECEPTOR_ADDRESS:3) (ASPECT:1)) (BODY:{(alive_message:1)})))");
     //    _t_free(result);
     _r_free(r);
     //! [testReceptorProtocol]
@@ -540,8 +540,6 @@ void testReceptorEdgeStream() {
     rs = fmemopen(buffer, strlen (buffer), "r");
     Stream *reader_stream = _st_new_unix_stream(rs);
 
-    Xaddr to = {RECEPTOR_XADDR,0};  // 0 xaddr means SELF
-
     Instances instances = NULL;
 
     char *output_data;
@@ -554,7 +552,7 @@ void testReceptorEdgeStream() {
     _t_new_receptor(ir,TEST_RECEPTOR_SYMBOL,w);
     Xaddr writer = _a_new_instance(&instances,ir);
 
-    Receptor *r = _r_makeStreamReaderReceptor(TEST_RECEPTOR_SYMBOL,TEST_STREAM_SYMBOL,reader_stream,writer);
+    Receptor *r = _r_makeStreamReaderReceptor(TEST_RECEPTOR_SYMBOL,TEST_STREAM_SYMBOL,reader_stream,writer.addr);
     ir = _t_new_root(INSTALLED_RECEPTOR);
     _t_new_receptor(ir,TEST_RECEPTOR_SYMBOL,r);
     Xaddr testReceptor = _a_new_instance(&instances,ir);
@@ -573,13 +571,13 @@ void testReceptorEdgeStream() {
 
     /// @todo @fixme we get an empty line signal because STREAM_AVAILABLE still reads true just before the last
     // STREAM_READ which fails.  This shouldn't actually have produced a signal...
-    spec_is_str_equal(_td(r,r->q->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.0) (RECEPTOR_XADDR:INSTALLED_RECEPTOR.1) (ASPECT:1)) (BODY:{(LINE:line1)})) (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.0) (RECEPTOR_XADDR:INSTALLED_RECEPTOR.1) (ASPECT:1)) (BODY:{(LINE:line2)})) (SIGNAL (ENVELOPE (RECEPTOR_XADDR:RECEPTOR_XADDR.0) (RECEPTOR_XADDR:INSTALLED_RECEPTOR.1) (ASPECT:1)) (BODY:{(LINE:)})))");
+    spec_is_str_equal(_td(r,r->q->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:1) (ASPECT:1)) (BODY:{(LINE:line1)})) (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:1) (ASPECT:1)) (BODY:{(LINE:line2)})) (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:1) (ASPECT:1)) (BODY:{(LINE:)})))");
 
     // manually run the signal sending code
     __v_deliver_signals(r,r->q->pending_signals,&instances);
 
     // and see that they've shown up in the writer receptor's flux signals list
-    // stream id won't match    spec_is_str_equal(_td(w,__r_get_signals(w,DEFAULT_ASPECT)),"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_XADDR:INSTALLED_RECEPTOR.2) (RECEPTOR_XADDR:INSTALLED_RECEPTOR.1) (ASPECT:1)) (BODY:{(LINE:line1)}) (RUN_TREE (process:STREAM_WRITE (TEST_STREAM_SYMBOL:0xbe6ef0) (PARAM_REF:/2/1)) (PARAMS (LINE:line1)))))");
+    // stream id won't match    spec_is_str_equal(_td(w,__r_get_signals(w,DEFAULT_ASPECT)),"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS.2) (RECEPTOR_ADDRESS.1) (ASPECT:1)) (BODY:{(LINE:line1)}) (RUN_TREE (process:STREAM_WRITE (TEST_STREAM_SYMBOL:0xbe6ef0) (PARAM_REF:/2/1)) (PARAMS (LINE:line1)))))");
 
     // and that they've been removed from process queue pending signals list
     spec_is_str_equal(_td(r,r->q->pending_signals),"(PENDING_SIGNALS)");
@@ -628,14 +626,14 @@ void _testReceptorClockAddListener(Receptor *r) {
 
 void testReceptorClock() {
     Receptor *r = _r_makeClockReceptor();
-    spec_is_str_equal(_td(r,r->root),"(CLOCK_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES (PROCESS_CODING (PROCESS_NAME:plant a listener to send the time) (PROCESS_INTENTION:long desc...) (process:LISTEN (PARAM_REF:/2/1) (PARAMS (RECEPTOR_XADDR:RECEPTOR_XADDR.0) (TEST_STR_SYMBOL:fish)) (ACTION:SEND)) (INPUT) (OUTPUT_SIGNATURE))) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS (LISTENER:CLOCK_TELL_TIME (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:CLOCK_TELL_TIME) (SEMTREX_GROUP:EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:EXPECTATION))))) (PARAMS (INTERPOLATE_SYMBOL:EXPECTATION)) (ACTION:plant a listener to send the time))) (SIGNALS))) (RECEPTOR_STATE))");
+    spec_is_str_equal(_td(r,r->root),"(CLOCK_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES (PROCESS_CODING (PROCESS_NAME:plant a listener to send the time) (PROCESS_INTENTION:long desc...) (process:LISTEN (PARAM_REF:/2/1) (PARAMS (RECEPTOR_ADDRESS:0) (TEST_STR_SYMBOL:fish)) (ACTION:SEND)) (INPUT) (OUTPUT_SIGNATURE))) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS (LISTENER:CLOCK_TELL_TIME (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:CLOCK_TELL_TIME) (SEMTREX_GROUP:EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:EXPECTATION))))) (PARAMS (INTERPOLATE_SYMBOL:EXPECTATION)) (ACTION:plant a listener to send the time))) (SIGNALS))) (RECEPTOR_STATE))");
 
     /* The clock receptor acts as if it receives a signal with contents TICK (which is of TIMESTAMP structure) for every time that updates a magic scape with that time according to which listeners have been planted.  This means you can plant listeners based on a semtrex for any kind of time you want.  If you want the current time just plant a listener for TICK.  If you want to listen for every second plant a listener on the Symbol literal SECOND, and the clock receptor will trigger the listener every time the SECOND changes.  You can also listen for particular intervals and times by adding specificity to the semtrex, so to trigger a 3:30am action a-la-cron listen for: "/<TICK:(%HOUR=3,MINUTE=30)>"
        @todo we should also make the clock receptor also seem to send signals of other semantic formats, i.e. so it's easy to listen for things like "on Wednesdays", or other semantic date/time identifiers.
      */
 
     // send the clock receptor a "tell me the time" request
-    Xaddr self = {RECEPTOR_XADDR,0};  // 0 xaddr means SELF
+    ReceptorAddress self = __r_get_self_address(r);
     T *tell = _t_new_root(CLOCK_TELL_TIME);
     T *e = _t_newr(tell,EXPECTATION);
     _sl(e,TICK);
@@ -646,7 +644,7 @@ void testReceptorClock() {
     _p_reduceq(r->q);
 
     // the listener should have now been planted!
-    spec_is_str_equal(_td(r,_t_child(__r_get_listeners(r,DEFAULT_ASPECT),2)),"(LISTENER:NULL_SYMBOL (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TICK))) (PARAMS (RECEPTOR_XADDR:RECEPTOR_XADDR.0) (TEST_STR_SYMBOL:fish)) (ACTION:SEND))");
+    spec_is_str_equal(_td(r,_t_child(__r_get_listeners(r,DEFAULT_ASPECT),2)),"(LISTENER:NULL_SYMBOL (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TICK))) (PARAMS (RECEPTOR_ADDRESS:0) (TEST_STR_SYMBOL:fish)) (ACTION:SEND))");
 
     // "run" the receptor and verify that listener gets activated
     pthread_t thread;

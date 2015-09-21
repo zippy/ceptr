@@ -422,11 +422,12 @@ Receptor * _r_unserialize(void *surface) {
  * @param[in] signal_contents the message to be sent, which will be wrapped in a SIGNAL
  * @todo signal should have timestamps and other meta info
  */
-T* __r_make_signal(Xaddr from,Xaddr to,Aspect aspect,T *signal_contents) {
+T* __r_make_signal(ReceptorAddress from,ReceptorAddress to,Aspect aspect,T *signal_contents) {
     T *s = _t_new_root(SIGNAL);
     T *e = _t_newr(s,ENVELOPE);
-    _t_new(e,RECEPTOR_XADDR,&from,sizeof(from));
-    _t_new(e,RECEPTOR_XADDR,&to,sizeof(to));
+    // @todo convert to paths at some point?
+    _t_newi(e,RECEPTOR_ADDRESS,from);
+    _t_newi(e,RECEPTOR_ADDRESS,to);
     _t_newi(e,ASPECT,aspect);
     T *b = _t_newt(s,BODY,signal_contents);
     return s;
@@ -580,7 +581,7 @@ char *__td(Receptor *r,T *t,char *buf) {
 
 /*****************  Built-in core and edge receptors */
 
-Receptor *_r_makeStreamReaderReceptor(Symbol receptor_symbol,Symbol stream_symbol,Stream *st,Xaddr to) {
+Receptor *_r_makeStreamReaderReceptor(Symbol receptor_symbol,Symbol stream_symbol,Stream *st,ReceptorAddress to) {
     Receptor *r = _r_new(receptor_symbol);
 
     // code is something like:
@@ -595,7 +596,7 @@ Receptor *_r_makeStreamReaderReceptor(Symbol receptor_symbol,Symbol stream_symbo
     //    _t_newi(p,TEST_INT_SYMBOL,2);  // two repetitions
     T *send = _t_newr(p,SEND);
 
-    _t_new(send,RECEPTOR_XADDR,&to,sizeof(to));
+    _t_newi(send,RECEPTOR_ADDRESS,to);
 
     T *s = _t_new(send,STREAM_READ,0,0);
     _t_new_stream(s,stream_symbol,st);
@@ -663,8 +664,8 @@ Receptor *_r_makeClockReceptor() {
     _t_new(x,PARAM_REF,pt1,sizeof(int)*4);  // param is our semtrex
     T *params =_t_newr(x,PARAMS);
 //    _t_new(params,GET_SIGNAL_SENDER);
-    Xaddr to = {RECEPTOR_XADDR,0};  // SELF
-    _t_new(params,RECEPTOR_XADDR,&to,sizeof(to));
+    ReceptorAddress to =  __r_get_self_address(r);
+    _t_newi(params,RECEPTOR_ADDRESS,to);
 
     //    _t_news(params,INTERPOLATE_SYMBOL,NULL_SYMBOL);  // the current tick
     _t_new_str(params,TEST_STR_SYMBOL,"fish");
@@ -703,10 +704,10 @@ void *___clock_thread(void *arg){
     Receptor *r = (Receptor*)arg;
     debug(D_CLOCK,"clock started\n");
     int err =0;
+    ReceptorAddress self = __r_get_self_address(r);
     while (r->state == Alive) {
         T *tick =__r_make_tick();
         debug(D_CLOCK,"%s\n",_td(r,tick));
-        Xaddr self = {RECEPTOR_XADDR,0};  // 0 xaddr means SELF
         T *signal = __r_make_signal(self,self,DEFAULT_ASPECT,tick);
         _r_deliver(r,signal);
         sleep(1);
@@ -740,5 +741,9 @@ void __r_kill(Receptor *r) {
     /* pthread_mutex_lock(&shutdownMutex); */
     /* G_shutdown = val; */
     /* pthread_mutex_unlock(&shutdownMutex); */
+}
+
+ReceptorAddress __r_get_self_address(Receptor *r) {
+    return 0;
 }
 /** @}*/

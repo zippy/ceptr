@@ -55,7 +55,7 @@ Receptor * _r_unserialize(void *surface);
 
 /******************  receptor signaling */
 
-T * __r_make_signal(Xaddr from,Xaddr to,Aspect aspect,T *signal_contents);
+T * __r_make_signal(ReceptorAddress from,ReceptorAddress to,Aspect aspect,T *signal_contents);
 void __r_check_listener(T* processes,T *listener,T *signal,Q *q);
 Error _r_deliver(Receptor *r, T *signal);
 
@@ -86,12 +86,13 @@ Xaddr G_null_xaddr;
 #define spec_is_xaddr_equal(r,got,expected)  spec_total++; if (is_xaddr_eq(got,expected)){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %s.%d but was %s.%d",__FUNCTION__,__LINE__,#got,!is_null_symbol(expected.symbol)?_r_get_symbol_name(r,expected.symbol):"0",expected.addr,!is_null_symbol(got.symbol) ? _r_get_symbol_name(r,got.symbol):"0",got.addr);}
 
 /*****************  Built-in core and edge receptors */
-Receptor *_r_makeStreamReaderReceptor(Symbol receptor_symbol,Symbol stream_symbol,Stream *stream,Xaddr to);
+Receptor *_r_makeStreamReaderReceptor(Symbol receptor_symbol,Symbol stream_symbol,Stream *stream,ReceptorAddress to);
 Receptor *_r_makeStreamWriterReceptor(Symbol receptor_symbol,Symbol stream_symbol,Stream *stream);
 Receptor *_r_makeClockReceptor();
 void *___clock_thread(void *arg);
 T * __r_make_tick();
 void __r_kill(Receptor *r);
+ReceptorAddress __r_get_self_address(Receptor *r);
 #endif
 
 /** @}*/

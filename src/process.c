@@ -219,8 +219,8 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
 
             T *response_contents = _t_detach_by_idx(code,1);
             T *envelope = _t_child(signal,1);
-            Xaddr to = *(Xaddr *)_t_surface(_t_child(envelope,1)); // reverse the from and to
-            Xaddr from = *(Xaddr *)_t_surface(_t_child(envelope,2));
+            ReceptorAddress to = *(ReceptorAddress *)_t_surface(_t_child(envelope,1)); // reverse the from and to
+            ReceptorAddress from = *(ReceptorAddress *)_t_surface(_t_child(envelope,2));
             Aspect a = *(Aspect *)_t_surface(_t_child(envelope,3));
 
             // add the response signal into the outgoing signals list of the root
@@ -283,13 +283,13 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
         {
 
             T *t = _t_detach_by_idx(code,1);
-            Xaddr to = *(Xaddr *)_t_surface(t);
+            ReceptorAddress to = *(ReceptorAddress *)_t_surface(t);
             _t_free(t);
             T* signal_contents = _t_detach_by_idx(code,1);
 
-            Xaddr from = {RECEPTOR_XADDR,0};  //@todo how do we say SELF??
+            ReceptorAddress from = __r_get_self_address(q->r);
             x = __r_make_signal(from,to,DEFAULT_ASPECT,signal_contents);
-            debug(D_SIGNALS,"sending %s to %d\n",t2s(signal_contents),to.addr);
+            debug(D_SIGNALS,"sending %s to %d\n",t2s(signal_contents),to);
             if (_t_children(code) == 0) err = Send;
             else {
                 t = _t_detach_by_idx(code,1);

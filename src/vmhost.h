@@ -44,7 +44,7 @@ Xaddr _v_install_r(VMHost *v,Xaddr package,T *bindings,char *label);
 Xaddr _v_new_receptor(VMHost *v,Symbol s, Receptor *r);
 void _v_activate(VMHost *v, Xaddr x);
 void __v_activate(VMHost *v, Receptor *r);
-void _v_send(VMHost *v,Xaddr from,Xaddr to,Aspect aspect,T *contents);
+void _v_send(VMHost *v,ReceptorAddress from,ReceptorAddress to,Aspect aspect,T *contents);
 void _v_send_signals(VMHost *v,T *signals);
 
 void _v_deliver_signals(VMHost *v);
