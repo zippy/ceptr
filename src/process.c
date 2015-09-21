@@ -296,7 +296,6 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                 t = _t_detach_by_idx(code,1);
                 /// @todo timeout or callback or whatever the heck in the async case
                 _t_free(t);
-                //                err = SendAsync;
             }
         }
         break;
@@ -644,7 +643,6 @@ Error _p_step(Q *q, R **contextP) {
     switch(context->state) {
     case noReductionErr:
     case Block:
-    case Send:
         raise_error("whoa, virtual states can't be executed!"); // shouldn't be calling step if Done or noErr or Block or Send
         break;
     case Pop:
@@ -1055,7 +1053,7 @@ Error _p_reduceq(Q *q) {
     while (q->contexts_count) {
 
 #ifdef CEPTR_DEBUG
-        char *sn[]={"Done","Ascend","Descend","Pushed","Pop","Eval","Block","Send","SendAsync"};
+        char *sn[]={"Done","Ascend","Descend","Pushed","Pop","Eval","Block"};
 #define __debug_state_str(s) (s <= 0 ? sn[-s] : "Error")
         if (debugging(D_REDUCEV)) {
             R *context = qe->context;
@@ -1110,33 +1108,6 @@ Error _p_reduceq(Q *q) {
             // add to the blocked list
             __p_enqueue(q->blocked,qe);
             q->contexts_count--;
-        }
-        else if ((next_state == Send) || (next_state == SendAsync)) {
-            // remove from the round-robin
-            raise(SIGINT);
-            if (next_state == Send) {__p_dequeue(q->active,qe);}
-
-            // take the signal off the run tree and send it, adding a send result in it's place
-            T *signal = qe->context->node_pointer;
-            T *parent = _t_parent(signal);
-
-            //@todo figure out what that return value should be.  Probably some result from
-            // the actual signal sending machinery, or at least what ever is going to
-            // evaluate the destination address for validity.
-            T *result = _t_newi(0,TEST_INT_SYMBOL,0);
-            //            result = __t_new(0,TEST_INT_SYMBOL,0,sizeof(int),sizeof(rT));
-
-            _t_swap(parent,_t_node_index(signal),result);
-            _t_add(q->pending_signals,signal);
-
-            // add to the blocked list if not an asynchronous send
-            if (next_state == Send) {
-                __p_enqueue(q->blocked,qe);
-                q->contexts_count--;
-            }
-            else {
-                qe->context->state = Ascend;
-            }
         }
         qe = next ? next : q->active;  // next in round robin or wrap back to first
         pthread_mutex_unlock(&q->mutex);

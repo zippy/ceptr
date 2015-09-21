@@ -280,7 +280,10 @@ void testVMHostActivateReceptor() {
     _v_send(v,cx.addr,sx.addr,DEFAULT_ASPECT,_t_newi(0,ping,0));
 
     spec_is_str_equal(_td(client,v->r->q->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:2) (RECEPTOR_ADDRESS:1) (ASPECT:1)) (BODY:{(ping_message:0)})))");
+
     // simulate round-robin processing of signals
+    // @todo, fix this simulation.  Currently it relies on _v_send_signals and _v_deliver_signals
+    // which are both pretty bogus..
     _v_deliver_signals(v);
     if (server->q) {
         _p_reduceq(server->q);
