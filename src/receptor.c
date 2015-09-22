@@ -448,11 +448,9 @@ T* __r_send_signal(Receptor *r,T *signal) {
 
     _t_add(r->q->pending_signals,signal);
 
-    //@todo figure out what that return value should be.  Probably some result from
-    // the actual signal sending machinery, or at least what ever is going to
-    // evaluate the destination address for validity.
+    //@todo for now we return the UUID of the signal as the result.  Perhaps later we return an error condition if delivery to address is known to be impossible, or something like that.
 
-    T *result = _t_newi(0,TEST_INT_SYMBOL,0);
+    T *result = _t_clone(_t_child(_t_child(signal,1),4));
     return result;
 }
 

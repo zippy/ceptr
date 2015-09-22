@@ -171,7 +171,7 @@ void testReceptorAction() {
     spec_is_str_equal(_td(r,r->q->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:4) (RECEPTOR_ADDRESS:3) (ASPECT:1) (SIGNAL_UUID) (SIGNAL_UUID)) (BODY:{(HTTP_RESPONSE (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT) (HTTP_REQUEST_PATH_SEGMENT:groups))})))");
 
     result = _t_child(r->q->completed->context->run_tree,1);
-    spec_is_str_equal(_td(r,result),"(TEST_INT_SYMBOL:0)");
+    spec_is_str_equal(_td(r,result),"(SIGNAL_UUID)");
 
     _t_free(r->defs.symbols); // normally these would be freeed by the r_free, but we hand loaded them...
     _t_free(r->defs.structures);
@@ -377,7 +377,7 @@ void testReceptorProtocol() {
 
     result = _t_child(r->q->completed->context->run_tree,1);
     d = _td(r,result);
-    spec_is_str_equal(d,"(TEST_INT_SYMBOL:0)");
+    spec_is_str_equal(d,"(SIGNAL_UUID)");
 
     d = _td(r,r->q->pending_signals);
     spec_is_str_equal(d,"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:4) (RECEPTOR_ADDRESS:3) (ASPECT:1) (SIGNAL_UUID) (SIGNAL_UUID)) (BODY:{(alive_message:1)})))");
