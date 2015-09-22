@@ -865,6 +865,9 @@ UUIDt __uuid_gen() {
     return u;
 }
 
+int __uuid_equal(UUIDt *u1,UUIDt *u2) {
+    return memcmp(u1,u2,sizeof(UUIDt))==0;
+};
 /*****************  Tree serialization */
 
 /// macro to write data by type into *bufferP and increment offset by the size of the type

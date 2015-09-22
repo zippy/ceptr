@@ -314,7 +314,7 @@ void testProcessRespond() {
     T *u1 = _t_child(_t_child(s,1),4);
     int p[] = {1,1,5,TREE_PATH_TERMINATOR};
     T *u2 = _t_get(r->q->pending_signals,p);
-    spec_is_true(memcmp(_t_surface(u1),_t_surface(u2),sizeof(UUIDt))==0);
+    spec_is_true(__uuid_equal(_t_surface(u1),_t_surface(u2)));
 
     _p_free_context(c);
     _t_free(s);

@@ -87,6 +87,7 @@ int _t_hash_equal(TreeHash h1,TreeHash h2);
 
 /*****************  UUID utilities */
 UUIDt __uuid_gen();
+int __uuid_equal(UUIDt *u1,UUIDt *u2);
 
 /*****************  Tree serialization */
 size_t __t_serialize(Defs *d,T *t,void **bufferP,size_t offset,size_t current_size,int compact);
