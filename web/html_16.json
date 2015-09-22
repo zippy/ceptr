@@ -1,12 +1,10 @@
-{ "symbol":{ "context":0,"id":140 },"type":"TREE_DELTA","name":"TREE_DELTA_REPLACE","children":[
-   { "symbol":{ "context":0,"id":136 },"type":"TREE_PATH","name":"TREE_DELTA_PATH","surface":"/3"},
-   { "symbol":{ "context":0,"id":137 },"type":"LIST","name":"TREE_DELTA_VALUE","children":[
-      { "symbol":{ "context":255,"id":39 },"type":"HTML_ELEMENT","name":"HTML_DIV","children":[
-         { "symbol":{ "context":255,"id":31 },"type":"LIST","name":"HTML_ATTRIBUTES"},
-         { "symbol":{ "context":255,"id":33 },"type":"LIST","name":"HTML_CONTENT","children":[
-            { "symbol":{ "context":255,"id":34 },"type":"CSTRING","name":"HTML_TEXT","surface":"Hello "},
-            { "symbol":{ "context":255,"id":43 },"type":"HTML_ELEMENT","name":"HTML_B","children":[
-               { "symbol":{ "context":255,"id":31 },"type":"LIST","name":"HTML_ATTRIBUTES"},
-               { "symbol":{ "context":255,"id":33 },"type":"LIST","name":"HTML_CONTENT","children":[
-                  { "symbol":{ "context":255,"id":34 },"type":"CSTRING","name":"HTML_TEXT","surface":"world!"}]}]}]}]}]},
-   { "symbol":{ "context":0,"id":138 },"type":"INTEGER","name":"TREE_DELTA_COUNT","surface":4}]}
+{ "symbol":{ "context":0,"id":145 },"type":"TREE_DELTA","name":"TREE_DELTA_REPLACE","children":[
+   { "symbol":{ "context":0,"id":141 },"type":"TREE_PATH","name":"TREE_DELTA_PATH","surface":"/1/2/1/2/1/2/2"},
+   { "symbol":{ "context":0,"id":142 },"type":"LIST","name":"TREE_DELTA_VALUE","children":[
+      { "symbol":{ "context":255,"id":41 },"type":"HTML_ELEMENT","name":"HTML_IMG","children":[
+         { "symbol":{ "context":255,"id":31 },"type":"LIST","name":"HTML_ATTRIBUTES","children":[
+            { "symbol":{ "context":255,"id":32 },"type":"KEY_VALUE_PARAM","name":"HTML_ATTRIBUTE","children":[
+               { "symbol":{ "context":255,"id":10 },"type":"CSTRING","name":"PARAM_KEY","surface":"src"},
+               { "symbol":{ "context":255,"id":11 },"type":"CSTRING","name":"PARAM_VALUE","surface":"test.png"}]}]},
+         { "symbol":{ "context":255,"id":33 },"type":"LIST","name":"HTML_CONTENT"}]}]},
+   { "symbol":{ "context":0,"id":143 },"type":"INTEGER","name":"TREE_DELTA_COUNT","surface":1}]}
