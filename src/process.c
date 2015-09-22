@@ -18,6 +18,20 @@
 #include "debug.h"
 #include <errno.h>
 
+void rt_check(Receptor *r,T *t) {
+    if (!(t->context.flags & TFLAG_RUN_NODE)) raise_error("Whoa! Not a run node! %s\n",_td(r,t));
+}
+
+uint32_t get_rt_cur_child(Receptor *r,T *tP) {
+    rt_check(r,tP);
+    return (((rT *)tP)->cur_child);
+}
+
+void set_rt_cur_child(Receptor *r,T *tP,uint32_t idx) {
+    rt_check(r,tP);
+    (((rT *)tP)->cur_child) = idx;
+}
+
 /**
  * implements the INTERPOLATE_FROM_MATCH process
  *
@@ -272,7 +286,8 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             // perhaps this should be a BLOCKED_EXPECT_ACTION process or something...
             _t_new(carrier,EXPECT_ACT,&context,sizeof(context));
         }
-        rt_cur_child(code) = 1; // reset the current child count on the code
+
+        set_rt_cur_child(q->r,code,1); // reset the current child count on the code
         x = _t_detach_by_idx(code,1);
 
         // the actually blocking happens in redcueq which can remove the process from the
@@ -347,7 +362,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
 
                 buf[i++]=0;
                 //                printf("just read: %s\n",buf);
-                x = _t_new(0,sy,buf,i);
+                x = __t_new(0,sy,buf,i,1);
             }
             else {raise_error("expecting RESULT_SYMBOL");}
         }
@@ -387,7 +402,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             }
             fflush(stream);
             /// @todo what should this really return?
-            x = _t_news(0,REDUCTION_ERROR_SYMBOL,NULL_SYMBOL);
+            x = __t_news(0,REDUCTION_ERROR_SYMBOL,NULL_SYMBOL,1);
         }
         break;
     case STREAM_AVAILABLE_ID:
@@ -398,7 +413,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             if (st->type != UnixStream) raise_error("unknown stream type:%d\n",st->type);
             FILE *stream = st->data.unix_stream;
             if (feof(stream)) st->flags &= ~StreamHasData;
-            x = _t_newi(0,BOOLEAN, (st->flags&StreamHasData)?1:0);
+            x = __t_newi(0,BOOLEAN, (st->flags&StreamHasData)?1:0,1);
             _t_free(s);
         }
         break;
@@ -473,7 +488,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                 // add a copy of the body/condition on as the last child
                 _t_add(code,_t_rclone(_t_child(state->code,next_phase == EvalBody ? 3 : 2)));
                 // and reset the current child count so it gets evaluated.
-                rt_cur_child(code) = 1; // reset the current child count on the code
+                set_rt_cur_child(q->r,code,1); // reset the current child count on the code
                 state->phase = next_phase;
                 return Eval;
             }
@@ -489,7 +504,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             T *act = _t_detach_by_idx(code,1);
             //            _t_add(expect,s);
             _r_add_listener(q->r,DEFAULT_ASPECT,NULL_SYMBOL,expect,params,act);
-            x = _t_news(0,REDUCTION_ERROR_SYMBOL,NULL_SYMBOL);
+            x = __t_news(0,REDUCTION_ERROR_SYMBOL,NULL_SYMBOL,1);
         }
         break;
     default:
@@ -671,7 +686,7 @@ Error _p_step(Q *q, R **contextP) {
                 // get results of the run_tree
                 T *np = _t_detach_by_idx(ctx->run_tree,1);
                 _t_replace(context->parent,context->idx,np); // replace the process call node with the result
-                rt_cur_child(np) = RUN_TREE_EVALUATED;
+                set_rt_cur_child(q->r,np,RUN_TREE_EVALUATED);
                 context->node_pointer = np;
                 context->state = Eval;  // or possible ascend??
             }
@@ -711,7 +726,7 @@ Error _p_step(Q *q, R **contextP) {
                 // or if we are doing deep param_ref searching, then search the entire tree
                 // @todo increase efficiency by adding some instruction to allow the coder choose, see #39
 #ifndef RUN_TREE_SHALLOW_PARAM_REF_SEARCH
-                if (count && (count != rt_cur_child(np)))
+                if (count && (count != get_rt_cur_child(q->r,np)))
                     context->state = Descend;
                 else
 #endif
@@ -738,7 +753,7 @@ Error _p_step(Q *q, R **contextP) {
                         _t_free(x);
                     }
                 }
-                if (count == rt_cur_child(np) || semeq(s,QUOTE)) {
+                if (count == get_rt_cur_child(q->r,np) || semeq(s,QUOTE)) {
                     // if the current child == the child count this means
                     // all the children have been processed, so we can evaluate this process
                     // if the process is QUOTE that's a special case and we evaluate it
@@ -772,13 +787,15 @@ Error _p_step(Q *q, R **contextP) {
         }
         break;
     case Ascend:
-        rt_cur_child(context->node_pointer) = RUN_TREE_EVALUATED;
+        set_rt_cur_child(q->r,context->node_pointer,RUN_TREE_EVALUATED);
         context->node_pointer = context->parent;
         context->parent = _t_parent(context->node_pointer);
-        if (!context->parent || context->parent == context->run_tree) {
+        if (!context->parent || context->parent == context->run_tree || (context->node_pointer == context->run_tree)) {
             context->idx = 1;
         }
-        else context->idx = rt_cur_child(context->parent);
+        else {
+            context->idx = get_rt_cur_child(q->r,context->parent);
+        }
         if (context->node_pointer == context->run_tree)
             context->state = Pop;
         else
@@ -786,6 +803,7 @@ Error _p_step(Q *q, R **contextP) {
         break;
     case Descend:
         context->parent = context->node_pointer;
+        rt_check(q->r,context->node_pointer);
         context->idx = ++rt_cur_child(context->node_pointer);
         context->node_pointer = _t_child(context->node_pointer,context->idx);
         context->state = Eval;
@@ -827,7 +845,7 @@ Error _p_step(Q *q, R **contextP) {
                 break;
             default: raise_error("unknown reduction error: %d",context->state);
             }
-            T *err = __t_new(ps,se,0,0,sizeof(rT));
+            T *err = __t_new(ps,se,0,0,1);
             int *path = _t_get_path(context->node_pointer);
             _t_new(err,ERROR_LOCATION,path,sizeof(int)*(_t_path_depth(path)+1));
             free(path);
@@ -857,7 +875,7 @@ T *__p_make_run_tree(T *processes,Process p,T *params) {
     // if this is a system process, we'll just add the params right onto the process node
     // and leave the run tree params empty
     if (is_sys_process(p)) {
-        ps = _t_newr(t,p);
+        ps = __t_new(t,p,0,0,1);
         _t_newr(t,PARAMS);
     }
     else {
@@ -922,7 +940,7 @@ T *_p_make_run_tree(T *processes,T *process,int num_params,...) {
         // because no sys-processes refer to PARAMS by path
         // this also means we need rclone them instead of clone them because they
         // will actually need to have space for the status marks by the processing code
-        T *c = __t_new(t,p,0,0,sizeof(rT));
+        T *c = __t_new(t,p,0,0,1);
 
         va_start(params,num_params);
         int i;

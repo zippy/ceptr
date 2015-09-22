@@ -50,9 +50,10 @@ void __t_init(T *t,T *parent,Symbol symbol) {
  * @param[in] size size in bytes of the surface
  * @returns pointer to node allocated on the heap
  */
-T * __t_new(T *parent,Symbol symbol,void *surface,size_t size,size_t alloc_size) {
-    T *t = malloc(alloc_size);
+T * __t_new(T *parent,Symbol symbol,void *surface,size_t size,int is_run_node) {
+    T *t = malloc(is_run_node ? sizeof(rT) : sizeof(T));
     __t_init(t,parent,symbol);
+    if (is_run_node) t->context.flags |= TFLAG_RUN_NODE;
     if (size) {
         t->context.flags |= TFLAG_ALLOCATED;
         t->contents.surface = malloc(size);
@@ -71,11 +72,12 @@ T * __t_new(T *parent,Symbol symbol,void *surface,size_t size,size_t alloc_size)
  * @param[in] surface integer value to store in the surface
  * @returns pointer to node allocated on the heap
  */
-T * __t_newi(T *parent,Symbol symbol,int surface,size_t alloc_size) {
-    T *t = malloc(alloc_size);
+T * __t_newi(T *parent,Symbol symbol,int surface,int is_run_node) {
+    T *t = malloc(is_run_node ? sizeof(rT) : sizeof(T));
     *((int *)&t->contents.surface) = surface;
     t->contents.size = sizeof(int);
     __t_init(t,parent,symbol);
+    if (is_run_node) t->context.flags |= TFLAG_RUN_NODE;
     return t;
 }
 
@@ -87,8 +89,8 @@ T * __t_newi(T *parent,Symbol symbol,int surface,size_t alloc_size) {
  * @param[in] surface semanticID value to store in the surface
  * @returns pointer to node allocated on the heap
  */
-T *_t_news(T *parent,Symbol symbol,SemanticID surface){
-    return _t_new(parent,symbol,&surface,sizeof(SemanticID));
+T *__t_news(T *parent,Symbol symbol,SemanticID surface,int is_run_node){
+    return __t_new(parent,symbol,&surface,sizeof(SemanticID),is_run_node);
 }
 
 /**
@@ -164,12 +166,13 @@ T *_t_new_receptor(T *parent,Symbol symbol,Receptor *r) {
 }
 
 /* create special tree node type */
-T *__t_new_special(T *parent,Symbol symbol,void *s,size_t size,int flag,size_t alloc_size) {
-    T *t = malloc(alloc_size);
+T *__t_new_special(T *parent,Symbol symbol,void *s,size_t size,int flag,int is_run_node) {
+    T *t = malloc(is_run_node ? sizeof(rT) : sizeof(T));
     t->contents.surface = s;
     t->contents.size = size;
     __t_init(t,parent,symbol);
     t->context.flags |= flag;
+    if (is_run_node) t->context.flags |= TFLAG_RUN_NODE;
     return t;
 }
 
@@ -187,7 +190,7 @@ T *__t_new_special(T *parent,Symbol symbol,void *s,size_t size,int flag,size_t a
  * @snippet spec/tree_spec.h testTreeScape
  */
 T *_t_new_scape(T *parent,Symbol symbol,Scape *s) {
-    return __t_new_special(parent,symbol,s,sizeof(Scape),TFLAG_SURFACE_IS_SCAPE,sizeof(T));
+    return __t_new_special(parent,symbol,s,sizeof(Scape),TFLAG_SURFACE_IS_SCAPE,0);
 }
 
 /**
@@ -204,7 +207,7 @@ T *_t_new_scape(T *parent,Symbol symbol,Scape *s) {
  * @snippet spec/tree_spec.h testTreeStream
  */
 T *_t_new_stream(T *parent,Symbol symbol,Stream *s) {
-    return __t_new_special(parent,symbol,s,sizeof(Stream),TFLAG_SURFACE_IS_STREAM+TFLAG_REFERENCE,sizeof(T));
+    return __t_new_special(parent,symbol,s,sizeof(Stream),TFLAG_SURFACE_IS_STREAM+TFLAG_REFERENCE,0);
 }
 
 /**
@@ -474,7 +477,7 @@ T *__t_clone(T *t,T *p) {
     if (t->context.flags & TFLAG_ALLOCATED)
         nt = _t_new(p,_t_symbol(t),_t_surface(t),_t_size(t));
     else if (t->context.flags & TFLAG_SURFACE_IS_STREAM) {
-        nt = __t_new_special(p,_t_symbol(t),_t_surface(t),_t_size(t),t->context.flags,sizeof(rT));
+        nt = __t_new_special(p,_t_symbol(t),_t_surface(t),_t_size(t),t->context.flags,0);
     }
     else if(_t_size(t) == 0)
         nt = _t_newr(p,_t_symbol(t));
@@ -487,14 +490,14 @@ T *__t_clone(T *t,T *p) {
 T *__t_rclone(T *t,T *p) {
     T *nt;
     if (t->context.flags & TFLAG_ALLOCATED)
-        nt = __t_new(p,_t_symbol(t),_t_surface(t),_t_size(t),sizeof(rT));
+        nt = __t_new(p,_t_symbol(t),_t_surface(t),_t_size(t),1);
     else if (t->context.flags & TFLAG_SURFACE_IS_STREAM) {
-        nt = __t_new_special(p,_t_symbol(t),_t_surface(t),_t_size(t),t->context.flags,sizeof(rT));
+        nt = __t_new_special(p,_t_symbol(t),_t_surface(t),_t_size(t),t->context.flags,1);
     }
     else if(_t_size(t) == 0)
-        nt = __t_new(p,_t_symbol(t),_t_surface(t),0,sizeof(rT));
+        nt = __t_new(p,_t_symbol(t),0,0,1);
     else
-        nt = __t_newi(p,_t_symbol(t),*(int *)_t_surface(t),sizeof(rT));
+        nt = __t_newi(p,_t_symbol(t),*(int *)_t_surface(t),1);
     ((rT *)nt)->cur_child =  RUN_TREE_NOT_EVAULATED;
     DO_KIDS(t,__t_rclone(_t_child(t,i),nt));
     return nt;

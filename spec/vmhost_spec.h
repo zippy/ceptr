@@ -446,7 +446,8 @@ void testVMHost() {
     testVMHostCreate();
     //    testVMHostLoadReceptorPackage();
     //    testVMHostInstallReceptor();
-    testVMHostActivateReceptor();
+
+    //    testVMHostActivateReceptor();
     testVMHostShell();
     _cleanup_HTTPDefs();
 }

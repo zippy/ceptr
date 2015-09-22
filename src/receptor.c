@@ -450,7 +450,7 @@ T* __r_send_signal(Receptor *r,T *signal) {
 
     //@todo for now we return the UUID of the signal as the result.  Perhaps later we return an error condition if delivery to address is known to be impossible, or something like that.
 
-    T *result = _t_clone(_t_child(_t_child(signal,1),4));
+    T *result = _t_rclone(_t_child(_t_child(signal,1),4));
     return result;
 }
 
@@ -498,7 +498,7 @@ void __r_check_listener(T* processes,T *listener,T *signal,Q *q) {
         }
         else {
             Process p = *(Process*) _t_surface(action);
-            T *params = _t_clone(_t_child(listener,2));
+            T *params = _t_rclone(_t_child(listener,2));  // __p_make_run_tree assumes rT nodes
             _p_interpolate_from_match(params,m,signal_contents);
             rt = __p_make_run_tree(processes,p,params);
             _t_free(params);

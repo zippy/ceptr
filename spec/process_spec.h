@@ -781,7 +781,7 @@ void testProcessSignatureMatching() {
     // add too many params
     c = _t_rclone(n);
     _t_add(t,c);
-    __t_newi(c,TEST_INT_SYMBOL,124,sizeof(rT));
+    __t_newi(c,TEST_INT_SYMBOL,124,1);
     spec_is_equal(_p_reduce(&defs,t),tooManyParamsReductionErr);
 
     _t_free(processes);
@@ -802,7 +802,7 @@ void testProcessError() {
 
     // error routine is just a param ref to pass back the error tree
     int pt[] = {4,1,TREE_PATH_TERMINATOR};
-    __t_new(t,PARAM_REF,pt,sizeof(int)*4,sizeof(rT));
+    __t_new(t,PARAM_REF,pt,sizeof(int)*4,1);
 
     Error e = _p_reduce(&defs,t);
     spec_is_equal(e,noReductionErr);
@@ -828,7 +828,7 @@ void testProcessRaise() {
 
     // error routine is just a param ref to pass back the error tree
     int pt[] = {4,1,TREE_PATH_TERMINATOR};
-    __t_new(t,PARAM_REF,pt,sizeof(int)*4,sizeof(rT));
+    __t_new(t,PARAM_REF,pt,sizeof(int)*4,1);
 
     Error e = _p_reduce(&defs,t);
     spec_is_equal(e,noReductionErr);
@@ -923,7 +923,7 @@ void testProcessErrorTrickleUp() {
 
     // error routine is just a param ref to pass back the error tree
     int pt[] = {4,1,TREE_PATH_TERMINATOR};
-    __t_new(t,PARAM_REF,pt,sizeof(int)*4,sizeof(rT));
+    __t_new(t,PARAM_REF,pt,sizeof(int)*4,1);
 
     // confirm that it reduces correctly
     spec_is_equal(_p_reduce(&defs,t),noReductionErr);
@@ -945,17 +945,17 @@ void testProcessMulti() {
 
     // create two run trees
     T *n = _t_new_root(PARAMS);
-    _t_newi(n,TEST_INT_SYMBOL,99);
-    _t_newi(n,TEST_INT_SYMBOL,123);
-    _t_newi(n,TEST_INT_SYMBOL,124);
+    __t_newi(n,TEST_INT_SYMBOL,99,1);
+    __t_newi(n,TEST_INT_SYMBOL,123,1);
+    __t_newi(n,TEST_INT_SYMBOL,124,1);
     T *t1 = __p_make_run_tree(processes,if_even,n);
 
-    _t_newi(n,TEST_INT_SYMBOL,100);
-    T *l2 = _t_newr(n,if_even);
-    _t_newi(l2,TEST_INT_SYMBOL,2);
-    _t_newi(l2,TEST_INT_SYMBOL,123);
-    _t_newi(l2,TEST_INT_SYMBOL,124);
-    _t_newi(n,TEST_INT_SYMBOL,314);
+    __t_newi(n,TEST_INT_SYMBOL,100,1);
+    T *l2 = __t_new(n,if_even,0,0,1);
+    __t_newi(l2,TEST_INT_SYMBOL,2,1);
+    __t_newi(l2,TEST_INT_SYMBOL,123,1);
+    __t_newi(l2,TEST_INT_SYMBOL,124,1);
+    __t_newi(n,TEST_INT_SYMBOL,314,1);
 
     T *t2 = __p_make_run_tree(processes,if_even,n);
 
@@ -1030,6 +1030,8 @@ void testRunTreeMaker() {
     // run-tree maker should also work on defined processes
     Process if_even = _defIfEven(processes);  // add the if_even process to our defs
 
+    _t_free(n);
+
     n = _t_new_root(PARAMS);
     _t_newi(n,TEST_INT_SYMBOL,99);
     _t_newi(n,TEST_INT_SYMBOL,123);
@@ -1039,7 +1041,7 @@ void testRunTreeMaker() {
 
     spec_is_str_equal(t2s(t),"(RUN_TREE (process:IF (process:EQ_INT (process:MOD_INT (PARAM_REF:/2/1) (TEST_INT_SYMBOL:2)) (TEST_INT_SYMBOL:0)) (PARAM_REF:/2/2) (PARAM_REF:/2/3)) (PARAMS (TEST_INT_SYMBOL:99) (TEST_INT_SYMBOL:123) (TEST_INT_SYMBOL:124)))");
 
-    _t_free(t);
+    _t_free(t);_t_free(n);
     _t_free(processes);
 }
 
