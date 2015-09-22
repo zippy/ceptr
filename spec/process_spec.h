@@ -302,12 +302,12 @@ void testProcessRespond() {
     // if this is a run-tree that's not a child of a signal we can't respond!
     spec_is_equal(__p_reduce_sys_proc(c,RESPOND,n,0),notInSignalContextReductionError);
 
-    // no add it to the signal and try again
+    // now add it to the signal and try again
     _t_add(s,run_tree);
 
     Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
 
-    // now it should create a response signal with the source UUID as the responding to UUID (5 position)
+    // it should create a response signal with the source UUID as the responding to UUID (5 position)
     spec_is_equal(__p_reduce_sys_proc(c,RESPOND,n,r->q),noReductionErr);
     spec_is_str_equal(t2s(n),"(SIGNAL_UUID)");
     spec_is_str_equal(_td(r,r->q->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:4) (RECEPTOR_ADDRESS:3) (ASPECT:1) (SIGNAL_UUID) (SIGNAL_UUID)) (BODY:{(TEST_INT_SYMBOL:271)})))");

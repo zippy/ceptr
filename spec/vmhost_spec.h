@@ -282,43 +282,20 @@ void testVMHostActivateReceptor() {
     spec_is_str_equal(_td(client,v->r->q->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:2) (RECEPTOR_ADDRESS:1) (ASPECT:1) (SIGNAL_UUID)) (BODY:{(ping_message:0)})))");
 
     // simulate round-robin processing of signals
-    // @todo, fix this simulation.  Currently it relies on _v_send_signals and _v_deliver_signals
-    // which are both pretty bogus..
-    /* _v_deliver_signals(v); */
-    /* if (server->q) { */
-    /*     _p_reduceq(server->q); */
-    /*     if (server->q->completed) { */
-    /*         T *result = server->q->completed->context->run_tree; */
-    /*         T *signals = _t_child(result,_t_children(result)); */
-    /*         // if the results added signals then send em! */
-    /*         if (semeq(SIGNALS,_t_symbol(signals))) { */
-    /*             _v_send_signals(v,signals); */
-    /*         } */
-    /*     } */
-    /* } */
-    /* _v_deliver_signals(v); */
-    /* if (client->q) { */
-    /*     _p_reduceq(client->q); */
-    /*     if (client->q->completed) { */
-    /*         T *result = client->q->completed->context->run_tree; */
-    /*         T *signals = _t_child(result,_t_children(result)); */
-    /*         // if the results added signals then send em! */
-    /*         if (semeq(SIGNALS,_t_symbol(signals))) { */
-    /*             _v_send_signals(v,signals); */
-    /*         } */
-    /*     } */
-    /* } */
 
-
+    _v_deliver_signals(v,v->r);
+    _p_reduceq(server->q);
+    _v_deliver_signals(v,server);
+    _p_reduceq(client->q);
 
     // now confirm that the signal was sent,
     // first that the pending signals list is empty
     spec_is_equal(_t_children(v->r->q->pending_signals),0);
 
     // and that the client now has the arrived response ping signal, plus the reduced action run-tree
-    // @todo, this spec is now broken because the response simulator above is failing
+    // @todo this shouldn't actually be on the flux, but rather should have been placed in callers run-tree
     T *t = __r_get_signals(client,DEFAULT_ASPECT);
-    spec_is_str_equal(_td(client,t),"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:1) (RECEPTOR_ADDRESS:2) (ASPECT:1) (SIGNAL_UUID)) (BODY:{(alive_message:1)}) (RUN_TREE (TEST_INT_SYMBOL:314) (PARAMS))))");
+    spec_is_str_equal(_td(client,t),"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:1) (RECEPTOR_ADDRESS:2) (ASPECT:1) (SIGNAL_UUID) (SIGNAL_UUID)) (BODY:{(alive_message:1)}) (RUN_TREE (TEST_INT_SYMBOL:314) (PARAMS))))");
 
     _v_free(v);
     //! [testVMHostActivateReceptor]
@@ -447,7 +424,7 @@ void testVMHost() {
     //    testVMHostLoadReceptorPackage();
     //    testVMHostInstallReceptor();
 
-    //    testVMHostActivateReceptor();
+    testVMHostActivateReceptor();
     testVMHostShell();
     _cleanup_HTTPDefs();
 }
