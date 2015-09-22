@@ -284,30 +284,30 @@ void testVMHostActivateReceptor() {
     // simulate round-robin processing of signals
     // @todo, fix this simulation.  Currently it relies on _v_send_signals and _v_deliver_signals
     // which are both pretty bogus..
-    _v_deliver_signals(v);
-    if (server->q) {
-        _p_reduceq(server->q);
-        if (server->q->completed) {
-            T *result = server->q->completed->context->run_tree;
-            T *signals = _t_child(result,_t_children(result));
-            // if the results added signals then send em!
-            if (semeq(SIGNALS,_t_symbol(signals))) {
-                _v_send_signals(v,signals);
-            }
-        }
-    }
-    _v_deliver_signals(v);
-    if (client->q) {
-        _p_reduceq(client->q);
-        if (client->q->completed) {
-            T *result = client->q->completed->context->run_tree;
-            T *signals = _t_child(result,_t_children(result));
-            // if the results added signals then send em!
-            if (semeq(SIGNALS,_t_symbol(signals))) {
-                _v_send_signals(v,signals);
-            }
-        }
-    }
+    /* _v_deliver_signals(v); */
+    /* if (server->q) { */
+    /*     _p_reduceq(server->q); */
+    /*     if (server->q->completed) { */
+    /*         T *result = server->q->completed->context->run_tree; */
+    /*         T *signals = _t_child(result,_t_children(result)); */
+    /*         // if the results added signals then send em! */
+    /*         if (semeq(SIGNALS,_t_symbol(signals))) { */
+    /*             _v_send_signals(v,signals); */
+    /*         } */
+    /*     } */
+    /* } */
+    /* _v_deliver_signals(v); */
+    /* if (client->q) { */
+    /*     _p_reduceq(client->q); */
+    /*     if (client->q->completed) { */
+    /*         T *result = client->q->completed->context->run_tree; */
+    /*         T *signals = _t_child(result,_t_children(result)); */
+    /*         // if the results added signals then send em! */
+    /*         if (semeq(SIGNALS,_t_symbol(signals))) { */
+    /*             _v_send_signals(v,signals); */
+    /*         } */
+    /*     } */
+    /* } */
 
 
 

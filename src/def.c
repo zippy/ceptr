@@ -449,9 +449,9 @@ char * __t_dump(Defs *defs,T *t,int level,char *buf) {
                 x = *(Xaddr *)_t_surface(t);
                 sprintf(buf,"(%s:%s.%d",n,_d_get_symbol_name(symbols,x.symbol),x.addr);
                 break;
-            case STREAM_ID:
-                sprintf(buf,"(%s:%p",n,_t_surface(t));
-                break;
+            /* case STREAM_ID: */
+            /*     sprintf(buf,"(%s:%p",n,_t_surface(t)); */
+            /*     break; */
             /* case UUID_ID: */
             /*     { */
             /*         UUIDt x = *(UUIDt *)_t_surface(t); */

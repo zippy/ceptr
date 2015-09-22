@@ -46,8 +46,7 @@ void __v_activate(VMHost *v, Receptor *r);
 void _v_send(VMHost *v,ReceptorAddress from,ReceptorAddress to,Aspect aspect,T *contents);
 void _v_send_signals(VMHost *v,T *signals);
 
-void _v_deliver_signals(VMHost *v);
-void __v_deliver_signals(Receptor *self,T *signals,Instances *receptor_instances);
+void _v_deliver_signals(VMHost *v, Receptor *sender);
 
 void * __v_process(void *arg);
 

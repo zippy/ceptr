@@ -8,6 +8,7 @@
 #include "../src/receptor.h"
 #include "../src/def.h"
 #include "../src/accumulator.h"
+#include "../src/vmhost.h"
 #include "http_example.h"
 #include <unistd.h>
 
@@ -531,22 +532,19 @@ void testReceptorEdgeStream() {
     rs = fmemopen(buffer, strlen (buffer), "r");
     Stream *reader_stream = _st_new_unix_stream(rs);
 
-    Instances instances = NULL;
+    VMHost *v = _v_new();
 
     char *output_data;
     size_t size;
     ws = open_memstream(&output_data,&size);
     Stream *writer_stream = _st_new_unix_stream(ws);
 
-    T *ir = _t_new_root(INSTALLED_RECEPTOR);
-    Receptor *w =_r_makeStreamWriterReceptor(TEST_RECEPTOR_SYMBOL,TEST_STREAM_SYMBOL,writer_stream);
-    _t_new_receptor(ir,TEST_RECEPTOR_SYMBOL,w);
-    Xaddr writer = _a_new_instance(&instances,ir);
+    Receptor *w = _r_makeStreamWriterReceptor(TEST_RECEPTOR_SYMBOL,TEST_STREAM_SYMBOL,writer_stream);
+
+    Xaddr writer = _v_new_receptor(v,TEST_RECEPTOR_SYMBOL,w);
 
     Receptor *r = _r_makeStreamReaderReceptor(TEST_RECEPTOR_SYMBOL,TEST_STREAM_SYMBOL,reader_stream,writer.addr);
-    ir = _t_new_root(INSTALLED_RECEPTOR);
-    _t_new_receptor(ir,TEST_RECEPTOR_SYMBOL,r);
-    Xaddr testReceptor = _a_new_instance(&instances,ir);
+    Xaddr testReceptor =  _v_new_receptor(v,TEST_RECEPTOR_SYMBOL,r);
 
     spec_is_str_equal(_td(w,__r_get_listeners(w,DEFAULT_ASPECT)),"(LISTENERS (LISTENER:LINE (EXPECTATION (SEMTREX_SYMBOL_ANY)) (PARAMS (INTERPOLATE_SYMBOL:NULL_SYMBOL)) (ACTION:echo input to stream)))");
 
@@ -565,15 +563,15 @@ void testReceptorEdgeStream() {
     spec_is_str_equal(_td(r,r->q->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:1) (ASPECT:1) (SIGNAL_UUID)) (BODY:{(LINE:line1)})) (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:1) (ASPECT:1) (SIGNAL_UUID)) (BODY:{(LINE:line2)})) (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:1) (ASPECT:1) (SIGNAL_UUID)) (BODY:{(LINE:)})))");
 
     // manually run the signal sending code
-    __v_deliver_signals(r,r->q->pending_signals,&instances);
+    _v_deliver_signals(v,r);
 
     // and see that they've shown up in the writer receptor's flux signals list
-    // stream id won't match    spec_is_str_equal(_td(w,__r_get_signals(w,DEFAULT_ASPECT)),"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS.2) (RECEPTOR_ADDRESS.1) (ASPECT:1) (SIGNAL_UUID)) (BODY:{(LINE:line1)}) (RUN_TREE (process:STREAM_WRITE (TEST_STREAM_SYMBOL:0xbe6ef0) (PARAM_REF:/2/1)) (PARAMS (LINE:line1)))))");
+    spec_is_str_equal(_td(w,__r_get_signals(w,DEFAULT_ASPECT)),"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:2) (RECEPTOR_ADDRESS:1) (ASPECT:1) (SIGNAL_UUID)) (BODY:{(LINE:line1)}) (RUN_TREE (process:STREAM_WRITE (TEST_STREAM_SYMBOL) (PARAM_REF:/2/1)) (PARAMS (LINE:line1)))) (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:2) (RECEPTOR_ADDRESS:1) (ASPECT:1) (SIGNAL_UUID)) (BODY:{(LINE:line2)}) (RUN_TREE (process:STREAM_WRITE (TEST_STREAM_SYMBOL) (PARAM_REF:/2/1)) (PARAMS (LINE:line2)))) (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:2) (RECEPTOR_ADDRESS:1) (ASPECT:1) (SIGNAL_UUID)) (BODY:{(LINE:)}) (RUN_TREE (process:STREAM_WRITE (TEST_STREAM_SYMBOL) (PARAM_REF:/2/1)) (PARAMS (LINE:)))))");
 
     // and that they've been removed from process queue pending signals list
     spec_is_str_equal(_td(r,r->q->pending_signals),"(PENDING_SIGNALS)");
 
-    // stream id won't match    spec_is_str_equal(_td(w,w->q->active->context->run_tree),"(RUN_TREE (process:STREAM_WRITE (TEST_STREAM_SYMBOL:0x1c49ef0) (PARAM_REF:/2/1)) (PARAMS (LINE:line1)))");
+    spec_is_str_equal(_td(w,w->q->active->context->run_tree),"(RUN_TREE (process:STREAM_WRITE (TEST_STREAM_SYMBOL) (PARAM_REF:/2/1)) (PARAMS (LINE:line1)))");
 
     // manually run the process queue
     //    debug_enable(D_REDUCE);
@@ -585,10 +583,10 @@ void testReceptorEdgeStream() {
 
     spec_is_str_equal(output_data,"line1\nline2\n\n");
 
-    _a_free_instances(&instances);
     _st_free(reader_stream);
     _st_free(writer_stream);
     free(output_data);
+    _v_free(v);
 }
 
 void _testReceptorClockAddListener(Receptor *r) {
