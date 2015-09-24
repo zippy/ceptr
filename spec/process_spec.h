@@ -321,6 +321,7 @@ void testProcessRespond() {
 
     _r_free(r);
 }
+extern int G_next_process_id;
 
 void testProcessSend() {
     T *p = _t_newr(0,SEND);
@@ -337,12 +338,14 @@ void testProcessSend() {
     T *run_tree = __p_build_run_tree(p,0);
 
     // add the run tree into a queue and run it
+    G_next_process_id = 0; // reset the process ids so the test will always work
     Q *q = r->q;
     T *ps = r->pending_signals;
     _p_addrt2q(q,run_tree);
 
     Qe *e = q->active;
     R *c = e->context;
+
 
     // after reduction the context should be in the blocked state
     // and the signal should be on the pending signals list
@@ -351,7 +354,7 @@ void testProcessSend() {
     spec_is_equal(q->contexts_count,0);
     spec_is_ptr_equal(q->blocked,e);
     spec_is_equal(c->state,Block);
-    spec_is_str_equal(_td(r,r->pending_responses),"(PENDING_RESPONSES (PENDING_RESPONSE (SIGNAL_UUID) (PROCESS_IDENT:11) (RESPONSE_CODE_PATH:/1)))");
+    spec_is_str_equal(_td(r,r->pending_responses),"(PENDING_RESPONSES (PENDING_RESPONSE (SIGNAL_UUID) (PROCESS_IDENT:1) (RESPONSE_CODE_PATH:/1)))");
 
     // send reduces to the UUID generated for the sent signal
     spec_is_str_equal(t2s(run_tree),"(RUN_TREE (SIGNAL_UUID) (PARAMS))");

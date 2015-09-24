@@ -708,20 +708,36 @@ void testReceptorClock() {
         raise_error("ERROR; return code from pthread_create() is %d\n", rc);
     }
 
+    // request to tell time should be on the signals list
+    T *signals = __r_get_signals(r,DEFAULT_ASPECT);
+    spec_is_str_equal(_td(r,signals),"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:0) (ASPECT:1) (SIGNAL_UUID)) (BODY:{(CLOCK_TELL_TIME (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TICK))))}) (RUN_TREE (REDUCTION_ERROR_SYMBOL:NULL_SYMBOL) (PARAMS (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TICK)))))))");
+
     sleep(1);
     _p_reduceq(r->q);
-    sleep(1);
-    _p_reduceq(r->q);
+
+    // do manual signal delivery (code pulled from _v_deliver_signals but we don't
+    // need the routing info in this case because we can just deliver to ourselves
+
+    signals = r->pending_signals;
+    while(_t_children(signals)>0) {
+        T *s = _t_detach_by_idx(signals,1);
+
+        Error err = _r_deliver(r,s);
+        if (err) {
+            raise_error("delivery error: %d",err);
+        }
+    }
 
     T *tick = __r_make_tick();
-    char buf1[100],buf2[100];
-        __td(r,tick,buf1);
-        //__td(r,_t_child(r->q->completed->context->run_tree,1),buf2);
-    buf1[60]=0; buf2[60]=0; // minute and second may not match...
-    spec_is_str_equal(buf1,buf2);
+    /* char buf1[100],buf2[100]; */
+    /* __td(r,tick,buf1); */
+    /* __td(r,_t_child(r->q->completed->context->run_tree,1),buf2); */
+    /* buf1[60]=0; buf2[60]=0; // minute and second may not match... */
+    /* spec_is_str_equal(buf1,buf2); */
 
-    // add some test here to confirm that the listener sent back it's signal when the ticks happen
-    //   spec_is_str_equal(_td(r,r->flux),"");
+    // the listener should have sent back the tick (which is right now "fish")
+    signals = __r_get_signals(r,DEFAULT_ASPECT);
+    spec_is_str_equal(_td(r,_t_child(signals,3)),"(SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:0) (ASPECT:1) (SIGNAL_UUID)) (BODY:{(TEST_STR_SYMBOL:fish)}))");
 
     __r_kill(r);
 

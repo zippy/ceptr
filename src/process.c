@@ -1032,7 +1032,7 @@ void _p_freeq(Q *q) {
     free(q);
 }
 
-int G_process_ids =0;
+int G_next_process_id = 0;
 /**
  * add a run tree into a processing queue
  *
@@ -1040,7 +1040,7 @@ int G_process_ids =0;
  */
 void _p_addrt2q(Q *q,T *run_tree) {
     Qe *n = malloc(sizeof(Qe));
-    n->id = ++G_process_ids;
+    n->id = ++G_next_process_id;
     n->prev = NULL;
     n->context = __p_make_context(run_tree,0,n->id);
     n->accounts.elapsed_time = 0;
