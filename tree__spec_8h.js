@@ -25,5 +25,6 @@ var tree__spec_8h =
     [ "testTreeScape", "tree__spec_8h.html#a6796662fa58d1f646024d0ca537cb8cb", null ],
     [ "testTreeSerialize", "tree__spec_8h.html#a012d7007d9b10f6e1ed85ff1b4c3919c", null ],
     [ "testTreeStream", "tree__spec_8h.html#af9b0708a3e22b06665f31f5661d97df8", null ],
-    [ "testTreeSwap", "tree__spec_8h.html#a22fbd67719525409ae07f576a34816b3", null ]
+    [ "testTreeSwap", "tree__spec_8h.html#a22fbd67719525409ae07f576a34816b3", null ],
+    [ "testUUID", "tree__spec_8h.html#a82554f40b445650d0927d4ed5056e132", null ]
 ];

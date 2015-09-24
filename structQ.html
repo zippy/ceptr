@@ -112,15 +112,16 @@ $(document).ready(function(){initNavTree('structQ.html','');});
 <div class="dynheader">
 Collaboration diagram for Q:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structQ__coll__graph.svg" width="447" height="590"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structQ__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:a31f7ee672b5de1fcb77cef7782f9df88"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a31f7ee672b5de1fcb77cef7782f9df88"></a>
-<a class="el" href="structDefs.html">Defs</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structQ.html#a31f7ee672b5de1fcb77cef7782f9df88">defs</a></td></tr>
-<tr class="memdesc:a31f7ee672b5de1fcb77cef7782f9df88"><td class="mdescLeft">&#160;</td><td class="mdescRight">defs that are valid for this queue <br /></td></tr>
-<tr class="separator:a31f7ee672b5de1fcb77cef7782f9df88"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38d241dba8d07c681a5133821b887984"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a38d241dba8d07c681a5133821b887984"></a>
+<a class="el" href="structReceptor.html">Receptor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structQ.html#a38d241dba8d07c681a5133821b887984">r</a></td></tr>
+<tr class="memdesc:a38d241dba8d07c681a5133821b887984"><td class="mdescLeft">&#160;</td><td class="mdescRight">back-pointer to receptor in which this <a class="el" href="structQ.html">Q</a> is running (for defs and more) <br /></td></tr>
+<tr class="separator:a38d241dba8d07c681a5133821b887984"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6708b052b51ce11613e298bf11a26328"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6708b052b51ce11613e298bf11a26328"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structQ.html#a6708b052b51ce11613e298bf11a26328">contexts_count</a></td></tr>
 <tr class="memdesc:a6708b052b51ce11613e298bf11a26328"><td class="mdescLeft">&#160;</td><td class="mdescRight">number of active processes <br /></td></tr>
@@ -131,23 +132,19 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struc
 <tr class="separator:a986c007532c25e847896a206182ed6e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7ee8f0b2d1cfefac4a7e3e8704bf6069"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7ee8f0b2d1cfefac4a7e3e8704bf6069"></a>
 <a class="el" href="structQe.html">Qe</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structQ.html#a7ee8f0b2d1cfefac4a7e3e8704bf6069">completed</a></td></tr>
-<tr class="memdesc:a7ee8f0b2d1cfefac4a7e3e8704bf6069"><td class="mdescLeft">&#160;</td><td class="mdescRight">completed processes <br /></td></tr>
+<tr class="memdesc:a7ee8f0b2d1cfefac4a7e3e8704bf6069"><td class="mdescLeft">&#160;</td><td class="mdescRight">completed processes (pending cleanup) <br /></td></tr>
 <tr class="separator:a7ee8f0b2d1cfefac4a7e3e8704bf6069"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab8eb183576f2b1753d80bfcfdd0cd22b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab8eb183576f2b1753d80bfcfdd0cd22b"></a>
 <a class="el" href="structQe.html">Qe</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structQ.html#ab8eb183576f2b1753d80bfcfdd0cd22b">blocked</a></td></tr>
 <tr class="memdesc:ab8eb183576f2b1753d80bfcfdd0cd22b"><td class="mdescLeft">&#160;</td><td class="mdescRight">blocked processes <br /></td></tr>
 <tr class="separator:ab8eb183576f2b1753d80bfcfdd0cd22b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a36bba343a63fbe7649b850da2a11b9bc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a36bba343a63fbe7649b850da2a11b9bc"></a>
-<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structQ.html#a36bba343a63fbe7649b850da2a11b9bc">pending_signals</a></td></tr>
-<tr class="memdesc:a36bba343a63fbe7649b850da2a11b9bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">slot for signals that need to be delivered for this process <br /></td></tr>
-<tr class="separator:a36bba343a63fbe7649b850da2a11b9bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abfe3f658fe8f494e2f598bc6b4a00166"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abfe3f658fe8f494e2f598bc6b4a00166"></a>
 pthread_mutex_t&#160;</td><td class="memItemRight" valign="bottom"><b>mutex</b></td></tr>
 <tr class="separator:abfe3f658fe8f494e2f598bc6b4a00166"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="ceptr__types_8h_source.html#l00211">211</a> of file <a class="el" href="ceptr__types_8h_source.html">ceptr_types.h</a>.</p>
+<p>Definition at line <a class="el" href="ceptr__types_8h_source.html#l00218">218</a> of file <a class="el" href="ceptr__types_8h_source.html">ceptr_types.h</a>.</p>
 </div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li>src/<a class="el" href="ceptr__types_8h_source.html">ceptr_types.h</a></li>
 </ul>
@@ -157,7 +154,7 @@ pthread_mutex_t&#160;</td><td class="memItemRight" valign="bottom"><b>mutex</b><
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="structQ.html">Q</a></li>
-    <li class="footer">Generated on Thu Sep 10 2015 15:47:27 for ceptr by
+    <li class="footer">Generated on Thu Sep 24 2015 11:00:58 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

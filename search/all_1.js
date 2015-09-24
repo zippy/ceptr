@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['a',['A',['../structA.html',1,'']]],
+  ['accounting',['Accounting',['../structAccounting.html',1,'']]],
   ['accumulator',['Accumulator',['../group__accumulator.html',1,'']]],
   ['accumulator_2ec',['accumulator.c',['../accumulator_8c.html',1,'']]],
   ['accumulator_2eh',['accumulator.h',['../accumulator_8h.html',1,'']]],

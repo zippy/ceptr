@@ -1,7 +1,7 @@
 var searchData=
 [
   ['running_20the_20self_2dtests',['Running the self-tests',['../howto_tests.html',1,'']]],
-  ['r',['R',['../structR.html',1,'R'],['../structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e',1,'VMHost::r()']]],
+  ['r',['R',['../structR.html',1,'R'],['../structQ.html#a38d241dba8d07c681a5133821b887984',1,'Q::r()'],['../structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e',1,'VMHost::r()']]],
   ['receptor',['Receptor',['../structReceptor.html',1,'Receptor'],['../group__receptor.html',1,'(Global Namespace)']]],
   ['receptor_2ec',['receptor.c',['../receptor_8c.html',1,'']]],
   ['receptor_2eh',['receptor.h',['../receptor_8h.html',1,'']]],

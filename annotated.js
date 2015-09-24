@@ -1,6 +1,6 @@
 var annotated =
 [
-    [ "A", "structA.html", "structA" ],
+    [ "Accounting", "structAccounting.html", "structAccounting" ],
     [ "BranchPoint", "structBranchPoint.html", "structBranchPoint" ],
     [ "ContextStore", "structContextStore.html", "structContextStore" ],
     [ "Defs", "structDefs.html", "structDefs" ],
@@ -39,6 +39,7 @@ var annotated =
     [ "UT_hash_bucket", "structUT__hash__bucket.html", "structUT__hash__bucket" ],
     [ "UT_hash_handle", "structUT__hash__handle.html", "structUT__hash__handle" ],
     [ "UT_hash_table", "structUT__hash__table.html", "structUT__hash__table" ],
+    [ "UUIDt", "structUUIDt.html", "structUUIDt" ],
     [ "VMHost", "structVMHost.html", "structVMHost" ],
     [ "Xaddr", "structXaddr.html", "structXaddr" ]
 ];

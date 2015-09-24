@@ -115,6 +115,7 @@ $(document).ready(function(){initNavTree('tree_8c.html','');});
 <code>#include &quot;<a class="el" href="def_8h_source.html">def.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="receptor_8h_source.html">receptor.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="scape_8h_source.html">scape.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="util_8h_source.html">util.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for tree.c:</div>
 <div class="dyncontent">
@@ -145,12 +146,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>__t_append_child</b> 
 <tr class="memitem:abb5df17e0c52979d4579cb34d4b46a2d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abb5df17e0c52979d4579cb34d4b46a2d"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>__t_init</b> (<a class="el" href="structT.html">T</a> *t, <a class="el" href="structT.html">T</a> *parent, <a class="el" href="structSemanticID.html">Symbol</a> symbol)</td></tr>
 <tr class="separator:abb5df17e0c52979d4579cb34d4b46a2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab4426cfa823b6fc93bb8094fdf63f8cf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tree.html#gab4426cfa823b6fc93bb8094fdf63f8cf">__t_new</a> (<a class="el" href="structT.html">T</a> *parent, <a class="el" href="structSemanticID.html">Symbol</a> symbol, void *surface, size_t size, size_t alloc_size)</td></tr>
-<tr class="separator:gab4426cfa823b6fc93bb8094fdf63f8cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad19e9f2cb621a82e755f6c7796c9fe12"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tree.html#gad19e9f2cb621a82e755f6c7796c9fe12">__t_newi</a> (<a class="el" href="structT.html">T</a> *parent, <a class="el" href="structSemanticID.html">Symbol</a> symbol, int surface, size_t alloc_size)</td></tr>
-<tr class="separator:gad19e9f2cb621a82e755f6c7796c9fe12"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga14080e3aa32b1612dabcd610b062e376"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tree.html#ga14080e3aa32b1612dabcd610b062e376">_t_news</a> (<a class="el" href="structT.html">T</a> *parent, <a class="el" href="structSemanticID.html">Symbol</a> symbol, <a class="el" href="structSemanticID.html">SemanticID</a> surface)</td></tr>
-<tr class="separator:ga14080e3aa32b1612dabcd610b062e376"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga53abffe57c4ccf60c106a8a45d98d47d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tree.html#ga53abffe57c4ccf60c106a8a45d98d47d">__t_new</a> (<a class="el" href="structT.html">T</a> *parent, <a class="el" href="structSemanticID.html">Symbol</a> symbol, void *surface, size_t size, int is_run_node)</td></tr>
+<tr class="separator:ga53abffe57c4ccf60c106a8a45d98d47d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga916b027544c282ad6b75f71d53cf545d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tree.html#ga916b027544c282ad6b75f71d53cf545d">__t_newi</a> (<a class="el" href="structT.html">T</a> *parent, <a class="el" href="structSemanticID.html">Symbol</a> symbol, int surface, int is_run_node)</td></tr>
+<tr class="separator:ga916b027544c282ad6b75f71d53cf545d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4a9edd746e2d99a9358d8e0ee9248ad6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tree.html#ga4a9edd746e2d99a9358d8e0ee9248ad6">__t_news</a> (<a class="el" href="structT.html">T</a> *parent, <a class="el" href="structSemanticID.html">Symbol</a> symbol, <a class="el" href="structSemanticID.html">SemanticID</a> surface, int is_run_node)</td></tr>
+<tr class="separator:ga4a9edd746e2d99a9358d8e0ee9248ad6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga79cff1b1b9d692acc297634be059c6a9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tree.html#ga79cff1b1b9d692acc297634be059c6a9">_t_newt</a> (<a class="el" href="structT.html">T</a> *parent, <a class="el" href="structSemanticID.html">Symbol</a> symbol, <a class="el" href="structT.html">T</a> *surface)</td></tr>
 <tr class="separator:ga79cff1b1b9d692acc297634be059c6a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga87cb5cdb608c0048c5ae7e3249780a8c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tree.html#ga87cb5cdb608c0048c5ae7e3249780a8c">_t_new_str</a> (<a class="el" href="structT.html">T</a> *parent, <a class="el" href="structSemanticID.html">Symbol</a> symbol, char *surface)</td></tr>
@@ -161,9 +162,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>__t_init</b> (<a clas
 <tr class="separator:ga3e2009f5a82889263d560d2c1479606a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7fd137a24b6795e1fc25c50ba91a767f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tree.html#ga7fd137a24b6795e1fc25c50ba91a767f">_t_new_receptor</a> (<a class="el" href="structT.html">T</a> *parent, <a class="el" href="structSemanticID.html">Symbol</a> symbol, <a class="el" href="structReceptor.html">Receptor</a> *r)</td></tr>
 <tr class="separator:ga7fd137a24b6795e1fc25c50ba91a767f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a09ffc3b71a028f1c0c01d82c20661904"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a09ffc3b71a028f1c0c01d82c20661904"></a>
-<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>__t_new_special</b> (<a class="el" href="structT.html">T</a> *parent, <a class="el" href="structSemanticID.html">Symbol</a> symbol, void *s, size_t size, int flag, size_t alloc_size)</td></tr>
-<tr class="separator:a09ffc3b71a028f1c0c01d82c20661904"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1476fd965ec4493c4bcb932721a61ce"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa1476fd965ec4493c4bcb932721a61ce"></a>
+<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>__t_new_special</b> (<a class="el" href="structT.html">T</a> *parent, <a class="el" href="structSemanticID.html">Symbol</a> symbol, void *s, size_t size, int flag, int is_run_node)</td></tr>
+<tr class="separator:aa1476fd965ec4493c4bcb932721a61ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab0f78fac726577a933574041c95a590d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tree.html#gab0f78fac726577a933574041c95a590d">_t_new_scape</a> (<a class="el" href="structT.html">T</a> *parent, <a class="el" href="structSemanticID.html">Symbol</a> symbol, <a class="el" href="structScape.html">Scape</a> *s)</td></tr>
 <tr class="separator:gab0f78fac726577a933574041c95a590d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga519afafbfb5c4a13f01cc10e1f48cb28"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tree.html#ga519afafbfb5c4a13f01cc10e1f48cb28">_t_new_stream</a> (<a class="el" href="structT.html">T</a> *parent, <a class="el" href="structSemanticID.html">Symbol</a> symbol, <a class="el" href="structStream.html">Stream</a> *s)</td></tr>
@@ -240,6 +241,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>__t_free</b> (<a clas
 <tr class="separator:ga19506af36bcdf713253dabd47ecaa6e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga11e689c8dea5c022fe0e4c20652e5af5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tree.html#ga11e689c8dea5c022fe0e4c20652e5af5">_t_hash_equal</a> (TreeHash h1, TreeHash h2)</td></tr>
 <tr class="separator:ga11e689c8dea5c022fe0e4c20652e5af5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3bc51ddefc411f494fe5a6722f6802ba"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga3bc51ddefc411f494fe5a6722f6802ba"></a>
+<a class="el" href="structUUIDt.html">UUIDt</a>&#160;</td><td class="memItemRight" valign="bottom"><b>__uuid_gen</b> ()</td></tr>
+<tr class="separator:ga3bc51ddefc411f494fe5a6722f6802ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga88591763ab94f7aaab16279461fc8b6e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga88591763ab94f7aaab16279461fc8b6e"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>__uuid_equal</b> (<a class="el" href="structUUIDt.html">UUIDt</a> *u1, <a class="el" href="structUUIDt.html">UUIDt</a> *u2)</td></tr>
+<tr class="separator:ga88591763ab94f7aaab16279461fc8b6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4b3d9a3a1c1bc4a7fb710e96faf1d437"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tree.html#ga4b3d9a3a1c1bc4a7fb710e96faf1d437">__t_serialize</a> (<a class="el" href="structDefs.html">Defs</a> *d, <a class="el" href="structT.html">T</a> *t, void **bufferP, size_t offset, size_t current_size, int compact)</td></tr>
 <tr class="separator:ga4b3d9a3a1c1bc4a7fb710e96faf1d437"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf5f98525f4d48c29783c7b13235958c2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tree.html#gaf5f98525f4d48c29783c7b13235958c2">_t_serialize</a> (<a class="el" href="structDefs.html">Defs</a> *d, <a class="el" href="structT.html">T</a> *t, void **surfaceP, size_t *lengthP)</td></tr>
@@ -281,7 +288,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>__t_free</b> (<a clas
 </div><div class="memdoc">
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000042">Todo:</a></b></dt><dd>, figure out how to clone trees with non-reference things, like scapes &amp; streams... </dd></dl>
 
-<p>Definition at line <a class="el" href="tree_8c_source.html#l00471">471</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
+<p>Definition at line <a class="el" href="tree_8c_source.html#l00475">475</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
 
 </div>
 </div>
@@ -291,7 +298,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>__t_free</b> (<a clas
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="tree_8c.html">tree.c</a></li>
-    <li class="footer">Generated on Thu Sep 10 2015 15:47:27 for ceptr by
+    <li class="footer">Generated on Thu Sep 24 2015 11:00:58 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

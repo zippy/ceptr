@@ -8,7 +8,9 @@ var process__spec_8h =
     [ "testProcessExpectAct", "process__spec_8h.html#a92fe15b1ddfadae90bbc060890942632", null ],
     [ "testProcessIf", "process__spec_8h.html#a2df9138f71c0a1fa19bcb49682d51299", null ],
     [ "testProcessInterpolateMatch", "process__spec_8h.html#a33482e1fe9b248cf7724976c9c695d71", null ],
+    [ "testProcessInterpolateMatchFull", "process__spec_8h.html#a8eeaa106745537616fdcb50a23b0c86b", null ],
     [ "testProcessIntMath", "process__spec_8h.html#a5ab85708c742161c5c045e3d45accd36", null ],
+    [ "testProcessListen", "process__spec_8h.html#a90b4b5b026569d3f4e2f2a1905d0d788", null ],
     [ "testProcessMulti", "process__spec_8h.html#a014ab3883818d777171247160a556f70", null ],
     [ "testProcessQuote", "process__spec_8h.html#aa9de86d7a2b3405c0ec9072c661ed18c", null ],
     [ "testProcessRaise", "process__spec_8h.html#a471b5d0a036f4e2b8e0f8b7eaab9787a", null ],
@@ -20,5 +22,6 @@ var process__spec_8h =
     [ "testProcessSignatureMatching", "process__spec_8h.html#a631f59b6dead13d3e5de6645af9c05ba", null ],
     [ "testProcessStream", "process__spec_8h.html#a696fff28daa19fa54a1f7c77245387fc", null ],
     [ "testProcessString", "process__spec_8h.html#ad4216f4d7ecefcc81d04327546953a9b", null ],
-    [ "testRunTree", "process__spec_8h.html#ac4571cec1a9f70eded22140be940cc54", null ]
+    [ "testRunTree", "process__spec_8h.html#ac4571cec1a9f70eded22140be940cc54", null ],
+    [ "testRunTreeMaker", "process__spec_8h.html#ab4a9ca44fbfc069f366382623f72c75a", null ]
 ];
