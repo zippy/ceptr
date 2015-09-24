@@ -680,7 +680,7 @@ void _testReceptorClockAddListener(Receptor *r) {
 
 void testReceptorClock() {
     Receptor *r = _r_makeClockReceptor();
-    spec_is_str_equal(_td(r,r->root),"(CLOCK_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES (PROCESS_CODING (PROCESS_NAME:plant a listener to send the time) (PROCESS_INTENTION:long desc...) (process:LISTEN (PARAM_REF:/2/1) (PARAMS (RECEPTOR_ADDRESS:0) (TEST_STR_SYMBOL:fish)) (ACTION:SEND)) (INPUT) (OUTPUT_SIGNATURE))) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS (LISTENER:CLOCK_TELL_TIME (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:CLOCK_TELL_TIME) (SEMTREX_GROUP:EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:EXPECTATION))))) (PARAMS (INTERPOLATE_SYMBOL:EXPECTATION)) (ACTION:plant a listener to send the time))) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))");
+    spec_is_str_equal(_td(r,r->root),"(CLOCK_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES (PROCESS_CODING (PROCESS_NAME:plant a listener to send the time) (PROCESS_INTENTION:long desc...) (process:LISTEN (PARAM_REF:/2/1) (PARAMS (RECEPTOR_ADDRESS:0) (INTERPOLATE_SYMBOL:NULL_SYMBOL)) (ACTION:SEND)) (INPUT) (OUTPUT_SIGNATURE))) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS (LISTENER:CLOCK_TELL_TIME (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:CLOCK_TELL_TIME) (SEMTREX_GROUP:EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:EXPECTATION))))) (PARAMS (INTERPOLATE_SYMBOL:EXPECTATION)) (ACTION:plant a listener to send the time))) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))");
 
    /* The clock receptor acts as if it receives a signal with contents TICK (which is of TIMESTAMP structure) for every time that updates a magic scape with that time according to which listeners have been planted.  This means you can plant listeners based on a semtrex for any kind of time you want.  If you want the current time just plant a listener for TICK.  If you want to listen for every second plant a listener on the Symbol literal SECOND, and the clock receptor will trigger the listener every time the SECOND changes.  You can also listen for particular intervals and times by adding specificity to the semtrex, so to trigger a 3:30am action a-la-cron listen for: "/<TICK:(%HOUR=3,MINUTE=30)>"
        @todo we should also make the clock receptor also seem to send signals of other semantic formats, i.e. so it's easy to listen for things like "on Wednesdays", or other semantic date/time identifiers.
@@ -698,7 +698,7 @@ void testReceptorClock() {
     _p_reduceq(r->q);
 
     // the listener should have now been planted!
-    spec_is_str_equal(_td(r,_t_child(__r_get_listeners(r,DEFAULT_ASPECT),2)),"(LISTENER:NULL_SYMBOL (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TICK))) (PARAMS (RECEPTOR_ADDRESS:0) (TEST_STR_SYMBOL:fish)) (ACTION:SEND))");
+    spec_is_str_equal(_td(r,_t_child(__r_get_listeners(r,DEFAULT_ASPECT),2)),"(LISTENER:NULL_SYMBOL (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TICK))) (PARAMS (RECEPTOR_ADDRESS:0) (INTERPOLATE_SYMBOL:NULL_SYMBOL)) (ACTION:SEND))");
 
     // "run" the receptor and verify that listener gets activated
     pthread_t thread;
@@ -715,6 +715,9 @@ void testReceptorClock() {
     sleep(1);
     _p_reduceq(r->q);
 
+    // save the tick that was sent for comparison later to see if it's the one recieved
+    T *sent_tick = (T*)_t_surface(_t_child(_t_child(signals,2),2));
+
     // do manual signal delivery (code pulled from _v_deliver_signals but we don't
     // need the routing info in this case because we can just deliver to ourselves
 
@@ -728,16 +731,14 @@ void testReceptorClock() {
         }
     }
 
-    T *tick = __r_make_tick();
-    /* char buf1[100],buf2[100]; */
-    /* __td(r,tick,buf1); */
-    /* __td(r,_t_child(r->q->completed->context->run_tree,1),buf2); */
-    /* buf1[60]=0; buf2[60]=0; // minute and second may not match... */
-    /* spec_is_str_equal(buf1,buf2); */
+    char buf1[100];
+    __td(r,sent_tick,buf1);
 
     // the listener should have sent back the tick (which is right now "fish")
     signals = __r_get_signals(r,DEFAULT_ASPECT);
-    spec_is_str_equal(_td(r,_t_child(signals,3)),"(SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:0) (ASPECT:1) (SIGNAL_UUID)) (BODY:{(TEST_STR_SYMBOL:fish)}))");
+    T *received_tick = (T*)_t_surface(_t_child(_t_child(signals,3),2));
+
+    spec_is_str_equal(_td(r,received_tick),buf1);
 
     __r_kill(r);
 
@@ -749,7 +750,6 @@ void testReceptorClock() {
     }
 
     _r_free(r);
-    _t_free(tick);
 }
 
 void testReceptor() {

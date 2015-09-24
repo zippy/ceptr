@@ -736,8 +736,8 @@ Receptor *_r_makeClockReceptor() {
     ReceptorAddress to =  __r_get_self_address(r);
     _t_newi(params,RECEPTOR_ADDRESS,to);
 
-    //    _t_news(params,INTERPOLATE_SYMBOL,NULL_SYMBOL);  // the current tick
-    _t_new_str(params,TEST_STR_SYMBOL,"fish");
+    _t_news(params,INTERPOLATE_SYMBOL,NULL_SYMBOL);  // the current tick
+    //_t_new_str(params,TEST_STR_SYMBOL,"fish");
 
     T *action = _t_newp(x,ACTION,SEND);
 

@@ -56,19 +56,19 @@ void _p_interpolate_from_match(T *t,T *match_results,T *match_tree) {
         if (!x) {
             raise_error("expecting to get a value from match!!");
         }
-        _t_morph(t,x);
 
+        //@todo most contexts where we use interpolation are in run trees
+        // hence the rclone.  Perhaps there should be an option to this function
+        // to allow regular cloning?
+        x = _t_rclone(x);
+        _t_replace(_t_parent(t),_t_node_index(t),x);
+
+        t = x;
         // set the symbol to the interpolate type, not the matched item type
         // because this allows for type conversion on semtrex matching using
         // the semtrex group name to as the indicator of which the new type will be
         if (!semeq(s,NULL_SYMBOL)) // if match was on NULL_SYMBOL it's a full results match so use what we found
             t->contents.symbol = s;
-
-        // if the match has children, then we need to clone them in.
-        /// @todo determine if this should be moved into _t_morph
-        if (_t_children(t) == 0 && _t_children(x) > 0) {
-            DO_KIDS(x,_t_add(t,_t_clone(_t_child(x,i))));
-        }
     }
     DO_KIDS(t,_p_interpolate_from_match(_t_child(t,i),match_results,match_tree));
 }
