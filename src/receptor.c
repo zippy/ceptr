@@ -567,6 +567,12 @@ Error _r_deliver(Receptor *r, T *signal) {
                     Qe *e = __p_find_context(q->blocked,process_id);
                     if (e) {
                         T *result = _t_get(e->context->run_tree,code_path);
+                        // if the code path was from a signal on the flux, it's root
+                        // will be the receptor, so the first get will fail so try again
+                        if (!result) result = _t_get(r->root,code_path);
+                        // @todo that really wasn't very pretty, and what happens if that
+                        // fails?  how do we handle it!?
+                        if (!result) raise_error("failed to find code path when delivering response!");
                         T *response = (T *)_t_surface(_t_child(signal,2));
                         debug(D_SIGNALS,"unblocking for response %s\n",_td(r,response));
                         _t_replace(_t_parent(result),_t_node_index(result), __r_sanatize_response(response));
