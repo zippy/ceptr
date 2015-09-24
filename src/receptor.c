@@ -572,8 +572,9 @@ Error _r_deliver(Receptor *r, T *signal) {
                         _t_replace(_t_parent(result),_t_node_index(result), __r_sanatize_response(response));
                         __p_unblock(q,e);
                     }
+                    _t_detach_by_idx(r->pending_responses,i);
+                    _t_free(l);
                     pthread_mutex_unlock(&q->mutex);
-
                     break;
                 }
                 );

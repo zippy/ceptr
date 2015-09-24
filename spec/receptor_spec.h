@@ -161,11 +161,12 @@ void testReceptorResponseDeliver() {
 
     // and the run tree should now be active and have the response contents value
     // in place for reduction.
-    //    rt = r->q->active->context->run_tree;
+    rt = r->q->active->context->run_tree;
     spec_is_str_equal(_td(r,rt),"(RUN_TREE (process:NOOP (TEST_STR_SYMBOL:foo)))");
 
-    //    T *signals = __r_get_signals(r,DEFAULT_ASPECT);
-    // spec_is_str_equal(_td(r,signals),"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:3) (RECEPTOR_ADDRESS:4) (ASPECT:1) (SIGNAL_UUID)) (BODY:{(TEST_INT_SYMBOL:314)})))");
+    // and the pending_responses list should be cleared too
+    spec_is_str_equal(_td(r,r->pending_responses),"(PENDING_RESPONSES)");
+
     _t_free(s);
     _r_free(r);
 }
