@@ -474,6 +474,7 @@ void _t_free(T *t) {
 
 T *__t_clone(T *t,T *p) {
     T *nt;
+    if (t->context.flags & TFLAG_SURFACE_IS_TREE) raise_error("can't clone orth trees!");
     if (t->context.flags & TFLAG_ALLOCATED)
         nt = _t_new(p,_t_symbol(t),_t_surface(t),_t_size(t));
     else if (t->context.flags & TFLAG_SURFACE_IS_STREAM) {
@@ -489,6 +490,8 @@ T *__t_clone(T *t,T *p) {
 
 T *__t_rclone(T *t,T *p) {
     T *nt;
+    if (t->context.flags & TFLAG_SURFACE_IS_TREE) raise_error("can't clone orth trees!");
+
     if (t->context.flags & TFLAG_ALLOCATED)
         nt = __t_new(p,_t_symbol(t),_t_surface(t),_t_size(t),1);
     else if (t->context.flags & TFLAG_SURFACE_IS_STREAM) {

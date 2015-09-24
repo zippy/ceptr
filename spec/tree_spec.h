@@ -117,8 +117,8 @@ void testTreeStream() {
     spec_is_true(ts->context.flags & TFLAG_REFERENCE);
     spec_is_ptr_equal(_t_surface(ts),s);
     char *x = t2s(ts);
-    x[22]=0; // chop off the actual address cus that changes all the time
-    spec_is_str_equal(x,"(TEST_STREAM_SYMBOL:0x");
+    x[19]=0; // chop off the actual address cus that changes all the time
+    spec_is_str_equal(x,"(TEST_STREAM_SYMBOL");
 
     _t_free(ts);
     // note, for now we must handle all stream deallocation manually because _t_new_stream

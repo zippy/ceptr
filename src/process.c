@@ -304,7 +304,6 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
 
             ReceptorAddress from = __r_get_self_address(q->r);
             T *signal = __r_make_signal(from,to,DEFAULT_ASPECT,signal_contents);
-
             T *response_point = NULL;
             if (_t_children(code) == 0) {
                 err = Block;

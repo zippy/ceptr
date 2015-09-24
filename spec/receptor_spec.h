@@ -118,6 +118,7 @@ void testReceptorSignalDeliver() {
 
     T *signals = __r_get_signals(r,DEFAULT_ASPECT);
     spec_is_str_equal(_td(r,signals),"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:3) (RECEPTOR_ADDRESS:4) (ASPECT:1) (SIGNAL_UUID)) (BODY:{(TEST_INT_SYMBOL:314)})))");
+    _r_free(r);
 }
 
 void testReceptorResponseDeliver() {
@@ -127,14 +128,16 @@ void testReceptorResponseDeliver() {
     T *t = _t_new_root(RUN_TREE);
     T *p = _t_new_root(NOOP);
     T *send = _t_newr(p,SEND);
-    _t_newi(send,RECEPTOR_ADDRESS,0);
-    _t_newi(0,TEST_INT_SYMBOL,314);
+    _t_newi(send,RECEPTOR_ADDRESS,4);
+    _t_newi(send,TEST_INT_SYMBOL,98789);
     //    _t_newi(send,BOOLEAN,1); // mark async
 
     T *c = _t_rclone(p);
+    _t_free(p);
     _t_add(t,c);
     _p_addrt2q(r->q,t);
     _p_reduceq(r->q);
+
     // the run tree should now be blocked with the sending signal uuid in the place
     // where the response value should be filled and the pending responses list should
     // have the UUID and the code path in it
@@ -143,8 +146,8 @@ void testReceptorResponseDeliver() {
     spec_is_str_equal(_td(r,r->pending_responses),"(PENDING_RESPONSES (PENDING_RESPONSE (SIGNAL_UUID) (PROCESS_IDENT:1) (RESPONSE_CODE_PATH:/1/1)))");
 
     // create a response signals
-    ReceptorAddress from = 3; // DUMMY ADDR
-    ReceptorAddress to = 4; // DUMMY ADDR
+    ReceptorAddress from = 4; // DUMMY ADDR
+    ReceptorAddress to = 0; // DUMMY ADDR
     T *s = __r_make_signal(from,to,DEFAULT_ASPECT,_t_new_str(0,TEST_STR_SYMBOL,"foo"));
 
     // add the response uuid to the envelope
@@ -163,6 +166,8 @@ void testReceptorResponseDeliver() {
 
     //    T *signals = __r_get_signals(r,DEFAULT_ASPECT);
     // spec_is_str_equal(_td(r,signals),"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:3) (RECEPTOR_ADDRESS:4) (ASPECT:1) (SIGNAL_UUID)) (BODY:{(TEST_INT_SYMBOL:314)})))");
+    _t_free(s);
+    _r_free(r);
 }
 
 void testReceptorAction() {

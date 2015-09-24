@@ -458,6 +458,7 @@ T* __r_send_signal(Receptor *r,T *signal,T *response_point,int process_id) {
         _t_newi(pr,PROCESS_IDENT,process_id);
         int *path = _t_get_path(response_point);
         _t_new(pr,RESPONSE_CODE_PATH,path,sizeof(int)*(_t_path_depth(path)+1));
+        free(path);
     }
 
     return result;
@@ -521,9 +522,9 @@ void __r_check_listener(T* processes,T *listener,T *signal,Q *q) {
 }
 
 
-T* __r_sanatize_result(T* result) {
+T* __r_sanatize_response(T* response) {
     //@todo actually do the sanatizing!!!
-    return _t_rclone(result);
+    return _t_rclone(response);
 }
 
 /**
@@ -568,7 +569,7 @@ Error _r_deliver(Receptor *r, T *signal) {
                         T *result = _t_get(e->context->run_tree,code_path);
                         T *response = (T *)_t_surface(_t_child(signal,2));
                         debug(D_SIGNALS,"unblocking for response %s\n",_td(r,response));
-                        _t_replace(_t_parent(result),_t_node_index(result), __r_sanatize_result(response));
+                        _t_replace(_t_parent(result),_t_node_index(result), __r_sanatize_response(response));
                         __p_unblock(q,e);
                     }
                     pthread_mutex_unlock(&q->mutex);
