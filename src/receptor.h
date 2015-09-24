@@ -56,7 +56,7 @@ Receptor * _r_unserialize(void *surface);
 /******************  receptor signaling */
 
 T * __r_make_signal(ReceptorAddress from,ReceptorAddress to,Aspect aspect,T *signal_contents);
-T* __r_send_signal(Receptor *r,T *signal);
+T* __r_send_signal(Receptor *r,T *signal,T *response_point,int process_id);
 void __r_check_listener(T* processes,T *listener,T *signal,Q *q);
 Error _r_deliver(Receptor *r, T *signal);
 

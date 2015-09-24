@@ -297,7 +297,7 @@ void testProcessRespond() {
     T *n = _t_newr(run_tree,RESPOND);
     T *response_contents = _t_newi(n,TEST_INT_SYMBOL,271);
 
-    R *c = __p_make_context(run_tree,0);
+    R *c = __p_make_context(run_tree,0,0);
 
     // if this is a run-tree that's not a child of a signal we can't respond!
     spec_is_equal(__p_reduce_sys_proc(c,RESPOND,n,0),notInSignalContextReductionError);
@@ -310,10 +310,10 @@ void testProcessRespond() {
     // it should create a response signal with the source UUID as the responding to UUID (5 position)
     spec_is_equal(__p_reduce_sys_proc(c,RESPOND,n,r->q),noReductionErr);
     spec_is_str_equal(t2s(n),"(SIGNAL_UUID)");
-    spec_is_str_equal(_td(r,r->q->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:4) (RECEPTOR_ADDRESS:3) (ASPECT:1) (SIGNAL_UUID) (SIGNAL_UUID)) (BODY:{(TEST_INT_SYMBOL:271)})))");
+    spec_is_str_equal(_td(r,r->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:4) (RECEPTOR_ADDRESS:3) (ASPECT:1) (SIGNAL_UUID) (SIGNAL_UUID)) (BODY:{(TEST_INT_SYMBOL:271)})))");
     T *u1 = _t_child(_t_child(s,1),4);
     int p[] = {1,1,5,TREE_PATH_TERMINATOR};
-    T *u2 = _t_get(r->q->pending_signals,p);
+    T *u2 = _t_get(r->pending_signals,p);
     spec_is_true(__uuid_equal(_t_surface(u1),_t_surface(u2)));
 
     _p_free_context(c);
@@ -333,20 +333,12 @@ void testProcessSend() {
 
     Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
 
-    // test the basic sys_process reduction which should produce the symbol and set the state to Send
-    // for reduceq to know what to do
-    spec_is_equal(Block,__p_reduce_sys_proc(0,SEND,code,r->q));
-    spec_is_str_equal(t2s(code),"(SIGNAL_UUID)");
-    spec_is_str_equal(_td(r,r->q->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:3) (ASPECT:1) (SIGNAL_UUID)) (BODY:{(TEST_INT_SYMBOL:314)})))");
-
-    _t_free(code);
-
     // test the reduction at the reduceq level where it can handle taking the signal and queuing it
     T *run_tree = __p_build_run_tree(p,0);
 
     // add the run tree into a queue and run it
     Q *q = r->q;
-    T *ps = q->pending_signals;
+    T *ps = r->pending_signals;
     _p_addrt2q(q,run_tree);
 
     Qe *e = q->active;
@@ -354,17 +346,20 @@ void testProcessSend() {
 
     // after reduction the context should be in the blocked state
     // and the signal should be on the pending signals list
+    // the UUID should be in pending responses list
     spec_is_equal(_p_reduceq(q),noReductionErr);
-
     spec_is_equal(q->contexts_count,0);
     spec_is_ptr_equal(q->blocked,e);
     spec_is_equal(c->state,Block);
+    spec_is_str_equal(_td(r,r->pending_responses),"(PENDING_RESPONSES (PENDING_RESPONSE (SIGNAL_UUID) (PROCESS_IDENT:11) (RESPONSE_CODE_PATH:/1)))");
 
     // send reduces to the UUID generated for the sent signal
     spec_is_str_equal(t2s(run_tree),"(RUN_TREE (SIGNAL_UUID) (PARAMS))");
-    spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:3) (ASPECT:1) (SIGNAL_UUID)) (BODY:{(TEST_INT_SYMBOL:314)})) (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:3) (ASPECT:1) (SIGNAL_UUID)) (BODY:{(TEST_INT_SYMBOL:314)})))");
+    spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:3) (ASPECT:1) (SIGNAL_UUID)) (BODY:{(TEST_INT_SYMBOL:314)})))");
 
     _p_freeq(q);
+    // clear off the signal in the list
+    _t_free(_t_detach_by_idx(r->pending_signals,1));
 
     // now test the asynchronous send case
     _t_newi(p,BOOLEAN,1);
@@ -372,7 +367,7 @@ void testProcessSend() {
     run_tree = __p_build_run_tree(p,0);
 
     r->q = q = _p_newq(r);
-    ps = q->pending_signals;
+    ps = r->pending_signals;
     _p_addrt2q(q,run_tree);
 
     e = q->active;
@@ -604,7 +599,9 @@ void testProcessReduce() {
     T *c = _t_rclone(n);
     _t_add(t,c);
 
-    R *context = __p_make_context(t,0);
+    R *context = __p_make_context(t,0,99);
+
+    spec_is_equal(context->id,99);
 
     // build a fake Receptor and Q on the stack so _p_step will work
     Receptor r;

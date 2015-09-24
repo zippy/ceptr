@@ -37,6 +37,8 @@ Receptor *__r_new(Symbol s,T *defs,T *aspects) {
     _t_newr(a,LISTENERS);
     _t_newr(a,SIGNALS);
     _t_newr(r->root,RECEPTOR_STATE);
+    r->pending_signals = _t_newr(r->root,PENDING_SIGNALS);
+    r->pending_responses = _t_newr(r->root,PENDING_RESPONSES);
 
     r->table = NULL;
     r->instances = NULL;
@@ -443,14 +445,21 @@ T* __r_make_signal(ReceptorAddress from,ReceptorAddress to,Aspect aspect,T *sign
  * @param[out] T result tree
  * @todo signal should have timestamps and other meta info
  */
-T* __r_send_signal(Receptor *r,T *signal) {
+T* __r_send_signal(Receptor *r,T *signal,T *response_point,int process_id) {
     debug(D_SIGNALS,"sending %s\n",_t2s(&r->defs,signal));
 
-    _t_add(r->q->pending_signals,signal);
+    _t_add(r->pending_signals,signal);
 
     //@todo for now we return the UUID of the signal as the result.  Perhaps later we return an error condition if delivery to address is known to be impossible, or something like that.
-
     T *result = _t_rclone(_t_child(_t_child(signal,1),4));
+    if (response_point) {
+        T *pr = _t_newr(r->pending_responses,PENDING_RESPONSE);
+        _t_add(pr,_t_clone(result));
+        _t_newi(pr,PROCESS_IDENT,process_id);
+        int *path = _t_get_path(response_point);
+        _t_new(pr,RESPONSE_CODE_PATH,path,sizeof(int)*(_t_path_depth(path)+1));
+    }
+
     return result;
 }
 
@@ -467,12 +476,12 @@ void __r_check_listener(T* processes,T *listener,T *signal,Q *q) {
     // if we get a match, create a run tree from the action, using the match and signal as the parameters
     T *stx = _t_news(0,SEMTREX_GROUP,NULL_SYMBOL);
     _t_add(stx,_t_clone(_t_child(e,1)));
-    debug(D_SIGNALS,"testing %s\n",t2s(signal_contents));
-    debug(D_SIGNALS,"against %s\n",t2s(stx));
+    debug(D_SIGNALS,"testing %s\n",_td(q->r,signal_contents));
+    debug(D_SIGNALS,"against %s\n",_td(q->r,stx));
 
     if (_t_matchr(stx,signal_contents,&m)) {
 
-        debug(D_SIGNALS,"got a match on %s\n",t2s(stx));
+        debug(D_SIGNALS,"got a match on %s\n",_td(q->r,stx));
 
         T *rt=0;
         T *action = _t_child(listener,3);
@@ -511,12 +520,20 @@ void __r_check_listener(T* processes,T *listener,T *signal,Q *q) {
     _t_free(stx);
 }
 
+
+T* __r_sanatize_result(T* result) {
+    //@todo actually do the sanatizing!!!
+    return _t_rclone(result);
+}
+
 /**
- * Send a signal to a receptor on a given aspect
+ * Send a signal to a receptor
  *
- * This function adds the signal to the flux, runs all the listeners on the aspect to see if the
- * signal matches any expectation, and if so, builds action run-trees and adds them to receptor's
- * process queue.
+ * This function checks to see if the signal is a response and if so activates the run-tree/action that's
+ * waiting for that response with the signal contents as the response value/param
+ * or, if it's a new signal, adds it to the flux, and then runs through all the
+ * listeners on the aspect the signal was sent on to see if it matches any expectation, and if so, builds
+ * action run-trees and adds them to receptor's process queue.
  *
  * @param[in] r destination receptor
  * @param[in] signal signal to be delivered to the receptor
@@ -532,20 +549,49 @@ Error _r_deliver(Receptor *r, T *signal) {
     T *l;
 
     T *envelope = _t_child(signal,1);
-    Aspect aspect = *(Aspect *)_t_surface(_t_child(envelope,3));
 
-    T *as = __r_get_signals(r,aspect);
+    // see if there's an in-response to UUID (position 5 of the envelope)
+    T *response_id=_t_child(envelope,5);
+    if (response_id) {
+        UUIDt *u = (UUIDt*)_t_surface(response_id);
+        debug(D_SIGNALS,"Delivering response: %s\n",_td(r,signal));
+        DO_KIDS(r->pending_responses,
+                l = _t_child(r->pending_responses,i);
+                if (__uuid_equal(u,(UUIDt *)_t_surface(_t_child(l,1)))) {
+                    int process_id = *(int *)_t_surface(_t_child(l,2));
+                    int *code_path = (int *)_t_surface(_t_child(l,3));
+                    int x;
+                    Q *q = r->q;
+                    pthread_mutex_lock(&q->mutex);
+                    Qe *e = __p_find_context(q->blocked,process_id);
+                    if (e) {
+                        T *result = _t_get(e->context->run_tree,code_path);
+                        T *response = (T *)_t_surface(_t_child(signal,2));
+                        debug(D_SIGNALS,"unblocking for response %s\n",_td(r,response));
+                        _t_replace(_t_parent(result),_t_node_index(result), __r_sanatize_result(response));
+                        __p_unblock(q,e);
+                    }
+                    pthread_mutex_unlock(&q->mutex);
 
-    _t_add(as,signal);
-    debug(D_SIGNALS,"Delivering: %s\n",_td(r,signal));
-    // walk through all the listeners on the aspect and see if any expectations match this incoming signal
-    T *ls = __r_get_listeners(r,aspect);
+                    break;
+                }
+                );
+    }
+    else {
+        Aspect aspect = *(Aspect *)_t_surface(_t_child(envelope,3));
 
-    DO_KIDS(ls,
-            l = _t_child(ls,i);
-            __r_check_listener(r->defs.processes,l,signal,r->q);
-            );
+        T *as = __r_get_signals(r,aspect);
 
+        debug(D_SIGNALS,"Delivering: %s\n",_td(r,signal));
+        _t_add(as,signal);
+        // walk through all the listeners on the aspect and see if any expectations match this incoming signal
+        T *ls = __r_get_listeners(r,aspect);
+
+        DO_KIDS(ls,
+                l = _t_child(ls,i);
+                __r_check_listener(r->defs.processes,l,signal,r->q);
+                );
+    }
     return noDeliveryErr;
 }
 

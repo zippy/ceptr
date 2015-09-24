@@ -57,7 +57,7 @@ void testReceptorCreate() {
     spec_is_symbol_equal(r,_t_symbol(t),ASPECT);
     spec_is_equal(*(int *)_t_surface(t),DEFAULT_ASPECT);
 
-    spec_is_str_equal(t2s(r->root),"(TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))) (RECEPTOR_STATE))");
+    spec_is_str_equal(t2s(r->root),"(TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))");
 
     _r_free(r);
     //! [testReceptorCreate]
@@ -104,6 +104,65 @@ void testReceptorSignal() {
 
     _t_free(s);
     _r_free(r);
+}
+
+void testReceptorSignalDeliver() {
+    Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
+    T *signal_contents = _t_newi(0,TEST_INT_SYMBOL,314);
+    ReceptorAddress f = 3; // DUMMY ADDR
+    ReceptorAddress t = 4; // DUMMY ADDR
+
+    // a new signal should simply be placed on the flux when delivered
+    T *s = __r_make_signal(f,t,DEFAULT_ASPECT,signal_contents);
+    spec_is_equal(_r_deliver(r,s),noDeliveryErr);
+
+    T *signals = __r_get_signals(r,DEFAULT_ASPECT);
+    spec_is_str_equal(_td(r,signals),"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:3) (RECEPTOR_ADDRESS:4) (ASPECT:1) (SIGNAL_UUID)) (BODY:{(TEST_INT_SYMBOL:314)})))");
+}
+
+void testReceptorResponseDeliver() {
+    Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
+
+    // set up receptor to have sent and signal and blocked waiting for the response
+    T *t = _t_new_root(RUN_TREE);
+    T *p = _t_new_root(NOOP);
+    T *send = _t_newr(p,SEND);
+    _t_newi(send,RECEPTOR_ADDRESS,0);
+    _t_newi(0,TEST_INT_SYMBOL,314);
+    //    _t_newi(send,BOOLEAN,1); // mark async
+
+    T *c = _t_rclone(p);
+    _t_add(t,c);
+    _p_addrt2q(r->q,t);
+    _p_reduceq(r->q);
+    // the run tree should now be blocked with the sending signal uuid in the place
+    // where the response value should be filled and the pending responses list should
+    // have the UUID and the code path in it
+    T *rt = r->q->blocked->context->run_tree;
+    spec_is_str_equal(_td(r,rt),"(RUN_TREE (process:NOOP (SIGNAL_UUID)))");
+    spec_is_str_equal(_td(r,r->pending_responses),"(PENDING_RESPONSES (PENDING_RESPONSE (SIGNAL_UUID) (PROCESS_IDENT:1) (RESPONSE_CODE_PATH:/1/1)))");
+
+    // create a response signals
+    ReceptorAddress from = 3; // DUMMY ADDR
+    ReceptorAddress to = 4; // DUMMY ADDR
+    T *s = __r_make_signal(from,to,DEFAULT_ASPECT,_t_new_str(0,TEST_STR_SYMBOL,"foo"));
+
+    // add the response uuid to the envelope
+    T *response_id = _t_clone(_t_child(_t_child(rt,1),1));
+    _t_add(_t_child(s,1),response_id);
+
+    spec_is_equal(_r_deliver(r,s),noDeliveryErr);
+
+    // block list should now be empty
+    spec_is_ptr_equal(r->q->blocked,NULL);
+
+    // and the run tree should now be active and have the response contents value
+    // in place for reduction.
+    //    rt = r->q->active->context->run_tree;
+    spec_is_str_equal(_td(r,rt),"(RUN_TREE (process:NOOP (TEST_STR_SYMBOL:foo)))");
+
+    //    T *signals = __r_get_signals(r,DEFAULT_ASPECT);
+    // spec_is_str_equal(_td(r,signals),"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:3) (RECEPTOR_ADDRESS:4) (ASPECT:1) (SIGNAL_UUID)) (BODY:{(TEST_INT_SYMBOL:314)})))");
 }
 
 void testReceptorAction() {
@@ -169,7 +228,7 @@ void testReceptorAction() {
     _p_reduceq(r->q);
 
     // should add a pending signal to be sent with the matched PATH_SEGMENT returned as the response signal body
-    spec_is_str_equal(_td(r,r->q->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:4) (RECEPTOR_ADDRESS:3) (ASPECT:1) (SIGNAL_UUID) (SIGNAL_UUID)) (BODY:{(HTTP_RESPONSE (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT) (HTTP_REQUEST_PATH_SEGMENT:groups))})))");
+    spec_is_str_equal(_td(r,r->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:4) (RECEPTOR_ADDRESS:3) (ASPECT:1) (SIGNAL_UUID) (SIGNAL_UUID)) (BODY:{(HTTP_RESPONSE (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT) (HTTP_REQUEST_PATH_SEGMENT:groups))})))");
 
     result = _t_child(r->q->completed->context->run_tree,1);
     spec_is_str_equal(_td(r,result),"(SIGNAL_UUID)");
@@ -380,7 +439,7 @@ void testReceptorProtocol() {
     d = _td(r,result);
     spec_is_str_equal(d,"(SIGNAL_UUID)");
 
-    d = _td(r,r->q->pending_signals);
+    d = _td(r,r->pending_signals);
     spec_is_str_equal(d,"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:4) (RECEPTOR_ADDRESS:3) (ASPECT:1) (SIGNAL_UUID) (SIGNAL_UUID)) (BODY:{(alive_message:1)})))");
     //    _t_free(result);
     _r_free(r);
@@ -560,7 +619,7 @@ void testReceptorEdgeStream() {
 
     /// @todo @fixme we get an empty line signal because STREAM_AVAILABLE still reads true just before the last
     // STREAM_READ which fails.  This shouldn't actually have produced a signal...
-    spec_is_str_equal(_td(r,r->q->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:1) (ASPECT:1) (SIGNAL_UUID)) (BODY:{(LINE:line1)})) (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:1) (ASPECT:1) (SIGNAL_UUID)) (BODY:{(LINE:line2)})) (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:1) (ASPECT:1) (SIGNAL_UUID)) (BODY:{(LINE:)})))");
+    spec_is_str_equal(_td(r,r->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:1) (ASPECT:1) (SIGNAL_UUID)) (BODY:{(LINE:line1)})) (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:1) (ASPECT:1) (SIGNAL_UUID)) (BODY:{(LINE:line2)})) (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:1) (ASPECT:1) (SIGNAL_UUID)) (BODY:{(LINE:)})))");
 
     // manually run the signal sending code
     _v_deliver_signals(v,r);
@@ -569,7 +628,7 @@ void testReceptorEdgeStream() {
     spec_is_str_equal(_td(w,__r_get_signals(w,DEFAULT_ASPECT)),"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:2) (RECEPTOR_ADDRESS:1) (ASPECT:1) (SIGNAL_UUID)) (BODY:{(LINE:line1)}) (RUN_TREE (process:STREAM_WRITE (TEST_STREAM_SYMBOL) (PARAM_REF:/2/1)) (PARAMS (LINE:line1)))) (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:2) (RECEPTOR_ADDRESS:1) (ASPECT:1) (SIGNAL_UUID)) (BODY:{(LINE:line2)}) (RUN_TREE (process:STREAM_WRITE (TEST_STREAM_SYMBOL) (PARAM_REF:/2/1)) (PARAMS (LINE:line2)))) (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:2) (RECEPTOR_ADDRESS:1) (ASPECT:1) (SIGNAL_UUID)) (BODY:{(LINE:)}) (RUN_TREE (process:STREAM_WRITE (TEST_STREAM_SYMBOL) (PARAM_REF:/2/1)) (PARAMS (LINE:)))))");
 
     // and that they've been removed from process queue pending signals list
-    spec_is_str_equal(_td(r,r->q->pending_signals),"(PENDING_SIGNALS)");
+    spec_is_str_equal(_td(r,r->pending_signals),"(PENDING_SIGNALS)");
 
     spec_is_str_equal(_td(w,w->q->active->context->run_tree),"(RUN_TREE (process:STREAM_WRITE (TEST_STREAM_SYMBOL) (PARAM_REF:/2/1)) (PARAMS (LINE:line1)))");
 
@@ -615,9 +674,9 @@ void _testReceptorClockAddListener(Receptor *r) {
 
 void testReceptorClock() {
     Receptor *r = _r_makeClockReceptor();
-    spec_is_str_equal(_td(r,r->root),"(CLOCK_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES (PROCESS_CODING (PROCESS_NAME:plant a listener to send the time) (PROCESS_INTENTION:long desc...) (process:LISTEN (PARAM_REF:/2/1) (PARAMS (RECEPTOR_ADDRESS:0) (TEST_STR_SYMBOL:fish)) (ACTION:SEND)) (INPUT) (OUTPUT_SIGNATURE))) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS (LISTENER:CLOCK_TELL_TIME (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:CLOCK_TELL_TIME) (SEMTREX_GROUP:EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:EXPECTATION))))) (PARAMS (INTERPOLATE_SYMBOL:EXPECTATION)) (ACTION:plant a listener to send the time))) (SIGNALS))) (RECEPTOR_STATE))");
+    spec_is_str_equal(_td(r,r->root),"(CLOCK_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES (PROCESS_CODING (PROCESS_NAME:plant a listener to send the time) (PROCESS_INTENTION:long desc...) (process:LISTEN (PARAM_REF:/2/1) (PARAMS (RECEPTOR_ADDRESS:0) (TEST_STR_SYMBOL:fish)) (ACTION:SEND)) (INPUT) (OUTPUT_SIGNATURE))) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS (LISTENER:CLOCK_TELL_TIME (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:CLOCK_TELL_TIME) (SEMTREX_GROUP:EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:EXPECTATION))))) (PARAMS (INTERPOLATE_SYMBOL:EXPECTATION)) (ACTION:plant a listener to send the time))) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))");
 
-    /* The clock receptor acts as if it receives a signal with contents TICK (which is of TIMESTAMP structure) for every time that updates a magic scape with that time according to which listeners have been planted.  This means you can plant listeners based on a semtrex for any kind of time you want.  If you want the current time just plant a listener for TICK.  If you want to listen for every second plant a listener on the Symbol literal SECOND, and the clock receptor will trigger the listener every time the SECOND changes.  You can also listen for particular intervals and times by adding specificity to the semtrex, so to trigger a 3:30am action a-la-cron listen for: "/<TICK:(%HOUR=3,MINUTE=30)>"
+   /* The clock receptor acts as if it receives a signal with contents TICK (which is of TIMESTAMP structure) for every time that updates a magic scape with that time according to which listeners have been planted.  This means you can plant listeners based on a semtrex for any kind of time you want.  If you want the current time just plant a listener for TICK.  If you want to listen for every second plant a listener on the Symbol literal SECOND, and the clock receptor will trigger the listener every time the SECOND changes.  You can also listen for particular intervals and times by adding specificity to the semtrex, so to trigger a 3:30am action a-la-cron listen for: "/<TICK:(%HOUR=3,MINUTE=30)>"
        @todo we should also make the clock receptor also seem to send signals of other semantic formats, i.e. so it's easy to listen for things like "on Wednesdays", or other semantic date/time identifiers.
      */
 
@@ -628,7 +687,7 @@ void testReceptorClock() {
     _sl(e,TICK);
 
     T *signal = __r_make_signal(self,self,DEFAULT_ASPECT,tell);
-    debug_enable(D_SIGNALS);
+    // debug_enable(D_SIGNALS);
     _r_deliver(r,signal);
     _p_reduceq(r->q);
 
@@ -676,6 +735,8 @@ void testReceptor() {
     testReceptorCreate();
     testReceptorAddListener();
     testReceptorSignal();
+    testReceptorSignalDeliver();
+    testReceptorResponseDeliver();
     testReceptorAction();
     testReceptorDef();
     testReceptorDefMatch();

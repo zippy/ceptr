@@ -173,7 +173,7 @@ void __v_activate(VMHost *v, Receptor *r) {
  */
 void _v_send(VMHost *v,ReceptorAddress from,ReceptorAddress to,Aspect aspect,T *contents) {
     T *s = __r_make_signal(from,to,aspect,contents);
-    T *x = __r_send_signal(v->r,s);
+    T *x = __r_send_signal(v->r,s,0,0);
     _t_free(x);
 }
 
@@ -183,7 +183,7 @@ void _v_send(VMHost *v,ReceptorAddress from,ReceptorAddress to,Aspect aspect,T *
 void _v_send_signals(VMHost *v,T *signals) {
     while(_t_children(signals)>0) {
         T *s = _t_detach_by_idx(signals,1);
-        T *r = __r_send_signal(v->r,s);
+        T *r = __r_send_signal(v->r,s,0,0);
         _t_free(r);  //@todo WHAT????  throwing away the rsult??
     }
 }
@@ -215,7 +215,7 @@ Xaddr __v_get_receptor_xaddr(Instances *instances,Receptor *r) {
  * scaffolding function for signal delivery
  */
 void _v_deliver_signals(VMHost *v, Receptor *sender) {
-    T *signals = sender->q->pending_signals;
+    T *signals = sender->pending_signals;
 
     Instances *receptor_instances = &v->r->instances;
 

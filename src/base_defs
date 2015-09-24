@@ -74,6 +74,11 @@ Symbol: SIGNAL,TREE;                        a signal on the flux.  It's first ch
 Symbol: ENVELOPE,LIST;
 Symbol: BODY,TREE;
 Symbol: SIGNAL_UUID,UUID;
+Symbol: PENDING_SIGNALS,LIST;               list of signals pending to be sent by the VM_HOST
+Symbol: PENDING_RESPONSES,LIST;
+Symbol: PENDING_RESPONSE,LIST;
+Symbol: RESPONSE_CODE_PATH,TREE_PATH;
+Symbol: PROCESS_IDENT,INTEGER;
 Symbol: LISTENERS,LIST;                     list of carrier/expectation/action tress that "listen" to changes on the flux
 Symbol: LISTENER,SYMBOL;                    surface of the listener is the carrier symbol, and it has two children_ID, expectation semtrex and action code tree
 Symbol: EXPECTATION,SEMTREX;                expectation is a semtrex (thus has one child which is the first part of the semtrex)
@@ -117,7 +122,6 @@ Symbol: RECEPTOR_PACKAGE,TREE;            a manifest, a symbol declaration tree,
 Symbol: RECEPTOR_IDENTIFIER,INTEGER;      uuid that identifies receptors
 Symbol: INSTALLED_RECEPTOR,TREE;          contains the installed receptor as well as state information (enabled,disabled_ID, etc..)
 Symbol: ACTIVE_RECEPTORS,LIST;            List of currently active INSTALLED_RECEPTORS
-Symbol: PENDING_SIGNALS,LIST;             list of signals pending to be sent by the VM_HOST
 Symbol: BINDINGS,TREE;                    specifics that match a MANIFEST and allow a receptor to be installed
 Symbol: BINDING_PAIR,LIST;                a pair that matches a MANIFEST_LABEL with a given binding
 

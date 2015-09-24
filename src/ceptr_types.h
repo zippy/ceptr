@@ -182,6 +182,7 @@ typedef struct Defs {
 // run-tree context
 typedef struct R R;
 struct R {
+    int id;           ///< the process id this context exists in
     int err;          ///< process error value
     int state;        ///< process state machine state
     T *run_tree;      ///< pointer to the root of the run_tree
@@ -201,6 +202,7 @@ struct Accounting {
 // Processing Queue element
 typedef struct Qe Qe;
 struct Qe {
+    int id;
     R *context;
     Accounting accounts;
     Qe *next;
@@ -219,7 +221,6 @@ struct Q {
     Qe *active;          ///< active processes
     Qe *completed;       ///< completed processes (pending cleanup)
     Qe *blocked;         ///< blocked processes
-    T *pending_signals;  ///< slot for signals that need to be delivered for this process
     pthread_mutex_t mutex;
 };
 
@@ -236,6 +237,10 @@ struct Receptor {
     T *root;             ///< root node of the semantic tree
     Defs defs;           ///< defs block
     T *flux;             ///< pointer for quick access to the flux
+    T *pending_signals;
+    T *pending_responses;
+    pthread_mutex_t pending_signals_mutex;
+    pthread_mutex_t pending_responses_mutex;
     LabelTable table;    ///< the label table
     Instances instances; ///< the instances store
     Q *q;                ///< process queue

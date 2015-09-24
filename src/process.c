@@ -249,7 +249,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
 
             T *response = __r_make_signal(from,to,a,response_contents);
             _t_new(_t_child(response,1),SIGNAL_UUID,&uuid,sizeof(UUIDt));
-            x = __r_send_signal(q->r,response);
+            x = __r_send_signal(q->r,response,0,0);
 
             //            _t_add(signals,_t_clone(response));
         }
@@ -304,14 +304,18 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
 
             ReceptorAddress from = __r_get_self_address(q->r);
             T *signal = __r_make_signal(from,to,DEFAULT_ASPECT,signal_contents);
-            x = __r_send_signal(q->r,signal);
 
-            if (_t_children(code) == 0) err = Block;
+            T *response_point = NULL;
+            if (_t_children(code) == 0) {
+                err = Block;
+                response_point = code;
+            }
             else {
                 t = _t_detach_by_idx(code,1);
                 /// @todo timeout or callback or whatever the heck in the async case
                 _t_free(t);
             }
+            x = __r_send_signal(q->r,signal,response_point,context->id);
         }
         break;
     case INTERPOLATE_FROM_MATCH_ID:
@@ -527,8 +531,9 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
 /**
  * create a run-tree execution context.
  */
-R *__p_make_context(T *run_tree,R *caller) {
+R *__p_make_context(T *run_tree,R *caller,int process_id) {
     R *context = malloc(sizeof(R));
+    context->id = process_id;
     context->state = Eval;
     context->err = 0;
     context->run_tree = run_tree;
@@ -588,23 +593,35 @@ void _p_enqueue(Qe **listP,Qe *e) {
     __p_enqueue(*listP,e);
 }
 
-/**
- * search for the context in the q and unblock it interpolating the waiting
- * process with the match results first
- */
-Error _p_unblock(Q *q,R *context) {
-    // find the context in the queue
-    Qe *e = q->blocked;
-    while (e && e->context != context) e = e->next;
-    if (!e) {raise_error("contextNotFoundErr");}
+Qe *__p_find_context(Qe *e,int process_id) {
+    while (e && e->id != process_id) e = e->next;
+    return e;
+}
 
-    pthread_mutex_lock(&q->mutex);
+// low level unblock. Should be called only when q mutex is locked
+void __p_unblock(Q *q,Qe *e) {
     __p_dequeue(q->blocked,e);
     __p_enqueue(q->active,e);
     q->contexts_count++;
-    pthread_mutex_unlock(&q->mutex);
+    e->context->state = Eval;
+}
 
-    context->state = Eval;
+/**
+ * search for the context in the q and unblock it
+ */
+Error _p_unblock(Q *q,R *context) {
+    // find the context in the queue
+    int err = 0;
+    pthread_mutex_lock(&q->mutex);
+    Qe *e = __p_find_context(q->blocked,context->id);
+    if (e) {
+        __p_unblock(q,e);
+    }
+    else {
+        err = 1;
+    }
+    pthread_mutex_unlock(&q->mutex);
+    return err;
 }
 
 /**
@@ -624,7 +641,7 @@ Error _p_unblock(Q *q,R *context) {
  */
 Error _p_reduce(Defs *defs,T *rt) {
     T *run_tree = rt;
-    R *context = __p_make_context(run_tree,0);
+    R *context = __p_make_context(run_tree,0,0);
     Error e;
 
     // build a fake Receptor and Q on the stack so _p_step will work
@@ -658,7 +675,7 @@ Error _p_step(Q *q, R **contextP) {
     switch(context->state) {
     case noReductionErr:
     case Block:
-        raise_error("whoa, virtual states can't be executed!"); // shouldn't be calling step if Done or noErr or Block or Send
+        raise_error("whoa, virtual states can't be executed!"); // shouldn't be calling step if Done or noErr or Block
         break;
     case Pop:
         // if this was the successful reduction by an error handler
@@ -766,7 +783,7 @@ Error _p_step(Q *q, R **contextP) {
                         else {
                             T *run_tree = __p_make_run_tree(defs->processes,s,np);
                             context->state = Pushed;
-                            *contextP = __p_make_context(run_tree,context);
+                            *contextP = __p_make_context(run_tree,context,context->id);
                         }
                     }
                     else {
@@ -974,7 +991,7 @@ Q *_p_newq(Receptor *r) {
     q->active = NULL;
     q->completed = NULL;
     q->blocked = NULL;
-    q->pending_signals = _t_new_root(PENDING_SIGNALS);
+    //    q->pending_signals = _t_new_root(PENDING_SIGNALS);
     pthread_mutex_init(&(q->mutex), NULL);
     return q;
 }
@@ -1013,10 +1030,10 @@ void _p_freeq(Q *q) {
     _p_free_elements(q->active);
     _p_free_elements(q->completed);
     _p_free_elements(q->blocked);
-    _t_free(q->pending_signals);
     free(q);
 }
 
+int G_process_ids =0;
 /**
  * add a run tree into a processing queue
  *
@@ -1024,8 +1041,9 @@ void _p_freeq(Q *q) {
  */
 void _p_addrt2q(Q *q,T *run_tree) {
     Qe *n = malloc(sizeof(Qe));
+    n->id = ++G_process_ids;
     n->prev = NULL;
-    n->context = __p_make_context(run_tree,0);
+    n->context = __p_make_context(run_tree,0,n->id);
     n->accounts.elapsed_time = 0;
     pthread_mutex_lock(&q->mutex);
     __p_append(q->active,n);

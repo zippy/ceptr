@@ -40,21 +40,21 @@ int main(int argc, const char **argv) {
     else {
     def_sys();
     //**** core tests
-    testTree();
-    testMTree();
-    testStream();
-    testDef();
-    testLabel();
-    testSemtrex();
+    /* testDef(); */
+    /* testTree(); */
+    /* testMTree(); */
+    /* testStream(); */
+    /* testLabel(); */
+    /* testSemtrex(); */
     testReceptor();
     testProcess();
-    testScape();
+    /* testScape(); */
     testVMHost();
-    testAccumulator();
+    //testAccumulator();
 
-    //***** examples
-    testProfileExample();
-    testHTTPExample();
+    /* //\***** examples */
+    //    testProfileExample();
+    // testHTTPExample();
 
     sys_free();
     report_tests();
