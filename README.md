@@ -16,6 +16,8 @@ See "Testing" below.
 
 You can read the code and API documentation here: http://zippy.github.io/ceptr/
 
+Or watch a brief overview webinar/video here: https://www.youtube.com/watch?v=3Db-8lD1lNA
+
 ## Architecture
 
 For a broad overview of the project see [the Ceptr Revelation] (http://ceptr.org/revelation/)
