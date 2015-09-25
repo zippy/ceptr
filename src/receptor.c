@@ -431,6 +431,7 @@ T* __r_make_signal(ReceptorAddress from,ReceptorAddress to,Aspect aspect,T *sign
     _t_newi(e,RECEPTOR_ADDRESS,from);
     _t_newi(e,RECEPTOR_ADDRESS,to);
     _t_newi(e,ASPECT,aspect);
+    _t_news(e,CARRIER,_t_symbol(signal_contents));
     UUIDt t = __uuid_gen();
     _t_new(e,SIGNAL_UUID,&t,sizeof(UUIDt));
     T *b = _t_newt(s,BODY,signal_contents);
@@ -443,18 +444,21 @@ T* __r_make_signal(ReceptorAddress from,ReceptorAddress to,Aspect aspect,T *sign
  * @param[in] r sending receptor
  * @param[in] signal Signal tree
  * @param[out] T result tree
+ * @returns a clone of the UUID of the message sent.
  * @todo signal should have timestamps and other meta info
  */
-T* __r_send_signal(Receptor *r,T *signal,T *response_point,int process_id) {
+T* __r_send_signal(Receptor *r,T *signal,Symbol response_carrier,T *response_point,int process_id) {
     debug(D_SIGNALS,"sending %s\n",_t2s(&r->defs,signal));
 
     _t_add(r->pending_signals,signal);
 
     //@todo for now we return the UUID of the signal as the result.  Perhaps later we return an error condition if delivery to address is known to be impossible, or something like that.
-    T *result = _t_rclone(_t_child(_t_child(signal,1),4));
+    T *envelope = _t_child(signal,SignalEnvelopeIdx);
+    T *result = _t_rclone(_t_child(envelope,EnvelopeUUIDIdx));
     if (response_point) {
         T *pr = _t_newr(r->pending_responses,PENDING_RESPONSE);
         _t_add(pr,_t_clone(result));
+        _t_news(pr,CARRIER,response_carrier);
         _t_newi(pr,PROCESS_IDENT,process_id);
         int *path = _t_get_path(response_point);
         _t_new(pr,RESPONSE_CODE_PATH,path,sizeof(int)*(_t_path_depth(path)+1));
@@ -470,7 +474,7 @@ T* __r_send_signal(Receptor *r,T *signal,T *response_point,int process_id) {
  * to match
  */
 void __r_check_listener(T* processes,T *listener,T *signal,Q *q) {
-    T *signal_contents = (T *)_t_surface(_t_child(signal,2));
+    T *signal_contents = (T *)_t_surface(_t_child(signal,SignalBodyIdx));
 
     T *e,*m;
     e = _t_child(listener,1);
@@ -521,9 +525,15 @@ void __r_check_listener(T* processes,T *listener,T *signal,Q *q) {
     _t_free(stx);
 }
 
-
-T* __r_sanatize_response(T* response) {
-    //@todo actually do the sanatizing!!!
+// a sanatized response is one in which it matches the expected carrier
+T* __r_sanatize_response(Receptor *r,T* response,Symbol carrier) {
+    Symbol rsym = _t_symbol(response);
+    if (!semeq(carrier,rsym)) {
+        //@todo what kind of logging of these kinds of events
+        debug(D_SIGNALS,"response failed sanatizing, expecting %s, but got %s!\n",_r_get_symbol_name(r,carrier),_r_get_symbol_name(r,rsym));
+        return NULL;
+    }
+    //@todo run some kind of check that ascertains that not only does the symbol match, but that children match too
     return _t_rclone(response);
 }
 
@@ -549,18 +559,28 @@ T* __r_sanatize_response(T* response) {
 Error _r_deliver(Receptor *r, T *signal) {
     T *l;
 
-    T *envelope = _t_child(signal,1);
+    T *envelope = _t_child(signal,SignalEnvelopeIdx);
 
-    // see if there's an in-response to UUID (position 5 of the envelope)
-    T *response_id=_t_child(envelope,5);
+    // see if there's an in-response to UUID
+    T *response_id=_t_child(envelope,EnvelopeInResponseToUUIDIdx);
     if (response_id) {
         UUIDt *u = (UUIDt*)_t_surface(response_id);
         debug(D_SIGNALS,"Delivering response: %s\n",_td(r,signal));
         DO_KIDS(r->pending_responses,
                 l = _t_child(r->pending_responses,i);
-                if (__uuid_equal(u,(UUIDt *)_t_surface(_t_child(l,1)))) {
-                    int process_id = *(int *)_t_surface(_t_child(l,2));
-                    int *code_path = (int *)_t_surface(_t_child(l,3));
+                if (__uuid_equal(u,(UUIDt *)_t_surface(_t_child(l,PendingResponseUUIDIdx)))) {
+                    int process_id = *(int *)_t_surface(_t_child(l,PendingResponseProcessIdentIdx));
+                    Symbol carrier = *(Symbol *)_t_surface(_t_child(l,PendingResponseCarrierIdx));
+                    int *code_path = (int *)_t_surface(_t_child(l,PendingResponseResponseCodePathIdx));
+                    T *response = (T *)_t_surface(_t_child(signal,SignalBodyIdx));
+                    response = __r_sanatize_response(r,response,carrier);
+                    // the response isn't safe, i.e. has unexpected carrier or other bad stuff in it
+                    // just break
+                    if (!response) {
+                        //@todo figure out if this means we should throw away the pending response too
+                        break;
+                    }
+
                     int x;
                     Q *q = r->q;
                     pthread_mutex_lock(&q->mutex);
@@ -573,11 +593,14 @@ Error _r_deliver(Receptor *r, T *signal) {
                         // @todo that really wasn't very pretty, and what happens if that
                         // fails?  how do we handle it!?
                         if (!result) raise_error("failed to find code path when delivering response!");
-                        T *response = (T *)_t_surface(_t_child(signal,2));
+
                         debug(D_SIGNALS,"unblocking for response %s\n",_td(r,response));
-                        _t_replace(_t_parent(result),_t_node_index(result), __r_sanatize_response(response));
+                        _t_replace(_t_parent(result),_t_node_index(result), response);
                         __p_unblock(q,e);
                     }
+
+                    // clean up the pending response
+                    // @todo this needs to be enhanced for long-term listeners...
                     _t_detach_by_idx(r->pending_responses,i);
                     _t_free(l);
                     pthread_mutex_unlock(&q->mutex);
@@ -586,7 +609,7 @@ Error _r_deliver(Receptor *r, T *signal) {
                 );
     }
     else {
-        Aspect aspect = *(Aspect *)_t_surface(_t_child(envelope,3));
+        Aspect aspect = *(Aspect *)_t_surface(_t_child(envelope,EnvelopeAspectIdx));
 
         T *as = __r_get_signals(r,aspect);
 
@@ -676,6 +699,7 @@ Receptor *_r_makeStreamReaderReceptor(Symbol receptor_symbol,Symbol stream_symbo
     T *s = _t_new(send,STREAM_READ,0,0);
     _t_new_stream(s,stream_symbol,st);
     _t_new(s,RESULT_SYMBOL,&LINE,sizeof(Symbol));
+    _t_news(send,RESPONSE_CARRIER,NULL_SYMBOL); //@todo response carrier?
     _t_newi(send,BOOLEAN,1); // mark async
 
     T *c = _t_rclone(p);
@@ -743,6 +767,8 @@ Receptor *_r_makeClockReceptor() {
     _t_newi(params,RECEPTOR_ADDRESS,to);
 
     _t_news(params,INTERPOLATE_SYMBOL,NULL_SYMBOL);  // the current tick
+    _t_news(params,RESPONSE_CARRIER,NULL_SYMBOL);
+
     //_t_new_str(params,TEST_STR_SYMBOL,"fish");
 
     T *action = _t_newp(x,ACTION,SEND);

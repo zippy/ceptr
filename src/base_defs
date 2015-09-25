@@ -67,7 +67,7 @@ Symbol: SCAPE_SPEC,TREE;
 Symbol: ASPECTS,LIST;
 Symbol: ASPECT_DEF,TREE;
 Symbol: ASPECT_TYPE,BIT;
-Symbol: CARRIER,INTEGER; //@todo fix to proper structure when we understand this  currently CARRIER is c pointer, but we have it set to an INTEGER so it prints in the tree debug dump
+Symbol: CARRIER,SYMBOL;
 Symbol: ASPECT,INTEGER;
 Symbol: SIGNALS,LIST;                       list of signals on an aspect in the flux
 Symbol: SIGNAL,TREE;                        a signal on the flux.  It's first child is the contents of the signal
@@ -78,6 +78,7 @@ Symbol: PENDING_SIGNALS,LIST;               list of signals pending to be sent b
 Symbol: PENDING_RESPONSES,LIST;
 Symbol: PENDING_RESPONSE,LIST;
 Symbol: RESPONSE_CODE_PATH,TREE_PATH;
+Symbol: RESPONSE_CARRIER,SYMBOL;            expected carrier for the response to a signal
 Symbol: PROCESS_IDENT,INTEGER;
 Symbol: LISTENERS,LIST;                     list of carrier/expectation/action tress that "listen" to changes on the flux
 Symbol: LISTENER,SYMBOL;                    surface of the listener is the carrier symbol, and it has two children_ID, expectation semtrex and action code tree

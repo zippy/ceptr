@@ -18,6 +18,13 @@
 #include "process.h"
 #include "scape.h"
 
+
+// structure position index enums to make code more readable
+// @todo figure out a better way to handle this... like put defs like these
+// into the symbol gen code (talk about a semantic muddle! If only I had ceptr...)
+enum {EnvelopeFromIdx=1,EnvelopeToIdx,EnvelopeAspectIdx,EnvelopeCarrierIdx,EnvelopeUUIDIdx,EnvelopeInResponseToUUIDIdx};
+enum {SignalEnvelopeIdx=1,SignalBodyIdx};
+enum {PendingResponseUUIDIdx=1,PendingResponseCarrierIdx,PendingResponseProcessIdentIdx,PendingResponseResponseCodePathIdx};
 // delivery errors
 enum {noDeliveryErr};
 
@@ -56,7 +63,7 @@ Receptor * _r_unserialize(void *surface);
 /******************  receptor signaling */
 
 T * __r_make_signal(ReceptorAddress from,ReceptorAddress to,Aspect aspect,T *signal_contents);
-T* __r_send_signal(Receptor *r,T *signal,T *response_point,int process_id);
+T* __r_send_signal(Receptor *r,T *signal,Symbol response_carrier,T *response_point,int process_id);
 void __r_check_listener(T* processes,T *listener,T *signal,Q *q);
 Error _r_deliver(Receptor *r, T *signal);
 

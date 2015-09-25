@@ -232,11 +232,12 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                 return notInSignalContextReductionError;
 
             T *response_contents = _t_detach_by_idx(code,1);
-            T *envelope = _t_child(signal,1);
-            ReceptorAddress to = *(ReceptorAddress *)_t_surface(_t_child(envelope,1)); // reverse the from and to
-            ReceptorAddress from = *(ReceptorAddress *)_t_surface(_t_child(envelope,2));
-            Aspect a = *(Aspect *)_t_surface(_t_child(envelope,3));
-            UUIDt uuid = *(UUIDt *)_t_surface(_t_child(envelope,4));
+            T *envelope = _t_child(signal,SignalEnvelopeIdx);
+            ReceptorAddress to = *(ReceptorAddress *)_t_surface(_t_child(envelope,EnvelopeFromIdx)); // reverse the from and to
+            ReceptorAddress from = *(ReceptorAddress *)_t_surface(_t_child(envelope,EnvelopeToIdx));
+            Aspect a = *(Aspect *)_t_surface(_t_child(envelope,EnvelopeAspectIdx));
+            //   Symbol c = *(Symbol *)_t_surface(_t_child(envelope,EnvelopeCarrierIdx));
+            UUIDt uuid = *(UUIDt *)_t_surface(_t_child(envelope,EnvelopeUUIDIdx));
 
             // add the response signal into the outgoing signals list of the root
             // run-tree (which is always the last child)
@@ -249,7 +250,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
 
             T *response = __r_make_signal(from,to,a,response_contents);
             _t_new(_t_child(response,1),SIGNAL_UUID,&uuid,sizeof(UUIDt));
-            x = __r_send_signal(q->r,response,0,0);
+            x = __r_send_signal(q->r,response,NULL_SYMBOL,0,0);
 
             //            _t_add(signals,_t_clone(response));
         }
@@ -304,6 +305,11 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
 
             ReceptorAddress from = __r_get_self_address(q->r);
             T *signal = __r_make_signal(from,to,DEFAULT_ASPECT,signal_contents);
+
+            t = _t_detach_by_idx(code,1); // get the response carrier
+            Symbol response_carrier = *(Symbol*)_t_surface(t);
+            _t_free(t);
+
             T *response_point = NULL;
             if (_t_children(code) == 0) {
                 err = Block;
@@ -314,7 +320,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                 /// @todo timeout or callback or whatever the heck in the async case
                 _t_free(t);
             }
-            x = __r_send_signal(q->r,signal,response_point,context->id);
+            x = __r_send_signal(q->r,signal,response_carrier,response_point,context->id);
         }
         break;
     case INTERPOLATE_FROM_MATCH_ID:

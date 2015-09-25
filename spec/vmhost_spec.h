@@ -279,7 +279,7 @@ void testVMHostActivateReceptor() {
 
     _v_send(v,cx.addr,sx.addr,DEFAULT_ASPECT,_t_newi(0,ping,0));
 
-    spec_is_str_equal(_td(client,v->r->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:2) (RECEPTOR_ADDRESS:1) (ASPECT:1) (SIGNAL_UUID)) (BODY:{(ping_message:0)})))");
+    spec_is_str_equal(_td(client,v->r->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:2) (RECEPTOR_ADDRESS:1) (ASPECT:1) (CARRIER:ping_message) (SIGNAL_UUID)) (BODY:{(ping_message:0)})))");
 
     // simulate round-robin processing of signals
     //debug_enable(D_SIGNALS);
@@ -351,6 +351,7 @@ void testVMHostShell() {
     T *x = _t_newr(p,shell_command);
     int pt1[] = {2,1,TREE_PATH_TERMINATOR};
     _t_new(x,PARAM_REF,pt1,sizeof(int)*4);
+    _t_news(p,RESPONSE_CARRIER,NULL_SYMBOL); //@todo fixme!! which is the right carrier?
     _t_newi(p,BOOLEAN,1); // indicate async send
 
     Process proc = _r_code_process(r,p,"send self command","long desc...",NULL,NULL);
@@ -372,7 +373,8 @@ void testVMHostShell() {
     _t_newi(p,RECEPTOR_ADDRESS,ox.addr);
 
     T *tick = __r_make_tick();
-        _t_add(p,tick);
+    _t_add(p,tick);
+    _t_news(p,RESPONSE_CARRIER,NULL_SYMBOL); //@todo no response expected?
     //x = _t_new_str(p,LINE,t2s(tick));
     //    int pt1[] = {2,1,TREE_PATH_TERMINATOR};
     //    _t_new(x,PARAM_REF,pt1,sizeof(int)*4);
