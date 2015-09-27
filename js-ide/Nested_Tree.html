@@ -1,0 +1,168 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<title>Nested Tree Mockup</title>
+</head><body id="tree-editor" style="font-family:Verdana,Helvetica,Helv,Sans; font-size:12pt;">
+<h1>Nested Tree Mockup</h1>
+
+<div>def symbol
+ <div>label = "Home Location"</div>
+ <div>latlong</div>
+</div>
+<p>&nbsp;</p>
+
+<div>def structure
+ <div>label = "latlong"</div>
+ <div>surface
+  <div>lat</div>
+  <div>long</div>
+ </div>
+ <div>process
+  <div>distance
+   <div>complicated sphere wrapping formula</div>
+  </div>
+ </div>
+</div>
+<p>&nbsp;</p>
+
+<div>EXPECTATION <br/>
+ <div>On HTTP_Request</div>
+ <div>Expect .*/HOST{value="geekgene.com"}</div>
+ <div>Do 
+ <div>if
+  <div>expr
+   <div>=
+    <div>x</div>
+    <div>10</div>
+   </div>
+  </div>
+  <div>then
+   <div>
+ 	<div>if
+ 	 <div>expr
+ 	  <div>=
+ 	   <div>x</div>
+ 	   <div>10</div>
+ 	  </div>
+ 	 </div>
+ 	 <div>then
+ 	  <div>some proc tree</div>
+ 	 </div>
+ 	 <div>else
+ 	  <div>some other proc tree</div>
+ 	 </div>
+ 	</div>
+   </div>
+  </div>
+  <div>else
+   <div>
+    <div>if
+ 	 <div>expr
+ 	  <div>=
+ 	   <div>x</div>
+ 	   <div>10</div>
+ 	  </div>
+ 	 </div>
+ 	 <div>then
+ 	  <div>some proc tree</div>
+ 	 </div>
+ 	 <div>else
+ 	  <div>some other proc tree</div>
+ 	 </div>
+ 	</div>
+   </div>
+  </div>
+ </div>
+ </div>
+ <div>With SessionInitParams <div>Instance = 48</div></div>
+</div>
+<p>&nbsp;</p>
+
+<hr/>
+<p>This is just a quick experiment with the CSS (1 selector with 4 properties). I could probably make it sexier, but it's pretty darn readable from both text and tree perspectives, I think.</p>
+<p>Try playing around with the width of the window and watch how the structure adapts.  I don't think it's fully cross-browser compatible, but seems fine in Chrome, Firefox and IE 11 (9 and up, I think)</p>
+<h2>Noteworthy issues to consider when translating typed text to trees:</h2>
+<p>
+<ul>
+ <li>I don't think we want to require parens when we can use syntactical context.</li>
+ <li>For many processes, we probably want to have keywords indicate advancing to next branch (almost like parens, but not paired... we could manually pop up by typing a close_paren (or other special key) and not display the paren just change the tree formatting/placement of cursor).</li>
+ <ul>
+  <li>e.g. If {first-child} Then {second-child} Else {third-child}</li>
+  <li>e.g. On {first-child} Expect {second-child} Do {third-child} With {fourth-child}</li>
+ </ul>
+ <li>In fact, I think we'd want to prepopulate the next child keywords and be able to tab into their slot to type (tab then press {delete} to delete optional ones like ELSE or WITH).</li>
+ <li>Where/How do we store such keyword sequence associations? Label Table?</li>
+ <li>It doesn't make a lot of sense to display Symbols as def trees like above. A label table view would be much more useful.</li>
+ <li>It also seems like we could make a simple def-symbol button or something to generate those kinds of entries. </li>
+ <li>Similarly, it seems fairly easy to build a Structure Def tool for everything up until the process defs... which is where we switch back to the coding style originally describe above.  So "coding" is always for writing processes. We can make a pretty simple UI for def-building so that constructing the semantic trees for content which work slightly differently than code, don't get confused with process trees.</li>
+</ul>
+</p>
+<h2>Possible Color Coding Approach for Semantic Tree Background Colors:</h2>
+<p>
+    <blockquote>
+      First Column (named) colors are for borders, controls, etc. <br/>
+      Second Column nested colors are for recursing tree levels. They need to be darker than expected because 10 steps of 10% opacity <> 100%
+    </blockquote>
+
+    <i>Note: We probably want to use the inverted colors (right-most) so that color clarity is higher in the initial levels setting type context clearly. It also makes layering veary easy because you're always adding a new layer of transparent white. Every time you switch symbol contexts (Process, Symbol, Receptor, etc.), you start a new color context layering anew (That's why the inverted colors may make more sense.)</i>
+  <ul>
+  <li id="process">
+    <div class="controls" style="background-color:seagreen; ">Process: seagreen</div>
+    <div class="dark" style="background-color:rgba(0,100,0,1); text-align:center;">
+    <div class="inversion"><div> 1 <div> 2 <div> 3 <div> 4 <div> 5 <div> 6 <div> 7 <div> 8 <div> 9 <div> 10 </div></div></div></div></div></div></div></div></div></div></div>
+    <div class="white"><div> 1 <div> 2 <div> 3 <div> 4 <div> 5 <div> 6 <div> 7 <div> 8 <div> 9 <div> 10 </div></div></div></div></div></div></div></div></div></div></div>Hand-tuned darker target: <br/>rgba(0,100,0,.1)</div>
+  </li>
+  <li id="receptor">
+    <div class="controls" style="background-color:gold; ">Receptor: gold</div>
+    <div class="dark" style="background-color:rgba(190,175,0,1); text-align:center;">
+    <div class="inversion"><div> 1 <div> 2 <div> 3 <div> 4 <div> 5 <div> 6 <div> 7 <div> 8 <div> 9 <div> 10 </div></div></div></div></div></div></div></div></div></div></div>
+    <div class="white"><div> 1 <div> 2 <div> 3 <div> 4 <div> 5 <div> 6 <div> 7 <div> 8 <div> 9 <div> 10 </div></div></div></div></div></div></div></div></div></div></div>Hand-tuned darker target: <br/>rgba(190,175,0,.1)</div>
+  </li>
+  <li id="protocol">
+    <div class="controls" style="background-color:tomato; ">Protocol: tomato</div>
+    <div class="dark" style="background-color:rgba(190,110,0,1); text-align:center;">
+    <div class="inversion"><div> 1 <div> 2 <div> 3 <div> 4 <div> 5 <div> 6 <div> 7 <div> 8 <div> 9 <div> 10 </div></div></div></div></div></div></div></div></div></div></div>
+    <div class="white"><div> 1 <div> 2 <div> 3 <div> 4 <div> 5 <div> 6 <div> 7 <div> 8 <div> 9 <div> 10 </div></div></div></div></div></div></div></div></div></div></div>Hand-tuned darker target: <br/>rgba(190,110,0,.1)</div>
+  </li>
+  <li id="semtrex">
+    <div class="controls" style="background-color:crimson; ">Semtrex: crimson</div>
+    <div class="dark" style="background-color:rgba(150,0,0,1); text-align:center;">
+    <div class="inversion"><div> 1 <div> 2 <div> 3 <div> 4 <div> 5 <div> 6 <div> 7 <div> 8 <div> 9 <div> 10 </div></div></div></div></div></div></div></div></div></div></div>
+    <div class="white"><div> 1 <div> 2 <div> 3 <div> 4 <div> 5 <div> 6 <div> 7 <div> 8 <div> 9 <div> 10 </div></div></div></div></div></div></div></div></div></div></div>Hand-tuned darker target: <br/>rgba(150,0,0,.1)</div>
+  </li>
+   <li id="symbol">
+    <div class="controls" style="background-color:blueviolet; ">Symbol/Label: blueviolet</div>
+    <div class="dark" style="background-color:rgba(80,0,130,1); text-align:center;">
+    <div class="inversion"><div> 1 <div> 2 <div> 3 <div> 4 <div> 5 <div> 6 <div> 7 <div> 8 <div> 9 <div> 10 </div></div></div></div></div></div></div></div></div></div></div>
+    <div class="white"><div> 1 <div> 2 <div> 3 <div> 4 <div> 5 <div> 6 <div> 7 <div> 8 <div> 9 <div> 10 </div></div></div></div></div></div></div></div></div></div></div>Hand-tuned darker target: <br/>rgba(80,0,130,.1)</div>
+  </li>
+   <li id="literal">
+    <div class="controls" style="background-color:royalblue; ">Value/Literal: royalblue</div>
+    <div class="dark" style="background-color:rgba(10,40,120,1); text-align:center;">
+    <div class="inversion"><div> 1 <div> 2 <div> 3 <div> 4 <div> 5 <div> 6 <div> 7 <div> 8 <div> 9 <div> 10 </div></div></div></div></div></div></div></div></div></div></div>
+    <div class="white"><div> 1 <div> 2 <div> 3 <div> 4 <div> 5 <div> 6 <div> 7 <div> 8 <div> 9 <div> 10 </div></div></div></div></div></div></div></div></div></div></div>Hand-tuned darker target: <br/>rgba(10,40,120,.1)</div>
+  </li> 
+  <li id="structure">
+    <div class="controls" style="background-color:sienna; ">Def/Structure: sienna</div>
+    <div class="dark" style="background-color:rgba(90,60,30,1); text-align:center;">
+    <div class="inversion"><div> 1 <div> 2 <div> 3 <div> 4 <div> 5 <div> 6 <div> 7 <div> 8 <div> 9 <div> 10 </div></div></div></div></div></div></div></div></div></div></div>
+    <div class="white"><div> 1 <div> 2 <div> 3 <div> 4 <div> 5 <div> 6 <div> 7 <div> 8 <div> 9 <div> 10 </div></div></div></div></div></div></div></div></div></div></div>Hand-tuned darker target: <br/>rgba(90,60,30,.1)</div>
+  </li> 
+  </ul>
+</p>
+<style type="text/css">
+  #tree-editor div { display: inline-block; padding: 3px 3px 1px 3px; margin-left: 5px; background-color: rgba(0,100,0,.1) ; }
+  #tree-editor ul li div.controls { width: 220px; padding: 28px 45px; text-align: center; }
+  #tree-editor ul li div.dark { color: white; padding: 6px 20px; vertical-align: top; text-align: center; }
+  #tree-editor ul li div.white { background:white !important; float: left; color: black; margin-right:20px;}
+  #tree-editor ul li#process div.white div { background-color: rgba(0,100,0,.1); }
+  #tree-editor ul li#receptor div.white div { background-color: rgba(190,175,0,.1); }
+  #tree-editor ul li#protocol div.white div { background-color: rgba(190,110,0,.1); }
+  #tree-editor ul li#semtrex div.white div { background-color: rgba(150,0,0,.1); }
+  #tree-editor ul li#symbol div.white div { background-color: rgba(80,0,130,.1); }
+  #tree-editor ul li#literal div.white div { background-color: rgba(10,40,120,.1); }
+  #tree-editor ul li#structure div.white div { background-color: rgba(90,60,30,.1); }
+  #tree-editor ul li div.inversion { background:inherit; float: right; color: black; margin-right:20px;}
+  #tree-editor ul li div.inversion div { background-color: rgba(255,255,255,.15); }
+</style>
+
+</body></html>
