@@ -289,9 +289,7 @@ void testReceptorDef() {
     spec_is_long_equal(__r_get_symbol_size(r,home,surface),sizeof(float)*2+6);
 
     T *code = _t_new_root(ACTION);
-    T *input = _t_new_root(INPUT_SIGNATURE);
-    T *output = _t_new_root(OUTPUT_SIGNATURE);
-    Process p = _r_code_process(r,code,"power","takes the mathematical power of the two params",input,output);
+    Process p = _r_code_process(r,code,"power","takes the mathematical power of the two params",NULL);
     spec_is_equal(_t_children(r->defs.processes),p.id);
 
     _r_free(r);
@@ -379,9 +377,7 @@ Receptor *_makePingProtocolReceptor(Symbol *pingP) {
 
     T *ping_resp = _t_new_root(RESPOND);
     _t_newi(ping_resp,alive,1);
-    T *input = _t_new_root(INPUT);
-    T *output = _t_new_root(OUTPUT_SIGNATURE);
-    Process proc = _r_code_process(r,ping_resp,"send alive response","long desc...",input,output);
+    Process proc = _r_code_process(r,ping_resp,"send alive response","long desc...",NULL);
     _t_newp(step,ACTION,proc);
 
     step = _t_newr(steps,get_alive_response);
@@ -669,9 +665,7 @@ void _testReceptorClockAddListener(Receptor *r) {
     int pt1[] = {2,1,TREE_PATH_TERMINATOR};
     _t_new(x,PARAM_REF,pt1,sizeof(int)*4);
 
-    T *input = _t_new_root(INPUT);
-    T *output = _t_new_root(OUTPUT_SIGNATURE);
-    Process proc = _r_code_process(r,x,"noop return param","long desc...",input,output);
+    Process proc = _r_code_process(r,x,"noop return param","long desc...",NULL);
     T *act = _t_newp(0,ACTION,proc);
 
     T* params = _t_new_root(PARAMS);
@@ -682,7 +676,7 @@ void _testReceptorClockAddListener(Receptor *r) {
 
 void testReceptorClock() {
     Receptor *r = _r_makeClockReceptor();
-    spec_is_str_equal(_td(r,r->root),"(CLOCK_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES (PROCESS_CODING (PROCESS_NAME:plant a listener to send the time) (PROCESS_INTENTION:long desc...) (process:LISTEN (PARAM_REF:/2/1) (PARAMS (RECEPTOR_ADDRESS:0) (INTERPOLATE_SYMBOL:NULL_SYMBOL) (RESPONSE_CARRIER:NULL_SYMBOL)) (ACTION:SEND)) (INPUT) (OUTPUT_SIGNATURE))) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS (LISTENER:CLOCK_TELL_TIME (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:CLOCK_TELL_TIME) (SEMTREX_GROUP:EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:EXPECTATION))))) (PARAMS (INTERPOLATE_SYMBOL:EXPECTATION)) (ACTION:plant a listener to send the time))) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))");
+    spec_is_str_equal(_td(r,r->root),"(CLOCK_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES (PROCESS_CODING (PROCESS_NAME:plant a listener to send the time) (PROCESS_INTENTION:long desc...) (process:LISTEN (PARAM_REF:/2/1) (PARAMS (RECEPTOR_ADDRESS:0) (INTERPOLATE_SYMBOL:NULL_SYMBOL) (RESPONSE_CARRIER:NULL_SYMBOL)) (ACTION:SEND)) (PROCESS_SIGNATURE))) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS (LISTENER:CLOCK_TELL_TIME (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:CLOCK_TELL_TIME) (SEMTREX_GROUP:EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:EXPECTATION))))) (PARAMS (INTERPOLATE_SYMBOL:EXPECTATION)) (ACTION:plant a listener to send the time))) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))");
 
    /* The clock receptor acts as if it receives a signal with contents TICK (which is of TIMESTAMP structure) for every time that updates a magic scape with that time according to which listeners have been planted.  This means you can plant listeners based on a semtrex for any kind of time you want.  If you want the current time just plant a listener for TICK.  If you want to listen for every second plant a listener on the Symbol literal SECOND, and the clock receptor will trigger the listener every time the SECOND changes.  You can also listen for particular intervals and times by adding specificity to the semtrex, so to trigger a 3:30am action a-la-cron listen for: "/<TICK:(%HOUR=3,MINUTE=30)>"
        @todo we should also make the clock receptor also seem to send signals of other semantic formats, i.e. so it's easy to listen for things like "on Wednesdays", or other semantic date/time identifiers.

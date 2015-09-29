@@ -86,16 +86,16 @@ void _p_interpolate_from_match(T *t,T *match_results,T *match_tree) {
  */
 Error __p_check_signature(Defs *defs,Process p,T *params) {
     T *def = _d_get_process_code(defs->processes,p);
-    T *input = _t_child(def,4);
-    int i = _t_children(input);
+    T *signature = _t_child(def,4);
+    int i = _t_children(signature) - 1; // there's always one output signature
     int c = _t_children(params);
     if (i > c) return tooFewParamsReductionErr;
     if (i < c) return tooManyParamsReductionErr;
-    for(i=1;i<=c;i++) {
-        T *sig = _t_child(_t_child(input,i),1);
+    for(i=2;i<=c;i++) {
+        T *sig = _t_child(_t_child(signature,i),2); // input signatures start at 2
         if(semeq(_t_symbol(sig),SIGNATURE_STRUCTURE)) {
             Structure ss = *(Symbol *)_t_surface(sig);
-            if (!semeq(_d_get_symbol_structure(defs->symbols,_t_symbol(_t_child(params,i))),ss) && !semeq(ss,TREE))
+            if (!semeq(_d_get_symbol_structure(defs->symbols,_t_symbol(_t_child(params,i-1))),ss) && !semeq(ss,TREE))
                 return signatureMismatchReductionErr;
         }
         else {

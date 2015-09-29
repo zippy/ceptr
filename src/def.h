@@ -19,7 +19,7 @@
 
 #define ST(defs,name,num,...) name = _d_define_structure(defs.symbols,defs.structures,"" #name "",RECEPTOR_CONTEXT,num,__VA_ARGS__)
 #define SY(defs,name,str) name = _d_declare_symbol(defs.symbols,defs.structures,str,"" #name "",RECEPTOR_CONTEXT)
-#define SP(defs,code,name,intention,in,out) name = _d_code_process(defs.processes,code,"" #name "",RECEPTOR_CONTEXT,intention,in,out)
+#define SP(defs,code,name,intention,signature) name = _d_code_process(defs.processes,code,"" #name "",RECEPTOR_CONTEXT,intention,signature)
 
 int semeq(SemanticID s1,SemanticID s2);
 char *_d_get_symbol_name(T *symbols,Symbol s);
@@ -34,8 +34,8 @@ T * _dv_define_structure(T *symbols,T *structures,char *label,int num_params,va_
 Structure _d_get_symbol_structure(T *symbols,Symbol symbol);
 size_t _d_get_symbol_size(T *symbols,T *structures,Symbol s,void *surface);
 size_t _d_get_structure_size(T *symbols,T *structures,Symbol s,void *surface);
-T *__d_code_process(T *processes,T *code,char *name,char *intention,T *in,T *out);
-Process _d_code_process(T *processes,T *code,char *name,char *intention,T *in,T *out,Context c);
+T *__d_code_process(T *processes,T *code,char *name,char *intention,T *signature);
+Process _d_code_process(T *processes,T *code,char *name,char *intention,T *signature,Context c);
 T * _d_build_def_semtrex(Defs defs,Symbol s,T *parent);
 size_t _sys_structure_size(int id,void *surface);
 

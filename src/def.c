@@ -293,21 +293,19 @@ size_t _d_get_structure_size(T *symbols,T *structures,Structure s,void *surface)
  * @param[in] code the code tree for this process
  * @param[in] name the name of the process
  * @param[in] intention a description of what the process intends to do/transform
- * @param[in] in the input signature for the process
- * @param[in] out the output signature for the process
+ * @param[in] signature the signature for the process
  * @returns the newly defined process
  * @todo this is not thread safe!
  *
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testCodeProcess
  */
-T *__d_code_process(T *processes,T *code,char *name,char *intention,T *in,T *out) {
+T *__d_code_process(T *processes,T *code,char *name,char *intention,T *signature) {
     T *def = _t_newr(processes,PROCESS_CODING);
     _t_new(def,PROCESS_NAME,name,strlen(name)+1);
     _t_new(def,PROCESS_INTENTION,intention,strlen(intention)+1);
     if (code) _t_add(def,code);
-    if (in) _t_add(def,in);
-    if (out) _t_add(def,out);
+    if (signature) _t_add(def,signature);
     return def;
 }
 
@@ -318,16 +316,15 @@ T *__d_code_process(T *processes,T *code,char *name,char *intention,T *in,T *out
  * @param[in] code the code tree for this process
  * @param[in] name the name of the process
  * @param[in] intention a description of what the process intends to do/transform
- * @param[in] in the input signature for the process
- * @param[in] out the output signature for the process
+ * @param[in] signature the signature for the process
  * @returns the process identifier
  * @todo this is not thread safe!
  *
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testCodeProcess
  */
-Process _d_code_process(T *processes,T *code,char *name,char *intention,T *in,T *out,Context c) {
-    __d_code_process(processes,code,name,intention,in,out);
+Process _d_code_process(T *processes,T *code,char *name,char *intention,T *signature,Context c) {
+    __d_code_process(processes,code,name,intention,signature);
     Symbol sym = {c,SEM_TYPE_PROCESS,_t_children(processes)};
     return sym;
 }

@@ -96,16 +96,16 @@ void testProfileExample() {
 
     spec_is_str_equal(_t2s(&test_profile_defs,t),"(USER_PROFILE (PROFILE_NAME (FIRST_NAME:Jane) (LAST_NAME:Smith)) (PROFILE_ADDRESS (STREET_ADDRESS:126 Main Street) (CITY:Smallville) (STATE:CA) (ZIP:12345) (COUNTRY:USA)) (PROFILE_EMAIL:test@example.com))");
 
-    T *input = _t_new_root(INPUT);
-    T *i = _t_newr(input,INPUT_SIGNATURE);
-    _t_news(i,SIGNATURE_STRUCTURE,INTEGER);
-    _t_new_str(i,INPUT_LABEL,"the_profile");
-    i = _t_newr(input,INPUT_SIGNATURE);
-    _t_news(i,SIGNATURE_STRUCTURE,PROFILE);
-
-    T* output = _t_new_root(OUTPUT_SIGNATURE);
-    i = _t_newr(output,OUTPUT_SIGNATURE);
+    T *signature = _t_new_root(PROCESS_SIGNATURE);
+    T *i = _t_newr(signature,OUTPUT_SIGNATURE);
+    _t_new_str(i,SIGNATURE_LABEL,"mailing_profile");
     _t_news(i,SIGNATURE_STRUCTURE,CSTRING);  // should actually be MAILING_LABEL symbol or something like that
+    i = _t_newr(signature,INPUT_SIGNATURE);
+    _t_new_str(i,SIGNATURE_LABEL,"the_int?");
+    _t_news(i,SIGNATURE_STRUCTURE,INTEGER);
+    i = _t_newr(signature,INPUT_SIGNATURE);
+    _t_new_str(i,SIGNATURE_LABEL,"the_profile");
+    _t_news(i,SIGNATURE_STRUCTURE,PROFILE);
 
     T *processes = test_profile_defs.processes;
 
@@ -137,7 +137,7 @@ void testProfileExample() {
 
     //    _t_new(code,PARAM_REF,pt2,sizeof(int)*4);
 
-    Process p = _d_code_process(processes,code,"profileToMailingLabel","given a profile produce a mailing label",input,output,RECEPTOR_CONTEXT);
+    Process p = _d_code_process(processes,code,"profileToMailingLabel","given a profile produce a mailing label",signature,RECEPTOR_CONTEXT);
 
     T *act = _t_newp(0,ACTION,p);
 

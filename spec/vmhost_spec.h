@@ -93,9 +93,9 @@ void testVMHostCreate() {
 /*     T *http_resp = _t_newr(resp,HTTP_RESPONSE); */
 /*     _t_new(http_resp,HTTP_RESPONSE_CONTENT_TYPE,"Text/Plain",11); */
 /*     _t_new(http_resp,TEST_STR_SYMBOL,"Hello World!",13); */
-/*     T *input = _t_new_root(INPUT); */
+/*     T *input = _t_new_root(INPUT_SIGNATURES); */
 /*     T *output = _t_new_root(OUTPUT_SIGNATURE); */
-/*     _d_code_process(procs,resp,"hellow","respond with hello",input,output); */
+/*     _d_code_process(procs,resp,"hellow","respond with hello",signature); */
 
 /*     _t_newr(defs,SCAPES); // for now we don't have any scapes */
 
@@ -252,9 +252,7 @@ void testVMHostActivateReceptor() {
 
     T *noop = _t_new_root(NOOP);
     _t_newi(noop,TEST_INT_SYMBOL,314);
-    T *input = _t_new_root(INPUT);
-    T *output = _t_new_root(OUTPUT_SIGNATURE);
-    Process proc = _r_code_process(client,noop,"do nothing","long desc...",input,output);
+    Process proc = _r_code_process(client,noop,"do nothing","long desc...",NULL);
     T *handler = _t_newp(0,ACTION,proc);
 
     _r_express_protocol(client,1,alive_client_seq,DEFAULT_ASPECT,handler);
@@ -354,7 +352,7 @@ void testVMHostShell() {
     _t_news(p,RESPONSE_CARRIER,NULL_SYMBOL); //@todo fixme!! which is the right carrier?
     _t_newi(p,BOOLEAN,1); // indicate async send
 
-    Process proc = _r_code_process(r,p,"send self command","long desc...",NULL,NULL);
+    Process proc = _r_code_process(r,p,"send self command","long desc...",NULL);
     T *act = _t_newp(0,ACTION,proc);
     T* params = _t_new_root(PARAMS);
     _t_news(params,INTERPOLATE_SYMBOL,verb);
@@ -378,7 +376,7 @@ void testVMHostShell() {
     //x = _t_new_str(p,LINE,t2s(tick));
     //    int pt1[] = {2,1,TREE_PATH_TERMINATOR};
     //    _t_new(x,PARAM_REF,pt1,sizeof(int)*4);
-    proc = _r_code_process(r,p,"send time to std_out","long desc...",NULL,NULL);
+    proc = _r_code_process(r,p,"send time to std_out","long desc...",NULL);
     act = _t_newp(0,ACTION,proc);
     params = _t_new_root(PARAMS);
     //   _t_news(params,INTERPOLATE_SYMBOL,shell_command);

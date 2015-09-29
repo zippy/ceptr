@@ -10,7 +10,7 @@
 void testRunTree() {
     T *processes = _t_new_root(PROCESSES);
     Defs defs = {0,0,processes};
-    T *code,*input,*output,*t;
+    T *code,*signature;
 
     // a process that would look something like this in lisp:
     // (defun my_if (true_branch false_branch condition) (if (condition) (true_branch) (false_branch)))
@@ -23,20 +23,19 @@ void testRunTree() {
     _t_new(code,PARAM_REF,pt1,sizeof(int)*4);
     _t_new(code,PARAM_REF,pt2,sizeof(int)*4);
 
-    input = _t_new_root(INPUT);
-    T *i3 = _t_newr(input,INPUT_SIGNATURE);
-    _t_news(i3,SIGNATURE_STRUCTURE,INTEGER);
-    _t_new(i3,INPUT_LABEL,"condition",4);
-    T *i1 = _t_newr(input,INPUT_SIGNATURE);
+    signature = _t_new_root(PROCESS_SIGNATURE);
+    _t_newr(signature,OUTPUT_SIGNATURE);
+    T *i3 = _t_newr(signature,INPUT_SIGNATURE);
+    _t_new(i3,SIGNATURE_LABEL,"condition",4);
+    _t_news(i3,SIGNATURE_PROCESS,BOOLEAN); // a process that returns a boolean
+    T *i1 = _t_newr(signature,INPUT_SIGNATURE);
+    _t_new(i1,SIGNATURE_LABEL,"true_branch",4);
     _t_news(i1,SIGNATURE_STRUCTURE,TREE);
-    _t_new(i1,INPUT_LABEL,"true_branch",4);
-    T *i2 = _t_newr(input,INPUT_SIGNATURE);
+    T *i2 = _t_newr(signature,INPUT_SIGNATURE);
+    _t_new(i2,SIGNATURE_LABEL,"false_branch",4);
     _t_news(i2,SIGNATURE_STRUCTURE,TREE);
-    _t_new(i2,INPUT_LABEL,"false_branch",4);
 
-
-    output = _t_new_root(OUTPUT_SIGNATURE);
-    Process p = _d_code_process(processes,code,"myif","a duplicate of the sys if process with params in different order",input,output,RECEPTOR_CONTEXT);
+    Process p = _d_code_process(processes,code,"myif","a duplicate of the sys if process with params in different order",signature,RECEPTOR_CONTEXT);
 
     T *p3 = _t_newi(0,BOOLEAN,1);
     T *p1 = _t_newi(0,TEST_INT_SYMBOL,123);
@@ -48,7 +47,7 @@ void testRunTree() {
 
     spec_is_symbol_equal(0,_t_symbol(r),RUN_TREE);
 
-    t = _t_child(r,1);  // first child should be clone of code
+    T *t = _t_child(r,1);  // first child should be clone of code
     spec_is_sem_equal(_t_symbol(t),IF);
     spec_is_true(t!=code);  //should be a clone
 
@@ -661,7 +660,7 @@ void testProcessReduce() {
  */
 //! [defIfEven]
 Process _defIfEven(T *processes) {
-    T *code,*input,*output;
+    T *code,*signature;
 
     /* a process that would look something like this in lisp:
        (defun if_even (val true_branch false_branch) (if (eq (mod val 2 ) 0) (true_branch) (false_branch)))
@@ -684,20 +683,19 @@ Process _defIfEven(T *processes) {
     _t_newi(eq,TEST_INT_SYMBOL,0);
     _t_new(code,PARAM_REF,p2,sizeof(int)*3);
     _t_new(code,PARAM_REF,p3,sizeof(int)*3);
-    input = _t_new_root(INPUT);
-    T *i1 = _t_newr(input,INPUT_SIGNATURE);
+    signature = _t_new_root(PROCESS_SIGNATURE);
+    _t_newr(signature,OUTPUT_SIGNATURE);
+    T *i1 = _t_newr(signature,INPUT_SIGNATURE);
+    _t_new(i1,SIGNATURE_LABEL,"val",4);
     _t_news(i1,SIGNATURE_STRUCTURE,INTEGER);
-    _t_new(i1,INPUT_LABEL,"val",4);
-    T *i2 = _t_newr(input,INPUT_SIGNATURE);
+    T *i2 = _t_newr(signature,INPUT_SIGNATURE);
+    _t_new(i2,SIGNATURE_LABEL,"true_branch",4);
     _t_news(i2,SIGNATURE_STRUCTURE,TREE);
-    _t_new(i2,INPUT_LABEL,"true_branch",4);
-    T *i3 = _t_newr(input,INPUT_SIGNATURE);
+    T *i3 = _t_newr(signature,INPUT_SIGNATURE);
+    _t_new(i3,SIGNATURE_LABEL,"false_branch",4);
     _t_news(i3,SIGNATURE_STRUCTURE,TREE);
-    _t_new(i3,INPUT_LABEL,"false_branch",4);
 
-    output = _t_new_root(OUTPUT_SIGNATURE);
-
-    return _d_code_process(processes,code,"if even","return 2nd child if even, third if not",input,output,RECEPTOR_CONTEXT);
+    return _d_code_process(processes,code,"if even","return 2nd child if even, third if not",signature,RECEPTOR_CONTEXT);
 }
 //! [defIfEven]
 
@@ -708,7 +706,7 @@ Process _defIfEven(T *processes) {
  */
 //! [defDivZero]
 Process _defDivZero(T *processes) {
-    T *code,*input,*output;
+    T *code,*signature;
 
     /* a process that would look something like this in lisp:
        (defun div_zero (val) (/ val 0))
@@ -716,13 +714,14 @@ Process _defDivZero(T *processes) {
     code = _t_new_root(DIV_INT);                       // IF is a system process
     _t_newi(code,TEST_INT_SYMBOL,2);
     _t_newi(code,TEST_INT_SYMBOL,0);
-    input = _t_new_root(INPUT);
-    T *i1 = _t_newr(input,INPUT_SIGNATURE);
-    _t_news(i1,SIGNATURE_STRUCTURE,INTEGER);
-    _t_new(i1,INPUT_LABEL,"val",4);
-     output = _t_new_root(OUTPUT_SIGNATURE);
+    signature = _t_new_root(PROCESS_SIGNATURE);
+    _t_newr(signature,OUTPUT_SIGNATURE);
 
-    return _d_code_process(processes,code,"divByZero","create a divide by zero error",input,output,RECEPTOR_CONTEXT);
+    T *i1 = _t_newr(signature,INPUT_SIGNATURE);
+    _t_new(i1,SIGNATURE_LABEL,"val",4);
+    _t_news(i1,SIGNATURE_STRUCTURE,INTEGER);
+
+    return _d_code_process(processes,code,"divByZero","create a divide by zero error",signature,RECEPTOR_CONTEXT);
 }
 //! [defDivZero]
 
@@ -765,6 +764,8 @@ void testProcessSignatureMatching() {
     _t_new(n,TEST_STR_SYMBOL,"test",5);  // this should be an INTEGER!!
     _t_newi(n,TEST_INT_SYMBOL,123);
     _t_newi(n,TEST_INT_SYMBOL,124);
+
+    spec_is_equal(__p_check_signature(&defs,if_even,n),signatureMismatchReductionErr);
 
     T *c = _t_rclone(n);
     _t_add(t,c);

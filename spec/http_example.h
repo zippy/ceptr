@@ -257,9 +257,7 @@ void _makeTestHTTPResponseProcess(Receptor *r,T **paramsP,Process *pP) {
     int pt1[] = {2,1,TREE_PATH_TERMINATOR};
     _t_new(resp,PARAM_REF,pt1,sizeof(int)*3);
 
-    T *input = _t_new_root(INPUT);
-    T *output = _t_new_root(OUTPUT_SIGNATURE);
-    Process p = _r_code_process(r,resp,"code path ping","respond with the value of the first parameter",input,output);
+    Process p = _r_code_process(r,resp,"code path ping","respond with the value of the first parameter",NULL);
     *pP = p;
 
     T *params = _t_new_root(PARAMS);

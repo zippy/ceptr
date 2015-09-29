@@ -200,8 +200,8 @@ Structure _r_define_structure(Receptor *r,char *label,int num_params,...) {
  * @returns the new Process
  *
  */
-Process _r_code_process(Receptor *r,T *code,char *name,char *intention,T *in,T *out) {
-    T *def = __d_code_process(r->defs.processes,code,name,intention,in,out);
+Process _r_code_process(Receptor *r,T *code,char *name,char *intention,T *signature) {
+    T *def = __d_code_process(r->defs.processes,code,name,intention,signature);
     return __set_label_for_def(r,name,def,SEM_TYPE_PROCESS);
 }
 
@@ -740,9 +740,8 @@ Receptor *_r_makeStreamWriterReceptor(Symbol receptor_symbol,Symbol stream_symbo
     T* params = _t_new_root(PARAMS);
     _t_news(params,INTERPOLATE_SYMBOL,NULL_SYMBOL);
 
-    T *input = _t_new_root(INPUT);
-    T *output = _t_new_root(OUTPUT_SIGNATURE);
-    Process proc = _r_code_process(r,x,"echo input to stream","long desc...",input,output);
+    T *signature = _t_new_root(PROCESS_SIGNATURE);
+    Process proc = _r_code_process(r,x,"echo input to stream","long desc...",signature);
     T *act = _t_newp(0,ACTION,proc);
 
     _r_add_listener(r,DEFAULT_ASPECT,LINE,expect,params,act);
@@ -773,9 +772,8 @@ Receptor *_r_makeClockReceptor() {
 
     T *action = _t_newp(x,ACTION,SEND);
 
-    T *input = _t_new_root(INPUT);
-    T *output = _t_new_root(OUTPUT_SIGNATURE);
-    Process proc = _r_code_process(r,x,"plant a listener to send the time","long desc...",input,output);
+    T *signature = _t_new_root(PROCESS_SIGNATURE);
+    Process proc = _r_code_process(r,x,"plant a listener to send the time","long desc...",signature);
     T *act = _t_newp(0,ACTION,proc);
 
     params = _t_new_root(PARAMS);

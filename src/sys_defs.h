@@ -31,6 +31,6 @@ ContextStore G_contexts[_NUM_CONTEXTS];
 
 #define sT(ctx,name,num,...) name = _d_define_structure(G_contexts[ctx].defs.symbols,G_contexts[ctx].defs.structures,"" #name "",ctx,num,__VA_ARGS__)
 #define sY(ctx,name,str) name = _d_declare_symbol(G_contexts[ctx].defs.symbols,G_contexts[ctx].defs.structures,str,"" #name "",ctx)
-#define sP(ctx,name,intention,in,out) name = _d_code_process(G_contexts[ctx].defs.processes,0,"" #name "",intention,in,out,ctx)
+#define sP(ctx,name,intention,signature) name = _d_code_process(G_contexts[ctx].defs.processes,0,"" #name "",intention,signature,ctx)
 
 #endif
