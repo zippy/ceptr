@@ -144,7 +144,10 @@ void testCodeProcess() {
     //! [testCodeProcess]
     T *defs = _t_new_root(PROCESSES);
     T *code = _t_new_root(ACTION);
-    T *signature = _t_new_root(PROCESS_SIGNATURE);
+    T *signature = __p_make_signature("result",NULL_SYMBOL,
+                                      "val",SIGNATURE_STRUCTURE,INTEGER,
+                                      "exponent",SIGNATURE_STRUCTURE,INTEGER,
+                                      NULL);
     Process p = _d_code_process(defs,code,"power","takes the mathematical power of the two params",signature,RECEPTOR_CONTEXT);
 
     spec_is_true(is_process(p));

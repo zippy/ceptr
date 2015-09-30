@@ -23,17 +23,30 @@ void testRunTree() {
     _t_new(code,PARAM_REF,pt1,sizeof(int)*4);
     _t_new(code,PARAM_REF,pt2,sizeof(int)*4);
 
+    T *xsignature = __p_make_signature("result",NULL_SYMBOL,
+                                   "condition",SIGNATURE_PROCESS,BOOLEAN,
+                                   "true_branch",SIGNATURE_STRUCTURE,TREE,
+                                   "false_branch",SIGNATURE_STRUCTURE,TREE,
+                                   NULL);
+    char buf[1000];
+    __t_dump(&defs,xsignature,NO_INDENT,buf);
+
     signature = _t_new_root(PROCESS_SIGNATURE);
-    _t_newr(signature,OUTPUT_SIGNATURE);
+    T *o = _t_newr(signature,OUTPUT_SIGNATURE);
+    _t_new_str(o,SIGNATURE_LABEL,"result");
+    _t_news(o,SIGNATURE_SYMBOL,NULL_SYMBOL);
     T *i3 = _t_newr(signature,INPUT_SIGNATURE);
-    _t_new(i3,SIGNATURE_LABEL,"condition",4);
+    _t_new_str(i3,SIGNATURE_LABEL,"condition");
     _t_news(i3,SIGNATURE_PROCESS,BOOLEAN); // a process that returns a boolean
     T *i1 = _t_newr(signature,INPUT_SIGNATURE);
-    _t_new(i1,SIGNATURE_LABEL,"true_branch",4);
+    _t_new_str(i1,SIGNATURE_LABEL,"true_branch");
     _t_news(i1,SIGNATURE_STRUCTURE,TREE);
     T *i2 = _t_newr(signature,INPUT_SIGNATURE);
-    _t_new(i2,SIGNATURE_LABEL,"false_branch",4);
+    _t_new_str(i2,SIGNATURE_LABEL,"false_branch");
     _t_news(i2,SIGNATURE_STRUCTURE,TREE);
+
+    // test that __p_make_signature does what we think it should
+    spec_is_str_equal(buf,_t2s(&defs,signature));
 
     Process p = _d_code_process(processes,code,"myif","a duplicate of the sys if process with params in different order",signature,RECEPTOR_CONTEXT);
 
@@ -660,7 +673,7 @@ void testProcessReduce() {
  */
 //! [defIfEven]
 Process _defIfEven(T *processes) {
-    T *code,*signature;
+    T *code;
 
     /* a process that would look something like this in lisp:
        (defun if_even (val true_branch false_branch) (if (eq (mod val 2 ) 0) (true_branch) (false_branch)))
@@ -683,17 +696,12 @@ Process _defIfEven(T *processes) {
     _t_newi(eq,TEST_INT_SYMBOL,0);
     _t_new(code,PARAM_REF,p2,sizeof(int)*3);
     _t_new(code,PARAM_REF,p3,sizeof(int)*3);
-    signature = _t_new_root(PROCESS_SIGNATURE);
-    _t_newr(signature,OUTPUT_SIGNATURE);
-    T *i1 = _t_newr(signature,INPUT_SIGNATURE);
-    _t_new(i1,SIGNATURE_LABEL,"val",4);
-    _t_news(i1,SIGNATURE_STRUCTURE,INTEGER);
-    T *i2 = _t_newr(signature,INPUT_SIGNATURE);
-    _t_new(i2,SIGNATURE_LABEL,"true_branch",4);
-    _t_news(i2,SIGNATURE_STRUCTURE,TREE);
-    T *i3 = _t_newr(signature,INPUT_SIGNATURE);
-    _t_new(i3,SIGNATURE_LABEL,"false_branch",4);
-    _t_news(i3,SIGNATURE_STRUCTURE,TREE);
+
+    T *signature = __p_make_signature("result",NULL_SYMBOL,
+                                      "val",SIGNATURE_STRUCTURE,INTEGER,
+                                      "true_branch",SIGNATURE_STRUCTURE,TREE,
+                                      "false_branch",SIGNATURE_STRUCTURE,TREE,
+                                      NULL);
 
     return _d_code_process(processes,code,"if even","return 2nd child if even, third if not",signature,RECEPTOR_CONTEXT);
 }
@@ -706,7 +714,7 @@ Process _defIfEven(T *processes) {
  */
 //! [defDivZero]
 Process _defDivZero(T *processes) {
-    T *code,*signature;
+    T *code;
 
     /* a process that would look something like this in lisp:
        (defun div_zero (val) (/ val 0))
@@ -714,12 +722,10 @@ Process _defDivZero(T *processes) {
     code = _t_new_root(DIV_INT);                       // IF is a system process
     _t_newi(code,TEST_INT_SYMBOL,2);
     _t_newi(code,TEST_INT_SYMBOL,0);
-    signature = _t_new_root(PROCESS_SIGNATURE);
-    _t_newr(signature,OUTPUT_SIGNATURE);
 
-    T *i1 = _t_newr(signature,INPUT_SIGNATURE);
-    _t_new(i1,SIGNATURE_LABEL,"val",4);
-    _t_news(i1,SIGNATURE_STRUCTURE,INTEGER);
+    T *signature = __p_make_signature("result",NULL_SYMBOL,
+                                      "val",SIGNATURE_STRUCTURE,INTEGER,
+                                      NULL);
 
     return _d_code_process(processes,code,"divByZero","create a divide by zero error",signature,RECEPTOR_CONTEXT);
 }

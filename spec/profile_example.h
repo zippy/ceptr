@@ -96,16 +96,11 @@ void testProfileExample() {
 
     spec_is_str_equal(_t2s(&test_profile_defs,t),"(USER_PROFILE (PROFILE_NAME (FIRST_NAME:Jane) (LAST_NAME:Smith)) (PROFILE_ADDRESS (STREET_ADDRESS:126 Main Street) (CITY:Smallville) (STATE:CA) (ZIP:12345) (COUNTRY:USA)) (PROFILE_EMAIL:test@example.com))");
 
-    T *signature = _t_new_root(PROCESS_SIGNATURE);
-    T *i = _t_newr(signature,OUTPUT_SIGNATURE);
-    _t_new_str(i,SIGNATURE_LABEL,"mailing_profile");
-    _t_news(i,SIGNATURE_STRUCTURE,CSTRING);  // should actually be MAILING_LABEL symbol or something like that
-    i = _t_newr(signature,INPUT_SIGNATURE);
-    _t_new_str(i,SIGNATURE_LABEL,"the_int?");
-    _t_news(i,SIGNATURE_STRUCTURE,INTEGER);
-    i = _t_newr(signature,INPUT_SIGNATURE);
-    _t_new_str(i,SIGNATURE_LABEL,"the_profile");
-    _t_news(i,SIGNATURE_STRUCTURE,PROFILE);
+    T *signature = __p_make_signature("result",NULL_SYMBOL,
+                                      "mailing_profile",SIGNATURE_STRUCTURE,CSTRING, // should actually be MAILING_LABEL symbol or something like that
+                                      "the_int?",SIGNATURE_STRUCTURE,INTEGER,
+                                      "the_profile",SIGNATURE_STRUCTURE,PROFILE,
+                                      NULL);
 
     T *processes = test_profile_defs.processes;
 

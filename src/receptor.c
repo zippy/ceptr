@@ -740,7 +740,10 @@ Receptor *_r_makeStreamWriterReceptor(Symbol receptor_symbol,Symbol stream_symbo
     T* params = _t_new_root(PARAMS);
     _t_news(params,INTERPOLATE_SYMBOL,NULL_SYMBOL);
 
-    T *signature = _t_new_root(PROCESS_SIGNATURE);
+    T *signature = __p_make_signature("result",NULL_SYMBOL,
+                                      "stream",SIGNATURE_STRUCTURE,STREAM,
+                                      NULL);
+
     Process proc = _r_code_process(r,x,"echo input to stream","long desc...",signature);
     T *act = _t_newp(0,ACTION,proc);
 
@@ -772,7 +775,9 @@ Receptor *_r_makeClockReceptor() {
 
     T *action = _t_newp(x,ACTION,SEND);
 
-    T *signature = _t_new_root(PROCESS_SIGNATURE);
+    T *signature = __p_make_signature("result",NULL_SYMBOL,
+                                      "stream",SIGNATURE_STRUCTURE,SEMTREX,
+                                      NULL);
     Process proc = _r_code_process(r,x,"plant a listener to send the time","long desc...",signature);
     T *act = _t_newp(0,ACTION,proc);
 
