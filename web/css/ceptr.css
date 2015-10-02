@@ -60,6 +60,17 @@ input {
 }
 
 
+#caret::before {content:"^"}
+
+#caret {
+  cursor: none;
+  outline: none;
+  margin-top: 15px;
+  margin-left: -5px;
+  position: absolute;
+  font-size: 80%;
+}
+
 /* this stuff is to make the caret | blink */
 .blinking-cursor {
   font-weight: 100;
@@ -72,7 +83,6 @@ input {
   animation: 1s blink step-end infinite;
   margin-right: -3px;
 }
-#caret {outline: none;}
 @keyframes "blink" {
   from, to {
     color: transparent;

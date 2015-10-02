@@ -1,62 +1,58 @@
-var LABEL_TABLE= {
-    "integer": {type:'structure'},
-    "float": {type:'structure'},
-    "shoe size": {type:'symbol',structure:'float'},
-    "street number": {type:'symbol',structure:'integer'},
-    "latitude": {type:'symbol',structure:'float'},
-    "longitude": {type:'symbol',structure:'float'},
-    "latlong": {type:'structure',symbols:['latitude','longitude']},
-    "home location": {type:'symbol',structure:'latlong'}
-};
-var SYMBOLS = [];
-for (var key in LABEL_TABLE) {
-    var i = LABEL_TABLE[key];
-    if (i.type == 'symbol') {SYMBOLS.push(key);}
-    $("#label-table").append("<ltitem><ltlabel>"+key+"</ltlabel> <lttype>"+i.type+"</lttype></ltitem>");
-}
-
-function showLabelTable() {
-    var h = "";
-    for (var key in LABEL_TABLE) {
-        var i = LABEL_TABLE[key];
-        h += "<ul>";
-        h += "<ltlabel>"+key+"</ltlabel> <lttype>"+i.type+"</lttype>";
-        if (i.type == "structure") {
-            if (i.symbols) {
-                h += "<ltsymbols>" + i.symbols.join(",")+ "</ltsymbols>"
-            }
-        }
-        h += "</ul>";
-    }
-    $("#label-table").html(h);
-
-}
-
 var JQ = $;  //jquery if needed for anything complicated, trying to not have dependency on jq
 (function () {
+    var LABEL_TABLE = {
+        "integer": {type:'structure'},
+        "float": {type:'structure'},
+        "shoe size": {type:'symbol',structure:'float'},
+        "street number": {type:'symbol',structure:'integer'},
+        "latitude": {type:'symbol',structure:'float'},
+        "longitude": {type:'symbol',structure:'float'},
+        "latlong": {type:'structure',symbols:['latitude','longitude']},
+        "home location": {type:'symbol',structure:'latlong'}
+    };
+    var SYMBOLS = [];
+    for (var key in LABEL_TABLE) {
+        var i = LABEL_TABLE[key];
+        if (i.type == 'symbol') {SYMBOLS.push(key);}
+    }
     var _ = function (elem,o) {
+
+        // instance variables
         var me = this;
         var handle_keys = true;
 
-	// Setup
+        // methods
+        this.showCaret = function() {
+            handle_keys=true;
+            caret.style.display="inline-block";
+            caret.focus();
+        }
+        this.hideCaret = function() {
+            handle_keys=false;
+            caret.style.display="none";
+        }
+
+	// instance properties
         this.elem = $(elem);
-        this.elem.te = this;
+        this.elem.te = this;  // stick a copy of this in the element for reference
 
         o = o || {};
 	configure.call(this, {
-	    testProperty: 314
+	    // add properties here testProperty: 314
 	}, o);
 
         // Create necessary elements
-        this.caret = $.create("span",{
+        var caret = $.create("span",{
             id:"caret",
             className: "blinking-cursor",
             contenteditable:true,
-            innerHTML: "|",
+            innerHTML: "",
             inside: this.elem
-         });
+        });
+        this.caret = caret;
+
         // Bind events
-	$.bind(this.caret, {
+	$.bind(caret, {
             "keypress": function(e) {
                 if (!handle_keys) {
                     return;
@@ -65,9 +61,9 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
                 {
                     var c = String.fromCharCode(code);
                     if (/^[a-zA-Z_-]$/.test(c)) {
-                        var new_sem = $.create("sem",{before: me.caret});
+                        var new_sem = $.create("sem",{before: caret});
                         var new_label = $.create("label",{inside:new_sem});
-                        var a = editLabel(me,new_label,false);
+                        var a = editLabel.call(me,new_label,false);
                         a.input.value=c;
                         a.evaluate();
                     }
@@ -77,15 +73,15 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
             "keydown": function(e) {
                 if (!handle_keys) {return;}
                 if (e.keyCode==37) { // left arrow
-                    var ref = me.caret;
-                    ref.parentNode.insertBefore(me.caret,ref.previousElementSibling);
-                    me.caret.focus();
+                    var ref = caret;
+                    ref.parentNode.insertBefore(caret,ref.previousElementSibling);
+                    caret.focus();
                     e.preventDefault();
                 }
                 else if (e.keyCode==39) { //right arrow
-                    var ref = me.caret.nextElementSibling;
-                    ref.parentNode.insertBefore(me.caret,ref.nextElementSibling);
-                    me.caret.focus();
+                    var ref = caret.nextElementSibling;
+                    ref.parentNode.insertBefore(caret,ref.nextElementSibling);
+                    caret.focus();
                     e.preventDefault();
                 }
             },
@@ -93,37 +89,74 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         $.bind(this.elem, {
             "click": function(e) {
                 if (e.target.nodeName == "LABEL" && e.target.getAttribute("locked") != "true")  {
-                    editLabel(me,e.target,true);
+                    editLabel.call(me,e.target,true);
+                    e.preventDefault();
+                }
+                else if (e.target.nodeName == "SURFACE") {
+                    // don't prevent default because we want the click to go through to
+                    // the editable content of the surface
+                    me.hideCaret();
+                }
+                else {
+                    // add some way to move the caret to the current clicked point
+                    me.showCaret();
                     e.preventDefault();
                 }
             }
         });
 
-        this.caret.focus();
+        caret.focus();
     };
     _.prototype = {
-        get fish() {return "cod";}
-
+        // add method function defs here...like: get fish() {return "cod";}
     };
+
     // Private functions
-    function editLabel(te,label,select) {
+
+    function setupSem(label_val,sem,lock) {
+        var def = LABEL_TABLE[label_val];
+        if (def.type == 'symbol') {
+            var label = $.getOrCreate('label',sem);
+            if (lock) label.setAttribute("locked","true");
+            label.innerHTML=label_val;
+            var struct = $.getOrCreate('struct',sem);
+            struct.innerHTML=def.structure;
+            var symbols = LABEL_TABLE[def.structure].symbols;
+            // if structure has no symbols it's system defined so create a surface
+            if (!symbols) {
+                $.remove('children',sem);
+                var surface = $.getOrCreate('surface',sem);
+                surface.innerHTML = "";
+                surface.setAttribute('contenteditable', 'true');
+            }
+            else {
+                $.remove('surface',sem);
+                var children = $.getOrCreate('children',sem);
+                children.innerHTML = "";
+                symbols.forEach(function(s){
+                    var child_sem = $.create('sem',{inside:children});
+                    setupSem(s,child_sem,true);
+                });
+            }
+        }
+    }
+
+    function editLabel(label,select) {
         var v = label.innerHTML;
         label.style.display="none";
         var input = $.create("input",{
             before:label
         });
         var a = new Awesomplete(input, {
-            className: "bb",
 	    list: SYMBOLS,
             minChars: 1
         });
         input.value=v;
         input.focus();
         if (select) input.select();
-        handle_keys=false;
+        var me = this;
+        this.hideCaret();
         function close_a(e) {
-            handle_keys=true;
-
             //if the new label is defined and different reset everything
             if (LABEL_TABLE[input.value] != undefined && label.innerHTML != input.value) {
                 setupSem(input.value,label.parentNode);
@@ -134,54 +167,13 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
 
             // move caret to after this node
             var ref = label.parentNode;
-            ref.parentNode.insertBefore(te.caret,ref.nextElementSibling);
-            te.caret.focus();
+            ref.parentNode.insertBefore(me.caret,ref.nextElementSibling);
+            me.showCaret();
         }
         $.bind(input,{
             "blur":close_a,
-        //    "awesomplete-close":close_a
         });
         return a;
-    }
-
-    function getOrCreate(tag,elem) {
-        var e = $(tag,elem);
-        if (!e) {
-            e = $.create(tag,{inside:elem});
-        }
-        return e;
-    }
-    function kill(tag,elem) {
-        var e = $(tag,elem);
-        if (e) e.remove();
-    }
-
-    function setupSem(label_val,sem,lock) {
-        var def = LABEL_TABLE[label_val];
-        if (def.type == 'symbol') {
-            var label = getOrCreate('label',sem);
-            if (lock) label.setAttribute("locked","true");
-            label.innerHTML=label_val;
-            var struct = getOrCreate('struct',sem);
-            struct.innerHTML=def.structure;
-            var symbols = LABEL_TABLE[def.structure].symbols;
-            // if structure has no symbols it's system defined so create a surface
-            if (!symbols) {
-                kill('children',sem);
-                var surface = getOrCreate('surface',sem);
-                surface.innerHTML = "";
-                surface.setAttribute('contenteditable', 'true');
-            }
-            else {
-                kill('surface',sem);
-                var children = getOrCreate('children',sem);
-                children.innerHTML = "";
-                symbols.forEach(function(s){
-                    var child_sem = $.create('sem',{inside:children});
-                    setupSem(s,child_sem,true);
-                });
-            }
-        }
     }
 
     function configure(properties, o) {
@@ -261,6 +253,19 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
 	return element;
     };
 
+    $.getOrCreate = function(tag,elem) {
+        var e = $(tag,elem);
+        if (!e) {
+            e = $.create(tag,{inside:elem});
+        }
+        return e;
+    }
+
+    $.remove = function(tag,elem) {
+        var e = $(tag,elem);
+        if (e) e.remove();
+    }
+
     // Initialization
 
     function init() {
@@ -281,9 +286,27 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
 	}
     }
 
+    // static methods and variables
+    //export some utilities
     _.$ = $;
     _.$$ = $$;
 
+    _.buildLabelTable = function(elem) {
+        var h = "";
+        for (var key in LABEL_TABLE) {
+            var i = LABEL_TABLE[key];
+            h += "<ul>";
+            h += "<ltlabel>"+key+"</ltlabel> <lttype>"+i.type+"</lttype>";
+            if (i.type == "structure") {
+                if (i.symbols) {
+                    h += "<ltsymbols>" + i.symbols.join(",")+ "</ltsymbols>"
+                }
+            }
+            h += "</ul>";
+        }
+        elem.innerHTML=h;
+
+    }
     // Make sure to export TE on self when in a browser
     if (typeof self !== 'undefined') {
 	self.TE = _;
