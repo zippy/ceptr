@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Te</title>
+    <link href="/css/ceptr.css" type="text/css" rel="stylesheet"/>
+    <script src="/js/ceptr.js"></script>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script src="/js/ide.js"></script>
+    <link rel="stylesheet" href="/css/awesomplete.css" />
+    <script src="/js/awesomplete.js" async></script>
+
+    <script type="text/javascript">
+      window.onload=function(){
+         showLabelTable();
+      };
+    </script>
+
+  </head>
+  <body >
+    <button onclick="$('struct').toggle()">toggle struct visibility</button>
+    <div class="column-container">
+      <div class="TE column-left">
+        <sem sem-id="1.3.33" structure="1.3.4"><label>shoe size</label><struct>float</struct><surface contenteditable="true">10.5</surface><children></children> </sem>
+        <br />
+        <sem sem-id="1.3.35" structure="1.3.3"><label>street number</label><struct>integer</struct><surface contenteditable="true">10</surface><children></children> </sem>
+        <br />
+        <sem sem-id="1.3.34" structure="1.3.4"><label>home location</label><struct>latlong</struct>
+        <children>
+          <sem sem-id="1.3.33" structure="1.3.4"><label locked="true">latitude</label><struct>float</struct><surface contenteditable="true">83</surface></sem>
+          <sem sem-id="1.3.33" structure="1.3.4"><label locked="true">longitude</label><struct>float</struct><surface contenteditable="true">90.2</surface></sem>
+        </children>
+        </sem>
+      </div>
+      <div id="label-table-container" class="column-right"><b>label table</b><br/>
+        <div id="label-table"></div>
+    </div>
+    </div>
+
+<div id="tree-editor">
+
+    <div>def symbol
+      <div>label = "Home Location"</div>
+      <div>latlong</div>
+    </div>
+    <p>&nbsp;</p>
+
+    <div class="ctx-sys typ-proc" symbol-id="0.3.33">def structure
+      <div>label = "latlong"</div>
+      <div>surface
+        <div>lat</div>
+        <div>long</div>
+      </div>
+      <div>process
+        <div>distance
+          <div>complicated sphere wrapping formula</div>
+        </div>
+      </div>
+    </div>
+<div>EXPECTATION <br/>
+ <div>On HTTP_Request</div>
+ <div>Expect .*/HOST{value="geekgene.com"}</div>
+ <div>Do
+ <div class="if">xx<span id="caret" class="blinking-cursor" contenteditable=true>|</span>yy
+  <div class="expr">expr2
+   <div>=
+    <div>x</div>
+    <div>10</div>
+   </div>
+  </div>
+  <div>then
+   <div>
+ 	<div class="if">
+ 	 <div>expr
+ 	  <div>=
+ 	   <div>x</div>
+ 	   <div>10</div>
+ 	  </div>
+ 	 </div>
+ 	 <div>then
+ 	  <div>some proc tree</div>
+ 	 </div>
+ 	 <div>else
+ 	  <div>some other proc tree</div>
+ 	 </div>
+ 	</div>
+   </div>
+  </div>
+  <div>else
+   <div>
+    <div>if
+ 	 <div>expr
+ 	  <div>=
+ 	   <div>x</div>
+ 	   <div>10</div>
+ 	  </div>
+ 	 </div>
+ 	 <div>then
+ 	  <div>some proc tree</div>
+ 	 </div>
+ 	 <div>else
+ 	  <div>some other proc tree</div>
+ 	 </div>
+ 	</div>
+   </div>
+  </div>
+ </div>
+ </div>
+ <div>With SessionInitParams <div>Instance = 48</div></div>
+</div>
+</div>
+  </body>
+</html>
