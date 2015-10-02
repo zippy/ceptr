@@ -95,6 +95,7 @@ size_t __t_serialize(Defs *d,T *t,void **bufferP,size_t offset,size_t current_si
 void _t_serialize(Defs *d,T *t,void **surfaceP,size_t *sizeP);
 T * _t_unserialize(Defs *d,void **surfaceP,size_t *lengthP,T *t);
 
+char * _t2rawjson(Defs *defs,T *t,int level,char *buf);
 char * _t2json(Defs *defs,T *t,int level,char *buf);
 
 /*****************  Misc... */

@@ -24,8 +24,8 @@ ContextStore G_contexts[_NUM_CONTEXTS];
 
 void init_defs_tree(ContextStore *cs) {
     cs->root = _t_new_root(DEFINITIONS);
-    cs->defs.symbols = _t_newr(cs->root,SYMBOLS);
     cs->defs.structures = _t_newr(cs->root,STRUCTURES);
+    cs->defs.symbols = _t_newr(cs->root,SYMBOLS);
     cs->defs.processes = _t_newr(cs->root,PROCESSES);
 }
 

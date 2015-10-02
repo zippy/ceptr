@@ -979,6 +979,139 @@ T * _t_unserialize(Defs *d,void **surfaceP,size_t *lengthP,T *t) {
 
 
 #define _add_char2buf(c,buf) *buf=c;buf++;*buf=0
+
+#define _add_sem(buf,s) sprintf(buf,"{ \"ctx\":%d,\"type\":%d,\"id\":%d }",s.context,s.semtype,s.id);
+/**
+ * dump tree in raw JSON format
+ *
+ * @param[in] defs the definition context
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/tree_spec.h testTreeJSON
+ */
+char * _t2rawjson(Defs *defs,T *t,int level,char *buf) {
+    char *result = buf;
+    T *structures = defs ? defs->structures : 0;
+    T *symbols = defs ? defs->symbols : 0;
+    T *processes = defs ? defs->processes : 0;
+    if (!t) return "";
+    Symbol s = _t_symbol(t);
+    char b[255];
+    char tbuf[2000];
+    int i;
+    char *c,cr;
+    Xaddr x;
+    buf = _indent_line(level,buf);
+
+    sprintf(buf,"{\"sem\":");
+    buf+= strlen(buf);
+    _add_sem(buf,s);
+    buf+= strlen(buf);
+    if (is_symbol(s)) {
+        Structure st = _d_get_symbol_structure(symbols,s);
+
+        if (is_sys_structure(st)) {
+            switch(st.id) {
+            case ENUM_ID: // for now enum surfaces are just strings so we can see the text value
+            case CSTRING_ID:
+                //@todo add escaping of quotes, carriage returns, etc...
+                sprintf(buf,",\"surface\":\"\%s\"",(char *)_t_surface(t));
+                break;
+            case CHAR_ID:
+                cr = *(char *)_t_surface(t);
+                if (cr == '"') {
+                    sprintf(buf,",\"surface\":\"\\\"\"");
+                } else {
+                    sprintf(buf,",\"surface\":\"%c\"",cr);
+                }
+                break;
+            case BIT_ID:
+                sprintf(buf,",\"surface\":%s",(*(int *)_t_surface(t)) ? "1" : "0");
+                break;
+            case INTEGER_ID:
+                sprintf(buf,",\"surface\":%d",*(int *)_t_surface(t));
+                break;
+            case FLOAT_ID:
+                sprintf(buf,",\"surface\":%f",*(float *)_t_surface(t));
+                break;
+            case SYMBOL_ID:
+            case STRUCTURE_ID:
+            case PROCESS_ID:
+                {
+                    SemanticID sem =*(SemanticID *)_t_surface(t);
+                    sprintf(buf,",\"surface\":");
+                    buf+= strlen(buf);
+                    _add_sem(buf,sem);
+                }
+                break;
+            case TREE_PATH_ID:
+                sprintf(buf,",\"surface\":\"%s\"",_t_sprint_path((int *)_t_surface(t),b));
+                break;
+            case XADDR_ID:
+                x = *(Xaddr *)_t_surface(t);
+                sprintf(buf,",\"surface\":{ \"symbol\":\"%s\",\"addr\":%d }",_d_get_symbol_name(symbols,x.symbol),x.addr);
+                break;
+            case STREAM_ID:
+                sprintf(buf,",\"surface\":\"%p\"",_t_surface(t));
+                break;
+            case TREE_ID:
+                if (t->context.flags & TFLAG_SURFACE_IS_TREE) {
+                    c = _t2rawjson(defs,(T *)_t_surface(t),0,tbuf);
+                    sprintf(buf,",\"surface\":%s",c);
+                    break;
+                }
+            case RECEPTOR_ID:
+                if (t->context.flags & (TFLAG_SURFACE_IS_TREE+TFLAG_SURFACE_IS_RECEPTOR)) {
+                    c = _t2rawjson(defs,((Receptor *)_t_surface(t))->root,0,tbuf);
+                    sprintf(buf,",\"surface\":%s",c);
+                    break;
+                }
+            case SCAPE_ID:
+                if (t->context.flags & TFLAG_SURFACE_IS_SCAPE) {
+                    Scape *sc = (Scape *)_t_surface(t);
+                    //TODO: fixme!
+                    raise_error("not-implemented");
+                    sprintf(buf,"(key %s,data %s",_d_get_symbol_name(symbols,sc->key_source),_d_get_symbol_name(symbols,sc->data_source));
+                    break;
+                }
+            case LIST_ID:
+                // nothing to do.
+                break;
+            default:
+                raise_error("don't know how to convert surface of %s",_d_get_symbol_name(symbols,s));
+                /* if (semeq(s,SEMTREX_MATCH_CURSOR)) { */
+                /*     c = _t2json(defs,*(T **)_t_surface(t),0,tbuf); */
+                /*     //c = "null"; */
+                /*     sprintf(buf,"{%s}",c); */
+                /*     break; */
+                /* } */
+                /* if (n == 0) */
+                /*     sprintf(buf,"(<unknown:%d.%d.%d>",s.context,s.semtype,s.id); */
+                /* else { */
+                /*     c = _d_get_structure_name(structures,st); */
+                /*     sprintf(buf,"\"type\":\"%s\",\"name\":\"%s\"",c,n); */
+                /* } */
+            }
+        }
+    }
+    buf += strlen(buf);
+    int _c = _t_children(t);
+    if ( _c > 0) {
+        sprintf(buf,",\"children\":[");
+        buf += strlen(buf);
+        for(i=1;i<=_c;i++){
+            _t2rawjson(defs,_t_child(t,i),level < 0 ? level-1 : level+1,buf);
+            buf += strlen(buf);
+            if (i<_c) {
+                _add_char2buf(',',buf);
+            }
+        }
+        _add_char2buf(']',buf);
+    }
+    _add_char2buf('}',buf);
+    return result;
+}
+
 /**
  * dump tree in JSON format
  *

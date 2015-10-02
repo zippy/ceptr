@@ -10,6 +10,7 @@
 #include "../src/ceptr.h"
 
 void wjson(Defs *d,T *t,char *n,int i);
+void dump2json(Defs *d,T *t,char *n);
 T *makeDelta(Symbol sym,int *path,T *t,int count);
 void visdump(Defs *defs,T *x);
 

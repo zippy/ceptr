@@ -18,6 +18,14 @@ void wjson(Defs *d,T *t,char *n,int i) {
     writeFile(fn,json,strlen(json));
 }
 
+void dump2json(Defs *d,T *t,char *n) {
+    char fn[100];
+    char json[100000] = {0};
+    _t2rawjson(d,t,-1,json);
+    sprintf(fn,"web/%s.json",n);
+    writeFile(fn,json,strlen(json));
+}
+
 // create a TREE_DELTA tree
 T *makeDelta(Symbol sym,int *path,T *t,int count) {
     T *d = _t_new_root(sym);

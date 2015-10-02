@@ -14,7 +14,8 @@ body {
 }
 
 .column-right {
-  width: 300px;
+  max-width: 500px;
+  width:300;
 }
 
 /* -------------------------------- label table ----------------------*/
@@ -22,11 +23,20 @@ body {
   border: 1px solid rgba(0,0,0,.3);
   background-color: rgba(0,80,130,.1);
 }
+#label-table {
+  max-height: 700px;
+  overflow-y: auto;
+}
 
 lttype::before {content:"type:"}
 ltsymbols::before {content:"symbols:"}
 ltsymbols {margin-left: 10px;}
-#label-table ul {margin:0 0 2px 10px;padding:0}
+#label-table ul {
+  margin:0 0 2px 10px;
+  padding:0;
+  padding-left: 1.5em;
+  text-indent:-1.5em;
+}
 /* ----------------------- tree editor and semantic nodes  ----------------------*/
 .TE {
   border: 1px solid rgba(0,0,0,.3);

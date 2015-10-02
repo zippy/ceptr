@@ -1,5 +1,17 @@
+function loadTree(file_name,completedFN) {
+    var fn = file_name+".json";
+    var tree;
+    $.get(fn, {},function(data,status) {
+        console.log("loading:"+fn);
+        completedFN(data);
+    }).fail(function(x) {
+        console.log("failed to load:"+fn);
+        console.log(JSON.stringify(x));
+    });
+}
 var JQ = $;  //jquery if needed for anything complicated, trying to not have dependency on jq
 (function () {
+    var _SYSDEFS = {};
     var LABEL_TABLE = {
         "integer": {type:'structure'},
         "float": {type:'structure'},
@@ -11,10 +23,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         "home location": {type:'symbol',structure:'latlong'}
     };
     var SYMBOLS = [];
-    for (var key in LABEL_TABLE) {
-        var i = LABEL_TABLE[key];
-        if (i.type == 'symbol') {SYMBOLS.push(key);}
-    }
+
     var _ = function (elem,o) {
 
         // instance variables
@@ -123,11 +132,18 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
             struct.innerHTML=def.structure;
             var symbols = LABEL_TABLE[def.structure].symbols;
             // if structure has no symbols it's system defined so create a surface
+            // or an unknown treenode in the case of LIST or TREE structures
             if (!symbols) {
-                $.remove('children',sem);
-                var surface = $.getOrCreate('surface',sem);
-                surface.innerHTML = "";
-                surface.setAttribute('contenteditable', 'true');
+                if (def.structure == "TREE" || def.structure == "LIST") {
+                    var children = $.getOrCreate('children',sem);
+                    children.innerHTML="<sem><label>--unknown--</label></sem>";
+                }
+                else {
+                    $.remove('children',sem);
+                    var surface = $.getOrCreate('surface',sem);
+                    surface.innerHTML = "";
+                    surface.setAttribute('contenteditable', 'true');
+                }
             }
             else {
                 $.remove('surface',sem);
@@ -266,12 +282,64 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         if (e) e.remove();
     }
 
-    // Initialization
+    var SEM_TYPE_STRUCTURE=1;
+    var SEM_TYPE_SYMBOL=2;
+    var SEM_TYPE_PROCESS=3;
+    var type_names= ["","STRUCTURE","SYMBOL","PROCESS"];
 
+    function getSemName(id){
+        if (id.id == 0) {
+            return "NULL_"+type_names[id.type];
+        }
+        return _SYSDEFS.children[id.type-1].children[id.id-1].children[0].surface;
+    }
+    _.getSemName = getSemName;
+    function getSymbolStruct(id){
+        if (id.type != SEM_TYPE_SYMBOL) {throw "expecting symbol";}
+        return _SYSDEFS.children[SEM_TYPE_SYMBOL-1].children[id.id-1].children[1].surface;
+    }
+    _.getSymbolStruct = getSymbolStruct;
+    function getStructSymbols(id){
+        if (id.type != SEM_TYPE_STRUCTURE) {throw "expecting structure";}
+        return _SYSDEFS.children[SEM_TYPE_STRUCTURE-1].children[id.id-1].children[1].children;
+    }
+    _.getStructSymbols = getStructSymbols;
+    // Initialization
     function init() {
 	$$(".TE").forEach(function (elem) {
 	    new _(elem);
 	});
+        loadTree("sysdefs",function(d){
+            _SYSDEFS = d;
+            _.DEFS = _SYSDEFS;
+
+            var struct_defs = _SYSDEFS.children[SEM_TYPE_STRUCTURE-1].children;
+            var structs = struct_defs.length;
+            for (var i=0;i<structs;i++) {
+                var symbols = struct_defs[i].children[1].children;
+                var structures = [];
+                for (var j=0;j<symbols.length;j++) {
+                    var n = getSemName(symbols[j].surface);
+                    if (n != "NULL_SYMBOL") {
+                        structures.push(n);
+                    }
+                }
+                var def = {type:'structure'};
+                if (structures.length>0) def.symbols = structures;
+                LABEL_TABLE[struct_defs[i].children[0].surface] = def;
+            }
+
+            var symbol_defs = _SYSDEFS.children[SEM_TYPE_SYMBOL-1].children;
+            var symbols = symbol_defs.length;
+            for (var i=0;i<symbols;i++) {
+                var struct = symbol_defs[i].children[1].surface;
+                LABEL_TABLE[symbol_defs[i].children[0].surface] = {type:'symbol',structure:getSemName(struct)};
+            }
+            for (var key in LABEL_TABLE) {
+                var i = LABEL_TABLE[key];
+                if (i.type == 'symbol') {SYMBOLS.push(key);}
+            }
+        });
     }
 
     // Are we in a browser? Check for Document constructor
