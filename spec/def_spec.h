@@ -57,7 +57,7 @@ void testDefSymbol() {
     spec_is_sem_equal(_t_symbol(_t_child(_t_child(defs,ss.id),2)),SYMBOL_STRUCTURE);
     spec_is_sem_equal(_t_symbol(_t_child(_t_child(defs,ss.id),1)),SYMBOL_LABEL);
     spec_is_str_equal(_d_get_symbol_name(defs,ss),"shoe size");
-
+    spec_is_str_equal(t2s(defs),"(SYMBOLS (SYMBOL_DECLARATION (SYMBOL_LABEL:shoe size) (SYMBOL_STRUCTURE:INTEGER)))");
     _t_free(defs);
     //! [testDefSymbol]
 }
@@ -80,6 +80,8 @@ void testDefStructure() {
     spec_is_symbol_equal(0,_t_symbol(_t_child(p,1)),STRUCTURE_PART);
     Structure x = {RECEPTOR_CONTEXT,SEM_TYPE_STRUCTURE,1};
     spec_is_str_equal(_d_get_structure_name(defs,x),"boolean pair");
+
+    spec_is_str_equal(t2s(defs),"(STRUCTURES (STRUCTURE_DEFINITION (STRUCTURE_LABEL:boolean pair) (STRUCTURE_PARTS (STRUCTURE_PART:BOOLEAN) (STRUCTURE_PART:BOOLEAN))))");
 
     _t_free(defs);
     //! [testDefStructure]
