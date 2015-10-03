@@ -1,0 +1,148 @@
+body {
+  font-family:Verdana,Helvetica,Helv,Sans; font-size:12pt;
+}
+
+.column-container {
+  display: table;
+}
+.column-left, .column-right {
+  display: table-cell;
+}
+
+.column-left {
+  width: 700px;
+}
+
+.column-right {
+  max-width: 500px;
+  width:300;
+}
+
+/* -------------------------------- label table ----------------------*/
+#label-table-container {
+  border: 1px solid rgba(0,0,0,.3);
+  background-color: rgba(0,80,130,.1);
+}
+#label-table {
+  max-height: 700px;
+  overflow-y: auto;
+}
+
+lttype::before {content:"type:"}
+ltsymbols::before {content:"symbols:"}
+ltsymbols {margin-left: 10px;}
+#label-table ul {
+  margin:0 0 2px 10px;
+  padding:0;
+  padding-left: 1.5em;
+  text-indent:-1.5em;
+}
+/* ----------------------- tree editor and semantic nodes  ----------------------*/
+.TE {
+  border: 1px solid rgba(0,0,0,.3);
+  padding: 5px;
+}
+.TE sem {
+  border-radius: .3em;
+  display: inline-block; padding: 3px 3px 1px 3px; margin-left: 5px; background-color: rgba(80,0,130,.1) ;
+}
+
+sem surface {
+  min-width: 20px;
+  display: inline-block;
+}
+
+sem surface {[content-editable="true"]}
+
+surface::before {content:":"}
+
+struct{display:none;vertical-align: sub;font-size:80%;}
+
+
+/* failed attempt to get label input element to have variable width sizing */
+div.awesomplete > input {
+  width:98%;padding:1%;
+  box-sizing: border-box; /* css3 rec */
+  -moz-box-sizing: border-box; /* ff2 */
+  -ms-box-sizing: border-box; /* ie8 */
+  -webkit-box-sizing: border-box; /* safari3 */
+  -khtml-box-sizing: border-box; /* konqueror */
+}
+
+
+#caret::before {content:"^"}
+
+#caret {
+  cursor: none;
+  outline: none;
+  margin-top: 15px;
+  margin-left: -5px;
+  position: absolute;
+  font-size: 80%;
+}
+
+/* this stuff is to make the caret | blink */
+.blinking-cursor {
+  font-weight: 100;
+  font-size: 20px;
+  color: #2E3D48;
+  -webkit-animation: 1s blink step-end infinite;
+  -moz-animation: 1s blink step-end infinite;
+  -ms-animation: 1s blink step-end infinite;
+  -o-animation: 1s blink step-end infinite;
+  animation: 1s blink step-end infinite;
+  margin-right: -3px;
+}
+@keyframes "blink" {
+  from, to {
+    color: transparent;
+  }
+  50% {
+    color: black;
+  }
+}
+
+@-moz-keyframes blink {
+  from, to {
+    color: transparent;
+  }
+  50% {
+    color: black;
+  }
+}
+
+@-webkit-keyframes "blink" {
+  from, to {
+    color: transparent;
+  }
+  50% {
+    color: black;
+  }
+}
+
+@-ms-keyframes "blink" {
+  from, to {
+    color: transparent;
+  }
+  50% {
+    color: black;
+  }
+}
+
+@-o-keyframes "blink" {
+  from, to {
+    color: transparent;
+  }
+  50% {
+    color: black;
+  }
+      }
+
+/* -------------------------------- old stuff ----------------------*/
+
+
+
+#tree-editor sem,#tree-editor div {
+  display: inline-block; padding: 3px 3px 1px 3px; margin-left: 5px; background-color: rgba(0,100,0,.1) ;
+}
+ 

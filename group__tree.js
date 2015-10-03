@@ -12,6 +12,7 @@ var group__tree =
     [ "__t_news", "group__tree.html#ga4a9edd746e2d99a9358d8e0ee9248ad6", null ],
     [ "__t_serialize", "group__tree.html#ga4b3d9a3a1c1bc4a7fb710e96faf1d437", null ],
     [ "_t2json", "group__tree.html#ga34e1f5a651d1a582e3cd7bb3e885ffde", null ],
+    [ "_t2rawjson", "group__tree.html#ga13014bea87bf812b5584d6cdb8a3b5da", null ],
     [ "_t_add", "group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c", null ],
     [ "_t_child", "group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b", null ],
     [ "_t_children", "group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc", null ],

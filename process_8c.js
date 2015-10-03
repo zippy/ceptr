@@ -10,6 +10,7 @@ var process_8c =
     [ "__p_find_context", "process_8c.html#a16f2d8cde47ddf8d619db33fbfcfa73b", null ],
     [ "__p_make_context", "process_8c.html#a05ba8f21383f9273acbdb89134f0fff9", null ],
     [ "__p_make_run_tree", "process_8c.html#ae3613e9e24d3be687d8fc10d30994445", null ],
+    [ "__p_make_signature", "process_8c.html#a59a93f71ed6dcdb1bae29d489932a6d0", null ],
     [ "__p_reduce_sys_proc", "process_8c.html#a5e368ad3c3c5a772d49c30675b143fff", null ],
     [ "__p_unblock", "process_8c.html#a95f4b3611fc8219a648be771df2ac3f8", null ],
     [ "_p_addrt2q", "process_8c.html#aeda111a93260aae9ed19b1c2d1d2e029", null ],
@@ -31,5 +32,5 @@ var process_8c =
     [ "pq", "process_8c.html#a5155e1fe433f5ebae5d912ab9604dbc8", null ],
     [ "rt_check", "process_8c.html#a7ef444de3ef7242e2cb0c10dcf8bf947", null ],
     [ "set_rt_cur_child", "process_8c.html#aa60e527f789813d39ac9ef4ef97a4382", null ],
-    [ "G_process_ids", "process_8c.html#af3c56728164e96753e47ffd857dd2157", null ]
+    [ "G_next_process_id", "process_8c.html#a4459dc13ae00b49b36447b0f91cbf466", null ]
 ];

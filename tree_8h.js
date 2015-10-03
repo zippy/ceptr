@@ -27,6 +27,7 @@ var tree_8h =
     [ "__uuid_equal", "group__tree.html#ga88591763ab94f7aaab16279461fc8b6e", null ],
     [ "__uuid_gen", "group__tree.html#ga3bc51ddefc411f494fe5a6722f6802ba", null ],
     [ "_t2json", "group__tree.html#ga34e1f5a651d1a582e3cd7bb3e885ffde", null ],
+    [ "_t2rawjson", "group__tree.html#ga13014bea87bf812b5584d6cdb8a3b5da", null ],
     [ "_t_add", "group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c", null ],
     [ "_t_child", "group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b", null ],
     [ "_t_children", "group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc", null ],

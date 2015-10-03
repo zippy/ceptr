@@ -38,6 +38,7 @@ var process_8h =
     [ "__p_find_context", "process_8h.html#a16f2d8cde47ddf8d619db33fbfcfa73b", null ],
     [ "__p_make_context", "process_8h.html#a05ba8f21383f9273acbdb89134f0fff9", null ],
     [ "__p_make_run_tree", "process_8h.html#ae3613e9e24d3be687d8fc10d30994445", null ],
+    [ "__p_make_signature", "process_8h.html#a59a93f71ed6dcdb1bae29d489932a6d0", null ],
     [ "__p_reduce_sys_proc", "process_8h.html#a5e368ad3c3c5a772d49c30675b143fff", null ],
     [ "__p_unblock", "process_8h.html#a95f4b3611fc8219a648be771df2ac3f8", null ],
     [ "_p_addrt2q", "process_8h.html#acd000cf38ec2232938329c07683c7b06", null ],

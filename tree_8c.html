@@ -119,8 +119,7 @@ $(document).ready(function(){initNavTree('tree_8c.html','');});
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for tree.c:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="tree_8c__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="tree_8c__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 </div>
 <p><a href="tree_8c_source.html">Go to the source code of this file.</a></p>
@@ -140,6 +139,9 @@ Include dependency graph for tree.c:</div>
 <tr class="memitem:aae6c77d050471f16b91ca8cfa0cf502b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aae6c77d050471f16b91ca8cfa0cf502b"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>_add_char2buf</b>(c, buf)&#160;&#160;&#160;*buf=c;buf++;*buf=0</td></tr>
 <tr class="separator:aae6c77d050471f16b91ca8cfa0cf502b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada88a5c9048b1ab95c0851529e893e1d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ada88a5c9048b1ab95c0851529e893e1d"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>_add_sem</b>(buf, s)&#160;&#160;&#160;sprintf(buf,&quot;{ \&quot;ctx\&quot;:%d,\&quot;type\&quot;:%d,\&quot;id\&quot;:%d }&quot;,s.context,s.semtype,s.id);</td></tr>
+<tr class="separator:ada88a5c9048b1ab95c0851529e893e1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af21b76c958222e81554b63041256c662"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af21b76c958222e81554b63041256c662"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>__t_append_child</b> (<a class="el" href="structT.html">T</a> *t, <a class="el" href="structT.html">T</a> *c)</td></tr>
 <tr class="separator:af21b76c958222e81554b63041256c662"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -254,6 +256,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>__uuid_equal</b> (<a c
 <tr class="memitem:gaf80e70368577f3c49c1651b137899659"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaf80e70368577f3c49c1651b137899659"></a>
 <a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>_t_unserialize</b> (<a class="el" href="structDefs.html">Defs</a> *d, void **surfaceP, size_t *lengthP, <a class="el" href="structT.html">T</a> *t)</td></tr>
 <tr class="separator:gaf80e70368577f3c49c1651b137899659"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga13014bea87bf812b5584d6cdb8a3b5da"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tree.html#ga13014bea87bf812b5584d6cdb8a3b5da">_t2rawjson</a> (<a class="el" href="structDefs.html">Defs</a> *defs, <a class="el" href="structT.html">T</a> *t, int level, char *buf)</td></tr>
+<tr class="separator:ga13014bea87bf812b5584d6cdb8a3b5da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga34e1f5a651d1a582e3cd7bb3e885ffde"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tree.html#ga34e1f5a651d1a582e3cd7bb3e885ffde">_t2json</a> (<a class="el" href="structDefs.html">Defs</a> *defs, <a class="el" href="structT.html">T</a> *t, int level, char *buf)</td></tr>
 <tr class="separator:ga34e1f5a651d1a582e3cd7bb3e885ffde"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -298,7 +302,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>__uuid_equal</b> (<a c
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="tree_8c.html">tree.c</a></li>
-    <li class="footer">Generated on Thu Sep 24 2015 11:00:58 for ceptr by
+    <li class="footer">Generated on Sat Oct 3 2015 17:11:03 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

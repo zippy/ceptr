@@ -117,8 +117,7 @@ $(document).ready(function(){initNavTree('test__framework_8h.html','');});
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for test_framework.h:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="test__framework_8h__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="test__framework_8h__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -146,13 +145,13 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>spec_is_str_equal</b>(got, expected)&#160;&#160;&#160;spec_total++; {char *__got=got;char *__ex=expected; if (strcmp(__got,__ex)==0){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],&quot;%s:%d expected %s to be:\n \&quot;%s\&quot;\nbut_was:\n \&quot;%s\&quot;&quot;,__FUNCTION__,__LINE__,#got,__ex,__got);}}</td></tr>
 <tr class="separator:a3eb4b8c9d968a16ff472ed402a4768ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a42cf2ec8f6d1fb8b7bca63211abd4777"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a42cf2ec8f6d1fb8b7bca63211abd4777"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>spec_is_long_equal</b>(got, expected)&#160;&#160;&#160;spec_total++; if (expected==got){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],&quot;%s:%d expected %s to be %ld but was %ld&quot;,__FUNCTION__,__LINE__,#got,(long)expected,got);}</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>spec_is_long_equal</b>(got, expected)&#160;&#160;&#160;spec_total++; {long __got=got;long __ex=(long)expected;if (__ex==__got){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],&quot;%s:%d expected %s to be %ld but was %ld&quot;,__FUNCTION__,__LINE__,#got,__ex,__got);}}</td></tr>
 <tr class="separator:a42cf2ec8f6d1fb8b7bca63211abd4777"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e1d27b13acba9748332405135635d12"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0e1d27b13acba9748332405135635d12"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>spec_is_ptr_equal</b>(got, expected)&#160;&#160;&#160;spec_total++; {void *__got=got;void *__ex=expected;if (__ex==__got){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],&quot;%s:%d expected %s to be %p but was %p&quot;,__FUNCTION__,__LINE__,#got,__ex,__got);}}</td></tr>
 <tr class="separator:a0e1d27b13acba9748332405135635d12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af69b6b4e33b5aade4837382c3a5ae3b9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af69b6b4e33b5aade4837382c3a5ae3b9"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>spec_is_path_equal</b>(got, expected)&#160;&#160;&#160;spec_total++; {int *__got;int *__ex=expected; if (__got &amp;&amp; <a class="el" href="group__tree.html#ga1d7afbc2a405c20a83b7bee4cfcb3a29">_t_path_equal</a>(__got,__ex)){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],&quot;%s:%d expected %s to be %s but was %s&quot;,__FUNCTION__,__LINE__,#got,<a class="el" href="group__tree.html#ga0e63c83e6413f47238db7fa20373c526">_t_sprint_path</a>(__ex,buf1),__got ? <a class="el" href="group__tree.html#ga0e63c83e6413f47238db7fa20373c526">_t_sprint_path</a>(__got,buf2) : &quot;nil&quot;);}}</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>spec_is_path_equal</b>(got, expected)&#160;&#160;&#160;spec_total++; {int *__got=got;int *__ex=expected; if (__got &amp;&amp; <a class="el" href="group__tree.html#ga1d7afbc2a405c20a83b7bee4cfcb3a29">_t_path_equal</a>(__got,__ex)){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],&quot;%s:%d expected %s to be %s but was %s&quot;,__FUNCTION__,__LINE__,#got,<a class="el" href="group__tree.html#ga0e63c83e6413f47238db7fa20373c526">_t_sprint_path</a>(__ex,buf1),__got ? <a class="el" href="group__tree.html#ga0e63c83e6413f47238db7fa20373c526">_t_sprint_path</a>(__got,buf2) : &quot;nil&quot;);}}</td></tr>
 <tr class="separator:af69b6b4e33b5aade4837382c3a5ae3b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2dfb87eee95edb34c68f45319059223e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2dfb87eee95edb34c68f45319059223e"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>spec_is_float_equal</b>(got, expected)&#160;&#160;&#160;spec_total++; {float=__got;float __ex=expected; if (__ex==__got){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],&quot;%s:%d expected %s to be %f but was %f&quot;,__FUNCTION__,__LINE__,#got,__ex,__got);}}</td></tr>
@@ -197,7 +196,7 @@ char&#160;</td><td class="memItemRight" valign="bottom"><b>buf2</b> [2000]</td><
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><a class="el" href="test__framework_8h.html">test_framework.h</a></li>
-    <li class="footer">Generated on Thu Sep 24 2015 11:00:58 for ceptr by
+    <li class="footer">Generated on Sat Oct 3 2015 17:11:03 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

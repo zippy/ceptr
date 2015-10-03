@@ -127,8 +127,7 @@ Include dependency graph for receptor.h:</div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="receptor_8h__dep__incl.svg" width="100%" height="552"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="receptor_8h__dep__incl.svg" width="100%" height="552"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 </div>
 <p><a href="receptor_8h_source.html">Go to the source code of this file.</a></p>
@@ -159,9 +158,30 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:gabc6126af1d45847bc59afa0aa3216b04"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gabc6126af1d45847bc59afa0aa3216b04"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>noDeliveryErr</b>
+<tr class="memitem:gabc6126af1d45847bc59afa0aa3216b04"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gabc6126af1d45847bc59afa0aa3216b04"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <br />
+&#160;&#160;<b>EnvelopeFromIdx</b> =1, 
+<b>EnvelopeToIdx</b>, 
+<b>EnvelopeAspectIdx</b>, 
+<b>EnvelopeCarrierIdx</b>, 
+<br />
+&#160;&#160;<b>EnvelopeUUIDIdx</b>, 
+<b>EnvelopeInResponseToUUIDIdx</b>
+<br />
  }</td></tr>
 <tr class="separator:gabc6126af1d45847bc59afa0aa3216b04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadc29c2ff13d900c2f185ee95427fb06c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gadc29c2ff13d900c2f185ee95427fb06c"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>SignalEnvelopeIdx</b> =1, 
+<b>SignalBodyIdx</b>
+ }</td></tr>
+<tr class="separator:gadc29c2ff13d900c2f185ee95427fb06c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga61dadd085c1777f559549e05962b2c9e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga61dadd085c1777f559549e05962b2c9e"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>PendingResponseUUIDIdx</b> =1, 
+<b>PendingResponseCarrierIdx</b>, 
+<b>PendingResponseProcessIdentIdx</b>, 
+<b>PendingResponseResponseCodePathIdx</b>
+ }</td></tr>
+<tr class="separator:ga61dadd085c1777f559549e05962b2c9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga726ca809ffd3d67ab4b8476646f26635"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga726ca809ffd3d67ab4b8476646f26635"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>noDeliveryErr</b>
+ }</td></tr>
+<tr class="separator:ga726ca809ffd3d67ab4b8476646f26635"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -190,8 +210,8 @@ Functions</h2></td></tr>
 <tr class="separator:ga120e66982d483fbe004fd969cf1c353f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad886d976f8621ebb22d02c61f454265c"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#gad886d976f8621ebb22d02c61f454265c">__r_get_symbol_size</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structSemanticID.html">Symbol</a> s, void *surface)</td></tr>
 <tr class="separator:gad886d976f8621ebb22d02c61f454265c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7f2d04de5c4be090823af4a3ef8ad9c1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSemanticID.html">Process</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga7f2d04de5c4be090823af4a3ef8ad9c1">_r_code_process</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structT.html">T</a> *code, char *name, char *intention, <a class="el" href="structT.html">T</a> *in, <a class="el" href="structT.html">T</a> *out)</td></tr>
-<tr class="separator:ga7f2d04de5c4be090823af4a3ef8ad9c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadc94e96ede4c84e1981e3537907653b7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSemanticID.html">Process</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#gadc94e96ede4c84e1981e3537907653b7">_r_code_process</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structT.html">T</a> *code, char *name, char *intention, <a class="el" href="structT.html">T</a> *signature)</td></tr>
+<tr class="separator:gadc94e96ede4c84e1981e3537907653b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga63078117d8c6850455a4419fd9b6b784"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga63078117d8c6850455a4419fd9b6b784">_r_build_def_semtrex</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structSemanticID.html">Symbol</a> s)</td></tr>
 <tr class="separator:ga63078117d8c6850455a4419fd9b6b784"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa8c97a2acf18af02e4e582d15932640c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#gaa8c97a2acf18af02e4e582d15932640c">_r_def_match</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structSemanticID.html">Symbol</a> s, <a class="el" href="structT.html">T</a> *t)</td></tr>
@@ -210,8 +230,8 @@ Functions</h2></td></tr>
 <tr class="separator:ga300b11b12792c290fef2fb0fe07d71ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gacdafc5a6d2d449f5a4903577e5642de8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#gacdafc5a6d2d449f5a4903577e5642de8">__r_make_signal</a> (ReceptorAddress from, ReceptorAddress to, Aspect aspect, <a class="el" href="structT.html">T</a> *signal_contents)</td></tr>
 <tr class="separator:gacdafc5a6d2d449f5a4903577e5642de8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab873f2c847fe0befed676bc32295f283"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#gab873f2c847fe0befed676bc32295f283">__r_send_signal</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structT.html">T</a> *signal, <a class="el" href="structT.html">T</a> *response_point, int process_id)</td></tr>
-<tr class="separator:gab873f2c847fe0befed676bc32295f283"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gace5199701c929e09c06608aff0910185"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#gace5199701c929e09c06608aff0910185">__r_send_signal</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structT.html">T</a> *signal, <a class="el" href="structSemanticID.html">Symbol</a> response_carrier, <a class="el" href="structT.html">T</a> *response_point, int process_id)</td></tr>
+<tr class="separator:gace5199701c929e09c06608aff0910185"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga74ad11561e8e391a1ebed9f7474ce095"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga74ad11561e8e391a1ebed9f7474ce095">__r_check_listener</a> (<a class="el" href="structT.html">T</a> *processes, <a class="el" href="structT.html">T</a> *listener, <a class="el" href="structT.html">T</a> *signal, <a class="el" href="structQ.html">Q</a> *q)</td></tr>
 <tr class="separator:ga74ad11561e8e391a1ebed9f7474ce095"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7d40f33135ee51640d0d24b8c9e3e046"><td class="memItemLeft" align="right" valign="top">Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga7d40f33135ee51640d0d24b8c9e3e046">_r_deliver</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structT.html">T</a> *signal)</td></tr>
@@ -280,7 +300,7 @@ Variables</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="receptor_8h.html">receptor.h</a></li>
-    <li class="footer">Generated on Thu Sep 24 2015 11:00:58 for ceptr by
+    <li class="footer">Generated on Sat Oct 3 2015 17:11:03 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
