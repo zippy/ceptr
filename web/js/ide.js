@@ -109,36 +109,54 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
     };
     _.prototype = {
         // add method function defs here...like: get fish() {return "cod";}
+        insert: function(label,surface) {
+            var n = $.create('sem',{inside:this.elem});
+            setupSem(label,n,false);
+            if (surface) {
+                if (Array.isArray(surface)) {
+                    var i;
+                    var s = $$('surface',n);
+                    for (i=0;i<surface.length;i++) {
+                        s[i].innerHTML = surface[i];
+                    }
+                }
+                else {
+                    $('surface',n).innerHTML = surface;
+                }
+            }
+        }
     };
 
     // Private functions
 
-    function setupSem(label_val,sem,lock) {
+    function setupSem(label_val,sem_elem,lock) {
         var def = LABEL_TABLE[label_val];
         if (def.type == 'symbol') {
-            var label = $.getOrCreate('label',sem);
+            var label = $.getOrCreate('label',sem_elem);
             if (lock) label.setAttribute("locked","true");
+            semid=def.sem;
+            sem_elem.setAttribute('semid',""+semid.ctx+'.'+semid.type+'.'+semid.id);
             label.innerHTML=label_val;
-            var struct = $.getOrCreate('struct',sem);
+            var struct = $.getOrCreate('struct',sem_elem);
             struct.innerHTML=def.structure;
             var symbols = LABEL_TABLE[def.structure].symbols;
             // if structure has no symbols it's system defined so create a surface
             // or an unknown treenode in the case of LIST or TREE structures
             if (!symbols) {
                 if (def.structure == "TREE" || def.structure == "LIST") {
-                    var children = $.getOrCreate('children',sem);
+                    var children = $.getOrCreate('children',sem_elem);
                     children.innerHTML="<sem><label>--unknown--</label></sem>";
                 }
                 else {
-                    $.remove('children',sem);
-                    var surface = $.getOrCreate('surface',sem);
+                    $.remove('children',sem_elem);
+                    var surface = $.getOrCreate('surface',sem_elem);
                     surface.innerHTML = "";
                     surface.setAttribute('contenteditable', 'true');
                 }
             }
             else {
-                $.remove('surface',sem);
-                var children = $.getOrCreate('children',sem);
+                $.remove('surface',sem_elem);
+                var children = $.getOrCreate('children',sem_elem);
                 children.innerHTML = "";
                 symbols.forEach(function(s){
                     var child_sem = $.create('sem',{inside:children});
@@ -409,13 +427,6 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
                 if (i.type == 'structure') {STRUCTURES.push(key);}
             }
             _.DEFS = d;
-
-            newSymbol("shoe size",LABEL_TABLE["FLOAT"].sem);
-            newSymbol("street number",LABEL_TABLE["INTEGER"].sem);
-            var lat = newSymbol("latitude",LABEL_TABLE["FLOAT"].sem);
-            var lon = newSymbol("longitude",LABEL_TABLE["FLOAT"].sem);
-            var ll = newStructure("latlong",[lat,lon]);
-            newSymbol("home location",ll);
         });
     }
 
@@ -442,6 +453,15 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
     _.setLabelTableContainer = function(elem) {
         elem.innerHTML="";
         _.lt_elem = elem;
+
+        newSymbol("shoe size",LABEL_TABLE["FLOAT"].sem);
+        newSymbol("street number",LABEL_TABLE["INTEGER"].sem);
+        var lat = newSymbol("latitude",LABEL_TABLE["FLOAT"].sem);
+        var lon = newSymbol("longitude",LABEL_TABLE["FLOAT"].sem);
+        var ll = newStructure("latlong",[lat,lon]);
+        newSymbol("home location",ll);
+
+
         buildLabelTable(elem);
 
         $.bind($('#newsem'), {
@@ -540,6 +560,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         return e;
     }
     function buildLabelTable(elem) {
+        elem.innerHTML="";
         var h = "";
         for (var key in LABEL_TABLE) {
             var i = LABEL_TABLE[key];

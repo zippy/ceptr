@@ -12,7 +12,11 @@
 
     <script type="text/javascript">
       window.onload=function(){
-         TE.setLabelTableContainer(TE.$("#label-table"));
+      TE.setLabelTableContainer(TE.$("#label-table"));
+      var te = TE.$(".TE");
+      te.te.insert("shoe size","10.5");
+      te.te.insert("street number","1234");
+      te.te.insert("home location",[83,22.5]);
       };
     </script>
 
@@ -21,16 +25,6 @@
     <button onclick="$('struct').toggle()">toggle struct visibility</button>
     <div class="column-container">
       <div class="TE column-left">
-        <sem sem-id="1.3.33" structure="1.3.4"><label>shoe size</label><struct>float</struct><surface contenteditable="true">10.5</surface><children></children> </sem>
-        <br />
-        <sem sem-id="1.3.35" structure="1.3.3"><label>street number</label><struct>integer</struct><surface contenteditable="true">10</surface><children></children> </sem>
-        <br />
-        <sem sem-id="1.3.34" structure="1.3.4"><label>home location</label><struct>latlong</struct>
-        <children>
-          <sem sem-id="1.3.33" structure="1.3.4"><label locked="true">latitude</label><struct>float</struct><surface contenteditable="true">83</surface></sem>
-          <sem sem-id="1.3.33" structure="1.3.4"><label locked="true">longitude</label><struct>float</struct><surface contenteditable="true">90.2</surface></sem>
-        </children>
-        </sem>
       </div>
       <div id="label-table-container" class="column-right">
         <b>label table</b>
