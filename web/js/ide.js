@@ -427,6 +427,8 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
                 if (i.type == 'structure') {STRUCTURES.push(key);}
             }
             _.DEFS = d;
+            var evt = new CustomEvent('sysdefsloaded');
+            window.dispatchEvent(evt);
         });
     }
 

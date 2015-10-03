@@ -3,22 +3,22 @@
   <head>
     <meta charset="utf-8">
     <title>Te</title>
-    <link href="/css/ceptr.css" type="text/css" rel="stylesheet"/>
-    <script src="/js/ceptr.js"></script>
-    <script type="text/javascript" src="/js/jquery.min.js"></script>
-    <script src="/js/ide.js"></script>
-    <link rel="stylesheet" href="/css/awesomplete.css" />
-    <script src="/js/awesomplete.js" async></script>
+    <link href="css/ceptr.css" type="text/css" rel="stylesheet"/>
+    <script src="js/ceptr.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/awesomplete.css" />
+    <script src="js/awesomplete.js" async></script>
 
     <script type="text/javascript">
-      window.onload=function(){
+      window.addEventListener('sysdefsloaded', function (e) {
       TE.setLabelTableContainer(TE.$("#label-table"));
       var te = TE.$(".TE");
       te.te.insert("shoe size","10.5");
       te.te.insert("street number","1234");
       te.te.insert("home location",[83,22.5]);
-      };
+      });
     </script>
+    <script src="js/ide.js"></script>
 
   </head>
   <body >
