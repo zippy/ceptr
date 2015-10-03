@@ -428,7 +428,6 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
             }
             _.DEFS = d;
             var evt = new CustomEvent('sysdefsloaded');
-            alert('dispatching');
 
             window.dispatchEvent(evt);
 
