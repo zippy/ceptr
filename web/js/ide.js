@@ -11,16 +11,7 @@ function loadTree(file_name,completedFN) {
 }
 var JQ = $;  //jquery if needed for anything complicated, trying to not have dependency on jq
 (function () {
-    var LABEL_TABLE = {
-        "integer": {type:'structure'},
-        "float": {type:'structure'},
-        "shoe size": {type:'symbol',structure:'float'},
-        "street number": {type:'symbol',structure:'integer'},
-        "latitude": {type:'symbol',structure:'float'},
-        "longitude": {type:'symbol',structure:'float'},
-        "latlong": {type:'structure',symbols:['latitude','longitude']},
-        "home location": {type:'symbol',structure:'latlong'}
-    };
+    var LABEL_TABLE = {};
     var SYMBOLS = [];
     var STRUCTURES = [];
 
@@ -418,8 +409,13 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
                 if (i.type == 'structure') {STRUCTURES.push(key);}
             }
             _.DEFS = d;
-            var c = newSymbol("chicken",LABEL_TABLE["CSTRING"].sem);
-            newStructure("coop",[c,c]);
+
+            newSymbol("shoe size",LABEL_TABLE["FLOAT"].sem);
+            newSymbol("street number",LABEL_TABLE["INTEGER"].sem);
+            var lat = newSymbol("latitude",LABEL_TABLE["FLOAT"].sem);
+            var lon = newSymbol("longitude",LABEL_TABLE["FLOAT"].sem);
+            var ll = newStructure("latlong",[lat,lon]);
+            newSymbol("home location",ll);
         });
     }
 
