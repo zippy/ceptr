@@ -12,7 +12,7 @@
 
     <script type="text/javascript">
       window.onload=function(){
-         TE.buildLabelTable(TE.$("#label-table"));
+         TE.setLabelTableContainer(TE.$("#label-table"));
       };
     </script>
 
@@ -32,9 +32,22 @@
         </children>
         </sem>
       </div>
-      <div id="label-table-container" class="column-right"><b>label table</b><br/>
+      <div id="label-table-container" class="column-right">
+        <b>label table</b>
+        <button id="newsem">+</button>
+        <div id="newsem-form" style="display:none">
+          <select id="newsem-type"><option>symbol</option><option>structure</option></select>
+          <div id="newsem-sym">Label:<input id="newsem-symlabel"> Structure:<input id="newsem-symstruct"></div>
+          <div id="newsem-struct" style="display:none">
+            Label:<input id="newsem-structlabel">
+            Symbols:<input id="newsem-structsym1"><button id="newsem-morestructsym">+</button>
+          </div>
+          <button id="newsem-cancel">Cancel</button>
+          <button id="newsem-ok">Ok</button>
+        </div>
+        <br/>
         <div id="label-table"></div>
-    </div>
+      </div>
     </div>
 
 <div id="tree-editor">

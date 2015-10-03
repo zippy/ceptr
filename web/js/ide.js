@@ -11,7 +11,6 @@ function loadTree(file_name,completedFN) {
 }
 var JQ = $;  //jquery if needed for anything complicated, trying to not have dependency on jq
 (function () {
-    var _SYSDEFS = {};
     var LABEL_TABLE = {
         "integer": {type:'structure'},
         "float": {type:'structure'},
@@ -23,6 +22,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         "home location": {type:'symbol',structure:'latlong'}
     };
     var SYMBOLS = [];
+    var STRUCTURES = [];
 
     var _ = function (elem,o) {
 
@@ -33,12 +33,12 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         // methods
         this.showCaret = function() {
             handle_keys=true;
-            caret.style.display="inline-block";
+            $.show(caret);
             caret.focus();
         }
         this.hideCaret = function() {
             handle_keys=false;
-            caret.style.display="none";
+            $.hide(caret);
         }
 
 	// instance properties
@@ -159,7 +159,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
 
     function editLabel(label,select) {
         var v = label.innerHTML;
-        label.style.display="none";
+        $.hide(label);
         var input = $.create("input",{
             before:label
         });
@@ -177,7 +177,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
             if (LABEL_TABLE[input.value] != undefined && label.innerHTML != input.value) {
                 setupSem(input.value,label.parentNode);
             }
-            label.style.display="inline-block";
+            $.show(label);
             var p = input.parentNode;
             if (p.parentElement != null) {p.remove();}
 
@@ -282,38 +282,112 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         if (e) e.remove();
     }
 
+    $.hide = function(e) {
+        var elem  = $(e);
+        var display = elem.style.display;
+        if (display !== "none") {
+            elem.__TEolddisplay = display;
+            elem.style.display="none";
+        }
+    }
+
+    $.show = function(e) {
+        var elem  = $(e);
+        elem.style.display= elem.__TEolddisplay || "";
+    }
+
     var SEM_TYPE_STRUCTURE=1;
     var SEM_TYPE_SYMBOL=2;
     var SEM_TYPE_PROCESS=3;
     var type_names= ["","STRUCTURE","SYMBOL","PROCESS"];
+    var SYS_CONTEXT=0;
+    var COMPOSITORY_CONTEXT=1;
+    var LOCAL_CONTEXT=2;
+    var TEST_CONTEXT=3;
+    var RECEPTOR_CONTEXT=0xff;
+    var CONTEXTS = [{},{},{
+        // set up the defs tree for the local context (have to do this manually)
+        sem:{ctx:0,type:2,id:1},
+        children:[
+            {sem:{ctx:0,type:2,id:2},children:[]},
+            {sem:{ctx:0,type:2,id:7},children:[]},
+            {sem:{ctx:0,type:2,id:61},children:[]}
+        ]
+    },{}];
 
     function getSemName(id){
         if (id.id == 0) {
             return "NULL_"+type_names[id.type];
         }
-        return _SYSDEFS.children[id.type-1].children[id.id-1].children[0].surface;
+        return CONTEXTS[id.ctx].children[id.type-1].children[id.id-1].children[0].surface;
     }
     _.getSemName = getSemName;
     function getSymbolStruct(id){
         if (id.type != SEM_TYPE_SYMBOL) {throw "expecting symbol";}
-        return _SYSDEFS.children[SEM_TYPE_SYMBOL-1].children[id.id-1].children[1].surface;
+        return CONTEXTS[id.ctx].children[SEM_TYPE_SYMBOL-1].children[id.id-1].children[1].surface;
     }
     _.getSymbolStruct = getSymbolStruct;
     function getStructSymbols(id){
         if (id.type != SEM_TYPE_STRUCTURE) {throw "expecting structure";}
-        return _SYSDEFS.children[SEM_TYPE_STRUCTURE-1].children[id.id-1].children[1].children;
+        return CONTEXTS[id.ctx].children[SEM_TYPE_STRUCTURE-1].children[id.id-1].children[1].children;
     }
     _.getStructSymbols = getStructSymbols;
+
+    function Tnew(parent,symbol,surface) {
+        var n = {sem:symbol};
+        if (surface) n.surface = surface;
+        if (!parent.children) {
+            parent.children = [n];
+        }
+        else {
+            parent.children.push(n);
+        }
+        return n;
+    }
+
+    function newSymbol(label,struct) {
+        var symbols = CONTEXTS[LOCAL_CONTEXT].children[SEM_TYPE_SYMBOL-1];
+        var def = Tnew(symbols,LABEL_TABLE["SYMBOL_DECLARATION"].sem);
+        Tnew(def,LABEL_TABLE["SYMBOL_LABEL"].sem,label);
+        Tnew(def,LABEL_TABLE["SYMBOL_STRUCTURE"].sem,struct);
+        var sem = {ctx:LOCAL_CONTEXT,type:SEM_TYPE_SYMBOL,id:symbols.children.length};
+        LABEL_TABLE[label]= {"sem":sem,type:'symbol',structure:getSemName(struct)};
+        SYMBOLS.push(label);
+        if (_.lt_elem) {
+            var lt = makeLabelTableElem(label,LABEL_TABLE[label]);
+            _.lt_elem.insertBefore(lt,_.lt_elem.firstChild)
+        }
+        return sem;
+    }
+
+    function newStructure(label,symbols) {
+        var structures = CONTEXTS[LOCAL_CONTEXT].children[SEM_TYPE_STRUCTURE-1];
+        var def = Tnew(structures,LABEL_TABLE["STRUCTURE_DEFINITION"].sem);
+        Tnew(def,LABEL_TABLE["STRUCTURE_LABEL"].sem,label);
+        var parts = Tnew(def,LABEL_TABLE["STRUCTURE_PARTS"].sem);
+        var sem = {ctx:LOCAL_CONTEXT,type:SEM_TYPE_STRUCTURE,id:structures.children.length};
+        var s = [];
+        for(var i=0;i<symbols.length;i++) {
+            Tnew(parts,LABEL_TABLE["STRUCTURE_PART"].sem,symbols[i]);
+            s.push(getSemName(symbols[i]));
+        }
+        LABEL_TABLE[label]= {"sem":sem,type:'structure',symbols:s};
+        STRUCTURES.push(label);
+        if (_.lt_elem) {
+            var lt = makeLabelTableElem(label,LABEL_TABLE[label]);
+            _.lt_elem.insertBefore(lt,_.lt_elem.firstChild)
+        }
+        return sem;
+    }
+
     // Initialization
     function init() {
 	$$(".TE").forEach(function (elem) {
 	    new _(elem);
 	});
         loadTree("sysdefs",function(d){
-            _SYSDEFS = d;
-            _.DEFS = _SYSDEFS;
-
-            var struct_defs = _SYSDEFS.children[SEM_TYPE_STRUCTURE-1].children;
+            CONTEXTS[SYS_CONTEXT] = d;
+            var struct_defs = d.children[SEM_TYPE_STRUCTURE-1].children;
             var structs = struct_defs.length;
             for (var i=0;i<structs;i++) {
                 var symbols = struct_defs[i].children[1].children;
@@ -324,21 +398,28 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
                         structures.push(n);
                     }
                 }
-                var def = {type:'structure'};
+                var def = {sem:{ctx:SYS_CONTEXT,type:SEM_TYPE_STRUCTURE,id:i+1},type:'structure'};
                 if (structures.length>0) def.symbols = structures;
                 LABEL_TABLE[struct_defs[i].children[0].surface] = def;
             }
 
-            var symbol_defs = _SYSDEFS.children[SEM_TYPE_SYMBOL-1].children;
+            var symbol_defs = d.children[SEM_TYPE_SYMBOL-1].children;
             var symbols = symbol_defs.length;
             for (var i=0;i<symbols;i++) {
                 var struct = symbol_defs[i].children[1].surface;
-                LABEL_TABLE[symbol_defs[i].children[0].surface] = {type:'symbol',structure:getSemName(struct)};
+                LABEL_TABLE[symbol_defs[i].children[0].surface] = {
+                    sem:{ctx:SYS_CONTEXT,type:SEM_TYPE_SYMBOL,id:i+1},
+                    type:'symbol',structure:getSemName(struct)
+                };
             }
             for (var key in LABEL_TABLE) {
                 var i = LABEL_TABLE[key];
                 if (i.type == 'symbol') {SYMBOLS.push(key);}
+                if (i.type == 'structure') {STRUCTURES.push(key);}
             }
+            _.DEFS = d;
+            var c = newSymbol("chicken",LABEL_TABLE["CSTRING"].sem);
+            newStructure("coop",[c,c]);
         });
     }
 
@@ -358,22 +439,116 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
     //export some utilities
     _.$ = $;
     _.$$ = $$;
+    _.LABEL_TABLE = LABEL_TABLE;
 
-    _.buildLabelTable = function(elem) {
+    // set up a label table element to work
+    // requires that it have various buttons and such
+    _.setLabelTableContainer = function(elem) {
+        elem.innerHTML="";
+        _.lt_elem = elem;
+        buildLabelTable(elem);
+
+        $.bind($('#newsem'), {
+            "click": function(e) {
+                $.hide($('#newsem'));
+                $.show($('#newsem-form'));
+                new Awesomplete($('#newsem-symstruct'), {
+	            list: STRUCTURES,
+                    minChars: 1
+                });
+                new Awesomplete($('#newsem-structsym1'), {
+	            list: SYMBOLS,
+                    minChars: 1
+                });
+            }
+        });
+        $.bind($('#newsem-cancel'), {
+            "click": function(e) {
+                $.show($('#newsem'));
+                $.hide($('#newsem-form'));
+            }
+        });
+        $.bind($('#newsem-morestructsym'), {
+            "click": function(e) {
+                var i=1;
+                var ss;
+                while (ss=$('#newsem-structsym'+i)) i++;
+                var e = $.create('input', {id:'newsem-structsym'+i});
+                var b = $('#newsem-morestructsym');
+                new Awesomplete(b.parentNode.insertBefore(e,b),{list:SYMBOLS,minChars:1});
+            }
+        });
+
+        $.bind($('#newsem-ok'), {
+            "click": function(e) {
+                switch($('#newsem-type').value) {
+                case "symbol":
+                    var s = $('#newsem-symstruct').value;
+                    if (!LABEL_TABLE[s]) {
+                        alert("unknown structure:"+s);
+                        return;
+                    }
+                    var label = $('#newsem-symlabel').value;
+                    newSymbol(label,LABEL_TABLE[s].sem);
+                    $('#newsem-symlabel').value = "";
+                    $('#newsem-symstruct').value = "";
+                    break;
+                case "structure":
+                    var symbols = [];
+                    var i=1;
+                    var ss;
+                    while (ss=$('#newsem-structsym'+i)) {
+                        i++;
+                        var s =ss.value;
+                        if (!LABEL_TABLE[s]) {
+                            alert("unknown symbol:"+s);
+                            return;
+                        }
+                        symbols.push(LABEL_TABLE[s].sem);
+                    }
+                    var label = $('#newsem-structlabel').value;
+                    newStructure(label,symbols);
+                    $('#newsem-structlabel').value = "";
+                    var i=2;var ss;
+                    while (ss=$('#newsem-structsym'+i)) {i++;ss.remove()};
+                    $('#newsem-structsym1').value="";
+                    break;
+                }
+                $.show($('#newsem'));
+                $.hide($('#newsem-form'));
+
+            }
+        });
+        $.bind($('#newsem-type'), {
+            "click": function(e) {
+                switch($('#newsem-type').value) {
+                case "symbol":
+                    $.show('#newsem-sym');$.hide('#newsem-struct');
+
+                    break;
+                case "structure": $.show('#newsem-struct');$.hide('#newsem-sym');break;
+                }
+            }
+        });
+
+    }
+    function makeLabelTableElem(key,i) {
+        var e = $.create('ul');
+        var h = "<ltlabel>"+key+"</ltlabel> <lttype>"+i.type+"</lttype>";
+        if (i.type == "structure") {
+            if (i.symbols) {
+                h += "<ltsymbols>" + i.symbols.join(",")+ "</ltsymbols>"
+            }
+        }
+        e.innerHTML=h;
+        return e;
+    }
+    function buildLabelTable(elem) {
         var h = "";
         for (var key in LABEL_TABLE) {
             var i = LABEL_TABLE[key];
-            h += "<ul>";
-            h += "<ltlabel>"+key+"</ltlabel> <lttype>"+i.type+"</lttype>";
-            if (i.type == "structure") {
-                if (i.symbols) {
-                    h += "<ltsymbols>" + i.symbols.join(",")+ "</ltsymbols>"
-                }
-            }
-            h += "</ul>";
+            elem.appendChild(makeLabelTableElem(key,i));
         }
-        elem.innerHTML=h;
-
     }
     // Make sure to export TE on self when in a browser
     if (typeof self !== 'undefined') {

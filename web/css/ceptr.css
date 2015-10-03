@@ -60,7 +60,7 @@ struct{display:none;vertical-align: sub;font-size:80%;}
 
 
 /* failed attempt to get label input element to have variable width sizing */
-input {
+div.awesomplete > input {
   width:98%;padding:1%;
   box-sizing: border-box; /* css3 rec */
   -moz-box-sizing: border-box; /* ff2 */
