@@ -11,13 +11,13 @@
     <script src="js/awesomplete.js" async></script>
 
     <script type="text/javascript">
-      window.onload=function(){
+      window.addEventListener('sysdefsloaded', function (e) {
       TE.setLabelTableContainer(TE.$("#label-table"));
       var te = TE.$(".TE");
       te.te.insert("shoe size","10.5");
       te.te.insert("street number","1234");
       te.te.insert("home location",[83,22.5]);
-      };
+      });
     </script>
 
   </head>
