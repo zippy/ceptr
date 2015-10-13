@@ -14,6 +14,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
     var LABEL_TABLE = {};
     var SYMBOLS = [];
     var STRUCTURES = [];
+    var PROCESSES = [];
 
     var _ = function (elem,o) {
 
@@ -389,6 +390,15 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         return sem;
     }
 
+    function _doDefs(type,func) {
+        var defs = CONTEXTS[SYS_CONTEXT].children[type-1].children;
+        var num_defs = defs.length;
+        for (var i=0;i<num_defs;i++) {
+            label = defs[i].children[0].surface;
+            var lt_entry = func(i,defs[i]);
+            LABEL_TABLE[label] = lt_entry;
+        }
+    }
     // Initialization
     function init() {
 	$$(".TE").forEach(function (elem) {
@@ -396,10 +406,8 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
 	});
         loadTree("sysdefs",function(d){
             CONTEXTS[SYS_CONTEXT] = d;
-            var struct_defs = d.children[SEM_TYPE_STRUCTURE-1].children;
-            var structs = struct_defs.length;
-            for (var i=0;i<structs;i++) {
-                var symbols = struct_defs[i].children[1].children;
+            _doDefs(SEM_TYPE_STRUCTURE,function(i,struct_def){
+                var symbols = struct_def.children[1].children;
                 var structures = [];
                 for (var j=0;j<symbols.length;j++) {
                     var n = getSemName(symbols[j].surface);
@@ -409,22 +417,31 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
                 }
                 var def = {sem:{ctx:SYS_CONTEXT,type:SEM_TYPE_STRUCTURE,id:i+1},type:'structure'};
                 if (structures.length>0) def.symbols = structures;
-                LABEL_TABLE[struct_defs[i].children[0].surface] = def;
-            }
-
-            var symbol_defs = d.children[SEM_TYPE_SYMBOL-1].children;
-            var symbols = symbol_defs.length;
-            for (var i=0;i<symbols;i++) {
-                var struct = symbol_defs[i].children[1].surface;
-                LABEL_TABLE[symbol_defs[i].children[0].surface] = {
+                return def;
+            });
+            _doDefs(SEM_TYPE_SYMBOL,function(i,symbol_def){
+                var struct = symbol_def.children[1].surface;
+                return {
                     sem:{ctx:SYS_CONTEXT,type:SEM_TYPE_SYMBOL,id:i+1},
-                    type:'symbol',structure:getSemName(struct)
+                    type:'symbol',
+                    structure:getSemName(struct)
                 };
-            }
+            });
+            _doDefs(SEM_TYPE_PROCESS,function(i,symbol_def){
+                var def = {
+                    sem:{ctx:SYS_CONTEXT,type:SEM_TYPE_PROCESS,id:i+1},
+                    type:'process'
+//                    intention:symbol_def.children[1].surface;
+                };
+                return def;
+            });
+
+
             for (var key in LABEL_TABLE) {
                 var i = LABEL_TABLE[key];
                 if (i.type == 'symbol') {SYMBOLS.push(key);}
                 if (i.type == 'structure') {STRUCTURES.push(key);}
+                if (i.type == 'process') {PROCESSES.push(key);}
             }
             _.DEFS = d;
             var evt = new CustomEvent('sysdefsloaded');
