@@ -22,17 +22,6 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         var me = this;
         var handle_keys = true;
 
-        // methods
-        this.showCaret = function() {
-            handle_keys=true;
-            $.show(caret);
-            caret.focus();
-        }
-        this.hideCaret = function() {
-            handle_keys=false;
-            $.hide(caret);
-        }
-
 	// instance properties
         this.elem = $(elem);
         this.elem.te = this;  // stick a copy of this in the element for reference
@@ -109,6 +98,15 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         caret.focus();
     };
     _.prototype = {
+        showCaret : function() {
+            handle_keys=true;
+            $.show(this.caret);
+            this.caret.focus();
+        },
+        hideCaret : function() {
+            handle_keys=false;
+            $.hide(this.caret);
+        },
         // change the visibility of the Structure tags
         toggleStructVisibility: function() {
             var vis = this.structVisible = !this.structVisible;
