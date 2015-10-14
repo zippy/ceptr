@@ -39,7 +39,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
 
         o = o || {};
 	configure.call(this, {
-	    // add properties here testProperty: 314
+            structVisible : false
 	}, o);
 
         // Create necessary elements
@@ -109,10 +109,18 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         caret.focus();
     };
     _.prototype = {
-        // add method function defs here...like: get fish() {return "cod";}
+        // change the visibility of the Structure tags
+        toggleStructVisibility: function() {
+            var vis = this.structVisible = !this.structVisible;
+            $$('struct',this.elem).forEach(function(s) {
+                vis ? $.show(s) : $.hide(s);
+
+            });
+        },
+        // insert a node at the current cursor position
         insert: function(label,surface) {
             var n = $.create('sem',{inside:this.elem});
-            setupSem(label,n,false);
+            setupSem.call(this,label,n,false);
             if (surface) {
                 if (Array.isArray(surface)) {
                     var i;
@@ -125,13 +133,50 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
                     $('surface',n).innerHTML = surface;
                 }
             }
+        },
+        // insert a full semantic tree at the current cursor position
+        insertTree: function(tree) {
+            _insertTree.call(this,tree,this.elem);
         }
     };
 
     // Private functions
 
+    function _insertTree(tree,parent) {
+        var me = this;
+        var s = $.create('sem',{inside:parent});
+        var semid = tree.sem;
+        var semid_txt = semid.ctx+'.'+semid.type+'.'+semid.id;
+        s.setAttribute('semid',""+semid_txt);
+        s.setAttribute("type",type_names[semid.type].toLowerCase());
+        var label = $.getOrCreate('label',s);
+        label.setAttribute("locked","true");
+        label.innerHTML=getSemName(semid);
+        if (semid.type == SEM_TYPE_SYMBOL) {
+            var struct = $.getOrCreate('struct',s);
+            me.structVisible ? $.show(struct) : $.hide(struct);
+            struct.innerHTML=getSemName(getSymbolStruct(semid));
+        }
+        if (tree.children) {
+            tree.children.forEach(function(child){
+                _insertTree.call(me,child,s);
+            });
+        }
+        if (tree.surface) {
+            var surface = $.getOrCreate('surface',s);
+            if (typeof tree.surface === "object") {
+                surface.innerHTML = "&lt;"+getSemName(tree.surface)+"&gt;"
+            }
+            else {
+                surface.innerHTML = tree.surface;
+            }
+        }
+    }
+
     function setupSem(label_val,sem_elem,lock) {
         var def = LABEL_TABLE[label_val];
+        var me = this;
+        sem_elem.setAttribute("type",def.type);
         if (def.type == 'symbol') {
             var label = $.getOrCreate('label',sem_elem);
             if (lock) label.setAttribute("locked","true");
@@ -140,6 +185,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
             label.innerHTML=label_val;
             var struct = $.getOrCreate('struct',sem_elem);
             struct.innerHTML=def.structure;
+            me.structVisible ? $.show(struct) : $.hide(struct);
             var symbols = LABEL_TABLE[def.structure].symbols;
             // if structure has no symbols it's system defined so create a surface
             // or an unknown treenode in the case of LIST or TREE structures
@@ -161,7 +207,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
                 children.innerHTML = "";
                 symbols.forEach(function(s){
                     var child_sem = $.create('sem',{inside:children});
-                    setupSem(s,child_sem,true);
+                    setupSem.call(me,s,child_sem,true);
                 });
             }
         }
@@ -185,7 +231,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         function close_a(e) {
             //if the new label is defined and different reset everything
             if (LABEL_TABLE[input.value] != undefined && label.innerHTML != input.value) {
-                setupSem(input.value,label.parentNode);
+                setupSem.call(me,input.value,label.parentNode,false);
             }
             $.show(label);
             var p = input.parentNode;
