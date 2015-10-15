@@ -30,7 +30,8 @@ body {
 
 lttype::before {content:"type:"}
 ltsymbols::before {content:"symbols:"}
-ltsymbols {margin-left: 10px;}
+ltparams::before {content:"params:"}
+ltsymbols,ltparams {margin-left: 10px;}
 #label-table ul {
   margin:0 0 2px 10px;
   padding:0;
@@ -47,6 +48,10 @@ ltsymbols {margin-left: 10px;}
   display: inline-block; padding: 3px 3px 1px 3px; margin-left: 5px; background-color: rgba(80,0,130,.1) ;
 }
 
+.TE sem[type="process"] {
+  background-color:rgba(0,100,0,.1);
+}
+
 sem surface {
   min-width: 20px;
   display: inline-block;
@@ -58,6 +63,7 @@ surface::before {content:":"}
 
 struct{vertical-align: sub;font-size:80%;}
 
+sig{vertical-align: super;font-size:80%;}
 
 /* failed attempt to get label input element to have variable width sizing */
 div.awesomplete > input {

@@ -175,10 +175,26 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
     }
 
     function setupSem(label_val,sem_elem,lock) {
+        // for now we are getting the def from the label table,
+        // we should probably get it from DEFS?  maybe not because it's slower
         var def = LABEL_TABLE[label_val];
         var me = this;
-        _setupSem.call(this,def.sem,sem_elem,lock);
-        if (def.type == 'symbol') {
+        var sem = def.sem;
+        _setupSem.call(this,sem,sem_elem,lock);
+        if (sem.type === SEM_TYPE_PROCESS) {
+            var params = LABEL_TABLE[label_val].params;
+            if (params) {
+                $.remove('surface',sem_elem);
+                var children = $.getOrCreate('children',sem_elem);
+                var h = "";
+                params.forEach(function(param){
+                    console.log(param);
+                    h += "<sem><sig>"+param+"</sig><label>--unknown--</label></sem>";
+                });
+                children.innerHTML = h;
+            }
+        }
+        else if (sem.type === SEM_TYPE_SYMBOL) {
             var symbols = LABEL_TABLE[def.structure].symbols;
             // if structure has no symbols it's system defined so create a surface
             // or an unknown treenode in the case of LIST or TREE structures
@@ -466,12 +482,20 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
                     structure:getSemName(struct)
                 };
             });
-            _doDefs(SEM_TYPE_PROCESS,function(i,symbol_def){
+            _doDefs(SEM_TYPE_PROCESS,function(i,process_def){
                 var def = {
                     sem:{ctx:SYS_CONTEXT,type:SEM_TYPE_PROCESS,id:i+1},
                     type:'process'
 //                    intention:symbol_def.children[1].surface;
                 };
+                var signatures = process_def.children[2].children
+                var params = [];
+                for (var j=1;j<signatures.length;j++) {
+                    var n = signatures[j].children[0].surface;
+                    params.push(n);
+                }
+                if (params.length>0) def.params = params;
+
                 return def;
             });
 
@@ -609,9 +633,14 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
     function makeLabelTableElem(key,i) {
         var e = $.create('ul');
         var h = "<ltlabel>"+key+"</ltlabel> <lttype>"+i.type+"</lttype>";
-        if (i.type == "structure") {
+        if (i.type === "structure") {
             if (i.symbols) {
                 h += "<ltsymbols>" + i.symbols.join(",")+ "</ltsymbols>"
+            }
+        }
+        if (i.type == "process") {
+            if (i.params) {
+                h += "<ltparams>" + i.params.join(",")+ "</ltparams>"
             }
         }
         e.innerHTML=h;
