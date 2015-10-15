@@ -612,8 +612,8 @@
          {"sem":{ "ctx":0,"type":2,"id":64 },"surface":"addition"},
          {"sem":{ "ctx":0,"type":2,"id":72 },"children":[
             {"sem":{ "ctx":0,"type":2,"id":71 },"children":[
-               {"sem":{ "ctx":0,"type":2,"id":65 },"surface":"result"},
-               {"sem":{ "ctx":0,"type":2,"id":68 },"surface":{ "ctx":0,"type":1,"id":12 }}]},
+               {"sem":{ "ctx":0,"type":2,"id":65 },"surface":"sum"},
+               {"sem":{ "ctx":0,"type":2,"id":68 },"surface":{ "ctx":0,"type":1,"id":2 }}]},
             {"sem":{ "ctx":0,"type":2,"id":70 },"children":[
                {"sem":{ "ctx":0,"type":2,"id":65 },"surface":"augend"},
                {"sem":{ "ctx":0,"type":2,"id":67 },"surface":{ "ctx":0,"type":1,"id":2 }}]},
@@ -625,8 +625,8 @@
          {"sem":{ "ctx":0,"type":2,"id":64 },"surface":"subtract"},
          {"sem":{ "ctx":0,"type":2,"id":72 },"children":[
             {"sem":{ "ctx":0,"type":2,"id":71 },"children":[
-               {"sem":{ "ctx":0,"type":2,"id":65 },"surface":"result"},
-               {"sem":{ "ctx":0,"type":2,"id":68 },"surface":{ "ctx":0,"type":1,"id":12 }}]},
+               {"sem":{ "ctx":0,"type":2,"id":65 },"surface":"difference"},
+               {"sem":{ "ctx":0,"type":2,"id":68 },"surface":{ "ctx":0,"type":1,"id":2 }}]},
             {"sem":{ "ctx":0,"type":2,"id":70 },"children":[
                {"sem":{ "ctx":0,"type":2,"id":65 },"surface":"minuend"},
                {"sem":{ "ctx":0,"type":2,"id":67 },"surface":{ "ctx":0,"type":1,"id":2 }}]},
@@ -638,8 +638,8 @@
          {"sem":{ "ctx":0,"type":2,"id":64 },"surface":"multiply"},
          {"sem":{ "ctx":0,"type":2,"id":72 },"children":[
             {"sem":{ "ctx":0,"type":2,"id":71 },"children":[
-               {"sem":{ "ctx":0,"type":2,"id":65 },"surface":"result"},
-               {"sem":{ "ctx":0,"type":2,"id":68 },"surface":{ "ctx":0,"type":1,"id":12 }}]},
+               {"sem":{ "ctx":0,"type":2,"id":65 },"surface":"product"},
+               {"sem":{ "ctx":0,"type":2,"id":68 },"surface":{ "ctx":0,"type":1,"id":2 }}]},
             {"sem":{ "ctx":0,"type":2,"id":70 },"children":[
                {"sem":{ "ctx":0,"type":2,"id":65 },"surface":"multiplicand"},
                {"sem":{ "ctx":0,"type":2,"id":67 },"surface":{ "ctx":0,"type":1,"id":2 }}]},
@@ -651,8 +651,8 @@
          {"sem":{ "ctx":0,"type":2,"id":64 },"surface":"divide"},
          {"sem":{ "ctx":0,"type":2,"id":72 },"children":[
             {"sem":{ "ctx":0,"type":2,"id":71 },"children":[
-               {"sem":{ "ctx":0,"type":2,"id":65 },"surface":"result"},
-               {"sem":{ "ctx":0,"type":2,"id":68 },"surface":{ "ctx":0,"type":1,"id":12 }}]},
+               {"sem":{ "ctx":0,"type":2,"id":65 },"surface":"quotient"},
+               {"sem":{ "ctx":0,"type":2,"id":68 },"surface":{ "ctx":0,"type":1,"id":2 }}]},
             {"sem":{ "ctx":0,"type":2,"id":70 },"children":[
                {"sem":{ "ctx":0,"type":2,"id":65 },"surface":"dividend"},
                {"sem":{ "ctx":0,"type":2,"id":67 },"surface":{ "ctx":0,"type":1,"id":2 }}]},
@@ -664,8 +664,8 @@
          {"sem":{ "ctx":0,"type":2,"id":64 },"surface":"modulo"},
          {"sem":{ "ctx":0,"type":2,"id":72 },"children":[
             {"sem":{ "ctx":0,"type":2,"id":71 },"children":[
-               {"sem":{ "ctx":0,"type":2,"id":65 },"surface":"result"},
-               {"sem":{ "ctx":0,"type":2,"id":68 },"surface":{ "ctx":0,"type":1,"id":12 }}]},
+               {"sem":{ "ctx":0,"type":2,"id":65 },"surface":"remainder"},
+               {"sem":{ "ctx":0,"type":2,"id":68 },"surface":{ "ctx":0,"type":1,"id":2 }}]},
             {"sem":{ "ctx":0,"type":2,"id":70 },"children":[
                {"sem":{ "ctx":0,"type":2,"id":65 },"surface":"dividend"},
                {"sem":{ "ctx":0,"type":2,"id":67 },"surface":{ "ctx":0,"type":1,"id":2 }}]},
@@ -726,7 +726,7 @@
          {"sem":{ "ctx":0,"type":2,"id":64 },"surface":"send a signal"},
          {"sem":{ "ctx":0,"type":2,"id":72 },"children":[
             {"sem":{ "ctx":0,"type":2,"id":71 },"children":[
-               {"sem":{ "ctx":0,"type":2,"id":65 },"surface":"result"},
+               {"sem":{ "ctx":0,"type":2,"id":65 },"surface":"response"},
                {"sem":{ "ctx":0,"type":2,"id":68 },"surface":{ "ctx":0,"type":1,"id":12 }}]}]}]},
       {"sem":{ "ctx":0,"type":2,"id":62 },"children":[
          {"sem":{ "ctx":0,"type":2,"id":63 },"surface":"EXPECT_ACT"},
