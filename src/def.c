@@ -305,6 +305,7 @@ T *__d_code_process(T *processes,T *code,char *name,char *intention,T *signature
     _t_new(def,PROCESS_NAME,name,strlen(name)+1);
     _t_new(def,PROCESS_INTENTION,intention,strlen(intention)+1);
     if (code) _t_add(def,code);
+    else if(processes != G_contexts[SYS_CONTEXT].defs.processes) raise_error("missing code");
     if (signature) _t_add(def,signature);
     return def;
 }

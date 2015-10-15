@@ -67,6 +67,7 @@ print $cfh <<'EOF';
 #include "base_defs.h"
 #include "sys_defs.h"
 #include "def.h"
+#include "process.h"
 
 void base_defs() {
 EOF

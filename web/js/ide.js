@@ -140,21 +140,24 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
 
     // Private functions
 
+    function _setupSem(sem,sem_elem,lock) {
+        sem_elem.setAttribute('semid',sem.ctx+'.'+sem.type+'.'+sem.id);
+        sem_elem.setAttribute("type",type_names[sem.type].toLowerCase());
+        var label = $.getOrCreate('label',sem_elem);
+        if (lock) label.setAttribute("locked","true");
+        label.innerHTML=getSemName(sem);
+        if (sem.type == SEM_TYPE_SYMBOL) {
+            var struct = $.getOrCreate('struct',sem_elem);
+            this.structVisible ? $.show(struct) : $.hide(struct);
+            struct.innerHTML=getSemName(getSymbolStruct(sem));
+        }
+    }
+
     function _insertTree(tree,parent) {
         var me = this;
         var s = $.create('sem',{inside:parent});
-        var semid = tree.sem;
-        var semid_txt = semid.ctx+'.'+semid.type+'.'+semid.id;
-        s.setAttribute('semid',""+semid_txt);
-        s.setAttribute("type",type_names[semid.type].toLowerCase());
-        var label = $.getOrCreate('label',s);
-        label.setAttribute("locked","true");
-        label.innerHTML=getSemName(semid);
-        if (semid.type == SEM_TYPE_SYMBOL) {
-            var struct = $.getOrCreate('struct',s);
-            me.structVisible ? $.show(struct) : $.hide(struct);
-            struct.innerHTML=getSemName(getSymbolStruct(semid));
-        }
+        _setupSem.call(this,tree.sem,s,true);
+
         if (tree.children) {
             tree.children.forEach(function(child){
                 _insertTree.call(me,child,s);
@@ -174,16 +177,8 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
     function setupSem(label_val,sem_elem,lock) {
         var def = LABEL_TABLE[label_val];
         var me = this;
-        sem_elem.setAttribute("type",def.type);
+        _setupSem.call(this,def.sem,sem_elem,lock);
         if (def.type == 'symbol') {
-            var label = $.getOrCreate('label',sem_elem);
-            if (lock) label.setAttribute("locked","true");
-            semid=def.sem;
-            sem_elem.setAttribute('semid',""+semid.ctx+'.'+semid.type+'.'+semid.id);
-            label.innerHTML=label_val;
-            var struct = $.getOrCreate('struct',sem_elem);
-            struct.innerHTML=def.structure;
-            me.structVisible ? $.show(struct) : $.hide(struct);
             var symbols = LABEL_TABLE[def.structure].symbols;
             // if structure has no symbols it's system defined so create a surface
             // or an unknown treenode in the case of LIST or TREE structures
@@ -218,7 +213,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
             before:label
         });
         var a = new Awesomplete(input, {
-	    list: SYMBOLS,
+	    list: SYMBOLS.concat(PROCESSES),
             minChars: 1
         });
         input.value=v;
@@ -685,7 +680,7 @@ function init() {
         $(this).replaceWith("<input id=\"x\" class=\"awesomplete\">");
         var input = document.getElementById("x");
         new Awesomplete(input, {
-	    list: SYMBOLS,
+	    list: SYMBOLS.concat(PROCESSES),
             minChars: 1
         });
         input.value=v;

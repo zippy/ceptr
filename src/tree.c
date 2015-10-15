@@ -1078,19 +1078,10 @@ char * _t2rawjson(Defs *defs,T *t,int level,char *buf) {
                 // nothing to do.
                 break;
             default:
-                raise_error("don't know how to convert surface of %s",_d_get_symbol_name(symbols,s));
-                /* if (semeq(s,SEMTREX_MATCH_CURSOR)) { */
-                /*     c = _t2json(defs,*(T **)_t_surface(t),0,tbuf); */
-                /*     //c = "null"; */
-                /*     sprintf(buf,"{%s}",c); */
-                /*     break; */
-                /* } */
-                /* if (n == 0) */
-                /*     sprintf(buf,"(<unknown:%d.%d.%d>",s.context,s.semtype,s.id); */
-                /* else { */
-                /*     c = _d_get_structure_name(structures,st); */
-                /*     sprintf(buf,"\"type\":\"%s\",\"name\":\"%s\"",c,n); */
-                /* } */
+                // other structures are composed so work automatically
+                if (st.id > _t_children(G_contexts[SYS_CONTEXT].defs.structures))
+                    raise_error("don't know how to convert surface of %s, structure id %d seems invalid",_d_get_symbol_name(symbols,s),st.id);
+
             }
         }
     }

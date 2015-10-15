@@ -162,12 +162,12 @@ Symbol: INCOMPATIBLE_TYPE_ERR,REDUCTION_ERROR;
 Symbol: UNIX_ERRNO_ERR,REDUCTION_ERROR;
 
 Process: NOOP,"no-op",0;
-Process: IF,"if",0;
-Process: ADD_INT,"addition",0;
-Process: SUB_INT,"subtract",0;
-Process: MULT_INT,"multiply",0;
-Process: DIV_INT,"divide",0;
-Process: MOD_INT,"modulo",0;
+Process: IF,"if","condition",SIGNATURE_PROCESS,BOOLEAN,"then",SIGNATURE_STRUCTURE,TREE,"else",SIGNATURE_STRUCTURE,TREE,0;
+Process: ADD_INT,"addition","augend",SIGNATURE_STRUCTURE,INTEGER,"addend",SIGNATURE_STRUCTURE,INTEGER,0;
+Process: SUB_INT,"subtract","minuend",SIGNATURE_STRUCTURE,INTEGER,"subtrahend",SIGNATURE_STRUCTURE,INTEGER,0;
+Process: MULT_INT,"multiply","multiplicand",SIGNATURE_STRUCTURE,INTEGER,"multiplier",SIGNATURE_STRUCTURE,INTEGER,0;
+Process: DIV_INT,"divide","dividend",SIGNATURE_STRUCTURE,INTEGER,"divisor",SIGNATURE_STRUCTURE,INTEGER,0;
+Process: MOD_INT,"modulo","dividend",SIGNATURE_STRUCTURE,INTEGER,"divisor",SIGNATURE_STRUCTURE,INTEGER,0;
 Process: EQ_INT,"test equality",0;
 Process: LT_INT,"test less than",0;
 Process: GT_INT,"test greater than",0;

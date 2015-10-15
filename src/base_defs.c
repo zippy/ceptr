@@ -12,6 +12,7 @@
 #include "base_defs.h"
 #include "sys_defs.h"
 #include "def.h"
+#include "process.h"
 
 void base_defs() {
   sT(SYS_CONTEXT,BIT,1,NULL_SYMBOL);
@@ -163,12 +164,12 @@ void base_defs() {
   sY(SYS_CONTEXT,INCOMPATIBLE_TYPE_ERR,REDUCTION_ERROR);
   sY(SYS_CONTEXT,UNIX_ERRNO_ERR,REDUCTION_ERROR);
   sP(SYS_CONTEXT,NOOP,"no-op",0);
-  sP(SYS_CONTEXT,IF,"if",0);
-  sP(SYS_CONTEXT,ADD_INT,"addition",0);
-  sP(SYS_CONTEXT,SUB_INT,"subtract",0);
-  sP(SYS_CONTEXT,MULT_INT,"multiply",0);
-  sP(SYS_CONTEXT,DIV_INT,"divide",0);
-  sP(SYS_CONTEXT,MOD_INT,"modulo",0);
+  sP(SYS_CONTEXT,IF,"if","condition",SIGNATURE_PROCESS,BOOLEAN,"then",SIGNATURE_STRUCTURE,TREE,"else",SIGNATURE_STRUCTURE,TREE,0);
+  sP(SYS_CONTEXT,ADD_INT,"addition","augend",SIGNATURE_STRUCTURE,INTEGER,"addend",SIGNATURE_STRUCTURE,INTEGER,0);
+  sP(SYS_CONTEXT,SUB_INT,"subtract","minuend",SIGNATURE_STRUCTURE,INTEGER,"subtrahend",SIGNATURE_STRUCTURE,INTEGER,0);
+  sP(SYS_CONTEXT,MULT_INT,"multiply","multiplicand",SIGNATURE_STRUCTURE,INTEGER,"multiplier",SIGNATURE_STRUCTURE,INTEGER,0);
+  sP(SYS_CONTEXT,DIV_INT,"divide","dividend",SIGNATURE_STRUCTURE,INTEGER,"divisor",SIGNATURE_STRUCTURE,INTEGER,0);
+  sP(SYS_CONTEXT,MOD_INT,"modulo","dividend",SIGNATURE_STRUCTURE,INTEGER,"divisor",SIGNATURE_STRUCTURE,INTEGER,0);
   sP(SYS_CONTEXT,EQ_INT,"test equality",0);
   sP(SYS_CONTEXT,LT_INT,"test less than",0);
   sP(SYS_CONTEXT,GT_INT,"test greater than",0);
