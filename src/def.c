@@ -140,6 +140,13 @@ T *__d_declare_symbol(T *symbols,Structure s,char *label){
     return def;
 }
 
+// this is used to reset the structure of a symbol that has been pre declared as NULL_SYMBOL
+// to it's actual value.
+void __d_set_symbol_structure(T *symbols,Symbol sym,Structure s) {
+    T * structure_def = _t_child(_t_child(symbols,sym.id),2);
+    *(Symbol *)_t_surface(structure_def) = s;
+}
+
 /**
  * add a symbol definition to a symbol defs tree
  *
@@ -160,8 +167,15 @@ Symbol _d_declare_symbol(T *symbols,T *structures,Structure s,char *label,Contex
     return sym;
 }
 
+T *__d_define_structure(T *structures,char *label,T *structure_def) {
+    T *def = _t_newr(structures,STRUCTURE_DEFINITION);
+    T *l = _t_new(def,STRUCTURE_LABEL,label,strlen(label)+1);
+    _t_add(def,structure_def);
+    return def;
+}
+
 /**
- * add a structure definition to a structure defs tree
+ * add a simple symbols based structure definition to a structure defs tree
  *
  * @param[in] structures a structre def tree containing structure definitions
  * @param[in] label a c-string label for this symbol
@@ -183,16 +197,16 @@ Structure _d_define_structure(T *symbols, T *structures,char *label,Context c,in
 
 /// va_list version of _d_define_structure
 T * _dv_define_structure(T *symbols,T *structures,char *label,int num_params,va_list params) {
-    T *def = _t_newr(structures,STRUCTURE_DEFINITION);
-    T *l = _t_new(def,STRUCTURE_LABEL,label,strlen(label)+1);
-    T *p = _t_newr(def,STRUCTURE_PARTS);
+    T *p,*seq = 0;
+    if (num_params > 1)
+        seq = _t_newr(0,STRUCTURE_SEQUENCE);
     int i;
     for(i=0;i<num_params;i++) {
         Symbol s = va_arg(params,Symbol);
         __d_validate_symbol(symbols,s,label);
-        _t_news(p,STRUCTURE_PART,s);
+        p = _t_news(seq,STRUCTURE_SYMBOL,s);
     }
-    return def;
+    return __d_define_structure(structures,label,seq ? seq : p);
 }
 
 /**
@@ -278,10 +292,18 @@ size_t _d_get_structure_size(T *symbols,T *structures,Structure s,void *surface)
     else {
         T *structure = _t_child(structures,s.id);
         T *parts = _t_child(structure,2);
-        DO_KIDS(parts,
-            T *p = _t_child(parts,i);
-            size += _d_get_symbol_size(symbols,structures,*(Symbol *)_t_surface(p),surface +size);
-                );
+        if (semeq(_t_symbol(parts),STRUCTURE_SEQUENCE)) {
+            DO_KIDS(parts,
+                    T *p = _t_child(parts,i);
+                    if (!semeq(_t_symbol(p),STRUCTURE_SYMBOL)) {
+                        raise_error("CAN'T GET SIZE FOR VARIABLE STRUCTURES '%s' (%d)",_d_get_structure_name(structures,s),s.id);
+                    }
+                    size += _d_get_symbol_size(symbols,structures,*(Symbol *)_t_surface(p),surface +size);
+                    );
+        }
+        else if (semeq(_t_symbol(parts),STRUCTURE_SYMBOL)) {
+            size = _d_get_symbol_size(symbols,structures,*(Symbol *)_t_surface(parts),surface);
+        }
     }
     return size;
 }

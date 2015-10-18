@@ -1196,15 +1196,15 @@ void _p_cleanup(Q *q,T* receptor_state) {
  *
  * @todo add more sensible handling of output signature.  We still aren't quite sure what to do about the output label, and how to handle output signature pass through from the results, probably need a special symbol for that
  */
-T *__p_make_signature(char *output_label,Symbol output_symbol,...){
+T *__p_make_signature(char *output_label,Symbol output_type,SemanticID output_sem,...){
     va_list params;
-    va_start(params,output_symbol);
+    va_start(params,output_sem);
     char *label;
     Symbol type,value;
     T *signature = _t_new_root(PROCESS_SIGNATURE);
     T *o = _t_newr(signature,OUTPUT_SIGNATURE);
     _t_new_str(o,SIGNATURE_LABEL,output_label);
-    _t_news(o,SIGNATURE_SYMBOL,output_symbol);
+    _t_news(o,output_type,output_sem);
     while (label = va_arg(params,char*)) {
         type = va_arg(params,Symbol);
         value = va_arg(params,Symbol);

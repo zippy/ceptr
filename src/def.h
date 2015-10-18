@@ -28,6 +28,7 @@ char *_d_get_process_name(T *processes,Process p);
 void __d_validate_symbol(T *symbols,Symbol s,char *n);
 void __d_validate_structure(T *structures,Structure s,char *n);
 T *__d_declare_symbol(T *symbols,Structure s,char *label);
+void __d_set_symbol_structure(T *symbols,Symbol sym,Structure s);
 Symbol _d_declare_symbol(T *symbols,T *structures,Structure s,char *label,Context c);
 Structure _d_define_structure(T *symbols,T *structures,char *label,Context c,int num_params,...);
 T * _dv_define_structure(T *symbols,T *structures,char *label,int num_params,va_list params);

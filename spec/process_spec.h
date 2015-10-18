@@ -23,7 +23,7 @@ void testRunTree() {
     _t_new(code,PARAM_REF,pt1,sizeof(int)*4);
     _t_new(code,PARAM_REF,pt2,sizeof(int)*4);
 
-    T *xsignature = __p_make_signature("result",NULL_SYMBOL,
+    T *xsignature = __p_make_signature("result",SIGNATURE_SYMBOL,NULL_SYMBOL,
                                    "condition",SIGNATURE_PROCESS,BOOLEAN,
                                    "true_branch",SIGNATURE_STRUCTURE,TREE,
                                    "false_branch",SIGNATURE_STRUCTURE,TREE,
@@ -697,7 +697,7 @@ Process _defIfEven(T *processes) {
     _t_new(code,PARAM_REF,p2,sizeof(int)*3);
     _t_new(code,PARAM_REF,p3,sizeof(int)*3);
 
-    T *signature = __p_make_signature("result",NULL_SYMBOL,
+    T *signature = __p_make_signature("result",SIGNATURE_SYMBOL,NULL_SYMBOL,
                                       "val",SIGNATURE_STRUCTURE,INTEGER,
                                       "true_branch",SIGNATURE_STRUCTURE,TREE,
                                       "false_branch",SIGNATURE_STRUCTURE,TREE,
@@ -723,7 +723,7 @@ Process _defDivZero(T *processes) {
     _t_newi(code,TEST_INT_SYMBOL,2);
     _t_newi(code,TEST_INT_SYMBOL,0);
 
-    T *signature = __p_make_signature("result",NULL_SYMBOL,
+    T *signature = __p_make_signature("result",SIGNATURE_SYMBOL,NULL_SYMBOL,
                                       "val",SIGNATURE_STRUCTURE,INTEGER,
                                       NULL);
 

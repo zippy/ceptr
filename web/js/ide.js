@@ -429,7 +429,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         var structures = CONTEXTS[LOCAL_CONTEXT].children[SEM_TYPE_STRUCTURE-1];
         var def = Tnew(structures,LABEL_TABLE["STRUCTURE_DEFINITION"].sem);
         Tnew(def,LABEL_TABLE["STRUCTURE_LABEL"].sem,label);
-        var parts = Tnew(def,LABEL_TABLE["STRUCTURE_PARTS"].sem);
+        var parts = Tnew(def,LABEL_TABLE["STRUCTURE_SEQUENCE"].sem);
         var sem = {ctx:LOCAL_CONTEXT,type:SEM_TYPE_STRUCTURE,id:structures.children.length};
         var s = [];
         for(var i=0;i<symbols.length;i++) {

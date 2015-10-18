@@ -661,7 +661,7 @@ char *_r_get_structure_name(Receptor *r,Structure s) {
 }
 
 char *_r_get_process_name(Receptor *r,Process p) {
-    return _d_get_process_name(r?r->defs.structures:0,p);
+    return _d_get_process_name(r?r->defs.processes:0,p);
 }
 
 char __t_dump_buf[10000];
@@ -740,7 +740,7 @@ Receptor *_r_makeStreamWriterReceptor(Symbol receptor_symbol,Symbol stream_symbo
     T* params = _t_new_root(PARAMS);
     _t_news(params,INTERPOLATE_SYMBOL,NULL_SYMBOL);
 
-    T *signature = __p_make_signature("result",NULL_SYMBOL,
+    T *signature = __p_make_signature("result",SIGNATURE_SYMBOL,NULL_SYMBOL,
                                       "stream",SIGNATURE_STRUCTURE,STREAM,
                                       NULL);
 
@@ -775,7 +775,7 @@ Receptor *_r_makeClockReceptor() {
 
     T *action = _t_newp(x,ACTION,SEND);
 
-    T *signature = __p_make_signature("result",NULL_SYMBOL,
+    T *signature = __p_make_signature("result",SIGNATURE_SYMBOL,NULL_SYMBOL,
                                       "stream",SIGNATURE_STRUCTURE,SEMTREX,
                                       NULL);
     Process proc = _r_code_process(r,x,"plant a listener to send the time","long desc...",signature);

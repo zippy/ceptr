@@ -46,6 +46,6 @@ T *__p_make_run_tree(T *processes,Process p,T *params);
 T *_p_make_run_tree(T *processes,T *p,int num_params,...);
 T *__p_build_run_tree(T* code,int num_params,...);
 void _p_cleanup(Q *q,T* receptor_state);
-T *__p_make_signature(char *output_label,Symbol output_symbol,...);
+T *__p_make_signature(char *output_label,Symbol output_type,SemanticID output_sem,...);
 #endif
 /** @}*/

@@ -139,7 +139,7 @@ void _a_serialize_instances(Instances *i,char *file) {
     T *t = _t_new_root(PARAMS);
     instances_elem *cur,*tmp;
     HASH_ITER(hh, *i, cur, tmp) {
-        T *sym = _t_news(t,STRUCTURE_PART,cur->s);
+        T *sym = _t_news(t,STRUCTURE_SYMBOL,cur->s);  // just using this symbol to store the symbol type
         Instance *iP = &cur->instances;
         instance_elem *curi,*tmpi;
         HASH_ITER(hh, *iP, curi, tmpi) {

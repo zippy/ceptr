@@ -21,8 +21,31 @@ open(my $hfh,'>:encoding(UTF-8)', $defs_h_file)
 
 my %c;
 my @d;
-my %fmap = ('Structure'=>'sT','Symbol'=>'sY','Process'=>'sP');
+my %fmap = ('Structure'=>'sT','Symbol'=>'sY','Process'=>'sP','SetSymbol'=>'sYs');
 my $context = "SYS";
+my %declared;
+
+sub addDef {
+    my $type = shift;
+    my $context = shift;
+    push @d,[$type,$context.'_CONTEXT',@_];
+
+    # don't need to redo header defs stuff for symbol set
+    if ($type ne 'SetSymbol') {
+        if (! exists $c{$context}) {
+            $c{$context} = {};
+        }
+
+        my $defs = $c{$context};
+
+        if (! exists $defs->{$type}) {
+            $defs->{$type} = [];
+        }
+
+        my $a = $defs->{$type};
+        push @$a, [@_];
+    }
+}
 
 while (my $def = <$fh>) {
     chomp $def;
@@ -31,20 +54,23 @@ while (my $def = <$fh>) {
     if ($def =~ /(.*): *(.*);(.*)/) {
         my $type = $1;
         if ($type eq 'Context') {$context = $2;next;}
+        my $comment = $3;
 
         my @params = split /,/,$2;
         #        my $name = shift @params;
-        push @d,[$type,$context.'_CONTEXT',@params];
-        my $comment = $3;
+        if ($type eq 'Declare') {
+            foreach my $s (@params) {
+                $declared{$s} = 1;
+                &addDef("Symbol",$context,$s,"NULL_STRUCTURE");
+            }
+        }
+        else {
+            if (($type eq 'Symbol') && $declared{$params[0]}) {
+                $type = "SetSymbol";
+            }
+            &addDef($type,$context,@params);
+        }
 
-        if (! exists $c{$context}) {$c{$context} = {}};
-
-        my $defs = $c{$context};
-
-        if (! exists $defs->{$type}) {$defs->{$type} = []};
-
-        my $a = $defs->{$type};
-        push @$a, [@params];
     } else {
         die "unable to parse $def";
     }
