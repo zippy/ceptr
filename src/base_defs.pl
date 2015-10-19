@@ -17,20 +17,24 @@ open(my $cfh,'>:encoding(UTF-8)', $defs_c_file)
         or die "Could not open definitions c file '$defs_c_file' $!";
 my $defs_h_file = 'base_defs.h';
 open(my $hfh,'>:encoding(UTF-8)', $defs_h_file)
-        or die "Could not open definitions c file '$defs_h_file' $!";
+        or die "Could not open definitions header file '$defs_h_file' $!";
 
 my %c;
 my @d;
-my %fmap = ('Structure'=>'sT','Symbol'=>'sY','Process'=>'sP','SetSymbol'=>'sYs');
+my %fmap = ('Structure'=>'sT','StructureS'=>'sTs','Symbol'=>'sY','Process'=>'sP','SetSymbol'=>'sYs');
 my $context = "SYS";
 my %declared;
+my %anon;
 
 sub addDef {
     my $type = shift;
     my $context = shift;
-    push @d,[$type,$context.'_CONTEXT',@_];
+    my $name = shift;
+    my $def = shift;
+    my $def_type = ($type eq 'Structure' && $def =~ /sT_/) ? "StructureS" : $type;
+    push @d,[$def_type,$context.'_CONTEXT',$name,$def];
 
-    # don't need to redo header defs stuff for symbol set
+    # don't need to redo header defs stuff for just setting symbols definition
     if ($type ne 'SetSymbol') {
         if (! exists $c{$context}) {
             $c{$context} = {};
@@ -43,8 +47,54 @@ sub addDef {
         }
 
         my $a = $defs->{$type};
-        push @$a, [@_];
+        push @$a, $name;
     }
+}
+
+sub andify {
+    my $n = shift;
+    join("_AND_",split(/,/,$n))
+}
+sub makeName {
+    my $n = shift;
+    $n =~ s/sT_SYM\(([^)]+)\)/$1/g;
+    $n =~ s/sT_SET\([0-9]+,/ONE_OF_/g;
+    $n =~ s/sT_SEQ\(2,([^,]+),\g1/PAIR_OF_$1/g;
+    $n =~ s/sT_SEQ\(2,([^)]+)\)/TUPLE_OF_$1/g;
+    $n =~ s/sT_SEQ\([0-9]+,/LIST_OF_/g;
+    $n =~ s/sT_STAR/ZERO_OR_MORE_OF_/g;
+    $n =~ s/sT_PLUS/ONE_OR_MORE_OF_/g;
+    $n =~ s/sT_QMARK/ZERO_OR_ONE_OF_/g;
+    $n =~ s/[()]//g;
+    return &andify($n);
+}
+
+sub buildNumParams {
+    my $x = shift;
+    my @params = split /,/,$x;
+    return scalar(@params).";".join(';',@params);
+}
+
+sub convertStrucDef {
+#    my @tokens = split /([,\(\)\{\}\|\?\+\*])/,shift;
+    my $x= shift;
+    if (!($x=~/[\{\}\(\)\+\*?|]/)) {
+        $x = &buildNumParams($x);
+    }
+    else {
+        $x =~ s/([a-zA-Z0-9_]+)/sT_SYM<$1>/g;
+        while ($x=~/[,()\{\}|?+*]/) {
+            $x =~ s/\*([a-zA-Z0-9_<>;]+)/sT_STAR<$1>/g;
+            $x =~ s/\+([a-zA-Z0-9_<>;]+)/sT_PLUS<$1>/g;
+            $x =~ s/\?([a-zA-Z0-9_<>;]+)/sT_QMRK<$1>/g;
+            $x =~ s/\(([^()]+)\)/"sT_SEQ<".&buildNumParams($1).'>'/eg;
+            $x =~ s/\{([^\}\{]+)\}/"sT_SET<".&buildNumParams($1).'>'/eg;
+        }
+        $x =~ s/</(/g;
+        $x =~ s/>/)/g;
+    }
+    $x =~ s/;/,/g;
+    return $x;
 }
 
 while (my $def = <$fh>) {
@@ -54,21 +104,47 @@ while (my $def = <$fh>) {
     if ($def =~ /(.*): *(.*);(.*)/) {
         my $type = $1;
         if ($type eq 'Context') {$context = $2;next;}
+        my $params = $2;
         my $comment = $3;
 
-        my @params = split /,/,$2;
-        #        my $name = shift @params;
         if ($type eq 'Declare') {
-            foreach my $s (@params) {
+            my @symbols = split /,/,$params;
+            foreach my $s (@symbols) {
                 $declared{$s} = 1;
                 &addDef("Symbol",$context,$s,"NULL_STRUCTURE");
             }
         }
         else {
-            if (($type eq 'Symbol') && $declared{$params[0]}) {
-                $type = "SetSymbol";
+            if ($type eq 'Symbol') {
+                $params =~ /(.*?),(.*)/;
+                my $name = $1;
+                my $structure = $2;
+                if ($declared{$name}) {
+                    $type = "SetSymbol";
+                }
+                if ($structure =~ /^\[(.*)\]$/) {
+                    my $sdef = &convertStrucDef($1);
+                    my $sname = &makeName($sdef);
+                    if (!$anon{$sname}) {
+                        $anon{$sname} = 1;
+                        &addDef("Structure",$context,$sname,$sdef);
+                        $structure = $sname;
+                    }
+                }
+                &addDef($type,$context,$name,$structure);
             }
-            &addDef($type,$context,@params);
+            elsif ($type eq 'Structure') {
+                $params =~ /(.*?),(.*)/;
+                my $name = $1;
+                my $structure_def = $2;
+                &addDef($type,$context,$name,&convertStrucDef($structure_def));
+            }
+            elsif ($type eq 'Process') {
+                $params =~ /(.*?),(.*)/;
+                my $name = $1;
+                my $process_def = $2;
+                &addDef($type,$context,$name,$process_def);
+            }
         }
 
     } else {
@@ -149,12 +225,12 @@ enum $context${\($type)}IDs {
     NULL_${\(($context ne 'SYS' ? $context.'_' : '').uc($type))}_ID,
 EOF
     foreach my $s (@$a) {
-        print $hfh '    '.$s->[0]."_ID,\n";
+        print $hfh '    '.$s."_ID,\n";
 
     }
     print $hfh '    NUM_'.$context.'_'.uc($types)."\n};\n";
     foreach my $s (@$a) {
-        print $hfh '#define '.$s->[0]." G_contexts[$context"."_CONTEXT].".lc($types).'['.$s->[0]."_ID]\n";
+        print $hfh '#define '.$s." G_contexts[$context"."_CONTEXT].".lc($types).'['.$s."_ID]\n";
     }
 }
 print $hfh <<EOF;

@@ -34,8 +34,19 @@ ContextStore G_contexts[_NUM_CONTEXTS];
 // NOte: symbols that are defined via a Declare line in the source file, cannot be
 // redefined, and thus are just set using the sYs macro.
 #define sT(ctx,name,num,...) name = _d_define_structure(G_contexts[ctx].defs.symbols,G_contexts[ctx].defs.structures,"" #name "",ctx,num,__VA_ARGS__)
+#define sTs(ctx,name,def) __d_define_structure(G_contexts[ctx].defs.structures,"" #name "",def);name = sTD(ctx,G_contexts[ctx].defs.structures);
 #define sY(ctx,name,str) name = _d_declare_symbol(G_contexts[ctx].defs.symbols,G_contexts[ctx].defs.structures,str,"" #name "",ctx)
 #define sYs(ctx,sym,str) __d_set_symbol_structure(G_contexts[ctx].defs.symbols,sym,str)
 #define sP(ctx,name,intention,...) name = _d_code_process(G_contexts[ctx].defs.processes,0,"" #name "",intention,__p_make_signature(__VA_ARGS__),ctx)
+
+#define sT_SET(...) sT_(STRUCTURE_SYMBOL_SET,__VA_ARGS__)
+#define sT_SEQ(...) sT_(STRUCTURE_SEQUENCE,__VA_ARGS__)
+#define sT_STAR(...) sT_(STRUCTURE_ZERO_OR_MORE,1,__VA_ARGS__)
+#define sT_PLUS(...) sT_(STRUCTURE_ONE_OR_MORE,1,__VA_ARGS__)
+#define sT_QMARK(...) sT_(STRUCTURE_ZERO_OR_ONE,1,__VA_ARGS__)
+#define sT_SYM(sym) _t_news(0,STRUCTURE_SYMBOL,sym)
+
+T *sT_(Symbol sym,int num_params,...);
+Structure sTD(Context c,T *structures);
 
 #endif

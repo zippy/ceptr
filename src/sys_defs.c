@@ -12,6 +12,7 @@
 #include "def.h"
 
 #include "base_defs.h"
+#include <stdarg.h>
 
 Symbol NULL_SYMBOL = {0,SEM_TYPE_SYMBOL,0};
 
@@ -85,4 +86,31 @@ void sys_free() {
     for(i=0;i<_NUM_CONTEXTS;i++) {
         free_context(&G_contexts[i]);
     }
+}
+
+T *sT_(Symbol sym,int num_params,...){
+    va_list params;
+    T *set = _t_newr(0,sym);
+    va_start(params,num_params);
+    int i;
+    for(i=0;i<num_params;i++) {
+        T * t = va_arg(params,T *);
+        // if it's a SYMBOL_SET we need to just use the symbol type and
+        // can throw away the node
+        if (semeq(sym,STRUCTURE_SYMBOL_SET)) {
+            _t_news(set,STRUCTURE_SYMBOL,_t_symbol(t));
+            _t_free(t);
+        }
+        // otherwise they should all be T *
+        else {
+            _t_add(set,t);
+        }
+    }
+    va_end(params);
+    return set;
+}
+
+Structure sTD(Context c,T *structures) {
+    Structure s = {c,SEM_TYPE_STRUCTURE,_t_children(structures)};
+    return s;
 }

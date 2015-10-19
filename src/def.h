@@ -42,6 +42,7 @@ size_t _sys_structure_size(int id,void *surface);
 
 enum{NO_INDENT=0,INDENT=-1};
 #define t2s(t) _t2s(0,t)
+#define t2sp(t) __t2s(0,t,4)
 #define _t2s(d,t) __t2s(d,t,NO_INDENT)
 char * __t2s(Defs *defs,T *t,int indent);
 char *_indent_line(int level,char *buf);

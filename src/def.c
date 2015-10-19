@@ -144,7 +144,16 @@ T *__d_declare_symbol(T *symbols,Structure s,char *label){
 // to it's actual value.
 void __d_set_symbol_structure(T *symbols,Symbol sym,Structure s) {
     T * structure_def = _t_child(_t_child(symbols,sym.id),2);
+    if (!semeq(NULL_STRUCTURE,*(Symbol *)_t_surface(structure_def)))
+        raise_error("Symbol already defined");
     *(Symbol *)_t_surface(structure_def) = s;
+}
+
+// this is used to set the structure definition of a declared but undefined strcture
+void __d_set_structure_def(T *structures,Structure s,T *def) {
+    T *d = _t_child(structures,s.id);
+    if (_t_children(d) > 1) raise_error("Structure already defined");
+    _t_add(d,def);
 }
 
 /**
@@ -167,10 +176,12 @@ Symbol _d_declare_symbol(T *symbols,T *structures,Structure s,char *label,Contex
     return sym;
 }
 
+// low level structure definition helper.  You can pass in a null structure
+// def to simply declare the existence of the structure without defining it.
 T *__d_define_structure(T *structures,char *label,T *structure_def) {
     T *def = _t_newr(structures,STRUCTURE_DEFINITION);
     T *l = _t_new(def,STRUCTURE_LABEL,label,strlen(label)+1);
-    _t_add(def,structure_def);
+    if (structure_def) _t_add(def,structure_def);
     return def;
 }
 
@@ -191,8 +202,8 @@ Structure _d_define_structure(T *symbols, T *structures,char *label,Context c,in
     va_start(params,num_params);
     T *def = _dv_define_structure(symbols,structures,label,num_params,params);
     va_end(params);
-    Symbol sym = {c,SEM_TYPE_STRUCTURE,_t_children(structures)};
-    return sym;
+    Structure s = {c,SEM_TYPE_STRUCTURE,_t_children(structures)};
+    return s;
 }
 
 /// va_list version of _d_define_structure
