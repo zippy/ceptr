@@ -198,22 +198,42 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
             }
         }
         else if (sem.type === SEM_TYPE_SYMBOL) {
-            var symbols = LABEL_TABLE[def.structure].symbols;
-            // if structure has no symbols it's system defined so create a surface
-            // or an unknown treenode in the case of LIST or TREE structures
-            if (!symbols) {
-                if (def.structure == "TREE" || def.structure == "LIST") {
-                    var children = $.getOrCreate('children',sem_elem);
-                    children.innerHTML="<sem><label>--unknown--</label></sem>";
+            var sdef = LABEL_TABLE[def.structure].def;
+            var symbols;
+            var structure_type;
+            // the simple cases are just symbols or sequences of symbols
+            if (getSemName(sdef.sem) === "STRUCTURE_SYMBOL") {
+                var s_name = getSemName(sdef.surface);
+                if (s_name === "NULL_SYMBOL") {
+                    structure_type = "base";
                 }
                 else {
-                    $.remove('children',sem_elem);
-                    var surface = $.getOrCreate('surface',sem_elem);
-                    surface.innerHTML = "";
-                    surface.setAttribute('contenteditable', 'true');
+                    symbols = [getSemName(sdef.surface)];
+                    structure_type = "fixed";
                 }
             }
+            else if (getSemName(sdef.sem) === "STRUCTURE_SEQUENCE") {
+                var s = [];
+                structure_type = "fixed";
+                sdef.children.forEach(function(c){
+                    if (getSemName(c.sem) === "STRUCTURE_SYMBOL") {
+                        s.push(getSemName(c.surface));
+                    }
+                    else {structure_type = "complex"};
+                });
+                if (structure_type == "fixed") symbols = s;
+            }
             else {
+                structure_type = "complex";
+            }
+
+            if (structure_type == "base") {
+                $.remove('children',sem_elem);
+                var surface = $.getOrCreate('surface',sem_elem);
+                surface.innerHTML = "";
+                surface.setAttribute('contenteditable', 'true');
+            }
+            else if (structure_type === "fixed") {
                 $.remove('surface',sem_elem);
                 var children = $.getOrCreate('children',sem_elem);
                 children.innerHTML = "";
@@ -221,6 +241,9 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
                     var child_sem = $.create('sem',{inside:children});
                     setupSem.call(me,s,child_sem,true,sem);
                 });
+            } else if (structure_type === "complex") {
+                var children = $.getOrCreate('children',sem_elem);
+                children.innerHTML="<sem><label>--unknown--</label></sem>";
             }
         }
     }
@@ -243,7 +266,16 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         function close_a(e) {
             //if the new label is defined and different reset everything
             if (LABEL_TABLE[input.value] != undefined && label.innerHTML != input.value) {
-                setupSem.call(me,input.value,label.parentNode,false,undefined);
+                var parent_sem_id = label.parentNode.parentNode.parentNode.getAttribute("semid");
+                var parent_sem;
+                if (parent_sem_id) {
+                    parent_sem_id = parent_sem_id.split('.');
+                    parent_sem = {};
+                    parent_sem.ctx = parent_sem_id[0];
+                    parent_sem.type = parent_sem_id[1];
+                    parent_sem.ctx = parent_sem_id[2];
+                }
+                setupSem.call(me,input.value,label.parentNode,false,parent_sem);
             }
             $.show(label);
             var p = input.parentNode;
@@ -439,7 +471,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
             Tnew(parts,LABEL_TABLE["STRUCTURE_SYMBOL"].sem,symbols[i]);
             s.push(getSemName(symbols[i]));
         }
-        LABEL_TABLE[label]= {"sem":sem,type:'structure',symbols:s};
+        LABEL_TABLE[label]= {"sem":sem,type:'structure',symbols:s,def:def.children[1]};
         STRUCTURES.push(label);
         if (_.lt_elem) {
             var lt = makeLabelTableElem(label,LABEL_TABLE[label]);
