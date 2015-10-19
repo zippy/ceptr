@@ -134,7 +134,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         },
         // insert a full semantic tree at the current cursor position
         insertTree: function(tree) {
-            _insertTree.call(this,tree,this.elem);
+            _insertTree.call(this,tree,this.elem,undefined);
         }
     };
 
@@ -156,14 +156,14 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         }
     }
 
-    function _insertTree(tree,parent) {
+    function _insertTree(tree,parent,parent_sem) {
         var me = this;
         var s = $.create('sem',{inside:parent});
-        _setupSem.call(this,tree.sem,s,true,parent.sem);
+        _setupSem.call(this,tree.sem,s,true,parent_sem);
 
         if (tree.children) {
             tree.children.forEach(function(child){
-                _insertTree.call(me,child,s);
+                _insertTree.call(me,child,s,tree.sem);
             });
         }
         if (tree.surface) {
