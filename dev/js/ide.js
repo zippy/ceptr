@@ -118,7 +118,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         // insert a node at the current cursor position
         insert: function(label,surface) {
             var n = $.create('sem',{inside:this.elem});
-            setupSem.call(this,label,n,false,undefined);
+            setupSem.call(this,label,n,false,getParentSem(n));
             if (surface) {
                 if (Array.isArray(surface)) {
                     var i;
@@ -248,6 +248,19 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         }
     }
 
+    function getParentSem(sem_elem) {
+        var parent_sem_id = sem_elem.parentNode.parentNode.getAttribute("semid");
+        var parent_sem;
+        if (parent_sem_id) {
+            parent_sem_id = parent_sem_id.split('.');
+            parent_sem = {};
+            parent_sem.ctx = parent_sem_id[0];
+            parent_sem.type = parent_sem_id[1];
+            parent_sem.ctx = parent_sem_id[2];
+        }
+        return parent_sem;
+    }
+
     function editLabel(label,select) {
         var v = label.innerHTML;
         $.hide(label);
@@ -266,15 +279,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         function close_a(e) {
             //if the new label is defined and different reset everything
             if (LABEL_TABLE[input.value] != undefined && label.innerHTML != input.value) {
-                var parent_sem_id = label.parentNode.parentNode.parentNode.getAttribute("semid");
-                var parent_sem;
-                if (parent_sem_id) {
-                    parent_sem_id = parent_sem_id.split('.');
-                    parent_sem = {};
-                    parent_sem.ctx = parent_sem_id[0];
-                    parent_sem.type = parent_sem_id[1];
-                    parent_sem.ctx = parent_sem_id[2];
-                }
+                var parent_sem = getParentSem(label.parentNode);
                 setupSem.call(me,input.value,label.parentNode,false,parent_sem);
             }
             $.show(label);
