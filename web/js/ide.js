@@ -118,7 +118,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         // insert a node at the current cursor position
         insert: function(label,surface) {
             var n = $.create('sem',{inside:this.elem});
-            setupSem.call(this,label,n,false);
+            setupSem.call(this,label,n,false,undefined);
             if (surface) {
                 if (Array.isArray(surface)) {
                     var i;
@@ -140,9 +140,12 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
 
     // Private functions
 
-    function _setupSem(sem,sem_elem,lock) {
+    function _setupSem(sem,sem_elem,lock,parent_sem) {
         sem_elem.setAttribute('semid',sem.ctx+'.'+sem.type+'.'+sem.id);
         sem_elem.setAttribute("type",type_names[sem.type].toLowerCase());
+        if (!parent_sem || parent_sem.type != sem.type) {
+            sem_elem.setAttribute("class","type-changed");
+        }
         var label = $.getOrCreate('label',sem_elem);
         if (lock) label.setAttribute("locked","true");
         label.innerHTML=getSemName(sem);
@@ -156,7 +159,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
     function _insertTree(tree,parent) {
         var me = this;
         var s = $.create('sem',{inside:parent});
-        _setupSem.call(this,tree.sem,s,true);
+        _setupSem.call(this,tree.sem,s,true,parent.sem);
 
         if (tree.children) {
             tree.children.forEach(function(child){
@@ -174,13 +177,13 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         }
     }
 
-    function setupSem(label_val,sem_elem,lock) {
+    function setupSem(label_val,sem_elem,lock,parent_sem) {
         // for now we are getting the def from the label table,
         // we should probably get it from DEFS?  maybe not because it's slower
         var def = LABEL_TABLE[label_val];
         var me = this;
         var sem = def.sem;
-        _setupSem.call(this,sem,sem_elem,lock);
+        _setupSem.call(this,sem,sem_elem,lock,parent_sem);
         if (sem.type === SEM_TYPE_PROCESS) {
             var params = LABEL_TABLE[label_val].params;
             if (params) {
@@ -216,7 +219,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
                 children.innerHTML = "";
                 symbols.forEach(function(s){
                     var child_sem = $.create('sem',{inside:children});
-                    setupSem.call(me,s,child_sem,true);
+                    setupSem.call(me,s,child_sem,true,sem);
                 });
             }
         }
@@ -240,7 +243,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         function close_a(e) {
             //if the new label is defined and different reset everything
             if (LABEL_TABLE[input.value] != undefined && label.innerHTML != input.value) {
-                setupSem.call(me,input.value,label.parentNode,false);
+                setupSem.call(me,input.value,label.parentNode,false,undefined);
             }
             $.show(label);
             var p = input.parentNode;
@@ -433,7 +436,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         var sem = {ctx:LOCAL_CONTEXT,type:SEM_TYPE_STRUCTURE,id:structures.children.length};
         var s = [];
         for(var i=0;i<symbols.length;i++) {
-            Tnew(parts,LABEL_TABLE["STRUCTURE_PART"].sem,symbols[i]);
+            Tnew(parts,LABEL_TABLE["STRUCTURE_SYMBOL"].sem,symbols[i]);
             s.push(getSemName(symbols[i]));
         }
         LABEL_TABLE[label]= {"sem":sem,type:'structure',symbols:s};
@@ -462,8 +465,9 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         loadTree("sysdefs",function(d){
             CONTEXTS[SYS_CONTEXT] = d;
             _doDefs(SEM_TYPE_STRUCTURE,function(i,struct_def){
-                var symbols = struct_def.children[1].children;
+                var sdefs = struct_def.children[1];
                 var structures = [];
+                var symbols = (sdefs.children) ? sdefs.children : sdefs;
                 for (var j=0;j<symbols.length;j++) {
                     var n = getSemName(symbols[j].surface);
                     if (n != "NULL_SYMBOL") {
