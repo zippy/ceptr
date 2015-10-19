@@ -14,6 +14,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
     var LABEL_TABLE = {};
     var SYMBOLS = [];
     var STRUCTURES = [];
+    var PROCESSES = [];
 
     var _ = function (elem,o) {
 
@@ -21,24 +22,13 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         var me = this;
         var handle_keys = true;
 
-        // methods
-        this.showCaret = function() {
-            handle_keys=true;
-            $.show(caret);
-            caret.focus();
-        }
-        this.hideCaret = function() {
-            handle_keys=false;
-            $.hide(caret);
-        }
-
 	// instance properties
         this.elem = $(elem);
         this.elem.te = this;  // stick a copy of this in the element for reference
 
         o = o || {};
 	configure.call(this, {
-	    // add properties here testProperty: 314
+            structVisible : false
 	}, o);
 
         // Create necessary elements
@@ -108,10 +98,27 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         caret.focus();
     };
     _.prototype = {
-        // add method function defs here...like: get fish() {return "cod";}
+        showCaret : function() {
+            handle_keys=true;
+            $.show(this.caret);
+            this.caret.focus();
+        },
+        hideCaret : function() {
+            handle_keys=false;
+            $.hide(this.caret);
+        },
+        // change the visibility of the Structure tags
+        toggleStructVisibility: function() {
+            var vis = this.structVisible = !this.structVisible;
+            $$('struct',this.elem).forEach(function(s) {
+                vis ? $.show(s) : $.hide(s);
+
+            });
+        },
+        // insert a node at the current cursor position
         insert: function(label,surface) {
             var n = $.create('sem',{inside:this.elem});
-            setupSem(label,n,false);
+            setupSem.call(this,label,n,false,undefined);
             if (surface) {
                 if (Array.isArray(surface)) {
                     var i;
@@ -124,21 +131,73 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
                     $('surface',n).innerHTML = surface;
                 }
             }
+        },
+        // insert a full semantic tree at the current cursor position
+        insertTree: function(tree) {
+            _insertTree.call(this,tree,this.elem);
         }
     };
 
     // Private functions
 
-    function setupSem(label_val,sem_elem,lock) {
-        var def = LABEL_TABLE[label_val];
-        if (def.type == 'symbol') {
-            var label = $.getOrCreate('label',sem_elem);
-            if (lock) label.setAttribute("locked","true");
-            semid=def.sem;
-            sem_elem.setAttribute('semid',""+semid.ctx+'.'+semid.type+'.'+semid.id);
-            label.innerHTML=label_val;
+    function _setupSem(sem,sem_elem,lock,parent_sem) {
+        sem_elem.setAttribute('semid',sem.ctx+'.'+sem.type+'.'+sem.id);
+        sem_elem.setAttribute("type",type_names[sem.type].toLowerCase());
+        if (!parent_sem || parent_sem.type != sem.type) {
+            sem_elem.setAttribute("class","type-changed");
+        }
+        var label = $.getOrCreate('label',sem_elem);
+        if (lock) label.setAttribute("locked","true");
+        label.innerHTML=getSemName(sem);
+        if (sem.type == SEM_TYPE_SYMBOL) {
             var struct = $.getOrCreate('struct',sem_elem);
-            struct.innerHTML=def.structure;
+            this.structVisible ? $.show(struct) : $.hide(struct);
+            struct.innerHTML=getSemName(getSymbolStruct(sem));
+        }
+    }
+
+    function _insertTree(tree,parent) {
+        var me = this;
+        var s = $.create('sem',{inside:parent});
+        _setupSem.call(this,tree.sem,s,true,parent.sem);
+
+        if (tree.children) {
+            tree.children.forEach(function(child){
+                _insertTree.call(me,child,s);
+            });
+        }
+        if (tree.surface) {
+            var surface = $.getOrCreate('surface',s);
+            if (typeof tree.surface === "object") {
+                surface.innerHTML = "&lt;"+getSemName(tree.surface)+"&gt;"
+            }
+            else {
+                surface.innerHTML = tree.surface;
+            }
+        }
+    }
+
+    function setupSem(label_val,sem_elem,lock,parent_sem) {
+        // for now we are getting the def from the label table,
+        // we should probably get it from DEFS?  maybe not because it's slower
+        var def = LABEL_TABLE[label_val];
+        var me = this;
+        var sem = def.sem;
+        _setupSem.call(this,sem,sem_elem,lock,parent_sem);
+        if (sem.type === SEM_TYPE_PROCESS) {
+            var params = LABEL_TABLE[label_val].params;
+            if (params) {
+                $.remove('surface',sem_elem);
+                var children = $.getOrCreate('children',sem_elem);
+                var h = "";
+                params.forEach(function(param){
+                    console.log(param);
+                    h += "<sem><sig>"+param+"</sig><label>--unknown--</label></sem>";
+                });
+                children.innerHTML = h;
+            }
+        }
+        else if (sem.type === SEM_TYPE_SYMBOL) {
             var symbols = LABEL_TABLE[def.structure].symbols;
             // if structure has no symbols it's system defined so create a surface
             // or an unknown treenode in the case of LIST or TREE structures
@@ -160,7 +219,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
                 children.innerHTML = "";
                 symbols.forEach(function(s){
                     var child_sem = $.create('sem',{inside:children});
-                    setupSem(s,child_sem,true);
+                    setupSem.call(me,s,child_sem,true,sem);
                 });
             }
         }
@@ -173,7 +232,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
             before:label
         });
         var a = new Awesomplete(input, {
-	    list: SYMBOLS,
+	    list: SYMBOLS.concat(PROCESSES),
             minChars: 1
         });
         input.value=v;
@@ -184,7 +243,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         function close_a(e) {
             //if the new label is defined and different reset everything
             if (LABEL_TABLE[input.value] != undefined && label.innerHTML != input.value) {
-                setupSem(input.value,label.parentNode);
+                setupSem.call(me,input.value,label.parentNode,false,undefined);
             }
             $.show(label);
             var p = input.parentNode;
@@ -373,11 +432,11 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         var structures = CONTEXTS[LOCAL_CONTEXT].children[SEM_TYPE_STRUCTURE-1];
         var def = Tnew(structures,LABEL_TABLE["STRUCTURE_DEFINITION"].sem);
         Tnew(def,LABEL_TABLE["STRUCTURE_LABEL"].sem,label);
-        var parts = Tnew(def,LABEL_TABLE["STRUCTURE_PARTS"].sem);
+        var parts = Tnew(def,LABEL_TABLE["STRUCTURE_SEQUENCE"].sem);
         var sem = {ctx:LOCAL_CONTEXT,type:SEM_TYPE_STRUCTURE,id:structures.children.length};
         var s = [];
         for(var i=0;i<symbols.length;i++) {
-            Tnew(parts,LABEL_TABLE["STRUCTURE_PART"].sem,symbols[i]);
+            Tnew(parts,LABEL_TABLE["STRUCTURE_SYMBOL"].sem,symbols[i]);
             s.push(getSemName(symbols[i]));
         }
         LABEL_TABLE[label]= {"sem":sem,type:'structure',symbols:s};
@@ -389,6 +448,15 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         return sem;
     }
 
+    function _doDefs(type,func) {
+        var defs = CONTEXTS[SYS_CONTEXT].children[type-1].children;
+        var num_defs = defs.length;
+        for (var i=0;i<num_defs;i++) {
+            label = defs[i].children[0].surface;
+            var lt_entry = func(i,defs[i]);
+            LABEL_TABLE[label] = lt_entry;
+        }
+    }
     // Initialization
     function init() {
 	$$(".TE").forEach(function (elem) {
@@ -396,11 +464,10 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
 	});
         loadTree("sysdefs",function(d){
             CONTEXTS[SYS_CONTEXT] = d;
-            var struct_defs = d.children[SEM_TYPE_STRUCTURE-1].children;
-            var structs = struct_defs.length;
-            for (var i=0;i<structs;i++) {
-                var symbols = struct_defs[i].children[1].children;
+            _doDefs(SEM_TYPE_STRUCTURE,function(i,struct_def){
+                var sdefs = struct_def.children[1];
                 var structures = [];
+                var symbols = (sdefs.children) ? sdefs.children : sdefs;
                 for (var j=0;j<symbols.length;j++) {
                     var n = getSemName(symbols[j].surface);
                     if (n != "NULL_SYMBOL") {
@@ -409,28 +476,43 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
                 }
                 var def = {sem:{ctx:SYS_CONTEXT,type:SEM_TYPE_STRUCTURE,id:i+1},type:'structure'};
                 if (structures.length>0) def.symbols = structures;
-                LABEL_TABLE[struct_defs[i].children[0].surface] = def;
-            }
-
-            var symbol_defs = d.children[SEM_TYPE_SYMBOL-1].children;
-            var symbols = symbol_defs.length;
-            for (var i=0;i<symbols;i++) {
-                var struct = symbol_defs[i].children[1].surface;
-                LABEL_TABLE[symbol_defs[i].children[0].surface] = {
+                return def;
+            });
+            _doDefs(SEM_TYPE_SYMBOL,function(i,symbol_def){
+                var struct = symbol_def.children[1].surface;
+                return {
                     sem:{ctx:SYS_CONTEXT,type:SEM_TYPE_SYMBOL,id:i+1},
-                    type:'symbol',structure:getSemName(struct)
+                    type:'symbol',
+                    structure:getSemName(struct)
                 };
-            }
+            });
+            _doDefs(SEM_TYPE_PROCESS,function(i,process_def){
+                var def = {
+                    sem:{ctx:SYS_CONTEXT,type:SEM_TYPE_PROCESS,id:i+1},
+                    type:'process'
+//                    intention:symbol_def.children[1].surface;
+                };
+                var signatures = process_def.children[2].children
+                var params = [];
+                for (var j=1;j<signatures.length;j++) {
+                    var n = signatures[j].children[0].surface;
+                    params.push(n);
+                }
+                if (params.length>0) def.params = params;
+
+                return def;
+            });
+
+
             for (var key in LABEL_TABLE) {
                 var i = LABEL_TABLE[key];
                 if (i.type == 'symbol') {SYMBOLS.push(key);}
                 if (i.type == 'structure') {STRUCTURES.push(key);}
+                if (i.type == 'process') {PROCESSES.push(key);}
             }
             _.DEFS = d;
             var evt = new CustomEvent('sysdefsloaded');
-
             window.dispatchEvent(evt);
-
         });
     }
 
@@ -555,9 +637,14 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
     function makeLabelTableElem(key,i) {
         var e = $.create('ul');
         var h = "<ltlabel>"+key+"</ltlabel> <lttype>"+i.type+"</lttype>";
-        if (i.type == "structure") {
+        if (i.type === "structure") {
             if (i.symbols) {
                 h += "<ltsymbols>" + i.symbols.join(",")+ "</ltsymbols>"
+            }
+        }
+        if (i.type == "process") {
+            if (i.params) {
+                h += "<ltparams>" + i.params.join(",")+ "</ltparams>"
             }
         }
         e.innerHTML=h;
@@ -626,7 +713,7 @@ function init() {
         $(this).replaceWith("<input id=\"x\" class=\"awesomplete\">");
         var input = document.getElementById("x");
         new Awesomplete(input, {
-	    list: SYMBOLS,
+	    list: SYMBOLS.concat(PROCESSES),
             minChars: 1
         });
         input.value=v;

@@ -12,17 +12,21 @@
     <script type="text/javascript">
       window.addEventListener('sysdefsloaded', function (e) {
       TE.setLabelTableContainer(TE.$("#label-table"));
-      var te = TE.$(".TE");
-      te.te.insert("shoe size","10.5");
-      te.te.insert("street number","1234");
-      te.te.insert("home location",[83,22.5]);
+      var te_elem = TE.$(".TE");
+      te = te_elem.te;
+      te.insert("shoe size","10.5");
+      te.insert("street number","1234");
+      te.insert("home location",[83,22.5]);
+      var tedefs_elem = TE.$("#defs");
+      tedefs = tedefs_elem.te;
+      tedefs.insertTree(TE.DEFS);
       });
     </script>
     <script src="js/ide.js"></script>
 
   </head>
   <body >
-    <button onclick="$('struct').toggle()">toggle struct visibility</button>
+    <button onclick="te.toggleStructVisibility();">toggle struct visibility</button>
     <div class="column-container">
       <div class="TE column-left">
       </div>
@@ -43,7 +47,9 @@
         <div id="label-table"></div>
       </div>
     </div>
-
+    <button onclick="tedefs.toggleStructVisibility();">toggle struct visibility</button>
+    <div id="defs" class="TE">
+    </div>
 <div id="tree-editor">
 
     <div>def symbol
