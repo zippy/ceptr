@@ -44,17 +44,20 @@ ltsymbols,ltparams {margin-left: 10px;}
   padding: 5px;
 }
 .TE sem {
-  border-radius: .3em;
-  display: inline-block; padding: 3px 3px 1px 3px; margin-left: 5px; background-color: rgba(80,0,130,.1) ;
+  border-radius: .3em; display: inline-block; padding: 3px 3px 1px 3px; margin-left: 5px; background-color: rgba(255,255,255,.2);
 }
+.TE sem[type=   process].type-changed { background-color: seagreen; }
+.TE sem[type=  receptor].type-changed { background-color: gold; }
+.TE sem[type=  protocol].type-changed { background-color: tomato; }
+.TE sem[type=   semtrex].type-changed { background-color: crimson; }
+.TE sem[type=    symbol].type-changed { background-color: blueviolet; }
+.TE sem[type=definition].type-changed { background-color: sienna; }
 
-.TE sem[type="process"] {
-  background-color:rgba(0,100,0,.1);
-}
 
-sem surface {
+.TE sem surface {
   min-width: 20px;
   display: inline-block;
+  background-color: royalblue;
 }
 
 sem surface {[content-editable="true"]}
