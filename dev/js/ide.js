@@ -465,17 +465,10 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         loadTree("sysdefs",function(d){
             CONTEXTS[SYS_CONTEXT] = d;
             _doDefs(SEM_TYPE_STRUCTURE,function(i,struct_def){
-                var sdefs = struct_def.children[1];
-                var structures = [];
-                var symbols = (sdefs.children) ? sdefs.children : sdefs;
-                for (var j=0;j<symbols.length;j++) {
-                    var n = getSemName(symbols[j].surface);
-                    if (n != "NULL_SYMBOL") {
-                        structures.push(n);
-                    }
-                }
-                var def = {sem:{ctx:SYS_CONTEXT,type:SEM_TYPE_STRUCTURE,id:i+1},type:'structure'};
-                if (structures.length>0) def.symbols = structures;
+                var def = {sem:{ctx:SYS_CONTEXT,type:SEM_TYPE_STRUCTURE,id:i+1},
+                           type:'structure',
+                           def:struct_def.children[1]
+                          };
                 return def;
             });
             _doDefs(SEM_TYPE_SYMBOL,function(i,symbol_def){
@@ -636,7 +629,11 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
     }
     function makeLabelTableElem(key,i) {
         var e = $.create('ul');
-        var h = "<ltlabel>"+key+"</ltlabel> <lttype>"+i.type+"</lttype>";
+        e.setAttribute("type",i.type);
+        var h = "<ltlabel>"+key+"</ltlabel>";
+        if (i.type == "symbol") {
+            h += "<ltstructure>" + i.structure+ "</ltstructure>"
+        }
         if (i.type === "structure") {
             if (i.symbols) {
                 h += "<ltsymbols>" + i.symbols.join(",")+ "</ltsymbols>"

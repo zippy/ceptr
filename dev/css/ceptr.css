@@ -21,14 +21,18 @@ body {
 /* -------------------------------- label table ----------------------*/
 #label-table-container {
   border: 1px solid rgba(0,0,0,.3);
-  background-color: rgba(0,80,130,.1);
+//  background-color: rgba(0,80,130,.1);
 }
 #label-table {
   max-height: 700px;
   overflow-y: auto;
 }
 
-lttype::before {content:"type:"}
+#label-table ul[type= structure] {background: rgba(0,100,0,.1)}
+#label-table ul[type= symbol] {background: rgba(100,0,0,.1)}
+#label-table ul[type= process] {background: rgba(0,0,100,.1)}
+
+ltstructure::before {content:":"}
 ltsymbols::before {content:"symbols:"}
 ltparams::before {content:"params:"}
 ltsymbols,ltparams {margin-left: 10px;}
@@ -58,6 +62,8 @@ ltsymbols,ltparams {margin-left: 10px;}
   min-width: 20px;
   display: inline-block;
   background-color: royalblue;
+  max-width: 400px;
+  overflow: auto;
 }
 
 sem surface {[content-editable="true"]}

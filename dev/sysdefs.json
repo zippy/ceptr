@@ -1,114 +1,156 @@
 {"sem":{ "ctx":0,"type":2,"id":7 },"children":[
    {"sem":{ "ctx":0,"type":2,"id":1 },"children":[
-      {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
-         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":"BIT"},
-         {"sem":{ "ctx":0,"type":2,"id":12 },"surface":{ "ctx":0,"type":2,"id":0 }}]},
-      {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
-         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":"INTEGER"},
-         {"sem":{ "ctx":0,"type":2,"id":12 },"surface":{ "ctx":0,"type":2,"id":0 }}]},
-      {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
-         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":"FLOAT"},
-         {"sem":{ "ctx":0,"type":2,"id":12 },"surface":{ "ctx":0,"type":2,"id":0 }}]},
-      {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
-         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":"CHAR"},
-         {"sem":{ "ctx":0,"type":2,"id":12 },"surface":{ "ctx":0,"type":2,"id":0 }}]},
-      {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
-         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":"CSTRING"},
-         {"sem":{ "ctx":0,"type":2,"id":12 },"surface":{ "ctx":0,"type":2,"id":0 }}]},
-      {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
-         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":"SYMBOL"},
-         {"sem":{ "ctx":0,"type":2,"id":12 },"surface":{ "ctx":0,"type":2,"id":0 }}]},
-      {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
-         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":"ENUM"},
-         {"sem":{ "ctx":0,"type":2,"id":12 },"surface":{ "ctx":0,"type":2,"id":0 }}]},
-      {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
-         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":"TREE_PATH"},
-         {"sem":{ "ctx":0,"type":2,"id":12 },"surface":{ "ctx":0,"type":2,"id":0 }}]},
-      {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
-         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":"XADDR"},
-         {"sem":{ "ctx":0,"type":2,"id":12 },"surface":{ "ctx":0,"type":2,"id":0 }}]},
-      {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
-         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":"LIST"},
-         {"sem":{ "ctx":0,"type":2,"id":12 },"surface":{ "ctx":0,"type":2,"id":0 }}]},
-      {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
-         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":"SURFACE"},
-         {"sem":{ "ctx":0,"type":2,"id":12 },"surface":{ "ctx":0,"type":2,"id":0 }}]},
-      {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
-         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":"TREE"},
-         {"sem":{ "ctx":0,"type":2,"id":12 },"surface":{ "ctx":0,"type":2,"id":0 }}]},
-      {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
-         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":"RECEPTOR"},
-         {"sem":{ "ctx":0,"type":2,"id":12 },"surface":{ "ctx":0,"type":2,"id":0 }}]},
-      {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
-         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":"PROCESS"},
-         {"sem":{ "ctx":0,"type":2,"id":12 },"surface":{ "ctx":0,"type":2,"id":0 }}]},
-      {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
-         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":"STRUCTURE"},
-         {"sem":{ "ctx":0,"type":2,"id":12 },"surface":{ "ctx":0,"type":2,"id":0 }}]},
-      {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
-         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":"SCAPE"},
-         {"sem":{ "ctx":0,"type":2,"id":12 },"surface":{ "ctx":0,"type":2,"id":0 }}]},
-      {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
-         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":"SEMTREX"},
-         {"sem":{ "ctx":0,"type":2,"id":12 },"surface":{ "ctx":0,"type":2,"id":0 }}]},
-      {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
-         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":"STREAM"},
-         {"sem":{ "ctx":0,"type":2,"id":12 },"surface":{ "ctx":0,"type":2,"id":0 }}]},
-      {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
-         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":"UUID"},
-         {"sem":{ "ctx":0,"type":2,"id":12 },"surface":{ "ctx":0,"type":2,"id":0 }}]},
-      {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
-         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":"STRUCTURE_DEF"},
-         {"sem":{ "ctx":0,"type":2,"id":12 },"surface":{ "ctx":0,"type":2,"id":0 }}]},
-      {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
-         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":"SIGNATURE_PART"},
+      {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":15 },"surface":"BIT"},
+         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":0 }}]},
+      {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":15 },"surface":"INTEGER"},
+         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":0 }}]},
+      {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":15 },"surface":"FLOAT"},
+         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":0 }}]},
+      {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":15 },"surface":"CHAR"},
+         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":0 }}]},
+      {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":15 },"surface":"CSTRING"},
+         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":0 }}]},
+      {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":15 },"surface":"SYMBOL"},
+         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":0 }}]},
+      {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":15 },"surface":"ENUM"},
+         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":0 }}]},
+      {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":15 },"surface":"TREE_PATH"},
+         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":0 }}]},
+      {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":15 },"surface":"XADDR"},
+         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":0 }}]},
+      {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":15 },"surface":"LIST"},
+         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":0 }}]},
+      {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":15 },"surface":"SURFACE"},
+         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":0 }}]},
+      {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":15 },"surface":"TREE"},
+         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":0 }}]},
+      {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":15 },"surface":"RECEPTOR"},
+         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":0 }}]},
+      {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":15 },"surface":"PROCESS"},
+         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":0 }}]},
+      {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":15 },"surface":"STRUCTURE"},
+         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":0 }}]},
+      {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":15 },"surface":"SCAPE"},
+         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":0 }}]},
+      {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":15 },"surface":"SEMTREX"},
+         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":0 }}]},
+      {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":15 },"surface":"STREAM"},
+         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":0 }}]},
+      {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":15 },"surface":"UUID"},
+         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":0 }}]},
+      {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":15 },"surface":"ZERO_OR_MORE_OF_LIST_OF_STRUCTURES_AND_SYMBOLS_AND_PROCESSES_AND_ZERO_OR_MORE_OF_PROTOCOOLS_AND_ZERO_OR_MORE_OF_SCAPES_AND_ZERO_OR_MORE_OF_ASPECTS"},
+         {"sem":{ "ctx":0,"type":2,"id":12 },"children":[
+            {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
+               {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":1 }},
+               {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":2 }},
+               {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":3 }},
+               {"sem":{ "ctx":0,"type":2,"id":12 },"children":[
+                  {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":4 }}]},
+               {"sem":{ "ctx":0,"type":2,"id":12 },"children":[
+                  {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":5 }}]},
+               {"sem":{ "ctx":0,"type":2,"id":12 },"children":[
+                  {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":6 }}]}]}]}]},
+      {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":15 },"surface":"STRUCTURE_DEF"},
          {"sem":{ "ctx":0,"type":2,"id":10 },"children":[
-            {"sem":{ "ctx":0,"type":2,"id":12 },"surface":{ "ctx":0,"type":2,"id":72 }},
-            {"sem":{ "ctx":0,"type":2,"id":12 },"surface":{ "ctx":0,"type":2,"id":73 }}]}]},
-      {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
-         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":"SEQUENCE"},
-         {"sem":{ "ctx":0,"type":2,"id":12 },"surface":{ "ctx":0,"type":2,"id":87 }}]},
-      {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
-         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":"PROTOCOL_STEP"},
-         {"sem":{ "ctx":0,"type":2,"id":10 },"children":[
-            {"sem":{ "ctx":0,"type":2,"id":12 },"surface":{ "ctx":0,"type":2,"id":66 }},
-            {"sem":{ "ctx":0,"type":2,"id":12 },"surface":{ "ctx":0,"type":2,"id":82 }},
-            {"sem":{ "ctx":0,"type":2,"id":12 },"surface":{ "ctx":0,"type":2,"id":67 }}]}]},
-      {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
-         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":"PROTOCOL"},
-         {"sem":{ "ctx":0,"type":2,"id":10 },"children":[
-            {"sem":{ "ctx":0,"type":2,"id":12 },"surface":{ "ctx":0,"type":2,"id":88 }},
-            {"sem":{ "ctx":0,"type":2,"id":12 },"surface":{ "ctx":0,"type":2,"id":86 }}]}]},
-      {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
-         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":"DATE"},
-         {"sem":{ "ctx":0,"type":2,"id":10 },"children":[
-            {"sem":{ "ctx":0,"type":2,"id":12 },"surface":{ "ctx":0,"type":2,"id":106 }},
-            {"sem":{ "ctx":0,"type":2,"id":12 },"surface":{ "ctx":0,"type":2,"id":107 }},
-            {"sem":{ "ctx":0,"type":2,"id":12 },"surface":{ "ctx":0,"type":2,"id":108 }}]}]},
-      {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
-         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":"TIME"},
-         {"sem":{ "ctx":0,"type":2,"id":10 },"children":[
-            {"sem":{ "ctx":0,"type":2,"id":12 },"surface":{ "ctx":0,"type":2,"id":109 }},
-            {"sem":{ "ctx":0,"type":2,"id":12 },"surface":{ "ctx":0,"type":2,"id":110 }},
-            {"sem":{ "ctx":0,"type":2,"id":12 },"surface":{ "ctx":0,"type":2,"id":111 }}]}]},
-      {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
-         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":"TIMESTAMP"},
-         {"sem":{ "ctx":0,"type":2,"id":10 },"children":[
-            {"sem":{ "ctx":0,"type":2,"id":12 },"surface":{ "ctx":0,"type":2,"id":112 }},
-            {"sem":{ "ctx":0,"type":2,"id":12 },"surface":{ "ctx":0,"type":2,"id":113 }}]}]},
-      {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
-         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":"REDUCTION_ERROR"},
-         {"sem":{ "ctx":0,"type":2,"id":12 },"surface":{ "ctx":0,"type":2,"id":119 }}]},
-      {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
-         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":"TREE_DELTA"},
-         {"sem":{ "ctx":0,"type":2,"id":10 },"children":[
-            {"sem":{ "ctx":0,"type":2,"id":12 },"surface":{ "ctx":0,"type":2,"id":155 }},
-            {"sem":{ "ctx":0,"type":2,"id":12 },"surface":{ "ctx":0,"type":2,"id":156 }},
-            {"sem":{ "ctx":0,"type":2,"id":12 },"surface":{ "ctx":0,"type":2,"id":157 }}]}]}]},
+            {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":8 }},
+            {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":8 }},
+            {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":8 }},
+            {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":8 }},
+            {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":8 }},
+            {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":8 }},
+            {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":8 }}]}]},
+      {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":15 },"surface":"TUPLE_OF_STRUCTURE_LABEL_AND_STRUCTURE_DEF"},
+         {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
+            {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":15 }},
+            {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":1,"id":21 }}]}]},
+      {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":15 },"surface":"ZERO_OR_MORE_OF_STRUCTURE_DEFINITION"},
+         {"sem":{ "ctx":0,"type":2,"id":12 },"children":[
+            {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":16 }}]}]},
+      {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":15 },"surface":"ONE_OR_MORE_OF_STRUCTURE_DEF"},
+         {"sem":{ "ctx":0,"type":2,"id":13 },"children":[
+            {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":1,"id":21 }}]}]},
+      {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":15 },"surface":"ONE_OR_MORE_OF_STRUCTURE_SYMBOL"},
+         {"sem":{ "ctx":0,"type":2,"id":13 },"children":[
+            {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":8 }}]}]},
+      {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":15 },"surface":"PAIR_OF_STRUCTURE_DEF"},
+         {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
+            {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":1,"id":21 }},
+            {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":1,"id":21 }}]}]},
+      {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":15 },"surface":"SIGNATURE_PART"},
+         {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
+            {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":72 }},
+            {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":73 }}]}]},
+      {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":15 },"surface":"SEQUENCE"},
+         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":87 }}]},
+      {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":15 },"surface":"PROTOCOL_STEP"},
+         {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
+            {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":66 }},
+            {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":82 }},
+            {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":67 }}]}]},
+      {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":15 },"surface":"PROTOCOL"},
+         {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
+            {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":88 }},
+            {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":86 }}]}]},
+      {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":15 },"surface":"DATE"},
+         {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
+            {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":106 }},
+            {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":107 }},
+            {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":108 }}]}]},
+      {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":15 },"surface":"TIME"},
+         {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
+            {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":109 }},
+            {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":110 }},
+            {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":111 }}]}]},
+      {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":15 },"surface":"TIMESTAMP"},
+         {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
+            {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":112 }},
+            {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":113 }}]}]},
+      {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":15 },"surface":"REDUCTION_ERROR"},
+         {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":119 }}]},
+      {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":15 },"surface":"TREE_DELTA"},
+         {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
+            {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":155 }},
+            {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":156 }},
+            {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":157 }}]}]}]},
    {"sem":{ "ctx":0,"type":2,"id":2 },"children":[
       {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
          {"sem":{ "ctx":0,"type":2,"id":19 },"surface":"STRUCTURES"},
-         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":10 }}]},
+         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":23 }}]},
       {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
          {"sem":{ "ctx":0,"type":2,"id":19 },"surface":"SYMBOLS"},
          {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":10 }}]},
@@ -126,34 +168,34 @@
          {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":10 }}]},
       {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
          {"sem":{ "ctx":0,"type":2,"id":19 },"surface":"DEFINITIONS"},
-         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":10 }}]},
+         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":20 }}]},
+      {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":19 },"surface":"STRUCTURE_SYMBOL"},
+         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":6 }}]},
+      {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":19 },"surface":"STRUCTURE_SEQUENCE"},
+         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":24 }}]},
+      {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":19 },"surface":"STRUCTURE_SYMBOL_SET"},
+         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":25 }}]},
+      {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":19 },"surface":"STRUCTURE_OR"},
+         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":26 }}]},
+      {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":19 },"surface":"STRUCTURE_ZERO_OR_MORE"},
+         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":21 }}]},
+      {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":19 },"surface":"STRUCTURE_ONE_OR_MORE"},
+         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":21 }}]},
+      {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":19 },"surface":"STRUCTURE_ZERO_OR_ONE"},
+         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":21 }}]},
       {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
          {"sem":{ "ctx":0,"type":2,"id":19 },"surface":"STRUCTURE_LABEL"},
          {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":5 }}]},
       {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
          {"sem":{ "ctx":0,"type":2,"id":19 },"surface":"STRUCTURE_DEFINITION"},
-         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":10 }}]},
-      {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
-         {"sem":{ "ctx":0,"type":2,"id":19 },"surface":"STRUCTURE_SEQUENCE"},
-         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":10 }}]},
-      {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
-         {"sem":{ "ctx":0,"type":2,"id":19 },"surface":"STRUCTURE_SYMBOL_SET"},
-         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":10 }}]},
-      {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
-         {"sem":{ "ctx":0,"type":2,"id":19 },"surface":"STRUCTURE_SYMBOL"},
-         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":6 }}]},
-      {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
-         {"sem":{ "ctx":0,"type":2,"id":19 },"surface":"STRUCTURE_OR"},
-         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":10 }}]},
-      {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
-         {"sem":{ "ctx":0,"type":2,"id":19 },"surface":"STRUCTURE_ZERO_OR_MORE"},
-         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":20 }}]},
-      {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
-         {"sem":{ "ctx":0,"type":2,"id":19 },"surface":"STRUCTURE_ONE_OR_MORE"},
-         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":20 }}]},
-      {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
-         {"sem":{ "ctx":0,"type":2,"id":19 },"surface":"STRUCTURE_ZERO_OR_ONE"},
-         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":20 }}]},
+         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":22 }}]},
       {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
          {"sem":{ "ctx":0,"type":2,"id":19 },"surface":"SYMBOL_DECLARATION"},
          {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":12 }}]},
@@ -333,13 +375,13 @@
          {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":6 }}]},
       {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
          {"sem":{ "ctx":0,"type":2,"id":19 },"surface":"SIGNATURE_PROCESS"},
-         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":15 }}]},
+         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":6 }}]},
       {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
          {"sem":{ "ctx":0,"type":2,"id":19 },"surface":"INPUT_SIGNATURE"},
-         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":21 }}]},
+         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":27 }}]},
       {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
          {"sem":{ "ctx":0,"type":2,"id":19 },"surface":"OUTPUT_SIGNATURE"},
-         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":21 }}]},
+         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":27 }}]},
       {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
          {"sem":{ "ctx":0,"type":2,"id":19 },"surface":"PROCESS_SIGNATURE"},
          {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":10 }}]},
@@ -441,13 +483,13 @@
          {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":2 }}]},
       {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
          {"sem":{ "ctx":0,"type":2,"id":19 },"surface":"TODAY"},
-         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":25 }}]},
+         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":31 }}]},
       {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
          {"sem":{ "ctx":0,"type":2,"id":19 },"surface":"NOW"},
-         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":26 }}]},
+         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":32 }}]},
       {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
          {"sem":{ "ctx":0,"type":2,"id":19 },"surface":"TICK"},
-         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":27 }}]},
+         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":33 }}]},
       {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
          {"sem":{ "ctx":0,"type":2,"id":19 },"surface":"CLOCK_TELL_TIME"},
          {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":0 }}]},
@@ -465,28 +507,28 @@
          {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":8 }}]},
       {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
          {"sem":{ "ctx":0,"type":2,"id":19 },"surface":"ZERO_DIVIDE_ERR"},
-         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":28 }}]},
+         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":34 }}]},
       {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
          {"sem":{ "ctx":0,"type":2,"id":19 },"surface":"TOO_FEW_PARAMS_ERR"},
-         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":28 }}]},
+         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":34 }}]},
       {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
          {"sem":{ "ctx":0,"type":2,"id":19 },"surface":"TOO_MANY_PARAMS_ERR"},
-         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":28 }}]},
+         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":34 }}]},
       {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
          {"sem":{ "ctx":0,"type":2,"id":19 },"surface":"SIGNATURE_MISMATCH_ERR"},
-         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":28 }}]},
+         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":34 }}]},
       {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
          {"sem":{ "ctx":0,"type":2,"id":19 },"surface":"NOT_A_PROCESS_ERR"},
-         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":28 }}]},
+         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":34 }}]},
       {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
          {"sem":{ "ctx":0,"type":2,"id":19 },"surface":"NOT_IN_SIGNAL_CONTEXT_ERR"},
-         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":28 }}]},
+         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":34 }}]},
       {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
          {"sem":{ "ctx":0,"type":2,"id":19 },"surface":"INCOMPATIBLE_TYPE_ERR"},
-         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":28 }}]},
+         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":34 }}]},
       {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
          {"sem":{ "ctx":0,"type":2,"id":19 },"surface":"UNIX_ERRNO_ERR"},
-         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":28 }}]},
+         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":34 }}]},
       {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
          {"sem":{ "ctx":0,"type":2,"id":19 },"surface":"STX_TOKENS"},
          {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":10 }}]},
@@ -579,10 +621,10 @@
          {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":2 }}]},
       {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
          {"sem":{ "ctx":0,"type":2,"id":19 },"surface":"TREE_DELTA_ADD"},
-         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":29 }}]},
+         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":35 }}]},
       {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
          {"sem":{ "ctx":0,"type":2,"id":19 },"surface":"TREE_DELTA_REPLACE"},
-         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":29 }}]}]},
+         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":35 }}]}]},
    {"sem":{ "ctx":0,"type":2,"id":3 },"children":[
       {"sem":{ "ctx":0,"type":2,"id":69 },"children":[
          {"sem":{ "ctx":0,"type":2,"id":70 },"surface":"NOOP"},
