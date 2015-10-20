@@ -44,6 +44,22 @@ void def_sys() {
     G_contexts[SYS_CONTEXT].symbols = malloc(NUM_SYS_SYMBOLS*sizeof(Symbol));
     G_contexts[SYS_CONTEXT].processes = malloc(NUM_SYS_PROCESSES*sizeof(Process));
 
+    G_contexts[TEST_CONTEXT].symbols = malloc(NUM_TEST_SYMBOLS*sizeof(Symbol));
+    G_contexts[LOCAL_CONTEXT].symbols = malloc(NUM_LOCAL_SYMBOLS*sizeof(Symbol));
+
+    for (i=0;i<NUM_SYS_SYMBOLS;i++) {
+        G_contexts[SYS_CONTEXT].symbols[i].id = -1;
+        G_contexts[SYS_CONTEXT].symbols[i].context = SYS_CONTEXT;
+    }
+    for (i=0;i<NUM_LOCAL_SYMBOLS;i++) {
+        G_contexts[LOCAL_CONTEXT].symbols[i].id = -1;
+        G_contexts[LOCAL_CONTEXT].symbols[i].context = LOCAL_CONTEXT;
+    }
+    for (i=0;i<NUM_TEST_SYMBOLS;i++) {
+        G_contexts[TEST_CONTEXT].symbols[i].id = -1;
+        G_contexts[TEST_CONTEXT].symbols[i].context = TEST_CONTEXT;
+    }
+
     // bootstrap the hard-coded definitions that we need to even be able to make
     // definitions
 
@@ -69,9 +85,6 @@ void def_sys() {
     init_defs_tree(&G_contexts[TEST_CONTEXT]);
     init_defs_tree(&G_contexts[LOCAL_CONTEXT]);
 
-    G_contexts[TEST_CONTEXT].symbols = malloc(NUM_TEST_SYMBOLS*sizeof(Symbol));
-    G_contexts[LOCAL_CONTEXT].symbols = malloc(NUM_LOCAL_SYMBOLS*sizeof(Symbol));
-
     base_defs();
 }
 void free_context(ContextStore *cs) {
@@ -88,21 +101,41 @@ void sys_free() {
     }
 }
 
+Context G_ctx;
+char * G_label;
+
 T *sT_(Symbol sym,int num_params,...){
     va_list params;
     T *set = _t_newr(0,sym);
     va_start(params,num_params);
     int i;
+    // if (strcmp("STX_SYMBOL_OR_SYMBOL_SET", G_label) == 0) {raise(SIGINT);}
     for(i=0;i<num_params;i++) {
         T * t = va_arg(params,T *);
         // if it's a SYMBOL_SET we need to just use the symbol type and
         // can throw away the node
         if (semeq(sym,STRUCTURE_SYMBOL_SET)) {
-            _t_news(set,STRUCTURE_SYMBOL,_t_symbol(t));
+            Symbol ss = *(Symbol *)_t_surface(t);
+            if (!is_symbol(ss)) raise_error("only structures allowed in SYMBOL_SET, def of %s",G_label);
+            _t_news(set,STRUCTURE_SYMBOL,ss);
             _t_free(t);
         }
         // otherwise they should all be T *
         else {
+            if (semeq(_t_symbol(t),STRUCTURE_SYMBOL)) {
+                Symbol ss = *(Symbol *)_t_surface(t);
+                if (is_structure(ss)) {
+                    T *st = _t_child(G_contexts[ss.context].defs.structures,ss.id);
+                    if (!st) {
+                        raise_error("Structure used in %s definition is undefined!",G_label);
+                    }
+                    else {
+                        _t_free(t);
+                        t = _t_clone(_t_child(st,2));
+                    }
+                }
+                else if (ss.id == -1) {raise_error("Symbol used in %s definition is undefined!",G_label);}
+            }
             _t_add(set,t);
         }
     }
