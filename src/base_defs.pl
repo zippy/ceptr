@@ -62,6 +62,7 @@ sub makeName {
     $n =~ s/sT_SEQ\(2,([^,]+),\g1/PAIR_OF_$1/g;
     $n =~ s/sT_SEQ\(2,([^)]+)\)/TUPLE_OF_$1/g;
     $n =~ s/sT_SEQ\([0-9]+,/LIST_OF_/g;
+    $n =~ s/sT_OR/LOGICAL_OR_OF_/g;
     $n =~ s/sT_STAR/ZERO_OR_MORE_OF_/g;
     $n =~ s/sT_PLUS/ONE_OR_MORE_OF_/g;
     $n =~ s/sT_QMARK/ZERO_OR_ONE_OF_/g;
@@ -78,12 +79,16 @@ sub buildNumParams {
 sub convertStrucDef {
 #    my @tokens = split /([,\(\)\{\}\|\?\+\*])/,shift;
     my $x= shift;
+    #for a simple structure without optionality we'll just use sT with params
     if (!($x=~/[\{\}\(\)\+\*?|]/)) {
         $x = &buildNumParams($x);
     }
     else {
         $x =~ s/([a-zA-Z0-9_]+)/sT_SYM<$1>/g;
-        while ($x=~/[,()\{\}|?+*]/) {
+        while ($x=~/\|/) {
+            $x =~ s/\|\[([^|\]]+)\|([^\]]+)\]/sT_OR<$1;$2>/;
+        }
+        while ($x=~/[,()\{\}?+*]/) {
             $x =~ s/\*([a-zA-Z0-9_<>;]+)/sT_STAR<$1>/g;
             $x =~ s/\+([a-zA-Z0-9_<>;]+)/sT_PLUS<$1>/g;
             $x =~ s/\?([a-zA-Z0-9_<>;]+)/sT_QMRK<$1>/g;
@@ -128,8 +133,8 @@ while (my $def = <$fh>) {
                     if (!$anon{$sname}) {
                         $anon{$sname} = 1;
                         &addDef("Structure",$context,$sname,$sdef);
-                        $structure = $sname;
                     }
+                    $structure = $sname;
                 }
                 &addDef($type,$context,$name,$structure);
             }

@@ -23,34 +23,20 @@ Structure: UUID,NULL_SYMBOL;
 
 Declare: STRUCTURES,SYMBOLS,PROCESSES,PROTOCOOLS,SCAPES,ASPECTS;
 Symbol: DEFINITIONS,[*(STRUCTURES,SYMBOLS,PROCESSES,*PROTOCOOLS,*SCAPES,*ASPECTS)];
-#Symbol: DEFINITIONS,LIST;
 
 Declare: STRUCTURE_SYMBOL,STRUCTURE_SEQUENCE,STRUCTURE_SYMBOL_SET,STRUCTURE_OR,STRUCTURE_ZERO_OR_MORE,STRUCTURE_ONE_OR_MORE,STRUCTURE_ZERO_OR_ONE;
 Structure: STRUCTURE_DEF,{STRUCTURE_SYMBOL,STRUCTURE_SEQUENCE,STRUCTURE_SYMBOL_SET,STRUCTURE_OR,STRUCTURE_ZERO_OR_MORE,STRUCTURE_ONE_OR_MORE,STRUCTURE_ZERO_OR_ONE};
-#Structure: STRUCTURE_DEF,NULL_SYMBOL;
-
 Symbol: STRUCTURE_LABEL,CSTRING;
-
 Symbol: STRUCTURE_DEFINITION,[(STRUCTURE_LABEL,STRUCTURE_DEF)];
-#Symbol: STRUCTURE_DEFINITION,LIST;
-
 Symbol: STRUCTURES,[*STRUCTURE_DEFINITION];
-#Symbol: STRUCTURES,LIST;
-
 Symbol: STRUCTURE_SEQUENCE,[+STRUCTURE_DEF];
-#Symbol: STRUCTURE_SEQUENCE,LIST;
-
 Symbol: STRUCTURE_SYMBOL_SET,[+STRUCTURE_SYMBOL];
-#Symbol: STRUCTURE_SYMBOL_SET,LIST;
-
 Symbol: STRUCTURE_SYMBOL,SYMBOL;
-
 Symbol: STRUCTURE_OR,[(STRUCTURE_DEF,STRUCTURE_DEF)];
-#Symbol: STRUCTURE_OR,LIST;
-
 Symbol: STRUCTURE_ZERO_OR_MORE,STRUCTURE_DEF;
 Symbol: STRUCTURE_ONE_OR_MORE,STRUCTURE_DEF;
 Symbol: STRUCTURE_ZERO_OR_ONE,STRUCTURE_DEF;
+
 Symbol: SYMBOL_STRUCTURE,STRUCTURE;
 Symbol: SYMBOL_LABEL,CSTRING;
 Symbol: SYMBOL_DECLARATION,[(SYMBOL_LABEL,SYMBOL_STRUCTURE)];
@@ -58,13 +44,14 @@ Symbol: SYMBOLS,[*SYMBOL_DECLARATION];
 
 Symbol: BOOLEAN,BIT;
 Symbol: SEMTREX_MATCH_PATH,TREE_PATH;       Path to symbol matched by semtrex
-Symbol: SEMTREX_SYMBOL_LITERAL,TREE;        This system symbol matches on the semantic type.
-Symbol: SEMTREX_SYMBOL_LITERAL_NOT,TREE;    Match any symbol or value of the node except.
-Symbol: SEMTREX_SYMBOL_SET,LIST;
 Symbol: SEMTREX_SYMBOL,SYMBOL;              Symbols in the literal set
-Symbol: SEMTREX_SEQUENCE,LIST;              Match on a sequence of child nodes which are any valid semtrex's.  Ex: comma separated nodes
+Symbol: SEMTREX_SYMBOL_SET,[+SEMTREX_SYMBOL];
+Structure: STX_SYMBOL_OR_SYMBOL_SET,|[SEMTREX_SYMBOL|SEMTREX_SYMBOL_SET];
+Symbol: SEMTREX_SYMBOL_LITERAL,STX_SYMBOL_OR_SYMBOL_SET;        This system symbol matches on the semantic type.
+Symbol: SEMTREX_SYMBOL_LITERAL_NOT,STX_SYMBOL_OR_SYMBOL_SET;    Match any symbol or value of the node except.
+Symbol: SEMTREX_SEQUENCE,[+SEMTREX];        Match on a sequence of child nodes which are any valid semtrex's.  Ex: comma separated nodes
 #///@todo, the structure really should be something like SEMTREX_PAIR
-Symbol: SEMTREX_OR,SEMTREX;                 Logical OR between two Semtrex expressions.      Ex: |
+Symbol: SEMTREX_OR,[(SEMTREX,SEMTREX)];     Logical OR between two Semtrex expressions.      Ex: |
 Symbol: SEMTREX_NOT,SEMTREX;                Logical ~ between of a Semtrex expressions.      Ex: ~
 Symbol: SEMTREX_SYMBOL_ANY,NULL_STRUCTURE;  Match any symbol or value of the node.           Ex: .
 Symbol: SEMTREX_ZERO_OR_MORE,SEMTREX;       Requires one child Semtrex and matches on zero or more of that Semtrex.  Ex: /0/TestSemtrex*
@@ -83,22 +70,23 @@ Symbol: SEMTREX_MATCH_SYMBOL,SYMBOL;
 Symbol: SEMTREX_MATCH_SIBLINGS_COUNT,INTEGER;  In the FSA_ID, it's the length of the match
 
 Symbol: ASCII_CHAR,CHAR;
-Symbol: ASCII_CHARS,LIST;
+Symbol: ASCII_CHARS,[+ASCII_CHAR];
 
 Symbol: RECEPTOR_XADDR,XADDR;               An Xaddr that points to a receptor
-Symbol: FLUX,LIST;                          tree to hold all incoming and in process signals on the various aspects
+Symbol: ASPECT,INTEGER;
+Symbol: FLUX,LIST;                           tree to hold all incoming and in process signals on the various aspects
 Symbol: SCAPE_SPEC,TREE;
 Symbol: ASPECTS,LIST;
 Symbol: ASPECT_DEF,TREE;
 Symbol: ASPECT_TYPE,BIT;
 Symbol: CARRIER,SYMBOL;
-Symbol: ASPECT,INTEGER;
-Symbol: SIGNALS,LIST;                       list of signals on an aspect in the flux
 Symbol: SIGNAL,TREE;                        a signal on the flux.  It's first child is the contents of the signal
-Symbol: ENVELOPE,LIST;
+Symbol: SIGNALS,[*SIGNAL];                  list of signals on an aspect in the flux
 Symbol: BODY,TREE;
 Symbol: SIGNAL_UUID,UUID;
-Symbol: PENDING_SIGNALS,LIST;               list of signals pending to be sent by the VM_HOST
+Symbol: RECEPTOR_ADDRESS,INTEGER;
+Symbol: ENVELOPE,[(RECEPTOR_ADDRESS,RECEPTOR_ADDRESS,ASPECT,CARRIER,SIGNAL_UUID,BODY)];
+Symbol: PENDING_SIGNALS,[*SIGNAL];               list of signals pending to be sent by the VM_HOST
 Symbol: PENDING_RESPONSES,LIST;
 Symbol: PENDING_RESPONSE,LIST;
 Symbol: RESPONSE_CODE_PATH,TREE_PATH;
@@ -109,10 +97,11 @@ Symbol: LISTENER,SYMBOL;                    surface of the listener is the carri
 Symbol: EXPECTATION,SEMTREX;                expectation is a semtrex (thus has one child which is the first part of the semtrex)
 Symbol: ACTION,PROCESS;                     code tree_ID, which specifies the action to perform when an expectation's semtrex matches
 Symbol: INTERPOLATE_SYMBOL,SYMBOL;          a place holder to indicate which symbol to insert into this part of the tree
-Symbol: PROCESSES,LIST;
-Symbol: PROCESS_CODING,TREE;                PROCESS_NAME,PROCESS_INTENTION,@PROCESS,PROCESS_SIGNATURE*
 Symbol: PROCESS_NAME,CSTRING;
 Symbol: PROCESS_INTENTION,CSTRING;
+Declare: PROCESS_SIGNATURE;
+Symbol: PROCESS_CODING,[(PROCESS_NAME,PROCESS_INTENTION,PROCESS,PROCESS_SIGNATURE)];
+Symbol: PROCESSES,[*PROCESS_CODING];
 
 Symbol: SIGNATURE_LABEL,CSTRING;
 Symbol: SIGNATURE_TYPE,STRUCTURE;           the semantic type that would match i.e. either PROCESS/STRUCTURE or SYMBOL
@@ -170,7 +159,6 @@ Structure: TIMESTAMP,TODAY,NOW;
 Symbol: TICK,TIMESTAMP;
 Symbol: CLOCK_TELL_TIME,NULL_STRUCTURE;
 
-Symbol: RECEPTOR_ADDRESS,INTEGER;
 Symbol: RECEPTOR_STATE,TREE;
 Symbol: RECEPTOR_ELAPSED_TIME,INTEGER;
 

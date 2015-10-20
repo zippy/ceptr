@@ -110,6 +110,7 @@ T *sT_(Symbol sym,int num_params,...){
     return set;
 }
 
+// helper to create the Structure struct to return for the sTs macro
 Structure sTD(Context c,T *structures) {
     Structure s = {c,SEM_TYPE_STRUCTURE,_t_children(structures)};
     return s;
