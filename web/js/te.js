@@ -180,6 +180,8 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         }
     }
 
+    // given a semantic element label, create a semtree of that
+    // type according to its structure.
     function setupSem(label_val,sem_elem,lock,parent_sem) {
         // for now we are getting the def from the label table,
         // we should probably get it from DEFS?  maybe not because it's slower
@@ -251,6 +253,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         }
     }
 
+    // given a sem tree element return the sem id of the the parent node
     function getParentSem(sem_elem) {
         var parent_sem_id = sem_elem.parentNode.parentNode.getAttribute("semid");
         var parent_sem;
@@ -264,6 +267,9 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         return parent_sem;
     }
 
+    // given the label element of a semtree element this pop up an awesomeplete
+    // selectlist, and if the label changed, rebuild the internals of the semantic
+    // element according to the new symbol type.
     function editLabel(label,select) {
         var v = label.innerHTML;
         $.hide(label);
@@ -573,13 +579,13 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         elem.innerHTML="";
         _.lt_elem = elem;
 
+        //@todo clean these up, currently just here as some local examples...
         newSymbol("shoe size",LABEL_TABLE["FLOAT"].sem);
         newSymbol("street number",LABEL_TABLE["INTEGER"].sem);
         var lat = newSymbol("latitude",LABEL_TABLE["FLOAT"].sem);
         var lon = newSymbol("longitude",LABEL_TABLE["FLOAT"].sem);
         var ll = newStructure("latlong",[lat,lon]);
         newSymbol("home location",ll);
-
 
         buildLabelTable(elem);
 
@@ -727,89 +733,3 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
     return _;
 
 }());
-
-
-function init() {
-
-    $("#tree-editor").on('click','#x',function(e){x=false;});
-    $("#tree-editor").on('blur','#x',function(e){
-        x=true;
-        var v = $(this).val();
-        $(".awesomplete").replaceWith("<label>"+v+"</label>");
-    });
-    var x = false;
-    $(window).bind('keypress', function(e) {
-        if (!x) return;
-        var code = (e.keyCode ? e.keyCode : e.which);
-        if(code == 13) {
-            alert("Fish");
-            //Enter keycode
-            //Do something
-        }
-        else {
-            $("#caret").before(String.fromCharCode(code));
-            event.preventDefault();
-        }
-    }).on('keydown', function(e) {
-        if (!x) return;
-        if (e.keyCode==8) {
-            event.preventDefault();
-            caretElemBefore().remove();
-        }
-        else if (e.keyCode==37) {
-            event.preventDefault();
-            x = caretElemBefore().remove();
-            $("#caret").after($(x));
-        }
-        else if (e.keyCode==39) {
-            event.preventDefault();
-            x = caretElemAfter().remove();
-            $("#caret").before($(x));
-        }
-            //alert(e.keyCode);
-    });
-    $("#tree-editor").on('click','label',function(e){
-        var v = this.innerHTML;
-        $(this).replaceWith("<input id=\"x\" class=\"awesomplete\">");
-        var input = document.getElementById("x");
-        new Awesomplete(input, {
-	    list: SYMBOLS.concat(PROCESSES),
-            minChars: 1
-        });
-        input.value=v;
-        input.focus();
-        input.select();
-        x=false;
-    });
-}
-
-
-function caretElemAfter() {
-    return $("#caret").map(function(){return this.nextSibling;});
-}
-function caretElemBefore() {
-    return $("#caret").map(function(){return this.previousSibling;});
-}
-
-// from https://gist.github.com/shadybones/9816763
-function createClass(name,rules){
-    var style = document.createElement('style');
-    style.type = 'text/css';
-    document.getElementsByTagName('head')[0].appendChild(style);
-    if(!(style.sheet||{}).insertRule)
-        (style.styleSheet || style.sheet).addRule(name, rules);
-    else
-        style.sheet.insertRule(name+"{"+rules+"}",0);
-}
-
-function applyClass(name,element,doRemove){
-    if(typeof element.valueOf() == "string"){
-        element = document.getElementById(element);
-    }
-    if(!element) return;
-    if(doRemove){
-        element.className = element.className.replace(new RegExp("\\b" + name + "\\b","g"));
-    }else{
-        element.className = element.className + " " + name;
-    }
-}
