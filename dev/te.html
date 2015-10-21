@@ -22,7 +22,7 @@
       tedefs.insertTree(TE.DEFS);
       });
     </script>
-    <script src="js/ide.js"></script>
+    <script src="js/te.js"></script>
 
   </head>
   <body >
@@ -35,7 +35,7 @@
         <button id="newsem">+</button>
         <div id="newsem-form" style="display:none">
           <select id="newsem-type"><option>symbol</option><option>structure</option></select>
-          <div id="newsem-sym">Label:<input id="newsem-symlabel"> Structure:<input id="newsem-symstruct"></div>
+          <div id="newsem-sym"></div>
           <div id="newsem-struct" style="display:none">
             Label:<input id="newsem-structlabel">
             Symbols:<input id="newsem-structsym1"><button id="newsem-morestructsym">+</button>
@@ -50,77 +50,5 @@
     <button onclick="tedefs.toggleStructVisibility();">toggle struct visibility</button>
     <div id="defs" class="TE">
     </div>
-<div id="tree-editor">
-
-    <div>def symbol
-      <div>label = "Home Location"</div>
-      <div>latlong</div>
-    </div>
-    <p>&nbsp;</p>
-
-    <div class="ctx-sys typ-proc" symbol-id="0.3.33">def structure
-      <div>label = "latlong"</div>
-      <div>surface
-        <div>lat</div>
-        <div>long</div>
-      </div>
-      <div>process
-        <div>distance
-          <div>complicated sphere wrapping formula</div>
-        </div>
-      </div>
-    </div>
-<div>EXPECTATION <br/>
- <div>On HTTP_Request</div>
- <div>Expect .*/HOST{value="geekgene.com"}</div>
- <div>Do
- <div class="if">xx<span id="caret" class="blinking-cursor" contenteditable=true>|</span>yy
-  <div class="expr">expr2
-   <div>=
-    <div>x</div>
-    <div>10</div>
-   </div>
-  </div>
-  <div>then
-   <div>
- 	<div class="if">
- 	 <div>expr
- 	  <div>=
- 	   <div>x</div>
- 	   <div>10</div>
- 	  </div>
- 	 </div>
- 	 <div>then
- 	  <div>some proc tree</div>
- 	 </div>
- 	 <div>else
- 	  <div>some other proc tree</div>
- 	 </div>
- 	</div>
-   </div>
-  </div>
-  <div>else
-   <div>
-    <div>if
- 	 <div>expr
- 	  <div>=
- 	   <div>x</div>
- 	   <div>10</div>
- 	  </div>
- 	 </div>
- 	 <div>then
- 	  <div>some proc tree</div>
- 	 </div>
- 	 <div>else
- 	  <div>some other proc tree</div>
- 	 </div>
- 	</div>
-   </div>
-  </div>
- </div>
- </div>
- <div>With SessionInitParams <div>Instance = 48</div></div>
-</div>
-</div>
   </body>
 </html>
