@@ -78,17 +78,19 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         });
         $.bind(this.elem, {
             "click": function(e) {
-                if (e.target.nodeName == "LABEL" && e.target.getAttribute("locked") != "true")  {
-                    editLabel.call(me,e.target,true);
-                    e.preventDefault();
+                if (e.target.nodeName == "LABEL")  {
+                    if (e.target.getAttribute("locked") != "true") {
+                        editLabel.call(me,e.target,true);
+                        e.preventDefault();
+                    }
                 }
-                else if (e.target.nodeName == "SURFACE") {
+                else if ((e.target.nodeName == "SURFACE")||(e.target.nodeName == "INPUT")) {
                     // don't prevent default because we want the click to go through to
                     // the editable content of the surface
                     me.hideCaret();
                 }
                 else {
-                    // add some way to move the caret to the current clicked point
+                    // @todo add some way to move the caret to the current clicked point
                     me.showCaret();
                     e.preventDefault();
                 }
@@ -131,6 +133,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
                     $('surface',n).innerHTML = surface;
                 }
             }
+            return n;
         },
         // insert a full semantic tree at the current cursor position
         insertTree: function(tree) {
@@ -584,10 +587,32 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
             "click": function(e) {
                 $.hide($('#newsem'));
                 $.show($('#newsem-form'));
-                new Awesomplete($('#newsem-symstruct'), {
-	            list: STRUCTURES,
-                    minChars: 1
+
+                // create a SYMBOL_DECLARATION tree
+                var elem = $.create('div',{inside:$('#newsem-sym'),className:'TE'});
+                var x = new _(elem);
+                var sem = x.insert('SYMBOL_DECLARATION');
+                $('label',sem).setAttribute("locked","true");
+                var s = $('.TE [semid="0.2.17"] surface',elem);
+                s.removeAttribute("contenteditable");
+                //var i = $.create('input',{inside:s});
+                // @todo for now manually use an awesomeplete/select list as the widget for the surface
+                // when we implement widgets (#51) this should just work automatically
+
+                var sel = $.create('select',{inside:s});
+                STRUCTURES.forEach(function(s) {
+                    var o = $.create('option',{inside:sel});
+                    o.innerHTML=s.length >30 ? s.substring(0,30)+"...":s;
+                    o.setAttribute("value",s);
                 });
+                // for some reason the awesomeplete didn't work
+                // new Awesomplete(i, {
+	        //     list: STRUCTURES,
+                //     minChars: 1
+                // });
+
+                //@todo, covert this to work similarly for defining structures where
+                // it just works because you can just edit a STRUCTURE_DEFINITION element
                 new Awesomplete($('#newsem-structsym1'), {
 	            list: SYMBOLS,
                     minChars: 1
@@ -598,6 +623,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
             "click": function(e) {
                 $.show($('#newsem'));
                 $.hide($('#newsem-form'));
+                $('#newsem-sym .TE').remove();
             }
         });
         $.bind($('#newsem-morestructsym'), {
@@ -607,6 +633,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
                 while (ss=$('#newsem-structsym'+i)) i++;
                 var e = $.create('input', {id:'newsem-structsym'+i});
                 var b = $('#newsem-morestructsym');
+                debugger;
                 new Awesomplete(b.parentNode.insertBefore(e,b),{list:SYMBOLS,minChars:1});
             }
         });
@@ -615,15 +642,13 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
             "click": function(e) {
                 switch($('#newsem-type').value) {
                 case "symbol":
-                    var s = $('#newsem-symstruct').value;
+                    var s = $('#newsem-sym [semid="0.2.17"] surface select').value;
                     if (!LABEL_TABLE[s]) {
                         alert("unknown structure:"+s);
                         return;
                     }
-                    var label = $('#newsem-symlabel').value;
+                    var label = $('#newsem-sym [semid="0.2.18"] surface').innerHTML;
                     newSymbol(label,LABEL_TABLE[s].sem);
-                    $('#newsem-symlabel').value = "";
-                    $('#newsem-symstruct').value = "";
                     break;
                 case "structure":
                     var symbols = [];
@@ -646,6 +671,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
                     $('#newsem-structsym1').value="";
                     break;
                 }
+                $('#newsem-sym .TE').remove();
                 $.show($('#newsem'));
                 $.hide($('#newsem-form'));
 
