@@ -78,17 +78,19 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         });
         $.bind(this.elem, {
             "click": function(e) {
-                if (e.target.nodeName == "LABEL" && e.target.getAttribute("locked") != "true")  {
-                    editLabel.call(me,e.target,true);
-                    e.preventDefault();
+                if (e.target.nodeName == "LABEL")  {
+                    if (e.target.getAttribute("locked") != "true") {
+                        editLabel.call(me,e.target,true);
+                        e.preventDefault();
+                    }
                 }
-                else if (e.target.nodeName == "SURFACE") {
+                else if ((e.target.nodeName == "SURFACE")||(e.target.nodeName == "INPUT")) {
                     // don't prevent default because we want the click to go through to
                     // the editable content of the surface
                     me.hideCaret();
                 }
                 else {
-                    // add some way to move the caret to the current clicked point
+                    // @todo add some way to move the caret to the current clicked point
                     me.showCaret();
                     e.preventDefault();
                 }
@@ -131,6 +133,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
                     $('surface',n).innerHTML = surface;
                 }
             }
+            return n;
         },
         // insert a full semantic tree at the current cursor position
         insertTree: function(tree) {
@@ -177,6 +180,8 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         }
     }
 
+    // given a semantic element label, create a semtree of that
+    // type according to its structure.
     function setupSem(label_val,sem_elem,lock,parent_sem) {
         // for now we are getting the def from the label table,
         // we should probably get it from DEFS?  maybe not because it's slower
@@ -248,6 +253,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         }
     }
 
+    // given a sem tree element return the sem id of the the parent node
     function getParentSem(sem_elem) {
         var parent_sem_id = sem_elem.parentNode.parentNode.getAttribute("semid");
         var parent_sem;
@@ -261,6 +267,9 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         return parent_sem;
     }
 
+    // given the label element of a semtree element this pop up an awesomeplete
+    // selectlist, and if the label changed, rebuild the internals of the semantic
+    // element according to the new symbol type.
     function editLabel(label,select) {
         var v = label.innerHTML;
         $.hide(label);
@@ -570,6 +579,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         elem.innerHTML="";
         _.lt_elem = elem;
 
+        //@todo clean these up, currently just here as some local examples...
         newSymbol("shoe size",LABEL_TABLE["FLOAT"].sem);
         newSymbol("street number",LABEL_TABLE["INTEGER"].sem);
         var lat = newSymbol("latitude",LABEL_TABLE["FLOAT"].sem);
@@ -577,17 +587,38 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         var ll = newStructure("latlong",[lat,lon]);
         newSymbol("home location",ll);
 
-
         buildLabelTable(elem);
 
         $.bind($('#newsem'), {
             "click": function(e) {
                 $.hide($('#newsem'));
                 $.show($('#newsem-form'));
-                new Awesomplete($('#newsem-symstruct'), {
-	            list: STRUCTURES,
-                    minChars: 1
+
+                // create a SYMBOL_DECLARATION tree
+                var elem = $.create('div',{inside:$('#newsem-sym'),className:'TE'});
+                var x = new _(elem);
+                var sem = x.insert('SYMBOL_DECLARATION');
+                $('label',sem).setAttribute("locked","true");
+                var s = $('.TE [semid="0.2.17"] surface',elem);
+                s.removeAttribute("contenteditable");
+                //var i = $.create('input',{inside:s});
+                // @todo for now manually use an awesomeplete/select list as the widget for the surface
+                // when we implement widgets (#51) this should just work automatically
+
+                var sel = $.create('select',{inside:s});
+                STRUCTURES.forEach(function(s) {
+                    var o = $.create('option',{inside:sel});
+                    o.innerHTML=s.length >30 ? s.substring(0,30)+"...":s;
+                    o.setAttribute("value",s);
                 });
+                // for some reason the awesomeplete didn't work
+                // new Awesomplete(i, {
+	        //     list: STRUCTURES,
+                //     minChars: 1
+                // });
+
+                //@todo, covert this to work similarly for defining structures where
+                // it just works because you can just edit a STRUCTURE_DEFINITION element
                 new Awesomplete($('#newsem-structsym1'), {
 	            list: SYMBOLS,
                     minChars: 1
@@ -598,6 +629,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
             "click": function(e) {
                 $.show($('#newsem'));
                 $.hide($('#newsem-form'));
+                $('#newsem-sym .TE').remove();
             }
         });
         $.bind($('#newsem-morestructsym'), {
@@ -607,6 +639,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
                 while (ss=$('#newsem-structsym'+i)) i++;
                 var e = $.create('input', {id:'newsem-structsym'+i});
                 var b = $('#newsem-morestructsym');
+                debugger;
                 new Awesomplete(b.parentNode.insertBefore(e,b),{list:SYMBOLS,minChars:1});
             }
         });
@@ -615,15 +648,13 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
             "click": function(e) {
                 switch($('#newsem-type').value) {
                 case "symbol":
-                    var s = $('#newsem-symstruct').value;
+                    var s = $('#newsem-sym [semid="0.2.17"] surface select').value;
                     if (!LABEL_TABLE[s]) {
                         alert("unknown structure:"+s);
                         return;
                     }
-                    var label = $('#newsem-symlabel').value;
+                    var label = $('#newsem-sym [semid="0.2.18"] surface').innerHTML;
                     newSymbol(label,LABEL_TABLE[s].sem);
-                    $('#newsem-symlabel').value = "";
-                    $('#newsem-symstruct').value = "";
                     break;
                 case "structure":
                     var symbols = [];
@@ -646,6 +677,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
                     $('#newsem-structsym1').value="";
                     break;
                 }
+                $('#newsem-sym .TE').remove();
                 $.show($('#newsem'));
                 $.hide($('#newsem-form'));
 
@@ -701,89 +733,3 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
     return _;
 
 }());
-
-
-function init() {
-
-    $("#tree-editor").on('click','#x',function(e){x=false;});
-    $("#tree-editor").on('blur','#x',function(e){
-        x=true;
-        var v = $(this).val();
-        $(".awesomplete").replaceWith("<label>"+v+"</label>");
-    });
-    var x = false;
-    $(window).bind('keypress', function(e) {
-        if (!x) return;
-        var code = (e.keyCode ? e.keyCode : e.which);
-        if(code == 13) {
-            alert("Fish");
-            //Enter keycode
-            //Do something
-        }
-        else {
-            $("#caret").before(String.fromCharCode(code));
-            event.preventDefault();
-        }
-    }).on('keydown', function(e) {
-        if (!x) return;
-        if (e.keyCode==8) {
-            event.preventDefault();
-            caretElemBefore().remove();
-        }
-        else if (e.keyCode==37) {
-            event.preventDefault();
-            x = caretElemBefore().remove();
-            $("#caret").after($(x));
-        }
-        else if (e.keyCode==39) {
-            event.preventDefault();
-            x = caretElemAfter().remove();
-            $("#caret").before($(x));
-        }
-            //alert(e.keyCode);
-    });
-    $("#tree-editor").on('click','label',function(e){
-        var v = this.innerHTML;
-        $(this).replaceWith("<input id=\"x\" class=\"awesomplete\">");
-        var input = document.getElementById("x");
-        new Awesomplete(input, {
-	    list: SYMBOLS.concat(PROCESSES),
-            minChars: 1
-        });
-        input.value=v;
-        input.focus();
-        input.select();
-        x=false;
-    });
-}
-
-
-function caretElemAfter() {
-    return $("#caret").map(function(){return this.nextSibling;});
-}
-function caretElemBefore() {
-    return $("#caret").map(function(){return this.previousSibling;});
-}
-
-// from https://gist.github.com/shadybones/9816763
-function createClass(name,rules){
-    var style = document.createElement('style');
-    style.type = 'text/css';
-    document.getElementsByTagName('head')[0].appendChild(style);
-    if(!(style.sheet||{}).insertRule)
-        (style.styleSheet || style.sheet).addRule(name, rules);
-    else
-        style.sheet.insertRule(name+"{"+rules+"}",0);
-}
-
-function applyClass(name,element,doRemove){
-    if(typeof element.valueOf() == "string"){
-        element = document.getElementById(element);
-    }
-    if(!element) return;
-    if(doRemove){
-        element.className = element.className.replace(new RegExp("\\b" + name + "\\b","g"));
-    }else{
-        element.className = element.className + " " + name;
-    }
-}
