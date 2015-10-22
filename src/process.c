@@ -1201,16 +1201,30 @@ T *__p_make_signature(char *output_label,Symbol output_type,SemanticID output_se
     va_start(params,output_sem);
     char *label;
     Symbol type,value;
+    int optional;
     T *signature = _t_new_root(PROCESS_SIGNATURE);
     T *o = _t_newr(signature,OUTPUT_SIGNATURE);
     _t_new_str(o,SIGNATURE_LABEL,output_label);
-    _t_news(o,output_type,output_sem);
+    if (semeq(output_type,SIGNATURE_PASSTHRU)) {
+        _t_newr(o,output_type);
+    }
+    else {
+        _t_news(o,output_type,output_sem);
+    }
     while (label = va_arg(params,char*)) {
         type = va_arg(params,Symbol);
+        if (semeq(type,SIGNATURE_OPTIONAL)) {
+            optional = 1;
+            type = va_arg(params,Symbol);
+        }
+        else {
+            optional = 0;
+        }
         value = va_arg(params,Symbol);
         T *i = _t_newr(signature,INPUT_SIGNATURE);
         _t_new_str(i,SIGNATURE_LABEL,label);
         _t_news(i,type,value);
+        if (optional) _t_newr(i,SIGNATURE_OPTIONAL);
     }
     va_end(params);
     return signature;

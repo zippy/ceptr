@@ -65,7 +65,7 @@ sub makeName {
     $n =~ s/sT_OR/LOGICAL_OR_OF_/g;
     $n =~ s/sT_STAR/ZERO_OR_MORE_OF_/g;
     $n =~ s/sT_PLUS/ONE_OR_MORE_OF_/g;
-    $n =~ s/sT_QMARK/ZERO_OR_ONE_OF_/g;
+    $n =~ s/sT_QMRK/ZERO_OR_ONE_OF_/g;
     $n =~ s/[()]//g;
     return &andify($n);
 }

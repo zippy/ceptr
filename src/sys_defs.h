@@ -44,7 +44,7 @@ char * G_label;
 #define sT_SEQ(...) sT_(STRUCTURE_SEQUENCE,__VA_ARGS__)
 #define sT_STAR(...) sT_(STRUCTURE_ZERO_OR_MORE,1,__VA_ARGS__)
 #define sT_PLUS(...) sT_(STRUCTURE_ONE_OR_MORE,1,__VA_ARGS__)
-#define sT_QMARK(...) sT_(STRUCTURE_ZERO_OR_ONE,1,__VA_ARGS__)
+#define sT_QMRK(...) sT_(STRUCTURE_ZERO_OR_ONE,1,__VA_ARGS__)
 #define sT_SYM(sym) _t_news(0,STRUCTURE_SYMBOL,sym)
 #define sT_OR(x,y) sT_(STRUCTURE_OR,2,x,y)
 
