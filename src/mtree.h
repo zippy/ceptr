@@ -43,8 +43,8 @@ H _m_new_root(Symbol s);
 H _m_newr(H parent,Symbol s);
 H _m_add(H parent,H h);
 H _m_detatch(H h);
-void * _m_serialize(M *m,size_t *l);
-H _m_unserialize(void *);
+S * _m_serialize(M *m);
+H _m_unserialize(S *);
 
 void _m_walk(H h,void (*walkfn)(H ,N *,void *,MwalkState *,Maddr),void *user_data);
 

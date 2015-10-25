@@ -500,8 +500,13 @@ void testReceptorSerialize() {
 
     _r_serialize(r,&surface,&length);
 
-    spec_is_long_equal(length,250);
-    spec_is_long_equal(*(size_t *)surface,250);
+    // serialized receptor is to stacked serialized mtree, first one for the tree
+    // and then one for the instances
+    S *s1 = (S *)surface;
+    S *s2 = (S *)(surface + s1->total_size);
+    spec_is_long_equal(length,s1->total_size+s2->total_size);
+    //    spec_is_long_equal(length,250);
+    //    spec_is_long_equal(*(size_t *)surface,250);
 
     Receptor *r1 = _r_unserialize(surface);
 
@@ -511,9 +516,14 @@ void testReceptorSerialize() {
     __t_dump(&r1->defs,r1->root,0,buf1);
     spec_is_str_equal(buf1,buf);
 
+    // check flux
+    spec_is_sem_equal(_t_symbol(r1->flux),FLUX);
+    spec_is_sem_equal(_t_symbol(r1->pending_signals),PENDING_SIGNALS);
+    spec_is_sem_equal(_t_symbol(r1->pending_responses),PENDING_RESPONSES);
+
     // check that the unserialized receptor has the labels loaded into the label table
     int *path = labelGet(&r1->table,"latitude");
-    int p[] = {2,1,TREE_PATH_TERMINATOR};
+    int p[] = {1,2,1,TREE_PATH_TERMINATOR};
     spec_is_path_equal(path,p);
     spec_is_sem_equal(_r_get_symbol_by_label(r1,"latitude"),lat);
     spec_is_sem_equal(_r_get_structure_by_label(r1,"latlong"),latlong);
@@ -760,7 +770,7 @@ void testReceptor() {
     testReceptorDefMatch();
     testReceptorProtocol();
     testReceptorInstanceNew();
-    //    testReceptorSerialize();
+    testReceptorSerialize();
     testReceptorNums();
     testReceptorEdgeStream();
     testReceptorClock();

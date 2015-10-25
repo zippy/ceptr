@@ -23,7 +23,9 @@ T *_a_get_instance(Instances *i,Xaddr x);
 Xaddr _a_new_instance(Instances *i,T *t);
 void _a_free_instances(Instances *i);
 
+S *__a_serialize_instances(Instances *i);
 void _a_serialize_instances(Instances *i,char *file);
+void __a_unserialize_instances(Instances *instances,S *s);
 void _a_unserialize_instances(Instances *i,char *file);
 
 VMHost *G_vm;

@@ -591,13 +591,12 @@ H _m_detatch(H oh) {
  * @param[inout] sizeP pointer to size_t value to return length of serialized data
  * @returns pointer to newly malloced buffer of serialized tree data
  */
-void * _m_serialize(M *m,size_t *sizeP) {
+S *_m_serialize(M *m) {
 
     uint32_t s_size = SERIALIZED_HEADER_SIZE(m->levels);
     uint32_t levels_size = 0;
     size_t blob_size = 0;
 
-    Mlevel j;
     Mindex i;
     H h = {m,{0,0}};
 
@@ -613,10 +612,11 @@ void * _m_serialize(M *m,size_t *sizeP) {
     }
     }
 
-
-    S *s = malloc(*sizeP = s_size+levels_size+blob_size);
-    memset(s,0,*sizeP);
+    size_t total_size = s_size+levels_size+blob_size;
+    S *s = malloc(total_size);
+    memset(s,0,total_size);
     s->magic = m->magic;
+    s->total_size = total_size;
     s->levels = m->levels;
     s->blob_offset = s_size+levels_size;
 
@@ -663,13 +663,13 @@ void * _m_serialize(M *m,size_t *sizeP) {
  * @returns handle to new mtree
  *
  */
-H _m_unserialize(void *s) {
+H _m_unserialize(S *s) {
     M *m = malloc(sizeof(M));
-    m->magic = ((M *)s)->magic;
-    m->levels = ((M *)s)->levels;
+    m->magic = s->magic;
+    m->levels = s->levels;
     m->lP = malloc(sizeof(L)*m->levels);
     H h = {m,{0,0}};
-    void *blob = ((S *)s)->blob_offset + (void *)s;
+    void *blob = s->blob_offset + (void *)s;
 
     uint32_t s_size = SERIALIZED_HEADER_SIZE(m->levels);
     for(h.a.l=0; h.a.l<m->levels; h.a.l++) {

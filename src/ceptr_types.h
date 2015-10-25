@@ -60,6 +60,7 @@ typedef struct M {
 
 typedef struct S {
     Mmagic magic;
+    size_t total_size;
     Mlevel levels;
     uint32_t blob_offset;
     uint32_t level_offsets[];

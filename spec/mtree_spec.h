@@ -190,8 +190,7 @@ void testCreateTreeNodesM(){
     spec_is_equal(h121.a.i,1);  //should be last because it was appended by add
 
 
-    size_t size;
-    S *s = _m_serialize(h.m,&size);
+    S *s = _m_serialize(h.m);
 
     //    writeFile("web/test1.cmt",s,size);
 
@@ -271,10 +270,11 @@ void testTreeConvert() {
 void testMTreeSerialize() {
     T *t = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
     H h = _m_new_from_t(t);
-    size_t size;
-    S *s = _m_serialize(h.m,&size);
+
+    S *s = _m_serialize(h.m);
 
     spec_is_equal(s->magic,h.m->magic);
+    spec_is_equal(s->total_size,929);
     spec_is_equal(s->levels,h.m->levels);
     spec_is_equal(s->level_offsets[0],0);
     L *l = GET_LEVEL(h);
@@ -291,27 +291,27 @@ void testMTreeSerialize() {
 
     spec_is_str_equal(buf1,buf);
 
-    writeFile("web/test.cmt",s,size);
+    writeFile("web/test.cmt",s,s->total_size);
     _m_free(h);free(s);
 
     h = _m_new_from_t(test_HTTP_defs.structures);
-    s = _m_serialize(h.m,&size);
-    writeFile("web/httpstructures.cmt",s,size);
+    s = _m_serialize(h.m);
+    writeFile("web/httpstructures.cmt",s,s->total_size);
     _m_free(h);free(s);
 
     h = _m_new_from_t(test_HTTP_defs.symbols);
-    s = _m_serialize(h.m,&size);
-    writeFile("web/httpsymbols.cmt",s,size);
+    s = _m_serialize(h.m);
+    writeFile("web/httpsymbols.cmt",s,s->total_size);
     _m_free(h);free(s);
 
     h = _m_new_from_t(G_contexts[SYS_CONTEXT].defs.structures);
-    s = _m_serialize(h.m,&size);
-    writeFile("web/sysstructures.cmt",s,size);
+    s = _m_serialize(h.m);
+    writeFile("web/sysstructures.cmt",s,s->total_size);
     _m_free(h);free(s);
 
     h = _m_new_from_t(G_contexts[SYS_CONTEXT].defs.symbols);
-    s = _m_serialize(h.m,&size);
-    writeFile("web/syssymbols.cmt",s,size);
+    s = _m_serialize(h.m);
+    writeFile("web/syssymbols.cmt",s,s->total_size);
     _m_free(h);free(s);
 
     _m_free(h1);

@@ -131,11 +131,7 @@ void _a_free_instances(Instances *i) {
     }
 }
 
-// the quick and dirty serialization builds a new tree
-// which we will just serialize as an mtree.
-// is is very inefficient @fixme
-void _a_serialize_instances(Instances *i,char *file) {
-
+S *__a_serialize_instances(Instances *i) {
     T *t = _t_new_root(PARAMS);
     instances_elem *cur,*tmp;
     HASH_ITER(hh, *i, cur, tmp) {
@@ -146,9 +142,18 @@ void _a_serialize_instances(Instances *i,char *file) {
             _t_add(sym,_t_clone(curi->instance));
         }
     }
-    size_t size;
     H h = _m_new_from_t(t);
-    S *s = _m_serialize(h.m,&size);
+    S *s = _m_serialize(h.m);
+    _m_free(h);_t_free(t);
+    return s;
+}
+
+// the quick and dirty serialization builds a new tree
+// which we will just serialize as an mtree.
+// is is very inefficient @fixme
+void _a_serialize_instances(Instances *i,char *file) {
+
+    S *s = __a_serialize_instances(i);
 
     FILE *ofp;
 
@@ -157,11 +162,25 @@ void _a_serialize_instances(Instances *i,char *file) {
         raise_error("Can't open output file %s!\n",file);
     }
     else {
-        fwrite(&size, 1,sizeof(size), ofp);
-        fwrite(s,1,size,ofp);
+        fwrite(s,1,s->total_size,ofp);
         fclose(ofp);
     }
-    _m_free(h);free(s);_t_free(t);
+    free(s);
+}
+
+void __a_unserialize_instances(Instances *instances,S *s) {
+    H h = _m_unserialize(s);
+    T *t = _t_new_from_m(h);
+
+    _m_free(h);
+    int j,c = _t_children(t);
+    for(j=1;j<=c;j++) {
+        T *u = _t_child(t,j);
+        while(_t_children(u)) {
+            _a_new_instance(instances, _t_detach_by_idx(u,1));
+        }
+    }
+    _t_free(t);
 }
 
 void _a_unserialize_instances(Instances *instances,char *file) {
@@ -172,23 +191,19 @@ void _a_unserialize_instances(Instances *instances,char *file) {
         raise_error("Can't open input file %s!\n",file);
     }
     else {
-        size_t size;
-        fread(&size, 1,sizeof(size), ofp);
-        S *s = malloc(size);
-        fread(s,1,size,ofp);
+        Mmagic magic;
+        fread(&magic, 1,sizeof(magic), ofp);
+        // @todo check magic value
+        size_t total_size;
+        fread(&magic, 1,sizeof(magic), ofp);
+        S *s = malloc(total_size);
+        s->magic = magic;
+        s->total_size = total_size;
+        size_t read_size = total_size-sizeof(Mmagic)-sizeof(total_size);
+        fread(&s->levels,1,read_size,ofp);
         fclose(ofp);
-        H h = _m_unserialize(s);
-        T *t = _t_new_from_m(h);
+        __a_unserialize_instances(instances,s);
         free(s);
-        _m_free(h);
-        int j,c = _t_children(t);
-        for(j=1;j<=c;j++) {
-            T *u = _t_child(t,j);
-            while(_t_children(u)) {
-                _a_new_instance(instances, _t_detach_by_idx(u,1));
-            }
-        }
-        _t_free(t);
     }
 }
 

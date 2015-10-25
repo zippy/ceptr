@@ -14,6 +14,7 @@
 #include "process.h"
 #include "accumulator.h"
 #include "debug.h"
+#include "mtree.h"
 #include <stdarg.h>
 #include <time.h>
 #include <unistd.h>
@@ -380,10 +381,21 @@ TreeHash _r_hash(Receptor *r,Xaddr t) {
  * @snippet spec/receptor_spec.h testReceptorSerialize
  */
 void _r_serialize(Receptor *r,void **surfaceP,size_t *lengthP) {
-    size_t buf_size = 10000;
-    *surfaceP  = malloc(buf_size);
-    *lengthP = __t_serialize(&r->defs,r->root,surfaceP,sizeof(size_t),buf_size,0);
-    *(size_t *)(*surfaceP) = *lengthP;
+    /* size_t buf_size = 10000; */
+    /* *surfaceP  = malloc(buf_size); */
+    /* *lengthP = __t_serialize(&r->defs,r->root,surfaceP,sizeof(size_t),buf_size,0); */
+    /* *(size_t *)(*surfaceP) = *lengthP; */
+
+    H h = _m_new_from_t(r->root);
+    S *s = _m_serialize(h.m);
+
+    S *is = __a_serialize_instances(&r->instances);
+    s = (S *)realloc(s,s->total_size+is->total_size);
+    memcpy(((void *)s)+s->total_size,is,is->total_size);
+
+    *lengthP = s->total_size+is->total_size;
+    *surfaceP = (void *)s;
+    free(is);
 }
 
 /**
@@ -395,21 +407,40 @@ void _r_serialize(Receptor *r,void **surfaceP,size_t *lengthP) {
  * @returns Receptor
  */
 Receptor * _r_unserialize(void *surface) {
-    size_t length = *(size_t *)surface;
-    Receptor *r = _r_new(*(Symbol *)(surface+sizeof(size_t)));
-    surface += sizeof(size_t);
-    T *t =  _t_unserialize(&r->defs,&surface,&length,0);
-    _t_free(r->root);
-    r->root = t;
-    //@todo fix defs!!
-    r->defs.structures = _t_child(t,1);
-    r->defs.symbols = _t_child(t,2);
-    r->defs.processes = _t_child(t,3);
-    r->flux = _t_child(t,2);
 
-    T *defs = _t_child(r->root,1);
+    S *s = (S *)surface;
+    H h = _m_unserialize(s);
+    Receptor *r = malloc(sizeof(Receptor));
+    r->table = NULL;
+    r->instances = NULL;
+    r->q = _p_newq(r);
+    r->state = Alive;  //@todo, check if this is true on unserialize
+
+    T *t = r->root = _t_new_from_m(h);
+    _m_free(h);
+
+    T *defs = _t_child(t,1);
+    r->defs.structures = _t_child(defs,1);
+    r->defs.symbols = _t_child(defs,2);
+    r->defs.processes = _t_child(defs,3);
+    r->defs.protocols = _t_child(defs,4);
+    r->defs.scapes = _t_child(defs,5);
+    r->flux = _t_child(t,3);
+    r->pending_signals = _t_child(t,5);
+    r->pending_responses = _t_child(t,6);
+
+    /* size_t length = *(size_t *)surface; */
+    /* Receptor *r = _r_new(*(Symbol *)(surface+sizeof(size_t))); */
+    /* surface += sizeof(size_t); */
+    /* T *t =  _t_unserialize(&r->defs,&surface,&length,0); */
+    /* _t_free(r->root); */
+    /* r->root = t; */
+
     DO_KIDS(defs,__r_set_labels(r,_t_child(defs,i),i));
 
+    // move to the instances
+    s = (S *) (surface + s->total_size);
+    __a_unserialize_instances(&r->instances,(S *)s);
     return r;
 }
 
