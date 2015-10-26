@@ -22,30 +22,41 @@
 Xaddr G_null_xaddr  = {0,0};
 /*****************  create and destroy receptors */
 
-
-Receptor *__r_new(Symbol s,T *defs,T *aspects) {
+/* set up the c structures for a receptor from a semantic tree */
+Receptor * __r_init(T *t) {
     Receptor *r = malloc(sizeof(Receptor));
-    r->root = _t_new_root(s);
-    _t_add(r->root,defs);
+    r->root = t;
+    r->table = NULL;
+    r->instances = NULL;
+    r->q = _p_newq(r);
+    r->state = Alive;  //@todo, check if this is true on unserialize
+
+    T *defs = _t_child(t,1);
     r->defs.structures = _t_child(defs,1);
     r->defs.symbols = _t_child(defs,2);
     r->defs.processes = _t_child(defs,3);
     r->defs.protocols = _t_child(defs,4);
     r->defs.scapes = _t_child(defs,5);
-    _t_add(r->root,aspects);
-    r->flux = _t_newr(r->root,FLUX);
-    T *a = _t_newi(r->flux,ASPECT,DEFAULT_ASPECT);
+    r->flux = _t_child(t,3);
+    r->pending_signals = _t_child(t,5);
+    r->pending_responses = _t_child(t,6);
+    return r;
+}
+
+Receptor *__r_new(Symbol s,T *defs,T *aspects) {
+    T *t = _t_new_root(s);
+    Receptor *r = malloc(sizeof(Receptor));
+    _t_add(t,defs);
+    _t_add(t,aspects);
+    T *f = _t_newr(t,FLUX);
+    T *a = _t_newi(f,ASPECT,DEFAULT_ASPECT);
     _t_newr(a,LISTENERS);
     _t_newr(a,SIGNALS);
-    _t_newr(r->root,RECEPTOR_STATE);
-    r->pending_signals = _t_newr(r->root,PENDING_SIGNALS);
-    r->pending_responses = _t_newr(r->root,PENDING_RESPONSES);
+    _t_newr(t,RECEPTOR_STATE);
+    _t_newr(t,PENDING_SIGNALS);
+    _t_newr(t,PENDING_RESPONSES);
 
-    r->table = NULL;
-    r->instances = NULL;
-    r->q = _p_newq(r);
-    r->state = Alive;
-    return r;
+    return __r_init(t);
 }
 
 /**
@@ -410,24 +421,11 @@ Receptor * _r_unserialize(void *surface) {
 
     S *s = (S *)surface;
     H h = _m_unserialize(s);
-    Receptor *r = malloc(sizeof(Receptor));
-    r->table = NULL;
-    r->instances = NULL;
-    r->q = _p_newq(r);
-    r->state = Alive;  //@todo, check if this is true on unserialize
 
-    T *t = r->root = _t_new_from_m(h);
+    T *t = _t_new_from_m(h);
     _m_free(h);
 
-    T *defs = _t_child(t,1);
-    r->defs.structures = _t_child(defs,1);
-    r->defs.symbols = _t_child(defs,2);
-    r->defs.processes = _t_child(defs,3);
-    r->defs.protocols = _t_child(defs,4);
-    r->defs.scapes = _t_child(defs,5);
-    r->flux = _t_child(t,3);
-    r->pending_signals = _t_child(t,5);
-    r->pending_responses = _t_child(t,6);
+    Receptor *r = __r_init(t);
 
     /* size_t length = *(size_t *)surface; */
     /* Receptor *r = _r_new(*(Symbol *)(surface+sizeof(size_t))); */
@@ -435,7 +433,7 @@ Receptor * _r_unserialize(void *surface) {
     /* T *t =  _t_unserialize(&r->defs,&surface,&length,0); */
     /* _t_free(r->root); */
     /* r->root = t; */
-
+    T *defs = _t_child(t,1);
     DO_KIDS(defs,__r_set_labels(r,_t_child(defs,i),i));
 
     // move to the instances
