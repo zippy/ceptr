@@ -26,7 +26,10 @@ typedef struct MwalkState {
     } user;
 } MwalkState;
 
-H _m_new(H parent,Symbol symbol,void *surface,size_t size);
+H __m_new(H parent,Symbol symbol,void *surface,size_t size,uint32_t flags);
+#define _m_new(parent,symbol,surface,size) __m_new(parent,symbol,surface,size,0)
+#define _m_newt(parent,symbol,h) __m_new(parent,symbol,&(h),sizeof(H),TFLAG_SURFACE_IS_TREE)
+
 H _m_newi(H h,Symbol symbol,int surface);
 H _m_new_from_t(T *t);
 T *_t_new_from_m(H h);

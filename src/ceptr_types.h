@@ -97,7 +97,7 @@ typedef struct Tcontents {
 } Tcontents;
 
 typedef struct Tcontext {
-    int flags;
+    uint32_t flags;
 } Tcontext;
 
 /**

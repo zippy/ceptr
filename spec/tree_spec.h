@@ -134,7 +134,12 @@ void testTreeOrthogonal() {
     T *o = _t_newt(t,TEST_TREE_SYMBOL,t2);
 
     spec_is_str_equal(t2s(t),"(TEST_INT_SYMBOL:1234 (TEST_TREE_SYMBOL:{(TEST_INT_SYMBOL2:99)}))");
+
+    T *tc = _t_clone(t);
+    spec_is_str_equal(t2s(tc),"(TEST_INT_SYMBOL:1234 (TEST_TREE_SYMBOL:{(TEST_INT_SYMBOL2:99)}))");
+
     _t_free(t);
+    _t_free(tc);
 }
 
 void testTreeRealloc() {

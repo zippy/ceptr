@@ -214,6 +214,34 @@ void testCreateTreeNodesM(){
     _m_free(h);
 }
 
+void testMTreeOrthogonal() {
+    H h = _m_new(null_H,TEST_STR_SYMBOL,"hello",6);
+    H h1 = _m_newi(null_H,TEST_INT_SYMBOL,314);
+    H o = _m_newt(h,TEST_TREE_SYMBOL,h1);
+
+    T *t = _t_new_from_m(h);
+
+    spec_is_str_equal(t2s(t),"(TEST_STR_SYMBOL:hello (TEST_TREE_SYMBOL:{(TEST_INT_SYMBOL:314)}))");
+    _t_free(t);
+    _m_free(h);
+}
+
+void testMTreeReceptor() {
+    Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
+    T *t = _t_newi(0,TEST_INT_SYMBOL,0);
+    T *tr = _t_new_receptor(t,TEST_RECEPTOR_SYMBOL,r);
+    H hr = _m_new_from_t(t);
+
+    T *t2 = _t_new_from_m(hr);
+    spec_is_ptr_equal(_t_surface(tr),r);
+
+    spec_is_str_equal(t2s(t2),"(TEST_INT_SYMBOL:0 (TEST_RECEPTOR_SYMBOL:{(TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))}))");
+
+    _t_free(t);
+    _t_free(t2);
+    _m_free(hr);
+}
+
 
 void testMTreeWalk() {
     //! [testMTreeWalk]
@@ -323,6 +351,8 @@ void testMTreeSerialize() {
 void testMTree() {
     _setup_HTTPDefs();
     testCreateTreeNodesM();
+    testMTreeOrthogonal();
+    testMTreeReceptor();
     testMTreeWalk();
     testTreeConvert();
     testMTreeSerialize();

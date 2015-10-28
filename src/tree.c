@@ -144,6 +144,20 @@ T *_t_newr(T *parent,Symbol symbol) {
     return _t_new(parent,symbol,0,0);
 }
 
+/* create tree node whose surface is a specially allocated c structure,
+   i.e. a receptor, scape, or stream, these nodes get cloned as references
+   so the c-structure isn't double freed
+ */
+T *__t_new_special(T *parent,Symbol symbol,void *s,int flag,int is_run_node) {
+    T *t = malloc(is_run_node ? sizeof(rT) : sizeof(T));
+    t->contents.surface = s;
+    t->contents.size = sizeof(void *);
+    __t_init(t,parent,symbol);
+    t->context.flags |= flag;
+    if (is_run_node) t->context.flags |= TFLAG_RUN_NODE;
+    return t;
+}
+
 /**
  * Create a new tree node with a receptor as it's surface
  *
@@ -160,19 +174,7 @@ T *_t_newr(T *parent,Symbol symbol) {
  * @snippet spec/tree_spec.h testTreeNewReceptor
  */
 T *_t_new_receptor(T *parent,Symbol symbol,Receptor *r) {
-    T *t = _t_newt(parent,symbol,(T *)r);
-    t->context.flags |= TFLAG_SURFACE_IS_TREE+TFLAG_SURFACE_IS_RECEPTOR;
-    return t;
-}
-
-/* create special tree node type */
-T *__t_new_special(T *parent,Symbol symbol,void *s,size_t size,int flag,int is_run_node) {
-    T *t = malloc(is_run_node ? sizeof(rT) : sizeof(T));
-    t->contents.surface = s;
-    t->contents.size = size;
-    __t_init(t,parent,symbol);
-    t->context.flags |= flag;
-    if (is_run_node) t->context.flags |= TFLAG_RUN_NODE;
+    T *t = __t_new_special(parent,symbol,r,TFLAG_SURFACE_IS_TREE+TFLAG_SURFACE_IS_RECEPTOR,0);
     return t;
 }
 
@@ -190,7 +192,7 @@ T *__t_new_special(T *parent,Symbol symbol,void *s,size_t size,int flag,int is_r
  * @snippet spec/tree_spec.h testTreeScape
  */
 T *_t_new_scape(T *parent,Symbol symbol,Scape *s) {
-    return __t_new_special(parent,symbol,s,sizeof(Scape),TFLAG_SURFACE_IS_SCAPE,0);
+    return __t_new_special(parent,symbol,s,TFLAG_SURFACE_IS_SCAPE,0);
 }
 
 /**
@@ -207,7 +209,7 @@ T *_t_new_scape(T *parent,Symbol symbol,Scape *s) {
  * @snippet spec/tree_spec.h testTreeStream
  */
 T *_t_new_stream(T *parent,Symbol symbol,Stream *s) {
-    return __t_new_special(parent,symbol,s,sizeof(Stream),TFLAG_SURFACE_IS_STREAM+TFLAG_REFERENCE,0);
+    return __t_new_special(parent,symbol,s,TFLAG_SURFACE_IS_STREAM+TFLAG_REFERENCE,0);
 }
 
 /**
@@ -440,19 +442,21 @@ void __t_free_children(T *t) {
 // free everything except the node itself
 void __t_free(T *t) {
     __t_free_children(t);
-    if (t->context.flags & TFLAG_ALLOCATED)
-        free(t->contents.surface);
-    else if (t->context.flags & TFLAG_SURFACE_IS_TREE) {
-        if (t->context.flags & TFLAG_SURFACE_IS_RECEPTOR)
-            _r_free((Receptor *)t->contents.surface);
-        else
-            _t_free((T *)t->contents.surface);
-    }
-    else if (t->context.flags & TFLAG_SURFACE_IS_SCAPE)
-        _s_free((Scape *)t->contents.surface);
-    else if ((t->context.flags & TFLAG_SURFACE_IS_STREAM) && !(t->context.flags & TFLAG_REFERENCE)) {
-        raise_error("WHAAA!");
-        _st_free((Stream *)t->contents.surface);
+    if (!(t->context.flags & TFLAG_REFERENCE)) {
+        if (t->context.flags & TFLAG_ALLOCATED)
+            free(t->contents.surface);
+        else if (t->context.flags & TFLAG_SURFACE_IS_TREE) {
+            if (t->context.flags & TFLAG_SURFACE_IS_RECEPTOR)
+                _r_free((Receptor *)t->contents.surface);
+            else
+                _t_free((T *)t->contents.surface);
+        }
+        else if (t->context.flags & TFLAG_SURFACE_IS_SCAPE)
+            _s_free((Scape *)t->contents.surface);
+        else if (t->context.flags & TFLAG_SURFACE_IS_STREAM) {
+            raise_error("WHAAA!");
+            _st_free((Stream *)t->contents.surface);
+        }
     }
 }
 
@@ -469,33 +473,48 @@ void _t_free(T *t) {
     free(t);
 }
 
-/// @todo, figure out how to clone trees with non-reference things, like scapes & streams...
-// convert all cloned T nodes into refs?
-
 T *__t_clone(T *t,T *p) {
     T *nt;
-    if (t->context.flags & TFLAG_SURFACE_IS_TREE) raise_error("can't clone orth trees!");
-    if (t->context.flags & TFLAG_ALLOCATED)
+    uint32_t flags = t->context.flags;
+
+    if (flags & TFLAG_SURFACE_IS_RECEPTOR) {
+        raise_error("can't clone receptors");
+    }
+    else if (flags & TFLAG_SURFACE_IS_TREE) {
+        nt = _t_newt(p,_t_symbol(t),__t_clone((T *)_t_surface(t),0));
+    }
+    else if (flags & TFLAG_ALLOCATED)
         nt = _t_new(p,_t_symbol(t),_t_surface(t),_t_size(t));
-    else if (t->context.flags & TFLAG_SURFACE_IS_STREAM) {
-        nt = __t_new_special(p,_t_symbol(t),_t_surface(t),_t_size(t),t->context.flags,0);
+    else if (flags & TFLAG_SURFACE_IS_STREAM) {
+        nt = __t_new_special(p,_t_symbol(t),_t_surface(t),t->context.flags,0);
     }
     else if(_t_size(t) == 0)
         nt = _t_newr(p,_t_symbol(t));
     else
         nt = _t_newi(p,_t_symbol(t),*(int *)_t_surface(t));
     DO_KIDS(t,__t_clone(_t_child(t,i),nt));
+
+    // if the tree points to a type that has an allocated c structure as its surface
+    // the clone must be marked as a reference, otherwise it would get freed twice
+    if (flags | (TFLAG_SURFACE_IS_RECEPTOR+TFLAG_SURFACE_IS_SCAPE+TFLAG_SURFACE_IS_STREAM))
+        nt->context.flags |= TFLAG_REFERENCE;
+
     return nt;
 }
 
 T *__t_rclone(T *t,T *p) {
     T *nt;
-    if (t->context.flags & TFLAG_SURFACE_IS_TREE) raise_error("can't clone orth trees!");
-
-    if (t->context.flags & TFLAG_ALLOCATED)
+    uint32_t flags = t->context.flags;
+    if (flags & TFLAG_SURFACE_IS_RECEPTOR) {
+        raise_error("can't clone receptors");
+    }
+    else if (flags & TFLAG_SURFACE_IS_TREE) {
+        nt = _t_newt(p,_t_symbol(t),__t_rclone((T *)_t_surface(t),0));
+    }
+    else if (flags & TFLAG_ALLOCATED)
         nt = __t_new(p,_t_symbol(t),_t_surface(t),_t_size(t),1);
-    else if (t->context.flags & TFLAG_SURFACE_IS_STREAM) {
-        nt = __t_new_special(p,_t_symbol(t),_t_surface(t),_t_size(t),t->context.flags,1);
+    else if (flags & TFLAG_SURFACE_IS_STREAM) {
+        nt = __t_new_special(p,_t_symbol(t),_t_surface(t),t->context.flags,1);
     }
     else if(_t_size(t) == 0)
         nt = __t_new(p,_t_symbol(t),0,0,1);

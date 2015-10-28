@@ -88,17 +88,18 @@ void __m_new_root(H *h, L **l) {
  * @param[in] symbol semantic symbol for the node to be create
  * @param[in] surface pointer to node's data
  * @param[in] size size in bytes of the surface
+ * @param[in] flags
  * @returns updated handle
  */
-H _m_new(H parent,Symbol symbol,void *surface,size_t size) {
+H __m_new(H parent,Symbol symbol,void *surface,size_t size,uint32_t flags) {
     H h;
     L *l = 0;
 
     if (parent.m) {
-    __m_new_init(parent,&h,&l);
+        __m_new_init(parent,&h,&l);
     }
     else {
-    __m_new_root(&h,&l);
+        __m_new_root(&h,&l);
     }
 
     // add a node
@@ -108,21 +109,18 @@ H _m_new(H parent,Symbol symbol,void *surface,size_t size) {
     n->symbol = symbol;
     n->size = size;
     n->parenti = parent.m ? parent.a.i : NULL_ADDR;
-    n->flags = 0;
+    n->flags = flags;
     if (size) {
-    if (size == sizeof(int)) {
-        n->surface = 0;
-        *((int *)&n->surface) = *(int *)surface;
-    }
-    else {
-        n->flags |= TFLAG_ALLOCATED;
-        n->surface = malloc(size);
-        if (surface)
-        memcpy(n->surface,surface,size);
-    }
-    }
-    else {
-    n->flags = 0;
+        if (size == sizeof(int)) {
+            n->surface = 0;
+            *((int *)&n->surface) = *(int *)surface;
+        }
+        else {
+            n->flags |= TFLAG_ALLOCATED;
+            n->surface = malloc(size);
+            if (surface)
+                memcpy(n->surface,surface,size);
+        }
     }
 
     return h;
@@ -131,7 +129,7 @@ H _m_new(H parent,Symbol symbol,void *surface,size_t size) {
 /**
  * Create a new tree
  *
- * @param[in] symbol semantic symbol for the node to be create
+ * @param[in] symbol semantic symbol for the node to be created
  * @returns handle to root node
  */
 H _m_new_root(Symbol s) {
@@ -161,13 +159,20 @@ H _m_newi(H parent,Symbol symbol,int surface) {
     return _m_new(parent,symbol,&surface,sizeof(int));
 }
 
-// helper function to recursively travers a ttree and build an mtree out of it
+// helper function to recursively traverse a ttree and build an mtree out of it
 // used by _m_new_from_t
 H __mnft(H parent,T *t) {
     int i, c = _t_children(t);
-    H h = _m_new(parent,_t_symbol(t),_t_surface(t),_t_size(t));
+
+    // clear the allocated flag, because that will get recalculated in __m_new
+    uint32_t flags = t->context.flags & ~TFLAG_ALLOCATED;
+    // if the ttree points to a type that has an allocated c structure as its surface
+    // it must be copied into the mtree as reference, otherwise it would get freed twice
+    // when the mtree is freed
+    if (flags | (TFLAG_SURFACE_IS_RECEPTOR+TFLAG_SURFACE_IS_SCAPE+TFLAG_SURFACE_IS_STREAM)) flags |= TFLAG_REFERENCE;
+    H h = __m_new(parent,_t_symbol(t),_t_surface(t),_t_size(t),flags);
     for(i=1;i<=c;i++) {
-    __mnft(h,_t_child(t,i));
+        __mnft(h,_t_child(t,i));
     }
     return h;
 }
@@ -192,7 +197,16 @@ void _m_2tfn(H h,N *n,void *data,MwalkState *s,Maddr ap) {
 
     T **tP = (T**) &(((struct {T *t;} *)data)->t);
     T *t =  h.a.l ? (s[h.a.l-1].user.t) : NULL;
-    *tP = _t_new(t,n->symbol,(n->flags & TFLAG_ALLOCATED)?n->surface:&n->surface,n->size);
+    if (n->flags & TFLAG_SURFACE_IS_TREE && !(n->flags & TFLAG_SURFACE_IS_RECEPTOR)) {
+        *tP = _t_newt(t,n->symbol,_t_new_from_m(*(H *)n->surface));
+    }
+    else if (n->flags & TFLAG_ALLOCATED) {
+        *tP = _t_new(t,n->symbol,n->surface,n->size);
+    }
+    else {
+        *tP = _t_new(t,n->symbol,&n->surface,n->size);
+    }
+    (*tP)->context.flags |= (~TFLAG_ALLOCATED)&(n->flags);
     s[h.a.l].user.t = *tP;
 }
 
@@ -243,10 +257,16 @@ void __m_free(H h,int free_surface) {
     Mindex j = l->nodes;
     if (free_surface) {
         while(j--) {
-        N *n = _GET_NODE(h,l,j);
-        if (n->flags & TFLAG_ALLOCATED) {
-            free(n->surface);
-        }
+            N *n = _GET_NODE(h,l,j);
+            if (!n->flags & TFLAG_REFERENCE) {
+                if (n->flags & TFLAG_SURFACE_IS_RECEPTOR) raise_error("mtree can't free receptor!");
+                if (n->flags & TFLAG_SURFACE_IS_TREE && !(n->flags & TFLAG_SURFACE_IS_RECEPTOR)) {
+                    _m_free(*(H *)n->surface);
+                }
+                if (n->flags & TFLAG_ALLOCATED) {
+                    free(n->surface);
+                }
+            }
         }
     }
     free(l->nP);
