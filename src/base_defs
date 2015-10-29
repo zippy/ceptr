@@ -80,20 +80,20 @@ Symbol: ASPECTS,LIST;
 Symbol: ASPECT_DEF,TREE;
 Symbol: ASPECT_TYPE,BIT;
 Symbol: CARRIER,SYMBOL;
-Symbol: SIGNAL,TREE;                        a signal on the flux.  It's first child is the contents of the signal
-Symbol: SIGNALS,[*SIGNAL];                  list of signals on an aspect in the flux
 Symbol: BODY,TREE;
 Symbol: SIGNAL_UUID,UUID;
 Symbol: RECEPTOR_ADDRESS,INTEGER;
-Symbol: ENVELOPE,[(RECEPTOR_ADDRESS,RECEPTOR_ADDRESS,ASPECT,CARRIER,SIGNAL_UUID,BODY)];
+Symbol: ENVELOPE,[(RECEPTOR_ADDRESS,RECEPTOR_ADDRESS,ASPECT,CARRIER,SIGNAL_UUID)];
+Symbol: SIGNAL,[(ENVELOPE,BODY)];                        a signal on the flux.  It's first child is the contents of the signal
+Symbol: SIGNALS,[*SIGNAL];                  list of signals on an aspect in the flux
 Symbol: PENDING_SIGNALS,[*SIGNAL];               list of signals pending to be sent by the VM_HOST
-Symbol: PENDING_RESPONSES,LIST;
-Symbol: PENDING_RESPONSE,LIST;
 Symbol: RESPONSE_CODE_PATH,TREE_PATH;
-Symbol: RESPONSE_CARRIER,SYMBOL;            expected carrier for the response to a signal
 Symbol: PROCESS_IDENT,INTEGER;
-Symbol: LISTENERS,LIST;                     list of carrier/expectation/action tress that "listen" to changes on the flux
+Symbol: PENDING_RESPONSE,[(SIGNAL_UUID,CARRIER,PROCESS_IDENT,RESPONSE_CODE_PATH)];
+Symbol: PENDING_RESPONSES,[*PENDING_RESPONSE];
+Symbol: RESPONSE_CARRIER,SYMBOL;            expected carrier for the response to a signal
 Symbol: LISTENER,SYMBOL;                    surface of the listener is the carrier symbol, and it has two children_ID, expectation semtrex and action code tree
+Symbol: LISTENERS,[*LISTENER];                     list of carrier/expectation/action tress that "listen" to changes on the flux
 Symbol: EXPECTATION,SEMTREX;                expectation is a semtrex (thus has one child which is the first part of the semtrex)
 Symbol: ACTION,PROCESS;                     code tree_ID, which specifies the action to perform when an expectation's semtrex matches
 Symbol: INTERPOLATE_SYMBOL,SYMBOL;          a place holder to indicate which symbol to insert into this part of the tree
@@ -129,15 +129,12 @@ Symbol: STEP_SYMBOL,SYMBOL;
 Symbol: STEPS,LIST;
 Structure: SEQUENCE,STEP_SYMBOL; /// @todo #8 this really should specify one or more step_symbols
 Structure: PROTOCOL_STEP,EXPECTATION,PARAMS,ACTION;
-Symbol: INTERACTIONS,LIST;
 Symbol: INTERACTION,LIST; /// @todo #8 this should really be a structure be we don't have optional elements yet....
+Symbol: INTERACTIONS,[+INTERACTION];
 Symbol: STEP,CSTRING;
 Symbol: RESPONSE_STEPS,LIST;
 Structure: PROTOCOL,STEPS,SEQUENCES;
 Symbol: SCAPES,LIST;
-Symbol: VM_HOST_RECEPTOR,RECEPTOR;
-Symbol: CLOCK_RECEPTOR,RECEPTOR;
-Symbol: COMPOSITORY,RECEPTOR;             receptor that holds available receptor packages for installation
 Symbol: MANIFEST,TREE;                    configuration template to be filled out for the installation of a receptor
 Symbol: MANIFEST_PAIR,LIST;
 Symbol: MANIFEST_LABEL,CSTRING;           a label in the manifest to identify a binding
@@ -148,6 +145,15 @@ Symbol: INSTALLED_RECEPTOR,TREE;          contains the installed receptor as wel
 Symbol: ACTIVE_RECEPTORS,LIST;            List of currently active INSTALLED_RECEPTORS
 Symbol: BINDINGS,TREE;                    specifics that match a MANIFEST and allow a receptor to be installed
 Symbol: BINDING_PAIR,LIST;                a pair that matches a MANIFEST_LABEL with a given binding
+
+Symbol: RECEPTOR_ELAPSED_TIME,INTEGER;
+Symbol: RECEPTOR_STATE,[(?RECEPTOR_ELAPSED_TIME)];
+
+Structure: RECEPTOR_DEF,DEFINITIONS,ASPECTS,FLUX,RECEPTOR_STATE,PENDING_SIGNALS,PENDING_RESPONSES;
+
+Symbol: VM_HOST_RECEPTOR,RECEPTOR;
+Symbol: CLOCK_RECEPTOR,RECEPTOR;
+Symbol: COMPOSITORY,RECEPTOR;         receptor that holds available receptor packages for installation
 
 Symbol: YEAR,INTEGER;
 Symbol: MONTH,INTEGER;
@@ -162,9 +168,6 @@ Symbol: NOW,TIME;
 Structure: TIMESTAMP,TODAY,NOW;
 Symbol: TICK,TIMESTAMP;
 Symbol: CLOCK_TELL_TIME,NULL_STRUCTURE;
-
-Symbol: RECEPTOR_STATE,TREE;
-Symbol: RECEPTOR_ELAPSED_TIME,INTEGER;
 
 Symbol: ERROR_LOCATION,TREE_PATH;
 Structure: REDUCTION_ERROR,ERROR_LOCATION;
