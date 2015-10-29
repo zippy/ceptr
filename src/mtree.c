@@ -169,7 +169,7 @@ H __mnft(H parent,T *t) {
     // if the ttree points to a type that has an allocated c structure as its surface
     // it must be copied into the mtree as reference, otherwise it would get freed twice
     // when the mtree is freed
-    if (flags | (TFLAG_SURFACE_IS_RECEPTOR+TFLAG_SURFACE_IS_SCAPE+TFLAG_SURFACE_IS_STREAM)) flags |= TFLAG_REFERENCE;
+    if (flags & (TFLAG_SURFACE_IS_RECEPTOR+TFLAG_SURFACE_IS_SCAPE+TFLAG_SURFACE_IS_STREAM)) flags |= TFLAG_REFERENCE;
     H h = __m_new(parent,_t_symbol(t),_t_surface(t),_t_size(t),flags);
     for(i=1;i<=c;i++) {
         __mnft(h,_t_child(t,i));

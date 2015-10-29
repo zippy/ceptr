@@ -477,27 +477,23 @@ T *__t_clone(T *t,T *p) {
     T *nt;
     uint32_t flags = t->context.flags;
 
-    if (flags & TFLAG_SURFACE_IS_RECEPTOR) {
-        raise_error("can't clone receptors");
+    // if the tree points to a type that has an allocated c structure as its surface
+    // the clone must be marked as a reference, otherwise it would get freed twice
+    if (flags & (TFLAG_SURFACE_IS_RECEPTOR+TFLAG_SURFACE_IS_SCAPE+TFLAG_SURFACE_IS_STREAM)) {
+        nt = __t_new_special(p,_t_symbol(t),_t_surface(t),flags,0);
+        nt->context.flags |= TFLAG_REFERENCE;
     }
     else if (flags & TFLAG_SURFACE_IS_TREE) {
         nt = _t_newt(p,_t_symbol(t),__t_clone((T *)_t_surface(t),0));
     }
     else if (flags & TFLAG_ALLOCATED)
         nt = _t_new(p,_t_symbol(t),_t_surface(t),_t_size(t));
-    else if (flags & TFLAG_SURFACE_IS_STREAM) {
-        nt = __t_new_special(p,_t_symbol(t),_t_surface(t),t->context.flags,0);
-    }
     else if(_t_size(t) == 0)
         nt = _t_newr(p,_t_symbol(t));
     else
         nt = _t_newi(p,_t_symbol(t),*(int *)_t_surface(t));
     DO_KIDS(t,__t_clone(_t_child(t,i),nt));
 
-    // if the tree points to a type that has an allocated c structure as its surface
-    // the clone must be marked as a reference, otherwise it would get freed twice
-    if (flags | (TFLAG_SURFACE_IS_RECEPTOR+TFLAG_SURFACE_IS_SCAPE+TFLAG_SURFACE_IS_STREAM))
-        nt->context.flags |= TFLAG_REFERENCE;
 
     return nt;
 }
@@ -506,16 +502,19 @@ T *__t_rclone(T *t,T *p) {
     T *nt;
     uint32_t flags = t->context.flags;
     if (flags & TFLAG_SURFACE_IS_RECEPTOR) {
-        raise_error("can't clone receptors");
+        raise_error("can't rclone receptors");
+    }
+    // if the tree points to a type that has an allocated c structure as its surface
+    // the clone must be marked as a reference, otherwise it would get freed twice
+    else if (flags & (TFLAG_SURFACE_IS_RECEPTOR+TFLAG_SURFACE_IS_SCAPE+TFLAG_SURFACE_IS_STREAM)) {
+        nt = __t_new_special(p,_t_symbol(t),_t_surface(t),flags,1);
+        nt->context.flags |= TFLAG_REFERENCE;
     }
     else if (flags & TFLAG_SURFACE_IS_TREE) {
         nt = _t_newt(p,_t_symbol(t),__t_rclone((T *)_t_surface(t),0));
     }
     else if (flags & TFLAG_ALLOCATED)
         nt = __t_new(p,_t_symbol(t),_t_surface(t),_t_size(t),1);
-    else if (flags & TFLAG_SURFACE_IS_STREAM) {
-        nt = __t_new_special(p,_t_symbol(t),_t_surface(t),t->context.flags,1);
-    }
     else if(_t_size(t) == 0)
         nt = __t_new(p,_t_symbol(t),0,0,1);
     else
