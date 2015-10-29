@@ -529,8 +529,8 @@ T *__t_rclone(T *t,T *p) {
  *
  * @param[in] t tree to clone
  * @returns T duplicated tree
- * @todo make this work with trees that have orthogonal trees!
- * @bug doesn't properly clone trees with orthogonal trees
+ *
+ * @note all receptor/scape/stream trees are cloned as references
  *
  * <b>Examples (from test suite):</b>
  * @snippet spec/tree_spec.h testTreeClone
