@@ -101,6 +101,8 @@ void *___clock_thread(void *arg);
 T * __r_make_tick();
 void __r_kill(Receptor *r);
 ReceptorAddress __r_get_self_address(Receptor *r);
-#endif
 
+void __r_dump_instances(Receptor *r);
+
+#endif
 /** @}*/

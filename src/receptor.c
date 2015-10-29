@@ -879,4 +879,22 @@ void __r_kill(Receptor *r) {
 ReceptorAddress __r_get_self_address(Receptor *r) {
     return 0;
 }
+
+void __r_dump_instances(Receptor *r) {
+    Instances *i = &r->instances;
+    T *t = _t_new_root(PARAMS);  // bogus symbol, just using to build the tree
+    instances_elem *cur,*tmp;
+    HASH_ITER(hh, *i, cur, tmp) {
+        T *sym = _t_news(t,STRUCTURE_SYMBOL,cur->s);  // just using this symbol to store the symbol type
+        int is_receptor = semeq(cur->s,INSTALLED_RECEPTOR);
+        Instance *iP = &cur->instances;
+        instance_elem *curi,*tmpi;
+        HASH_ITER(hh, *iP, curi, tmpi) {
+            T *c = _t_clone(curi->instance);
+            _t_add(sym,c);
+        }
+    }
+    printf("INSTANCES:%s\n",_t2s(&r->defs,t));
+    _t_free(t);
+}
 /** @}*/

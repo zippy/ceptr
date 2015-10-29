@@ -1046,6 +1046,9 @@ char * _t2rawjson(Defs *defs,T *t,int level,char *buf) {
             case BIT_ID:
                 sprintf(buf,",\"surface\":%s",(*(int *)_t_surface(t)) ? "1" : "0");
                 break;
+            case BLOB_ID:
+                raise_error("not implemented");
+                break;
             case INTEGER_ID:
                 sprintf(buf,",\"surface\":%d",*(int *)_t_surface(t));
                 break;
@@ -1175,6 +1178,9 @@ char * _t2json(Defs *defs,T *t,int level,char *buf) {
                 break;
             case BIT_ID:
                 sprintf(buf,"\"type\":\"BIT\",\"name\":\"%s\",\"surface\":%s",n,(*(int *)_t_surface(t)) ? "1" : "0");
+                break;
+            case BLOB_ID:
+                raise_error("not implemented");
                 break;
             case INTEGER_ID:
                 sprintf(buf,"\"type\":\"INTEGER\",\"name\":\"%s\",\"surface\":%d",n,*(int *)_t_surface(t));

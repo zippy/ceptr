@@ -275,7 +275,10 @@ size_t _sys_structure_size(int id,void *surface) {
     case FLOAT_ID: return sizeof(float);
     case CSTRING_ID: return strlen(surface)+1;
     case XADDR_ID: return sizeof(Xaddr);
-    case STREAM_ID: return sizeof(Stream);
+    case STREAM_ID:
+    case RECEPTOR_ID:
+    case SCAPE_ID:
+        return sizeof(void *);
     default: return -1;
     }
 }
@@ -450,6 +453,9 @@ char * __t_dump(Defs *defs,T *t,int level,char *buf) {
             case ENUM_ID: // for now enum surfaces are just strings so we can see the text value
             case CSTRING_ID:
                 sprintf(buf,"(%s:%s",n,(char *)_t_surface(t));
+                break;
+            case BLOB_ID:
+                sprintf(buf,"(%s:%ld-byte-blob",n,_t_size(t));
                 break;
             case CHAR_ID:
                 sprintf(buf,"(%s:'%c'",n,*(char *)_t_surface(t));

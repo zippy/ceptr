@@ -493,6 +493,15 @@ void testReceptorSerialize() {
 
     Xaddr x = _r_new_instance(r,t);
 
+    // also add a sub-receptor as an instance so we can test proper
+    // serialization of nested receptors
+    T *ir = _t_new_root(INSTALLED_RECEPTOR);
+    Receptor *r2 = _r_new(TEST_RECEPTOR_SYMBOL);
+    _t_new_receptor(ir,TEST_RECEPTOR_SYMBOL,r2);
+    Xaddr xr = _r_new_instance(r,ir);
+    T *t2 = _t_newi(0,TEST_INT_SYMBOL,314);
+    Xaddr x2 = _r_new_instance(r2,t2);
+
     void *surface;
     size_t length;
     char buf[2000];
@@ -500,7 +509,7 @@ void testReceptorSerialize() {
 
     _r_serialize(r,&surface,&length);
 
-    // serialized receptor is to stacked serialized mtree, first one for the tree
+    // serialized receptor is two stacked serialized mtrees, first one for the tree
     // and then one for the instances
     S *s1 = (S *)surface;
     S *s2 = (S *)(surface + s1->total_size);
@@ -508,36 +517,51 @@ void testReceptorSerialize() {
     //    spec_is_long_equal(length,250);
     //    spec_is_long_equal(*(size_t *)surface,250);
 
-    Receptor *r1 = _r_unserialize(surface);
+    Receptor *ru = _r_unserialize(surface);
+
+    //    __r_dump_instances(r);
+    //    __r_dump_instances(ru);
 
     // check that the structures look the same by comparing a string dump of the two
     // receptors
     __t_dump(&r->defs,r->root,0,buf);
-    __t_dump(&r1->defs,r1->root,0,buf1);
+    __t_dump(&ru->defs,ru->root,0,buf1);
     spec_is_str_equal(buf1,buf);
 
     // check flux
-    spec_is_sem_equal(_t_symbol(r1->flux),FLUX);
-    spec_is_sem_equal(_t_symbol(r1->pending_signals),PENDING_SIGNALS);
-    spec_is_sem_equal(_t_symbol(r1->pending_responses),PENDING_RESPONSES);
+    spec_is_sem_equal(_t_symbol(ru->flux),FLUX);
+    spec_is_sem_equal(_t_symbol(ru->pending_signals),PENDING_SIGNALS);
+    spec_is_sem_equal(_t_symbol(ru->pending_responses),PENDING_RESPONSES);
 
     // check that the unserialized receptor has the labels loaded into the label table
-    int *path = labelGet(&r1->table,"latitude");
+    int *path = labelGet(&ru->table,"latitude");
     int p[] = {1,2,1,TREE_PATH_TERMINATOR};
     spec_is_path_equal(path,p);
-    spec_is_sem_equal(_r_get_symbol_by_label(r1,"latitude"),lat);
-    spec_is_sem_equal(_r_get_structure_by_label(r1,"latlong"),latlong);
+    spec_is_sem_equal(_r_get_symbol_by_label(ru,"latitude"),lat);
+    spec_is_sem_equal(_r_get_structure_by_label(ru,"latlong"),latlong);
 
     // check that the unserialized receptor has all the instances loaded into the instance store too
-    T *t1 = _r_get_instance(r1,x);
+    T *t1 = _r_get_instance(ru,x);
     buf[0] = buf1[0] = 0;
     __t_dump(&r->defs,t,0,buf);
-    __t_dump(&r1->defs,t1,0,buf1);
+    __t_dump(&ru->defs,t1,0,buf1);
     spec_is_str_equal(buf1,buf);
+
+    t1 = _r_get_instance(ru,xr);
+    buf[0] = buf1[0] = 0;
+    __t_dump(&r->defs,ir,0,buf);
+    __t_dump(&ru->defs,t1,0,buf1);
+    spec_is_str_equal(buf1,buf);
+
+    Receptor *r3 = __r_get_receptor(t1);
+    t1 = _r_get_instance(r3,x2);
+    spec_is_equal(*(int*)_t_surface(t1),314);
+
+    //    __r_dump_instances(r3);  show the 314 int
 
     free(surface);
     _r_free(r);
-    _r_free(r1);
+    _r_free(ru);
     //! [testReceptorSerialize]
 }
 
