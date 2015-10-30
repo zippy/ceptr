@@ -638,10 +638,10 @@ void testReceptorEdgeStream() {
 
     Receptor *w = _r_makeStreamWriterReceptor(TEST_RECEPTOR_SYMBOL,TEST_STREAM_SYMBOL,writer_stream);
 
-    Xaddr writer = _v_new_receptor(v,TEST_RECEPTOR_SYMBOL,w);
+    Xaddr writer = _v_new_receptor(v,v->r,TEST_RECEPTOR_SYMBOL,w);
 
     Receptor *r = _r_makeStreamReaderReceptor(TEST_RECEPTOR_SYMBOL,TEST_STREAM_SYMBOL,reader_stream,writer.addr);
-    Xaddr testReceptor =  _v_new_receptor(v,TEST_RECEPTOR_SYMBOL,r);
+    Xaddr testReceptor =  _v_new_receptor(v,v->r,TEST_RECEPTOR_SYMBOL,r);
 
     spec_is_str_equal(_td(w,__r_get_listeners(w,DEFAULT_ASPECT)),"(LISTENERS (LISTENER:LINE (EXPECTATION (SEMTREX_SYMBOL_ANY)) (PARAMS (INTERPOLATE_SYMBOL:NULL_SYMBOL)) (ACTION:echo input to stream)))");
 
@@ -657,13 +657,13 @@ void testReceptorEdgeStream() {
 
     /// @todo @fixme we get an empty line signal because STREAM_AVAILABLE still reads true just before the last
     // STREAM_READ which fails.  This shouldn't actually have produced a signal...
-    spec_is_str_equal(_td(r,r->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:1) (ASPECT:1) (CARRIER:LINE) (SIGNAL_UUID)) (BODY:{(LINE:line1)})) (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:1) (ASPECT:1) (CARRIER:LINE) (SIGNAL_UUID)) (BODY:{(LINE:line2)})) (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:1) (ASPECT:1) (CARRIER:LINE) (SIGNAL_UUID)) (BODY:{(LINE:)})))");
+    spec_is_str_equal(_td(r,r->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:2) (ASPECT:1) (CARRIER:LINE) (SIGNAL_UUID)) (BODY:{(LINE:line1)})) (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:2) (ASPECT:1) (CARRIER:LINE) (SIGNAL_UUID)) (BODY:{(LINE:line2)})) (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:2) (ASPECT:1) (CARRIER:LINE) (SIGNAL_UUID)) (BODY:{(LINE:)})))");
 
     // manually run the signal sending code
     _v_deliver_signals(v,r);
 
     // and see that they've shown up in the writer receptor's flux signals list
-    spec_is_str_equal(_td(w,__r_get_signals(w,DEFAULT_ASPECT)),"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:2) (RECEPTOR_ADDRESS:1) (ASPECT:1) (CARRIER:LINE) (SIGNAL_UUID)) (BODY:{(LINE:line1)}) (RUN_TREE (process:STREAM_WRITE (TEST_STREAM_SYMBOL) (PARAM_REF:/2/1)) (PARAMS (LINE:line1)))) (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:2) (RECEPTOR_ADDRESS:1) (ASPECT:1) (CARRIER:LINE) (SIGNAL_UUID)) (BODY:{(LINE:line2)}) (RUN_TREE (process:STREAM_WRITE (TEST_STREAM_SYMBOL) (PARAM_REF:/2/1)) (PARAMS (LINE:line2)))) (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:2) (RECEPTOR_ADDRESS:1) (ASPECT:1) (CARRIER:LINE) (SIGNAL_UUID)) (BODY:{(LINE:)}) (RUN_TREE (process:STREAM_WRITE (TEST_STREAM_SYMBOL) (PARAM_REF:/2/1)) (PARAMS (LINE:)))))");
+    spec_is_str_equal(_td(w,__r_get_signals(w,DEFAULT_ASPECT)),"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:3) (RECEPTOR_ADDRESS:2) (ASPECT:1) (CARRIER:LINE) (SIGNAL_UUID)) (BODY:{(LINE:line1)}) (RUN_TREE (process:STREAM_WRITE (TEST_STREAM_SYMBOL) (PARAM_REF:/2/1)) (PARAMS (LINE:line1)))) (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:3) (RECEPTOR_ADDRESS:2) (ASPECT:1) (CARRIER:LINE) (SIGNAL_UUID)) (BODY:{(LINE:line2)}) (RUN_TREE (process:STREAM_WRITE (TEST_STREAM_SYMBOL) (PARAM_REF:/2/1)) (PARAMS (LINE:line2)))) (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:3) (RECEPTOR_ADDRESS:2) (ASPECT:1) (CARRIER:LINE) (SIGNAL_UUID)) (BODY:{(LINE:)}) (RUN_TREE (process:STREAM_WRITE (TEST_STREAM_SYMBOL) (PARAM_REF:/2/1)) (PARAMS (LINE:)))))");
 
     // and that they've been removed from process queue pending signals list
     spec_is_str_equal(_td(r,r->pending_signals),"(PENDING_SIGNALS)");

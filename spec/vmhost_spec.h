@@ -13,7 +13,12 @@ void testVMHostCreate() {
     VMHost *v = _v_new();
 
     // test the structure of the VM_HOST receptor
-    spec_is_str_equal(t2s(v->r->root),"(VM_HOST_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES) (ACTIVE_RECEPTORS) (COMPOSITORY:{(COMPOSITORY (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))}))");
+    spec_is_str_equal(t2s(v->r->root),"(VM_HOST_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES) (ACTIVE_RECEPTORS))");
+
+    spec_is_ptr_equal(_t_child(v->r->root,7),v->active_receptors);
+    Xaddr cx = {COMPOSITORY,1};
+    Receptor *c = __r_get_receptor(_r_get_instance(v->r,cx));
+    spec_is_sem_equal(_t_symbol(c->root),COMPOSITORY);
 
     // test the installed receptors scape
     spec_is_sem_equal(v->installed_receptors->key_source,RECEPTOR_IDENTIFIER);
@@ -260,8 +265,8 @@ void testVMHostActivateReceptor() {
     Symbol ss = _r_declare_symbol(v->r,RECEPTOR,"alive server");
     Symbol cs = _r_declare_symbol(v->r,RECEPTOR,"alive client");
 
-    Xaddr sx = _v_new_receptor(v,ss,server);
-    Xaddr cx = _v_new_receptor(v,cs,client);
+    Xaddr sx = _v_new_receptor(v,v->r,ss,server);
+    Xaddr cx = _v_new_receptor(v,v->r,cs,client);
     __v_activate(v,server);
     __v_activate(v,client);
 
@@ -277,7 +282,7 @@ void testVMHostActivateReceptor() {
 
     _v_send(v,cx.addr,sx.addr,DEFAULT_ASPECT,_t_newi(0,ping,0));
 
-    spec_is_str_equal(_td(client,v->r->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:2) (RECEPTOR_ADDRESS:1) (ASPECT:1) (CARRIER:ping_message) (SIGNAL_UUID)) (BODY:{(ping_message:0)})))");
+    spec_is_str_equal(_td(client,v->r->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:3) (RECEPTOR_ADDRESS:2) (ASPECT:1) (CARRIER:ping_message) (SIGNAL_UUID)) (BODY:{(ping_message:0)})))");
 
     // simulate round-robin processing of signals
     //debug_enable(D_SIGNALS);
@@ -312,7 +317,7 @@ void testVMHostShell() {
     Structure command = _r_define_structure(r,"command",1,verb); // need the optional parameters part here
     Symbol shell_command = _r_declare_symbol(r,command,"shell command");
 
-    Xaddr shellx = _v_new_receptor(G_vm,shell,r);
+    Xaddr shellx = _v_new_receptor(G_vm,G_vm->r,shell,r);
     _v_activate(G_vm,shellx);
 
     // create stdin/out receptors
@@ -329,12 +334,12 @@ void testVMHostShell() {
 
     Symbol std_in = _r_declare_symbol(G_vm->r,RECEPTOR,"std_in");
     Receptor *i_r = _r_makeStreamReaderReceptor(std_in,TEST_STREAM_SYMBOL,input_stream,shellx.addr);
-    Xaddr ix = _v_new_receptor(G_vm,std_in,i_r);
+    Xaddr ix = _v_new_receptor(G_vm,G_vm->r,std_in,i_r);
     _v_activate(G_vm,ix);
 
     Symbol std_out = _r_declare_symbol(G_vm->r,RECEPTOR,"std_out");
     Receptor *o_r = _r_makeStreamWriterReceptor(std_out,TEST_STREAM_SYMBOL,output_stream);
-    Xaddr ox = _v_new_receptor(G_vm,std_out,o_r);
+    Xaddr ox = _v_new_receptor(G_vm,G_vm->r,std_out,o_r);
     _v_activate(G_vm,ox);
 
     // create expectations for commands

@@ -25,7 +25,6 @@ typedef struct thread {
  */
 struct VMHost {
     Receptor *r;                ///< Receptor data for this vm host
-    Receptor *c;                ///< Receptor data for the vm host's local version of the compository
     T *active_receptors;    ///< pointer to tree that holds all currently active receptors
     Scape *installed_receptors;
     thread vm_thread;
@@ -40,7 +39,7 @@ void _v_free(VMHost *r);
 
 Xaddr _v_load_receptor_package(VMHost *v,T *p);
 Xaddr _v_install_r(VMHost *v,Xaddr package,T *bindings,char *label);
-Xaddr _v_new_receptor(VMHost *v,Symbol s, Receptor *r);
+Xaddr _v_new_receptor(VMHost *v,Receptor *parent,Symbol s, Receptor *r);
 void _v_activate(VMHost *v, Xaddr x);
 void __v_activate(VMHost *v, Receptor *r);
 void _v_send(VMHost *v,ReceptorAddress from,ReceptorAddress to,Aspect aspect,T *contents);

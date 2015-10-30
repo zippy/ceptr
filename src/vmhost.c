@@ -13,6 +13,19 @@
 #include "accumulator.h"
 /******************  create and destroy virtual machine */
 
+
+/* set up the c structures for a vmhost*/
+VMHost *__v_init(Receptor *r) {
+    VMHost *v = malloc(sizeof(VMHost));
+    v->r = r;
+    v->active_receptors = _t_child(v->r->root,7);
+    //    v->c = _t_surface(_t_child(v->r->root,8));
+    v->installed_receptors = _s_new(RECEPTOR_IDENTIFIER,RECEPTOR);
+    v->vm_thread.state = 0;
+    v->clock_thread.state = 0;
+    return v;
+}
+
 /**
  * @brief Creates a new virtual machine host
  *
@@ -24,14 +37,11 @@
  * @snippet spec/vmhost_spec.h testVMHostCreate
  */
 VMHost * _v_new() {
-    VMHost *v = malloc(sizeof(VMHost));
-    v->r = _r_new(VM_HOST_RECEPTOR);
-    v->c = _r_new(COMPOSITORY);
-    v->active_receptors = _t_newr(v->r->root,ACTIVE_RECEPTORS);
-    v->installed_receptors = _s_new(RECEPTOR_IDENTIFIER,RECEPTOR);
-    v->vm_thread.state = 0;
-    v->clock_thread.state = 0;
-    _t_new_receptor(v->r->root,COMPOSITORY,v->c);
+    Receptor *r = _r_new(VM_HOST_RECEPTOR);
+    _t_newr(r->root,ACTIVE_RECEPTORS);
+    Receptor *c = _r_new(COMPOSITORY);
+    VMHost *v = __v_init(r);
+    _v_new_receptor(v,v->r,COMPOSITORY,c);
     return v;
 }
 
@@ -65,7 +75,8 @@ void _v_free(VMHost *v) {
  */
 Xaddr _v_load_receptor_package(VMHost *v,T *p) {
     Xaddr x;
-    x = _r_new_instance(v->c,p);
+    raise_error("not implemented");
+    //    x = _r_new_instance(v->c,p);
     return x;
 }
 
@@ -82,7 +93,8 @@ Xaddr _v_load_receptor_package(VMHost *v,T *p) {
  * @snippet spec/vmhost_spec.h testVMHostInstallReceptor
  */
 Xaddr _v_install_r(VMHost *v,Xaddr package,T *bindings,char *label) {
-    T *p = _r_get_instance(v->c,package);
+    raise_error("not implemented");
+    T *p;// = _r_get_instance(v->c,package);
     T *id = _t_child(p,2);
     TreeHash h = _t_hash(v->r->defs.symbols,v->r->defs.structures,id);
 
@@ -117,14 +129,15 @@ Xaddr _v_install_r(VMHost *v,Xaddr package,T *bindings,char *label) {
     Symbol s = _r_declare_symbol(v->r,RECEPTOR,label);
 
     Receptor *r = _r_new_receptor_from_package(s,p,bindings);
-    return _v_new_receptor(v,s,r);
+    return _v_new_receptor(v,v->r,s,r);
 }
 
-Xaddr _v_new_receptor(VMHost *v,Symbol s, Receptor *r) {
+Xaddr _v_new_receptor(VMHost *v,Receptor *parent,Symbol s, Receptor *r) {
     T *ir = _t_new_root(INSTALLED_RECEPTOR);
     _t_new_receptor(ir,s,r);
-
-    return _r_new_instance(v->r,ir);
+    //@todo what ever else is needed at the vmhost level to add the receptor's
+    // process queue to the process tables etc...
+    return _r_new_instance(parent,ir);
 }
 
 /**
@@ -141,7 +154,7 @@ Xaddr _v_new_receptor(VMHost *v,Symbol s, Receptor *r) {
  */
 void _v_activate(VMHost *v, Xaddr x) {
     T *t = _r_get_instance(v->r,x);
-    _t_add(v->active_receptors,t);
+        _t_add(v->active_receptors,t);
 
     // handle special cases
     T *rt = _t_child(t,1);
@@ -309,7 +322,7 @@ void _v_start_vmhost(VMHost *v) {
  */
 void _v_instantiate_builtins(VMHost *v) {
     Receptor *r = _r_makeClockReceptor();
-    Xaddr clock = _v_new_receptor(v,CLOCK_RECEPTOR,r);
+    Xaddr clock = _v_new_receptor(v,v->r,CLOCK_RECEPTOR,r);
     _v_activate(v,clock);
 }
 
