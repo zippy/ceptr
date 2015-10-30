@@ -30,6 +30,7 @@ void testRunTree() {
                                    NULL);
     char buf[1000];
     __t_dump(&defs,xsignature,NO_INDENT,buf);
+    _t_free(xsignature);
 
     signature = _t_new_root(PROCESS_SIGNATURE);
     T *o = _t_newr(signature,OUTPUT_SIGNATURE);
