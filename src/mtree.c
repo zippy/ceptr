@@ -172,12 +172,19 @@ H __mnft(H parent,T *t) {
     if (flags & (TFLAG_SURFACE_IS_RECEPTOR+TFLAG_SURFACE_IS_SCAPE+TFLAG_SURFACE_IS_STREAM)) flags |= TFLAG_REFERENCE;
     void *surface = _t_surface(t);
     void *sp;
-    if (flags & (TFLAG_SURFACE_IS_TREE+TFLAG_SURFACE_IS_SCAPE+TFLAG_SURFACE_IS_STREAM)) {
-        sp = surface;
-        surface = &sp;
-    }
+    H h;
 
-    H h = __m_new(parent,_t_symbol(t),surface,_t_size(t),flags);
+    if (flags & TFLAG_SURFACE_IS_TREE && !(flags & TFLAG_SURFACE_IS_RECEPTOR)) {
+        H sh = _m_new_from_t((T *)surface);
+        h = _m_newt(parent,_t_symbol(t),sh);
+    }
+    else {
+        if (flags & (TFLAG_SURFACE_IS_RECEPTOR+TFLAG_SURFACE_IS_SCAPE+TFLAG_SURFACE_IS_STREAM)) {
+            sp = surface;
+            surface = &sp;
+        }
+        h = __m_new(parent,_t_symbol(t),surface,_t_size(t),flags);
+    }
     if (flags&TFLAG_RUN_NODE) {
         // @todo, make this more efficient, ie we shouldn't have to
         // do an _m_get, instead there should be a way for mtrees to create run_nodes

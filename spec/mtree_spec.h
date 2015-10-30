@@ -215,13 +215,23 @@ void testCreateTreeNodesM(){
 void testMTreeOrthogonal() {
     H h = _m_new(null_H,TEST_STR_SYMBOL,"hello",6);
     H h1 = _m_newi(null_H,TEST_INT_SYMBOL,314);
-    H o = _m_newt(h,TEST_TREE_SYMBOL,h1);
+    _m_newt(h,TEST_TREE_SYMBOL,h1);
 
     T *t = _t_new_from_m(h);
-
     spec_is_str_equal(t2s(t),"(TEST_STR_SYMBOL:hello (TEST_TREE_SYMBOL:{(TEST_INT_SYMBOL:314)}))");
+    _m_free(h);
+
+    // now make sure converting works for orthogonal trees in the other direction too.
+
+    h = _m_new_from_t(t);
+    _t_free(t);
+
+    t = _t_new_from_m(h);
+    spec_is_str_equal(t2s(t),"(TEST_STR_SYMBOL:hello (TEST_TREE_SYMBOL:{(TEST_INT_SYMBOL:314)}))");
+
     _t_free(t);
     _m_free(h);
+
 }
 
 void testMTreeReceptor() {
@@ -382,6 +392,7 @@ void testMTreeSerialize() {
 
     spec_is_str_equal(t2s(t),"(TEST_TREE_SYMBOL:{(TEST_TREE_SYMBOL:{(process:ADD_INT (TEST_INT_SYMBOL:314) (TEST_INT_SYMBOL:1000))})})");
 
+    free(s);
     _t_free(t);
     _m_free(h);
     _m_free(h1);
