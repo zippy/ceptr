@@ -190,11 +190,9 @@ void testCreateTreeNodesM(){
     spec_is_equal(h121.a.i,1);  //should be last because it was appended by add
 
 
-    S *s = _m_serialize(h.m);
-
+    //S *s = _m_serialize(h.m);
     //    writeFile("web/test1.cmt",s,size);
-
-    free(s);
+    //free(s);
 
     buf[0] = 0;
     _m_walk(h2,_walkfn,buf);
@@ -370,6 +368,23 @@ void testMTreeSerialize() {
     _m_free(h1);
     _t_free(t1);
     _t_free(t);
+
+    // test serialization of orthogonal trees
+    h1 = _m_newr(null_H,ADD_INT);
+    _m_newi(h1,TEST_INT_SYMBOL,314);
+    _m_newi(h1,TEST_INT_SYMBOL,1000);
+    H h2 = _m_newt(null_H,TEST_TREE_SYMBOL,h1);
+    h = _m_newt(null_H,TEST_TREE_SYMBOL,h2);
+
+    s = _m_serialize(h.m);
+    h1 = _m_unserialize(s);
+    t = _t_new_from_m(h1);
+
+    spec_is_str_equal(t2s(t),"(TEST_TREE_SYMBOL:{(TEST_TREE_SYMBOL:{(process:ADD_INT (TEST_INT_SYMBOL:314) (TEST_INT_SYMBOL:1000))})})");
+
+    _t_free(t);
+    _m_free(h);
+    _m_free(h1);
 }
 
 

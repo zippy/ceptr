@@ -684,7 +684,28 @@ S *_m_serialize(M *m) {
             *sn = *n;
             //      raise(SIGINT);
 
-            if (n->flags & TFLAG_ALLOCATED) {
+            if (n->flags & TFLAG_SURFACE_IS_RECEPTOR) {
+                raise_error("can't serialize receptors");
+            }
+
+            if (n->flags & TFLAG_SURFACE_IS_TREE && !(n->flags & TFLAG_SURFACE_IS_RECEPTOR)) {
+                H sh = *(H *)n->surface;
+                S *ss = _m_serialize(sh.m);
+                *(size_t *)&sn->surface = blob_size;
+                // orth tree size wasn't included in the original total size so
+                // we have to realloc the buffer and increase the size
+                // @todo, a better way to do this would have been to serialize the orthogonal
+                //        trees ahead of time in the size calculation loop so as not to have to
+                //        realloc here, instead we could just copy the tree in
+                size_t new_total_size = s->total_size + ss->total_size - sizeof(H*);
+                s = realloc(s,new_total_size);
+                s->total_size = new_total_size;
+                blob = s->blob_offset + (void *)s; // reset the blob pointer
+                memcpy(blob+blob_size,ss,ss->total_size);
+                blob_size+=ss->total_size;
+                free(ss);
+            }
+            else if (n->flags & TFLAG_ALLOCATED) {
                 *(size_t *)&sn->surface = blob_size;
                 memcpy(blob+blob_size,n->surface,n->size);
                 blob_size+=n->size;
@@ -726,7 +747,15 @@ H _m_unserialize(S *s) {
             N *n = GET_NODE(h,l);
             *n = *sn;
             void *surface = blob+*(size_t *)&sn->surface;
-            if (n->flags & TFLAG_ALLOCATED) {
+            if (n->flags & TFLAG_SURFACE_IS_TREE && !(n->flags & TFLAG_SURFACE_IS_RECEPTOR)) {
+                if (!(n->flags & TFLAG_ALLOCATED)) {
+                    raise_error("whoa! orthogonal tree handles are supposed to be allocated!");
+                }
+                H sh = _m_unserialize((S *)surface);
+                n->surface = malloc(sizeof(H));
+                memcpy(n->surface,&sh,sn->size);
+            }
+            else if (n->flags & TFLAG_ALLOCATED) {
                 n->surface = malloc(sn->size);
                 memcpy(n->surface,surface,sn->size);
             }
