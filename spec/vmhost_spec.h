@@ -13,9 +13,8 @@ void testVMHostCreate() {
     VMHost *v = _v_new();
 
     // test the structure of the VM_HOST receptor
-    spec_is_str_equal(t2s(v->r->root),"(VM_HOST_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES) (ACTIVE_RECEPTORS))");
+    spec_is_str_equal(t2s(v->r->root),"(VM_HOST_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))");
 
-    spec_is_ptr_equal(_t_child(v->r->root,7),v->active_receptors);
     Xaddr cx = {COMPOSITORY,1};
     Receptor *c = __r_get_receptor(_r_get_instance(v->r,cx));
     spec_is_sem_equal(_t_symbol(c->root),COMPOSITORY);
@@ -271,14 +270,14 @@ void testVMHostActivateReceptor() {
     __v_activate(v,client);
 
     // confirm that the activate list has new children
-    spec_is_equal(_t_children(v->active_receptors),2);
+    spec_is_equal(v->active_receptor_count,2);
 
     // and that they are the same as the installed receptors
-    T *ar;
-    ar = _t_child(v->active_receptors,1);
-    spec_is_ptr_equal(ar,server->root);
-    ar = _t_child(v->active_receptors,2);
-    spec_is_ptr_equal(ar,client->root);
+    Receptor *ar;
+    ar = v->active_receptors[0];
+    spec_is_ptr_equal(ar,server);
+    ar = v->active_receptors[1];
+    spec_is_ptr_equal(ar,client);
 
     _v_send(v,cx.addr,sx.addr,DEFAULT_ASPECT,_t_newi(0,ping,0));
 
@@ -422,13 +421,33 @@ void testVMHostShell() {
     free(output_data);
 }
 
+void testVMHostSerialize() {
+    G_vm = _v_new();
+    //       _v_instantiate_builtins(G_vm);
+
+    spec_is_str_equal(t2s(G_vm->r->root),"(VM_HOST_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))");
+
+    Receptor *clock = G_vm->active_receptors[0];
+    //    _testReceptorClockAddListener(clock);
+
+    void *surface;
+    size_t length;
+    _r_serialize(G_vm->r,&surface,&length);
+    Receptor *r = _r_unserialize(surface);
+    spec_is_str_equal(t2s(r->root),"(VM_HOST_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))");
+
+    //__r_dump_instances(r);
+    _r_free(r);
+    free(surface);
+    _v_free(G_vm);
+}
 void testVMHost() {
     _setup_HTTPDefs();
     testVMHostCreate();
-    //    testVMHostLoadReceptorPackage();
-    //    testVMHostInstallReceptor();
-
+    //testVMHostLoadReceptorPackage();
+    //testVMHostInstallReceptor();
     testVMHostActivateReceptor();
     testVMHostShell();
+    testVMHostSerialize();
     _cleanup_HTTPDefs();
 }

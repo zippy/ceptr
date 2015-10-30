@@ -143,7 +143,6 @@ Symbol: MANIFEST_SPEC,SYMBOL;             a symbol to specify what type of data 
 Symbol: RECEPTOR_PACKAGE,TREE;            a manifest, a symbol declaration tree, a structure definition tree_ID, and an identifier
 Symbol: RECEPTOR_IDENTIFIER,INTEGER;      uuid that identifies receptors
 Symbol: INSTALLED_RECEPTOR,TREE;          contains the installed receptor as well as state information (enabled,disabled_ID, etc..)
-Symbol: ACTIVE_RECEPTORS,LIST;            List of currently active INSTALLED_RECEPTORS
 Symbol: BINDINGS,TREE;                    specifics that match a MANIFEST and allow a receptor to be installed
 Symbol: BINDING_PAIR,LIST;                a pair that matches a MANIFEST_LABEL with a given binding
 

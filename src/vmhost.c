@@ -18,8 +18,7 @@
 VMHost *__v_init(Receptor *r) {
     VMHost *v = malloc(sizeof(VMHost));
     v->r = r;
-    v->active_receptors = _t_child(v->r->root,7);
-    //    v->c = _t_surface(_t_child(v->r->root,8));
+    v->active_receptor_count = 0;
     v->installed_receptors = _s_new(RECEPTOR_IDENTIFIER,RECEPTOR);
     v->vm_thread.state = 0;
     v->clock_thread.state = 0;
@@ -38,7 +37,6 @@ VMHost *__v_init(Receptor *r) {
  */
 VMHost * _v_new() {
     Receptor *r = _r_new(VM_HOST_RECEPTOR);
-    _t_newr(r->root,ACTIVE_RECEPTORS);
     Receptor *c = _r_new(COMPOSITORY);
     VMHost *v = __v_init(r);
     _v_new_receptor(v,v->r,COMPOSITORY,c);
@@ -51,12 +49,6 @@ VMHost * _v_new() {
  * @param[in] v the VMHost to free
  */
 void _v_free(VMHost *v) {
-    int c = _t_children(v->active_receptors);
-
-    // detach any active receptors which would otherwise be doubly freed
-    while(_t_children(v->active_receptors) > 0) {
-        _t_detach_by_idx(v->active_receptors,1);
-    }
     _r_free(v->r);
     _s_free(v->installed_receptors);
     free(v);
@@ -154,7 +146,8 @@ Xaddr _v_new_receptor(VMHost *v,Receptor *parent,Symbol s, Receptor *r) {
  */
 void _v_activate(VMHost *v, Xaddr x) {
     T *t = _r_get_instance(v->r,x);
-        _t_add(v->active_receptors,t);
+
+    __v_activate(v,__r_get_receptor(t));
 
     // handle special cases
     T *rt = _t_child(t,1);
@@ -171,11 +164,13 @@ void _v_activate(VMHost *v, Xaddr x) {
  * @param[in] v VMHost
  * @param[in] r receptor to activate
  *
- * @todo for now we are just storing the active receptors in the receptor tree
- * later this will probably have to be optimized into a hash/scape for faster access
  */
 void __v_activate(VMHost *v, Receptor *r) {
-    _t_add(v->active_receptors,r->root);
+    if (v->active_receptor_count+1 >= MAX_ACTIVE_RECEPTORS) {
+        raise_error("too many active receptors");
+    }
+
+    v->active_receptors[v->active_receptor_count++]=r;
 }
 
 /**
@@ -283,10 +278,8 @@ void *__v_process(void *arg) {
         // where we put allocate receptor's queues for processing according to
         // priority/etc...
 
-        c = _t_children(v->active_receptors);
-        for (i=1;v->r->state == Alive && i<=c;i++) {
-            /// @todo refactor being able to walk through all currently active receptors
-            Receptor *r = __r_get_receptor(_t_child(v->active_receptors,i));
+        for (i=0;v->r->state == Alive && i<v->active_receptor_count;i++) {
+            Receptor *r = v->active_receptors[i];
             if (r->q && r->q->contexts_count > 0) {
                 _p_reduceq(r->q);
             }
@@ -299,9 +292,8 @@ void *__v_process(void *arg) {
     }
 
     // close down all receptors
-    c = _t_children(v->active_receptors);
-    for (i=1;i<=c;i++) {
-        Receptor *r = __r_get_receptor(_t_child(v->active_receptors,i));
+    for (i=0;i<v->active_receptor_count;i++) {
+        Receptor *r = v->active_receptors[i];
         __r_kill(r);
         // if other receptors have threads associated with them, the possibly we should
         // be doing a thread_join here, or maybe even inside __r_kill @fixme
