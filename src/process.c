@@ -206,12 +206,10 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
         // make sure the surface was allocated and if not, converted to an alloced surface
         if (c > 0) {
             if (!(x->context.flags & TFLAG_ALLOCATED)) {
-                int v = *((int *)&x->contents.surface); // copy the string as an integer
-                str = (char *)&v; // calculate the length
-                int size = strlen(str)+1;
-                x->contents.surface = malloc(size);
-                memcpy(x->contents.surface,str,size);
-                t->context.flags = TFLAG_ALLOCATED;
+                str = malloc(x->contents.size);
+                memcpy(str,&x->contents.surface,x->contents.size);
+                x->contents.surface = str;
+                x->context.flags = TFLAG_ALLOCATED;
             }
         }
         /// @todo this would probably be faster with just one total realloc for all children

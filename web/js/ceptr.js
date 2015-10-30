@@ -105,6 +105,7 @@ function unserialize(serialzed_mtree) {
             c[i].symbol.id =  t.getUint16(node_offset+x,true); x+=4;
             c[i].parenti = t.getUint32(node_offset+x,true); x+= Mindex_size;
             c[i].flags =   t.getUint32(node_offset+x,true); x+= 4;
+            c[i].cur_child =   t.getUint32(node_offset+x,true); x+= 4;
             c[i].size =    t.getUint64(node_offset+x,true).valueOf(); x+=size_t_size;
             if (c[i].size == 4) {
                 t.seek(node_offset+x);
@@ -123,7 +124,7 @@ function unserialize(serialzed_mtree) {
     return r;
 };
 
-var TFLAG_ALLOCATED=0x0001,TFLAG_SURFACE_IS_TREE=0x0002,TFLAG_SURFACE_IS_RECEPTOR = 0x0004,TFLAG_SURFACE_IS_SCAPE=0x0008,TFLAG_DELETED=0x0010;
+var TFLAG_ALLOCATED=0x0001,TFLAG_SURFACE_IS_TREE=0x0002,TFLAG_SURFACE_IS_RECEPTOR = 0x0004,TFLAG_SURFACE_IS_SCAPE=0x0008,TFLAG_SURFACE_IS_STREAM=0x0010,TFLAG_DELETED=0x0020,TFLAG_RUN_NODE=0x0040,TFLAG_REFERENCE=0x8000;
 
 function getnode(mtree,l,i) {
     var level = mtree[l];

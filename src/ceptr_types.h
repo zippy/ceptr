@@ -37,6 +37,7 @@ typedef struct N {
     Symbol symbol;
     Mindex parenti;
     uint32_t flags;
+    uint32_t cur_child;  // for active run-trees
     size_t size;
     void *surface;  // this item must be last!!!
 } N;

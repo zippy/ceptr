@@ -437,6 +437,9 @@ char * __t_dump(Defs *defs,T *t,int level,char *buf) {
     Xaddr x;
     buf = _indent_line(level,buf);
 
+    // use this to mark all run nodes with a %
+    // if (t->context.flags & TFLAG_RUN_NODE) *buf++ = '%';
+
     if (is_process(s)) {
         sprintf(buf,"(process:%s",_d_get_process_name(processes,s));
     }

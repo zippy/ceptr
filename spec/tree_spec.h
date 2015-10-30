@@ -84,6 +84,7 @@ void testTreeNewReceptor() {
     T *tr = _t_new_receptor(t,TEST_RECEPTOR_SYMBOL,r);
 
     spec_is_ptr_equal(_t_surface(tr),r);
+    spec_is_true(!(tr->context.flags & TFLAG_ALLOCATED));
 
     spec_is_str_equal(t2s(t),"(TEST_INT_SYMBOL:0 (TEST_RECEPTOR_SYMBOL:{(TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))}))");
 

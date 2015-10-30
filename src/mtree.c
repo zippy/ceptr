@@ -111,9 +111,8 @@ H __m_new(H parent,Symbol symbol,void *surface,size_t size,uint32_t flags) {
     n->parenti = parent.m ? parent.a.i : NULL_ADDR;
     n->flags = flags;
     if (size) {
-        if (size == sizeof(int)) {
-            n->surface = 0;
-            *((int *)&n->surface) = *(int *)surface;
+        if (size <= sizeof(void *)) {
+            memcpy(&n->surface,surface,size);
         }
         else {
             n->flags |= TFLAG_ALLOCATED;
@@ -169,8 +168,22 @@ H __mnft(H parent,T *t) {
     // if the ttree points to a type that has an allocated c structure as its surface
     // it must be copied into the mtree as reference, otherwise it would get freed twice
     // when the mtree is freed
+
     if (flags & (TFLAG_SURFACE_IS_RECEPTOR+TFLAG_SURFACE_IS_SCAPE+TFLAG_SURFACE_IS_STREAM)) flags |= TFLAG_REFERENCE;
-    H h = __m_new(parent,_t_symbol(t),_t_surface(t),_t_size(t),flags);
+    void *surface = _t_surface(t);
+    void *sp;
+    if (flags & (TFLAG_SURFACE_IS_TREE+TFLAG_SURFACE_IS_SCAPE+TFLAG_SURFACE_IS_STREAM)) {
+        sp = surface;
+        surface = &sp;
+    }
+
+    H h = __m_new(parent,_t_symbol(t),surface,_t_size(t),flags);
+    if (flags&TFLAG_RUN_NODE) {
+        // @todo, make this more efficient, ie we shouldn't have to
+        // do an _m_get, instead there should be a way for mtrees to create run_nodes
+        N *n = __m_get(h);
+        n->cur_child = ((rT *)t)->cur_child;
+    }
     for(i=1;i<=c;i++) {
         __mnft(h,_t_child(t,i));
     }
@@ -197,17 +210,28 @@ void _m_2tfn(H h,N *n,void *data,MwalkState *s,Maddr ap) {
 
     T **tP = (T**) &(((struct {T *t;} *)data)->t);
     T *t =  h.a.l ? (s[h.a.l-1].user.t) : NULL;
+    int is_run_node = (n->flags&TFLAG_RUN_NODE);
+
+    T *nt;
+
     if (n->flags & TFLAG_SURFACE_IS_TREE && !(n->flags & TFLAG_SURFACE_IS_RECEPTOR)) {
-        *tP = _t_newt(t,n->symbol,_t_new_from_m(*(H *)n->surface));
+        if (is_run_node) raise_error("not implemented");
+        nt = _t_newt(t,n->symbol,_t_new_from_m(*(H *)n->surface));
     }
     else if (n->flags & TFLAG_ALLOCATED) {
-        *tP = _t_new(t,n->symbol,n->surface,n->size);
+        nt = __t_new(t,n->symbol,n->surface,n->size,is_run_node);
     }
     else {
-        *tP = _t_new(t,n->symbol,&n->surface,n->size);
+        nt = __t_new(t,n->symbol,&n->surface,n->size,is_run_node);
     }
-    (*tP)->context.flags |= (~TFLAG_ALLOCATED)&(n->flags);
-    s[h.a.l].user.t = *tP;
+    nt->context.flags |= (~TFLAG_ALLOCATED)&(n->flags);
+
+    if (is_run_node) {
+        ((rT *)nt)->cur_child = n->cur_child;
+    }
+    *tP = nt;
+
+    s[h.a.l].user.t = nt;
 }
 
 /**
@@ -285,10 +309,10 @@ int _m_children(H h) {
     Mlevel levels = h.m->levels;
 
     if (h.a.l >= levels) {
-    raise_error("address too deep!");
+        raise_error("address too deep!");
     }
     else if (h.a.l == levels-1) {
-    return 0;
+        return 0;
     }
     L *l = _GET_LEVEL(h,h.a.l+1);
     Mindex c = 0;
@@ -305,8 +329,8 @@ int _m_children(H h) {
     }
 */
     while (i < max) {
-    if (!(n->flags & TFLAG_DELETED) && pi == n->parenti) c++;
-    n++;i++;
+        if (!(n->flags & TFLAG_DELETED) && pi == n->parenti) c++;
+        n++;i++;
     }
 
     return c;
@@ -321,9 +345,9 @@ int _m_children(H h) {
 void * _m_surface(H h) {
     N *n = __m_get(h);
     if (n->flags & TFLAG_ALLOCATED)
-    return n->surface;
+        return n->surface;
     else
-    return &n->surface;
+        return &n->surface;
 }
 
 /**
@@ -335,9 +359,9 @@ void * _m_surface(H h) {
 Maddr _m_parent(H h) {
     Maddr a = {NULL_ADDR,NULL_ADDR};
     if (h.a.l > 0) {
-    N *n = __m_get(h);
-    a.l = h.a.l-1;
-    a.i = n->parenti;
+        N *n = __m_get(h);
+        a.l = h.a.l-1;
+        a.i = n->parenti;
     }
     return a;
 }
@@ -353,36 +377,36 @@ Maddr _m_child(H h,Mindex c) {
     Maddr a = {NULL_ADDR,NULL_ADDR};
     Mlevel levels = h.m->levels;
     if (h.a.l >= levels) {
-    raise_error("address too deep!");
+        raise_error("address too deep!");
     }
     else if (h.a.l == levels-1) {
-    return a;
+        return a;
     }
     a.l = h.a.l+1;
     L *l = &h.m->lP[a.l];
     Mindex ci = 0,max = l->nodes;
     N *n = &l->nP[0];
     if (c == NULL_ADDR) {
-    a.i = NULL_ADDR;
-    while(ci < max) {
-        if (n->parenti == h.a.i) a.i = ci;
-        ci++;
-        n++;
-    }
-    if (a.i == NULL_ADDR)
-        a.l = NULL_ADDR;
+        a.i = NULL_ADDR;
+        while(ci < max) {
+            if (n->parenti == h.a.i) a.i = ci;
+            ci++;
+            n++;
+        }
+        if (a.i == NULL_ADDR)
+            a.l = NULL_ADDR;
     }
     else {
-    a.i = 0;
-    while(a.i < max) {
-        if (n->parenti == h.a.i) ci++;
-        if (ci == c) return a;
-        a.i++;n++;
+        a.i = 0;
+        while(a.i < max) {
+            if (n->parenti == h.a.i) ci++;
+            if (ci == c) return a;
+            a.i++;n++;
+        }
+        a.l = NULL_ADDR;
+        a.i = NULL_ADDR;
     }
-    a.l = NULL_ADDR;
-    a.i = NULL_ADDR;
-    }
-/* works if nodes are sorted
+    /* works if nodes are sorted
     //skip past nodes of children of parents before our parent
     while (a.i < max && n->parenti < h.a.i) {
     a.i++;n++;
@@ -432,13 +456,13 @@ Maddr _m_next_sibling(H h) {
     N *n = GET_NODE(h,l);
     Mindex pi = n->parenti;
     while (i<l->nodes) {
-    n++;
-    if (n->parenti == pi) {
-        r.l = h.a.l;
-        r.i = i;
-        return r;
-    }
-    i++;
+        n++;
+        if (n->parenti == pi) {
+            r.l = h.a.l;
+            r.i = i;
+            return r;
+        }
+        i++;
     }
     return null_H.a;
 }
@@ -462,19 +486,19 @@ H _m_add(H parent,H h) {
     H p = parent;
     Mindex d = parent.a.i;
     for (i=0;i<levels;i++) {
-    __m_new_init(p,&r,&pl);
-    l = _GET_LEVEL(h,i);
-    N *np = __m_add_nodes(r,pl,l->nodes);
-    N *n = &l->nP[0];
-    Mindex j = l->nodes;
-    while (j--)  {
-        *np = *n;
-        if (np->parenti == NULL_ADDR) np->parenti = 0;
-        np->parenti += d;
-        np++; n++;
-    }
-    d = pl->nodes-l->nodes;
-    p.a.l++;
+        __m_new_init(p,&r,&pl);
+        l = _GET_LEVEL(h,i);
+        N *np = __m_add_nodes(r,pl,l->nodes);
+        N *n = &l->nP[0];
+        Mindex j = l->nodes;
+        while (j--)  {
+            *np = *n;
+            if (np->parenti == NULL_ADDR) np->parenti = 0;
+            np->parenti += d;
+            np++; n++;
+        }
+        d = pl->nodes-l->nodes;
+        p.a.l++;
     }
     r.a = _m_child(parent,x);
 
@@ -562,18 +586,18 @@ void _m_detatchfn(H oh,N *on,void *data,MwalkState *s,Maddr ap) {
     H h;
     L *l;
     if (!d->m) {
-    __m_new_root(&h,&l);
-    parent.m = 0;
-    d->m = h.m;
+        __m_new_root(&h,&l);
+        parent.m = 0;
+        d->m = h.m;
     }
     else {
-    parent.m = d->m;
-    parent.a.i = s[oh.a.l-1].user.pi;
-    // we use d->l here to give us a level offset because the root of
-    // the detached tree is not necessarily the same as the root of
-    // the whole tree.
-    parent.a.l = oh.a.l-1-d->l;
-    __m_new_init(parent,&h,&l);
+        parent.m = d->m;
+        parent.a.i = s[oh.a.l-1].user.pi;
+        // we use d->l here to give us a level offset because the root of
+        // the detached tree is not necessarily the same as the root of
+        // the whole tree.
+        parent.a.l = oh.a.l-1-d->l;
+        __m_new_init(parent,&h,&l);
     }
 
     N *n,*nl;
@@ -661,12 +685,12 @@ S *_m_serialize(M *m) {
         //      raise(SIGINT);
 
         if (n->flags & TFLAG_ALLOCATED) {
-        *(size_t *)&sn->surface = blob_size;
-        memcpy(blob+blob_size,n->surface,n->size);
-        blob_size+=n->size;
+            *(size_t *)&sn->surface = blob_size;
+            memcpy(blob+blob_size,n->surface,n->size);
+            blob_size+=n->size;
         }
         else {
-        *((int *)&sn->surface) = *((int *)&n->surface);
+            memcpy(&sn->surface,&n->surface,n->size);
         }
 
         sn = (N *) (SERIALIZED_NODE_SIZE + ((void*)sn));
@@ -693,24 +717,24 @@ H _m_unserialize(S *s) {
 
     uint32_t s_size = SERIALIZED_HEADER_SIZE(m->levels);
     for(h.a.l=0; h.a.l<m->levels; h.a.l++) {
-    L *sl = (L *) (((void *)s) + s_size + ((S *)s)->level_offsets[h.a.l]);
-    L *l = GET_LEVEL(h);
-    l->nodes = sl->nodes;
-    l->nP = malloc(sizeof(N)*l->nodes);
-    N *sn = sizeof(Mindex)+(void *)sl;
-    for(h.a.i=0;h.a.i < l->nodes;h.a.i++) {
-        N *n = GET_NODE(h,l);
-        *n = *sn;
-        void *surface = blob+*(size_t *)&sn->surface;
-        if (n->flags & TFLAG_ALLOCATED) {
-        n->surface = malloc(sn->size);
-        memcpy(n->surface,surface,sn->size);
+        L *sl = (L *) (((void *)s) + s_size + ((S *)s)->level_offsets[h.a.l]);
+        L *l = GET_LEVEL(h);
+        l->nodes = sl->nodes;
+        l->nP = malloc(sizeof(N)*l->nodes);
+        N *sn = sizeof(Mindex)+(void *)sl;
+        for(h.a.i=0;h.a.i < l->nodes;h.a.i++) {
+            N *n = GET_NODE(h,l);
+            *n = *sn;
+            void *surface = blob+*(size_t *)&sn->surface;
+            if (n->flags & TFLAG_ALLOCATED) {
+                n->surface = malloc(sn->size);
+                memcpy(n->surface,surface,sn->size);
+            }
+            else {
+                memcpy(&n->surface,&sn->surface,sn->size);
+            }
+            sn = (N *) (SERIALIZED_NODE_SIZE + ((void*)sn));
         }
-        else {
-        *((int *)&n->surface) = *((int *)&sn->surface);
-        }
-        sn = (N *) (SERIALIZED_NODE_SIZE + ((void*)sn));
-    }
     }
     h.a.i = h.a.l = 0;
     return h;

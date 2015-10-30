@@ -40,7 +40,6 @@ void __t_init(T *t,T *parent,Symbol symbol) {
     }
 }
 
-
 /**
  * Create a new tree node
  *
@@ -54,11 +53,16 @@ T * __t_new(T *parent,Symbol symbol,void *surface,size_t size,int is_run_node) {
     T *t = malloc(is_run_node ? sizeof(rT) : sizeof(T));
     __t_init(t,parent,symbol);
     if (is_run_node) t->context.flags |= TFLAG_RUN_NODE;
-    if (size) {
-        t->context.flags |= TFLAG_ALLOCATED;
-        t->contents.surface = malloc(size);
-        if (surface)
-            memcpy(t->contents.surface,surface,size);
+    if (size && surface) {
+        void *dst;
+        if (size <= sizeof(void *)) {
+            dst = &t->contents.surface;
+        }
+        else {
+            t->context.flags |= TFLAG_ALLOCATED;
+            dst = t->contents.surface = malloc(size);
+        }
+        memcpy(dst,surface,size);
     }
     t->contents.size = size;
     return t;
@@ -73,6 +77,7 @@ T * __t_new(T *parent,Symbol symbol,void *surface,size_t size,int is_run_node) {
  * @returns pointer to node allocated on the heap
  */
 T * __t_newi(T *parent,Symbol symbol,int surface,int is_run_node) {
+    return __t_new(parent,symbol,&surface,sizeof(int),is_run_node);
     T *t = malloc(is_run_node ? sizeof(rT) : sizeof(T));
     *((int *)&t->contents.surface) = surface;
     t->contents.size = sizeof(int);
@@ -307,7 +312,7 @@ void __t_morph(T *t,Symbol s,void *surface,size_t size,int allocate) {
     }
     else {
         if (surface)
-            *((int *)&t->contents.surface) = *(int *)surface;
+            memcpy(&t->contents.surface,surface,size);
         t->context.flags = 0;
     }
 
@@ -486,12 +491,10 @@ T *__t_clone(T *t,T *p) {
     else if (flags & TFLAG_SURFACE_IS_TREE) {
         nt = _t_newt(p,_t_symbol(t),__t_clone((T *)_t_surface(t),0));
     }
-    else if (flags & TFLAG_ALLOCATED)
-        nt = _t_new(p,_t_symbol(t),_t_surface(t),_t_size(t));
     else if(_t_size(t) == 0)
         nt = _t_newr(p,_t_symbol(t));
     else
-        nt = _t_newi(p,_t_symbol(t),*(int *)_t_surface(t));
+        nt = _t_new(p,_t_symbol(t),_t_surface(t),_t_size(t));
     DO_KIDS(t,__t_clone(_t_child(t,i),nt));
 
 
@@ -513,12 +516,10 @@ T *__t_rclone(T *t,T *p) {
     else if (flags & TFLAG_SURFACE_IS_TREE) {
         nt = _t_newt(p,_t_symbol(t),__t_rclone((T *)_t_surface(t),0));
     }
-    else if (flags & TFLAG_ALLOCATED)
-        nt = __t_new(p,_t_symbol(t),_t_surface(t),_t_size(t),1);
     else if(_t_size(t) == 0)
         nt = __t_new(p,_t_symbol(t),0,0,1);
     else
-        nt = __t_newi(p,_t_symbol(t),*(int *)_t_surface(t),1);
+        nt = __t_new(p,_t_symbol(t),_t_surface(t),_t_size(t),1);
     ((rT *)nt)->cur_child =  RUN_TREE_NOT_EVAULATED;
     DO_KIDS(t,__t_rclone(_t_child(t,i),nt));
     return nt;

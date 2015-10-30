@@ -230,18 +230,19 @@ void testMTreeReceptor() {
     Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
     T *t = _t_newi(0,TEST_INT_SYMBOL,0);
     T *tr = _t_new_receptor(t,TEST_RECEPTOR_SYMBOL,r);
-    H hr = _m_new_from_t(t);
+
+    H hr = _m_new_from_t(tr);
 
     T *t2 = _t_new_from_m(hr);
-    spec_is_ptr_equal(_t_surface(tr),r);
+    spec_is_ptr_equal(*(Receptor **)_m_surface(hr),r);
+    spec_is_ptr_equal(_t_surface(t2),r);
 
-    spec_is_str_equal(t2s(t2),"(TEST_INT_SYMBOL:0 (TEST_RECEPTOR_SYMBOL:{(TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))}))");
+    spec_is_str_equal(t2s(t2),"(TEST_RECEPTOR_SYMBOL:{(TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))})");
 
     _t_free(t);
     _t_free(t2);
     _m_free(hr);
 }
-
 
 void testMTreeWalk() {
     //! [testMTreeWalk]
@@ -292,6 +293,30 @@ void testTreeConvert() {
     _m_free(h);
     _t_free(t);
     _t_free(t1);
+
+    // test that converting run-trees works too
+
+    T *n = _t_newr(0,ADD_INT);
+    _t_newi(n,TEST_INT_SYMBOL,99);
+    _t_newi(n,TEST_INT_SYMBOL,100);
+
+    T *c = _t_rclone(n);
+    t = _t_new_root(RUN_TREE);
+    _t_add(t,c);
+
+    h = _m_new_from_t(t);
+    _t_free(t);
+     t = _t_new_from_m(h);
+    Defs defs;
+    spec_is_str_equal(t2s(t),"(RUN_TREE (process:ADD_INT (TEST_INT_SYMBOL:99) (TEST_INT_SYMBOL:100)))");
+    debug_enable(D_REDUCE+D_REDUCEV);
+    _p_reduce(&defs,t);
+    debug_disable(D_REDUCE+D_REDUCEV);
+    spec_is_str_equal(t2s(t),"(RUN_TREE (TEST_INT_SYMBOL:199))");
+
+    _m_free(h);
+    _t_free(n);
+    _t_free(t);
     //! [testMTreeSerialize]
 }
 

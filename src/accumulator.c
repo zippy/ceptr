@@ -136,10 +136,20 @@ S *__a_serialize_instances(Instances *i) {
     instances_elem *cur,*tmp;
     HASH_ITER(hh, *i, cur, tmp) {
         T *sym = _t_news(t,STRUCTURE_SYMBOL,cur->s);  // just using this symbol to store the symbol type
+        int is_receptor = semeq(cur->s,INSTALLED_RECEPTOR);
         Instance *iP = &cur->instances;
         instance_elem *curi,*tmpi;
         HASH_ITER(hh, *iP, curi, tmpi) {
-            _t_add(sym,_t_clone(curi->instance));
+            T *c;
+            if (is_receptor) {
+                void *surface;
+                size_t length;
+                Receptor *r = __r_get_receptor(curi->instance);
+                _r_serialize(r,&surface,&length);
+                c = _t_new(0,SERIALIZED_RECEPTOR,surface,length);
+            }
+            else c = _t_clone(curi->instance);
+            _t_add(sym,c);
         }
     }
     H h = _m_new_from_t(t);
@@ -176,8 +186,16 @@ void __a_unserialize_instances(Instances *instances,S *s) {
     int j,c = _t_children(t);
     for(j=1;j<=c;j++) {
         T *u = _t_child(t,j);
+        int is_receptor = semeq(*(Symbol *)_t_surface(u),INSTALLED_RECEPTOR);
         while(_t_children(u)) {
-            _a_new_instance(instances, _t_detach_by_idx(u,1));
+            T *i = _t_detach_by_idx(u,1);
+            if (is_receptor) {
+                Receptor *r = _r_unserialize(_t_surface(i));
+                _t_free(i);
+                i = _t_new_root(INSTALLED_RECEPTOR);
+                _t_new_receptor(i,_t_symbol(r->root),r);
+            }
+            _a_new_instance(instances, i);
         }
     }
     _t_free(t);
