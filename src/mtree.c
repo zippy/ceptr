@@ -282,7 +282,7 @@ void __m_free(H h,int free_surface) {
     if (free_surface) {
         while(j--) {
             N *n = _GET_NODE(h,l,j);
-            if (!n->flags & TFLAG_REFERENCE) {
+            if (!(n->flags & TFLAG_REFERENCE)) {
                 if (n->flags & TFLAG_SURFACE_IS_RECEPTOR) raise_error("mtree can't free receptor!");
                 if (n->flags & TFLAG_SURFACE_IS_TREE && !(n->flags & TFLAG_SURFACE_IS_RECEPTOR)) {
                     _m_free(*(H *)n->surface);

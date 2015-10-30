@@ -45,7 +45,6 @@ Receptor * __r_init(T *t) {
 
 Receptor *__r_new(Symbol s,T *defs,T *aspects) {
     T *t = _t_new_root(s);
-    Receptor *r = malloc(sizeof(Receptor));
     _t_add(t,defs);
     _t_add(t,aspects);
     T *f = _t_newr(t,FLUX);
@@ -132,7 +131,6 @@ void _r_free(Receptor *r) {
     lableTableFree(&r->table);
     _a_free_instances(&r->instances);
     if (r->q) _p_freeq(r->q);
-
     free(r);
 }
 
