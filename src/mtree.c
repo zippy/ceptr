@@ -20,10 +20,10 @@ const H null_H = {0,{NULL_ADDR,NULL_ADDR}};
 /// @todo make this not realloc each time?
 void __m_add_level(M *m) {
     if (!m->levels++) {
-    m->lP = malloc(sizeof(L));
+        m->lP = malloc(sizeof(L));
     }
     else {
-    m->lP = realloc(m->lP,sizeof(L)*m->levels);
+        m->lP = realloc(m->lP,sizeof(L)*m->levels);
     }
     int i = m->levels-1;
     m->lP[i].nodes = 0;
@@ -35,17 +35,17 @@ N *__m_add_nodes(H h,L *l,int c) {
     N *n;
     Mindex i = l->nodes;
     if (!i) {
-    size_t s = sizeof(N)*c;
+        size_t s = sizeof(N)*c;
         l->nP = malloc(s);
-    memset(l->nP,0,s);
-    l->nodes = c;
+        memset(l->nP,0,s);
+        l->nodes = c;
     }
     else {
-    //  size_t os = sizeof(N)*l->nodes;
-    l->nodes += c;
-    size_t ns = sizeof(N)*l->nodes;
+        //  size_t os = sizeof(N)*l->nodes;
+        l->nodes += c;
+        size_t ns = sizeof(N)*l->nodes;
         l->nP = realloc(l->nP,ns);
-    //  memset(l->nP+ns,0,sizeof(N)*c);
+        //  memset(l->nP+ns,0,sizeof(N)*c);
     }
     n = _GET_NODE(h,l,i);
     return n;
@@ -57,16 +57,16 @@ void __m_new_init(H parent,H *h,L **l) {
     h->a.l = parent.a.l+1;
 
     if (parent.a.l >= parent.m->levels) {
-    raise_error("address too deep!");
+        raise_error("address too deep!");
     }
     else if (parent.a.l == parent.m->levels-1) {
-    h->a.i = 0;
-    __m_add_level(h->m);
-    *l = GET_LEVEL(*h);
+        h->a.i = 0;
+        __m_add_level(h->m);
+        *l = GET_LEVEL(*h);
     }
     else {
-    *l = GET_LEVEL(*h);
-    h->a.i = (*l)->nodes;
+        *l = GET_LEVEL(*h);
+        h->a.i = (*l)->nodes;
     }
 }
 
@@ -277,23 +277,23 @@ size_t _m_size(H h) {return __m_get(h)->size;}
 void __m_free(H h,int free_surface) {
     int i = h.m->levels;
     while(i--) {
-    L *l = _GET_LEVEL(h,i);
-    Mindex j = l->nodes;
-    if (free_surface) {
-        while(j--) {
-            N *n = _GET_NODE(h,l,j);
-            if (!(n->flags & TFLAG_REFERENCE)) {
-                if (n->flags & TFLAG_SURFACE_IS_RECEPTOR) raise_error("mtree can't free receptor!");
-                if (n->flags & TFLAG_SURFACE_IS_TREE && !(n->flags & TFLAG_SURFACE_IS_RECEPTOR)) {
-                    _m_free(*(H *)n->surface);
-                }
-                if (n->flags & TFLAG_ALLOCATED) {
-                    free(n->surface);
+        L *l = _GET_LEVEL(h,i);
+        Mindex j = l->nodes;
+        if (free_surface) {
+            while(j--) {
+                N *n = _GET_NODE(h,l,j);
+                if (!(n->flags & TFLAG_REFERENCE)) {
+                    if (n->flags & TFLAG_SURFACE_IS_RECEPTOR) raise_error("mtree can't free receptor!");
+                    if (n->flags & TFLAG_SURFACE_IS_TREE && !(n->flags & TFLAG_SURFACE_IS_RECEPTOR)) {
+                        _m_free(*(H *)n->surface);
+                    }
+                    if (n->flags & TFLAG_ALLOCATED) {
+                        free(n->surface);
+                    }
                 }
             }
         }
-    }
-    free(l->nP);
+        free(l->nP);
     }
     free(h.m->lP);
     free(h.m);
@@ -320,14 +320,14 @@ int _m_children(H h) {
     Mindex max = l->nodes;
     N *n = &l->nP[0];
 
-/* this works if nodes are sorted
-    while (i < max && n->parenti != h.a.i) {
-    n++;i++;
-    }
-    while (i < max && n->parenti == h.a.i) {
-    n++;i++;c++;
-    }
-*/
+    /* this works if nodes are sorted
+       while (i < max && n->parenti != h.a.i) {
+       n++;i++;
+       }
+       while (i < max && n->parenti == h.a.i) {
+       n++;i++;c++;
+       }
+    */
     while (i < max) {
         if (!(n->flags & TFLAG_DELETED) && pi == n->parenti) c++;
         n++;i++;
@@ -416,18 +416,18 @@ Maddr _m_child(H h,Mindex c) {
     // this routine returns the last child address
     if (c == NULL_ADDR) {
     while (a.i < max && n->parenti == h.a.i) {
-        a.i++;n++;
+    a.i++;n++;
     }
     a.i--;
     if (a.i == -1) a.l = NULL_ADDR;
     }
     else {
     if (a.i+c > l->nodes) {
-        raise_error("address too deep!");
+    raise_error("address too deep!");
     }
     a.i += c-1;
     }
-*/
+    */
 
     return a;
 }
@@ -529,52 +529,52 @@ void _m_walk(H h,void (*walkfn)(H ,N *,void *,MwalkState *,Maddr),void *user_dat
     //    raise(SIGINT);
 
     while(!done) {
-    backup = 0;
-    n = GET_NODE(h,l);
-    // look for child of parent at this level (may be node at current handle address)
-    while ((h.a.i < nodes)  && ((n->flags & TFLAG_DELETED) || (n->parenti != ap.i))) {
-        n++;h.a.i++;
-    };
+        backup = 0;
+        n = GET_NODE(h,l);
+        // look for child of parent at this level (may be node at current handle address)
+        while ((h.a.i < nodes)  && ((n->flags & TFLAG_DELETED) || (n->parenti != ap.i))) {
+            n++;h.a.i++;
+        };
 
-    // if we got one, then call the walk function
-    if (h.a.i != nodes) {
-        (*walkfn)(h,n,user_data,state,ap);
-        // and go down looking for children
-        if (h.a.l+1 < levels) {
-        state[h.a.l].i = h.a.i;
-        ap = h.a;
-        h.a.l++;
-        h.a.i = 0;
-        l = GET_LEVEL(h);
-        nodes = l->nodes;
+        // if we got one, then call the walk function
+        if (h.a.i != nodes) {
+            (*walkfn)(h,n,user_data,state,ap);
+            // and go down looking for children
+            if (h.a.l+1 < levels) {
+                state[h.a.l].i = h.a.i;
+                ap = h.a;
+                h.a.l++;
+                h.a.i = 0;
+                l = GET_LEVEL(h);
+                nodes = l->nodes;
+            }
+            else {
+                // if no more levels, then backup if no more nodes
+                if (++h.a.i == nodes)
+                    backup = 1;
+            }
         }
-        else {
-        // if no more levels, then backup if no more nodes
-        if (++h.a.i == nodes)
-            backup = 1;
-        }
-    }
-    else backup = 1;
+        else backup = 1;
 
-    while(backup) {
-        // if current node is at root level we are done
-        if (h.a.l == root) {backup = 0;done = 1;}
-        else {
-        // otherwise move up a level
-        h.a.l--;
-        // new node index is next node at that level from stored state
-        h.a.i = state[h.a.l].i+1;
-        l = GET_LEVEL(h);
-        nodes = l->nodes;
-        // if we still have nodes to check then we have finished backing up otherwise
-        // we'll loop to go back up another level
-        if (h.a.i < nodes) {
-            backup = 0;
-            ap.l = h.a.l -1;
-            ap.i = state[ap.l].i;
+        while(backup) {
+            // if current node is at root level we are done
+            if (h.a.l == root) {backup = 0;done = 1;}
+            else {
+                // otherwise move up a level
+                h.a.l--;
+                // new node index is next node at that level from stored state
+                h.a.i = state[h.a.l].i+1;
+                l = GET_LEVEL(h);
+                nodes = l->nodes;
+                // if we still have nodes to check then we have finished backing up otherwise
+                // we'll loop to go back up another level
+                if (h.a.i < nodes) {
+                    backup = 0;
+                    ap.l = h.a.l -1;
+                    ap.i = state[ap.l].i;
+                }
+            }
         }
-        }
-    }
     }
 }
 
@@ -646,14 +646,14 @@ S *_m_serialize(M *m) {
 
     // calculate level and blob sizes so we can allocate
     for(h.a.l=0; h.a.l<m->levels; h.a.l++) {
-    L *l = GET_LEVEL(h);
+        L *l = GET_LEVEL(h);
 
-    levels_size +=  SERIALIZED_LEVEL_SIZE(l);
+        levels_size +=  SERIALIZED_LEVEL_SIZE(l);
 
-    for(h.a.i=0;h.a.i < l->nodes;h.a.i++) {
-        N *n = GET_NODE(h,l);
-        blob_size+=n->size;
-    }
+        for(h.a.i=0;h.a.i < l->nodes;h.a.i++) {
+            N *n = GET_NODE(h,l);
+            blob_size+=n->size;
+        }
     }
 
     size_t total_size = s_size+levels_size+blob_size;
@@ -670,31 +670,31 @@ S *_m_serialize(M *m) {
     blob_size = 0;
 
     for(h.a.l=0; h.a.l<m->levels; h.a.l++) {
-    s->level_offsets[h.a.l] = levels_size;
-    L *sl = (L *) (((void *)s) + s_size + levels_size);
+        s->level_offsets[h.a.l] = levels_size;
+        L *sl = (L *) (((void *)s) + s_size + levels_size);
 
-    L *l = GET_LEVEL(h);
-    levels_size +=  SERIALIZED_LEVEL_SIZE(l);
+        L *l = GET_LEVEL(h);
+        levels_size +=  SERIALIZED_LEVEL_SIZE(l);
 
-    sl->nodes = l->nodes;
+        sl->nodes = l->nodes;
 
-    N *sn = sizeof(Mindex)+(void *)sl;
-    for(h.a.i=0;h.a.i < l->nodes;h.a.i++) {
-        N *n = GET_NODE(h,l);
-        *sn = *n;
-        //      raise(SIGINT);
+        N *sn = sizeof(Mindex)+(void *)sl;
+        for(h.a.i=0;h.a.i < l->nodes;h.a.i++) {
+            N *n = GET_NODE(h,l);
+            *sn = *n;
+            //      raise(SIGINT);
 
-        if (n->flags & TFLAG_ALLOCATED) {
-            *(size_t *)&sn->surface = blob_size;
-            memcpy(blob+blob_size,n->surface,n->size);
-            blob_size+=n->size;
+            if (n->flags & TFLAG_ALLOCATED) {
+                *(size_t *)&sn->surface = blob_size;
+                memcpy(blob+blob_size,n->surface,n->size);
+                blob_size+=n->size;
+            }
+            else {
+                memcpy(&sn->surface,&n->surface,n->size);
+            }
+
+            sn = (N *) (SERIALIZED_NODE_SIZE + ((void*)sn));
         }
-        else {
-            memcpy(&sn->surface,&n->surface,n->size);
-        }
-
-        sn = (N *) (SERIALIZED_NODE_SIZE + ((void*)sn));
-    }
     }
     return s;
 }
