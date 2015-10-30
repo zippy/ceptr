@@ -600,6 +600,9 @@ Error _r_deliver(Receptor *r, T *signal) {
                     Symbol carrier = *(Symbol *)_t_surface(_t_child(l,PendingResponseCarrierIdx));
                     int *code_path = (int *)_t_surface(_t_child(l,PendingResponseResponseCodePathIdx));
                     T *response = (T *)_t_surface(_t_child(signal,SignalBodyIdx));
+                    // now set up the signal so when it's freed below, the body doesn't get freed too
+                    signal->context.flags &= ~TFLAG_SURFACE_IS_TREE;
+
                     response = __r_sanatize_response(r,response,carrier);
                     // the response isn't safe, i.e. has unexpected carrier or other bad stuff in it
                     // just break
@@ -634,6 +637,7 @@ Error _r_deliver(Receptor *r, T *signal) {
                     break;
                 }
                 );
+        _t_free(signal);
     }
     else {
         Aspect aspect = *(Aspect *)_t_surface(_t_child(envelope,EnvelopeAspectIdx));
