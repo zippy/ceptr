@@ -14,9 +14,6 @@
 #include "receptor.h"
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <errno.h>
 
 VMHost *G_vm = 0;
 
@@ -52,30 +49,9 @@ void _a_boot(char *dir_path) {
         char fn[1000];
         __a_fname(fn,dir_path);
 
-        off_t file_size;
-        char *buffer;
-        struct stat stbuf;
-        int fd;
+        void *buffer;
+        readFile(fn,&buffer,0);
 
-        fd = open(fn, O_RDONLY);
-        if (fd == -1) {
-            raise_error("unable to open: %s",fn);
-        }
-
-        if ((fstat(fd, &stbuf) != 0) || (!S_ISREG(stbuf.st_mode))) {
-            raise_error("not a regular file: %s",fn);
-        }
-
-        file_size = stbuf.st_size;
-
-        buffer = (char*)malloc(file_size);
-        if (buffer == NULL) {
-            raise_error("unable to allocate enough memory for contents of: %s",fn);
-        }
-        ssize_t bytes_read = read(fd,buffer,file_size);
-        if (bytes_read == -1) {
-            raise_error("error reading %s: %d",fn,errno)
-        }
         Receptor *r = _r_unserialize(buffer);
         G_vm = __v_init(r);
         free(buffer);
@@ -100,7 +76,7 @@ void _a_shut_down() {
     _v_join_thread(&G_vm->clock_thread);
     _v_join_thread(&G_vm->vm_thread);
 
-    // make sure all receptor state info is serialized
+    // serialize the receptor part of the vmhost
     void *surface;
     size_t length;
     _r_serialize(G_vm->r,&surface,&length);
@@ -109,6 +85,8 @@ void _a_shut_down() {
     __a_fname(fn,G_vm->dir);
     writeFile(fn,surface,length);
     free(surface);
+
+    // serialize other parts of the vmhost
 
     // free the memory used by the VM_HOST
     _v_free(G_vm);

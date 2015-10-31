@@ -16,6 +16,7 @@
 void hexDump(char *desc, void *addr, int len);
 int strcicmp(char const *a, char const *b);
 void writeFile(char *fn,void *data,size_t size);
+void readFile(char *fn,void **data,size_t *size);
 uint64_t diff_micro(struct timespec *start, struct timespec *end);
 
 #endif

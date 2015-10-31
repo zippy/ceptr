@@ -3,6 +3,12 @@
  * @copyright Copyright (C) 2013-2015, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
  */
 #include "util.h"
+#include <fcntl.h>
+#include <unistd.h>
+#include <errno.h>
+#include <sys/stat.h>
+#include <stdlib.h>
+#include "ceptr_error.h"
 
 void hexDump(char *desc, void *addr, int len) {
     int i;
@@ -57,6 +63,40 @@ void writeFile(char *fn,void *data,size_t size) {
         fwrite(data, 1,size, ofp);
         fclose(ofp);
     }
+}
+
+void readFile(char *fn,void **data,size_t *size) {
+    off_t file_size;
+    char *buffer;
+    struct stat stbuf;
+    int fd;
+
+    fd = open(fn, O_RDONLY);
+    if (fd == -1) {
+        raise_error("unable to open: %s",fn);
+    }
+
+    if ((fstat(fd, &stbuf) != 0) || (!S_ISREG(stbuf.st_mode))) {
+        close(fd);
+        raise_error("not a regular file: %s",fn);
+    }
+
+    file_size = stbuf.st_size;
+    if (size) *size = file_size;
+
+    buffer = malloc(file_size);
+    if (buffer == NULL) {
+        close(fd);
+        raise_error("unable to allocate enough memory for contents of: %s",fn);
+    }
+    ssize_t bytes_read = read(fd,buffer,file_size);
+    if (bytes_read == -1) {
+        close(fd);
+        free(buffer);
+        raise_error("error reading %s: %d",fn,errno);
+    }
+    *data = buffer;
+    close(fd);
 }
 
 uint64_t diff_micro(struct timespec *start, struct timespec *end)
