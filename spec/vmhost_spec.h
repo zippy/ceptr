@@ -423,12 +423,12 @@ void testVMHostShell() {
 
 void testVMHostSerialize() {
     G_vm = _v_new();
-    //       _v_instantiate_builtins(G_vm);
+    _v_instantiate_builtins(G_vm);
 
     spec_is_str_equal(t2s(G_vm->r->root),"(VM_HOST_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))");
 
     Receptor *clock = G_vm->active_receptors[0];
-    //    _testReceptorClockAddListener(clock);
+        _testReceptorClockAddListener(clock);
 
     void *surface;
     size_t length;
@@ -436,10 +436,11 @@ void testVMHostSerialize() {
     Receptor *r = _r_unserialize(surface);
     spec_is_str_equal(t2s(r->root),"(VM_HOST_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))");
 
-    //__r_dump_instances(r);
+    // __r_dump_instances(r);
     _r_free(r);
     free(surface);
     _v_free(G_vm);
+    G_vm=NULL;
 }
 void testVMHost() {
     _setup_HTTPDefs();

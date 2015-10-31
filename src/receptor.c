@@ -405,6 +405,7 @@ void _r_serialize(Receptor *r,void **surfaceP,size_t *lengthP) {
     *lengthP = s->total_size+is->total_size;
     *surfaceP = (void *)s;
     free(is);
+    _m_free(h);
 }
 
 /**

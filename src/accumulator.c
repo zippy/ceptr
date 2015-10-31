@@ -11,11 +11,19 @@
 #include "accumulator.h"
 #include "semtrex.h"
 #include "mtree.h"
+#include "receptor.h"
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <fcntl.h>
 #include <unistd.h>
+#include <errno.h>
 
 VMHost *G_vm = 0;
+
+void __a_fname(char *buf,char *dir) {
+    strcpy(buf,dir);
+    strcpy(buf+strlen(buf),"/vmhost.x");
+}
 
 /**
  * bootstrap the ceptr system
@@ -26,10 +34,6 @@ VMHost *G_vm = 0;
  *
  */
 void _a_boot(char *dir_path) {
-    // _a_check_vm_host_version_on_the_compository();
-
-    // instantiate a VMHost object
-    G_vm = _v_new();
 
     // check if the storage directory exists
     struct stat st = {0};
@@ -38,14 +42,48 @@ void _a_boot(char *dir_path) {
         // create directory
         mkdir(dir_path,0700);
 
+        // instantiate a VMHost object
+        G_vm = _v_new();
         // create the basic receptors that all VMHosts have
         _v_instantiate_builtins(G_vm);
     }
     else {
-        raise_error("not yet implemented");
         // deserialize all of the vmhost's instantiated receptors and other instances
-        // ...
+        char fn[1000];
+        __a_fname(fn,dir_path);
+
+        off_t file_size;
+        char *buffer;
+        struct stat stbuf;
+        int fd;
+
+        fd = open(fn, O_RDONLY);
+        if (fd == -1) {
+            raise_error("unable to open: %s",fn);
+        }
+
+        if ((fstat(fd, &stbuf) != 0) || (!S_ISREG(stbuf.st_mode))) {
+            raise_error("not a regular file: %s",fn);
+        }
+
+        file_size = stbuf.st_size;
+
+        buffer = (char*)malloc(file_size);
+        if (buffer == NULL) {
+            raise_error("unable to allocate enough memory for contents of: %s",fn);
+        }
+        ssize_t bytes_read = read(fd,buffer,file_size);
+        if (bytes_read == -1) {
+            raise_error("error reading %s: %d",fn,errno)
+        }
+        Receptor *r = _r_unserialize(buffer);
+        G_vm = __v_init(r);
+        free(buffer);
     }
+    G_vm->dir = dir_path;
+
+    // _a_check_vm_host_version_on_the_compository();
+
     _v_start_vmhost(G_vm);
 }
 
@@ -63,7 +101,14 @@ void _a_shut_down() {
     _v_join_thread(&G_vm->vm_thread);
 
     // make sure all receptor state info is serialized
-    // ...
+    void *surface;
+    size_t length;
+    _r_serialize(G_vm->r,&surface,&length);
+    //    _r_unserialize(surface);
+    char fn[1000];
+    __a_fname(fn,G_vm->dir);
+    writeFile(fn,surface,length);
+    free(surface);
 
     // free the memory used by the VM_HOST
     _v_free(G_vm);
@@ -147,6 +192,8 @@ S *__a_serialize_instances(Instances *i) {
                 Receptor *r = __r_get_receptor(curi->instance);
                 _r_serialize(r,&surface,&length);
                 c = _t_new(0,SERIALIZED_RECEPTOR,surface,length);
+                //@todo create a version of _t_new that doesn't have to realloc the surface but can just use it
+                free(surface);
             }
             else c = _t_clone(curi->instance);
             _t_add(sym,c);

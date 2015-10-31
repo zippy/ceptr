@@ -169,7 +169,6 @@ void testReceptorResponseDeliver() {
     // and the pending_responses list should be cleared too
     spec_is_str_equal(_td(r,r->pending_responses),"(PENDING_RESPONSES)");
 
-    _t_free(s);
     _r_free(r);
 }
 
