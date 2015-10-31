@@ -133,44 +133,26 @@ Xaddr _v_new_receptor(VMHost *v,Receptor *parent,Symbol s, Receptor *r) {
 }
 
 /**
- * Activate a receptor from the installed packages
- *
- * unserializes the receptor from the RECEPTOR_PACKAGE and installs it into the
- * active receptors list
+ * Activate a receptor
  *
  * @param[in] v VMHost
  * @param[in] x Xaddr of receptor to activate
  *
- * @todo for now we are just storing the active receptors in the receptor tree
- * later this will probably have to be optimized into a hash/scape for faster access
  */
 void _v_activate(VMHost *v, Xaddr x) {
-    T *t = _r_get_instance(v->r,x);
-
-    __v_activate(v,__r_get_receptor(t));
-
-    // handle special cases
-    T *rt = _t_child(t,1);
-    if (semeq(_t_symbol(rt),CLOCK_RECEPTOR)) {
-        _v_start_thread(&v->clock_thread,___clock_thread,_t_surface(rt));
-    }
-}
-
-/**
- * Activate a receptor
- *
- * adds a receptor tree to the active receptors list
- *
- * @param[in] v VMHost
- * @param[in] r receptor to activate
- *
- */
-void __v_activate(VMHost *v, Receptor *r) {
     if (v->active_receptor_count+1 >= MAX_ACTIVE_RECEPTORS) {
         raise_error("too many active receptors");
     }
+    T *t = _r_get_instance(v->r,x);
+    Receptor *r = __r_get_receptor(t);
+    int c = v->active_receptor_count++;
+    v->active_receptors[c].r=r;
+    v->active_receptors[c].x=x;
 
-    v->active_receptors[v->active_receptor_count++]=r;
+    // handle special cases
+    if (semeq(_t_symbol(r->root),CLOCK_RECEPTOR)) {
+        _v_start_thread(&v->clock_thread,___clock_thread,r);
+    }
 }
 
 /**
@@ -279,7 +261,7 @@ void *__v_process(void *arg) {
         // priority/etc...
 
         for (i=0;v->r->state == Alive && i<v->active_receptor_count;i++) {
-            Receptor *r = v->active_receptors[i];
+            Receptor *r = v->active_receptors[i].r;
             if (r->q && r->q->contexts_count > 0) {
                 _p_reduceq(r->q);
             }
@@ -293,7 +275,7 @@ void *__v_process(void *arg) {
 
     // close down all receptors
     for (i=0;i<v->active_receptor_count;i++) {
-        Receptor *r = v->active_receptors[i];
+        Receptor *r = v->active_receptors[i].r;
         __r_kill(r);
         // if other receptors have threads associated with them, the possibly we should
         // be doing a thread_join here, or maybe even inside __r_kill @fixme

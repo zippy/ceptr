@@ -266,17 +266,17 @@ void testVMHostActivateReceptor() {
 
     Xaddr sx = _v_new_receptor(v,v->r,ss,server);
     Xaddr cx = _v_new_receptor(v,v->r,cs,client);
-    __v_activate(v,server);
-    __v_activate(v,client);
+    _v_activate(v,sx);
+    _v_activate(v,cx);
 
     // confirm that the activate list has new children
     spec_is_equal(v->active_receptor_count,2);
 
     // and that they are the same as the installed receptors
     Receptor *ar;
-    ar = v->active_receptors[0];
+    ar = v->active_receptors[0].r;
     spec_is_ptr_equal(ar,server);
-    ar = v->active_receptors[1];
+    ar = v->active_receptors[1].r;
     spec_is_ptr_equal(ar,client);
 
     _v_send(v,cx.addr,sx.addr,DEFAULT_ASPECT,_t_newi(0,ping,0));
@@ -427,14 +427,17 @@ void testVMHostSerialize() {
 
     spec_is_str_equal(t2s(G_vm->r->root),"(VM_HOST_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))");
 
-    Receptor *clock = G_vm->active_receptors[0];
-        _testReceptorClockAddListener(clock);
+    Receptor *clock = G_vm->active_receptors[0].r;
+    _testReceptorClockAddListener(clock);
 
     void *surface;
     size_t length;
     _r_serialize(G_vm->r,&surface,&length);
     Receptor *r = _r_unserialize(surface);
     spec_is_str_equal(t2s(r->root),"(VM_HOST_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))");
+
+    __r_kill(clock);
+    _v_join_thread(&G_vm->clock_thread);
 
     // __r_dump_instances(r);
     _r_free(r);

@@ -20,13 +20,19 @@ typedef struct thread {
     pthread_t pthread;
 } thread;
 
+typedef struct ActiveReceptor {
+    Xaddr x;
+    Receptor *r;
+} ActiveReceptor;
+
+
 #define MAX_ACTIVE_RECEPTORS 1000
 /**
  * VMHost holds all the data for an active virtual machine host
  */
 struct VMHost {
     Receptor *r;                ///< Receptor data for this vm host
-    Receptor *active_receptors[MAX_ACTIVE_RECEPTORS];       ///< pointer to array that holds all currently active receptors
+    ActiveReceptor active_receptors[MAX_ACTIVE_RECEPTORS];       ///< pointer to array that holds all currently active receptors
     int active_receptor_count;
     Scape *installed_receptors;
     thread vm_thread;
@@ -45,7 +51,6 @@ Xaddr _v_load_receptor_package(VMHost *v,T *p);
 Xaddr _v_install_r(VMHost *v,Xaddr package,T *bindings,char *label);
 Xaddr _v_new_receptor(VMHost *v,Receptor *parent,Symbol s, Receptor *r);
 void _v_activate(VMHost *v, Xaddr x);
-void __v_activate(VMHost *v, Receptor *r);
 void _v_send(VMHost *v,ReceptorAddress from,ReceptorAddress to,Aspect aspect,T *contents);
 void _v_send_signals(VMHost *v,T *signals);
 

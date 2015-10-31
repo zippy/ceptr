@@ -17,9 +17,14 @@
 
 VMHost *G_vm = 0;
 
-void __a_fname(char *buf,char *dir) {
+//@todo refactor into something better
+void __a_vmfn(char *buf,char *dir) {
     strcpy(buf,dir);
     strcpy(buf+strlen(buf),"/vmhost.x");
+}
+void __a_vmsfn(char *buf,char *dir) {
+    strcpy(buf,dir);
+    strcpy(buf+strlen(buf),"/vmhost_state.x");
 }
 
 /**
@@ -45,16 +50,32 @@ void _a_boot(char *dir_path) {
         _v_instantiate_builtins(G_vm);
     }
     else {
-        // deserialize all of the vmhost's instantiated receptors and other instances
+        // unserialize all of the vmhost's instantiated receptors and other instances
         char fn[1000];
-        __a_fname(fn,dir_path);
-
         void *buffer;
+        __a_vmfn(fn,dir_path);
         readFile(fn,&buffer,0);
 
         Receptor *r = _r_unserialize(buffer);
         G_vm = __v_init(r);
         free(buffer);
+
+        // unserialize other vmhost state data
+        __a_vmsfn(fn,dir_path);
+        S *s;
+        readFile(fn,&s,0);
+        H h = _m_unserialize(s);
+        free(s);
+
+        H hars; hars.m=h.m; hars.a = _m_child(h,1); // first child is ACTIVE_RECEPTORS
+        H har; har.m=h.m;
+        int i,j = _m_children(hars);
+        for (i=1;i<=j;i++) {
+            har.a = _m_child(hars,i);
+            if(!semeq(_m_symbol(har),RECEPTOR_XADDR)) raise_error("expecting RECEPTOR_XADDR!");
+            _v_activate(G_vm,*(Xaddr *)_m_surface(har));
+        }
+        _m_free(h);
     }
     G_vm->dir = dir_path;
 
@@ -82,11 +103,21 @@ void _a_shut_down() {
     _r_serialize(G_vm->r,&surface,&length);
     //    _r_unserialize(surface);
     char fn[1000];
-    __a_fname(fn,G_vm->dir);
+    __a_vmfn(fn,G_vm->dir);
     writeFile(fn,surface,length);
     free(surface);
 
     // serialize other parts of the vmhost
+    int i;
+    H h = _m_newr(null_H,VM_HOST_STATE);
+    H har = _m_newr(h,ACTIVE_RECEPTORS);
+    for (i=0;i<G_vm->active_receptor_count;i++) {
+        _m_new(har,RECEPTOR_XADDR,&G_vm->active_receptors[i].x,sizeof(Xaddr));
+    }
+    S *s = _m_serialize(h.m);
+    __a_vmsfn(fn,G_vm->dir);
+    writeFile(fn,s,s->total_size);
+    free(s);
 
     // free the memory used by the VM_HOST
     _v_free(G_vm);

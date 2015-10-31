@@ -31,7 +31,7 @@ void testAccBootStrap() {
 
     // new clock receptor should be instantiated and active
     spec_is_equal(G_vm->active_receptor_count,1);
-    Receptor *clock = G_vm->active_receptors[0];
+    Receptor *clock = G_vm->active_receptors[0].r;
     spec_is_symbol_equal(G_vm->r,_t_symbol(clock->root),CLOCK_RECEPTOR);
 
 
