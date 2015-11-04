@@ -1,5 +1,7 @@
 # ceptr
 
+[![Join the chat at https://gitter.im/zippy/ceptr](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/zippy/ceptr?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Ceptr provides a new computing stack for semantic self-describing data, and protocols.
 
 ## Installation
