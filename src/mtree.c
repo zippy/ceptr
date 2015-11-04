@@ -704,10 +704,15 @@ S *_m_serialize(M *m) {
                 // @todo, a better way to do this would have been to serialize the orthogonal
                 //        trees ahead of time in the size calculation loop so as not to have to
                 //        realloc here, instead we could just copy the tree in
-                size_t new_total_size = s->total_size + ss->total_size - sizeof(H*);
+                size_t new_total_size = s->total_size + ss->total_size;
                 s = realloc(s,new_total_size);
                 s->total_size = new_total_size;
-                blob = s->blob_offset + (void *)s; // reset the blob pointer
+                // reset pointers into the serialized block because of the realloc:
+                // blob, sl and sn
+                blob = s->blob_offset + (void *)s;
+                sl = (L *) (((void *)s) + s_size + levels_size);
+                sn = sizeof(Mindex)+(void *)sl + SERIALIZED_NODE_SIZE*h.a.i;
+
                 memcpy(blob+blob_size,ss,ss->total_size);
                 blob_size+=ss->total_size;
                 free(ss);

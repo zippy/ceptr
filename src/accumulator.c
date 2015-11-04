@@ -118,6 +118,7 @@ void _a_shut_down() {
     __a_vmsfn(fn,G_vm->dir);
     writeFile(fn,s,s->total_size);
     free(s);
+    _m_free(h);
 
     // free the memory used by the VM_HOST
     _v_free(G_vm);
