@@ -309,13 +309,11 @@ void testVMHostShell() {
     _v_instantiate_builtins(G_vm);
 
     // create the shell receptor
+    // @todo fix the naming paradox that the "shell" symbol is defined in the
+    // vmhost context here, but used in the context of the receptor itself
+    // see bug #31
     Symbol shell = _r_declare_symbol(G_vm->r,RECEPTOR,"shell");
     Receptor *r = _r_new(shell);
-
-    Symbol verb = _r_declare_symbol(r,CSTRING,"verb");
-    Structure command = _r_define_structure(r,"command",1,verb); // need the optional parameters part here
-    Symbol shell_command = _r_declare_symbol(r,command,"shell command");
-
     Xaddr shellx = _v_new_receptor(G_vm,G_vm->r,shell,r);
     _v_activate(G_vm,shellx);
 
@@ -344,13 +342,13 @@ void testVMHostShell() {
     // create expectations for commands
     // (expect (on std_in LINE) action (send self (shell_command parsed from LINE))
     T *expect = _t_new_root(EXPECTATION);
-    T *s = _t_news(expect,SEMTREX_GROUP,verb);
+    T *s = _t_news(expect,SEMTREX_GROUP,VERB);
     _sl(s,LINE);
     T *p = _t_new_root(SEND);
     ReceptorAddress to =  __r_get_self_address(r);
 
     _t_newi(p,RECEPTOR_ADDRESS,to);
-    T *x = _t_newr(p,shell_command);
+    T *x = _t_newr(p,SHELL_COMMAND);
     int pt1[] = {2,1,TREE_PATH_TERMINATOR};
     _t_new(x,PARAM_REF,pt1,sizeof(int)*4);
     _t_news(p,RESPONSE_CARRIER,NULL_SYMBOL); //@todo fixme!! which is the right carrier?
@@ -359,17 +357,17 @@ void testVMHostShell() {
     Process proc = _r_code_process(r,p,"send self command","long desc...",NULL);
     T *act = _t_newp(0,ACTION,proc);
     T* params = _t_new_root(PARAMS);
-    _t_news(params,INTERPOLATE_SYMBOL,verb);
-    _r_add_listener(r,DEFAULT_ASPECT,verb,expect,params,act);
+    _t_news(params,INTERPOLATE_SYMBOL,VERB);
+    _r_add_listener(r,DEFAULT_ASPECT,VERB,expect,params,act);
 
     // (expect (on flux SHELL_COMMAND:time) action(send std_out (convert_to_lines (listen to clock)))
     expect = _t_new_root(EXPECTATION);
-    s = _t_news(expect,SEMTREX_GROUP,shell_command);
+    s = _t_news(expect,SEMTREX_GROUP,SHELL_COMMAND);
 
-    T *cm = _sl(s,shell_command);
+    T *cm = _sl(s,SHELL_COMMAND);
     T *vl =  _t_newr(cm,SEMTREX_VALUE_LITERAL);
     T *vls = _t_newr(vl,SEMTREX_VALUE_SET);
-    _t_new_str(vls,verb,"time");
+    _t_new_str(vls,VERB,"time");
 
     p = _t_new_root(SEND);
     _t_newi(p,RECEPTOR_ADDRESS,ox.addr);
@@ -384,7 +382,7 @@ void testVMHostShell() {
     act = _t_newp(0,ACTION,proc);
     params = _t_new_root(PARAMS);
     //   _t_news(params,INTERPOLATE_SYMBOL,shell_command);
-    _r_add_listener(r,DEFAULT_ASPECT,verb,expect,params,act);
+    _r_add_listener(r,DEFAULT_ASPECT,VERB,expect,params,act);
 
     // (expect (on flux SHELL_COMMAND:receptor) action (send std_out (convert_to_lines (send vmhost (get receptor list from vmhost)))))
 
@@ -408,6 +406,8 @@ void testVMHostShell() {
     spec_is_true(output_data != 0); // protect against seg-faults when nothing was written to the stream...
     if (output_data != 0) {spec_is_str_equal(output_data,"some time representation x 2");}
     __r_kill(G_vm->r);
+
+    //    puts(_t2s(&G_vm->r->defs,r->root));
 
     _v_join_thread(&G_vm->clock_thread);
     _v_join_thread(&G_vm->vm_thread);

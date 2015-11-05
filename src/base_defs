@@ -249,8 +249,13 @@ Symbol: TREE_DELTA_REPLACE,TREE_DELTA;
 ########################################################################################
 Context: LOCAL;
 
-Symbol: LINE,CSTRING;                 text lines from unix streams
+Symbol: LINE,CSTRING;                           text lines from unix streams
 
+#defs for shell receptor
+Symbol: VERB,CSTRING;
+Symbol: COMMAND_PARAMETER,CSTRING;
+Structure: COMMAND,(VERB,*COMMAND_PARAMETER);
+Symbol: SHELL_COMMAND,COMMAND;
 
 ########################################################################################
 Context: TEST;

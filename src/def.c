@@ -35,13 +35,11 @@ char *_d_get_symbol_name(T *symbols,Symbol s) {
     if (is_sys_symbol(s) && (s.id == 0))
         return "NULL_SYMBOL";
     if (symbols) {
-        int c = _t_children(symbols);
-        if (s.id > c || s.id < 1)  {
-            raise_error("Bad symbol:%d--%d symbols in decl list",s.id,c);
-        }
         T *def = _t_child(symbols,s.id);
-        T *l = _t_child(def,1);
-        return (char *)_t_surface(_t_child(def,1));
+        if (def) {
+            T *l = _t_child(def,1);
+            return (char *)_t_surface(_t_child(def,1));
+        }
     }
     sprintf(__d_extra_buf,"<unknown symbol:%d.%d.%d>",s.context,s.semtype,s.id);
     return __d_extra_buf;
@@ -64,8 +62,10 @@ char *_d_get_structure_name(T *structures,Structure s) {
         return "NULL_STRUCTURE";
     if (structures) {
         T *def = _t_child(structures,s.id);
-        T *l = _t_child(def,1);
-        return (char *)_t_surface(l);
+        if (def) {
+            T *l = _t_child(def,1);
+            return (char *)_t_surface(l);
+        }
     }
     sprintf(__d_extra_buf,"<unknown structure:%d.%d.%d>",s.context,s.semtype,s.id);
     return __d_extra_buf;
@@ -240,6 +240,9 @@ Structure _d_get_symbol_structure(T *symbols,Symbol s) {
 
     if (symbols) {
         T *def = _t_child(symbols,s.id);
+        if (!def) {
+            raise_error("Bad symbol:%d.%d.%d-- only %d symbols in decl list",s.context,s.semtype,s.id,_t_children(symbols));
+        }
         T *t = _t_child(def,2); // second child of the def is the structure
         return *(Structure *)_t_surface(t);
     }

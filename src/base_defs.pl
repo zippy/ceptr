@@ -214,6 +214,7 @@ EOF
 &hout("SYS","Process");
 &hout("TEST","Symbol");
 &hout("LOCAL","Symbol");
+&hout("LOCAL","Structure");
 
 sub hout {
     my $context = shift;

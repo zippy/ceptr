@@ -568,8 +568,23 @@ enum TESTSymbolIDs {
 enum LOCALSymbolIDs {
     NULL_LOCAL_SYMBOL_ID,
     LINE_ID,
+    VERB_ID,
+    COMMAND_PARAMETER_ID,
+    SHELL_COMMAND_ID,
     NUM_LOCAL_SYMBOLS
 };
 #define LINE G_contexts[LOCAL_CONTEXT].symbols[LINE_ID]
+#define VERB G_contexts[LOCAL_CONTEXT].symbols[VERB_ID]
+#define COMMAND_PARAMETER G_contexts[LOCAL_CONTEXT].symbols[COMMAND_PARAMETER_ID]
+#define SHELL_COMMAND G_contexts[LOCAL_CONTEXT].symbols[SHELL_COMMAND_ID]
+
+/**********************************************************************************/
+// LOCAL:Structure
+enum LOCALStructureIDs {
+    NULL_LOCAL_STRUCTURE_ID,
+    COMMAND_ID,
+    NUM_LOCAL_STRUCTURES
+};
+#define COMMAND G_contexts[LOCAL_CONTEXT].structures[COMMAND_ID]
 
 #endif

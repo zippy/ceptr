@@ -45,7 +45,9 @@ void def_sys() {
     G_contexts[SYS_CONTEXT].processes = malloc(NUM_SYS_PROCESSES*sizeof(Process));
 
     G_contexts[TEST_CONTEXT].symbols = malloc(NUM_TEST_SYMBOLS*sizeof(Symbol));
+    //    G_contexts[TEST_CONTEXT].structures = malloc(NUM_TEST_STRUCTURES*sizeof(Structure));
     G_contexts[LOCAL_CONTEXT].symbols = malloc(NUM_LOCAL_SYMBOLS*sizeof(Symbol));
+    G_contexts[LOCAL_CONTEXT].structures = malloc(NUM_LOCAL_STRUCTURES*sizeof(Structure));
 
     for (i=0;i<NUM_SYS_SYMBOLS;i++) {
         G_contexts[SYS_CONTEXT].symbols[i].id = -1;
