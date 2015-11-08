@@ -1,18 +1,24 @@
 # ceptr
 
-[![Join the chat at https://gitter.im/zippy/ceptr](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/zippy/ceptr?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 Ceptr provides a new computing stack for semantic self-describing data, and protocols.
 
 ## Installation
 
 There are currently no dependencies, so just clone this repo.
 
-To get ceptr running on Windows using Eclipse see: https://github.com/zippy/ceptr/blob/master/ceptr-eclipse-csharp-interface.txt
+Then cd into the root directory of the repo and type:
+
+    make ceptr
+
+This will build a ceptr node running the command-line receptor, which is currently very primitive, with just one command "time". more coming soon!
+
+For some guidance on getting the code-base to compile on Windows using Eclipse see: https://github.com/zippy/ceptr/blob/master/ceptr-eclipse-csharp-interface.txt  (Note: this hasn't been tested recently...)
 
 ## Usage
 
-See "Testing" below.
+TBD...
+
+Also, see "Testing" below.
 
 ## Documentation
 
@@ -30,15 +36,17 @@ TBD..
 
 ## Testing
 
-To compile and run all tests simple cd into the root directory and type:
+To compile and run all the tests simply cd into the root directory and type:
 
-    make
+    make specs
 
 This runs all of the tests, which live in the specs sub-directory.
 
 The tests also produce a bunch semantic trees dumped out to json for visualization in a testing web-app.  To be able to see these, you need to place the contents of the "web" sub-directory into a web server somewhere, and then just point your browser to that directory.  Please note that this isn't a comprehensive testing environment, just a space we've used for creating visuals for presentation purposes.
 
 ## Development
+
+[![Join the dev chat at https://gitter.im/zippy/ceptr](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/zippy/ceptr?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 [![Ready](https://badge.waffle.io/zippy/ceptr.svg?label=ready&title=Ready)](http://waffle.io/zippy/ceptr)
 
