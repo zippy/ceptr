@@ -32,6 +32,17 @@ void set_rt_cur_child(Receptor *r,T *tP,uint32_t idx) {
     (((rT *)tP)->cur_child) = idx;
 }
 
+void processUnblocker(Stream *st) {
+    int err;
+    // we might need to wait for the process to actually be blocked in the processing thread
+    // so if unblock reports that the process isn't blocked, then just wait for a bit.
+    // @todo, this is really ugly and could lead to deadlock, so we should fix it somehow!
+    while (err = _p_unblock((Q *)st->callback_arg1,st->callback_arg2)) {
+        sleepms(1);
+    }
+    //    if (err) raise_error("couldn't unblock!");
+}
+
 /**
  * implements the INTERPOLATE_FROM_MATCH process
  *
@@ -334,44 +345,40 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
     case STREAM_READ_ID:
         {
             // get the stream param
-            T *s = _t_detach_by_idx(code,1);
+            T *s = _t_child(code,1);
             Stream *st = _t_surface(s);
             if (st->type != UnixStream) raise_error("unknown stream type:%d\n",st->type);
-            FILE *stream = st->data.unix_stream;
-            _t_free(s);
-            // get the result type to use as the symbol type for the ascii data
-            s = _t_detach_by_idx(code,1);
-            sy = _t_symbol(s);
-            if (semeq(RESULT_SYMBOL,sy)) {
-                sy = *(Symbol *)_t_surface(s);
+            //@todo possible another parameter to specify if we should read lines, or specific number of bytes
+            st->callback = 0;
+            if (st->flags & StreamHasData) {
+                _t_detach_by_idx(code,1);
                 _t_free(s);
-                int ch;
-                char buf[1000]; //@todo handle buffer dynamically
-                int i = 0;
-
-                //@todo possible another parameter to specify if we should read lines, or specific number of bytes
-
-                //@todo integrity checks?
-                while ((ch = fgetc (stream)) != EOF && ch != '\n' && i < 1000)
-                    buf[i++] = ch;
-
-                if (ch == EOF) {
-                    if (errno) return unixErrnoReductionErr;
-
-                    //@todo what about the non-errno condition, just EOF?  If this is the first
-                    // read, i.e. and there wasn't any data, we shouldn't really be returning
-                    // an empty RESULT_SYMBOL even if we've set StreamHasData correctly
-
-                    st->flags &= ~StreamHasData;
-                    debug(D_STREAM,"Got EOF during READ\n");
-               }
-                if (i>=1000) {raise_error("buffer overrun in STREAM_READ");}
-
-                buf[i++]=0;
-                //                printf("just read: %s\n",buf);
-                x = __t_new(0,sy,buf,i,1);
+                if (st->err) return(st->err);
+                // get the result type to use as the symbol type for the ascii data
+                s = _t_detach_by_idx(code,1);
+                sy = _t_symbol(s);
+                if (semeq(RESULT_SYMBOL,sy)) {
+                    sy = *(Symbol *)_t_surface(s);
+                    _t_free(s);
+                    x = __t_new(0,sy,_st_data(st),_st_data_size(st),1);
+                    _st_data_read(st);
+                }
+                else {raise_error("expecting RESULT_SYMBOL");}
             }
-            else {raise_error("expecting RESULT_SYMBOL");}
+            else if (st->flags & StreamAlive) {
+                st->callback = processUnblocker;
+                st->callback_arg1 = q;
+                st->callback_arg2 = q->active->id;
+
+                // start up the thread to read the data,
+                _st_start_read(st);
+
+                // and block this context
+                return(Block);
+            }
+            else {
+                return deadStreamReadReductionErr;
+            }
         }
         break;
     case STREAM_WRITE_ID:
@@ -398,10 +405,15 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                     str = _t2s(&q->r->defs,s);
                 }
                 //str = t2s(s);
-                debug(D_STREAM,"just wrote: %s\n",str);
                 int err = fputs(str,stream);
                 _t_free(s);
-                if (err < 0) return unixErrnoReductionErr;
+                if (err < 0) {
+                    debug(D_STREAM,"unix error %d on attempting to write: %s\n",errno,str);
+                    return unixErrnoReductionErr;
+                }
+                else {
+                    debug(D_STREAM,"just wrote: %s\n",str);
+                }
                 if (add_nl) {
                     err = fputs("\n",stream);
                     if (err < 0) return unixErrnoReductionErr;
@@ -412,15 +424,17 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             x = __t_news(0,REDUCTION_ERROR_SYMBOL,NULL_SYMBOL,1);
         }
         break;
-    case STREAM_AVAILABLE_ID:
+    case STREAM_ALIVE_ID:
         {
             // get the stream param
             T *s = _t_detach_by_idx(code,1);
             Stream *st = _t_surface(s);
             if (st->type != UnixStream) raise_error("unknown stream type:%d\n",st->type);
             FILE *stream = st->data.unix_stream;
-            if (feof(stream)) st->flags &= ~StreamHasData;
-            x = __t_newi(0,BOOLEAN, (st->flags&StreamHasData)?1:0,1);
+            if (st->flags & StreamAlive)
+                if (feof(stream)) st->flags &= ~StreamAlive;
+            debug(D_STREAM,"testing StreamAlive: %d\n",st->flags & StreamAlive);
+            x = __t_newi(0,BOOLEAN, (st->flags&StreamAlive)?1:0,1);
             _t_free(s);
         }
         break;
@@ -612,11 +626,11 @@ void __p_unblock(Q *q,Qe *e) {
 /**
  * search for the context in the q and unblock it
  */
-Error _p_unblock(Q *q,R *context) {
+Error _p_unblock(Q *q,int id) {
     // find the context in the queue
     int err = 0;
     pthread_mutex_lock(&q->mutex);
-    Qe *e = __p_find_context(q->blocked,context->id);
+    Qe *e = __p_find_context(q->blocked,id);
     if (e) {
         __p_unblock(q,e);
     }
@@ -856,6 +870,7 @@ Error _p_step(Q *q, R **contextP) {
             case notInSignalContextReductionError: se=NOT_IN_SIGNAL_CONTEXT_ERR;
             case divideByZeroReductionErr: se=ZERO_DIVIDE_ERR;break;
             case incompatibleTypeReductionErr: se=INCOMPATIBLE_TYPE_ERR;break;
+            case deadStreamReadReductionErr: se=DEAD_STREAM_READ_ERR;break;
             case unixErrnoReductionErr:
                 /// @todo make a better error symbol here... :-P
                 extra = _t_new_str(0,TEST_STR_SYMBOL,strerror(errno));
@@ -1042,7 +1057,7 @@ int G_next_process_id = 0;
  *
  * @todo make thread safe.  currently you shouldn't call this if the Q is being actively reduced
  */
-void _p_addrt2q(Q *q,T *run_tree) {
+Qe *_p_addrt2q(Q *q,T *run_tree) {
     Qe *n = malloc(sizeof(Qe));
     n->id = ++G_next_process_id;
     n->prev = NULL;
@@ -1052,6 +1067,7 @@ void _p_addrt2q(Q *q,T *run_tree) {
     __p_append(q->active,n);
     q->contexts_count++;
     pthread_mutex_unlock(&q->mutex);
+    return n;
 }
 
 /**
@@ -1064,7 +1080,7 @@ void *_p_reduceq_thread(void *arg){
 
     int err;
     err = _p_reduceq((Q *)arg);
-    pthread_exit(err);
+    pthread_exit(NULL);
 }
 
 #ifdef CEPTR_DEBUG
@@ -1090,7 +1106,6 @@ Error _p_reduceq(Q *q) {
     struct timespec start, end;
 
     while (q->contexts_count) {
-
 #ifdef CEPTR_DEBUG
         char *sn[]={"Done","Ascend","Descend","Pushed","Pop","Eval","Block"};
 #define __debug_state_str(s) (s <= 0 ? sn[-s] : "Error")
@@ -1151,6 +1166,7 @@ Error _p_reduceq(Q *q) {
         qe = next ? next : q->active;  // next in round robin or wrap back to first
         pthread_mutex_unlock(&q->mutex);
     };
+
     /// @todo figure out what error we should be sending back here, i.e. what if
     // one process ended ok, but one did not.  What's the error?  Probably
     // the errors here would be at a different level, and the caller would be

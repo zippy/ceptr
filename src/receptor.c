@@ -536,7 +536,7 @@ void __r_check_listener(T* processes,T *listener,T *signal,Q *q) {
             _t_add(_t_child(context->run_tree,2),params);
             rt_cur_child(context->node_pointer) = RUN_TREE_NOT_EVAULATED;
 
-            _p_unblock(q,context);
+            _p_unblock(q,context->id);
         }
         else {
             Process p = *(Process*) _t_surface(action);
@@ -717,10 +717,9 @@ Receptor *_r_makeStreamReaderReceptor(Symbol receptor_symbol,Symbol stream_symbo
     // code is something like:
     // (do (not stream eof) (send to (read_stream stream line)))
 
-    T *t = _t_new_root(RUN_TREE);
     T *p = _t_new_root(REPLICATE);
     T *params = _t_newr(p,PARAMS);
-    T *eof = _t_newr(p,STREAM_AVAILABLE);
+    T *eof = _t_newr(p,STREAM_ALIVE);
 
     _t_new_stream(eof,stream_symbol,st);
     //    _t_newi(p,TEST_INT_SYMBOL,2);  // two repetitions
@@ -734,11 +733,10 @@ Receptor *_r_makeStreamReaderReceptor(Symbol receptor_symbol,Symbol stream_symbo
     _t_news(send,RESPONSE_CARRIER,NULL_SYMBOL); //@todo response carrier?
     _t_newi(send,BOOLEAN,1); // mark async
 
-    T *c = _t_rclone(p);
-    _t_add(t,c);
-
-    _p_addrt2q(r->q,t);
+    T *run_tree = __p_build_run_tree(p,0);
     _t_free(p);
+    _p_addrt2q(r->q,run_tree);
+
     return r;
 }
 

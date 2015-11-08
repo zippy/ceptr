@@ -183,6 +183,7 @@ Symbol: NOT_A_PROCESS_ERR,REDUCTION_ERROR;
 Symbol: NOT_IN_SIGNAL_CONTEXT_ERR,REDUCTION_ERROR;
 Symbol: INCOMPATIBLE_TYPE_ERR,REDUCTION_ERROR;
 Symbol: UNIX_ERRNO_ERR,REDUCTION_ERROR;
+Symbol: DEAD_STREAM_READ_ERR,REDUCTION_ERROR;
 
 Process: NOOP,"no-op","result",SIGNATURE_STRUCTURE,TREE,0;
 Process: IF,"if","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"condition",SIGNATURE_PROCESS,BOOLEAN,"then",SIGNATURE_ANY,NULL_STRUCTURE,"else",SIGNATURE_OPTIONAL,SIGNATURE_ANY,NULL_STRUCTURE,0;
@@ -205,8 +206,8 @@ Process: INTERPOLATE_FROM_MATCH,"interploate match result in place","result",SIG
 Process: RAISE,"raise reduction error","result",SIGNATURE_STRUCTURE,TREE,0;
 Process: STREAM_READ,"read from a stream","result",SIGNATURE_STRUCTURE,TREE,0;
 Process: STREAM_WRITE,"write to a stream","result",SIGNATURE_STRUCTURE,TREE,0;
-Process: STREAM_AVAILABLE,"check a stream for data availability","result",SIGNATURE_STRUCTURE,TREE,0;
-Process: REPLICATE,"replicate process","result",SIGNATURE_STRUCTURE,TREE,0;
+Process: STREAM_ALIVE,"check a stream is alive for reading","result",SIGNATURE_STRUCTURE,TREE,0;
+Process: REPLICATE,"replicate process","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"while",SIGNATURE_PROCESS,BOOLEAN,"do",SIGNATURE_ANY,NULL_STRUCTURE,0;
 Process: LISTEN,"plant a listener","result",SIGNATURE_STRUCTURE,TREE,0;
 
 Symbol: STX_TOKENS,LIST;

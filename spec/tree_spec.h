@@ -111,7 +111,7 @@ void testTreeStream() {
     char buffer[] = "line1\nline2\n";
     stream = fmemopen(buffer, strlen (buffer), "r+");
 
-    Stream *s = _st_new_unix_stream(stream);
+    Stream *s = _st_new_unix_stream(stream,0);
     T *ts = _t_new_stream(0,TEST_STREAM_SYMBOL,s);
 
     spec_is_true(ts->context.flags & TFLAG_SURFACE_IS_STREAM);

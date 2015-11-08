@@ -354,11 +354,8 @@ void testProcessSend() {
     G_next_process_id = 0; // reset the process ids so the test will always work
     Q *q = r->q;
     T *ps = r->pending_signals;
-    _p_addrt2q(q,run_tree);
-
-    Qe *e = q->active;
+    Qe *e =_p_addrt2q(q,run_tree);
     R *c = e->context;
-
 
     // after reduction the context should be in the blocked state
     // and the signal should be on the pending signals list
@@ -384,9 +381,7 @@ void testProcessSend() {
 
     r->q = q = _p_newq(r);
     ps = r->pending_signals;
-    _p_addrt2q(q,run_tree);
-
-    e = q->active;
+    e = _p_addrt2q(q,run_tree);
     c = e->context;
 
     // after reduction the context should have been moved to the completed list
@@ -428,85 +423,93 @@ void testProcessQuote() {
 void testProcessStream() {
     Defs defs = {0,0,0,0,0};
 
+    Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
+    Q *q = r->q;
+
     FILE *stream;
     char buffer[500] = "line1\nline2\n";
     stream = fmemopen(buffer, 500, "r+");
 
-    T *n = _t_new_root(STREAM_AVAILABLE);
-    Stream *st = _st_new_unix_stream(stream);
+    // test the basic case of the STREAM_ALIVE process which returns
+    // a boolean if the stream is readable or not.
+    T *n = _t_new_root(STREAM_ALIVE);
+    Stream *st = _st_new_unix_stream(stream,1);
     _t_new_stream(n,TEST_STREAM_SYMBOL,st);
-    __p_reduce_sys_proc(0,STREAM_AVAILABLE,n,0);
+    __p_reduce_sys_proc(0,STREAM_ALIVE,n,0);
     spec_is_str_equal(t2s(n),"(BOOLEAN:1)");
     _t_free(n);
 
-    T *run_tree = _t_new_root(RUN_TREE);
     // test reading a stream
-
     n = _t_new_root(STREAM_READ);
-
     _t_new_stream(n,TEST_STREAM_SYMBOL,st);
     _t_news(n,RESULT_SYMBOL,TEST_STR_SYMBOL);
 
-    T *c = _t_rclone(n);
-    _t_add(run_tree,c);
-    int err = _p_reduce(&defs,run_tree);
-    spec_is_equal(err,noReductionErr);
-
-    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (TEST_STR_SYMBOL:line1))");
-
+    T *run_tree = __p_build_run_tree(n,0);
     _t_free(n);
-    _t_free(run_tree);
+    Qe *e = _p_addrt2q(q,run_tree);
+    R *c = e->context;
+
+    // after reduction the context should be in the blocked state
+
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    spec_is_equal(q->contexts_count,0);
+    spec_is_ptr_equal(q->blocked,e);
+    spec_is_equal(c->state,Block);
+
+    // wait for read to complete, after which it should have also unblocked the
+    // context which should thus be ready for reduction again.
+    while(!(st->flags&StreamHasData) && st->flags&StreamAlive ) {sleepms(1);};
+    spec_is_equal(q->contexts_count,1);
+
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (TEST_STR_SYMBOL:line1) (PARAMS))");
 
     // test writing to the stream
-    run_tree = _t_new_root(RUN_TREE);
     n = _t_new_root(STREAM_WRITE);
     _t_new_stream(n,TEST_STREAM_SYMBOL,st);
     _t_new_str(n,TEST_STR_SYMBOL,"fish\n");
     _t_new_str(n,LINE,"cow");
     _t_newi(n,TEST_INT_SYMBOL,314);
 
-    c = _t_rclone(n);
-    _t_add(run_tree,c);
-    err = _p_reduce(&defs,run_tree);
-    spec_is_equal(err,noReductionErr);
+    run_tree = __p_build_run_tree(n,0);
+    _t_free(n);
+    e = _p_addrt2q(q,run_tree);
+
+    spec_is_equal(_p_reduceq(q),noReductionErr);
 
     spec_is_str_equal(buffer,"line1\nfish\ncow\n(TEST_INT_SYMBOL:314)\n");
 
-    _t_free(n);
-    _t_free(run_tree);
     _st_free(st);
 
     // test writing to a readonly stream
     stream = fmemopen(buffer, strlen (buffer), "r");
-    st = _st_new_unix_stream(stream);
-    run_tree = _t_new_root(RUN_TREE);
+    st = _st_new_unix_stream(stream,0);
     n = _t_new_root(STREAM_WRITE);
 
     _t_new_stream(n,TEST_STREAM_SYMBOL,st);
     _t_new_str(n,TEST_STR_SYMBOL,"fish\n");
 
-    c = _t_rclone(n);
-    _t_add(run_tree,c);
-    err = _p_reduce(&defs,run_tree);
-    spec_is_equal(err,unixErrnoReductionErr);
+    run_tree = __p_build_run_tree(n,0);
+    _t_free(n);
+    e = _p_addrt2q(q,run_tree);
+    spec_is_equal(_p_reduceq(q),noReductionErr);
 
+    // context should have recorded the err
+    spec_is_equal(e->context->err,unixErrnoReductionErr);
+
+    // buffer should remain unchanged
     spec_is_str_equal(buffer,"line1\nfish\ncow\n(TEST_INT_SYMBOL:314)\n");
 
-    _t_free(n);
-    _t_free(run_tree);
-
-
     while ((fgetc (stream)) != EOF);
-    n = _t_new_root(STREAM_AVAILABLE);
+    n = _t_new_root(STREAM_ALIVE);
     _t_new_stream(n,TEST_STREAM_SYMBOL,st);
-    __p_reduce_sys_proc(0,STREAM_AVAILABLE,n,0);
+    __p_reduce_sys_proc(0,STREAM_ALIVE,n,0);
     spec_is_str_equal(t2s(n),"(BOOLEAN:0)");
     _t_free(n);
 
     _st_free(st);
-
+    _r_free(r);
 }
-
 
 void testProcessExpectAct() {
 
@@ -546,9 +549,7 @@ void testProcessExpectAct() {
     Q *q = r->q;
 
     _t_newr(run_tree,PARAMS);
-    _p_addrt2q(q,run_tree);
-
-    Qe *e = q->active;
+    Qe *e = _p_addrt2q(q,run_tree);
     R *c = e->context;
 
     // after reduction the context should be in the blocked state
@@ -859,7 +860,7 @@ void testProcessReplicate() {
     _t_newi(code,TEST_INT_SYMBOL,3);
 
     T *x = _t_newr(code,STREAM_WRITE);
-    Stream *st = _st_new_unix_stream(output);
+    Stream *st = _st_new_unix_stream(output,0);
     _t_new_stream(x,TEST_STREAM_SYMBOL,st);
     _t_new_str(x,LINE,"testing");
 

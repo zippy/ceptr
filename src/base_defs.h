@@ -152,6 +152,7 @@ enum SYSSymbolIDs {
     NOT_IN_SIGNAL_CONTEXT_ERR_ID,
     INCOMPATIBLE_TYPE_ERR_ID,
     UNIX_ERRNO_ERR_ID,
+    DEAD_STREAM_READ_ERR_ID,
     STX_TOKENS_ID,
     STX_SL_ID,
     STX_OP_ID,
@@ -319,6 +320,7 @@ enum SYSSymbolIDs {
 #define NOT_IN_SIGNAL_CONTEXT_ERR G_contexts[SYS_CONTEXT].symbols[NOT_IN_SIGNAL_CONTEXT_ERR_ID]
 #define INCOMPATIBLE_TYPE_ERR G_contexts[SYS_CONTEXT].symbols[INCOMPATIBLE_TYPE_ERR_ID]
 #define UNIX_ERRNO_ERR G_contexts[SYS_CONTEXT].symbols[UNIX_ERRNO_ERR_ID]
+#define DEAD_STREAM_READ_ERR G_contexts[SYS_CONTEXT].symbols[DEAD_STREAM_READ_ERR_ID]
 #define STX_TOKENS G_contexts[SYS_CONTEXT].symbols[STX_TOKENS_ID]
 #define STX_SL G_contexts[SYS_CONTEXT].symbols[STX_SL_ID]
 #define STX_OP G_contexts[SYS_CONTEXT].symbols[STX_OP_ID]
@@ -506,7 +508,7 @@ enum SYSProcessIDs {
     RAISE_ID,
     STREAM_READ_ID,
     STREAM_WRITE_ID,
-    STREAM_AVAILABLE_ID,
+    STREAM_ALIVE_ID,
     REPLICATE_ID,
     LISTEN_ID,
     NUM_SYS_PROCESSES
@@ -532,7 +534,7 @@ enum SYSProcessIDs {
 #define RAISE G_contexts[SYS_CONTEXT].processes[RAISE_ID]
 #define STREAM_READ G_contexts[SYS_CONTEXT].processes[STREAM_READ_ID]
 #define STREAM_WRITE G_contexts[SYS_CONTEXT].processes[STREAM_WRITE_ID]
-#define STREAM_AVAILABLE G_contexts[SYS_CONTEXT].processes[STREAM_AVAILABLE_ID]
+#define STREAM_ALIVE G_contexts[SYS_CONTEXT].processes[STREAM_ALIVE_ID]
 #define REPLICATE G_contexts[SYS_CONTEXT].processes[REPLICATE_ID]
 #define LISTEN G_contexts[SYS_CONTEXT].processes[LISTEN_ID]
 

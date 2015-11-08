@@ -626,14 +626,14 @@ void testReceptorEdgeStream() {
     char buffer[] = "line1\nline2\n";
 
     rs = fmemopen(buffer, strlen (buffer), "r");
-    Stream *reader_stream = _st_new_unix_stream(rs);
+    Stream *reader_stream = _st_new_unix_stream(rs,1);
 
     VMHost *v = _v_new();
 
     char *output_data;
     size_t size;
     ws = open_memstream(&output_data,&size);
-    Stream *writer_stream = _st_new_unix_stream(ws);
+    Stream *writer_stream = _st_new_unix_stream(ws,0);
 
     Receptor *w = _r_makeStreamWriterReceptor(TEST_RECEPTOR_SYMBOL,TEST_STREAM_SYMBOL,writer_stream);
 
@@ -645,24 +645,35 @@ void testReceptorEdgeStream() {
     spec_is_str_equal(_td(w,__r_get_listeners(w,DEFAULT_ASPECT)),"(LISTENERS (LISTENER:LINE (EXPECTATION (SEMTREX_SYMBOL_ANY)) (PARAMS (INTERPOLATE_SYMBOL:NULL_SYMBOL)) (ACTION:echo input to stream)))");
 
     // manually run the reader's process queue
-    //debug_enable(D_REDUCE);
-    _p_reduceq(r->q);
-    //debug_disable(D_REDUCE);
+    //debug_enable(D_STREAM);
+    Q *q = r->q;
+    Stream *st = reader_stream;
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    while(!(st->flags&StreamHasData) && st->flags&StreamAlive ) {sleepms(1);};
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    while(!(st->flags&StreamHasData) && st->flags&StreamAlive ) {sleepms(1);};
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    while(!(st->flags&StreamHasData) && st->flags&StreamAlive ) {sleepms(1);};
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    //debug_disable(D_STREAM);
+    spec_is_false(st->flags&StreamAlive);
 
-    T *result = r->q->completed->context->run_tree;
+    spec_is_false(r->q->completed == NULL);
+    if (r->q->completed) {
+        spec_is_equal(r->q->completed->context->err,deadStreamReadReductionErr);
+    }
+    /* T *result = r->q->blocked->context->run_tree; */
 
-    /// @todo BOOLEAN is what's left from the replicate.  Should it be something else?
-    spec_is_str_equal(_td(r,result),"(RUN_TREE (BOOLEAN:0))");
+    /* /// @todo BOOLEAN is what's left from the replicate.  Should it be something else? */
+    /* spec_is_str_equal(_td(r,result),"(RUN_TREE (BOOLEAN:0))"); */
 
-    /// @todo @fixme we get an empty line signal because STREAM_AVAILABLE still reads true just before the last
-    // STREAM_READ which fails.  This shouldn't actually have produced a signal...
-    spec_is_str_equal(_td(r,r->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:2) (ASPECT:1) (CARRIER:LINE) (SIGNAL_UUID)) (BODY:{(LINE:line1)})) (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:2) (ASPECT:1) (CARRIER:LINE) (SIGNAL_UUID)) (BODY:{(LINE:line2)})) (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:2) (ASPECT:1) (CARRIER:LINE) (SIGNAL_UUID)) (BODY:{(LINE:)})))");
+    spec_is_str_equal(_td(r,r->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:2) (ASPECT:1) (CARRIER:LINE) (SIGNAL_UUID)) (BODY:{(LINE:line1)})) (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:2) (ASPECT:1) (CARRIER:LINE) (SIGNAL_UUID)) (BODY:{(LINE:line2)})))");
 
     // manually run the signal sending code
     _v_deliver_signals(v,r);
 
     // and see that they've shown up in the writer receptor's flux signals list
-    spec_is_str_equal(_td(w,__r_get_signals(w,DEFAULT_ASPECT)),"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:3) (RECEPTOR_ADDRESS:2) (ASPECT:1) (CARRIER:LINE) (SIGNAL_UUID)) (BODY:{(LINE:line1)}) (RUN_TREE (process:STREAM_WRITE (TEST_STREAM_SYMBOL) (PARAM_REF:/2/1)) (PARAMS (LINE:line1)))) (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:3) (RECEPTOR_ADDRESS:2) (ASPECT:1) (CARRIER:LINE) (SIGNAL_UUID)) (BODY:{(LINE:line2)}) (RUN_TREE (process:STREAM_WRITE (TEST_STREAM_SYMBOL) (PARAM_REF:/2/1)) (PARAMS (LINE:line2)))) (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:3) (RECEPTOR_ADDRESS:2) (ASPECT:1) (CARRIER:LINE) (SIGNAL_UUID)) (BODY:{(LINE:)}) (RUN_TREE (process:STREAM_WRITE (TEST_STREAM_SYMBOL) (PARAM_REF:/2/1)) (PARAMS (LINE:)))))");
+    spec_is_str_equal(_td(w,__r_get_signals(w,DEFAULT_ASPECT)),"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:3) (RECEPTOR_ADDRESS:2) (ASPECT:1) (CARRIER:LINE) (SIGNAL_UUID)) (BODY:{(LINE:line1)}) (RUN_TREE (process:STREAM_WRITE (TEST_STREAM_SYMBOL) (PARAM_REF:/2/1)) (PARAMS (LINE:line1)))) (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:3) (RECEPTOR_ADDRESS:2) (ASPECT:1) (CARRIER:LINE) (SIGNAL_UUID)) (BODY:{(LINE:line2)}) (RUN_TREE (process:STREAM_WRITE (TEST_STREAM_SYMBOL) (PARAM_REF:/2/1)) (PARAMS (LINE:line2)))))");
 
     // and that they've been removed from process queue pending signals list
     spec_is_str_equal(_td(r,r->pending_signals),"(PENDING_SIGNALS)");
@@ -674,10 +685,9 @@ void testReceptorEdgeStream() {
     _p_reduceq(w->q);
     //    debug_disable(D_REDUCE);
 
-    // right now this show the "empty line" because it's the last of three lines to be added onto the completed queue.
-    //    spec_is_str_equal(_td(w,w->q->completed->context->run_tree),"(RUN_TREE (REDUCTION_ERROR_SYMBOL:NULL_SYMBOL) (PARAMS (LINE:)))");
+    spec_is_str_equal(_td(w,w->q->completed->context->run_tree),"(RUN_TREE (REDUCTION_ERROR_SYMBOL:NULL_SYMBOL) (PARAMS (LINE:line2)))");
 
-    spec_is_str_equal(output_data,"line1\nline2\n\n");
+    spec_is_str_equal(output_data,"line1\nline2\n");
 
     _st_free(reader_stream);
     _st_free(writer_stream);
