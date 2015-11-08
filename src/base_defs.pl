@@ -9,13 +9,13 @@ use strict;
 use warnings;
 use Data::Dumper;
 
-my $defs_file = 'base_defs';
+my $defs_file = 'src/base_defs';
 open(my $fh,'<:encoding(UTF-8)', $defs_file)
         or die "Could not open definitions source file '$defs_file' $!";
-my $defs_c_file = 'base_defs.c';
+my $defs_c_file = 'src/base_defs.c';
 open(my $cfh,'>:encoding(UTF-8)', $defs_c_file)
         or die "Could not open definitions c file '$defs_c_file' $!";
-my $defs_h_file = 'base_defs.h';
+my $defs_h_file = 'src/base_defs.h';
 open(my $hfh,'>:encoding(UTF-8)', $defs_h_file)
         or die "Could not open definitions header file '$defs_h_file' $!";
 
