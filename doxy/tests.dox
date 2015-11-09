@@ -3,15 +3,9 @@
 
    The codebase is heavily tested since we use test-driven development practices.
 
-   To compile and run all tests, just cd into the root directory and type "make"
+   To compile and run all tests, just cd into the root directory and type "make specs"
 
    We've set things up so that Doxygen inserts the tests for the functions right
    in the documentation for each function in the section "Examples (from test suite):".
 
 */
-
-/**
- * @defgroup tests Test Suite
- *
- * @brief Ceptr codebase self-tests
- */

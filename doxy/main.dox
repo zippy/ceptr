@@ -12,7 +12,11 @@
   - Developer Wiki at: https://github.com/zippy/ceptr/wiki
   - Ceptr Revelation at: http://ceptr.org/revelation (Overview of the Technology)
 
-  How-to guides:  
+  Reference:
+
+  - @ref ref_vm_sys_processes
+
+  How-to guides:
 
   - @ref howto_tests
 
@@ -27,4 +31,16 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
+ */
+
+/**
+ * @defgroup ref Reference Documents
+ *
+ * @brief technical overview/reference documentation
+ */
+
+/**
+ * @defgroup tests Test Suite
+ *
+ * @brief Ceptr codebase self-tests
  */

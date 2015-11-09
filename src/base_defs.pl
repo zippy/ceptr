@@ -9,15 +9,17 @@ use strict;
 use warnings;
 use Data::Dumper;
 
-my $defs_file = 'src/base_defs';
-open(my $fh,'<:encoding(UTF-8)', $defs_file)
-        or die "Could not open definitions source file '$defs_file' $!";
-my $defs_c_file = 'src/base_defs.c';
-open(my $cfh,'>:encoding(UTF-8)', $defs_c_file)
-        or die "Could not open definitions c file '$defs_c_file' $!";
-my $defs_h_file = 'src/base_defs.h';
-open(my $hfh,'>:encoding(UTF-8)', $defs_h_file)
-        or die "Could not open definitions header file '$defs_h_file' $!";
+my $fh = openf('<','src/base_defs');
+my $cfh = openf('>','src/base_defs.c');
+my $hfh = openf('>','src/base_defs.h');
+
+sub openf {
+    my $rw = shift;
+    my $fn = shift;
+    open(my $fh,"$rw:encoding(UTF-8)", $fn)
+            or die "Could not open '$fn' $!";
+    return $fh
+}
 
 my %c;
 my @d;
@@ -25,14 +27,17 @@ my %fmap = ('Structure'=>'sT','StructureS'=>'sTs','Symbol'=>'sY','Process'=>'sP'
 my $context = "SYS";
 my %declared;
 my %anon;
+my %comments;
 
 sub addDef {
     my $type = shift;
     my $context = shift;
     my $name = shift;
     my $def = shift;
+    my $comment = shift;
     my $def_type = ($type eq 'Structure' && $def =~ /sT_/) ? "StructureS" : $type;
     push @d,[$def_type,$context.'_CONTEXT',$name,$def];
+    $comments{$name} = $comment;
 
     # don't need to redo header defs stuff for just setting symbols definition
     if ($type ne 'SetSymbol') {
@@ -136,19 +141,19 @@ while (my $def = <$fh>) {
                     }
                     $structure = $sname;
                 }
-                &addDef($type,$context,$name,$structure);
+                &addDef($type,$context,$name,$structure,$comment);
             }
             elsif ($type eq 'Structure') {
                 $params =~ /(.*?),(.*)/;
                 my $name = $1;
                 my $structure_def = $2;
-                &addDef($type,$context,$name,&convertStrucDef($structure_def));
+                &addDef($type,$context,$name,&convertStrucDef($structure_def),$comment);
             }
             elsif ($type eq 'Process') {
                 $params =~ /(.*?),(.*)/;
                 my $name = $1;
                 my $process_def = $2;
-                &addDef($type,$context,$name,$process_def);
+                &addDef($type,$context,$name,$process_def,$comment);
             }
         }
 
@@ -216,6 +221,7 @@ EOF
 &hout("LOCAL","Symbol");
 &hout("LOCAL","Structure");
 
+# add definitions to the header file
 sub hout {
     my $context = shift;
     my $type = shift;
@@ -243,3 +249,49 @@ print $hfh <<EOF;
 
 #endif
 EOF
+
+#generate sys process documentation file
+my $pdfh = openf('>','doxy/sys_process_docs.html');
+my $html = << 'HTML';
+<table class="doxtable"><tr><th>Process</th><th>Inputs</th><th>Output</th><th>Comments</th></tr>
+HTML
+
+foreach my $s (@d) {
+    my @x = @$s;
+    my $type = $x[0];
+    if ($type eq 'Process') {
+        my $name = $x[2];
+        my ($desc,$out,$out_type,$out_sym,@def) = split /,/,$x[3];
+        $desc =~ /"(.*)"/;
+        $desc = $1;
+        $out = &processSig($out,$out_type,$out_sym);
+        my $in = "";
+        while ($def[0] && $def[0] ne '0') {
+            my $n = shift @def;
+            my $optional = 0;
+            if ($def[0] eq 'SIGNATURE_OPTIONAL') {
+                $optional = 1;
+                shift @def;
+            }
+            my $i = &processSig($n,shift @def,shift @def);
+            $i = "[$i]" if $optional;
+            $in .= "<li>$i</li>";
+        }
+        $html .= "<tr><td>$name<br \>$desc</td><td>$in</td><td>$out</td><td>$comments{$name}</td></tr>\n";
+    }
+}
+
+$html .= << 'HTML';
+</table>
+HTML
+print $pdfh $html;
+
+sub processSig {
+    my $name = shift;
+    my $type = shift;
+    my $sym = shift;
+    $name =~ /"(.*)"/;$name = $1;
+    $type =~ /SIGNATURE_(.*)/;$type = $1;
+
+    return "$name($type:$sym)";
+}
