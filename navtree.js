@@ -1,6 +1,7 @@
 var NAVTREE =
 [
   [ "ceptr", "index.html", [
+    [ "System Processes Reference", "ref_vm_sys_processes.html", null ],
     [ "Running the self-tests", "howto_tests.html", null ],
     [ "Todo List", "todo.html", null ],
     [ "Modules", "modules.html", "modules" ],
@@ -33,11 +34,11 @@ var NAVTREEINDEX =
 "base__defs_8h.html#ad1b9b79e86d1b465669a375504010057",
 "base__defs_8h.html#affd60a1bd0b4f90d4339099ca8831b52a997a525b96ca8ba5b8d1ceb2ea0f94f6",
 "group__def.html#gafa2a4161d0689358ee7fdb8256955db0",
-"group__tree.html#ga1d7afbc2a405c20a83b7bee4cfcb3a29",
-"http__example_8h.html#ae24eeb5809320b4cc9909ecb008224ce",
-"receptor_8c.html",
-"structQ.html#a38d241dba8d07c681a5133821b887984",
-"tree__spec_8h.html#a5986d99ac81ace5b68beb3d5c255ca61"
+"group__tree.html#ga19506af36bcdf713253dabd47ecaa6e4",
+"http__example_8h.html#ae11ebe978c58758887d86a598998559b",
+"profile__example_8h_source.html",
+"structN.html#afee5fd2934a4e35dbcdd82657835ff54",
+"tree__spec_8h.html#a40c176590d4f13d3110238f7c50824fb"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
