@@ -6,16 +6,20 @@ var group__vmhost =
       [ "pthread", "structthread.html#ade33d76baf20e29b1d29c3aa098996e4", null ],
       [ "state", "structthread.html#af4eb2d11f62e4bb8b997e60a82a68258", null ]
     ] ],
+    [ "ActiveReceptor", "structActiveReceptor.html", [
+      [ "r", "structActiveReceptor.html#adcb0f70000d68e02f3a8bf16119d00f8", null ],
+      [ "x", "structActiveReceptor.html#a50f0a4386a602c756d16fa2a50256f4a", null ]
+    ] ],
     [ "VMHost", "structVMHost.html", [
-      [ "active_receptors", "structVMHost.html#aa7b4b8b391039f62980e8d52d75df7eb", null ],
-      [ "c", "structVMHost.html#a53bffdb41bcc4096902aabf8ab029637", null ],
+      [ "active_receptor_count", "structVMHost.html#a97819ac8dc92af600c64aa6835e45983", null ],
+      [ "active_receptors", "structVMHost.html#a95ef186e3477224ee0be117e7f9abbe3", null ],
       [ "clock_thread", "structVMHost.html#a7ea4bc0fa80cfe16e33626dce0c12402", null ],
+      [ "dir", "structVMHost.html#a00e4fa50ce8f245d8b9ff534dd02253a", null ],
       [ "installed_receptors", "structVMHost.html#abc9dab8da288b7f9ad20988e545a56f9", null ],
       [ "process_state", "structVMHost.html#a6210d87a36adbc358e239510cade66b4", null ],
       [ "r", "structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e", null ],
       [ "vm_thread", "structVMHost.html#ada4998fffaedd9669bdada5ef0ec478f", null ]
     ] ],
-    [ "__v_activate", "group__vmhost.html#ga066ae2bbe18ed4c9357526118dd1d2b9", null ],
     [ "__v_get_receptor_xaddr", "group__vmhost.html#ga861469ce8640d16306fb6bdbb6e43f54", null ],
     [ "__v_process", "group__vmhost.html#ga19975d66a0fa04365bf89250bdede501", null ],
     [ "_v_activate", "group__vmhost.html#ga53694170e5452b8062ec405e6a9a3f60", null ],

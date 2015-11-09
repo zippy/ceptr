@@ -1,5 +1,7 @@
 var accumulator_8h =
 [
+    [ "__a_serialize_instances", "group__accumulator.html#gac15a7b4658ba5568dd333fab1e2fd07d", null ],
+    [ "__a_unserialize_instances", "group__accumulator.html#gafab96a965b9966f987e0e220ebaa67e6", null ],
     [ "_a_boot", "group__accumulator.html#gaf3d0afe467ab198fc69ccaf7ee9fb5e9", null ],
     [ "_a_free_instances", "group__accumulator.html#ga547a2a64758fbf9354d8498e07cb8d2b", null ],
     [ "_a_get_instance", "group__accumulator.html#gaa967dcf3850e900ee02c57e571cbcfb4", null ],

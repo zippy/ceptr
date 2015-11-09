@@ -3,7 +3,6 @@ var NAVTREE =
   [ "ceptr", "index.html", [
     [ "Running the self-tests", "howto_tests.html", null ],
     [ "Todo List", "todo.html", null ],
-    [ "Bug List", "bug.html", null ],
     [ "Modules", "modules.html", "modules" ],
     [ "Data Structures", null, [
       [ "Data Structures", "annotated.html", "annotated" ],
@@ -31,13 +30,14 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "accumulator_8c.html",
-"base__defs_8h.html#ae45ea5f68b11fba5335966aaecbd1e8d",
-"def_8c_source.html",
-"group__receptor.html#gafeb11f99c9aea801cb188cc012b62a12",
-"group__tree.html#gaf019d190c9623de809d006e309a441af",
-"process_8c.html#a4459dc13ae00b49b36447b0f91cbf466",
-"semtrex__spec_8h.html#aac8d79a08dc1790cb5bfd18db1db7224",
-"structthread.html"
+"base__defs_8h.html#ad1b9b79e86d1b465669a375504010057",
+"base__defs_8h.html#affd60a1bd0b4f90d4339099ca8831b52a997a525b96ca8ba5b8d1ceb2ea0f94f6",
+"group__def.html#gafa2a4161d0689358ee7fdb8256955db0",
+"group__tree.html#ga1d7afbc2a405c20a83b7bee4cfcb3a29",
+"http__example_8h.html#ae24eeb5809320b4cc9909ecb008224ce",
+"receptor_8c.html",
+"structQ.html#a38d241dba8d07c681a5133821b887984",
+"tree__spec_8h.html#a5986d99ac81ace5b68beb3d5c255ca61"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

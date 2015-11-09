@@ -23,7 +23,8 @@ var process_8h =
       [ "divideByZeroReductionErr", "process_8h.html#aafd8125ddd0cd2cb2675dea09aacb099a19c26d4f8a34387ce5e56150e153c96a", null ],
       [ "notInSignalContextReductionError", "process_8h.html#aafd8125ddd0cd2cb2675dea09aacb099a9c94dfac4b5bc217af2d01b7ee062d4f", null ],
       [ "incompatibleTypeReductionErr", "process_8h.html#aafd8125ddd0cd2cb2675dea09aacb099a453a6447e521cd5caf425d6ed9cbaa95", null ],
-      [ "unixErrnoReductionErr", "process_8h.html#aafd8125ddd0cd2cb2675dea09aacb099a9f86d2a69eeedfc041eadaa4a34113d0", null ]
+      [ "unixErrnoReductionErr", "process_8h.html#aafd8125ddd0cd2cb2675dea09aacb099a9f86d2a69eeedfc041eadaa4a34113d0", null ],
+      [ "deadStreamReadReductionErr", "process_8h.html#aafd8125ddd0cd2cb2675dea09aacb099aa4c428966bd288fdcc0da6f0674f518c", null ]
     ] ],
     [ "ReplicationPhase", "process_8h.html#a84a48878bd9180c85c2f2dcc9f4087de", [
       [ "EvalCondition", "process_8h.html#a84a48878bd9180c85c2f2dcc9f4087dea03e7020f0cb871e968911005aeb2de80", null ],
@@ -38,10 +39,10 @@ var process_8h =
     [ "__p_find_context", "process_8h.html#a16f2d8cde47ddf8d619db33fbfcfa73b", null ],
     [ "__p_make_context", "process_8h.html#a05ba8f21383f9273acbdb89134f0fff9", null ],
     [ "__p_make_run_tree", "process_8h.html#ae3613e9e24d3be687d8fc10d30994445", null ],
-    [ "__p_make_signature", "process_8h.html#a59a93f71ed6dcdb1bae29d489932a6d0", null ],
+    [ "__p_make_signature", "process_8h.html#a7dc2c46bc4670386c36a0efb369eed34", null ],
     [ "__p_reduce_sys_proc", "process_8h.html#a5e368ad3c3c5a772d49c30675b143fff", null ],
     [ "__p_unblock", "process_8h.html#a95f4b3611fc8219a648be771df2ac3f8", null ],
-    [ "_p_addrt2q", "process_8h.html#acd000cf38ec2232938329c07683c7b06", null ],
+    [ "_p_addrt2q", "process_8h.html#aa925828fc4de916a63206ae1f868dc0e", null ],
     [ "_p_cleanup", "process_8h.html#acf6f4df30921d6ed6116b25fdfb9aa98", null ],
     [ "_p_enqueue", "process_8h.html#a39ccc64f181f96a92744969f3daca886", null ],
     [ "_p_freeq", "process_8h.html#aea59e125f10441efe75f6047ee7b35e1", null ],
@@ -51,5 +52,5 @@ var process_8h =
     [ "_p_reduceq", "process_8h.html#a64e8965291c67057b06f273db19a465d", null ],
     [ "_p_reduceq_thread", "process_8h.html#add05ec8f9d463726351fef1ffaa938fd", null ],
     [ "_p_step", "process_8h.html#a3a5e10aa19f18453fcc24481bafb2903", null ],
-    [ "_p_unblock", "process_8h.html#ae15cddef2d7476755f0f44fe82120b02", null ]
+    [ "_p_unblock", "process_8h.html#ae2449b4f1ecf168f4ac166d27f99edf7", null ]
 ];

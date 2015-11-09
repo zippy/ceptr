@@ -124,7 +124,8 @@ Include dependency graph for mtree.h:</div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="mtree_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="mtree_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 </div>
 <p><a href="mtree_8h_source.html">Go to the source code of this file.</a></p>
@@ -133,6 +134,12 @@ This graph shows which files directly or indirectly include this file:</div>
 Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structMwalkState.html">MwalkState</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5910f67e3ceb64cbe63da3d90b350f0f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5910f67e3ceb64cbe63da3d90b350f0f"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>_m_new</b>(parent, symbol, surface, size)&#160;&#160;&#160;<a class="el" href="mtree_8h.html#a7bdb04a09caa291cfca57ba943589bd4">__m_new</a>(parent,symbol,surface,size,0)</td></tr>
+<tr class="separator:a5910f67e3ceb64cbe63da3d90b350f0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c88fcbc56cdad2e40ae31b195d81db4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2c88fcbc56cdad2e40ae31b195d81db4"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>_m_newt</b>(parent, symbol, h)&#160;&#160;&#160;<a class="el" href="mtree_8h.html#a7bdb04a09caa291cfca57ba943589bd4">__m_new</a>(parent,symbol,&amp;(h),sizeof(<a class="el" href="structH.html">H</a>),TFLAG_SURFACE_IS_TREE)</td></tr>
+<tr class="separator:a2c88fcbc56cdad2e40ae31b195d81db4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7aea074208322c575f95a181cf7d98b7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7aea074208322c575f95a181cf7d98b7"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>_m_free</b>(h)&#160;&#160;&#160;<a class="el" href="mtree_8h.html#a9b501c349d7130204110933195696acb">__m_free</a>(h,1)</td></tr>
 <tr class="separator:a7aea074208322c575f95a181cf7d98b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -163,14 +170,16 @@ typedef struct <a class="el" href="structMwalkState.html">MwalkState</a>&#160;</
 <tr class="memitem:a627273d459be4796b2a1706d0fa78bba"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a627273d459be4796b2a1706d0fa78bba"></a>
 const <a class="el" href="structH.html">H</a>&#160;</td><td class="memItemRight" valign="bottom"><b>null_H</b></td></tr>
 <tr class="separator:a627273d459be4796b2a1706d0fa78bba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af2f3d808adcb064e5120ee33f54e8c2d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structH.html">H</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mtree_8h.html#af2f3d808adcb064e5120ee33f54e8c2d">_m_new</a> (<a class="el" href="structH.html">H</a> parent, <a class="el" href="structSemanticID.html">Symbol</a> symbol, void *surface, size_t size)</td></tr>
-<tr class="separator:af2f3d808adcb064e5120ee33f54e8c2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7bdb04a09caa291cfca57ba943589bd4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structH.html">H</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mtree_8h.html#a7bdb04a09caa291cfca57ba943589bd4">__m_new</a> (<a class="el" href="structH.html">H</a> parent, <a class="el" href="structSemanticID.html">Symbol</a> symbol, void *surface, size_t size, uint32_t flags)</td></tr>
+<tr class="separator:a7bdb04a09caa291cfca57ba943589bd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4024a66b66c98dab331c484420bf98f9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structH.html">H</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mtree_8h.html#a4024a66b66c98dab331c484420bf98f9">_m_newi</a> (<a class="el" href="structH.html">H</a> h, <a class="el" href="structSemanticID.html">Symbol</a> symbol, int surface)</td></tr>
 <tr class="separator:a4024a66b66c98dab331c484420bf98f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c5bd733621f48184a13a1202bd24fed"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structH.html">H</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mtree_8h.html#a0c5bd733621f48184a13a1202bd24fed">_m_new_from_t</a> (<a class="el" href="structT.html">T</a> *t)</td></tr>
 <tr class="separator:a0c5bd733621f48184a13a1202bd24fed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0e6e5f78e7ec6f3c9165feca0eae093"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mtree_8h.html#ab0e6e5f78e7ec6f3c9165feca0eae093">_t_new_from_m</a> (<a class="el" href="structH.html">H</a> h)</td></tr>
 <tr class="separator:ab0e6e5f78e7ec6f3c9165feca0eae093"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c2f12a5e9758f2adc0ff5108b420676"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structN.html">N</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mtree_8h.html#a3c2f12a5e9758f2adc0ff5108b420676">__m_get</a> (<a class="el" href="structH.html">H</a> h)</td></tr>
+<tr class="separator:a3c2f12a5e9758f2adc0ff5108b420676"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a94624993d8f2ec4ba1364343e01eedb9"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mtree_8h.html#a94624993d8f2ec4ba1364343e01eedb9">_m_size</a> (<a class="el" href="structH.html">H</a> h)</td></tr>
 <tr class="separator:a94624993d8f2ec4ba1364343e01eedb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b501c349d7130204110933195696acb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mtree_8h.html#a9b501c349d7130204110933195696acb">__m_free</a> (<a class="el" href="structH.html">H</a> h, int free_surface)</td></tr>
@@ -195,10 +204,10 @@ const <a class="el" href="structH.html">H</a>&#160;</td><td class="memItemRight"
 <tr class="separator:a8b69b478ffa977cc25fcca734972e376"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a14d54ae2ffa5ab84d561ae02a9a0897c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structH.html">H</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mtree_8h.html#a14d54ae2ffa5ab84d561ae02a9a0897c">_m_detatch</a> (<a class="el" href="structH.html">H</a> h)</td></tr>
 <tr class="separator:a14d54ae2ffa5ab84d561ae02a9a0897c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:addc8bd768127da32ec43976a9ae0f6db"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mtree_8h.html#addc8bd768127da32ec43976a9ae0f6db">_m_serialize</a> (<a class="el" href="structM.html">M</a> *m, size_t *l)</td></tr>
-<tr class="separator:addc8bd768127da32ec43976a9ae0f6db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6e44f6a317dd88b5b4aacca1a6c7efa3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structH.html">H</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mtree_8h.html#a6e44f6a317dd88b5b4aacca1a6c7efa3">_m_unserialize</a> (void *)</td></tr>
-<tr class="separator:a6e44f6a317dd88b5b4aacca1a6c7efa3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27481040e0d545565d203c0f37b30d79"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structS.html">S</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mtree_8h.html#a27481040e0d545565d203c0f37b30d79">_m_serialize</a> (<a class="el" href="structM.html">M</a> *m)</td></tr>
+<tr class="separator:a27481040e0d545565d203c0f37b30d79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a613465f5111c7b4e4d5a9dff747b25e0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structH.html">H</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mtree_8h.html#a613465f5111c7b4e4d5a9dff747b25e0">_m_unserialize</a> (<a class="el" href="structS.html">S</a> *)</td></tr>
+<tr class="separator:a613465f5111c7b4e4d5a9dff747b25e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac2c4b050224da6010e036ff381f31c3e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mtree_8h.html#ac2c4b050224da6010e036ff381f31c3e">_m_walk</a> (<a class="el" href="structH.html">H</a> h, void(*walkfn)(<a class="el" href="structH.html">H</a>, <a class="el" href="structN.html">N</a> *, void *, <a class="el" href="structMwalkState.html">MwalkState</a> *, <a class="el" href="structMaddr.html">Maddr</a>), void *user_data)</td></tr>
 <tr class="separator:ac2c4b050224da6010e036ff381f31c3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -240,7 +249,91 @@ const <a class="el" href="structH.html">H</a>&#160;</td><td class="memItemRight"
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="mtree_8c_source.html#l00239">239</a> of file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
+<p>Definition at line <a class="el" href="mtree_8c_source.html#l00284">284</a> of file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a3c2f12a5e9758f2adc0ff5108b420676"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structN.html">N</a>* __m_get </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structH.html">H</a>&#160;</td>
+          <td class="paramname"><em>h</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>get an mtree node by handle</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">h</td><td>the handle to an mtree node </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>pointer to an <a class="el" href="structN.html">N</a> (the node) </dd></dl>
+
+<p>Definition at line <a class="el" href="mtree_8c_source.html#l00264">264</a> of file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a7bdb04a09caa291cfca57ba943589bd4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structH.html">H</a> __m_new </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structH.html">H</a>&#160;</td>
+          <td class="paramname"><em>parent</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structSemanticID.html">Symbol</a>&#160;</td>
+          <td class="paramname"><em>symbol</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>surface</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>flags</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Create a new tree node</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">parent</td><td>handle to parent node </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">symbol</td><td>semantic symbol for the node to be create </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">surface</td><td>pointer to node's data </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">size</td><td>size in bytes of the surface </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">flags</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>updated handle </dd></dl>
+
+<p>Definition at line <a class="el" href="mtree_8c_source.html#l00094">94</a> of file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
 
 </div>
 </div>
@@ -278,7 +371,7 @@ const <a class="el" href="structH.html">H</a>&#160;</td><td class="memItemRight"
 <dl class="section return"><dt>Returns</dt><dd>handle of newly added (sub) tree</dd></dl>
 <p>this function is destructive in that the task is accomplished by copying the values from the tree at h, and then freeing it. </p>
 
-<p>Definition at line <a class="el" href="mtree_8c_source.html#l00437">437</a> of file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
+<p>Definition at line <a class="el" href="mtree_8c_source.html#l00488">488</a> of file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
 
 </div>
 </div>
@@ -315,7 +408,7 @@ const <a class="el" href="structH.html">H</a>&#160;</td><td class="memItemRight"
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structMaddr.html">Maddr</a> of child </dd></dl>
 
-<p>Definition at line <a class="el" href="mtree_8c_source.html#l00332">332</a> of file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
+<p>Definition at line <a class="el" href="mtree_8c_source.html#l00383">383</a> of file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
 
 </div>
 </div>
@@ -341,7 +434,7 @@ const <a class="el" href="structH.html">H</a>&#160;</td><td class="memItemRight"
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>child count </dd></dl>
 
-<p>Definition at line <a class="el" href="mtree_8c_source.html#l00264">264</a> of file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
+<p>Definition at line <a class="el" href="mtree_8c_source.html#l00315">315</a> of file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
 
 </div>
 </div>
@@ -367,58 +460,7 @@ const <a class="el" href="structH.html">H</a>&#160;</td><td class="memItemRight"
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>hande to newly detached tree </dd></dl>
 
-<p>Definition at line <a class="el" href="mtree_8c_source.html#l00580">580</a> of file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="af2f3d808adcb064e5120ee33f54e8c2d"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structH.html">H</a> _m_new </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structH.html">H</a>&#160;</td>
-          <td class="paramname"><em>parent</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structSemanticID.html">Symbol</a>&#160;</td>
-          <td class="paramname"><em>symbol</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>surface</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>size</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Create a new tree node</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">parent</td><td>handle to parent node </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">symbol</td><td>semantic symbol for the node to be create </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">surface</td><td>pointer to node's data </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">size</td><td>size in bytes of the surface </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>updated handle </dd></dl>
-
-<p>Definition at line <a class="el" href="mtree_8c_source.html#l00093">93</a> of file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
+<p>Definition at line <a class="el" href="mtree_8c_source.html#l00631">631</a> of file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
 
 </div>
 </div>
@@ -444,7 +486,7 @@ const <a class="el" href="structH.html">H</a>&#160;</td><td class="memItemRight"
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>handle to mtree </dd></dl>
 
-<p>Definition at line <a class="el" href="mtree_8c_source.html#l00181">181</a> of file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
+<p>Definition at line <a class="el" href="mtree_8c_source.html#l00206">206</a> of file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
 
 </div>
 </div>
@@ -464,13 +506,13 @@ const <a class="el" href="structH.html">H</a>&#160;</td><td class="memItemRight"
 <p>Create a new tree</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">symbol</td><td>semantic symbol for the node to be create </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">symbol</td><td>semantic symbol for the node to be created </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>handle to root node </dd></dl>
 
-<p>Definition at line <a class="el" href="mtree_8c_source.html#l00137">137</a> of file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
+<p>Definition at line <a class="el" href="mtree_8c_source.html#l00134">134</a> of file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
 
 </div>
 </div>
@@ -514,7 +556,7 @@ const <a class="el" href="structH.html">H</a>&#160;</td><td class="memItemRight"
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>handle to node </dd></dl>
 
-<p>Definition at line <a class="el" href="mtree_8c_source.html#l00160">160</a> of file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
+<p>Definition at line <a class="el" href="mtree_8c_source.html#l00157">157</a> of file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
 
 </div>
 </div>
@@ -551,7 +593,7 @@ const <a class="el" href="structH.html">H</a>&#160;</td><td class="memItemRight"
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>handle to node </dd></dl>
 
-<p>Definition at line <a class="el" href="mtree_8c_source.html#l00148">148</a> of file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
+<p>Definition at line <a class="el" href="mtree_8c_source.html#l00145">145</a> of file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
 
 </div>
 </div>
@@ -577,7 +619,7 @@ const <a class="el" href="structH.html">H</a>&#160;</td><td class="memItemRight"
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structMaddr.html">Maddr</a> of next sibling child </dd></dl>
 
-<p>Definition at line <a class="el" href="mtree_8c_source.html#l00408">408</a> of file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
+<p>Definition at line <a class="el" href="mtree_8c_source.html#l00459">459</a> of file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
 
 </div>
 </div>
@@ -603,30 +645,20 @@ const <a class="el" href="structH.html">H</a>&#160;</td><td class="memItemRight"
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structMaddr.html">Maddr</a> of parent node </dd></dl>
 
-<p>Definition at line <a class="el" href="mtree_8c_source.html#l00315">315</a> of file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
+<p>Definition at line <a class="el" href="mtree_8c_source.html#l00366">366</a> of file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="addc8bd768127da32ec43976a9ae0f6db"></a>
+<a class="anchor" id="a27481040e0d545565d203c0f37b30d79"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void* _m_serialize </td>
+          <td class="memname"><a class="el" href="structS.html">S</a>* _m_serialize </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structM.html">M</a> *&#160;</td>
-          <td class="paramname"><em>m</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><em>m</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">size_t *&#160;</td>
-          <td class="paramname"><em>sizeP</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -640,7 +672,7 @@ const <a class="el" href="structH.html">H</a>&#160;</td><td class="memItemRight"
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>pointer to newly malloced buffer of serialized tree data </dd></dl>
 
-<p>Definition at line <a class="el" href="mtree_8c_source.html#l00594">594</a> of file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
+<p>Definition at line <a class="el" href="mtree_8c_source.html#l00645">645</a> of file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
 
 </div>
 </div>
@@ -666,7 +698,7 @@ const <a class="el" href="structH.html">H</a>&#160;</td><td class="memItemRight"
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>size </dd></dl>
 
-<p>Definition at line <a class="el" href="mtree_8c_source.html#l00231">231</a> of file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
+<p>Definition at line <a class="el" href="mtree_8c_source.html#l00276">276</a> of file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
 
 </div>
 </div>
@@ -692,7 +724,7 @@ const <a class="el" href="structH.html">H</a>&#160;</td><td class="memItemRight"
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>pointer to node's surface </dd></dl>
 
-<p>Definition at line <a class="el" href="mtree_8c_source.html#l00301">301</a> of file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
+<p>Definition at line <a class="el" href="mtree_8c_source.html#l00352">352</a> of file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
 
 </div>
 </div>
@@ -718,18 +750,18 @@ const <a class="el" href="structH.html">H</a>&#160;</td><td class="memItemRight"
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>node's Symbol </dd></dl>
 
-<p>Definition at line <a class="el" href="mtree_8c_source.html#l00397">397</a> of file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
+<p>Definition at line <a class="el" href="mtree_8c_source.html#l00448">448</a> of file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a6e44f6a317dd88b5b4aacca1a6c7efa3"></a>
+<a class="anchor" id="a613465f5111c7b4e4d5a9dff747b25e0"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="structH.html">H</a> _m_unserialize </td>
           <td>(</td>
-          <td class="paramtype">void *&#160;</td>
+          <td class="paramtype"><a class="el" href="structS.html">S</a> *&#160;</td>
           <td class="paramname"><em>s</em></td><td>)</td>
           <td></td>
         </tr>
@@ -738,7 +770,7 @@ const <a class="el" href="structH.html">H</a>&#160;</td><td class="memItemRight"
 <p>build mtree from serialized mtree data</p>
 <p>[in] pointer to serialized data </p><dl class="section return"><dt>Returns</dt><dd>handle to new mtree </dd></dl>
 
-<p>Definition at line <a class="el" href="mtree_8c_source.html#l00666">666</a> of file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
+<p>Definition at line <a class="el" href="mtree_8c_source.html#l00743">743</a> of file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
 
 </div>
 </div>
@@ -782,7 +814,7 @@ const <a class="el" href="structH.html">H</a>&#160;</td><td class="memItemRight"
 </dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000008">Todo:</a></b></dt><dd>checks to make sure root isn't deleted or null? </dd></dl>
 
-<p>Definition at line <a class="el" href="mtree_8c_source.html#l00473">473</a> of file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
+<p>Definition at line <a class="el" href="mtree_8c_source.html#l00524">524</a> of file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
 
 </div>
 </div>
@@ -808,7 +840,7 @@ const <a class="el" href="structH.html">H</a>&#160;</td><td class="memItemRight"
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>handle to mtree </dd></dl>
 
-<p>Definition at line <a class="el" href="mtree_8c_source.html#l00205">205</a> of file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
+<p>Definition at line <a class="el" href="mtree_8c_source.html#l00250">250</a> of file <a class="el" href="mtree_8c_source.html">mtree.c</a>.</p>
 
 </div>
 </div>
@@ -818,7 +850,7 @@ const <a class="el" href="structH.html">H</a>&#160;</td><td class="memItemRight"
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="mtree_8h.html">mtree.h</a></li>
-    <li class="footer">Generated on Sat Oct 3 2015 17:11:03 for ceptr by
+    <li class="footer">Generated on Mon Nov 9 2015 12:37:03 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

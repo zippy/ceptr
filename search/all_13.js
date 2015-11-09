@@ -22,7 +22,6 @@ var searchData=
   ['testreceptoraction',['testReceptorAction',['../receptor__spec_8h.html#a3cae92defb2178364fc0d8f7eded5089',1,'receptor_spec.h']]],
   ['testreceptorcreate',['testReceptorCreate',['../receptor__spec_8h.html#a3a764534a7cc2c00a1e15642d0554b7c',1,'receptor_spec.h']]],
   ['testreceptordefmatch',['testReceptorDefMatch',['../receptor__spec_8h.html#a0f0176e080e437a43dfcc761f00ca284',1,'receptor_spec.h']]],
-  ['testreceptoredgestream',['testReceptorEdgeStream',['../receptor__spec_8h.html#afceb592c80fbad8dd4a6182b52e660fb',1,'receptor_spec.h']]],
   ['testreceptorinstancenew',['testReceptorInstanceNew',['../receptor__spec_8h.html#a9584612d41b06b90041df77e64da66b8',1,'receptor_spec.h']]],
   ['testreceptorprotocol',['testReceptorProtocol',['../receptor__spec_8h.html#a9936252c73ecd66c0fc1f72b05494824',1,'receptor_spec.h']]],
   ['testreceptorserialize',['testReceptorSerialize',['../receptor__spec_8h.html#a0c65a8eec063de14d49ae6c3fadcf0d8',1,'receptor_spec.h']]],

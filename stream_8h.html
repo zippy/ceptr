@@ -112,15 +112,18 @@ $(document).ready(function(){initNavTree('stream_8h.html','');});
 <p>streams abstraction header file  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;stdio.h&gt;</code><br />
+<code>#include &lt;pthread.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for stream.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="stream_8h__incl.svg" width="106" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="stream_8h__incl.svg" width="174" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="stream_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="stream_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 </div>
 <p><a href="stream_8h_source.html">Go to the source code of this file.</a></p>
@@ -129,17 +132,39 @@ This graph shows which files directly or indirectly include this file:</div>
 Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structStream.html">Stream</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ebf71538d56e7938e86b92db4d9ca32"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9ebf71538d56e7938e86b92db4d9ca32"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>_st_data</b>(st)&#160;&#160;&#160;(st)-&gt;buf</td></tr>
+<tr class="separator:a9ebf71538d56e7938e86b92db4d9ca32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afcbfe05dbc0da4f57e892de6e64018a3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afcbfe05dbc0da4f57e892de6e64018a3"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>_st_data_size</b>(st)&#160;&#160;&#160;(st)-&gt;data_size</td></tr>
+<tr class="separator:afcbfe05dbc0da4f57e892de6e64018a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5653712efdf75595414f08800f191f73"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5653712efdf75595414f08800f191f73"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>StreamTypes</b> { <b>UnixStream</b> =123
  }</td></tr>
 <tr class="separator:a5653712efdf75595414f08800f191f73"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0411cd49bb5b71852cecd93bcbf0ca2d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0411cd49bb5b71852cecd93bcbf0ca2d"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>StreamHasData</b> =0x0001, 
-<b>StreamCloseOnFree</b> =0x0002
+<tr class="memitem:a0411cd49bb5b71852cecd93bcbf0ca2d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0411cd49bb5b71852cecd93bcbf0ca2d"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <br />
+&#160;&#160;<b>StreamHasData</b> =0x0001, 
+<b>StreamCloseOnFree</b> =0x0002, 
+<b>StreamReader</b> =0x0004, 
+<b>StreamWaiting</b> =0x0008, 
+<br />
+&#160;&#160;<b>StreamAlive</b> =0x8000
+<br />
  }</td></tr>
 <tr class="separator:a0411cd49bb5b71852cecd93bcbf0ca2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c14861ebec0e4ed4c45737b5c9f432d"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structStream.html">Stream</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stream_8h.html#a0c14861ebec0e4ed4c45737b5c9f432d">Stream</a></td></tr>
-<tr class="separator:a0c14861ebec0e4ed4c45737b5c9f432d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0f83b38c0fa7fa8dc15f3f768a2909fb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structStream.html">Stream</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stream_8h.html#a0f83b38c0fa7fa8dc15f3f768a2909fb">_st_new_unix_stream</a> (FILE *stream)</td></tr>
-<tr class="separator:a0f83b38c0fa7fa8dc15f3f768a2909fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e76c504c13a7baa62d7ea29c4af657b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9e76c504c13a7baa62d7ea29c4af657b"></a>
+typedef struct <a class="el" href="structStream.html">Stream</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Stream</b></td></tr>
+<tr class="separator:a9e76c504c13a7baa62d7ea29c4af657b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae02eaa881e0ed98951c2e65d4cc418c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aae02eaa881e0ed98951c2e65d4cc418c"></a>
+typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><b>hasDataCallbackFn</b> )(<a class="el" href="structStream.html">Stream</a> *)</td></tr>
+<tr class="separator:aae02eaa881e0ed98951c2e65d4cc418c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a583a5536a8b45f8a542449b4ff3f7e5e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structStream.html">Stream</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stream_8h.html#a583a5536a8b45f8a542449b4ff3f7e5e">_st_new_unix_stream</a> (FILE *stream, int reader)</td></tr>
+<tr class="separator:a583a5536a8b45f8a542449b4ff3f7e5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb3d2ea8ba1e9e81d5804f68715ea529"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stream_8h.html#abb3d2ea8ba1e9e81d5804f68715ea529">_st_start_read</a> (<a class="el" href="structStream.html">Stream</a> *st)</td></tr>
+<tr class="separator:abb3d2ea8ba1e9e81d5804f68715ea529"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9bac5b101e58747900c48e16c0e0f94b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stream_8h.html#a9bac5b101e58747900c48e16c0e0f94b">_st_data_read</a> (<a class="el" href="structStream.html">Stream</a> *st)</td></tr>
+<tr class="separator:a9bac5b101e58747900c48e16c0e0f94b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2a9830ab76c5e671aaf4061b6bd296e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stream_8h.html#ab2a9830ab76c5e671aaf4061b6bd296e">_st_kill</a> (<a class="el" href="structStream.html">Stream</a> *st)</td></tr>
+<tr class="separator:ab2a9830ab76c5e671aaf4061b6bd296e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe0923e53392b62793ec3e80f88021aa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stream_8h.html#afe0923e53392b62793ec3e80f88021aa">_st_free</a> (<a class="el" href="structStream.html">Stream</a> *)</td></tr>
 <tr class="separator:afe0923e53392b62793ec3e80f88021aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -148,21 +173,26 @@ Data Structures</h2></td></tr>
 <dl class="section copyright"><dt>Copyright</dt><dd>Copyright (C) 2013-2015, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al). This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3). </dd></dl>
 
 <p>Definition in file <a class="el" href="stream_8h_source.html">stream.h</a>.</p>
-</div><h2 class="groupheader">Typedef Documentation</h2>
-<a class="anchor" id="a0c14861ebec0e4ed4c45737b5c9f432d"></a>
+</div><h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="a9bac5b101e58747900c48e16c0e0f94b"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef struct <a class="el" href="structStream.html">Stream</a>  <a class="el" href="structStream.html">Stream</a></td>
+          <td class="memname">void _st_data_read </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structStream.html">Stream</a> *&#160;</td>
+          <td class="paramname"><em>st</em></td><td>)</td>
+          <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>abstraction for a stream data type </p>
+<p>mark that data in a stream has been consumed </p>
+
+<p>Definition at line <a class="el" href="stream_8c_source.html#l00125">125</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
 
 </div>
 </div>
-<h2 class="groupheader">Function Documentation</h2>
 <a class="anchor" id="afe0923e53392b62793ec3e80f88021aa"></a>
 <div class="memitem">
 <div class="memproto">
@@ -176,13 +206,33 @@ Data Structures</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>release the memory of a stream object </p>
+<p>release the resources of a stream object </p>
 
-<p>Definition at line <a class="el" href="stream_8c_source.html#l00030">30</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
+<p>Definition at line <a class="el" href="stream_8c_source.html#l00148">148</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a0f83b38c0fa7fa8dc15f3f768a2909fb"></a>
+<a class="anchor" id="ab2a9830ab76c5e671aaf4061b6bd296e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void _st_kill </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structStream.html">Stream</a> *&#160;</td>
+          <td class="paramname"><em>st</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>kill a stream</p>
+<p>if a reader stream is blocked and waiting, calls _st_start_read so that the reader thread can complete. </p>
+
+<p>Definition at line <a class="el" href="stream_8c_source.html#l00136">136</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a583a5536a8b45f8a542449b4ff3f7e5e"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -190,14 +240,43 @@ Data Structures</h2></td></tr>
           <td class="memname"><a class="el" href="structStream.html">Stream</a>* _st_new_unix_stream </td>
           <td>(</td>
           <td class="paramtype">FILE *&#160;</td>
-          <td class="paramname"><em>stream</em></td><td>)</td>
+          <td class="paramname"><em>stream</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>reader</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p>create a new stream object of the unix flavor </p>
 
-<p>Definition at line <a class="el" href="stream_8c_source.html#l00018">18</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
+<p>Definition at line <a class="el" href="stream_8c_source.html#l00083">83</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="abb3d2ea8ba1e9e81d5804f68715ea529"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void _st_start_read </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structStream.html">Stream</a> *&#160;</td>
+          <td class="paramname"><em>st</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>wake the stream reader thread </p>
+
+<p>Definition at line <a class="el" href="stream_8c_source.html#l00114">114</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
 
 </div>
 </div>
@@ -207,7 +286,7 @@ Data Structures</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="stream_8h.html">stream.h</a></li>
-    <li class="footer">Generated on Sat Oct 3 2015 17:11:03 for ceptr by
+    <li class="footer">Generated on Mon Nov 9 2015 12:37:03 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

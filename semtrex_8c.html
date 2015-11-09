@@ -117,7 +117,8 @@ $(document).ready(function(){initNavTree('semtrex_8c.html','');});
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for semtrex.c:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="semtrex_8c__incl.svg" width="627" height="560"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="semtrex_8c__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 </div>
 <p><a href="semtrex_8c_source.html">Go to the source code of this file.</a></p>
@@ -311,7 +312,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_stxl</b> (<a class="
 <div class="line">    debug(D_STX_MATCH,<span class="stringliteral">&quot;pushing\n&quot;</span>);                                      \</div>
 <div class="line">        if((depth+1)&gt;=MAX_BRANCH_DEPTH) {raise_error(<span class="stringliteral">&quot;MAX branch depth exceeded&quot;</span>);} \</div>
 <div class="line">        stack[depth].s = state;                                         \</div>
-<div class="line">        stack[depth].cursor = <a class="code" href="structVMHost.html#a53bffdb41bcc4096902aabf8ab029637">c</a>;                                        \</div>
+<div class="line">        stack[depth].cursor = c;                                        \</div>
 <div class="line">        stack[depth].walk = w;                                          \</div>
 <div class="line">        if (rP) {                                                       \</div>
 <div class="line">            if (*rP) {                                                  \</div>
@@ -322,10 +323,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_stxl</b> (<a class="
 <div class="line">        }                                                               \</div>
 <div class="line">        depth++;                                                        \</div>
 <div class="line">}</div>
-<div class="ttc" id="group__tree_html_gae4c9b743462f0a3808c9f02c3bf33da8"><div class="ttname"><a href="group__tree.html#gae4c9b743462f0a3808c9f02c3bf33da8">_t_get_path</a></div><div class="ttdeci">int * _t_get_path(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00696">tree.c:696</a></div></div>
-<div class="ttc" id="group__tree_html_ga7535eb2963c6cf5fc78cb14287581f92"><div class="ttname"><a href="group__tree.html#ga7535eb2963c6cf5fc78cb14287581f92">_t_clone</a></div><div class="ttdeci">T * _t_clone(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00520">tree.c:520</a></div></div>
-<div class="ttc" id="structVMHost_html_a53bffdb41bcc4096902aabf8ab029637"><div class="ttname"><a href="structVMHost.html#a53bffdb41bcc4096902aabf8ab029637">VMHost::c</a></div><div class="ttdeci">Receptor * c</div><div class="ttdoc">Receptor data for the vm host&#39;s local version of the compository. </div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8h_source.html#l00028">vmhost.h:28</a></div></div>
-<div class="ttc" id="structVMHost_html_a218d2e91e129dee7c71e1b06ff533a6e"><div class="ttname"><a href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">VMHost::r</a></div><div class="ttdeci">Receptor * r</div><div class="ttdoc">Receptor data for this vm host. </div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8h_source.html#l00027">vmhost.h:27</a></div></div>
+<div class="ttc" id="group__tree_html_gae4c9b743462f0a3808c9f02c3bf33da8"><div class="ttname"><a href="group__tree.html#gae4c9b743462f0a3808c9f02c3bf33da8">_t_get_path</a></div><div class="ttdeci">int * _t_get_path(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00715">tree.c:715</a></div></div>
+<div class="ttc" id="group__tree_html_ga7535eb2963c6cf5fc78cb14287581f92"><div class="ttname"><a href="group__tree.html#ga7535eb2963c6cf5fc78cb14287581f92">_t_clone</a></div><div class="ttdeci">T * _t_clone(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00539">tree.c:539</a></div></div>
+<div class="ttc" id="structVMHost_html_a218d2e91e129dee7c71e1b06ff533a6e"><div class="ttname"><a href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">VMHost::r</a></div><div class="ttdeci">Receptor * r</div><div class="ttdoc">Receptor data for this vm host. </div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8h_source.html#l00034">vmhost.h:34</a></div></div>
 </div><!-- fragment -->
 <p>Definition at line <a class="el" href="semtrex_8c_source.html#l00418">418</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
@@ -741,7 +741,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_stxl</b> (<a class="
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="semtrex_8c.html">semtrex.c</a></li>
-    <li class="footer">Generated on Sat Oct 3 2015 17:11:03 for ceptr by
+    <li class="footer">Generated on Mon Nov 9 2015 12:37:03 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

@@ -6,6 +6,8 @@ var group__receptor =
     [ "receptor.h", "receptor_8h.html", null ],
     [ "scape.c", "scape_8c.html", null ],
     [ "scape.h", "scape_8h.html", null ],
+    [ "shell.c", "shell_8c.html", null ],
+    [ "shell.h", "shell_8h.html", null ],
     [ "___clock_thread", "group__receptor.html#ga4cb85b79ae4207e4595d003d11beb226", null ],
     [ "__r_check_listener", "group__receptor.html#ga74ad11561e8e391a1ebed9f7474ce095", null ],
     [ "__r_get_receptor", "group__receptor.html#gac438809f0d3f3add97efd49729c9027f", null ],

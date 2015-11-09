@@ -1,5 +1,6 @@
 var structN =
 [
+    [ "cur_child", "structN.html#ad3eece05447230f421b5db5783ba1033", null ],
     [ "flags", "structN.html#ac48a6d508fe68b613d00374254a0d8ce", null ],
     [ "parenti", "structN.html#afee5fd2934a4e35dbcdd82657835ff54", null ],
     [ "size", "structN.html#aa46c27feac616f1c68106121481cea28", null ],

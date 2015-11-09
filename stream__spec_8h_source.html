@@ -109,26 +109,77 @@ $(document).ready(function(){initNavTree('stream__spec_8h_source.html','');});
 <a href="stream__spec_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;../src/ceptr.h&quot;</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;../src/stream.h&quot;</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keywordtype">void</span> testStream() {</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <a class="code" href="structStream.html">Stream</a> *s = <a class="code" href="stream_8c.html#a0f83b38c0fa7fa8dc15f3f768a2909fb">_st_new_unix_stream</a>(stdin);</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    spec_is_equal(s-&gt;type,UnixStream);</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    spec_is_equal(s-&gt;flags,StreamHasData+StreamCloseOnFree);</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    spec_is_ptr_equal(s-&gt;data.unix_stream,stdin);</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    s-&gt;flags &amp;= ~StreamCloseOnFree; <span class="comment">// don&#39;t close the stdin on free...</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &lt;unistd.h&gt;</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keywordtype">void</span> testCallback(<a class="code" href="structStream.html">Stream</a> *st) {</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    spec_is_str_equal(_st_data(st),<span class="stringliteral">&quot;line2&quot;</span>);</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    spec_is_str_equal((<span class="keywordtype">char</span> *)st-&gt;callback_arg1,<span class="stringliteral">&quot;arg val&quot;</span>);</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    st-&gt;callback = 0;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;}</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <a class="code" href="stream_8c.html#a968db3488104e65751b060be40ea9b58">_st_free</a>(s);</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;}</div>
-<div class="ttc" id="structStream_html"><div class="ttname"><a href="structStream.html">Stream</a></div><div class="ttdef"><b>Definition:</b> <a href="stream_8h_source.html#l00023">stream.h:23</a></div></div>
-<div class="ttc" id="stream_8c_html_a968db3488104e65751b060be40ea9b58"><div class="ttname"><a href="stream_8c.html#a968db3488104e65751b060be40ea9b58">_st_free</a></div><div class="ttdeci">void _st_free(Stream *stream)</div><div class="ttdef"><b>Definition:</b> <a href="stream_8c_source.html#l00030">stream.c:30</a></div></div>
-<div class="ttc" id="stream_8c_html_a0f83b38c0fa7fa8dc15f3f768a2909fb"><div class="ttname"><a href="stream_8c.html#a0f83b38c0fa7fa8dc15f3f768a2909fb">_st_new_unix_stream</a></div><div class="ttdeci">Stream * _st_new_unix_stream(FILE *stream)</div><div class="ttdef"><b>Definition:</b> <a href="stream_8c_source.html#l00018">stream.c:18</a></div></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keywordtype">void</span> testStream() {</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="comment">// test basic stream creation</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <a class="code" href="structStream.html">Stream</a> *s = <a class="code" href="stream_8c.html#a583a5536a8b45f8a542449b4ff3f7e5e">_st_new_unix_stream</a>(stdout,0);</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    spec_is_equal(s-&gt;type,UnixStream);</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    spec_is_equal(s-&gt;flags,StreamCloseOnFree);</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    spec_is_ptr_equal(s-&gt;data.unix_stream,stdout);</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    s-&gt;flags &amp;= ~StreamCloseOnFree; <span class="comment">// don&#39;t close the stdin on free...</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <a class="code" href="stream_8c.html#a968db3488104e65751b060be40ea9b58">_st_free</a>(s);</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="comment">//    debug_enable(D_STREAM);</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="comment">// test reading from a stream</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    FILE *input;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keywordtype">char</span> data[] = <span class="stringliteral">&quot;line1\nline2\n&quot;</span>;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    input = fmemopen(data, strlen(data), <span class="stringliteral">&quot;r&quot;</span>);</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    s = <a class="code" href="stream_8c.html#a583a5536a8b45f8a542449b4ff3f7e5e">_st_new_unix_stream</a>(input,1);</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    spec_is_true(s-&gt;flags&amp;StreamReader);</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    spec_is_true(s-&gt;flags&amp;StreamWaiting);</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <a class="code" href="stream_8c.html#abb3d2ea8ba1e9e81d5804f68715ea529">_st_start_read</a>(s);</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordflow">while</span>(!(s-&gt;flags&amp;StreamHasData) &amp;&amp; s-&gt;flags&amp;StreamAlive ) {sleepms(1);};</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    spec_is_str_equal(_st_data(s),<span class="stringliteral">&quot;line1&quot;</span>);</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    spec_is_equal(_st_data_size(s),6);</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <a class="code" href="stream_8c.html#a9bac5b101e58747900c48e16c0e0f94b">_st_data_read</a>(s);</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    spec_is_false(s-&gt;flags&amp;StreamHasData);</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    s-&gt;callback = testCallback;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    s-&gt;callback_arg1 = <span class="stringliteral">&quot;arg val&quot;</span>;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <a class="code" href="stream_8c.html#abb3d2ea8ba1e9e81d5804f68715ea529">_st_start_read</a>(s);</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordflow">while</span>(!(s-&gt;flags&amp;StreamHasData) &amp;&amp; s-&gt;flags&amp;StreamAlive ) {sleepms(1);};</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    spec_is_true(s-&gt;flags&amp;StreamHasData);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <a class="code" href="stream_8c.html#a9bac5b101e58747900c48e16c0e0f94b">_st_data_read</a>(s);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    spec_is_false(s-&gt;flags&amp;StreamHasData);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <a class="code" href="stream_8c.html#abb3d2ea8ba1e9e81d5804f68715ea529">_st_start_read</a>(s);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordflow">while</span>(!(s-&gt;flags&amp;StreamHasData) &amp;&amp; s-&gt;flags&amp;StreamAlive ) {sleepms(1);};</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    spec_is_false(s-&gt;flags&amp;StreamHasData);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    spec_is_false(s-&gt;flags&amp;StreamAlive);</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    debug_disable(D_STREAM);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordtype">void</span> *status;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">int</span> rc;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    rc = pthread_join(s-&gt;pthread, &amp;status);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordflow">if</span> (rc) {</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        raise_error(<span class="stringliteral">&quot;ERROR; return code from pthread_join() is %d\n&quot;</span>, rc);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    }</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <a class="code" href="stream_8c.html#a968db3488104e65751b060be40ea9b58">_st_free</a>(s);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;}</div>
+<div class="ttc" id="structStream_html"><div class="ttname"><a href="structStream.html">Stream</a></div><div class="ttdef"><b>Definition:</b> <a href="stream_8h_source.html#l00028">stream.h:28</a></div></div>
+<div class="ttc" id="stream_8c_html_a968db3488104e65751b060be40ea9b58"><div class="ttname"><a href="stream_8c.html#a968db3488104e65751b060be40ea9b58">_st_free</a></div><div class="ttdeci">void _st_free(Stream *stream)</div><div class="ttdef"><b>Definition:</b> <a href="stream_8c_source.html#l00148">stream.c:148</a></div></div>
+<div class="ttc" id="stream_8c_html_abb3d2ea8ba1e9e81d5804f68715ea529"><div class="ttname"><a href="stream_8c.html#abb3d2ea8ba1e9e81d5804f68715ea529">_st_start_read</a></div><div class="ttdeci">void _st_start_read(Stream *st)</div><div class="ttdef"><b>Definition:</b> <a href="stream_8c_source.html#l00114">stream.c:114</a></div></div>
+<div class="ttc" id="stream_8c_html_a9bac5b101e58747900c48e16c0e0f94b"><div class="ttname"><a href="stream_8c.html#a9bac5b101e58747900c48e16c0e0f94b">_st_data_read</a></div><div class="ttdeci">void _st_data_read(Stream *st)</div><div class="ttdef"><b>Definition:</b> <a href="stream_8c_source.html#l00125">stream.c:125</a></div></div>
+<div class="ttc" id="stream_8c_html_a583a5536a8b45f8a542449b4ff3f7e5e"><div class="ttname"><a href="stream_8c.html#a583a5536a8b45f8a542449b4ff3f7e5e">_st_new_unix_stream</a></div><div class="ttdeci">Stream * _st_new_unix_stream(FILE *stream, int reader)</div><div class="ttdef"><b>Definition:</b> <a href="stream_8c_source.html#l00083">stream.c:83</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><a class="el" href="stream__spec_8h.html">stream_spec.h</a></li>
-    <li class="footer">Generated on Sat Oct 3 2015 17:11:03 for ceptr by
+    <li class="footer">Generated on Mon Nov 9 2015 12:37:03 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

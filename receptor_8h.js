@@ -22,6 +22,7 @@ var receptor_8h =
     [ "noDeliveryErr", "group__receptor.html#gga726ca809ffd3d67ab4b8476646f26635a8bb5261733bd4fff6d3a68c96f286ac5", null ],
     [ "___clock_thread", "group__receptor.html#ga4cb85b79ae4207e4595d003d11beb226", null ],
     [ "__r_check_listener", "group__receptor.html#ga74ad11561e8e391a1ebed9f7474ce095", null ],
+    [ "__r_dump_instances", "group__receptor.html#gabd6d2f87b6511b3851eeb5d48f5b3bb4", null ],
     [ "__r_get_aspect", "group__receptor.html#ga6d832bc4fd6b86ba0cb523166711c3a1", null ],
     [ "__r_get_listeners", "group__receptor.html#ga638aa054bbcc81cdb79a819cb0f917ac", null ],
     [ "__r_get_receptor", "group__receptor.html#gac438809f0d3f3add97efd49729c9027f", null ],

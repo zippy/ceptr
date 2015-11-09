@@ -111,6 +111,12 @@ $(document).ready(function(){initNavTree('structStream.html','');});
 <div class="contents">
 
 <p><code>#include &lt;<a class="el" href="stream_8h_source.html">stream.h</a>&gt;</code></p>
+<div class="dynheader">
+Collaboration diagram for Stream:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structStream__coll__graph.svg" width="152" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Data Fields</h2></td></tr>
@@ -120,6 +126,36 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>type</b></td></tr>
 <tr class="memitem:ad0ec98a999ffabf6dbf192ed85d66f68"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad0ec98a999ffabf6dbf192ed85d66f68"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>flags</b></td></tr>
 <tr class="separator:ad0ec98a999ffabf6dbf192ed85d66f68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a6608bda0e2f149365cd38bd5fbec60"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4a6608bda0e2f149365cd38bd5fbec60"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>err</b></td></tr>
+<tr class="separator:a4a6608bda0e2f149365cd38bd5fbec60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe759ae321f971c550a3b9452a914185"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afe759ae321f971c550a3b9452a914185"></a>
+pthread_t&#160;</td><td class="memItemRight" valign="bottom"><b>pthread</b></td></tr>
+<tr class="separator:afe759ae321f971c550a3b9452a914185"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08fcc6cc3eeca71be5e4efd6707ce852"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a08fcc6cc3eeca71be5e4efd6707ce852"></a>
+pthread_mutex_t&#160;</td><td class="memItemRight" valign="bottom"><b>mutex</b></td></tr>
+<tr class="separator:a08fcc6cc3eeca71be5e4efd6707ce852"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f7fc814253f3dfae48951b9f47c34a2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7f7fc814253f3dfae48951b9f47c34a2"></a>
+pthread_cond_t&#160;</td><td class="memItemRight" valign="bottom"><b>cv</b></td></tr>
+<tr class="separator:a7f7fc814253f3dfae48951b9f47c34a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2fa4478cf31c4f9da7ff76ff01928f2b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2fa4478cf31c4f9da7ff76ff01928f2b"></a>
+char *&#160;</td><td class="memItemRight" valign="bottom"><b>buf</b></td></tr>
+<tr class="separator:a2fa4478cf31c4f9da7ff76ff01928f2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a7ce2a565c065ce5468192cd75b1690"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9a7ce2a565c065ce5468192cd75b1690"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>buf_size</b></td></tr>
+<tr class="separator:a9a7ce2a565c065ce5468192cd75b1690"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33b847d69114c9cf31f831f689723baa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a33b847d69114c9cf31f831f689723baa"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>data_size</b></td></tr>
+<tr class="separator:a33b847d69114c9cf31f831f689723baa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1617596b012929a6a68a37fffe2b75a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af1617596b012929a6a68a37fffe2b75a"></a>
+hasDataCallbackFn&#160;</td><td class="memItemRight" valign="bottom"><b>callback</b></td></tr>
+<tr class="separator:af1617596b012929a6a68a37fffe2b75a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b63f2a0a45c971187a9efba665f09df"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6b63f2a0a45c971187a9efba665f09df"></a>
+void *&#160;</td><td class="memItemRight" valign="bottom"><b>callback_arg1</b></td></tr>
+<tr class="separator:a6b63f2a0a45c971187a9efba665f09df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08e31ce0e3f9c976b97b39f21c01a9aa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a08e31ce0e3f9c976b97b39f21c01a9aa"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>callback_arg2</b></td></tr>
+<tr class="separator:a08e31ce0e3f9c976b97b39f21c01a9aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac66b22ba53bb293c48fc3fb75562a9cb"><td class="memItemLeft" ><a class="anchor" id="ac66b22ba53bb293c48fc3fb75562a9cb"></a>
 union {</td></tr>
 <tr class="memitem:a9836bafe53f125626977f5feb297a91a"><td class="memItemLeft" >
@@ -131,7 +167,7 @@ union {</td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>abstraction for a stream data type </p>
 
-<p>Definition at line <a class="el" href="stream_8h_source.html#l00023">23</a> of file <a class="el" href="stream_8h_source.html">stream.h</a>.</p>
+<p>Definition at line <a class="el" href="stream_8h_source.html#l00028">28</a> of file <a class="el" href="stream_8h_source.html">stream.h</a>.</p>
 </div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li>src/<a class="el" href="stream_8h_source.html">stream.h</a></li>
 </ul>
@@ -141,7 +177,7 @@ union {</td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="structStream.html">Stream</a></li>
-    <li class="footer">Generated on Sat Oct 3 2015 17:11:03 for ceptr by
+    <li class="footer">Generated on Mon Nov 9 2015 12:37:04 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

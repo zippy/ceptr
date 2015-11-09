@@ -2,6 +2,9 @@ var def_8c =
 [
     [ "__d_code_process", "group__def.html#ga33015dd6a62c1e791de183e875ec4c72", null ],
     [ "__d_declare_symbol", "group__def.html#ga398a0288bf8fb4695c955832e8fc7fc8", null ],
+    [ "__d_define_structure", "def_8c.html#aed1d00cd747b3db215cb766aa32cd3eb", null ],
+    [ "__d_set_structure_def", "def_8c.html#a04efc8e66ed5ab08728864f36b114538", null ],
+    [ "__d_set_symbol_structure", "group__def.html#ga83921b9941f28a5dcf8a4141ab75598b", null ],
     [ "__d_validate_structure", "group__def.html#gaa65722e0c590698e4b114038f036de29", null ],
     [ "__d_validate_symbol", "group__def.html#ga867aa639a7213c544c3f37e23e53b2dd", null ],
     [ "__t2s", "group__def.html#gaa7033f5f1b8553022a5a26b35b4056ac", null ],

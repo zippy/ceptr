@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['c',['c',['../structVMHost.html#a53bffdb41bcc4096902aabf8ab029637',1,'VMHost']]],
   ['callee',['callee',['../structR.html#aec3b036fadeaf91cc4ece8727b9d683c',1,'R']]],
   ['caller',['caller',['../structR.html#ac8848a92ff8778bc051c92589ed7b2df',1,'R']]],
   ['completed',['completed',['../structQ.html#a7ee8f0b2d1cfefac4a7e3e8704bf6069',1,'Q']]],

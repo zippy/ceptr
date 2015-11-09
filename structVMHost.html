@@ -114,7 +114,8 @@ $(document).ready(function(){initNavTree('structVMHost.html','');});
 <div class="dynheader">
 Collaboration diagram for VMHost:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structVMHost__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structVMHost__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
@@ -123,14 +124,13 @@ Data Fields</h2></td></tr>
 <a class="el" href="structReceptor.html">Receptor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a></td></tr>
 <tr class="memdesc:a218d2e91e129dee7c71e1b06ff533a6e"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structReceptor.html">Receptor</a> data for this vm host. <br /></td></tr>
 <tr class="separator:a218d2e91e129dee7c71e1b06ff533a6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a53bffdb41bcc4096902aabf8ab029637"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a53bffdb41bcc4096902aabf8ab029637"></a>
-<a class="el" href="structReceptor.html">Receptor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVMHost.html#a53bffdb41bcc4096902aabf8ab029637">c</a></td></tr>
-<tr class="memdesc:a53bffdb41bcc4096902aabf8ab029637"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structReceptor.html">Receptor</a> data for the vm host's local version of the compository. <br /></td></tr>
-<tr class="separator:a53bffdb41bcc4096902aabf8ab029637"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa7b4b8b391039f62980e8d52d75df7eb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa7b4b8b391039f62980e8d52d75df7eb"></a>
-<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVMHost.html#aa7b4b8b391039f62980e8d52d75df7eb">active_receptors</a></td></tr>
-<tr class="memdesc:aa7b4b8b391039f62980e8d52d75df7eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">pointer to tree that holds all currently active receptors <br /></td></tr>
-<tr class="separator:aa7b4b8b391039f62980e8d52d75df7eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95ef186e3477224ee0be117e7f9abbe3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a95ef186e3477224ee0be117e7f9abbe3"></a>
+<a class="el" href="structActiveReceptor.html">ActiveReceptor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVMHost.html#a95ef186e3477224ee0be117e7f9abbe3">active_receptors</a> [MAX_ACTIVE_RECEPTORS]</td></tr>
+<tr class="memdesc:a95ef186e3477224ee0be117e7f9abbe3"><td class="mdescLeft">&#160;</td><td class="mdescRight">pointer to array that holds all currently active receptors <br /></td></tr>
+<tr class="separator:a95ef186e3477224ee0be117e7f9abbe3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97819ac8dc92af600c64aa6835e45983"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a97819ac8dc92af600c64aa6835e45983"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>active_receptor_count</b></td></tr>
+<tr class="separator:a97819ac8dc92af600c64aa6835e45983"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc9dab8da288b7f9ad20988e545a56f9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abc9dab8da288b7f9ad20988e545a56f9"></a>
 <a class="el" href="structScape.html">Scape</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>installed_receptors</b></td></tr>
 <tr class="separator:abc9dab8da288b7f9ad20988e545a56f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -143,11 +143,14 @@ Data Fields</h2></td></tr>
 <tr class="memitem:a6210d87a36adbc358e239510cade66b4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6210d87a36adbc358e239510cade66b4"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>process_state</b></td></tr>
 <tr class="separator:a6210d87a36adbc358e239510cade66b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00e4fa50ce8f245d8b9ff534dd02253a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a00e4fa50ce8f245d8b9ff534dd02253a"></a>
+char *&#160;</td><td class="memItemRight" valign="bottom"><b>dir</b></td></tr>
+<tr class="separator:a00e4fa50ce8f245d8b9ff534dd02253a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="structVMHost.html">VMHost</a> holds all the data for an active virtual machine host </p>
 
-<p>Definition at line <a class="el" href="vmhost_8h_source.html#l00026">26</a> of file <a class="el" href="vmhost_8h_source.html">vmhost.h</a>.</p>
+<p>Definition at line <a class="el" href="vmhost_8h_source.html#l00033">33</a> of file <a class="el" href="vmhost_8h_source.html">vmhost.h</a>.</p>
 </div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li>src/<a class="el" href="vmhost_8h_source.html">vmhost.h</a></li>
 </ul>
@@ -157,7 +160,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>process_state</b></td>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="structVMHost.html">VMHost</a></li>
-    <li class="footer">Generated on Sat Oct 3 2015 17:11:03 for ceptr by
+    <li class="footer">Generated on Mon Nov 9 2015 12:37:04 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

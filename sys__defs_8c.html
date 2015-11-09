@@ -112,10 +112,12 @@ $(document).ready(function(){initNavTree('sys__defs_8c.html','');});
 <div class="textblock"><code>#include &quot;<a class="el" href="tree_8h_source.html">tree.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="def_8h_source.html">def.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="base__defs_8h_source.html">base_defs.h</a>&quot;</code><br />
+<code>#include &lt;stdarg.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for sys_defs.c:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="sys__defs_8c__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="sys__defs_8c__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 </div>
 <p><a href="sys__defs_8c_source.html">Go to the source code of this file.</a></p>
@@ -135,6 +137,12 @@ Include dependency graph for sys_defs.c:</div>
 <tr class="memitem:adeb9e80848b0d67a7484ced880f65adc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adeb9e80848b0d67a7484ced880f65adc"></a>
 <a class="el" href="structContextStore.html">ContextStore</a>&#160;</td><td class="memItemRight" valign="bottom"><b>G_contexts</b> [_NUM_CONTEXTS]</td></tr>
 <tr class="separator:adeb9e80848b0d67a7484ced880f65adc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac33201af5a06542fc8c51895b4c26b7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aac33201af5a06542fc8c51895b4c26b7"></a>
+Context&#160;</td><td class="memItemRight" valign="bottom"><b>G_ctx</b></td></tr>
+<tr class="separator:aac33201af5a06542fc8c51895b4c26b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2802562ba52d6692f72a674e350db08"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af2802562ba52d6692f72a674e350db08"></a>
+char *&#160;</td><td class="memItemRight" valign="bottom"><b>G_label</b></td></tr>
+<tr class="separator:af2802562ba52d6692f72a674e350db08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d4bca8a21dcd168c8a5f9d181896f50"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0d4bca8a21dcd168c8a5f9d181896f50"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>init_defs_tree</b> (<a class="el" href="structContextStore.html">ContextStore</a> *cs)</td></tr>
 <tr class="separator:a0d4bca8a21dcd168c8a5f9d181896f50"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -147,6 +155,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>free_context</b> (<a 
 <tr class="memitem:ga7ce90bc0d2880d34c8df6f7bfdac0ac7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga7ce90bc0d2880d34c8df6f7bfdac0ac7"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>sys_free</b> ()</td></tr>
 <tr class="separator:ga7ce90bc0d2880d34c8df6f7bfdac0ac7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d09d53224cbb8ee8211535dacf1adc9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0d09d53224cbb8ee8211535dacf1adc9"></a>
+<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>sT_</b> (<a class="el" href="structSemanticID.html">Symbol</a> sym, int num_params,...)</td></tr>
+<tr class="separator:a0d09d53224cbb8ee8211535dacf1adc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d746ea639c2dbd9c45d992a804ed8d0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3d746ea639c2dbd9c45d992a804ed8d0"></a>
+<a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><b>sTD</b> (Context c, <a class="el" href="structT.html">T</a> *structures)</td></tr>
+<tr class="separator:a3d746ea639c2dbd9c45d992a804ed8d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>definition of system semantic elements for bootstrapping </p>
@@ -159,7 +173,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>sys_free</b> ()</td><
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="sys__defs_8c.html">sys_defs.c</a></li>
-    <li class="footer">Generated on Sat Oct 3 2015 17:11:03 for ceptr by
+    <li class="footer">Generated on Mon Nov 9 2015 12:37:03 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

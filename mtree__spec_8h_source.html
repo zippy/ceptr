@@ -167,7 +167,7 @@ $(document).ready(function(){initNavTree('mtree__spec_8h_source.html','');});
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <a class="code" href="structH.html">H</a> h,h1,h11,h2,h21,h22,h3;</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="comment">// test adding a new root</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    h = <a class="code" href="mtree_8c.html#af2f3d808adcb064e5120ee33f54e8c2d">_m_new</a>(null_H,TEST_STR_SYMBOL,<span class="stringliteral">&quot;hello&quot;</span>,6);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    h = _m_new(null_H,TEST_STR_SYMBOL,<span class="stringliteral">&quot;hello&quot;</span>,6);</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    spec_is_equal(h.a.l,0);</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    spec_is_equal(h.a.i,0);</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    spec_is_equal(h.m-&gt;levels,1);</div>
@@ -180,7 +180,7 @@ $(document).ready(function(){initNavTree('mtree__spec_8h_source.html','');});
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    spec_is_true(semeq(<a class="code" href="mtree_8c.html#ab8786adc8759967b5ab4314e7827065b">_m_symbol</a>(h),TEST_STR_SYMBOL));</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="comment">// test adding first child</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    h1 = <a class="code" href="mtree_8c.html#af2f3d808adcb064e5120ee33f54e8c2d">_m_new</a>(h,TEST_STR_SYMBOL,<span class="stringliteral">&quot;t1&quot;</span>,3);</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    h1 = _m_new(h,TEST_STR_SYMBOL,<span class="stringliteral">&quot;t1&quot;</span>,3);</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    spec_is_equal(h.m-&gt;levels,2);</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    spec_is_str_equal((<span class="keywordtype">char</span> *)<a class="code" href="mtree_8c.html#a0131231a4ed8941c12b7281e7a2bce4d">_m_surface</a>(h1),<span class="stringliteral">&quot;t1&quot;</span>);</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    spec_is_maddr_equal(<a class="code" href="mtree_8c.html#ad49f52a39bf6ec9d31d476a25de088f3">_m_parent</a>(h1),h.a);</div>
@@ -190,7 +190,7 @@ $(document).ready(function(){initNavTree('mtree__spec_8h_source.html','');});
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    spec_is_maddr_equal(<a class="code" href="mtree_8c.html#a8f0130ea8f017ec2aed0c72a9be77a47">_m_child</a>(h1,NULL_ADDR),null_H.a);</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="comment">// test adding second child</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    h2 = <a class="code" href="mtree_8c.html#af2f3d808adcb064e5120ee33f54e8c2d">_m_new</a>(h,TEST_STR_SYMBOL,<span class="stringliteral">&quot;t2&quot;</span>,3);</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    h2 = _m_new(h,TEST_STR_SYMBOL,<span class="stringliteral">&quot;t2&quot;</span>,3);</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    spec_is_equal(h.m-&gt;levels,2);</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    spec_is_str_equal((<span class="keywordtype">char</span> *)<a class="code" href="mtree_8c.html#a0131231a4ed8941c12b7281e7a2bce4d">_m_surface</a>(h2),<span class="stringliteral">&quot;t2&quot;</span>);</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    spec_is_maddr_equal(<a class="code" href="mtree_8c.html#ad49f52a39bf6ec9d31d476a25de088f3">_m_parent</a>(h2),h.a);</div>
@@ -200,7 +200,7 @@ $(document).ready(function(){initNavTree('mtree__spec_8h_source.html','');});
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    spec_is_equal(<a class="code" href="mtree_8c.html#a810511f76ba90cfb41460732ef11bcb0">_m_children</a>(h2),0);</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="comment">// test adding child to second child</span></div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    h21 = <a class="code" href="mtree_8c.html#af2f3d808adcb064e5120ee33f54e8c2d">_m_new</a>(h2,TEST_STR_SYMBOL,<span class="stringliteral">&quot;t21&quot;</span>,4);</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    h21 = _m_new(h2,TEST_STR_SYMBOL,<span class="stringliteral">&quot;t21&quot;</span>,4);</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    spec_is_equal(h21.a.l,2);</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    spec_is_equal(h21.a.i,0);</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    spec_is_equal(h.m-&gt;levels,3);</div>
@@ -212,7 +212,7 @@ $(document).ready(function(){initNavTree('mtree__spec_8h_source.html','');});
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="comment">// now adding in a child to the first child (i.e. out of order)</span></div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    spec_is_maddr_equal(<a class="code" href="mtree_8c.html#a8f0130ea8f017ec2aed0c72a9be77a47">_m_child</a>(h1,NULL_ADDR),null_H.a);</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    h11 = <a class="code" href="mtree_8c.html#af2f3d808adcb064e5120ee33f54e8c2d">_m_new</a>(h1,TEST_STR_SYMBOL,<span class="stringliteral">&quot;t11&quot;</span>,4);</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    h11 = _m_new(h1,TEST_STR_SYMBOL,<span class="stringliteral">&quot;t11&quot;</span>,4);</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    spec_is_equal(h11.a.l,2);</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    spec_is_equal(h11.a.i,1);  <span class="comment">//should be inserted after the t21 node</span></div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    spec_is_equal(h.m-&gt;levels,3);</div>
@@ -224,7 +224,7 @@ $(document).ready(function(){initNavTree('mtree__spec_8h_source.html','');});
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <span class="comment">// this test is here because it makes sure that things work even</span></div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    <span class="comment">// if nodes are inserted out of order</span></div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    h22 = <a class="code" href="mtree_8c.html#af2f3d808adcb064e5120ee33f54e8c2d">_m_new</a>(h2,TEST_STR_SYMBOL,<span class="stringliteral">&quot;t22&quot;</span>,4);</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    h22 = _m_new(h2,TEST_STR_SYMBOL,<span class="stringliteral">&quot;t22&quot;</span>,4);</div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    spec_is_equal(h22.a.l,2);</div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    spec_is_equal(h22.a.i,2);  <span class="comment">//should be inserted after the t11 node</span></div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    spec_is_equal(h.m-&gt;levels,3);</div>
@@ -253,10 +253,10 @@ $(document).ready(function(){initNavTree('mtree__spec_8h_source.html','');});
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    spec_is_maddr_equal(<a class="code" href="mtree_8c.html#a59cab39e0fcd896b39158cb0c81bbd1a">_m_next_sibling</a>(h11),null_H.a);</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;</div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    <span class="comment">// test add</span></div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <a class="code" href="structH.html">H</a> h12 = <a class="code" href="mtree_8c.html#af2f3d808adcb064e5120ee33f54e8c2d">_m_new</a>(null_H,TEST_TREE_SYMBOL,<span class="stringliteral">&quot;t12&quot;</span>,4);</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <a class="code" href="structH.html">H</a> h12 = _m_new(null_H,TEST_TREE_SYMBOL,<span class="stringliteral">&quot;t12&quot;</span>,4);</div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    spec_is_str_equal((<span class="keywordtype">char</span> *)<a class="code" href="mtree_8c.html#a0131231a4ed8941c12b7281e7a2bce4d">_m_surface</a>(h12),<span class="stringliteral">&quot;t12&quot;</span>);</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <a class="code" href="mtree_8c.html#af2f3d808adcb064e5120ee33f54e8c2d">_m_new</a>(h12,TEST_STR_SYMBOL,<span class="stringliteral">&quot;t121&quot;</span>,5);</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <a class="code" href="structH.html">H</a> h221 = <a class="code" href="mtree_8c.html#af2f3d808adcb064e5120ee33f54e8c2d">_m_new</a>(h22,TEST_STR_SYMBOL,<span class="stringliteral">&quot;t221&quot;</span>,5);</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    _m_new(h12,TEST_STR_SYMBOL,<span class="stringliteral">&quot;t121&quot;</span>,5);</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <a class="code" href="structH.html">H</a> h221 = _m_new(h22,TEST_STR_SYMBOL,<span class="stringliteral">&quot;t221&quot;</span>,5);</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    spec_is_equal(h221.a.l,3);</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    spec_is_equal(h221.a.i,0);  <span class="comment">//should be first and only node on third level</span></div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    spec_is_equal(GET_LEVEL(h221)-&gt;nodes,1);</div>
@@ -293,178 +293,268 @@ $(document).ready(function(){initNavTree('mtree__spec_8h_source.html','');});
 <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    spec_is_equal(h121.a.i,1);  <span class="comment">//should be last because it was appended by add</span></div>
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;</div>
 <div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    <span class="keywordtype">size_t</span> size;</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    <a class="code" href="structS.html">S</a> *s = <a class="code" href="mtree_8c.html#a85882e4f20f772884a5b3a3b2dd836d0">_m_serialize</a>(h.m,&amp;size);</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    <span class="comment">//    writeFile(&quot;web/test1.cmt&quot;,s,size);</span></div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    free(s);</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    buf[0] = 0;</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    <a class="code" href="mtree_8c.html#ac2c4b050224da6010e036ff381f31c3e">_m_walk</a>(h2,_walkfn,buf);</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    spec_is_str_equal(buf,<span class="stringliteral">&quot;1.1, 2.0, 2.2, 3.0, &quot;</span>);</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    spec_is_equal(<a class="code" href="mtree_8c.html#a810511f76ba90cfb41460732ef11bcb0">_m_children</a>(h),3);</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    h2 = <a class="code" href="mtree_8c.html#aadcc0b49fc78411ef25fd61007acda1e">_m_detatch</a>(h2);</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    spec_is_maddr_equal(<a class="code" href="mtree_8c.html#ad49f52a39bf6ec9d31d476a25de088f3">_m_parent</a>(h2),null_H.a);</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    <span class="comment">//    mtd(h2);</span></div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    <span class="comment">//    mtd(h);</span></div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    spec_is_true(h2.m != h.m);</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    spec_is_equal(<a class="code" href="mtree_8c.html#a810511f76ba90cfb41460732ef11bcb0">_m_children</a>(h2),2);</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    spec_is_equal(<a class="code" href="mtree_8c.html#a810511f76ba90cfb41460732ef11bcb0">_m_children</a>(h),2);</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    _m_free(h2);</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    <span class="comment">//S *s = _m_serialize(h.m);</span></div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    <span class="comment">//    writeFile(&quot;web/test1.cmt&quot;,s,size);</span></div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    <span class="comment">//free(s);</span></div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    buf[0] = 0;</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    <a class="code" href="mtree_8c.html#ac2c4b050224da6010e036ff381f31c3e">_m_walk</a>(h2,_walkfn,buf);</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    spec_is_str_equal(buf,<span class="stringliteral">&quot;1.1, 2.0, 2.2, 3.0, &quot;</span>);</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    spec_is_equal(<a class="code" href="mtree_8c.html#a810511f76ba90cfb41460732ef11bcb0">_m_children</a>(h),3);</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    h2 = <a class="code" href="mtree_8c.html#aadcc0b49fc78411ef25fd61007acda1e">_m_detatch</a>(h2);</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    spec_is_maddr_equal(<a class="code" href="mtree_8c.html#ad49f52a39bf6ec9d31d476a25de088f3">_m_parent</a>(h2),null_H.a);</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    <span class="comment">//    mtd(h2);</span></div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    <span class="comment">//    mtd(h);</span></div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    spec_is_true(h2.m != h.m);</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    spec_is_equal(<a class="code" href="mtree_8c.html#a810511f76ba90cfb41460732ef11bcb0">_m_children</a>(h2),2);</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    spec_is_equal(<a class="code" href="mtree_8c.html#a810511f76ba90cfb41460732ef11bcb0">_m_children</a>(h),2);</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    _m_free(h2);</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    _m_free(h);</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;}</div>
 <div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    _m_free(h);</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;}</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;</div>
-<div class="line"><a name="l00219"></a><span class="lineno"><a class="line" href="mtree__spec_8h.html#a38ad74cf9f34a01de272d4aa2d3288b1">  219</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="mtree__spec_8h.html#a38ad74cf9f34a01de272d4aa2d3288b1">testMTreeWalk</a>() {</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    <a class="code" href="structT.html">T</a> *t = <a class="code" href="http__example_8h.html#a1c182b5a6e82ef49c6967183a15c3e8b">_makeTestHTTPRequestTree</a>(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    <span class="comment">// puts(__t2s(&amp;test_HTTP_defs,t,INDENT));</span></div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    <a class="code" href="structH.html">H</a> h = <a class="code" href="mtree_8c.html#a0c5bd733621f48184a13a1202bd24fed">_m_new_from_t</a>(t);</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    <span class="keywordtype">char</span> buf[2000] ={0};</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    <a class="code" href="structMaddr.html">Maddr</a> ac = {0,0};</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    <a class="code" href="mtree_8c.html#ac2c4b050224da6010e036ff381f31c3e">_m_walk</a>(h,_walkfn,buf);</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    spec_is_str_equal(buf,<span class="stringliteral">&quot;0.0, 1.0, 2.0, 2.1, 1.1, 1.2, 2.2, 3.0, 3.1, 2.3, 3.2, 3.3, 2.4, 3.4, 4.0, 5.0, 5.1, 4.1, 5.2, 5.3, &quot;</span>);</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;<span class="keywordtype">void</span> testMTreeOrthogonal() {</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    <a class="code" href="structH.html">H</a> h = _m_new(null_H,TEST_STR_SYMBOL,<span class="stringliteral">&quot;hello&quot;</span>,6);</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    <a class="code" href="structH.html">H</a> h1 = <a class="code" href="mtree_8c.html#afad9c74e15faf49c268ed9117cff0d07">_m_newi</a>(null_H,TEST_INT_SYMBOL,314);</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    _m_newt(h,TEST_TREE_SYMBOL,h1);</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    <a class="code" href="structT.html">T</a> *t = <a class="code" href="mtree_8c.html#ab0e6e5f78e7ec6f3c9165feca0eae093">_t_new_from_m</a>(h);</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    spec_is_str_equal(t2s(t),<span class="stringliteral">&quot;(TEST_STR_SYMBOL:hello (TEST_TREE_SYMBOL:{(TEST_INT_SYMBOL:314)}))&quot;</span>);</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    _m_free(h);</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    <span class="comment">// now make sure converting works for orthogonal trees in the other direction too.</span></div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    h = <a class="code" href="mtree_8c.html#a0c5bd733621f48184a13a1202bd24fed">_m_new_from_t</a>(t);</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
 <div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    <span class="comment">//start walk from a node</span></div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    h.a.l = 1;</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;    h.a.i = 2;</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    buf[0] = 0;</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    <a class="code" href="mtree_8c.html#ac2c4b050224da6010e036ff381f31c3e">_m_walk</a>(h,_walkfn,buf);</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    spec_is_str_equal(buf,<span class="stringliteral">&quot;1.2, 2.2, 3.0, 3.1, 2.3, 3.2, 3.3, 2.4, 3.4, 4.0, 5.0, 5.1, 4.1, 5.2, 5.3, &quot;</span>);</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    _m_free(h);</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;}</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;</div>
-<div class="line"><a name="l00241"></a><span class="lineno"><a class="line" href="mtree__spec_8h.html#a6df36a3255486133fd34898984c1a5e1">  241</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="mtree__spec_8h.html#a6df36a3255486133fd34898984c1a5e1">testTreeConvert</a>() {</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    <a class="code" href="structT.html">T</a> *t = <a class="code" href="http__example_8h.html#a1c182b5a6e82ef49c6967183a15c3e8b">_makeTestHTTPRequestTree</a>(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    <a class="code" href="structH.html">H</a> h = <a class="code" href="mtree_8c.html#a0c5bd733621f48184a13a1202bd24fed">_m_new_from_t</a>(t);</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    spec_is_symbol_equal(0,<a class="code" href="mtree_8c.html#ab8786adc8759967b5ab4314e7827065b">_m_symbol</a>(h),HTTP_REQUEST);</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;    <a class="code" href="structH.html">H</a> hh = h;</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    hh.a.l = 1;</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    spec_is_symbol_equal(0,<a class="code" href="mtree_8c.html#ab8786adc8759967b5ab4314e7827065b">_m_symbol</a>(hh),HTTP_REQUEST_VERSION);</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    hh.a.l = 5;</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    hh.a.i = 2;</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    spec_is_str_equal((<span class="keywordtype">char</span> *)<a class="code" href="mtree_8c.html#a0131231a4ed8941c12b7281e7a2bce4d">_m_surface</a>(hh),<span class="stringliteral">&quot;page&quot;</span>);</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    <span class="comment">//    mtd(h);</span></div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;    <span class="comment">//    puts(__t2s(&amp;test_HTTP_defs,t,INDENT));</span></div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;    <a class="code" href="structT.html">T</a> *t1 = <a class="code" href="mtree_8c.html#ab0e6e5f78e7ec6f3c9165feca0eae093">_t_new_from_m</a>(h);</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;    <span class="keywordtype">char</span> buf[2000] = {0};</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    <span class="keywordtype">char</span> buf1[2000] = {0};</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;    __t_dump(&amp;test_HTTP_defs,t,0,buf);</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;    __t_dump(&amp;test_HTTP_defs,t1,0,buf1);</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    spec_is_str_equal(buf1,buf);</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    t = <a class="code" href="mtree_8c.html#ab0e6e5f78e7ec6f3c9165feca0eae093">_t_new_from_m</a>(h);</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    spec_is_str_equal(t2s(t),<span class="stringliteral">&quot;(TEST_STR_SYMBOL:hello (TEST_TREE_SYMBOL:{(TEST_INT_SYMBOL:314)}))&quot;</span>);</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    _m_free(h);</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;}</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;<span class="keywordtype">void</span> testMTreeReceptor() {</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    <a class="code" href="structReceptor.html">Receptor</a> *r = <a class="code" href="group__receptor.html#ga62c253e7cc1d1ad20471913ae822ebc2">_r_new</a>(TEST_RECEPTOR_SYMBOL);</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    <a class="code" href="structT.html">T</a> *t = _t_newi(0,TEST_INT_SYMBOL,0);</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    <a class="code" href="structT.html">T</a> *tr = <a class="code" href="group__tree.html#ga7fd137a24b6795e1fc25c50ba91a767f">_t_new_receptor</a>(t,TEST_RECEPTOR_SYMBOL,r);</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    <a class="code" href="structH.html">H</a> hr = <a class="code" href="mtree_8c.html#a0c5bd733621f48184a13a1202bd24fed">_m_new_from_t</a>(tr);</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    <a class="code" href="structT.html">T</a> *t2 = <a class="code" href="mtree_8c.html#ab0e6e5f78e7ec6f3c9165feca0eae093">_t_new_from_m</a>(hr);</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    spec_is_ptr_equal(*(<a class="code" href="structReceptor.html">Receptor</a> **)<a class="code" href="mtree_8c.html#a0131231a4ed8941c12b7281e7a2bce4d">_m_surface</a>(hr),r);</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    spec_is_ptr_equal(<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(t2),r);</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    spec_is_str_equal(t2s(t2),<span class="stringliteral">&quot;(TEST_RECEPTOR_SYMBOL:{(TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))})&quot;</span>);</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t2);</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    _m_free(hr);</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;}</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;</div>
+<div class="line"><a name="l00255"></a><span class="lineno"><a class="line" href="mtree__spec_8h.html#a38ad74cf9f34a01de272d4aa2d3288b1">  255</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="mtree__spec_8h.html#a38ad74cf9f34a01de272d4aa2d3288b1">testMTreeWalk</a>() {</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;    <a class="code" href="structT.html">T</a> *t = <a class="code" href="http__example_8h.html#a1c182b5a6e82ef49c6967183a15c3e8b">_makeTestHTTPRequestTree</a>(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    <span class="comment">// puts(__t2s(&amp;test_HTTP_defs,t,INDENT));</span></div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    <a class="code" href="structH.html">H</a> h = <a class="code" href="mtree_8c.html#a0c5bd733621f48184a13a1202bd24fed">_m_new_from_t</a>(t);</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;    <span class="keywordtype">char</span> buf[2000] ={0};</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;    <a class="code" href="structMaddr.html">Maddr</a> ac = {0,0};</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;    <a class="code" href="mtree_8c.html#ac2c4b050224da6010e036ff381f31c3e">_m_walk</a>(h,_walkfn,buf);</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    spec_is_str_equal(buf,<span class="stringliteral">&quot;0.0, 1.0, 2.0, 2.1, 1.1, 1.2, 2.2, 3.0, 3.1, 2.3, 3.2, 3.3, 2.4, 3.4, 4.0, 5.0, 5.1, 4.1, 5.2, 5.3, &quot;</span>);</div>
 <div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    _m_free(h);</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t1);</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;}</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;<span class="keywordtype">void</span> testMTreeSerialize() {</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    <a class="code" href="structT.html">T</a> *t = <a class="code" href="http__example_8h.html#a1c182b5a6e82ef49c6967183a15c3e8b">_makeTestHTTPRequestTree</a>(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    <a class="code" href="structH.html">H</a> h = <a class="code" href="mtree_8c.html#a0c5bd733621f48184a13a1202bd24fed">_m_new_from_t</a>(t);</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    <span class="keywordtype">size_t</span> size;</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;    <a class="code" href="structS.html">S</a> *s = <a class="code" href="mtree_8c.html#a85882e4f20f772884a5b3a3b2dd836d0">_m_serialize</a>(h.m,&amp;size);</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    <span class="comment">//start walk from a node</span></div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    h.a.l = 1;</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;    h.a.i = 2;</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    buf[0] = 0;</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;    <a class="code" href="mtree_8c.html#ac2c4b050224da6010e036ff381f31c3e">_m_walk</a>(h,_walkfn,buf);</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    spec_is_str_equal(buf,<span class="stringliteral">&quot;1.2, 2.2, 3.0, 3.1, 2.3, 3.2, 3.3, 2.4, 3.4, 4.0, 5.0, 5.1, 4.1, 5.2, 5.3, &quot;</span>);</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    _m_free(h);</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;}</div>
 <div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    spec_is_equal(s-&gt;magic,h.m-&gt;magic);</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    spec_is_equal(s-&gt;levels,h.m-&gt;levels);</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;    spec_is_equal(s-&gt;level_offsets[0],0);</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    <a class="code" href="structL.html">L</a> *l = GET_LEVEL(h);</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    spec_is_equal(s-&gt;level_offsets[1], (<span class="keywordtype">int</span>)SERIALIZED_LEVEL_SIZE(l));</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;    <a class="code" href="structH.html">H</a> h1 = <a class="code" href="mtree_8c.html#a8fd28bfb7cf7c6a5afceae0d9622a393">_m_unserialize</a>(s);</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    <a class="code" href="structT.html">T</a> *t1 = <a class="code" href="mtree_8c.html#ab0e6e5f78e7ec6f3c9165feca0eae093">_t_new_from_m</a>(h1);</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    <span class="keywordtype">char</span> buf[2000] = {0};</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;    <span class="keywordtype">char</span> buf1[2000] = {0};</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;    __t_dump(&amp;test_HTTP_defs,t,0,buf);</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    __t_dump(&amp;test_HTTP_defs,t1,0,buf1);</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;    spec_is_str_equal(buf1,buf);</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    writeFile(<span class="stringliteral">&quot;web/test.cmt&quot;</span>,s,size);</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;    _m_free(h);free(s);</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    h = <a class="code" href="mtree_8c.html#a0c5bd733621f48184a13a1202bd24fed">_m_new_from_t</a>(test_HTTP_defs.<a class="code" href="structDefs.html#a6f9d3b3e38fff31326b7d27f730ae95c">structures</a>);</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;    s = <a class="code" href="mtree_8c.html#a85882e4f20f772884a5b3a3b2dd836d0">_m_serialize</a>(h.m,&amp;size);</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;    writeFile(<span class="stringliteral">&quot;web/httpstructures.cmt&quot;</span>,s,size);</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;    _m_free(h);free(s);</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    h = <a class="code" href="mtree_8c.html#a0c5bd733621f48184a13a1202bd24fed">_m_new_from_t</a>(test_HTTP_defs.<a class="code" href="structDefs.html#a172e45e131e197571ba1a36a136d35f8">symbols</a>);</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;    s = <a class="code" href="mtree_8c.html#a85882e4f20f772884a5b3a3b2dd836d0">_m_serialize</a>(h.m,&amp;size);</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;    writeFile(<span class="stringliteral">&quot;web/httpsymbols.cmt&quot;</span>,s,size);</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;    _m_free(h);free(s);</div>
+<div class="line"><a name="l00277"></a><span class="lineno"><a class="line" href="mtree__spec_8h.html#a6df36a3255486133fd34898984c1a5e1">  277</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="mtree__spec_8h.html#a6df36a3255486133fd34898984c1a5e1">testTreeConvert</a>() {</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;    <a class="code" href="structT.html">T</a> *t = <a class="code" href="http__example_8h.html#a1c182b5a6e82ef49c6967183a15c3e8b">_makeTestHTTPRequestTree</a>(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    <a class="code" href="structH.html">H</a> h = <a class="code" href="mtree_8c.html#a0c5bd733621f48184a13a1202bd24fed">_m_new_from_t</a>(t);</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    spec_is_symbol_equal(0,<a class="code" href="mtree_8c.html#ab8786adc8759967b5ab4314e7827065b">_m_symbol</a>(h),HTTP_REQUEST);</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;    <a class="code" href="structH.html">H</a> hh = h;</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    hh.a.l = 1;</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;    spec_is_symbol_equal(0,<a class="code" href="mtree_8c.html#ab8786adc8759967b5ab4314e7827065b">_m_symbol</a>(hh),HTTP_REQUEST_VERSION);</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    hh.a.l = 5;</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;    hh.a.i = 2;</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;    spec_is_str_equal((<span class="keywordtype">char</span> *)<a class="code" href="mtree_8c.html#a0131231a4ed8941c12b7281e7a2bce4d">_m_surface</a>(hh),<span class="stringliteral">&quot;page&quot;</span>);</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;    <span class="comment">//    mtd(h);</span></div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    <span class="comment">//    puts(__t2s(&amp;test_HTTP_defs,t,INDENT));</span></div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;    <a class="code" href="structT.html">T</a> *t1 = <a class="code" href="mtree_8c.html#ab0e6e5f78e7ec6f3c9165feca0eae093">_t_new_from_m</a>(h);</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;    <span class="keywordtype">char</span> buf[2000] = {0};</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    <span class="keywordtype">char</span> buf1[2000] = {0};</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;    __t_dump(&amp;test_HTTP_defs,t,0,buf);</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    __t_dump(&amp;test_HTTP_defs,t1,0,buf1);</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;    spec_is_str_equal(buf1,buf);</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;    _m_free(h);</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t1);</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;    <span class="comment">// test that converting run-trees works too</span></div>
 <div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;    h = <a class="code" href="mtree_8c.html#a0c5bd733621f48184a13a1202bd24fed">_m_new_from_t</a>(G_contexts[SYS_CONTEXT].defs.structures);</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    s = <a class="code" href="mtree_8c.html#a85882e4f20f772884a5b3a3b2dd836d0">_m_serialize</a>(h.m,&amp;size);</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    writeFile(<span class="stringliteral">&quot;web/sysstructures.cmt&quot;</span>,s,size);</div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;    _m_free(h);free(s);</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;    h = <a class="code" href="mtree_8c.html#a0c5bd733621f48184a13a1202bd24fed">_m_new_from_t</a>(G_contexts[SYS_CONTEXT].defs.symbols);</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;    s = <a class="code" href="mtree_8c.html#a85882e4f20f772884a5b3a3b2dd836d0">_m_serialize</a>(h.m,&amp;size);</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;    writeFile(<span class="stringliteral">&quot;web/syssymbols.cmt&quot;</span>,s,size);</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;    _m_free(h);free(s);</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;    _m_free(h1);</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t1);</div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;}</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;<span class="keywordtype">void</span> testMTree() {</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;    _setup_HTTPDefs();</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;    testCreateTreeNodesM();</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;    <a class="code" href="mtree__spec_8h.html#a38ad74cf9f34a01de272d4aa2d3288b1">testMTreeWalk</a>();</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;    <a class="code" href="mtree__spec_8h.html#a6df36a3255486133fd34898984c1a5e1">testTreeConvert</a>();</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;    testMTreeSerialize();</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;    _cleanup_HTTPDefs();</div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;}</div>
-<div class="ttc" id="mtree_8c_html_ac2c4b050224da6010e036ff381f31c3e"><div class="ttname"><a href="mtree_8c.html#ac2c4b050224da6010e036ff381f31c3e">_m_walk</a></div><div class="ttdeci">void _m_walk(H h, void(*walkfn)(H, N *, void *, MwalkState *, Maddr), void *user_data)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00473">mtree.c:473</a></div></div>
-<div class="ttc" id="structT_html"><div class="ttname"><a href="structT.html">T</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00106">ceptr_types.h:106</a></div></div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;    <a class="code" href="structT.html">T</a> *n = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(0,ADD_INT);</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    _t_newi(n,TEST_INT_SYMBOL,99);</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    _t_newi(n,TEST_INT_SYMBOL,100);</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;    <a class="code" href="structT.html">T</a> *c = _t_rclone(n);</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;    t = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(RUN_TREE);</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;    <a class="code" href="group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c">_t_add</a>(t,c);</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;    h = <a class="code" href="mtree_8c.html#a0c5bd733621f48184a13a1202bd24fed">_m_new_from_t</a>(t);</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;     t = <a class="code" href="mtree_8c.html#ab0e6e5f78e7ec6f3c9165feca0eae093">_t_new_from_m</a>(h);</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;    <a class="code" href="structDefs.html">Defs</a> defs;</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;    spec_is_str_equal(t2s(t),<span class="stringliteral">&quot;(RUN_TREE (process:ADD_INT (TEST_INT_SYMBOL:99) (TEST_INT_SYMBOL:100)))&quot;</span>);</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;    debug_enable(D_REDUCE+D_REDUCEV);</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;    <a class="code" href="process_8c.html#acc149ea5dc5c12cd12fc35a61157cfbc">_p_reduce</a>(&amp;defs,t);</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;    debug_disable(D_REDUCE+D_REDUCEV);</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;    spec_is_str_equal(t2s(t),<span class="stringliteral">&quot;(RUN_TREE (TEST_INT_SYMBOL:199))&quot;</span>);</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;    _m_free(h);</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(n);</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;}</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;<span class="keywordtype">void</span> testMTreeSerialize() {</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;    <a class="code" href="structT.html">T</a> *t = <a class="code" href="http__example_8h.html#a1c182b5a6e82ef49c6967183a15c3e8b">_makeTestHTTPRequestTree</a>(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;    <a class="code" href="structH.html">H</a> h = <a class="code" href="mtree_8c.html#a0c5bd733621f48184a13a1202bd24fed">_m_new_from_t</a>(t);</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;    <a class="code" href="structS.html">S</a> *s = <a class="code" href="mtree_8c.html#a27481040e0d545565d203c0f37b30d79">_m_serialize</a>(h.m);</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    spec_is_equal(s-&gt;magic,h.m-&gt;magic);</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;    spec_is_equal(s-&gt;total_size,929);</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;    spec_is_equal(s-&gt;levels,h.m-&gt;levels);</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;    spec_is_equal(s-&gt;level_offsets[0],0);</div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;    <a class="code" href="structL.html">L</a> *l = GET_LEVEL(h);</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;    spec_is_equal(s-&gt;level_offsets[1], (<span class="keywordtype">int</span>)SERIALIZED_LEVEL_SIZE(l));</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;    <a class="code" href="structH.html">H</a> h1 = <a class="code" href="mtree_8c.html#a641f65780358ce0f40479d6ccaba1735">_m_unserialize</a>(s);</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;    <a class="code" href="structT.html">T</a> *t1 = <a class="code" href="mtree_8c.html#ab0e6e5f78e7ec6f3c9165feca0eae093">_t_new_from_m</a>(h1);</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;    <span class="keywordtype">char</span> buf[2000] = {0};</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;    <span class="keywordtype">char</span> buf1[2000] = {0};</div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;</div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;    __t_dump(&amp;test_HTTP_defs,t,0,buf);</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;    __t_dump(&amp;test_HTTP_defs,t1,0,buf1);</div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;    spec_is_str_equal(buf1,buf);</div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;    writeFile(<span class="stringliteral">&quot;web/test.cmt&quot;</span>,s,s-&gt;total_size);</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;    _m_free(h);free(s);</div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;    h = <a class="code" href="mtree_8c.html#a0c5bd733621f48184a13a1202bd24fed">_m_new_from_t</a>(test_HTTP_defs.<a class="code" href="structDefs.html#a6f9d3b3e38fff31326b7d27f730ae95c">structures</a>);</div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;    s = <a class="code" href="mtree_8c.html#a27481040e0d545565d203c0f37b30d79">_m_serialize</a>(h.m);</div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;    writeFile(<span class="stringliteral">&quot;web/httpstructures.cmt&quot;</span>,s,s-&gt;total_size);</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;    _m_free(h);free(s);</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;</div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;    h = <a class="code" href="mtree_8c.html#a0c5bd733621f48184a13a1202bd24fed">_m_new_from_t</a>(test_HTTP_defs.<a class="code" href="structDefs.html#a172e45e131e197571ba1a36a136d35f8">symbols</a>);</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;    s = <a class="code" href="mtree_8c.html#a27481040e0d545565d203c0f37b30d79">_m_serialize</a>(h.m);</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;    writeFile(<span class="stringliteral">&quot;web/httpsymbols.cmt&quot;</span>,s,s-&gt;total_size);</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;    _m_free(h);free(s);</div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;    h = <a class="code" href="mtree_8c.html#a0c5bd733621f48184a13a1202bd24fed">_m_new_from_t</a>(G_contexts[SYS_CONTEXT].defs.structures);</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;    s = <a class="code" href="mtree_8c.html#a27481040e0d545565d203c0f37b30d79">_m_serialize</a>(h.m);</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;    writeFile(<span class="stringliteral">&quot;web/sysstructures.cmt&quot;</span>,s,s-&gt;total_size);</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;    _m_free(h);free(s);</div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;    h = <a class="code" href="mtree_8c.html#a0c5bd733621f48184a13a1202bd24fed">_m_new_from_t</a>(G_contexts[SYS_CONTEXT].defs.symbols);</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;    s = <a class="code" href="mtree_8c.html#a27481040e0d545565d203c0f37b30d79">_m_serialize</a>(h.m);</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;    writeFile(<span class="stringliteral">&quot;web/syssymbols.cmt&quot;</span>,s,s-&gt;total_size);</div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;    _m_free(h);free(s);</div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;</div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;    _m_free(h1);</div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t1);</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;    <span class="comment">// test serialization of orthogonal trees</span></div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;    h1 = <a class="code" href="mtree_8c.html#adb19f3ed4e8aa551480218555052e153">_m_newr</a>(null_H,ADD_INT);</div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;    <a class="code" href="mtree_8c.html#afad9c74e15faf49c268ed9117cff0d07">_m_newi</a>(h1,TEST_INT_SYMBOL,314);</div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;    <a class="code" href="mtree_8c.html#afad9c74e15faf49c268ed9117cff0d07">_m_newi</a>(h1,TEST_INT_SYMBOL,1000);</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;    <a class="code" href="structH.html">H</a> h2 = _m_newt(null_H,TEST_TREE_SYMBOL,h1);</div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;    h = _m_newt(null_H,TEST_TREE_SYMBOL,h2);</div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;</div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;    s = <a class="code" href="mtree_8c.html#a27481040e0d545565d203c0f37b30d79">_m_serialize</a>(h.m);</div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;    h1 = <a class="code" href="mtree_8c.html#a641f65780358ce0f40479d6ccaba1735">_m_unserialize</a>(s);</div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;    t = <a class="code" href="mtree_8c.html#ab0e6e5f78e7ec6f3c9165feca0eae093">_t_new_from_m</a>(h1);</div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;</div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;    spec_is_str_equal(t2s(t),<span class="stringliteral">&quot;(TEST_TREE_SYMBOL:{(TEST_TREE_SYMBOL:{(process:ADD_INT (TEST_INT_SYMBOL:314) (TEST_INT_SYMBOL:1000))})})&quot;</span>);</div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;    free(s);</div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;    _m_free(h);</div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;    _m_free(h1);</div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;}</div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;</div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;</div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;<span class="keywordtype">void</span> testMTree() {</div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;    _setup_HTTPDefs();</div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;    testCreateTreeNodesM();</div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;    testMTreeOrthogonal();</div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;    testMTreeReceptor();</div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;    <a class="code" href="mtree__spec_8h.html#a38ad74cf9f34a01de272d4aa2d3288b1">testMTreeWalk</a>();</div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;    <a class="code" href="mtree__spec_8h.html#a6df36a3255486133fd34898984c1a5e1">testTreeConvert</a>();</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;    testMTreeSerialize();</div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;    _cleanup_HTTPDefs();</div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;}</div>
+<div class="ttc" id="group__tree_html_ga25dd0f385044ffbcc7c215ea80fa00b4"><div class="ttname"><a href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a></div><div class="ttdeci">T * _t_new_root(Symbol symbol)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00137">tree.c:137</a></div></div>
+<div class="ttc" id="mtree_8c_html_ac2c4b050224da6010e036ff381f31c3e"><div class="ttname"><a href="mtree_8c.html#ac2c4b050224da6010e036ff381f31c3e">_m_walk</a></div><div class="ttdeci">void _m_walk(H h, void(*walkfn)(H, N *, void *, MwalkState *, Maddr), void *user_data)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00524">mtree.c:524</a></div></div>
+<div class="ttc" id="structT_html"><div class="ttname"><a href="structT.html">T</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00108">ceptr_types.h:108</a></div></div>
 <div class="ttc" id="structN_html"><div class="ttname"><a href="structN.html">N</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00036">ceptr_types.h:36</a></div></div>
-<div class="ttc" id="structDefs_html_a6f9d3b3e38fff31326b7d27f730ae95c"><div class="ttname"><a href="structDefs.html#a6f9d3b3e38fff31326b7d27f730ae95c">Defs::structures</a></div><div class="ttdeci">T * structures</div><div class="ttdoc">pointer for quick access to structures </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00174">ceptr_types.h:174</a></div></div>
-<div class="ttc" id="mtree_8c_html_ab8786adc8759967b5ab4314e7827065b"><div class="ttname"><a href="mtree_8c.html#ab8786adc8759967b5ab4314e7827065b">_m_symbol</a></div><div class="ttdeci">Symbol _m_symbol(H h)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00397">mtree.c:397</a></div></div>
-<div class="ttc" id="mtree_8c_html_a0131231a4ed8941c12b7281e7a2bce4d"><div class="ttname"><a href="mtree_8c.html#a0131231a4ed8941c12b7281e7a2bce4d">_m_surface</a></div><div class="ttdeci">void * _m_surface(H h)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00301">mtree.c:301</a></div></div>
-<div class="ttc" id="mtree_8c_html_aadcc0b49fc78411ef25fd61007acda1e"><div class="ttname"><a href="mtree_8c.html#aadcc0b49fc78411ef25fd61007acda1e">_m_detatch</a></div><div class="ttdeci">H _m_detatch(H oh)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00580">mtree.c:580</a></div></div>
-<div class="ttc" id="mtree__spec_8h_html_a38ad74cf9f34a01de272d4aa2d3288b1"><div class="ttname"><a href="mtree__spec_8h.html#a38ad74cf9f34a01de272d4aa2d3288b1">testMTreeWalk</a></div><div class="ttdeci">void testMTreeWalk()</div><div class="ttdef"><b>Definition:</b> <a href="mtree__spec_8h_source.html#l00219">mtree_spec.h:219</a></div></div>
-<div class="ttc" id="structS_html"><div class="ttname"><a href="structS.html">S</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00061">ceptr_types.h:61</a></div></div>
-<div class="ttc" id="mtree_8c_html_a85882e4f20f772884a5b3a3b2dd836d0"><div class="ttname"><a href="mtree_8c.html#a85882e4f20f772884a5b3a3b2dd836d0">_m_serialize</a></div><div class="ttdeci">void * _m_serialize(M *m, size_t *sizeP)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00594">mtree.c:594</a></div></div>
-<div class="ttc" id="mtree_8c_html_a8f0130ea8f017ec2aed0c72a9be77a47"><div class="ttname"><a href="mtree_8c.html#a8f0130ea8f017ec2aed0c72a9be77a47">_m_child</a></div><div class="ttdeci">Maddr _m_child(H h, Mindex c)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00332">mtree.c:332</a></div></div>
-<div class="ttc" id="mtree__spec_8h_html_a6df36a3255486133fd34898984c1a5e1"><div class="ttname"><a href="mtree__spec_8h.html#a6df36a3255486133fd34898984c1a5e1">testTreeConvert</a></div><div class="ttdeci">void testTreeConvert()</div><div class="ttdef"><b>Definition:</b> <a href="mtree__spec_8h_source.html#l00241">mtree_spec.h:241</a></div></div>
+<div class="ttc" id="mtree_8c_html_a641f65780358ce0f40479d6ccaba1735"><div class="ttname"><a href="mtree_8c.html#a641f65780358ce0f40479d6ccaba1735">_m_unserialize</a></div><div class="ttdeci">H _m_unserialize(S *s)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00743">mtree.c:743</a></div></div>
+<div class="ttc" id="process_8c_html_acc149ea5dc5c12cd12fc35a61157cfbc"><div class="ttname"><a href="process_8c.html#acc149ea5dc5c12cd12fc35a61157cfbc">_p_reduce</a></div><div class="ttdeci">Error _p_reduce(Defs *defs, T *rt)</div><div class="ttdef"><b>Definition:</b> <a href="process_8c_source.html#l00659">process.c:659</a></div></div>
+<div class="ttc" id="structDefs_html_a6f9d3b3e38fff31326b7d27f730ae95c"><div class="ttname"><a href="structDefs.html#a6f9d3b3e38fff31326b7d27f730ae95c">Defs::structures</a></div><div class="ttdeci">T * structures</div><div class="ttdoc">pointer for quick access to structures </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00176">ceptr_types.h:176</a></div></div>
+<div class="ttc" id="mtree_8c_html_ab8786adc8759967b5ab4314e7827065b"><div class="ttname"><a href="mtree_8c.html#ab8786adc8759967b5ab4314e7827065b">_m_symbol</a></div><div class="ttdeci">Symbol _m_symbol(H h)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00448">mtree.c:448</a></div></div>
+<div class="ttc" id="mtree_8c_html_a0131231a4ed8941c12b7281e7a2bce4d"><div class="ttname"><a href="mtree_8c.html#a0131231a4ed8941c12b7281e7a2bce4d">_m_surface</a></div><div class="ttdeci">void * _m_surface(H h)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00352">mtree.c:352</a></div></div>
+<div class="ttc" id="mtree_8c_html_aadcc0b49fc78411ef25fd61007acda1e"><div class="ttname"><a href="mtree_8c.html#aadcc0b49fc78411ef25fd61007acda1e">_m_detatch</a></div><div class="ttdeci">H _m_detatch(H oh)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00631">mtree.c:631</a></div></div>
+<div class="ttc" id="mtree_8c_html_a27481040e0d545565d203c0f37b30d79"><div class="ttname"><a href="mtree_8c.html#a27481040e0d545565d203c0f37b30d79">_m_serialize</a></div><div class="ttdeci">S * _m_serialize(M *m)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00645">mtree.c:645</a></div></div>
+<div class="ttc" id="group__tree_html_ga7fd137a24b6795e1fc25c50ba91a767f"><div class="ttname"><a href="group__tree.html#ga7fd137a24b6795e1fc25c50ba91a767f">_t_new_receptor</a></div><div class="ttdeci">T * _t_new_receptor(T *parent, Symbol symbol, Receptor *r)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00181">tree.c:181</a></div></div>
+<div class="ttc" id="mtree__spec_8h_html_a38ad74cf9f34a01de272d4aa2d3288b1"><div class="ttname"><a href="mtree__spec_8h.html#a38ad74cf9f34a01de272d4aa2d3288b1">testMTreeWalk</a></div><div class="ttdeci">void testMTreeWalk()</div><div class="ttdef"><b>Definition:</b> <a href="mtree__spec_8h_source.html#l00255">mtree_spec.h:255</a></div></div>
+<div class="ttc" id="structS_html"><div class="ttname"><a href="structS.html">S</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00062">ceptr_types.h:62</a></div></div>
+<div class="ttc" id="group__tree_html_ga3e2009f5a82889263d560d2c1479606a"><div class="ttname"><a href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a></div><div class="ttdeci">T * _t_newr(T *parent, Symbol symbol)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00148">tree.c:148</a></div></div>
+<div class="ttc" id="group__tree_html_gac9278e540a0d63526b60cc0591283a62"><div class="ttname"><a href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a></div><div class="ttdeci">void * _t_surface(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00564">tree.c:564</a></div></div>
+<div class="ttc" id="mtree_8c_html_a8f0130ea8f017ec2aed0c72a9be77a47"><div class="ttname"><a href="mtree_8c.html#a8f0130ea8f017ec2aed0c72a9be77a47">_m_child</a></div><div class="ttdeci">Maddr _m_child(H h, Mindex c)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00383">mtree.c:383</a></div></div>
+<div class="ttc" id="mtree__spec_8h_html_a6df36a3255486133fd34898984c1a5e1"><div class="ttname"><a href="mtree__spec_8h.html#a6df36a3255486133fd34898984c1a5e1">testTreeConvert</a></div><div class="ttdeci">void testTreeConvert()</div><div class="ttdef"><b>Definition:</b> <a href="mtree__spec_8h_source.html#l00277">mtree_spec.h:277</a></div></div>
 <div class="ttc" id="http__example_8h_html"><div class="ttname"><a href="http__example_8h.html">http_example.h</a></div></div>
-<div class="ttc" id="structMaddr_html"><div class="ttname"><a href="structMaddr.html">Maddr</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00069">ceptr_types.h:69</a></div></div>
-<div class="ttc" id="mtree_8c_html_a94624993d8f2ec4ba1364343e01eedb9"><div class="ttname"><a href="mtree_8c.html#a94624993d8f2ec4ba1364343e01eedb9">_m_size</a></div><div class="ttdeci">size_t _m_size(H h)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00231">mtree.c:231</a></div></div>
-<div class="ttc" id="mtree_8c_html_af2f3d808adcb064e5120ee33f54e8c2d"><div class="ttname"><a href="mtree_8c.html#af2f3d808adcb064e5120ee33f54e8c2d">_m_new</a></div><div class="ttdeci">H _m_new(H parent, Symbol symbol, void *surface, size_t size)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00093">mtree.c:93</a></div></div>
-<div class="ttc" id="mtree_8c_html_ab0e6e5f78e7ec6f3c9165feca0eae093"><div class="ttname"><a href="mtree_8c.html#ab0e6e5f78e7ec6f3c9165feca0eae093">_t_new_from_m</a></div><div class="ttdeci">T * _t_new_from_m(H h)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00205">mtree.c:205</a></div></div>
-<div class="ttc" id="structL_html"><div class="ttname"><a href="structL.html">L</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00044">ceptr_types.h:44</a></div></div>
-<div class="ttc" id="mtree_8c_html_a0c5bd733621f48184a13a1202bd24fed"><div class="ttname"><a href="mtree_8c.html#a0c5bd733621f48184a13a1202bd24fed">_m_new_from_t</a></div><div class="ttdeci">H _m_new_from_t(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00181">mtree.c:181</a></div></div>
+<div class="ttc" id="structMaddr_html"><div class="ttname"><a href="structMaddr.html">Maddr</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00071">ceptr_types.h:71</a></div></div>
+<div class="ttc" id="mtree_8c_html_a94624993d8f2ec4ba1364343e01eedb9"><div class="ttname"><a href="mtree_8c.html#a94624993d8f2ec4ba1364343e01eedb9">_m_size</a></div><div class="ttdeci">size_t _m_size(H h)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00276">mtree.c:276</a></div></div>
+<div class="ttc" id="mtree_8c_html_ab0e6e5f78e7ec6f3c9165feca0eae093"><div class="ttname"><a href="mtree_8c.html#ab0e6e5f78e7ec6f3c9165feca0eae093">_t_new_from_m</a></div><div class="ttdeci">T * _t_new_from_m(H h)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00250">mtree.c:250</a></div></div>
+<div class="ttc" id="structL_html"><div class="ttname"><a href="structL.html">L</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00045">ceptr_types.h:45</a></div></div>
+<div class="ttc" id="mtree_8c_html_a0c5bd733621f48184a13a1202bd24fed"><div class="ttname"><a href="mtree_8c.html#a0c5bd733621f48184a13a1202bd24fed">_m_new_from_t</a></div><div class="ttdeci">H _m_new_from_t(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00206">mtree.c:206</a></div></div>
 <div class="ttc" id="structMwalkState_html"><div class="ttname"><a href="structMwalkState.html">MwalkState</a></div><div class="ttdef"><b>Definition:</b> <a href="mtree_8h_source.html#l00021">mtree.h:21</a></div></div>
-<div class="ttc" id="mtree_8c_html_a8fd28bfb7cf7c6a5afceae0d9622a393"><div class="ttname"><a href="mtree_8c.html#a8fd28bfb7cf7c6a5afceae0d9622a393">_m_unserialize</a></div><div class="ttdeci">H _m_unserialize(void *s)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00666">mtree.c:666</a></div></div>
-<div class="ttc" id="mtree_8c_html_a8b69b478ffa977cc25fcca734972e376"><div class="ttname"><a href="mtree_8c.html#a8b69b478ffa977cc25fcca734972e376">_m_add</a></div><div class="ttdeci">H _m_add(H parent, H h)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00437">mtree.c:437</a></div></div>
-<div class="ttc" id="mtree_8c_html_afad9c74e15faf49c268ed9117cff0d07"><div class="ttname"><a href="mtree_8c.html#afad9c74e15faf49c268ed9117cff0d07">_m_newi</a></div><div class="ttdeci">H _m_newi(H parent, Symbol symbol, int surface)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00160">mtree.c:160</a></div></div>
+<div class="ttc" id="mtree_8c_html_a8b69b478ffa977cc25fcca734972e376"><div class="ttname"><a href="mtree_8c.html#a8b69b478ffa977cc25fcca734972e376">_m_add</a></div><div class="ttdeci">H _m_add(H parent, H h)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00488">mtree.c:488</a></div></div>
+<div class="ttc" id="mtree_8c_html_afad9c74e15faf49c268ed9117cff0d07"><div class="ttname"><a href="mtree_8c.html#afad9c74e15faf49c268ed9117cff0d07">_m_newi</a></div><div class="ttdeci">H _m_newi(H parent, Symbol symbol, int surface)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00157">mtree.c:157</a></div></div>
 <div class="ttc" id="http__example_8h_html_a1c182b5a6e82ef49c6967183a15c3e8b"><div class="ttname"><a href="http__example_8h.html#a1c182b5a6e82ef49c6967183a15c3e8b">_makeTestHTTPRequestTree</a></div><div class="ttdeci">T * _makeTestHTTPRequestTree()</div><div class="ttdoc">[makeTestHTTPRequestTree] </div><div class="ttdef"><b>Definition:</b> <a href="http__example_8h_source.html#l00207">http_example.h:207</a></div></div>
-<div class="ttc" id="structH_html"><div class="ttname"><a href="structH.html">H</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00075">ceptr_types.h:75</a></div></div>
-<div class="ttc" id="mtree_8c_html_ad49f52a39bf6ec9d31d476a25de088f3"><div class="ttname"><a href="mtree_8c.html#ad49f52a39bf6ec9d31d476a25de088f3">_m_parent</a></div><div class="ttdeci">Maddr _m_parent(H h)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00315">mtree.c:315</a></div></div>
-<div class="ttc" id="mtree_8c_html_a810511f76ba90cfb41460732ef11bcb0"><div class="ttname"><a href="mtree_8c.html#a810511f76ba90cfb41460732ef11bcb0">_m_children</a></div><div class="ttdeci">int _m_children(H h)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00264">mtree.c:264</a></div></div>
-<div class="ttc" id="group__tree_html_ga31e55cdc031e5f12523b998e89080db6"><div class="ttname"><a href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a></div><div class="ttdeci">void _t_free(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00467">tree.c:467</a></div></div>
-<div class="ttc" id="mtree_8c_html_a59cab39e0fcd896b39158cb0c81bbd1a"><div class="ttname"><a href="mtree_8c.html#a59cab39e0fcd896b39158cb0c81bbd1a">_m_next_sibling</a></div><div class="ttdeci">Maddr _m_next_sibling(H h)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00408">mtree.c:408</a></div></div>
-<div class="ttc" id="structDefs_html_a172e45e131e197571ba1a36a136d35f8"><div class="ttname"><a href="structDefs.html#a172e45e131e197571ba1a36a136d35f8">Defs::symbols</a></div><div class="ttdeci">T * symbols</div><div class="ttdoc">pointer for quick access to symbols </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00175">ceptr_types.h:175</a></div></div>
+<div class="ttc" id="structReceptor_html"><div class="ttname"><a href="structReceptor.html">Receptor</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00238">ceptr_types.h:238</a></div></div>
+<div class="ttc" id="structH_html"><div class="ttname"><a href="structH.html">H</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00077">ceptr_types.h:77</a></div></div>
+<div class="ttc" id="mtree_8c_html_ad49f52a39bf6ec9d31d476a25de088f3"><div class="ttname"><a href="mtree_8c.html#ad49f52a39bf6ec9d31d476a25de088f3">_m_parent</a></div><div class="ttdeci">Maddr _m_parent(H h)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00366">mtree.c:366</a></div></div>
+<div class="ttc" id="mtree_8c_html_a810511f76ba90cfb41460732ef11bcb0"><div class="ttname"><a href="mtree_8c.html#a810511f76ba90cfb41460732ef11bcb0">_m_children</a></div><div class="ttdeci">int _m_children(H h)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00315">mtree.c:315</a></div></div>
+<div class="ttc" id="group__tree_html_ga3b7a6499fe49f8e6a54166d583b08d5c"><div class="ttname"><a href="group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c">_t_add</a></div><div class="ttdeci">void _t_add(T *t, T *c)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00238">tree.c:238</a></div></div>
+<div class="ttc" id="structDefs_html"><div class="ttname"><a href="structDefs.html">Defs</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00175">ceptr_types.h:175</a></div></div>
+<div class="ttc" id="group__receptor_html_ga62c253e7cc1d1ad20471913ae822ebc2"><div class="ttname"><a href="group__receptor.html#ga62c253e7cc1d1ad20471913ae822ebc2">_r_new</a></div><div class="ttdeci">Receptor * _r_new(Symbol s)</div><div class="ttdoc">Creates a new receptor. </div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00072">receptor.c:72</a></div></div>
+<div class="ttc" id="group__tree_html_ga31e55cdc031e5f12523b998e89080db6"><div class="ttname"><a href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a></div><div class="ttdeci">void _t_free(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00476">tree.c:476</a></div></div>
+<div class="ttc" id="mtree_8c_html_a59cab39e0fcd896b39158cb0c81bbd1a"><div class="ttname"><a href="mtree_8c.html#a59cab39e0fcd896b39158cb0c81bbd1a">_m_next_sibling</a></div><div class="ttdeci">Maddr _m_next_sibling(H h)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00459">mtree.c:459</a></div></div>
+<div class="ttc" id="structDefs_html_a172e45e131e197571ba1a36a136d35f8"><div class="ttname"><a href="structDefs.html#a172e45e131e197571ba1a36a136d35f8">Defs::symbols</a></div><div class="ttdeci">T * symbols</div><div class="ttdoc">pointer for quick access to symbols </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00177">ceptr_types.h:177</a></div></div>
 <div class="ttc" id="structSemanticID_html"><div class="ttname"><a href="structSemanticID.html">SemanticID</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00020">ceptr_types.h:20</a></div></div>
+<div class="ttc" id="mtree_8c_html_adb19f3ed4e8aa551480218555052e153"><div class="ttname"><a href="mtree_8c.html#adb19f3ed4e8aa551480218555052e153">_m_newr</a></div><div class="ttdeci">H _m_newr(H parent, Symbol s)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00145">mtree.c:145</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><a class="el" href="mtree__spec_8h.html">mtree_spec.h</a></li>
-    <li class="footer">Generated on Sat Oct 3 2015 17:11:03 for ceptr by
+    <li class="footer">Generated on Mon Nov 9 2015 12:37:03 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
