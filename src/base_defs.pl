@@ -253,7 +253,8 @@ EOF
 #generate sys process documentation file
 my $pdfh = openf('>','doxy/sys_processes.html');
 my $phtml = << 'HTML';
-<table class="doxtable"><tr><th>Process</th><th>Inputs</th><th>Output</th><th>Comments</th></tr>
+<style type="text/css">table.processes ol{margin:0;padding:1em;}</style>
+<table class="doxtable processes"><tr><th>Process</th><th>Inputs</th><th>Output</th><th>Comments</th></tr>
 HTML
 my $stdfh = openf('>','doxy/sys_structures.html');
 my $sthtml = << 'HTML';
@@ -289,7 +290,7 @@ foreach my $s (@d) {
         }
         my $c = "<i>$desc</i>";
         $c = "$c<br />".$comments{$name} if $comments{$name};
-        $phtml .= "<tr><td><a name=\"$name\"></a>$name</td><td>$in</td><td>$out</td><td>$c</td></tr>\n";
+        $phtml .= "<tr><td><a name=\"$name\"></a>$name</td><td><ol>$in</ol></td><td>$out</td><td>$c</td></tr>\n";
     }
     elsif ($type eq 'Symbol') {
         $def =~ s/_/-/g;
