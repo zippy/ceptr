@@ -287,12 +287,15 @@ foreach my $s (@d) {
             $i = "[$i]" if $optional;
             $in .= "<li>$i</li>";
         }
-        $phtml .= "<tr><td><a name=\"$name\"></a>$name<br \>$desc</td><td>$in</td><td>$out</td><td>$comments{$name}</td></tr>\n";
+        my $c = "<i>$desc</i>";
+        $c = "$c<br />".$comments{$name} if $comments{$name};
+        $phtml .= "<tr><td><a name=\"$name\"></a>$name</td><td>$in</td><td>$out</td><td>$c</td></tr>\n";
     }
     elsif ($type eq 'Symbol') {
         $def =~ s/_/-/g;
         $def = "<a href=\"ref_sys_structures.html#$def\">$def</a>";
-        $syhtml .= "<tr><td><a name=\"$name\"></a>$name</td><td>$def</td><td>$comments{$name}</td></tr>";
+        my $c = $comments{$name} ? $comments{$name} : "";
+        $syhtml .= "<tr><td><a name=\"$name\"></a>$name</td><td>$def</td><td>$c</td></tr>\n";
     }
     elsif ($type eq 'Structure') {
         my ($count,@def) = split /,/,$def;
@@ -302,8 +305,10 @@ foreach my $s (@d) {
         }
 
         $def = join(', ',@def);
+        $def = "SEQ($def)" if (scalar @def > 1);
         $sthtml .= "";
-        $sthtml .= "<tr><td><a name=\"$name\"></a>$name</td><td>$def</td><td>$comments{$name}</td></tr>";
+        my $c = $comments{$name} ? $comments{$name} : "";
+        $sthtml .= "<tr><td><a name=\"$name\"></a>$name</td><td>$def</td><td>$c</td></tr>\n";
     }
     elsif ($type eq 'StructureS') {
         my $n = $name;
@@ -312,7 +317,11 @@ foreach my $s (@d) {
         $def =~ s/,/, /g;
         $def =~ s/SYM\((.*?)\)/<a href="ref_sys_symbols.html#$1">$1<\/a>/g;
         $def =~ s/(SEQ|SET)\([0-9]+, /$1(/g;
-        $sthtml .= "<tr><td><a name=\"$name\"></a>$n</td><td>$def</td><td>$comments{$name}</td></tr>";
+        $def =~ s/STAR/\*/g;
+        $def =~ s/PLUS/\+/g;
+        $def =~ s/QMRK/\?/g;
+        my $c = $comments{$name} ? $comments{$name} : "";
+        $sthtml .= "<tr><td><a name=\"$name\"></a>$n</td><td>$def</td><td>$c</td></tr>\n";
     }
 
 }
