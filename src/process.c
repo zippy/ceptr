@@ -521,10 +521,12 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
         {
             //            T *expect = _t_new_root(EXPECTATION);
             T *expect = _t_detach_by_idx(code,1);
+            T *carrier = _t_detach_by_idx(code,1);
             T *params = _t_detach_by_idx(code,1);
             T *act = _t_detach_by_idx(code,1);
             //            _t_add(expect,s);
-            _r_add_listener(q->r,DEFAULT_ASPECT,NULL_SYMBOL,expect,params,act);
+            _r_add_listener(q->r,DEFAULT_ASPECT,*(Symbol *)_t_surface(carrier),expect,params,act);
+            _t_free(carrier);
             x = __t_news(0,REDUCTION_ERROR_SYMBOL,NULL_SYMBOL,1);
         }
         break;

@@ -792,21 +792,22 @@ Receptor *_r_makeClockReceptor() {
 
     T *x = _t_newr(0,LISTEN);
     int pt1[] = {2,1,TREE_PATH_TERMINATOR};
-    _t_new(x,PARAM_REF,pt1,sizeof(int)*4);  // param is our semtrex
+    _t_new(x,PARAM_REF,pt1,sizeof(int)*4);  // param is our expectation semtrex
+    _t_news(x,CARRIER,EXPECTATION);
     T *params =_t_newr(x,PARAMS);
-//    _t_new(params,GET_SIGNAL_SENDER);
+
     ReceptorAddress to =  __r_get_self_address(r);
     _t_newi(params,RECEPTOR_ADDRESS,to);
 
-    _t_news(params,INTERPOLATE_SYMBOL,NULL_SYMBOL);  // the current tick
+    //interpolate on null_symbol matches the whole semtrex that triggered this
+    // expectation, which would be the current tick as it arrives
+    _t_news(params,INTERPOLATE_SYMBOL,NULL_SYMBOL);
     _t_news(params,RESPONSE_CARRIER,NULL_SYMBOL);
-
-    //_t_new_str(params,TEST_STR_SYMBOL,"fish");
 
     T *action = _t_newp(x,ACTION,SEND);
 
     T *signature = __p_make_signature("result",SIGNATURE_SYMBOL,NULL_SYMBOL,
-                                      "stream",SIGNATURE_STRUCTURE,SEMTREX,
+                                      "time stx",SIGNATURE_SYMBOL,EXPECTATION,
                                       NULL);
     Process proc = _r_code_process(r,x,"plant a listener to send the time","long desc...",signature);
     T *act = _t_newp(0,ACTION,proc);

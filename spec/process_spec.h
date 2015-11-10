@@ -900,6 +900,7 @@ void testProcessListen() {
     T *n = _t_new_root(LISTEN);
     T *expect = _t_newr(n,EXPECTATION);
     _sl(expect,TICK);
+    _t_news(n,CARRIER,EXPECTATION);
     T *p = _t_newr(n,PARAMS);
     T *a = _t_newp(n,ACTION,NOOP);
 
@@ -907,7 +908,7 @@ void testProcessListen() {
 
     spec_is_str_equal(t2s(n),"(REDUCTION_ERROR_SYMBOL:NULL_SYMBOL)"); //@todo is this right??
 
-    spec_is_str_equal(t2s(__r_get_listeners(r,DEFAULT_ASPECT)),"(LISTENERS (LISTENER:NULL_SYMBOL (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TICK))) (PARAMS) (ACTION:NOOP)))");
+    spec_is_str_equal(t2s(__r_get_listeners(r,DEFAULT_ASPECT)),"(LISTENERS (LISTENER:EXPECTATION (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TICK))) (PARAMS) (ACTION:NOOP)))");
 
     _t_free(n);
     _r_free(r);

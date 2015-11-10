@@ -719,7 +719,7 @@ void _testReceptorClockAddListener(Receptor *r) {
 
 void testReceptorClock() {
     Receptor *r = _r_makeClockReceptor();
-    spec_is_str_equal(_td(r,r->root),"(CLOCK_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES (PROCESS_CODING (PROCESS_NAME:plant a listener to send the time) (PROCESS_INTENTION:long desc...) (process:LISTEN (PARAM_REF:/2/1) (PARAMS (RECEPTOR_ADDRESS:0) (INTERPOLATE_SYMBOL:NULL_SYMBOL) (RESPONSE_CARRIER:NULL_SYMBOL)) (ACTION:SEND)) (PROCESS_SIGNATURE (OUTPUT_SIGNATURE (SIGNATURE_LABEL:result) (SIGNATURE_SYMBOL:NULL_SYMBOL)) (INPUT_SIGNATURE (SIGNATURE_LABEL:stream) (SIGNATURE_STRUCTURE:SEMTREX))))) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS (LISTENER:CLOCK_TELL_TIME (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:CLOCK_TELL_TIME) (SEMTREX_GROUP:EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:EXPECTATION))))) (PARAMS (INTERPOLATE_SYMBOL:EXPECTATION)) (ACTION:plant a listener to send the time))) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))");
+    spec_is_str_equal(_td(r,r->root),"(CLOCK_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES (PROCESS_CODING (PROCESS_NAME:plant a listener to send the time) (PROCESS_INTENTION:long desc...) (process:LISTEN (PARAM_REF:/2/1) (CARRIER:EXPECTATION) (PARAMS (RECEPTOR_ADDRESS:0) (INTERPOLATE_SYMBOL:NULL_SYMBOL) (RESPONSE_CARRIER:NULL_SYMBOL)) (ACTION:SEND)) (PROCESS_SIGNATURE (OUTPUT_SIGNATURE (SIGNATURE_LABEL:result) (SIGNATURE_SYMBOL:NULL_SYMBOL)) (INPUT_SIGNATURE (SIGNATURE_LABEL:stream) (SIGNATURE_STRUCTURE:SEMTREX))))) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS (LISTENER:CLOCK_TELL_TIME (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:CLOCK_TELL_TIME) (SEMTREX_GROUP:EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:EXPECTATION))))) (PARAMS (INTERPOLATE_SYMBOL:EXPECTATION)) (ACTION:plant a listener to send the time))) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))");
 
    /* The clock receptor acts as if it receives a signal with contents TICK (which is of TIMESTAMP structure) for every time that updates a magic scape with that time according to which listeners have been planted.  This means you can plant listeners based on a semtrex for any kind of time you want.  If you want the current time just plant a listener for TICK.  If you want to listen for every second plant a listener on the Symbol literal SECOND, and the clock receptor will trigger the listener every time the SECOND changes.  You can also listen for particular intervals and times by adding specificity to the semtrex, so to trigger a 3:30am action a-la-cron listen for: "/<TICK:(%HOUR=3,MINUTE=30)>"
        @todo we should also make the clock receptor also seem to send signals of other semantic formats, i.e. so it's easy to listen for things like "on Wednesdays", or other semantic date/time identifiers.
@@ -737,7 +737,7 @@ void testReceptorClock() {
     _p_reduceq(r->q);
 
     // the listener should have now been planted!
-    spec_is_str_equal(_td(r,_t_child(__r_get_listeners(r,DEFAULT_ASPECT),2)),"(LISTENER:NULL_SYMBOL (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TICK))) (PARAMS (RECEPTOR_ADDRESS:0) (INTERPOLATE_SYMBOL:NULL_SYMBOL) (RESPONSE_CARRIER:NULL_SYMBOL)) (ACTION:SEND))");
+    spec_is_str_equal(_td(r,_t_child(__r_get_listeners(r,DEFAULT_ASPECT),2)),"(LISTENER:EXPECTATION (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TICK))) (PARAMS (RECEPTOR_ADDRESS:0) (INTERPOLATE_SYMBOL:NULL_SYMBOL) (RESPONSE_CARRIER:NULL_SYMBOL)) (ACTION:SEND))");
 
     // "run" the receptor and verify that listener gets activated
     pthread_t thread;
@@ -773,7 +773,7 @@ void testReceptorClock() {
     char buf1[100];
     __td(r,sent_tick,buf1);
 
-    // the listener should have sent back the tick (which is right now "fish")
+    // the listener should have sent back the tick
     signals = __r_get_signals(r,DEFAULT_ASPECT);
     T *received_tick = (T*)_t_surface(_t_child(_t_child(signals,3),2));
 
