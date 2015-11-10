@@ -287,8 +287,7 @@ foreach my $s (@d) {
             $i = "[$i]" if $optional;
             $in .= "<li>$i</li>";
         }
-        $phtml .= '<a name="'.$name.'></a>';
-        $phtml .= "<tr><td>$name<br \>$desc</td><td>$in</td><td>$out</td><td>$comments{$name}</td></tr>\n";
+        $phtml .= "<tr><td><a name=\"$name\"></a>$name<br \>$desc</td><td>$in</td><td>$out</td><td>$comments{$name}</td></tr>\n";
     }
     elsif ($type eq 'Symbol') {
         $def =~ s/_/-/g;
@@ -337,6 +336,7 @@ sub processSig {
     my $sym = shift;
     $name =~ /"(.*)"/;$name = $1;
     $type =~ /SIGNATURE_(.*)/;$type = $1;
+    $sym =~ s/(.*)/<a href="ref_sys_symbols.html#$1">$1<\/a>/;
 
     return "$name($type:$sym)";
 }
