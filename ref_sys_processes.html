@@ -103,7 +103,7 @@ $(document).ready(function(){initNavTree('ref_sys_processes.html','');});
 <div class="textblock"><p>The ceptr processing model consits of reducing a semantic tree of process nodes. Processes can either be system processes (provided by the virtual machine) or composed processes declared in in the context of the receptor.</p>
 <p>The virtual machine provides the following system processes:</p>
 <style type="text/css">table.processes ol{margin:0;padding:1em;}</style>
-<table class="doxtable processes"><tr><th>Process</th><th>Inputs</th><th>Output</th><th>Comments</th></tr>
+<table class="doxtable processes"><tr><th>Process</th><th>Children (inputs)</th><th>Reduces To (output)</th><th>Comments</th></tr>
 <tr><td><a name="NOOP"></a>NOOP</td><td><ol><li>do(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</li></ol></td><td>result(STRUCTURE:<a href="ref_sys_symbols.html#TREE">TREE</a>)</td><td><i>no-op</i><br />   this process reduces to its single "do" parameter.</td></tr>
 <tr><td><a name="IF"></a>IF</td><td><ol><li>condition(PROCESS:<a href="ref_sys_symbols.html#BOOLEAN">BOOLEAN</a>)</li><li>then(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</li><li>[else(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)]</li></ol></td><td>result(PASSTHRU:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</td><td><i>if</i><br />  this is a traditional "if" process that reduces conditionally to either the "then" or the "else" parameter depending on the value of the "condition" parameter.  Note: we may be replacing this with a more lispy COND process</td></tr>
 <tr><td><a name="ITERATE"></a>ITERATE</td><td><ol><li>condtion(PROCESS:<a href="ref_sys_symbols.html#BOOLEAN">BOOLEAN</a>)</li><li>do(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</li></ol></td><td>result(PASSTHRU:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</td><td><i>iterate a process</i><br />                     this process checks the structure of the result of the "condition" param, if it's a BOOLEAN, it treats the iteration as a while loop and iterates until the BOOLEAN is false; if it's an INTEGER it treats the iteration as repeat loop and iterates as many times as the value of the INTEGER</td></tr>
@@ -134,7 +134,7 @@ $(document).ready(function(){initNavTree('ref_sys_processes.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Nov 10 2015 17:52:50 for ceptr by
+    <li class="footer">Generated on Tue Nov 10 2015 18:36:40 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
