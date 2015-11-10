@@ -717,7 +717,7 @@ Receptor *_r_makeStreamReaderReceptor(Symbol receptor_symbol,Symbol stream_symbo
     // code is something like:
     // (do (not stream eof) (send to (read_stream stream line)))
 
-    T *p = _t_new_root(REPLICATE);
+    T *p = _t_new_root(ITERATE);
     T *params = _t_newr(p,PARAMS);
     T *eof = _t_newr(p,STREAM_ALIVE);
 

@@ -855,7 +855,7 @@ void testProcessReplicate() {
     output = open_memstream(&output_data,&size);
 
     // a replicate process that writes to a stream and 3 times
-    T *code = _t_new_root(REPLICATE);
+    T *code = _t_new_root(ITERATE);
     T *params = _t_newr(code,PARAMS);
     _t_newi(code,TEST_INT_SYMBOL,3);
 

@@ -185,8 +185,8 @@ Symbol: INCOMPATIBLE_TYPE_ERR,REDUCTION_ERROR;
 Symbol: UNIX_ERRNO_ERR,REDUCTION_ERROR;
 Symbol: DEAD_STREAM_READ_ERR,REDUCTION_ERROR;
 
-Process: NOOP,"no-op","result",SIGNATURE_STRUCTURE,TREE,0;
-Process: IF,"if","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"condition",SIGNATURE_PROCESS,BOOLEAN,"then",SIGNATURE_ANY,NULL_STRUCTURE,"else",SIGNATURE_OPTIONAL,SIGNATURE_ANY,NULL_STRUCTURE,0;
+Process: NOOP,"no-op","result",SIGNATURE_STRUCTURE,TREE,"do",SIGNATURE_ANY,NULL_STRUCTURE,0;   this process reduces to it's single "do" parameter
+Process: IF,"if","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"condition",SIGNATURE_PROCESS,BOOLEAN,"then",SIGNATURE_ANY,NULL_STRUCTURE,"else",SIGNATURE_OPTIONAL,SIGNATURE_ANY,NULL_STRUCTURE,0;  this is a traditional "if" process that reduces conditionally to either the "then" or the "else" parameter depending on the value of the "condition" parameter.
 Process: ADD_INT,"addition","sum",SIGNATURE_STRUCTURE,INTEGER,"augend",SIGNATURE_STRUCTURE,INTEGER,"addend",SIGNATURE_STRUCTURE,INTEGER,0;
 Process: SUB_INT,"subtract","difference",SIGNATURE_STRUCTURE,INTEGER,"minuend",SIGNATURE_STRUCTURE,INTEGER,"subtrahend",SIGNATURE_STRUCTURE,INTEGER,0;
 Process: MULT_INT,"multiply","product",SIGNATURE_STRUCTURE,INTEGER,"multiplicand",SIGNATURE_STRUCTURE,INTEGER,"multiplier",SIGNATURE_STRUCTURE,INTEGER,0;
@@ -207,7 +207,7 @@ Process: RAISE,"raise reduction error","result",SIGNATURE_STRUCTURE,TREE,0;
 Process: STREAM_READ,"read from a stream","result",SIGNATURE_STRUCTURE,TREE,0;
 Process: STREAM_WRITE,"write to a stream","result",SIGNATURE_STRUCTURE,TREE,0;
 Process: STREAM_ALIVE,"check a stream is alive for reading","result",SIGNATURE_STRUCTURE,TREE,0;
-Process: REPLICATE,"replicate process","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"while",SIGNATURE_PROCESS,BOOLEAN,"do",SIGNATURE_ANY,NULL_STRUCTURE,0;
+Process: ITERATE,"iterate a process","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"condtion",SIGNATURE_PROCESS,BOOLEAN,"do",SIGNATURE_ANY,NULL_STRUCTURE,0;                     this process checks the structure of the result of the "condition" param, if it's a BOOLEAN, it treats the iteration as a while loop and iterates until the BOOLEAN is false; if it's an INTEGER it treats the iteration as repeat loop and iterates as many times as the value of the INTEGER
 Process: LISTEN,"plant a listener","result",SIGNATURE_STRUCTURE,TREE,0;
 
 Symbol: STX_TOKENS,LIST;

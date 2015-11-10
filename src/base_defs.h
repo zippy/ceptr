@@ -509,7 +509,7 @@ enum SYSProcessIDs {
     STREAM_READ_ID,
     STREAM_WRITE_ID,
     STREAM_ALIVE_ID,
-    REPLICATE_ID,
+    ITERATE_ID,
     LISTEN_ID,
     NUM_SYS_PROCESSES
 };
@@ -535,7 +535,7 @@ enum SYSProcessIDs {
 #define STREAM_READ G_contexts[SYS_CONTEXT].processes[STREAM_READ_ID]
 #define STREAM_WRITE G_contexts[SYS_CONTEXT].processes[STREAM_WRITE_ID]
 #define STREAM_ALIVE G_contexts[SYS_CONTEXT].processes[STREAM_ALIVE_ID]
-#define REPLICATE G_contexts[SYS_CONTEXT].processes[REPLICATE_ID]
+#define ITERATE G_contexts[SYS_CONTEXT].processes[ITERATE_ID]
 #define LISTEN G_contexts[SYS_CONTEXT].processes[LISTEN_ID]
 
 /**********************************************************************************/

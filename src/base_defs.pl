@@ -111,7 +111,7 @@ while (my $def = <$fh>) {
     chomp $def;
     next if ($def =~ /^ *#/);       # ignore comments
     next if ($def) =~ /^[ \t]*$/;   #ignore whitespace lines
-    if ($def =~ /(.*): *(.*);(.*)/) {
+    if ($def =~ /(.*): *(.*?);(.*)/) {
         my $type = $1;
         if ($type eq 'Context') {$context = $2;next;}
         my $params = $2;

@@ -438,7 +438,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             _t_free(s);
         }
         break;
-    case REPLICATE_ID:
+    case ITERATE_ID:
         // replicate is a special case, we have to check the phase to see what to do
         // after the children have been evaluated.
         {
@@ -768,13 +768,13 @@ Error _p_step(Q *q, R **contextP) {
             }
             else
                 {
-                if (semeq(s,REPLICATE)) {
+                if (semeq(s,ITERATE)) {
                     // if first time we are hitting this replication
                     // then we need to set it up
                     //                    raise(SIGINT);
                     if (_t_size(np) == 0) {
                         // sanity check
-                        if (_t_children(np) != 3) {raise_error("REPLICATE must have 3 params");}
+                        if (_t_children(np) != 3) {raise_error("ITERATE must have 3 params");}
                         // create a copy of the code and stick it in the replication state struct
                         ReplicationState *state = malloc(sizeof(ReplicationState));
                         state->phase = EvalCondition;
