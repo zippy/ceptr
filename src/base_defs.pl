@@ -254,7 +254,7 @@ EOF
 my $pdfh = openf('>','doxy/sys_processes.html');
 my $phtml = << 'HTML';
 <style type="text/css">table.processes ol{margin:0;padding:1em;}</style>
-<table class="doxtable processes"><tr><th>Process</th><th>Inputs</th><th>Output</th><th>Comments</th></tr>
+<table class="doxtable processes"><tr><th>Process</th><th>Children (inputs)</th><th>Reduces To (output)</th><th>Comments</th></tr>
 HTML
 my $stdfh = openf('>','doxy/sys_structures.html');
 my $sthtml = << 'HTML';
