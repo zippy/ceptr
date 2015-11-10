@@ -679,97 +679,98 @@ $(document).ready(function(){initNavTree('receptor_8c_source.html','');});
 <div class="line"><a name="l00792"></a><span class="lineno">  792</span>&#160;</div>
 <div class="line"><a name="l00793"></a><span class="lineno">  793</span>&#160;    <a class="code" href="structT.html">T</a> *x = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(0,LISTEN);</div>
 <div class="line"><a name="l00794"></a><span class="lineno">  794</span>&#160;    <span class="keywordtype">int</span> pt1[] = {2,1,TREE_PATH_TERMINATOR};</div>
-<div class="line"><a name="l00795"></a><span class="lineno">  795</span>&#160;    _t_new(x,PARAM_REF,pt1,<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>)*4);  <span class="comment">// param is our semtrex</span></div>
-<div class="line"><a name="l00796"></a><span class="lineno">  796</span>&#160;    <a class="code" href="structT.html">T</a> *params =<a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(x,PARAMS);</div>
-<div class="line"><a name="l00797"></a><span class="lineno">  797</span>&#160;</div>
-<div class="line"><a name="l00798"></a><span class="lineno">  798</span>&#160;    ReceptorAddress to =  __r_get_self_address(r);</div>
-<div class="line"><a name="l00799"></a><span class="lineno">  799</span>&#160;    _t_newi(params,RECEPTOR_ADDRESS,to);</div>
-<div class="line"><a name="l00800"></a><span class="lineno">  800</span>&#160;</div>
-<div class="line"><a name="l00801"></a><span class="lineno">  801</span>&#160;    <span class="comment">//interpolate on null_symbol matches the whole semtrex that triggered this</span></div>
-<div class="line"><a name="l00802"></a><span class="lineno">  802</span>&#160;    <span class="comment">// expectation, which would be the current tick as it arrives</span></div>
-<div class="line"><a name="l00803"></a><span class="lineno">  803</span>&#160;    _t_news(params,INTERPOLATE_SYMBOL,NULL_SYMBOL);</div>
-<div class="line"><a name="l00804"></a><span class="lineno">  804</span>&#160;    _t_news(params,RESPONSE_CARRIER,NULL_SYMBOL);</div>
-<div class="line"><a name="l00805"></a><span class="lineno">  805</span>&#160;</div>
-<div class="line"><a name="l00806"></a><span class="lineno">  806</span>&#160;    <a class="code" href="structT.html">T</a> *action = <a class="code" href="group__tree.html#ga48ffc2a6e4aa4856b76fb53b97db87f3">_t_newp</a>(x,ACTION,SEND);</div>
-<div class="line"><a name="l00807"></a><span class="lineno">  807</span>&#160;</div>
-<div class="line"><a name="l00808"></a><span class="lineno">  808</span>&#160;    <a class="code" href="structT.html">T</a> *signature = <a class="code" href="process_8c.html#a7dc2c46bc4670386c36a0efb369eed34">__p_make_signature</a>(<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_SYMBOL,NULL_SYMBOL,</div>
-<div class="line"><a name="l00809"></a><span class="lineno">  809</span>&#160;                                      <span class="stringliteral">&quot;stream&quot;</span>,SIGNATURE_STRUCTURE,SEMTREX,</div>
-<div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160;                                      NULL);</div>
-<div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160;    <a class="code" href="structSemanticID.html">Process</a> proc = <a class="code" href="group__receptor.html#gadc94e96ede4c84e1981e3537907653b7">_r_code_process</a>(r,x,<span class="stringliteral">&quot;plant a listener to send the time&quot;</span>,<span class="stringliteral">&quot;long desc...&quot;</span>,signature);</div>
-<div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160;    <a class="code" href="structT.html">T</a> *act = <a class="code" href="group__tree.html#ga48ffc2a6e4aa4856b76fb53b97db87f3">_t_newp</a>(0,ACTION,proc);</div>
-<div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160;</div>
-<div class="line"><a name="l00814"></a><span class="lineno">  814</span>&#160;    params = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(PARAMS);</div>
-<div class="line"><a name="l00815"></a><span class="lineno">  815</span>&#160;    _t_news(params,INTERPOLATE_SYMBOL,EXPECTATION);</div>
-<div class="line"><a name="l00816"></a><span class="lineno">  816</span>&#160;</div>
-<div class="line"><a name="l00817"></a><span class="lineno">  817</span>&#160;    <a class="code" href="group__receptor.html#gab41afaa1881acc5525b60fd6088ed389">_r_add_listener</a>(r,DEFAULT_ASPECT,CLOCK_TELL_TIME,expect,params,act);</div>
-<div class="line"><a name="l00818"></a><span class="lineno">  818</span>&#160;</div>
+<div class="line"><a name="l00795"></a><span class="lineno">  795</span>&#160;    _t_new(x,PARAM_REF,pt1,<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>)*4);  <span class="comment">// param is our expectation semtrex</span></div>
+<div class="line"><a name="l00796"></a><span class="lineno">  796</span>&#160;    _t_news(x,CARRIER,EXPECTATION);</div>
+<div class="line"><a name="l00797"></a><span class="lineno">  797</span>&#160;    <a class="code" href="structT.html">T</a> *params =<a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(x,PARAMS);</div>
+<div class="line"><a name="l00798"></a><span class="lineno">  798</span>&#160;</div>
+<div class="line"><a name="l00799"></a><span class="lineno">  799</span>&#160;    ReceptorAddress to =  __r_get_self_address(r);</div>
+<div class="line"><a name="l00800"></a><span class="lineno">  800</span>&#160;    _t_newi(params,RECEPTOR_ADDRESS,to);</div>
+<div class="line"><a name="l00801"></a><span class="lineno">  801</span>&#160;</div>
+<div class="line"><a name="l00802"></a><span class="lineno">  802</span>&#160;    <span class="comment">//interpolate on null_symbol matches the whole semtrex that triggered this</span></div>
+<div class="line"><a name="l00803"></a><span class="lineno">  803</span>&#160;    <span class="comment">// expectation, which would be the current tick as it arrives</span></div>
+<div class="line"><a name="l00804"></a><span class="lineno">  804</span>&#160;    _t_news(params,INTERPOLATE_SYMBOL,NULL_SYMBOL);</div>
+<div class="line"><a name="l00805"></a><span class="lineno">  805</span>&#160;    _t_news(params,RESPONSE_CARRIER,NULL_SYMBOL);</div>
+<div class="line"><a name="l00806"></a><span class="lineno">  806</span>&#160;</div>
+<div class="line"><a name="l00807"></a><span class="lineno">  807</span>&#160;    <a class="code" href="structT.html">T</a> *action = <a class="code" href="group__tree.html#ga48ffc2a6e4aa4856b76fb53b97db87f3">_t_newp</a>(x,ACTION,SEND);</div>
+<div class="line"><a name="l00808"></a><span class="lineno">  808</span>&#160;</div>
+<div class="line"><a name="l00809"></a><span class="lineno">  809</span>&#160;    <a class="code" href="structT.html">T</a> *signature = <a class="code" href="process_8c.html#a7dc2c46bc4670386c36a0efb369eed34">__p_make_signature</a>(<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_SYMBOL,NULL_SYMBOL,</div>
+<div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160;                                      <span class="stringliteral">&quot;time stx&quot;</span>,SIGNATURE_SYMBOL,EXPECTATION,</div>
+<div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160;                                      NULL);</div>
+<div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160;    <a class="code" href="structSemanticID.html">Process</a> proc = <a class="code" href="group__receptor.html#gadc94e96ede4c84e1981e3537907653b7">_r_code_process</a>(r,x,<span class="stringliteral">&quot;plant a listener to send the time&quot;</span>,<span class="stringliteral">&quot;long desc...&quot;</span>,signature);</div>
+<div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160;    <a class="code" href="structT.html">T</a> *act = <a class="code" href="group__tree.html#ga48ffc2a6e4aa4856b76fb53b97db87f3">_t_newp</a>(0,ACTION,proc);</div>
+<div class="line"><a name="l00814"></a><span class="lineno">  814</span>&#160;</div>
+<div class="line"><a name="l00815"></a><span class="lineno">  815</span>&#160;    params = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(PARAMS);</div>
+<div class="line"><a name="l00816"></a><span class="lineno">  816</span>&#160;    _t_news(params,INTERPOLATE_SYMBOL,EXPECTATION);</div>
+<div class="line"><a name="l00817"></a><span class="lineno">  817</span>&#160;</div>
+<div class="line"><a name="l00818"></a><span class="lineno">  818</span>&#160;    <a class="code" href="group__receptor.html#gab41afaa1881acc5525b60fd6088ed389">_r_add_listener</a>(r,DEFAULT_ASPECT,CLOCK_TELL_TIME,expect,params,act);</div>
 <div class="line"><a name="l00819"></a><span class="lineno">  819</span>&#160;</div>
-<div class="line"><a name="l00820"></a><span class="lineno">  820</span>&#160;    <span class="keywordflow">return</span> r;</div>
-<div class="line"><a name="l00821"></a><span class="lineno">  821</span>&#160;}</div>
-<div class="line"><a name="l00822"></a><span class="lineno">  822</span>&#160;</div>
-<div class="line"><a name="l00837"></a><span class="lineno"><a class="line" href="group__receptor.html#ga4cb85b79ae4207e4595d003d11beb226">  837</a></span>&#160;<span class="keywordtype">void</span> *<a class="code" href="group__receptor.html#ga4cb85b79ae4207e4595d003d11beb226">___clock_thread</a>(<span class="keywordtype">void</span> *arg){</div>
-<div class="line"><a name="l00838"></a><span class="lineno">  838</span>&#160;    <a class="code" href="structReceptor.html">Receptor</a> *r = (<a class="code" href="structReceptor.html">Receptor</a>*)arg;</div>
-<div class="line"><a name="l00839"></a><span class="lineno">  839</span>&#160;    debug(D_CLOCK,<span class="stringliteral">&quot;clock started\n&quot;</span>);</div>
-<div class="line"><a name="l00840"></a><span class="lineno">  840</span>&#160;    <span class="keywordtype">int</span> err =0;</div>
-<div class="line"><a name="l00841"></a><span class="lineno">  841</span>&#160;    ReceptorAddress <span class="keyword">self</span> = __r_get_self_address(r);</div>
-<div class="line"><a name="l00842"></a><span class="lineno">  842</span>&#160;    <span class="keywordflow">while</span> (r-&gt;<a class="code" href="structReceptor.html#a877d31e0f4bd35d7c4a598c6e0416dd5">state</a> == Alive) {</div>
-<div class="line"><a name="l00843"></a><span class="lineno">  843</span>&#160;        <a class="code" href="structT.html">T</a> *tick =__r_make_tick();</div>
-<div class="line"><a name="l00844"></a><span class="lineno">  844</span>&#160;        debug(D_CLOCK,<span class="stringliteral">&quot;%s\n&quot;</span>,_td(r,tick));</div>
-<div class="line"><a name="l00845"></a><span class="lineno">  845</span>&#160;        <a class="code" href="structT.html">T</a> *signal = <a class="code" href="group__receptor.html#gacdafc5a6d2d449f5a4903577e5642de8">__r_make_signal</a>(<span class="keyword">self</span>,<span class="keyword">self</span>,DEFAULT_ASPECT,tick);</div>
-<div class="line"><a name="l00846"></a><span class="lineno">  846</span>&#160;        <a class="code" href="group__receptor.html#ga7d40f33135ee51640d0d24b8c9e3e046">_r_deliver</a>(r,signal);</div>
-<div class="line"><a name="l00847"></a><span class="lineno">  847</span>&#160;        sleep(1);</div>
-<div class="line"><a name="l00849"></a><span class="lineno">  849</span>&#160;        <span class="comment">//       with nano-sleep so that we get every second?</span></div>
-<div class="line"><a name="l00850"></a><span class="lineno">  850</span>&#160;    }</div>
-<div class="line"><a name="l00851"></a><span class="lineno">  851</span>&#160;    debug(D_CLOCK,<span class="stringliteral">&quot;clock stopped\n&quot;</span>);</div>
-<div class="line"><a name="l00852"></a><span class="lineno">  852</span>&#160;    pthread_exit(&amp;err); <span class="comment">//@todo determine if we should use pthread_exit or just return 0</span></div>
-<div class="line"><a name="l00853"></a><span class="lineno">  853</span>&#160;    <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00854"></a><span class="lineno">  854</span>&#160;}</div>
-<div class="line"><a name="l00855"></a><span class="lineno">  855</span>&#160;</div>
-<div class="line"><a name="l00856"></a><span class="lineno">  856</span>&#160;<a class="code" href="structT.html">T</a> * __r_make_tick() {</div>
-<div class="line"><a name="l00857"></a><span class="lineno">  857</span>&#160;    <span class="keyword">struct </span>tm t;</div>
-<div class="line"><a name="l00858"></a><span class="lineno">  858</span>&#160;    time_t clock;</div>
-<div class="line"><a name="l00859"></a><span class="lineno">  859</span>&#160;    time(&amp;clock);</div>
-<div class="line"><a name="l00860"></a><span class="lineno">  860</span>&#160;    gmtime_r(&amp;clock, &amp;t);</div>
-<div class="line"><a name="l00861"></a><span class="lineno">  861</span>&#160;    <a class="code" href="structT.html">T</a> *tick = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(TICK);</div>
-<div class="line"><a name="l00862"></a><span class="lineno">  862</span>&#160;    <a class="code" href="structT.html">T</a> *today = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(tick,TODAY);</div>
-<div class="line"><a name="l00863"></a><span class="lineno">  863</span>&#160;    <a class="code" href="structT.html">T</a> *now = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(tick,NOW);</div>
-<div class="line"><a name="l00864"></a><span class="lineno">  864</span>&#160;    _t_newi(today,YEAR,t.tm_year+1900);</div>
-<div class="line"><a name="l00865"></a><span class="lineno">  865</span>&#160;    _t_newi(today,MONTH,t.tm_mon+1);</div>
-<div class="line"><a name="l00866"></a><span class="lineno">  866</span>&#160;    _t_newi(today,DAY,t.tm_mday);</div>
-<div class="line"><a name="l00867"></a><span class="lineno">  867</span>&#160;    _t_newi(now,HOUR,t.tm_hour);</div>
-<div class="line"><a name="l00868"></a><span class="lineno">  868</span>&#160;    _t_newi(now,MINUTE,t.tm_min);</div>
-<div class="line"><a name="l00869"></a><span class="lineno">  869</span>&#160;    _t_newi(now,SECOND,t.tm_sec);</div>
-<div class="line"><a name="l00870"></a><span class="lineno">  870</span>&#160;    <span class="keywordflow">return</span> tick;</div>
-<div class="line"><a name="l00871"></a><span class="lineno">  871</span>&#160;}</div>
-<div class="line"><a name="l00872"></a><span class="lineno">  872</span>&#160;</div>
-<div class="line"><a name="l00873"></a><span class="lineno">  873</span>&#160;<span class="keywordtype">void</span> __r_kill(<a class="code" href="structReceptor.html">Receptor</a> *r) {</div>
-<div class="line"><a name="l00874"></a><span class="lineno">  874</span>&#160;    r-&gt;<a class="code" href="structReceptor.html#a877d31e0f4bd35d7c4a598c6e0416dd5">state</a> = Dead;</div>
-<div class="line"><a name="l00875"></a><span class="lineno">  875</span>&#160;    <span class="comment">/* pthread_mutex_lock(&amp;shutdownMutex); */</span></div>
-<div class="line"><a name="l00876"></a><span class="lineno">  876</span>&#160;    <span class="comment">/* G_shutdown = val; */</span></div>
-<div class="line"><a name="l00877"></a><span class="lineno">  877</span>&#160;    <span class="comment">/* pthread_mutex_unlock(&amp;shutdownMutex); */</span></div>
-<div class="line"><a name="l00878"></a><span class="lineno">  878</span>&#160;}</div>
-<div class="line"><a name="l00879"></a><span class="lineno">  879</span>&#160;</div>
-<div class="line"><a name="l00880"></a><span class="lineno">  880</span>&#160;ReceptorAddress __r_get_self_address(<a class="code" href="structReceptor.html">Receptor</a> *r) {</div>
-<div class="line"><a name="l00881"></a><span class="lineno">  881</span>&#160;    <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00882"></a><span class="lineno">  882</span>&#160;}</div>
-<div class="line"><a name="l00883"></a><span class="lineno">  883</span>&#160;</div>
-<div class="line"><a name="l00884"></a><span class="lineno">  884</span>&#160;<span class="keywordtype">void</span> __r_dump_instances(<a class="code" href="structReceptor.html">Receptor</a> *r) {</div>
-<div class="line"><a name="l00885"></a><span class="lineno">  885</span>&#160;    <a class="code" href="structinstances__elem.html">Instances</a> *i = &amp;r-&gt;<a class="code" href="structReceptor.html#a6150c6bff7a9724b4dd436a75fe4cc4b">instances</a>;</div>
-<div class="line"><a name="l00886"></a><span class="lineno">  886</span>&#160;    <a class="code" href="structT.html">T</a> *t = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(PARAMS);  <span class="comment">// bogus symbol, just using to build the tree</span></div>
-<div class="line"><a name="l00887"></a><span class="lineno">  887</span>&#160;    <a class="code" href="structinstances__elem.html">instances_elem</a> *cur,*tmp;</div>
-<div class="line"><a name="l00888"></a><span class="lineno">  888</span>&#160;    HASH_ITER(hh, *i, cur, tmp) {</div>
-<div class="line"><a name="l00889"></a><span class="lineno">  889</span>&#160;        <a class="code" href="structT.html">T</a> *sym = _t_news(t,STRUCTURE_SYMBOL,cur-&gt;<a class="code" href="structinstances__elem.html#aeeb84ef2b0bb4b596d161bc84f17937d">s</a>);  <span class="comment">// just using this symbol to store the symbol type</span></div>
-<div class="line"><a name="l00890"></a><span class="lineno">  890</span>&#160;        <span class="keywordtype">int</span> is_receptor = semeq(cur-&gt;<a class="code" href="structinstances__elem.html#aeeb84ef2b0bb4b596d161bc84f17937d">s</a>,INSTALLED_RECEPTOR);</div>
-<div class="line"><a name="l00891"></a><span class="lineno">  891</span>&#160;        <a class="code" href="structinstance__elem.html">Instance</a> *iP = &amp;cur-&gt;<a class="code" href="structinstances__elem.html#a734b66c913756eb945351222cb601a87">instances</a>;</div>
-<div class="line"><a name="l00892"></a><span class="lineno">  892</span>&#160;        <a class="code" href="structinstance__elem.html">instance_elem</a> *curi,*tmpi;</div>
-<div class="line"><a name="l00893"></a><span class="lineno">  893</span>&#160;        HASH_ITER(hh, *iP, curi, tmpi) {</div>
-<div class="line"><a name="l00894"></a><span class="lineno">  894</span>&#160;            <a class="code" href="structT.html">T</a> *c = <a class="code" href="group__tree.html#ga7535eb2963c6cf5fc78cb14287581f92">_t_clone</a>(curi-&gt;<a class="code" href="structinstance__elem.html#a7a42321cb232ac42535157a9e654127f">instance</a>);</div>
-<div class="line"><a name="l00895"></a><span class="lineno">  895</span>&#160;            <a class="code" href="group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c">_t_add</a>(sym,c);</div>
-<div class="line"><a name="l00896"></a><span class="lineno">  896</span>&#160;        }</div>
-<div class="line"><a name="l00897"></a><span class="lineno">  897</span>&#160;    }</div>
-<div class="line"><a name="l00898"></a><span class="lineno">  898</span>&#160;    printf(<span class="stringliteral">&quot;INSTANCES:%s\n&quot;</span>,_t2s(&amp;r-&gt;<a class="code" href="structReceptor.html#a56e5e37eb23a3e5debf7f24723eca9ed">defs</a>,t));</div>
-<div class="line"><a name="l00899"></a><span class="lineno">  899</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
-<div class="line"><a name="l00900"></a><span class="lineno">  900</span>&#160;}</div>
+<div class="line"><a name="l00820"></a><span class="lineno">  820</span>&#160;</div>
+<div class="line"><a name="l00821"></a><span class="lineno">  821</span>&#160;    <span class="keywordflow">return</span> r;</div>
+<div class="line"><a name="l00822"></a><span class="lineno">  822</span>&#160;}</div>
+<div class="line"><a name="l00823"></a><span class="lineno">  823</span>&#160;</div>
+<div class="line"><a name="l00838"></a><span class="lineno"><a class="line" href="group__receptor.html#ga4cb85b79ae4207e4595d003d11beb226">  838</a></span>&#160;<span class="keywordtype">void</span> *<a class="code" href="group__receptor.html#ga4cb85b79ae4207e4595d003d11beb226">___clock_thread</a>(<span class="keywordtype">void</span> *arg){</div>
+<div class="line"><a name="l00839"></a><span class="lineno">  839</span>&#160;    <a class="code" href="structReceptor.html">Receptor</a> *r = (<a class="code" href="structReceptor.html">Receptor</a>*)arg;</div>
+<div class="line"><a name="l00840"></a><span class="lineno">  840</span>&#160;    debug(D_CLOCK,<span class="stringliteral">&quot;clock started\n&quot;</span>);</div>
+<div class="line"><a name="l00841"></a><span class="lineno">  841</span>&#160;    <span class="keywordtype">int</span> err =0;</div>
+<div class="line"><a name="l00842"></a><span class="lineno">  842</span>&#160;    ReceptorAddress <span class="keyword">self</span> = __r_get_self_address(r);</div>
+<div class="line"><a name="l00843"></a><span class="lineno">  843</span>&#160;    <span class="keywordflow">while</span> (r-&gt;<a class="code" href="structReceptor.html#a877d31e0f4bd35d7c4a598c6e0416dd5">state</a> == Alive) {</div>
+<div class="line"><a name="l00844"></a><span class="lineno">  844</span>&#160;        <a class="code" href="structT.html">T</a> *tick =__r_make_tick();</div>
+<div class="line"><a name="l00845"></a><span class="lineno">  845</span>&#160;        debug(D_CLOCK,<span class="stringliteral">&quot;%s\n&quot;</span>,_td(r,tick));</div>
+<div class="line"><a name="l00846"></a><span class="lineno">  846</span>&#160;        <a class="code" href="structT.html">T</a> *signal = <a class="code" href="group__receptor.html#gacdafc5a6d2d449f5a4903577e5642de8">__r_make_signal</a>(<span class="keyword">self</span>,<span class="keyword">self</span>,DEFAULT_ASPECT,tick);</div>
+<div class="line"><a name="l00847"></a><span class="lineno">  847</span>&#160;        <a class="code" href="group__receptor.html#ga7d40f33135ee51640d0d24b8c9e3e046">_r_deliver</a>(r,signal);</div>
+<div class="line"><a name="l00848"></a><span class="lineno">  848</span>&#160;        sleep(1);</div>
+<div class="line"><a name="l00850"></a><span class="lineno">  850</span>&#160;        <span class="comment">//       with nano-sleep so that we get every second?</span></div>
+<div class="line"><a name="l00851"></a><span class="lineno">  851</span>&#160;    }</div>
+<div class="line"><a name="l00852"></a><span class="lineno">  852</span>&#160;    debug(D_CLOCK,<span class="stringliteral">&quot;clock stopped\n&quot;</span>);</div>
+<div class="line"><a name="l00853"></a><span class="lineno">  853</span>&#160;    pthread_exit(&amp;err); <span class="comment">//@todo determine if we should use pthread_exit or just return 0</span></div>
+<div class="line"><a name="l00854"></a><span class="lineno">  854</span>&#160;    <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l00855"></a><span class="lineno">  855</span>&#160;}</div>
+<div class="line"><a name="l00856"></a><span class="lineno">  856</span>&#160;</div>
+<div class="line"><a name="l00857"></a><span class="lineno">  857</span>&#160;<a class="code" href="structT.html">T</a> * __r_make_tick() {</div>
+<div class="line"><a name="l00858"></a><span class="lineno">  858</span>&#160;    <span class="keyword">struct </span>tm t;</div>
+<div class="line"><a name="l00859"></a><span class="lineno">  859</span>&#160;    time_t clock;</div>
+<div class="line"><a name="l00860"></a><span class="lineno">  860</span>&#160;    time(&amp;clock);</div>
+<div class="line"><a name="l00861"></a><span class="lineno">  861</span>&#160;    gmtime_r(&amp;clock, &amp;t);</div>
+<div class="line"><a name="l00862"></a><span class="lineno">  862</span>&#160;    <a class="code" href="structT.html">T</a> *tick = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(TICK);</div>
+<div class="line"><a name="l00863"></a><span class="lineno">  863</span>&#160;    <a class="code" href="structT.html">T</a> *today = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(tick,TODAY);</div>
+<div class="line"><a name="l00864"></a><span class="lineno">  864</span>&#160;    <a class="code" href="structT.html">T</a> *now = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(tick,NOW);</div>
+<div class="line"><a name="l00865"></a><span class="lineno">  865</span>&#160;    _t_newi(today,YEAR,t.tm_year+1900);</div>
+<div class="line"><a name="l00866"></a><span class="lineno">  866</span>&#160;    _t_newi(today,MONTH,t.tm_mon+1);</div>
+<div class="line"><a name="l00867"></a><span class="lineno">  867</span>&#160;    _t_newi(today,DAY,t.tm_mday);</div>
+<div class="line"><a name="l00868"></a><span class="lineno">  868</span>&#160;    _t_newi(now,HOUR,t.tm_hour);</div>
+<div class="line"><a name="l00869"></a><span class="lineno">  869</span>&#160;    _t_newi(now,MINUTE,t.tm_min);</div>
+<div class="line"><a name="l00870"></a><span class="lineno">  870</span>&#160;    _t_newi(now,SECOND,t.tm_sec);</div>
+<div class="line"><a name="l00871"></a><span class="lineno">  871</span>&#160;    <span class="keywordflow">return</span> tick;</div>
+<div class="line"><a name="l00872"></a><span class="lineno">  872</span>&#160;}</div>
+<div class="line"><a name="l00873"></a><span class="lineno">  873</span>&#160;</div>
+<div class="line"><a name="l00874"></a><span class="lineno">  874</span>&#160;<span class="keywordtype">void</span> __r_kill(<a class="code" href="structReceptor.html">Receptor</a> *r) {</div>
+<div class="line"><a name="l00875"></a><span class="lineno">  875</span>&#160;    r-&gt;<a class="code" href="structReceptor.html#a877d31e0f4bd35d7c4a598c6e0416dd5">state</a> = Dead;</div>
+<div class="line"><a name="l00876"></a><span class="lineno">  876</span>&#160;    <span class="comment">/* pthread_mutex_lock(&amp;shutdownMutex); */</span></div>
+<div class="line"><a name="l00877"></a><span class="lineno">  877</span>&#160;    <span class="comment">/* G_shutdown = val; */</span></div>
+<div class="line"><a name="l00878"></a><span class="lineno">  878</span>&#160;    <span class="comment">/* pthread_mutex_unlock(&amp;shutdownMutex); */</span></div>
+<div class="line"><a name="l00879"></a><span class="lineno">  879</span>&#160;}</div>
+<div class="line"><a name="l00880"></a><span class="lineno">  880</span>&#160;</div>
+<div class="line"><a name="l00881"></a><span class="lineno">  881</span>&#160;ReceptorAddress __r_get_self_address(<a class="code" href="structReceptor.html">Receptor</a> *r) {</div>
+<div class="line"><a name="l00882"></a><span class="lineno">  882</span>&#160;    <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l00883"></a><span class="lineno">  883</span>&#160;}</div>
+<div class="line"><a name="l00884"></a><span class="lineno">  884</span>&#160;</div>
+<div class="line"><a name="l00885"></a><span class="lineno">  885</span>&#160;<span class="keywordtype">void</span> __r_dump_instances(<a class="code" href="structReceptor.html">Receptor</a> *r) {</div>
+<div class="line"><a name="l00886"></a><span class="lineno">  886</span>&#160;    <a class="code" href="structinstances__elem.html">Instances</a> *i = &amp;r-&gt;<a class="code" href="structReceptor.html#a6150c6bff7a9724b4dd436a75fe4cc4b">instances</a>;</div>
+<div class="line"><a name="l00887"></a><span class="lineno">  887</span>&#160;    <a class="code" href="structT.html">T</a> *t = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(PARAMS);  <span class="comment">// bogus symbol, just using to build the tree</span></div>
+<div class="line"><a name="l00888"></a><span class="lineno">  888</span>&#160;    <a class="code" href="structinstances__elem.html">instances_elem</a> *cur,*tmp;</div>
+<div class="line"><a name="l00889"></a><span class="lineno">  889</span>&#160;    HASH_ITER(hh, *i, cur, tmp) {</div>
+<div class="line"><a name="l00890"></a><span class="lineno">  890</span>&#160;        <a class="code" href="structT.html">T</a> *sym = _t_news(t,STRUCTURE_SYMBOL,cur-&gt;<a class="code" href="structinstances__elem.html#aeeb84ef2b0bb4b596d161bc84f17937d">s</a>);  <span class="comment">// just using this symbol to store the symbol type</span></div>
+<div class="line"><a name="l00891"></a><span class="lineno">  891</span>&#160;        <span class="keywordtype">int</span> is_receptor = semeq(cur-&gt;<a class="code" href="structinstances__elem.html#aeeb84ef2b0bb4b596d161bc84f17937d">s</a>,INSTALLED_RECEPTOR);</div>
+<div class="line"><a name="l00892"></a><span class="lineno">  892</span>&#160;        <a class="code" href="structinstance__elem.html">Instance</a> *iP = &amp;cur-&gt;<a class="code" href="structinstances__elem.html#a734b66c913756eb945351222cb601a87">instances</a>;</div>
+<div class="line"><a name="l00893"></a><span class="lineno">  893</span>&#160;        <a class="code" href="structinstance__elem.html">instance_elem</a> *curi,*tmpi;</div>
+<div class="line"><a name="l00894"></a><span class="lineno">  894</span>&#160;        HASH_ITER(hh, *iP, curi, tmpi) {</div>
+<div class="line"><a name="l00895"></a><span class="lineno">  895</span>&#160;            <a class="code" href="structT.html">T</a> *c = <a class="code" href="group__tree.html#ga7535eb2963c6cf5fc78cb14287581f92">_t_clone</a>(curi-&gt;<a class="code" href="structinstance__elem.html#a7a42321cb232ac42535157a9e654127f">instance</a>);</div>
+<div class="line"><a name="l00896"></a><span class="lineno">  896</span>&#160;            <a class="code" href="group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c">_t_add</a>(sym,c);</div>
+<div class="line"><a name="l00897"></a><span class="lineno">  897</span>&#160;        }</div>
+<div class="line"><a name="l00898"></a><span class="lineno">  898</span>&#160;    }</div>
+<div class="line"><a name="l00899"></a><span class="lineno">  899</span>&#160;    printf(<span class="stringliteral">&quot;INSTANCES:%s\n&quot;</span>,_t2s(&amp;r-&gt;<a class="code" href="structReceptor.html#a56e5e37eb23a3e5debf7f24723eca9ed">defs</a>,t));</div>
+<div class="line"><a name="l00900"></a><span class="lineno">  900</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
+<div class="line"><a name="l00901"></a><span class="lineno">  901</span>&#160;}</div>
 <div class="ttc" id="structinstance__elem_html"><div class="ttname"><a href="structinstance__elem.html">instance_elem</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00152">ceptr_types.h:152</a></div></div>
 <div class="ttc" id="group__tree_html_ga25dd0f385044ffbcc7c215ea80fa00b4"><div class="ttname"><a href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a></div><div class="ttdeci">T * _t_new_root(Symbol symbol)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00137">tree.c:137</a></div></div>
 <div class="ttc" id="structQ_html_a38d241dba8d07c681a5133821b887984"><div class="ttname"><a href="structQ.html#a38d241dba8d07c681a5133821b887984">Q::r</a></div><div class="ttdeci">Receptor * r</div><div class="ttdoc">back-pointer to receptor in which this Q is running (for defs and more) </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00221">ceptr_types.h:221</a></div></div>
@@ -788,7 +789,7 @@ $(document).ready(function(){initNavTree('receptor_8c_source.html','');});
 <div class="ttc" id="group__receptor_html_ga41c4e57e15ff758a44e0119a1f18ed2d"><div class="ttname"><a href="group__receptor.html#ga41c4e57e15ff758a44e0119a1f18ed2d">_r_express_protocol</a></div><div class="ttdeci">void _r_express_protocol(Receptor *r, int idx, Symbol sequence, Aspect aspect, T *handler)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00300">receptor.c:300</a></div></div>
 <div class="ttc" id="debug_8h_html"><div class="ttname"><a href="debug_8h.html">debug.h</a></div></div>
 <div class="ttc" id="group__tree_html_ga403644d86c835ceae71dc7af0356900f"><div class="ttname"><a href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a></div><div class="ttdeci">T * _t_detach_by_idx(T *t, int i)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00255">tree.c:255</a></div></div>
-<div class="ttc" id="process_8c_html_aea59e125f10441efe75f6047ee7b35e1"><div class="ttname"><a href="process_8c.html#aea59e125f10441efe75f6047ee7b35e1">_p_freeq</a></div><div class="ttdeci">void _p_freeq(Q *q)</div><div class="ttdef"><b>Definition:</b> <a href="process_8c_source.html#l01046">process.c:1046</a></div></div>
+<div class="ttc" id="process_8c_html_aea59e125f10441efe75f6047ee7b35e1"><div class="ttname"><a href="process_8c.html#aea59e125f10441efe75f6047ee7b35e1">_p_freeq</a></div><div class="ttdeci">void _p_freeq(Q *q)</div><div class="ttdef"><b>Definition:</b> <a href="process_8c_source.html#l01048">process.c:1048</a></div></div>
 <div class="ttc" id="group__tree_html_ga55270b512ed52ffe5a938a793fa5cd7f"><div class="ttname"><a href="group__tree.html#ga55270b512ed52ffe5a938a793fa5cd7f">_t_path_depth</a></div><div class="ttdeci">int _t_path_depth(int *p)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00696">tree.c:696</a></div></div>
 <div class="ttc" id="group__tree_html_gaa47f880fb18ec33c8f31c2aee78df797"><div class="ttname"><a href="group__tree.html#gaa47f880fb18ec33c8f31c2aee78df797">_t_node_index</a></div><div class="ttdeci">int _t_node_index(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00633">tree.c:633</a></div></div>
 <div class="ttc" id="mtree_8c_html_a27481040e0d545565d203c0f37b30d79"><div class="ttname"><a href="mtree_8c.html#a27481040e0d545565d203c0f37b30d79">_m_serialize</a></div><div class="ttdeci">S * _m_serialize(M *m)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00645">mtree.c:645</a></div></div>
@@ -825,7 +826,7 @@ $(document).ready(function(){initNavTree('receptor_8c_source.html','');});
 <div class="ttc" id="group__receptor_html_ga645381abc5b870dd686bd6731bba3703"><div class="ttname"><a href="group__receptor.html#ga645381abc5b870dd686bd6731bba3703">__set_label_for_def</a></div><div class="ttdeci">SemanticID __set_label_for_def(Receptor *r, char *label, T *def, int type)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00142">receptor.c:142</a></div></div>
 <div class="ttc" id="structReceptor_html_af8aee3ef6d1d93b80427faa57e6f1468"><div class="ttname"><a href="structReceptor.html#af8aee3ef6d1d93b80427faa57e6f1468">Receptor::flux</a></div><div class="ttdeci">T * flux</div><div class="ttdoc">pointer for quick access to the flux </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00241">ceptr_types.h:241</a></div></div>
 <div class="ttc" id="receptor_8c_html_a6784a7133ab6bc8c6a105fead8843c86"><div class="ttname"><a href="receptor_8c.html#a6784a7133ab6bc8c6a105fead8843c86">__r_get_structure_size</a></div><div class="ttdeci">size_t __r_get_structure_size(Receptor *r, Structure s, void *surface)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00244">receptor.c:244</a></div></div>
-<div class="ttc" id="process_8c_html_ae2449b4f1ecf168f4ac166d27f99edf7"><div class="ttname"><a href="process_8c.html#ae2449b4f1ecf168f4ac166d27f99edf7">_p_unblock</a></div><div class="ttdeci">Error _p_unblock(Q *q, int id)</div><div class="ttdef"><b>Definition:</b> <a href="process_8c_source.html#l00629">process.c:629</a></div></div>
+<div class="ttc" id="process_8c_html_ae2449b4f1ecf168f4ac166d27f99edf7"><div class="ttname"><a href="process_8c.html#ae2449b4f1ecf168f4ac166d27f99edf7">_p_unblock</a></div><div class="ttdeci">Error _p_unblock(Q *q, int id)</div><div class="ttdef"><b>Definition:</b> <a href="process_8c_source.html#l00631">process.c:631</a></div></div>
 <div class="ttc" id="group__tree_html_ga79cff1b1b9d692acc297634be059c6a9"><div class="ttname"><a href="group__tree.html#ga79cff1b1b9d692acc297634be059c6a9">_t_newt</a></div><div class="ttdeci">T * _t_newt(T *parent, Symbol symbol, T *surface)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00109">tree.c:109</a></div></div>
 <div class="ttc" id="group__def_html_ga434ff1353a4f55f4f61b95fe8d9cff43"><div class="ttname"><a href="group__def.html#ga434ff1353a4f55f4f61b95fe8d9cff43">_d_get_symbol_name</a></div><div class="ttdeci">char * _d_get_symbol_name(T *symbols, Symbol s)</div><div class="ttdef"><b>Definition:</b> <a href="def_8c_source.html#l00032">def.c:32</a></div></div>
 <div class="ttc" id="structR_html_a4182dd8437a5164bc6f4363b52ec0656"><div class="ttname"><a href="structR.html#a4182dd8437a5164bc6f4363b52ec0656">R::id</a></div><div class="ttdeci">int id</div><div class="ttdoc">the process id this context exists in </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00187">ceptr_types.h:187</a></div></div>
@@ -851,13 +852,13 @@ $(document).ready(function(){initNavTree('receptor_8c_source.html','');});
 <div class="ttc" id="group__receptor_html_gad886d976f8621ebb22d02c61f454265c"><div class="ttname"><a href="group__receptor.html#gad886d976f8621ebb22d02c61f454265c">__r_get_symbol_size</a></div><div class="ttdeci">size_t __r_get_symbol_size(Receptor *r, Symbol s, void *surface)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00251">receptor.c:251</a></div></div>
 <div class="ttc" id="structDefs_html_a2c74d8ba3b0f1972a6527cb96c0be65d"><div class="ttname"><a href="structDefs.html#a2c74d8ba3b0f1972a6527cb96c0be65d">Defs::scapes</a></div><div class="ttdeci">T * scapes</div><div class="ttdoc">pointer for quick access to scapes </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00180">ceptr_types.h:180</a></div></div>
 <div class="ttc" id="group__receptor_html_gadc618904f81240b244e816234d1c906e"><div class="ttname"><a href="group__receptor.html#gadc618904f81240b244e816234d1c906e">_r_get_instance</a></div><div class="ttdeci">T * _r_get_instance(Receptor *r, Xaddr x)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00367">receptor.c:367</a></div></div>
-<div class="ttc" id="process_8c_html_ab687631a788dd02e54df41041ed55f1c"><div class="ttname"><a href="process_8c.html#ab687631a788dd02e54df41041ed55f1c">_p_newq</a></div><div class="ttdeci">Q * _p_newq(Receptor *r)</div><div class="ttdef"><b>Definition:</b> <a href="process_8c_source.html#l01005">process.c:1005</a></div></div>
+<div class="ttc" id="process_8c_html_ab687631a788dd02e54df41041ed55f1c"><div class="ttname"><a href="process_8c.html#ab687631a788dd02e54df41041ed55f1c">_p_newq</a></div><div class="ttdeci">Q * _p_newq(Receptor *r)</div><div class="ttdef"><b>Definition:</b> <a href="process_8c_source.html#l01007">process.c:1007</a></div></div>
 <div class="ttc" id="structReceptor_html"><div class="ttname"><a href="structReceptor.html">Receptor</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00238">ceptr_types.h:238</a></div></div>
 <div class="ttc" id="structXaddr_html"><div class="ttname"><a href="structXaddr.html">Xaddr</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00267">ceptr_types.h:267</a></div></div>
 <div class="ttc" id="structH_html"><div class="ttname"><a href="structH.html">H</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00077">ceptr_types.h:77</a></div></div>
 <div class="ttc" id="structinstances__elem_html_aeeb84ef2b0bb4b596d161bc84f17937d"><div class="ttname"><a href="structinstances__elem.html#aeeb84ef2b0bb4b596d161bc84f17937d">instances_elem::s</a></div><div class="ttdeci">Symbol s</div><div class="ttdoc">key to store of this symbol type </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00163">ceptr_types.h:163</a></div></div>
 <div class="ttc" id="group__def_html_ga41157ee3740cc54c3857ca46e2545999"><div class="ttname"><a href="group__def.html#ga41157ee3740cc54c3857ca46e2545999">_d_get_symbol_structure</a></div><div class="ttdeci">Structure _d_get_symbol_structure(T *symbols, Symbol s)</div><div class="ttdef"><b>Definition:</b> <a href="def_8c_source.html#l00233">def.c:233</a></div></div>
-<div class="ttc" id="group__receptor_html_ga4cb85b79ae4207e4595d003d11beb226"><div class="ttname"><a href="group__receptor.html#ga4cb85b79ae4207e4595d003d11beb226">___clock_thread</a></div><div class="ttdeci">void * ___clock_thread(void *arg)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00837">receptor.c:837</a></div></div>
+<div class="ttc" id="group__receptor_html_ga4cb85b79ae4207e4595d003d11beb226"><div class="ttname"><a href="group__receptor.html#ga4cb85b79ae4207e4595d003d11beb226">___clock_thread</a></div><div class="ttdeci">void * ___clock_thread(void *arg)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00838">receptor.c:838</a></div></div>
 <div class="ttc" id="group__semtrex_html_ga12e70dc3d5fde33655e8731ad3bdd935"><div class="ttname"><a href="group__semtrex.html#ga12e70dc3d5fde33655e8731ad3bdd935">_sl</a></div><div class="ttdeci">#define _sl(t, s)</div><div class="ttdoc">macro to add a single symbol literal to semtrex tree </div><div class="ttdef"><b>Definition:</b> <a href="semtrex_8h_source.html#l00114">semtrex.h:114</a></div></div>
 <div class="ttc" id="group__def_html_ga342c1e89ee3d397776b0375a038c918d"><div class="ttname"><a href="group__def.html#ga342c1e89ee3d397776b0375a038c918d">_dv_define_structure</a></div><div class="ttdeci">T * _dv_define_structure(T *symbols, T *structures, char *label, int num_params, va_list params)</div><div class="ttdoc">va_list version of _d_define_structure </div><div class="ttdef"><b>Definition:</b> <a href="def_8c_source.html#l00210">def.c:210</a></div></div>
 <div class="ttc" id="mtree_8h_html"><div class="ttname"><a href="mtree_8h.html">mtree.h</a></div><div class="ttdoc">semantic tree matrix header file `` </div></div>
@@ -872,9 +873,9 @@ $(document).ready(function(){initNavTree('receptor_8c_source.html','');});
 <div class="ttc" id="accumulator_8h_html"><div class="ttname"><a href="accumulator_8h.html">accumulator.h</a></div><div class="ttdoc">header file for the accumulator </div></div>
 <div class="ttc" id="group__tree_html_ga0dcacdfd022b2a04b8fb53eb25ee367e"><div class="ttname"><a href="group__tree.html#ga0dcacdfd022b2a04b8fb53eb25ee367e">_t_replace</a></div><div class="ttdeci">void _t_replace(T *t, int i, T *r)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00349">tree.c:349</a></div></div>
 <div class="ttc" id="group__receptor_html_ga62c253e7cc1d1ad20471913ae822ebc2"><div class="ttname"><a href="group__receptor.html#ga62c253e7cc1d1ad20471913ae822ebc2">_r_new</a></div><div class="ttdeci">Receptor * _r_new(Symbol s)</div><div class="ttdoc">Creates a new receptor. </div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00072">receptor.c:72</a></div></div>
-<div class="ttc" id="process_8c_html_a3ea04d2b45efc2d35b350002d3073040"><div class="ttname"><a href="process_8c.html#a3ea04d2b45efc2d35b350002d3073040">_p_addrt2q</a></div><div class="ttdeci">Qe * _p_addrt2q(Q *q, T *run_tree)</div><div class="ttdef"><b>Definition:</b> <a href="process_8c_source.html#l01060">process.c:1060</a></div></div>
+<div class="ttc" id="process_8c_html_a3ea04d2b45efc2d35b350002d3073040"><div class="ttname"><a href="process_8c.html#a3ea04d2b45efc2d35b350002d3073040">_p_addrt2q</a></div><div class="ttdeci">Qe * _p_addrt2q(Q *q, T *run_tree)</div><div class="ttdef"><b>Definition:</b> <a href="process_8c_source.html#l01062">process.c:1062</a></div></div>
 <div class="ttc" id="group__tree_html_ga31e55cdc031e5f12523b998e89080db6"><div class="ttname"><a href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a></div><div class="ttdeci">void _t_free(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00476">tree.c:476</a></div></div>
-<div class="ttc" id="process_8c_html_a7dc2c46bc4670386c36a0efb369eed34"><div class="ttname"><a href="process_8c.html#a7dc2c46bc4670386c36a0efb369eed34">__p_make_signature</a></div><div class="ttdeci">T * __p_make_signature(char *output_label, Symbol output_type, SemanticID output_sem,...)</div><div class="ttdef"><b>Definition:</b> <a href="process_8c_source.html#l01213">process.c:1213</a></div></div>
+<div class="ttc" id="process_8c_html_a7dc2c46bc4670386c36a0efb369eed34"><div class="ttname"><a href="process_8c.html#a7dc2c46bc4670386c36a0efb369eed34">__p_make_signature</a></div><div class="ttdeci">T * __p_make_signature(char *output_label, Symbol output_type, SemanticID output_sem,...)</div><div class="ttdef"><b>Definition:</b> <a href="process_8c_source.html#l01215">process.c:1215</a></div></div>
 <div class="ttc" id="structDefs_html_a172e45e131e197571ba1a36a136d35f8"><div class="ttname"><a href="structDefs.html#a172e45e131e197571ba1a36a136d35f8">Defs::symbols</a></div><div class="ttdeci">T * symbols</div><div class="ttdoc">pointer for quick access to symbols </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00177">ceptr_types.h:177</a></div></div>
 <div class="ttc" id="structSemanticID_html"><div class="ttname"><a href="structSemanticID.html">SemanticID</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00020">ceptr_types.h:20</a></div></div>
 <div class="ttc" id="structDefs_html_aa0cf913c12ec27ee0027c64ee146c27d"><div class="ttname"><a href="structDefs.html#aa0cf913c12ec27ee0027c64ee146c27d">Defs::protocols</a></div><div class="ttdeci">T * protocols</div><div class="ttdoc">pointer for quick access to protocols </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00179">ceptr_types.h:179</a></div></div>
@@ -887,7 +888,7 @@ $(document).ready(function(){initNavTree('receptor_8c_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="receptor_8c.html">receptor.c</a></li>
-    <li class="footer">Generated on Tue Nov 10 2015 12:05:25 for ceptr by
+    <li class="footer">Generated on Tue Nov 10 2015 17:52:50 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
