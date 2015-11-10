@@ -251,17 +251,27 @@ print $hfh <<EOF;
 EOF
 
 #generate sys process documentation file
-my $pdfh = openf('>','doxy/sys_process_docs.html');
-my $html = << 'HTML';
+my $pdfh = openf('>','doxy/sys_processes.html');
+my $phtml = << 'HTML';
 <table class="doxtable"><tr><th>Process</th><th>Inputs</th><th>Output</th><th>Comments</th></tr>
+HTML
+my $stdfh = openf('>','doxy/sys_structures.html');
+my $sthtml = << 'HTML';
+<table class="doxtable"><tr><th>Structures</th><th>Symbols</th></th><th>Comments</th></tr>
+HTML
+my $sydfh = openf('>','doxy/sys_symbols.html');
+my $syhtml = << 'HTML';
+<table class="doxtable"><tr><th>Symbol</th><th>Structure</th><th>Comments</th></tr>
 HTML
 
 foreach my $s (@d) {
     my @x = @$s;
     my $type = $x[0];
+    my $context = $x[1];
+    my $name = $x[2];
+    my $def = $x[3];
     if ($type eq 'Process') {
-        my $name = $x[2];
-        my ($desc,$out,$out_type,$out_sym,@def) = split /,/,$x[3];
+        my ($desc,$out,$out_type,$out_sym,@def) = split /,/,$def;
         $desc =~ /"(.*)"/;
         $desc = $1;
         $out = &processSig($out,$out_type,$out_sym);
@@ -277,14 +287,49 @@ foreach my $s (@d) {
             $i = "[$i]" if $optional;
             $in .= "<li>$i</li>";
         }
-        $html .= "<tr><td>$name<br \>$desc</td><td>$in</td><td>$out</td><td>$comments{$name}</td></tr>\n";
+        $phtml .= '<a name="'.$name.'></a>';
+        $phtml .= "<tr><td>$name<br \>$desc</td><td>$in</td><td>$out</td><td>$comments{$name}</td></tr>\n";
     }
+    elsif ($type eq 'Symbol') {
+        $def =~ s/_/-/g;
+        $def = "<a href=\"ref_sys_structures.html#$def\">$def</a>";
+        $syhtml .= "<tr><td><a name=\"$name\"></a>$name</td><td>$def</td><td>$comments{$name}</td></tr>";
+    }
+    elsif ($type eq 'Structure') {
+        my ($count,@def) = split /,/,$def;
+
+        for(@def) {
+            s/(.*)/<a href="ref_sys_symbols.html#$1">$1<\/a>/;
+        }
+
+        $def = join(', ',@def);
+        $sthtml .= "";
+        $sthtml .= "<tr><td><a name=\"$name\"></a>$name</td><td>$def</td><td>$comments{$name}</td></tr>";
+    }
+    elsif ($type eq 'StructureS') {
+        my $n = $name;
+        $n =~ s/_/-/g;
+        $def =~ s/sT_//g;
+        $def =~ s/,/, /g;
+        $def =~ s/SYM\((.*?)\)/<a href="ref_sys_symbols.html#$1">$1<\/a>/g;
+        $def =~ s/(SEQ|SET)\([0-9]+, /$1(/g;
+        $sthtml .= "<tr><td><a name=\"$name\"></a>$n</td><td>$def</td><td>$comments{$name}</td></tr>";
+    }
+
 }
 
-$html .= << 'HTML';
+&finish($phtml,$pdfh);
+&finish($sthtml,$stdfh);
+&finish($syhtml,$sydfh);
+
+sub finish {
+    my $html = shift;
+    my $fh = shift;
+    $html .= << 'HTML';
 </table>
 HTML
-print $pdfh $html;
+    print $fh $html;
+}
 
 sub processSig {
     my $name = shift;

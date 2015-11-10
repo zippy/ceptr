@@ -1,0 +1,26 @@
+<table class="doxtable"><tr><th>Process</th><th>Inputs</th><th>Output</th><th>Comments</th></tr>
+<a name="NOOP></a><tr><td>NOOP<br >no-op</td><td></td><td>result(STRUCTURE:TREE)</td><td></td></tr>
+<a name="IF></a><tr><td>IF<br >if</td><td><li>condition(PROCESS:BOOLEAN)</li><li>then(ANY:NULL_STRUCTURE)</li><li>[else(ANY:NULL_STRUCTURE)]</li></td><td>result(PASSTHRU:NULL_STRUCTURE)</td><td></td></tr>
+<a name="ADD_INT></a><tr><td>ADD_INT<br >addition</td><td><li>augend(STRUCTURE:INTEGER)</li><li>addend(STRUCTURE:INTEGER)</li></td><td>sum(STRUCTURE:INTEGER)</td><td></td></tr>
+<a name="SUB_INT></a><tr><td>SUB_INT<br >subtract</td><td><li>minuend(STRUCTURE:INTEGER)</li><li>subtrahend(STRUCTURE:INTEGER)</li></td><td>difference(STRUCTURE:INTEGER)</td><td></td></tr>
+<a name="MULT_INT></a><tr><td>MULT_INT<br >multiply</td><td><li>multiplicand(STRUCTURE:INTEGER)</li><li>multiplier(STRUCTURE:INTEGER)</li></td><td>product(STRUCTURE:INTEGER)</td><td></td></tr>
+<a name="DIV_INT></a><tr><td>DIV_INT<br >divide</td><td><li>dividend(STRUCTURE:INTEGER)</li><li>divisor(STRUCTURE:INTEGER)</li></td><td>quotient(STRUCTURE:INTEGER)</td><td></td></tr>
+<a name="MOD_INT></a><tr><td>MOD_INT<br >modulo</td><td><li>dividend(STRUCTURE:INTEGER)</li><li>divisor(STRUCTURE:INTEGER)</li></td><td>remainder(STRUCTURE:INTEGER)</td><td></td></tr>
+<a name="EQ_INT></a><tr><td>EQ_INT<br >test equality</td><td></td><td>result(STRUCTURE:TREE)</td><td></td></tr>
+<a name="LT_INT></a><tr><td>LT_INT<br >test less than</td><td></td><td>result(STRUCTURE:TREE)</td><td></td></tr>
+<a name="GT_INT></a><tr><td>GT_INT<br >test greater than</td><td></td><td>result(STRUCTURE:TREE)</td><td></td></tr>
+<a name="LTE_INT></a><tr><td>LTE_INT<br >test less than or equal</td><td></td><td>result(STRUCTURE:TREE)</td><td></td></tr>
+<a name="GTE_INT></a><tr><td>GTE_INT<br >test greater than or equal</td><td></td><td>result(STRUCTURE:TREE)</td><td></td></tr>
+<a name="CONCAT_STR></a><tr><td>CONCAT_STR<br >concatinate strings</td><td></td><td>result(STRUCTURE:TREE)</td><td></td></tr>
+<a name="RESPOND></a><tr><td>RESPOND<br >respond to signal</td><td></td><td>result(STRUCTURE:TREE)</td><td></td></tr>
+<a name="SEND></a><tr><td>SEND<br >send a signal</td><td></td><td>response(STRUCTURE:TREE)</td><td></td></tr>
+<a name="EXPECT_ACT></a><tr><td>EXPECT_ACT<br >block run tree until expectation met and then act</td><td></td><td>result(STRUCTURE:TREE)</td><td></td></tr>
+<a name="QUOTE></a><tr><td>QUOTE<br >quote a process so that it can be passed as a value</td><td></td><td>result(STRUCTURE:TREE)</td><td></td></tr>
+<a name="INTERPOLATE_FROM_MATCH></a><tr><td>INTERPOLATE_FROM_MATCH<br >interploate match result in place</td><td></td><td>result(STRUCTURE:TREE)</td><td></td></tr>
+<a name="RAISE></a><tr><td>RAISE<br >raise reduction error</td><td></td><td>result(STRUCTURE:TREE)</td><td></td></tr>
+<a name="STREAM_READ></a><tr><td>STREAM_READ<br >read from a stream</td><td></td><td>result(STRUCTURE:TREE)</td><td></td></tr>
+<a name="STREAM_WRITE></a><tr><td>STREAM_WRITE<br >write to a stream</td><td></td><td>result(STRUCTURE:TREE)</td><td></td></tr>
+<a name="STREAM_ALIVE></a><tr><td>STREAM_ALIVE<br >check a stream is alive for reading</td><td></td><td>result(STRUCTURE:TREE)</td><td></td></tr>
+<a name="REPLICATE></a><tr><td>REPLICATE<br >replicate process</td><td><li>while(PROCESS:BOOLEAN)</li><li>do(ANY:NULL_STRUCTURE)</li></td><td>result(PASSTHRU:NULL_STRUCTURE)</td><td></td></tr>
+<a name="LISTEN></a><tr><td>LISTEN<br >plant a listener</td><td></td><td>result(STRUCTURE:TREE)</td><td></td></tr>
+</table>
