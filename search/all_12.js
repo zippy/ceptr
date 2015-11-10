@@ -1,7 +1,9 @@
 var searchData=
 [
   ['symbol_20and_20structure_20definition',['Symbol and Structure Definition',['../group__def.html',1,'']]],
-  ['system_20processes_20reference',['System Processes Reference',['../ref_vm_sys_processes.html',1,'']]],
+  ['system_20processes_20reference',['System Processes Reference',['../ref_sys_processes.html',1,'']]],
+  ['system_20structures_20reference',['System Structures Reference',['../ref_sys_structures.html',1,'']]],
+  ['system_20symbols_20reference',['System Symbols Reference',['../ref_sys_symbols.html',1,'']]],
   ['s',['S',['../structS.html',1,'S'],['../structinstances__elem.html#aeeb84ef2b0bb4b596d161bc84f17937d',1,'instances_elem::s()']]],
   ['scape',['Scape',['../structScape.html',1,'']]],
   ['scape_2ec',['scape.c',['../scape_8c.html',1,'']]],
