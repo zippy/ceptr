@@ -320,7 +320,7 @@ $(document).ready(function(){initNavTree('base__defs_8c_source.html','');});
 <div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;  sY(SYS_CONTEXT,INCOMPATIBLE_TYPE_ERR,REDUCTION_ERROR);</div>
 <div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;  sY(SYS_CONTEXT,UNIX_ERRNO_ERR,REDUCTION_ERROR);</div>
 <div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;  sY(SYS_CONTEXT,DEAD_STREAM_READ_ERR,REDUCTION_ERROR);</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;  sP(SYS_CONTEXT,NOOP,<span class="stringliteral">&quot;no-op&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_STRUCTURE,TREE,0);</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;  sP(SYS_CONTEXT,NOOP,<span class="stringliteral">&quot;no-op&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_STRUCTURE,TREE,<span class="stringliteral">&quot;do&quot;</span>,SIGNATURE_ANY,NULL_STRUCTURE,0);</div>
 <div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;  sP(SYS_CONTEXT,IF,<span class="stringliteral">&quot;if&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_PASSTHRU,NULL_STRUCTURE,<span class="stringliteral">&quot;condition&quot;</span>,SIGNATURE_PROCESS,BOOLEAN,<span class="stringliteral">&quot;then&quot;</span>,SIGNATURE_ANY,NULL_STRUCTURE,<span class="stringliteral">&quot;else&quot;</span>,SIGNATURE_OPTIONAL,SIGNATURE_ANY,NULL_STRUCTURE,0);</div>
 <div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;  sP(SYS_CONTEXT,ADD_INT,<span class="stringliteral">&quot;addition&quot;</span>,<span class="stringliteral">&quot;sum&quot;</span>,SIGNATURE_STRUCTURE,INTEGER,<span class="stringliteral">&quot;augend&quot;</span>,SIGNATURE_STRUCTURE,INTEGER,<span class="stringliteral">&quot;addend&quot;</span>,SIGNATURE_STRUCTURE,INTEGER,0);</div>
 <div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;  sP(SYS_CONTEXT,SUB_INT,<span class="stringliteral">&quot;subtract&quot;</span>,<span class="stringliteral">&quot;difference&quot;</span>,SIGNATURE_STRUCTURE,INTEGER,<span class="stringliteral">&quot;minuend&quot;</span>,SIGNATURE_STRUCTURE,INTEGER,<span class="stringliteral">&quot;subtrahend&quot;</span>,SIGNATURE_STRUCTURE,INTEGER,0);</div>
@@ -342,7 +342,7 @@ $(document).ready(function(){initNavTree('base__defs_8c_source.html','');});
 <div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;  sP(SYS_CONTEXT,STREAM_READ,<span class="stringliteral">&quot;read from a stream&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_STRUCTURE,TREE,0);</div>
 <div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;  sP(SYS_CONTEXT,STREAM_WRITE,<span class="stringliteral">&quot;write to a stream&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_STRUCTURE,TREE,0);</div>
 <div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;  sP(SYS_CONTEXT,STREAM_ALIVE,<span class="stringliteral">&quot;check a stream is alive for reading&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_STRUCTURE,TREE,0);</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;  sP(SYS_CONTEXT,REPLICATE,<span class="stringliteral">&quot;replicate process&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_PASSTHRU,NULL_STRUCTURE,<span class="stringliteral">&quot;while&quot;</span>,SIGNATURE_PROCESS,BOOLEAN,<span class="stringliteral">&quot;do&quot;</span>,SIGNATURE_ANY,NULL_STRUCTURE,0);</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;  sP(SYS_CONTEXT,ITERATE,<span class="stringliteral">&quot;iterate a process&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_PASSTHRU,NULL_STRUCTURE,<span class="stringliteral">&quot;condtion&quot;</span>,SIGNATURE_PROCESS,BOOLEAN,<span class="stringliteral">&quot;do&quot;</span>,SIGNATURE_ANY,NULL_STRUCTURE,0);</div>
 <div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;  sP(SYS_CONTEXT,LISTEN,<span class="stringliteral">&quot;plant a listener&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_STRUCTURE,TREE,0);</div>
 <div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;  sY(SYS_CONTEXT,STX_TOKENS,LIST);</div>
 <div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;  sY(SYS_CONTEXT,STX_SL,NULL_STRUCTURE);</div>
@@ -403,7 +403,7 @@ $(document).ready(function(){initNavTree('base__defs_8c_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="base__defs_8c.html">base_defs.c</a></li>
-    <li class="footer">Generated on Mon Nov 9 2015 22:16:45 for ceptr by
+    <li class="footer">Generated on Mon Nov 9 2015 23:54:10 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

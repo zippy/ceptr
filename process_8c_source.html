@@ -502,7 +502,7 @@ $(document).ready(function(){initNavTree('process_8c_source.html','');});
 <div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;            <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(s);</div>
 <div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;        }</div>
 <div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;        <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;    <span class="keywordflow">case</span> REPLICATE_ID:</div>
+<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;    <span class="keywordflow">case</span> ITERATE_ID:</div>
 <div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;        <span class="comment">// replicate is a special case, we have to check the phase to see what to do</span></div>
 <div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;        <span class="comment">// after the children have been evaluated.</span></div>
 <div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;        {</div>
@@ -799,13 +799,13 @@ $(document).ready(function(){initNavTree('process_8c_source.html','');});
 <div class="line"><a name="l00768"></a><span class="lineno">  768</span>&#160;            }</div>
 <div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160;            <span class="keywordflow">else</span></div>
 <div class="line"><a name="l00770"></a><span class="lineno">  770</span>&#160;                {</div>
-<div class="line"><a name="l00771"></a><span class="lineno">  771</span>&#160;                <span class="keywordflow">if</span> (semeq(s,REPLICATE)) {</div>
+<div class="line"><a name="l00771"></a><span class="lineno">  771</span>&#160;                <span class="keywordflow">if</span> (semeq(s,ITERATE)) {</div>
 <div class="line"><a name="l00772"></a><span class="lineno">  772</span>&#160;                    <span class="comment">// if first time we are hitting this replication</span></div>
 <div class="line"><a name="l00773"></a><span class="lineno">  773</span>&#160;                    <span class="comment">// then we need to set it up</span></div>
 <div class="line"><a name="l00774"></a><span class="lineno">  774</span>&#160;                    <span class="comment">//                    raise(SIGINT);</span></div>
 <div class="line"><a name="l00775"></a><span class="lineno">  775</span>&#160;                    <span class="keywordflow">if</span> (<a class="code" href="group__tree.html#gac97d0dd9bbdeb14978735bac1eb0b25e">_t_size</a>(np) == 0) {</div>
 <div class="line"><a name="l00776"></a><span class="lineno">  776</span>&#160;                        <span class="comment">// sanity check</span></div>
-<div class="line"><a name="l00777"></a><span class="lineno">  777</span>&#160;                        <span class="keywordflow">if</span> (<a class="code" href="group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc">_t_children</a>(np) != 3) {raise_error(<span class="stringliteral">&quot;REPLICATE must have 3 params&quot;</span>);}</div>
+<div class="line"><a name="l00777"></a><span class="lineno">  777</span>&#160;                        <span class="keywordflow">if</span> (<a class="code" href="group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc">_t_children</a>(np) != 3) {raise_error(<span class="stringliteral">&quot;ITERATE must have 3 params&quot;</span>);}</div>
 <div class="line"><a name="l00778"></a><span class="lineno">  778</span>&#160;                        <span class="comment">// create a copy of the code and stick it in the replication state struct</span></div>
 <div class="line"><a name="l00779"></a><span class="lineno">  779</span>&#160;                        <a class="code" href="structReplicationState.html">ReplicationState</a> *state = malloc(<span class="keyword">sizeof</span>(<a class="code" href="structReplicationState.html">ReplicationState</a>));</div>
 <div class="line"><a name="l00780"></a><span class="lineno">  780</span>&#160;                        state-&gt;phase = EvalCondition;</div>
@@ -1308,7 +1308,7 @@ $(document).ready(function(){initNavTree('process_8c_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="process_8c.html">process.c</a></li>
-    <li class="footer">Generated on Mon Nov 9 2015 22:16:45 for ceptr by
+    <li class="footer">Generated on Mon Nov 9 2015 23:54:10 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

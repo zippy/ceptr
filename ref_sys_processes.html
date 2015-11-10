@@ -103,8 +103,8 @@ $(document).ready(function(){initNavTree('ref_sys_processes.html','');});
 <div class="textblock"><p>The ceptr processing model consits of reducing a semantic tree of process nodes. Processes can either be system processes (provided by the virtual machine) or composed processes declared in in the context of the receptor.</p>
 <p>The virtual machine provides the following system processes:</p>
 <table class="doxtable"><tr><th>Process</th><th>Inputs</th><th>Output</th><th>Comments</th></tr>
-<tr><td><a name="NOOP"></a>NOOP<br >no-op</td><td></td><td>result(STRUCTURE:<a href="ref_sys_symbols.html#TREE">TREE</a>)</td><td></td></tr>
-<tr><td><a name="IF"></a>IF<br >if</td><td><li>condition(PROCESS:<a href="ref_sys_symbols.html#BOOLEAN">BOOLEAN</a>)</li><li>then(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</li><li>[else(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)]</li></td><td>result(PASSTHRU:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</td><td></td></tr>
+<tr><td><a name="NOOP"></a>NOOP<br >no-op</td><td><li>do(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</li></td><td>result(STRUCTURE:<a href="ref_sys_symbols.html#TREE">TREE</a>)</td><td>   this process reduces to it's single "do" parameter</td></tr>
+<tr><td><a name="IF"></a>IF<br >if</td><td><li>condition(PROCESS:<a href="ref_sys_symbols.html#BOOLEAN">BOOLEAN</a>)</li><li>then(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</li><li>[else(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)]</li></td><td>result(PASSTHRU:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</td><td>  this is a traditional "if" process that reduces conditionally to either the "then" or the "else" parameter depending on the value of the "condition" parameter.</td></tr>
 <tr><td><a name="ADD_INT"></a>ADD_INT<br >addition</td><td><li>augend(STRUCTURE:<a href="ref_sys_symbols.html#INTEGER">INTEGER</a>)</li><li>addend(STRUCTURE:<a href="ref_sys_symbols.html#INTEGER">INTEGER</a>)</li></td><td>sum(STRUCTURE:<a href="ref_sys_symbols.html#INTEGER">INTEGER</a>)</td><td></td></tr>
 <tr><td><a name="SUB_INT"></a>SUB_INT<br >subtract</td><td><li>minuend(STRUCTURE:<a href="ref_sys_symbols.html#INTEGER">INTEGER</a>)</li><li>subtrahend(STRUCTURE:<a href="ref_sys_symbols.html#INTEGER">INTEGER</a>)</li></td><td>difference(STRUCTURE:<a href="ref_sys_symbols.html#INTEGER">INTEGER</a>)</td><td></td></tr>
 <tr><td><a name="MULT_INT"></a>MULT_INT<br >multiply</td><td><li>multiplicand(STRUCTURE:<a href="ref_sys_symbols.html#INTEGER">INTEGER</a>)</li><li>multiplier(STRUCTURE:<a href="ref_sys_symbols.html#INTEGER">INTEGER</a>)</li></td><td>product(STRUCTURE:<a href="ref_sys_symbols.html#INTEGER">INTEGER</a>)</td><td></td></tr>
@@ -125,7 +125,7 @@ $(document).ready(function(){initNavTree('ref_sys_processes.html','');});
 <tr><td><a name="STREAM_READ"></a>STREAM_READ<br >read from a stream</td><td></td><td>result(STRUCTURE:<a href="ref_sys_symbols.html#TREE">TREE</a>)</td><td></td></tr>
 <tr><td><a name="STREAM_WRITE"></a>STREAM_WRITE<br >write to a stream</td><td></td><td>result(STRUCTURE:<a href="ref_sys_symbols.html#TREE">TREE</a>)</td><td></td></tr>
 <tr><td><a name="STREAM_ALIVE"></a>STREAM_ALIVE<br >check a stream is alive for reading</td><td></td><td>result(STRUCTURE:<a href="ref_sys_symbols.html#TREE">TREE</a>)</td><td></td></tr>
-<tr><td><a name="REPLICATE"></a>REPLICATE<br >replicate process</td><td><li>while(PROCESS:<a href="ref_sys_symbols.html#BOOLEAN">BOOLEAN</a>)</li><li>do(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</li></td><td>result(PASSTHRU:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</td><td></td></tr>
+<tr><td><a name="ITERATE"></a>ITERATE<br >iterate a process</td><td><li>condtion(PROCESS:<a href="ref_sys_symbols.html#BOOLEAN">BOOLEAN</a>)</li><li>do(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</li></td><td>result(PASSTHRU:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</td><td>                     this process checks the structure of the result of the "condition" param, if it's a BOOLEAN, it treats the iteration as a while loop and iterates until the BOOLEAN is false; if it's an INTEGER it treats the iteration as repeat loop and iterates as many times as the value of the INTEGER</td></tr>
 <tr><td><a name="LISTEN"></a>LISTEN<br >plant a listener</td><td></td><td>result(STRUCTURE:<a href="ref_sys_symbols.html#TREE">TREE</a>)</td><td></td></tr>
 </table>
  </div></div><!-- contents -->
@@ -133,7 +133,7 @@ $(document).ready(function(){initNavTree('ref_sys_processes.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Nov 9 2015 22:16:45 for ceptr by
+    <li class="footer">Generated on Mon Nov 9 2015 23:54:10 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
