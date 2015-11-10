@@ -489,6 +489,18 @@ enum SYSProcessIDs {
     NULL_PROCESS_ID,
     NOOP_ID,
     IF_ID,
+    ITERATE_ID,
+    SEND_ID,
+    LISTEN_ID,
+    RESPOND_ID,
+    EXPECT_ACT_ID,
+    QUOTE_ID,
+    INTERPOLATE_FROM_MATCH_ID,
+    RAISE_ID,
+    STREAM_READ_ID,
+    STREAM_WRITE_ID,
+    STREAM_ALIVE_ID,
+    CONCAT_STR_ID,
     ADD_INT_ID,
     SUB_INT_ID,
     MULT_INT_ID,
@@ -499,22 +511,22 @@ enum SYSProcessIDs {
     GT_INT_ID,
     LTE_INT_ID,
     GTE_INT_ID,
-    CONCAT_STR_ID,
-    RESPOND_ID,
-    SEND_ID,
-    EXPECT_ACT_ID,
-    QUOTE_ID,
-    INTERPOLATE_FROM_MATCH_ID,
-    RAISE_ID,
-    STREAM_READ_ID,
-    STREAM_WRITE_ID,
-    STREAM_ALIVE_ID,
-    ITERATE_ID,
-    LISTEN_ID,
     NUM_SYS_PROCESSES
 };
 #define NOOP G_contexts[SYS_CONTEXT].processes[NOOP_ID]
 #define IF G_contexts[SYS_CONTEXT].processes[IF_ID]
+#define ITERATE G_contexts[SYS_CONTEXT].processes[ITERATE_ID]
+#define SEND G_contexts[SYS_CONTEXT].processes[SEND_ID]
+#define LISTEN G_contexts[SYS_CONTEXT].processes[LISTEN_ID]
+#define RESPOND G_contexts[SYS_CONTEXT].processes[RESPOND_ID]
+#define EXPECT_ACT G_contexts[SYS_CONTEXT].processes[EXPECT_ACT_ID]
+#define QUOTE G_contexts[SYS_CONTEXT].processes[QUOTE_ID]
+#define INTERPOLATE_FROM_MATCH G_contexts[SYS_CONTEXT].processes[INTERPOLATE_FROM_MATCH_ID]
+#define RAISE G_contexts[SYS_CONTEXT].processes[RAISE_ID]
+#define STREAM_READ G_contexts[SYS_CONTEXT].processes[STREAM_READ_ID]
+#define STREAM_WRITE G_contexts[SYS_CONTEXT].processes[STREAM_WRITE_ID]
+#define STREAM_ALIVE G_contexts[SYS_CONTEXT].processes[STREAM_ALIVE_ID]
+#define CONCAT_STR G_contexts[SYS_CONTEXT].processes[CONCAT_STR_ID]
 #define ADD_INT G_contexts[SYS_CONTEXT].processes[ADD_INT_ID]
 #define SUB_INT G_contexts[SYS_CONTEXT].processes[SUB_INT_ID]
 #define MULT_INT G_contexts[SYS_CONTEXT].processes[MULT_INT_ID]
@@ -525,18 +537,6 @@ enum SYSProcessIDs {
 #define GT_INT G_contexts[SYS_CONTEXT].processes[GT_INT_ID]
 #define LTE_INT G_contexts[SYS_CONTEXT].processes[LTE_INT_ID]
 #define GTE_INT G_contexts[SYS_CONTEXT].processes[GTE_INT_ID]
-#define CONCAT_STR G_contexts[SYS_CONTEXT].processes[CONCAT_STR_ID]
-#define RESPOND G_contexts[SYS_CONTEXT].processes[RESPOND_ID]
-#define SEND G_contexts[SYS_CONTEXT].processes[SEND_ID]
-#define EXPECT_ACT G_contexts[SYS_CONTEXT].processes[EXPECT_ACT_ID]
-#define QUOTE G_contexts[SYS_CONTEXT].processes[QUOTE_ID]
-#define INTERPOLATE_FROM_MATCH G_contexts[SYS_CONTEXT].processes[INTERPOLATE_FROM_MATCH_ID]
-#define RAISE G_contexts[SYS_CONTEXT].processes[RAISE_ID]
-#define STREAM_READ G_contexts[SYS_CONTEXT].processes[STREAM_READ_ID]
-#define STREAM_WRITE G_contexts[SYS_CONTEXT].processes[STREAM_WRITE_ID]
-#define STREAM_ALIVE G_contexts[SYS_CONTEXT].processes[STREAM_ALIVE_ID]
-#define ITERATE G_contexts[SYS_CONTEXT].processes[ITERATE_ID]
-#define LISTEN G_contexts[SYS_CONTEXT].processes[LISTEN_ID]
 
 /**********************************************************************************/
 // TEST:Symbol
