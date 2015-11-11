@@ -18,9 +18,7 @@ int strcicmp(char const *a, char const *b);
 void writeFile(char *fn,void *data,size_t size);
 void readFile(char *fn,void **data,size_t *size);
 uint64_t diff_micro(struct timespec *start, struct timespec *end);
-
-#define MS_PER_NANO_SECOND  1000000L  // 1 millisecond = 1,000,000 Nanoseconds
-#define sleepms(ms) nanosleep((const struct timespec[]){{0, ms*MS_PER_NANO_SECOND}}, NULL);
+void sleepms(long milliseconds);
 #define sleepns(ns) nanosleep((const struct timespec[]){{0, ns}}, NULL);
 
 #endif

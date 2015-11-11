@@ -105,3 +105,12 @@ uint64_t diff_micro(struct timespec *start, struct timespec *end)
     return ((end->tv_sec * (1000000)) + (end->tv_nsec / 1000)) -
         ((start->tv_sec * 1000000) + (start->tv_nsec / 1000));
 }
+
+#define MS_PER_NANO_SECOND  1000000L  // 1 millisecond = 1,000,000 Nanoseconds
+
+void sleepms(long milliseconds) {
+    struct timespec ts;
+    ts.tv_sec = milliseconds/1000;
+    ts.tv_nsec = (milliseconds-(ts.tv_sec*1000))*MS_PER_NANO_SECOND;
+    nanosleep(&ts,NULL);
+}
