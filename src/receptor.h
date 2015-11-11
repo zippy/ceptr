@@ -54,6 +54,7 @@ void _r_express_protocol(Receptor *r,int idx,Symbol sequence,Aspect aspect,T* ha
 
 Xaddr _r_new_instance(Receptor *r,T *t);
 T *_r_get_instance(Receptor *r,Xaddr x);
+T * _r_set_instance(Receptor *r,Xaddr x,T *t);
 TreeHash _r_hash(Receptor *r,Xaddr t);
 
 /******************  receptor serialization */

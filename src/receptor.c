@@ -369,6 +369,21 @@ T * _r_get_instance(Receptor *r,Xaddr x) {
 }
 
 /**
+ * set the instance for a given xaddr
+ *
+ * @param[in] r the receptor context in which things are defined
+ * @param[in] x the xaddr of the instance
+ * @param[in] t the new tree to set the instance value to
+ * @returns the instance tree
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/receptor_spec.h testReceptorInstanceNew
+ */
+T * _r_set_instance(Receptor *r,Xaddr x,T *t) {
+    return _a_set_instance(&r->instances,x,t);
+}
+
+/**
  * get the hash of a tree by Xaddr
  */
 TreeHash _r_hash(Receptor *r,Xaddr t) {

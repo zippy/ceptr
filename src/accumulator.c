@@ -127,7 +127,7 @@ void _a_shut_down() {
 
 /*------------------------------------------------------------------------*/
 
-T *_a_get_instance(Instances *instances,Xaddr x) {
+instance_elem *__a_get_instance(Instances *instances,Xaddr x) {
     instances_elem *e = 0;
     HASH_FIND_INT( *instances, &x.symbol, e );
     if (e) {
@@ -135,8 +135,23 @@ T *_a_get_instance(Instances *instances,Xaddr x) {
         Instance *iP = &e->instances;
         HASH_FIND_INT( *iP, &x.addr, i );
         if (i) {
-            return i->instance;
+            return i;
         }
+    }
+    return 0;
+}
+
+T *_a_get_instance(Instances *instances,Xaddr x) {
+    instance_elem *i = __a_get_instance(instances,x);
+    return i ? i->instance : NULL;
+}
+
+T *_a_set_instance(Instances *instances,Xaddr x,T *t) {
+    instance_elem *i = __a_get_instance(instances,x);
+    if (i) {
+        _t_free(i->instance);
+        i->instance = t;
+        return i->instance;
     }
     return 0;
 }

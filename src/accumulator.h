@@ -21,6 +21,7 @@ void _a_start_vmhost();
 void _a_shut_down();
 
 T *_a_get_instance(Instances *i,Xaddr x);
+T *_a_set_instance(Instances *instances,Xaddr x,T *t);
 Xaddr _a_new_instance(Instances *i,T *t);
 void _a_free_instances(Instances *i);
 
