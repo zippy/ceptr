@@ -37,6 +37,8 @@ var base__defs_8h =
     [ "EXPECTATION", "base__defs_8h.html#a641b6e05210263dc8838e5bfa7a49c5d", null ],
     [ "FLOAT", "base__defs_8h.html#ae8690abbffa85934d64d545920e2b108", null ],
     [ "FLUX", "base__defs_8h.html#a25423659eff62f7c31c180dedef555a6", null ],
+    [ "GET", "base__defs_8h.html#a982a66f513611f7f83ebfa4b4ecf1df9", null ],
+    [ "GET_XADDR", "base__defs_8h.html#a5602e77f88b8d3c586024f85b1e33b86", null ],
     [ "GT_INT", "base__defs_8h.html#afa6a39777090f03b4c43ead39a3855da", null ],
     [ "GTE_INT", "base__defs_8h.html#a5484afa6101b8f95fb069fe9169799ee", null ],
     [ "HOUR", "base__defs_8h.html#a4698ae12cf6a8acb5886fffd0ec897e6", null ],
@@ -165,6 +167,7 @@ var base__defs_8h =
     [ "SIGNATURE_SEMANTIC_VARIANTS", "base__defs_8h.html#ae3bd5df85dcb3307b96ad35b1953769b", null ],
     [ "SIGNATURE_STRUCTURE", "base__defs_8h.html#ae74d3c9b9cef4685d5ec5dc6290ae69d", null ],
     [ "SIGNATURE_SYMBOL", "base__defs_8h.html#a796f62e141181674b57cc92e3ee40221", null ],
+    [ "SPECIAL", "base__defs_8h.html#a84acb423f634978b61ac46856de40a70", null ],
     [ "STEP", "base__defs_8h.html#a70be2dc5c8bdc85b027ea6118753cca1", null ],
     [ "STEP_SYMBOL", "base__defs_8h.html#afe5e65ea6d5be011ce59d0b46c99d125", null ],
     [ "STEPS", "base__defs_8h.html#a1ca9f64427b2bc5b538fe2fa2501c639", null ],
@@ -227,6 +230,7 @@ var base__defs_8h =
     [ "TEST_RECEPTOR_SYMBOL", "base__defs_8h.html#a73d2c88e23d3e1cb9fc975a585abfb3b", null ],
     [ "TEST_STR_SYMBOL", "base__defs_8h.html#a8759dbbdc5d35d47db08c76c1235453b", null ],
     [ "TEST_STREAM_SYMBOL", "base__defs_8h.html#af6fccbbfa444fc7fe979159c26ff07e6", null ],
+    [ "TEST_SYMBOL_SYMBOL", "base__defs_8h.html#ac115807c2f31869d924fe3e725d371ea", null ],
     [ "TEST_TREE_SYMBOL", "base__defs_8h.html#aba26a2a1546443ba23c946c131e6ad41", null ],
     [ "TEST_TREE_SYMBOL2", "base__defs_8h.html#a91882de1256bf18edcf0769410d36418", null ],
     [ "TICK", "base__defs_8h.html#a7d5ee1cc1e801872efa1ea7486189019", null ],
@@ -282,6 +286,7 @@ var base__defs_8h =
     [ "SYSProcessIDs", "base__defs_8h.html#ae45ea5f68b11fba5335966aaecbd1e8d", [
       [ "NULL_PROCESS_ID", "base__defs_8h.html#ae45ea5f68b11fba5335966aaecbd1e8dae0d8763313d07c0fd7069016226f0ce1", null ],
       [ "NOOP_ID", "base__defs_8h.html#ae45ea5f68b11fba5335966aaecbd1e8da9bc0fb0dc3c075114973bb833d98303d", null ],
+      [ "GET_ID", "base__defs_8h.html#ae45ea5f68b11fba5335966aaecbd1e8daa445600eb4ec83dc7bc4bc768da74ba2", null ],
       [ "IF_ID", "base__defs_8h.html#ae45ea5f68b11fba5335966aaecbd1e8daa778775ecfe4f1b5d5732965af60c6de", null ],
       [ "ITERATE_ID", "base__defs_8h.html#ae45ea5f68b11fba5335966aaecbd1e8daad0d1736b35fb0f385a7096cadf0a4a1", null ],
       [ "SEND_ID", "base__defs_8h.html#ae45ea5f68b11fba5335966aaecbd1e8da462d468ab1d5ca565291b0c4d1580183", null ],
@@ -305,6 +310,7 @@ var base__defs_8h =
       [ "GT_INT_ID", "base__defs_8h.html#ae45ea5f68b11fba5335966aaecbd1e8da98807c00ea958c54e3aa80006ceeb763", null ],
       [ "LTE_INT_ID", "base__defs_8h.html#ae45ea5f68b11fba5335966aaecbd1e8daf5d821134dd0b346da90cf0db1dcb1e5", null ],
       [ "GTE_INT_ID", "base__defs_8h.html#ae45ea5f68b11fba5335966aaecbd1e8da6c7e8caa527aaa68f38087836fe4b9b9", null ],
+      [ "SPECIAL_ID", "base__defs_8h.html#ae45ea5f68b11fba5335966aaecbd1e8da33c46756cd99db9867c5f48ca76d48b1", null ],
       [ "NUM_SYS_PROCESSES", "base__defs_8h.html#ae45ea5f68b11fba5335966aaecbd1e8da2044269b41c15464e4414a0a66e8c25b", null ]
     ] ],
     [ "SYSStructureIDs", "base__defs_8h.html#ad5793bf9ce5a73d7b2ff32a9c090a603", [
@@ -508,6 +514,7 @@ var base__defs_8h =
       [ "INCOMPATIBLE_TYPE_ERR_ID", "base__defs_8h.html#affd60a1bd0b4f90d4339099ca8831b52a74606dd07a367fe21c214b3997e7244f", null ],
       [ "UNIX_ERRNO_ERR_ID", "base__defs_8h.html#affd60a1bd0b4f90d4339099ca8831b52a7534fc95193fbc960e8343a72ad11a49", null ],
       [ "DEAD_STREAM_READ_ERR_ID", "base__defs_8h.html#affd60a1bd0b4f90d4339099ca8831b52aa8896cfb893da35783f06a54db474b57", null ],
+      [ "GET_XADDR_ID", "base__defs_8h.html#affd60a1bd0b4f90d4339099ca8831b52a413a1ce536f163a278019de5ae58ceec", null ],
       [ "STX_TOKENS_ID", "base__defs_8h.html#affd60a1bd0b4f90d4339099ca8831b52a70f147b0d160c23db066c26dd7a78b0a", null ],
       [ "STX_SL_ID", "base__defs_8h.html#affd60a1bd0b4f90d4339099ca8831b52a1a65c1effc38bf1804385f2569917142", null ],
       [ "STX_OP_ID", "base__defs_8h.html#affd60a1bd0b4f90d4339099ca8831b52abb77b5751f1214b1da6069ac537abf4c", null ],
@@ -554,6 +561,7 @@ var base__defs_8h =
       [ "TEST_NAME_SYMBOL_ID", "base__defs_8h.html#a3403be17ff1c1896ffd589f05e44375aad176acc1b972ad1316356c9ebc1c732b", null ],
       [ "TEST_RECEPTOR_SYMBOL_ID", "base__defs_8h.html#a3403be17ff1c1896ffd589f05e44375aaf922b8c90898582974c0e72fa7380cd8", null ],
       [ "TEST_ALPHABETIZE_SCAPE_SYMBOL_ID", "base__defs_8h.html#a3403be17ff1c1896ffd589f05e44375aa5449f87c1cab4e6380007c565cb517ee", null ],
+      [ "TEST_SYMBOL_SYMBOL_ID", "base__defs_8h.html#a3403be17ff1c1896ffd589f05e44375aa99733127acea5ecee66e27879ee7d446", null ],
       [ "NUM_TEST_SYMBOLS", "base__defs_8h.html#a3403be17ff1c1896ffd589f05e44375aa9656ed9349b96221794ed5b22c56229c", null ]
     ] ],
     [ "base_defs", "base__defs_8h.html#ac7dea914d4dd4992c05729f2b0fe1d7f", null ]

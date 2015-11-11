@@ -7,6 +7,7 @@ var accumulator_8h =
     [ "_a_get_instance", "group__accumulator.html#gaa967dcf3850e900ee02c57e571cbcfb4", null ],
     [ "_a_new_instance", "group__accumulator.html#ga39db962b9f458027e77c46b1b51e061c", null ],
     [ "_a_serialize_instances", "group__accumulator.html#gac3b0ef4965dc1264fac465f7bc2c0e43", null ],
+    [ "_a_set_instance", "group__accumulator.html#ga932302199c74e04d355085c2deaf7fd8", null ],
     [ "_a_shut_down", "group__accumulator.html#gacd134fcef0a0eb8ff30060432bb2e485", null ],
     [ "_a_start_vmhost", "group__accumulator.html#ga3442d35088f5a3a579e09105803219fe", null ],
     [ "_a_unserialize_instances", "group__accumulator.html#ga5288b5dc3f139fce3633a06b7f791fb5", null ],

@@ -33,5 +33,6 @@ var group__receptor =
     [ "_r_new_instance", "group__receptor.html#gadd08a3c284251a2ec7e03b8f91eddc5c", null ],
     [ "_r_new_receptor_from_package", "group__receptor.html#ga7a6afdc039a31cdf24bf93dd0475b72b", null ],
     [ "_r_serialize", "group__receptor.html#ga3e737841784555574a0d90ad2eff4cc4", null ],
+    [ "_r_set_instance", "group__receptor.html#ga28899931aa49371ed6eb6c69b123b5f6", null ],
     [ "_r_unserialize", "group__receptor.html#ga300b11b12792c290fef2fb0fe07d71ee", null ]
 ];

@@ -1,6 +1,7 @@
 var tree_8h =
 [
     [ "_t_new", "group__tree.html#ga4d33e0b6d54c2c7b64f9da572b7a9c32", null ],
+    [ "_t_new_str", "group__tree.html#ga17ed65913f6f06f6657ed07a06381ec1", null ],
     [ "_t_newi", "group__tree.html#ga6a798165600b04d378af876ffd89a470", null ],
     [ "_t_news", "group__tree.html#ga9dfe482aed77ac440f05b09cec9b6b7d", null ],
     [ "DO_KIDS", "group__tree.html#gaad4a7e01880eca2ef88c86662acec2f1", null ],
@@ -21,6 +22,7 @@ var tree_8h =
     [ "__t_free_children", "group__tree.html#ga4fb39ee561fc4b17cfb241330b835951", null ],
     [ "__t_morph", "group__tree.html#gad6597b652983165f6b2993211a598ad4", null ],
     [ "__t_new", "group__tree.html#ga53abffe57c4ccf60c106a8a45d98d47d", null ],
+    [ "__t_new_str", "group__tree.html#gac1d2fb0c7e543a73db3a6213094f95e1", null ],
     [ "__t_newi", "group__tree.html#ga916b027544c282ad6b75f71d53cf545d", null ],
     [ "__t_news", "group__tree.html#ga4a9edd746e2d99a9358d8e0ee9248ad6", null ],
     [ "__t_serialize", "group__tree.html#ga4b3d9a3a1c1bc4a7fb710e96faf1d437", null ],
@@ -45,7 +47,6 @@ var tree_8h =
     [ "_t_new_receptor", "group__tree.html#ga7fd137a24b6795e1fc25c50ba91a767f", null ],
     [ "_t_new_root", "group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4", null ],
     [ "_t_new_scape", "group__tree.html#gab0f78fac726577a933574041c95a590d", null ],
-    [ "_t_new_str", "group__tree.html#ga87cb5cdb608c0048c5ae7e3249780a8c", null ],
     [ "_t_new_stream", "group__tree.html#ga519afafbfb5c4a13f01cc10e1f48cb28", null ],
     [ "_t_newp", "group__tree.html#ga48ffc2a6e4aa4856b76fb53b97db87f3", null ],
     [ "_t_newr", "group__tree.html#ga3e2009f5a82889263d560d2c1479606a", null ],

@@ -35,6 +35,9 @@ var process_8h =
       [ "ReplicateTypeUnknown", "process_8h.html#a73b86c9f87d6f9481f56bcac78f38793ac2e80ffa646d6f381666faf0e186746d", null ],
       [ "ReplicateTypeCond", "process_8h.html#a73b86c9f87d6f9481f56bcac78f38793a4b739ef54540a4fb677e754b8cec3dbc", null ]
     ] ],
+    [ "SpecialProcesses", "process_8h.html#a32cc1249c92e21430d8db65772fe7011", [
+      [ "SpecialReceptors", "process_8h.html#a32cc1249c92e21430d8db65772fe7011a79d83d354e688c41e22649a223a513b7", null ]
+    ] ],
     [ "__p_build_run_tree", "process_8h.html#a1d2c7b7c331d6ac0e45495de62fb1f13", null ],
     [ "__p_find_context", "process_8h.html#a16f2d8cde47ddf8d619db33fbfcfa73b", null ],
     [ "__p_make_context", "process_8h.html#a05ba8f21383f9273acbdb89134f0fff9", null ],

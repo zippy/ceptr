@@ -1,7 +1,6 @@
 var receptor__spec_8h =
 [
     [ "_makePingProtocolReceptor", "receptor__spec_8h.html#a7bd8dd4a9e7fa8cf5400ae22c253dbd2", null ],
-    [ "_testReceptorClockAddListener", "receptor__spec_8h.html#a7ea907b2faa0b14f8e4858ff1b453bbf", null ],
     [ "defineHouseLocation", "receptor__spec_8h.html#a98dc4c2784ade9388f0b5aad95d78aae", null ],
     [ "defineNums", "receptor__spec_8h.html#a44646a010f12df1a62ff6017a2d6a43e", null ],
     [ "makeInt", "receptor__spec_8h.html#a104604d103dcbad0c749f873b99b0910", null ],
