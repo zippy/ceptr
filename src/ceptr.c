@@ -18,7 +18,7 @@ int main(int argc, const char **argv) {
 
     // set up the vmhost
     G_vm = _v_new();
-    //    _v_instantiate_builtins(G_vm);
+    _v_instantiate_builtins(G_vm);
 
     Stream *output_stream, *input_stream;
     Receptor *i_r,*o_r;
@@ -27,14 +27,14 @@ int main(int argc, const char **argv) {
     output_stream->flags &= ~StreamCloseOnFree; // don't close the stdout on free...
     input_stream->flags &= ~StreamCloseOnFree; // don't close the stdin on free...
 
-    debug_enable(D_SIGNALS);
+    //   debug_enable(D_SIGNALS);
     _v_start_vmhost(G_vm);
 
     while (G_vm->r->state == Alive) {
         sleep(1);
     };
 
-    //    _v_join_thread(&G_vm->clock_thread);
+    _v_join_thread(&G_vm->clock_thread);
     _v_join_thread(&G_vm->vm_thread);
 
 

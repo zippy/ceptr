@@ -37,7 +37,7 @@ void testAccBootStrap() {
 
     // now add a listener in the clock
     T *tick = __r_make_tick();
-    _testReceptorClockAddListener(clock);
+    // _testReceptorClockAddListener(clock);
 
     // sleep for a bit, which should allow the clock to run for a second
     // and reduce the tick listener to the tick it received

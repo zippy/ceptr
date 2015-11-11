@@ -131,7 +131,7 @@ void testReceptorResponseDeliver() {
     _t_newi(send,RECEPTOR_ADDRESS,4);
     _t_newi(send,TEST_INT_SYMBOL,98789);
     _t_news(send,RESPONSE_CARRIER,TEST_STR_SYMBOL);
-    //    _t_newi(send,BOOLEAN,1); // mark async
+    _t_newi(send,BOOLEAN,0); // synchronous
 
     T *c = _t_rclone(p);
     _t_free(p);
@@ -695,51 +695,72 @@ void testReceptorEdgeStream() {
     _v_free(v);
 }
 
-void _testReceptorClockAddListener(Receptor *r) {
-    T *expect = _t_new_root(EXPECTATION);
+/* void _testReceptorClockAddListener(Receptor *r) { */
+/*     T *expect = _t_new_root(EXPECTATION); */
 
-    /// @todo figure out why looking for the SECOND down a walk match fails
-    // char *stx = "/<TICK:(%SECOND)>";
-    // T *s = parseSemtrex(&r->d,stx);
+/*     /// @todo figure out why looking for the SECOND down a walk match fails */
+/*     // char *stx = "/<TICK:(%SECOND)>"; */
+/*     // T *s = parseSemtrex(&r->d,stx); */
 
-    T *s =  _sl(expect,TICK);
+/*     T *s =  _sl(expect,TICK); */
 
-    T *x = _t_newr(0,NOOP);
-    int pt1[] = {2,1,TREE_PATH_TERMINATOR};
-    _t_new(x,PARAM_REF,pt1,sizeof(int)*4);
+/*     T *x = _t_newr(0,NOOP); */
+/*     int pt1[] = {2,1,TREE_PATH_TERMINATOR}; */
+/*     _t_new(x,PARAM_REF,pt1,sizeof(int)*4); */
 
-    Process proc = _r_code_process(r,x,"noop return param","long desc...",NULL);
-    T *act = _t_newp(0,ACTION,proc);
+/*     Process proc = _r_code_process(r,x,"noop return param","long desc...",NULL); */
+/*     T *act = _t_newp(0,ACTION,proc); */
 
-    T* params = _t_new_root(PARAMS);
-    _t_news(params,INTERPOLATE_SYMBOL,NULL_SYMBOL);  // NULL_SYMBOL = the full match
+/*     T* params = _t_new_root(PARAMS); */
+/*     _t_news(params,INTERPOLATE_SYMBOL,NULL_SYMBOL);  // NULL_SYMBOL = the full match */
 
-    _r_add_listener(r,DEFAULT_ASPECT,TICK,expect,params,act);
-}
+/*     _r_add_listener(r,DEFAULT_ASPECT,TICK,expect,params,act); */
+/* } */
 
 void testReceptorClock() {
     Receptor *r = _r_makeClockReceptor();
-    spec_is_str_equal(_td(r,r->root),"(CLOCK_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES (PROCESS_CODING (PROCESS_NAME:plant a listener to send the time) (PROCESS_INTENTION:long desc...) (process:LISTEN (PARAM_REF:/2/1) (CARRIER:EXPECTATION) (PARAMS (RECEPTOR_ADDRESS:0) (INTERPOLATE_SYMBOL:NULL_SYMBOL) (RESPONSE_CARRIER:NULL_SYMBOL)) (ACTION:SEND)) (PROCESS_SIGNATURE (OUTPUT_SIGNATURE (SIGNATURE_LABEL:result) (SIGNATURE_SYMBOL:NULL_SYMBOL)) (INPUT_SIGNATURE (SIGNATURE_LABEL:time stx) (SIGNATURE_SYMBOL:EXPECTATION))))) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS (LISTENER:CLOCK_TELL_TIME (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:CLOCK_TELL_TIME) (SEMTREX_GROUP:EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:EXPECTATION))))) (PARAMS (INTERPOLATE_SYMBOL:EXPECTATION)) (ACTION:plant a listener to send the time))) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))");
+    spec_is_str_equal(_td(r,r->root),"(CLOCK_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES (PROCESS_CODING (PROCESS_NAME:respond with current time) (PROCESS_INTENTION:long desc...) (process:RESPOND (process:GET (GET_XADDR:TICK.1))) (PROCESS_SIGNATURE (OUTPUT_SIGNATURE (SIGNATURE_LABEL:result) (SIGNATURE_SYMBOL:NULL_SYMBOL))))) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS (LISTENER:CLOCK_TELL_TIME (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:CLOCK_TELL_TIME))) (PARAMS) (ACTION:respond with current time))) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))");
 
-   /* The clock receptor acts as if it receives a signal with contents TICK (which is of TIMESTAMP structure) for every time that updates a magic scape with that time according to which listeners have been planted.  This means you can plant listeners based on a semtrex for any kind of time you want.  If you want the current time just plant a listener for TICK.  If you want to listen for every second plant a listener on the Symbol literal SECOND, and the clock receptor will trigger the listener every time the SECOND changes.  You can also listen for particular intervals and times by adding specificity to the semtrex, so to trigger a 3:30am action a-la-cron listen for: "/<TICK:(%HOUR=3,MINUTE=30)>"
-       @todo we should also make the clock receptor also seem to send signals of other semantic formats, i.e. so it's easy to listen for things like "on Wednesdays", or other semantic date/time identifiers.
+   /*
+      The clock receptor should do two things: respond to CLOCK_TELL_TIME signals with the current time, and also allow you to plant a listener based on a semtrex for any kind of time you want.  If you want the current time just plant a listener for TICK.  If you want to listen for every second plant a listener on the Symbol literal SECOND, and the clock receptor will trigger the listener every time the SECOND changes.  You can also listen for particular intervals and times by adding specificity to the semtrex, so to trigger a 3:30am action a-la-cron listen for: "/<TICK:(%HOUR=3,MINUTE=30)>"
+       @todo we should also make the clock receptor also respond to other semantic formats, i.e. so it's easy to listen for things like "on Wednesdays", or other semantic date/time identifiers.
      */
 
     // send the clock receptor a "tell me the time" request
     ReceptorAddress self = __r_get_self_address(r);
-    T *tell = _t_new_root(CLOCK_TELL_TIME);
-    T *e = _t_newr(tell,EXPECTATION);
-    _sl(e,TICK);
 
-    T *signal = __r_make_signal(self,self,DEFAULT_ASPECT,tell);
-    // debug_enable(D_SIGNALS);
-    _r_deliver(r,signal);
-    _p_reduceq(r->q);
+    T *send = _t_newr(0,SEND);
+    _t_newi(send,RECEPTOR_ADDRESS,self);
+    _t_newr(send,CLOCK_TELL_TIME);
+    _t_news(send,RESPONSE_CARRIER,TICK);
+    T *run_tree = __p_build_run_tree(send,0);
+    _t_free(send);
+    _p_addrt2q(r->q,run_tree);
 
-    // the listener should have now been planted!
-    spec_is_str_equal(_td(r,_t_child(__r_get_listeners(r,DEFAULT_ASPECT),2)),"(LISTENER:EXPECTATION (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TICK))) (PARAMS (RECEPTOR_ADDRESS:0) (INTERPOLATE_SYMBOL:NULL_SYMBOL) (RESPONSE_CARRIER:NULL_SYMBOL)) (ACTION:SEND))");
+    //    debug_enable(D_SIGNALS);
 
-    // "run" the receptor and verify that listener gets activated
+    while (r->q->contexts_count) {
+        _p_reduceq(r->q);
+
+        // @todo fix this fake signal sending which only works here in this test because
+        // the signals are being sent to ourself!
+        T *signals = r->pending_signals;
+        while(_t_children(signals)>0) {
+            T *s = _t_detach_by_idx(signals,1);
+            Error err = _r_deliver(r,s);
+            if (err) raise_error("delivery error: %d",err);
+        }
+    }
+
+    Xaddr x = {TICK,1};
+    T* tick = _r_get_instance(r,x);
+
+    // clone the initial tick for later comparison
+    tick = _t_clone(tick);
+
+    // "run" the receptor and verify that the tick instance keeps getting updated
+    // we wait a second first so that the first update will be a second later
+    sleepms(1005);
     pthread_t thread;
     int rc = 0;
     rc = pthread_create(&thread,0,___clock_thread,r);
@@ -747,47 +768,24 @@ void testReceptorClock() {
         raise_error("ERROR; return code from pthread_create() is %d\n", rc);
     }
 
-    // request to tell time should be on the signals list
-    T *signals = __r_get_signals(r,DEFAULT_ASPECT);
-    spec_is_str_equal(_td(r,signals),"(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:0) (ASPECT:1) (CARRIER:CLOCK_TELL_TIME) (SIGNAL_UUID)) (BODY:{(CLOCK_TELL_TIME (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TICK))))}) (RUN_TREE (REDUCTION_ERROR_SYMBOL:NULL_SYMBOL) (PARAMS (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TICK)))))))");
-
-    sleep(1);
-    _p_reduceq(r->q);
-
-    // save the tick that was sent for comparison later to see if it's the one recieved
-    T *sent_tick = (T*)_t_surface(_t_child(_t_child(signals,2),2));
-
-    // do manual signal delivery (code pulled from _v_deliver_signals but we don't
-    // need the routing info in this case because we can just deliver to ourselves
-
-    signals = r->pending_signals;
-    while(_t_children(signals)>0) {
-        T *s = _t_detach_by_idx(signals,1);
-
-        Error err = _r_deliver(r,s);
-        if (err) {
-            raise_error("delivery error: %d",err);
-        }
-    }
-
-    char buf1[100];
-    __td(r,sent_tick,buf1);
-
-    // the listener should have sent back the tick
-    signals = __r_get_signals(r,DEFAULT_ASPECT);
-    T *received_tick = (T*)_t_surface(_t_child(_t_child(signals,3),2));
-
-    spec_is_str_equal(_td(r,received_tick),buf1);
+    sleepms(1);
+    T* ntick = _r_get_instance(r,x);
+    int p[] = {2,3,TREE_PATH_TERMINATOR};
+    spec_is_equal(*(int *)_t_surface(_t_get(ntick,p)),
+                  1+*(int *)_t_surface(_t_get(tick,p))  // should be 1 second later!
+                  );
 
     __r_kill(r);
 
     void *status;
     rc = pthread_join(thread, &status);
-    debug_disable(D_SIGNALS);
+
     if (rc) {
         raise_error("ERROR; return code from pthread_join() is %d\n", rc);
     }
 
+    debug_disable(D_SIGNALS);
+    _t_free(tick);
     _r_free(r);
 }
 

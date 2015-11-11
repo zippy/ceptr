@@ -514,6 +514,7 @@ enum SYSProcessIDs {
     GT_INT_ID,
     LTE_INT_ID,
     GTE_INT_ID,
+    SPECIAL_ID,
     NUM_SYS_PROCESSES
 };
 #define NOOP G_contexts[SYS_CONTEXT].processes[NOOP_ID]
@@ -541,6 +542,7 @@ enum SYSProcessIDs {
 #define GT_INT G_contexts[SYS_CONTEXT].processes[GT_INT_ID]
 #define LTE_INT G_contexts[SYS_CONTEXT].processes[LTE_INT_ID]
 #define GTE_INT G_contexts[SYS_CONTEXT].processes[GTE_INT_ID]
+#define SPECIAL G_contexts[SYS_CONTEXT].processes[SPECIAL_ID]
 
 /**********************************************************************************/
 // TEST:Symbol
@@ -556,6 +558,7 @@ enum TESTSymbolIDs {
     TEST_NAME_SYMBOL_ID,
     TEST_RECEPTOR_SYMBOL_ID,
     TEST_ALPHABETIZE_SCAPE_SYMBOL_ID,
+    TEST_SYMBOL_SYMBOL_ID,
     NUM_TEST_SYMBOLS
 };
 #define TEST_INT_SYMBOL G_contexts[TEST_CONTEXT].symbols[TEST_INT_SYMBOL_ID]
@@ -568,6 +571,7 @@ enum TESTSymbolIDs {
 #define TEST_NAME_SYMBOL G_contexts[TEST_CONTEXT].symbols[TEST_NAME_SYMBOL_ID]
 #define TEST_RECEPTOR_SYMBOL G_contexts[TEST_CONTEXT].symbols[TEST_RECEPTOR_SYMBOL_ID]
 #define TEST_ALPHABETIZE_SCAPE_SYMBOL G_contexts[TEST_CONTEXT].symbols[TEST_ALPHABETIZE_SCAPE_SYMBOL_ID]
+#define TEST_SYMBOL_SYMBOL G_contexts[TEST_CONTEXT].symbols[TEST_SYMBOL_SYMBOL_ID]
 
 /**********************************************************************************/
 // LOCAL:Symbol

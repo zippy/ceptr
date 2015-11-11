@@ -11,6 +11,28 @@
 #include "shell.h"
 #include "semtrex.h"
 
+
+void addCommand(Receptor *r,Xaddr ox,char *command,char *desc,T *code) {
+    T *expect = _t_new_root(EXPECTATION);
+    T *s = _t_news(expect,SEMTREX_GROUP,SHELL_COMMAND);
+
+    T *cm = _sl(s,SHELL_COMMAND);
+    T *vl =  _t_newr(cm,SEMTREX_VALUE_LITERAL);
+    T *vls = _t_newr(vl,SEMTREX_VALUE_SET);
+    _t_new_str(vls,VERB,command);
+
+    T *p = _t_new_root(SEND);
+    _t_newi(p,RECEPTOR_ADDRESS,ox.addr);
+    _t_add(p,code);
+    _t_news(p,RESPONSE_CARRIER,NULL_SYMBOL); //@todo no response expected?
+
+    Process proc = _r_code_process(r,p,desc,"long desc...",NULL);
+    T *act = _t_newp(0,ACTION,proc);
+    T *params = _t_new_root(PARAMS);
+
+    _r_add_listener(r,DEFAULT_ASPECT,VERB,expect,params,act);
+}
+
 void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp,Stream **isp,Stream **osp) {
     // create the shell receptor
     // @todo fix the naming paradox that the "shell" symbol is defined in the
@@ -58,32 +80,19 @@ void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp
     _r_add_listener(r,DEFAULT_ASPECT,VERB,expect,params,act);
 
     // (expect (on flux SHELL_COMMAND:time) action(send std_out (convert_to_lines (listen to clock)))
-    expect = _t_new_root(EXPECTATION);
-    s = _t_news(expect,SEMTREX_GROUP,SHELL_COMMAND);
 
-    T *cm = _sl(s,SHELL_COMMAND);
-    T *vl =  _t_newr(cm,SEMTREX_VALUE_LITERAL);
-    T *vls = _t_newr(vl,SEMTREX_VALUE_SET);
-    _t_new_str(vls,VERB,"time");
+    T *code = _t_new_root(SEND);
+    _t_newi(code,RECEPTOR_ADDRESS,2); // @todo bogus!!! fix clock address
+    _t_newr(code,CLOCK_TELL_TIME);
+    _t_news(code,RESPONSE_CARRIER,TICK);
 
-    p = _t_new_root(SEND);
-    _t_newi(p,RECEPTOR_ADDRESS,ox.addr);
-
-    T *tick = __r_make_tick();
-    _t_add(p,tick);
-    _t_news(p,RESPONSE_CARRIER,NULL_SYMBOL); //@todo no response expected?
-    //x = _t_new_str(p,LINE,t2s(tick));
-    //    int pt1[] = {2,1,TREE_PATH_TERMINATOR};
-    //    _t_new(x,PARAM_REF,pt1,sizeof(int)*4);
-    proc = _r_code_process(r,p,"send time to std_out","long desc...",NULL);
-    act = _t_newp(0,ACTION,proc);
-    params = _t_new_root(PARAMS);
-    //   _t_news(params,INTERPOLATE_SYMBOL,shell_command);
-    _r_add_listener(r,DEFAULT_ASPECT,VERB,expect,params,act);
-
+    addCommand(r,ox,"time","get time",code);
 
     // (expect (on flux SHELL_COMMAND:receptor) action (send std_out (convert_to_lines (send vmhost (get receptor list from vmhost)))))
-    // @todo
+
+    code = _t_newi(0,SPECIAL,SpecialReceptors);
+
+    addCommand(r,ox,"receptors","get receptor list",code);
 
 }
 

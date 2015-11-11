@@ -17,7 +17,7 @@
 #include "util.h"
 #include "debug.h"
 #include <errno.h>
-
+#include "accumulator.h"
 void rt_check(Receptor *r,T *t) {
     if (!(t->context.flags & TFLAG_RUN_NODE)) raise_error("Whoa! Not a run node! %s\n",_td(r,t));
 }
@@ -448,7 +448,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             FILE *stream = st->data.unix_stream;
             if (st->flags & StreamAlive)
                 if (feof(stream)) st->flags &= ~StreamAlive;
-            debug(D_STREAM,"testing StreamAlive: %d\n",st->flags & StreamAlive);
+            debug(D_STREAM,"checking if StreamAlive: %s\n",st->flags & StreamAlive ? "yes":"no");
             x = __t_newi(0,BOOLEAN, (st->flags&StreamAlive)?1:0,1);
             _t_free(s);
         }
@@ -543,6 +543,33 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             _r_add_listener(q->r,DEFAULT_ASPECT,*(Symbol *)_t_surface(carrier),expect,params,act);
             _t_free(carrier);
             x = __t_news(0,REDUCTION_ERROR_SYMBOL,NULL_SYMBOL,1);
+        }
+        break;
+    case SPECIAL_ID:
+        {switch(*(int *)_t_surface(code)) {
+            case SpecialReceptors:
+                {
+                    char *s = malloc(10000);
+                    int l = 0;
+                    Xaddr xr = {INSTALLED_RECEPTOR,1};
+                    T *i;
+                    while (i =_a_get_instance(&G_vm->r->instances,xr)) {
+                        i = __r_get_receptor(i)->root;
+                        char *n = _r_get_symbol_name(G_vm->r,_t_symbol(i));
+                        int nl = strlen(n);
+                        memcpy(&s[l],n,nl);
+                        l+= nl;
+                        sprintf(&s[l],":%d ",xr.addr++);
+                        l += strlen(&s[l]);
+                    }
+                    s[l]=0;
+                    x = __t_new_str(0,LINE,s,1);
+                    free(s);
+                }
+                break;
+            default:
+                x = __t_new_str(0,TEST_STR_SYMBOL,"blorp!",1);
+            }
         }
         break;
     default:

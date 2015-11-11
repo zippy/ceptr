@@ -312,7 +312,7 @@ void testVMHostShell() {
 
     // allocate c input out streams to mimic stdin and stdout
     FILE *input,*output;
-    char commands[] = "time\nreceptors\ntime\n";
+    char commands[] = "time\nreceptors\n";
     input = fmemopen(commands, strlen(commands), "r");
     char *output_data = NULL;
     size_t size;
@@ -323,13 +323,13 @@ void testVMHostShell() {
 
     makeShell(G_vm,input,output,&i_r,&o_r,&input_stream,&output_stream);
 
-    //    debug_enable(D_STREAM+D_SIGNALS);
+    //debug_enable(D_STREAM+D_SIGNALS);
     //    spec_is_str_equal(_td(o_r,o_r->flux),"or flux");
     _v_start_vmhost(G_vm);
     sleep(1);
     //    spec_is_str_equal(_td(o_r,o_r->flux),"or flux");
     //    spec_is_str_equal(_td(r,r->flux),"shell flux");
-    //debug_disable(D_STREAM);
+    debug_disable(D_STREAM+D_SIGNALS);
 
     // confirm that the completed processes get cleaned up in the course of the vmhosts processing
     spec_is_ptr_equal(i_r->q->completed,NULL);
@@ -341,7 +341,9 @@ void testVMHostShell() {
     spec_is_str_equal(rs,"(RECEPTOR_STATE (RECEPTOR_ELAPSED_TIME:");
 
     spec_is_true(output_data != 0); // protect against seg-faults when nothing was written to the stream...
-    if (output_data != 0) {spec_is_str_equal(output_data,"some time representation x 2");}
+    if (output_data != 0) {
+        output_data[78] =0;  // clip the tick so it work regardless of the time
+        spec_is_str_equal(output_data,"COMPOSITORY:1 CLOCK_RECEPTOR:2 shell:3 std_in:4 std_out:5 \n(TICK (TODAY (YEAR:");}
     __r_kill(G_vm->r);
 
     //    puts(_t2s(&G_vm->r->defs,r->root));
@@ -365,7 +367,7 @@ void testVMHostSerialize() {
     spec_is_str_equal(t2s(G_vm->r->root),"(VM_HOST_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))");
 
     Receptor *clock = G_vm->active_receptors[0].r;
-    _testReceptorClockAddListener(clock);
+    //   _testReceptorClockAddListener(clock);
 
     void *surface;
     size_t length;

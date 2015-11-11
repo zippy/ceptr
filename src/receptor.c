@@ -492,7 +492,6 @@ T* __r_make_signal(ReceptorAddress from,ReceptorAddress to,Aspect aspect,T *sign
  */
 T* __r_send_signal(Receptor *r,T *signal,Symbol response_carrier,T *response_point,int process_id) {
     debug(D_SIGNALS,"sending %s\n",_t2s(&r->defs,signal));
-
     _t_add(r->pending_signals,signal);
 
     //@todo for now we return the UUID of the signal as the result.  Perhaps later we return an error condition if delivery to address is known to be impossible, or something like that.
@@ -505,6 +504,7 @@ T* __r_send_signal(Receptor *r,T *signal,Symbol response_carrier,T *response_poi
         _t_newi(pr,PROCESS_IDENT,process_id);
         int *path = _t_get_path(response_point);
         _t_new(pr,RESPONSE_CODE_PATH,path,sizeof(int)*(_t_path_depth(path)+1));
+        debug(D_SIGNALS,"adding pending response: %s\n",_td(r,pr));
         free(path);
     }
 
@@ -524,7 +524,7 @@ void __r_check_listener(T* processes,T *listener,T *signal,Q *q) {
     // if we get a match, create a run tree from the action, using the match and signal as the parameters
     T *stx = _t_news(0,SEMTREX_GROUP,NULL_SYMBOL);
     _t_add(stx,_t_clone(_t_child(e,1)));
-    debug(D_SIGNALS,"testing %s\n",_td(q->r,signal_contents));
+    debug(D_SIGNALS,"matching %s\n",_td(q->r,signal_contents));
     debug(D_SIGNALS,"against %s\n",_td(q->r,stx));
 
     if (_t_matchr(stx,signal_contents,&m)) {
@@ -802,36 +802,52 @@ Receptor *_r_makeClockReceptor() {
 
     T *expect = _t_new_root(EXPECTATION);
     T *s = _sl(expect,CLOCK_TELL_TIME);
-    s = _t_news(s,SEMTREX_GROUP,EXPECTATION);
-    _sl(s,EXPECTATION);
 
-    T *x = _t_newr(0,LISTEN);
-    int pt1[] = {2,1,TREE_PATH_TERMINATOR};
-    _t_new(x,PARAM_REF,pt1,sizeof(int)*4);  // param is our expectation semtrex
-    _t_news(x,CARRIER,EXPECTATION);
-    T *params =_t_newr(x,PARAMS);
+    T *resp = _t_new_root(RESPOND);
+    T *tick = __r_make_tick();  // initial tick, will get updated by clock thread.
+    Xaddr x = _r_new_instance(r,tick);
 
-    ReceptorAddress to =  __r_get_self_address(r);
-    _t_newi(params,RECEPTOR_ADDRESS,to);
+    T *g = _t_newr(resp,GET);
+    _t_new(g,GET_XADDR,&x,sizeof(Xaddr));
 
-    //interpolate on null_symbol matches the whole semtrex that triggered this
-    // expectation, which would be the current tick as it arrives
-    _t_news(params,INTERPOLATE_SYMBOL,NULL_SYMBOL);
-    _t_news(params,RESPONSE_CARRIER,NULL_SYMBOL);
+    T *signature = __p_make_signature("result",SIGNATURE_SYMBOL,NULL_SYMBOL,NULL);
+    Process proc = _r_code_process(r,resp,"respond with current time","long desc...",signature);
 
-    T *action = _t_newp(x,ACTION,SEND);
-
-    T *signature = __p_make_signature("result",SIGNATURE_SYMBOL,NULL_SYMBOL,
-                                      "time stx",SIGNATURE_SYMBOL,EXPECTATION,
-                                      NULL);
-    Process proc = _r_code_process(r,x,"plant a listener to send the time","long desc...",signature);
     T *act = _t_newp(0,ACTION,proc);
-
-    params = _t_new_root(PARAMS);
-    _t_news(params,INTERPOLATE_SYMBOL,EXPECTATION);
-
+    T *params = _t_new_root(PARAMS);
     _r_add_listener(r,DEFAULT_ASPECT,CLOCK_TELL_TIME,expect,params,act);
 
+    // this stuff was for the old clock which installed a listener on itself to send back
+    // the TICK when in next arrrived
+    /* s = _t_news(s,SEMTREX_GROUP,EXPECTATION); */
+    /* _sl(s,EXPECTATION); */
+
+    /* T *x = _t_newr(0,LISTEN); */
+    /* int pt1[] = {2,1,TREE_PATH_TERMINATOR}; */
+    /* _t_new(x,PARAM_REF,pt1,sizeof(int)*4);  // param is our expectation semtrex */
+    /* _t_news(x,CARRIER,EXPECTATION); */
+    /* T *params =_t_newr(x,PARAMS); */
+
+    /* ReceptorAddress to =  __r_get_self_address(r); */
+    /* _t_newi(params,RECEPTOR_ADDRESS,to); */
+
+    /* //interpolate on null_symbol matches the whole semtrex that triggered this */
+    /* // expectation, which would be the current tick as it arrives */
+    /* _t_news(params,INTERPOLATE_SYMBOL,NULL_SYMBOL); */
+    /* _t_news(params,RESPONSE_CARRIER,NULL_SYMBOL); */
+
+    /* T *action = _t_newp(x,ACTION,SEND); */
+
+    /* T *signature = __p_make_signature("result",SIGNATURE_SYMBOL,NULL_SYMBOL, */
+    /*                                   "time stx",SIGNATURE_SYMBOL,EXPECTATION, */
+    /*                                   NULL); */
+    /* Process proc = _r_code_process(r,x,"plant a listener to send the time","long desc...",signature); */
+    /* T *act = _t_newp(0,ACTION,proc); */
+
+    /* params = _t_new_root(PARAMS); */
+    /* _t_news(params,INTERPOLATE_SYMBOL,EXPECTATION); */
+
+    /* _r_add_listener(r,DEFAULT_ASPECT,CLOCK_TELL_TIME,expect,params,act);*/
 
     return r;
 }
@@ -840,9 +856,7 @@ Receptor *_r_makeClockReceptor() {
     bad implementation of the clock receptor thread (but easy):
    - wake up every second
    - build a TICK symbol based on the current time.
-   - send this signal to the CLOCK_RECEPTOR
-   - everything else should take care of itself because __r_check_listener which
-     runs after _r_deliver will match
+   - set the Xaddr of the current tick
 
   @todo: a better implementation would be to analyze the semtrex expectations that have been planted
   and only wakeup when needed based on those semtrexes
@@ -858,8 +872,10 @@ void *___clock_thread(void *arg){
     while (r->state == Alive) {
         T *tick =__r_make_tick();
         debug(D_CLOCK,"%s\n",_td(r,tick));
-        T *signal = __r_make_signal(self,self,DEFAULT_ASPECT,tick);
-        _r_deliver(r,signal);
+        Xaddr x = {TICK,1};
+        _r_set_instance(r,x,tick);
+        //        T *signal = __r_make_signal(self,self,DEFAULT_ASPECT,tick);
+        //        _r_deliver(r,signal);
         sleep(1);
         /// @todo this will skip some seconds over time.... make more sophisticated
         //       with nano-sleep so that we get every second?

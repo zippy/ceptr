@@ -213,6 +213,8 @@ Process: GT_INT,"test greater than","result",SIGNATURE_STRUCTURE,TREE,0;
 Process: LTE_INT,"test less than or equal","result",SIGNATURE_STRUCTURE,TREE,0;
 Process: GTE_INT,"test greater than or equal","result",SIGNATURE_STRUCTURE,TREE,0;
 
+Process: SPECIAL,"dark magic","result",SIGNATURE_STRUCTURE,TREE,0;   this process reduces to hardcoded special things as a scaffold for things we don't know how to build in ceptr yet.
+
 Symbol: STX_TOKENS,LIST;
 Symbol: STX_SL,NULL_STRUCTURE;
 Symbol: STX_OP,NULL_STRUCTURE;
@@ -274,3 +276,4 @@ Symbol: TEST_STREAM_SYMBOL,STREAM;
 Symbol: TEST_NAME_SYMBOL,CSTRING;
 Symbol: TEST_RECEPTOR_SYMBOL,RECEPTOR;
 Symbol: TEST_ALPHABETIZE_SCAPE_SYMBOL,SCAPE;
+Symbol: TEST_SYMBOL_SYMBOL,SYMBOL;
