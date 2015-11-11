@@ -105,6 +105,25 @@ void testRunTree() {
 //-----------------------------------------------------------------------------------------
 // tests of system processes
 
+void testProcessGet() {
+    Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
+    Q *q = r->q;
+
+    T *t = _t_newi(0,TEST_INT_SYMBOL,314);
+    Xaddr x = _r_new_instance(r,t);
+
+    T *n = _t_newr(0,GET);
+    _t_new(n,GET_XADDR,&x,sizeof(Xaddr));
+    T *run_tree = __p_build_run_tree(n,0);
+    _t_free(n);
+    Qe *e = _p_addrt2q(q,run_tree);
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (TEST_INT_SYMBOL:314) (PARAMS))");
+
+    _r_free(r);
+}
+
 void testProcessInterpolateMatch() {
     Defs defs;
     T *t = _t_new_root(RUN_TREE);
@@ -1057,6 +1076,7 @@ void testRunTreeMaker() {
 
 void testProcess() {
     testRunTree();
+    testProcessGet();
     testProcessInterpolateMatch();
     testProcessInterpolateMatchFull();
     testProcessIf();

@@ -134,6 +134,16 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
         /// @todo what happens if it has more than one child! validity check?
         x = _t_detach_by_idx(code,1);
         break;
+    case GET_ID:
+        {
+            T *t = _t_detach_by_idx(code,1);
+            Xaddr xa = *(Xaddr *)_t_surface(t);
+            T *v = _r_get_instance(q->r,xa);
+            if (!v) raise_error("Invalid xaddr in GET");
+            x = _t_rclone(v);
+            _t_free(t);
+        }
+        break;
     case IF_ID:
         t = _t_child(code,1);
         b = (*(int *)_t_surface(t)) ? 2 : 3;
@@ -320,14 +330,19 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             _t_free(t);
 
             T *response_point = NULL;
-            if (_t_children(code) == 0) {
+            int sync = _t_children(code) == 0;
+            if (!sync) {
+                t = _t_detach_by_idx(code,1);
+                sync = !*(int *)_t_surface(t);
+                _t_free(t);
+            }
+            if (sync) {
                 err = Block;
+                debug(D_SIGNALS,"blocking at %s\n",_td(q->r,code));
                 response_point = code;
             }
             else {
-                t = _t_detach_by_idx(code,1);
                 /// @todo timeout or callback or whatever the heck in the async case
-                _t_free(t);
             }
             x = __r_send_signal(q->r,signal,response_carrier,response_point,context->id);
         }

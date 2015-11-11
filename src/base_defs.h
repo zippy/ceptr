@@ -153,6 +153,7 @@ enum SYSSymbolIDs {
     INCOMPATIBLE_TYPE_ERR_ID,
     UNIX_ERRNO_ERR_ID,
     DEAD_STREAM_READ_ERR_ID,
+    GET_XADDR_ID,
     STX_TOKENS_ID,
     STX_SL_ID,
     STX_OP_ID,
@@ -321,6 +322,7 @@ enum SYSSymbolIDs {
 #define INCOMPATIBLE_TYPE_ERR G_contexts[SYS_CONTEXT].symbols[INCOMPATIBLE_TYPE_ERR_ID]
 #define UNIX_ERRNO_ERR G_contexts[SYS_CONTEXT].symbols[UNIX_ERRNO_ERR_ID]
 #define DEAD_STREAM_READ_ERR G_contexts[SYS_CONTEXT].symbols[DEAD_STREAM_READ_ERR_ID]
+#define GET_XADDR G_contexts[SYS_CONTEXT].symbols[GET_XADDR_ID]
 #define STX_TOKENS G_contexts[SYS_CONTEXT].symbols[STX_TOKENS_ID]
 #define STX_SL G_contexts[SYS_CONTEXT].symbols[STX_SL_ID]
 #define STX_OP G_contexts[SYS_CONTEXT].symbols[STX_OP_ID]
@@ -488,6 +490,7 @@ enum SYSStructureIDs {
 enum SYSProcessIDs {
     NULL_PROCESS_ID,
     NOOP_ID,
+    GET_ID,
     IF_ID,
     ITERATE_ID,
     SEND_ID,
@@ -514,6 +517,7 @@ enum SYSProcessIDs {
     NUM_SYS_PROCESSES
 };
 #define NOOP G_contexts[SYS_CONTEXT].processes[NOOP_ID]
+#define GET G_contexts[SYS_CONTEXT].processes[GET_ID]
 #define IF G_contexts[SYS_CONTEXT].processes[IF_ID]
 #define ITERATE G_contexts[SYS_CONTEXT].processes[ITERATE_ID]
 #define SEND G_contexts[SYS_CONTEXT].processes[SEND_ID]
