@@ -38,7 +38,8 @@ T *__t_newi(T *parent,Symbol symbol,int surface,int is_run_node);
 T *__t_news(T *parent,Symbol symbol,SemanticID surface,int is_run_node);
 #define _t_news(parent,symbol,surface) __t_news(parent,symbol,surface,0)
 T *_t_newt(T *parent,Symbol symbol,T *t);
-T *_t_new_str(T *parent,Symbol symbol,char *str);
+#define _t_new_str(parent,symbol,str) __t_new_str(parent,symbol,str,0)
+T *__t_new_str(T *parent,Symbol symbol,char *str,int is_run_node);
 T *_t_new_root(Symbol symbol);
 T *_t_newr(T *parent,Symbol symbol);
 T *_t_new_receptor(T *parent,Symbol symbol,Receptor *r);

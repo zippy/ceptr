@@ -123,10 +123,9 @@ T * _t_newt(T *parent,Symbol symbol,T *surface) {
  * @param[in] surface string value to store in the surface
  * @returns pointer to node allocated on the heap
  */
-T * _t_new_str(T *parent,Symbol symbol,char *surface) {
-    return _t_new(parent,symbol,surface,strlen(surface)+1);
+T * __t_new_str(T *parent,Symbol symbol,char *surface,int is_run_node) {
+    return __t_new(parent,symbol,surface,strlen(surface)+1,is_run_node);
 }
-T *_t_new_str(T *parent,Symbol symbol,char *str);
 
 /**
  * Create a new tree root node (with null surface and no parent)
