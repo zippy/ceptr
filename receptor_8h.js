@@ -1,5 +1,6 @@
 var receptor_8h =
 [
+    [ "__r_make_tick", "group__receptor.html#ga9b3bd27832b7ab21d8ff37ea15f874e8", null ],
     [ "is_null_symbol", "group__receptor.html#ga071c5d041e46874412aa9eef6ab5d19c", null ],
     [ "is_null_xaddr", "group__receptor.html#gaebca30e5763de19a93797f180d5b217e", null ],
     [ "is_xaddr_eq", "group__receptor.html#ga45fa6003cdfcef73aa54bb5b440617f1", null ],
@@ -30,9 +31,9 @@ var receptor_8h =
     [ "__r_get_signals", "group__receptor.html#gaf76e6bfe4883569ebfb83c40fe2c37e9", null ],
     [ "__r_get_symbol_size", "group__receptor.html#gad886d976f8621ebb22d02c61f454265c", null ],
     [ "__r_get_symbol_structure", "group__receptor.html#ga120e66982d483fbe004fd969cf1c353f", null ],
-    [ "__r_kill", "group__receptor.html#ga2e6346f24ce76ad12990f6863d1ff3d6", null ],
+    [ "__r_kill", "group__receptor.html#ga259683dbd92b29637ba635a6cbde0fc0", null ],
     [ "__r_make_signal", "group__receptor.html#gacdafc5a6d2d449f5a4903577e5642de8", null ],
-    [ "__r_make_tick", "group__receptor.html#gae85947274a039b1c98f6ed001aac9a54", null ],
+    [ "__r_make_timestamp", "group__receptor.html#gabd442a49cee4e353034991f0049e2dda", null ],
     [ "__r_send_signal", "group__receptor.html#gace5199701c929e09c06608aff0910185", null ],
     [ "__set_label_for_def", "group__receptor.html#ga645381abc5b870dd686bd6731bba3703", null ],
     [ "__td", "group__receptor.html#gad673a5f7dd1499eb01a4ea6a8ca39256", null ],

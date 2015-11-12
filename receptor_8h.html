@@ -155,6 +155,9 @@ Macros</h2></td></tr>
 <tr class="memitem:ga4db8f49b8fa0a099ba5ad2797ba1d33e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga4db8f49b8fa0a099ba5ad2797ba1d33e"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>spec_is_xaddr_equal</b>(r, got, expected)&#160;&#160;&#160;spec_total++; if (is_xaddr_eq(got,expected)){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],&quot;%s:%d expected %s to be %s.%d but was %s.%d&quot;,__FUNCTION__,__LINE__,#got,!is_null_symbol(expected.symbol)?_r_get_symbol_name(r,expected.symbol):&quot;0&quot;,expected.addr,!is_null_symbol(got.symbol) ? _r_get_symbol_name(r,got.symbol):&quot;0&quot;,got.addr);}</td></tr>
 <tr class="separator:ga4db8f49b8fa0a099ba5ad2797ba1d33e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9b3bd27832b7ab21d8ff37ea15f874e8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga9b3bd27832b7ab21d8ff37ea15f874e8"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>__r_make_tick</b>()&#160;&#160;&#160;__r_make_timestamp(TICK,0)</td></tr>
+<tr class="separator:ga9b3bd27832b7ab21d8ff37ea15f874e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -275,12 +278,12 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_r_get_process_name
 <tr class="separator:gacf28f044a27ea3dc698b50728b6219ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4cb85b79ae4207e4595d003d11beb226"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga4cb85b79ae4207e4595d003d11beb226">___clock_thread</a> (void *arg)</td></tr>
 <tr class="separator:ga4cb85b79ae4207e4595d003d11beb226"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae85947274a039b1c98f6ed001aac9a54"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gae85947274a039b1c98f6ed001aac9a54"></a>
-<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>__r_make_tick</b> ()</td></tr>
-<tr class="separator:gae85947274a039b1c98f6ed001aac9a54"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2e6346f24ce76ad12990f6863d1ff3d6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga2e6346f24ce76ad12990f6863d1ff3d6"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>__r_kill</b> (<a class="el" href="structReceptor.html">Receptor</a> *r)</td></tr>
-<tr class="separator:ga2e6346f24ce76ad12990f6863d1ff3d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabd442a49cee4e353034991f0049e2dda"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gabd442a49cee4e353034991f0049e2dda"></a>
+<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>__r_make_timestamp</b> (<a class="el" href="structSemanticID.html">Symbol</a> s, int delta)</td></tr>
+<tr class="separator:gabd442a49cee4e353034991f0049e2dda"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga259683dbd92b29637ba635a6cbde0fc0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga259683dbd92b29637ba635a6cbde0fc0"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>__r_kill</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, int delta)</td></tr>
+<tr class="separator:ga259683dbd92b29637ba635a6cbde0fc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac1597e73b55dbb298e89140b44e870d5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gac1597e73b55dbb298e89140b44e870d5"></a>
 ReceptorAddress&#160;</td><td class="memItemRight" valign="bottom"><b>__r_get_self_address</b> (<a class="el" href="structReceptor.html">Receptor</a> *r)</td></tr>
 <tr class="separator:gac1597e73b55dbb298e89140b44e870d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -305,7 +308,7 @@ Variables</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="receptor_8h.html">receptor.h</a></li>
-    <li class="footer">Generated on Wed Nov 11 2015 18:31:56 for ceptr by
+    <li class="footer">Generated on Thu Nov 12 2015 11:28:41 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

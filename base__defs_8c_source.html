@@ -321,82 +321,90 @@ $(document).ready(function(){initNavTree('base__defs_8c_source.html','');});
 <div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;  sY(SYS_CONTEXT,UNIX_ERRNO_ERR,REDUCTION_ERROR);</div>
 <div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;  sY(SYS_CONTEXT,DEAD_STREAM_READ_ERR,REDUCTION_ERROR);</div>
 <div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;  sY(SYS_CONTEXT,GET_XADDR,XADDR);</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;  sP(SYS_CONTEXT,NOOP,<span class="stringliteral">&quot;no-op&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_STRUCTURE,TREE,<span class="stringliteral">&quot;do&quot;</span>,SIGNATURE_ANY,NULL_STRUCTURE,0);</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;  sP(SYS_CONTEXT,GET,<span class="stringliteral">&quot;get instance value&quot;</span>,<span class="stringliteral">&quot;value&quot;</span>,SIGNATURE_ANY,NULL_STRUCTURE,<span class="stringliteral">&quot;what&quot;</span>,SIGNATURE_SYMBOL,GET_XADDR,0);</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;  sP(SYS_CONTEXT,IF,<span class="stringliteral">&quot;if&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_PASSTHRU,NULL_STRUCTURE,<span class="stringliteral">&quot;condition&quot;</span>,SIGNATURE_PROCESS,BOOLEAN,<span class="stringliteral">&quot;then&quot;</span>,SIGNATURE_ANY,NULL_STRUCTURE,<span class="stringliteral">&quot;else&quot;</span>,SIGNATURE_OPTIONAL,SIGNATURE_ANY,NULL_STRUCTURE,0);</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;  sP(SYS_CONTEXT,ITERATE,<span class="stringliteral">&quot;iterate a process&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_PASSTHRU,NULL_STRUCTURE,<span class="stringliteral">&quot;condtion&quot;</span>,SIGNATURE_PROCESS,BOOLEAN,<span class="stringliteral">&quot;do&quot;</span>,SIGNATURE_ANY,NULL_STRUCTURE,0);</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;  sP(SYS_CONTEXT,SEND,<span class="stringliteral">&quot;send a signal&quot;</span>,<span class="stringliteral">&quot;response&quot;</span>,SIGNATURE_STRUCTURE,TREE,<span class="stringliteral">&quot;to&quot;</span>,SIGNATURE_SYMBOL,RECEPTOR_ADDRESS,<span class="stringliteral">&quot;message contents&quot;</span>,SIGNATURE_ANY,NULL_STRUCTURE,<span class="stringliteral">&quot;respond on&quot;</span>,SIGNATURE_SYMBOL,RESPONSE_CARRIER,<span class="stringliteral">&quot;async&quot;</span>,SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,BOOLEAN,0);</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;  sP(SYS_CONTEXT,LISTEN,<span class="stringliteral">&quot;plant a listener&quot;</span>,<span class="stringliteral">&quot;error&quot;</span>,SIGNATURE_SYMBOL,REDUCTION_ERROR_SYMBOL,<span class="stringliteral">&quot;listen for&quot;</span>,SIGNATURE_SYMBOL,EXPECTATION,<span class="stringliteral">&quot;on&quot;</span>,SIGNATURE_SYMBOL,CARRIER,<span class="stringliteral">&quot;with&quot;</span>,SIGNATURE_SYMBOL,PARAMS,<span class="stringliteral">&quot;do&quot;</span>,SIGNATURE_SYMBOL,ACTION,0);</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;  sP(SYS_CONTEXT,RESPOND,<span class="stringliteral">&quot;respond to signal&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_STRUCTURE,TREE,<span class="stringliteral">&quot;response contents&quot;</span>,SIGNATURE_ANY,NULL_STRUCTURE,0);</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;  sP(SYS_CONTEXT,EXPECT_ACT,<span class="stringliteral">&quot;block run tree until expectation met and then act&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_STRUCTURE,TREE,0);</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;  sP(SYS_CONTEXT,QUOTE,<span class="stringliteral">&quot;quote a process so that it can be passed as a value&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_STRUCTURE,TREE,0);</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;  sP(SYS_CONTEXT,INTERPOLATE_FROM_MATCH,<span class="stringliteral">&quot;interploate match result in place&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_STRUCTURE,TREE,0);</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;  sP(SYS_CONTEXT,RAISE,<span class="stringliteral">&quot;raise reduction error&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_STRUCTURE,TREE,0);</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;  sP(SYS_CONTEXT,STREAM_READ,<span class="stringliteral">&quot;read from a stream&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_STRUCTURE,TREE,0);</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;  sP(SYS_CONTEXT,STREAM_WRITE,<span class="stringliteral">&quot;write to a stream&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_STRUCTURE,TREE,0);</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;  sP(SYS_CONTEXT,STREAM_ALIVE,<span class="stringliteral">&quot;check a stream is alive for reading&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_STRUCTURE,TREE,0);</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;  sP(SYS_CONTEXT,CONCAT_STR,<span class="stringliteral">&quot;concatinate strings&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_STRUCTURE,TREE,0);</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;  sP(SYS_CONTEXT,ADD_INT,<span class="stringliteral">&quot;addition&quot;</span>,<span class="stringliteral">&quot;sum&quot;</span>,SIGNATURE_STRUCTURE,INTEGER,<span class="stringliteral">&quot;augend&quot;</span>,SIGNATURE_STRUCTURE,INTEGER,<span class="stringliteral">&quot;addend&quot;</span>,SIGNATURE_STRUCTURE,INTEGER,0);</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;  sP(SYS_CONTEXT,SUB_INT,<span class="stringliteral">&quot;subtract&quot;</span>,<span class="stringliteral">&quot;difference&quot;</span>,SIGNATURE_STRUCTURE,INTEGER,<span class="stringliteral">&quot;minuend&quot;</span>,SIGNATURE_STRUCTURE,INTEGER,<span class="stringliteral">&quot;subtrahend&quot;</span>,SIGNATURE_STRUCTURE,INTEGER,0);</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;  sP(SYS_CONTEXT,MULT_INT,<span class="stringliteral">&quot;multiply&quot;</span>,<span class="stringliteral">&quot;product&quot;</span>,SIGNATURE_STRUCTURE,INTEGER,<span class="stringliteral">&quot;multiplicand&quot;</span>,SIGNATURE_STRUCTURE,INTEGER,<span class="stringliteral">&quot;multiplier&quot;</span>,SIGNATURE_STRUCTURE,INTEGER,0);</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;  sP(SYS_CONTEXT,DIV_INT,<span class="stringliteral">&quot;divide&quot;</span>,<span class="stringliteral">&quot;quotient&quot;</span>,SIGNATURE_STRUCTURE,INTEGER,<span class="stringliteral">&quot;dividend&quot;</span>,SIGNATURE_STRUCTURE,INTEGER,<span class="stringliteral">&quot;divisor&quot;</span>,SIGNATURE_STRUCTURE,INTEGER,0);</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;  sP(SYS_CONTEXT,MOD_INT,<span class="stringliteral">&quot;modulo&quot;</span>,<span class="stringliteral">&quot;remainder&quot;</span>,SIGNATURE_STRUCTURE,INTEGER,<span class="stringliteral">&quot;dividend&quot;</span>,SIGNATURE_STRUCTURE,INTEGER,<span class="stringliteral">&quot;divisor&quot;</span>,SIGNATURE_STRUCTURE,INTEGER,0);</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;  sP(SYS_CONTEXT,EQ_INT,<span class="stringliteral">&quot;test equality&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_STRUCTURE,TREE,0);</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;  sP(SYS_CONTEXT,LT_INT,<span class="stringliteral">&quot;test less than&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_STRUCTURE,TREE,0);</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;  sP(SYS_CONTEXT,GT_INT,<span class="stringliteral">&quot;test greater than&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_STRUCTURE,TREE,0);</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;  sP(SYS_CONTEXT,LTE_INT,<span class="stringliteral">&quot;test less than or equal&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_STRUCTURE,TREE,0);</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;  sP(SYS_CONTEXT,GTE_INT,<span class="stringliteral">&quot;test greater than or equal&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_STRUCTURE,TREE,0);</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;  sP(SYS_CONTEXT,SPECIAL,<span class="stringliteral">&quot;dark magic&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_STRUCTURE,TREE,0);</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;  sY(SYS_CONTEXT,STX_TOKENS,LIST);</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;  sY(SYS_CONTEXT,STX_SL,NULL_STRUCTURE);</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;  sY(SYS_CONTEXT,STX_OP,NULL_STRUCTURE);</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;  sY(SYS_CONTEXT,STX_CP,NULL_STRUCTURE);</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;  sY(SYS_CONTEXT,STX_SET,NULL_STRUCTURE);</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;  sY(SYS_CONTEXT,STX_OS,NULL_STRUCTURE);</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;  sY(SYS_CONTEXT,STX_CS,NULL_STRUCTURE);</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;  sY(SYS_CONTEXT,STX_LABEL,CSTRING);</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;  sY(SYS_CONTEXT,STX_OG,CSTRING);</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;  sY(SYS_CONTEXT,STX_CG,NULL_STRUCTURE);</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;  sY(SYS_CONTEXT,STX_EQ,CSTRING);</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;  sY(SYS_CONTEXT,STX_NEQ,CSTRING);</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;  sY(SYS_CONTEXT,STX_WALK,NULL_STRUCTURE);</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;  sY(SYS_CONTEXT,STX_STAR,NULL_STRUCTURE);</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;  sY(SYS_CONTEXT,STX_PLUS,NULL_STRUCTURE);</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;  sY(SYS_CONTEXT,STX_Q,NULL_STRUCTURE);</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;  sY(SYS_CONTEXT,STX_OR,NULL_STRUCTURE);</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;  sY(SYS_CONTEXT,STX_COMMA,NULL_STRUCTURE);</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;  sY(SYS_CONTEXT,STX_EXCEPT,CSTRING);</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;  sY(SYS_CONTEXT,STX_NOT,NULL_STRUCTURE);</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;  sY(SYS_CONTEXT,STX_VAL_S,CSTRING);</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;  sY(SYS_CONTEXT,STX_VAL_C,CHAR);</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;  sY(SYS_CONTEXT,STX_VAL_I,INTEGER);</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;  sY(SYS_CONTEXT,STX_VAL_F,FLOAT);</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;  sY(SYS_CONTEXT,STX_SIBS,LIST);</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;  sY(SYS_CONTEXT,STX_CHILD,TREE);</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;  sY(SYS_CONTEXT,STX_POSTFIX,TREE);</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;  sY(SYS_CONTEXT,TREE_DELTA_PATH,TREE_PATH);</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;  sY(SYS_CONTEXT,TREE_DELTA_VALUE,TREE);</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;  sY(SYS_CONTEXT,TREE_DELTA_COUNT,INTEGER);</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;  sT(SYS_CONTEXT,TREE_DELTA,3,TREE_DELTA_PATH,TREE_DELTA_VALUE,TREE_DELTA_COUNT);</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;  sY(SYS_CONTEXT,TREE_DELTA_ADD,TREE_DELTA);</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;  sY(SYS_CONTEXT,TREE_DELTA_REPLACE,TREE_DELTA);</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;  sY(LOCAL_CONTEXT,LINE,CSTRING);</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;  sY(LOCAL_CONTEXT,VERB,CSTRING);</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;  sY(LOCAL_CONTEXT,COMMAND_PARAMETER,CSTRING);</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;  sTs(LOCAL_CONTEXT,COMMAND,sT_SEQ(2,sT_SYM(VERB),sT_STAR(sT_SYM(COMMAND_PARAMETER))));</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;  sY(LOCAL_CONTEXT,SHELL_COMMAND,COMMAND);</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;  sY(TEST_CONTEXT,TEST_INT_SYMBOL,INTEGER);</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;  sY(TEST_CONTEXT,TEST_INT_SYMBOL2,INTEGER);</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;  sY(TEST_CONTEXT,TEST_FLOAT_SYMBOL,FLOAT);</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;  sY(TEST_CONTEXT,TEST_STR_SYMBOL,CSTRING);</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;  sY(TEST_CONTEXT,TEST_TREE_SYMBOL,TREE);</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;  sY(TEST_CONTEXT,TEST_TREE_SYMBOL2,TREE);</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;  sY(TEST_CONTEXT,TEST_STREAM_SYMBOL,STREAM);</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;  sY(TEST_CONTEXT,TEST_NAME_SYMBOL,CSTRING);</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;  sY(TEST_CONTEXT,TEST_RECEPTOR_SYMBOL,RECEPTOR);</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;  sY(TEST_CONTEXT,TEST_ALPHABETIZE_SCAPE_SYMBOL,SCAPE);</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;  sY(TEST_CONTEXT,TEST_SYMBOL_SYMBOL,SYMBOL);</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;}</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;  sY(SYS_CONTEXT,REQUEST_TIMING,TIMESTAMP);</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;  sY(SYS_CONTEXT,COUNT,INTEGER);</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;  sY(SYS_CONTEXT,UNLIMMITED,NULL_STRUCTURE);</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;  sTs(SYS_CONTEXT,LOGICAL_OR_OF_COUNT_AND_UNLIMMITED,sT_OR(sT_SYM(COUNT),sT_SYM(UNLIMMITED)));</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;  sY(SYS_CONTEXT,REPETITIONS,LOGICAL_OR_OF_COUNT_AND_UNLIMMITED);</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;  sTs(SYS_CONTEXT,TUPLE_OF_ZERO_OR_ONE_OF_REQUEST_TIMING_AND_ZERO_OR_ONE_OF_REPETITIONS,sT_SEQ(2,sT_QMRK(sT_SYM(REQUEST_TIMING)),sT_QMRK(sT_SYM(REPETITIONS))));</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;  sY(SYS_CONTEXT,REQUEST_CONDITIONS,TUPLE_OF_ZERO_OR_ONE_OF_REQUEST_TIMING_AND_ZERO_OR_ONE_OF_REPETITIONS);</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;  sP(SYS_CONTEXT,NOOP,<span class="stringliteral">&quot;no-op&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_STRUCTURE,TREE,<span class="stringliteral">&quot;do&quot;</span>,SIGNATURE_ANY,NULL_STRUCTURE,0);</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;  sP(SYS_CONTEXT,GET,<span class="stringliteral">&quot;get instance value&quot;</span>,<span class="stringliteral">&quot;value&quot;</span>,SIGNATURE_ANY,NULL_STRUCTURE,<span class="stringliteral">&quot;what&quot;</span>,SIGNATURE_SYMBOL,GET_XADDR,0);</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;  sP(SYS_CONTEXT,IF,<span class="stringliteral">&quot;if&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_PASSTHRU,NULL_STRUCTURE,<span class="stringliteral">&quot;condition&quot;</span>,SIGNATURE_PROCESS,BOOLEAN,<span class="stringliteral">&quot;then&quot;</span>,SIGNATURE_ANY,NULL_STRUCTURE,<span class="stringliteral">&quot;else&quot;</span>,SIGNATURE_OPTIONAL,SIGNATURE_ANY,NULL_STRUCTURE,0);</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;  sP(SYS_CONTEXT,ITERATE,<span class="stringliteral">&quot;iterate a process&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_PASSTHRU,NULL_STRUCTURE,<span class="stringliteral">&quot;condtion&quot;</span>,SIGNATURE_PROCESS,BOOLEAN,<span class="stringliteral">&quot;do&quot;</span>,SIGNATURE_ANY,NULL_STRUCTURE,0);</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;  sP(SYS_CONTEXT,SAY,<span class="stringliteral">&quot;send a message to a receptor&quot;</span>,<span class="stringliteral">&quot;error&quot;</span>,SIGNATURE_SYMBOL,REDUCTION_ERROR_SYMBOL,<span class="stringliteral">&quot;to&quot;</span>,SIGNATURE_SYMBOL,RECEPTOR_ADDRESS,<span class="stringliteral">&quot;on&quot;</span>,SIGNATURE_SYMBOL,ASPECT,<span class="stringliteral">&quot;message&quot;</span>,SIGNATURE_ANY,NULL_STRUCTURE);</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;  sP(SYS_CONTEXT,REQUEST,<span class="stringliteral">&quot;send a request to a receptor&quot;</span>,<span class="stringliteral">&quot;response&quot;</span>,SIGNATURE_STRUCTURE,TREE,<span class="stringliteral">&quot;of&quot;</span>,SIGNATURE_SYMBOL,RECEPTOR_ADDRESS,<span class="stringliteral">&quot;on&quot;</span>,SIGNATURE_SYMBOL,ASPECT,<span class="stringliteral">&quot;message&quot;</span>,SIGNATURE_ANY,NULL_STRUCTURE,<span class="stringliteral">&quot;respond on&quot;</span>,SIGNATURE_SYMBOL,RESPONSE_CARRIER,<span class="stringliteral">&quot;until&quot;</span>,SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,REQUEST_CONDITIONS,<span class="stringliteral">&quot;callback&quot;</span>,SIGNATURE_OPTIONAL,SIGNATURE_PROCESS,NULL_SYMBOL,0);</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;  sP(SYS_CONTEXT,LISTEN,<span class="stringliteral">&quot;plant a listener&quot;</span>,<span class="stringliteral">&quot;error&quot;</span>,SIGNATURE_SYMBOL,REDUCTION_ERROR_SYMBOL,<span class="stringliteral">&quot;listen for&quot;</span>,SIGNATURE_SYMBOL,EXPECTATION,<span class="stringliteral">&quot;on&quot;</span>,SIGNATURE_SYMBOL,CARRIER,<span class="stringliteral">&quot;with&quot;</span>,SIGNATURE_SYMBOL,PARAMS,<span class="stringliteral">&quot;do&quot;</span>,SIGNATURE_SYMBOL,ACTION,0);</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;  sP(SYS_CONTEXT,RESPOND,<span class="stringliteral">&quot;respond to signal&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_STRUCTURE,TREE,<span class="stringliteral">&quot;response contents&quot;</span>,SIGNATURE_ANY,NULL_STRUCTURE,0);</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;  sP(SYS_CONTEXT,EXPECT_ACT,<span class="stringliteral">&quot;block run tree until expectation met and then act&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_STRUCTURE,TREE,<span class="stringliteral">&quot;on&quot;</span>,SIGNATURE_SYMBOL,CARRIER,<span class="stringliteral">&quot;expectation&quot;</span>,SIGNATURE_STRUCTURE,SEMTREX,<span class="stringliteral">&quot;with&quot;</span>,SIGNATURE_SYMBOL,PARAMS,<span class="stringliteral">&quot;do&quot;</span>,SIGNATURE_PROCESS,QUOTE,0);</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;  sP(SYS_CONTEXT,QUOTE,<span class="stringliteral">&quot;quote a process so that it can be passed as a value&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_STRUCTURE,TREE,0);</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;  sP(SYS_CONTEXT,INTERPOLATE_FROM_MATCH,<span class="stringliteral">&quot;interploate match result in place&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_STRUCTURE,TREE,0);</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;  sP(SYS_CONTEXT,RAISE,<span class="stringliteral">&quot;raise reduction error&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_STRUCTURE,TREE,0);</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;  sP(SYS_CONTEXT,STREAM_READ,<span class="stringliteral">&quot;read from a stream&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_STRUCTURE,TREE,0);</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;  sP(SYS_CONTEXT,STREAM_WRITE,<span class="stringliteral">&quot;write to a stream&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_STRUCTURE,TREE,0);</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;  sP(SYS_CONTEXT,STREAM_ALIVE,<span class="stringliteral">&quot;check a stream is alive for reading&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_STRUCTURE,TREE,0);</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;  sP(SYS_CONTEXT,CONCAT_STR,<span class="stringliteral">&quot;concatinate strings&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_STRUCTURE,TREE,0);</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;  sP(SYS_CONTEXT,ADD_INT,<span class="stringliteral">&quot;addition&quot;</span>,<span class="stringliteral">&quot;sum&quot;</span>,SIGNATURE_STRUCTURE,INTEGER,<span class="stringliteral">&quot;augend&quot;</span>,SIGNATURE_STRUCTURE,INTEGER,<span class="stringliteral">&quot;addend&quot;</span>,SIGNATURE_STRUCTURE,INTEGER,0);</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;  sP(SYS_CONTEXT,SUB_INT,<span class="stringliteral">&quot;subtract&quot;</span>,<span class="stringliteral">&quot;difference&quot;</span>,SIGNATURE_STRUCTURE,INTEGER,<span class="stringliteral">&quot;minuend&quot;</span>,SIGNATURE_STRUCTURE,INTEGER,<span class="stringliteral">&quot;subtrahend&quot;</span>,SIGNATURE_STRUCTURE,INTEGER,0);</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;  sP(SYS_CONTEXT,MULT_INT,<span class="stringliteral">&quot;multiply&quot;</span>,<span class="stringliteral">&quot;product&quot;</span>,SIGNATURE_STRUCTURE,INTEGER,<span class="stringliteral">&quot;multiplicand&quot;</span>,SIGNATURE_STRUCTURE,INTEGER,<span class="stringliteral">&quot;multiplier&quot;</span>,SIGNATURE_STRUCTURE,INTEGER,0);</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;  sP(SYS_CONTEXT,DIV_INT,<span class="stringliteral">&quot;divide&quot;</span>,<span class="stringliteral">&quot;quotient&quot;</span>,SIGNATURE_STRUCTURE,INTEGER,<span class="stringliteral">&quot;dividend&quot;</span>,SIGNATURE_STRUCTURE,INTEGER,<span class="stringliteral">&quot;divisor&quot;</span>,SIGNATURE_STRUCTURE,INTEGER,0);</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;  sP(SYS_CONTEXT,MOD_INT,<span class="stringliteral">&quot;modulo&quot;</span>,<span class="stringliteral">&quot;remainder&quot;</span>,SIGNATURE_STRUCTURE,INTEGER,<span class="stringliteral">&quot;dividend&quot;</span>,SIGNATURE_STRUCTURE,INTEGER,<span class="stringliteral">&quot;divisor&quot;</span>,SIGNATURE_STRUCTURE,INTEGER,0);</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;  sP(SYS_CONTEXT,EQ_INT,<span class="stringliteral">&quot;test equality&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_STRUCTURE,TREE,0);</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;  sP(SYS_CONTEXT,LT_INT,<span class="stringliteral">&quot;test less than&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_STRUCTURE,TREE,0);</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;  sP(SYS_CONTEXT,GT_INT,<span class="stringliteral">&quot;test greater than&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_STRUCTURE,TREE,0);</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;  sP(SYS_CONTEXT,LTE_INT,<span class="stringliteral">&quot;test less than or equal&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_STRUCTURE,TREE,0);</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;  sP(SYS_CONTEXT,GTE_INT,<span class="stringliteral">&quot;test greater than or equal&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_STRUCTURE,TREE,0);</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;  sP(SYS_CONTEXT,SPECIAL,<span class="stringliteral">&quot;dark magic&quot;</span>,<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_STRUCTURE,TREE,0);</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;  sY(SYS_CONTEXT,STX_TOKENS,LIST);</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;  sY(SYS_CONTEXT,STX_SL,NULL_STRUCTURE);</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;  sY(SYS_CONTEXT,STX_OP,NULL_STRUCTURE);</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;  sY(SYS_CONTEXT,STX_CP,NULL_STRUCTURE);</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;  sY(SYS_CONTEXT,STX_SET,NULL_STRUCTURE);</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;  sY(SYS_CONTEXT,STX_OS,NULL_STRUCTURE);</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;  sY(SYS_CONTEXT,STX_CS,NULL_STRUCTURE);</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;  sY(SYS_CONTEXT,STX_LABEL,CSTRING);</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;  sY(SYS_CONTEXT,STX_OG,CSTRING);</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;  sY(SYS_CONTEXT,STX_CG,NULL_STRUCTURE);</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;  sY(SYS_CONTEXT,STX_EQ,CSTRING);</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;  sY(SYS_CONTEXT,STX_NEQ,CSTRING);</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;  sY(SYS_CONTEXT,STX_WALK,NULL_STRUCTURE);</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;  sY(SYS_CONTEXT,STX_STAR,NULL_STRUCTURE);</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;  sY(SYS_CONTEXT,STX_PLUS,NULL_STRUCTURE);</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;  sY(SYS_CONTEXT,STX_Q,NULL_STRUCTURE);</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;  sY(SYS_CONTEXT,STX_OR,NULL_STRUCTURE);</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;  sY(SYS_CONTEXT,STX_COMMA,NULL_STRUCTURE);</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;  sY(SYS_CONTEXT,STX_EXCEPT,CSTRING);</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;  sY(SYS_CONTEXT,STX_NOT,NULL_STRUCTURE);</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;  sY(SYS_CONTEXT,STX_VAL_S,CSTRING);</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;  sY(SYS_CONTEXT,STX_VAL_C,CHAR);</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;  sY(SYS_CONTEXT,STX_VAL_I,INTEGER);</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;  sY(SYS_CONTEXT,STX_VAL_F,FLOAT);</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;  sY(SYS_CONTEXT,STX_SIBS,LIST);</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;  sY(SYS_CONTEXT,STX_CHILD,TREE);</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;  sY(SYS_CONTEXT,STX_POSTFIX,TREE);</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;  sY(SYS_CONTEXT,TREE_DELTA_PATH,TREE_PATH);</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;  sY(SYS_CONTEXT,TREE_DELTA_VALUE,TREE);</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;  sY(SYS_CONTEXT,TREE_DELTA_COUNT,INTEGER);</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;  sT(SYS_CONTEXT,TREE_DELTA,3,TREE_DELTA_PATH,TREE_DELTA_VALUE,TREE_DELTA_COUNT);</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;  sY(SYS_CONTEXT,TREE_DELTA_ADD,TREE_DELTA);</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;  sY(SYS_CONTEXT,TREE_DELTA_REPLACE,TREE_DELTA);</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;  sY(LOCAL_CONTEXT,LINE,CSTRING);</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;  sY(LOCAL_CONTEXT,VERB,CSTRING);</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;  sY(LOCAL_CONTEXT,COMMAND_PARAMETER,CSTRING);</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;  sTs(LOCAL_CONTEXT,COMMAND,sT_SEQ(2,sT_SYM(VERB),sT_STAR(sT_SYM(COMMAND_PARAMETER))));</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;  sY(LOCAL_CONTEXT,SHELL_COMMAND,COMMAND);</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;  sY(TEST_CONTEXT,TEST_INT_SYMBOL,INTEGER);</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;  sY(TEST_CONTEXT,TEST_INT_SYMBOL2,INTEGER);</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;  sY(TEST_CONTEXT,TEST_FLOAT_SYMBOL,FLOAT);</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;  sY(TEST_CONTEXT,TEST_STR_SYMBOL,CSTRING);</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;  sY(TEST_CONTEXT,TEST_TREE_SYMBOL,TREE);</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;  sY(TEST_CONTEXT,TEST_TREE_SYMBOL2,TREE);</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;  sY(TEST_CONTEXT,TEST_STREAM_SYMBOL,STREAM);</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;  sY(TEST_CONTEXT,TEST_NAME_SYMBOL,CSTRING);</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;  sY(TEST_CONTEXT,TEST_RECEPTOR_SYMBOL,RECEPTOR);</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;  sY(TEST_CONTEXT,TEST_ALPHABETIZE_SCAPE_SYMBOL,SCAPE);</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;  sY(TEST_CONTEXT,TEST_SYMBOL_SYMBOL,SYMBOL);</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;}</div>
 <div class="ttc" id="def_8h_html"><div class="ttname"><a href="def_8h.html">def.h</a></div><div class="ttdoc">header file for symbol and structure definition functions </div></div>
 <div class="ttc" id="process_8h_html"><div class="ttname"><a href="process_8h.html">process.h</a></div><div class="ttdoc">processing header files </div></div>
 <div class="ttc" id="sys__defs_8h_html"><div class="ttname"><a href="sys__defs_8h.html">sys_defs.h</a></div><div class="ttdoc">Defines types and vars for system defined semantics. </div></div>
@@ -407,7 +415,7 @@ $(document).ready(function(){initNavTree('base__defs_8c_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="base__defs_8c.html">base_defs.c</a></li>
-    <li class="footer">Generated on Wed Nov 11 2015 18:31:56 for ceptr by
+    <li class="footer">Generated on Thu Nov 12 2015 11:28:41 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

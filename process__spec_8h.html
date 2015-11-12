@@ -148,9 +148,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>testProcessString</b>
 <tr class="memitem:ad63b9b096ad0b0a66cac7206053096a7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad63b9b096ad0b0a66cac7206053096a7"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>testProcessRespond</b> ()</td></tr>
 <tr class="separator:ad63b9b096ad0b0a66cac7206053096a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a818d9ab2c0d16b7d9c960416608e6781"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a818d9ab2c0d16b7d9c960416608e6781"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>testProcessSend</b> ()</td></tr>
-<tr class="separator:a818d9ab2c0d16b7d9c960416608e6781"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:addbb8c97246394a942d55bed6a8451ce"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="addbb8c97246394a942d55bed6a8451ce"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>testProcessSay</b> ()</td></tr>
+<tr class="separator:addbb8c97246394a942d55bed6a8451ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d10d4bea024fb45f4eef5d398804622"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5d10d4bea024fb45f4eef5d398804622"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>testProcessRequest</b> ()</td></tr>
+<tr class="separator:a5d10d4bea024fb45f4eef5d398804622"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9de86d7a2b3405c0ec9072c661ed18c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa9de86d7a2b3405c0ec9072c661ed18c"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>testProcessQuote</b> ()</td></tr>
 <tr class="separator:aa9de86d7a2b3405c0ec9072c661ed18c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -226,7 +229,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>G_next_process_id</b><
 <p>[defIfEven] </p>
 <p>helper to generate an example process definition that creates a divide by zero error</p>
 <div class="fragment"></div><!-- fragment -->
-<p>Definition at line <a class="el" href="process__spec_8h_source.html#l00737">737</a> of file <a class="el" href="process__spec_8h_source.html">process_spec.h</a>.</p>
+<p>Definition at line <a class="el" href="process__spec_8h_source.html#l00741">741</a> of file <a class="el" href="process__spec_8h_source.html">process_spec.h</a>.</p>
 
 </div>
 </div>
@@ -280,7 +283,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>G_next_process_id</b><
 <div class="line">    <span class="keywordflow">return</span> <a class="code" href="group__def.html#ga46a91fe61c582d1a380ed040fbb68bee">_d_code_process</a>(processes,code,<span class="stringliteral">&quot;if even&quot;</span>,<span class="stringliteral">&quot;return 2nd child if even, third if not&quot;</span>,signature,RECEPTOR_CONTEXT);</div>
 <div class="line">}</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="process__spec_8h_source.html#l00696">696</a> of file <a class="el" href="process__spec_8h_source.html">process_spec.h</a>.</p>
+<p>Definition at line <a class="el" href="process__spec_8h_source.html#l00700">700</a> of file <a class="el" href="process__spec_8h_source.html">process_spec.h</a>.</p>
 
 </div>
 </div>
@@ -299,7 +302,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>G_next_process_id</b><
 <p>[testProcessErrorTrickleUp]</p>
 <p>[testProcessErrorTrickleUp] </p>
 
-<p>Definition at line <a class="el" href="process__spec_8h_source.html#l00936">936</a> of file <a class="el" href="process__spec_8h_source.html">process_spec.h</a>.</p>
+<p>Definition at line <a class="el" href="process__spec_8h_source.html#l00940">940</a> of file <a class="el" href="process__spec_8h_source.html">process_spec.h</a>.</p>
 
 </div>
 </div>
@@ -315,7 +318,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>G_next_process_id</b><
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000048">Todo:</a></b></dt><dd>when interpolating from a match, how do we handle non-leaf interpollations, i.e. where do you hook children onto? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000047">Todo:</a></b></dt><dd>when interpolating from a match, how do we handle non-leaf interpollations, i.e. where do you hook children onto? </dd></dl>
 
 <p>Definition at line <a class="el" href="process__spec_8h_source.html#l00175">175</a> of file <a class="el" href="process__spec_8h_source.html">process_spec.h</a>.</p>
 
@@ -333,7 +336,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>G_next_process_id</b><
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000049">Todo:</a></b></dt><dd>structure type checking for integer math? Too expensive? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000048">Todo:</a></b></dt><dd>structure type checking for integer math? Too expensive? </dd></dl>
 
 <p>Definition at line <a class="el" href="process__spec_8h_source.html#l00188">188</a> of file <a class="el" href="process__spec_8h_source.html">process_spec.h</a>.</p>
 
@@ -354,7 +357,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>G_next_process_id</b><
 <p>[testProcessMulti]</p>
 <p>[testProcessMulti] </p>
 
-<p>Definition at line <a class="el" href="process__spec_8h_source.html#l00966">966</a> of file <a class="el" href="process__spec_8h_source.html">process_spec.h</a>.</p>
+<p>Definition at line <a class="el" href="process__spec_8h_source.html#l00970">970</a> of file <a class="el" href="process__spec_8h_source.html">process_spec.h</a>.</p>
 
 </div>
 </div>
@@ -375,7 +378,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>G_next_process_id</b><
 <p>[testProcessReduceDefinedProcess]</p>
 <p>[testProcessReduceDefinedProcess] </p>
 
-<p>Definition at line <a class="el" href="process__spec_8h_source.html#l00755">755</a> of file <a class="el" href="process__spec_8h_source.html">process_spec.h</a>.</p>
+<p>Definition at line <a class="el" href="process__spec_8h_source.html#l00759">759</a> of file <a class="el" href="process__spec_8h_source.html">process_spec.h</a>.</p>
 
 </div>
 </div>
@@ -385,7 +388,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>G_next_process_id</b><
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><a class="el" href="process__spec_8h.html">process_spec.h</a></li>
-    <li class="footer">Generated on Wed Nov 11 2015 18:31:56 for ceptr by
+    <li class="footer">Generated on Thu Nov 12 2015 11:28:41 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

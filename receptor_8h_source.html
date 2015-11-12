@@ -197,14 +197,15 @@ $(document).ready(function(){initNavTree('receptor_8h_source.html','');});
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<a class="code" href="structReceptor.html">Receptor</a> *_r_makeStreamWriterReceptor(<a class="code" href="structSemanticID.html">Symbol</a> receptor_symbol,<a class="code" href="structSemanticID.html">Symbol</a> stream_symbol,<a class="code" href="structStream.html">Stream</a> *stream);</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<a class="code" href="structReceptor.html">Receptor</a> *_r_makeClockReceptor();</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="keywordtype">void</span> *<a class="code" href="group__receptor.html#ga4cb85b79ae4207e4595d003d11beb226">___clock_thread</a>(<span class="keywordtype">void</span> *arg);</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<a class="code" href="structT.html">T</a> * __r_make_tick();</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="keywordtype">void</span> __r_kill(<a class="code" href="structReceptor.html">Receptor</a> *r);</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;ReceptorAddress __r_get_self_address(<a class="code" href="structReceptor.html">Receptor</a> *r);</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="keywordtype">void</span> __r_dump_instances(<a class="code" href="structReceptor.html">Receptor</a> *r);</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="preprocessor">#define __r_make_tick() __r_make_timestamp(TICK,0)</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<a class="code" href="structT.html">T</a> *__r_make_timestamp(<a class="code" href="structSemanticID.html">Symbol</a> s,<span class="keywordtype">int</span> delta);</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="keywordtype">void</span> __r_kill(<a class="code" href="structReceptor.html">Receptor</a> *r,<span class="keywordtype">int</span> delta);</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;ReceptorAddress __r_get_self_address(<a class="code" href="structReceptor.html">Receptor</a> *r);</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="keywordtype">void</span> __r_dump_instances(<a class="code" href="structReceptor.html">Receptor</a> *r);</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
 <div class="ttc" id="structT_html"><div class="ttname"><a href="structT.html">T</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00108">ceptr_types.h:108</a></div></div>
 <div class="ttc" id="group__receptor_html_ga120e66982d483fbe004fd969cf1c353f"><div class="ttname"><a href="group__receptor.html#ga120e66982d483fbe004fd969cf1c353f">__r_get_symbol_structure</a></div><div class="ttdeci">Structure __r_get_symbol_structure(Receptor *r, Symbol s)</div><div class="ttdoc">find a symbol&#39;s structure </div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00236">receptor.c:236</a></div></div>
 <div class="ttc" id="group__receptor_html_ga3e737841784555574a0d90ad2eff4cc4"><div class="ttname"><a href="group__receptor.html#ga3e737841784555574a0d90ad2eff4cc4">_r_serialize</a></div><div class="ttdeci">void _r_serialize(Receptor *r, void **surfaceP, size_t *lengthP)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00407">receptor.c:407</a></div></div>
@@ -233,7 +234,7 @@ $(document).ready(function(){initNavTree('receptor_8h_source.html','');});
 <div class="ttc" id="group__receptor_html_gadc618904f81240b244e816234d1c906e"><div class="ttname"><a href="group__receptor.html#gadc618904f81240b244e816234d1c906e">_r_get_instance</a></div><div class="ttdeci">T * _r_get_instance(Receptor *r, Xaddr x)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00367">receptor.c:367</a></div></div>
 <div class="ttc" id="structReceptor_html"><div class="ttname"><a href="structReceptor.html">Receptor</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00238">ceptr_types.h:238</a></div></div>
 <div class="ttc" id="structXaddr_html"><div class="ttname"><a href="structXaddr.html">Xaddr</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00267">ceptr_types.h:267</a></div></div>
-<div class="ttc" id="group__receptor_html_ga4cb85b79ae4207e4595d003d11beb226"><div class="ttname"><a href="group__receptor.html#ga4cb85b79ae4207e4595d003d11beb226">___clock_thread</a></div><div class="ttdeci">void * ___clock_thread(void *arg)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00867">receptor.c:867</a></div></div>
+<div class="ttc" id="group__receptor_html_ga4cb85b79ae4207e4595d003d11beb226"><div class="ttname"><a href="group__receptor.html#ga4cb85b79ae4207e4595d003d11beb226">___clock_thread</a></div><div class="ttdeci">void * ___clock_thread(void *arg)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00866">receptor.c:866</a></div></div>
 <div class="ttc" id="label_8h_html"><div class="ttname"><a href="label_8h.html">label.h</a></div><div class="ttdoc">Label tables map human readable text strings to parts of semantic trees. </div></div>
 <div class="ttc" id="group__receptor_html_ga7a6afdc039a31cdf24bf93dd0475b72b"><div class="ttname"><a href="group__receptor.html#ga7a6afdc039a31cdf24bf93dd0475b72b">_r_new_receptor_from_package</a></div><div class="ttdeci">Receptor * _r_new_receptor_from_package(Symbol s, T *p, T *bindings)</div><div class="ttdoc">Creates a new receptor from a receptor package. </div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00103">receptor.c:103</a></div></div>
 <div class="ttc" id="group__receptor_html_ga7d40f33135ee51640d0d24b8c9e3e046"><div class="ttname"><a href="group__receptor.html#ga7d40f33135ee51640d0d24b8c9e3e046">_r_deliver</a></div><div class="ttdeci">Error _r_deliver(Receptor *r, T *signal)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00602">receptor.c:602</a></div></div>
@@ -249,7 +250,7 @@ $(document).ready(function(){initNavTree('receptor_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="receptor_8h.html">receptor.h</a></li>
-    <li class="footer">Generated on Wed Nov 11 2015 18:31:56 for ceptr by
+    <li class="footer">Generated on Thu Nov 12 2015 11:28:41 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
