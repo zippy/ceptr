@@ -99,7 +99,8 @@ Receptor *_r_makeStreamReaderReceptor(Symbol receptor_symbol,Symbol stream_symbo
 Receptor *_r_makeStreamWriterReceptor(Symbol receptor_symbol,Symbol stream_symbol,Stream *stream);
 Receptor *_r_makeClockReceptor();
 void *___clock_thread(void *arg);
-T * __r_make_tick();
+#define __r_make_tick() __r_make_timestamp(TICK,00)
+T *__r_make_timestamp(Symbol s,int delta);
 void __r_kill(Receptor *r);
 ReceptorAddress __r_get_self_address(Receptor *r);
 

@@ -21,10 +21,10 @@ void addCommand(Receptor *r,Xaddr ox,char *command,char *desc,T *code) {
     T *vls = _t_newr(vl,SEMTREX_VALUE_SET);
     _t_new_str(vls,VERB,command);
 
-    T *p = _t_new_root(SEND);
+    T *p = _t_new_root(SAY);
     _t_newi(p,RECEPTOR_ADDRESS,ox.addr);
+    _t_newi(p,ASPECT,DEFAULT_ASPECT);
     _t_add(p,code);
-    _t_news(p,RESPONSE_CARRIER,NULL_SYMBOL); //@todo no response expected?
 
     Process proc = _r_code_process(r,p,desc,"long desc...",NULL);
     T *act = _t_newp(0,ACTION,proc);
@@ -63,15 +63,14 @@ void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp
     T *expect = _t_new_root(EXPECTATION);
     T *s = _t_news(expect,SEMTREX_GROUP,VERB);
     _sl(s,LINE);
-    T *p = _t_new_root(SEND);
+    T *p = _t_new_root(SAY);
     ReceptorAddress to =  __r_get_self_address(r);
 
     _t_newi(p,RECEPTOR_ADDRESS,to);
+    _t_newi(p,ASPECT,DEFAULT_ASPECT);
     T *x = _t_newr(p,SHELL_COMMAND);
     int pt1[] = {2,1,TREE_PATH_TERMINATOR};
     _t_new(x,PARAM_REF,pt1,sizeof(int)*4);
-    _t_news(p,RESPONSE_CARRIER,NULL_SYMBOL); //@todo fixme!! which is the right carrier?
-    _t_newi(p,BOOLEAN,1); // indicate async send
 
     Process proc = _r_code_process(r,p,"send self command","long desc...",NULL);
     T *act = _t_newp(0,ACTION,proc);
@@ -81,8 +80,9 @@ void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp
 
     // (expect (on flux SHELL_COMMAND:time) action(send std_out (convert_to_lines (send clock get_time))))
 
-    T *code = _t_new_root(SEND);
+    T *code = _t_new_root(REQUEST);
     _t_newi(code,RECEPTOR_ADDRESS,2); // @todo bogus!!! fix clock address
+    _t_newi(code,ASPECT,DEFAULT_ASPECT);
     _t_newr(code,CLOCK_TELL_TIME);
     _t_news(code,RESPONSE_CARRIER,TICK);
 

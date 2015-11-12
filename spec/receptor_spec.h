@@ -127,11 +127,11 @@ void testReceptorResponseDeliver() {
     // set up receptor to have sent and signal and blocked waiting for the response
     T *t = _t_new_root(RUN_TREE);
     T *p = _t_new_root(NOOP);
-    T *send = _t_newr(p,SEND);
-    _t_newi(send,RECEPTOR_ADDRESS,4);
-    _t_newi(send,TEST_INT_SYMBOL,98789);
-    _t_news(send,RESPONSE_CARRIER,TEST_STR_SYMBOL);
-    _t_newi(send,BOOLEAN,0); // synchronous
+    T *req = _t_newr(p,REQUEST);
+    _t_newi(req,RECEPTOR_ADDRESS,4);
+    _t_newi(req,ASPECT,DEFAULT_ASPECT);
+    _t_newi(req,TEST_INT_SYMBOL,98789);
+    _t_news(req,RESPONSE_CARRIER,TEST_STR_SYMBOL);
 
     T *c = _t_rclone(p);
     _t_free(p);
@@ -729,12 +729,13 @@ void testReceptorClock() {
     // send the clock receptor a "tell me the time" request
     ReceptorAddress self = __r_get_self_address(r);
 
-    T *send = _t_newr(0,SEND);
-    _t_newi(send,RECEPTOR_ADDRESS,self);
-    _t_newr(send,CLOCK_TELL_TIME);
-    _t_news(send,RESPONSE_CARRIER,TICK);
-    T *run_tree = __p_build_run_tree(send,0);
-    _t_free(send);
+    T *req = _t_newr(0,REQUEST);
+    _t_newi(req,RECEPTOR_ADDRESS,self);
+    _t_newi(req,ASPECT,DEFAULT_ASPECT);
+    _t_newr(req,CLOCK_TELL_TIME);
+    _t_news(req,RESPONSE_CARRIER,TICK);
+    T *run_tree = __p_build_run_tree(req,0);
+    _t_free(req);
     _p_addrt2q(r->q,run_tree);
 
     //    debug_enable(D_SIGNALS);

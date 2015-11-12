@@ -738,15 +738,14 @@ Receptor *_r_makeStreamReaderReceptor(Symbol receptor_symbol,Symbol stream_symbo
 
     _t_new_stream(eof,stream_symbol,st);
     //    _t_newi(p,TEST_INT_SYMBOL,2);  // two repetitions
-    T *send = _t_newr(p,SEND);
+    T *say = _t_newr(p,SAY);
 
-    _t_newi(send,RECEPTOR_ADDRESS,to);
+    _t_newi(say,RECEPTOR_ADDRESS,to);
+    _t_newi(say,ASPECT,DEFAULT_ASPECT);
 
-    T *s = _t_new(send,STREAM_READ,0,0);
+    T *s = _t_new(say,STREAM_READ,0,0);
     _t_new_stream(s,stream_symbol,st);
     _t_new(s,RESULT_SYMBOL,&LINE,sizeof(Symbol));
-    _t_news(send,RESPONSE_CARRIER,NULL_SYMBOL); //@todo response carrier?
-    _t_newi(send,BOOLEAN,1); // mark async
 
     T *run_tree = __p_build_run_tree(p,0);
     _t_free(p);
@@ -885,12 +884,13 @@ void *___clock_thread(void *arg){
     return 0;
 }
 
-T * __r_make_tick() {
+T * __r_make_timestamp(Symbol s,int delta) {
     struct tm t;
     time_t clock;
     time(&clock);
+    clock += delta;
     gmtime_r(&clock, &t);
-    T *tick = _t_new_root(TICK);
+    T *tick = _t_new_root(s);
     T *today = _t_newr(tick,TODAY);
     T *now = _t_newr(tick,NOW);
     _t_newi(today,YEAR,t.tm_year+1900);

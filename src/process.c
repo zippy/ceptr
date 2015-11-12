@@ -314,35 +314,61 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
         // round-robin
         err = Block;
         break;
-    case SEND_ID:
+    case REQUEST_ID:
+    case SAY_ID:
         {
 
             T *t = _t_detach_by_idx(code,1);
             ReceptorAddress to = *(ReceptorAddress *)_t_surface(t);
             _t_free(t);
+
+            t = _t_detach_by_idx(code,1);
+            if (!semeq(_t_symbol(t),ASPECT)) {
+                raise_error("expected ASPECT!");
+            }
+            Aspect aspect = *(int *)_t_surface(t);
+            _t_free(t);
+
             T* signal_contents = _t_detach_by_idx(code,1);
 
             ReceptorAddress from = __r_get_self_address(q->r);
-            T *signal = __r_make_signal(from,to,DEFAULT_ASPECT,signal_contents);
-
-            t = _t_detach_by_idx(code,1); // get the response carrier
-            Symbol response_carrier = *(Symbol*)_t_surface(t);
-            _t_free(t);
+            T *signal = __r_make_signal(from,to,aspect,signal_contents);
 
             T *response_point = NULL;
-            int sync = _t_children(code) == 0;
-            if (!sync) {
-                t = _t_detach_by_idx(code,1);
-                sync = !*(int *)_t_surface(t);
+            Symbol response_carrier;
+            if (s.id == REQUEST_ID) {
+                t = _t_detach_by_idx(code,1); // get the response carrier
+                response_carrier = *(Symbol*)_t_surface(t);
                 _t_free(t);
-            }
-            if (sync) {
-                err = Block;
-                debug(D_SIGNALS,"blocking at %s\n",_td(q->r,code));
-                response_point = code;
-            }
-            else {
-                /// @todo timeout or callback or whatever the heck in the async case
+
+                int kids = _t_children(code);
+                T *until = NULL;
+                if (!kids) {
+                    // setup the default until (30 second timeout)
+                    until = _t_newr(0,REQUEST_CONDITIONS);
+                    T *ts = __r_make_timestamp(REQUEST_TIMING,30);
+                    _t_add(until,ts);
+                }
+                else if (kids > 2) {
+                    return(tooManyParamsReductionErr);
+                }
+                T *callback = NULL;
+                while(kids--) {
+                    t = _t_detach_by_idx(code,1);
+                    if (semeq(_t_symbol(t),REQUEST_CONDITIONS)) {
+                        until = t;
+                    }
+                    else callback = t;
+                }
+                if (!callback) {
+                    err = Block;
+                    debug(D_SIGNALS,"blocking at %s\n",_td(q->r,code));
+                    response_point = code;
+                }
+                else {
+                    raise_error("request callback not implemented");
+                }
+                _t_free(until); //@todo remove when we get this working... it should be passed into send_signal
             }
             x = __r_send_signal(q->r,signal,response_carrier,response_point,context->id);
         }

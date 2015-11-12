@@ -154,6 +154,11 @@ enum SYSSymbolIDs {
     UNIX_ERRNO_ERR_ID,
     DEAD_STREAM_READ_ERR_ID,
     GET_XADDR_ID,
+    REQUEST_TIMING_ID,
+    COUNT_ID,
+    UNLIMMITED_ID,
+    REPETITIONS_ID,
+    REQUEST_CONDITIONS_ID,
     STX_TOKENS_ID,
     STX_SL_ID,
     STX_OP_ID,
@@ -323,6 +328,11 @@ enum SYSSymbolIDs {
 #define UNIX_ERRNO_ERR G_contexts[SYS_CONTEXT].symbols[UNIX_ERRNO_ERR_ID]
 #define DEAD_STREAM_READ_ERR G_contexts[SYS_CONTEXT].symbols[DEAD_STREAM_READ_ERR_ID]
 #define GET_XADDR G_contexts[SYS_CONTEXT].symbols[GET_XADDR_ID]
+#define REQUEST_TIMING G_contexts[SYS_CONTEXT].symbols[REQUEST_TIMING_ID]
+#define COUNT G_contexts[SYS_CONTEXT].symbols[COUNT_ID]
+#define UNLIMMITED G_contexts[SYS_CONTEXT].symbols[UNLIMMITED_ID]
+#define REPETITIONS G_contexts[SYS_CONTEXT].symbols[REPETITIONS_ID]
+#define REQUEST_CONDITIONS G_contexts[SYS_CONTEXT].symbols[REQUEST_CONDITIONS_ID]
 #define STX_TOKENS G_contexts[SYS_CONTEXT].symbols[STX_TOKENS_ID]
 #define STX_SL G_contexts[SYS_CONTEXT].symbols[STX_SL_ID]
 #define STX_OP G_contexts[SYS_CONTEXT].symbols[STX_OP_ID]
@@ -420,6 +430,8 @@ enum SYSStructureIDs {
     TIME_ID,
     TIMESTAMP_ID,
     REDUCTION_ERROR_ID,
+    LOGICAL_OR_OF_COUNT_AND_UNLIMMITED_ID,
+    TUPLE_OF_ZERO_OR_ONE_OF_REQUEST_TIMING_AND_ZERO_OR_ONE_OF_REPETITIONS_ID,
     TREE_DELTA_ID,
     NUM_SYS_STRUCTURES
 };
@@ -483,6 +495,8 @@ enum SYSStructureIDs {
 #define TIME G_contexts[SYS_CONTEXT].structures[TIME_ID]
 #define TIMESTAMP G_contexts[SYS_CONTEXT].structures[TIMESTAMP_ID]
 #define REDUCTION_ERROR G_contexts[SYS_CONTEXT].structures[REDUCTION_ERROR_ID]
+#define LOGICAL_OR_OF_COUNT_AND_UNLIMMITED G_contexts[SYS_CONTEXT].structures[LOGICAL_OR_OF_COUNT_AND_UNLIMMITED_ID]
+#define TUPLE_OF_ZERO_OR_ONE_OF_REQUEST_TIMING_AND_ZERO_OR_ONE_OF_REPETITIONS G_contexts[SYS_CONTEXT].structures[TUPLE_OF_ZERO_OR_ONE_OF_REQUEST_TIMING_AND_ZERO_OR_ONE_OF_REPETITIONS_ID]
 #define TREE_DELTA G_contexts[SYS_CONTEXT].structures[TREE_DELTA_ID]
 
 /**********************************************************************************/
@@ -493,7 +507,8 @@ enum SYSProcessIDs {
     GET_ID,
     IF_ID,
     ITERATE_ID,
-    SEND_ID,
+    SAY_ID,
+    REQUEST_ID,
     LISTEN_ID,
     RESPOND_ID,
     EXPECT_ACT_ID,
@@ -521,7 +536,8 @@ enum SYSProcessIDs {
 #define GET G_contexts[SYS_CONTEXT].processes[GET_ID]
 #define IF G_contexts[SYS_CONTEXT].processes[IF_ID]
 #define ITERATE G_contexts[SYS_CONTEXT].processes[ITERATE_ID]
-#define SEND G_contexts[SYS_CONTEXT].processes[SEND_ID]
+#define SAY G_contexts[SYS_CONTEXT].processes[SAY_ID]
+#define REQUEST G_contexts[SYS_CONTEXT].processes[REQUEST_ID]
 #define LISTEN G_contexts[SYS_CONTEXT].processes[LISTEN_ID]
 #define RESPOND G_contexts[SYS_CONTEXT].processes[RESPOND_ID]
 #define EXPECT_ACT G_contexts[SYS_CONTEXT].processes[EXPECT_ACT_ID]
