@@ -279,41 +279,6 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
         // Note that QUOTE seems to be the same as NOOP?
         x = _t_detach_by_idx(code,1);
         break;
-    case EXPECT_ACT_ID:
-        // detach the carrier and expectation and construction params, and enqueue the expectation and action
-        // on the carrier
-        {
-            T *carrier_param = _t_detach_by_idx(code,1);
-            T *carrier = *(T **)_t_surface(carrier_param);
-            _t_free(carrier_param);
-            T *ex = _t_detach_by_idx(code,1);
-            T *expectation = _t_new_root(EXPECTATION);
-            _t_add(expectation,ex);
-            T *params = _t_detach_by_idx(code,1);
-
-            //@todo: this is a fake way to add an expectation to a carrier (as a c pointer
-            // out of the params)
-            // we probably actually need a system representation for carriers and an API
-            // that will also make this thread safe.  For example, in the case of carrier being
-            // a receptor's aspect/flux then we should be using _r_add_listener here, but
-            // unfortunately we don't want to have to know about receptors this far down in the
-            // stack...  But it's not clear yet how we do know about the listening context as
-            // I don't think it should be copied into every execution context (the R struct)
-            _t_add(carrier,expectation);
-            _t_add(carrier,params);
-            // the action is a pointer back to this context for now were using a EXPECT_ACT
-            // with the c pointer as the surface because I don't know what else to do...  @fixme
-            // perhaps this should be a BLOCKED_EXPECT_ACTION process or something...
-            _t_new(carrier,EXPECT_ACT,&context,sizeof(context));
-        }
-
-        set_rt_cur_child(q->r,code,1); // reset the current child count on the code
-        x = _t_detach_by_idx(code,1);
-
-        // the actually blocking happens in redcueq which can remove the process from the
-        // round-robin
-        err = Block;
-        break;
     case REQUEST_ID:
     case SAY_ID:
         {

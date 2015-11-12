@@ -511,7 +511,6 @@ enum SYSProcessIDs {
     REQUEST_ID,
     LISTEN_ID,
     RESPOND_ID,
-    EXPECT_ACT_ID,
     QUOTE_ID,
     INTERPOLATE_FROM_MATCH_ID,
     RAISE_ID,
@@ -540,7 +539,6 @@ enum SYSProcessIDs {
 #define REQUEST G_contexts[SYS_CONTEXT].processes[REQUEST_ID]
 #define LISTEN G_contexts[SYS_CONTEXT].processes[LISTEN_ID]
 #define RESPOND G_contexts[SYS_CONTEXT].processes[RESPOND_ID]
-#define EXPECT_ACT G_contexts[SYS_CONTEXT].processes[EXPECT_ACT_ID]
 #define QUOTE G_contexts[SYS_CONTEXT].processes[QUOTE_ID]
 #define INTERPOLATE_FROM_MATCH G_contexts[SYS_CONTEXT].processes[INTERPOLATE_FROM_MATCH_ID]
 #define RAISE G_contexts[SYS_CONTEXT].processes[RAISE_ID]

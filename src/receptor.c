@@ -537,21 +537,25 @@ void __r_check_listener(T* processes,T *listener,T *signal,Q *q) {
             raise_error("null action in listener!");
         }
 
-        if (semeq(_t_symbol(action),EXPECT_ACT)) {
-            // currently if the action is EXPECT_ACT then we assume that
-            // this is actually the blocked phase of EXPECT_ACT. This could be a
-            // problem if we ever wanted our action to be an EXPECT_ACT process
-            // see the implementation of EXPECT_ACT in process.c @fixme
-            R *context = *(R**) _t_surface(action);
+        if (0) {
+            // placeholder for the kind of listener that just unblocks a process
+            // that was blocked waiting for the match, rather than the kind that
+            // creates a new process.  was EXPECT_ACT
 
-            // for now we add the params to the contexts run tree
-            /// @todo later this should be integrated into some kind of scoping handling
-            T *params = _t_clone(_t_child(listener,2));
-            _p_interpolate_from_match(params,m,signal_contents);
-            _t_add(_t_child(context->run_tree,2),params);
-            rt_cur_child(context->node_pointer) = RUN_TREE_NOT_EVAULATED;
+            /* // currently if the action is EXPECT_ACT then we assume that */
+            /* // this is actually the blocked phase of EXPECT_ACT. This could be a */
+            /* // problem if we ever wanted our action to be an EXPECT_ACT process */
+            /* // see the implementation of EXPECT_ACT in process.c @fixme */
+            /* R *context = *(R**) _t_surface(action); */
 
-            _p_unblock(q,context->id);
+            /* // for now we add the params to the contexts run tree */
+            /* /// @todo later this should be integrated into some kind of scoping handling */
+            /* T *params = _t_clone(_t_child(listener,2)); */
+            /* _p_interpolate_from_match(params,m,signal_contents); */
+            /* _t_add(_t_child(context->run_tree,2),params); */
+            /* rt_cur_child(context->node_pointer) = RUN_TREE_NOT_EVAULATED; */
+
+            /* _p_unblock(q,context->id); */
         }
         else {
             Process p = *(Process*) _t_surface(action);
