@@ -31,7 +31,7 @@ int main(int argc, const char **argv) {
     _v_start_vmhost(G_vm);
 
     while (G_vm->r->state == Alive) {
-        sleep(1);
+        sleepms(100);
     };
 
     _v_join_thread(&G_vm->clock_thread);

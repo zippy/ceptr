@@ -22,7 +22,7 @@ enum QueueError {noErr = 0, contextNotFoundErr};
 enum ReplicationPhase {EvalCondition,EvalBody};
 enum ReplicationType {ReplicateTypeCount,ReplicateTypeUnknown,ReplicateTypeCond};
 
-enum SpecialProcesses {SpecialReceptors};
+enum SpecialProcesses {SpecialReceptors,SpecialQuit};
 
 typedef struct ReplicationState {
     T *code;

@@ -79,7 +79,7 @@ void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp
     _t_news(params,INTERPOLATE_SYMBOL,VERB);
     _r_add_listener(r,DEFAULT_ASPECT,VERB,expect,params,act);
 
-    // (expect (on flux SHELL_COMMAND:time) action(send std_out (convert_to_lines (listen to clock)))
+    // (expect (on flux SHELL_COMMAND:time) action(send std_out (convert_to_lines (send clock get_time))))
 
     T *code = _t_new_root(SEND);
     _t_newi(code,RECEPTOR_ADDRESS,2); // @todo bogus!!! fix clock address
@@ -88,11 +88,14 @@ void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp
 
     addCommand(r,ox,"time","get time",code);
 
-    // (expect (on flux SHELL_COMMAND:receptor) action (send std_out (convert_to_lines (send vmhost (get receptor list from vmhost)))))
+    // (expect (on flux SHELL_COMMAND:receptor) action (send std_out (convert_to_lines (send vmhost receptor-list))))
 
     code = _t_newi(0,SPECIAL,SpecialReceptors);
-
     addCommand(r,ox,"receptors","get receptor list",code);
+
+    // (expect (on flux SHELL_COMMAND:receptor) action (send std_out (convert_to_lines (send vmhost shutdown)))
+    code = _t_newi(0,SPECIAL,SpecialQuit);
+    addCommand(r,ox,"quit","shut down the vmhost",code);
 
 }
 

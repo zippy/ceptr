@@ -548,7 +548,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
     case SPECIAL_ID:
         {switch(*(int *)_t_surface(code)) {
             case SpecialReceptors:
-                {
+                if (G_vm) {
                     char *s = malloc(10000);
                     int l = 0;
                     Xaddr xr = {INSTALLED_RECEPTOR,1};
@@ -567,6 +567,10 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                     free(s);
                 }
                 break;
+            case SpecialQuit:
+                if (G_vm) {
+                    __r_kill(G_vm->r);
+                }
             default:
                 x = __t_new_str(0,TEST_STR_SYMBOL,"blorp!",1);
             }
