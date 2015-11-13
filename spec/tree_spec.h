@@ -182,6 +182,8 @@ void testTreePathGet() {
     spec_is_symbol_equal(0,_t_symbol(_t_get(t,p33122)),PARAM_VALUE);
     spec_is_symbol_equal(0,_t_symbol(_t_get(t,p311)),HTTP_REQUEST_PATH_SEGMENT);
 
+    spec_is_str_equal(_t2s(&test_HTTP_defs,_t_getv(t,3,3,1,2,TREE_PATH_TERMINATOR)),"(HTTP_REQUEST_PATH_QUERY_PARAM (PARAM_KEY:page) (PARAM_VALUE:2))");
+
     //  _t_get returns null if tree doesn't have a node at the given path
     p311[2] = 3;
     spec_is_ptr_equal(_t_get(t,p311),NULL);

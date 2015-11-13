@@ -79,6 +79,7 @@ int _t_path_equal(int *p1,int *p2);
 int _t_path_depth(int *p);
 void _t_pathcpy(int *dst_p,int *src_p);
 T * _t_get(T *t,int *p);
+T * _t_getv(T *t,...);
 int *_t_get_path(T *t);
 void * _t_get_surface(T *t,int *p);
 char * _t_sprint_path(int *fp,char *buf);

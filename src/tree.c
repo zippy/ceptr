@@ -786,6 +786,29 @@ T * _t_get(T *t,int *p) {
 }
 
 /**
+ * get a node by path using variable arguments.
+ *
+ * @param[in] t the tree to search
+ * @returns pointer to a T
+ *
+ * note: the last argument MUST be TREE_PATH_TERMINATOR
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/tree_spec.h testTreePathGet
+ */
+T * _t_getv(T *t,...) {
+    int p[100];
+    va_list ap;
+    va_start (ap, t);
+    int i = 0;
+    while((p[i] = va_arg(ap,int)) != TREE_PATH_TERMINATOR) {
+        if (i++ == 100) raise_error("tree path to deep");
+    }
+    va_end(ap);
+    return _t_get(t,p);
+}
+
+/**
  * get the surface of a node by path
  *
  * @param[in] t the tree to search
