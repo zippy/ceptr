@@ -578,9 +578,9 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             }
         }
         break;
-    case SPECIAL_ID:
+    case MAGIC_ID:
         {switch(*(int *)_t_surface(code)) {
-            case SpecialReceptors:
+            case MagicReceptors:
                 if (G_vm) {
                     char *s = malloc(10000);
                     int l = 0;
@@ -600,7 +600,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                     free(s);
                 }
                 break;
-            case SpecialQuit:
+            case MagicQuit:
                 if (G_vm) {
                     __r_kill(G_vm->r);
                 }

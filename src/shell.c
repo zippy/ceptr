@@ -90,11 +90,11 @@ void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp
 
     // (expect (on flux SHELL_COMMAND:receptor) action (send std_out (convert_to_lines (send vmhost receptor-list))))
 
-    code = _t_newi(0,SPECIAL,SpecialReceptors);
+    code = _t_newi(0,MAGIC,MagicReceptors);
     addCommand(r,ox,"receptors","get receptor list",code);
 
     // (expect (on flux SHELL_COMMAND:receptor) action (send std_out (convert_to_lines (send vmhost shutdown)))
-    code = _t_newi(0,SPECIAL,SpecialQuit);
+    code = _t_newi(0,MAGIC,MagicQuit);
     addCommand(r,ox,"quit","shut down the vmhost",code);
 
 }

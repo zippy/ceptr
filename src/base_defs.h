@@ -532,7 +532,7 @@ enum SYSProcessIDs {
     GT_INT_ID,
     LTE_INT_ID,
     GTE_INT_ID,
-    SPECIAL_ID,
+    MAGIC_ID,
     NUM_SYS_PROCESSES
 };
 #define NOOP G_contexts[SYS_CONTEXT].processes[NOOP_ID]
@@ -560,7 +560,7 @@ enum SYSProcessIDs {
 #define GT_INT G_contexts[SYS_CONTEXT].processes[GT_INT_ID]
 #define LTE_INT G_contexts[SYS_CONTEXT].processes[LTE_INT_ID]
 #define GTE_INT G_contexts[SYS_CONTEXT].processes[GTE_INT_ID]
-#define SPECIAL G_contexts[SYS_CONTEXT].processes[SPECIAL_ID]
+#define MAGIC G_contexts[SYS_CONTEXT].processes[MAGIC_ID]
 
 /**********************************************************************************/
 // TEST:Symbol
