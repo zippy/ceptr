@@ -15,7 +15,7 @@ var group__receptor =
     [ "__r_get_symbol_structure", "group__receptor.html#ga120e66982d483fbe004fd969cf1c353f", null ],
     [ "__r_make_signal", "group__receptor.html#ga10381b27336b0b9a0849fca89dbf65a2", null ],
     [ "__set_label_for_def", "group__receptor.html#ga645381abc5b870dd686bd6731bba3703", null ],
-    [ "_r_add_listener", "group__receptor.html#gab41afaa1881acc5525b60fd6088ed389", null ],
+    [ "_r_add_expectation", "group__receptor.html#ga7f710381a10c86aeef2c6840a7bddc4b", null ],
     [ "_r_build_def_semtrex", "group__receptor.html#ga63078117d8c6850455a4419fd9b6b784", null ],
     [ "_r_code_process", "group__receptor.html#gadc94e96ede4c84e1981e3537907653b7", null ],
     [ "_r_declare_symbol", "group__receptor.html#ga436d69cd861739b56bb32b7bf6f315ab", null ],

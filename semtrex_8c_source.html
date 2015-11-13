@@ -1141,7 +1141,7 @@ $(document).ready(function(){initNavTree('semtrex_8c_source.html','');});
 <div class="line"><a name="l01165"></a><span class="lineno"> 1165</span>&#160;    <a class="code" href="structT.html">T</a> *t,*s = <a class="code" href="group__semtrex.html#gad46a0cafec3ba9ca1500ecd6f8984238">makeASCIITree</a>(stx);</div>
 <div class="line"><a name="l01166"></a><span class="lineno"> 1166</span>&#160;</div>
 <div class="line"><a name="l01168"></a><span class="lineno"> 1168</span>&#160;    <span class="comment">// build the token stream out of an ascii stream</span></div>
-<div class="line"><a name="l01169"></a><span class="lineno"> 1169</span>&#160;    <span class="comment">// EXPECTATION</span></div>
+<div class="line"><a name="l01169"></a><span class="lineno"> 1169</span>&#160;    <span class="comment">// PATTERN</span></div>
 <div class="line"><a name="l01170"></a><span class="lineno"> 1170</span>&#160;    <span class="comment">// &quot;/{STX_TOKENS:(ASCII_CHARS/({STX_SL:ASCII_CHAR=&#39;/&#39;})|(({STX_OP:ASCII_CHAR=&#39;(&#39;})|(({STX_CP:ASCII_CHAR=&#39;)&#39;})|(({STX_PLUS:ASCII_CHAR=&#39;+&#39;})|(({STX_COMMA:ASCII_CHAR=&#39;,&#39;})|((ASCII_CHAR=&#39;!&#39;,{STX_EXCEPT:[a-zA-Z0-9_]+})|(({STX_CG:ASCII_CHAR=&#39;}&#39;})|(({STX_STAR:ASCII_CHAR=&#39;*&#39;})|(({STX_LABEL:[a-zA-Z0-9_]+})|(ASCII_CHAR=&#39;{&#39;,{STX_OG:[a-zA-Z0-9_]+},ASCII_CHAR=&#39;:&#39;)))))))))+)}</span></div>
 <div class="line"><a name="l01171"></a><span class="lineno"> 1171</span>&#160;    <a class="code" href="structT.html">T</a> *ts = _t_news(0,SEMTREX_GROUP,STX_TOKENS);</div>
 <div class="line"><a name="l01172"></a><span class="lineno"> 1172</span>&#160;    <a class="code" href="structT.html">T</a> *g = <a class="code" href="group__semtrex.html#ga12e70dc3d5fde33655e8731ad3bdd935">_sl</a>(ts,ASCII_CHARS);</div>
@@ -1329,7 +1329,7 @@ $(document).ready(function(){initNavTree('semtrex_8c_source.html','');});
 <div class="line"><a name="l01356"></a><span class="lineno"> 1356</span>&#160;        dump_tokens(<span class="stringliteral">&quot;TOKENS_AFTER_SETS:&quot;</span>);</div>
 <div class="line"><a name="l01357"></a><span class="lineno"> 1357</span>&#160;</div>
 <div class="line"><a name="l01359"></a><span class="lineno"> 1359</span>&#160;        <span class="comment">// convert STX_EQ/STX_NEQ to SEMTREX_VALUE_LITERALS</span></div>
-<div class="line"><a name="l01360"></a><span class="lineno"> 1360</span>&#160;        <span class="comment">// EXPECTATION</span></div>
+<div class="line"><a name="l01360"></a><span class="lineno"> 1360</span>&#160;        <span class="comment">// PATTERN</span></div>
 <div class="line"><a name="l01361"></a><span class="lineno"> 1361</span>&#160;        <span class="comment">// /%&lt;SEMTREX_VALUE_LITERAL:STX_EQ|STX_NEQ,&lt;SEMTREX_VALUE_SET:STX_VAL_I|STX_VAL_F|STX_VAL_S|STX_VAL_C|STX_SET)&gt;&gt;</span></div>
 <div class="line"><a name="l01362"></a><span class="lineno"> 1362</span>&#160;        sxx = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(SEMTREX_WALK);</div>
 <div class="line"><a name="l01363"></a><span class="lineno"> 1363</span>&#160;        g = _t_news(sxx,SEMTREX_GROUP,SEMTREX_VALUE_LITERAL);</div>
@@ -1397,7 +1397,7 @@ $(document).ready(function(){initNavTree('semtrex_8c_source.html','');});
 <div class="line"><a name="l01425"></a><span class="lineno"> 1425</span>&#160;        dump_tokens(<span class="stringliteral">&quot;TOKENS_AFTER_VALUE_LITERAL:&quot;</span>);</div>
 <div class="line"><a name="l01426"></a><span class="lineno"> 1426</span>&#160;</div>
 <div class="line"><a name="l01428"></a><span class="lineno"> 1428</span>&#160;        <span class="comment">// replace paren groups with STX_SIBS list</span></div>
-<div class="line"><a name="l01429"></a><span class="lineno"> 1429</span>&#160;        <span class="comment">// EXPECTATION</span></div>
+<div class="line"><a name="l01429"></a><span class="lineno"> 1429</span>&#160;        <span class="comment">// PATTERN</span></div>
 <div class="line"><a name="l01430"></a><span class="lineno"> 1430</span>&#160;        <span class="comment">// /STX_TOKENS/.*,&lt;STX_OP:STX_OP,&lt;STX_SIBS:!{STX_CP,STX_OP}+&gt;,STX_CP&gt;</span></div>
 <div class="line"><a name="l01431"></a><span class="lineno"> 1431</span>&#160;        sxx = <a class="code" href="group__semtrex.html#ga12e70dc3d5fde33655e8731ad3bdd935">_sl</a>(0,STX_TOKENS);</div>
 <div class="line"><a name="l01432"></a><span class="lineno"> 1432</span>&#160;        sq = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(sxx,SEMTREX_SEQUENCE);</div>
@@ -1424,7 +1424,7 @@ $(document).ready(function(){initNavTree('semtrex_8c_source.html','');});
 <div class="line"><a name="l01453"></a><span class="lineno"> 1453</span>&#160;        dump_tokens(<span class="stringliteral">&quot;TOKENS_AFTER_SIBS:&quot;</span>);</div>
 <div class="line"><a name="l01454"></a><span class="lineno"> 1454</span>&#160;</div>
 <div class="line"><a name="l01456"></a><span class="lineno"> 1456</span>&#160;        <span class="comment">// find groups</span></div>
-<div class="line"><a name="l01457"></a><span class="lineno"> 1457</span>&#160;        <span class="comment">// EXPECTATION</span></div>
+<div class="line"><a name="l01457"></a><span class="lineno"> 1457</span>&#160;        <span class="comment">// PATTERN</span></div>
 <div class="line"><a name="l01458"></a><span class="lineno"> 1458</span>&#160;        <span class="comment">// /%,&lt;STX_OG:STX_OG,&lt;SEMTREX_GROUP:!{STX_CG,STX_OG}+&gt;,STX_CG&gt;</span></div>
 <div class="line"><a name="l01459"></a><span class="lineno"> 1459</span>&#160;        sxx = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(SEMTREX_WALK);</div>
 <div class="line"><a name="l01460"></a><span class="lineno"> 1460</span>&#160;        g = _t_news(sxx,SEMTREX_GROUP,STX_OG);</div>
@@ -1453,7 +1453,7 @@ $(document).ready(function(){initNavTree('semtrex_8c_source.html','');});
 <div class="line"><a name="l01483"></a><span class="lineno"> 1483</span>&#160;        dump_tokens(<span class="stringliteral">&quot;TOKENS_AFTER_GROUPS:&quot;</span>);</div>
 <div class="line"><a name="l01484"></a><span class="lineno"> 1484</span>&#160;</div>
 <div class="line"><a name="l01486"></a><span class="lineno"> 1486</span>&#160;        <span class="comment">// if there are any parens left we raise mismatch!</span></div>
-<div class="line"><a name="l01487"></a><span class="lineno"> 1487</span>&#160;        <span class="comment">// EXPECTATION</span></div>
+<div class="line"><a name="l01487"></a><span class="lineno"> 1487</span>&#160;        <span class="comment">// PATTERN</span></div>
 <div class="line"><a name="l01488"></a><span class="lineno"> 1488</span>&#160;        <span class="comment">// /(STX_TOKENS/.*,(STX_OP)|(STX_CP))</span></div>
 <div class="line"><a name="l01489"></a><span class="lineno"> 1489</span>&#160;        sxx = <a class="code" href="group__semtrex.html#ga12e70dc3d5fde33655e8731ad3bdd935">_sl</a>(0,STX_TOKENS);</div>
 <div class="line"><a name="l01490"></a><span class="lineno"> 1490</span>&#160;        sq = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(sxx,SEMTREX_SEQUENCE);</div>
@@ -1471,7 +1471,7 @@ $(document).ready(function(){initNavTree('semtrex_8c_source.html','');});
 <div class="line"><a name="l01502"></a><span class="lineno"> 1502</span>&#160;        <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(sxx);</div>
 <div class="line"><a name="l01503"></a><span class="lineno"> 1503</span>&#160;</div>
 <div class="line"><a name="l01505"></a><span class="lineno"> 1505</span>&#160;        <span class="comment">// convert postfix groups</span></div>
-<div class="line"><a name="l01506"></a><span class="lineno"> 1506</span>&#160;        <span class="comment">// EXPECTATION</span></div>
+<div class="line"><a name="l01506"></a><span class="lineno"> 1506</span>&#160;        <span class="comment">// PATTERN</span></div>
 <div class="line"><a name="l01507"></a><span class="lineno"> 1507</span>&#160;        <span class="comment">// /*&lt;STX_POSTFIX:.,STX_PLUS|STX_STAR|STX_Q&gt;</span></div>
 <div class="line"><a name="l01508"></a><span class="lineno"> 1508</span>&#160;        sxx = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(SEMTREX_WALK);</div>
 <div class="line"><a name="l01509"></a><span class="lineno"> 1509</span>&#160;        g = _t_news(sxx,SEMTREX_GROUP,STX_POSTFIX);</div>
@@ -1509,7 +1509,7 @@ $(document).ready(function(){initNavTree('semtrex_8c_source.html','');});
 <div class="line"><a name="l01541"></a><span class="lineno"> 1541</span>&#160;        dump_tokens(<span class="stringliteral">&quot;TOKENS_AFTER_POSTFIX:&quot;</span>);</div>
 <div class="line"><a name="l01542"></a><span class="lineno"> 1542</span>&#160;</div>
 <div class="line"><a name="l01544"></a><span class="lineno"> 1544</span>&#160;        <span class="comment">// convert not</span></div>
-<div class="line"><a name="l01545"></a><span class="lineno"> 1545</span>&#160;        <span class="comment">// EXPECTATION</span></div>
+<div class="line"><a name="l01545"></a><span class="lineno"> 1545</span>&#160;        <span class="comment">// PATTERN</span></div>
 <div class="line"><a name="l01546"></a><span class="lineno"> 1546</span>&#160;        <span class="comment">// /%&lt;SEMTREX_NOT:STX_NOT,.&gt;</span></div>
 <div class="line"><a name="l01547"></a><span class="lineno"> 1547</span>&#160;        sxx = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(SEMTREX_WALK);</div>
 <div class="line"><a name="l01548"></a><span class="lineno"> 1548</span>&#160;        g = _t_news(sxx,SEMTREX_GROUP,SEMTREX_NOT);</div>
@@ -1539,7 +1539,7 @@ $(document).ready(function(){initNavTree('semtrex_8c_source.html','');});
 <div class="line"><a name="l01572"></a><span class="lineno"> 1572</span>&#160;        dump_tokens(<span class="stringliteral">&quot;TOKENS_AFTER_NOT:&quot;</span>);</div>
 <div class="line"><a name="l01573"></a><span class="lineno"> 1573</span>&#160;</div>
 <div class="line"><a name="l01575"></a><span class="lineno"> 1575</span>&#160;        <span class="comment">// convert things following slashes to children of things preceeding slashes</span></div>
-<div class="line"><a name="l01576"></a><span class="lineno"> 1576</span>&#160;        <span class="comment">// EXPECTATION</span></div>
+<div class="line"><a name="l01576"></a><span class="lineno"> 1576</span>&#160;        <span class="comment">// PATTERN</span></div>
 <div class="line"><a name="l01577"></a><span class="lineno"> 1577</span>&#160;        <span class="comment">// /%.*,&lt;STX_CHILD:STX_LABEL,STX_SL,!STX_SL&gt;</span></div>
 <div class="line"><a name="l01578"></a><span class="lineno"> 1578</span>&#160;        sxx = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(SEMTREX_WALK);</div>
 <div class="line"><a name="l01579"></a><span class="lineno"> 1579</span>&#160;        sq = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(sxx,SEMTREX_SEQUENCE);</div>
@@ -1576,7 +1576,7 @@ $(document).ready(function(){initNavTree('semtrex_8c_source.html','');});
 <div class="line"><a name="l01610"></a><span class="lineno"> 1610</span>&#160;</div>
 <div class="line"><a name="l01611"></a><span class="lineno"> 1611</span>&#160;</div>
 <div class="line"><a name="l01613"></a><span class="lineno"> 1613</span>&#160;        <span class="comment">// convert STX_SET to SEMTREX_LITERALS</span></div>
-<div class="line"><a name="l01614"></a><span class="lineno"> 1614</span>&#160;        <span class="comment">// EXPECTATION</span></div>
+<div class="line"><a name="l01614"></a><span class="lineno"> 1614</span>&#160;        <span class="comment">// PATTERN</span></div>
 <div class="line"><a name="l01615"></a><span class="lineno"> 1615</span>&#160;        <span class="comment">// /%&lt;SEMTREX_SYMBOL_LITERAL:STX_EXCEPT=&quot;!&quot;?,STX_SET&gt;</span></div>
 <div class="line"><a name="l01616"></a><span class="lineno"> 1616</span>&#160;</div>
 <div class="line"><a name="l01617"></a><span class="lineno"> 1617</span>&#160;        sxx = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(SEMTREX_WALK);</div>
@@ -1620,7 +1620,7 @@ $(document).ready(function(){initNavTree('semtrex_8c_source.html','');});
 <div class="line"><a name="l01655"></a><span class="lineno"> 1655</span>&#160;        dump_tokens(<span class="stringliteral">&quot;TOKENS_AFTER_LITERAL_STX_SET:&quot;</span>);</div>
 <div class="line"><a name="l01656"></a><span class="lineno"> 1656</span>&#160;</div>
 <div class="line"><a name="l01658"></a><span class="lineno"> 1658</span>&#160;        <span class="comment">// convert labels to SEMTREX_LITERALS</span></div>
-<div class="line"><a name="l01659"></a><span class="lineno"> 1659</span>&#160;        <span class="comment">// EXPECTATION</span></div>
+<div class="line"><a name="l01659"></a><span class="lineno"> 1659</span>&#160;        <span class="comment">// PATTERN</span></div>
 <div class="line"><a name="l01660"></a><span class="lineno"> 1660</span>&#160;        <span class="comment">// /%&lt;SEMTREX_SYMBOL_LITERAL:STX_LABEL|STX_EXCEPT&gt;</span></div>
 <div class="line"><a name="l01661"></a><span class="lineno"> 1661</span>&#160;        sxx = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(SEMTREX_WALK);</div>
 <div class="line"><a name="l01662"></a><span class="lineno"> 1662</span>&#160;        g = _t_news(sxx,SEMTREX_GROUP,SEMTREX_SYMBOL_LITERAL);</div>
@@ -1647,7 +1647,7 @@ $(document).ready(function(){initNavTree('semtrex_8c_source.html','');});
 <div class="line"><a name="l01683"></a><span class="lineno"> 1683</span>&#160;        dump_tokens(<span class="stringliteral">&quot;TOKENS_AFTER_LITERAL:&quot;</span>);</div>
 <div class="line"><a name="l01684"></a><span class="lineno"> 1684</span>&#160;</div>
 <div class="line"><a name="l01686"></a><span class="lineno"> 1686</span>&#160;        <span class="comment">// convert comma tokens to sequences</span></div>
-<div class="line"><a name="l01687"></a><span class="lineno"> 1687</span>&#160;        <span class="comment">// EXPECTATION</span></div>
+<div class="line"><a name="l01687"></a><span class="lineno"> 1687</span>&#160;        <span class="comment">// PATTERN</span></div>
 <div class="line"><a name="l01688"></a><span class="lineno"> 1688</span>&#160;        <span class="comment">// /*&lt;SEMTREX_SEQUENCE:(!STX_COMMA,STX_COMMA)+,!STX_COMMA&gt;  -&gt;  SEMTREX_SEQUENCE</span></div>
 <div class="line"><a name="l01689"></a><span class="lineno"> 1689</span>&#160;        sxx = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(SEMTREX_WALK);</div>
 <div class="line"><a name="l01690"></a><span class="lineno"> 1690</span>&#160;        g = _t_news(sxx,SEMTREX_GROUP,SEMTREX_SEQUENCE);</div>
@@ -1689,7 +1689,7 @@ $(document).ready(function(){initNavTree('semtrex_8c_source.html','');});
 <div class="line"><a name="l01726"></a><span class="lineno"> 1726</span>&#160;</div>
 <div class="line"><a name="l01727"></a><span class="lineno"> 1727</span>&#160;</div>
 <div class="line"><a name="l01729"></a><span class="lineno"> 1729</span>&#160;        <span class="comment">// convert ors</span></div>
-<div class="line"><a name="l01730"></a><span class="lineno"> 1730</span>&#160;        <span class="comment">// EXPECTATION</span></div>
+<div class="line"><a name="l01730"></a><span class="lineno"> 1730</span>&#160;        <span class="comment">// PATTERN</span></div>
 <div class="line"><a name="l01731"></a><span class="lineno"> 1731</span>&#160;        <span class="comment">// /%&lt;SEMTREX_OR:!STX_OR,STX_OR,!STX_OR&gt;</span></div>
 <div class="line"><a name="l01732"></a><span class="lineno"> 1732</span>&#160;        sxx = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(SEMTREX_WALK);</div>
 <div class="line"><a name="l01733"></a><span class="lineno"> 1733</span>&#160;        g = _t_news(sxx,SEMTREX_GROUP,SEMTREX_OR);</div>
@@ -1722,7 +1722,7 @@ $(document).ready(function(){initNavTree('semtrex_8c_source.html','');});
 <div class="line"><a name="l01760"></a><span class="lineno"> 1760</span>&#160;        dump_tokens(<span class="stringliteral">&quot;TOKENS_AFTER_ORS:&quot;</span>);</div>
 <div class="line"><a name="l01761"></a><span class="lineno"> 1761</span>&#160;</div>
 <div class="line"><a name="l01763"></a><span class="lineno"> 1763</span>&#160;        <span class="comment">// fixup STX_WALK</span></div>
-<div class="line"><a name="l01764"></a><span class="lineno"> 1764</span>&#160;        <span class="comment">// EXPECTATION</span></div>
+<div class="line"><a name="l01764"></a><span class="lineno"> 1764</span>&#160;        <span class="comment">// PATTERN</span></div>
 <div class="line"><a name="l01765"></a><span class="lineno"> 1765</span>&#160;        <span class="comment">// /%&lt;SEMTREX_WALK:STX_WALK,.&gt;</span></div>
 <div class="line"><a name="l01766"></a><span class="lineno"> 1766</span>&#160;        sxx = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(SEMTREX_WALK);</div>
 <div class="line"><a name="l01767"></a><span class="lineno"> 1767</span>&#160;        g = _t_news(sxx,SEMTREX_GROUP,SEMTREX_WALK);</div>
@@ -1749,7 +1749,7 @@ $(document).ready(function(){initNavTree('semtrex_8c_source.html','');});
 <div class="line"><a name="l01788"></a><span class="lineno"> 1788</span>&#160;        dump_tokens(<span class="stringliteral">&quot;TOKENS_AFTER_WALK:&quot;</span>);</div>
 <div class="line"><a name="l01789"></a><span class="lineno"> 1789</span>&#160;</div>
 <div class="line"><a name="l01791"></a><span class="lineno"> 1791</span>&#160;        <span class="comment">// remove stray STX_SIBS</span></div>
-<div class="line"><a name="l01792"></a><span class="lineno"> 1792</span>&#160;        <span class="comment">// EXPECTATION</span></div>
+<div class="line"><a name="l01792"></a><span class="lineno"> 1792</span>&#160;        <span class="comment">// PATTERN</span></div>
 <div class="line"><a name="l01793"></a><span class="lineno"> 1793</span>&#160;        <span class="comment">// /%&lt;STX_SIBS:STX_SIBS&gt;</span></div>
 <div class="line"><a name="l01794"></a><span class="lineno"> 1794</span>&#160;        sxx = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(SEMTREX_WALK);</div>
 <div class="line"><a name="l01795"></a><span class="lineno"> 1795</span>&#160;        g = _t_news(sxx,SEMTREX_GROUP,STX_SIBS);</div>
@@ -1878,7 +1878,7 @@ $(document).ready(function(){initNavTree('semtrex_8c_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="semtrex_8c.html">semtrex.c</a></li>
-    <li class="footer">Generated on Fri Nov 13 2015 17:16:32 for ceptr by
+    <li class="footer">Generated on Fri Nov 13 2015 17:37:19 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

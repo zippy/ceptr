@@ -112,7 +112,7 @@ $(document).ready(function(){initNavTree('shell_8c_source.html','');});
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keywordtype">void</span> addCommand(<a class="code" href="structReceptor.html">Receptor</a> *r,<a class="code" href="structXaddr.html">Xaddr</a> ox,<span class="keywordtype">char</span> *command,<span class="keywordtype">char</span> *desc,<a class="code" href="structT.html">T</a> *code) {</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <a class="code" href="structT.html">T</a> *expect = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(EXPECTATION);</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <a class="code" href="structT.html">T</a> *expect = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(PATTERN);</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <a class="code" href="structT.html">T</a> *s = _t_news(expect,SEMTREX_GROUP,SHELL_COMMAND);</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <a class="code" href="structT.html">T</a> *cm = <a class="code" href="group__semtrex.html#ga12e70dc3d5fde33655e8731ad3bdd935">_sl</a>(s,SHELL_COMMAND);</div>
@@ -129,7 +129,7 @@ $(document).ready(function(){initNavTree('shell_8c_source.html','');});
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <a class="code" href="structT.html">T</a> *act = <a class="code" href="group__tree.html#ga48ffc2a6e4aa4856b76fb53b97db87f3">_t_newp</a>(0,ACTION,proc);</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <a class="code" href="structT.html">T</a> *params = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(PARAMS);</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <a class="code" href="group__receptor.html#gab41afaa1881acc5525b60fd6088ed389">_r_add_listener</a>(r,DEFAULT_ASPECT,VERB,expect,params,act);</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <a class="code" href="group__receptor.html#ga7f710381a10c86aeef2c6840a7bddc4b">_r_add_expectation</a>(r,DEFAULT_ASPECT,VERB,expect,params,act);</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;}</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keywordtype">void</span> makeShell(<a class="code" href="structVMHost.html">VMHost</a> *v,FILE *input, FILE *output,<a class="code" href="structReceptor.html">Receptor</a> **irp,<a class="code" href="structReceptor.html">Receptor</a> **orp,<a class="code" href="structStream.html">Stream</a> **isp,<a class="code" href="structStream.html">Stream</a> **osp) {</div>
@@ -159,7 +159,7 @@ $(document).ready(function(){initNavTree('shell_8c_source.html','');});
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="comment">// create expectations for commands</span></div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="comment">// (expect (on std_in LINE) action (send self (shell_command parsed from LINE))</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <a class="code" href="structT.html">T</a> *expect = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(EXPECTATION);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <a class="code" href="structT.html">T</a> *expect = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(PATTERN);</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <a class="code" href="structT.html">T</a> *s = _t_news(expect,SEMTREX_GROUP,VERB);</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <a class="code" href="group__semtrex.html#ga12e70dc3d5fde33655e8731ad3bdd935">_sl</a>(s,LINE);</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <a class="code" href="structT.html">T</a> *p = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(SAY);</div>
@@ -175,7 +175,7 @@ $(document).ready(function(){initNavTree('shell_8c_source.html','');});
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <a class="code" href="structT.html">T</a> *act = <a class="code" href="group__tree.html#ga48ffc2a6e4aa4856b76fb53b97db87f3">_t_newp</a>(0,ACTION,proc);</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <a class="code" href="structT.html">T</a>* params = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(PARAMS);</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    _t_news(params,INTERPOLATE_SYMBOL,VERB);</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <a class="code" href="group__receptor.html#gab41afaa1881acc5525b60fd6088ed389">_r_add_listener</a>(r,DEFAULT_ASPECT,VERB,expect,params,act);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <a class="code" href="group__receptor.html#ga7f710381a10c86aeef2c6840a7bddc4b">_r_add_expectation</a>(r,DEFAULT_ASPECT,VERB,expect,params,act);</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="comment">// (expect (on flux SHELL_COMMAND:time) action(send std_out (convert_to_lines (send clock get_time))))</span></div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
@@ -204,10 +204,10 @@ $(document).ready(function(){initNavTree('shell_8c_source.html','');});
 <div class="ttc" id="shell_8h_html"><div class="ttname"><a href="shell_8h.html">shell.h</a></div><div class="ttdoc">command line shell receptor header files </div></div>
 <div class="ttc" id="semtrex_8h_html"><div class="ttname"><a href="semtrex_8h.html">semtrex.h</a></div><div class="ttdoc">Semantic tree regular expression header file. </div></div>
 <div class="ttc" id="group__tree_html_ga3e2009f5a82889263d560d2c1479606a"><div class="ttname"><a href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a></div><div class="ttdeci">T * _t_newr(T *parent, Symbol symbol)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00147">tree.c:147</a></div></div>
+<div class="ttc" id="group__receptor_html_ga7f710381a10c86aeef2c6840a7bddc4b"><div class="ttname"><a href="group__receptor.html#ga7f710381a10c86aeef2c6840a7bddc4b">_r_add_expectation</a></div><div class="ttdeci">void _r_add_expectation(Receptor *r, Aspect aspect, Symbol carrier, T *pattern, T *params, T *action)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00117">receptor.c:117</a></div></div>
 <div class="ttc" id="group__tree_html_ga48ffc2a6e4aa4856b76fb53b97db87f3"><div class="ttname"><a href="group__tree.html#ga48ffc2a6e4aa4856b76fb53b97db87f3">_t_newp</a></div><div class="ttdeci">T * _t_newp(T *parent, Symbol symbol, Process surface)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00227">tree.c:227</a></div></div>
 <div class="ttc" id="group__receptor_html_gadc94e96ede4c84e1981e3537907653b7"><div class="ttname"><a href="group__receptor.html#gadc94e96ede4c84e1981e3537907653b7">_r_code_process</a></div><div class="ttdeci">Process _r_code_process(Receptor *r, T *code, char *name, char *intention, T *signature)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00222">receptor.c:222</a></div></div>
 <div class="ttc" id="group__receptor_html_ga436d69cd861739b56bb32b7bf6f315ab"><div class="ttname"><a href="group__receptor.html#ga436d69cd861739b56bb32b7bf6f315ab">_r_declare_symbol</a></div><div class="ttdeci">Symbol _r_declare_symbol(Receptor *r, Structure s, char *label)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00184">receptor.c:184</a></div></div>
-<div class="ttc" id="group__receptor_html_gab41afaa1881acc5525b60fd6088ed389"><div class="ttname"><a href="group__receptor.html#gab41afaa1881acc5525b60fd6088ed389">_r_add_listener</a></div><div class="ttdeci">void _r_add_listener(Receptor *r, Aspect aspect, Symbol carrier, T *expectation, T *params, T *action)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00117">receptor.c:117</a></div></div>
 <div class="ttc" id="group__vmhost_html_ga53694170e5452b8062ec405e6a9a3f60"><div class="ttname"><a href="group__vmhost.html#ga53694170e5452b8062ec405e6a9a3f60">_v_activate</a></div><div class="ttdeci">void _v_activate(VMHost *v, Xaddr x)</div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8c_source.html#l00142">vmhost.c:142</a></div></div>
 <div class="ttc" id="structVMHost_html"><div class="ttname"><a href="structVMHost.html">VMHost</a></div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8h_source.html#l00033">vmhost.h:33</a></div></div>
 <div class="ttc" id="structReceptor_html"><div class="ttname"><a href="structReceptor.html">Receptor</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00239">ceptr_types.h:239</a></div></div>
@@ -224,7 +224,7 @@ $(document).ready(function(){initNavTree('shell_8c_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="shell_8c.html">shell.c</a></li>
-    <li class="footer">Generated on Fri Nov 13 2015 17:16:32 for ceptr by
+    <li class="footer">Generated on Fri Nov 13 2015 17:37:19 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

@@ -492,7 +492,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_join_thread</b> (<
 <p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structVMHost.html">VMHost</a> *v = <a class="code" href="group__vmhost.html#gab6fbe5683628fb0d62a966316ced938d">_v_new</a>();</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// test the structure of the VM_HOST receptor</span></div>
-<div class="line">    spec_is_str_equal(t2s(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>-&gt;<a class="code" href="structReceptor.html#aec6f1eee133a993b59baf50e75620fb6">root</a>),<span class="stringliteral">&quot;(VM_HOST_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))&quot;</span>);</div>
+<div class="line">    spec_is_str_equal(t2s(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>-&gt;<a class="code" href="structReceptor.html#aec6f1eee133a993b59baf50e75620fb6">root</a>),<span class="stringliteral">&quot;(VM_HOST_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (EXPECTATIONS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))&quot;</span>);</div>
 <div class="line"></div>
 <div class="line">    <a class="code" href="structXaddr.html">Xaddr</a> cx = {COMPOSITORY,1};</div>
 <div class="line">    <a class="code" href="structReceptor.html">Receptor</a> *c = <a class="code" href="group__receptor.html#gac438809f0d3f3add97efd49729c9027f">__r_get_receptor</a>(<a class="code" href="group__receptor.html#gadc618904f81240b244e816234d1c906e">_r_get_instance</a>(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,cx));</div>
@@ -576,7 +576,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_join_thread</b> (<
 <div class="line"><span class="comment">/*     // add a listener that matches on any request with &quot;Host: helloworld.org&quot; */</span></div>
 <div class="line"><span class="comment">/*     // /HTTP_REQUEST/.*,HTTP_REQUEST_HOST=helloworld.org */</span></div>
 <div class="line"><span class="comment">/*     T *act = _t_newp(0,ACTION,-1); */</span></div>
-<div class="line"><span class="comment">/*     T *expect = _t_new_root(EXPECTATION); */</span></div>
+<div class="line"><span class="comment">/*     T *expect = _t_new_root(PATTERN); */</span></div>
 <div class="line"><span class="comment">/*     T *req = _t_newi(expect,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST); */</span></div>
 <div class="line"><span class="comment">/*     T *ss = _t_newi(req,SEMTREX_SEQUENCE,0); */</span></div>
 <div class="line"><span class="comment">/*     T *sss = _t_newi(ss,SEMTREX_ZERO_OR_MORE,0); */</span></div>
@@ -596,7 +596,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_join_thread</b> (<
 <div class="line"><span class="comment">/*     spec_is_str_equal(_dump_semtrex(test_HTTP_defs,req,buf),&quot;/(HTTP_REQUEST/.*,HTTP_REQUEST_HOST=helloworld.com)&quot;); */</span></div>
 <div class="line"><span class="comment">/*     free(sv); */</span></div>
 <div class="line"></div>
-<div class="line"><span class="comment">/*     _r_add_listener(hello_r,DEFAULT_ASPECT,HTTP_REQUEST,expect,act); */</span></div>
+<div class="line"><span class="comment">/*     _r_add_expectation(hello_r,DEFAULT_ASPECT,HTTP_REQUEST,expect,act); */</span></div>
 <div class="line"></div>
 <div class="line"><span class="comment">/*     // build up an HTTP_REQUEST tree that corresponds with a simple get for host helloworld.com */</span></div>
 <div class="line"><span class="comment">/*     T *s = _t_new_root(HTTP_REQUEST); */</span></div>
@@ -667,7 +667,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_join_thread</b> (<
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Nov 13 2015 17:16:32 for ceptr by
+    <li class="footer">Generated on Fri Nov 13 2015 17:37:19 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

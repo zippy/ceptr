@@ -38,7 +38,7 @@ var receptor_8h =
     [ "__r_send", "group__receptor.html#ga5bb9c9f7caa8240b191fe33c0f7ea157", null ],
     [ "__set_label_for_def", "group__receptor.html#ga645381abc5b870dd686bd6731bba3703", null ],
     [ "__td", "group__receptor.html#gad673a5f7dd1499eb01a4ea6a8ca39256", null ],
-    [ "_r_add_listener", "group__receptor.html#gab41afaa1881acc5525b60fd6088ed389", null ],
+    [ "_r_add_expectation", "group__receptor.html#ga7f710381a10c86aeef2c6840a7bddc4b", null ],
     [ "_r_build_def_semtrex", "group__receptor.html#ga63078117d8c6850455a4419fd9b6b784", null ],
     [ "_r_code_process", "group__receptor.html#gadc94e96ede4c84e1981e3537907653b7", null ],
     [ "_r_declare_symbol", "group__receptor.html#ga436d69cd861739b56bb32b7bf6f315ab", null ],

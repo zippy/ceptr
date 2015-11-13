@@ -963,7 +963,7 @@ $(document).ready(function(){initNavTree('process__spec_8h_source.html','');});
 <div class="line"><a name="l00878"></a><span class="lineno">  878</span>&#160;    <a class="code" href="structT.html">T</a> *n = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(LISTEN);</div>
 <div class="line"><a name="l00879"></a><span class="lineno">  879</span>&#160;    _t_newi(n,ASPECT,DEFAULT_ASPECT);</div>
 <div class="line"><a name="l00880"></a><span class="lineno">  880</span>&#160;    _t_news(n,CARRIER,TICK);</div>
-<div class="line"><a name="l00881"></a><span class="lineno">  881</span>&#160;    <a class="code" href="structT.html">T</a> *match = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(n,EXPECTATION);</div>
+<div class="line"><a name="l00881"></a><span class="lineno">  881</span>&#160;    <a class="code" href="structT.html">T</a> *match = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(n,PATTERN);</div>
 <div class="line"><a name="l00882"></a><span class="lineno">  882</span>&#160;    <a class="code" href="group__semtrex.html#ga12e70dc3d5fde33655e8731ad3bdd935">_sl</a>(match,TICK);</div>
 <div class="line"><a name="l00883"></a><span class="lineno">  883</span>&#160;    <a class="code" href="structT.html">T</a> *a = <a class="code" href="group__tree.html#ga48ffc2a6e4aa4856b76fb53b97db87f3">_t_newp</a>(n,ACTION,NOOP);</div>
 <div class="line"><a name="l00884"></a><span class="lineno">  884</span>&#160;    _t_newi(a,TEST_INT_SYMBOL,314);</div>
@@ -972,7 +972,7 @@ $(document).ready(function(){initNavTree('process__spec_8h_source.html','');});
 <div class="line"><a name="l00887"></a><span class="lineno">  887</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(n);</div>
 <div class="line"><a name="l00888"></a><span class="lineno">  888</span>&#160;</div>
 <div class="line"><a name="l00889"></a><span class="lineno">  889</span>&#160;    <a class="code" href="structT.html">T</a> *l = __r_get_listeners(r,DEFAULT_ASPECT);</div>
-<div class="line"><a name="l00890"></a><span class="lineno">  890</span>&#160;    spec_is_str_equal(t2s(l),<span class="stringliteral">&quot;(LISTENERS (LISTENER:TICK (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TICK))) (PARAMS (INTERPOLATE_SYMBOL:NULL_SYMBOL)) (ACTION:NOOP (TEST_INT_SYMBOL:314))))&quot;</span>);</div>
+<div class="line"><a name="l00890"></a><span class="lineno">  890</span>&#160;    spec_is_str_equal(t2s(l),<span class="stringliteral">&quot;(EXPECTATIONS (EXPECTATON:TICK (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TICK))) (PARAMS (INTERPOLATE_SYMBOL:NULL_SYMBOL)) (ACTION:NOOP (TEST_INT_SYMBOL:314))))&quot;</span>);</div>
 <div class="line"><a name="l00891"></a><span class="lineno">  891</span>&#160;</div>
 <div class="line"><a name="l00892"></a><span class="lineno">  892</span>&#160;    _r_remove_listener(r, <a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(l,1));</div>
 <div class="line"><a name="l00893"></a><span class="lineno">  893</span>&#160;</div>
@@ -980,7 +980,7 @@ $(document).ready(function(){initNavTree('process__spec_8h_source.html','');});
 <div class="line"><a name="l00895"></a><span class="lineno">  895</span>&#160;    n = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(LISTEN);</div>
 <div class="line"><a name="l00896"></a><span class="lineno">  896</span>&#160;    _t_newi(n,ASPECT,DEFAULT_ASPECT);</div>
 <div class="line"><a name="l00897"></a><span class="lineno">  897</span>&#160;    _t_news(n,CARRIER,TEST_STR_SYMBOL);</div>
-<div class="line"><a name="l00898"></a><span class="lineno">  898</span>&#160;    match = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(n,EXPECTATION);</div>
+<div class="line"><a name="l00898"></a><span class="lineno">  898</span>&#160;    match = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(n,PATTERN);</div>
 <div class="line"><a name="l00899"></a><span class="lineno">  899</span>&#160;    <a class="code" href="group__semtrex.html#ga12e70dc3d5fde33655e8731ad3bdd935">_sl</a>(match,TEST_STR_SYMBOL);</div>
 <div class="line"><a name="l00900"></a><span class="lineno">  900</span>&#160;</div>
 <div class="line"><a name="l00901"></a><span class="lineno">  901</span>&#160;    G_next_process_id = 0; <span class="comment">// reset the process ids so the test will always work</span></div>
@@ -995,7 +995,7 @@ $(document).ready(function(){initNavTree('process__spec_8h_source.html','');});
 <div class="line"><a name="l00910"></a><span class="lineno">  910</span>&#160;    spec_is_ptr_equal(q-&gt;<a class="code" href="structQ.html#ab8eb183576f2b1753d80bfcfdd0cd22b">blocked</a>,e);</div>
 <div class="line"><a name="l00911"></a><span class="lineno">  911</span>&#160;    spec_is_str_equal(t2s(run_tree),<span class="stringliteral">&quot;(RUN_TREE (process:LISTEN) (PARAMS))&quot;</span>);</div>
 <div class="line"><a name="l00912"></a><span class="lineno">  912</span>&#160;</div>
-<div class="line"><a name="l00913"></a><span class="lineno">  913</span>&#160;    spec_is_str_equal(t2s(__r_get_listeners(r,DEFAULT_ASPECT)),<span class="stringliteral">&quot;(LISTENERS (LISTENER:TEST_STR_SYMBOL (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TEST_STR_SYMBOL))) (PARAMS (INTERPOLATE_SYMBOL:NULL_SYMBOL)) (WAKEUP_REFERENCE (PROCESS_IDENT:1) (CODE_PATH:/1))))&quot;</span>);</div>
+<div class="line"><a name="l00913"></a><span class="lineno">  913</span>&#160;    spec_is_str_equal(t2s(__r_get_listeners(r,DEFAULT_ASPECT)),<span class="stringliteral">&quot;(EXPECTATIONS (EXPECTATON:TEST_STR_SYMBOL (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TEST_STR_SYMBOL))) (PARAMS (INTERPOLATE_SYMBOL:NULL_SYMBOL)) (WAKEUP_REFERENCE (PROCESS_IDENT:1) (CODE_PATH:/1))))&quot;</span>);</div>
 <div class="line"><a name="l00914"></a><span class="lineno">  914</span>&#160;</div>
 <div class="line"><a name="l00915"></a><span class="lineno">  915</span>&#160;    <a class="code" href="structT.html">T</a> *s = <a class="code" href="group__receptor.html#ga10381b27336b0b9a0849fca89dbf65a2">__r_make_signal</a>(0,0,DEFAULT_ASPECT,_t_new_str(0,TEST_STR_SYMBOL,<span class="stringliteral">&quot;fishy!&quot;</span>),0,0);</div>
 <div class="line"><a name="l00916"></a><span class="lineno">  916</span>&#160;    <a class="code" href="group__receptor.html#ga7d40f33135ee51640d0d24b8c9e3e046">_r_deliver</a>(r,s);</div>
@@ -1241,7 +1241,7 @@ $(document).ready(function(){initNavTree('process__spec_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><a class="el" href="process__spec_8h.html">process_spec.h</a></li>
-    <li class="footer">Generated on Fri Nov 13 2015 17:16:32 for ceptr by
+    <li class="footer">Generated on Fri Nov 13 2015 17:37:19 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

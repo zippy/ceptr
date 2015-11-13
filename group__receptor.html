@@ -199,8 +199,8 @@ Functions</h2></td></tr>
 <tr class="memitem:ga7a6afdc039a31cdf24bf93dd0475b72b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structReceptor.html">Receptor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga7a6afdc039a31cdf24bf93dd0475b72b">_r_new_receptor_from_package</a> (<a class="el" href="structSemanticID.html">Symbol</a> s, <a class="el" href="structT.html">T</a> *p, <a class="el" href="structT.html">T</a> *bindings)</td></tr>
 <tr class="memdesc:ga7a6afdc039a31cdf24bf93dd0475b72b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new receptor from a receptor package.  <a href="#ga7a6afdc039a31cdf24bf93dd0475b72b">More...</a><br /></td></tr>
 <tr class="separator:ga7a6afdc039a31cdf24bf93dd0475b72b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab41afaa1881acc5525b60fd6088ed389"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#gab41afaa1881acc5525b60fd6088ed389">_r_add_listener</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, Aspect aspect, <a class="el" href="structSemanticID.html">Symbol</a> carrier, <a class="el" href="structT.html">T</a> *expectation, <a class="el" href="structT.html">T</a> *params, <a class="el" href="structT.html">T</a> *action)</td></tr>
-<tr class="separator:gab41afaa1881acc5525b60fd6088ed389"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7f710381a10c86aeef2c6840a7bddc4b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga7f710381a10c86aeef2c6840a7bddc4b">_r_add_expectation</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, Aspect aspect, <a class="el" href="structSemanticID.html">Symbol</a> carrier, <a class="el" href="structT.html">T</a> *pattern, <a class="el" href="structT.html">T</a> *params, <a class="el" href="structT.html">T</a> *action)</td></tr>
+<tr class="separator:ga7f710381a10c86aeef2c6840a7bddc4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga260315f59f6983d629518091796f44c6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga260315f59f6983d629518091796f44c6"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>_r_remove_listener</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structT.html">T</a> *listener)</td></tr>
 <tr class="separator:ga260315f59f6983d629518091796f44c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -577,12 +577,12 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="gab41afaa1881acc5525b60fd6088ed389"></a>
+<a class="anchor" id="ga7f710381a10c86aeef2c6840a7bddc4b"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void _r_add_listener </td>
+          <td class="memname">void _r_add_expectation </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structReceptor.html">Receptor</a> *&#160;</td>
           <td class="paramname"><em>r</em>, </td>
@@ -603,7 +603,7 @@ Variables</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="structT.html">T</a> *&#160;</td>
-          <td class="paramname"><em>expectation</em>, </td>
+          <td class="paramname"><em>pattern</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -943,13 +943,13 @@ Variables</h2></td></tr>
 <div class="line"></div>
 <div class="line">    <a class="code" href="structT.html">T</a> *signal = <a class="code" href="group__receptor.html#ga10381b27336b0b9a0849fca89dbf65a2">__r_make_signal</a>(f,t,DEFAULT_ASPECT,signal_contents,0,0);</div>
 <div class="line"></div>
-<div class="line">    <span class="comment">// our expectation should match on the first path segment</span></div>
+<div class="line">    <span class="comment">// our expectation pattern should match on the first path segment</span></div>
 <div class="line">    <span class="comment">// /HTTP_REQUEST/.,.,HTTP_REQUEST_PATH/HTTP_REQUEST_PATH_SEGMENTS/&lt;HTTP_REQUEST_PATH_SEGMENT:HTTP_REQUEST_PATH_SEGMENT&gt;</span></div>
-<div class="line">    <a class="code" href="structT.html">T</a> *expect = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(EXPECTATION);</div>
+<div class="line">    <a class="code" href="structT.html">T</a> *pattern = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(PATTERN);</div>
 <div class="line">    <span class="keywordtype">char</span> *stx = <span class="stringliteral">&quot;/HTTP_REQUEST/(.,.,HTTP_REQUEST_PATH/HTTP_REQUEST_PATH_SEGMENTS/&lt;HTTP_REQUEST_PATH_SEGMENT:HTTP_REQUEST_PATH_SEGMENT&gt;)&quot;</span>;</div>
 <div class="line">    <a class="code" href="structT.html">T</a> *req = <a class="code" href="group__semtrex.html#ga17eda8e5306b5764656d7edf3f5b15bd">parseSemtrex</a>(&amp;test_HTTP_defs,stx);</div>
-<div class="line">    <a class="code" href="group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c">_t_add</a>(expect,req);</div>
-<div class="line"><span class="comment">/*    T *req = _t_news(expect,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST);</span></div>
+<div class="line">    <a class="code" href="group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c">_t_add</a>(pattern,req);</div>
+<div class="line"><span class="comment">/*    T *req = _t_news(pattern,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST);</span></div>
 <div class="line"><span class="comment">    T *seq = _t_newr(req,SEMTREX_SEQUENCE);</span></div>
 <div class="line"><span class="comment">    _t_newr(seq,SEMTREX_SYMBOL_ANY);  // skips the Version</span></div>
 <div class="line"><span class="comment">    _t_newr(seq,SEMTREX_SYMBOL_ANY);  // skips over the Method</span></div>
@@ -979,7 +979,7 @@ Variables</h2></td></tr>
 <div class="line">    <a class="code" href="http__example_8h.html#a5476caaca538a030a6770bc99a42f372">_makeTestHTTPResponseProcess</a>(r,&amp;params,&amp;p);</div>
 <div class="line">    <a class="code" href="structT.html">T</a> *act = <a class="code" href="group__tree.html#ga48ffc2a6e4aa4856b76fb53b97db87f3">_t_newp</a>(0,ACTION,p);</div>
 <div class="line"></div>
-<div class="line">    <a class="code" href="group__receptor.html#gab41afaa1881acc5525b60fd6088ed389">_r_add_listener</a>(r,DEFAULT_ASPECT,HTTP_REQUEST,expect,params,act);</div>
+<div class="line">    <a class="code" href="group__receptor.html#ga7f710381a10c86aeef2c6840a7bddc4b">_r_add_expectation</a>(r,DEFAULT_ASPECT,HTTP_REQUEST,pattern,params,act);</div>
 <div class="line"></div>
 <div class="line">    Error err = <a class="code" href="group__receptor.html#ga7d40f33135ee51640d0d24b8c9e3e046">_r_deliver</a>(r,signal);</div>
 <div class="line">    spec_is_equal(err,noDeliveryErr);</div>
@@ -1066,14 +1066,14 @@ Variables</h2></td></tr>
 <div class="line">    <a class="code" href="structT.html">T</a> *ps = r-&gt;<a class="code" href="structReceptor.html#a56e5e37eb23a3e5debf7f24723eca9ed">defs</a>.<a class="code" href="structDefs.html#aa0cf913c12ec27ee0027c64ee146c27d">protocols</a>;</div>
 <div class="line">    <span class="keywordtype">char</span> *d = _td(r,ps);</div>
 <div class="line"></div>
-<div class="line">    spec_is_str_equal(d,<span class="stringliteral">&quot;(PROTOCOLS (alive (STEPS (listen_for_ping (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping_message))) (PARAMS) (ACTION:send alive response)) (get_alive_response (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:alive_message))) (PARAMS))) (SEQUENCES (alive_server (STEP_SYMBOL:listen_for_ping)) (alive_client (STEP_SYMBOL:get_alive_response)))))&quot;</span>);</div>
+<div class="line">    spec_is_str_equal(d,<span class="stringliteral">&quot;(PROTOCOLS (alive (STEPS (listen_for_ping (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping_message))) (PARAMS) (ACTION:send alive response)) (get_alive_response (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:alive_message))) (PARAMS))) (SEQUENCES (alive_server (STEP_SYMBOL:listen_for_ping)) (alive_client (STEP_SYMBOL:get_alive_response)))))&quot;</span>);</div>
 <div class="line"></div>
 <div class="line">    <a class="code" href="structSemanticID.html">Symbol</a> alive_server = <a class="code" href="group__receptor.html#gacce906c9de30765f458599777b72be90">_r_get_symbol_by_label</a>(r,<span class="stringliteral">&quot;alive_server&quot;</span>);</div>
 <div class="line">    <a class="code" href="group__receptor.html#ga41c4e57e15ff758a44e0119a1f18ed2d">_r_express_protocol</a>(r,1,alive_server,DEFAULT_ASPECT,NULL);</div>
 <div class="line"></div>
 <div class="line">    d = _td(r,r-&gt;<a class="code" href="structReceptor.html#af8aee3ef6d1d93b80427faa57e6f1468">flux</a>);</div>
 <div class="line"></div>
-<div class="line">    spec_is_str_equal(d,<span class="stringliteral">&quot;(FLUX (ASPECT:1 (LISTENERS (LISTENER:NULL_SYMBOL (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping_message))) (PARAMS) (ACTION:send alive response))) (SIGNALS)))&quot;</span>);</div>
+<div class="line">    spec_is_str_equal(d,<span class="stringliteral">&quot;(FLUX (ASPECT:1 (EXPECTATIONS (EXPECTATON:NULL_SYMBOL (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping_message))) (PARAMS) (ACTION:send alive response))) (SIGNALS)))&quot;</span>);</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// delivering a fake signal should return a ping</span></div>
 <div class="line">    ReceptorAddress f = 3; <span class="comment">// DUMMY ADDR</span></div>
@@ -1300,7 +1300,7 @@ Variables</h2></td></tr>
 <div class="line"></div>
 <div class="line">    <span class="comment">// test that listeners and signals are set up correctly on the default aspect</span></div>
 <div class="line">    t = __r_get_listeners(r,DEFAULT_ASPECT);</div>
-<div class="line">    spec_is_symbol_equal(r,<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(t),LISTENERS);</div>
+<div class="line">    spec_is_symbol_equal(r,<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(t),EXPECTATIONS);</div>
 <div class="line">    t = __r_get_signals(r,DEFAULT_ASPECT);</div>
 <div class="line">    spec_is_symbol_equal(r,<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(t),SIGNALS);</div>
 <div class="line"></div>
@@ -1316,7 +1316,7 @@ Variables</h2></td></tr>
 <div class="line">    spec_is_symbol_equal(r,<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(t),ASPECT);</div>
 <div class="line">    spec_is_equal(*(<span class="keywordtype">int</span> *)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(t),DEFAULT_ASPECT);</div>
 <div class="line"></div>
-<div class="line">    spec_is_str_equal(t2s(r-&gt;<a class="code" href="structReceptor.html#aec6f1eee133a993b59baf50e75620fb6">root</a>),<span class="stringliteral">&quot;(TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))&quot;</span>);</div>
+<div class="line">    spec_is_str_equal(t2s(r-&gt;<a class="code" href="structReceptor.html#aec6f1eee133a993b59baf50e75620fb6">root</a>),<span class="stringliteral">&quot;(TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (EXPECTATIONS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))&quot;</span>);</div>
 <div class="line"></div>
 <div class="line">    <a class="code" href="group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8">_r_free</a>(r);</div>
 </div><!-- fragment -->
@@ -1706,7 +1706,7 @@ Variables</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Nov 13 2015 17:16:32 for ceptr by
+    <li class="footer">Generated on Fri Nov 13 2015 17:37:19 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

@@ -169,9 +169,9 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="PENDING_RESPONSE"></a>PENDING_RESPONSE</td><td><a href="ref_sys_structures.html#LIST_OF_SIGNAL_UUID_AND_CARRIER_AND_WAKEUP_REFERENCE_AND_END_CONDITIONS">LIST-OF-SIGNAL-UUID-AND-CARRIER-AND-WAKEUP-REFERENCE-AND-END-CONDITIONS</a></td><td></td></tr>
 <tr><td><a name="PENDING_RESPONSES"></a>PENDING_RESPONSES</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_PENDING_RESPONSE">ZERO-OR-MORE-OF-PENDING-RESPONSE</a></td><td></td></tr>
 <tr><td><a name="RESPONSE_CARRIER"></a>RESPONSE_CARRIER</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>            expected carrier for the response to a signal</td></tr>
-<tr><td><a name="LISTENER"></a>LISTENER</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>                    surface of the listener is the carrier symbol, and it has two children_ID, expectation semtrex and action code tree</td></tr>
-<tr><td><a name="LISTENERS"></a>LISTENERS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_LISTENER">ZERO-OR-MORE-OF-LISTENER</a></td><td>                     list of carrier/expectation/action tress that "listen" to changes on the flux</td></tr>
-<tr><td><a name="EXPECTATION"></a>EXPECTATION</td><td><a href="ref_sys_structures.html#SEMTREX">SEMTREX</a></td><td>                expectation is a semtrex (thus has one child which is the first part of the semtrex)</td></tr>
+<tr><td><a name="EXPECTATION"></a>EXPECTATION</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>                    surface of the listener is the carrier symbol, and it has two children_ID, expectation semtrex and action code tree</td></tr>
+<tr><td><a name="EXPECTATIONS"></a>EXPECTATIONS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_EXPECTATION">ZERO-OR-MORE-OF-EXPECTATION</a></td><td>                     list of carrier/expectation/action tress that "listen" to changes on the flux</td></tr>
+<tr><td><a name="PATTERN"></a>PATTERN</td><td><a href="ref_sys_structures.html#SEMTREX">SEMTREX</a></td><td>                expectation is a semtrex (thus has one child which is the first part of the semtrex)</td></tr>
 <tr><td><a name="ACTION"></a>ACTION</td><td><a href="ref_sys_structures.html#PROCESS">PROCESS</a></td><td>                     code tree_ID, which specifies the action to perform when an expectation's semtrex matches</td></tr>
 <tr><td><a name="INTERPOLATE_SYMBOL"></a>INTERPOLATE_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>          a place holder to indicate which symbol to insert into this part of the tree</td></tr>
 <tr><td><a name="PROCESS_NAME"></a>PROCESS_NAME</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
@@ -297,7 +297,7 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Nov 13 2015 17:16:32 for ceptr by
+    <li class="footer">Generated on Fri Nov 13 2015 17:37:19 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
