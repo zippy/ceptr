@@ -67,6 +67,7 @@ var base__defs_8h =
     [ "LOGICAL_OR_OF_COUNT_AND_UNLIMMITED", "base__defs_8h.html#a5dedb71a96377c7b162c934d0ee1d4b5", null ],
     [ "LT_INT", "base__defs_8h.html#aec3a5363f131646e639ec350c3078d7d", null ],
     [ "LTE_INT", "base__defs_8h.html#acc26a301a202864271bc2ad04c5d7c50", null ],
+    [ "MAGIC", "base__defs_8h.html#a94630370ae389fb1189282fa0742f310", null ],
     [ "MANIFEST", "base__defs_8h.html#ad4762a7b67a8ebc20ffdc22f9663c645", null ],
     [ "MANIFEST_LABEL", "base__defs_8h.html#ae15b2c7e7fa2999475dd0f47abe812ce", null ],
     [ "MANIFEST_PAIR", "base__defs_8h.html#ac6ff215fb00bd66bfc1b900daa797630", null ],
@@ -171,7 +172,6 @@ var base__defs_8h =
     [ "SIGNATURE_SEMANTIC_VARIANTS", "base__defs_8h.html#ae3bd5df85dcb3307b96ad35b1953769b", null ],
     [ "SIGNATURE_STRUCTURE", "base__defs_8h.html#ae74d3c9b9cef4685d5ec5dc6290ae69d", null ],
     [ "SIGNATURE_SYMBOL", "base__defs_8h.html#a796f62e141181674b57cc92e3ee40221", null ],
-    [ "SPECIAL", "base__defs_8h.html#a84acb423f634978b61ac46856de40a70", null ],
     [ "STEP", "base__defs_8h.html#a70be2dc5c8bdc85b027ea6118753cca1", null ],
     [ "STEP_SYMBOL", "base__defs_8h.html#afe5e65ea6d5be011ce59d0b46c99d125", null ],
     [ "STEPS", "base__defs_8h.html#a1ca9f64427b2bc5b538fe2fa2501c639", null ],
@@ -319,7 +319,7 @@ var base__defs_8h =
       [ "GT_INT_ID", "base__defs_8h.html#ae45ea5f68b11fba5335966aaecbd1e8da98807c00ea958c54e3aa80006ceeb763", null ],
       [ "LTE_INT_ID", "base__defs_8h.html#ae45ea5f68b11fba5335966aaecbd1e8daf5d821134dd0b346da90cf0db1dcb1e5", null ],
       [ "GTE_INT_ID", "base__defs_8h.html#ae45ea5f68b11fba5335966aaecbd1e8da6c7e8caa527aaa68f38087836fe4b9b9", null ],
-      [ "SPECIAL_ID", "base__defs_8h.html#ae45ea5f68b11fba5335966aaecbd1e8da33c46756cd99db9867c5f48ca76d48b1", null ],
+      [ "MAGIC_ID", "base__defs_8h.html#ae45ea5f68b11fba5335966aaecbd1e8da9671d771eb067e4004ee0ac483658da8", null ],
       [ "NUM_SYS_PROCESSES", "base__defs_8h.html#ae45ea5f68b11fba5335966aaecbd1e8da2044269b41c15464e4414a0a66e8c25b", null ]
     ] ],
     [ "SYSStructureIDs", "base__defs_8h.html#ad5793bf9ce5a73d7b2ff32a9c090a603", [

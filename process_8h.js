@@ -2,6 +2,10 @@ var process_8h =
 [
     [ "ReplicationState", "structReplicationState.html", "structReplicationState" ],
     [ "ReplicationState", "process_8h.html#ae300beb3c8ffceda9d33d4ff657bb1e3", null ],
+    [ "MagicProcesses", "process_8h.html#a03e650c12910a0e1b96f2f18539e2902", [
+      [ "MagicReceptors", "process_8h.html#a03e650c12910a0e1b96f2f18539e2902a2614cefab0746f5c138cfe956c71e9c5", null ],
+      [ "MagicQuit", "process_8h.html#a03e650c12910a0e1b96f2f18539e2902a4c20237ca5fb62be0003df34585d4db0", null ]
+    ] ],
     [ "QueueError", "process_8h.html#a0822535a60c22a2ff4e36c5f600a9826", [
       [ "noErr", "process_8h.html#a0822535a60c22a2ff4e36c5f600a9826a29314e147c76ea079f859e0db61a0dfd", null ],
       [ "contextNotFoundErr", "process_8h.html#a0822535a60c22a2ff4e36c5f600a9826abd074a6c47470b56ace2ae2af0c70474", null ]
@@ -34,10 +38,6 @@ var process_8h =
       [ "ReplicateTypeCount", "process_8h.html#a73b86c9f87d6f9481f56bcac78f38793ab87ca22c5afe104171970956b69afd29", null ],
       [ "ReplicateTypeUnknown", "process_8h.html#a73b86c9f87d6f9481f56bcac78f38793ac2e80ffa646d6f381666faf0e186746d", null ],
       [ "ReplicateTypeCond", "process_8h.html#a73b86c9f87d6f9481f56bcac78f38793a4b739ef54540a4fb677e754b8cec3dbc", null ]
-    ] ],
-    [ "SpecialProcesses", "process_8h.html#a32cc1249c92e21430d8db65772fe7011", [
-      [ "SpecialReceptors", "process_8h.html#a32cc1249c92e21430d8db65772fe7011a79d83d354e688c41e22649a223a513b7", null ],
-      [ "SpecialQuit", "process_8h.html#a32cc1249c92e21430d8db65772fe7011a4c1c7c4d83068788efa90cdde27f1b33", null ]
     ] ],
     [ "__p_build_run_tree", "process_8h.html#a1d2c7b7c331d6ac0e45495de62fb1f13", null ],
     [ "__p_find_context", "process_8h.html#a16f2d8cde47ddf8d619db33fbfcfa73b", null ],
