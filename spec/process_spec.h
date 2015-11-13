@@ -1077,7 +1077,6 @@ void testProcess() {
     testProcessRequest();
     testProcessQuote();
     testProcessStream();
-    //    testProcessExpectAct();
     testProcessReduce();
     testProcessReduceDefinedProcess();
     testProcessSignatureMatching();

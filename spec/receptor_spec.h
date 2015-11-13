@@ -535,7 +535,6 @@ void testReceptorSerialize() {
     //    spec_is_long_equal(*(size_t *)surface,250);
 
     Receptor *ru = _r_unserialize(surface);
-
     //    __r_dump_instances(r);
     //    __r_dump_instances(ru);
 
