@@ -252,6 +252,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>__t_free</b> (<a clas
 <tr class="separator:ga608555368dfdef7de1872f89b6fed637"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf019d190c9623de809d006e309a441af"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tree.html#gaf019d190c9623de809d006e309a441af">_t_get</a> (<a class="el" href="structT.html">T</a> *t, int *p)</td></tr>
 <tr class="separator:gaf019d190c9623de809d006e309a441af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae87e70707c55cc361e7bbfa0939536f6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tree.html#gae87e70707c55cc361e7bbfa0939536f6">_t_getv</a> (<a class="el" href="structT.html">T</a> *t,...)</td></tr>
+<tr class="separator:gae87e70707c55cc361e7bbfa0939536f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gae4c9b743462f0a3808c9f02c3bf33da8"><td class="memItemLeft" align="right" valign="top">int *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tree.html#gae4c9b743462f0a3808c9f02c3bf33da8">_t_get_path</a> (<a class="el" href="structT.html">T</a> *t)</td></tr>
 <tr class="separator:gae4c9b743462f0a3808c9f02c3bf33da8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga81b96d2e950c7ac5ae8d17364f2fc49f"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tree.html#ga81b96d2e950c7ac5ae8d17364f2fc49f">_t_get_surface</a> (<a class="el" href="structT.html">T</a> *t, int *p)</td></tr>
@@ -620,7 +622,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>__uuid_equal</b> (<a c
 <dl class="section return"><dt>Returns</dt><dd>the length that was added to the buffer</dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000042">Todo:</a></b></dt><dd>compact is really a shorthand for whether this is a fixed size tree or not this should actually be determined on the fly by looking at the structure types. </dd></dl>
 
-<p>Definition at line <a class="el" href="tree_8c_source.html#l00914">914</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
+<p>Definition at line <a class="el" href="tree_8c_source.html#l00937">937</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
 
 </div>
 </div>
@@ -687,7 +689,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>__uuid_equal</b> (<a c
 <div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(stx);</div>
 <div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="tree_8c_source.html#l01135">1135</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
+<p>Definition at line <a class="el" href="tree_8c_source.html#l01158">1158</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
 
 </div>
 </div>
@@ -754,7 +756,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>__uuid_equal</b> (<a c
 <div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(stx);</div>
 <div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="tree_8c_source.html#l01010">1010</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
+<p>Definition at line <a class="el" href="tree_8c_source.html#l01033">1033</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
 
 </div>
 </div>
@@ -1072,6 +1074,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>__uuid_equal</b> (<a c
 <div class="line">    spec_is_symbol_equal(0,<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(<a class="code" href="group__tree.html#gaf019d190c9623de809d006e309a441af">_t_get</a>(t,p33122)),PARAM_VALUE);</div>
 <div class="line">    spec_is_symbol_equal(0,<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(<a class="code" href="group__tree.html#gaf019d190c9623de809d006e309a441af">_t_get</a>(t,p311)),HTTP_REQUEST_PATH_SEGMENT);</div>
 <div class="line"></div>
+<div class="line">    spec_is_str_equal(_t2s(&amp;test_HTTP_defs,<a class="code" href="group__tree.html#gae87e70707c55cc361e7bbfa0939536f6">_t_getv</a>(t,3,3,1,2,TREE_PATH_TERMINATOR)),<span class="stringliteral">&quot;(HTTP_REQUEST_PATH_QUERY_PARAM (PARAM_KEY:page) (PARAM_VALUE:2))&quot;</span>);</div>
+<div class="line"></div>
 <div class="line">    <span class="comment">//  _t_get returns null if tree doesn&#39;t have a node at the given path</span></div>
 <div class="line">    p311[2] = 3;</div>
 <div class="line">    spec_is_ptr_equal(<a class="code" href="group__tree.html#gaf019d190c9623de809d006e309a441af">_t_get</a>(t,p311),NULL);</div>
@@ -1185,7 +1189,73 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>__uuid_equal</b> (<a c
 <div class="line"></div>
 <div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(tt);</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="tree_8c_source.html#l00798">798</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
+<p>Definition at line <a class="el" href="tree_8c_source.html#l00821">821</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gae87e70707c55cc361e7bbfa0939536f6"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structT.html">T</a>* _t_getv </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structT.html">T</a> *&#160;</td>
+          <td class="paramname"><em>t</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>get a node by path using variable arguments.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">t</td><td>the tree to search </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>pointer to a <a class="el" href="structT.html">T</a></dd></dl>
+<p>note: the last argument MUST be TREE_PATH_TERMINATOR</p>
+<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structT.html">T</a> *t = <a class="code" href="http__example_8h.html#a1c182b5a6e82ef49c6967183a15c3e8b">_makeTestHTTPRequestTree</a>(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
+<div class="line"></div>
+<div class="line">    <span class="keywordtype">int</span> p0[] = {TREE_PATH_TERMINATOR};</div>
+<div class="line">    <span class="keywordtype">int</span> p1[] = {1,TREE_PATH_TERMINATOR};</div>
+<div class="line">    <span class="keywordtype">int</span> p2[] = {2,TREE_PATH_TERMINATOR};</div>
+<div class="line">    <span class="keywordtype">int</span> p3[] = {3,TREE_PATH_TERMINATOR};</div>
+<div class="line">    <span class="keywordtype">int</span> p33[] = {3,3,TREE_PATH_TERMINATOR};</div>
+<div class="line">    <span class="keywordtype">int</span> p331[] = {3,3,1,TREE_PATH_TERMINATOR};</div>
+<div class="line">    <span class="keywordtype">int</span> p3312[] = {3,3,1,2,TREE_PATH_TERMINATOR};</div>
+<div class="line">    <span class="keywordtype">int</span> p33122[] = {3,3,1,2,2,TREE_PATH_TERMINATOR};</div>
+<div class="line">    <span class="keywordtype">int</span> p311[] = {3,1,1,TREE_PATH_TERMINATOR};</div>
+<div class="line"></div>
+<div class="line">    spec_is_ptr_equal(<a class="code" href="group__tree.html#gaf019d190c9623de809d006e309a441af">_t_get</a>(t,p0),t);</div>
+<div class="line">    spec_is_symbol_equal(0,<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(<a class="code" href="group__tree.html#gaf019d190c9623de809d006e309a441af">_t_get</a>(t,p1)),HTTP_REQUEST_VERSION);</div>
+<div class="line">    spec_is_symbol_equal(0,<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(<a class="code" href="group__tree.html#gaf019d190c9623de809d006e309a441af">_t_get</a>(t,p2)),HTTP_REQUEST_METHOD);</div>
+<div class="line">    spec_is_symbol_equal(0,<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(<a class="code" href="group__tree.html#gaf019d190c9623de809d006e309a441af">_t_get</a>(t,p3)),HTTP_REQUEST_PATH);</div>
+<div class="line">    spec_is_symbol_equal(0,<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(<a class="code" href="group__tree.html#gaf019d190c9623de809d006e309a441af">_t_get</a>(t,p33)),HTTP_REQUEST_PATH_QUERY);</div>
+<div class="line">    spec_is_symbol_equal(0,<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(<a class="code" href="group__tree.html#gaf019d190c9623de809d006e309a441af">_t_get</a>(t,p331)),HTTP_REQUEST_PATH_QUERY_PARAMS);</div>
+<div class="line">    spec_is_symbol_equal(0,<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(<a class="code" href="group__tree.html#gaf019d190c9623de809d006e309a441af">_t_get</a>(t,p3312)),HTTP_REQUEST_PATH_QUERY_PARAM);</div>
+<div class="line">    spec_is_symbol_equal(0,<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(<a class="code" href="group__tree.html#gaf019d190c9623de809d006e309a441af">_t_get</a>(t,p33122)),PARAM_VALUE);</div>
+<div class="line">    spec_is_symbol_equal(0,<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(<a class="code" href="group__tree.html#gaf019d190c9623de809d006e309a441af">_t_get</a>(t,p311)),HTTP_REQUEST_PATH_SEGMENT);</div>
+<div class="line"></div>
+<div class="line">    spec_is_str_equal(_t2s(&amp;test_HTTP_defs,<a class="code" href="group__tree.html#gae87e70707c55cc361e7bbfa0939536f6">_t_getv</a>(t,3,3,1,2,TREE_PATH_TERMINATOR)),<span class="stringliteral">&quot;(HTTP_REQUEST_PATH_QUERY_PARAM (PARAM_KEY:page) (PARAM_VALUE:2))&quot;</span>);</div>
+<div class="line"></div>
+<div class="line">    <span class="comment">//  _t_get returns null if tree doesn&#39;t have a node at the given path</span></div>
+<div class="line">    p311[2] = 3;</div>
+<div class="line">    spec_is_ptr_equal(<a class="code" href="group__tree.html#gaf019d190c9623de809d006e309a441af">_t_get</a>(t,p311),NULL);</div>
+<div class="line"></div>
+<div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
+</div><!-- fragment -->
+<p>Definition at line <a class="el" href="tree_8c_source.html#l00799">799</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
 
 </div>
 </div>
@@ -1251,7 +1321,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>__uuid_equal</b> (<a c
 <div class="line"></div>
 <div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="tree_8c_source.html#l00843">843</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
+<p>Definition at line <a class="el" href="tree_8c_source.html#l00866">866</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
 
 </div>
 </div>
@@ -1281,7 +1351,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>__uuid_equal</b> (<a c
 <p>comparison function for hash tree equality</p>
 <p>we have this because TreeHash may become a larger structure not subject to direct equality testing. </p>
 
-<p>Definition at line <a class="el" href="tree_8c_source.html#l00877">877</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
+<p>Definition at line <a class="el" href="tree_8c_source.html#l00900">900</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
 
 </div>
 </div>
@@ -2069,7 +2139,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>__uuid_equal</b> (<a c
 <div class="line">    free(s);</div>
 <div class="line"></div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="tree_8c_source.html#l00951">951</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
+<p>Definition at line <a class="el" href="tree_8c_source.html#l00974">974</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
 
 </div>
 </div>
@@ -2136,7 +2206,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>__uuid_equal</b> (<a c
 <div class="line"></div>
 <div class="line">    spec_is_str_equal(<a class="code" href="group__tree.html#ga0e63c83e6413f47238db7fa20373c526">_t_sprint_path</a>(p5,buf),<span class="stringliteral">&quot;/3/0/2/1/1&quot;</span>);</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="tree_8c_source.html#l00814">814</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
+<p>Definition at line <a class="el" href="tree_8c_source.html#l00837">837</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
 
 </div>
 </div>
@@ -2255,7 +2325,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>__uuid_equal</b> (<a c
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Nov 13 2015 14:17:44 for ceptr by
+    <li class="footer">Generated on Fri Nov 13 2015 17:05:15 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

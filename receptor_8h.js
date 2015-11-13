@@ -19,6 +19,7 @@ var receptor_8h =
     [ "PendingResponseUUIDIdx", "group__receptor.html#gga726ca809ffd3d67ab4b8476646f26635acfdc7a7105324151516291a32aabaee3", null ],
     [ "PendingResponseCarrierIdx", "group__receptor.html#gga726ca809ffd3d67ab4b8476646f26635aef08d300c15869ab7270248e520d9878", null ],
     [ "PendingResponseWakeupIdx", "group__receptor.html#gga726ca809ffd3d67ab4b8476646f26635ad3a9a937c108069df128bc9ec12b1cbd", null ],
+    [ "PendingResponseEndCondsIdx", "group__receptor.html#gga726ca809ffd3d67ab4b8476646f26635afffc057ee412e72a5b8b59621f20673f", null ],
     [ "noDeliveryErr", "group__receptor.html#gga0411cd49bb5b71852cecd93bcbf0ca2da8bb5261733bd4fff6d3a68c96f286ac5", null ],
     [ "___clock_thread", "group__receptor.html#ga4cb85b79ae4207e4595d003d11beb226", null ],
     [ "__r_build_wakeup_info", "group__receptor.html#ga2489d73f268a2bb8bd0f8a04e3ffd731", null ],

@@ -24,6 +24,7 @@ var group__tree =
     [ "_t_get", "group__tree.html#gaf019d190c9623de809d006e309a441af", null ],
     [ "_t_get_path", "group__tree.html#gae4c9b743462f0a3808c9f02c3bf33da8", null ],
     [ "_t_get_surface", "group__tree.html#ga81b96d2e950c7ac5ae8d17364f2fc49f", null ],
+    [ "_t_getv", "group__tree.html#gae87e70707c55cc361e7bbfa0939536f6", null ],
     [ "_t_hash", "group__tree.html#ga19506af36bcdf713253dabd47ecaa6e4", null ],
     [ "_t_hash_equal", "group__tree.html#ga11e689c8dea5c022fe0e4c20652e5af5", null ],
     [ "_t_insert_at", "group__tree.html#ga96de3ae222902beccffa3c26ef1ef40a", null ],
