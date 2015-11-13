@@ -24,7 +24,7 @@
 // into the symbol gen code (talk about a semantic muddle! If only I had ceptr...)
 enum {EnvelopeFromIdx=1,EnvelopeToIdx,EnvelopeAspectIdx,EnvelopeCarrierIdx,EnvelopeUUIDIdx,EnvelopeExtraIdx};
 enum {SignalEnvelopeIdx=1,SignalBodyIdx};
-enum {PendingResponseUUIDIdx=1,PendingResponseCarrierIdx,PendingResponseWakeupIdx};
+enum {PendingResponseUUIDIdx=1,PendingResponseCarrierIdx,PendingResponseWakeupIdx,PendingResponseEndCondsIdx};
 // delivery errors
 enum {noDeliveryErr};
 

@@ -93,7 +93,7 @@ Symbol: PENDING_SIGNALS,[*SIGNAL];               list of signals pending to be s
 Symbol: CODE_PATH,TREE_PATH;
 Symbol: PROCESS_IDENT,INTEGER;
 Symbol: WAKEUP_REFERENCE,[(PROCESS_IDENT,CODE_PATH)];
-Symbol: PENDING_RESPONSE,[(SIGNAL_UUID,CARRIER,WAKEUP_REFERENCE)];
+Symbol: PENDING_RESPONSE,[(SIGNAL_UUID,CARRIER,WAKEUP_REFERENCE,END_CONDITIONS)];
 Symbol: PENDING_RESPONSES,[*PENDING_RESPONSE];
 Symbol: RESPONSE_CARRIER,SYMBOL;            expected carrier for the response to a signal
 Symbol: LISTENER,SYMBOL;                    surface of the listener is the carrier symbol, and it has two children_ID, expectation semtrex and action code tree

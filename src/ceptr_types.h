@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "uthash.h"
+#include <stdbool.h>
 
 enum SemanticContexts {SYS_CONTEXT,COMPOSITORY_CONTEXT,LOCAL_CONTEXT,TEST_CONTEXT,_NUM_CONTEXTS,RECEPTOR_CONTEXT=0xff};
 

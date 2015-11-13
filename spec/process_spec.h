@@ -396,6 +396,8 @@ void testProcessRequest() {
     _t_newi(p,ASPECT,DEFAULT_ASPECT);
     _t_newi(p,TEST_INT_SYMBOL,314);
     _t_news(p,RESPONSE_CARRIER,TEST_STR_SYMBOL);
+    T *ec = _t_newr(p,END_CONDITIONS);
+    _t_newi(ec,COUNT,1);
 
     T *code =_t_rclone(p);
     Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
@@ -416,11 +418,17 @@ void testProcessRequest() {
     spec_is_equal(q->contexts_count,0);
     spec_is_ptr_equal(q->blocked,e);
     spec_is_equal(c->state,Block);
-    spec_is_str_equal(_td(r,r->pending_responses),"(PENDING_RESPONSES (PENDING_RESPONSE (SIGNAL_UUID) (CARRIER:TEST_STR_SYMBOL) (WAKEUP_REFERENCE (PROCESS_IDENT:1) (CODE_PATH:/1))))");
+    spec_is_str_equal(_td(r,r->pending_responses),"(PENDING_RESPONSES (PENDING_RESPONSE (SIGNAL_UUID) (CARRIER:TEST_STR_SYMBOL) (WAKEUP_REFERENCE (PROCESS_IDENT:1) (CODE_PATH:/1)) (END_CONDITIONS (COUNT:1))))");
 
     // request reduces to the UUID generated for the sent signal
     spec_is_str_equal(t2s(run_tree),"(RUN_TREE (SIGNAL_UUID) (PARAMS))");
-    spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:3) (ASPECT:1) (CARRIER:TEST_INT_SYMBOL) (SIGNAL_UUID)) (BODY:{(TEST_INT_SYMBOL:314)})))");
+    spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:3) (ASPECT:1) (CARRIER:TEST_INT_SYMBOL) (SIGNAL_UUID) (END_CONDITIONS (COUNT:1))) (BODY:{(TEST_INT_SYMBOL:314)})))");
+
+    //    debug_enable(D_SIGNALS);
+    // generate a response signal
+    T *s = __r_make_signal(0,0,DEFAULT_ASPECT,_t_new_str(0,TEST_STR_SYMBOL,"one fish"),_t_surface(_t_child(run_tree,1)),0);
+    _r_deliver(r,s);
+    spec_is_str_equal(_td(r,r->pending_responses),"(PENDING_RESPONSES)");
 
     //   _p_freeq(q);
     // clear off the signal in the list
@@ -445,6 +453,8 @@ void testProcessRequest() {
 
     /* spec_is_str_equal(t2s(run_tree),"(RUN_TREE (SIGNAL_UUID) (PARAMS))"); */
     /* spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:0) (RECEPTOR_ADDRESS:3) (ASPECT:1) (CARRIER:TEST_INT_SYMBOL) (SIGNAL_UUID)) (BODY:{(TEST_INT_SYMBOL:314)})))"); */
+
+    debug_disable(D_SIGNALS);
 
     _r_free(r);
     _t_free(p);

@@ -48,6 +48,7 @@ T *defaultCondition() {
     T *until = _t_newr(0,END_CONDITIONS);
     T *ts = __r_make_timestamp(TIMEOUT_AT,30);
     _t_add(until,ts);
+    _t_newi(until,COUNT,1);
     return until;
 }
 
@@ -304,9 +305,10 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             T* signal_contents = _t_detach_by_idx(code,1);
 
             ReceptorAddress from = __r_get_self_address(q->r);
-            T *signal = __r_make_signal(from,to,aspect,signal_contents,0,0);
+            T *signal;
 
             if (s.id == SAY_ID) {
+                signal = __r_make_signal(from,to,aspect,signal_contents,0,0);
                 x = _r_send(q->r,signal);
             }
             else if (s.id == REQUEST_ID) {
@@ -338,7 +340,8 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                 else {
                     raise_error("request callback not implemented");
                 }
-                _t_free(until); //@todo remove when we get this working... it should be passed into send_signal
+                signal = __r_make_signal(from,to,aspect,signal_contents,0,until);
+
                 x = _r_request(q->r,signal,response_carrier,response_point,context->id);
             }
         }
@@ -565,8 +568,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                 with = _t_new_root(PARAMS);
                 _t_news(with,INTERPOLATE_SYMBOL,NULL_SYMBOL);
             }
-            // @todo restore when we implement until
-            //            if (!until) until = defaultCondition();
+            //if (!until) until = defaultCondition();
             if (act) {
                 _r_add_listener(q->r,aspect,carrier,match,with,act);
                 x = __t_news(0,REDUCTION_ERROR_SYMBOL,NULL_SYMBOL,1);

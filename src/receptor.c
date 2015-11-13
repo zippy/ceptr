@@ -543,13 +543,17 @@ T* _r_send(Receptor *r,T *signal) {
  */
 T* _r_request(Receptor *r,T *signal,Symbol response_carrier,T *code_point,int process_id) {
 
-
     //@todo lock resources
     T *result = __r_send(r,signal);
     T *pr = _t_newr(r->pending_responses,PENDING_RESPONSE);
     _t_add(pr,_t_clone(result));
     _t_news(pr,CARRIER,response_carrier);
     _t_add(pr,__r_build_wakeup_info(code_point,process_id));
+    int p[] = {SignalEnvelopeIdx,EnvelopeExtraIdx,TREE_PATH_TERMINATOR};
+    T *ec = _t_get(signal,p);
+    if (!ec || !semeq(_t_symbol(ec),END_CONDITIONS)) raise_error("request missing END_CONDITIONS");
+    _t_add(pr,_t_clone(ec));
+
     debug(D_SIGNALS,"sending request and adding pending response: %s\n",_td(r,pr));
     //@todo unlock resources
 
@@ -674,46 +678,76 @@ Error _r_deliver(Receptor *r, T *signal) {
         DO_KIDS(r->pending_responses,
                 l = _t_child(r->pending_responses,i);
                 if (__uuid_equal(u,(UUIDt *)_t_surface(_t_child(l,PendingResponseUUIDIdx)))) {
-                    Symbol carrier = *(Symbol *)_t_surface(_t_child(l,PendingResponseCarrierIdx));
-                    T *wakeup = _t_child(l,PendingResponseWakeupIdx);
-                    int process_id = *(int *)_t_surface(_t_child(wakeup,1));
-                    int *code_path = (int *)_t_surface(_t_child(wakeup,2));
-                    T *response = (T *)_t_surface(_t_child(signal,SignalBodyIdx));
-                    // now set up the signal so when it's freed below, the body doesn't get freed too
-                    signal->context.flags &= ~TFLAG_SURFACE_IS_TREE;
 
-                    response = __r_sanatize_response(r,response,carrier);
-                    // the response isn't safe, i.e. has unexpected carrier or other bad stuff in it
-                    // just break
-                    if (!response) {
-                        //@todo figure out if this means we should throw away the pending response too
-                        break;
+                    // get the end conditions so we can see if we should actually respond
+                    T *ec = _t_child(l,PendingResponseEndCondsIdx);
+                    bool allow = false;
+                    bool cleanup = false;
+                    int k = _t_children(ec);
+                    while (k) {
+                        T *c = _t_child(ec,k);
+                        Symbol sym = _t_symbol(c);
+                        if (semeq(sym,COUNT)) {
+                            //@todo mutex!!
+                            int *cP = (int *)_t_surface(c);
+                            if (*cP <= 1) cleanup = true;
+                            if (*cP >= 1) allow = true;
+                            (*cP)--;
+                            debug(D_SIGNALS,"decreasing count to: %d\n",*cP);
+                        }
+                        else if (semeq(sym,TIMEOUT_AT)) {
+                            allow = true;
+                            //@todo check timeout and ignore if now is past the timeout
+                        }
+                        k--;
                     }
 
-                    Q *q = r->q;
-                    debug(D_LOCK,"deliver LOCK\n");
-                    pthread_mutex_lock(&q->mutex);
-                    Qe *e = __p_find_context(q->blocked,process_id);
-                    if (e) {
-                        T *result = _t_get(e->context->run_tree,code_path);
-                        // if the code path was from a signal on the flux, it's root
-                        // will be the receptor, so the first get will fail so try again
-                        if (!result) result = _t_get(r->root,code_path);
-                        // @todo that really wasn't very pretty, and what happens if that
-                        // fails?  how do we handle it!?
-                        if (!result) raise_error("failed to find code path when delivering response!");
+                    if (allow) {
+                        Symbol carrier = *(Symbol *)_t_surface(_t_child(l,PendingResponseCarrierIdx));
+                        T *wakeup = _t_child(l,PendingResponseWakeupIdx);
+                        int process_id = *(int *)_t_surface(_t_child(wakeup,1));
+                        int *code_path = (int *)_t_surface(_t_child(wakeup,2));
+                        T *response = (T *)_t_surface(_t_child(signal,SignalBodyIdx));
+                        // now set up the signal so when it's freed below, the body doesn't get freed too
+                        signal->context.flags &= ~TFLAG_SURFACE_IS_TREE;
 
-                        debug(D_SIGNALS,"unblocking for response %s\n",_td(r,response));
-                        _t_replace(_t_parent(result),_t_node_index(result), response);
-                        __p_unblock(q,e);
+                        response = __r_sanatize_response(r,response,carrier);
+                        // the response isn't safe, i.e. has unexpected carrier or other bad stuff in it
+                        // just break
+                        if (!response) {
+                            //@todo figure out if this means we should throw away the pending response too
+                            break;
+                        }
+
+                        Q *q = r->q;
+                        debug(D_LOCK,"deliver LOCK\n");
+                        pthread_mutex_lock(&q->mutex);
+                        Qe *e = __p_find_context(q->blocked,process_id);
+                        if (e) {
+                            T *result = _t_get(e->context->run_tree,code_path);
+                            // if the code path was from a signal on the flux, it's root
+                            // will be the receptor, so the first get will fail so try again
+                            if (!result) result = _t_get(r->root,code_path);
+                            // @todo that really wasn't very pretty, and what happens if that
+                            // fails?  how do we handle it!?
+                            if (!result) raise_error("failed to find code path when delivering response!");
+
+                            debug(D_SIGNALS,"unblocking for response %s\n",_td(r,response));
+                            _t_replace(_t_parent(result),_t_node_index(result), response);
+                            e->context->node_pointer = response;
+
+                            __p_unblock(q,e);
+                        }
+                        pthread_mutex_unlock(&q->mutex);
+                        debug(D_LOCK,"deliver UNLOCK\n");
                     }
 
-                    // clean up the pending response
-                    // @todo this needs to be enhanced for long-term listeners...
-                    _t_detach_by_idx(r->pending_responses,i);
-                    _t_free(l);
-                    pthread_mutex_unlock(&q->mutex);
-                    debug(D_LOCK,"deliver UNLOCK\n");
+                    if (cleanup) {
+                        debug(D_SIGNALS,"removing pending response: %s\n",_td(r,l));
+                        _t_detach_by_idx(r->pending_responses,i);
+                        //i--;
+                        _t_free(l);
+                    }
                     break;
                 }
                 );

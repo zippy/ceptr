@@ -157,7 +157,12 @@ void testReceptorResponseDeliver() {
     // have the UUID and the code path in it
     T *rt = r->q->blocked->context->run_tree;
     spec_is_str_equal(_td(r,rt),"(RUN_TREE (process:NOOP (SIGNAL_UUID)))");
-    spec_is_str_equal(_td(r,r->pending_responses),"(PENDING_RESPONSES (PENDING_RESPONSE (SIGNAL_UUID) (CARRIER:TEST_STR_SYMBOL) (WAKEUP_REFERENCE (PROCESS_IDENT:1) (CODE_PATH:/1/1))))");
+    T *pr = _t_child(r->pending_responses,1);
+    spec_is_str_equal(_td(r,_t_child(pr,1)),"(SIGNAL_UUID)");
+    spec_is_str_equal(_td(r,_t_child(pr,2)),"(CARRIER:TEST_STR_SYMBOL)");
+    spec_is_str_equal(_td(r,_t_child(pr,3)),"(WAKEUP_REFERENCE (PROCESS_IDENT:1) (CODE_PATH:/1/1))");
+    T *ec = _t_child(pr,4);
+    spec_is_sem_equal(_t_symbol(ec),END_CONDITIONS);
 
     // create a response signals
     ReceptorAddress from = 4; // DUMMY ADDR
