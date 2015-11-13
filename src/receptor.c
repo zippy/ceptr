@@ -49,7 +49,7 @@ Receptor *__r_new(Symbol s,T *defs,T *aspects) {
     _t_add(t,aspects);
     T *f = _t_newr(t,FLUX);
     T *a = _t_newi(f,ASPECT,DEFAULT_ASPECT);
-    _t_newr(a,LISTENERS);
+    _t_newr(a,EXPECTATIONS);
     _t_newr(a,SIGNALS);
     _t_newr(t,RECEPTOR_STATE);
     _t_newr(t,PENDING_SIGNALS);
@@ -114,9 +114,9 @@ Receptor *_r_new_receptor_from_package(Symbol s,T *p,T *bindings) {
 /**
  * Adds an expectation/action pair to a receptor's aspect.
  */
-void _r_add_listener(Receptor *r,Aspect aspect,Symbol carrier,T *expectation,T* params,T *action) {
-    T *l = _t_news(0,LISTENER,carrier);
-    _t_add(l,expectation);
+void _r_add_expectation(Receptor *r,Aspect aspect,Symbol carrier,T *pattern,T* params,T *action) {
+    T *l = _t_news(0,EXPECTATION,carrier);
+    _t_add(l,pattern);
     _t_add(l,params);
     _t_add(l,action);
     T *a = __r_get_listeners(r,aspect);
@@ -334,7 +334,7 @@ void _r_express_protocol(Receptor *r,int idx,Symbol sequence,Aspect aspect,T* ha
                     //@todo turns out we don't use the carrier for anything yet, so
                     // we can just set it to a NULL_SYMBOL.  This will have to change
                     // once we actually get carriers figured out
-                    _r_add_listener(r,aspect,NULL_SYMBOL,expect,params,act);
+                    _r_add_expectation(r,aspect,NULL_SYMBOL,expect,params,act);
                     return;
                 }
             }
@@ -862,7 +862,7 @@ Receptor *_r_makeStreamReaderReceptor(Symbol receptor_symbol,Symbol stream_symbo
 Receptor *_r_makeStreamWriterReceptor(Symbol receptor_symbol,Symbol stream_symbol,Stream *st) {
     Receptor *r = _r_new(receptor_symbol);
 
-    T *expect = _t_new_root(EXPECTATION);
+    T *expect = _t_new_root(PATTERN);
 
     char *stx = "/<LINE:LINE>";
 
@@ -896,7 +896,7 @@ Receptor *_r_makeStreamWriterReceptor(Symbol receptor_symbol,Symbol stream_symbo
     Process proc = _r_code_process(r,x,"echo input to stream","long desc...",signature);
     T *act = _t_newp(0,ACTION,proc);
 
-    _r_add_listener(r,DEFAULT_ASPECT,LINE,expect,params,act);
+    _r_add_expectation(r,DEFAULT_ASPECT,LINE,expect,params,act);
 
     return r;
 }
@@ -904,7 +904,7 @@ Receptor *_r_makeStreamWriterReceptor(Symbol receptor_symbol,Symbol stream_symbo
 Receptor *_r_makeClockReceptor() {
     Receptor *r = _r_new(CLOCK_RECEPTOR);
 
-    T *expect = _t_new_root(EXPECTATION);
+    T *expect = _t_new_root(PATTERN);
     T *s = _sl(expect,CLOCK_TELL_TIME);
 
     T *resp = _t_new_root(RESPOND);
@@ -919,17 +919,17 @@ Receptor *_r_makeClockReceptor() {
 
     T *act = _t_newp(0,ACTION,proc);
     T *params = _t_new_root(PARAMS);
-    _r_add_listener(r,DEFAULT_ASPECT,CLOCK_TELL_TIME,expect,params,act);
+    _r_add_expectation(r,DEFAULT_ASPECT,CLOCK_TELL_TIME,expect,params,act);
 
     // this stuff was for the old clock which installed a listener on itself to send back
     // the TICK when in next arrrived
-    /* s = _t_news(s,SEMTREX_GROUP,EXPECTATION); */
-    /* _sl(s,EXPECTATION); */
+    /* s = _t_news(s,SEMTREX_GROUP,PATTERN); */
+    /* _sl(s,PATTERN); */
 
     /* T *x = _t_newr(0,LISTEN); */
     /* int pt1[] = {2,1,TREE_PATH_TERMINATOR}; */
     /* _t_new(x,PARAM_REF,pt1,sizeof(int)*4);  // param is our expectation semtrex */
-    /* _t_news(x,CARRIER,EXPECTATION); */
+    /* _t_news(x,CARRIER,PATTERN); */
     /* T *params =_t_newr(x,PARAMS); */
 
     /* ReceptorAddress to =  __r_get_self_address(r); */
@@ -943,15 +943,15 @@ Receptor *_r_makeClockReceptor() {
     /* T *action = _t_newp(x,ACTION,SEND); */
 
     /* T *signature = __p_make_signature("result",SIGNATURE_SYMBOL,NULL_SYMBOL, */
-    /*                                   "time stx",SIGNATURE_SYMBOL,EXPECTATION, */
+    /*                                   "time stx",SIGNATURE_SYMBOL,PATTERN, */
     /*                                   NULL); */
     /* Process proc = _r_code_process(r,x,"plant a listener to send the time","long desc...",signature); */
     /* T *act = _t_newp(0,ACTION,proc); */
 
     /* params = _t_new_root(PARAMS); */
-    /* _t_news(params,INTERPOLATE_SYMBOL,EXPECTATION); */
+    /* _t_news(params,INTERPOLATE_SYMBOL,PATTERN); */
 
-    /* _r_add_listener(r,DEFAULT_ASPECT,CLOCK_TELL_TIME,expect,params,act);*/
+    /* _r_add_expectation(r,DEFAULT_ASPECT,CLOCK_TELL_TIME,expect,params,act);*/
 
     return r;
 }

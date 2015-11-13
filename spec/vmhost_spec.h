@@ -14,7 +14,7 @@ void testVMHostCreate() {
     VMHost *v = _v_new();
 
     // test the structure of the VM_HOST receptor
-    spec_is_str_equal(t2s(v->r->root),"(VM_HOST_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))");
+    spec_is_str_equal(t2s(v->r->root),"(VM_HOST_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (EXPECTATIONS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))");
 
     Xaddr cx = {COMPOSITORY,1};
     Receptor *c = __r_get_receptor(_r_get_instance(v->r,cx));
@@ -85,7 +85,7 @@ void testVMHostCreate() {
 /*     T *mp = _t_newr(m,MANIFEST_PAIR); */
 /*     _t_new(mp,MANIFEST_LABEL,"host",5);  // binds to a host value */
 /*     _t_newi(mp,MANIFEST_SPEC,HTTP_REQUEST_HOST); */
-/*     //    T *me = _t_newr(mp,EXPECTATION); */
+/*     //    T *me = _t_newr(mp,PATTERN); */
 
 /*     _t_newi(p,RECEPTOR_IDENTIFIER,HELLO_WORLD_UUID); */
 
@@ -191,7 +191,7 @@ void testVMHostCreate() {
 /*     // add a listener that matches on any request with "Host: helloworld.org" */
 /*     // /HTTP_REQUEST/.*,HTTP_REQUEST_HOST=helloworld.org */
 /*     T *act = _t_newp(0,ACTION,-1); */
-/*     T *expect = _t_new_root(EXPECTATION); */
+/*     T *expect = _t_new_root(PATTERN); */
 /*     T *req = _t_newi(expect,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST); */
 /*     T *ss = _t_newi(req,SEMTREX_SEQUENCE,0); */
 /*     T *sss = _t_newi(ss,SEMTREX_ZERO_OR_MORE,0); */
@@ -211,7 +211,7 @@ void testVMHostCreate() {
 /*     spec_is_str_equal(_dump_semtrex(test_HTTP_defs,req,buf),"/(HTTP_REQUEST/.*,HTTP_REQUEST_HOST=helloworld.com)"); */
 /*     free(sv); */
 
-/*     _r_add_listener(hello_r,DEFAULT_ASPECT,HTTP_REQUEST,expect,act); */
+/*     _r_add_expectation(hello_r,DEFAULT_ASPECT,HTTP_REQUEST,expect,act); */
 
 /*     // build up an HTTP_REQUEST tree that corresponds with a simple get for host helloworld.com */
 /*     T *s = _t_new_root(HTTP_REQUEST); */
@@ -364,7 +364,7 @@ void testVMHostSerialize() {
     G_vm = _v_new();
     _v_instantiate_builtins(G_vm);
 
-    spec_is_str_equal(t2s(G_vm->r->root),"(VM_HOST_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))");
+    spec_is_str_equal(t2s(G_vm->r->root),"(VM_HOST_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (EXPECTATIONS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))");
 
     Receptor *clock = G_vm->active_receptors[0].r;
     //   _testReceptorClockAddListener(clock);
@@ -373,7 +373,7 @@ void testVMHostSerialize() {
     size_t length;
     _r_serialize(G_vm->r,&surface,&length);
     Receptor *r = _r_unserialize(surface);
-    spec_is_str_equal(t2s(r->root),"(VM_HOST_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))");
+    spec_is_str_equal(t2s(r->root),"(VM_HOST_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (EXPECTATIONS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))");
 
     __r_kill(clock);
     _v_join_thread(&G_vm->clock_thread);

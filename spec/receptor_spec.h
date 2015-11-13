@@ -41,7 +41,7 @@ void testReceptorCreate() {
 
     // test that listeners and signals are set up correctly on the default aspect
     t = __r_get_listeners(r,DEFAULT_ASPECT);
-    spec_is_symbol_equal(r,_t_symbol(t),LISTENERS);
+    spec_is_symbol_equal(r,_t_symbol(t),EXPECTATIONS);
     t = __r_get_signals(r,DEFAULT_ASPECT);
     spec_is_symbol_equal(r,_t_symbol(t),SIGNALS);
 
@@ -57,7 +57,7 @@ void testReceptorCreate() {
     spec_is_symbol_equal(r,_t_symbol(t),ASPECT);
     spec_is_equal(*(int *)_t_surface(t),DEFAULT_ASPECT);
 
-    spec_is_str_equal(t2s(r->root),"(TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))");
+    spec_is_str_equal(t2s(r->root),"(TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (EXPECTATIONS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))");
 
     _r_free(r);
     //! [testReceptorCreate]
@@ -69,14 +69,14 @@ void testReceptorAddListener() {
 
     Symbol dummy = {0,0,0};
     // test that you can add a listener to a receptor's aspect
-    T *s = _t_new_root(EXPECTATION);
+    T *s = _t_new_root(PATTERN);
     _sl(s,dummy);
     T *a = _t_news(0,ACTION,NULL_PROCESS);
     T *p = _t_new_root(PARAMS);  // empty construct params list
-    _r_add_listener(r,DEFAULT_ASPECT,TEST_INT_SYMBOL,s,p,a);
+    _r_add_expectation(r,DEFAULT_ASPECT,TEST_INT_SYMBOL,s,p,a);
 
     T *l = _t_child(__r_get_listeners(r,DEFAULT_ASPECT),1);      // listener should have been added as first child of listeners
-    spec_is_symbol_equal(r,_t_symbol(l),LISTENER);
+    spec_is_symbol_equal(r,_t_symbol(l),EXPECTATION);
     spec_is_sem_equal(*(Symbol *)_t_surface(l),TEST_INT_SYMBOL); // carrier should be TEST_INT_SYMBOL
     spec_is_ptr_equal(_t_child(l,1),s);       // our expectation semtrex should be first child of the listener
     spec_is_ptr_equal(_t_child(l,2),p);       // our params constructor should be the second child of the listener
@@ -202,13 +202,13 @@ void testReceptorAction() {
 
     T *signal = __r_make_signal(f,t,DEFAULT_ASPECT,signal_contents,0,0);
 
-    // our expectation should match on the first path segment
+    // our expectation pattern should match on the first path segment
     // /HTTP_REQUEST/.,.,HTTP_REQUEST_PATH/HTTP_REQUEST_PATH_SEGMENTS/<HTTP_REQUEST_PATH_SEGMENT:HTTP_REQUEST_PATH_SEGMENT>
-    T *expect = _t_new_root(EXPECTATION);
+    T *pattern = _t_new_root(PATTERN);
     char *stx = "/HTTP_REQUEST/(.,.,HTTP_REQUEST_PATH/HTTP_REQUEST_PATH_SEGMENTS/<HTTP_REQUEST_PATH_SEGMENT:HTTP_REQUEST_PATH_SEGMENT>)";
     T *req = parseSemtrex(&test_HTTP_defs,stx);
-    _t_add(expect,req);
-/*    T *req = _t_news(expect,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST);
+    _t_add(pattern,req);
+/*    T *req = _t_news(pattern,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST);
     T *seq = _t_newr(req,SEMTREX_SEQUENCE);
     _t_newr(seq,SEMTREX_SYMBOL_ANY);  // skips the Version
     _t_newr(seq,SEMTREX_SYMBOL_ANY);  // skips over the Method
@@ -238,7 +238,7 @@ void testReceptorAction() {
     _makeTestHTTPResponseProcess(r,&params,&p);
     T *act = _t_newp(0,ACTION,p);
 
-    _r_add_listener(r,DEFAULT_ASPECT,HTTP_REQUEST,expect,params,act);
+    _r_add_expectation(r,DEFAULT_ASPECT,HTTP_REQUEST,pattern,params,act);
 
     Error err = _r_deliver(r,signal);
     spec_is_equal(err,noDeliveryErr);
@@ -388,7 +388,7 @@ Receptor *_makePingProtocolReceptor(Symbol *pingP) {
 
     T *steps = _t_newr(p,STEPS);
     T *step = _t_newr(steps,listen_for_ping);
-    T *e = _t_newr(step,EXPECTATION);
+    T *e = _t_newr(step,PATTERN);
     _sl(e,ping);
     T *params = _t_newr(step,PARAMS);
 
@@ -398,7 +398,7 @@ Receptor *_makePingProtocolReceptor(Symbol *pingP) {
     _t_newp(step,ACTION,proc);
 
     step = _t_newr(steps,get_alive_response);
-    e = _t_newr(step,EXPECTATION);
+    e = _t_newr(step,PATTERN);
     _sl(e,alive);
     params = _t_newr(step,PARAMS);
 
@@ -429,14 +429,14 @@ void testReceptorProtocol() {
     T *ps = r->defs.protocols;
     char *d = _td(r,ps);
 
-    spec_is_str_equal(d,"(PROTOCOLS (alive (STEPS (listen_for_ping (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping_message))) (PARAMS) (ACTION:send alive response)) (get_alive_response (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:alive_message))) (PARAMS))) (SEQUENCES (alive_server (STEP_SYMBOL:listen_for_ping)) (alive_client (STEP_SYMBOL:get_alive_response)))))");
+    spec_is_str_equal(d,"(PROTOCOLS (alive (STEPS (listen_for_ping (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping_message))) (PARAMS) (ACTION:send alive response)) (get_alive_response (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:alive_message))) (PARAMS))) (SEQUENCES (alive_server (STEP_SYMBOL:listen_for_ping)) (alive_client (STEP_SYMBOL:get_alive_response)))))");
 
     Symbol alive_server = _r_get_symbol_by_label(r,"alive_server");
     _r_express_protocol(r,1,alive_server,DEFAULT_ASPECT,NULL);
 
     d = _td(r,r->flux);
 
-    spec_is_str_equal(d,"(FLUX (ASPECT:1 (LISTENERS (LISTENER:NULL_SYMBOL (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping_message))) (PARAMS) (ACTION:send alive response))) (SIGNALS)))");
+    spec_is_str_equal(d,"(FLUX (ASPECT:1 (EXPECTATIONS (EXPECTATION:NULL_SYMBOL (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping_message))) (PARAMS) (ACTION:send alive response))) (SIGNALS)))");
 
     // delivering a fake signal should return a ping
     ReceptorAddress f = 3; // DUMMY ADDR
@@ -660,7 +660,7 @@ void testReceptorEdgeStream() {
     Receptor *r = _r_makeStreamReaderReceptor(TEST_RECEPTOR_SYMBOL,TEST_STREAM_SYMBOL,reader_stream,writer.addr);
     Xaddr testReceptor =  _v_new_receptor(v,v->r,TEST_RECEPTOR_SYMBOL,r);
 
-    spec_is_str_equal(_td(w,__r_get_listeners(w,DEFAULT_ASPECT)),"(LISTENERS (LISTENER:LINE (EXPECTATION (SEMTREX_SYMBOL_ANY)) (PARAMS (INTERPOLATE_SYMBOL:NULL_SYMBOL)) (ACTION:echo input to stream)))");
+    spec_is_str_equal(_td(w,__r_get_listeners(w,DEFAULT_ASPECT)),"(EXPECTATIONS (EXPECTATION:LINE (PATTERN (SEMTREX_SYMBOL_ANY)) (PARAMS (INTERPOLATE_SYMBOL:NULL_SYMBOL)) (ACTION:echo input to stream)))");
 
     // manually run the reader's process queue
     //debug_enable(D_STREAM);
@@ -714,7 +714,7 @@ void testReceptorEdgeStream() {
 }
 
 /* void _testReceptorClockAddListener(Receptor *r) { */
-/*     T *expect = _t_new_root(EXPECTATION); */
+/*     T *expect = _t_new_root(PATTERN); */
 
 /*     /// @todo figure out why looking for the SECOND down a walk match fails */
 /*     // char *stx = "/<TICK:(%SECOND)>"; */
@@ -732,12 +732,12 @@ void testReceptorEdgeStream() {
 /*     T* params = _t_new_root(PARAMS); */
 /*     _t_news(params,INTERPOLATE_SYMBOL,NULL_SYMBOL);  // NULL_SYMBOL = the full match */
 
-/*     _r_add_listener(r,DEFAULT_ASPECT,TICK,expect,params,act); */
+/*     _r_add_expectation(r,DEFAULT_ASPECT,TICK,expect,params,act); */
 /* } */
 
 void testReceptorClock() {
     Receptor *r = _r_makeClockReceptor();
-    spec_is_str_equal(_td(r,r->root),"(CLOCK_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES (PROCESS_CODING (PROCESS_NAME:respond with current time) (PROCESS_INTENTION:long desc...) (process:RESPOND (process:GET (GET_XADDR:TICK.1))) (PROCESS_SIGNATURE (OUTPUT_SIGNATURE (SIGNATURE_LABEL:result) (SIGNATURE_SYMBOL:NULL_SYMBOL))))) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (LISTENERS (LISTENER:CLOCK_TELL_TIME (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:CLOCK_TELL_TIME))) (PARAMS) (ACTION:respond with current time))) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))");
+    spec_is_str_equal(_td(r,r->root),"(CLOCK_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES (PROCESS_CODING (PROCESS_NAME:respond with current time) (PROCESS_INTENTION:long desc...) (process:RESPOND (process:GET (GET_XADDR:TICK.1))) (PROCESS_SIGNATURE (OUTPUT_SIGNATURE (SIGNATURE_LABEL:result) (SIGNATURE_SYMBOL:NULL_SYMBOL))))) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (EXPECTATIONS (EXPECTATION:CLOCK_TELL_TIME (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:CLOCK_TELL_TIME))) (PARAMS) (ACTION:respond with current time))) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))");
 
    /*
       The clock receptor should do two things: respond to CLOCK_TELL_TIME signals with the current time, and also allow you to plant a listener based on a semtrex for any kind of time you want.  If you want the current time just plant a listener for TICK.  If you want to listen for every second plant a listener on the Symbol literal SECOND, and the clock receptor will trigger the listener every time the SECOND changes.  You can also listen for particular intervals and times by adding specificity to the semtrex, so to trigger a 3:30am action a-la-cron listen for: "/<TICK:(%HOUR=3,MINUTE=30)>"

@@ -568,15 +568,15 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                 with = _t_new_root(PARAMS);
                 _t_news(with,INTERPOLATE_SYMBOL,NULL_SYMBOL);
             }
-            //if (!until) until = defaultCondition();
+            if (!until) until = defaultCondition();
             if (act) {
-                _r_add_listener(q->r,aspect,carrier,match,with,act);
+                _r_add_expectation(q->r,aspect,carrier,match,with,act);
                 x = __t_news(0,REDUCTION_ERROR_SYMBOL,NULL_SYMBOL,1);
                 debug(D_LISTEN,"adding listener\n");
             }
             else {
                 act = __r_build_wakeup_info(code,context->id);
-                _r_add_listener(q->r,aspect,carrier,match,with,act);
+                _r_add_expectation(q->r,aspect,carrier,match,with,act);
                 debug(D_LISTEN,"adding listener and blocking at %d,%s\n",context->id,_td(q->r,code));
                 return Block;
             }

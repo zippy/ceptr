@@ -13,7 +13,7 @@
 
 
 void addCommand(Receptor *r,Xaddr ox,char *command,char *desc,T *code) {
-    T *expect = _t_new_root(EXPECTATION);
+    T *expect = _t_new_root(PATTERN);
     T *s = _t_news(expect,SEMTREX_GROUP,SHELL_COMMAND);
 
     T *cm = _sl(s,SHELL_COMMAND);
@@ -30,7 +30,7 @@ void addCommand(Receptor *r,Xaddr ox,char *command,char *desc,T *code) {
     T *act = _t_newp(0,ACTION,proc);
     T *params = _t_new_root(PARAMS);
 
-    _r_add_listener(r,DEFAULT_ASPECT,VERB,expect,params,act);
+    _r_add_expectation(r,DEFAULT_ASPECT,VERB,expect,params,act);
 }
 
 void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp,Stream **isp,Stream **osp) {
@@ -60,7 +60,7 @@ void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp
 
     // create expectations for commands
     // (expect (on std_in LINE) action (send self (shell_command parsed from LINE))
-    T *expect = _t_new_root(EXPECTATION);
+    T *expect = _t_new_root(PATTERN);
     T *s = _t_news(expect,SEMTREX_GROUP,VERB);
     _sl(s,LINE);
     T *p = _t_new_root(SAY);
@@ -76,7 +76,7 @@ void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp
     T *act = _t_newp(0,ACTION,proc);
     T* params = _t_new_root(PARAMS);
     _t_news(params,INTERPOLATE_SYMBOL,VERB);
-    _r_add_listener(r,DEFAULT_ASPECT,VERB,expect,params,act);
+    _r_add_expectation(r,DEFAULT_ASPECT,VERB,expect,params,act);
 
     // (expect (on flux SHELL_COMMAND:time) action(send std_out (convert_to_lines (send clock get_time))))
 

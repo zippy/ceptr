@@ -31,7 +31,7 @@ enum {noDeliveryErr};
 /******************  create and destroy receptors */
 Receptor *_r_new(Symbol s);
 Receptor *_r_new_receptor_from_package(Symbol s,T *p,T *bindings);
-void _r_add_listener(Receptor *r,Aspect aspect,Symbol carrier,T *expectation,T* params,T *action);
+void _r_add_expectation(Receptor *r,Aspect aspect,Symbol carrier,T *pattern,T* params,T *action);
 void _r_remove_listener(Receptor *r,T *listener);
 void _r_free(Receptor *r);
 

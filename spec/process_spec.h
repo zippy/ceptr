@@ -878,7 +878,7 @@ void testProcessListen() {
     T *n = _t_new_root(LISTEN);
     _t_newi(n,ASPECT,DEFAULT_ASPECT);
     _t_news(n,CARRIER,TICK);
-    T *match = _t_newr(n,EXPECTATION);
+    T *match = _t_newr(n,PATTERN);
     _sl(match,TICK);
     T *a = _t_newp(n,ACTION,NOOP);
     _t_newi(a,TEST_INT_SYMBOL,314);
@@ -887,7 +887,7 @@ void testProcessListen() {
     _t_free(n);
 
     T *l = __r_get_listeners(r,DEFAULT_ASPECT);
-    spec_is_str_equal(t2s(l),"(LISTENERS (LISTENER:TICK (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TICK))) (PARAMS (INTERPOLATE_SYMBOL:NULL_SYMBOL)) (ACTION:NOOP (TEST_INT_SYMBOL:314))))");
+    spec_is_str_equal(t2s(l),"(EXPECTATIONS (EXPECTATION:TICK (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TICK))) (PARAMS (INTERPOLATE_SYMBOL:NULL_SYMBOL)) (ACTION:NOOP (TEST_INT_SYMBOL:314))))");
 
     _r_remove_listener(r, _t_child(l,1));
 
@@ -895,7 +895,7 @@ void testProcessListen() {
     n = _t_new_root(LISTEN);
     _t_newi(n,ASPECT,DEFAULT_ASPECT);
     _t_news(n,CARRIER,TEST_STR_SYMBOL);
-    match = _t_newr(n,EXPECTATION);
+    match = _t_newr(n,PATTERN);
     _sl(match,TEST_STR_SYMBOL);
 
     G_next_process_id = 0; // reset the process ids so the test will always work
@@ -910,7 +910,7 @@ void testProcessListen() {
     spec_is_ptr_equal(q->blocked,e);
     spec_is_str_equal(t2s(run_tree),"(RUN_TREE (process:LISTEN) (PARAMS))");
 
-    spec_is_str_equal(t2s(__r_get_listeners(r,DEFAULT_ASPECT)),"(LISTENERS (LISTENER:TEST_STR_SYMBOL (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TEST_STR_SYMBOL))) (PARAMS (INTERPOLATE_SYMBOL:NULL_SYMBOL)) (WAKEUP_REFERENCE (PROCESS_IDENT:1) (CODE_PATH:/1))))");
+    spec_is_str_equal(t2s(__r_get_listeners(r,DEFAULT_ASPECT)),"(EXPECTATIONS (EXPECTATION:TEST_STR_SYMBOL (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TEST_STR_SYMBOL))) (PARAMS (INTERPOLATE_SYMBOL:NULL_SYMBOL)) (WAKEUP_REFERENCE (PROCESS_IDENT:1) (CODE_PATH:/1))))");
 
     T *s = __r_make_signal(0,0,DEFAULT_ASPECT,_t_new_str(0,TEST_STR_SYMBOL,"fishy!"),0,0);
     _r_deliver(r,s);

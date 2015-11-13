@@ -1166,7 +1166,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 
     /////////////////////////////////////////////////////
     // build the token stream out of an ascii stream
-    // EXPECTATION
+    // PATTERN
     // "/{STX_TOKENS:(ASCII_CHARS/({STX_SL:ASCII_CHAR='/'})|(({STX_OP:ASCII_CHAR='('})|(({STX_CP:ASCII_CHAR=')'})|(({STX_PLUS:ASCII_CHAR='+'})|(({STX_COMMA:ASCII_CHAR=','})|((ASCII_CHAR='!',{STX_EXCEPT:[a-zA-Z0-9_]+})|(({STX_CG:ASCII_CHAR='}'})|(({STX_STAR:ASCII_CHAR='*'})|(({STX_LABEL:[a-zA-Z0-9_]+})|(ASCII_CHAR='{',{STX_OG:[a-zA-Z0-9_]+},ASCII_CHAR=':')))))))))+)}
     T *ts = _t_news(0,SEMTREX_GROUP,STX_TOKENS);
     T *g = _sl(ts,ASCII_CHARS);
@@ -1357,7 +1357,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 
         /////////////////////////////////////////////////////
         // convert STX_EQ/STX_NEQ to SEMTREX_VALUE_LITERALS
-        // EXPECTATION
+        // PATTERN
         // /%<SEMTREX_VALUE_LITERAL:STX_EQ|STX_NEQ,<SEMTREX_VALUE_SET:STX_VAL_I|STX_VAL_F|STX_VAL_S|STX_VAL_C|STX_SET)>>
         sxx = _t_new_root(SEMTREX_WALK);
         g = _t_news(sxx,SEMTREX_GROUP,SEMTREX_VALUE_LITERAL);
@@ -1426,7 +1426,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 
         /////////////////////////////////////////////////////
         // replace paren groups with STX_SIBS list
-        // EXPECTATION
+        // PATTERN
         // /STX_TOKENS/.*,<STX_OP:STX_OP,<STX_SIBS:!{STX_CP,STX_OP}+>,STX_CP>
         sxx = _sl(0,STX_TOKENS);
         sq = _t_newr(sxx,SEMTREX_SEQUENCE);
@@ -1454,7 +1454,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 
         /////////////////////////////////////////////////////
         // find groups
-        // EXPECTATION
+        // PATTERN
         // /%,<STX_OG:STX_OG,<SEMTREX_GROUP:!{STX_CG,STX_OG}+>,STX_CG>
         sxx = _t_new_root(SEMTREX_WALK);
         g = _t_news(sxx,SEMTREX_GROUP,STX_OG);
@@ -1484,7 +1484,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 
         /////////////////////////////////////////////////////
         // if there are any parens left we raise mismatch!
-        // EXPECTATION
+        // PATTERN
         // /(STX_TOKENS/.*,(STX_OP)|(STX_CP))
         sxx = _sl(0,STX_TOKENS);
         sq = _t_newr(sxx,SEMTREX_SEQUENCE);
@@ -1503,7 +1503,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 
         /////////////////////////////////////////////////////
         // convert postfix groups
-        // EXPECTATION
+        // PATTERN
         // /*<STX_POSTFIX:.,STX_PLUS|STX_STAR|STX_Q>
         sxx = _t_new_root(SEMTREX_WALK);
         g = _t_news(sxx,SEMTREX_GROUP,STX_POSTFIX);
@@ -1542,7 +1542,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 
         /////////////////////////////////////////////////////
         // convert not
-        // EXPECTATION
+        // PATTERN
         // /%<SEMTREX_NOT:STX_NOT,.>
         sxx = _t_new_root(SEMTREX_WALK);
         g = _t_news(sxx,SEMTREX_GROUP,SEMTREX_NOT);
@@ -1573,7 +1573,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 
         /////////////////////////////////////////////////////
         // convert things following slashes to children of things preceeding slashes
-        // EXPECTATION
+        // PATTERN
         // /%.*,<STX_CHILD:STX_LABEL,STX_SL,!STX_SL>
         sxx = _t_new_root(SEMTREX_WALK);
         sq = _t_newr(sxx,SEMTREX_SEQUENCE);
@@ -1611,7 +1611,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 
         /////////////////////////////////////////////////////
         // convert STX_SET to SEMTREX_LITERALS
-        // EXPECTATION
+        // PATTERN
         // /%<SEMTREX_SYMBOL_LITERAL:STX_EXCEPT="!"?,STX_SET>
 
         sxx = _t_new_root(SEMTREX_WALK);
@@ -1656,7 +1656,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 
         /////////////////////////////////////////////////////
         // convert labels to SEMTREX_LITERALS
-        // EXPECTATION
+        // PATTERN
         // /%<SEMTREX_SYMBOL_LITERAL:STX_LABEL|STX_EXCEPT>
         sxx = _t_new_root(SEMTREX_WALK);
         g = _t_news(sxx,SEMTREX_GROUP,SEMTREX_SYMBOL_LITERAL);
@@ -1684,7 +1684,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 
         /////////////////////////////////////////////////////
         // convert comma tokens to sequences
-        // EXPECTATION
+        // PATTERN
         // /*<SEMTREX_SEQUENCE:(!STX_COMMA,STX_COMMA)+,!STX_COMMA>  ->  SEMTREX_SEQUENCE
         sxx = _t_new_root(SEMTREX_WALK);
         g = _t_news(sxx,SEMTREX_GROUP,SEMTREX_SEQUENCE);
@@ -1727,7 +1727,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 
         /////////////////////////////////////////////////////
         // convert ors
-        // EXPECTATION
+        // PATTERN
         // /%<SEMTREX_OR:!STX_OR,STX_OR,!STX_OR>
         sxx = _t_new_root(SEMTREX_WALK);
         g = _t_news(sxx,SEMTREX_GROUP,SEMTREX_OR);
@@ -1761,7 +1761,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 
         /////////////////////////////////////////////////////
         // fixup STX_WALK
-        // EXPECTATION
+        // PATTERN
         // /%<SEMTREX_WALK:STX_WALK,.>
         sxx = _t_new_root(SEMTREX_WALK);
         g = _t_news(sxx,SEMTREX_GROUP,SEMTREX_WALK);
@@ -1789,7 +1789,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 
         /////////////////////////////////////////////////////
         // remove stray STX_SIBS
-        // EXPECTATION
+        // PATTERN
         // /%<STX_SIBS:STX_SIBS>
         sxx = _t_new_root(SEMTREX_WALK);
         g = _t_news(sxx,SEMTREX_GROUP,STX_SIBS);
