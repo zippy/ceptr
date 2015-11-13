@@ -22,7 +22,7 @@
 // structure position index enums to make code more readable
 // @todo figure out a better way to handle this... like put defs like these
 // into the symbol gen code (talk about a semantic muddle! If only I had ceptr...)
-enum {EnvelopeFromIdx=1,EnvelopeToIdx,EnvelopeAspectIdx,EnvelopeCarrierIdx,EnvelopeUUIDIdx,EnvelopeInResponseToUUIDIdx};
+enum {EnvelopeFromIdx=1,EnvelopeToIdx,EnvelopeAspectIdx,EnvelopeCarrierIdx,EnvelopeUUIDIdx,EnvelopeExtraIdx};
 enum {SignalEnvelopeIdx=1,SignalBodyIdx};
 enum {PendingResponseUUIDIdx=1,PendingResponseCarrierIdx,PendingResponseWakeupIdx};
 // delivery errors
@@ -64,9 +64,11 @@ Receptor * _r_unserialize(void *surface);
 
 /******************  receptor signaling */
 
-T * __r_make_signal(ReceptorAddress from,ReceptorAddress to,Aspect aspect,T *signal_contents);
+T * __r_make_signal(ReceptorAddress from,ReceptorAddress to,Aspect aspect,T *signal_contents,UUIDt *in_response_to,T* until);
 T *__r_build_wakeup_info(T *code_point,int process_id);
-T* __r_send_signal(Receptor *r,T *signal,Symbol response_carrier,T *code_point,int process_id);
+T* __r_send(Receptor *r,T *signal);
+T* _r_send(Receptor *r,T *signal);
+T* _r_request(Receptor *r,T *signal,Symbol response_carrier,T *code_point,int process_id);
 void __r_check_listener(T* processes,T *listener,T *signal,Q *q);
 Error _r_deliver(Receptor *r, T *signal);
 

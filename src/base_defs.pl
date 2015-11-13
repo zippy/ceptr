@@ -293,8 +293,9 @@ foreach my $s (@d) {
         $phtml .= "<tr><td><a name=\"$name\"></a>$name</td><td><ol>$in</ol></td><td>$out</td><td>$c</td></tr>\n";
     }
     elsif ($type eq 'Symbol') {
-        $def =~ s/_/-/g;
-        $def = "<a href=\"ref_sys_structures.html#$def\">$def</a>";
+        my $n = $def;
+        $def =~ s/_/-/g; # we do this so long defs will wrap in html cus underscores don't
+        $def = "<a href=\"ref_sys_structures.html#$n\">$def</a>";
         my $c = $comments{$name} ? $comments{$name} : "";
         $syhtml .= "<tr><td><a name=\"$name\"></a>$name</td><td>$def</td><td>$c</td></tr>\n";
     }

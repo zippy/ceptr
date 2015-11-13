@@ -323,7 +323,8 @@ void testProcessRespond() {
     T *signal_contents = _t_newi(0,TEST_INT_SYMBOL,314);
     ReceptorAddress f = 3; // DUMMY ADDR
     ReceptorAddress t = 4; // DUMMY ADDR
-    T *s = __r_make_signal(f,t,DEFAULT_ASPECT,signal_contents);
+
+    T *s = __r_make_signal(f,t,DEFAULT_ASPECT,signal_contents,0,defaultCondition());
 
     T *run_tree = _t_new_root(RUN_TREE);
     T *n = _t_newr(run_tree,RESPOND);
@@ -342,9 +343,9 @@ void testProcessRespond() {
     // it should create a response signal with the source UUID as the responding to UUID
     spec_is_equal(__p_reduce_sys_proc(c,RESPOND,n,r->q),noReductionErr);
     spec_is_str_equal(t2s(n),"(SIGNAL_UUID)");
-    spec_is_str_equal(_td(r,r->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:4) (RECEPTOR_ADDRESS:3) (ASPECT:1) (CARRIER:TEST_INT_SYMBOL) (SIGNAL_UUID) (SIGNAL_UUID)) (BODY:{(TEST_INT_SYMBOL:271)})))");
+    spec_is_str_equal(_td(r,r->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:4) (RECEPTOR_ADDRESS:3) (ASPECT:1) (CARRIER:TEST_INT_SYMBOL) (SIGNAL_UUID) (IN_RESPONSE_TO_UUID)) (BODY:{(TEST_INT_SYMBOL:271)})))");
     T *u1 = _t_child(_t_child(s,SignalEnvelopeIdx),EnvelopeUUIDIdx);
-    int p[] = {1,SignalEnvelopeIdx,EnvelopeInResponseToUUIDIdx,TREE_PATH_TERMINATOR};
+    int p[] = {1,SignalEnvelopeIdx,EnvelopeExtraIdx,TREE_PATH_TERMINATOR};
     T *u2 = _t_get(r->pending_signals,p);
     spec_is_true(__uuid_equal(_t_surface(u1),_t_surface(u2)));
 
@@ -901,7 +902,7 @@ void testProcessListen() {
 
     spec_is_str_equal(t2s(__r_get_listeners(r,DEFAULT_ASPECT)),"(LISTENERS (LISTENER:TEST_STR_SYMBOL (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TEST_STR_SYMBOL))) (PARAMS (INTERPOLATE_SYMBOL:NULL_SYMBOL)) (WAKEUP_REFERENCE (PROCESS_IDENT:1) (CODE_PATH:/1))))");
 
-    T *s = __r_make_signal(0,0,DEFAULT_ASPECT,_t_new_str(0,TEST_STR_SYMBOL,"fishy!"));
+    T *s = __r_make_signal(0,0,DEFAULT_ASPECT,_t_new_str(0,TEST_STR_SYMBOL,"fishy!"),0,0);
     _r_deliver(r,s);
     spec_is_equal(_p_reduceq(q),noReductionErr);
 

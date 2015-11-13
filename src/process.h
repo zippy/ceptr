@@ -31,6 +31,7 @@ typedef struct ReplicationState {
     int type;
 } ReplicationState;
 
+T *defaultCondition();
 R *__p_make_context(T *run_tree,R *caller,int process_id);
 Error _p_step(Q *q, R **contextP);
 Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q);

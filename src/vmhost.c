@@ -162,8 +162,8 @@ void _v_activate(VMHost *v, Xaddr x) {
  * @snippet spec/vmhost_spec.h testVMHostActivateReceptor
  */
 void _v_send(VMHost *v,ReceptorAddress from,ReceptorAddress to,Aspect aspect,T *contents) {
-    T *s = __r_make_signal(from,to,aspect,contents);
-    T *x = __r_send_signal(v->r,s,NULL_SYMBOL,0,0);
+    T *s = __r_make_signal(from,to,aspect,contents,0,0);
+    T *x = _r_send(v->r,s);
     _t_free(x);
 }
 
@@ -173,7 +173,7 @@ void _v_send(VMHost *v,ReceptorAddress from,ReceptorAddress to,Aspect aspect,T *
 void _v_send_signals(VMHost *v,T *signals) {
     while(_t_children(signals)>0) {
         T *s = _t_detach_by_idx(signals,1);
-        T *r = __r_send_signal(v->r,s,NULL_SYMBOL,0,0);
+        T *r = _r_send(v->r,s);
         _t_free(r);  //@todo WHAT????  throwing away the rsult??
     }
 }

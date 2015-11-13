@@ -476,7 +476,7 @@ Receptor * _r_unserialize(void *surface) {
  * @param[in] signal_contents the message to be sent, which will be wrapped in a SIGNAL
  * @todo signal should have timestamps and other meta info
  */
-T* __r_make_signal(ReceptorAddress from,ReceptorAddress to,Aspect aspect,T *signal_contents) {
+T* __r_make_signal(ReceptorAddress from,ReceptorAddress to,Aspect aspect,T *signal_contents,UUIDt *in_response_to,T* until) {
     T *s = _t_new_root(SIGNAL);
     T *e = _t_newr(s,ENVELOPE);
     // @todo convert to paths at some point?
@@ -487,6 +487,12 @@ T* __r_make_signal(ReceptorAddress from,ReceptorAddress to,Aspect aspect,T *sign
     UUIDt t = __uuid_gen();
     _t_new(e,SIGNAL_UUID,&t,sizeof(UUIDt));
     T *b = _t_newt(s,BODY,signal_contents);
+
+    if (in_response_to && until) raise_error("attempt to make signal with both response_uuid and until");
+    if (in_response_to)
+        _t_new(e,IN_RESPONSE_TO_UUID,in_response_to,sizeof(UUIDt));
+    else if (until)
+        _t_add(e,until);
     return s;
 }
 
@@ -500,32 +506,52 @@ T* __r_build_wakeup_info(T *code_point,int process_id) {
     return wakeup;
 }
 
+// low level send, must be called with pending_signals resource locked!!
+T* __r_send(Receptor *r,T *signal) {
+    _t_add(r->pending_signals,signal);
+
+    //@todo for now we return the UUID of the signal as the result.  Perhaps later we return an error condition if delivery to address is known to be impossible, or something like that.
+    T *envelope = _t_child(signal,SignalEnvelopeIdx);
+    return _t_rclone(_t_child(envelope,EnvelopeUUIDIdx));
+}
+
 /**
- * send a signal
+ * send a simple signal (say)
+ *
+ * @param[in] carrier the carrier on which to expect a response
+ * @param[in] signal Signal tree
+ * @returns a clone of the UUID of the message sent.
+ */
+T* _r_send(Receptor *r,T *signal) {
+    debug(D_SIGNALS,"sending %s\n",_t2s(&r->defs,signal));
+    //@todo lock resources
+    T *result =__r_send(r,signal);
+    //@todo unlock resources
+    return result;
+}
+
+/**
+ * send a request signal
  *
  * @param[in] r sending receptor
  * @param[in] signal Signal tree
  * @param[in] carrier the carrier on which to expect a response
  * @param[in] code_point the point in the code to re-awaken when a response comes back
  * @param[in] process_id the id of the process in which that code point exists
- * @param[out] T result tree
  * @returns a clone of the UUID of the message sent.
  * @todo signal should have timestamps and other meta info
  */
-T* __r_send_signal(Receptor *r,T *signal,Symbol response_carrier,T *code_point,int process_id) {
-    debug(D_SIGNALS,"sending %s\n",_t2s(&r->defs,signal));
-    _t_add(r->pending_signals,signal);
+T* _r_request(Receptor *r,T *signal,Symbol response_carrier,T *code_point,int process_id) {
 
-    //@todo for now we return the UUID of the signal as the result.  Perhaps later we return an error condition if delivery to address is known to be impossible, or something like that.
-    T *envelope = _t_child(signal,SignalEnvelopeIdx);
-    T *result = _t_rclone(_t_child(envelope,EnvelopeUUIDIdx));
-    if (code_point) {
-        T *pr = _t_newr(r->pending_responses,PENDING_RESPONSE);
-        _t_add(pr,_t_clone(result));
-        _t_news(pr,CARRIER,response_carrier);
-        _t_add(pr,__r_build_wakeup_info(code_point,process_id));
-        debug(D_SIGNALS,"adding pending response: %s\n",_td(r,pr));
-    }
+
+    //@todo lock resources
+    T *result = __r_send(r,signal);
+    T *pr = _t_newr(r->pending_responses,PENDING_RESPONSE);
+    _t_add(pr,_t_clone(result));
+    _t_news(pr,CARRIER,response_carrier);
+    _t_add(pr,__r_build_wakeup_info(code_point,process_id));
+    debug(D_SIGNALS,"sending request and adding pending response: %s\n",_td(r,pr));
+    //@todo unlock resources
 
     return result;
 }
@@ -636,10 +662,14 @@ Error _r_deliver(Receptor *r, T *signal) {
 
     T *envelope = _t_child(signal,SignalEnvelopeIdx);
 
-    // see if there's an in-response to UUID
-    T *response_id=_t_child(envelope,EnvelopeInResponseToUUIDIdx);
-    if (response_id) {
-        UUIDt *u = (UUIDt*)_t_surface(response_id);
+    // see if this is more than a plain send signal we are delivering
+    // if there are END_CONDITIONS we know this is a request
+    // if there is a an IN_RESPONSE_TO_UUID then we know it's a response
+    T *extra=_t_child(envelope,EnvelopeExtraIdx);
+    if (extra && semeq(IN_RESPONSE_TO_UUID,_t_symbol(extra))) {
+        // responses don't trigger listener matching, instead they
+        // go through the pending_responses list to see where the signal goes
+        UUIDt *u = (UUIDt*)_t_surface(extra);
         debug(D_SIGNALS,"Delivering response: %s\n",_td(r,signal));
         DO_KIDS(r->pending_responses,
                 l = _t_child(r->pending_responses,i);
@@ -690,6 +720,13 @@ Error _r_deliver(Receptor *r, T *signal) {
         _t_free(signal);
     }
     else {
+
+        if (extra && semeq(END_CONDITIONS,_t_symbol(extra))) {
+            // determine if we will honor the request conditions?
+            // perhaps that all happens at the protocol level
+            // @todo anything specific we need to store here??
+        }
+
         Aspect aspect = *(Aspect *)_t_surface(_t_child(envelope,EnvelopeAspectIdx));
 
         T *as = __r_get_signals(r,aspect);
@@ -907,7 +944,7 @@ void *___clock_thread(void *arg){
         debug(D_CLOCK,"%s\n",_td(r,tick));
         Xaddr x = {TICK,1};
         _r_set_instance(r,x,tick);
-        //        T *signal = __r_make_signal(self,self,DEFAULT_ASPECT,tick);
+        //        T *signal = __r_make_signal(self,self,DEFAULT_ASPECT,tick,0,0);
         //        _r_deliver(r,signal);
         sleep(1);
         /// @todo this will skip some seconds over time.... make more sophisticated

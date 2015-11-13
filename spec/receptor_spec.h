@@ -87,11 +87,11 @@ void testReceptorAddListener() {
 
 void testReceptorSignal() {
     Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
-    T *signal_contents = _t_newi(0,TEST_INT_SYMBOL,314);
+    T *sc,*signal_contents = _t_newi(0,TEST_INT_SYMBOL,314);
     ReceptorAddress f = 3; // DUMMY ADDR
     ReceptorAddress t = 4; // DUMMY ADDR
 
-    T *s = __r_make_signal(f,t,DEFAULT_ASPECT,signal_contents);
+    T *s = __r_make_signal(f,t,DEFAULT_ASPECT,sc=_t_clone(signal_contents),0,0);
 
     spec_is_symbol_equal(r,_t_symbol(s),SIGNAL);
 
@@ -100,9 +100,22 @@ void testReceptorSignal() {
     T *body = _t_child(s,SignalBodyIdx);
     spec_is_str_equal(t2s(body),"(BODY:{(TEST_INT_SYMBOL:314)})");
     T *contents = (T*)_t_surface(body);
-    spec_is_ptr_equal(signal_contents,contents);
+    spec_is_ptr_equal(sc,contents);
+    _t_free(s);
+
+    UUIDt u = __uuid_gen();
+    s = __r_make_signal(f,t,DEFAULT_ASPECT,_t_clone(signal_contents),&u,0);
+    spec_is_str_equal(t2s(s),"(SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:3) (RECEPTOR_ADDRESS:4) (ASPECT:1) (CARRIER:TEST_INT_SYMBOL) (SIGNAL_UUID) (IN_RESPONSE_TO_UUID)) (BODY:{(TEST_INT_SYMBOL:314)}))");
+    int p[] = {SignalEnvelopeIdx,EnvelopeExtraIdx,TREE_PATH_TERMINATOR};
+    T *ru = _t_get(s,p);
+    spec_is_true(__uuid_equal(&u,_t_surface(ru)));
 
     _t_free(s);
+    T *ec = defaultCondition();
+    s = __r_make_signal(f,t,DEFAULT_ASPECT,signal_contents,0,ec);
+    spec_is_ptr_equal(ec,_t_get(s,p));
+    _t_free(s);
+
     _r_free(r);
 }
 
@@ -113,7 +126,7 @@ void testReceptorSignalDeliver() {
     ReceptorAddress t = 4; // DUMMY ADDR
 
     // a new signal should simply be placed on the flux when delivered
-    T *s = __r_make_signal(f,t,DEFAULT_ASPECT,signal_contents);
+    T *s = __r_make_signal(f,t,DEFAULT_ASPECT,signal_contents,0,0);
     spec_is_equal(_r_deliver(r,s),noDeliveryErr);
 
     T *signals = __r_get_signals(r,DEFAULT_ASPECT);
@@ -149,11 +162,11 @@ void testReceptorResponseDeliver() {
     // create a response signals
     ReceptorAddress from = 4; // DUMMY ADDR
     ReceptorAddress to = 0; // DUMMY ADDR
-    T *s = __r_make_signal(from,to,DEFAULT_ASPECT,_t_new_str(0,TEST_STR_SYMBOL,"foo"));
 
-    // add the response uuid to the envelope
-    T *response_id = _t_clone(_t_child(_t_child(rt,1),1));
-    _t_add(_t_child(s,SignalEnvelopeIdx),response_id);
+    // get the original signal uuid from the run tree
+    UUIDt response_id = *(UUIDt *)_t_surface(_t_child(_t_child(rt,1),1));
+    T *s = __r_make_signal(from,to,DEFAULT_ASPECT,_t_new_str(0,TEST_STR_SYMBOL,"foo"),&response_id,0);
+
     //    debug_enable(D_SIGNALS);
     spec_is_equal(_r_deliver(r,s),noDeliveryErr);
     //    debug_disable(D_SIGNALS);
@@ -182,7 +195,7 @@ void testReceptorAction() {
     ReceptorAddress f = 3; // DUMMY ADDR
     ReceptorAddress t = 4; // DUMMY ADDR
 
-    T *signal = __r_make_signal(f,t,DEFAULT_ASPECT,signal_contents);
+    T *signal = __r_make_signal(f,t,DEFAULT_ASPECT,signal_contents,0,0);
 
     // our expectation should match on the first path segment
     // /HTTP_REQUEST/.,.,HTTP_REQUEST_PATH/HTTP_REQUEST_PATH_SEGMENTS/<HTTP_REQUEST_PATH_SEGMENT:HTTP_REQUEST_PATH_SEGMENT>
@@ -235,7 +248,7 @@ void testReceptorAction() {
     _p_reduceq(r->q);
 
     // should add a pending signal to be sent with the matched PATH_SEGMENT returned as the response signal body
-    spec_is_str_equal(_td(r,r->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:4) (RECEPTOR_ADDRESS:3) (ASPECT:1) (CARRIER:HTTP_RESPONSE) (SIGNAL_UUID) (SIGNAL_UUID)) (BODY:{(HTTP_RESPONSE (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT) (HTTP_REQUEST_PATH_SEGMENT:groups))})))");
+    spec_is_str_equal(_td(r,r->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:4) (RECEPTOR_ADDRESS:3) (ASPECT:1) (CARRIER:HTTP_RESPONSE) (SIGNAL_UUID) (IN_RESPONSE_TO_UUID)) (BODY:{(HTTP_RESPONSE (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT) (HTTP_REQUEST_PATH_SEGMENT:groups))})))");
 
     result = _t_child(r->q->completed->context->run_tree,1);
     spec_is_str_equal(_td(r,result),"(SIGNAL_UUID)");
@@ -423,7 +436,7 @@ void testReceptorProtocol() {
     // delivering a fake signal should return a ping
     ReceptorAddress f = 3; // DUMMY ADDR
     ReceptorAddress t = 4; // DUMMY ADDR
-    T *signal = __r_make_signal(f,t,DEFAULT_ASPECT,_t_newi(0,ping,0));
+    T *signal = __r_make_signal(f,t,DEFAULT_ASPECT,_t_newi(0,ping,0),0,0);
 
     d = _td(r,signal);
     spec_is_str_equal(d,"(SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:3) (RECEPTOR_ADDRESS:4) (ASPECT:1) (CARRIER:ping_message) (SIGNAL_UUID)) (BODY:{(ping_message:0)}))");
@@ -443,7 +456,7 @@ void testReceptorProtocol() {
     spec_is_str_equal(d,"(SIGNAL_UUID)");
 
     d = _td(r,r->pending_signals);
-    spec_is_str_equal(d,"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:4) (RECEPTOR_ADDRESS:3) (ASPECT:1) (CARRIER:alive_message) (SIGNAL_UUID) (SIGNAL_UUID)) (BODY:{(alive_message:1)})))");
+    spec_is_str_equal(d,"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:4) (RECEPTOR_ADDRESS:3) (ASPECT:1) (CARRIER:alive_message) (SIGNAL_UUID) (IN_RESPONSE_TO_UUID)) (BODY:{(alive_message:1)})))");
     //    _t_free(result);
     _r_free(r);
     //! [testReceptorProtocol]

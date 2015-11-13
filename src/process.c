@@ -275,9 +275,8 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             /* if (kids == 1 || (!semeq(SIGNALS,_t_symbol(signals = _t_child(root->run_tree,kids))))) */
             /*     signals = _t_newr(root->run_tree,SIGNALS); // make signals list if it's not there */
 
-            T *response = __r_make_signal(from,to,a,response_contents);
-            _t_new(_t_child(response,1),SIGNAL_UUID,&uuid,sizeof(UUIDt));
-            x = __r_send_signal(q->r,response,NULL_SYMBOL,0,0);
+            T *response = __r_make_signal(from,to,a,response_contents,&uuid,0);
+            x = _r_send(q->r,response);
 
             //            _t_add(signals,_t_clone(response));
         }
@@ -305,11 +304,14 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             T* signal_contents = _t_detach_by_idx(code,1);
 
             ReceptorAddress from = __r_get_self_address(q->r);
-            T *signal = __r_make_signal(from,to,aspect,signal_contents);
+            T *signal = __r_make_signal(from,to,aspect,signal_contents,0,0);
 
-            T *response_point = NULL;
-            Symbol response_carrier;
-            if (s.id == REQUEST_ID) {
+            if (s.id == SAY_ID) {
+                x = _r_send(q->r,signal);
+            }
+            else if (s.id == REQUEST_ID) {
+                T *response_point = NULL;
+                Symbol response_carrier;
                 t = _t_detach_by_idx(code,1); // get the response carrier
                 response_carrier = *(Symbol*)_t_surface(t);
                 _t_free(t);
@@ -337,8 +339,8 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                     raise_error("request callback not implemented");
                 }
                 _t_free(until); //@todo remove when we get this working... it should be passed into send_signal
+                x = _r_request(q->r,signal,response_carrier,response_point,context->id);
             }
-            x = __r_send_signal(q->r,signal,response_carrier,response_point,context->id);
         }
         break;
     case INTERPOLATE_FROM_MATCH_ID:
