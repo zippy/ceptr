@@ -415,7 +415,7 @@ void testProcessRequest() {
     spec_is_equal(q->contexts_count,0);
     spec_is_ptr_equal(q->blocked,e);
     spec_is_equal(c->state,Block);
-    spec_is_str_equal(_td(r,r->pending_responses),"(PENDING_RESPONSES (PENDING_RESPONSE (SIGNAL_UUID) (CARRIER:TEST_STR_SYMBOL) (PROCESS_IDENT:1) (RESPONSE_CODE_PATH:/1)))");
+    spec_is_str_equal(_td(r,r->pending_responses),"(PENDING_RESPONSES (PENDING_RESPONSE (SIGNAL_UUID) (CARRIER:TEST_STR_SYMBOL) (WAKEUP_REFERENCE (PROCESS_IDENT:1) (CODE_PATH:/1))))");
 
     // request reduces to the UUID generated for the sent signal
     spec_is_str_equal(t2s(run_tree),"(RUN_TREE (SIGNAL_UUID) (PARAMS))");
@@ -863,20 +863,52 @@ void testProcessReplicate() {
 void testProcessListen() {
     Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
 
+    // test regular asynchronous listening.
     T *n = _t_new_root(LISTEN);
-    T *expect = _t_newr(n,EXPECTATION);
-    _sl(expect,TICK);
-    _t_news(n,CARRIER,EXPECTATION);
-    T *p = _t_newr(n,PARAMS);
+    _t_newi(n,ASPECT,DEFAULT_ASPECT);
+    _t_news(n,CARRIER,TICK);
+    T *match = _t_newr(n,EXPECTATION);
+    _sl(match,TICK);
     T *a = _t_newp(n,ACTION,NOOP);
-
+    _t_newi(a,TEST_INT_SYMBOL,314);
     spec_is_equal(__p_reduce_sys_proc(0,LISTEN,n,r->q),noReductionErr);
-
     spec_is_str_equal(t2s(n),"(REDUCTION_ERROR_SYMBOL:NULL_SYMBOL)"); //@todo is this right??
-
-    spec_is_str_equal(t2s(__r_get_listeners(r,DEFAULT_ASPECT)),"(LISTENERS (LISTENER:EXPECTATION (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TICK))) (PARAMS) (ACTION:NOOP)))");
-
     _t_free(n);
+
+    T *l = __r_get_listeners(r,DEFAULT_ASPECT);
+    spec_is_str_equal(t2s(l),"(LISTENERS (LISTENER:TICK (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TICK))) (PARAMS (INTERPOLATE_SYMBOL:NULL_SYMBOL)) (ACTION:NOOP (TEST_INT_SYMBOL:314))))");
+
+    _r_remove_listener(r, _t_child(l,1));
+
+    // test listen that blocks
+    n = _t_new_root(LISTEN);
+    _t_newi(n,ASPECT,DEFAULT_ASPECT);
+    _t_news(n,CARRIER,TEST_STR_SYMBOL);
+    match = _t_newr(n,EXPECTATION);
+    _sl(match,TEST_STR_SYMBOL);
+
+    G_next_process_id = 0; // reset the process ids so the test will always work
+    T *run_tree = __p_build_run_tree(n,0);
+    _t_free(n);
+    Q *q = r->q;
+    Qe *e = _p_addrt2q(q,run_tree);
+
+    //debug_enable(D_LISTEN);
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    spec_is_equal(q->contexts_count,0);
+    spec_is_ptr_equal(q->blocked,e);
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (process:LISTEN) (PARAMS))");
+
+    spec_is_str_equal(t2s(__r_get_listeners(r,DEFAULT_ASPECT)),"(LISTENERS (LISTENER:TEST_STR_SYMBOL (EXPECTATION (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TEST_STR_SYMBOL))) (PARAMS (INTERPOLATE_SYMBOL:NULL_SYMBOL)) (WAKEUP_REFERENCE (PROCESS_IDENT:1) (CODE_PATH:/1))))");
+
+    T *s = __r_make_signal(0,0,DEFAULT_ASPECT,_t_new_str(0,TEST_STR_SYMBOL,"fishy!"));
+    _r_deliver(r,s);
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+
+    // @todo, ok the two params thing here is wrong, but we don't actually have
+    // a use case for the blocking listen, so I don't quite know how it should work... @FIXME
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (PARAMS (TEST_STR_SYMBOL:fishy!)) (PARAMS))");
+    debug_disable(D_LISTEN);
     _r_free(r);
 }
 

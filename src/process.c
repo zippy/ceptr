@@ -43,6 +43,14 @@ void processUnblocker(Stream *st) {
     //    if (err) raise_error("couldn't unblock!");
 }
 
+// setup the default until condition (30 second timeout)
+T *defaultCondition() {
+    T *until = _t_newr(0,END_CONDITIONS);
+    T *ts = __r_make_timestamp(TIMEOUT_AT,30);
+    _t_add(until,ts);
+    return until;
+}
+
 /**
  * implements the INTERPOLATE_FROM_MATCH process
  *
@@ -308,23 +316,18 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
 
                 int kids = _t_children(code);
                 T *until = NULL;
-                if (!kids) {
-                    // setup the default until (30 second timeout)
-                    until = _t_newr(0,REQUEST_CONDITIONS);
-                    T *ts = __r_make_timestamp(REQUEST_TIMING,30);
-                    _t_add(until,ts);
-                }
-                else if (kids > 2) {
+                if (kids > 2) {
                     return(tooManyParamsReductionErr);
                 }
                 T *callback = NULL;
                 while(kids--) {
                     t = _t_detach_by_idx(code,1);
-                    if (semeq(_t_symbol(t),REQUEST_CONDITIONS)) {
+                    if (semeq(_t_symbol(t),END_CONDITIONS)) {
                         until = t;
                     }
                     else callback = t;
                 }
+                if (!until) until = defaultCondition();
                 if (!callback) {
                     err = Block;
                     debug(D_SIGNALS,"blocking at %s\n",_td(q->r,code));
@@ -525,15 +528,54 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
         break;
     case LISTEN_ID:
         {
-            //            T *expect = _t_new_root(EXPECTATION);
-            T *expect = _t_detach_by_idx(code,1);
-            T *carrier = _t_detach_by_idx(code,1);
-            T *params = _t_detach_by_idx(code,1);
-            T *act = _t_detach_by_idx(code,1);
-            //            _t_add(expect,s);
-            _r_add_listener(q->r,DEFAULT_ASPECT,*(Symbol *)_t_surface(carrier),expect,params,act);
-            _t_free(carrier);
-            x = __t_news(0,REDUCTION_ERROR_SYMBOL,NULL_SYMBOL,1);
+            t = _t_detach_by_idx(code,1);
+            if (!t || !semeq(_t_symbol(t),ASPECT)) {
+                raise_error("expected ASPECT!");
+            }
+            Aspect aspect = *(int *)_t_surface(t);
+            _t_free(t);
+
+            T *on = _t_detach_by_idx(code,1);
+            Symbol carrier = *(Symbol *)_t_surface(on);
+            _t_free(on);
+            T *match = _t_detach_by_idx(code,1);
+            T *with = NULL;
+            T *until = NULL;
+            T *act = NULL;
+            int kids = _t_children(code);
+            if (kids > 3) {
+                return(tooManyParamsReductionErr);
+            }
+            while(kids--) {
+                T *t = _t_detach_by_idx(code,1);
+                Symbol sym = _t_symbol(t);
+                if (semeq(sym,END_CONDITIONS)) {
+                    until = t;
+                }
+                else if (semeq(sym,ACTION)) {
+                    act = t;
+                }
+                else if (semeq(sym,PARAMS)) {
+                    with = t;
+                }
+            }
+            if (!with) {
+                with = _t_new_root(PARAMS);
+                _t_news(with,INTERPOLATE_SYMBOL,NULL_SYMBOL);
+            }
+            // @todo restore when we implement until
+            //            if (!until) until = defaultCondition();
+            if (act) {
+                _r_add_listener(q->r,aspect,carrier,match,with,act);
+                x = __t_news(0,REDUCTION_ERROR_SYMBOL,NULL_SYMBOL,1);
+                debug(D_LISTEN,"adding listener\n");
+            }
+            else {
+                act = __r_build_wakeup_info(code,context->id);
+                _r_add_listener(q->r,aspect,carrier,match,with,act);
+                debug(D_LISTEN,"adding listener and blocking at %d,%s\n",context->id,_td(q->r,code));
+                return Block;
+            }
         }
         break;
     case SPECIAL_ID:
@@ -668,6 +710,7 @@ void __p_unblock(Q *q,Qe *e) {
 Error _p_unblock(Q *q,int id) {
     // find the context in the queue
     int err = 0;
+    debug(D_LOCK,"unblock LOCK\n");
     pthread_mutex_lock(&q->mutex);
     Qe *e = __p_find_context(q->blocked,id);
     if (e) {
@@ -677,6 +720,7 @@ Error _p_unblock(Q *q,int id) {
         err = 1;
     }
     pthread_mutex_unlock(&q->mutex);
+    debug(D_LOCK,"unblock UNLOCK\n");
     return err;
 }
 
@@ -854,7 +898,7 @@ Error _p_step(Q *q, R **contextP) {
                     context->state = Descend;
                 }
                 else {
-                    raise_error("whoa! brain fart!");
+                    raise_error("whoa! brain fart! on %d,%s",count,_t2s(&q->r->defs,np));
                 }
             }
         }
@@ -1102,10 +1146,13 @@ Qe *_p_addrt2q(Q *q,T *run_tree) {
     n->prev = NULL;
     n->context = __p_make_context(run_tree,0,n->id);
     n->accounts.elapsed_time = 0;
+    debug(D_LOCK,"addrt2q LOCK\n");
     pthread_mutex_lock(&q->mutex);
     __p_append(q->active,n);
     q->contexts_count++;
     pthread_mutex_unlock(&q->mutex);
+    debug(D_LOCK,"addrt2q UNLOCK\n");
+
     return n;
 }
 
@@ -1182,6 +1229,7 @@ Error _p_reduceq(Q *q) {
             debug(D_REDUCE,"Eval: %s\n\n",_t2s(&q->r->defs,qe->context->run_tree));
         }
 #endif
+        debug(D_LOCK,"reduce LOCK\n");
         pthread_mutex_lock(&q->mutex);
         Qe *next = qe->next;
         if (next_state == Done) {
@@ -1204,6 +1252,7 @@ Error _p_reduceq(Q *q) {
         }
         qe = next ? next : q->active;  // next in round robin or wrap back to first
         pthread_mutex_unlock(&q->mutex);
+        debug(D_LOCK,"reduce UNLOCK\n");
     };
 
     /// @todo figure out what error we should be sending back here, i.e. what if
@@ -1221,6 +1270,7 @@ Error _p_reduceq(Q *q) {
  * @param[in] receptor_state pointer to tree node that holds the receptor state info
  */
 void _p_cleanup(Q *q,T* receptor_state) {
+    debug(D_LOCK,"cleanup LOCK\n");
     pthread_mutex_lock(&q->mutex);
     Qe *e = q->completed;
     while (e) {
@@ -1237,6 +1287,7 @@ void _p_cleanup(Q *q,T* receptor_state) {
     _p_free_elements(q->completed);
     q->completed = NULL;
     pthread_mutex_unlock(&q->mutex);
+    debug(D_LOCK,"cleanup UNLOCK\n");
 }
 
 /**

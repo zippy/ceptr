@@ -88,9 +88,10 @@ Symbol: ENVELOPE,[(RECEPTOR_ADDRESS,RECEPTOR_ADDRESS,ASPECT,CARRIER,SIGNAL_UUID)
 Symbol: SIGNAL,[(ENVELOPE,BODY)];                        a signal on the flux.  It's first child is the contents of the signal
 Symbol: SIGNALS,[*SIGNAL];                  list of signals on an aspect in the flux
 Symbol: PENDING_SIGNALS,[*SIGNAL];               list of signals pending to be sent by the VM_HOST
-Symbol: RESPONSE_CODE_PATH,TREE_PATH;
+Symbol: CODE_PATH,TREE_PATH;
 Symbol: PROCESS_IDENT,INTEGER;
-Symbol: PENDING_RESPONSE,[(SIGNAL_UUID,CARRIER,PROCESS_IDENT,RESPONSE_CODE_PATH)];
+Symbol: WAKEUP_REFERENCE,[(PROCESS_IDENT,CODE_PATH)];
+Symbol: PENDING_RESPONSE,[(SIGNAL_UUID,CARRIER,WAKEUP_REFERENCE)];
 Symbol: PENDING_RESPONSES,[*PENDING_RESPONSE];
 Symbol: RESPONSE_CARRIER,SYMBOL;            expected carrier for the response to a signal
 Symbol: LISTENER,SYMBOL;                    surface of the listener is the carrier symbol, and it has two children_ID, expectation semtrex and action code tree
@@ -186,19 +187,21 @@ Symbol: UNIX_ERRNO_ERR,REDUCTION_ERROR;
 Symbol: DEAD_STREAM_READ_ERR,REDUCTION_ERROR;
 
 Symbol: GET_XADDR,XADDR;
-Symbol: REQUEST_TIMING,TIMESTAMP;       specifies a timeout for requests
+Symbol: TIMEOUT_AT,TIMESTAMP;       specifies a timeout for requests
 Symbol: COUNT,INTEGER;
 Symbol: UNLIMMITED,NULL_STRUCTURE;
 Symbol: REPETITIONS,[|[COUNT|UNLIMMITED]];
-Symbol: REQUEST_CONDITIONS,[(?REQUEST_TIMING,?REPETITIONS)];
+Symbol: END_CONDITIONS,[(?TIMEOUT_AT,?REPETITIONS)];
 
 Process: NOOP,"no-op","result",SIGNATURE_STRUCTURE,TREE,"do",SIGNATURE_ANY,NULL_STRUCTURE,0;   this process reduces to its single "do" parameter.
 Process: GET,"get instance value","value",SIGNATURE_ANY,NULL_STRUCTURE,"what",SIGNATURE_SYMBOL,GET_XADDR,0;   reduces to the value of the instance at the xaddr of the "what" parameter
 Process: IF,"if","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"condition",SIGNATURE_PROCESS,BOOLEAN,"then",SIGNATURE_ANY,NULL_STRUCTURE,"else",SIGNATURE_OPTIONAL,SIGNATURE_ANY,NULL_STRUCTURE,0;  this is a traditional "if" process that reduces conditionally to either the "then" or the "else" parameter depending on the value of the "condition" parameter.  Note: we may be replacing this with a more lispy COND process
 Process: ITERATE,"iterate a process","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"condtion",SIGNATURE_PROCESS,BOOLEAN,"do",SIGNATURE_ANY,NULL_STRUCTURE,0;                     this process checks the structure of the result of the "condition" param, if it's a BOOLEAN, it treats the iteration as a while loop and iterates until the BOOLEAN is false; if it's an INTEGER it treats the iteration as repeat loop and iterates as many times as the value of the INTEGER
 Process: SAY,"send a message to a receptor","error",SIGNATURE_SYMBOL,REDUCTION_ERROR_SYMBOL,"to",SIGNATURE_SYMBOL,RECEPTOR_ADDRESS,"on",SIGNATURE_SYMBOL,ASPECT,"message",SIGNATURE_ANY,NULL_STRUCTURE;
-Process: REQUEST,"send a request to a receptor","response",SIGNATURE_STRUCTURE,TREE,"of",SIGNATURE_SYMBOL,RECEPTOR_ADDRESS,"on",SIGNATURE_SYMBOL,ASPECT,"message",SIGNATURE_ANY,NULL_STRUCTURE,"respond on",SIGNATURE_SYMBOL,RESPONSE_CARRIER,"until",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,REQUEST_CONDITIONS,"callback",SIGNATURE_OPTIONAL,SIGNATURE_PROCESS,NULL_SYMBOL,0;  if there is no "callback" param, then this process will block until the result comes back or the "until" causes cleanup of pending request.
-Process: LISTEN,"plant a listener","error",SIGNATURE_SYMBOL,REDUCTION_ERROR_SYMBOL,"listen for",SIGNATURE_SYMBOL,EXPECTATION,"on",SIGNATURE_SYMBOL,CARRIER,"with",SIGNATURE_SYMBOL,PARAMS,"do",SIGNATURE_SYMBOL,ACTION,0;
+Process: REQUEST,"send a request to a receptor","response",SIGNATURE_STRUCTURE,TREE,"of",SIGNATURE_SYMBOL,RECEPTOR_ADDRESS,"on",SIGNATURE_SYMBOL,ASPECT,"message",SIGNATURE_ANY,NULL_STRUCTURE,"respond on",SIGNATURE_SYMBOL,RESPONSE_CARRIER,"until",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,END_CONDITIONS,"callback",SIGNATURE_OPTIONAL,SIGNATURE_PROCESS,NULL_SYMBOL,0;  if there is no "callback" param, then this process will block until the result comes back or the "until" causes cleanup of pending request.
+
+Process: LISTEN,"plant a listener","error",SIGNATURE_SYMBOL,REDUCTION_ERROR_SYMBOL,"on",SIGNATURE_SYMBOL,ASPECT,"for",SIGNATURE_SYMBOL,CARRIER,"match",SIGNATURE_SYMBOL,EXPECTATION,"do",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,ACTION,"with",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,PARAMS,"until",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,END_CONDITIONS,0;  If you don't provide an action, the assumption is that the LISTEN process will block and  will reduce to the SEMTREX_MATCH.  This will also force the END_CONDITIONS/REPETITIONS to ONCE
+
 Process: RESPOND,"respond to signal","result",SIGNATURE_STRUCTURE,TREE,"response contents",SIGNATURE_ANY,NULL_STRUCTURE,0;
 Process: QUOTE,"quote a process so that it can be passed as a value","result",SIGNATURE_STRUCTURE,TREE,0;
 Process: INTERPOLATE_FROM_MATCH,"interploate match result in place","result",SIGNATURE_STRUCTURE,TREE,0;

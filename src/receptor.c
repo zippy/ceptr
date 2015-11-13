@@ -123,6 +123,15 @@ void _r_add_listener(Receptor *r,Aspect aspect,Symbol carrier,T *expectation,T* 
     _t_add(a,l);
 }
 
+void _r_remove_listener(Receptor *r,T *listener) {
+    T *a = _t_parent(listener);
+    _t_detach_by_ptr(a,listener);
+    _t_free(listener);
+    // @todo, if there are any processes blocked on this listener they
+    // should actually get cleaned up somehow.  This would mean searching
+    // through for them, or something...
+}
+
 /**
  * Destroys a receptor freeing all memory it uses.
  */
@@ -481,31 +490,41 @@ T* __r_make_signal(ReceptorAddress from,ReceptorAddress to,Aspect aspect,T *sign
     return s;
 }
 
+// create WAKEUP_REFERENCE symbol used for unblocking a process
+T* __r_build_wakeup_info(T *code_point,int process_id) {
+    T *wakeup = _t_new_root(WAKEUP_REFERENCE);
+    _t_newi(wakeup,PROCESS_IDENT,process_id);
+    int *path = _t_get_path(code_point);
+    _t_new(wakeup,CODE_PATH,path,sizeof(int)*(_t_path_depth(path)+1));
+    free(path);
+    return wakeup;
+}
+
 /**
  * send a signal
  *
  * @param[in] r sending receptor
  * @param[in] signal Signal tree
+ * @param[in] carrier the carrier on which to expect a response
+ * @param[in] code_point the point in the code to re-awaken when a response comes back
+ * @param[in] process_id the id of the process in which that code point exists
  * @param[out] T result tree
  * @returns a clone of the UUID of the message sent.
  * @todo signal should have timestamps and other meta info
  */
-T* __r_send_signal(Receptor *r,T *signal,Symbol response_carrier,T *response_point,int process_id) {
+T* __r_send_signal(Receptor *r,T *signal,Symbol response_carrier,T *code_point,int process_id) {
     debug(D_SIGNALS,"sending %s\n",_t2s(&r->defs,signal));
     _t_add(r->pending_signals,signal);
 
     //@todo for now we return the UUID of the signal as the result.  Perhaps later we return an error condition if delivery to address is known to be impossible, or something like that.
     T *envelope = _t_child(signal,SignalEnvelopeIdx);
     T *result = _t_rclone(_t_child(envelope,EnvelopeUUIDIdx));
-    if (response_point) {
+    if (code_point) {
         T *pr = _t_newr(r->pending_responses,PENDING_RESPONSE);
         _t_add(pr,_t_clone(result));
         _t_news(pr,CARRIER,response_carrier);
-        _t_newi(pr,PROCESS_IDENT,process_id);
-        int *path = _t_get_path(response_point);
-        _t_new(pr,RESPONSE_CODE_PATH,path,sizeof(int)*(_t_path_depth(path)+1));
+        _t_add(pr,__r_build_wakeup_info(code_point,process_id));
         debug(D_SIGNALS,"adding pending response: %s\n",_td(r,pr));
-        free(path);
     }
 
     return result;
@@ -537,25 +556,34 @@ void __r_check_listener(T* processes,T *listener,T *signal,Q *q) {
             raise_error("null action in listener!");
         }
 
-        if (0) {
-            // placeholder for the kind of listener that just unblocks a process
-            // that was blocked waiting for the match, rather than the kind that
-            // creates a new process.  was EXPECT_ACT
-
-            /* // currently if the action is EXPECT_ACT then we assume that */
-            /* // this is actually the blocked phase of EXPECT_ACT. This could be a */
-            /* // problem if we ever wanted our action to be an EXPECT_ACT process */
-            /* // see the implementation of EXPECT_ACT in process.c @fixme */
-            /* R *context = *(R**) _t_surface(action); */
+        if (semeq(_t_symbol(action),WAKEUP_REFERENCE)) {
 
             /* // for now we add the params to the contexts run tree */
             /* /// @todo later this should be integrated into some kind of scoping handling */
-            /* T *params = _t_clone(_t_child(listener,2)); */
-            /* _p_interpolate_from_match(params,m,signal_contents); */
-            /* _t_add(_t_child(context->run_tree,2),params); */
-            /* rt_cur_child(context->node_pointer) = RUN_TREE_NOT_EVAULATED; */
+            T *params = _t_rclone(_t_child(listener,2));
+            _p_interpolate_from_match(params,m,signal_contents);
+            int process_id = *(int *)_t_surface(_t_child(action,1));
+            int *code_path = (int *)_t_surface(_t_child(action,2));
 
-            /* _p_unblock(q,context->id); */
+            // @todo figure out how to refactor this with the similar
+            // code in _r_deliver.
+            debug(D_LOCK,"listen LOCK\n");
+            pthread_mutex_lock(&q->mutex);
+            Qe *e = __p_find_context(q->blocked,process_id);
+            if (e) {
+                T *result = _t_get(e->context->run_tree,code_path);
+                if (!result) raise_error("failed to find code path when waking up listener!");
+                T *p = _t_parent(result);
+                _t_replace(p,_t_node_index(result), params);
+                e->context->node_pointer = params;
+
+                __p_unblock(q,e);
+                debug(D_LISTEN,"unblocking listener at %d,%s\n",process_id,_td(q->r,p));
+            }
+            else _t_free(params);
+            pthread_mutex_unlock(&q->mutex);
+            debug(D_LOCK,"listen UNLOCK\n");
+            _r_remove_listener(q->r,listener);
         }
         else {
             Process p = *(Process*) _t_surface(action);
@@ -616,9 +644,10 @@ Error _r_deliver(Receptor *r, T *signal) {
         DO_KIDS(r->pending_responses,
                 l = _t_child(r->pending_responses,i);
                 if (__uuid_equal(u,(UUIDt *)_t_surface(_t_child(l,PendingResponseUUIDIdx)))) {
-                    int process_id = *(int *)_t_surface(_t_child(l,PendingResponseProcessIdentIdx));
                     Symbol carrier = *(Symbol *)_t_surface(_t_child(l,PendingResponseCarrierIdx));
-                    int *code_path = (int *)_t_surface(_t_child(l,PendingResponseResponseCodePathIdx));
+                    T *wakeup = _t_child(l,PendingResponseWakeupIdx);
+                    int process_id = *(int *)_t_surface(_t_child(wakeup,1));
+                    int *code_path = (int *)_t_surface(_t_child(wakeup,2));
                     T *response = (T *)_t_surface(_t_child(signal,SignalBodyIdx));
                     // now set up the signal so when it's freed below, the body doesn't get freed too
                     signal->context.flags &= ~TFLAG_SURFACE_IS_TREE;
@@ -631,8 +660,8 @@ Error _r_deliver(Receptor *r, T *signal) {
                         break;
                     }
 
-                    int x;
                     Q *q = r->q;
+                    debug(D_LOCK,"deliver LOCK\n");
                     pthread_mutex_lock(&q->mutex);
                     Qe *e = __p_find_context(q->blocked,process_id);
                     if (e) {
@@ -654,6 +683,7 @@ Error _r_deliver(Receptor *r, T *signal) {
                     _t_detach_by_idx(r->pending_responses,i);
                     _t_free(l);
                     pthread_mutex_unlock(&q->mutex);
+                    debug(D_LOCK,"deliver UNLOCK\n");
                     break;
                 }
                 );
