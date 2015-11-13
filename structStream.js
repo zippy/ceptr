@@ -6,7 +6,7 @@ var structStream =
     [ "callback_arg1", "structStream.html#a6b63f2a0a45c971187a9efba665f09df", null ],
     [ "callback_arg2", "structStream.html#a08e31ce0e3f9c976b97b39f21c01a9aa", null ],
     [ "cv", "structStream.html#a7f7fc814253f3dfae48951b9f47c34a2", null ],
-    [ "data", "structStream.html#ac66b22ba53bb293c48fc3fb75562a9cb", null ],
+    [ "data", "structStream.html#ad7e6f237d41c09cdad161453bac422a5", null ],
     [ "data_size", "structStream.html#a33b847d69114c9cf31f831f689723baa", null ],
     [ "err", "structStream.html#a4a6608bda0e2f149365cd38bd5fbec60", null ],
     [ "flags", "structStream.html#ad0ec98a999ffabf6dbf192ed85d66f68", null ],

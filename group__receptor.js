@@ -14,7 +14,7 @@ var group__receptor =
     [ "__r_get_symbol_size", "group__receptor.html#gad886d976f8621ebb22d02c61f454265c", null ],
     [ "__r_get_symbol_structure", "group__receptor.html#ga120e66982d483fbe004fd969cf1c353f", null ],
     [ "__r_make_signal", "group__receptor.html#gacdafc5a6d2d449f5a4903577e5642de8", null ],
-    [ "__r_send_signal", "group__receptor.html#gace5199701c929e09c06608aff0910185", null ],
+    [ "__r_send_signal", "group__receptor.html#ga3a5eb12932bb3c20b405c89132f09c31", null ],
     [ "__set_label_for_def", "group__receptor.html#ga645381abc5b870dd686bd6731bba3703", null ],
     [ "_r_add_listener", "group__receptor.html#gab41afaa1881acc5525b60fd6088ed389", null ],
     [ "_r_build_def_semtrex", "group__receptor.html#ga63078117d8c6850455a4419fd9b6b784", null ],

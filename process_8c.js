@@ -28,6 +28,7 @@ var process_8c =
     [ "_p_step", "process_8c.html#a3a5e10aa19f18453fcc24481bafb2903", null ],
     [ "_p_unblock", "process_8c.html#ae2449b4f1ecf168f4ac166d27f99edf7", null ],
     [ "debug_np", "process_8c.html#a8d3cdacd670f55a84385f823e721c6e4", null ],
+    [ "defaultCondition", "process_8c.html#a2bab5d67cb79aa990c542bc82a40400b", null ],
     [ "get_rt_cur_child", "process_8c.html#a30152002be2ccbdcc4d425b42249f385", null ],
     [ "pq", "process_8c.html#a5155e1fe433f5ebae5d912ab9604dbc8", null ],
     [ "processUnblocker", "process_8c.html#a948489c430d1740f065ab51c4cce5304", null ],

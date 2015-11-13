@@ -161,9 +161,10 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="SIGNAL"></a>SIGNAL</td><td><a href="ref_sys_structures.html#TUPLE-OF-ENVELOPE-AND-BODY">TUPLE-OF-ENVELOPE-AND-BODY</a></td><td>                        a signal on the flux.  It's first child is the contents of the signal</td></tr>
 <tr><td><a name="SIGNALS"></a>SIGNALS</td><td><a href="ref_sys_structures.html#ZERO-OR-MORE-OF-SIGNAL">ZERO-OR-MORE-OF-SIGNAL</a></td><td>                  list of signals on an aspect in the flux</td></tr>
 <tr><td><a name="PENDING_SIGNALS"></a>PENDING_SIGNALS</td><td><a href="ref_sys_structures.html#ZERO-OR-MORE-OF-SIGNAL">ZERO-OR-MORE-OF-SIGNAL</a></td><td>               list of signals pending to be sent by the VM_HOST</td></tr>
-<tr><td><a name="RESPONSE_CODE_PATH"></a>RESPONSE_CODE_PATH</td><td><a href="ref_sys_structures.html#TREE-PATH">TREE-PATH</a></td><td></td></tr>
+<tr><td><a name="CODE_PATH"></a>CODE_PATH</td><td><a href="ref_sys_structures.html#TREE-PATH">TREE-PATH</a></td><td></td></tr>
 <tr><td><a name="PROCESS_IDENT"></a>PROCESS_IDENT</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
-<tr><td><a name="PENDING_RESPONSE"></a>PENDING_RESPONSE</td><td><a href="ref_sys_structures.html#LIST-OF-SIGNAL-UUID-AND-CARRIER-AND-PROCESS-IDENT-AND-RESPONSE-CODE-PATH">LIST-OF-SIGNAL-UUID-AND-CARRIER-AND-PROCESS-IDENT-AND-RESPONSE-CODE-PATH</a></td><td></td></tr>
+<tr><td><a name="WAKEUP_REFERENCE"></a>WAKEUP_REFERENCE</td><td><a href="ref_sys_structures.html#TUPLE-OF-PROCESS-IDENT-AND-CODE-PATH">TUPLE-OF-PROCESS-IDENT-AND-CODE-PATH</a></td><td></td></tr>
+<tr><td><a name="PENDING_RESPONSE"></a>PENDING_RESPONSE</td><td><a href="ref_sys_structures.html#LIST-OF-SIGNAL-UUID-AND-CARRIER-AND-WAKEUP-REFERENCE">LIST-OF-SIGNAL-UUID-AND-CARRIER-AND-WAKEUP-REFERENCE</a></td><td></td></tr>
 <tr><td><a name="PENDING_RESPONSES"></a>PENDING_RESPONSES</td><td><a href="ref_sys_structures.html#ZERO-OR-MORE-OF-PENDING-RESPONSE">ZERO-OR-MORE-OF-PENDING-RESPONSE</a></td><td></td></tr>
 <tr><td><a name="RESPONSE_CARRIER"></a>RESPONSE_CARRIER</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>            expected carrier for the response to a signal</td></tr>
 <tr><td><a name="LISTENER"></a>LISTENER</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>                    surface of the listener is the carrier symbol, and it has two children_ID, expectation semtrex and action code tree</td></tr>
@@ -237,11 +238,11 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="UNIX_ERRNO_ERR"></a>UNIX_ERRNO_ERR</td><td><a href="ref_sys_structures.html#REDUCTION-ERROR">REDUCTION-ERROR</a></td><td></td></tr>
 <tr><td><a name="DEAD_STREAM_READ_ERR"></a>DEAD_STREAM_READ_ERR</td><td><a href="ref_sys_structures.html#REDUCTION-ERROR">REDUCTION-ERROR</a></td><td></td></tr>
 <tr><td><a name="GET_XADDR"></a>GET_XADDR</td><td><a href="ref_sys_structures.html#XADDR">XADDR</a></td><td></td></tr>
-<tr><td><a name="REQUEST_TIMING"></a>REQUEST_TIMING</td><td><a href="ref_sys_structures.html#TIMESTAMP">TIMESTAMP</a></td><td>       specifies a timeout for requests</td></tr>
+<tr><td><a name="TIMEOUT_AT"></a>TIMEOUT_AT</td><td><a href="ref_sys_structures.html#TIMESTAMP">TIMESTAMP</a></td><td>       specifies a timeout for requests</td></tr>
 <tr><td><a name="COUNT"></a>COUNT</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
 <tr><td><a name="UNLIMMITED"></a>UNLIMMITED</td><td><a href="ref_sys_structures.html#NULL-STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
 <tr><td><a name="REPETITIONS"></a>REPETITIONS</td><td><a href="ref_sys_structures.html#LOGICAL-OR-OF-COUNT-AND-UNLIMMITED">LOGICAL-OR-OF-COUNT-AND-UNLIMMITED</a></td><td></td></tr>
-<tr><td><a name="REQUEST_CONDITIONS"></a>REQUEST_CONDITIONS</td><td><a href="ref_sys_structures.html#TUPLE-OF-ZERO-OR-ONE-OF-REQUEST-TIMING-AND-ZERO-OR-ONE-OF-REPETITIONS">TUPLE-OF-ZERO-OR-ONE-OF-REQUEST-TIMING-AND-ZERO-OR-ONE-OF-REPETITIONS</a></td><td>  </td></tr>
+<tr><td><a name="END_CONDITIONS"></a>END_CONDITIONS</td><td><a href="ref_sys_structures.html#TUPLE-OF-ZERO-OR-ONE-OF-TIMEOUT-AT-AND-ZERO-OR-ONE-OF-REPETITIONS">TUPLE-OF-ZERO-OR-ONE-OF-TIMEOUT-AT-AND-ZERO-OR-ONE-OF-REPETITIONS</a></td><td></td></tr>
 <tr><td><a name="STX_TOKENS"></a>STX_TOKENS</td><td><a href="ref_sys_structures.html#LIST">LIST</a></td><td></td></tr>
 <tr><td><a name="STX_SL"></a>STX_SL</td><td><a href="ref_sys_structures.html#NULL-STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
 <tr><td><a name="STX_OP"></a>STX_OP</td><td><a href="ref_sys_structures.html#NULL-STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
@@ -295,7 +296,7 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Nov 12 2015 11:28:41 for ceptr by
+    <li class="footer">Generated on Thu Nov 12 2015 22:44:38 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
