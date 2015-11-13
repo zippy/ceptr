@@ -173,7 +173,7 @@ Enumerations</h2></td></tr>
 <b>EnvelopeCarrierIdx</b>, 
 <br />
 &#160;&#160;<b>EnvelopeUUIDIdx</b>, 
-<b>EnvelopeInResponseToUUIDIdx</b>
+<b>EnvelopeExtraIdx</b>
 <br />
  }</td></tr>
 <tr class="separator:gadc29c2ff13d900c2f185ee95427fb06c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -240,13 +240,18 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_r_remove_listener</b
 <tr class="separator:ga3e737841784555574a0d90ad2eff4cc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga300b11b12792c290fef2fb0fe07d71ee"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structReceptor.html">Receptor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga300b11b12792c290fef2fb0fe07d71ee">_r_unserialize</a> (void *surface)</td></tr>
 <tr class="separator:ga300b11b12792c290fef2fb0fe07d71ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gacdafc5a6d2d449f5a4903577e5642de8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#gacdafc5a6d2d449f5a4903577e5642de8">__r_make_signal</a> (ReceptorAddress from, ReceptorAddress to, Aspect aspect, <a class="el" href="structT.html">T</a> *signal_contents)</td></tr>
-<tr class="separator:gacdafc5a6d2d449f5a4903577e5642de8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga10381b27336b0b9a0849fca89dbf65a2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga10381b27336b0b9a0849fca89dbf65a2">__r_make_signal</a> (ReceptorAddress from, ReceptorAddress to, Aspect aspect, <a class="el" href="structT.html">T</a> *signal_contents, <a class="el" href="structUUIDt.html">UUIDt</a> *in_response_to, <a class="el" href="structT.html">T</a> *until)</td></tr>
+<tr class="separator:ga10381b27336b0b9a0849fca89dbf65a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2489d73f268a2bb8bd0f8a04e3ffd731"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga2489d73f268a2bb8bd0f8a04e3ffd731"></a>
 <a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>__r_build_wakeup_info</b> (<a class="el" href="structT.html">T</a> *code_point, int process_id)</td></tr>
 <tr class="separator:ga2489d73f268a2bb8bd0f8a04e3ffd731"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3a5eb12932bb3c20b405c89132f09c31"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga3a5eb12932bb3c20b405c89132f09c31">__r_send_signal</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structT.html">T</a> *signal, <a class="el" href="structSemanticID.html">Symbol</a> response_carrier, <a class="el" href="structT.html">T</a> *code_point, int process_id)</td></tr>
-<tr class="separator:ga3a5eb12932bb3c20b405c89132f09c31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5bb9c9f7caa8240b191fe33c0f7ea157"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga5bb9c9f7caa8240b191fe33c0f7ea157"></a>
+<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>__r_send</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structT.html">T</a> *signal)</td></tr>
+<tr class="separator:ga5bb9c9f7caa8240b191fe33c0f7ea157"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa9abda6d1e05a6b498580619d216efe9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#gaa9abda6d1e05a6b498580619d216efe9">_r_send</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structT.html">T</a> *signal)</td></tr>
+<tr class="separator:gaa9abda6d1e05a6b498580619d216efe9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga560777ec3ceabeb53f89e3da8612a634"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga560777ec3ceabeb53f89e3da8612a634">_r_request</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structT.html">T</a> *signal, <a class="el" href="structSemanticID.html">Symbol</a> response_carrier, <a class="el" href="structT.html">T</a> *code_point, int process_id)</td></tr>
+<tr class="separator:ga560777ec3ceabeb53f89e3da8612a634"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga74ad11561e8e391a1ebed9f7474ce095"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga74ad11561e8e391a1ebed9f7474ce095">__r_check_listener</a> (<a class="el" href="structT.html">T</a> *processes, <a class="el" href="structT.html">T</a> *listener, <a class="el" href="structT.html">T</a> *signal, <a class="el" href="structQ.html">Q</a> *q)</td></tr>
 <tr class="separator:ga74ad11561e8e391a1ebed9f7474ce095"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7d40f33135ee51640d0d24b8c9e3e046"><td class="memItemLeft" align="right" valign="top">Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga7d40f33135ee51640d0d24b8c9e3e046">_r_deliver</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structT.html">T</a> *signal)</td></tr>
@@ -337,7 +342,7 @@ Variables</h2></td></tr>
 </dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000034">Todo:</a></b></dt><dd>this will skip some seconds over time.... make more sophisticated </dd></dl>
 
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00900">900</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00941">941</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -378,7 +383,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>low level function for matching expectations on listeners and either adding a new run tree onto the current <a class="el" href="structQ.html">Q</a> or reawakening the process that's been blocked waiting for the expectation to match </p>
 
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00538">538</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00568">568</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -397,7 +402,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>get the <a class="el" href="structReceptor.html">Receptor</a> structure from an installed receptor </p>
 
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00726">726</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00767">767</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -467,7 +472,7 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="gacdafc5a6d2d449f5a4903577e5642de8"></a>
+<a class="anchor" id="ga10381b27336b0b9a0849fca89dbf65a2"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -493,7 +498,19 @@ Variables</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="structT.html">T</a> *&#160;</td>
-          <td class="paramname"><em>signal_contents</em>&#160;</td>
+          <td class="paramname"><em>signal_contents</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structUUIDt.html">UUIDt</a> *&#160;</td>
+          <td class="paramname"><em>in_response_to</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structT.html">T</a> *&#160;</td>
+          <td class="paramname"><em>until</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -515,66 +532,6 @@ Variables</h2></td></tr>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000029">Todo:</a></b></dt><dd>signal should have timestamps and other meta info </dd></dl>
 
 <p>Definition at line <a class="el" href="receptor_8c_source.html#l00479">479</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ga3a5eb12932bb3c20b405c89132f09c31"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structT.html">T</a>* __r_send_signal </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structReceptor.html">Receptor</a> *&#160;</td>
-          <td class="paramname"><em>r</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structT.html">T</a> *&#160;</td>
-          <td class="paramname"><em>signal</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structSemanticID.html">Symbol</a>&#160;</td>
-          <td class="paramname"><em>response_carrier</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structT.html">T</a> *&#160;</td>
-          <td class="paramname"><em>code_point</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>process_id</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>send a signal</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">r</td><td>sending receptor </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">signal</td><td>Signal tree </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">carrier</td><td>the carrier on which to expect a response </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">code_point</td><td>the point in the code to re-awaken when a response comes back </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">process_id</td><td>the id of the process in which that code point exists </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname"><a class="el" href="structT.html">T</a></td><td>result tree </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>a clone of the UUID of the message sent. </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000030">Todo:</a></b></dt><dd>signal should have timestamps and other meta info </dd></dl>
-
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00515">515</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -983,7 +940,7 @@ Variables</h2></td></tr>
 <div class="line">    ReceptorAddress f = 3; <span class="comment">// DUMMY ADDR</span></div>
 <div class="line">    ReceptorAddress t = 4; <span class="comment">// DUMMY ADDR</span></div>
 <div class="line"></div>
-<div class="line">    <a class="code" href="structT.html">T</a> *signal = <a class="code" href="group__receptor.html#gacdafc5a6d2d449f5a4903577e5642de8">__r_make_signal</a>(f,t,DEFAULT_ASPECT,signal_contents);</div>
+<div class="line">    <a class="code" href="structT.html">T</a> *signal = <a class="code" href="group__receptor.html#ga10381b27336b0b9a0849fca89dbf65a2">__r_make_signal</a>(f,t,DEFAULT_ASPECT,signal_contents,0,0);</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// our expectation should match on the first path segment</span></div>
 <div class="line">    <span class="comment">// /HTTP_REQUEST/.,.,HTTP_REQUEST_PATH/HTTP_REQUEST_PATH_SEGMENTS/&lt;HTTP_REQUEST_PATH_SEGMENT:HTTP_REQUEST_PATH_SEGMENT&gt;</span></div>
@@ -1036,7 +993,7 @@ Variables</h2></td></tr>
 <div class="line">    <a class="code" href="process_8c.html#a64e8965291c67057b06f273db19a465d">_p_reduceq</a>(r-&gt;<a class="code" href="structReceptor.html#ab1e1dd776afee48ee71297a3e39756f8">q</a>);</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// should add a pending signal to be sent with the matched PATH_SEGMENT returned as the response signal body</span></div>
-<div class="line">    spec_is_str_equal(_td(r,r-&gt;pending_signals),<span class="stringliteral">&quot;(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:4) (RECEPTOR_ADDRESS:3) (ASPECT:1) (CARRIER:HTTP_RESPONSE) (SIGNAL_UUID) (SIGNAL_UUID)) (BODY:{(HTTP_RESPONSE (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT) (HTTP_REQUEST_PATH_SEGMENT:groups))})))&quot;</span>);</div>
+<div class="line">    spec_is_str_equal(_td(r,r-&gt;pending_signals),<span class="stringliteral">&quot;(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:4) (RECEPTOR_ADDRESS:3) (ASPECT:1) (CARRIER:HTTP_RESPONSE) (SIGNAL_UUID) (IN_RESPONSE_TO_UUID)) (BODY:{(HTTP_RESPONSE (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT) (HTTP_REQUEST_PATH_SEGMENT:groups))})))&quot;</span>);</div>
 <div class="line"></div>
 <div class="line">    result = <a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(r-&gt;<a class="code" href="structReceptor.html#ab1e1dd776afee48ee71297a3e39756f8">q</a>-&gt;<a class="code" href="structQ.html#a7ee8f0b2d1cfefac4a7e3e8704bf6069">completed</a>-&gt;context-&gt;<a class="code" href="structR.html#aab5d23021e9afe31b32544e515f18c1f">run_tree</a>,1);</div>
 <div class="line">    spec_is_str_equal(_td(r,result),<span class="stringliteral">&quot;(SIGNAL_UUID)&quot;</span>);</div>
@@ -1045,7 +1002,7 @@ Variables</h2></td></tr>
 <div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(r-&gt;<a class="code" href="structReceptor.html#a56e5e37eb23a3e5debf7f24723eca9ed">defs</a>.<a class="code" href="structDefs.html#a6f9d3b3e38fff31326b7d27f730ae95c">structures</a>);</div>
 <div class="line">    <a class="code" href="group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8">_r_free</a>(r);</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00634">634</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00664">664</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -1120,7 +1077,7 @@ Variables</h2></td></tr>
 <div class="line">    <span class="comment">// delivering a fake signal should return a ping</span></div>
 <div class="line">    ReceptorAddress f = 3; <span class="comment">// DUMMY ADDR</span></div>
 <div class="line">    ReceptorAddress t = 4; <span class="comment">// DUMMY ADDR</span></div>
-<div class="line">    <a class="code" href="structT.html">T</a> *signal = <a class="code" href="group__receptor.html#gacdafc5a6d2d449f5a4903577e5642de8">__r_make_signal</a>(f,t,DEFAULT_ASPECT,_t_newi(0,ping,0));</div>
+<div class="line">    <a class="code" href="structT.html">T</a> *signal = <a class="code" href="group__receptor.html#ga10381b27336b0b9a0849fca89dbf65a2">__r_make_signal</a>(f,t,DEFAULT_ASPECT,_t_newi(0,ping,0),0,0);</div>
 <div class="line"></div>
 <div class="line">    d = _td(r,signal);</div>
 <div class="line">    spec_is_str_equal(d,<span class="stringliteral">&quot;(SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:3) (RECEPTOR_ADDRESS:4) (ASPECT:1) (CARRIER:ping_message) (SIGNAL_UUID)) (BODY:{(ping_message:0)}))&quot;</span>);</div>
@@ -1140,7 +1097,7 @@ Variables</h2></td></tr>
 <div class="line">    spec_is_str_equal(d,<span class="stringliteral">&quot;(SIGNAL_UUID)&quot;</span>);</div>
 <div class="line"></div>
 <div class="line">    d = _td(r,r-&gt;pending_signals);</div>
-<div class="line">    spec_is_str_equal(d,<span class="stringliteral">&quot;(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:4) (RECEPTOR_ADDRESS:3) (ASPECT:1) (CARRIER:alive_message) (SIGNAL_UUID) (SIGNAL_UUID)) (BODY:{(alive_message:1)})))&quot;</span>);</div>
+<div class="line">    spec_is_str_equal(d,<span class="stringliteral">&quot;(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:4) (RECEPTOR_ADDRESS:3) (ASPECT:1) (CARRIER:alive_message) (SIGNAL_UUID) (IN_RESPONSE_TO_UUID)) (BODY:{(alive_message:1)})))&quot;</span>);</div>
 <div class="line">    <span class="comment">//    _t_free(result);</span></div>
 <div class="line">    <a class="code" href="group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8">_r_free</a>(r);</div>
 </div><!-- fragment --><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000027">Todo:</a></b></dt><dd>revisit the assumption about handlers and endpoints </dd></dl>
@@ -1449,6 +1406,102 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="ga560777ec3ceabeb53f89e3da8612a634"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structT.html">T</a>* _r_request </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structReceptor.html">Receptor</a> *&#160;</td>
+          <td class="paramname"><em>r</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structT.html">T</a> *&#160;</td>
+          <td class="paramname"><em>signal</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structSemanticID.html">Symbol</a>&#160;</td>
+          <td class="paramname"><em>response_carrier</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structT.html">T</a> *&#160;</td>
+          <td class="paramname"><em>code_point</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>process_id</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>send a request signal</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">r</td><td>sending receptor </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">signal</td><td>Signal tree </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">carrier</td><td>the carrier on which to expect a response </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">code_point</td><td>the point in the code to re-awaken when a response comes back </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">process_id</td><td>the id of the process in which that code point exists </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a clone of the UUID of the message sent. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000030">Todo:</a></b></dt><dd>signal should have timestamps and other meta info </dd></dl>
+
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00544">544</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gaa9abda6d1e05a6b498580619d216efe9"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structT.html">T</a>* _r_send </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structReceptor.html">Receptor</a> *&#160;</td>
+          <td class="paramname"><em>r</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structT.html">T</a> *&#160;</td>
+          <td class="paramname"><em>signal</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>send a simple signal (say)</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">carrier</td><td>the carrier on which to expect a response </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">signal</td><td>Signal tree </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a clone of the UUID of the message sent. </dd></dl>
+
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00525">525</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="ga3e737841784555574a0d90ad2eff4cc4"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1652,7 +1705,7 @@ Variables</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Nov 12 2015 23:01:26 for ceptr by
+    <li class="footer">Generated on Fri Nov 13 2015 14:17:44 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
