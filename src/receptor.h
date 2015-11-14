@@ -25,14 +25,17 @@
 enum {EnvelopeFromIdx=1,EnvelopeToIdx,EnvelopeAspectIdx,EnvelopeCarrierIdx,EnvelopeUUIDIdx,EnvelopeExtraIdx};
 enum {SignalEnvelopeIdx=1,SignalBodyIdx};
 enum {PendingResponseUUIDIdx=1,PendingResponseCarrierIdx,PendingResponseWakeupIdx,PendingResponseEndCondsIdx};
+enum {ExpectationCarrierIdx=1,ExpectationPatternIdx,ExpectationActionIdx,ExpectationParamsIdx,ExpectationEndCondsIdx};
+enum {StepCarrierIdx=1,StepPatternIdx,StepActionIdx,StepExtra1Idx,StepExtra2Idx};
+
 // delivery errors
 enum {noDeliveryErr};
 
 /******************  create and destroy receptors */
 Receptor *_r_new(Symbol s);
 Receptor *_r_new_receptor_from_package(Symbol s,T *p,T *bindings);
-void _r_add_expectation(Receptor *r,Aspect aspect,Symbol carrier,T *pattern,T* params,T *action);
-void _r_remove_listener(Receptor *r,T *listener);
+void _r_add_expectation(Receptor *r,Aspect aspect,Symbol carrier,T *pattern,T *action,T *with,T *until);
+void _r_remove_expectation(Receptor *r,T *expectation);
 void _r_free(Receptor *r);
 
 /*****************  receptor symbols, structures, and processes */
@@ -69,12 +72,12 @@ T *__r_build_wakeup_info(T *code_point,int process_id);
 T* __r_send(Receptor *r,T *signal);
 T* _r_send(Receptor *r,T *signal);
 T* _r_request(Receptor *r,T *signal,Symbol response_carrier,T *code_point,int process_id);
-void __r_check_listener(T* processes,T *listener,T *signal,Q *q);
+void __r_test_expectation(T* processes,T *expectation,T *signal,Q *q);
 Error _r_deliver(Receptor *r, T *signal);
 
 /******************  internal utilities */
 T *__r_get_aspect(Receptor *r,Aspect aspect);
-T *__r_get_listeners(Receptor *r,Aspect aspect);
+T *__r_get_expectations(Receptor *r,Aspect aspect);
 T *__r_get_signals(Receptor *r,Aspect aspect);
 Receptor * __r_get_receptor(T *installed_receptor);
 

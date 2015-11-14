@@ -95,11 +95,12 @@ Symbol: PROCESS_IDENT,INTEGER;
 Symbol: WAKEUP_REFERENCE,[(PROCESS_IDENT,CODE_PATH)];
 Symbol: PENDING_RESPONSE,[(SIGNAL_UUID,CARRIER,WAKEUP_REFERENCE,END_CONDITIONS)];
 Symbol: PENDING_RESPONSES,[*PENDING_RESPONSE];
-Symbol: RESPONSE_CARRIER,SYMBOL;            expected carrier for the response to a signal
-Symbol: EXPECTATION,SYMBOL;                    surface of the listener is the carrier symbol, and it has two children_ID, expectation semtrex and action code tree
-Symbol: EXPECTATIONS,[*EXPECTATION];                     list of carrier/expectation/action tress that "listen" to changes on the flux
+Symbol: RESPONSE_CARRIER,SYMBOL;            expected carrier for the response to a signal that "listen" to changes on the flux
 Symbol: PATTERN,SEMTREX;                expectation is a semtrex (thus has one child which is the first part of the semtrex)
 Symbol: ACTION,PROCESS;                     code tree_ID, which specifies the action to perform when an expectation's semtrex matches
+Declare: PARAMS;
+Symbol: EXPECTATION,[(CARRIER,PATTERN,ACTION,PARAMS,END_CONDITIONS)];
+Symbol: EXPECTATIONS,[*EXPECTATION];                     list of carrier/expectation/action tress
 Symbol: INTERPOLATE_SYMBOL,SYMBOL;          a place holder to indicate which symbol to insert into this part of the tree
 Symbol: PROCESS_NAME,CSTRING;
 Symbol: PROCESS_INTENTION,CSTRING;
@@ -132,7 +133,7 @@ Symbol: SEQUENCES,LIST;
 Symbol: STEP_SYMBOL,SYMBOL;
 Symbol: STEPS,LIST;
 Structure: SEQUENCE,+STEP_SYMBOL;
-Structure: PROTOCOL_STEP,PATTERN,PARAMS,ACTION;
+Structure: PROTOCOL_STEP,(CARRIER,PATTERN,ACTION,?PARAMS,?END_CONDITIONS);
 Symbol: INTERACTION,LIST; /// @todo #8 this should really be a structure be we don't have optional elements yet....
 Symbol: INTERACTIONS,[+INTERACTION];
 Symbol: STEP,CSTRING;
@@ -191,8 +192,8 @@ Symbol: DEAD_STREAM_READ_ERR,REDUCTION_ERROR;
 Symbol: GET_XADDR,XADDR;
 Symbol: TIMEOUT_AT,TIMESTAMP;       specifies a timeout for requests
 Symbol: COUNT,INTEGER;
-Symbol: UNLIMMITED,NULL_STRUCTURE;
-Symbol: REPETITIONS,[|[COUNT|UNLIMMITED]];
+Symbol: UNLIMITED,NULL_STRUCTURE;
+Symbol: REPETITIONS,[|[COUNT|UNLIMITED]];
 Symbol: END_CONDITIONS,[(?TIMEOUT_AT,?REPETITIONS)];
 
 Process: NOOP,"no-op","result",SIGNATURE_STRUCTURE,TREE,"do",SIGNATURE_ANY,NULL_STRUCTURE,0;   this process reduces to its single "do" parameter.
@@ -202,7 +203,7 @@ Process: ITERATE,"iterate a process","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,
 Process: SAY,"send a message to a receptor","signal id",SIGNATURE_SYMBOL,SIGNAL_UUID,"to",SIGNATURE_SYMBOL,RECEPTOR_ADDRESS,"on",SIGNATURE_SYMBOL,ASPECT,"message",SIGNATURE_ANY,NULL_STRUCTURE;
 Process: REQUEST,"send a request to a receptor","response",SIGNATURE_ANY,NULL_STRUCTURE,"of",SIGNATURE_SYMBOL,RECEPTOR_ADDRESS,"on",SIGNATURE_SYMBOL,ASPECT,"message",SIGNATURE_ANY,NULL_STRUCTURE,"respond on",SIGNATURE_SYMBOL,RESPONSE_CARRIER,"until",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,END_CONDITIONS,"callback",SIGNATURE_OPTIONAL,SIGNATURE_PROCESS,NULL_SYMBOL,0;  if there is no "callback" param, then this process will block until the result comes back or the "until" causes cleanup of pending request.
 
-Process: LISTEN,"plant a listener","error",SIGNATURE_SYMBOL,REDUCTION_ERROR_SYMBOL,"on",SIGNATURE_SYMBOL,ASPECT,"for",SIGNATURE_SYMBOL,CARRIER,"match",SIGNATURE_SYMBOL,PATTERN,"do",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,ACTION,"with",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,PARAMS,"until",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,END_CONDITIONS,0;  If you don't provide an action, the assumption is that the LISTEN process will block and  will reduce to the SEMTREX_MATCH.  This will also force the END_CONDITIONS/REPETITIONS to ONCE
+Process: LISTEN,"plant a listener","error",SIGNATURE_SYMBOL,REDUCTION_ERROR_SYMBOL,"on",SIGNATURE_SYMBOL,ASPECT,"for",SIGNATURE_SYMBOL,CARRIER,"match",SIGNATURE_SYMBOL,PATTERN,"do",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,ACTION,"with",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,PARAMS,"until",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,END_CONDITIONS,0;  If you don't provide an action, the assumption is that the LISTEN process will block and  will reduce to the SEMTREX_MATCH.  This will also force the END_CONDITIONS/REPETITIONS to COUNT:1.  If "for" carrier is NULL_SYMBOL the expectation will match on all carriers.
 
 Process: RESPOND,"respond to signal","response id",SIGNATURE_SYMBOL,SIGNAL_UUID,"response contents",SIGNATURE_ANY,NULL_STRUCTURE,0;
 Process: QUOTE,"quote a process so that it can be passed as a value","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"process",SIGNATURE_PROCESS,NULL_PROCESS,0;

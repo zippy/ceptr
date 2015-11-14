@@ -11,6 +11,8 @@ char *dtypestr(int type) {
     if (type & D_STX_MATCH) {sprintf(s,"_STX_MATCH");s--;};
     if (type & D_CLOCK) {sprintf(s,"_CLOCK");s--;};
     if (type & D_STREAM) {sprintf(s,"_STREAM");s--;};
+    if (type & D_LOCK) {sprintf(s,"_LOCK");s--;};
+    if (type & D_LISTEN) {sprintf(s,"_LISTEN");s--;};
     *s=0;
     return G_dtype;
 }

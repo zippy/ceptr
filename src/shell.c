@@ -28,9 +28,8 @@ void addCommand(Receptor *r,Xaddr ox,char *command,char *desc,T *code) {
 
     Process proc = _r_code_process(r,p,desc,"long desc...",NULL);
     T *act = _t_newp(0,ACTION,proc);
-    T *params = _t_new_root(PARAMS);
 
-    _r_add_expectation(r,DEFAULT_ASPECT,VERB,expect,params,act);
+    _r_add_expectation(r,DEFAULT_ASPECT,SHELL_COMMAND,expect,act,0,0);
 }
 
 void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp,Stream **isp,Stream **osp) {
@@ -76,7 +75,7 @@ void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp
     T *act = _t_newp(0,ACTION,proc);
     T* params = _t_new_root(PARAMS);
     _t_news(params,INTERPOLATE_SYMBOL,VERB);
-    _r_add_expectation(r,DEFAULT_ASPECT,VERB,expect,params,act);
+    _r_add_expectation(r,DEFAULT_ASPECT,LINE,expect,act,params,0);
 
     // (expect (on flux SHELL_COMMAND:time) action(send std_out (convert_to_lines (send clock get_time))))
 

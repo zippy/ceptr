@@ -112,22 +112,38 @@ Receptor *_r_new_receptor_from_package(Symbol s,T *p,T *bindings) {
 }
 
 /**
- * Adds an expectation/action pair to a receptor's aspect.
+ * @brief Adds an expectation to a receptor's aspect.
+ *
+ * @param[in] r receptor to add to
+ * @param[in] aspect aspect on which to install the expectation
+ * @param[in] carrier pre-screeing of signals to match against
+ * @param[in] pattern semtrex to match against signals
+ * @param[in] action process to run if match
+ * @param[in] with parameters to pass into that process
+ * @param[in] until end conditions for cleaning up this expectation
+ *
  */
-void _r_add_expectation(Receptor *r,Aspect aspect,Symbol carrier,T *pattern,T* params,T *action) {
-    T *l = _t_news(0,EXPECTATION,carrier);
-    _t_add(l,pattern);
-    _t_add(l,params);
-    _t_add(l,action);
-    T *a = __r_get_listeners(r,aspect);
-    _t_add(a,l);
+void _r_add_expectation(Receptor *r,Aspect aspect,Symbol carrier,T *pattern,T *action,T *with,T *until) {
+    T *e = _t_newr(0,EXPECTATION);
+    _t_news(e,CARRIER,carrier);
+    _t_add(e,pattern);
+    _t_add(e,action);
+    if (!with) with = _t_new_root(PARAMS);
+    _t_add(e,with);
+    if (!until) {
+        until = _t_new_root(END_CONDITIONS);
+        _t_newr(until,UNLIMITED);
+    }
+    _t_add(e,until);
+    T *a = __r_get_expectations(r,aspect);
+    _t_add(a,e);
 }
 
-void _r_remove_listener(Receptor *r,T *listener) {
-    T *a = _t_parent(listener);
-    _t_detach_by_ptr(a,listener);
-    _t_free(listener);
-    // @todo, if there are any processes blocked on this listener they
+void _r_remove_expectation(Receptor *r,T *expectation) {
+    T *a = _t_parent(expectation);
+    _t_detach_by_ptr(a,expectation);
+    _t_free(expectation);
+    // @todo, if there are any processes blocked on this expectation they
     // should actually get cleaned up somehow.  This would mean searching
     // through for them, or something...
 }
@@ -294,13 +310,13 @@ int _r_def_match(Receptor *r,Symbol s,T *t) {
 }
 
 /**
- * Setup listeners on an aspect for a given sequence in a protocol
+ * Setup expectations on an aspect for a given sequence in a protocol
  *
  *
  * @param[in] r the receptor
  * @param[in] idx the index of the protocol in the definition tree
- * @param[in] sequence in the protocol to express (i.e. activate by adding to flux's listeners)
- * @param[in] aspect the aspect on which to install listeners for this protocol
+ * @param[in] sequence in the protocol to express (i.e. activate by adding to flux's expectations)
+ * @param[in] aspect the aspect on which to install expectations for this protocol
  * @param[in] handler an action to run as the sequence's endpoint (if any)
  *
  * <b>Examples (from test suite):</b>
@@ -321,9 +337,17 @@ void _r_express_protocol(Receptor *r,int idx,Symbol sequence,Aspect aspect,T* ha
             for(j=1;j<=c;j++) {
                 T *step = _t_child(steps,j);
                 if (semeq(_t_symbol(step),step1)) {
-                    T *expect = _t_clone(_t_child(step,1));
-                    T *params = _t_clone(_t_child(step,2));
-                    T *act = _t_child(step,3);
+                    Symbol carrier = *(Symbol *)_t_surface(_t_child(step,StepCarrierIdx));
+                    T *pattern = _t_clone(_t_child(step,StepPatternIdx));
+                    T *act = _t_child(step,StepActionIdx);
+                    T *e1 = _t_child(step,StepExtra1Idx);
+                    T *e2 = _t_child(step,StepExtra2Idx);
+                    T *params = NULL;
+                    T *until = NULL;
+                    if (e1 && semeq(_t_symbol(e1),PARAMS)) params = e1;
+                    else if (e1 && semeq(_t_symbol(e1),END_CONDITIONS)) until = e1;
+                    if (e2 && semeq(_t_symbol(e2),END_CONDITIONS)) until = e2;
+
                     // if there is no action, then assume its the sequence endpoint
                     // and use the handler in its place
                     /// @todo revisit the assumption about handlers and endpoints
@@ -331,10 +355,7 @@ void _r_express_protocol(Receptor *r,int idx,Symbol sequence,Aspect aspect,T* ha
                         act = _t_clone(act);
                     else
                         act = handler;
-                    //@todo turns out we don't use the carrier for anything yet, so
-                    // we can just set it to a NULL_SYMBOL.  This will have to change
-                    // once we actually get carriers figured out
-                    _r_add_expectation(r,aspect,NULL_SYMBOL,expect,params,act);
+                    _r_add_expectation(r,aspect,carrier,pattern,act,params,until);
                     return;
                 }
             }
@@ -561,18 +582,28 @@ T* _r_request(Receptor *r,T *signal,Symbol response_carrier,T *code_point,int pr
 }
 
 /**
- * low level function for matching expectations on listeners and either adding a new run tree
+ * low level function for testing expectation patterns on signals and either adding a new run tree
  * onto the current Q or reawakening the process that's been blocked waiting for the expectation
  * to match
  */
-void __r_check_listener(T* processes,T *listener,T *signal,Q *q) {
+void __r_test_expectation(T* processes,T *expectation,T *signal,Q *q) {
     T *signal_contents = (T *)_t_surface(_t_child(signal,SignalBodyIdx));
 
-    T *e,*m;
-    e = _t_child(listener,1);
+    //test carriers first because they must match
+    T *e_carrier = _t_child(expectation,ExpectationCarrierIdx);
+    T *s_carrier = _t_getv(signal,SignalEnvelopeIdx,EnvelopeCarrierIdx,TREE_PATH_TERMINATOR);
+
+    debug(D_SIGNALS,"checking signal carrier %s\n",_td(q->r,s_carrier));
+    debug(D_SIGNALS,"against expectation carrier %s\n",_td(q->r,e_carrier));
+
+    Symbol esym = *(Symbol *)_t_surface(e_carrier);
+    if (!semeq(esym,*(Symbol *)_t_surface(s_carrier)) && !semeq(esym,NULL_SYMBOL)) return;
+
+    T *pattern,*m;
+    pattern = _t_child(expectation,ExpectationPatternIdx);
     // if we get a match, create a run tree from the action, using the match and signal as the parameters
     T *stx = _t_news(0,SEMTREX_GROUP,NULL_SYMBOL);
-    _t_add(stx,_t_clone(_t_child(e,1)));
+    _t_add(stx,_t_clone(_t_child(pattern,1)));
     debug(D_SIGNALS,"matching %s\n",_td(q->r,signal_contents));
     debug(D_SIGNALS,"against %s\n",_td(q->r,stx));
 
@@ -581,16 +612,15 @@ void __r_check_listener(T* processes,T *listener,T *signal,Q *q) {
         debug(D_SIGNALS,"got a match on %s\n",_td(q->r,stx));
 
         T *rt=0;
-        T *action = _t_child(listener,3);
+        T *action = _t_child(expectation,ExpectationActionIdx);
         if (!action) {
-            raise_error("null action in listener!");
+            raise_error("null action in expectation!");
         }
 
         if (semeq(_t_symbol(action),WAKEUP_REFERENCE)) {
-
             /* // for now we add the params to the contexts run tree */
             /* /// @todo later this should be integrated into some kind of scoping handling */
-            T *params = _t_rclone(_t_child(listener,2));
+            T *params = _t_rclone(_t_child(expectation,ExpectationParamsIdx));
             _p_interpolate_from_match(params,m,signal_contents);
             int process_id = *(int *)_t_surface(_t_child(action,1));
             int *code_path = (int *)_t_surface(_t_child(action,2));
@@ -602,22 +632,22 @@ void __r_check_listener(T* processes,T *listener,T *signal,Q *q) {
             Qe *e = __p_find_context(q->blocked,process_id);
             if (e) {
                 T *result = _t_get(e->context->run_tree,code_path);
-                if (!result) raise_error("failed to find code path when waking up listener!");
+                if (!result) raise_error("failed to find code path when waking up expectation!");
                 T *p = _t_parent(result);
                 _t_replace(p,_t_node_index(result), params);
                 e->context->node_pointer = params;
 
                 __p_unblock(q,e);
-                debug(D_LISTEN,"unblocking listener at %d,%s\n",process_id,_td(q->r,p));
+                debug(D_LISTEN,"unblocking action at %d,%s\n",process_id,_td(q->r,p));
             }
             else _t_free(params);
             pthread_mutex_unlock(&q->mutex);
             debug(D_LOCK,"listen UNLOCK\n");
-            _r_remove_listener(q->r,listener);
+            _r_remove_expectation(q->r,expectation);
         }
         else {
             Process p = *(Process*) _t_surface(action);
-            T *params = _t_rclone(_t_child(listener,2));  // __p_make_run_tree assumes rT nodes
+            T *params = _t_rclone(_t_child(expectation,ExpectationParamsIdx));  // __p_make_run_tree assumes rT nodes
             _p_interpolate_from_match(params,m,signal_contents);
             rt = __p_make_run_tree(processes,p,params);
             _t_free(params);
@@ -648,7 +678,7 @@ T* __r_sanatize_response(Receptor *r,T* response,Symbol carrier) {
  * This function checks to see if the signal is a response and if so activates the run-tree/action that's
  * waiting for that response with the signal contents as the response value/param
  * or, if it's a new signal, adds it to the flux, and then runs through all the
- * listeners on the aspect the signal was sent on to see if it matches any expectation, and if so, builds
+ * expectations on the aspect the signal was sent on to see if it matches any expectation, and if so, builds
  * action run-trees and adds them to receptor's process queue.
  *
  * @param[in] r destination receptor
@@ -671,7 +701,7 @@ Error _r_deliver(Receptor *r, T *signal) {
     // if there is a an IN_RESPONSE_TO_UUID then we know it's a response
     T *extra=_t_child(envelope,EnvelopeExtraIdx);
     if (extra && semeq(IN_RESPONSE_TO_UUID,_t_symbol(extra))) {
-        // responses don't trigger listener matching, instead they
+        // responses don't trigger expectation matching, instead they
         // go through the pending_responses list to see where the signal goes
         UUIDt *u = (UUIDt*)_t_surface(extra);
         debug(D_SIGNALS,"Delivering response: %s\n",_td(r,signal));
@@ -767,12 +797,12 @@ Error _r_deliver(Receptor *r, T *signal) {
 
         debug(D_SIGNALS,"Delivering: %s\n",_td(r,signal));
         _t_add(as,signal);
-        // walk through all the listeners on the aspect and see if any expectations match this incoming signal
-        T *ls = __r_get_listeners(r,aspect);
+        // walk through all the expectations on the aspect and see if any expectations match this incoming signal
+        T *es = __r_get_expectations(r,aspect);
 
-        DO_KIDS(ls,
-                l = _t_child(ls,i);
-                __r_check_listener(r->defs.processes,l,signal,r->q);
+        DO_KIDS(es,
+                l = _t_child(es,i);
+                __r_test_expectation(r->defs.processes,l,signal,r->q);
                 );
     }
     return noDeliveryErr;
@@ -783,7 +813,7 @@ Error _r_deliver(Receptor *r, T *signal) {
 T *__r_get_aspect(Receptor *r,Aspect aspect) {
     return _t_child(r->flux,aspect);
 }
-T *__r_get_listeners(Receptor *r,Aspect aspect) {
+T *__r_get_expectations(Receptor *r,Aspect aspect) {
     return _t_child(__r_get_aspect(r,aspect),1);
 }
 T *__r_get_signals(Receptor *r,Aspect aspect) {
@@ -896,7 +926,7 @@ Receptor *_r_makeStreamWriterReceptor(Symbol receptor_symbol,Symbol stream_symbo
     Process proc = _r_code_process(r,x,"echo input to stream","long desc...",signature);
     T *act = _t_newp(0,ACTION,proc);
 
-    _r_add_expectation(r,DEFAULT_ASPECT,LINE,expect,params,act);
+    _r_add_expectation(r,DEFAULT_ASPECT,NULL_SYMBOL,expect,act,params,0);
 
     return r;
 }
@@ -919,9 +949,9 @@ Receptor *_r_makeClockReceptor() {
 
     T *act = _t_newp(0,ACTION,proc);
     T *params = _t_new_root(PARAMS);
-    _r_add_expectation(r,DEFAULT_ASPECT,CLOCK_TELL_TIME,expect,params,act);
+    _r_add_expectation(r,DEFAULT_ASPECT,CLOCK_TELL_TIME,expect,act,params,0);
 
-    // this stuff was for the old clock which installed a listener on itself to send back
+    // this stuff was for the old clock which installed a expectation on itself to send back
     // the TICK when in next arrrived
     /* s = _t_news(s,SEMTREX_GROUP,PATTERN); */
     /* _sl(s,PATTERN); */
@@ -945,13 +975,13 @@ Receptor *_r_makeClockReceptor() {
     /* T *signature = __p_make_signature("result",SIGNATURE_SYMBOL,NULL_SYMBOL, */
     /*                                   "time stx",SIGNATURE_SYMBOL,PATTERN, */
     /*                                   NULL); */
-    /* Process proc = _r_code_process(r,x,"plant a listener to send the time","long desc...",signature); */
+    /* Process proc = _r_code_process(r,x,"plant a expectation to send the time","long desc...",signature); */
     /* T *act = _t_newp(0,ACTION,proc); */
 
     /* params = _t_new_root(PARAMS); */
     /* _t_news(params,INTERPOLATE_SYMBOL,PATTERN); */
 
-    /* _r_add_expectation(r,DEFAULT_ASPECT,CLOCK_TELL_TIME,expect,params,act);*/
+    /* _r_add_expectation(r,DEFAULT_ASPECT,CLOCK_TELL_TIME,expect,act,params,0);*/
 
     return r;
 }

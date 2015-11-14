@@ -211,7 +211,7 @@ void testVMHostCreate() {
 /*     spec_is_str_equal(_dump_semtrex(test_HTTP_defs,req,buf),"/(HTTP_REQUEST/.*,HTTP_REQUEST_HOST=helloworld.com)"); */
 /*     free(sv); */
 
-/*     _r_add_expectation(hello_r,DEFAULT_ASPECT,HTTP_REQUEST,expect,act); */
+/*     _r_add_expectation(hello_r,DEFAULT_ASPECT,HTTP_REQUEST,expect,act,0,0); */
 
 /*     // build up an HTTP_REQUEST tree that corresponds with a simple get for host helloworld.com */
 /*     T *s = _t_new_root(HTTP_REQUEST); */
@@ -324,11 +324,8 @@ void testVMHostShell() {
     makeShell(G_vm,input,output,&i_r,&o_r,&input_stream,&output_stream);
 
     //debug_enable(D_STREAM+D_SIGNALS);
-    //    spec_is_str_equal(_td(o_r,o_r->flux),"or flux");
     _v_start_vmhost(G_vm);
     sleep(1);
-    //    spec_is_str_equal(_td(o_r,o_r->flux),"or flux");
-    //    spec_is_str_equal(_td(r,r->flux),"shell flux");
     debug_disable(D_STREAM+D_SIGNALS);
 
     // confirm that the completed processes get cleaned up in the course of the vmhosts processing
@@ -367,7 +364,7 @@ void testVMHostSerialize() {
     spec_is_str_equal(t2s(G_vm->r->root),"(VM_HOST_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (EXPECTATIONS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))");
 
     Receptor *clock = G_vm->active_receptors[0].r;
-    //   _testReceptorClockAddListener(clock);
+    //   _testReceptorClockAddExpectation(clock);
 
     void *surface;
     size_t length;

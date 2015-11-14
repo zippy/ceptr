@@ -43,8 +43,8 @@ void processUnblocker(Stream *st) {
     //    if (err) raise_error("couldn't unblock!");
 }
 
-// setup the default until condition (30 second timeout)
-T *defaultCondition() {
+// setup the default until condition (only once, and 30 second timeout)
+T *defaultRequestUntil() {
     T *until = _t_newr(0,END_CONDITIONS);
     T *ts = __r_make_timestamp(TIMEOUT_AT,30);
     _t_add(until,ts);
@@ -331,7 +331,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                     }
                     else callback = t;
                 }
-                if (!until) until = defaultCondition();
+                if (!until) until = defaultRequestUntil();
                 if (!callback) {
                     err = Block;
                     debug(D_SIGNALS,"blocking at %s\n",_td(q->r,code));
@@ -413,6 +413,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                 int add_nl = 1;
                 if (semeq(struc,CSTRING)) {
                     str = _t_surface(s);
+                    debug(D_STREAM,"found a cstring to write: %s\n",str);
                     if (!semeq(sym,LINE)) add_nl = 0;
                 }
                 else {
@@ -420,14 +421,15 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                 }
                 //str = t2s(s);
                 int err = fputs(str,stream);
-                _t_free(s);
                 if (err < 0) {
                     debug(D_STREAM,"unix error %d on attempting to write: %s\n",errno,str);
+                    _t_free(s);
                     return unixErrnoReductionErr;
                 }
                 else {
                     debug(D_STREAM,"just wrote: %s\n",str);
                 }
+                _t_free(s);
                 if (add_nl) {
                     err = fputs("\n",stream);
                     if (err < 0) return unixErrnoReductionErr;
@@ -568,16 +570,19 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                 with = _t_new_root(PARAMS);
                 _t_news(with,INTERPOLATE_SYMBOL,NULL_SYMBOL);
             }
-            if (!until) until = defaultCondition();
             if (act) {
-                _r_add_expectation(q->r,aspect,carrier,match,with,act);
+                _r_add_expectation(q->r,aspect,carrier,match,act,with,until);
                 x = __t_news(0,REDUCTION_ERROR_SYMBOL,NULL_SYMBOL,1);
-                debug(D_LISTEN,"adding listener\n");
+                debug(D_LISTEN,"adding expectation\n");
             }
             else {
                 act = __r_build_wakeup_info(code,context->id);
-                _r_add_expectation(q->r,aspect,carrier,match,with,act);
-                debug(D_LISTEN,"adding listener and blocking at %d,%s\n",context->id,_td(q->r,code));
+                if (!until) {
+                    until = _t_new_root(END_CONDITIONS);
+                    _t_newi(until,COUNT,1);
+                }
+                _r_add_expectation(q->r,aspect,carrier,match,act,with,until);
+                debug(D_LISTEN,"adding expectation and blocking at %d,%s\n",context->id,_td(q->r,code));
                 return Block;
             }
         }

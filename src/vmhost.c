@@ -178,8 +178,6 @@ void _v_send_signals(VMHost *v,T *signals) {
     }
 }
 
-
-
 /// @todo this should probably be implemented in a scape but for now
 // we just loop through all instances searching for a match
 Xaddr __v_get_receptor_xaddr(Instances *instances,Receptor *r) {

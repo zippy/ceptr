@@ -324,7 +324,7 @@ void testProcessRespond() {
     ReceptorAddress f = 3; // DUMMY ADDR
     ReceptorAddress t = 4; // DUMMY ADDR
 
-    T *s = __r_make_signal(f,t,DEFAULT_ASPECT,signal_contents,0,defaultCondition());
+    T *s = __r_make_signal(f,t,DEFAULT_ASPECT,signal_contents,0,defaultRequestUntil());
 
     T *run_tree = _t_new_root(RUN_TREE);
     T *n = _t_newr(run_tree,RESPOND);
@@ -886,10 +886,10 @@ void testProcessListen() {
     spec_is_str_equal(t2s(n),"(REDUCTION_ERROR_SYMBOL:NULL_SYMBOL)"); //@todo is this right??
     _t_free(n);
 
-    T *l = __r_get_listeners(r,DEFAULT_ASPECT);
-    spec_is_str_equal(t2s(l),"(EXPECTATIONS (EXPECTATION:TICK (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TICK))) (PARAMS (INTERPOLATE_SYMBOL:NULL_SYMBOL)) (ACTION:NOOP (TEST_INT_SYMBOL:314))))");
+    T *ex = __r_get_expectations(r,DEFAULT_ASPECT);
+    spec_is_str_equal(t2s(ex),"(EXPECTATIONS (EXPECTATION (CARRIER:TICK) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TICK))) (ACTION:NOOP (TEST_INT_SYMBOL:314)) (PARAMS (INTERPOLATE_SYMBOL:NULL_SYMBOL)) (END_CONDITIONS (UNLIMITED))))");
 
-    _r_remove_listener(r, _t_child(l,1));
+    _r_remove_expectation(r, _t_child(ex,1));
 
     // test listen that blocks
     n = _t_new_root(LISTEN);
@@ -904,13 +904,13 @@ void testProcessListen() {
     Q *q = r->q;
     Qe *e = _p_addrt2q(q,run_tree);
 
-    //debug_enable(D_LISTEN);
+    //    debug_enable(D_LISTEN+D_SIGNALS);
     spec_is_equal(_p_reduceq(q),noReductionErr);
     spec_is_equal(q->contexts_count,0);
     spec_is_ptr_equal(q->blocked,e);
     spec_is_str_equal(t2s(run_tree),"(RUN_TREE (process:LISTEN) (PARAMS))");
 
-    spec_is_str_equal(t2s(__r_get_listeners(r,DEFAULT_ASPECT)),"(EXPECTATIONS (EXPECTATION:TEST_STR_SYMBOL (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TEST_STR_SYMBOL))) (PARAMS (INTERPOLATE_SYMBOL:NULL_SYMBOL)) (WAKEUP_REFERENCE (PROCESS_IDENT:1) (CODE_PATH:/1))))");
+    spec_is_str_equal(t2s(__r_get_expectations(r,DEFAULT_ASPECT)),"(EXPECTATIONS (EXPECTATION (CARRIER:TEST_STR_SYMBOL) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TEST_STR_SYMBOL))) (WAKEUP_REFERENCE (PROCESS_IDENT:1) (CODE_PATH:/1)) (PARAMS (INTERPOLATE_SYMBOL:NULL_SYMBOL)) (END_CONDITIONS (COUNT:1))))");
 
     T *s = __r_make_signal(0,0,DEFAULT_ASPECT,_t_new_str(0,TEST_STR_SYMBOL,"fishy!"),0,0);
     _r_deliver(r,s);

@@ -1,16 +1,16 @@
 { "symbol":{ "context":255,"id":1 },"type":"PROTOCOL","name":"alive","children":[
    { "symbol":{ "context":0,"id":96 },"type":"LIST","name":"STEPS","children":[
       { "symbol":{ "context":255,"id":4 },"type":"PROTOCOL_STEP","name":"listen_for_ping","children":[
-         { "symbol":{ "context":0,"id":70 },"type":"SEMTREX","name":"PATTERN","children":[
+         { "symbol":{ "context":0,"id":52 },"type":"SYMBOL","name":"CARRIER","surface":"ping_message"},
+         { "symbol":{ "context":0,"id":68 },"type":"SEMTREX","name":"PATTERN","children":[
             { "symbol":{ "context":0,"id":24 },"type":"STX_SYMBOL_OR_SYMBOL_SET","name":"SEMTREX_SYMBOL_LITERAL","children":[
                { "symbol":{ "context":0,"id":22 },"type":"SYMBOL","name":"SEMTREX_SYMBOL","surface":"ping_message"}]}]},
-         { "symbol":{ "context":0,"id":90 },"type":"LIST","name":"PARAMS"},
-         { "symbol":{ "context":0,"id":71 },"type":"PROCESS","name":"ACTION","surface":"send alive response"}]},
+         { "symbol":{ "context":0,"id":69 },"type":"PROCESS","name":"ACTION","surface":"send alive response"}]},
       { "symbol":{ "context":255,"id":5 },"type":"PROTOCOL_STEP","name":"get_alive_response","children":[
-         { "symbol":{ "context":0,"id":70 },"type":"SEMTREX","name":"PATTERN","children":[
+         { "symbol":{ "context":0,"id":52 },"type":"SYMBOL","name":"CARRIER","surface":"alive_message"},
+         { "symbol":{ "context":0,"id":68 },"type":"SEMTREX","name":"PATTERN","children":[
             { "symbol":{ "context":0,"id":24 },"type":"STX_SYMBOL_OR_SYMBOL_SET","name":"SEMTREX_SYMBOL_LITERAL","children":[
-               { "symbol":{ "context":0,"id":22 },"type":"SYMBOL","name":"SEMTREX_SYMBOL","surface":"alive_message"}]}]},
-         { "symbol":{ "context":0,"id":90 },"type":"LIST","name":"PARAMS"}]}]},
+               { "symbol":{ "context":0,"id":22 },"type":"SYMBOL","name":"SEMTREX_SYMBOL","surface":"alive_message"}]}]}]}]},
    { "symbol":{ "context":0,"id":94 },"type":"LIST","name":"SEQUENCES","children":[
       { "symbol":{ "context":255,"id":6 },"type":"SEQUENCE","name":"alive_server","children":[
          { "symbol":{ "context":0,"id":95 },"type":"SYMBOL","name":"STEP_SYMBOL","surface":"listen_for_ping"}]},

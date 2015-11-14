@@ -12,7 +12,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-void _testReceptorClockAddListener(Receptor *r);
+void _testReceptorClockAddExpectation(Receptor *r);
 void testAccBootStrap() {
     spec_is_ptr_equal(G_vm,NULL);
 
@@ -35,12 +35,12 @@ void testAccBootStrap() {
     spec_is_symbol_equal(G_vm->r,_t_symbol(clock->root),CLOCK_RECEPTOR);
 
 
-    // now add a listener in the clock
+    // now add an expectation in the clock
     T *tick = __r_make_tick();
-    // _testReceptorClockAddListener(clock);
+    // _testReceptorClockAddExpectation(clock);
 
     // sleep for a bit, which should allow the clock to run for a second
-    // and reduce the tick listener to the tick it received
+    // and reduce the tick expectation to the tick it received
     //sleep(1);
 
     // @todo, this is broken since weve changed how the clock receptor works...
@@ -59,7 +59,7 @@ void testAccBootStrap() {
     // boot again
     _a_boot(dname);
 
-    // verify that clock with planted listener and it's accumulated data are re-instantiated at boot
+    // verify that clock with planted expectation and it's accumulated data are re-instantiated at boot
     Xaddr x = {INSTALLED_RECEPTOR,2};
     T *ct = _r_get_instance(G_vm->r,x);
     spec_is_true(ct != NULL);
