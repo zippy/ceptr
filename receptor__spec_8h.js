@@ -6,7 +6,7 @@ var receptor__spec_8h =
     [ "makeInt", "receptor__spec_8h.html#a104604d103dcbad0c749f873b99b0910", null ],
     [ "testReceptor", "receptor__spec_8h.html#aaf972a86b5bdef0bc6a43ebf006f313c", null ],
     [ "testReceptorAction", "receptor__spec_8h.html#a3cae92defb2178364fc0d8f7eded5089", null ],
-    [ "testReceptorAddListener", "receptor__spec_8h.html#a835718c76d21df730045c682738b4a42", null ],
+    [ "testReceptorAddExpectation", "receptor__spec_8h.html#a8042706ea2645bebe0fda1c3cf9aadf3", null ],
     [ "testReceptorClock", "receptor__spec_8h.html#aaf6ba85eee6e79581791f16b56ca8dd2", null ],
     [ "testReceptorCreate", "receptor__spec_8h.html#a3a764534a7cc2c00a1e15642d0554b7c", null ],
     [ "testReceptorDef", "receptor__spec_8h.html#aa07faab05f9e36cec27352a395804b52", null ],

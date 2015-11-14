@@ -175,9 +175,9 @@ Data Structures</h2></td></tr>
 <tr class="memitem:ae300beb3c8ffceda9d33d4ff657bb1e3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae300beb3c8ffceda9d33d4ff657bb1e3"></a>
 typedef struct <a class="el" href="structReplicationState.html">ReplicationState</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ReplicationState</b></td></tr>
 <tr class="separator:ae300beb3c8ffceda9d33d4ff657bb1e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2bab5d67cb79aa990c542bc82a40400b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2bab5d67cb79aa990c542bc82a40400b"></a>
-<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>defaultCondition</b> ()</td></tr>
-<tr class="separator:a2bab5d67cb79aa990c542bc82a40400b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a801534a91014a8b984c6261c71231398"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a801534a91014a8b984c6261c71231398"></a>
+<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>defaultRequestUntil</b> ()</td></tr>
+<tr class="separator:a801534a91014a8b984c6261c71231398"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05ba8f21383f9273acbdb89134f0fff9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structR.html">R</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="process_8h.html#a05ba8f21383f9273acbdb89134f0fff9">__p_make_context</a> (<a class="el" href="structT.html">T</a> *run_tree, <a class="el" href="structR.html">R</a> *caller, int process_id)</td></tr>
 <tr class="separator:a05ba8f21383f9273acbdb89134f0fff9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a5e10aa19f18453fcc24481bafb2903"><td class="memItemLeft" align="right" valign="top">Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="process_8h.html#a3a5e10aa19f18453fcc24481bafb2903">_p_step</a> (<a class="el" href="structQ.html">Q</a> *q, <a class="el" href="structR.html">R</a> **contextP)</td></tr>
@@ -258,7 +258,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>__p_unblock</b> (<a c
 </div><div class="memdoc">
 <p>create a run-tree execution context. </p>
 
-<p>Definition at line <a class="el" href="process_8c_source.html#l00636">636</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+<p>Definition at line <a class="el" href="process_8c_source.html#l00639">639</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
 </div>
 </div>
@@ -309,7 +309,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>__p_unblock</b> (<a c
 </dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000024">Todo:</a></b></dt><dd>add more sensible handling of output signature. We still aren't quite sure what to do about the output label, and how to handle output signature pass through from the results, probably need a special symbol for that </dd></dl>
 
-<p>Definition at line <a class="el" href="process_8c_source.html#l01307">1307</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+<p>Definition at line <a class="el" href="process_8c_source.html#l01310">1310</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
 </div>
 </div>
@@ -389,7 +389,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>__p_unblock</b> (<a c
 <p>add a run tree into a processing queue</p>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000022">Todo:</a></b></dt><dd>make thread safe. currently you shouldn't call this if the <a class="el" href="structQ.html">Q</a> is being actively reduced </dd></dl>
 
-<p>Definition at line <a class="el" href="process_8c_source.html#l01147">1147</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+<p>Definition at line <a class="el" href="process_8c_source.html#l01150">1150</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
 </div>
 </div>
@@ -425,7 +425,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>__p_unblock</b> (<a c
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="process_8c_source.html#l01276">1276</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+<p>Definition at line <a class="el" href="process_8c_source.html#l01279">1279</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
 </div>
 </div>
@@ -450,7 +450,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>__p_unblock</b> (<a c
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="process_8c_source.html#l01133">1133</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+<p>Definition at line <a class="el" href="process_8c_source.html#l01136">1136</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
 </div>
 </div>
@@ -501,7 +501,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>__p_unblock</b> (<a c
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structT.html">T</a> RUN_TREE tree </dd></dl>
 
-<p>Definition at line <a class="el" href="process_8c_source.html#l01050">1050</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+<p>Definition at line <a class="el" href="process_8c_source.html#l01053">1053</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
 </div>
 </div>
@@ -527,7 +527,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>__p_unblock</b> (<a c
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structQ.html">Q</a> the processing queue </dd></dl>
 
-<p>Definition at line <a class="el" href="process_8c_source.html#l01092">1092</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+<p>Definition at line <a class="el" href="process_8c_source.html#l01095">1095</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
 </div>
 </div>
@@ -590,7 +590,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>__p_unblock</b> (<a c
 <div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(processes);</div>
 <div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);<a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(n);</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="process_8c_source.html#l00746">746</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+<p>Definition at line <a class="el" href="process_8c_source.html#l00749">749</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
 </div>
 </div>
@@ -616,7 +616,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>__p_unblock</b> (<a c
 </dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000023">Todo:</a></b></dt><dd>figure out what error we should be sending back here, i.e. what if </dd></dl>
 
-<p>Definition at line <a class="el" href="process_8c_source.html#l01191">1191</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+<p>Definition at line <a class="el" href="process_8c_source.html#l01194">1194</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
 </div>
 </div>
@@ -641,7 +641,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>__p_unblock</b> (<a c
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="process_8c_source.html#l01168">1168</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+<p>Definition at line <a class="el" href="process_8c_source.html#l01171">1171</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
 </div>
 </div>
@@ -681,7 +681,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>__p_unblock</b> (<a c
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000020">Todo:</a></b></dt><dd>what if the replaced parameter is itself a PARAM_REF tree ?? </dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000021">Todo:</a></b></dt><dd>make a better error symbol here... :-P </dd></dl>
 
-<p>Definition at line <a class="el" href="process_8c_source.html#l00775">775</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+<p>Definition at line <a class="el" href="process_8c_source.html#l00778">778</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
 </div>
 </div>
@@ -710,7 +710,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>__p_unblock</b> (<a c
 </div><div class="memdoc">
 <p>search for the context in the q and unblock it </p>
 
-<p>Definition at line <a class="el" href="process_8c_source.html#l00714">714</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+<p>Definition at line <a class="el" href="process_8c_source.html#l00717">717</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
 
 </div>
 </div>
@@ -720,7 +720,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>__p_unblock</b> (<a c
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="process_8h.html">process.h</a></li>
-    <li class="footer">Generated on Fri Nov 13 2015 17:37:19 for ceptr by
+    <li class="footer">Generated on Sat Nov 14 2015 00:01:56 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

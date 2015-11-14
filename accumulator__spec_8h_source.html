@@ -115,7 +115,7 @@ $(document).ready(function(){initNavTree('accumulator__spec_8h_source.html','');
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;sys/stat.h&gt;</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &lt;unistd.h&gt;</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keywordtype">void</span> _testReceptorClockAddListener(<a class="code" href="structReceptor.html">Receptor</a> *r);</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keywordtype">void</span> _testReceptorClockAddExpectation(<a class="code" href="structReceptor.html">Receptor</a> *r);</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keywordtype">void</span> testAccBootStrap() {</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    spec_is_ptr_equal(G_vm,NULL);</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
@@ -138,12 +138,12 @@ $(document).ready(function(){initNavTree('accumulator__spec_8h_source.html','');
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    spec_is_symbol_equal(G_vm-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(clock-&gt;<a class="code" href="structReceptor.html#aec6f1eee133a993b59baf50e75620fb6">root</a>),CLOCK_RECEPTOR);</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="comment">// now add a listener in the clock</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="comment">// now add an expectation in the clock</span></div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <a class="code" href="structT.html">T</a> *tick = __r_make_tick();</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="comment">// _testReceptorClockAddListener(clock);</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="comment">// _testReceptorClockAddExpectation(clock);</span></div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="comment">// sleep for a bit, which should allow the clock to run for a second</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="comment">// and reduce the tick listener to the tick it received</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="comment">// and reduce the tick expectation to the tick it received</span></div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="comment">//sleep(1);</span></div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="comment">// @todo, this is broken since weve changed how the clock receptor works...</span></div>
@@ -162,7 +162,7 @@ $(document).ready(function(){initNavTree('accumulator__spec_8h_source.html','');
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="comment">// boot again</span></div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <a class="code" href="group__accumulator.html#gaf3d0afe467ab198fc69ccaf7ee9fb5e9">_a_boot</a>(dname);</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="comment">// verify that clock with planted listener and it&#39;s accumulated data are re-instantiated at boot</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="comment">// verify that clock with planted expectation and it&#39;s accumulated data are re-instantiated at boot</span></div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <a class="code" href="structXaddr.html">Xaddr</a> x = {INSTALLED_RECEPTOR,2};</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <a class="code" href="structT.html">T</a> *ct = <a class="code" href="group__receptor.html#gadc618904f81240b244e816234d1c906e">_r_get_instance</a>(G_vm-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,x);</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    spec_is_true(ct != NULL);</div>
@@ -243,14 +243,14 @@ $(document).ready(function(){initNavTree('accumulator__spec_8h_source.html','');
 <div class="ttc" id="structS_html"><div class="ttname"><a href="structS.html">S</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00063">ceptr_types.h:63</a></div></div>
 <div class="ttc" id="group__tree_html_ga7535eb2963c6cf5fc78cb14287581f92"><div class="ttname"><a href="group__tree.html#ga7535eb2963c6cf5fc78cb14287581f92">_t_clone</a></div><div class="ttdeci">T * _t_clone(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00538">tree.c:538</a></div></div>
 <div class="ttc" id="group__tree_html_ga946600fb570f0cc913450905f6189d49"><div class="ttname"><a href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a></div><div class="ttdeci">Symbol _t_symbol(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00576">tree.c:576</a></div></div>
-<div class="ttc" id="group__receptor_html_gac438809f0d3f3add97efd49729c9027f"><div class="ttname"><a href="group__receptor.html#gac438809f0d3f3add97efd49729c9027f">__r_get_receptor</a></div><div class="ttdeci">Receptor * __r_get_receptor(T *installed_receptor)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00797">receptor.c:797</a></div></div>
+<div class="ttc" id="group__receptor_html_gac438809f0d3f3add97efd49729c9027f"><div class="ttname"><a href="group__receptor.html#gac438809f0d3f3add97efd49729c9027f">__r_get_receptor</a></div><div class="ttdeci">Receptor * __r_get_receptor(T *installed_receptor)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00827">receptor.c:827</a></div></div>
 <div class="ttc" id="group__accumulator_html_gacd134fcef0a0eb8ff30060432bb2e485"><div class="ttname"><a href="group__accumulator.html#gacd134fcef0a0eb8ff30060432bb2e485">_a_shut_down</a></div><div class="ttdeci">void _a_shut_down()</div><div class="ttdef"><b>Definition:</b> <a href="accumulator_8c_source.html#l00093">accumulator.c:93</a></div></div>
 <div class="ttc" id="structReceptor_html_af8aee3ef6d1d93b80427faa57e6f1468"><div class="ttname"><a href="structReceptor.html#af8aee3ef6d1d93b80427faa57e6f1468">Receptor::flux</a></div><div class="ttdeci">T * flux</div><div class="ttdoc">pointer for quick access to the flux </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00242">ceptr_types.h:242</a></div></div>
 <div class="ttc" id="structReceptor_html_aec6f1eee133a993b59baf50e75620fb6"><div class="ttname"><a href="structReceptor.html#aec6f1eee133a993b59baf50e75620fb6">Receptor::root</a></div><div class="ttdeci">T * root</div><div class="ttdoc">root node of the semantic tree </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00240">ceptr_types.h:240</a></div></div>
 <div class="ttc" id="group__accumulator_html_gaf3d0afe467ab198fc69ccaf7ee9fb5e9"><div class="ttname"><a href="group__accumulator.html#gaf3d0afe467ab198fc69ccaf7ee9fb5e9">_a_boot</a></div><div class="ttdeci">void _a_boot(char *dir_path)</div><div class="ttdef"><b>Definition:</b> <a href="accumulator_8c_source.html#l00038">accumulator.c:38</a></div></div>
 <div class="ttc" id="structVMHost_html_a95ef186e3477224ee0be117e7f9abbe3"><div class="ttname"><a href="structVMHost.html#a95ef186e3477224ee0be117e7f9abbe3">VMHost::active_receptors</a></div><div class="ttdeci">ActiveReceptor active_receptors[MAX_ACTIVE_RECEPTORS]</div><div class="ttdoc">pointer to array that holds all currently active receptors </div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8h_source.html#l00035">vmhost.h:35</a></div></div>
 <div class="ttc" id="http__example_8h_html_a1c182b5a6e82ef49c6967183a15c3e8b"><div class="ttname"><a href="http__example_8h.html#a1c182b5a6e82ef49c6967183a15c3e8b">_makeTestHTTPRequestTree</a></div><div class="ttdeci">T * _makeTestHTTPRequestTree()</div><div class="ttdoc">[makeTestHTTPRequestTree] </div><div class="ttdef"><b>Definition:</b> <a href="http__example_8h_source.html#l00207">http_example.h:207</a></div></div>
-<div class="ttc" id="group__receptor_html_gadc618904f81240b244e816234d1c906e"><div class="ttname"><a href="group__receptor.html#gadc618904f81240b244e816234d1c906e">_r_get_instance</a></div><div class="ttdeci">T * _r_get_instance(Receptor *r, Xaddr x)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00376">receptor.c:376</a></div></div>
+<div class="ttc" id="group__receptor_html_gadc618904f81240b244e816234d1c906e"><div class="ttname"><a href="group__receptor.html#gadc618904f81240b244e816234d1c906e">_r_get_instance</a></div><div class="ttdeci">T * _r_get_instance(Receptor *r, Xaddr x)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00397">receptor.c:397</a></div></div>
 <div class="ttc" id="structReceptor_html"><div class="ttname"><a href="structReceptor.html">Receptor</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00239">ceptr_types.h:239</a></div></div>
 <div class="ttc" id="structXaddr_html"><div class="ttname"><a href="structXaddr.html">Xaddr</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00268">ceptr_types.h:268</a></div></div>
 <div class="ttc" id="structVMHost_html_a218d2e91e129dee7c71e1b06ff533a6e"><div class="ttname"><a href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">VMHost::r</a></div><div class="ttdeci">Receptor * r</div><div class="ttdoc">Receptor data for this vm host. </div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8h_source.html#l00034">vmhost.h:34</a></div></div>
@@ -262,7 +262,7 @@ $(document).ready(function(){initNavTree('accumulator__spec_8h_source.html','');
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><b>accumulator_spec.h</b></li>
-    <li class="footer">Generated on Fri Nov 13 2015 17:37:18 for ceptr by
+    <li class="footer">Generated on Sat Nov 14 2015 00:01:56 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
