@@ -422,77 +422,74 @@ $(document).ready(function(){initNavTree('vmhost__spec_8h_source.html','');});
 <div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;</div>
 <div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;    makeShell(G_vm,input,output,&amp;i_r,&amp;o_r,&amp;input_stream,&amp;output_stream);</div>
 <div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;    <span class="comment">//    debug_enable(D_STREAM+D_SIGNALS);</span></div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;    <span class="comment">//    spec_is_str_equal(_td(o_r,o_r-&gt;flux),&quot;or flux&quot;);</span></div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;    _v_start_vmhost(G_vm);</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;    sleep(1);</div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;    <span class="comment">//    spec_is_str_equal(_td(o_r,o_r-&gt;flux),&quot;or flux&quot;);</span></div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;    <span class="comment">//    spec_is_str_equal(_td(r,r-&gt;flux),&quot;shell flux&quot;);</span></div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;    debug_disable(D_STREAM+D_SIGNALS);</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;</div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;    <span class="comment">// confirm that the completed processes get cleaned up in the course of the vmhosts processing</span></div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;    spec_is_ptr_equal(i_r-&gt;<a class="code" href="structReceptor.html#ab1e1dd776afee48ee71297a3e39756f8">q</a>-&gt;<a class="code" href="structQ.html#a7ee8f0b2d1cfefac4a7e3e8704bf6069">completed</a>,NULL);</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;    spec_is_ptr_equal(o_r-&gt;<a class="code" href="structReceptor.html#ab1e1dd776afee48ee71297a3e39756f8">q</a>-&gt;<a class="code" href="structQ.html#a7ee8f0b2d1cfefac4a7e3e8704bf6069">completed</a>,NULL);</div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;    <span class="comment">// kill the string after elapsed time because it&#39;s system dependent</span></div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;    <span class="keywordtype">char</span> *rs = t2s(<a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(i_r-&gt;<a class="code" href="structReceptor.html#aec6f1eee133a993b59baf50e75620fb6">root</a>,4));</div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;    rs[39]=0;</div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;    spec_is_str_equal(rs,<span class="stringliteral">&quot;(RECEPTOR_STATE (RECEPTOR_ELAPSED_TIME:&quot;</span>);</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;</div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;    spec_is_true(output_data != 0); <span class="comment">// protect against seg-faults when nothing was written to the stream...</span></div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;    <span class="keywordflow">if</span> (output_data != 0) {</div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;        output_data[78] =0;  <span class="comment">// clip the tick so it work regardless of the time</span></div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;        spec_is_str_equal(output_data,<span class="stringliteral">&quot;COMPOSITORY:1 CLOCK_RECEPTOR:2 shell:3 std_in:4 std_out:5 \n(TICK (TODAY (YEAR:&quot;</span>);}</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;    __r_kill(G_vm-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>);</div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;</div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;    <span class="comment">//    puts(_t2s(&amp;G_vm-&gt;r-&gt;defs,r-&gt;root));</span></div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;    <span class="comment">//debug_enable(D_STREAM+D_SIGNALS);</span></div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;    _v_start_vmhost(G_vm);</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;    sleep(1);</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;    debug_disable(D_STREAM+D_SIGNALS);</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;    <span class="comment">// confirm that the completed processes get cleaned up in the course of the vmhosts processing</span></div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;    spec_is_ptr_equal(i_r-&gt;<a class="code" href="structReceptor.html#ab1e1dd776afee48ee71297a3e39756f8">q</a>-&gt;<a class="code" href="structQ.html#a7ee8f0b2d1cfefac4a7e3e8704bf6069">completed</a>,NULL);</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;    spec_is_ptr_equal(o_r-&gt;<a class="code" href="structReceptor.html#ab1e1dd776afee48ee71297a3e39756f8">q</a>-&gt;<a class="code" href="structQ.html#a7ee8f0b2d1cfefac4a7e3e8704bf6069">completed</a>,NULL);</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;    <span class="comment">// kill the string after elapsed time because it&#39;s system dependent</span></div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;    <span class="keywordtype">char</span> *rs = t2s(<a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(i_r-&gt;<a class="code" href="structReceptor.html#aec6f1eee133a993b59baf50e75620fb6">root</a>,4));</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    rs[39]=0;</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;    spec_is_str_equal(rs,<span class="stringliteral">&quot;(RECEPTOR_STATE (RECEPTOR_ELAPSED_TIME:&quot;</span>);</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;    spec_is_true(output_data != 0); <span class="comment">// protect against seg-faults when nothing was written to the stream...</span></div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;    <span class="keywordflow">if</span> (output_data != 0) {</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;        output_data[78] =0;  <span class="comment">// clip the tick so it work regardless of the time</span></div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;        spec_is_str_equal(output_data,<span class="stringliteral">&quot;COMPOSITORY:1 CLOCK_RECEPTOR:2 shell:3 std_in:4 std_out:5 \n(TICK (TODAY (YEAR:&quot;</span>);}</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;    __r_kill(G_vm-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>);</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;    <span class="comment">//    puts(_t2s(&amp;G_vm-&gt;r-&gt;defs,r-&gt;root));</span></div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;    _v_join_thread(&amp;G_vm-&gt;clock_thread);</div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;    _v_join_thread(&amp;G_vm-&gt;vm_thread);</div>
 <div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;</div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;    _v_join_thread(&amp;G_vm-&gt;clock_thread);</div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;    _v_join_thread(&amp;G_vm-&gt;vm_thread);</div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;</div>
-<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;    <span class="comment">// free the memory used by the VM_HOST</span></div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;    <a class="code" href="group__vmhost.html#ga44e0f6d62e38448bfa058f287cc463eb">_v_free</a>(G_vm);</div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;    G_vm = NULL;</div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;</div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;    <a class="code" href="stream_8c.html#a968db3488104e65751b060be40ea9b58">_st_free</a>(input_stream);</div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;    <a class="code" href="stream_8c.html#a968db3488104e65751b060be40ea9b58">_st_free</a>(output_stream);</div>
-<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;    free(output_data);</div>
-<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;}</div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;</div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;<span class="keywordtype">void</span> testVMHostSerialize() {</div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;    G_vm = <a class="code" href="group__vmhost.html#gab6fbe5683628fb0d62a966316ced938d">_v_new</a>();</div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;    <a class="code" href="group__vmhost.html#ga74a1f49de857467af1613bb0e71b0963">_v_instantiate_builtins</a>(G_vm);</div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;</div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;    spec_is_str_equal(t2s(G_vm-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>-&gt;<a class="code" href="structReceptor.html#aec6f1eee133a993b59baf50e75620fb6">root</a>),<span class="stringliteral">&quot;(VM_HOST_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (EXPECTATIONS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))&quot;</span>);</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;    <span class="comment">// free the memory used by the VM_HOST</span></div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;    <a class="code" href="group__vmhost.html#ga44e0f6d62e38448bfa058f287cc463eb">_v_free</a>(G_vm);</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;    G_vm = NULL;</div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;    <a class="code" href="stream_8c.html#a968db3488104e65751b060be40ea9b58">_st_free</a>(input_stream);</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;    <a class="code" href="stream_8c.html#a968db3488104e65751b060be40ea9b58">_st_free</a>(output_stream);</div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;    free(output_data);</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;}</div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;</div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;<span class="keywordtype">void</span> testVMHostSerialize() {</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;    G_vm = <a class="code" href="group__vmhost.html#gab6fbe5683628fb0d62a966316ced938d">_v_new</a>();</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;    <a class="code" href="group__vmhost.html#ga74a1f49de857467af1613bb0e71b0963">_v_instantiate_builtins</a>(G_vm);</div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;    spec_is_str_equal(t2s(G_vm-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>-&gt;<a class="code" href="structReceptor.html#aec6f1eee133a993b59baf50e75620fb6">root</a>),<span class="stringliteral">&quot;(VM_HOST_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (EXPECTATIONS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))&quot;</span>);</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;    <a class="code" href="structReceptor.html">Receptor</a> *clock = G_vm-&gt;<a class="code" href="structVMHost.html#a95ef186e3477224ee0be117e7f9abbe3">active_receptors</a>[0].r;</div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;    <span class="comment">//   _testReceptorClockAddExpectation(clock);</span></div>
 <div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;</div>
-<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;    <a class="code" href="structReceptor.html">Receptor</a> *clock = G_vm-&gt;<a class="code" href="structVMHost.html#a95ef186e3477224ee0be117e7f9abbe3">active_receptors</a>[0].r;</div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;    <span class="comment">//   _testReceptorClockAddExpectation(clock);</span></div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;</div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;    <span class="keywordtype">void</span> *surface;</div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;    <span class="keywordtype">size_t</span> length;</div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;    <a class="code" href="group__receptor.html#ga3e737841784555574a0d90ad2eff4cc4">_r_serialize</a>(G_vm-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,&amp;surface,&amp;length);</div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;    <a class="code" href="structReceptor.html">Receptor</a> *r = <a class="code" href="group__receptor.html#ga300b11b12792c290fef2fb0fe07d71ee">_r_unserialize</a>(surface);</div>
-<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;    spec_is_str_equal(t2s(r-&gt;<a class="code" href="structReceptor.html#aec6f1eee133a993b59baf50e75620fb6">root</a>),<span class="stringliteral">&quot;(VM_HOST_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (EXPECTATIONS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))&quot;</span>);</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;    <span class="keywordtype">void</span> *surface;</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;    <span class="keywordtype">size_t</span> length;</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;    <a class="code" href="group__receptor.html#ga3e737841784555574a0d90ad2eff4cc4">_r_serialize</a>(G_vm-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,&amp;surface,&amp;length);</div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;    <a class="code" href="structReceptor.html">Receptor</a> *r = <a class="code" href="group__receptor.html#ga300b11b12792c290fef2fb0fe07d71ee">_r_unserialize</a>(surface);</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;    spec_is_str_equal(t2s(r-&gt;<a class="code" href="structReceptor.html#aec6f1eee133a993b59baf50e75620fb6">root</a>),<span class="stringliteral">&quot;(VM_HOST_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (EXPECTATIONS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))&quot;</span>);</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;    __r_kill(clock);</div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;    _v_join_thread(&amp;G_vm-&gt;clock_thread);</div>
 <div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;</div>
-<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;    __r_kill(clock);</div>
-<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;    _v_join_thread(&amp;G_vm-&gt;clock_thread);</div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;</div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;    <span class="comment">// __r_dump_instances(r);</span></div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;    <a class="code" href="group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8">_r_free</a>(r);</div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;    free(surface);</div>
-<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;    <a class="code" href="group__vmhost.html#ga44e0f6d62e38448bfa058f287cc463eb">_v_free</a>(G_vm);</div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;    G_vm=NULL;</div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;}</div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;<span class="keywordtype">void</span> testVMHost() {</div>
-<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;    _setup_HTTPDefs();</div>
-<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;    <a class="code" href="vmhost__spec_8h.html#ab22810ce6e5f9b1586db2767bfc44c64">testVMHostCreate</a>();</div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;    <span class="comment">//testVMHostLoadReceptorPackage();</span></div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;    <span class="comment">//testVMHostInstallReceptor();</span></div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;    <a class="code" href="vmhost__spec_8h.html#a9165528cd9a1193303f58f7c012ba53c">testVMHostActivateReceptor</a>();</div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;    testVMHostShell();</div>
-<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;    testVMHostSerialize();</div>
-<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;    _cleanup_HTTPDefs();</div>
-<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;}</div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;    <span class="comment">// __r_dump_instances(r);</span></div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;    <a class="code" href="group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8">_r_free</a>(r);</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;    free(surface);</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;    <a class="code" href="group__vmhost.html#ga44e0f6d62e38448bfa058f287cc463eb">_v_free</a>(G_vm);</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;    G_vm=NULL;</div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;}</div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;<span class="keywordtype">void</span> testVMHost() {</div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;    _setup_HTTPDefs();</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;    <a class="code" href="vmhost__spec_8h.html#ab22810ce6e5f9b1586db2767bfc44c64">testVMHostCreate</a>();</div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;    <span class="comment">//testVMHostLoadReceptorPackage();</span></div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;    <span class="comment">//testVMHostInstallReceptor();</span></div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;    <a class="code" href="vmhost__spec_8h.html#a9165528cd9a1193303f58f7c012ba53c">testVMHostActivateReceptor</a>();</div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;    testVMHostShell();</div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;    testVMHostSerialize();</div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;    _cleanup_HTTPDefs();</div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;}</div>
 <div class="ttc" id="group__tree_html_ga25dd0f385044ffbcc7c215ea80fa00b4"><div class="ttname"><a href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a></div><div class="ttdeci">T * _t_new_root(Symbol symbol)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00136">tree.c:136</a></div></div>
 <div class="ttc" id="structT_html"><div class="ttname"><a href="structT.html">T</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00109">ceptr_types.h:109</a></div></div>
 <div class="ttc" id="group__receptor_html_ga3e737841784555574a0d90ad2eff4cc4"><div class="ttname"><a href="group__receptor.html#ga3e737841784555574a0d90ad2eff4cc4">_r_serialize</a></div><div class="ttdeci">void _r_serialize(Receptor *r, void **surfaceP, size_t *lengthP)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00437">receptor.c:437</a></div></div>
@@ -501,7 +498,7 @@ $(document).ready(function(){initNavTree('vmhost__spec_8h_source.html','');});
 <div class="ttc" id="group__vmhost_html_ga5a5dd1eef04efc23462a14f0ba652cb1"><div class="ttname"><a href="group__vmhost.html#ga5a5dd1eef04efc23462a14f0ba652cb1">_v_send</a></div><div class="ttdeci">void _v_send(VMHost *v, ReceptorAddress from, ReceptorAddress to, Aspect aspect, T *contents)</div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8c_source.html#l00164">vmhost.c:164</a></div></div>
 <div class="ttc" id="group__vmhost_html_ga74a1f49de857467af1613bb0e71b0963"><div class="ttname"><a href="group__vmhost.html#ga74a1f49de857467af1613bb0e71b0963">_v_instantiate_builtins</a></div><div class="ttdeci">void _v_instantiate_builtins(VMHost *v)</div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8c_source.html#l00295">vmhost.c:295</a></div></div>
 <div class="ttc" id="group__receptor_html_ga6f650808029d4c598ebe6515d9900ef8"><div class="ttname"><a href="group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8">_r_free</a></div><div class="ttdeci">void _r_free(Receptor *r)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00154">receptor.c:154</a></div></div>
-<div class="ttc" id="process_8c_html_a64e8965291c67057b06f273db19a465d"><div class="ttname"><a href="process_8c.html#a64e8965291c67057b06f273db19a465d">_p_reduceq</a></div><div class="ttdeci">Error _p_reduceq(Q *q)</div><div class="ttdef"><b>Definition:</b> <a href="process_8c_source.html#l01194">process.c:1194</a></div></div>
+<div class="ttc" id="process_8c_html_a64e8965291c67057b06f273db19a465d"><div class="ttname"><a href="process_8c.html#a64e8965291c67057b06f273db19a465d">_p_reduceq</a></div><div class="ttdeci">Error _p_reduceq(Q *q)</div><div class="ttdef"><b>Definition:</b> <a href="process_8c_source.html#l01196">process.c:1196</a></div></div>
 <div class="ttc" id="group__receptor_html_gacce906c9de30765f458599777b72be90"><div class="ttname"><a href="group__receptor.html#gacce906c9de30765f458599777b72be90">_r_get_symbol_by_label</a></div><div class="ttdeci">Symbol _r_get_symbol_by_label(Receptor *r, char *label)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00246">receptor.c:246</a></div></div>
 <div class="ttc" id="stream_8c_html_a968db3488104e65751b060be40ea9b58"><div class="ttname"><a href="stream_8c.html#a968db3488104e65751b060be40ea9b58">_st_free</a></div><div class="ttdeci">void _st_free(Stream *stream)</div><div class="ttdef"><b>Definition:</b> <a href="stream_8c_source.html#l00148">stream.c:148</a></div></div>
 <div class="ttc" id="group__tree_html_ga946600fb570f0cc913450905f6189d49"><div class="ttname"><a href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a></div><div class="ttdeci">Symbol _t_symbol(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00576">tree.c:576</a></div></div>
@@ -535,7 +532,7 @@ $(document).ready(function(){initNavTree('vmhost__spec_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><a class="el" href="vmhost__spec_8h.html">vmhost_spec.h</a></li>
-    <li class="footer">Generated on Sat Nov 14 2015 00:01:56 for ceptr by
+    <li class="footer">Generated on Sun Nov 15 2015 17:49:09 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
