@@ -258,11 +258,11 @@ my $phtml = << 'HTML';
 HTML
 my $stdfh = openf('>','doxy/sys_structures.html');
 my $sthtml = << 'HTML';
-<table class="doxtable"><tr><th>Structures</th><th>Symbols</th></th><th>Comments</th></tr>
+<table class="doxtable"><tr><th>Structure</th><th>Defintion</th></th><th>Comments</th></tr>
 HTML
 my $sydfh = openf('>','doxy/sys_symbols.html');
 my $syhtml = << 'HTML';
-<table class="doxtable"><tr><th>Symbol</th><th>Structure</th><th>Comments</th></tr>
+<table class="doxtable"><tr><th>Symbol</th><th>Semantic use of Structure:</th><th>Comments</th></tr>
 HTML
 
 foreach my $s (@d) {
