@@ -1,9 +1,5 @@
 var NAVTREEINDEX8 =
 {
-"sys__defs_8c_source.html":[7,0,1,30],
-"sys__defs_8h.html":[7,0,1,31],
-"sys__defs_8h.html#a09b0f4fa3a7517885de30bd9dbc9c413":[7,0,1,31,4],
-"sys__defs_8h.html#a0d09d53224cbb8ee8211535dacf1adc9":[7,0,1,31,17],
 "sys__defs_8h.html#a1cb26e8680c21fe4243506c096177489":[7,0,1,31,24],
 "sys__defs_8h.html#a29f55129e7ae84352824fbf74d80f09b":[7,0,1,31,15],
 "sys__defs_8h.html#a2b06cc8277915de32048b4130fecde24":[7,0,1,31,2],

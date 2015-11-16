@@ -106,10 +106,10 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="STRUCTURES"></a>STRUCTURES</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_STRUCTURE_DEFINITION">ZERO-OR-MORE-OF-STRUCTURE-DEFINITION</a></td><td></td></tr>
 <tr><td><a name="SYMBOLS"></a>SYMBOLS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_SYMBOL_DECLARATION">ZERO-OR-MORE-OF-SYMBOL-DECLARATION</a></td><td></td></tr>
 <tr><td><a name="PROCESSES"></a>PROCESSES</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_PROCESS_CODING">ZERO-OR-MORE-OF-PROCESS-CODING</a></td><td></td></tr>
-<tr><td><a name="PROTOCOLS"></a>PROTOCOLS</td><td><a href="ref_sys_structures.html#LIST">LIST</a></td><td></td></tr>
+<tr><td><a name="PROTOCOLS"></a>PROTOCOLS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_PROTOCOL">ZERO-OR-MORE-OF-PROTOCOL</a></td><td></td></tr>
 <tr><td><a name="SCAPES"></a>SCAPES</td><td><a href="ref_sys_structures.html#LIST">LIST</a></td><td></td></tr>
 <tr><td><a name="ASPECTS"></a>ASPECTS</td><td><a href="ref_sys_structures.html#LIST">LIST</a></td><td></td></tr>
-<tr><td><a name="DEFINITIONS"></a>DEFINITIONS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_LIST_OF_STRUCTURES_AND_SYMBOLS_AND_PROCESSES_AND_ZERO_OR_MORE_OF_PROTOCOOLS_AND_ZERO_OR_MORE_OF_SCAPES_AND_ZERO_OR_MORE_OF_ASPECTS">ZERO-OR-MORE-OF-LIST-OF-STRUCTURES-AND-SYMBOLS-AND-PROCESSES-AND-ZERO-OR-MORE-OF-PROTOCOOLS-AND-ZERO-OR-MORE-OF-SCAPES-AND-ZERO-OR-MORE-OF-ASPECTS</a></td><td></td></tr>
+<tr><td><a name="DEFINITIONS"></a>DEFINITIONS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_LIST_OF_STRUCTURES_AND_SYMBOLS_AND_PROCESSES_AND_ZERO_OR_MORE_OF_PROTOCOLS_AND_ZERO_OR_MORE_OF_SCAPES_AND_ZERO_OR_MORE_OF_ASPECTS">ZERO-OR-MORE-OF-LIST-OF-STRUCTURES-AND-SYMBOLS-AND-PROCESSES-AND-ZERO-OR-MORE-OF-PROTOCOLS-AND-ZERO-OR-MORE-OF-SCAPES-AND-ZERO-OR-MORE-OF-ASPECTS</a></td><td></td></tr>
 <tr><td><a name="STRUCTURE_SYMBOL"></a>STRUCTURE_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
 <tr><td><a name="STRUCTURE_SEQUENCE"></a>STRUCTURE_SEQUENCE</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_STRUCTURE_DEF">ONE-OR-MORE-OF-STRUCTURE-DEF</a></td><td></td></tr>
 <tr><td><a name="STRUCTURE_SYMBOL_SET"></a>STRUCTURE_SYMBOL_SET</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_STRUCTURE_SYMBOL">ONE-OR-MORE-OF-STRUCTURE-SYMBOL</a></td><td></td></tr>
@@ -149,7 +149,7 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="ASCII_CHAR"></a>ASCII_CHAR</td><td><a href="ref_sys_structures.html#CHAR">CHAR</a></td><td></td></tr>
 <tr><td><a name="ASCII_CHARS"></a>ASCII_CHARS</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_ASCII_CHAR">ONE-OR-MORE-OF-ASCII-CHAR</a></td><td></td></tr>
 <tr><td><a name="RECEPTOR_XADDR"></a>RECEPTOR_XADDR</td><td><a href="ref_sys_structures.html#XADDR">XADDR</a></td><td>               An Xaddr that points to a receptor</td></tr>
-<tr><td><a name="ASPECT"></a>ASPECT</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
+<tr><td><a name="ASPECT"></a>ASPECT</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
 <tr><td><a name="FLUX"></a>FLUX</td><td><a href="ref_sys_structures.html#LIST">LIST</a></td><td>                           tree to hold all incoming and in process signals on the various aspects</td></tr>
 <tr><td><a name="SCAPE_SPEC"></a>SCAPE_SPEC</td><td><a href="ref_sys_structures.html#TREE">TREE</a></td><td></td></tr>
 <tr><td><a name="ASPECT_DEF"></a>ASPECT_DEF</td><td><a href="ref_sys_structures.html#TREE">TREE</a></td><td></td></tr>
@@ -195,12 +195,9 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="PARAM_REF"></a>PARAM_REF</td><td><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></td><td>               used in a code tree as a reference to a parameter</td></tr>
 <tr><td><a name="RESULT_SYMBOL"></a>RESULT_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
 <tr><td><a name="REDUCTION_ERROR_SYMBOL"></a>REDUCTION_ERROR_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
-<tr><td><a name="SEQUENCES"></a>SEQUENCES</td><td><a href="ref_sys_structures.html#LIST">LIST</a></td><td></td></tr>
 <tr><td><a name="STEP_SYMBOL"></a>STEP_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
+<tr><td><a name="SEQUENCES"></a>SEQUENCES</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_SEQUENCE">ONE-OR-MORE-OF-SEQUENCE</a></td><td></td></tr>
 <tr><td><a name="STEPS"></a>STEPS</td><td><a href="ref_sys_structures.html#LIST">LIST</a></td><td></td></tr>
-<tr><td><a name="INTERACTION"></a>INTERACTION</td><td><a href="ref_sys_structures.html#LIST">LIST</a></td><td> /// @todo #8 this should really be a structure be we don't have optional elements yet....</td></tr>
-<tr><td><a name="INTERACTIONS"></a>INTERACTIONS</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_INTERACTION">ONE-OR-MORE-OF-INTERACTION</a></td><td></td></tr>
-<tr><td><a name="STEP"></a>STEP</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
 <tr><td><a name="RESPONSE_STEPS"></a>RESPONSE_STEPS</td><td><a href="ref_sys_structures.html#LIST">LIST</a></td><td></td></tr>
 <tr><td><a name="MANIFEST"></a>MANIFEST</td><td><a href="ref_sys_structures.html#TREE">TREE</a></td><td>                    configuration template to be filled out for the installation of a receptor</td></tr>
 <tr><td><a name="MANIFEST_PAIR"></a>MANIFEST_PAIR</td><td><a href="ref_sys_structures.html#LIST">LIST</a></td><td></td></tr>
@@ -297,7 +294,7 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Nov 16 2015 11:01:42 for ceptr by
+    <li class="footer">Generated on Mon Nov 16 2015 11:32:37 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
