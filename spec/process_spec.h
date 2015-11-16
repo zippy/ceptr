@@ -916,6 +916,10 @@ void testProcessListen() {
     _r_deliver(r,s);
     spec_is_equal(_p_reduceq(q),noReductionErr);
 
+    // because this listen blocked, and can thus only be woken up once, the expectation
+    // had to have been removed afterwards.
+    spec_is_str_equal(t2s(__r_get_expectations(r,DEFAULT_ASPECT)),"(EXPECTATIONS)");
+
     // @todo, ok the two params thing here is wrong, but we don't actually have
     // a use case for the blocking listen, so I don't quite know how it should work... @FIXME
     spec_is_str_equal(t2s(run_tree),"(RUN_TREE (PARAMS (TEST_STR_SYMBOL:fishy!)) (PARAMS))");

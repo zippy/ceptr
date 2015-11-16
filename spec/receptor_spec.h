@@ -63,7 +63,7 @@ void testReceptorCreate() {
     //! [testReceptorCreate]
 }
 
-void testReceptorAddExpectation() {
+void testReceptorAddRemoveExpectation() {
     Receptor *r;
     r = _r_new(TEST_RECEPTOR_SYMBOL);
 
@@ -74,9 +74,13 @@ void testReceptorAddExpectation() {
     T *a = _t_news(0,ACTION,NULL_PROCESS);
     _r_add_expectation(r,DEFAULT_ASPECT,TEST_INT_SYMBOL,s,a,0,0);
 
-    T *e = _t_child(__r_get_expectations(r,DEFAULT_ASPECT),1);      // expectation should have been added as first child of expectations
+    T *es = __r_get_expectations(r,DEFAULT_ASPECT);
+    T *e = _t_child(es,1);      // expectation should have been added as first child of expectations
     spec_is_str_equal(_td(r,e),"(EXPECTATION (CARRIER:TEST_INT_SYMBOL) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:NULL_SYMBOL))) (ACTION:NULL_PROCESS) (PARAMS) (END_CONDITIONS (UNLIMITED)))");
 
+    _r_remove_expectation(r,e);
+
+    spec_is_str_equal(_td(r,es),"(EXPECTATIONS)");
     _r_free(r);
 }
 
@@ -185,8 +189,8 @@ void testReceptorResponseDeliver() {
     _r_free(r);
 }
 
-void testReceptorAction() {
-    //! [testReceptorAction]
+void testReceptorExpectation() {
+    //! [testReceptorExpectation]
     Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
 
     // The signal is an HTTP request
@@ -256,7 +260,7 @@ void testReceptorAction() {
     _t_free(r->defs.symbols); // normally these would be freeed by the r_free, but we hand loaded them...
     _t_free(r->defs.structures);
     _r_free(r);
-    //! [testReceptorAction]
+    //! [testReceptorExpectation]
 }
 
 void testReceptorDef() {
@@ -805,11 +809,11 @@ void testReceptorClock() {
 void testReceptor() {
     _setup_HTTPDefs();
     testReceptorCreate();
-    testReceptorAddExpectation();
+    testReceptorAddRemoveExpectation();
     testReceptorSignal();
     testReceptorSignalDeliver();
     testReceptorResponseDeliver();
-    testReceptorAction();
+    testReceptorExpectation();
     testReceptorDef();
     testReceptorDefMatch();
     testReceptorProtocol();
