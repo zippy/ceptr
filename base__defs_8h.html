@@ -138,9 +138,9 @@ Macros</h2></td></tr>
 <tr class="memitem:a3edd8070703da6646cf9200ff9e6dbe6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3edd8070703da6646cf9200ff9e6dbe6"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>PROCESSES</b>&#160;&#160;&#160;G_contexts[SYS_CONTEXT].symbols[PROCESSES_ID]</td></tr>
 <tr class="separator:a3edd8070703da6646cf9200ff9e6dbe6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7fada03e74db5b63c146cb41d5ed0367"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7fada03e74db5b63c146cb41d5ed0367"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>PROTOCOOLS</b>&#160;&#160;&#160;G_contexts[SYS_CONTEXT].symbols[PROTOCOOLS_ID]</td></tr>
-<tr class="separator:a7fada03e74db5b63c146cb41d5ed0367"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1ff3f2d2a7498773a043aa6231d159c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa1ff3f2d2a7498773a043aa6231d159c"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>PROTOCOLS</b>&#160;&#160;&#160;G_contexts[SYS_CONTEXT].symbols[PROTOCOLS_ID]</td></tr>
+<tr class="separator:aa1ff3f2d2a7498773a043aa6231d159c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a511c931c9c25261fe6ca3ffdc4498953"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a511c931c9c25261fe6ca3ffdc4498953"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>SCAPES</b>&#160;&#160;&#160;G_contexts[SYS_CONTEXT].symbols[SCAPES_ID]</td></tr>
 <tr class="separator:a511c931c9c25261fe6ca3ffdc4498953"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -405,9 +405,6 @@ Macros</h2></td></tr>
 <tr class="memitem:af1cf0b963b8a138519af656897397361"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af1cf0b963b8a138519af656897397361"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>REDUCTION_ERROR_SYMBOL</b>&#160;&#160;&#160;G_contexts[SYS_CONTEXT].symbols[REDUCTION_ERROR_SYMBOL_ID]</td></tr>
 <tr class="separator:af1cf0b963b8a138519af656897397361"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1ff3f2d2a7498773a043aa6231d159c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa1ff3f2d2a7498773a043aa6231d159c"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>PROTOCOLS</b>&#160;&#160;&#160;G_contexts[SYS_CONTEXT].symbols[PROTOCOLS_ID]</td></tr>
-<tr class="separator:aa1ff3f2d2a7498773a043aa6231d159c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa62933015d091a5adc0482461d48c115"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa62933015d091a5adc0482461d48c115"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>SEQUENCES</b>&#160;&#160;&#160;G_contexts[SYS_CONTEXT].symbols[SEQUENCES_ID]</td></tr>
 <tr class="separator:aa62933015d091a5adc0482461d48c115"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -981,7 +978,7 @@ Enumerations</h2></td></tr>
 <b>SYMBOLS_ID</b>, 
 <b>PROCESSES_ID</b>, 
 <br />
-&#160;&#160;<b>PROTOCOOLS_ID</b>, 
+&#160;&#160;<b>PROTOCOLS_ID</b>, 
 <b>SCAPES_ID</b>, 
 <b>ASPECTS_ID</b>, 
 <b>DEFINITIONS_ID</b>, 
@@ -1092,107 +1089,106 @@ Enumerations</h2></td></tr>
 <b>RESULT_SYMBOL_ID</b>, 
 <br />
 &#160;&#160;<b>REDUCTION_ERROR_SYMBOL_ID</b>, 
-<b>PROTOCOLS_ID</b>, 
 <b>SEQUENCES_ID</b>, 
 <b>STEP_SYMBOL_ID</b>, 
+<b>STEPS_ID</b>, 
 <br />
-&#160;&#160;<b>STEPS_ID</b>, 
-<b>INTERACTION_ID</b>, 
+&#160;&#160;<b>INTERACTION_ID</b>, 
 <b>INTERACTIONS_ID</b>, 
 <b>STEP_ID</b>, 
+<b>RESPONSE_STEPS_ID</b>, 
 <br />
-&#160;&#160;<b>RESPONSE_STEPS_ID</b>, 
-<b>MANIFEST_ID</b>, 
+&#160;&#160;<b>MANIFEST_ID</b>, 
 <b>MANIFEST_PAIR_ID</b>, 
 <b>MANIFEST_LABEL_ID</b>, 
+<b>MANIFEST_SPEC_ID</b>, 
 <br />
-&#160;&#160;<b>MANIFEST_SPEC_ID</b>, 
-<b>RECEPTOR_PACKAGE_ID</b>, 
+&#160;&#160;<b>RECEPTOR_PACKAGE_ID</b>, 
 <b>RECEPTOR_IDENTIFIER_ID</b>, 
 <b>INSTALLED_RECEPTOR_ID</b>, 
+<b>BINDINGS_ID</b>, 
 <br />
-&#160;&#160;<b>BINDINGS_ID</b>, 
-<b>BINDING_PAIR_ID</b>, 
+&#160;&#160;<b>BINDING_PAIR_ID</b>, 
 <b>RECEPTOR_ELAPSED_TIME_ID</b>, 
 <b>RECEPTOR_STATE_ID</b>, 
+<b>SERIALIZED_RECEPTOR_ID</b>, 
 <br />
-&#160;&#160;<b>SERIALIZED_RECEPTOR_ID</b>, 
-<b>VM_HOST_RECEPTOR_ID</b>, 
+&#160;&#160;<b>VM_HOST_RECEPTOR_ID</b>, 
 <b>ACTIVE_RECEPTORS_ID</b>, 
 <b>VM_HOST_STATE_ID</b>, 
+<b>CLOCK_RECEPTOR_ID</b>, 
 <br />
-&#160;&#160;<b>CLOCK_RECEPTOR_ID</b>, 
-<b>COMPOSITORY_ID</b>, 
+&#160;&#160;<b>COMPOSITORY_ID</b>, 
 <b>YEAR_ID</b>, 
 <b>MONTH_ID</b>, 
+<b>DAY_ID</b>, 
 <br />
-&#160;&#160;<b>DAY_ID</b>, 
-<b>HOUR_ID</b>, 
+&#160;&#160;<b>HOUR_ID</b>, 
 <b>MINUTE_ID</b>, 
 <b>SECOND_ID</b>, 
+<b>TODAY_ID</b>, 
 <br />
-&#160;&#160;<b>TODAY_ID</b>, 
-<b>NOW_ID</b>, 
+&#160;&#160;<b>NOW_ID</b>, 
 <b>TICK_ID</b>, 
 <b>CLOCK_TELL_TIME_ID</b>, 
+<b>ERROR_LOCATION_ID</b>, 
 <br />
-&#160;&#160;<b>ERROR_LOCATION_ID</b>, 
-<b>ZERO_DIVIDE_ERR_ID</b>, 
+&#160;&#160;<b>ZERO_DIVIDE_ERR_ID</b>, 
 <b>TOO_FEW_PARAMS_ERR_ID</b>, 
 <b>TOO_MANY_PARAMS_ERR_ID</b>, 
+<b>SIGNATURE_MISMATCH_ERR_ID</b>, 
 <br />
-&#160;&#160;<b>SIGNATURE_MISMATCH_ERR_ID</b>, 
-<b>NOT_A_PROCESS_ERR_ID</b>, 
+&#160;&#160;<b>NOT_A_PROCESS_ERR_ID</b>, 
 <b>NOT_IN_SIGNAL_CONTEXT_ERR_ID</b>, 
 <b>INCOMPATIBLE_TYPE_ERR_ID</b>, 
+<b>UNIX_ERRNO_ERR_ID</b>, 
 <br />
-&#160;&#160;<b>UNIX_ERRNO_ERR_ID</b>, 
-<b>DEAD_STREAM_READ_ERR_ID</b>, 
+&#160;&#160;<b>DEAD_STREAM_READ_ERR_ID</b>, 
 <b>GET_XADDR_ID</b>, 
 <b>TIMEOUT_AT_ID</b>, 
+<b>COUNT_ID</b>, 
 <br />
-&#160;&#160;<b>COUNT_ID</b>, 
-<b>UNLIMITED_ID</b>, 
+&#160;&#160;<b>UNLIMITED_ID</b>, 
 <b>REPETITIONS_ID</b>, 
 <b>STX_TOKENS_ID</b>, 
+<b>STX_SL_ID</b>, 
 <br />
-&#160;&#160;<b>STX_SL_ID</b>, 
-<b>STX_OP_ID</b>, 
+&#160;&#160;<b>STX_OP_ID</b>, 
 <b>STX_CP_ID</b>, 
 <b>STX_SET_ID</b>, 
+<b>STX_OS_ID</b>, 
 <br />
-&#160;&#160;<b>STX_OS_ID</b>, 
-<b>STX_CS_ID</b>, 
+&#160;&#160;<b>STX_CS_ID</b>, 
 <b>STX_LABEL_ID</b>, 
 <b>STX_OG_ID</b>, 
+<b>STX_CG_ID</b>, 
 <br />
-&#160;&#160;<b>STX_CG_ID</b>, 
-<b>STX_EQ_ID</b>, 
+&#160;&#160;<b>STX_EQ_ID</b>, 
 <b>STX_NEQ_ID</b>, 
 <b>STX_WALK_ID</b>, 
+<b>STX_STAR_ID</b>, 
 <br />
-&#160;&#160;<b>STX_STAR_ID</b>, 
-<b>STX_PLUS_ID</b>, 
+&#160;&#160;<b>STX_PLUS_ID</b>, 
 <b>STX_Q_ID</b>, 
 <b>STX_OR_ID</b>, 
+<b>STX_COMMA_ID</b>, 
 <br />
-&#160;&#160;<b>STX_COMMA_ID</b>, 
-<b>STX_EXCEPT_ID</b>, 
+&#160;&#160;<b>STX_EXCEPT_ID</b>, 
 <b>STX_NOT_ID</b>, 
 <b>STX_VAL_S_ID</b>, 
+<b>STX_VAL_C_ID</b>, 
 <br />
-&#160;&#160;<b>STX_VAL_C_ID</b>, 
-<b>STX_VAL_I_ID</b>, 
+&#160;&#160;<b>STX_VAL_I_ID</b>, 
 <b>STX_VAL_F_ID</b>, 
 <b>STX_SIBS_ID</b>, 
+<b>STX_CHILD_ID</b>, 
 <br />
-&#160;&#160;<b>STX_CHILD_ID</b>, 
-<b>STX_POSTFIX_ID</b>, 
+&#160;&#160;<b>STX_POSTFIX_ID</b>, 
 <b>TREE_DELTA_PATH_ID</b>, 
 <b>TREE_DELTA_VALUE_ID</b>, 
+<b>TREE_DELTA_COUNT_ID</b>, 
 <br />
-&#160;&#160;<b>TREE_DELTA_COUNT_ID</b>, 
-<b>TREE_DELTA_ADD_ID</b>, 
+&#160;&#160;<b>TREE_DELTA_ADD_ID</b>, 
 <b>TREE_DELTA_REPLACE_ID</b>, 
 <b>NUM_SYS_SYMBOLS</b>
 <br />
@@ -1378,7 +1374,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>base_defs</b> ()</td>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="base__defs_8h.html">base_defs.h</a></li>
-    <li class="footer">Generated on Mon Nov 16 2015 07:31:40 for ceptr by
+    <li class="footer">Generated on Mon Nov 16 2015 11:01:42 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

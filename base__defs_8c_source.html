@@ -136,7 +136,7 @@ $(document).ready(function(){initNavTree('base__defs_8c_source.html','');});
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  sY(SYS_CONTEXT,STRUCTURES,NULL_STRUCTURE);</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  sY(SYS_CONTEXT,SYMBOLS,NULL_STRUCTURE);</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  sY(SYS_CONTEXT,PROCESSES,NULL_STRUCTURE);</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  sY(SYS_CONTEXT,PROTOCOOLS,NULL_STRUCTURE);</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  sY(SYS_CONTEXT,PROTOCOLS,NULL_STRUCTURE);</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  sY(SYS_CONTEXT,SCAPES,NULL_STRUCTURE);</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  sY(SYS_CONTEXT,ASPECTS,NULL_STRUCTURE);</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  sTs(SYS_CONTEXT,ZERO_OR_MORE_OF_LIST_OF_STRUCTURES_AND_SYMBOLS_AND_PROCESSES_AND_ZERO_OR_MORE_OF_PROTOCOOLS_AND_ZERO_OR_MORE_OF_SCAPES_AND_ZERO_OR_MORE_OF_ASPECTS,sT_STAR(sT_SEQ(6,sT_SYM(STRUCTURES),sT_SYM(SYMBOLS),sT_SYM(PROCESSES),sT_STAR(sT_SYM(PROTOCOOLS)),sT_STAR(sT_SYM(SCAPES)),sT_STAR(sT_SYM(ASPECTS)))));</div>
@@ -202,7 +202,7 @@ $(document).ready(function(){initNavTree('base__defs_8c_source.html','');});
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  sTs(SYS_CONTEXT,ONE_OR_MORE_OF_ASCII_CHAR,sT_PLUS(sT_SYM(ASCII_CHAR)));</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  sY(SYS_CONTEXT,ASCII_CHARS,ONE_OR_MORE_OF_ASCII_CHAR);</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  sY(SYS_CONTEXT,RECEPTOR_XADDR,XADDR);</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  sY(SYS_CONTEXT,ASPECT,INTEGER);</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  sY(SYS_CONTEXT,ASPECT,SYMBOL);</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  sY(SYS_CONTEXT,FLUX,LIST);</div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  sY(SYS_CONTEXT,SCAPE_SPEC,TREE);</div>
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  sYs(SYS_CONTEXT,ASPECTS,LIST);</div>
@@ -268,7 +268,7 @@ $(document).ready(function(){initNavTree('base__defs_8c_source.html','');});
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;  sYs(SYS_CONTEXT,PARAMS,LIST);</div>
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;  sY(SYS_CONTEXT,RESULT_SYMBOL,SYMBOL);</div>
 <div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;  sY(SYS_CONTEXT,REDUCTION_ERROR_SYMBOL,SYMBOL);</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;  sY(SYS_CONTEXT,PROTOCOLS,LIST);</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;  sYs(SYS_CONTEXT,PROTOCOLS,LIST);</div>
 <div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;  sY(SYS_CONTEXT,SEQUENCES,LIST);</div>
 <div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;  sY(SYS_CONTEXT,STEP_SYMBOL,SYMBOL);</div>
 <div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;  sY(SYS_CONTEXT,STEPS,LIST);</div>
@@ -420,7 +420,7 @@ $(document).ready(function(){initNavTree('base__defs_8c_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="base__defs_8c.html">base_defs.c</a></li>
-    <li class="footer">Generated on Mon Nov 16 2015 07:31:40 for ceptr by
+    <li class="footer">Generated on Mon Nov 16 2015 11:01:42 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
