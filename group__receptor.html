@@ -364,7 +364,7 @@ Variables</h2></td></tr>
 </dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000034">Todo:</a></b></dt><dd>this will skip some seconds over time.... make more sophisticated </dd></dl>
 
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l01001">1001</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l01046">1046</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -383,7 +383,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>get the <a class="el" href="structReceptor.html">Receptor</a> structure from an installed receptor </p>
 
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00827">827</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00872">872</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -553,7 +553,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>low level function for testing expectation patterns on signals and either adding a new run tree onto the current <a class="el" href="structQ.html">Q</a> or reawakening the process that's been blocked waiting for the expectation to match </p>
 
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00589">589</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00644">644</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -973,77 +973,8 @@ Variables</h2></td></tr>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000031">Todo:</a></b></dt><dd>for now the signal param is added directly to the flux. Later it should probably be cloned? or there should be a parameter to choose?</dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Error </dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000032">Todo:</a></b></dt><dd>figure out what kinds of errors could be returned by _r_deliver</dd></dl>
-<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structReceptor.html">Receptor</a> *r = <a class="code" href="group__receptor.html#ga62c253e7cc1d1ad20471913ae822ebc2">_r_new</a>(TEST_RECEPTOR_SYMBOL);</div>
-<div class="line"></div>
-<div class="line">    <span class="comment">// The signal is an HTTP request</span></div>
-<div class="line">    <a class="code" href="structT.html">T</a> *signal_contents = <a class="code" href="http__example_8h.html#a1c182b5a6e82ef49c6967183a15c3e8b">_makeTestHTTPRequestTree</a>(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
-<div class="line"></div>
-<div class="line">    ReceptorAddress f = 3; <span class="comment">// DUMMY ADDR</span></div>
-<div class="line">    ReceptorAddress t = 4; <span class="comment">// DUMMY ADDR</span></div>
-<div class="line"></div>
-<div class="line">    <a class="code" href="structT.html">T</a> *signal = <a class="code" href="group__receptor.html#ga10381b27336b0b9a0849fca89dbf65a2">__r_make_signal</a>(f,t,DEFAULT_ASPECT,signal_contents,0,0);</div>
-<div class="line"></div>
-<div class="line">    <span class="comment">// our expectation pattern should match on the first path segment</span></div>
-<div class="line">    <span class="comment">// /HTTP_REQUEST/.,.,HTTP_REQUEST_PATH/HTTP_REQUEST_PATH_SEGMENTS/&lt;HTTP_REQUEST_PATH_SEGMENT:HTTP_REQUEST_PATH_SEGMENT&gt;</span></div>
-<div class="line">    <a class="code" href="structT.html">T</a> *pattern = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(PATTERN);</div>
-<div class="line">    <span class="keywordtype">char</span> *stx = <span class="stringliteral">&quot;/HTTP_REQUEST/(.,.,HTTP_REQUEST_PATH/HTTP_REQUEST_PATH_SEGMENTS/&lt;HTTP_REQUEST_PATH_SEGMENT:HTTP_REQUEST_PATH_SEGMENT&gt;)&quot;</span>;</div>
-<div class="line">    <a class="code" href="structT.html">T</a> *req = <a class="code" href="group__semtrex.html#ga17eda8e5306b5764656d7edf3f5b15bd">parseSemtrex</a>(&amp;test_HTTP_defs,stx);</div>
-<div class="line">    <a class="code" href="group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c">_t_add</a>(pattern,req);</div>
-<div class="line"><span class="comment">/*    T *req = _t_news(pattern,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST);</span></div>
-<div class="line"><span class="comment">    T *seq = _t_newr(req,SEMTREX_SEQUENCE);</span></div>
-<div class="line"><span class="comment">    _t_newr(seq,SEMTREX_SYMBOL_ANY);  // skips the Version</span></div>
-<div class="line"><span class="comment">    _t_newr(seq,SEMTREX_SYMBOL_ANY);  // skips over the Method</span></div>
-<div class="line"><span class="comment">    T *path = _t_news(seq,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST_PATH);</span></div>
-<div class="line"><span class="comment">    T *segs = _t_news(path,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST_PATH_SEGMENTS);</span></div>
-<div class="line"><span class="comment">    T *g = _t_news(segs,SEMTREX_GROUP,HTTP_REQUEST_PATH_SEGMENT);</span></div>
-<div class="line"><span class="comment">    _t_news(g,SEMTREX_SYMBOL_LITERAL,HTTP_REQUEST_PATH_SEGMENT);</span></div>
-<div class="line"><span class="comment">*/</span></div>
-<div class="line"></div>
-<div class="line">    <span class="comment">// gotta load the defs into the receptor for printing things out to work right.</span></div>
-<div class="line">    r-&gt;<a class="code" href="structReceptor.html#a56e5e37eb23a3e5debf7f24723eca9ed">defs</a>.<a class="code" href="structDefs.html#a172e45e131e197571ba1a36a136d35f8">symbols</a> = <a class="code" href="group__tree.html#ga7535eb2963c6cf5fc78cb14287581f92">_t_clone</a>(test_HTTP_defs.<a class="code" href="structDefs.html#a172e45e131e197571ba1a36a136d35f8">symbols</a>);</div>
-<div class="line">    r-&gt;<a class="code" href="structReceptor.html#a56e5e37eb23a3e5debf7f24723eca9ed">defs</a>.<a class="code" href="structDefs.html#a6f9d3b3e38fff31326b7d27f730ae95c">structures</a> = <a class="code" href="group__tree.html#ga7535eb2963c6cf5fc78cb14287581f92">_t_clone</a>(test_HTTP_defs.<a class="code" href="structDefs.html#a6f9d3b3e38fff31326b7d27f730ae95c">structures</a>);</div>
-<div class="line"></div>
-<div class="line">    <a class="code" href="structT.html">T</a> *result;</div>
-<div class="line">    <span class="keywordtype">int</span> matched;</div>
-<div class="line">    <span class="comment">// make sure our expectation semtrex actually matches the signal</span></div>
-<div class="line">    spec_is_true(<a class="code" href="group__semtrex.html#ga27540c8e1822da3160a0cc4717df410f">_t_matchr</a>(req,signal_contents,&amp;result));</div>
-<div class="line">    <a class="code" href="structT.html">T</a> *m = <a class="code" href="group__semtrex.html#gada90f89374f4577e3ac8819e500a97a7">_t_get_match</a>(result,HTTP_REQUEST_PATH_SEGMENT);</div>
-<div class="line"></div>
-<div class="line">    spec_is_str_equal(_td(r,m),<span class="stringliteral">&quot;(SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:HTTP_REQUEST_PATH_SEGMENT) (SEMTREX_MATCH_PATH:/3/1/1) (SEMTREX_MATCH_SIBLINGS_COUNT:1))&quot;</span>);</div>
-<div class="line">    <span class="keywordflow">if</span> (result) {</div>
-<div class="line">        <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(result);</div>
-<div class="line">    }</div>
-<div class="line"></div>
-<div class="line">    <a class="code" href="structT.html">T</a> *params;</div>
-<div class="line">    <a class="code" href="structSemanticID.html">Process</a> p;</div>
-<div class="line">    <a class="code" href="http__example_8h.html#a5476caaca538a030a6770bc99a42f372">_makeTestHTTPResponseProcess</a>(r,&amp;params,&amp;p);</div>
-<div class="line">    <a class="code" href="structT.html">T</a> *act = <a class="code" href="group__tree.html#ga48ffc2a6e4aa4856b76fb53b97db87f3">_t_newp</a>(0,ACTION,p);</div>
-<div class="line"></div>
-<div class="line">    <a class="code" href="group__receptor.html#gac391ad8fbd0bb7ca9382e9ab0018edcf">_r_add_expectation</a>(r,DEFAULT_ASPECT,HTTP_REQUEST,pattern,act,params,0);</div>
-<div class="line"></div>
-<div class="line">    Error err = <a class="code" href="group__receptor.html#ga7d40f33135ee51640d0d24b8c9e3e046">_r_deliver</a>(r,signal);</div>
-<div class="line">    spec_is_equal(err,noDeliveryErr);</div>
-<div class="line"></div>
-<div class="line">    <span class="comment">// signal and run_tree should be added and ready on the process queue</span></div>
-<div class="line">    spec_is_equal(r-&gt;<a class="code" href="structReceptor.html#ab1e1dd776afee48ee71297a3e39756f8">q</a>-&gt;<a class="code" href="structQ.html#a6708b052b51ce11613e298bf11a26328">contexts_count</a>,1);</div>
-<div class="line">    spec_is_str_equal(_td(r,__r_get_signals(r,DEFAULT_ASPECT)),</div>
-<div class="line">                      <span class="stringliteral">&quot;(SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:3) (RECEPTOR_ADDRESS:4) (ASPECT:1) (CARRIER:HTTP_REQUEST) (SIGNAL_UUID)) (BODY:{(HTTP_REQUEST (HTTP_REQUEST_VERSION (VERSION_MAJOR:1) (VERSION_MINOR:0)) (HTTP_REQUEST_METHOD:GET) (HTTP_REQUEST_PATH (HTTP_REQUEST_PATH_SEGMENTS (HTTP_REQUEST_PATH_SEGMENT:groups) (HTTP_REQUEST_PATH_SEGMENT:5)) (HTTP_REQUEST_PATH_FILE (FILE_NAME:users) (FILE_EXTENSION:json)) (HTTP_REQUEST_PATH_QUERY (HTTP_REQUEST_PATH_QUERY_PARAMS (HTTP_REQUEST_PATH_QUERY_PARAM (PARAM_KEY:sort_by) (PARAM_VALUE:last_name)) (HTTP_REQUEST_PATH_QUERY_PARAM (PARAM_KEY:page) (PARAM_VALUE:2))))))}) (RUN_TREE (process:RESPOND (PARAM_REF:/2/1)) (PARAMS (HTTP_RESPONSE (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT) (HTTP_REQUEST_PATH_SEGMENT:groups))))))&quot;</span></div>
-<div class="line">                      );</div>
-<div class="line"></div>
-<div class="line">    <span class="comment">// manually run the process queue</span></div>
-<div class="line">    <a class="code" href="process_8c.html#a64e8965291c67057b06f273db19a465d">_p_reduceq</a>(r-&gt;<a class="code" href="structReceptor.html#ab1e1dd776afee48ee71297a3e39756f8">q</a>);</div>
-<div class="line"></div>
-<div class="line">    <span class="comment">// should add a pending signal to be sent with the matched PATH_SEGMENT returned as the response signal body</span></div>
-<div class="line">    spec_is_str_equal(_td(r,r-&gt;pending_signals),<span class="stringliteral">&quot;(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:4) (RECEPTOR_ADDRESS:3) (ASPECT:1) (CARRIER:HTTP_RESPONSE) (SIGNAL_UUID) (IN_RESPONSE_TO_UUID)) (BODY:{(HTTP_RESPONSE (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT) (HTTP_REQUEST_PATH_SEGMENT:groups))})))&quot;</span>);</div>
-<div class="line"></div>
-<div class="line">    result = <a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(r-&gt;<a class="code" href="structReceptor.html#ab1e1dd776afee48ee71297a3e39756f8">q</a>-&gt;<a class="code" href="structQ.html#a7ee8f0b2d1cfefac4a7e3e8704bf6069">completed</a>-&gt;context-&gt;<a class="code" href="structR.html#aab5d23021e9afe31b32544e515f18c1f">run_tree</a>,1);</div>
-<div class="line">    spec_is_str_equal(_td(r,result),<span class="stringliteral">&quot;(SIGNAL_UUID)&quot;</span>);</div>
-<div class="line"></div>
-<div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(r-&gt;<a class="code" href="structReceptor.html#a56e5e37eb23a3e5debf7f24723eca9ed">defs</a>.<a class="code" href="structDefs.html#a172e45e131e197571ba1a36a136d35f8">symbols</a>); <span class="comment">// normally these would be freeed by the r_free, but we hand loaded them...</span></div>
-<div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(r-&gt;<a class="code" href="structReceptor.html#a56e5e37eb23a3e5debf7f24723eca9ed">defs</a>.<a class="code" href="structDefs.html#a6f9d3b3e38fff31326b7d27f730ae95c">structures</a>);</div>
-<div class="line">    <a class="code" href="group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8">_r_free</a>(r);</div>
-</div><!-- fragment -->
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00694">694</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p><b>Examples (from test suite):</b> </p><div class="fragment"></div><!-- fragment -->
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00756">756</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -1123,6 +1054,7 @@ Variables</h2></td></tr>
 <div class="line">    d = _td(r,signal);</div>
 <div class="line">    spec_is_str_equal(d,<span class="stringliteral">&quot;(SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:3) (RECEPTOR_ADDRESS:4) (ASPECT:1) (CARRIER:ping_message) (SIGNAL_UUID)) (BODY:{(ping_message:0)}))&quot;</span>);</div>
 <div class="line"></div>
+<div class="line">    <span class="comment">//    debug_enable(D_SIGNALS);</span></div>
 <div class="line">    <a class="code" href="structT.html">T</a> *result;</div>
 <div class="line">    Error err = <a class="code" href="group__receptor.html#ga7d40f33135ee51640d0d24b8c9e3e046">_r_deliver</a>(r,signal);</div>
 <div class="line"></div>
@@ -1139,6 +1071,8 @@ Variables</h2></td></tr>
 <div class="line"></div>
 <div class="line">    d = _td(r,r-&gt;pending_signals);</div>
 <div class="line">    spec_is_str_equal(d,<span class="stringliteral">&quot;(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:4) (RECEPTOR_ADDRESS:3) (ASPECT:1) (CARRIER:alive_message) (SIGNAL_UUID) (IN_RESPONSE_TO_UUID)) (BODY:{(alive_message:1)})))&quot;</span>);</div>
+<div class="line"></div>
+<div class="line">    debug_disable(D_SIGNALS);</div>
 <div class="line">    <span class="comment">//    _t_free(result);</span></div>
 <div class="line">    <a class="code" href="group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8">_r_free</a>(r);</div>
 </div><!-- fragment --><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000027">Todo:</a></b></dt><dd>revisit the assumption about handlers and endpoints </dd></dl>
@@ -1745,7 +1679,7 @@ Variables</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Nov 15 2015 17:49:09 for ceptr by
+    <li class="footer">Generated on Mon Nov 16 2015 07:31:40 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
