@@ -183,10 +183,45 @@ void testReceptorResponseDeliver() {
     rt = r->q->active->context->run_tree;
     spec_is_str_equal(_td(r,rt),"(RUN_TREE (process:NOOP (TEST_STR_SYMBOL:foo)))");
 
-    // and the pending_responses list should be cleared too
+    // and the pending_responses list should be cleared too because we only asked for one response.
     spec_is_str_equal(_td(r,r->pending_responses),"(PENDING_RESPONSES)");
 
     _r_free(r);
+}
+
+void testReceptorEndCondition() {
+    T *until = _t_new_root(END_CONDITIONS);
+    _t_newr(until,UNLIMITED);
+    bool cleanup,allow;
+    evaluateEndCondition(until,&cleanup,&allow);
+    spec_is_false(cleanup);spec_is_true(allow);
+    _t_free(until);
+
+    until = _t_new_root(END_CONDITIONS);
+    _t_newi(until,COUNT,2);
+    evaluateEndCondition(until,&cleanup,&allow);
+    spec_is_false(cleanup);spec_is_true(allow);
+    spec_is_str_equal(t2s(until),"(END_CONDITIONS (COUNT:1))");
+    evaluateEndCondition(until,&cleanup,&allow);
+    spec_is_true(cleanup);spec_is_true(allow);
+    spec_is_str_equal(t2s(until),"(END_CONDITIONS (COUNT:0))");
+    _t_free(until);
+    //    debug_enable(D_SIGNALS);
+    until = _t_new_root(END_CONDITIONS);
+    T *ts = __r_make_timestamp(TIMEOUT_AT,-1);
+    _t_add(until,ts);
+    evaluateEndCondition(until,&cleanup,&allow);
+    spec_is_true(cleanup);spec_is_false(allow);
+    _t_free(until);
+
+    until = _t_new_root(END_CONDITIONS);
+    ts = __r_make_timestamp(TIMEOUT_AT,+1);
+    _t_add(until,ts);
+    evaluateEndCondition(until,&cleanup,&allow);
+    spec_is_false(cleanup);spec_is_true(allow);
+    _t_free(until);
+    debug_disable(D_SIGNALS);
+
 }
 
 void testReceptorExpectation() {
@@ -237,7 +272,11 @@ void testReceptorExpectation() {
     _makeTestHTTPResponseProcess(r,&params,&p);
     T *act = _t_newp(0,ACTION,p);
 
-    _r_add_expectation(r,DEFAULT_ASPECT,HTTP_REQUEST,pattern,act,params,0);
+    // have this expectation clean itself up after one match
+    T *until = _t_new_root(END_CONDITIONS);
+    _t_newi(until,COUNT,1);
+
+    _r_add_expectation(r,DEFAULT_ASPECT,HTTP_REQUEST,pattern,act,params,until);
 
     Error err = _r_deliver(r,signal);
     spec_is_equal(err,noDeliveryErr);
@@ -256,6 +295,9 @@ void testReceptorExpectation() {
 
     result = _t_child(r->q->completed->context->run_tree,1);
     spec_is_str_equal(_td(r,result),"(SIGNAL_UUID)");
+
+    T *es = __r_get_expectations(r,DEFAULT_ASPECT);
+    spec_is_str_equal(_td(r,es),"(EXPECTATIONS)");
 
     _t_free(r->defs.symbols); // normally these would be freeed by the r_free, but we hand loaded them...
     _t_free(r->defs.structures);
@@ -445,6 +487,7 @@ void testReceptorProtocol() {
     d = _td(r,signal);
     spec_is_str_equal(d,"(SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:3) (RECEPTOR_ADDRESS:4) (ASPECT:1) (CARRIER:ping_message) (SIGNAL_UUID)) (BODY:{(ping_message:0)}))");
 
+    //    debug_enable(D_SIGNALS);
     T *result;
     Error err = _r_deliver(r,signal);
 
@@ -461,6 +504,8 @@ void testReceptorProtocol() {
 
     d = _td(r,r->pending_signals);
     spec_is_str_equal(d,"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:4) (RECEPTOR_ADDRESS:3) (ASPECT:1) (CARRIER:alive_message) (SIGNAL_UUID) (IN_RESPONSE_TO_UUID)) (BODY:{(alive_message:1)})))");
+
+    debug_disable(D_SIGNALS);
     //    _t_free(result);
     _r_free(r);
     //! [testReceptorProtocol]
@@ -813,6 +858,7 @@ void testReceptor() {
     testReceptorSignal();
     testReceptorSignalDeliver();
     testReceptorResponseDeliver();
+    testReceptorEndCondition();
     testReceptorExpectation();
     testReceptorDef();
     testReceptorDefMatch();

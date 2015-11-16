@@ -581,6 +581,61 @@ T* _r_request(Receptor *r,T *signal,Symbol response_carrier,T *code_point,int pr
     return result;
 }
 
+// check if the end condition has been met
+void evaluateEndCondition(T *ec,bool *cleanup,bool *allow) {
+    *cleanup = false;
+    *allow = false;
+    int k = _t_children(ec);
+    while (k) {
+        T *c = _t_child(ec,k);
+        Symbol sym = _t_symbol(c);
+        if (semeq(sym,COUNT)) {
+            //@todo mutex!!
+            int *cP = (int *)_t_surface(c);
+            if (*cP <= 1) *cleanup = true;
+            if (*cP >= 1) *allow = true;
+            (*cP)--;
+            debug(D_SIGNALS,"decreasing count to: %d\n",*cP);
+            break;  // this is final, even if there's a timeout
+        }
+        else if (semeq(sym,TIMEOUT_AT)) {
+            T *td = _t_child(c,1);
+            T *nw = _t_child(c,2);
+            int year = *(int *)_t_surface(_t_child(td,1))-1900;
+            int mon = *(int *)_t_surface(_t_child(td,2))-1;
+            int mday = *(int *)_t_surface(_t_child(td,3));
+            int hour = *(int *)_t_surface(_t_child(nw,1));
+            int min = *(int *)_t_surface(_t_child(nw,2));
+            int sec = *(int *)_t_surface(_t_child(nw,3));
+
+            //debug(D_SIGNALS,"T: y:%d,m:%d,d:%d,h:%d,m:%d,s:%d\n")
+            time_t now_t;
+            time(&now_t);
+            struct tm now;
+            gmtime_r(&now_t, &now);
+            if ((year > now.tm_year) ||
+                (mon > now.tm_mon) ||
+                (mday > now.tm_mday) ||
+                (hour > now.tm_hour) ||
+                (min > now.tm_min) ||
+                (sec > now.tm_sec)) {
+                *allow = true;
+            }
+
+            *cleanup = !*allow;
+        }
+        else if (semeq(sym,UNLIMITED)) {
+            *allow = true;
+        }
+        else {
+            raise_error("unknown end condition %s",t2s(c));
+        }
+
+        k--;
+    }
+    debug(D_SIGNALS,"after end condition %s cleanup=%s allow=%s\n",t2s(ec),*cleanup?"true":"false",*allow?"true":"false");
+}
+
 /**
  * low level function for testing expectation patterns on signals and either adding a new run tree
  * onto the current Q or reawakening the process that's been blocked waiting for the expectation
@@ -607,8 +662,11 @@ void __r_test_expectation(T* processes,T *expectation,T *signal,Q *q) {
     debug(D_SIGNALS,"matching %s\n",_td(q->r,signal_contents));
     debug(D_SIGNALS,"against %s\n",_td(q->r,stx));
 
-    if (_t_matchr(stx,signal_contents,&m)) {
+    bool allow;
+    bool cleanup;
+    evaluateEndCondition(_t_child(expectation,ExpectationEndCondsIdx),&cleanup,&allow);
 
+    if (allow && _t_matchr(stx,signal_contents,&m)) {
         debug(D_SIGNALS,"got a match on %s\n",_td(q->r,stx));
 
         T *rt=0;
@@ -638,12 +696,12 @@ void __r_test_expectation(T* processes,T *expectation,T *signal,Q *q) {
                 e->context->node_pointer = params;
 
                 __p_unblock(q,e);
-                debug(D_LISTEN,"unblocking action at %d,%s\n",process_id,_td(q->r,p));
+                debug(D_LISTEN+D_SIGNALS,"unblocking action at %d,%s\n",process_id,_td(q->r,p));
             }
             else _t_free(params);
             pthread_mutex_unlock(&q->mutex);
             debug(D_LOCK,"listen UNLOCK\n");
-            _r_remove_expectation(q->r,expectation);
+            cleanup = true; //always cleanup after a wakeup because the context is gone.
         }
         else {
             Process p = *(Process*) _t_surface(action);
@@ -654,9 +712,13 @@ void __r_test_expectation(T* processes,T *expectation,T *signal,Q *q) {
             _t_add(signal,rt);
             _p_addrt2q(q,rt);
         }
-
         _t_free(m);
     }
+    if (cleanup) {
+        debug(D_SIGNALS,"cleaning up %s\n",_td(q->r,expectation));
+        _r_remove_expectation(q->r,expectation);
+    }
+
     _t_free(stx);
 }
 
@@ -711,26 +773,9 @@ Error _r_deliver(Receptor *r, T *signal) {
 
                     // get the end conditions so we can see if we should actually respond
                     T *ec = _t_child(l,PendingResponseEndCondsIdx);
-                    bool allow = false;
-                    bool cleanup = false;
-                    int k = _t_children(ec);
-                    while (k) {
-                        T *c = _t_child(ec,k);
-                        Symbol sym = _t_symbol(c);
-                        if (semeq(sym,COUNT)) {
-                            //@todo mutex!!
-                            int *cP = (int *)_t_surface(c);
-                            if (*cP <= 1) cleanup = true;
-                            if (*cP >= 1) allow = true;
-                            (*cP)--;
-                            debug(D_SIGNALS,"decreasing count to: %d\n",*cP);
-                        }
-                        else if (semeq(sym,TIMEOUT_AT)) {
-                            allow = true;
-                            //@todo check timeout and ignore if now is past the timeout
-                        }
-                        k--;
-                    }
+                    bool allow;
+                    bool cleanup;
+                    evaluateEndCondition(ec,&cleanup,&allow);
 
                     if (allow) {
                         Symbol carrier = *(Symbol *)_t_surface(_t_child(l,PendingResponseCarrierIdx));
