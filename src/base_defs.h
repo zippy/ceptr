@@ -22,7 +22,7 @@ enum SYSSymbolIDs {
     STRUCTURES_ID,
     SYMBOLS_ID,
     PROCESSES_ID,
-    PROTOCOOLS_ID,
+    PROTOCOLS_ID,
     SCAPES_ID,
     ASPECTS_ID,
     DEFINITIONS_ID,
@@ -111,7 +111,6 @@ enum SYSSymbolIDs {
     PARAM_REF_ID,
     RESULT_SYMBOL_ID,
     REDUCTION_ERROR_SYMBOL_ID,
-    PROTOCOLS_ID,
     SEQUENCES_ID,
     STEP_SYMBOL_ID,
     STEPS_ID,
@@ -198,7 +197,7 @@ enum SYSSymbolIDs {
 #define STRUCTURES G_contexts[SYS_CONTEXT].symbols[STRUCTURES_ID]
 #define SYMBOLS G_contexts[SYS_CONTEXT].symbols[SYMBOLS_ID]
 #define PROCESSES G_contexts[SYS_CONTEXT].symbols[PROCESSES_ID]
-#define PROTOCOOLS G_contexts[SYS_CONTEXT].symbols[PROTOCOOLS_ID]
+#define PROTOCOLS G_contexts[SYS_CONTEXT].symbols[PROTOCOLS_ID]
 #define SCAPES G_contexts[SYS_CONTEXT].symbols[SCAPES_ID]
 #define ASPECTS G_contexts[SYS_CONTEXT].symbols[ASPECTS_ID]
 #define DEFINITIONS G_contexts[SYS_CONTEXT].symbols[DEFINITIONS_ID]
@@ -287,7 +286,6 @@ enum SYSSymbolIDs {
 #define PARAM_REF G_contexts[SYS_CONTEXT].symbols[PARAM_REF_ID]
 #define RESULT_SYMBOL G_contexts[SYS_CONTEXT].symbols[RESULT_SYMBOL_ID]
 #define REDUCTION_ERROR_SYMBOL G_contexts[SYS_CONTEXT].symbols[REDUCTION_ERROR_SYMBOL_ID]
-#define PROTOCOLS G_contexts[SYS_CONTEXT].symbols[PROTOCOLS_ID]
 #define SEQUENCES G_contexts[SYS_CONTEXT].symbols[SEQUENCES_ID]
 #define STEP_SYMBOL G_contexts[SYS_CONTEXT].symbols[STEP_SYMBOL_ID]
 #define STEPS G_contexts[SYS_CONTEXT].symbols[STEPS_ID]

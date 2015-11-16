@@ -39,8 +39,12 @@ sub addDef {
     push @d,[$def_type,$context.'_CONTEXT',$name,$def];
     $comments{$name} = $comment;
 
-    # don't need to redo header defs stuff for just setting symbols definition
-    if ($type ne 'SetSymbol') {
+    if ($type eq 'SetSymbol') {
+        # if this is the setting of the value of a symbol that was previously
+        # declared, save the real definition for docs purposes
+        $declared{$name} = $def;
+    }
+    else {
         if (! exists $c{$context}) {
             $c{$context} = {};
         }
@@ -260,10 +264,13 @@ my $stdfh = openf('>','doxy/sys_structures.html');
 my $sthtml = << 'HTML';
 <table class="doxtable"><tr><th>Structure</th><th>Defintion</th></th><th>Comments</th></tr>
 HTML
+$sthtml .= "<tr><td><a name=\"NULL_STRUCTURE\"></a>NULL-STRUCTURE</td><td><i>undefined</i></td><td></td></tr>\n";
+
 my $sydfh = openf('>','doxy/sys_symbols.html');
 my $syhtml = << 'HTML';
 <table class="doxtable"><tr><th>Symbol</th><th>Semantic use of Structure:</th><th>Comments</th></tr>
 HTML
+$syhtml .= "<tr><td><a name=\"NULL_SYMBOL\"></a>NULL_SYMBOL</td><td><i>undefined</i></td><td></td></tr>\n";
 
 foreach my $s (@d) {
     my @x = @$s;
@@ -293,6 +300,9 @@ foreach my $s (@d) {
         $phtml .= "<tr><td><a name=\"$name\"></a>$name</td><td><ol>$in</ol></td><td>$out</td><td>$c</td></tr>\n";
     }
     elsif ($type eq 'Symbol') {
+        if ($declared{$name}) {
+            $def =$declared{$name};
+        }
         my $n = $def;
         $def =~ s/_/-/g; # we do this so long defs will wrap in html cus underscores don't
         $def = "<a href=\"ref_sys_structures.html#$n\">$def</a>";
