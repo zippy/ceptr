@@ -75,6 +75,7 @@ sub makeName {
     $n =~ s/sT_STAR/ZERO_OR_MORE_OF_/g;
     $n =~ s/sT_PLUS/ONE_OR_MORE_OF_/g;
     $n =~ s/sT_QMRK/ZERO_OR_ONE_OF_/g;
+    $n =~ s/sT_PCNT/STRUCTURE_OF_/g;
     $n =~ s/[()]//g;
     return &andify($n);
 }
@@ -94,6 +95,7 @@ sub convertStrucDef {
     }
     else {
         $x =~ s/([a-zA-Z0-9_]+)/sT_SYM<$1>/g;
+        $x =~ s/\%sT_SYM(<[a-zA-Z0-9_]+>)/sT_PCNT$1/g;
         while ($x=~/\|/) {
             $x =~ s/\|\[([^|\]]+)\|([^\]]+)\]/sT_OR<$1;$2>/;
         }
@@ -328,6 +330,7 @@ foreach my $s (@d) {
         $def =~ s/sT_//g;
         $def =~ s/,/, /g;
         $def =~ s/SYM\((.*?)\)/<a href="ref_sys_symbols.html#$1">$1<\/a>/g;
+        $def =~ s/PCNT\((.*?)\)/%<a href="ref_sys_structures.html#$1">$1<\/a>/g;
         $def =~ s/(SEQ|SET)\([0-9]+, /$1(/g;
         $def =~ s/STAR/\*/g;
         $def =~ s/PLUS/\+/g;

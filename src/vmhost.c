@@ -267,7 +267,7 @@ void *__v_process(void *arg) {
             _v_deliver_signals(v,r);
 
             // cleanup any fully reduced run-trees
-            if (r->q->completed) _p_cleanup(r->q,_t_child(r->root,4));
+            if (r->q->completed) _p_cleanup(r->q,_t_child(r->root,ReceptorStateIdx));
         }
     }
 

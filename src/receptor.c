@@ -31,24 +31,23 @@ Receptor * __r_init(T *t) {
     r->q = _p_newq(r);
     r->state = Alive;  //@todo, check if this is true on unserialize
 
-    T *defs = _t_child(t,1);
+    T *defs = _t_child(t,ReceptorDefsIDx);
     r->defs.structures = _t_child(defs,1);
     r->defs.symbols = _t_child(defs,2);
     r->defs.processes = _t_child(defs,3);
     r->defs.protocols = _t_child(defs,4);
     r->defs.scapes = _t_child(defs,5);
-    r->flux = _t_child(t,3);
-    r->pending_signals = _t_child(t,5);
-    r->pending_responses = _t_child(t,6);
+    r->flux = _t_child(t,ReceptorFluxIDx);
+    r->pending_signals = _t_child(t,ReceptorPendingSignalsIdx);
+    r->pending_responses = _t_child(t,ReceptorPendingResponsesIdx);
     return r;
 }
 
-Receptor *__r_new(Symbol s,T *defs,T *aspects) {
+Receptor *__r_new(Symbol s,T *defs) {
     T *t = _t_new_root(s);
     _t_add(t,defs);
-    _t_add(t,aspects);
     T *f = _t_newr(t,FLUX);
-    T *a = _t_newi(f,ASPECT,DEFAULT_ASPECT);
+    T *a = _t_newr(f,DEFAULT_ASPECT);
     _t_newr(a,EXPECTATIONS);
     _t_newr(a,SIGNALS);
     _t_newr(t,RECEPTOR_STATE);
@@ -76,8 +75,8 @@ Receptor *_r_new(Symbol s) {
     _t_newr(defs,PROCESSES);
     _t_newr(defs,PROTOCOLS);
     _t_newr(defs,SCAPES);
-    T *aspects = _t_new_root(ASPECTS);
-    return __r_new(s,defs,aspects);
+    _t_newr(defs,ASPECTS);
+    return __r_new(s,defs);
 }
 
 // set the labels in the label table for the given def
@@ -102,8 +101,8 @@ void __r_set_labels(Receptor *r,T *defs,int sem_type) {
  */
 Receptor *_r_new_receptor_from_package(Symbol s,T *p,T *bindings) {
     T *defs = _t_clone(_t_child(p,3));
-    T *aspects = _t_clone(_t_child(p,4));
-    Receptor * r = __r_new(s,defs,aspects);
+    //    T *aspects = _t_clone(_t_child(p,4));  @todo this should be inside the defs allready
+    Receptor * r = __r_new(s,defs);
 
     //@todo fix this because it relies on SemanticTypes value matching the index order in the definitions.
     DO_KIDS(defs,__r_set_labels(r,_t_child(defs,i),i));
@@ -503,7 +502,7 @@ T* __r_make_signal(ReceptorAddress from,ReceptorAddress to,Aspect aspect,T *sign
     // @todo convert to paths at some point?
     _t_newi(e,RECEPTOR_ADDRESS,from);
     _t_newi(e,RECEPTOR_ADDRESS,to);
-    _t_newi(e,ASPECT,aspect);
+    _t_news(e,ASPECT_IDENT,aspect);
     _t_news(e,CARRIER,_t_symbol(signal_contents));
     UUIDt t = __uuid_gen();
     _t_new(e,SIGNAL_UUID,&t,sizeof(UUIDt));
@@ -856,7 +855,14 @@ Error _r_deliver(Receptor *r, T *signal) {
 /******************  internal utilities */
 
 T *__r_get_aspect(Receptor *r,Aspect aspect) {
-    return _t_child(r->flux,aspect);
+    int i;
+    T *a;
+    DO_KIDS(r->flux,
+            a = _t_child(r->flux,i);
+            if (semeq(aspect,_t_symbol(a)))
+                return a;
+            );
+    return NULL;
 }
 T *__r_get_expectations(Receptor *r,Aspect aspect) {
     return _t_child(__r_get_aspect(r,aspect),1);
@@ -921,7 +927,7 @@ Receptor *_r_makeStreamReaderReceptor(Symbol receptor_symbol,Symbol stream_symbo
     T *say = _t_newr(p,SAY);
 
     _t_newi(say,RECEPTOR_ADDRESS,to);
-    _t_newi(say,ASPECT,DEFAULT_ASPECT);
+    _t_news(say,ASPECT_IDENT,DEFAULT_ASPECT);
 
     T *s = _t_new(say,STREAM_READ,0,0);
     _t_new_stream(s,stream_symbol,st);

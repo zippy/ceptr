@@ -255,12 +255,9 @@ typedef struct UUIDt {
     uint64_t time;
 } UUIDt;
 
-// receptors receive signals on aspects
-// for now aspects are just identified as the child index in the flux receptor
-enum {DEFAULT_ASPECT=1};
 // aspects appear on either side of the membrane
 enum AspectType {EXTERNAL_ASPECT=0,INTERNAL_ASPECT};
-typedef int Aspect;
+typedef Symbol Aspect;  //aspects are identified by a semantic Symbol identifier
 
 /**
  * An eXistence Address consists of the semantic type (Symbol) and an address.

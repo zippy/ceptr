@@ -296,10 +296,10 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             _t_free(t);
 
             t = _t_detach_by_idx(code,1);
-            if (!semeq(_t_symbol(t),ASPECT)) {
-                raise_error("expected ASPECT!");
+            if (!semeq(_t_symbol(t),ASPECT_IDENT)) {
+                raise_error("expected ASPECT_IDENT!");
             }
-            Aspect aspect = *(int *)_t_surface(t);
+            Aspect aspect = *(Aspect *)_t_surface(t);
             _t_free(t);
 
             T* signal_contents = _t_detach_by_idx(code,1);
@@ -536,10 +536,10 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
     case LISTEN_ID:
         {
             t = _t_detach_by_idx(code,1);
-            if (!t || !semeq(_t_symbol(t),ASPECT)) {
-                raise_error("expected ASPECT!");
+            if (!t || !semeq(_t_symbol(t),ASPECT_IDENT)) {
+                raise_error("expected ASPECT_IDENT!");
             }
-            Aspect aspect = *(int *)_t_surface(t);
+            Aspect aspect = *(Aspect *)_t_surface(t);
             _t_free(t);
 
             T *on = _t_detach_by_idx(code,1);

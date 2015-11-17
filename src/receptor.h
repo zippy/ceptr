@@ -22,6 +22,7 @@
 // structure position index enums to make code more readable
 // @todo figure out a better way to handle this... like put defs like these
 // into the symbol gen code (talk about a semantic muddle! If only I had ceptr...)
+enum {ReceptorDefsIDx=1,ReceptorFluxIDx,ReceptorStateIdx,ReceptorPendingSignalsIdx,ReceptorPendingResponsesIdx};
 enum {EnvelopeFromIdx=1,EnvelopeToIdx,EnvelopeAspectIdx,EnvelopeCarrierIdx,EnvelopeUUIDIdx,EnvelopeExtraIdx};
 enum {SignalEnvelopeIdx=1,SignalBodyIdx};
 enum {PendingResponseUUIDIdx=1,PendingResponseCarrierIdx,PendingResponseWakeupIdx,PendingResponseEndCondsIdx};
