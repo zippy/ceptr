@@ -1,33 +1,36 @@
 ########################################################################################
 Context: SYS;
 
-Structure: BIT,NULL_SYMBOL;
-Structure: INTEGER,NULL_SYMBOL;
-Structure: FLOAT,NULL_SYMBOL;
-Structure: CHAR,NULL_SYMBOL;
-Structure: CSTRING,NULL_SYMBOL;
-Structure: SYMBOL,NULL_SYMBOL;
-Structure: ENUM,NULL_SYMBOL;
-Structure: TREE_PATH,NULL_SYMBOL;
+# These are "bottoming out" structures that are implemented by the system, not composed;
+# thus we use the NULL_SYMBOL to indicate their surface definition, because it's not really defined in ceptr terms.
+Structure: BIT,NULL_SYMBOL;             surface is 0 or 1
+Structure: INTEGER,NULL_SYMBOL;         surface is a c int
+Structure: FLOAT,NULL_SYMBOL;           surface is a c float
+Structure: CHAR,NULL_SYMBOL;            surface is a c char
+Structure: CSTRING,NULL_SYMBOL;         surface is a null terminated set of bytes
+Structure: SYMBOL,NULL_SYMBOL;          surface is a c struct (SemID) representing symbols
+Structure: ENUM,NULL_SYMBOL;            @todo
+Structure: TREE_PATH,NULL_SYMBOL;       surface is an -1 terminated set of c ints
 Structure: XADDR,NULL_SYMBOL;
-Structure: LIST,NULL_SYMBOL;
 Structure: SURFACE,NULL_SYMBOL;
-Structure: TREE,NULL_SYMBOL;
+Structure: TREE,NULL_SYMBOL;            surface is a c pointer to a tree
 Structure: RECEPTOR,NULL_SYMBOL;
-Structure: PROCESS,NULL_SYMBOL;
-Structure: STRUCTURE,NULL_SYMBOL;
+Structure: PROCESS,NULL_SYMBOL;         surface is a c struct (SemID) representing processes
+Structure: STRUCTURE,NULL_SYMBOL;       surface is a c struct (SemID) representing structures
 Structure: SCAPE,NULL_SYMBOL;
 Structure: SEMTREX,NULL_SYMBOL;
-Structure: STREAM,NULL_SYMBOL;
-Structure: UUID,NULL_SYMBOL;
-Structure: BLOB,NULL_SYMBOL;
+Structure: STREAM,NULL_SYMBOL;          surface is a c struct holding state for unix (and other) streams
+Structure: UUID,NULL_SYMBOL;            surface is a c struct holding a UUID
+Structure: BLOB,NULL_SYMBOL;            surface is and undefined blob of bytes
 
+# 
 Declare: STRUCTURES,SYMBOLS,PROCESSES,PROTOCOLS,SCAPES,ASPECTS;
 Symbol: DEFINITIONS,[*(STRUCTURES,SYMBOLS,PROCESSES,*PROTOCOLS,*SCAPES,*ASPECTS)];
 
 Declare: STRUCTURE_SYMBOL,STRUCTURE_SEQUENCE,STRUCTURE_SYMBOL_SET,STRUCTURE_OR,STRUCTURE_ZERO_OR_MORE,STRUCTURE_ONE_OR_MORE;
 Symbol: SYMBOL_OF_STRUCTURE,STRUCTURE;
-Structure: STRUCTURE_DEF,{STRUCTURE_SYMBOL,STRUCTURE_SEQUENCE,STRUCTURE_SYMBOL_SET,STRUCTURE_OR,STRUCTURE_ZERO_OR_MORE,STRUCTURE_ONE_OR_MORE,STRUCTURE_ZERO_OR_ONE,SYMBOL_OF_STRUCTURE};
+Symbol: STRUCTURE_ANYTHING,NULL_STRUCTURE;
+Structure: STRUCTURE_DEF,{STRUCTURE_SYMBOL,STRUCTURE_SEQUENCE,STRUCTURE_SYMBOL_SET,STRUCTURE_OR,STRUCTURE_ZERO_OR_MORE,STRUCTURE_ONE_OR_MORE,STRUCTURE_ZERO_OR_ONE,SYMBOL_OF_STRUCTURE,STRUCTURE_ANYTHING};
 Symbol: STRUCTURE_LABEL,CSTRING;
 Symbol: STRUCTURE_DEFINITION,[(STRUCTURE_LABEL,STRUCTURE_DEF)];
 Symbol: STRUCTURES,[*STRUCTURE_DEFINITION];
@@ -61,7 +64,7 @@ Symbol: SEMTREX_ONE_OR_MORE,SEMTREX;        Requires one child Semtrex and match
 Symbol: SEMTREX_ZERO_OR_ONE,SEMTREX;        Requires one child Semtrex and matches on zero or one of that Semtrex.   Ex: /0/TestSemtrex?
 Symbol: SEMTREX_VALUE_LITERAL,TREE;         Matches on the semantic type and the data values.
 Symbol: SEMTREX_VALUE_LITERAL_NOT,TREE;     Matches on logical not of semantic type and data values
-Symbol: SEMTREX_VALUE_SET,LIST;             List containing the values to match on
+Symbol: SEMTREX_VALUE_SET,[+!];             this is of the symbols to match on
 Symbol: SEMTREX_GROUP,SYMBOL;               Grouping                                 Ex: <...>operator
 Symbol: SEMTREX_DESCEND,NULL_STRUCTURE;     
 Symbol: SEMTREX_WALK,SEMTREX;
@@ -126,9 +129,9 @@ Symbol: INPUT_SIGNATURE,[(SIGNATURE_LABEL,SIGNATURE_INPUT_TYPE)];
 Symbol: OUTPUT_SIGNATURE,[(SIGNATURE_LABEL,SIGNATURE_OUTPUT_TYPE)];
 Symbol: PROCESS_SIGNATURE,[(OUTPUT_SIGNATURE,*INPUT_SIGNATURE)];
 
-Symbol: RUN_TREE,TREE;                     think about this as a stack frame and its code
-Symbol: PARAM_REF,TREE_PATH;               used in a code tree as a reference to a parameter
-Symbol: PARAMS,[*TREE];
+Symbol: RUN_TREE,[!];                       think about this as a stack frame and its code
+Symbol: PARAM_REF,TREE_PATH;                used in a code tree as a reference to a parameter
+Symbol: PARAMS,[*!];
 Symbol: RESULT_SYMBOL,SYMBOL;
 Symbol: REDUCTION_ERROR_SYMBOL,SYMBOL;
 
@@ -142,14 +145,14 @@ Symbol: RESPONSE_STEPS,[*%PROTOCOL_STEP];
 Structure: PROTOCOL,STEPS,SEQUENCES;
 Symbol: SCAPES,[*%SCAPE];
 Symbol: MANIFEST,TREE;                    configuration template to be filled out for the installation of a receptor
-Symbol: MANIFEST_PAIR,LIST;
 Symbol: MANIFEST_LABEL,CSTRING;           a label in the manifest to identify a binding
 Symbol: MANIFEST_SPEC,SYMBOL;             a symbol to specify what type of data must be provided for a given manifest label
+Symbol: MANIFEST_PAIR,[(MANIFEST_LABEL,MANIFEST_SPEC)];
 Symbol: RECEPTOR_PACKAGE,TREE;            a manifest, a symbol declaration tree, a structure definition tree_ID, and an identifier
 Symbol: RECEPTOR_IDENTIFIER,INTEGER;      uuid that identifies receptors
 Symbol: INSTALLED_RECEPTOR,TREE;          contains the installed receptor as well as state information (enabled,disabled_ID, etc..)
 Symbol: BINDINGS,TREE;                    specifics that match a MANIFEST and allow a receptor to be installed
-Symbol: BINDING_PAIR,LIST;                a pair that matches a MANIFEST_LABEL with a given binding
+Symbol: BINDING_PAIR,[(MANIFEST_LABEL,!)];                a pair that matches a MANIFEST_LABEL with a given binding
 
 Symbol: RECEPTOR_ELAPSED_TIME,INTEGER;
 Symbol: RECEPTOR_STATE,[(?RECEPTOR_ELAPSED_TIME)];
@@ -197,7 +200,7 @@ Symbol: UNLIMITED,NULL_STRUCTURE;
 Symbol: REPETITIONS,[|[COUNT|UNLIMITED]];
 Symbol: END_CONDITIONS,[(?TIMEOUT_AT,?REPETITIONS)];
 
-Process: NOOP,"no-op","result",SIGNATURE_STRUCTURE,TREE,"do",SIGNATURE_ANY,NULL_STRUCTURE,0;   this process reduces to its single "do" parameter.
+Process: NOOP,"no-op","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"do",SIGNATURE_ANY,NULL_STRUCTURE,0;   this process reduces to its single "do" parameter.
 Process: GET,"get instance value","value",SIGNATURE_ANY,NULL_STRUCTURE,"what",SIGNATURE_SYMBOL,GET_XADDR,0;   reduces to the value of the instance at the xaddr of the "what" parameter
 Process: IF,"if","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"condition",SIGNATURE_PROCESS,BOOLEAN,"then",SIGNATURE_ANY,NULL_STRUCTURE,"else",SIGNATURE_OPTIONAL,SIGNATURE_ANY,NULL_STRUCTURE,0;  this is a traditional "if" process that reduces conditionally to either the "then" or the "else" parameter depending on the value of the "condition" parameter.  Note: we may be replacing this with a more lispy COND process
 Process: ITERATE,"iterate a process","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"condtion",SIGNATURE_PROCESS,BOOLEAN,"do",SIGNATURE_ANY,NULL_STRUCTURE,0;                     this process checks the structure of the result of the "condition" param, if it's a BOOLEAN, it treats the iteration as a while loop and iterates until the BOOLEAN is false; if it's an INTEGER it treats the iteration as repeat loop and iterates as many times as the value of the INTEGER
@@ -225,7 +228,7 @@ Process: GT_INT,"test greater than","result",SIGNATURE_SYMBOL,BOOLEAN,"int1",SIG
 Process: LTE_INT,"test less than or equal","result",SIGNATURE_SYMBOL,BOOLEAN,"int1",SIGNATURE_STRUCTURE,INTEGER,"int2",SIGNATURE_STRUCTURE,INTEGER,0;
 Process: GTE_INT,"test greater than or equal","result",SIGNATURE_SYMBOL,BOOLEAN,"int1",SIGNATURE_STRUCTURE,INTEGER,"int2",SIGNATURE_STRUCTURE,INTEGER,0;
 
-Process: MAGIC,"dark magic","result",SIGNATURE_STRUCTURE,TREE,0;   this process reduces to hardcoded special things as a scaffold for things we don't know how to build in ceptr yet.
+Process: MAGIC,"dark magic","result",SIGNATURE_ANY,NULL_STRUCTURE,0;   this process reduces to hardcoded special things as a scaffold for things we don't know how to build in ceptr yet.
 
 Symbol: STX_SL,NULL_STRUCTURE;
 Symbol: STX_OP,NULL_STRUCTURE;
@@ -254,12 +257,12 @@ Symbol: STX_VAL_F,FLOAT;
 Structure: STX_TOKEN_LIST,*{STX_SL,STX_OP,STX_CP,STX_SET,STX_OS,STX_CS,STX_LABEL,STX_OG,STX_CG,STX_EQ,STX_NEQ,STX_WALK,STX_STAR,STX_PLUS,STX_Q,STX_OR,STX_COMMA,STX_EXCEPT,STX_NOT,STX_VAL_S,STX_VAL_C,STX_VAL_I,STX_VAL_F};
 Symbol: STX_TOKENS,STX_TOKEN_LIST;
 
-Symbol: STX_SIBS,LIST;
-Symbol: STX_CHILD,TREE;
-Symbol: STX_POSTFIX,TREE;
+Symbol: STX_SIBS,[+!];
+Symbol: STX_CHILD,[!];
+Symbol: STX_POSTFIX,[!];
 
 Symbol: TREE_DELTA_PATH,TREE_PATH;
-Symbol: TREE_DELTA_VALUE,TREE;
+Symbol: TREE_DELTA_VALUE,[!];
 Symbol: TREE_DELTA_COUNT,INTEGER;
 Structure: TREE_DELTA,TREE_DELTA_PATH,TREE_DELTA_VALUE,TREE_DELTA_COUNT;
 Symbol: TREE_DELTA_ADD,TREE_DELTA;

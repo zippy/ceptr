@@ -27,7 +27,7 @@ int main(int argc, const char **argv) {
     output_stream->flags &= ~StreamCloseOnFree; // don't close the stdout on free...
     input_stream->flags &= ~StreamCloseOnFree; // don't close the stdin on free...
 
-    //   debug_enable(D_SIGNALS);
+    debug_enable(D_SIGNALS);
     _v_start_vmhost(G_vm);
 
     while (G_vm->r->state == Alive) {

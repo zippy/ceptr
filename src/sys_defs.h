@@ -48,6 +48,7 @@ char * G_label;
 #define sT_SYM(sym) _t_news(0,STRUCTURE_SYMBOL,sym)
 #define sT_PCNT(str) _t_news(0,SYMBOL_OF_STRUCTURE,str)
 #define sT_OR(x,y) sT_(STRUCTURE_OR,2,x,y)
+#define sT_BANG _t_newr(0,STRUCTURE_ANYTHING)
 
 T *sT_(Symbol sym,int num_params,...);
 Structure sTD(Context c,T *structures);

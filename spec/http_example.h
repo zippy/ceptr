@@ -66,21 +66,40 @@ void _setup_status_defs(Defs d) {
     ST(d,STATUS,2,STATUS_VALUE,STATUS_TEXT);
 }
 
+#define SD(d,label,def)     __d_define_structure(d.structures,label,def); st.context = RECEPTOR_CONTEXT;st.semtype = SEM_TYPE_STRUCTURE;st.id=_t_children(d.structures);
+
 
 //@todo make this actually match request-URI rather than just the path
 void _setup_uri_defs(Defs d) {
-    SY(d,HTTP_REQUEST_PATH_SEGMENTS,LIST);
+    T *t;
+    Structure st;
+
     SY(d,HTTP_REQUEST_PATH_SEGMENT,CSTRING);
+    t = _t_new_root(STRUCTURE_ZERO_OR_MORE);
+    _t_news(t,STRUCTURE_SYMBOL,HTTP_REQUEST_PATH_SEGMENT);
+    SD(d,"segments list",t);
+    SY(d,HTTP_REQUEST_PATH_SEGMENTS,st);
+
     SY(d,FILE_NAME,CSTRING);
     SY(d,FILE_EXTENSION,CSTRING);
     ST(d,FILE_HANDLE,2,FILE_NAME,FILE_EXTENSION);
     SY(d,HTTP_REQUEST_PATH_FILE,FILE_HANDLE);
-    SY(d,HTTP_REQUEST_PATH_QUERY,LIST);
-    SY(d,HTTP_REQUEST_PATH_QUERY_PARAMS,LIST);
+
     SY(d,PARAM_KEY,CSTRING);
     SY(d,PARAM_VALUE,CSTRING);
     ST(d,KEY_VALUE_PARAM,2,PARAM_KEY,PARAM_VALUE);
     SY(d,HTTP_REQUEST_PATH_QUERY_PARAM,KEY_VALUE_PARAM);
+
+    t = _t_new_root(STRUCTURE_ZERO_OR_MORE);
+    _t_news(t,STRUCTURE_SYMBOL,HTTP_REQUEST_PATH_QUERY_PARAM);
+    SD(d,"query param list",t);
+    SY(d,HTTP_REQUEST_PATH_QUERY_PARAMS,st);
+
+    t = _t_new_root(STRUCTURE_ZERO_OR_ONE);
+    _t_news(t,STRUCTURE_SYMBOL,HTTP_REQUEST_PATH_QUERY_PARAMS);
+    SD(d,"query struct",t);
+    SY(d,HTTP_REQUEST_PATH_QUERY,st);
+
     ST(d,URI,3,
        HTTP_REQUEST_PATH_SEGMENTS,
        HTTP_REQUEST_PATH_FILE,
@@ -125,16 +144,16 @@ Symbol HTML_TAG;
 
 void _setup_html_defs(Defs d) {
     SY(d,HTML_DOCUMENT,TREE);
-    SY(d,HTML_TOKENS,LIST);
+    SY(d,HTML_TOKENS,NULL_STRUCTURE);  //LIST
     SY(d,HTML_TOK_TAG_OPEN,CSTRING);
     SY(d,HTML_TOK_TAG_CLOSE,CSTRING);
     SY(d,HTML_TOK_TAG_SELFCLOSE,CSTRING);
     SY(d,HTML_TAG,CSTRING);
 
 
-    SY(d,HTML_ATTRIBUTES,LIST);
+    SY(d,HTML_ATTRIBUTES,NULL_STRUCTURE); //LIST
     SY(d,HTML_ATTRIBUTE,KEY_VALUE_PARAM);
-    SY(d,HTML_CONTENT,LIST);  // really should be semtrex: /(HTML_ELEMENT|HTML_TEXT)+
+    SY(d,HTML_CONTENT,NULL_STRUCTURE);  // really should be semtrex: /(HTML_ELEMENT|HTML_TEXT)+
     SY(d,HTML_TEXT,CSTRING);
     ST(d,HTML_ELEMENT,2,
        HTML_ATTRIBUTES,

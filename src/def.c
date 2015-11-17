@@ -268,7 +268,6 @@ size_t _d_get_symbol_size(T *symbols,T *structures,Symbol s,void *surface) {
 
 size_t _sys_structure_size(int id,void *surface) {
     switch(id) {
-    case LIST_ID:
     case TREE_ID:
     case NULL_STRUCTURE_ID: return 0;
         //      case SEMTREX: return

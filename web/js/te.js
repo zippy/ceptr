@@ -474,6 +474,11 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         return sem;
     }
 
+    function getSemIDText(label) {
+        var sem = LABEL_TABLE[label].sem;
+        return sem.ctx+'.'+sem.type+'.'+sem.id;
+    }
+
     function newStructure(label,symbols) {
         var structures = CONTEXTS[LOCAL_CONTEXT].children[SEM_TYPE_STRUCTURE-1];
         var def = Tnew(structures,LABEL_TABLE["STRUCTURE_DEFINITION"].sem);
@@ -599,7 +604,8 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
                 var x = new _(elem);
                 var sem = x.insert('SYMBOL_DECLARATION');
                 $('label',sem).setAttribute("locked","true");
-                var s = $('.TE [semid="0.2.17"] surface',elem);
+
+                var s = $('.TE [semid="'+getSemIDText('SYMBOL_STRUCTURE')+'"] surface',elem);
                 s.removeAttribute("contenteditable");
                 //var i = $.create('input',{inside:s});
                 // @todo for now manually use an awesomeplete/select list as the widget for the surface
@@ -648,12 +654,13 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
             "click": function(e) {
                 switch($('#newsem-type').value) {
                 case "symbol":
-                    var s = $('#newsem-sym [semid="0.2.17"] surface select').value;
+                    var s = $('#newsem-sym [semid="'+getSemIDText('SYMBOL_STRUCTURE')+'"] surface select').value;
                     if (!LABEL_TABLE[s]) {
                         alert("unknown structure:"+s);
                         return;
                     }
-                    var label = $('#newsem-sym [semid="0.2.18"] surface').innerHTML;
+
+                    var label = $('#newsem-sym [semid="'+getSemIDText('SYMBOL_LABEL')+'"] surface').innerHTML;
                     newSymbol(label,LABEL_TABLE[s].sem);
                     break;
                 case "structure":

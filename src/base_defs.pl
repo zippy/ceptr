@@ -76,6 +76,7 @@ sub makeName {
     $n =~ s/sT_PLUS/ONE_OR_MORE_OF_/g;
     $n =~ s/sT_QMRK/ZERO_OR_ONE_OF_/g;
     $n =~ s/sT_PCNT/STRUCTURE_OF_/g;
+    $n =~ s/sT_BANG/ANY_SYMBOL/g;
     $n =~ s/[()]//g;
     return &andify($n);
 }
@@ -90,7 +91,7 @@ sub convertStrucDef {
 #    my @tokens = split /([,\(\)\{\}\|\?\+\*])/,shift;
     my $x= shift;
     #for a simple structure without optionality we'll just use sT with params
-    if (!($x=~/[\{\}\(\)\+\*?|]/)) {
+    if (!($x=~/[\{\}\(\)\+\*?|\%\!]/)) {
         $x = &buildNumParams($x);
     }
     else {
@@ -99,12 +100,13 @@ sub convertStrucDef {
         while ($x=~/\|/) {
             $x =~ s/\|\[([^|\]]+)\|([^\]]+)\]/sT_OR<$1;$2>/;
         }
-        while ($x=~/[,()\{\}?+*]/) {
+        while ($x=~/[,()\{\}?+*!]/) {
             $x =~ s/\*([a-zA-Z0-9_<>;]+)/sT_STAR<$1>/g;
             $x =~ s/\+([a-zA-Z0-9_<>;]+)/sT_PLUS<$1>/g;
             $x =~ s/\?([a-zA-Z0-9_<>;]+)/sT_QMRK<$1>/g;
             $x =~ s/\(([^()]+)\)/"sT_SEQ<".&buildNumParams($1).'>'/eg;
             $x =~ s/\{([^\}\{]+)\}/"sT_SET<".&buildNumParams($1).'>'/eg;
+            $x =~ s/!/sT_BANG/g;
         }
         $x =~ s/</(/g;
         $x =~ s/>/)/g;
@@ -335,6 +337,7 @@ foreach my $s (@d) {
         $def =~ s/STAR/\*/g;
         $def =~ s/PLUS/\+/g;
         $def =~ s/QMRK/\?/g;
+        $def =~ s/BANG/\!/g;
         my $c = $comments{$name} ? $comments{$name} : "";
         $sthtml .= "<tr><td><a name=\"$name\"></a>$n</td><td>$def</td><td>$c</td></tr>\n";
     }

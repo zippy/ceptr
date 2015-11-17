@@ -429,7 +429,7 @@ void testMatchGroup() {
 }
 
 void testMatchGroupMulti() {
-    sX(TSTX_TOKENS,LIST);
+    sX(TSTX_TOKENS,NULL_STRUCTURE); //should be some optionality LIST
     sX(TSTX_OP,NULL_STRUCTURE);
     sX(TSTX_SL,NULL_STRUCTURE);
 
@@ -863,7 +863,7 @@ void testEmbodyFromMatch() {
     // test how embody from match ignores any capture that's identified as NULL_SYMBOL
     char *ts = "label:abc,123,3.1415";
     T *r,*t = makeASCIITree(ts);
-    sX(LABELED_TRIPLET,LIST);
+    sX(LABELED_TRIPLET,NULL_STRUCTURE); //should be an optionality LIST
     sX(LABEL,CSTRING);
     sX(X1,CSTRING);
     sX(X2,INTEGER);

@@ -1118,9 +1118,6 @@ char * _t2rawjson(Defs *defs,T *t,int level,char *buf) {
                     sprintf(buf,"(key %s,data %s",_d_get_symbol_name(symbols,sc->key_source),_d_get_symbol_name(symbols,sc->data_source));
                     break;
                 }
-            case LIST_ID:
-                // nothing to do.
-                break;
             default:
                 // other structures are composed so work automatically
                 if (st.id > _t_children(G_contexts[SYS_CONTEXT].defs.structures))
@@ -1252,9 +1249,6 @@ char * _t2json(Defs *defs,T *t,int level,char *buf) {
                     sprintf(buf,"(%s:key %s,data %s",n,_d_get_symbol_name(symbols,sc->key_source),_d_get_symbol_name(symbols,sc->data_source));
                     break;
                 }
-            case LIST_ID:
-                sprintf(buf,"\"type\":\"LIST\",\"name\":\"%s\"",n);
-                break;
             default:
                 if (semeq(s,SEMTREX_MATCH_CURSOR)) {
                     c = _t2json(defs,*(T **)_t_surface(t),0,tbuf);

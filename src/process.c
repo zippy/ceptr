@@ -239,7 +239,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                 str = malloc(x->contents.size);
                 memcpy(str,&x->contents.surface,x->contents.size);
                 x->contents.surface = str;
-                x->context.flags = TFLAG_ALLOCATED;
+                x->context.flags = TFLAG_ALLOCATED+TFLAG_RUN_NODE;
             }
         }
         /// @todo this would probably be faster with just one total realloc for all children
