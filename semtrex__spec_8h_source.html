@@ -532,7 +532,7 @@ $(document).ready(function(){initNavTree('semtrex__spec_8h_source.html','');});
 <div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;}</div>
 <div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;</div>
 <div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;<span class="keywordtype">void</span> testMatchGroupMulti() {</div>
-<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;    sX(TSTX_TOKENS,LIST);</div>
+<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;    sX(TSTX_TOKENS,NULL_STRUCTURE); <span class="comment">//should be some optionality LIST</span></div>
 <div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;    sX(TSTX_OP,NULL_STRUCTURE);</div>
 <div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;    sX(TSTX_SL,NULL_STRUCTURE);</div>
 <div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;</div>
@@ -741,7 +741,7 @@ $(document).ready(function(){initNavTree('semtrex__spec_8h_source.html','');});
 <div class="line"><a name="l00638"></a><span class="lineno">  638</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(s);</div>
 <div class="line"><a name="l00639"></a><span class="lineno">  639</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
 <div class="line"><a name="l00640"></a><span class="lineno">  640</span>&#160;</div>
-<div class="line"><a name="l00641"></a><span class="lineno">  641</span>&#160;    sX(<a class="code" href="structR.html">R</a>,TREE);</div>
+<div class="line"><a name="l00641"></a><span class="lineno">  641</span>&#160;    sX(<a class="code" href="structR.html">R</a>,NULL_STRUCTURE);</div>
 <div class="line"><a name="l00642"></a><span class="lineno">  642</span>&#160;    sX(A,NULL_STRUCTURE);</div>
 <div class="line"><a name="l00643"></a><span class="lineno">  643</span>&#160;    sX(B,NULL_STRUCTURE);</div>
 <div class="line"><a name="l00644"></a><span class="lineno">  644</span>&#160;    sX(C,NULL_STRUCTURE);</div>
@@ -966,7 +966,7 @@ $(document).ready(function(){initNavTree('semtrex__spec_8h_source.html','');});
 <div class="line"><a name="l00863"></a><span class="lineno">  863</span>&#160;    <span class="comment">// test how embody from match ignores any capture that&#39;s identified as NULL_SYMBOL</span></div>
 <div class="line"><a name="l00864"></a><span class="lineno">  864</span>&#160;    <span class="keywordtype">char</span> *ts = <span class="stringliteral">&quot;label:abc,123,3.1415&quot;</span>;</div>
 <div class="line"><a name="l00865"></a><span class="lineno">  865</span>&#160;    <a class="code" href="structT.html">T</a> *r,*t = <a class="code" href="group__semtrex.html#gad46a0cafec3ba9ca1500ecd6f8984238">makeASCIITree</a>(ts);</div>
-<div class="line"><a name="l00866"></a><span class="lineno">  866</span>&#160;    sX(LABELED_TRIPLET,LIST);</div>
+<div class="line"><a name="l00866"></a><span class="lineno">  866</span>&#160;    sX(LABELED_TRIPLET,NULL_STRUCTURE); <span class="comment">//should be an optionality LIST</span></div>
 <div class="line"><a name="l00867"></a><span class="lineno">  867</span>&#160;    sX(LABEL,CSTRING);</div>
 <div class="line"><a name="l00868"></a><span class="lineno">  868</span>&#160;    sX(X1,CSTRING);</div>
 <div class="line"><a name="l00869"></a><span class="lineno">  869</span>&#160;    sX(X2,INTEGER);</div>
@@ -1069,7 +1069,7 @@ $(document).ready(function(){initNavTree('semtrex__spec_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><a class="el" href="semtrex__spec_8h.html">semtrex_spec.h</a></li>
-    <li class="footer">Generated on Tue Nov 17 2015 10:12:19 for ceptr by
+    <li class="footer">Generated on Tue Nov 17 2015 16:11:24 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

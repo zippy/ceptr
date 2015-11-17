@@ -137,10 +137,11 @@ $(document).ready(function(){initNavTree('ref_sys_structures.html','');});
 <tr><td><a name="ONE_OR_MORE_OF_SEMTREX"></a>ONE-OR-MORE-OF-SEMTREX</td><td>+(<a href="ref_sys_symbols.html#SEMTREX">SEMTREX</a>)</td><td></td></tr>
 <tr><td><a name="PAIR_OF_SEMTREX"></a>PAIR-OF-SEMTREX</td><td>SEQ(<a href="ref_sys_symbols.html#SEMTREX">SEMTREX</a>, <a href="ref_sys_symbols.html#SEMTREX">SEMTREX</a>)</td><td></td></tr>
 <tr><td><a name="ONE_OR_MORE_OF_ANY_SYMBOL"></a>ONE-OR-MORE-OF-ANY-SYMBOL</td><td>+(!)</td><td></td></tr>
+<tr><td><a name="SEMTREX_VALUE_LITERAL_DEF"></a>SEMTREX-VALUE-LITERAL-DEF</td><td>OR(!, <a href="ref_sys_symbols.html#SEMTREX_VALUE_SET">SEMTREX_VALUE_SET</a>)</td><td></td></tr>
 <tr><td><a name="ONE_OR_MORE_OF_ASCII_CHAR"></a>ONE-OR-MORE-OF-ASCII-CHAR</td><td>+(<a href="ref_sys_symbols.html#ASCII_CHAR">ASCII_CHAR</a>)</td><td></td></tr>
 <tr><td><a name="ASPECT"></a>ASPECT</td><td>SEQ(<a href="ref_sys_symbols.html#EXPECTATIONS">EXPECTATIONS</a>, <a href="ref_sys_symbols.html#SIGNALS">SIGNALS</a>)</td><td></td></tr>
 <tr><td><a name="ONE_OR_MORE_OF_STRUCTURE_OF_ASPECT"></a>ONE-OR-MORE-OF-STRUCTURE-OF-ASPECT</td><td>+(%<a href="ref_sys_structures.html#ASPECT">ASPECT</a>)</td><td></td></tr>
-<tr><td><a name="TUPLE_OF_ASPECT_TYPE_AND_TREE"></a>TUPLE-OF-ASPECT-TYPE-AND-TREE</td><td>SEQ(<a href="ref_sys_symbols.html#ASPECT_TYPE">ASPECT_TYPE</a>, <a href="ref_sys_symbols.html#TREE">TREE</a>)</td><td></td></tr>
+<tr><td><a name="TUPLE_OF_ASPECT_TYPE_AND_ASPECT_LABEL"></a>TUPLE-OF-ASPECT-TYPE-AND-ASPECT-LABEL</td><td>SEQ(<a href="ref_sys_symbols.html#ASPECT_TYPE">ASPECT_TYPE</a>, <a href="ref_sys_symbols.html#ASPECT_LABEL">ASPECT_LABEL</a>)</td><td></td></tr>
 <tr><td><a name="ONE_OR_MORE_OF_ASPECT_DEF"></a>ONE-OR-MORE-OF-ASPECT-DEF</td><td>+(<a href="ref_sys_symbols.html#ASPECT_DEF">ASPECT_DEF</a>)</td><td></td></tr>
 <tr><td><a name="LIST_OF_RECEPTOR_ADDRESS_AND_RECEPTOR_ADDRESS_AND_ASPECT_IDENT_AND_CARRIER_AND_SIGNAL_UUID_AND_ZERO_OR_ONE_OF_LOGICAL_OR_OF_END_CONDITIONS_AND_IN_RESPONSE_TO_UUID"></a>LIST-OF-RECEPTOR-ADDRESS-AND-RECEPTOR-ADDRESS-AND-ASPECT-IDENT-AND-CARRIER-AND-SIGNAL-UUID-AND-ZERO-OR-ONE-OF-LOGICAL-OR-OF-END-CONDITIONS-AND-IN-RESPONSE-TO-UUID</td><td>SEQ(<a href="ref_sys_symbols.html#RECEPTOR_ADDRESS">RECEPTOR_ADDRESS</a>, <a href="ref_sys_symbols.html#RECEPTOR_ADDRESS">RECEPTOR_ADDRESS</a>, <a href="ref_sys_symbols.html#ASPECT_IDENT">ASPECT_IDENT</a>, <a href="ref_sys_symbols.html#CARRIER">CARRIER</a>, <a href="ref_sys_symbols.html#SIGNAL_UUID">SIGNAL_UUID</a>, ?(OR(<a href="ref_sys_symbols.html#END_CONDITIONS">END_CONDITIONS</a>, <a href="ref_sys_symbols.html#IN_RESPONSE_TO_UUID">IN_RESPONSE_TO_UUID</a>)))</td><td></td></tr>
 <tr><td><a name="TUPLE_OF_ENVELOPE_AND_BODY"></a>TUPLE-OF-ENVELOPE-AND-BODY</td><td>SEQ(<a href="ref_sys_symbols.html#ENVELOPE">ENVELOPE</a>, <a href="ref_sys_symbols.html#BODY">BODY</a>)</td><td></td></tr>
@@ -169,7 +170,10 @@ $(document).ready(function(){initNavTree('ref_sys_structures.html','');});
 <tr><td><a name="PROTOCOL"></a>PROTOCOL</td><td>SEQ(<a href="ref_sys_symbols.html#STEPS">STEPS</a>, <a href="ref_sys_symbols.html#SEQUENCES">SEQUENCES</a>)</td><td></td></tr>
 <tr><td><a name="ZERO_OR_MORE_OF_STRUCTURE_OF_SCAPE"></a>ZERO-OR-MORE-OF-STRUCTURE-OF-SCAPE</td><td>*(%<a href="ref_sys_structures.html#SCAPE">SCAPE</a>)</td><td></td></tr>
 <tr><td><a name="TUPLE_OF_MANIFEST_LABEL_AND_MANIFEST_SPEC"></a>TUPLE-OF-MANIFEST-LABEL-AND-MANIFEST-SPEC</td><td>SEQ(<a href="ref_sys_symbols.html#MANIFEST_LABEL">MANIFEST_LABEL</a>, <a href="ref_sys_symbols.html#MANIFEST_SPEC">MANIFEST_SPEC</a>)</td><td></td></tr>
+<tr><td><a name="ONE_OR_MORE_OF_MANIFEST_PAIR"></a>ONE-OR-MORE-OF-MANIFEST-PAIR</td><td>+(<a href="ref_sys_symbols.html#MANIFEST_PAIR">MANIFEST_PAIR</a>)</td><td></td></tr>
+<tr><td><a name="LIST_OF_MANIFEST_AND_RECEPTOR_IDENTIFIER_AND_DEFINITIONS"></a>LIST-OF-MANIFEST-AND-RECEPTOR-IDENTIFIER-AND-DEFINITIONS</td><td>SEQ(<a href="ref_sys_symbols.html#MANIFEST">MANIFEST</a>, <a href="ref_sys_symbols.html#RECEPTOR_IDENTIFIER">RECEPTOR_IDENTIFIER</a>, <a href="ref_sys_symbols.html#DEFINITIONS">DEFINITIONS</a>)</td><td></td></tr>
 <tr><td><a name="TUPLE_OF_MANIFEST_LABEL_AND_ANY_SYMBOL"></a>TUPLE-OF-MANIFEST-LABEL-AND-ANY-SYMBOL</td><td>SEQ(<a href="ref_sys_symbols.html#MANIFEST_LABEL">MANIFEST_LABEL</a>, !)</td><td></td></tr>
+<tr><td><a name="ONE_OR_MORE_OF_BINDING_PAIR"></a>ONE-OR-MORE-OF-BINDING-PAIR</td><td>+(<a href="ref_sys_symbols.html#BINDING_PAIR">BINDING_PAIR</a>)</td><td></td></tr>
 <tr><td><a name="LIST_OF_ZERO_OR_ONE_OF_RECEPTOR_ELAPSED_TIME"></a>LIST-OF-ZERO-OR-ONE-OF-RECEPTOR-ELAPSED-TIME</td><td>SEQ(?(<a href="ref_sys_symbols.html#RECEPTOR_ELAPSED_TIME">RECEPTOR_ELAPSED_TIME</a>))</td><td></td></tr>
 <tr><td><a name="RECEPTOR_DEF"></a>RECEPTOR_DEF</td><td>SEQ(<a href="ref_sys_symbols.html#DEFINITIONS">DEFINITIONS</a>, <a href="ref_sys_symbols.html#ASPECTS">ASPECTS</a>, <a href="ref_sys_symbols.html#FLUX">FLUX</a>, <a href="ref_sys_symbols.html#RECEPTOR_STATE">RECEPTOR_STATE</a>, <a href="ref_sys_symbols.html#PENDING_SIGNALS">PENDING_SIGNALS</a>, <a href="ref_sys_symbols.html#PENDING_RESPONSES">PENDING_RESPONSES</a>)</td><td></td></tr>
 <tr><td><a name="ZERO_OR_MORE_OF_RECEPTOR_XADDR"></a>ZERO-OR-MORE-OF-RECEPTOR-XADDR</td><td>*(<a href="ref_sys_symbols.html#RECEPTOR_XADDR">RECEPTOR_XADDR</a>)</td><td></td></tr>
@@ -189,7 +193,7 @@ $(document).ready(function(){initNavTree('ref_sys_structures.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Nov 17 2015 10:12:19 for ceptr by
+    <li class="footer">Generated on Tue Nov 17 2015 16:11:24 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

@@ -1,5 +1,16 @@
 var NAVTREEINDEX8 =
 {
+"structVMHost.html#abc9dab8da288b7f9ad20988e545a56f9":[5,7,4,4],
+"structVMHost.html#ada4998fffaedd9669bdada5ef0ec478f":[5,7,4,7],
+"structXaddr.html":[6,0,42],
+"structXaddr.html#a429b38f8f57ab372da80e98fc4779005":[6,0,42,1],
+"structXaddr.html#ac8d1cbd8cb612f491f6271d3bbdaf325":[6,0,42,0],
+"structinstance__elem.html":[6,0,6],
+"structinstance__elem.html#a1032278ed4df88774c734d299ba29981":[6,0,6,1],
+"structinstance__elem.html#a7a42321cb232ac42535157a9e654127f":[6,0,6,2],
+"structinstance__elem.html#a86b4388e64f55687d1c000af2eb7b0e4":[6,0,6,0],
+"structinstances__elem.html":[6,0,7],
+"structinstances__elem.html#a734b66c913756eb945351222cb601a87":[6,0,7,1],
 "structinstances__elem.html#a8de2d1f9439151657a718b405a16cae4":[6,0,7,2],
 "structinstances__elem.html#ad772585aa257fd39c3cb06ec84b73e3d":[6,0,7,0],
 "structinstances__elem.html#aeeb84ef2b0bb4b596d161bc84f17937d":[6,0,7,3],
