@@ -118,6 +118,11 @@ Error __p_check_signature(Defs *defs,Process p,T *params) {
             if (!semeq(_d_get_symbol_structure(defs->symbols,_t_symbol(_t_child(params,i-1))),ss) && !semeq(ss,TREE))
                 return signatureMismatchReductionErr;
         }
+        else if(semeq(_t_symbol(sig),SIGNATURE_SYMBOL)) {
+            raise_error("not implemented");
+        }
+        else if(semeq(_t_symbol(sig),SIGNATURE_ANY)) {
+        }
         else {
             raise_error("unknown signature checking symbol: %s",_d_get_symbol_name(0,_t_symbol(sig)));
         }

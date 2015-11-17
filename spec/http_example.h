@@ -143,15 +143,15 @@ Symbol HTML_TOK_TAG_SELFCLOSE;
 Symbol HTML_TAG;
 
 void _setup_html_defs(Defs d) {
-    SY(d,HTML_DOCUMENT,TREE);
-    SY(d,HTML_TOKENS,NULL_STRUCTURE);  //LIST
+    SY(d,HTML_DOCUMENT,NULL_STRUCTURE); //@todo should be an optionality structure
+    SY(d,HTML_TOKENS,NULL_STRUCTURE);   //@todo should be an optionality structure
     SY(d,HTML_TOK_TAG_OPEN,CSTRING);
     SY(d,HTML_TOK_TAG_CLOSE,CSTRING);
     SY(d,HTML_TOK_TAG_SELFCLOSE,CSTRING);
     SY(d,HTML_TAG,CSTRING);
 
 
-    SY(d,HTML_ATTRIBUTES,NULL_STRUCTURE); //LIST
+    SY(d,HTML_ATTRIBUTES,NULL_STRUCTURE); //@todo should be an optionality structure
     SY(d,HTML_ATTRIBUTE,KEY_VALUE_PARAM);
     SY(d,HTML_CONTENT,NULL_STRUCTURE);  // really should be semtrex: /(HTML_ELEMENT|HTML_TEXT)+
     SY(d,HTML_TEXT,CSTRING);
@@ -201,7 +201,7 @@ void _setup_HTTPDefs() {
 
     SY(d,HTTP_REQUEST_HOST,CSTRING);
 
-    SY(d,HTTP_RESPONSE,TREE);
+    SY(d,HTTP_RESPONSE,NULL_STRUCTURE);  //@todo should be an optionality structure
     SY(d,HTTP_RESPONSE_CONTENT_TYPE,CSTRING);
     SY(d,HTTP_RESPONSE_BODY,CSTRING);
 

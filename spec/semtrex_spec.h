@@ -638,7 +638,7 @@ void testMatchNot() {
     _t_free(s);
     _t_free(t);
 
-    sX(R,TREE);
+    sX(R,NULL_STRUCTURE);
     sX(A,NULL_STRUCTURE);
     sX(B,NULL_STRUCTURE);
     sX(C,NULL_STRUCTURE);

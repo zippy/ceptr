@@ -1,9 +1,9 @@
-{ "symbol":{ "context":255,"id":19 },"type":"TREE","name":"HTTP_RESPONSE","children":[
+{ "symbol":{ "context":255,"id":19 },"type":"NULL_STRUCTURE","name":"HTTP_RESPONSE","children":[
    { "symbol":{ "context":255,"id":24 },"type":"STATUS","name":"HTTP_RESPONSE_STATUS","children":[
       { "symbol":{ "context":255,"id":22 },"type":"INTEGER","name":"STATUS_VALUE","surface":200},
       { "symbol":{ "context":255,"id":23 },"type":"CSTRING","name":"STATUS_TEXT","surface":"OK"}]},
    { "symbol":{ "context":255,"id":20 },"type":"CSTRING","name":"HTTP_RESPONSE_CONTENT_TYPE","surface":"CeptrSymbol/HTML_DOCUMENT"},
-   { "symbol":{ "context":255,"id":25 },"type":"TREE","name":"HTML_DOCUMENT","children":[
+   { "symbol":{ "context":255,"id":25 },"type":"NULL_STRUCTURE","name":"HTML_DOCUMENT","children":[
       { "symbol":{ "context":255,"id":35 },"type":"HTML_ELEMENT","name":"HTML_HTML","children":[
          { "symbol":{ "context":255,"id":31 },"type":"NULL_STRUCTURE","name":"HTML_ATTRIBUTES"},
          { "symbol":{ "context":255,"id":33 },"type":"NULL_STRUCTURE","name":"HTML_CONTENT","children":[

@@ -23,10 +23,10 @@ void testRunTree() {
     _t_new(code,PARAM_REF,pt1,sizeof(int)*4);
     _t_new(code,PARAM_REF,pt2,sizeof(int)*4);
 
-    T *xsignature = __p_make_signature("result",SIGNATURE_SYMBOL,NULL_SYMBOL,
+    T *xsignature = __p_make_signature("result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,
                                    "condition",SIGNATURE_PROCESS,BOOLEAN,
-                                   "true_branch",SIGNATURE_STRUCTURE,TREE,
-                                   "false_branch",SIGNATURE_STRUCTURE,TREE,
+                                   "true_branch",SIGNATURE_ANY,NULL_STRUCTURE,
+                                   "false_branch",SIGNATURE_ANY,NULL_STRUCTURE,
                                    NULL);
     char buf[1000];
     __t_dump(&defs,xsignature,NO_INDENT,buf);
@@ -35,16 +35,16 @@ void testRunTree() {
     signature = _t_new_root(PROCESS_SIGNATURE);
     T *o = _t_newr(signature,OUTPUT_SIGNATURE);
     _t_new_str(o,SIGNATURE_LABEL,"result");
-    _t_news(o,SIGNATURE_SYMBOL,NULL_SYMBOL);
+    _t_news(o,SIGNATURE_PASSTHRU,NULL_STRUCTURE);
     T *i3 = _t_newr(signature,INPUT_SIGNATURE);
     _t_new_str(i3,SIGNATURE_LABEL,"condition");
     _t_news(i3,SIGNATURE_PROCESS,BOOLEAN); // a process that returns a boolean
     T *i1 = _t_newr(signature,INPUT_SIGNATURE);
     _t_new_str(i1,SIGNATURE_LABEL,"true_branch");
-    _t_news(i1,SIGNATURE_STRUCTURE,TREE);
+    _t_news(i1,SIGNATURE_ANY,NULL_STRUCTURE);
     T *i2 = _t_newr(signature,INPUT_SIGNATURE);
     _t_new_str(i2,SIGNATURE_LABEL,"false_branch");
-    _t_news(i2,SIGNATURE_STRUCTURE,TREE);
+    _t_news(i2,SIGNATURE_ANY,NULL_STRUCTURE);
 
     // test that __p_make_signature does what we think it should
     spec_is_str_equal(buf,_t2s(&defs,signature));
@@ -676,10 +676,10 @@ Process _defIfEven(T *processes) {
     _t_new(code,PARAM_REF,p2,sizeof(int)*3);
     _t_new(code,PARAM_REF,p3,sizeof(int)*3);
 
-    T *signature = __p_make_signature("result",SIGNATURE_SYMBOL,NULL_SYMBOL,
+    T *signature = __p_make_signature("result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,
                                       "val",SIGNATURE_STRUCTURE,INTEGER,
-                                      "true_branch",SIGNATURE_STRUCTURE,TREE,
-                                      "false_branch",SIGNATURE_STRUCTURE,TREE,
+                                      "true_branch",SIGNATURE_ANY,NULL_STRUCTURE,
+                                      "false_branch",SIGNATURE_ANY,NULL_STRUCTURE,
                                       NULL);
 
     return _d_code_process(processes,code,"if even","return 2nd child if even, third if not",signature,RECEPTOR_CONTEXT);

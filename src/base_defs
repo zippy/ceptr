@@ -62,9 +62,10 @@ Symbol: SEMTREX_SYMBOL_ANY,NULL_STRUCTURE;  Match any symbol or value of the nod
 Symbol: SEMTREX_ZERO_OR_MORE,SEMTREX;       Requires one child Semtrex and matches on zero or more of that Semtrex.  Ex: /0/TestSemtrex*
 Symbol: SEMTREX_ONE_OR_MORE,SEMTREX;        Requires one child Semtrex and matches on one or more of that Semtrex.   Ex: /0/TestSemtrex+
 Symbol: SEMTREX_ZERO_OR_ONE,SEMTREX;        Requires one child Semtrex and matches on zero or one of that Semtrex.   Ex: /0/TestSemtrex?
-Symbol: SEMTREX_VALUE_LITERAL,TREE;         Matches on the semantic type and the data values.
-Symbol: SEMTREX_VALUE_LITERAL_NOT,TREE;     Matches on logical not of semantic type and data values
 Symbol: SEMTREX_VALUE_SET,[+!];             this is of the symbols to match on
+Structure: SEMTREX_VALUE_LITERAL_DEF,|[!|SEMTREX_VALUE_SET];
+Symbol: SEMTREX_VALUE_LITERAL,SEMTREX_VALUE_LITERAL_DEF;         Matches on the semantic type and the data values.
+Symbol: SEMTREX_VALUE_LITERAL_NOT,SEMTREX_VALUE_LITERAL_DEF;      Matches on logical not of semantic type and data values
 Symbol: SEMTREX_GROUP,SYMBOL;               Grouping                                 Ex: <...>operator
 Symbol: SEMTREX_DESCEND,NULL_STRUCTURE;     
 Symbol: SEMTREX_WALK,SEMTREX;
@@ -82,13 +83,14 @@ Declare: EXPECTATIONS,SIGNALS;
 Structure: ASPECT,(EXPECTATIONS,SIGNALS);
 Symbol: DEFAULT_ASPECT,ASPECT;              
 Symbol: FLUX,[+%ASPECT];                    tree to hold all incoming and in process signals on the various aspects
-Symbol: SCAPE_SPEC,TREE;
-Symbol: ASPECT_IDENT,SYMBOL;               when we get ranges, this should limit the surface symbol those of ASPECT structure
-Symbol: ASPECT_TYPE,BIT;
-Symbol: ASPECT_DEF,[(ASPECT_TYPE,TREE)];
+Symbol: SCAPE_SPEC,NULL_STRUCTURE;          @todo...
+Symbol: ASPECT_IDENT,SYMBOL;                when we get ranges, this should limit the surface symbol those of ASPECT structure
+Symbol: ASPECT_TYPE,BIT;                    really should be an enum of IN, OUT
+Symbol: ASPECT_LABEL,CSTRING;
+Symbol: ASPECT_DEF,[(ASPECT_TYPE,ASPECT_LABEL)];   what else goes in the aspect definition?
 Symbol: ASPECTS,[+ASPECT_DEF];
 Symbol: CARRIER,SYMBOL;
-Symbol: BODY,TREE;
+Symbol: BODY,TREE;                          orthogonal tree that holds message body
 Symbol: SIGNAL_UUID,UUID;
 Symbol: IN_RESPONSE_TO_UUID,UUID;
 Symbol: RECEPTOR_ADDRESS,INTEGER;
@@ -144,15 +146,15 @@ Symbol: SEQUENCES,[+SEQUENCE];
 Symbol: RESPONSE_STEPS,[*%PROTOCOL_STEP];
 Structure: PROTOCOL,STEPS,SEQUENCES;
 Symbol: SCAPES,[*%SCAPE];
-Symbol: MANIFEST,TREE;                    configuration template to be filled out for the installation of a receptor
 Symbol: MANIFEST_LABEL,CSTRING;           a label in the manifest to identify a binding
 Symbol: MANIFEST_SPEC,SYMBOL;             a symbol to specify what type of data must be provided for a given manifest label
 Symbol: MANIFEST_PAIR,[(MANIFEST_LABEL,MANIFEST_SPEC)];
-Symbol: RECEPTOR_PACKAGE,TREE;            a manifest, a symbol declaration tree, a structure definition tree_ID, and an identifier
+Symbol: MANIFEST,[+MANIFEST_PAIR];         configuration template to be filled out for the installation of a receptor
 Symbol: RECEPTOR_IDENTIFIER,INTEGER;      uuid that identifies receptors
+Symbol: RECEPTOR_PACKAGE,[(MANIFEST,RECEPTOR_IDENTIFIER,DEFINITIONS)];
 Symbol: INSTALLED_RECEPTOR,TREE;          contains the installed receptor as well as state information (enabled,disabled_ID, etc..)
-Symbol: BINDINGS,TREE;                    specifics that match a MANIFEST and allow a receptor to be installed
 Symbol: BINDING_PAIR,[(MANIFEST_LABEL,!)];                a pair that matches a MANIFEST_LABEL with a given binding
+Symbol: BINDINGS,[+BINDING_PAIR];                    specifics that match a MANIFEST and allow a receptor to be installed
 
 Symbol: RECEPTOR_ELAPSED_TIME,INTEGER;
 Symbol: RECEPTOR_STATE,[(?RECEPTOR_ELAPSED_TIME)];
