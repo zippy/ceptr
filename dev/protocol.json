@@ -1,5 +1,5 @@
 { "symbol":{ "context":255,"id":1 },"type":"PROTOCOL","name":"alive","children":[
-   { "symbol":{ "context":0,"id":95 },"type":"LIST","name":"STEPS","children":[
+   { "symbol":{ "context":0,"id":95 },"type":"ONE_OR_MORE_OF_STRUCTURE_OF_PROTOCOL_STEP","name":"STEPS","children":[
       { "symbol":{ "context":255,"id":4 },"type":"PROTOCOL_STEP","name":"listen_for_ping","children":[
          { "symbol":{ "context":0,"id":56 },"type":"SYMBOL","name":"CARRIER","surface":"ping_message"},
          { "symbol":{ "context":0,"id":71 },"type":"SEMTREX","name":"PATTERN","children":[
