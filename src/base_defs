@@ -128,19 +128,19 @@ Symbol: PROCESS_SIGNATURE,[(OUTPUT_SIGNATURE,*INPUT_SIGNATURE)];
 
 Symbol: RUN_TREE,TREE;                     think about this as a stack frame and its code
 Symbol: PARAM_REF,TREE_PATH;               used in a code tree as a reference to a parameter
-Symbol: PARAMS,LIST;
+Symbol: PARAMS,[*TREE];
 Symbol: RESULT_SYMBOL,SYMBOL;
 Symbol: REDUCTION_ERROR_SYMBOL,SYMBOL;
 
 Symbol: PROTOCOLS,[+%PROTOCOL];  one or more of symbols of structure PROTOCOL
-Symbol: STEPS,LIST;      we haven't yet figured out how declare a list of unknown symbol type
+Symbol: STEPS,[+%PROTOCOL_STEP];
 Structure: PROTOCOL_STEP,(CARRIER,PATTERN,ACTION,?PARAMS,?END_CONDITIONS);
 Symbol: STEP_SYMBOL,SYMBOL;
 Structure: SEQUENCE,+STEP_SYMBOL;
 Symbol: SEQUENCES,[+SEQUENCE];
-Symbol: RESPONSE_STEPS,LIST;
+Symbol: RESPONSE_STEPS,[*%PROTOCOL_STEP];
 Structure: PROTOCOL,STEPS,SEQUENCES;
-Symbol: SCAPES,LIST;
+Symbol: SCAPES,[*%SCAPE];
 Symbol: MANIFEST,TREE;                    configuration template to be filled out for the installation of a receptor
 Symbol: MANIFEST_PAIR,LIST;
 Symbol: MANIFEST_LABEL,CSTRING;           a label in the manifest to identify a binding
@@ -201,7 +201,7 @@ Process: NOOP,"no-op","result",SIGNATURE_STRUCTURE,TREE,"do",SIGNATURE_ANY,NULL_
 Process: GET,"get instance value","value",SIGNATURE_ANY,NULL_STRUCTURE,"what",SIGNATURE_SYMBOL,GET_XADDR,0;   reduces to the value of the instance at the xaddr of the "what" parameter
 Process: IF,"if","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"condition",SIGNATURE_PROCESS,BOOLEAN,"then",SIGNATURE_ANY,NULL_STRUCTURE,"else",SIGNATURE_OPTIONAL,SIGNATURE_ANY,NULL_STRUCTURE,0;  this is a traditional "if" process that reduces conditionally to either the "then" or the "else" parameter depending on the value of the "condition" parameter.  Note: we may be replacing this with a more lispy COND process
 Process: ITERATE,"iterate a process","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"condtion",SIGNATURE_PROCESS,BOOLEAN,"do",SIGNATURE_ANY,NULL_STRUCTURE,0;                     this process checks the structure of the result of the "condition" param, if it's a BOOLEAN, it treats the iteration as a while loop and iterates until the BOOLEAN is false; if it's an INTEGER it treats the iteration as repeat loop and iterates as many times as the value of the INTEGER
-Process: SAY,"send a message to a receptor","signal id",SIGNATURE_SYMBOL,SIGNAL_UUID,"to",SIGNATURE_SYMBOL,RECEPTOR_ADDRESS,"on",SIGNATURE_SYMBOL,ASPECT_IDENT,"message",SIGNATURE_ANY,NULL_STRUCTURE;
+Process: SAY,"send a message to a receptor","signal id",SIGNATURE_SYMBOL,SIGNAL_UUID,"to",SIGNATURE_SYMBOL,RECEPTOR_ADDRESS,"on",SIGNATURE_SYMBOL,ASPECT_IDENT,"message",SIGNATURE_ANY,NULL_STRUCTURE,0;
 Process: REQUEST,"send a request to a receptor","response",SIGNATURE_ANY,NULL_STRUCTURE,"of",SIGNATURE_SYMBOL,RECEPTOR_ADDRESS,"on",SIGNATURE_SYMBOL,ASPECT_IDENT,"message",SIGNATURE_ANY,NULL_STRUCTURE,"respond on",SIGNATURE_SYMBOL,RESPONSE_CARRIER,"until",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,END_CONDITIONS,"callback",SIGNATURE_OPTIONAL,SIGNATURE_PROCESS,NULL_SYMBOL,0;  if there is no "callback" param, then this process will block until the result comes back or the "until" causes cleanup of pending request.
 
 Process: LISTEN,"plant a listener","error",SIGNATURE_SYMBOL,REDUCTION_ERROR_SYMBOL,"on",SIGNATURE_SYMBOL,ASPECT_IDENT,"for",SIGNATURE_SYMBOL,CARRIER,"match",SIGNATURE_SYMBOL,PATTERN,"do",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,ACTION,"with",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,PARAMS,"until",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,END_CONDITIONS,0;  If you don't provide an action, the assumption is that the LISTEN process will block and  will reduce to the SEMTREX_MATCH.  This will also force the END_CONDITIONS/REPETITIONS to COUNT:1.  If "for" carrier is NULL_SYMBOL the expectation will match on all carriers.
@@ -227,7 +227,6 @@ Process: GTE_INT,"test greater than or equal","result",SIGNATURE_SYMBOL,BOOLEAN,
 
 Process: MAGIC,"dark magic","result",SIGNATURE_STRUCTURE,TREE,0;   this process reduces to hardcoded special things as a scaffold for things we don't know how to build in ceptr yet.
 
-Symbol: STX_TOKENS,LIST;
 Symbol: STX_SL,NULL_STRUCTURE;
 Symbol: STX_OP,NULL_STRUCTURE;
 Symbol: STX_CP,NULL_STRUCTURE;
@@ -251,6 +250,9 @@ Symbol: STX_VAL_S,CSTRING;
 Symbol: STX_VAL_C,CHAR;
 Symbol: STX_VAL_I,INTEGER;
 Symbol: STX_VAL_F,FLOAT;
+
+Structure: STX_TOKEN_LIST,*{STX_SL,STX_OP,STX_CP,STX_SET,STX_OS,STX_CS,STX_LABEL,STX_OG,STX_CG,STX_EQ,STX_NEQ,STX_WALK,STX_STAR,STX_PLUS,STX_Q,STX_OR,STX_COMMA,STX_EXCEPT,STX_NOT,STX_VAL_S,STX_VAL_C,STX_VAL_I,STX_VAL_F};
+Symbol: STX_TOKENS,STX_TOKEN_LIST;
 
 Symbol: STX_SIBS,LIST;
 Symbol: STX_CHILD,TREE;
