@@ -4,17 +4,17 @@
       { "symbol":{ "context":255,"id":15 },"type":"INTEGER","name":"VERSION_MINOR","surface":0}]},
    { "symbol":{ "context":255,"id":2 },"type":"CSTRING","name":"HTTP_REQUEST_METHOD","surface":"GET"},
    { "symbol":{ "context":255,"id":13 },"type":"URI","name":"HTTP_REQUEST_PATH","children":[
-      { "symbol":{ "context":255,"id":3 },"type":"LIST","name":"HTTP_REQUEST_PATH_SEGMENTS","children":[
-         { "symbol":{ "context":255,"id":4 },"type":"CSTRING","name":"HTTP_REQUEST_PATH_SEGMENT","surface":"groups"},
-         { "symbol":{ "context":255,"id":4 },"type":"CSTRING","name":"HTTP_REQUEST_PATH_SEGMENT","surface":"5"}]},
+      { "symbol":{ "context":255,"id":4 },"type":"segments list","name":"HTTP_REQUEST_PATH_SEGMENTS","children":[
+         { "symbol":{ "context":255,"id":3 },"type":"CSTRING","name":"HTTP_REQUEST_PATH_SEGMENT","surface":"groups"},
+         { "symbol":{ "context":255,"id":3 },"type":"CSTRING","name":"HTTP_REQUEST_PATH_SEGMENT","surface":"5"}]},
       { "symbol":{ "context":255,"id":7 },"type":"FILE_HANDLE","name":"HTTP_REQUEST_PATH_FILE","children":[
          { "symbol":{ "context":255,"id":5 },"type":"CSTRING","name":"FILE_NAME","surface":"users"},
          { "symbol":{ "context":255,"id":6 },"type":"CSTRING","name":"FILE_EXTENSION","surface":"json"}]},
-      { "symbol":{ "context":255,"id":8 },"type":"LIST","name":"HTTP_REQUEST_PATH_QUERY","children":[
-         { "symbol":{ "context":255,"id":9 },"type":"LIST","name":"HTTP_REQUEST_PATH_QUERY_PARAMS","children":[
-            { "symbol":{ "context":255,"id":12 },"type":"KEY_VALUE_PARAM","name":"HTTP_REQUEST_PATH_QUERY_PARAM","children":[
-               { "symbol":{ "context":255,"id":10 },"type":"CSTRING","name":"PARAM_KEY","surface":"sort_by"},
-               { "symbol":{ "context":255,"id":11 },"type":"CSTRING","name":"PARAM_VALUE","surface":"last_name"}]},
-            { "symbol":{ "context":255,"id":12 },"type":"KEY_VALUE_PARAM","name":"HTTP_REQUEST_PATH_QUERY_PARAM","children":[
-               { "symbol":{ "context":255,"id":10 },"type":"CSTRING","name":"PARAM_KEY","surface":"page"},
-               { "symbol":{ "context":255,"id":11 },"type":"CSTRING","name":"PARAM_VALUE","surface":"2"}]}]}]}]}]}
+      { "symbol":{ "context":255,"id":12 },"type":"query struct","name":"HTTP_REQUEST_PATH_QUERY","children":[
+         { "symbol":{ "context":255,"id":11 },"type":"query param list","name":"HTTP_REQUEST_PATH_QUERY_PARAMS","children":[
+            { "symbol":{ "context":255,"id":10 },"type":"KEY_VALUE_PARAM","name":"HTTP_REQUEST_PATH_QUERY_PARAM","children":[
+               { "symbol":{ "context":255,"id":8 },"type":"CSTRING","name":"PARAM_KEY","surface":"sort_by"},
+               { "symbol":{ "context":255,"id":9 },"type":"CSTRING","name":"PARAM_VALUE","surface":"last_name"}]},
+            { "symbol":{ "context":255,"id":10 },"type":"KEY_VALUE_PARAM","name":"HTTP_REQUEST_PATH_QUERY_PARAM","children":[
+               { "symbol":{ "context":255,"id":8 },"type":"CSTRING","name":"PARAM_KEY","surface":"page"},
+               { "symbol":{ "context":255,"id":9 },"type":"CSTRING","name":"PARAM_VALUE","surface":"2"}]}]}]}]}]}
