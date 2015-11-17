@@ -7,6 +7,7 @@ var sys__defs_8h =
     [ "sP", "sys__defs_8h.html#a09b0f4fa3a7517885de30bd9dbc9c413", null ],
     [ "sT", "sys__defs_8h.html#a8905a396623084b0907589f66b3e69bc", null ],
     [ "sT_OR", "sys__defs_8h.html#a776b101e4784278e4c99586e7331604f", null ],
+    [ "sT_PCNT", "sys__defs_8h.html#a90f9b1d614a54c91bbf12797387e659e", null ],
     [ "sT_PLUS", "sys__defs_8h.html#a5eee6b57423a0dd05f690cf55be82f39", null ],
     [ "sT_QMRK", "sys__defs_8h.html#aa597318726282f1b2a2d6ac087b2a593", null ],
     [ "sT_SEQ", "sys__defs_8h.html#a41919d9e8bbeba8a550bc914e59ef5c1", null ],

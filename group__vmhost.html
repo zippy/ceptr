@@ -165,7 +165,7 @@ Functions</h2></td></tr>
 <tr class="separator:gabae46d9d63a9372eea058db447f4edb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga53694170e5452b8062ec405e6a9a3f60"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vmhost.html#ga53694170e5452b8062ec405e6a9a3f60">_v_activate</a> (<a class="el" href="structVMHost.html">VMHost</a> *v, <a class="el" href="structXaddr.html">Xaddr</a> x)</td></tr>
 <tr class="separator:ga53694170e5452b8062ec405e6a9a3f60"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5a5dd1eef04efc23462a14f0ba652cb1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vmhost.html#ga5a5dd1eef04efc23462a14f0ba652cb1">_v_send</a> (<a class="el" href="structVMHost.html">VMHost</a> *v, ReceptorAddress from, ReceptorAddress to, Aspect aspect, <a class="el" href="structT.html">T</a> *contents)</td></tr>
+<tr class="memitem:ga5a5dd1eef04efc23462a14f0ba652cb1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vmhost.html#ga5a5dd1eef04efc23462a14f0ba652cb1">_v_send</a> (<a class="el" href="structVMHost.html">VMHost</a> *v, ReceptorAddress from, ReceptorAddress to, <a class="el" href="structSemanticID.html">Aspect</a> aspect, <a class="el" href="structT.html">T</a> *contents)</td></tr>
 <tr class="separator:ga5a5dd1eef04efc23462a14f0ba652cb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga0d188e8b2a654b2e01e12c57017184cb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vmhost.html#ga0d188e8b2a654b2e01e12c57017184cb">_v_send_signals</a> (<a class="el" href="structVMHost.html">VMHost</a> *v, <a class="el" href="structT.html">T</a> *signals)</td></tr>
 <tr class="separator:ga0d188e8b2a654b2e01e12c57017184cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -492,7 +492,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_join_thread</b> (<
 <p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structVMHost.html">VMHost</a> *v = <a class="code" href="group__vmhost.html#gab6fbe5683628fb0d62a966316ced938d">_v_new</a>();</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// test the structure of the VM_HOST receptor</span></div>
-<div class="line">    spec_is_str_equal(t2s(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>-&gt;<a class="code" href="structReceptor.html#aec6f1eee133a993b59baf50e75620fb6">root</a>),<span class="stringliteral">&quot;(VM_HOST_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (ASPECTS) (FLUX (ASPECT:1 (EXPECTATIONS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))&quot;</span>);</div>
+<div class="line">    spec_is_str_equal(t2s(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>-&gt;<a class="code" href="structReceptor.html#aec6f1eee133a993b59baf50e75620fb6">root</a>),<span class="stringliteral">&quot;(VM_HOST_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES) (ASPECTS)) (FLUX (DEFAULT_ASPECT (EXPECTATIONS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))&quot;</span>);</div>
 <div class="line"></div>
 <div class="line">    <a class="code" href="structXaddr.html">Xaddr</a> cx = {COMPOSITORY,1};</div>
 <div class="line">    <a class="code" href="structReceptor.html">Receptor</a> *c = <a class="code" href="group__receptor.html#gac438809f0d3f3add97efd49729c9027f">__r_get_receptor</a>(<a class="code" href="group__receptor.html#gadc618904f81240b244e816234d1c906e">_r_get_instance</a>(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,cx));</div>
@@ -532,7 +532,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_join_thread</b> (<
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Aspect&#160;</td>
+          <td class="paramtype"><a class="el" href="structSemanticID.html">Aspect</a>&#160;</td>
           <td class="paramname"><em>aspect</em>, </td>
         </tr>
         <tr>
@@ -667,7 +667,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_join_thread</b> (<
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Nov 16 2015 11:32:37 for ceptr by
+    <li class="footer">Generated on Mon Nov 16 2015 22:46:27 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

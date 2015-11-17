@@ -16,7 +16,7 @@ var receptor_8c =
     [ "__r_kill", "group__receptor.html#ga2e6346f24ce76ad12990f6863d1ff3d6", null ],
     [ "__r_make_signal", "group__receptor.html#ga10381b27336b0b9a0849fca89dbf65a2", null ],
     [ "__r_make_timestamp", "group__receptor.html#gabd442a49cee4e353034991f0049e2dda", null ],
-    [ "__r_new", "receptor_8c.html#a13d2b50e64e3b0428cee8de4c7e7c135", null ],
+    [ "__r_new", "receptor_8c.html#a47050f14384fa6cc94af052e03f0a67f", null ],
     [ "__r_sanatize_response", "receptor_8c.html#abeb5afc26ec891fa76f865877884b206", null ],
     [ "__r_send", "group__receptor.html#ga5bb9c9f7caa8240b191fe33c0f7ea157", null ],
     [ "__r_set_labels", "receptor_8c.html#a02e7c09f119ae6ca17c70c30fb5a85c0", null ],
