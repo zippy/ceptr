@@ -25,6 +25,7 @@
 #include "accumulator_spec.h"
 
 #include "profile_example.h"
+#include "group_spec.h"
 
 #include <setjmp.h>
 
@@ -55,6 +56,7 @@ int main(int argc, const char **argv) {
     //***** examples
     testProfileExample();
     testHTTPExample();
+    testGroup();
 
     sys_free();
     report_tests();
