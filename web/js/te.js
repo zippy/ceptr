@@ -9,6 +9,9 @@ function loadTree(file_name,completedFN) {
         console.log(JSON.stringify(x));
     });
 }
+function getSymbolByID(id) {
+    Object.keys(TE.LABEL_TABLE).forEach(function(k) {var sem = TE.LABEL_TABLE[k].sem; if (sem.id == id &&sem.type==2) console.log(k);})
+}
 var JQ = $;  //jquery if needed for anything complicated, trying to not have dependency on jq
 (function () {
     var LABEL_TABLE = {};
