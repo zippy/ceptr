@@ -36,6 +36,28 @@ var receptor_8h =
     [ "StepExtra1Idx", "group__receptor.html#ggabed82baf7f470b522273a3e37c24c600a87587e6f89cff22d1380899d8cf746ef", null ],
     [ "StepExtra2Idx", "group__receptor.html#ggabed82baf7f470b522273a3e37c24c600a459f3183e73130135fd03cf807452adf", null ],
     [ "noDeliveryErr", "group__receptor.html#ggab04a0655cd1e3bcac5e8f48c18df1a57a8bb5261733bd4fff6d3a68c96f286ac5", null ],
+    [ "ASPECTIndexes", "group__receptor.html#ga5d784acb0641793528d225b9cf6aeece", [
+      [ "aspectExpectationsIdx", "group__receptor.html#gga5d784acb0641793528d225b9cf6aeeceadceb2c21432add228dea877767e8050d", null ],
+      [ "aspectSignalsIdx", "group__receptor.html#gga5d784acb0641793528d225b9cf6aeeceadf885c0fe9b0de2d587b6241bc8ab2aa", null ]
+    ] ],
+    [ "DATEIndexes", "group__receptor.html#ga8e32281c946b8e4c5d5c5c6c58a763d9", [
+      [ "dateYearIdx", "group__receptor.html#gga8e32281c946b8e4c5d5c5c6c58a763d9a7ae561a8adfcc711a6688e1ae21009d0", null ],
+      [ "dateMonthIdx", "group__receptor.html#gga8e32281c946b8e4c5d5c5c6c58a763d9a04332a9c097a442ed8d762790467243e", null ],
+      [ "dateDayIdx", "group__receptor.html#gga8e32281c946b8e4c5d5c5c6c58a763d9abf1157d3ec33ae023f2a261b2d3faa90", null ]
+    ] ],
+    [ "PROTOCOLIndexes", "group__receptor.html#ga3d5081d6f7122f41a2c8c8054f58c267", [
+      [ "protocolStepsIdx", "group__receptor.html#gga3d5081d6f7122f41a2c8c8054f58c267a67e30f4fd5ab8b7e3e8231adf8b90c04", null ],
+      [ "protocolSequencesIdx", "group__receptor.html#gga3d5081d6f7122f41a2c8c8054f58c267a2eda6eece55fa9bf503eb31a8993c9e7", null ]
+    ] ],
+    [ "TIMEIndexes", "group__receptor.html#gad45862254f3aa6459ea1d193433ab0b9", [
+      [ "timeHourIdx", "group__receptor.html#ggad45862254f3aa6459ea1d193433ab0b9ab4570385ff506adb7d7368352b749216", null ],
+      [ "timeMinuteIdx", "group__receptor.html#ggad45862254f3aa6459ea1d193433ab0b9aaff9103a1d5f6336fe7e21c751bf06c1", null ],
+      [ "timeSecondIdx", "group__receptor.html#ggad45862254f3aa6459ea1d193433ab0b9a3822583e9678a2d90ac478b8ecdda770", null ]
+    ] ],
+    [ "TIMESTAMPIndexes", "group__receptor.html#ga58ad8eb09ad85de281291ee2107a2cd8", [
+      [ "timestampTodayIdx", "group__receptor.html#gga58ad8eb09ad85de281291ee2107a2cd8a8d04adcdb2bbc695ebea472ee8a15968", null ],
+      [ "timestampNowIdx", "group__receptor.html#gga58ad8eb09ad85de281291ee2107a2cd8a345ba4fdc67a5421b94049993fd0dc22", null ]
+    ] ],
     [ "___clock_thread", "group__receptor.html#ga4cb85b79ae4207e4595d003d11beb226", null ],
     [ "__r_build_wakeup_info", "group__receptor.html#ga2489d73f268a2bb8bd0f8a04e3ffd731", null ],
     [ "__r_dump_instances", "group__receptor.html#gabd6d2f87b6511b3851eeb5d48f5b3bb4", null ],

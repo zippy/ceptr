@@ -2,6 +2,7 @@ var group__tests =
 [
     [ "ceptr_specs.c", "ceptr__specs_8c.html", null ],
     [ "def_spec.h", "def__spec_8h.html", null ],
+    [ "group_spec.h", "group__spec_8h.html", null ],
     [ "http_example.h", "http__example_8h.html", null ],
     [ "label_spec.h", "label__spec_8h.html", null ],
     [ "mtree_spec.h", "mtree__spec_8h.html", null ],

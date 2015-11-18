@@ -112,6 +112,12 @@ $(document).ready(function(){initNavTree('group__receptor.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="files"></a>
 Files</h2></td></tr>
+<tr class="memitem:group_8c"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group_8c.html">group.c</a></td></tr>
+<tr class="memdesc:group_8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">implementation of some group communication receptors <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:group_8h"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group_8h.html">group.h</a></td></tr>
+<tr class="memdesc:group_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">group communication receptors header file <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:process_8c"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="process_8c.html">process.c</a></td></tr>
 <tr class="memdesc:process_8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">implementation of ceptr processing: instructions and run tree reduction <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -217,6 +223,28 @@ Enumerations</h2></td></tr>
 <br />
  }</td></tr>
 <tr class="separator:gabed82baf7f470b522273a3e37c24c600"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8e32281c946b8e4c5d5c5c6c58a763d9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga8e32281c946b8e4c5d5c5c6c58a763d9"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>DATEIndexes</b> { <b>dateYearIdx</b> =1, 
+<b>dateMonthIdx</b>, 
+<b>dateDayIdx</b>
+ }</td></tr>
+<tr class="separator:ga8e32281c946b8e4c5d5c5c6c58a763d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad45862254f3aa6459ea1d193433ab0b9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gad45862254f3aa6459ea1d193433ab0b9"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>TIMEIndexes</b> { <b>timeHourIdx</b> =1, 
+<b>timeMinuteIdx</b>, 
+<b>timeSecondIdx</b>
+ }</td></tr>
+<tr class="separator:gad45862254f3aa6459ea1d193433ab0b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga58ad8eb09ad85de281291ee2107a2cd8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga58ad8eb09ad85de281291ee2107a2cd8"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>TIMESTAMPIndexes</b> { <b>timestampTodayIdx</b> =1, 
+<b>timestampNowIdx</b>
+ }</td></tr>
+<tr class="separator:ga58ad8eb09ad85de281291ee2107a2cd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3d5081d6f7122f41a2c8c8054f58c267"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga3d5081d6f7122f41a2c8c8054f58c267"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>PROTOCOLIndexes</b> { <b>protocolStepsIdx</b> =1, 
+<b>protocolSequencesIdx</b>
+ }</td></tr>
+<tr class="separator:ga3d5081d6f7122f41a2c8c8054f58c267"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5d784acb0641793528d225b9cf6aeece"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga5d784acb0641793528d225b9cf6aeece"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>ASPECTIndexes</b> { <b>aspectExpectationsIdx</b> =1, 
+<b>aspectSignalsIdx</b>
+ }</td></tr>
+<tr class="separator:ga5d784acb0641793528d225b9cf6aeece"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab04a0655cd1e3bcac5e8f48c18df1a57"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gab04a0655cd1e3bcac5e8f48c18df1a57"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>noDeliveryErr</b>
  }</td></tr>
 <tr class="separator:gab04a0655cd1e3bcac5e8f48c18df1a57"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1686,7 +1714,7 @@ Variables</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Nov 17 2015 22:10:07 for ceptr by
+    <li class="footer">Generated on Wed Nov 18 2015 15:21:11 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

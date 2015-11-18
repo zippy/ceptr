@@ -12,6 +12,8 @@ var dir_68267d1309a1af8e8297ef4c3efbcdba =
     [ "debug.h", "debug_8h.html", "debug_8h" ],
     [ "def.c", "def_8c.html", "def_8c" ],
     [ "def.h", "def_8h.html", "def_8h" ],
+    [ "group.c", "group_8c.html", "group_8c" ],
+    [ "group.h", "group_8h.html", "group_8h" ],
     [ "hashfn.c", "hashfn_8c_source.html", null ],
     [ "hashfn.h", "hashfn_8h_source.html", null ],
     [ "label.c", "label_8c.html", "label_8c" ],

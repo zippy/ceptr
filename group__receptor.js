@@ -1,5 +1,7 @@
 var group__receptor =
 [
+    [ "group.c", "group_8c.html", null ],
+    [ "group.h", "group_8h.html", null ],
     [ "process.c", "process_8c.html", null ],
     [ "process.h", "process_8h.html", null ],
     [ "receptor.c", "receptor_8c.html", null ],
