@@ -2,15 +2,15 @@
    { "symbol":{ "context":0,"id":97 },"type":"ONE_OR_MORE_OF_STRUCTURE_OF_PROTOCOL_STEP","name":"STEPS","children":[
       { "symbol":{ "context":255,"id":4 },"type":"PROTOCOL_STEP","name":"listen_for_ping","children":[
          { "symbol":{ "context":0,"id":58 },"type":"SYMBOL","name":"CARRIER","surface":"ping_message"},
-         { "symbol":{ "context":0,"id":73 },"type":"SEMTREX","name":"PATTERN","children":[
-            { "symbol":{ "context":0,"id":26 },"type":"STX_SYMBOL_OR_SYMBOL_SET","name":"SEMTREX_SYMBOL_LITERAL","children":[
-               { "symbol":{ "context":0,"id":24 },"type":"SYMBOL","name":"SEMTREX_SYMBOL","surface":"ping_message"}]}]},
+         { "symbol":{ "context":0,"id":73 },"type":"SEMTREX_DEF","name":"PATTERN","children":[
+            { "symbol":{ "context":0,"id":24 },"type":"SEMTREX_SYMBOL_LITERAL_DEF","name":"SEMTREX_SYMBOL_LITERAL","children":[
+               { "symbol":{ "context":0,"id":38 },"type":"SYMBOL","name":"SEMTREX_SYMBOL","surface":"ping_message"}]}]},
          { "symbol":{ "context":0,"id":74 },"type":"PROCESS","name":"ACTION","surface":"send alive response"}]},
       { "symbol":{ "context":255,"id":5 },"type":"PROTOCOL_STEP","name":"get_alive_response","children":[
          { "symbol":{ "context":0,"id":58 },"type":"SYMBOL","name":"CARRIER","surface":"alive_message"},
-         { "symbol":{ "context":0,"id":73 },"type":"SEMTREX","name":"PATTERN","children":[
-            { "symbol":{ "context":0,"id":26 },"type":"STX_SYMBOL_OR_SYMBOL_SET","name":"SEMTREX_SYMBOL_LITERAL","children":[
-               { "symbol":{ "context":0,"id":24 },"type":"SYMBOL","name":"SEMTREX_SYMBOL","surface":"alive_message"}]}]}]}]},
+         { "symbol":{ "context":0,"id":73 },"type":"SEMTREX_DEF","name":"PATTERN","children":[
+            { "symbol":{ "context":0,"id":24 },"type":"SEMTREX_SYMBOL_LITERAL_DEF","name":"SEMTREX_SYMBOL_LITERAL","children":[
+               { "symbol":{ "context":0,"id":38 },"type":"SYMBOL","name":"SEMTREX_SYMBOL","surface":"alive_message"}]}]}]}]},
    { "symbol":{ "context":0,"id":99 },"type":"ONE_OR_MORE_OF_SEQUENCE","name":"SEQUENCES","children":[
       { "symbol":{ "context":255,"id":6 },"type":"SEQUENCE","name":"alive_server","children":[
          { "symbol":{ "context":0,"id":98 },"type":"SYMBOL","name":"STEP_SYMBOL","surface":"listen_for_ping"}]},
