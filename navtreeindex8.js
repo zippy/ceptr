@@ -1,5 +1,9 @@
 var NAVTREEINDEX8 =
 {
+"structVMHost.html#a6210d87a36adbc358e239510cade66b4":[5,7,4,5],
+"structVMHost.html#a7ea4bc0fa80cfe16e33626dce0c12402":[5,7,4,2],
+"structVMHost.html#a95ef186e3477224ee0be117e7f9abbe3":[5,7,4,1],
+"structVMHost.html#a97819ac8dc92af600c64aa6835e45983":[5,7,4,0],
 "structVMHost.html#abc9dab8da288b7f9ad20988e545a56f9":[5,7,4,4],
 "structVMHost.html#ada4998fffaedd9669bdada5ef0ec478f":[5,7,4,7],
 "structXaddr.html":[6,0,42],

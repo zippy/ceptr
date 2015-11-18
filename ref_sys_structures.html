@@ -115,7 +115,7 @@ $(document).ready(function(){initNavTree('ref_sys_structures.html','');});
 <tr><td><a name="XADDR"></a>XADDR</td><td><a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a></td><td></td></tr>
 <tr><td><a name="SURFACE"></a>SURFACE</td><td><a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a></td><td></td></tr>
 <tr><td><a name="TREE"></a>TREE</td><td><a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a></td><td>            surface is a c pointer to a tree</td></tr>
-<tr><td><a name="RECEPTOR"></a>RECEPTOR</td><td><a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a></td><td></td></tr>
+<tr><td><a name="RECEPTOR"></a>RECEPTOR</td><td><a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a></td><td>        surface is a c pointer to a receptor structure</td></tr>
 <tr><td><a name="PROCESS"></a>PROCESS</td><td><a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a></td><td>         surface is a c struct (SemID) representing processes</td></tr>
 <tr><td><a name="STRUCTURE"></a>STRUCTURE</td><td><a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a></td><td>       surface is a c struct (SemID) representing structures</td></tr>
 <tr><td><a name="SCAPE"></a>SCAPE</td><td><a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a></td><td></td></tr>
@@ -132,10 +132,12 @@ $(document).ready(function(){initNavTree('ref_sys_structures.html','');});
 <tr><td><a name="PAIR_OF_STRUCTURE_DEF"></a>PAIR-OF-STRUCTURE-DEF</td><td>SEQ(<a href="ref_sys_symbols.html#STRUCTURE_DEF">STRUCTURE_DEF</a>, <a href="ref_sys_symbols.html#STRUCTURE_DEF">STRUCTURE_DEF</a>)</td><td></td></tr>
 <tr><td><a name="TUPLE_OF_SYMBOL_LABEL_AND_SYMBOL_STRUCTURE"></a>TUPLE-OF-SYMBOL-LABEL-AND-SYMBOL-STRUCTURE</td><td>SEQ(<a href="ref_sys_symbols.html#SYMBOL_LABEL">SYMBOL_LABEL</a>, <a href="ref_sys_symbols.html#SYMBOL_STRUCTURE">SYMBOL_STRUCTURE</a>)</td><td></td></tr>
 <tr><td><a name="ZERO_OR_MORE_OF_SYMBOL_DECLARATION"></a>ZERO-OR-MORE-OF-SYMBOL-DECLARATION</td><td>*(<a href="ref_sys_symbols.html#SYMBOL_DECLARATION">SYMBOL_DECLARATION</a>)</td><td></td></tr>
+<tr><td><a name="SEMTREX_DEF"></a>SEMTREX-DEF</td><td>SET(<a href="ref_sys_symbols.html#SEMTREX_SYMBOL_LITERAL">SEMTREX_SYMBOL_LITERAL</a>, <a href="ref_sys_symbols.html#SEMTREX_SYMBOL_LITERAL_NOT">SEMTREX_SYMBOL_LITERAL_NOT</a>, <a href="ref_sys_symbols.html#SEMTREX_SEQUENCE">SEMTREX_SEQUENCE</a>, <a href="ref_sys_symbols.html#SEMTREX_OR">SEMTREX_OR</a>, <a href="ref_sys_symbols.html#SEMTREX_NOT">SEMTREX_NOT</a>, <a href="ref_sys_symbols.html#SEMTREX_SYMBOL_ANY">SEMTREX_SYMBOL_ANY</a>, <a href="ref_sys_symbols.html#SEMTREX_ZERO_OR_MORE">SEMTREX_ZERO_OR_MORE</a>, <a href="ref_sys_symbols.html#SEMTREX_ONE_OR_MORE">SEMTREX_ONE_OR_MORE</a>, <a href="ref_sys_symbols.html#SEMTREX_ZERO_OR_ONE">SEMTREX_ZERO_OR_ONE</a>, <a href="ref_sys_symbols.html#SEMTREX_VALUE_LITERAL">SEMTREX_VALUE_LITERAL</a>, <a href="ref_sys_symbols.html#SEMTREX_VALUE_LITERAL_NOT">SEMTREX_VALUE_LITERAL_NOT</a>, <a href="ref_sys_symbols.html#SEMTREX_GROUP">SEMTREX_GROUP</a>, <a href="ref_sys_symbols.html#SEMTREX_WALK">SEMTREX_WALK</a>, <a href="ref_sys_symbols.html#SEMTREX_DESCEND">SEMTREX_DESCEND</a>)</td><td></td></tr>
 <tr><td><a name="ONE_OR_MORE_OF_SEMTREX_SYMBOL"></a>ONE-OR-MORE-OF-SEMTREX-SYMBOL</td><td>+(<a href="ref_sys_symbols.html#SEMTREX_SYMBOL">SEMTREX_SYMBOL</a>)</td><td></td></tr>
-<tr><td><a name="STX_SYMBOL_OR_SYMBOL_SET"></a>STX-SYMBOL-OR-SYMBOL-SET</td><td>OR(<a href="ref_sys_symbols.html#SEMTREX_SYMBOL">SEMTREX_SYMBOL</a>, <a href="ref_sys_symbols.html#SEMTREX_SYMBOL_SET">SEMTREX_SYMBOL_SET</a>)</td><td></td></tr>
-<tr><td><a name="ONE_OR_MORE_OF_SEMTREX"></a>ONE-OR-MORE-OF-SEMTREX</td><td>+(<a href="ref_sys_symbols.html#SEMTREX">SEMTREX</a>)</td><td></td></tr>
-<tr><td><a name="PAIR_OF_SEMTREX"></a>PAIR-OF-SEMTREX</td><td>SEQ(<a href="ref_sys_symbols.html#SEMTREX">SEMTREX</a>, <a href="ref_sys_symbols.html#SEMTREX">SEMTREX</a>)</td><td></td></tr>
+<tr><td><a name="SEMTREX_SYMBOL_LITERAL_DEF"></a>SEMTREX-SYMBOL-LITERAL-DEF</td><td>SEQ(OR(<a href="ref_sys_symbols.html#SEMTREX_SYMBOL">SEMTREX_SYMBOL</a>, <a href="ref_sys_symbols.html#SEMTREX_SYMBOL_SET">SEMTREX_SYMBOL_SET</a>), *(!))</td><td></td></tr>
+<tr><td><a name="ONE_OR_MORE_OF_SEMTREX_DEF"></a>ONE-OR-MORE-OF-SEMTREX-DEF</td><td>+(<a href="ref_sys_symbols.html#SEMTREX_DEF">SEMTREX_DEF</a>)</td><td></td></tr>
+<tr><td><a name="PAIR_OF_SEMTREX_DEF"></a>PAIR-OF-SEMTREX-DEF</td><td>SEQ(<a href="ref_sys_symbols.html#SEMTREX_DEF">SEMTREX_DEF</a>, <a href="ref_sys_symbols.html#SEMTREX_DEF">SEMTREX_DEF</a>)</td><td></td></tr>
+<tr><td><a name="ZERO_OR_ONE_OF_ANY_SYMBOL"></a>ZERO-OR-ONE-OF-ANY-SYMBOL</td><td>?(!)</td><td></td></tr>
 <tr><td><a name="ONE_OR_MORE_OF_ANY_SYMBOL"></a>ONE-OR-MORE-OF-ANY-SYMBOL</td><td>+(!)</td><td></td></tr>
 <tr><td><a name="SEMTREX_VALUE_LITERAL_DEF"></a>SEMTREX-VALUE-LITERAL-DEF</td><td>OR(!, <a href="ref_sys_symbols.html#SEMTREX_VALUE_SET">SEMTREX_VALUE_SET</a>)</td><td></td></tr>
 <tr><td><a name="ONE_OR_MORE_OF_ASCII_CHAR"></a>ONE-OR-MORE-OF-ASCII-CHAR</td><td>+(<a href="ref_sys_symbols.html#ASCII_CHAR">ASCII_CHAR</a>)</td><td></td></tr>
@@ -193,7 +195,7 @@ $(document).ready(function(){initNavTree('ref_sys_structures.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Nov 17 2015 16:11:24 for ceptr by
+    <li class="footer">Generated on Tue Nov 17 2015 22:10:07 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
