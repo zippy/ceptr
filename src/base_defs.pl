@@ -28,6 +28,7 @@ my $context = "SYS";
 my %declared;
 my %anon;
 my %comments;
+my %declmap;
 
 sub addDef {
     my $type = shift;
@@ -36,7 +37,9 @@ sub addDef {
     my $def = shift;
     my $comment = shift;
     my $def_type = ($type eq 'Structure' && $def =~ /sT_/) ? "StructureS" : $type;
+    $declmap{$name} = scalar(@d);
     push @d,[$def_type,$context.'_CONTEXT',$name,$def];
+
     $comments{$name} = $comment;
 
     if ($type eq 'SetSymbol') {
@@ -229,6 +232,30 @@ EOF
 &hout("LOCAL","Symbol");
 &hout("LOCAL","Structure");
 
+sub camelify {
+    my $s = shift;
+    my @n = split(/_/,$s);
+    @n = map {ucfirst(lc($_))} @n;
+    $n[0] = lc($n[0]);
+    return join('',@n);
+}
+
+sub printEnum {
+    my $hfh = shift;
+    my $s = shift;
+    my $d = shift;
+    if ($d ne 'NULL_SYMBOL') {
+        print $hfh 'enum '.$s.'Indexes {';
+        my $n = &camelify($s);
+        my @i = split(/,/,$d);
+        @i = map {$n.ucfirst(&camelify($_)).'Idx'} @i;
+        $i[0].="=1";
+        my $idx = join(',',@i);
+        print $hfh $idx;
+        print $hfh "};\n";
+    }
+}
+
 # add definitions to the header file
 sub hout {
     my $context = shift;
@@ -252,6 +279,21 @@ EOF
     foreach my $s (@$a) {
         print $hfh '#define '.$s." G_contexts[$context"."_CONTEXT].".lc($types).'['.$s."_ID]\n";
     }
+    # attempt to create enums for all structure Indexes.  doesn't quite work
+    # if ($type eq 'Structure') {
+    #     foreach my $s (@$a) {
+    #         my $def = $d[$declmap{$s}][3];
+    #         if ($def =~ /^[0-9],(.*)$/) {
+    #             printEnum($hfh,$s,$1);
+    #         }
+    #         $def =~ s/sT_SYM\(([^)]+)\)/$1/g;
+    #         if ($def =~ /sT_SEQ\([0-9],([^(]*)\)(.*)$/) {
+    #             print $1,"\n";
+    #             print "END: $2\n";
+    #             printEnum($hfh,$s,$1);
+    #         }
+    #     }
+    # }
 }
 print $hfh <<EOF;
 

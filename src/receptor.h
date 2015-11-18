@@ -28,7 +28,11 @@ enum {SignalEnvelopeIdx=1,SignalBodyIdx};
 enum {PendingResponseUUIDIdx=1,PendingResponseCarrierIdx,PendingResponseWakeupIdx,PendingResponseEndCondsIdx};
 enum {ExpectationCarrierIdx=1,ExpectationPatternIdx,ExpectationActionIdx,ExpectationParamsIdx,ExpectationEndCondsIdx};
 enum {StepCarrierIdx=1,StepPatternIdx,StepActionIdx,StepExtra1Idx,StepExtra2Idx};
-
+enum DATEIndexes {dateYearIdx=1,dateMonthIdx,dateDayIdx};
+enum TIMEIndexes {timeHourIdx=1,timeMinuteIdx,timeSecondIdx};
+enum TIMESTAMPIndexes {timestampTodayIdx=1,timestampNowIdx};
+enum PROTOCOLIndexes {protocolStepsIdx=1,protocolSequencesIdx};
+enum ASPECTIndexes {aspectExpectationsIdx=1,aspectSignalsIdx};
 // delivery errors
 enum {noDeliveryErr};
 
