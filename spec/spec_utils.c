@@ -20,7 +20,7 @@ void wjson(Defs *d,T *t,char *n,int i) {
 
 void dump2json(Defs *d,T *t,char *n) {
     char fn[100];
-    char json[100000] = {0};
+    char json[1000000] = {0};
     _t2rawjson(d,t,-1,json);
     sprintf(fn,"web/%s.json",n);
     writeFile(fn,json,strlen(json));
