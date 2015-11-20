@@ -139,6 +139,7 @@ Symbol: PROCESS_SIGNATURE,[(OUTPUT_SIGNATURE,*INPUT_SIGNATURE)];
 
 Symbol: RUN_TREE,[!];                       think about this as a stack frame and its code
 Symbol: PARAM_REF,TREE_PATH;                used in a code tree as a reference to a parameter
+Symbol: SIGNAL_REF,TREE_PATH;               used in a code tree triggered by an expectation as a reference to a part of the signal that triggered the action.
 Symbol: PARAMS,[*!];
 Symbol: RESULT_SYMBOL,SYMBOL;
 Symbol: REDUCTION_ERROR_SYMBOL,SYMBOL;

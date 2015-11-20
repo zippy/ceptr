@@ -836,6 +836,20 @@ Error _p_step(Q *q, R **contextP) {
                 _t_replace(context->parent, context->idx,np);
                 s = _t_symbol(np);
             }
+            else if (semeq(s,SIGNAL_REF)) {
+                T *sig = _t_parent(context->run_tree);
+                if (!sig) {
+                    raise_error("not in signal context!");
+                    //                    return context->state = context->err = notInSignalContextReductionError;
+                }
+                T *param = _t_get(sig,(int *)_t_surface(np));
+                if (!param) {
+                    raise_error("request for non-existent signal portion");
+                }
+                context->node_pointer = np = _t_rclone(param);
+                _t_replace(context->parent, context->idx,np);
+                s = _t_symbol(np);
+            }
             /// @todo what if the replaced parameter is itself a PARAM_REF tree ??
 
             int count = _t_children(np);

@@ -645,6 +645,36 @@ void testProcessReduce() {
     _t_free(t);
 }
 
+void testProcessRefs() {
+    Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
+    Q *q = r->q;
+
+    int pt1[] = {2,1,TREE_PATH_TERMINATOR};
+    int pt2[] = {SignalBodyIdx,0,TREE_PATH_TERMINATOR};
+
+    T *n = _t_newr(0,NOOP);
+    T *t = _t_newr(n,BODY);
+    _t_new(t,PARAM_REF,pt1,sizeof(int)*4);
+    _t_new(t,SIGNAL_REF,pt2,sizeof(int)*4);
+    t = _t_newi(0,TEST_INT_SYMBOL,314);  // a param to the run tree
+    T *run_tree = __p_build_run_tree(n,1,t);
+    _t_free(n);
+    _t_free(t);
+    ReceptorAddress fm = 3; // DUMMY ADDR
+    ReceptorAddress to = 4; // DUMMY ADDR
+    T *signal = __r_make_signal(fm,to,DEFAULT_ASPECT,_t_new_str(0,TEST_STR_SYMBOL,"foo"),0,0);
+
+    // simulate that this run-tree is on the flux.
+    _t_add(signal,run_tree);
+
+    Qe *e = _p_addrt2q(q,run_tree);
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+
+    spec_is_str_equal(t2s(run_tree), "(RUN_TREE (BODY (TEST_INT_SYMBOL:314) (TEST_STR_SYMBOL:foo)) (PARAMS (TEST_INT_SYMBOL:314)))");
+
+    _r_free(r);
+}
+
 /**
  * helper to generate an example process definition that acts as an if for even numbers
  *
@@ -1082,6 +1112,7 @@ void testProcess() {
     testProcessQuote();
     testProcessStream();
     testProcessReduce();
+    testProcessRefs();
     testProcessReduceDefinedProcess();
     testProcessSignatureMatching();
     testProcessError();

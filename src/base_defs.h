@@ -116,6 +116,7 @@ enum SYSSymbolIDs {
     OUTPUT_SIGNATURE_ID,
     RUN_TREE_ID,
     PARAM_REF_ID,
+    SIGNAL_REF_ID,
     RESULT_SYMBOL_ID,
     REDUCTION_ERROR_SYMBOL_ID,
     STEPS_ID,
@@ -295,6 +296,7 @@ enum SYSSymbolIDs {
 #define OUTPUT_SIGNATURE G_contexts[SYS_CONTEXT].symbols[OUTPUT_SIGNATURE_ID]
 #define RUN_TREE G_contexts[SYS_CONTEXT].symbols[RUN_TREE_ID]
 #define PARAM_REF G_contexts[SYS_CONTEXT].symbols[PARAM_REF_ID]
+#define SIGNAL_REF G_contexts[SYS_CONTEXT].symbols[SIGNAL_REF_ID]
 #define RESULT_SYMBOL G_contexts[SYS_CONTEXT].symbols[RESULT_SYMBOL_ID]
 #define REDUCTION_ERROR_SYMBOL G_contexts[SYS_CONTEXT].symbols[REDUCTION_ERROR_SYMBOL_ID]
 #define STEPS G_contexts[SYS_CONTEXT].symbols[STEPS_ID]
