@@ -211,8 +211,8 @@ void _v_deliver_signals(VMHost *v, Receptor *sender) {
         T *s = _t_detach_by_idx(signals,1);
         T *envelope = _t_child(s,1);
         //      T *contents = _t_child(s,2);
-        ReceptorAddress *toP = (ReceptorAddress *)_t_surface(_t_child(envelope,2));
-        ReceptorAddress *fromP = (ReceptorAddress *)_t_surface(_t_child(envelope,1));
+        ReceptorAddress *toP = (ReceptorAddress *)_t_surface(_t_child(_t_child(envelope,EnvelopeToIdx),1));
+        ReceptorAddress *fromP = (ReceptorAddress *)_t_surface(_t_child(_t_child(envelope,EnvelopeFromIdx),1));
 
         // if the from or to address is "self" (0) we do a reverse lookup and
         // fix the values in the signal we are about to deliver.

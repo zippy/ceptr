@@ -95,9 +95,13 @@ Symbol: CARRIER,SYMBOL;
 Symbol: BODY,TREE;                          orthogonal tree that holds message body
 Symbol: SIGNAL_UUID,UUID;
 Symbol: IN_RESPONSE_TO_UUID,UUID;
-Symbol: RECEPTOR_ADDRESS,INTEGER;
+Symbol: INSTANCE_NUM,INTEGER;               this a placeholder for better addressing later...
+Symbol: RECEPTOR_PATH,TREE_PATH;
+Structure: RECEPTOR_ADDRESS,|[INSTANCE_NUM|RECEPTOR_PATH];
+Symbol: FROM_ADDRESS,RECEPTOR_ADDRESS;
+Symbol: TO_ADDRESS,RECEPTOR_ADDRESS;
 Declare: END_CONDITIONS;
-Symbol: ENVELOPE,[(RECEPTOR_ADDRESS,RECEPTOR_ADDRESS,ASPECT_IDENT,CARRIER,SIGNAL_UUID,?|[END_CONDITIONS|IN_RESPONSE_TO_UUID])];
+Symbol: ENVELOPE,[(FROM_ADDRESS,TO_ADDRESS,ASPECT_IDENT,CARRIER,SIGNAL_UUID,?|[END_CONDITIONS|IN_RESPONSE_TO_UUID])];
 Symbol: SIGNAL,[(ENVELOPE,BODY)];                        a signal on the flux.  It's first child is the contents of the signal
 Symbol: SIGNALS,[*SIGNAL];                  list of signals on an aspect in the flux
 Symbol: PENDING_SIGNALS,[*SIGNAL];               list of signals pending to be sent by the VM_HOST
@@ -147,6 +151,7 @@ Structure: SEQUENCE,+STEP_SYMBOL;
 Symbol: SEQUENCES,[+SEQUENCE];
 Symbol: RESPONSE_STEPS,[*%PROTOCOL_STEP];
 Structure: PROTOCOL,STEPS,SEQUENCES;
+
 Symbol: SCAPES,[*%SCAPE];
 Symbol: MANIFEST_LABEL,CSTRING;           a label in the manifest to identify a binding
 Symbol: MANIFEST_SPEC,SYMBOL;             a symbol to specify what type of data must be provided for a given manifest label

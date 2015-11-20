@@ -282,7 +282,7 @@ void testVMHostActivateReceptor() {
 
     _v_send(v,cx.addr,sx.addr,DEFAULT_ASPECT,_t_newi(0,ping,0));
 
-    spec_is_str_equal(_td(client,v->r->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (RECEPTOR_ADDRESS:3) (RECEPTOR_ADDRESS:2) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:ping_message) (SIGNAL_UUID)) (BODY:{(ping_message:0)})))");
+    spec_is_str_equal(_td(client,v->r->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (INSTANCE_NUM:3)) (TO_ADDRESS (INSTANCE_NUM:2)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:ping_message) (SIGNAL_UUID)) (BODY:{(ping_message:0)})))");
 
     // simulate round-robin processing of signals
     //debug_enable(D_SIGNALS);

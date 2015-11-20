@@ -71,6 +71,8 @@ void _r_serialize(Receptor *r,void **surfaceP,size_t *lengthP);
 Receptor * _r_unserialize(void *surface);
 
 /******************  receptor signaling */
+T *__r_make_addr(T *parent,Symbol type,ReceptorAddress addr);
+ReceptorAddress __r_get_addr(T *addr);
 
 T * __r_make_signal(ReceptorAddress from,ReceptorAddress to,Aspect aspect,T *signal_contents,UUIDt *in_response_to,T* until);
 T *__r_build_wakeup_info(T *code_point,int process_id);

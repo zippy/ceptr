@@ -487,6 +487,22 @@ Receptor * _r_unserialize(void *surface) {
 
 /******************  receptor signaling */
 
+// build a receptor address.  This is scaffolding for later receptor
+// addressing that will include both ceptrnet addresses and receptor paths
+// as a possible options for addressing the receptor.
+T *__r_make_addr(T *parent,Symbol type,ReceptorAddress addr) {
+    T *a = _t_newr(parent,type);
+    _t_newi(a,INSTANCE_NUM,addr);
+    return a;
+}
+
+ReceptorAddress __r_get_addr(T *addr) {
+    // for now they are all instance nums so we can just get the surface
+    // of the first child.
+    T *t = _t_child(addr,1);
+    return *(ReceptorAddress *)_t_surface(t);
+}
+
 /**
  * build a signal
  *
@@ -500,8 +516,8 @@ T* __r_make_signal(ReceptorAddress from,ReceptorAddress to,Aspect aspect,T *sign
     T *s = _t_new_root(SIGNAL);
     T *e = _t_newr(s,ENVELOPE);
     // @todo convert to paths at some point?
-    _t_newi(e,RECEPTOR_ADDRESS,from);
-    _t_newi(e,RECEPTOR_ADDRESS,to);
+    __r_make_addr(e,FROM_ADDRESS,from);
+    __r_make_addr(e,TO_ADDRESS,to);
     _t_news(e,ASPECT_IDENT,aspect);
     _t_news(e,CARRIER,_t_symbol(signal_contents));
     UUIDt t = __uuid_gen();
