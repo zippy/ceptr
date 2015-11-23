@@ -26,6 +26,7 @@ enum {ReceptorDefsIDx=1,ReceptorFluxIDx,ReceptorStateIdx,ReceptorPendingSignalsI
 enum {EnvelopeFromIdx=1,EnvelopeToIdx,EnvelopeAspectIdx,EnvelopeCarrierIdx,EnvelopeUUIDIdx,EnvelopeExtraIdx};
 enum {SignalEnvelopeIdx=1,SignalBodyIdx};
 enum {PendingResponseUUIDIdx=1,PendingResponseCarrierIdx,PendingResponseWakeupIdx,PendingResponseEndCondsIdx};
+enum {WakeupReferenceProcessIdentIdx=1,WakeupReferenceCodePathIdx};
 enum {ExpectationCarrierIdx=1,ExpectationPatternIdx,ExpectationActionIdx,ExpectationParamsIdx,ExpectationEndCondsIdx};
 enum {StepCarrierIdx=1,StepPatternIdx,StepActionIdx,StepExtra1Idx,StepExtra2Idx};
 enum DATEIndexes {dateYearIdx=1,dateMonthIdx,dateDayIdx};
@@ -39,7 +40,9 @@ enum {noDeliveryErr};
 /******************  create and destroy receptors */
 Receptor *_r_new(Symbol s);
 Receptor *_r_new_receptor_from_package(Symbol s,T *p,T *bindings);
+T *__r_build_expectation(Symbol carrier,T *pattern,T *action,T *with,T *until);
 void _r_add_expectation(Receptor *r,Aspect aspect,Symbol carrier,T *pattern,T *action,T *with,T *until);
+void __r_add_expectation(Receptor *r,Aspect aspect,T *e);
 void _r_remove_expectation(Receptor *r,T *expectation);
 void _r_free(Receptor *r);
 
@@ -74,7 +77,7 @@ Receptor * _r_unserialize(void *surface);
 T *__r_make_addr(T *parent,Symbol type,ReceptorAddress addr);
 ReceptorAddress __r_get_addr(T *addr);
 
-T * __r_make_signal(ReceptorAddress from,ReceptorAddress to,Aspect aspect,T *signal_contents,UUIDt *in_response_to,T* until);
+T * __r_make_signal(ReceptorAddress from,ReceptorAddress to,Aspect aspect,Symbol carrier,T *signal_contents,UUIDt *in_response_to,T* until);
 T *__r_build_wakeup_info(T *code_point,int process_id);
 T* __r_send(Receptor *r,T *signal);
 T* _r_send(Receptor *r,T *signal);

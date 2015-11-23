@@ -23,7 +23,9 @@ void addCommand(Receptor *r,Xaddr ox,char *command,char *desc,T *code) {
 
     T *p = _t_new_root(SAY);
     __r_make_addr(p,TO_ADDRESS,ox.addr);
+
     _t_news(p,ASPECT_IDENT,DEFAULT_ASPECT);
+    _t_news(p,CARRIER,NULL_SYMBOL);
     _t_add(p,code);
 
     Process proc = _r_code_process(r,p,desc,"long desc...",NULL);
@@ -65,8 +67,9 @@ void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp
     T *p = _t_new_root(SAY);
     ReceptorAddress to =  __r_get_self_address(r);
 
-    _t_newi(p,RECEPTOR_ADDRESS,to);
+    __r_make_addr(p,TO_ADDRESS,to);
     _t_news(p,ASPECT_IDENT,DEFAULT_ASPECT);
+    _t_news(p,CARRIER,SHELL_COMMAND);
     T *x = _t_newr(p,SHELL_COMMAND);
     int pt1[] = {2,1,TREE_PATH_TERMINATOR};
     _t_new(x,PARAM_REF,pt1,sizeof(int)*4);
@@ -80,8 +83,9 @@ void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp
     // (expect (on flux SHELL_COMMAND:time) action(send std_out (convert_to_lines (send clock get_time))))
 
     T *code = _t_new_root(REQUEST);
-    _t_newi(code,RECEPTOR_ADDRESS,2); // @todo bogus!!! fix clock address
+    __r_make_addr(code,TO_ADDRESS,2); // @todo bogus!!! fix clock address
     _t_news(code,ASPECT_IDENT,DEFAULT_ASPECT);
+    _t_news(code,CARRIER,CLOCK_TELL_TIME);
     _t_newr(code,CLOCK_TELL_TIME);
     _t_news(code,RESPONSE_CARRIER,TICK);
 

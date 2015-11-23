@@ -110,6 +110,22 @@ Receptor *_r_new_receptor_from_package(Symbol s,T *p,T *bindings) {
     return r;
 }
 
+// helper to build and expectation tree
+T *__r_build_expectation(Symbol carrier,T *pattern,T *action,T *with,T *until) {
+    T *e = _t_newr(0,EXPECTATION);
+    _t_news(e,CARRIER,carrier);
+    _t_add(e,pattern);
+    _t_add(e,action);
+    if (!with) with = _t_new_root(PARAMS);
+    _t_add(e,with);
+    if (!until) {
+        until = _t_new_root(END_CONDITIONS);
+        _t_newr(until,UNLIMITED);
+    }
+    _t_add(e,until);
+    return e;
+}
+
 /**
  * @brief Adds an expectation to a receptor's aspect.
  *
@@ -123,17 +139,11 @@ Receptor *_r_new_receptor_from_package(Symbol s,T *p,T *bindings) {
  *
  */
 void _r_add_expectation(Receptor *r,Aspect aspect,Symbol carrier,T *pattern,T *action,T *with,T *until) {
-    T *e = _t_newr(0,EXPECTATION);
-    _t_news(e,CARRIER,carrier);
-    _t_add(e,pattern);
-    _t_add(e,action);
-    if (!with) with = _t_new_root(PARAMS);
-    _t_add(e,with);
-    if (!until) {
-        until = _t_new_root(END_CONDITIONS);
-        _t_newr(until,UNLIMITED);
-    }
-    _t_add(e,until);
+    T *e = __r_build_expectation(carrier,pattern,action,with,until);
+    __r_add_expectation(r,aspect,e);
+}
+
+void __r_add_expectation(Receptor *r,Aspect aspect,T *e) {
     T *a = __r_get_expectations(r,aspect);
     _t_add(a,e);
 }
@@ -512,14 +522,14 @@ ReceptorAddress __r_get_addr(T *addr) {
  * @param[in] signal_contents the message to be sent, which will be wrapped in a SIGNAL
  * @todo signal should have timestamps and other meta info
  */
-T* __r_make_signal(ReceptorAddress from,ReceptorAddress to,Aspect aspect,T *signal_contents,UUIDt *in_response_to,T* until) {
+T* __r_make_signal(ReceptorAddress from,ReceptorAddress to,Aspect aspect,Symbol carrier,T *signal_contents,UUIDt *in_response_to,T* until) {
     T *s = _t_new_root(SIGNAL);
     T *e = _t_newr(s,ENVELOPE);
     // @todo convert to paths at some point?
     __r_make_addr(e,FROM_ADDRESS,from);
     __r_make_addr(e,TO_ADDRESS,to);
     _t_news(e,ASPECT_IDENT,aspect);
-    _t_news(e,CARRIER,_t_symbol(signal_contents));
+    _t_news(e,CARRIER,carrier);
     UUIDt t = __uuid_gen();
     _t_new(e,SIGNAL_UUID,&t,sizeof(UUIDt));
     T *b = _t_newt(s,BODY,signal_contents);
@@ -571,7 +581,7 @@ T* _r_send(Receptor *r,T *signal) {
  *
  * @param[in] r sending receptor
  * @param[in] signal Signal tree
- * @param[in] carrier the carrier on which to expect a response
+ * @param[in] response_carrier the carrier on which to expect a response
  * @param[in] code_point the point in the code to re-awaken when a response comes back
  * @param[in] process_id the id of the process in which that code point exists
  * @returns a clone of the UUID of the message sent.
@@ -737,15 +747,8 @@ void __r_test_expectation(T* processes,T *expectation,T *signal,Q *q) {
     _t_free(stx);
 }
 
-// a sanatized response is one in which it matches the expected carrier
-T* __r_sanatize_response(Receptor *r,T* response,Symbol carrier) {
-    Symbol rsym = _t_symbol(response);
-    if (!semeq(carrier,rsym)) {
-        //@todo what kind of logging of these kinds of events
-        debug(D_SIGNALS,"response failed sanatizing, expecting %s, but got %s!\n",_r_get_symbol_name(r,carrier),_r_get_symbol_name(r,rsym));
-        return NULL;
-    }
-    //@todo run some kind of check that ascertains that not only does the symbol match, but that children match too
+// what kind of sanatizing do we do of the actual response signal?
+T* __r_sanatize_response(Receptor *r,T* response) {
     return _t_rclone(response);
 }
 
@@ -795,15 +798,20 @@ Error _r_deliver(Receptor *r, T *signal) {
                     if (allow) {
                         Symbol carrier = *(Symbol *)_t_surface(_t_child(l,PendingResponseCarrierIdx));
                         T *wakeup = _t_child(l,PendingResponseWakeupIdx);
-                        int process_id = *(int *)_t_surface(_t_child(wakeup,1));
-                        int *code_path = (int *)_t_surface(_t_child(wakeup,2));
+                        int process_id = *(int *)_t_surface(_t_child(wakeup,WakeupReferenceProcessIdentIdx));
+                        int *code_path = (int *)_t_surface(_t_child(wakeup,WakeupReferenceCodePathIdx));
                         T *response = (T *)_t_surface(_t_child(signal,SignalBodyIdx));
                         // now set up the signal so when it's freed below, the body doesn't get freed too
                         signal->context.flags &= ~TFLAG_SURFACE_IS_TREE;
+                        Symbol signal_carrier = *(Symbol *)_t_surface(_t_child(envelope,EnvelopeCarrierIdx));
+                        if (!semeq(carrier,signal_carrier)) {
+                            debug(D_SIGNALS,"response failed carrier check, expecting %s, but got %s!\n",_r_get_symbol_name(r,carrier),_r_get_symbol_name(r,signal_carrier));
+                            //@todo what kind of logging of these kinds of events?
+                            break;
+                        }
 
-                        response = __r_sanatize_response(r,response,carrier);
-                        // the response isn't safe, i.e. has unexpected carrier or other bad stuff in it
-                        // just break
+                        response = __r_sanatize_response(r,response);
+                        // if the response isn't safe just break
                         if (!response) {
                             //@todo figure out if this means we should throw away the pending response too
                             break;
@@ -942,8 +950,9 @@ Receptor *_r_makeStreamReaderReceptor(Symbol receptor_symbol,Symbol stream_symbo
     //    _t_newi(p,TEST_INT_SYMBOL,2);  // two repetitions
     T *say = _t_newr(p,SAY);
 
-    _t_newi(say,RECEPTOR_ADDRESS,to);
+    __r_make_addr(say,TO_ADDRESS,to);
     _t_news(say,ASPECT_IDENT,DEFAULT_ASPECT);
+    _t_news(say,CARRIER,LINE);
 
     T *s = _t_new(say,STREAM_READ,0,0);
     _t_new_stream(s,stream_symbol,st);
@@ -1008,6 +1017,7 @@ Receptor *_r_makeClockReceptor() {
     T *tick = __r_make_tick();  // initial tick, will get updated by clock thread.
     Xaddr x = _r_new_instance(r,tick);
 
+    _t_news(resp,RESPONSE_CARRIER,TICK);
     T *g = _t_newr(resp,GET);
     _t_new(g,GET_XADDR,&x,sizeof(Xaddr));
 
@@ -1075,7 +1085,7 @@ void *___clock_thread(void *arg){
         debug(D_CLOCK,"%s\n",_td(r,tick));
         Xaddr x = {TICK,1};
         _r_set_instance(r,x,tick);
-        //        T *signal = __r_make_signal(self,self,DEFAULT_ASPECT,tick,0,0);
+        //        T *signal = __r_make_signal(self,self,DEFAULT_ASPECT,TICK,tick,0,0);
         //        _r_deliver(r,signal);
         sleep(1);
         /// @todo this will skip some seconds over time.... make more sophisticated

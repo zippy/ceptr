@@ -629,6 +629,7 @@ enum TESTSymbolIDs {
     TEST_RECEPTOR_SYMBOL_ID,
     TEST_ALPHABETIZE_SCAPE_SYMBOL_ID,
     TEST_SYMBOL_SYMBOL_ID,
+    TESTING_ID,
     NUM_TEST_SYMBOLS
 };
 #define TEST_INT_SYMBOL G_contexts[TEST_CONTEXT].symbols[TEST_INT_SYMBOL_ID]
@@ -642,6 +643,7 @@ enum TESTSymbolIDs {
 #define TEST_RECEPTOR_SYMBOL G_contexts[TEST_CONTEXT].symbols[TEST_RECEPTOR_SYMBOL_ID]
 #define TEST_ALPHABETIZE_SCAPE_SYMBOL G_contexts[TEST_CONTEXT].symbols[TEST_ALPHABETIZE_SCAPE_SYMBOL_ID]
 #define TEST_SYMBOL_SYMBOL G_contexts[TEST_CONTEXT].symbols[TEST_SYMBOL_SYMBOL_ID]
+#define TESTING G_contexts[TEST_CONTEXT].symbols[TESTING_ID]
 
 /**********************************************************************************/
 // LOCAL:Symbol

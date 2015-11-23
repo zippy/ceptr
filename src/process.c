@@ -263,16 +263,17 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             T *signal = _t_parent(context->run_tree);
             if (!signal || !semeq(_t_symbol(signal),SIGNAL))
                 return notInSignalContextReductionError;
-
+            T *t = _t_detach_by_idx(code,1);
+            Symbol carrier = *(Symbol*)_t_surface(t);
+            _t_free(t);
             T *response_contents = _t_detach_by_idx(code,1);
             T *envelope = _t_child(signal,SignalEnvelopeIdx);
             ReceptorAddress to = __r_get_addr(_t_child(envelope,EnvelopeFromIdx)); // from and to reverse in response
             ReceptorAddress from = __r_get_addr(_t_child(envelope,EnvelopeToIdx));
             Aspect a = *(Aspect *)_t_surface(_t_child(envelope,EnvelopeAspectIdx));
-            //   Symbol c = *(Symbol *)_t_surface(_t_child(envelope,EnvelopeCarrierIdx));
             UUIDt uuid = *(UUIDt *)_t_surface(_t_child(envelope,EnvelopeUUIDIdx));
 
-            T *response = __r_make_signal(from,to,a,response_contents,&uuid,0);
+            T *response = __r_make_signal(from,to,a,carrier,response_contents,&uuid,0);
             x = _r_send(q->r,response);
         }
         break;
@@ -286,7 +287,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
         {
 
             T *t = _t_detach_by_idx(code,1);
-            ReceptorAddress to = *(ReceptorAddress *)_t_surface(t);
+            ReceptorAddress to = __r_get_addr(t);
             _t_free(t);
 
             t = _t_detach_by_idx(code,1);
@@ -296,20 +297,24 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             Aspect aspect = *(Aspect *)_t_surface(t);
             _t_free(t);
 
+            t = _t_detach_by_idx(code,1);
+            Symbol carrier = *(Symbol*)_t_surface(t);
+            _t_free(t);
+
             T* signal_contents = _t_detach_by_idx(code,1);
 
             ReceptorAddress from = __r_get_self_address(q->r);
             T *signal;
 
             if (s.id == SAY_ID) {
-                signal = __r_make_signal(from,to,aspect,signal_contents,0,0);
+                signal = __r_make_signal(from,to,aspect,carrier,signal_contents,0,0);
                 x = _r_send(q->r,signal);
             }
             else if (s.id == REQUEST_ID) {
                 T *response_point = NULL;
-                Symbol response_carrier;
-                t = _t_detach_by_idx(code,1); // get the response carrier
-                response_carrier = *(Symbol*)_t_surface(t);
+
+                t = _t_detach_by_idx(code,1);
+                Symbol response_carrier = *(Symbol*)_t_surface(t);
                 _t_free(t);
 
                 int kids = _t_children(code);
@@ -334,7 +339,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                 else {
                     raise_error("request callback not implemented");
                 }
-                signal = __r_make_signal(from,to,aspect,signal_contents,0,until);
+                signal = __r_make_signal(from,to,aspect,carrier,signal_contents,0,until);
 
                 x = _r_request(q->r,signal,response_carrier,response_point,context->id);
             }

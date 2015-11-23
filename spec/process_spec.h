@@ -324,10 +324,12 @@ void testProcessRespond() {
     ReceptorAddress f = 3; // DUMMY ADDR
     ReceptorAddress t = 4; // DUMMY ADDR
 
-    T *s = __r_make_signal(f,t,DEFAULT_ASPECT,signal_contents,0,defaultRequestUntil());
+    T *s = __r_make_signal(f,t,DEFAULT_ASPECT,TESTING,signal_contents,0,defaultRequestUntil());
 
     T *run_tree = _t_new_root(RUN_TREE);
     T *n = _t_newr(run_tree,RESPOND);
+    _t_news(n,RESPONSE_CARRIER,TESTING);
+
     T *response_contents = _t_newi(n,TEST_INT_SYMBOL,271);
 
     R *c = __p_make_context(run_tree,0,0);
@@ -343,7 +345,7 @@ void testProcessRespond() {
     // it should create a response signal with the source UUID as the responding to UUID
     spec_is_equal(__p_reduce_sys_proc(c,RESPOND,n,r->q),noReductionErr);
     spec_is_str_equal(t2s(n),"(SIGNAL_UUID)");
-    spec_is_str_equal(_td(r,r->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (INSTANCE_NUM:4)) (TO_ADDRESS (INSTANCE_NUM:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TEST_INT_SYMBOL) (SIGNAL_UUID) (IN_RESPONSE_TO_UUID)) (BODY:{(TEST_INT_SYMBOL:271)})))");
+    spec_is_str_equal(_td(r,r->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (INSTANCE_NUM:4)) (TO_ADDRESS (INSTANCE_NUM:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (SIGNAL_UUID) (IN_RESPONSE_TO_UUID)) (BODY:{(TEST_INT_SYMBOL:271)})))");
     T *u1 = _t_child(_t_child(s,SignalEnvelopeIdx),EnvelopeUUIDIdx);
     int p[] = {1,SignalEnvelopeIdx,EnvelopeExtraIdx,TREE_PATH_TERMINATOR};
     T *u2 = _t_get(r->pending_signals,p);
@@ -360,8 +362,9 @@ void testProcessSay() {
     T *p = _t_newr(0,SAY);
     ReceptorAddress to = 3; // DUMMY ADDR
 
-    _t_newi(p,RECEPTOR_ADDRESS,to);
+    __r_make_addr(p,TO_ADDRESS,to);
     _t_news(p,ASPECT_IDENT,DEFAULT_ASPECT);
+    _t_news(p,CARRIER,TESTING);
     _t_newi(p,TEST_INT_SYMBOL,314);
 
     Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
@@ -384,7 +387,7 @@ void testProcessSay() {
 
     // say reduces to the UUID generated for the sent signal
     spec_is_str_equal(t2s(run_tree),"(RUN_TREE (SIGNAL_UUID) (PARAMS))");
-    spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (INSTANCE_NUM:0)) (TO_ADDRESS (INSTANCE_NUM:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TEST_INT_SYMBOL) (SIGNAL_UUID)) (BODY:{(TEST_INT_SYMBOL:314)})))");
+    spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (INSTANCE_NUM:0)) (TO_ADDRESS (INSTANCE_NUM:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (SIGNAL_UUID)) (BODY:{(TEST_INT_SYMBOL:314)})))");
     _r_free(r);
 }
 
@@ -392,10 +395,11 @@ void testProcessRequest() {
     T *p = _t_newr(0,REQUEST);
     ReceptorAddress to = 3; // DUMMY ADDR
 
-    _t_newi(p,RECEPTOR_ADDRESS,to);
+    __r_make_addr(p,TO_ADDRESS,to);
     _t_news(p,ASPECT_IDENT,DEFAULT_ASPECT);
+    _t_news(p,CARRIER,TESTING);
     _t_newi(p,TEST_INT_SYMBOL,314);
-    _t_news(p,RESPONSE_CARRIER,TEST_STR_SYMBOL);
+    _t_news(p,RESPONSE_CARRIER,TESTING);
     T *ec = _t_newr(p,END_CONDITIONS);
     _t_newi(ec,COUNT,1);
 
@@ -418,15 +422,15 @@ void testProcessRequest() {
     spec_is_equal(q->contexts_count,0);
     spec_is_ptr_equal(q->blocked,e);
     spec_is_equal(c->state,Block);
-    spec_is_str_equal(_td(r,r->pending_responses),"(PENDING_RESPONSES (PENDING_RESPONSE (SIGNAL_UUID) (CARRIER:TEST_STR_SYMBOL) (WAKEUP_REFERENCE (PROCESS_IDENT:1) (CODE_PATH:/1)) (END_CONDITIONS (COUNT:1))))");
+    spec_is_str_equal(_td(r,r->pending_responses),"(PENDING_RESPONSES (PENDING_RESPONSE (SIGNAL_UUID) (CARRIER:TESTING) (WAKEUP_REFERENCE (PROCESS_IDENT:1) (CODE_PATH:/1)) (END_CONDITIONS (COUNT:1))))");
 
     // request reduces to the UUID generated for the sent signal
     spec_is_str_equal(t2s(run_tree),"(RUN_TREE (SIGNAL_UUID) (PARAMS))");
-    spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (INSTANCE_NUM:0)) (TO_ADDRESS (INSTANCE_NUM:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TEST_INT_SYMBOL) (SIGNAL_UUID) (END_CONDITIONS (COUNT:1))) (BODY:{(TEST_INT_SYMBOL:314)})))");
+    spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (INSTANCE_NUM:0)) (TO_ADDRESS (INSTANCE_NUM:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (SIGNAL_UUID) (END_CONDITIONS (COUNT:1))) (BODY:{(TEST_INT_SYMBOL:314)})))");
 
-    //    debug_enable(D_SIGNALS);
+    // debug_enable(D_SIGNALS);
     // generate a response signal
-    T *s = __r_make_signal(0,0,DEFAULT_ASPECT,_t_new_str(0,TEST_STR_SYMBOL,"one fish"),_t_surface(_t_child(run_tree,1)),0);
+    T *s = __r_make_signal(0,0,DEFAULT_ASPECT,TESTING,_t_new_str(0,TEST_STR_SYMBOL,"one fish"),_t_surface(_t_child(run_tree,1)),0);
     _r_deliver(r,s);
     spec_is_str_equal(_td(r,r->pending_responses),"(PENDING_RESPONSES)");
 
@@ -662,7 +666,7 @@ void testProcessRefs() {
     _t_free(t);
     ReceptorAddress fm = 3; // DUMMY ADDR
     ReceptorAddress to = 4; // DUMMY ADDR
-    T *signal = __r_make_signal(fm,to,DEFAULT_ASPECT,_t_new_str(0,TEST_STR_SYMBOL,"foo"),0,0);
+    T *signal = __r_make_signal(fm,to,DEFAULT_ASPECT,TESTING,_t_new_str(0,TEST_STR_SYMBOL,"foo"),0,0);
 
     // simulate that this run-tree is on the flux.
     _t_add(signal,run_tree);
@@ -924,7 +928,7 @@ void testProcessListen() {
     // test listen that blocks
     n = _t_new_root(LISTEN);
     _t_news(n,ASPECT_IDENT,DEFAULT_ASPECT);
-    _t_news(n,CARRIER,TEST_STR_SYMBOL);
+    _t_news(n,CARRIER,TESTING);
     match = _t_newr(n,PATTERN);
     _sl(match,TEST_STR_SYMBOL);
 
@@ -934,15 +938,15 @@ void testProcessListen() {
     Q *q = r->q;
     Qe *e = _p_addrt2q(q,run_tree);
 
-    //    debug_enable(D_LISTEN+D_SIGNALS);
+    //debug_enable(D_LISTEN+D_SIGNALS);
     spec_is_equal(_p_reduceq(q),noReductionErr);
     spec_is_equal(q->contexts_count,0);
     spec_is_ptr_equal(q->blocked,e);
     spec_is_str_equal(t2s(run_tree),"(RUN_TREE (process:LISTEN) (PARAMS))");
 
-    spec_is_str_equal(t2s(__r_get_expectations(r,DEFAULT_ASPECT)),"(EXPECTATIONS (EXPECTATION (CARRIER:TEST_STR_SYMBOL) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TEST_STR_SYMBOL))) (WAKEUP_REFERENCE (PROCESS_IDENT:1) (CODE_PATH:/1)) (PARAMS (INTERPOLATE_SYMBOL:NULL_SYMBOL)) (END_CONDITIONS (COUNT:1))))");
+    spec_is_str_equal(t2s(__r_get_expectations(r,DEFAULT_ASPECT)),"(EXPECTATIONS (EXPECTATION (CARRIER:TESTING) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TEST_STR_SYMBOL))) (WAKEUP_REFERENCE (PROCESS_IDENT:1) (CODE_PATH:/1)) (PARAMS (INTERPOLATE_SYMBOL:NULL_SYMBOL)) (END_CONDITIONS (COUNT:1))))");
 
-    T *s = __r_make_signal(0,0,DEFAULT_ASPECT,_t_new_str(0,TEST_STR_SYMBOL,"fishy!"),0,0);
+    T *s = __r_make_signal(0,0,DEFAULT_ASPECT,TESTING,_t_new_str(0,TEST_STR_SYMBOL,"fishy!"),0,0);
     _r_deliver(r,s);
     spec_is_equal(_p_reduceq(q),noReductionErr);
 

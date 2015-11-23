@@ -87,12 +87,12 @@ void testReceptorSignal() {
     ReceptorAddress f = 3; // DUMMY ADDR
     ReceptorAddress t = 4; // DUMMY ADDR
 
-    T *s = __r_make_signal(f,t,DEFAULT_ASPECT,sc=_t_clone(signal_contents),0,0);
+    T *s = __r_make_signal(f,t,DEFAULT_ASPECT,TESTING,sc=_t_clone(signal_contents),0,0);
 
     spec_is_symbol_equal(r,_t_symbol(s),SIGNAL);
 
     T *envelope = _t_child(s,SignalEnvelopeIdx);
-    spec_is_str_equal(t2s(envelope),"(ENVELOPE (FROM_ADDRESS (INSTANCE_NUM:3)) (TO_ADDRESS (INSTANCE_NUM:4)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TEST_INT_SYMBOL) (SIGNAL_UUID))");
+    spec_is_str_equal(t2s(envelope),"(ENVELOPE (FROM_ADDRESS (INSTANCE_NUM:3)) (TO_ADDRESS (INSTANCE_NUM:4)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (SIGNAL_UUID))");
     T *body = _t_child(s,SignalBodyIdx);
     spec_is_str_equal(t2s(body),"(BODY:{(TEST_INT_SYMBOL:314)})");
     T *contents = (T*)_t_surface(body);
@@ -100,15 +100,15 @@ void testReceptorSignal() {
     _t_free(s);
 
     UUIDt u = __uuid_gen();
-    s = __r_make_signal(f,t,DEFAULT_ASPECT,_t_clone(signal_contents),&u,0);
-    spec_is_str_equal(t2s(s),"(SIGNAL (ENVELOPE (FROM_ADDRESS (INSTANCE_NUM:3)) (TO_ADDRESS (INSTANCE_NUM:4)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TEST_INT_SYMBOL) (SIGNAL_UUID) (IN_RESPONSE_TO_UUID)) (BODY:{(TEST_INT_SYMBOL:314)}))");
+    s = __r_make_signal(f,t,DEFAULT_ASPECT,TESTING,_t_clone(signal_contents),&u,0);
+    spec_is_str_equal(t2s(s),"(SIGNAL (ENVELOPE (FROM_ADDRESS (INSTANCE_NUM:3)) (TO_ADDRESS (INSTANCE_NUM:4)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (SIGNAL_UUID) (IN_RESPONSE_TO_UUID)) (BODY:{(TEST_INT_SYMBOL:314)}))");
     int p[] = {SignalEnvelopeIdx,EnvelopeExtraIdx,TREE_PATH_TERMINATOR};
     T *ru = _t_get(s,p);
     spec_is_true(__uuid_equal(&u,_t_surface(ru)));
 
     _t_free(s);
     T *ec = defaultRequestUntil();
-    s = __r_make_signal(f,t,DEFAULT_ASPECT,signal_contents,0,ec);
+    s = __r_make_signal(f,t,DEFAULT_ASPECT,TESTING,signal_contents,0,ec);
     spec_is_ptr_equal(ec,_t_get(s,p));
     _t_free(s);
 
@@ -122,11 +122,11 @@ void testReceptorSignalDeliver() {
     ReceptorAddress t = 4; // DUMMY ADDR
 
     // a new signal should simply be placed on the flux when delivered
-    T *s = __r_make_signal(f,t,DEFAULT_ASPECT,signal_contents,0,0);
+    T *s = __r_make_signal(f,t,DEFAULT_ASPECT,TESTING,signal_contents,0,0);
     spec_is_equal(_r_deliver(r,s),noDeliveryErr);
 
     T *signals = __r_get_signals(r,DEFAULT_ASPECT);
-    spec_is_str_equal(_td(r,signals),"(SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (INSTANCE_NUM:3)) (TO_ADDRESS (INSTANCE_NUM:4)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TEST_INT_SYMBOL) (SIGNAL_UUID)) (BODY:{(TEST_INT_SYMBOL:314)})))");
+    spec_is_str_equal(_td(r,signals),"(SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (INSTANCE_NUM:3)) (TO_ADDRESS (INSTANCE_NUM:4)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (SIGNAL_UUID)) (BODY:{(TEST_INT_SYMBOL:314)})))");
     _r_free(r);
 }
 
@@ -137,10 +137,11 @@ void testReceptorResponseDeliver() {
     T *t = _t_new_root(RUN_TREE);
     T *p = _t_new_root(NOOP);
     T *req = _t_newr(p,REQUEST);
-    _t_newi(req,RECEPTOR_ADDRESS,4);
+    __r_make_addr(req,TO_ADDRESS,4);
     _t_news(req,ASPECT_IDENT,DEFAULT_ASPECT);
+    _t_news(req,CARRIER,TESTING);
     _t_newi(req,TEST_INT_SYMBOL,98789);
-    _t_news(req,RESPONSE_CARRIER,TEST_STR_SYMBOL);
+    _t_news(req,RESPONSE_CARRIER,TESTING);
 
     T *c = _t_rclone(p);
     _t_free(p);
@@ -155,7 +156,7 @@ void testReceptorResponseDeliver() {
     spec_is_str_equal(_td(r,rt),"(RUN_TREE (process:NOOP (SIGNAL_UUID)))");
     T *pr = _t_child(r->pending_responses,1);
     spec_is_str_equal(_td(r,_t_child(pr,1)),"(SIGNAL_UUID)");
-    spec_is_str_equal(_td(r,_t_child(pr,2)),"(CARRIER:TEST_STR_SYMBOL)");
+    spec_is_str_equal(_td(r,_t_child(pr,2)),"(CARRIER:TESTING)");
     spec_is_str_equal(_td(r,_t_child(pr,3)),"(WAKEUP_REFERENCE (PROCESS_IDENT:1) (CODE_PATH:/1/1))");
     T *ec = _t_child(pr,4);
     spec_is_sem_equal(_t_symbol(ec),END_CONDITIONS);
@@ -166,7 +167,7 @@ void testReceptorResponseDeliver() {
 
     // get the original signal uuid from the run tree
     UUIDt response_id = *(UUIDt *)_t_surface(_t_child(_t_child(rt,1),1));
-    T *s = __r_make_signal(from,to,DEFAULT_ASPECT,_t_new_str(0,TEST_STR_SYMBOL,"foo"),&response_id,0);
+    T *s = __r_make_signal(from,to,DEFAULT_ASPECT,TESTING,_t_new_str(0,TEST_STR_SYMBOL,"foo"),&response_id,0);
 
     //    debug_enable(D_SIGNALS);
     spec_is_equal(_r_deliver(r,s),noDeliveryErr);
@@ -231,7 +232,7 @@ void testReceptorExpectation() {
     ReceptorAddress f = 3; // DUMMY ADDR
     ReceptorAddress t = 4; // DUMMY ADDR
 
-    T *signal = __r_make_signal(f,t,DEFAULT_ASPECT,signal_contents,0,0);
+    T *signal = __r_make_signal(f,t,DEFAULT_ASPECT,HTTP_REQUEST,signal_contents,0,0);
 
     // our expectation pattern should match on the first path segment
     // /HTTP_REQUEST/.,.,HTTP_REQUEST_PATH/HTTP_REQUEST_PATH_SEGMENTS/<HTTP_REQUEST_PATH_SEGMENT:HTTP_REQUEST_PATH_SEGMENT>
@@ -281,7 +282,7 @@ void testReceptorExpectation() {
     // signal and run_tree should be added and ready on the process queue
     spec_is_equal(r->q->contexts_count,1);
     spec_is_str_equal(_td(r,__r_get_signals(r,DEFAULT_ASPECT)),
-                      "(SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (INSTANCE_NUM:3)) (TO_ADDRESS (INSTANCE_NUM:4)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:HTTP_REQUEST) (SIGNAL_UUID)) (BODY:{(HTTP_REQUEST (HTTP_REQUEST_VERSION (VERSION_MAJOR:1) (VERSION_MINOR:0)) (HTTP_REQUEST_METHOD:GET) (HTTP_REQUEST_PATH (HTTP_REQUEST_PATH_SEGMENTS (HTTP_REQUEST_PATH_SEGMENT:groups) (HTTP_REQUEST_PATH_SEGMENT:5)) (HTTP_REQUEST_PATH_FILE (FILE_NAME:users) (FILE_EXTENSION:json)) (HTTP_REQUEST_PATH_QUERY (HTTP_REQUEST_PATH_QUERY_PARAMS (HTTP_REQUEST_PATH_QUERY_PARAM (PARAM_KEY:sort_by) (PARAM_VALUE:last_name)) (HTTP_REQUEST_PATH_QUERY_PARAM (PARAM_KEY:page) (PARAM_VALUE:2))))))}) (RUN_TREE (process:RESPOND (PARAM_REF:/2/1)) (PARAMS (HTTP_RESPONSE (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT) (HTTP_REQUEST_PATH_SEGMENT:groups))))))"
+                      "(SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (INSTANCE_NUM:3)) (TO_ADDRESS (INSTANCE_NUM:4)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:HTTP_REQUEST) (SIGNAL_UUID)) (BODY:{(HTTP_REQUEST (HTTP_REQUEST_VERSION (VERSION_MAJOR:1) (VERSION_MINOR:0)) (HTTP_REQUEST_METHOD:GET) (HTTP_REQUEST_PATH (HTTP_REQUEST_PATH_SEGMENTS (HTTP_REQUEST_PATH_SEGMENT:groups) (HTTP_REQUEST_PATH_SEGMENT:5)) (HTTP_REQUEST_PATH_FILE (FILE_NAME:users) (FILE_EXTENSION:json)) (HTTP_REQUEST_PATH_QUERY (HTTP_REQUEST_PATH_QUERY_PARAMS (HTTP_REQUEST_PATH_QUERY_PARAM (PARAM_KEY:sort_by) (PARAM_VALUE:last_name)) (HTTP_REQUEST_PATH_QUERY_PARAM (PARAM_KEY:page) (PARAM_VALUE:2))))))}) (RUN_TREE (process:RESPOND (RESPONSE_CARRIER:HTTP_RESPONSE) (PARAM_REF:/2/1)) (PARAMS (HTTP_RESPONSE (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT) (HTTP_REQUEST_PATH_SEGMENT:groups))))))"
                       );
 
     // manually run the process queue
@@ -777,7 +778,7 @@ void testReceptorEdgeStream() {
 
 void testReceptorClock() {
     Receptor *r = _r_makeClockReceptor();
-    spec_is_str_equal(_td(r,r->root),"(CLOCK_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES (PROCESS_CODING (PROCESS_NAME:respond with current time) (PROCESS_INTENTION:long desc...) (process:RESPOND (process:GET (GET_XADDR:TICK.1))) (PROCESS_SIGNATURE (OUTPUT_SIGNATURE (SIGNATURE_LABEL:result) (SIGNATURE_SYMBOL:NULL_SYMBOL))))) (PROTOCOLS) (SCAPES) (ASPECTS)) (FLUX (DEFAULT_ASPECT (EXPECTATIONS (EXPECTATION (CARRIER:CLOCK_TELL_TIME) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:CLOCK_TELL_TIME))) (ACTION:respond with current time) (PARAMS) (END_CONDITIONS (UNLIMITED)))) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))");
+    spec_is_str_equal(_td(r,r->root),"(CLOCK_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES (PROCESS_CODING (PROCESS_NAME:respond with current time) (PROCESS_INTENTION:long desc...) (process:RESPOND (RESPONSE_CARRIER:TICK) (process:GET (GET_XADDR:TICK.1))) (PROCESS_SIGNATURE (OUTPUT_SIGNATURE (SIGNATURE_LABEL:result) (SIGNATURE_SYMBOL:NULL_SYMBOL))))) (PROTOCOLS) (SCAPES) (ASPECTS)) (FLUX (DEFAULT_ASPECT (EXPECTATIONS (EXPECTATION (CARRIER:CLOCK_TELL_TIME) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:CLOCK_TELL_TIME))) (ACTION:respond with current time) (PARAMS) (END_CONDITIONS (UNLIMITED)))) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))");
 
    /*
       The clock receptor should do two things: respond to CLOCK_TELL_TIME signals with the current time, and also allow you to plant a listener based on a semtrex for any kind of time you want.  If you want the current time just plant a listener for TICK.  If you want to listen for every second plant a listener on the Symbol literal SECOND, and the clock receptor will trigger the listener every time the SECOND changes.  You can also listen for particular intervals and times by adding specificity to the semtrex, so to trigger a 3:30am action a-la-cron listen for: "/<TICK:(%HOUR=3,MINUTE=30)>"
@@ -788,8 +789,9 @@ void testReceptorClock() {
     ReceptorAddress self = __r_get_self_address(r);
 
     T *req = _t_newr(0,REQUEST);
-    _t_newi(req,RECEPTOR_ADDRESS,self);
+    __r_make_addr(req,TO_ADDRESS,self);
     _t_news(req,ASPECT_IDENT,DEFAULT_ASPECT);
+    _t_news(req,CARRIER,TICK);
     _t_newr(req,CLOCK_TELL_TIME);
     _t_news(req,RESPONSE_CARRIER,TICK);
     T *run_tree = __p_build_run_tree(req,0);
