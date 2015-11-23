@@ -401,114 +401,6 @@ void testReceptorDefMatch() {
     //! [testReceptorDefMatch]
 }
 
-/*
-  Protocol Startpoint <- Data Source (of type carrier type)
-     The carrier type is implicit in the first step's expectation semtrex.
-  Protocol Endpoint -> Action Handler (which can accept data of my carrier type)
-     The last step of a protocol is an "output" handler ACTION that must be provided at
-     expression time
-*/
-Receptor *_makePingProtocolReceptor(Symbol *pingP) {
-    Receptor *r;
-    r = _r_new(TEST_RECEPTOR_SYMBOL);
-
-    Symbol ping_protocol = _r_declare_symbol(r,PROTOCOL,"alive");
-    Symbol ping = _r_declare_symbol(r,BIT,"ping_message");
-    Symbol alive = _r_declare_symbol(r,BIT,"alive_message");
-    *pingP = ping;
-
-    // define a ping protocol with server and client sequences
-    T *ps = r->defs.protocols;
-    T *p = _t_newr(ps,ping_protocol);
-
-    // define the steps that can be used in sequences
-    Symbol listen_for_ping = _r_declare_symbol(r,PROTOCOL_STEP,"listen_for_ping");
-    Symbol get_alive_response = _r_declare_symbol(r,PROTOCOL_STEP,"get_alive_response");
-
-    T *steps = _t_newr(p,STEPS);
-    T *step = _t_newr(steps,listen_for_ping);
-    _t_news(step,CARRIER,ping);
-    T *e = _t_newr(step,PATTERN);
-    _sl(e,ping);
-
-    T *ping_resp = _t_new_root(RESPOND);
-    _t_newi(ping_resp,alive,1);
-    Process proc = _r_code_process(r,ping_resp,"send alive response","long desc...",NULL);
-    _t_newp(step,ACTION,proc);
-
-    step = _t_newr(steps,get_alive_response);
-    _t_news(step,CARRIER,alive);
-    e = _t_newr(step,PATTERN);
-    _sl(e,alive);
-
-    // define the sequences (built of steps)
-    Symbol alive_server = _r_declare_symbol(r,SEQUENCE,"alive_server");
-    Symbol alive_client = _r_declare_symbol(r,SEQUENCE,"alive_client");
-
-    T *sequences = _t_newr(p,SEQUENCES);
-
-    // the alive_server sequence just has one step, which is to listen for the ping
-    T *seq = _t_newr(sequences,alive_server);
-    _t_news(seq,STEP_SYMBOL,listen_for_ping);
-
-    // the alive_client sequence has two steps: send the ping, and listen for the alive response
-    seq = _t_newr(sequences,alive_client);
-    _t_news(seq,STEP_SYMBOL,get_alive_response);
-    wjson(&r->defs,p,"protocol",-1);
-
-    return r;
-}
-
-void testReceptorProtocol() {
-    //! [testReceptorProtocol]
-    Symbol ping;
-
-    Receptor *r = _makePingProtocolReceptor(&ping);
-
-    T *ps = r->defs.protocols;
-    char *d = _td(r,ps);
-
-    spec_is_str_equal(d,"(PROTOCOLS (alive (STEPS (listen_for_ping (CARRIER:ping_message) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping_message))) (ACTION:send alive response)) (get_alive_response (CARRIER:alive_message) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:alive_message))))) (SEQUENCES (alive_server (STEP_SYMBOL:listen_for_ping)) (alive_client (STEP_SYMBOL:get_alive_response)))))");
-
-    Symbol alive_server = _r_get_symbol_by_label(r,"alive_server");
-    _r_express_protocol(r,1,alive_server,DEFAULT_ASPECT,NULL);
-
-    d = _td(r,r->flux);
-
-    spec_is_str_equal(d,"(FLUX (DEFAULT_ASPECT (EXPECTATIONS (EXPECTATION (CARRIER:ping_message) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ping_message))) (ACTION:send alive response) (PARAMS) (END_CONDITIONS (UNLIMITED)))) (SIGNALS)))");
-
-    // delivering a fake signal should return a ping
-    ReceptorAddress f = 3; // DUMMY ADDR
-    ReceptorAddress t = 4; // DUMMY ADDR
-    T *signal = __r_make_signal(f,t,DEFAULT_ASPECT,_t_newi(0,ping,0),0,0);
-
-    d = _td(r,signal);
-    spec_is_str_equal(d,"(SIGNAL (ENVELOPE (FROM_ADDRESS (INSTANCE_NUM:3)) (TO_ADDRESS (INSTANCE_NUM:4)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:ping_message) (SIGNAL_UUID)) (BODY:{(ping_message:0)}))");
-
-    //    debug_enable(D_SIGNALS);
-    T *result;
-    Error err = _r_deliver(r,signal);
-
-    // after delivery we should see the process in the active list with the semtrex match in the params
-    d = _td(r,r->q->active->context->run_tree);
-    spec_is_str_equal(d,"(RUN_TREE (process:RESPOND (alive_message:1)) (PARAMS))");
-
-    // manually run the process queue
-    _p_reduceq(r->q);
-
-    result = _t_child(r->q->completed->context->run_tree,1);
-    d = _td(r,result);
-    spec_is_str_equal(d,"(SIGNAL_UUID)");
-
-    d = _td(r,r->pending_signals);
-    spec_is_str_equal(d,"(PENDING_SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (INSTANCE_NUM:4)) (TO_ADDRESS (INSTANCE_NUM:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:alive_message) (SIGNAL_UUID) (IN_RESPONSE_TO_UUID)) (BODY:{(alive_message:1)})))");
-
-    debug_disable(D_SIGNALS);
-    //    _t_free(result);
-    _r_free(r);
-    //! [testReceptorProtocol]
-}
-
 void testReceptorInstanceNew() {
     //! [testReceptorInstancesNew]
     Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
@@ -861,7 +753,6 @@ void testReceptor() {
     testReceptorExpectation();
     testReceptorDef();
     testReceptorDefMatch();
-    testReceptorProtocol();
     testReceptorInstanceNew();
     testReceptorSerialize();
     testReceptorNums();

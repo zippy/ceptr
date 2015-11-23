@@ -3,7 +3,7 @@
 <tr><td><a name="STRUCTURES"></a>STRUCTURES</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_STRUCTURE_DEFINITION">ZERO-OR-MORE-OF-STRUCTURE-DEFINITION</a></td><td></td></tr>
 <tr><td><a name="SYMBOLS"></a>SYMBOLS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_SYMBOL_DECLARATION">ZERO-OR-MORE-OF-SYMBOL-DECLARATION</a></td><td></td></tr>
 <tr><td><a name="PROCESSES"></a>PROCESSES</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_PROCESS_CODING">ZERO-OR-MORE-OF-PROCESS-CODING</a></td><td></td></tr>
-<tr><td><a name="PROTOCOLS"></a>PROTOCOLS</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_STRUCTURE_OF_PROTOCOL">ONE-OR-MORE-OF-STRUCTURE-OF-PROTOCOL</a></td><td>  one or more of symbols of structure PROTOCOLd</td></tr>
+<tr><td><a name="PROTOCOLS"></a>PROTOCOLS</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_STRUCTURE_OF_PROTOCOL_DEF">ONE-OR-MORE-OF-STRUCTURE-OF-PROTOCOL-DEF</a></td><td></td></tr>
 <tr><td><a name="SCAPES"></a>SCAPES</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_STRUCTURE_OF_SCAPE">ZERO-OR-MORE-OF-STRUCTURE-OF-SCAPE</a></td><td></td></tr>
 <tr><td><a name="ASPECTS"></a>ASPECTS</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_ASPECT_DEF">ONE-OR-MORE-OF-ASPECT-DEF</a></td><td></td></tr>
 <tr><td><a name="DEFINITIONS"></a>DEFINITIONS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_LIST_OF_STRUCTURES_AND_SYMBOLS_AND_PROCESSES_AND_ZERO_OR_MORE_OF_PROTOCOLS_AND_ZERO_OR_MORE_OF_SCAPES_AND_ZERO_OR_MORE_OF_ASPECTS">ZERO-OR-MORE-OF-LIST-OF-STRUCTURES-AND-SYMBOLS-AND-PROCESSES-AND-ZERO-OR-MORE-OF-PROTOCOLS-AND-ZERO-OR-MORE-OF-SCAPES-AND-ZERO-OR-MORE-OF-ASPECTS</a></td><td></td></tr>
@@ -100,10 +100,12 @@
 <tr><td><a name="SIGNAL_REF"></a>SIGNAL_REF</td><td><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></td><td>               used in a code tree triggered by an expectation as a reference to a part of the signal that triggered the action.</td></tr>
 <tr><td><a name="RESULT_SYMBOL"></a>RESULT_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
 <tr><td><a name="REDUCTION_ERROR_SYMBOL"></a>REDUCTION_ERROR_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
-<tr><td><a name="STEPS"></a>STEPS</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_STRUCTURE_OF_PROTOCOL_STEP">ONE-OR-MORE-OF-STRUCTURE-OF-PROTOCOL-STEP</a></td><td></td></tr>
-<tr><td><a name="STEP_SYMBOL"></a>STEP_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
-<tr><td><a name="SEQUENCES"></a>SEQUENCES</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_SEQUENCE">ONE-OR-MORE-OF-SEQUENCE</a></td><td></td></tr>
-<tr><td><a name="RESPONSE_STEPS"></a>RESPONSE_STEPS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_STRUCTURE_OF_PROTOCOL_STEP">ZERO-OR-MORE-OF-STRUCTURE-OF-PROTOCOL-STEP</a></td><td></td></tr>
+<tr><td><a name="ROLE"></a>ROLE</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>  the symbol stored in a ROLE must be limmited to those of structure RECEPTOR_ADDRESS. we don't mean %RECEPTOR_ADDRESS as the structure because that actually means a symbol of of type receptor address.  Here we mean that the surface contains a symbol that itself must be of type RECEPTOR_ADDRESS, this is agian like a range specifier on the value of the surface.</td></tr>
+<tr><td><a name="ANYBODY"></a>ANYBODY</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
+<tr><td><a name="SOURCE"></a>SOURCE</td><td><a href="ref_sys_structures.html#TUPLE_OF_ZERO_OR_MORE_OF_ROLE_AND_ZERO_OR_ONE_OF_ANYBODY">TUPLE-OF-ZERO-OR-MORE-OF-ROLE-AND-ZERO-OR-ONE-OF-ANYBODY</a></td><td>  hmm gotta be a way of specifying that this can't be empty (@todo)</td></tr>
+<tr><td><a name="ROLE_PROCESS"></a>ROLE_PROCESS</td><td><a href="ref_sys_structures.html#LIST_OF_ROLE_AND_SOURCE_AND_EXPECTATION">LIST-OF-ROLE-AND-SOURCE-AND-EXPECTATION</a></td><td></td></tr>
+<tr><td><a name="CONVERSATION_LABEL"></a>CONVERSATION_LABEL</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="CONVERSATION"></a>CONVERSATION</td><td><a href="ref_sys_structures.html#TUPLE_OF_CONVERSATION_LABEL_AND_ONE_OR_MORE_OF_ROLE_PROCESS">TUPLE-OF-CONVERSATION-LABEL-AND-ONE-OR-MORE-OF-ROLE-PROCESS</a></td><td></td></tr>
 <tr><td><a name="MANIFEST_LABEL"></a>MANIFEST_LABEL</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td>           a label in the manifest to identify a binding</td></tr>
 <tr><td><a name="MANIFEST_SPEC"></a>MANIFEST_SPEC</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>             a symbol to specify what type of data must be provided for a given manifest label</td></tr>
 <tr><td><a name="MANIFEST_PAIR"></a>MANIFEST_PAIR</td><td><a href="ref_sys_structures.html#TUPLE_OF_MANIFEST_LABEL_AND_MANIFEST_SPEC">TUPLE-OF-MANIFEST-LABEL-AND-MANIFEST-SPEC</a></td><td></td></tr>

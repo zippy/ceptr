@@ -8,6 +8,7 @@
 #include "../src/vmhost.h"
 #include "http_example.h"
 #include "../src/shell.h"
+#include "../src/protocol.h"
 
 void testVMHostCreate() {
     //! [testVMHostCreate]
@@ -242,26 +243,24 @@ void testVMHostCreate() {
 /*     _v_activate(v,httpd_x); */
 /*     _v_activate(v,x); */
 
+Receptor *_makeAliveProtocolReceptor();
 
-void testVMHostActivateReceptor() {
+void testVMHostActivateReceptor()  {
     //! [testVMHostActivateReceptor]
     VMHost *v = _v_new();
 
-    Symbol ping;
-    Receptor *server = _makePingProtocolReceptor(&ping);
-    Symbol alive_server_seq = _r_get_symbol_by_label(server,"alive_server");
-    _r_express_protocol(server,1,alive_server_seq,DEFAULT_ASPECT,NULL);
+    Receptor *server = _makeAliveProtocolReceptor();
+    Symbol alive = _r_get_symbol_by_label(server,"alive");
+    Symbol ping =_r_get_symbol_by_label(server,"ping");
+    _o_express_role(server,alive,_r_get_symbol_by_label(server,"server"),DEFAULT_ASPECT,NULL);
 
-    Receptor *client = _makePingProtocolReceptor(&ping);
-    Symbol alive_client_seq = _r_get_symbol_by_label(client,"alive_client");
-
+    Receptor *client = _makeAliveProtocolReceptor();
 
     T *noop = _t_new_root(NOOP);
     _t_newi(noop,TEST_INT_SYMBOL,314);
     Process proc = _r_code_process(client,noop,"do nothing","long desc...",NULL);
     T *handler = _t_newp(0,ACTION,proc);
-
-    _r_express_protocol(client,1,alive_client_seq,DEFAULT_ASPECT,handler);
+    _o_express_role(client,alive,ANYBODY,DEFAULT_ASPECT,handler);
 
     Symbol ss = _r_declare_symbol(v->r,RECEPTOR,"alive server");
     Symbol cs = _r_declare_symbol(v->r,RECEPTOR,"alive client");
@@ -281,9 +280,9 @@ void testVMHostActivateReceptor() {
     ar = v->active_receptors[1].r;
     spec_is_ptr_equal(ar,client);
 
-    _v_send(v,cx.addr,sx.addr,DEFAULT_ASPECT,_t_newi(0,ping,0));
+    _v_send(v,cx.addr,sx.addr,DEFAULT_ASPECT,alive,_t_newi(0,ping,0));
 
-    spec_is_str_equal(_td(client,v->r->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (INSTANCE_NUM:3)) (TO_ADDRESS (INSTANCE_NUM:2)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:ping_message) (SIGNAL_UUID)) (BODY:{(ping_message:0)})))");
+    spec_is_str_equal(_td(client,v->r->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (INSTANCE_NUM:3)) (TO_ADDRESS (INSTANCE_NUM:2)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:alive) (SIGNAL_UUID)) (BODY:{(ping)})))");
 
     // simulate round-robin processing of signals
     //debug_enable(D_SIGNALS);
@@ -303,6 +302,7 @@ void testVMHostActivateReceptor() {
     _v_free(v);
     //! [testVMHostActivateReceptor]
 }
+
 
 void testVMHostShell() {
 

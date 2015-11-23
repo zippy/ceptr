@@ -144,14 +144,14 @@ Symbol: PARAMS,[*!];
 Symbol: RESULT_SYMBOL,SYMBOL;
 Symbol: REDUCTION_ERROR_SYMBOL,SYMBOL;
 
-Symbol: PROTOCOLS,[+%PROTOCOL];  one or more of symbols of structure PROTOCOL
-Symbol: STEPS,[+%PROTOCOL_STEP];
-Structure: PROTOCOL_STEP,(CARRIER,PATTERN,ACTION,?PARAMS,?END_CONDITIONS);
-Symbol: STEP_SYMBOL,SYMBOL;
-Structure: SEQUENCE,+STEP_SYMBOL;
-Symbol: SEQUENCES,[+SEQUENCE];
-Symbol: RESPONSE_STEPS,[*%PROTOCOL_STEP];
-Structure: PROTOCOL,STEPS,SEQUENCES;
+Symbol: ROLE,SYMBOL;  the symbol stored in a ROLE must be limmited to those of structure RECEPTOR_ADDRESS. we don't mean %RECEPTOR_ADDRESS as the structure because that actually means a symbol of of type receptor address.  Here we mean that the surface contains a symbol that itself must be of type RECEPTOR_ADDRESS, this is agian like a range specifier on the value of the surface.
+Symbol: ANYBODY,NULL_STRUCTURE;
+Symbol: SOURCE,[(*ROLE,?ANYBODY)];  hmm gotta be a way of specifying that this can't be empty (@todo)
+Symbol: ROLE_PROCESS,[(ROLE,SOURCE,EXPECTATION)];
+Symbol: CONVERSATION_LABEL,CSTRING;
+Symbol: CONVERSATION,[(CONVERSATION_LABEL,+ROLE_PROCESS)];
+Structure: PROTOCOL_DEF,(+ROLE,+CONVERSATION);
+Symbol: PROTOCOLS,[+%PROTOCOL_DEF];
 
 Symbol: SCAPES,[*%SCAPE];
 Symbol: MANIFEST_LABEL,CSTRING;           a label in the manifest to identify a binding

@@ -318,62 +318,6 @@ int _r_def_match(Receptor *r,Symbol s,T *t) {
     return result;
 }
 
-/**
- * Setup expectations on an aspect for a given sequence in a protocol
- *
- *
- * @param[in] r the receptor
- * @param[in] idx the index of the protocol in the definition tree
- * @param[in] sequence in the protocol to express (i.e. activate by adding to flux's expectations)
- * @param[in] aspect the aspect on which to install expectations for this protocol
- * @param[in] handler an action to run as the sequence's endpoint (if any)
- *
- * <b>Examples (from test suite):</b>
- * @snippet spec/receptor_spec.h testReceptorProtocol
- */
-void _r_express_protocol(Receptor *r,int idx,Symbol sequence,Aspect aspect,T* handler) {
-    T *p = _t_child(r->defs.protocols,idx);
-    T *sequences = _t_child(p,2);
-    int j,c = _t_children(sequences);
-    for(j=1;j<=c;j++) {
-        T *seq = _t_child(sequences,j);
-        if (semeq(sequence,_t_symbol(seq))) {
-            // found the sequence, now get the first step
-            Symbol step1 = *(Symbol *)_t_surface(_t_child(seq,1));
-            // and search for the step definition in the list of steps
-            T *steps = _t_child(p,1);
-            c = _t_children(steps);
-            for(j=1;j<=c;j++) {
-                T *step = _t_child(steps,j);
-                if (semeq(_t_symbol(step),step1)) {
-                    Symbol carrier = *(Symbol *)_t_surface(_t_child(step,StepCarrierIdx));
-                    T *pattern = _t_clone(_t_child(step,StepPatternIdx));
-                    T *act = _t_child(step,StepActionIdx);
-                    T *e1 = _t_child(step,StepExtra1Idx);
-                    T *e2 = _t_child(step,StepExtra2Idx);
-                    T *params = NULL;
-                    T *until = NULL;
-                    if (e1 && semeq(_t_symbol(e1),PARAMS)) params = e1;
-                    else if (e1 && semeq(_t_symbol(e1),END_CONDITIONS)) until = e1;
-                    if (e2 && semeq(_t_symbol(e2),END_CONDITIONS)) until = e2;
-
-                    // if there is no action, then assume its the sequence endpoint
-                    // and use the handler in its place
-                    /// @todo revisit the assumption about handlers and endpoints
-                    if (act)
-                        act = _t_clone(act);
-                    else
-                        act = handler;
-                    _r_add_expectation(r,aspect,carrier,pattern,act,params,until);
-                    return;
-                }
-            }
-            raise_error("step not found:%s",_r_get_symbol_name(r,step1));
-        }
-    }
-    raise_error("sequence not found:%s",_r_get_symbol_name(r,sequence));
-}
-
 /*****************  receptor instances and xaddrs */
 
 /**

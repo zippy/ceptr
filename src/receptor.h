@@ -28,12 +28,13 @@ enum {SignalEnvelopeIdx=1,SignalBodyIdx};
 enum {PendingResponseUUIDIdx=1,PendingResponseCarrierIdx,PendingResponseWakeupIdx,PendingResponseEndCondsIdx};
 enum {WakeupReferenceProcessIdentIdx=1,WakeupReferenceCodePathIdx};
 enum {ExpectationCarrierIdx=1,ExpectationPatternIdx,ExpectationActionIdx,ExpectationParamsIdx,ExpectationEndCondsIdx};
-enum {StepCarrierIdx=1,StepPatternIdx,StepActionIdx,StepExtra1Idx,StepExtra2Idx};
 enum DATEIndexes {dateYearIdx=1,dateMonthIdx,dateDayIdx};
 enum TIMEIndexes {timeHourIdx=1,timeMinuteIdx,timeSecondIdx};
 enum TIMESTAMPIndexes {timestampTodayIdx=1,timestampNowIdx};
-enum PROTOCOLIndexes {protocolStepsIdx=1,protocolSequencesIdx};
 enum ASPECTIndexes {aspectExpectationsIdx=1,aspectSignalsIdx};
+enum {RoleProcessRoleIdx=1,RoleProcessSource,RoleProcessExpectation};
+enum {SourceRoleIdx=1};
+enum {ConversationConversationLabelIdx=1,ConversationRoleFirstProcessIdx};
 // delivery errors
 enum {noDeliveryErr};
 
@@ -59,8 +60,6 @@ Process _r_code_process(Receptor *r,T *code,char *name,char *intention,T *signat
 
 T *_r_build_def_semtrex(Receptor *r,Symbol s);
 int _r_def_match(Receptor *r,Symbol s,T *t);
-
-void _r_express_protocol(Receptor *r,int idx,Symbol sequence,Aspect aspect,T* handler);
 
 /*****************  receptor instances and xaddrs */
 
