@@ -22,7 +22,7 @@ void addCommand(Receptor *r,Xaddr ox,char *command,char *desc,T *code) {
     _t_new_str(vls,VERB,command);
 
     T *p = _t_new_root(SAY);
-    _t_newi(p,RECEPTOR_ADDRESS,ox.addr);
+    __r_make_addr(p,TO_ADDRESS,ox.addr);
     _t_news(p,ASPECT_IDENT,DEFAULT_ASPECT);
     _t_add(p,code);
 
