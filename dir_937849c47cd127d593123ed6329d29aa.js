@@ -9,6 +9,7 @@ var dir_937849c47cd127d593123ed6329d29aa =
     [ "mtree_spec.h", "mtree__spec_8h.html", "mtree__spec_8h" ],
     [ "process_spec.h", "process__spec_8h.html", "process__spec_8h" ],
     [ "profile_example.h", "profile__example_8h.html", "profile__example_8h" ],
+    [ "protocol_spec.h", "protocol__spec_8h.html", "protocol__spec_8h" ],
     [ "receptor_spec.h", "receptor__spec_8h.html", "receptor__spec_8h" ],
     [ "scape_spec.h", "scape__spec_8h.html", "scape__spec_8h" ],
     [ "semtrex_spec.h", "semtrex__spec_8h.html", "semtrex__spec_8h" ],

@@ -106,7 +106,7 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="STRUCTURES"></a>STRUCTURES</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_STRUCTURE_DEFINITION">ZERO-OR-MORE-OF-STRUCTURE-DEFINITION</a></td><td></td></tr>
 <tr><td><a name="SYMBOLS"></a>SYMBOLS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_SYMBOL_DECLARATION">ZERO-OR-MORE-OF-SYMBOL-DECLARATION</a></td><td></td></tr>
 <tr><td><a name="PROCESSES"></a>PROCESSES</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_PROCESS_CODING">ZERO-OR-MORE-OF-PROCESS-CODING</a></td><td></td></tr>
-<tr><td><a name="PROTOCOLS"></a>PROTOCOLS</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_STRUCTURE_OF_PROTOCOL">ONE-OR-MORE-OF-STRUCTURE-OF-PROTOCOL</a></td><td>  one or more of symbols of structure PROTOCOL</td></tr>
+<tr><td><a name="PROTOCOLS"></a>PROTOCOLS</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_STRUCTURE_OF_PROTOCOL_DEF">ONE-OR-MORE-OF-STRUCTURE-OF-PROTOCOL-DEF</a></td><td></td></tr>
 <tr><td><a name="SCAPES"></a>SCAPES</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_STRUCTURE_OF_SCAPE">ZERO-OR-MORE-OF-STRUCTURE-OF-SCAPE</a></td><td></td></tr>
 <tr><td><a name="ASPECTS"></a>ASPECTS</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_ASPECT_DEF">ONE-OR-MORE-OF-ASPECT-DEF</a></td><td></td></tr>
 <tr><td><a name="DEFINITIONS"></a>DEFINITIONS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_LIST_OF_STRUCTURES_AND_SYMBOLS_AND_PROCESSES_AND_ZERO_OR_MORE_OF_PROTOCOLS_AND_ZERO_OR_MORE_OF_SCAPES_AND_ZERO_OR_MORE_OF_ASPECTS">ZERO-OR-MORE-OF-LIST-OF-STRUCTURES-AND-SYMBOLS-AND-PROCESSES-AND-ZERO-OR-MORE-OF-PROTOCOLS-AND-ZERO-OR-MORE-OF-SCAPES-AND-ZERO-OR-MORE-OF-ASPECTS</a></td><td></td></tr>
@@ -164,9 +164,12 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="BODY"></a>BODY</td><td><a href="ref_sys_structures.html#TREE">TREE</a></td><td>                          orthogonal tree that holds message body</td></tr>
 <tr><td><a name="SIGNAL_UUID"></a>SIGNAL_UUID</td><td><a href="ref_sys_structures.html#UUID">UUID</a></td><td></td></tr>
 <tr><td><a name="IN_RESPONSE_TO_UUID"></a>IN_RESPONSE_TO_UUID</td><td><a href="ref_sys_structures.html#UUID">UUID</a></td><td></td></tr>
-<tr><td><a name="RECEPTOR_ADDRESS"></a>RECEPTOR_ADDRESS</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
+<tr><td><a name="INSTANCE_NUM"></a>INSTANCE_NUM</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td>               this a placeholder for better addressing later...</td></tr>
+<tr><td><a name="RECEPTOR_PATH"></a>RECEPTOR_PATH</td><td><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></td><td></td></tr>
+<tr><td><a name="FROM_ADDRESS"></a>FROM_ADDRESS</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
+<tr><td><a name="TO_ADDRESS"></a>TO_ADDRESS</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
 <tr><td><a name="END_CONDITIONS"></a>END_CONDITIONS</td><td><a href="ref_sys_structures.html#TUPLE_OF_ZERO_OR_ONE_OF_TIMEOUT_AT_AND_ZERO_OR_ONE_OF_REPETITIONS">TUPLE-OF-ZERO-OR-ONE-OF-TIMEOUT-AT-AND-ZERO-OR-ONE-OF-REPETITIONS</a></td><td></td></tr>
-<tr><td><a name="ENVELOPE"></a>ENVELOPE</td><td><a href="ref_sys_structures.html#LIST_OF_RECEPTOR_ADDRESS_AND_RECEPTOR_ADDRESS_AND_ASPECT_IDENT_AND_CARRIER_AND_SIGNAL_UUID_AND_ZERO_OR_ONE_OF_LOGICAL_OR_OF_END_CONDITIONS_AND_IN_RESPONSE_TO_UUID">LIST-OF-RECEPTOR-ADDRESS-AND-RECEPTOR-ADDRESS-AND-ASPECT-IDENT-AND-CARRIER-AND-SIGNAL-UUID-AND-ZERO-OR-ONE-OF-LOGICAL-OR-OF-END-CONDITIONS-AND-IN-RESPONSE-TO-UUID</a></td><td></td></tr>
+<tr><td><a name="ENVELOPE"></a>ENVELOPE</td><td><a href="ref_sys_structures.html#LIST_OF_FROM_ADDRESS_AND_TO_ADDRESS_AND_ASPECT_IDENT_AND_CARRIER_AND_SIGNAL_UUID_AND_ZERO_OR_ONE_OF_LOGICAL_OR_OF_END_CONDITIONS_AND_IN_RESPONSE_TO_UUID">LIST-OF-FROM-ADDRESS-AND-TO-ADDRESS-AND-ASPECT-IDENT-AND-CARRIER-AND-SIGNAL-UUID-AND-ZERO-OR-ONE-OF-LOGICAL-OR-OF-END-CONDITIONS-AND-IN-RESPONSE-TO-UUID</a></td><td></td></tr>
 <tr><td><a name="SIGNAL"></a>SIGNAL</td><td><a href="ref_sys_structures.html#TUPLE_OF_ENVELOPE_AND_BODY">TUPLE-OF-ENVELOPE-AND-BODY</a></td><td>                        a signal on the flux.  It's first child is the contents of the signal</td></tr>
 <tr><td><a name="PENDING_SIGNALS"></a>PENDING_SIGNALS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_SIGNAL">ZERO-OR-MORE-OF-SIGNAL</a></td><td>               list of signals pending to be sent by the VM_HOST</td></tr>
 <tr><td><a name="CODE_PATH"></a>CODE_PATH</td><td><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></td><td></td></tr>
@@ -197,12 +200,15 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="OUTPUT_SIGNATURE"></a>OUTPUT_SIGNATURE</td><td><a href="ref_sys_structures.html#TUPLE_OF_SIGNATURE_LABEL_AND_SIGNATURE_OUTPUT_TYPE">TUPLE-OF-SIGNATURE-LABEL-AND-SIGNATURE-OUTPUT-TYPE</a></td><td></td></tr>
 <tr><td><a name="RUN_TREE"></a>RUN_TREE</td><td><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></td><td>                       think about this as a stack frame and its code</td></tr>
 <tr><td><a name="PARAM_REF"></a>PARAM_REF</td><td><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></td><td>                used in a code tree as a reference to a parameter</td></tr>
+<tr><td><a name="SIGNAL_REF"></a>SIGNAL_REF</td><td><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></td><td>               used in a code tree triggered by an expectation as a reference to a part of the signal that triggered the action.</td></tr>
 <tr><td><a name="RESULT_SYMBOL"></a>RESULT_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
 <tr><td><a name="REDUCTION_ERROR_SYMBOL"></a>REDUCTION_ERROR_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
-<tr><td><a name="STEPS"></a>STEPS</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_STRUCTURE_OF_PROTOCOL_STEP">ONE-OR-MORE-OF-STRUCTURE-OF-PROTOCOL-STEP</a></td><td></td></tr>
-<tr><td><a name="STEP_SYMBOL"></a>STEP_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
-<tr><td><a name="SEQUENCES"></a>SEQUENCES</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_SEQUENCE">ONE-OR-MORE-OF-SEQUENCE</a></td><td></td></tr>
-<tr><td><a name="RESPONSE_STEPS"></a>RESPONSE_STEPS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_STRUCTURE_OF_PROTOCOL_STEP">ZERO-OR-MORE-OF-STRUCTURE-OF-PROTOCOL-STEP</a></td><td></td></tr>
+<tr><td><a name="ROLE"></a>ROLE</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>  the symbol stored in a ROLE must be limmited to those of structure RECEPTOR_ADDRESS. we don't mean %RECEPTOR_ADDRESS as the structure because that actually means a symbol of of type receptor address.  Here we mean that the surface contains a symbol that itself must be of type RECEPTOR_ADDRESS, this is agian like a range specifier on the value of the surface.</td></tr>
+<tr><td><a name="ANYBODY"></a>ANYBODY</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
+<tr><td><a name="SOURCE"></a>SOURCE</td><td><a href="ref_sys_structures.html#TUPLE_OF_ZERO_OR_MORE_OF_ROLE_AND_ZERO_OR_ONE_OF_ANYBODY">TUPLE-OF-ZERO-OR-MORE-OF-ROLE-AND-ZERO-OR-ONE-OF-ANYBODY</a></td><td>  hmm gotta be a way of specifying that this can't be empty (@todo)</td></tr>
+<tr><td><a name="ROLE_PROCESS"></a>ROLE_PROCESS</td><td><a href="ref_sys_structures.html#LIST_OF_ROLE_AND_SOURCE_AND_EXPECTATION">LIST-OF-ROLE-AND-SOURCE-AND-EXPECTATION</a></td><td></td></tr>
+<tr><td><a name="CONVERSATION_LABEL"></a>CONVERSATION_LABEL</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="CONVERSATION"></a>CONVERSATION</td><td><a href="ref_sys_structures.html#TUPLE_OF_CONVERSATION_LABEL_AND_ONE_OR_MORE_OF_ROLE_PROCESS">TUPLE-OF-CONVERSATION-LABEL-AND-ONE-OR-MORE-OF-ROLE-PROCESS</a></td><td></td></tr>
 <tr><td><a name="MANIFEST_LABEL"></a>MANIFEST_LABEL</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td>           a label in the manifest to identify a binding</td></tr>
 <tr><td><a name="MANIFEST_SPEC"></a>MANIFEST_SPEC</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>             a symbol to specify what type of data must be provided for a given manifest label</td></tr>
 <tr><td><a name="MANIFEST_PAIR"></a>MANIFEST_PAIR</td><td><a href="ref_sys_structures.html#TUPLE_OF_MANIFEST_LABEL_AND_MANIFEST_SPEC">TUPLE-OF-MANIFEST-LABEL-AND-MANIFEST-SPEC</a></td><td></td></tr>
@@ -292,13 +298,14 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="TEST_RECEPTOR_SYMBOL"></a>TEST_RECEPTOR_SYMBOL</td><td><a href="ref_sys_structures.html#RECEPTOR">RECEPTOR</a></td><td></td></tr>
 <tr><td><a name="TEST_ALPHABETIZE_SCAPE_SYMBOL"></a>TEST_ALPHABETIZE_SCAPE_SYMBOL</td><td><a href="ref_sys_structures.html#SCAPE">SCAPE</a></td><td></td></tr>
 <tr><td><a name="TEST_SYMBOL_SYMBOL"></a>TEST_SYMBOL_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
+<tr><td><a name="TESTING"></a>TESTING</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
 </table>
  </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Nov 18 2015 15:21:11 for ceptr by
+    <li class="footer">Generated on Mon Nov 23 2015 18:14:17 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

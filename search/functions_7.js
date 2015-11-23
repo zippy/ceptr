@@ -17,7 +17,6 @@ var searchData=
   ['testreceptordefmatch',['testReceptorDefMatch',['../receptor__spec_8h.html#a0f0176e080e437a43dfcc761f00ca284',1,'receptor_spec.h']]],
   ['testreceptorexpectation',['testReceptorExpectation',['../receptor__spec_8h.html#a1cff5f815970b5209885f117bc705fd0',1,'receptor_spec.h']]],
   ['testreceptorinstancenew',['testReceptorInstanceNew',['../receptor__spec_8h.html#a9584612d41b06b90041df77e64da66b8',1,'receptor_spec.h']]],
-  ['testreceptorprotocol',['testReceptorProtocol',['../receptor__spec_8h.html#a9936252c73ecd66c0fc1f72b05494824',1,'receptor_spec.h']]],
   ['testreceptorserialize',['testReceptorSerialize',['../receptor__spec_8h.html#a0c65a8eec063de14d49ae6c3fadcf0d8',1,'receptor_spec.h']]],
   ['testscapeaddelement',['testScapeAddElement',['../scape__spec_8h.html#a6d5ce3afd114532201a79937f6fb1247',1,'scape_spec.h']]],
   ['testscapenew',['testScapeNew',['../scape__spec_8h.html#a895ab132a0a1e72c8e1c5c63bc1ae4dd',1,'scape_spec.h']]],

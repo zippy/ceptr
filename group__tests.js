@@ -8,6 +8,7 @@ var group__tests =
     [ "mtree_spec.h", "mtree__spec_8h.html", null ],
     [ "process_spec.h", "process__spec_8h.html", null ],
     [ "profile_example.h", "profile__example_8h.html", null ],
+    [ "protocol_spec.h", "protocol__spec_8h.html", null ],
     [ "receptor_spec.h", "receptor__spec_8h.html", null ],
     [ "scape_spec.h", "scape__spec_8h.html", null ],
     [ "semtrex_spec.h", "semtrex__spec_8h.html", null ],

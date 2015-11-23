@@ -148,9 +148,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>__r_set_labels</b> (<
 <tr class="memitem:ga7a6afdc039a31cdf24bf93dd0475b72b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structReceptor.html">Receptor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga7a6afdc039a31cdf24bf93dd0475b72b">_r_new_receptor_from_package</a> (<a class="el" href="structSemanticID.html">Symbol</a> s, <a class="el" href="structT.html">T</a> *p, <a class="el" href="structT.html">T</a> *bindings)</td></tr>
 <tr class="memdesc:ga7a6afdc039a31cdf24bf93dd0475b72b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new receptor from a receptor package.  <a href="group__receptor.html#ga7a6afdc039a31cdf24bf93dd0475b72b">More...</a><br /></td></tr>
 <tr class="separator:ga7a6afdc039a31cdf24bf93dd0475b72b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2a6fb1c1ff8a22e2e85b3b2914277b24"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga2a6fb1c1ff8a22e2e85b3b2914277b24"></a>
+<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>__r_build_expectation</b> (<a class="el" href="structSemanticID.html">Symbol</a> carrier, <a class="el" href="structT.html">T</a> *pattern, <a class="el" href="structT.html">T</a> *action, <a class="el" href="structT.html">T</a> *with, <a class="el" href="structT.html">T</a> *until)</td></tr>
+<tr class="separator:ga2a6fb1c1ff8a22e2e85b3b2914277b24"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac391ad8fbd0bb7ca9382e9ab0018edcf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#gac391ad8fbd0bb7ca9382e9ab0018edcf">_r_add_expectation</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structSemanticID.html">Aspect</a> aspect, <a class="el" href="structSemanticID.html">Symbol</a> carrier, <a class="el" href="structT.html">T</a> *pattern, <a class="el" href="structT.html">T</a> *action, <a class="el" href="structT.html">T</a> *with, <a class="el" href="structT.html">T</a> *until)</td></tr>
 <tr class="memdesc:gac391ad8fbd0bb7ca9382e9ab0018edcf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds an expectation to a receptor's aspect.  <a href="group__receptor.html#gac391ad8fbd0bb7ca9382e9ab0018edcf">More...</a><br /></td></tr>
 <tr class="separator:gac391ad8fbd0bb7ca9382e9ab0018edcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaea860a7adb59f9097232671cc426fba2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaea860a7adb59f9097232671cc426fba2"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>__r_add_expectation</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structSemanticID.html">Aspect</a> aspect, <a class="el" href="structT.html">T</a> *e)</td></tr>
+<tr class="separator:gaea860a7adb59f9097232671cc426fba2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf6a2bbb13e1b5c97e314b180e239d798"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaf6a2bbb13e1b5c97e314b180e239d798"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>_r_remove_expectation</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structT.html">T</a> *expectation)</td></tr>
 <tr class="separator:gaf6a2bbb13e1b5c97e314b180e239d798"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -195,8 +201,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_r_remove_expectation
 <tr class="separator:ga3e737841784555574a0d90ad2eff4cc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga300b11b12792c290fef2fb0fe07d71ee"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structReceptor.html">Receptor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga300b11b12792c290fef2fb0fe07d71ee">_r_unserialize</a> (void *surface)</td></tr>
 <tr class="separator:ga300b11b12792c290fef2fb0fe07d71ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga10381b27336b0b9a0849fca89dbf65a2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga10381b27336b0b9a0849fca89dbf65a2">__r_make_signal</a> (ReceptorAddress from, ReceptorAddress to, <a class="el" href="structSemanticID.html">Aspect</a> aspect, <a class="el" href="structT.html">T</a> *signal_contents, <a class="el" href="structUUIDt.html">UUIDt</a> *in_response_to, <a class="el" href="structT.html">T</a> *until)</td></tr>
-<tr class="separator:ga10381b27336b0b9a0849fca89dbf65a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga26df1ff50cb08812f6d515e16a987e80"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga26df1ff50cb08812f6d515e16a987e80"></a>
+<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>__r_make_addr</b> (<a class="el" href="structT.html">T</a> *parent, <a class="el" href="structSemanticID.html">Symbol</a> type, ReceptorAddress addr)</td></tr>
+<tr class="separator:ga26df1ff50cb08812f6d515e16a987e80"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae8b6f71d3064f488ae5407f3df2c03f9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gae8b6f71d3064f488ae5407f3df2c03f9"></a>
+ReceptorAddress&#160;</td><td class="memItemRight" valign="bottom"><b>__r_get_addr</b> (<a class="el" href="structT.html">T</a> *addr)</td></tr>
+<tr class="separator:gae8b6f71d3064f488ae5407f3df2c03f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga893186e8d759e9aa1f14d932900e8046"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga893186e8d759e9aa1f14d932900e8046">__r_make_signal</a> (ReceptorAddress from, ReceptorAddress to, <a class="el" href="structSemanticID.html">Aspect</a> aspect, <a class="el" href="structSemanticID.html">Symbol</a> carrier, <a class="el" href="structT.html">T</a> *signal_contents, <a class="el" href="structUUIDt.html">UUIDt</a> *in_response_to, <a class="el" href="structT.html">T</a> *until)</td></tr>
+<tr class="separator:ga893186e8d759e9aa1f14d932900e8046"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2489d73f268a2bb8bd0f8a04e3ffd731"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga2489d73f268a2bb8bd0f8a04e3ffd731"></a>
 <a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>__r_build_wakeup_info</b> (<a class="el" href="structT.html">T</a> *code_point, int process_id)</td></tr>
 <tr class="separator:ga2489d73f268a2bb8bd0f8a04e3ffd731"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -212,9 +224,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>evaluateEndCondition<
 <tr class="separator:ad035def5eff0ddf6e431719950265d4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga0197c353235cfecbbe280032888f5275"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga0197c353235cfecbbe280032888f5275">__r_test_expectation</a> (<a class="el" href="structT.html">T</a> *processes, <a class="el" href="structT.html">T</a> *expectation, <a class="el" href="structT.html">T</a> *signal, <a class="el" href="structQ.html">Q</a> *q)</td></tr>
 <tr class="separator:ga0197c353235cfecbbe280032888f5275"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abeb5afc26ec891fa76f865877884b206"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abeb5afc26ec891fa76f865877884b206"></a>
-<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>__r_sanatize_response</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structT.html">T</a> *response, <a class="el" href="structSemanticID.html">Symbol</a> carrier)</td></tr>
-<tr class="separator:abeb5afc26ec891fa76f865877884b206"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4265e7bd4c10f53a468449d86ec15ce9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4265e7bd4c10f53a468449d86ec15ce9"></a>
+<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>__r_sanatize_response</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structT.html">T</a> *response)</td></tr>
+<tr class="separator:a4265e7bd4c10f53a468449d86ec15ce9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7d40f33135ee51640d0d24b8c9e3e046"><td class="memItemLeft" align="right" valign="top">Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__receptor.html#ga7d40f33135ee51640d0d24b8c9e3e046">_r_deliver</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structT.html">T</a> *signal)</td></tr>
 <tr class="separator:ga7d40f33135ee51640d0d24b8c9e3e046"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6d832bc4fd6b86ba0cb523166711c3a1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga6d832bc4fd6b86ba0cb523166711c3a1"></a>
@@ -299,7 +311,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>__r_dump_instances</b
 <p>Get the child index for a given label.</p>
 <p>This works for retrieving symbols, structures &amp; processes because the symbol and structure values is just the child index. </p>
 
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00180">180</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00190">190</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -334,7 +346,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>__r_dump_instances</b
 </div><div class="memdoc">
 <p>get the size of a structure's surface </p><dl class="section return"><dt>Returns</dt><dd>size </dd></dl>
 
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00268">268</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00278">278</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -344,7 +356,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>__r_dump_instances</b
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="receptor_8c.html">receptor.c</a></li>
-    <li class="footer">Generated on Wed Nov 18 2015 15:21:11 for ceptr by
+    <li class="footer">Generated on Mon Nov 23 2015 18:14:17 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
