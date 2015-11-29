@@ -382,11 +382,12 @@
          {"sem":{ "ctx":0,"type":2,"id":13 },"children":[
             {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":101 }}]}]},
       {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
-         {"sem":{ "ctx":0,"type":2,"id":16 },"surface":"LIST_OF_ROLE_AND_SOURCE_AND_EXPECTATION"},
+         {"sem":{ "ctx":0,"type":2,"id":16 },"surface":"LIST_OF_ROLE_AND_SOURCE_AND_PATTERN_AND_ACTION"},
          {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
             {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":101 }},
             {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":104 }},
-            {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":79 }}]}]},
+            {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":76 }},
+            {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":77 }}]}]},
       {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
          {"sem":{ "ctx":0,"type":2,"id":16 },"surface":"TUPLE_OF_CONVERSATION_LABEL_AND_ONE_OR_MORE_OF_ROLE_PROCESS"},
          {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
@@ -1169,7 +1170,7 @@
                {"sem":{ "ctx":0,"type":2,"id":85 },"surface":"message"},
                {"sem":{ "ctx":0,"type":2,"id":90 }}]},
             {"sem":{ "ctx":0,"type":2,"id":94 },"children":[
-               {"sem":{ "ctx":0,"type":2,"id":85 },"surface":"respond on"},
+               {"sem":{ "ctx":0,"type":2,"id":85 },"surface":"expect response on"},
                {"sem":{ "ctx":0,"type":2,"id":87 },"surface":{ "ctx":0,"type":2,"id":75 }}]},
             {"sem":{ "ctx":0,"type":2,"id":94 },"children":[
                {"sem":{ "ctx":0,"type":2,"id":85 },"surface":"until"},
