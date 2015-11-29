@@ -280,21 +280,35 @@ void testMatchExcept() {
 }
 
 void testMatchStar() {
-    // /SIGNALS/SIGNAL*
+    // /SIGNALS/<SIGNALS:SIGNAL?>
+    T *r;
     T *s = _sl(0,SIGNALS);
-    T *ss = _t_newr(s,SEMTREX_ZERO_OR_MORE);
+    T *g = _t_news(s,SEMTREX_GROUP,SIGNALS);
+    T *ss = _t_newr(g,SEMTREX_ZERO_OR_MORE);
     _sl(ss,SIGNAL);
 
     T *t = _t_new_root(SIGNALS);
 
     spec_is_true(_t_match(s,t));
+    // @todo this is actually broken, it looks like if you add the GROUP something has to match
+    //spec_is_true(_t_matchr(s,t,&r));
+    //spec_is_str_equal(t2s(r),"(SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:SIGNALS) (SEMTREX_MATCH_PATH:/1) (SEMTREX_MATCH_SIBLINGS_COUNT:0))");
+    //    _t_free(r);
 
     T *signal_contents = _t_newi(0,TEST_INT_SYMBOL,314);
     ReceptorAddress fr = 3; // DUMMY ADDR
     ReceptorAddress to = 4; // DUMMY ADDR
     T *sig = __r_make_signal(fr,to,DEFAULT_ASPECT,TESTING,signal_contents,0,0);
+    T *sig2 = _t_clone(sig);
     _t_add(t,sig);
-    spec_is_true(_t_match(s,t));
+    spec_is_true(_t_matchr(s,t,&r));
+    spec_is_str_equal(t2s(r),"(SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:SIGNALS) (SEMTREX_MATCH_PATH:/1) (SEMTREX_MATCH_SIBLINGS_COUNT:1))");
+    _t_free(r);
+
+    _t_add(t,sig2);
+    spec_is_true(_t_matchr(s,t,&r));
+    spec_is_str_equal(t2s(r),"(SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:SIGNALS) (SEMTREX_MATCH_PATH:/1) (SEMTREX_MATCH_SIBLINGS_COUNT:2))");
+    _t_free(r);
 
     spec_is_false(_t_match(s,signal_contents));
     _t_free(t);
@@ -302,21 +316,31 @@ void testMatchStar() {
 }
 
 void testMatchPlus() {
-    // /SIGNALS/SIGNAL+
+    // /SIGNALS/<SIGNALS:SIGNAL+>
+    T *r;
     T *s = _sl(0,SIGNALS);
-    T *ss = _t_newr(s,SEMTREX_ONE_OR_MORE);
+    T *g = _t_news(s,SEMTREX_GROUP,SIGNALS);
+    T *ss = _t_newr(g,SEMTREX_ONE_OR_MORE);
     _sl(ss,SIGNAL);
 
     T *t = _t_new_root(SIGNALS);
 
-    spec_is_false(_t_match(s,t));
+    spec_is_false(_t_matchr(s,t,&r));
 
     T *signal_contents = _t_newi(0,TEST_INT_SYMBOL,314);
     ReceptorAddress fr = 3; // DUMMY ADDR
     ReceptorAddress to = 4; // DUMMY ADDR
     T *sig = __r_make_signal(fr,to,DEFAULT_ASPECT,TESTING,signal_contents,0,0);
+    T *sig2 = _t_clone(sig);
     _t_add(t,sig);
-    spec_is_true(_t_match(s,t));
+    spec_is_true(_t_matchr(s,t,&r));
+    spec_is_str_equal(t2s(r),"(SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:SIGNALS) (SEMTREX_MATCH_PATH:/1) (SEMTREX_MATCH_SIBLINGS_COUNT:1))");
+    _t_free(r);
+
+    _t_add(t,sig2);
+    spec_is_true(_t_matchr(s,t,&r));
+    spec_is_str_equal(t2s(r),"(SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:SIGNALS) (SEMTREX_MATCH_PATH:/1) (SEMTREX_MATCH_SIBLINGS_COUNT:2))");
+    _t_free(r);
 
     spec_is_false(_t_match(s,signal_contents));
     _t_free(t);
@@ -324,26 +348,38 @@ void testMatchPlus() {
 }
 
 void testMatchQ() {
-    // /TEST_INT_SYMBOL/1?
-    T *s = _sl(0,TEST_INT_SYMBOL);
-    T *ss = _t_newr(s,SEMTREX_SEQUENCE);
-    T *sss = _t_newr(ss,SEMTREX_ZERO_OR_ONE);
-    T *s1 = _sl(sss,sy1);
-    T *t1, *t1x, *t1y, *s2;
+    // /SIGNALS/<SIGNALS:SIGNAL?>
+    T *r;
+    T *s = _sl(0,SIGNALS);
+    T *g = _t_news(s,SEMTREX_GROUP,SIGNALS);
+    T *ss = _t_newr(g,SEMTREX_ZERO_OR_ONE);
+    _sl(ss,SIGNAL);
 
-    T *t = _t_new(0,TEST_INT_SYMBOL,"t",2);
+    T *t = _t_new_root(SIGNALS);
+
     spec_is_true(_t_match(s,t));
+    // @todo this is actually broken, it looks like if you add the GROUP something has to match
+    //spec_is_true(_t_matchr(s,t,&r));
+    //spec_is_str_equal(t2s(r),"(SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:SIGNALS) (SEMTREX_MATCH_PATH:/1) (SEMTREX_MATCH_SIBLINGS_COUNT:0))");
+    //    _t_free(r);
 
-    t1 = _t_new(t,sy1,"t1",3);
-    spec_is_true(_t_match(s,t));
+    T *signal_contents = _t_newi(0,TEST_INT_SYMBOL,314);
+    ReceptorAddress fr = 3; // DUMMY ADDR
+    ReceptorAddress to = 4; // DUMMY ADDR
+    T *sig = __r_make_signal(fr,to,DEFAULT_ASPECT,TESTING,signal_contents,0,0);
+    T *sig2 = _t_clone(sig);
+    _t_add(t,sig);
+    spec_is_true(_t_matchr(s,t,&r));
+    spec_is_str_equal(t2s(r),"(SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:SIGNALS) (SEMTREX_MATCH_PATH:/1) (SEMTREX_MATCH_SIBLINGS_COUNT:1))");
+    _t_free(r);
 
-    t1x = _t_new(t,sy1,"t1",3);
-    t1y = _t_new(t,sy2,"t2",3);
+    // add a second signal and it still only matches on the first sibling
+    _t_add(t,sig2);
+    spec_is_true(_t_matchr(s,t,&r));
+    spec_is_str_equal(t2s(r),"(SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:SIGNALS) (SEMTREX_MATCH_PATH:/1) (SEMTREX_MATCH_SIBLINGS_COUNT:1))");
+    _t_free(r);
 
-    // /TEST_INT_SYMBOL/1?,2
-    s2 = _sl(ss,sy2);
-    spec_is_true(!_t_match(s,t));
-
+    spec_is_false(_t_match(s,signal_contents));
     _t_free(t);
     _t_free(s);
 }
