@@ -390,7 +390,7 @@ $(document).ready(function(){initNavTree('vmhost__spec_8h_source.html','');});
 <div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    spec_is_str_equal(_td(client,v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>-&gt;pending_signals),<span class="stringliteral">&quot;(PENDING_SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (CONTEXT_NUM:3)) (TO_ADDRESS (CONTEXT_NUM:2)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:alive) (SIGNAL_UUID)) (BODY:{(ping)})))&quot;</span>);</div>
 <div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;</div>
 <div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;    <span class="comment">// simulate round-robin processing of signals</span></div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;    <span class="comment">//debug_enable(D_SIGNALS);</span></div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;    debug_enable(D_SIGNALS);</div>
 <div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    <a class="code" href="group__vmhost.html#ga7c2d4696c7ed325684c45f113ce0c2b2">_v_deliver_signals</a>(v,v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>);</div>
 <div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;    <a class="code" href="process_8c.html#a64e8965291c67057b06f273db19a465d">_p_reduceq</a>(server-&gt;<a class="code" href="structReceptor.html#ab1e1dd776afee48ee71297a3e39756f8">q</a>);</div>
 <div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;    <a class="code" href="group__vmhost.html#ga7c2d4696c7ed325684c45f113ce0c2b2">_v_deliver_signals</a>(v,server);</div>
@@ -402,7 +402,7 @@ $(document).ready(function(){initNavTree('vmhost__spec_8h_source.html','');});
 <div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;</div>
 <div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;    <span class="comment">// @todo delivery of response doesn&#39;t work here because _v_send is broken and there&#39;s no process</span></div>
 <div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;    <span class="comment">// q or anything for the delivery to unblock.  This is a broken spec that we need to fix!!</span></div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;    <span class="comment">//    debug_disable(D_SIGNALS);</span></div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;        debug_disable(D_SIGNALS);</div>
 <div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;</div>
 <div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;    <a class="code" href="group__vmhost.html#ga44e0f6d62e38448bfa058f287cc463eb">_v_free</a>(v);</div>
 <div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;}</div>
@@ -489,7 +489,7 @@ $(document).ready(function(){initNavTree('vmhost__spec_8h_source.html','');});
 <div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;    <a class="code" href="vmhost__spec_8h.html#ab22810ce6e5f9b1586db2767bfc44c64">testVMHostCreate</a>();</div>
 <div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;    <span class="comment">//testVMHostLoadReceptorPackage();</span></div>
 <div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;    <span class="comment">//testVMHostInstallReceptor();</span></div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;<span class="comment">//    testVMHostActivateReceptor();</span></div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;    <span class="comment">// testVMHostActivateReceptor();</span></div>
 <div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;    testVMHostShell();</div>
 <div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;    <span class="comment">//   testVMHostSerialize();</span></div>
 <div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;}</div>
@@ -505,7 +505,7 @@ $(document).ready(function(){initNavTree('vmhost__spec_8h_source.html','');});
 <div class="ttc" id="stream_8c_html_a968db3488104e65751b060be40ea9b58"><div class="ttname"><a href="stream_8c.html#a968db3488104e65751b060be40ea9b58">_st_free</a></div><div class="ttdeci">void _st_free(Stream *stream)</div><div class="ttdef"><b>Definition:</b> <a href="stream_8c_source.html#l00148">stream.c:148</a></div></div>
 <div class="ttc" id="group__tree_html_ga946600fb570f0cc913450905f6189d49"><div class="ttname"><a href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a></div><div class="ttdeci">Symbol _t_symbol(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00576">tree.c:576</a></div></div>
 <div class="ttc" id="group__tree_html_ga07dd808fabd8a722b417f2f5e5ca132b"><div class="ttname"><a href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a></div><div class="ttdeci">T * _t_child(T *t, int i)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00599">tree.c:599</a></div></div>
-<div class="ttc" id="group__receptor_html_gac438809f0d3f3add97efd49729c9027f"><div class="ttname"><a href="group__receptor.html#gac438809f0d3f3add97efd49729c9027f">__r_get_receptor</a></div><div class="ttdeci">Receptor * __r_get_receptor(T *installed_receptor)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00879">receptor.c:879</a></div></div>
+<div class="ttc" id="group__receptor_html_gac438809f0d3f3add97efd49729c9027f"><div class="ttname"><a href="group__receptor.html#gac438809f0d3f3add97efd49729c9027f">__r_get_receptor</a></div><div class="ttdeci">Receptor * __r_get_receptor(T *installed_receptor)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00881">receptor.c:881</a></div></div>
 <div class="ttc" id="group__tree_html_ga48ffc2a6e4aa4856b76fb53b97db87f3"><div class="ttname"><a href="group__tree.html#ga48ffc2a6e4aa4856b76fb53b97db87f3">_t_newp</a></div><div class="ttdeci">T * _t_newp(T *parent, Symbol symbol, Process surface)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00227">tree.c:227</a></div></div>
 <div class="ttc" id="group__receptor_html_gadc94e96ede4c84e1981e3537907653b7"><div class="ttname"><a href="group__receptor.html#gadc94e96ede4c84e1981e3537907653b7">_r_code_process</a></div><div class="ttdeci">Process _r_code_process(Receptor *r, T *code, char *name, char *intention, T *signature)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00280">receptor.c:280</a></div></div>
 <div class="ttc" id="group__vmhost_html_ga44e0f6d62e38448bfa058f287cc463eb"><div class="ttname"><a href="group__vmhost.html#ga44e0f6d62e38448bfa058f287cc463eb">_v_free</a></div><div class="ttdeci">void _v_free(VMHost *v)</div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8c_source.html#l00067">vmhost.c:67</a></div></div>
@@ -536,7 +536,7 @@ $(document).ready(function(){initNavTree('vmhost__spec_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><a class="el" href="vmhost__spec_8h.html">vmhost_spec.h</a></li>
-    <li class="footer">Generated on Sun Nov 29 2015 00:54:48 for ceptr by
+    <li class="footer">Generated on Sun Nov 29 2015 11:50:51 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

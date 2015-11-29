@@ -120,8 +120,7 @@ Include dependency graph for process.h:</div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="process_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="process_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 </div>
 <p><a href="process_8h_source.html">Go to the source code of this file.</a></p>
@@ -633,10 +632,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>__p_unblock</b> (<a c
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Error status of the reduction</dd></dl>
-<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structT.html">T</a> *processes = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(PROCESSES);</div>
+<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structSemanticID.html">Process</a> divz = <a class="code" href="process__spec_8h.html#a891952585ebb2eb396251fa772b8ebe8">_defDivZero</a>();  <span class="comment">// add the if_even process to our defs</span></div>
+<div class="line">    <a class="code" href="structT.html">T</a> *processes = __sem_get_defs(G_sem,SEM_TYPE_PROCESS,TEST_CONTEXT);</div>
 <div class="line">    <a class="code" href="structDefs.html">Defs</a> defs = {0,0,processes};</div>
-<div class="line"></div>
-<div class="line">    <a class="code" href="structSemanticID.html">Process</a> divz = <a class="code" href="process__spec_8h.html#a4d38a76b0d2eb372b0ceb20cc65ab9ca">_defDivZero</a>(processes);  <span class="comment">// add the if_even process to our defs</span></div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// create a run tree right in the position to &quot;call&quot; this function</span></div>
 <div class="line">    <a class="code" href="structT.html">T</a> *t = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(RUN_TREE);</div>
@@ -656,7 +654,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>__p_unblock</b> (<a c
 <div class="line">    spec_is_equal(<a class="code" href="process_8c.html#a53286ef1d13a97616609cab8d7ac6e53">_p_reduce</a>(G_sem,&amp;defs,t),noReductionErr);</div>
 <div class="line">    spec_is_str_equal(t2s(<a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(t,1)),<span class="stringliteral">&quot;(ZERO_DIVIDE_ERR (ERROR_LOCATION:/1/1))&quot;</span>);</div>
 <div class="line"></div>
-<div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(processes);</div>
 <div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);<a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(n);</div>
 </div><!-- fragment -->
 <p>Definition at line <a class="el" href="process_8c_source.html#l00746">746</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
@@ -789,7 +786,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>__p_unblock</b> (<a c
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="process_8h.html">process.h</a></li>
-    <li class="footer">Generated on Sun Nov 29 2015 00:54:48 for ceptr by
+    <li class="footer">Generated on Sun Nov 29 2015 11:50:52 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
