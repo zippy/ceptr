@@ -110,26 +110,27 @@ $(document).ready(function(){initNavTree('protocol_8c.html','');});
 <p>implementation of protocol helpers  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="protocol_8h_source.html">protocol.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="vmhost_8h_source.html">vmhost.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for protocol.c:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="protocol_8c__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="protocol_8c__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 </div>
 <p><a href="protocol_8c_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
-<tr class="memitem:a2c7ff197cbf462bae4aff10bd3d1c7d5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2c7ff197cbf462bae4aff10bd3d1c7d5"></a>
-<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>_o_new</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structSemanticID.html">Symbol</a> protocol,...)</td></tr>
-<tr class="separator:a2c7ff197cbf462bae4aff10bd3d1c7d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa4b2beed8656b636c9e5d3190681622"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afa4b2beed8656b636c9e5d3190681622"></a>
+<tr class="memitem:ga1c5922c03eef9111c4e116773e8517fe"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga1c5922c03eef9111c4e116773e8517fe"></a>
+<a class="el" href="structVMHost.html">VMHost</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>G_vm</b></td></tr>
+<tr class="separator:ga1c5922c03eef9111c4e116773e8517fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafa4b2beed8656b636c9e5d3190681622"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gafa4b2beed8656b636c9e5d3190681622"></a>
 <a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>_t_find_child</b> (<a class="el" href="structT.html">T</a> *t, <a class="el" href="structSemanticID.html">Symbol</a> sym)</td></tr>
-<tr class="separator:afa4b2beed8656b636c9e5d3190681622"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a74dae6f8b41f3d0c77f71f0e7245a90f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a74dae6f8b41f3d0c77f71f0e7245a90f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>_o_express_role</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structSemanticID.html">Symbol</a> protocol, <a class="el" href="structSemanticID.html">Symbol</a> role, <a class="el" href="structSemanticID.html">Aspect</a> aspect, <a class="el" href="structT.html">T</a> *bindings)</td></tr>
-<tr class="separator:a74dae6f8b41f3d0c77f71f0e7245a90f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:gafa4b2beed8656b636c9e5d3190681622"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga70b7186f103bb1769e2386af48ece57b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__accumulator.html#ga70b7186f103bb1769e2386af48ece57b">_o_make_protocol_def</a> (char *label,...)</td></tr>
+<tr class="separator:ga70b7186f103bb1769e2386af48ece57b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga46ff4d16575a21f8c7d02fa754ac6d2f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga46ff4d16575a21f8c7d02fa754ac6d2f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>_o_express_role</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structSemanticID.html">Protocol</a> protocol, <a class="el" href="structSemanticID.html">Symbol</a> role, <a class="el" href="structSemanticID.html">Aspect</a> aspect, <a class="el" href="structT.html">T</a> *bindings)</td></tr>
+<tr class="separator:ga46ff4d16575a21f8c7d02fa754ac6d2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>implementation of protocol helpers </p>
@@ -142,7 +143,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_o_express_role</b> (
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="protocol_8c.html">protocol.c</a></li>
-    <li class="footer">Generated on Mon Nov 23 2015 18:14:17 for ceptr by
+    <li class="footer">Generated on Sun Nov 29 2015 00:54:48 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

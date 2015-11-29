@@ -118,7 +118,7 @@ Include dependency graph for protocol.h:</div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="protocol_8h__dep__incl.svg" width="451" height="187"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="protocol_8h__dep__incl.svg" width="563" height="187"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="protocol_8h_source.html">Go to the source code of this file.</a></p>
@@ -126,9 +126,8 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
-<tr class="memitem:a2c7ff197cbf462bae4aff10bd3d1c7d5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2c7ff197cbf462bae4aff10bd3d1c7d5"></a>
-<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>_o_new</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structSemanticID.html">Symbol</a> protocol,...)</td></tr>
-<tr class="separator:a2c7ff197cbf462bae4aff10bd3d1c7d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70b7186f103bb1769e2386af48ece57b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="protocol_8h.html#a70b7186f103bb1769e2386af48ece57b">_o_make_protocol_def</a> (char *label,...)</td></tr>
+<tr class="separator:a70b7186f103bb1769e2386af48ece57b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae34af558a8aeadc39b220bbcc3977f96"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae34af558a8aeadc39b220bbcc3977f96"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>_o_express_role</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structSemanticID.html">Symbol</a> protocol, <a class="el" href="structSemanticID.html">Symbol</a> role, <a class="el" href="structSemanticID.html">Aspect</a> aspect, <a class="el" href="structT.html">T</a> *action)</td></tr>
 <tr class="separator:ae34af558a8aeadc39b220bbcc3977f96"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -138,13 +137,52 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_o_express_role</b> (
 <dl class="section copyright"><dt>Copyright</dt><dd>Copyright (C) 2013-2015, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al). This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3). </dd></dl>
 
 <p>Definition in file <a class="el" href="protocol_8h_source.html">protocol.h</a>.</p>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="a70b7186f103bb1769e2386af48ece57b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structT.html">T</a>* _o_make_protocol_def </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>label</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>helper to build a PROTOCOL_DEFINITION</p>
+<p>NOTE: this just makes it easier to build protocol defs in c. If you don't get the params right when calling it, it will segfault!</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">protocols</td><td>a protocols def tree containing protocols which will be added to </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">label</td><td>the name of the protocol </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">...</td><td>params in correct order </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="protocol_8c_source.html#l00037">37</a> of file <a class="el" href="protocol_8c_source.html">protocol.c</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="protocol_8h.html">protocol.h</a></li>
-    <li class="footer">Generated on Mon Nov 23 2015 18:14:17 for ceptr by
+    <li class="footer">Generated on Sun Nov 29 2015 00:54:48 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

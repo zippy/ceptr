@@ -114,71 +114,71 @@ $(document).ready(function(){initNavTree('profile__example_8h_source.html','');}
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;../src/receptor.h&quot;</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;../src/def.h&quot;</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &quot;../src/semtrex.h&quot;</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="spec__utils_8h.html">spec_utils.h</a>&quot;</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<a class="code" href="structT.html">T</a> *test_profile_symbols,*test_profile_structures;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<a class="code" href="structDefs.html">Defs</a> test_profile_defs;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> FIRST_NAME;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> LAST_NAME;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<a class="code" href="structSemanticID.html">Structure</a> NAME;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> PROFILE_NAME;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STREET_ADDRESS;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> CITY;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STATE;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> ZIP;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> COUNTRY;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<a class="code" href="structSemanticID.html">Structure</a> ADDRESS;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> PROFILE_ADDRESS;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> PROFILE_EMAIL;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<a class="code" href="structSemanticID.html">Structure</a> PROFILE;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> USER_PROFILE;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> MAILING_LABEL;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keywordtype">void</span> _setupProfileDefs() {</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    test_profile_defs.<a class="code" href="structDefs.html#a172e45e131e197571ba1a36a136d35f8">symbols</a> = test_profile_symbols = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(SYMBOLS);</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    test_profile_defs.<a class="code" href="structDefs.html#a6f9d3b3e38fff31326b7d27f730ae95c">structures</a> = test_profile_structures = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(STRUCTURES);</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    test_profile_defs.<a class="code" href="structDefs.html#a80e876ed085ca3f40c11c6dced4bff9a">processes</a> = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(PROCESSES);</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <a class="code" href="structDefs.html">Defs</a> d = test_profile_defs;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    SY(d,FIRST_NAME,CSTRING);</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    SY(d,LAST_NAME,CSTRING);</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    ST(d,NAME,2,</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;       FIRST_NAME,</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;       LAST_NAME</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;       );</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    SY(d,PROFILE_NAME,NAME);</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    SY(d,STREET_ADDRESS,CSTRING);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    SY(d,CITY,CSTRING);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    SY(d,STATE,CSTRING);</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    SY(d,ZIP,CSTRING);</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    SY(d,COUNTRY,CSTRING);</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    ST(d,ADDRESS,5,</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;       STREET_ADDRESS,</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;       CITY,</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;       STATE,</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;       ZIP,</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;       COUNTRY</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;       );</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    SY(d,PROFILE_ADDRESS,ADDRESS);</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    SY(d,PROFILE_EMAIL,CSTRING);</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    ST(d,PROFILE,3,</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;       PROFILE_NAME,</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;       PROFILE_ADDRESS,</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;       PROFILE_EMAIL);</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    SY(d,USER_PROFILE,PROFILE);</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    SY(d,MAILING_LABEL,CSTRING);</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;}</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="keywordtype">void</span> _cleanupProfileDefs() {</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(test_profile_symbols);</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(test_profile_structures);</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<a class="code" href="structReceptor.html">Receptor</a> *test_profile_receptor;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<a class="code" href="structT.html">T</a> *test_profile_symbols,*test_profile_structures;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<a class="code" href="structDefs.html">Defs</a> test_profile_defs;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> FIRST_NAME;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> LAST_NAME;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<a class="code" href="structSemanticID.html">Structure</a> NAME;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> PROFILE_NAME;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STREET_ADDRESS;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> CITY;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> STATE;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> ZIP;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> COUNTRY;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<a class="code" href="structSemanticID.html">Structure</a> ADDRESS;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> PROFILE_ADDRESS;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> PROFILE_EMAIL;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<a class="code" href="structSemanticID.html">Structure</a> PROFILE;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> USER_PROFILE;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> MAILING_LABEL;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keywordtype">void</span> _setupProfileDefs() {</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <a class="code" href="structReceptor.html">Receptor</a> *r = test_profile_receptor = <a class="code" href="group__receptor.html#gaf15a8e41a81cdff234b5eff7213a7429">_r_new</a>(G_sem,TEST_RECEPTOR_SYMBOL);</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    test_profile_defs = test_profile_receptor-&gt;<a class="code" href="structReceptor.html#a56e5e37eb23a3e5debf7f24723eca9ed">defs</a>;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    test_profile_symbols = test_profile_defs.<a class="code" href="structDefs.html#a172e45e131e197571ba1a36a136d35f8">symbols</a>;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    test_profile_structures = test_profile_defs.<a class="code" href="structDefs.html#a6f9d3b3e38fff31326b7d27f730ae95c">structures</a>;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    SY(r,FIRST_NAME,CSTRING);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    SY(r,LAST_NAME,CSTRING);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    ST(r,NAME,2,</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;       FIRST_NAME,</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;       LAST_NAME</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;       );</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    SY(r,PROFILE_NAME,NAME);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    SY(r,STREET_ADDRESS,CSTRING);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    SY(r,CITY,CSTRING);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    SY(r,STATE,CSTRING);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    SY(r,ZIP,CSTRING);</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    SY(r,COUNTRY,CSTRING);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    ST(r,ADDRESS,5,</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;       STREET_ADDRESS,</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;       CITY,</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;       STATE,</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;       ZIP,</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;       COUNTRY</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;       );</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    SY(r,PROFILE_ADDRESS,ADDRESS);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    SY(r,PROFILE_EMAIL,CSTRING);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    ST(r,PROFILE,3,</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;       PROFILE_NAME,</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;       PROFILE_ADDRESS,</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;       PROFILE_EMAIL);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    SY(r,USER_PROFILE,PROFILE);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    SY(r,MAILING_LABEL,CSTRING);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;}</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="keywordtype">void</span> _cleanupProfileDefs() {</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <a class="code" href="group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8">_r_free</a>(test_profile_receptor);</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;}</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="keywordtype">void</span> testProfileExample() {</div>
@@ -195,94 +195,99 @@ $(document).ready(function(){initNavTree('profile__example_8h_source.html','');}
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    _t_new_str(a,ZIP,<span class="stringliteral">&quot;12345&quot;</span>);</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    _t_new_str(a,COUNTRY,<span class="stringliteral">&quot;USA&quot;</span>);</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    wjson(&amp;test_profile_defs,t,<span class="stringliteral">&quot;user_profile&quot;</span>,-1);</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    spec_is_str_equal(_t2s(&amp;test_profile_defs,t),<span class="stringliteral">&quot;(USER_PROFILE (PROFILE_NAME (FIRST_NAME:Jane) (LAST_NAME:Smith)) (PROFILE_ADDRESS (STREET_ADDRESS:126 Main Street) (CITY:Smallville) (STATE:CA) (ZIP:12345) (COUNTRY:USA)) (PROFILE_EMAIL:test@example.com))&quot;</span>);</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <a class="code" href="structT.html">T</a> *signature = <a class="code" href="process_8c.html#a7dc2c46bc4670386c36a0efb369eed34">__p_make_signature</a>(<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_SYMBOL,NULL_SYMBOL,</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                                      <span class="stringliteral">&quot;mailing_profile&quot;</span>,SIGNATURE_STRUCTURE,CSTRING, <span class="comment">// should actually be MAILING_LABEL symbol or something like that</span></div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                                      <span class="stringliteral">&quot;the_int?&quot;</span>,SIGNATURE_STRUCTURE,INTEGER,</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                                      <span class="stringliteral">&quot;the_profile&quot;</span>,SIGNATURE_STRUCTURE,PROFILE,</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                                      NULL);</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <a class="code" href="structT.html">T</a> *processes = test_profile_defs.<a class="code" href="structDefs.html#a80e876ed085ca3f40c11c6dced4bff9a">processes</a>;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <a class="code" href="structT.html">T</a> *code = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(CONCAT_STR);</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    <span class="keywordtype">int</span> pt1[] = {2,1,1,1,TREE_PATH_TERMINATOR};</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="keywordtype">int</span> pt2[] = {2,1,1,2,TREE_PATH_TERMINATOR};</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <span class="keywordtype">int</span> pt3[] = {2,1,2,1,TREE_PATH_TERMINATOR};</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="keywordtype">int</span> pt4[] = {2,1,2,2,TREE_PATH_TERMINATOR};</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="keywordtype">int</span> pt5[] = {2,1,2,3,TREE_PATH_TERMINATOR};</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    <span class="keywordtype">int</span> pt6[] = {2,1,2,4,TREE_PATH_TERMINATOR};</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    _t_news(code,RESULT_SYMBOL,MAILING_LABEL);</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <a class="code" href="structT.html">T</a> *c = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(code,CONCAT_STR);</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <span class="comment">//    _t_news(c,RESULT_SYMBOL,TEST_NAME_SYMBOL);</span></div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    _t_new(c,PARAM_REF,pt1,<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>)*5);</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    _t_new_str(c,TEST_STR_SYMBOL,<span class="stringliteral">&quot; &quot;</span>);</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    _t_new(c,PARAM_REF,pt2,<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>)*5);</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    _t_new_str(code,TEST_STR_SYMBOL,<span class="stringliteral">&quot;\\n&quot;</span>);</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    _t_new(code,PARAM_REF,pt3,<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>)*5);</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    _t_new_str(code,TEST_STR_SYMBOL,<span class="stringliteral">&quot;\\n&quot;</span>);</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    c = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(code,CONCAT_STR);</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="comment">//    _t_news(c,RESULT_SYMBOL,TEST_NAME_SYMBOL);</span></div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    _t_new(c,PARAM_REF,pt4,<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>)*5);</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    _t_new_str(c,TEST_STR_SYMBOL,<span class="stringliteral">&quot;, &quot;</span>);</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    _t_new(c,PARAM_REF,pt5,<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>)*5);</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    _t_new_str(c,TEST_STR_SYMBOL,<span class="stringliteral">&quot; &quot;</span>);</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    _t_new(c,PARAM_REF,pt6,<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>)*5);</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    <span class="comment">//    _t_new(code,PARAM_REF,pt2,sizeof(int)*4);</span></div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <a class="code" href="structSemanticID.html">Process</a> p = <a class="code" href="group__def.html#ga46a91fe61c582d1a380ed040fbb68bee">_d_code_process</a>(processes,code,<span class="stringliteral">&quot;profileToMailingLabel&quot;</span>,<span class="stringliteral">&quot;given a profile produce a mailing label&quot;</span>,signature,RECEPTOR_CONTEXT);</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    <a class="code" href="structT.html">T</a> *act = <a class="code" href="group__tree.html#ga48ffc2a6e4aa4856b76fb53b97db87f3">_t_newp</a>(0,ACTION,p);</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    <a class="code" href="structT.html">T</a> *r = <a class="code" href="process_8c.html#a0d7e9199c11402521a3ed08719eb92a6">_p_make_run_tree</a>(processes,act,1,t);</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    wjson(&amp;test_profile_defs,r,<span class="stringliteral">&quot;profile&quot;</span>,0);</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    <span class="comment">//    spec_is_str_equal(_t2s(&amp;test_profile_defs,r),&quot;&quot;);</span></div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    startVisdump(<span class="stringliteral">&quot;profile&quot;</span>);</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    spec_is_equal(<a class="code" href="process_8c.html#acc149ea5dc5c12cd12fc35a61157cfbc">_p_reduce</a>(&amp;test_profile_defs,r),noReductionErr);</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    <span class="keywordtype">int</span> pt[] = {TREE_PATH_TERMINATOR};</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    _visdump(&amp;test_profile_defs,<a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(r,1),pt);</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    endVisdump();</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    spec_is_str_equal(_t2s(&amp;test_profile_defs,<a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(r,1)),<span class="stringliteral">&quot;(MAILING_LABEL:Jane Smith\\n126 Main Street\\nSmallville, CA 12345)&quot;</span>);</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(r);</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(processes);</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <a class="code" href="structSemTable.html">SemTable</a> *sem = test_profile_receptor-&gt;<a class="code" href="structReceptor.html#a4bb9ce729b6b85fb99326e9df7b23cbd">sem</a>;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    wjson(sem,t,<span class="stringliteral">&quot;user_profile&quot;</span>,-1);</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    spec_is_str_equal(t2s(t),<span class="stringliteral">&quot;(USER_PROFILE (PROFILE_NAME (FIRST_NAME:Jane) (LAST_NAME:Smith)) (PROFILE_ADDRESS (STREET_ADDRESS:126 Main Street) (CITY:Smallville) (STATE:CA) (ZIP:12345) (COUNTRY:USA)) (PROFILE_EMAIL:test@example.com))&quot;</span>);</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <a class="code" href="structT.html">T</a> *signature = __p_make_signature(<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_SYMBOL,NULL_SYMBOL,</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                                      <span class="stringliteral">&quot;mailing_profile&quot;</span>,SIGNATURE_STRUCTURE,CSTRING, <span class="comment">// should actually be MAILING_LABEL symbol or something like that</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                                      <span class="stringliteral">&quot;the_int?&quot;</span>,SIGNATURE_STRUCTURE,INTEGER,</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                                      <span class="stringliteral">&quot;the_profile&quot;</span>,SIGNATURE_STRUCTURE,PROFILE,</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;                                      NULL);</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    <a class="code" href="structT.html">T</a> *processes = __sem_get_defs(sem,SEM_TYPE_PROCESS,test_profile_receptor-&gt;addr);</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <a class="code" href="structT.html">T</a> *code = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(CONCAT_STR);</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="keywordtype">int</span> pt1[] = {2,1,1,1,TREE_PATH_TERMINATOR};</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <span class="keywordtype">int</span> pt2[] = {2,1,1,2,TREE_PATH_TERMINATOR};</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="keywordtype">int</span> pt3[] = {2,1,2,1,TREE_PATH_TERMINATOR};</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="keywordtype">int</span> pt4[] = {2,1,2,2,TREE_PATH_TERMINATOR};</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    <span class="keywordtype">int</span> pt5[] = {2,1,2,3,TREE_PATH_TERMINATOR};</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="keywordtype">int</span> pt6[] = {2,1,2,4,TREE_PATH_TERMINATOR};</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    _t_news(code,RESULT_SYMBOL,MAILING_LABEL);</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <a class="code" href="structT.html">T</a> *c = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(code,CONCAT_STR);</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    <span class="comment">//    _t_news(c,RESULT_SYMBOL,TEST_NAME_SYMBOL);</span></div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    _t_new(c,PARAM_REF,pt1,<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>)*5);</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    _t_new_str(c,TEST_STR_SYMBOL,<span class="stringliteral">&quot; &quot;</span>);</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    _t_new(c,PARAM_REF,pt2,<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>)*5);</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    _t_new_str(code,TEST_STR_SYMBOL,<span class="stringliteral">&quot;\\n&quot;</span>);</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    _t_new(code,PARAM_REF,pt3,<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>)*5);</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    _t_new_str(code,TEST_STR_SYMBOL,<span class="stringliteral">&quot;\\n&quot;</span>);</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    c = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(code,CONCAT_STR);</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    <span class="comment">//    _t_news(c,RESULT_SYMBOL,TEST_NAME_SYMBOL);</span></div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    _t_new(c,PARAM_REF,pt4,<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>)*5);</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    _t_new_str(c,TEST_STR_SYMBOL,<span class="stringliteral">&quot;, &quot;</span>);</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    _t_new(c,PARAM_REF,pt5,<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>)*5);</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    _t_new_str(c,TEST_STR_SYMBOL,<span class="stringliteral">&quot; &quot;</span>);</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    _t_new(c,PARAM_REF,pt6,<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>)*5);</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    <span class="comment">//    _t_new(code,PARAM_REF,pt2,sizeof(int)*4);</span></div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    <a class="code" href="structSemanticID.html">Process</a> p = <a class="code" href="group__def.html#ga46a91fe61c582d1a380ed040fbb68bee">_d_code_process</a>(processes,code,<span class="stringliteral">&quot;profileToMailingLabel&quot;</span>,<span class="stringliteral">&quot;given a profile produce a mailing label&quot;</span>,signature,TEST_CONTEXT);</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    <a class="code" href="structT.html">T</a> *act = <a class="code" href="group__tree.html#ga48ffc2a6e4aa4856b76fb53b97db87f3">_t_newp</a>(0,ACTION,p);</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    <a class="code" href="structT.html">T</a> *r = <a class="code" href="process_8c.html#a0d7e9199c11402521a3ed08719eb92a6">_p_make_run_tree</a>(processes,act,1,t);</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    wjson(sem,r,<span class="stringliteral">&quot;profile&quot;</span>,0);</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    <span class="comment">//    spec_is_str_equal(_t2s(&amp;test_profile_defs,r),&quot;&quot;);</span></div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    startVisdump(<span class="stringliteral">&quot;profile&quot;</span>);</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    spec_is_equal(<a class="code" href="process_8c.html#a53286ef1d13a97616609cab8d7ac6e53">_p_reduce</a>(sem,&amp;test_profile_defs,r),noReductionErr);</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    <span class="keywordtype">int</span> pt[] = {TREE_PATH_TERMINATOR};</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    _visdump(sem,<a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(r,1),pt);</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    endVisdump();</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    spec_is_str_equal(t2s(<a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(r,1)),<span class="stringliteral">&quot;(MAILING_LABEL:Jane Smith\\n126 Main Street\\nSmallville, CA 12345)&quot;</span>);</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(r);</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(act);</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    _cleanupProfileDefs();</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;}</div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;</div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="group__tree_html_ga25dd0f385044ffbcc7c215ea80fa00b4"><div class="ttname"><a href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a></div><div class="ttdeci">T * _t_new_root(Symbol symbol)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00136">tree.c:136</a></div></div>
-<div class="ttc" id="structT_html"><div class="ttname"><a href="structT.html">T</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00109">ceptr_types.h:109</a></div></div>
-<div class="ttc" id="process_8c_html_acc149ea5dc5c12cd12fc35a61157cfbc"><div class="ttname"><a href="process_8c.html#acc149ea5dc5c12cd12fc35a61157cfbc">_p_reduce</a></div><div class="ttdeci">Error _p_reduce(Defs *defs, T *rt)</div><div class="ttdef"><b>Definition:</b> <a href="process_8c_source.html#l00750">process.c:750</a></div></div>
-<div class="ttc" id="structDefs_html_a6f9d3b3e38fff31326b7d27f730ae95c"><div class="ttname"><a href="structDefs.html#a6f9d3b3e38fff31326b7d27f730ae95c">Defs::structures</a></div><div class="ttdeci">T * structures</div><div class="ttdoc">pointer for quick access to structures </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00177">ceptr_types.h:177</a></div></div>
+<div class="ttc" id="structT_html"><div class="ttname"><a href="structT.html">T</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00112">ceptr_types.h:112</a></div></div>
+<div class="ttc" id="group__receptor_html_gaf15a8e41a81cdff234b5eff7213a7429"><div class="ttname"><a href="group__receptor.html#gaf15a8e41a81cdff234b5eff7213a7429">_r_new</a></div><div class="ttdeci">Receptor * _r_new(SemTable *st, Symbol s)</div><div class="ttdoc">Creates a new receptor. </div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00086">receptor.c:86</a></div></div>
+<div class="ttc" id="structDefs_html_a6f9d3b3e38fff31326b7d27f730ae95c"><div class="ttname"><a href="structDefs.html#a6f9d3b3e38fff31326b7d27f730ae95c">Defs::structures</a></div><div class="ttdeci">T * structures</div><div class="ttdoc">pointer for quick access to structures </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00180">ceptr_types.h:180</a></div></div>
+<div class="ttc" id="spec__utils_8h_html"><div class="ttname"><a href="spec__utils_8h.html">spec_utils.h</a></div></div>
+<div class="ttc" id="process_8c_html_a53286ef1d13a97616609cab8d7ac6e53"><div class="ttname"><a href="process_8c.html#a53286ef1d13a97616609cab8d7ac6e53">_p_reduce</a></div><div class="ttdeci">Error _p_reduce(SemTable *sem, Defs *defs, T *rt)</div><div class="ttdef"><b>Definition:</b> <a href="process_8c_source.html#l00746">process.c:746</a></div></div>
+<div class="ttc" id="group__receptor_html_ga6f650808029d4c598ebe6515d9900ef8"><div class="ttname"><a href="group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8">_r_free</a></div><div class="ttdeci">void _r_free(Receptor *r)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00173">receptor.c:173</a></div></div>
 <div class="ttc" id="group__tree_html_ga3e2009f5a82889263d560d2c1479606a"><div class="ttname"><a href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a></div><div class="ttdeci">T * _t_newr(T *parent, Symbol symbol)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00147">tree.c:147</a></div></div>
 <div class="ttc" id="group__tree_html_ga07dd808fabd8a722b417f2f5e5ca132b"><div class="ttname"><a href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a></div><div class="ttdeci">T * _t_child(T *t, int i)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00599">tree.c:599</a></div></div>
 <div class="ttc" id="group__tree_html_ga48ffc2a6e4aa4856b76fb53b97db87f3"><div class="ttname"><a href="group__tree.html#ga48ffc2a6e4aa4856b76fb53b97db87f3">_t_newp</a></div><div class="ttdeci">T * _t_newp(T *parent, Symbol symbol, Process surface)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00227">tree.c:227</a></div></div>
-<div class="ttc" id="process_8c_html_a0d7e9199c11402521a3ed08719eb92a6"><div class="ttname"><a href="process_8c.html#a0d7e9199c11402521a3ed08719eb92a6">_p_make_run_tree</a></div><div class="ttdeci">T * _p_make_run_tree(T *processes, T *process, int num_params,...)</div><div class="ttdef"><b>Definition:</b> <a href="process_8c_source.html#l01068">process.c:1068</a></div></div>
-<div class="ttc" id="structDefs_html_a80e876ed085ca3f40c11c6dced4bff9a"><div class="ttname"><a href="structDefs.html#a80e876ed085ca3f40c11c6dced4bff9a">Defs::processes</a></div><div class="ttdeci">T * processes</div><div class="ttdoc">pointer for quick access to processes </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00179">ceptr_types.h:179</a></div></div>
-<div class="ttc" id="group__def_html_ga46a91fe61c582d1a380ed040fbb68bee"><div class="ttname"><a href="group__def.html#ga46a91fe61c582d1a380ed040fbb68bee">_d_code_process</a></div><div class="ttdeci">Process _d_code_process(T *processes, T *code, char *name, char *intention, T *signature, Context c)</div><div class="ttdef"><b>Definition:</b> <a href="def_8c_source.html#l00365">def.c:365</a></div></div>
-<div class="ttc" id="structDefs_html"><div class="ttname"><a href="structDefs.html">Defs</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00176">ceptr_types.h:176</a></div></div>
+<div class="ttc" id="process_8c_html_a0d7e9199c11402521a3ed08719eb92a6"><div class="ttname"><a href="process_8c.html#a0d7e9199c11402521a3ed08719eb92a6">_p_make_run_tree</a></div><div class="ttdeci">T * _p_make_run_tree(T *processes, T *process, int num_params,...)</div><div class="ttdef"><b>Definition:</b> <a href="process_8c_source.html#l01065">process.c:1065</a></div></div>
+<div class="ttc" id="group__def_html_ga46a91fe61c582d1a380ed040fbb68bee"><div class="ttname"><a href="group__def.html#ga46a91fe61c582d1a380ed040fbb68bee">_d_code_process</a></div><div class="ttdeci">Process _d_code_process(T *processes, T *code, char *name, char *intention, T *signature, Context c)</div><div class="ttdef"><b>Definition:</b> <a href="def_8c_source.html#l00302">def.c:302</a></div></div>
+<div class="ttc" id="structSemTable_html"><div class="ttname"><a href="structSemTable.html">SemTable</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00241">ceptr_types.h:241</a></div></div>
+<div class="ttc" id="structReceptor_html_a4bb9ce729b6b85fb99326e9df7b23cbd"><div class="ttname"><a href="structReceptor.html#a4bb9ce729b6b85fb99326e9df7b23cbd">Receptor::sem</a></div><div class="ttdeci">SemTable * sem</div><div class="ttdoc">pointer back to the semantic table context where the receptor&#39;s running </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00258">ceptr_types.h:258</a></div></div>
+<div class="ttc" id="structReceptor_html_a56e5e37eb23a3e5debf7f24723eca9ed"><div class="ttname"><a href="structReceptor.html#a56e5e37eb23a3e5debf7f24723eca9ed">Receptor::defs</a></div><div class="ttdeci">Defs defs</div><div class="ttdoc">defs block </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00259">ceptr_types.h:259</a></div></div>
+<div class="ttc" id="structReceptor_html"><div class="ttname"><a href="structReceptor.html">Receptor</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00255">ceptr_types.h:255</a></div></div>
+<div class="ttc" id="structDefs_html"><div class="ttname"><a href="structDefs.html">Defs</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00179">ceptr_types.h:179</a></div></div>
 <div class="ttc" id="group__tree_html_ga31e55cdc031e5f12523b998e89080db6"><div class="ttname"><a href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a></div><div class="ttdeci">void _t_free(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00475">tree.c:475</a></div></div>
-<div class="ttc" id="process_8c_html_a7dc2c46bc4670386c36a0efb369eed34"><div class="ttname"><a href="process_8c.html#a7dc2c46bc4670386c36a0efb369eed34">__p_make_signature</a></div><div class="ttdeci">T * __p_make_signature(char *output_label, Symbol output_type, SemanticID output_sem,...)</div><div class="ttdef"><b>Definition:</b> <a href="process_8c_source.html#l01325">process.c:1325</a></div></div>
-<div class="ttc" id="structDefs_html_a172e45e131e197571ba1a36a136d35f8"><div class="ttname"><a href="structDefs.html#a172e45e131e197571ba1a36a136d35f8">Defs::symbols</a></div><div class="ttdeci">T * symbols</div><div class="ttdoc">pointer for quick access to symbols </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00178">ceptr_types.h:178</a></div></div>
-<div class="ttc" id="structSemanticID_html"><div class="ttname"><a href="structSemanticID.html">SemanticID</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00021">ceptr_types.h:21</a></div></div>
+<div class="ttc" id="structDefs_html_a172e45e131e197571ba1a36a136d35f8"><div class="ttname"><a href="structDefs.html#a172e45e131e197571ba1a36a136d35f8">Defs::symbols</a></div><div class="ttdeci">T * symbols</div><div class="ttdoc">pointer for quick access to symbols </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00181">ceptr_types.h:181</a></div></div>
+<div class="ttc" id="structSemanticID_html"><div class="ttname"><a href="structSemanticID.html">SemanticID</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00023">ceptr_types.h:23</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><a class="el" href="profile__example_8h.html">profile_example.h</a></li>
-    <li class="footer">Generated on Mon Nov 23 2015 18:14:17 for ceptr by
+    <li class="footer">Generated on Sun Nov 29 2015 00:54:48 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

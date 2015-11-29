@@ -110,10 +110,10 @@ $(document).ready(function(){initNavTree('spec__utils_8c_source.html','');});
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="spec__utils_8h.html">spec_utils.h</a>&quot;</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// write out a tree as json</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keywordtype">void</span> wjson(<a class="code" href="structDefs.html">Defs</a> *d,<a class="code" href="structT.html">T</a> *t,<span class="keywordtype">char</span> *n,<span class="keywordtype">int</span> i) {</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keywordtype">void</span> wjson(<a class="code" href="structSemTable.html">SemTable</a> *sem,<a class="code" href="structT.html">T</a> *t,<span class="keywordtype">char</span> *n,<span class="keywordtype">int</span> i) {</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <span class="keywordtype">char</span> fn[100];</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <span class="keywordtype">char</span> json[100000] = {0};</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <a class="code" href="group__tree.html#ga34e1f5a651d1a582e3cd7bb3e885ffde">_t2json</a>(d,t,-1,json);</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <a class="code" href="group__tree.html#ga99f3418321c60281de6692af9b213a37">_t2json</a>(sem,t,-1,json);</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="keywordflow">if</span> (i &gt;= 0)</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    sprintf(fn,<span class="stringliteral">&quot;web/%s_%d.json&quot;</span>,n,i);</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keywordflow">else</span></div>
@@ -121,10 +121,10 @@ $(document).ready(function(){initNavTree('spec__utils_8c_source.html','');});
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    writeFile(fn,json,strlen(json));</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;}</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keywordtype">void</span> dump2json(<a class="code" href="structDefs.html">Defs</a> *d,<a class="code" href="structT.html">T</a> *t,<span class="keywordtype">char</span> *n) {</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keywordtype">void</span> dump2json(<a class="code" href="structSemTable.html">SemTable</a> *st,<a class="code" href="structT.html">T</a> *t,<span class="keywordtype">char</span> *n) {</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keywordtype">char</span> fn[100];</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keywordtype">char</span> json[1000000] = {0};</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <a class="code" href="group__tree.html#ga13014bea87bf812b5584d6cdb8a3b5da">_t2rawjson</a>(d,t,-1,json);</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <a class="code" href="group__tree.html#gace8bc22998a47bd04b312d79cefe1171">_t2rawjson</a>(st,t,-1,json);</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    sprintf(fn,<span class="stringliteral">&quot;web/%s.json&quot;</span>,n);</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    writeFile(fn,json,strlen(json));</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;}</div>
@@ -142,39 +142,39 @@ $(document).ready(function(){initNavTree('spec__utils_8c_source.html','');});
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keywordtype">char</span> *G_visdump_fn = 0;</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keywordtype">int</span> G_visdump_count = 0;</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keywordtype">void</span> _visdump(<a class="code" href="structDefs.html">Defs</a> *defs,<a class="code" href="structT.html">T</a> *x,<span class="keywordtype">int</span> *path) {</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keywordtype">void</span> _visdump(<a class="code" href="structSemTable.html">SemTable</a> *sem,<a class="code" href="structT.html">T</a> *x,<span class="keywordtype">int</span> *path) {</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <a class="code" href="structT.html">T</a> *delta = makeDelta(TREE_DELTA_REPLACE,path,x,1);</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    wjson(defs,delta,G_visdump_fn,G_visdump_count++);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    wjson(sem,delta,G_visdump_fn,G_visdump_count++);</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(delta);</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;}</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keywordtype">void</span> visdump(<a class="code" href="structDefs.html">Defs</a> *defs,<a class="code" href="structT.html">T</a> *x) {</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keywordtype">void</span> visdump(<a class="code" href="structSemTable.html">SemTable</a> *sem,<a class="code" href="structT.html">T</a> *x) {</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordflow">if</span> (G_visdump_count) {</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordtype">int</span> *path = <a class="code" href="group__tree.html#gae4c9b743462f0a3808c9f02c3bf33da8">_t_get_path</a>(x);</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    _visdump(defs,x,path);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    _visdump(sem,x,path);</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    free(path);</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    }</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;}</div>
 <div class="ttc" id="group__tree_html_ga25dd0f385044ffbcc7c215ea80fa00b4"><div class="ttname"><a href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a></div><div class="ttdeci">T * _t_new_root(Symbol symbol)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00136">tree.c:136</a></div></div>
-<div class="ttc" id="structT_html"><div class="ttname"><a href="structT.html">T</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00109">ceptr_types.h:109</a></div></div>
+<div class="ttc" id="structT_html"><div class="ttname"><a href="structT.html">T</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00112">ceptr_types.h:112</a></div></div>
 <div class="ttc" id="spec__utils_8h_html"><div class="ttname"><a href="spec__utils_8h.html">spec_utils.h</a></div></div>
-<div class="ttc" id="group__tree_html_ga34e1f5a651d1a582e3cd7bb3e885ffde"><div class="ttname"><a href="group__tree.html#ga34e1f5a651d1a582e3cd7bb3e885ffde">_t2json</a></div><div class="ttdeci">char * _t2json(Defs *defs, T *t, int level, char *buf)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l01155">tree.c:1155</a></div></div>
 <div class="ttc" id="group__tree_html_ga55270b512ed52ffe5a938a793fa5cd7f"><div class="ttname"><a href="group__tree.html#ga55270b512ed52ffe5a938a793fa5cd7f">_t_path_depth</a></div><div class="ttdeci">int _t_path_depth(int *p)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00695">tree.c:695</a></div></div>
 <div class="ttc" id="group__tree_html_gae4c9b743462f0a3808c9f02c3bf33da8"><div class="ttname"><a href="group__tree.html#gae4c9b743462f0a3808c9f02c3bf33da8">_t_get_path</a></div><div class="ttdeci">int * _t_get_path(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00714">tree.c:714</a></div></div>
 <div class="ttc" id="group__tree_html_ga7535eb2963c6cf5fc78cb14287581f92"><div class="ttname"><a href="group__tree.html#ga7535eb2963c6cf5fc78cb14287581f92">_t_clone</a></div><div class="ttdeci">T * _t_clone(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00538">tree.c:538</a></div></div>
 <div class="ttc" id="group__tree_html_ga3e2009f5a82889263d560d2c1479606a"><div class="ttname"><a href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a></div><div class="ttdeci">T * _t_newr(T *parent, Symbol symbol)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00147">tree.c:147</a></div></div>
+<div class="ttc" id="group__tree_html_gace8bc22998a47bd04b312d79cefe1171"><div class="ttname"><a href="group__tree.html#gace8bc22998a47bd04b312d79cefe1171">_t2rawjson</a></div><div class="ttdeci">char * _t2rawjson(SemTable *sem, T *t, int level, char *buf)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l01036">tree.c:1036</a></div></div>
+<div class="ttc" id="structSemTable_html"><div class="ttname"><a href="structSemTable.html">SemTable</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00241">ceptr_types.h:241</a></div></div>
 <div class="ttc" id="group__tree_html_ga3b7a6499fe49f8e6a54166d583b08d5c"><div class="ttname"><a href="group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c">_t_add</a></div><div class="ttdeci">void _t_add(T *t, T *c)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00237">tree.c:237</a></div></div>
-<div class="ttc" id="structDefs_html"><div class="ttname"><a href="structDefs.html">Defs</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00176">ceptr_types.h:176</a></div></div>
-<div class="ttc" id="group__tree_html_ga13014bea87bf812b5584d6cdb8a3b5da"><div class="ttname"><a href="group__tree.html#ga13014bea87bf812b5584d6cdb8a3b5da">_t2rawjson</a></div><div class="ttdeci">char * _t2rawjson(Defs *defs, T *t, int level, char *buf)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l01033">tree.c:1033</a></div></div>
+<div class="ttc" id="group__tree_html_ga99f3418321c60281de6692af9b213a37"><div class="ttname"><a href="group__tree.html#ga99f3418321c60281de6692af9b213a37">_t2json</a></div><div class="ttdeci">char * _t2json(SemTable *sem, T *t, int level, char *buf)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l01155">tree.c:1155</a></div></div>
 <div class="ttc" id="group__tree_html_ga31e55cdc031e5f12523b998e89080db6"><div class="ttname"><a href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a></div><div class="ttdeci">void _t_free(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00475">tree.c:475</a></div></div>
-<div class="ttc" id="structSemanticID_html"><div class="ttname"><a href="structSemanticID.html">SemanticID</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00021">ceptr_types.h:21</a></div></div>
+<div class="ttc" id="structSemanticID_html"><div class="ttname"><a href="structSemanticID.html">SemanticID</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00023">ceptr_types.h:23</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><a class="el" href="spec__utils_8c.html">spec_utils.c</a></li>
-    <li class="footer">Generated on Mon Nov 23 2015 18:14:17 for ceptr by
+    <li class="footer">Generated on Sun Nov 29 2015 00:54:48 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

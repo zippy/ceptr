@@ -12,6 +12,7 @@ var dir_937849c47cd127d593123ed6329d29aa =
     [ "protocol_spec.h", "protocol__spec_8h.html", "protocol__spec_8h" ],
     [ "receptor_spec.h", "receptor__spec_8h.html", "receptor__spec_8h" ],
     [ "scape_spec.h", "scape__spec_8h.html", "scape__spec_8h" ],
+    [ "semtable_spec.h", "semtable__spec_8h.html", "semtable__spec_8h" ],
     [ "semtrex_spec.h", "semtrex__spec_8h.html", "semtrex__spec_8h" ],
     [ "spec_utils.c", "spec__utils_8c.html", "spec__utils_8c" ],
     [ "spec_utils.h", "spec__utils_8h.html", "spec__utils_8h" ],

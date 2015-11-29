@@ -148,9 +148,9 @@ typedef struct <a class="el" href="structVMHost.html">VMHost</a>&#160;</td><td c
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga9d4f6d9d2c0985e38c027799045f2659"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga9d4f6d9d2c0985e38c027799045f2659"></a>
-<a class="el" href="structVMHost.html">VMHost</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>__v_init</b> (<a class="el" href="structReceptor.html">Receptor</a> *r)</td></tr>
-<tr class="separator:ga9d4f6d9d2c0985e38c027799045f2659"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafad5aa5ec8efd6a773fa4a08815e38c1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gafad5aa5ec8efd6a773fa4a08815e38c1"></a>
+<a class="el" href="structVMHost.html">VMHost</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>__v_init</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structSemTable.html">SemTable</a> *sem)</td></tr>
+<tr class="separator:gafad5aa5ec8efd6a773fa4a08815e38c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab6fbe5683628fb0d62a966316ced938d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structVMHost.html">VMHost</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vmhost.html#gab6fbe5683628fb0d62a966316ced938d">_v_new</a> ()</td></tr>
 <tr class="memdesc:gab6fbe5683628fb0d62a966316ced938d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new virtual machine host.  <a href="#gab6fbe5683628fb0d62a966316ced938d">More...</a><br /></td></tr>
 <tr class="separator:gab6fbe5683628fb0d62a966316ced938d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -213,9 +213,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_join_thread</b> (<
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000045">Todo:</a></b></dt><dd>this should probably be implemented in a scape but for now </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000043">Todo:</a></b></dt><dd>this should probably be implemented in a scape but for now </dd></dl>
 
-<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00183">183</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
+<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00201">201</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
 
 </div>
 </div>
@@ -234,7 +234,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_join_thread</b> (<
 </div><div class="memdoc">
 <p>this is the VMhost main monitoring and execution thread </p>
 
-<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00244">244</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
+<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00262">262</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
 
 </div>
 </div>
@@ -270,7 +270,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_join_thread</b> (<
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00142">142</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
+<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00160">160</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
 
 </div>
 </div>
@@ -299,7 +299,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_join_thread</b> (<
 </div><div class="memdoc">
 <p>scaffolding function for signal delivery </p>
 
-<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00205">205</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
+<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00223">223</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
 
 </div>
 </div>
@@ -324,7 +324,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_join_thread</b> (<
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00051">51</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
+<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00067">67</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
 
 </div>
 </div>
@@ -398,13 +398,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_join_thread</b> (<
 <div class="line"><span class="comment">/*     // because the receptor&#39;s id is in the installed_receptors scape */</span></div>
 <div class="line"><span class="comment">/*     T *pack = _r_get_instance(v-&gt;c,xp); */</span></div>
 <div class="line"><span class="comment">/*     T *id = _t_child(pack,2); */</span></div>
-<div class="line"><span class="comment">/*     TreeHash h = _t_hash(v-&gt;r-&gt;defs.symbols,v-&gt;r-&gt;defs.structures,id); */</span></div>
+<div class="line"><span class="comment">/*     TreeHash h = _t_hash(v-&gt;r-&gt;sem,id); */</span></div>
 <div class="line"><span class="comment">/*     spec_is_xaddr_equal(v-&gt;r,_s_get(v-&gt;installed_receptors,h),xp); */</span></div>
 <div class="line"></div>
 <div class="line"><span class="comment">/*     _v_free(v); */</span></div>
-</div><!-- fragment --><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000044">Todo:</a></b></dt><dd>expand the manifest to allow optional binding, etc, using semtrex to do the matching instead of assuming positional matching </dd></dl>
+</div><!-- fragment --><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000042">Todo:</a></b></dt><dd>expand the manifest to allow optional binding, etc, using semtrex to do the matching instead of assuming positional matching </dd></dl>
 
-<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00087">87</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
+<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00104">104</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
 
 </div>
 </div>
@@ -423,7 +423,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_join_thread</b> (<
 </div><div class="memdoc">
 <p>create all the built in receptors that exist in all VMhosts </p>
 
-<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00295">295</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
+<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00313">313</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
 
 </div>
 </div>
@@ -459,7 +459,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_join_thread</b> (<
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structXaddr.html">Xaddr</a> of the receptor package in the compository </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000043">Todo:</a></b></dt><dd>validate signature and checksums??</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000041">Todo:</a></b></dt><dd>validate signature and checksums??</dd></dl>
 <p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line"><span class="comment">/*     VMHost *v = _v_new(); */</span></div>
 <div class="line"><span class="comment">/*     T *p = _makeTestHTTPAppReceptorPackage(); */</span></div>
 <div class="line"></div>
@@ -469,7 +469,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_join_thread</b> (<
 <div class="line"><span class="comment">/*     spec_is_ptr_equal(p,p1); */</span></div>
 <div class="line"><span class="comment">/*     _v_free(v); */</span></div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00068">68</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
+<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00085">85</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
 
 </div>
 </div>
@@ -492,7 +492,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_join_thread</b> (<
 <p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structVMHost.html">VMHost</a> *v = <a class="code" href="group__vmhost.html#gab6fbe5683628fb0d62a966316ced938d">_v_new</a>();</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// test the structure of the VM_HOST receptor</span></div>
-<div class="line">    spec_is_str_equal(t2s(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>-&gt;<a class="code" href="structReceptor.html#aec6f1eee133a993b59baf50e75620fb6">root</a>),<span class="stringliteral">&quot;(VM_HOST_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES) (ASPECTS)) (FLUX (DEFAULT_ASPECT (EXPECTATIONS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))&quot;</span>);</div>
+<div class="line">    spec_is_sem_equal(<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>-&gt;<a class="code" href="structReceptor.html#aec6f1eee133a993b59baf50e75620fb6">root</a>),VM_HOST_RECEPTOR);</div>
+<div class="line">    <span class="comment">//too much data in the structures    spec_is_str_equal(t2s(v-&gt;r-&gt;root),&quot;(VM_HOST_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES) (ASPECTS)) (FLUX (DEFAULT_ASPECT (EXPECTATIONS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))&quot;);</span></div>
 <div class="line"></div>
 <div class="line">    <a class="code" href="structXaddr.html">Xaddr</a> cx = {COMPOSITORY,1};</div>
 <div class="line">    <a class="code" href="structReceptor.html">Receptor</a> *c = <a class="code" href="group__receptor.html#gac438809f0d3f3add97efd49729c9027f">__r_get_receptor</a>(<a class="code" href="group__receptor.html#gadc618904f81240b244e816234d1c906e">_r_get_instance</a>(v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,cx));</div>
@@ -503,7 +504,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_join_thread</b> (<
 <div class="line">    spec_is_sem_equal(v-&gt;installed_receptors-&gt;data_source,RECEPTOR);</div>
 <div class="line">    <a class="code" href="group__vmhost.html#ga44e0f6d62e38448bfa058f287cc463eb">_v_free</a>(v);</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00038">38</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
+<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00039">39</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
 
 </div>
 </div>
@@ -599,7 +600,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_join_thread</b> (<
 <div class="line"></div>
 <div class="line"><span class="comment">/*     char buf[2000]; */</span></div>
 <div class="line"><span class="comment">/*     // just check that we got our semtrex right */</span></div>
-<div class="line"><span class="comment">/*     spec_is_str_equal(_dump_semtrex(test_HTTP_defs,req,buf),&quot;/(HTTP_REQUEST/.*,HTTP_REQUEST_HOST=helloworld.com)&quot;); */</span></div>
+<div class="line"><span class="comment">/*     spec_is_str_equal(_dump_semtrex(G_sem,req,buf),&quot;/(HTTP_REQUEST/.*,HTTP_REQUEST_HOST=helloworld.com)&quot;); */</span></div>
 <div class="line"><span class="comment">/*     free(sv); */</span></div>
 <div class="line"></div>
 <div class="line"><span class="comment">/*     _r_add_expectation(hello_r,DEFAULT_ASPECT,HTTP_REQUEST,expect,act,0,0); */</span></div>
@@ -632,11 +633,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_join_thread</b> (<
 <div class="line"><span class="comment">/*     _v_activate(v,httpd_x); */</span></div>
 <div class="line"><span class="comment">/*     _v_activate(v,x); */</span></div>
 <div class="line"></div>
-<div class="line"><a class="code" href="structReceptor.html">Receptor</a> *_makeAliveProtocolReceptor();</div>
+<div class="line"><a class="code" href="structReceptor.html">Receptor</a> *_makeAliveProtocolReceptor(<a class="code" href="structVMHost.html">VMHost</a> *v);</div>
 <div class="line"></div>
 <div class="line"><span class="keywordtype">void</span> <a class="code" href="vmhost__spec_8h.html#a9165528cd9a1193303f58f7c012ba53c">testVMHostActivateReceptor</a>()  {</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00164">164</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
+<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00182">182</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
 
 </div>
 </div>
@@ -665,7 +666,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_join_thread</b> (<
 </div><div class="memdoc">
 <p>walk through the list of signals and send them </p>
 
-<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00173">173</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
+<p>Definition at line <a class="el" href="vmhost_8c_source.html#l00191">191</a> of file <a class="el" href="vmhost_8c_source.html">vmhost.c</a>.</p>
 
 </div>
 </div>
@@ -674,7 +675,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_v_join_thread</b> (<
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Nov 23 2015 18:14:17 for ceptr by
+    <li class="footer">Generated on Sun Nov 29 2015 00:54:49 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

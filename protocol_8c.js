@@ -1,6 +1,7 @@
 var protocol_8c =
 [
-    [ "_o_express_role", "protocol_8c.html#a74dae6f8b41f3d0c77f71f0e7245a90f", null ],
-    [ "_o_new", "protocol_8c.html#a2c7ff197cbf462bae4aff10bd3d1c7d5", null ],
-    [ "_t_find_child", "protocol_8c.html#afa4b2beed8656b636c9e5d3190681622", null ]
+    [ "_o_express_role", "group__accumulator.html#ga46ff4d16575a21f8c7d02fa754ac6d2f", null ],
+    [ "_o_make_protocol_def", "group__accumulator.html#ga70b7186f103bb1769e2386af48ece57b", null ],
+    [ "_t_find_child", "group__accumulator.html#gafa4b2beed8656b636c9e5d3190681622", null ],
+    [ "G_vm", "group__accumulator.html#ga1c5922c03eef9111c4e116773e8517fe", null ]
 ];

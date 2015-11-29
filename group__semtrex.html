@@ -153,7 +153,7 @@ Macros</h2></td></tr>
 <tr class="memdesc:gac1b578cc9fc2f835ad12855698fe4cf2"><td class="mdescLeft">&#160;</td><td class="mdescRight">macro to add a single symbol literal not to semtrex tree <br /></td></tr>
 <tr class="separator:gac1b578cc9fc2f835ad12855698fe4cf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga23a719903c25f5387274002776ae5fa1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga23a719903c25f5387274002776ae5fa1"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga23a719903c25f5387274002776ae5fa1">DS</a>(l, t)&#160;&#160;&#160;{<a class="el" href="structDefs.html">Defs</a> _d={0,0,0,0};<a class="el" href="structDefs.html">Defs</a> *d = G_d?G_d:&amp;_d;char buf[1000];puts(&quot;\n&quot; #l &quot;:&quot;);<a class="el" href="group__semtrex.html#ga614de2fa253b75fc34b41421a866ca62">_dump_semtrex</a>(d,t,buf);puts(buf);}</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga23a719903c25f5387274002776ae5fa1">DS</a>(l, t)&#160;&#160;&#160;{char buf[1000];puts(&quot;\n&quot; #l &quot;:&quot;);<a class="el" href="group__semtrex.html#ga0b627873ef75a23e1c24074e9893ee6e">_dump_semtrex</a>(G_sem,t,buf);puts(buf);}</td></tr>
 <tr class="memdesc:ga23a719903c25f5387274002776ae5fa1"><td class="mdescLeft">&#160;</td><td class="mdescRight">debugging macro for quickly dumping out a semtrex text string <br /></td></tr>
 <tr class="separator:ga23a719903c25f5387274002776ae5fa1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -217,14 +217,14 @@ Functions</h2></td></tr>
 <tr class="separator:ga27540c8e1822da3160a0cc4717df410f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gada90f89374f4577e3ac8819e500a97a7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#gada90f89374f4577e3ac8819e500a97a7">_t_get_match</a> (<a class="el" href="structT.html">T</a> *result, <a class="el" href="structSemanticID.html">Symbol</a> group)</td></tr>
 <tr class="separator:gada90f89374f4577e3ac8819e500a97a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5e8b3f2120a2a17ca5c4724974ba3436"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga5e8b3f2120a2a17ca5c4724974ba3436">_t_embody_from_match</a> (<a class="el" href="structDefs.html">Defs</a> *defs, <a class="el" href="structT.html">T</a> *match, <a class="el" href="structT.html">T</a> *t)</td></tr>
-<tr class="separator:ga5e8b3f2120a2a17ca5c4724974ba3436"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga614de2fa253b75fc34b41421a866ca62"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga614de2fa253b75fc34b41421a866ca62">_dump_semtrex</a> (<a class="el" href="structDefs.html">Defs</a> *defs, <a class="el" href="structT.html">T</a> *s, char *buf)</td></tr>
-<tr class="separator:ga614de2fa253b75fc34b41421a866ca62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga25d59875a246ba9fb47131bced426517"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga25d59875a246ba9fb47131bced426517">_t_embody_from_match</a> (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structT.html">T</a> *match, <a class="el" href="structT.html">T</a> *t)</td></tr>
+<tr class="separator:ga25d59875a246ba9fb47131bced426517"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0b627873ef75a23e1c24074e9893ee6e"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga0b627873ef75a23e1c24074e9893ee6e">_dump_semtrex</a> (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structT.html">T</a> *s, char *buf)</td></tr>
+<tr class="separator:ga0b627873ef75a23e1c24074e9893ee6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad46a0cafec3ba9ca1500ecd6f8984238"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#gad46a0cafec3ba9ca1500ecd6f8984238">makeASCIITree</a> (char *c)</td></tr>
 <tr class="separator:gad46a0cafec3ba9ca1500ecd6f8984238"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga17eda8e5306b5764656d7edf3f5b15bd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga17eda8e5306b5764656d7edf3f5b15bd">parseSemtrex</a> (<a class="el" href="structDefs.html">Defs</a> *d, char *stx)</td></tr>
-<tr class="separator:ga17eda8e5306b5764656d7edf3f5b15bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabe49b12bfb8785a10bf088c4ebe60db4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#gabe49b12bfb8785a10bf088c4ebe60db4">parseSemtrex</a> (<a class="el" href="structSemTable.html">SemTable</a> *sem, char *stx)</td></tr>
+<tr class="separator:gabe49b12bfb8785a10bf088c4ebe60db4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga5e4a8396bf0b927fb440bc207ff44b32"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga5e4a8396bf0b927fb440bc207ff44b32"></a>
 <a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>__stxcv</b> (<a class="el" href="structT.html">T</a> *stxx, char c)</td></tr>
 <tr class="separator:ga5e4a8396bf0b927fb440bc207ff44b32"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -403,19 +403,19 @@ Here's a BNF for the textual representation of semtrex trees:<div class="fragmen
 </div><div class="memdoc">
 <p>utility function to create a semtrex litteral symbol set </p>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01141">1141</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01131">1131</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ga614de2fa253b75fc34b41421a866ca62"></a>
+<a class="anchor" id="ga0b627873ef75a23e1c24074e9893ee6e"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">char* _dump_semtrex </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structDefs.html">Defs</a> *&#160;</td>
-          <td class="paramname"><em>defs</em>, </td>
+          <td class="paramtype"><a class="el" href="structSemTable.html">SemTable</a> *&#160;</td>
+          <td class="paramname"><em>sem</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -447,7 +447,7 @@ Here's a BNF for the textual representation of semtrex trees:<div class="fragmen
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the buffer </dd></dl>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00953">953</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00951">951</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -466,7 +466,7 @@ Here's a BNF for the textual representation of semtrex trees:<div class="fragmen
 </div><div class="memdoc">
 <p>free the memory allocated by an FSA </p>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00326">326</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00327">327</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -495,19 +495,19 @@ Here's a BNF for the textual representation of semtrex trees:<div class="fragmen
 </div><div class="memdoc">
 <p>wrapper function for building the finite state automata recursively and patching it to the final match state </p>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00282">282</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00283">283</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ga5e8b3f2120a2a17ca5c4724974ba3436"></a>
+<a class="anchor" id="ga25d59875a246ba9fb47131bced426517"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="structT.html">T</a>* _t_embody_from_match </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structDefs.html">Defs</a> *&#160;</td>
-          <td class="paramname"><em>defs</em>, </td>
+          <td class="paramtype"><a class="el" href="structSemTable.html">SemTable</a> *&#160;</td>
+          <td class="paramname"><em>sem</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -697,7 +697,7 @@ Here's a BNF for the textual representation of semtrex trees:<div class="fragmen
 </div><div class="memdoc">
 <p>convert ascii tokens from a match to a char and add them to the given tree </p>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01132">1132</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01122">1122</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -738,7 +738,7 @@ Here's a BNF for the textual representation of semtrex trees:<div class="fragmen
 </div><div class="memdoc">
 <p>convert ascii tokens from a match to an float and add them to the given tree </p>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01099">1099</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01089">1089</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -779,7 +779,7 @@ Here's a BNF for the textual representation of semtrex trees:<div class="fragmen
 </div><div class="memdoc">
 <p>convert ascii tokens from a match to an integer and add them to the given tree </p>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01083">1083</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01073">1073</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -820,7 +820,7 @@ Here's a BNF for the textual representation of semtrex trees:<div class="fragmen
 </div><div class="memdoc">
 <p>convert ascii tokens from a match to a string and add them to the given tree </p>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01116">1116</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01106">1106</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -845,19 +845,19 @@ Here's a BNF for the textual representation of semtrex trees:<div class="fragmen
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structT.html">T</a> ASCII_CHARS tree </dd></dl>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01071">1071</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01061">1061</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ga17eda8e5306b5764656d7edf3f5b15bd"></a>
+<a class="anchor" id="gabe49b12bfb8785a10bf088c4ebe60db4"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="structT.html">T</a>* parseSemtrex </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structDefs.html">Defs</a> *&#160;</td>
-          <td class="paramname"><em>d</em>, </td>
+          <td class="paramtype"><a class="el" href="structSemTable.html">SemTable</a> *&#160;</td>
+          <td class="paramname"><em>sem</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -880,9 +880,9 @@ Here's a BNF for the textual representation of semtrex trees:<div class="fragmen
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structT.html">T</a> semtrex tree </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000037">Todo:</a></b></dt><dd>, this should be implemented using INTERPOLATE_MATCH </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000035">Todo:</a></b></dt><dd>, this should be implemented using INTERPOLATE_MATCH </dd></dl>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01160">1160</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01150">1150</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -891,7 +891,7 @@ Here's a BNF for the textual representation of semtrex trees:<div class="fragmen
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Nov 23 2015 18:14:17 for ceptr by
+    <li class="footer">Generated on Sun Nov 29 2015 00:54:49 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

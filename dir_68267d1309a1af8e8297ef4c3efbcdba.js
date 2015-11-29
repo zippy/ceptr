@@ -28,6 +28,8 @@ var dir_68267d1309a1af8e8297ef4c3efbcdba =
     [ "receptor.h", "receptor_8h.html", "receptor_8h" ],
     [ "scape.c", "scape_8c.html", "scape_8c" ],
     [ "scape.h", "scape_8h.html", "scape_8h" ],
+    [ "semtable.c", "semtable_8c.html", "semtable_8c" ],
+    [ "semtable.h", "semtable_8h.html", "semtable_8h" ],
     [ "semtrex.c", "semtrex_8c.html", "semtrex_8c" ],
     [ "semtrex.h", "semtrex_8h.html", "semtrex_8h" ],
     [ "shell.c", "shell_8c.html", "shell_8c" ],

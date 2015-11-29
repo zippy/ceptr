@@ -7,5 +7,6 @@ var structVMHost =
     [ "installed_receptors", "structVMHost.html#abc9dab8da288b7f9ad20988e545a56f9", null ],
     [ "process_state", "structVMHost.html#a6210d87a36adbc358e239510cade66b4", null ],
     [ "r", "structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e", null ],
+    [ "sem", "structVMHost.html#a0718944e7f9d848d3b96f704ea0f0252", null ],
     [ "vm_thread", "structVMHost.html#ada4998fffaedd9669bdada5ef0ec478f", null ]
 ];

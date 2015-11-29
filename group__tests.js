@@ -11,6 +11,7 @@ var group__tests =
     [ "protocol_spec.h", "protocol__spec_8h.html", null ],
     [ "receptor_spec.h", "receptor__spec_8h.html", null ],
     [ "scape_spec.h", "scape__spec_8h.html", null ],
+    [ "semtable_spec.h", "semtable__spec_8h.html", null ],
     [ "semtrex_spec.h", "semtrex__spec_8h.html", null ],
     [ "spec_utils.c", "spec__utils_8c.html", null ],
     [ "spec_utils.h", "spec__utils_8h.html", null ],

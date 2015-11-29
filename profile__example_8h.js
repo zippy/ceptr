@@ -17,6 +17,7 @@ var profile__example_8h =
     [ "STATE", "profile__example_8h.html#a715eabdd34c5bb533807e5044ccc1214", null ],
     [ "STREET_ADDRESS", "profile__example_8h.html#ac390521322d7e1a4fa91204881da7e48", null ],
     [ "test_profile_defs", "profile__example_8h.html#a15c2795fc5e60df3c4ffda2bfe253e92", null ],
+    [ "test_profile_receptor", "profile__example_8h.html#a7ba59ea4d82ed76df48da4b1c635dd4a", null ],
     [ "test_profile_structures", "profile__example_8h.html#a03d69852c8a837b9119c46b92d9d8d20", null ],
     [ "test_profile_symbols", "profile__example_8h.html#a5151b3f6d229c8b9ad8a263ca39a1c7b", null ],
     [ "USER_PROFILE", "profile__example_8h.html#ab9f8306b9a7168c10ae09db3b80c4c9a", null ],

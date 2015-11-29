@@ -118,7 +118,8 @@ Include dependency graph for scape.h:</div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="scape_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="scape_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 </div>
 <p><a href="scape_8h_source.html">Go to the source code of this file.</a></p>
@@ -176,7 +177,7 @@ Functions</h2></td></tr>
 <p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structScape.html">Scape</a> *s = <a class="code" href="scape_8c.html#a4262c29b48e99f7254b1ceef9bae0436">_s_new</a>(TEST_INT_SYMBOL,TEST_STR_SYMBOL);</div>
 <div class="line">    <a class="code" href="structXaddr.html">Xaddr</a> x = {1,3};  <span class="comment">// DUMMY XADDR</span></div>
 <div class="line">    <a class="code" href="structT.html">T</a> *t = _t_newi(0,TEST_INT_SYMBOL,31415);</div>
-<div class="line">    TreeHash h = <a class="code" href="group__tree.html#ga19506af36bcdf713253dabd47ecaa6e4">_t_hash</a>(0,0,t);</div>
+<div class="line">    TreeHash h = <a class="code" href="group__tree.html#gaceb68b489c4362a94aafa5b71c38d1ee">_t_hash</a>(G_sem,t);</div>
 <div class="line">    <a class="code" href="scape_8c.html#a1bfbd4c58bd2c951e11434efb3936506">_s_add</a>(s,h,x);</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// check that element was added</span></div>
@@ -186,7 +187,7 @@ Functions</h2></td></tr>
 <div class="line"></div>
 <div class="line">    <span class="comment">// check that a different hash returns the null xaddr</span></div>
 <div class="line">    t-&gt;contents.symbol = TEST_INT_SYMBOL2;</div>
-<div class="line">    h = <a class="code" href="group__tree.html#ga19506af36bcdf713253dabd47ecaa6e4">_t_hash</a>(0,0,t);</div>
+<div class="line">    h = <a class="code" href="group__tree.html#gaceb68b489c4362a94aafa5b71c38d1ee">_t_hash</a>(G_sem,t);</div>
 <div class="line">    xg = <a class="code" href="scape_8c.html#a94d326b6bc334bd6bcfdcd4fdcd29439">_s_get</a>(s,h);</div>
 <div class="line">    spec_is_true(is_null_xaddr(xg));</div>
 <div class="line"></div>
@@ -244,7 +245,7 @@ Functions</h2></td></tr>
 <p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structScape.html">Scape</a> *s = <a class="code" href="scape_8c.html#a4262c29b48e99f7254b1ceef9bae0436">_s_new</a>(TEST_INT_SYMBOL,TEST_STR_SYMBOL);</div>
 <div class="line">    <a class="code" href="structXaddr.html">Xaddr</a> x = {1,3};  <span class="comment">// DUMMY XADDR</span></div>
 <div class="line">    <a class="code" href="structT.html">T</a> *t = _t_newi(0,TEST_INT_SYMBOL,31415);</div>
-<div class="line">    TreeHash h = <a class="code" href="group__tree.html#ga19506af36bcdf713253dabd47ecaa6e4">_t_hash</a>(0,0,t);</div>
+<div class="line">    TreeHash h = <a class="code" href="group__tree.html#gaceb68b489c4362a94aafa5b71c38d1ee">_t_hash</a>(G_sem,t);</div>
 <div class="line">    <a class="code" href="scape_8c.html#a1bfbd4c58bd2c951e11434efb3936506">_s_add</a>(s,h,x);</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// check that element was added</span></div>
@@ -254,7 +255,7 @@ Functions</h2></td></tr>
 <div class="line"></div>
 <div class="line">    <span class="comment">// check that a different hash returns the null xaddr</span></div>
 <div class="line">    t-&gt;contents.symbol = TEST_INT_SYMBOL2;</div>
-<div class="line">    h = <a class="code" href="group__tree.html#ga19506af36bcdf713253dabd47ecaa6e4">_t_hash</a>(0,0,t);</div>
+<div class="line">    h = <a class="code" href="group__tree.html#gaceb68b489c4362a94aafa5b71c38d1ee">_t_hash</a>(G_sem,t);</div>
 <div class="line">    xg = <a class="code" href="scape_8c.html#a94d326b6bc334bd6bcfdcd4fdcd29439">_s_get</a>(s,h);</div>
 <div class="line">    spec_is_true(is_null_xaddr(xg));</div>
 <div class="line"></div>
@@ -305,7 +306,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="scape_8h.html">scape.h</a></li>
-    <li class="footer">Generated on Mon Nov 23 2015 18:14:17 for ceptr by
+    <li class="footer">Generated on Sun Nov 29 2015 00:54:48 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

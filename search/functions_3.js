@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['get_5fsymbol',['get_symbol',['../semtrex_8c.html#a1c432d4d8a2f614895f8fa2f7dcd2f99',1,'semtrex.c']]]
+  ['list1',['list1',['../semtrex_8c.html#a27270856d607cf2cc84b27b46473513b',1,'semtrex.c']]]
 ];

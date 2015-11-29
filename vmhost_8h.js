@@ -4,7 +4,7 @@ var vmhost_8h =
     [ "ActiveReceptor", "group__vmhost.html#ga6c44cd3da992698a1e57bbcf25b423a1", null ],
     [ "thread", "group__vmhost.html#ga713b95fcfb383cf3c6e49d19d7c0fe96", null ],
     [ "VMHost", "group__vmhost.html#ga28f6922ceb70f5d815e9227bfed8b062", null ],
-    [ "__v_init", "group__vmhost.html#ga9d4f6d9d2c0985e38c027799045f2659", null ],
+    [ "__v_init", "group__vmhost.html#gafad5aa5ec8efd6a773fa4a08815e38c1", null ],
     [ "__v_process", "group__vmhost.html#ga19975d66a0fa04365bf89250bdede501", null ],
     [ "_v_activate", "group__vmhost.html#ga53694170e5452b8062ec405e6a9a3f60", null ],
     [ "_v_deliver_signals", "group__vmhost.html#ga7c2d4696c7ed325684c45f113ce0c2b2", null ],
