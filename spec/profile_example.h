@@ -133,7 +133,7 @@ void testProfileExample() {
 
     //    _t_new(code,PARAM_REF,pt2,sizeof(int)*4);
 
-    Process p = _d_code_process(processes,code,"profileToMailingLabel","given a profile produce a mailing label",signature,TEST_CONTEXT);
+    Process p = _d_code_process(sem,code,"profileToMailingLabel","given a profile produce a mailing label",signature,test_profile_receptor->addr);
 
     T *act = _t_newp(0,ACTION,p);
 

@@ -121,7 +121,8 @@ Symbol: INTERPOLATE_SYMBOL,SYMBOL;          a place holder to indicate which sym
 Symbol: PROCESS_NAME,CSTRING;
 Symbol: PROCESS_INTENTION,CSTRING;
 Declare: PROCESS_SIGNATURE;
-Symbol: PROCESS_CODING,[(PROCESS_NAME,PROCESS_INTENTION,PROCESS,PROCESS_SIGNATURE)];
+Symbol: CODE,[!];
+Symbol: PROCESS_CODING,[(PROCESS_NAME,PROCESS_INTENTION,CODE,PROCESS_SIGNATURE)];
 Symbol: PROCESSES,[*PROCESS_CODING];
 
 Symbol: SIGNATURE_LABEL,CSTRING;
@@ -139,7 +140,7 @@ Symbol: OUTPUT_SIGNATURE,[(SIGNATURE_LABEL,SIGNATURE_OUTPUT_TYPE)];
 Structure: PROCESS_FORM,(OUTPUT_SIGNATURE,*INPUT_SIGNATURE);
 Symbol: PROCESS_SIGNATURE,PROCESS_FORM;
 
-Symbol: RUN_TREE,[!];                       think about this as a stack frame and its code
+Symbol: RUN_TREE,[(CODE,PARAMS,?CODE)];     think about this as a stack frame and its code and error handling code
 Symbol: PARAM_REF,TREE_PATH;                used in a code tree as a reference to a parameter
 Symbol: SIGNAL_REF,TREE_PATH;               used in a code tree triggered by an expectation as a reference to a part of the signal that triggered the action.
 Symbol: PARAMS,[*!];

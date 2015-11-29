@@ -643,7 +643,8 @@ void evaluateEndCondition(T *ec,bool *cleanup,bool *allow) {
  * onto the current Q or reawakening the process that's been blocked waiting for the expectation
  * to match
  */
-void __r_test_expectation(T* processes,T *expectation,T *signal,Q *q) {
+void __r_test_expectation(Receptor *r,T *expectation,T *signal) {
+    Q *q = r->q;
     T *signal_contents = (T *)_t_surface(_t_child(signal,SignalBodyIdx));
 
     //test carriers first because they must match
@@ -709,6 +710,7 @@ void __r_test_expectation(T* processes,T *expectation,T *signal,Q *q) {
             Process p = *(Process*) _t_surface(action);
             T *params = _t_rclone(_t_child(expectation,ExpectationParamsIdx));  // __p_make_run_tree assumes rT nodes
             _p_interpolate_from_match(params,m,signal_contents);
+            T *processes = _sem_get_defs(r->sem,p);
             rt = __p_make_run_tree(processes,p,params);
             _t_free(params);
             _t_add(signal,rt);
@@ -847,7 +849,7 @@ Error _r_deliver(Receptor *r, T *signal) {
 
         DO_KIDS(es,
                 l = _t_child(es,i);
-                __r_test_expectation(r->defs.processes,l,signal,r->q);
+                __r_test_expectation(r,l,signal);
                 );
     }
     return noDeliveryErr;

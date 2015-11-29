@@ -299,7 +299,8 @@ T *__d_code_process(T *processes,T *code,char *name,char *intention,T *signature
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testCodeProcess
  */
-Process _d_code_process(T *processes,T *code,char *name,char *intention,T *signature,Context c) {
+Process _d_code_process(SemTable *sem,T *code,char *name,char *intention,T *signature,Context c) {
+    T *processes = __sem_get_defs(sem,SEM_TYPE_PROCESS,c);
     T *def = __d_code_process(processes,code,name,intention,signature);
     Process p = {c,SEM_TYPE_PROCESS,_d_get_def_addr(def)};
     return p;
@@ -440,6 +441,7 @@ char * __t_dump(SemTable *sem,T *t,int level,char *buf) {
             case SYMBOL_ID:
             case STRUCTURE_ID:
             case PROCESS_ID:
+            case PROTOCOL_ID:
                 c = _sem_get_name(sem,*(SemanticID *)_t_surface(t));
                 sprintf(buf,"(%s:%s",n,c?c:"<unknown>");
                 break;

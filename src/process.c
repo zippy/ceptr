@@ -896,7 +896,7 @@ Error _p_step(Q *q, R **contextP) {
                     if (!is_sys_process(s)) {
                         // if it's user defined process then we check the signature and then make
                         // a new run-tree run that process
-                        T *processes = q->r->defs.processes;
+                        T *processes = _sem_get_defs(q->r->sem,s);
                         Error e = __p_check_signature(q->r->sem,processes,s,np);
                         if (e) context->state = e;
                         else {
@@ -990,8 +990,8 @@ Error _p_step(Q *q, R **contextP) {
                 _t_add(err,extra);
             }
             // switch the node_pointer to the top of the error handling routine
-            context->node_pointer = _t_child(context->run_tree,3);
-            context->idx = 3;
+            context->node_pointer = _t_child(context->run_tree,RunTreeErrorCodeIdx);
+            context->idx = RunTreeErrorCodeIdx;
             context->parent = context->run_tree;
 
             context->state = Eval;
@@ -1018,7 +1018,7 @@ T *__p_make_run_tree(T *processes,Process p,T *params) {
     else {
         // otherwise we get the code of the process
         T *code_def = _d_get_process_code(processes,p);
-        T *code = _t_child(code_def,3);
+        T *code = _t_child(code_def,ProcessDefCodeIdx);
         T *c = _t_rclone(code);
         _t_add(t,c);
         ps = _t_newr(t,PARAMS);

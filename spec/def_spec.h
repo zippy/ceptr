@@ -149,7 +149,7 @@ void testCodeProcess() {
                                       "val",SIGNATURE_STRUCTURE,INTEGER,
                                       "exponent",SIGNATURE_STRUCTURE,INTEGER,
                                       NULL);
-    Process p = _d_code_process(defs,code,"power","takes the mathematical power of the two params",signature,TEST_CONTEXT);
+    Process p = _d_code_process(G_sem,code,"power","takes the mathematical power of the two params",signature,TEST_CONTEXT);
 
     spec_is_true(is_process(p));
     spec_is_true(!is_symbol(p));
@@ -203,7 +203,7 @@ void testDefSemtrex() {
 void testDefSysDefs() {
     spec_is_equal(G_sem->contexts,5); // 5 for the base 4 plus the one added by http_example.h
     spec_is_equal(_t_children(G_sem->stores[0].definitions),6);  // should have slots for all the defs
-    spec_is_equal(_t_children(_t_child(G_sem->stores[0].definitions,1)),84);
+    spec_is_equal(_t_children(_t_child(G_sem->stores[0].definitions,1)),85);
 
     //    spec_is_str_equal(t2s(_t_child(G_contexts[SYS_CONTEXT].root,1)),"");
     dump2json(G_sem,G_contexts[SYS_CONTEXT].root,"sysdefs");

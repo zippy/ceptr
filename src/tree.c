@@ -1081,6 +1081,7 @@ char * _t2rawjson(SemTable *sem,T *t,int level,char *buf) {
             case SYMBOL_ID:
             case STRUCTURE_ID:
             case PROCESS_ID:
+            case PROTOCOL_ID:
                 {
                     SemanticID sem =*(SemanticID *)_t_surface(t);
                     sprintf(buf,",\"surface\":");
@@ -1216,6 +1217,10 @@ char * _t2json(SemTable *sem,T *t,int level,char *buf) {
             case PROCESS_ID:
                 c = _sem_get_name(sem,*(Process *)_t_surface(t));
                 sprintf(buf,"\"type\":\"PROCESS\",\"name\":\"%s\",\"surface\":\"%s\"",n,c?c:"<unknown>");
+                break;
+            case PROTOCOL_ID:
+                c = _sem_get_name(sem,*(Protocol *)_t_surface(t));
+                sprintf(buf,"\"type\":\"PROTOCOL\",\"name\":\"%s\",\"surface\":\"%s\"",n,c?c:"<unknown>");
                 break;
             case TREE_PATH_ID:
                 sprintf(buf,"\"type\":\"TREE_PATH\",\"name\":\"%s\",\"surface\":\"%s\"",n,_t_sprint_path((int *)_t_surface(t),b));

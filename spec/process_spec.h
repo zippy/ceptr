@@ -49,7 +49,7 @@ void testRunTree() {
     // test that __p_make_signature does what we think it should
     spec_is_str_equal(buf,t2s(signature));
 
-    Process p = _d_code_process(processes,code,"myif","a duplicate of the sys if process with params in different order",signature,TEST_CONTEXT);
+    Process p = _d_code_process(G_sem,code,"myif","a duplicate of the sys if process with params in different order",signature,TEST_CONTEXT);
 
     T *p3 = _t_newi(0,BOOLEAN,1);
     T *p1 = _t_newi(0,TEST_INT_SYMBOL,123);
@@ -681,7 +681,7 @@ void testProcessRefs() {
  * @snippet spec/process_spec.h defIfEven
  */
 //! [defIfEven]
-Process _defIfEven(T *processes) {
+Process _defIfEven() {
     T *code;
 
     /* a process that would look something like this in lisp:
@@ -712,7 +712,7 @@ Process _defIfEven(T *processes) {
                                       "false_branch",SIGNATURE_ANY,NULL_STRUCTURE,
                                       NULL);
 
-    return _d_code_process(processes,code,"if even","return 2nd child if even, third if not",signature,TEST_CONTEXT);
+    return _d_code_process(G_sem,code,"if even","return 2nd child if even, third if not",signature,TEST_CONTEXT);
 }
 //! [defIfEven]
 
@@ -722,7 +722,7 @@ Process _defIfEven(T *processes) {
  * @snippet spec/process_spec.h defDivZero
  */
 //! [defDivZero]
-Process _defDivZero(T *processes) {
+Process _defDivZero() {
     T *code;
 
     /* a process that would look something like this in lisp:
@@ -736,19 +736,19 @@ Process _defDivZero(T *processes) {
                                       "val",SIGNATURE_STRUCTURE,INTEGER,
                                       NULL);
 
-    return _d_code_process(processes,code,"divByZero","create a divide by zero error",signature,TEST_CONTEXT);
+    return _d_code_process(G_sem,code,"divByZero","create a divide by zero error",signature,TEST_CONTEXT);
 }
 //! [defDivZero]
 
 void testProcessReduceDefinedProcess() {
     //! [testProcessReduceDefinedProcess]
-    T *processes = _t_new_root(PROCESSES);
+
+    Process if_even = _defIfEven();  // add the if_even process to our defs
+    T *processes = __sem_get_defs(G_sem,SEM_TYPE_PROCESS,TEST_CONTEXT);
     Defs defs = {0,0,processes};
 
-    Process if_even = _defIfEven(processes);  // add the if_even process to our defs
-
     // check that it dumps nicely, including showing the param_refs as paths
-    int p[] = {1,3,TREE_PATH_TERMINATOR};
+    int p[] = {if_even.id,ProcessDefCodeIdx,TREE_PATH_TERMINATOR};
 
     spec_is_str_equal(t2s(_t_get(processes,p)),"(process:IF (process:EQ_INT (process:MOD_INT (PARAM_REF:/2/1) (TEST_INT_SYMBOL:2)) (TEST_INT_SYMBOL:0)) (PARAM_REF:/2/2) (PARAM_REF:/2/3))");
 
@@ -764,15 +764,14 @@ void testProcessReduceDefinedProcess() {
     spec_is_equal(_p_reduce(G_sem,&defs,t),noReductionErr);
     spec_is_str_equal(t2s(_t_child(t,1)),"(TEST_INT_SYMBOL:124)");
 
-    _t_free(processes);
     _t_free(t);_t_free(n);
     //! [testProcessReduceDefinedProcess]
 }
 
 void testProcessSignatureMatching() {
-    T *processes = _t_new_root(PROCESSES);
+    Process if_even = _defIfEven();
+    T *processes = __sem_get_defs(G_sem,SEM_TYPE_PROCESS,TEST_CONTEXT);
     Defs defs = {0,0,processes};
-    Process if_even = _defIfEven(processes);
 
     T *t = _t_new_root(RUN_TREE);
     T *n = _t_new_root(if_even);
@@ -800,7 +799,6 @@ void testProcessSignatureMatching() {
     __t_newi(c,TEST_INT_SYMBOL,124,1);
     spec_is_equal(_p_reduce(G_sem,&defs,t),tooManyParamsReductionErr);
 
-    _t_free(processes);
     _t_free(t);
     _t_free(n);
 }
@@ -959,10 +957,9 @@ void testProcessListen() {
 
 void testProcessErrorTrickleUp() {
     //! [testProcessErrorTrickleUp]
-    T *processes = _t_new_root(PROCESSES);
+    Process divz = _defDivZero();  // add the if_even process to our defs
+    T *processes = __sem_get_defs(G_sem,SEM_TYPE_PROCESS,TEST_CONTEXT);
     Defs defs = {0,0,processes};
-
-    Process divz = _defDivZero(processes);  // add the if_even process to our defs
 
     // create a run tree right in the position to "call" this function
     T *t = _t_new_root(RUN_TREE);
@@ -982,7 +979,6 @@ void testProcessErrorTrickleUp() {
     spec_is_equal(_p_reduce(G_sem,&defs,t),noReductionErr);
     spec_is_str_equal(t2s(_t_child(t,1)),"(ZERO_DIVIDE_ERR (ERROR_LOCATION:/1/1))");
 
-    _t_free(processes);
     _t_free(t);_t_free(n);
     //! [testProcessErrorTrickleUp]
 }
@@ -991,10 +987,10 @@ void testProcessMulti() {
     //! [testProcessMulti]
 
     Receptor *r = _r_new(G_sem,TEST_RECEPTOR_SYMBOL);
-    T *processes = r->defs.processes;
+    T *processes = __sem_get_defs(G_sem,SEM_TYPE_PROCESS,TEST_CONTEXT);
     Q *q = r->q;
 
-    Process if_even = _defIfEven(processes);  // add the if_even process to our defs
+    Process if_even = _defIfEven();  // add the if_even process to our defs
 
     // create two run trees
     T *n = _t_new_root(PARAMS);
@@ -1072,7 +1068,7 @@ void testProcessMulti() {
 }
 
 void testRunTreeMaker() {
-    T *processes = _t_new_root(PROCESSES);
+    T *processes = __sem_get_defs(G_sem,SEM_TYPE_PROCESS,TEST_CONTEXT);
 
     T *n = _t_new_root(PARAMS);
     _t_newi(n,TEST_INT_SYMBOL,314);
@@ -1081,7 +1077,7 @@ void testRunTreeMaker() {
     _t_free(t);
 
     // run-tree maker should also work on defined processes
-    Process if_even = _defIfEven(processes);  // add the if_even process to our defs
+    Process if_even = _defIfEven();  // add the if_even process to our defs
 
     _t_free(n);
 
@@ -1095,7 +1091,6 @@ void testRunTreeMaker() {
     spec_is_str_equal(t2s(t),"(RUN_TREE (process:IF (process:EQ_INT (process:MOD_INT (PARAM_REF:/2/1) (TEST_INT_SYMBOL:2)) (TEST_INT_SYMBOL:0)) (PARAM_REF:/2/2) (PARAM_REF:/2/3)) (PARAMS (TEST_INT_SYMBOL:99) (TEST_INT_SYMBOL:123) (TEST_INT_SYMBOL:124)))");
 
     _t_free(t);_t_free(n);
-    _t_free(processes);
 }
 
 void testProcess() {

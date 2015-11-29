@@ -35,7 +35,8 @@ enum {RoleProcessRoleIdx=1,RoleProcessSource,RoleProcessPatternIdx,RoleProcessAc
 enum {SourceRoleIdx=1};
 enum {ConversationConversationLabelIdx=1,ConversationRoleFirstProcessIdx};
 enum {DefLabelIdx=1,SymbolDefStructureIdx};
-enum {ProcessDefNameIdx=1,ProcessDefIntentionIdx,ProcessDefProcessIdx,ProcessDefSignatureIdx};
+enum {ProcessDefNameIdx=1,ProcessDefIntentionIdx,ProcessDefCodeIdx,ProcessDefSignatureIdx};
+enum {RuntreeCodeIdx=1,RunTreeParamsIdx,RunTreeErrorCodeIdx};
 
 #define ST(r,name,num,...) name = _r_define_structure(r,"" #name "",num,__VA_ARGS__)
 #define SY(r,name,str) name = _r_declare_symbol(r,str,"" #name "")
@@ -56,7 +57,7 @@ Structure __d_get_symbol_structure(T *symbols,Symbol s);
 size_t _d_get_symbol_size(SemTable *sem,Symbol s,void *surface);
 size_t _d_get_structure_size(SemTable *sem,Symbol s,void *surface);
 T *__d_code_process(T *processes,T *code,char *name,char *intention,T *signature);
-Process _d_code_process(T *processes,T *code,char *name,char *intention,T *signature,Context c);
+Process _d_code_process(SemTable *sem,T *code,char *name,char *intention,T *signature,Context c);
 T *__d_define_protocol(T *protocols,T *def);
 Protocol _d_define_protocol(SemTable *sem,T *def,Context c);
 T *_d_make_protocol_def(char *label,...);
