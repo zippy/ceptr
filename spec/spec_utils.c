@@ -7,10 +7,10 @@
 #include "spec_utils.h"
 
 // write out a tree as json
-void wjson(Defs *d,T *t,char *n,int i) {
+void wjson(SemTable *sem,T *t,char *n,int i) {
     char fn[100];
     char json[100000] = {0};
-    _t2json(d,t,-1,json);
+    _t2json(sem,t,-1,json);
     if (i >= 0)
     sprintf(fn,"web/%s_%d.json",n,i);
     else
@@ -18,10 +18,10 @@ void wjson(Defs *d,T *t,char *n,int i) {
     writeFile(fn,json,strlen(json));
 }
 
-void dump2json(Defs *d,T *t,char *n) {
+void dump2json(SemTable *st,T *t,char *n) {
     char fn[100];
     char json[1000000] = {0};
-    _t2rawjson(d,t,-1,json);
+    _t2rawjson(st,t,-1,json);
     sprintf(fn,"web/%s.json",n);
     writeFile(fn,json,strlen(json));
 }
@@ -39,16 +39,16 @@ T *makeDelta(Symbol sym,int *path,T *t,int count) {
 char *G_visdump_fn = 0;
 int G_visdump_count = 0;
 
-void _visdump(Defs *defs,T *x,int *path) {
+void _visdump(SemTable *sem,T *x,int *path) {
     T *delta = makeDelta(TREE_DELTA_REPLACE,path,x,1);
-    wjson(defs,delta,G_visdump_fn,G_visdump_count++);
+    wjson(sem,delta,G_visdump_fn,G_visdump_count++);
     _t_free(delta);
 }
 
-void visdump(Defs *defs,T *x) {
+void visdump(SemTable *sem,T *x) {
     if (G_visdump_count) {
     int *path = _t_get_path(x);
-    _visdump(defs,x,path);
+    _visdump(sem,x,path);
     free(path);
     }
 }

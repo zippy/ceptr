@@ -9,10 +9,11 @@
 
 #include "../src/ceptr.h"
 
-void wjson(Defs *d,T *t,char *n,int i);
-void dump2json(Defs *d,T *t,char *n);
+void wjson(SemTable *sem,T *t,char *n,int i);
+void dump2json(SemTable *st,T *t,char *n);
 T *makeDelta(Symbol sym,int *path,T *t,int count);
-void visdump(Defs *defs,T *x);
+void _visdump(SemTable *sem,T *x,int *path);
+void visdump(SemTable *sem,T *x);
 
 #define startVisdump(n) G_visdump_fn = n;G_visdump_count = 1;
 #define endVisdump() G_visdump_count = 0;

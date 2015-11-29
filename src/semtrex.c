@@ -16,6 +16,7 @@
 #include "semtrex.h"
 #include "def.h"
 #include "debug.h"
+#
 
 /// the final matching state in the FSA can be declared statically and globally
 SState matchstate = {StateMatch}; /* only one instance of the match state*/
@@ -328,12 +329,11 @@ void _stx_freeFA(SState *s) {
     __stx_freeFA2(s);
 }
 
-Defs *G_d = 0;
 T *G_ts,*G_te;
 #define DEBUG_MATCH
 #ifdef DEBUG_MATCH
-#define MATCH_DEBUGG(s,x)       debug(D_STX_MATCH,"IN:" #s " for %s\n",x);debug(D_STX_MATCH,"  cursor:%s\n",_t2s(G_d,t));
-#define MATCH_DEBUG(s)  debug(D_STX_MATCH,"IN:" #s "\n");debug(D_STX_MATCH,"  cursor:%s\n",!t ? "NULL" : _t2s(G_d,t));
+#define MATCH_DEBUGG(s,x)       debug(D_STX_MATCH,"IN:" #s " for %s\n",x);debug(D_STX_MATCH,"  cursor:%s\n",_t2s(G_sem,t));
+#define MATCH_DEBUG(s)  debug(D_STX_MATCH,"IN:" #s "\n");debug(D_STX_MATCH,"  cursor:%s\n",!t ? "NULL" : _t2s(G_sem,t));
 
 #else
 #define MATCH_DEBUG(s)
@@ -515,7 +515,7 @@ int __t_match(T *semtrex,T *source_t,T **rP) {
                 if (!t) FAIL;
                 int count = _t_children(v);
                 int i;
-                debug(D_STX_MATCH,"  seeking:%s\n",__t_dump(G_d,v,0,buf));
+                debug(D_STX_MATCH,"  seeking:%s\n",__t_dump(G_sem,v,0,buf));
                 Symbol ts = _t_symbol(t);
                 if (s->data.value.flags & LITERAL_NOT) {
                     if (s->data.value.flags & LITERAL_SET) {
@@ -578,7 +578,7 @@ int __t_match(T *semtrex,T *source_t,T **rP) {
             break;
         case StateGroupOpen:
             o = &s->data.groupo;
-            MATCH_DEBUGG(GroupOpen,_d_get_symbol_name(G_d?G_d->symbols:0,o->symbol));
+            MATCH_DEBUGG(GroupOpen,_sem_get_name(G_sem,o->symbol));
             if (!rP) {
                 // if we aren't collecting up match results simply follow groups through
                 s = s->out;
@@ -596,7 +596,7 @@ int __t_match(T *semtrex,T *source_t,T **rP) {
         case StateGroupClose:
             // get the match structure from the GroupOpen state pointed to by this state
             o = &s->data.groupc.openP->data.groupo;
-            MATCH_DEBUGG(GroupClose,_d_get_symbol_name(G_d?G_d->symbols:0,o->symbol));
+            MATCH_DEBUGG(GroupClose,_sem_get_name(G_sem,o->symbol));
             if (rP) {
 
                 int pt[2] = {3,TREE_PATH_TERMINATOR};
@@ -629,7 +629,7 @@ int __t_match(T *semtrex,T *source_t,T **rP) {
                 }
                 else r = 0;
             }
-            debug(D_STX_MATCH,"Fail: so popping to--%s\n", __t_dump(G_d,r,0,buf));
+            debug(D_STX_MATCH,"Fail: so popping to--%s\n", __t_dump(G_sem,r,0,buf));
 
             s = stack[depth].s;
             t = stack[depth].cursor;
@@ -655,7 +655,7 @@ int __t_match(T *semtrex,T *source_t,T **rP) {
     }
     if (rP) {
         if (s) {
-            debug(D_STX_MATCH,"FIXING RESULTS:\n%s\n",__t2s(G_d,*rP,INDENT));
+            debug(D_STX_MATCH,"FIXING RESULTS:\n%s\n",__t2s(G_sem,*rP,INDENT));
 
             // convert the cursor pointers to matched paths/sibling counts
             __fix(source_t,*rP);
@@ -731,7 +731,7 @@ T *_t_get_match(T *match,Symbol group)
  * @param[in] parent the parent tree to add the embodiment into
  *
  */
-T *_t_embody_from_match(Defs *defs,T *match,T *parent) {
+T *_t_embody_from_match(SemTable *sem,T *match,T *parent) {
     Symbol s = *(Symbol *)_t_surface(_t_child(match,1));
     if (semeq(s,NULL_SYMBOL)) return 0;
     T *e;
@@ -741,7 +741,7 @@ T *_t_embody_from_match(Defs *defs,T *match,T *parent) {
         for(i=4;i<=j;i++) {
             T *c = _t_child(match,i);
             if (c) {
-                T *r = _t_embody_from_match(defs,c,parent);
+                T *r = _t_embody_from_match(sem,c,parent);
                 if (r) _t_add(e,r);
             }
         }
@@ -749,9 +749,7 @@ T *_t_embody_from_match(Defs *defs,T *match,T *parent) {
     else {
         int *p;
         int children = *(int *)_t_surface(_t_child(match,3));
-        T *structures = defs ? defs->structures : 0;
-        T *symbols = defs ? defs->symbols : 0;
-        Structure st = _d_get_symbol_structure(symbols,s);
+        Structure st = _sem_get_symbol_structure(sem,s);
         T *x;
         switch(st.id) {
         case CSTRING_ID:
@@ -772,34 +770,34 @@ T *_t_embody_from_match(Defs *defs,T *match,T *parent) {
 }
 
 // semtrex dumping code
-char * __dump_semtrex(Defs *defs,T *s,char *buf);
+char * __dump_semtrex(SemTable *sem,T *s,char *buf);
 
-void __stxd_multi(Defs *defs,char *x,T *s,char *buf) {
+void __stxd_multi(SemTable *sem,char *x,T *s,char *buf) {
     char b[4000];
     T *sub = _t_child(s,1);
     Symbol ss = _t_symbol(sub);
     int has_child = (semeq(ss,SEMTREX_SYMBOL_LITERAL_NOT) || semeq(ss,SEMTREX_SYMBOL_LITERAL)) ? 2 : 1;
-    sprintf(buf,(_t_children(s)>has_child || _t_symbol(sub).id==SEMTREX_SEQUENCE_ID) ? "(%s)%s" : "%s%s",__dump_semtrex(defs,sub,b),x);
+    sprintf(buf,(_t_children(s)>has_child || _t_symbol(sub).id==SEMTREX_SEQUENCE_ID) ? "(%s)%s" : "%s%s",__dump_semtrex(sem,sub,b),x);
 }
-void __stxd_descend(Defs *defs,T *s,char *v,char *buf,int skip) {
+void __stxd_descend(SemTable *sem,T *s,char *v,char *buf,int skip) {
     if((_t_children(s)-skip)>0) {
         char b[4000];
         T *sub = _t_child(s,1+skip);
         Symbol ss = _t_symbol(sub);
         int has_child = (semeq(ss,SEMTREX_SYMBOL_LITERAL_NOT) || semeq(ss,SEMTREX_SYMBOL_LITERAL)) ? 2 : 1;
-        sprintf(buf,_t_children(sub)>has_child?"%s/(%s)":"%s/%s",v,__dump_semtrex(defs,sub,b));
+        sprintf(buf,_t_children(sub)>has_child?"%s/(%s)":"%s/%s",v,__dump_semtrex(sem,sub,b));
     }
     else sprintf(buf,"%s",v);
 }
 
-char * __dump_semtrex(Defs *defs,T *s,char *buf) {
+char * __dump_semtrex(SemTable *sem,T *s,char *buf) {
     Symbol sym = _t_symbol(s);
     char b[5000];
     char b1[5000];
     char *sn,*bx;
     T *t,*v,*v1;
     int i,c,count;
-    SemanticID sem;
+    SemanticID sid;
     switch(sym.id) {
     case SEMTREX_VALUE_LITERAL_ID:
     case SEMTREX_VALUE_LITERAL_NOT_ID:
@@ -814,13 +812,13 @@ char * __dump_semtrex(Defs *defs,T *s,char *buf) {
             v1 = v;
             v = s;
         }
-        sem = _t_symbol(v1);  // if set assume values are all the same type
-        sn = _d_get_symbol_name(defs->symbols,sem);
+        sid = _t_symbol(v1);  // if set assume values are all the same type
+        sn = _sem_get_name(sem,sid);
         if (*sn=='<')
-            sprintf(b,"%d.%d.%d",sem.context,sem.semtype,sem.id);
+            sprintf(b,"%d.%d.%d",sid.context,sid.semtype,sid.id);
         else
             sprintf(b,"%s",sn);
-        Structure st = _d_get_symbol_structure(defs->symbols,sem);
+        Structure st = _sem_get_symbol_structure(sem,sid);
         if (sym.id == SEMTREX_VALUE_LITERAL_NOT_ID) {
             sprintf(b+strlen(b),"!");
         }
@@ -871,11 +869,11 @@ char * __dump_semtrex(Defs *defs,T *s,char *buf) {
             sprintf(b+strlen(b),"{");
         }
         for(i=1;i<=count;i++) {
-            sem = *(Symbol *)_t_surface(v1);
-            sn = _d_get_symbol_name(defs->symbols,sem);
+            sid = *(Symbol *)_t_surface(v1);
+            sn = _sem_get_name(sem,sid);
             // ignore "<unknown symbol"
             if (*sn=='<')
-                sprintf(b+strlen(b),"%d.%d.%d",sem.context,sem.semtype,sem.id);
+                sprintf(b+strlen(b),"%d.%d.%d",sid.context,sid.semtype,sid.id);
             else
                 sprintf(b+strlen(b),"%s",sn);
             v1 = _t_next_sibling(v1);
@@ -885,58 +883,58 @@ char * __dump_semtrex(Defs *defs,T *s,char *buf) {
         if (count > 1)
             sprintf(b+strlen(b),"}");
 
-        __stxd_descend(defs,s,b,buf,1);
+        __stxd_descend(sem,s,b,buf,1);
         break;
     case SEMTREX_SYMBOL_ANY_ID:
         sprintf(b,".");
-        __stxd_descend(defs,s,b,buf,0);
+        __stxd_descend(sem,s,b,buf,0);
         break;
     case SEMTREX_SEQUENCE_ID:
         sn = buf;
         DO_KIDS(s,
-            sprintf(sn,i<_c ? "%s,":"%s",__dump_semtrex(defs,_t_child(s,i),b));
+            sprintf(sn,i<_c ? "%s,":"%s",__dump_semtrex(sem,_t_child(s,i),b));
             sn += strlen(sn);
                 );
         break;
     case SEMTREX_OR_ID:
         t = _t_child(s,1);
-        sn = __dump_semtrex(defs,t,b);
+        sn = __dump_semtrex(sem,t,b);
         Symbol ss = _t_symbol(t);
         int has_child = (semeq(ss,SEMTREX_SYMBOL_LITERAL_NOT) || semeq(ss,SEMTREX_SYMBOL_LITERAL)) ? 2 : 1;
         sprintf(buf,(_t_children(t) > has_child) ? "(%s)|":"%s|",sn);
         t = _t_child(s,2);
-        sn = __dump_semtrex(defs,t,b);
+        sn = __dump_semtrex(sem,t,b);
         ss = _t_symbol(t);
         has_child = (semeq(ss,SEMTREX_SYMBOL_LITERAL_NOT) || semeq(ss,SEMTREX_SYMBOL_LITERAL)) ? 2 : 1;
         sprintf(buf+strlen(buf),(_t_children(t) > has_child) ? "(%s)":"%s",sn);
         break;
     case SEMTREX_NOT_ID:
         t = _t_child(s,1);
-        sn = __dump_semtrex(defs,t,b);
+        sn = __dump_semtrex(sem,t,b);
         sprintf(buf,"~%s",sn);
         break;
     case SEMTREX_ZERO_OR_MORE_ID:
-        __stxd_multi(defs,"*",s,buf);
+        __stxd_multi(sem,"*",s,buf);
         break;
     case SEMTREX_ONE_OR_MORE_ID:
-        __stxd_multi(defs,"+",s,buf);
+        __stxd_multi(sem,"+",s,buf);
         break;
     case SEMTREX_ZERO_OR_ONE_ID:
-        __stxd_multi(defs,"?",s,buf);
+        __stxd_multi(sem,"?",s,buf);
         break;
     case SEMTREX_GROUP_ID:
-        sn = _d_get_symbol_name(defs->symbols,*(Symbol *)_t_surface(s));
+        sn = _sem_get_name(sem,*(Symbol *)_t_surface(s));
         // ignore "<unknown symbol"
         if  (*sn=='<')
-            sprintf(buf, "<%s>",__dump_semtrex(defs,_t_child(s,1),b));
+            sprintf(buf, "<%s>",__dump_semtrex(sem,_t_child(s,1),b));
         else
-            sprintf(buf, "<%s:%s>",sn,__dump_semtrex(defs,_t_child(s,1),b));
+            sprintf(buf, "<%s:%s>",sn,__dump_semtrex(sem,_t_child(s,1),b));
         break;
     case SEMTREX_DESCEND_ID:
-        sprintf(buf, "/%s",__dump_semtrex(defs,_t_child(s,1),b));
+        sprintf(buf, "/%s",__dump_semtrex(sem,_t_child(s,1),b));
         break;
     case SEMTREX_WALK_ID:
-        sprintf(buf, "(%%%s)",__dump_semtrex(defs,_t_child(s,1),b));
+        sprintf(buf, "(%%%s)",__dump_semtrex(sem,_t_child(s,1),b));
         break;
     }
     return buf;
@@ -950,9 +948,9 @@ char * __dump_semtrex(Defs *defs,T *s,char *buf) {
  * @param[in] buf the string buffer to fill
  * @returns the buffer
  */
-char * _dump_semtrex(Defs *defs,T *s,char *buf) {
+char * _dump_semtrex(SemTable *sem,T *s,char *buf) {
     buf[0] = '/';
-    __dump_semtrex(defs,s,buf+1);
+    __dump_semtrex(sem,s,buf+1);
     return buf;
 }
 
@@ -996,11 +994,15 @@ void _stxl(T *stxx) {
 }
 
 // temporary function until we get system label table operational
-Symbol _get_symbol(char *symbol_name,Defs *d,Context ctx) {
-    if (d->symbols) {
-        int i,c = _t_children(d->symbols);
+Symbol get_symbol(char *symbol_name,SemTable *sem) {
+    int ctx;
+    for (ctx=0;ctx<sem->contexts;ctx++) {
+        ContextStore *cs = __sem_context(sem,ctx);
+        if (!cs->definitions) continue;
+        T *symbols = __sem_get_defs(sem,SEM_TYPE_SYMBOL,ctx);
+        int i,c = _t_children(symbols);
         for(i=1;i<=c;i++) {
-            T *t = _t_child(d->symbols,i);
+            T *t = _t_child(symbols,i);
             T *c = _t_child(t,1);
             if (!strcmp(symbol_name,(char *)_t_surface(c))) {
                 Symbol r = {ctx,SEM_TYPE_SYMBOL,i};
@@ -1011,21 +1013,9 @@ Symbol _get_symbol(char *symbol_name,Defs *d,Context ctx) {
     return NULL_SYMBOL;
 }
 
-// temporary function to look up a symbol name in a defintion
-/// @todo convert this to use the label table
-Symbol get_symbol(char *symbol_name,Defs *d) {
-    Symbol s = _get_symbol(symbol_name,&G_contexts[SYS_CONTEXT].defs,SYS_CONTEXT);
-    if (!semeq(s,NULL_SYMBOL))
-        return s;
-    s = _get_symbol(symbol_name,&G_contexts[TEST_CONTEXT].defs,TEST_CONTEXT);
-    if (!semeq(s,NULL_SYMBOL))
-        return s;
-    return _get_symbol(symbol_name,d,RECEPTOR_CONTEXT);
-}
-
 //#define DUMP_TOKENS
 #ifdef DUMP_TOKENS
-#define dump_tokens(str) puts(str);puts(_t2s(G_d,tokens));
+#define dump_tokens(str) puts(str);puts(_t2s(G_sem,tokens));
 #else
 #define dump_tokens(str)
 #endif
@@ -1157,7 +1147,7 @@ T *__sl(T *p, int not,int count, ...) {
  * @param[in] stx the cstring representation of a semtrex tree
  * @returns T semtrex tree
  */
-T *parseSemtrex(Defs *d,char *stx) {
+T *parseSemtrex(SemTable *sem,char *stx) {
     // convert the string into a tree
     #ifdef DUMP_TOKENS
     printf("\nPARSING:%s\n",stx);
@@ -1401,7 +1391,7 @@ T *parseSemtrex(Defs *d,char *stx) {
                 v = _t_child(v,1);
                 while(set_count--) {
                     char *symbol_name = (char *)_t_surface(t);
-                    Symbol vs = get_symbol(symbol_name,d);
+                    Symbol vs = get_symbol(symbol_name,sem);
                     // convert the STX_VAL structure token to the semantic type specified by the value literal
                     v->contents.symbol = vs;
                     v = _t_next_sibling(v);
@@ -1411,7 +1401,7 @@ T *parseSemtrex(Defs *d,char *stx) {
             else {
                 //              set = _t_newr(t,SEMTREX_VALUE_SET);
                 char *symbol_name = (char *)_t_surface(t);
-                Symbol vs = get_symbol(symbol_name,d);
+                Symbol vs = get_symbol(symbol_name,sem);
                 // convert the STX_VAL structure token to the semantic type specified by the value literal
                 v->contents.symbol = vs;
                 _t_add(t,v);
@@ -1473,7 +1463,7 @@ T *parseSemtrex(Defs *d,char *stx) {
 
             // convert the STX_OG to SEMTREX_GROUP children and free the STX_CG
             char *symbol_name = (char *)_t_surface(g);
-            Symbol sy = get_symbol(symbol_name,d);
+            Symbol sy = get_symbol(symbol_name,sem);
             __t_morph(g,SEMTREX_GROUP,&sy,sizeof(Symbol),1);
 
             _t_free(results);
@@ -1497,7 +1487,7 @@ T *parseSemtrex(Defs *d,char *stx) {
         //----------------
         // ACTION
         if (_t_match(sxx,tokens)) {
-            raise_error("mismatched parens! [tokens:%s]",_t2s(G_d,tokens));
+            raise_error("mismatched parens! [tokens:%s]",_t2s(G_sem,tokens));
         }
         _t_free(sxx);
 
@@ -1640,7 +1630,7 @@ T *parseSemtrex(Defs *d,char *stx) {
             DO_KIDS(t,
                     T *x = _t_child(t,i);
                     char *symbol_name = (char *)_t_surface(x);
-                    Symbol sy = get_symbol(symbol_name,d);
+                    Symbol sy = get_symbol(symbol_name,sem);
                     __t_morph(x,SEMTREX_SYMBOL,&sy,sizeof(Symbol),1);
                     );
             t->contents.symbol = SEMTREX_SYMBOL_SET;
@@ -1670,7 +1660,7 @@ T *parseSemtrex(Defs *d,char *stx) {
             int *path = (int *)_t_surface(_t_child(m,2));
             t = _t_get(tokens,path);
             char *symbol_name = (char *)_t_surface(t);
-            Symbol sy = get_symbol(symbol_name,d);
+            Symbol sy = get_symbol(symbol_name,sem);
             t->contents.symbol = semeq(t->contents.symbol,STX_LABEL)?SEMTREX_SYMBOL_LITERAL:SEMTREX_SYMBOL_LITERAL_NOT;
             T *ss = _t_news(0,SEMTREX_SYMBOL,sy);
             int pp[2] = {1,TREE_PATH_TERMINATOR};
@@ -1802,7 +1792,7 @@ T *parseSemtrex(Defs *d,char *stx) {
             t = _t_get(tokens,path);
             T *parent = _t_parent(t);
             if (_t_children(t) > 1) {
-                __t_dump(0,tokens,0,buf);
+                __t_dump(G_sem,tokens,0,buf);
                 raise_error("sibs with more than one child! [tokens:%s]",buf);
             }
             int x = path[_t_path_depth(path)-1];
@@ -1823,7 +1813,7 @@ T *parseSemtrex(Defs *d,char *stx) {
             _t_detach_by_ptr(tokens,t);
         }
         else {
-            __t_dump(0,tokens,0,buf);
+            __t_dump(G_sem,tokens,0,buf);
             raise_error("unexpected tokens! [tokens:%s]",buf);
         }
         _t_free(tokens);

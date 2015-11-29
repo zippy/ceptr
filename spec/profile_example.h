@@ -11,8 +11,9 @@
 #include "../src/receptor.h"
 #include "../src/def.h"
 #include "../src/semtrex.h"
+#include "spec_utils.h"
 
-
+Receptor *test_profile_receptor;
 T *test_profile_symbols,*test_profile_structures;
 Defs test_profile_defs;
 Symbol FIRST_NAME;
@@ -35,47 +36,46 @@ Symbol USER_PROFILE;
 Symbol MAILING_LABEL;
 
 void _setupProfileDefs() {
-    test_profile_defs.symbols = test_profile_symbols = _t_new_root(SYMBOLS);
-    test_profile_defs.structures = test_profile_structures = _t_new_root(STRUCTURES);
-    test_profile_defs.processes = _t_new_root(PROCESSES);
-    Defs d = test_profile_defs;
+    Receptor *r = test_profile_receptor = _r_new(G_sem,TEST_RECEPTOR_SYMBOL);
+    test_profile_defs = test_profile_receptor->defs;
+    test_profile_symbols = test_profile_defs.symbols;
+    test_profile_structures = test_profile_defs.structures;
 
-    SY(d,FIRST_NAME,CSTRING);
-    SY(d,LAST_NAME,CSTRING);
-    ST(d,NAME,2,
+    SY(r,FIRST_NAME,CSTRING);
+    SY(r,LAST_NAME,CSTRING);
+    ST(r,NAME,2,
        FIRST_NAME,
        LAST_NAME
        );
-    SY(d,PROFILE_NAME,NAME);
+    SY(r,PROFILE_NAME,NAME);
 
-    SY(d,STREET_ADDRESS,CSTRING);
-    SY(d,CITY,CSTRING);
-    SY(d,STATE,CSTRING);
-    SY(d,ZIP,CSTRING);
-    SY(d,COUNTRY,CSTRING);
+    SY(r,STREET_ADDRESS,CSTRING);
+    SY(r,CITY,CSTRING);
+    SY(r,STATE,CSTRING);
+    SY(r,ZIP,CSTRING);
+    SY(r,COUNTRY,CSTRING);
 
-    ST(d,ADDRESS,5,
+    ST(r,ADDRESS,5,
        STREET_ADDRESS,
        CITY,
        STATE,
        ZIP,
        COUNTRY
        );
-    SY(d,PROFILE_ADDRESS,ADDRESS);
+    SY(r,PROFILE_ADDRESS,ADDRESS);
 
-    SY(d,PROFILE_EMAIL,CSTRING);
-    ST(d,PROFILE,3,
+    SY(r,PROFILE_EMAIL,CSTRING);
+    ST(r,PROFILE,3,
        PROFILE_NAME,
        PROFILE_ADDRESS,
        PROFILE_EMAIL);
-    SY(d,USER_PROFILE,PROFILE);
+    SY(r,USER_PROFILE,PROFILE);
 
-    SY(d,MAILING_LABEL,CSTRING);
+    SY(r,MAILING_LABEL,CSTRING);
 }
 
 void _cleanupProfileDefs() {
-    _t_free(test_profile_symbols);
-    _t_free(test_profile_structures);
+    _r_free(test_profile_receptor);
 }
 
 void testProfileExample() {
@@ -92,9 +92,10 @@ void testProfileExample() {
     _t_new_str(a,ZIP,"12345");
     _t_new_str(a,COUNTRY,"USA");
 
-    wjson(&test_profile_defs,t,"user_profile",-1);
+    SemTable *sem = test_profile_receptor->sem;
+    wjson(sem,t,"user_profile",-1);
 
-    spec_is_str_equal(_t2s(&test_profile_defs,t),"(USER_PROFILE (PROFILE_NAME (FIRST_NAME:Jane) (LAST_NAME:Smith)) (PROFILE_ADDRESS (STREET_ADDRESS:126 Main Street) (CITY:Smallville) (STATE:CA) (ZIP:12345) (COUNTRY:USA)) (PROFILE_EMAIL:test@example.com))");
+    spec_is_str_equal(t2s(t),"(USER_PROFILE (PROFILE_NAME (FIRST_NAME:Jane) (LAST_NAME:Smith)) (PROFILE_ADDRESS (STREET_ADDRESS:126 Main Street) (CITY:Smallville) (STATE:CA) (ZIP:12345) (COUNTRY:USA)) (PROFILE_EMAIL:test@example.com))");
 
     T *signature = __p_make_signature("result",SIGNATURE_SYMBOL,NULL_SYMBOL,
                                       "mailing_profile",SIGNATURE_STRUCTURE,CSTRING, // should actually be MAILING_LABEL symbol or something like that
@@ -102,7 +103,7 @@ void testProfileExample() {
                                       "the_profile",SIGNATURE_STRUCTURE,PROFILE,
                                       NULL);
 
-    T *processes = test_profile_defs.processes;
+    T *processes = __sem_get_defs(sem,SEM_TYPE_PROCESS,test_profile_receptor->addr);
 
     T *code = _t_new_root(CONCAT_STR);
 
@@ -132,27 +133,26 @@ void testProfileExample() {
 
     //    _t_new(code,PARAM_REF,pt2,sizeof(int)*4);
 
-    Process p = _d_code_process(processes,code,"profileToMailingLabel","given a profile produce a mailing label",signature,RECEPTOR_CONTEXT);
+    Process p = _d_code_process(processes,code,"profileToMailingLabel","given a profile produce a mailing label",signature,TEST_CONTEXT);
 
     T *act = _t_newp(0,ACTION,p);
 
     T *r = _p_make_run_tree(processes,act,1,t);
-    wjson(&test_profile_defs,r,"profile",0);
+    wjson(sem,r,"profile",0);
 
     //    spec_is_str_equal(_t2s(&test_profile_defs,r),"");
 
     startVisdump("profile");
-    spec_is_equal(_p_reduce(&test_profile_defs,r),noReductionErr);
+    spec_is_equal(_p_reduce(sem,&test_profile_defs,r),noReductionErr);
     int pt[] = {TREE_PATH_TERMINATOR};
 
-    _visdump(&test_profile_defs,_t_child(r,1),pt);
+    _visdump(sem,_t_child(r,1),pt);
     endVisdump();
 
-    spec_is_str_equal(_t2s(&test_profile_defs,_t_child(r,1)),"(MAILING_LABEL:Jane Smith\\n126 Main Street\\nSmallville, CA 12345)");
+    spec_is_str_equal(t2s(_t_child(r,1)),"(MAILING_LABEL:Jane Smith\\n126 Main Street\\nSmallville, CA 12345)");
 
     _t_free(r);
     _t_free(t);
-    _t_free(processes);
     _t_free(act);
     _cleanupProfileDefs();
 }

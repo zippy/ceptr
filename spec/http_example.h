@@ -50,57 +50,57 @@ Structure STATUS;
 Symbol STATUS_VALUE;
 Symbol STATUS_TEXT;
 
+Receptor *HTTP_receptor;
 
 T *test_HTTP_symbols,*test_HTTP_structures;
 Defs test_HTTP_defs;
 
-void _setup_version_defs(Defs d) {
-    SY(d,VERSION_MAJOR,INTEGER);
-    SY(d,VERSION_MINOR,INTEGER);
-    ST(d,VERSION,2,VERSION_MAJOR,VERSION_MINOR);
+void _setup_version_defs(Receptor *r) {
+    SY(r,VERSION_MAJOR,INTEGER);
+    SY(r,VERSION_MINOR,INTEGER);
+    ST(r,VERSION,2,VERSION_MAJOR,VERSION_MINOR);
 }
 
-void _setup_status_defs(Defs d) {
-    SY(d,STATUS_VALUE,INTEGER);
-    SY(d,STATUS_TEXT,CSTRING);
-    ST(d,STATUS,2,STATUS_VALUE,STATUS_TEXT);
+void _setup_status_defs(Receptor *r) {
+    SY(r,STATUS_VALUE,INTEGER);
+    SY(r,STATUS_TEXT,CSTRING);
+    ST(r,STATUS,2,STATUS_VALUE,STATUS_TEXT);
 }
 
-#define SD(d,label,def)     __d_define_structure(d.structures,label,def); st.context = RECEPTOR_CONTEXT;st.semtype = SEM_TYPE_STRUCTURE;st.id=_t_children(d.structures);
-
+#define SD(r,label,def) st = __r_define_structure(r,label,def)
 
 //@todo make this actually match request-URI rather than just the path
-void _setup_uri_defs(Defs d) {
+void _setup_uri_defs(Receptor *r) {
     T *t;
     Structure st;
 
-    SY(d,HTTP_REQUEST_PATH_SEGMENT,CSTRING);
+    SY(r,HTTP_REQUEST_PATH_SEGMENT,CSTRING);
     t = _t_new_root(STRUCTURE_ZERO_OR_MORE);
     _t_news(t,STRUCTURE_SYMBOL,HTTP_REQUEST_PATH_SEGMENT);
-    SD(d,"segments list",t);
-    SY(d,HTTP_REQUEST_PATH_SEGMENTS,st);
+    SD(r,"segments list",t);
+    SY(r,HTTP_REQUEST_PATH_SEGMENTS,st);
 
-    SY(d,FILE_NAME,CSTRING);
-    SY(d,FILE_EXTENSION,CSTRING);
-    ST(d,FILE_HANDLE,2,FILE_NAME,FILE_EXTENSION);
-    SY(d,HTTP_REQUEST_PATH_FILE,FILE_HANDLE);
+    SY(r,FILE_NAME,CSTRING);
+    SY(r,FILE_EXTENSION,CSTRING);
+    ST(r,FILE_HANDLE,2,FILE_NAME,FILE_EXTENSION);
+    SY(r,HTTP_REQUEST_PATH_FILE,FILE_HANDLE);
 
-    SY(d,PARAM_KEY,CSTRING);
-    SY(d,PARAM_VALUE,CSTRING);
-    ST(d,KEY_VALUE_PARAM,2,PARAM_KEY,PARAM_VALUE);
-    SY(d,HTTP_REQUEST_PATH_QUERY_PARAM,KEY_VALUE_PARAM);
+    SY(r,PARAM_KEY,CSTRING);
+    SY(r,PARAM_VALUE,CSTRING);
+    ST(r,KEY_VALUE_PARAM,2,PARAM_KEY,PARAM_VALUE);
+    SY(r,HTTP_REQUEST_PATH_QUERY_PARAM,KEY_VALUE_PARAM);
 
     t = _t_new_root(STRUCTURE_ZERO_OR_MORE);
     _t_news(t,STRUCTURE_SYMBOL,HTTP_REQUEST_PATH_QUERY_PARAM);
-    SD(d,"query param list",t);
-    SY(d,HTTP_REQUEST_PATH_QUERY_PARAMS,st);
+    SD(r,"query param list",t);
+    SY(r,HTTP_REQUEST_PATH_QUERY_PARAMS,st);
 
     t = _t_new_root(STRUCTURE_ZERO_OR_ONE);
     _t_news(t,STRUCTURE_SYMBOL,HTTP_REQUEST_PATH_QUERY_PARAMS);
-    SD(d,"query struct",t);
-    SY(d,HTTP_REQUEST_PATH_QUERY,st);
+    SD(r,"query struct",t);
+    SY(r,HTTP_REQUEST_PATH_QUERY,st);
 
-    ST(d,URI,3,
+    ST(r,URI,3,
        HTTP_REQUEST_PATH_SEGMENTS,
        HTTP_REQUEST_PATH_FILE,
        HTTP_REQUEST_PATH_QUERY
@@ -142,78 +142,79 @@ Symbol HTML_TOK_TAG_CLOSE;
 Symbol HTML_TOK_TAG_SELFCLOSE;
 Symbol HTML_TAG;
 
-void _setup_html_defs(Defs d) {
-    SY(d,HTML_DOCUMENT,NULL_STRUCTURE); //@todo should be an optionality structure
-    SY(d,HTML_TOKENS,NULL_STRUCTURE);   //@todo should be an optionality structure
-    SY(d,HTML_TOK_TAG_OPEN,CSTRING);
-    SY(d,HTML_TOK_TAG_CLOSE,CSTRING);
-    SY(d,HTML_TOK_TAG_SELFCLOSE,CSTRING);
-    SY(d,HTML_TAG,CSTRING);
+void _setup_html_defs(Receptor *r) {
+    SY(r,HTML_DOCUMENT,NULL_STRUCTURE); //@todo should be an optionality structure
+    SY(r,HTML_TOKENS,NULL_STRUCTURE);   //@todo should be an optionality structure
+    SY(r,HTML_TOK_TAG_OPEN,CSTRING);
+    SY(r,HTML_TOK_TAG_CLOSE,CSTRING);
+    SY(r,HTML_TOK_TAG_SELFCLOSE,CSTRING);
+    SY(r,HTML_TAG,CSTRING);
 
 
-    SY(d,HTML_ATTRIBUTES,NULL_STRUCTURE); //@todo should be an optionality structure
-    SY(d,HTML_ATTRIBUTE,KEY_VALUE_PARAM);
-    SY(d,HTML_CONTENT,NULL_STRUCTURE);  // really should be semtrex: /(HTML_ELEMENT|HTML_TEXT)+
-    SY(d,HTML_TEXT,CSTRING);
-    ST(d,HTML_ELEMENT,2,
+    SY(r,HTML_ATTRIBUTES,NULL_STRUCTURE); //@todo should be an optionality structure
+    SY(r,HTML_ATTRIBUTE,KEY_VALUE_PARAM);
+    SY(r,HTML_CONTENT,NULL_STRUCTURE);  // really should be semtrex: /(HTML_ELEMENT|HTML_TEXT)+
+    SY(r,HTML_TEXT,CSTRING);
+    ST(r,HTML_ELEMENT,2,
        HTML_ATTRIBUTES,
        HTML_CONTENT
        );
-    SY(d,HTML_HTML,HTML_ELEMENT);
-    SY(d,HTML_HEAD,HTML_ELEMENT);
-    SY(d,HTML_TITLE,HTML_ELEMENT);
-    SY(d,HTML_BODY,HTML_ELEMENT);
-    SY(d,HTML_DIV,HTML_ELEMENT);
-    SY(d,HTML_P,HTML_ELEMENT);
-    SY(d,HTML_IMG,HTML_ELEMENT);
-    SY(d,HTML_A,HTML_ELEMENT);
-    SY(d,HTML_B,HTML_ELEMENT);
-    SY(d,HTML_UL,HTML_ELEMENT);
-    SY(d,HTML_OL,HTML_ELEMENT);
-    SY(d,HTML_LI,HTML_ELEMENT);
-    SY(d,HTML_SPAN,HTML_ELEMENT);
-    SY(d,HTML_H1,HTML_ELEMENT);
-    SY(d,HTML_H2,HTML_ELEMENT);
-    SY(d,HTML_H3,HTML_ELEMENT);
-    SY(d,HTML_H4,HTML_ELEMENT);
-    SY(d,HTML_FORM,HTML_ELEMENT);
-    SY(d,HTML_INPUT,HTML_ELEMENT);
-    SY(d,HTML_BUTTON,HTML_ELEMENT);
+    SY(r,HTML_HTML,HTML_ELEMENT);
+    SY(r,HTML_HEAD,HTML_ELEMENT);
+    SY(r,HTML_TITLE,HTML_ELEMENT);
+    SY(r,HTML_BODY,HTML_ELEMENT);
+    SY(r,HTML_DIV,HTML_ELEMENT);
+    SY(r,HTML_P,HTML_ELEMENT);
+    SY(r,HTML_IMG,HTML_ELEMENT);
+    SY(r,HTML_A,HTML_ELEMENT);
+    SY(r,HTML_B,HTML_ELEMENT);
+    SY(r,HTML_UL,HTML_ELEMENT);
+    SY(r,HTML_OL,HTML_ELEMENT);
+    SY(r,HTML_LI,HTML_ELEMENT);
+    SY(r,HTML_SPAN,HTML_ELEMENT);
+    SY(r,HTML_H1,HTML_ELEMENT);
+    SY(r,HTML_H2,HTML_ELEMENT);
+    SY(r,HTML_H3,HTML_ELEMENT);
+    SY(r,HTML_H4,HTML_ELEMENT);
+    SY(r,HTML_FORM,HTML_ELEMENT);
+    SY(r,HTML_INPUT,HTML_ELEMENT);
+    SY(r,HTML_BUTTON,HTML_ELEMENT);
 }
 
 void _setup_HTTPDefs() {
-    test_HTTP_defs.symbols = test_HTTP_symbols = _t_new_root(SYMBOLS);
-    test_HTTP_defs.structures = test_HTTP_structures = _t_new_root(STRUCTURES);
-    Defs d = test_HTTP_defs;
+    Receptor *r = HTTP_receptor = _r_new(G_sem,TEST_RECEPTOR_SYMBOL);
 
-    SY(d,OCTET_STREAM,CSTRING);
+    test_HTTP_defs = HTTP_receptor->defs;
+    test_HTTP_symbols = test_HTTP_defs.symbols;
+    test_HTTP_structures = test_HTTP_defs.structures;
 
-    SY(d,HTTP_REQUEST_METHOD,CSTRING);
+    SY(r,OCTET_STREAM,CSTRING);
 
-    _setup_uri_defs(d);
-    SY(d,HTTP_REQUEST_PATH,URI);
+    SY(r,HTTP_REQUEST_METHOD,CSTRING);
 
-    _setup_version_defs(d);
-    SY(d,HTTP_REQUEST_VERSION,VERSION);
+    _setup_uri_defs(r);
+    SY(r,HTTP_REQUEST_PATH,URI);
 
-    ST(d,HTTP_REQUEST_V09,3,HTTP_REQUEST_VERSION,HTTP_REQUEST_METHOD,HTTP_REQUEST_PATH);
-    SY(d,HTTP_REQUEST,HTTP_REQUEST_V09);
+    _setup_version_defs(r);
+    SY(r,HTTP_REQUEST_VERSION,VERSION);
 
-    SY(d,HTTP_REQUEST_HOST,CSTRING);
+    ST(r,HTTP_REQUEST_V09,3,HTTP_REQUEST_VERSION,HTTP_REQUEST_METHOD,HTTP_REQUEST_PATH);
+    SY(r,HTTP_REQUEST,HTTP_REQUEST_V09);
 
-    SY(d,HTTP_RESPONSE,NULL_STRUCTURE);  //@todo should be an optionality structure
-    SY(d,HTTP_RESPONSE_CONTENT_TYPE,CSTRING);
-    SY(d,HTTP_RESPONSE_BODY,CSTRING);
+    SY(r,HTTP_REQUEST_HOST,CSTRING);
 
-    _setup_status_defs(d);
-    SY(d,HTTP_RESPONSE_STATUS,STATUS);
+    SY(r,HTTP_RESPONSE,NULL_STRUCTURE);  //@todo should be an optionality structure
+    SY(r,HTTP_RESPONSE_CONTENT_TYPE,CSTRING);
+    SY(r,HTTP_RESPONSE_BODY,CSTRING);
 
-    _setup_html_defs(d);
+    _setup_status_defs(r);
+    SY(r,HTTP_RESPONSE_STATUS,STATUS);
+
+    _setup_html_defs(r);
 }
 
 void _cleanup_HTTPDefs() {
-    _t_free(test_HTTP_symbols);
-    _t_free(test_HTTP_structures);
+    _r_free(HTTP_receptor);
 }
 
 
@@ -251,7 +252,7 @@ T *_makeTestHTTPRequestTree() {
     _t_new(t_param2,PARAM_VALUE,"2",2);
 
     // confirm that we built the request right!
-     T *stx = _d_build_def_semtrex(test_HTTP_defs,HTTP_REQUEST,0);
+     T *stx = _d_build_def_semtrex(G_sem,HTTP_REQUEST,0);
 
      if (!_t_match(stx,t)) {raise_error("BAD HTTP_REQUEST semtrex");}
      _t_free(stx);
@@ -392,7 +393,6 @@ T *parseHTML(char *html) {
     Symbol G_stag_sym[] = {HTML_IMG,HTML_INPUT,HTML_BUTTON};
     char *G_stag_str[] ={"img","input","button"};
 
-    Defs *d = &test_HTTP_defs;
     T *t,*h = makeASCIITree(html);
 
     /////////////////////////////////////////////////////
@@ -401,17 +401,17 @@ T *parseHTML(char *html) {
     T *s;
     char *stx = "/ASCII_CHARS/<HTML_TOKENS:(ASCII_CHAR='<',<HTML_TOK_TAG_SELFCLOSE:ASCII_CHAR!={'>',' '}+>,<HTML_ATTRIBUTES:(ASCII_CHAR=' ',<HTML_ATTRIBUTE:<PARAM_KEY:ASCII_CHAR!={'>',' ','='}+>,ASCII_CHAR='=',ASCII_CHAR='\"',<PARAM_VALUE:ASCII_CHAR!='\"'+>,ASCII_CHAR='\"'>)*>,ASCII_CHAR='/',ASCII_CHAR='>'|ASCII_CHAR='<',ASCII_CHAR='/',<HTML_TOK_TAG_CLOSE:ASCII_CHAR!='>'+>,ASCII_CHAR='>'|ASCII_CHAR='<',<HTML_TOK_TAG_OPEN:ASCII_CHAR!={'>',' '}+>,<HTML_ATTRIBUTES:(ASCII_CHAR=' ',<HTML_ATTRIBUTE:<PARAM_KEY:ASCII_CHAR!={'>',' ','='}+>,ASCII_CHAR='=',ASCII_CHAR='\"',<PARAM_VALUE:ASCII_CHAR!='\"'+>,ASCII_CHAR='\"'>)*>,ASCII_CHAR='>'|<HTML_TEXT:ASCII_CHAR!='<'+>)+>";
 
-    s = parseSemtrex(d,stx);
+    s = parseSemtrex(G_sem,stx);
 
     int fnc = 0;
-    wjson(d,s,"htmlparse",-1);
-    wjson(d,h,"htmlascii",-1);
+    wjson(G_sem,s,"htmlparse",-1);
+    wjson(G_sem,h,"htmlascii",-1);
 
     T *results,*tokens;
     if (_t_matchr(s,h,&results)) {
     tokens = _t_new_root(HTML_TOKENS);
     int i,m = _t_children(results);
-    wjson(d,tokens,"html",fnc++);
+    wjson(G_sem,tokens,"html",fnc++);
     T *delta,*src;
     for(i=4;i<=m;i++) {
         T *c = _t_child(results,i);
@@ -438,7 +438,7 @@ T *parseHTML(char *html) {
         delta = asciiT_tos(h,c,tokens,ts);
         }
         delta = makeDeltaAdd(src,delta);
-        wjson(d,delta,"html",fnc++);
+        wjson(G_sem,delta,"html",fnc++);
         _t_free(delta);
     }
     _t_free(results);
@@ -481,7 +481,7 @@ T *parseHTML(char *html) {
         _t_add(tag,content);
         _t_insert_at(tokens,path,tag);
         delta = makeDelta(TREE_DELTA_REPLACE,path,tag,count);
-        wjson(d,delta,"html",fnc++);
+        wjson(G_sem,delta,"html",fnc++);
         _t_free(delta);
         _t_free(results);
     }
@@ -499,7 +499,7 @@ T *parseHTML(char *html) {
         __t_morph(t,ts,0,0,0);
         _t_newr(t,HTML_CONTENT);
         delta = makeDelta(TREE_DELTA_REPLACE,path,t,1);
-        wjson(d,delta,"html",fnc++);
+        wjson(G_sem,delta,"html",fnc++);
         _t_free(delta);
         _t_free(results);
 
@@ -514,7 +514,6 @@ T *parseHTML(char *html) {
 }
 
 void testHTTPExample() {
-    _setup_HTTPDefs();
     T *t = parseHTML("<html><body><div>Hello <b>world!</b></div></body></html>");
     T *r = _t_new_root(HTTP_RESPONSE);
     T *s = _t_newr(r,HTTP_RESPONSE_STATUS);
@@ -523,12 +522,10 @@ void testHTTPExample() {
     _t_new_str(r,HTTP_RESPONSE_CONTENT_TYPE,"CeptrSymbol/HTML_DOCUMENT");
     T *d = _t_newr(r,HTML_DOCUMENT);
     _t_add(d,t);
-    spec_is_str_equal(_t2s(&test_HTTP_defs,r),"(HTTP_RESPONSE (HTTP_RESPONSE_STATUS (STATUS_VALUE:200) (STATUS_TEXT:OK)) (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTML_DOCUMENT) (HTML_DOCUMENT (HTML_HTML (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_BODY (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_DIV (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_TEXT:Hello ) (HTML_B (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_TEXT:world!)))))))))))");
-    wjson(&test_HTTP_defs,r,"httpresp",-1);
+    spec_is_str_equal(t2s(r),"(HTTP_RESPONSE (HTTP_RESPONSE_STATUS (STATUS_VALUE:200) (STATUS_TEXT:OK)) (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTML_DOCUMENT) (HTML_DOCUMENT (HTML_HTML (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_BODY (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_DIV (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_TEXT:Hello ) (HTML_B (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_TEXT:world!)))))))))))");
+    wjson(G_sem,r,"httpresp",-1);
 
     _t_free(r);
-    _cleanup_HTTPDefs();
-
 }
 
 #endif

@@ -14,8 +14,7 @@
 
 #include "receptor.h"
 
-T *_o_new(Receptor *r,Symbol protocol,...);
-
+T *_o_make_protocol_def(char *label,...);
 void _o_express_role(Receptor *r,Symbol protocol,Symbol role,Aspect aspect,T *action);
 
 #endif

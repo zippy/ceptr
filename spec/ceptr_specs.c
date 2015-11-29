@@ -12,10 +12,11 @@
 
 #include "test_framework.h"
 
+#include "semtable_spec.h"
+#include "def_spec.h"
 #include "tree_spec.h"
 #include "mtree_spec.h"
 #include "stream_spec.h"
-#include "def_spec.h"
 #include "label_spec.h"
 #include "semtrex_spec.h"
 #include "receptor_spec.h"
@@ -26,6 +27,8 @@
 
 #include "profile_example.h"
 #include "group_spec.h"
+#include "protocol_spec.h"
+#include "http_example.h"
 
 #include <setjmp.h>
 
@@ -36,28 +39,32 @@ int main(int argc, const char **argv) {
 
     int err;
     if ((err = setjmp(G_err))) {
-    printf("ERROR: %d\n",err);
+        printf("ERROR: %d\n",err);
     }
     else {
     def_sys();
+    _setup_HTTPDefs();
     //**** core tests
+    testSemTable();
     testDef();
     testTree();
     testMTree();
     testStream();
     testLabel();
     testSemtrex();
-    testReceptor();
     testProcess();
+    testReceptor();
     testScape();
     testVMHost();
-    testAccumulator();
+    /* testAccumulator(); */
 
-    //***** examples
+    /* //\***** examples */
     testProfileExample();
     testHTTPExample();
-    testGroup();
+    /* //testGroup(); */
+    testProtocol();
 
+    _cleanup_HTTPDefs();
     sys_free();
     report_tests();
     }

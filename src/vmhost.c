@@ -15,13 +15,14 @@
 
 
 /* set up the c structures for a vmhost*/
-VMHost *__v_init(Receptor *r) {
+VMHost *__v_init(Receptor *r,SemTable *sem) {
     VMHost *v = malloc(sizeof(VMHost));
     v->r = r;
     v->active_receptor_count = 0;
     v->installed_receptors = _s_new(RECEPTOR_IDENTIFIER,RECEPTOR);
     v->vm_thread.state = 0;
     v->clock_thread.state = 0;
+    v->sem = sem;
     return v;
 }
 
@@ -36,10 +37,25 @@ VMHost *__v_init(Receptor *r) {
  * @snippet spec/vmhost_spec.h testVMHostCreate
  */
 VMHost * _v_new() {
-    Receptor *r = _r_new(VM_HOST_RECEPTOR);
-    Receptor *c = _r_new(COMPOSITORY);
-    VMHost *v = __v_init(r);
-    _v_new_receptor(v,v->r,COMPOSITORY,c);
+    SemTable *sem = _sem_new();
+
+    Receptor *r = _r_new(sem,VM_HOST_RECEPTOR);
+
+    VMHost *v = __v_init(r,sem);
+
+    r = _r_new(sem,COMPOSITORY);
+    _v_new_receptor(v,v->r,COMPOSITORY,r);
+
+    r = _r_new(sem,DEV_SANDBOX);
+    _v_new_receptor(v,v->r,DEV_SANDBOX,r);
+
+    r = _r_new(sem,TEST_SANDBOX);
+    _v_new_receptor(v,v->r,TEST_SANDBOX,r);
+
+    base_sys_defs(sem);
+    base_local_defs(sem);
+    base_test_defs(sem);
+
     return v;
 }
 
@@ -51,6 +67,7 @@ VMHost * _v_new() {
 void _v_free(VMHost *v) {
     _r_free(v->r);
     _s_free(v->installed_receptors);
+    _sem_free(v->sem);
     free(v);
 }
 
@@ -88,7 +105,7 @@ Xaddr _v_install_r(VMHost *v,Xaddr package,T *bindings,char *label) {
     raise_error("not implemented");
     T *p;// = _r_get_instance(v->c,package);
     T *id = _t_child(p,2);
-    TreeHash h = _t_hash(v->r->defs.symbols,v->r->defs.structures,id);
+    TreeHash h = _t_hash(v->r->sem,id);
 
     // make sure we aren't re-installing an already installed receptor
     Xaddr x = _s_get(v->installed_receptors,h);
@@ -109,18 +126,19 @@ Xaddr _v_install_r(VMHost *v,Xaddr package,T *bindings,char *label) {
             if (!bp) {
                 raise_error("missing binding for %s",(char *)_t_surface(_t_child(mp,1)));
             }
-            T *v = _t_child(bp,2);
+            T *vb = _t_child(bp,2);
             Symbol spec = *(Symbol *)_t_surface(s);
-            if (semeq(_t_symbol(v),spec)) {
+            if (semeq(_t_symbol(vb),spec)) {
                 T *symbols = _t_child(p,3);
-                raise_error("bindings symbol %s doesn't match spec %s",_d_get_symbol_name(symbols,_t_symbol(v)),_d_get_symbol_name(symbols,spec));
+                raise_error("bindings symbol %s doesn't match spec %s",_sem_get_name(v->r->sem,_t_symbol(vb)),_sem_get_name(v->r->sem,spec));
             }
         }
     }
 
     Symbol s = _r_declare_symbol(v->r,RECEPTOR,label);
 
-    Receptor *r = _r_new_receptor_from_package(s,p,bindings);
+    raise_error("fix semtable");
+    Receptor *r = _r_new_receptor_from_package(NULL,s,p,bindings);
     return _v_new_receptor(v,v->r,s,r);
 }
 
@@ -293,7 +311,7 @@ void _v_start_vmhost(VMHost *v) {
  * create all the built in receptors that exist in all VMhosts
  */
 void _v_instantiate_builtins(VMHost *v) {
-    Receptor *r = _r_makeClockReceptor();
+    Receptor *r = _r_makeClockReceptor(v->sem);
     Xaddr clock = _v_new_receptor(v,v->r,CLOCK_RECEPTOR,r);
     _v_activate(v,clock);
 }

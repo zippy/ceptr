@@ -10,6 +10,7 @@
 
 #include "tree.h"
 #include "def.h"
+#include "receptor.h"
 
 #include "base_defs.h"
 #include <stdarg.h>
@@ -20,20 +21,24 @@ Structure NULL_STRUCTURE = {0,SEM_TYPE_STRUCTURE,0};
 
 Process NULL_PROCESS = {0,SEM_TYPE_PROCESS,0};
 
-ContextStore G_contexts[_NUM_CONTEXTS];
+ContextStore1 G_contexts[_NUM_DEFAULT_CONTEXTS];
 #define _sd(s,c,t,i); s.context = c;s.semtype=t;s.id=i;
 
-void init_defs_tree(ContextStore *cs) {
-    cs->root = _t_new_root(DEFINITIONS);
-    cs->defs.structures = _t_newr(cs->root,STRUCTURES);
-    cs->defs.symbols = _t_newr(cs->root,SYMBOLS);
-    cs->defs.processes = _t_newr(cs->root,PROCESSES);
+SemTable *G_sem;
+
+T *init_defs_tree(int context) {
+    ContextStore1 *cs = &G_contexts[context];
+    cs->root = __r_make_definitions();
+    G_sem->stores[context].definitions = cs->root;
+    return cs->root;
 }
 
 void def_sys() {
 
+    G_sem = _sem_new();
+
     int i;
-    for(i=0;i<_NUM_CONTEXTS;i++) {
+    for(i=0;i<_NUM_DEFAULT_CONTEXTS;i++) {
         G_contexts[i].structures = 0;
         G_contexts[i].symbols = 0;
         G_contexts[i].processes = 0;
@@ -83,13 +88,16 @@ void def_sys() {
     _sd(SYMBOL_LABEL,SYS_CONTEXT,SEM_TYPE_SYMBOL,SYMBOL_LABEL_ID);
 
     // this has to happen after the _sd declarations so that the basic Symbols will be valid
-    init_defs_tree(&G_contexts[SYS_CONTEXT]);
-    init_defs_tree(&G_contexts[TEST_CONTEXT]);
-    init_defs_tree(&G_contexts[LOCAL_CONTEXT]);
+    init_defs_tree(SYS_CONTEXT);
+    init_defs_tree(TEST_CONTEXT);
+    init_defs_tree(LOCAL_CONTEXT);
+    G_sem->contexts = TEST_CONTEXT+1;
 
-    base_defs();
+    base_sys_defs(G_sem);
+    base_local_defs(G_sem);
+    base_test_defs(G_sem);
 }
-void free_context(ContextStore *cs) {
+void free_context(ContextStore1 *cs) {
     if (cs->structures) free(cs->structures);
     if (cs->symbols) free(cs->symbols);
     if (cs->processes) free(cs->processes);
@@ -98,15 +106,16 @@ void free_context(ContextStore *cs) {
 
 void sys_free() {
     int i;
-    for(i=0;i<_NUM_CONTEXTS;i++) {
+    for(i=0;i<_NUM_DEFAULT_CONTEXTS;i++) {
         free_context(&G_contexts[i]);
     }
+    _sem_free(G_sem);
 }
 
 Context G_ctx;
 char * G_label;
 
-T *sT_(Symbol sym,int num_params,...){
+T *sT_(SemTable *sem,Symbol sym,int num_params,...){
     va_list params;
     T *set = _t_newr(0,sym);
     va_start(params,num_params);
@@ -127,7 +136,8 @@ T *sT_(Symbol sym,int num_params,...){
             if (semeq(_t_symbol(t),STRUCTURE_SYMBOL)) {
                 Symbol ss = *(Symbol *)_t_surface(t);
                 if (is_structure(ss)) {
-                    T *st = _t_child(G_contexts[ss.context].defs.structures,ss.id);
+                    T *structures = _sem_get_defs(G_sem,ss);
+                    T *st = _t_child(structures,ss.id);
                     if (!st) {
                         raise_error("Structure used in %s definition is undefined!",G_label);
                     }
@@ -143,10 +153,4 @@ T *sT_(Symbol sym,int num_params,...){
     }
     va_end(params);
     return set;
-}
-
-// helper to create the Structure struct to return for the sTs macro
-Structure sTD(Context c,T *structures) {
-    Structure s = {c,SEM_TYPE_STRUCTURE,_t_children(structures)};
-    return s;
 }

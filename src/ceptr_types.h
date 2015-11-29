@@ -6,28 +6,31 @@
 #include "uthash.h"
 #include <stdbool.h>
 
-enum SemanticContexts {SYS_CONTEXT,COMPOSITORY_CONTEXT,LOCAL_CONTEXT,TEST_CONTEXT,_NUM_CONTEXTS,RECEPTOR_CONTEXT=0xff};
+enum SemanticContexts {SYS_CONTEXT,COMPOSITORY_CONTEXT,LOCAL_CONTEXT,TEST_CONTEXT,_NUM_DEFAULT_CONTEXTS};
 
 // NOTE: the actual values of the types matter because they must match the order they show
 // up in the definition trees
-enum SemanticTypes {SEM_TYPE_STRUCTURE=1,SEM_TYPE_SYMBOL,SEM_TYPE_PROCESS};
+enum SemanticTypes {SEM_TYPE_STRUCTURE=1,SEM_TYPE_SYMBOL,SEM_TYPE_PROCESS,SEM_TYPE_PROTOCOL};
 #define is_symbol(s) ((s).semtype == SEM_TYPE_SYMBOL)
 #define is_process(s) ((s).semtype == SEM_TYPE_PROCESS)
 #define is_structure(s) ((s).semtype == SEM_TYPE_STRUCTURE)
+#define is_protocol(s) ((s).semtype == SEM_TYPE_PROTOCOL)
 
-typedef uint8_t Context;
+typedef uint32_t Context;
 typedef uint8_t SemanticType;
+typedef uint16_t SemanticAddr;
 
 typedef struct SemanticID {
     Context context;
     SemanticType semtype;
-    uint32_t id;
-    uint16_t _reserved; // add an extra 16 bits to make this a 64bit structure.
+    SemanticAddr id;
+    uint8_t _reserved; // add an extra 8 bits to make this a 64bit structure.
 } SemanticID;
 
 typedef SemanticID Symbol;
-typedef SemanticID Process;
 typedef SemanticID Structure;
+typedef SemanticID Process;
+typedef SemanticID Protocol;
 
 typedef uint16_t Mlevel;
 typedef uint32_t Mindex;
@@ -227,6 +230,19 @@ struct Q {
     pthread_mutex_t mutex;
 };
 
+// SemTable structures
+typedef struct ContextStore {
+    T *definitions;
+    //Defs defs;
+} ContextStore;
+
+//@todo convert to malloc
+#define MAX_CONTEXTS 100
+typedef struct SemTable {
+    int contexts;
+    ContextStore stores[MAX_CONTEXTS];
+} SemTable;
+
 
 // ** types for receptors
 enum ReceptorStates {Alive=0,Dead};
@@ -238,6 +254,8 @@ enum ReceptorStates {Alive=0,Dead};
 */
 struct Receptor {
     T *root;             ///< root node of the semantic tree
+    ReceptorAddress addr;
+    SemTable *sem;       ///< pointer back to the semantic table context where the receptor's running
     Defs defs;           ///< defs block
     T *flux;             ///< pointer for quick access to the flux
     T *pending_signals;

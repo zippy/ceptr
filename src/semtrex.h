@@ -95,10 +95,10 @@ Defs *G_d;
 T *G_ts,*G_te;
 int _t_matchr(T *semtrex,T *t,T **r);
 T *_t_get_match(T *result,Symbol group);
-T *_t_embody_from_match(Defs *defs,T *match,T *t);
-char * _dump_semtrex(Defs *defs,T *s,char *buf);
+T *_t_embody_from_match(SemTable *sem,T *match,T *t);
+char * _dump_semtrex(SemTable *sem,T *s,char *buf);
 T *makeASCIITree(char *c);
-T *parseSemtrex(Defs *d,char *stx);
+T *parseSemtrex(SemTable *sem,char *stx);
 
 T *__stxcv(T *stxx,char c);
 T *__stxcvm(T *stxx,int not,int count,...);
@@ -119,7 +119,7 @@ T *wrap(T *tokens,T *results, Symbol contents_s, Symbol open_s);
 T *__sl(T *p, int not,int count, ...);
 
 /// debugging macro for quickly dumping out a semtrex text string
-#define DS(l,t) {Defs _d={0,0,0,0};Defs *d = G_d?G_d:&_d;char buf[1000];puts("\n" #l ":");_dump_semtrex(d,t,buf);puts(buf);}
+#define DS(l,t) {char buf[1000];puts("\n" #l ":");_dump_semtrex(G_sem,t,buf);puts(buf);}
 
 #endif
 

@@ -8,7 +8,7 @@
 #include "../src/process.h"
 
 void testRunTree() {
-    T *processes = _t_new_root(PROCESSES);
+    T *processes = __sem_get_defs(G_sem,SEM_TYPE_PROCESS,TEST_CONTEXT);
     Defs defs = {0,0,processes};
     T *code,*signature;
 
@@ -29,7 +29,7 @@ void testRunTree() {
                                    "false_branch",SIGNATURE_ANY,NULL_STRUCTURE,
                                    NULL);
     char buf[1000];
-    __t_dump(&defs,xsignature,NO_INDENT,buf);
+    __t_dump(G_sem,xsignature,NO_INDENT,buf);
     _t_free(xsignature);
 
     signature = _t_new_root(PROCESS_SIGNATURE);
@@ -47,9 +47,9 @@ void testRunTree() {
     _t_news(i2,SIGNATURE_ANY,NULL_STRUCTURE);
 
     // test that __p_make_signature does what we think it should
-    spec_is_str_equal(buf,_t2s(&defs,signature));
+    spec_is_str_equal(buf,t2s(signature));
 
-    Process p = _d_code_process(processes,code,"myif","a duplicate of the sys if process with params in different order",signature,RECEPTOR_CONTEXT);
+    Process p = _d_code_process(processes,code,"myif","a duplicate of the sys if process with params in different order",signature,TEST_CONTEXT);
 
     T *p3 = _t_newi(0,BOOLEAN,1);
     T *p1 = _t_newi(0,TEST_INT_SYMBOL,123);
@@ -81,7 +81,7 @@ void testRunTree() {
     spec_is_symbol_equal(0,_t_symbol(t),BOOLEAN);
     spec_is_true(t!=p3);  //should be a clone
 
-    spec_is_equal(_p_reduce(&defs,r),noReductionErr);
+    spec_is_equal(_p_reduce(G_sem,&defs,r),noReductionErr);
 
     spec_is_str_equal(t2s(_t_child(r,1)),"(TEST_INT_SYMBOL:123)");
 
@@ -96,7 +96,6 @@ void testRunTree() {
 
     _t_free(act);
     _t_free(r);
-    _t_free(processes);
     _t_free(p1);
     _t_free(p2);
     _t_free(p3);
@@ -106,7 +105,7 @@ void testRunTree() {
 // tests of system processes
 
 void testProcessGet() {
-    Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
+    Receptor *r = _r_new(G_sem,TEST_RECEPTOR_SYMBOL);
     Q *q = r->q;
 
     T *t = _t_newi(0,TEST_INT_SYMBOL,314);
@@ -140,7 +139,7 @@ void testProcessInterpolateMatch() {
 
     T *c = _t_rclone(n);
     _t_add(t,c);
-    _p_reduce(&defs,t);
+    _p_reduce(G_sem,&defs,t);
 
     spec_is_str_equal(t2s(_t_child(t,1)),"(TEST_TREE_SYMBOL (TEST_INT_SYMBOL2:314))");
     _t_free(t);
@@ -163,7 +162,7 @@ void testProcessInterpolateMatchFull() {
 
     T *c = _t_rclone(n);
     _t_add(t,c);
-    _p_reduce(&defs,t);
+    _p_reduce(G_sem,&defs,t);
 
     spec_is_str_equal(t2s(_t_child(t,1)),"(TEST_TREE_SYMBOL (TEST_INT_SYMBOL:314))");
     _t_free(t);
@@ -200,7 +199,7 @@ void testProcessIntMath() {
     // where do we get the defs.  Right now they are referred to in the process q
     // which the contexts don't have direct access to.
     /* n = _t_new_root(ADD_INT); */
-    /* spec_is_sem_equal(_d_get_symbol_structure(defs,s),INTEGER); */
+    /* spec_is_sem_equal(_sem_get_symbol_structure(G_sem,s),INTEGER); */
     /* _t_newi(n,TEST_INT_SYMBOL,99); */
     /* _t_news(n,INTERPOLATE_SYMBOL,TEST_INT_SYMBOL); */
     /* spec_is_equal(__p_reduce_sys_proc(0,ADD_INT,n,0),incompatibleTypeReductionErr); */
@@ -301,7 +300,6 @@ void testProcessIntMath() {
 }
 
 void testProcessString() {
-    Defs defs;
 
     // test string concatenation
     T *n = _t_new_root(CONCAT_STR);
@@ -340,12 +338,12 @@ void testProcessRespond() {
     // now add it to the signal and try again
     _t_add(s,run_tree);
 
-    Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
+    Receptor *r = _r_new(G_sem,TEST_RECEPTOR_SYMBOL);
 
     // it should create a response signal with the source UUID as the responding to UUID
     spec_is_equal(__p_reduce_sys_proc(c,RESPOND,n,r->q),noReductionErr);
     spec_is_str_equal(t2s(n),"(SIGNAL_UUID)");
-    spec_is_str_equal(_td(r,r->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (INSTANCE_NUM:4)) (TO_ADDRESS (INSTANCE_NUM:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (SIGNAL_UUID) (IN_RESPONSE_TO_UUID)) (BODY:{(TEST_INT_SYMBOL:271)})))");
+    spec_is_str_equal(_td(r,r->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (CONTEXT_NUM:4)) (TO_ADDRESS (CONTEXT_NUM:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (SIGNAL_UUID) (IN_RESPONSE_TO_UUID)) (BODY:{(TEST_INT_SYMBOL:271)})))");
     T *u1 = _t_child(_t_child(s,SignalEnvelopeIdx),EnvelopeUUIDIdx);
     int p[] = {1,SignalEnvelopeIdx,EnvelopeExtraIdx,TREE_PATH_TERMINATOR};
     T *u2 = _t_get(r->pending_signals,p);
@@ -367,7 +365,7 @@ void testProcessSay() {
     _t_news(p,CARRIER,TESTING);
     _t_newi(p,TEST_INT_SYMBOL,314);
 
-    Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
+    Receptor *r = _r_new(G_sem,TEST_RECEPTOR_SYMBOL);
 
     T *run_tree = __p_build_run_tree(p,0);
     _t_free(p);
@@ -387,7 +385,7 @@ void testProcessSay() {
 
     // say reduces to the UUID generated for the sent signal
     spec_is_str_equal(t2s(run_tree),"(RUN_TREE (SIGNAL_UUID) (PARAMS))");
-    spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (INSTANCE_NUM:0)) (TO_ADDRESS (INSTANCE_NUM:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (SIGNAL_UUID)) (BODY:{(TEST_INT_SYMBOL:314)})))");
+    spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (CONTEXT_NUM:5)) (TO_ADDRESS (CONTEXT_NUM:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (SIGNAL_UUID)) (BODY:{(TEST_INT_SYMBOL:314)})))");
     _r_free(r);
 }
 
@@ -404,7 +402,7 @@ void testProcessRequest() {
     _t_newi(ec,COUNT,1);
 
     T *code =_t_rclone(p);
-    Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
+    Receptor *r = _r_new(G_sem,TEST_RECEPTOR_SYMBOL);
 
     T *run_tree = __p_build_run_tree(code,0);
 
@@ -426,7 +424,7 @@ void testProcessRequest() {
 
     // request reduces to the UUID generated for the sent signal
     spec_is_str_equal(t2s(run_tree),"(RUN_TREE (SIGNAL_UUID) (PARAMS))");
-    spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (INSTANCE_NUM:0)) (TO_ADDRESS (INSTANCE_NUM:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (SIGNAL_UUID) (END_CONDITIONS (COUNT:1))) (BODY:{(TEST_INT_SYMBOL:314)})))");
+    spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (CONTEXT_NUM:5)) (TO_ADDRESS (CONTEXT_NUM:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (SIGNAL_UUID) (END_CONDITIONS (COUNT:1))) (BODY:{(TEST_INT_SYMBOL:314)})))");
 
     // debug_enable(D_SIGNALS);
     // generate a response signal
@@ -456,7 +454,7 @@ void testProcessRequest() {
     /* spec_is_ptr_equal(q->completed,e); */
 
     /* spec_is_str_equal(t2s(run_tree),"(RUN_TREE (SIGNAL_UUID) (PARAMS))"); */
-    /* spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (INSTANCE_NUM:0)) (TO_ADDRESS (INSTANCE_NUM:3)) (DEFAULT_ASPECT) (CARRIER:TEST_INT_SYMBOL) (SIGNAL_UUID)) (BODY:{(TEST_INT_SYMBOL:314)})))"); */
+    /* spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (CONTEXT_NUM:0)) (TO_ADDRESS (CONTEXT_NUM:3)) (DEFAULT_ASPECT) (CARRIER:TEST_INT_SYMBOL) (SIGNAL_UUID)) (BODY:{(TEST_INT_SYMBOL:314)})))"); */
 
     debug_disable(D_SIGNALS);
 
@@ -478,7 +476,7 @@ void testProcessQuote() {
 
     T *c = _t_rclone(n);
     _t_add(t,c);
-    _p_reduce(&defs,t);
+    _p_reduce(G_sem,&defs,t);
 
     spec_is_str_equal(t2s(t),"(RUN_TREE (process:ADD_INT (TEST_INT_SYMBOL:99) (TEST_INT_SYMBOL:100)))");
 
@@ -487,9 +485,7 @@ void testProcessQuote() {
 }
 
 void testProcessStream() {
-    Defs defs = {0,0,0,0,0};
-
-    Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
+    Receptor *r = _r_new(G_sem,TEST_RECEPTOR_SYMBOL);
     Q *q = r->q;
 
     FILE *stream;
@@ -641,7 +637,7 @@ void testProcessReduce() {
     _t_free(_t_detach_by_idx(t,1));
     c = _t_rclone(n);
     _t_add(t,c);
-    _p_reduce(&r.defs,t);
+    _p_reduce(G_sem,&r.defs,t);
 
     spec_is_str_equal(t2s(c),"(TEST_INT_SYMBOL:99)");
 
@@ -650,7 +646,7 @@ void testProcessReduce() {
 }
 
 void testProcessRefs() {
-    Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
+    Receptor *r = _r_new(G_sem,TEST_RECEPTOR_SYMBOL);
     Q *q = r->q;
 
     int pt1[] = {2,1,TREE_PATH_TERMINATOR};
@@ -716,7 +712,7 @@ Process _defIfEven(T *processes) {
                                       "false_branch",SIGNATURE_ANY,NULL_STRUCTURE,
                                       NULL);
 
-    return _d_code_process(processes,code,"if even","return 2nd child if even, third if not",signature,RECEPTOR_CONTEXT);
+    return _d_code_process(processes,code,"if even","return 2nd child if even, third if not",signature,TEST_CONTEXT);
 }
 //! [defIfEven]
 
@@ -740,7 +736,7 @@ Process _defDivZero(T *processes) {
                                       "val",SIGNATURE_STRUCTURE,INTEGER,
                                       NULL);
 
-    return _d_code_process(processes,code,"divByZero","create a divide by zero error",signature,RECEPTOR_CONTEXT);
+    return _d_code_process(processes,code,"divByZero","create a divide by zero error",signature,TEST_CONTEXT);
 }
 //! [defDivZero]
 
@@ -765,7 +761,7 @@ void testProcessReduceDefinedProcess() {
     T *t = __p_make_run_tree(processes,if_even,n);
 
     // confirm that it reduces correctly
-    spec_is_equal(_p_reduce(&defs,t),noReductionErr);
+    spec_is_equal(_p_reduce(G_sem,&defs,t),noReductionErr);
     spec_is_str_equal(t2s(_t_child(t,1)),"(TEST_INT_SYMBOL:124)");
 
     _t_free(processes);
@@ -784,25 +780,25 @@ void testProcessSignatureMatching() {
     _t_newi(n,TEST_INT_SYMBOL,123);
     _t_newi(n,TEST_INT_SYMBOL,124);
 
-    spec_is_equal(__p_check_signature(&defs,if_even,n),signatureMismatchReductionErr);
+    spec_is_equal(__p_check_signature(G_sem,processes,if_even,n),signatureMismatchReductionErr);
 
     T *c = _t_rclone(n);
     _t_add(t,c);
-    spec_is_equal(_p_reduce(&defs,t),signatureMismatchReductionErr);
+    spec_is_equal(_p_reduce(G_sem,&defs,t),signatureMismatchReductionErr);
     _t_free(_t_detach_by_idx(t,1));
 
     // too few params
     c = _t_rclone(n);
     _t_add(t,c);
     _t_free(_t_detach_by_idx(c,1));
-    spec_is_equal(_p_reduce(&defs,t),tooFewParamsReductionErr);
+    spec_is_equal(_p_reduce(G_sem,&defs,t),tooFewParamsReductionErr);
     _t_free(_t_detach_by_idx(t,1));
 
     // add too many params
     c = _t_rclone(n);
     _t_add(t,c);
     __t_newi(c,TEST_INT_SYMBOL,124,1);
-    spec_is_equal(_p_reduce(&defs,t),tooManyParamsReductionErr);
+    spec_is_equal(_p_reduce(G_sem,&defs,t),tooManyParamsReductionErr);
 
     _t_free(processes);
     _t_free(t);
@@ -824,7 +820,7 @@ void testProcessError() {
     int pt[] = {4,1,TREE_PATH_TERMINATOR};
     __t_new(t,PARAM_REF,pt,sizeof(int)*4,1);
 
-    Error e = _p_reduce(&defs,t);
+    Error e = _p_reduce(G_sem,&defs,t);
     spec_is_equal(e,noReductionErr);
     spec_is_str_equal(t2s(_t_child(t,1)),"(ZERO_DIVIDE_ERR (ERROR_LOCATION:/1/1))");
     _t_free(n);
@@ -850,7 +846,7 @@ void testProcessRaise() {
     int pt[] = {4,1,TREE_PATH_TERMINATOR};
     __t_new(t,PARAM_REF,pt,sizeof(int)*4,1);
 
-    Error e = _p_reduce(&defs,t);
+    Error e = _p_reduce(G_sem,&defs,t);
     spec_is_equal(e,noReductionErr);
     spec_is_str_equal(t2s(_t_child(t,1)),"(NOT_A_PROCESS_ERR (ERROR_LOCATION:/1))");
     _t_free(n);
@@ -876,7 +872,7 @@ void testProcessReplicate() {
     _t_new_str(x,LINE,"testing");
 
     T *t = __p_build_run_tree(code,0);
-    Error e = _p_reduce(&defs,t);
+    Error e = _p_reduce(G_sem,&defs,t);
     spec_is_equal(e,noReductionErr);
     spec_is_str_equal(output_data,"testing\ntesting\ntesting\n");
     //    spec_is_str_equal(t2s(t),"xxx"); @todo something here when we figure out return value
@@ -895,7 +891,7 @@ void testProcessReplicate() {
     _t_replace(code,2,x);
 
     t = __p_build_run_tree(code,0);
-    e = _p_reduce(&defs,t);
+    e = _p_reduce(G_sem,&defs,t);
     spec_is_equal(e,noReductionErr);
     spec_is_str_equal(output_data,"testing\ntesting\ntesting\n");
 
@@ -906,7 +902,7 @@ void testProcessReplicate() {
 }
 
 void testProcessListen() {
-    Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
+    Receptor *r = _r_new(G_sem,TEST_RECEPTOR_SYMBOL);
 
     // test regular asynchronous listening.
     T *n = _t_new_root(LISTEN);
@@ -983,7 +979,7 @@ void testProcessErrorTrickleUp() {
     __t_new(t,PARAM_REF,pt,sizeof(int)*4,1);
 
     // confirm that it reduces correctly
-    spec_is_equal(_p_reduce(&defs,t),noReductionErr);
+    spec_is_equal(_p_reduce(G_sem,&defs,t),noReductionErr);
     spec_is_str_equal(t2s(_t_child(t,1)),"(ZERO_DIVIDE_ERR (ERROR_LOCATION:/1/1))");
 
     _t_free(processes);
@@ -994,7 +990,7 @@ void testProcessErrorTrickleUp() {
 void testProcessMulti() {
     //! [testProcessMulti]
 
-    Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
+    Receptor *r = _r_new(G_sem,TEST_RECEPTOR_SYMBOL);
     T *processes = r->defs.processes;
     Q *q = r->q;
 

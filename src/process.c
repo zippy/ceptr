@@ -104,9 +104,9 @@ void _p_interpolate_from_match(T *t,T *match_results,T *match_tree) {
  *
  * @todo add SIGNATURE_SYMBOL for setting up process signatures by Symbol not just Structure
  */
-Error __p_check_signature(Defs *defs,Process p,T *params) {
-    T *def = _d_get_process_code(defs->processes,p);
-    T *signature = _t_child(def,4);
+Error __p_check_signature(SemTable *sem,T *processes,Process p,T *params) {
+    T *def = _d_get_process_code(processes,p);
+    T *signature = _t_child(def,ProcessDefSignatureIdx);
     int i = _t_children(signature) - 1; // there's always one output signature
     int c = _t_children(params);
     if (i > c) return tooFewParamsReductionErr;
@@ -115,7 +115,7 @@ Error __p_check_signature(Defs *defs,Process p,T *params) {
         T *sig = _t_child(_t_child(signature,i),2); // input signatures start at 2
         if(semeq(_t_symbol(sig),SIGNATURE_STRUCTURE)) {
             Structure ss = *(Symbol *)_t_surface(sig);
-            if (!semeq(_d_get_symbol_structure(defs->symbols,_t_symbol(_t_child(params,i-1))),ss) && !semeq(ss,TREE))
+            if (!semeq(_sem_get_symbol_structure(sem,_t_symbol(_t_child(params,i-1))),ss) && !semeq(ss,TREE))
                 return signatureMismatchReductionErr;
         }
         else if(semeq(_t_symbol(sig),SIGNATURE_SYMBOL)) {
@@ -124,7 +124,7 @@ Error __p_check_signature(Defs *defs,Process p,T *params) {
         else if(semeq(_t_symbol(sig),SIGNATURE_ANY)) {
         }
         else {
-            raise_error("unknown signature checking symbol: %s",_d_get_symbol_name(0,_t_symbol(sig)));
+            raise_error("unknown signature checking symbol: %s",_sem_get_name(sem,_t_symbol(sig)));
         }
     }
     return 0;
@@ -408,7 +408,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                 /// @todo other integrity checks, i.e. length etc?
                 char *str;
                 Symbol sym = _t_symbol(s);
-                Structure struc = _d_get_symbol_structure(q->r->defs.symbols,sym);
+                Structure struc = _sem_get_symbol_structure(q->r->sem,sym);
                 int add_nl = 1;
                 if (semeq(struc,CSTRING)) {
                     str = _t_surface(s);
@@ -416,7 +416,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                     if (!semeq(sym,LINE)) add_nl = 0;
                 }
                 else {
-                    str = _t2s(&q->r->defs,s);
+                    str = _t2s(q->r->sem,s);
                 }
                 //str = t2s(s);
                 int err = fputs(str,stream);
@@ -473,18 +473,14 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                         state->count = 0;
                     }
                     else {
-                        //@todo how do we actually get the defs in here????
-                        // we'd like to do a sanity check and make sure that what
-                        // ever symbol we're given it's of an INTEGER structure
-                        // for now we just assume that it is.
-                        //Structure s = _d_get_symbol_structure(defs,c);
-                        //if (semeq(s,INTEGER)) {
+                        Structure s = _sem_get_symbol_structure(q->r->sem,c);
+                        if (semeq(s,INTEGER)) {
                             state->type = ReplicateTypeCount;
                             state->count = *(int *)_t_surface(x);
-                        //}
-                        //else {
-                            //raise_error("unable to determine replication type!");
-                        //}
+                        }
+                        else {
+                            raise_error("unable to determine replication type!");
+                        }
                     }
                 }
                 // evaluate condition based on replication type
@@ -747,7 +743,7 @@ Error _p_unblock(Q *q,int id) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/process_spec.h testProcessErrorTrickleUp
  */
-Error _p_reduce(Defs *defs,T *rt) {
+Error _p_reduce(SemTable *sem,Defs *defs,T *rt) {
     T *run_tree = rt;
     R *context = __p_make_context(run_tree,0,0);
     Error e;
@@ -756,6 +752,7 @@ Error _p_reduce(Defs *defs,T *rt) {
     Receptor r;
     Q q;
     r.root = NULL;
+    r.sem = sem;
     r.q = &q;
     r.defs = *defs;
     q.r = &r;
@@ -777,7 +774,6 @@ Error _p_reduce(Defs *defs,T *rt) {
  * @returns the next state that will be called for the context
  */
 Error _p_step(Q *q, R **contextP) {
-    Defs *defs = &q->r->defs;
     R *context = *contextP;
 
     switch(context->state) {
@@ -900,10 +896,11 @@ Error _p_step(Q *q, R **contextP) {
                     if (!is_sys_process(s)) {
                         // if it's user defined process then we check the signature and then make
                         // a new run-tree run that process
-                        Error e = __p_check_signature(defs,s,np);
+                        T *processes = q->r->defs.processes;
+                        Error e = __p_check_signature(q->r->sem,processes,s,np);
                         if (e) context->state = e;
                         else {
-                            T *run_tree = __p_make_run_tree(defs->processes,s,np);
+                            T *run_tree = __p_make_run_tree(processes,s,np);
                             context->state = Pushed;
                             *contextP = __p_make_context(run_tree,context,context->id);
                         }
@@ -920,7 +917,7 @@ Error _p_step(Q *q, R **contextP) {
                     context->state = Descend;
                 }
                 else {
-                    raise_error("whoa! brain fart! on %d,%s",count,_t2s(&q->r->defs,np));
+                    raise_error("whoa! brain fart! on %d,%s",count,_t2s(q->r->sem,np));
                 }
             }
         }
@@ -1072,7 +1069,7 @@ T *_p_make_run_tree(T *processes,T *process,int num_params,...) {
 
     Process p = *(Process *)_t_surface(process);
     if (!is_process(p)) {
-        raise_error("%s is not a Process",_d_get_process_name(processes,p));
+        raise_error("not a Process!");
     }
     if (is_sys_process(p)) {
         t =  _t_new_root(RUN_TREE);
@@ -1222,7 +1219,7 @@ Error _p_reduceq(Q *q) {
             char *s = __debug_state_str(context->state);
             debug(D_REDUCEV,"ID:%p -- State %s(%d)\n",qe,s,context->state);
             debug(D_REDUCEV,"  idx:%d\n",context->idx);
-            debug(D_REDUCEV,"%s\n",_t2s(&q->r->defs,context->run_tree));
+            debug(D_REDUCEV,"%s\n",_t2s(q->r->sem,context->run_tree));
             if (context) {
                 if (context->node_pointer == 0) {
                     debug(D_REDUCEV,"Node Pointer: NULL!\n");
@@ -1248,7 +1245,7 @@ Error _p_reduceq(Q *q) {
         debug(D_REDUCEV,"result state:%s\n\n",__debug_state_str(qe->context->state));
         if (debugging(D_REDUCE) && prev_state == Eval) {
             debug_np(D_REDUCE,qe->context->node_pointer);
-            debug(D_REDUCE,"Eval: %s\n\n",_t2s(&q->r->defs,qe->context->run_tree));
+            debug(D_REDUCE,"Eval: %s\n\n",_t2s(q->r->sem,qe->context->run_tree));
         }
 #endif
         debug(D_LOCK,"reduce LOCK\n");
@@ -1313,22 +1310,22 @@ void _p_cleanup(Q *q,T* receptor_state) {
 }
 
 /**
- * utility function to build process signatures
+ * utility function to build process forms
  *
  * @param[in] output_label
  * @param[in] output_symbol
  * @param[in] var_args triplets of label, symbol type, and symbol value for the signature
- * @param[out] signature tree
+ * @param[out] form tree
  *
  * @todo add more sensible handling of output signature.  We still aren't quite sure what to do about the output label, and how to handle output signature pass through from the results, probably need a special symbol for that
  */
-T *__p_make_signature(char *output_label,Symbol output_type,SemanticID output_sem,...){
+T *__p_make_form(Symbol sym,char *output_label,Symbol output_type,SemanticID output_sem,...){
     va_list params;
     va_start(params,output_sem);
     char *label;
     Symbol type,value;
     int optional;
-    T *signature = _t_new_root(PROCESS_SIGNATURE);
+    T *signature = _t_new_root(sym);
     T *o = _t_newr(signature,OUTPUT_SIGNATURE);
     _t_new_str(o,SIGNATURE_LABEL,output_label);
     if (semeq(output_type,SIGNATURE_PASSTHRU)) {

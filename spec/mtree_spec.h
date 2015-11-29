@@ -235,7 +235,7 @@ void testMTreeOrthogonal() {
 }
 
 void testMTreeReceptor() {
-    Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
+    Receptor *r = _r_new(G_sem,TEST_RECEPTOR_SYMBOL);
     T *t = _t_newi(0,TEST_INT_SYMBOL,0);
     T *tr = _t_new_receptor(t,TEST_RECEPTOR_SYMBOL,r);
 
@@ -255,7 +255,7 @@ void testMTreeReceptor() {
 void testMTreeWalk() {
     //! [testMTreeWalk]
     T *t = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
-    // puts(__t2s(&test_HTTP_defs,t,INDENT));
+    // puts(__t2s(G_sem,t,INDENT));
     H h = _m_new_from_t(t);
     char buf[2000] ={0};
     Maddr ac = {0,0};
@@ -287,14 +287,14 @@ void testTreeConvert() {
     hh.a.i = 2;
     spec_is_str_equal((char *)_m_surface(hh),"page");
     //    mtd(h);
-    //    puts(__t2s(&test_HTTP_defs,t,INDENT));
+    //    puts(__t2s(G_sem,t,INDENT));
     T *t1 = _t_new_from_m(h);
 
     char buf[2000] = {0};
     char buf1[2000] = {0};
 
-    __t_dump(&test_HTTP_defs,t,0,buf);
-    __t_dump(&test_HTTP_defs,t1,0,buf1);
+    __t_dump(G_sem,t,0,buf);
+    __t_dump(G_sem,t1,0,buf1);
 
     spec_is_str_equal(buf1,buf);
 
@@ -318,7 +318,7 @@ void testTreeConvert() {
     Defs defs;
     spec_is_str_equal(t2s(t),"(RUN_TREE (process:ADD_INT (TEST_INT_SYMBOL:99) (TEST_INT_SYMBOL:100)))");
     debug_enable(D_REDUCE+D_REDUCEV);
-    _p_reduce(&defs,t);
+    _p_reduce(G_sem,&defs,t);
     debug_disable(D_REDUCE+D_REDUCEV);
     spec_is_str_equal(t2s(t),"(RUN_TREE (TEST_INT_SYMBOL:199))");
 
@@ -347,8 +347,8 @@ void testMTreeSerialize() {
     char buf[2000] = {0};
     char buf1[2000] = {0};
 
-    __t_dump(&test_HTTP_defs,t,0,buf);
-    __t_dump(&test_HTTP_defs,t1,0,buf1);
+    __t_dump(G_sem,t,0,buf);
+    __t_dump(G_sem,t1,0,buf1);
 
     spec_is_str_equal(buf1,buf);
 
@@ -365,12 +365,12 @@ void testMTreeSerialize() {
     writeFile("web/httpsymbols.cmt",s,s->total_size);
     _m_free(h);free(s);
 
-    h = _m_new_from_t(G_contexts[SYS_CONTEXT].defs.structures);
+    h = _m_new_from_t(__sem_get_defs(G_sem,SEM_TYPE_STRUCTURE,SYS_CONTEXT));
     s = _m_serialize(h.m);
     writeFile("web/sysstructures.cmt",s,s->total_size);
     _m_free(h);free(s);
 
-    h = _m_new_from_t(G_contexts[SYS_CONTEXT].defs.symbols);
+    h = _m_new_from_t(__sem_get_defs(G_sem,SEM_TYPE_SYMBOL,SYS_CONTEXT));
     s = _m_serialize(h.m);
     writeFile("web/syssymbols.cmt",s,s->total_size);
     _m_free(h);free(s);
@@ -400,12 +400,10 @@ void testMTreeSerialize() {
 
 
 void testMTree() {
-    _setup_HTTPDefs();
     testCreateTreeNodesM();
     testMTreeOrthogonal();
     testMTreeReceptor();
     testMTreeWalk();
     testTreeConvert();
     testMTreeSerialize();
-    _cleanup_HTTPDefs();
 }

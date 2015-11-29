@@ -863,14 +863,17 @@ char * _t_sprint_path(int *fp,char *buf) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/tree_spec.h testTreeHash
  */
-TreeHash _t_hash(T *symbols,T *structures,T *t) {
+TreeHash _t_hash(SemTable *sem,T *t) {
     int i,c = _t_children(t);
     TreeHash result;
     if (c == 0) {
         struct {Symbol s;TreeHash h;} h;
         void *surface = _t_surface(t);
         h.s = _t_symbol(t);
-        size_t l = _d_get_symbol_size(symbols,structures,h.s,surface);
+        //@todo fix this so we don't have keep doing this on the recursive calls...
+        T *symbols = _sem_get_defs(sem,h.s);
+        T *structures = _sem_get_defs(sem,h.s);
+        size_t l = _d_get_symbol_size(sem,h.s,surface);
         if (l > 0)
             h.h = hashfn((char *)surface,l);
         else
@@ -882,7 +885,7 @@ TreeHash _t_hash(T *symbols,T *structures,T *t) {
         TreeHash *h,*hashes = malloc(l);
         h = hashes;
         for(i=1;i<=c;i++) {
-            *(h++) = _t_hash(symbols,structures,_t_child(t,i));
+            *(h++) = _t_hash(sem,_t_child(t,i));
         }
         (*(Symbol *)h) = _t_symbol(t);
         result = hashfn((char *)hashes,l);
@@ -934,11 +937,11 @@ int __uuid_equal(UUIDt *u1,UUIDt *u2) {
  * @todo compact is really a shorthand for whether this is a fixed size tree or not
  * this should actually be determined on the fly by looking at the structure types.
  */
-size_t __t_serialize(Defs *d,T *t,void **bufferP,size_t offset,size_t current_size,int compact){
+size_t __t_serialize(SemTable *sem,T *t,void **bufferP,size_t offset,size_t current_size,int compact){
     size_t cl =0,l = _t_size(t);
     int i, c = _t_children(t);
 
-    //    printf("\ncurrent_size:%ld offset:%ld  size:%ld symbol:%s",current_size,offset,l,_d_get_symbol_name(d->symbols,_t_symbol(t)));
+    //    printf("\ncurrent_size:%ld offset:%ld  size:%ld symbol:%s",current_size,offset,l,_sem_get_name(sem,_t_symbol(t)));
     while ((offset+l+sizeof(Symbol)) > current_size) {
         current_size*=2;
         *bufferP = realloc(*bufferP,current_size);
@@ -954,7 +957,7 @@ size_t __t_serialize(Defs *d,T *t,void **bufferP,size_t offset,size_t current_si
     }
 
     for(i=1;i<=c;i++) {
-        offset = __t_serialize(d,_t_child(t,i),bufferP,offset,current_size,compact);
+        offset = __t_serialize(sem,_t_child(t,i),bufferP,offset,current_size,compact);
     }
     return offset;
 }
@@ -971,10 +974,10 @@ size_t __t_serialize(Defs *d,T *t,void **bufferP,size_t offset,size_t current_si
  * <b>Examples (from test suite):</b>
  * @snippet spec/tree_spec.h testTreeSerialize
  */
-void _t_serialize(Defs *d,T *t,void **surfaceP,size_t *lengthP) {
+void _t_serialize(SemTable *sem,T *t,void **surfaceP,size_t *lengthP) {
     size_t buf_size = 1000;
     *surfaceP = malloc(buf_size);
-    *lengthP = __t_serialize(d,t,surfaceP,0,buf_size,0);
+    *lengthP = __t_serialize(sem,t,surfaceP,0,buf_size,0);
     *surfaceP = realloc(*surfaceP,*lengthP);
 }
 
@@ -983,15 +986,15 @@ void _t_serialize(Defs *d,T *t,void **surfaceP,size_t *lengthP) {
 /// macro to read typed date from the surface and update length and surface values (assumes variable has already been declared)
 #define _SREAD(type,var_name) var_name = *(type *)*surfaceP;*lengthP -= sizeof(type);*surfaceP += sizeof(type);
 
-T * _t_unserialize(Defs *d,void **surfaceP,size_t *lengthP,T *t) {
+T * _t_unserialize(SemTable *sem,void **surfaceP,size_t *lengthP,T *t) {
     size_t size;
 
     SREAD(Symbol,s);
-    //    printf("\nSymbol:%s",_d_get_symbol_name(d->symbols,s));
+    //    printf("\nSymbol:%s",_sem_get_name(sem,s));
 
     SREAD(int,c);
 
-    Structure st = _d_get_symbol_structure(d->symbols,s);
+    Structure st = _sem_get_symbol_structure(sem,s);
 
     if (is_sys_structure(st)) {
         size = _sys_structure_size(st.id,*surfaceP);
@@ -1013,7 +1016,7 @@ T * _t_unserialize(Defs *d,void **surfaceP,size_t *lengthP,T *t) {
 
     int i;
     for(i=1;i<=c;i++) {
-        _t_unserialize(d,surfaceP,lengthP,t);
+        _t_unserialize(sem,surfaceP,lengthP,t);
     }
     return t;
 }
@@ -1030,11 +1033,8 @@ T * _t_unserialize(Defs *d,void **surfaceP,size_t *lengthP,T *t) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/tree_spec.h testTreeJSON
  */
-char * _t2rawjson(Defs *defs,T *t,int level,char *buf) {
+char * _t2rawjson(SemTable *sem,T *t,int level,char *buf) {
     char *result = buf;
-    T *structures = defs ? defs->structures : 0;
-    T *symbols = defs ? defs->symbols : 0;
-    T *processes = defs ? defs->processes : 0;
     if (!t) return "";
     Symbol s = _t_symbol(t);
     char b[255];
@@ -1049,7 +1049,7 @@ char * _t2rawjson(Defs *defs,T *t,int level,char *buf) {
     _add_sem(buf,s);
     buf+= strlen(buf);
     if (is_symbol(s)) {
-        Structure st = _d_get_symbol_structure(symbols,s);
+        Structure st = _sem_get_symbol_structure(sem,s);
 
         if (is_sys_structure(st)) {
             switch(st.id) {
@@ -1093,20 +1093,20 @@ char * _t2rawjson(Defs *defs,T *t,int level,char *buf) {
                 break;
             case XADDR_ID:
                 x = *(Xaddr *)_t_surface(t);
-                sprintf(buf,",\"surface\":{ \"symbol\":\"%s\",\"addr\":%d }",_d_get_symbol_name(symbols,x.symbol),x.addr);
+                sprintf(buf,",\"surface\":{ \"symbol\":\"%s\",\"addr\":%d }",_sem_get_name(sem,x.symbol),x.addr);
                 break;
             case STREAM_ID:
                 sprintf(buf,",\"surface\":\"%p\"",_t_surface(t));
                 break;
             case TREE_ID:
                 if (t->context.flags & TFLAG_SURFACE_IS_TREE) {
-                    c = _t2rawjson(defs,(T *)_t_surface(t),0,tbuf);
+                    c = _t2rawjson(sem,(T *)_t_surface(t),0,tbuf);
                     sprintf(buf,",\"surface\":%s",c);
                     break;
                 }
             case RECEPTOR_ID:
                 if (t->context.flags & (TFLAG_SURFACE_IS_TREE+TFLAG_SURFACE_IS_RECEPTOR)) {
-                    c = _t2rawjson(defs,((Receptor *)_t_surface(t))->root,0,tbuf);
+                    c = _t2rawjson(sem,((Receptor *)_t_surface(t))->root,0,tbuf);
                     sprintf(buf,",\"surface\":%s",c);
                     break;
                 }
@@ -1115,13 +1115,13 @@ char * _t2rawjson(Defs *defs,T *t,int level,char *buf) {
                     Scape *sc = (Scape *)_t_surface(t);
                     //TODO: fixme!
                     raise_error("not-implemented");
-                    sprintf(buf,"(key %s,data %s",_d_get_symbol_name(symbols,sc->key_source),_d_get_symbol_name(symbols,sc->data_source));
+                    sprintf(buf,"(key %s,data %s",_sem_get_name(sem,sc->key_source),_sem_get_name(sem,sc->data_source));
                     break;
                 }
             default:
                 // other structures are composed so work automatically
-                if (st.id > _t_children(G_contexts[SYS_CONTEXT].defs.structures))
-                    raise_error("don't know how to convert surface of %s, structure id %d seems invalid",_d_get_symbol_name(symbols,s),st.id);
+                if (st.id > _t_children(__sem_get_defs(sem,SEM_TYPE_STRUCTURE,st.context)))
+                    raise_error("don't know how to convert surface of %s, structure id %d seems invalid",_sem_get_name(sem,s),st.id);
 
             }
         }
@@ -1132,7 +1132,7 @@ char * _t2rawjson(Defs *defs,T *t,int level,char *buf) {
         sprintf(buf,",\"children\":[");
         buf += strlen(buf);
         for(i=1;i<=_c;i++){
-            _t2rawjson(defs,_t_child(t,i),level < 0 ? level-1 : level+1,buf);
+            _t2rawjson(sem,_t_child(t,i),level < 0 ? level-1 : level+1,buf);
             buf += strlen(buf);
             if (i<_c) {
                 _add_char2buf(',',buf);
@@ -1152,11 +1152,8 @@ char * _t2rawjson(Defs *defs,T *t,int level,char *buf) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/tree_spec.h testTreeJSON
  */
-char * _t2json(Defs *defs,T *t,int level,char *buf) {
+char * _t2json(SemTable *sem,T *t,int level,char *buf) {
     char *result = buf;
-    T *structures = defs ? defs->structures : 0;
-    T *symbols = defs ? defs->symbols : 0;
-    T *processes = defs ? defs->processes : 0;
     if (!t) return "";
     Symbol s = _t_symbol(t);
     char b[255];
@@ -1167,18 +1164,18 @@ char * _t2json(Defs *defs,T *t,int level,char *buf) {
     buf = _indent_line(level,buf);
 
     if (is_process(s)) {
-        sprintf(buf,"{ \"type\":\"process\",\"name\" :\"%s\"",_d_get_process_name(processes,s));
+        sprintf(buf,"{ \"type\":\"process\",\"name\" :\"%s\"",_sem_get_name(sem,s));
     }
     else {
-        char *n = _d_get_symbol_name(symbols,s);
-        Structure st = _d_get_symbol_structure(symbols,s);
+        char *n = _sem_get_name(sem,s);
+        Structure st = _sem_get_symbol_structure(sem,s);
         sprintf(buf,"{ \"symbol\":{ \"context\":%d,\"id\":%d },",s.context,s.id);
         buf+= strlen(buf);
 
         if (!is_sys_structure(st)) {
             // if it's not a system structure, it's composed, so all we need to do is
             // print out the symbol name, and the reset will take care of itself
-            sprintf(buf,"\"type\":\"%s\",\"name\":\"%s\"",_d_get_structure_name(structures,st),n);
+            sprintf(buf,"\"type\":\"%s\",\"name\":\"%s\"",_sem_get_name(sem,st),n);
         }
         else {
 
@@ -1209,15 +1206,15 @@ char * _t2json(Defs *defs,T *t,int level,char *buf) {
                 sprintf(buf,"\"type\":\"FLOAT\",\"name\":\"%s\",\"surface\":%f",n,*(float *)_t_surface(t));
                 break;
             case SYMBOL_ID:
-                c = _d_get_symbol_name(symbols,*(Symbol *)_t_surface(t));
+                c = _sem_get_name(sem,*(Symbol *)_t_surface(t));
                 sprintf(buf,"\"type\":\"SYMBOL\",\"name\":\"%s\",\"surface\":\"%s\"",n,c?c:"<unknown>");
                 break;
             case STRUCTURE_ID:
-                c = _d_get_structure_name(structures,*(Structure *)_t_surface(t));
+                c = _sem_get_name(sem,*(Structure *)_t_surface(t));
                 sprintf(buf,"\"type\":\"STRUCTURE\",\"name\":\"%s\",\"surface\":\"%s\"",n,c?c:"<unknown>");
                 break;
             case PROCESS_ID:
-                c = _d_get_process_name(processes,*(Process *)_t_surface(t));
+                c = _sem_get_name(sem,*(Process *)_t_surface(t));
                 sprintf(buf,"\"type\":\"PROCESS\",\"name\":\"%s\",\"surface\":\"%s\"",n,c?c:"<unknown>");
                 break;
             case TREE_PATH_ID:
@@ -1225,20 +1222,20 @@ char * _t2json(Defs *defs,T *t,int level,char *buf) {
                 break;
             case XADDR_ID:
                 x = *(Xaddr *)_t_surface(t);
-                sprintf(buf,"\"type\":\"XADDR\",\"name\":\"%s\",\"surface\":{ \"symbol\":\"%s\",\"addr\":%d }",n,_d_get_symbol_name(symbols,x.symbol),x.addr);
+                sprintf(buf,"\"type\":\"XADDR\",\"name\":\"%s\",\"surface\":{ \"symbol\":\"%s\",\"addr\":%d }",n,_sem_get_name(sem,x.symbol),x.addr);
                 break;
             case STREAM_ID:
                 sprintf(buf,"\"type\":\"STREAM\",\"name\":\"%s\",\"surface\":\"%p\"",n,_t_surface(t));
                 break;
             case TREE_ID:
                 if (t->context.flags & TFLAG_SURFACE_IS_TREE) {
-                    c = _t2json(defs,(T *)_t_surface(t),0,tbuf);
+                    c = _t2json(sem,(T *)_t_surface(t),0,tbuf);
                     sprintf(buf,"\"type\":\"TREE\",\"name\":\"%s\",\"surface\":%s",n,c);
                     break;
                 }
             case RECEPTOR_ID:
                 if (t->context.flags & (TFLAG_SURFACE_IS_TREE+TFLAG_SURFACE_IS_RECEPTOR)) {
-                    c = _t2json(defs,((Receptor *)_t_surface(t))->root,0,tbuf);
+                    c = _t2json(sem,((Receptor *)_t_surface(t))->root,0,tbuf);
                     sprintf(buf,"\"type\":\"RECEPTOR\",\"name\":\"%s\",\"surface\":%s",n,c);
                     break;
                 }
@@ -1246,12 +1243,12 @@ char * _t2json(Defs *defs,T *t,int level,char *buf) {
                 if (t->context.flags & TFLAG_SURFACE_IS_SCAPE) {
                     Scape *sc = (Scape *)_t_surface(t);
                     //TODO: fixme!
-                    sprintf(buf,"(%s:key %s,data %s",n,_d_get_symbol_name(symbols,sc->key_source),_d_get_symbol_name(symbols,sc->data_source));
+                    sprintf(buf,"(%s:key %s,data %s",n,_sem_get_name(sem,sc->key_source),_sem_get_name(sem,sc->data_source));
                     break;
                 }
             default:
                 if (semeq(s,SEMTREX_MATCH_CURSOR)) {
-                    c = _t2json(defs,*(T **)_t_surface(t),0,tbuf);
+                    c = _t2json(sem,*(T **)_t_surface(t),0,tbuf);
                     //c = "null";
                     sprintf(buf,"(%s:{%s}",n,c);
                     break;
@@ -1259,7 +1256,7 @@ char * _t2json(Defs *defs,T *t,int level,char *buf) {
                 if (n == 0)
                     sprintf(buf,"(<unknown:%d.%d.%d>",s.context,s.semtype,s.id);
                 else {
-                    c = _d_get_structure_name(structures,st);
+                    c = _sem_get_name(sem,st);
                     sprintf(buf,"\"type\":\"%s\",\"name\":\"%s\"",c,n);
                 }
             }
@@ -1271,7 +1268,7 @@ char * _t2json(Defs *defs,T *t,int level,char *buf) {
         sprintf(buf,",\"children\":[");
         buf += strlen(buf);
         for(i=1;i<=_c;i++){
-            _t2json(defs,_t_child(t,i),level < 0 ? level-1 : level+1,buf);
+            _t2json(sem,_t_child(t,i),level < 0 ? level-1 : level+1,buf);
             buf += strlen(buf);
             if (i<_c) {
                 _add_char2buf(',',buf);

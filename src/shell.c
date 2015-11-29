@@ -40,7 +40,7 @@ void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp
     // vmhost context here, but used in the context of the receptor itself
     // see bug #31
     Symbol shell = _r_declare_symbol(G_vm->r,RECEPTOR,"shell");
-    Receptor *r = _r_new(shell);
+    Receptor *r = _r_new(v->sem,shell);
     Xaddr shellx = _v_new_receptor(G_vm,G_vm->r,shell,r);
     _v_activate(G_vm,shellx);
 
@@ -50,12 +50,12 @@ void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp
     Stream *input_stream = *isp = _st_new_unix_stream(input,1);
 
     Symbol std_in = _r_declare_symbol(G_vm->r,RECEPTOR,"std_in");
-    Receptor *i_r = *irp = _r_makeStreamReaderReceptor(std_in,TEST_STREAM_SYMBOL,input_stream,shellx.addr);
+    Receptor *i_r = *irp = _r_makeStreamReaderReceptor(v->sem,std_in,TEST_STREAM_SYMBOL,input_stream,shellx.addr);
     Xaddr ix = _v_new_receptor(G_vm,G_vm->r,std_in,i_r);
     _v_activate(G_vm,ix);
 
     Symbol std_out = _r_declare_symbol(G_vm->r,RECEPTOR,"std_out");
-    Receptor *o_r = *orp = _r_makeStreamWriterReceptor(std_out,TEST_STREAM_SYMBOL,output_stream);
+    Receptor *o_r = *orp = _r_makeStreamWriterReceptor(v->sem,std_out,TEST_STREAM_SYMBOL,output_stream);
     Xaddr ox = _v_new_receptor(G_vm,G_vm->r,std_out,o_r);
     _v_activate(G_vm,ox);
 

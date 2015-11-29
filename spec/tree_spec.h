@@ -80,7 +80,7 @@ void testTreeNewReceptor() {
     // we should make this a rational test
 
     T *t = _t_newi(0,TEST_INT_SYMBOL,0);
-    Receptor *r = _r_new(TEST_RECEPTOR_SYMBOL);
+    Receptor *r = _r_new(G_sem,TEST_RECEPTOR_SYMBOL);
     T *tr = _t_new_receptor(t,TEST_RECEPTOR_SYMBOL,r);
 
     spec_is_ptr_equal(_t_surface(tr),r);
@@ -182,7 +182,7 @@ void testTreePathGet() {
     spec_is_symbol_equal(0,_t_symbol(_t_get(t,p33122)),PARAM_VALUE);
     spec_is_symbol_equal(0,_t_symbol(_t_get(t,p311)),HTTP_REQUEST_PATH_SEGMENT);
 
-    spec_is_str_equal(_t2s(&test_HTTP_defs,_t_getv(t,3,3,1,2,TREE_PATH_TERMINATOR)),"(HTTP_REQUEST_PATH_QUERY_PARAM (PARAM_KEY:page) (PARAM_VALUE:2))");
+    spec_is_str_equal(t2s(_t_getv(t,3,3,1,2,TREE_PATH_TERMINATOR)),"(HTTP_REQUEST_PATH_QUERY_PARAM (PARAM_KEY:page) (PARAM_VALUE:2))");
 
     //  _t_get returns null if tree doesn't have a node at the given path
     p311[2] = 3;
@@ -322,8 +322,8 @@ void testTreeClone() {
 
     char buf1[2000];
     char buf2[2000];
-    __t_dump(&test_HTTP_defs,c,0,buf1);
-    __t_dump(&test_HTTP_defs,t,0,buf2);
+    __t_dump(G_sem,c,0,buf1);
+    __t_dump(G_sem,t,0,buf2);
 
     spec_is_str_equal(buf1,buf2);
 
@@ -346,7 +346,7 @@ void testTreeReplace() {
 
     _t_replace(t,1,t_version);
     int p[] = {1,TREE_PATH_TERMINATOR};
-    spec_is_str_equal(_t2s(&test_HTTP_defs,_t_get(t,p)),"(HTTP_REQUEST_VERSION (VERSION_MAJOR:1) (VERSION_MINOR:1))");
+    spec_is_str_equal(t2s(_t_get(t,p)),"(HTTP_REQUEST_VERSION (VERSION_MAJOR:1) (VERSION_MINOR:1))");
 
     _t_free(t);
     //! [testTreeReplace]
@@ -362,7 +362,7 @@ void testTreeSwap() {
     _t_newi(t_version,VERSION_MINOR,1);
 
     T *s = _t_swap(t,1,t_version);
-    spec_is_str_equal(_t2s(&test_HTTP_defs,s),"(HTTP_REQUEST_VERSION (VERSION_MAJOR:1) (VERSION_MINOR:0))");
+    spec_is_str_equal(t2s(s),"(HTTP_REQUEST_VERSION (VERSION_MAJOR:1) (VERSION_MINOR:0))");
     spec_is_ptr_equal(_t_parent(s),NULL);
 
     _t_free(s);
@@ -379,7 +379,7 @@ void testTreeInsertAt() {
     char buf[2000];
     p[2] = TREE_PATH_TERMINATOR;
     c = _t_get(t,p);
-    __t_dump(&test_HTTP_defs,c,0,buf);
+    __t_dump(G_sem,c,0,buf);
     spec_is_str_equal(buf,"(HTTP_REQUEST_PATH_SEGMENTS (HTTP_REQUEST_PATH_SEGMENT:groups) (HTTP_REQUEST_PATH_SEGMENT:a) (HTTP_REQUEST_PATH_SEGMENT:5))");
 
     _t_free(t);
@@ -441,11 +441,11 @@ void testTreeDetach() {
 void testTreeHash() {
     //! [testTreeHash]
     T *t = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
-    TreeHash h = _t_hash(test_HTTP_symbols,test_HTTP_structures,t);
+    TreeHash h = _t_hash(G_sem,t);
 
     // test that changing a symbol changes the hash
     t->contents.symbol.id++;
-    spec_is_true(!_t_hash_equal(h,_t_hash(test_HTTP_symbols,test_HTTP_structures,t)));
+    spec_is_true(!_t_hash_equal(h,_t_hash(G_sem,t)));
     t->contents.symbol.id--;
 
     // test that changing a surface changes the hash
@@ -453,13 +453,13 @@ void testTreeHash() {
     T *v = _t_get(t,p);
     int orig_version = *(int *)&v->contents.surface;
     *(int *)&v->contents.surface = orig_version + 1;
-    spec_is_true(!_t_hash_equal(h,_t_hash(test_HTTP_symbols,test_HTTP_structures,t)));
+    spec_is_true(!_t_hash_equal(h,_t_hash(G_sem,t)));
     *(int *)&v->contents.surface = orig_version; // change value back
 
     // test that changing child order changes the hash
     T *t_version = _t_detach_by_idx(t,1);
     _t_add(t,t_version);
-    spec_is_true(!_t_hash_equal(h,_t_hash(test_HTTP_symbols,test_HTTP_structures,t)));
+    spec_is_true(!_t_hash_equal(h,_t_hash(G_sem,t)));
 
     _t_free(t);
     //! [testTreeHash]
@@ -484,15 +484,15 @@ void testTreeSerialize() {
     char buf[2000] = {0};
     char buf1[2000] = {0};
     T *t1,*t = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
-    __t_dump(&test_HTTP_defs,t,0,buf);
+    __t_dump(G_sem,t,0,buf);
 
     size_t l;
     void *surface,*s;
     G_d = &test_HTTP_defs;
-    _t_serialize(&test_HTTP_defs,t,&surface,&l);
+    _t_serialize(G_sem,t,&surface,&l);
     s = surface;
-    t1 = _t_unserialize(&test_HTTP_defs,&surface,&l,0);
-    __t_dump(&test_HTTP_defs,t1,0,buf1);
+    t1 = _t_unserialize(G_sem,&surface,&l,0);
+    __t_dump(G_sem,t1,0,buf1);
 
     spec_is_str_equal(buf1,buf);
 
@@ -507,20 +507,20 @@ void testTreeJSON() {
     //! [testTreeJSON]
     char buf[5000] = {0};
     T *t = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
-    _t2json(&test_HTTP_defs,t,INDENT,buf);
+    _t2json(G_sem,t,INDENT,buf);
 
     // @todo got screwed up by removing list, too lazy to fix
     //spec_is_str_equal(buf,"{ \"symbol\":{ \"context\":255,\"id\":17 },\"type\":\"HTTP_REQUEST_V09\",\"name\":\"HTTP_REQUEST\",\"children\":[\n   { \"symbol\":{ \"context\":255,\"id\":16 },\"type\":\"VERSION\",\"name\":\"HTTP_REQUEST_VERSION\",\"children\":[\n      { \"symbol\":{ \"context\":255,\"id\":14 },\"type\":\"INTEGER\",\"name\":\"VERSION_MAJOR\",\"surface\":1},\n      { \"symbol\":{ \"context\":255,\"id\":15 },\"type\":\"INTEGER\",\"name\":\"VERSION_MINOR\",\"surface\":0}]},\n   { \"symbol\":{ \"context\":255,\"id\":2 },\"type\":\"CSTRING\",\"name\":\"HTTP_REQUEST_METHOD\",\"surface\":\"GET\"},\n   { \"symbol\":{ \"context\":255,\"id\":13 },\"type\":\"URI\",\"name\":\"HTTP_REQUEST_PATH\",\"children\":[\n      { \"symbol\":{ \"context\":255,\"id\":3 },\"type\":\"segments list\",\"name\":\"HTTP_REQUEST_PATH_SEGMENTS\",\"children\":[\n         { \"symbol\":{ \"context\":255,\"id\":4 },\"type\":\"CSTRING\",\"name\":\"HTTP_REQUEST_PATH_SEGMENT\",\"surface\":\"groups\"},\n         { \"symbol\":{ \"context\":255,\"id\":4 },\"type\":\"CSTRING\",\"name\":\"HTTP_REQUEST_PATH_SEGMENT\",\"surface\":\"5\"}]},\n      { \"symbol\":{ \"context\":255,\"id\":7 },\"type\":\"FILE_HANDLE\",\"name\":\"HTTP_REQUEST_PATH_FILE\",\"children\":[\n         { \"symbol\":{ \"context\":255,\"id\":5 },\"type\":\"CSTRING\",\"name\":\"FILE_NAME\",\"surface\":\"users\"},\n         { \"symbol\":{ \"context\":255,\"id\":6 },\"type\":\"CSTRING\",\"name\":\"FILE_EXTENSION\",\"surface\":\"json\"}]},\n      { \"symbol\":{ \"context\":255,\"id\":8 },\"type\":\"query struct\",\"name\":\"HTTP_REQUEST_PATH_QUERY\",\"children\":[\n         { \"symbol\":{ \"context\":255,\"id\":9 },\"type\":\"query param list\",\"name\":\"HTTP_REQUEST_PATH_QUERY_PARAMS\",\"children\":[\n            { \"symbol\":{ \"context\":255,\"id\":12 },\"type\":\"KEY_VALUE_PARAM\",\"name\":\"HTTP_REQUEST_PATH_QUERY_PARAM\",\"children\":[\n               { \"symbol\":{ \"context\":255,\"id\":10 },\"type\":\"CSTRING\",\"name\":\"PARAM_KEY\",\"surface\":\"sort_by\"},\n               { \"symbol\":{ \"context\":255,\"id\":11 },\"type\":\"CSTRING\",\"name\":\"PARAM_VALUE\",\"surface\":\"last_name\"}]},\n            { \"symbol\":{ \"context\":255,\"id\":12 },\"type\":\"KEY_VALUE_PARAM\",\"name\":\"HTTP_REQUEST_PATH_QUERY_PARAM\",\"children\":[\n               { \"symbol\":{ \"context\":255,\"id\":10 },\"type\":\"CSTRING\",\"name\":\"PARAM_KEY\",\"surface\":\"page\"},\n               { \"symbol\":{ \"context\":255,\"id\":11 },\"type\":\"CSTRING\",\"name\":\"PARAM_VALUE\",\"surface\":\"2\"}]}]}]}]}]}");
 
-    wjson(&test_HTTP_defs,t,"httpreq",0);
+    wjson(G_sem,t,"httpreq",0);
     char *stxs = "/%<HTTP_REQUEST_PATH_SEGMENTS:HTTP_REQUEST_PATH_SEGMENTS,HTTP_REQUEST_PATH_FILE>";
     T *stx;
-    stx = parseSemtrex(&test_HTTP_defs,stxs);
-    wjson(&test_HTTP_defs,stx,"httpreq",1);
+    stx = parseSemtrex(G_sem,stxs);
+    wjson(G_sem,stx,"httpreq",1);
 
     T *r;
     if (_t_matchr(stx,t,&r)) {
-	wjson(&test_HTTP_defs,r,"httpreq",2);
+	wjson(G_sem,r,"httpreq",2);
 	_t_free(r);
     }
 
@@ -531,13 +531,11 @@ void testTreeJSON() {
 
 void testProcessHTML() {
     T *t = parseHTML("<html><body><div id=\"314\" class=\"contents\">Hello world<img src=\"test.png\"/></div></body></html>");
-    spec_is_str_equal(_t2s(&test_HTTP_defs,t),"(HTML_HTML (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_BODY (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_DIV (HTML_ATTRIBUTES (HTML_ATTRIBUTE (PARAM_KEY:id) (PARAM_VALUE:314)) (HTML_ATTRIBUTE (PARAM_KEY:class) (PARAM_VALUE:contents))) (HTML_CONTENT (HTML_TEXT:Hello world) (HTML_IMG (HTML_ATTRIBUTES (HTML_ATTRIBUTE (PARAM_KEY:src) (PARAM_VALUE:test.png))) (HTML_CONTENT))))))))");
+    spec_is_str_equal(t2s(t),"(HTML_HTML (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_BODY (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_DIV (HTML_ATTRIBUTES (HTML_ATTRIBUTE (PARAM_KEY:id) (PARAM_VALUE:314)) (HTML_ATTRIBUTE (PARAM_KEY:class) (PARAM_VALUE:contents))) (HTML_CONTENT (HTML_TEXT:Hello world) (HTML_IMG (HTML_ATTRIBUTES (HTML_ATTRIBUTE (PARAM_KEY:src) (PARAM_VALUE:test.png))) (HTML_CONTENT))))))))");
     _t_free(t);
 }
 
 void testTree() {
-    _setup_HTTPDefs();
-
     testCreateTreeNodes();
     testTreeNewReceptor();
     testTreeScape();
@@ -564,6 +562,4 @@ void testTree() {
     testTreeSerialize();
     testTreeJSON();
     testProcessHTML();
-
-    _cleanup_HTTPDefs();
 }

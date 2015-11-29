@@ -12,35 +12,20 @@
 #ifndef _CEPTR_RECEPTOR_H
 #define _CEPTR_RECEPTOR_H
 
+#include "semtable.h"
 #include "tree.h"
 #include "def.h"
 #include "label.h"
 #include "process.h"
 #include "scape.h"
 
-
-// structure position index enums to make code more readable
-// @todo figure out a better way to handle this... like put defs like these
-// into the symbol gen code (talk about a semantic muddle! If only I had ceptr...)
-enum {ReceptorDefsIDx=1,ReceptorFluxIDx,ReceptorStateIdx,ReceptorPendingSignalsIdx,ReceptorPendingResponsesIdx};
-enum {EnvelopeFromIdx=1,EnvelopeToIdx,EnvelopeAspectIdx,EnvelopeCarrierIdx,EnvelopeUUIDIdx,EnvelopeExtraIdx};
-enum {SignalEnvelopeIdx=1,SignalBodyIdx};
-enum {PendingResponseUUIDIdx=1,PendingResponseCarrierIdx,PendingResponseWakeupIdx,PendingResponseEndCondsIdx};
-enum {WakeupReferenceProcessIdentIdx=1,WakeupReferenceCodePathIdx};
-enum {ExpectationCarrierIdx=1,ExpectationPatternIdx,ExpectationActionIdx,ExpectationParamsIdx,ExpectationEndCondsIdx};
-enum DATEIndexes {dateYearIdx=1,dateMonthIdx,dateDayIdx};
-enum TIMEIndexes {timeHourIdx=1,timeMinuteIdx,timeSecondIdx};
-enum TIMESTAMPIndexes {timestampTodayIdx=1,timestampNowIdx};
-enum ASPECTIndexes {aspectExpectationsIdx=1,aspectSignalsIdx};
-enum {RoleProcessRoleIdx=1,RoleProcessSource,RoleProcessExpectation};
-enum {SourceRoleIdx=1};
-enum {ConversationConversationLabelIdx=1,ConversationRoleFirstProcessIdx};
 // delivery errors
 enum {noDeliveryErr};
 
 /******************  create and destroy receptors */
-Receptor *_r_new(Symbol s);
-Receptor *_r_new_receptor_from_package(Symbol s,T *p,T *bindings);
+T *__r_make_definitions();
+Receptor *_r_new(SemTable *st,Symbol s);
+Receptor *_r_new_receptor_from_package(SemTable *st,Symbol s,T *p,T *bindings);
 T *__r_build_expectation(Symbol carrier,T *pattern,T *action,T *with,T *until);
 void _r_add_expectation(Receptor *r,Aspect aspect,Symbol carrier,T *pattern,T *action,T *with,T *until);
 void __r_add_expectation(Receptor *r,Aspect aspect,T *e);
@@ -51,9 +36,9 @@ void _r_free(Receptor *r);
 SemanticID __set_label_for_def(Receptor *r,char *label,T *def,int type);
 
 Symbol _r_declare_symbol(Receptor *r,Structure s,char *label);
-Symbol _r_get_symbol_by_label(Receptor *r,char *label);
+SemanticID _r_get_sem_by_label(Receptor *r,char *label);
 Structure _r_define_structure(Receptor *r,char *label,int num_params,...);
-Structure _r_get_structure_by_label(Receptor *r,char *label);
+Structure __r_define_structure(Receptor *r,char *label,T *structure_def);
 Structure __r_get_symbol_structure(Receptor *r,Symbol s);
 size_t __r_get_symbol_size(Receptor *r,Symbol s,void *surface);
 Process _r_code_process(Receptor *r,T *code,char *name,char *intention,T *signature);
@@ -111,9 +96,9 @@ Xaddr G_null_xaddr;
 #define spec_is_xaddr_equal(r,got,expected)  spec_total++; if (is_xaddr_eq(got,expected)){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %s.%d but was %s.%d",__FUNCTION__,__LINE__,#got,!is_null_symbol(expected.symbol)?_r_get_symbol_name(r,expected.symbol):"0",expected.addr,!is_null_symbol(got.symbol) ? _r_get_symbol_name(r,got.symbol):"0",got.addr);}
 
 /*****************  Built-in core and edge receptors */
-Receptor *_r_makeStreamReaderReceptor(Symbol receptor_symbol,Symbol stream_symbol,Stream *stream,ReceptorAddress to);
-Receptor *_r_makeStreamWriterReceptor(Symbol receptor_symbol,Symbol stream_symbol,Stream *stream);
-Receptor *_r_makeClockReceptor();
+Receptor *_r_makeStreamReaderReceptor(SemTable *sem,Symbol receptor_symbol,Symbol stream_symbol,Stream *stream,ReceptorAddress to);
+Receptor *_r_makeStreamWriterReceptor(SemTable *sem,Symbol receptor_symbol,Symbol stream_symbol,Stream *stream);
+Receptor *_r_makeClockReceptor(SemTable *sem);
 void *___clock_thread(void *arg);
 #define __r_make_tick() __r_make_timestamp(TICK,00)
 T *__r_make_timestamp(Symbol s,int delta);

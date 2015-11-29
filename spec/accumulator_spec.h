@@ -113,9 +113,9 @@ void testAccPersistInstances() {
     _a_free_instances(&i);
     __a_unserialize_instances(&i,s);
 
-    spec_is_str_equal(_t2s(&test_HTTP_defs,_a_get_instance(&i,x)),"(PARAMS (TEST_INT_SYMBOL:314))");
-    spec_is_str_equal(_t2s(&test_HTTP_defs,_a_get_instance(&i,y)),_t2s(&test_HTTP_defs,htc));
-    spec_is_str_equal(_t2s(&test_HTTP_defs,_a_get_instance(&i,z)),"(TEST_INT_SYMBOL:2)");
+    spec_is_str_equal(t2s(_a_get_instance(&i,x)),"(PARAMS (TEST_INT_SYMBOL:314))");
+    spec_is_str_equal(t2s(_a_get_instance(&i,y)),t2s(htc));
+    spec_is_str_equal(t2s(_a_get_instance(&i,z)),"(TEST_INT_SYMBOL:2)");
 
     _t_free(htc);
     _a_free_instances(&i);
@@ -129,9 +129,7 @@ void testAccumulator() {
         mkdir(temp_dir,0700);
     }
 
-    _setup_HTTPDefs();
     testAccBootStrap();
     testAccInstances();
     testAccPersistInstances();
-    _cleanup_HTTPDefs();
 }

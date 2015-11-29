@@ -3,10 +3,10 @@
 <tr><td><a name="STRUCTURES"></a>STRUCTURES</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_STRUCTURE_DEFINITION">ZERO-OR-MORE-OF-STRUCTURE-DEFINITION</a></td><td></td></tr>
 <tr><td><a name="SYMBOLS"></a>SYMBOLS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_SYMBOL_DECLARATION">ZERO-OR-MORE-OF-SYMBOL-DECLARATION</a></td><td></td></tr>
 <tr><td><a name="PROCESSES"></a>PROCESSES</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_PROCESS_CODING">ZERO-OR-MORE-OF-PROCESS-CODING</a></td><td></td></tr>
-<tr><td><a name="PROTOCOLS"></a>PROTOCOLS</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_STRUCTURE_OF_PROTOCOL_DEF">ONE-OR-MORE-OF-STRUCTURE-OF-PROTOCOL-DEF</a></td><td></td></tr>
+<tr><td><a name="PROTOCOLS"></a>PROTOCOLS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_PROTOCOL_DEFINITION">ZERO-OR-MORE-OF-PROTOCOL-DEFINITION</a></td><td></td></tr>
 <tr><td><a name="SCAPES"></a>SCAPES</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_STRUCTURE_OF_SCAPE">ZERO-OR-MORE-OF-STRUCTURE-OF-SCAPE</a></td><td></td></tr>
 <tr><td><a name="ASPECTS"></a>ASPECTS</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_ASPECT_DEF">ONE-OR-MORE-OF-ASPECT-DEF</a></td><td></td></tr>
-<tr><td><a name="DEFINITIONS"></a>DEFINITIONS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_LIST_OF_STRUCTURES_AND_SYMBOLS_AND_PROCESSES_AND_ZERO_OR_MORE_OF_PROTOCOLS_AND_ZERO_OR_MORE_OF_SCAPES_AND_ZERO_OR_MORE_OF_ASPECTS">ZERO-OR-MORE-OF-LIST-OF-STRUCTURES-AND-SYMBOLS-AND-PROCESSES-AND-ZERO-OR-MORE-OF-PROTOCOLS-AND-ZERO-OR-MORE-OF-SCAPES-AND-ZERO-OR-MORE-OF-ASPECTS</a></td><td></td></tr>
+<tr><td><a name="DEFINITIONS"></a>DEFINITIONS</td><td><a href="ref_sys_structures.html#LIST_OF_STRUCTURES_AND_SYMBOLS_AND_PROCESSES_AND_PROTOCOLS_AND_ZERO_OR_MORE_OF_SCAPES_AND_ZERO_OR_MORE_OF_ASPECTS">LIST-OF-STRUCTURES-AND-SYMBOLS-AND-PROCESSES-AND-PROTOCOLS-AND-ZERO-OR-MORE-OF-SCAPES-AND-ZERO-OR-MORE-OF-ASPECTS</a></td><td></td></tr>
 <tr><td><a name="STRUCTURE_SYMBOL"></a>STRUCTURE_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
 <tr><td><a name="STRUCTURE_SEQUENCE"></a>STRUCTURE_SEQUENCE</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_STRUCTURE_DEF">ONE-OR-MORE-OF-STRUCTURE-DEF</a></td><td></td></tr>
 <tr><td><a name="STRUCTURE_SYMBOL_SET"></a>STRUCTURE_SYMBOL_SET</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_STRUCTURE_SYMBOL">ONE-OR-MORE-OF-STRUCTURE-SYMBOL</a></td><td></td></tr>
@@ -61,7 +61,7 @@
 <tr><td><a name="BODY"></a>BODY</td><td><a href="ref_sys_structures.html#TREE">TREE</a></td><td>                          orthogonal tree that holds message body</td></tr>
 <tr><td><a name="SIGNAL_UUID"></a>SIGNAL_UUID</td><td><a href="ref_sys_structures.html#UUID">UUID</a></td><td></td></tr>
 <tr><td><a name="IN_RESPONSE_TO_UUID"></a>IN_RESPONSE_TO_UUID</td><td><a href="ref_sys_structures.html#UUID">UUID</a></td><td></td></tr>
-<tr><td><a name="INSTANCE_NUM"></a>INSTANCE_NUM</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td>               this a placeholder for better addressing later...</td></tr>
+<tr><td><a name="CONTEXT_NUM"></a>CONTEXT_NUM</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td>               this a placeholder for better addressing later...</td></tr>
 <tr><td><a name="RECEPTOR_PATH"></a>RECEPTOR_PATH</td><td><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></td><td></td></tr>
 <tr><td><a name="FROM_ADDRESS"></a>FROM_ADDRESS</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
 <tr><td><a name="TO_ADDRESS"></a>TO_ADDRESS</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
@@ -82,7 +82,7 @@
 <tr><td><a name="INTERPOLATE_SYMBOL"></a>INTERPOLATE_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>          a place holder to indicate which symbol to insert into this part of the tree</td></tr>
 <tr><td><a name="PROCESS_NAME"></a>PROCESS_NAME</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
 <tr><td><a name="PROCESS_INTENTION"></a>PROCESS_INTENTION</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
-<tr><td><a name="PROCESS_SIGNATURE"></a>PROCESS_SIGNATURE</td><td><a href="ref_sys_structures.html#TUPLE_OF_OUTPUT_SIGNATURE_AND_ZERO_OR_MORE_OF_INPUT_SIGNATURE">TUPLE-OF-OUTPUT-SIGNATURE-AND-ZERO-OR-MORE-OF-INPUT-SIGNATURE</a></td><td></td></tr>
+<tr><td><a name="PROCESS_SIGNATURE"></a>PROCESS_SIGNATURE</td><td><a href="ref_sys_structures.html#PROCESS_FORM">PROCESS-FORM</a></td><td></td></tr>
 <tr><td><a name="PROCESS_CODING"></a>PROCESS_CODING</td><td><a href="ref_sys_structures.html#LIST_OF_PROCESS_NAME_AND_PROCESS_INTENTION_AND_PROCESS_AND_PROCESS_SIGNATURE">LIST-OF-PROCESS-NAME-AND-PROCESS-INTENTION-AND-PROCESS-AND-PROCESS-SIGNATURE</a></td><td></td></tr>
 <tr><td><a name="SIGNATURE_LABEL"></a>SIGNATURE_LABEL</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
 <tr><td><a name="SIGNATURE_STRUCTURE"></a>SIGNATURE_STRUCTURE</td><td><a href="ref_sys_structures.html#STRUCTURE">STRUCTURE</a></td><td>      the structure that would match</td></tr>
@@ -100,12 +100,15 @@
 <tr><td><a name="SIGNAL_REF"></a>SIGNAL_REF</td><td><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></td><td>               used in a code tree triggered by an expectation as a reference to a part of the signal that triggered the action.</td></tr>
 <tr><td><a name="RESULT_SYMBOL"></a>RESULT_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
 <tr><td><a name="REDUCTION_ERROR_SYMBOL"></a>REDUCTION_ERROR_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
-<tr><td><a name="ROLE"></a>ROLE</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>  the symbol stored in a ROLE must be limmited to those of structure RECEPTOR_ADDRESS. we don't mean %RECEPTOR_ADDRESS as the structure because that actually means a symbol of of type receptor address.  Here we mean that the surface contains a symbol that itself must be of type RECEPTOR_ADDRESS, this is agian like a range specifier on the value of the surface.</td></tr>
-<tr><td><a name="ANYBODY"></a>ANYBODY</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
-<tr><td><a name="SOURCE"></a>SOURCE</td><td><a href="ref_sys_structures.html#TUPLE_OF_ZERO_OR_MORE_OF_ROLE_AND_ZERO_OR_ONE_OF_ANYBODY">TUPLE-OF-ZERO-OR-MORE-OF-ROLE-AND-ZERO-OR-ONE-OF-ANYBODY</a></td><td>  hmm gotta be a way of specifying that this can't be empty (@todo)</td></tr>
+<tr><td><a name="ROLE"></a>ROLE</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>  A role stands for an expected agent, thus the symbol stored in a ROLE must be limited to those of structure RECEPTOR_ADDRESS.</td></tr>
+<tr><td><a name="GOAL"></a>GOAL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td> A goal stands for an intended process, thus the symbol stored in a GOAL must be limited to those that are uses of the PROCESS_FORM structure which declares the intention.</td></tr>
+<tr><td><a name="USAGE"></a>USAGE</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td> A usage stands for a(n) X of a Symbol.</td></tr>
+<tr><td><a name="SOURCE"></a>SOURCE</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_ROLE">ONE-OR-MORE-OF-ROLE</a></td><td></td></tr>
 <tr><td><a name="ROLE_PROCESS"></a>ROLE_PROCESS</td><td><a href="ref_sys_structures.html#LIST_OF_ROLE_AND_SOURCE_AND_EXPECTATION">LIST-OF-ROLE-AND-SOURCE-AND-EXPECTATION</a></td><td></td></tr>
 <tr><td><a name="CONVERSATION_LABEL"></a>CONVERSATION_LABEL</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
 <tr><td><a name="CONVERSATION"></a>CONVERSATION</td><td><a href="ref_sys_structures.html#TUPLE_OF_CONVERSATION_LABEL_AND_ONE_OR_MORE_OF_ROLE_PROCESS">TUPLE-OF-CONVERSATION-LABEL-AND-ONE-OR-MORE-OF-ROLE-PROCESS</a></td><td></td></tr>
+<tr><td><a name="PROTOCOL_LABEL"></a>PROTOCOL_LABEL</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="PROTOCOL_DEFINITION"></a>PROTOCOL_DEFINITION</td><td><a href="ref_sys_structures.html#LIST_OF_PROTOCOL_LABEL_AND_ONE_OR_MORE_OF_ROLE_AND_ONE_OR_MORE_OF_GOAL_AND_ZERO_OR_MORE_OF_USAGE_AND_ONE_OR_MORE_OF_CONVERSATION">LIST-OF-PROTOCOL-LABEL-AND-ONE-OR-MORE-OF-ROLE-AND-ONE-OR-MORE-OF-GOAL-AND-ZERO-OR-MORE-OF-USAGE-AND-ONE-OR-MORE-OF-CONVERSATION</a></td><td></td></tr>
 <tr><td><a name="MANIFEST_LABEL"></a>MANIFEST_LABEL</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td>           a label in the manifest to identify a binding</td></tr>
 <tr><td><a name="MANIFEST_SPEC"></a>MANIFEST_SPEC</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>             a symbol to specify what type of data must be provided for a given manifest label</td></tr>
 <tr><td><a name="MANIFEST_PAIR"></a>MANIFEST_PAIR</td><td><a href="ref_sys_structures.html#TUPLE_OF_MANIFEST_LABEL_AND_MANIFEST_SPEC">TUPLE-OF-MANIFEST-LABEL-AND-MANIFEST-SPEC</a></td><td></td></tr>
@@ -119,6 +122,8 @@
 <tr><td><a name="RECEPTOR_STATE"></a>RECEPTOR_STATE</td><td><a href="ref_sys_structures.html#LIST_OF_ZERO_OR_ONE_OF_RECEPTOR_ELAPSED_TIME">LIST-OF-ZERO-OR-ONE-OF-RECEPTOR-ELAPSED-TIME</a></td><td></td></tr>
 <tr><td><a name="SERIALIZED_RECEPTOR"></a>SERIALIZED_RECEPTOR</td><td><a href="ref_sys_structures.html#BLOB">BLOB</a></td><td></td></tr>
 <tr><td><a name="VM_HOST_RECEPTOR"></a>VM_HOST_RECEPTOR</td><td><a href="ref_sys_structures.html#RECEPTOR">RECEPTOR</a></td><td></td></tr>
+<tr><td><a name="DEV_SANDBOX"></a>DEV_SANDBOX</td><td><a href="ref_sys_structures.html#RECEPTOR">RECEPTOR</a></td><td></td></tr>
+<tr><td><a name="TEST_SANDBOX"></a>TEST_SANDBOX</td><td><a href="ref_sys_structures.html#RECEPTOR">RECEPTOR</a></td><td></td></tr>
 <tr><td><a name="ACTIVE_RECEPTORS"></a>ACTIVE_RECEPTORS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_RECEPTOR_XADDR">ZERO-OR-MORE-OF-RECEPTOR-XADDR</a></td><td></td></tr>
 <tr><td><a name="VM_HOST_STATE"></a>VM_HOST_STATE</td><td><a href="ref_sys_structures.html#LIST_OF_ACTIVE_RECEPTORS">LIST-OF-ACTIVE-RECEPTORS</a></td><td></td></tr>
 <tr><td><a name="CLOCK_RECEPTOR"></a>CLOCK_RECEPTOR</td><td><a href="ref_sys_structures.html#RECEPTOR">RECEPTOR</a></td><td></td></tr>

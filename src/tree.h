@@ -85,7 +85,7 @@ void * _t_get_surface(T *t,int *p);
 char * _t_sprint_path(int *fp,char *buf);
 
 /*****************  Tree hashing utilities */
-TreeHash _t_hash(T *symbols,T *structures,T *t);
+TreeHash _t_hash(SemTable *sem,T *t);
 int _t_hash_equal(TreeHash h1,TreeHash h2);
 
 /*****************  UUID utilities */
@@ -93,12 +93,12 @@ UUIDt __uuid_gen();
 int __uuid_equal(UUIDt *u1,UUIDt *u2);
 
 /*****************  Tree serialization */
-size_t __t_serialize(Defs *d,T *t,void **bufferP,size_t offset,size_t current_size,int compact);
-void _t_serialize(Defs *d,T *t,void **surfaceP,size_t *sizeP);
-T * _t_unserialize(Defs *d,void **surfaceP,size_t *lengthP,T *t);
+size_t __t_serialize(SemTable *sem,T *t,void **bufferP,size_t offset,size_t current_size,int compact);
+void _t_serialize(SemTable *sem,T *t,void **surfaceP,size_t *sizeP);
+T * _t_unserialize(SemTable *sem,void **surfaceP,size_t *lengthP,T *t);
 
-char * _t2rawjson(Defs *defs,T *t,int level,char *buf);
-char * _t2json(Defs *defs,T *t,int level,char *buf);
+char * _t2rawjson(SemTable *sem,T *t,int level,char *buf);
+char * _t2json(SemTable *sem,T *t,int level,char *buf);
 
 /*****************  Misc... */
 

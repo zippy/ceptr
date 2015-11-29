@@ -57,7 +57,8 @@ void _a_boot(char *dir_path) {
         readFile(fn,&buffer,0);
 
         Receptor *r = _r_unserialize(buffer);
-        G_vm = __v_init(r);
+        raise_error("fix semtable");
+        G_vm = __v_init(r,NULL);
         free(buffer);
 
         // unserialize other vmhost state data

@@ -34,12 +34,13 @@ typedef struct ReplicationState {
 T *defaultRequestUntil();
 R *__p_make_context(T *run_tree,R *caller,int process_id);
 Error _p_step(Q *q, R **contextP);
+Error __p_check_signature(SemTable *sem,T *processes,Process p,T *params);
 Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q);
 void _p_enqueue(Qe **listP,Qe *e);
 Qe *__p_find_context(Qe *e,int process_id);
 void __p_unblock(Q *q,Qe *e);
 Error _p_unblock(Q *q,int id);
-Error _p_reduce(Defs *defs,T *run_tree);
+Error _p_reduce(SemTable *sem,Defs *defs,T *run_tree);
 Q *_p_newq(Receptor *r);
 void _p_freeq(Q *q);
 Qe *_p_addrt2q(Q *q,T *t);
@@ -49,6 +50,7 @@ T *__p_make_run_tree(T *processes,Process p,T *params);
 T *_p_make_run_tree(T *processes,T *p,int num_params,...);
 T *__p_build_run_tree(T* code,int num_params,...);
 void _p_cleanup(Q *q,T* receptor_state);
-T *__p_make_signature(char *output_label,Symbol output_type,SemanticID output_sem,...);
+#define __p_make_signature(output_label,output_type,output_sem,...) __p_make_form(PROCESS_SIGNATURE,output_label,output_type,output_sem,__VA_ARGS__)
+T *__p_make_form(Symbol sym,char *output_label,Symbol output_type,SemanticID output_sem,...);
 #endif
 /** @}*/

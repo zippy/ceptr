@@ -192,18 +192,25 @@ print $cfh <<'EOF';
 #include "def.h"
 #include "process.h"
 
-void base_defs() {
 EOF
+my $cur_ctx = "";
 foreach my $s (@d) {
     my @x = @$s;
     my $n = shift @x;
+    my $ctx = lc($x[0]);
+    $ctx =~ /(.*)_context/;
+    $ctx = $1;
+    if ($ctx ne $cur_ctx) {
+        if ($cur_ctx ne "") {
+            print $cfh "}\n\n";
+        }
+        $cur_ctx = $ctx;
+        print $cfh 'void base_'.$ctx."_defs(SemTable *sem) {\n";
+    }
     my $p = join(',',@x);
     print $cfh "  $fmap{$n}($p);\n";
 }
-
-print $cfh <<EOF;
-}
-EOF
+print $cfh "}\n\n";
 
 
 print $hfh <<'EOF';
@@ -222,7 +229,9 @@ print $hfh <<'EOF';
 #define _CEPTR_BASE_DEFS_H
 #include "sys_defs.h"
 
-void base_defs();
+void base_sys_defs(SemTable *sem);
+void base_test_defs(SemTable *sem);
+void base_local_defs(SemTable *sem);
 EOF
 
 &hout("SYS","Symbol");

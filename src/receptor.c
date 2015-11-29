@@ -23,27 +23,29 @@ Xaddr G_null_xaddr  = {0,0};
 /*****************  create and destroy receptors */
 
 /* set up the c structures for a receptor from a semantic tree */
-Receptor * __r_init(T *t) {
+Receptor * __r_init(T *t,SemTable *sem,ReceptorAddress addr) {
     Receptor *r = malloc(sizeof(Receptor));
     r->root = t;
+    r->sem = sem;
+    r->addr = addr;
     r->table = NULL;
     r->instances = NULL;
     r->q = _p_newq(r);
     r->state = Alive;  //@todo, check if this is true on unserialize
 
-    T *defs = _t_child(t,ReceptorDefsIDx);
+    T *defs = _t_child(t,ReceptorDefsIdx);
     r->defs.structures = _t_child(defs,1);
     r->defs.symbols = _t_child(defs,2);
     r->defs.processes = _t_child(defs,3);
     r->defs.protocols = _t_child(defs,4);
     r->defs.scapes = _t_child(defs,5);
-    r->flux = _t_child(t,ReceptorFluxIDx);
+    r->flux = _t_child(t,ReceptorFluxIdx);
     r->pending_signals = _t_child(t,ReceptorPendingSignalsIdx);
     r->pending_responses = _t_child(t,ReceptorPendingResponsesIdx);
     return r;
 }
 
-Receptor *__r_new(Symbol s,T *defs) {
+Receptor *__r_new(Symbol s,T *defs,SemTable *sem,ReceptorAddress addr) {
     T *t = _t_new_root(s);
     _t_add(t,defs);
     T *f = _t_newr(t,FLUX);
@@ -53,8 +55,21 @@ Receptor *__r_new(Symbol s,T *defs) {
     _t_newr(t,RECEPTOR_STATE);
     _t_newr(t,PENDING_SIGNALS);
     _t_newr(t,PENDING_RESPONSES);
+    Receptor *r = __r_init(t,sem,addr);
 
-    return __r_init(t);
+    return r;
+}
+
+//helper to make empty definitions tree
+T *__r_make_definitions() {
+    T *defs = _t_new_root(DEFINITIONS);
+    _t_newr(defs,STRUCTURES);
+    _t_newr(defs,SYMBOLS);
+    _t_newr(defs,PROCESSES);
+    _t_newr(defs,PROTOCOLS);
+    _t_newr(defs,SCAPES);
+    _t_newr(defs,ASPECTS);
+    return defs;
 }
 
 /**
@@ -68,15 +83,9 @@ Receptor *__r_new(Symbol s,T *defs) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/receptor_spec.h testReceptorCreate
  */
-Receptor *_r_new(Symbol s) {
-    T *defs = _t_new_root(DEFINITIONS);
-    _t_newr(defs,STRUCTURES);
-    _t_newr(defs,SYMBOLS);
-    _t_newr(defs,PROCESSES);
-    _t_newr(defs,PROTOCOLS);
-    _t_newr(defs,SCAPES);
-    _t_newr(defs,ASPECTS);
-    return __r_new(s,defs);
+Receptor *_r_new(SemTable *st,Symbol s) {
+    T *defs = __r_make_definitions();
+    return __r_new(s,defs,st,_sem_new_context(st,defs));
 }
 
 // set the labels in the label table for the given def
@@ -99,10 +108,11 @@ void __r_set_labels(Receptor *r,T *defs,int sem_type) {
  * @returns pointer to a newly allocated Receptor
  * @todo implement bindings
  */
-Receptor *_r_new_receptor_from_package(Symbol s,T *p,T *bindings) {
+Receptor *_r_new_receptor_from_package(SemTable *st,Symbol s,T *p,T *bindings) {
     T *defs = _t_clone(_t_child(p,3));
     //    T *aspects = _t_clone(_t_child(p,4));  @todo this should be inside the defs allready
-    Receptor * r = __r_new(s,defs);
+    raise_error("fix receptor address");
+    Receptor * r = __r_new(s,defs,st,0);
 
     //@todo fix this because it relies on SemanticTypes value matching the index order in the definitions.
     DO_KIDS(defs,__r_set_labels(r,_t_child(defs,i),i));
@@ -161,6 +171,8 @@ void _r_remove_expectation(Receptor *r,T *expectation) {
  * Destroys a receptor freeing all memory it uses.
  */
 void _r_free(Receptor *r) {
+
+    _sem_free_context(r->sem,r->addr);
     _t_free(r->root);
     lableTableFree(&r->table);
     _a_free_instances(&r->instances);
@@ -178,7 +190,7 @@ SemanticID __set_label_for_def(Receptor *r,char *label,T *def,int type) {
     labelSet(&r->table,label,path);
     int i = path[_t_path_depth(path)-1];
     free(path);
-    SemanticID s = {RECEPTOR_CONTEXT,type,i};
+    SemanticID s = {r->addr,type,i};
     return s;
 }
 
@@ -188,7 +200,7 @@ SemanticID __set_label_for_def(Receptor *r,char *label,T *def,int type) {
  * This works for retrieving symbols, structures & processes because the symbol and structure values is just the child index.
  */
 SemanticID  __get_label_idx(Receptor *r,char *label) {
-    SemanticID s = {RECEPTOR_CONTEXT,0,0};
+    SemanticID s = {r->addr,0,0};
     int *path = labelGet(&r->table,label);
     if (path) {
         s.id = path[_t_path_depth(path)-1];
@@ -207,13 +219,15 @@ SemanticID  __get_label_idx(Receptor *r,char *label) {
  *
  */
 Symbol _r_declare_symbol(Receptor *r,Structure s,char *label){
-    __d_validate_structure(r->defs.structures,s,label);
+    __d_validate_structure(r->sem,s,label);
     T *def = __d_declare_symbol(r->defs.symbols,s,label);
     return __set_label_for_def(r,label,def,SEM_TYPE_SYMBOL);
 }
 
 /**
- * define a new structure
+ * define a new structure (simple version)
+ *
+ * this call is handy for building simple STRUCTURE_SEQUENCE style structures
  *
  * @param[in] r receptor to provide a semantic context for new structure definitions
  * @param[in] s the structure type for this symbol
@@ -226,9 +240,28 @@ Symbol _r_declare_symbol(Receptor *r,Structure s,char *label){
 Structure _r_define_structure(Receptor *r,char *label,int num_params,...) {
     va_list params;
     va_start(params,num_params);
-    T *def = _dv_define_structure(r->defs.symbols,r->defs.structures,label,num_params,params);
+    T *def = _dv_define_structure(r->sem,label,r->addr,num_params,params);
     va_end(params);
 
+    return __set_label_for_def(r,label,def,SEM_TYPE_STRUCTURE);
+}
+
+/**
+ * define a new structure
+ *
+ * version of _r_define_structure for complex structure defs where caller provides
+ * the STRUCTURE_DEF
+ *
+ * @param[in] r receptor to provide a semantic context for new structure definitions
+ * @param[in] s the structure type for this symbol
+ * @param[in] label a c-string label for this symbol
+ * @param[in] structure_def tree of STRUCTURE_DEF structure
+ * @returns the new Structure
+ *
+ */
+Structure __r_define_structure(Receptor *r,char *label,T *structure_def) {
+    //@todo validate the structure_def somehow?
+    T *def = __d_define_structure(r->defs.structures,label,structure_def);
     return __set_label_for_def(r,label,def,SEM_TYPE_STRUCTURE);
 }
 
@@ -249,17 +282,16 @@ Process _r_code_process(Receptor *r,T *code,char *name,char *intention,T *signat
     return __set_label_for_def(r,name,def,SEM_TYPE_PROCESS);
 }
 
-/**
- * find a symbol by its label
- */
-Symbol _r_get_symbol_by_label(Receptor *r,char *label) {
-    return __get_label_idx(r,label);
+Protocol _r_define_protocol(Receptor *r,T *p) {
+    T *def = __d_define_protocol(r->defs.protocols,p);
+    char *label = (char *)_t_surface(_t_child(p,DefLabelIdx));
+    return __set_label_for_def(r,label,def,SEM_TYPE_PROTOCOL);
 }
 
 /**
- * find a structure by its label
+ * find a symbol by its label
  */
-Structure _r_get_structure_by_label(Receptor *r,char *label){
+Symbol _r_get_sem_by_label(Receptor *r,char *label) {
     return __get_label_idx(r,label);
 }
 
@@ -268,7 +300,7 @@ Structure _r_get_structure_by_label(Receptor *r,char *label){
  * @returns structure id
  */
 Structure __r_get_symbol_structure(Receptor *r,Symbol s){
-    return _d_get_symbol_structure(r->defs.symbols,s);
+    return _sem_get_symbol_structure(r->sem,s);
 }
 
 /**
@@ -276,14 +308,14 @@ Structure __r_get_symbol_structure(Receptor *r,Symbol s){
  * @returns size
  */
 size_t __r_get_structure_size(Receptor *r,Structure s,void *surface) {
-    return _d_get_structure_size(r->defs.symbols,r->defs.structures,s,surface);
+    return _d_get_structure_size(r->sem,s,surface);
 }
 /**
  * get the size of a symbol's surface
  * @returns size
  */
 size_t __r_get_symbol_size(Receptor *r,Symbol s,void *surface) {
-    return _d_get_symbol_size(r->defs.symbols,r->defs.structures,s,surface);
+    return _d_get_symbol_size(r->sem,s,surface);
 }
 
 /**
@@ -294,7 +326,7 @@ size_t __r_get_symbol_size(Receptor *r,Symbol s,void *surface) {
  * @returns the completed semtrex
  */
 T * _r_build_def_semtrex(Receptor *r,Symbol s) {
-    return _d_build_def_semtrex(r->defs,s,0);
+    return _d_build_def_semtrex(r->sem,s,0);
 }
 
 /**
@@ -370,7 +402,7 @@ T * _r_set_instance(Receptor *r,Xaddr x,T *t) {
  * get the hash of a tree by Xaddr
  */
 TreeHash _r_hash(Receptor *r,Xaddr t) {
-    return _t_hash(r->defs.symbols,r->defs.structures,_r_get_instance(r,t));
+    return _t_hash(r->sem,_r_get_instance(r,t));
 }
 
 /******************  receptor serialization */
@@ -422,7 +454,8 @@ Receptor * _r_unserialize(void *surface) {
     T *t = _t_new_from_m(h);
     _m_free(h);
 
-    Receptor *r = __r_init(t);
+    raise_error("fix semtable and receptor address");
+    Receptor *r = __r_init(t,0,0);
 
     /* size_t length = *(size_t *)surface; */
     /* Receptor *r = _r_new(*(Symbol *)(surface+sizeof(size_t))); */
@@ -446,7 +479,7 @@ Receptor * _r_unserialize(void *surface) {
 // as a possible options for addressing the receptor.
 T *__r_make_addr(T *parent,Symbol type,ReceptorAddress addr) {
     T *a = _t_newr(parent,type);
-    _t_newi(a,INSTANCE_NUM,addr);
+    _t_newi(a,CONTEXT_NUM,addr);
     return a;
 }
 
@@ -513,7 +546,7 @@ T* __r_send(Receptor *r,T *signal) {
  * @returns a clone of the UUID of the message sent.
  */
 T* _r_send(Receptor *r,T *signal) {
-    debug(D_SIGNALS,"sending %s\n",_t2s(&r->defs,signal));
+    debug(D_SIGNALS,"sending %s\n",_t2s(r->sem,signal));
     //@todo lock resources
     T *result =__r_send(r,signal);
     //@todo unlock resources
@@ -854,15 +887,15 @@ Receptor * __r_get_receptor(T *installed_receptor) {
 /*****************  Tree debugging utilities */
 
 char *_r_get_symbol_name(Receptor *r,Symbol s) {
-    return _d_get_symbol_name(r?r->defs.symbols:0,s);
+    return _sem_get_name(r->sem,s);
 }
 
 char *_r_get_structure_name(Receptor *r,Structure s) {
-    return _d_get_structure_name(r?r->defs.structures:0,s);
+    return _sem_get_name(r->sem,s);
 }
 
 char *_r_get_process_name(Receptor *r,Process p) {
-    return _d_get_process_name(r?r->defs.processes:0,p);
+    return _sem_get_name(r->sem,p);
 }
 
 char __t_dump_buf[10000];
@@ -874,14 +907,14 @@ char *_td(Receptor *r,T *t) {
 char *__td(Receptor *r,T *t,char *buf) {
     if (!t) sprintf(buf,"<null-tree>");
     else
-        __t_dump(&r->defs,t,0,buf);
+        __t_dump(r->sem,t,0,buf);
     return buf;
 }
 
 /*****************  Built-in core and edge receptors */
 
-Receptor *_r_makeStreamReaderReceptor(Symbol receptor_symbol,Symbol stream_symbol,Stream *st,ReceptorAddress to) {
-    Receptor *r = _r_new(receptor_symbol);
+Receptor *_r_makeStreamReaderReceptor(SemTable *sem,Symbol receptor_symbol,Symbol stream_symbol,Stream *st,ReceptorAddress to) {
+    Receptor *r = _r_new(sem,receptor_symbol);
 
     // code is something like:
     // (do (not stream eof) (send to (read_stream stream line)))
@@ -909,8 +942,8 @@ Receptor *_r_makeStreamReaderReceptor(Symbol receptor_symbol,Symbol stream_symbo
     return r;
 }
 
-Receptor *_r_makeStreamWriterReceptor(Symbol receptor_symbol,Symbol stream_symbol,Stream *st) {
-    Receptor *r = _r_new(receptor_symbol);
+Receptor *_r_makeStreamWriterReceptor(SemTable *sem,Symbol receptor_symbol,Symbol stream_symbol,Stream *st) {
+    Receptor *r = _r_new(sem,receptor_symbol);
 
     T *expect = _t_new_root(PATTERN);
 
@@ -927,7 +960,7 @@ Receptor *_r_makeStreamWriterReceptor(Symbol receptor_symbol,Symbol stream_symbo
     //    _t_news(x,SEMTREX_SYMBOL,LINE);
 
     /* char buf[1000]; */
-    /* _dump_semtrex(&r->defs,t,buf); */
+    /* _dump_semtrex(r->sem,t,buf); */
     /* puts(buf); */
 
     T *x = _t_new_root(STREAM_WRITE);
@@ -951,8 +984,8 @@ Receptor *_r_makeStreamWriterReceptor(Symbol receptor_symbol,Symbol stream_symbo
     return r;
 }
 
-Receptor *_r_makeClockReceptor() {
-    Receptor *r = _r_new(CLOCK_RECEPTOR);
+Receptor *_r_makeClockReceptor(SemTable *st) {
+    Receptor *r = _r_new(st,CLOCK_RECEPTOR);
 
     T *expect = _t_new_root(PATTERN);
     T *s = _sl(expect,CLOCK_TELL_TIME);
@@ -1066,7 +1099,7 @@ void __r_kill(Receptor *r) {
 }
 
 ReceptorAddress __r_get_self_address(Receptor *r) {
-    return 0;
+    return r->addr;
 }
 
 void __r_dump_instances(Receptor *r) {
@@ -1083,7 +1116,7 @@ void __r_dump_instances(Receptor *r) {
             _t_add(sym,c);
         }
     }
-    printf("INSTANCES:%s\n",_t2s(&r->defs,t));
+    printf("INSTANCES:%s\n",_t2s(r->sem,t));
     _t_free(t);
 }
 /** @}*/

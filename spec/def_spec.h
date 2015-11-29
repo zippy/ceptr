@@ -4,110 +4,97 @@
  * @ingroup tests
  */
 
-#include "../src/ceptr.h"
-#include "../src/def.h"
 #include "../src/semtrex.h"
+#include "../src/receptor.h"
+#include "spec_utils.h"
 
-void testSymbolGetName() {
-    //! [testSymbolGetName]
-    spec_is_str_equal(_d_get_symbol_name(0,TEST_INT_SYMBOL),"TEST_INT_SYMBOL");
-    spec_is_str_equal(_d_get_symbol_name(0,NULL_SYMBOL),"NULL_SYMBOL");
-    spec_is_str_equal(_d_get_symbol_name(0,DEFINITIONS),"DEFINITIONS");
-    //! [testSymbolGetName]
-}
+void testDefGetName() {
+    T *symbols = __sem_get_defs(G_sem,SEM_TYPE_SYMBOL,TEST_CONTEXT);
 
-void testStructureGetName() {
-    //! [testStructureGetName]
-    spec_is_str_equal(_d_get_structure_name(0,INTEGER),"INTEGER");
-    spec_is_str_equal(_d_get_structure_name(0,NULL_STRUCTURE),"NULL_STRUCTURE");
-    //! [testStructureGetName]
-}
-
-void testProcessGetName() {
-    //! [testProcessGetName]
-    spec_is_str_equal(_d_get_process_name(0,IF),"IF");
-    spec_is_str_equal(_d_get_process_name(0,NULL_PROCESS),"NULL_PROCESS");
-    //! [testProcessGetName]
+    spec_is_str_equal(__d_get_sem_name(symbols,TEST_INT_SYMBOL),"TEST_INT_SYMBOL");
 }
 
 void testDefValidate() {
-    T *symbols = _t_new_root(SYMBOLS);
+    T *symbols = __sem_get_defs(G_sem,SEM_TYPE_SYMBOL,TEST_CONTEXT);
+    T *structures = __sem_get_defs(G_sem,SEM_TYPE_STRUCTURE,TEST_CONTEXT);
+
     Symbol bad_symbol = {1,SEM_TYPE_SYMBOL,99};
-    T *structures = _t_new_root(STRUCTURES);
     Structure bad_structure = {2,SEM_TYPE_STRUCTURE,22};
 
     // commented out because for now they raise errors...
-    //    __d_validate_structure(structures,bad_structure,"test");
-    //    __d_validate_symbol(symbols,bad_symbol,"test");
-    _t_free(symbols);
-    _t_free(structures);
+    //        __d_validate_structure(G_sem,bad_structure,"test");
+    //    __d_validate_symbol(G_sem,bad_symbol,"test");
 }
 
 void testDefSymbol() {
     //! [testDefSymbol]
-    T *defs = _t_new_root(SYMBOLS);
+    T *d = __r_make_definitions();
+    int ctx = _sem_new_context(G_sem,d);
+    T *defs = __sem_get_defs(G_sem,SEM_TYPE_SYMBOL,ctx);
 
     T *def = __d_declare_symbol(defs,INTEGER,"shoe size");
-    Symbol ss = {RECEPTOR_CONTEXT,SEM_TYPE_SYMBOL,1};
+    Symbol ss = {ctx,SEM_TYPE_SYMBOL,1};
 
+    spec_is_equal(_d_get_def_addr(def),1);
     spec_is_true(is_symbol(ss));
     spec_is_equal(_t_children(defs),ss.id);
     spec_is_ptr_equal(_t_child(defs,ss.id),def);
     spec_is_sem_equal(_t_symbol(_t_child(defs,ss.id)),SYMBOL_DECLARATION);
-    spec_is_sem_equal(_t_symbol(_t_child(_t_child(defs,ss.id),2)),SYMBOL_STRUCTURE);
-    spec_is_sem_equal(_t_symbol(_t_child(_t_child(defs,ss.id),1)),SYMBOL_LABEL);
-    spec_is_str_equal(_d_get_symbol_name(defs,ss),"shoe size");
+    spec_is_sem_equal(_t_symbol(_t_child(_t_child(defs,ss.id),SymbolDefStructureIdx)),SYMBOL_STRUCTURE);
+    spec_is_sem_equal(_t_symbol(_t_child(_t_child(defs,ss.id),DefLabelIdx)),SYMBOL_LABEL);
+    spec_is_str_equal(__d_get_sem_name(defs,ss),"shoe size");
     spec_is_str_equal(t2s(defs),"(SYMBOLS (SYMBOL_DECLARATION (SYMBOL_LABEL:shoe size) (SYMBOL_STRUCTURE:INTEGER)))");
 
-    ss = _d_declare_symbol(defs,0,NULL_STRUCTURE,"street number",RECEPTOR_CONTEXT); // pre-declared to NULL
+    ss = _d_declare_symbol(G_sem,NULL_STRUCTURE,"street number",ctx); // pre-declared to NULL
+
     spec_is_equal(ss.id,2);
     spec_is_str_equal(t2s(_t_child(defs,ss.id)),"(SYMBOL_DECLARATION (SYMBOL_LABEL:street number) (SYMBOL_STRUCTURE:NULL_STRUCTURE))");
     __d_set_symbol_structure(defs,ss,INTEGER);
     spec_is_str_equal(t2s(_t_child(defs,ss.id)),"(SYMBOL_DECLARATION (SYMBOL_LABEL:street number) (SYMBOL_STRUCTURE:INTEGER))");
+    spec_is_equal(_d_get_def_addr(_t_child(defs,ss.id)),ss.id);
 
-    _t_free(defs);
+    _sem_free_context(G_sem,ctx);
+    _t_free(d);
     //! [testDefSymbol]
 }
 
 void testDefStructure() {
     //! [testDefStructure]
-    T *defs = _t_new_root(STRUCTURES);
+    T *defs = __sem_get_defs(G_sem,SEM_TYPE_STRUCTURE,TEST_CONTEXT);
 
-    Structure st = _d_define_structure(0,defs,"boolean pair",RECEPTOR_CONTEXT,2,BOOLEAN,BOOLEAN);
+    Structure st = _d_define_structure(G_sem,"boolean pair",TEST_CONTEXT,2,BOOLEAN,BOOLEAN);
     spec_is_equal(_t_children(defs),st.id);
     T *s = _t_child(defs,st.id);
     spec_is_sem_equal(_t_symbol(s),STRUCTURE_DEFINITION);
     spec_is_equal(_t_children(s),2);
-    T *l = _t_child(s,1);
+    T *l = _t_child(s,DefLabelIdx);
     T *p = _t_child(s,2);
     spec_is_symbol_equal(0,_t_symbol(l),STRUCTURE_LABEL);
     spec_is_str_equal((char *)_t_surface(l),"boolean pair");
     spec_is_symbol_equal(0,_t_symbol(p),STRUCTURE_SEQUENCE);
     spec_is_symbol_equal(0,_t_symbol(_t_child(p,1)),STRUCTURE_SYMBOL);
     spec_is_symbol_equal(0,_t_symbol(_t_child(p,2)),STRUCTURE_SYMBOL);
-    Structure x = {RECEPTOR_CONTEXT,SEM_TYPE_STRUCTURE,1};
-    spec_is_str_equal(_d_get_structure_name(defs,x),"boolean pair");
+    Structure x = {TEST_CONTEXT,SEM_TYPE_STRUCTURE,1};
+    spec_is_str_equal(__d_get_sem_name(defs,x),"boolean pair");
 
     spec_is_str_equal(t2s(defs),"(STRUCTURES (STRUCTURE_DEFINITION (STRUCTURE_LABEL:boolean pair) (STRUCTURE_SEQUENCE (STRUCTURE_SYMBOL:BOOLEAN) (STRUCTURE_SYMBOL:BOOLEAN))))");
 
-    _t_free(defs);
     //! [testDefStructure]
 }
 
 void testGetSymbolStructure() {
     //! [testSymbolStructure]
+    T *symbols = __sem_get_defs(G_sem,SEM_TYPE_SYMBOL,SYS_CONTEXT);
+
     // test a few built-in symbols
-    spec_is_structure_equal(0,_d_get_symbol_structure(0,STRUCTURE_DEFINITION),TUPLE_OF_STRUCTURE_LABEL_AND_STRUCTURE_DEF);
-    spec_is_structure_equal(0,_d_get_symbol_structure(0,STRUCTURE_SYMBOL),SYMBOL);
+    spec_is_structure_equal(0,__d_get_symbol_structure(symbols,STRUCTURE_DEFINITION),TUPLE_OF_STRUCTURE_LABEL_AND_STRUCTURE_DEF);
+    spec_is_structure_equal(0,__d_get_symbol_structure(symbols,STRUCTURE_SYMBOL),SYMBOL);
 
     // test user-defined symbols
-    T *symbols = _t_new_root(SYMBOLS);
-    T *structures = _t_new_root(STRUCTURES);
+    symbols = __sem_get_defs(G_sem,SEM_TYPE_SYMBOL,TEST_CONTEXT);
 
-    Symbol s = _d_declare_symbol(symbols,structures,INTEGER,"shoe size",RECEPTOR_CONTEXT);
-    spec_is_sem_equal(_d_get_symbol_structure(symbols,s),INTEGER);
-    _t_free(symbols);
-    _t_free(structures);
+    Symbol s = _d_declare_symbol(G_sem,INTEGER,"shoe size",TEST_CONTEXT);
+    spec_is_sem_equal(__d_get_symbol_structure(symbols,s),INTEGER);
     //! [testSymbolStructure]
 }
 
@@ -115,41 +102,39 @@ void testGetSize() {
     //! [testGetSize]
 
     // test a few built-in symbols and structures
-    spec_is_long_equal(_d_get_structure_size(0,0,INTEGER,0),sizeof(int));
-    spec_is_long_equal(_d_get_structure_size(0,0,BIT,0),sizeof(int));
-    spec_is_long_equal(_d_get_structure_size(0,0,FLOAT,0),sizeof(float));
-    spec_is_long_equal(_d_get_structure_size(0,0,XADDR,0),sizeof(Xaddr));
-    spec_is_long_equal(_d_get_symbol_size(0,0,STRUCTURE_SYMBOL,0),sizeof(Symbol));
-    spec_is_long_equal(_d_get_symbol_size(0,0,SYMBOL_LABEL,"shoe_size"),10);
+    spec_is_long_equal(_d_get_structure_size(G_sem,INTEGER,0),sizeof(int));
+    spec_is_long_equal(_d_get_structure_size(G_sem,BIT,0),sizeof(int));
+    spec_is_long_equal(_d_get_structure_size(G_sem,FLOAT,0),sizeof(float));
+    spec_is_long_equal(_d_get_structure_size(G_sem,XADDR,0),sizeof(Xaddr));
+    spec_is_long_equal(_d_get_symbol_size(G_sem,STRUCTURE_SYMBOL,0),sizeof(Symbol));
+    spec_is_long_equal(_d_get_symbol_size(G_sem,SYMBOL_LABEL,"shoe_size"),10);
 
     // test user-defined symbols and structures
-    T *structures = _t_new_root(STRUCTURES);                    // create tree that holds structures
-    T *symbols = _t_new_root(SYMBOLS);                          // create tree that holds symbols
-    Symbol lat = _d_declare_symbol(symbols,structures,FLOAT,"latitude",RECEPTOR_CONTEXT);      // symbols are declared, structures are defined
-    Symbol lon = _d_declare_symbol(symbols,structures,FLOAT,"longitude",RECEPTOR_CONTEXT);     // here we declare two meaningful ways to use the structure float
+    T *symbols = __sem_get_defs(G_sem,SEM_TYPE_SYMBOL,TEST_CONTEXT);
+    T *structures = __sem_get_defs(G_sem,SEM_TYPE_STRUCTURE,TEST_CONTEXT);
 
-    Defs defs = {structures, symbols, 0, 0};
+    Symbol lat = _d_declare_symbol(G_sem,FLOAT,"latitude",TEST_CONTEXT);      // symbols are declared, structures are defined
+    Symbol lon = _d_declare_symbol(G_sem,FLOAT,"longitude",TEST_CONTEXT);     // here we declare two meaningful ways to use the structure float
+
 
     // Two symbols, lat and lon are assembled into the structure "latlong"
-    Structure latlong = _d_define_structure(symbols,structures,"latlong",RECEPTOR_CONTEXT, 2, lat, lon);
+    Structure latlong = _d_define_structure(G_sem,"latlong",TEST_CONTEXT, 2, lat, lon);
 
     // House location is a meaningful use of the structure latlong
-    Symbol house_loc = _d_declare_symbol(symbols,structures, latlong, "house location",RECEPTOR_CONTEXT);
+    Symbol house_loc = _d_declare_symbol(G_sem,latlong,"house location",TEST_CONTEXT);
 
     // Here's the surface of the latlong.
     float ll[] = {2.0,90.3};
-    spec_is_long_equal(_d_get_symbol_size(symbols,structures,house_loc,ll),sizeof(ll));
-    spec_is_long_equal(_d_get_structure_size(symbols,structures,latlong,ll),sizeof(ll));
+    spec_is_long_equal(_d_get_symbol_size(G_sem,house_loc,ll),sizeof(ll));
+    spec_is_long_equal(_d_get_structure_size(G_sem,latlong,ll),sizeof(ll));
 
     //structure sizing when structure is a singleton
-    Structure latstruct = _d_define_structure(symbols,structures,"latstruct",RECEPTOR_CONTEXT, 1, lat);
+    Structure latstruct = _d_define_structure(G_sem,"latstruct",TEST_CONTEXT, 1, lat);
     float ls[] = {2.0};
-    spec_is_long_equal(_d_get_structure_size(symbols,structures,latstruct,ll),sizeof(ls));
+    spec_is_long_equal(_d_get_structure_size(G_sem,latstruct,ll),sizeof(ls));
 
     //@todo what about sizing with optional structural elements...
 
-    _t_free(symbols);
-    _t_free(structures);
     //! [testGetSize]
 
     // In the diagram on 20140806_102233.jpg, "Label" is the symbol, "Struct" is the structure.
@@ -158,13 +143,13 @@ void testGetSize() {
 
 void testCodeProcess() {
     //! [testCodeProcess]
-    T *defs = _t_new_root(PROCESSES);
+    T *defs = __sem_get_defs(G_sem,SEM_TYPE_PROCESS,TEST_CONTEXT);
     T *code = _t_new_root(ACTION);
     T *signature = __p_make_signature("result",SIGNATURE_SYMBOL,NULL_SYMBOL,
                                       "val",SIGNATURE_STRUCTURE,INTEGER,
                                       "exponent",SIGNATURE_STRUCTURE,INTEGER,
                                       NULL);
-    Process p = _d_code_process(defs,code,"power","takes the mathematical power of the two params",signature,RECEPTOR_CONTEXT);
+    Process p = _d_code_process(defs,code,"power","takes the mathematical power of the two params",signature,TEST_CONTEXT);
 
     spec_is_true(is_process(p));
     spec_is_true(!is_symbol(p));
@@ -190,36 +175,38 @@ void testCodeProcess() {
     T *sig = _t_child(s,4);
     spec_is_sem_equal(_t_symbol(sig),PROCESS_SIGNATURE);
 
-    spec_is_str_equal(_d_get_process_name(defs,p),"power");
-
-    _t_free(defs);
+    spec_is_str_equal(__d_get_sem_name(defs,p),"power");
 
     //! [testCodeProcess]
 }
 
 void testDefSemtrex() {
     //! [testDefSemtrex]
-    Defs d = {_t_newr(0,STRUCTURES),_t_newr(0,SYMBOLS),0,0};
-    Symbol SY(d,lat,FLOAT);
-    Symbol SY(d,lon,FLOAT);
-    Structure ST(d,latlong,2,lat,lon);
-    Symbol SY(d,house_loc,latlong);
+    Receptor *r = _r_new(G_sem,TEST_RECEPTOR_SYMBOL);
 
-    T *stx = _d_build_def_semtrex(d,house_loc,0);
+    Symbol SY(r,lat,FLOAT);
+    Symbol SY(r,lon,FLOAT);
+    Structure ST(r,latlong,2,lat,lon);
+    Symbol SY(r,house_loc,latlong);
+
+    T *stx = _d_build_def_semtrex(r->sem,house_loc,0);
     char buf[2000];
-    spec_is_str_equal(_dump_semtrex(&d,stx,buf),"/house_loc/(lat,lon)");
-    __t_dump(&d,stx,0,buf);
+    spec_is_str_equal(_dump_semtrex(r->sem,stx,buf),"/house_loc/(lat,lon)");
+    __t_dump(r->sem,stx,0,buf);
     spec_is_str_equal(buf,"(SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:house_loc) (SEMTREX_SEQUENCE (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:lat)) (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:lon))))");
 
     _t_free(stx);
-    _t_free(d.structures);
-    _t_free(d.symbols);
+    _r_free(r);
     //! [testDefSemtrex]
 }
 
 void testDefSysDefs() {
+    spec_is_equal(G_sem->contexts,5); // 5 for the base 4 plus the one added by http_example.h
+    spec_is_equal(_t_children(G_sem->stores[0].definitions),6);  // should have slots for all the defs
+    spec_is_equal(_t_children(_t_child(G_sem->stores[0].definitions,1)),84);
+
     //    spec_is_str_equal(t2s(_t_child(G_contexts[SYS_CONTEXT].root,1)),"");
-    dump2json(&G_contexts[SYS_CONTEXT].defs,G_contexts[SYS_CONTEXT].root,"sysdefs");
+    dump2json(G_sem,G_contexts[SYS_CONTEXT].root,"sysdefs");
     spec_is_str_equal(t2s(_t_child(_t_child(G_contexts[SYS_CONTEXT].root,1),STRUCTURE_DEF.id)),"(STRUCTURE_DEFINITION (STRUCTURE_LABEL:STRUCTURE_DEF) (STRUCTURE_SYMBOL_SET (STRUCTURE_SYMBOL:STRUCTURE_SYMBOL) (STRUCTURE_SYMBOL:STRUCTURE_SEQUENCE) (STRUCTURE_SYMBOL:STRUCTURE_SYMBOL_SET) (STRUCTURE_SYMBOL:STRUCTURE_OR) (STRUCTURE_SYMBOL:STRUCTURE_ZERO_OR_MORE) (STRUCTURE_SYMBOL:STRUCTURE_ONE_OR_MORE) (STRUCTURE_SYMBOL:STRUCTURE_ZERO_OR_ONE) (STRUCTURE_SYMBOL:SYMBOL_OF_STRUCTURE) (STRUCTURE_SYMBOL:STRUCTURE_ANYTHING)))");
     /* puts("Structures:");puts(t2sp(_t_child(G_contexts[SYS_CONTEXT].root,1))); */
     /* puts("Symbols:");puts(t2sp(_t_child(G_contexts[SYS_CONTEXT].root,2))); */
@@ -231,11 +218,9 @@ void testDefSysDefs() {
 }
 
 void testDef() {
+    testDefGetName();
     testDefSysDefs();
-    testSymbolGetName();
-    testStructureGetName();
     testDefValidate();
-    testProcessGetName();
     testDefSymbol();
     testDefStructure();
     testGetSymbolStructure();

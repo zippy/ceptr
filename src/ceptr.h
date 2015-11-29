@@ -13,6 +13,7 @@
 #include <stdlib.h>
 
 #include "ceptr_error.h"
+#include "semtable.h"
 #include "tree.h"
 #include "mtree.h"
 #include "stream.h"

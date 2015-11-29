@@ -29,97 +29,30 @@ int semeq(SemanticID s1,SemanticID s2) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testSymbolGetName
  */
-char *_d_get_symbol_name(T *symbols,Symbol s) {
-    if (s.context != RECEPTOR_CONTEXT)
-        symbols = G_contexts[s.context].defs.symbols;
-    if (is_sys_symbol(s) && (s.id == 0))
-        return "NULL_SYMBOL";
-    if (symbols) {
-        T *def = _t_child(symbols,s.id);
-        if (def) {
-            T *l = _t_child(def,1);
-            return (char *)_t_surface(_t_child(def,1));
-        }
+char *__d_get_sem_name(T *defs,SemanticID s) {
+    char *n = NULL;
+    T *def = _t_child(defs,s.id);
+    if (def) {
+        T *t = _t_child(def,DefLabelIdx);  // label is always first child
+        n = (char *)_t_surface(t);
     }
-    sprintf(__d_extra_buf,"<unknown symbol:%d.%d.%d>",s.context,s.semtype,s.id);
-    return __d_extra_buf;
-}
-
-/**
- * get structure's label
- *
- * @param[in] structures a structre def tree containing structure definitions
- * @param[in] s the Structure to return the name for
- * @returns char * pointing to label
- *
- * <b>Examples (from test suite):</b>
- * @snippet spec/def_spec.h testStructureGetName
- */
-char *_d_get_structure_name(T *structures,Structure s) {
-    if (s.context != RECEPTOR_CONTEXT)
-        structures = G_contexts[s.context].defs.structures;
-    if (is_sys_structure(s) && (s.id == 0))
-        return "NULL_STRUCTURE";
-    if (structures) {
-        T *def = _t_child(structures,s.id);
-        if (def) {
-            T *l = _t_child(def,1);
-            return (char *)_t_surface(l);
-        }
-    }
-    sprintf(__d_extra_buf,"<unknown structure:%d.%d.%d>",s.context,s.semtype,s.id);
-    return __d_extra_buf;
-}
-
-/**
- * get processes's label
- *
- * @param[in] processes a process def tree containing structure definitions
- * @param[in] p the Process to return the name for
- * @returns char * pointing to label
- *
- * <b>Examples (from test suite):</b>
- * @snippet spec/def_spec.h testProcessGetName
- */
-char *_d_get_process_name(T *processes,Process p) {
-    if (p.context != RECEPTOR_CONTEXT)
-        processes = G_contexts[p.context].defs.processes;
-    if (is_sys_process(p) && (p.id == 0))
-        return "NULL_PROCESS";
-    if (processes) {
-        T *def = _t_child(processes,p.id);
-        if (def) {
-            T *l = _t_child(def,1);
-            return (char *)_t_surface(l);
-        }
-    }
-    sprintf(__d_extra_buf,"<unknown process:%d.%d.%d>",p.context,p.semtype,p.id);
-    return __d_extra_buf;
+    return n;
 }
 
 // internal check to see if a symbol is valid
-void __d_validate_symbol(T *symbols,Symbol s,char *n) {
+void __d_validate_symbol(SemTable *sem,Symbol s,char *n) {
     if (!is_symbol(s)) raise_error("Bad symbol in %s def: semantic type not SEM_TYPE_SYMBOL",n);
-    if (s.context != RECEPTOR_CONTEXT)
-        symbols = G_contexts[s.context].defs.symbols;
     if (is_sys_symbol(s) && (s.id == 0)) return; // NULL_SYMBOL ok
-    if (symbols) {
-        if (!_t_child(symbols,s.id)) raise_error("Bad symbol in %s def: definition not found in context",n);
-    }
-    else raise_error("Bad symbol in %s def: context not found",n);
+    T *symbols = _sem_get_defs(sem,s);
+    if (!_t_child(symbols,s.id)) raise_error("Bad symbol in %s def: definition not found in context",n);
 }
 
 // internal check to see if a structure is valid
-void __d_validate_structure(T *structures,Structure s,char *n) {
+void __d_validate_structure(SemTable *sem,Structure s,char *n) {
     if (!is_structure(s)) raise_error("Bad structure in %s def: semantic type not SEM_TYPE_STRUCTURE",n);
-
-    if (s.context != RECEPTOR_CONTEXT)
-        structures = G_contexts[s.context].defs.structures;
     if (is_sys_structure(s) && (s.id == 0)) return; // NULL_STRUCTURE ok
-    if (structures) {
-        if(s.id && !_t_child(structures,s.id)) {raise_error("Unknown structure <%d.%d.%d> in declaration of %s",s.context,s.semtype,s.id,n);}
-    }
-    else raise_error("Bad structure in %s def: context not found",n);
+    T *structures = _sem_get_defs(sem,s);
+    if(s.id && !_t_child(structures,s.id)) {raise_error("Unknown structure <%d.%d.%d> in declaration of %s",s.context,s.semtype,s.id,n);}
 }
 
 /**
@@ -143,7 +76,9 @@ T *__d_declare_symbol(T *symbols,Structure s,char *label){
 // this is used to reset the structure of a symbol that has been pre declared as NULL_SYMBOL
 // to it's actual value.
 void __d_set_symbol_structure(T *symbols,Symbol sym,Structure s) {
-    T * structure_def = _t_child(_t_child(symbols,sym.id),2);
+    T *t = _t_child(symbols,sym.id);
+    if (!t) raise_error("def not found!");
+    T * structure_def = _t_child(t,SymbolDefStructureIdx);
     if (!semeq(NULL_STRUCTURE,*(Symbol *)_t_surface(structure_def)))
         raise_error("Symbol already defined");
     *(Symbol *)_t_surface(structure_def) = s;
@@ -156,10 +91,19 @@ void __d_set_structure_def(T *structures,Structure s,T *def) {
     _t_add(d,def);
 }
 
+// used to find the semantic address for a def when building a SemanticID
+// @todo this is kinda backwards perhaps because it's all based on the fact
+// that the SemanticAddr is the child index in the def tree.  This may not
+// need to be changed
+SemanticAddr  _d_get_def_addr(T *def) {
+    int *path = _t_get_path(def);
+    return path[_t_path_depth(path)-1];
+}
+
 /**
  * add a symbol definition to a symbol defs tree
  *
- * @param[in] symbols a symbol def tree containing symbol definitions
+ * @param[in] sem is the semantic table to which to add the symbol
  * @param[in] s the structure type for this symbol
  * @param[in] label a c-string label for this symbol
  * @param[in] the context in which this symbol is being declared
@@ -169,10 +113,11 @@ void __d_set_structure_def(T *structures,Structure s,T *def) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testDefSymbol
  */
-Symbol _d_declare_symbol(T *symbols,T *structures,Structure s,char *label,Context c){
-    __d_validate_structure(structures,s,label);
-    __d_declare_symbol(symbols,s,label);
-    Symbol sym = {c,SEM_TYPE_SYMBOL,_t_children(symbols)};
+Symbol _d_declare_symbol(SemTable *sem,Structure s,char *label,Context c){
+    __d_validate_structure(sem,s,label);
+    T *symbols = __sem_get_defs(sem,SEM_TYPE_SYMBOL,c);
+    T *def = __d_declare_symbol(symbols,s,label);
+    Symbol sym = {c,SEM_TYPE_SYMBOL,_d_get_def_addr(def)};
     return sym;
 }
 
@@ -186,10 +131,10 @@ T *__d_define_structure(T *structures,char *label,T *structure_def) {
 }
 
 /**
- * add a simple symbols based structure definition to a structure defs tree
+ * helper to add a STRUCTURE_SEQUENCE of symbols structure definition to a semantic table
  *
- * @param[in] structures a structre def tree containing structure definitions
- * @param[in] label a c-string label for this symbol
+ * @param[in] sem is the semantic table to which to add the structure
+ * @param[in] label a c-string label for this structures
  * @param[in] num_params number of symbols in the structure
  * @param[in] ... variable list of Symbol type symbols
  * @returns the new structure def
@@ -197,24 +142,25 @@ T *__d_define_structure(T *structures,char *label,T *structure_def) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testDefStructure
  */
-Structure _d_define_structure(T *symbols, T *structures,char *label,Context c,int num_params,...) {
+Structure _d_define_structure(SemTable *sem,char *label,Context c,int num_params,...) {
     va_list params;
     va_start(params,num_params);
-    T *def = _dv_define_structure(symbols,structures,label,num_params,params);
+    T *def = _dv_define_structure(sem,label,c,num_params,params);
     va_end(params);
-    Structure s = {c,SEM_TYPE_STRUCTURE,_t_children(structures)};
+    Structure s = {c,SEM_TYPE_STRUCTURE,_d_get_def_addr(def)};
     return s;
 }
 
 /// va_list version of _d_define_structure
-T * _dv_define_structure(T *symbols,T *structures,char *label,int num_params,va_list params) {
+T * _dv_define_structure(SemTable *sem,char *label,Context c,int num_params,va_list params) {
+    T *structures = __sem_get_defs(sem,SEM_TYPE_STRUCTURE,c);
     T *p,*seq = 0;
     if (num_params > 1)
         seq = _t_newr(0,STRUCTURE_SEQUENCE);
     int i;
     for(i=0;i<num_params;i++) {
         Symbol s = va_arg(params,Symbol);
-        __d_validate_symbol(symbols,s,label);
+        __d_validate_symbol(sem,s,label);
         p = _t_news(seq,STRUCTURE_SYMBOL,s);
     }
     return __d_define_structure(structures,label,seq ? seq : p);
@@ -230,30 +176,19 @@ T * _dv_define_structure(T *symbols,T *structures,char *label,int num_params,va_
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testGetSymbolStructure
  */
-Structure _d_get_symbol_structure(T *symbols,Symbol s) {
-    if (!is_symbol(s)) raise_error("Bad symbol: semantic type not SEM_TYPE_SYMBOL");
-    if (s.context != RECEPTOR_CONTEXT)
-        symbols = G_contexts[s.context].defs.symbols;
-
-    // NULL_SYMBOL has NULL_STRUCTURE ??
-    if (is_sys_symbol(s) && (s.id == 0)) return NULL_STRUCTURE;
-
-    if (symbols) {
-        T *def = _t_child(symbols,s.id);
-        if (!def) {
-            raise_error("Bad symbol:%d.%d.%d-- only %d symbols in decl list",s.context,s.semtype,s.id,_t_children(symbols));
-        }
-        T *t = _t_child(def,2); // second child of the def is the structure
-        return *(Structure *)_t_surface(t);
+Structure __d_get_symbol_structure(T *symbols,Symbol s) {
+    T *def = _t_child(symbols,s.id);
+    if (!def) {
+        raise_error("Bad symbol:%d.%d.%d-- only %d symbols in decl list",s.context,s.semtype,s.id,_t_children(symbols));
     }
-    raise_error("Context %d not found!",s.context);
+    T *t = _t_child(def,SymbolDefStructureIdx);
+    return *(Structure *)_t_surface(t);
 }
 
 /**
  * get the size of a symbol
  *
- * @param[in] symbols a symbol def tree containing symbol definitions
- * @param[in] structures a structure def tree containing structure definitions
+ * @param[in] sem is the semantic table where symbols and structures are define
  * @param[in] s the symbol
  * @param[in] surface the surface of the structure (may be necessary beause some structures have length info in the data)
  * @returns size of the structure
@@ -261,9 +196,9 @@ Structure _d_get_symbol_structure(T *symbols,Symbol s) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testGetSize
  */
-size_t _d_get_symbol_size(T *symbols,T *structures,Symbol s,void *surface) {
-    Structure st = _d_get_symbol_structure(symbols,s);
-    return _d_get_structure_size(symbols,structures,st,surface);
+size_t _d_get_symbol_size(SemTable *sem,Symbol s,void *surface) {
+    Structure st = _sem_get_symbol_structure(sem,s);
+    return _d_get_structure_size(sem,st,surface);
 }
 
 size_t _sys_structure_size(int id,void *surface) {
@@ -288,8 +223,7 @@ size_t _sys_structure_size(int id,void *surface) {
 /**
  * get the size of a structure
  *
- * @param[in] symbols a symbol def tree containing symbol definitions
- * @param[in] structures a structure def tree containing structure definitions
+ * @param[in] sem is the semantic table where symbols and structures are define
  * @param[in] s the structure
  * @param[in] surface the surface of the structure (may be necessary beause some structures have length info in the data)
  * @returns size of the structure
@@ -297,12 +231,14 @@ size_t _sys_structure_size(int id,void *surface) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testGetSize
  */
-size_t _d_get_structure_size(T *symbols,T *structures,Structure s,void *surface) {
+size_t _d_get_structure_size(SemTable *sem,Structure s,void *surface) {
     size_t size = 0;
+    T *structures = _sem_get_defs(sem,s);
+
     if (is_sys_structure(s)) {
         size = _sys_structure_size(s.id,surface);
         if (size == -1) {
-            raise_error("DON'T HAVE A SIZE FOR STRUCTURE '%s' (%d)",_d_get_structure_name(structures,s),s.id);
+            raise_error("DON'T HAVE A SIZE FOR STRUCTURE '%s' (%d)",_sem_get_name(sem,s),s.id);
         }
     }
     else {
@@ -312,13 +248,13 @@ size_t _d_get_structure_size(T *symbols,T *structures,Structure s,void *surface)
             DO_KIDS(parts,
                     T *p = _t_child(parts,i);
                     if (!semeq(_t_symbol(p),STRUCTURE_SYMBOL)) {
-                        raise_error("CAN'T GET SIZE FOR VARIABLE STRUCTURES '%s' (%d)",_d_get_structure_name(structures,s),s.id);
+                        raise_error("CAN'T GET SIZE FOR VARIABLE STRUCTURES '%s' (%d)",_sem_get_name(sem,s),s.id);
                     }
-                    size += _d_get_symbol_size(symbols,structures,*(Symbol *)_t_surface(p),surface +size);
+                    size += _d_get_symbol_size(sem,*(Symbol *)_t_surface(p),surface +size);
                     );
         }
         else if (semeq(_t_symbol(parts),STRUCTURE_SYMBOL)) {
-            size = _d_get_symbol_size(symbols,structures,*(Symbol *)_t_surface(parts),surface);
+            size = _d_get_symbol_size(sem,*(Symbol *)_t_surface(parts),surface);
         }
     }
     return size;
@@ -340,10 +276,11 @@ size_t _d_get_structure_size(T *symbols,T *structures,Structure s,void *surface)
  */
 T *__d_code_process(T *processes,T *code,char *name,char *intention,T *signature) {
     T *def = _t_newr(processes,PROCESS_CODING);
-    _t_new(def,PROCESS_NAME,name,strlen(name)+1);
+    _t_new_str(def,PROCESS_NAME,name);
     _t_new(def,PROCESS_INTENTION,intention,strlen(intention)+1);
     if (code) _t_add(def,code);
-    else if(processes != G_contexts[SYS_CONTEXT].defs.processes) raise_error("missing code");
+    // @todo what indicator do we add for system processes that are defined in C?
+    //    else if(processes != G_contexts[SYS_CONTEXT].defs.processes) raise_error("missing code");
     if (signature) _t_add(def,signature);
     return def;
 }
@@ -363,9 +300,39 @@ T *__d_code_process(T *processes,T *code,char *name,char *intention,T *signature
  * @snippet spec/def_spec.h testCodeProcess
  */
 Process _d_code_process(T *processes,T *code,char *name,char *intention,T *signature,Context c) {
-    __d_code_process(processes,code,name,intention,signature);
-    Symbol sym = {c,SEM_TYPE_PROCESS,_t_children(processes)};
-    return sym;
+    T *def = __d_code_process(processes,code,name,intention,signature);
+    Process p = {c,SEM_TYPE_PROCESS,_d_get_def_addr(def)};
+    return p;
+}
+
+/**
+ * add a new protocol to a protocols tree
+ *
+ * @param[inout] protocols a protocols def tree containing protocols which will be added to
+ * @param[in] label the name of the protocol
+ * @param[in] def the protocol definition
+ *
+ */
+T *__d_define_protocol(T *protocols,T *def) {
+    _t_add(protocols,def);
+    return def;
+}
+
+/**
+ * add a protocol definition to a protocol defs tree
+ *
+ * @param[in] sem is the semantic table to which to add the protocol
+ * @param[in] def the protocol definition
+ * @param[in] the context in which this protocol is being defined
+ * @param[out] the semantic id of the new protocol
+ *
+ */
+Protocol _d_define_protocol(SemTable *sem,T *def,Context c) {
+    //__d_validate_protocol(sem,def); //@todo
+    T *protocols = __sem_get_defs(sem,SEM_TYPE_PROTOCOL,c);
+    T *pdef = __d_define_protocol(protocols,def);
+    Protocol p = {c,SEM_TYPE_PROTOCOL,_d_get_def_addr(pdef)};
+    return p;
 }
 
 /**
@@ -381,19 +348,19 @@ Process _d_code_process(T *processes,T *code,char *name,char *intention,T *signa
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testDefSemtrex
 */
-T * _d_build_def_semtrex(Defs defs,Symbol s,T *parent) {
+T * _d_build_def_semtrex(SemTable *sem,Symbol s,T *parent) {
     T *stx = _sl(parent,s);
 
-    Structure st = _d_get_symbol_structure(defs.symbols,s);
+    Structure st = _sem_get_symbol_structure(sem,s);
     if (!(is_sys_structure(st))) {
-        T *structure = _d_get_structure_def(defs.structures,st);
+        T *structure = _d_get_structure_def(_sem_get_defs(sem,st),st);
         T *parts = _t_child(structure,2);
         int i,c = _t_children(parts);
         if (c > 0) {
             T *seq = _t_newr(stx,SEMTREX_SEQUENCE);
             for(i=1;i<=c;i++) {
                 T *p = _t_child(parts,i);
-                _d_build_def_semtrex(defs,*(Symbol *)_t_surface(p),seq);
+                _d_build_def_semtrex(sem,*(Symbol *)_t_surface(p),seq);
             }
         }
     }
@@ -407,10 +374,10 @@ T * _d_build_def_semtrex(Defs defs,Symbol s,T *parent) {
  * tree 2 string: returns a string representation of a tree
  * @TODO make this actually not break on large trees!
  */
-char * __t2s(Defs *defs,T *t,int indent) {
+char * __t2s(SemTable *sem,T *t,int indent) {
     static char buf[100000];
     buf[0] = 0;
-    return __t_dump(defs,t,indent,buf);
+    return __t_dump(sem,t,indent,buf);
 }
 
 char *_indent_line(int level,char *buf) {
@@ -426,10 +393,7 @@ char *_indent_line(int level,char *buf) {
     return buf;
 }
 
-char * __t_dump(Defs *defs,T *t,int level,char *buf) {
-    T *structures = defs ? defs->structures : 0;
-    T *symbols = defs ? defs->symbols : 0;
-    T *processes = defs ? defs->processes : 0;
+char * __t_dump(SemTable *sem,T *t,int level,char *buf) {
     if (!t) return "";
     Symbol s = _t_symbol(t);
     char b[255];
@@ -442,12 +406,13 @@ char * __t_dump(Defs *defs,T *t,int level,char *buf) {
     // use this to mark all run nodes with a %
     // if (t->context.flags & TFLAG_RUN_NODE) *buf++ = '%';
 
+    char *n = _sem_get_name(sem,s);
+
     if (is_process(s)) {
-        sprintf(buf,"(process:%s",_d_get_process_name(processes,s));
+        sprintf(buf,"(process:%s",n);
     }
     else {
-        char *n = _d_get_symbol_name(symbols,s);
-        Structure st = _d_get_symbol_structure(symbols,s);
+        Structure st = _sem_get_symbol_structure(sem,s);
         if (!is_sys_structure(st)) {
             // if it's not a system structure, it's composed, so all we need to do is
             // print out the symbol name, and the reset will take care of itself
@@ -473,15 +438,9 @@ char * __t_dump(Defs *defs,T *t,int level,char *buf) {
                 sprintf(buf,"(%s:%f",n,*(float *)_t_surface(t));
                 break;
             case SYMBOL_ID:
-                c = _d_get_symbol_name(symbols,*(Symbol *)_t_surface(t));
-                sprintf(buf,"(%s:%s",n,c?c:"<unknown>");
-                break;
             case STRUCTURE_ID:
-                c = _d_get_structure_name(structures,*(Structure *)_t_surface(t));
-                sprintf(buf,"(%s:%s",n,c?c:"<unknown>");
-                break;
             case PROCESS_ID:
-                c = _d_get_process_name(processes,*(Process *)_t_surface(t));
+                c = _sem_get_name(sem,*(SemanticID *)_t_surface(t));
                 sprintf(buf,"(%s:%s",n,c?c:"<unknown>");
                 break;
             case TREE_PATH_ID:
@@ -489,7 +448,7 @@ char * __t_dump(Defs *defs,T *t,int level,char *buf) {
                 break;
             case XADDR_ID:
                 x = *(Xaddr *)_t_surface(t);
-                sprintf(buf,"(%s:%s.%d",n,_d_get_symbol_name(symbols,x.symbol),x.addr);
+                sprintf(buf,"(%s:%s.%d",n,_sem_get_name(sem,x.symbol),x.addr);
                 break;
             /* case STREAM_ID: */
             /*     sprintf(buf,"(%s:%p",n,_t_surface(t)); */
@@ -502,25 +461,25 @@ char * __t_dump(Defs *defs,T *t,int level,char *buf) {
             /*     break; */
             case TREE_ID:
                 if (t->context.flags & TFLAG_SURFACE_IS_TREE) {
-                    c = __t_dump(defs,(T *)_t_surface(t),0,tbuf);
+                    c = __t_dump(sem,(T *)_t_surface(t),0,tbuf);
                     sprintf(buf,"(%s:{%s}",n,c);
                     break;
                 }
             case RECEPTOR_ID:
                 if (t->context.flags & (TFLAG_SURFACE_IS_TREE+TFLAG_SURFACE_IS_RECEPTOR)) {
-                    c = __t_dump(defs,((Receptor *)_t_surface(t))->root,0,tbuf);
+                    c = __t_dump(sem,((Receptor *)_t_surface(t))->root,0,tbuf);
                     sprintf(buf,"(%s:{%s}",n,c);
                     break;
                 }
             case SCAPE_ID:
                 if (t->context.flags & TFLAG_SURFACE_IS_SCAPE) {
                     Scape *sc = (Scape *)_t_surface(t);
-                    sprintf(buf,"(%s:key %s,data %s",n,_d_get_symbol_name(symbols,sc->key_source),_d_get_symbol_name(symbols,sc->data_source));
+                    sprintf(buf,"(%s:key %s,data %s",n,_sem_get_name(sem,sc->key_source),_sem_get_name(sem,sc->data_source));
                     break;
                 }
             default:
                 if (semeq(s,SEMTREX_MATCH_CURSOR)) {
-                    c = __t_dump(defs,*(T **)_t_surface(t),0,tbuf);
+                    c = __t_dump(sem,*(T **)_t_surface(t),0,tbuf);
                     //c = "null";
                     sprintf(buf,"(%s:{%s}",n,c);
                     break;
@@ -532,7 +491,7 @@ char * __t_dump(Defs *defs,T *t,int level,char *buf) {
             }
         }
     }
-    DO_KIDS(t,__t_dump(defs,_t_child(t,i),level < 0 ? level-1 : level+1,buf+strlen(buf)));
+    DO_KIDS(t,__t_dump(sem,_t_child(t,i),level < 0 ? level-1 : level+1,buf+strlen(buf)));
     sprintf(buf+strlen(buf),")");
     return buf;
 }

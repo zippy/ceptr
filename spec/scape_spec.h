@@ -22,7 +22,7 @@ void testScapeAddElement() {
     Scape *s = _s_new(TEST_INT_SYMBOL,TEST_STR_SYMBOL);
     Xaddr x = {1,3};  // DUMMY XADDR
     T *t = _t_newi(0,TEST_INT_SYMBOL,31415);
-    TreeHash h = _t_hash(0,0,t);
+    TreeHash h = _t_hash(G_sem,t);
     _s_add(s,h,x);
 
     // check that element was added
@@ -32,7 +32,7 @@ void testScapeAddElement() {
 
     // check that a different hash returns the null xaddr
     t->contents.symbol = TEST_INT_SYMBOL2;
-    h = _t_hash(0,0,t);
+    h = _t_hash(G_sem,t);
     xg = _s_get(s,h);
     spec_is_true(is_null_xaddr(xg));
 

@@ -17,36 +17,59 @@
 #include "tree.h"
 #include <stdarg.h>
 
-#define ST(defs,name,num,...) name = _d_define_structure(defs.symbols,defs.structures,"" #name "",RECEPTOR_CONTEXT,num,__VA_ARGS__)
-#define SY(defs,name,str) name = _d_declare_symbol(defs.symbols,defs.structures,str,"" #name "",RECEPTOR_CONTEXT)
-#define SP(defs,code,name,intention,signature) name = _d_code_process(defs.processes,code,"" #name "",RECEPTOR_CONTEXT,intention,signature)
+// structure position index enums to make code more readable
+// @todo figure out a better way to handle this... like put defs like these
+// into the symbol gen code (talk about a semantic muddle! If only I had ceptr...)
+// Note, that I tried that and it's hard!
+enum {ReceptorDefsIdx=1,ReceptorFluxIdx,ReceptorStateIdx,ReceptorPendingSignalsIdx,ReceptorPendingResponsesIdx};
+enum {EnvelopeFromIdx=1,EnvelopeToIdx,EnvelopeAspectIdx,EnvelopeCarrierIdx,EnvelopeUUIDIdx,EnvelopeExtraIdx};
+enum {SignalEnvelopeIdx=1,SignalBodyIdx};
+enum {PendingResponseUUIDIdx=1,PendingResponseCarrierIdx,PendingResponseWakeupIdx,PendingResponseEndCondsIdx};
+enum {WakeupReferenceProcessIdentIdx=1,WakeupReferenceCodePathIdx};
+enum {ExpectationCarrierIdx=1,ExpectationPatternIdx,ExpectationActionIdx,ExpectationParamsIdx,ExpectationEndCondsIdx};
+enum DATEIndexes {dateYearIdx=1,dateMonthIdx,dateDayIdx};
+enum TIMEIndexes {timeHourIdx=1,timeMinuteIdx,timeSecondIdx};
+enum TIMESTAMPIndexes {timestampTodayIdx=1,timestampNowIdx};
+enum ASPECTIndexes {aspectExpectationsIdx=1,aspectSignalsIdx};
+enum {RoleProcessRoleIdx=1,RoleProcessSource,RoleProcessPatternIdx,RoleProcessActionIdx};
+enum {SourceRoleIdx=1};
+enum {ConversationConversationLabelIdx=1,ConversationRoleFirstProcessIdx};
+enum {DefLabelIdx=1,SymbolDefStructureIdx};
+enum {ProcessDefNameIdx=1,ProcessDefIntentionIdx,ProcessDefProcessIdx,ProcessDefSignatureIdx};
+
+#define ST(r,name,num,...) name = _r_define_structure(r,"" #name "",num,__VA_ARGS__)
+#define SY(r,name,str) name = _r_declare_symbol(r,str,"" #name "")
+#define SP(r,code,name,intention,signature) name = _r_code_process(r,code,"" #name "",intention,signature)
 
 int semeq(SemanticID s1,SemanticID s2);
-char *_d_get_symbol_name(T *symbols,Symbol s);
-char *_d_get_structure_name(T *structures,Structure s);
-char *_d_get_process_name(T *processes,Process p);
-void __d_validate_symbol(T *symbols,Symbol s,char *n);
-void __d_validate_structure(T *structures,Structure s,char *n);
+char *__d_get_sem_name(T *defs,SemanticID s);
+void __d_validate_symbol(SemTable *sem,Symbol s,char *n);
+void __d_validate_structure(SemTable *sem,Structure s,char *n);
 T *__d_declare_symbol(T *symbols,Structure s,char *label);
 void __d_set_symbol_structure(T *symbols,Symbol sym,Structure s);
-Symbol _d_declare_symbol(T *symbols,T *structures,Structure s,char *label,Context c);
-Structure _d_define_structure(T *symbols,T *structures,char *label,Context c,int num_params,...);
-T * _dv_define_structure(T *symbols,T *structures,char *label,int num_params,va_list params);
-Structure _d_get_symbol_structure(T *symbols,Symbol symbol);
-size_t _d_get_symbol_size(T *symbols,T *structures,Symbol s,void *surface);
-size_t _d_get_structure_size(T *symbols,T *structures,Symbol s,void *surface);
+SemanticAddr  _d_get_def_addr(T *def);
+Symbol _d_declare_symbol(SemTable *sem,Structure s,char *label,Context c);
+T *__d_define_structure(T *structures,char *label,T *structure_def);
+Structure _d_define_structure(SemTable *sem,char *label,Context c,int num_params,...);
+T * _dv_define_structure(SemTable *sem,char *label,Context c,int num_params,va_list params);
+Structure __d_get_symbol_structure(T *symbols,Symbol s);
+size_t _d_get_symbol_size(SemTable *sem,Symbol s,void *surface);
+size_t _d_get_structure_size(SemTable *sem,Symbol s,void *surface);
 T *__d_code_process(T *processes,T *code,char *name,char *intention,T *signature);
 Process _d_code_process(T *processes,T *code,char *name,char *intention,T *signature,Context c);
-T * _d_build_def_semtrex(Defs defs,Symbol s,T *parent);
+T *__d_define_protocol(T *protocols,T *def);
+Protocol _d_define_protocol(SemTable *sem,T *def,Context c);
+T *_d_make_protocol_def(char *label,...);
+T * _d_build_def_semtrex(SemTable *sem,Symbol s,T *parent);
 size_t _sys_structure_size(int id,void *surface);
 
 enum{NO_INDENT=0,INDENT=-1};
-#define t2s(t) _t2s(0,t)
-#define t2sp(t) __t2s(0,t,4)
+#define t2s(t) _t2s(G_sem,t)
+#define t2sp(t) __t2s(G_sem,t,4)
 #define _t2s(d,t) __t2s(d,t,NO_INDENT)
-char * __t2s(Defs *defs,T *t,int indent);
+char * __t2s(SemTable *sem,T *t,int indent);
 char *_indent_line(int level,char *buf);
-char * __t_dump(Defs *defs,T *t,int level,char *buf);
+char * __t_dump(SemTable *sem,T *t,int level,char *buf);
 
 #define _d_get_def(defs,s) _t_child(defs,(s).id);
 #define _d_get_process_code(processes,p) _d_get_def(processes,p)

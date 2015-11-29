@@ -1,11 +1,11 @@
-{ "symbol":{ "context":255,"id":11 },"type":"PROFILE","name":"USER_PROFILE","children":[
-   { "symbol":{ "context":255,"id":3 },"type":"NAME","name":"PROFILE_NAME","children":[
-      { "symbol":{ "context":255,"id":1 },"type":"CSTRING","name":"FIRST_NAME","surface":"Jane"},
-      { "symbol":{ "context":255,"id":2 },"type":"CSTRING","name":"LAST_NAME","surface":"Smith"}]},
-   { "symbol":{ "context":255,"id":9 },"type":"ADDRESS","name":"PROFILE_ADDRESS","children":[
-      { "symbol":{ "context":255,"id":4 },"type":"CSTRING","name":"STREET_ADDRESS","surface":"126 Main Street"},
-      { "symbol":{ "context":255,"id":5 },"type":"CSTRING","name":"CITY","surface":"Smallville"},
-      { "symbol":{ "context":255,"id":6 },"type":"CSTRING","name":"STATE","surface":"CA"},
-      { "symbol":{ "context":255,"id":7 },"type":"CSTRING","name":"ZIP","surface":"12345"},
-      { "symbol":{ "context":255,"id":8 },"type":"CSTRING","name":"COUNTRY","surface":"USA"}]},
-   { "symbol":{ "context":255,"id":10 },"type":"CSTRING","name":"PROFILE_EMAIL","surface":"test@example.com"}]}
+{ "symbol":{ "context":5,"id":11 },"type":"PROFILE","name":"USER_PROFILE","children":[
+   { "symbol":{ "context":5,"id":3 },"type":"NAME","name":"PROFILE_NAME","children":[
+      { "symbol":{ "context":5,"id":1 },"type":"CSTRING","name":"FIRST_NAME","surface":"Jane"},
+      { "symbol":{ "context":5,"id":2 },"type":"CSTRING","name":"LAST_NAME","surface":"Smith"}]},
+   { "symbol":{ "context":5,"id":9 },"type":"ADDRESS","name":"PROFILE_ADDRESS","children":[
+      { "symbol":{ "context":5,"id":4 },"type":"CSTRING","name":"STREET_ADDRESS","surface":"126 Main Street"},
+      { "symbol":{ "context":5,"id":5 },"type":"CSTRING","name":"CITY","surface":"Smallville"},
+      { "symbol":{ "context":5,"id":6 },"type":"CSTRING","name":"STATE","surface":"CA"},
+      { "symbol":{ "context":5,"id":7 },"type":"CSTRING","name":"ZIP","surface":"12345"},
+      { "symbol":{ "context":5,"id":8 },"type":"CSTRING","name":"COUNTRY","surface":"USA"}]},
+   { "symbol":{ "context":5,"id":10 },"type":"CSTRING","name":"PROFILE_EMAIL","surface":"test@example.com"}]}
