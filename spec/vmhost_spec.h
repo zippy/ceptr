@@ -317,7 +317,7 @@ void testVMHostShell() {
 
     // allocate c input out streams to mimic stdin and stdout
     FILE *input,*output;
-    char commands[] = "time\nreceptors\n";
+    char commands[] = "receptors\ntime\n";
     input = fmemopen(commands, strlen(commands), "r");
     char *output_data = NULL;
     size_t size;
@@ -344,8 +344,8 @@ void testVMHostShell() {
 
     spec_is_true(output_data != 0); // protect against seg-faults when nothing was written to the stream...
     if (output_data != 0) {
-        output_data[120] =0;  // clip the tick so it work regardless of the time
-        spec_is_str_equal(output_data,"COMPOSITORY:1 DEV_SANDBOX:2 TEST_SANDBOX:3 CLOCK_RECEPTOR:4 shell:5 std_in:6 std_out:7\n(TICK (TODAY (YEAR:");}
+        output_data[107] =0;  // clip the tick so it work regardless of the time
+        spec_is_str_equal(output_data,"COMPOSITORY:1 DEV_SANDBOX:2 TEST_SANDBOX:3 CLOCK_RECEPTOR:4 shell:5 std_in:6 std_out:7 \n(TICK (TODAY (YEAR:");}
     __r_kill(G_vm->r);
 
     //    puts(_t2s(&G_vm->r->defs,r->root));

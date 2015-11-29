@@ -130,8 +130,11 @@ void testReceptorSignalDeliver() {
     _r_free(r);
 }
 
+extern int G_next_process_id;
 void testReceptorResponseDeliver() {
     Receptor *r = _r_new(G_sem,TEST_RECEPTOR_SYMBOL);
+
+    G_next_process_id = 0; // reset the process ids so the test will always work
 
     // set up receptor to have sent and signal and blocked waiting for the response
     T *t = _t_new_root(RUN_TREE);

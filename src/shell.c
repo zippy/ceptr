@@ -83,7 +83,7 @@ void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp
     // (expect (on flux SHELL_COMMAND:time) action(send std_out (convert_to_lines (send clock get_time))))
 
     T *code = _t_new_root(REQUEST);
-    __r_make_addr(code,TO_ADDRESS,2); // @todo bogus!!! fix clock address
+    __r_make_addr(code,TO_ADDRESS,4); // @todo bogus!!! fix clock address
     _t_news(code,ASPECT_IDENT,DEFAULT_ASPECT);
     _t_news(code,CARRIER,CLOCK_TELL_TIME);
     _t_newr(code,CLOCK_TELL_TIME);
