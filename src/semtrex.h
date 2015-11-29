@@ -111,12 +111,12 @@ T *asciiT_toc(T* asciiT,T* match,T *t,Symbol s);
 T *wrap(T *tokens,T *results, Symbol contents_s, Symbol open_s);
 
 /// macro to add a single symbol literal to semtrex tree
-#define _sl(t,s) __sl(t,0,1,s)
+#define _sl(t,s) __sl(t,false,1,s)
 
 /// macro to add a single symbol literal not to semtrex tree
-#define _sln(t,s) __sl(t,1,1,s)
+#define _sln(t,s) __sl(t,true,1,s)
 
-T *__sl(T *p, int not,int count, ...);
+T *__sl(T *p, bool not,int count, ...);
 
 /// debugging macro for quickly dumping out a semtrex text string
 #define DS(l,t) {char buf[1000];puts("\n" #l ":");_dump_semtrex(G_sem,t,buf);puts(buf);}

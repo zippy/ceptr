@@ -280,51 +280,45 @@ void testMatchExcept() {
 }
 
 void testMatchStar() {
-    // /TEST_INT_SYMBOL/1*
-    T *s = _sl(0,TEST_INT_SYMBOL);
-    T *ss = _t_newr(s,SEMTREX_SEQUENCE);
-    T *sss = _t_newr(ss,SEMTREX_ZERO_OR_MORE);
-    T *s1 = _sl(sss,sy1);
-    T *t1, *t1x, *t1y, *s2;
+    // /SIGNALS/SIGNAL*
+    T *s = _sl(0,SIGNALS);
+    T *ss = _t_newr(s,SEMTREX_ZERO_OR_MORE);
+    _sl(ss,SIGNAL);
 
-    T *t = _t_new(0,TEST_INT_SYMBOL,"t",2);
+    T *t = _t_new_root(SIGNALS);
+
     spec_is_true(_t_match(s,t));
 
-    t1 = _t_new(t,sy1,"t1",3);
+    T *signal_contents = _t_newi(0,TEST_INT_SYMBOL,314);
+    ReceptorAddress fr = 3; // DUMMY ADDR
+    ReceptorAddress to = 4; // DUMMY ADDR
+    T *sig = __r_make_signal(fr,to,DEFAULT_ASPECT,TESTING,signal_contents,0,0);
+    _t_add(t,sig);
     spec_is_true(_t_match(s,t));
 
-    t1x = _t_new(t,sy1,"t1",3);
-    t1y = _t_new(t,sy2,"t2",3);
-    spec_is_true(_t_match(s,t));
-
-    // /TEST_INT_SYMBOL/1*,2
-    s2 = _sl(ss,sy2);
-    spec_is_true(_t_match(s,t));
-    (*(int *)_t_surface(_t_child(s2,1))) = 3;
-
-    spec_is_true(!_t_match(s,t));
+    spec_is_false(_t_match(s,signal_contents));
     _t_free(t);
     _t_free(s);
 }
 
 void testMatchPlus() {
-    // /TEST_INT_SYMBOL/1+
-    T *s = _sl(0,TEST_INT_SYMBOL);
-    T *ss = _t_newr(s,SEMTREX_SEQUENCE);
-    T *sss = _t_newr(ss,SEMTREX_ONE_OR_MORE);
-    T *s1 = _sl(sss,sy1);
-    T *t1, *t1x, *t1y;
+    // /SIGNALS/SIGNAL+
+    T *s = _sl(0,SIGNALS);
+    T *ss = _t_newr(s,SEMTREX_ONE_OR_MORE);
+    _sl(ss,SIGNAL);
 
-    T *t = _t_new(0,TEST_INT_SYMBOL,"t",2);
-    spec_is_true(!_t_match(s,t));
+    T *t = _t_new_root(SIGNALS);
 
-    t1 = _t_new(t,sy1,"t1",3);
+    spec_is_false(_t_match(s,t));
+
+    T *signal_contents = _t_newi(0,TEST_INT_SYMBOL,314);
+    ReceptorAddress fr = 3; // DUMMY ADDR
+    ReceptorAddress to = 4; // DUMMY ADDR
+    T *sig = __r_make_signal(fr,to,DEFAULT_ASPECT,TESTING,signal_contents,0,0);
+    _t_add(t,sig);
     spec_is_true(_t_match(s,t));
 
-    t1x = _t_new(t,sy1,"t1",3);
-    t1y = _t_new(t,sy2,"t2",3);
-    spec_is_true(_t_match(s,t));
-
+    spec_is_false(_t_match(s,signal_contents));
     _t_free(t);
     _t_free(s);
 }

@@ -1128,7 +1128,7 @@ T *asciiT_toc(T* asciiT,T* match,T *t,Symbol s) {
 /**
  * utility function to create a semtrex litteral symbol set
  */
-T *__sl(T *p, int not,int count, ...) {
+T *__sl(T *p, bool not,int count, ...) {
     va_list symbols;
     T *t = _t_newr(p,not ? SEMTREX_SYMBOL_LITERAL_NOT : SEMTREX_SYMBOL_LITERAL);
     T *ss = count > 1 ?  _t_newr(t,SEMTREX_SYMBOL_SET) : t;
