@@ -274,7 +274,7 @@ void _makeTestHTTPResponseProcess(Receptor *r,T **paramsP,Process *pP) {
     // like message that contains what the first path segment was
 
     T *resp = _t_new_root(RESPOND);
-    _t_news(resp,RESPONSE_CARRIER,HTTP_RESPONSE);
+    _t_news(resp,CARRIER,HTTP_RESPONSE);
     int pt1[] = {2,1,TREE_PATH_TERMINATOR};
     _t_new(resp,PARAM_REF,pt1,sizeof(int)*3);
 

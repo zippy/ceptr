@@ -996,7 +996,7 @@ Receptor *_r_makeClockReceptor(SemTable *st) {
     T *tick = __r_make_tick();  // initial tick, will get updated by clock thread.
     Xaddr x = _r_new_instance(r,tick);
 
-    _t_news(resp,RESPONSE_CARRIER,TICK);
+    _t_news(resp,CARRIER,TICK);
     T *g = _t_newr(resp,GET);
     _t_new(g,GET_XADDR,&x,sizeof(Xaddr));
 

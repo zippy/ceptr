@@ -326,7 +326,7 @@ void testProcessRespond() {
 
     T *run_tree = _t_new_root(RUN_TREE);
     T *n = _t_newr(run_tree,RESPOND);
-    _t_news(n,RESPONSE_CARRIER,TESTING);
+    _t_news(n,CARRIER,TESTING);
 
     T *response_contents = _t_newi(n,TEST_INT_SYMBOL,271);
 

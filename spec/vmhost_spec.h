@@ -97,7 +97,7 @@ void testVMHostCreate() {
 /*     T *procs = _t_newr(defs,PROCESSES); */
 /*     // a process that simply reduces to an HTTP_RESPONSE indicating an off-line status */
 /*     T *resp = _t_new_root(RESPOND); */
-/*     _t_news(resp,RESPONSE_CARRIER,HTTP_RESPONSE);*/
+/*     _t_news(resp,CARRIER,HTTP_RESPONSE);*/
 /*     T *http_resp = _t_newr(resp,HTTP_RESPONSE); */
 /*     _t_new(http_resp,HTTP_RESPONSE_CONTENT_TYPE,"Text/Plain",11); */
 /*     _t_new(http_resp,TEST_STR_SYMBOL,"Hello World!",13); */
