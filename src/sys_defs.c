@@ -127,7 +127,7 @@ T *sT_(SemTable *sem,Symbol sym,int num_params,...){
         // can throw away the node
         if (semeq(sym,STRUCTURE_SYMBOL_SET)) {
             Symbol ss = *(Symbol *)_t_surface(t);
-            if (!is_symbol(ss)) raise_error("only structures allowed in SYMBOL_SET, def of %s",G_label);
+            if (!is_symbol(ss)) raise_error("only symbols allowed in SYMBOL_SET, def of %s",G_label);
             _t_news(set,STRUCTURE_SYMBOL,ss);
             _t_free(t);
         }
