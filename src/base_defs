@@ -72,7 +72,7 @@ Symbol: SEMTREX_VALUE_LITERAL_NOT,SEMTREX_VALUE_LITERAL_DEF;      Matches on log
 Symbol: SEMTREX_GROUP,SYMBOL;               Grouping, should have 1 child.. bad def!!       Ex: <...>operator
 Symbol: SEMTREX_DESCEND,SEMTREX_DEF;     
 Symbol: SEMTREX_WALK,SEMTREX_DEF;
-Symbol: SEMTREX_MATCH,INTEGER;              Returns result and sibling count.        Ex: {name:expr} (verify this is what it's supposed to do)
+Symbol: SEMTREX_MATCH,INTEGER;              @todo this is actually more like [(SEMTREX_MATCH_SYMBOL,SEMTREX_MATCH_PATH,SEMTREX_MATCH_SIBLINGS_COUNT, recurseon:SEMTREX_MATCH)] but we're using the surface of the root as well which is an INTEGER.
 Symbol: SEMTREX_MATCH_CURSOR,NULL_STRUCTURE;   stores c pointer to tree node at start of match
 Symbol: SEMTREX_MATCH_RESULTS,NULL_STRUCTURE;  In the FSA_ID, keeps track of which part matches so it can be referenced
 Symbol: SEMTREX_MATCH_SYMBOL,SYMBOL;

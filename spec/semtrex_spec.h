@@ -922,6 +922,33 @@ void testEmbodyFromMatch() {
     _t_free(t);
 }
 
+void testSemtrexReplace() {
+    //    char *stx = "%ROLE_PROCESS/.*,<ACTION:GOAL=RESPOND>";
+    //    T *s = parseSemtrex(G_sem,stx);  Doesn't work for symbols as value literals, sigh
+    // %ROLE_PROCESS/.*,<ACTION:GOAL=some_process>
+    T *stx = _t_new_root(SEMTREX_WALK);
+    T *s = _sl(stx,ROLE_PROCESS);
+    s = _t_newr(s,SEMTREX_SEQUENCE);
+    _t_newr(_t_newr(s,SEMTREX_ZERO_OR_MORE),SEMTREX_SYMBOL_ANY);
+    T *g = _t_news(s,SEMTREX_GROUP,ACTION);
+    T *vl = _t_newr(g,SEMTREX_VALUE_LITERAL);
+    Symbol some_process = _d_declare_symbol(G_sem,PROCESS,"some_process",TEST_CONTEXT);
+    _t_news(vl,GOAL,some_process);
+
+    T *d = _t_new_root(CONVERSATION);
+    _t_new_str(d,CONVERSATION_LABEL,"some_conversation");
+    T *rp = _t_newr(d,ROLE_PROCESS);
+    //    _t_newr(rp,ROLE);
+    //    _t_newr(rp,SOURCE);
+    _t_newr(rp,PATTERN);
+    _t_news(rp,GOAL,some_process);
+
+    T *a = _t_news(0,ACTION,RESPOND);
+    _stx_replace(stx,d,a);
+    spec_is_str_equal(t2s(d),"(CONVERSATION (CONVERSATION_LABEL:some_conversation) (ROLE_PROCESS (PATTERN) (ACTION:RESPOND)))");
+}
+
+
 void testSemtrex() {
     _stxSetup();
     testMakeFA();
@@ -942,4 +969,5 @@ void testSemtrex() {
     testSemtrexParse();
     testSemtrexParseHHTPReq();
     testEmbodyFromMatch();
+    testSemtrexReplace();
 }

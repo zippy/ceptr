@@ -94,6 +94,8 @@ int _t_match(T *semtrex,T *t);
 Defs *G_d;
 T *G_ts,*G_te;
 int _t_matchr(T *semtrex,T *t,T **r);
+T *_stx_get_matched_node(Symbol s,T *match_results,T *match_tree,int *sibs);
+void _stx_replace(T *semtrex,T *t,T *replace);
 T *_t_get_match(T *result,Symbol group);
 T *_t_embody_from_match(SemTable *sem,T *match,T *t);
 char * _dump_semtrex(SemTable *sem,T *s,char *buf);

@@ -65,23 +65,15 @@ T *defaultRequestUntil() {
 void _p_interpolate_from_match(T *t,T *match_results,T *match_tree) {
     if (semeq(_t_symbol(t),INTERPOLATE_SYMBOL)) {
         Symbol s = *(Symbol *)_t_surface(t);
-        T *m = _t_get_match(match_results,s);
-        if (!m) {
-            raise_error("expected to have match!");
-        }
-        int *path = (int *)_t_surface(_t_child(m,2));
-        int sibs = *(int*)_t_surface(_t_child(m,3));
-        T *x = _t_get(match_tree,path);
-
-        if (!x) {
-            raise_error("expecting to get a value from match!!");
-        }
+        int sibs;
+        T *x = _stx_get_matched_node(s,match_results,match_tree,&sibs);
+        if (sibs > 1) raise_error("not implemented for sibs > 1");
 
         //@todo most contexts where we use interpolation are in run trees
         // hence the rclone.  Perhaps there should be an option to this function
         // to allow regular cloning?
         x = _t_rclone(x);
-        _t_replace(_t_parent(t),_t_node_index(t),x);
+        _t_replace_node(t,x);
 
         t = x;
         // set the symbol to the interpolate type, not the matched item type

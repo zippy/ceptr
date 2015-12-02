@@ -338,7 +338,7 @@ void _t_morph(T *dst,T *src) {
  * Replace the specified child with the given node.
 
  * @note frees the replaced child
- * @param[in] t input node on which to operate
+ * @param[in] t parent node on which to operate
  * @param[in] i index to child be replaced
  * @param[in] r node to replace
  *
@@ -351,6 +351,24 @@ void _t_replace(T *t,int i,T *r) {
     _t_free(c);
     t->structure.children[i-1] = r;
     r->structure.parent = t;
+}
+
+/**
+ * Replace the a node with the given node.
+ *
+ * @note, the node must not be a root node
+ * @note frees the replaced node
+ *
+ * @param[in] t node to be replaced
+ * @param[in] r node to replace
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/tree_spec.h testTreeReplace
+ */
+void _t_replace_node(T *t,T *r) {
+    T *p = _t_parent(t);
+    if (!p) raise_error("cant replace a root node");
+    _t_replace(p,_t_node_index(t),r);
 }
 
 /**

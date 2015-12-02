@@ -700,6 +700,32 @@ int _t_match(T *semtrex,T *t) {
     return __t_match(semtrex,t,NULL);
 }
 
+T *_stx_get_matched_node(Symbol s,T *match_results,T *match_tree,int *sibs) {
+    T *m = _t_get_match(match_results,s);
+    if (!m) {
+        raise_error("expected to have match!");
+    }
+    int *path = (int *)_t_surface(_t_child(m,SemtrexMatchPathIdx));
+    *sibs = *(int*)_t_surface(_t_child(m,SemtrexMatchSibsIdx));
+    T *x = _t_get(match_tree,path);
+
+    if (!x) {
+        raise_error("expecting to get a value from match!!");
+    }
+    return x;
+}
+
+void _stx_replace(T *semtrex,T *t,T *replace){
+    T *r;
+    Symbol sym = _t_symbol(replace);
+    while(_t_matchr(semtrex,t,&r)) {
+        int sibs;
+        T *x = _stx_get_matched_node(sym,r,t,&sibs);
+        if (sibs > 1) raise_error("not implemented for sibs > 1");
+        _t_replace_node(x,replace);
+    }
+}
+
 /**
  * extract the portion of a semtrex match results that corresponds with a given group symbol
  *
@@ -726,7 +752,7 @@ T *_t_get_match(T *match,Symbol group)
 /**
  * create a new tree based on the matched elements from a semtrex match
  *
- * @param[in] defs definitions of the semantic context
+ * @param[in] sem semantic context
  * @param[in] match a match from a call to _t_matchr
  * @param[in] parent the parent tree to add the embodiment into
  *
@@ -1072,8 +1098,8 @@ T *makeASCIITree(char *c) {
  */
 T *asciiT_toi(T* asciiT,T* match,T *t,Symbol s) {
     char buf[10];
-    int sibs = *(int *)_t_surface(_t_child(match,3));
-    int *path = (int *)_t_surface(_t_child(match,2));
+    int sibs = *(int *)_t_surface(_t_child(match,SemtrexMatchSibsIdx));
+    int *path = (int *)_t_surface(_t_child(match,SemtrexMatchPathIdx));
     int j,d = _t_path_depth(path);
     for(j=0;j<sibs;j++) {
         buf[j] = *(char *)_t_surface(_t_get(asciiT,path));
@@ -1088,8 +1114,8 @@ T *asciiT_toi(T* asciiT,T* match,T *t,Symbol s) {
  */
 T *asciiT_tof(T* asciiT,T* match,T *t,Symbol s) {
     char buf[10];
-    int sibs = *(int *)_t_surface(_t_child(match,3));
-    int *path = (int *)_t_surface(_t_child(match,2));
+    int sibs = *(int *)_t_surface(_t_child(match,SemtrexMatchSibsIdx));
+    int *path = (int *)_t_surface(_t_child(match,SemtrexMatchPathIdx));
     int j,d = _t_path_depth(path);
     for(j=0;j<sibs;j++) {
         buf[j] = *(char *)_t_surface(_t_get(asciiT,path));
@@ -1105,9 +1131,9 @@ T *asciiT_tof(T* asciiT,T* match,T *t,Symbol s) {
  */
 T *asciiT_tos(T* asciiT,T* match,T *t,Symbol s) {
     char buf[255];
-    int sibs = *(int *)_t_surface(_t_child(match,3));
-    int *path = (int *)_t_surface(_t_child(match,2));
-    int j,d = _t_path_depth(path);
+    int sibs = *(int *)_t_surface(_t_child(match,SemtrexMatchSibsIdx));
+    int *path = (int *)_t_surface(_t_child(match,SemtrexMatchPathIdx));
+   int j,d = _t_path_depth(path);
     for(j=0;j<sibs;j++) {
         buf[j] = *(char *)_t_surface(_t_get(asciiT,path));
         path[d-1]++;

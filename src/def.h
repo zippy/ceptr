@@ -37,6 +37,7 @@ enum {ConversationConversationLabelIdx=1,ConversationRoleFirstProcessIdx};
 enum {DefLabelIdx=1,SymbolDefStructureIdx};
 enum {ProcessDefNameIdx=1,ProcessDefIntentionIdx,ProcessDefCodeIdx,ProcessDefSignatureIdx};
 enum {RuntreeCodeIdx=1,RunTreeParamsIdx,RunTreeErrorCodeIdx};
+enum {SemtrexMatchSymbolIdx=1,SemtrexMatchPathIdx,SemtrexMatchSibsIdx};
 
 #define ST(r,name,num,...) name = _r_define_structure(r,"" #name "",num,__VA_ARGS__)
 #define SY(r,name,str) name = _r_declare_symbol(r,str,"" #name "")
