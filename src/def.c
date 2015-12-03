@@ -19,6 +19,13 @@ int semeq(SemanticID s1,SemanticID s2) {
     return (memcmp(&s1,&s2,sizeof(SemanticID))==0);
 }
 
+SemanticID _d_define(SemTable *sem,T *def,SemanticType semtype,Context c) {
+    T *definitions = __sem_get_defs(sem,semtype,c);
+    _t_add(definitions,def);
+    SemanticID sid = {c,semtype,_d_get_def_addr(def)};
+    return sid;
+}
+
 /**
  * get symbol's label
  *
@@ -56,9 +63,8 @@ void __d_validate_structure(SemTable *sem,Structure s,char *n) {
 }
 
 /**
- * add a symbol definition to a symbol defs tree
+ * build a symbol definition
  *
- * @param[in] symbols a symbol def tree containing symbol definitions
  * @param[in] s the structure type for this symbol
  * @param[in] label a c-string label for this symbol
  * @returns the new symbol def
@@ -66,8 +72,8 @@ void __d_validate_structure(SemTable *sem,Structure s,char *n) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testDefSymbol
  */
-T *__d_define_symbol(T *symbols,Structure s,char *label){
-    T *def = _t_newr(symbols,SYMBOL_DEFINITION);
+T *_d_make_symbol_def(Structure s,char *label){
+    T *def = _t_new_root(SYMBOL_DEFINITION);
     _t_new(def,SYMBOL_LABEL,label,strlen(label)+1);
     _t_news(def,SYMBOL_STRUCTURE,s);
     return def;
@@ -115,19 +121,31 @@ SemanticAddr  _d_get_def_addr(T *def) {
  */
 Symbol _d_define_symbol(SemTable *sem,Structure s,char *label,Context c){
     __d_validate_structure(sem,s,label);
-    T *symbols = __sem_get_defs(sem,SEM_TYPE_SYMBOL,c);
-    T *def = __d_define_symbol(symbols,s,label);
-    Symbol sym = {c,SEM_TYPE_SYMBOL,_d_get_def_addr(def)};
-    return sym;
+    T *def = _d_make_symbol_def(s,label);
+    return _d_define(sem,def,SEM_TYPE_SYMBOL,c);
 }
 
-// low level structure definition helper.  You can pass in a null structure
-// def to simply declare the existence of the structure without defining it.
-T *__d_define_structure(T *structures,char *label,T *structure_def) {
-    T *def = _t_newr(structures,STRUCTURE_DEFINITION);
+T *_d_make_structure(char *label,T *structure_def) {
+    T *def = _t_new_root(STRUCTURE_DEFINITION);
     T *l = _t_new(def,STRUCTURE_LABEL,label,strlen(label)+1);
     if (structure_def) _t_add(def,structure_def);
     return def;
+}
+
+/**
+ * define a new structure
+ *
+ * @param[in] sem is the semantic table to which to add the structure
+ * @param[in] label a c-string label for this structures
+ * @param[in] structure_def the STRUCTURE_DEF definitions
+ * @returns the new structure def
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/def_spec.h testDefStructure
+ */
+Structure _d_define_structure(SemTable *sem,char *label,T *structure_def,Context c) {
+    T *def = _d_make_structure(label,structure_def);
+    return _d_define(sem,def,SEM_TYPE_STRUCTURE,c);
 }
 
 /**
@@ -142,18 +160,16 @@ T *__d_define_structure(T *structures,char *label,T *structure_def) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testDefStructure
  */
-Structure _d_define_structure(SemTable *sem,char *label,Context c,int num_params,...) {
+Structure _d_define_structure_v(SemTable *sem,char *label,Context c,int num_params,...) {
     va_list params;
     va_start(params,num_params);
-    T *def = _dv_define_structure(sem,label,c,num_params,params);
+    T *def = _d_make_vstruc_def(sem,label,num_params,params);
     va_end(params);
-    Structure s = {c,SEM_TYPE_STRUCTURE,_d_get_def_addr(def)};
-    return s;
+    return _d_define_structure(sem,label,def,c);
 }
 
-/// va_list version of _d_define_structure
-T * _dv_define_structure(SemTable *sem,char *label,Context c,int num_params,va_list params) {
-    T *structures = __sem_get_defs(sem,SEM_TYPE_STRUCTURE,c);
+// build a STRUCTURE_SEQUENCE STRUCTURE_DEF out of va_list
+T * _d_make_vstruc_def(SemTable *sem,char *label,int num_params,va_list params) {
     T *p,*seq = 0;
     if (num_params > 1)
         seq = _t_newr(0,STRUCTURE_SEQUENCE);
@@ -163,7 +179,7 @@ T * _dv_define_structure(SemTable *sem,char *label,Context c,int num_params,va_l
         __d_validate_symbol(sem,s,label);
         p = _t_news(seq,STRUCTURE_SYMBOL,s);
     }
-    return __d_define_structure(structures,label,seq ? seq : p);
+    return seq ? seq : p;
 }
 
 /**
@@ -261,9 +277,8 @@ size_t _d_get_structure_size(SemTable *sem,Structure s,void *surface) {
 }
 
 /**
- * add a new process coding to the processes tree
+ * build a new process definition
  *
- * @param[inout] processes a process def tree containing process codings which will be added to
  * @param[in] code the code tree for this process
  * @param[in] name the name of the process
  * @param[in] intention a description of what the process intends to do/transform
@@ -274,8 +289,8 @@ size_t _d_get_structure_size(SemTable *sem,Structure s,void *surface) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testCodeProcess
  */
-T *__d_define_process(T *processes,T *code,char *name,char *intention,T *signature) {
-    T *def = _t_newr(processes,PROCESS_DEFINITION);
+T *_d_make_process_def(T *code,char *name,char *intention,T *signature) {
+    T *def = _t_new_root(PROCESS_DEFINITION);
     _t_new_str(def,PROCESS_NAME,name);
     _t_new(def,PROCESS_INTENTION,intention,strlen(intention)+1);
     if (code) _t_add(def,code);
@@ -284,6 +299,7 @@ T *__d_define_process(T *processes,T *code,char *name,char *intention,T *signatu
     if (signature) _t_add(def,signature);
     return def;
 }
+
 
 /**
  * add a new process coding to the processes tree
@@ -300,23 +316,8 @@ T *__d_define_process(T *processes,T *code,char *name,char *intention,T *signatu
  * @snippet spec/def_spec.h testCodeProcess
  */
 Process _d_define_process(SemTable *sem,T *code,char *name,char *intention,T *signature,Context c) {
-    T *processes = __sem_get_defs(sem,SEM_TYPE_PROCESS,c);
-    T *def = __d_define_process(processes,code,name,intention,signature);
-    Process p = {c,SEM_TYPE_PROCESS,_d_get_def_addr(def)};
-    return p;
-}
-
-/**
- * add a new protocol to a protocols tree
- *
- * @param[inout] protocols a protocols def tree containing protocols which will be added to
- * @param[in] label the name of the protocol
- * @param[in] def the protocol definition
- *
- */
-T *__d_define_protocol(T *protocols,T *def) {
-    _t_add(protocols,def);
-    return def;
+    T *def = _d_make_process_def(code,name,intention,signature);
+    return _d_define(sem,def,SEM_TYPE_PROCESS,c);
 }
 
 /**
@@ -330,10 +331,7 @@ T *__d_define_protocol(T *protocols,T *def) {
  */
 Protocol _d_define_protocol(SemTable *sem,T *def,Context c) {
     //__d_validate_protocol(sem,def); //@todo
-    T *protocols = __sem_get_defs(sem,SEM_TYPE_PROTOCOL,c);
-    T *pdef = __d_define_protocol(protocols,def);
-    Protocol p = {c,SEM_TYPE_PROTOCOL,_d_get_def_addr(pdef)};
-    return p;
+    return _d_define(sem,def,SEM_TYPE_PROTOCOL,c);
 }
 
 /**

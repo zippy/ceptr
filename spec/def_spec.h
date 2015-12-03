@@ -32,8 +32,8 @@ void testDefSymbol() {
     int ctx = _sem_new_context(G_sem,d);
     T *defs = __sem_get_defs(G_sem,SEM_TYPE_SYMBOL,ctx);
 
-    T *def = __d_define_symbol(defs,INTEGER,"shoe size");
-    Symbol ss = {ctx,SEM_TYPE_SYMBOL,1};
+    Symbol ss = _d_define_symbol(G_sem,INTEGER,"shoe size",ctx);
+    T *def = _sem_get_def(G_sem,ss);
 
     spec_is_equal(_d_get_def_addr(def),1);
     spec_is_true(is_symbol(ss));
@@ -62,7 +62,7 @@ void testDefStructure() {
     //! [testDefStructure]
     T *defs = __sem_get_defs(G_sem,SEM_TYPE_STRUCTURE,TEST_CONTEXT);
 
-    Structure st = _d_define_structure(G_sem,"boolean pair",TEST_CONTEXT,2,BOOLEAN,BOOLEAN);
+    Structure st = _d_define_structure_v(G_sem,"boolean pair",TEST_CONTEXT,2,BOOLEAN,BOOLEAN);
     spec_is_equal(_t_children(defs),st.id);
     T *s = _t_child(defs,st.id);
     spec_is_sem_equal(_t_symbol(s),STRUCTURE_DEFINITION);
@@ -118,7 +118,7 @@ void testGetSize() {
 
 
     // Two symbols, lat and lon are assembled into the structure "latlong"
-    Structure latlong = _d_define_structure(G_sem,"latlong",TEST_CONTEXT, 2, lat, lon);
+    Structure latlong = _d_define_structure_v(G_sem,"latlong",TEST_CONTEXT, 2, lat, lon);
 
     // House location is a meaningful use of the structure latlong
     Symbol house_loc = _d_define_symbol(G_sem,latlong,"house location",TEST_CONTEXT);
@@ -129,7 +129,7 @@ void testGetSize() {
     spec_is_long_equal(_d_get_structure_size(G_sem,latlong,ll),sizeof(ll));
 
     //structure sizing when structure is a singleton
-    Structure latstruct = _d_define_structure(G_sem,"latstruct",TEST_CONTEXT, 1, lat);
+    Structure latstruct = _d_define_structure_v(G_sem,"latstruct",TEST_CONTEXT, 1, lat);
     float ls[] = {2.0};
     spec_is_long_equal(_d_get_structure_size(G_sem,latstruct,ll),sizeof(ls));
 

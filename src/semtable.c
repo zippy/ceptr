@@ -49,6 +49,11 @@ T *__sem_get_defs(SemTable *st,SemanticType semtype,Context c) {
     return defs;
 }
 
+T *__sem_get_def(SemTable *sem,SemanticType semtype,Context c,SemanticAddr i) {
+    T *defs = __sem_get_defs(sem,semtype,c);
+    return _t_child(defs,i);
+}
+
 char *_sem_get_name(SemTable *st,SemanticID s) {
     if (s.id == 0) {
         if (s.context == SYS_CONTEXT) {

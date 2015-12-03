@@ -18,8 +18,10 @@ void _sem_free(SemTable *st);
 #define _sem_context(st,s) __sem_context(st,(s).context)
 ContextStore *__sem_context(SemTable *st,Context c);
 void _sem_free_context(SemTable *sem,Context c);
-#define _sem_get_defs(st,s) __sem_get_defs(st,(s).semtype,(s).context)
+#define _sem_get_defs(sem,s) __sem_get_defs(sem,(s).semtype,(s).context)
 T *__sem_get_defs(SemTable *st,SemanticType semtype,Context c);
+#define _sem_get_def(sem,s) __sem_get_def(sem,(s).semtype,(s).context,(s).id)
+T *__sem_get_def(SemTable *sem,SemanticType semtype,Context c,SemanticAddr i);
 char *_sem_get_name(SemTable *st,SemanticID s);
 Structure _sem_get_symbol_structure(SemTable *st,Symbol s);
 

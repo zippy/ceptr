@@ -44,24 +44,25 @@ enum {SemtrexMatchSymbolIdx=1,SemtrexMatchPathIdx,SemtrexMatchSibsIdx};
 #define SP(r,code,name,intention,signature) name = _r_define_process(r,code,"" #name "",intention,signature)
 
 int semeq(SemanticID s1,SemanticID s2);
+SemanticID _d_define(SemTable *sem,T *def,SemanticType semtype,Context c);
 char *__d_get_sem_name(T *defs,SemanticID s);
 void __d_validate_symbol(SemTable *sem,Symbol s,char *n);
 void __d_validate_structure(SemTable *sem,Structure s,char *n);
-T *__d_define_symbol(T *symbols,Structure s,char *label);
+T *_d_make_symbol_def(Structure s,char *label);
 void __d_set_symbol_structure(T *symbols,Symbol sym,Structure s);
 SemanticAddr  _d_get_def_addr(T *def);
 Symbol _d_define_symbol(SemTable *sem,Structure s,char *label,Context c);
-T *__d_define_structure(T *structures,char *label,T *structure_def);
-Structure _d_define_structure(SemTable *sem,char *label,Context c,int num_params,...);
-T * _dv_define_structure(SemTable *sem,char *label,Context c,int num_params,va_list params);
+T *_d_make_structure_def(char *label,T *structure_def);
+Structure _d_define_structure(SemTable *sem,char *label,T *structure_def,Context c);
+Structure _d_define_structure_v(SemTable *sem,char *label,Context c,int num_params,...);
+T * _d_make_vstruc_def(SemTable *sem,char *label,int num_params,va_list params);
 Structure __d_get_symbol_structure(T *symbols,Symbol s);
 size_t _d_get_symbol_size(SemTable *sem,Symbol s,void *surface);
 size_t _d_get_structure_size(SemTable *sem,Symbol s,void *surface);
-T *__d_define_process(T *processes,T *code,char *name,char *intention,T *signature);
+T *_d_make_process_def(T *code,char *name,char *intention,T *signature);
 Process _d_define_process(SemTable *sem,T *code,char *name,char *intention,T *signature,Context c);
-T *__d_define_protocol(T *protocols,T *def);
 Protocol _d_define_protocol(SemTable *sem,T *def,Context c);
-T *_d_make_protocol_def(char *label,...);
+T *_d_make_protocol_def(SemTable *sem,char *label,...);
 T * _d_build_def_semtrex(SemTable *sem,Symbol s,T *parent);
 size_t _sys_structure_size(int id,void *surface);
 

@@ -90,11 +90,12 @@ Receptor *_r_new(SemTable *st,Symbol s) {
 
 // set the labels in the label table for the given def
 void __r_set_labels(Receptor *r,T *defs,int sem_type) {
+    LabelTable *table = &r->table;
     DO_KIDS(
             defs,
             T *def = _t_child(defs,i);
             T *sl = _t_child(def,1);
-            __set_label_for_def(r,_t_surface(sl),def,sem_type);
+            __set_label_for_def(table,_t_surface(sl),def);
             );
 }
 
@@ -185,13 +186,17 @@ void _r_free(Receptor *r) {
 /**
  * we use this for labeling symbols, structures and processes because labels store the full path to the labeled item and we want the labels to be unique across all three
  */
-SemanticID __set_label_for_def(Receptor *r,char *label,T *def,int type) {
+void _set_label_for_def(Receptor *r,char *label,SemanticID s) {
+    T *def = _sem_get_def(r->sem,s);
+    __set_label_for_def(&r->table,label,def);
+}
+
+void __set_label_for_def(LabelTable *table,char *label,T *def) {
     int *path = _t_get_path(def);
-    labelSet(&r->table,label,path);
+    if (!label) label = (char *)_t_surface(_t_child(def,DefLabelIdx));
+    labelSet(table,label,path);
     int i = path[_t_path_depth(path)-1];
     free(path);
-    SemanticID s = {r->addr,type,i};
-    return s;
 }
 
 /**
@@ -219,9 +224,9 @@ SemanticID  __get_label_idx(Receptor *r,char *label) {
  *
  */
 Symbol _r_define_symbol(Receptor *r,Structure s,char *label){
-    __d_validate_structure(r->sem,s,label);
-    T *def = __d_define_symbol(r->defs.symbols,s,label);
-    return __set_label_for_def(r,label,def,SEM_TYPE_SYMBOL);
+    Symbol sym = _d_define_symbol(r->sem,s,label,r->addr);
+    _set_label_for_def(r,label,sym);
+    return sym;
 }
 
 /**
@@ -240,10 +245,11 @@ Symbol _r_define_symbol(Receptor *r,Structure s,char *label){
 Structure _r_define_structure(Receptor *r,char *label,int num_params,...) {
     va_list params;
     va_start(params,num_params);
-    T *def = _dv_define_structure(r->sem,label,r->addr,num_params,params);
+    T *def = _d_make_vstruc_def(r->sem,label,num_params,params);
     va_end(params);
-
-    return __set_label_for_def(r,label,def,SEM_TYPE_STRUCTURE);
+    Structure s = _d_define_structure(r->sem,label,def,r->addr);
+    _set_label_for_def(r,label,s);
+    return s;
 }
 
 /**
@@ -260,9 +266,9 @@ Structure _r_define_structure(Receptor *r,char *label,int num_params,...) {
  *
  */
 Structure __r_define_structure(Receptor *r,char *label,T *structure_def) {
-    //@todo validate the structure_def somehow?
-    T *def = __d_define_structure(r->defs.structures,label,structure_def);
-    return __set_label_for_def(r,label,def,SEM_TYPE_STRUCTURE);
+    Structure s = _d_define_structure(r->sem,label,structure_def,r->addr);
+    _set_label_for_def(r,label,s);
+    return s;
 }
 
 /**
@@ -278,14 +284,15 @@ Structure __r_define_structure(Receptor *r,char *label,T *structure_def) {
  *
  */
 Process _r_define_process(Receptor *r,T *code,char *name,char *intention,T *signature) {
-    T *def = __d_define_process(r->defs.processes,code,name,intention,signature);
-    return __set_label_for_def(r,name,def,SEM_TYPE_PROCESS);
+    Process p = _d_define_process(r->sem,code,name,intention,signature,r->addr);
+    _set_label_for_def(r,name,p);
+    return p;
 }
 
-Protocol _r_define_protocol(Receptor *r,T *p) {
-    T *def = __d_define_protocol(r->defs.protocols,p);
-    char *label = (char *)_t_surface(_t_child(p,DefLabelIdx));
-    return __set_label_for_def(r,label,def,SEM_TYPE_PROTOCOL);
+Protocol _r_define_protocol(Receptor *r,T *protocol_def) {
+    Protocol p = _d_define_protocol(r->sem,protocol_def,r->addr);
+    _set_label_for_def(r,0,p);
+    return p;
 }
 
 /**

@@ -33,7 +33,8 @@ void _r_remove_expectation(Receptor *r,T *expectation);
 void _r_free(Receptor *r);
 
 /*****************  receptor symbols, structures, and processes */
-SemanticID __set_label_for_def(Receptor *r,char *label,T *def,int type);
+void _set_label_for_def(Receptor *r,char *label,SemanticID s);
+void __set_label_for_def(LabelTable *table,char *label,T *def);
 
 Symbol _r_define_symbol(Receptor *r,Structure s,char *label);
 SemanticID _r_get_sem_by_label(Receptor *r,char *label);
