@@ -31,13 +31,15 @@ enum DATEIndexes {dateYearIdx=1,dateMonthIdx,dateDayIdx};
 enum TIMEIndexes {timeHourIdx=1,timeMinuteIdx,timeSecondIdx};
 enum TIMESTAMPIndexes {timestampTodayIdx=1,timestampNowIdx};
 enum ASPECTIndexes {aspectExpectationsIdx=1,aspectSignalsIdx};
-enum {RoleProcessRoleIdx=1,RoleProcessSource,RoleProcessPatternIdx,RoleProcessActionIdx};
+enum {ExpectRoleIdx=1,ExpectSourceIdx,ExpectPatternIdx,ExpectActionIdx};
+enum {InitiateRoleIdx=1,InitiateDestinationIdx,InitiateActionIdx};
 enum {SourceRoleIdx=1};
-enum {ConversationConversationLabelIdx=1,ConversationRoleFirstProcessIdx};
 enum {DefLabelIdx=1,SymbolDefStructureIdx};
 enum {ProcessDefNameIdx=1,ProcessDefIntentionIdx,ProcessDefCodeIdx,ProcessDefSignatureIdx};
 enum {RuntreeCodeIdx=1,RunTreeParamsIdx,RunTreeErrorCodeIdx};
+enum {ResolutionWhichIdx=1};
 enum {SemtrexMatchSymbolIdx=1,SemtrexMatchPathIdx,SemtrexMatchSibsIdx};
+enum {InclusionPnameIdx=1};
 
 #define ST(r,name,num,...) name = _r_define_structure(r,"" #name "",num,__VA_ARGS__)
 #define SY(r,name,str) name = _r_define_symbol(r,str,"" #name "")

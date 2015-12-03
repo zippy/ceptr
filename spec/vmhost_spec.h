@@ -255,6 +255,7 @@ void testVMHostActivateReceptor()  {
     Symbol ping =_r_get_sem_by_label(alive_r,"ping");
     Symbol s = _r_get_sem_by_label(alive_r,"server");
     Symbol c = _r_get_sem_by_label(alive_r,"client");
+    Symbol handler = _r_get_sem_by_label(alive_r,"handler");
 
     Receptor *server =  _r_new(alive_r->sem,TEST_RECEPTOR_SYMBOL);
     _o_express_role(server,alive,s,DEFAULT_ASPECT,NULL);
@@ -263,9 +264,14 @@ void testVMHostActivateReceptor()  {
 
     T *noop = _t_new_root(NOOP);
     _t_newi(noop,TEST_INT_SYMBOL,314);
-    T *handler = _t_newp(0,ACTION,proc);
-    _o_express_role(client,alive,c,DEFAULT_ASPECT,handler);
     Process proc = _r_define_process(client,noop,"do nothing","long desc...",NULL);
+
+    T *binding = _t_new_root(PROTOCOL_BINDINGS);
+    T *res = _t_newr(binding,RESOLUTION);
+    _t_news(res,GOAL,handler);
+    _t_news(res,ACTUAL_PROCESS,proc);
+    _o_express_role(client,alive,c,DEFAULT_ASPECT,binding);
+    _t_free(binding);
 
     Symbol ss = _r_define_symbol(v->r,RECEPTOR,"alive server");
     Symbol cs = _r_define_symbol(v->r,RECEPTOR,"alive client");
@@ -390,7 +396,7 @@ void testVMHost() {
     testVMHostCreate();
     //testVMHostLoadReceptorPackage();
     //testVMHostInstallReceptor();
-//    testVMHostActivateReceptor();
+    //testVMHostActivateReceptor();
     testVMHostShell();
     //   testVMHostSerialize();
 }

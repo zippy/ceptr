@@ -14,7 +14,9 @@
 
 #include "receptor.h"
 
-T *_o_make_protocol_def(char *label,...);
+T *_o_make_protocol_def(SemTable *sem,Context c,char *label,...);
+T * _o_unwrap(SemTable *sem,T *def);
+T *_o_resolve(SemTable *sem,T *def,Symbol role, T *bindings);
 void _o_express_role(Receptor *r,Symbol protocol,Symbol role,Aspect aspect,T *action);
 
 #endif

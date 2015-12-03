@@ -25,8 +25,8 @@ Structure: UUID,NULL_SYMBOL;            surface is a c struct holding a UUID
 Structure: BLOB,NULL_SYMBOL;            surface is and undefined blob of bytes
 
 # 
-Declare: STRUCTURES,SYMBOLS,PROCESSES,PROTOCOLS,SCAPES,ASPECTS;
-Symbol: DEFINITIONS,[(STRUCTURES,SYMBOLS,PROCESSES,PROTOCOLS,*SCAPES,*ASPECTS)];
+Declare: STRUCTURES,SYMBOLS,PROCESSES,PROTOCOLS,RECEPTORS,SCAPES,ASPECTS;
+Symbol: DEFINITIONS,[(STRUCTURES,SYMBOLS,PROCESSES,PROTOCOLS,RECEPTORS,*SCAPES,*ASPECTS)];
 
 Declare: STRUCTURE_SYMBOL,STRUCTURE_SEQUENCE,STRUCTURE_SYMBOL_SET,STRUCTURE_OR,STRUCTURE_ZERO_OR_MORE,STRUCTURE_ONE_OR_MORE;
 Symbol: SYMBOL_OF_STRUCTURE,STRUCTURE;
@@ -148,21 +148,38 @@ Symbol: RESULT_SYMBOL,SYMBOL;
 Symbol: REDUCTION_ERROR_SYMBOL,SYMBOL;
 
 Symbol: ROLE,SYMBOL;  A role stands for an expected agent, thus the symbol stored in a ROLE must be limited to those of structure RECEPTOR_ADDRESS.
-Symbol: GOAL,SYMBOL; A goal stands for an intended process, thus the symbol stored in a GOAL must be limited to those that are uses of the PROCESS_FORM structure which declares the intention.
+Symbol: GOAL,SYMBOL; A goal stands for an intended process, thus the symbol stored in a GOAL must be limited to those that are uses of the PROCESS structure.
 Symbol: USAGE,SYMBOL; A usage stands for a(n) X of a Symbol.
+#Symbol: XX,SYMBOL; An XX stands for a included protocol, the the symbol store in an XX must be limited to those that are uses of the PROTOCOL structure
 Symbol: SOURCE,[+ROLE];
-Symbol: ROLE_PROCESS,[(ROLE,SOURCE,PATTERN,ACTION)];
-Symbol: CONVERSATION_LABEL,CSTRING;
-Symbol: CONVERSATION,[(CONVERSATION_LABEL,+ROLE_PROCESS)];
+Symbol: DESTINATION,[+ROLE];
+Symbol: EXPECT,[(ROLE,SOURCE,PATTERN,ACTION)];
+Symbol: INITIATE,[(ROLE,DESTINATION,ACTION)];
+Symbol: PNAME,PROTOCOL;
+Symbol: INCLUSION,[(PNAME,+|[RESOLUTION|CONNECTION])];
+Structure: INTERACTION,(*EXPECT,*INITIATE);
+#Symbol: CONVERSATION_LABEL,CSTRING;
+#Symbol: CONVERSATION,[(CONVERSATION_LABEL,+ROLE_PROCESS)];
 
-Symbol: PROTOCOL_LABEL,CSTRING;
-Symbol: PROTOCOL_DEFINITION,[(PROTOCOL_LABEL,+ROLE,+GOAL,*USAGE,+CONVERSATION)];
 
 Symbol: PROTOCOLS,[*PROTOCOL_DEFINITION];
-#Symbol: CONNECTION,[{(GOAL,GOAL),(ROLE,ROLE),(USAGE,USAGE)}];
-#Symbol: RESOLUTION,[{(GOAL,ACTION),(ROLE,%RECEPTOR_ADDRESS),(USAGE,%SYMBOL)}];
-#Symbol: PNAME,PROTOCOL;
-#Symbol: COMPOSITION,[(PNAME,+|[CONNECTION|RESOLUTION])];
+Symbol: ACTUAL_PROCESS,PROCESS;
+Symbol: ACTUAL_RECEPTOR,RECEPTOR_ADDRESS;
+Symbol: ACTUAL_SYMBOL,SYMBOL;
+Symbol: WHICH_PROCESS,[(GOAL,ACTUAL_PROCESS)];
+Symbol: WHICH_RECEPTOR,[(ROLE,ACTUAL_RECEPTOR)];
+Symbol: WHICH_SYMBOL,[(USAGE,ACTUAL_SYMBOL)];
+Structure: MAPPING,{WHICH_PROCESS,WHICH_RECEPTOR,WHICH_SYMBOL};  maps abstract to concrete
+Symbol: RESOLUTION,MAPPING;
+Symbol: WHICH_GOAL,[(GOAL,GOAL)];
+Symbol: WHICH_ROLE,[(ROLE,ROLE)];
+Symbol: WHICH_USAGE,[(USAGE,USAGE)];
+Structure: LINKING,{WHICH_GOAL,WHICH_ROLE,WHICH_USAGE}; links two abstract role/goal/usage
+Symbol: CONNECTION,LINKING;
+Symbol: PROTOCOL_BINDINGS,[+RESOLUTION];
+
+Symbol: PROTOCOL_LABEL,CSTRING;
+Symbol: PROTOCOL_DEFINITION,[(PROTOCOL_LABEL,*ROLE,*GOAL,*USAGE,*%INTERACTION,*INCLUSION)];
 
 Symbol: SCAPES,[*%SCAPE];
 Symbol: MANIFEST_LABEL,CSTRING;           a label in the manifest to identify a binding
@@ -177,8 +194,11 @@ Symbol: BINDINGS,[+BINDING_PAIR];                    specifics that match a MANI
 
 Symbol: RECEPTOR_ELAPSED_TIME,INTEGER;
 Symbol: RECEPTOR_STATE,[(?RECEPTOR_ELAPSED_TIME)];
+Symbol: RECEPTOR_LABEL,CSTRING;
+Structure: RECEPTOR_IDENTITY,RECEPTOR_LABEL,RECEPTOR_IDENTIFIER; placeholder structure for compository identifier
 
-Structure: RECEPTOR_DEF,DEFINITIONS,FLUX,RECEPTOR_STATE,PENDING_SIGNALS,PENDING_RESPONSES;
+Structure: RECEPTOR_DEFINITION,DEFINITIONS,FLUX,RECEPTOR_STATE,PENDING_SIGNALS,PENDING_RESPONSES;  this is the strucure of the tree part of the RECEPTOR structure other stuff like the current processing state and such are hidden in there.  @todo rationalize this.
+Symbol: RECEPTORS,[*RECEPTOR_DEFINITION];
 
 Symbol: SERIALIZED_RECEPTOR,BLOB;
 
