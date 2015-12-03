@@ -135,7 +135,7 @@ Xaddr _v_install_r(VMHost *v,Xaddr package,T *bindings,char *label) {
         }
     }
 
-    Symbol s = _r_declare_symbol(v->r,RECEPTOR,label);
+    Symbol s = _r_define_symbol(v->r,RECEPTOR,label);
 
     raise_error("fix semtable");
     Receptor *r = _r_new_receptor_from_package(NULL,s,p,bindings);

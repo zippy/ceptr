@@ -49,7 +49,7 @@ void testRunTree() {
     // test that __p_make_signature does what we think it should
     spec_is_str_equal(buf,t2s(signature));
 
-    Process p = _d_code_process(G_sem,code,"myif","a duplicate of the sys if process with params in different order",signature,TEST_CONTEXT);
+    Process p = _d_define_process(G_sem,code,"myif","a duplicate of the sys if process with params in different order",signature,TEST_CONTEXT);
 
     T *p3 = _t_newi(0,BOOLEAN,1);
     T *p1 = _t_newi(0,TEST_INT_SYMBOL,123);
@@ -712,7 +712,7 @@ Process _defIfEven() {
                                       "false_branch",SIGNATURE_ANY,NULL_STRUCTURE,
                                       NULL);
 
-    return _d_code_process(G_sem,code,"if even","return 2nd child if even, third if not",signature,TEST_CONTEXT);
+    return _d_define_process(G_sem,code,"if even","return 2nd child if even, third if not",signature,TEST_CONTEXT);
 }
 //! [defIfEven]
 
@@ -736,7 +736,7 @@ Process _defDivZero() {
                                       "val",SIGNATURE_STRUCTURE,INTEGER,
                                       NULL);
 
-    return _d_code_process(G_sem,code,"divByZero","create a divide by zero error",signature,TEST_CONTEXT);
+    return _d_define_process(G_sem,code,"divByZero","create a divide by zero error",signature,TEST_CONTEXT);
 }
 //! [defDivZero]
 

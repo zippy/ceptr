@@ -103,7 +103,7 @@ void testVMHostCreate() {
 /*     _t_new(http_resp,TEST_STR_SYMBOL,"Hello World!",13); */
 /*     T *input = _t_new_root(INPUT_SIGNATURES); */
 /*     T *output = _t_new_root(OUTPUT_SIGNATURE); */
-/*     _d_code_process(procs,resp,"hellow","respond with hello",signature); */
+/*     _d_define_process(procs,resp,"hellow","respond with hello",signature); */
 
 /*     _t_newr(defs,SCAPES); // for now we don't have any scapes */
 
@@ -263,12 +263,12 @@ void testVMHostActivateReceptor()  {
 
     T *noop = _t_new_root(NOOP);
     _t_newi(noop,TEST_INT_SYMBOL,314);
-    Process proc = _r_code_process(client,noop,"do nothing","long desc...",NULL);
     T *handler = _t_newp(0,ACTION,proc);
     _o_express_role(client,alive,c,DEFAULT_ASPECT,handler);
+    Process proc = _r_define_process(client,noop,"do nothing","long desc...",NULL);
 
-    Symbol ss = _r_declare_symbol(v->r,RECEPTOR,"alive server");
-    Symbol cs = _r_declare_symbol(v->r,RECEPTOR,"alive client");
+    Symbol ss = _r_define_symbol(v->r,RECEPTOR,"alive server");
+    Symbol cs = _r_define_symbol(v->r,RECEPTOR,"alive client");
 
     Xaddr sx = _v_new_receptor(v,v->r,ss,server);
     Xaddr cx = _v_new_receptor(v,v->r,cs,client);

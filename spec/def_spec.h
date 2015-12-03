@@ -32,25 +32,25 @@ void testDefSymbol() {
     int ctx = _sem_new_context(G_sem,d);
     T *defs = __sem_get_defs(G_sem,SEM_TYPE_SYMBOL,ctx);
 
-    T *def = __d_declare_symbol(defs,INTEGER,"shoe size");
+    T *def = __d_define_symbol(defs,INTEGER,"shoe size");
     Symbol ss = {ctx,SEM_TYPE_SYMBOL,1};
 
     spec_is_equal(_d_get_def_addr(def),1);
     spec_is_true(is_symbol(ss));
     spec_is_equal(_t_children(defs),ss.id);
     spec_is_ptr_equal(_t_child(defs,ss.id),def);
-    spec_is_sem_equal(_t_symbol(_t_child(defs,ss.id)),SYMBOL_DECLARATION);
+    spec_is_sem_equal(_t_symbol(_t_child(defs,ss.id)),SYMBOL_DEFINITION);
     spec_is_sem_equal(_t_symbol(_t_child(_t_child(defs,ss.id),SymbolDefStructureIdx)),SYMBOL_STRUCTURE);
     spec_is_sem_equal(_t_symbol(_t_child(_t_child(defs,ss.id),DefLabelIdx)),SYMBOL_LABEL);
     spec_is_str_equal(__d_get_sem_name(defs,ss),"shoe size");
-    spec_is_str_equal(t2s(defs),"(SYMBOLS (SYMBOL_DECLARATION (SYMBOL_LABEL:shoe size) (SYMBOL_STRUCTURE:INTEGER)))");
+    spec_is_str_equal(t2s(defs),"(SYMBOLS (SYMBOL_DEFINITION (SYMBOL_LABEL:shoe size) (SYMBOL_STRUCTURE:INTEGER)))");
 
-    ss = _d_declare_symbol(G_sem,NULL_STRUCTURE,"street number",ctx); // pre-declared to NULL
+    ss = _d_define_symbol(G_sem,NULL_STRUCTURE,"street number",ctx); // pre-declared to NULL
 
     spec_is_equal(ss.id,2);
-    spec_is_str_equal(t2s(_t_child(defs,ss.id)),"(SYMBOL_DECLARATION (SYMBOL_LABEL:street number) (SYMBOL_STRUCTURE:NULL_STRUCTURE))");
+    spec_is_str_equal(t2s(_t_child(defs,ss.id)),"(SYMBOL_DEFINITION (SYMBOL_LABEL:street number) (SYMBOL_STRUCTURE:NULL_STRUCTURE))");
     __d_set_symbol_structure(defs,ss,INTEGER);
-    spec_is_str_equal(t2s(_t_child(defs,ss.id)),"(SYMBOL_DECLARATION (SYMBOL_LABEL:street number) (SYMBOL_STRUCTURE:INTEGER))");
+    spec_is_str_equal(t2s(_t_child(defs,ss.id)),"(SYMBOL_DEFINITION (SYMBOL_LABEL:street number) (SYMBOL_STRUCTURE:INTEGER))");
     spec_is_equal(_d_get_def_addr(_t_child(defs,ss.id)),ss.id);
 
     _sem_free_context(G_sem,ctx);
@@ -93,7 +93,7 @@ void testGetSymbolStructure() {
     // test user-defined symbols
     symbols = __sem_get_defs(G_sem,SEM_TYPE_SYMBOL,TEST_CONTEXT);
 
-    Symbol s = _d_declare_symbol(G_sem,INTEGER,"shoe size",TEST_CONTEXT);
+    Symbol s = _d_define_symbol(G_sem,INTEGER,"shoe size",TEST_CONTEXT);
     spec_is_sem_equal(__d_get_symbol_structure(symbols,s),INTEGER);
     //! [testSymbolStructure]
 }
@@ -113,15 +113,15 @@ void testGetSize() {
     T *symbols = __sem_get_defs(G_sem,SEM_TYPE_SYMBOL,TEST_CONTEXT);
     T *structures = __sem_get_defs(G_sem,SEM_TYPE_STRUCTURE,TEST_CONTEXT);
 
-    Symbol lat = _d_declare_symbol(G_sem,FLOAT,"latitude",TEST_CONTEXT);      // symbols are declared, structures are defined
-    Symbol lon = _d_declare_symbol(G_sem,FLOAT,"longitude",TEST_CONTEXT);     // here we declare two meaningful ways to use the structure float
+    Symbol lat = _d_define_symbol(G_sem,FLOAT,"latitude",TEST_CONTEXT);      // symbols are declared, structures are defined
+    Symbol lon = _d_define_symbol(G_sem,FLOAT,"longitude",TEST_CONTEXT);     // here we declare two meaningful ways to use the structure float
 
 
     // Two symbols, lat and lon are assembled into the structure "latlong"
     Structure latlong = _d_define_structure(G_sem,"latlong",TEST_CONTEXT, 2, lat, lon);
 
     // House location is a meaningful use of the structure latlong
-    Symbol house_loc = _d_declare_symbol(G_sem,latlong,"house location",TEST_CONTEXT);
+    Symbol house_loc = _d_define_symbol(G_sem,latlong,"house location",TEST_CONTEXT);
 
     // Here's the surface of the latlong.
     float ll[] = {2.0,90.3};
@@ -149,14 +149,14 @@ void testCodeProcess() {
                                       "val",SIGNATURE_STRUCTURE,INTEGER,
                                       "exponent",SIGNATURE_STRUCTURE,INTEGER,
                                       NULL);
-    Process p = _d_code_process(G_sem,code,"power","takes the mathematical power of the two params",signature,TEST_CONTEXT);
+    Process p = _d_define_process(G_sem,code,"power","takes the mathematical power of the two params",signature,TEST_CONTEXT);
 
     spec_is_true(is_process(p));
     spec_is_true(!is_symbol(p));
     spec_is_equal(_t_children(defs),p.id);
     T *s = _t_child(defs,p.id);
 
-    spec_is_sem_equal(_t_symbol(s),PROCESS_CODING);
+    spec_is_sem_equal(_t_symbol(s),PROCESS_DEFINITION);
 
     // first child is the name of the process
     T *name = _t_child(s,1);
@@ -215,7 +215,7 @@ void testDefSysDefs() {
     //  spec_is_str_equal(t2s(_t_child(G_contexts[SYS_CONTEXT].root,1)),"(STRUCTURES (STRUCTURE_DEFINITION (STRUCTURE_LABEL:BIT) (STRUCTURE_SYMBOL:NULL_SYMBOL)) (STRUCTURE_DEFINITION (STRUCTURE_LABEL:INTEGER) (STRUCTURE_SYMBOL:NULL_SYMBOL)) (STRUCTURE_DEFINITION (STRUCTURE_LABEL:FLOAT) (STRUCTURE_SYMBOL:NULL_SYMBOL)) (STRUCTURE_DEFINITION (STRUCTURE_LABEL:CHAR) (STRUCTURE_SYMBOL:NULL_SYMBOL)) (STRUCTURE_DEFINITION (STRUCTURE_LABEL:CSTRING) (STRUCTURE_SYMBOL:NULL_SYMBOL)) (STRUCTURE_DEFINITION (STRUCTURE_LABEL:SYMBOL) (STRUCTURE_SYMBOL:NULL_SYMBOL)) (STRUCTURE_DEFINITION (STRUCTURE_LABEL:ENUM) (STRUCTURE_SYMBOL:NULL_SYMBOL)) (STRUCTURE_DEFINITION (STRUCTURE_LABEL:TREE_PATH) (STRUCTURE_SYMBOL:NULL_SYMBOL)) (STRUCTURE_DEFINITION (STRUCTURE_LABEL:XADDR) (STRUCTURE_SYMBOL:NULL_SYMBOL)) (STRUCTURE_DEFINITION (STRUCTURE_LABEL:LIST) (STRUCTURE_SYMBOL:NULL_SYMBOL)) (STRUCTURE_DEFINITION (STRUCTURE_LABEL:SURFACE) (STRUCTURE_SYMBOL:NULL_SYMBOL)) (STRUCTURE_DEFINITION (STRUCTURE_LABEL:TREE) (STRUCTURE_SYMBOL:NULL_SYMBOL)) (STRUCTURE_DEFINITION (STRUCTURE_LABEL:RECEPTOR) (STRUCTURE_SYMBOL:NULL_SYMBOL)) (STRUCTURE_DEFINITION (STRUCTURE_LABEL:PROCESS) (STRUCTURE_SYMBOL:NULL_SYMBOL)) (STRUCTURE_DEFINITION (STRUCTURE_LABEL:STRUCTURE) (STRUCTURE_SYMBOL:NULL_SYMBOL)) (STRUCTURE_DEFINITION (STRUCTURE_LABEL:SCAPE) (STRUCTURE_SYMBOL:NULL_SYMBOL)) (STRUCTURE_DEFINITION (STRUCTURE_LABEL:SEMTREX) (STRUCTURE_SYMBOL:NULL_SYMBOL)) (STRUCTURE_DEFINITION (STRUCTURE_LABEL:STREAM) (STRUCTURE_SYMBOL:NULL_SYMBOL)) (STRUCTURE_DEFINITION (STRUCTURE_LABEL:UUID) (STRUCTURE_SYMBOL:NULL_SYMBOL)) (STRUCTURE_DEFINITION (STRUCTURE_LABEL:STRUCTURE_DEF) (STRUCTURE_SYMBOL:NULL_SYMBOL)) (STRUCTURE_DEFINITION (STRUCTURE_LABEL:SIGNATURE_PART) (STRUCTURE_SEQUENCE (STRUCTURE_SYMBOL:SIGNATURE_LABEL) (STRUCTURE_SYMBOL:SIGNATURE_TYPE))) (STRUCTURE_DEFINITION (STRUCTURE_LABEL:SEQUENCE) (STRUCTURE_SYMBOL:STEP_SYMBOL)) (STRUCTURE_DEFINITION (STRUCTURE_LABEL:PROTOCOL_STEP) (STRUCTURE_SEQUENCE (STRUCTURE_SYMBOL:EXPECTATION) (STRUCTURE_SYMBOL:PARAMS) (STRUCTURE_SYMBOL:ACTION))) (STRUCTURE_DEFINITION (STRUCTURE_LABEL:PROTOCOL) (STRUCTURE_SEQUENCE (STRUCTURE_SYMBOL:STEPS) (STRUCTURE_SYMBOL:SEQUENCES))) (STRUCTURE_DEFINITION (STRUCTURE_LABEL:DATE) (STRUCTURE_SEQUENCE (STRUCTURE_SYMBOL:YEAR) (STRUCTURE_SYMBOL:MONTH) (STRUCTURE_SYMBOL:DAY))) (STRUCTURE_DEFINITION (STRUCTURE_LABEL:TIME) (STRUCTURE_SEQUENCE (STRUCTURE_SYMBOL:HOUR) (STRUCTURE_SYMBOL:MINUTE) (STRUCTURE_SYMBOL:SECOND))) (STRUCTURE_DEFINITION (STRUCTURE_LABEL:TIMESTAMP) (STRUCTURE_SEQUENCE (STRUCTURE_SYMBOL:TODAY) (STRUCTURE_SYMBOL:NOW))) (STRUCTURE_DEFINITION (STRUCTURE_LABEL:REDUCTION_ERROR) (STRUCTURE_SYMBOL:ERROR_LOCATION)) (STRUCTURE_DEFINITION (STRUCTURE_LABEL:TREE_DELTA) (STRUCTURE_SEQUENCE (STRUCTURE_SYMBOL:TREE_DELTA_PATH) (STRUCTURE_SYMBOL:TREE_DELTA_VALUE) (STRUCTURE_SYMBOL:TREE_DELTA_COUNT))))");
 
     // an example of a defined process (if)
-    spec_is_str_equal(t2s(_t_child(_t_child(G_contexts[SYS_CONTEXT].root,3),IF.id)),"(PROCESS_CODING (PROCESS_NAME:IF) (PROCESS_INTENTION:if) (PROCESS_SIGNATURE (OUTPUT_SIGNATURE (SIGNATURE_LABEL:result) (SIGNATURE_PASSTHRU)) (INPUT_SIGNATURE (SIGNATURE_LABEL:condition) (SIGNATURE_PROCESS:BOOLEAN)) (INPUT_SIGNATURE (SIGNATURE_LABEL:then) (SIGNATURE_ANY)) (INPUT_SIGNATURE (SIGNATURE_LABEL:else) (SIGNATURE_ANY) (SIGNATURE_OPTIONAL))))");
+    spec_is_str_equal(t2s(_t_child(_t_child(G_contexts[SYS_CONTEXT].root,3),IF.id)),"(PROCESS_DEFINITION (PROCESS_NAME:IF) (PROCESS_INTENTION:if) (PROCESS_SIGNATURE (OUTPUT_SIGNATURE (SIGNATURE_LABEL:result) (SIGNATURE_PASSTHRU)) (INPUT_SIGNATURE (SIGNATURE_LABEL:condition) (SIGNATURE_PROCESS:BOOLEAN)) (INPUT_SIGNATURE (SIGNATURE_LABEL:then) (SIGNATURE_ANY)) (INPUT_SIGNATURE (SIGNATURE_LABEL:else) (SIGNATURE_ANY) (SIGNATURE_OPTIONAL))))");
 }
 
 void testDef() {

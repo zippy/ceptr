@@ -35,13 +35,14 @@ void _r_free(Receptor *r);
 /*****************  receptor symbols, structures, and processes */
 SemanticID __set_label_for_def(Receptor *r,char *label,T *def,int type);
 
-Symbol _r_declare_symbol(Receptor *r,Structure s,char *label);
+Symbol _r_define_symbol(Receptor *r,Structure s,char *label);
 SemanticID _r_get_sem_by_label(Receptor *r,char *label);
 Structure _r_define_structure(Receptor *r,char *label,int num_params,...);
 Structure __r_define_structure(Receptor *r,char *label,T *structure_def);
 Structure __r_get_symbol_structure(Receptor *r,Symbol s);
 size_t __r_get_symbol_size(Receptor *r,Symbol s,void *surface);
-Process _r_code_process(Receptor *r,T *code,char *name,char *intention,T *signature);
+Process _r_define_process(Receptor *r,T *code,char *name,char *intention,T *signature);
+Protocol _r_define_protocol(Receptor *r,T *p);
 
 T *_r_build_def_semtrex(Receptor *r,Symbol s);
 int _r_def_match(Receptor *r,Symbol s,T *t);

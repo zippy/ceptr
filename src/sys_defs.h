@@ -38,9 +38,9 @@ char * G_label;
 // redefined, and thus are just set using the sYs macro.
 #define sT(ctx,name,num,...) name = _d_define_structure(sem,"" #name "",ctx,num,__VA_ARGS__)
 #define sTs(ctx,name,def) G_ctx = ctx;G_label=""#name"";{T *sdef = __d_define_structure(__sem_get_defs(sem,SEM_TYPE_STRUCTURE,ctx),"" #name "",def);Structure str = {ctx,SEM_TYPE_STRUCTURE,_d_get_def_addr(sdef)};name = str;}
-#define sY(ctx,name,str) name = _d_declare_symbol(sem,str,"" #name "",ctx)
+#define sY(ctx,name,str) name = _d_define_symbol(sem,str,"" #name "",ctx)
 #define sYs(ctx,sym,str) __d_set_symbol_structure(__sem_get_defs(sem,SEM_TYPE_SYMBOL,ctx),sym,str)
-#define sP(ctx,name,intention,...) name = _d_code_process(sem,0,"" #name "",intention,__p_make_signature(__VA_ARGS__),ctx)
+#define sP(ctx,name,intention,...) name = _d_define_process(sem,0,"" #name "",intention,__p_make_signature(__VA_ARGS__),ctx)
 
 #define sT_SET(...) sT_(sem,STRUCTURE_SYMBOL_SET,__VA_ARGS__)
 #define sT_SEQ(...) sT_(sem,STRUCTURE_SEQUENCE,__VA_ARGS__)

@@ -66,8 +66,8 @@ void __d_validate_structure(SemTable *sem,Structure s,char *n) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testDefSymbol
  */
-T *__d_declare_symbol(T *symbols,Structure s,char *label){
-    T *def = _t_newr(symbols,SYMBOL_DECLARATION);
+T *__d_define_symbol(T *symbols,Structure s,char *label){
+    T *def = _t_newr(symbols,SYMBOL_DEFINITION);
     _t_new(def,SYMBOL_LABEL,label,strlen(label)+1);
     _t_news(def,SYMBOL_STRUCTURE,s);
     return def;
@@ -113,10 +113,10 @@ SemanticAddr  _d_get_def_addr(T *def) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testDefSymbol
  */
-Symbol _d_declare_symbol(SemTable *sem,Structure s,char *label,Context c){
+Symbol _d_define_symbol(SemTable *sem,Structure s,char *label,Context c){
     __d_validate_structure(sem,s,label);
     T *symbols = __sem_get_defs(sem,SEM_TYPE_SYMBOL,c);
-    T *def = __d_declare_symbol(symbols,s,label);
+    T *def = __d_define_symbol(symbols,s,label);
     Symbol sym = {c,SEM_TYPE_SYMBOL,_d_get_def_addr(def)};
     return sym;
 }
@@ -274,8 +274,8 @@ size_t _d_get_structure_size(SemTable *sem,Structure s,void *surface) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testCodeProcess
  */
-T *__d_code_process(T *processes,T *code,char *name,char *intention,T *signature) {
-    T *def = _t_newr(processes,PROCESS_CODING);
+T *__d_define_process(T *processes,T *code,char *name,char *intention,T *signature) {
+    T *def = _t_newr(processes,PROCESS_DEFINITION);
     _t_new_str(def,PROCESS_NAME,name);
     _t_new(def,PROCESS_INTENTION,intention,strlen(intention)+1);
     if (code) _t_add(def,code);
@@ -299,9 +299,9 @@ T *__d_code_process(T *processes,T *code,char *name,char *intention,T *signature
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testCodeProcess
  */
-Process _d_code_process(SemTable *sem,T *code,char *name,char *intention,T *signature,Context c) {
+Process _d_define_process(SemTable *sem,T *code,char *name,char *intention,T *signature,Context c) {
     T *processes = __sem_get_defs(sem,SEM_TYPE_PROCESS,c);
-    T *def = __d_code_process(processes,code,name,intention,signature);
+    T *def = __d_define_process(processes,code,name,intention,signature);
     Process p = {c,SEM_TYPE_PROCESS,_d_get_def_addr(def)};
     return p;
 }

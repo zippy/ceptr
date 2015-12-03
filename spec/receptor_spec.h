@@ -309,8 +309,8 @@ void testReceptorExpectation() {
 void testReceptorDef() {
     Receptor *r = _r_new(G_sem,TEST_RECEPTOR_SYMBOL);
 
-    Symbol lat = _r_declare_symbol(r,FLOAT,"latitude");
-    Symbol lon = _r_declare_symbol(r,FLOAT,"longitude");
+    Symbol lat = _r_define_symbol(r,FLOAT,"latitude");
+    Symbol lon = _r_define_symbol(r,FLOAT,"longitude");
     T *def;
 
     spec_is_structure_equal(r,__r_get_symbol_structure(r,lat),FLOAT);
@@ -334,21 +334,21 @@ void testReceptorDef() {
     spec_is_structure_equal(r,_r_get_sem_by_label(r,"latlong"),latlong);
     spec_is_long_equal(__r_get_symbol_size(r,lat,0),sizeof(float));
 
-    Symbol house_loc = _r_declare_symbol(r,latlong,"house location");
+    Symbol house_loc = _r_define_symbol(r,latlong,"house location");
     spec_is_sem_equal(__r_get_symbol_structure(r,house_loc),latlong);
     spec_is_long_equal(__r_get_symbol_size(r,house_loc,0),sizeof(float)*2);
 
-    Symbol name = _r_declare_symbol(r,CSTRING,"name");
+    Symbol name = _r_define_symbol(r,CSTRING,"name");
     spec_is_long_equal(__r_get_symbol_size(r,name,"zippy"),(long)6);
 
     Structure namedhouse = _r_define_structure(r,"namedhouse",2,house_loc,name);
 
-    Symbol home = _r_declare_symbol(r,namedhouse,"home");
+    Symbol home = _r_define_symbol(r,namedhouse,"home");
     char surface[] ={1,2,3,4,5,6,7,8,'b','o','b','b','y',0};
     spec_is_long_equal(__r_get_symbol_size(r,home,surface),sizeof(float)*2+6);
 
     T *code = _t_new_root(ACTION);
-    Process p = _r_code_process(r,code,"power","takes the mathematical power of the two params",NULL);
+    Process p = _r_define_process(r,code,"power","takes the mathematical power of the two params",NULL);
     spec_is_equal(_t_children(r->defs.processes),p.id);
 
     _r_free(r);
@@ -361,10 +361,10 @@ void testReceptorDef() {
 */
 //! [defineHouseLocation]
 void defineHouseLocation(Receptor *r,Symbol *lat,Symbol *lon, Structure *latlong, Symbol *house_loc) {
-    *lat = _r_declare_symbol(r,FLOAT,"latitude");
-    *lon = _r_declare_symbol(r,FLOAT,"longitude");
+    *lat = _r_define_symbol(r,FLOAT,"latitude");
+    *lon = _r_define_symbol(r,FLOAT,"longitude");
     *latlong = _r_define_structure(r,"latlong",2,*lat,*lon);
-    *house_loc = _r_declare_symbol(r,*latlong,"house location");
+    *house_loc = _r_define_symbol(r,*latlong,"house location");
 }
 //! [defineHouseLocation]
 
@@ -534,16 +534,16 @@ void defineNums(Receptor *r) {
     char buf[10];
     for(i=0;i<16;i++){
 	sprintf(buf,"exp%d",i);
-	exps[i] = _r_declare_symbol(r,BIT,buf);
+	exps[i] = _r_define_symbol(r,BIT,buf);
     }
     integer = _r_define_structure(r,"integer",16,exps[0],exps[1],exps[2],exps[3],exps[4],exps[5],exps[6],exps[7],exps[8],exps[9],exps[10],exps[11],exps[12],exps[13],exps[14],exps[15]);
-    mantissa = _r_declare_symbol(r,integer,"mantissa");
-    exponent = _r_declare_symbol(r,integer,"exponent");
+    mantissa = _r_define_symbol(r,integer,"mantissa");
+    exponent = _r_define_symbol(r,integer,"exponent");
     flt = _r_define_structure(r,"float",2,mantissa,exponent);
-    latitude = _r_declare_symbol(r,flt,"latitude");
-    longitude = _r_declare_symbol(r,flt,"longitude");
+    latitude = _r_define_symbol(r,flt,"latitude");
+    longitude = _r_define_symbol(r,flt,"longitude");
     lat_long = _r_define_structure(r,"latlong",2,latitude,longitude);
-    home_location = _r_declare_symbol(r,lat_long,"home_location");
+    home_location = _r_define_symbol(r,lat_long,"home_location");
 }
 
 void makeInt(T *t,int v) {
@@ -662,7 +662,7 @@ void testReceptorEdgeStream() {
 /*     int pt1[] = {2,1,TREE_PATH_TERMINATOR}; */
 /*     _t_new(x,PARAM_REF,pt1,sizeof(int)*4); */
 
-/*     Process proc = _r_code_process(r,x,"noop return param","long desc...",NULL); */
+/*     Process proc = _r_define_process(r,x,"noop return param","long desc...",NULL); */
 /*     T *act = _t_newp(0,ACTION,proc); */
 
 /*     T* params = _t_new_root(PARAMS); */
@@ -673,7 +673,7 @@ void testReceptorEdgeStream() {
 
 void testReceptorClock() {
     Receptor *r = _r_makeClockReceptor(G_sem);
-    spec_is_str_equal(_td(r,r->root),"(CLOCK_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES (PROCESS_CODING (PROCESS_NAME:respond with current time) (PROCESS_INTENTION:long desc...) (process:RESPOND (CARRIER:TICK) (process:GET (GET_XADDR:TICK.1))) (PROCESS_SIGNATURE (OUTPUT_SIGNATURE (SIGNATURE_LABEL:result) (SIGNATURE_SYMBOL:NULL_SYMBOL))))) (PROTOCOLS) (SCAPES) (ASPECTS)) (FLUX (DEFAULT_ASPECT (EXPECTATIONS (EXPECTATION (CARRIER:CLOCK_TELL_TIME) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:CLOCK_TELL_TIME))) (ACTION:respond with current time) (PARAMS) (END_CONDITIONS (UNLIMITED)))) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))");
+    spec_is_str_equal(_td(r,r->root),"(CLOCK_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES (PROCESS_DEFINITION (PROCESS_NAME:respond with current time) (PROCESS_INTENTION:long desc...) (process:RESPOND (CARRIER:TICK) (process:GET (GET_XADDR:TICK.1))) (PROCESS_SIGNATURE (OUTPUT_SIGNATURE (SIGNATURE_LABEL:result) (SIGNATURE_SYMBOL:NULL_SYMBOL))))) (PROTOCOLS) (SCAPES) (ASPECTS)) (FLUX (DEFAULT_ASPECT (EXPECTATIONS (EXPECTATION (CARRIER:CLOCK_TELL_TIME) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:CLOCK_TELL_TIME))) (ACTION:respond with current time) (PARAMS) (END_CONDITIONS (UNLIMITED)))) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))");
 
    /*
       The clock receptor should do two things: respond to CLOCK_TELL_TIME signals with the current time, and also allow you to plant a listener based on a semtrex for any kind of time you want.  If you want the current time just plant a listener for TICK.  If you want to listen for every second plant a listener on the Symbol literal SECOND, and the clock receptor will trigger the listener every time the SECOND changes.  You can also listen for particular intervals and times by adding specificity to the semtrex, so to trigger a 3:30am action a-la-cron listen for: "/<TICK:(%HOUR=3,MINUTE=30)>"

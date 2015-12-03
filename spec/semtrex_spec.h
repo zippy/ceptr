@@ -22,8 +22,8 @@ Symbol sy4 = {0,0,4};
 Symbol TEST_GROUP_SYMBOL1;
 Symbol TEST_GROUP_SYMBOL2;
 
-#define sYt(name,str) name = _d_declare_symbol(G_sem,str,"" #name "",TEST_CONTEXT)
-#define sX(name,str) Symbol name = _d_declare_symbol(G_sem,str,"" #name "",TEST_CONTEXT)
+#define sYt(name,str) name = _d_define_symbol(G_sem,str,"" #name "",TEST_CONTEXT)
+#define sX(name,str) Symbol name = _d_define_symbol(G_sem,str,"" #name "",TEST_CONTEXT)
 
 void _stxSetup() {
     sYt(sy0,CSTRING);
@@ -923,29 +923,29 @@ void testEmbodyFromMatch() {
 }
 
 void testSemtrexReplace() {
-    //    char *stx = "%ROLE_PROCESS/.*,<ACTION:GOAL=RESPOND>";
+    //    char *stx = "%EXPECT/.*,<ACTION:GOAL=RESPOND>";
     //    T *s = parseSemtrex(G_sem,stx);  Doesn't work for symbols as value literals, sigh
-    // %ROLE_PROCESS/.*,<ACTION:GOAL=some_process>
+    // %EXPECT/.*,<ACTION:GOAL=some_process>
     T *stx = _t_new_root(SEMTREX_WALK);
-    T *s = _sl(stx,ROLE_PROCESS);
+    T *s = _sl(stx,EXPECT);
     s = _t_newr(s,SEMTREX_SEQUENCE);
     _t_newr(_t_newr(s,SEMTREX_ZERO_OR_MORE),SEMTREX_SYMBOL_ANY);
     T *g = _t_news(s,SEMTREX_GROUP,ACTION);
     T *vl = _t_newr(g,SEMTREX_VALUE_LITERAL);
-    Symbol some_process = _d_declare_symbol(G_sem,PROCESS,"some_process",TEST_CONTEXT);
+    Symbol some_process = _d_define_symbol(G_sem,PROCESS,"some_process",TEST_CONTEXT);
+    Symbol some_interaction = _d_define_symbol(G_sem,INTERACTION,"some_interaction",TEST_CONTEXT);
     _t_news(vl,GOAL,some_process);
 
-    T *d = _t_new_root(CONVERSATION);
-    _t_new_str(d,CONVERSATION_LABEL,"some_conversation");
-    T *rp = _t_newr(d,ROLE_PROCESS);
+    T *d = _t_new_root(some_interaction);
+    T *e = _t_newr(d,EXPECT);
     //    _t_newr(rp,ROLE);
     //    _t_newr(rp,SOURCE);
-    _t_newr(rp,PATTERN);
-    _t_news(rp,GOAL,some_process);
+    _t_newr(e,PATTERN);
+    _t_news(e,GOAL,some_process);
 
     T *a = _t_news(0,ACTION,RESPOND);
     _stx_replace(stx,d,a);
-    spec_is_str_equal(t2s(d),"(CONVERSATION (CONVERSATION_LABEL:some_conversation) (ROLE_PROCESS (PATTERN) (ACTION:RESPOND)))");
+    spec_is_str_equal(t2s(d),"(some_interaction (EXPECT (PATTERN) (ACTION:RESPOND)))");
 }
 
 

@@ -464,7 +464,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
 
     function newSymbol(label,struct) {
         var symbols = CONTEXTS[LOCAL_CONTEXT].children[SEM_TYPE_SYMBOL-1];
-        var def = Tnew(symbols,LABEL_TABLE["SYMBOL_DECLARATION"].sem);
+        var def = Tnew(symbols,LABEL_TABLE["SYMBOL_DEFINITION"].sem);
         Tnew(def,LABEL_TABLE["SYMBOL_LABEL"].sem,label);
         Tnew(def,LABEL_TABLE["SYMBOL_STRUCTURE"].sem,struct);
         var sem = {ctx:LOCAL_CONTEXT,type:SEM_TYPE_SYMBOL,id:symbols.children.length};
@@ -602,10 +602,10 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
                 $.hide($('#newsem'));
                 $.show($('#newsem-form'));
 
-                // create a SYMBOL_DECLARATION tree
+                // create a SYMBOL_DEFINITION tree
                 var elem = $.create('div',{inside:$('#newsem-sym'),className:'TE'});
                 var x = new _(elem);
-                var sem = x.insert('SYMBOL_DECLARATION');
+                var sem = x.insert('SYMBOL_DEFINITION');
                 $('label',sem).setAttribute("locked","true");
 
                 var s = $('.TE [semid="'+getSemIDText('SYMBOL_STRUCTURE')+'"] surface',elem);

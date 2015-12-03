@@ -218,9 +218,9 @@ SemanticID  __get_label_idx(Receptor *r,char *label) {
  * @returns the new Symbol
  *
  */
-Symbol _r_declare_symbol(Receptor *r,Structure s,char *label){
+Symbol _r_define_symbol(Receptor *r,Structure s,char *label){
     __d_validate_structure(r->sem,s,label);
-    T *def = __d_declare_symbol(r->defs.symbols,s,label);
+    T *def = __d_define_symbol(r->defs.symbols,s,label);
     return __set_label_for_def(r,label,def,SEM_TYPE_SYMBOL);
 }
 
@@ -277,8 +277,8 @@ Structure __r_define_structure(Receptor *r,char *label,T *structure_def) {
  * @returns the new Process
  *
  */
-Process _r_code_process(Receptor *r,T *code,char *name,char *intention,T *signature) {
-    T *def = __d_code_process(r->defs.processes,code,name,intention,signature);
+Process _r_define_process(Receptor *r,T *code,char *name,char *intention,T *signature) {
+    T *def = __d_define_process(r->defs.processes,code,name,intention,signature);
     return __set_label_for_def(r,name,def,SEM_TYPE_PROCESS);
 }
 
@@ -978,7 +978,7 @@ Receptor *_r_makeStreamWriterReceptor(SemTable *sem,Symbol receptor_symbol,Symbo
                                       "stream",SIGNATURE_STRUCTURE,STREAM,
                                       NULL);
 
-    Process proc = _r_code_process(r,x,"echo input to stream","long desc...",signature);
+    Process proc = _r_define_process(r,x,"echo input to stream","long desc...",signature);
     T *act = _t_newp(0,ACTION,proc);
 
     _r_add_expectation(r,DEFAULT_ASPECT,NULL_SYMBOL,expect,act,params,0);
@@ -1001,7 +1001,7 @@ Receptor *_r_makeClockReceptor(SemTable *st) {
     _t_new(g,GET_XADDR,&x,sizeof(Xaddr));
 
     T *signature = __p_make_signature("result",SIGNATURE_SYMBOL,NULL_SYMBOL,NULL);
-    Process proc = _r_code_process(r,resp,"respond with current time","long desc...",signature);
+    Process proc = _r_define_process(r,resp,"respond with current time","long desc...",signature);
 
     T *act = _t_newp(0,ACTION,proc);
     T *params = _t_new_root(PARAMS);
@@ -1031,7 +1031,7 @@ Receptor *_r_makeClockReceptor(SemTable *st) {
     /* T *signature = __p_make_signature("result",SIGNATURE_SYMBOL,NULL_SYMBOL, */
     /*                                   "time stx",SIGNATURE_SYMBOL,PATTERN, */
     /*                                   NULL); */
-    /* Process proc = _r_code_process(r,x,"plant a expectation to send the time","long desc...",signature); */
+    /* Process proc = _r_define_process(r,x,"plant a expectation to send the time","long desc...",signature); */
     /* T *act = _t_newp(0,ACTION,proc); */
 
     /* params = _t_new_root(PARAMS); */

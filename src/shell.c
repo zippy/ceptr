@@ -28,7 +28,7 @@ void addCommand(Receptor *r,Xaddr ox,char *command,char *desc,T *code) {
     _t_news(p,CARRIER,NULL_SYMBOL);
     _t_add(p,code);
 
-    Process proc = _r_code_process(r,p,desc,"long desc...",NULL);
+    Process proc = _r_define_process(r,p,desc,"long desc...",NULL);
     T *act = _t_newp(0,ACTION,proc);
 
     _r_add_expectation(r,DEFAULT_ASPECT,SHELL_COMMAND,expect,act,0,0);
@@ -39,7 +39,7 @@ void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp
     // @todo fix the naming paradox that the "shell" symbol is defined in the
     // vmhost context here, but used in the context of the receptor itself
     // see bug #31
-    Symbol shell = _r_declare_symbol(G_vm->r,RECEPTOR,"shell");
+    Symbol shell = _r_define_symbol(G_vm->r,RECEPTOR,"shell");
     Receptor *r = _r_new(v->sem,shell);
     Xaddr shellx = _v_new_receptor(G_vm,G_vm->r,shell,r);
     _v_activate(G_vm,shellx);
@@ -49,12 +49,12 @@ void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp
     Stream *output_stream = *osp = _st_new_unix_stream(output,0);
     Stream *input_stream = *isp = _st_new_unix_stream(input,1);
 
-    Symbol std_in = _r_declare_symbol(G_vm->r,RECEPTOR,"std_in");
+    Symbol std_in = _r_define_symbol(G_vm->r,RECEPTOR,"std_in");
     Receptor *i_r = *irp = _r_makeStreamReaderReceptor(v->sem,std_in,TEST_STREAM_SYMBOL,input_stream,shellx.addr);
     Xaddr ix = _v_new_receptor(G_vm,G_vm->r,std_in,i_r);
     _v_activate(G_vm,ix);
 
-    Symbol std_out = _r_declare_symbol(G_vm->r,RECEPTOR,"std_out");
+    Symbol std_out = _r_define_symbol(G_vm->r,RECEPTOR,"std_out");
     Receptor *o_r = *orp = _r_makeStreamWriterReceptor(v->sem,std_out,TEST_STREAM_SYMBOL,output_stream);
     Xaddr ox = _v_new_receptor(G_vm,G_vm->r,std_out,o_r);
     _v_activate(G_vm,ox);
@@ -74,7 +74,7 @@ void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp
     int pt1[] = {2,1,TREE_PATH_TERMINATOR};
     _t_new(x,PARAM_REF,pt1,sizeof(int)*4);
 
-    Process proc = _r_code_process(r,p,"send self command","long desc...",NULL);
+    Process proc = _r_define_process(r,p,"send self command","long desc...",NULL);
     T *act = _t_newp(0,ACTION,proc);
     T* params = _t_new_root(PARAMS);
     _t_news(params,INTERPOLATE_SYMBOL,VERB);

@@ -40,25 +40,25 @@ enum {RuntreeCodeIdx=1,RunTreeParamsIdx,RunTreeErrorCodeIdx};
 enum {SemtrexMatchSymbolIdx=1,SemtrexMatchPathIdx,SemtrexMatchSibsIdx};
 
 #define ST(r,name,num,...) name = _r_define_structure(r,"" #name "",num,__VA_ARGS__)
-#define SY(r,name,str) name = _r_declare_symbol(r,str,"" #name "")
-#define SP(r,code,name,intention,signature) name = _r_code_process(r,code,"" #name "",intention,signature)
+#define SY(r,name,str) name = _r_define_symbol(r,str,"" #name "")
+#define SP(r,code,name,intention,signature) name = _r_define_process(r,code,"" #name "",intention,signature)
 
 int semeq(SemanticID s1,SemanticID s2);
 char *__d_get_sem_name(T *defs,SemanticID s);
 void __d_validate_symbol(SemTable *sem,Symbol s,char *n);
 void __d_validate_structure(SemTable *sem,Structure s,char *n);
-T *__d_declare_symbol(T *symbols,Structure s,char *label);
+T *__d_define_symbol(T *symbols,Structure s,char *label);
 void __d_set_symbol_structure(T *symbols,Symbol sym,Structure s);
 SemanticAddr  _d_get_def_addr(T *def);
-Symbol _d_declare_symbol(SemTable *sem,Structure s,char *label,Context c);
+Symbol _d_define_symbol(SemTable *sem,Structure s,char *label,Context c);
 T *__d_define_structure(T *structures,char *label,T *structure_def);
 Structure _d_define_structure(SemTable *sem,char *label,Context c,int num_params,...);
 T * _dv_define_structure(SemTable *sem,char *label,Context c,int num_params,va_list params);
 Structure __d_get_symbol_structure(T *symbols,Symbol s);
 size_t _d_get_symbol_size(SemTable *sem,Symbol s,void *surface);
 size_t _d_get_structure_size(SemTable *sem,Symbol s,void *surface);
-T *__d_code_process(T *processes,T *code,char *name,char *intention,T *signature);
-Process _d_code_process(SemTable *sem,T *code,char *name,char *intention,T *signature,Context c);
+T *__d_define_process(T *processes,T *code,char *name,char *intention,T *signature);
+Process _d_define_process(SemTable *sem,T *code,char *name,char *intention,T *signature,Context c);
 T *__d_define_protocol(T *protocols,T *def);
 Protocol _d_define_protocol(SemTable *sem,T *def,Context c);
 T *_d_make_protocol_def(char *label,...);
