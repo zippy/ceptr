@@ -18,6 +18,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
     var SYMBOLS = [];
     var STRUCTURES = [];
     var PROCESSES = [];
+    var PROTOCOLS = [];
 
     var _ = function (elem,o) {
 
@@ -416,12 +417,12 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
     var SEM_TYPE_STRUCTURE=1;
     var SEM_TYPE_SYMBOL=2;
     var SEM_TYPE_PROCESS=3;
-    var type_names= ["","STRUCTURE","SYMBOL","PROCESS"];
+    var SEM_TYPE_PROTOCOL=4;
+    var type_names= ["","STRUCTURE","SYMBOL","PROCESS","PROTOCOL"];
     var SYS_CONTEXT=0;
     var COMPOSITORY_CONTEXT=1;
     var LOCAL_CONTEXT=2;
     var TEST_CONTEXT=3;
-    var RECEPTOR_CONTEXT=0xff;
     var CONTEXTS = [{},{},{
         // set up the defs tree for the local context (have to do this manually)
         sem:{ctx:0,type:2,id:1},
@@ -464,7 +465,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
 
     function newSymbol(label,struct) {
         var symbols = CONTEXTS[LOCAL_CONTEXT].children[SEM_TYPE_SYMBOL-1];
-        var def = Tnew(symbols,LABEL_TABLE["SYMBOL_DECLARATION"].sem);
+        var def = Tnew(symbols,LABEL_TABLE["SYMBOL_DEFINITION"].sem);
         Tnew(def,LABEL_TABLE["SYMBOL_LABEL"].sem,label);
         Tnew(def,LABEL_TABLE["SYMBOL_STRUCTURE"].sem,struct);
         var sem = {ctx:LOCAL_CONTEXT,type:SEM_TYPE_SYMBOL,id:symbols.children.length};
@@ -602,10 +603,10 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
                 $.hide($('#newsem'));
                 $.show($('#newsem-form'));
 
-                // create a SYMBOL_DECLARATION tree
+                // create a SYMBOL_DEFINITION tree
                 var elem = $.create('div',{inside:$('#newsem-sym'),className:'TE'});
                 var x = new _(elem);
-                var sem = x.insert('SYMBOL_DECLARATION');
+                var sem = x.insert('SYMBOL_DEFINITION');
                 $('label',sem).setAttribute("locked","true");
 
                 var s = $('.TE [semid="'+getSemIDText('SYMBOL_STRUCTURE')+'"] surface',elem);
