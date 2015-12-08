@@ -26,7 +26,7 @@ enum {noDeliveryErr};
 T *__r_make_definitions();
 T *_r_make_state();
 Receptor *_r_new(SemTable *sem,SemanticID r);
-Receptor *_r_new_receptor_from_package(SemTable *st,Symbol s,T *p,T *bindings);
+Receptor *_r_new_receptor_from_package(SemTable *sem,Symbol s,T *p,T *bindings);
 T *__r_build_expectation(Symbol carrier,T *pattern,T *action,T *with,T *until);
 void _r_add_expectation(Receptor *r,Aspect aspect,Symbol carrier,T *pattern,T *action,T *with,T *until);
 void __r_add_expectation(Receptor *r,Aspect aspect,T *e);
@@ -100,7 +100,7 @@ Xaddr G_null_xaddr;
 Receptor *_r_makeStreamReaderReceptor(SemTable *sem,Symbol stream_symbol,Stream *stream,ReceptorAddress to);
 Receptor *_r_makeStreamWriterReceptor(SemTable *sem,Symbol stream_symbol,Stream *stream);
 void _r_defineClockReceptor(SemTable *sem);
-Receptor *_r_makeClockReceptor(SemTable *st);
+Receptor *_r_makeClockReceptor(SemTable *sem);
 void *___clock_thread(void *arg);
 #define __r_make_tick() __r_make_timestamp(TICK,00)
 T *__r_make_timestamp(Symbol s,int delta);

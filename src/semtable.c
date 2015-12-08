@@ -17,8 +17,10 @@ SemTable *_sem_new() {
 }
 
 int _sem_new_context(SemTable *sem,T *definitions) {
+
     if (sem->contexts >= MAX_CONTEXTS-1) raise_error("no more room in semtable");
     int idx = sem->contexts++;
+    //    sem->stores[idx].table = NULL;
     sem->stores[idx].definitions = definitions;
     return idx;
 }
@@ -27,8 +29,8 @@ void _sem_free(SemTable *sem) {
     free(sem);
 }
 
-ContextStore *__sem_context(SemTable *st,Context c) {
-    return &st->stores[c];
+ContextStore *__sem_context(SemTable *sem,Context c) {
+    return &sem->stores[c];
 }
 
 void _sem_free_context(SemTable *sem,Context c) {
@@ -36,6 +38,8 @@ void _sem_free_context(SemTable *sem,Context c) {
     // definition tree belong to the receptors that allocated them so
     // we never free them.
     ctx->definitions = NULL;
+    //if (ctx->table) lableTableFree(ctx->table);
+
     if ((c+1) == sem->contexts)
         sem->contexts--;
 }
@@ -68,7 +72,7 @@ T *__sem_get_def(SemTable *sem,SemanticType semtype,Context c,SemanticAddr i) {
     return _t_child(defs,i);
 }
 
-char *_sem_get_name(SemTable *st,SemanticID s) {
+char *_sem_get_name(SemTable *sem,SemanticID s) {
     if (s.id == 0) {
         if (s.context == SYS_CONTEXT) {
             switch (s.semtype) {
@@ -83,12 +87,12 @@ char *_sem_get_name(SemTable *st,SemanticID s) {
             raise_error("unexpected semantic NULL id!");
         }
     }
-    return __d_get_sem_name(_sem_get_defs(st,s),s);
+    return __d_get_sem_name(_sem_get_defs(sem,s),s);
 }
 
-Structure _sem_get_symbol_structure(SemTable *st,Symbol s){
+Structure _sem_get_symbol_structure(SemTable *sem,Symbol s){
     if (!is_symbol(s)) raise_error("Bad symbol: semantic type not SEM_TYPE_SYMBOL");
-    return __d_get_symbol_structure(_sem_get_defs(st,s),s);
+    return __d_get_symbol_structure(_sem_get_defs(sem,s),s);
 }
 
 // @todo, convert this to hash table label table!!

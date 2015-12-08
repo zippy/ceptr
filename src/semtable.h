@@ -13,17 +13,17 @@
 #include "ceptr_error.h"
 
 SemTable *_sem_new();
-int _sem_new_context(SemTable *st,T *definitions);
-void _sem_free(SemTable *st);
-#define _sem_context(st,s) __sem_context(st,(s).context)
-ContextStore *__sem_context(SemTable *st,Context c);
+int _sem_new_context(SemTable *sem,T *definitions);
+void _sem_free(SemTable *sem);
+#define _sem_context(sem,s) __sem_context(sem,(s).context)
+ContextStore *__sem_context(SemTable *sem,Context c);
 void _sem_free_context(SemTable *sem,Context c);
 #define _sem_get_defs(sem,s) __sem_get_defs(sem,(s).semtype,(s).context)
 T *__sem_get_defs(SemTable *st,SemanticType semtype,Context c);
 #define _sem_get_def(sem,s) __sem_get_def(sem,(s).semtype,(s).context,(s).id)
 T *__sem_get_def(SemTable *sem,SemanticType semtype,Context c,SemanticAddr i);
-char *_sem_get_name(SemTable *st,SemanticID s);
-Structure _sem_get_symbol_structure(SemTable *st,Symbol s);
+char *_sem_get_name(SemTable *sem,SemanticID s);
+Structure _sem_get_symbol_structure(SemTable *sem,Symbol s);
 SemanticID _sem_get_by_label(SemTable *sem,char *label,Context ctx);
 
 #endif

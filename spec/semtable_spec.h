@@ -9,14 +9,14 @@
 
 void testSemTableCreate() {
     //! [testSemTableCreate]
-    SemTable *st = _sem_new();
-    spec_is_equal(st->contexts,0);
-    int idx = _sem_new_context(st,(T *)1234L);
+    SemTable *sem = _sem_new();
+    spec_is_equal(sem->contexts,0);
+    int idx = _sem_new_context(sem,(T *)1234L);
     spec_is_equal(idx,0);
-    spec_is_equal(st->contexts,1);
+    spec_is_equal(sem->contexts,1);
     Symbol s = {SYS_CONTEXT,0,0};
-    spec_is_long_equal((long)_sem_context(st,s)->definitions,1234L);
-    _sem_free(st);
+    spec_is_long_equal((long)_sem_context(sem,s)->definitions,1234L);
+    _sem_free(sem);
     //! [testSemTableCreate]
 }
 

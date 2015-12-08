@@ -224,6 +224,7 @@ struct Q {
 // SemTable structures
 typedef struct ContextStore {
     T *definitions;
+    //LabelTable table;    ///< the label table for this context?
 } ContextStore;
 
 //@todo convert to malloc
@@ -253,7 +254,6 @@ struct Receptor {
     T *pending_responses;
     pthread_mutex_t pending_signals_mutex;
     pthread_mutex_t pending_responses_mutex;
-    LabelTable table;    ///< the label table
     Instances instances; ///< the instances store
     Q *q;                ///< process queue
     int state;           ///< state information about the receptor that the vmhost manages

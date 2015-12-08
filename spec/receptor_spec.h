@@ -299,21 +299,14 @@ void testReceptorDef() {
     spec_is_str_equal((char *)_t_surface(_t_child(def = _sem_get_def(r->sem,lat),DefLabelIdx)),"Latitude");
     spec_is_str_equal((char *)_t_surface(_t_child(_sem_get_def(r->sem,lon),DefLabelIdx)),"Longitude");
 
-    int *path = labelGet(&r->table,"Latitude");
-    //    spec_is_ptr_equal(_t_get(r->root,path),def);
-    spec_is_sem_equal(_r_get_sem_by_label(r,"Latitude"),lat);
+     spec_is_sem_equal(_r_get_sem_by_label(r,"Latitude"),lat);
     spec_is_sem_equal(_sem_get_by_label(G_sem,"Latitude",r->context),lat);
 
     Structure latlong = _r_define_structure(r,"Latlong",2,lat,lon);
 
-    //    spec_is_str_equal(t2s(_t_parent(_sem_get_defs(r->sem,lat))),"WHA!");
-
     def = _sem_get_def(r->sem,latlong);
     T *l = _t_child(def,DefLabelIdx);
     spec_is_str_equal((char *)_t_surface(l),"Latlong");
-
-    path = labelGet(&r->table,"Latlong");
-    //    spec_is_ptr_equal(_t_get(r->root,path),def);
 
     spec_is_structure_equal(r,_r_get_sem_by_label(r,"Latlong"),latlong);
     spec_is_long_equal(__r_get_symbol_size(r,lat,0),sizeof(float));
@@ -471,10 +464,7 @@ void testReceptorSerialize() {
     spec_is_sem_equal(_t_symbol(ru->pending_signals),PENDING_SIGNALS);
     spec_is_sem_equal(_t_symbol(ru->pending_responses),PENDING_RESPONSES);
 
-    // check that the unserialized receptor has the labels loaded into the label table
-    int *path = labelGet(&ru->table,"latitude");
-    int p[] = {1,2,1,TREE_PATH_TERMINATOR};
-    spec_is_path_equal(path,p);
+    // check that the unserialized is matched up to the correct definitions in the semtable
     spec_is_sem_equal(_r_get_sem_by_label(ru,"latitude"),lat);
     spec_is_sem_equal(_r_get_sem_by_label(ru,"latlong"),latlong);
 

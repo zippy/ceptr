@@ -18,10 +18,10 @@ void wjson(SemTable *sem,T *t,char *n,int i) {
     writeFile(fn,json,strlen(json));
 }
 
-void dump2json(SemTable *st,T *t,char *n) {
+void dump2json(SemTable *sem,T *t,char *n) {
     char fn[100];
     char json[1000000] = {0};
-    _t2rawjson(st,t,-1,json);
+    _t2rawjson(sem,t,-1,json);
     sprintf(fn,"web/%s.json",n);
     writeFile(fn,json,strlen(json));
 }

@@ -30,7 +30,6 @@ Receptor * __r_init(T *t,SemTable *sem) {
     r->context = *(int *)_t_surface(_t_child(t,ReceptorInstanceContextNumIdx));
     r->addr.addr = r->context;  //@fixme!! for now these are the same, but this needs to get fixed
     r->sem = sem;
-    r->table = NULL;
     r->instances = NULL;
     r->q = _p_newq(r);
     r->state = Alive;  //@todo, check if this is true on unserialize
@@ -166,7 +165,6 @@ void _r_remove_expectation(Receptor *r,T *expectation) {
  */
 void _r_free(Receptor *r) {
     _t_free(r->root);
-    lableTableFree(&r->table);
     _a_free_instances(&r->instances);
     if (r->q) _p_freeq(r->q);
     free(r);
@@ -403,7 +401,7 @@ void _r_serialize(Receptor *r,void **surfaceP,size_t *lengthP) {
 /**
  * Unserialize a receptor
  *
- * Given a serialized receptor, return an instantiated receptor tree with label table
+ * Given a serialized receptor, return an instantiated receptor tree
  *
  * @param[in] surface serialized receptor data
  * @returns Receptor
