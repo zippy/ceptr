@@ -24,5 +24,6 @@ T *__sem_get_defs(SemTable *st,SemanticType semtype,Context c);
 T *__sem_get_def(SemTable *sem,SemanticType semtype,Context c,SemanticAddr i);
 char *_sem_get_name(SemTable *st,SemanticID s);
 Structure _sem_get_symbol_structure(SemTable *st,Symbol s);
+SemanticID _sem_get_by_label(SemTable *sem,char *label,Context ctx);
 
 #endif

@@ -579,17 +579,33 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             case MagicReceptors:
                 if (G_vm) {
                     char *s = malloc(10000);
+                    /* int l = 0; */
+                    /* Xaddr xr = {INSTALLED_RECEPTOR,1}; */
+                    /* T *i; */
+                    /* while (i =_a_get_instance(&G_vm->r->instances,xr)) { */
+                    /*     i = __r_get_receptor(i)->root; */
+                    /*     char *n = _r_get_symbol_name(G_vm->r,_t_symbol(i)); */
+                    /*     int nl = strlen(n); */
+                    /*     memcpy(&s[l],n,nl); */
+                    /*     l+= nl; */
+                    /*     sprintf(&s[l],":%d ",xr.addr++); */
+                    /*     l += strlen(&s[l]); */
+                    /* } */
+                    /* s[l]=0; */
+                    int i;
                     int l = 0;
-                    Xaddr xr = {INSTALLED_RECEPTOR,1};
-                    T *i;
-                    while (i =_a_get_instance(&G_vm->r->instances,xr)) {
-                        i = __r_get_receptor(i)->root;
-                        char *n = _r_get_symbol_name(G_vm->r,_t_symbol(i));
-                        int nl = strlen(n);
-                        memcpy(&s[l],n,nl);
-                        l+= nl;
-                        sprintf(&s[l],":%d ",xr.addr++);
-                        l += strlen(&s[l]);
+                    for (i=0;i<G_vm->receptor_count;i++) {
+                        Receptor *r = G_vm->routing_table[i];
+                        if (r) {
+                            SemanticID sid ={r->parent,SEM_TYPE_RECEPTOR,r->context};
+                            char *n = _sem_get_name(r->sem,sid);
+                            if (!n) n= "??";
+                            int nl = strlen(n);
+                            memcpy(&s[l],n,nl);
+                            l+= nl;
+                            sprintf(&s[l],":%d ",r->addr.addr);
+                            l += strlen(&s[l]);
+                        }
                     }
                     s[l]=0;
                     x = __t_new_str(0,LINE,s,1);
@@ -735,7 +751,7 @@ Error _p_unblock(Q *q,int id) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/process_spec.h testProcessErrorTrickleUp
  */
-Error _p_reduce(SemTable *sem,Defs *defs,T *rt) {
+Error _p_reduce(SemTable *sem,T *rt) {
     T *run_tree = rt;
     R *context = __p_make_context(run_tree,0,0);
     Error e;
@@ -746,7 +762,6 @@ Error _p_reduce(SemTable *sem,Defs *defs,T *rt) {
     r.root = NULL;
     r.sem = sem;
     r.q = &q;
-    r.defs = *defs;
     q.r = &r;
 
     while(_p_step(&q, &context) != Done);
@@ -1280,19 +1295,14 @@ Error _p_reduceq(Q *q) {
  * @param[in] q the queue to be cleaned up
  * @param[in] receptor_state pointer to tree node that holds the receptor state info
  */
-void _p_cleanup(Q *q,T* receptor_state) {
+void _p_cleanup(Q *q) {
     debug(D_LOCK,"cleanup LOCK\n");
     pthread_mutex_lock(&q->mutex);
     Qe *e = q->completed;
     while (e) {
-        if (_t_children(receptor_state) == 0) {
-            _t_newi(receptor_state,RECEPTOR_ELAPSED_TIME,e->accounts.elapsed_time);
-        }
-        else {
-            T *ett = _t_child(receptor_state,1);
-            int *et = (int *)_t_surface(ett);
-            (*et) += e->accounts.elapsed_time;
-        }
+        T *ett = _t_child(_t_child(q->r->root,ReceptorInstanceStateIdx),ReceptorElapsedTimeIdx);
+        int *et = (int *)_t_surface(ett);
+        (*et) += e->accounts.elapsed_time;
         e = e->next;
     }
     _p_free_elements(q->completed);

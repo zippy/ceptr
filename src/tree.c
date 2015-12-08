@@ -384,6 +384,7 @@ void _t_replace_node(T *t,T *r) {
  * @snippet spec/tree_spec.h testTreeSwap
  */
 T *_t_swap(T *t,int i,T *r) {
+    root_check(r);
     T *c = _t_child(t,i);
     if (!c) {raise_error("tree doesn't have child %d",i);}
     t->structure.children[i-1] = r;

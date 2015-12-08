@@ -25,8 +25,8 @@ Structure: UUID,NULL_SYMBOL;            surface is a c struct holding a UUID
 Structure: BLOB,NULL_SYMBOL;            surface is and undefined blob of bytes
 
 # 
-Declare: STRUCTURES,SYMBOLS,PROCESSES,PROTOCOLS,RECEPTORS,SCAPES,ASPECTS;
-Symbol: DEFINITIONS,[(STRUCTURES,SYMBOLS,PROCESSES,PROTOCOLS,RECEPTORS,*SCAPES,*ASPECTS)];
+Declare: STRUCTURES,SYMBOLS,PROCESSES,PROTOCOLS,RECEPTORS,SCAPES;
+Symbol: DEFINITIONS,[(STRUCTURES,SYMBOLS,PROCESSES,PROTOCOLS,RECEPTORS,*SCAPES)];
 
 Declare: STRUCTURE_SYMBOL,STRUCTURE_SEQUENCE,STRUCTURE_SYMBOL_SET,STRUCTURE_OR,STRUCTURE_ZERO_OR_MORE,STRUCTURE_ONE_OR_MORE;
 Symbol: SYMBOL_OF_STRUCTURE,STRUCTURE;
@@ -96,16 +96,16 @@ Symbol: CARRIER,SYMBOL;
 Symbol: BODY,TREE;                          orthogonal tree that holds message body
 Symbol: SIGNAL_UUID,UUID;
 Symbol: IN_RESPONSE_TO_UUID,UUID;
-Symbol: CONTEXT_NUM,INTEGER;               this a placeholder for better addressing later...
 Symbol: RECEPTOR_PATH,TREE_PATH;
-Structure: RECEPTOR_ADDRESS,|[CONTEXT_NUM|RECEPTOR_PATH];
+Symbol: RECEPTOR_ADDR,INTEGER;
+Structure: RECEPTOR_ADDRESS,|[RECEPTOR_ADDR|RECEPTOR_PATH];
 Symbol: FROM_ADDRESS,RECEPTOR_ADDRESS;
 Symbol: TO_ADDRESS,RECEPTOR_ADDRESS;
 Declare: END_CONDITIONS;
 Symbol: ENVELOPE,[(FROM_ADDRESS,TO_ADDRESS,ASPECT_IDENT,CARRIER,SIGNAL_UUID,?|[END_CONDITIONS|IN_RESPONSE_TO_UUID])];
 Symbol: SIGNAL,[(ENVELOPE,BODY)];                        a signal on the flux.  It's first child is the contents of the signal
 Symbol: SIGNALS,[*SIGNAL];                  list of signals on an aspect in the flux
-Symbol: PENDING_SIGNALS,[*SIGNAL];               list of signals pending to be sent by the VM_HOST
+Symbol: PENDING_SIGNALS,[*SIGNAL];               list of signals pending to be sent by the SYS_RECEPTOR
 Symbol: CODE_PATH,TREE_PATH;
 Symbol: PROCESS_IDENT,INTEGER;
 Symbol: WAKEUP_REFERENCE,[(PROCESS_IDENT,CODE_PATH)];
@@ -188,28 +188,25 @@ Symbol: MANIFEST_PAIR,[(MANIFEST_LABEL,MANIFEST_SPEC)];
 Symbol: MANIFEST,[+MANIFEST_PAIR];         configuration template to be filled out for the installation of a receptor
 Symbol: RECEPTOR_IDENTIFIER,INTEGER;      uuid that identifies receptors
 Symbol: RECEPTOR_PACKAGE,[(MANIFEST,RECEPTOR_IDENTIFIER,DEFINITIONS)];
-Symbol: INSTALLED_RECEPTOR,TREE;          contains the installed receptor as well as state information (enabled,disabled_ID, etc..)
 Symbol: BINDING_PAIR,[(MANIFEST_LABEL,!)];                a pair that matches a MANIFEST_LABEL with a given binding
 Symbol: BINDINGS,[+BINDING_PAIR];                    specifics that match a MANIFEST and allow a receptor to be installed
 
 Symbol: RECEPTOR_ELAPSED_TIME,INTEGER;
-Symbol: RECEPTOR_STATE,[(?RECEPTOR_ELAPSED_TIME)];
 Symbol: RECEPTOR_LABEL,CSTRING;
 Structure: RECEPTOR_IDENTITY,RECEPTOR_LABEL,RECEPTOR_IDENTIFIER; placeholder structure for compository identifier
 
-Structure: RECEPTOR_DEFINITION,DEFINITIONS,FLUX,RECEPTOR_STATE,PENDING_SIGNALS,PENDING_RESPONSES;  this is the strucure of the tree part of the RECEPTOR structure other stuff like the current processing state and such are hidden in there.  @todo rationalize this.
+Symbol: RECEPTOR_DEFINITION,[(RECEPTOR_LABEL,DEFINITIONS)];
 Symbol: RECEPTORS,[*RECEPTOR_DEFINITION];
+
+Symbol: RECEPTOR_STATE,[(FLUX,PENDING_SIGNALS,PENDING_RESPONSES,RECEPTOR_ELAPSED_TIME)];
+Symbol: PARENT_CONTEXT_NUM,INTEGER;        identifies the semantic context of a receptors parent
+Symbol: CONTEXT_NUM,INTEGER;               identifies the semantic context of a receptor
+Symbol: RECEPTOR_INSTANCE,[(CONTEXT_NUM,PARENT_CONTEXT_NUM,RECEPTOR_STATE)];
 
 Symbol: SERIALIZED_RECEPTOR,BLOB;
 
-Symbol: VM_HOST_RECEPTOR,RECEPTOR;
-Symbol: DEV_SANDBOX,RECEPTOR;
-Symbol: TEST_SANDBOX,RECEPTOR;
-
 Symbol: ACTIVE_RECEPTORS,[*RECEPTOR_XADDR];
-Symbol: VM_HOST_STATE,[(ACTIVE_RECEPTORS)];
-Symbol: CLOCK_RECEPTOR,RECEPTOR;
-Symbol: COMPOSITORY,RECEPTOR;         receptor that holds available receptor packages for installation
+Symbol: SYS_STATE,[(ACTIVE_RECEPTORS)];
 
 Symbol: YEAR,INTEGER;
 Symbol: MONTH,INTEGER;
@@ -223,7 +220,6 @@ Symbol: TODAY,DATE;
 Symbol: NOW,TIME;
 Structure: TIMESTAMP,TODAY,NOW;
 Symbol: TICK,TIMESTAMP;
-Symbol: CLOCK_TELL_TIME,NULL_STRUCTURE;
 
 Symbol: ERROR_LOCATION,TREE_PATH;
 Structure: REDUCTION_ERROR,ERROR_LOCATION;
@@ -255,7 +251,7 @@ Process: LISTEN,"plant a listener","error",SIGNATURE_SYMBOL,REDUCTION_ERROR_SYMB
 
 Process: RESPOND,"respond to signal","response id",SIGNATURE_SYMBOL,SIGNAL_UUID,"respond on",SIGNATURE_SYMBOL,CARRIER,"response contents",SIGNATURE_ANY,NULL_STRUCTURE,0;
 Process: QUOTE,"quote a process so that it can be passed as a value","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"process",SIGNATURE_PROCESS,NULL_PROCESS,0;
-Process: INTERPOLATE_FROM_MATCH,"interploate match result in place","result",SIGNATURE_STRUCTURE,TREE,0;
+Process: INTERPOLATE_FROM_MATCH,"interploate match result in place","result",SIGNATURE_ANY,NULL_STRUCTURE,0;
 Process: RAISE,"raise reduction error","result",SIGNATURE_STRUCTURE,NULL_STRUCTURE,"error",SIGNATURE_SYMBOL,REDUCTION_ERROR_SYMBOL,0;   this process doesn't really return anything, because it triggers the handler for the error in the "error" parameter
 Process: STREAM_READ,"read from a stream","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"stream",SIGNATURE_STRUCTURE,STREAM,"into",SIGNATURE_SYMBOL,RESULT_SYMBOL,0;  the data on the stream will appear as the surface of the symbol type given by the "into" param. Clearly this could get ugly as there is no semantic checking that that's ok...
 Process: STREAM_WRITE,"write to a stream","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"stream",SIGNATURE_STRUCTURE,STREAM,"what",SIGNATURE_ANY,NULL_STRUCTURE,0;
@@ -312,11 +308,12 @@ Structure: TREE_DELTA,TREE_DELTA_PATH,TREE_DELTA_VALUE,TREE_DELTA_COUNT;
 Symbol: TREE_DELTA_ADD,TREE_DELTA;
 Symbol: TREE_DELTA_REPLACE,TREE_DELTA;
 
+########################################################################################
+Context: COMPOSITORY;
+
 
 ########################################################################################
-Context: LOCAL;
-
-Symbol: LINE,CSTRING;                           text lines from unix streams
+Context: DEV_COMPOSITORY;
 
 #defs for shell receptor
 Symbol: VERB,CSTRING;
@@ -331,11 +328,24 @@ Symbol: TEST_INT_SYMBOL,INTEGER;
 Symbol: TEST_INT_SYMBOL2,INTEGER;
 Symbol: TEST_FLOAT_SYMBOL,FLOAT;
 Symbol: TEST_STR_SYMBOL,CSTRING;
-Symbol: TEST_TREE_SYMBOL,TREE;
-Symbol: TEST_TREE_SYMBOL2,TREE;
+Symbol: TEST_TREE_SYMBOL,TREE;      an orthogonal tree
+Symbol: TEST_ANYTHING_SYMBOL,[!];   used to build trees in testing of unknown structure
+Symbol: TEST_ANYTHING_SYMBOL2,[!];
 Symbol: TEST_STREAM_SYMBOL,STREAM;
 Symbol: TEST_NAME_SYMBOL,CSTRING;
-Symbol: TEST_RECEPTOR_SYMBOL,RECEPTOR;
 Symbol: TEST_ALPHABETIZE_SCAPE_SYMBOL,SCAPE;
 Symbol: TEST_SYMBOL_SYMBOL,SYMBOL;
 Symbol: TESTING,SYMBOL;
+
+########################################################################################
+Context: CLOCK;
+
+Symbol: CLOCK_TELL_TIME,NULL_STRUCTURE;
+
+########################################################################################
+Context: STREAM_READER;
+
+Symbol: LINE,CSTRING;                           text lines from unix streams
+
+########################################################################################
+Context: STREAM_WRITER;

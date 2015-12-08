@@ -21,7 +21,9 @@
 // @todo figure out a better way to handle this... like put defs like these
 // into the symbol gen code (talk about a semantic muddle! If only I had ceptr...)
 // Note, that I tried that and it's hard!
-enum {ReceptorDefsIdx=1,ReceptorFluxIdx,ReceptorStateIdx,ReceptorPendingSignalsIdx,ReceptorPendingResponsesIdx};
+enum {ReceptorInstanceContextNumIdx=1,ReceptorInstanceParentContextIdx,ReceptorInstanceStateIdx};
+enum {ReceptorDefinitionLabelIdx=1,ReceptorDefinitionDefsIdx};
+enum {ReceptorFluxIdx=1,ReceptorPendingSignalsIdx,ReceptorPendingResponsesIdx,ReceptorElapsedTimeIdx};
 enum {EnvelopeFromIdx=1,EnvelopeToIdx,EnvelopeAspectIdx,EnvelopeCarrierIdx,EnvelopeUUIDIdx,EnvelopeExtraIdx};
 enum {SignalEnvelopeIdx=1,SignalBodyIdx};
 enum {PendingResponseUUIDIdx=1,PendingResponseCarrierIdx,PendingResponseWakeupIdx,PendingResponseEndCondsIdx};
@@ -67,6 +69,8 @@ Protocol _d_define_protocol(SemTable *sem,T *def,Context c);
 T *_d_make_protocol_def(SemTable *sem,char *label,...);
 T * _d_build_def_semtrex(SemTable *sem,Symbol s,T *parent);
 size_t _sys_structure_size(int id,void *surface);
+SemanticID _d_define_receptor(SemTable *sem,char *label,T *def,Context c);
+Context _d_get_receptor_context(SemTable *sem,SemanticID r);
 
 enum{NO_INDENT=0,INDENT=-1};
 #define t2s(t) _t2s(G_sem,t)
@@ -81,7 +85,7 @@ char * __t_dump(SemTable *sem,T *t,int level,char *buf);
 #define _d_get_symbol_def(symbols,s) _d_get_def(symbols,s)
 #define _d_get_structure_def(structures,s) _d_get_def(structures,s)
 
-#define spec_is_sem_equal(got, expected) spec_total++; if (semeq(expected,got)){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %d.%d.%d but was %d.%d.%d",__FUNCTION__,__LINE__,#got,(expected).semtype,(expected).context,(expected).id,(got).semtype,(got).context,(got).id);}
+#define spec_is_sem_equal(got, expected) spec_total++; if (semeq(expected,got)){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %d.%d.%d but was %d.%d.%d",__FUNCTION__,__LINE__,#got,(expected).context,(expected).semtype,(expected).id,(got).context,(got).semtype,(got).id);}
 
 void def_sys();
 void sys_free();

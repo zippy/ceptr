@@ -24,7 +24,8 @@ enum {noDeliveryErr};
 
 /******************  create and destroy receptors */
 T *__r_make_definitions();
-Receptor *_r_new(SemTable *st,Symbol s);
+T *_r_make_state();
+Receptor *_r_new(SemTable *sem,SemanticID r);
 Receptor *_r_new_receptor_from_package(SemTable *st,Symbol s,T *p,T *bindings);
 T *__r_build_expectation(Symbol carrier,T *pattern,T *action,T *with,T *until);
 void _r_add_expectation(Receptor *r,Aspect aspect,Symbol carrier,T *pattern,T *action,T *with,T *until);
@@ -33,8 +34,6 @@ void _r_remove_expectation(Receptor *r,T *expectation);
 void _r_free(Receptor *r);
 
 /*****************  receptor symbols, structures, and processes */
-void _set_label_for_def(Receptor *r,char *label,SemanticID s);
-void __set_label_for_def(LabelTable *table,char *label,T *def);
 
 Symbol _r_define_symbol(Receptor *r,Structure s,char *label);
 SemanticID _r_get_sem_by_label(Receptor *r,char *label);
@@ -57,7 +56,7 @@ TreeHash _r_hash(Receptor *r,Xaddr t);
 
 /******************  receptor serialization */
 void _r_serialize(Receptor *r,void **surfaceP,size_t *lengthP);
-Receptor * _r_unserialize(void *surface);
+Receptor * _r_unserialize(SemTable *sem,void *surface);
 
 /******************  receptor signaling */
 T *__r_make_addr(T *parent,Symbol type,ReceptorAddress addr);
@@ -98,9 +97,10 @@ Xaddr G_null_xaddr;
 #define spec_is_xaddr_equal(r,got,expected)  spec_total++; if (is_xaddr_eq(got,expected)){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %s.%d but was %s.%d",__FUNCTION__,__LINE__,#got,!is_null_symbol(expected.symbol)?_r_get_symbol_name(r,expected.symbol):"0",expected.addr,!is_null_symbol(got.symbol) ? _r_get_symbol_name(r,got.symbol):"0",got.addr);}
 
 /*****************  Built-in core and edge receptors */
-Receptor *_r_makeStreamReaderReceptor(SemTable *sem,Symbol receptor_symbol,Symbol stream_symbol,Stream *stream,ReceptorAddress to);
-Receptor *_r_makeStreamWriterReceptor(SemTable *sem,Symbol receptor_symbol,Symbol stream_symbol,Stream *stream);
-Receptor *_r_makeClockReceptor(SemTable *sem);
+Receptor *_r_makeStreamReaderReceptor(SemTable *sem,Symbol stream_symbol,Stream *stream,ReceptorAddress to);
+Receptor *_r_makeStreamWriterReceptor(SemTable *sem,Symbol stream_symbol,Stream *stream);
+void _r_defineClockReceptor(SemTable *sem);
+Receptor *_r_makeClockReceptor(SemTable *st);
 void *___clock_thread(void *arg);
 #define __r_make_tick() __r_make_timestamp(TICK,00)
 T *__r_make_timestamp(Symbol s,int delta);

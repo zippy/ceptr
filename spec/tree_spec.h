@@ -48,15 +48,15 @@ void testCreateTreeNodes() {
     spec_is_ptr_equal(_t_next_sibling(t2),t3);
     spec_is_ptr_equal(_t_next_sibling(t3),NULL);
 
-    t4 = _t_new_root(TEST_TREE_SYMBOL);
+    t4 = _t_new_root(TEST_ANYTHING_SYMBOL);
     _t_add(t,t4);
     spec_is_equal(_t_children(t),4);
     spec_is_ptr_equal(_t_child(t,4),t4);
 
-    t5 = _t_newr(t4,TEST_TREE_SYMBOL2);
+    t5 = _t_newr(t4,TEST_ANYTHING_SYMBOL2);
     spec_is_ptr_equal(_t_parent(t5),t4);
     spec_is_long_equal(_t_size(t5),(long)0);
-    spec_is_symbol_equal(0,_t_symbol(t5),TEST_TREE_SYMBOL2);
+    spec_is_symbol_equal(0,_t_symbol(t5),TEST_ANYTHING_SYMBOL2);
 
     _t_detach_by_ptr(t,t3);
     _t_free(t3);  // detatch doesn't free the memory of the removed node
@@ -79,14 +79,14 @@ void testTreeNewReceptor() {
     // @fixme this is really a bogus test, because why would a TEST_INT have a receptor as a child?
     // we should make this a rational test
 
-    T *t = _t_newi(0,TEST_INT_SYMBOL,0);
-    Receptor *r = _r_new(G_sem,TEST_RECEPTOR_SYMBOL);
-    T *tr = _t_new_receptor(t,TEST_RECEPTOR_SYMBOL,r);
+    T *t = _t_new_root(TEST_ANYTHING_SYMBOL);
+    Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
+    T *tr = _t_new_receptor(t,TEST_RECEPTOR,r);
 
     spec_is_ptr_equal(_t_surface(tr),r);
     spec_is_true(!(tr->context.flags & TFLAG_ALLOCATED));
 
-    spec_is_str_equal(t2s(t),"(TEST_INT_SYMBOL:0 (TEST_RECEPTOR_SYMBOL:{(TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES) (ASPECTS)) (FLUX (DEFAULT_ASPECT (EXPECTATIONS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))}))");
+    spec_is_str_equal(t2s(t),"(TEST_ANYTHING_SYMBOL (TEST_RECEPTOR:{(RECEPTOR_INSTANCE (CONTEXT_NUM:3) (PARENT_CONTEXT_NUM:0) (RECEPTOR_STATE (FLUX (DEFAULT_ASPECT (EXPECTATIONS) (SIGNALS))) (PENDING_SIGNALS) (PENDING_RESPONSES) (RECEPTOR_ELAPSED_TIME:0)))}))");
 
     _t_free(t); // note, no need to free the receptor explicitly, as _t_free knows about it
     //! [testTreeNewReceptor]
@@ -130,14 +130,14 @@ void testTreeStream() {
 }
 
 void testTreeOrthogonal() {
-    T *t = _t_newi(0,TEST_INT_SYMBOL,1234);
+    T *t = _t_new_root(TEST_ANYTHING_SYMBOL);
     T *t2 = _t_newi(0,TEST_INT_SYMBOL2,99);
     T *o = _t_newt(t,TEST_TREE_SYMBOL,t2);
 
-    spec_is_str_equal(t2s(t),"(TEST_INT_SYMBOL:1234 (TEST_TREE_SYMBOL:{(TEST_INT_SYMBOL2:99)}))");
+    spec_is_str_equal(t2s(t),"(TEST_ANYTHING_SYMBOL (TEST_TREE_SYMBOL:{(TEST_INT_SYMBOL2:99)}))");
 
     T *tc = _t_clone(t);
-    spec_is_str_equal(t2s(tc),"(TEST_INT_SYMBOL:1234 (TEST_TREE_SYMBOL:{(TEST_INT_SYMBOL2:99)}))");
+    spec_is_str_equal(t2s(tc),"(TEST_ANYTHING_SYMBOL (TEST_TREE_SYMBOL:{(TEST_INT_SYMBOL2:99)}))");
 
     _t_free(t);
     _t_free(tc);
@@ -488,7 +488,7 @@ void testTreeSerialize() {
 
     size_t l;
     void *surface,*s;
-    G_d = &test_HTTP_defs;
+
     _t_serialize(G_sem,t,&surface,&l);
     s = surface;
     t1 = _t_unserialize(G_sem,&surface,&l,0);

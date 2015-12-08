@@ -16,12 +16,12 @@
 /*
 Receptor *_makeTokenAuthProtocolReceptor() {
     Receptor *r;
-    r = _r_new(TEST_RECEPTOR_SYMBOL);
-    Symbol token_auth = _r_declare_symbol(r,PROTOCOL_DEF,"authorizing");
-    Symbol token = _r_declare_symbol(r,INTEGER,"token");
-    Symbol authenticator = _r_declare_symbol(r,RECEPTOR_ADDRESS,"authenticator");
-    Symbol authenticatee = _r_declare_symbol(r,RECEPTOR_ADDRESS,"authenticatee");
-    Symbol verifier = _r_declare_symbol(r,RECEPTOR_ADDRESS,"verifier");
+    r = _r_new(TEST_RECEPTOR);
+    Symbol token_auth = _r_define_symbol(r,PROTOCOL_DEF,"authorizing");
+    Symbol token = _r_define_symbol(r,INTEGER,"token");
+    Symbol authenticator = _r_define_symbol(r,RECEPTOR_ADDRESS,"authenticator");
+    Symbol authenticatee = _r_define_symbol(r,RECEPTOR_ADDRESS,"authenticatee");
+    Symbol verifier = _r_define_symbol(r,RECEPTOR_ADDRESS,"verifier");
 
     e1 = {
         let t = new_token;
@@ -83,20 +83,19 @@ _o_new(r,following,"following"  //watching tuning-into listening
 
 */
 Receptor *makeGroup(VMHost *v,char *label) {
-    Symbol group = _r_declare_symbol(v->r,RECEPTOR,label);
-    raise_error("fix semtable");
-    Receptor *r = _r_new(NULL,group);
+    SemTable *sem = v->r->sem;
+    Symbol group = _r_define_symbol(v->r,RECEPTOR,label);
+    Receptor *r = _r_new(sem,group);
     /* Xaddr groupx = _v_new_receptor(v,v->r,group,r); */
 
-    /* Symbol channel_addr = _r_declare_symbol(r,RECEPTOR_ADDRESS,"channel"); */
-    /* Symbol member =  _r_declare_symbol(r,RECEPTOR_ADDRESS,"member"); */
-    /* Symbol group_addr = _r_declare_symbol(r,RECEPTOR_ADDRESS,"group"); */
-    /* Symbol proxy_addr = _r_declare_symbol(r,RECEPTOR_ADDRESS,"proxy"); */
-    /* Symbol talking = _r_declare_symbol(r,PROTOCOL_DEF,"talking"); */
-    /* //    Symbol create = _r_declare_symbol(r,NULL_STRUCTURE,"create"); */
-    /* Symbol join = _r_declare_symbol(r,NULL_STRUCTURE,"talking join"); */
-    /* Symbol read = _r_declare_symbol(r,NULL_STRUCTURE,"talking read"); */
-    /* Symbol post_id = _r_declare_symbol(r,INTEGER,"post_id"); */
+    /* Symbol channel_addr = _r_define_symbol(r,RECEPTOR_ADDRESS,"channel"); */
+    /* Symbol member =  _r_define_symbol(r,RECEPTOR_ADDRESS,"member"); */
+    /* Symbol group_addr = _r_define_symbol(r,RECEPTOR_ADDRESS,"group"); */
+    /* Symbol proxy_addr = _r_define_symbol(r,RECEPTOR_ADDRESS,"proxy"); */
+    /* //    Symbol create = _r_define_symbol(r,NULL_STRUCTURE,"create"); */
+    /* Symbol join = _r_define_symbol(r,NULL_STRUCTURE,"talking join"); */
+    /* Symbol read = _r_define_symbol(r,NULL_STRUCTURE,"talking read"); */
+    /* Symbol post_id = _r_define_symbol(r,INTEGER,"post_id"); */
 
     /* T *e_join,*e_sub,*e_crud,*e_act; */
     /* T *g_d = _o_new(r,group,talking, */

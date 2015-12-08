@@ -235,9 +235,9 @@ void testMTreeOrthogonal() {
 }
 
 void testMTreeReceptor() {
-    Receptor *r = _r_new(G_sem,TEST_RECEPTOR_SYMBOL);
+    Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
     T *t = _t_newi(0,TEST_INT_SYMBOL,0);
-    T *tr = _t_new_receptor(t,TEST_RECEPTOR_SYMBOL,r);
+    T *tr = _t_new_receptor(t,TEST_RECEPTOR,r);
 
     H hr = _m_new_from_t(tr);
 
@@ -245,7 +245,7 @@ void testMTreeReceptor() {
     spec_is_ptr_equal(*(Receptor **)_m_surface(hr),r);
     spec_is_ptr_equal(_t_surface(t2),r);
 
-    spec_is_str_equal(t2s(t2),"(TEST_RECEPTOR_SYMBOL:{(TEST_RECEPTOR_SYMBOL (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES) (ASPECTS)) (FLUX (DEFAULT_ASPECT (EXPECTATIONS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))})");
+    spec_is_str_equal(t2s(t2),"(TEST_RECEPTOR:{(RECEPTOR_INSTANCE (CONTEXT_NUM:3) (PARENT_CONTEXT_NUM:0) (RECEPTOR_STATE (FLUX (DEFAULT_ASPECT (EXPECTATIONS) (SIGNALS))) (PENDING_SIGNALS) (PENDING_RESPONSES) (RECEPTOR_ELAPSED_TIME:0)))})");
 
     _t_free(t);
     _t_free(t2);
@@ -314,11 +314,11 @@ void testTreeConvert() {
 
     h = _m_new_from_t(t);
     _t_free(t);
-     t = _t_new_from_m(h);
-    Defs defs;
+    t = _t_new_from_m(h);
+
     spec_is_str_equal(t2s(t),"(RUN_TREE (process:ADD_INT (TEST_INT_SYMBOL:99) (TEST_INT_SYMBOL:100)))");
     debug_enable(D_REDUCE+D_REDUCEV);
-    _p_reduce(G_sem,&defs,t);
+    _p_reduce(G_sem,t);
     debug_disable(D_REDUCE+D_REDUCEV);
     spec_is_str_equal(t2s(t),"(RUN_TREE (TEST_INT_SYMBOL:199))");
 
@@ -355,12 +355,12 @@ void testMTreeSerialize() {
     writeFile("web/test.cmt",s,s->total_size);
     _m_free(h);free(s);
 
-    h = _m_new_from_t(test_HTTP_defs.structures);
+    h = _m_new_from_t(__sem_get_defs(HTTP_receptor->sem,SEM_TYPE_STRUCTURE,HTTP_receptor->context));
     s = _m_serialize(h.m);
     writeFile("web/httpstructures.cmt",s,s->total_size);
     _m_free(h);free(s);
 
-    h = _m_new_from_t(test_HTTP_defs.symbols);
+    h = _m_new_from_t(__sem_get_defs(HTTP_receptor->sem,SEM_TYPE_SYMBOL,HTTP_receptor->context));
     s = _m_serialize(h.m);
     writeFile("web/httpsymbols.cmt",s,s->total_size);
     _m_free(h);free(s);

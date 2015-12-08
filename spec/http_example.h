@@ -52,9 +52,6 @@ Symbol STATUS_TEXT;
 
 Receptor *HTTP_receptor;
 
-T *test_HTTP_symbols,*test_HTTP_structures;
-Defs test_HTTP_defs;
-
 void _setup_version_defs(Receptor *r) {
     SY(r,VERSION_MAJOR,INTEGER);
     SY(r,VERSION_MINOR,INTEGER);
@@ -182,11 +179,7 @@ void _setup_html_defs(Receptor *r) {
 }
 
 void _setup_HTTPDefs() {
-    Receptor *r = HTTP_receptor = _r_new(G_sem,TEST_RECEPTOR_SYMBOL);
-
-    test_HTTP_defs = HTTP_receptor->defs;
-    test_HTTP_symbols = test_HTTP_defs.symbols;
-    test_HTTP_structures = test_HTTP_defs.structures;
+    Receptor *r = HTTP_receptor = _r_new(G_sem,TEST_RECEPTOR);
 
     SY(r,OCTET_STREAM,CSTRING);
 

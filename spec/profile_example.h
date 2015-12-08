@@ -14,8 +14,7 @@
 #include "spec_utils.h"
 
 Receptor *test_profile_receptor;
-T *test_profile_symbols,*test_profile_structures;
-Defs test_profile_defs;
+
 Symbol FIRST_NAME;
 Symbol LAST_NAME;
 Structure NAME;
@@ -36,10 +35,7 @@ Symbol USER_PROFILE;
 Symbol MAILING_LABEL;
 
 void _setupProfileDefs() {
-    Receptor *r = test_profile_receptor = _r_new(G_sem,TEST_RECEPTOR_SYMBOL);
-    test_profile_defs = test_profile_receptor->defs;
-    test_profile_symbols = test_profile_defs.symbols;
-    test_profile_structures = test_profile_defs.structures;
+    Receptor *r = test_profile_receptor = _r_new(G_sem,TEST_RECEPTOR);
 
     SY(r,FIRST_NAME,CSTRING);
     SY(r,LAST_NAME,CSTRING);
@@ -103,7 +99,7 @@ void testProfileExample() {
                                       "the_profile",SIGNATURE_STRUCTURE,PROFILE,
                                       NULL);
 
-    T *processes = __sem_get_defs(sem,SEM_TYPE_PROCESS,test_profile_receptor->addr);
+    T *processes = __sem_get_defs(sem,SEM_TYPE_PROCESS,test_profile_receptor->context);
 
     T *code = _t_new_root(CONCAT_STR);
 
@@ -133,7 +129,7 @@ void testProfileExample() {
 
     //    _t_new(code,PARAM_REF,pt2,sizeof(int)*4);
 
-    Process p = _d_define_process(sem,code,"profileToMailingLabel","given a profile produce a mailing label",signature,test_profile_receptor->addr);
+    Process p = _d_define_process(sem,code,"profileToMailingLabel","given a profile produce a mailing label",signature,test_profile_receptor->context);
 
     T *act = _t_newp(0,ACTION,p);
 
@@ -143,7 +139,7 @@ void testProfileExample() {
     //    spec_is_str_equal(_t2s(&test_profile_defs,r),"");
 
     startVisdump("profile");
-    spec_is_equal(_p_reduce(sem,&test_profile_defs,r),noReductionErr);
+    spec_is_equal(_p_reduce(sem,r),noReductionErr);
     int pt[] = {TREE_PATH_TERMINATOR};
 
     _visdump(sem,_t_child(r,1),pt);

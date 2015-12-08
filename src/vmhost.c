@@ -19,6 +19,7 @@ VMHost *__v_init(Receptor *r,SemTable *sem) {
     VMHost *v = malloc(sizeof(VMHost));
     v->r = r;
     v->active_receptor_count = 0;
+    v->receptor_count = 0;
     v->installed_receptors = _s_new(RECEPTOR_IDENTIFIER,RECEPTOR);
     v->vm_thread.state = 0;
     v->clock_thread.state = 0;
@@ -39,22 +40,23 @@ VMHost *__v_init(Receptor *r,SemTable *sem) {
 VMHost * _v_new() {
     SemTable *sem = _sem_new();
 
-    Receptor *r = _r_new(sem,VM_HOST_RECEPTOR);
+    base_contexts(sem);
+    base_defs(sem);
 
+    Receptor *r = _r_new(sem,SYS_RECEPTOR);
     VMHost *v = __v_init(r,sem);
 
     r = _r_new(sem,COMPOSITORY);
     _v_new_receptor(v,v->r,COMPOSITORY,r);
 
-    r = _r_new(sem,DEV_SANDBOX);
-    _v_new_receptor(v,v->r,DEV_SANDBOX,r);
+    r = _r_new(sem,DEV_COMPOSITORY);
+    _v_new_receptor(v,v->r,DEV_COMPOSITORY,r);
 
-    r = _r_new(sem,TEST_SANDBOX);
-    _v_new_receptor(v,v->r,TEST_SANDBOX,r);
+    r = _r_new(sem,TEST_RECEPTOR);
+    _v_new_receptor(v,v->r,TEST_RECEPTOR,r);
 
-    base_sys_defs(sem);
-    base_local_defs(sem);
-    base_test_defs(sem);
+    _r_defineClockReceptor(sem);
+
 
     return v;
 }
@@ -143,11 +145,17 @@ Xaddr _v_install_r(VMHost *v,Xaddr package,T *bindings,char *label) {
 }
 
 Xaddr _v_new_receptor(VMHost *v,Receptor *parent,Symbol s, Receptor *r) {
-    T *ir = _t_new_root(INSTALLED_RECEPTOR);
-    _t_new_receptor(ir,s,r);
+    T *t = _t_new_receptor(NULL,s,r);
+    if (v->receptor_count+1 >= MAX_RECEPTORS) {
+        raise_error("too many receptors");
+    }
+    int c = v->receptor_count++;
+    v->routing_table[c]=r;
+    r->addr.addr = c;
+
     //@todo what ever else is needed at the vmhost level to add the receptor's
     // process queue to the process tables etc...
-    return _r_new_instance(parent,ir);
+    return _r_new_instance(parent,t);
 }
 
 /**
@@ -168,7 +176,7 @@ void _v_activate(VMHost *v, Xaddr x) {
     v->active_receptors[c].x=x;
 
     // handle special cases
-    if (semeq(_t_symbol(r->root),CLOCK_RECEPTOR)) {
+    if (semeq(x.symbol,CLOCK_RECEPTOR)) {
         _v_start_thread(&v->clock_thread,___clock_thread,r);
     }
 }
@@ -200,8 +208,9 @@ void _v_send_signals(VMHost *v,T *signals) {
 // we just loop through all instances searching for a match
 Xaddr __v_get_receptor_xaddr(Instances *instances,Receptor *r) {
     instances_elem *e = 0;
-    Xaddr result = {INSTALLED_RECEPTOR,0};
-    HASH_FIND_INT( *instances, &INSTALLED_RECEPTOR, e );
+    SemanticID sid = {r->parent,SEM_TYPE_RECEPTOR,r->context};
+    Xaddr result = {sid,0};
+    HASH_FIND_INT( *instances, &sid, e );
     if (e) {
         Instance *iP = &e->instances;
 
@@ -212,7 +221,6 @@ Xaddr __v_get_receptor_xaddr(Instances *instances,Receptor *r) {
                 return result;
             }
         }
-
     }
     return result;
 }
@@ -222,8 +230,6 @@ Xaddr __v_get_receptor_xaddr(Instances *instances,Receptor *r) {
  */
 void _v_deliver_signals(VMHost *v, Receptor *sender) {
     T *signals = sender->pending_signals;
-
-    Instances *receptor_instances = &v->r->instances;
 
     while(_t_children(signals)>0) {
         T *s = _t_detach_by_idx(signals,1);
@@ -235,18 +241,22 @@ void _v_deliver_signals(VMHost *v, Receptor *sender) {
         // if the from or to address is "self" (0) we do a reverse lookup and
         // fix the values in the signal we are about to deliver.
 
-        if (*fromP == 0) {
-            *fromP = __v_get_receptor_xaddr(receptor_instances,sender).addr;
+        if (fromP->addr == 0) {
+            raise_error("self broken - from");
+            //      *fromP = __v_get_receptor_xaddr(receptor_instances,sender).addr;
         }
 
         Receptor *r;
-        if (*toP == 0) {
+        if (toP->addr == 0) {
+            raise_error("self broken - to");
             r = sender;
-            *toP = __v_get_receptor_xaddr(receptor_instances,r).addr;
+            //      *toP = __v_get_receptor_xaddr(receptor_instances,r).addr;
         }
         else  {
-            Xaddr t = {INSTALLED_RECEPTOR,*toP};
-            r = __r_get_receptor(_a_get_instance(receptor_instances,t));
+            if (toP->addr >= v->receptor_count) {
+                raise_error("to address: %d doesn't exist!",toP->addr);
+            }
+            r = v->routing_table[toP->addr];
         }
 
         Error err = _r_deliver(r,s);
@@ -285,7 +295,7 @@ void *__v_process(void *arg) {
             _v_deliver_signals(v,r);
 
             // cleanup any fully reduced run-trees
-            if (r->q->completed) _p_cleanup(r->q,_t_child(r->root,ReceptorStateIdx));
+            if (r->q->completed) _p_cleanup(r->q);
         }
     }
 

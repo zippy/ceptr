@@ -296,8 +296,8 @@ void testMatchStar() {
     //    _t_free(r);
 
     T *signal_contents = _t_newi(0,TEST_INT_SYMBOL,314);
-    ReceptorAddress fr = 3; // DUMMY ADDR
-    ReceptorAddress to = 4; // DUMMY ADDR
+    ReceptorAddress fr = {3}; // DUMMY ADDR
+    ReceptorAddress to = {4}; // DUMMY ADDR
     T *sig = __r_make_signal(fr,to,DEFAULT_ASPECT,TESTING,signal_contents,0,0);
     T *sig2 = _t_clone(sig);
     _t_add(t,sig);
@@ -328,8 +328,8 @@ void testMatchPlus() {
     spec_is_false(_t_matchr(s,t,&r));
 
     T *signal_contents = _t_newi(0,TEST_INT_SYMBOL,314);
-    ReceptorAddress fr = 3; // DUMMY ADDR
-    ReceptorAddress to = 4; // DUMMY ADDR
+    ReceptorAddress fr = {3}; // DUMMY ADDR
+    ReceptorAddress to = {4}; // DUMMY ADDR
     T *sig = __r_make_signal(fr,to,DEFAULT_ASPECT,TESTING,signal_contents,0,0);
     T *sig2 = _t_clone(sig);
     _t_add(t,sig);
@@ -364,8 +364,8 @@ void testMatchQ() {
     //    _t_free(r);
 
     T *signal_contents = _t_newi(0,TEST_INT_SYMBOL,314);
-    ReceptorAddress fr = 3; // DUMMY ADDR
-    ReceptorAddress to = 4; // DUMMY ADDR
+    ReceptorAddress fr = {3}; // DUMMY ADDR
+    ReceptorAddress to = {4}; // DUMMY ADDR
     T *sig = __r_make_signal(fr,to,DEFAULT_ASPECT,TESTING,signal_contents,0,0);
     T *sig2 = _t_clone(sig);
     _t_add(t,sig);
@@ -724,7 +724,6 @@ void testMatchNot() {
 void testSemtrexDump() {
     T *s = _makeTestSemtrex1();
     char buf[2000];
-    Defs d = {0,0,0,0};
 
     spec_is_str_equal(_dump_semtrex(G_sem,s,buf),"/TEST_STR_SYMBOL/(sy1/sy11/sy111,sy2,sy3)");
     _t_free(s);
@@ -865,7 +864,7 @@ void testSemtrexParseHHTPReq() {
     spec_is_str_equal(stxs,buf);
 
     spec_is_str_equal(buf,"/ASCII_CHARS/<HTTP_REQUEST:<HTTP_REQUEST_METHOD:ASCII_CHAR!=' '+>,ASCII_CHAR=' ',<HTTP_REQUEST_PATH:<HTTP_REQUEST_PATH_SEGMENTS:(ASCII_CHAR='/',<HTTP_REQUEST_PATH_SEGMENT:ASCII_CHAR!={'/','?',' '}*>)+>>,(ASCII_CHAR='?',<HTTP_REQUEST_PATH_QUERY:<HTTP_REQUEST_PATH_QUERY_PARAMS:(<HTTP_REQUEST_PATH_QUERY_PARAM:<PARAM_KEY:ASCII_CHAR!={'&',' ','='}+>,ASCII_CHAR='=',<PARAM_VALUE:ASCII_CHAR!={'&',' '}*>>,ASCII_CHAR='&'?)+>+>)?,ASCII_CHAR=' ',ASCII_CHAR='H',ASCII_CHAR='T',ASCII_CHAR='T',ASCII_CHAR='P',ASCII_CHAR='/',<HTTP_REQUEST_VERSION:<VERSION_MAJOR:ASCII_CHAR='0'>,ASCII_CHAR='.',<VERSION_MINOR:ASCII_CHAR='9'>>>");
-    //G_d = &test_HTTP_defs;
+
     //debug_enable(D_STX_MATCH);
     spec_is_true(_t_matchr(stx,s,&r));
     //debug_disable(D_STX_MATCH);

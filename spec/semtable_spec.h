@@ -40,8 +40,17 @@ testSemGetSymbolStructure() {
     //! [testSemGetSymbolStructure]
 }
 
+testSemGetByLabel() {
+    //! [testSemGetByLabel]
+    SemanticID s = _sem_get_by_label(G_sem,"DEFINITIONS",SYS_CONTEXT);
+    spec_is_sem_equal(s,DEFINITIONS);
+
+    //! [testSemGetByLabel]
+}
+
 void testSemTable() {
     testSemTableCreate();
     testSemTableGetName();
     testSemGetSymbolStructure();
+    testSemGetByLabel();
 }

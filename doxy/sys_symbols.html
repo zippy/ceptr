@@ -6,8 +6,7 @@
 <tr><td><a name="PROTOCOLS"></a>PROTOCOLS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_PROTOCOL_DEFINITION">ZERO-OR-MORE-OF-PROTOCOL-DEFINITION</a></td><td></td></tr>
 <tr><td><a name="RECEPTORS"></a>RECEPTORS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_RECEPTOR_DEFINITION">ZERO-OR-MORE-OF-RECEPTOR-DEFINITION</a></td><td></td></tr>
 <tr><td><a name="SCAPES"></a>SCAPES</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_STRUCTURE_OF_SCAPE">ZERO-OR-MORE-OF-STRUCTURE-OF-SCAPE</a></td><td></td></tr>
-<tr><td><a name="ASPECTS"></a>ASPECTS</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_ASPECT_DEF">ONE-OR-MORE-OF-ASPECT-DEF</a></td><td></td></tr>
-<tr><td><a name="DEFINITIONS"></a>DEFINITIONS</td><td><a href="ref_sys_structures.html#LIST_OF_STRUCTURES_AND_SYMBOLS_AND_PROCESSES_AND_PROTOCOLS_AND_RECEPTORS_AND_ZERO_OR_MORE_OF_SCAPES_AND_ZERO_OR_MORE_OF_ASPECTS">LIST-OF-STRUCTURES-AND-SYMBOLS-AND-PROCESSES-AND-PROTOCOLS-AND-RECEPTORS-AND-ZERO-OR-MORE-OF-SCAPES-AND-ZERO-OR-MORE-OF-ASPECTS</a></td><td></td></tr>
+<tr><td><a name="DEFINITIONS"></a>DEFINITIONS</td><td><a href="ref_sys_structures.html#LIST_OF_STRUCTURES_AND_SYMBOLS_AND_PROCESSES_AND_PROTOCOLS_AND_RECEPTORS_AND_ZERO_OR_MORE_OF_SCAPES">LIST-OF-STRUCTURES-AND-SYMBOLS-AND-PROCESSES-AND-PROTOCOLS-AND-RECEPTORS-AND-ZERO-OR-MORE-OF-SCAPES</a></td><td></td></tr>
 <tr><td><a name="STRUCTURE_SYMBOL"></a>STRUCTURE_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
 <tr><td><a name="STRUCTURE_SEQUENCE"></a>STRUCTURE_SEQUENCE</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_STRUCTURE_DEF">ONE-OR-MORE-OF-STRUCTURE-DEF</a></td><td></td></tr>
 <tr><td><a name="STRUCTURE_SYMBOL_SET"></a>STRUCTURE_SYMBOL_SET</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_STRUCTURE_SYMBOL">ONE-OR-MORE-OF-STRUCTURE-SYMBOL</a></td><td></td></tr>
@@ -58,18 +57,19 @@
 <tr><td><a name="ASPECT_TYPE"></a>ASPECT_TYPE</td><td><a href="ref_sys_structures.html#BIT">BIT</a></td><td>                    really should be an enum of IN, OUT</td></tr>
 <tr><td><a name="ASPECT_LABEL"></a>ASPECT_LABEL</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
 <tr><td><a name="ASPECT_DEF"></a>ASPECT_DEF</td><td><a href="ref_sys_structures.html#TUPLE_OF_ASPECT_TYPE_AND_ASPECT_LABEL">TUPLE-OF-ASPECT-TYPE-AND-ASPECT-LABEL</a></td><td>   what else goes in the aspect definition?</td></tr>
+<tr><td><a name="ASPECTS"></a>ASPECTS</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_ASPECT_DEF">ONE-OR-MORE-OF-ASPECT-DEF</a></td><td></td></tr>
 <tr><td><a name="CARRIER"></a>CARRIER</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
 <tr><td><a name="BODY"></a>BODY</td><td><a href="ref_sys_structures.html#TREE">TREE</a></td><td>                          orthogonal tree that holds message body</td></tr>
 <tr><td><a name="SIGNAL_UUID"></a>SIGNAL_UUID</td><td><a href="ref_sys_structures.html#UUID">UUID</a></td><td></td></tr>
 <tr><td><a name="IN_RESPONSE_TO_UUID"></a>IN_RESPONSE_TO_UUID</td><td><a href="ref_sys_structures.html#UUID">UUID</a></td><td></td></tr>
-<tr><td><a name="CONTEXT_NUM"></a>CONTEXT_NUM</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td>               this a placeholder for better addressing later...</td></tr>
 <tr><td><a name="RECEPTOR_PATH"></a>RECEPTOR_PATH</td><td><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></td><td></td></tr>
+<tr><td><a name="RECEPTOR_ADDR"></a>RECEPTOR_ADDR</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
 <tr><td><a name="FROM_ADDRESS"></a>FROM_ADDRESS</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
 <tr><td><a name="TO_ADDRESS"></a>TO_ADDRESS</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
 <tr><td><a name="END_CONDITIONS"></a>END_CONDITIONS</td><td><a href="ref_sys_structures.html#TUPLE_OF_ZERO_OR_ONE_OF_TIMEOUT_AT_AND_ZERO_OR_ONE_OF_REPETITIONS">TUPLE-OF-ZERO-OR-ONE-OF-TIMEOUT-AT-AND-ZERO-OR-ONE-OF-REPETITIONS</a></td><td></td></tr>
 <tr><td><a name="ENVELOPE"></a>ENVELOPE</td><td><a href="ref_sys_structures.html#LIST_OF_FROM_ADDRESS_AND_TO_ADDRESS_AND_ASPECT_IDENT_AND_CARRIER_AND_SIGNAL_UUID_AND_ZERO_OR_ONE_OF_LOGICAL_OR_OF_END_CONDITIONS_AND_IN_RESPONSE_TO_UUID">LIST-OF-FROM-ADDRESS-AND-TO-ADDRESS-AND-ASPECT-IDENT-AND-CARRIER-AND-SIGNAL-UUID-AND-ZERO-OR-ONE-OF-LOGICAL-OR-OF-END-CONDITIONS-AND-IN-RESPONSE-TO-UUID</a></td><td></td></tr>
 <tr><td><a name="SIGNAL"></a>SIGNAL</td><td><a href="ref_sys_structures.html#TUPLE_OF_ENVELOPE_AND_BODY">TUPLE-OF-ENVELOPE-AND-BODY</a></td><td>                        a signal on the flux.  It's first child is the contents of the signal</td></tr>
-<tr><td><a name="PENDING_SIGNALS"></a>PENDING_SIGNALS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_SIGNAL">ZERO-OR-MORE-OF-SIGNAL</a></td><td>               list of signals pending to be sent by the VM_HOST</td></tr>
+<tr><td><a name="PENDING_SIGNALS"></a>PENDING_SIGNALS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_SIGNAL">ZERO-OR-MORE-OF-SIGNAL</a></td><td>               list of signals pending to be sent by the SYS_RECEPTOR</td></tr>
 <tr><td><a name="CODE_PATH"></a>CODE_PATH</td><td><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></td><td></td></tr>
 <tr><td><a name="PROCESS_IDENT"></a>PROCESS_IDENT</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
 <tr><td><a name="WAKEUP_REFERENCE"></a>WAKEUP_REFERENCE</td><td><a href="ref_sys_structures.html#TUPLE_OF_PROCESS_IDENT_AND_CODE_PATH">TUPLE-OF-PROCESS-IDENT-AND-CODE-PATH</a></td><td></td></tr>
@@ -131,20 +131,18 @@
 <tr><td><a name="MANIFEST"></a>MANIFEST</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_MANIFEST_PAIR">ONE-OR-MORE-OF-MANIFEST-PAIR</a></td><td>         configuration template to be filled out for the installation of a receptor</td></tr>
 <tr><td><a name="RECEPTOR_IDENTIFIER"></a>RECEPTOR_IDENTIFIER</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td>      uuid that identifies receptors</td></tr>
 <tr><td><a name="RECEPTOR_PACKAGE"></a>RECEPTOR_PACKAGE</td><td><a href="ref_sys_structures.html#LIST_OF_MANIFEST_AND_RECEPTOR_IDENTIFIER_AND_DEFINITIONS">LIST-OF-MANIFEST-AND-RECEPTOR-IDENTIFIER-AND-DEFINITIONS</a></td><td></td></tr>
-<tr><td><a name="INSTALLED_RECEPTOR"></a>INSTALLED_RECEPTOR</td><td><a href="ref_sys_structures.html#TREE">TREE</a></td><td>          contains the installed receptor as well as state information (enabled,disabled_ID, etc..)</td></tr>
 <tr><td><a name="BINDING_PAIR"></a>BINDING_PAIR</td><td><a href="ref_sys_structures.html#TUPLE_OF_MANIFEST_LABEL_AND_ANY_SYMBOL">TUPLE-OF-MANIFEST-LABEL-AND-ANY-SYMBOL</a></td><td>                a pair that matches a MANIFEST_LABEL with a given binding</td></tr>
 <tr><td><a name="BINDINGS"></a>BINDINGS</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_BINDING_PAIR">ONE-OR-MORE-OF-BINDING-PAIR</a></td><td>                    specifics that match a MANIFEST and allow a receptor to be installed</td></tr>
 <tr><td><a name="RECEPTOR_ELAPSED_TIME"></a>RECEPTOR_ELAPSED_TIME</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
-<tr><td><a name="RECEPTOR_STATE"></a>RECEPTOR_STATE</td><td><a href="ref_sys_structures.html#LIST_OF_ZERO_OR_ONE_OF_RECEPTOR_ELAPSED_TIME">LIST-OF-ZERO-OR-ONE-OF-RECEPTOR-ELAPSED-TIME</a></td><td></td></tr>
 <tr><td><a name="RECEPTOR_LABEL"></a>RECEPTOR_LABEL</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="RECEPTOR_DEFINITION"></a>RECEPTOR_DEFINITION</td><td><a href="ref_sys_structures.html#TUPLE_OF_RECEPTOR_LABEL_AND_DEFINITIONS">TUPLE-OF-RECEPTOR-LABEL-AND-DEFINITIONS</a></td><td></td></tr>
+<tr><td><a name="RECEPTOR_STATE"></a>RECEPTOR_STATE</td><td><a href="ref_sys_structures.html#LIST_OF_FLUX_AND_PENDING_SIGNALS_AND_PENDING_RESPONSES_AND_RECEPTOR_ELAPSED_TIME">LIST-OF-FLUX-AND-PENDING-SIGNALS-AND-PENDING-RESPONSES-AND-RECEPTOR-ELAPSED-TIME</a></td><td></td></tr>
+<tr><td><a name="PARENT_CONTEXT_NUM"></a>PARENT_CONTEXT_NUM</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td>        identifies the semantic context of a receptors parent</td></tr>
+<tr><td><a name="CONTEXT_NUM"></a>CONTEXT_NUM</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td>               identifies the semantic context of a receptor</td></tr>
+<tr><td><a name="RECEPTOR_INSTANCE"></a>RECEPTOR_INSTANCE</td><td><a href="ref_sys_structures.html#LIST_OF_CONTEXT_NUM_AND_PARENT_CONTEXT_NUM_AND_RECEPTOR_STATE">LIST-OF-CONTEXT-NUM-AND-PARENT-CONTEXT-NUM-AND-RECEPTOR-STATE</a></td><td></td></tr>
 <tr><td><a name="SERIALIZED_RECEPTOR"></a>SERIALIZED_RECEPTOR</td><td><a href="ref_sys_structures.html#BLOB">BLOB</a></td><td></td></tr>
-<tr><td><a name="VM_HOST_RECEPTOR"></a>VM_HOST_RECEPTOR</td><td><a href="ref_sys_structures.html#RECEPTOR">RECEPTOR</a></td><td></td></tr>
-<tr><td><a name="DEV_SANDBOX"></a>DEV_SANDBOX</td><td><a href="ref_sys_structures.html#RECEPTOR">RECEPTOR</a></td><td></td></tr>
-<tr><td><a name="TEST_SANDBOX"></a>TEST_SANDBOX</td><td><a href="ref_sys_structures.html#RECEPTOR">RECEPTOR</a></td><td></td></tr>
 <tr><td><a name="ACTIVE_RECEPTORS"></a>ACTIVE_RECEPTORS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_RECEPTOR_XADDR">ZERO-OR-MORE-OF-RECEPTOR-XADDR</a></td><td></td></tr>
-<tr><td><a name="VM_HOST_STATE"></a>VM_HOST_STATE</td><td><a href="ref_sys_structures.html#LIST_OF_ACTIVE_RECEPTORS">LIST-OF-ACTIVE-RECEPTORS</a></td><td></td></tr>
-<tr><td><a name="CLOCK_RECEPTOR"></a>CLOCK_RECEPTOR</td><td><a href="ref_sys_structures.html#RECEPTOR">RECEPTOR</a></td><td></td></tr>
-<tr><td><a name="COMPOSITORY"></a>COMPOSITORY</td><td><a href="ref_sys_structures.html#RECEPTOR">RECEPTOR</a></td><td>         receptor that holds available receptor packages for installation</td></tr>
+<tr><td><a name="SYS_STATE"></a>SYS_STATE</td><td><a href="ref_sys_structures.html#LIST_OF_ACTIVE_RECEPTORS">LIST-OF-ACTIVE-RECEPTORS</a></td><td></td></tr>
 <tr><td><a name="YEAR"></a>YEAR</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
 <tr><td><a name="MONTH"></a>MONTH</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
 <tr><td><a name="DAY"></a>DAY</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
@@ -154,7 +152,6 @@
 <tr><td><a name="TODAY"></a>TODAY</td><td><a href="ref_sys_structures.html#DATE">DATE</a></td><td></td></tr>
 <tr><td><a name="NOW"></a>NOW</td><td><a href="ref_sys_structures.html#TIME">TIME</a></td><td></td></tr>
 <tr><td><a name="TICK"></a>TICK</td><td><a href="ref_sys_structures.html#TIMESTAMP">TIMESTAMP</a></td><td></td></tr>
-<tr><td><a name="CLOCK_TELL_TIME"></a>CLOCK_TELL_TIME</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
 <tr><td><a name="ERROR_LOCATION"></a>ERROR_LOCATION</td><td><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></td><td></td></tr>
 <tr><td><a name="ZERO_DIVIDE_ERR"></a>ZERO_DIVIDE_ERR</td><td><a href="ref_sys_structures.html#REDUCTION_ERROR">REDUCTION-ERROR</a></td><td></td></tr>
 <tr><td><a name="TOO_FEW_PARAMS_ERR"></a>TOO_FEW_PARAMS_ERR</td><td><a href="ref_sys_structures.html#REDUCTION_ERROR">REDUCTION-ERROR</a></td><td></td></tr>
@@ -202,7 +199,6 @@
 <tr><td><a name="TREE_DELTA_COUNT"></a>TREE_DELTA_COUNT</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
 <tr><td><a name="TREE_DELTA_ADD"></a>TREE_DELTA_ADD</td><td><a href="ref_sys_structures.html#TREE_DELTA">TREE-DELTA</a></td><td></td></tr>
 <tr><td><a name="TREE_DELTA_REPLACE"></a>TREE_DELTA_REPLACE</td><td><a href="ref_sys_structures.html#TREE_DELTA">TREE-DELTA</a></td><td></td></tr>
-<tr><td><a name="LINE"></a>LINE</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td>                           text lines from unix streams</td></tr>
 <tr><td><a name="VERB"></a>VERB</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
 <tr><td><a name="COMMAND_PARAMETER"></a>COMMAND_PARAMETER</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
 <tr><td><a name="SHELL_COMMAND"></a>SHELL_COMMAND</td><td><a href="ref_sys_structures.html#COMMAND">COMMAND</a></td><td></td></tr>
@@ -210,12 +206,14 @@
 <tr><td><a name="TEST_INT_SYMBOL2"></a>TEST_INT_SYMBOL2</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
 <tr><td><a name="TEST_FLOAT_SYMBOL"></a>TEST_FLOAT_SYMBOL</td><td><a href="ref_sys_structures.html#FLOAT">FLOAT</a></td><td></td></tr>
 <tr><td><a name="TEST_STR_SYMBOL"></a>TEST_STR_SYMBOL</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
-<tr><td><a name="TEST_TREE_SYMBOL"></a>TEST_TREE_SYMBOL</td><td><a href="ref_sys_structures.html#TREE">TREE</a></td><td></td></tr>
-<tr><td><a name="TEST_TREE_SYMBOL2"></a>TEST_TREE_SYMBOL2</td><td><a href="ref_sys_structures.html#TREE">TREE</a></td><td></td></tr>
+<tr><td><a name="TEST_TREE_SYMBOL"></a>TEST_TREE_SYMBOL</td><td><a href="ref_sys_structures.html#TREE">TREE</a></td><td>      an orthogonal tree</td></tr>
+<tr><td><a name="TEST_ANYTHING_SYMBOL"></a>TEST_ANYTHING_SYMBOL</td><td><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></td><td>   used to build trees in testing of unknown structure</td></tr>
+<tr><td><a name="TEST_ANYTHING_SYMBOL2"></a>TEST_ANYTHING_SYMBOL2</td><td><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></td><td></td></tr>
 <tr><td><a name="TEST_STREAM_SYMBOL"></a>TEST_STREAM_SYMBOL</td><td><a href="ref_sys_structures.html#STREAM">STREAM</a></td><td></td></tr>
 <tr><td><a name="TEST_NAME_SYMBOL"></a>TEST_NAME_SYMBOL</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
-<tr><td><a name="TEST_RECEPTOR_SYMBOL"></a>TEST_RECEPTOR_SYMBOL</td><td><a href="ref_sys_structures.html#RECEPTOR">RECEPTOR</a></td><td></td></tr>
 <tr><td><a name="TEST_ALPHABETIZE_SCAPE_SYMBOL"></a>TEST_ALPHABETIZE_SCAPE_SYMBOL</td><td><a href="ref_sys_structures.html#SCAPE">SCAPE</a></td><td></td></tr>
 <tr><td><a name="TEST_SYMBOL_SYMBOL"></a>TEST_SYMBOL_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
 <tr><td><a name="TESTING"></a>TESTING</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
+<tr><td><a name="CLOCK_TELL_TIME"></a>CLOCK_TELL_TIME</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
+<tr><td><a name="LINE"></a>LINE</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td>                           text lines from unix streams</td></tr>
 </table>

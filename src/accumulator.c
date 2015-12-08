@@ -56,8 +56,9 @@ void _a_boot(char *dir_path) {
         __a_vmfn(fn,dir_path);
         readFile(fn,&buffer,0);
 
-        Receptor *r = _r_unserialize(buffer);
-        raise_error("fix semtable");
+        SemTable *sem = _sem_new();
+        raise_error("fix semtable, it needs to get loaded first");
+        Receptor *r = _r_unserialize(sem,buffer);
         G_vm = __v_init(r,NULL);
         free(buffer);
 
@@ -110,7 +111,7 @@ void _a_shut_down() {
 
     // serialize other parts of the vmhost
     int i;
-    H h = _m_newr(null_H,VM_HOST_STATE);
+    H h = _m_newr(null_H,SYS_STATE);
     H har = _m_newr(h,ACTIVE_RECEPTORS);
     for (i=0;i<G_vm->active_receptor_count;i++) {
         _m_new(har,RECEPTOR_XADDR,&G_vm->active_receptors[i].x,sizeof(Xaddr));
@@ -121,7 +122,7 @@ void _a_shut_down() {
     free(s);
     _m_free(h);
 
-    // free the memory used by the VM_HOST
+    // free the memory used by the SYS_RECEPTOR
     _v_free(G_vm);
     G_vm = NULL;
 }
@@ -207,12 +208,11 @@ S *__a_serialize_instances(Instances *i) {
     instances_elem *cur,*tmp;
     HASH_ITER(hh, *i, cur, tmp) {
         T *sym = _t_news(t,STRUCTURE_SYMBOL,cur->s);  // just using this symbol to store the symbol type
-        int is_receptor = semeq(cur->s,INSTALLED_RECEPTOR);
         Instance *iP = &cur->instances;
         instance_elem *curi,*tmpi;
         HASH_ITER(hh, *iP, curi, tmpi) {
             T *c;
-            if (is_receptor) {
+            if (is_receptor(cur->s)) {
                 void *surface;
                 size_t length;
                 Receptor *r = __r_get_receptor(curi->instance);
@@ -251,7 +251,7 @@ void _a_serialize_instances(Instances *i,char *file) {
     free(s);
 }
 
-void __a_unserialize_instances(Instances *instances,S *s) {
+void __a_unserialize_instances(SemTable *sem,Instances *instances,S *s) {
     H h = _m_unserialize(s);
     T *t = _t_new_from_m(h);
 
@@ -259,14 +259,14 @@ void __a_unserialize_instances(Instances *instances,S *s) {
     int j,c = _t_children(t);
     for(j=1;j<=c;j++) {
         T *u = _t_child(t,j);
-        int is_receptor = semeq(*(Symbol *)_t_surface(u),INSTALLED_RECEPTOR);
+        SemanticID s = *(SemanticID *)_t_surface(u);
+        int is_receptor = is_receptor(s);
         while(_t_children(u)) {
             T *i = _t_detach_by_idx(u,1);
             if (is_receptor) {
-                Receptor *r = _r_unserialize(_t_surface(i));
+                Receptor *r = _r_unserialize(sem,_t_surface(i));
                 _t_free(i);
-                i = _t_new_root(INSTALLED_RECEPTOR);
-                _t_new_receptor(i,_t_symbol(r->root),r);
+                _t_new_receptor(0,s,r);
             }
             _a_new_instance(instances, i);
         }
@@ -274,7 +274,7 @@ void __a_unserialize_instances(Instances *instances,S *s) {
     _t_free(t);
 }
 
-void _a_unserialize_instances(Instances *instances,char *file) {
+void _a_unserialize_instances(SemTable *sem,Instances *instances,char *file) {
     FILE *ofp;
 
     ofp = fopen(file, "r");
@@ -293,7 +293,7 @@ void _a_unserialize_instances(Instances *instances,char *file) {
         size_t read_size = total_size-sizeof(Mmagic)-sizeof(total_size);
         fread(&s->levels,1,read_size,ofp);
         fclose(ofp);
-        __a_unserialize_instances(instances,s);
+        __a_unserialize_instances(sem,instances,s);
         free(s);
     }
 }

@@ -13,14 +13,13 @@
 void testVMHostCreate() {
     //! [testVMHostCreate]
     VMHost *v = _v_new();
+    SemTable *sem = v->r->sem;
+    // test that the base contexts and defs were created
+    spec_is_equal(sem->contexts,_NUM_DEFAULT_CONTEXTS);
+    spec_is_equal(_t_children(_t_child(sem->stores[0].definitions,SEM_TYPE_SYMBOL)),NUM_SYS_SYMBOLS-1);
+    spec_is_equal(_t_children(_t_child(sem->stores[0].definitions,SEM_TYPE_STRUCTURE)),NUM_SYS_STRUCTURES-1);
 
-    // test the structure of the VM_HOST receptor
-    spec_is_sem_equal(_t_symbol(v->r->root),VM_HOST_RECEPTOR);
-    //too much data in the structures    spec_is_str_equal(t2s(v->r->root),"(VM_HOST_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES) (ASPECTS)) (FLUX (DEFAULT_ASPECT (EXPECTATIONS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))");
-
-    Xaddr cx = {COMPOSITORY,1};
-    Receptor *c = __r_get_receptor(_r_get_instance(v->r,cx));
-    spec_is_sem_equal(_t_symbol(c->root),COMPOSITORY);
+    spec_is_str_equal(t2s(v->r->root),"(RECEPTOR_INSTANCE (CONTEXT_NUM:0) (PARENT_CONTEXT_NUM:-1) (RECEPTOR_STATE (FLUX (DEFAULT_ASPECT (EXPECTATIONS) (SIGNALS))) (PENDING_SIGNALS) (PENDING_RESPONSES) (RECEPTOR_ELAPSED_TIME:0)))");
 
     // test the installed receptors scape
     spec_is_sem_equal(v->installed_receptors->key_source,RECEPTOR_IDENTIFIER);
@@ -257,10 +256,10 @@ void testVMHostActivateReceptor()  {
     Symbol c = _r_get_sem_by_label(alive_r,"client");
     Symbol handler = _r_get_sem_by_label(alive_r,"handler");
 
-    Receptor *server =  _r_new(alive_r->sem,TEST_RECEPTOR_SYMBOL);
+    Receptor *server =  _r_new(alive_r->sem,TEST_RECEPTOR);
     _o_express_role(server,alive,s,DEFAULT_ASPECT,NULL);
 
-    Receptor *client =  _r_new(alive_r->sem,TEST_RECEPTOR_SYMBOL);
+    Receptor *client =  _r_new(alive_r->sem,TEST_RECEPTOR);
 
     T *noop = _t_new_root(NOOP);
     _t_newi(noop,TEST_INT_SYMBOL,314);
@@ -291,7 +290,7 @@ void testVMHostActivateReceptor()  {
     ar = v->active_receptors[1].r;
     spec_is_ptr_equal(ar,client);
 
-    _v_send(v,cx.addr,sx.addr,DEFAULT_ASPECT,alive,_t_newi(0,ping,0));
+    _v_send(v,client->addr,server->addr,DEFAULT_ASPECT,alive,_t_newi(0,ping,0));
 
     spec_is_str_equal(_td(client,v->r->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (CONTEXT_NUM:3)) (TO_ADDRESS (CONTEXT_NUM:2)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:alive) (SIGNAL_UUID)) (BODY:{(ping)})))");
 
@@ -344,22 +343,19 @@ void testVMHostShell() {
     spec_is_ptr_equal(o_r->q->completed,NULL);
 
     // kill the string after elapsed time because it's system dependent
-    char *rs = t2s(_t_child(i_r->root,ReceptorStateIdx));
-    rs[39]=0;
-    spec_is_str_equal(rs,"(RECEPTOR_STATE (RECEPTOR_ELAPSED_TIME:");
+    T *e = _t_child(_t_child(i_r->root,ReceptorInstanceStateIdx),ReceptorElapsedTimeIdx);
+    spec_is_true(*(int *)_t_surface(e)>0);
 
     spec_is_true(output_data != 0); // protect against seg-faults when nothing was written to the stream...
     if (output_data != 0) {
-        output_data[107] =0;  // clip the tick so it work regardless of the time
-        spec_is_str_equal(output_data,"COMPOSITORY:1 DEV_SANDBOX:2 TEST_SANDBOX:3 CLOCK_RECEPTOR:4 shell:5 std_in:6 std_out:7 \n(TICK (TODAY (YEAR:");}
+        output_data[122] =0;  // clip the tick so it work regardless of the time
+        spec_is_str_equal(output_data,"COMPOSITORY:0 DEV_COMPOSITORY:1 TEST_RECEPTOR:2 CLOCK_RECEPTOR:3 XX:4 STREAM_READER:5 STREAM_WRITER:6\n(TICK (TODAY (YEAR:");}
     __r_kill(G_vm->r);
-
-    //    puts(_t2s(&G_vm->r->defs,r->root));
 
     _v_join_thread(&G_vm->clock_thread);
     _v_join_thread(&G_vm->vm_thread);
 
-    // free the memory used by the VM_HOST
+    // free the memory used by the SYS_RECEPTOR
     _v_free(G_vm);
     G_vm = NULL;
 
@@ -372,7 +368,7 @@ void testVMHostSerialize() {
     G_vm = _v_new();
     _v_instantiate_builtins(G_vm);
 
-    spec_is_str_equal(t2s(G_vm->r->root),"(VM_HOST_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES) (ASPECTS)) (FLUX (DEFAULT_ASPECT (EXPECTATIONS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))");
+    spec_is_str_equal(t2s(G_vm->r->root),"(SYS_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (FLUX (DEFAULT_ASPECT (EXPECTATIONS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))");
 
     Receptor *clock = G_vm->active_receptors[0].r;
     //   _testReceptorClockAddExpectation(clock);
@@ -380,8 +376,8 @@ void testVMHostSerialize() {
     void *surface;
     size_t length;
     _r_serialize(G_vm->r,&surface,&length);
-    Receptor *r = _r_unserialize(surface);
-    spec_is_str_equal(t2s(r->root),"(VM_HOST_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES) (ASPECTS)) (FLUX (DEFAULT_ASPECT (EXPECTATIONS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))");
+    Receptor *r = _r_unserialize(G_vm->r->sem,surface);
+    spec_is_str_equal(t2s(r->root),"(SYS_RECEPTOR (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (PROTOCOLS) (SCAPES)) (FLUX (DEFAULT_ASPECT (EXPECTATIONS) (SIGNALS))) (RECEPTOR_STATE) (PENDING_SIGNALS) (PENDING_RESPONSES))");
 
     __r_kill(clock);
     _v_join_thread(&G_vm->clock_thread);

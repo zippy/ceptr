@@ -17,19 +17,12 @@ SemTable *G_sem;
 #define is_sys_symbol(s) (s.context == SYS_CONTEXT)
 #define is_sys_process(s) (is_process(s) && (s.context == SYS_CONTEXT))
 #define is_sys_structure(s) (is_structure(s) && (s.context == SYS_CONTEXT))
+#define is_sys_receptor(s) (is_receptor(s) && (s.context == SYS_CONTEXT))
 
 Structure NULL_SYMBOL;
 Process NULL_PROCESS;
 Structure NULL_STRUCTURE;
 
-typedef struct ContextStore1 {
-    T *root;
-    Structure *structures;  ///< pointer for quick access to structures
-    Symbol *symbols;     ///< pointer for quick access to symbols
-    Process *processes;   ///< pointer for quick access to processes
-} ContextStore1;
-
-ContextStore1 G_contexts[_NUM_DEFAULT_CONTEXTS];
 Context G_ctx;
 char * G_label;
 // helper macros for setting up the base system definitions, these macros are

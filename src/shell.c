@@ -12,7 +12,7 @@
 #include "semtrex.h"
 
 
-void addCommand(Receptor *r,Xaddr ox,char *command,char *desc,T *code) {
+void addCommand(Receptor *r,ReceptorAddress ox,char *command,char *desc,T *code) {
     T *expect = _t_new_root(PATTERN);
     T *s = _t_news(expect,SEMTREX_GROUP,SHELL_COMMAND);
 
@@ -22,7 +22,7 @@ void addCommand(Receptor *r,Xaddr ox,char *command,char *desc,T *code) {
     _t_new_str(vls,VERB,command);
 
     T *p = _t_new_root(SAY);
-    __r_make_addr(p,TO_ADDRESS,ox.addr);
+    __r_make_addr(p,TO_ADDRESS,ox);
 
     _t_news(p,ASPECT_IDENT,DEFAULT_ASPECT);
     _t_news(p,CARRIER,NULL_SYMBOL);
@@ -36,10 +36,8 @@ void addCommand(Receptor *r,Xaddr ox,char *command,char *desc,T *code) {
 
 void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp,Stream **isp,Stream **osp) {
     // create the shell receptor
-    // @todo fix the naming paradox that the "shell" symbol is defined in the
-    // vmhost context here, but used in the context of the receptor itself
-    // see bug #31
-    Symbol shell = _r_define_symbol(G_vm->r,RECEPTOR,"shell");
+
+    Symbol shell = _d_define_receptor(G_vm->r->sem,"shell",__r_make_definitions(),DEV_COMPOSITORY_CONTEXT);
     Receptor *r = _r_new(v->sem,shell);
     Xaddr shellx = _v_new_receptor(G_vm,G_vm->r,shell,r);
     _v_activate(G_vm,shellx);
@@ -49,14 +47,12 @@ void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp
     Stream *output_stream = *osp = _st_new_unix_stream(output,0);
     Stream *input_stream = *isp = _st_new_unix_stream(input,1);
 
-    Symbol std_in = _r_define_symbol(G_vm->r,RECEPTOR,"std_in");
-    Receptor *i_r = *irp = _r_makeStreamReaderReceptor(v->sem,std_in,TEST_STREAM_SYMBOL,input_stream,shellx.addr);
-    Xaddr ix = _v_new_receptor(G_vm,G_vm->r,std_in,i_r);
+    Receptor *i_r = *irp = _r_makeStreamReaderReceptor(v->sem,TEST_STREAM_SYMBOL,input_stream,r->addr);
+    Xaddr ix = _v_new_receptor(G_vm,G_vm->r,STREAM_READER,i_r);
     _v_activate(G_vm,ix);
 
-    Symbol std_out = _r_define_symbol(G_vm->r,RECEPTOR,"std_out");
-    Receptor *o_r = *orp = _r_makeStreamWriterReceptor(v->sem,std_out,TEST_STREAM_SYMBOL,output_stream);
-    Xaddr ox = _v_new_receptor(G_vm,G_vm->r,std_out,o_r);
+    Receptor *o_r = *orp = _r_makeStreamWriterReceptor(v->sem,TEST_STREAM_SYMBOL,output_stream);
+    Xaddr ox = _v_new_receptor(G_vm,G_vm->r,STREAM_WRITER,o_r);
     _v_activate(G_vm,ox);
 
     // create expectations for commands
@@ -83,22 +79,23 @@ void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp
     // (expect (on flux SHELL_COMMAND:time) action(send std_out (convert_to_lines (send clock get_time))))
 
     T *code = _t_new_root(REQUEST);
-    __r_make_addr(code,TO_ADDRESS,4); // @todo bogus!!! fix clock address
+    ReceptorAddress clock_addr = {3}; // @todo bogus!!! fix getting clock address somehow
+    __r_make_addr(code,TO_ADDRESS,clock_addr);
     _t_news(code,ASPECT_IDENT,DEFAULT_ASPECT);
     _t_news(code,CARRIER,CLOCK_TELL_TIME);
     _t_newr(code,CLOCK_TELL_TIME);
     _t_news(code,RESPONSE_CARRIER,TICK);
 
-    addCommand(r,ox,"time","get time",code);
+    addCommand(r,o_r->addr,"time","get time",code);
 
     // (expect (on flux SHELL_COMMAND:receptor) action (send std_out (convert_to_lines (send vmhost receptor-list))))
 
     code = _t_newi(0,MAGIC,MagicReceptors);
-    addCommand(r,ox,"receptors","get receptor list",code);
+    addCommand(r,o_r->addr,"receptors","get receptor list",code);
 
     // (expect (on flux SHELL_COMMAND:receptor) action (send std_out (convert_to_lines (send vmhost shutdown)))
     code = _t_newi(0,MAGIC,MagicQuit);
-    addCommand(r,ox,"quit","shut down the vmhost",code);
+    addCommand(r,o_r->addr,"quit","shut down the vmhost",code);
 
 }
 

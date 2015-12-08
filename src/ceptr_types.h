@@ -6,15 +6,14 @@
 #include "uthash.h"
 #include <stdbool.h>
 
-enum SemanticContexts {SYS_CONTEXT,COMPOSITORY_CONTEXT,LOCAL_CONTEXT,TEST_CONTEXT,_NUM_DEFAULT_CONTEXTS};
-
 // NOTE: the actual values of the types matter because they must match the order they show
 // up in the definition trees
-enum SemanticTypes {SEM_TYPE_STRUCTURE=1,SEM_TYPE_SYMBOL,SEM_TYPE_PROCESS,SEM_TYPE_PROTOCOL};
+enum SemanticTypes {SEM_TYPE_STRUCTURE=1,SEM_TYPE_SYMBOL,SEM_TYPE_PROCESS,SEM_TYPE_RECEPTOR,SEM_TYPE_PROTOCOL};
 #define is_symbol(s) ((s).semtype == SEM_TYPE_SYMBOL)
 #define is_process(s) ((s).semtype == SEM_TYPE_PROCESS)
 #define is_structure(s) ((s).semtype == SEM_TYPE_STRUCTURE)
 #define is_protocol(s) ((s).semtype == SEM_TYPE_PROTOCOL)
+#define is_receptor(s) ((s).semtype == SEM_TYPE_RECEPTOR)
 
 typedef uint32_t Context;
 typedef uint8_t SemanticType;
@@ -27,16 +26,19 @@ typedef struct SemanticID {
     uint8_t _reserved; // add an extra 8 bits to make this a 64bit structure.
 } SemanticID;
 
+// creating aliases for SemanticIDs as hints for use.
 typedef SemanticID Symbol;
 typedef SemanticID Structure;
 typedef SemanticID Process;
 typedef SemanticID Protocol;
+typedef SemanticID Recept;
 
+
+// ** types for matrix trees
 typedef uint16_t Mlevel;
 typedef uint32_t Mindex;
 typedef uint32_t Mmagic;
 
-// ** types for matrix trees
 typedef struct N {
     Symbol symbol;
     Mindex parenti;
@@ -171,19 +173,6 @@ typedef struct instances_elem {
 } instances_elem;
 typedef instances_elem *Instances;
 
-// ** types for defs
-
-/**
-   a collection for passing around pointers to the various def trees
-*/
-typedef struct Defs {
-    T *structures;  ///< pointer for quick access to structures
-    T *symbols;     ///< pointer for quick access to symbols
-    T *processes;   ///< pointer for quick access to processes
-    T *protocols;   ///< pointer for quick access to protocols
-    T *scapes;      ///< pointer for quick access to scapes
-} Defs;
-
 // ** types for processing
 // run-tree context
 typedef struct R R;
@@ -215,7 +204,9 @@ struct Qe {
     Qe *prev;
 };
 
-typedef int ReceptorAddress;
+typedef struct ReceptorAddress {
+    int addr;
+} ReceptorAddress;
 
 typedef struct Receptor Receptor;
 
@@ -233,7 +224,6 @@ struct Q {
 // SemTable structures
 typedef struct ContextStore {
     T *definitions;
-    //Defs defs;
 } ContextStore;
 
 //@todo convert to malloc
@@ -253,10 +243,11 @@ enum ReceptorStates {Alive=0,Dead};
    table.
 */
 struct Receptor {
-    T *root;             ///< root node of the semantic tree
-    ReceptorAddress addr;
+    T *root;             ///< RECEPTOR_INSTANCE semantic tree
+    Context parent;      ///< the context this receptor definition lives in
+    Context context;     ///< the context this receptor definition creates
+    ReceptorAddress addr;///< the address by which to get messages to this receptor instance
     SemTable *sem;       ///< pointer back to the semantic table context where the receptor's running
-    Defs defs;           ///< defs block
     T *flux;             ///< pointer for quick access to the flux
     T *pending_signals;
     T *pending_responses;

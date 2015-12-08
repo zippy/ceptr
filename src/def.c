@@ -19,6 +19,12 @@ int semeq(SemanticID s1,SemanticID s2) {
     return (memcmp(&s1,&s2,sizeof(SemanticID))==0);
 }
 
+// used to find the semantic address for a def when building a SemanticID
+// the semantic address is just the child index of the definition
+SemanticAddr  _d_get_def_addr(T *def) {
+    return _t_node_index(def);
+}
+
 SemanticID _d_define(SemTable *sem,T *def,SemanticType semtype,Context c) {
     T *definitions = __sem_get_defs(sem,semtype,c);
     _t_add(definitions,def);
@@ -95,15 +101,6 @@ void __d_set_structure_def(T *structures,Structure s,T *def) {
     T *d = _t_child(structures,s.id);
     if (_t_children(d) > 1) raise_error("Structure already defined");
     _t_add(d,def);
-}
-
-// used to find the semantic address for a def when building a SemanticID
-// @todo this is kinda backwards perhaps because it's all based on the fact
-// that the SemanticAddr is the child index in the def tree.  This may not
-// need to be changed
-SemanticAddr  _d_get_def_addr(T *def) {
-    int *path = _t_get_path(def);
-    return path[_t_path_depth(path)-1];
 }
 
 /**
@@ -366,6 +363,53 @@ T * _d_build_def_semtrex(SemTable *sem,Symbol s,T *parent) {
     return stx;
 }
 
+/**
+ * define a new receptor
+ *
+ * this call creates a receptor as a new semantic context inside given context
+ *
+ * @param[in] sem the SemanticTable of contexts
+ * @param[in] label a human readable name for this receptor
+ * @param[in] defs definitions that make up the receptor
+ * @paran[in] the context in which to define this receptor
+ *
+ */
+SemanticID _d_define_receptor(SemTable *sem,char *label,T *def,Context c) {
+
+    bool vmhost_special_case = (c == SYS_CONTEXT) && (!sem->contexts);
+    //__d_validate_receptor(sem,def); //@todo
+    // @todo recursively add definitions for any receptors defined in def
+    if (_t_children(_t_child(def,SEM_TYPE_RECEPTOR))) {
+        raise_error("recursive receptor definition not yet implemented");
+    }
+    Context new_context = _sem_new_context(sem,def);
+
+    T *d = _t_new_root(RECEPTOR_DEFINITION);
+
+    // big trick!! put the context number in the surface of the definition so
+    // we can get later in _d_get_receptor_address
+    (*(int *)_t_surface(d)) = new_context;
+
+    _t_new_str(d,RECEPTOR_LABEL,label);
+    _t_add(d,def);
+
+    // account for the one exception where the VMHost is defined inside itself
+    // we can't use _d_define because when it tries to look up the newly added
+    // def with _d_get_def_addr which uses _t_get_path, it will fail on the infinite loop.
+    if (vmhost_special_case) {
+        // this makes the "defined-inside-itself" loop!
+        //        _t_add(def,d);
+        SemanticID sid = {c,SEM_TYPE_RECEPTOR,0};
+        return sid;
+    }
+    return _d_define(sem,d,SEM_TYPE_RECEPTOR,c);
+}
+
+// this works because when a receptor gets defined the semantic context get jammed into the definition surface!
+Context _d_get_receptor_context(SemTable *sem,SemanticID r) {
+    T *def = _sem_get_def(sem,r);
+    return *(int *)_t_surface(def);
+}
 
 /*****************  Tree debugging utilities */
 
@@ -392,6 +436,8 @@ char *_indent_line(int level,char *buf) {
     return buf;
 }
 
+#define MAX_LEVEL 100
+
 char * __t_dump(SemTable *sem,T *t,int level,char *buf) {
     if (!t) return "";
     Symbol s = _t_symbol(t);
@@ -402,6 +448,10 @@ char * __t_dump(SemTable *sem,T *t,int level,char *buf) {
     Xaddr x;
     buf = _indent_line(level,buf);
 
+    if (level > MAX_LEVEL) {
+        raise_error("whoa, MAX_LEVEL exceeded!");
+    }
+
     // use this to mark all run nodes with a %
     // if (t->context.flags & TFLAG_RUN_NODE) *buf++ = '%';
 
@@ -409,6 +459,15 @@ char * __t_dump(SemTable *sem,T *t,int level,char *buf) {
 
     if (is_process(s)) {
         sprintf(buf,"(process:%s",n);
+    }
+    else if (is_receptor(s)) {
+        if (t->context.flags & (TFLAG_SURFACE_IS_TREE+TFLAG_SURFACE_IS_RECEPTOR)) {
+            c = __t_dump(sem,((Receptor *)_t_surface(t))->root,0,tbuf);
+            sprintf(buf,"(%s:{%s}",n,c);
+        }
+        else {
+            raise_error("bad node flags for receptor semtype!");
+        }
     }
     else {
         Structure st = _sem_get_symbol_structure(sem,s);
@@ -465,12 +524,9 @@ char * __t_dump(SemTable *sem,T *t,int level,char *buf) {
                     sprintf(buf,"(%s:{%s}",n,c);
                     break;
                 }
+                raise_error("TREE struct without TREE node flags");
             case RECEPTOR_ID:
-                if (t->context.flags & (TFLAG_SURFACE_IS_TREE+TFLAG_SURFACE_IS_RECEPTOR)) {
-                    c = __t_dump(sem,((Receptor *)_t_surface(t))->root,0,tbuf);
-                    sprintf(buf,"(%s:{%s}",n,c);
-                    break;
-                }
+                raise_error("boink bad receptor struct");
             case SCAPE_ID:
                 if (t->context.flags & TFLAG_SURFACE_IS_SCAPE) {
                     Scape *sc = (Scape *)_t_surface(t);

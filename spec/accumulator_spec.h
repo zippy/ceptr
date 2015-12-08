@@ -27,7 +27,7 @@ void testAccBootStrap() {
     _a_boot(dname);
     spec_is_equal(stat(dname, &st),0); // does after boot
 
-    spec_is_symbol_equal(G_vm->r,_t_symbol(G_vm->r->root),VM_HOST_RECEPTOR);
+    spec_is_symbol_equal(G_vm->r,_t_symbol(G_vm->r->root),SYS_RECEPTOR);
 
     // new clock receptor should be instantiated and active
     spec_is_equal(G_vm->active_receptor_count,1);
@@ -60,7 +60,7 @@ void testAccBootStrap() {
     _a_boot(dname);
 
     // verify that clock with planted expectation and it's accumulated data are re-instantiated at boot
-    Xaddr x = {INSTALLED_RECEPTOR,2};
+    Xaddr x = {CLOCK_RECEPTOR,2};
     T *ct = _r_get_instance(G_vm->r,x);
     spec_is_true(ct != NULL);
     Receptor *cr = __r_get_receptor(ct);
@@ -111,7 +111,7 @@ void testAccPersistInstances() {
 
     S *s = __a_serialize_instances(&i);
     _a_free_instances(&i);
-    __a_unserialize_instances(&i,s);
+    __a_unserialize_instances(HTTP_receptor->sem,&i,s);
 
     spec_is_str_equal(t2s(_a_get_instance(&i,x)),"(PARAMS (TEST_INT_SYMBOL:314))");
     spec_is_str_equal(t2s(_a_get_instance(&i,y)),t2s(htc));

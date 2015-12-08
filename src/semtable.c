@@ -40,12 +40,26 @@ void _sem_free_context(SemTable *sem,Context c) {
         sem->contexts--;
 }
 
+char G_ctx_buf[20];
+
+char *_sem_ctx2s(SemTable *sem,Context c) {
+    switch(c) {
+    case SYS_CONTEXT:return "SYS_CONTEXT";
+    case COMPOSITORY_CONTEXT:return "COMPOSITORY_CONTEXT";
+    case DEV_COMPOSITORY_CONTEXT:return "DEV_COMPOSITORY_CONTEXT";
+    case TEST_CONTEXT:return "TEST_CONTEXT";
+    default:
+        sprintf(G_ctx_buf,"%d",c);
+        return G_ctx_buf;
+    }
+}
+
 // get the definitions for the semantic type of the semid
-T *__sem_get_defs(SemTable *st,SemanticType semtype,Context c) {
-    ContextStore *ctx = __sem_context(st,c);
-    if (!ctx->definitions) raise_error("no definitions in context %d",c);
+T *__sem_get_defs(SemTable *sem,SemanticType semtype,Context c) {
+    ContextStore *ctx = __sem_context(sem,c);
+    if (!ctx->definitions) raise_error("no definitions in context %s",_sem_ctx2s(sem,c));
     T *defs = _t_child(ctx->definitions,semtype);
-    if (!defs) raise_error("no defs for semtype %d in context %d",semtype,c);
+    if (!defs) raise_error("no defs for semtype %d in context %s",semtype,_sem_ctx2s(sem,c));
     return defs;
 }
 
@@ -61,6 +75,7 @@ char *_sem_get_name(SemTable *st,SemanticID s) {
             case SEM_TYPE_STRUCTURE: return "NULL_STRUCTURE";
             case SEM_TYPE_SYMBOL: return "NULL_SYMBOL";
             case SEM_TYPE_PROCESS: return "NULL_PROCESS";
+            case SEM_TYPE_RECEPTOR: return "SYS_RECEPTOR";
             default: raise_error("bad semtype");
             }
         }
@@ -74,6 +89,28 @@ char *_sem_get_name(SemTable *st,SemanticID s) {
 Structure _sem_get_symbol_structure(SemTable *st,Symbol s){
     if (!is_symbol(s)) raise_error("Bad symbol: semantic type not SEM_TYPE_SYMBOL");
     return __d_get_symbol_structure(_sem_get_defs(st,s),s);
+}
+
+// @todo, convert this to hash table label table!!
+SemanticID _sem_get_by_label(SemTable *sem,char *label,Context c) {
+    ContextStore *ctx = __sem_context(sem,c);
+    T *d = ctx->definitions;
+    if (!d) raise_error("no definitions in context %s",_sem_ctx2s(sem,c));
+    int i,j;
+    SemanticID sid = {c,0,0};
+    for(i=1;i<=_t_children(d);i++) {
+        T *defs = _t_child(d,i);
+        for(j=1;j<=_t_children(defs);j++) {
+            T *def = _t_child(defs,j);
+            if (strcmp(label,(char *)_t_surface(_t_child(def,DefLabelIdx)))==0) {
+                sid.semtype = i;
+                sid.id = j;
+                return sid;
+            }
+        }
+    }
+    raise_error("implement what to do if label not found!");
+    return sid;
 }
 
 /** @}*/

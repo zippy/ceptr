@@ -23,41 +23,35 @@ Xaddr G_null_xaddr  = {0,0};
 /*****************  create and destroy receptors */
 
 /* set up the c structures for a receptor from a semantic tree */
-Receptor * __r_init(T *t,SemTable *sem,ReceptorAddress addr) {
+Receptor * __r_init(T *t,SemTable *sem) {
     Receptor *r = malloc(sizeof(Receptor));
     r->root = t;
+    r->parent = *(int *)_t_surface(_t_child(t,ReceptorInstanceParentContextIdx));
+    r->context = *(int *)_t_surface(_t_child(t,ReceptorInstanceContextNumIdx));
+    r->addr.addr = r->context;  //@fixme!! for now these are the same, but this needs to get fixed
     r->sem = sem;
-    r->addr = addr;
     r->table = NULL;
     r->instances = NULL;
     r->q = _p_newq(r);
     r->state = Alive;  //@todo, check if this is true on unserialize
 
-    T *defs = _t_child(t,ReceptorDefsIdx);
-    r->defs.structures = _t_child(defs,1);
-    r->defs.symbols = _t_child(defs,2);
-    r->defs.processes = _t_child(defs,3);
-    r->defs.protocols = _t_child(defs,4);
-    r->defs.scapes = _t_child(defs,5);
-    r->flux = _t_child(t,ReceptorFluxIdx);
-    r->pending_signals = _t_child(t,ReceptorPendingSignalsIdx);
-    r->pending_responses = _t_child(t,ReceptorPendingResponsesIdx);
+    T *state = _t_child(t,ReceptorInstanceStateIdx);
+    r->flux = _t_child(state,ReceptorFluxIdx);
+    r->pending_signals = _t_child(state,ReceptorPendingSignalsIdx);
+    r->pending_responses = _t_child(state,ReceptorPendingResponsesIdx);
     return r;
 }
 
-Receptor *__r_new(Symbol s,T *defs,SemTable *sem,ReceptorAddress addr) {
-    T *t = _t_new_root(s);
-    _t_add(t,defs);
+T *_r_make_state() {
+    T *t = _t_new_root(RECEPTOR_STATE);
     T *f = _t_newr(t,FLUX);
     T *a = _t_newr(f,DEFAULT_ASPECT);
     _t_newr(a,EXPECTATIONS);
     _t_newr(a,SIGNALS);
-    _t_newr(t,RECEPTOR_STATE);
     _t_newr(t,PENDING_SIGNALS);
     _t_newr(t,PENDING_RESPONSES);
-    Receptor *r = __r_init(t,sem,addr);
-
-    return r;
+    _t_newi(t,RECEPTOR_ELAPSED_TIME,0);
+    return t;
 }
 
 //helper to make empty definitions tree
@@ -66,9 +60,9 @@ T *__r_make_definitions() {
     _t_newr(defs,STRUCTURES);
     _t_newr(defs,SYMBOLS);
     _t_newr(defs,PROCESSES);
+    _t_newr(defs,RECEPTORS);
     _t_newr(defs,PROTOCOLS);
     _t_newr(defs,SCAPES);
-    _t_newr(defs,ASPECTS);
     return defs;
 }
 
@@ -77,26 +71,25 @@ T *__r_make_definitions() {
  *
  * allocates all the memory needed in the heap
  *
- * @param[in] s symbol for this receptor
+ * @param[in] r semantic ID for this receptor
  * @returns pointer to a newly allocated Receptor
  *
  * <b>Examples (from test suite):</b>
  * @snippet spec/receptor_spec.h testReceptorCreate
  */
-Receptor *_r_new(SemTable *st,Symbol s) {
-    T *defs = __r_make_definitions();
-    return __r_new(s,defs,st,_sem_new_context(st,defs));
-}
-
-// set the labels in the label table for the given def
-void __r_set_labels(Receptor *r,T *defs,int sem_type) {
-    LabelTable *table = &r->table;
-    DO_KIDS(
-            defs,
-            T *def = _t_child(defs,i);
-            T *sl = _t_child(def,1);
-            __set_label_for_def(table,_t_surface(sl),def);
-            );
+Receptor *_r_new(SemTable *sem,SemanticID r) {
+    T *t = _t_new_root(RECEPTOR_INSTANCE);
+    if (semeq(r,SYS_RECEPTOR)) {
+        _t_newi(t,CONTEXT_NUM,0);
+        _t_newi(t,PARENT_CONTEXT_NUM,-1);
+    }
+    else {
+        _t_newi(t,CONTEXT_NUM,_d_get_receptor_context(sem,r));
+        _t_newi(t,PARENT_CONTEXT_NUM,r.context);
+    }
+    T *state = _r_make_state();
+    _t_add(t,state);
+    return __r_init(t,sem);
 }
 
 /**
@@ -109,14 +102,14 @@ void __r_set_labels(Receptor *r,T *defs,int sem_type) {
  * @returns pointer to a newly allocated Receptor
  * @todo implement bindings
  */
-Receptor *_r_new_receptor_from_package(SemTable *st,Symbol s,T *p,T *bindings) {
+Receptor *_r_new_receptor_from_package(SemTable *sem,Symbol s,T *p,T *bindings) {
     T *defs = _t_clone(_t_child(p,3));
     //    T *aspects = _t_clone(_t_child(p,4));  @todo this should be inside the defs allready
     raise_error("fix receptor address");
-    Receptor * r = __r_new(s,defs,st,0);
+    Receptor *r = _r_new(sem,s);
 
     //@todo fix this because it relies on SemanticTypes value matching the index order in the definitions.
-    DO_KIDS(defs,__r_set_labels(r,_t_child(defs,i),i));
+    //    DO_KIDS(defs,__r_set_labels(r,_t_child(defs,i),i));
 
     return r;
 }
@@ -172,8 +165,6 @@ void _r_remove_expectation(Receptor *r,T *expectation) {
  * Destroys a receptor freeing all memory it uses.
  */
 void _r_free(Receptor *r) {
-
-    _sem_free_context(r->sem,r->addr);
     _t_free(r->root);
     lableTableFree(&r->table);
     _a_free_instances(&r->instances);
@@ -182,37 +173,6 @@ void _r_free(Receptor *r) {
 }
 
 /*****************  receptor symbols, structures and processes */
-
-/**
- * we use this for labeling symbols, structures and processes because labels store the full path to the labeled item and we want the labels to be unique across all three
- */
-void _set_label_for_def(Receptor *r,char *label,SemanticID s) {
-    T *def = _sem_get_def(r->sem,s);
-    __set_label_for_def(&r->table,label,def);
-}
-
-void __set_label_for_def(LabelTable *table,char *label,T *def) {
-    int *path = _t_get_path(def);
-    if (!label) label = (char *)_t_surface(_t_child(def,DefLabelIdx));
-    labelSet(table,label,path);
-    int i = path[_t_path_depth(path)-1];
-    free(path);
-}
-
-/**
- * Get the child index for a given label.
- *
- * This works for retrieving symbols, structures & processes because the symbol and structure values is just the child index.
- */
-SemanticID  __get_label_idx(Receptor *r,char *label) {
-    SemanticID s = {r->addr,0,0};
-    int *path = labelGet(&r->table,label);
-    if (path) {
-        s.id = path[_t_path_depth(path)-1];
-        s.semtype = path[1]; // definitions index == semantic type!!
-    }
-    return s;
-}
 
 /**
  * define a new symbol
@@ -224,8 +184,7 @@ SemanticID  __get_label_idx(Receptor *r,char *label) {
  *
  */
 Symbol _r_define_symbol(Receptor *r,Structure s,char *label){
-    Symbol sym = _d_define_symbol(r->sem,s,label,r->addr);
-    _set_label_for_def(r,label,sym);
+    Symbol sym = _d_define_symbol(r->sem,s,label,r->context);
     return sym;
 }
 
@@ -247,8 +206,7 @@ Structure _r_define_structure(Receptor *r,char *label,int num_params,...) {
     va_start(params,num_params);
     T *def = _d_make_vstruc_def(r->sem,label,num_params,params);
     va_end(params);
-    Structure s = _d_define_structure(r->sem,label,def,r->addr);
-    _set_label_for_def(r,label,s);
+    Structure s = _d_define_structure(r->sem,label,def,r->context);
     return s;
 }
 
@@ -266,8 +224,7 @@ Structure _r_define_structure(Receptor *r,char *label,int num_params,...) {
  *
  */
 Structure __r_define_structure(Receptor *r,char *label,T *structure_def) {
-    Structure s = _d_define_structure(r->sem,label,structure_def,r->addr);
-    _set_label_for_def(r,label,s);
+    Structure s = _d_define_structure(r->sem,label,structure_def,r->context);
     return s;
 }
 
@@ -284,14 +241,12 @@ Structure __r_define_structure(Receptor *r,char *label,T *structure_def) {
  *
  */
 Process _r_define_process(Receptor *r,T *code,char *name,char *intention,T *signature) {
-    Process p = _d_define_process(r->sem,code,name,intention,signature,r->addr);
-    _set_label_for_def(r,name,p);
+    Process p = _d_define_process(r->sem,code,name,intention,signature,r->context);
     return p;
 }
 
 Protocol _r_define_protocol(Receptor *r,T *protocol_def) {
-    Protocol p = _d_define_protocol(r->sem,protocol_def,r->addr);
-    _set_label_for_def(r,0,p);
+    Protocol p = _d_define_protocol(r->sem,protocol_def,r->context);
     return p;
 }
 
@@ -299,7 +254,7 @@ Protocol _r_define_protocol(Receptor *r,T *protocol_def) {
  * find a symbol by its label
  */
 Symbol _r_get_sem_by_label(Receptor *r,char *label) {
-    return __get_label_idx(r,label);
+    return _sem_get_by_label(r->sem,label,r->context);
 }
 
 /**
@@ -453,7 +408,7 @@ void _r_serialize(Receptor *r,void **surfaceP,size_t *lengthP) {
  * @param[in] surface serialized receptor data
  * @returns Receptor
  */
-Receptor * _r_unserialize(void *surface) {
+Receptor * _r_unserialize(SemTable *sem,void *surface) {
 
     S *s = (S *)surface;
     H h = _m_unserialize(s);
@@ -461,8 +416,7 @@ Receptor * _r_unserialize(void *surface) {
     T *t = _t_new_from_m(h);
     _m_free(h);
 
-    raise_error("fix semtable and receptor address");
-    Receptor *r = __r_init(t,0,0);
+    Receptor *r = __r_init(t,sem);
 
     /* size_t length = *(size_t *)surface; */
     /* Receptor *r = _r_new(*(Symbol *)(surface+sizeof(size_t))); */
@@ -470,12 +424,12 @@ Receptor * _r_unserialize(void *surface) {
     /* T *t =  _t_unserialize(&r->defs,&surface,&length,0); */
     /* _t_free(r->root); */
     /* r->root = t; */
-    T *defs = _t_child(t,1);
-    DO_KIDS(defs,__r_set_labels(r,_t_child(defs,i),i));
+    //    T *defs = _t_child(t,1);
+    //  DO_KIDS(defs,__r_set_labels(r,_t_child(defs,i),i));
 
     // move to the instances
     s = (S *) (surface + s->total_size);
-    __a_unserialize_instances(&r->instances,(S *)s);
+    __a_unserialize_instances(sem,&r->instances,(S *)s);
     return r;
 }
 
@@ -486,7 +440,7 @@ Receptor * _r_unserialize(void *surface) {
 // as a possible options for addressing the receptor.
 T *__r_make_addr(T *parent,Symbol type,ReceptorAddress addr) {
     T *a = _t_newr(parent,type);
-    _t_newi(a,CONTEXT_NUM,addr);
+    _t_newi(a,RECEPTOR_ADDR,addr.addr);
     return a;
 }
 
@@ -886,11 +840,9 @@ T *__r_get_signals(Receptor *r,Aspect aspect) {
  * get the Receptor structure from an installed receptor
  */
 Receptor * __r_get_receptor(T *installed_receptor) {
-    // the receptor itself is the surface of the first child of the INSTALLED_RECEPTOR (bleah)
-    if (!semeq(_t_symbol(installed_receptor),INSTALLED_RECEPTOR)) {
-        raise_error("expecting an INSTALLED_RECEPTOR!");
-    }
-    return (Receptor *)_t_surface(_t_child(installed_receptor,1));
+    if (! is_receptor(_t_symbol(installed_receptor)))
+        raise_error("expecting SEM_TYPE_RECEPTOR!");
+    return (Receptor *)_t_surface(installed_receptor);
 }
 
 /*****************  Tree debugging utilities */
@@ -922,8 +874,8 @@ char *__td(Receptor *r,T *t,char *buf) {
 
 /*****************  Built-in core and edge receptors */
 
-Receptor *_r_makeStreamReaderReceptor(SemTable *sem,Symbol receptor_symbol,Symbol stream_symbol,Stream *st,ReceptorAddress to) {
-    Receptor *r = _r_new(sem,receptor_symbol);
+Receptor *_r_makeStreamReaderReceptor(SemTable *sem,Symbol stream_symbol,Stream *st,ReceptorAddress to) {
+    Receptor *r = _r_new(sem,STREAM_READER);
 
     // code is something like:
     // (do (not stream eof) (send to (read_stream stream line)))
@@ -951,8 +903,8 @@ Receptor *_r_makeStreamReaderReceptor(SemTable *sem,Symbol receptor_symbol,Symbo
     return r;
 }
 
-Receptor *_r_makeStreamWriterReceptor(SemTable *sem,Symbol receptor_symbol,Symbol stream_symbol,Stream *st) {
-    Receptor *r = _r_new(sem,receptor_symbol);
+Receptor *_r_makeStreamWriterReceptor(SemTable *sem,Symbol stream_symbol,Stream *st) {
+    Receptor *r = _r_new(sem,STREAM_WRITER);
 
     T *expect = _t_new_root(PATTERN);
 
@@ -974,7 +926,7 @@ Receptor *_r_makeStreamWriterReceptor(SemTable *sem,Symbol receptor_symbol,Symbo
 
     T *x = _t_new_root(STREAM_WRITE);
 
-    _t_new_stream(x,TEST_STREAM_SYMBOL,st);
+    _t_new_stream(x,stream_symbol,st);
     int pt1[] = {2,1,TREE_PATH_TERMINATOR};
     _t_new(x,PARAM_REF,pt1,sizeof(int)*4);
 
@@ -993,58 +945,32 @@ Receptor *_r_makeStreamWriterReceptor(SemTable *sem,Symbol receptor_symbol,Symbo
     return r;
 }
 
-Receptor *_r_makeClockReceptor(SemTable *st) {
-    Receptor *r = _r_new(st,CLOCK_RECEPTOR);
+void _r_defineClockReceptor(SemTable *sem) {
+    Context clk_ctx =  _d_get_receptor_context(sem,CLOCK_RECEPTOR);
+    T *resp = _t_new_root(RESPOND);
+    _t_news(resp,CARRIER,TICK);
+    Xaddr x = {TICK,1};
+    T *g = _t_newr(resp,GET);
+    _t_new(g,GET_XADDR,&x,sizeof(Xaddr));
+    T *signature = __p_make_signature("result",SIGNATURE_SYMBOL,NULL_SYMBOL,NULL);
+    Process proc = _d_define_process(sem,resp,"respond with current time","long desc...",signature,clk_ctx);
+}
 
+Receptor *_r_makeClockReceptor(SemTable *sem) {
+    Receptor *r = _r_new(sem,CLOCK_RECEPTOR);
+
+    // add the expectation in explicitly because we haven't yet defined the clock protocol
     T *expect = _t_new_root(PATTERN);
     T *s = _sl(expect,CLOCK_TELL_TIME);
 
-    T *resp = _t_new_root(RESPOND);
     T *tick = __r_make_tick();  // initial tick, will get updated by clock thread.
     Xaddr x = _r_new_instance(r,tick);
 
-    _t_news(resp,CARRIER,TICK);
-    T *g = _t_newr(resp,GET);
-    _t_new(g,GET_XADDR,&x,sizeof(Xaddr));
-
-    T *signature = __p_make_signature("result",SIGNATURE_SYMBOL,NULL_SYMBOL,NULL);
-    Process proc = _r_define_process(r,resp,"respond with current time","long desc...",signature);
+    Process proc = _sem_get_by_label(sem,"respond with current time",r->context);
 
     T *act = _t_newp(0,ACTION,proc);
     T *params = _t_new_root(PARAMS);
     _r_add_expectation(r,DEFAULT_ASPECT,CLOCK_TELL_TIME,expect,act,params,0);
-
-    // this stuff was for the old clock which installed a expectation on itself to send back
-    // the TICK when in next arrrived
-    /* s = _t_news(s,SEMTREX_GROUP,PATTERN); */
-    /* _sl(s,PATTERN); */
-
-    /* T *x = _t_newr(0,LISTEN); */
-    /* int pt1[] = {2,1,TREE_PATH_TERMINATOR}; */
-    /* _t_new(x,PARAM_REF,pt1,sizeof(int)*4);  // param is our expectation semtrex */
-    /* _t_news(x,CARRIER,PATTERN); */
-    /* T *params =_t_newr(x,PARAMS); */
-
-    /* ReceptorAddress to =  __r_get_self_address(r); */
-    /* _t_newi(params,RECEPTOR_ADDRESS,to); */
-
-    /* //interpolate on null_symbol matches the whole semtrex that triggered this */
-    /* // expectation, which would be the current tick as it arrives */
-    /* _t_news(params,INTERPOLATE_SYMBOL,NULL_SYMBOL); */
-    /* _t_news(params,RESPONSE_CARRIER,NULL_SYMBOL); */
-
-    /* T *action = _t_newp(x,ACTION,SEND); */
-
-    /* T *signature = __p_make_signature("result",SIGNATURE_SYMBOL,NULL_SYMBOL, */
-    /*                                   "time stx",SIGNATURE_SYMBOL,PATTERN, */
-    /*                                   NULL); */
-    /* Process proc = _r_define_process(r,x,"plant a expectation to send the time","long desc...",signature); */
-    /* T *act = _t_newp(0,ACTION,proc); */
-
-    /* params = _t_new_root(PARAMS); */
-    /* _t_news(params,INTERPOLATE_SYMBOL,PATTERN); */
-
-    /* _r_add_expectation(r,DEFAULT_ASPECT,CLOCK_TELL_TIME,expect,act,params,0);*/
 
     return r;
 }
@@ -1117,7 +1043,6 @@ void __r_dump_instances(Receptor *r) {
     instances_elem *cur,*tmp;
     HASH_ITER(hh, *i, cur, tmp) {
         T *sym = _t_news(t,STRUCTURE_SYMBOL,cur->s);  // just using this symbol to store the symbol type
-        int is_receptor = semeq(cur->s,INSTALLED_RECEPTOR);
         Instance *iP = &cur->instances;
         instance_elem *curi,*tmpi;
         HASH_ITER(hh, *iP, curi, tmpi) {

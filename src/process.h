@@ -40,7 +40,7 @@ void _p_enqueue(Qe **listP,Qe *e);
 Qe *__p_find_context(Qe *e,int process_id);
 void __p_unblock(Q *q,Qe *e);
 Error _p_unblock(Q *q,int id);
-Error _p_reduce(SemTable *sem,Defs *defs,T *run_tree);
+Error _p_reduce(SemTable *sem,T *run_tree);
 Q *_p_newq(Receptor *r);
 void _p_freeq(Q *q);
 Qe *_p_addrt2q(Q *q,T *t);
@@ -49,7 +49,7 @@ void *_p_reduceq_thread(void *arg);
 T *__p_make_run_tree(T *processes,Process p,T *params);
 T *_p_make_run_tree(T *processes,T *p,int num_params,...);
 T *__p_build_run_tree(T* code,int num_params,...);
-void _p_cleanup(Q *q,T* receptor_state);
+void _p_cleanup(Q *q);
 #define __p_make_signature(output_label,output_type,output_sem,...) __p_make_form(PROCESS_SIGNATURE,output_label,output_type,output_sem,__VA_ARGS__)
 T *__p_make_form(Symbol sym,char *output_label,Symbol output_type,SemanticID output_sem,...);
 #endif

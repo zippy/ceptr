@@ -16,56 +16,16 @@
 #include <stdarg.h>
 
 Symbol NULL_SYMBOL = {0,SEM_TYPE_SYMBOL,0};
-
 Structure NULL_STRUCTURE = {0,SEM_TYPE_STRUCTURE,0};
-
 Process NULL_PROCESS = {0,SEM_TYPE_PROCESS,0};
 
-ContextStore1 G_contexts[_NUM_DEFAULT_CONTEXTS];
 #define _sd(s,c,t,i); s.context = c;s.semtype=t;s.id=i;
 
 SemTable *G_sem;
 
-T *init_defs_tree(int context) {
-    ContextStore1 *cs = &G_contexts[context];
-    cs->root = __r_make_definitions();
-    G_sem->stores[context].definitions = cs->root;
-    return cs->root;
-}
-
 void def_sys() {
 
     G_sem = _sem_new();
-
-    int i;
-    for(i=0;i<_NUM_DEFAULT_CONTEXTS;i++) {
-        G_contexts[i].structures = 0;
-        G_contexts[i].symbols = 0;
-        G_contexts[i].processes = 0;
-        G_contexts[i].root = 0;
-    }
-
-    G_contexts[SYS_CONTEXT].structures = malloc(NUM_SYS_STRUCTURES*sizeof(Structure));
-    G_contexts[SYS_CONTEXT].symbols = malloc(NUM_SYS_SYMBOLS*sizeof(Symbol));
-    G_contexts[SYS_CONTEXT].processes = malloc(NUM_SYS_PROCESSES*sizeof(Process));
-
-    G_contexts[TEST_CONTEXT].symbols = malloc(NUM_TEST_SYMBOLS*sizeof(Symbol));
-    //    G_contexts[TEST_CONTEXT].structures = malloc(NUM_TEST_STRUCTURES*sizeof(Structure));
-    G_contexts[LOCAL_CONTEXT].symbols = malloc(NUM_LOCAL_SYMBOLS*sizeof(Symbol));
-    G_contexts[LOCAL_CONTEXT].structures = malloc(NUM_LOCAL_STRUCTURES*sizeof(Structure));
-
-    for (i=0;i<NUM_SYS_SYMBOLS;i++) {
-        G_contexts[SYS_CONTEXT].symbols[i].id = -1;
-        G_contexts[SYS_CONTEXT].symbols[i].context = SYS_CONTEXT;
-    }
-    for (i=0;i<NUM_LOCAL_SYMBOLS;i++) {
-        G_contexts[LOCAL_CONTEXT].symbols[i].id = -1;
-        G_contexts[LOCAL_CONTEXT].symbols[i].context = LOCAL_CONTEXT;
-    }
-    for (i=0;i<NUM_TEST_SYMBOLS;i++) {
-        G_contexts[TEST_CONTEXT].symbols[i].id = -1;
-        G_contexts[TEST_CONTEXT].symbols[i].context = TEST_CONTEXT;
-    }
 
     // bootstrap the hard-coded definitions that we need to even be able to make
     // definitions
@@ -83,32 +43,25 @@ void def_sys() {
     _sd(STRUCTURE_ZERO_OR_ONE,SYS_CONTEXT,SEM_TYPE_SYMBOL,STRUCTURE_ZERO_OR_ONE_ID);
     _sd(SYMBOLS,SYS_CONTEXT,SEM_TYPE_SYMBOL,SYMBOLS_ID);
     _sd(PROCESSES,SYS_CONTEXT,SEM_TYPE_SYMBOL,PROCESSES_ID);
+    _sd(PROTOCOLS,SYS_CONTEXT,SEM_TYPE_SYMBOL,PROTOCOLS_ID);
+    _sd(RECEPTORS,SYS_CONTEXT,SEM_TYPE_SYMBOL,RECEPTORS_ID);
+    _sd(SCAPES,SYS_CONTEXT,SEM_TYPE_SYMBOL,SCAPES_ID);
     _sd(SYMBOL_DEFINITION,SYS_CONTEXT,SEM_TYPE_SYMBOL,SYMBOL_DEFINITION_ID);
     _sd(SYMBOL_STRUCTURE,SYS_CONTEXT,SEM_TYPE_SYMBOL,SYMBOL_STRUCTURE_ID);
     _sd(SYMBOL_LABEL,SYS_CONTEXT,SEM_TYPE_SYMBOL,SYMBOL_LABEL_ID);
+    _sd(RECEPTOR_DEFINITION,SYS_CONTEXT,SEM_TYPE_SYMBOL,RECEPTOR_DEFINITION_ID);
+    _sd(RECEPTOR_LABEL,SYS_CONTEXT,SEM_TYPE_SYMBOL,RECEPTOR_LABEL_ID);
+
+    base_contexts(G_sem);
 
     // this has to happen after the _sd declarations so that the basic Symbols will be valid
-    init_defs_tree(SYS_CONTEXT);
-    init_defs_tree(TEST_CONTEXT);
-    init_defs_tree(LOCAL_CONTEXT);
-    G_sem->contexts = TEST_CONTEXT+1;
+    base_defs(G_sem);
 
-    base_sys_defs(G_sem);
-    base_local_defs(G_sem);
-    base_test_defs(G_sem);
+    _r_defineClockReceptor(G_sem);
 }
-void free_context(ContextStore1 *cs) {
-    if (cs->structures) free(cs->structures);
-    if (cs->symbols) free(cs->symbols);
-    if (cs->processes) free(cs->processes);
-    if (cs->root) _t_free(cs->root);
-}
+
 
 void sys_free() {
-    int i;
-    for(i=0;i<_NUM_DEFAULT_CONTEXTS;i++) {
-        free_context(&G_contexts[i]);
-    }
     _sem_free(G_sem);
 }
 
