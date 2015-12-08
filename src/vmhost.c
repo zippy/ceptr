@@ -238,19 +238,16 @@ void _v_deliver_signals(VMHost *v, Receptor *sender) {
         ReceptorAddress *toP = (ReceptorAddress *)_t_surface(_t_child(_t_child(envelope,EnvelopeToIdx),1));
         ReceptorAddress *fromP = (ReceptorAddress *)_t_surface(_t_child(_t_child(envelope,EnvelopeFromIdx),1));
 
-        // if the from or to address is "self" (0) we do a reverse lookup and
+        // if the from or to address is "self" (-1) we find the senders self
         // fix the values in the signal we are about to deliver.
 
-        if (fromP->addr == 0) {
-            raise_error("self broken - from");
-            //      *fromP = __v_get_receptor_xaddr(receptor_instances,sender).addr;
+        if (fromP->addr == SELF_RECEPTOR_ADDR) {
+            *fromP = __r_get_self_address(sender);
         }
 
         Receptor *r;
-        if (toP->addr == 0) {
-            raise_error("self broken - to");
-            r = sender;
-            //      *toP = __v_get_receptor_xaddr(receptor_instances,r).addr;
+        if (toP->addr == SELF_RECEPTOR_ADDR) {
+            *toP = __r_get_self_address(sender);
         }
         else  {
             if (toP->addr >= v->receptor_count) {

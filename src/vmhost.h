@@ -15,6 +15,8 @@
 
 #include "receptor.h"
 
+#define SELF_RECEPTOR_ADDR -1
+
 typedef struct thread {
     int state;
     pthread_t pthread;
