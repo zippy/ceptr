@@ -103,9 +103,7 @@ $(document).ready(function(){initNavTree('sys__defs_8h.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Data Structures</a> &#124;
 <a href="#define-members">Macros</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
@@ -125,16 +123,12 @@ Include dependency graph for sys_defs.h:</div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="sys__defs_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="sys__defs_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 </div>
 <p><a href="sys__defs_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
-Data Structures</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structContextStore1.html">ContextStore1</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:af494e2f2b61f6d7490b61b44d5181125"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af494e2f2b61f6d7490b61b44d5181125"></a>
@@ -146,20 +140,23 @@ Macros</h2></td></tr>
 <tr class="memitem:a2b06cc8277915de32048b4130fecde24"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2b06cc8277915de32048b4130fecde24"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>is_sys_structure</b>(s)&#160;&#160;&#160;(is_structure(s) &amp;&amp; (s.context == SYS_CONTEXT))</td></tr>
 <tr class="separator:a2b06cc8277915de32048b4130fecde24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40166a9ab82eb329b6c2e4a0a0ef6bdc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a40166a9ab82eb329b6c2e4a0a0ef6bdc"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>is_sys_receptor</b>(s)&#160;&#160;&#160;(is_receptor(s) &amp;&amp; (s.context == SYS_CONTEXT))</td></tr>
+<tr class="separator:a40166a9ab82eb329b6c2e4a0a0ef6bdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8905a396623084b0907589f66b3e69bc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8905a396623084b0907589f66b3e69bc"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>sT</b>(ctx, name, num,...)&#160;&#160;&#160;name = <a class="el" href="group__def.html#ga2548ae63a43771c1754ddcb7d43479e5">_d_define_structure</a>(sem,&quot;&quot; #name &quot;&quot;,ctx,num,__VA_ARGS__)</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>sT</b>(ctx, name, num,...)&#160;&#160;&#160;name = <a class="el" href="group__def.html#gaf0ec17bf7fbf0d0aadb870f3500b23c5">_d_define_structure_v</a>(sem,&quot;&quot; #name &quot;&quot;,ctx,num,__VA_ARGS__)</td></tr>
 <tr class="separator:a8905a396623084b0907589f66b3e69bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a57077e2388ce61c796b3cea81b933f9b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a57077e2388ce61c796b3cea81b933f9b"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>sTs</b>(ctx, name, def)&#160;&#160;&#160;G_ctx = ctx;G_label=&quot;&quot;#name&quot;&quot;;{<a class="el" href="structT.html">T</a> *sdef = __d_define_structure(__sem_get_defs(sem,SEM_TYPE_STRUCTURE,ctx),&quot;&quot; #name &quot;&quot;,def);<a class="el" href="structSemanticID.html">Structure</a> str = {ctx,SEM_TYPE_STRUCTURE,_d_get_def_addr(sdef)};name = str;}</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>sTs</b>(ctx, name, def)&#160;&#160;&#160;G_ctx = ctx;G_label=&quot;&quot;#name&quot;&quot;;name = <a class="el" href="group__def.html#gaa07e8bdb0806d0e55d0f892c791def0d">_d_define_structure</a>(sem,&quot;&quot; #name &quot;&quot;,def,ctx);</td></tr>
 <tr class="separator:a57077e2388ce61c796b3cea81b933f9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e9dbbf194fdfd3e577a672734fbed37"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8e9dbbf194fdfd3e577a672734fbed37"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>sY</b>(ctx, name, str)&#160;&#160;&#160;name = <a class="el" href="group__def.html#ga7d0c5a0f5a6b810406ea918c3e1207a8">_d_declare_symbol</a>(sem,str,&quot;&quot; #name &quot;&quot;,ctx)</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>sY</b>(ctx, name, str)&#160;&#160;&#160;name = <a class="el" href="group__def.html#ga3f075d8ef101d4a88a6668f01cf44080">_d_define_symbol</a>(sem,str,&quot;&quot; #name &quot;&quot;,ctx)</td></tr>
 <tr class="separator:a8e9dbbf194fdfd3e577a672734fbed37"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29f55129e7ae84352824fbf74d80f09b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a29f55129e7ae84352824fbf74d80f09b"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>sYs</b>(ctx, sym, str)&#160;&#160;&#160;__d_set_symbol_structure(__sem_get_defs(sem,SEM_TYPE_SYMBOL,ctx),sym,str)</td></tr>
 <tr class="separator:a29f55129e7ae84352824fbf74d80f09b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a09b0f4fa3a7517885de30bd9dbc9c413"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a09b0f4fa3a7517885de30bd9dbc9c413"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>sP</b>(ctx, name, intention,...)&#160;&#160;&#160;name = <a class="el" href="group__def.html#gae009f690cb6c446454113c99e6e11f32">_d_code_process</a>(sem,0,&quot;&quot; #name &quot;&quot;,intention,__p_make_signature(__VA_ARGS__),ctx)</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>sP</b>(ctx, name, intention,...)&#160;&#160;&#160;name = <a class="el" href="group__def.html#gaee8a21fdd29944bf44bb03457511515d">_d_define_process</a>(sem,0,&quot;&quot; #name &quot;&quot;,intention,__p_make_signature(__VA_ARGS__),ctx)</td></tr>
 <tr class="separator:a09b0f4fa3a7517885de30bd9dbc9c413"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb9fdf44cc34528887905ff6412885b9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeb9fdf44cc34528887905ff6412885b9"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>sT_SET</b>(...)&#160;&#160;&#160;sT_(sem,STRUCTURE_SYMBOL_SET,__VA_ARGS__)</td></tr>
@@ -189,12 +186,6 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>sT_BANG</b>&#160;&#160;&#160;<a class="el" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(0,STRUCTURE_ANYTHING)</td></tr>
 <tr class="separator:a7e137737198173e708fe6065281b7ed5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:a80888a194d9ed83b8001e6a510916aaa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a80888a194d9ed83b8001e6a510916aaa"></a>
-typedef struct <a class="el" href="structContextStore1.html">ContextStore1</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ContextStore1</b></td></tr>
-<tr class="separator:a80888a194d9ed83b8001e6a510916aaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a82eca0dc2c333607b1e0e79ee893ef8a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a82eca0dc2c333607b1e0e79ee893ef8a"></a>
@@ -215,9 +206,6 @@ Variables</h2></td></tr>
 <tr class="memitem:a9a0f519a69d0b11547ea79544670e9ca"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9a0f519a69d0b11547ea79544670e9ca"></a>
 <a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><b>NULL_STRUCTURE</b></td></tr>
 <tr class="separator:a9a0f519a69d0b11547ea79544670e9ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5b4a0550b31f4b20607eaa3b326c0629"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5b4a0550b31f4b20607eaa3b326c0629"></a>
-<a class="el" href="structContextStore1.html">ContextStore1</a>&#160;</td><td class="memItemRight" valign="bottom"><b>G_contexts</b> [_NUM_DEFAULT_CONTEXTS]</td></tr>
-<tr class="separator:a5b4a0550b31f4b20607eaa3b326c0629"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aac33201af5a06542fc8c51895b4c26b7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aac33201af5a06542fc8c51895b4c26b7"></a>
 Context&#160;</td><td class="memItemRight" valign="bottom"><b>G_ctx</b></td></tr>
 <tr class="separator:aac33201af5a06542fc8c51895b4c26b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -236,7 +224,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>G_label</b></td></t
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="sys__defs_8h.html">sys_defs.h</a></li>
-    <li class="footer">Generated on Sun Nov 29 2015 11:50:52 for ceptr by
+    <li class="footer">Generated on Mon Dec 7 2015 23:46:05 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

@@ -35,7 +35,9 @@ var semtrex_8h =
     [ "__stxcvm", "group__semtrex.html#gaca2dea328b69197bc1f21cf8139e904d", null ],
     [ "_dump_semtrex", "group__semtrex.html#ga0b627873ef75a23e1c24074e9893ee6e", null ],
     [ "_stx_freeFA", "group__semtrex.html#gacbce8db372cc051950f8d684af47c39a", null ],
+    [ "_stx_get_matched_node", "group__semtrex.html#ga4445b670a237494dbb895b7e9ef1628c", null ],
     [ "_stx_makeFA", "group__semtrex.html#ga23ed44c9e7a1637d5f7d49e6114af83a", null ],
+    [ "_stx_replace", "group__semtrex.html#ga48acf095c88caad0ab104b923390538a", null ],
     [ "_t_embody_from_match", "group__semtrex.html#ga25d59875a246ba9fb47131bced426517", null ],
     [ "_t_get_match", "group__semtrex.html#gada90f89374f4577e3ac8819e500a97a7", null ],
     [ "_t_match", "group__semtrex.html#ga8e580d7393964e5df55e92aebf587e3f", null ],
@@ -47,7 +49,6 @@ var semtrex_8h =
     [ "makeASCIITree", "group__semtrex.html#gad46a0cafec3ba9ca1500ecd6f8984238", null ],
     [ "parseSemtrex", "group__semtrex.html#gabe49b12bfb8785a10bf088c4ebe60db4", null ],
     [ "wrap", "group__semtrex.html#ga812993c95f0eeed3dd78ad1c5f979a7f", null ],
-    [ "G_d", "group__semtrex.html#ga11e99630a9b6ddf002ac9a725bba7ebd", null ],
     [ "G_te", "group__semtrex.html#ga8592201e0b95200efcedc42ec62b6676", null ],
     [ "G_ts", "group__semtrex.html#ga82573c9fc996af7623605123964ec479", null ]
 ];

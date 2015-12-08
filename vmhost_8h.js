@@ -1,6 +1,7 @@
 var vmhost_8h =
 [
     [ "MAX_ACTIVE_RECEPTORS", "group__vmhost.html#ga3848db508f196ac93016545460a40fc4", null ],
+    [ "MAX_RECEPTORS", "group__vmhost.html#ga22d5fbd08cda7fbb0e42dc1b1c4461da", null ],
     [ "ActiveReceptor", "group__vmhost.html#ga6c44cd3da992698a1e57bbcf25b423a1", null ],
     [ "thread", "group__vmhost.html#ga713b95fcfb383cf3c6e49d19d7c0fe96", null ],
     [ "VMHost", "group__vmhost.html#ga28f6922ceb70f5d815e9227bfed8b062", null ],

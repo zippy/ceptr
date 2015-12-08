@@ -215,6 +215,12 @@ Functions</h2></td></tr>
 <tr class="separator:ga8e580d7393964e5df55e92aebf587e3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga27540c8e1822da3160a0cc4717df410f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga27540c8e1822da3160a0cc4717df410f">_t_matchr</a> (<a class="el" href="structT.html">T</a> *semtrex, <a class="el" href="structT.html">T</a> *t, <a class="el" href="structT.html">T</a> **r)</td></tr>
 <tr class="separator:ga27540c8e1822da3160a0cc4717df410f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4445b670a237494dbb895b7e9ef1628c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga4445b670a237494dbb895b7e9ef1628c"></a>
+<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>_stx_get_matched_node</b> (<a class="el" href="structSemanticID.html">Symbol</a> s, <a class="el" href="structT.html">T</a> *match_results, <a class="el" href="structT.html">T</a> *match_tree, int *sibs)</td></tr>
+<tr class="separator:ga4445b670a237494dbb895b7e9ef1628c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga48acf095c88caad0ab104b923390538a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga48acf095c88caad0ab104b923390538a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>_stx_replace</b> (<a class="el" href="structT.html">T</a> *semtrex, <a class="el" href="structT.html">T</a> *t, <a class="el" href="structT.html">T</a> *replace)</td></tr>
+<tr class="separator:ga48acf095c88caad0ab104b923390538a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gada90f89374f4577e3ac8819e500a97a7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#gada90f89374f4577e3ac8819e500a97a7">_t_get_match</a> (<a class="el" href="structT.html">T</a> *result, <a class="el" href="structSemanticID.html">Symbol</a> group)</td></tr>
 <tr class="separator:gada90f89374f4577e3ac8819e500a97a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga25d59875a246ba9fb47131bced426517"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__semtrex.html#ga25d59875a246ba9fb47131bced426517">_t_embody_from_match</a> (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structT.html">T</a> *match, <a class="el" href="structT.html">T</a> *t)</td></tr>
@@ -247,9 +253,6 @@ Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:ga11e99630a9b6ddf002ac9a725bba7ebd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga11e99630a9b6ddf002ac9a725bba7ebd"></a>
-<a class="el" href="structDefs.html">Defs</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>G_d</b></td></tr>
-<tr class="separator:ga11e99630a9b6ddf002ac9a725bba7ebd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga82573c9fc996af7623605123964ec479"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga82573c9fc996af7623605123964ec479"></a>
 <a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>G_ts</b></td></tr>
 <tr class="separator:ga82573c9fc996af7623605123964ec479"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -403,7 +406,7 @@ Here's a BNF for the textual representation of semtrex trees:<div class="fragmen
 </div><div class="memdoc">
 <p>utility function to create a semtrex litteral symbol set </p>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01131">1131</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01158">1158</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -447,7 +450,7 @@ Here's a BNF for the textual representation of semtrex trees:<div class="fragmen
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the buffer </dd></dl>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00951">951</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00978">978</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -531,14 +534,14 @@ Here's a BNF for the textual representation of semtrex trees:<div class="fragmen
 <p>create a new tree based on the matched elements from a semtrex match</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">defs</td><td>definitions of the semantic context </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">sem</td><td>semantic context </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">match</td><td>a match from a call to _t_matchr </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">parent</td><td>the parent tree to add the embodiment into </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00734">734</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00761">761</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -575,7 +578,7 @@ Here's a BNF for the textual representation of semtrex trees:<div class="fragmen
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structT.html">T</a> of the match or NULL if no such match found </dd></dl>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00710">710</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l00737">737</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -697,7 +700,7 @@ Here's a BNF for the textual representation of semtrex trees:<div class="fragmen
 </div><div class="memdoc">
 <p>convert ascii tokens from a match to a char and add them to the given tree </p>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01122">1122</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01149">1149</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -738,7 +741,7 @@ Here's a BNF for the textual representation of semtrex trees:<div class="fragmen
 </div><div class="memdoc">
 <p>convert ascii tokens from a match to an float and add them to the given tree </p>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01089">1089</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01116">1116</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -779,7 +782,7 @@ Here's a BNF for the textual representation of semtrex trees:<div class="fragmen
 </div><div class="memdoc">
 <p>convert ascii tokens from a match to an integer and add them to the given tree </p>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01073">1073</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01100">1100</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -820,7 +823,7 @@ Here's a BNF for the textual representation of semtrex trees:<div class="fragmen
 </div><div class="memdoc">
 <p>convert ascii tokens from a match to a string and add them to the given tree </p>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01106">1106</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01133">1133</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -845,7 +848,7 @@ Here's a BNF for the textual representation of semtrex trees:<div class="fragmen
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structT.html">T</a> ASCII_CHARS tree </dd></dl>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01061">1061</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01088">1088</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -882,7 +885,7 @@ Here's a BNF for the textual representation of semtrex trees:<div class="fragmen
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structT.html">T</a> semtrex tree </dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000035">Todo:</a></b></dt><dd>, this should be implemented using INTERPOLATE_MATCH </dd></dl>
 
-<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01150">1150</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
+<p>Definition at line <a class="el" href="semtrex_8c_source.html#l01177">1177</a> of file <a class="el" href="semtrex_8c_source.html">semtrex.c</a>.</p>
 
 </div>
 </div>
@@ -891,7 +894,7 @@ Here's a BNF for the textual representation of semtrex trees:<div class="fragmen
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Nov 29 2015 11:50:52 for ceptr by
+    <li class="footer">Generated on Mon Dec 7 2015 23:46:05 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

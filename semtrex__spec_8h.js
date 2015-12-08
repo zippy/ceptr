@@ -30,6 +30,7 @@ var semtrex__spec_8h =
     [ "testSemtrexDump", "semtrex__spec_8h.html#aca7232031cea0653cd08aa18c72aa12b", null ],
     [ "testSemtrexParse", "semtrex__spec_8h.html#af24081f14eba10133e9fb304415b7333", null ],
     [ "testSemtrexParseHHTPReq", "semtrex__spec_8h.html#a352a04e56de17c44e6e3d53b63a89765", null ],
+    [ "testSemtrexReplace", "semtrex__spec_8h.html#ae40b753d9dd55baddbd5b85e22204374", null ],
     [ "sy0", "semtrex__spec_8h.html#ad6b2fd7dae17bdd858d3fe885a4ad13d", null ],
     [ "sy1", "semtrex__spec_8h.html#a7cf1af111c9fd786327d049a1080d186", null ],
     [ "sy11", "semtrex__spec_8h.html#a9154813017f6ad2b6ae66192e0ce820d", null ],

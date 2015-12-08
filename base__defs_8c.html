@@ -103,7 +103,8 @@ $(document).ready(function(){initNavTree('base__defs_8c.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">base_defs.c File Reference<div class="ingroups"><a class="el" href="group__def.html">Symbol and Structure Definition</a></div></div>  </div>
 </div><!--header-->
@@ -115,29 +116,1078 @@ $(document).ready(function(){initNavTree('base__defs_8c.html','');});
 <code>#include &quot;<a class="el" href="sys__defs_8h_source.html">sys_defs.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="def_8h_source.html">def.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="process_8h_source.html">process.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="receptor_8h_source.html">receptor.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for base_defs.c:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="base__defs_8c__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="base__defs_8c__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 </div>
 <p><a href="base__defs_8c_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ab4d4024836843fb994e92a0c2e217dd4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab4d4024836843fb994e92a0c2e217dd4"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>base_sys_defs</b> (<a class="el" href="structSemTable.html">SemTable</a> *sem)</td></tr>
-<tr class="separator:ab4d4024836843fb994e92a0c2e217dd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a904a5c86e90e48c3f68365df3930d1c3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a904a5c86e90e48c3f68365df3930d1c3"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>base_local_defs</b> (<a class="el" href="structSemTable.html">SemTable</a> *sem)</td></tr>
-<tr class="separator:a904a5c86e90e48c3f68365df3930d1c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab41b7f3bca60f6ec2b801764ba00a36a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab41b7f3bca60f6ec2b801764ba00a36a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>base_test_defs</b> (<a class="el" href="structSemTable.html">SemTable</a> *sem)</td></tr>
-<tr class="separator:ab41b7f3bca60f6ec2b801764ba00a36a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aecd4af9529b168d23b46541b738902ff"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aecd4af9529b168d23b46541b738902ff"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>base_defs</b> (<a class="el" href="structSemTable.html">SemTable</a> *sem)</td></tr>
+<tr class="separator:aecd4af9529b168d23b46541b738902ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a122187fec119f8a9c3c61082250da9c6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a122187fec119f8a9c3c61082250da9c6"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>base_contexts</b> (<a class="el" href="structSemTable.html">SemTable</a> *sem)</td></tr>
+<tr class="separator:a122187fec119f8a9c3c61082250da9c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a1cfbf24be54c2aa7f113d2a6acd77ad6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1cfbf24be54c2aa7f113d2a6acd77ad6"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SYS_RECEPTOR</b> ={0,0,0}</td></tr>
+<tr class="separator:a1cfbf24be54c2aa7f113d2a6acd77ad6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a776e550c2a30d2e39752177438c31647"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a776e550c2a30d2e39752177438c31647"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>COMPOSITORY</b> ={0,0,0}</td></tr>
+<tr class="separator:a776e550c2a30d2e39752177438c31647"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae235c238452801efd3731377e28e936f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae235c238452801efd3731377e28e936f"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>DEV_COMPOSITORY</b> ={0,0,0}</td></tr>
+<tr class="separator:ae235c238452801efd3731377e28e936f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc868eb38cef56ce460a8739e0fe32fb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afc868eb38cef56ce460a8739e0fe32fb"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TEST_RECEPTOR</b> ={0,0,0}</td></tr>
+<tr class="separator:afc868eb38cef56ce460a8739e0fe32fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2cc746e08dd61da561e45ec7ec2fb38"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac2cc746e08dd61da561e45ec7ec2fb38"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>CLOCK_RECEPTOR</b> ={0,0,0}</td></tr>
+<tr class="separator:ac2cc746e08dd61da561e45ec7ec2fb38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac58be04f7f0d4342cf0a531a2071b46d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac58be04f7f0d4342cf0a531a2071b46d"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STREAM_READER</b> ={0,0,0}</td></tr>
+<tr class="separator:ac58be04f7f0d4342cf0a531a2071b46d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac77080145a911c6ed2b153599b60068d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac77080145a911c6ed2b153599b60068d"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STREAM_WRITER</b> ={0,0,0}</td></tr>
+<tr class="separator:ac77080145a911c6ed2b153599b60068d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3afdaa93875b9d6f5fc874dc28169bd2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3afdaa93875b9d6f5fc874dc28169bd2"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>BIT</b> ={0,0,0}</td></tr>
+<tr class="separator:a3afdaa93875b9d6f5fc874dc28169bd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a343d90f13e55484959f53c142c79b722"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a343d90f13e55484959f53c142c79b722"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>INTEGER</b> ={0,0,0}</td></tr>
+<tr class="separator:a343d90f13e55484959f53c142c79b722"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9b203e5806044dcaafac0b00bdbb1bf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad9b203e5806044dcaafac0b00bdbb1bf"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>FLOAT</b> ={0,0,0}</td></tr>
+<tr class="separator:ad9b203e5806044dcaafac0b00bdbb1bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a001dc3134cac718f44b50cd6baa593e2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a001dc3134cac718f44b50cd6baa593e2"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>CHAR</b> ={0,0,0}</td></tr>
+<tr class="separator:a001dc3134cac718f44b50cd6baa593e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7791a5add3965986ae8c0e449e8cbf7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae7791a5add3965986ae8c0e449e8cbf7"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>CSTRING</b> ={0,0,0}</td></tr>
+<tr class="separator:ae7791a5add3965986ae8c0e449e8cbf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc74eddd7a3d77f6c599e98833d31890"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acc74eddd7a3d77f6c599e98833d31890"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SYMBOL</b> ={0,0,0}</td></tr>
+<tr class="separator:acc74eddd7a3d77f6c599e98833d31890"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9a4ea4a90594eefc220146c440c8dca"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab9a4ea4a90594eefc220146c440c8dca"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STRUCTURE</b> ={0,0,0}</td></tr>
+<tr class="separator:ab9a4ea4a90594eefc220146c440c8dca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae392956d9a8958fc731840b7cbb73b09"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae392956d9a8958fc731840b7cbb73b09"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PROCESS</b> ={0,0,0}</td></tr>
+<tr class="separator:ae392956d9a8958fc731840b7cbb73b09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11c0011b08db071f2eb045f79480fe94"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a11c0011b08db071f2eb045f79480fe94"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PROTOCOL</b> ={0,0,0}</td></tr>
+<tr class="separator:a11c0011b08db071f2eb045f79480fe94"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa65f712052ad5600de61af84d6b4c9cb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa65f712052ad5600de61af84d6b4c9cb"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SCAPE</b> ={0,0,0}</td></tr>
+<tr class="separator:aa65f712052ad5600de61af84d6b4c9cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a041ce0e81a7eaad7c9b06b49ecbbfe"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4a041ce0e81a7eaad7c9b06b49ecbbfe"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ENUM</b> ={0,0,0}</td></tr>
+<tr class="separator:a4a041ce0e81a7eaad7c9b06b49ecbbfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a479863dbf71cc828a8cf1970cf16e2e8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a479863dbf71cc828a8cf1970cf16e2e8"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TREE_PATH</b> ={0,0,0}</td></tr>
+<tr class="separator:a479863dbf71cc828a8cf1970cf16e2e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9836cf75b4e464a4c41377f76ad61ef6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9836cf75b4e464a4c41377f76ad61ef6"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>XADDR</b> ={0,0,0}</td></tr>
+<tr class="separator:a9836cf75b4e464a4c41377f76ad61ef6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae31763fd1973a70e6d07b99152f7bcad"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae31763fd1973a70e6d07b99152f7bcad"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SURFACE</b> ={0,0,0}</td></tr>
+<tr class="separator:ae31763fd1973a70e6d07b99152f7bcad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada80ad71e738e6717784fc5d2d6f93fc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ada80ad71e738e6717784fc5d2d6f93fc"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TREE</b> ={0,0,0}</td></tr>
+<tr class="separator:ada80ad71e738e6717784fc5d2d6f93fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8936853c68cd443c9ea2ea806aedd900"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8936853c68cd443c9ea2ea806aedd900"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>RECEPTOR</b> ={0,0,0}</td></tr>
+<tr class="separator:a8936853c68cd443c9ea2ea806aedd900"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c3c34c6fc4be16d3f68989f051ac2d8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6c3c34c6fc4be16d3f68989f051ac2d8"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SEMTREX</b> ={0,0,0}</td></tr>
+<tr class="separator:a6c3c34c6fc4be16d3f68989f051ac2d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c2e1bdefdb5cab8da39e605c0bab209"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0c2e1bdefdb5cab8da39e605c0bab209"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STREAM</b> ={0,0,0}</td></tr>
+<tr class="separator:a0c2e1bdefdb5cab8da39e605c0bab209"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c6582ac5ca8f4b058b03d28aff4abf3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3c6582ac5ca8f4b058b03d28aff4abf3"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>UUID</b> ={0,0,0}</td></tr>
+<tr class="separator:a3c6582ac5ca8f4b058b03d28aff4abf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9def3bddbd93ec98656429e29c04dc87"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9def3bddbd93ec98656429e29c04dc87"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>BLOB</b> ={0,0,0}</td></tr>
+<tr class="separator:a9def3bddbd93ec98656429e29c04dc87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7de06130050a8262ddeec8ccdab91e67"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7de06130050a8262ddeec8ccdab91e67"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STRUCTURES</b> ={0,0,0}</td></tr>
+<tr class="separator:a7de06130050a8262ddeec8ccdab91e67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ef516490f0492be55ab854ed67a66aa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9ef516490f0492be55ab854ed67a66aa"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SYMBOLS</b> ={0,0,0}</td></tr>
+<tr class="separator:a9ef516490f0492be55ab854ed67a66aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7942c1808d94d3f1ac41eda6d16b8dbd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7942c1808d94d3f1ac41eda6d16b8dbd"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PROCESSES</b> ={0,0,0}</td></tr>
+<tr class="separator:a7942c1808d94d3f1ac41eda6d16b8dbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06218389aeb8b6aa1e739ba3b0294490"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a06218389aeb8b6aa1e739ba3b0294490"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PROTOCOLS</b> ={0,0,0}</td></tr>
+<tr class="separator:a06218389aeb8b6aa1e739ba3b0294490"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed74c876291ec385f3b726955df55738"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aed74c876291ec385f3b726955df55738"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>RECEPTORS</b> ={0,0,0}</td></tr>
+<tr class="separator:aed74c876291ec385f3b726955df55738"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69c8c5bec6c221b658b2cb71fa6fda4e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a69c8c5bec6c221b658b2cb71fa6fda4e"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SCAPES</b> ={0,0,0}</td></tr>
+<tr class="separator:a69c8c5bec6c221b658b2cb71fa6fda4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a938f6094195a5aa7a58149da1a2105bc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a938f6094195a5aa7a58149da1a2105bc"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>LIST_OF_STRUCTURES_AND_SYMBOLS_AND_PROCESSES_AND_PROTOCOLS_AND_RECEPTORS_AND_ZERO_OR_MORE_OF_SCAPES</b> ={0,0,0}</td></tr>
+<tr class="separator:a938f6094195a5aa7a58149da1a2105bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30891cd697ceb3b86ec1dccbc28f4fa0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a30891cd697ceb3b86ec1dccbc28f4fa0"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>DEFINITIONS</b> ={0,0,0}</td></tr>
+<tr class="separator:a30891cd697ceb3b86ec1dccbc28f4fa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3283a620b7eae8a29345e97e9f4653e6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3283a620b7eae8a29345e97e9f4653e6"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STRUCTURE_SYMBOL</b> ={0,0,0}</td></tr>
+<tr class="separator:a3283a620b7eae8a29345e97e9f4653e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc2ab0fa536d38ba91ecfed9949a5b57"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acc2ab0fa536d38ba91ecfed9949a5b57"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STRUCTURE_SEQUENCE</b> ={0,0,0}</td></tr>
+<tr class="separator:acc2ab0fa536d38ba91ecfed9949a5b57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb89ad3473916a80f3aea1f6dd7a19c6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abb89ad3473916a80f3aea1f6dd7a19c6"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STRUCTURE_SYMBOL_SET</b> ={0,0,0}</td></tr>
+<tr class="separator:abb89ad3473916a80f3aea1f6dd7a19c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae49750797c70f350e7dc7eb5a822d9ff"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae49750797c70f350e7dc7eb5a822d9ff"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STRUCTURE_OR</b> ={0,0,0}</td></tr>
+<tr class="separator:ae49750797c70f350e7dc7eb5a822d9ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f3e6bd32a57dc1ddd2f29e575ef49e1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7f3e6bd32a57dc1ddd2f29e575ef49e1"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STRUCTURE_ZERO_OR_MORE</b> ={0,0,0}</td></tr>
+<tr class="separator:a7f3e6bd32a57dc1ddd2f29e575ef49e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47e04a519c8e81bf5ad41a5f31f9bb58"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a47e04a519c8e81bf5ad41a5f31f9bb58"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STRUCTURE_ONE_OR_MORE</b> ={0,0,0}</td></tr>
+<tr class="separator:a47e04a519c8e81bf5ad41a5f31f9bb58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a072cf8fc40ff86952d7ddced7fb00b8d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a072cf8fc40ff86952d7ddced7fb00b8d"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SYMBOL_OF_STRUCTURE</b> ={0,0,0}</td></tr>
+<tr class="separator:a072cf8fc40ff86952d7ddced7fb00b8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeee277ad507a587488d13cec33b1dd55"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeee277ad507a587488d13cec33b1dd55"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STRUCTURE_ANYTHING</b> ={0,0,0}</td></tr>
+<tr class="separator:aeee277ad507a587488d13cec33b1dd55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c0375c3a3f62d172a1e211eb076c12f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5c0375c3a3f62d172a1e211eb076c12f"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STRUCTURE_DEF</b> ={0,0,0}</td></tr>
+<tr class="separator:a5c0375c3a3f62d172a1e211eb076c12f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a180c1753fb388b6e606b519cc3ab5e91"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a180c1753fb388b6e606b519cc3ab5e91"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STRUCTURE_LABEL</b> ={0,0,0}</td></tr>
+<tr class="separator:a180c1753fb388b6e606b519cc3ab5e91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42dda3960a003661a4c9a8e97cbe9707"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a42dda3960a003661a4c9a8e97cbe9707"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TUPLE_OF_STRUCTURE_LABEL_AND_STRUCTURE_DEF</b> ={0,0,0}</td></tr>
+<tr class="separator:a42dda3960a003661a4c9a8e97cbe9707"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad80cf1a131f1e17532038ff4b08170c2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad80cf1a131f1e17532038ff4b08170c2"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STRUCTURE_DEFINITION</b> ={0,0,0}</td></tr>
+<tr class="separator:ad80cf1a131f1e17532038ff4b08170c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a283a1b5cd88422da0cbc0740e8fba7ad"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a283a1b5cd88422da0cbc0740e8fba7ad"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ZERO_OR_MORE_OF_STRUCTURE_DEFINITION</b> ={0,0,0}</td></tr>
+<tr class="separator:a283a1b5cd88422da0cbc0740e8fba7ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac412e44305c525fe4ff97775d88c5c12"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac412e44305c525fe4ff97775d88c5c12"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ONE_OR_MORE_OF_STRUCTURE_DEF</b> ={0,0,0}</td></tr>
+<tr class="separator:ac412e44305c525fe4ff97775d88c5c12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc156aa23d303cf6d9e96067d17d937c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abc156aa23d303cf6d9e96067d17d937c"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ONE_OR_MORE_OF_STRUCTURE_SYMBOL</b> ={0,0,0}</td></tr>
+<tr class="separator:abc156aa23d303cf6d9e96067d17d937c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe9b407b422d1b00ba5bd25cb1201af2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afe9b407b422d1b00ba5bd25cb1201af2"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PAIR_OF_STRUCTURE_DEF</b> ={0,0,0}</td></tr>
+<tr class="separator:afe9b407b422d1b00ba5bd25cb1201af2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a907b25140708eac50bdfffacc7afe6ec"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a907b25140708eac50bdfffacc7afe6ec"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STRUCTURE_ZERO_OR_ONE</b> ={0,0,0}</td></tr>
+<tr class="separator:a907b25140708eac50bdfffacc7afe6ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a26dee207b345a0732238d5f81ce2b3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0a26dee207b345a0732238d5f81ce2b3"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SYMBOL_STRUCTURE</b> ={0,0,0}</td></tr>
+<tr class="separator:a0a26dee207b345a0732238d5f81ce2b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a421c381d6dc8c373d68fb7454d2c01"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4a421c381d6dc8c373d68fb7454d2c01"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SYMBOL_LABEL</b> ={0,0,0}</td></tr>
+<tr class="separator:a4a421c381d6dc8c373d68fb7454d2c01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a902300efa647e163641aa3409298772d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a902300efa647e163641aa3409298772d"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TUPLE_OF_SYMBOL_LABEL_AND_SYMBOL_STRUCTURE</b> ={0,0,0}</td></tr>
+<tr class="separator:a902300efa647e163641aa3409298772d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b13334717d7190e157d0999e5bf7ef5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7b13334717d7190e157d0999e5bf7ef5"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SYMBOL_DEFINITION</b> ={0,0,0}</td></tr>
+<tr class="separator:a7b13334717d7190e157d0999e5bf7ef5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba9b67fc5d99e16a63963da4ef674d68"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aba9b67fc5d99e16a63963da4ef674d68"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ZERO_OR_MORE_OF_SYMBOL_DEFINITION</b> ={0,0,0}</td></tr>
+<tr class="separator:aba9b67fc5d99e16a63963da4ef674d68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e367447c874f65bd9c355742646e4e7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3e367447c874f65bd9c355742646e4e7"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>BOOLEAN</b> ={0,0,0}</td></tr>
+<tr class="separator:a3e367447c874f65bd9c355742646e4e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11d090a759a9d3ce68d4a98ce75265f9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a11d090a759a9d3ce68d4a98ce75265f9"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SEMTREX_MATCH_PATH</b> ={0,0,0}</td></tr>
+<tr class="separator:a11d090a759a9d3ce68d4a98ce75265f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f3def491360bc8906186b1ba4e96899"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0f3def491360bc8906186b1ba4e96899"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SEMTREX_SYMBOL_LITERAL</b> ={0,0,0}</td></tr>
+<tr class="separator:a0f3def491360bc8906186b1ba4e96899"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19efc07dc36d2f57e982b53c9ab22aac"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a19efc07dc36d2f57e982b53c9ab22aac"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SEMTREX_SYMBOL_LITERAL_NOT</b> ={0,0,0}</td></tr>
+<tr class="separator:a19efc07dc36d2f57e982b53c9ab22aac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdfb09554601a8cd0779ab5029a1afa5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afdfb09554601a8cd0779ab5029a1afa5"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SEMTREX_SEQUENCE</b> ={0,0,0}</td></tr>
+<tr class="separator:afdfb09554601a8cd0779ab5029a1afa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64d352ebf60cd239c62ef66c3cbd9c26"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a64d352ebf60cd239c62ef66c3cbd9c26"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SEMTREX_OR</b> ={0,0,0}</td></tr>
+<tr class="separator:a64d352ebf60cd239c62ef66c3cbd9c26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd783efecfaf65e4d2c688f1185479d7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abd783efecfaf65e4d2c688f1185479d7"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SEMTREX_NOT</b> ={0,0,0}</td></tr>
+<tr class="separator:abd783efecfaf65e4d2c688f1185479d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3417807e77f17c50f2b572c8ed06a0b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae3417807e77f17c50f2b572c8ed06a0b"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SEMTREX_SYMBOL_ANY</b> ={0,0,0}</td></tr>
+<tr class="separator:ae3417807e77f17c50f2b572c8ed06a0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96562522b9db25ed3fca0d209dbd6353"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a96562522b9db25ed3fca0d209dbd6353"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SEMTREX_ZERO_OR_MORE</b> ={0,0,0}</td></tr>
+<tr class="separator:a96562522b9db25ed3fca0d209dbd6353"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af16ae0b754fc7807159c137d1f271e08"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af16ae0b754fc7807159c137d1f271e08"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SEMTREX_ONE_OR_MORE</b> ={0,0,0}</td></tr>
+<tr class="separator:af16ae0b754fc7807159c137d1f271e08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95eed1ac275f67c8192638c8ad269bf9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a95eed1ac275f67c8192638c8ad269bf9"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SEMTREX_ZERO_OR_ONE</b> ={0,0,0}</td></tr>
+<tr class="separator:a95eed1ac275f67c8192638c8ad269bf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad37f95b3a40e8d57b1ced780af792123"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad37f95b3a40e8d57b1ced780af792123"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SEMTREX_VALUE_LITERAL</b> ={0,0,0}</td></tr>
+<tr class="separator:ad37f95b3a40e8d57b1ced780af792123"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd74dfa4d2a8402560912c0989ea89cf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abd74dfa4d2a8402560912c0989ea89cf"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SEMTREX_VALUE_LITERAL_NOT</b> ={0,0,0}</td></tr>
+<tr class="separator:abd74dfa4d2a8402560912c0989ea89cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9af9494f8f6b2d7efa73f71e9660bc8e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9af9494f8f6b2d7efa73f71e9660bc8e"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SEMTREX_GROUP</b> ={0,0,0}</td></tr>
+<tr class="separator:a9af9494f8f6b2d7efa73f71e9660bc8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47c0672cb9fc0362fda935a469edfed8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a47c0672cb9fc0362fda935a469edfed8"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SEMTREX_WALK</b> ={0,0,0}</td></tr>
+<tr class="separator:a47c0672cb9fc0362fda935a469edfed8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27e4bb3d5cfada2f7b74d05eab3fbcb6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a27e4bb3d5cfada2f7b74d05eab3fbcb6"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SEMTREX_DESCEND</b> ={0,0,0}</td></tr>
+<tr class="separator:a27e4bb3d5cfada2f7b74d05eab3fbcb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada588bc87496421c9b9ceb6c960c91ca"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ada588bc87496421c9b9ceb6c960c91ca"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SEMTREX_DEF</b> ={0,0,0}</td></tr>
+<tr class="separator:ada588bc87496421c9b9ceb6c960c91ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d6b6428b5fde321599628ee35355be1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0d6b6428b5fde321599628ee35355be1"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SEMTREX_SYMBOL</b> ={0,0,0}</td></tr>
+<tr class="separator:a0d6b6428b5fde321599628ee35355be1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4bd7672fe291f644903ea5a03423bf73"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4bd7672fe291f644903ea5a03423bf73"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ONE_OR_MORE_OF_SEMTREX_SYMBOL</b> ={0,0,0}</td></tr>
+<tr class="separator:a4bd7672fe291f644903ea5a03423bf73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a994cc0ca0bfcbb2fbe04dddd29b8006f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a994cc0ca0bfcbb2fbe04dddd29b8006f"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SEMTREX_SYMBOL_SET</b> ={0,0,0}</td></tr>
+<tr class="separator:a994cc0ca0bfcbb2fbe04dddd29b8006f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4713b425697e4b108fa9d50befecdebd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4713b425697e4b108fa9d50befecdebd"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SEMTREX_SYMBOL_LITERAL_DEF</b> ={0,0,0}</td></tr>
+<tr class="separator:a4713b425697e4b108fa9d50befecdebd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1061d069966df0cef432c10189239adc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1061d069966df0cef432c10189239adc"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ONE_OR_MORE_OF_SEMTREX_DEF</b> ={0,0,0}</td></tr>
+<tr class="separator:a1061d069966df0cef432c10189239adc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad24ee6a49a8b5412fde5a79f7154a441"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad24ee6a49a8b5412fde5a79f7154a441"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PAIR_OF_SEMTREX_DEF</b> ={0,0,0}</td></tr>
+<tr class="separator:ad24ee6a49a8b5412fde5a79f7154a441"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0519a60e0cd240d1733bc5f81acc0f4c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0519a60e0cd240d1733bc5f81acc0f4c"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ZERO_OR_ONE_OF_ANY_SYMBOL</b> ={0,0,0}</td></tr>
+<tr class="separator:a0519a60e0cd240d1733bc5f81acc0f4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade0e01f74e3ea9d9393dd8fb55134a0c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ade0e01f74e3ea9d9393dd8fb55134a0c"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ONE_OR_MORE_OF_ANY_SYMBOL</b> ={0,0,0}</td></tr>
+<tr class="separator:ade0e01f74e3ea9d9393dd8fb55134a0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63bf1fcb21d7812a5df78ff5947136f9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a63bf1fcb21d7812a5df78ff5947136f9"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SEMTREX_VALUE_SET</b> ={0,0,0}</td></tr>
+<tr class="separator:a63bf1fcb21d7812a5df78ff5947136f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa655bac55c75e0827a596aa8cfb0feb9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa655bac55c75e0827a596aa8cfb0feb9"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SEMTREX_VALUE_LITERAL_DEF</b> ={0,0,0}</td></tr>
+<tr class="separator:aa655bac55c75e0827a596aa8cfb0feb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae791d15d4683ddc14b404395c4580052"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae791d15d4683ddc14b404395c4580052"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SEMTREX_MATCH</b> ={0,0,0}</td></tr>
+<tr class="separator:ae791d15d4683ddc14b404395c4580052"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab14b28728139566489d5dc73ce23c5e8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab14b28728139566489d5dc73ce23c5e8"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SEMTREX_MATCH_CURSOR</b> ={0,0,0}</td></tr>
+<tr class="separator:ab14b28728139566489d5dc73ce23c5e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5c4e2b13727a2ef2b0feea0d7ab9c21"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac5c4e2b13727a2ef2b0feea0d7ab9c21"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SEMTREX_MATCH_RESULTS</b> ={0,0,0}</td></tr>
+<tr class="separator:ac5c4e2b13727a2ef2b0feea0d7ab9c21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac34f0a614966cd4ce369a55cb17cd618"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac34f0a614966cd4ce369a55cb17cd618"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SEMTREX_MATCH_SYMBOL</b> ={0,0,0}</td></tr>
+<tr class="separator:ac34f0a614966cd4ce369a55cb17cd618"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a59ee089bc1acd2c7eee3975c554b54"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3a59ee089bc1acd2c7eee3975c554b54"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SEMTREX_MATCH_SIBLINGS_COUNT</b> ={0,0,0}</td></tr>
+<tr class="separator:a3a59ee089bc1acd2c7eee3975c554b54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e89ef00e6406f1a277b92eb032412bc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1e89ef00e6406f1a277b92eb032412bc"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ASCII_CHAR</b> ={0,0,0}</td></tr>
+<tr class="separator:a1e89ef00e6406f1a277b92eb032412bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae4da5074c397be49cec371bfcc17e09"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aae4da5074c397be49cec371bfcc17e09"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ONE_OR_MORE_OF_ASCII_CHAR</b> ={0,0,0}</td></tr>
+<tr class="separator:aae4da5074c397be49cec371bfcc17e09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea8327ee1bef7c2e53e9660e470d17d6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aea8327ee1bef7c2e53e9660e470d17d6"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ASCII_CHARS</b> ={0,0,0}</td></tr>
+<tr class="separator:aea8327ee1bef7c2e53e9660e470d17d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22fc31eca2cf5ea79665697af9729bb9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a22fc31eca2cf5ea79665697af9729bb9"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>RECEPTOR_XADDR</b> ={0,0,0}</td></tr>
+<tr class="separator:a22fc31eca2cf5ea79665697af9729bb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aacf1196d2b51acf10deea6231fdd6912"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aacf1196d2b51acf10deea6231fdd6912"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>EXPECTATIONS</b> ={0,0,0}</td></tr>
+<tr class="separator:aacf1196d2b51acf10deea6231fdd6912"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9a1a347ca65a91874fc850a3c57a5ad"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af9a1a347ca65a91874fc850a3c57a5ad"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SIGNALS</b> ={0,0,0}</td></tr>
+<tr class="separator:af9a1a347ca65a91874fc850a3c57a5ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8e00434dc98ccd0b0345a5254c4dbc7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad8e00434dc98ccd0b0345a5254c4dbc7"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ASPECT</b> ={0,0,0}</td></tr>
+<tr class="separator:ad8e00434dc98ccd0b0345a5254c4dbc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3fd73532d1b4419a294ff20d635f37ab"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3fd73532d1b4419a294ff20d635f37ab"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>DEFAULT_ASPECT</b> ={0,0,0}</td></tr>
+<tr class="separator:a3fd73532d1b4419a294ff20d635f37ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abda661ca2baddbcdd3b760511301930b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abda661ca2baddbcdd3b760511301930b"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ONE_OR_MORE_OF_STRUCTURE_OF_ASPECT</b> ={0,0,0}</td></tr>
+<tr class="separator:abda661ca2baddbcdd3b760511301930b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad15be6d56785d77d81b142c4a1dd200"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aad15be6d56785d77d81b142c4a1dd200"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>FLUX</b> ={0,0,0}</td></tr>
+<tr class="separator:aad15be6d56785d77d81b142c4a1dd200"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a736f359bd279d8407c288eb42bec7ab0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a736f359bd279d8407c288eb42bec7ab0"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SCAPE_SPEC</b> ={0,0,0}</td></tr>
+<tr class="separator:a736f359bd279d8407c288eb42bec7ab0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac304da2d3ec1986dfaa978b6c22f6a93"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac304da2d3ec1986dfaa978b6c22f6a93"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ASPECT_IDENT</b> ={0,0,0}</td></tr>
+<tr class="separator:ac304da2d3ec1986dfaa978b6c22f6a93"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a042a94cfbf023d60789bc8643c430134"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a042a94cfbf023d60789bc8643c430134"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ASPECT_TYPE</b> ={0,0,0}</td></tr>
+<tr class="separator:a042a94cfbf023d60789bc8643c430134"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3db08fc528c08e643287e4a2d89c07a9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3db08fc528c08e643287e4a2d89c07a9"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ASPECT_LABEL</b> ={0,0,0}</td></tr>
+<tr class="separator:a3db08fc528c08e643287e4a2d89c07a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a879cb96e6364cab40918862cc7cdd124"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a879cb96e6364cab40918862cc7cdd124"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TUPLE_OF_ASPECT_TYPE_AND_ASPECT_LABEL</b> ={0,0,0}</td></tr>
+<tr class="separator:a879cb96e6364cab40918862cc7cdd124"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb90116e1c069f705792f89b825b90a8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acb90116e1c069f705792f89b825b90a8"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ASPECT_DEF</b> ={0,0,0}</td></tr>
+<tr class="separator:acb90116e1c069f705792f89b825b90a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abce7042ecadcec617da35f90e49f3cec"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abce7042ecadcec617da35f90e49f3cec"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ONE_OR_MORE_OF_ASPECT_DEF</b> ={0,0,0}</td></tr>
+<tr class="separator:abce7042ecadcec617da35f90e49f3cec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1751f0e438cc199e6f1a893f8943237c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1751f0e438cc199e6f1a893f8943237c"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ASPECTS</b> ={0,0,0}</td></tr>
+<tr class="separator:a1751f0e438cc199e6f1a893f8943237c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a823bcab78a92e84cf686cf26e28821e1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a823bcab78a92e84cf686cf26e28821e1"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>CARRIER</b> ={0,0,0}</td></tr>
+<tr class="separator:a823bcab78a92e84cf686cf26e28821e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accbdb1bc34f1780fc2e688f473079414"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="accbdb1bc34f1780fc2e688f473079414"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>BODY</b> ={0,0,0}</td></tr>
+<tr class="separator:accbdb1bc34f1780fc2e688f473079414"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab817df6074edc7f2938c102b86808124"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab817df6074edc7f2938c102b86808124"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SIGNAL_UUID</b> ={0,0,0}</td></tr>
+<tr class="separator:ab817df6074edc7f2938c102b86808124"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae514fae5487c7206aa827734e309b06e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae514fae5487c7206aa827734e309b06e"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>IN_RESPONSE_TO_UUID</b> ={0,0,0}</td></tr>
+<tr class="separator:ae514fae5487c7206aa827734e309b06e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefde359415e3ba93b3932a221bbe8ec9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aefde359415e3ba93b3932a221bbe8ec9"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>RECEPTOR_PATH</b> ={0,0,0}</td></tr>
+<tr class="separator:aefde359415e3ba93b3932a221bbe8ec9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a364e2668ae1cb0e6c2af39f91b547698"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a364e2668ae1cb0e6c2af39f91b547698"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>RECEPTOR_ADDR</b> ={0,0,0}</td></tr>
+<tr class="separator:a364e2668ae1cb0e6c2af39f91b547698"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f808a884cd69161759be58e1df12d02"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6f808a884cd69161759be58e1df12d02"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>RECEPTOR_ADDRESS</b> ={0,0,0}</td></tr>
+<tr class="separator:a6f808a884cd69161759be58e1df12d02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad72fe9788858149f26c3897fb3e246f2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad72fe9788858149f26c3897fb3e246f2"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>FROM_ADDRESS</b> ={0,0,0}</td></tr>
+<tr class="separator:ad72fe9788858149f26c3897fb3e246f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26f831f5f7d3076e27ae0b03ea116bbc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a26f831f5f7d3076e27ae0b03ea116bbc"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TO_ADDRESS</b> ={0,0,0}</td></tr>
+<tr class="separator:a26f831f5f7d3076e27ae0b03ea116bbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6342891b6d5eabf19a12c0bb495d237"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae6342891b6d5eabf19a12c0bb495d237"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>END_CONDITIONS</b> ={0,0,0}</td></tr>
+<tr class="separator:ae6342891b6d5eabf19a12c0bb495d237"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5b4cf2c44dc7bef3f2d75f1648902eb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af5b4cf2c44dc7bef3f2d75f1648902eb"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>LIST_OF_FROM_ADDRESS_AND_TO_ADDRESS_AND_ASPECT_IDENT_AND_CARRIER_AND_SIGNAL_UUID_AND_ZERO_OR_ONE_OF_LOGICAL_OR_OF_END_CONDITIONS_AND_IN_RESPONSE_TO_UUID</b> ={0,0,0}</td></tr>
+<tr class="separator:af5b4cf2c44dc7bef3f2d75f1648902eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4cfb0c5bad614d0cb6ae567f7add060a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4cfb0c5bad614d0cb6ae567f7add060a"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ENVELOPE</b> ={0,0,0}</td></tr>
+<tr class="separator:a4cfb0c5bad614d0cb6ae567f7add060a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad25adb7ab8595c2c2e3acb1d41a1c917"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad25adb7ab8595c2c2e3acb1d41a1c917"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TUPLE_OF_ENVELOPE_AND_BODY</b> ={0,0,0}</td></tr>
+<tr class="separator:ad25adb7ab8595c2c2e3acb1d41a1c917"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae027b7025d8adbf8b332cec7cb67e517"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae027b7025d8adbf8b332cec7cb67e517"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SIGNAL</b> ={0,0,0}</td></tr>
+<tr class="separator:ae027b7025d8adbf8b332cec7cb67e517"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c72157ed3b2f14acc30abcf8fccf239"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5c72157ed3b2f14acc30abcf8fccf239"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ZERO_OR_MORE_OF_SIGNAL</b> ={0,0,0}</td></tr>
+<tr class="separator:a5c72157ed3b2f14acc30abcf8fccf239"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68bdb7a0bfbdb87b3b071b0a41f40717"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a68bdb7a0bfbdb87b3b071b0a41f40717"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PENDING_SIGNALS</b> ={0,0,0}</td></tr>
+<tr class="separator:a68bdb7a0bfbdb87b3b071b0a41f40717"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c121faab05f529d977fd39eb9b95b48"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2c121faab05f529d977fd39eb9b95b48"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>CODE_PATH</b> ={0,0,0}</td></tr>
+<tr class="separator:a2c121faab05f529d977fd39eb9b95b48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8fe33903528b4f3fb3626183774b557"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab8fe33903528b4f3fb3626183774b557"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PROCESS_IDENT</b> ={0,0,0}</td></tr>
+<tr class="separator:ab8fe33903528b4f3fb3626183774b557"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a821b701751f27798f30b764330d22235"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a821b701751f27798f30b764330d22235"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TUPLE_OF_PROCESS_IDENT_AND_CODE_PATH</b> ={0,0,0}</td></tr>
+<tr class="separator:a821b701751f27798f30b764330d22235"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaac1609ca7cf0a311426a9a73041be54"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaac1609ca7cf0a311426a9a73041be54"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>WAKEUP_REFERENCE</b> ={0,0,0}</td></tr>
+<tr class="separator:aaac1609ca7cf0a311426a9a73041be54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66ac8f1e0eed25cddaa950422ba536cc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a66ac8f1e0eed25cddaa950422ba536cc"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>LIST_OF_SIGNAL_UUID_AND_CARRIER_AND_WAKEUP_REFERENCE_AND_END_CONDITIONS</b> ={0,0,0}</td></tr>
+<tr class="separator:a66ac8f1e0eed25cddaa950422ba536cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14fa7b85893c1debb6ecdd9ccc36582b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a14fa7b85893c1debb6ecdd9ccc36582b"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PENDING_RESPONSE</b> ={0,0,0}</td></tr>
+<tr class="separator:a14fa7b85893c1debb6ecdd9ccc36582b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8130f3b12812d955b52ee102dfd7658"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af8130f3b12812d955b52ee102dfd7658"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ZERO_OR_MORE_OF_PENDING_RESPONSE</b> ={0,0,0}</td></tr>
+<tr class="separator:af8130f3b12812d955b52ee102dfd7658"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab47d37b70235b9b1f2221a34c3e6de70"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab47d37b70235b9b1f2221a34c3e6de70"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PENDING_RESPONSES</b> ={0,0,0}</td></tr>
+<tr class="separator:ab47d37b70235b9b1f2221a34c3e6de70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b82e91583c338afa171cf7aa96aef02"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7b82e91583c338afa171cf7aa96aef02"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>RESPONSE_CARRIER</b> ={0,0,0}</td></tr>
+<tr class="separator:a7b82e91583c338afa171cf7aa96aef02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95b304992571e8191a136b45192bf8c4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a95b304992571e8191a136b45192bf8c4"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PATTERN</b> ={0,0,0}</td></tr>
+<tr class="separator:a95b304992571e8191a136b45192bf8c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a559eb75517729a3d3a712224c28e5113"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a559eb75517729a3d3a712224c28e5113"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ACTION</b> ={0,0,0}</td></tr>
+<tr class="separator:a559eb75517729a3d3a712224c28e5113"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a9a8aa69caeff94ba9c0be60cb08215"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8a9a8aa69caeff94ba9c0be60cb08215"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PARAMS</b> ={0,0,0}</td></tr>
+<tr class="separator:a8a9a8aa69caeff94ba9c0be60cb08215"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9aa2d6e5a4f13fe734b073294fc32237"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9aa2d6e5a4f13fe734b073294fc32237"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>LIST_OF_CARRIER_AND_PATTERN_AND_ACTION_AND_PARAMS_AND_END_CONDITIONS</b> ={0,0,0}</td></tr>
+<tr class="separator:a9aa2d6e5a4f13fe734b073294fc32237"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acbd9e934222857e93013003b0829d818"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acbd9e934222857e93013003b0829d818"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>EXPECTATION</b> ={0,0,0}</td></tr>
+<tr class="separator:acbd9e934222857e93013003b0829d818"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab882169f6ab8633286bbab6cf930b880"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab882169f6ab8633286bbab6cf930b880"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ZERO_OR_MORE_OF_EXPECTATION</b> ={0,0,0}</td></tr>
+<tr class="separator:ab882169f6ab8633286bbab6cf930b880"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48dca3bdf100b31a75863fca4a395f8a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a48dca3bdf100b31a75863fca4a395f8a"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>INTERPOLATE_SYMBOL</b> ={0,0,0}</td></tr>
+<tr class="separator:a48dca3bdf100b31a75863fca4a395f8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acda9d4f463f0c950d82b4004cf14f0ce"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acda9d4f463f0c950d82b4004cf14f0ce"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PROCESS_NAME</b> ={0,0,0}</td></tr>
+<tr class="separator:acda9d4f463f0c950d82b4004cf14f0ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41454ef08d5d59e7033cba60ef017d34"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a41454ef08d5d59e7033cba60ef017d34"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PROCESS_INTENTION</b> ={0,0,0}</td></tr>
+<tr class="separator:a41454ef08d5d59e7033cba60ef017d34"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7c8c7275d26efc99999c15ef45c656d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af7c8c7275d26efc99999c15ef45c656d"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PROCESS_SIGNATURE</b> ={0,0,0}</td></tr>
+<tr class="separator:af7c8c7275d26efc99999c15ef45c656d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c12fb968973949e6b024e57bc7d4746"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5c12fb968973949e6b024e57bc7d4746"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ANY_SYMBOL</b> ={0,0,0}</td></tr>
+<tr class="separator:a5c12fb968973949e6b024e57bc7d4746"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d666f159e3c7ded4f559abe13c4f932"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2d666f159e3c7ded4f559abe13c4f932"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>CODE</b> ={0,0,0}</td></tr>
+<tr class="separator:a2d666f159e3c7ded4f559abe13c4f932"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ece33a11cab559a50bc813ae75c4bf0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8ece33a11cab559a50bc813ae75c4bf0"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>LIST_OF_PROCESS_NAME_AND_PROCESS_INTENTION_AND_CODE_AND_PROCESS_SIGNATURE</b> ={0,0,0}</td></tr>
+<tr class="separator:a8ece33a11cab559a50bc813ae75c4bf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a507cda9b0082d3dd987beaf30feee33e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a507cda9b0082d3dd987beaf30feee33e"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PROCESS_DEFINITION</b> ={0,0,0}</td></tr>
+<tr class="separator:a507cda9b0082d3dd987beaf30feee33e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd6b6ee5a18e32c1d6df27b96ea0c4a0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afd6b6ee5a18e32c1d6df27b96ea0c4a0"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ZERO_OR_MORE_OF_PROCESS_DEFINITION</b> ={0,0,0}</td></tr>
+<tr class="separator:afd6b6ee5a18e32c1d6df27b96ea0c4a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34b1078412ea7378287d9e6d19ea8b7a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a34b1078412ea7378287d9e6d19ea8b7a"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SIGNATURE_LABEL</b> ={0,0,0}</td></tr>
+<tr class="separator:a34b1078412ea7378287d9e6d19ea8b7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6d91a9f65ed2fff49e4608aaf574f24"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac6d91a9f65ed2fff49e4608aaf574f24"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SIGNATURE_STRUCTURE</b> ={0,0,0}</td></tr>
+<tr class="separator:ac6d91a9f65ed2fff49e4608aaf574f24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1350e67b816b8e6bc31dcb0ac080dc8c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1350e67b816b8e6bc31dcb0ac080dc8c"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SIGNATURE_SYMBOL</b> ={0,0,0}</td></tr>
+<tr class="separator:a1350e67b816b8e6bc31dcb0ac080dc8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acfa8b1e39e6ca3f7e54362948fb3be42"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acfa8b1e39e6ca3f7e54362948fb3be42"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SIGNATURE_PROCESS</b> ={0,0,0}</td></tr>
+<tr class="separator:acfa8b1e39e6ca3f7e54362948fb3be42"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f82894818d5e9a04580eb902981ae88"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4f82894818d5e9a04580eb902981ae88"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SIGNATURE_PASSTHRU</b> ={0,0,0}</td></tr>
+<tr class="separator:a4f82894818d5e9a04580eb902981ae88"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50d91a20d50481e2ad76d7549aff2a9b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a50d91a20d50481e2ad76d7549aff2a9b"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SIGNATURE_ANY</b> ={0,0,0}</td></tr>
+<tr class="separator:a50d91a20d50481e2ad76d7549aff2a9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad667b8e14cdf8090cdbcb92c9225eda6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad667b8e14cdf8090cdbcb92c9225eda6"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SIGNATURE_OPTIONAL</b> ={0,0,0}</td></tr>
+<tr class="separator:ad667b8e14cdf8090cdbcb92c9225eda6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4b295b6ea0f6969ac1d7e5b45c9f8c1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab4b295b6ea0f6969ac1d7e5b45c9f8c1"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ONE_OF_SIGNATURE_STRUCTURE_AND_SIGNATURE_SYMBOL_AND_SIGNATURE_PROCESS_AND_SIGNATURE_PASSTHRU</b> ={0,0,0}</td></tr>
+<tr class="separator:ab4b295b6ea0f6969ac1d7e5b45c9f8c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaefa8c7efa1f55013176e129fd212e9d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaefa8c7efa1f55013176e129fd212e9d"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SIGNATURE_OUTPUT_TYPE</b> ={0,0,0}</td></tr>
+<tr class="separator:aaefa8c7efa1f55013176e129fd212e9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd05920fcec5a3ca3ec587920ed6c72f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acd05920fcec5a3ca3ec587920ed6c72f"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SIGNATURE_SEMANTIC_VARIANTS</b> ={0,0,0}</td></tr>
+<tr class="separator:acd05920fcec5a3ca3ec587920ed6c72f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92ee36a89ddb5e62c33f14eafd638e2c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a92ee36a89ddb5e62c33f14eafd638e2c"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TUPLE_OF_SIGNATURE_SEMANTIC_VARIANTS_AND_ZERO_OR_ONE_OF_SIGNATURE_OPTIONAL</b> ={0,0,0}</td></tr>
+<tr class="separator:a92ee36a89ddb5e62c33f14eafd638e2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad22cc3d04c04a1f7f2d56c56247cb37d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad22cc3d04c04a1f7f2d56c56247cb37d"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SIGNATURE_INPUT_TYPE</b> ={0,0,0}</td></tr>
+<tr class="separator:ad22cc3d04c04a1f7f2d56c56247cb37d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa052811b7bd9bf64fea7bcc0df44e333"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa052811b7bd9bf64fea7bcc0df44e333"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TUPLE_OF_SIGNATURE_LABEL_AND_SIGNATURE_INPUT_TYPE</b> ={0,0,0}</td></tr>
+<tr class="separator:aa052811b7bd9bf64fea7bcc0df44e333"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8d6c42f1b1088a9705b2973df414231"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae8d6c42f1b1088a9705b2973df414231"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>INPUT_SIGNATURE</b> ={0,0,0}</td></tr>
+<tr class="separator:ae8d6c42f1b1088a9705b2973df414231"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2045f60910a94a965f051bc7f1a1a41b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2045f60910a94a965f051bc7f1a1a41b"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TUPLE_OF_SIGNATURE_LABEL_AND_SIGNATURE_OUTPUT_TYPE</b> ={0,0,0}</td></tr>
+<tr class="separator:a2045f60910a94a965f051bc7f1a1a41b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af41085226f6a26b67840a893881746f4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af41085226f6a26b67840a893881746f4"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>OUTPUT_SIGNATURE</b> ={0,0,0}</td></tr>
+<tr class="separator:af41085226f6a26b67840a893881746f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41e24c8538b46a4f303c618fd51eb642"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a41e24c8538b46a4f303c618fd51eb642"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PROCESS_FORM</b> ={0,0,0}</td></tr>
+<tr class="separator:a41e24c8538b46a4f303c618fd51eb642"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad770568218c5f2c0cc3437cd7a138e0d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad770568218c5f2c0cc3437cd7a138e0d"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>LIST_OF_CODE_AND_PARAMS_AND_ZERO_OR_ONE_OF_CODE</b> ={0,0,0}</td></tr>
+<tr class="separator:ad770568218c5f2c0cc3437cd7a138e0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba8b9303a89329f8ba5612721da9a892"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aba8b9303a89329f8ba5612721da9a892"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>RUN_TREE</b> ={0,0,0}</td></tr>
+<tr class="separator:aba8b9303a89329f8ba5612721da9a892"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a699c7f0123768acb67fa74bf4f2e3e09"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a699c7f0123768acb67fa74bf4f2e3e09"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PARAM_REF</b> ={0,0,0}</td></tr>
+<tr class="separator:a699c7f0123768acb67fa74bf4f2e3e09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8bf57514817542d48a9a2836e858464b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8bf57514817542d48a9a2836e858464b"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SIGNAL_REF</b> ={0,0,0}</td></tr>
+<tr class="separator:a8bf57514817542d48a9a2836e858464b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c83bf90f0663143755f95d0f2260b9a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9c83bf90f0663143755f95d0f2260b9a"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ZERO_OR_MORE_OF_ANY_SYMBOL</b> ={0,0,0}</td></tr>
+<tr class="separator:a9c83bf90f0663143755f95d0f2260b9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7212e07b1dcdaea2fc5bdf5115fe9b8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad7212e07b1dcdaea2fc5bdf5115fe9b8"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>RESULT_SYMBOL</b> ={0,0,0}</td></tr>
+<tr class="separator:ad7212e07b1dcdaea2fc5bdf5115fe9b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e61f81294f767a3348ff287436d142c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5e61f81294f767a3348ff287436d142c"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>REDUCTION_ERROR_SYMBOL</b> ={0,0,0}</td></tr>
+<tr class="separator:a5e61f81294f767a3348ff287436d142c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53eb9a0a5aed42f76f4dac8e5dc15b4b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a53eb9a0a5aed42f76f4dac8e5dc15b4b"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ROLE</b> ={0,0,0}</td></tr>
+<tr class="separator:a53eb9a0a5aed42f76f4dac8e5dc15b4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a264bc4d28452752fafc3f9747550d263"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a264bc4d28452752fafc3f9747550d263"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GOAL</b> ={0,0,0}</td></tr>
+<tr class="separator:a264bc4d28452752fafc3f9747550d263"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e4bed513d0e545e0b0da97359d8b859"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5e4bed513d0e545e0b0da97359d8b859"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>USAGE</b> ={0,0,0}</td></tr>
+<tr class="separator:a5e4bed513d0e545e0b0da97359d8b859"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a110f452349009117a686d1532a08a92a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a110f452349009117a686d1532a08a92a"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ONE_OR_MORE_OF_ROLE</b> ={0,0,0}</td></tr>
+<tr class="separator:a110f452349009117a686d1532a08a92a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebe10e7b93adf5dac5bcf0b191c82d0b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aebe10e7b93adf5dac5bcf0b191c82d0b"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SOURCE</b> ={0,0,0}</td></tr>
+<tr class="separator:aebe10e7b93adf5dac5bcf0b191c82d0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a739cf51ce3867ccd9e6fbe6e1879dbbf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a739cf51ce3867ccd9e6fbe6e1879dbbf"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>DESTINATION</b> ={0,0,0}</td></tr>
+<tr class="separator:a739cf51ce3867ccd9e6fbe6e1879dbbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae242affc7a1d018ede9a247af6fcfda0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae242affc7a1d018ede9a247af6fcfda0"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>LIST_OF_ROLE_AND_SOURCE_AND_PATTERN_AND_ACTION</b> ={0,0,0}</td></tr>
+<tr class="separator:ae242affc7a1d018ede9a247af6fcfda0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66f02ad207ef064b9672f70f871ed509"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a66f02ad207ef064b9672f70f871ed509"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>EXPECT</b> ={0,0,0}</td></tr>
+<tr class="separator:a66f02ad207ef064b9672f70f871ed509"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7dd394042a6dec7af7b10adc0ae024c1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7dd394042a6dec7af7b10adc0ae024c1"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>LIST_OF_ROLE_AND_DESTINATION_AND_ACTION</b> ={0,0,0}</td></tr>
+<tr class="separator:a7dd394042a6dec7af7b10adc0ae024c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f8bf2427942ee31919d1ba5ce6f477a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4f8bf2427942ee31919d1ba5ce6f477a"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>INITIATE</b> ={0,0,0}</td></tr>
+<tr class="separator:a4f8bf2427942ee31919d1ba5ce6f477a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa89ef433d2e00dfd21bc3ab78025c35c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa89ef433d2e00dfd21bc3ab78025c35c"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PNAME</b> ={0,0,0}</td></tr>
+<tr class="separator:aa89ef433d2e00dfd21bc3ab78025c35c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae493fd517f27583164bdcd0ea6f89373"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae493fd517f27583164bdcd0ea6f89373"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TUPLE_OF_PNAME_AND_ONE_OR_MORE_OF_LOGICAL_OR_OF_RESOLUTION_AND_CONNECTION</b> ={0,0,0}</td></tr>
+<tr class="separator:ae493fd517f27583164bdcd0ea6f89373"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a279e02f2799e588db73964f4839c57b1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a279e02f2799e588db73964f4839c57b1"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>INCLUSION</b> ={0,0,0}</td></tr>
+<tr class="separator:a279e02f2799e588db73964f4839c57b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2142e4c787d35245dc25773375d70ccc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2142e4c787d35245dc25773375d70ccc"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>INTERACTION</b> ={0,0,0}</td></tr>
+<tr class="separator:a2142e4c787d35245dc25773375d70ccc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75342ba9d1bdf9de7ffbb59eb4761639"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a75342ba9d1bdf9de7ffbb59eb4761639"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ZERO_OR_MORE_OF_PROTOCOL_DEFINITION</b> ={0,0,0}</td></tr>
+<tr class="separator:a75342ba9d1bdf9de7ffbb59eb4761639"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9eeb8851314eb9d124d8220cdb8eacd3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9eeb8851314eb9d124d8220cdb8eacd3"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ACTUAL_PROCESS</b> ={0,0,0}</td></tr>
+<tr class="separator:a9eeb8851314eb9d124d8220cdb8eacd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2984b68993df0a4fcfb9f177c59b674"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa2984b68993df0a4fcfb9f177c59b674"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ACTUAL_RECEPTOR</b> ={0,0,0}</td></tr>
+<tr class="separator:aa2984b68993df0a4fcfb9f177c59b674"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedf9a9c0aff57f586af7e6a7d3eb33e5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aedf9a9c0aff57f586af7e6a7d3eb33e5"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ACTUAL_SYMBOL</b> ={0,0,0}</td></tr>
+<tr class="separator:aedf9a9c0aff57f586af7e6a7d3eb33e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa416262ac537b7927ba4667abe478dd9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa416262ac537b7927ba4667abe478dd9"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TUPLE_OF_GOAL_AND_ACTUAL_PROCESS</b> ={0,0,0}</td></tr>
+<tr class="separator:aa416262ac537b7927ba4667abe478dd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a444d5fc0164da836fafaf80bd5463807"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a444d5fc0164da836fafaf80bd5463807"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>WHICH_PROCESS</b> ={0,0,0}</td></tr>
+<tr class="separator:a444d5fc0164da836fafaf80bd5463807"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15a53647b949d2e3ead2b24ba12507df"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a15a53647b949d2e3ead2b24ba12507df"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TUPLE_OF_ROLE_AND_ACTUAL_RECEPTOR</b> ={0,0,0}</td></tr>
+<tr class="separator:a15a53647b949d2e3ead2b24ba12507df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05abffcb7ebf3c32e12e7759976bd395"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a05abffcb7ebf3c32e12e7759976bd395"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>WHICH_RECEPTOR</b> ={0,0,0}</td></tr>
+<tr class="separator:a05abffcb7ebf3c32e12e7759976bd395"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06a7f3a398d3911e7137e7c5bb571e44"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a06a7f3a398d3911e7137e7c5bb571e44"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TUPLE_OF_USAGE_AND_ACTUAL_SYMBOL</b> ={0,0,0}</td></tr>
+<tr class="separator:a06a7f3a398d3911e7137e7c5bb571e44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a18aa464814293082da593eabb394f2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0a18aa464814293082da593eabb394f2"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>WHICH_SYMBOL</b> ={0,0,0}</td></tr>
+<tr class="separator:a0a18aa464814293082da593eabb394f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19f9bb65e2cedb3799724d93ca5388e3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a19f9bb65e2cedb3799724d93ca5388e3"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>MAPPING</b> ={0,0,0}</td></tr>
+<tr class="separator:a19f9bb65e2cedb3799724d93ca5388e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae74893c14885e51dfcc27ab1f6f30fc3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae74893c14885e51dfcc27ab1f6f30fc3"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>RESOLUTION</b> ={0,0,0}</td></tr>
+<tr class="separator:ae74893c14885e51dfcc27ab1f6f30fc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7589af6846c2f1ffdc9606b6d601a5b4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7589af6846c2f1ffdc9606b6d601a5b4"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PAIR_OF_GOAL</b> ={0,0,0}</td></tr>
+<tr class="separator:a7589af6846c2f1ffdc9606b6d601a5b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af28bf4f129dc00694f409caa0348b0d4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af28bf4f129dc00694f409caa0348b0d4"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>WHICH_GOAL</b> ={0,0,0}</td></tr>
+<tr class="separator:af28bf4f129dc00694f409caa0348b0d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2432cc0babc5193518fb65b0511f7e92"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2432cc0babc5193518fb65b0511f7e92"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PAIR_OF_ROLE</b> ={0,0,0}</td></tr>
+<tr class="separator:a2432cc0babc5193518fb65b0511f7e92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12951b22c558cce8a1611324b76246ff"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a12951b22c558cce8a1611324b76246ff"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>WHICH_ROLE</b> ={0,0,0}</td></tr>
+<tr class="separator:a12951b22c558cce8a1611324b76246ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ec1d222754f2b798ed812c50c7925dd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2ec1d222754f2b798ed812c50c7925dd"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PAIR_OF_USAGE</b> ={0,0,0}</td></tr>
+<tr class="separator:a2ec1d222754f2b798ed812c50c7925dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7736eb96675149db24deaa04f9e433ef"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7736eb96675149db24deaa04f9e433ef"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>WHICH_USAGE</b> ={0,0,0}</td></tr>
+<tr class="separator:a7736eb96675149db24deaa04f9e433ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2bff898511257f37d1c18f2ba9ce905"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa2bff898511257f37d1c18f2ba9ce905"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>LINKING</b> ={0,0,0}</td></tr>
+<tr class="separator:aa2bff898511257f37d1c18f2ba9ce905"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a478d8bafedb0917110f8bf40ccbb8aa8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a478d8bafedb0917110f8bf40ccbb8aa8"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>CONNECTION</b> ={0,0,0}</td></tr>
+<tr class="separator:a478d8bafedb0917110f8bf40ccbb8aa8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab129b67a45b1f2ebf069839c2f0b2b56"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab129b67a45b1f2ebf069839c2f0b2b56"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ONE_OR_MORE_OF_RESOLUTION</b> ={0,0,0}</td></tr>
+<tr class="separator:ab129b67a45b1f2ebf069839c2f0b2b56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a707710d9e799efdd939671e11d9d8eba"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a707710d9e799efdd939671e11d9d8eba"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PROTOCOL_BINDINGS</b> ={0,0,0}</td></tr>
+<tr class="separator:a707710d9e799efdd939671e11d9d8eba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e8af511523331b72c9a988430efc60e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1e8af511523331b72c9a988430efc60e"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PROTOCOL_LABEL</b> ={0,0,0}</td></tr>
+<tr class="separator:a1e8af511523331b72c9a988430efc60e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5eece272b780698ea10f8acb4a2e8d25"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5eece272b780698ea10f8acb4a2e8d25"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>LIST_OF_PROTOCOL_LABEL_AND_ZERO_OR_MORE_OF_ROLE_AND_ZERO_OR_MORE_OF_GOAL_AND_ZERO_OR_MORE_OF_USAGE_AND_ZERO_OR_MORE_OF_STRUCTURE_OF_INTERACTION_AND_ZERO_OR_MORE_OF_INCLUSION</b> ={0,0,0}</td></tr>
+<tr class="separator:a5eece272b780698ea10f8acb4a2e8d25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa26ee5c81f50b7d2a50bea3837514797"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa26ee5c81f50b7d2a50bea3837514797"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PROTOCOL_DEFINITION</b> ={0,0,0}</td></tr>
+<tr class="separator:aa26ee5c81f50b7d2a50bea3837514797"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7cc32f94b40cb63b9536e402af879b1b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7cc32f94b40cb63b9536e402af879b1b"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ZERO_OR_MORE_OF_STRUCTURE_OF_SCAPE</b> ={0,0,0}</td></tr>
+<tr class="separator:a7cc32f94b40cb63b9536e402af879b1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2107bd5bd682cad084d41a7959087f13"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2107bd5bd682cad084d41a7959087f13"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>MANIFEST_LABEL</b> ={0,0,0}</td></tr>
+<tr class="separator:a2107bd5bd682cad084d41a7959087f13"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a405fd617b903f0b1982d08bd311cba7b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a405fd617b903f0b1982d08bd311cba7b"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>MANIFEST_SPEC</b> ={0,0,0}</td></tr>
+<tr class="separator:a405fd617b903f0b1982d08bd311cba7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4dad6d7b066e1003bf2f90c659a2a88a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4dad6d7b066e1003bf2f90c659a2a88a"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TUPLE_OF_MANIFEST_LABEL_AND_MANIFEST_SPEC</b> ={0,0,0}</td></tr>
+<tr class="separator:a4dad6d7b066e1003bf2f90c659a2a88a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9285257f339c381201dffd671a54ffe"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab9285257f339c381201dffd671a54ffe"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>MANIFEST_PAIR</b> ={0,0,0}</td></tr>
+<tr class="separator:ab9285257f339c381201dffd671a54ffe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0ed51fd0ff5c86de8f7c770bbfeac76"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad0ed51fd0ff5c86de8f7c770bbfeac76"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ONE_OR_MORE_OF_MANIFEST_PAIR</b> ={0,0,0}</td></tr>
+<tr class="separator:ad0ed51fd0ff5c86de8f7c770bbfeac76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87758f666dbd08384473aad5c7473914"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a87758f666dbd08384473aad5c7473914"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>MANIFEST</b> ={0,0,0}</td></tr>
+<tr class="separator:a87758f666dbd08384473aad5c7473914"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c868ba4a37b30defcde88ed95c7acf4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4c868ba4a37b30defcde88ed95c7acf4"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>RECEPTOR_IDENTIFIER</b> ={0,0,0}</td></tr>
+<tr class="separator:a4c868ba4a37b30defcde88ed95c7acf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2261e54611d9ee7d33aab4749b6f3b0d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2261e54611d9ee7d33aab4749b6f3b0d"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>LIST_OF_MANIFEST_AND_RECEPTOR_IDENTIFIER_AND_DEFINITIONS</b> ={0,0,0}</td></tr>
+<tr class="separator:a2261e54611d9ee7d33aab4749b6f3b0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a748205faabecec9ec16b1ce981f9be14"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a748205faabecec9ec16b1ce981f9be14"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>RECEPTOR_PACKAGE</b> ={0,0,0}</td></tr>
+<tr class="separator:a748205faabecec9ec16b1ce981f9be14"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b52917f2a3b5f08703c87de8b52142f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8b52917f2a3b5f08703c87de8b52142f"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TUPLE_OF_MANIFEST_LABEL_AND_ANY_SYMBOL</b> ={0,0,0}</td></tr>
+<tr class="separator:a8b52917f2a3b5f08703c87de8b52142f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a387d4e624a80775f9b6788cba57902b3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a387d4e624a80775f9b6788cba57902b3"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>BINDING_PAIR</b> ={0,0,0}</td></tr>
+<tr class="separator:a387d4e624a80775f9b6788cba57902b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad03ea5783651118c9a3a5dd6e3d1875b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad03ea5783651118c9a3a5dd6e3d1875b"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ONE_OR_MORE_OF_BINDING_PAIR</b> ={0,0,0}</td></tr>
+<tr class="separator:ad03ea5783651118c9a3a5dd6e3d1875b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e7242f6c01aa6423202eb918e8cfc2a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7e7242f6c01aa6423202eb918e8cfc2a"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>BINDINGS</b> ={0,0,0}</td></tr>
+<tr class="separator:a7e7242f6c01aa6423202eb918e8cfc2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb4dcd610e475e8656dd86de0ed52142"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeb4dcd610e475e8656dd86de0ed52142"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>RECEPTOR_ELAPSED_TIME</b> ={0,0,0}</td></tr>
+<tr class="separator:aeb4dcd610e475e8656dd86de0ed52142"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac876a4abc4b555329b3e81801cc5ad1b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac876a4abc4b555329b3e81801cc5ad1b"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>RECEPTOR_LABEL</b> ={0,0,0}</td></tr>
+<tr class="separator:ac876a4abc4b555329b3e81801cc5ad1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbdea25aa5521ecf81793ca709ea1c3e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afbdea25aa5521ecf81793ca709ea1c3e"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>RECEPTOR_IDENTITY</b> ={0,0,0}</td></tr>
+<tr class="separator:afbdea25aa5521ecf81793ca709ea1c3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8ccd62f6dc6dd779b22562efa0cb442"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa8ccd62f6dc6dd779b22562efa0cb442"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TUPLE_OF_RECEPTOR_LABEL_AND_DEFINITIONS</b> ={0,0,0}</td></tr>
+<tr class="separator:aa8ccd62f6dc6dd779b22562efa0cb442"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee5fbf2757957eaba224b1bb8f341118"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aee5fbf2757957eaba224b1bb8f341118"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>RECEPTOR_DEFINITION</b> ={0,0,0}</td></tr>
+<tr class="separator:aee5fbf2757957eaba224b1bb8f341118"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99e94a21570b5fba2b9f362c9cdf92dc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a99e94a21570b5fba2b9f362c9cdf92dc"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ZERO_OR_MORE_OF_RECEPTOR_DEFINITION</b> ={0,0,0}</td></tr>
+<tr class="separator:a99e94a21570b5fba2b9f362c9cdf92dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74bc25f6274fb4a540d64adf2f6d4814"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a74bc25f6274fb4a540d64adf2f6d4814"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>LIST_OF_FLUX_AND_PENDING_SIGNALS_AND_PENDING_RESPONSES_AND_RECEPTOR_ELAPSED_TIME</b> ={0,0,0}</td></tr>
+<tr class="separator:a74bc25f6274fb4a540d64adf2f6d4814"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaec10d6bccfd855a2068e3eafeae52a7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaec10d6bccfd855a2068e3eafeae52a7"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>RECEPTOR_STATE</b> ={0,0,0}</td></tr>
+<tr class="separator:aaec10d6bccfd855a2068e3eafeae52a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8998c7134e83e693c5212d260bb2aee9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8998c7134e83e693c5212d260bb2aee9"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PARENT_CONTEXT_NUM</b> ={0,0,0}</td></tr>
+<tr class="separator:a8998c7134e83e693c5212d260bb2aee9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ad38e97589c70f366f3881b8bb0a160"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8ad38e97589c70f366f3881b8bb0a160"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>CONTEXT_NUM</b> ={0,0,0}</td></tr>
+<tr class="separator:a8ad38e97589c70f366f3881b8bb0a160"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93da427ebece435edec27d912433bbe8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a93da427ebece435edec27d912433bbe8"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>LIST_OF_CONTEXT_NUM_AND_PARENT_CONTEXT_NUM_AND_RECEPTOR_STATE</b> ={0,0,0}</td></tr>
+<tr class="separator:a93da427ebece435edec27d912433bbe8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0e854243eff801108b1fb24d6151471"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa0e854243eff801108b1fb24d6151471"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>RECEPTOR_INSTANCE</b> ={0,0,0}</td></tr>
+<tr class="separator:aa0e854243eff801108b1fb24d6151471"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aacd11ecf0bdb040c7d055c3eaa4c903c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aacd11ecf0bdb040c7d055c3eaa4c903c"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SERIALIZED_RECEPTOR</b> ={0,0,0}</td></tr>
+<tr class="separator:aacd11ecf0bdb040c7d055c3eaa4c903c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a370d2dc7e0d72184275462bac1144a9e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a370d2dc7e0d72184275462bac1144a9e"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ZERO_OR_MORE_OF_RECEPTOR_XADDR</b> ={0,0,0}</td></tr>
+<tr class="separator:a370d2dc7e0d72184275462bac1144a9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab2b97746067a53efce4f730e9daabdc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aab2b97746067a53efce4f730e9daabdc"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ACTIVE_RECEPTORS</b> ={0,0,0}</td></tr>
+<tr class="separator:aab2b97746067a53efce4f730e9daabdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f91082220a7f671a86d87d39bab5e16"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3f91082220a7f671a86d87d39bab5e16"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>LIST_OF_ACTIVE_RECEPTORS</b> ={0,0,0}</td></tr>
+<tr class="separator:a3f91082220a7f671a86d87d39bab5e16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81e80e89f1c2b021afad89f59f249a5d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a81e80e89f1c2b021afad89f59f249a5d"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SYS_STATE</b> ={0,0,0}</td></tr>
+<tr class="separator:a81e80e89f1c2b021afad89f59f249a5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81cb206c2da382352d44909959f8af64"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a81cb206c2da382352d44909959f8af64"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>YEAR</b> ={0,0,0}</td></tr>
+<tr class="separator:a81cb206c2da382352d44909959f8af64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a697becbbd68e301fd18a51e86eab33"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3a697becbbd68e301fd18a51e86eab33"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>MONTH</b> ={0,0,0}</td></tr>
+<tr class="separator:a3a697becbbd68e301fd18a51e86eab33"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:addb1dc03cc50add94d85065ab99b6f5e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="addb1dc03cc50add94d85065ab99b6f5e"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>DAY</b> ={0,0,0}</td></tr>
+<tr class="separator:addb1dc03cc50add94d85065ab99b6f5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a006f0329539659d2cce2cc3516c8095e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a006f0329539659d2cce2cc3516c8095e"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HOUR</b> ={0,0,0}</td></tr>
+<tr class="separator:a006f0329539659d2cce2cc3516c8095e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ad7cf634945ce388ea45f0152a25315"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3ad7cf634945ce388ea45f0152a25315"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>MINUTE</b> ={0,0,0}</td></tr>
+<tr class="separator:a3ad7cf634945ce388ea45f0152a25315"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a4810f4675f5147d454df7acff58458"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8a4810f4675f5147d454df7acff58458"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SECOND</b> ={0,0,0}</td></tr>
+<tr class="separator:a8a4810f4675f5147d454df7acff58458"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8bd67f697c1a546d379e50e5996f2f3e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8bd67f697c1a546d379e50e5996f2f3e"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>DATE</b> ={0,0,0}</td></tr>
+<tr class="separator:a8bd67f697c1a546d379e50e5996f2f3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95d9ecb288a9ee30026daba46a3aa7e1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a95d9ecb288a9ee30026daba46a3aa7e1"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TIME</b> ={0,0,0}</td></tr>
+<tr class="separator:a95d9ecb288a9ee30026daba46a3aa7e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ad86f9ed6676e46d16fb2c1a2a7b430"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4ad86f9ed6676e46d16fb2c1a2a7b430"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TODAY</b> ={0,0,0}</td></tr>
+<tr class="separator:a4ad86f9ed6676e46d16fb2c1a2a7b430"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adab3779ab3bfddca2fdda4d420220004"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adab3779ab3bfddca2fdda4d420220004"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>NOW</b> ={0,0,0}</td></tr>
+<tr class="separator:adab3779ab3bfddca2fdda4d420220004"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a739182c96c9ac4e1e74643bea6d41ac4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a739182c96c9ac4e1e74643bea6d41ac4"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TIMESTAMP</b> ={0,0,0}</td></tr>
+<tr class="separator:a739182c96c9ac4e1e74643bea6d41ac4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3438fe6ae7f9872e4f7e28337eb0337b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3438fe6ae7f9872e4f7e28337eb0337b"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TICK</b> ={0,0,0}</td></tr>
+<tr class="separator:a3438fe6ae7f9872e4f7e28337eb0337b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43e154add2ec6e26a72e984e9c1345ae"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a43e154add2ec6e26a72e984e9c1345ae"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ERROR_LOCATION</b> ={0,0,0}</td></tr>
+<tr class="separator:a43e154add2ec6e26a72e984e9c1345ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8d6f67f197325adb08e1f0036eaee5d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa8d6f67f197325adb08e1f0036eaee5d"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>REDUCTION_ERROR</b> ={0,0,0}</td></tr>
+<tr class="separator:aa8d6f67f197325adb08e1f0036eaee5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6257acaa995888945f110b6b0aaa02b1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6257acaa995888945f110b6b0aaa02b1"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ZERO_DIVIDE_ERR</b> ={0,0,0}</td></tr>
+<tr class="separator:a6257acaa995888945f110b6b0aaa02b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7cf04d8691b8032b33942fc92c00ecc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af7cf04d8691b8032b33942fc92c00ecc"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TOO_FEW_PARAMS_ERR</b> ={0,0,0}</td></tr>
+<tr class="separator:af7cf04d8691b8032b33942fc92c00ecc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68b7a7b29d9907a72809e2073124eab1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a68b7a7b29d9907a72809e2073124eab1"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TOO_MANY_PARAMS_ERR</b> ={0,0,0}</td></tr>
+<tr class="separator:a68b7a7b29d9907a72809e2073124eab1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6be57c8ad95ded7020fb5a458e1b682"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa6be57c8ad95ded7020fb5a458e1b682"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SIGNATURE_MISMATCH_ERR</b> ={0,0,0}</td></tr>
+<tr class="separator:aa6be57c8ad95ded7020fb5a458e1b682"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3234b379b9b9ee08fc14308550f487ea"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3234b379b9b9ee08fc14308550f487ea"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>NOT_A_PROCESS_ERR</b> ={0,0,0}</td></tr>
+<tr class="separator:a3234b379b9b9ee08fc14308550f487ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4fde1a7844919208642d8e7c018b935c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4fde1a7844919208642d8e7c018b935c"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>NOT_IN_SIGNAL_CONTEXT_ERR</b> ={0,0,0}</td></tr>
+<tr class="separator:a4fde1a7844919208642d8e7c018b935c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae58f92691125e3ab1dddcc09f7ee7530"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae58f92691125e3ab1dddcc09f7ee7530"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>INCOMPATIBLE_TYPE_ERR</b> ={0,0,0}</td></tr>
+<tr class="separator:ae58f92691125e3ab1dddcc09f7ee7530"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab47f8ff9b327e9142f725dbafaa53419"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab47f8ff9b327e9142f725dbafaa53419"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>UNIX_ERRNO_ERR</b> ={0,0,0}</td></tr>
+<tr class="separator:ab47f8ff9b327e9142f725dbafaa53419"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd9e0671e12bf78a51dfbe14951cd76c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afd9e0671e12bf78a51dfbe14951cd76c"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>DEAD_STREAM_READ_ERR</b> ={0,0,0}</td></tr>
+<tr class="separator:afd9e0671e12bf78a51dfbe14951cd76c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5444d25075a96dc8dbd73fb87658f5c2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5444d25075a96dc8dbd73fb87658f5c2"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GET_XADDR</b> ={0,0,0}</td></tr>
+<tr class="separator:a5444d25075a96dc8dbd73fb87658f5c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5e16df1c3607c0f99c5c03d61286303"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac5e16df1c3607c0f99c5c03d61286303"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TIMEOUT_AT</b> ={0,0,0}</td></tr>
+<tr class="separator:ac5e16df1c3607c0f99c5c03d61286303"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad789cbbb7a05fd49112649e0edfa744e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad789cbbb7a05fd49112649e0edfa744e"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>COUNT</b> ={0,0,0}</td></tr>
+<tr class="separator:ad789cbbb7a05fd49112649e0edfa744e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8983caf7e11eb5ffb4f5c078383b73a2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8983caf7e11eb5ffb4f5c078383b73a2"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>UNLIMITED</b> ={0,0,0}</td></tr>
+<tr class="separator:a8983caf7e11eb5ffb4f5c078383b73a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acdb420f476841b9fe82e1f6e06fb2823"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acdb420f476841b9fe82e1f6e06fb2823"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>LOGICAL_OR_OF_COUNT_AND_UNLIMITED</b> ={0,0,0}</td></tr>
+<tr class="separator:acdb420f476841b9fe82e1f6e06fb2823"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79f6751d425a511ccfd074ba7e61bf5f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a79f6751d425a511ccfd074ba7e61bf5f"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>REPETITIONS</b> ={0,0,0}</td></tr>
+<tr class="separator:a79f6751d425a511ccfd074ba7e61bf5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7d29bdd3cb140f77c60e59ad99e9ff4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab7d29bdd3cb140f77c60e59ad99e9ff4"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TUPLE_OF_ZERO_OR_ONE_OF_TIMEOUT_AT_AND_ZERO_OR_ONE_OF_REPETITIONS</b> ={0,0,0}</td></tr>
+<tr class="separator:ab7d29bdd3cb140f77c60e59ad99e9ff4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b3a1897816c4748ab385c110c569501"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5b3a1897816c4748ab385c110c569501"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>NOOP</b> ={0,0,0}</td></tr>
+<tr class="separator:a5b3a1897816c4748ab385c110c569501"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a776e50d122481dcb0ab55cd800e4aaaf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a776e50d122481dcb0ab55cd800e4aaaf"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GET</b> ={0,0,0}</td></tr>
+<tr class="separator:a776e50d122481dcb0ab55cd800e4aaaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28e0ac7ea66dc0250099e12d91d2e4bf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a28e0ac7ea66dc0250099e12d91d2e4bf"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>IF</b> ={0,0,0}</td></tr>
+<tr class="separator:a28e0ac7ea66dc0250099e12d91d2e4bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86ca6b4105ee84de40711754b3e1e97c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a86ca6b4105ee84de40711754b3e1e97c"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ITERATE</b> ={0,0,0}</td></tr>
+<tr class="separator:a86ca6b4105ee84de40711754b3e1e97c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1f4b5f4a20336f39f97ed597b36331a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad1f4b5f4a20336f39f97ed597b36331a"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SAY</b> ={0,0,0}</td></tr>
+<tr class="separator:ad1f4b5f4a20336f39f97ed597b36331a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c3fafe4e4352f7635ef9d957a85f4ac"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8c3fafe4e4352f7635ef9d957a85f4ac"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>REQUEST</b> ={0,0,0}</td></tr>
+<tr class="separator:a8c3fafe4e4352f7635ef9d957a85f4ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4cae6298b61f4217bae3195d6c86e0c4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4cae6298b61f4217bae3195d6c86e0c4"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>LISTEN</b> ={0,0,0}</td></tr>
+<tr class="separator:a4cae6298b61f4217bae3195d6c86e0c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4701b0efb9a11fe472ec04182cc26b5c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4701b0efb9a11fe472ec04182cc26b5c"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>RESPOND</b> ={0,0,0}</td></tr>
+<tr class="separator:a4701b0efb9a11fe472ec04182cc26b5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a561b9c82b4ad00b6583d291b26a412ad"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a561b9c82b4ad00b6583d291b26a412ad"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>QUOTE</b> ={0,0,0}</td></tr>
+<tr class="separator:a561b9c82b4ad00b6583d291b26a412ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91d3dc0201e4094dcfcf62b9ba07d091"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a91d3dc0201e4094dcfcf62b9ba07d091"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>INTERPOLATE_FROM_MATCH</b> ={0,0,0}</td></tr>
+<tr class="separator:a91d3dc0201e4094dcfcf62b9ba07d091"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac2d8053cf7da30bae044242cd47547f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aac2d8053cf7da30bae044242cd47547f"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>RAISE</b> ={0,0,0}</td></tr>
+<tr class="separator:aac2d8053cf7da30bae044242cd47547f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad520e62eaabdb7320a6894d46543f922"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad520e62eaabdb7320a6894d46543f922"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STREAM_READ</b> ={0,0,0}</td></tr>
+<tr class="separator:ad520e62eaabdb7320a6894d46543f922"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65f1c20c1ccb5cad25d38ac2f8690520"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a65f1c20c1ccb5cad25d38ac2f8690520"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STREAM_WRITE</b> ={0,0,0}</td></tr>
+<tr class="separator:a65f1c20c1ccb5cad25d38ac2f8690520"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad5816415726cbdd009b6e3a1b7c0a62"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aad5816415726cbdd009b6e3a1b7c0a62"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STREAM_ALIVE</b> ={0,0,0}</td></tr>
+<tr class="separator:aad5816415726cbdd009b6e3a1b7c0a62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4817ecfc75267945716a67b03879c6c8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4817ecfc75267945716a67b03879c6c8"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>CONCAT_STR</b> ={0,0,0}</td></tr>
+<tr class="separator:a4817ecfc75267945716a67b03879c6c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a42ea0ef48aad8b6a08aa14e855e862"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6a42ea0ef48aad8b6a08aa14e855e862"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ADD_INT</b> ={0,0,0}</td></tr>
+<tr class="separator:a6a42ea0ef48aad8b6a08aa14e855e862"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b6104d92043c4c5c235436b1f9db12d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2b6104d92043c4c5c235436b1f9db12d"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SUB_INT</b> ={0,0,0}</td></tr>
+<tr class="separator:a2b6104d92043c4c5c235436b1f9db12d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a1b74cbcdf0f70b4c2f767fb67b6072"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4a1b74cbcdf0f70b4c2f767fb67b6072"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>MULT_INT</b> ={0,0,0}</td></tr>
+<tr class="separator:a4a1b74cbcdf0f70b4c2f767fb67b6072"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a387e8f95ef221c507367283ed5e26638"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a387e8f95ef221c507367283ed5e26638"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>DIV_INT</b> ={0,0,0}</td></tr>
+<tr class="separator:a387e8f95ef221c507367283ed5e26638"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04cc7523e07034f5da40e29b77668414"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a04cc7523e07034f5da40e29b77668414"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>MOD_INT</b> ={0,0,0}</td></tr>
+<tr class="separator:a04cc7523e07034f5da40e29b77668414"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4e9e2f3ff51e81c0f5a5a91f94ba487"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab4e9e2f3ff51e81c0f5a5a91f94ba487"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>EQ_INT</b> ={0,0,0}</td></tr>
+<tr class="separator:ab4e9e2f3ff51e81c0f5a5a91f94ba487"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3381a907a9e6912587133905835fb161"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3381a907a9e6912587133905835fb161"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>LT_INT</b> ={0,0,0}</td></tr>
+<tr class="separator:a3381a907a9e6912587133905835fb161"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2925f6426b08d86ce1663ad5ac5cb72f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2925f6426b08d86ce1663ad5ac5cb72f"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GT_INT</b> ={0,0,0}</td></tr>
+<tr class="separator:a2925f6426b08d86ce1663ad5ac5cb72f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ee1113a3b9295ccc66161b85dac5f23"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7ee1113a3b9295ccc66161b85dac5f23"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>LTE_INT</b> ={0,0,0}</td></tr>
+<tr class="separator:a7ee1113a3b9295ccc66161b85dac5f23"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8464744482463a6d596112eb6f1a5fb6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8464744482463a6d596112eb6f1a5fb6"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GTE_INT</b> ={0,0,0}</td></tr>
+<tr class="separator:a8464744482463a6d596112eb6f1a5fb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4003ed19593d539ee89c7e1ac4b2b81d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4003ed19593d539ee89c7e1ac4b2b81d"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>MAGIC</b> ={0,0,0}</td></tr>
+<tr class="separator:a4003ed19593d539ee89c7e1ac4b2b81d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec1f6645e5c6a04cb23981cbf651af62"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aec1f6645e5c6a04cb23981cbf651af62"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STX_SL</b> ={0,0,0}</td></tr>
+<tr class="separator:aec1f6645e5c6a04cb23981cbf651af62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a226600a06ad428e5409452071f528513"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a226600a06ad428e5409452071f528513"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STX_OP</b> ={0,0,0}</td></tr>
+<tr class="separator:a226600a06ad428e5409452071f528513"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9a3688c22ad784f8ee50684299244de"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad9a3688c22ad784f8ee50684299244de"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STX_CP</b> ={0,0,0}</td></tr>
+<tr class="separator:ad9a3688c22ad784f8ee50684299244de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ac60f7eefa4722ab582fa4d448fcee0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9ac60f7eefa4722ab582fa4d448fcee0"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STX_SET</b> ={0,0,0}</td></tr>
+<tr class="separator:a9ac60f7eefa4722ab582fa4d448fcee0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd1a78fc8af312634f58b1af9178ef14"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acd1a78fc8af312634f58b1af9178ef14"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STX_OS</b> ={0,0,0}</td></tr>
+<tr class="separator:acd1a78fc8af312634f58b1af9178ef14"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a201b399d3fb6b9db48fa0ec373f9c9a1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a201b399d3fb6b9db48fa0ec373f9c9a1"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STX_CS</b> ={0,0,0}</td></tr>
+<tr class="separator:a201b399d3fb6b9db48fa0ec373f9c9a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61eb6fd8426c97c3c6bc5783eb7c4539"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a61eb6fd8426c97c3c6bc5783eb7c4539"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STX_LABEL</b> ={0,0,0}</td></tr>
+<tr class="separator:a61eb6fd8426c97c3c6bc5783eb7c4539"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11cba3f0cff9d01c0ef15bdb1d1c1253"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a11cba3f0cff9d01c0ef15bdb1d1c1253"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STX_OG</b> ={0,0,0}</td></tr>
+<tr class="separator:a11cba3f0cff9d01c0ef15bdb1d1c1253"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19a7620ca214fd0e48c483784c71add7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a19a7620ca214fd0e48c483784c71add7"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STX_CG</b> ={0,0,0}</td></tr>
+<tr class="separator:a19a7620ca214fd0e48c483784c71add7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2234ea2ba4c80b7b286764dd1c176507"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2234ea2ba4c80b7b286764dd1c176507"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STX_EQ</b> ={0,0,0}</td></tr>
+<tr class="separator:a2234ea2ba4c80b7b286764dd1c176507"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a871f5bc334391b35709829b74d4d294d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a871f5bc334391b35709829b74d4d294d"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STX_NEQ</b> ={0,0,0}</td></tr>
+<tr class="separator:a871f5bc334391b35709829b74d4d294d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3754a87836afdb87e14709af2ac86815"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3754a87836afdb87e14709af2ac86815"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STX_WALK</b> ={0,0,0}</td></tr>
+<tr class="separator:a3754a87836afdb87e14709af2ac86815"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87114c686c9e9e35b00636c124032c1b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a87114c686c9e9e35b00636c124032c1b"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STX_STAR</b> ={0,0,0}</td></tr>
+<tr class="separator:a87114c686c9e9e35b00636c124032c1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c95fa5fa2c9bcbbebf1c01abac2104c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8c95fa5fa2c9bcbbebf1c01abac2104c"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STX_PLUS</b> ={0,0,0}</td></tr>
+<tr class="separator:a8c95fa5fa2c9bcbbebf1c01abac2104c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a8d85c61e63cc39e4f5121c570a3f96"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5a8d85c61e63cc39e4f5121c570a3f96"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STX_Q</b> ={0,0,0}</td></tr>
+<tr class="separator:a5a8d85c61e63cc39e4f5121c570a3f96"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9fcdc9d302e2364e272d957dd46c94c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac9fcdc9d302e2364e272d957dd46c94c"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STX_OR</b> ={0,0,0}</td></tr>
+<tr class="separator:ac9fcdc9d302e2364e272d957dd46c94c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90d6cbdd11a067a4fbba784a102b1935"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a90d6cbdd11a067a4fbba784a102b1935"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STX_COMMA</b> ={0,0,0}</td></tr>
+<tr class="separator:a90d6cbdd11a067a4fbba784a102b1935"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1dc724c524455d0313dc8a4477194c9a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1dc724c524455d0313dc8a4477194c9a"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STX_EXCEPT</b> ={0,0,0}</td></tr>
+<tr class="separator:a1dc724c524455d0313dc8a4477194c9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0c921363f625c43150d78eed43e5923"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa0c921363f625c43150d78eed43e5923"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STX_NOT</b> ={0,0,0}</td></tr>
+<tr class="separator:aa0c921363f625c43150d78eed43e5923"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6bfa44d749fa9a8cb847965bef5e9376"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6bfa44d749fa9a8cb847965bef5e9376"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STX_VAL_S</b> ={0,0,0}</td></tr>
+<tr class="separator:a6bfa44d749fa9a8cb847965bef5e9376"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ac72652b5e3320544e9fd893b7c9242"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6ac72652b5e3320544e9fd893b7c9242"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STX_VAL_C</b> ={0,0,0}</td></tr>
+<tr class="separator:a6ac72652b5e3320544e9fd893b7c9242"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad373491bf40508094a541b91f3bba5c3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad373491bf40508094a541b91f3bba5c3"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STX_VAL_I</b> ={0,0,0}</td></tr>
+<tr class="separator:ad373491bf40508094a541b91f3bba5c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01e85419acd0ec1a0ca9db24b795e7ac"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a01e85419acd0ec1a0ca9db24b795e7ac"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STX_VAL_F</b> ={0,0,0}</td></tr>
+<tr class="separator:a01e85419acd0ec1a0ca9db24b795e7ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a515f46bcea5834ff8fde650b36d150ae"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a515f46bcea5834ff8fde650b36d150ae"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STX_TOKEN_LIST</b> ={0,0,0}</td></tr>
+<tr class="separator:a515f46bcea5834ff8fde650b36d150ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25455d1e5b47dde3758581375e011162"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a25455d1e5b47dde3758581375e011162"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STX_TOKENS</b> ={0,0,0}</td></tr>
+<tr class="separator:a25455d1e5b47dde3758581375e011162"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd4a9ef4cd824e578b2a2251fe5694e3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acd4a9ef4cd824e578b2a2251fe5694e3"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STX_SIBS</b> ={0,0,0}</td></tr>
+<tr class="separator:acd4a9ef4cd824e578b2a2251fe5694e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b835ad8461504b187f13a7faac1bbc4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1b835ad8461504b187f13a7faac1bbc4"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STX_CHILD</b> ={0,0,0}</td></tr>
+<tr class="separator:a1b835ad8461504b187f13a7faac1bbc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7acbb4158543499bb4b5ca121770c54"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa7acbb4158543499bb4b5ca121770c54"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STX_POSTFIX</b> ={0,0,0}</td></tr>
+<tr class="separator:aa7acbb4158543499bb4b5ca121770c54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1bd19b074d5631192820f5a1ca52ab0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad1bd19b074d5631192820f5a1ca52ab0"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TREE_DELTA_PATH</b> ={0,0,0}</td></tr>
+<tr class="separator:ad1bd19b074d5631192820f5a1ca52ab0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab66362a1d5c9b28f6718167ba08486ea"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab66362a1d5c9b28f6718167ba08486ea"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TREE_DELTA_VALUE</b> ={0,0,0}</td></tr>
+<tr class="separator:ab66362a1d5c9b28f6718167ba08486ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83275576af44c5555c2432d268e51dfe"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a83275576af44c5555c2432d268e51dfe"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TREE_DELTA_COUNT</b> ={0,0,0}</td></tr>
+<tr class="separator:a83275576af44c5555c2432d268e51dfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e19401d08d717973fd9f7a508e24b45"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3e19401d08d717973fd9f7a508e24b45"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TREE_DELTA</b> ={0,0,0}</td></tr>
+<tr class="separator:a3e19401d08d717973fd9f7a508e24b45"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a617da229979994071d240be5de6a12c3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a617da229979994071d240be5de6a12c3"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TREE_DELTA_ADD</b> ={0,0,0}</td></tr>
+<tr class="separator:a617da229979994071d240be5de6a12c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15d047c2fa793b21259d1ca3e8052c47"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a15d047c2fa793b21259d1ca3e8052c47"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TREE_DELTA_REPLACE</b> ={0,0,0}</td></tr>
+<tr class="separator:a15d047c2fa793b21259d1ca3e8052c47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44716e6e4223d39dd858d7016a9595c9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a44716e6e4223d39dd858d7016a9595c9"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>VERB</b> ={0,0,0}</td></tr>
+<tr class="separator:a44716e6e4223d39dd858d7016a9595c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5aac7f93ba9786d7be2f8972028ad223"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5aac7f93ba9786d7be2f8972028ad223"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>COMMAND_PARAMETER</b> ={0,0,0}</td></tr>
+<tr class="separator:a5aac7f93ba9786d7be2f8972028ad223"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60c1e621a1dc5bddd708bb8e0b2ea05f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a60c1e621a1dc5bddd708bb8e0b2ea05f"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>COMMAND</b> ={0,0,0}</td></tr>
+<tr class="separator:a60c1e621a1dc5bddd708bb8e0b2ea05f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7c0afc28276f7a345bf90c2560ee471"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab7c0afc28276f7a345bf90c2560ee471"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SHELL_COMMAND</b> ={0,0,0}</td></tr>
+<tr class="separator:ab7c0afc28276f7a345bf90c2560ee471"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b18ace6ebf64337d182d7bc5ee145cb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6b18ace6ebf64337d182d7bc5ee145cb"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TEST_INT_SYMBOL</b> ={0,0,0}</td></tr>
+<tr class="separator:a6b18ace6ebf64337d182d7bc5ee145cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6cf60bef267ee0c4fc83c62facb9ba13"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6cf60bef267ee0c4fc83c62facb9ba13"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TEST_INT_SYMBOL2</b> ={0,0,0}</td></tr>
+<tr class="separator:a6cf60bef267ee0c4fc83c62facb9ba13"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff2b4a14a46d9d5083dea13f7e95bbcc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aff2b4a14a46d9d5083dea13f7e95bbcc"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TEST_FLOAT_SYMBOL</b> ={0,0,0}</td></tr>
+<tr class="separator:aff2b4a14a46d9d5083dea13f7e95bbcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab49418a49c3dd7e7db80ecbf530d880f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab49418a49c3dd7e7db80ecbf530d880f"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TEST_STR_SYMBOL</b> ={0,0,0}</td></tr>
+<tr class="separator:ab49418a49c3dd7e7db80ecbf530d880f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0c45ac743e0d4c0cb85fb6b7b08b120"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab0c45ac743e0d4c0cb85fb6b7b08b120"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TEST_TREE_SYMBOL</b> ={0,0,0}</td></tr>
+<tr class="separator:ab0c45ac743e0d4c0cb85fb6b7b08b120"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae27f94cdf81b60a635742b34eede9560"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae27f94cdf81b60a635742b34eede9560"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TEST_ANYTHING_SYMBOL</b> ={0,0,0}</td></tr>
+<tr class="separator:ae27f94cdf81b60a635742b34eede9560"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07d7fdd4184bd43bbf140bcbb008c89a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a07d7fdd4184bd43bbf140bcbb008c89a"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TEST_ANYTHING_SYMBOL2</b> ={0,0,0}</td></tr>
+<tr class="separator:a07d7fdd4184bd43bbf140bcbb008c89a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5cd1ef7ce40c5ad449c266e6495a3dad"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5cd1ef7ce40c5ad449c266e6495a3dad"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TEST_STREAM_SYMBOL</b> ={0,0,0}</td></tr>
+<tr class="separator:a5cd1ef7ce40c5ad449c266e6495a3dad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a587fd7e72bf321c0fdec064f545e5a48"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a587fd7e72bf321c0fdec064f545e5a48"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TEST_NAME_SYMBOL</b> ={0,0,0}</td></tr>
+<tr class="separator:a587fd7e72bf321c0fdec064f545e5a48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a227820eff9ce921b5f36cd401985dc43"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a227820eff9ce921b5f36cd401985dc43"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TEST_ALPHABETIZE_SCAPE_SYMBOL</b> ={0,0,0}</td></tr>
+<tr class="separator:a227820eff9ce921b5f36cd401985dc43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6d42469c2371dd3ee70281ef137eefa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab6d42469c2371dd3ee70281ef137eefa"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TEST_SYMBOL_SYMBOL</b> ={0,0,0}</td></tr>
+<tr class="separator:ab6d42469c2371dd3ee70281ef137eefa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaef7785d0e3ff8e090489d836f2a9e65"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaef7785d0e3ff8e090489d836f2a9e65"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TESTING</b> ={0,0,0}</td></tr>
+<tr class="separator:aaef7785d0e3ff8e090489d836f2a9e65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae06c1bfa93c2906d1ad9064fa1a46326"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae06c1bfa93c2906d1ad9064fa1a46326"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>CLOCK_TELL_TIME</b> ={0,0,0}</td></tr>
+<tr class="separator:ae06c1bfa93c2906d1ad9064fa1a46326"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e0f821e9286b5232232e275881ae69f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0e0f821e9286b5232232e275881ae69f"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>LINE</b> ={0,0,0}</td></tr>
+<tr class="separator:a0e0f821e9286b5232232e275881ae69f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>auto-generated system definitions </p>
-<p>NOTE: this file is auto-generated by base_defs.pl</p>
+<p>NOTE: this file is auto-generated by base_defs.pl so DON'<a class="el" href="structT.html">T</a> EDIT IT MANUALLY!</p>
 <dl class="section copyright"><dt>Copyright</dt><dd>Copyright (C) 2013-2015, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al). This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3). </dd></dl>
 
 <p>Definition in file <a class="el" href="base__defs_8c_source.html">base_defs.c</a>.</p>
@@ -147,7 +1197,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>base_test_defs</b> (<
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="base__defs_8c.html">base_defs.c</a></li>
-    <li class="footer">Generated on Sun Nov 29 2015 11:50:52 for ceptr by
+    <li class="footer">Generated on Mon Dec 7 2015 23:46:05 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

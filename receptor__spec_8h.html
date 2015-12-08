@@ -184,6 +184,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>testReceptor</b> ()</
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
+<tr class="memitem:a4459dc13ae00b49b36447b0f91cbf466"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4459dc13ae00b49b36447b0f91cbf466"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>G_next_process_id</b></td></tr>
+<tr class="separator:a4459dc13ae00b49b36447b0f91cbf466"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae8b4148e1253c960153508d851e3fdea"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae8b4148e1253c960153508d851e3fdea"></a>
 <a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>mantissa</b></td></tr>
 <tr class="separator:ae8b4148e1253c960153508d851e3fdea"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -262,13 +265,13 @@ Variables</h2></td></tr>
 <p>[defineHouseLocation] </p>
 <p>define a "house location" symbol built out of a latlong</p>
 <div class="fragment"><div class="line"><span class="keywordtype">void</span> <a class="code" href="receptor__spec_8h.html#a98dc4c2784ade9388f0b5aad95d78aae">defineHouseLocation</a>(<a class="code" href="structReceptor.html">Receptor</a> *r,<a class="code" href="structSemanticID.html">Symbol</a> *lat,<a class="code" href="structSemanticID.html">Symbol</a> *lon, <a class="code" href="structSemanticID.html">Structure</a> *latlong, <a class="code" href="structSemanticID.html">Symbol</a> *house_loc) {</div>
-<div class="line">    *lat = <a class="code" href="group__receptor.html#ga436d69cd861739b56bb32b7bf6f315ab">_r_declare_symbol</a>(r,FLOAT,<span class="stringliteral">&quot;latitude&quot;</span>);</div>
-<div class="line">    *lon = <a class="code" href="group__receptor.html#ga436d69cd861739b56bb32b7bf6f315ab">_r_declare_symbol</a>(r,FLOAT,<span class="stringliteral">&quot;longitude&quot;</span>);</div>
+<div class="line">    *lat = <a class="code" href="group__receptor.html#ga29fd5ebc5d1c142a7da96bd0dd36292c">_r_define_symbol</a>(r,FLOAT,<span class="stringliteral">&quot;latitude&quot;</span>);</div>
+<div class="line">    *lon = <a class="code" href="group__receptor.html#ga29fd5ebc5d1c142a7da96bd0dd36292c">_r_define_symbol</a>(r,FLOAT,<span class="stringliteral">&quot;longitude&quot;</span>);</div>
 <div class="line">    *latlong = <a class="code" href="group__receptor.html#gae291bec8771c13074164984b08db4874">_r_define_structure</a>(r,<span class="stringliteral">&quot;latlong&quot;</span>,2,*lat,*lon);</div>
-<div class="line">    *house_loc = <a class="code" href="group__receptor.html#ga436d69cd861739b56bb32b7bf6f315ab">_r_declare_symbol</a>(r,*latlong,<span class="stringliteral">&quot;house location&quot;</span>);</div>
+<div class="line">    *house_loc = <a class="code" href="group__receptor.html#ga29fd5ebc5d1c142a7da96bd0dd36292c">_r_define_symbol</a>(r,*latlong,<span class="stringliteral">&quot;house location&quot;</span>);</div>
 <div class="line">}</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="receptor__spec_8h_source.html#l00360">360</a> of file <a class="el" href="receptor__spec_8h_source.html">receptor_spec.h</a>.</p>
+<p>Definition at line <a class="el" href="receptor__spec_8h_source.html#l00349">349</a> of file <a class="el" href="receptor__spec_8h_source.html">receptor_spec.h</a>.</p>
 
 </div>
 </div>
@@ -308,7 +311,7 @@ Variables</h2></td></tr>
 <p>[testReceptorDefMatch]</p>
 <p>[testReceptorDefMatch] </p>
 
-<p>Definition at line <a class="el" href="receptor__spec_8h_source.html#l00368">368</a> of file <a class="el" href="receptor__spec_8h_source.html">receptor_spec.h</a>.</p>
+<p>Definition at line <a class="el" href="receptor__spec_8h_source.html#l00357">357</a> of file <a class="el" href="receptor__spec_8h_source.html">receptor_spec.h</a>.</p>
 
 </div>
 </div>
@@ -327,7 +330,7 @@ Variables</h2></td></tr>
 <p>[testReceptorExpectation]</p>
 <p>[testReceptorExpectation] </p>
 
-<p>Definition at line <a class="el" href="receptor__spec_8h_source.html#l00225">225</a> of file <a class="el" href="receptor__spec_8h_source.html">receptor_spec.h</a>.</p>
+<p>Definition at line <a class="el" href="receptor__spec_8h_source.html#l00211">211</a> of file <a class="el" href="receptor__spec_8h_source.html">receptor_spec.h</a>.</p>
 
 </div>
 </div>
@@ -346,7 +349,7 @@ Variables</h2></td></tr>
 <p>[testReceptorInstancesNew]</p>
 <p>[testReceptorInstancesNew] </p>
 
-<p>Definition at line <a class="el" href="receptor__spec_8h_source.html#l00404">404</a> of file <a class="el" href="receptor__spec_8h_source.html">receptor_spec.h</a>.</p>
+<p>Definition at line <a class="el" href="receptor__spec_8h_source.html#l00393">393</a> of file <a class="el" href="receptor__spec_8h_source.html">receptor_spec.h</a>.</p>
 
 </div>
 </div>
@@ -365,7 +368,7 @@ Variables</h2></td></tr>
 <p>[testReceptorSerialize]</p>
 <p>[testReceptorSerialize] </p>
 
-<p>Definition at line <a class="el" href="receptor__spec_8h_source.html#l00431">431</a> of file <a class="el" href="receptor__spec_8h_source.html">receptor_spec.h</a>.</p>
+<p>Definition at line <a class="el" href="receptor__spec_8h_source.html#l00420">420</a> of file <a class="el" href="receptor__spec_8h_source.html">receptor_spec.h</a>.</p>
 
 </div>
 </div>
@@ -375,7 +378,7 @@ Variables</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><a class="el" href="receptor__spec_8h.html">receptor_spec.h</a></li>
-    <li class="footer">Generated on Sun Nov 29 2015 11:50:51 for ceptr by
+    <li class="footer">Generated on Mon Dec 7 2015 23:46:05 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

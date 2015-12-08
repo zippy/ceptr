@@ -271,15 +271,6 @@ Variables</h2></td></tr>
 <tr class="memitem:a905a2f4ef8d313395b34ed1b6ef9f017"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a905a2f4ef8d313395b34ed1b6ef9f017"></a>
 <a class="el" href="structReceptor.html">Receptor</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>HTTP_receptor</b></td></tr>
 <tr class="separator:a905a2f4ef8d313395b34ed1b6ef9f017"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a04e667046fb85c3cb3aa09b6c84bcb83"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a04e667046fb85c3cb3aa09b6c84bcb83"></a>
-<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>test_HTTP_symbols</b></td></tr>
-<tr class="separator:a04e667046fb85c3cb3aa09b6c84bcb83"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a714c2c927fa29725d4e42609c7472ad8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a714c2c927fa29725d4e42609c7472ad8"></a>
-<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>test_HTTP_structures</b></td></tr>
-<tr class="separator:a714c2c927fa29725d4e42609c7472ad8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a512ff7ae94e9a7156b7ab1f19d2da48d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a512ff7ae94e9a7156b7ab1f19d2da48d"></a>
-<a class="el" href="structDefs.html">Defs</a>&#160;</td><td class="memItemRight" valign="bottom"><b>test_HTTP_defs</b></td></tr>
-<tr class="separator:a512ff7ae94e9a7156b7ab1f19d2da48d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad9ad2240528a800797695e9130a070b4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad9ad2240528a800797695e9130a070b4"></a>
 <a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTML_DOCUMENT</b></td></tr>
 <tr class="separator:ad9ad2240528a800797695e9130a070b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -396,7 +387,7 @@ Variables</h2></td></tr>
 <p>generate a semtrex that will match a valid HTTP request in an ASCII_CHARS tree </p>
 <p>= ' ' </p>
 
-<p>Definition at line <a class="el" href="http__example_8h_source.html#l00296">296</a> of file <a class="el" href="http__example_8h_source.html">http_example.h</a>.</p>
+<p>Definition at line <a class="el" href="http__example_8h_source.html#l00289">289</a> of file <a class="el" href="http__example_8h_source.html">http_example.h</a>.</p>
 
 </div>
 </div>
@@ -452,7 +443,7 @@ Variables</h2></td></tr>
 <div class="line">    <span class="keywordflow">return</span> t;</div>
 <div class="line">}</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="http__example_8h_source.html#l00227">227</a> of file <a class="el" href="http__example_8h_source.html">http_example.h</a>.</p>
+<p>Definition at line <a class="el" href="http__example_8h_source.html#l00220">220</a> of file <a class="el" href="http__example_8h_source.html">http_example.h</a>.</p>
 
 </div>
 </div>
@@ -495,11 +486,11 @@ Variables</h2></td></tr>
 <div class="line">    <span class="comment">// like message that contains what the first path segment was</span></div>
 <div class="line"></div>
 <div class="line">    <a class="code" href="structT.html">T</a> *resp = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(RESPOND);</div>
-<div class="line">    _t_news(resp,RESPONSE_CARRIER,HTTP_RESPONSE);</div>
+<div class="line">    _t_news(resp,CARRIER,HTTP_RESPONSE);</div>
 <div class="line">    <span class="keywordtype">int</span> pt1[] = {2,1,TREE_PATH_TERMINATOR};</div>
 <div class="line">    _t_new(resp,PARAM_REF,pt1,<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>)*3);</div>
 <div class="line"></div>
-<div class="line">    <a class="code" href="structSemanticID.html">Process</a> p = <a class="code" href="group__receptor.html#gadc94e96ede4c84e1981e3537907653b7">_r_code_process</a>(r,resp,<span class="stringliteral">&quot;code path ping&quot;</span>,<span class="stringliteral">&quot;respond with the value of the first parameter&quot;</span>,NULL);</div>
+<div class="line">    <a class="code" href="structSemanticID.html">Process</a> p = <a class="code" href="group__receptor.html#ga9e248fdb6e6d814935ac88e67e10e769">_r_define_process</a>(r,resp,<span class="stringliteral">&quot;code path ping&quot;</span>,<span class="stringliteral">&quot;respond with the value of the first parameter&quot;</span>,NULL);</div>
 <div class="line">    *pP = p;</div>
 <div class="line"></div>
 <div class="line">    <a class="code" href="structT.html">T</a> *params = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(PARAMS);</div>
@@ -509,7 +500,7 @@ Variables</h2></td></tr>
 <div class="line">    *paramsP = params;</div>
 <div class="line">}</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="http__example_8h_source.html#l00271">271</a> of file <a class="el" href="http__example_8h_source.html">http_example.h</a>.</p>
+<p>Definition at line <a class="el" href="http__example_8h_source.html#l00264">264</a> of file <a class="el" href="http__example_8h_source.html">http_example.h</a>.</p>
 
 </div>
 </div>
@@ -519,7 +510,7 @@ Variables</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><a class="el" href="http__example_8h.html">http_example.h</a></li>
-    <li class="footer">Generated on Sun Nov 29 2015 11:50:51 for ceptr by
+    <li class="footer">Generated on Mon Dec 7 2015 23:46:05 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

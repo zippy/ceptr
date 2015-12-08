@@ -19,6 +19,7 @@ var searchData=
   ['testreceptorserialize',['testReceptorSerialize',['../receptor__spec_8h.html#a0c65a8eec063de14d49ae6c3fadcf0d8',1,'receptor_spec.h']]],
   ['testscapeaddelement',['testScapeAddElement',['../scape__spec_8h.html#a6d5ce3afd114532201a79937f6fb1247',1,'scape_spec.h']]],
   ['testscapenew',['testScapeNew',['../scape__spec_8h.html#a895ab132a0a1e72c8e1c5c63bc1ae4dd',1,'scape_spec.h']]],
+  ['testsemgetbylabel',['testSemGetByLabel',['../semtable__spec_8h.html#aa01be69fbc2c75a00dfbb4a95257cd12',1,'semtable_spec.h']]],
   ['testsemgetsymbolstructure',['testSemGetSymbolStructure',['../semtable__spec_8h.html#a45f00a2d648a8fd97ff8075ef4593773',1,'semtable_spec.h']]],
   ['testsemtablecreate',['testSemTableCreate',['../semtable__spec_8h.html#ab10241f610faeae2fc98909e4662858e',1,'semtable_spec.h']]],
   ['testsemtablegetname',['testSemTableGetName',['../semtable__spec_8h.html#a274281cb43d1782f04e1d670f03505be',1,'semtable_spec.h']]],

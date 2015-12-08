@@ -104,12 +104,12 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <table class="doxtable"><tr><th>Symbol</th><th>Semantic use of Structure:</th><th>Comments</th></tr>
 <tr><td><a name="NULL_SYMBOL"></a>NULL_SYMBOL</td><td><i>undefined</i></td><td></td></tr>
 <tr><td><a name="STRUCTURES"></a>STRUCTURES</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_STRUCTURE_DEFINITION">ZERO-OR-MORE-OF-STRUCTURE-DEFINITION</a></td><td></td></tr>
-<tr><td><a name="SYMBOLS"></a>SYMBOLS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_SYMBOL_DECLARATION">ZERO-OR-MORE-OF-SYMBOL-DECLARATION</a></td><td></td></tr>
-<tr><td><a name="PROCESSES"></a>PROCESSES</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_PROCESS_CODING">ZERO-OR-MORE-OF-PROCESS-CODING</a></td><td></td></tr>
+<tr><td><a name="SYMBOLS"></a>SYMBOLS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_SYMBOL_DEFINITION">ZERO-OR-MORE-OF-SYMBOL-DEFINITION</a></td><td></td></tr>
+<tr><td><a name="PROCESSES"></a>PROCESSES</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_PROCESS_DEFINITION">ZERO-OR-MORE-OF-PROCESS-DEFINITION</a></td><td></td></tr>
 <tr><td><a name="PROTOCOLS"></a>PROTOCOLS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_PROTOCOL_DEFINITION">ZERO-OR-MORE-OF-PROTOCOL-DEFINITION</a></td><td></td></tr>
+<tr><td><a name="RECEPTORS"></a>RECEPTORS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_RECEPTOR_DEFINITION">ZERO-OR-MORE-OF-RECEPTOR-DEFINITION</a></td><td></td></tr>
 <tr><td><a name="SCAPES"></a>SCAPES</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_STRUCTURE_OF_SCAPE">ZERO-OR-MORE-OF-STRUCTURE-OF-SCAPE</a></td><td></td></tr>
-<tr><td><a name="ASPECTS"></a>ASPECTS</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_ASPECT_DEF">ONE-OR-MORE-OF-ASPECT-DEF</a></td><td></td></tr>
-<tr><td><a name="DEFINITIONS"></a>DEFINITIONS</td><td><a href="ref_sys_structures.html#LIST_OF_STRUCTURES_AND_SYMBOLS_AND_PROCESSES_AND_PROTOCOLS_AND_ZERO_OR_MORE_OF_SCAPES_AND_ZERO_OR_MORE_OF_ASPECTS">LIST-OF-STRUCTURES-AND-SYMBOLS-AND-PROCESSES-AND-PROTOCOLS-AND-ZERO-OR-MORE-OF-SCAPES-AND-ZERO-OR-MORE-OF-ASPECTS</a></td><td></td></tr>
+<tr><td><a name="DEFINITIONS"></a>DEFINITIONS</td><td><a href="ref_sys_structures.html#LIST_OF_STRUCTURES_AND_SYMBOLS_AND_PROCESSES_AND_PROTOCOLS_AND_RECEPTORS_AND_ZERO_OR_MORE_OF_SCAPES">LIST-OF-STRUCTURES-AND-SYMBOLS-AND-PROCESSES-AND-PROTOCOLS-AND-RECEPTORS-AND-ZERO-OR-MORE-OF-SCAPES</a></td><td></td></tr>
 <tr><td><a name="STRUCTURE_SYMBOL"></a>STRUCTURE_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
 <tr><td><a name="STRUCTURE_SEQUENCE"></a>STRUCTURE_SEQUENCE</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_STRUCTURE_DEF">ONE-OR-MORE-OF-STRUCTURE-DEF</a></td><td></td></tr>
 <tr><td><a name="STRUCTURE_SYMBOL_SET"></a>STRUCTURE_SYMBOL_SET</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_STRUCTURE_SYMBOL">ONE-OR-MORE-OF-STRUCTURE-SYMBOL</a></td><td></td></tr>
@@ -123,7 +123,7 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="STRUCTURE_ZERO_OR_ONE"></a>STRUCTURE_ZERO_OR_ONE</td><td><a href="ref_sys_structures.html#STRUCTURE_DEF">STRUCTURE-DEF</a></td><td></td></tr>
 <tr><td><a name="SYMBOL_STRUCTURE"></a>SYMBOL_STRUCTURE</td><td><a href="ref_sys_structures.html#STRUCTURE">STRUCTURE</a></td><td></td></tr>
 <tr><td><a name="SYMBOL_LABEL"></a>SYMBOL_LABEL</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
-<tr><td><a name="SYMBOL_DECLARATION"></a>SYMBOL_DECLARATION</td><td><a href="ref_sys_structures.html#TUPLE_OF_SYMBOL_LABEL_AND_SYMBOL_STRUCTURE">TUPLE-OF-SYMBOL-LABEL-AND-SYMBOL-STRUCTURE</a></td><td></td></tr>
+<tr><td><a name="SYMBOL_DEFINITION"></a>SYMBOL_DEFINITION</td><td><a href="ref_sys_structures.html#TUPLE_OF_SYMBOL_LABEL_AND_SYMBOL_STRUCTURE">TUPLE-OF-SYMBOL-LABEL-AND-SYMBOL-STRUCTURE</a></td><td></td></tr>
 <tr><td><a name="BOOLEAN"></a>BOOLEAN</td><td><a href="ref_sys_structures.html#BIT">BIT</a></td><td></td></tr>
 <tr><td><a name="SEMTREX_MATCH_PATH"></a>SEMTREX_MATCH_PATH</td><td><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></td><td>       Path to symbol matched by semtrex</td></tr>
 <tr><td><a name="SEMTREX_SYMBOL_LITERAL"></a>SEMTREX_SYMBOL_LITERAL</td><td><a href="ref_sys_structures.html#SEMTREX_SYMBOL_LITERAL_DEF">SEMTREX-SYMBOL-LITERAL-DEF</a></td><td>        matches on the semantic type.</td></tr>
@@ -143,7 +143,7 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="SEMTREX_SYMBOL"></a>SEMTREX_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>              Symbols in the literal set</td></tr>
 <tr><td><a name="SEMTREX_SYMBOL_SET"></a>SEMTREX_SYMBOL_SET</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_SEMTREX_SYMBOL">ONE-OR-MORE-OF-SEMTREX-SYMBOL</a></td><td></td></tr>
 <tr><td><a name="SEMTREX_VALUE_SET"></a>SEMTREX_VALUE_SET</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_ANY_SYMBOL">ONE-OR-MORE-OF-ANY-SYMBOL</a></td><td>             this is of the symbols to match on</td></tr>
-<tr><td><a name="SEMTREX_MATCH"></a>SEMTREX_MATCH</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td>              Returns result and sibling count.        Ex: {name:expr} (verify this is what it's supposed to do)</td></tr>
+<tr><td><a name="SEMTREX_MATCH"></a>SEMTREX_MATCH</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td>              @todo this is actually more like [(SEMTREX_MATCH_SYMBOL,SEMTREX_MATCH_PATH,SEMTREX_MATCH_SIBLINGS_COUNT, recurseon:SEMTREX_MATCH)] but we're using the surface of the root as well which is an INTEGER.</td></tr>
 <tr><td><a name="SEMTREX_MATCH_CURSOR"></a>SEMTREX_MATCH_CURSOR</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td>   stores c pointer to tree node at start of match</td></tr>
 <tr><td><a name="SEMTREX_MATCH_RESULTS"></a>SEMTREX_MATCH_RESULTS</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td>  In the FSA_ID, keeps track of which part matches so it can be referenced</td></tr>
 <tr><td><a name="SEMTREX_MATCH_SYMBOL"></a>SEMTREX_MATCH_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
@@ -160,18 +160,19 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="ASPECT_TYPE"></a>ASPECT_TYPE</td><td><a href="ref_sys_structures.html#BIT">BIT</a></td><td>                    really should be an enum of IN, OUT</td></tr>
 <tr><td><a name="ASPECT_LABEL"></a>ASPECT_LABEL</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
 <tr><td><a name="ASPECT_DEF"></a>ASPECT_DEF</td><td><a href="ref_sys_structures.html#TUPLE_OF_ASPECT_TYPE_AND_ASPECT_LABEL">TUPLE-OF-ASPECT-TYPE-AND-ASPECT-LABEL</a></td><td>   what else goes in the aspect definition?</td></tr>
+<tr><td><a name="ASPECTS"></a>ASPECTS</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_ASPECT_DEF">ONE-OR-MORE-OF-ASPECT-DEF</a></td><td></td></tr>
 <tr><td><a name="CARRIER"></a>CARRIER</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
 <tr><td><a name="BODY"></a>BODY</td><td><a href="ref_sys_structures.html#TREE">TREE</a></td><td>                          orthogonal tree that holds message body</td></tr>
 <tr><td><a name="SIGNAL_UUID"></a>SIGNAL_UUID</td><td><a href="ref_sys_structures.html#UUID">UUID</a></td><td></td></tr>
 <tr><td><a name="IN_RESPONSE_TO_UUID"></a>IN_RESPONSE_TO_UUID</td><td><a href="ref_sys_structures.html#UUID">UUID</a></td><td></td></tr>
-<tr><td><a name="CONTEXT_NUM"></a>CONTEXT_NUM</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td>               this a placeholder for better addressing later...</td></tr>
 <tr><td><a name="RECEPTOR_PATH"></a>RECEPTOR_PATH</td><td><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></td><td></td></tr>
+<tr><td><a name="RECEPTOR_ADDR"></a>RECEPTOR_ADDR</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
 <tr><td><a name="FROM_ADDRESS"></a>FROM_ADDRESS</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
 <tr><td><a name="TO_ADDRESS"></a>TO_ADDRESS</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
 <tr><td><a name="END_CONDITIONS"></a>END_CONDITIONS</td><td><a href="ref_sys_structures.html#TUPLE_OF_ZERO_OR_ONE_OF_TIMEOUT_AT_AND_ZERO_OR_ONE_OF_REPETITIONS">TUPLE-OF-ZERO-OR-ONE-OF-TIMEOUT-AT-AND-ZERO-OR-ONE-OF-REPETITIONS</a></td><td></td></tr>
 <tr><td><a name="ENVELOPE"></a>ENVELOPE</td><td><a href="ref_sys_structures.html#LIST_OF_FROM_ADDRESS_AND_TO_ADDRESS_AND_ASPECT_IDENT_AND_CARRIER_AND_SIGNAL_UUID_AND_ZERO_OR_ONE_OF_LOGICAL_OR_OF_END_CONDITIONS_AND_IN_RESPONSE_TO_UUID">LIST-OF-FROM-ADDRESS-AND-TO-ADDRESS-AND-ASPECT-IDENT-AND-CARRIER-AND-SIGNAL-UUID-AND-ZERO-OR-ONE-OF-LOGICAL-OR-OF-END-CONDITIONS-AND-IN-RESPONSE-TO-UUID</a></td><td></td></tr>
 <tr><td><a name="SIGNAL"></a>SIGNAL</td><td><a href="ref_sys_structures.html#TUPLE_OF_ENVELOPE_AND_BODY">TUPLE-OF-ENVELOPE-AND-BODY</a></td><td>                        a signal on the flux.  It's first child is the contents of the signal</td></tr>
-<tr><td><a name="PENDING_SIGNALS"></a>PENDING_SIGNALS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_SIGNAL">ZERO-OR-MORE-OF-SIGNAL</a></td><td>               list of signals pending to be sent by the VM_HOST</td></tr>
+<tr><td><a name="PENDING_SIGNALS"></a>PENDING_SIGNALS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_SIGNAL">ZERO-OR-MORE-OF-SIGNAL</a></td><td>               list of signals pending to be sent by the SYS_RECEPTOR</td></tr>
 <tr><td><a name="CODE_PATH"></a>CODE_PATH</td><td><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></td><td></td></tr>
 <tr><td><a name="PROCESS_IDENT"></a>PROCESS_IDENT</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
 <tr><td><a name="WAKEUP_REFERENCE"></a>WAKEUP_REFERENCE</td><td><a href="ref_sys_structures.html#TUPLE_OF_PROCESS_IDENT_AND_CODE_PATH">TUPLE-OF-PROCESS-IDENT-AND-CODE-PATH</a></td><td></td></tr>
@@ -187,7 +188,7 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="PROCESS_INTENTION"></a>PROCESS_INTENTION</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
 <tr><td><a name="PROCESS_SIGNATURE"></a>PROCESS_SIGNATURE</td><td><a href="ref_sys_structures.html#PROCESS_FORM">PROCESS-FORM</a></td><td></td></tr>
 <tr><td><a name="CODE"></a>CODE</td><td><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></td><td></td></tr>
-<tr><td><a name="PROCESS_CODING"></a>PROCESS_CODING</td><td><a href="ref_sys_structures.html#LIST_OF_PROCESS_NAME_AND_PROCESS_INTENTION_AND_CODE_AND_PROCESS_SIGNATURE">LIST-OF-PROCESS-NAME-AND-PROCESS-INTENTION-AND-CODE-AND-PROCESS-SIGNATURE</a></td><td></td></tr>
+<tr><td><a name="PROCESS_DEFINITION"></a>PROCESS_DEFINITION</td><td><a href="ref_sys_structures.html#LIST_OF_PROCESS_NAME_AND_PROCESS_INTENTION_AND_CODE_AND_PROCESS_SIGNATURE">LIST-OF-PROCESS-NAME-AND-PROCESS-INTENTION-AND-CODE-AND-PROCESS-SIGNATURE</a></td><td></td></tr>
 <tr><td><a name="SIGNATURE_LABEL"></a>SIGNATURE_LABEL</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
 <tr><td><a name="SIGNATURE_STRUCTURE"></a>SIGNATURE_STRUCTURE</td><td><a href="ref_sys_structures.html#STRUCTURE">STRUCTURE</a></td><td>      the structure that would match</td></tr>
 <tr><td><a name="SIGNATURE_SYMBOL"></a>SIGNATURE_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>            the symbol that would match</td></tr>
@@ -205,33 +206,46 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="RESULT_SYMBOL"></a>RESULT_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
 <tr><td><a name="REDUCTION_ERROR_SYMBOL"></a>REDUCTION_ERROR_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
 <tr><td><a name="ROLE"></a>ROLE</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>  A role stands for an expected agent, thus the symbol stored in a ROLE must be limited to those of structure RECEPTOR_ADDRESS.</td></tr>
-<tr><td><a name="GOAL"></a>GOAL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td> A goal stands for an intended process, thus the symbol stored in a GOAL must be limited to those that are uses of the PROCESS_FORM structure which declares the intention.</td></tr>
+<tr><td><a name="GOAL"></a>GOAL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td> A goal stands for an intended process, thus the symbol stored in a GOAL must be limited to those that are uses of the PROCESS structure.</td></tr>
 <tr><td><a name="USAGE"></a>USAGE</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td> A usage stands for a(n) X of a Symbol.</td></tr>
 <tr><td><a name="SOURCE"></a>SOURCE</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_ROLE">ONE-OR-MORE-OF-ROLE</a></td><td></td></tr>
-<tr><td><a name="ROLE_PROCESS"></a>ROLE_PROCESS</td><td><a href="ref_sys_structures.html#LIST_OF_ROLE_AND_SOURCE_AND_PATTERN_AND_ACTION">LIST-OF-ROLE-AND-SOURCE-AND-PATTERN-AND-ACTION</a></td><td></td></tr>
-<tr><td><a name="CONVERSATION_LABEL"></a>CONVERSATION_LABEL</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
-<tr><td><a name="CONVERSATION"></a>CONVERSATION</td><td><a href="ref_sys_structures.html#TUPLE_OF_CONVERSATION_LABEL_AND_ONE_OR_MORE_OF_ROLE_PROCESS">TUPLE-OF-CONVERSATION-LABEL-AND-ONE-OR-MORE-OF-ROLE-PROCESS</a></td><td></td></tr>
+<tr><td><a name="DESTINATION"></a>DESTINATION</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_ROLE">ONE-OR-MORE-OF-ROLE</a></td><td></td></tr>
+<tr><td><a name="EXPECT"></a>EXPECT</td><td><a href="ref_sys_structures.html#LIST_OF_ROLE_AND_SOURCE_AND_PATTERN_AND_ACTION">LIST-OF-ROLE-AND-SOURCE-AND-PATTERN-AND-ACTION</a></td><td></td></tr>
+<tr><td><a name="INITIATE"></a>INITIATE</td><td><a href="ref_sys_structures.html#LIST_OF_ROLE_AND_DESTINATION_AND_ACTION">LIST-OF-ROLE-AND-DESTINATION-AND-ACTION</a></td><td></td></tr>
+<tr><td><a name="PNAME"></a>PNAME</td><td><a href="ref_sys_structures.html#PROTOCOL">PROTOCOL</a></td><td></td></tr>
+<tr><td><a name="INCLUSION"></a>INCLUSION</td><td><a href="ref_sys_structures.html#TUPLE_OF_PNAME_AND_ONE_OR_MORE_OF_LOGICAL_OR_OF_RESOLUTION_AND_CONNECTION">TUPLE-OF-PNAME-AND-ONE-OR-MORE-OF-LOGICAL-OR-OF-RESOLUTION-AND-CONNECTION</a></td><td></td></tr>
+<tr><td><a name="ACTUAL_PROCESS"></a>ACTUAL_PROCESS</td><td><a href="ref_sys_structures.html#PROCESS">PROCESS</a></td><td></td></tr>
+<tr><td><a name="ACTUAL_RECEPTOR"></a>ACTUAL_RECEPTOR</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
+<tr><td><a name="ACTUAL_SYMBOL"></a>ACTUAL_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
+<tr><td><a name="WHICH_PROCESS"></a>WHICH_PROCESS</td><td><a href="ref_sys_structures.html#TUPLE_OF_GOAL_AND_ACTUAL_PROCESS">TUPLE-OF-GOAL-AND-ACTUAL-PROCESS</a></td><td></td></tr>
+<tr><td><a name="WHICH_RECEPTOR"></a>WHICH_RECEPTOR</td><td><a href="ref_sys_structures.html#TUPLE_OF_ROLE_AND_ACTUAL_RECEPTOR">TUPLE-OF-ROLE-AND-ACTUAL-RECEPTOR</a></td><td></td></tr>
+<tr><td><a name="WHICH_SYMBOL"></a>WHICH_SYMBOL</td><td><a href="ref_sys_structures.html#TUPLE_OF_USAGE_AND_ACTUAL_SYMBOL">TUPLE-OF-USAGE-AND-ACTUAL-SYMBOL</a></td><td></td></tr>
+<tr><td><a name="RESOLUTION"></a>RESOLUTION</td><td><a href="ref_sys_structures.html#MAPPING">MAPPING</a></td><td></td></tr>
+<tr><td><a name="WHICH_GOAL"></a>WHICH_GOAL</td><td><a href="ref_sys_structures.html#PAIR_OF_GOAL">PAIR-OF-GOAL</a></td><td></td></tr>
+<tr><td><a name="WHICH_ROLE"></a>WHICH_ROLE</td><td><a href="ref_sys_structures.html#PAIR_OF_ROLE">PAIR-OF-ROLE</a></td><td></td></tr>
+<tr><td><a name="WHICH_USAGE"></a>WHICH_USAGE</td><td><a href="ref_sys_structures.html#PAIR_OF_USAGE">PAIR-OF-USAGE</a></td><td></td></tr>
+<tr><td><a name="CONNECTION"></a>CONNECTION</td><td><a href="ref_sys_structures.html#LINKING">LINKING</a></td><td></td></tr>
+<tr><td><a name="PROTOCOL_BINDINGS"></a>PROTOCOL_BINDINGS</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_RESOLUTION">ONE-OR-MORE-OF-RESOLUTION</a></td><td></td></tr>
 <tr><td><a name="PROTOCOL_LABEL"></a>PROTOCOL_LABEL</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
-<tr><td><a name="PROTOCOL_DEFINITION"></a>PROTOCOL_DEFINITION</td><td><a href="ref_sys_structures.html#LIST_OF_PROTOCOL_LABEL_AND_ONE_OR_MORE_OF_ROLE_AND_ONE_OR_MORE_OF_GOAL_AND_ZERO_OR_MORE_OF_USAGE_AND_ONE_OR_MORE_OF_CONVERSATION">LIST-OF-PROTOCOL-LABEL-AND-ONE-OR-MORE-OF-ROLE-AND-ONE-OR-MORE-OF-GOAL-AND-ZERO-OR-MORE-OF-USAGE-AND-ONE-OR-MORE-OF-CONVERSATION</a></td><td></td></tr>
+<tr><td><a name="PROTOCOL_DEFINITION"></a>PROTOCOL_DEFINITION</td><td><a href="ref_sys_structures.html#LIST_OF_PROTOCOL_LABEL_AND_ZERO_OR_MORE_OF_ROLE_AND_ZERO_OR_MORE_OF_GOAL_AND_ZERO_OR_MORE_OF_USAGE_AND_ZERO_OR_MORE_OF_STRUCTURE_OF_INTERACTION_AND_ZERO_OR_MORE_OF_INCLUSION">LIST-OF-PROTOCOL-LABEL-AND-ZERO-OR-MORE-OF-ROLE-AND-ZERO-OR-MORE-OF-GOAL-AND-ZERO-OR-MORE-OF-USAGE-AND-ZERO-OR-MORE-OF-STRUCTURE-OF-INTERACTION-AND-ZERO-OR-MORE-OF-INCLUSION</a></td><td></td></tr>
 <tr><td><a name="MANIFEST_LABEL"></a>MANIFEST_LABEL</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td>           a label in the manifest to identify a binding</td></tr>
 <tr><td><a name="MANIFEST_SPEC"></a>MANIFEST_SPEC</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>             a symbol to specify what type of data must be provided for a given manifest label</td></tr>
 <tr><td><a name="MANIFEST_PAIR"></a>MANIFEST_PAIR</td><td><a href="ref_sys_structures.html#TUPLE_OF_MANIFEST_LABEL_AND_MANIFEST_SPEC">TUPLE-OF-MANIFEST-LABEL-AND-MANIFEST-SPEC</a></td><td></td></tr>
 <tr><td><a name="MANIFEST"></a>MANIFEST</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_MANIFEST_PAIR">ONE-OR-MORE-OF-MANIFEST-PAIR</a></td><td>         configuration template to be filled out for the installation of a receptor</td></tr>
 <tr><td><a name="RECEPTOR_IDENTIFIER"></a>RECEPTOR_IDENTIFIER</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td>      uuid that identifies receptors</td></tr>
 <tr><td><a name="RECEPTOR_PACKAGE"></a>RECEPTOR_PACKAGE</td><td><a href="ref_sys_structures.html#LIST_OF_MANIFEST_AND_RECEPTOR_IDENTIFIER_AND_DEFINITIONS">LIST-OF-MANIFEST-AND-RECEPTOR-IDENTIFIER-AND-DEFINITIONS</a></td><td></td></tr>
-<tr><td><a name="INSTALLED_RECEPTOR"></a>INSTALLED_RECEPTOR</td><td><a href="ref_sys_structures.html#TREE">TREE</a></td><td>          contains the installed receptor as well as state information (enabled,disabled_ID, etc..)</td></tr>
 <tr><td><a name="BINDING_PAIR"></a>BINDING_PAIR</td><td><a href="ref_sys_structures.html#TUPLE_OF_MANIFEST_LABEL_AND_ANY_SYMBOL">TUPLE-OF-MANIFEST-LABEL-AND-ANY-SYMBOL</a></td><td>                a pair that matches a MANIFEST_LABEL with a given binding</td></tr>
 <tr><td><a name="BINDINGS"></a>BINDINGS</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_BINDING_PAIR">ONE-OR-MORE-OF-BINDING-PAIR</a></td><td>                    specifics that match a MANIFEST and allow a receptor to be installed</td></tr>
 <tr><td><a name="RECEPTOR_ELAPSED_TIME"></a>RECEPTOR_ELAPSED_TIME</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
-<tr><td><a name="RECEPTOR_STATE"></a>RECEPTOR_STATE</td><td><a href="ref_sys_structures.html#LIST_OF_ZERO_OR_ONE_OF_RECEPTOR_ELAPSED_TIME">LIST-OF-ZERO-OR-ONE-OF-RECEPTOR-ELAPSED-TIME</a></td><td></td></tr>
+<tr><td><a name="RECEPTOR_LABEL"></a>RECEPTOR_LABEL</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="RECEPTOR_DEFINITION"></a>RECEPTOR_DEFINITION</td><td><a href="ref_sys_structures.html#TUPLE_OF_RECEPTOR_LABEL_AND_DEFINITIONS">TUPLE-OF-RECEPTOR-LABEL-AND-DEFINITIONS</a></td><td></td></tr>
+<tr><td><a name="RECEPTOR_STATE"></a>RECEPTOR_STATE</td><td><a href="ref_sys_structures.html#LIST_OF_FLUX_AND_PENDING_SIGNALS_AND_PENDING_RESPONSES_AND_RECEPTOR_ELAPSED_TIME">LIST-OF-FLUX-AND-PENDING-SIGNALS-AND-PENDING-RESPONSES-AND-RECEPTOR-ELAPSED-TIME</a></td><td></td></tr>
+<tr><td><a name="PARENT_CONTEXT_NUM"></a>PARENT_CONTEXT_NUM</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td>        identifies the semantic context of a receptors parent</td></tr>
+<tr><td><a name="CONTEXT_NUM"></a>CONTEXT_NUM</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td>               identifies the semantic context of a receptor</td></tr>
+<tr><td><a name="RECEPTOR_INSTANCE"></a>RECEPTOR_INSTANCE</td><td><a href="ref_sys_structures.html#LIST_OF_CONTEXT_NUM_AND_PARENT_CONTEXT_NUM_AND_RECEPTOR_STATE">LIST-OF-CONTEXT-NUM-AND-PARENT-CONTEXT-NUM-AND-RECEPTOR-STATE</a></td><td></td></tr>
 <tr><td><a name="SERIALIZED_RECEPTOR"></a>SERIALIZED_RECEPTOR</td><td><a href="ref_sys_structures.html#BLOB">BLOB</a></td><td></td></tr>
-<tr><td><a name="VM_HOST_RECEPTOR"></a>VM_HOST_RECEPTOR</td><td><a href="ref_sys_structures.html#RECEPTOR">RECEPTOR</a></td><td></td></tr>
-<tr><td><a name="DEV_SANDBOX"></a>DEV_SANDBOX</td><td><a href="ref_sys_structures.html#RECEPTOR">RECEPTOR</a></td><td></td></tr>
-<tr><td><a name="TEST_SANDBOX"></a>TEST_SANDBOX</td><td><a href="ref_sys_structures.html#RECEPTOR">RECEPTOR</a></td><td></td></tr>
 <tr><td><a name="ACTIVE_RECEPTORS"></a>ACTIVE_RECEPTORS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_RECEPTOR_XADDR">ZERO-OR-MORE-OF-RECEPTOR-XADDR</a></td><td></td></tr>
-<tr><td><a name="VM_HOST_STATE"></a>VM_HOST_STATE</td><td><a href="ref_sys_structures.html#LIST_OF_ACTIVE_RECEPTORS">LIST-OF-ACTIVE-RECEPTORS</a></td><td></td></tr>
-<tr><td><a name="CLOCK_RECEPTOR"></a>CLOCK_RECEPTOR</td><td><a href="ref_sys_structures.html#RECEPTOR">RECEPTOR</a></td><td></td></tr>
-<tr><td><a name="COMPOSITORY"></a>COMPOSITORY</td><td><a href="ref_sys_structures.html#RECEPTOR">RECEPTOR</a></td><td>         receptor that holds available receptor packages for installation</td></tr>
+<tr><td><a name="SYS_STATE"></a>SYS_STATE</td><td><a href="ref_sys_structures.html#LIST_OF_ACTIVE_RECEPTORS">LIST-OF-ACTIVE-RECEPTORS</a></td><td></td></tr>
 <tr><td><a name="YEAR"></a>YEAR</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
 <tr><td><a name="MONTH"></a>MONTH</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
 <tr><td><a name="DAY"></a>DAY</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
@@ -241,7 +255,6 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="TODAY"></a>TODAY</td><td><a href="ref_sys_structures.html#DATE">DATE</a></td><td></td></tr>
 <tr><td><a name="NOW"></a>NOW</td><td><a href="ref_sys_structures.html#TIME">TIME</a></td><td></td></tr>
 <tr><td><a name="TICK"></a>TICK</td><td><a href="ref_sys_structures.html#TIMESTAMP">TIMESTAMP</a></td><td></td></tr>
-<tr><td><a name="CLOCK_TELL_TIME"></a>CLOCK_TELL_TIME</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
 <tr><td><a name="ERROR_LOCATION"></a>ERROR_LOCATION</td><td><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></td><td></td></tr>
 <tr><td><a name="ZERO_DIVIDE_ERR"></a>ZERO_DIVIDE_ERR</td><td><a href="ref_sys_structures.html#REDUCTION_ERROR">REDUCTION-ERROR</a></td><td></td></tr>
 <tr><td><a name="TOO_FEW_PARAMS_ERR"></a>TOO_FEW_PARAMS_ERR</td><td><a href="ref_sys_structures.html#REDUCTION_ERROR">REDUCTION-ERROR</a></td><td></td></tr>
@@ -289,7 +302,6 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="TREE_DELTA_COUNT"></a>TREE_DELTA_COUNT</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
 <tr><td><a name="TREE_DELTA_ADD"></a>TREE_DELTA_ADD</td><td><a href="ref_sys_structures.html#TREE_DELTA">TREE-DELTA</a></td><td></td></tr>
 <tr><td><a name="TREE_DELTA_REPLACE"></a>TREE_DELTA_REPLACE</td><td><a href="ref_sys_structures.html#TREE_DELTA">TREE-DELTA</a></td><td></td></tr>
-<tr><td><a name="LINE"></a>LINE</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td>                           text lines from unix streams</td></tr>
 <tr><td><a name="VERB"></a>VERB</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
 <tr><td><a name="COMMAND_PARAMETER"></a>COMMAND_PARAMETER</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
 <tr><td><a name="SHELL_COMMAND"></a>SHELL_COMMAND</td><td><a href="ref_sys_structures.html#COMMAND">COMMAND</a></td><td></td></tr>
@@ -297,21 +309,23 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="TEST_INT_SYMBOL2"></a>TEST_INT_SYMBOL2</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
 <tr><td><a name="TEST_FLOAT_SYMBOL"></a>TEST_FLOAT_SYMBOL</td><td><a href="ref_sys_structures.html#FLOAT">FLOAT</a></td><td></td></tr>
 <tr><td><a name="TEST_STR_SYMBOL"></a>TEST_STR_SYMBOL</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
-<tr><td><a name="TEST_TREE_SYMBOL"></a>TEST_TREE_SYMBOL</td><td><a href="ref_sys_structures.html#TREE">TREE</a></td><td></td></tr>
-<tr><td><a name="TEST_TREE_SYMBOL2"></a>TEST_TREE_SYMBOL2</td><td><a href="ref_sys_structures.html#TREE">TREE</a></td><td></td></tr>
+<tr><td><a name="TEST_TREE_SYMBOL"></a>TEST_TREE_SYMBOL</td><td><a href="ref_sys_structures.html#TREE">TREE</a></td><td>      an orthogonal tree</td></tr>
+<tr><td><a name="TEST_ANYTHING_SYMBOL"></a>TEST_ANYTHING_SYMBOL</td><td><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></td><td>   used to build trees in testing of unknown structure</td></tr>
+<tr><td><a name="TEST_ANYTHING_SYMBOL2"></a>TEST_ANYTHING_SYMBOL2</td><td><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></td><td></td></tr>
 <tr><td><a name="TEST_STREAM_SYMBOL"></a>TEST_STREAM_SYMBOL</td><td><a href="ref_sys_structures.html#STREAM">STREAM</a></td><td></td></tr>
 <tr><td><a name="TEST_NAME_SYMBOL"></a>TEST_NAME_SYMBOL</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
-<tr><td><a name="TEST_RECEPTOR_SYMBOL"></a>TEST_RECEPTOR_SYMBOL</td><td><a href="ref_sys_structures.html#RECEPTOR">RECEPTOR</a></td><td></td></tr>
 <tr><td><a name="TEST_ALPHABETIZE_SCAPE_SYMBOL"></a>TEST_ALPHABETIZE_SCAPE_SYMBOL</td><td><a href="ref_sys_structures.html#SCAPE">SCAPE</a></td><td></td></tr>
 <tr><td><a name="TEST_SYMBOL_SYMBOL"></a>TEST_SYMBOL_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
 <tr><td><a name="TESTING"></a>TESTING</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
+<tr><td><a name="CLOCK_TELL_TIME"></a>CLOCK_TELL_TIME</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
+<tr><td><a name="LINE"></a>LINE</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td>                           text lines from unix streams</td></tr>
 </table>
  </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Nov 29 2015 11:50:52 for ceptr by
+    <li class="footer">Generated on Mon Dec 7 2015 23:46:05 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

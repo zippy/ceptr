@@ -1,7 +1,7 @@
 var sys__defs_8h =
 [
-    [ "ContextStore1", "structContextStore1.html", "structContextStore1" ],
     [ "is_sys_process", "sys__defs_8h.html#a9ca58ba970e4682b8e666a517384a520", null ],
+    [ "is_sys_receptor", "sys__defs_8h.html#a40166a9ab82eb329b6c2e4a0a0ef6bdc", null ],
     [ "is_sys_structure", "sys__defs_8h.html#a2b06cc8277915de32048b4130fecde24", null ],
     [ "is_sys_symbol", "sys__defs_8h.html#af494e2f2b61f6d7490b61b44d5181125", null ],
     [ "sP", "sys__defs_8h.html#a09b0f4fa3a7517885de30bd9dbc9c413", null ],
@@ -18,9 +18,7 @@ var sys__defs_8h =
     [ "sTs", "sys__defs_8h.html#a57077e2388ce61c796b3cea81b933f9b", null ],
     [ "sY", "sys__defs_8h.html#a8e9dbbf194fdfd3e577a672734fbed37", null ],
     [ "sYs", "sys__defs_8h.html#a29f55129e7ae84352824fbf74d80f09b", null ],
-    [ "ContextStore1", "sys__defs_8h.html#a80888a194d9ed83b8001e6a510916aaa", null ],
     [ "sT_", "sys__defs_8h.html#a82eca0dc2c333607b1e0e79ee893ef8a", null ],
-    [ "G_contexts", "sys__defs_8h.html#a5b4a0550b31f4b20607eaa3b326c0629", null ],
     [ "G_ctx", "sys__defs_8h.html#aac33201af5a06542fc8c51895b4c26b7", null ],
     [ "G_label", "sys__defs_8h.html#af2802562ba52d6692f72a674e350db08", null ],
     [ "G_sem", "sys__defs_8h.html#ad5412ca1b13907601ccb30bdd036806e", null ],

@@ -103,8 +103,6 @@ $(document).ready(function(){initNavTree('todo.html','');});
 <div class="textblock"><dl class="reflist">
 <dt><a class="anchor" id="_todo000032"></a>Global <a class="el" href="group__receptor.html#ga4cb85b79ae4207e4595d003d11beb226">___clock_thread</a>  (void *arg)</dt>
 <dd>: a better implementation would be to analyze the semtrex expectations that have been planted and only wakeup when needed based on those semtrexes </dd>
-<dt><a class="anchor" id="_todo000003"></a>Global <a class="el" href="group__def.html#ga33015dd6a62c1e791de183e875ec4c72">__d_code_process</a>  (<a class="el" href="structT.html">T</a> *processes, <a class="el" href="structT.html">T</a> *code, char *name, char *intention, <a class="el" href="structT.html">T</a> *signature)</dt>
-<dd>this is not thread safe! </dd>
 <dt><a class="anchor" id="_todo000006"></a>Global <a class="el" href="mtree_8c.html#ac998c85aa041115374dd7de3db2ad0e3">__m_add_level</a>  (<a class="el" href="structM.html">M</a> *m)</dt>
 <dd>make this not realloc each time?  </dd>
 <dt><a class="anchor" id="_todo000007"></a>Global <a class="el" href="mtree_8c.html#ad787e09f41339d2e4d72722558c6ce9e">__m_add_nodes</a>  (<a class="el" href="structH.html">H</a> h, <a class="el" href="structL.html">L</a> *l, int c)</dt>
@@ -130,7 +128,7 @@ $(document).ready(function(){initNavTree('todo.html','');});
 <p>what should this really return? </p>
 <p class="enddd">the value returned from the loop will be what??(what's in x)  </p>
 </dd>
-<dt><a class="anchor" id="_todo000028"></a>Global <a class="el" href="group__receptor.html#ga893186e8d759e9aa1f14d932900e8046">__r_make_signal</a>  (ReceptorAddress from, ReceptorAddress to, Aspect aspect, Symbol carrier, <a class="el" href="structT.html">T</a> *signal_contents, <a class="el" href="structUUIDt.html">UUIDt</a> *in_response_to, <a class="el" href="structT.html">T</a> *until)</dt>
+<dt><a class="anchor" id="_todo000028"></a>Global <a class="el" href="group__receptor.html#ga893186e8d759e9aa1f14d932900e8046">__r_make_signal</a>  (<a class="el" href="structReceptorAddress.html">ReceptorAddress</a> from, <a class="el" href="structReceptorAddress.html">ReceptorAddress</a> to, Aspect aspect, Symbol carrier, <a class="el" href="structT.html">T</a> *signal_contents, <a class="el" href="structUUIDt.html">UUIDt</a> *in_response_to, <a class="el" href="structT.html">T</a> *until)</dt>
 <dd>signal should have timestamps and other meta info  </dd>
 <dt><a class="anchor" id="_todo000036"></a>Global <a class="el" href="group__tree.html#gad6597b652983165f6b2993211a598ad4">__t_morph</a>  (<a class="el" href="structT.html">T</a> *t, Symbol s, void *surface, size_t length, int allocate)</dt>
 <dd>Handle the case where the surface of the node to be morphed is itself a tree  </dd>
@@ -140,9 +138,11 @@ $(document).ready(function(){initNavTree('todo.html','');});
 <dd>this should probably be implemented in a scape but for now  </dd>
 <dt><a class="anchor" id="_todo000005"></a>Global <a class="el" href="group__def.html#ga15d66273ad66f17580a90a30c90b8f07">_d_build_def_semtrex</a>  (<a class="el" href="structSemTable.html">SemTable</a> *sem, Symbol s, <a class="el" href="structT.html">T</a> *parent)</dt>
 <dd>currently this won't detect an incorrect strcture with extra children. This is because we don't haven't yet implemented the equivalent of "$" for semtrex. </dd>
-<dt><a class="anchor" id="_todo000004"></a>Global <a class="el" href="group__def.html#gae009f690cb6c446454113c99e6e11f32">_d_code_process</a>  (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structT.html">T</a> *code, char *name, char *intention, <a class="el" href="structT.html">T</a> *signature, Context c)</dt>
+<dt><a class="anchor" id="_todo000004"></a>Global <a class="el" href="group__def.html#gaee8a21fdd29944bf44bb03457511515d">_d_define_process</a>  (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structT.html">T</a> *code, char *name, char *intention, <a class="el" href="structT.html">T</a> *signature, Context c)</dt>
 <dd>this is not thread safe! </dd>
-<dt><a class="anchor" id="_todo000002"></a>Global <a class="el" href="group__def.html#ga7d0c5a0f5a6b810406ea918c3e1207a8">_d_declare_symbol</a>  (<a class="el" href="structSemTable.html">SemTable</a> *sem, Structure s, char *label, Context c)</dt>
+<dt><a class="anchor" id="_todo000002"></a>Global <a class="el" href="group__def.html#ga3f075d8ef101d4a88a6668f01cf44080">_d_define_symbol</a>  (<a class="el" href="structSemTable.html">SemTable</a> *sem, Structure s, char *label, Context c)</dt>
+<dd>this is not thread safe! </dd>
+<dt><a class="anchor" id="_todo000003"></a>Global <a class="el" href="group__def.html#ga6ee4dbd2d1ad94bd853ae2735a2da0a6">_d_make_process_def</a>  (<a class="el" href="structT.html">T</a> *code, char *name, char *intention, <a class="el" href="structT.html">T</a> *signature)</dt>
 <dd>this is not thread safe! </dd>
 <dt><a class="anchor" id="_todo000008"></a>Global <a class="el" href="mtree_8h.html#ac2c4b050224da6010e036ff381f31c3e">_m_walk</a>  (<a class="el" href="structH.html">H</a> h, void(*walkfn)(<a class="el" href="structH.html">H</a>, <a class="el" href="structN.html">N</a> *, void *, <a class="el" href="structMwalkState.html">MwalkState</a> *, <a class="el" href="structMaddr.html">Maddr</a>), void *user_data)</dt>
 <dd>checks to make sure root isn't deleted or null?  </dd>
@@ -204,7 +204,7 @@ $(document).ready(function(){initNavTree('todo.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Nov 29 2015 11:50:52 for ceptr by
+    <li class="footer">Generated on Mon Dec 7 2015 23:46:05 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

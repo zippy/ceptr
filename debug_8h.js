@@ -17,6 +17,7 @@ var debug_8h =
     [ "D_STREAM", "debug_8h.html#a06fc87d81c62e9abb8790b6e5713c55bad46a53b0c3931124fffb9ef756274a35", null ],
     [ "D_LOCK", "debug_8h.html#a06fc87d81c62e9abb8790b6e5713c55ba696ee47246bee8e75fc0a2eb003935ee", null ],
     [ "D_LISTEN", "debug_8h.html#a06fc87d81c62e9abb8790b6e5713c55ba5aa1dcdb6e9cbcee37cb5edf93ae723a", null ],
+    [ "D_PROTOCOL", "debug_8h.html#a06fc87d81c62e9abb8790b6e5713c55ba67b983dffb1f58582754e8006ffb1caa", null ],
     [ "debug_disable", "debug_8h.html#a3a0352a9ab7c27e5d274a94991394772", null ],
     [ "debug_enable", "debug_8h.html#a6c1711ac8962ae51ef71bb0f3a8eed29", null ],
     [ "dtypestr", "debug_8h.html#a60a7ed7da732b6081d9dec4102fdc863", null ],

@@ -112,23 +112,29 @@ $(document).ready(function(){initNavTree('protocol_8h_source.html','');});
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="receptor_8h.html">receptor.h</a>&quot;</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<a class="code" href="structT.html">T</a> *<a class="code" href="protocol_8h.html#a70b7186f103bb1769e2386af48ece57b">_o_make_protocol_def</a>(<span class="keywordtype">char</span> *label,...);</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keywordtype">void</span> _o_express_role(<a class="code" href="structReceptor.html">Receptor</a> *r,<a class="code" href="structSemanticID.html">Symbol</a> protocol,<a class="code" href="structSemanticID.html">Symbol</a> role,<a class="code" href="structSemanticID.html">Aspect</a> aspect,<a class="code" href="structT.html">T</a> *action);</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<a class="code" href="structT.html">T</a> *<a class="code" href="protocol_8h.html#a85c1d0c237321e72e3294cbf64217a6e">_o_make_protocol_def</a>(<a class="code" href="structSemTable.html">SemTable</a> *sem,Context c,<span class="keywordtype">char</span> *label,...);</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<a class="code" href="structT.html">T</a> * <a class="code" href="protocol_8h.html#a36cdb993f049076b7b8c858c7ae6181d">_o_unwrap</a>(<a class="code" href="structSemTable.html">SemTable</a> *sem,<a class="code" href="structT.html">T</a> *def);</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<a class="code" href="structT.html">T</a> *<a class="code" href="protocol_8h.html#aaaccaac4fb14d2ba4747bc24a91405fe">_o_resolve</a>(<a class="code" href="structSemTable.html">SemTable</a> *sem,<a class="code" href="structT.html">T</a> *def,<a class="code" href="structSemanticID.html">Symbol</a> role, <a class="code" href="structT.html">T</a> *bindings);</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keywordtype">void</span> <a class="code" href="protocol_8h.html#ae34af558a8aeadc39b220bbcc3977f96">_o_express_role</a>(<a class="code" href="structReceptor.html">Receptor</a> *r,<a class="code" href="structSemanticID.html">Symbol</a> protocol,<a class="code" href="structSemanticID.html">Symbol</a> role,<a class="code" href="structSemanticID.html">Aspect</a> aspect,<a class="code" href="structT.html">T</a> *action);</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
-<div class="ttc" id="structT_html"><div class="ttname"><a href="structT.html">T</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00112">ceptr_types.h:112</a></div></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
+<div class="ttc" id="structT_html"><div class="ttname"><a href="structT.html">T</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00114">ceptr_types.h:114</a></div></div>
+<div class="ttc" id="protocol_8h_html_a36cdb993f049076b7b8c858c7ae6181d"><div class="ttname"><a href="protocol_8h.html#a36cdb993f049076b7b8c858c7ae6181d">_o_unwrap</a></div><div class="ttdeci">T * _o_unwrap(SemTable *sem, T *def)</div><div class="ttdef"><b>Definition:</b> <a href="protocol_8c_source.html#l00185">protocol.c:185</a></div></div>
 <div class="ttc" id="receptor_8h_html"><div class="ttname"><a href="receptor_8h.html">receptor.h</a></div><div class="ttdoc">receptor implementation header file </div></div>
-<div class="ttc" id="protocol_8h_html_a70b7186f103bb1769e2386af48ece57b"><div class="ttname"><a href="protocol_8h.html#a70b7186f103bb1769e2386af48ece57b">_o_make_protocol_def</a></div><div class="ttdeci">T * _o_make_protocol_def(char *label,...)</div><div class="ttdef"><b>Definition:</b> <a href="protocol_8c_source.html#l00037">protocol.c:37</a></div></div>
-<div class="ttc" id="structReceptor_html"><div class="ttname"><a href="structReceptor.html">Receptor</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00255">ceptr_types.h:255</a></div></div>
-<div class="ttc" id="structSemanticID_html"><div class="ttname"><a href="structSemanticID.html">SemanticID</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00023">ceptr_types.h:23</a></div></div>
+<div class="ttc" id="protocol_8h_html_a85c1d0c237321e72e3294cbf64217a6e"><div class="ttname"><a href="protocol_8h.html#a85c1d0c237321e72e3294cbf64217a6e">_o_make_protocol_def</a></div><div class="ttdeci">T * _o_make_protocol_def(SemTable *sem, Context c, char *label,...)</div><div class="ttdef"><b>Definition:</b> <a href="protocol_8c_source.html#l00039">protocol.c:39</a></div></div>
+<div class="ttc" id="protocol_8h_html_ae34af558a8aeadc39b220bbcc3977f96"><div class="ttname"><a href="protocol_8h.html#ae34af558a8aeadc39b220bbcc3977f96">_o_express_role</a></div><div class="ttdeci">void _o_express_role(Receptor *r, Symbol protocol, Symbol role, Aspect aspect, T *action)</div><div class="ttdef"><b>Definition:</b> <a href="protocol_8c_source.html#l00301">protocol.c:301</a></div></div>
+<div class="ttc" id="structSemTable_html"><div class="ttname"><a href="structSemTable.html">SemTable</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00231">ceptr_types.h:231</a></div></div>
+<div class="ttc" id="protocol_8h_html_aaaccaac4fb14d2ba4747bc24a91405fe"><div class="ttname"><a href="protocol_8h.html#aaaccaac4fb14d2ba4747bc24a91405fe">_o_resolve</a></div><div class="ttdeci">T * _o_resolve(SemTable *sem, T *def, Symbol role, T *bindings)</div><div class="ttdef"><b>Definition:</b> <a href="protocol_8c_source.html#l00238">protocol.c:238</a></div></div>
+<div class="ttc" id="structReceptor_html"><div class="ttname"><a href="structReceptor.html">Receptor</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00245">ceptr_types.h:245</a></div></div>
+<div class="ttc" id="structSemanticID_html"><div class="ttname"><a href="structSemanticID.html">SemanticID</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00022">ceptr_types.h:22</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="protocol_8h.html">protocol.h</a></li>
-    <li class="footer">Generated on Sun Nov 29 2015 11:50:51 for ceptr by
+    <li class="footer">Generated on Mon Dec 7 2015 23:46:05 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

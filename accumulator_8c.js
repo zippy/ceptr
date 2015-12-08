@@ -2,7 +2,7 @@ var accumulator_8c =
 [
     [ "__a_get_instance", "accumulator_8c.html#a4546ec1a9b81f94744df61093a765b61", null ],
     [ "__a_serialize_instances", "group__accumulator.html#gac15a7b4658ba5568dd333fab1e2fd07d", null ],
-    [ "__a_unserialize_instances", "group__accumulator.html#gafab96a965b9966f987e0e220ebaa67e6", null ],
+    [ "__a_unserialize_instances", "group__accumulator.html#ga1de8f1521082b6361c284bb14382d2fb", null ],
     [ "__a_vmfn", "accumulator_8c.html#a8586556988ffce93186a292a96085d27", null ],
     [ "__a_vmsfn", "accumulator_8c.html#ab2192b433dbd50df14d9a3c6a9a51248", null ],
     [ "_a_boot", "group__accumulator.html#gaf3d0afe467ab198fc69ccaf7ee9fb5e9", null ],
@@ -12,7 +12,7 @@ var accumulator_8c =
     [ "_a_serialize_instances", "group__accumulator.html#gac3b0ef4965dc1264fac465f7bc2c0e43", null ],
     [ "_a_set_instance", "group__accumulator.html#ga932302199c74e04d355085c2deaf7fd8", null ],
     [ "_a_shut_down", "group__accumulator.html#gacd134fcef0a0eb8ff30060432bb2e485", null ],
-    [ "_a_unserialize_instances", "group__accumulator.html#ga5288b5dc3f139fce3633a06b7f791fb5", null ],
+    [ "_a_unserialize_instances", "group__accumulator.html#gacddc78a13deabb1c2f6fd92eb257928f", null ],
     [ "instanceFree", "accumulator_8c.html#ab74ffd0dd1a1937c4336f27b2326ed90", null ],
     [ "G_vm", "accumulator_8c.html#a1c5922c03eef9111c4e116773e8517fe", null ]
 ];

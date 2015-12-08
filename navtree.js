@@ -33,15 +33,17 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "accumulator_8c.html",
-"base__defs_8h.html#aba585f3dbebb2d57b2844e63cb5e77c1",
-"base__defs_8h.html#affd60a1bd0b4f90d4339099ca8831b52a23127f48de83039f087781e339e7a31d",
-"globals_s.html",
-"group__receptor.html#ga8f608ce478b52a5a118591b5a1adc82a",
-"group__tree.html#ga916b027544c282ad6b75f71d53cf545d",
-"mtree_8c.html#ac998c85aa041115374dd7de3db2ad0e3",
-"receptor__spec_8h.html#ae3b37f9d7a3f5cafeaf3870f9b189d32",
-"structQe.html#a04295f556d67beca631fb401a93df6a3",
-"tree__spec_8h.html#a525a44d0cc92ff418638414bf36c705e"
+"base__defs_8c.html#ab0c45ac743e0d4c0cb85fb6b7b08b120",
+"base__defs_8h.html#a4701b0efb9a11fe472ec04182cc26b5c",
+"base__defs_8h.html#ad5793bf9ce5a73d7b2ff32a9c090a603a527bfbf39817438f04849953c9580fbf",
+"base__defs_8h.html#affd60a1bd0b4f90d4339099ca8831b52a64481138a83ddc868679679682f449d5",
+"group__accumulator.html#gaaaccaac4fb14d2ba4747bc24a91405fe",
+"group__receptor.html#gaa5f33711ac4da299b54ccfa583d9378c",
+"group__tree.html#ga946600fb570f0cc913450905f6189d49",
+"mtree_8c.html#adb19f3ed4e8aa551480218555052e153",
+"receptor__spec_8h.html#a9894e9bf24a5138dbcddf651c3d1cde4",
+"structQ.html#a38d241dba8d07c681a5133821b887984",
+"tree__spec_8h.html#a14b70ecd723111bbe4d10b3d3e36600a"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

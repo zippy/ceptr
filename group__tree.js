@@ -43,6 +43,7 @@ var group__tree =
     [ "_t_path_equal", "group__tree.html#ga1d7afbc2a405c20a83b7bee4cfcb3a29", null ],
     [ "_t_pathcpy", "group__tree.html#ga608555368dfdef7de1872f89b6fed637", null ],
     [ "_t_replace", "group__tree.html#ga0dcacdfd022b2a04b8fb53eb25ee367e", null ],
+    [ "_t_replace_node", "group__tree.html#ga469d08a1ee5504ed99714ed22c8255e2", null ],
     [ "_t_root", "group__tree.html#ga81a9fea3df69847f0916eb4a84fe64d3", null ],
     [ "_t_serialize", "group__tree.html#gaa22307828da90c976a3d73932c16c1ca", null ],
     [ "_t_size", "group__tree.html#gac97d0dd9bbdeb14978735bac1eb0b25e", null ],

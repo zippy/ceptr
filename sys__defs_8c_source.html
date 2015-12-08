@@ -115,169 +115,118 @@ $(document).ready(function(){initNavTree('sys__defs_8c_source.html','');});
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;stdarg.h&gt;</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<a class="code" href="structSemanticID.html">Symbol</a> NULL_SYMBOL = {0,SEM_TYPE_SYMBOL,0};</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<a class="code" href="structSemanticID.html">Structure</a> NULL_STRUCTURE = {0,SEM_TYPE_STRUCTURE,0};</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<a class="code" href="structSemanticID.html">Structure</a> NULL_STRUCTURE = {0,SEM_TYPE_STRUCTURE,0};</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<a class="code" href="structSemanticID.html">Process</a> NULL_PROCESS = {0,SEM_TYPE_PROCESS,0};</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<a class="code" href="structSemanticID.html">Process</a> NULL_PROCESS = {0,SEM_TYPE_PROCESS,0};</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#define _sd(s,c,t,i); s.context = c;s.semtype=t;s.id=i;</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<a class="code" href="structContextStore1.html">ContextStore1</a> G_contexts[_NUM_DEFAULT_CONTEXTS];</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#define _sd(s,c,t,i); s.context = c;s.semtype=t;s.id=i;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<a class="code" href="structSemTable.html">SemTable</a> *G_sem;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<a class="code" href="structT.html">T</a> *init_defs_tree(<span class="keywordtype">int</span> context) {</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <a class="code" href="structContextStore1.html">ContextStore1</a> *cs = &amp;G_contexts[context];</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    cs-&gt;root = __r_make_definitions();</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    G_sem-&gt;stores[context].definitions = cs-&gt;root;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keywordflow">return</span> cs-&gt;root;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;}</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keywordtype">void</span> def_sys() {</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    G_sem = _sem_new();</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keywordtype">int</span> i;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keywordflow">for</span>(i=0;i&lt;_NUM_DEFAULT_CONTEXTS;i++) {</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        G_contexts[i].<a class="code" href="structContextStore1.html#a4e56289ad91950fd63475de822196245">structures</a> = 0;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        G_contexts[i].<a class="code" href="structContextStore1.html#ae04fd70eb07c19c1b2bb7fffc5e9f44c">symbols</a> = 0;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        G_contexts[i].<a class="code" href="structContextStore1.html#a3374dc91c967f50ebd49cd21954d5013">processes</a> = 0;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        G_contexts[i].root = 0;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    }</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    G_contexts[SYS_CONTEXT].<a class="code" href="structContextStore1.html#a4e56289ad91950fd63475de822196245">structures</a> = malloc(NUM_SYS_STRUCTURES*<span class="keyword">sizeof</span>(<a class="code" href="structSemanticID.html">Structure</a>));</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    G_contexts[SYS_CONTEXT].<a class="code" href="structContextStore1.html#ae04fd70eb07c19c1b2bb7fffc5e9f44c">symbols</a> = malloc(NUM_SYS_SYMBOLS*<span class="keyword">sizeof</span>(<a class="code" href="structSemanticID.html">Symbol</a>));</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    G_contexts[SYS_CONTEXT].<a class="code" href="structContextStore1.html#a3374dc91c967f50ebd49cd21954d5013">processes</a> = malloc(NUM_SYS_PROCESSES*<span class="keyword">sizeof</span>(<a class="code" href="structSemanticID.html">Process</a>));</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    G_contexts[TEST_CONTEXT].<a class="code" href="structContextStore1.html#ae04fd70eb07c19c1b2bb7fffc5e9f44c">symbols</a> = malloc(NUM_TEST_SYMBOLS*<span class="keyword">sizeof</span>(<a class="code" href="structSemanticID.html">Symbol</a>));</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="comment">//    G_contexts[TEST_CONTEXT].structures = malloc(NUM_TEST_STRUCTURES*sizeof(Structure));</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    G_contexts[LOCAL_CONTEXT].<a class="code" href="structContextStore1.html#ae04fd70eb07c19c1b2bb7fffc5e9f44c">symbols</a> = malloc(NUM_LOCAL_SYMBOLS*<span class="keyword">sizeof</span>(<a class="code" href="structSemanticID.html">Symbol</a>));</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    G_contexts[LOCAL_CONTEXT].<a class="code" href="structContextStore1.html#a4e56289ad91950fd63475de822196245">structures</a> = malloc(NUM_LOCAL_STRUCTURES*<span class="keyword">sizeof</span>(<a class="code" href="structSemanticID.html">Structure</a>));</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<a class="code" href="structSemTable.html">SemTable</a> *G_sem;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keywordtype">void</span> def_sys() {</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    G_sem = _sem_new();</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="comment">// bootstrap the hard-coded definitions that we need to even be able to make</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="comment">// definitions</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    _sd(DEFINITIONS,SYS_CONTEXT,SEM_TYPE_SYMBOL,DEFINITIONS_ID);</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    _sd(STRUCTURES,SYS_CONTEXT,SEM_TYPE_SYMBOL,STRUCTURES_ID);</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    _sd(STRUCTURE_DEFINITION,SYS_CONTEXT,SEM_TYPE_SYMBOL,STRUCTURE_DEFINITION_ID);</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    _sd(STRUCTURE_LABEL,SYS_CONTEXT,SEM_TYPE_SYMBOL,STRUCTURE_LABEL_ID);</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    _sd(STRUCTURE_SEQUENCE,SYS_CONTEXT,SEM_TYPE_SYMBOL,STRUCTURE_SEQUENCE_ID);</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    _sd(STRUCTURE_SYMBOL,SYS_CONTEXT,SEM_TYPE_SYMBOL,STRUCTURE_SYMBOL_ID);</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    _sd(STRUCTURE_SYMBOL_SET,SYS_CONTEXT,SEM_TYPE_SYMBOL,STRUCTURE_SYMBOL_SET_ID);</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    _sd(STRUCTURE_OR,SYS_CONTEXT,SEM_TYPE_SYMBOL,STRUCTURE_OR_ID);</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    _sd(STRUCTURE_ZERO_OR_MORE,SYS_CONTEXT,SEM_TYPE_SYMBOL,STRUCTURE_ZERO_OR_MORE_ID);</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    _sd(STRUCTURE_ONE_OR_MORE,SYS_CONTEXT,SEM_TYPE_SYMBOL,STRUCTURE_ONE_OR_MORE_ID);</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    _sd(STRUCTURE_ZERO_OR_ONE,SYS_CONTEXT,SEM_TYPE_SYMBOL,STRUCTURE_ZERO_OR_ONE_ID);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    _sd(SYMBOLS,SYS_CONTEXT,SEM_TYPE_SYMBOL,SYMBOLS_ID);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    _sd(PROCESSES,SYS_CONTEXT,SEM_TYPE_SYMBOL,PROCESSES_ID);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    _sd(PROTOCOLS,SYS_CONTEXT,SEM_TYPE_SYMBOL,PROTOCOLS_ID);</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    _sd(RECEPTORS,SYS_CONTEXT,SEM_TYPE_SYMBOL,RECEPTORS_ID);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    _sd(SCAPES,SYS_CONTEXT,SEM_TYPE_SYMBOL,SCAPES_ID);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    _sd(SYMBOL_DEFINITION,SYS_CONTEXT,SEM_TYPE_SYMBOL,SYMBOL_DEFINITION_ID);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    _sd(SYMBOL_STRUCTURE,SYS_CONTEXT,SEM_TYPE_SYMBOL,SYMBOL_STRUCTURE_ID);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    _sd(SYMBOL_LABEL,SYS_CONTEXT,SEM_TYPE_SYMBOL,SYMBOL_LABEL_ID);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    _sd(RECEPTOR_DEFINITION,SYS_CONTEXT,SEM_TYPE_SYMBOL,RECEPTOR_DEFINITION_ID);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    _sd(RECEPTOR_LABEL,SYS_CONTEXT,SEM_TYPE_SYMBOL,RECEPTOR_LABEL_ID);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    base_contexts(G_sem);</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordflow">for</span> (i=0;i&lt;NUM_SYS_SYMBOLS;i++) {</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        G_contexts[SYS_CONTEXT].<a class="code" href="structContextStore1.html#ae04fd70eb07c19c1b2bb7fffc5e9f44c">symbols</a>[i].id = -1;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        G_contexts[SYS_CONTEXT].<a class="code" href="structContextStore1.html#ae04fd70eb07c19c1b2bb7fffc5e9f44c">symbols</a>[i].context = SYS_CONTEXT;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    }</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordflow">for</span> (i=0;i&lt;NUM_LOCAL_SYMBOLS;i++) {</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        G_contexts[LOCAL_CONTEXT].<a class="code" href="structContextStore1.html#ae04fd70eb07c19c1b2bb7fffc5e9f44c">symbols</a>[i].id = -1;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        G_contexts[LOCAL_CONTEXT].<a class="code" href="structContextStore1.html#ae04fd70eb07c19c1b2bb7fffc5e9f44c">symbols</a>[i].context = LOCAL_CONTEXT;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    }</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordflow">for</span> (i=0;i&lt;NUM_TEST_SYMBOLS;i++) {</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        G_contexts[TEST_CONTEXT].<a class="code" href="structContextStore1.html#ae04fd70eb07c19c1b2bb7fffc5e9f44c">symbols</a>[i].id = -1;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        G_contexts[TEST_CONTEXT].<a class="code" href="structContextStore1.html#ae04fd70eb07c19c1b2bb7fffc5e9f44c">symbols</a>[i].context = TEST_CONTEXT;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    }</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="comment">// bootstrap the hard-coded definitions that we need to even be able to make</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="comment">// definitions</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    _sd(DEFINITIONS,SYS_CONTEXT,SEM_TYPE_SYMBOL,DEFINITIONS_ID);</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    _sd(STRUCTURES,SYS_CONTEXT,SEM_TYPE_SYMBOL,STRUCTURES_ID);</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    _sd(STRUCTURE_DEFINITION,SYS_CONTEXT,SEM_TYPE_SYMBOL,STRUCTURE_DEFINITION_ID);</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    _sd(STRUCTURE_LABEL,SYS_CONTEXT,SEM_TYPE_SYMBOL,STRUCTURE_LABEL_ID);</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    _sd(STRUCTURE_SEQUENCE,SYS_CONTEXT,SEM_TYPE_SYMBOL,STRUCTURE_SEQUENCE_ID);</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    _sd(STRUCTURE_SYMBOL,SYS_CONTEXT,SEM_TYPE_SYMBOL,STRUCTURE_SYMBOL_ID);</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    _sd(STRUCTURE_SYMBOL_SET,SYS_CONTEXT,SEM_TYPE_SYMBOL,STRUCTURE_SYMBOL_SET_ID);</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    _sd(STRUCTURE_OR,SYS_CONTEXT,SEM_TYPE_SYMBOL,STRUCTURE_OR_ID);</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    _sd(STRUCTURE_ZERO_OR_MORE,SYS_CONTEXT,SEM_TYPE_SYMBOL,STRUCTURE_ZERO_OR_MORE_ID);</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    _sd(STRUCTURE_ONE_OR_MORE,SYS_CONTEXT,SEM_TYPE_SYMBOL,STRUCTURE_ONE_OR_MORE_ID);</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    _sd(STRUCTURE_ZERO_OR_ONE,SYS_CONTEXT,SEM_TYPE_SYMBOL,STRUCTURE_ZERO_OR_ONE_ID);</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    _sd(SYMBOLS,SYS_CONTEXT,SEM_TYPE_SYMBOL,SYMBOLS_ID);</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    _sd(PROCESSES,SYS_CONTEXT,SEM_TYPE_SYMBOL,PROCESSES_ID);</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    _sd(SYMBOL_DECLARATION,SYS_CONTEXT,SEM_TYPE_SYMBOL,SYMBOL_DECLARATION_ID);</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    _sd(SYMBOL_STRUCTURE,SYS_CONTEXT,SEM_TYPE_SYMBOL,SYMBOL_STRUCTURE_ID);</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    _sd(SYMBOL_LABEL,SYS_CONTEXT,SEM_TYPE_SYMBOL,SYMBOL_LABEL_ID);</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="comment">// this has to happen after the _sd declarations so that the basic Symbols will be valid</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    init_defs_tree(SYS_CONTEXT);</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    init_defs_tree(TEST_CONTEXT);</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    init_defs_tree(LOCAL_CONTEXT);</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    G_sem-&gt;contexts = TEST_CONTEXT+1;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    base_sys_defs(G_sem);</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    base_local_defs(G_sem);</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    base_test_defs(G_sem);</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;}</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="keywordtype">void</span> free_context(<a class="code" href="structContextStore1.html">ContextStore1</a> *cs) {</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="keywordflow">if</span> (cs-&gt;<a class="code" href="structContextStore1.html#a4e56289ad91950fd63475de822196245">structures</a>) free(cs-&gt;<a class="code" href="structContextStore1.html#a4e56289ad91950fd63475de822196245">structures</a>);</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keywordflow">if</span> (cs-&gt;<a class="code" href="structContextStore1.html#ae04fd70eb07c19c1b2bb7fffc5e9f44c">symbols</a>) free(cs-&gt;<a class="code" href="structContextStore1.html#ae04fd70eb07c19c1b2bb7fffc5e9f44c">symbols</a>);</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <span class="keywordflow">if</span> (cs-&gt;<a class="code" href="structContextStore1.html#a3374dc91c967f50ebd49cd21954d5013">processes</a>) free(cs-&gt;<a class="code" href="structContextStore1.html#a3374dc91c967f50ebd49cd21954d5013">processes</a>);</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <span class="keywordflow">if</span> (cs-&gt;root) <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(cs-&gt;root);</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;}</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="keywordtype">void</span> sys_free() {</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <span class="keywordtype">int</span> i;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    <span class="keywordflow">for</span>(i=0;i&lt;_NUM_DEFAULT_CONTEXTS;i++) {</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        free_context(&amp;G_contexts[i]);</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    }</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    _sem_free(G_sem);</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;}</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;Context G_ctx;</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="keywordtype">char</span> * G_label;</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<a class="code" href="structT.html">T</a> *sT_(<a class="code" href="structSemTable.html">SemTable</a> *sem,<a class="code" href="structSemanticID.html">Symbol</a> sym,<span class="keywordtype">int</span> num_params,...){</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    va_list params;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    <a class="code" href="structT.html">T</a> *set = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(0,sym);</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    va_start(params,num_params);</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <span class="keywordtype">int</span> i;</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    <span class="comment">// if (strcmp(&quot;STX_SYMBOL_OR_SYMBOL_SET&quot;, G_label) == 0) {raise(SIGINT);}</span></div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="keywordflow">for</span>(i=0;i&lt;num_params;i++) {</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        <a class="code" href="structT.html">T</a> * t = va_arg(params,<a class="code" href="structT.html">T</a> *);</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        <span class="comment">// if it&#39;s a SYMBOL_SET we need to just use the symbol type and</span></div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        <span class="comment">// can throw away the node</span></div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        <span class="keywordflow">if</span> (semeq(sym,STRUCTURE_SYMBOL_SET)) {</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;            <a class="code" href="structSemanticID.html">Symbol</a> ss = *(<a class="code" href="structSemanticID.html">Symbol</a> *)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(t);</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;            <span class="keywordflow">if</span> (!is_symbol(ss)) raise_error(<span class="stringliteral">&quot;only structures allowed in SYMBOL_SET, def of %s&quot;</span>,G_label);</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;            _t_news(set,STRUCTURE_SYMBOL,ss);</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;            <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        }</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;        <span class="comment">// otherwise they should all be T *</span></div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;        <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;            <span class="keywordflow">if</span> (semeq(<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(t),STRUCTURE_SYMBOL)) {</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;                <a class="code" href="structSemanticID.html">Symbol</a> ss = *(<a class="code" href="structSemanticID.html">Symbol</a> *)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(t);</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;                <span class="keywordflow">if</span> (is_structure(ss)) {</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;                    <a class="code" href="structT.html">T</a> *structures = _sem_get_defs(G_sem,ss);</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;                    <a class="code" href="structT.html">T</a> *st = <a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(structures,ss.id);</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;                    <span class="keywordflow">if</span> (!st) {</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;                        raise_error(<span class="stringliteral">&quot;Structure used in %s definition is undefined!&quot;</span>,G_label);</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;                    }</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;                    <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;                        <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;                        t = <a class="code" href="group__tree.html#ga7535eb2963c6cf5fc78cb14287581f92">_t_clone</a>(<a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(st,2));</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;                    }</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;                }</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ss.id == -1) {raise_error(<span class="stringliteral">&quot;Symbol used in %s definition is undefined!&quot;</span>,G_label);}</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;            }</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;            <a class="code" href="group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c">_t_add</a>(set,t);</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        }</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    }</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    va_end(params);</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <span class="keywordflow">return</span> set;</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;}</div>
-<div class="ttc" id="structT_html"><div class="ttname"><a href="structT.html">T</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00112">ceptr_types.h:112</a></div></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="comment">// this has to happen after the _sd declarations so that the basic Symbols will be valid</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    base_defs(G_sem);</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    _r_defineClockReceptor(G_sem);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;}</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="keywordtype">void</span> sys_free() {</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    _sem_free(G_sem);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;}</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;Context G_ctx;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keywordtype">char</span> * G_label;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<a class="code" href="structT.html">T</a> *sT_(<a class="code" href="structSemTable.html">SemTable</a> *sem,<a class="code" href="structSemanticID.html">Symbol</a> sym,<span class="keywordtype">int</span> num_params,...){</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    va_list params;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <a class="code" href="structT.html">T</a> *set = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(0,sym);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    va_start(params,num_params);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordtype">int</span> i;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="comment">// if (strcmp(&quot;STX_SYMBOL_OR_SYMBOL_SET&quot;, G_label) == 0) {raise(SIGINT);}</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordflow">for</span>(i=0;i&lt;num_params;i++) {</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        <a class="code" href="structT.html">T</a> * t = va_arg(params,<a class="code" href="structT.html">T</a> *);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <span class="comment">// if it&#39;s a SYMBOL_SET we need to just use the symbol type and</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <span class="comment">// can throw away the node</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="keywordflow">if</span> (semeq(sym,STRUCTURE_SYMBOL_SET)) {</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            <a class="code" href="structSemanticID.html">Symbol</a> ss = *(<a class="code" href="structSemanticID.html">Symbol</a> *)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(t);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            <span class="keywordflow">if</span> (!is_symbol(ss)) raise_error(<span class="stringliteral">&quot;only symbols allowed in SYMBOL_SET, def of %s&quot;</span>,G_label);</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            _t_news(set,STRUCTURE_SYMBOL,ss);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        }</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        <span class="comment">// otherwise they should all be T *</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            <span class="keywordflow">if</span> (semeq(<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(t),STRUCTURE_SYMBOL)) {</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                <a class="code" href="structSemanticID.html">Symbol</a> ss = *(<a class="code" href="structSemanticID.html">Symbol</a> *)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(t);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                <span class="keywordflow">if</span> (is_structure(ss)) {</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                    <a class="code" href="structT.html">T</a> *structures = _sem_get_defs(G_sem,ss);</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                    <a class="code" href="structT.html">T</a> *st = <a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(structures,ss.id);</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                    <span class="keywordflow">if</span> (!st) {</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                        raise_error(<span class="stringliteral">&quot;Structure used in %s definition is undefined!&quot;</span>,G_label);</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                    }</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                    <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                        <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                        t = <a class="code" href="group__tree.html#ga7535eb2963c6cf5fc78cb14287581f92">_t_clone</a>(<a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(st,2));</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                    }</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                }</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ss.id == -1) {raise_error(<span class="stringliteral">&quot;Symbol used in %s definition is undefined!&quot;</span>,G_label);}</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            }</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            <a class="code" href="group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c">_t_add</a>(set,t);</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        }</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    }</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    va_end(params);</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <span class="keywordflow">return</span> set;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;}</div>
+<div class="ttc" id="structT_html"><div class="ttname"><a href="structT.html">T</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00114">ceptr_types.h:114</a></div></div>
 <div class="ttc" id="def_8h_html"><div class="ttname"><a href="def_8h.html">def.h</a></div><div class="ttdoc">header file for symbol and structure definition functions </div></div>
-<div class="ttc" id="group__tree_html_ga7535eb2963c6cf5fc78cb14287581f92"><div class="ttname"><a href="group__tree.html#ga7535eb2963c6cf5fc78cb14287581f92">_t_clone</a></div><div class="ttdeci">T * _t_clone(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00538">tree.c:538</a></div></div>
+<div class="ttc" id="group__tree_html_ga7535eb2963c6cf5fc78cb14287581f92"><div class="ttname"><a href="group__tree.html#ga7535eb2963c6cf5fc78cb14287581f92">_t_clone</a></div><div class="ttdeci">T * _t_clone(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00557">tree.c:557</a></div></div>
 <div class="ttc" id="tree_8h_html"><div class="ttname"><a href="tree_8h.html">tree.h</a></div><div class="ttdoc">semantic trees header file </div></div>
 <div class="ttc" id="group__tree_html_ga3e2009f5a82889263d560d2c1479606a"><div class="ttname"><a href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a></div><div class="ttdeci">T * _t_newr(T *parent, Symbol symbol)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00147">tree.c:147</a></div></div>
-<div class="ttc" id="group__tree_html_ga946600fb570f0cc913450905f6189d49"><div class="ttname"><a href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a></div><div class="ttdeci">Symbol _t_symbol(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00576">tree.c:576</a></div></div>
-<div class="ttc" id="group__tree_html_ga07dd808fabd8a722b417f2f5e5ca132b"><div class="ttname"><a href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a></div><div class="ttdeci">T * _t_child(T *t, int i)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00599">tree.c:599</a></div></div>
+<div class="ttc" id="group__tree_html_ga946600fb570f0cc913450905f6189d49"><div class="ttname"><a href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a></div><div class="ttdeci">Symbol _t_symbol(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00595">tree.c:595</a></div></div>
+<div class="ttc" id="group__tree_html_ga07dd808fabd8a722b417f2f5e5ca132b"><div class="ttname"><a href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a></div><div class="ttdeci">T * _t_child(T *t, int i)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00618">tree.c:618</a></div></div>
 <div class="ttc" id="receptor_8h_html"><div class="ttname"><a href="receptor_8h.html">receptor.h</a></div><div class="ttdoc">receptor implementation header file </div></div>
-<div class="ttc" id="structContextStore1_html_ae04fd70eb07c19c1b2bb7fffc5e9f44c"><div class="ttname"><a href="structContextStore1.html#ae04fd70eb07c19c1b2bb7fffc5e9f44c">ContextStore1::symbols</a></div><div class="ttdeci">Symbol * symbols</div><div class="ttdoc">pointer for quick access to symbols </div><div class="ttdef"><b>Definition:</b> <a href="sys__defs_8h_source.html#l00028">sys_defs.h:28</a></div></div>
-<div class="ttc" id="group__tree_html_gac9278e540a0d63526b60cc0591283a62"><div class="ttname"><a href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a></div><div class="ttdeci">void * _t_surface(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00563">tree.c:563</a></div></div>
-<div class="ttc" id="structContextStore1_html"><div class="ttname"><a href="structContextStore1.html">ContextStore1</a></div><div class="ttdef"><b>Definition:</b> <a href="sys__defs_8h_source.html#l00025">sys_defs.h:25</a></div></div>
-<div class="ttc" id="structSemTable_html"><div class="ttname"><a href="structSemTable.html">SemTable</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00241">ceptr_types.h:241</a></div></div>
+<div class="ttc" id="group__tree_html_gac9278e540a0d63526b60cc0591283a62"><div class="ttname"><a href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a></div><div class="ttdeci">void * _t_surface(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00582">tree.c:582</a></div></div>
+<div class="ttc" id="structSemTable_html"><div class="ttname"><a href="structSemTable.html">SemTable</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00231">ceptr_types.h:231</a></div></div>
 <div class="ttc" id="group__tree_html_ga3b7a6499fe49f8e6a54166d583b08d5c"><div class="ttname"><a href="group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c">_t_add</a></div><div class="ttdeci">void _t_add(T *t, T *c)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00237">tree.c:237</a></div></div>
 <div class="ttc" id="base__defs_8h_html"><div class="ttname"><a href="base__defs_8h.html">base_defs.h</a></div><div class="ttdoc">auto-generated system definitions </div></div>
-<div class="ttc" id="structContextStore1_html_a3374dc91c967f50ebd49cd21954d5013"><div class="ttname"><a href="structContextStore1.html#a3374dc91c967f50ebd49cd21954d5013">ContextStore1::processes</a></div><div class="ttdeci">Process * processes</div><div class="ttdoc">pointer for quick access to processes </div><div class="ttdef"><b>Definition:</b> <a href="sys__defs_8h_source.html#l00029">sys_defs.h:29</a></div></div>
-<div class="ttc" id="group__tree_html_ga31e55cdc031e5f12523b998e89080db6"><div class="ttname"><a href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a></div><div class="ttdeci">void _t_free(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00475">tree.c:475</a></div></div>
-<div class="ttc" id="structContextStore1_html_a4e56289ad91950fd63475de822196245"><div class="ttname"><a href="structContextStore1.html#a4e56289ad91950fd63475de822196245">ContextStore1::structures</a></div><div class="ttdeci">Structure * structures</div><div class="ttdoc">pointer for quick access to structures </div><div class="ttdef"><b>Definition:</b> <a href="sys__defs_8h_source.html#l00027">sys_defs.h:27</a></div></div>
-<div class="ttc" id="structSemanticID_html"><div class="ttname"><a href="structSemanticID.html">SemanticID</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00023">ceptr_types.h:23</a></div></div>
+<div class="ttc" id="group__tree_html_ga31e55cdc031e5f12523b998e89080db6"><div class="ttname"><a href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a></div><div class="ttdeci">void _t_free(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00494">tree.c:494</a></div></div>
+<div class="ttc" id="structSemanticID_html"><div class="ttname"><a href="structSemanticID.html">SemanticID</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00022">ceptr_types.h:22</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="sys__defs_8c.html">sys_defs.c</a></li>
-    <li class="footer">Generated on Sun Nov 29 2015 11:50:51 for ceptr by
+    <li class="footer">Generated on Mon Dec 7 2015 23:46:05 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
