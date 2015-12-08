@@ -34,7 +34,7 @@ typedef struct ReplicationState {
 T *defaultRequestUntil();
 R *__p_make_context(T *run_tree,R *caller,int process_id);
 Error _p_step(Q *q, R **contextP);
-Error __p_check_signature(SemTable *sem,T *processes,Process p,T *params);
+Error __p_check_signature(SemTable *sem,Process p,T *params);
 Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q);
 void _p_enqueue(Qe **listP,Qe *e);
 Qe *__p_find_context(Qe *e,int process_id);

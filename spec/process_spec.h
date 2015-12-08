@@ -766,7 +766,6 @@ void testProcessReduceDefinedProcess() {
 
 void testProcessSignatureMatching() {
     Process if_even = _defIfEven();
-    T *processes = __sem_get_defs(G_sem,SEM_TYPE_PROCESS,TEST_CONTEXT);
 
     T *t = _t_new_root(RUN_TREE);
     T *n = _t_new_root(if_even);
@@ -774,7 +773,7 @@ void testProcessSignatureMatching() {
     _t_newi(n,TEST_INT_SYMBOL,123);
     _t_newi(n,TEST_INT_SYMBOL,124);
 
-    spec_is_equal(__p_check_signature(G_sem,processes,if_even,n),signatureMismatchReductionErr);
+    spec_is_equal(__p_check_signature(G_sem,if_even,n),signatureMismatchReductionErr);
 
     T *c = _t_rclone(n);
     _t_add(t,c);

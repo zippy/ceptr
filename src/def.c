@@ -334,7 +334,7 @@ Protocol _d_define_protocol(SemTable *sem,T *def,Context c) {
 /**
  * Walks the definition of a symbol to build a semtrex that would match that definiton
  *
- * @param[in] defs the definition context
+ * @param[in] sem the semantic context
  * @param[in] s the symbol to build a semtrex for
  * @param[in] parent the parent semtrex node because this function calls itself recursively.  Pass in 0 to start.
  * @returns the completed semtrex
@@ -370,7 +370,7 @@ T * _d_build_def_semtrex(SemTable *sem,Symbol s,T *parent) {
  *
  * @param[in] sem the SemanticTable of contexts
  * @param[in] label a human readable name for this receptor
- * @param[in] defs definitions that make up the receptor
+ * @param[in] def definitions that make up the receptor
  * @paran[in] the context in which to define this receptor
  *
  */

@@ -970,7 +970,7 @@ char * __dump_semtrex(SemTable *sem,T *s,char *buf) {
 /**
  * convert a semtrex tree into linear text format
  *
- * @param[in] defs pointer to definitions for printing out symbol names
+ * @param[in] sem the semantic contexts
  * @param[in] s the semtrex tree
  * @param[in] buf the string buffer to fill
  * @returns the buffer

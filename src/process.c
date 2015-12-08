@@ -88,7 +88,7 @@ void _p_interpolate_from_match(T *t,T *match_results,T *match_tree) {
 /**
  * check a group of parameters to see if they match a process input signature
  *
- * @param[in] defs definition trees needed for the checking
+ * @param[in] sem Semantic table in use
  * @param[in] p the Process we are checking against
  * @param[in] params list of parameters
  *
@@ -96,7 +96,8 @@ void _p_interpolate_from_match(T *t,T *match_results,T *match_tree) {
  *
  * @todo add SIGNATURE_SYMBOL for setting up process signatures by Symbol not just Structure
  */
-Error __p_check_signature(SemTable *sem,T *processes,Process p,T *params) {
+Error __p_check_signature(SemTable *sem,Process p,T *params) {
+    T *processes = _sem_get_defs(sem,p);
     T *def = _d_get_process_code(processes,p);
     T *signature = _t_child(def,ProcessDefSignatureIdx);
     int i = _t_children(signature) - 1; // there's always one output signature
@@ -579,19 +580,6 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             case MagicReceptors:
                 if (G_vm) {
                     char *s = malloc(10000);
-                    /* int l = 0; */
-                    /* Xaddr xr = {INSTALLED_RECEPTOR,1}; */
-                    /* T *i; */
-                    /* while (i =_a_get_instance(&G_vm->r->instances,xr)) { */
-                    /*     i = __r_get_receptor(i)->root; */
-                    /*     char *n = _r_get_symbol_name(G_vm->r,_t_symbol(i)); */
-                    /*     int nl = strlen(n); */
-                    /*     memcpy(&s[l],n,nl); */
-                    /*     l+= nl; */
-                    /*     sprintf(&s[l],":%d ",xr.addr++); */
-                    /*     l += strlen(&s[l]); */
-                    /* } */
-                    /* s[l]=0; */
                     int i;
                     int l = 0;
                     for (i=0;i<G_vm->receptor_count;i++) {
@@ -903,10 +891,10 @@ Error _p_step(Q *q, R **contextP) {
                     if (!is_sys_process(s)) {
                         // if it's user defined process then we check the signature and then make
                         // a new run-tree run that process
-                        T *processes = _sem_get_defs(q->r->sem,s);
-                        Error e = __p_check_signature(q->r->sem,processes,s,np);
+                        Error e = __p_check_signature(q->r->sem,s,np);
                         if (e) context->state = e;
                         else {
+                            T *processes = _sem_get_defs(q->r->sem,s);
                             T *run_tree = __p_make_run_tree(processes,s,np);
                             context->state = Pushed;
                             *contextP = __p_make_context(run_tree,context,context->id);
@@ -1108,7 +1096,7 @@ T *_p_make_run_tree(T *processes,T *process,int num_params,...) {
 /**
  * create a new processing queue
  *
- * @param[in] defs definitions that
+ * @param[in] r receptor in which to create the Queue
  * @returns Q the processing queue
  */
 Q *_p_newq(Receptor *r) {
@@ -1118,7 +1106,6 @@ Q *_p_newq(Receptor *r) {
     q->active = NULL;
     q->completed = NULL;
     q->blocked = NULL;
-    //    q->pending_signals = _t_new_root(PENDING_SIGNALS);
     pthread_mutex_init(&(q->mutex), NULL);
     return q;
 }
@@ -1293,7 +1280,6 @@ Error _p_reduceq(Q *q) {
  * cleanup any completed process from the queue, updating the receptor state data as necessary
  *
  * @param[in] q the queue to be cleaned up
- * @param[in] receptor_state pointer to tree node that holds the receptor state info
  */
 void _p_cleanup(Q *q) {
     debug(D_LOCK,"cleanup LOCK\n");
@@ -1312,8 +1298,9 @@ void _p_cleanup(Q *q) {
 }
 
 /**
- * utility function to build process forms
+ * utility function to build process form structures
  *
+ * @param[in] symbol the type of process form to build, i.e. PROCESS_SIGNATURE
  * @param[in] output_label
  * @param[in] output_symbol
  * @param[in] var_args triplets of label, symbol type, and symbol value for the signature

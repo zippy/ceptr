@@ -1047,7 +1047,10 @@ T * _t_unserialize(SemTable *sem,void **surfaceP,size_t *lengthP,T *t) {
 /**
  * dump tree in raw JSON format
  *
- * @param[in] defs the definition context
+ * @param[in] sem the semantic context
+ * @param[in] t the tree to dump
+ * @param[in] level current level used for recursion (call with 0)
+ * @param[in,out] buf buffer to dump into
  *
  * <b>Examples (from test suite):</b>
  * @snippet spec/tree_spec.h testTreeJSON
@@ -1167,7 +1170,10 @@ char * _t2rawjson(SemTable *sem,T *t,int level,char *buf) {
 /**
  * dump tree in JSON format
  *
- * @param[in] defs the definition context
+ * @param[in] sem the semantic context
+ * @param[in] t the tree to dump
+ * @param[in] level current level used for recursion (call with 0)
+ * @param[in,out] buf buffer to dump into
  *
  * <b>Examples (from test suite):</b>
  * @snippet spec/tree_spec.h testTreeJSON
