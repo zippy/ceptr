@@ -1,7 +1,9 @@
 #!/usr/local/bin/perl
 
-# This file generates c code that defines system semantic definitions.
-# it reads the file "base_defs" as a source file for creating the definitions
+# This script generates c code that defines system semantic definitions.
+# It reads the file "base_defs" as a source file for creating the definitions.
+# It also produces html output documentation of the various definitions for
+# use in our doxygen based docs.
 #
 # Copyright (C) 2013-2015, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
 
@@ -342,7 +344,6 @@ EOF
     print $hfh '    NUM_'.$context.'_'.uc($types)."\n};\n";
     foreach my $s (@$a) {
         print $hfh "SemanticID $s;\n";
-#        print $hfh '#define '.$s." G_contexts[$context"."_CONTEXT].".lc($types).'['.$s."_ID]\n";
     }
     # attempt to create enums for all structure Indexes.  doesn't quite work
     # if ($type eq 'Structure') {
