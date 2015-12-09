@@ -563,7 +563,11 @@ T *_t_rclone(T *t) {
     return __t_rclone(t,0);
 }
 
-Symbol _getBuildType(SemTable *sem,Symbol param,Structure *stP,T **defP) {
+SemanticID _getBuildType(SemTable *sem,SemanticID param,Structure *stP,T **defP) {
+    if (is_process(param)) {
+        *defP = _sem_get_def(sem,param);
+        return PROCESS_SIGNATURE;
+    }
     Structure st = _sem_get_symbol_structure(sem,param);
     *stP = st;
     if (semeq(st,NULL_STRUCTURE)) {
@@ -585,6 +589,13 @@ Symbol _getBuildType(SemTable *sem,Symbol param,Structure *stP,T **defP) {
 enum buildStates {bReadSymbol,bPop,bAddRoot,bReadBase};
 /**
  * helper for building trees in c
+ *
+ * @param[in] sem current semantic contexts
+ * @param[in] parent the tree to add the built tree onto (can be NULL)
+ * @param[in] ... varargs directing the building of the tree.  See examples
+ * @returns built tree
+ *
+ * @note this function doesn't validate that built tree follows the restrictions in the definitions it just uses the definitions to know what to expect in the varargs.  Thus if you put the wrong things in the varargs it will likely segfault!  Also you can build illegal trees.  It would be possible to add an expectations layer that would see if what comes next looks ok according to what's expected as specified in the definitions.  It would also be possible to run the built tree against the semtrex produced by _d_build_def_semtrex
  */
 T *_t_build(SemTable *sem,T *parent,...) {
     va_list ap;
@@ -596,8 +607,8 @@ T *_t_build(SemTable *sem,T *parent,...) {
     char *stn;
     T *def,*p;
     int state = bReadSymbol;
-    Symbol expecting[100];
-    T* expecting_def[100];
+    //    Symbol expecting[100];
+    //    T* expecting_def[100];
     int level = 0;
     while(!done) {
         switch(state) {
@@ -608,7 +619,10 @@ T *_t_build(SemTable *sem,T *parent,...) {
             type = _getBuildType(sem,param,&st,&def);
             //expectig_def[level] = def;
             debug(D_TREE,"reading %s of type: %s with def:%s\n",_sem_get_name(sem,param),_sem_get_name(sem,type),_t2s(sem,def));
-            if (semeq(type,STRUCTURE_SYMBOL)) {
+            if (semeq(type,PROCESS_SIGNATURE)) {
+                state = bAddRoot;
+            }
+            else if (semeq(type,STRUCTURE_SYMBOL)) {
                 if (semeq(*(Symbol *)_t_surface(def),NULL_SYMBOL)) {
                     state = bReadBase;
                 }
@@ -644,6 +658,15 @@ T *_t_build(SemTable *sem,T *parent,...) {
             else if (semeq(st,CSTRING)) {
                 t = _t_new_str(t,param,va_arg(ap,char *));
             }
+            else if (semeq(st,TREE_PATH)) {
+                int path[100];
+                int j = 0;
+                while((path[j]=va_arg(ap,int)) != TREE_PATH_TERMINATOR) {
+                    j++;
+                    if (j==100) raise_error("path too deep!");
+                }
+                t = _t_new(t,param,path,sizeof(int)*(j+1));
+            }
             else {
                 raise_error("unimplemented surface type:%s",_sem_get_name(sem,st));
             }
@@ -657,6 +680,9 @@ T *_t_build(SemTable *sem,T *parent,...) {
             type = _getBuildType(sem,param,&st,&def);
             debug(D_TREE,"popping to %s of type %s\n",_sem_get_name(sem,param),_sem_get_name(sem,type));
             if (semeq(type,STRUCTURE_ANYTHING) || (semeq(type,STRUCTURE_SEQUENCE))) {
+                state = bReadSymbol;
+            }
+            else if (semeq(type,PROCESS_SIGNATURE)) {
                 state = bReadSymbol;
             }
             else if (semeq(type,STRUCTURE_SYMBOL_SET)) {

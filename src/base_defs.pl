@@ -387,7 +387,7 @@ foreach my $s (@d) {
     my $name = $x[2];
     my $def = $x[3];
     if ($type eq 'Process') {
-        my ($desc,$out,$out_type,$out_sym,@def) = split /,/,$def;
+        my ($code,$desc,$out,$out_type,$out_sym,@def) = split /,/,$def;
         $desc =~ /"(.*)"/;
         $desc = $1;
         $out = &processSig($out,$out_type,$out_sym);

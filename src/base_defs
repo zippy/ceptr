@@ -240,35 +240,35 @@ Symbol: UNLIMITED,NULL_STRUCTURE;
 Symbol: REPETITIONS,[|[COUNT|UNLIMITED]];
 Symbol: END_CONDITIONS,[(?TIMEOUT_AT,?REPETITIONS)];
 
-Process: NOOP,"no-op","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"do",SIGNATURE_ANY,NULL_STRUCTURE,0;   this process reduces to its single "do" parameter.
-Process: GET,"get instance value","value",SIGNATURE_ANY,NULL_STRUCTURE,"what",SIGNATURE_SYMBOL,GET_XADDR,0;   reduces to the value of the instance at the xaddr of the "what" parameter
-Process: IF,"if","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"condition",SIGNATURE_PROCESS,BOOLEAN,"then",SIGNATURE_ANY,NULL_STRUCTURE,"else",SIGNATURE_OPTIONAL,SIGNATURE_ANY,NULL_STRUCTURE,0;  this is a traditional "if" process that reduces conditionally to either the "then" or the "else" parameter depending on the value of the "condition" parameter.  Note: we may be replacing this with a more lispy COND process
-Process: ITERATE,"iterate a process","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"condtion",SIGNATURE_PROCESS,BOOLEAN,"do",SIGNATURE_ANY,NULL_STRUCTURE,0;                     this process checks the structure of the result of the "condition" param, if it's a BOOLEAN, it treats the iteration as a while loop and iterates until the BOOLEAN is false; if it's an INTEGER it treats the iteration as repeat loop and iterates as many times as the value of the INTEGER
-Process: SAY,"send a message to a receptor","signal id",SIGNATURE_SYMBOL,SIGNAL_UUID,"to",SIGNATURE_SYMBOL,RECEPTOR_ADDRESS,"on",SIGNATURE_SYMBOL,ASPECT_IDENT,"carrier",SIGNATURE_SYMBOL,CARRIER,"message",SIGNATURE_ANY,NULL_STRUCTURE,0;
-Process: REQUEST,"send a request to a receptor","response",SIGNATURE_ANY,NULL_STRUCTURE,"of",SIGNATURE_SYMBOL,RECEPTOR_ADDRESS,"on",SIGNATURE_SYMBOL,ASPECT_IDENT,"carrier",SIGNATURE_SYMBOL,CARRIER,"message",SIGNATURE_ANY,NULL_STRUCTURE,"expect response on",SIGNATURE_SYMBOL,RESPONSE_CARRIER,"until",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,END_CONDITIONS,"callback",SIGNATURE_OPTIONAL,SIGNATURE_PROCESS,NULL_SYMBOL,0;  if there is no "callback" param, then this process will block until the result comes back or the "until" causes cleanup of pending request.
+Process: NOOP,0,"no-op","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"do",SIGNATURE_ANY,NULL_STRUCTURE,0;   this process reduces to its single "do" parameter.
+Process: GET,0,"get instance value","value",SIGNATURE_ANY,NULL_STRUCTURE,"what",SIGNATURE_SYMBOL,GET_XADDR,0;   reduces to the value of the instance at the xaddr of the "what" parameter
+Process: IF,0,"if","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"condition",SIGNATURE_PROCESS,BOOLEAN,"then",SIGNATURE_ANY,NULL_STRUCTURE,"else",SIGNATURE_OPTIONAL,SIGNATURE_ANY,NULL_STRUCTURE,0;  this is a traditional "if" process that reduces conditionally to either the "then" or the "else" parameter depending on the value of the "condition" parameter.  Note: we may be replacing this with a more lispy COND process
+Process: ITERATE,0,"iterate a process","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"condtion",SIGNATURE_PROCESS,BOOLEAN,"do",SIGNATURE_ANY,NULL_STRUCTURE,0;                     this process checks the structure of the result of the "condition" param, if it's a BOOLEAN, it treats the iteration as a while loop and iterates until the BOOLEAN is false; if it's an INTEGER it treats the iteration as repeat loop and iterates as many times as the value of the INTEGER
+Process: SAY,0,"send a message to a receptor","signal id",SIGNATURE_SYMBOL,SIGNAL_UUID,"to",SIGNATURE_SYMBOL,RECEPTOR_ADDRESS,"on",SIGNATURE_SYMBOL,ASPECT_IDENT,"carrier",SIGNATURE_SYMBOL,CARRIER,"message",SIGNATURE_ANY,NULL_STRUCTURE,0;
+Process: REQUEST,0,"send a request to a receptor","response",SIGNATURE_ANY,NULL_STRUCTURE,"of",SIGNATURE_SYMBOL,RECEPTOR_ADDRESS,"on",SIGNATURE_SYMBOL,ASPECT_IDENT,"carrier",SIGNATURE_SYMBOL,CARRIER,"message",SIGNATURE_ANY,NULL_STRUCTURE,"expect response on",SIGNATURE_SYMBOL,RESPONSE_CARRIER,"until",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,END_CONDITIONS,"callback",SIGNATURE_OPTIONAL,SIGNATURE_PROCESS,NULL_SYMBOL,0;  if there is no "callback" param, then this process will block until the result comes back or the "until" causes cleanup of pending request.
 
-Process: LISTEN,"plant a listener","error",SIGNATURE_SYMBOL,REDUCTION_ERROR_SYMBOL,"on",SIGNATURE_SYMBOL,ASPECT_IDENT,"for",SIGNATURE_SYMBOL,CARRIER,"match",SIGNATURE_SYMBOL,PATTERN,"do",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,ACTION,"with",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,PARAMS,"until",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,END_CONDITIONS,0;  If you don't provide an action, the assumption is that the LISTEN process will block and  will reduce to the SEMTREX_MATCH.  This will also force the END_CONDITIONS/REPETITIONS to COUNT:1.  If "for" carrier is NULL_SYMBOL the expectation will match on all carriers.
+Process: LISTEN,0,"plant a listener","error",SIGNATURE_SYMBOL,REDUCTION_ERROR_SYMBOL,"on",SIGNATURE_SYMBOL,ASPECT_IDENT,"for",SIGNATURE_SYMBOL,CARRIER,"match",SIGNATURE_SYMBOL,PATTERN,"do",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,ACTION,"with",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,PARAMS,"until",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,END_CONDITIONS,0;  If you don't provide an action, the assumption is that the LISTEN process will block and  will reduce to the SEMTREX_MATCH.  This will also force the END_CONDITIONS/REPETITIONS to COUNT:1.  If "for" carrier is NULL_SYMBOL the expectation will match on all carriers.
 
-Process: RESPOND,"respond to signal","response id",SIGNATURE_SYMBOL,SIGNAL_UUID,"respond on",SIGNATURE_SYMBOL,CARRIER,"response contents",SIGNATURE_ANY,NULL_STRUCTURE,0;
-Process: QUOTE,"quote a process so that it can be passed as a value","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"process",SIGNATURE_PROCESS,NULL_PROCESS,0;
-Process: INTERPOLATE_FROM_MATCH,"interploate match result in place","result",SIGNATURE_ANY,NULL_STRUCTURE,0;
-Process: RAISE,"raise reduction error","result",SIGNATURE_STRUCTURE,NULL_STRUCTURE,"error",SIGNATURE_SYMBOL,REDUCTION_ERROR_SYMBOL,0;   this process doesn't really return anything, because it triggers the handler for the error in the "error" parameter
-Process: STREAM_READ,"read from a stream","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"stream",SIGNATURE_STRUCTURE,STREAM,"into",SIGNATURE_SYMBOL,RESULT_SYMBOL,0;  the data on the stream will appear as the surface of the symbol type given by the "into" param. Clearly this could get ugly as there is no semantic checking that that's ok...
-Process: STREAM_WRITE,"write to a stream","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"stream",SIGNATURE_STRUCTURE,STREAM,"what",SIGNATURE_ANY,NULL_STRUCTURE,0;
-Process: STREAM_ALIVE,"test if stream is alive for reading","alive",SIGNATURE_SYMBOL,BOOLEAN,"stream",SIGNATURE_STRUCTURE,STREAM,0;
-Process: CONCAT_STR,"concatinate strings","concatenation",SIGNATURE_STRUCTURE,CSTRING,"into",SIGNATURE_SYMBOL,RESULT_SYMBOL,"str1",SIGNATURE_STRUCTURE,CSTRING,"str2",SIGNATURE_STRUCTURE,CSTRING,0;  concatenates two strings of any symbol type into an new symbol type specified by the "into" parameter
-Process: ADD_INT,"addition","sum",SIGNATURE_STRUCTURE,INTEGER,"augend",SIGNATURE_STRUCTURE,INTEGER,"addend",SIGNATURE_STRUCTURE,INTEGER,0;
-Process: SUB_INT,"subtract","difference",SIGNATURE_STRUCTURE,INTEGER,"minuend",SIGNATURE_STRUCTURE,INTEGER,"subtrahend",SIGNATURE_STRUCTURE,INTEGER,0;
-Process: MULT_INT,"multiply","product",SIGNATURE_STRUCTURE,INTEGER,"multiplicand",SIGNATURE_STRUCTURE,INTEGER,"multiplier",SIGNATURE_STRUCTURE,INTEGER,0;
-Process: DIV_INT,"divide","quotient",SIGNATURE_STRUCTURE,INTEGER,"dividend",SIGNATURE_STRUCTURE,INTEGER,"divisor",SIGNATURE_STRUCTURE,INTEGER,0;
-Process: MOD_INT,"modulo","remainder",SIGNATURE_STRUCTURE,INTEGER,"dividend",SIGNATURE_STRUCTURE,INTEGER,"divisor",SIGNATURE_STRUCTURE,INTEGER,0;
-Process: EQ_INT,"test equality","equality",SIGNATURE_SYMBOL,BOOLEAN,"int1",SIGNATURE_STRUCTURE,INTEGER,"int2",SIGNATURE_STRUCTURE,INTEGER,0;
-Process: LT_INT,"test less than","result",SIGNATURE_SYMBOL,BOOLEAN,"int1",SIGNATURE_STRUCTURE,INTEGER,"int2",SIGNATURE_STRUCTURE,INTEGER,0;
-Process: GT_INT,"test greater than","result",SIGNATURE_SYMBOL,BOOLEAN,"int1",SIGNATURE_STRUCTURE,INTEGER,"int2",SIGNATURE_STRUCTURE,INTEGER,0;
-Process: LTE_INT,"test less than or equal","result",SIGNATURE_SYMBOL,BOOLEAN,"int1",SIGNATURE_STRUCTURE,INTEGER,"int2",SIGNATURE_STRUCTURE,INTEGER,0;
-Process: GTE_INT,"test greater than or equal","result",SIGNATURE_SYMBOL,BOOLEAN,"int1",SIGNATURE_STRUCTURE,INTEGER,"int2",SIGNATURE_STRUCTURE,INTEGER,0;
+Process: RESPOND,0,"respond to signal","response id",SIGNATURE_SYMBOL,SIGNAL_UUID,"respond on",SIGNATURE_SYMBOL,CARRIER,"response contents",SIGNATURE_ANY,NULL_STRUCTURE,0;
+Process: QUOTE,0,"quote a process so that it can be passed as a value","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"process",SIGNATURE_PROCESS,NULL_PROCESS,0;
+Process: INTERPOLATE_FROM_MATCH,0,"interploate match result in place","result",SIGNATURE_ANY,NULL_STRUCTURE,0;
+Process: RAISE,0,"raise reduction error","result",SIGNATURE_STRUCTURE,NULL_STRUCTURE,"error",SIGNATURE_SYMBOL,REDUCTION_ERROR_SYMBOL,0;   this process doesn't really return anything, because it triggers the handler for the error in the "error" parameter
+Process: STREAM_READ,0,"read from a stream","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"stream",SIGNATURE_STRUCTURE,STREAM,"into",SIGNATURE_SYMBOL,RESULT_SYMBOL,0;  the data on the stream will appear as the surface of the symbol type given by the "into" param. Clearly this could get ugly as there is no semantic checking that that's ok...
+Process: STREAM_WRITE,0,"write to a stream","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"stream",SIGNATURE_STRUCTURE,STREAM,"what",SIGNATURE_ANY,NULL_STRUCTURE,0;
+Process: STREAM_ALIVE,0,"test if stream is alive for reading","alive",SIGNATURE_SYMBOL,BOOLEAN,"stream",SIGNATURE_STRUCTURE,STREAM,0;
+Process: CONCAT_STR,0,"concatinate strings","concatenation",SIGNATURE_STRUCTURE,CSTRING,"into",SIGNATURE_SYMBOL,RESULT_SYMBOL,"str1",SIGNATURE_STRUCTURE,CSTRING,"str2",SIGNATURE_STRUCTURE,CSTRING,0;  concatenates two strings of any symbol type into an new symbol type specified by the "into" parameter
+Process: ADD_INT,0,"addition","sum",SIGNATURE_STRUCTURE,INTEGER,"augend",SIGNATURE_STRUCTURE,INTEGER,"addend",SIGNATURE_STRUCTURE,INTEGER,0;
+Process: SUB_INT,0,"subtract","difference",SIGNATURE_STRUCTURE,INTEGER,"minuend",SIGNATURE_STRUCTURE,INTEGER,"subtrahend",SIGNATURE_STRUCTURE,INTEGER,0;
+Process: MULT_INT,0,"multiply","product",SIGNATURE_STRUCTURE,INTEGER,"multiplicand",SIGNATURE_STRUCTURE,INTEGER,"multiplier",SIGNATURE_STRUCTURE,INTEGER,0;
+Process: DIV_INT,0,"divide","quotient",SIGNATURE_STRUCTURE,INTEGER,"dividend",SIGNATURE_STRUCTURE,INTEGER,"divisor",SIGNATURE_STRUCTURE,INTEGER,0;
+Process: MOD_INT,0,"modulo","remainder",SIGNATURE_STRUCTURE,INTEGER,"dividend",SIGNATURE_STRUCTURE,INTEGER,"divisor",SIGNATURE_STRUCTURE,INTEGER,0;
+Process: EQ_INT,0,"test equality","equality",SIGNATURE_SYMBOL,BOOLEAN,"int1",SIGNATURE_STRUCTURE,INTEGER,"int2",SIGNATURE_STRUCTURE,INTEGER,0;
+Process: LT_INT,0,"test less than","result",SIGNATURE_SYMBOL,BOOLEAN,"int1",SIGNATURE_STRUCTURE,INTEGER,"int2",SIGNATURE_STRUCTURE,INTEGER,0;
+Process: GT_INT,0,"test greater than","result",SIGNATURE_SYMBOL,BOOLEAN,"int1",SIGNATURE_STRUCTURE,INTEGER,"int2",SIGNATURE_STRUCTURE,INTEGER,0;
+Process: LTE_INT,0,"test less than or equal","result",SIGNATURE_SYMBOL,BOOLEAN,"int1",SIGNATURE_STRUCTURE,INTEGER,"int2",SIGNATURE_STRUCTURE,INTEGER,0;
+Process: GTE_INT,0,"test greater than or equal","result",SIGNATURE_SYMBOL,BOOLEAN,"int1",SIGNATURE_STRUCTURE,INTEGER,"int2",SIGNATURE_STRUCTURE,INTEGER,0;
 
-Process: MAGIC,"dark magic","result",SIGNATURE_ANY,NULL_STRUCTURE,0;   this process reduces to hardcoded special things as a scaffold for things we don't know how to build in ceptr yet.
+Process: MAGIC,0,"dark magic","result",SIGNATURE_ANY,NULL_STRUCTURE,0;   this process reduces to hardcoded special things as a scaffold for things we don't know how to build in ceptr yet.
 
 Symbol: STX_SL,NULL_STRUCTURE;
 Symbol: STX_OP,NULL_STRUCTURE;
@@ -308,25 +308,6 @@ Structure: TREE_DELTA,TREE_DELTA_PATH,TREE_DELTA_VALUE,TREE_DELTA_COUNT;
 Symbol: TREE_DELTA_ADD,TREE_DELTA;
 Symbol: TREE_DELTA_REPLACE,TREE_DELTA;
 
-# definitions for an ALIVE protocol
-Symbol: SERVER,RECEPTOR_ADDRESS;
-Symbol: CLIENT,RECEPTOR_ADDRESS;
-Symbol: PING,NULL_STRUCTURE;
-Symbol: YUP,NULL_STRUCTURE;
-Symbol: HANDLER,PROCESS;
-
-Data: pattern1,PATTERN,SEMTREX_SYMBOL_LITERAL,SEMTREX_SYMBOL,PING;
-Data: action1,ACTION,NOOP;
-Data: pattern2,PATTERN,SEMTREX_SYMBOL_LITERAL,SEMTREX_SYMBOL,YUP;
-Data: action2,GOAL,HANDLER;
-Protocol: ALIVE,
-   ROLE,SERVER,
-   ROLE,CLIENT,
-   GOAL,HANDLER,
-   INTERACTION,"alive",
-        EXPECT,SERVER,CLIENT,pattern1,action1,
-        EXPECT,CLIENT,SERVER,pattern2,action2;
-
 ########################################################################################
 Context: COMPOSITORY;
 
@@ -339,6 +320,28 @@ Symbol: VERB,CSTRING;
 Symbol: COMMAND_PARAMETER,CSTRING;
 Structure: COMMAND,(VERB,*COMMAND_PARAMETER);
 Symbol: SHELL_COMMAND,COMMAND;
+
+# definitions for an ALIVE protocol
+Symbol: SERVER,RECEPTOR_ADDRESS;
+Symbol: CLIENT,RECEPTOR_ADDRESS;
+Symbol: PING,NULL_STRUCTURE;
+Symbol: YUP,NULL_STRUCTURE;
+Symbol: HANDLER,PROCESS;
+
+Data: ping_resp,RESPOND,SIGNAL_REF,SignalEnvelopeIdx,EnvelopeCarrierIdx,TREE_PATH_TERMINATOR,YUP;
+Process: respond_with_yup,ping_resp,"respond with yup","response id",SIGNATURE_SYMBOL,SIGNAL_UUID,0;
+
+Data: pattern1,PATTERN,SEMTREX_SYMBOL_LITERAL,SEMTREX_SYMBOL,PING;
+Data: action1,ACTION,respond_with_yup;
+Data: pattern2,PATTERN,SEMTREX_SYMBOL_LITERAL,SEMTREX_SYMBOL,YUP;
+Data: action2,GOAL,HANDLER;
+Protocol: ALIVE,
+   ROLE,SERVER,
+   ROLE,CLIENT,
+   GOAL,HANDLER,
+   INTERACTION,"alive",
+        EXPECT,SERVER,CLIENT,pattern1,action1,
+        EXPECT,CLIENT,SERVER,pattern2,action2;
 
 ########################################################################################
 Context: TEST;

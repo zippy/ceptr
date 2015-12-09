@@ -538,8 +538,8 @@ void testProcessHTML() {
 void testTreeBuild() {
 
     // tests basic structures plus the STRUCTURE_ANYTHING
-    T *t = _t_build(G_sem,0,TEST_ANYTHING_SYMBOL,ACTION,IF,TEST_ANYTHING_SYMBOL,TEST_STR_SYMBOL,"fish",NULL_SYMBOL,TEST_INT_SYMBOL,3141,NULL_SYMBOL);
-    spec_is_str_equal(t2s(t),"(TEST_ANYTHING_SYMBOL (ACTION:IF) (TEST_ANYTHING_SYMBOL (TEST_STR_SYMBOL:fish)) (TEST_INT_SYMBOL:3141))");
+    T *t = _t_build(G_sem,0,TEST_ANYTHING_SYMBOL,ACTION,IF,TEST_ANYTHING_SYMBOL,TEST_STR_SYMBOL,"fish",NULL_SYMBOL,TEST_INT_SYMBOL,3141,SIGNAL_REF,SignalEnvelopeIdx,EnvelopeCarrierIdx,TREE_PATH_TERMINATOR,NULL_SYMBOL);
+    spec_is_str_equal(t2s(t),"(TEST_ANYTHING_SYMBOL (ACTION:IF) (TEST_ANYTHING_SYMBOL (TEST_STR_SYMBOL:fish)) (TEST_INT_SYMBOL:3141) (SIGNAL_REF:/1/4))");
 
     // tests the STRUCTURE_SEQUENCE def
     t = _t_build(G_sem,0,SYMBOL_DEFINITION,SYMBOL_LABEL,"shoe size",SYMBOL_STRUCTURE,INTEGER,NULL_SYMBOL);
@@ -550,6 +550,10 @@ void testTreeBuild() {
     // tests the STRUCTURE_SYMBOL_SET def
     t = _t_build(G_sem,0,PATTERN,SEMTREX_SYMBOL_LITERAL,SEMTREX_SYMBOL,PING,NULL_SYMBOL);
     spec_is_str_equal(t2s(t),"(PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:PING)))");
+
+    // tests building a code tree
+    t = _t_build(G_sem,0,RESPOND,SIGNAL_REF,SignalEnvelopeIdx,EnvelopeCarrierIdx,TREE_PATH_TERMINATOR,YUP,NULL_SYMBOL);
+    spec_is_str_equal(t2s(t),"(process:RESPOND (SIGNAL_REF:/1/4) (YUP))");
 
 }
 

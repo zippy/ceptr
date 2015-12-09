@@ -33,7 +33,7 @@ char * G_label;
 #define sTs(ctx,name,def) G_ctx = ctx;G_label=""#name"";name = _d_define_structure(sem,"" #name "",def,ctx);
 #define sY(ctx,name,str) name = _d_define_symbol(sem,str,"" #name "",ctx)
 #define sYs(ctx,sym,str) __d_set_symbol_structure(__sem_get_defs(sem,SEM_TYPE_SYMBOL,ctx),sym,str)
-#define sP(ctx,name,intention,...) name = _d_define_process(sem,0,"" #name "",intention,__p_make_signature(__VA_ARGS__),ctx)
+#define sP(ctx,name,code,intention,...) name = _d_define_process(sem,code,"" #name "",intention,__p_make_signature(__VA_ARGS__),ctx)
 
 #define sT_SET(...) sT_(sem,STRUCTURE_SYMBOL_SET,__VA_ARGS__)
 #define sT_SEQ(...) sT_(sem,STRUCTURE_SEQUENCE,__VA_ARGS__)

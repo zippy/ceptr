@@ -228,11 +228,6 @@ enum SYSSymbolIDs {
     TREE_DELTA_COUNT_ID,
     TREE_DELTA_ADD_ID,
     TREE_DELTA_REPLACE_ID,
-    SERVER_ID,
-    CLIENT_ID,
-    PING_ID,
-    YUP_ID,
-    HANDLER_ID,
     NUM_SYS_SYMBOLS
 };
 SemanticID STRUCTURES;
@@ -434,11 +429,6 @@ SemanticID TREE_DELTA_VALUE;
 SemanticID TREE_DELTA_COUNT;
 SemanticID TREE_DELTA_ADD;
 SemanticID TREE_DELTA_REPLACE;
-SemanticID SERVER;
-SemanticID CLIENT;
-SemanticID PING;
-SemanticID YUP;
-SemanticID HANDLER;
 
 /**********************************************************************************/
 // SYS:Structure
@@ -708,10 +698,8 @@ SemanticID MAGIC;
 // SYS:Protocol
 enum SYSProtocolIDs {
     NULL_PROTOCOL_ID,
-    ALIVE_ID,
     NUM_SYS_PROTOCOLS
 };
-SemanticID ALIVE;
 
 /**********************************************************************************/
 // COMPOSITORY:Symbol
@@ -748,11 +736,21 @@ enum DEV_COMPOSITORYSymbolIDs {
     VERB_ID,
     COMMAND_PARAMETER_ID,
     SHELL_COMMAND_ID,
+    SERVER_ID,
+    CLIENT_ID,
+    PING_ID,
+    YUP_ID,
+    HANDLER_ID,
     NUM_DEV_COMPOSITORY_SYMBOLS
 };
 SemanticID VERB;
 SemanticID COMMAND_PARAMETER;
 SemanticID SHELL_COMMAND;
+SemanticID SERVER;
+SemanticID CLIENT;
+SemanticID PING;
+SemanticID YUP;
+SemanticID HANDLER;
 
 /**********************************************************************************/
 // DEV_COMPOSITORY:Structure
@@ -767,15 +765,19 @@ SemanticID COMMAND;
 // DEV_COMPOSITORY:Process
 enum DEV_COMPOSITORYProcessIDs {
     NULL_DEV_COMPOSITORY_PROCESS_ID,
+    respond_with_yup_ID,
     NUM_DEV_COMPOSITORY_PROCESSES
 };
+SemanticID respond_with_yup;
 
 /**********************************************************************************/
 // DEV_COMPOSITORY:Protocol
 enum DEV_COMPOSITORYProtocolIDs {
     NULL_DEV_COMPOSITORY_PROTOCOL_ID,
+    ALIVE_ID,
     NUM_DEV_COMPOSITORY_PROTOCOLS
 };
+SemanticID ALIVE;
 
 /**********************************************************************************/
 // TEST:Symbol
