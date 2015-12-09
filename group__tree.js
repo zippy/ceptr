@@ -15,6 +15,7 @@ var group__tree =
     [ "_t2json", "group__tree.html#ga99f3418321c60281de6692af9b213a37", null ],
     [ "_t2rawjson", "group__tree.html#gace8bc22998a47bd04b312d79cefe1171", null ],
     [ "_t_add", "group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c", null ],
+    [ "_t_build", "group__tree.html#gaebfc497f04bdfbfd3a241771b146bebc", null ],
     [ "_t_child", "group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b", null ],
     [ "_t_children", "group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc", null ],
     [ "_t_clone", "group__tree.html#ga7535eb2963c6cf5fc78cb14287581f92", null ],

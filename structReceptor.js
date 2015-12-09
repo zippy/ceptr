@@ -12,6 +12,5 @@ var structReceptor =
     [ "q", "structReceptor.html#ab1e1dd776afee48ee71297a3e39756f8", null ],
     [ "root", "structReceptor.html#aec6f1eee133a993b59baf50e75620fb6", null ],
     [ "sem", "structReceptor.html#a4bb9ce729b6b85fb99326e9df7b23cbd", null ],
-    [ "state", "structReceptor.html#a877d31e0f4bd35d7c4a598c6e0416dd5", null ],
-    [ "table", "structReceptor.html#a2f7dc587ff971db209316cde561d0cd0", null ]
+    [ "state", "structReceptor.html#a877d31e0f4bd35d7c4a598c6e0416dd5", null ]
 ];

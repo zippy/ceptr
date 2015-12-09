@@ -4,6 +4,10 @@ var base__defs_8h =
       [ "NULL_CLOCK_PROCESS_ID", "base__defs_8h.html#a142af4bf9a90bc9bdf6851656d7e670aa8ce1a4acc0db2d04b57d500b3c26dd87", null ],
       [ "NUM_CLOCK_PROCESSES", "base__defs_8h.html#a142af4bf9a90bc9bdf6851656d7e670aaa7f86879172ac4bcaa0a00cc3a275ec8", null ]
     ] ],
+    [ "CLOCKProtocolIDs", "base__defs_8h.html#a41b0f88e237868e8d9c997a554751afb", [
+      [ "NULL_CLOCK_PROTOCOL_ID", "base__defs_8h.html#a41b0f88e237868e8d9c997a554751afbafc204236604df225941986b80ec9f96c", null ],
+      [ "NUM_CLOCK_PROTOCOLS", "base__defs_8h.html#a41b0f88e237868e8d9c997a554751afbacb1054249cef5219b0a56aacc43d8353", null ]
+    ] ],
     [ "CLOCKStructureIDs", "base__defs_8h.html#afd79ae1e42ea125843e1f3d2efc690dd", [
       [ "NULL_CLOCK_STRUCTURE_ID", "base__defs_8h.html#afd79ae1e42ea125843e1f3d2efc690dda275ba13fcd0788cec4b6827851251547", null ],
       [ "NUM_CLOCK_STRUCTURES", "base__defs_8h.html#afd79ae1e42ea125843e1f3d2efc690ddaee15fa653157c3e67e0183a942456699", null ]
@@ -17,6 +21,10 @@ var base__defs_8h =
       [ "NULL_COMPOSITORY_PROCESS_ID", "base__defs_8h.html#ae3c1d0585181cec05fee819b1d476167abf602cbb1aae19ee21bbbe30ac4f1291", null ],
       [ "NUM_COMPOSITORY_PROCESSES", "base__defs_8h.html#ae3c1d0585181cec05fee819b1d476167a3f5a21d82b49d5858e16aa2c34fa093f", null ]
     ] ],
+    [ "COMPOSITORYProtocolIDs", "base__defs_8h.html#a396f4bae3b7325e0502e9bbbe5e7bbe5", [
+      [ "NULL_COMPOSITORY_PROTOCOL_ID", "base__defs_8h.html#a396f4bae3b7325e0502e9bbbe5e7bbe5af81566ef3e86735d50ec4a623c67d713", null ],
+      [ "NUM_COMPOSITORY_PROTOCOLS", "base__defs_8h.html#a396f4bae3b7325e0502e9bbbe5e7bbe5aa1e01c1cc8a28f7b3253d062bc7c37cf", null ]
+    ] ],
     [ "COMPOSITORYStructureIDs", "base__defs_8h.html#a49e1cd2bfc90e5832572f04c66e26b31", [
       [ "NULL_COMPOSITORY_STRUCTURE_ID", "base__defs_8h.html#a49e1cd2bfc90e5832572f04c66e26b31ae848bedb057442d5f3b7587ef47c13ed", null ],
       [ "NUM_COMPOSITORY_STRUCTURES", "base__defs_8h.html#a49e1cd2bfc90e5832572f04c66e26b31a189e908cf5a91b9dec44a9ab7f9ef243", null ]
@@ -27,7 +35,16 @@ var base__defs_8h =
     ] ],
     [ "DEV_COMPOSITORYProcessIDs", "base__defs_8h.html#a42e61535cea6adcd891d4d481179ed2d", [
       [ "NULL_DEV_COMPOSITORY_PROCESS_ID", "base__defs_8h.html#a42e61535cea6adcd891d4d481179ed2daec44fb6322fb7bcc8b07d1fe65f9d549", null ],
+      [ "send_request_ID", "base__defs_8h.html#a42e61535cea6adcd891d4d481179ed2da02fbeea8afd9b980435662d807870907", null ],
+      [ "send_response_ID", "base__defs_8h.html#a42e61535cea6adcd891d4d481179ed2da3034fcf6ee475bdba0c8baa2c52b1d36", null ],
+      [ "respond_with_yup_ID", "base__defs_8h.html#a42e61535cea6adcd891d4d481179ed2da5a0c4185d2143ae05f5d95b15247e21a", null ],
       [ "NUM_DEV_COMPOSITORY_PROCESSES", "base__defs_8h.html#a42e61535cea6adcd891d4d481179ed2da50b57279960314a9a07c7e21ec31be08", null ]
+    ] ],
+    [ "DEV_COMPOSITORYProtocolIDs", "base__defs_8h.html#ae8b0e85646ee1879fcea840ec977411a", [
+      [ "NULL_DEV_COMPOSITORY_PROTOCOL_ID", "base__defs_8h.html#ae8b0e85646ee1879fcea840ec977411aa9090bc5881f790da75e5bb3f94297c31", null ],
+      [ "REQUESTING_ID", "base__defs_8h.html#ae8b0e85646ee1879fcea840ec977411aa683d1ae27cd47bcf352f8cbe2c4f0094", null ],
+      [ "ALIVE_ID", "base__defs_8h.html#ae8b0e85646ee1879fcea840ec977411aa7258d06f310e560fb968f82fb1712c4d", null ],
+      [ "NUM_DEV_COMPOSITORY_PROTOCOLS", "base__defs_8h.html#ae8b0e85646ee1879fcea840ec977411aa7ea670dc1f23455239220c12220a7108", null ]
     ] ],
     [ "DEV_COMPOSITORYStructureIDs", "base__defs_8h.html#afd48fcc424303b9f116912d39d1e039c", [
       [ "NULL_DEV_COMPOSITORY_STRUCTURE_ID", "base__defs_8h.html#afd48fcc424303b9f116912d39d1e039cab03e679575dfb47b907c153306e5144a", null ],
@@ -36,9 +53,20 @@ var base__defs_8h =
     ] ],
     [ "DEV_COMPOSITORYSymbolIDs", "base__defs_8h.html#afaba043c0867bbf9b8f028fa414aed64", [
       [ "NULL_DEV_COMPOSITORY_SYMBOL_ID", "base__defs_8h.html#afaba043c0867bbf9b8f028fa414aed64a6503ea99f9cfd24008567b158be0453f", null ],
+      [ "REQUESTER_ID", "base__defs_8h.html#afaba043c0867bbf9b8f028fa414aed64a13e3e8322d15e00764f5920fa08de418", null ],
+      [ "RESPONDER_ID", "base__defs_8h.html#afaba043c0867bbf9b8f028fa414aed64a1f91161c1560431969d5296923f9fdd5", null ],
+      [ "REQUEST_DATA_ID", "base__defs_8h.html#afaba043c0867bbf9b8f028fa414aed64a911eb8d922e73e48322a8b4fa32ab3ab", null ],
+      [ "RESPONSE_DATA_ID", "base__defs_8h.html#afaba043c0867bbf9b8f028fa414aed64a0191c0a04afdaa4fc31c37261b626925", null ],
+      [ "RESPONSE_HANDLER_ID", "base__defs_8h.html#afaba043c0867bbf9b8f028fa414aed64ab3d7fdbbbe27e86d0dfa8a3e56bdbc20", null ],
+      [ "REQUEST_HANDLER_ID", "base__defs_8h.html#afaba043c0867bbf9b8f028fa414aed64a475166e06373f878c0f55102f728302d", null ],
       [ "VERB_ID", "base__defs_8h.html#afaba043c0867bbf9b8f028fa414aed64ade0691d32e30a534ee1a8e5e34a19c31", null ],
       [ "COMMAND_PARAMETER_ID", "base__defs_8h.html#afaba043c0867bbf9b8f028fa414aed64aaac30ab3ecc1f116cbcb28d34782fc6f", null ],
       [ "SHELL_COMMAND_ID", "base__defs_8h.html#afaba043c0867bbf9b8f028fa414aed64a6dcca05912eb947fc3ae26497cc8568a", null ],
+      [ "SERVER_ID", "base__defs_8h.html#afaba043c0867bbf9b8f028fa414aed64acc9d7d342c77b23067cdb9f0a900fa2a", null ],
+      [ "CLIENT_ID", "base__defs_8h.html#afaba043c0867bbf9b8f028fa414aed64adbccc274318f909228d315dd749f71fc", null ],
+      [ "PING_ID", "base__defs_8h.html#afaba043c0867bbf9b8f028fa414aed64aa706f042e1758bb44e18e577704d7989", null ],
+      [ "YUP_ID", "base__defs_8h.html#afaba043c0867bbf9b8f028fa414aed64abd1d0d54a9ff801bfd6c384de78fd27e", null ],
+      [ "HANDLER_ID", "base__defs_8h.html#afaba043c0867bbf9b8f028fa414aed64ae51897b10992804d6ca9da802e4d56da", null ],
       [ "NUM_DEV_COMPOSITORY_SYMBOLS", "base__defs_8h.html#afaba043c0867bbf9b8f028fa414aed64ad99aafaba716df5ccdbc336069f9fdbc", null ]
     ] ],
     [ "SemanticContexts", "base__defs_8h.html#a27d4a291fe7bfd69871f56db2a4188cd", [
@@ -55,6 +83,10 @@ var base__defs_8h =
       [ "NULL_STREAM_READER_PROCESS_ID", "base__defs_8h.html#a2dcd8b867e0e2025a094f4d01ce246fcaa8f3a7489cee0d002f11ca8f246bf681", null ],
       [ "NUM_STREAM_READER_PROCESSES", "base__defs_8h.html#a2dcd8b867e0e2025a094f4d01ce246fca6fdc0c50654b82c7d0065b0749639ce4", null ]
     ] ],
+    [ "STREAM_READERProtocolIDs", "base__defs_8h.html#a391d6120df88632dd3ecd92df67df4c8", [
+      [ "NULL_STREAM_READER_PROTOCOL_ID", "base__defs_8h.html#a391d6120df88632dd3ecd92df67df4c8abfaf8b730e475365e5a22d6f2e978d8e", null ],
+      [ "NUM_STREAM_READER_PROTOCOLS", "base__defs_8h.html#a391d6120df88632dd3ecd92df67df4c8acdbde0a67244063b8cd529174c258dde", null ]
+    ] ],
     [ "STREAM_READERStructureIDs", "base__defs_8h.html#a2dd3e99b2fbffe1fd1a52c39adaacb37", [
       [ "NULL_STREAM_READER_STRUCTURE_ID", "base__defs_8h.html#a2dd3e99b2fbffe1fd1a52c39adaacb37a4a03ad345e835b05e6afb315d8e7f529", null ],
       [ "NUM_STREAM_READER_STRUCTURES", "base__defs_8h.html#a2dd3e99b2fbffe1fd1a52c39adaacb37ab73fb0bf495b22130bd4ab9287738791", null ]
@@ -67,6 +99,10 @@ var base__defs_8h =
     [ "STREAM_WRITERProcessIDs", "base__defs_8h.html#a6ef04c53359cc804683e4f55ffda4ba1", [
       [ "NULL_STREAM_WRITER_PROCESS_ID", "base__defs_8h.html#a6ef04c53359cc804683e4f55ffda4ba1a11227ded73469174483bcb6ed6348f7a", null ],
       [ "NUM_STREAM_WRITER_PROCESSES", "base__defs_8h.html#a6ef04c53359cc804683e4f55ffda4ba1abd1f16f3724298c2b0c2a525dbdc08f3", null ]
+    ] ],
+    [ "STREAM_WRITERProtocolIDs", "base__defs_8h.html#a5be1c368cf0927703a1ee55cd1da7ad6", [
+      [ "NULL_STREAM_WRITER_PROTOCOL_ID", "base__defs_8h.html#a5be1c368cf0927703a1ee55cd1da7ad6a5e39397001a6143782aea2bc65da7236", null ],
+      [ "NUM_STREAM_WRITER_PROTOCOLS", "base__defs_8h.html#a5be1c368cf0927703a1ee55cd1da7ad6ad9b31b968990f583a973bd718cc52f59", null ]
     ] ],
     [ "STREAM_WRITERStructureIDs", "base__defs_8h.html#a8076ee0a80a50e414b88f91a7de42312", [
       [ "NULL_STREAM_WRITER_STRUCTURE_ID", "base__defs_8h.html#a8076ee0a80a50e414b88f91a7de42312abd36fba244b62d383503d713c213d5b5", null ],
@@ -105,6 +141,10 @@ var base__defs_8h =
       [ "GTE_INT_ID", "base__defs_8h.html#ae45ea5f68b11fba5335966aaecbd1e8da6c7e8caa527aaa68f38087836fe4b9b9", null ],
       [ "MAGIC_ID", "base__defs_8h.html#ae45ea5f68b11fba5335966aaecbd1e8da9671d771eb067e4004ee0ac483658da8", null ],
       [ "NUM_SYS_PROCESSES", "base__defs_8h.html#ae45ea5f68b11fba5335966aaecbd1e8da2044269b41c15464e4414a0a66e8c25b", null ]
+    ] ],
+    [ "SYSProtocolIDs", "base__defs_8h.html#ac0ce61b4263655c2de54ead2aa2cff58", [
+      [ "NULL_PROTOCOL_ID", "base__defs_8h.html#ac0ce61b4263655c2de54ead2aa2cff58a326d17093418fb8dc04a0e2c8766ca04", null ],
+      [ "NUM_SYS_PROTOCOLS", "base__defs_8h.html#ac0ce61b4263655c2de54ead2aa2cff58a85e4f6843418145bd50e710ce3da4b5f", null ]
     ] ],
     [ "SYSStructureIDs", "base__defs_8h.html#ad5793bf9ce5a73d7b2ff32a9c090a603", [
       [ "NULL_STRUCTURE_ID", "base__defs_8h.html#ad5793bf9ce5a73d7b2ff32a9c090a603adfbe9c6bccbe7c0519499b26b09359f2", null ],
@@ -416,6 +456,10 @@ var base__defs_8h =
       [ "NULL_TEST_PROCESS_ID", "base__defs_8h.html#ab3faeba6b14944fd544d0b370737b07dacb8984026c437fde1e57085076a495d1", null ],
       [ "NUM_TEST_PROCESSES", "base__defs_8h.html#ab3faeba6b14944fd544d0b370737b07da466c751bc653f4843b43ddebaa5a2a1a", null ]
     ] ],
+    [ "TESTProtocolIDs", "base__defs_8h.html#a34d445a976a7c004bbd866f8b2c1fd21", [
+      [ "NULL_TEST_PROTOCOL_ID", "base__defs_8h.html#a34d445a976a7c004bbd866f8b2c1fd21a82bf414baf07a9a05fb3c3ae7889b889", null ],
+      [ "NUM_TEST_PROTOCOLS", "base__defs_8h.html#a34d445a976a7c004bbd866f8b2c1fd21a51d4650fac7335a2e5e40bec5ad423fd", null ]
+    ] ],
     [ "TESTStructureIDs", "base__defs_8h.html#a427a4bd5ae682206f67678bc15a56225", [
       [ "NULL_TEST_STRUCTURE_ID", "base__defs_8h.html#a427a4bd5ae682206f67678bc15a56225a9a7bfce802fc7d75dc900b56640b56e8", null ],
       [ "NUM_TEST_STRUCTURES", "base__defs_8h.html#a427a4bd5ae682206f67678bc15a56225af2207db3e65865d811cb3db7bdce4deb", null ]
@@ -444,6 +488,7 @@ var base__defs_8h =
     [ "ACTUAL_RECEPTOR", "base__defs_8h.html#aa2984b68993df0a4fcfb9f177c59b674", null ],
     [ "ACTUAL_SYMBOL", "base__defs_8h.html#aedf9a9c0aff57f586af7e6a7d3eb33e5", null ],
     [ "ADD_INT", "base__defs_8h.html#a6a42ea0ef48aad8b6a08aa14e855e862", null ],
+    [ "ALIVE", "base__defs_8h.html#afa278df6ecec6784e3b1f5573f90e152", null ],
     [ "ANY_SYMBOL", "base__defs_8h.html#a5c12fb968973949e6b024e57bc7d4746", null ],
     [ "ASCII_CHAR", "base__defs_8h.html#a1e89ef00e6406f1a277b92eb032412bc", null ],
     [ "ASCII_CHARS", "base__defs_8h.html#aea8327ee1bef7c2e53e9660e470d17d6", null ],
@@ -461,6 +506,7 @@ var base__defs_8h =
     [ "BOOLEAN", "base__defs_8h.html#a3e367447c874f65bd9c355742646e4e7", null ],
     [ "CARRIER", "base__defs_8h.html#a823bcab78a92e84cf686cf26e28821e1", null ],
     [ "CHAR", "base__defs_8h.html#a001dc3134cac718f44b50cd6baa593e2", null ],
+    [ "CLIENT", "base__defs_8h.html#a9d4cf80f0cbf6b0008da228b539b8394", null ],
     [ "CLOCK_RECEPTOR", "base__defs_8h.html#ac2cc746e08dd61da561e45ec7ec2fb38", null ],
     [ "CLOCK_TELL_TIME", "base__defs_8h.html#ae06c1bfa93c2906d1ad9064fa1a46326", null ],
     [ "CODE", "base__defs_8h.html#a2d666f159e3c7ded4f559abe13c4f932", null ],
@@ -497,6 +543,7 @@ var base__defs_8h =
     [ "GOAL", "base__defs_8h.html#a264bc4d28452752fafc3f9747550d263", null ],
     [ "GT_INT", "base__defs_8h.html#a2925f6426b08d86ce1663ad5ac5cb72f", null ],
     [ "GTE_INT", "base__defs_8h.html#a8464744482463a6d596112eb6f1a5fb6", null ],
+    [ "HANDLER", "base__defs_8h.html#ab3e1cb1bce688e86d00ab93f1bf043ee", null ],
     [ "HOUR", "base__defs_8h.html#a006f0329539659d2cce2cc3516c8095e", null ],
     [ "IF", "base__defs_8h.html#a28e0ac7ea66dc0250099e12d91d2e4bf", null ],
     [ "IN_RESPONSE_TO_UUID", "base__defs_8h.html#ae514fae5487c7206aa827734e309b06e", null ],
@@ -568,6 +615,7 @@ var base__defs_8h =
     [ "PENDING_RESPONSE", "base__defs_8h.html#a14fa7b85893c1debb6ecdd9ccc36582b", null ],
     [ "PENDING_RESPONSES", "base__defs_8h.html#ab47d37b70235b9b1f2221a34c3e6de70", null ],
     [ "PENDING_SIGNALS", "base__defs_8h.html#a68bdb7a0bfbdb87b3b071b0a41f40717", null ],
+    [ "PING", "base__defs_8h.html#a8f4ab77064117ab5dc1fe2944884f723", null ],
     [ "PNAME", "base__defs_8h.html#aa89ef433d2e00dfd21bc3ab78025c35c", null ],
     [ "PROCESS", "base__defs_8h.html#ae392956d9a8958fc731840b7cbb73b09", null ],
     [ "PROCESS_DEFINITION", "base__defs_8h.html#a507cda9b0082d3dd987beaf30feee33e", null ],
@@ -602,9 +650,17 @@ var base__defs_8h =
     [ "REDUCTION_ERROR_SYMBOL", "base__defs_8h.html#a5e61f81294f767a3348ff287436d142c", null ],
     [ "REPETITIONS", "base__defs_8h.html#a79f6751d425a511ccfd074ba7e61bf5f", null ],
     [ "REQUEST", "base__defs_8h.html#a8c3fafe4e4352f7635ef9d957a85f4ac", null ],
+    [ "REQUEST_DATA", "base__defs_8h.html#a8c5c408cd2a512d1c40a027265487417", null ],
+    [ "REQUEST_HANDLER", "base__defs_8h.html#ac76c9226811b601def7d2e1e4ea80b08", null ],
+    [ "REQUESTER", "base__defs_8h.html#ac044e52b635a9eaa24949d5e301ab0f0", null ],
+    [ "REQUESTING", "base__defs_8h.html#a918c4839064d8130ada3c4e284a43c24", null ],
     [ "RESOLUTION", "base__defs_8h.html#ae74893c14885e51dfcc27ab1f6f30fc3", null ],
     [ "RESPOND", "base__defs_8h.html#a4701b0efb9a11fe472ec04182cc26b5c", null ],
+    [ "respond_with_yup", "base__defs_8h.html#a2c913668fbb67d6b88e22222b1898ce4", null ],
+    [ "RESPONDER", "base__defs_8h.html#a6f427cdd2b89c0c7bf8edc25c27bb664", null ],
     [ "RESPONSE_CARRIER", "base__defs_8h.html#a7b82e91583c338afa171cf7aa96aef02", null ],
+    [ "RESPONSE_DATA", "base__defs_8h.html#a98894d51707a43a0ba601025abcfd8af", null ],
+    [ "RESPONSE_HANDLER", "base__defs_8h.html#adcc2e6b7edef32bb6dce543b60db9291", null ],
     [ "RESULT_SYMBOL", "base__defs_8h.html#ad7212e07b1dcdaea2fc5bdf5115fe9b8", null ],
     [ "ROLE", "base__defs_8h.html#a53eb9a0a5aed42f76f4dac8e5dc15b4b", null ],
     [ "RUN_TREE", "base__defs_8h.html#aba8b9303a89329f8ba5612721da9a892", null ],
@@ -640,7 +696,10 @@ var base__defs_8h =
     [ "SEMTREX_WALK", "base__defs_8h.html#a47c0672cb9fc0362fda935a469edfed8", null ],
     [ "SEMTREX_ZERO_OR_MORE", "base__defs_8h.html#a96562522b9db25ed3fca0d209dbd6353", null ],
     [ "SEMTREX_ZERO_OR_ONE", "base__defs_8h.html#a95eed1ac275f67c8192638c8ad269bf9", null ],
+    [ "send_request", "base__defs_8h.html#af2003542d087cebe27a81828e415d3dc", null ],
+    [ "send_response", "base__defs_8h.html#a544ba5d4b343c616bbb17c5b2f8ff391", null ],
     [ "SERIALIZED_RECEPTOR", "base__defs_8h.html#aacd11ecf0bdb040c7d055c3eaa4c903c", null ],
+    [ "SERVER", "base__defs_8h.html#a3ed78752e2e62a1e804fffd44beee4da", null ],
     [ "SHELL_COMMAND", "base__defs_8h.html#ab7c0afc28276f7a345bf90c2560ee471", null ],
     [ "SIGNAL", "base__defs_8h.html#ae027b7025d8adbf8b332cec7cb67e517", null ],
     [ "SIGNAL_REF", "base__defs_8h.html#a8bf57514817542d48a9a2836e858464b", null ],
@@ -774,6 +833,7 @@ var base__defs_8h =
     [ "WHICH_USAGE", "base__defs_8h.html#a7736eb96675149db24deaa04f9e433ef", null ],
     [ "XADDR", "base__defs_8h.html#a9836cf75b4e464a4c41377f76ad61ef6", null ],
     [ "YEAR", "base__defs_8h.html#a81cb206c2da382352d44909959f8af64", null ],
+    [ "YUP", "base__defs_8h.html#a6017ea5c58aac320b4449fae815cbdde", null ],
     [ "ZERO_DIVIDE_ERR", "base__defs_8h.html#a6257acaa995888945f110b6b0aaa02b1", null ],
     [ "ZERO_OR_MORE_OF_ANY_SYMBOL", "base__defs_8h.html#a9c83bf90f0663143755f95d0f2260b9a", null ],
     [ "ZERO_OR_MORE_OF_EXPECTATION", "base__defs_8h.html#ab882169f6ab8633286bbab6cf930b880", null ],

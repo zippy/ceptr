@@ -111,14 +111,14 @@ $(document).ready(function(){initNavTree('semtable__spec_8h_source.html','');});
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;../src/receptor.h&quot;</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div>
 <div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="semtable__spec_8h.html#ab10241f610faeae2fc98909e4662858e">   10</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="semtable__spec_8h.html#ab10241f610faeae2fc98909e4662858e">testSemTableCreate</a>() {</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <a class="code" href="structSemTable.html">SemTable</a> *st = _sem_new();</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    spec_is_equal(st-&gt;contexts,0);</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="keywordtype">int</span> idx = _sem_new_context(st,(<a class="code" href="structT.html">T</a> *)1234<a class="code" href="structL.html">L</a>);</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <a class="code" href="structSemTable.html">SemTable</a> *sem = _sem_new();</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    spec_is_equal(sem-&gt;contexts,0);</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="keywordtype">int</span> idx = _sem_new_context(sem,(<a class="code" href="structT.html">T</a> *)1234<a class="code" href="structL.html">L</a>);</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    spec_is_equal(idx,0);</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    spec_is_equal(st-&gt;contexts,1);</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    spec_is_equal(sem-&gt;contexts,1);</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <a class="code" href="structSemanticID.html">Symbol</a> s = {SYS_CONTEXT,0,0};</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    spec_is_long_equal((<span class="keywordtype">long</span>)_sem_context(st,s)-&gt;definitions,1234<a class="code" href="structL.html">L</a>);</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    _sem_free(st);</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    spec_is_long_equal((<span class="keywordtype">long</span>)_sem_context(sem,s)-&gt;definitions,1234<a class="code" href="structL.html">L</a>);</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    _sem_free(sem);</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;}</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
 <div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="semtable__spec_8h.html#a274281cb43d1782f04e1d670f03505be">   23</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="semtable__spec_8h.html#a274281cb43d1782f04e1d670f03505be">testSemTableGetName</a>() {</div>
@@ -153,7 +153,7 @@ $(document).ready(function(){initNavTree('semtable__spec_8h_source.html','');});
 <div class="ttc" id="semtable__spec_8h_html_a274281cb43d1782f04e1d670f03505be"><div class="ttname"><a href="semtable__spec_8h.html#a274281cb43d1782f04e1d670f03505be">testSemTableGetName</a></div><div class="ttdeci">void testSemTableGetName()</div><div class="ttdef"><b>Definition:</b> <a href="semtable__spec_8h_source.html#l00023">semtable_spec.h:23</a></div></div>
 <div class="ttc" id="semtable__spec_8h_html_ab10241f610faeae2fc98909e4662858e"><div class="ttname"><a href="semtable__spec_8h.html#ab10241f610faeae2fc98909e4662858e">testSemTableCreate</a></div><div class="ttdeci">void testSemTableCreate()</div><div class="ttdef"><b>Definition:</b> <a href="semtable__spec_8h_source.html#l00010">semtable_spec.h:10</a></div></div>
 <div class="ttc" id="semtable__spec_8h_html_aa01be69fbc2c75a00dfbb4a95257cd12"><div class="ttname"><a href="semtable__spec_8h.html#aa01be69fbc2c75a00dfbb4a95257cd12">testSemGetByLabel</a></div><div class="ttdeci">testSemGetByLabel()</div><div class="ttdef"><b>Definition:</b> <a href="semtable__spec_8h_source.html#l00043">semtable_spec.h:43</a></div></div>
-<div class="ttc" id="structSemTable_html"><div class="ttname"><a href="structSemTable.html">SemTable</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00231">ceptr_types.h:231</a></div></div>
+<div class="ttc" id="structSemTable_html"><div class="ttname"><a href="structSemTable.html">SemTable</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00232">ceptr_types.h:232</a></div></div>
 <div class="ttc" id="structL_html"><div class="ttname"><a href="structL.html">L</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00051">ceptr_types.h:51</a></div></div>
 <div class="ttc" id="semtable__spec_8h_html_a45f00a2d648a8fd97ff8075ef4593773"><div class="ttname"><a href="semtable__spec_8h.html#a45f00a2d648a8fd97ff8075ef4593773">testSemGetSymbolStructure</a></div><div class="ttdeci">testSemGetSymbolStructure()</div><div class="ttdef"><b>Definition:</b> <a href="semtable__spec_8h_source.html#l00035">semtable_spec.h:35</a></div></div>
 <div class="ttc" id="structSemanticID_html"><div class="ttname"><a href="structSemanticID.html">SemanticID</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00022">ceptr_types.h:22</a></div></div>
@@ -163,7 +163,7 @@ $(document).ready(function(){initNavTree('semtable__spec_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><a class="el" href="semtable__spec_8h.html">semtable_spec.h</a></li>
-    <li class="footer">Generated on Mon Dec 7 2015 23:46:04 for ceptr by
+    <li class="footer">Generated on Wed Dec 9 2015 18:07:29 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

@@ -139,7 +139,7 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="SEMTREX_VALUE_LITERAL_NOT"></a>SEMTREX_VALUE_LITERAL_NOT</td><td><a href="ref_sys_structures.html#SEMTREX_VALUE_LITERAL_DEF">SEMTREX-VALUE-LITERAL-DEF</a></td><td>      Matches on logical not of semantic type and data values</td></tr>
 <tr><td><a name="SEMTREX_GROUP"></a>SEMTREX_GROUP</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>               Grouping, should have 1 child.. bad def!!       Ex: <...>operator</td></tr>
 <tr><td><a name="SEMTREX_WALK"></a>SEMTREX_WALK</td><td><a href="ref_sys_structures.html#SEMTREX_DEF">SEMTREX-DEF</a></td><td></td></tr>
-<tr><td><a name="SEMTREX_DESCEND"></a>SEMTREX_DESCEND</td><td><a href="ref_sys_structures.html#SEMTREX_DEF">SEMTREX-DEF</a></td><td>     </td></tr>
+<tr><td><a name="SEMTREX_DESCEND"></a>SEMTREX_DESCEND</td><td><a href="ref_sys_structures.html#SEMTREX_DEF">SEMTREX-DEF</a></td><td></td></tr>
 <tr><td><a name="SEMTREX_SYMBOL"></a>SEMTREX_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>              Symbols in the literal set</td></tr>
 <tr><td><a name="SEMTREX_SYMBOL_SET"></a>SEMTREX_SYMBOL_SET</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_SEMTREX_SYMBOL">ONE-OR-MORE-OF-SEMTREX-SYMBOL</a></td><td></td></tr>
 <tr><td><a name="SEMTREX_VALUE_SET"></a>SEMTREX_VALUE_SET</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_ANY_SYMBOL">ONE-OR-MORE-OF-ANY-SYMBOL</a></td><td>             this is of the symbols to match on</td></tr>
@@ -153,7 +153,7 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="RECEPTOR_XADDR"></a>RECEPTOR_XADDR</td><td><a href="ref_sys_structures.html#XADDR">XADDR</a></td><td>               An Xaddr that points to a receptor</td></tr>
 <tr><td><a name="EXPECTATIONS"></a>EXPECTATIONS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_EXPECTATION">ZERO-OR-MORE-OF-EXPECTATION</a></td><td>                     list of carrier/expectation/action tress</td></tr>
 <tr><td><a name="SIGNALS"></a>SIGNALS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_SIGNAL">ZERO-OR-MORE-OF-SIGNAL</a></td><td>                  list of signals on an aspect in the flux</td></tr>
-<tr><td><a name="DEFAULT_ASPECT"></a>DEFAULT_ASPECT</td><td><a href="ref_sys_structures.html#ASPECT">ASPECT</a></td><td>              </td></tr>
+<tr><td><a name="DEFAULT_ASPECT"></a>DEFAULT_ASPECT</td><td><a href="ref_sys_structures.html#ASPECT">ASPECT</a></td><td></td></tr>
 <tr><td><a name="FLUX"></a>FLUX</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_STRUCTURE_OF_ASPECT">ONE-OR-MORE-OF-STRUCTURE-OF-ASPECT</a></td><td>                    tree to hold all incoming and in process signals on the various aspects</td></tr>
 <tr><td><a name="SCAPE_SPEC"></a>SCAPE_SPEC</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td>          @todo...</td></tr>
 <tr><td><a name="ASPECT_IDENT"></a>ASPECT_IDENT</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>                when we get ranges, this should limit the surface symbol those of ASPECT structure</td></tr>
@@ -302,9 +302,20 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="TREE_DELTA_COUNT"></a>TREE_DELTA_COUNT</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
 <tr><td><a name="TREE_DELTA_ADD"></a>TREE_DELTA_ADD</td><td><a href="ref_sys_structures.html#TREE_DELTA">TREE-DELTA</a></td><td></td></tr>
 <tr><td><a name="TREE_DELTA_REPLACE"></a>TREE_DELTA_REPLACE</td><td><a href="ref_sys_structures.html#TREE_DELTA">TREE-DELTA</a></td><td></td></tr>
+<tr><td><a name="REQUESTER"></a>REQUESTER</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
+<tr><td><a name="RESPONDER"></a>RESPONDER</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
+<tr><td><a name="REQUEST_DATA"></a>REQUEST_DATA</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
+<tr><td><a name="RESPONSE_DATA"></a>RESPONSE_DATA</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
+<tr><td><a name="RESPONSE_HANDLER"></a>RESPONSE_HANDLER</td><td><a href="ref_sys_structures.html#PROCESS">PROCESS</a></td><td></td></tr>
+<tr><td><a name="REQUEST_HANDLER"></a>REQUEST_HANDLER</td><td><a href="ref_sys_structures.html#PROCESS">PROCESS</a></td><td></td></tr>
 <tr><td><a name="VERB"></a>VERB</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
 <tr><td><a name="COMMAND_PARAMETER"></a>COMMAND_PARAMETER</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
 <tr><td><a name="SHELL_COMMAND"></a>SHELL_COMMAND</td><td><a href="ref_sys_structures.html#COMMAND">COMMAND</a></td><td></td></tr>
+<tr><td><a name="SERVER"></a>SERVER</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
+<tr><td><a name="CLIENT"></a>CLIENT</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
+<tr><td><a name="PING"></a>PING</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
+<tr><td><a name="YUP"></a>YUP</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
+<tr><td><a name="HANDLER"></a>HANDLER</td><td><a href="ref_sys_structures.html#PROCESS">PROCESS</a></td><td></td></tr>
 <tr><td><a name="TEST_INT_SYMBOL"></a>TEST_INT_SYMBOL</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
 <tr><td><a name="TEST_INT_SYMBOL2"></a>TEST_INT_SYMBOL2</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
 <tr><td><a name="TEST_FLOAT_SYMBOL"></a>TEST_FLOAT_SYMBOL</td><td><a href="ref_sys_structures.html#FLOAT">FLOAT</a></td><td></td></tr>
@@ -325,7 +336,7 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Dec 7 2015 23:46:05 for ceptr by
+    <li class="footer">Generated on Wed Dec 9 2015 18:07:29 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

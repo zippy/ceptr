@@ -508,7 +508,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>sys_free</b> ()</td><
 <p>Walks the definition of a symbol to build a semtrex that would match that definiton</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">defs</td><td>the definition context </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">sem</td><td>the semantic context </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>the symbol to build a semtrex for </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">parent</td><td>the parent semtrex node because this function calls itself recursively. Pass in 0 to start. </td></tr>
   </table>
@@ -720,7 +720,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>sys_free</b> ()</td><
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">sem</td><td>the SemanticTable of contexts </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">label</td><td>a human readable name for this receptor </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">defs</td><td>definitions that make up the receptor [in] the context in which to define this receptor </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">def</td><td>definitions that make up the receptor [in] the context in which to define this receptor </td></tr>
   </table>
   </dd>
 </dl>
@@ -1264,7 +1264,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>sys_free</b> ()</td><
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Dec 7 2015 23:46:05 for ceptr by
+    <li class="footer">Generated on Wed Dec 9 2015 18:07:29 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

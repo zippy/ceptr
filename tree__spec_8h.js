@@ -3,6 +3,7 @@ var tree__spec_8h =
     [ "testCreateTreeNodes", "tree__spec_8h.html#a286550bec63d29f38a427e12679f838a", null ],
     [ "testProcessHTML", "tree__spec_8h.html#a525a44d0cc92ff418638414bf36c705e", null ],
     [ "testTree", "tree__spec_8h.html#a3b7a25fec254f0861dab0728feec3cce", null ],
+    [ "testTreeBuild", "tree__spec_8h.html#afaf691cf932ec665943b959776e50eaa", null ],
     [ "testTreeClone", "tree__spec_8h.html#a61b28f10ff4df871f93a9b98c2a6dbf8", null ],
     [ "testTreeDetach", "tree__spec_8h.html#a80fb5c03826178e4332803fb546777fc", null ],
     [ "testTreeHash", "tree__spec_8h.html#a2a36cde88a26d81f883c8650e3981379", null ],

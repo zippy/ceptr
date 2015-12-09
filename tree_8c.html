@@ -116,10 +116,12 @@ $(document).ready(function(){initNavTree('tree_8c.html','');});
 <code>#include &quot;<a class="el" href="receptor_8h_source.html">receptor.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="scape_8h_source.html">scape.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="util_8h_source.html">util.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="debug_8h_source.html">debug.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for tree.c:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="tree_8c__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="tree_8c__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 </div>
 <p><a href="tree_8c_source.html">Go to the source code of this file.</a></p>
@@ -142,6 +144,12 @@ Include dependency graph for tree.c:</div>
 <tr class="memitem:ada88a5c9048b1ab95c0851529e893e1d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ada88a5c9048b1ab95c0851529e893e1d"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>_add_sem</b>(buf, s)&#160;&#160;&#160;sprintf(buf,&quot;{ \&quot;ctx\&quot;:%d,\&quot;type\&quot;:%d,\&quot;id\&quot;:%d }&quot;,s.context,s.semtype,s.id);</td></tr>
 <tr class="separator:ada88a5c9048b1ab95c0851529e893e1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77dd3a670402a0494d81a2853dfe63be"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a77dd3a670402a0494d81a2853dfe63be"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>buildStates</b> { <b>bReadSymbol</b>, 
+<b>bPop</b>, 
+<b>bAddRoot</b>, 
+<b>bReadBase</b>
+ }</td></tr>
+<tr class="separator:a77dd3a670402a0494d81a2853dfe63be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af21b76c958222e81554b63041256c662"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af21b76c958222e81554b63041256c662"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>__t_append_child</b> (<a class="el" href="structT.html">T</a> *t, <a class="el" href="structT.html">T</a> *c)</td></tr>
 <tr class="separator:af21b76c958222e81554b63041256c662"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -210,6 +218,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>__t_free</b> (<a clas
 <tr class="memitem:ga030487f63804a31d5e6b911908ec795b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga030487f63804a31d5e6b911908ec795b"></a>
 <a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>_t_rclone</b> (<a class="el" href="structT.html">T</a> *t)</td></tr>
 <tr class="separator:ga030487f63804a31d5e6b911908ec795b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3978642c662d49512283ad5e45764353"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3978642c662d49512283ad5e45764353"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>_getBuildType</b> (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structSemanticID.html">SemanticID</a> param, <a class="el" href="structSemanticID.html">Structure</a> *stP, <a class="el" href="structT.html">T</a> **defP)</td></tr>
+<tr class="separator:a3978642c662d49512283ad5e45764353"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaebfc497f04bdfbfd3a241771b146bebc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tree.html#gaebfc497f04bdfbfd3a241771b146bebc">_t_build</a> (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structT.html">T</a> *parent,...)</td></tr>
+<tr class="separator:gaebfc497f04bdfbfd3a241771b146bebc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4b1df42f7a8edbe3a6192d64ab027ecc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc">_t_children</a> (<a class="el" href="structT.html">T</a> *t)</td></tr>
 <tr class="separator:ga4b1df42f7a8edbe3a6192d64ab027ecc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac9278e540a0d63526b60cc0591283a62"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a> (<a class="el" href="structT.html">T</a> *t)</td></tr>
@@ -277,7 +290,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>__uuid_equal</b> (<a c
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="tree_8c.html">tree.c</a></li>
-    <li class="footer">Generated on Mon Dec 7 2015 23:46:05 for ceptr by
+    <li class="footer">Generated on Wed Dec 9 2015 18:07:29 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

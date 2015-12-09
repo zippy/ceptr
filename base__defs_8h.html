@@ -566,6 +566,10 @@ Enumerations</h2></td></tr>
 <br />
  }</td></tr>
 <tr class="separator:ae45ea5f68b11fba5335966aaecbd1e8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0ce61b4263655c2de54ead2aa2cff58"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac0ce61b4263655c2de54ead2aa2cff58"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>SYSProtocolIDs</b> { <b>NULL_PROTOCOL_ID</b>, 
+<b>NUM_SYS_PROTOCOLS</b>
+ }</td></tr>
+<tr class="separator:ac0ce61b4263655c2de54ead2aa2cff58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d89da31a8bc48c93d3998d51e1130b9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0d89da31a8bc48c93d3998d51e1130b9"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>COMPOSITORYSymbolIDs</b> { <b>NULL_COMPOSITORY_SYMBOL_ID</b>, 
 <b>NUM_COMPOSITORY_SYMBOLS</b>
  }</td></tr>
@@ -578,13 +582,30 @@ Enumerations</h2></td></tr>
 <b>NUM_COMPOSITORY_PROCESSES</b>
  }</td></tr>
 <tr class="separator:ae3c1d0585181cec05fee819b1d476167"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a396f4bae3b7325e0502e9bbbe5e7bbe5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a396f4bae3b7325e0502e9bbbe5e7bbe5"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>COMPOSITORYProtocolIDs</b> { <b>NULL_COMPOSITORY_PROTOCOL_ID</b>, 
+<b>NUM_COMPOSITORY_PROTOCOLS</b>
+ }</td></tr>
+<tr class="separator:a396f4bae3b7325e0502e9bbbe5e7bbe5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afaba043c0867bbf9b8f028fa414aed64"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afaba043c0867bbf9b8f028fa414aed64"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>DEV_COMPOSITORYSymbolIDs</b> { <br />
 &#160;&#160;<b>NULL_DEV_COMPOSITORY_SYMBOL_ID</b>, 
-<b>VERB_ID</b>, 
-<b>COMMAND_PARAMETER_ID</b>, 
-<b>SHELL_COMMAND_ID</b>, 
+<b>REQUESTER_ID</b>, 
+<b>RESPONDER_ID</b>, 
+<b>REQUEST_DATA_ID</b>, 
 <br />
-&#160;&#160;<b>NUM_DEV_COMPOSITORY_SYMBOLS</b>
+&#160;&#160;<b>RESPONSE_DATA_ID</b>, 
+<b>RESPONSE_HANDLER_ID</b>, 
+<b>REQUEST_HANDLER_ID</b>, 
+<b>VERB_ID</b>, 
+<br />
+&#160;&#160;<b>COMMAND_PARAMETER_ID</b>, 
+<b>SHELL_COMMAND_ID</b>, 
+<b>SERVER_ID</b>, 
+<b>CLIENT_ID</b>, 
+<br />
+&#160;&#160;<b>PING_ID</b>, 
+<b>YUP_ID</b>, 
+<b>HANDLER_ID</b>, 
+<b>NUM_DEV_COMPOSITORY_SYMBOLS</b>
 <br />
  }</td></tr>
 <tr class="separator:afaba043c0867bbf9b8f028fa414aed64"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -593,10 +614,22 @@ Enumerations</h2></td></tr>
 <b>NUM_DEV_COMPOSITORY_STRUCTURES</b>
  }</td></tr>
 <tr class="separator:afd48fcc424303b9f116912d39d1e039c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a42e61535cea6adcd891d4d481179ed2d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a42e61535cea6adcd891d4d481179ed2d"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>DEV_COMPOSITORYProcessIDs</b> { <b>NULL_DEV_COMPOSITORY_PROCESS_ID</b>, 
-<b>NUM_DEV_COMPOSITORY_PROCESSES</b>
+<tr class="memitem:a42e61535cea6adcd891d4d481179ed2d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a42e61535cea6adcd891d4d481179ed2d"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>DEV_COMPOSITORYProcessIDs</b> { <br />
+&#160;&#160;<b>NULL_DEV_COMPOSITORY_PROCESS_ID</b>, 
+<b>send_request_ID</b>, 
+<b>send_response_ID</b>, 
+<b>respond_with_yup_ID</b>, 
+<br />
+&#160;&#160;<b>NUM_DEV_COMPOSITORY_PROCESSES</b>
+<br />
  }</td></tr>
 <tr class="separator:a42e61535cea6adcd891d4d481179ed2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8b0e85646ee1879fcea840ec977411a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae8b0e85646ee1879fcea840ec977411a"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>DEV_COMPOSITORYProtocolIDs</b> { <b>NULL_DEV_COMPOSITORY_PROTOCOL_ID</b>, 
+<b>REQUESTING_ID</b>, 
+<b>ALIVE_ID</b>, 
+<b>NUM_DEV_COMPOSITORY_PROTOCOLS</b>
+ }</td></tr>
+<tr class="separator:ae8b0e85646ee1879fcea840ec977411a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3403be17ff1c1896ffd589f05e44375a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3403be17ff1c1896ffd589f05e44375a"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>TESTSymbolIDs</b> { <br />
 &#160;&#160;<b>NULL_TEST_SYMBOL_ID</b>, 
 <b>TEST_INT_SYMBOL_ID</b>, 
@@ -626,6 +659,10 @@ Enumerations</h2></td></tr>
 <b>NUM_TEST_PROCESSES</b>
  }</td></tr>
 <tr class="separator:ab3faeba6b14944fd544d0b370737b07d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34d445a976a7c004bbd866f8b2c1fd21"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a34d445a976a7c004bbd866f8b2c1fd21"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>TESTProtocolIDs</b> { <b>NULL_TEST_PROTOCOL_ID</b>, 
+<b>NUM_TEST_PROTOCOLS</b>
+ }</td></tr>
+<tr class="separator:a34d445a976a7c004bbd866f8b2c1fd21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4702fac782edcd725ff7a55fd86f56a2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4702fac782edcd725ff7a55fd86f56a2"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>CLOCKSymbolIDs</b> { <b>NULL_CLOCK_SYMBOL_ID</b>, 
 <b>CLOCK_TELL_TIME_ID</b>, 
 <b>NUM_CLOCK_SYMBOLS</b>
@@ -639,6 +676,10 @@ Enumerations</h2></td></tr>
 <b>NUM_CLOCK_PROCESSES</b>
  }</td></tr>
 <tr class="separator:a142af4bf9a90bc9bdf6851656d7e670a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41b0f88e237868e8d9c997a554751afb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a41b0f88e237868e8d9c997a554751afb"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>CLOCKProtocolIDs</b> { <b>NULL_CLOCK_PROTOCOL_ID</b>, 
+<b>NUM_CLOCK_PROTOCOLS</b>
+ }</td></tr>
+<tr class="separator:a41b0f88e237868e8d9c997a554751afb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd6ae758fe0fe5c70a54b510fa747644"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afd6ae758fe0fe5c70a54b510fa747644"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>STREAM_READERSymbolIDs</b> { <b>NULL_STREAM_READER_SYMBOL_ID</b>, 
 <b>LINE_ID</b>, 
 <b>NUM_STREAM_READER_SYMBOLS</b>
@@ -652,6 +693,10 @@ Enumerations</h2></td></tr>
 <b>NUM_STREAM_READER_PROCESSES</b>
  }</td></tr>
 <tr class="separator:a2dcd8b867e0e2025a094f4d01ce246fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a391d6120df88632dd3ecd92df67df4c8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a391d6120df88632dd3ecd92df67df4c8"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>STREAM_READERProtocolIDs</b> { <b>NULL_STREAM_READER_PROTOCOL_ID</b>, 
+<b>NUM_STREAM_READER_PROTOCOLS</b>
+ }</td></tr>
+<tr class="separator:a391d6120df88632dd3ecd92df67df4c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3587dd29c8460180e9ac1886db1ac560"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3587dd29c8460180e9ac1886db1ac560"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>STREAM_WRITERSymbolIDs</b> { <b>NULL_STREAM_WRITER_SYMBOL_ID</b>, 
 <b>NUM_STREAM_WRITER_SYMBOLS</b>
  }</td></tr>
@@ -664,6 +709,10 @@ Enumerations</h2></td></tr>
 <b>NUM_STREAM_WRITER_PROCESSES</b>
  }</td></tr>
 <tr class="separator:a6ef04c53359cc804683e4f55ffda4ba1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5be1c368cf0927703a1ee55cd1da7ad6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5be1c368cf0927703a1ee55cd1da7ad6"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>STREAM_WRITERProtocolIDs</b> { <b>NULL_STREAM_WRITER_PROTOCOL_ID</b>, 
+<b>NUM_STREAM_WRITER_PROTOCOLS</b>
+ }</td></tr>
+<tr class="separator:a5be1c368cf0927703a1ee55cd1da7ad6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -1669,6 +1718,24 @@ Variables</h2></td></tr>
 <tr class="memitem:a4003ed19593d539ee89c7e1ac4b2b81d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4003ed19593d539ee89c7e1ac4b2b81d"></a>
 <a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>MAGIC</b></td></tr>
 <tr class="separator:a4003ed19593d539ee89c7e1ac4b2b81d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac044e52b635a9eaa24949d5e301ab0f0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac044e52b635a9eaa24949d5e301ab0f0"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>REQUESTER</b></td></tr>
+<tr class="separator:ac044e52b635a9eaa24949d5e301ab0f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f427cdd2b89c0c7bf8edc25c27bb664"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6f427cdd2b89c0c7bf8edc25c27bb664"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>RESPONDER</b></td></tr>
+<tr class="separator:a6f427cdd2b89c0c7bf8edc25c27bb664"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c5c408cd2a512d1c40a027265487417"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8c5c408cd2a512d1c40a027265487417"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>REQUEST_DATA</b></td></tr>
+<tr class="separator:a8c5c408cd2a512d1c40a027265487417"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98894d51707a43a0ba601025abcfd8af"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a98894d51707a43a0ba601025abcfd8af"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>RESPONSE_DATA</b></td></tr>
+<tr class="separator:a98894d51707a43a0ba601025abcfd8af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adcc2e6b7edef32bb6dce543b60db9291"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adcc2e6b7edef32bb6dce543b60db9291"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>RESPONSE_HANDLER</b></td></tr>
+<tr class="separator:adcc2e6b7edef32bb6dce543b60db9291"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac76c9226811b601def7d2e1e4ea80b08"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac76c9226811b601def7d2e1e4ea80b08"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>REQUEST_HANDLER</b></td></tr>
+<tr class="separator:ac76c9226811b601def7d2e1e4ea80b08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44716e6e4223d39dd858d7016a9595c9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a44716e6e4223d39dd858d7016a9595c9"></a>
 <a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>VERB</b></td></tr>
 <tr class="separator:a44716e6e4223d39dd858d7016a9595c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1678,9 +1745,39 @@ Variables</h2></td></tr>
 <tr class="memitem:ab7c0afc28276f7a345bf90c2560ee471"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab7c0afc28276f7a345bf90c2560ee471"></a>
 <a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SHELL_COMMAND</b></td></tr>
 <tr class="separator:ab7c0afc28276f7a345bf90c2560ee471"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ed78752e2e62a1e804fffd44beee4da"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3ed78752e2e62a1e804fffd44beee4da"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SERVER</b></td></tr>
+<tr class="separator:a3ed78752e2e62a1e804fffd44beee4da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d4cf80f0cbf6b0008da228b539b8394"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9d4cf80f0cbf6b0008da228b539b8394"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>CLIENT</b></td></tr>
+<tr class="separator:a9d4cf80f0cbf6b0008da228b539b8394"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f4ab77064117ab5dc1fe2944884f723"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8f4ab77064117ab5dc1fe2944884f723"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PING</b></td></tr>
+<tr class="separator:a8f4ab77064117ab5dc1fe2944884f723"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6017ea5c58aac320b4449fae815cbdde"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6017ea5c58aac320b4449fae815cbdde"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>YUP</b></td></tr>
+<tr class="separator:a6017ea5c58aac320b4449fae815cbdde"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3e1cb1bce688e86d00ab93f1bf043ee"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab3e1cb1bce688e86d00ab93f1bf043ee"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HANDLER</b></td></tr>
+<tr class="separator:ab3e1cb1bce688e86d00ab93f1bf043ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60c1e621a1dc5bddd708bb8e0b2ea05f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a60c1e621a1dc5bddd708bb8e0b2ea05f"></a>
 <a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>COMMAND</b></td></tr>
 <tr class="separator:a60c1e621a1dc5bddd708bb8e0b2ea05f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2003542d087cebe27a81828e415d3dc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af2003542d087cebe27a81828e415d3dc"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>send_request</b></td></tr>
+<tr class="separator:af2003542d087cebe27a81828e415d3dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a544ba5d4b343c616bbb17c5b2f8ff391"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a544ba5d4b343c616bbb17c5b2f8ff391"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>send_response</b></td></tr>
+<tr class="separator:a544ba5d4b343c616bbb17c5b2f8ff391"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c913668fbb67d6b88e22222b1898ce4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2c913668fbb67d6b88e22222b1898ce4"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>respond_with_yup</b></td></tr>
+<tr class="separator:a2c913668fbb67d6b88e22222b1898ce4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a918c4839064d8130ada3c4e284a43c24"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a918c4839064d8130ada3c4e284a43c24"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>REQUESTING</b></td></tr>
+<tr class="separator:a918c4839064d8130ada3c4e284a43c24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa278df6ecec6784e3b1f5573f90e152"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afa278df6ecec6784e3b1f5573f90e152"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ALIVE</b></td></tr>
+<tr class="separator:afa278df6ecec6784e3b1f5573f90e152"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b18ace6ebf64337d182d7bc5ee145cb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6b18ace6ebf64337d182d7bc5ee145cb"></a>
 <a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TEST_INT_SYMBOL</b></td></tr>
 <tr class="separator:a6b18ace6ebf64337d182d7bc5ee145cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1736,7 +1833,7 @@ Variables</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="base__defs_8h.html">base_defs.h</a></li>
-    <li class="footer">Generated on Mon Dec 7 2015 23:46:05 for ceptr by
+    <li class="footer">Generated on Wed Dec 9 2015 18:07:29 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
