@@ -248,18 +248,12 @@ Receptor *_makeAliveProtocolReceptor(VMHost *v);
 void testVMHostActivateReceptor()  {
     //! [testVMHostActivateReceptor]
     VMHost *v = _v_new();
+    SemTable *sem = v->r->sem;
 
-    Receptor *alive_r = _makeAliveProtocolReceptor(v);
-    Protocol alive = _r_get_sem_by_label(alive_r,"alive");
-    Symbol ping =_r_get_sem_by_label(alive_r,"ping");
-    Symbol s = _r_get_sem_by_label(alive_r,"server");
-    Symbol c = _r_get_sem_by_label(alive_r,"client");
-    Symbol handler = _r_get_sem_by_label(alive_r,"handler");
+    Receptor *server =  _r_new(sem,TEST_RECEPTOR);
+    _o_express_role(server,ALIVE,SERVER,DEFAULT_ASPECT,NULL);
 
-    Receptor *server =  _r_new(alive_r->sem,TEST_RECEPTOR);
-    _o_express_role(server,alive,s,DEFAULT_ASPECT,NULL);
-
-    Receptor *client =  _r_new(alive_r->sem,TEST_RECEPTOR);
+    Receptor *client =  _r_new(sem,TEST_RECEPTOR);
 
     T *noop = _t_new_root(NOOP);
     _t_newi(noop,TEST_INT_SYMBOL,314);
@@ -267,16 +261,13 @@ void testVMHostActivateReceptor()  {
 
     T *binding = _t_new_root(PROTOCOL_BINDINGS);
     T *res = _t_newr(binding,RESOLUTION);
-    _t_news(res,GOAL,handler);
+    _t_news(res,GOAL,HANDLER);
     _t_news(res,ACTUAL_PROCESS,proc);
-    _o_express_role(client,alive,c,DEFAULT_ASPECT,binding);
+    _o_express_role(client,ALIVE,CLIENT,DEFAULT_ASPECT,binding);
     _t_free(binding);
 
-    Symbol ss = _r_define_symbol(v->r,RECEPTOR,"alive server");
-    Symbol cs = _r_define_symbol(v->r,RECEPTOR,"alive client");
-
-    Xaddr sx = _v_new_receptor(v,v->r,ss,server);
-    Xaddr cx = _v_new_receptor(v,v->r,cs,client);
+    Xaddr sx = _v_new_receptor(v,v->r,TEST_RECEPTOR,server);
+    Xaddr cx = _v_new_receptor(v,v->r,TEST_RECEPTOR,client);
     _v_activate(v,sx);
     _v_activate(v,cx);
 
@@ -290,9 +281,9 @@ void testVMHostActivateReceptor()  {
     ar = v->active_receptors[1].r;
     spec_is_ptr_equal(ar,client);
 
-    _v_send(v,client->addr,server->addr,DEFAULT_ASPECT,alive,_t_newi(0,ping,0));
+    _v_send(v,client->addr,server->addr,DEFAULT_ASPECT,ALIVE,_t_newi(0,PING,0));
 
-    spec_is_str_equal(_td(client,v->r->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (CONTEXT_NUM:3)) (TO_ADDRESS (CONTEXT_NUM:2)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:alive) (SIGNAL_UUID)) (BODY:{(ping)})))");
+    spec_is_str_equal(_td(client,v->r->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (CONTEXT_NUM:3)) (TO_ADDRESS (CONTEXT_NUM:2)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:ALIVE) (SIGNAL_UUID)) (BODY:{(PING)})))");
 
     // simulate round-robin processing of signals
     //debug_enable(D_SIGNALS);

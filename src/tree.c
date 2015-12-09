@@ -638,7 +638,7 @@ T *_t_build(SemTable *sem,T *parent,...) {
             else if (semeq(type,STRUCTURE_SYMBOL_SET)) {
                 state = bAddRoot;
             }
-            else if (semeq(type,STRUCTURE_ANYTHING) || (semeq(type,STRUCTURE_SEQUENCE))) {
+            else if (semeq(type,STRUCTURE_ANYTHING) || semeq(type,STRUCTURE_SEQUENCE) || semeq(type,STRUCTURE_ONE_OR_MORE)) {
                 state = bAddRoot;
             }
             else {
@@ -679,7 +679,7 @@ T *_t_build(SemTable *sem,T *parent,...) {
             param = _t_symbol(t);
             type = _getBuildType(sem,param,&st,&def);
             debug(D_TREE,"popping to %s of type %s\n",_sem_get_name(sem,param),_sem_get_name(sem,type));
-            if (semeq(type,STRUCTURE_ANYTHING) || (semeq(type,STRUCTURE_SEQUENCE))) {
+            if (semeq(type,STRUCTURE_ANYTHING) || semeq(type,STRUCTURE_SEQUENCE) || semeq(type,STRUCTURE_ONE_OR_MORE)) {
                 state = bReadSymbol;
             }
             else if (semeq(type,PROCESS_SIGNATURE)) {
