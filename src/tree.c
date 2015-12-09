@@ -17,6 +17,7 @@
 #include "receptor.h"
 #include "scape.h"
 #include "util.h"
+#include "debug.h"
 
 /*****************  Node creation */
 void __t_append_child(T *t,T *c) {
@@ -560,6 +561,121 @@ T *_t_clone(T *t) {
 
 T *_t_rclone(T *t) {
     return __t_rclone(t,0);
+}
+
+Symbol _getBuildType(SemTable *sem,Symbol param,Structure *stP,T **defP) {
+    Structure st = _sem_get_symbol_structure(sem,param);
+    *stP = st;
+    if (semeq(st,NULL_STRUCTURE)) {
+        *defP = NULL;
+        return st;
+    }
+    T *st_def = _sem_get_def(sem,st);
+    T *def = _t_child(st_def,2);
+    *defP = def;
+    Symbol stsym = _t_symbol(def);
+    return stsym;
+}
+/* // check the symbol set to see if param is legal: */
+/* int i,c = _t_children(def); */
+/* for (i=1;i<=c;i++) { */
+/*     if (semeq(*(Symbol *)_t_surface(_t_child(def,i)),param)) break; */
+/*  } */
+/* if (i > c) raise_error("got %s but expecting symbol in set: %s",_sem_get_name(sem,param),_t2s(sem,def)); */
+enum buildStates {bReadSymbol,bPop,bAddRoot,bReadBase};
+/**
+ * helper for building trees in c
+ */
+T *_t_build(SemTable *sem,T *parent,...) {
+    va_list ap;
+    va_start (ap, parent);
+    Symbol param,type;
+    T *t = parent;
+    bool done = false;
+    Structure st = NULL_STRUCTURE;
+    char *stn;
+    T *def,*p;
+    int state = bReadSymbol;
+    Symbol expecting[100];
+    T* expecting_def[100];
+    int level = 0;
+    while(!done) {
+        switch(state) {
+        case bReadSymbol:
+            param = va_arg(ap,Symbol);
+            if (semeq(param,NULL_SYMBOL)) {debug(D_TREE,"read NULL_SYMBOL\n");state=bPop;break;}
+            //expecting[level]
+            type = _getBuildType(sem,param,&st,&def);
+            //expectig_def[level] = def;
+            debug(D_TREE,"reading %s of type: %s with def:%s\n",_sem_get_name(sem,param),_sem_get_name(sem,type),_t2s(sem,def));
+            if (semeq(type,STRUCTURE_SYMBOL)) {
+                if (semeq(*(Symbol *)_t_surface(def),NULL_SYMBOL)) {
+                    state = bReadBase;
+                }
+                else {
+                    state = bAddRoot;
+                }
+            }
+            else if (semeq(type,NULL_STRUCTURE)) {
+                // null structure literal so just add it and pop
+                _t_newr(t,param);
+                state = bPop;
+            }
+            else if (semeq(type,STRUCTURE_SYMBOL_SET)) {
+                state = bAddRoot;
+            }
+            else if (semeq(type,STRUCTURE_ANYTHING) || (semeq(type,STRUCTURE_SEQUENCE))) {
+                state = bAddRoot;
+            }
+            else {
+                debug(D_TREE,"type:%s \n",_sem_get_name(sem,type));
+                raise_error("type: %s unimplemented",_sem_get_name(sem,type));
+            }
+            break;
+        case bReadBase:
+            // these are all the system defined structures
+            debug(D_TREE,"building sys structure %s\n",_sem_get_name(sem,st));
+            if (semeq(st,PROCESS) || semeq(st,SYMBOL) || semeq(st,STRUCTURE) || semeq(st,PROTOCOL)) {
+                t = _t_news(t,param,va_arg(ap,SemanticID));
+            }
+            else if (semeq(st,INTEGER)) {
+                t = _t_newi(t,param,va_arg(ap,int));
+            }
+            else if (semeq(st,CSTRING)) {
+                t = _t_new_str(t,param,va_arg(ap,char *));
+            }
+            else {
+                raise_error("unimplemented surface type:%s",_sem_get_name(sem,st));
+            }
+            state = bPop;
+            break;
+        case bPop:
+            p = _t_parent(t);
+            if (p == parent) {done = true;break;}
+            t = p;
+            param = _t_symbol(t);
+            type = _getBuildType(sem,param,&st,&def);
+            debug(D_TREE,"popping to %s of type %s\n",_sem_get_name(sem,param),_sem_get_name(sem,type));
+            if (semeq(type,STRUCTURE_ANYTHING) || (semeq(type,STRUCTURE_SEQUENCE))) {
+                state = bReadSymbol;
+            }
+            else if (semeq(type,STRUCTURE_SYMBOL_SET)) {
+                state = bPop;  //gotta pop right away because we only expect one item
+            }
+            else {
+                debug(D_TREE,"type:%s \n",_sem_get_name(sem,type));
+                raise_error("type: %s unimplemented",_sem_get_name(sem,type));
+            }
+            break;
+        case bAddRoot:
+            debug(D_TREE,"adding node %s\n",_sem_get_name(sem,param));
+            t  = _t_newr(t,param);
+            state = bReadSymbol;
+            break;
+        }
+    }
+    va_end(ap);
+    return t;
 }
 
 /******************** Node data accessors */

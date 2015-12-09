@@ -308,6 +308,25 @@ Structure: TREE_DELTA,TREE_DELTA_PATH,TREE_DELTA_VALUE,TREE_DELTA_COUNT;
 Symbol: TREE_DELTA_ADD,TREE_DELTA;
 Symbol: TREE_DELTA_REPLACE,TREE_DELTA;
 
+# definitions for an ALIVE protocol
+Symbol: SERVER,RECEPTOR_ADDRESS;
+Symbol: CLIENT,RECEPTOR_ADDRESS;
+Symbol: PING,NULL_STRUCTURE;
+Symbol: YUP,NULL_STRUCTURE;
+Symbol: HANDLER,PROCESS;
+
+Data: pattern1,PATTERN,SEMTREX_SYMBOL_LITERAL,SEMTREX_SYMBOL,PING;
+Data: action1,ACTION,NOOP;
+Data: pattern2,PATTERN,SEMTREX_SYMBOL_LITERAL,SEMTREX_SYMBOL,YUP;
+Data: action2,GOAL,HANDLER;
+Protocol: ALIVE,
+   ROLE,SERVER,
+   ROLE,CLIENT,
+   GOAL,HANDLER,
+   INTERACTION,"alive",
+        EXPECT,SERVER,CLIENT,pattern1,action1,
+        EXPECT,CLIENT,SERVER,pattern2,action2;
+
 ########################################################################################
 Context: COMPOSITORY;
 

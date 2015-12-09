@@ -13,6 +13,8 @@ char *dtypestr(int type) {
     if (type & D_STREAM) {sprintf(s,"_STREAM");s--;};
     if (type & D_LOCK) {sprintf(s,"_LOCK");s--;};
     if (type & D_LISTEN) {sprintf(s,"_LISTEN");s--;};
+    if (type & D_TREE) {sprintf(s,"_TREE");s--;};
+    if (type & D_PROTOCOL) {sprintf(s,"_PROTOCOL");s--;};
     *s=0;
     return G_dtype;
 }

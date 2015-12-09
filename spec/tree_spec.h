@@ -535,6 +535,24 @@ void testProcessHTML() {
     _t_free(t);
 }
 
+void testTreeBuild() {
+
+    // tests basic structures plus the STRUCTURE_ANYTHING
+    T *t = _t_build(G_sem,0,TEST_ANYTHING_SYMBOL,ACTION,IF,TEST_ANYTHING_SYMBOL,TEST_STR_SYMBOL,"fish",NULL_SYMBOL,TEST_INT_SYMBOL,3141,NULL_SYMBOL);
+    spec_is_str_equal(t2s(t),"(TEST_ANYTHING_SYMBOL (ACTION:IF) (TEST_ANYTHING_SYMBOL (TEST_STR_SYMBOL:fish)) (TEST_INT_SYMBOL:3141))");
+
+    // tests the STRUCTURE_SEQUENCE def
+    t = _t_build(G_sem,0,SYMBOL_DEFINITION,SYMBOL_LABEL,"shoe size",SYMBOL_STRUCTURE,INTEGER,NULL_SYMBOL);
+    spec_is_str_equal(t2s(t),"(SYMBOL_DEFINITION (SYMBOL_LABEL:shoe size) (SYMBOL_STRUCTURE:INTEGER))");
+    t = _t_build(G_sem,0,TODAY,YEAR,2015,MONTH,1,DAY,30,NULL_SYMBOL);
+    spec_is_str_equal(t2s(t),"(TODAY (YEAR:2015) (MONTH:1) (DAY:30))");
+
+    // tests the STRUCTURE_SYMBOL_SET def
+    t = _t_build(G_sem,0,PATTERN,SEMTREX_SYMBOL_LITERAL,SEMTREX_SYMBOL,PING,NULL_SYMBOL);
+    spec_is_str_equal(t2s(t),"(PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:PING)))");
+
+}
+
 void testTree() {
     testCreateTreeNodes();
     testTreeNewReceptor();
@@ -562,4 +580,5 @@ void testTree() {
     testTreeSerialize();
     testTreeJSON();
     testProcessHTML();
+    testTreeBuild();
 }

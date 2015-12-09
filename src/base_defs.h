@@ -228,6 +228,11 @@ enum SYSSymbolIDs {
     TREE_DELTA_COUNT_ID,
     TREE_DELTA_ADD_ID,
     TREE_DELTA_REPLACE_ID,
+    SERVER_ID,
+    CLIENT_ID,
+    PING_ID,
+    YUP_ID,
+    HANDLER_ID,
     NUM_SYS_SYMBOLS
 };
 SemanticID STRUCTURES;
@@ -429,6 +434,11 @@ SemanticID TREE_DELTA_VALUE;
 SemanticID TREE_DELTA_COUNT;
 SemanticID TREE_DELTA_ADD;
 SemanticID TREE_DELTA_REPLACE;
+SemanticID SERVER;
+SemanticID CLIENT;
+SemanticID PING;
+SemanticID YUP;
+SemanticID HANDLER;
 
 /**********************************************************************************/
 // SYS:Structure
@@ -695,6 +705,15 @@ SemanticID GTE_INT;
 SemanticID MAGIC;
 
 /**********************************************************************************/
+// SYS:Protocol
+enum SYSProtocolIDs {
+    NULL_PROTOCOL_ID,
+    ALIVE_ID,
+    NUM_SYS_PROTOCOLS
+};
+SemanticID ALIVE;
+
+/**********************************************************************************/
 // COMPOSITORY:Symbol
 enum COMPOSITORYSymbolIDs {
     NULL_COMPOSITORY_SYMBOL_ID,
@@ -713,6 +732,13 @@ enum COMPOSITORYStructureIDs {
 enum COMPOSITORYProcessIDs {
     NULL_COMPOSITORY_PROCESS_ID,
     NUM_COMPOSITORY_PROCESSES
+};
+
+/**********************************************************************************/
+// COMPOSITORY:Protocol
+enum COMPOSITORYProtocolIDs {
+    NULL_COMPOSITORY_PROTOCOL_ID,
+    NUM_COMPOSITORY_PROTOCOLS
 };
 
 /**********************************************************************************/
@@ -742,6 +768,13 @@ SemanticID COMMAND;
 enum DEV_COMPOSITORYProcessIDs {
     NULL_DEV_COMPOSITORY_PROCESS_ID,
     NUM_DEV_COMPOSITORY_PROCESSES
+};
+
+/**********************************************************************************/
+// DEV_COMPOSITORY:Protocol
+enum DEV_COMPOSITORYProtocolIDs {
+    NULL_DEV_COMPOSITORY_PROTOCOL_ID,
+    NUM_DEV_COMPOSITORY_PROTOCOLS
 };
 
 /**********************************************************************************/
@@ -790,6 +823,13 @@ enum TESTProcessIDs {
 };
 
 /**********************************************************************************/
+// TEST:Protocol
+enum TESTProtocolIDs {
+    NULL_TEST_PROTOCOL_ID,
+    NUM_TEST_PROTOCOLS
+};
+
+/**********************************************************************************/
 // CLOCK:Symbol
 enum CLOCKSymbolIDs {
     NULL_CLOCK_SYMBOL_ID,
@@ -810,6 +850,13 @@ enum CLOCKStructureIDs {
 enum CLOCKProcessIDs {
     NULL_CLOCK_PROCESS_ID,
     NUM_CLOCK_PROCESSES
+};
+
+/**********************************************************************************/
+// CLOCK:Protocol
+enum CLOCKProtocolIDs {
+    NULL_CLOCK_PROTOCOL_ID,
+    NUM_CLOCK_PROTOCOLS
 };
 
 /**********************************************************************************/
@@ -836,6 +883,13 @@ enum STREAM_READERProcessIDs {
 };
 
 /**********************************************************************************/
+// STREAM_READER:Protocol
+enum STREAM_READERProtocolIDs {
+    NULL_STREAM_READER_PROTOCOL_ID,
+    NUM_STREAM_READER_PROTOCOLS
+};
+
+/**********************************************************************************/
 // STREAM_WRITER:Symbol
 enum STREAM_WRITERSymbolIDs {
     NULL_STREAM_WRITER_SYMBOL_ID,
@@ -854,6 +908,13 @@ enum STREAM_WRITERStructureIDs {
 enum STREAM_WRITERProcessIDs {
     NULL_STREAM_WRITER_PROCESS_ID,
     NUM_STREAM_WRITER_PROCESSES
+};
+
+/**********************************************************************************/
+// STREAM_WRITER:Protocol
+enum STREAM_WRITERProtocolIDs {
+    NULL_STREAM_WRITER_PROTOCOL_ID,
+    NUM_STREAM_WRITER_PROTOCOLS
 };
 
 #endif

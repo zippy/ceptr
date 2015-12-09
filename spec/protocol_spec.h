@@ -337,10 +337,10 @@ void testProtocolUnwrap() {
 void testProtocol() {
     G_vm = _v_new();
     _setupTestProtocols();
-    testProtocolResolve();
-    testProtocolUnwrap();
-    testProtocolRequesting();
-    testProtocolRecognize();
+    /* testProtocolResolve(); */
+    /* testProtocolUnwrap(); */
+    /* testProtocolRequesting(); */
+    /* testProtocolRecognize(); */
     testProtocolAlive();
     _v_free(G_vm);
 }

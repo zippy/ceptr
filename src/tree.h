@@ -62,6 +62,8 @@ void _t_free(T *t);
 T *_t_clone(T *t);
 T *_t_rclone(T *t);
 
+T *_t_build(SemTable *sem,T *t,...);
+
 /******************** Node data accessors */
 int _t_children(T *t);
 void * _t_surface(T *t);

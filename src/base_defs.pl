@@ -23,7 +23,7 @@ sub openf {
 
 my %c;
 my @d;
-my %fmap = ('Structure'=>'sT','StructureS'=>'sTs','Symbol'=>'sY','Process'=>'sP','SetSymbol'=>'sYs');
+my %fmap = ('Structure'=>'sT','StructureS'=>'sTs','Symbol'=>'sY','Process'=>'sP','SetSymbol'=>'sYs','Protocol'=>'sProt','Data'=>'sData');
 my $context = "SYS";
 my %declared;
 my %anon;
@@ -119,11 +119,20 @@ sub convertStrucDef {
     return $x;
 }
 
-while (my $def = <$fh>) {
-    chomp $def;
-    next if ($def =~ /^ *#/);       # ignore comments
-    next if ($def) =~ /^[ \t]*$/;   #ignore whitespace lines
+my $def = "";
+while (my $line = <$fh>) {
+    chomp $line;
+    next if ($line =~ /^ *#/);       # ignore comments
+    next if ($line =~ /^[ \t]*$/);   # ignore whitespace lines
+    if ($line =~ /^\s*(.*?,)\s*$/) { # if line ends in a comma assume it continues on the next line
+        $def .= $1;
+        next;
+    }
+    $line =~ s/^\s+|\s+$//;  #trim leading and trailing whitespace
+    $def .= $line;
+#    print "testing $def\n";
     if ($def =~ /(.*): *(.*?);(.*)/) {
+        $def = "";
         my $type = $1;
         if ($type eq 'Context') {
             $context = $2;
@@ -165,16 +174,15 @@ while (my $def = <$fh>) {
                 my $structure_def = $2;
                 &addDef($type,$context,$name,&convertStrucDef($structure_def),$comment);
             }
-            elsif ($type eq 'Process') {
+            elsif (($type eq 'Process') || ($type eq 'Protocol') || ($type eq 'Data')) {
                 $params =~ /(.*?),(.*)/;
                 my $name = $1;
-                my $process_def = $2;
-                &addDef($type,$context,$name,$process_def,$comment);
+                my $def = $2;
+                &addDef($type,$context,$name,$def,$comment);
             }
         }
-
     } else {
-        die "unable to parse $def";
+        die "unable to parse $line";
     }
 }
 #print Dumper(\@d);
@@ -197,6 +205,7 @@ print $cfh <<'EOF';
 #include "def.h"
 #include "process.h"
 #include "receptor.h"
+#include "protocol.h"
 
 EOF
 
@@ -218,6 +227,7 @@ foreach my $CTX (@contexts) {
 foreach my $s (@d) {
     my @x = @$s;
     next if ($x[0] eq 'SetSymbol');
+    next if ($x[0] eq 'Data');
     print $cfh "SemanticID $x[2]={0,0,0};\n";
 }
 
@@ -280,6 +290,7 @@ foreach my $CTX (@contexts) {
     &hout($CTX,"Symbol");
     &hout($CTX,"Structure");
     &hout($CTX,"Process");
+    &hout($CTX,"Protocol");
 }
 
 sub camelify {
@@ -433,6 +444,9 @@ foreach my $s (@d) {
         $def =~ s/BANG/\!/g;
         my $c = $comments{$name} ? $comments{$name} : "";
         $sthtml .= "<tr><td><a name=\"$name\"></a>$n</td><td>$def</td><td>$c</td></tr>\n";
+    }
+    elsif ($type eq 'Protocol') {
+
     }
 
 }
