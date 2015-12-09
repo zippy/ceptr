@@ -290,9 +290,9 @@ T *_d_make_process_def(T *code,char *name,char *intention,T *signature) {
     T *def = _t_new_root(PROCESS_DEFINITION);
     _t_new_str(def,PROCESS_NAME,name);
     _t_new(def,PROCESS_INTENTION,intention,strlen(intention)+1);
-    if (code) _t_add(def,code);
-    // @todo what indicator do we add for system processes that are defined in C?
-    //    else if(processes != G_contexts[SYS_CONTEXT].defs.processes) raise_error("missing code");
+    if (!code)
+        code = _t_new_root(NULL_PROCESS); // indicates a system (i.e. non ceptr) defined process
+    _t_add(def,code);
     if (signature) _t_add(def,signature);
     return def;
 }
