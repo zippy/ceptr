@@ -733,6 +733,12 @@ enum COMPOSITORYProtocolIDs {
 // DEV_COMPOSITORY:Symbol
 enum DEV_COMPOSITORYSymbolIDs {
     NULL_DEV_COMPOSITORY_SYMBOL_ID,
+    REQUESTER_ID,
+    RESPONDER_ID,
+    REQUEST_DATA_ID,
+    RESPONSE_DATA_ID,
+    RESPONSE_HANDLER_ID,
+    REQUEST_HANDLER_ID,
     VERB_ID,
     COMMAND_PARAMETER_ID,
     SHELL_COMMAND_ID,
@@ -743,6 +749,12 @@ enum DEV_COMPOSITORYSymbolIDs {
     HANDLER_ID,
     NUM_DEV_COMPOSITORY_SYMBOLS
 };
+SemanticID REQUESTER;
+SemanticID RESPONDER;
+SemanticID REQUEST_DATA;
+SemanticID RESPONSE_DATA;
+SemanticID RESPONSE_HANDLER;
+SemanticID REQUEST_HANDLER;
 SemanticID VERB;
 SemanticID COMMAND_PARAMETER;
 SemanticID SHELL_COMMAND;
@@ -765,18 +777,24 @@ SemanticID COMMAND;
 // DEV_COMPOSITORY:Process
 enum DEV_COMPOSITORYProcessIDs {
     NULL_DEV_COMPOSITORY_PROCESS_ID,
+    send_request_ID,
+    send_response_ID,
     respond_with_yup_ID,
     NUM_DEV_COMPOSITORY_PROCESSES
 };
+SemanticID send_request;
+SemanticID send_response;
 SemanticID respond_with_yup;
 
 /**********************************************************************************/
 // DEV_COMPOSITORY:Protocol
 enum DEV_COMPOSITORYProtocolIDs {
     NULL_DEV_COMPOSITORY_PROTOCOL_ID,
+    REQUESTING_ID,
     ALIVE_ID,
     NUM_DEV_COMPOSITORY_PROTOCOLS
 };
+SemanticID REQUESTING;
 SemanticID ALIVE;
 
 /**********************************************************************************/

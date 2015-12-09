@@ -180,6 +180,9 @@ while (my $line = <$fh>) {
                 my $def = $2;
                 &addDef($type,$context,$name,$def,$comment);
             }
+            else {
+                die "unknown directive: $type";
+            }
         }
     } else {
         die "unable to parse $line";

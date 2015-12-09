@@ -1,4 +1,5 @@
 ########################################################################################
+# the base definitions for all systems.
 Context: SYS;
 
 # These are "bottoming out" structures that are implemented by the system, not composed;
@@ -309,19 +310,48 @@ Symbol: TREE_DELTA_ADD,TREE_DELTA;
 Symbol: TREE_DELTA_REPLACE,TREE_DELTA;
 
 ########################################################################################
+# this context will contain SEED or POD structures that wrap receptors for global sharing
 Context: COMPOSITORY;
 
 
 ########################################################################################
+# definitions in progress that only exist on a local machine
 Context: DEV_COMPOSITORY;
 
-#defs for shell receptor
+###### defs for an abstract requesting protocol
+Symbol: REQUESTER,RECEPTOR_ADDRESS;
+Symbol: RESPONDER,RECEPTOR_ADDRESS;
+Symbol: REQUEST_DATA,SYMBOL;
+Symbol: RESPONSE_DATA,SYMBOL;
+Symbol: RESPONSE_HANDLER,PROCESS;
+Symbol: REQUEST_HANDLER,PROCESS;
+
+Data: req_code,REQUEST,ROLE,CARRIER,REQUEST_DATA,RESPONDER,USAGE,REQUEST_DATA,CARRIER,RESPONSE_DATA,GOAL,RESPONSE_HANDLER;  need to fix carriers
+Process: send_request,req_code,"send request","response",SIGNATURE_ANY,NULL_STRUCTURE,0;
+Data: req_action,ACTION,send_request;
+
+Data: resp_code,RESPOND,SIGNAL_REF,SignalEnvelopeIdx,EnvelopeCarrierIdx,TREE_PATH_TERMINATOR,GOAL,REQUEST_HANDLER;
+Process: send_response,resp_code,"send response","response id",SIGNATURE_SYMBOL,SIGNAL_UUID,0;
+Data: resp_action,GOAL,RESPONSE_HANDLER;
+Data: resp_pattern,PATTERN,SEMTREX_SYMBOL_LITERAL,USAGE,RESPONSE_DATA;
+Protocol: REQUESTING,
+   ROLE,REQUESTER,
+   ROLE,RESPONDER,
+   GOAL,REQUEST_HANDLER,
+   GOAL,RESPONSE_HANDLER,
+   USAGE,REQUEST_DATA,
+   USAGE,RESPONSE_DATA,
+   INTERACTION,"backnforth",
+      INITIATE,REQUESTER,RESPONDER,req_action,
+      EXPECT,RESPONDER,REQUESTER,resp_pattern,resp_action;
+
+##### defs for shell receptor
 Symbol: VERB,CSTRING;
 Symbol: COMMAND_PARAMETER,CSTRING;
 Structure: COMMAND,(VERB,*COMMAND_PARAMETER);
 Symbol: SHELL_COMMAND,COMMAND;
 
-# definitions for an ALIVE protocol
+###### definitions for an ALIVE protocol
 Symbol: SERVER,RECEPTOR_ADDRESS;
 Symbol: CLIENT,RECEPTOR_ADDRESS;
 Symbol: PING,NULL_STRUCTURE;
@@ -344,6 +374,7 @@ Protocol: ALIVE,
         EXPECT,CLIENT,SERVER,pattern2,action2;
 
 ########################################################################################
+# a handful of definitions for testing things 
 Context: TEST;
 
 Symbol: TEST_INT_SYMBOL,INTEGER;

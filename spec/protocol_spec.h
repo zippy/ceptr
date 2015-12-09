@@ -56,14 +56,8 @@ Receptor *_makeRequestingProtocolReceptor(VMHost *v) {
 }
 
 void testProtocolRequesting() {
-    Receptor *r = _makeRequestingProtocolReceptor(G_vm);
-    Protocol requesting = _r_get_sem_by_label(r,"requesting");
-    Symbol request =_r_get_sem_by_label(r,"request");
-    Symbol response = _r_get_sem_by_label(r,"response");
-    Symbol request_handler = _r_get_sem_by_label(r,"request_handler");
-    Symbol response_handler = _r_get_sem_by_label(r,"response_handler");
 
-    spec_is_str_equal(_td(r,__sem_get_defs(r->sem,SEM_TYPE_PROTOCOL,r->context)),"(PROTOCOLS (PROTOCOL_DEFINITION (PROTOCOL_LABEL:requesting) (ROLE:requester) (ROLE:responder) (GOAL:request_handler) (GOAL:response_handler) (USAGE:request) (USAGE:response) (backnforth (INITIATE (ROLE:requester) (DESTINATION (ROLE:responder)) (ACTION:request)) (EXPECT (ROLE:responder) (SOURCE (ROLE:requester)) (PATTERN (SEMTREX_SYMBOL_LITERAL (USAGE:response))) (GOAL:response_handler)))))");
+    spec_is_str_equal(t2s(_sem_get_def(G_sem,REQUESTING)),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL:REQUESTING) (ROLE:REQUESTER) (ROLE:RESPONDER) (GOAL:REQUEST_HANDLER) (GOAL:RESPONSE_HANDLER) (USAGE:REQUEST_DATA) (USAGE:RESPONSE_DATA) (backnforth (INITIATE (ROLE:REQUESTER) (DESTINATION (ROLE:RESPONDER)) (ACTION:send_request)) (EXPECT (ROLE:RESPONDER) (SOURCE (ROLE:REQUESTER)) (PATTERN (SEMTREX_SYMBOL_LITERAL (USAGE:RESPONSE_DATA))) (GOAL:RESPONSE_HANDLER))))");
 
     //@todo trying to express request protocol should fail because it's not concrete enough
 
@@ -283,8 +277,9 @@ void testProtocol() {
     G_vm = _v_new();
     _setupTestProtocols();
     testProtocolResolve();
-    /* testProtocolUnwrap(); */
-    /* testProtocolRequesting(); */
+    //testProtocolUnwrap();
+    testProtocolRequesting();
+
     /* testProtocolRecognize(); */
     testProtocolAlive();
     _v_free(G_vm);
