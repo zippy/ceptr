@@ -1,6 +1,7 @@
 var NAVTREE =
 [
   [ "ceptr", "index.html", [
+    [ "System Definitions Reference", "ref_sys_defs.html", null ],
     [ "System Processes Reference", "ref_sys_processes.html", null ],
     [ "System Structures Reference", "ref_sys_structures.html", null ],
     [ "System Symbols Reference", "ref_sys_symbols.html", null ],
@@ -33,17 +34,17 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "accumulator_8c.html",
-"base__defs_8c.html#aab2b97746067a53efce4f730e9daabdc",
-"base__defs_8h.html#a396f4bae3b7325e0502e9bbbe5e7bbe5aa1e01c1cc8a28f7b3253d062bc7c37cf",
-"base__defs_8h.html#acb90116e1c069f705792f89b825b90a8",
-"base__defs_8h.html#affd60a1bd0b4f90d4339099ca8831b52a04f885511d8d72b53356958bd63038e3",
-"def_8h_source.html",
-"group__receptor.html#ga28899931aa49371ed6eb6c69b123b5f6",
-"group__tree.html#ga31e55cdc031e5f12523b998e89080db6",
-"http__example_8h.html#ac3343496e49a2b633139040f1fa7f464",
-"profile__example_8h.html#a6e10edf75ad5a85cfb5f2cc5a4a4e57f",
-"spec__utils_8h.html#a708173d269f0836d0a6cb1eb4c3b40df",
-"sys__defs_8c.html#a659145d2ab93a0f49ed8e967c0466433"
+"base__defs_8c.html#aa7acbb4158543499bb4b5ca121770c54",
+"base__defs_8h.html#a3587dd29c8460180e9ac1886db1ac560abc260b7079bc2a362b793f32b6c30197",
+"base__defs_8h.html#ac0ce61b4263655c2de54ead2aa2cff58a85e4f6843418145bd50e710ce3da4b5f",
+"base__defs_8h.html#afbdea25aa5521ecf81793ca709ea1c3e",
+"debug_8h.html#a06fc87d81c62e9abb8790b6e5713c55bab4507046b5535a01282b3f9e30decdb1",
+"group__def.html#ggadf764cbdea00d65edcd07bb9953ad2b7a127a7d2e50ebea6a8d644c72ba13bf49",
+"group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b",
+"http__example_8h.html#a8313d2056250fd7ee2e8c32fb01f142c",
+"process__spec_8h.html#a631f59b6dead13d3e5de6645af9c05ba",
+"shell_8c_source.html",
+"structinstances__elem.html#a8de2d1f9439151657a718b405a16cae4"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

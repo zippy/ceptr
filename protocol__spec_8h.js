@@ -1,7 +1,5 @@
 var protocol__spec_8h =
 [
-    [ "_makeRecognizeProtocolReceptor", "protocol__spec_8h.html#ae7cb699b6427e952c3703d9947fb6aaa", null ],
-    [ "_makeRequestingProtocolReceptor", "protocol__spec_8h.html#abf060fadff4ac5197fcba9919b90475d", null ],
     [ "_setupTestProtocols", "protocol__spec_8h.html#a78e30d4d4870f48b3dacaef365480d55", null ],
     [ "testProtocol", "protocol__spec_8h.html#a7cfab829fbe3742daa8bc0d3328e2fe9", null ],
     [ "testProtocolAlive", "protocol__spec_8h.html#a141b4fb9a77e36598e397c14bb6f7f45", null ],
