@@ -6,112 +6,24 @@
 
 #include "../src/protocol.h"
 
-Receptor *_makeRequestingProtocolReceptor(VMHost *v) {
-    Receptor *r;
-    SemTable *sem = v->r->sem;
-    r = _r_new(sem,TEST_RECEPTOR);
-
-    Symbol requester = _r_define_symbol(r,RECEPTOR_ADDRESS,"requester");
-    Symbol responder = _r_define_symbol(r,RECEPTOR_ADDRESS,"responder");
-    Symbol request = _r_define_symbol(r,SYMBOL,"request");
-    Symbol response = _r_define_symbol(r,SYMBOL,"response");
-    Symbol response_handler = _r_define_symbol(r,PROCESS,"response_handler");
-    Symbol request_handler = _r_define_symbol(r,PROCESS,"request_handler");
-
-    T *req = _t_new_root(REQUEST);
-    _t_news(req,ROLE,responder);
-    //@todo carrier?
-    _t_news(req,USAGE,request);
-    //@todo response_carrier?
-    _t_news(req,GOAL,response_handler);
-
-    Process req_proc = _r_define_process(r,req,"request","long desc...",NULL);
-    T *req_action = _t_newp(0,ACTION,req_proc);
-
-    // use the carrier it came in on as the response carrier.
-    T *resp = _t_new_root(RESPOND);
-    int pt[] = {SignalEnvelopeIdx,EnvelopeCarrierIdx,TREE_PATH_TERMINATOR};  // the senders address
-    _t_new(resp,SIGNAL_REF,pt,sizeof(int)*4);
-    _t_news(resp,GOAL,request_handler);
-    Process resp_proc = _r_define_process(r,resp,"respond","long desc...",NULL);
-
-    T *pattern = _t_new_root(PATTERN);
-    T *stx = _t_newr(pattern,SEMTREX_SYMBOL_LITERAL);
-    _t_news(stx,USAGE,response);
-    T *resp_action = _t_news(0,GOAL,response_handler);
-
-    T *def = _o_make_protocol_def(sem,r->context,"requesting",
-                  ROLE,requester,
-                  ROLE,responder,
-                  GOAL,request_handler,
-                  GOAL,response_handler,
-                  USAGE,request,
-                  USAGE,response,
-                  INTERACTION,"backnforth",
-                                  INITIATE,requester,responder,req_action, //say request & enable "response",
-                                  EXPECT,responder,requester,pattern,resp_action,
-                  NULL_SYMBOL);
-    _r_define_protocol(r,def);
-    return r;
-}
-
 void testProtocolRequesting() {
 
     spec_is_str_equal(t2s(_sem_get_def(G_sem,REQUESTING)),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL:REQUESTING) (ROLE:REQUESTER) (ROLE:RESPONDER) (GOAL:REQUEST_HANDLER) (GOAL:RESPONSE_HANDLER) (USAGE:REQUEST_DATA) (USAGE:RESPONSE_DATA) (backnforth (INITIATE (ROLE:REQUESTER) (DESTINATION (ROLE:RESPONDER)) (ACTION:send_request)) (EXPECT (ROLE:RESPONDER) (SOURCE (ROLE:REQUESTER)) (PATTERN (SEMTREX_SYMBOL_LITERAL (USAGE:RESPONSE_DATA))) (GOAL:RESPONSE_HANDLER))))");
+
+    spec_is_str_equal(t2s(_sem_get_def(G_sem,send_request)),"(PROCESS_DEFINITION (PROCESS_NAME:send_request) (PROCESS_INTENTION:send request) (process:REQUEST (ROLE:RESPONDER) (USAGE:REQUEST_DATA) (USAGE:REQUEST_DATA) (USAGE:RESPONSE_DATA) (GOAL:RESPONSE_HANDLER)) (PROCESS_SIGNATURE (OUTPUT_SIGNATURE (SIGNATURE_LABEL:response) (SIGNATURE_ANY))))");
+
+    spec_is_str_equal(t2s(_sem_get_def(G_sem,send_response)),"(PROCESS_DEFINITION (PROCESS_NAME:send_response) (PROCESS_INTENTION:send response) (process:RESPOND (SIGNAL_REF:/1/4) (GOAL:REQUEST_HANDLER)) (PROCESS_SIGNATURE (OUTPUT_SIGNATURE (SIGNATURE_LABEL:response id) (SIGNATURE_SYMBOL:SIGNAL_UUID))))");
 
     //@todo trying to express request protocol should fail because it's not concrete enough
 
 }
 
-Receptor *_makeRecognizeProtocolReceptor(VMHost *v) {
-    Receptor *r;
-    SemTable *sem = v->r->sem;
-    Receptor *rqp = _makeRequestingProtocolReceptor(v);
-    r = _r_new(sem,TEST_RECEPTOR);
-
-    Symbol request = _r_get_sem_by_label(rqp,"request");
-    Symbol response = _r_get_sem_by_label(rqp,"response");
-    Protocol requesting = _r_get_sem_by_label(rqp,"requesting");
-    Symbol requester = _r_get_sem_by_label(rqp,"requester");
-    Symbol responder = _r_get_sem_by_label(rqp,"responder");
-    Process request_handler = _r_get_sem_by_label(rqp,"request_handler");
-    Process response_handler = _r_get_sem_by_label(rqp,"response_handler");
-    Symbol recognizer = _r_define_symbol(r,RECEPTOR_ADDRESS,"recognizer");
-    Symbol recognizee = _r_define_symbol(r,RECEPTOR_ADDRESS,"recognizee");
-    Symbol recognition = _r_define_symbol(r,PROCESS,"recognition");
-
-    Symbol are_you = _r_define_symbol(r,SEMTREX,"are_you");
-    Symbol i_am = _r_define_symbol(r,RECEPTOR_IDENTITY,"i_am");
-
-    T *proc = _t_new_root(i_am); //hard coded version of code for filling and I_AM structure
-    _t_new_str(proc,RECEPTOR_LABEL,"super cept");
-    _t_newi(proc,RECEPTOR_IDENTIFIER,314159);
-
-    Process fill_i_am = _r_define_process(r,proc,"fill i am","long desc...",NULL);
-
-    T *def = _o_make_protocol_def(sem,r->context,"recognize",
-                               INCLUSION,requesting,
-                                  WHICH_ROLE,requester,recognizer,
-                                  WHICH_ROLE,responder,recognizee,
-                                  WHICH_GOAL,response_handler,recognition,
-                                  WHICH_SYMBOL,request,are_you,
-                                  WHICH_SYMBOL,response,i_am,
-                                  WHICH_PROCESS,request_handler,fill_i_am,
-                                NULL_SYMBOL);
-    _r_define_protocol(r,def);
-    return r;
-}
-
 void testProtocolRecognize() {
-    // requesting protocol has been defined in G_vm by previous test case so we can just use it
-    Receptor *r = _makeRecognizeProtocolReceptor(G_vm);
-    Protocol recog = _r_get_sem_by_label(r,"recognize");
-    spec_is_str_equal(_td(r,__sem_get_defs(r->sem,SEM_TYPE_PROTOCOL,r->context)),"(PROTOCOLS (PROTOCOL_DEFINITION (PROTOCOL_LABEL:recognize) (INCLUSION (PNAME:requesting) (CONNECTION (WHICH_ROLE (ROLE:requester) (ROLE:recognizer))) (CONNECTION (WHICH_ROLE (ROLE:responder) (ROLE:recognizee))) (CONNECTION (WHICH_GOAL (GOAL:response_handler) (GOAL:recognition))) (RESOLUTION (WHICH_SYMBOL (USAGE:request) (ACTUAL_SYMBOL:are_you))) (RESOLUTION (WHICH_SYMBOL (USAGE:response) (ACTUAL_SYMBOL:i_am))) (RESOLUTION (WHICH_PROCESS (GOAL:request_handler) (ACTUAL_PROCESS:fill i am))))))");
 
-    Symbol recognition = _r_get_sem_by_label(r,"recognition");
-    Symbol recognizer = _r_get_sem_by_label(r,"recognizer");
+    spec_is_str_equal(t2s(_sem_get_def(G_sem,RECOGNIZE)),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL:RECOGNIZE) (INCLUSION (PNAME:REQUESTING) (CONNECTION (WHICH_ROLE (ROLE:REQUESTER) (ROLE:RECOGNIZER))) (CONNECTION (WHICH_ROLE (ROLE:RESPONDER) (ROLE:RECOGNIZEE))) (CONNECTION (WHICH_GOAL (GOAL:RESPONSE_HANDLER) (GOAL:RECOGNITION))) (RESOLUTION (WHICH_SYMBOL (USAGE:REQUEST_DATA) (ACTUAL_SYMBOL:are_you))) (RESOLUTION (WHICH_SYMBOL (USAGE:RESPONSE_DATA) (ACTUAL_SYMBOL:i_am))) (RESOLUTION (WHICH_PROCESS (GOAL:REQUEST_HANDLER) (ACTUAL_PROCESS:fill_i_am)))))");
+    return;
 
-    Receptor *self =  _r_new(r->sem,TEST_RECEPTOR);
+    Receptor *self =  _r_new(G_sem,TEST_RECEPTOR);
 
     T *noop = _t_new_root(NOOP);
     _t_newi(noop,TEST_INT_SYMBOL,314);
@@ -120,10 +32,10 @@ void testProtocolRecognize() {
     T *bindings = _t_new_root(PROTOCOL_BINDINGS);
     T *res = _t_newr(bindings,RESOLUTION);
     T *w = _t_newr(res,WHICH_PROCESS);
-    _t_news(w,GOAL,recognition);
+    _t_news(w,GOAL,RECOGNITION);
     _t_news(w,ACTUAL_PROCESS,proc);
 
-    _o_express_role(self,recog,recognizer,DEFAULT_ASPECT,bindings);
+    _o_express_role(self,RECOGNIZE,RECOGNIZER,DEFAULT_ASPECT,bindings);
     _t_free(bindings);
 
     spec_is_str_equal(_td(self,self->flux),"");
@@ -279,8 +191,7 @@ void testProtocol() {
     testProtocolResolve();
     //testProtocolUnwrap();
     testProtocolRequesting();
-
-    /* testProtocolRecognize(); */
+    testProtocolRecognize();
     testProtocolAlive();
     _v_free(G_vm);
 }

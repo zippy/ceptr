@@ -326,7 +326,7 @@ Symbol: RESPONSE_DATA,SYMBOL;
 Symbol: RESPONSE_HANDLER,PROCESS;
 Symbol: REQUEST_HANDLER,PROCESS;
 
-Data: req_code,REQUEST,ROLE,CARRIER,REQUEST_DATA,RESPONDER,USAGE,REQUEST_DATA,CARRIER,RESPONSE_DATA,GOAL,RESPONSE_HANDLER;  need to fix carriers
+Data: req_code,REQUEST,ROLE,RESPONDER,USAGE,REQUEST_DATA,USAGE,REQUEST_DATA,USAGE,RESPONSE_DATA,GOAL,RESPONSE_HANDLER;  need to fix carriers, currently using the REQUEST_DATA and RESPONSE_DATA as the carriers.
 Process: send_request,req_code,"send request","response",SIGNATURE_ANY,NULL_STRUCTURE,0;
 Data: req_action,ACTION,send_request;
 
@@ -344,6 +344,26 @@ Protocol: REQUESTING,
    INTERACTION,"backnforth",
       INITIATE,REQUESTER,RESPONDER,req_action,
       EXPECT,RESPONDER,REQUESTER,resp_pattern,resp_action;
+
+##### defs for recognize protocol (like ping, only semantic)
+
+Symbol: RECOGNIZER,RECEPTOR_ADDRESS;
+Symbol: RECOGNIZEE,RECEPTOR_ADDRESS;
+Symbol: RECOGNITION,PROCESS;
+Symbol: are_you,SEMTREX;
+Symbol: i_am,RECEPTOR_IDENTITY;
+
+Data: iam_code,i_am,RECEPTOR_LABEL,"super cept",RECEPTOR_IDENTIFIER,314159;
+Process: fill_i_am,iam_code,"fill i am","result",SIGNATURE_ANY,NULL_STRUCTURE,0;
+
+Protocol: RECOGNIZE,
+  INCLUSION,REQUESTING,
+     WHICH_ROLE,REQUESTER,RECOGNIZER,
+     WHICH_ROLE,RESPONDER,RECOGNIZEE,
+     WHICH_GOAL,RESPONSE_HANDLER,RECOGNITION,
+     WHICH_SYMBOL,REQUEST_DATA,are_you,
+     WHICH_SYMBOL,RESPONSE_DATA,i_am,
+     WHICH_PROCESS,REQUEST_HANDLER,fill_i_am;
 
 ##### defs for shell receptor
 Symbol: VERB,CSTRING;
