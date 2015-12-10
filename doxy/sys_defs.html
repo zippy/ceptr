@@ -1,0 +1,2247 @@
+<style type="text/css">
+ div.def-type {display:inline-block;}
+ div.def-item {display:inline-block;}
+ div.def-name {display:inline-block;}
+ div.def-sig-in {display:inline-block;}
+ div.def-sig-out {display:inline-block;}
+ div.def-sym-def {display:inline-block;}
+ div.def-struc-def {display:inline-block;}
+ div.def-protocol-def {display:inline-block;}
+ div.def-sig-out {display:inline-block;}
+ div.def-comment {display:inline-block;}
+</style>
+
+<div class="defs-context">
+   <h4>SYS_CONTEXT</h4>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="BIT"></a>BIT</div>
+       <div class="def-struc-def"><a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a></div>
+       <div class="def-comment">             surface is 0 or 1</div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="INTEGER"></a>INTEGER</div>
+       <div class="def-struc-def"><a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a></div>
+       <div class="def-comment">         surface is a c int</div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="FLOAT"></a>FLOAT</div>
+       <div class="def-struc-def"><a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a></div>
+       <div class="def-comment">           surface is a c float</div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="CHAR"></a>CHAR</div>
+       <div class="def-struc-def"><a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a></div>
+       <div class="def-comment">            surface is a c char</div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="CSTRING"></a>CSTRING</div>
+       <div class="def-struc-def"><a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a></div>
+       <div class="def-comment">         surface is a null terminated set of bytes</div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="SYMBOL"></a>SYMBOL</div>
+       <div class="def-struc-def"><a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a></div>
+       <div class="def-comment">          surface is a c struct (SemID) representing symbols</div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="STRUCTURE"></a>STRUCTURE</div>
+       <div class="def-struc-def"><a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a></div>
+       <div class="def-comment">       surface is a c struct (SemID) representing structures</div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="PROCESS"></a>PROCESS</div>
+       <div class="def-struc-def"><a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a></div>
+       <div class="def-comment">         surface is a c struct (SemID) representing processes</div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="PROTOCOL"></a>PROTOCOL</div>
+       <div class="def-struc-def"><a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a></div>
+       <div class="def-comment">        surface is a c struct (SemID) representing protocols</div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="SCAPE"></a>SCAPE</div>
+       <div class="def-struc-def"><a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="ENUM"></a>ENUM</div>
+       <div class="def-struc-def"><a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a></div>
+       <div class="def-comment">            @todo</div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="TREE_PATH"></a>TREE_PATH</div>
+       <div class="def-struc-def"><a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a></div>
+       <div class="def-comment">       surface is an -1 terminated set of c ints</div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="XADDR"></a>XADDR</div>
+       <div class="def-struc-def"><a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="SURFACE"></a>SURFACE</div>
+       <div class="def-struc-def"><a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="TREE"></a>TREE</div>
+       <div class="def-struc-def"><a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a></div>
+       <div class="def-comment">            surface is a c pointer to a tree</div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="RECEPTOR"></a>RECEPTOR</div>
+       <div class="def-struc-def"><a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a></div>
+       <div class="def-comment">        surface is a c pointer to a receptor structure</div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="SEMTREX"></a>SEMTREX</div>
+       <div class="def-struc-def"><a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="STREAM"></a>STREAM</div>
+       <div class="def-struc-def"><a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a></div>
+       <div class="def-comment">          surface is a c struct holding state for unix (and other) streams</div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="UUID"></a>UUID</div>
+       <div class="def-struc-def"><a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a></div>
+       <div class="def-comment">            surface is a c struct holding a UUID</div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="BLOB"></a>BLOB</div>
+       <div class="def-struc-def"><a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a></div>
+       <div class="def-comment">            surface is and undefined blob of bytes</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="STRUCTURES"></a>STRUCTURES</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_STRUCTURE_DEFINITION">ZERO-OR-MORE-OF-STRUCTURE-DEFINITION</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SYMBOLS"></a>SYMBOLS</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_SYMBOL_DEFINITION">ZERO-OR-MORE-OF-SYMBOL-DEFINITION</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="PROCESSES"></a>PROCESSES</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_PROCESS_DEFINITION">ZERO-OR-MORE-OF-PROCESS-DEFINITION</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="PROTOCOLS"></a>PROTOCOLS</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_PROTOCOL_DEFINITION">ZERO-OR-MORE-OF-PROTOCOL-DEFINITION</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="RECEPTORS"></a>RECEPTORS</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_RECEPTOR_DEFINITION">ZERO-OR-MORE-OF-RECEPTOR-DEFINITION</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SCAPES"></a>SCAPES</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_STRUCTURE_OF_SCAPE">ZERO-OR-MORE-OF-STRUCTURE-OF-SCAPE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="LIST_OF_STRUCTURES_AND_SYMBOLS_AND_PROCESSES_AND_PROTOCOLS_AND_RECEPTORS_AND_ZERO_OR_MORE_OF_SCAPES"></a>LIST-OF-STRUCTURES-AND-SYMBOLS-AND-PROCESSES-AND-PROTOCOLS-AND-RECEPTORS-AND-ZERO-OR-MORE-OF-SCAPES</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#STRUCTURES">STRUCTURES</a>, <a href="ref_sys_symbols.html#SYMBOLS">SYMBOLS</a>, <a href="ref_sys_symbols.html#PROCESSES">PROCESSES</a>, <a href="ref_sys_symbols.html#PROTOCOLS">PROTOCOLS</a>, <a href="ref_sys_symbols.html#RECEPTORS">RECEPTORS</a>, *(<a href="ref_sys_symbols.html#SCAPES">SCAPES</a>))</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="DEFINITIONS"></a>DEFINITIONS</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_STRUCTURES_AND_SYMBOLS_AND_PROCESSES_AND_PROTOCOLS_AND_RECEPTORS_AND_ZERO_OR_MORE_OF_SCAPES">LIST-OF-STRUCTURES-AND-SYMBOLS-AND-PROCESSES-AND-PROTOCOLS-AND-RECEPTORS-AND-ZERO-OR-MORE-OF-SCAPES</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="STRUCTURE_SYMBOL"></a>STRUCTURE_SYMBOL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="STRUCTURE_SEQUENCE"></a>STRUCTURE_SEQUENCE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ONE_OR_MORE_OF_STRUCTURE_DEF">ONE-OR-MORE-OF-STRUCTURE-DEF</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="STRUCTURE_SYMBOL_SET"></a>STRUCTURE_SYMBOL_SET</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ONE_OR_MORE_OF_STRUCTURE_SYMBOL">ONE-OR-MORE-OF-STRUCTURE-SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="STRUCTURE_OR"></a>STRUCTURE_OR</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#PAIR_OF_STRUCTURE_DEF">PAIR-OF-STRUCTURE-DEF</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="STRUCTURE_ZERO_OR_MORE"></a>STRUCTURE_ZERO_OR_MORE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#STRUCTURE_DEF">STRUCTURE-DEF</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="STRUCTURE_ONE_OR_MORE"></a>STRUCTURE_ONE_OR_MORE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#STRUCTURE_DEF">STRUCTURE-DEF</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SYMBOL_OF_STRUCTURE"></a>SYMBOL_OF_STRUCTURE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#STRUCTURE">STRUCTURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="STRUCTURE_ANYTHING"></a>STRUCTURE_ANYTHING</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="STRUCTURE_DEF"></a>STRUCTURE-DEF</div>
+       <div class="def-struc-def">SET(<a href="ref_sys_symbols.html#STRUCTURE_SYMBOL">STRUCTURE_SYMBOL</a>, <a href="ref_sys_symbols.html#STRUCTURE_SEQUENCE">STRUCTURE_SEQUENCE</a>, <a href="ref_sys_symbols.html#STRUCTURE_SYMBOL_SET">STRUCTURE_SYMBOL_SET</a>, <a href="ref_sys_symbols.html#STRUCTURE_OR">STRUCTURE_OR</a>, <a href="ref_sys_symbols.html#STRUCTURE_ZERO_OR_MORE">STRUCTURE_ZERO_OR_MORE</a>, <a href="ref_sys_symbols.html#STRUCTURE_ONE_OR_MORE">STRUCTURE_ONE_OR_MORE</a>, <a href="ref_sys_symbols.html#STRUCTURE_ZERO_OR_ONE">STRUCTURE_ZERO_OR_ONE</a>, <a href="ref_sys_symbols.html#SYMBOL_OF_STRUCTURE">SYMBOL_OF_STRUCTURE</a>, <a href="ref_sys_symbols.html#STRUCTURE_ANYTHING">STRUCTURE_ANYTHING</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="STRUCTURE_LABEL"></a>STRUCTURE_LABEL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="TUPLE_OF_STRUCTURE_LABEL_AND_STRUCTURE_DEF"></a>TUPLE-OF-STRUCTURE-LABEL-AND-STRUCTURE-DEF</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#STRUCTURE_LABEL">STRUCTURE_LABEL</a>, <a href="ref_sys_symbols.html#STRUCTURE_DEF">STRUCTURE_DEF</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="STRUCTURE_DEFINITION"></a>STRUCTURE_DEFINITION</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TUPLE_OF_STRUCTURE_LABEL_AND_STRUCTURE_DEF">TUPLE-OF-STRUCTURE-LABEL-AND-STRUCTURE-DEF</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="ZERO_OR_MORE_OF_STRUCTURE_DEFINITION"></a>ZERO-OR-MORE-OF-STRUCTURE-DEFINITION</div>
+       <div class="def-struc-def">*(<a href="ref_sys_symbols.html#STRUCTURE_DEFINITION">STRUCTURE_DEFINITION</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="ONE_OR_MORE_OF_STRUCTURE_DEF"></a>ONE-OR-MORE-OF-STRUCTURE-DEF</div>
+       <div class="def-struc-def">+(<a href="ref_sys_symbols.html#STRUCTURE_DEF">STRUCTURE_DEF</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="ONE_OR_MORE_OF_STRUCTURE_SYMBOL"></a>ONE-OR-MORE-OF-STRUCTURE-SYMBOL</div>
+       <div class="def-struc-def">+(<a href="ref_sys_symbols.html#STRUCTURE_SYMBOL">STRUCTURE_SYMBOL</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="PAIR_OF_STRUCTURE_DEF"></a>PAIR-OF-STRUCTURE-DEF</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#STRUCTURE_DEF">STRUCTURE_DEF</a>, <a href="ref_sys_symbols.html#STRUCTURE_DEF">STRUCTURE_DEF</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="STRUCTURE_ZERO_OR_ONE"></a>STRUCTURE_ZERO_OR_ONE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#STRUCTURE_DEF">STRUCTURE-DEF</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SYMBOL_STRUCTURE"></a>SYMBOL_STRUCTURE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#STRUCTURE">STRUCTURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SYMBOL_LABEL"></a>SYMBOL_LABEL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="TUPLE_OF_SYMBOL_LABEL_AND_SYMBOL_STRUCTURE"></a>TUPLE-OF-SYMBOL-LABEL-AND-SYMBOL-STRUCTURE</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#SYMBOL_LABEL">SYMBOL_LABEL</a>, <a href="ref_sys_symbols.html#SYMBOL_STRUCTURE">SYMBOL_STRUCTURE</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SYMBOL_DEFINITION"></a>SYMBOL_DEFINITION</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TUPLE_OF_SYMBOL_LABEL_AND_SYMBOL_STRUCTURE">TUPLE-OF-SYMBOL-LABEL-AND-SYMBOL-STRUCTURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="ZERO_OR_MORE_OF_SYMBOL_DEFINITION"></a>ZERO-OR-MORE-OF-SYMBOL-DEFINITION</div>
+       <div class="def-struc-def">*(<a href="ref_sys_symbols.html#SYMBOL_DEFINITION">SYMBOL_DEFINITION</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="BOOLEAN"></a>BOOLEAN</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#BIT">BIT</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SEMTREX_MATCH_PATH"></a>SEMTREX_MATCH_PATH</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></div>
+       <div class="def-comment">       Path to symbol matched by semtrex</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SEMTREX_SYMBOL_LITERAL"></a>SEMTREX_SYMBOL_LITERAL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SEMTREX_SYMBOL_LITERAL_DEF">SEMTREX-SYMBOL-LITERAL-DEF</a></div>
+       <div class="def-comment">        matches on the semantic type.</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SEMTREX_SYMBOL_LITERAL_NOT"></a>SEMTREX_SYMBOL_LITERAL_NOT</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SEMTREX_SYMBOL_LITERAL_DEF">SEMTREX-SYMBOL-LITERAL-DEF</a></div>
+       <div class="def-comment">    matches any symbol or value of the node except.</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SEMTREX_SEQUENCE"></a>SEMTREX_SEQUENCE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ONE_OR_MORE_OF_SEMTREX_DEF">ONE-OR-MORE-OF-SEMTREX-DEF</a></div>
+       <div class="def-comment">        Match on a sequence of child nodes which are any valid semtrex's.  Ex: comma separated nodes</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SEMTREX_OR"></a>SEMTREX_OR</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#PAIR_OF_SEMTREX_DEF">PAIR-OF-SEMTREX-DEF</a></div>
+       <div class="def-comment">     Logical OR between two Semtrex expressions.      Ex: |</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SEMTREX_NOT"></a>SEMTREX_NOT</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SEMTREX_DEF">SEMTREX-DEF</a></div>
+       <div class="def-comment">            Logical ~ between of a Semtrex expressions.      Ex: ~ (not implemented)</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SEMTREX_SYMBOL_ANY"></a>SEMTREX_SYMBOL_ANY</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ZERO_OR_ONE_OF_ANY_SYMBOL">ZERO-OR-ONE-OF-ANY-SYMBOL</a></div>
+       <div class="def-comment">            match any symbol or value of the node.           Ex: .</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SEMTREX_ZERO_OR_MORE"></a>SEMTREX_ZERO_OR_MORE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SEMTREX_DEF">SEMTREX-DEF</a></div>
+       <div class="def-comment">   Requires one child Semtrex and matches on zero or more of that Semtrex.  Ex: /0/TestSemtrex*</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SEMTREX_ONE_OR_MORE"></a>SEMTREX_ONE_OR_MORE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SEMTREX_DEF">SEMTREX-DEF</a></div>
+       <div class="def-comment">    Requires one child Semtrex and matches on one or more of that Semtrex.   Ex: /0/TestSemtrex+</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SEMTREX_ZERO_OR_ONE"></a>SEMTREX_ZERO_OR_ONE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SEMTREX_DEF">SEMTREX-DEF</a></div>
+       <div class="def-comment">    Requires one child Semtrex and matches on zero or one of that Semtrex.   Ex: /0/TestSemtrex?</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SEMTREX_VALUE_LITERAL"></a>SEMTREX_VALUE_LITERAL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SEMTREX_VALUE_LITERAL_DEF">SEMTREX-VALUE-LITERAL-DEF</a></div>
+       <div class="def-comment">         Matches on the semantic type and the data values.</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SEMTREX_VALUE_LITERAL_NOT"></a>SEMTREX_VALUE_LITERAL_NOT</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SEMTREX_VALUE_LITERAL_DEF">SEMTREX-VALUE-LITERAL-DEF</a></div>
+       <div class="def-comment">      Matches on logical not of semantic type and data values</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SEMTREX_GROUP"></a>SEMTREX_GROUP</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
+       <div class="def-comment">               Grouping, should have 1 child.. bad def!!       Ex: <...>operator</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SEMTREX_WALK"></a>SEMTREX_WALK</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SEMTREX_DEF">SEMTREX-DEF</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SEMTREX_DESCEND"></a>SEMTREX_DESCEND</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SEMTREX_DEF">SEMTREX-DEF</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="SEMTREX_DEF"></a>SEMTREX-DEF</div>
+       <div class="def-struc-def">SET(<a href="ref_sys_symbols.html#SEMTREX_SYMBOL_LITERAL">SEMTREX_SYMBOL_LITERAL</a>, <a href="ref_sys_symbols.html#SEMTREX_SYMBOL_LITERAL_NOT">SEMTREX_SYMBOL_LITERAL_NOT</a>, <a href="ref_sys_symbols.html#SEMTREX_SEQUENCE">SEMTREX_SEQUENCE</a>, <a href="ref_sys_symbols.html#SEMTREX_OR">SEMTREX_OR</a>, <a href="ref_sys_symbols.html#SEMTREX_NOT">SEMTREX_NOT</a>, <a href="ref_sys_symbols.html#SEMTREX_SYMBOL_ANY">SEMTREX_SYMBOL_ANY</a>, <a href="ref_sys_symbols.html#SEMTREX_ZERO_OR_MORE">SEMTREX_ZERO_OR_MORE</a>, <a href="ref_sys_symbols.html#SEMTREX_ONE_OR_MORE">SEMTREX_ONE_OR_MORE</a>, <a href="ref_sys_symbols.html#SEMTREX_ZERO_OR_ONE">SEMTREX_ZERO_OR_ONE</a>, <a href="ref_sys_symbols.html#SEMTREX_VALUE_LITERAL">SEMTREX_VALUE_LITERAL</a>, <a href="ref_sys_symbols.html#SEMTREX_VALUE_LITERAL_NOT">SEMTREX_VALUE_LITERAL_NOT</a>, <a href="ref_sys_symbols.html#SEMTREX_GROUP">SEMTREX_GROUP</a>, <a href="ref_sys_symbols.html#SEMTREX_WALK">SEMTREX_WALK</a>, <a href="ref_sys_symbols.html#SEMTREX_DESCEND">SEMTREX_DESCEND</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SEMTREX_SYMBOL"></a>SEMTREX_SYMBOL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
+       <div class="def-comment">              Symbols in the literal set</div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="ONE_OR_MORE_OF_SEMTREX_SYMBOL"></a>ONE-OR-MORE-OF-SEMTREX-SYMBOL</div>
+       <div class="def-struc-def">+(<a href="ref_sys_symbols.html#SEMTREX_SYMBOL">SEMTREX_SYMBOL</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SEMTREX_SYMBOL_SET"></a>SEMTREX_SYMBOL_SET</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ONE_OR_MORE_OF_SEMTREX_SYMBOL">ONE-OR-MORE-OF-SEMTREX-SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="SEMTREX_SYMBOL_LITERAL_DEF"></a>SEMTREX-SYMBOL-LITERAL-DEF</div>
+       <div class="def-struc-def">SEQ(OR(<a href="ref_sys_symbols.html#SEMTREX_SYMBOL">SEMTREX_SYMBOL</a>, <a href="ref_sys_symbols.html#SEMTREX_SYMBOL_SET">SEMTREX_SYMBOL_SET</a>), *(!))</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="ONE_OR_MORE_OF_SEMTREX_DEF"></a>ONE-OR-MORE-OF-SEMTREX-DEF</div>
+       <div class="def-struc-def">+(<a href="ref_sys_symbols.html#SEMTREX_DEF">SEMTREX_DEF</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="PAIR_OF_SEMTREX_DEF"></a>PAIR-OF-SEMTREX-DEF</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#SEMTREX_DEF">SEMTREX_DEF</a>, <a href="ref_sys_symbols.html#SEMTREX_DEF">SEMTREX_DEF</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="ZERO_OR_ONE_OF_ANY_SYMBOL"></a>ZERO-OR-ONE-OF-ANY-SYMBOL</div>
+       <div class="def-struc-def">?(!)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="ONE_OR_MORE_OF_ANY_SYMBOL"></a>ONE-OR-MORE-OF-ANY-SYMBOL</div>
+       <div class="def-struc-def">+(!)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SEMTREX_VALUE_SET"></a>SEMTREX_VALUE_SET</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ONE_OR_MORE_OF_ANY_SYMBOL">ONE-OR-MORE-OF-ANY-SYMBOL</a></div>
+       <div class="def-comment">             this is of the symbols to match on</div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="SEMTREX_VALUE_LITERAL_DEF"></a>SEMTREX-VALUE-LITERAL-DEF</div>
+       <div class="def-struc-def">OR(!, <a href="ref_sys_symbols.html#SEMTREX_VALUE_SET">SEMTREX_VALUE_SET</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SEMTREX_MATCH"></a>SEMTREX_MATCH</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#INTEGER">INTEGER</a></div>
+       <div class="def-comment">              @todo this is actually more like [(SEMTREX_MATCH_SYMBOL,SEMTREX_MATCH_PATH,SEMTREX_MATCH_SIBLINGS_COUNT, recurseon:SEMTREX_MATCH)] but we're using the surface of the root as well which is an INTEGER.</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SEMTREX_MATCH_CURSOR"></a>SEMTREX_MATCH_CURSOR</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
+       <div class="def-comment">   stores c pointer to tree node at start of match</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SEMTREX_MATCH_RESULTS"></a>SEMTREX_MATCH_RESULTS</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
+       <div class="def-comment">  In the FSA_ID, keeps track of which part matches so it can be referenced</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SEMTREX_MATCH_SYMBOL"></a>SEMTREX_MATCH_SYMBOL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SEMTREX_MATCH_SIBLINGS_COUNT"></a>SEMTREX_MATCH_SIBLINGS_COUNT</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#INTEGER">INTEGER</a></div>
+       <div class="def-comment">  In the FSA_ID, it's the length of the match</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="ASCII_CHAR"></a>ASCII_CHAR</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CHAR">CHAR</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="ONE_OR_MORE_OF_ASCII_CHAR"></a>ONE-OR-MORE-OF-ASCII-CHAR</div>
+       <div class="def-struc-def">+(<a href="ref_sys_symbols.html#ASCII_CHAR">ASCII_CHAR</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="ASCII_CHARS"></a>ASCII_CHARS</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ONE_OR_MORE_OF_ASCII_CHAR">ONE-OR-MORE-OF-ASCII-CHAR</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="RECEPTOR_XADDR"></a>RECEPTOR_XADDR</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#XADDR">XADDR</a></div>
+       <div class="def-comment">               An Xaddr that points to a receptor</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="EXPECTATIONS"></a>EXPECTATIONS</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_EXPECTATION">ZERO-OR-MORE-OF-EXPECTATION</a></div>
+       <div class="def-comment">                     list of carrier/expectation/action tress</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SIGNALS"></a>SIGNALS</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_SIGNAL">ZERO-OR-MORE-OF-SIGNAL</a></div>
+       <div class="def-comment">                  list of signals on an aspect in the flux</div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="ASPECT"></a>ASPECT</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#EXPECTATIONS">EXPECTATIONS</a>, <a href="ref_sys_symbols.html#SIGNALS">SIGNALS</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="DEFAULT_ASPECT"></a>DEFAULT_ASPECT</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ASPECT">ASPECT</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="ONE_OR_MORE_OF_STRUCTURE_OF_ASPECT"></a>ONE-OR-MORE-OF-STRUCTURE-OF-ASPECT</div>
+       <div class="def-struc-def">+(%<a href="ref_sys_structures.html#ASPECT">ASPECT</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="FLUX"></a>FLUX</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ONE_OR_MORE_OF_STRUCTURE_OF_ASPECT">ONE-OR-MORE-OF-STRUCTURE-OF-ASPECT</a></div>
+       <div class="def-comment">                    tree to hold all incoming and in process signals on the various aspects</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SCAPE_SPEC"></a>SCAPE_SPEC</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
+       <div class="def-comment">          @todo...</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="ASPECT_IDENT"></a>ASPECT_IDENT</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
+       <div class="def-comment">                when we get ranges, this should limit the surface symbol those of ASPECT structure</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="ASPECT_TYPE"></a>ASPECT_TYPE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#BIT">BIT</a></div>
+       <div class="def-comment">                    really should be an enum of IN, OUT</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="ASPECT_LABEL"></a>ASPECT_LABEL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="TUPLE_OF_ASPECT_TYPE_AND_ASPECT_LABEL"></a>TUPLE-OF-ASPECT-TYPE-AND-ASPECT-LABEL</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#ASPECT_TYPE">ASPECT_TYPE</a>, <a href="ref_sys_symbols.html#ASPECT_LABEL">ASPECT_LABEL</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="ASPECT_DEF"></a>ASPECT_DEF</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TUPLE_OF_ASPECT_TYPE_AND_ASPECT_LABEL">TUPLE-OF-ASPECT-TYPE-AND-ASPECT-LABEL</a></div>
+       <div class="def-comment">   what else goes in the aspect definition?</div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="ONE_OR_MORE_OF_ASPECT_DEF"></a>ONE-OR-MORE-OF-ASPECT-DEF</div>
+       <div class="def-struc-def">+(<a href="ref_sys_symbols.html#ASPECT_DEF">ASPECT_DEF</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="ASPECTS"></a>ASPECTS</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ONE_OR_MORE_OF_ASPECT_DEF">ONE-OR-MORE-OF-ASPECT-DEF</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="CARRIER"></a>CARRIER</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="BODY"></a>BODY</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TREE">TREE</a></div>
+       <div class="def-comment">                          orthogonal tree that holds message body</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SIGNAL_UUID"></a>SIGNAL_UUID</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#UUID">UUID</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="IN_RESPONSE_TO_UUID"></a>IN_RESPONSE_TO_UUID</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#UUID">UUID</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="RECEPTOR_PATH"></a>RECEPTOR_PATH</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="RECEPTOR_ADDR"></a>RECEPTOR_ADDR</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#INTEGER">INTEGER</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="RECEPTOR_ADDRESS"></a>RECEPTOR-ADDRESS</div>
+       <div class="def-struc-def">OR(<a href="ref_sys_symbols.html#RECEPTOR_ADDR">RECEPTOR_ADDR</a>, <a href="ref_sys_symbols.html#RECEPTOR_PATH">RECEPTOR_PATH</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="FROM_ADDRESS"></a>FROM_ADDRESS</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="TO_ADDRESS"></a>TO_ADDRESS</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="END_CONDITIONS"></a>END_CONDITIONS</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TUPLE_OF_ZERO_OR_ONE_OF_TIMEOUT_AT_AND_ZERO_OR_ONE_OF_REPETITIONS">TUPLE-OF-ZERO-OR-ONE-OF-TIMEOUT-AT-AND-ZERO-OR-ONE-OF-REPETITIONS</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="LIST_OF_FROM_ADDRESS_AND_TO_ADDRESS_AND_ASPECT_IDENT_AND_CARRIER_AND_SIGNAL_UUID_AND_ZERO_OR_ONE_OF_LOGICAL_OR_OF_END_CONDITIONS_AND_IN_RESPONSE_TO_UUID"></a>LIST-OF-FROM-ADDRESS-AND-TO-ADDRESS-AND-ASPECT-IDENT-AND-CARRIER-AND-SIGNAL-UUID-AND-ZERO-OR-ONE-OF-LOGICAL-OR-OF-END-CONDITIONS-AND-IN-RESPONSE-TO-UUID</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#FROM_ADDRESS">FROM_ADDRESS</a>, <a href="ref_sys_symbols.html#TO_ADDRESS">TO_ADDRESS</a>, <a href="ref_sys_symbols.html#ASPECT_IDENT">ASPECT_IDENT</a>, <a href="ref_sys_symbols.html#CARRIER">CARRIER</a>, <a href="ref_sys_symbols.html#SIGNAL_UUID">SIGNAL_UUID</a>, ?(OR(<a href="ref_sys_symbols.html#END_CONDITIONS">END_CONDITIONS</a>, <a href="ref_sys_symbols.html#IN_RESPONSE_TO_UUID">IN_RESPONSE_TO_UUID</a>)))</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="ENVELOPE"></a>ENVELOPE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_FROM_ADDRESS_AND_TO_ADDRESS_AND_ASPECT_IDENT_AND_CARRIER_AND_SIGNAL_UUID_AND_ZERO_OR_ONE_OF_LOGICAL_OR_OF_END_CONDITIONS_AND_IN_RESPONSE_TO_UUID">LIST-OF-FROM-ADDRESS-AND-TO-ADDRESS-AND-ASPECT-IDENT-AND-CARRIER-AND-SIGNAL-UUID-AND-ZERO-OR-ONE-OF-LOGICAL-OR-OF-END-CONDITIONS-AND-IN-RESPONSE-TO-UUID</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="TUPLE_OF_ENVELOPE_AND_BODY"></a>TUPLE-OF-ENVELOPE-AND-BODY</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#ENVELOPE">ENVELOPE</a>, <a href="ref_sys_symbols.html#BODY">BODY</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SIGNAL"></a>SIGNAL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TUPLE_OF_ENVELOPE_AND_BODY">TUPLE-OF-ENVELOPE-AND-BODY</a></div>
+       <div class="def-comment">                        a signal on the flux.  It's first child is the contents of the signal</div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="ZERO_OR_MORE_OF_SIGNAL"></a>ZERO-OR-MORE-OF-SIGNAL</div>
+       <div class="def-struc-def">*(<a href="ref_sys_symbols.html#SIGNAL">SIGNAL</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="PENDING_SIGNALS"></a>PENDING_SIGNALS</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_SIGNAL">ZERO-OR-MORE-OF-SIGNAL</a></div>
+       <div class="def-comment">               list of signals pending to be sent by the SYS_RECEPTOR</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="CODE_PATH"></a>CODE_PATH</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="PROCESS_IDENT"></a>PROCESS_IDENT</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#INTEGER">INTEGER</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="TUPLE_OF_PROCESS_IDENT_AND_CODE_PATH"></a>TUPLE-OF-PROCESS-IDENT-AND-CODE-PATH</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#PROCESS_IDENT">PROCESS_IDENT</a>, <a href="ref_sys_symbols.html#CODE_PATH">CODE_PATH</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="WAKEUP_REFERENCE"></a>WAKEUP_REFERENCE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TUPLE_OF_PROCESS_IDENT_AND_CODE_PATH">TUPLE-OF-PROCESS-IDENT-AND-CODE-PATH</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="LIST_OF_SIGNAL_UUID_AND_CARRIER_AND_WAKEUP_REFERENCE_AND_END_CONDITIONS"></a>LIST-OF-SIGNAL-UUID-AND-CARRIER-AND-WAKEUP-REFERENCE-AND-END-CONDITIONS</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#SIGNAL_UUID">SIGNAL_UUID</a>, <a href="ref_sys_symbols.html#CARRIER">CARRIER</a>, <a href="ref_sys_symbols.html#WAKEUP_REFERENCE">WAKEUP_REFERENCE</a>, <a href="ref_sys_symbols.html#END_CONDITIONS">END_CONDITIONS</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="PENDING_RESPONSE"></a>PENDING_RESPONSE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_SIGNAL_UUID_AND_CARRIER_AND_WAKEUP_REFERENCE_AND_END_CONDITIONS">LIST-OF-SIGNAL-UUID-AND-CARRIER-AND-WAKEUP-REFERENCE-AND-END-CONDITIONS</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="ZERO_OR_MORE_OF_PENDING_RESPONSE"></a>ZERO-OR-MORE-OF-PENDING-RESPONSE</div>
+       <div class="def-struc-def">*(<a href="ref_sys_symbols.html#PENDING_RESPONSE">PENDING_RESPONSE</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="PENDING_RESPONSES"></a>PENDING_RESPONSES</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_PENDING_RESPONSE">ZERO-OR-MORE-OF-PENDING-RESPONSE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="RESPONSE_CARRIER"></a>RESPONSE_CARRIER</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
+       <div class="def-comment">            expected carrier for the response to a signal that "listen" to changes on the flux</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="PATTERN"></a>PATTERN</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SEMTREX_DEF">SEMTREX-DEF</a></div>
+       <div class="def-comment">                expectation is a semtrex (thus has one child which is the first part of the semtrex)</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="ACTION"></a>ACTION</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#PROCESS">PROCESS</a></div>
+       <div class="def-comment">                     code tree_ID, which specifies the action to perform when an expectation's semtrex matches</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="PARAMS"></a>PARAMS</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_ANY_SYMBOL">ZERO-OR-MORE-OF-ANY-SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="LIST_OF_CARRIER_AND_PATTERN_AND_ACTION_AND_PARAMS_AND_END_CONDITIONS"></a>LIST-OF-CARRIER-AND-PATTERN-AND-ACTION-AND-PARAMS-AND-END-CONDITIONS</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#CARRIER">CARRIER</a>, <a href="ref_sys_symbols.html#PATTERN">PATTERN</a>, <a href="ref_sys_symbols.html#ACTION">ACTION</a>, <a href="ref_sys_symbols.html#PARAMS">PARAMS</a>, <a href="ref_sys_symbols.html#END_CONDITIONS">END_CONDITIONS</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="EXPECTATION"></a>EXPECTATION</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_CARRIER_AND_PATTERN_AND_ACTION_AND_PARAMS_AND_END_CONDITIONS">LIST-OF-CARRIER-AND-PATTERN-AND-ACTION-AND-PARAMS-AND-END-CONDITIONS</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="ZERO_OR_MORE_OF_EXPECTATION"></a>ZERO-OR-MORE-OF-EXPECTATION</div>
+       <div class="def-struc-def">*(<a href="ref_sys_symbols.html#EXPECTATION">EXPECTATION</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="INTERPOLATE_SYMBOL"></a>INTERPOLATE_SYMBOL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
+       <div class="def-comment">          a place holder to indicate which symbol to insert into this part of the tree</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="PROCESS_NAME"></a>PROCESS_NAME</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="PROCESS_INTENTION"></a>PROCESS_INTENTION</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="PROCESS_SIGNATURE"></a>PROCESS_SIGNATURE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#PROCESS_FORM">PROCESS-FORM</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="ANY_SYMBOL"></a>ANY-SYMBOL</div>
+       <div class="def-struc-def">!</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="CODE"></a>CODE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="LIST_OF_PROCESS_NAME_AND_PROCESS_INTENTION_AND_CODE_AND_PROCESS_SIGNATURE"></a>LIST-OF-PROCESS-NAME-AND-PROCESS-INTENTION-AND-CODE-AND-PROCESS-SIGNATURE</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#PROCESS_NAME">PROCESS_NAME</a>, <a href="ref_sys_symbols.html#PROCESS_INTENTION">PROCESS_INTENTION</a>, <a href="ref_sys_symbols.html#CODE">CODE</a>, <a href="ref_sys_symbols.html#PROCESS_SIGNATURE">PROCESS_SIGNATURE</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="PROCESS_DEFINITION"></a>PROCESS_DEFINITION</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_PROCESS_NAME_AND_PROCESS_INTENTION_AND_CODE_AND_PROCESS_SIGNATURE">LIST-OF-PROCESS-NAME-AND-PROCESS-INTENTION-AND-CODE-AND-PROCESS-SIGNATURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="ZERO_OR_MORE_OF_PROCESS_DEFINITION"></a>ZERO-OR-MORE-OF-PROCESS-DEFINITION</div>
+       <div class="def-struc-def">*(<a href="ref_sys_symbols.html#PROCESS_DEFINITION">PROCESS_DEFINITION</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SIGNATURE_LABEL"></a>SIGNATURE_LABEL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SIGNATURE_STRUCTURE"></a>SIGNATURE_STRUCTURE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#STRUCTURE">STRUCTURE</a></div>
+       <div class="def-comment">      the structure that would match</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SIGNATURE_SYMBOL"></a>SIGNATURE_SYMBOL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
+       <div class="def-comment">            the symbol that would match</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SIGNATURE_PROCESS"></a>SIGNATURE_PROCESS</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
+       <div class="def-comment">           the output signature of the process</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SIGNATURE_PASSTHRU"></a>SIGNATURE_PASSTHRU</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SIGNATURE_ANY"></a>SIGNATURE_ANY</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SIGNATURE_OPTIONAL"></a>SIGNATURE_OPTIONAL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="ONE_OF_SIGNATURE_STRUCTURE_AND_SIGNATURE_SYMBOL_AND_SIGNATURE_PROCESS_AND_SIGNATURE_PASSTHRU"></a>ONE-OF-SIGNATURE-STRUCTURE-AND-SIGNATURE-SYMBOL-AND-SIGNATURE-PROCESS-AND-SIGNATURE-PASSTHRU</div>
+       <div class="def-struc-def">SET(<a href="ref_sys_symbols.html#SIGNATURE_STRUCTURE">SIGNATURE_STRUCTURE</a>, <a href="ref_sys_symbols.html#SIGNATURE_SYMBOL">SIGNATURE_SYMBOL</a>, <a href="ref_sys_symbols.html#SIGNATURE_PROCESS">SIGNATURE_PROCESS</a>, <a href="ref_sys_symbols.html#SIGNATURE_PASSTHRU">SIGNATURE_PASSTHRU</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SIGNATURE_OUTPUT_TYPE"></a>SIGNATURE_OUTPUT_TYPE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ONE_OF_SIGNATURE_STRUCTURE_AND_SIGNATURE_SYMBOL_AND_SIGNATURE_PROCESS_AND_SIGNATURE_PASSTHRU">ONE-OF-SIGNATURE-STRUCTURE-AND-SIGNATURE-SYMBOL-AND-SIGNATURE-PROCESS-AND-SIGNATURE-PASSTHRU</a></div>
+       <div class="def-comment">           the semantic type expected as result i.e. either PROCESS/STRUCTURE/SYMBOL or PASSTHRU when the type comes from a reduction of a SIGNATURE_ANY</div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="SIGNATURE_SEMANTIC_VARIANTS"></a>SIGNATURE-SEMANTIC-VARIANTS</div>
+       <div class="def-struc-def">SET(<a href="ref_sys_symbols.html#SIGNATURE_STRUCTURE">SIGNATURE_STRUCTURE</a>, <a href="ref_sys_symbols.html#SIGNATURE_SYMBOL">SIGNATURE_SYMBOL</a>, <a href="ref_sys_symbols.html#SIGNATURE_PROCESS">SIGNATURE_PROCESS</a>, <a href="ref_sys_symbols.html#SIGNATURE_ANY">SIGNATURE_ANY</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="TUPLE_OF_SIGNATURE_SEMANTIC_VARIANTS_AND_ZERO_OR_ONE_OF_SIGNATURE_OPTIONAL"></a>TUPLE-OF-SIGNATURE-SEMANTIC-VARIANTS-AND-ZERO-OR-ONE-OF-SIGNATURE-OPTIONAL</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#SIGNATURE_SEMANTIC_VARIANTS">SIGNATURE_SEMANTIC_VARIANTS</a>, ?(<a href="ref_sys_symbols.html#SIGNATURE_OPTIONAL">SIGNATURE_OPTIONAL</a>))</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SIGNATURE_INPUT_TYPE"></a>SIGNATURE_INPUT_TYPE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TUPLE_OF_SIGNATURE_SEMANTIC_VARIANTS_AND_ZERO_OR_ONE_OF_SIGNATURE_OPTIONAL">TUPLE-OF-SIGNATURE-SEMANTIC-VARIANTS-AND-ZERO-OR-ONE-OF-SIGNATURE-OPTIONAL</a></div>
+       <div class="def-comment">    the semantic type that would expected as input i.e. either PROCESS/STRUCTURE/SYMBOL</div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="TUPLE_OF_SIGNATURE_LABEL_AND_SIGNATURE_INPUT_TYPE"></a>TUPLE-OF-SIGNATURE-LABEL-AND-SIGNATURE-INPUT-TYPE</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#SIGNATURE_LABEL">SIGNATURE_LABEL</a>, <a href="ref_sys_symbols.html#SIGNATURE_INPUT_TYPE">SIGNATURE_INPUT_TYPE</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="INPUT_SIGNATURE"></a>INPUT_SIGNATURE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TUPLE_OF_SIGNATURE_LABEL_AND_SIGNATURE_INPUT_TYPE">TUPLE-OF-SIGNATURE-LABEL-AND-SIGNATURE-INPUT-TYPE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="TUPLE_OF_SIGNATURE_LABEL_AND_SIGNATURE_OUTPUT_TYPE"></a>TUPLE-OF-SIGNATURE-LABEL-AND-SIGNATURE-OUTPUT-TYPE</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#SIGNATURE_LABEL">SIGNATURE_LABEL</a>, <a href="ref_sys_symbols.html#SIGNATURE_OUTPUT_TYPE">SIGNATURE_OUTPUT_TYPE</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="OUTPUT_SIGNATURE"></a>OUTPUT_SIGNATURE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TUPLE_OF_SIGNATURE_LABEL_AND_SIGNATURE_OUTPUT_TYPE">TUPLE-OF-SIGNATURE-LABEL-AND-SIGNATURE-OUTPUT-TYPE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="PROCESS_FORM"></a>PROCESS-FORM</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#OUTPUT_SIGNATURE">OUTPUT_SIGNATURE</a>, *(<a href="ref_sys_symbols.html#INPUT_SIGNATURE">INPUT_SIGNATURE</a>))</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="LIST_OF_CODE_AND_PARAMS_AND_ZERO_OR_ONE_OF_CODE"></a>LIST-OF-CODE-AND-PARAMS-AND-ZERO-OR-ONE-OF-CODE</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#CODE">CODE</a>, <a href="ref_sys_symbols.html#PARAMS">PARAMS</a>, ?(<a href="ref_sys_symbols.html#CODE">CODE</a>))</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="RUN_TREE"></a>RUN_TREE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_CODE_AND_PARAMS_AND_ZERO_OR_ONE_OF_CODE">LIST-OF-CODE-AND-PARAMS-AND-ZERO-OR-ONE-OF-CODE</a></div>
+       <div class="def-comment">     think about this as a stack frame and its code and error handling code</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="PARAM_REF"></a>PARAM_REF</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></div>
+       <div class="def-comment">                used in a code tree as a reference to a parameter</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SIGNAL_REF"></a>SIGNAL_REF</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></div>
+       <div class="def-comment">               used in a code tree triggered by an expectation as a reference to a part of the signal that triggered the action.</div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="ZERO_OR_MORE_OF_ANY_SYMBOL"></a>ZERO-OR-MORE-OF-ANY-SYMBOL</div>
+       <div class="def-struc-def">*(!)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="RESULT_SYMBOL"></a>RESULT_SYMBOL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="REDUCTION_ERROR_SYMBOL"></a>REDUCTION_ERROR_SYMBOL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="ROLE"></a>ROLE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
+       <div class="def-comment">  A role stands for an expected agent, thus the symbol stored in a ROLE must be limited to those of structure RECEPTOR_ADDRESS.</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="GOAL"></a>GOAL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
+       <div class="def-comment"> A goal stands for an intended process, thus the symbol stored in a GOAL must be limited to those that are uses of the PROCESS structure.</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="USAGE"></a>USAGE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
+       <div class="def-comment"> A usage stands for a(n) X of a Symbol.</div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="ONE_OR_MORE_OF_ROLE"></a>ONE-OR-MORE-OF-ROLE</div>
+       <div class="def-struc-def">+(<a href="ref_sys_symbols.html#ROLE">ROLE</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SOURCE"></a>SOURCE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ONE_OR_MORE_OF_ROLE">ONE-OR-MORE-OF-ROLE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="DESTINATION"></a>DESTINATION</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ONE_OR_MORE_OF_ROLE">ONE-OR-MORE-OF-ROLE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="LIST_OF_ROLE_AND_SOURCE_AND_PATTERN_AND_ACTION"></a>LIST-OF-ROLE-AND-SOURCE-AND-PATTERN-AND-ACTION</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#ROLE">ROLE</a>, <a href="ref_sys_symbols.html#SOURCE">SOURCE</a>, <a href="ref_sys_symbols.html#PATTERN">PATTERN</a>, <a href="ref_sys_symbols.html#ACTION">ACTION</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="EXPECT"></a>EXPECT</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_ROLE_AND_SOURCE_AND_PATTERN_AND_ACTION">LIST-OF-ROLE-AND-SOURCE-AND-PATTERN-AND-ACTION</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="LIST_OF_ROLE_AND_DESTINATION_AND_ACTION"></a>LIST-OF-ROLE-AND-DESTINATION-AND-ACTION</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#ROLE">ROLE</a>, <a href="ref_sys_symbols.html#DESTINATION">DESTINATION</a>, <a href="ref_sys_symbols.html#ACTION">ACTION</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="INITIATE"></a>INITIATE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_ROLE_AND_DESTINATION_AND_ACTION">LIST-OF-ROLE-AND-DESTINATION-AND-ACTION</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="PNAME"></a>PNAME</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#PROTOCOL">PROTOCOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="TUPLE_OF_PNAME_AND_ONE_OR_MORE_OF_LOGICAL_OR_OF_RESOLUTION_AND_CONNECTION"></a>TUPLE-OF-PNAME-AND-ONE-OR-MORE-OF-LOGICAL-OR-OF-RESOLUTION-AND-CONNECTION</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#PNAME">PNAME</a>, +(OR(<a href="ref_sys_symbols.html#RESOLUTION">RESOLUTION</a>, <a href="ref_sys_symbols.html#CONNECTION">CONNECTION</a>)))</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="INCLUSION"></a>INCLUSION</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TUPLE_OF_PNAME_AND_ONE_OR_MORE_OF_LOGICAL_OR_OF_RESOLUTION_AND_CONNECTION">TUPLE-OF-PNAME-AND-ONE-OR-MORE-OF-LOGICAL-OR-OF-RESOLUTION-AND-CONNECTION</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="INTERACTION"></a>INTERACTION</div>
+       <div class="def-struc-def">SEQ(*(<a href="ref_sys_symbols.html#EXPECT">EXPECT</a>), *(<a href="ref_sys_symbols.html#INITIATE">INITIATE</a>))</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="ZERO_OR_MORE_OF_PROTOCOL_DEFINITION"></a>ZERO-OR-MORE-OF-PROTOCOL-DEFINITION</div>
+       <div class="def-struc-def">*(<a href="ref_sys_symbols.html#PROTOCOL_DEFINITION">PROTOCOL_DEFINITION</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="ACTUAL_PROCESS"></a>ACTUAL_PROCESS</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#PROCESS">PROCESS</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="ACTUAL_RECEPTOR"></a>ACTUAL_RECEPTOR</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="ACTUAL_SYMBOL"></a>ACTUAL_SYMBOL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="TUPLE_OF_GOAL_AND_ACTUAL_PROCESS"></a>TUPLE-OF-GOAL-AND-ACTUAL-PROCESS</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#GOAL">GOAL</a>, <a href="ref_sys_symbols.html#ACTUAL_PROCESS">ACTUAL_PROCESS</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="WHICH_PROCESS"></a>WHICH_PROCESS</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TUPLE_OF_GOAL_AND_ACTUAL_PROCESS">TUPLE-OF-GOAL-AND-ACTUAL-PROCESS</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="TUPLE_OF_ROLE_AND_ACTUAL_RECEPTOR"></a>TUPLE-OF-ROLE-AND-ACTUAL-RECEPTOR</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#ROLE">ROLE</a>, <a href="ref_sys_symbols.html#ACTUAL_RECEPTOR">ACTUAL_RECEPTOR</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="WHICH_RECEPTOR"></a>WHICH_RECEPTOR</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TUPLE_OF_ROLE_AND_ACTUAL_RECEPTOR">TUPLE-OF-ROLE-AND-ACTUAL-RECEPTOR</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="TUPLE_OF_USAGE_AND_ACTUAL_SYMBOL"></a>TUPLE-OF-USAGE-AND-ACTUAL-SYMBOL</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#USAGE">USAGE</a>, <a href="ref_sys_symbols.html#ACTUAL_SYMBOL">ACTUAL_SYMBOL</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="WHICH_SYMBOL"></a>WHICH_SYMBOL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TUPLE_OF_USAGE_AND_ACTUAL_SYMBOL">TUPLE-OF-USAGE-AND-ACTUAL-SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="MAPPING"></a>MAPPING</div>
+       <div class="def-struc-def">SET(<a href="ref_sys_symbols.html#WHICH_PROCESS">WHICH_PROCESS</a>, <a href="ref_sys_symbols.html#WHICH_RECEPTOR">WHICH_RECEPTOR</a>, <a href="ref_sys_symbols.html#WHICH_SYMBOL">WHICH_SYMBOL</a>)</div>
+       <div class="def-comment">  maps abstract to concrete</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="RESOLUTION"></a>RESOLUTION</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#MAPPING">MAPPING</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="PAIR_OF_GOAL"></a>PAIR-OF-GOAL</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#GOAL">GOAL</a>, <a href="ref_sys_symbols.html#GOAL">GOAL</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="WHICH_GOAL"></a>WHICH_GOAL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#PAIR_OF_GOAL">PAIR-OF-GOAL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="PAIR_OF_ROLE"></a>PAIR-OF-ROLE</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#ROLE">ROLE</a>, <a href="ref_sys_symbols.html#ROLE">ROLE</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="WHICH_ROLE"></a>WHICH_ROLE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#PAIR_OF_ROLE">PAIR-OF-ROLE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="PAIR_OF_USAGE"></a>PAIR-OF-USAGE</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#USAGE">USAGE</a>, <a href="ref_sys_symbols.html#USAGE">USAGE</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="WHICH_USAGE"></a>WHICH_USAGE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#PAIR_OF_USAGE">PAIR-OF-USAGE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="LINKING"></a>LINKING</div>
+       <div class="def-struc-def">SET(<a href="ref_sys_symbols.html#WHICH_GOAL">WHICH_GOAL</a>, <a href="ref_sys_symbols.html#WHICH_ROLE">WHICH_ROLE</a>, <a href="ref_sys_symbols.html#WHICH_USAGE">WHICH_USAGE</a>)</div>
+       <div class="def-comment"> links two abstract role/goal/usage</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="CONNECTION"></a>CONNECTION</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LINKING">LINKING</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="ONE_OR_MORE_OF_RESOLUTION"></a>ONE-OR-MORE-OF-RESOLUTION</div>
+       <div class="def-struc-def">+(<a href="ref_sys_symbols.html#RESOLUTION">RESOLUTION</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="PROTOCOL_BINDINGS"></a>PROTOCOL_BINDINGS</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ONE_OR_MORE_OF_RESOLUTION">ONE-OR-MORE-OF-RESOLUTION</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="PROTOCOL_LABEL"></a>PROTOCOL_LABEL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="LIST_OF_PROTOCOL_LABEL_AND_ZERO_OR_MORE_OF_ROLE_AND_ZERO_OR_MORE_OF_GOAL_AND_ZERO_OR_MORE_OF_USAGE_AND_ZERO_OR_MORE_OF_STRUCTURE_OF_INTERACTION_AND_ZERO_OR_MORE_OF_INCLUSION"></a>LIST-OF-PROTOCOL-LABEL-AND-ZERO-OR-MORE-OF-ROLE-AND-ZERO-OR-MORE-OF-GOAL-AND-ZERO-OR-MORE-OF-USAGE-AND-ZERO-OR-MORE-OF-STRUCTURE-OF-INTERACTION-AND-ZERO-OR-MORE-OF-INCLUSION</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#PROTOCOL_LABEL">PROTOCOL_LABEL</a>, *(<a href="ref_sys_symbols.html#ROLE">ROLE</a>), *(<a href="ref_sys_symbols.html#GOAL">GOAL</a>), *(<a href="ref_sys_symbols.html#USAGE">USAGE</a>), *(%<a href="ref_sys_structures.html#INTERACTION">INTERACTION</a>), *(<a href="ref_sys_symbols.html#INCLUSION">INCLUSION</a>))</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="PROTOCOL_DEFINITION"></a>PROTOCOL_DEFINITION</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_PROTOCOL_LABEL_AND_ZERO_OR_MORE_OF_ROLE_AND_ZERO_OR_MORE_OF_GOAL_AND_ZERO_OR_MORE_OF_USAGE_AND_ZERO_OR_MORE_OF_STRUCTURE_OF_INTERACTION_AND_ZERO_OR_MORE_OF_INCLUSION">LIST-OF-PROTOCOL-LABEL-AND-ZERO-OR-MORE-OF-ROLE-AND-ZERO-OR-MORE-OF-GOAL-AND-ZERO-OR-MORE-OF-USAGE-AND-ZERO-OR-MORE-OF-STRUCTURE-OF-INTERACTION-AND-ZERO-OR-MORE-OF-INCLUSION</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="ZERO_OR_MORE_OF_STRUCTURE_OF_SCAPE"></a>ZERO-OR-MORE-OF-STRUCTURE-OF-SCAPE</div>
+       <div class="def-struc-def">*(%<a href="ref_sys_structures.html#SCAPE">SCAPE</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="MANIFEST_LABEL"></a>MANIFEST_LABEL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-comment">           a label in the manifest to identify a binding</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="MANIFEST_SPEC"></a>MANIFEST_SPEC</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
+       <div class="def-comment">             a symbol to specify what type of data must be provided for a given manifest label</div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="TUPLE_OF_MANIFEST_LABEL_AND_MANIFEST_SPEC"></a>TUPLE-OF-MANIFEST-LABEL-AND-MANIFEST-SPEC</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#MANIFEST_LABEL">MANIFEST_LABEL</a>, <a href="ref_sys_symbols.html#MANIFEST_SPEC">MANIFEST_SPEC</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="MANIFEST_PAIR"></a>MANIFEST_PAIR</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TUPLE_OF_MANIFEST_LABEL_AND_MANIFEST_SPEC">TUPLE-OF-MANIFEST-LABEL-AND-MANIFEST-SPEC</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="ONE_OR_MORE_OF_MANIFEST_PAIR"></a>ONE-OR-MORE-OF-MANIFEST-PAIR</div>
+       <div class="def-struc-def">+(<a href="ref_sys_symbols.html#MANIFEST_PAIR">MANIFEST_PAIR</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="MANIFEST"></a>MANIFEST</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ONE_OR_MORE_OF_MANIFEST_PAIR">ONE-OR-MORE-OF-MANIFEST-PAIR</a></div>
+       <div class="def-comment">         configuration template to be filled out for the installation of a receptor</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="RECEPTOR_IDENTIFIER"></a>RECEPTOR_IDENTIFIER</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#INTEGER">INTEGER</a></div>
+       <div class="def-comment">      uuid that identifies receptors</div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="LIST_OF_MANIFEST_AND_RECEPTOR_IDENTIFIER_AND_DEFINITIONS"></a>LIST-OF-MANIFEST-AND-RECEPTOR-IDENTIFIER-AND-DEFINITIONS</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#MANIFEST">MANIFEST</a>, <a href="ref_sys_symbols.html#RECEPTOR_IDENTIFIER">RECEPTOR_IDENTIFIER</a>, <a href="ref_sys_symbols.html#DEFINITIONS">DEFINITIONS</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="RECEPTOR_PACKAGE"></a>RECEPTOR_PACKAGE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_MANIFEST_AND_RECEPTOR_IDENTIFIER_AND_DEFINITIONS">LIST-OF-MANIFEST-AND-RECEPTOR-IDENTIFIER-AND-DEFINITIONS</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="TUPLE_OF_MANIFEST_LABEL_AND_ANY_SYMBOL"></a>TUPLE-OF-MANIFEST-LABEL-AND-ANY-SYMBOL</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#MANIFEST_LABEL">MANIFEST_LABEL</a>, !)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="BINDING_PAIR"></a>BINDING_PAIR</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TUPLE_OF_MANIFEST_LABEL_AND_ANY_SYMBOL">TUPLE-OF-MANIFEST-LABEL-AND-ANY-SYMBOL</a></div>
+       <div class="def-comment">                a pair that matches a MANIFEST_LABEL with a given binding</div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="ONE_OR_MORE_OF_BINDING_PAIR"></a>ONE-OR-MORE-OF-BINDING-PAIR</div>
+       <div class="def-struc-def">+(<a href="ref_sys_symbols.html#BINDING_PAIR">BINDING_PAIR</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="BINDINGS"></a>BINDINGS</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ONE_OR_MORE_OF_BINDING_PAIR">ONE-OR-MORE-OF-BINDING-PAIR</a></div>
+       <div class="def-comment">                    specifics that match a MANIFEST and allow a receptor to be installed</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="RECEPTOR_ELAPSED_TIME"></a>RECEPTOR_ELAPSED_TIME</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#INTEGER">INTEGER</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="RECEPTOR_LABEL"></a>RECEPTOR_LABEL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="RECEPTOR_IDENTITY"></a>RECEPTOR_IDENTITY</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#RECEPTOR_LABEL">RECEPTOR_LABEL</a>, <a href="ref_sys_symbols.html#RECEPTOR_IDENTIFIER">RECEPTOR_IDENTIFIER</a>)</div>
+       <div class="def-comment"> placeholder structure for compository identifier</div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="TUPLE_OF_RECEPTOR_LABEL_AND_DEFINITIONS"></a>TUPLE-OF-RECEPTOR-LABEL-AND-DEFINITIONS</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#RECEPTOR_LABEL">RECEPTOR_LABEL</a>, <a href="ref_sys_symbols.html#DEFINITIONS">DEFINITIONS</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="RECEPTOR_DEFINITION"></a>RECEPTOR_DEFINITION</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TUPLE_OF_RECEPTOR_LABEL_AND_DEFINITIONS">TUPLE-OF-RECEPTOR-LABEL-AND-DEFINITIONS</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="ZERO_OR_MORE_OF_RECEPTOR_DEFINITION"></a>ZERO-OR-MORE-OF-RECEPTOR-DEFINITION</div>
+       <div class="def-struc-def">*(<a href="ref_sys_symbols.html#RECEPTOR_DEFINITION">RECEPTOR_DEFINITION</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="LIST_OF_FLUX_AND_PENDING_SIGNALS_AND_PENDING_RESPONSES_AND_RECEPTOR_ELAPSED_TIME"></a>LIST-OF-FLUX-AND-PENDING-SIGNALS-AND-PENDING-RESPONSES-AND-RECEPTOR-ELAPSED-TIME</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#FLUX">FLUX</a>, <a href="ref_sys_symbols.html#PENDING_SIGNALS">PENDING_SIGNALS</a>, <a href="ref_sys_symbols.html#PENDING_RESPONSES">PENDING_RESPONSES</a>, <a href="ref_sys_symbols.html#RECEPTOR_ELAPSED_TIME">RECEPTOR_ELAPSED_TIME</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="RECEPTOR_STATE"></a>RECEPTOR_STATE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_FLUX_AND_PENDING_SIGNALS_AND_PENDING_RESPONSES_AND_RECEPTOR_ELAPSED_TIME">LIST-OF-FLUX-AND-PENDING-SIGNALS-AND-PENDING-RESPONSES-AND-RECEPTOR-ELAPSED-TIME</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="PARENT_CONTEXT_NUM"></a>PARENT_CONTEXT_NUM</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#INTEGER">INTEGER</a></div>
+       <div class="def-comment">        identifies the semantic context of a receptors parent</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="CONTEXT_NUM"></a>CONTEXT_NUM</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#INTEGER">INTEGER</a></div>
+       <div class="def-comment">               identifies the semantic context of a receptor</div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="LIST_OF_CONTEXT_NUM_AND_PARENT_CONTEXT_NUM_AND_RECEPTOR_STATE"></a>LIST-OF-CONTEXT-NUM-AND-PARENT-CONTEXT-NUM-AND-RECEPTOR-STATE</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#CONTEXT_NUM">CONTEXT_NUM</a>, <a href="ref_sys_symbols.html#PARENT_CONTEXT_NUM">PARENT_CONTEXT_NUM</a>, <a href="ref_sys_symbols.html#RECEPTOR_STATE">RECEPTOR_STATE</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="RECEPTOR_INSTANCE"></a>RECEPTOR_INSTANCE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_CONTEXT_NUM_AND_PARENT_CONTEXT_NUM_AND_RECEPTOR_STATE">LIST-OF-CONTEXT-NUM-AND-PARENT-CONTEXT-NUM-AND-RECEPTOR-STATE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SERIALIZED_RECEPTOR"></a>SERIALIZED_RECEPTOR</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#BLOB">BLOB</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="ZERO_OR_MORE_OF_RECEPTOR_XADDR"></a>ZERO-OR-MORE-OF-RECEPTOR-XADDR</div>
+       <div class="def-struc-def">*(<a href="ref_sys_symbols.html#RECEPTOR_XADDR">RECEPTOR_XADDR</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="ACTIVE_RECEPTORS"></a>ACTIVE_RECEPTORS</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_RECEPTOR_XADDR">ZERO-OR-MORE-OF-RECEPTOR-XADDR</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="LIST_OF_ACTIVE_RECEPTORS"></a>LIST-OF-ACTIVE-RECEPTORS</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#ACTIVE_RECEPTORS">ACTIVE_RECEPTORS</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SYS_STATE"></a>SYS_STATE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_ACTIVE_RECEPTORS">LIST-OF-ACTIVE-RECEPTORS</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="YEAR"></a>YEAR</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#INTEGER">INTEGER</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="MONTH"></a>MONTH</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#INTEGER">INTEGER</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="DAY"></a>DAY</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#INTEGER">INTEGER</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="HOUR"></a>HOUR</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#INTEGER">INTEGER</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="MINUTE"></a>MINUTE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#INTEGER">INTEGER</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SECOND"></a>SECOND</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#INTEGER">INTEGER</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="DATE"></a>DATE</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#YEAR">YEAR</a>, <a href="ref_sys_symbols.html#MONTH">MONTH</a>, <a href="ref_sys_symbols.html#DAY">DAY</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="TIME"></a>TIME</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#HOUR">HOUR</a>, <a href="ref_sys_symbols.html#MINUTE">MINUTE</a>, <a href="ref_sys_symbols.html#SECOND">SECOND</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="TODAY"></a>TODAY</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#DATE">DATE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="NOW"></a>NOW</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TIME">TIME</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="TIMESTAMP"></a>TIMESTAMP</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#TODAY">TODAY</a>, <a href="ref_sys_symbols.html#NOW">NOW</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="TICK"></a>TICK</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TIMESTAMP">TIMESTAMP</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="ERROR_LOCATION"></a>ERROR_LOCATION</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="REDUCTION_ERROR"></a>REDUCTION_ERROR</div>
+       <div class="def-struc-def"><a href="ref_sys_symbols.html#ERROR_LOCATION">ERROR_LOCATION</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="ZERO_DIVIDE_ERR"></a>ZERO_DIVIDE_ERR</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#REDUCTION_ERROR">REDUCTION-ERROR</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="TOO_FEW_PARAMS_ERR"></a>TOO_FEW_PARAMS_ERR</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#REDUCTION_ERROR">REDUCTION-ERROR</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="TOO_MANY_PARAMS_ERR"></a>TOO_MANY_PARAMS_ERR</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#REDUCTION_ERROR">REDUCTION-ERROR</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SIGNATURE_MISMATCH_ERR"></a>SIGNATURE_MISMATCH_ERR</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#REDUCTION_ERROR">REDUCTION-ERROR</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="NOT_A_PROCESS_ERR"></a>NOT_A_PROCESS_ERR</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#REDUCTION_ERROR">REDUCTION-ERROR</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="NOT_IN_SIGNAL_CONTEXT_ERR"></a>NOT_IN_SIGNAL_CONTEXT_ERR</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#REDUCTION_ERROR">REDUCTION-ERROR</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="INCOMPATIBLE_TYPE_ERR"></a>INCOMPATIBLE_TYPE_ERR</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#REDUCTION_ERROR">REDUCTION-ERROR</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="UNIX_ERRNO_ERR"></a>UNIX_ERRNO_ERR</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#REDUCTION_ERROR">REDUCTION-ERROR</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="DEAD_STREAM_READ_ERR"></a>DEAD_STREAM_READ_ERR</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#REDUCTION_ERROR">REDUCTION-ERROR</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="GET_XADDR"></a>GET_XADDR</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#XADDR">XADDR</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="TIMEOUT_AT"></a>TIMEOUT_AT</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TIMESTAMP">TIMESTAMP</a></div>
+       <div class="def-comment">       specifies a timeout for requests</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="COUNT"></a>COUNT</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#INTEGER">INTEGER</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="UNLIMITED"></a>UNLIMITED</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="LOGICAL_OR_OF_COUNT_AND_UNLIMITED"></a>LOGICAL-OR-OF-COUNT-AND-UNLIMITED</div>
+       <div class="def-struc-def">OR(<a href="ref_sys_symbols.html#COUNT">COUNT</a>, <a href="ref_sys_symbols.html#UNLIMITED">UNLIMITED</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="REPETITIONS"></a>REPETITIONS</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LOGICAL_OR_OF_COUNT_AND_UNLIMITED">LOGICAL-OR-OF-COUNT-AND-UNLIMITED</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="TUPLE_OF_ZERO_OR_ONE_OF_TIMEOUT_AT_AND_ZERO_OR_ONE_OF_REPETITIONS"></a>TUPLE-OF-ZERO-OR-ONE-OF-TIMEOUT-AT-AND-ZERO-OR-ONE-OF-REPETITIONS</div>
+       <div class="def-struc-def">SEQ(?(<a href="ref_sys_symbols.html#TIMEOUT_AT">TIMEOUT_AT</a>), ?(<a href="ref_sys_symbols.html#REPETITIONS">REPETITIONS</a>))</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="NOOP"></a>NOOP</div>
+       <div class="def-sig-in"><li>do(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</li></div>
+       <div class="def-sig-out">result(PASSTHRU:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
+       <div class="def-comment"><i>no-op</i><br />   this process reduces to its single "do" parameter.</div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="GET"></a>GET</div>
+       <div class="def-sig-in"><li>what(SYMBOL:<a href="ref_sys_symbols.html#GET_XADDR">GET_XADDR</a>)</li></div>
+       <div class="def-sig-out">value(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
+       <div class="def-comment"><i>get instance value</i><br />   reduces to the value of the instance at the xaddr of the "what" parameter</div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="IF"></a>IF</div>
+       <div class="def-sig-in"><li>condition(PROCESS:<a href="ref_sys_symbols.html#BOOLEAN">BOOLEAN</a>)</li><li>then(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</li><li>[else(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)]</li></div>
+       <div class="def-sig-out">result(PASSTHRU:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
+       <div class="def-comment"><i>if</i><br />  this is a traditional "if" process that reduces conditionally to either the "then" or the "else" parameter depending on the value of the "condition" parameter.  Note: we may be replacing this with a more lispy COND process</div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="ITERATE"></a>ITERATE</div>
+       <div class="def-sig-in"><li>condtion(PROCESS:<a href="ref_sys_symbols.html#BOOLEAN">BOOLEAN</a>)</li><li>do(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</li></div>
+       <div class="def-sig-out">result(PASSTHRU:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
+       <div class="def-comment"><i>iterate a process</i><br />                     this process checks the structure of the result of the "condition" param, if it's a BOOLEAN, it treats the iteration as a while loop and iterates until the BOOLEAN is false; if it's an INTEGER it treats the iteration as repeat loop and iterates as many times as the value of the INTEGER</div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="SAY"></a>SAY</div>
+       <div class="def-sig-in"><li>to(SYMBOL:<a href="ref_sys_symbols.html#RECEPTOR_ADDRESS">RECEPTOR_ADDRESS</a>)</li><li>on(SYMBOL:<a href="ref_sys_symbols.html#ASPECT_IDENT">ASPECT_IDENT</a>)</li><li>carrier(SYMBOL:<a href="ref_sys_symbols.html#CARRIER">CARRIER</a>)</li><li>message(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</li></div>
+       <div class="def-sig-out">signal id(SYMBOL:<a href="ref_sys_symbols.html#SIGNAL_UUID">SIGNAL_UUID</a>)</div>
+       <div class="def-comment"><i>send a message to a receptor</i></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="REQUEST"></a>REQUEST</div>
+       <div class="def-sig-in"><li>of(SYMBOL:<a href="ref_sys_symbols.html#RECEPTOR_ADDRESS">RECEPTOR_ADDRESS</a>)</li><li>on(SYMBOL:<a href="ref_sys_symbols.html#ASPECT_IDENT">ASPECT_IDENT</a>)</li><li>carrier(SYMBOL:<a href="ref_sys_symbols.html#CARRIER">CARRIER</a>)</li><li>message(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</li><li>expect response on(SYMBOL:<a href="ref_sys_symbols.html#RESPONSE_CARRIER">RESPONSE_CARRIER</a>)</li><li>[until(SYMBOL:<a href="ref_sys_symbols.html#END_CONDITIONS">END_CONDITIONS</a>)]</li><li>[callback(PROCESS:<a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a>)]</li></div>
+       <div class="def-sig-out">response(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
+       <div class="def-comment"><i>send a request to a receptor</i><br />  if there is no "callback" param, then this process will block until the result comes back or the "until" causes cleanup of pending request.</div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="LISTEN"></a>LISTEN</div>
+       <div class="def-sig-in"><li>on(SYMBOL:<a href="ref_sys_symbols.html#ASPECT_IDENT">ASPECT_IDENT</a>)</li><li>for(SYMBOL:<a href="ref_sys_symbols.html#CARRIER">CARRIER</a>)</li><li>match(SYMBOL:<a href="ref_sys_symbols.html#PATTERN">PATTERN</a>)</li><li>[do(SYMBOL:<a href="ref_sys_symbols.html#ACTION">ACTION</a>)]</li><li>[with(SYMBOL:<a href="ref_sys_symbols.html#PARAMS">PARAMS</a>)]</li><li>[until(SYMBOL:<a href="ref_sys_symbols.html#END_CONDITIONS">END_CONDITIONS</a>)]</li></div>
+       <div class="def-sig-out">error(SYMBOL:<a href="ref_sys_symbols.html#REDUCTION_ERROR_SYMBOL">REDUCTION_ERROR_SYMBOL</a>)</div>
+       <div class="def-comment"><i>plant a listener</i><br />  If you don't provide an action, the assumption is that the LISTEN process will block and  will reduce to the SEMTREX_MATCH.  This will also force the END_CONDITIONS/REPETITIONS to COUNT:1.  If "for" carrier is NULL_SYMBOL the expectation will match on all carriers.</div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="RESPOND"></a>RESPOND</div>
+       <div class="def-sig-in"><li>respond on(SYMBOL:<a href="ref_sys_symbols.html#CARRIER">CARRIER</a>)</li><li>response contents(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</li></div>
+       <div class="def-sig-out">response id(SYMBOL:<a href="ref_sys_symbols.html#SIGNAL_UUID">SIGNAL_UUID</a>)</div>
+       <div class="def-comment"><i>respond to signal</i></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="QUOTE"></a>QUOTE</div>
+       <div class="def-sig-in"><li>process(PROCESS:<a href="ref_sys_symbols.html#NULL_PROCESS">NULL_PROCESS</a>)</li></div>
+       <div class="def-sig-out">result(PASSTHRU:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
+       <div class="def-comment"><i>quote a process so that it can be passed as a value</i></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="INTERPOLATE_FROM_MATCH"></a>INTERPOLATE_FROM_MATCH</div>
+       <div class="def-sig-in"></div>
+       <div class="def-sig-out">result(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
+       <div class="def-comment"><i>interploate match result in place</i></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="RAISE"></a>RAISE</div>
+       <div class="def-sig-in"><li>error(SYMBOL:<a href="ref_sys_symbols.html#REDUCTION_ERROR_SYMBOL">REDUCTION_ERROR_SYMBOL</a>)</li></div>
+       <div class="def-sig-out">result(STRUCTURE:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
+       <div class="def-comment"><i>raise reduction error</i><br />   this process doesn't really return anything, because it triggers the handler for the error in the "error" parameter</div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="STREAM_READ"></a>STREAM_READ</div>
+       <div class="def-sig-in"><li>stream(STRUCTURE:<a href="ref_sys_symbols.html#STREAM">STREAM</a>)</li><li>into(SYMBOL:<a href="ref_sys_symbols.html#RESULT_SYMBOL">RESULT_SYMBOL</a>)</li></div>
+       <div class="def-sig-out">result(PASSTHRU:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
+       <div class="def-comment"><i>read from a stream</i><br />  the data on the stream will appear as the surface of the symbol type given by the "into" param. Clearly this could get ugly as there is no semantic checking that that's ok...</div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="STREAM_WRITE"></a>STREAM_WRITE</div>
+       <div class="def-sig-in"><li>stream(STRUCTURE:<a href="ref_sys_symbols.html#STREAM">STREAM</a>)</li><li>what(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</li></div>
+       <div class="def-sig-out">result(PASSTHRU:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
+       <div class="def-comment"><i>write to a stream</i></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="STREAM_ALIVE"></a>STREAM_ALIVE</div>
+       <div class="def-sig-in"><li>stream(STRUCTURE:<a href="ref_sys_symbols.html#STREAM">STREAM</a>)</li></div>
+       <div class="def-sig-out">alive(SYMBOL:<a href="ref_sys_symbols.html#BOOLEAN">BOOLEAN</a>)</div>
+       <div class="def-comment"><i>test if stream is alive for reading</i></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="CONCAT_STR"></a>CONCAT_STR</div>
+       <div class="def-sig-in"><li>into(SYMBOL:<a href="ref_sys_symbols.html#RESULT_SYMBOL">RESULT_SYMBOL</a>)</li><li>str1(STRUCTURE:<a href="ref_sys_symbols.html#CSTRING">CSTRING</a>)</li><li>str2(STRUCTURE:<a href="ref_sys_symbols.html#CSTRING">CSTRING</a>)</li></div>
+       <div class="def-sig-out">concatenation(STRUCTURE:<a href="ref_sys_symbols.html#CSTRING">CSTRING</a>)</div>
+       <div class="def-comment"><i>concatinate strings</i><br />  concatenates two strings of any symbol type into an new symbol type specified by the "into" parameter</div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="ADD_INT"></a>ADD_INT</div>
+       <div class="def-sig-in"><li>augend(STRUCTURE:<a href="ref_sys_symbols.html#INTEGER">INTEGER</a>)</li><li>addend(STRUCTURE:<a href="ref_sys_symbols.html#INTEGER">INTEGER</a>)</li></div>
+       <div class="def-sig-out">sum(STRUCTURE:<a href="ref_sys_symbols.html#INTEGER">INTEGER</a>)</div>
+       <div class="def-comment"><i>addition</i></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="SUB_INT"></a>SUB_INT</div>
+       <div class="def-sig-in"><li>minuend(STRUCTURE:<a href="ref_sys_symbols.html#INTEGER">INTEGER</a>)</li><li>subtrahend(STRUCTURE:<a href="ref_sys_symbols.html#INTEGER">INTEGER</a>)</li></div>
+       <div class="def-sig-out">difference(STRUCTURE:<a href="ref_sys_symbols.html#INTEGER">INTEGER</a>)</div>
+       <div class="def-comment"><i>subtract</i></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="MULT_INT"></a>MULT_INT</div>
+       <div class="def-sig-in"><li>multiplicand(STRUCTURE:<a href="ref_sys_symbols.html#INTEGER">INTEGER</a>)</li><li>multiplier(STRUCTURE:<a href="ref_sys_symbols.html#INTEGER">INTEGER</a>)</li></div>
+       <div class="def-sig-out">product(STRUCTURE:<a href="ref_sys_symbols.html#INTEGER">INTEGER</a>)</div>
+       <div class="def-comment"><i>multiply</i></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="DIV_INT"></a>DIV_INT</div>
+       <div class="def-sig-in"><li>dividend(STRUCTURE:<a href="ref_sys_symbols.html#INTEGER">INTEGER</a>)</li><li>divisor(STRUCTURE:<a href="ref_sys_symbols.html#INTEGER">INTEGER</a>)</li></div>
+       <div class="def-sig-out">quotient(STRUCTURE:<a href="ref_sys_symbols.html#INTEGER">INTEGER</a>)</div>
+       <div class="def-comment"><i>divide</i></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="MOD_INT"></a>MOD_INT</div>
+       <div class="def-sig-in"><li>dividend(STRUCTURE:<a href="ref_sys_symbols.html#INTEGER">INTEGER</a>)</li><li>divisor(STRUCTURE:<a href="ref_sys_symbols.html#INTEGER">INTEGER</a>)</li></div>
+       <div class="def-sig-out">remainder(STRUCTURE:<a href="ref_sys_symbols.html#INTEGER">INTEGER</a>)</div>
+       <div class="def-comment"><i>modulo</i></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="EQ_INT"></a>EQ_INT</div>
+       <div class="def-sig-in"><li>int1(STRUCTURE:<a href="ref_sys_symbols.html#INTEGER">INTEGER</a>)</li><li>int2(STRUCTURE:<a href="ref_sys_symbols.html#INTEGER">INTEGER</a>)</li></div>
+       <div class="def-sig-out">equality(SYMBOL:<a href="ref_sys_symbols.html#BOOLEAN">BOOLEAN</a>)</div>
+       <div class="def-comment"><i>test equality</i></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="LT_INT"></a>LT_INT</div>
+       <div class="def-sig-in"><li>int1(STRUCTURE:<a href="ref_sys_symbols.html#INTEGER">INTEGER</a>)</li><li>int2(STRUCTURE:<a href="ref_sys_symbols.html#INTEGER">INTEGER</a>)</li></div>
+       <div class="def-sig-out">result(SYMBOL:<a href="ref_sys_symbols.html#BOOLEAN">BOOLEAN</a>)</div>
+       <div class="def-comment"><i>test less than</i></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="GT_INT"></a>GT_INT</div>
+       <div class="def-sig-in"><li>int1(STRUCTURE:<a href="ref_sys_symbols.html#INTEGER">INTEGER</a>)</li><li>int2(STRUCTURE:<a href="ref_sys_symbols.html#INTEGER">INTEGER</a>)</li></div>
+       <div class="def-sig-out">result(SYMBOL:<a href="ref_sys_symbols.html#BOOLEAN">BOOLEAN</a>)</div>
+       <div class="def-comment"><i>test greater than</i></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="LTE_INT"></a>LTE_INT</div>
+       <div class="def-sig-in"><li>int1(STRUCTURE:<a href="ref_sys_symbols.html#INTEGER">INTEGER</a>)</li><li>int2(STRUCTURE:<a href="ref_sys_symbols.html#INTEGER">INTEGER</a>)</li></div>
+       <div class="def-sig-out">result(SYMBOL:<a href="ref_sys_symbols.html#BOOLEAN">BOOLEAN</a>)</div>
+       <div class="def-comment"><i>test less than or equal</i></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="GTE_INT"></a>GTE_INT</div>
+       <div class="def-sig-in"><li>int1(STRUCTURE:<a href="ref_sys_symbols.html#INTEGER">INTEGER</a>)</li><li>int2(STRUCTURE:<a href="ref_sys_symbols.html#INTEGER">INTEGER</a>)</li></div>
+       <div class="def-sig-out">result(SYMBOL:<a href="ref_sys_symbols.html#BOOLEAN">BOOLEAN</a>)</div>
+       <div class="def-comment"><i>test greater than or equal</i></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="MAGIC"></a>MAGIC</div>
+       <div class="def-sig-in"></div>
+       <div class="def-sig-out">result(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
+       <div class="def-comment"><i>dark magic</i><br />   this process reduces to hardcoded special things as a scaffold for things we don't know how to build in ceptr yet.</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="STX_SL"></a>STX_SL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="STX_OP"></a>STX_OP</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="STX_CP"></a>STX_CP</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="STX_SET"></a>STX_SET</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="STX_OS"></a>STX_OS</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="STX_CS"></a>STX_CS</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="STX_LABEL"></a>STX_LABEL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="STX_OG"></a>STX_OG</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="STX_CG"></a>STX_CG</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="STX_EQ"></a>STX_EQ</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="STX_NEQ"></a>STX_NEQ</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="STX_WALK"></a>STX_WALK</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="STX_STAR"></a>STX_STAR</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="STX_PLUS"></a>STX_PLUS</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="STX_Q"></a>STX_Q</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="STX_OR"></a>STX_OR</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="STX_COMMA"></a>STX_COMMA</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="STX_EXCEPT"></a>STX_EXCEPT</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="STX_NOT"></a>STX_NOT</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="STX_VAL_S"></a>STX_VAL_S</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="STX_VAL_C"></a>STX_VAL_C</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CHAR">CHAR</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="STX_VAL_I"></a>STX_VAL_I</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#INTEGER">INTEGER</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="STX_VAL_F"></a>STX_VAL_F</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#FLOAT">FLOAT</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="STX_TOKEN_LIST"></a>STX-TOKEN-LIST</div>
+       <div class="def-struc-def">*(SET(<a href="ref_sys_symbols.html#STX_SL">STX_SL</a>, <a href="ref_sys_symbols.html#STX_OP">STX_OP</a>, <a href="ref_sys_symbols.html#STX_CP">STX_CP</a>, <a href="ref_sys_symbols.html#STX_SET">STX_SET</a>, <a href="ref_sys_symbols.html#STX_OS">STX_OS</a>, <a href="ref_sys_symbols.html#STX_CS">STX_CS</a>, <a href="ref_sys_symbols.html#STX_LABEL">STX_LABEL</a>, <a href="ref_sys_symbols.html#STX_OG">STX_OG</a>, <a href="ref_sys_symbols.html#STX_CG">STX_CG</a>, <a href="ref_sys_symbols.html#STX_EQ">STX_EQ</a>, <a href="ref_sys_symbols.html#STX_NEQ">STX_NEQ</a>, <a href="ref_sys_symbols.html#STX_WALK">STX_WALK</a>, <a href="ref_sys_symbols.html#STX_*">STX_*</a>, <a href="ref_sys_symbols.html#STX_+">STX_+</a>, <a href="ref_sys_symbols.html#STX_Q">STX_Q</a>, <a href="ref_sys_symbols.html#STX_OR">STX_OR</a>, <a href="ref_sys_symbols.html#STX_COMMA">STX_COMMA</a>, <a href="ref_sys_symbols.html#STX_EXCEPT">STX_EXCEPT</a>, <a href="ref_sys_symbols.html#STX_NOT">STX_NOT</a>, <a href="ref_sys_symbols.html#STX_VAL_S">STX_VAL_S</a>, <a href="ref_sys_symbols.html#STX_VAL_C">STX_VAL_C</a>, <a href="ref_sys_symbols.html#STX_VAL_I">STX_VAL_I</a>, <a href="ref_sys_symbols.html#STX_VAL_F">STX_VAL_F</a>))</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="STX_TOKENS"></a>STX_TOKENS</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#STX_TOKEN_LIST">STX-TOKEN-LIST</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="STX_SIBS"></a>STX_SIBS</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ONE_OR_MORE_OF_ANY_SYMBOL">ONE-OR-MORE-OF-ANY-SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="STX_CHILD"></a>STX_CHILD</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="STX_POSTFIX"></a>STX_POSTFIX</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="TREE_DELTA_PATH"></a>TREE_DELTA_PATH</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="TREE_DELTA_VALUE"></a>TREE_DELTA_VALUE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="TREE_DELTA_COUNT"></a>TREE_DELTA_COUNT</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#INTEGER">INTEGER</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="TREE_DELTA"></a>TREE_DELTA</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#TREE_DELTA_PATH">TREE_DELTA_PATH</a>, <a href="ref_sys_symbols.html#TREE_DELTA_VALUE">TREE_DELTA_VALUE</a>, <a href="ref_sys_symbols.html#TREE_DELTA_COUNT">TREE_DELTA_COUNT</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="TREE_DELTA_ADD"></a>TREE_DELTA_ADD</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TREE_DELTA">TREE-DELTA</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="TREE_DELTA_REPLACE"></a>TREE_DELTA_REPLACE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TREE_DELTA">TREE-DELTA</a></div>
+       <div class="def-comment"></div>
+   </div>
+</div>
+<div class="defs-context">
+   <h4>DEV_COMPOSITORY_CONTEXT</h4>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="REQUESTER"></a>REQUESTER</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="RESPONDER"></a>RESPONDER</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="REQUEST_DATA"></a>REQUEST_DATA</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="RESPONSE_DATA"></a>RESPONSE_DATA</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="RESPONSE_HANDLER"></a>RESPONSE_HANDLER</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#PROCESS">PROCESS</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="REQUEST_HANDLER"></a>REQUEST_HANDLER</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#PROCESS">PROCESS</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="send_request"></a>send_request</div>
+       <div class="def-sig-in"></div>
+       <div class="def-sig-out">response(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
+       <div class="def-comment"><i>send request</i></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="send_response"></a>send_response</div>
+       <div class="def-sig-in"></div>
+       <div class="def-sig-out">response id(SYMBOL:<a href="ref_sys_symbols.html#SIGNAL_UUID">SIGNAL_UUID</a>)</div>
+       <div class="def-comment"><i>send response</i></div>
+   </div>
+   <div class="def-item def-protocol">
+       <div class="def-type">Protocol:</div>
+       <div class="def-name"><a name="REQUESTING"></a>REQUESTING</div>
+       <div class="def-protocol-def">ROLE,REQUESTER,ROLE,RESPONDER,GOAL,REQUEST_HANDLER,GOAL,RESPONSE_HANDLER,USAGE,REQUEST_DATA,USAGE,RESPONSE_DATA,INTERACTION,"backnforth",INITIATE,REQUESTER,RESPONDER,req_action,EXPECT,RESPONDER,REQUESTER,resp_pattern,resp_action</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="RECOGNIZER"></a>RECOGNIZER</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="RECOGNIZEE"></a>RECOGNIZEE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="RECOGNITION"></a>RECOGNITION</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#PROCESS">PROCESS</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="are_you"></a>are_you</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SEMTREX">SEMTREX</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="i_am"></a>i_am</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#RECEPTOR_IDENTITY">RECEPTOR-IDENTITY</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="fill_i_am"></a>fill_i_am</div>
+       <div class="def-sig-in"></div>
+       <div class="def-sig-out">result(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
+       <div class="def-comment"><i>fill i am</i></div>
+   </div>
+   <div class="def-item def-protocol">
+       <div class="def-type">Protocol:</div>
+       <div class="def-name"><a name="RECOGNIZE"></a>RECOGNIZE</div>
+       <div class="def-protocol-def">INCLUSION,REQUESTING,WHICH_ROLE,REQUESTER,RECOGNIZER,WHICH_ROLE,RESPONDER,RECOGNIZEE,WHICH_GOAL,RESPONSE_HANDLER,RECOGNITION,WHICH_SYMBOL,REQUEST_DATA,are_you,WHICH_SYMBOL,RESPONSE_DATA,i_am,WHICH_PROCESS,REQUEST_HANDLER,fill_i_am</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="VERB"></a>VERB</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="COMMAND_PARAMETER"></a>COMMAND_PARAMETER</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="COMMAND"></a>COMMAND</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#VERB">VERB</a>, *(<a href="ref_sys_symbols.html#COMMAND_PARAMETER">COMMAND_PARAMETER</a>))</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SHELL_COMMAND"></a>SHELL_COMMAND</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#COMMAND">COMMAND</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SERVER"></a>SERVER</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="CLIENT"></a>CLIENT</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="PING"></a>PING</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="YUP"></a>YUP</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="HANDLER"></a>HANDLER</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#PROCESS">PROCESS</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="respond_with_yup"></a>respond_with_yup</div>
+       <div class="def-sig-in"></div>
+       <div class="def-sig-out">response id(SYMBOL:<a href="ref_sys_symbols.html#SIGNAL_UUID">SIGNAL_UUID</a>)</div>
+       <div class="def-comment"><i>respond with yup</i></div>
+   </div>
+   <div class="def-item def-protocol">
+       <div class="def-type">Protocol:</div>
+       <div class="def-name"><a name="ALIVE"></a>ALIVE</div>
+       <div class="def-protocol-def">ROLE,SERVER,ROLE,CLIENT,GOAL,HANDLER,INTERACTION,"alive",EXPECT,SERVER,CLIENT,pattern1,action1,EXPECT,CLIENT,SERVER,pattern2,action2</div>
+       <div class="def-comment"></div>
+   </div>
+</div>
+<div class="defs-context">
+   <h4>TEST_CONTEXT</h4>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="TEST_INT_SYMBOL"></a>TEST_INT_SYMBOL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#INTEGER">INTEGER</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="TEST_INT_SYMBOL2"></a>TEST_INT_SYMBOL2</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#INTEGER">INTEGER</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="TEST_FLOAT_SYMBOL"></a>TEST_FLOAT_SYMBOL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#FLOAT">FLOAT</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="TEST_STR_SYMBOL"></a>TEST_STR_SYMBOL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="TEST_TREE_SYMBOL"></a>TEST_TREE_SYMBOL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TREE">TREE</a></div>
+       <div class="def-comment">      an orthogonal tree</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="TEST_ANYTHING_SYMBOL"></a>TEST_ANYTHING_SYMBOL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></div>
+       <div class="def-comment">   used to build trees in testing of unknown structure</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="TEST_ANYTHING_SYMBOL2"></a>TEST_ANYTHING_SYMBOL2</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="TEST_STREAM_SYMBOL"></a>TEST_STREAM_SYMBOL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#STREAM">STREAM</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="TEST_NAME_SYMBOL"></a>TEST_NAME_SYMBOL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="TEST_ALPHABETIZE_SCAPE_SYMBOL"></a>TEST_ALPHABETIZE_SCAPE_SYMBOL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SCAPE">SCAPE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="TEST_SYMBOL_SYMBOL"></a>TEST_SYMBOL_SYMBOL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="TESTING"></a>TESTING</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+</div>
+<div class="defs-context">
+   <h4>CLOCK_CONTEXT</h4>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="CLOCK_TELL_TIME"></a>CLOCK_TELL_TIME</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+</div>
+<div class="defs-context">
+   <h4>STREAM_READER_CONTEXT</h4>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="LINE"></a>LINE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-comment">                           text lines from unix streams</div>
+   </div>

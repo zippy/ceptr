@@ -384,12 +384,34 @@ my $syhtml = << 'HTML';
 HTML
 $syhtml .= "<tr><td><a name=\"NULL_SYMBOL\"></a>NULL_SYMBOL</td><td><i>undefined</i></td><td></td></tr>\n";
 
+my $sysdfh = openf('>','doxy/sys_defs.html');
+my $sysdhtml = <<"HTML";
+<style type="text/css">
+ div.def-type {display:inline-block;}
+ div.def-item {display:inline-block;}
+ div.def-name {display:inline-block;}
+ div.def-sig-in {display:inline-block;}
+ div.def-sig-out {display:inline-block;}
+ div.def-sym-def {display:inline-block;}
+ div.def-struc-def {display:inline-block;}
+ div.def-protocol-def {display:inline-block;}
+ div.def-sig-out {display:inline-block;}
+ div.def-comment {display:inline-block;}
+</style>
+
+HTML
+my $cur_ctx = "";
 foreach my $s (@d) {
     my @x = @$s;
     my $type = $x[0];
     my $context = $x[1];
     my $name = $x[2];
     my $def = $x[3];
+    if ($cur_ctx ne $context) {
+        if ($cur_ctx ne "") {$sysdhtml .= "</div>\n"};
+        $sysdhtml .= "<div class=\"defs-context\">\n   <h4>$context</h4>\n";
+        $cur_ctx = $context;
+    }
     if ($type eq 'Process') {
         my ($code,$desc,$out,$out_type,$out_sym,@def) = split /,/,$def;
         $desc =~ /"(.*)"/;
@@ -410,6 +432,16 @@ foreach my $s (@d) {
         my $c = "<i>$desc</i>";
         $c = "$c<br />".$comments{$name} if $comments{$name};
         $phtml .= "<tr><td><a name=\"$name\"></a>$name</td><td><ol>$in</ol></td><td>$out</td><td>$c</td></tr>\n";
+        $sysdhtml .= << "HTML";
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="$name"></a>$name</div>
+       <div class="def-sig-in">$in</div>
+       <div class="def-sig-out">$out</div>
+       <div class="def-comment">$c</div>
+   </div>
+HTML
+
     }
     elsif ($type eq 'Symbol') {
         if ($declared{$name}) {
@@ -420,6 +452,14 @@ foreach my $s (@d) {
         $def = "<a href=\"ref_sys_structures.html#$n\">$def</a>";
         my $c = $comments{$name} ? $comments{$name} : "";
         $syhtml .= "<tr><td><a name=\"$name\"></a>$name</td><td>$def</td><td>$c</td></tr>\n";
+        $sysdhtml .= << "HTML";
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="$name"></a>$name</div>
+       <div class="def-sym-def">$def</div>
+       <div class="def-comment">$c</div>
+   </div>
+HTML
     }
     elsif ($type eq 'Structure') {
         my ($count,@def) = split /,/,$def;
@@ -433,6 +473,14 @@ foreach my $s (@d) {
         $sthtml .= "";
         my $c = $comments{$name} ? $comments{$name} : "";
         $sthtml .= "<tr><td><a name=\"$name\"></a>$name</td><td>$def</td><td>$c</td></tr>\n";
+        $sysdhtml .= << "HTML";
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="$name"></a>$name</div>
+       <div class="def-struc-def">$def</div>
+       <div class="def-comment">$c</div>
+   </div>
+HTML
     }
     elsif ($type eq 'StructureS') {
         my $n = $name;
@@ -448,12 +496,27 @@ foreach my $s (@d) {
         $def =~ s/BANG/\!/g;
         my $c = $comments{$name} ? $comments{$name} : "";
         $sthtml .= "<tr><td><a name=\"$name\"></a>$n</td><td>$def</td><td>$c</td></tr>\n";
+        $sysdhtml .= << "HTML";
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="$name"></a>$n</div>
+       <div class="def-struc-def">$def</div>
+       <div class="def-comment">$c</div>
+   </div>
+HTML
+    } elsif ($type eq 'Protocol') {
+        my $c = $comments{$name} ? $comments{$name} : "";
+        $sysdhtml .= << "HTML";
+   <div class="def-item def-protocol">
+       <div class="def-type">Protocol:</div>
+       <div class="def-name"><a name="$name"></a>$name</div>
+       <div class="def-protocol-def">$def</div>
+       <div class="def-comment">$c</div>
+   </div>
+HTML
     }
-    elsif ($type eq 'Protocol') {
-
-    }
-
 }
+print $sysdfh $sysdhtml;
 
 &finish($phtml,$pdfh);
 &finish($sthtml,$stdfh);
