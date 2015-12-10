@@ -1605,9 +1605,9 @@
                {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
                   {"sem":{ "ctx":0,"type":2,"id":16 },"surface":"COMMAND"},
                   {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
-                     {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":2,"type":2,"id":8 }},
+                     {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":2,"type":2,"id":13 }},
                      {"sem":{ "ctx":0,"type":2,"id":12 },"children":[
-                        {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":2,"type":2,"id":9 }}]}]}]}]},
+                        {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":2,"type":2,"id":14 }}]}]}]}]},
             {"sem":{ "ctx":0,"type":2,"id":2 },"children":[
                {"sem":{ "ctx":0,"type":2,"id":21 },"children":[
                   {"sem":{ "ctx":0,"type":2,"id":20 },"surface":"REQUESTER"},
@@ -1630,6 +1630,21 @@
                {"sem":{ "ctx":0,"type":2,"id":21 },"children":[
                   {"sem":{ "ctx":0,"type":2,"id":20 },"surface":"backnforth"},
                   {"sem":{ "ctx":0,"type":2,"id":19 },"surface":{ "ctx":0,"type":1,"id":67 }}]},
+               {"sem":{ "ctx":0,"type":2,"id":21 },"children":[
+                  {"sem":{ "ctx":0,"type":2,"id":20 },"surface":"RECOGNIZER"},
+                  {"sem":{ "ctx":0,"type":2,"id":19 },"surface":{ "ctx":0,"type":1,"id":43 }}]},
+               {"sem":{ "ctx":0,"type":2,"id":21 },"children":[
+                  {"sem":{ "ctx":0,"type":2,"id":20 },"surface":"RECOGNIZEE"},
+                  {"sem":{ "ctx":0,"type":2,"id":19 },"surface":{ "ctx":0,"type":1,"id":43 }}]},
+               {"sem":{ "ctx":0,"type":2,"id":21 },"children":[
+                  {"sem":{ "ctx":0,"type":2,"id":20 },"surface":"RECOGNITION"},
+                  {"sem":{ "ctx":0,"type":2,"id":19 },"surface":{ "ctx":0,"type":1,"id":8 }}]},
+               {"sem":{ "ctx":0,"type":2,"id":21 },"children":[
+                  {"sem":{ "ctx":0,"type":2,"id":20 },"surface":"are_you"},
+                  {"sem":{ "ctx":0,"type":2,"id":19 },"surface":{ "ctx":0,"type":1,"id":17 }}]},
+               {"sem":{ "ctx":0,"type":2,"id":21 },"children":[
+                  {"sem":{ "ctx":0,"type":2,"id":20 },"surface":"i_am"},
+                  {"sem":{ "ctx":0,"type":2,"id":19 },"surface":{ "ctx":0,"type":1,"id":85 }}]},
                {"sem":{ "ctx":0,"type":2,"id":21 },"children":[
                   {"sem":{ "ctx":0,"type":2,"id":20 },"surface":"VERB"},
                   {"sem":{ "ctx":0,"type":2,"id":19 },"surface":{ "ctx":0,"type":1,"id":5 }}]},
@@ -1662,10 +1677,10 @@
                   {"sem":{ "ctx":0,"type":2,"id":82 },"surface":"send_request"},
                   {"sem":{ "ctx":0,"type":2,"id":83 },"surface":"send request"},
                   {"sem":{ "ctx":0,"type":3,"id":6 },"children":[
-                     {"sem":{ "ctx":0,"type":2,"id":103 },"surface":{ "ctx":0,"type":2,"id":59 }},
-                     {"sem":{ "ctx":2,"type":2,"id":3 },"surface":{ "ctx":2,"type":2,"id":2 }},
+                     {"sem":{ "ctx":0,"type":2,"id":103 },"surface":{ "ctx":2,"type":2,"id":2 }},
                      {"sem":{ "ctx":0,"type":2,"id":105 },"surface":{ "ctx":2,"type":2,"id":3 }},
-                     {"sem":{ "ctx":0,"type":2,"id":59 },"surface":{ "ctx":2,"type":2,"id":4 }},
+                     {"sem":{ "ctx":0,"type":2,"id":105 },"surface":{ "ctx":2,"type":2,"id":3 }},
+                     {"sem":{ "ctx":0,"type":2,"id":105 },"surface":{ "ctx":2,"type":2,"id":4 }},
                      {"sem":{ "ctx":0,"type":2,"id":104 },"surface":{ "ctx":2,"type":2,"id":5 }}]},
                   {"sem":{ "ctx":0,"type":2,"id":84 },"children":[
                      {"sem":{ "ctx":0,"type":2,"id":97 },"children":[
@@ -1682,11 +1697,21 @@
                         {"sem":{ "ctx":0,"type":2,"id":87 },"surface":"response id"},
                         {"sem":{ "ctx":0,"type":2,"id":89 },"surface":{ "ctx":0,"type":2,"id":61 }}]}]}]},
                {"sem":{ "ctx":0,"type":2,"id":86 },"children":[
+                  {"sem":{ "ctx":0,"type":2,"id":82 },"surface":"fill_i_am"},
+                  {"sem":{ "ctx":0,"type":2,"id":83 },"surface":"fill i am"},
+                  {"sem":{ "ctx":2,"type":2,"id":12 },"children":[
+                     {"sem":{ "ctx":0,"type":2,"id":135 },"surface":"super cept"},
+                     {"sem":{ "ctx":0,"type":2,"id":130 },"surface":314159}]},
+                  {"sem":{ "ctx":0,"type":2,"id":84 },"children":[
+                     {"sem":{ "ctx":0,"type":2,"id":97 },"children":[
+                        {"sem":{ "ctx":0,"type":2,"id":87 },"surface":"result"},
+                        {"sem":{ "ctx":0,"type":2,"id":92 }}]}]}]},
+               {"sem":{ "ctx":0,"type":2,"id":86 },"children":[
                   {"sem":{ "ctx":0,"type":2,"id":82 },"surface":"respond_with_yup"},
                   {"sem":{ "ctx":0,"type":2,"id":83 },"surface":"respond with yup"},
                   {"sem":{ "ctx":0,"type":3,"id":8 },"children":[
                      {"sem":{ "ctx":0,"type":2,"id":100 },"surface":"/1/4"},
-                     {"sem":{ "ctx":2,"type":2,"id":14 }}]},
+                     {"sem":{ "ctx":2,"type":2,"id":19 }}]},
                   {"sem":{ "ctx":0,"type":2,"id":84 },"children":[
                      {"sem":{ "ctx":0,"type":2,"id":97 },"children":[
                         {"sem":{ "ctx":0,"type":2,"id":87 },"surface":"response id"},
@@ -1716,27 +1741,55 @@
                               {"sem":{ "ctx":0,"type":2,"id":105 },"surface":{ "ctx":2,"type":2,"id":4 }}]}]},
                         {"sem":{ "ctx":0,"type":2,"id":104 },"surface":{ "ctx":2,"type":2,"id":5 }}]}]}]},
                {"sem":{ "ctx":0,"type":2,"id":125 },"children":[
+                  {"sem":{ "ctx":0,"type":2,"id":124 },"surface":"RECOGNIZE"},
+                  {"sem":{ "ctx":0,"type":2,"id":111 },"children":[
+                     {"sem":{ "ctx":0,"type":2,"id":110 },"surface":{ "ctx":2,"type":5,"id":1 }},
+                     {"sem":{ "ctx":0,"type":2,"id":122 },"children":[
+                        {"sem":{ "ctx":0,"type":2,"id":120 },"children":[
+                           {"sem":{ "ctx":0,"type":2,"id":103 },"surface":{ "ctx":2,"type":2,"id":1 }},
+                           {"sem":{ "ctx":0,"type":2,"id":103 },"surface":{ "ctx":2,"type":2,"id":8 }}]}]},
+                     {"sem":{ "ctx":0,"type":2,"id":122 },"children":[
+                        {"sem":{ "ctx":0,"type":2,"id":120 },"children":[
+                           {"sem":{ "ctx":0,"type":2,"id":103 },"surface":{ "ctx":2,"type":2,"id":2 }},
+                           {"sem":{ "ctx":0,"type":2,"id":103 },"surface":{ "ctx":2,"type":2,"id":9 }}]}]},
+                     {"sem":{ "ctx":0,"type":2,"id":122 },"children":[
+                        {"sem":{ "ctx":0,"type":2,"id":119 },"children":[
+                           {"sem":{ "ctx":0,"type":2,"id":104 },"surface":{ "ctx":2,"type":2,"id":5 }},
+                           {"sem":{ "ctx":0,"type":2,"id":104 },"surface":{ "ctx":2,"type":2,"id":10 }}]}]},
+                     {"sem":{ "ctx":0,"type":2,"id":118 },"children":[
+                        {"sem":{ "ctx":0,"type":2,"id":117 },"children":[
+                           {"sem":{ "ctx":0,"type":2,"id":105 },"surface":{ "ctx":2,"type":2,"id":3 }},
+                           {"sem":{ "ctx":0,"type":2,"id":114 },"surface":{ "ctx":2,"type":2,"id":11 }}]}]},
+                     {"sem":{ "ctx":0,"type":2,"id":118 },"children":[
+                        {"sem":{ "ctx":0,"type":2,"id":117 },"children":[
+                           {"sem":{ "ctx":0,"type":2,"id":105 },"surface":{ "ctx":2,"type":2,"id":4 }},
+                           {"sem":{ "ctx":0,"type":2,"id":114 },"surface":{ "ctx":2,"type":2,"id":12 }}]}]},
+                     {"sem":{ "ctx":0,"type":2,"id":118 },"children":[
+                        {"sem":{ "ctx":0,"type":2,"id":115 },"children":[
+                           {"sem":{ "ctx":0,"type":2,"id":104 },"surface":{ "ctx":2,"type":2,"id":6 }},
+                           {"sem":{ "ctx":0,"type":2,"id":112 },"surface":{ "ctx":2,"type":3,"id":3 }}]}]}]}]},
+               {"sem":{ "ctx":0,"type":2,"id":125 },"children":[
                   {"sem":{ "ctx":0,"type":2,"id":124 },"surface":"ALIVE"},
-                  {"sem":{ "ctx":0,"type":2,"id":103 },"surface":{ "ctx":2,"type":2,"id":11 }},
-                  {"sem":{ "ctx":0,"type":2,"id":103 },"surface":{ "ctx":2,"type":2,"id":12 }},
-                  {"sem":{ "ctx":0,"type":2,"id":104 },"surface":{ "ctx":2,"type":2,"id":15 }},
-                  {"sem":{ "ctx":2,"type":2,"id":16 },"children":[
+                  {"sem":{ "ctx":0,"type":2,"id":103 },"surface":{ "ctx":2,"type":2,"id":16 }},
+                  {"sem":{ "ctx":0,"type":2,"id":103 },"surface":{ "ctx":2,"type":2,"id":17 }},
+                  {"sem":{ "ctx":0,"type":2,"id":104 },"surface":{ "ctx":2,"type":2,"id":20 }},
+                  {"sem":{ "ctx":2,"type":2,"id":21 },"children":[
                      {"sem":{ "ctx":0,"type":2,"id":108 },"children":[
-                        {"sem":{ "ctx":0,"type":2,"id":103 },"surface":{ "ctx":2,"type":2,"id":11 }},
+                        {"sem":{ "ctx":0,"type":2,"id":103 },"surface":{ "ctx":2,"type":2,"id":16 }},
                         {"sem":{ "ctx":0,"type":2,"id":106 },"children":[
-                           {"sem":{ "ctx":0,"type":2,"id":103 },"surface":{ "ctx":2,"type":2,"id":12 }}]},
+                           {"sem":{ "ctx":0,"type":2,"id":103 },"surface":{ "ctx":2,"type":2,"id":17 }}]},
                         {"sem":{ "ctx":0,"type":2,"id":77 },"children":[
                            {"sem":{ "ctx":0,"type":2,"id":24 },"children":[
-                              {"sem":{ "ctx":0,"type":2,"id":38 },"surface":{ "ctx":2,"type":2,"id":13 }}]}]},
-                        {"sem":{ "ctx":0,"type":2,"id":78 },"surface":{ "ctx":2,"type":3,"id":3 }}]},
+                              {"sem":{ "ctx":0,"type":2,"id":38 },"surface":{ "ctx":2,"type":2,"id":18 }}]}]},
+                        {"sem":{ "ctx":0,"type":2,"id":78 },"surface":{ "ctx":2,"type":3,"id":4 }}]},
                      {"sem":{ "ctx":0,"type":2,"id":108 },"children":[
-                        {"sem":{ "ctx":0,"type":2,"id":103 },"surface":{ "ctx":2,"type":2,"id":12 }},
+                        {"sem":{ "ctx":0,"type":2,"id":103 },"surface":{ "ctx":2,"type":2,"id":17 }},
                         {"sem":{ "ctx":0,"type":2,"id":106 },"children":[
-                           {"sem":{ "ctx":0,"type":2,"id":103 },"surface":{ "ctx":2,"type":2,"id":11 }}]},
+                           {"sem":{ "ctx":0,"type":2,"id":103 },"surface":{ "ctx":2,"type":2,"id":16 }}]},
                         {"sem":{ "ctx":0,"type":2,"id":77 },"children":[
                            {"sem":{ "ctx":0,"type":2,"id":24 },"children":[
-                              {"sem":{ "ctx":0,"type":2,"id":38 },"surface":{ "ctx":2,"type":2,"id":14 }}]}]},
-                        {"sem":{ "ctx":0,"type":2,"id":104 },"surface":{ "ctx":2,"type":2,"id":15 }}]}]}]}]},
+                              {"sem":{ "ctx":0,"type":2,"id":38 },"surface":{ "ctx":2,"type":2,"id":19 }}]}]},
+                        {"sem":{ "ctx":0,"type":2,"id":104 },"surface":{ "ctx":2,"type":2,"id":20 }}]}]}]}]},
             {"sem":{ "ctx":0,"type":2,"id":6 }}]}]},
       {"sem":{ "ctx":0,"type":2,"id":136 },"children":[
          {"sem":{ "ctx":0,"type":2,"id":135 },"surface":"TEST_RECEPTOR"},

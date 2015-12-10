@@ -176,7 +176,16 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         if (tree.surface) {
             var surface = $.getOrCreate('surface',s);
             if (typeof tree.surface === "object") {
-                surface.innerHTML = "&lt;"+getSemName(tree.surface)+"&gt;"
+                var o = tree.surface;
+                //@todo implement general way to represent base objects here
+
+                // this represents a SemanticID by it's name:
+                if (o.hasOwnProperty("ctx") && o.hasOwnProperty("id") && o.hasOwnProperty("type")) {
+                    surface.innerHTML = "&lt;"+getSemName(tree.surface)+"&gt;"
+                }
+                else {
+                    surface.innerHTML = "some-object";
+                }
             }
             else {
                 surface.innerHTML = tree.surface;
@@ -417,21 +426,19 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
     var SEM_TYPE_STRUCTURE=1;
     var SEM_TYPE_SYMBOL=2;
     var SEM_TYPE_PROCESS=3;
-    var SEM_TYPE_PROTOCOL=4;
-    var type_names= ["","STRUCTURE","SYMBOL","PROCESS","PROTOCOL"];
+    var SEM_TYPE_RECEPTOR=4;
+    var SEM_TYPE_PROTOCOL=5;
+    var type_names= ["","STRUCTURE","SYMBOL","PROCESS","RECEPTOR","PROTOCOL"];
     var SYS_CONTEXT=0;
     var COMPOSITORY_CONTEXT=1;
-    var LOCAL_CONTEXT=2;
+    var DEV_COMPOSITORY_CONTEXT=2;
     var TEST_CONTEXT=3;
-    var CONTEXTS = [{},{},{
-        // set up the defs tree for the local context (have to do this manually)
-        sem:{ctx:0,type:2,id:1},
-        children:[
-            {sem:{ctx:0,type:2,id:2},children:[]},
-            {sem:{ctx:0,type:2,id:7},children:[]},
-            {sem:{ctx:0,type:2,id:61},children:[]}
-        ]
-    },{}];
+    var CLOCK_CONTEXT=4;
+    var STREAM_READER_CONTEXT=5;
+    var STREAM_WRITER_CONTEXT=6;
+
+    var CONTEXTS = [];
+    var Context_count = 0;
 
     function getSemName(id){
         if (id.id == 0) {
@@ -464,11 +471,11 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
     }
 
     function newSymbol(label,struct) {
-        var symbols = CONTEXTS[LOCAL_CONTEXT].children[SEM_TYPE_SYMBOL-1];
+        var symbols = CONTEXTS[DEV_COMPOSITORY_CONTEXT].children[SEM_TYPE_SYMBOL-1];
         var def = Tnew(symbols,LABEL_TABLE["SYMBOL_DEFINITION"].sem);
         Tnew(def,LABEL_TABLE["SYMBOL_LABEL"].sem,label);
         Tnew(def,LABEL_TABLE["SYMBOL_STRUCTURE"].sem,struct);
-        var sem = {ctx:LOCAL_CONTEXT,type:SEM_TYPE_SYMBOL,id:symbols.children.length};
+        var sem = {ctx:DEV_COMPOSITORY_CONTEXT,type:SEM_TYPE_SYMBOL,id:symbols.children.length};
         LABEL_TABLE[label]= {"sem":sem,type:'symbol',structure:getSemName(struct)};
         SYMBOLS.push(label);
         if (_.lt_elem) {
@@ -484,11 +491,11 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
     }
 
     function newStructure(label,symbols) {
-        var structures = CONTEXTS[LOCAL_CONTEXT].children[SEM_TYPE_STRUCTURE-1];
+        var structures = CONTEXTS[DEV_COMPOSITORY_CONTEXT].children[SEM_TYPE_STRUCTURE-1];
         var def = Tnew(structures,LABEL_TABLE["STRUCTURE_DEFINITION"].sem);
         Tnew(def,LABEL_TABLE["STRUCTURE_LABEL"].sem,label);
         var parts = Tnew(def,LABEL_TABLE["STRUCTURE_SEQUENCE"].sem);
-        var sem = {ctx:LOCAL_CONTEXT,type:SEM_TYPE_STRUCTURE,id:structures.children.length};
+        var sem = {ctx:DEV_COMPOSITORY_CONTEXT,type:SEM_TYPE_STRUCTURE,id:structures.children.length};
         var s = [];
         for(var i=0;i<symbols.length;i++) {
             Tnew(parts,LABEL_TABLE["STRUCTURE_SYMBOL"].sem,symbols[i]);
@@ -503,54 +510,76 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         return sem;
     }
 
-    function _doDefs(type,func) {
-        var defs = CONTEXTS[SYS_CONTEXT].children[type-1].children;
-        var num_defs = defs.length;
-        for (var i=0;i<num_defs;i++) {
-            label = defs[i].children[0].surface;
-            var lt_entry = func(i,defs[i]);
-            LABEL_TABLE[label] = lt_entry;
+    // add defs to the label table
+    function _doDefs(context,type,func) {
+        var defs = CONTEXTS[context].children[type-1].children;
+        if (defs) {
+            var num_defs = defs.length;
+            for (var i=0;i<num_defs;i++) {
+                label = defs[i].children[0].surface;
+                var lt_entry = func(i,defs[i]);
+                LABEL_TABLE[label] = lt_entry;
+            }
         }
     }
+
+    function setupContext(context,defs) {
+        CONTEXTS[context] = defs;
+        _doDefs(context,SEM_TYPE_RECEPTOR,function(i,receptor_def){
+            Context_count++;
+            setupContext(Context_count,receptor_def.children[1]);
+            return {
+                sem:{ctx:context,type:SEM_TYPE_RECEPTOR,id:i+1},
+                type:'receptor'
+                // @todo add defs for label table here.
+            };
+        });
+        _doDefs(context,SEM_TYPE_STRUCTURE,function(i,struct_def){
+            var def = {sem:{ctx:context,type:SEM_TYPE_STRUCTURE,id:i+1},
+                       type:'structure',
+                       def:struct_def.children[1]
+                      };
+            return def;
+        });
+        _doDefs(context,SEM_TYPE_SYMBOL,function(i,symbol_def){
+            var struct = symbol_def.children[1].surface;
+            return {
+                sem:{ctx:context,type:SEM_TYPE_SYMBOL,id:i+1},
+                type:'symbol',
+                structure:getSemName(struct)
+            };
+        });
+        _doDefs(context,SEM_TYPE_PROCESS,function(i,process_def){
+            var def = {
+                sem:{ctx:context,type:SEM_TYPE_PROCESS,id:i+1},
+                type:'process'
+                //                    intention:symbol_def.children[1].surface;
+            };
+            var signatures = process_def.children[3].children
+            var params = [];
+            for (var j=1;j<signatures.length;j++) {
+                var n = signatures[j].children[0].surface;
+                params.push(n);
+            }
+            if (params.length>0) def.params = params;
+
+            return def;
+        });
+        _doDefs(context,SEM_TYPE_PROTOCOL,function(i,protocol_def){
+            return {
+                sem:{ctx:context,type:SEM_TYPE_PROTOCOL,id:i+1},
+                type:'protocol'
+                // @todo add defs for label table here.
+            };
+        });
+   }
     // Initialization
     function init() {
 	$$(".TE").forEach(function (elem) {
 	    new _(elem);
 	});
         loadTree("sysdefs",function(d){
-            CONTEXTS[SYS_CONTEXT] = d;
-            _doDefs(SEM_TYPE_STRUCTURE,function(i,struct_def){
-                var def = {sem:{ctx:SYS_CONTEXT,type:SEM_TYPE_STRUCTURE,id:i+1},
-                           type:'structure',
-                           def:struct_def.children[1]
-                          };
-                return def;
-            });
-            _doDefs(SEM_TYPE_SYMBOL,function(i,symbol_def){
-                var struct = symbol_def.children[1].surface;
-                return {
-                    sem:{ctx:SYS_CONTEXT,type:SEM_TYPE_SYMBOL,id:i+1},
-                    type:'symbol',
-                    structure:getSemName(struct)
-                };
-            });
-            _doDefs(SEM_TYPE_PROCESS,function(i,process_def){
-                var def = {
-                    sem:{ctx:SYS_CONTEXT,type:SEM_TYPE_PROCESS,id:i+1},
-                    type:'process'
-//                    intention:symbol_def.children[1].surface;
-                };
-                var signatures = process_def.children[2].children
-                var params = [];
-                for (var j=1;j<signatures.length;j++) {
-                    var n = signatures[j].children[0].surface;
-                    params.push(n);
-                }
-                if (params.length>0) def.params = params;
-
-                return def;
-            });
-
+            setupContext(SYS_CONTEXT,d);
 
             for (var key in LABEL_TABLE) {
                 var i = LABEL_TABLE[key];
