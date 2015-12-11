@@ -36,7 +36,6 @@ void def_sys() {
     _sd(STRUCTURE_LABEL,SYS_CONTEXT,SEM_TYPE_SYMBOL,STRUCTURE_LABEL_ID);
     _sd(STRUCTURE_SEQUENCE,SYS_CONTEXT,SEM_TYPE_SYMBOL,STRUCTURE_SEQUENCE_ID);
     _sd(STRUCTURE_SYMBOL,SYS_CONTEXT,SEM_TYPE_SYMBOL,STRUCTURE_SYMBOL_ID);
-    _sd(STRUCTURE_SYMBOL_SET,SYS_CONTEXT,SEM_TYPE_SYMBOL,STRUCTURE_SYMBOL_SET_ID);
     _sd(STRUCTURE_OR,SYS_CONTEXT,SEM_TYPE_SYMBOL,STRUCTURE_OR_ID);
     _sd(STRUCTURE_ZERO_OR_MORE,SYS_CONTEXT,SEM_TYPE_SYMBOL,STRUCTURE_ZERO_OR_MORE_ID);
     _sd(STRUCTURE_ONE_OR_MORE,SYS_CONTEXT,SEM_TYPE_SYMBOL,STRUCTURE_ONE_OR_MORE_ID);
@@ -73,36 +72,24 @@ T *sT_(SemTable *sem,Symbol sym,int num_params,...){
     T *set = _t_newr(0,sym);
     va_start(params,num_params);
     int i;
-    // if (strcmp("STX_SYMBOL_OR_SYMBOL_SET", G_label) == 0) {raise(SIGINT);}
     for(i=0;i<num_params;i++) {
         T * t = va_arg(params,T *);
-        // if it's a SYMBOL_SET we need to just use the symbol type and
-        // can throw away the node
-        if (semeq(sym,STRUCTURE_SYMBOL_SET)) {
+        if (semeq(_t_symbol(t),STRUCTURE_SYMBOL)) {
             Symbol ss = *(Symbol *)_t_surface(t);
-            if (!is_symbol(ss)) raise_error("only symbols allowed in SYMBOL_SET, def of %s",G_label);
-            _t_news(set,STRUCTURE_SYMBOL,ss);
-            _t_free(t);
-        }
-        // otherwise they should all be T *
-        else {
-            if (semeq(_t_symbol(t),STRUCTURE_SYMBOL)) {
-                Symbol ss = *(Symbol *)_t_surface(t);
-                if (is_structure(ss)) {
-                    T *structures = _sem_get_defs(G_sem,ss);
-                    T *st = _t_child(structures,ss.id);
-                    if (!st) {
-                        raise_error("Structure used in %s definition is undefined!",G_label);
-                    }
-                    else {
-                        _t_free(t);
-                        t = _t_clone(_t_child(st,2));
-                    }
+            if (is_structure(ss)) {
+                T *structures = _sem_get_defs(G_sem,ss);
+                T *st = _t_child(structures,ss.id);
+                if (!st) {
+                    raise_error("Structure used in %s definition is undefined!",G_label);
                 }
-                else if (ss.id == -1) {raise_error("Symbol used in %s definition is undefined!",G_label);}
+                else {
+                    _t_free(t);
+                    t = _t_clone(_t_child(st,2));
+                }
             }
-            _t_add(set,t);
+            else if (ss.id == -1) {raise_error("Symbol used in %s definition is undefined!",G_label);}
         }
+        _t_add(set,t);
     }
     va_end(params);
     return set;

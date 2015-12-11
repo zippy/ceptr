@@ -66,30 +66,28 @@ sub addDef {
     }
 }
 
-sub andify {
-    my $n = shift;
-    join("_AND_",split(/,/,$n))
-}
 sub makeName {
     my $n = shift;
     $n =~ s/sT_SYM\(([^)]+)\)/$1/g;
-    $n =~ s/sT_SET\([0-9]+,/ONE_OF_/g;
     $n =~ s/sT_SEQ\(2,([^,]+),\g1/PAIR_OF_$1/g;
     $n =~ s/sT_SEQ\(2,([^)]+)\)/TUPLE_OF_$1/g;
     $n =~ s/sT_SEQ\([0-9]+,/LIST_OF_/g;
-    $n =~ s/sT_OR/LOGICAL_OR_OF_/g;
+    $n =~ s/sT_OR\([0-9]+,/LOGICAL_OR_OF_/g;
     $n =~ s/sT_STAR/ZERO_OR_MORE_OF_/g;
     $n =~ s/sT_PLUS/ONE_OR_MORE_OF_/g;
     $n =~ s/sT_QMRK/ZERO_OR_ONE_OF_/g;
     $n =~ s/sT_PCNT/STRUCTURE_OF_/g;
     $n =~ s/sT_BANG/ANY_SYMBOL/g;
     $n =~ s/[()]//g;
-    return &andify($n);
+    $n =  join('_AND_',split(/,/,$n));
+    $n =  join('_OR_',split(/\|/,$n));
+    return $n;
 }
 
 sub buildNumParams {
     my $x = shift;
-    my @params = split /,/,$x;
+    my $sep = shift;
+    my @params = split /$sep/,$x;
     return scalar(@params).";".join(';',@params);
 }
 
@@ -98,20 +96,17 @@ sub convertStrucDef {
     my $x= shift;
     #for a simple structure without optionality we'll just use sT with params
     if (!($x=~/[\{\}\(\)\+\*?|\%\!]/)) {
-        $x = &buildNumParams($x);
+        $x = &buildNumParams($x,',');
     }
     else {
         $x =~ s/([a-zA-Z0-9_]+)/sT_SYM<$1>/g;
         $x =~ s/\%sT_SYM(<[a-zA-Z0-9_]+>)/sT_PCNT$1/g;
-        while ($x=~/\|/) {
-            $x =~ s/\|\[([^|\]]+)\|([^\]]+)\]/sT_OR<$1;$2>/;
-        }
         while ($x=~/[,()\{\}?+*!]/) {
             $x =~ s/\*([a-zA-Z0-9_<>;]+)/sT_STAR<$1>/g;
             $x =~ s/\+([a-zA-Z0-9_<>;]+)/sT_PLUS<$1>/g;
             $x =~ s/\?([a-zA-Z0-9_<>;]+)/sT_QMRK<$1>/g;
-            $x =~ s/\(([^()]+)\)/"sT_SEQ<".&buildNumParams($1).'>'/eg;
-            $x =~ s/\{([^\}\{]+)\}/"sT_SET<".&buildNumParams($1).'>'/eg;
+            $x =~ s/\(([^()]+)\)/"sT_SEQ<".&buildNumParams($1,',').'>'/eg;
+            $x =~ s/\|\{([^\{\}]+)\}/"sT_OR<".&buildNumParams($1,'\|').'>'/eg;
             $x =~ s/!/sT_BANG/g;
         }
         $x =~ s/</(/g;
@@ -489,7 +484,7 @@ HTML
         $def =~ s/,/, /g;
         $def =~ s/SYM\((.*?)\)/<a href="ref_sys_symbols.html#$1">$1<\/a>/g;
         $def =~ s/PCNT\((.*?)\)/%<a href="ref_sys_structures.html#$1">$1<\/a>/g;
-        $def =~ s/(SEQ|SET)\([0-9]+, /$1(/g;
+        $def =~ s/(SEQ|OR)\([0-9]+, /$1(/g;
         $def =~ s/STAR/\*/g;
         $def =~ s/PLUS/\+/g;
         $def =~ s/QMRK/\?/g;

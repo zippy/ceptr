@@ -35,14 +35,13 @@ char * G_label;
 #define sYs(ctx,sym,str) __d_set_symbol_structure(__sem_get_defs(sem,SEM_TYPE_SYMBOL,ctx),sym,str)
 #define sP(ctx,name,code,intention,...) name = _d_define_process(sem,code,"" #name "",intention,__p_make_signature(__VA_ARGS__),ctx)
 
-#define sT_SET(...) sT_(sem,STRUCTURE_SYMBOL_SET,__VA_ARGS__)
+#define sT_OR(...) sT_(sem,STRUCTURE_OR,__VA_ARGS__)
 #define sT_SEQ(...) sT_(sem,STRUCTURE_SEQUENCE,__VA_ARGS__)
 #define sT_STAR(...) sT_(sem,STRUCTURE_ZERO_OR_MORE,1,__VA_ARGS__)
 #define sT_PLUS(...) sT_(sem,STRUCTURE_ONE_OR_MORE,1,__VA_ARGS__)
 #define sT_QMRK(...) sT_(sem,STRUCTURE_ZERO_OR_ONE,1,__VA_ARGS__)
 #define sT_SYM(sym) _t_news(0,STRUCTURE_SYMBOL,sym)
 #define sT_PCNT(str) _t_news(0,SYMBOL_OF_STRUCTURE,str)
-#define sT_OR(x,y) sT_(sem,STRUCTURE_OR,2,x,y)
 #define sT_BANG _t_newr(0,STRUCTURE_ANYTHING)
 
 #define sProt(ctx,name,...) {T *def=_o_make_protocol_def(sem,ctx,"" #name "",__VA_ARGS__,NULL_SYMBOL);name = _d_define_protocol(sem,def,ctx);}

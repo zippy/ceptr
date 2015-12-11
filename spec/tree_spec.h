@@ -547,7 +547,7 @@ void testTreeBuild() {
     t = _t_build(G_sem,0,TODAY,YEAR,2015,MONTH,1,DAY,30,NULL_SYMBOL);
     spec_is_str_equal(t2s(t),"(TODAY (YEAR:2015) (MONTH:1) (DAY:30))");
 
-    // tests the STRUCTURE_SYMBOL_SET def
+    // tests the STRUCTURE_OR def
     t = _t_build(G_sem,0,PATTERN,SEMTREX_SYMBOL_LITERAL,SEMTREX_SYMBOL,PING,NULL_SYMBOL);
     spec_is_str_equal(t2s(t),"(PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:PING)))");
 

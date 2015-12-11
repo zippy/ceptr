@@ -635,7 +635,7 @@ T *_t_build(SemTable *sem,T *parent,...) {
                 _t_newr(t,param);
                 state = bPop;
             }
-            else if (semeq(type,STRUCTURE_SYMBOL_SET) || semeq(type,STRUCTURE_OR)) {
+            else if (semeq(type,STRUCTURE_OR)) {
                 state = bAddRoot;
             }
             else if (semeq(type,STRUCTURE_ANYTHING) || semeq(type,STRUCTURE_SEQUENCE) || semeq(type,STRUCTURE_ONE_OR_MORE)) {
@@ -685,7 +685,7 @@ T *_t_build(SemTable *sem,T *parent,...) {
             else if (semeq(type,PROCESS_SIGNATURE)) {
                 state = bReadSymbol;
             }
-            else if (semeq(type,STRUCTURE_SYMBOL_SET) || semeq(type,STRUCTURE_OR)) {
+            else if (semeq(type,STRUCTURE_OR)) {
                 state = bPop;  //gotta pop right away because we only expect one item
             }
             else {
