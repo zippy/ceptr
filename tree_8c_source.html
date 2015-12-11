@@ -505,7 +505,7 @@ $(document).ready(function(){initNavTree('tree_8c_source.html','');});
 <div class="line"><a name="l00635"></a><span class="lineno">  635</span>&#160;                <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,param);</div>
 <div class="line"><a name="l00636"></a><span class="lineno">  636</span>&#160;                state = bPop;</div>
 <div class="line"><a name="l00637"></a><span class="lineno">  637</span>&#160;            }</div>
-<div class="line"><a name="l00638"></a><span class="lineno">  638</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (semeq(type,STRUCTURE_SYMBOL_SET) || semeq(type,STRUCTURE_OR)) {</div>
+<div class="line"><a name="l00638"></a><span class="lineno">  638</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (semeq(type,STRUCTURE_OR)) {</div>
 <div class="line"><a name="l00639"></a><span class="lineno">  639</span>&#160;                state = bAddRoot;</div>
 <div class="line"><a name="l00640"></a><span class="lineno">  640</span>&#160;            }</div>
 <div class="line"><a name="l00641"></a><span class="lineno">  641</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (semeq(type,STRUCTURE_ANYTHING) || semeq(type,STRUCTURE_SEQUENCE) || semeq(type,STRUCTURE_ONE_OR_MORE)) {</div>
@@ -555,7 +555,7 @@ $(document).ready(function(){initNavTree('tree_8c_source.html','');});
 <div class="line"><a name="l00685"></a><span class="lineno">  685</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (semeq(type,PROCESS_SIGNATURE)) {</div>
 <div class="line"><a name="l00686"></a><span class="lineno">  686</span>&#160;                state = bReadSymbol;</div>
 <div class="line"><a name="l00687"></a><span class="lineno">  687</span>&#160;            }</div>
-<div class="line"><a name="l00688"></a><span class="lineno">  688</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (semeq(type,STRUCTURE_SYMBOL_SET) || semeq(type,STRUCTURE_OR)) {</div>
+<div class="line"><a name="l00688"></a><span class="lineno">  688</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (semeq(type,STRUCTURE_OR)) {</div>
 <div class="line"><a name="l00689"></a><span class="lineno">  689</span>&#160;                state = bPop;  <span class="comment">//gotta pop right away because we only expect one item</span></div>
 <div class="line"><a name="l00690"></a><span class="lineno">  690</span>&#160;            }</div>
 <div class="line"><a name="l00691"></a><span class="lineno">  691</span>&#160;            <span class="keywordflow">else</span> {</div>
@@ -1190,7 +1190,7 @@ $(document).ready(function(){initNavTree('tree_8c_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="tree_8c.html">tree.c</a></li>
-    <li class="footer">Generated on Wed Dec 9 2015 20:55:43 for ceptr by
+    <li class="footer">Generated on Fri Dec 11 2015 10:01:55 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

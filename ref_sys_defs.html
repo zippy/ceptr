@@ -100,7 +100,7 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
 <div class="title">System Definitions Reference </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>Key in structure defintions: SEQ = Sequence of, SET = one of the items in the Set, * = zero or more, + = one or more, ? zero or one, OR = logical or, % = symbol of given structure, ! = any symbol.</p>
+<div class="textblock"><p>Key in structure defintions: SEQ = Sequence of, * = zero or more, + = one or more, ? zero or one, OR = logical or, % = symbol of given structure, ! = any symbol.</p>
 <style type="text/css">
  div.def-type {display:inline-block;}
  div.def-item {display:inline-block;}
@@ -298,14 +298,8 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
-       <div class="def-name"><a name="STRUCTURE_SYMBOL_SET"></a>STRUCTURE_SYMBOL_SET</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#ONE_OR_MORE_OF_STRUCTURE_SYMBOL">ONE-OR-MORE-OF-STRUCTURE-SYMBOL</a></div>
-       <div class="def-comment"></div>
-   </div>
-   <div class="def-item def-symbol">
-       <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="STRUCTURE_OR"></a>STRUCTURE_OR</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#PAIR_OF_STRUCTURE_DEF">PAIR-OF-STRUCTURE-DEF</a></div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ONE_OR_MORE_OF_STRUCTURE_DEF">ONE-OR-MORE-OF-STRUCTURE-DEF</a></div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">
@@ -335,7 +329,7 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
        <div class="def-name"><a name="STRUCTURE_DEF"></a>STRUCTURE-DEF</div>
-       <div class="def-struc-def">SET(<a href="ref_sys_symbols.html#STRUCTURE_SYMBOL">STRUCTURE_SYMBOL</a>, <a href="ref_sys_symbols.html#STRUCTURE_SEQUENCE">STRUCTURE_SEQUENCE</a>, <a href="ref_sys_symbols.html#STRUCTURE_SYMBOL_SET">STRUCTURE_SYMBOL_SET</a>, <a href="ref_sys_symbols.html#STRUCTURE_OR">STRUCTURE_OR</a>, <a href="ref_sys_symbols.html#STRUCTURE_ZERO_OR_MORE">STRUCTURE_ZERO_OR_MORE</a>, <a href="ref_sys_symbols.html#STRUCTURE_ONE_OR_MORE">STRUCTURE_ONE_OR_MORE</a>, <a href="ref_sys_symbols.html#STRUCTURE_ZERO_OR_ONE">STRUCTURE_ZERO_OR_ONE</a>, <a href="ref_sys_symbols.html#SYMBOL_OF_STRUCTURE">SYMBOL_OF_STRUCTURE</a>, <a href="ref_sys_symbols.html#STRUCTURE_ANYTHING">STRUCTURE_ANYTHING</a>)</div>
+       <div class="def-struc-def">OR(<a href="ref_sys_symbols.html#STRUCTURE_SYMBOL">STRUCTURE_SYMBOL</a>, <a href="ref_sys_symbols.html#STRUCTURE_SEQUENCE">STRUCTURE_SEQUENCE</a>, <a href="ref_sys_symbols.html#STRUCTURE_OR">STRUCTURE_OR</a>, <a href="ref_sys_symbols.html#STRUCTURE_ZERO_OR_MORE">STRUCTURE_ZERO_OR_MORE</a>, <a href="ref_sys_symbols.html#STRUCTURE_ONE_OR_MORE">STRUCTURE_ONE_OR_MORE</a>, <a href="ref_sys_symbols.html#STRUCTURE_ZERO_OR_ONE">STRUCTURE_ZERO_OR_ONE</a>, <a href="ref_sys_symbols.html#SYMBOL_OF_STRUCTURE">SYMBOL_OF_STRUCTURE</a>, <a href="ref_sys_symbols.html#STRUCTURE_ANYTHING">STRUCTURE_ANYTHING</a>)</div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">
@@ -366,18 +360,6 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
        <div class="def-type">Structure:</div>
        <div class="def-name"><a name="ONE_OR_MORE_OF_STRUCTURE_DEF"></a>ONE-OR-MORE-OF-STRUCTURE-DEF</div>
        <div class="def-struc-def">+(<a href="ref_sys_symbols.html#STRUCTURE_DEF">STRUCTURE_DEF</a>)</div>
-       <div class="def-comment"></div>
-   </div>
-   <div class="def-item def-structure">
-       <div class="def-type">Structure:</div>
-       <div class="def-name"><a name="ONE_OR_MORE_OF_STRUCTURE_SYMBOL"></a>ONE-OR-MORE-OF-STRUCTURE-SYMBOL</div>
-       <div class="def-struc-def">+(<a href="ref_sys_symbols.html#STRUCTURE_SYMBOL">STRUCTURE_SYMBOL</a>)</div>
-       <div class="def-comment"></div>
-   </div>
-   <div class="def-item def-structure">
-       <div class="def-type">Structure:</div>
-       <div class="def-name"><a name="PAIR_OF_STRUCTURE_DEF"></a>PAIR-OF-STRUCTURE-DEF</div>
-       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#STRUCTURE_DEF">STRUCTURE_DEF</a>, <a href="ref_sys_symbols.html#STRUCTURE_DEF">STRUCTURE_DEF</a>)</div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">
@@ -515,7 +497,7 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
        <div class="def-name"><a name="SEMTREX_DEF"></a>SEMTREX-DEF</div>
-       <div class="def-struc-def">SET(<a href="ref_sys_symbols.html#SEMTREX_SYMBOL_LITERAL">SEMTREX_SYMBOL_LITERAL</a>, <a href="ref_sys_symbols.html#SEMTREX_SYMBOL_LITERAL_NOT">SEMTREX_SYMBOL_LITERAL_NOT</a>, <a href="ref_sys_symbols.html#SEMTREX_SEQUENCE">SEMTREX_SEQUENCE</a>, <a href="ref_sys_symbols.html#SEMTREX_OR">SEMTREX_OR</a>, <a href="ref_sys_symbols.html#SEMTREX_NOT">SEMTREX_NOT</a>, <a href="ref_sys_symbols.html#SEMTREX_SYMBOL_ANY">SEMTREX_SYMBOL_ANY</a>, <a href="ref_sys_symbols.html#SEMTREX_ZERO_OR_MORE">SEMTREX_ZERO_OR_MORE</a>, <a href="ref_sys_symbols.html#SEMTREX_ONE_OR_MORE">SEMTREX_ONE_OR_MORE</a>, <a href="ref_sys_symbols.html#SEMTREX_ZERO_OR_ONE">SEMTREX_ZERO_OR_ONE</a>, <a href="ref_sys_symbols.html#SEMTREX_VALUE_LITERAL">SEMTREX_VALUE_LITERAL</a>, <a href="ref_sys_symbols.html#SEMTREX_VALUE_LITERAL_NOT">SEMTREX_VALUE_LITERAL_NOT</a>, <a href="ref_sys_symbols.html#SEMTREX_GROUP">SEMTREX_GROUP</a>, <a href="ref_sys_symbols.html#SEMTREX_WALK">SEMTREX_WALK</a>, <a href="ref_sys_symbols.html#SEMTREX_DESCEND">SEMTREX_DESCEND</a>)</div>
+       <div class="def-struc-def">OR(<a href="ref_sys_symbols.html#SEMTREX_SYMBOL_LITERAL">SEMTREX_SYMBOL_LITERAL</a>, <a href="ref_sys_symbols.html#SEMTREX_SYMBOL_LITERAL_NOT">SEMTREX_SYMBOL_LITERAL_NOT</a>, <a href="ref_sys_symbols.html#SEMTREX_SEQUENCE">SEMTREX_SEQUENCE</a>, <a href="ref_sys_symbols.html#SEMTREX_OR">SEMTREX_OR</a>, <a href="ref_sys_symbols.html#SEMTREX_NOT">SEMTREX_NOT</a>, <a href="ref_sys_symbols.html#SEMTREX_SYMBOL_ANY">SEMTREX_SYMBOL_ANY</a>, <a href="ref_sys_symbols.html#SEMTREX_ZERO_OR_MORE">SEMTREX_ZERO_OR_MORE</a>, <a href="ref_sys_symbols.html#SEMTREX_ONE_OR_MORE">SEMTREX_ONE_OR_MORE</a>, <a href="ref_sys_symbols.html#SEMTREX_ZERO_OR_ONE">SEMTREX_ZERO_OR_ONE</a>, <a href="ref_sys_symbols.html#SEMTREX_VALUE_LITERAL">SEMTREX_VALUE_LITERAL</a>, <a href="ref_sys_symbols.html#SEMTREX_VALUE_LITERAL_NOT">SEMTREX_VALUE_LITERAL_NOT</a>, <a href="ref_sys_symbols.html#SEMTREX_GROUP">SEMTREX_GROUP</a>, <a href="ref_sys_symbols.html#SEMTREX_WALK">SEMTREX_WALK</a>, <a href="ref_sys_symbols.html#SEMTREX_DESCEND">SEMTREX_DESCEND</a>)</div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">
@@ -1000,20 +982,20 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
    </div>
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
-       <div class="def-name"><a name="ONE_OF_SIGNATURE_STRUCTURE_AND_SIGNATURE_SYMBOL_AND_SIGNATURE_PROCESS_AND_SIGNATURE_PASSTHRU"></a>ONE-OF-SIGNATURE-STRUCTURE-AND-SIGNATURE-SYMBOL-AND-SIGNATURE-PROCESS-AND-SIGNATURE-PASSTHRU</div>
-       <div class="def-struc-def">SET(<a href="ref_sys_symbols.html#SIGNATURE_STRUCTURE">SIGNATURE_STRUCTURE</a>, <a href="ref_sys_symbols.html#SIGNATURE_SYMBOL">SIGNATURE_SYMBOL</a>, <a href="ref_sys_symbols.html#SIGNATURE_PROCESS">SIGNATURE_PROCESS</a>, <a href="ref_sys_symbols.html#SIGNATURE_PASSTHRU">SIGNATURE_PASSTHRU</a>)</div>
+       <div class="def-name"><a name="LOGICAL_OR_OF_SIGNATURE_STRUCTURE_AND_SIGNATURE_SYMBOL_AND_SIGNATURE_PROCESS_AND_SIGNATURE_PASSTHRU"></a>LOGICAL-OR-OF-SIGNATURE-STRUCTURE-AND-SIGNATURE-SYMBOL-AND-SIGNATURE-PROCESS-AND-SIGNATURE-PASSTHRU</div>
+       <div class="def-struc-def">OR(<a href="ref_sys_symbols.html#SIGNATURE_STRUCTURE">SIGNATURE_STRUCTURE</a>, <a href="ref_sys_symbols.html#SIGNATURE_SYMBOL">SIGNATURE_SYMBOL</a>, <a href="ref_sys_symbols.html#SIGNATURE_PROCESS">SIGNATURE_PROCESS</a>, <a href="ref_sys_symbols.html#SIGNATURE_PASSTHRU">SIGNATURE_PASSTHRU</a>)</div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="SIGNATURE_OUTPUT_TYPE"></a>SIGNATURE_OUTPUT_TYPE</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#ONE_OF_SIGNATURE_STRUCTURE_AND_SIGNATURE_SYMBOL_AND_SIGNATURE_PROCESS_AND_SIGNATURE_PASSTHRU">ONE-OF-SIGNATURE-STRUCTURE-AND-SIGNATURE-SYMBOL-AND-SIGNATURE-PROCESS-AND-SIGNATURE-PASSTHRU</a></div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LOGICAL_OR_OF_SIGNATURE_STRUCTURE_AND_SIGNATURE_SYMBOL_AND_SIGNATURE_PROCESS_AND_SIGNATURE_PASSTHRU">LOGICAL-OR-OF-SIGNATURE-STRUCTURE-AND-SIGNATURE-SYMBOL-AND-SIGNATURE-PROCESS-AND-SIGNATURE-PASSTHRU</a></div>
        <div class="def-comment">           the semantic type expected as result i.e. either PROCESS/STRUCTURE/SYMBOL or PASSTHRU when the type comes from a reduction of a SIGNATURE_ANY</div>
    </div>
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
        <div class="def-name"><a name="SIGNATURE_SEMANTIC_VARIANTS"></a>SIGNATURE-SEMANTIC-VARIANTS</div>
-       <div class="def-struc-def">SET(<a href="ref_sys_symbols.html#SIGNATURE_STRUCTURE">SIGNATURE_STRUCTURE</a>, <a href="ref_sys_symbols.html#SIGNATURE_SYMBOL">SIGNATURE_SYMBOL</a>, <a href="ref_sys_symbols.html#SIGNATURE_PROCESS">SIGNATURE_PROCESS</a>, <a href="ref_sys_symbols.html#SIGNATURE_ANY">SIGNATURE_ANY</a>)</div>
+       <div class="def-struc-def">OR(<a href="ref_sys_symbols.html#SIGNATURE_STRUCTURE">SIGNATURE_STRUCTURE</a>, <a href="ref_sys_symbols.html#SIGNATURE_SYMBOL">SIGNATURE_SYMBOL</a>, <a href="ref_sys_symbols.html#SIGNATURE_PROCESS">SIGNATURE_PROCESS</a>, <a href="ref_sys_symbols.html#SIGNATURE_ANY">SIGNATURE_ANY</a>)</div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-structure">
@@ -1247,7 +1229,7 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
        <div class="def-name"><a name="MAPPING"></a>MAPPING</div>
-       <div class="def-struc-def">SET(<a href="ref_sys_symbols.html#WHICH_PROCESS">WHICH_PROCESS</a>, <a href="ref_sys_symbols.html#WHICH_RECEPTOR">WHICH_RECEPTOR</a>, <a href="ref_sys_symbols.html#WHICH_SYMBOL">WHICH_SYMBOL</a>)</div>
+       <div class="def-struc-def">OR(<a href="ref_sys_symbols.html#WHICH_PROCESS">WHICH_PROCESS</a>, <a href="ref_sys_symbols.html#WHICH_RECEPTOR">WHICH_RECEPTOR</a>, <a href="ref_sys_symbols.html#WHICH_SYMBOL">WHICH_SYMBOL</a>)</div>
        <div class="def-comment">  maps abstract to concrete</div>
    </div>
    <div class="def-item def-symbol">
@@ -1295,7 +1277,7 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
        <div class="def-name"><a name="LINKING"></a>LINKING</div>
-       <div class="def-struc-def">SET(<a href="ref_sys_symbols.html#WHICH_GOAL">WHICH_GOAL</a>, <a href="ref_sys_symbols.html#WHICH_ROLE">WHICH_ROLE</a>, <a href="ref_sys_symbols.html#WHICH_USAGE">WHICH_USAGE</a>)</div>
+       <div class="def-struc-def">OR(<a href="ref_sys_symbols.html#WHICH_GOAL">WHICH_GOAL</a>, <a href="ref_sys_symbols.html#WHICH_ROLE">WHICH_ROLE</a>, <a href="ref_sys_symbols.html#WHICH_USAGE">WHICH_USAGE</a>)</div>
        <div class="def-comment"> links two abstract role/goal/usage</div>
    </div>
    <div class="def-item def-symbol">
@@ -2023,7 +2005,7 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
        <div class="def-name"><a name="STX_TOKEN_LIST"></a>STX-TOKEN-LIST</div>
-       <div class="def-struc-def">*(SET(<a href="ref_sys_symbols.html#STX_SL">STX_SL</a>, <a href="ref_sys_symbols.html#STX_OP">STX_OP</a>, <a href="ref_sys_symbols.html#STX_CP">STX_CP</a>, <a href="ref_sys_symbols.html#STX_SET">STX_SET</a>, <a href="ref_sys_symbols.html#STX_OS">STX_OS</a>, <a href="ref_sys_symbols.html#STX_CS">STX_CS</a>, <a href="ref_sys_symbols.html#STX_LABEL">STX_LABEL</a>, <a href="ref_sys_symbols.html#STX_OG">STX_OG</a>, <a href="ref_sys_symbols.html#STX_CG">STX_CG</a>, <a href="ref_sys_symbols.html#STX_EQ">STX_EQ</a>, <a href="ref_sys_symbols.html#STX_NEQ">STX_NEQ</a>, <a href="ref_sys_symbols.html#STX_WALK">STX_WALK</a>, <a href="ref_sys_symbols.html#STX_*">STX_*</a>, <a href="ref_sys_symbols.html#STX_+">STX_+</a>, <a href="ref_sys_symbols.html#STX_Q">STX_Q</a>, <a href="ref_sys_symbols.html#STX_OR">STX_OR</a>, <a href="ref_sys_symbols.html#STX_COMMA">STX_COMMA</a>, <a href="ref_sys_symbols.html#STX_EXCEPT">STX_EXCEPT</a>, <a href="ref_sys_symbols.html#STX_NOT">STX_NOT</a>, <a href="ref_sys_symbols.html#STX_VAL_S">STX_VAL_S</a>, <a href="ref_sys_symbols.html#STX_VAL_C">STX_VAL_C</a>, <a href="ref_sys_symbols.html#STX_VAL_I">STX_VAL_I</a>, <a href="ref_sys_symbols.html#STX_VAL_F">STX_VAL_F</a>))</div>
+       <div class="def-struc-def">*(OR(<a href="ref_sys_symbols.html#STX_SL">STX_SL</a>, <a href="ref_sys_symbols.html#STX_OP">STX_OP</a>, <a href="ref_sys_symbols.html#STX_CP">STX_CP</a>, <a href="ref_sys_symbols.html#STX_SET">STX_SET</a>, <a href="ref_sys_symbols.html#STX_OS">STX_OS</a>, <a href="ref_sys_symbols.html#STX_CS">STX_CS</a>, <a href="ref_sys_symbols.html#STX_LABEL">STX_LABEL</a>, <a href="ref_sys_symbols.html#STX_OG">STX_OG</a>, <a href="ref_sys_symbols.html#STX_CG">STX_CG</a>, <a href="ref_sys_symbols.html#STX_EQ">STX_EQ</a>, <a href="ref_sys_symbols.html#STX_NEQ">STX_NEQ</a>, <a href="ref_sys_symbols.html#STX_WALK">STX_WALK</a>, <a href="ref_sys_symbols.html#STX_*">STX_*</a>, <a href="ref_sys_symbols.html#STX_+">STX_+</a>, <a href="ref_sys_symbols.html#STX_Q">STX_Q</a>, <a href="ref_sys_symbols.html#STX_OR">STX_OR</a>, <a href="ref_sys_symbols.html#STX_COMMA">STX_COMMA</a>, <a href="ref_sys_symbols.html#STX_EXCEPT">STX_EXCEPT</a>, <a href="ref_sys_symbols.html#STX_NOT">STX_NOT</a>, <a href="ref_sys_symbols.html#STX_VAL_S">STX_VAL_S</a>, <a href="ref_sys_symbols.html#STX_VAL_C">STX_VAL_C</a>, <a href="ref_sys_symbols.html#STX_VAL_I">STX_VAL_I</a>, <a href="ref_sys_symbols.html#STX_VAL_F">STX_VAL_F</a>))</div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">
@@ -2353,7 +2335,7 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Dec 9 2015 20:55:44 for ceptr by
+    <li class="footer">Generated on Fri Dec 11 2015 10:01:55 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

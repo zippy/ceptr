@@ -112,8 +112,7 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="DEFINITIONS"></a>DEFINITIONS</td><td><a href="ref_sys_structures.html#LIST_OF_STRUCTURES_AND_SYMBOLS_AND_PROCESSES_AND_PROTOCOLS_AND_RECEPTORS_AND_ZERO_OR_MORE_OF_SCAPES">LIST-OF-STRUCTURES-AND-SYMBOLS-AND-PROCESSES-AND-PROTOCOLS-AND-RECEPTORS-AND-ZERO-OR-MORE-OF-SCAPES</a></td><td></td></tr>
 <tr><td><a name="STRUCTURE_SYMBOL"></a>STRUCTURE_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
 <tr><td><a name="STRUCTURE_SEQUENCE"></a>STRUCTURE_SEQUENCE</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_STRUCTURE_DEF">ONE-OR-MORE-OF-STRUCTURE-DEF</a></td><td></td></tr>
-<tr><td><a name="STRUCTURE_SYMBOL_SET"></a>STRUCTURE_SYMBOL_SET</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_STRUCTURE_SYMBOL">ONE-OR-MORE-OF-STRUCTURE-SYMBOL</a></td><td></td></tr>
-<tr><td><a name="STRUCTURE_OR"></a>STRUCTURE_OR</td><td><a href="ref_sys_structures.html#PAIR_OF_STRUCTURE_DEF">PAIR-OF-STRUCTURE-DEF</a></td><td></td></tr>
+<tr><td><a name="STRUCTURE_OR"></a>STRUCTURE_OR</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_STRUCTURE_DEF">ONE-OR-MORE-OF-STRUCTURE-DEF</a></td><td></td></tr>
 <tr><td><a name="STRUCTURE_ZERO_OR_MORE"></a>STRUCTURE_ZERO_OR_MORE</td><td><a href="ref_sys_structures.html#STRUCTURE_DEF">STRUCTURE-DEF</a></td><td></td></tr>
 <tr><td><a name="STRUCTURE_ONE_OR_MORE"></a>STRUCTURE_ONE_OR_MORE</td><td><a href="ref_sys_structures.html#STRUCTURE_DEF">STRUCTURE-DEF</a></td><td></td></tr>
 <tr><td><a name="SYMBOL_OF_STRUCTURE"></a>SYMBOL_OF_STRUCTURE</td><td><a href="ref_sys_structures.html#STRUCTURE">STRUCTURE</a></td><td></td></tr>
@@ -196,7 +195,7 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="SIGNATURE_PASSTHRU"></a>SIGNATURE_PASSTHRU</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
 <tr><td><a name="SIGNATURE_ANY"></a>SIGNATURE_ANY</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
 <tr><td><a name="SIGNATURE_OPTIONAL"></a>SIGNATURE_OPTIONAL</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
-<tr><td><a name="SIGNATURE_OUTPUT_TYPE"></a>SIGNATURE_OUTPUT_TYPE</td><td><a href="ref_sys_structures.html#ONE_OF_SIGNATURE_STRUCTURE_AND_SIGNATURE_SYMBOL_AND_SIGNATURE_PROCESS_AND_SIGNATURE_PASSTHRU">ONE-OF-SIGNATURE-STRUCTURE-AND-SIGNATURE-SYMBOL-AND-SIGNATURE-PROCESS-AND-SIGNATURE-PASSTHRU</a></td><td>           the semantic type expected as result i.e. either PROCESS/STRUCTURE/SYMBOL or PASSTHRU when the type comes from a reduction of a SIGNATURE_ANY</td></tr>
+<tr><td><a name="SIGNATURE_OUTPUT_TYPE"></a>SIGNATURE_OUTPUT_TYPE</td><td><a href="ref_sys_structures.html#LOGICAL_OR_OF_SIGNATURE_STRUCTURE_AND_SIGNATURE_SYMBOL_AND_SIGNATURE_PROCESS_AND_SIGNATURE_PASSTHRU">LOGICAL-OR-OF-SIGNATURE-STRUCTURE-AND-SIGNATURE-SYMBOL-AND-SIGNATURE-PROCESS-AND-SIGNATURE-PASSTHRU</a></td><td>           the semantic type expected as result i.e. either PROCESS/STRUCTURE/SYMBOL or PASSTHRU when the type comes from a reduction of a SIGNATURE_ANY</td></tr>
 <tr><td><a name="SIGNATURE_INPUT_TYPE"></a>SIGNATURE_INPUT_TYPE</td><td><a href="ref_sys_structures.html#TUPLE_OF_SIGNATURE_SEMANTIC_VARIANTS_AND_ZERO_OR_ONE_OF_SIGNATURE_OPTIONAL">TUPLE-OF-SIGNATURE-SEMANTIC-VARIANTS-AND-ZERO-OR-ONE-OF-SIGNATURE-OPTIONAL</a></td><td>    the semantic type that would expected as input i.e. either PROCESS/STRUCTURE/SYMBOL</td></tr>
 <tr><td><a name="INPUT_SIGNATURE"></a>INPUT_SIGNATURE</td><td><a href="ref_sys_structures.html#TUPLE_OF_SIGNATURE_LABEL_AND_SIGNATURE_INPUT_TYPE">TUPLE-OF-SIGNATURE-LABEL-AND-SIGNATURE-INPUT-TYPE</a></td><td></td></tr>
 <tr><td><a name="OUTPUT_SIGNATURE"></a>OUTPUT_SIGNATURE</td><td><a href="ref_sys_structures.html#TUPLE_OF_SIGNATURE_LABEL_AND_SIGNATURE_OUTPUT_TYPE">TUPLE-OF-SIGNATURE-LABEL-AND-SIGNATURE-OUTPUT-TYPE</a></td><td></td></tr>
@@ -341,7 +340,7 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Dec 9 2015 20:55:44 for ceptr by
+    <li class="footer">Generated on Fri Dec 11 2015 10:01:55 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
