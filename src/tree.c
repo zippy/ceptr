@@ -643,7 +643,7 @@ T *_t_build(SemTable *sem,T *parent,...) {
             }
             else {
                 debug(D_TREE,"type:%s \n",_sem_get_name(sem,type));
-                raise_error("type: %s unimplemented",_sem_get_name(sem,type));
+                raise_error("type: %s unimplemented in bReadSymbol",_sem_get_name(sem,type));
             }
             break;
         case bReadBase:
@@ -651,6 +651,11 @@ T *_t_build(SemTable *sem,T *parent,...) {
             debug(D_TREE,"building sys structure %s\n",_sem_get_name(sem,st));
             if (semeq(st,PROCESS) || semeq(st,SYMBOL) || semeq(st,STRUCTURE) || semeq(st,PROTOCOL)) {
                 t = _t_news(t,param,va_arg(ap,SemanticID));
+                // execption for SEMTREX_GROUP which has children...
+                if (semeq(param,SEMTREX_GROUP)) {
+                    state = bReadSymbol;
+                    break;
+                }
             }
             else if (semeq(st,INTEGER)) {
                 t = _t_newi(t,param,va_arg(ap,int));
@@ -688,9 +693,14 @@ T *_t_build(SemTable *sem,T *parent,...) {
             else if (semeq(type,STRUCTURE_OR)) {
                 state = bPop;  //gotta pop right away because we only expect one item
             }
+            else if (semeq(type,STRUCTURE_SYMBOL)) {
+                // this should only happen when popping back from a SEMTREX_GROUP
+                // so just pop again
+                state = bPop;  //gotta pop right away because we only expect one item
+            }
             else {
                 debug(D_TREE,"type:%s \n",_sem_get_name(sem,type));
-                raise_error("type: %s unimplemented",_sem_get_name(sem,type));
+                raise_error("type: %s unimplemented in bPop",_sem_get_name(sem,type));
             }
             break;
         case bAddRoot:

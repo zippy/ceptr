@@ -945,6 +945,9 @@ void testSemtrexReplace() {
     T *a = _t_news(0,ACTION,RESPOND);
     _stx_replace(stx,d,a);
     spec_is_str_equal(t2s(d),"(some_interaction (EXPECT (PATTERN) (ACTION:RESPOND)))");
+    _t_free(d);
+    _t_free(stx);
+    _t_free(a);
 }
 
 

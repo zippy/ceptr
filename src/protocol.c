@@ -40,12 +40,12 @@ T *_o_make_protocol_def(SemTable *sem,Context c,char *label,...) {
     va_list params;
     va_start(params,label);
 
-    Symbol state = PROTOCOL_DEFINITION;
+    Symbol state = PROTOCOL_SEMANTICS;
     bool in_conv = false;
     T *p = _t_new_root(PROTOCOL_DEFINITION);
     _t_new_str(p,PROTOCOL_LABEL,label);
+    T *t = _t_newr(p,PROTOCOL_SEMANTICS);
     bool done = false;
-    T *t;
     Symbol param;
     bool pop = false;
     while(!done) {
@@ -63,22 +63,11 @@ T *_o_make_protocol_def(SemTable *sem,Context c,char *label,...) {
             debug(D_PROTOCOL,"reading %s in state %s\n",_sem_get_name(sem,param),_sem_get_name(sem,state));
         }
         if (semeq(state,PROTOCOL_DEFINITION)) {
-            if (semeq(param,ROLE)) {
-                Symbol role = va_arg(params,Symbol);
-                _t_news(p,ROLE,role);
-            }
-            else if (semeq(param,GOAL)) {
-                Symbol role = va_arg(params,Symbol);
-                _t_news(p,GOAL,role);
-            }
-            else if (semeq(param,USAGE)) {
-                Symbol role = va_arg(params,Symbol);
-                _t_news(p,USAGE,role);
-            }
-            else if (semeq(param,INTERACTION)) {
+            if (semeq(param,INTERACTION)) {
                 state = INTERACTION;
             }
             else if (semeq(param,INCLUSION)) {
+                p = t;
                 state = INCLUSION;
             }
             else if (semeq(param,NULL_SYMBOL)) {
@@ -86,11 +75,26 @@ T *_o_make_protocol_def(SemTable *sem,Context c,char *label,...) {
             }
             else raise_error("expecting ROLE,GOAL,USAGE,INCLUSION,INTERACTION or NULL_SYMBOL got %s",_sem_get_name(sem,param));
         }
+        if (semeq(state,PROTOCOL_SEMANTICS)) {
+            if (semeq(param,ROLE)) {
+                Symbol role = va_arg(params,Symbol);
+                _t_news(t,ROLE,role);
+            }
+            else if (semeq(param,GOAL)) {
+                Symbol role = va_arg(params,Symbol);
+                _t_news(t,GOAL,role);
+            }
+            else if (semeq(param,USAGE)) {
+                Symbol role = va_arg(params,Symbol);
+                _t_news(t,USAGE,role);
+            }
+            else pop = true;
+        }
         if (semeq(state,INTERACTION)) {
             if (semeq(param,INTERACTION)) {
                 char *l = va_arg(params,char*);
                 Symbol interaction = _d_define_symbol(sem,INTERACTION,l,c);
-                t = _t_newr(p,interaction);
+                t = _t_newr(t,interaction);
             }
             else if (semeq(param,EXPECT) || semeq(param,INITIATE)) {
                 p = t;
@@ -185,39 +189,61 @@ T *_o_make_protocol_def(SemTable *sem,Context c,char *label,...) {
 T * _o_unwrap(SemTable *sem,T *def) {
     T *d = _t_clone(def);
     int i;
-    //    DO_KIDS(def,
     for (i=1;i<=_t_children(d);i++) {
-            T *t = _t_child(d,i);
-            if (semeq(_t_symbol(t),INCLUSION)) {
-                Protocol p = *(Protocol *)_t_surface(_t_child(t,InclusionPnameIdx));
-                T *ps = _sem_get_defs(sem,p);
-                T *p_def = _t_clone(_t_child(ps,p.id));
-                int j,c = _t_children(t);
-                for(j=InclusionPnameIdx+1;j<=c;j++) {
-                    T *x = _t_child(t,j); // get the connection or resolution
-                    if (semeq(_t_symbol(x),CONNECTION)) {
-                        T *w = _t_child(x,1);  // get the which
+        T *t = _t_child(d,i);
+        if (semeq(_t_symbol(t),INCLUSION)) {
+            Protocol p = *(Protocol *)_t_surface(_t_child(t,InclusionPnameIdx));
+            T *ps = _sem_get_defs(sem,p);
+            T *p_def = _o_unwrap(sem,_t_child(ps,p.id));  // do the recursive unwrapping
+            int j,c = _t_children(t);
+            for(j=InclusionPnameIdx+1;j<=c;j++) {
+                T *x = _t_child(t,j); // get the connection or resolution
+                if (semeq(_t_symbol(x),CONNECTION)) {
+                    T *w = _t_child(x,1);  // get the which
 
-                        T *v = _t_clone(_t_child(w,1)); // get the source
-                        T *stx = _t_new_root(SEMTREX_WALK);
-                        T *g = _t_news(stx,SEMTREX_GROUP,_t_symbol(v));
-                        T *vl = _t_newr(g,SEMTREX_VALUE_LITERAL);
-                        _t_add(vl,v);
-                        T *r = _t_clone(_t_child(w,2));
-                        /* printf("matching %s\n",_t2s(sem,stx)); */
-                        /* printf("against %s\n",_t2s(sem,p_def)); */
-                        /* printf("to replace %s\n",_t2s(sem,r)); */
-                        _stx_replace(stx,p_def,r);
-                        _t_free(stx);
-                    }
-                    else if (semeq(_t_symbol(t),RESOLUTION)) {
-                        puts("not imp!");
-                    }
-                    else raise_error("expecting CONNECTION or RESOLUTION");
+                    T *v = _t_clone(_t_child(w,1)); // get the source
+                    T *stx = _t_new_root(SEMTREX_WALK);
+                    T *g = _t_news(stx,SEMTREX_GROUP,_t_symbol(v));
+                    T *vl = _t_newr(g,SEMTREX_VALUE_LITERAL);
+                    _t_add(vl,v);
+                    T *r = _t_child(w,2);
+                    /* printf("matching %s\n",_t2s(sem,stx)); */
+                    /* printf("against %s\n",_t2s(sem,p_def)); */
+                    /* printf("to replace %s\n",_t2s(sem,r)); */
+                    _stx_replace(stx,p_def,r);
+                    /* printf("results in %s\n",_t2s(sem,p_def)); */
+                    _t_free(stx);
                 }
-                _t_replace_node(t,p_def);
+                else if (semeq(_t_symbol(t),RESOLUTION)) {
+                    puts("not imp!");
+                }
+                else raise_error("expecting CONNECTION or RESOLUTION");
             }
-            //           );
+
+            // after doing the semantics mapping from the CONNECTIONS and RESOLUTIONS
+            // we need to add into the parent semantics and items that weren't resolved
+            // or connected for later binding
+            T *unwrapped_semantics = _t_child(p_def,ProtocolDefSemanticsIdx);
+            T *parent_semantics = _t_child(d,ProtocolDefSemanticsIdx);
+            T *x;
+            while(x = _t_detach_by_idx(unwrapped_semantics,1)) {
+                Symbol sym = _t_symbol(x);
+                c = _t_children(parent_semantics);
+                for (j=1;j<=c;j++) {
+                    if (semeq(sym,_t_symbol(_t_child(parent_semantics,j)))) break;
+                }
+                // not found so we can add it
+                if (j>c) _t_add(parent_semantics,x);
+                //          else _t_free(x);
+            }
+            _t_detach_by_ptr(d,t);  // remove the INCLUSION specs
+            // add in the unwrapped interactions
+
+            while(x = _t_detach_by_idx(p_def,ProtocolDefSemanticsIdx+1)) {
+                _t_add(d,x);
+            }
+            _t_free(p_def);
+        }
     }
 
     return d;
@@ -263,6 +289,7 @@ T *_o_resolve(SemTable *sem,T *def,Symbol role, T *bindings){
                     // replace the GOAL with the ACTUAL
                     T *a = _t_news(0,ACTION,*(Process *)_t_surface(_t_child(w,2)));
                     _stx_replace(gstx,d,a);
+                    _t_free(a);
                 }
                 else if (semeq(_t_symbol(w),WHICH_SYMBOL)) {
                     T *usage = _t_child(w,1);
@@ -280,6 +307,7 @@ T *_o_resolve(SemTable *sem,T *def,Symbol role, T *bindings){
                     // replace the USAGE with the ACTUAL
                     T *a = _t_news(0,SEMTREX_SYMBOL,*(Symbol *)_t_surface(_t_child(w,2)));
                     _stx_replace(ustx,d,a);
+                    _t_free(a);
                 }
             );
         if (gstx) _t_free(gstx);

@@ -722,7 +722,7 @@ void _stx_replace(T *semtrex,T *t,T *replace){
         int sibs;
         T *x = _stx_get_matched_node(sym,r,t,&sibs);
         if (sibs > 1) raise_error("not implemented for sibs > 1");
-        _t_replace_node(x,replace);
+        _t_replace_node(x,_t_clone(replace));
         _t_free(r);
     }
 }

@@ -38,6 +38,7 @@ enum {InitiateRoleIdx=1,InitiateDestinationIdx,InitiateActionIdx};
 enum {SourceRoleIdx=1};
 enum {DefLabelIdx=1,SymbolDefStructureIdx};
 enum {ProcessDefNameIdx=1,ProcessDefIntentionIdx,ProcessDefCodeIdx,ProcessDefSignatureIdx};
+enum {ProtocolDefNameIdx=1,ProtocolDefSemanticsIdx};
 enum {RuntreeCodeIdx=1,RunTreeParamsIdx,RunTreeErrorCodeIdx};
 enum {ResolutionWhichIdx=1};
 enum {SemtrexMatchSymbolIdx=1,SemtrexMatchPathIdx,SemtrexMatchSibsIdx};
