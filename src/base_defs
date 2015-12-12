@@ -332,8 +332,8 @@ Data: req_action,ACTION,send_request;
 
 Data: resp_code,RESPOND,SIGNAL_REF,SignalEnvelopeIdx,EnvelopeCarrierIdx,TREE_PATH_TERMINATOR,GOAL,REQUEST_HANDLER;
 Process: send_response,resp_code,"send response","response id",SIGNATURE_SYMBOL,SIGNAL_UUID,0;
-Data: resp_action,GOAL,RESPONSE_HANDLER;
-Data: resp_pattern,PATTERN,SEMTREX_SYMBOL_LITERAL,USAGE,RESPONSE_DATA;
+Data: resp_action,ACTION,send_response;
+Data: resp_pattern,PATTERN,SEMTREX_SYMBOL_LITERAL,USAGE,REQUEST_DATA;
 Protocol: REQUESTING,
    ROLE,REQUESTER,
    ROLE,RESPONDER,
@@ -352,7 +352,7 @@ Symbol: RECOGNITION,PROCESS;
 Symbol: are_you,SEMTREX;
 Symbol: i_am,RECEPTOR_IDENTITY;
 
-Data: iam_code,i_am,RECEPTOR_LABEL,"super cept",RECEPTOR_IDENTIFIER,314159;
+Data: iam_code,NOOP,i_am,RECEPTOR_LABEL,"super cept",RECEPTOR_IDENTIFIER,314159,NULL_SYMBOL;
 Process: fill_i_am,iam_code,"fill i am","result",SIGNATURE_ANY,NULL_STRUCTURE,0;
 
 Protocol: RECOGNIZE,

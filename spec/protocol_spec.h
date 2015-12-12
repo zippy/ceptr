@@ -8,7 +8,7 @@
 
 void testProtocolRequesting() {
 
-    spec_is_str_equal(t2s(_sem_get_def(G_sem,REQUESTING)),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL:REQUESTING) (PROTOCOL_SEMANTICS (ROLE:REQUESTER) (ROLE:RESPONDER) (GOAL:REQUEST_HANDLER) (GOAL:RESPONSE_HANDLER) (USAGE:REQUEST_DATA) (USAGE:RESPONSE_DATA)) (backnforth (INITIATE (ROLE:REQUESTER) (DESTINATION (ROLE:RESPONDER)) (ACTION:send_request)) (EXPECT (ROLE:RESPONDER) (SOURCE (ROLE:REQUESTER)) (PATTERN (SEMTREX_SYMBOL_LITERAL (USAGE:RESPONSE_DATA))) (GOAL:RESPONSE_HANDLER))))");
+    spec_is_str_equal(t2s(_sem_get_def(G_sem,REQUESTING)),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL:REQUESTING) (PROTOCOL_SEMANTICS (ROLE:REQUESTER) (ROLE:RESPONDER) (GOAL:REQUEST_HANDLER) (GOAL:RESPONSE_HANDLER) (USAGE:REQUEST_DATA) (USAGE:RESPONSE_DATA)) (backnforth (INITIATE (ROLE:REQUESTER) (DESTINATION (ROLE:RESPONDER)) (ACTION:send_request)) (EXPECT (ROLE:RESPONDER) (SOURCE (ROLE:REQUESTER)) (PATTERN (SEMTREX_SYMBOL_LITERAL (USAGE:REQUEST_DATA))) (GOAL:RESPONSE_HANDLER))))");
 
     spec_is_str_equal(t2s(_sem_get_def(G_sem,send_request)),"(PROCESS_DEFINITION (PROCESS_NAME:send_request) (PROCESS_INTENTION:send request) (process:REQUEST (ROLE:RESPONDER) (USAGE:REQUEST_DATA) (USAGE:REQUEST_DATA) (USAGE:RESPONSE_DATA) (GOAL:RESPONSE_HANDLER)) (PROCESS_SIGNATURE (OUTPUT_SIGNATURE (SIGNATURE_LABEL:response) (SIGNATURE_ANY))))");
 
@@ -25,7 +25,7 @@ void testProtocolRecognize() {
     spec_is_str_equal(t2s(recog),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL:RECOGNIZE) (PROTOCOL_SEMANTICS) (INCLUSION (PNAME:REQUESTING) (CONNECTION (WHICH_ROLE (ROLE:REQUESTER) (ROLE:RECOGNIZER))) (CONNECTION (WHICH_ROLE (ROLE:RESPONDER) (ROLE:RECOGNIZEE))) (CONNECTION (WHICH_GOAL (GOAL:REQUEST_HANDLER) (GOAL:RECOGNITION))) (RESOLUTION (WHICH_SYMBOL (USAGE:REQUEST_DATA) (ACTUAL_SYMBOL:are_you))) (RESOLUTION (WHICH_SYMBOL (USAGE:RESPONSE_DATA) (ACTUAL_SYMBOL:i_am))) (RESOLUTION (WHICH_PROCESS (GOAL:RESPONSE_HANDLER) (ACTUAL_PROCESS:fill_i_am)))))");
 
     T *t = _o_unwrap(G_sem,recog);
-    spec_is_str_equal(t2s(t),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL:RECOGNIZE) (PROTOCOL_SEMANTICS (ROLE:RECOGNIZER) (GOAL:RECOGNITION)) (backnforth (INITIATE (ROLE:RECOGNIZER) (DESTINATION (ROLE:RECOGNIZEE)) (ACTION:send_request)) (EXPECT (ROLE:RECOGNIZEE) (SOURCE (ROLE:RECOGNIZER)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:i_am))) (ACTION:fill_i_am))))");
+    spec_is_str_equal(t2s(t),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL:RECOGNIZE) (PROTOCOL_SEMANTICS (ROLE:RECOGNIZER) (GOAL:RECOGNITION)) (backnforth (INITIATE (ROLE:RECOGNIZER) (DESTINATION (ROLE:RECOGNIZEE)) (ACTION:send_request)) (EXPECT (ROLE:RECOGNIZEE) (SOURCE (ROLE:RECOGNIZER)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:are_you))) (ACTION:fill_i_am))))");
 
     Receptor *self =  _r_new(G_sem,TEST_RECEPTOR);
 
@@ -40,17 +40,29 @@ void testProtocolRecognize() {
     _t_news(w,ACTUAL_PROCESS,proc);
 
     _o_express_role(self,RECOGNIZE,RECOGNIZER,DEFAULT_ASPECT,bindings);
+    _t_free(bindings);
 
     //recognizer doesn't add expectations
     spec_is_str_equal(_td(self,self->flux),"(FLUX (DEFAULT_ASPECT (EXPECTATIONS) (SIGNALS)))");
 
-    //debug_enable(D_PROTOCOL);
-    _o_express_role(self,RECOGNIZE,RECOGNIZEE,DEFAULT_ASPECT,bindings);
-    //debug_disable(D_PROTOCOL);
-    _t_free(bindings);
+    // recognizee doesn't need any bindings because that role's completed by unwrapping
+    _o_express_role(self,RECOGNIZE,RECOGNIZEE,DEFAULT_ASPECT,NULL);
+    // however it does add expectation
+    spec_is_str_equal(_td(self,self->flux),"(FLUX (DEFAULT_ASPECT (EXPECTATIONS (EXPECTATION (CARRIER:RECOGNIZE) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:are_you))) (ACTION:fill_i_am) (PARAMS) (END_CONDITIONS (UNLIMITED)))) (SIGNALS)))");
 
-    //recognizee does add expectations
-    spec_is_str_equal(_td(self,self->flux),"(FLUX (DEFAULT_ASPECT (EXPECTATIONS (EXPECTATION (CARRIER:RECOGNIZE) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:i_am))) (ACTION:fill_i_am) (PARAMS) (END_CONDITIONS (UNLIMITED)))) (SIGNALS)))");
+    VMHost *v = G_vm;
+    Xaddr x = _v_new_receptor(v,v->r,TEST_RECEPTOR,self);
+    _v_activate(v,x);
+    T *s = __r_make_signal(self->addr,self->addr,DEFAULT_ASPECT,RECOGNIZE,_t_newr(0,are_you),0,0);
+    debug_enable(D_SIGNALS);
+    _r_send(self,s);
+    spec_is_str_equal(t2s(self->root),"");
+    _v_deliver_signals(v,self);
+    spec_is_str_equal(t2s(self->root),"");
+    _p_reduceq(self->q);
+    spec_is_str_equal(t2s(self->root),"");
+    _v_deliver_signals(v,self);
+    debug_disable(D_SIGNALS);
 
 }
 

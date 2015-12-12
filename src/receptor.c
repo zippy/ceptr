@@ -500,7 +500,7 @@ T* __r_send(Receptor *r,T *signal) {
 /**
  * send a simple signal (say)
  *
- * @param[in] carrier the carrier on which to expect a response
+ * @param[in] r the receptor sending the signal
  * @param[in] signal Signal tree
  * @returns a clone of the UUID of the message sent.
  */
@@ -667,6 +667,7 @@ void __r_test_expectation(Receptor *r,T *expectation,T *signal) {
         }
         else {
             Process p = *(Process*) _t_surface(action);
+            debug(D_SIGNALS,"creating a run tree for action %s\n",_sem_get_name(r->sem,p));
             T *params = _t_rclone(_t_child(expectation,ExpectationParamsIdx));  // __p_make_run_tree assumes rT nodes
             _p_interpolate_from_match(params,m,signal_contents);
             T *processes = _sem_get_defs(r->sem,p);
