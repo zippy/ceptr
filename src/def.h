@@ -41,6 +41,7 @@ enum {ProcessDefNameIdx=1,ProcessDefIntentionIdx,ProcessDefCodeIdx,ProcessDefSig
 enum {ProtocolDefNameIdx=1,ProtocolDefSemanticsIdx};
 enum {RuntreeCodeIdx=1,RunTreeParamsIdx,RunTreeErrorCodeIdx};
 enum {ResolutionWhichIdx=1};
+enum {ConnectionWhichIdx=1};
 enum {SemtrexMatchSymbolIdx=1,SemtrexMatchPathIdx,SemtrexMatchSibsIdx};
 enum {InclusionPnameIdx=1};
 

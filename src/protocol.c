@@ -196,10 +196,11 @@ T * _o_unwrap(SemTable *sem,T *def) {
             T *ps = _sem_get_defs(sem,p);
             T *p_def = _o_unwrap(sem,_t_child(ps,p.id));  // do the recursive unwrapping
             int j,c = _t_children(t);
+            T *bindings = NULL;
             for(j=InclusionPnameIdx+1;j<=c;j++) {
                 T *x = _t_child(t,j); // get the connection or resolution
                 if (semeq(_t_symbol(x),CONNECTION)) {
-                    T *w = _t_child(x,1);  // get the which
+                    T *w = _t_child(x,ConnectionWhichIdx);  // get the which
 
                     T *v = _t_clone(_t_child(w,1)); // get the source
                     T *stx = _t_new_root(SEMTREX_WALK);
@@ -214,16 +215,45 @@ T * _o_unwrap(SemTable *sem,T *def) {
                     /* printf("results in %s\n",_t2s(sem,p_def)); */
                     _t_free(stx);
                 }
-                else if (semeq(_t_symbol(t),RESOLUTION)) {
-                    puts("not imp!");
+                else if (semeq(_t_symbol(x),RESOLUTION)) {
+                    if (!bindings) bindings = _t_new_root(PROTOCOL_BINDINGS);
+                    _t_add(bindings,_t_clone(x));
                 }
                 else raise_error("expecting CONNECTION or RESOLUTION");
+            }
+            if (bindings) {
+                _o_resolve(sem,p_def,bindings);
             }
 
             // after doing the semantics mapping from the CONNECTIONS and RESOLUTIONS
             // we need to add into the parent semantics and items that weren't resolved
             // or connected for later binding
             T *unwrapped_semantics = _t_child(p_def,ProtocolDefSemanticsIdx);
+
+            // but first remove any bound items from the PROTOCOL_SEMANTICS because those
+            // don't need to be merged into the parents semantics
+            if (bindings) {
+                int i,c = _t_children(bindings);
+                for(i=1;i<=c;i++) {
+                    T *x = _t_child(bindings,i);
+                    x = _t_child(_t_child(x,ResolutionWhichIdx),1);
+                    Symbol symx = _t_symbol(x);
+                    Symbol symxs = *(Symbol *) _t_surface(x);
+                    T *parent_semantics = _t_child(d,ProtocolDefSemanticsIdx);
+                    int j,b = _t_children(unwrapped_semantics);
+                    // search the parent semantics for matching item and remove it.
+                    for(j=1;j<=b;j++) {
+                        T *y = _t_child(unwrapped_semantics,j);
+                        if (semeq(symx,_t_symbol(y)) && semeq(symxs,*(Symbol *) _t_surface(y))) {
+                            _t_free(_t_detach_by_idx(unwrapped_semantics,j));
+                            break;
+                        }
+                    }
+                }
+
+                _t_free(bindings);
+            }
+
             T *parent_semantics = _t_child(d,ProtocolDefSemanticsIdx);
             T *x;
             while(x = _t_detach_by_idx(unwrapped_semantics,1)) {
@@ -256,21 +286,22 @@ T * _o_unwrap(SemTable *sem,T *def) {
  * RESOLUTIONS and CONNECTIONS in the the def and the bindings
  *
  * @param[in] sem SemTable contexts
- * @param[in] def protocol definition to resolve
+ * @param[in,out] def protocol definition to resolve
  * @param[in] role the role that needs resolving
  * @param[in] bindings the PROTOCOL_BINDINGS tree with additional RESOLUTIONS
- * @param[out] resolved protocol definition tree
  */
-T *_o_resolve(SemTable *sem,T *def,Symbol role, T *bindings){
-    T *d = _t_clone(def);
+void _o_resolve(SemTable *sem,T *def, T *bindings){
+    T *d = def;
     if (bindings) {
         T *gstx = NULL;
         T *gv;
         T *ustx = NULL;
         T *uv;
+        debug(D_PROTOCOL,"resolving bindings %s\n",t2s(bindings));
         DO_KIDS(bindings,
                 T *res = _t_child(bindings,i);
                 T *w = _t_child(res,ResolutionWhichIdx);
+                debug(D_PROTOCOL,"resolving %s\n",t2s(w));
                 if (semeq(_t_symbol(w),WHICH_PROCESS)) {
                     T *goal = _t_child(w,1);
                     // build the stx if we haven't already
@@ -313,7 +344,6 @@ T *_o_resolve(SemTable *sem,T *def,Symbol role, T *bindings){
         if (gstx) _t_free(gstx);
         if (ustx) _t_free(ustx);
     }
-    return d;
 }
 
 /**
@@ -327,33 +357,38 @@ T *_o_resolve(SemTable *sem,T *def,Symbol role, T *bindings){
  *
  */
 void _o_express_role(Receptor *r,Protocol protocol,Symbol role,Aspect aspect,T *bindings) {
-    T *ps = _sem_get_defs(r->sem,protocol);
-    T *p = _t_child(ps,protocol.id);
+    T *p = _sem_get_def(r->sem,protocol);
     if (!p) raise_error("protocol not found");
-    p = _o_resolve(r->sem,p,role,bindings);
+    p = _o_unwrap(r->sem,p);  // creates a cloned, uwrapped protocol def.
+    _o_resolve(r->sem,p,bindings);
     //@todo convert this search to be repeat Semtex matching on INTERACTION structure...
-    T *c;
-    DO_KIDS(p,
-            c = _t_child(p,i);
-            if (semeq(_sem_get_symbol_structure(r->sem,_t_symbol(c)),INTERACTION)) {
+    T *t;
+    int i,c=_t_children(p);
+    for(i=1;i<=c;i++) {
+        t = _t_child(p,i);
+        if (semeq(_sem_get_symbol_structure(r->sem,_t_symbol(t)),INTERACTION)) {
             int j;
-            int x = _t_children(c);
-            for(j=1;j<=x;j++) {
-                T *rp = _t_child(c,j);
-                T *rpr = _t_child(rp,ExpectRoleIdx);
-                if (semeq(*(Symbol *)_t_surface(rpr),role)) {
-                    T *pattern = _t_clone(_t_child(rp,ExpectPatternIdx));
-                    // @todo check pattern for unbound USAGEs
+            int b = _t_children(t);
+            for(j=1;j<=b;j++) {
+                T *x = _t_child(t,j);
+                if (semeq(_t_symbol(x),EXPECT)) {
+                    T *rl = _t_child(x,ExpectRoleIdx);
+                    if (semeq(*(Symbol *)_t_surface(rl),role)) {
+                        T *pattern = _t_clone(_t_child(x,ExpectPatternIdx));
+                        // @todo check pattern for unbound USAGEs
 
-                    T *a = _t_clone(_t_child(rp,ExpectActionIdx));
-                    if (!bindings && semeq(_t_symbol(a),GOAL)) {
-                        raise_error("binding missing for unspecified protocol role");
+                        T *a = _t_clone(_t_child(x,ExpectActionIdx));
+                        if (!bindings && semeq(_t_symbol(a),GOAL)) {
+                            raise_error("binding missing for GOAL:%s in %s",_sem_get_name(r->sem,*(SemanticID *)_t_surface(a)),_t2s(r->sem,x));
+                        }
+                        T *e = __r_build_expectation(protocol,pattern,a,0,0);
+                        __r_add_expectation(r,aspect,e);
                     }
-                    T *e = __r_build_expectation(protocol,pattern,a,0,0);
-                    __r_add_expectation(r,aspect,e);
                 }
             }
-        };);
+        }
+    }
+    _t_free(p);
 }
 
 /** @}*/

@@ -20,8 +20,12 @@ void testProtocolRequesting() {
 
 void testProtocolRecognize() {
 
-    spec_is_str_equal(t2s(_sem_get_def(G_sem,RECOGNIZE)),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL:RECOGNIZE) (PROTOCOL_SEMANTICS) (INCLUSION (PNAME:REQUESTING) (CONNECTION (WHICH_ROLE (ROLE:REQUESTER) (ROLE:RECOGNIZER))) (CONNECTION (WHICH_ROLE (ROLE:RESPONDER) (ROLE:RECOGNIZEE))) (CONNECTION (WHICH_GOAL (GOAL:RESPONSE_HANDLER) (GOAL:RECOGNITION))) (RESOLUTION (WHICH_SYMBOL (USAGE:REQUEST_DATA) (ACTUAL_SYMBOL:are_you))) (RESOLUTION (WHICH_SYMBOL (USAGE:RESPONSE_DATA) (ACTUAL_SYMBOL:i_am))) (RESOLUTION (WHICH_PROCESS (GOAL:REQUEST_HANDLER) (ACTUAL_PROCESS:fill_i_am)))))");
-    return;
+    T *recog = _sem_get_def(G_sem,RECOGNIZE);
+
+    spec_is_str_equal(t2s(recog),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL:RECOGNIZE) (PROTOCOL_SEMANTICS) (INCLUSION (PNAME:REQUESTING) (CONNECTION (WHICH_ROLE (ROLE:REQUESTER) (ROLE:RECOGNIZER))) (CONNECTION (WHICH_ROLE (ROLE:RESPONDER) (ROLE:RECOGNIZEE))) (CONNECTION (WHICH_GOAL (GOAL:RESPONSE_HANDLER) (GOAL:RECOGNITION))) (RESOLUTION (WHICH_SYMBOL (USAGE:REQUEST_DATA) (ACTUAL_SYMBOL:are_you))) (RESOLUTION (WHICH_SYMBOL (USAGE:RESPONSE_DATA) (ACTUAL_SYMBOL:i_am))) (RESOLUTION (WHICH_PROCESS (GOAL:REQUEST_HANDLER) (ACTUAL_PROCESS:fill_i_am)))))");
+
+    T *t = _o_unwrap(G_sem,recog);
+    spec_is_str_equal(t2s(t),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL:RECOGNIZE) (PROTOCOL_SEMANTICS (ROLE:RECOGNIZER) (GOAL:RECOGNITION)) (backnforth (INITIATE (ROLE:RECOGNIZER) (DESTINATION (ROLE:RECOGNIZEE)) (ACTION:send_request)) (EXPECT (ROLE:RECOGNIZEE) (SOURCE (ROLE:RECOGNIZER)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:i_am))) (GOAL:RECOGNITION))))");
 
     Receptor *self =  _r_new(G_sem,TEST_RECEPTOR);
 
@@ -36,17 +40,17 @@ void testProtocolRecognize() {
     _t_news(w,ACTUAL_PROCESS,proc);
 
     _o_express_role(self,RECOGNIZE,RECOGNIZER,DEFAULT_ASPECT,bindings);
+
+    //recognizer doesn't add expectations
+    spec_is_str_equal(_td(self,self->flux),"(FLUX (DEFAULT_ASPECT (EXPECTATIONS) (SIGNALS)))");
+
+    //debug_enable(D_PROTOCOL);
+    _o_express_role(self,RECOGNIZE,RECOGNIZEE,DEFAULT_ASPECT,bindings);
+    //debug_disable(D_PROTOCOL);
     _t_free(bindings);
 
-    spec_is_str_equal(_td(self,self->flux),"");
-
-    bindings = _t_new_root(PROTOCOL_BINDINGS);
-    res = _t_new_root(RESOLUTION);
-    w = _t_newr(res,WHICH_PROCESS);
-    //c    _t_news(w,GOAL,response_handler);
-    _t_news(w,ACTUAL_PROCESS,proc);
-    //    _o_express_role(self,recog,responder,DEFAULT_ASPECT,res);
-    _t_free(bindings);
+    //recognizee does add expectations
+    spec_is_str_equal(_td(self,self->flux),"(FLUX (DEFAULT_ASPECT (EXPECTATIONS (EXPECTATION (CARRIER:RECOGNIZE) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:i_am))) (ACTION:do nothing) (PARAMS) (END_CONDITIONS (UNLIMITED)))) (SIGNALS)))");
 
 }
 
@@ -145,8 +149,9 @@ void testProtocolResolve() {
     T *bindings = _t_build(G_sem,0,PROTOCOL_BINDINGS,RESOLUTION,WHICH_PROCESS,GOAL,process,ACTUAL_PROCESS,proc,NULL_SYMBOL,RESOLUTION,WHICH_SYMBOL,USAGE,data,ACTUAL_SYMBOL,TEST_INT_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);
 
     spec_is_str_equal(t2s(bindings),"(PROTOCOL_BINDINGS (RESOLUTION (WHICH_PROCESS (GOAL:process) (ACTUAL_PROCESS:do nothing))) (RESOLUTION (WHICH_SYMBOL (USAGE:data) (ACTUAL_SYMBOL:TEST_INT_SYMBOL))))");
-    T *resolved = _o_resolve(G_sem,simple_def,agent,bindings);
     spec_is_str_equal(t2s(simple_def),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL:do) (PROTOCOL_SEMANTICS (ROLE:agent) (GOAL:process) (USAGE:data)) (act (EXPECT (ROLE:agent) (SOURCE (ROLE:agent)) (PATTERN (SEMTREX_SYMBOL_LITERAL (USAGE:data))) (GOAL:process))))");
+    T *resolved = _t_clone(simple_def);
+    _o_resolve(G_sem,resolved,bindings);
     spec_is_str_equal(t2s(resolved),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL:do) (PROTOCOL_SEMANTICS (ROLE:agent) (GOAL:process) (USAGE:data)) (act (EXPECT (ROLE:agent) (SOURCE (ROLE:agent)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TEST_INT_SYMBOL))) (ACTION:do nothing))))");
 
     _t_free(bindings);
