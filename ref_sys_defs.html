@@ -1306,14 +1306,26 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
    </div>
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
-       <div class="def-name"><a name="LIST_OF_PROTOCOL_LABEL_AND_ZERO_OR_MORE_OF_ROLE_AND_ZERO_OR_MORE_OF_GOAL_AND_ZERO_OR_MORE_OF_USAGE_AND_ZERO_OR_MORE_OF_STRUCTURE_OF_INTERACTION_AND_ZERO_OR_MORE_OF_INCLUSION"></a>LIST-OF-PROTOCOL-LABEL-AND-ZERO-OR-MORE-OF-ROLE-AND-ZERO-OR-MORE-OF-GOAL-AND-ZERO-OR-MORE-OF-USAGE-AND-ZERO-OR-MORE-OF-STRUCTURE-OF-INTERACTION-AND-ZERO-OR-MORE-OF-INCLUSION</div>
-       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#PROTOCOL_LABEL">PROTOCOL_LABEL</a>, *(<a href="ref_sys_symbols.html#ROLE">ROLE</a>), *(<a href="ref_sys_symbols.html#GOAL">GOAL</a>), *(<a href="ref_sys_symbols.html#USAGE">USAGE</a>), *(%<a href="ref_sys_structures.html#INTERACTION">INTERACTION</a>), *(<a href="ref_sys_symbols.html#INCLUSION">INCLUSION</a>))</div>
+       <div class="def-name"><a name="LIST_OF_ZERO_OR_MORE_OF_ROLE_AND_ZERO_OR_MORE_OF_GOAL_AND_ZERO_OR_MORE_OF_USAGE"></a>LIST-OF-ZERO-OR-MORE-OF-ROLE-AND-ZERO-OR-MORE-OF-GOAL-AND-ZERO-OR-MORE-OF-USAGE</div>
+       <div class="def-struc-def">SEQ(*(<a href="ref_sys_symbols.html#ROLE">ROLE</a>), *(<a href="ref_sys_symbols.html#GOAL">GOAL</a>), *(<a href="ref_sys_symbols.html#USAGE">USAGE</a>))</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="PROTOCOL_SEMANTICS"></a>PROTOCOL_SEMANTICS</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_ZERO_OR_MORE_OF_ROLE_AND_ZERO_OR_MORE_OF_GOAL_AND_ZERO_OR_MORE_OF_USAGE">LIST-OF-ZERO-OR-MORE-OF-ROLE-AND-ZERO-OR-MORE-OF-GOAL-AND-ZERO-OR-MORE-OF-USAGE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="LIST_OF_PROTOCOL_LABEL_AND_PROTOCOL_SEMANTICS_AND_ZERO_OR_MORE_OF_STRUCTURE_OF_INTERACTION_AND_ZERO_OR_MORE_OF_INCLUSION"></a>LIST-OF-PROTOCOL-LABEL-AND-PROTOCOL-SEMANTICS-AND-ZERO-OR-MORE-OF-STRUCTURE-OF-INTERACTION-AND-ZERO-OR-MORE-OF-INCLUSION</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#PROTOCOL_LABEL">PROTOCOL_LABEL</a>, <a href="ref_sys_symbols.html#PROTOCOL_SEMANTICS">PROTOCOL_SEMANTICS</a>, *(%<a href="ref_sys_structures.html#INTERACTION">INTERACTION</a>), *(<a href="ref_sys_symbols.html#INCLUSION">INCLUSION</a>))</div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="PROTOCOL_DEFINITION"></a>PROTOCOL_DEFINITION</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_PROTOCOL_LABEL_AND_ZERO_OR_MORE_OF_ROLE_AND_ZERO_OR_MORE_OF_GOAL_AND_ZERO_OR_MORE_OF_USAGE_AND_ZERO_OR_MORE_OF_STRUCTURE_OF_INTERACTION_AND_ZERO_OR_MORE_OF_INCLUSION">LIST-OF-PROTOCOL-LABEL-AND-ZERO-OR-MORE-OF-ROLE-AND-ZERO-OR-MORE-OF-GOAL-AND-ZERO-OR-MORE-OF-USAGE-AND-ZERO-OR-MORE-OF-STRUCTURE-OF-INTERACTION-AND-ZERO-OR-MORE-OF-INCLUSION</a></div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_PROTOCOL_LABEL_AND_PROTOCOL_SEMANTICS_AND_ZERO_OR_MORE_OF_STRUCTURE_OF_INTERACTION_AND_ZERO_OR_MORE_OF_INCLUSION">LIST-OF-PROTOCOL-LABEL-AND-PROTOCOL-SEMANTICS-AND-ZERO-OR-MORE-OF-STRUCTURE-OF-INTERACTION-AND-ZERO-OR-MORE-OF-INCLUSION</a></div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-structure">
@@ -2167,7 +2179,7 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
    <div class="def-item def-protocol">
        <div class="def-type">Protocol:</div>
        <div class="def-name"><a name="RECOGNIZE"></a>RECOGNIZE</div>
-       <div class="def-protocol-def">INCLUSION,REQUESTING,WHICH_ROLE,REQUESTER,RECOGNIZER,WHICH_ROLE,RESPONDER,RECOGNIZEE,WHICH_GOAL,RESPONSE_HANDLER,RECOGNITION,WHICH_SYMBOL,REQUEST_DATA,are_you,WHICH_SYMBOL,RESPONSE_DATA,i_am,WHICH_PROCESS,REQUEST_HANDLER,fill_i_am</div>
+       <div class="def-protocol-def">INCLUSION,REQUESTING,WHICH_ROLE,REQUESTER,RECOGNIZER,WHICH_ROLE,RESPONDER,RECOGNIZEE,WHICH_GOAL,REQUEST_HANDLER,RECOGNITION,WHICH_SYMBOL,REQUEST_DATA,are_you,WHICH_SYMBOL,RESPONSE_DATA,i_am,WHICH_PROCESS,RESPONSE_HANDLER,fill_i_am</div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">
@@ -2335,7 +2347,7 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Dec 11 2015 10:01:55 for ceptr by
+    <li class="footer">Generated on Fri Dec 11 2015 21:36:29 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

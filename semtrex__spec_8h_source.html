@@ -1048,31 +1048,34 @@ $(document).ready(function(){initNavTree('semtrex__spec_8h_source.html','');});
 <div class="line"><a name="l00945"></a><span class="lineno">  945</span>&#160;    <a class="code" href="structT.html">T</a> *a = _t_news(0,ACTION,RESPOND);</div>
 <div class="line"><a name="l00946"></a><span class="lineno">  946</span>&#160;    _stx_replace(stx,d,a);</div>
 <div class="line"><a name="l00947"></a><span class="lineno">  947</span>&#160;    spec_is_str_equal(t2s(d),<span class="stringliteral">&quot;(some_interaction (EXPECT (PATTERN) (ACTION:RESPOND)))&quot;</span>);</div>
-<div class="line"><a name="l00948"></a><span class="lineno">  948</span>&#160;}</div>
-<div class="line"><a name="l00949"></a><span class="lineno">  949</span>&#160;</div>
-<div class="line"><a name="l00950"></a><span class="lineno">  950</span>&#160;</div>
-<div class="line"><a name="l00951"></a><span class="lineno">  951</span>&#160;<span class="keywordtype">void</span> testSemtrex() {</div>
-<div class="line"><a name="l00952"></a><span class="lineno">  952</span>&#160;    _stxSetup();</div>
-<div class="line"><a name="l00953"></a><span class="lineno">  953</span>&#160;    testMakeFA();</div>
-<div class="line"><a name="l00954"></a><span class="lineno">  954</span>&#160;    testMatchTrees();</div>
-<div class="line"><a name="l00955"></a><span class="lineno">  955</span>&#160;    testSemtrexDump();</div>
-<div class="line"><a name="l00956"></a><span class="lineno">  956</span>&#160;    testMatchOr();</div>
-<div class="line"><a name="l00957"></a><span class="lineno">  957</span>&#160;    testMatchAny();</div>
-<div class="line"><a name="l00958"></a><span class="lineno">  958</span>&#160;    testMatchExcept();</div>
-<div class="line"><a name="l00959"></a><span class="lineno">  959</span>&#160;    testMatchStar();</div>
-<div class="line"><a name="l00960"></a><span class="lineno">  960</span>&#160;    testMatchPlus();</div>
-<div class="line"><a name="l00961"></a><span class="lineno">  961</span>&#160;    testMatchQ();</div>
-<div class="line"><a name="l00962"></a><span class="lineno">  962</span>&#160;    testMatchLiteralValue();</div>
-<div class="line"><a name="l00963"></a><span class="lineno">  963</span>&#160;    testMatchGroup();</div>
-<div class="line"><a name="l00964"></a><span class="lineno">  964</span>&#160;    testMatchGroupMulti();</div>
-<div class="line"><a name="l00965"></a><span class="lineno">  965</span>&#160;    testMatchDescend();</div>
-<div class="line"><a name="l00966"></a><span class="lineno">  966</span>&#160;    testMatchWalk();</div>
-<div class="line"><a name="l00967"></a><span class="lineno">  967</span>&#160;    <span class="comment">//testMatchNot();</span></div>
-<div class="line"><a name="l00968"></a><span class="lineno">  968</span>&#160;    testSemtrexParse();</div>
-<div class="line"><a name="l00969"></a><span class="lineno">  969</span>&#160;    testSemtrexParseHHTPReq();</div>
-<div class="line"><a name="l00970"></a><span class="lineno">  970</span>&#160;    testEmbodyFromMatch();</div>
-<div class="line"><a name="l00971"></a><span class="lineno">  971</span>&#160;    testSemtrexReplace();</div>
-<div class="line"><a name="l00972"></a><span class="lineno">  972</span>&#160;}</div>
+<div class="line"><a name="l00948"></a><span class="lineno">  948</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(d);</div>
+<div class="line"><a name="l00949"></a><span class="lineno">  949</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(stx);</div>
+<div class="line"><a name="l00950"></a><span class="lineno">  950</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(a);</div>
+<div class="line"><a name="l00951"></a><span class="lineno">  951</span>&#160;}</div>
+<div class="line"><a name="l00952"></a><span class="lineno">  952</span>&#160;</div>
+<div class="line"><a name="l00953"></a><span class="lineno">  953</span>&#160;</div>
+<div class="line"><a name="l00954"></a><span class="lineno">  954</span>&#160;<span class="keywordtype">void</span> testSemtrex() {</div>
+<div class="line"><a name="l00955"></a><span class="lineno">  955</span>&#160;    _stxSetup();</div>
+<div class="line"><a name="l00956"></a><span class="lineno">  956</span>&#160;    testMakeFA();</div>
+<div class="line"><a name="l00957"></a><span class="lineno">  957</span>&#160;    testMatchTrees();</div>
+<div class="line"><a name="l00958"></a><span class="lineno">  958</span>&#160;    testSemtrexDump();</div>
+<div class="line"><a name="l00959"></a><span class="lineno">  959</span>&#160;    testMatchOr();</div>
+<div class="line"><a name="l00960"></a><span class="lineno">  960</span>&#160;    testMatchAny();</div>
+<div class="line"><a name="l00961"></a><span class="lineno">  961</span>&#160;    testMatchExcept();</div>
+<div class="line"><a name="l00962"></a><span class="lineno">  962</span>&#160;    testMatchStar();</div>
+<div class="line"><a name="l00963"></a><span class="lineno">  963</span>&#160;    testMatchPlus();</div>
+<div class="line"><a name="l00964"></a><span class="lineno">  964</span>&#160;    testMatchQ();</div>
+<div class="line"><a name="l00965"></a><span class="lineno">  965</span>&#160;    testMatchLiteralValue();</div>
+<div class="line"><a name="l00966"></a><span class="lineno">  966</span>&#160;    testMatchGroup();</div>
+<div class="line"><a name="l00967"></a><span class="lineno">  967</span>&#160;    testMatchGroupMulti();</div>
+<div class="line"><a name="l00968"></a><span class="lineno">  968</span>&#160;    testMatchDescend();</div>
+<div class="line"><a name="l00969"></a><span class="lineno">  969</span>&#160;    testMatchWalk();</div>
+<div class="line"><a name="l00970"></a><span class="lineno">  970</span>&#160;    <span class="comment">//testMatchNot();</span></div>
+<div class="line"><a name="l00971"></a><span class="lineno">  971</span>&#160;    testSemtrexParse();</div>
+<div class="line"><a name="l00972"></a><span class="lineno">  972</span>&#160;    testSemtrexParseHHTPReq();</div>
+<div class="line"><a name="l00973"></a><span class="lineno">  973</span>&#160;    testEmbodyFromMatch();</div>
+<div class="line"><a name="l00974"></a><span class="lineno">  974</span>&#160;    testSemtrexReplace();</div>
+<div class="line"><a name="l00975"></a><span class="lineno">  975</span>&#160;}</div>
 <div class="ttc" id="group__tree_html_ga25dd0f385044ffbcc7c215ea80fa00b4"><div class="ttname"><a href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a></div><div class="ttdeci">T * _t_new_root(Symbol symbol)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00137">tree.c:137</a></div></div>
 <div class="ttc" id="structSState_html_ae22ac0f7bb019ad6aae9714be4828a8e"><div class="ttname"><a href="structSState.html#ae22ac0f7bb019ad6aae9714be4828a8e">SState::_did</a></div><div class="ttdeci">int _did</div><div class="ttdoc">used to hold a mark when freeing and printing out FSA to prevent looping. </div><div class="ttdef"><b>Definition:</b> <a href="semtrex_8h_source.html#l00087">semtrex.h:87</a></div></div>
 <div class="ttc" id="group__semtrex_html_gga7cce21ba007b15ca5263f3cc5ef15c11a0304642b1bec42fa532a750ef23e276d"><div class="ttname"><a href="group__semtrex.html#gga7cce21ba007b15ca5263f3cc5ef15c11a0304642b1bec42fa532a750ef23e276d">TransitionNextChild</a></div><div class="ttdoc">advance to next sibling in the match tree </div><div class="ttdef"><b>Definition:</b> <a href="semtrex_8h_source.html#l00031">semtrex.h:31</a></div></div>
@@ -1080,12 +1083,12 @@ $(document).ready(function(){initNavTree('semtrex__spec_8h_source.html','');});
 <div class="ttc" id="structSgroupOpen_html_a1daccf55b781d3df990334af45339d10"><div class="ttname"><a href="structSgroupOpen.html#a1daccf55b781d3df990334af45339d10">SgroupOpen::symbol</a></div><div class="ttdeci">SemanticID symbol</div><div class="ttdoc">the symbol that describes the group semantically </div><div class="ttdef"><b>Definition:</b> <a href="semtrex_8h_source.html#l00043">semtrex.h:43</a></div></div>
 <div class="ttc" id="unionSTypeData_html_a762fc3124cc5a68133c857ef91d18041"><div class="ttname"><a href="unionSTypeData.html#a762fc3124cc5a68133c857ef91d18041">STypeData::groupo</a></div><div class="ttdeci">SgroupOpen groupo</div><div class="ttdoc">Group data for matching for StateGroup type states. </div><div class="ttdef"><b>Definition:</b> <a href="semtrex_8h_source.html#l00075">semtrex.h:75</a></div></div>
 <div class="ttc" id="unionSTypeData_html_a78d1d47572bb172f00a6cdfb3917697b"><div class="ttname"><a href="unionSTypeData.html#a78d1d47572bb172f00a6cdfb3917697b">STypeData::value</a></div><div class="ttdeci">Svalue value</div><div class="ttdoc">Value data to match on for StateValue type states. </div><div class="ttdef"><b>Definition:</b> <a href="semtrex_8h_source.html#l00074">semtrex.h:74</a></div></div>
-<div class="ttc" id="group__tree_html_gae4c9b743462f0a3808c9f02c3bf33da8"><div class="ttname"><a href="group__tree.html#gae4c9b743462f0a3808c9f02c3bf33da8">_t_get_path</a></div><div class="ttdeci">int * _t_get_path(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00875">tree.c:875</a></div></div>
+<div class="ttc" id="group__tree_html_gae4c9b743462f0a3808c9f02c3bf33da8"><div class="ttname"><a href="group__tree.html#gae4c9b743462f0a3808c9f02c3bf33da8">_t_get_path</a></div><div class="ttdeci">int * _t_get_path(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00885">tree.c:885</a></div></div>
 <div class="ttc" id="group__tree_html_ga7535eb2963c6cf5fc78cb14287581f92"><div class="ttname"><a href="group__tree.html#ga7535eb2963c6cf5fc78cb14287581f92">_t_clone</a></div><div class="ttdeci">T * _t_clone(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00558">tree.c:558</a></div></div>
 <div class="ttc" id="group__tree_html_ga3e2009f5a82889263d560d2c1479606a"><div class="ttname"><a href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a></div><div class="ttdeci">T * _t_newr(T *parent, Symbol symbol)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00148">tree.c:148</a></div></div>
 <div class="ttc" id="group__semtrex_html_gabbe3a3359feb3be7f9dd5b7fbbbb74ed"><div class="ttname"><a href="group__semtrex.html#gabbe3a3359feb3be7f9dd5b7fbbbb74ed">__sl</a></div><div class="ttdeci">T * __sl(T *p, bool not, int count,...)</div><div class="ttdef"><b>Definition:</b> <a href="semtrex_8c_source.html#l01158">semtrex.c:1158</a></div></div>
-<div class="ttc" id="group__tree_html_ga946600fb570f0cc913450905f6189d49"><div class="ttname"><a href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a></div><div class="ttdeci">Symbol _t_symbol(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00737">tree.c:737</a></div></div>
-<div class="ttc" id="group__tree_html_ga07dd808fabd8a722b417f2f5e5ca132b"><div class="ttname"><a href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a></div><div class="ttdeci">T * _t_child(T *t, int i)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00760">tree.c:760</a></div></div>
+<div class="ttc" id="group__tree_html_ga946600fb570f0cc913450905f6189d49"><div class="ttname"><a href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a></div><div class="ttdeci">Symbol _t_symbol(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00747">tree.c:747</a></div></div>
+<div class="ttc" id="group__tree_html_ga07dd808fabd8a722b417f2f5e5ca132b"><div class="ttname"><a href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a></div><div class="ttdeci">T * _t_child(T *t, int i)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00770">tree.c:770</a></div></div>
 <div class="ttc" id="group__semtrex_html_gad46a0cafec3ba9ca1500ecd6f8984238"><div class="ttname"><a href="group__semtrex.html#gad46a0cafec3ba9ca1500ecd6f8984238">makeASCIITree</a></div><div class="ttdeci">T * makeASCIITree(char *c)</div><div class="ttdef"><b>Definition:</b> <a href="semtrex_8c_source.html#l01088">semtrex.c:1088</a></div></div>
 <div class="ttc" id="group__semtrex_html_ga23ed44c9e7a1637d5f7d49e6114af83a"><div class="ttname"><a href="group__semtrex.html#ga23ed44c9e7a1637d5f7d49e6114af83a">_stx_makeFA</a></div><div class="ttdeci">SState * _stx_makeFA(T *t, int *statesP)</div><div class="ttdef"><b>Definition:</b> <a href="semtrex_8c_source.html#l00283">semtrex.c:283</a></div></div>
 <div class="ttc" id="group__semtrex_html_ga8e580d7393964e5df55e92aebf587e3f"><div class="ttname"><a href="group__semtrex.html#ga8e580d7393964e5df55e92aebf587e3f">_t_match</a></div><div class="ttdeci">int _t_match(T *semtrex, T *t)</div><div class="ttdef"><b>Definition:</b> <a href="semtrex_8c_source.html#l00699">semtrex.c:699</a></div></div>
@@ -1107,7 +1110,7 @@ $(document).ready(function(){initNavTree('semtrex__spec_8h_source.html','');});
 <div class="ttc" id="group__semtrex_html_gabe49b12bfb8785a10bf088c4ebe60db4"><div class="ttname"><a href="group__semtrex.html#gabe49b12bfb8785a10bf088c4ebe60db4">parseSemtrex</a></div><div class="ttdeci">T * parseSemtrex(SemTable *sem, char *stx)</div><div class="ttdef"><b>Definition:</b> <a href="semtrex_8c_source.html#l01177">semtrex.c:1177</a></div></div>
 <div class="ttc" id="group__tree_html_ga3b7a6499fe49f8e6a54166d583b08d5c"><div class="ttname"><a href="group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c">_t_add</a></div><div class="ttdeci">void _t_add(T *t, T *c)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00238">tree.c:238</a></div></div>
 <div class="ttc" id="structR_html"><div class="ttname"><a href="structR.html">R</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00179">ceptr_types.h:179</a></div></div>
-<div class="ttc" id="group__tree_html_ga99f3418321c60281de6692af9b213a37"><div class="ttname"><a href="group__tree.html#ga99f3418321c60281de6692af9b213a37">_t2json</a></div><div class="ttdeci">char * _t2json(SemTable *sem, T *t, int level, char *buf)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l01323">tree.c:1323</a></div></div>
+<div class="ttc" id="group__tree_html_ga99f3418321c60281de6692af9b213a37"><div class="ttname"><a href="group__tree.html#ga99f3418321c60281de6692af9b213a37">_t2json</a></div><div class="ttdeci">char * _t2json(SemTable *sem, T *t, int level, char *buf)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l01333">tree.c:1333</a></div></div>
 <div class="ttc" id="group__semtrex_html_ga0b627873ef75a23e1c24074e9893ee6e"><div class="ttname"><a href="group__semtrex.html#ga0b627873ef75a23e1c24074e9893ee6e">_dump_semtrex</a></div><div class="ttdeci">char * _dump_semtrex(SemTable *sem, T *s, char *buf)</div><div class="ttdef"><b>Definition:</b> <a href="semtrex_8c_source.html#l00978">semtrex.c:978</a></div></div>
 <div class="ttc" id="structSState_html_ac570e1a6012a5f5e9ac09e2b7a261a3c"><div class="ttname"><a href="structSState.html#ac570e1a6012a5f5e9ac09e2b7a261a3c">SState::type</a></div><div class="ttdeci">StateType type</div><div class="ttdoc">what type of state this is </div><div class="ttdef"><b>Definition:</b> <a href="semtrex_8h_source.html#l00083">semtrex.h:83</a></div></div>
 <div class="ttc" id="structSgroupOpen_html_a498c3ea885c19b632ff633ebc0ddd06c"><div class="ttname"><a href="structSgroupOpen.html#a498c3ea885c19b632ff633ebc0ddd06c">SgroupOpen::uid</a></div><div class="ttdeci">int uid</div><div class="ttdoc">unique id for the group </div><div class="ttdef"><b>Definition:</b> <a href="semtrex_8h_source.html#l00044">semtrex.h:44</a></div></div>
@@ -1115,7 +1118,7 @@ $(document).ready(function(){initNavTree('semtrex__spec_8h_source.html','');});
 <div class="ttc" id="structSemanticID_html"><div class="ttname"><a href="structSemanticID.html">SemanticID</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00022">ceptr_types.h:22</a></div></div>
 <div class="ttc" id="group__semtrex_html_gga7cce21ba007b15ca5263f3cc5ef15c11a3281a29fe6ed6c41e5b47100af5737e4"><div class="ttname"><a href="group__semtrex.html#gga7cce21ba007b15ca5263f3cc5ef15c11a3281a29fe6ed6c41e5b47100af5737e4">TransitionDown</a></div><div class="ttdoc">move to child in the match tree </div><div class="ttdef"><b>Definition:</b> <a href="semtrex_8h_source.html#l00033">semtrex.h:33</a></div></div>
 <div class="ttc" id="group__semtrex_html_gac1b578cc9fc2f835ad12855698fe4cf2"><div class="ttname"><a href="group__semtrex.html#gac1b578cc9fc2f835ad12855698fe4cf2">_sln</a></div><div class="ttdeci">#define _sln(t, s)</div><div class="ttdoc">macro to add a single symbol literal not to semtrex tree </div><div class="ttdef"><b>Definition:</b> <a href="semtrex_8h_source.html#l00119">semtrex.h:119</a></div></div>
-<div class="ttc" id="group__tree_html_ga0e63c83e6413f47238db7fa20373c526"><div class="ttname"><a href="group__tree.html#ga0e63c83e6413f47238db7fa20373c526">_t_sprint_path</a></div><div class="ttdeci">char * _t_sprint_path(int *fp, char *buf)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00998">tree.c:998</a></div></div>
+<div class="ttc" id="group__tree_html_ga0e63c83e6413f47238db7fa20373c526"><div class="ttname"><a href="group__tree.html#ga0e63c83e6413f47238db7fa20373c526">_t_sprint_path</a></div><div class="ttdeci">char * _t_sprint_path(int *fp, char *buf)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l01008">tree.c:1008</a></div></div>
 <div class="ttc" id="structSState_html_a6dc01f4330db9f0d04ede6c97d8b1e77"><div class="ttname"><a href="structSState.html#a6dc01f4330db9f0d04ede6c97d8b1e77">SState::out1</a></div><div class="ttdeci">struct SState * out1</div><div class="ttdoc">which alternate state to go to next in the case this is a Split state </div><div class="ttdef"><b>Definition:</b> <a href="semtrex_8h_source.html#l00086">semtrex.h:86</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -1123,7 +1126,7 @@ $(document).ready(function(){initNavTree('semtrex__spec_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><a class="el" href="semtrex__spec_8h.html">semtrex_spec.h</a></li>
-    <li class="footer">Generated on Fri Dec 11 2015 10:01:55 for ceptr by
+    <li class="footer">Generated on Fri Dec 11 2015 21:36:29 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

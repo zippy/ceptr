@@ -130,8 +130,8 @@ Functions</h2></td></tr>
 <tr class="separator:a85c1d0c237321e72e3294cbf64217a6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a36cdb993f049076b7b8c858c7ae6181d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="protocol_8h.html#a36cdb993f049076b7b8c858c7ae6181d">_o_unwrap</a> (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structT.html">T</a> *def)</td></tr>
 <tr class="separator:a36cdb993f049076b7b8c858c7ae6181d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaaccaac4fb14d2ba4747bc24a91405fe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="protocol_8h.html#aaaccaac4fb14d2ba4747bc24a91405fe">_o_resolve</a> (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structT.html">T</a> *def, <a class="el" href="structSemanticID.html">Symbol</a> role, <a class="el" href="structT.html">T</a> *bindings)</td></tr>
-<tr class="separator:aaaccaac4fb14d2ba4747bc24a91405fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f209a996f29d4cbbdf76fddfe3dc326"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="protocol_8h.html#a1f209a996f29d4cbbdf76fddfe3dc326">_o_resolve</a> (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structT.html">T</a> *def, <a class="el" href="structT.html">T</a> *bindings)</td></tr>
+<tr class="separator:a1f209a996f29d4cbbdf76fddfe3dc326"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae34af558a8aeadc39b220bbcc3977f96"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="protocol_8h.html#ae34af558a8aeadc39b220bbcc3977f96">_o_express_role</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structSemanticID.html">Symbol</a> protocol, <a class="el" href="structSemanticID.html">Symbol</a> role, <a class="el" href="structSemanticID.html">Aspect</a> aspect, <a class="el" href="structT.html">T</a> *action)</td></tr>
 <tr class="separator:ae34af558a8aeadc39b220bbcc3977f96"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -194,7 +194,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="protocol_8c_source.html#l00301">301</a> of file <a class="el" href="protocol_8c_source.html">protocol.c</a>.</p>
+<p>Definition at line <a class="el" href="protocol_8c_source.html#l00359">359</a> of file <a class="el" href="protocol_8c_source.html">protocol.c</a>.</p>
 
 </div>
 </div>
@@ -248,12 +248,12 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="aaaccaac4fb14d2ba4747bc24a91405fe"></a>
+<a class="anchor" id="a1f209a996f29d4cbbdf76fddfe3dc326"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structT.html">T</a>* _o_resolve </td>
+          <td class="memname">void _o_resolve </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structSemTable.html">SemTable</a> *&#160;</td>
           <td class="paramname"><em>sem</em>, </td>
@@ -263,12 +263,6 @@ Functions</h2></td></tr>
           <td></td>
           <td class="paramtype"><a class="el" href="structT.html">T</a> *&#160;</td>
           <td class="paramname"><em>def</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structSemanticID.html">Symbol</a>&#160;</td>
-          <td class="paramname"><em>role</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -288,15 +282,14 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">sem</td><td><a class="el" href="structSemTable.html">SemTable</a> contexts </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">def</td><td>protocol definition to resolve </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">def</td><td>protocol definition to resolve </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">role</td><td>the role that needs resolving </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">bindings</td><td>the PROTOCOL_BINDINGS tree with additional RESOLUTIONS </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">resolved</td><td>protocol definition tree </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="protocol_8c_source.html#l00238">238</a> of file <a class="el" href="protocol_8c_source.html">protocol.c</a>.</p>
+<p>Definition at line <a class="el" href="protocol_8c_source.html#l00293">293</a> of file <a class="el" href="protocol_8c_source.html">protocol.c</a>.</p>
 
 </div>
 </div>
@@ -333,7 +326,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="protocol_8c_source.html#l00185">185</a> of file <a class="el" href="protocol_8c_source.html">protocol.c</a>.</p>
+<p>Definition at line <a class="el" href="protocol_8c_source.html#l00189">189</a> of file <a class="el" href="protocol_8c_source.html">protocol.c</a>.</p>
 
 </div>
 </div>
@@ -343,7 +336,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="protocol_8h.html">protocol.h</a></li>
-    <li class="footer">Generated on Fri Dec 11 2015 10:01:55 for ceptr by
+    <li class="footer">Generated on Fri Dec 11 2015 21:36:29 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
