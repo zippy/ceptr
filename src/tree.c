@@ -714,6 +714,60 @@ T *_t_build(SemTable *sem,T *parent,...) {
     return t;
 }
 
+/**
+ * replace SLOTS in a template with the SEMANTIC_MAPPINGs in a FILL_ITEMS tree
+ *
+ * @param[in,out] template the tree with SLOTs to be filled
+ * @param[in] items tree of type FILL_ITEMS
+ *
+ * @note the template is modified in place, so the caller may need to clone a source template
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/tree_spec.h testTreeTemplate
+*/
+void __t_fill_template(T *template, T *items,bool as_run_node) {
+    if (!template) return;
+    bool is_run_node = (template->context.flags |= TFLAG_RUN_NODE) || as_run_node;
+    if (semeq(_t_symbol(template),SLOT)) {
+        T *t = _t_child(template,SlotSemanticRefIdx);
+        Symbol sym = _t_symbol(t);
+        Symbol valsym = *(Symbol *)_t_surface(t);
+        T *v = _t_child(template,SlotValueOfIdx);
+        Symbol valof;
+        if (v) {
+            valof = *(Symbol *)_t_surface(v);
+        }
+
+        // scan all the items for semantic refs that match this slot.
+        // @todo convert this to a hashtable based implementation, probably on the treehash of the semantic ref
+        int i,c = _t_children(items);
+        for(i=1;i<=c;i++) {
+            T *m = _t_child(items,i);
+            T *ref = _t_child(m,SemanticMapSemanticRefIdx);
+            if (semeq(sym,_t_symbol(ref)) && semeq(valsym,*(Symbol *)_t_surface(ref))) {
+                T *r;
+                T *replacement_value = _t_child(_t_child(m,SemanticMapReplacementValIdx),1);
+                if (v) {
+                    // in the value case the replacement node is of the type specified in the template
+                    r = __t_new(0,valof,_t_surface(replacement_value),_t_size(t),is_run_node);
+                }
+                else {
+                    // in the structure case the replacement node is simply a clone of the replacement
+                    if (is_run_node)
+                        r = _t_rclone(replacement_value);
+                    else
+                        r = _t_clone(replacement_value);
+                }
+                _t_replace_node(template,r);
+                break;
+            }
+        }
+    }
+    else {
+        DO_KIDS(template,_t_fill_template(_t_child(template,i),items));
+    }
+}
+
 /******************** Node data accessors */
 /**
  * get the number of children of a given node

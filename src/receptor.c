@@ -641,7 +641,7 @@ void __r_test_expectation(Receptor *r,T *expectation,T *signal) {
             /* // for now we add the params to the contexts run tree */
             /* /// @todo later this should be integrated into some kind of scoping handling */
             T *params = _t_rclone(_t_child(expectation,ExpectationParamsIdx));
-            _p_interpolate_from_match(params,m,signal_contents);
+            _p_fill_from_match(params,m,signal_contents);
             int process_id = *(int *)_t_surface(_t_child(action,1));
             int *code_path = (int *)_t_surface(_t_child(action,2));
 
@@ -669,7 +669,7 @@ void __r_test_expectation(Receptor *r,T *expectation,T *signal) {
             Process p = *(Process*) _t_surface(action);
             debug(D_SIGNALS,"creating a run tree for action %s\n",_sem_get_name(r->sem,p));
             T *params = _t_rclone(_t_child(expectation,ExpectationParamsIdx));  // __p_make_run_tree assumes rT nodes
-            _p_interpolate_from_match(params,m,signal_contents);
+            _p_fill_from_match(params,m,signal_contents);
             T *processes = _sem_get_defs(r->sem,p);
             rt = __p_make_run_tree(processes,p,params);
             _t_free(params);
@@ -930,7 +930,8 @@ Receptor *_r_makeStreamWriterReceptor(SemTable *sem,Symbol stream_symbol,Stream 
     _t_new(x,PARAM_REF,pt1,sizeof(int)*4);
 
     T* params = _t_new_root(PARAMS);
-    _t_news(params,INTERPOLATE_SYMBOL,NULL_SYMBOL);
+    T* s = _t_newr(params,SLOT);
+    _t_news(s,USAGE,NULL_SYMBOL);
 
     T *signature = __p_make_signature("result",SIGNATURE_SYMBOL,NULL_SYMBOL,
                                       "stream",SIGNATURE_STRUCTURE,STREAM,

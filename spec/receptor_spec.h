@@ -570,7 +570,7 @@ void testReceptorEdgeStream() {
     Receptor *r = _r_makeStreamReaderReceptor(v->sem,TEST_STREAM_SYMBOL,reader_stream,w->addr);
     Xaddr reader =  _v_new_receptor(v,v->r,STREAM_READER,r);
 
-    spec_is_str_equal(_td(w,__r_get_expectations(w,DEFAULT_ASPECT)),"(EXPECTATIONS (EXPECTATION (CARRIER:NULL_SYMBOL) (PATTERN (SEMTREX_SYMBOL_ANY)) (ACTION:echo input to stream) (PARAMS (INTERPOLATE_SYMBOL:NULL_SYMBOL)) (END_CONDITIONS (UNLIMITED))))");
+    spec_is_str_equal(_td(w,__r_get_expectations(w,DEFAULT_ASPECT)),"(EXPECTATIONS (EXPECTATION (CARRIER:NULL_SYMBOL) (PATTERN (SEMTREX_SYMBOL_ANY)) (ACTION:echo input to stream) (PARAMS (SLOT (USAGE:NULL_SYMBOL))) (END_CONDITIONS (UNLIMITED))))");
 
     // manually run the reader's process queue
     //debug_enable(D_STREAM);

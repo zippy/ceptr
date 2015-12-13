@@ -277,7 +277,8 @@ void _makeTestHTTPResponseProcess(Receptor *r,T **paramsP,Process *pP) {
     T *params = _t_new_root(PARAMS);
     T *http_resp = _t_newr(params,HTTP_RESPONSE);
     _t_new(http_resp,HTTP_RESPONSE_CONTENT_TYPE,"CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT",38);
-    _t_news(http_resp,INTERPOLATE_SYMBOL,HTTP_REQUEST_PATH_SEGMENT);
+    T *s = _t_newr(http_resp,SLOT);
+    _t_news(s,USAGE,HTTP_REQUEST_PATH_SEGMENT);
     *paramsP = params;
 }
 //! [makeTestHTTPResponseProcess]

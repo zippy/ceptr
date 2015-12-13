@@ -122,18 +122,19 @@ void testProcessGet() {
     _r_free(r);
 }
 
-void testProcessInterpolateMatch() {
+void testProcessFillMatch() {
     T *t = _t_new_root(RUN_TREE);
-    // test INTERPOLATE_FROM_MATCH which takes three params, the tree to interpolate, the stx-match and the tree it matched on
-    T *n = _t_new_root(INTERPOLATE_FROM_MATCH);
+    // test FILL_FROM_MATCH which takes three params, the template tree, the stx-match and the tree it matched on
+    T *n = _t_new_root(FILL_FROM_MATCH);
     T *p1 = _t_newr(n,TEST_ANYTHING_SYMBOL);
-    _t_news(p1,INTERPOLATE_SYMBOL,TEST_INT_SYMBOL2);
+    T *s = _t_newr(p1,SLOT);
+    _t_news(s,USAGE,TEST_INT_SYMBOL2);
     T *p2 = _t_newi(n,SEMTREX_MATCH,1);
     _t_news(p2,SEMTREX_MATCH,TEST_INT_SYMBOL2);
     int path[] = {TREE_PATH_TERMINATOR};
     _t_new(p2,SEMTREX_MATCH_PATH,path,2*sizeof(int));
     _t_newi(p2,SEMTREX_MATCH_SIBLINGS_COUNT,1);
-    T *p3 = _t_newi(n,TEST_INT_SYMBOL,314);
+    T *p3 = _t_newi(n,TEST_INT_SYMBOL2,314);
 
     T *c = _t_rclone(n);
     _t_add(t,c);
@@ -144,12 +145,13 @@ void testProcessInterpolateMatch() {
     _t_free(n);
 }
 
-void testProcessInterpolateMatchFull() {
+void testProcessFillMatchFull() {
     T *t = _t_new_root(RUN_TREE);
-    // test INTERPOLATE_FROM_MATCH which takes three params, the tree to interpolate, the stx-match and the tree it matched on
-    T *n = _t_new_root(INTERPOLATE_FROM_MATCH);
+    // test FILL_FROM_MATCH which takes three params, the template tree, the stx-match and the tree it matched on
+    T *n = _t_new_root(FILL_FROM_MATCH);
     T *p1 = _t_newr(n,TEST_ANYTHING_SYMBOL);
-    _t_news(p1,INTERPOLATE_SYMBOL,NULL_SYMBOL);
+    T *s = _t_newr(p1,SLOT);
+    _t_news(s,USAGE,NULL_SYMBOL);
     T *p2 = _t_newi(n,SEMTREX_MATCH,1);
     _t_news(p2,SEMTREX_MATCH,NULL_SYMBOL);
     int path[] = {TREE_PATH_TERMINATOR};
@@ -198,7 +200,8 @@ void testProcessIntMath() {
     /* n = _t_new_root(ADD_INT); */
     /* spec_is_sem_equal(_sem_get_symbol_structure(G_sem,s),INTEGER); */
     /* _t_newi(n,TEST_INT_SYMBOL,99); */
-    /* _t_news(n,INTERPOLATE_SYMBOL,TEST_INT_SYMBOL); */
+    /* T *s = _t_newr(n,SLOT); */
+    /* _t_news(s,USAGE,TEST_INT_SYMBOL); */
     /* spec_is_equal(__p_reduce_sys_proc(0,ADD_INT,n,0),incompatibleTypeReductionErr); */
     /* spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:199)"); */
     /* _t_free(n); */
@@ -906,7 +909,7 @@ void testProcessListen() {
     _t_free(n);
 
     T *ex = __r_get_expectations(r,DEFAULT_ASPECT);
-    spec_is_str_equal(t2s(ex),"(EXPECTATIONS (EXPECTATION (CARRIER:TICK) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TICK))) (ACTION:NOOP (TEST_INT_SYMBOL:314)) (PARAMS (INTERPOLATE_SYMBOL:NULL_SYMBOL)) (END_CONDITIONS (UNLIMITED))))");
+    spec_is_str_equal(t2s(ex),"(EXPECTATIONS (EXPECTATION (CARRIER:TICK) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TICK))) (ACTION:NOOP (TEST_INT_SYMBOL:314)) (PARAMS (SLOT (USAGE:NULL_SYMBOL))) (END_CONDITIONS (UNLIMITED))))");
 
     _r_remove_expectation(r, _t_child(ex,1));
 
@@ -929,7 +932,7 @@ void testProcessListen() {
     spec_is_ptr_equal(q->blocked,e);
     spec_is_str_equal(t2s(run_tree),"(RUN_TREE (process:LISTEN) (PARAMS))");
 
-    spec_is_str_equal(t2s(__r_get_expectations(r,DEFAULT_ASPECT)),"(EXPECTATIONS (EXPECTATION (CARRIER:TESTING) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TEST_STR_SYMBOL))) (WAKEUP_REFERENCE (PROCESS_IDENT:1) (CODE_PATH:/1)) (PARAMS (INTERPOLATE_SYMBOL:NULL_SYMBOL)) (END_CONDITIONS (COUNT:1))))");
+    spec_is_str_equal(t2s(__r_get_expectations(r,DEFAULT_ASPECT)),"(EXPECTATIONS (EXPECTATION (CARRIER:TESTING) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TEST_STR_SYMBOL))) (WAKEUP_REFERENCE (PROCESS_IDENT:1) (CODE_PATH:/1)) (PARAMS (SLOT (USAGE:NULL_SYMBOL))) (END_CONDITIONS (COUNT:1))))");
 
     T *s = __r_make_signal(r->addr,r->addr,DEFAULT_ASPECT,TESTING,_t_new_str(0,TEST_STR_SYMBOL,"fishy!"),0,0);
     _r_deliver(r,s);
@@ -1084,8 +1087,8 @@ void testRunTreeMaker() {
 void testProcess() {
     testRunTree();
     testProcessGet();
-    testProcessInterpolateMatch();
-    testProcessInterpolateMatchFull();
+    testProcessFillMatch();
+    testProcessFillMatchFull();
     testProcessIf();
     testProcessIntMath();
     testProcessString();

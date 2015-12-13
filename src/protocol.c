@@ -179,6 +179,36 @@ T *_o_make_protocol_def(SemTable *sem,Context c,char *label,...) {
     return t;
 }
 
+
+// hmmm this is kind of like template replace but just looks
+// for the semantic references, not for SLOTs
+void _t_replace_sem_refs(T *t, T *items) {
+    if (!t) return;
+
+    Symbol sym = _t_symbol(t);
+    if (semeq(sym,GOAL)||semeq(sym,ROLE)||semeq(sym,USAGE)) {
+        Symbol valsym = *(Symbol *)_t_surface(t);
+
+        // scan all the items for semantic refs that match this slot.
+        // @todo convert this to a hashtable based implementation, probably on the treehash of the semantic ref
+        int i,c = _t_children(items);
+        for(i=1;i<=c;i++) {
+            T *m = _t_child(items,i);
+            T *ref = _t_child(m,SemanticMapSemanticRefIdx);
+            if (semeq(sym,_t_symbol(ref)) && semeq(valsym,*(Symbol *)_t_surface(ref))) {
+                T *r;
+                T *replacement_value = _t_child(_t_child(m,SemanticMapReplacementValIdx),1);
+                r = _t_clone(replacement_value);
+                _t_replace_node(t,r);
+                break;
+            }
+        }
+    }
+    else {
+        DO_KIDS(t,_t_replace_sem_refs(_t_child(t,i),items));
+    }
+}
+
 /**
  * recursively expand wrapped protocol defs
  *
@@ -197,23 +227,16 @@ T * _o_unwrap(SemTable *sem,T *def) {
             T *p_def = _o_unwrap(sem,_t_child(ps,p.id));  // do the recursive unwrapping
             int j,c = _t_children(t);
             T *bindings = NULL;
+            T *items = NULL;
             for(j=InclusionPnameIdx+1;j<=c;j++) {
                 T *x = _t_child(t,j); // get the connection or resolution
                 if (semeq(_t_symbol(x),CONNECTION)) {
                     T *w = _t_child(x,ConnectionWhichIdx);  // get the which
-
-                    T *v = _t_clone(_t_child(w,1)); // get the source
-                    T *stx = _t_new_root(SEMTREX_WALK);
-                    T *g = _t_news(stx,SEMTREX_GROUP,_t_symbol(v));
-                    T *vl = _t_newr(g,SEMTREX_VALUE_LITERAL);
-                    _t_add(vl,v);
-                    T *r = _t_child(w,2);
-                    /* printf("matching %s\n",_t2s(sem,stx)); */
-                    /* printf("against %s\n",_t2s(sem,p_def)); */
-                    /* printf("to replace %s\n",_t2s(sem,r)); */
-                    _stx_replace(stx,p_def,r);
-                    /* printf("results in %s\n",_t2s(sem,p_def)); */
-                    _t_free(stx);
+                    if (!items) items = _t_new_root(FILL_ITEMS);
+                    T *t = _t_newr(items,SEMANTIC_MAP);
+                    _t_add(t,_t_clone(_t_child(w,1)));
+                    T *r = _t_newr(t,REPLACEMENT_VALUE);
+                    _t_add(r,_t_clone(_t_child(w,2)));
                 }
                 else if (semeq(_t_symbol(x),RESOLUTION)) {
                     if (!bindings) bindings = _t_new_root(PROTOCOL_BINDINGS);
@@ -221,6 +244,15 @@ T * _o_unwrap(SemTable *sem,T *def) {
                 }
                 else raise_error("expecting CONNECTION or RESOLUTION");
             }
+
+            if (items) {
+                debug(D_PROTOCOL,"filling template %s\n",t2s(p_def));
+                debug(D_PROTOCOL,"with %s\n",t2s(items));
+                _t_replace_sem_refs(p_def,items);
+                debug(D_PROTOCOL,"result %s\n",t2s(p_def));
+                _t_free(items);
+            }
+
             if (bindings) {
                 _o_resolve(sem,p_def,bindings);
             }
@@ -280,7 +312,7 @@ T * _o_unwrap(SemTable *sem,T *def) {
 }
 
 /**
- * convert a, possibly composed, protocol definition into an e
+ * convert a, possibly composed, protocol definition into an expressable definition
  *
  * convert a PROTOCOL_DEF to a concertized version according to the
  * RESOLUTIONS and CONNECTIONS in the the def and the bindings
@@ -293,56 +325,19 @@ T * _o_unwrap(SemTable *sem,T *def) {
 void _o_resolve(SemTable *sem,T *def, T *bindings){
     T *d = def;
     if (bindings) {
-        T *gstx = NULL;
-        T *gv;
-        T *ustx = NULL;
-        T *uv;
         debug(D_PROTOCOL,"resolving bindings %s\n",t2s(bindings));
+        T *items = _t_new_root(FILL_ITEMS);
         DO_KIDS(bindings,
                 T *res = _t_child(bindings,i);
                 T *w = _t_child(res,ResolutionWhichIdx);
-                debug(D_PROTOCOL,"resolving %s\n",t2s(w));
-                if (semeq(_t_symbol(w),WHICH_PROCESS)) {
-                    T *goal = _t_child(w,1);
-                    // build the stx if we haven't already
-                    if (!gstx) {
-                        // %EXPECT/.*,<ACTION:GOAL=goal>
-                        gstx = _t_new_root(SEMTREX_WALK);
-                        T *s = _sl(gstx,EXPECT);
-                        s = _t_newr(s,SEMTREX_SEQUENCE);
-                        _t_newr(_t_newr(s,SEMTREX_ZERO_OR_MORE),SEMTREX_SYMBOL_ANY);
-                        T *g = _t_news(s,SEMTREX_GROUP,ACTION);
-                        T *vl = _t_newr(g,SEMTREX_VALUE_LITERAL);
-                        gv = _t_news(vl,GOAL,*(Process *)_t_surface(goal));
-                    }
-                    else *(Process *)_t_surface(gv) = *(Process *)_t_surface(goal);
-
-                    // replace the GOAL with the ACTUAL
-                    T *a = _t_news(0,ACTION,*(Process *)_t_surface(_t_child(w,2)));
-                    _stx_replace(gstx,d,a);
-                    _t_free(a);
-                }
-                else if (semeq(_t_symbol(w),WHICH_SYMBOL)) {
-                    T *usage = _t_child(w,1);
-                    // build the stx if we haven't already
-                    if (!ustx) {
-                        // %SEMTREX_SYMBOL_LITERAL/<SEMTREX_SYMBOL:USAGE=usage>
-                        ustx = _t_new_root(SEMTREX_WALK);
-                        T *s = _sl(ustx,SEMTREX_SYMBOL_LITERAL);
-                        T *g = _t_news(s,SEMTREX_GROUP,SEMTREX_SYMBOL);
-                        T *vl = _t_newr(g,SEMTREX_VALUE_LITERAL);
-                        uv = _t_news(vl,USAGE,*(Symbol *)_t_surface(usage));
-                    }
-                    else *(Symbol *)_t_surface(uv) = *(Symbol *)_t_surface(usage);
-
-                    // replace the USAGE with the ACTUAL
-                    T *a = _t_news(0,SEMTREX_SYMBOL,*(Symbol *)_t_surface(_t_child(w,2)));
-                    _stx_replace(ustx,d,a);
-                    _t_free(a);
-                }
+                T *t = _t_newr(items,SEMANTIC_MAP);
+                _t_add(t,_t_clone(_t_child(w,1)));
+                T *r = _t_newr(t,REPLACEMENT_VALUE);
+                _t_add(r,_t_clone(_t_child(w,2)));
             );
-        if (gstx) _t_free(gstx);
-        if (ustx) _t_free(ustx);
+        debug(D_PROTOCOL,"by filling template with %s\n",t2s(items));
+        _t_fill_template(d,items);
+        _t_free(items);
     }
 }
 

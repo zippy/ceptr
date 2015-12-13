@@ -536,25 +536,56 @@ void testProcessHTML() {
 }
 
 void testTreeBuild() {
+    //! [testTreeBuild]
 
     // tests basic structures plus the STRUCTURE_ANYTHING
     T *t = _t_build(G_sem,0,TEST_ANYTHING_SYMBOL,ACTION,IF,TEST_ANYTHING_SYMBOL,TEST_STR_SYMBOL,"fish",NULL_SYMBOL,TEST_INT_SYMBOL,3141,SIGNAL_REF,SignalEnvelopeIdx,EnvelopeCarrierIdx,TREE_PATH_TERMINATOR,NULL_SYMBOL);
     spec_is_str_equal(t2s(t),"(TEST_ANYTHING_SYMBOL (ACTION:IF) (TEST_ANYTHING_SYMBOL (TEST_STR_SYMBOL:fish)) (TEST_INT_SYMBOL:3141) (SIGNAL_REF:/1/4))");
+    _t_free(t);
 
     // tests the STRUCTURE_SEQUENCE def
     t = _t_build(G_sem,0,SYMBOL_DEFINITION,SYMBOL_LABEL,"shoe size",SYMBOL_STRUCTURE,INTEGER,NULL_SYMBOL);
     spec_is_str_equal(t2s(t),"(SYMBOL_DEFINITION (SYMBOL_LABEL:shoe size) (SYMBOL_STRUCTURE:INTEGER))");
+    _t_free(t);
     t = _t_build(G_sem,0,TODAY,YEAR,2015,MONTH,1,DAY,30,NULL_SYMBOL);
     spec_is_str_equal(t2s(t),"(TODAY (YEAR:2015) (MONTH:1) (DAY:30))");
-
+    _t_free(t);
     // tests the STRUCTURE_OR def
     t = _t_build(G_sem,0,PATTERN,SEMTREX_SYMBOL_LITERAL,SEMTREX_SYMBOL,PING,NULL_SYMBOL);
     spec_is_str_equal(t2s(t),"(PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:PING)))");
+    _t_free(t);
 
     // tests building a code tree
     t = _t_build(G_sem,0,RESPOND,SIGNAL_REF,SignalEnvelopeIdx,EnvelopeCarrierIdx,TREE_PATH_TERMINATOR,YUP,NULL_SYMBOL);
     spec_is_str_equal(t2s(t),"(process:RESPOND (SIGNAL_REF:/1/4) (YUP))");
 
+    _t_free(t);
+    //! [testTreeBuild]
+
+}
+
+void testTreeTemplate() {
+    //! [testTreeTemplate]
+
+    // test filling a value slot
+    T *template = _t_build(G_sem,0,PATTERN,SEMTREX_SYMBOL_LITERAL,SLOT,USAGE,REQUEST_DATA,SLOT_IS_VALUE_OF,SEMTREX_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);
+    spec_is_str_equal(t2s(template),"(PATTERN (SEMTREX_SYMBOL_LITERAL (SLOT (USAGE:REQUEST_DATA) (SLOT_IS_VALUE_OF:SEMTREX_SYMBOL))))");
+    T *items = _t_build(G_sem,0,FILL_ITEMS,SEMANTIC_MAP,USAGE,REQUEST_DATA,REPLACEMENT_VALUE,ACTUAL_SYMBOL,PING,NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);
+    spec_is_str_equal(t2s(items),"(FILL_ITEMS (SEMANTIC_MAP (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:PING))))");
+    _t_fill_template(template,items);
+    spec_is_str_equal(t2s(template),"(PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:PING)))");
+
+    // test filling a structure slot
+    template = _t_build(G_sem,0,PATTERN,SEMTREX_SYMBOL_LITERAL,SLOT,USAGE,REQUEST_DATA,NULL_SYMBOL,NULL_SYMBOL);
+    spec_is_str_equal(t2s(template),"(PATTERN (SEMTREX_SYMBOL_LITERAL (SLOT (USAGE:REQUEST_DATA))))");
+    items = _t_build(G_sem,0,FILL_ITEMS,SEMANTIC_MAP,USAGE,REQUEST_DATA,REPLACEMENT_VALUE,SEMTREX_SYMBOL,PING,NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);
+    spec_is_str_equal(t2s(items),"(FILL_ITEMS (SEMANTIC_MAP (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (SEMTREX_SYMBOL:PING))))");
+    _t_fill_template(template,items);
+    spec_is_str_equal(t2s(template),"(PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:PING)))");
+
+    _t_free(template);
+    _t_free(items);
+    //! [testTreeTemplate]
 }
 
 void testTree() {
@@ -585,4 +616,5 @@ void testTree() {
     testTreeJSON();
     testProcessHTML();
     testTreeBuild();
+    testTreeTemplate();
 }

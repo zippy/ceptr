@@ -52,37 +52,24 @@ T *defaultRequestUntil() {
     return until;
 }
 
+
+
+
 /**
- * implements the INTERPOLATE_FROM_MATCH process
+ * implements the FILL_FROM_MATCH process
  *
- * replaces the interpolation tree with the matched sub-parts from a semtrex match results tree
+ * replaces the template tree with the matched sub-parts from a semtrex match results tree
  *
- * @param[in] t interpolation tree to be scanned for INTERPOLATE_SYMBOL nodes
+ * @param[in] t template tree to be filled
  * @param[in] match_results SEMTREX_MATCH_RESULTS tree
- * @param[in] match_tree original tree that was matched (needed to grab the data to interpolate)
+ * @param[in] match_tree original tree that was matched (needed to build FILL_ITEMS)
+ *
  * @todo what to do if match has sibs??
  */
-void _p_interpolate_from_match(T *t,T *match_results,T *match_tree) {
-    if (semeq(_t_symbol(t),INTERPOLATE_SYMBOL)) {
-        Symbol s = *(Symbol *)_t_surface(t);
-        int sibs;
-        T *x = _stx_get_matched_node(s,match_results,match_tree,&sibs);
-        if (sibs > 1) raise_error("not implemented for sibs > 1");
-
-        //@todo most contexts where we use interpolation are in run trees
-        // hence the rclone.  Perhaps there should be an option to this function
-        // to allow regular cloning?
-        x = _t_rclone(x);
-        _t_replace_node(t,x);
-
-        t = x;
-        // set the symbol to the interpolate type, not the matched item type
-        // because this allows for type conversion on semtrex matching using
-        // the semtrex group name to as the indicator of which the new type will be
-        if (!semeq(s,NULL_SYMBOL)) // if match was on NULL_SYMBOL it's a full results match so use what we found
-            t->contents.symbol = s;
-    }
-    DO_KIDS(t,_p_interpolate_from_match(_t_child(t,i),match_results,match_tree));
+void _p_fill_from_match(T *t,T *match_results,T *match_tree) {
+    T *items = _stx_results2fill_items(match_results,match_tree);
+    __t_fill_template(t,items,true);
+    _t_free(items);
 }
 
 /**
@@ -338,12 +325,12 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             }
         }
         break;
-    case INTERPOLATE_FROM_MATCH_ID:
+    case FILL_FROM_MATCH_ID:
         match_results = _t_child(code,2);
         match_tree = _t_child(code,3);
         x = _t_detach_by_idx(code,1);
         /// @todo interpolation errors?
-        _p_interpolate_from_match(x,match_results,match_tree);
+        _p_fill_from_match(x,match_results,match_tree);
         break;
     case RAISE_ID:
         return raiseReductionErr;
@@ -556,7 +543,8 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             }
             if (!with) {
                 with = _t_new_root(PARAMS);
-                _t_news(with,INTERPOLATE_SYMBOL,NULL_SYMBOL);
+                T *s = _t_newr(with,SLOT);
+                _t_news(s,USAGE,NULL_SYMBOL);
             }
             if (act) {
                 _r_add_expectation(q->r,aspect,carrier,match,act,with,until);

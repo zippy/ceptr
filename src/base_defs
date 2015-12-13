@@ -117,7 +117,6 @@ Symbol: ACTION,PROCESS;                     code tree_ID, which specifies the ac
 Declare: PARAMS;
 Symbol: EXPECTATION,[(CARRIER,PATTERN,ACTION,PARAMS,END_CONDITIONS)];
 Symbol: EXPECTATIONS,[*EXPECTATION];                     list of carrier/expectation/action tress
-Symbol: INTERPOLATE_SYMBOL,SYMBOL;          a place holder to indicate which symbol to insert into this part of the tree
 Symbol: PROCESS_NAME,CSTRING;
 Symbol: PROCESS_INTENTION,CSTRING;
 Declare: PROCESS_SIGNATURE;
@@ -153,14 +152,19 @@ Symbol: USAGE,SYMBOL; A usage stands for a(n) X of a Symbol.
 #Symbol: XX,SYMBOL; An XX stands for a included protocol, the the symbol store in an XX must be limited to those that are uses of the PROTOCOL structure
 Symbol: SOURCE,[+ROLE];
 Symbol: DESTINATION,[+ROLE];
-Symbol: EXPECT,[(ROLE,SOURCE,PATTERN,ACTION)];
+Symbol: PATTERN_SYMBOL,SYMBOL;
+Symbol: EXPECT,[(ROLE,SOURCE,PATTERN_SYMBOL,ACTION)];
 Symbol: INITIATE,[(ROLE,DESTINATION,ACTION)];
 Symbol: PNAME,PROTOCOL;
 Symbol: INCLUSION,[(PNAME,+|{RESOLUTION|CONNECTION})];
 Structure: INTERACTION,(*EXPECT,*INITIATE);
-#Symbol: CONVERSATION_LABEL,CSTRING;
-#Symbol: CONVERSATION,[(CONVERSATION_LABEL,+ROLE_PROCESS)];
 
+Structure: SEMANTIC_REFERENCE,|{GOAL|ROLE|USAGE};   
+Symbol: SLOT_IS_VALUE_OF,SYMBOL;
+Symbol: SLOT,[(SEMANTIC_REFERENCE,?SLOT_IS_VALUE_OF)];   semantic id and optional indicator to fill the value not the structure for the element in the template that needs filling
+Symbol: REPLACEMENT_VALUE,[!];        what to fill the slot with
+Symbol: SEMANTIC_MAP,[(SEMANTIC_REFERENCE,REPLACEMENT_VALUE)];   mapping between a semantic reference and replacement value, used for filling templates
+Symbol: FILL_ITEMS,[(+SEMANTIC_MAP)];
 
 Symbol: PROTOCOLS,[*PROTOCOL_DEFINITION];
 Symbol: ACTUAL_PROCESS,PROCESS;
@@ -252,7 +256,7 @@ Process: LISTEN,0,"plant a listener","error",SIGNATURE_SYMBOL,REDUCTION_ERROR_SY
 
 Process: RESPOND,0,"respond to signal","response id",SIGNATURE_SYMBOL,SIGNAL_UUID,"respond on",SIGNATURE_SYMBOL,CARRIER,"response contents",SIGNATURE_ANY,NULL_STRUCTURE,0;
 Process: QUOTE,0,"quote a process so that it can be passed as a value","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"process",SIGNATURE_PROCESS,NULL_PROCESS,0;
-Process: INTERPOLATE_FROM_MATCH,0,"interploate match result in place","result",SIGNATURE_ANY,NULL_STRUCTURE,0;
+Process: FILL_FROM_MATCH,0,"fill template from match results","result",SIGNATURE_ANY,NULL_STRUCTURE,0;
 Process: RAISE,0,"raise reduction error","result",SIGNATURE_STRUCTURE,NULL_STRUCTURE,"error",SIGNATURE_SYMBOL,REDUCTION_ERROR_SYMBOL,0;   this process doesn't really return anything, because it triggers the handler for the error in the "error" parameter
 Process: STREAM_READ,0,"read from a stream","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"stream",SIGNATURE_STRUCTURE,STREAM,"into",SIGNATURE_SYMBOL,RESULT_SYMBOL,0;  the data on the stream will appear as the surface of the symbol type given by the "into" param. Clearly this could get ugly as there is no semantic checking that that's ok...
 Process: STREAM_WRITE,0,"write to a stream","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"stream",SIGNATURE_STRUCTURE,STREAM,"what",SIGNATURE_ANY,NULL_STRUCTURE,0;
@@ -326,14 +330,14 @@ Symbol: RESPONSE_DATA,SYMBOL;
 Symbol: RESPONSE_HANDLER,PROCESS;
 Symbol: REQUEST_HANDLER,PROCESS;
 
-Data: req_code,REQUEST,ROLE,RESPONDER,USAGE,REQUEST_DATA,USAGE,REQUEST_DATA,USAGE,RESPONSE_DATA,GOAL,RESPONSE_HANDLER;  need to fix carriers, currently using the REQUEST_DATA and RESPONSE_DATA as the carriers.
+Data: req_code,REQUEST,SLOT,ROLE,RESPONDER,NULL_SYMBOL,SLOT,USAGE,REQUEST_DATA,NULL_SYMBOL,SLOT,USAGE,REQUEST_DATA,NULL_SYMBOL,SLOT,USAGE,RESPONSE_DATA,NULL_SYMBOL,SLOT,GOAL,REQUEST_HANDLER,NULL_SYMBOL;  need to fix carriers, currently using the REQUEST_DATA and RESPONSE_DATA as the carriers.
 Process: send_request,req_code,"send request","response",SIGNATURE_ANY,NULL_STRUCTURE,0;
 Data: req_action,ACTION,send_request;
 
-Data: resp_code,RESPOND,SIGNAL_REF,SignalEnvelopeIdx,EnvelopeCarrierIdx,TREE_PATH_TERMINATOR,GOAL,REQUEST_HANDLER;
+Data: resp_code,RESPOND,SIGNAL_REF,SignalEnvelopeIdx,EnvelopeCarrierIdx,TREE_PATH_TERMINATOR,GOAL,RESPONSE_HANDLER;
 Process: send_response,resp_code,"send response","response id",SIGNATURE_SYMBOL,SIGNAL_UUID,0;
 Data: resp_action,ACTION,send_response;
-Data: resp_pattern,PATTERN,SEMTREX_SYMBOL_LITERAL,USAGE,REQUEST_DATA;
+Data: resp_pattern,PATTERN,SEMTREX_SYMBOL_LITERAL,SLOT,USAGE,REQUEST_DATA,SLOT_IS_VALUE_OF,SEMTREX_SYMBOL,NULL_SYMBOL,NULL_SYMBOL;
 Protocol: REQUESTING,
    ROLE,REQUESTER,
    ROLE,RESPONDER,
@@ -383,7 +387,7 @@ Process: respond_with_yup,ping_resp,"respond with yup","response id",SIGNATURE_S
 Data: pattern1,PATTERN,SEMTREX_SYMBOL_LITERAL,SEMTREX_SYMBOL,PING;
 Data: action1,ACTION,respond_with_yup;
 Data: pattern2,PATTERN,SEMTREX_SYMBOL_LITERAL,SEMTREX_SYMBOL,YUP;
-Data: action2,GOAL,HANDLER;
+Data: action2,SLOT,GOAL,HANDLER,SLOT_IS_VALUE_OF,ACTION,NULL_SYMBOL;
 Protocol: ALIVE,
    ROLE,SERVER,
    ROLE,CLIENT,
