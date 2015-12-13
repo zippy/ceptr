@@ -13,6 +13,7 @@ var tree_8c =
     ] ],
     [ "__t_append_child", "tree_8c.html#af21b76c958222e81554b63041256c662", null ],
     [ "__t_clone", "tree_8c.html#ae39e9df3e49a81dd7abc83771a7eecee", null ],
+    [ "__t_fill_template", "group__tree.html#gac1c43acbe9e29de7e0c9244c65ce44a3", null ],
     [ "__t_free", "group__tree.html#ga9ae9ab4b3db34fd0ef209adafec68794", null ],
     [ "__t_free_children", "group__tree.html#ga4fb39ee561fc4b17cfb241330b835951", null ],
     [ "__t_init", "tree_8c.html#abb5df17e0c52979d4579cb34d4b46a2d", null ],

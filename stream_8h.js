@@ -5,11 +5,11 @@ var stream_8h =
     [ "_st_data_size", "stream_8h.html#afcbfe05dbc0da4f57e892de6e64018a3", null ],
     [ "hasDataCallbackFn", "stream_8h.html#aae02eaa881e0ed98951c2e65d4cc418c", null ],
     [ "Stream", "stream_8h.html#a9e76c504c13a7baa62d7ea29c4af657b", null ],
-    [ "StreamHasData", "stream_8h.html#aaf8fd5f0e57d456151c951e0f3715fc4ae4421e0389e3f06ee4ffad69dc400bb8", null ],
-    [ "StreamCloseOnFree", "stream_8h.html#aaf8fd5f0e57d456151c951e0f3715fc4afbc2c22fba1a65afa597182a11c4ca80", null ],
-    [ "StreamReader", "stream_8h.html#aaf8fd5f0e57d456151c951e0f3715fc4ad9b34129d5bec66051a3439d140d1975", null ],
-    [ "StreamWaiting", "stream_8h.html#aaf8fd5f0e57d456151c951e0f3715fc4a440654504807dee43692b75cd69efa4f", null ],
-    [ "StreamAlive", "stream_8h.html#aaf8fd5f0e57d456151c951e0f3715fc4acdb6580d5ed1edfde0c9c4b1eac49880", null ],
+    [ "StreamHasData", "stream_8h.html#ae4d5251432e1a9e6803c0240cc492e18ae4421e0389e3f06ee4ffad69dc400bb8", null ],
+    [ "StreamCloseOnFree", "stream_8h.html#ae4d5251432e1a9e6803c0240cc492e18afbc2c22fba1a65afa597182a11c4ca80", null ],
+    [ "StreamReader", "stream_8h.html#ae4d5251432e1a9e6803c0240cc492e18ad9b34129d5bec66051a3439d140d1975", null ],
+    [ "StreamWaiting", "stream_8h.html#ae4d5251432e1a9e6803c0240cc492e18a440654504807dee43692b75cd69efa4f", null ],
+    [ "StreamAlive", "stream_8h.html#ae4d5251432e1a9e6803c0240cc492e18acdb6580d5ed1edfde0c9c4b1eac49880", null ],
     [ "StreamTypes", "stream_8h.html#a5653712efdf75595414f08800f191f73", [
       [ "UnixStream", "stream_8h.html#a5653712efdf75595414f08800f191f73a9485c2bf6da2bb5dfd17d4e7371eb26b", null ]
     ] ],
