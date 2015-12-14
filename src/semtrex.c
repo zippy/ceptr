@@ -1852,9 +1852,9 @@ T *parseSemtrex(SemTable *sem,char *stx) {
     return t;
 }
 
-// recursable implementation of _stx_results2fill_items
-void __stx_r2fi(T *mr,T *mt, T *items) {
-    T *t = _t_newr(items,SEMANTIC_MAP);
+// recursable implementation of _stx_results2sem_map
+void __stx_r2fi(T *mr,T *mt, T *sem_map) {
+    T *t = _t_newr(sem_map,SEMANTIC_LINK);
     T *match_symbol =  _t_child(mr,SemtrexMatchSymbolIdx);
     _t_news(t,USAGE,*(Symbol*)_t_surface(match_symbol));
     T *r = _t_newr(t,REPLACEMENT_VALUE);
@@ -1868,21 +1868,21 @@ void __stx_r2fi(T *mr,T *mt, T *items) {
     _t_add(r,_t_clone(x));
     int i,c = _t_children(mr);
     for (i=SemtrexMatchSibsIdx+1;i<=c;i++) {
-        __stx_r2fi(_t_child(mr,i),mt,items);
+        __stx_r2fi(_t_child(mr,i),mt,sem_map);
     }
 }
 
 /**
- * create FILL_ITEMS tree from a SEMTREX_MATCH tree for use in filling templates
+ * create SEMANTIC_MAP tree from a SEMTREX_MATCH tree for use in filling templates
  *
  * @param[in] match_results results tree from _t_matchr
  * @param[in] match_tree the tree the semtrex was matched against
- * @results a FILL_ITEMS tree
+ * @results a SEMANTIC_MAP tree
  */
-T *_stx_results2fill_items(T *match_results,T *match_tree) {
-    T *items = _t_new_root(FILL_ITEMS);
-    __stx_r2fi(match_results,match_tree,items);
-    return items;
+T *_stx_results2sem_map(T *match_results,T *match_tree) {
+    T *sem_map = _t_new_root(SEMANTIC_MAP);
+    __stx_r2fi(match_results,match_tree,sem_map);
+    return sem_map;
 }
 
 /**@}*/

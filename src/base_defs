@@ -163,8 +163,8 @@ Structure: SEMANTIC_REFERENCE,|{GOAL|ROLE|USAGE};
 Symbol: SLOT_IS_VALUE_OF,SYMBOL;
 Symbol: SLOT,[(SEMANTIC_REFERENCE,?SLOT_IS_VALUE_OF)];   semantic id and optional indicator to fill the value not the structure for the element in the template that needs filling
 Symbol: REPLACEMENT_VALUE,[!];        what to fill the slot with
-Symbol: SEMANTIC_MAP,[(SEMANTIC_REFERENCE,REPLACEMENT_VALUE)];   mapping between a semantic reference and replacement value, used for filling templates
-Symbol: FILL_ITEMS,[(+SEMANTIC_MAP)];
+Symbol: SEMANTIC_LINK,[(SEMANTIC_REFERENCE,REPLACEMENT_VALUE)];   mapping between a semantic reference and replacement value, used for filling templates
+Symbol: SEMANTIC_MAP,[(+SEMANTIC_LINK)];
 
 Symbol: PROTOCOLS,[*PROTOCOL_DEFINITION];
 Symbol: ACTUAL_PROCESS,PROCESS;

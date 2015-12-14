@@ -182,18 +182,18 @@ T *_o_make_protocol_def(SemTable *sem,Context c,char *label,...) {
 
 // hmmm this is kind of like template replace but just looks
 // for the semantic references, not for SLOTs
-void _t_replace_sem_refs(T *t, T *items) {
+void _t_replace_sem_refs(T *t, T *sem_map) {
     if (!t) return;
 
     Symbol sym = _t_symbol(t);
     if (semeq(sym,GOAL)||semeq(sym,ROLE)||semeq(sym,USAGE)) {
         Symbol valsym = *(Symbol *)_t_surface(t);
 
-        // scan all the items for semantic refs that match this slot.
+        // scan all the sem_map for semantic refs that match this slot.
         // @todo convert this to a hashtable based implementation, probably on the treehash of the semantic ref
-        int i,c = _t_children(items);
+        int i,c = _t_children(sem_map);
         for(i=1;i<=c;i++) {
-            T *m = _t_child(items,i);
+            T *m = _t_child(sem_map,i);
             T *ref = _t_child(m,SemanticMapSemanticRefIdx);
             if (semeq(sym,_t_symbol(ref)) && semeq(valsym,*(Symbol *)_t_surface(ref))) {
                 T *r;
@@ -205,7 +205,7 @@ void _t_replace_sem_refs(T *t, T *items) {
         }
     }
     else {
-        DO_KIDS(t,_t_replace_sem_refs(_t_child(t,i),items));
+        DO_KIDS(t,_t_replace_sem_refs(_t_child(t,i),sem_map));
     }
 }
 
@@ -227,13 +227,13 @@ T * _o_unwrap(SemTable *sem,T *def) {
             T *p_def = _o_unwrap(sem,_t_child(ps,p.id));  // do the recursive unwrapping
             int j,c = _t_children(t);
             T *bindings = NULL;
-            T *items = NULL;
+            T *sem_map = NULL;
             for(j=InclusionPnameIdx+1;j<=c;j++) {
                 T *x = _t_child(t,j); // get the connection or resolution
                 if (semeq(_t_symbol(x),CONNECTION)) {
                     T *w = _t_child(x,ConnectionWhichIdx);  // get the which
-                    if (!items) items = _t_new_root(FILL_ITEMS);
-                    T *t = _t_newr(items,SEMANTIC_MAP);
+                    if (!sem_map) sem_map = _t_new_root(SEMANTIC_MAP);
+                    T *t = _t_newr(sem_map,SEMANTIC_LINK);
                     _t_add(t,_t_clone(_t_child(w,1)));
                     T *r = _t_newr(t,REPLACEMENT_VALUE);
                     _t_add(r,_t_clone(_t_child(w,2)));
@@ -245,12 +245,12 @@ T * _o_unwrap(SemTable *sem,T *def) {
                 else raise_error("expecting CONNECTION or RESOLUTION");
             }
 
-            if (items) {
+            if (sem_map) {
                 debug(D_PROTOCOL,"filling template %s\n",t2s(p_def));
-                debug(D_PROTOCOL,"with %s\n",t2s(items));
-                _t_replace_sem_refs(p_def,items);
+                debug(D_PROTOCOL,"with %s\n",t2s(sem_map));
+                _t_replace_sem_refs(p_def,sem_map);
                 debug(D_PROTOCOL,"result %s\n",t2s(p_def));
-                _t_free(items);
+                _t_free(sem_map);
             }
 
             if (bindings) {
@@ -258,11 +258,11 @@ T * _o_unwrap(SemTable *sem,T *def) {
             }
 
             // after doing the semantics mapping from the CONNECTIONS and RESOLUTIONS
-            // we need to add into the parent semantics and items that weren't resolved
+            // we need to add into the parent semantics and sem_map that weren't resolved
             // or connected for later binding
             T *unwrapped_semantics = _t_child(p_def,ProtocolDefSemanticsIdx);
 
-            // but first remove any bound items from the PROTOCOL_SEMANTICS because those
+            // but first remove any bound sem_map from the PROTOCOL_SEMANTICS because those
             // don't need to be merged into the parents semantics
             if (bindings) {
                 int i,c = _t_children(bindings);
@@ -326,18 +326,18 @@ void _o_resolve(SemTable *sem,T *def, T *bindings){
     T *d = def;
     if (bindings) {
         debug(D_PROTOCOL,"resolving bindings %s\n",t2s(bindings));
-        T *items = _t_new_root(FILL_ITEMS);
+        T *sem_map = _t_new_root(SEMANTIC_MAP);
         DO_KIDS(bindings,
                 T *res = _t_child(bindings,i);
                 T *w = _t_child(res,ResolutionWhichIdx);
-                T *t = _t_newr(items,SEMANTIC_MAP);
+                T *t = _t_newr(sem_map,SEMANTIC_LINK);
                 _t_add(t,_t_clone(_t_child(w,1)));
                 T *r = _t_newr(t,REPLACEMENT_VALUE);
                 _t_add(r,_t_clone(_t_child(w,2)));
             );
-        debug(D_PROTOCOL,"by filling template with %s\n",t2s(items));
-        _t_fill_template(d,items);
-        _t_free(items);
+        debug(D_PROTOCOL,"by filling template with %s\n",t2s(sem_map));
+        _t_fill_template(d,sem_map);
+        _t_free(sem_map);
     }
 }
 

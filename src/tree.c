@@ -715,17 +715,17 @@ T *_t_build(SemTable *sem,T *parent,...) {
 }
 
 /**
- * replace SLOTS in a template with the SEMANTIC_MAPPINGs in a FILL_ITEMS tree
+ * replace SLOTS in a template with the SEMANTIC_LINKs in a SEMANTIC_MAP tree
  *
  * @param[in,out] template the tree with SLOTs to be filled
- * @param[in] items tree of type FILL_ITEMS
+ * @param[in] links tree of type SEMANTIC_MAP
  *
  * @note the template is modified in place, so the caller may need to clone a source template
  *
  * <b>Examples (from test suite):</b>
  * @snippet spec/tree_spec.h testTreeTemplate
 */
-void __t_fill_template(T *template, T *items,bool as_run_node) {
+void __t_fill_template(T *template, T *links,bool as_run_node) {
     if (!template) return;
     bool is_run_node = (template->context.flags |= TFLAG_RUN_NODE) || as_run_node;
     if (semeq(_t_symbol(template),SLOT)) {
@@ -738,11 +738,11 @@ void __t_fill_template(T *template, T *items,bool as_run_node) {
             valof = *(Symbol *)_t_surface(v);
         }
 
-        // scan all the items for semantic refs that match this slot.
+        // scan all the links for semantic refs that match this slot.
         // @todo convert this to a hashtable based implementation, probably on the treehash of the semantic ref
-        int i,c = _t_children(items);
+        int i,c = _t_children(links);
         for(i=1;i<=c;i++) {
-            T *m = _t_child(items,i);
+            T *m = _t_child(links,i);
             T *ref = _t_child(m,SemanticMapSemanticRefIdx);
             if (semeq(sym,_t_symbol(ref)) && semeq(valsym,*(Symbol *)_t_surface(ref))) {
                 T *r;
@@ -764,7 +764,7 @@ void __t_fill_template(T *template, T *items,bool as_run_node) {
         }
     }
     else {
-        DO_KIDS(template,_t_fill_template(_t_child(template,i),items));
+        DO_KIDS(template,_t_fill_template(_t_child(template,i),links));
     }
 }
 

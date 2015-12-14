@@ -62,14 +62,14 @@ T *defaultRequestUntil() {
  *
  * @param[in] t template tree to be filled
  * @param[in] match_results SEMTREX_MATCH_RESULTS tree
- * @param[in] match_tree original tree that was matched (needed to build FILL_ITEMS)
+ * @param[in] match_tree original tree that was matched (needed to build SEMANTIC_MAP)
  *
  * @todo what to do if match has sibs??
  */
 void _p_fill_from_match(T *t,T *match_results,T *match_tree) {
-    T *items = _stx_results2fill_items(match_results,match_tree);
-    __t_fill_template(t,items,true);
-    _t_free(items);
+    T *sem_map = _stx_results2sem_map(match_results,match_tree);
+    __t_fill_template(t,sem_map,true);
+    _t_free(sem_map);
 }
 
 /**

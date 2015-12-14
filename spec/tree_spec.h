@@ -570,21 +570,21 @@ void testTreeTemplate() {
     // test filling a value slot
     T *template = _t_build(G_sem,0,PATTERN,SEMTREX_SYMBOL_LITERAL,SLOT,USAGE,REQUEST_DATA,SLOT_IS_VALUE_OF,SEMTREX_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);
     spec_is_str_equal(t2s(template),"(PATTERN (SEMTREX_SYMBOL_LITERAL (SLOT (USAGE:REQUEST_DATA) (SLOT_IS_VALUE_OF:SEMTREX_SYMBOL))))");
-    T *items = _t_build(G_sem,0,FILL_ITEMS,SEMANTIC_MAP,USAGE,REQUEST_DATA,REPLACEMENT_VALUE,ACTUAL_SYMBOL,PING,NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);
-    spec_is_str_equal(t2s(items),"(FILL_ITEMS (SEMANTIC_MAP (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:PING))))");
-    _t_fill_template(template,items);
+    T *sem_map = _t_build(G_sem,0,SEMANTIC_MAP,SEMANTIC_LINK,USAGE,REQUEST_DATA,REPLACEMENT_VALUE,ACTUAL_SYMBOL,PING,NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);
+    spec_is_str_equal(t2s(sem_map),"(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:PING))))");
+    _t_fill_template(template,sem_map);
     spec_is_str_equal(t2s(template),"(PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:PING)))");
 
     // test filling a structure slot
     template = _t_build(G_sem,0,PATTERN,SEMTREX_SYMBOL_LITERAL,SLOT,USAGE,REQUEST_DATA,NULL_SYMBOL,NULL_SYMBOL);
     spec_is_str_equal(t2s(template),"(PATTERN (SEMTREX_SYMBOL_LITERAL (SLOT (USAGE:REQUEST_DATA))))");
-    items = _t_build(G_sem,0,FILL_ITEMS,SEMANTIC_MAP,USAGE,REQUEST_DATA,REPLACEMENT_VALUE,SEMTREX_SYMBOL,PING,NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);
-    spec_is_str_equal(t2s(items),"(FILL_ITEMS (SEMANTIC_MAP (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (SEMTREX_SYMBOL:PING))))");
-    _t_fill_template(template,items);
+    sem_map = _t_build(G_sem,0,SEMANTIC_MAP,SEMANTIC_LINK,USAGE,REQUEST_DATA,REPLACEMENT_VALUE,SEMTREX_SYMBOL,PING,NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);
+    spec_is_str_equal(t2s(sem_map),"(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (SEMTREX_SYMBOL:PING))))");
+    _t_fill_template(template,sem_map);
     spec_is_str_equal(t2s(template),"(PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:PING)))");
 
     _t_free(template);
-    _t_free(items);
+    _t_free(sem_map);
     //! [testTreeTemplate]
 }
 

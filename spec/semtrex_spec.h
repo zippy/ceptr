@@ -411,8 +411,8 @@ void testMatchGroup() {
 
     spec_is_str_equal(t2s(r),"(SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:TEST_GROUP_SYMBOL1) (SEMTREX_MATCH_PATH:/1) (SEMTREX_MATCH_SIBLINGS_COUNT:3) (SEMTREX_MATCH:2 (SEMTREX_MATCH_SYMBOL:TEST_GROUP_SYMBOL2) (SEMTREX_MATCH_PATH:/3) (SEMTREX_MATCH_SIBLINGS_COUNT:1)))");
 
-    T *items = _stx_results2fill_items(r,t);
-    spec_is_str_equal(t2s(items),"(FILL_ITEMS (SEMANTIC_MAP (USAGE:TEST_GROUP_SYMBOL1) (REPLACEMENT_VALUE (sy1:t1 (sy11:t11 (sy111:t111))))) (SEMANTIC_MAP (USAGE:TEST_GROUP_SYMBOL2) (REPLACEMENT_VALUE (sy3:t3))))");
+    T *map = _stx_results2sem_map(r,t);
+    spec_is_str_equal(t2s(map),"(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:TEST_GROUP_SYMBOL1) (REPLACEMENT_VALUE (sy1:t1 (sy11:t11 (sy111:t111))))) (SEMANTIC_LINK (USAGE:TEST_GROUP_SYMBOL2) (REPLACEMENT_VALUE (sy3:t3))))");
 
     // you should also be able to find the matched group by uid
     spec_is_ptr_equal(_t_get_match(r,TEST_GROUP_SYMBOL1),r);
