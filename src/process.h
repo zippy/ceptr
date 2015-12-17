@@ -19,17 +19,17 @@ enum ReductionError {Ascend=-1,Descend=-2,Pushed=-3,Pop=-4,Eval=-5,Block=-6,Done
 
 enum QueueError {noErr = 0, contextNotFoundErr};
 
-enum ReplicationPhase {EvalCondition,EvalBody};
-enum ReplicationType {ReplicateTypeCount,ReplicateTypeUnknown,ReplicateTypeCond};
+enum IterationPhase {EvalCondition,EvalBody};
+enum IterationType {IterateTypeCount,IterateTypeUnknown,IterateTypeCond};
 
 enum MagicProcesses {MagicReceptors,MagicQuit};
 
-typedef struct ReplicationState {
+typedef struct IterationState {
     T *code;
     int phase;
     int count;
     int type;
-} ReplicationState;
+} IterationState;
 
 T *defaultRequestUntil();
 R *__p_make_context(T *run_tree,R *caller,int process_id,T *sem_map);

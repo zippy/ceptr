@@ -874,7 +874,7 @@ void testProcessRaise() {
     _t_free(t);
 }
 
-void testProcessReplicate() {
+void testProcessIterate() {
     FILE *output;
 
     char *output_data = NULL;
@@ -1132,7 +1132,7 @@ void testProcess() {
     testProcessSignatureMatching();
     testProcessError();
     testProcessRaise();
-    testProcessReplicate();
+    testProcessIterate();
     testProcessListen();
     testProcessErrorTrickleUp();
     testProcessMulti();
