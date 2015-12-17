@@ -643,7 +643,7 @@ void __r_test_expectation(Receptor *r,T *expectation,T *signal) {
             /* // for now we add the params to the contexts run tree */
             /* /// @todo later this should be integrated into some kind of scoping handling */
             T *params = _t_rclone(_t_child(expectation,ExpectationParamsIdx));
-            _p_fill_from_match(params,m,signal_contents);
+            _p_fill_from_match(r->sem,params,m,signal_contents);
             int process_id = *(int *)_t_surface(_t_child(action,1));
             int *code_path = (int *)_t_surface(_t_child(action,2));
 
@@ -672,7 +672,7 @@ void __r_test_expectation(Receptor *r,T *expectation,T *signal) {
 
             // _p_make_run_tree assumes rT nodes
             T *params = _t_rclone(_t_child(expectation,ExpectationParamsIdx));
-            _p_fill_from_match(params,m,signal_contents);
+            _p_fill_from_match(r->sem,params,m,signal_contents);
             T *sm = _t_child(expectation,ExpectationSemanticMapIdx);
             if (sm) sm = _t_clone(sm);
             debug(D_SIGNALS,"creating a run tree for action %s with params %s\n",_sem_get_name(r->sem,p),_t2s(r->sem,params));

@@ -34,6 +34,7 @@ typedef struct IterationState {
 T *defaultRequestUntil();
 R *__p_make_context(T *run_tree,R *caller,int process_id,T *sem_map);
 Error _p_step(Q *q, R **contextP);
+void _p_fill_from_match(SemTable *sem,T *t,T *match_results,T *match_tree);
 Error __p_check_signature(SemTable *sem,Process p,T *params,T *sem_map);
 Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q);
 void _p_enqueue(Qe **listP,Qe *e);

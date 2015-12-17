@@ -1853,7 +1853,7 @@ T *parseSemtrex(SemTable *sem,char *stx) {
 }
 
 // recursable implementation of _stx_results2sem_map
-void __stx_r2fi(T *mr,T *mt, T *sem_map) {
+void __stx_r2fi(SemTable *sem,T *mr,T *mt, T *sem_map) {
     T *t = _t_newr(sem_map,SEMANTIC_LINK);
     T *match_symbol =  _t_child(mr,SemtrexMatchSymbolIdx);
     Symbol msym = *(Symbol*)_t_surface(match_symbol);
@@ -1867,15 +1867,25 @@ void __stx_r2fi(T *mr,T *mt, T *sem_map) {
         raise_error("expecting to get a value from match!!");
     }
     x = _t_clone(x);
-    //@todo conversion of types when possible?
-    //@todo sanity checking of types?
-    //
-    if (!semeq(msym,NULL_SYMBOL))
+
+    int c = _t_children(mr);
+
+    if (!semeq(msym,NULL_SYMBOL)) {
+        Symbol xsym = _t_symbol(x);
+        Structure mrs = _sem_get_symbol_structure(sem,msym);
+        Structure xs = _sem_get_symbol_structure(sem,xsym);
+
+        //@todo conversion of types when possible?
+        if (!semeq(mrs,xs)) raise_error("incompatible structures in match: %s(%s) and %s(%s)",
+                                        _sem_get_name(sem,msym),_sem_get_name(sem,msym),
+                                        _sem_get_name(sem,xsym),_sem_get_name(sem,xs));
+
         x->contents.symbol = msym;
+    }
     _t_add(r,x);
-    int i,c = _t_children(mr);
+    int i;
     for (i=SemtrexMatchSibsIdx+1;i<=c;i++) {
-        __stx_r2fi(_t_child(mr,i),mt,sem_map);
+        __stx_r2fi(sem,_t_child(mr,i),mt,sem_map);
     }
 }
 
@@ -1886,9 +1896,9 @@ void __stx_r2fi(T *mr,T *mt, T *sem_map) {
  * @param[in] match_tree the tree the semtrex was matched against
  * @results a SEMANTIC_MAP tree
  */
-T *_stx_results2sem_map(T *match_results,T *match_tree) {
+T *_stx_results2sem_map(SemTable *sem,T *match_results,T *match_tree) {
     T *sem_map = _t_new_root(SEMANTIC_MAP);
-    __stx_r2fi(match_results,match_tree,sem_map);
+    __stx_r2fi(sem,match_results,match_tree,sem_map);
     return sem_map;
 }
 

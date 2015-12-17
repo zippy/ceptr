@@ -101,7 +101,7 @@ T *_t_embody_from_match(SemTable *sem,T *match,T *t);
 char * _dump_semtrex(SemTable *sem,T *s,char *buf);
 T *makeASCIITree(char *c);
 T *parseSemtrex(SemTable *sem,char *stx);
-T *_stx_results2sem_map(T *match_results,T *match_tree);
+T *_stx_results2sem_map(SemTable *sem,T *match_results,T *match_tree);
 
 T *__stxcv(T *stxx,char c);
 T *__stxcvm(T *stxx,int not,int count,...);

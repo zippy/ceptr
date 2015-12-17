@@ -52,22 +52,20 @@ T *defaultRequestUntil() {
     return until;
 }
 
-
-
-
 /**
  * implements the FILL_FROM_MATCH process
  *
  * replaces the template tree with the matched sub-parts from a semtrex match results tree
  *
+ * @param[in] sem current semantic context
  * @param[in] t template tree to be filled
  * @param[in] match_results SEMTREX_MATCH_RESULTS tree
  * @param[in] match_tree original tree that was matched (needed to build SEMANTIC_MAP)
  *
  * @todo what to do if match has sibs??
  */
-void _p_fill_from_match(T *t,T *match_results,T *match_tree) {
-    T *sem_map = _stx_results2sem_map(match_results,match_tree);
+void _p_fill_from_match(SemTable *sem,T *t,T *match_results,T *match_tree) {
+    T *sem_map = _stx_results2sem_map(sem,match_results,match_tree);
     __t_fill_template(t,sem_map,true);
     _t_free(sem_map);
 }
@@ -370,7 +368,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
         match_tree = _t_child(code,3);
         x = _t_detach_by_idx(code,1);
         /// @todo interpolation errors?
-        _p_fill_from_match(x,match_results,match_tree);
+        _p_fill_from_match(q->r->sem,x,match_results,match_tree);
         break;
     case RAISE_ID:
         return raiseReductionErr;
