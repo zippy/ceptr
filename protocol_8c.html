@@ -129,13 +129,16 @@ Include dependency graph for protocol.c:</div>
 <tr class="separator:gafa4b2beed8656b636c9e5d3190681622"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga85c1d0c237321e72e3294cbf64217a6e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__accumulator.html#ga85c1d0c237321e72e3294cbf64217a6e">_o_make_protocol_def</a> (<a class="el" href="structSemTable.html">SemTable</a> *sem, Context c, char *label,...)</td></tr>
 <tr class="separator:ga85c1d0c237321e72e3294cbf64217a6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad6e80240518b27f9520c56955c44d2d1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gad6e80240518b27f9520c56955c44d2d1"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>_t_replace_sem_refs</b> (<a class="el" href="structT.html">T</a> *t, <a class="el" href="structT.html">T</a> *items)</td></tr>
-<tr class="separator:gad6e80240518b27f9520c56955c44d2d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga36cdb993f049076b7b8c858c7ae6181d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__accumulator.html#ga36cdb993f049076b7b8c858c7ae6181d">_o_unwrap</a> (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structT.html">T</a> *def)</td></tr>
-<tr class="separator:ga36cdb993f049076b7b8c858c7ae6181d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1f209a996f29d4cbbdf76fddfe3dc326"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__accumulator.html#ga1f209a996f29d4cbbdf76fddfe3dc326">_o_resolve</a> (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structT.html">T</a> *def, <a class="el" href="structT.html">T</a> *bindings)</td></tr>
-<tr class="separator:ga1f209a996f29d4cbbdf76fddfe3dc326"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga05224b0285fda0dae9b331c994a1541b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga05224b0285fda0dae9b331c994a1541b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>_t_replace_sem_refs</b> (<a class="el" href="structT.html">T</a> *t, <a class="el" href="structT.html">T</a> *sem_map)</td></tr>
+<tr class="separator:ga05224b0285fda0dae9b331c994a1541b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga68b11cd5bfe5da833dc02b7f4875ed44"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga68b11cd5bfe5da833dc02b7f4875ed44"></a>
+<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>_o_bindings2sem_map</b> (<a class="el" href="structT.html">T</a> *bindings, <a class="el" href="structT.html">T</a> *sem_map)</td></tr>
+<tr class="separator:ga68b11cd5bfe5da833dc02b7f4875ed44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad059bbd58bb0f8532009f1f575f196bd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__accumulator.html#gad059bbd58bb0f8532009f1f575f196bd">_o_unwrap</a> (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structT.html">T</a> *def, <a class="el" href="structT.html">T</a> *sem_map)</td></tr>
+<tr class="separator:gad059bbd58bb0f8532009f1f575f196bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf14457ce0e9763f262504feef6fd49da"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__accumulator.html#gaf14457ce0e9763f262504feef6fd49da">_o_resolve</a> (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structT.html">T</a> *def, <a class="el" href="structT.html">T</a> *sem_map)</td></tr>
+<tr class="separator:gaf14457ce0e9763f262504feef6fd49da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga46ff4d16575a21f8c7d02fa754ac6d2f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__accumulator.html#ga46ff4d16575a21f8c7d02fa754ac6d2f">_o_express_role</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structSemanticID.html">Protocol</a> protocol, <a class="el" href="structSemanticID.html">Symbol</a> role, <a class="el" href="structSemanticID.html">Aspect</a> aspect, <a class="el" href="structT.html">T</a> *bindings)</td></tr>
 <tr class="separator:ga46ff4d16575a21f8c7d02fa754ac6d2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -150,7 +153,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_t_replace_sem_refs</
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="protocol_8c.html">protocol.c</a></li>
-    <li class="footer">Generated on Sun Dec 13 2015 15:58:32 for ceptr by
+    <li class="footer">Generated on Thu Dec 17 2015 01:20:32 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

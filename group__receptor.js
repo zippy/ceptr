@@ -19,7 +19,7 @@ var group__receptor =
     [ "__r_get_symbol_structure", "group__receptor.html#ga120e66982d483fbe004fd969cf1c353f", null ],
     [ "__r_make_signal", "group__receptor.html#ga893186e8d759e9aa1f14d932900e8046", null ],
     [ "__r_test_expectation", "group__receptor.html#ga70aee08cc1b09a659993eae4dc779a8b", null ],
-    [ "_r_add_expectation", "group__receptor.html#gac391ad8fbd0bb7ca9382e9ab0018edcf", null ],
+    [ "_r_add_expectation", "group__receptor.html#gaabb070f3fefc65c40cd339ee2d88d464", null ],
     [ "_r_build_def_semtrex", "group__receptor.html#ga63078117d8c6850455a4419fd9b6b784", null ],
     [ "_r_def_match", "group__receptor.html#gaa8c97a2acf18af02e4e582d15932640c", null ],
     [ "_r_define_process", "group__receptor.html#ga9e248fdb6e6d814935ac88e67e10e769", null ],

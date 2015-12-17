@@ -7,7 +7,7 @@ var sys__defs_8c =
     [ "G_ctx", "sys__defs_8c.html#aac33201af5a06542fc8c51895b4c26b7", null ],
     [ "G_label", "sys__defs_8c.html#af2802562ba52d6692f72a674e350db08", null ],
     [ "G_sem", "sys__defs_8c.html#ad5412ca1b13907601ccb30bdd036806e", null ],
-    [ "NULL_PROCESS", "sys__defs_8c.html#a659145d2ab93a0f49ed8e967c0466433", null ],
-    [ "NULL_STRUCTURE", "sys__defs_8c.html#a9a0f519a69d0b11547ea79544670e9ca", null ],
-    [ "NULL_SYMBOL", "sys__defs_8c.html#ad0408529e6c5d12d81a6545892418b29", null ]
+    [ "NULL_PROCESS", "sys__defs_8c.html#a1068cc7a3992188e4659eb6f6a151bb1", null ],
+    [ "NULL_STRUCTURE", "sys__defs_8c.html#a6ecbc1cac29acafd0607c72b74a4aa66", null ],
+    [ "NULL_SYMBOL", "sys__defs_8c.html#aaf1422bd6971d319680f53f7c7ae2058", null ]
 ];

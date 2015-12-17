@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['testcodeprocess',['testCodeProcess',['../def__spec_8h.html#a75496f49503d74f479d7bd3e0b8914f3',1,'def_spec.h']]],
+  ['testdefprocess',['testDefProcess',['../def__spec_8h.html#ae5c15da7bedbab290404f99ffdcabbfb',1,'def_spec.h']]],
+  ['testdefprocesstemplate',['testDefProcessTemplate',['../def__spec_8h.html#aad381bff8dcf1dced2f7611abfce508e',1,'def_spec.h']]],
   ['testdefsemtrex',['testDefSemtrex',['../def__spec_8h.html#a3782adfdff29ee1088fb2e66d373739b',1,'def_spec.h']]],
   ['testdefstructure',['testDefStructure',['../def__spec_8h.html#aa7427b84dd399a4ba84eea3df00c4045',1,'def_spec.h']]],
   ['testdefsymbol',['testDefSymbol',['../def__spec_8h.html#a56a27a1c1dbaa31060bb3d6aafdcba99',1,'def_spec.h']]],

@@ -309,7 +309,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>__uuid_equal</b> (<a c
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="structT.html">T</a> *&#160;</td>
-          <td class="paramname"><em>items</em>, </td>
+          <td class="paramname"><em>links</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -324,11 +324,11 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>__uuid_equal</b> (<a c
         </tr>
       </table>
 </div><div class="memdoc">
-<p>replace SLOTS in a template with the SEMANTIC_MAPPINGs in a FILL_ITEMS tree</p>
+<p>replace SLOTS in a template with the SEMANTIC_LINKs in a SEMANTIC_MAP tree</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in,out]</td><td class="paramname">template</td><td>the tree with SLOTs to be filled </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">items</td><td>tree of type FILL_ITEMS</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">links</td><td>tree of type SEMANTIC_MAP</td></tr>
   </table>
   </dd>
 </dl>
@@ -337,21 +337,36 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>__uuid_equal</b> (<a c
 <div class="line">    <span class="comment">// test filling a value slot</span></div>
 <div class="line">    <a class="code" href="structT.html">T</a> *<span class="keyword">template</span> = <a class="code" href="group__tree.html#gaebfc497f04bdfbfd3a241771b146bebc">_t_build</a>(G_sem,0,PATTERN,SEMTREX_SYMBOL_LITERAL,SLOT,USAGE,REQUEST_DATA,SLOT_IS_VALUE_OF,SEMTREX_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);</div>
 <div class="line">    spec_is_str_equal(t2s(<span class="keyword">template</span>),<span class="stringliteral">&quot;(PATTERN (SEMTREX_SYMBOL_LITERAL (SLOT (USAGE:REQUEST_DATA) (SLOT_IS_VALUE_OF:SEMTREX_SYMBOL))))&quot;</span>);</div>
-<div class="line">    <a class="code" href="structT.html">T</a> *items = <a class="code" href="group__tree.html#gaebfc497f04bdfbfd3a241771b146bebc">_t_build</a>(G_sem,0,FILL_ITEMS,SEMANTIC_MAP,USAGE,REQUEST_DATA,REPLACEMENT_VALUE,ACTUAL_SYMBOL,PING,NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);</div>
-<div class="line">    spec_is_str_equal(t2s(items),<span class="stringliteral">&quot;(FILL_ITEMS (SEMANTIC_MAP (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:PING))))&quot;</span>);</div>
-<div class="line">    _t_fill_template(<span class="keyword">template</span>,items);</div>
+<div class="line">    <a class="code" href="structT.html">T</a> *sem_map = <a class="code" href="group__tree.html#gaebfc497f04bdfbfd3a241771b146bebc">_t_build</a>(G_sem,0,SEMANTIC_MAP,SEMANTIC_LINK,USAGE,REQUEST_DATA,REPLACEMENT_VALUE,ACTUAL_SYMBOL,PING,NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);</div>
+<div class="line">    spec_is_str_equal(t2s(sem_map),<span class="stringliteral">&quot;(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:PING))))&quot;</span>);</div>
+<div class="line">    _t_fill_template(<span class="keyword">template</span>,sem_map);</div>
 <div class="line">    spec_is_str_equal(t2s(<span class="keyword">template</span>),<span class="stringliteral">&quot;(PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:PING)))&quot;</span>);</div>
+<div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(<span class="keyword">template</span>);</div>
+<div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(sem_map);</div>
+<div class="line"></div>
+<div class="line">    <span class="comment">// test filling a value slot of a non leaf node</span></div>
+<div class="line">    <span class="keyword">template</span> = <a class="code" href="group__tree.html#gaebfc497f04bdfbfd3a241771b146bebc">_t_build</a>(G_sem,0,REQUEST,SLOT,ROLE,RESPONDER,SLOT_IS_VALUE_OF,TO_ADDRESS,NULL_SYMBOL,SLOT,USAGE,REQUEST_DATA,NULL_SYMBOL,SLOT,USAGE,REQUEST_DATA,NULL_SYMBOL,NULL_SYMBOL);</div>
+<div class="line">    spec_is_str_equal(t2s(<span class="keyword">template</span>),<span class="stringliteral">&quot;(process:REQUEST (SLOT (ROLE:RESPONDER) (SLOT_IS_VALUE_OF:TO_ADDRESS)) (SLOT (USAGE:REQUEST_DATA)) (SLOT (USAGE:REQUEST_DATA)))&quot;</span>);</div>
+<div class="line">    sem_map = <a class="code" href="group__tree.html#gaebfc497f04bdfbfd3a241771b146bebc">_t_build</a>(G_sem,0,SEMANTIC_MAP,</div>
+<div class="line">                       SEMANTIC_LINK,USAGE,REQUEST_DATA,REPLACEMENT_VALUE,ACTUAL_SYMBOL,PING,NULL_SYMBOL,NULL_SYMBOL,</div>
+<div class="line">                       SEMANTIC_LINK,ROLE,RESPONDER,REPLACEMENT_VALUE,ACTUAL_RECEPTOR,RECEPTOR_ADDR,3,NULL_SYMBOL,NULL_SYMBOL,</div>
+<div class="line">                       NULL_SYMBOL);</div>
+<div class="line">    spec_is_str_equal(t2s(sem_map),<span class="stringliteral">&quot;(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:PING))) (SEMANTIC_LINK (ROLE:RESPONDER) (REPLACEMENT_VALUE (ACTUAL_RECEPTOR (RECEPTOR_ADDR:3)))))&quot;</span>);</div>
+<div class="line">    _t_fill_template(<span class="keyword">template</span>,sem_map);</div>
+<div class="line">    spec_is_str_equal(t2s(<span class="keyword">template</span>),<span class="stringliteral">&quot;(process:REQUEST (TO_ADDRESS (RECEPTOR_ADDR:3)) (ACTUAL_SYMBOL:PING) (ACTUAL_SYMBOL:PING))&quot;</span>);</div>
+<div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(<span class="keyword">template</span>);</div>
+<div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(sem_map);</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// test filling a structure slot</span></div>
 <div class="line">    <span class="keyword">template</span> = <a class="code" href="group__tree.html#gaebfc497f04bdfbfd3a241771b146bebc">_t_build</a>(G_sem,0,PATTERN,SEMTREX_SYMBOL_LITERAL,SLOT,USAGE,REQUEST_DATA,NULL_SYMBOL,NULL_SYMBOL);</div>
 <div class="line">    spec_is_str_equal(t2s(<span class="keyword">template</span>),<span class="stringliteral">&quot;(PATTERN (SEMTREX_SYMBOL_LITERAL (SLOT (USAGE:REQUEST_DATA))))&quot;</span>);</div>
-<div class="line">    items = <a class="code" href="group__tree.html#gaebfc497f04bdfbfd3a241771b146bebc">_t_build</a>(G_sem,0,FILL_ITEMS,SEMANTIC_MAP,USAGE,REQUEST_DATA,REPLACEMENT_VALUE,SEMTREX_SYMBOL,PING,NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);</div>
-<div class="line">    spec_is_str_equal(t2s(items),<span class="stringliteral">&quot;(FILL_ITEMS (SEMANTIC_MAP (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (SEMTREX_SYMBOL:PING))))&quot;</span>);</div>
-<div class="line">    _t_fill_template(<span class="keyword">template</span>,items);</div>
+<div class="line">    sem_map = <a class="code" href="group__tree.html#gaebfc497f04bdfbfd3a241771b146bebc">_t_build</a>(G_sem,0,SEMANTIC_MAP,SEMANTIC_LINK,USAGE,REQUEST_DATA,REPLACEMENT_VALUE,SEMTREX_SYMBOL,PING,NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);</div>
+<div class="line">    spec_is_str_equal(t2s(sem_map),<span class="stringliteral">&quot;(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (SEMTREX_SYMBOL:PING))))&quot;</span>);</div>
+<div class="line">    _t_fill_template(<span class="keyword">template</span>,sem_map);</div>
 <div class="line">    spec_is_str_equal(t2s(<span class="keyword">template</span>),<span class="stringliteral">&quot;(PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:PING)))&quot;</span>);</div>
 <div class="line"></div>
 <div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(<span class="keyword">template</span>);</div>
-<div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(items);</div>
+<div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(sem_map);</div>
 </div><!-- fragment -->
 <p>Definition at line <a class="el" href="tree_8c_source.html#l00728">728</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
 
@@ -693,7 +708,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>__uuid_equal</b> (<a c
 <dl class="section return"><dt>Returns</dt><dd>the length that was added to the buffer</dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000040">Todo:</a></b></dt><dd>compact is really a shorthand for whether this is a fixed size tree or not this should actually be determined on the fly by looking at the structure types. </dd></dl>
 
-<p>Definition at line <a class="el" href="tree_8c_source.html#l01165">1165</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
+<p>Definition at line <a class="el" href="tree_8c_source.html#l01190">1190</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
 
 </div>
 </div>
@@ -764,7 +779,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>__uuid_equal</b> (<a c
 <div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(stx);</div>
 <div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="tree_8c_source.html#l01387">1387</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
+<p>Definition at line <a class="el" href="tree_8c_source.html#l01412">1412</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
 
 </div>
 </div>
@@ -835,7 +850,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>__uuid_equal</b> (<a c
 <div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(stx);</div>
 <div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="tree_8c_source.html#l01264">1264</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
+<p>Definition at line <a class="el" href="tree_8c_source.html#l01289">1289</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
 
 </div>
 </div>
@@ -953,7 +968,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>__uuid_equal</b> (<a c
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>child or NULL if that child doesn't exist </dd></dl>
 
-<p>Definition at line <a class="el" href="tree_8c_source.html#l00824">824</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
+<p>Definition at line <a class="el" href="tree_8c_source.html#l00849">849</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
 
 </div>
 </div>
@@ -979,7 +994,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>__uuid_equal</b> (<a c
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>number of children </dd></dl>
 
-<p>Definition at line <a class="el" href="tree_8c_source.html#l00778">778</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
+<p>Definition at line <a class="el" href="tree_8c_source.html#l00803">803</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
 
 </div>
 </div>
@@ -1206,7 +1221,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>__uuid_equal</b> (<a c
 <div class="line"></div>
 <div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="tree_8c_source.html#l00995">995</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
+<p>Definition at line <a class="el" href="tree_8c_source.html#l01020">1020</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
 
 </div>
 </div>
@@ -1255,7 +1270,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>__uuid_equal</b> (<a c
 <div class="line"></div>
 <div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="tree_8c_source.html#l00939">939</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
+<p>Definition at line <a class="el" href="tree_8c_source.html#l00964">964</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
 
 </div>
 </div>
@@ -1313,7 +1328,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>__uuid_equal</b> (<a c
 <div class="line"></div>
 <div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(tt);</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="tree_8c_source.html#l01046">1046</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
+<p>Definition at line <a class="el" href="tree_8c_source.html#l01071">1071</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
 
 </div>
 </div>
@@ -1379,7 +1394,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>__uuid_equal</b> (<a c
 <div class="line"></div>
 <div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="tree_8c_source.html#l01024">1024</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
+<p>Definition at line <a class="el" href="tree_8c_source.html#l01049">1049</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
 
 </div>
 </div>
@@ -1439,7 +1454,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>__uuid_equal</b> (<a c
 <div class="line"></div>
 <div class="line">    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="tree_8c_source.html#l01091">1091</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
+<p>Definition at line <a class="el" href="tree_8c_source.html#l01116">1116</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
 
 </div>
 </div>
@@ -1469,7 +1484,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>__uuid_equal</b> (<a c
 <p>comparison function for hash tree equality</p>
 <p>we have this because TreeHash may become a larger structure not subject to direct equality testing. </p>
 
-<p>Definition at line <a class="el" href="tree_8c_source.html#l01128">1128</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
+<p>Definition at line <a class="el" href="tree_8c_source.html#l01153">1153</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
 
 </div>
 </div>
@@ -1923,7 +1938,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>__uuid_equal</b> (<a c
 <dl class="section return"><dt>Returns</dt><dd>the index of the node</dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000038">Todo:</a></b></dt><dd>improve algorithm as this is very expensive if called all the time. </dd></dl>
 
-<p>Definition at line <a class="el" href="tree_8c_source.html#l00879">879</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
+<p>Definition at line <a class="el" href="tree_8c_source.html#l00904">904</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
 
 </div>
 </div>
@@ -1949,7 +1964,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>__uuid_equal</b> (<a c
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the index of the node </dd></dl>
 
-<p>Definition at line <a class="el" href="tree_8c_source.html#l00857">857</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
+<p>Definition at line <a class="el" href="tree_8c_source.html#l00882">882</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
 
 </div>
 </div>
@@ -1975,7 +1990,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>__uuid_equal</b> (<a c
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>parent or NULL if node is root </dd></dl>
 
-<p>Definition at line <a class="el" href="tree_8c_source.html#l00835">835</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
+<p>Definition at line <a class="el" href="tree_8c_source.html#l00860">860</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
 
 </div>
 </div>
@@ -2012,7 +2027,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>__uuid_equal</b> (<a c
 <div class="line">    spec_is_equal(<a class="code" href="group__tree.html#ga55270b512ed52ffe5a938a793fa5cd7f">_t_path_depth</a>(p3),3);</div>
 <div class="line">    spec_is_equal(<a class="code" href="group__tree.html#ga55270b512ed52ffe5a938a793fa5cd7f">_t_path_depth</a>(p5),5);</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="tree_8c_source.html#l00920">920</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
+<p>Definition at line <a class="el" href="tree_8c_source.html#l00945">945</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
 
 </div>
 </div>
@@ -2065,7 +2080,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>__uuid_equal</b> (<a c
 <div class="line">    spec_is_true(!<a class="code" href="group__tree.html#ga1d7afbc2a405c20a83b7bee4cfcb3a29">_t_path_equal</a>(p0,p3));</div>
 <div class="line">    spec_is_true(!<a class="code" href="group__tree.html#ga1d7afbc2a405c20a83b7bee4cfcb3a29">_t_path_equal</a>(p4,p5));</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="tree_8c_source.html#l00905">905</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
+<p>Definition at line <a class="el" href="tree_8c_source.html#l00930">930</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
 
 </div>
 </div>
@@ -2106,7 +2121,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>__uuid_equal</b> (<a c
 <div class="line"></div>
 <div class="line">    spec_is_path_equal(pp,p5);</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="tree_8c_source.html#l00978">978</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
+<p>Definition at line <a class="el" href="tree_8c_source.html#l01003">1003</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
 
 </div>
 </div>
@@ -2239,7 +2254,7 @@ frees the replaced node</dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>root node by walking up the parents </dd></dl>
 
-<p>Definition at line <a class="el" href="tree_8c_source.html#l00845">845</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
+<p>Definition at line <a class="el" href="tree_8c_source.html#l00870">870</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
 
 </div>
 </div>
@@ -2308,7 +2323,7 @@ frees the replaced node</dd></dl>
 <div class="line">    free(s);</div>
 <div class="line"></div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="tree_8c_source.html#l01202">1202</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
+<p>Definition at line <a class="el" href="tree_8c_source.html#l01227">1227</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
 
 </div>
 </div>
@@ -2334,7 +2349,7 @@ frees the replaced node</dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>size </dd></dl>
 
-<p>Definition at line <a class="el" href="tree_8c_source.html#l00811">811</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
+<p>Definition at line <a class="el" href="tree_8c_source.html#l00836">836</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
 
 </div>
 </div>
@@ -2375,7 +2390,7 @@ frees the replaced node</dd></dl>
 <div class="line"></div>
 <div class="line">    spec_is_str_equal(<a class="code" href="group__tree.html#ga0e63c83e6413f47238db7fa20373c526">_t_sprint_path</a>(p5,buf),<span class="stringliteral">&quot;/3/0/2/1/1&quot;</span>);</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="tree_8c_source.html#l01062">1062</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
+<p>Definition at line <a class="el" href="tree_8c_source.html#l01087">1087</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
 
 </div>
 </div>
@@ -2401,7 +2416,7 @@ frees the replaced node</dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>pointer to node's surface </dd></dl>
 
-<p>Definition at line <a class="el" href="tree_8c_source.html#l00788">788</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
+<p>Definition at line <a class="el" href="tree_8c_source.html#l00813">813</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
 
 </div>
 </div>
@@ -2485,7 +2500,7 @@ frees the replaced node</dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Symbol for the given node </dd></dl>
 
-<p>Definition at line <a class="el" href="tree_8c_source.html#l00801">801</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
+<p>Definition at line <a class="el" href="tree_8c_source.html#l00826">826</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
 
 </div>
 </div>
@@ -2494,7 +2509,7 @@ frees the replaced node</dd></dl>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Dec 13 2015 15:58:32 for ceptr by
+    <li class="footer">Generated on Thu Dec 17 2015 01:20:33 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

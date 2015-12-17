@@ -23,7 +23,7 @@ var sys__defs_8h =
     [ "G_ctx", "sys__defs_8h.html#aac33201af5a06542fc8c51895b4c26b7", null ],
     [ "G_label", "sys__defs_8h.html#af2802562ba52d6692f72a674e350db08", null ],
     [ "G_sem", "sys__defs_8h.html#ad5412ca1b13907601ccb30bdd036806e", null ],
-    [ "NULL_PROCESS", "sys__defs_8h.html#a659145d2ab93a0f49ed8e967c0466433", null ],
-    [ "NULL_STRUCTURE", "sys__defs_8h.html#a9a0f519a69d0b11547ea79544670e9ca", null ],
-    [ "NULL_SYMBOL", "sys__defs_8h.html#a1cb26e8680c21fe4243506c096177489", null ]
+    [ "NULL_PROCESS", "sys__defs_8h.html#a1068cc7a3992188e4659eb6f6a151bb1", null ],
+    [ "NULL_STRUCTURE", "sys__defs_8h.html#a6ecbc1cac29acafd0607c72b74a4aa66", null ],
+    [ "NULL_SYMBOL", "sys__defs_8h.html#a9453ac22d3f866b164777cd4b8983f53", null ]
 ];

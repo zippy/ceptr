@@ -128,10 +128,13 @@ Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:a85c1d0c237321e72e3294cbf64217a6e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="protocol_8h.html#a85c1d0c237321e72e3294cbf64217a6e">_o_make_protocol_def</a> (<a class="el" href="structSemTable.html">SemTable</a> *sem, Context c, char *label,...)</td></tr>
 <tr class="separator:a85c1d0c237321e72e3294cbf64217a6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a36cdb993f049076b7b8c858c7ae6181d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="protocol_8h.html#a36cdb993f049076b7b8c858c7ae6181d">_o_unwrap</a> (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structT.html">T</a> *def)</td></tr>
-<tr class="separator:a36cdb993f049076b7b8c858c7ae6181d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f209a996f29d4cbbdf76fddfe3dc326"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="protocol_8h.html#a1f209a996f29d4cbbdf76fddfe3dc326">_o_resolve</a> (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structT.html">T</a> *def, <a class="el" href="structT.html">T</a> *bindings)</td></tr>
-<tr class="separator:a1f209a996f29d4cbbdf76fddfe3dc326"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68b11cd5bfe5da833dc02b7f4875ed44"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a68b11cd5bfe5da833dc02b7f4875ed44"></a>
+<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>_o_bindings2sem_map</b> (<a class="el" href="structT.html">T</a> *bindings, <a class="el" href="structT.html">T</a> *sem_map)</td></tr>
+<tr class="separator:a68b11cd5bfe5da833dc02b7f4875ed44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad059bbd58bb0f8532009f1f575f196bd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="protocol_8h.html#ad059bbd58bb0f8532009f1f575f196bd">_o_unwrap</a> (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structT.html">T</a> *def, <a class="el" href="structT.html">T</a> *sem_map)</td></tr>
+<tr class="separator:ad059bbd58bb0f8532009f1f575f196bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a776476c98e3e2616feb5977715d1335c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="protocol_8h.html#a776476c98e3e2616feb5977715d1335c">_o_resolve</a> (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structT.html">T</a> *def, <a class="el" href="structT.html">T</a> *bindings)</td></tr>
+<tr class="separator:a776476c98e3e2616feb5977715d1335c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae34af558a8aeadc39b220bbcc3977f96"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="protocol_8h.html#ae34af558a8aeadc39b220bbcc3977f96">_o_express_role</a> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structSemanticID.html">Symbol</a> protocol, <a class="el" href="structSemanticID.html">Symbol</a> role, <a class="el" href="structSemanticID.html">Aspect</a> aspect, <a class="el" href="structT.html">T</a> *action)</td></tr>
 <tr class="separator:ae34af558a8aeadc39b220bbcc3977f96"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -194,7 +197,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="protocol_8c_source.html#l00354">354</a> of file <a class="el" href="protocol_8c_source.html">protocol.c</a>.</p>
+<p>Definition at line <a class="el" href="protocol_8c_source.html#l00367">367</a> of file <a class="el" href="protocol_8c_source.html">protocol.c</a>.</p>
 
 </div>
 </div>
@@ -243,17 +246,18 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>the new protocol def </dd></dl>
 
-<p>Definition at line <a class="el" href="protocol_8c_source.html#l00039">39</a> of file <a class="el" href="protocol_8c_source.html">protocol.c</a>.</p>
+<p>Definition at line <a class="el" href="protocol_8c_source.html#l00040">40</a> of file <a class="el" href="protocol_8c_source.html">protocol.c</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a1f209a996f29d4cbbdf76fddfe3dc326"></a>
+<a class="anchor" id="a776476c98e3e2616feb5977715d1335c"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void _o_resolve </td>
+          <td class="memname"><a class="el" href="structT.html">T</a>* _o_resolve </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structSemTable.html">SemTable</a> *&#160;</td>
           <td class="paramname"><em>sem</em>, </td>
@@ -268,7 +272,7 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="structT.html">T</a> *&#160;</td>
-          <td class="paramname"><em>bindings</em>&#160;</td>
+          <td class="paramname"><em>sem_map</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -284,16 +288,17 @@ Functions</h2></td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">sem</td><td><a class="el" href="structSemTable.html">SemTable</a> contexts </td></tr>
     <tr><td class="paramdir">[in,out]</td><td class="paramname">def</td><td>protocol definition to resolve </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">role</td><td>the role that needs resolving </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">bindings</td><td>the PROTOCOL_BINDINGS tree with additional RESOLUTIONS </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">sem_map</td><td>used to resolve the bindings </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>a PROTOCOL_SEMANTICS tree of semantics that remain unbound </dd></dl>
 
-<p>Definition at line <a class="el" href="protocol_8c_source.html#l00325">325</a> of file <a class="el" href="protocol_8c_source.html">protocol.c</a>.</p>
+<p>Definition at line <a class="el" href="protocol_8c_source.html#l00330">330</a> of file <a class="el" href="protocol_8c_source.html">protocol.c</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a36cdb993f049076b7b8c858c7ae6181d"></a>
+<a class="anchor" id="ad059bbd58bb0f8532009f1f575f196bd"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -307,7 +312,13 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="structT.html">T</a> *&#160;</td>
-          <td class="paramname"><em>def</em>&#160;</td>
+          <td class="paramname"><em>def</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structT.html">T</a> *&#160;</td>
+          <td class="paramname"><em>sem_map</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -321,12 +332,13 @@ Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">sem</td><td><a class="el" href="structSemTable.html">SemTable</a> of contexts </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">def</td><td>protocol definition tree </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">unwrapped</td><td>protocol definition tree </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">sem_map</td><td>semantic map of the unwrapped protocols </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>unwrapped protocol definition tree </dd></dl>
 
-<p>Definition at line <a class="el" href="protocol_8c_source.html#l00219">219</a> of file <a class="el" href="protocol_8c_source.html">protocol.c</a>.</p>
+<p>Definition at line <a class="el" href="protocol_8c_source.html#l00238">238</a> of file <a class="el" href="protocol_8c_source.html">protocol.c</a>.</p>
 
 </div>
 </div>
@@ -336,7 +348,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="protocol_8h.html">protocol.h</a></li>
-    <li class="footer">Generated on Sun Dec 13 2015 15:58:32 for ceptr by
+    <li class="footer">Generated on Thu Dec 17 2015 01:20:32 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

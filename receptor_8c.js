@@ -2,7 +2,7 @@ var receptor_8c =
 [
     [ "___clock_thread", "group__receptor.html#ga4cb85b79ae4207e4595d003d11beb226", null ],
     [ "__r_add_expectation", "group__receptor.html#gaea860a7adb59f9097232671cc426fba2", null ],
-    [ "__r_build_expectation", "group__receptor.html#ga2a6fb1c1ff8a22e2e85b3b2914277b24", null ],
+    [ "__r_build_expectation", "group__receptor.html#ga1934a15079da0b2f2a3112261010cd66", null ],
     [ "__r_build_wakeup_info", "group__receptor.html#ga2489d73f268a2bb8bd0f8a04e3ffd731", null ],
     [ "__r_define_structure", "group__receptor.html#ga9a017ac5e8250b6143719abe815be93a", null ],
     [ "__r_dump_instances", "group__receptor.html#gabd6d2f87b6511b3851eeb5d48f5b3bb4", null ],
@@ -25,7 +25,7 @@ var receptor_8c =
     [ "__r_send", "group__receptor.html#ga5bb9c9f7caa8240b191fe33c0f7ea157", null ],
     [ "__r_test_expectation", "group__receptor.html#ga70aee08cc1b09a659993eae4dc779a8b", null ],
     [ "__td", "group__receptor.html#gad673a5f7dd1499eb01a4ea6a8ca39256", null ],
-    [ "_r_add_expectation", "group__receptor.html#gac391ad8fbd0bb7ca9382e9ab0018edcf", null ],
+    [ "_r_add_expectation", "group__receptor.html#gaabb070f3fefc65c40cd339ee2d88d464", null ],
     [ "_r_build_def_semtrex", "group__receptor.html#ga63078117d8c6850455a4419fd9b6b784", null ],
     [ "_r_def_match", "group__receptor.html#gaa8c97a2acf18af02e4e582d15932640c", null ],
     [ "_r_define_process", "group__receptor.html#ga9e248fdb6e6d814935ac88e67e10e769", null ],

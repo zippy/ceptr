@@ -1,10 +1,12 @@
 var def_8c =
 [
+    [ "MAX_HASHES", "def_8c.html#afa554317e7a371329316836d01c9d1d5", null ],
     [ "MAX_LEVEL", "def_8c.html#a5bb4257ca9fa4bfcf9391b7895b97761", null ],
     [ "__d_get_sem_name", "group__def.html#ga210d7b312760266e54e75cba41bfb42e", null ],
     [ "__d_get_symbol_structure", "group__def.html#ga9482f4a5f8e4c442b9869fd316d150ee", null ],
     [ "__d_set_structure_def", "def_8c.html#a04efc8e66ed5ab08728864f36b114538", null ],
     [ "__d_set_symbol_structure", "group__def.html#ga83921b9941f28a5dcf8a4141ab75598b", null ],
+    [ "__d_tsig", "def_8c.html#a6fd022ea1b9b30fcfd983b87ff80ddfa", null ],
     [ "__d_validate_structure", "group__def.html#gaca59ccc7ed2b54770ac084af9df8e64c", null ],
     [ "__d_validate_symbol", "group__def.html#ga48474fcfea9848df5821203d38ea5237", null ],
     [ "__t2s", "group__def.html#ga650def1f2919516ccd42490bacf6aa7d", null ],
