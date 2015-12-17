@@ -114,7 +114,7 @@ Receptor *_r_new_receptor_from_package(SemTable *sem,Symbol s,T *p,T *bindings) 
 }
 
 // helper to build and expectation tree
-T *__r_build_expectation(Symbol carrier,T *pattern,T *action,T *with,T *until) {
+T *__r_build_expectation(Symbol carrier,T *pattern,T *action,T *with,T *until,T *using) {
     T *e = _t_newr(0,EXPECTATION);
     _t_news(e,CARRIER,carrier);
     _t_add(e,pattern);
@@ -126,6 +126,8 @@ T *__r_build_expectation(Symbol carrier,T *pattern,T *action,T *with,T *until) {
         _t_newr(until,UNLIMITED);
     }
     _t_add(e,until);
+    if (using)
+        _t_add(e,using);
     return e;
 }
 
@@ -141,8 +143,8 @@ T *__r_build_expectation(Symbol carrier,T *pattern,T *action,T *with,T *until) {
  * @param[in] until end conditions for cleaning up this expectation
  *
  */
-void _r_add_expectation(Receptor *r,Aspect aspect,Symbol carrier,T *pattern,T *action,T *with,T *until) {
-    T *e = __r_build_expectation(carrier,pattern,action,with,until);
+void _r_add_expectation(Receptor *r,Aspect aspect,Symbol carrier,T *pattern,T *action,T *with,T *until,T *using) {
+    T *e = __r_build_expectation(carrier,pattern,action,with,until,using);
     __r_add_expectation(r,aspect,e);
 }
 
@@ -667,11 +669,13 @@ void __r_test_expectation(Receptor *r,T *expectation,T *signal) {
         }
         else {
             Process p = *(Process*) _t_surface(action);
-            debug(D_SIGNALS,"creating a run tree for action %s\n",_sem_get_name(r->sem,p));
-            T *params = _t_rclone(_t_child(expectation,ExpectationParamsIdx));  // __p_make_run_tree assumes rT nodes
+            T *params = _t_rclone(_t_child(expectation,ExpectationParamsIdx));  // _p_make_run_tree assumes rT nodes
             _p_fill_from_match(params,m,signal_contents);
-            T *processes = _sem_get_defs(r->sem,p);
-            rt = __p_make_run_tree(processes,p,params);
+            T *sm = _t_child(expectation,ExpectationSemanticMapIdx);
+            if (sm) sm = _t_clone(sm);
+            debug(D_SIGNALS,"creating a run tree for action %s with params %s\n",_sem_get_name(r->sem,p),_t2s(r->sem,params));
+            //@todo check the signature?
+            rt = __p_make_run_tree(r->sem,p,params,sm);
             _t_free(params);
             _t_add(signal,rt);
             _p_addrt2q(q,rt);
@@ -940,7 +944,7 @@ Receptor *_r_makeStreamWriterReceptor(SemTable *sem,Symbol stream_symbol,Stream 
     Process proc = _r_define_process(r,x,"echo input to stream","long desc...",signature);
     T *act = _t_newp(0,ACTION,proc);
 
-    _r_add_expectation(r,DEFAULT_ASPECT,NULL_SYMBOL,expect,act,params,0);
+    _r_add_expectation(r,DEFAULT_ASPECT,NULL_SYMBOL,expect,act,params,0,NULL);
 
     return r;
 }
@@ -970,7 +974,7 @@ Receptor *_r_makeClockReceptor(SemTable *sem) {
 
     T *act = _t_newp(0,ACTION,proc);
     T *params = _t_new_root(PARAMS);
-    _r_add_expectation(r,DEFAULT_ASPECT,CLOCK_TELL_TIME,expect,act,params,0);
+    _r_add_expectation(r,DEFAULT_ASPECT,CLOCK_TELL_TIME,expect,act,params,0,NULL);
 
     return r;
 }

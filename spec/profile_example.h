@@ -99,8 +99,6 @@ void testProfileExample() {
                                       "the_profile",SIGNATURE_STRUCTURE,PROFILE,
                                       NULL);
 
-    T *processes = __sem_get_defs(sem,SEM_TYPE_PROCESS,test_profile_receptor->context);
-
     T *code = _t_new_root(CONCAT_STR);
 
     int pt1[] = {2,1,1,1,TREE_PATH_TERMINATOR};
@@ -131,9 +129,10 @@ void testProfileExample() {
 
     Process p = _d_define_process(sem,code,"profileToMailingLabel","given a profile produce a mailing label",signature,test_profile_receptor->context);
 
-    T *act = _t_newp(0,ACTION,p);
+    T *params = _t_new_root(PARAMS);
+    _t_add(params,t);
 
-    T *r = _p_make_run_tree(processes,act,1,t);
+    T *r = _p_make_run_tree(G_sem,p,params);
     wjson(sem,r,"profile",0);
 
     //    spec_is_str_equal(_t2s(&test_profile_defs,r),"");
@@ -148,8 +147,6 @@ void testProfileExample() {
     spec_is_str_equal(t2s(_t_child(r,1)),"(MAILING_LABEL:Jane Smith\\n126 Main Street\\nSmallville, CA 12345)");
 
     _t_free(r);
-    _t_free(t);
-    _t_free(act);
     _cleanupProfileDefs();
 }
 

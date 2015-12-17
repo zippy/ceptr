@@ -412,7 +412,7 @@ void testMatchGroup() {
     spec_is_str_equal(t2s(r),"(SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:TEST_GROUP_SYMBOL1) (SEMTREX_MATCH_PATH:/1) (SEMTREX_MATCH_SIBLINGS_COUNT:3) (SEMTREX_MATCH:2 (SEMTREX_MATCH_SYMBOL:TEST_GROUP_SYMBOL2) (SEMTREX_MATCH_PATH:/3) (SEMTREX_MATCH_SIBLINGS_COUNT:1)))");
 
     T *map = _stx_results2sem_map(r,t);
-    spec_is_str_equal(t2s(map),"(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:TEST_GROUP_SYMBOL1) (REPLACEMENT_VALUE (sy1:t1 (sy11:t11 (sy111:t111))))) (SEMANTIC_LINK (USAGE:TEST_GROUP_SYMBOL2) (REPLACEMENT_VALUE (sy3:t3))))");
+    spec_is_str_equal(t2s(map),"(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:TEST_GROUP_SYMBOL1) (REPLACEMENT_VALUE (TEST_GROUP_SYMBOL1:16789876 (sy11:t11 (sy111:t111))))) (SEMANTIC_LINK (USAGE:TEST_GROUP_SYMBOL2) (REPLACEMENT_VALUE (TEST_GROUP_SYMBOL2:t3))))");
 
     // you should also be able to find the matched group by uid
     spec_is_ptr_equal(_t_get_match(r,TEST_GROUP_SYMBOL1),r);
@@ -459,6 +459,23 @@ void testMatchGroup() {
     _t_free(t);
     _t_free(s);
     _t_free(g);
+
+    sg = _t_news(0,SEMTREX_GROUP,VERB);
+    s = _t_newr(sg,SEMTREX_SYMBOL_LITERAL);
+    _t_news(s,SEMTREX_SYMBOL,LINE);
+
+    t = _t_new_str(0,LINE,"receptors");
+    spec_is_true(_t_matchr(sg,t,&r));
+    spec_is_str_equal(t2s(r), "(SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:VERB) (SEMTREX_MATCH_PATH:) (SEMTREX_MATCH_SIBLINGS_COUNT:1))");
+
+    map = _stx_results2sem_map(r,t);
+    spec_is_str_equal(t2s(map),"(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:VERB) (REPLACEMENT_VALUE (VERB:receptors))))");
+
+    _t_free(map);
+    _t_free(r);
+    _t_free(t);
+    _t_free(sg);
+
 }
 
 void testMatchGroupMulti() {

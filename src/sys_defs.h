@@ -19,9 +19,9 @@ SemTable *G_sem;
 #define is_sys_structure(s) (is_structure(s) && (s.context == SYS_CONTEXT))
 #define is_sys_receptor(s) (is_receptor(s) && (s.context == SYS_CONTEXT))
 
-Structure NULL_SYMBOL;
-Process NULL_PROCESS;
-Structure NULL_STRUCTURE;
+const Structure NULL_SYMBOL;
+const Process NULL_PROCESS;
+const Structure NULL_STRUCTURE;
 
 Context G_ctx;
 char * G_label;

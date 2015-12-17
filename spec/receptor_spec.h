@@ -50,7 +50,7 @@ void testReceptorAddRemoveExpectation() {
     T *s = _t_new_root(PATTERN);
     _sl(s,dummy);
     T *a = _t_news(0,ACTION,NULL_PROCESS);
-    _r_add_expectation(r,DEFAULT_ASPECT,TEST_INT_SYMBOL,s,a,0,0);
+    _r_add_expectation(r,DEFAULT_ASPECT,TEST_INT_SYMBOL,s,a,0,0,NULL);
 
     T *es = __r_get_expectations(r,DEFAULT_ASPECT);
     T *e = _t_child(es,1);      // expectation should have been added as first child of expectations
@@ -260,7 +260,9 @@ void testReceptorExpectation() {
     T *until = _t_new_root(END_CONDITIONS);
     _t_newi(until,COUNT,1);
 
-    _r_add_expectation(r,DEFAULT_ASPECT,HTTP_REQUEST,pattern,act,params,until);
+    T *using = NULL;
+
+    _r_add_expectation(r,DEFAULT_ASPECT,HTTP_REQUEST,pattern,act,params,until,using);
 
     Error err = _r_deliver(r,signal);
     spec_is_equal(err,noDeliveryErr);

@@ -10,9 +10,9 @@ void testProtocolRequesting() {
 
     spec_is_str_equal(t2s(_sem_get_def(G_sem,REQUESTING)),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL:REQUESTING) (PROTOCOL_SEMANTICS (ROLE:REQUESTER) (ROLE:RESPONDER) (GOAL:REQUEST_HANDLER) (GOAL:RESPONSE_HANDLER) (USAGE:REQUEST_DATA) (USAGE:RESPONSE_DATA)) (backnforth (INITIATE (ROLE:REQUESTER) (DESTINATION (ROLE:RESPONDER)) (ACTION:send_request)) (EXPECT (ROLE:RESPONDER) (SOURCE (ROLE:REQUESTER)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SLOT (USAGE:REQUEST_DATA) (SLOT_IS_VALUE_OF:SEMTREX_SYMBOL)))) (ACTION:send_response))))");
 
-    spec_is_str_equal(t2s(_sem_get_def(G_sem,send_request)),"(PROCESS_DEFINITION (PROCESS_NAME:send_request) (PROCESS_INTENTION:send request) (process:REQUEST (SLOT (ROLE:RESPONDER)) (SLOT (USAGE:REQUEST_DATA)) (SLOT (USAGE:REQUEST_DATA)) (SLOT (USAGE:RESPONSE_DATA)) (SLOT (GOAL:REQUEST_HANDLER))) (PROCESS_SIGNATURE (OUTPUT_SIGNATURE (SIGNATURE_LABEL:response) (SIGNATURE_ANY))))");
+    spec_is_str_equal(t2s(_sem_get_def(G_sem,send_request)),"(PROCESS_DEFINITION (PROCESS_NAME:send_request) (PROCESS_INTENTION:send request) (process:REQUEST (SLOT (ROLE:RESPONDER) (SLOT_IS_VALUE_OF:TO_ADDRESS)) (SLOT (USAGE:REQUEST_DATA)) (SLOT (USAGE:REQUEST_DATA)) (SLOT (USAGE:RESPONSE_DATA)) (SLOT (GOAL:REQUEST_HANDLER))) (PROCESS_SIGNATURE (OUTPUT_SIGNATURE (SIGNATURE_LABEL:response) (SIGNATURE_ANY)) (TEMPLATE_SIGNATURE (EXPECTED_SLOT (ROLE:RESPONDER) (SLOT_IS_VALUE_OF:TO_ADDRESS)) (EXPECTED_SLOT (USAGE:REQUEST_DATA)) (EXPECTED_SLOT (USAGE:RESPONSE_DATA)) (EXPECTED_SLOT (GOAL:REQUEST_HANDLER)))))");
 
-    spec_is_str_equal(t2s(_sem_get_def(G_sem,send_response)),"(PROCESS_DEFINITION (PROCESS_NAME:send_response) (PROCESS_INTENTION:send response) (process:RESPOND (SIGNAL_REF:/1/4) (GOAL:RESPONSE_HANDLER)) (PROCESS_SIGNATURE (OUTPUT_SIGNATURE (SIGNATURE_LABEL:response id) (SIGNATURE_SYMBOL:SIGNAL_UUID))))");
+    spec_is_str_equal(t2s(_sem_get_def(G_sem,send_response)),"(PROCESS_DEFINITION (PROCESS_NAME:send_response) (PROCESS_INTENTION:send response) (process:RESPOND (SIGNAL_REF:/1/4) (SLOT (GOAL:RESPONSE_HANDLER))) (PROCESS_SIGNATURE (OUTPUT_SIGNATURE (SIGNATURE_LABEL:response id) (SIGNATURE_SYMBOL:SIGNAL_UUID)) (TEMPLATE_SIGNATURE (EXPECTED_SLOT (GOAL:RESPONSE_HANDLER)))))");
 
     //@todo trying to express request protocol should fail because it's not concrete enough
 
@@ -24,8 +24,12 @@ void testProtocolRecognize() {
 
     spec_is_str_equal(t2s(recog),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL:RECOGNIZE) (PROTOCOL_SEMANTICS) (INCLUSION (PNAME:REQUESTING) (CONNECTION (WHICH_ROLE (ROLE:REQUESTER) (ROLE:RECOGNIZER))) (CONNECTION (WHICH_ROLE (ROLE:RESPONDER) (ROLE:RECOGNIZEE))) (CONNECTION (WHICH_GOAL (GOAL:REQUEST_HANDLER) (GOAL:RECOGNITION))) (RESOLUTION (WHICH_SYMBOL (USAGE:REQUEST_DATA) (ACTUAL_SYMBOL:are_you))) (RESOLUTION (WHICH_SYMBOL (USAGE:RESPONSE_DATA) (ACTUAL_SYMBOL:i_am))) (RESOLUTION (WHICH_PROCESS (GOAL:RESPONSE_HANDLER) (ACTUAL_PROCESS:fill_i_am)))))");
 
-    T *t = _o_unwrap(G_sem,recog);
-    spec_is_str_equal(t2s(t),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL:RECOGNIZE) (PROTOCOL_SEMANTICS (ROLE:RECOGNIZER) (GOAL:RECOGNITION)) (backnforth (INITIATE (ROLE:RECOGNIZER) (DESTINATION (ROLE:RECOGNIZEE)) (ACTION:send_request)) (EXPECT (ROLE:RECOGNIZEE) (SOURCE (ROLE:RECOGNIZER)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:are_you))) (ACTION:send_response plus something about the template...))))");
+    T *sem_map = _t_new_root(SEMANTIC_MAP);
+    T *t = _o_unwrap(G_sem,recog,sem_map);
+    spec_is_str_equal(t2s(t),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL:RECOGNIZE) (PROTOCOL_SEMANTICS (ROLE:RECOGNIZER) (GOAL:RECOGNITION)) (backnforth (INITIATE (ROLE:RECOGNIZER) (DESTINATION (ROLE:RECOGNIZEE)) (ACTION:send_request)) (EXPECT (ROLE:RECOGNIZEE) (SOURCE (ROLE:RECOGNIZER)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:are_you))) (ACTION:send_response))))");
+
+    spec_is_str_equal(t2s(sem_map),"(SEMANTIC_MAP (SEMANTIC_LINK (ROLE:REQUESTER) (REPLACEMENT_VALUE (ROLE:RECOGNIZER))) (SEMANTIC_LINK (ROLE:RESPONDER) (REPLACEMENT_VALUE (ROLE:RECOGNIZEE))) (SEMANTIC_LINK (GOAL:REQUEST_HANDLER) (REPLACEMENT_VALUE (GOAL:RECOGNITION))) (SEMANTIC_LINK (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:are_you))) (SEMANTIC_LINK (USAGE:RESPONSE_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:i_am))) (SEMANTIC_LINK (GOAL:RESPONSE_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:fill_i_am))))");
+    _t_free(sem_map);
 
     Receptor *self =  _r_new(G_sem,TEST_RECEPTOR);
 
@@ -38,6 +42,8 @@ void testProtocolRecognize() {
     T *w = _t_newr(res,WHICH_PROCESS);
     _t_news(w,GOAL,RECOGNITION);
     _t_news(w,ACTUAL_PROCESS,proc);
+    //    debug_enable(D_PROTOCOL);
+
 
     _o_express_role(self,RECOGNIZE,RECOGNIZER,DEFAULT_ASPECT,bindings);
     _t_free(bindings);
@@ -48,20 +54,35 @@ void testProtocolRecognize() {
     // recognizee doesn't need any bindings because that role's completed by unwrapping
     _o_express_role(self,RECOGNIZE,RECOGNIZEE,DEFAULT_ASPECT,NULL);
     // however it does add expectation
-    spec_is_str_equal(_td(self,self->flux),"(FLUX (DEFAULT_ASPECT (EXPECTATIONS (EXPECTATION (CARRIER:RECOGNIZE) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:are_you))) (ACTION:send_response) (PARAMS) (END_CONDITIONS (UNLIMITED)))) (SIGNALS)))");
+    spec_is_str_equal(_td(self,self->flux),"(FLUX (DEFAULT_ASPECT (EXPECTATIONS (EXPECTATION (CARRIER:RECOGNIZE) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:are_you))) (ACTION:send_response) (PARAMS) (END_CONDITIONS (UNLIMITED)) (SEMANTIC_MAP (SEMANTIC_LINK (ROLE:REQUESTER) (REPLACEMENT_VALUE (ROLE:RECOGNIZER))) (SEMANTIC_LINK (ROLE:RESPONDER) (REPLACEMENT_VALUE (ROLE:RECOGNIZEE))) (SEMANTIC_LINK (GOAL:REQUEST_HANDLER) (REPLACEMENT_VALUE (GOAL:RECOGNITION))) (SEMANTIC_LINK (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:are_you))) (SEMANTIC_LINK (USAGE:RESPONSE_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:i_am))) (SEMANTIC_LINK (GOAL:RESPONSE_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:fill_i_am)))))) (SIGNALS)))");
+
+    debug_disable(D_PROTOCOL);
 
     VMHost *v = G_vm;
     Xaddr x = _v_new_receptor(v,v->r,TEST_RECEPTOR,self);
     _v_activate(v,x);
+
+    /* _o_initiate(RECOGNIZE,"backnforth", */
+    /*             RESPONDER => self->addr */
+    /*             REQUEST_DATA => _t_newr(0,are_you), */
+    /*             ); */
+
     T *s = __r_make_signal(self->addr,self->addr,DEFAULT_ASPECT,RECOGNIZE,_t_newr(0,are_you),0,0);
     //    debug_enable(D_SIGNALS);
     _r_send(self,s);
-    spec_is_str_equal(t2s(self->root),"(RECEPTOR_INSTANCE (CONTEXT_NUM:3) (PARENT_CONTEXT_NUM:0) (RECEPTOR_STATE (FLUX (DEFAULT_ASPECT (EXPECTATIONS (EXPECTATION (CARRIER:RECOGNIZE) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:are_you))) (ACTION:send_response) (PARAMS) (END_CONDITIONS (UNLIMITED)))) (SIGNALS))) (PENDING_SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:RECOGNIZE) (SIGNAL_UUID)) (BODY:{(are_you)}))) (PENDING_RESPONSES) (RECEPTOR_ELAPSED_TIME:0)))");
-    /* _v_deliver_signals(v,self); */
-    /* spec_is_str_equal(t2s(self->root),"(RECEPTOR_INSTANCE (CONTEXT_NUM:3) (PARENT_CONTEXT_NUM:0) (RECEPTOR_STATE (FLUX (DEFAULT_ASPECT (EXPECTATIONS (EXPECTATION (CARRIER:RECOGNIZE) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:are_you))) (ACTION:send_response) (PARAMS) (END_CONDITIONS (UNLIMITED)))) (SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:RECOGNIZE) (SIGNAL_UUID)) (BODY:{(are_you)}) (RUN_TREE (process:RESPOND (SIGNAL_REF:/1/4) (GOAL:RESPONSE_HANDLER)) (PARAMS)))))) (PENDING_SIGNALS) (PENDING_RESPONSES) (RECEPTOR_ELAPSED_TIME:0)))"); */
-    /* _p_reduceq(self->q); */
-    /* spec_is_str_equal(t2s(self->root),""); */
-    /* _v_deliver_signals(v,self); */
+
+    spec_is_str_equal(t2s(self->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:RECOGNIZE) (SIGNAL_UUID)) (BODY:{(are_you)})))");
+    _v_deliver_signals(v,self);
+    T *signals = __r_get_signals(self,DEFAULT_ASPECT);
+    spec_is_str_equal(t2s(signals),"(SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:RECOGNIZE) (SIGNAL_UUID)) (BODY:{(are_you)}) (RUN_TREE (process:RESPOND (SIGNAL_REF:/1/4) (process:fill_i_am)) (PARAMS))))");
+    //debug_enable(D_REDUCE+D_REDUCEV);
+    _p_reduceq(self->q);
+    debug_disable(D_REDUCE+D_REDUCEV);
+
+    spec_is_str_equal(_td(self,self->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:RECOGNIZE) (SIGNAL_UUID) (IN_RESPONSE_TO_UUID)) (BODY:{(i_am (RECEPTOR_LABEL:super cept) (RECEPTOR_IDENTIFIER:314159))})))");
+    _v_deliver_signals(v,self);
+
+    spec_is_str_equal(t2s(self->root),"");
     /* debug_disable(D_SIGNALS); */
 
 }
@@ -87,7 +108,7 @@ void testProtocolAlive() {
     _t_free(bindings);
 
     // check that the expressed expectation is bound correctly to the handler
-    spec_is_str_equal(_td(r2,r2->flux),"(FLUX (DEFAULT_ASPECT (EXPECTATIONS (EXPECTATION (CARRIER:ALIVE) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:YUP))) (ACTION:do nothing) (PARAMS) (END_CONDITIONS (UNLIMITED)))) (SIGNALS)))");
+    spec_is_str_equal(_td(r2,r2->flux),"(FLUX (DEFAULT_ASPECT (EXPECTATIONS (EXPECTATION (CARRIER:ALIVE) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:YUP))) (ACTION:do nothing) (PARAMS) (END_CONDITIONS (UNLIMITED)) (SEMANTIC_MAP (SEMANTIC_LINK (GOAL:HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:do nothing)))))) (SIGNALS)))");
 
     T *s = __r_make_signal(r->addr,r->addr,DEFAULT_ASPECT,ALIVE,_t_new_root(PING),0,0);
     //debug_enable(D_SIGNALS);
@@ -161,15 +182,24 @@ void testProtocolResolve() {
     spec_is_str_equal(t2s(bindings),"(PROTOCOL_BINDINGS (RESOLUTION (WHICH_PROCESS (GOAL:process) (ACTUAL_PROCESS:do nothing))) (RESOLUTION (WHICH_SYMBOL (USAGE:data) (ACTUAL_SYMBOL:TEST_INT_SYMBOL))))");
     spec_is_str_equal(t2s(simple_def),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL:do) (PROTOCOL_SEMANTICS (ROLE:agent) (GOAL:process) (USAGE:data)) (act (EXPECT (ROLE:agent) (SOURCE (ROLE:agent)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SLOT (USAGE:data) (SLOT_IS_VALUE_OF:SEMTREX_SYMBOL)))) (SLOT (GOAL:process) (SLOT_IS_VALUE_OF:ACTION)))))");
     T *resolved = _t_clone(simple_def);
-    _o_resolve(G_sem,resolved,bindings);
+    T *sem_map = _o_bindings2sem_map(bindings,NULL);
+    spec_is_str_equal(t2s(sem_map),"(SEMANTIC_MAP (SEMANTIC_LINK (GOAL:process) (REPLACEMENT_VALUE (ACTUAL_PROCESS:do nothing))) (SEMANTIC_LINK (USAGE:data) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:TEST_INT_SYMBOL))))");
+    T *unbound = _o_resolve(G_sem,resolved,sem_map);
+    spec_is_str_equal(t2s(unbound),"(PROTOCOL_SEMANTICS (ROLE:agent))");
     spec_is_str_equal(t2s(resolved),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL:do) (PROTOCOL_SEMANTICS (ROLE:agent) (GOAL:process) (USAGE:data)) (act (EXPECT (ROLE:agent) (SOURCE (ROLE:agent)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TEST_INT_SYMBOL))) (ACTION:do nothing))))");
 
     _t_free(bindings);
+    _t_free(sem_map);
     _t_free(resolved);
 }
 
 void testProtocolUnwrap() {
-    T *unwrapped = _o_unwrap(G_sem,shake_def);
+    T *sem_map = _t_new_root(SEMANTIC_MAP);
+    //    debug_enable(D_PROTOCOL);
+    T *unwrapped = _o_unwrap(G_sem,shake_def,sem_map);
+    debug_disable(D_PROTOCOL);
+    spec_is_str_equal(t2s(sem_map),"(SEMANTIC_MAP (SEMANTIC_LINK (ROLE:agent) (REPLACEMENT_VALUE (ROLE:mover))) (SEMANTIC_LINK (GOAL:process) (REPLACEMENT_VALUE (GOAL:shaking))) (SEMANTIC_LINK (USAGE:data) (REPLACEMENT_VALUE (USAGE:info))))");
+    _t_free(sem_map);
     spec_is_str_equal(t2s(unwrapped),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL:shake) (PROTOCOL_SEMANTICS (ROLE:mover) (ROLE:shaker) (GOAL:shaking) (USAGE:info)) (act (EXPECT (ROLE:mover) (SOURCE (ROLE:mover)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SLOT (USAGE:info) (SLOT_IS_VALUE_OF:SEMTREX_SYMBOL)))) (SLOT (GOAL:shaking) (SLOT_IS_VALUE_OF:ACTION)))))");
     _t_free(unwrapped);
 }

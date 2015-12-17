@@ -638,7 +638,7 @@ T *_t_build(SemTable *sem,T *parent,...) {
             else if (semeq(type,STRUCTURE_OR)) {
                 state = bAddRoot;
             }
-            else if (semeq(type,STRUCTURE_ANYTHING) || semeq(type,STRUCTURE_SEQUENCE) || semeq(type,STRUCTURE_ONE_OR_MORE)) {
+            else if (semeq(type,STRUCTURE_ZERO_OR_MORE) || semeq(type,STRUCTURE_ANYTHING) || semeq(type,STRUCTURE_SEQUENCE) || semeq(type,STRUCTURE_ONE_OR_MORE)) {
                 state = bAddRoot;
             }
             else {
@@ -657,7 +657,7 @@ T *_t_build(SemTable *sem,T *parent,...) {
                     break;
                 }
             }
-            else if (semeq(st,INTEGER)) {
+            else if (semeq(st,INTEGER) || semeq(st,BIT)) {
                 t = _t_newi(t,param,va_arg(ap,int));
             }
             else if (semeq(st,CSTRING)) {
@@ -684,7 +684,7 @@ T *_t_build(SemTable *sem,T *parent,...) {
             param = _t_symbol(t);
             type = _getBuildType(sem,param,&st,&def);
             debug(D_TREE,"popping to %s of type %s\n",_sem_get_name(sem,param),_sem_get_name(sem,type));
-            if (semeq(type,STRUCTURE_ANYTHING) || semeq(type,STRUCTURE_SEQUENCE) || semeq(type,STRUCTURE_ONE_OR_MORE)) {
+            if (semeq(type,STRUCTURE_ZERO_OR_MORE) || semeq(type,STRUCTURE_ANYTHING) || semeq(type,STRUCTURE_SEQUENCE) || semeq(type,STRUCTURE_ONE_OR_MORE)) {
                 state = bReadSymbol;
             }
             else if (semeq(type,PROCESS_SIGNATURE)) {
@@ -745,18 +745,43 @@ void __t_fill_template(T *template, T *links,bool as_run_node) {
             T *m = _t_child(links,i);
             T *ref = _t_child(m,SemanticMapSemanticRefIdx);
             if (semeq(sym,_t_symbol(ref)) && semeq(valsym,*(Symbol *)_t_surface(ref))) {
-                T *r;
+                T *r = NULL;
                 T *replacement_value = _t_child(_t_child(m,SemanticMapReplacementValIdx),1);
-                if (v) {
-                    // in the value case the replacement node is of the type specified in the template
-                    r = __t_new(0,valof,_t_surface(replacement_value),_t_size(t),is_run_node);
+                if (semeq(sym,GOAL) && !v) { // treat a VALUE_OF slot as a symbol not a process
+                    SemanticID p = _t_symbol(replacement_value);
+                    if (!is_process(p)) {
+                        if (!(semeq(ACTUAL_PROCESS,p))) {
+                            puts(t2s(replacement_value));
+                            raise_error("only implemented ACTUAL_PROCESS for GOAL replacement values.");
+                        }
+                        p = *(Process *)_t_surface(replacement_value);
+                    }
+                    r = __t_new(0,p,0,0,is_run_node);
+                    if (is_run_node)
+                        ((rT *)r)->cur_child = RUN_TREE_NOT_EVAULATED;
                 }
                 else {
-                    // in the structure case the replacement node is simply a clone of the replacement
-                    if (is_run_node)
-                        r = _t_rclone(replacement_value);
-                    else
-                        r = _t_clone(replacement_value);
+                    if (v) {
+                        // in the value case the replacement node is of the type specified in the template
+                        // and the "value" is either the surface of the "ACTUAL_X" or its children
+                        if (_t_children(replacement_value)) {
+                            if (is_run_node)
+                                r = _t_rclone(replacement_value);
+                            else
+                                r = _t_clone(replacement_value);
+                            r->contents.symbol = valof;
+                        }
+                        else {
+                            r = __t_new(0,valof,_t_surface(replacement_value),_t_size(t),is_run_node);
+                        }
+                    }
+                    else {
+                        // in the structure case the replacement node is simply a clone of the replacement
+                        if (is_run_node)
+                            r = _t_rclone(replacement_value);
+                        else
+                            r = _t_clone(replacement_value);
+                    }
                 }
                 _t_replace_node(template,r);
                 break;

@@ -34,6 +34,7 @@ T *_t_find_child(T *t,Symbol sym) {
  * @param[inout] protocols a protocols def tree containing protocols which will be added to
  * @param[in] label the name of the protocol
  * @param[in] ... params in correct order
+ * @returns the new protocol def
  *
  */
 T *_o_make_protocol_def(SemTable *sem,Context c,char *label,...) {
@@ -209,14 +210,32 @@ void _t_replace_sem_refs(T *t, T *sem_map) {
     }
 }
 
+// convert PROTOCOL_BINDINGS to SEMANTIC_MAP
+T *_o_bindings2sem_map(T *bindings, T *sem_map) {
+    if (!sem_map)
+        sem_map = _t_new_root(SEMANTIC_MAP);
+    DO_KIDS(bindings,
+            T *res = _t_child(bindings,i);
+            T *w = _t_child(res,ResolutionWhichIdx);
+            T *t = _t_newr(sem_map,SEMANTIC_LINK);
+            _t_add(t,_t_clone(_t_child(w,1)));
+            T *r = _t_newr(t,REPLACEMENT_VALUE);
+            _t_add(r,_t_clone(_t_child(w,2)));
+            );
+    debug(D_PROTOCOL,"converting bindings %s\n",t2s(bindings));
+    debug(D_PROTOCOL,"to sem map %s\n",t2s(sem_map));
+    return sem_map;
+}
+
 /**
  * recursively expand wrapped protocol defs
  *
  * @param[in] sem SemTable of contexts
  * @param[in] def protocol definition tree
- * @param[out] unwrapped protocol definition tree
+ * @param[in,out] sem_map semantic map of the unwrapped protocols
+ * @returns unwrapped protocol definition tree
  */
-T * _o_unwrap(SemTable *sem,T *def) {
+T * _o_unwrap(SemTable *sem,T *def,T *sem_map) {
     T *d = _t_clone(def);
     int i;
     for (i=1;i<=_t_children(d);i++) {
@@ -224,15 +243,13 @@ T * _o_unwrap(SemTable *sem,T *def) {
         if (semeq(_t_symbol(t),INCLUSION)) {
             Protocol p = *(Protocol *)_t_surface(_t_child(t,InclusionPnameIdx));
             T *ps = _sem_get_defs(sem,p);
-            T *p_def = _o_unwrap(sem,_t_child(ps,p.id));  // do the recursive unwrapping
+            T *p_def = _o_unwrap(sem,_t_child(ps,p.id),sem_map);  // do the recursive unwrapping
             int j,c = _t_children(t);
             T *bindings = NULL;
-            T *sem_map = NULL;
             for(j=InclusionPnameIdx+1;j<=c;j++) {
                 T *x = _t_child(t,j); // get the connection or resolution
                 if (semeq(_t_symbol(x),CONNECTION)) {
                     T *w = _t_child(x,ConnectionWhichIdx);  // get the which
-                    if (!sem_map) sem_map = _t_new_root(SEMANTIC_MAP);
                     T *t = _t_newr(sem_map,SEMANTIC_LINK);
                     _t_add(t,_t_clone(_t_child(w,1)));
                     T *r = _t_newr(t,REPLACEMENT_VALUE);
@@ -246,70 +263,57 @@ T * _o_unwrap(SemTable *sem,T *def) {
             }
 
             if (sem_map) {
-                debug(D_PROTOCOL,"filling template %s\n",t2s(p_def));
-                debug(D_PROTOCOL,"with %s\n",t2s(sem_map));
+                debug(D_PROTOCOL,"filling template %s\n",__t2s(sem,p_def,INDENT));
+                debug(D_PROTOCOL,"with %s\n",__t2s(sem,sem_map,INDENT));
                 _t_replace_sem_refs(p_def,sem_map);
-                debug(D_PROTOCOL,"result %s\n",t2s(p_def));
-                _t_free(sem_map);
+                debug(D_PROTOCOL,"result %s\n",__t2s(sem,p_def,INDENT));
             }
 
+            T *unbound_semantics;
             if (bindings) {
-                _o_resolve(sem,p_def,bindings);
+                _o_bindings2sem_map(bindings,sem_map);
+                unbound_semantics = _o_resolve(sem,p_def,sem_map);
+                _t_free(bindings);
+                _t_free(_t_detach_by_idx(p_def,ProtocolDefSemanticsIdx));
+            }
+            else {
+                unbound_semantics = _t_detach_by_idx(p_def,ProtocolDefSemanticsIdx);
             }
 
             // after doing the semantics mapping from the CONNECTIONS and RESOLUTIONS
             // we need to add into the parent semantics and sem_map that weren't resolved
             // or connected for later binding
-            T *unwrapped_semantics = _t_child(p_def,ProtocolDefSemanticsIdx);
-
-            // but first remove any bound sem_map from the PROTOCOL_SEMANTICS because those
-            // don't need to be merged into the parents semantics
-            if (bindings) {
-                int i,c = _t_children(bindings);
-                for(i=1;i<=c;i++) {
-                    T *x = _t_child(bindings,i);
-                    x = _t_child(_t_child(x,ResolutionWhichIdx),1);
-                    Symbol symx = _t_symbol(x);
-                    Symbol symxs = *(Symbol *) _t_surface(x);
-                    T *parent_semantics = _t_child(d,ProtocolDefSemanticsIdx);
-                    int j,b = _t_children(unwrapped_semantics);
-                    // search the parent semantics for matching item and remove it.
-                    for(j=1;j<=b;j++) {
-                        T *y = _t_child(unwrapped_semantics,j);
-                        if (semeq(symx,_t_symbol(y)) && semeq(symxs,*(Symbol *) _t_surface(y))) {
-                            _t_free(_t_detach_by_idx(unwrapped_semantics,j));
-                            break;
-                        }
-                    }
-                }
-
-                _t_free(bindings);
-            }
 
             T *parent_semantics = _t_child(d,ProtocolDefSemanticsIdx);
             T *x;
-            while(x = _t_detach_by_idx(unwrapped_semantics,1)) {
+            while(x = _t_detach_by_idx(unbound_semantics,1)) {
                 Symbol sym = _t_symbol(x);
                 c = _t_children(parent_semantics);
                 for (j=1;j<=c;j++) {
                     if (semeq(sym,_t_symbol(_t_child(parent_semantics,j)))) break;
                 }
                 // not found so we can add it
-                if (j>c) _t_add(parent_semantics,x);
-                //          else _t_free(x);
+                if (j>c) {
+                    _t_add(parent_semantics,x);
+                    debug(D_PROTOCOL,"adding %s to semantics\n",_sem_get_name(sem,sym));
+                }
+                else _t_free(x);
             }
             _t_detach_by_ptr(d,t);  // remove the INCLUSION specs
-            // add in the unwrapped interactions
 
-            while(x = _t_detach_by_idx(p_def,ProtocolDefSemanticsIdx+1)) {
+            // add in the unwrapped interactions
+            while(x = _t_detach_by_idx(p_def,ProtocolDefSemanticsIdx)) {
                 _t_add(d,x);
             }
+            _t_free(unbound_semantics);
             _t_free(p_def);
         }
     }
+    debug(D_PROTOCOL,"unwrapped to: %s\n",__t2s(sem,d,INDENT));
 
     return d;
 }
+
 
 /**
  * convert a, possibly composed, protocol definition into an expressable definition
@@ -320,25 +324,34 @@ T * _o_unwrap(SemTable *sem,T *def) {
  * @param[in] sem SemTable contexts
  * @param[in,out] def protocol definition to resolve
  * @param[in] role the role that needs resolving
- * @param[in] bindings the PROTOCOL_BINDINGS tree with additional RESOLUTIONS
+ * @param[in] sem_map used to resolve the bindings
+ * @returns a PROTOCOL_SEMANTICS tree of semantics that remain unbound
  */
-void _o_resolve(SemTable *sem,T *def, T *bindings){
-    T *d = def;
-    if (bindings) {
-        debug(D_PROTOCOL,"resolving bindings %s\n",t2s(bindings));
-        T *sem_map = _t_new_root(SEMANTIC_MAP);
-        DO_KIDS(bindings,
-                T *res = _t_child(bindings,i);
-                T *w = _t_child(res,ResolutionWhichIdx);
-                T *t = _t_newr(sem_map,SEMANTIC_LINK);
-                _t_add(t,_t_clone(_t_child(w,1)));
-                T *r = _t_newr(t,REPLACEMENT_VALUE);
-                _t_add(r,_t_clone(_t_child(w,2)));
-            );
-        debug(D_PROTOCOL,"by filling template with %s\n",t2s(sem_map));
-        _t_fill_template(d,sem_map);
-        _t_free(sem_map);
+T * _o_resolve(SemTable *sem,T *def, T *sem_map){
+
+    // calculate the list of still unbound semantics
+    T *semantics = _t_clone(_t_child(def,ProtocolDefSemanticsIdx));
+
+    if (sem_map) {
+        _t_fill_template(def,sem_map);
+        int i,c = _t_children(sem_map);
+        for(i=1;i<=c;i++) {
+            T *x = _t_child(_t_child(sem_map,i),SemanticMapSemanticRefIdx);
+            Symbol symx = _t_symbol(x);
+            Symbol symxs = *(Symbol *) _t_surface(x);
+            int j,b = _t_children(semantics);
+            // search the semantics for matching item and remove it.
+            for(j=1;j<=b;j++) {
+                T *y = _t_child(semantics,j);
+                if (semeq(symx,_t_symbol(y)) && semeq(symxs,*(Symbol *) _t_surface(y))) {
+                    _t_free(_t_detach_by_idx(semantics,j));
+                    break;
+                }
+            }
+        }
     }
+
+    return semantics;
 }
 
 /**
@@ -354,8 +367,18 @@ void _o_resolve(SemTable *sem,T *def, T *bindings){
 void _o_express_role(Receptor *r,Protocol protocol,Symbol role,Aspect aspect,T *bindings) {
     T *p = _sem_get_def(r->sem,protocol);
     if (!p) raise_error("protocol not found");
-    p = _o_unwrap(r->sem,p);  // creates a cloned, uwrapped protocol def.
-    _o_resolve(r->sem,p,bindings);
+    T *sem_map = _t_new_root(SEMANTIC_MAP);
+    p = _o_unwrap(r->sem,p,sem_map);  // creates a cloned, uwrapped protocol def.
+    if (bindings) {
+        _o_bindings2sem_map(bindings,sem_map);
+    }
+    T *unbound = _o_resolve(r->sem,p,sem_map);
+    debug(D_PROTOCOL,"express %s yelids unbound: %s\n",_sem_get_name(r->sem,role),_t2s(r->sem,unbound));
+    debug(D_PROTOCOL,"express %s yelids sem_map: %s\n",_sem_get_name(r->sem,role),_t2s(r->sem,sem_map));
+    if (!_t_children(sem_map)) {
+        _t_free(sem_map);
+        sem_map = NULL;
+    }
     //@todo convert this search to be repeat Semtex matching on INTERACTION structure...
     T *t;
     int i,c=_t_children(p);
@@ -376,7 +399,9 @@ void _o_express_role(Receptor *r,Protocol protocol,Symbol role,Aspect aspect,T *
                         if (!bindings && semeq(_t_symbol(a),GOAL)) {
                             raise_error("binding missing for GOAL:%s in %s",_sem_get_name(r->sem,*(SemanticID *)_t_surface(a)),_t2s(r->sem,x));
                         }
-                        T *e = __r_build_expectation(protocol,pattern,a,0,0);
+                        T *sm = sem_map ? _t_clone(sem_map) : NULL;
+                        T *e = __r_build_expectation(protocol,pattern,a,0,0,sm);
+                        debug(D_PROTOCOL,"express %s adds expectation: %s\n",_sem_get_name(r->sem,role),_t2s(r->sem,e));
                         __r_add_expectation(r,aspect,e);
                     }
                 }
@@ -384,6 +409,8 @@ void _o_express_role(Receptor *r,Protocol protocol,Symbol role,Aspect aspect,T *
         }
     }
     _t_free(p);
+    if (unbound) _t_free(unbound);
+    if (sem_map) _t_free(sem_map);
 }
 
 /** @}*/

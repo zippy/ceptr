@@ -574,6 +574,21 @@ void testTreeTemplate() {
     spec_is_str_equal(t2s(sem_map),"(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:PING))))");
     _t_fill_template(template,sem_map);
     spec_is_str_equal(t2s(template),"(PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:PING)))");
+    _t_free(template);
+    _t_free(sem_map);
+
+    // test filling a value slot of a non leaf node
+    template = _t_build(G_sem,0,REQUEST,SLOT,ROLE,RESPONDER,SLOT_IS_VALUE_OF,TO_ADDRESS,NULL_SYMBOL,SLOT,USAGE,REQUEST_DATA,NULL_SYMBOL,SLOT,USAGE,REQUEST_DATA,NULL_SYMBOL,NULL_SYMBOL);
+    spec_is_str_equal(t2s(template),"(process:REQUEST (SLOT (ROLE:RESPONDER) (SLOT_IS_VALUE_OF:TO_ADDRESS)) (SLOT (USAGE:REQUEST_DATA)) (SLOT (USAGE:REQUEST_DATA)))");
+    sem_map = _t_build(G_sem,0,SEMANTIC_MAP,
+                       SEMANTIC_LINK,USAGE,REQUEST_DATA,REPLACEMENT_VALUE,ACTUAL_SYMBOL,PING,NULL_SYMBOL,NULL_SYMBOL,
+                       SEMANTIC_LINK,ROLE,RESPONDER,REPLACEMENT_VALUE,ACTUAL_RECEPTOR,RECEPTOR_ADDR,3,NULL_SYMBOL,NULL_SYMBOL,
+                       NULL_SYMBOL);
+    spec_is_str_equal(t2s(sem_map),"(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:PING))) (SEMANTIC_LINK (ROLE:RESPONDER) (REPLACEMENT_VALUE (ACTUAL_RECEPTOR (RECEPTOR_ADDR:3)))))");
+    _t_fill_template(template,sem_map);
+    spec_is_str_equal(t2s(template),"(process:REQUEST (TO_ADDRESS (RECEPTOR_ADDR:3)) (ACTUAL_SYMBOL:PING) (ACTUAL_SYMBOL:PING))");
+    _t_free(template);
+    _t_free(sem_map);
 
     // test filling a structure slot
     template = _t_build(G_sem,0,PATTERN,SEMTREX_SYMBOL_LITERAL,SLOT,USAGE,REQUEST_DATA,NULL_SYMBOL,NULL_SYMBOL);

@@ -515,7 +515,7 @@
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="EXPECTATIONS"></a>EXPECTATIONS</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_EXPECTATION">ZERO-OR-MORE-OF-EXPECTATION</a></div>
-       <div class="def-comment">                     list of carrier/expectation/action tress</div>
+       <div class="def-comment">        list of carrier/expectation/action tress</div>
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
@@ -763,16 +763,22 @@
        <div class="def-sym-def"><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_ANY_SYMBOL">ZERO-OR-MORE-OF-ANY-SYMBOL</a></div>
        <div class="def-comment"></div>
    </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SEMANTIC_MAP"></a>SEMANTIC_MAP</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_ONE_OR_MORE_OF_SEMANTIC_LINK">LIST-OF-ONE-OR-MORE-OF-SEMANTIC-LINK</a></div>
+       <div class="def-comment"></div>
+   </div>
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
-       <div class="def-name"><a name="LIST_OF_CARRIER_AND_PATTERN_AND_ACTION_AND_PARAMS_AND_END_CONDITIONS"></a>LIST-OF-CARRIER-AND-PATTERN-AND-ACTION-AND-PARAMS-AND-END-CONDITIONS</div>
-       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#CARRIER">CARRIER</a>, <a href="ref_sys_symbols.html#PATTERN">PATTERN</a>, <a href="ref_sys_symbols.html#ACTION">ACTION</a>, <a href="ref_sys_symbols.html#PARAMS">PARAMS</a>, <a href="ref_sys_symbols.html#END_CONDITIONS">END_CONDITIONS</a>)</div>
+       <div class="def-name"><a name="LIST_OF_CARRIER_AND_PATTERN_AND_ACTION_AND_PARAMS_AND_END_CONDITIONS_AND_ZERO_OR_ONE_OF_SEMANTIC_MAP"></a>LIST-OF-CARRIER-AND-PATTERN-AND-ACTION-AND-PARAMS-AND-END-CONDITIONS-AND-ZERO-OR-ONE-OF-SEMANTIC-MAP</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#CARRIER">CARRIER</a>, <a href="ref_sys_symbols.html#PATTERN">PATTERN</a>, <a href="ref_sys_symbols.html#ACTION">ACTION</a>, <a href="ref_sys_symbols.html#PARAMS">PARAMS</a>, <a href="ref_sys_symbols.html#END_CONDITIONS">END_CONDITIONS</a>, ?(<a href="ref_sys_symbols.html#SEMANTIC_MAP">SEMANTIC_MAP</a>))</div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="EXPECTATION"></a>EXPECTATION</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_CARRIER_AND_PATTERN_AND_ACTION_AND_PARAMS_AND_END_CONDITIONS">LIST-OF-CARRIER-AND-PATTERN-AND-ACTION-AND-PARAMS-AND-END-CONDITIONS</a></div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_CARRIER_AND_PATTERN_AND_ACTION_AND_PARAMS_AND_END_CONDITIONS_AND_ZERO_OR_ONE_OF_SEMANTIC_MAP">LIST-OF-CARRIER-AND-PATTERN-AND-ACTION-AND-PARAMS-AND-END-CONDITIONS-AND-ZERO-OR-ONE-OF-SEMANTIC-MAP</a></div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-structure">
@@ -827,6 +833,54 @@
        <div class="def-type">Structure:</div>
        <div class="def-name"><a name="ZERO_OR_MORE_OF_PROCESS_DEFINITION"></a>ZERO-OR-MORE-OF-PROCESS-DEFINITION</div>
        <div class="def-struc-def">*(<a href="ref_sys_symbols.html#PROCESS_DEFINITION">PROCESS_DEFINITION</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="SEMANTIC_REFERENCE"></a>SEMANTIC-REFERENCE</div>
+       <div class="def-struc-def">OR(<a href="ref_sys_symbols.html#GOAL">GOAL</a>, <a href="ref_sys_symbols.html#ROLE">ROLE</a>, <a href="ref_sys_symbols.html#USAGE">USAGE</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SLOT_IS_VALUE_OF"></a>SLOT_IS_VALUE_OF</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="SLOT_STRUCTURE"></a>SLOT-STRUCTURE</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#SEMANTIC_REFERENCE">SEMANTIC_REFERENCE</a>, ?(<a href="ref_sys_symbols.html#SLOT_IS_VALUE_OF">SLOT_IS_VALUE_OF</a>))</div>
+       <div class="def-comment">  semantic id and optional indicator to fill the value not the structure for the element in the template that needs filling</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SLOT"></a>SLOT</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SLOT_STRUCTURE">SLOT-STRUCTURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="REPLACEMENT_VALUE"></a>REPLACEMENT_VALUE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></div>
+       <div class="def-comment">        what to fill the slot with</div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="TUPLE_OF_SEMANTIC_REFERENCE_AND_REPLACEMENT_VALUE"></a>TUPLE-OF-SEMANTIC-REFERENCE-AND-REPLACEMENT-VALUE</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#SEMANTIC_REFERENCE">SEMANTIC_REFERENCE</a>, <a href="ref_sys_symbols.html#REPLACEMENT_VALUE">REPLACEMENT_VALUE</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SEMANTIC_LINK"></a>SEMANTIC_LINK</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TUPLE_OF_SEMANTIC_REFERENCE_AND_REPLACEMENT_VALUE">TUPLE-OF-SEMANTIC-REFERENCE-AND-REPLACEMENT-VALUE</a></div>
+       <div class="def-comment">   mapping between a semantic reference and replacement value, used for filling templates</div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="LIST_OF_ONE_OR_MORE_OF_SEMANTIC_LINK"></a>LIST-OF-ONE-OR-MORE-OF-SEMANTIC-LINK</div>
+       <div class="def-struc-def">SEQ(+(<a href="ref_sys_symbols.html#SEMANTIC_LINK">SEMANTIC_LINK</a>))</div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">
@@ -925,10 +979,28 @@
        <div class="def-sym-def"><a href="ref_sys_structures.html#TUPLE_OF_SIGNATURE_LABEL_AND_SIGNATURE_OUTPUT_TYPE">TUPLE-OF-SIGNATURE-LABEL-AND-SIGNATURE-OUTPUT-TYPE</a></div>
        <div class="def-comment"></div>
    </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="EXPECTED_SLOT"></a>EXPECTED_SLOT</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SLOT_STRUCTURE">SLOT-STRUCTURE</a></div>
+       <div class="def-comment">  use of the slot structure not as a slot but as what kind of slot to expect (for the template signature)</div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="LIST_OF_ZERO_OR_MORE_OF_EXPECTED_SLOT"></a>LIST-OF-ZERO-OR-MORE-OF-EXPECTED-SLOT</div>
+       <div class="def-struc-def">SEQ(*(<a href="ref_sys_symbols.html#EXPECTED_SLOT">EXPECTED_SLOT</a>))</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="TEMPLATE_SIGNATURE"></a>TEMPLATE_SIGNATURE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_ZERO_OR_MORE_OF_EXPECTED_SLOT">LIST-OF-ZERO-OR-MORE-OF-EXPECTED-SLOT</a></div>
+       <div class="def-comment"></div>
+   </div>
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
        <div class="def-name"><a name="PROCESS_FORM"></a>PROCESS-FORM</div>
-       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#OUTPUT_SIGNATURE">OUTPUT_SIGNATURE</a>, *(<a href="ref_sys_symbols.html#INPUT_SIGNATURE">INPUT_SIGNATURE</a>))</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#OUTPUT_SIGNATURE">OUTPUT_SIGNATURE</a>, *(<a href="ref_sys_symbols.html#INPUT_SIGNATURE">INPUT_SIGNATURE</a>), *(<a href="ref_sys_symbols.html#TEMPLATE_SIGNATURE">TEMPLATE_SIGNATURE</a>))</div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-structure">
@@ -1061,60 +1133,6 @@
        <div class="def-type">Structure:</div>
        <div class="def-name"><a name="INTERACTION"></a>INTERACTION</div>
        <div class="def-struc-def">SEQ(*(<a href="ref_sys_symbols.html#EXPECT">EXPECT</a>), *(<a href="ref_sys_symbols.html#INITIATE">INITIATE</a>))</div>
-       <div class="def-comment"></div>
-   </div>
-   <div class="def-item def-structure">
-       <div class="def-type">Structure:</div>
-       <div class="def-name"><a name="SEMANTIC_REFERENCE"></a>SEMANTIC-REFERENCE</div>
-       <div class="def-struc-def">OR(<a href="ref_sys_symbols.html#GOAL">GOAL</a>, <a href="ref_sys_symbols.html#ROLE">ROLE</a>, <a href="ref_sys_symbols.html#USAGE">USAGE</a>)</div>
-       <div class="def-comment"></div>
-   </div>
-   <div class="def-item def-symbol">
-       <div class="def-type">Symbol:</div>
-       <div class="def-name"><a name="SLOT_IS_VALUE_OF"></a>SLOT_IS_VALUE_OF</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
-       <div class="def-comment"></div>
-   </div>
-   <div class="def-item def-structure">
-       <div class="def-type">Structure:</div>
-       <div class="def-name"><a name="TUPLE_OF_SEMANTIC_REFERENCE_AND_ZERO_OR_ONE_OF_SLOT_IS_VALUE_OF"></a>TUPLE-OF-SEMANTIC-REFERENCE-AND-ZERO-OR-ONE-OF-SLOT-IS-VALUE-OF</div>
-       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#SEMANTIC_REFERENCE">SEMANTIC_REFERENCE</a>, ?(<a href="ref_sys_symbols.html#SLOT_IS_VALUE_OF">SLOT_IS_VALUE_OF</a>))</div>
-       <div class="def-comment"></div>
-   </div>
-   <div class="def-item def-symbol">
-       <div class="def-type">Symbol:</div>
-       <div class="def-name"><a name="SLOT"></a>SLOT</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#TUPLE_OF_SEMANTIC_REFERENCE_AND_ZERO_OR_ONE_OF_SLOT_IS_VALUE_OF">TUPLE-OF-SEMANTIC-REFERENCE-AND-ZERO-OR-ONE-OF-SLOT-IS-VALUE-OF</a></div>
-       <div class="def-comment">   semantic id and optional indicator to fill the value not the structure for the element in the template that needs filling</div>
-   </div>
-   <div class="def-item def-symbol">
-       <div class="def-type">Symbol:</div>
-       <div class="def-name"><a name="REPLACEMENT_VALUE"></a>REPLACEMENT_VALUE</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></div>
-       <div class="def-comment">        what to fill the slot with</div>
-   </div>
-   <div class="def-item def-structure">
-       <div class="def-type">Structure:</div>
-       <div class="def-name"><a name="TUPLE_OF_SEMANTIC_REFERENCE_AND_REPLACEMENT_VALUE"></a>TUPLE-OF-SEMANTIC-REFERENCE-AND-REPLACEMENT-VALUE</div>
-       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#SEMANTIC_REFERENCE">SEMANTIC_REFERENCE</a>, <a href="ref_sys_symbols.html#REPLACEMENT_VALUE">REPLACEMENT_VALUE</a>)</div>
-       <div class="def-comment"></div>
-   </div>
-   <div class="def-item def-symbol">
-       <div class="def-type">Symbol:</div>
-       <div class="def-name"><a name="SEMANTIC_LINK"></a>SEMANTIC_LINK</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#TUPLE_OF_SEMANTIC_REFERENCE_AND_REPLACEMENT_VALUE">TUPLE-OF-SEMANTIC-REFERENCE-AND-REPLACEMENT-VALUE</a></div>
-       <div class="def-comment">   mapping between a semantic reference and replacement value, used for filling templates</div>
-   </div>
-   <div class="def-item def-structure">
-       <div class="def-type">Structure:</div>
-       <div class="def-name"><a name="LIST_OF_ONE_OR_MORE_OF_SEMANTIC_LINK"></a>LIST-OF-ONE-OR-MORE-OF-SEMANTIC-LINK</div>
-       <div class="def-struc-def">SEQ(+(<a href="ref_sys_symbols.html#SEMANTIC_LINK">SEMANTIC_LINK</a>))</div>
-       <div class="def-comment"></div>
-   </div>
-   <div class="def-item def-symbol">
-       <div class="def-type">Symbol:</div>
-       <div class="def-name"><a name="SEMANTIC_MAP"></a>SEMANTIC_MAP</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_ONE_OR_MORE_OF_SEMANTIC_LINK">LIST-OF-ONE-OR-MORE-OF-SEMANTIC-LINK</a></div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-structure">
@@ -1605,6 +1623,18 @@
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="MISSING_SEMANTIC_MAP_ERR"></a>MISSING_SEMANTIC_MAP_ERR</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#REDUCTION_ERROR">REDUCTION-ERROR</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="MISMATCH_SEMANTIC_MAP_ERR"></a>MISMATCH_SEMANTIC_MAP_ERR</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#REDUCTION_ERROR">REDUCTION-ERROR</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="GET_XADDR"></a>GET_XADDR</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#XADDR">XADDR</a></div>
        <div class="def-comment"></div>
@@ -1676,14 +1706,14 @@
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
        <div class="def-name"><a name="SAY"></a>SAY</div>
-       <div class="def-sig-in"><li>to(SYMBOL:<a href="ref_sys_symbols.html#RECEPTOR_ADDRESS">RECEPTOR_ADDRESS</a>)</li><li>on(SYMBOL:<a href="ref_sys_symbols.html#ASPECT_IDENT">ASPECT_IDENT</a>)</li><li>carrier(SYMBOL:<a href="ref_sys_symbols.html#CARRIER">CARRIER</a>)</li><li>message(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</li></div>
+       <div class="def-sig-in"><li>to(SYMBOL:<a href="ref_sys_symbols.html#TO_ADDRESS">TO_ADDRESS</a>)</li><li>on(SYMBOL:<a href="ref_sys_symbols.html#ASPECT_IDENT">ASPECT_IDENT</a>)</li><li>carrier(SYMBOL:<a href="ref_sys_symbols.html#CARRIER">CARRIER</a>)</li><li>message(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</li></div>
        <div class="def-sig-out">signal id(SYMBOL:<a href="ref_sys_symbols.html#SIGNAL_UUID">SIGNAL_UUID</a>)</div>
        <div class="def-comment"><i>send a message to a receptor</i></div>
    </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
        <div class="def-name"><a name="REQUEST"></a>REQUEST</div>
-       <div class="def-sig-in"><li>of(SYMBOL:<a href="ref_sys_symbols.html#RECEPTOR_ADDRESS">RECEPTOR_ADDRESS</a>)</li><li>on(SYMBOL:<a href="ref_sys_symbols.html#ASPECT_IDENT">ASPECT_IDENT</a>)</li><li>carrier(SYMBOL:<a href="ref_sys_symbols.html#CARRIER">CARRIER</a>)</li><li>message(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</li><li>expect response on(SYMBOL:<a href="ref_sys_symbols.html#RESPONSE_CARRIER">RESPONSE_CARRIER</a>)</li><li>[until(SYMBOL:<a href="ref_sys_symbols.html#END_CONDITIONS">END_CONDITIONS</a>)]</li><li>[callback(PROCESS:<a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a>)]</li></div>
+       <div class="def-sig-in"><li>of(SYMBOL:<a href="ref_sys_symbols.html#TO_ADDRESS">TO_ADDRESS</a>)</li><li>on(SYMBOL:<a href="ref_sys_symbols.html#ASPECT_IDENT">ASPECT_IDENT</a>)</li><li>carrier(SYMBOL:<a href="ref_sys_symbols.html#CARRIER">CARRIER</a>)</li><li>message(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</li><li>expect response on(SYMBOL:<a href="ref_sys_symbols.html#RESPONSE_CARRIER">RESPONSE_CARRIER</a>)</li><li>[until(SYMBOL:<a href="ref_sys_symbols.html#END_CONDITIONS">END_CONDITIONS</a>)]</li><li>[callback(PROCESS:<a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a>)]</li></div>
        <div class="def-sig-out">response(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
        <div class="def-comment"><i>send a request to a receptor</i><br />  if there is no "callback" param, then this process will block until the result comes back or the "until" causes cleanup of pending request.</div>
    </div>

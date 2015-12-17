@@ -1856,7 +1856,8 @@ T *parseSemtrex(SemTable *sem,char *stx) {
 void __stx_r2fi(T *mr,T *mt, T *sem_map) {
     T *t = _t_newr(sem_map,SEMANTIC_LINK);
     T *match_symbol =  _t_child(mr,SemtrexMatchSymbolIdx);
-    _t_news(t,USAGE,*(Symbol*)_t_surface(match_symbol));
+    Symbol msym = *(Symbol*)_t_surface(match_symbol);
+    _t_news(t,USAGE,msym);
     T *r = _t_newr(t,REPLACEMENT_VALUE);
 
     int *path = (int *)_t_surface(_t_child(mr,SemtrexMatchPathIdx));
@@ -1865,7 +1866,13 @@ void __stx_r2fi(T *mr,T *mt, T *sem_map) {
     if (!x) {
         raise_error("expecting to get a value from match!!");
     }
-    _t_add(r,_t_clone(x));
+    x = _t_clone(x);
+    //@todo conversion of types when possible?
+    //@todo sanity checking of types?
+    //
+    if (!semeq(msym,NULL_SYMBOL))
+        x->contents.symbol = msym;
+    _t_add(r,x);
     int i,c = _t_children(mr);
     for (i=SemtrexMatchSibsIdx+1;i<=c;i++) {
         __stx_r2fi(_t_child(mr,i),mt,sem_map);

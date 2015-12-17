@@ -15,9 +15,9 @@
 #include "base_defs.h"
 #include <stdarg.h>
 
-Symbol NULL_SYMBOL = {0,SEM_TYPE_SYMBOL,0};
-Structure NULL_STRUCTURE = {0,SEM_TYPE_STRUCTURE,0};
-Process NULL_PROCESS = {0,SEM_TYPE_PROCESS,0};
+const Symbol NULL_SYMBOL = {0,SEM_TYPE_SYMBOL,0};
+const Structure NULL_STRUCTURE = {0,SEM_TYPE_STRUCTURE,0};
+const Process NULL_PROCESS = {0,SEM_TYPE_PROCESS,0};
 
 #define _sd(s,c,t,i); s.context = c;s.semtype=t;s.id=i;
 

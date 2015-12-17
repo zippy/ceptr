@@ -317,7 +317,7 @@ void testTreeConvert() {
     t = _t_new_from_m(h);
 
     spec_is_str_equal(t2s(t),"(RUN_TREE (process:ADD_INT (TEST_INT_SYMBOL:99) (TEST_INT_SYMBOL:100)))");
-    debug_enable(D_REDUCE+D_REDUCEV);
+    //debug_enable(D_REDUCE+D_REDUCEV);
     _p_reduce(G_sem,t);
     debug_disable(D_REDUCE+D_REDUCEV);
     spec_is_str_equal(t2s(t),"(RUN_TREE (TEST_INT_SYMBOL:199))");

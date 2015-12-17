@@ -83,30 +83,49 @@ void _p_fill_from_match(T *t,T *match_results,T *match_tree) {
  *
  * @todo add SIGNATURE_SYMBOL for setting up process signatures by Symbol not just Structure
  */
-Error __p_check_signature(SemTable *sem,Process p,T *params) {
+Error __p_check_signature(SemTable *sem,Process p,T *code) {
     T *processes = _sem_get_defs(sem,p);
     T *def = _d_get_process_code(processes,p);
     T *signature = _t_child(def,ProcessDefSignatureIdx);
-    int i = _t_children(signature) - 1; // there's always one output signature
-    int c = _t_children(params);
-    if (i > c) return tooFewParamsReductionErr;
-    if (i < c) return tooManyParamsReductionErr;
-    for(i=2;i<=c;i++) {
-        T *sig = _t_child(_t_child(signature,i),2); // input signatures start at 2
-        if(semeq(_t_symbol(sig),SIGNATURE_STRUCTURE)) {
-            Structure ss = *(Symbol *)_t_surface(sig);
-            if (!semeq(_sem_get_symbol_structure(sem,_t_symbol(_t_child(params,i-1))),ss) && !semeq(ss,TREE))
-                return signatureMismatchReductionErr;
+    int sigs = _t_children(signature);
+    int input_sigs = 0;
+    int i;
+    for(i=SignatureOutputSigIdx+1;i<=sigs;i++) { // skip the output signature which is always first
+        T *s = _t_child(signature,i);
+        Symbol sym = _t_symbol(s);
+        if (semeq(sym,INPUT_SIGNATURE)) {
+            input_sigs++;
+            T *sig = _t_child(s,2); // input signatures start at 2
+            if(semeq(_t_symbol(sig),SIGNATURE_STRUCTURE)) {
+                Structure ss = *(Symbol *)_t_surface(sig);
+                if (!semeq(_sem_get_symbol_structure(sem,_t_symbol(_t_child(code,i-1))),ss) && !semeq(ss,TREE))
+                    return signatureMismatchReductionErr;
+            }
+            else if(semeq(_t_symbol(sig),SIGNATURE_SYMBOL)) {
+                raise_error("not implemented");
+            }
+            else if(semeq(_t_symbol(sig),SIGNATURE_ANY)) {
+            }
+            else {
+                raise_error("unknown signature checking symbol: %s",_sem_get_name(sem,_t_symbol(sig)));
+            }
         }
-        else if(semeq(_t_symbol(sig),SIGNATURE_SYMBOL)) {
-            raise_error("not implemented");
-        }
-        else if(semeq(_t_symbol(sig),SIGNATURE_ANY)) {
-        }
-        else {
-            raise_error("unknown signature checking symbol: %s",_sem_get_name(sem,_t_symbol(sig)));
+        else if (semeq(sym,TEMPLATE_SIGNATURE)) {
+            T *sm = _t_child(code,i-1);
+            if (!sm || !semeq(_t_symbol(sm),SEMANTIC_MAP))
+                return missingSemanticMapReductionErr;
+            int c = _t_children(s);
+            if (c != _t_children(sm)) return mismatchSemanticMapReductionErr;
+            // we have the right number of slots, so now check if all the expected slots
+            // are represented in the ones provided in the semantic map
+            // @todo!!
+
         }
     }
+    int param_count = _t_children(code);
+    if (param_count > input_sigs) return tooManyParamsReductionErr;
+    if (param_count < input_sigs) return tooFewParamsReductionErr;
+
     return 0;
 }
 
@@ -244,6 +263,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             if (!signal || !semeq(_t_symbol(signal),SIGNAL))
                 return notInSignalContextReductionError;
             T *t = _t_detach_by_idx(code,1);
+            if (!semeq(CARRIER,_t_symbol(t))) raise_error("expected CARRIER got %s",_t2s(q->r->sem,t));
             Symbol carrier = *(Symbol*)_t_surface(t);
             _t_free(t);
             T *response_contents = _t_detach_by_idx(code,1);
@@ -546,8 +566,10 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                 T *s = _t_newr(with,SLOT);
                 _t_news(s,USAGE,NULL_SYMBOL);
             }
+
+            // @todo add SEMANTIC_MAP into LISTEN
             if (act) {
-                _r_add_expectation(q->r,aspect,carrier,match,act,with,until);
+                _r_add_expectation(q->r,aspect,carrier,match,act,with,until,NULL);
                 x = __t_news(0,REDUCTION_ERROR_SYMBOL,NULL_SYMBOL,1);
                 debug(D_LISTEN,"adding expectation\n");
             }
@@ -557,7 +579,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                     until = _t_new_root(END_CONDITIONS);
                     _t_newi(until,COUNT,1);
                 }
-                _r_add_expectation(q->r,aspect,carrier,match,act,with,until);
+                _r_add_expectation(q->r,aspect,carrier,match,act,with,until,NULL);
                 debug(D_LISTEN,"adding expectation and blocking at %d,%s\n",context->id,_td(q->r,code));
                 return Block;
             }
@@ -844,13 +866,13 @@ Error _p_step(Q *q, R **contextP) {
                 // or if we are doing deep param_ref searching, then search the entire tree
                 // @todo increase efficiency by adding some instruction to allow the coder choose, see #39
 #ifndef RUN_TREE_SHALLOW_PARAM_REF_SEARCH
-                if (count && (count != get_rt_cur_child(q->r,np)))
+                int node_cur_child = get_rt_cur_child(q->r,np);
+                if ((node_cur_child != RUN_TREE_EVALUATED) && count && (count != node_cur_child))
                     context->state = Descend;
                 else
 #endif
                     context->state = Ascend;
-            }
-            else
+            } else
                 {
                 if (semeq(s,ITERATE)) {
                     // if first time we are hitting this replication
@@ -879,16 +901,19 @@ Error _p_step(Q *q, R **contextP) {
                     if (!is_sys_process(s)) {
                         // if it's user defined process then we check the signature and then make
                         // a new run-tree run that process
+
                         Error e = __p_check_signature(q->r->sem,s,np);
                         if (e) context->state = e;
                         else {
-                            T *processes = _sem_get_defs(q->r->sem,s);
-                            T *run_tree = __p_make_run_tree(processes,s,np);
+                            T *run_tree = _p_make_run_tree(q->r->sem,s,np);
                             context->state = Pushed;
                             *contextP = __p_make_context(run_tree,context,context->id);
+                            debug(D_REDUCE,"New context for %s: %s\n\n",_sem_get_name(q->r->sem,s),_t2s(q->r->sem,run_tree));
                         }
                     }
                     else {
+                        debug(D_REDUCE,"Reducing sys proc: %s\n",_sem_get_name(q->r->sem,s));
+
                         // if it's a sys process we can just reduce it in and then ascend
                         // or move to the error handling state
                         Error e = __p_reduce_sys_proc(context,s,np,q);
@@ -956,6 +981,8 @@ Error _p_step(Q *q, R **contextP) {
             case divideByZeroReductionErr: se=ZERO_DIVIDE_ERR;break;
             case incompatibleTypeReductionErr: se=INCOMPATIBLE_TYPE_ERR;break;
             case deadStreamReadReductionErr: se=DEAD_STREAM_READ_ERR;break;
+            case missingSemanticMapReductionErr: se=MISSING_SEMANTIC_MAP_ERR;break;
+            case mismatchSemanticMapReductionErr: se=MISMATCH_SEMANTIC_MAP_ERR;break;
             case unixErrnoReductionErr:
                 /// @todo make a better error symbol here... :-P
                 extra = _t_new_str(0,TEST_STR_SYMBOL,strerror(errno));
@@ -981,36 +1008,6 @@ Error _p_step(Q *q, R **contextP) {
         }
     }
     return context->state;
-}
-
-/*
-  special runtree builder that uses the actual params tree node.  This is used
-  in the process of reduction because we don't have to clone the param values, we
-  can use the actual tree nodes that are being reduced as they are already rT nodes
-  and they are only used once, i.e. in this reduction
-*/
-T *__p_make_run_tree(T *processes,Process p,T *params) {
-    T *t = _t_new_root(RUN_TREE);
-    T *ps;
-    // if this is a system process, we'll just add the params right onto the process node
-    // and leave the run tree params empty
-    if (is_sys_process(p)) {
-        ps = __t_new(t,p,0,0,1);
-        _t_newr(t,PARAMS);
-    }
-    else {
-        // otherwise we get the code of the process
-        T *code_def = _d_get_process_code(processes,p);
-        T *code = _t_child(code_def,ProcessDefCodeIdx);
-        T *c = _t_rclone(code);
-        _t_add(t,c);
-        ps = _t_newr(t,PARAMS);
-    }
-    int i,num_params = _t_children(params);
-    for(i=1;i<=num_params;i++) {
-        _t_add(ps,_t_detach_by_idx(params,1));
-    }
-    return t;
 }
 
 /**
@@ -1039,44 +1036,45 @@ T *__p_build_run_tree(T* code,int num_params,...) {
 /**
  * Build a run tree from a code tree and params
  *
- * @param[in] processes processes trees
- * @param[in] process Process tree node to be turned into run tree
- * @param[in] num_params the number of parameters to add to the parameters child
- * @param[in] ... T params
+ * @param[in] sem current semantic context
+ * @param[in] p process to be cloned into a run tree
+ * @param[in] params parameters to be added to the run-tree
+ *
+ * @note the params get added, not cloned to the tree
+ *
  * @returns T RUN_TREE tree
  */
-T *_p_make_run_tree(T *processes,T *process,int num_params,...) {
-
-    T *t = NULL;
-    va_list params;
-
-    Process p = *(Process *)_t_surface(process);
+T *__p_make_run_tree(SemTable *sem,Process p,T *params,T *sem_map) {
     if (!is_process(p)) {
         raise_error("not a Process!");
     }
-    if (is_sys_process(p)) {
-        t =  _t_new_root(RUN_TREE);
-        // if it's a sys process we add the parameters directly as children to the process
-        // because no sys-processes refer to PARAMS by path
-        // this also means we need rclone them instead of clone them because they
-        // will actually need to have space for the status marks by the processing code
-        T *c = __t_new(t,p,0,0,1);
+    T *processes = _sem_get_defs(sem,p);
+    T *code_def = _d_get_process_code(processes,p);
+    T *t = _t_new_root(RUN_TREE);
+    T *ps;
 
-        va_start(params,num_params);
-        int i;
-        for(i=0;i<num_params;i++) {
-            _t_add(c,_t_rclone(va_arg(params,T *)));
-        }
-        va_end(params);
+    T *code = _t_child(code_def,ProcessDefCodeIdx);
+
+    // if this is a system process the code will be NULL_PROCESS so
+    // we'll just add the params right onto the process node
+    // and leave the run tree params empty
+    if (semeq(_t_symbol(code),NULL_PROCESS)) {
+        ps = __t_new(t,p,0,0,1);
+        _t_newr(t,PARAMS);
     }
     else {
-        T *code_def = _d_get_process_code(processes,p);
-        T *code = _t_child(code_def,3);
+        // otherwise we clone the code of the process
+        T *c = _t_rclone(code);
+        _t_add(t,c);
+        ps = _t_newr(t,PARAMS);
+    }
+    int i,num_params = _t_children(params);
+    for(i=1;i<=num_params;i++) {
+        _t_add(ps,_t_detach_by_idx(params,1));
+    }
 
-        va_list params;
-        va_start(params,num_params);
-        t = __p_build_run_tree_va(code,num_params,params);
-        va_end(params);
+    if (sem_map) {
+        __t_fill_template(t,sem_map,true);
     }
     return t;
 }
@@ -1199,7 +1197,7 @@ Error _p_reduceq(Q *q) {
         if (debugging(D_REDUCEV)) {
             R *context = qe->context;
             char *s = __debug_state_str(context->state);
-            debug(D_REDUCEV,"ID:%p -- State %s(%d)\n",qe,s,context->state);
+            debug(D_REDUCEV,"ID:%d -- State %s(%d)\n",qe->id,s,context->state);
             debug(D_REDUCEV,"  idx:%d\n",context->idx);
             debug(D_REDUCEV,"%s\n",_t2s(q->r->sem,context->run_tree));
             if (context) {

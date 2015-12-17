@@ -140,8 +140,8 @@ void testGetSize() {
     // Use t_dump to display textually the resulting tree structure.  Use _td for a T in the context of a given receptor.
 }
 
-void testCodeProcess() {
-    //! [testCodeProcess]
+void testDefProcess() {
+    //! [testDefProcess]
     T *defs = __sem_get_defs(G_sem,SEM_TYPE_PROCESS,TEST_CONTEXT);
     T *code = _t_new_root(NOOP); // fake code
     T *signature = __p_make_signature("result",SIGNATURE_SYMBOL,NULL_SYMBOL,
@@ -163,21 +163,41 @@ void testCodeProcess() {
     spec_is_str_equal((char *)_t_surface(name),"power");
 
     // second child is process intention as text (documentation)
-    T *intention = _t_child(s,2);
+    T *intention = _t_child(s,ProcessDefIntentionIdx);
     spec_is_sem_equal(_t_symbol(intention),PROCESS_INTENTION);
     spec_is_str_equal((char *)_t_surface(intention),"takes the mathematical power of the two params");
 
     // third child is code itself
-    spec_is_ptr_equal(_t_child(s,3),code);
+    spec_is_ptr_equal(_t_child(s,ProcessDefCodeIdx),code);
 
     // fourth child is the signature
-    T *sig = _t_child(s,4);
+    T *sig = _t_child(s,ProcessDefSignatureIdx);
     spec_is_sem_equal(_t_symbol(sig),PROCESS_SIGNATURE);
 
     spec_is_str_equal(__d_get_sem_name(defs,p),"power");
 
-    //! [testCodeProcess]
+    //! [testDefProcess]
 }
+void testDefProcessTemplate() {
+    //! [testDefProcessTemplate]
+    T *defs = __sem_get_defs(G_sem,SEM_TYPE_PROCESS,TEST_CONTEXT);
+    T *code = _t_new_root(NOOP); // some code with a template
+    T *t = _t_newr(code,SLOT);
+    _t_news(t,GOAL,REQUEST_HANDLER);
+    t = _t_newr(code,SLOT);
+    _t_news(t,USAGE,REQUEST_DATA);
+    _t_news(t,SLOT_IS_VALUE_OF,TEST_INT_SYMBOL);
+    T *signature = __p_make_signature("result",SIGNATURE_SYMBOL,NULL_SYMBOL,NULL);
+    Process p = _d_define_process(G_sem,code,"test_template_proc","long desc..",signature,TEST_CONTEXT);
+    T *def = _sem_get_def(G_sem,p);
+
+    T *sig = _t_child(def,ProcessDefSignatureIdx);
+    spec_is_str_equal(t2s(_t_child(sig,2)),"(TEMPLATE_SIGNATURE (EXPECTED_SLOT (GOAL:REQUEST_HANDLER)) (EXPECTED_SLOT (USAGE:REQUEST_DATA) (SLOT_IS_VALUE_OF:TEST_INT_SYMBOL)))");
+
+    //! [testDefProcessTemplate]
+}
+
+
 
 void testDefSemtrex() {
     //! [testDefSemtrex]
@@ -248,7 +268,8 @@ void testDef() {
     testDefStructure();
     testGetSymbolStructure();
     testGetSize();
-    testCodeProcess();
+    testDefProcess();
+    testDefProcessTemplate();
     testDefSemtrex();
     testDefReceptor();
 }

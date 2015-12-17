@@ -273,6 +273,30 @@ size_t _d_get_structure_size(SemTable *sem,Structure s,void *surface) {
     return size;
 }
 
+#define MAX_HASHES 10
+// extract the template signature from the code
+void __d_tsig(SemTable *sem,T *code, T *tsig,TreeHash *hashes) {
+    if (semeq(_t_symbol(code),SLOT)) {
+        // check for duplicates
+        TreeHash h = _t_hash(sem,code);
+        int i=0;
+        while(hashes[i] && hashes[i]!=h) {
+            i++;
+            if (i == MAX_HASHES) raise_error("whoa! too many slots in code template");
+        }
+        // if its unique then add it.
+        if (!hashes[i]) {
+            hashes[i] = h;
+            T *t = _t_clone(code);
+            t->contents.symbol = EXPECTED_SLOT;
+            _t_add(tsig,t);
+        }
+    }
+    else {
+        DO_KIDS(code,__d_tsig(sem,_t_child(code,i),tsig,hashes));
+    }
+}
+
 /**
  * build a new process definition
  *
@@ -284,7 +308,7 @@ size_t _d_get_structure_size(SemTable *sem,Structure s,void *surface) {
  * @todo this is not thread safe!
  *
  * <b>Examples (from test suite):</b>
- * @snippet spec/def_spec.h testCodeProcess
+ * @snippet spec/def_spec.h testDefProcess
  */
 T *_d_make_process_def(T *code,char *name,char *intention,T *signature) {
     T *def = _t_new_root(PROCESS_DEFINITION);
@@ -293,13 +317,16 @@ T *_d_make_process_def(T *code,char *name,char *intention,T *signature) {
     if (!code)
         code = _t_new_root(NULL_PROCESS); // indicates a system (i.e. non ceptr) defined process
     _t_add(def,code);
-    if (signature) _t_add(def,signature);
+    if (signature) {
+        _t_add(def,signature);
+    }
+
     return def;
 }
 
 
 /**
- * add a new process coding to the processes tree
+ * add a new process definition to the processes tree
  *
  * @param[inout] processes a process def tree containing process codings which will be added to
  * @param[in] code the code tree for this process
@@ -310,10 +337,17 @@ T *_d_make_process_def(T *code,char *name,char *intention,T *signature) {
  * @todo this is not thread safe!
  *
  * <b>Examples (from test suite):</b>
- * @snippet spec/def_spec.h testCodeProcess
+ * @snippet spec/def_spec.h testDefProcess
  */
 Process _d_define_process(SemTable *sem,T *code,char *name,char *intention,T *signature,Context c) {
     T *def = _d_make_process_def(code,name,intention,signature);
+    if (signature && code) {
+        T *tsig = _t_new_root(TEMPLATE_SIGNATURE);
+        TreeHash h[MAX_HASHES]={0,0,0,0,0,0,0,0,0,0};
+        __d_tsig(sem,code,tsig,h);
+        if (_t_children(tsig)) _t_add(signature,tsig);
+        else _t_free(tsig);
+    }
     return _d_define(sem,def,SEM_TYPE_PROCESS,c);
 }
 
@@ -453,7 +487,11 @@ char * __t_dump(SemTable *sem,T *t,int level,char *buf) {
     }
 
     // use this to mark all run nodes with a %
-    // if (t->context.flags & TFLAG_RUN_NODE) *buf++ = '%';
+    /* if (t->context.flags & TFLAG_RUN_NODE) { */
+    /*     *buf++ = '%'; */
+    /*     sprintf(buf,"%d",rt_cur_child(t)); */
+    /*     buf += strlen(buf); */
+    /* } */
 
     char *n = _sem_get_name(sem,s);
 

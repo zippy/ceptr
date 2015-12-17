@@ -8,7 +8,6 @@
 #include "../src/process.h"
 
 void testRunTree() {
-    T *processes = __sem_get_defs(G_sem,SEM_TYPE_PROCESS,TEST_CONTEXT);
     T *code,*signature;
 
     // a process that would look something like this in lisp:
@@ -50,54 +49,25 @@ void testRunTree() {
 
     Process p = _d_define_process(G_sem,code,"myif","a duplicate of the sys if process with params in different order",signature,TEST_CONTEXT);
 
-    T *p3 = _t_newi(0,BOOLEAN,1);
-    T *p1 = _t_newi(0,TEST_INT_SYMBOL,123);
-    T *p2 = _t_newi(0,TEST_INT_SYMBOL,321);
+    T *params = _t_build(G_sem,0,PARAMS,TEST_INT_SYMBOL,123,TEST_INT_SYMBOL,321,BOOLEAN,1,NULL_SYMBOL);
 
-    T *act = _t_newp(0,ACTION,p);
+    T *r = _p_make_run_tree(G_sem,p,params);
 
-    T *r = _p_make_run_tree(processes,act,3,p1,p2,p3);
-
-    spec_is_symbol_equal(0,_t_symbol(r),RUN_TREE);
-
-    T *t = _t_child(r,1);  // first child should be clone of code
-    spec_is_sem_equal(_t_symbol(t),IF);
-    spec_is_true(t!=code);  //should be a clone
-
-    T *ps = _t_child(r,2); //second child should be params
-    spec_is_symbol_equal(0,_t_symbol(ps),PARAMS);
-
-    t = _t_child(ps,1);
-    spec_is_symbol_equal(0,_t_symbol(t),TEST_INT_SYMBOL);
-    spec_is_true(t!=p1);  //should be a clone
-
-    t = _t_child(ps,2);  // third child should be params
-    spec_is_symbol_equal(0,_t_symbol(t),TEST_INT_SYMBOL);
-    spec_is_true(t!=p2);  //should be a clone
-
-
-    t = _t_child(ps,3);  // third child should be params
-    spec_is_symbol_equal(0,_t_symbol(t),BOOLEAN);
-    spec_is_true(t!=p3);  //should be a clone
+    spec_is_str_equal(t2s(r),"(RUN_TREE (process:IF (PARAM_REF:/2/3) (PARAM_REF:/2/1) (PARAM_REF:/2/2)) (PARAMS (TEST_INT_SYMBOL:123) (TEST_INT_SYMBOL:321) (BOOLEAN:1)))");
 
     spec_is_equal(_p_reduce(G_sem,r),noReductionErr);
 
     spec_is_str_equal(t2s(_t_child(r,1)),"(TEST_INT_SYMBOL:123)");
 
-    _t_free(act);
     _t_free(r);
 
+    params = _t_build(G_sem,0,PARAMS,TEST_INT_SYMBOL,123,TEST_INT_SYMBOL,321,NULL_SYMBOL);
     // you can also create a run tree with a system process
-    act = _t_newp(0,ACTION,ADD_INT);
 
-    r = _p_make_run_tree(processes,act,2,p1,p2);
-    spec_is_str_equal(t2s(r),"(RUN_TREE (process:ADD_INT (TEST_INT_SYMBOL:123) (TEST_INT_SYMBOL:321)))");
+    r = _p_make_run_tree(G_sem,ADD_INT,params);
+    spec_is_str_equal(t2s(r),"(RUN_TREE (process:ADD_INT (TEST_INT_SYMBOL:123) (TEST_INT_SYMBOL:321)) (PARAMS))");
 
-    _t_free(act);
     _t_free(r);
-    _t_free(p1);
-    _t_free(p2);
-    _t_free(p3);
 }
 
 //-----------------------------------------------------------------------------------------
@@ -406,6 +376,8 @@ void testProcessRequest() {
 
     T *run_tree = __p_build_run_tree(code,0);
 
+    spec_is_str_equal(_td(r,run_tree),"(RUN_TREE (process:REQUEST (TO_ADDRESS (RECEPTOR_ADDR:99)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (TEST_INT_SYMBOL:314) (RESPONSE_CARRIER:TESTING) (END_CONDITIONS (COUNT:1))) (PARAMS))");
+
     // add the run tree into a queue and run it
     G_next_process_id = 0; // reset the process ids so the test will always work
     Q *q = r->q;
@@ -675,13 +647,14 @@ void testProcessRefs() {
     _r_free(r);
 }
 
+Process G_ifeven;
 /**
  * helper to generate an example process definition that acts as an if for even numbers
  *
  * @snippet spec/process_spec.h defIfEven
  */
 //! [defIfEven]
-Process _defIfEven() {
+void _defIfEven() {
     T *code;
 
     /* a process that would look something like this in lisp:
@@ -712,7 +685,7 @@ Process _defIfEven() {
                                       "false_branch",SIGNATURE_ANY,NULL_STRUCTURE,
                                       NULL);
 
-    return _d_define_process(G_sem,code,"if even","return 2nd child if even, third if not",signature,TEST_CONTEXT);
+    G_ifeven =  _d_define_process(G_sem,code,"if even","return 2nd child if even, third if not",signature,TEST_CONTEXT);
 }
 //! [defIfEven]
 
@@ -743,7 +716,7 @@ Process _defDivZero() {
 void testProcessReduceDefinedProcess() {
     //! [testProcessReduceDefinedProcess]
 
-    Process if_even = _defIfEven();  // add the if_even process to our defs
+    Process if_even = G_ifeven;
     T *processes = __sem_get_defs(G_sem,SEM_TYPE_PROCESS,TEST_CONTEXT);
 
     // check that it dumps nicely, including showing the param_refs as paths
@@ -757,7 +730,7 @@ void testProcessReduceDefinedProcess() {
     _t_newi(n,TEST_INT_SYMBOL,99);
     _t_newi(n,TEST_INT_SYMBOL,123);
     _t_newi(n,TEST_INT_SYMBOL,124);
-    T *t = __p_make_run_tree(processes,if_even,n);
+    T *t = _p_make_run_tree(G_sem,if_even,n);
 
     // confirm that it reduces correctly
     spec_is_equal(_p_reduce(G_sem,t),noReductionErr);
@@ -768,11 +741,11 @@ void testProcessReduceDefinedProcess() {
 }
 
 void testProcessSignatureMatching() {
-    Process if_even = _defIfEven();
+    Process if_even = G_ifeven;
 
     T *t = _t_new_root(RUN_TREE);
     T *n = _t_new_root(if_even);
-    _t_new(n,TEST_STR_SYMBOL,"test",5);  // this should be an INTEGER!!
+    T *x = _t_new(n,TEST_STR_SYMBOL,"test",5);  // this should be an INTEGER!!
     _t_newi(n,TEST_INT_SYMBOL,123);
     _t_newi(n,TEST_INT_SYMBOL,124);
 
@@ -791,12 +764,44 @@ void testProcessSignatureMatching() {
     _t_free(_t_detach_by_idx(t,1));
 
     // add too many params
+    // fix the mismatch in the first param so the test won't fail by mismatch type
+    int v = 0;
+    __t_morph(x,TEST_INT_SYMBOL,&v,sizeof(int),0);
     c = _t_rclone(n);
+    // add in the extra param
     _t_add(t,c);
     __t_newi(c,TEST_INT_SYMBOL,124,1);
     spec_is_equal(_p_reduce(G_sem,t),tooManyParamsReductionErr);
 
     _t_free(t);
+    _t_free(n);
+
+    n = _t_new_root(send_request);
+    // test missing semantic map
+    spec_is_equal(__p_check_signature(G_sem,send_request,n),missingSemanticMapReductionErr);
+    T *sm = _t_newr(n,SEMANTIC_MAP);
+    // test map without matching expected slots
+    spec_is_equal(__p_check_signature(G_sem,send_request,n),mismatchSemanticMapReductionErr);
+    _t_free(_t_detach_by_idx(n,1));
+    //(TEMPLATE_SIGNATURE (EXPECTED_SLOT (ROLE:RESPONDER)) (EXPECTED_SLOT (USAGE:REQUEST_DATA)) (EXPECTED_SLOT (USAGE:RESPONSE_DATA)) (EXPECTED_SLOT (GOAL:REQUEST_HANDLER)))
+    _t_build(G_sem,n,
+             SEMANTIC_MAP,
+             SEMANTIC_LINK,
+             USAGE,REQUEST_DATA,
+             REPLACEMENT_VALUE,ACTUAL_SYMBOL,PING,NULL_SYMBOL,NULL_SYMBOL,
+             SEMANTIC_LINK,
+             USAGE,RESPONSE_DATA,
+             REPLACEMENT_VALUE,ACTUAL_SYMBOL,PING,NULL_SYMBOL,NULL_SYMBOL,
+             SEMANTIC_LINK,
+             ROLE,RESPONDER,
+             REPLACEMENT_VALUE,ACTUAL_RECEPTOR,FROM_ADDRESS,RECEPTOR_ADDR,3,NULL_SYMBOL,NULL_SYMBOL,
+             SEMANTIC_LINK,
+             GOAL,RESPONSE_HANDLER,
+             REPLACEMENT_VALUE,ACTUAL_PROCESS,NOOP,NULL_SYMBOL,
+             NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL
+             );
+    spec_is_str_equal(t2s(sm),"(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:PING))) (SEMANTIC_LINK (USAGE:RESPONSE_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:PING))) (SEMANTIC_LINK (ROLE:RESPONDER) (REPLACEMENT_VALUE (ACTUAL_RECEPTOR (FROM_ADDRESS (RECEPTOR_ADDR:3))))) (SEMANTIC_LINK (GOAL:RESPONSE_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:NOOP))))");
+    spec_is_equal(__p_check_signature(G_sem,send_request,n),noReductionErr);
     _t_free(n);
 }
 
@@ -952,7 +957,6 @@ void testProcessListen() {
 void testProcessErrorTrickleUp() {
     //! [testProcessErrorTrickleUp]
     Process divz = _defDivZero();  // add the if_even process to our defs
-    T *processes = __sem_get_defs(G_sem,SEM_TYPE_PROCESS,TEST_CONTEXT);
 
     // create a run tree right in the position to "call" this function
     T *t = _t_new_root(RUN_TREE);
@@ -980,17 +984,16 @@ void testProcessMulti() {
     //! [testProcessMulti]
 
     Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
-    T *processes = __sem_get_defs(G_sem,SEM_TYPE_PROCESS,TEST_CONTEXT);
     Q *q = r->q;
 
-    Process if_even = _defIfEven();  // add the if_even process to our defs
+    Process if_even = G_ifeven;
 
     // create two run trees
     T *n = _t_new_root(PARAMS);
     __t_newi(n,TEST_INT_SYMBOL,99,1);
     __t_newi(n,TEST_INT_SYMBOL,123,1);
     __t_newi(n,TEST_INT_SYMBOL,124,1);
-    T *t1 = __p_make_run_tree(processes,if_even,n);
+    T *t1 = _p_make_run_tree(G_sem,if_even,n);
 
     __t_newi(n,TEST_INT_SYMBOL,100,1);
     T *l2 = __t_new(n,if_even,0,0,1);
@@ -999,7 +1002,7 @@ void testProcessMulti() {
     __t_newi(l2,TEST_INT_SYMBOL,124,1);
     __t_newi(n,TEST_INT_SYMBOL,314,1);
 
-    T *t2 = __p_make_run_tree(processes,if_even,n);
+    T *t2 = _p_make_run_tree(G_sem,if_even,n);
 
     // add them to a processing queue
     spec_is_equal(q->contexts_count,0);
@@ -1058,33 +1061,36 @@ void testProcessMulti() {
     //! [testProcessMulti]
 }
 
-void testRunTreeMaker() {
-    T *processes = __sem_get_defs(G_sem,SEM_TYPE_PROCESS,TEST_CONTEXT);
+void testRunTreeTemplate() {
 
-    T *n = _t_new_root(PARAMS);
-    _t_newi(n,TEST_INT_SYMBOL,314);
-    T *t = __p_make_run_tree(processes,NOOP,n);
-    spec_is_str_equal(t2s(t),"(RUN_TREE (process:NOOP (TEST_INT_SYMBOL:314)) (PARAMS))");
-    _t_free(t);
+    T *params = _t_new_root(PARAMS);
+    T *sm = _t_build(G_sem,0,
+                     SEMANTIC_MAP,
+                     SEMANTIC_LINK,
+                     USAGE,REQUEST_DATA,
+                     REPLACEMENT_VALUE,PING,NULL_SYMBOL,
+                     SEMANTIC_LINK,
+                     USAGE,RESPONSE_DATA,
+                     REPLACEMENT_VALUE,PING,NULL_SYMBOL,
+                     SEMANTIC_LINK,
+                     ROLE,RESPONDER,
+                     REPLACEMENT_VALUE,TO_ADDRESS,RECEPTOR_ADDR,3,NULL_SYMBOL,NULL_SYMBOL,
+                     SEMANTIC_LINK,
+                     GOAL,REQUEST_HANDLER,
+                     REPLACEMENT_VALUE,NOOP,NULL_SYMBOL,
+                     NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL
+                     );
 
-    // run-tree maker should also work on defined processes
-    Process if_even = _defIfEven();  // add the if_even process to our defs
+    spec_is_str_equal(t2s(sm),"(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (PING))) (SEMANTIC_LINK (USAGE:RESPONSE_DATA) (REPLACEMENT_VALUE (PING))) (SEMANTIC_LINK (ROLE:RESPONDER) (REPLACEMENT_VALUE (TO_ADDRESS (RECEPTOR_ADDR:3)))) (SEMANTIC_LINK (GOAL:REQUEST_HANDLER) (REPLACEMENT_VALUE (process:NOOP))))");
 
-    _t_free(n);
-
-    n = _t_new_root(PARAMS);
-    _t_newi(n,TEST_INT_SYMBOL,99);
-    _t_newi(n,TEST_INT_SYMBOL,123);
-    _t_newi(n,TEST_INT_SYMBOL,124);
-
-    t = __p_make_run_tree(processes,if_even,n);
-
-    spec_is_str_equal(t2s(t),"(RUN_TREE (process:IF (process:EQ_INT (process:MOD_INT (PARAM_REF:/2/1) (TEST_INT_SYMBOL:2)) (TEST_INT_SYMBOL:0)) (PARAM_REF:/2/2) (PARAM_REF:/2/3)) (PARAMS (TEST_INT_SYMBOL:99) (TEST_INT_SYMBOL:123) (TEST_INT_SYMBOL:124)))");
-
-    _t_free(t);_t_free(n);
+    T *r = __p_make_run_tree(G_sem,send_request,params,sm);
+    spec_is_str_equal(t2s(r),"(RUN_TREE (process:REQUEST (TO_ADDRESS (RECEPTOR_ADDR:3)) (PING) (PING) (PING) (process:NOOP)) (PARAMS))");
+    _t_free(r);
+    _t_free(sm);
 }
 
 void testProcess() {
+    _defIfEven();
     testRunTree();
     testProcessGet();
     testProcessFillMatch();
@@ -1107,5 +1113,5 @@ void testProcess() {
     testProcessListen();
     testProcessErrorTrickleUp();
     testProcessMulti();
-    testRunTreeMaker();
+    testRunTreeTemplate();
 }
