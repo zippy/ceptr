@@ -51,7 +51,7 @@ void testRunTree() {
 
     T *params = _t_build(G_sem,0,PARAMS,TEST_INT_SYMBOL,123,TEST_INT_SYMBOL,321,BOOLEAN,1,NULL_SYMBOL);
 
-    T *r = _p_make_run_tree(G_sem,p,params);
+    T *r = _p_make_run_tree(G_sem,p,params,NULL);
 
     spec_is_str_equal(t2s(r),"(RUN_TREE (process:IF (PARAM_REF:/2/3) (PARAM_REF:/2/1) (PARAM_REF:/2/2)) (PARAMS (TEST_INT_SYMBOL:123) (TEST_INT_SYMBOL:321) (BOOLEAN:1)))");
 
@@ -64,7 +64,7 @@ void testRunTree() {
     params = _t_build(G_sem,0,PARAMS,TEST_INT_SYMBOL,123,TEST_INT_SYMBOL,321,NULL_SYMBOL);
     // you can also create a run tree with a system process
 
-    r = _p_make_run_tree(G_sem,ADD_INT,params);
+    r = _p_make_run_tree(G_sem,ADD_INT,params,NULL);
     spec_is_str_equal(t2s(r),"(RUN_TREE (process:ADD_INT (TEST_INT_SYMBOL:123) (TEST_INT_SYMBOL:321)) (PARAMS))");
 
     _t_free(r);
@@ -300,7 +300,7 @@ void testProcessRespond() {
 
     T *response_contents = _t_newi(n,TEST_INT_SYMBOL,271);
 
-    R *c = __p_make_context(run_tree,0,0);
+    R *c = __p_make_context(run_tree,0,0,NULL);
 
     // if this is a run-tree that's not a child of a signal we can't respond!
     spec_is_equal(__p_reduce_sys_proc(c,RESPOND,n,0),notInSignalContextReductionError);
@@ -565,7 +565,7 @@ void testProcessReduce() {
     T *c = _t_rclone(n);
     _t_add(t,c);
 
-    R *context = __p_make_context(t,0,99);
+    R *context = __p_make_context(t,0,99,NULL);
 
     spec_is_equal(context->id,99);
 
@@ -730,7 +730,7 @@ void testProcessReduceDefinedProcess() {
     _t_newi(n,TEST_INT_SYMBOL,99);
     _t_newi(n,TEST_INT_SYMBOL,123);
     _t_newi(n,TEST_INT_SYMBOL,124);
-    T *t = _p_make_run_tree(G_sem,if_even,n);
+    T *t = _p_make_run_tree(G_sem,if_even,n,NULL);
 
     // confirm that it reduces correctly
     spec_is_equal(_p_reduce(G_sem,t),noReductionErr);
@@ -749,7 +749,7 @@ void testProcessSignatureMatching() {
     _t_newi(n,TEST_INT_SYMBOL,123);
     _t_newi(n,TEST_INT_SYMBOL,124);
 
-    spec_is_equal(__p_check_signature(G_sem,if_even,n),signatureMismatchReductionErr);
+    spec_is_equal(__p_check_signature(G_sem,if_even,n,NULL),signatureMismatchReductionErr);
 
     T *c = _t_rclone(n);
     _t_add(t,c);
@@ -778,31 +778,54 @@ void testProcessSignatureMatching() {
 
     n = _t_new_root(send_request);
     // test missing semantic map
-    spec_is_equal(__p_check_signature(G_sem,send_request,n),missingSemanticMapReductionErr);
-    T *sm = _t_newr(n,SEMANTIC_MAP);
+    spec_is_equal(__p_check_signature(G_sem,send_request,n,NULL),missingSemanticMapReductionErr);
+    T *sm = _t_new_root(SEMANTIC_MAP);
     // test map without matching expected slots
-    spec_is_equal(__p_check_signature(G_sem,send_request,n),mismatchSemanticMapReductionErr);
-    _t_free(_t_detach_by_idx(n,1));
+    spec_is_equal(__p_check_signature(G_sem,send_request,n,sm),mismatchSemanticMapReductionErr);
+    _t_free(sm);
     //(TEMPLATE_SIGNATURE (EXPECTED_SLOT (ROLE:RESPONDER)) (EXPECTED_SLOT (USAGE:REQUEST_DATA)) (EXPECTED_SLOT (USAGE:RESPONSE_DATA)) (EXPECTED_SLOT (GOAL:REQUEST_HANDLER)))
-    _t_build(G_sem,n,
-             SEMANTIC_MAP,
+    sm = _t_build(G_sem,0,
+                  SEMANTIC_MAP,
+                  SEMANTIC_LINK,
+                  USAGE,REQUEST_DATA,
+                  REPLACEMENT_VALUE,ACTUAL_SYMBOL,PING,NULL_SYMBOL,NULL_SYMBOL,
+                  SEMANTIC_LINK,
+                  USAGE,RESPONSE_DATA,
+                  REPLACEMENT_VALUE,ACTUAL_SYMBOL,PING,NULL_SYMBOL,NULL_SYMBOL,
+                  SEMANTIC_LINK,
+                  GOAL,RESPONSE_HANDLER,
+                  REPLACEMENT_VALUE,ACTUAL_PROCESS,NOOP,NULL_SYMBOL,NULL_SYMBOL,
+                  SEMANTIC_LINK,
+                  GOAL,REQUEST_HANDLER,
+                  REPLACEMENT_VALUE,ACTUAL_PROCESS,NOOP,NULL_SYMBOL,
+                  NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL
+             );
+    spec_is_str_equal(t2s(sm),"(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:PING))) (SEMANTIC_LINK (USAGE:RESPONSE_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:PING))) (SEMANTIC_LINK (GOAL:RESPONSE_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:NOOP))) (SEMANTIC_LINK (GOAL:REQUEST_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:NOOP))))");
+
+    spec_is_equal(__p_check_signature(G_sem,send_request,n,sm),mismatchSemanticMapReductionErr);
+
+    _t_build(G_sem,sm,
              SEMANTIC_LINK,
-             USAGE,REQUEST_DATA,
-             REPLACEMENT_VALUE,ACTUAL_SYMBOL,PING,NULL_SYMBOL,NULL_SYMBOL,
-             SEMANTIC_LINK,
-             USAGE,RESPONSE_DATA,
-             REPLACEMENT_VALUE,ACTUAL_SYMBOL,PING,NULL_SYMBOL,NULL_SYMBOL,
+             ROLE,RECOGNIZER,
+             REPLACEMENT_VALUE,ACTUAL_RECEPTOR,FROM_ADDRESS,RECEPTOR_ADDR,3,NULL_SYMBOL,NULL_SYMBOL);
+
+    spec_is_str_equal(t2s(sm),"(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:PING))) (SEMANTIC_LINK (USAGE:RESPONSE_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:PING))) (SEMANTIC_LINK (GOAL:RESPONSE_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:NOOP))) (SEMANTIC_LINK (GOAL:REQUEST_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:NOOP))) (SEMANTIC_LINK (ROLE:RECOGNIZER) (REPLACEMENT_VALUE (ACTUAL_RECEPTOR (FROM_ADDRESS (RECEPTOR_ADDR:3))))))");
+
+    spec_is_equal(__p_check_signature(G_sem,send_request,n,sm),mismatchSemanticMapReductionErr);
+
+    _t_free(_t_detach_by_idx(sm,_t_children(sm)));
+
+    _t_build(G_sem,sm,
              SEMANTIC_LINK,
              ROLE,RESPONDER,
-             REPLACEMENT_VALUE,ACTUAL_RECEPTOR,FROM_ADDRESS,RECEPTOR_ADDR,3,NULL_SYMBOL,NULL_SYMBOL,
-             SEMANTIC_LINK,
-             GOAL,RESPONSE_HANDLER,
-             REPLACEMENT_VALUE,ACTUAL_PROCESS,NOOP,NULL_SYMBOL,
-             NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL
-             );
-    spec_is_str_equal(t2s(sm),"(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:PING))) (SEMANTIC_LINK (USAGE:RESPONSE_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:PING))) (SEMANTIC_LINK (ROLE:RESPONDER) (REPLACEMENT_VALUE (ACTUAL_RECEPTOR (FROM_ADDRESS (RECEPTOR_ADDR:3))))) (SEMANTIC_LINK (GOAL:RESPONSE_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:NOOP))))");
-    spec_is_equal(__p_check_signature(G_sem,send_request,n),noReductionErr);
+             REPLACEMENT_VALUE,ACTUAL_RECEPTOR,FROM_ADDRESS,RECEPTOR_ADDR,3,NULL_SYMBOL,NULL_SYMBOL);
+
+    spec_is_str_equal(t2s(sm),"(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:PING))) (SEMANTIC_LINK (USAGE:RESPONSE_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:PING))) (SEMANTIC_LINK (GOAL:RESPONSE_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:NOOP))) (SEMANTIC_LINK (GOAL:REQUEST_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:NOOP))) (SEMANTIC_LINK (ROLE:RESPONDER) (REPLACEMENT_VALUE (ACTUAL_RECEPTOR (FROM_ADDRESS (RECEPTOR_ADDR:3))))))");
+
+    spec_is_equal(__p_check_signature(G_sem,send_request,n,sm),noReductionErr);
+
     _t_free(n);
+    _t_free(sm);
 }
 
 void testProcessError() {
@@ -993,7 +1016,7 @@ void testProcessMulti() {
     __t_newi(n,TEST_INT_SYMBOL,99,1);
     __t_newi(n,TEST_INT_SYMBOL,123,1);
     __t_newi(n,TEST_INT_SYMBOL,124,1);
-    T *t1 = _p_make_run_tree(G_sem,if_even,n);
+    T *t1 = _p_make_run_tree(G_sem,if_even,n,NULL);
 
     __t_newi(n,TEST_INT_SYMBOL,100,1);
     T *l2 = __t_new(n,if_even,0,0,1);
@@ -1002,7 +1025,7 @@ void testProcessMulti() {
     __t_newi(l2,TEST_INT_SYMBOL,124,1);
     __t_newi(n,TEST_INT_SYMBOL,314,1);
 
-    T *t2 = _p_make_run_tree(G_sem,if_even,n);
+    T *t2 = _p_make_run_tree(G_sem,if_even,n,NULL);
 
     // add them to a processing queue
     spec_is_equal(q->contexts_count,0);
@@ -1083,7 +1106,7 @@ void testRunTreeTemplate() {
 
     spec_is_str_equal(t2s(sm),"(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (PING))) (SEMANTIC_LINK (USAGE:RESPONSE_DATA) (REPLACEMENT_VALUE (PING))) (SEMANTIC_LINK (ROLE:RESPONDER) (REPLACEMENT_VALUE (TO_ADDRESS (RECEPTOR_ADDR:3)))) (SEMANTIC_LINK (GOAL:REQUEST_HANDLER) (REPLACEMENT_VALUE (process:NOOP))))");
 
-    T *r = __p_make_run_tree(G_sem,send_request,params,sm);
+    T *r = _p_make_run_tree(G_sem,send_request,params,sm);
     spec_is_str_equal(t2s(r),"(RUN_TREE (process:REQUEST (TO_ADDRESS (RECEPTOR_ADDR:3)) (PING) (PING) (PING) (process:NOOP)) (PARAMS))");
     _t_free(r);
     _t_free(sm);

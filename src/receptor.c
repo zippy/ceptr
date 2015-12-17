@@ -669,16 +669,18 @@ void __r_test_expectation(Receptor *r,T *expectation,T *signal) {
         }
         else {
             Process p = *(Process*) _t_surface(action);
-            T *params = _t_rclone(_t_child(expectation,ExpectationParamsIdx));  // _p_make_run_tree assumes rT nodes
+
+            // _p_make_run_tree assumes rT nodes
+            T *params = _t_rclone(_t_child(expectation,ExpectationParamsIdx));
             _p_fill_from_match(params,m,signal_contents);
             T *sm = _t_child(expectation,ExpectationSemanticMapIdx);
             if (sm) sm = _t_clone(sm);
             debug(D_SIGNALS,"creating a run tree for action %s with params %s\n",_sem_get_name(r->sem,p),_t2s(r->sem,params));
             //@todo check the signature?
-            rt = __p_make_run_tree(r->sem,p,params,sm);
+            rt = _p_make_run_tree(r->sem,p,params,sm);
             _t_free(params);
             _t_add(signal,rt);
-            _p_addrt2q(q,rt);
+            __p_addrt2q(q,rt,sm);
         }
         _t_free(m);
     }

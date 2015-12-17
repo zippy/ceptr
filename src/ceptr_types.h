@@ -186,6 +186,7 @@ struct R {
     int idx;          ///< node pointers child index  (cached here for efficiency)
     R *caller;        ///< a pointer to the context that invoked this run-tree/context
     R *callee;        ///< a pointer to the context we've invoked
+    T *sem_map;       ///< semantic map in effect for this context
 };
 
 // ** structure to hold in process accounting

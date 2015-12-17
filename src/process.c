@@ -83,13 +83,14 @@ void _p_fill_from_match(T *t,T *match_results,T *match_tree) {
  *
  * @todo add SIGNATURE_SYMBOL for setting up process signatures by Symbol not just Structure
  */
-Error __p_check_signature(SemTable *sem,Process p,T *code) {
+Error __p_check_signature(SemTable *sem,Process p,T *code,T *sem_map) {
     T *processes = _sem_get_defs(sem,p);
     T *def = _d_get_process_code(processes,p);
     T *signature = _t_child(def,ProcessDefSignatureIdx);
     int sigs = _t_children(signature);
     int input_sigs = 0;
     int i;
+
     for(i=SignatureOutputSigIdx+1;i<=sigs;i++) { // skip the output signature which is always first
         T *s = _t_child(signature,i);
         Symbol sym = _t_symbol(s);
@@ -111,15 +112,34 @@ Error __p_check_signature(SemTable *sem,Process p,T *code) {
             }
         }
         else if (semeq(sym,TEMPLATE_SIGNATURE)) {
-            T *sm = _t_child(code,i-1);
-            if (!sm || !semeq(_t_symbol(sm),SEMANTIC_MAP))
+            if (!sem_map)
                 return missingSemanticMapReductionErr;
             int c = _t_children(s);
-            if (c != _t_children(sm)) return mismatchSemanticMapReductionErr;
-            // we have the right number of slots, so now check if all the expected slots
-            // are represented in the ones provided in the semantic map
-            // @todo!!
+            int map_children = _t_children(sem_map);
+            if (map_children < c ) return mismatchSemanticMapReductionErr;
 
+            // build up hashes of all the semantic references in our map
+            // @todo cache this someplace so we don't need to do it every time
+            TreeHash mapped[map_children];
+            int j;
+            for(j=1;j<=map_children;j++) {
+                T *t = _t_child(_t_child(sem_map,j),SemanticMapSemanticRefIdx);
+                mapped[j-1] = _t_hash(sem,t);
+            }
+            // now scan through the signature and see if all it's expected slots are actually mapped
+            // @todo convert this to a true hash lookup algorithm
+            for(j=1;j<=c;j++) {
+                T *t = _t_child(_t_child(s,j),1);
+                TreeHash h = _t_hash(sem,t);
+                int k;
+                for (k=0;k<map_children;k++) {
+                    if (mapped[k] == h) {
+                        break;
+                    }
+                }
+                // not found so return a mismatch error
+                if (k == map_children) return mismatchSemanticMapReductionErr;
+            }
         }
     }
     int param_count = _t_children(code);
@@ -639,7 +659,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
 /**
  * create a run-tree execution context.
  */
-R *__p_make_context(T *run_tree,R *caller,int process_id) {
+R *__p_make_context(T *run_tree,R *caller,int process_id,T *sem_map) {
     R *context = malloc(sizeof(R));
     context->id = process_id;
     context->state = Eval;
@@ -650,6 +670,7 @@ R *__p_make_context(T *run_tree,R *caller,int process_id) {
     context->parent = run_tree;
     context->idx = 1;
     context->caller = caller;
+    context->sem_map = sem_map;
     if (caller) caller->callee = context;
     return context;
 }
@@ -751,7 +772,7 @@ Error _p_unblock(Q *q,int id) {
  */
 Error _p_reduce(SemTable *sem,T *rt) {
     T *run_tree = rt;
-    R *context = __p_make_context(run_tree,0,0);
+    R *context = __p_make_context(run_tree,0,0,NULL);
     Error e;
 
     // build a fake Receptor and Q on the stack so _p_step will work
@@ -902,12 +923,15 @@ Error _p_step(Q *q, R **contextP) {
                         // if it's user defined process then we check the signature and then make
                         // a new run-tree run that process
 
-                        Error e = __p_check_signature(q->r->sem,s,np);
+                        Error e = __p_check_signature(q->r->sem,s,np,context->sem_map);
                         if (e) context->state = e;
                         else {
-                            T *run_tree = _p_make_run_tree(q->r->sem,s,np);
+                            T *run_tree = _p_make_run_tree(q->r->sem,s,np,context->sem_map);
                             context->state = Pushed;
-                            *contextP = __p_make_context(run_tree,context,context->id);
+                            // @todo for now we just are just passing the semantic map from one
+                            // context to the next, but I'm pretty sure we're going to need a way
+                            // for folks to modify this on the fly as processes are called
+                            *contextP = __p_make_context(run_tree,context,context->id,context->sem_map);
                             debug(D_REDUCE,"New context for %s: %s\n\n",_sem_get_name(q->r->sem,s),_t2s(q->r->sem,run_tree));
                         }
                     }
@@ -1044,7 +1068,7 @@ T *__p_build_run_tree(T* code,int num_params,...) {
  *
  * @returns T RUN_TREE tree
  */
-T *__p_make_run_tree(SemTable *sem,Process p,T *params,T *sem_map) {
+T *_p_make_run_tree(SemTable *sem,Process p,T *params,T *sem_map) {
     if (!is_process(p)) {
         raise_error("not a Process!");
     }
@@ -1059,7 +1083,7 @@ T *__p_make_run_tree(SemTable *sem,Process p,T *params,T *sem_map) {
     // we'll just add the params right onto the process node
     // and leave the run tree params empty
     if (semeq(_t_symbol(code),NULL_PROCESS)) {
-        ps = __t_new(t,p,0,0,1);
+        ps = __t_new(t,p,0,0,true);
         _t_newr(t,PARAMS);
     }
     else {
@@ -1139,11 +1163,11 @@ int G_next_process_id = 0;
  *
  * @todo make thread safe.  currently you shouldn't call this if the Q is being actively reduced
  */
-Qe *_p_addrt2q(Q *q,T *run_tree) {
+Qe *__p_addrt2q(Q *q,T *run_tree,T *sem_map) {
     Qe *n = malloc(sizeof(Qe));
     n->id = ++G_next_process_id;
     n->prev = NULL;
-    n->context = __p_make_context(run_tree,0,n->id);
+    n->context = __p_make_context(run_tree,0,n->id,sem_map);
     n->accounts.elapsed_time = 0;
     debug(D_LOCK,"addrt2q LOCK\n");
     pthread_mutex_lock(&q->mutex);

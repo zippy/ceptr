@@ -32,9 +32,9 @@ typedef struct ReplicationState {
 } ReplicationState;
 
 T *defaultRequestUntil();
-R *__p_make_context(T *run_tree,R *caller,int process_id);
+R *__p_make_context(T *run_tree,R *caller,int process_id,T *sem_map);
 Error _p_step(Q *q, R **contextP);
-Error __p_check_signature(SemTable *sem,Process p,T *params);
+Error __p_check_signature(SemTable *sem,Process p,T *params,T *sem_map);
 Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q);
 void _p_enqueue(Qe **listP,Qe *e);
 Qe *__p_find_context(Qe *e,int process_id);
@@ -43,11 +43,11 @@ Error _p_unblock(Q *q,int id);
 Error _p_reduce(SemTable *sem,T *run_tree);
 Q *_p_newq(Receptor *r);
 void _p_freeq(Q *q);
-Qe *_p_addrt2q(Q *q,T *t);
+#define _p_addrt2q(q,t) __p_addrt2q(q,t,NULL);
+Qe *__p_addrt2q(Q *q,T *t,T *sem_map);
 Error _p_reduceq(Q *q);
 void *_p_reduceq_thread(void *arg);
-#define _p_make_run_tree(sem,p,params) __p_make_run_tree(sem,p,params,NULL)
-T *__p_make_run_tree(SemTable *sem,Process p,T *params,T *sem_map);
+T *_p_make_run_tree(SemTable *sem,Process p,T *params,T *sem_map);
 T *__p_build_run_tree(T* code,int num_params,...);
 void _p_cleanup(Q *q);
 #define __p_make_signature(output_label,output_type,output_sem,...) __p_make_form(PROCESS_SIGNATURE,output_label,output_type,output_sem,__VA_ARGS__)

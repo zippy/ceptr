@@ -132,7 +132,7 @@ void testProfileExample() {
     T *params = _t_new_root(PARAMS);
     _t_add(params,t);
 
-    T *r = _p_make_run_tree(G_sem,p,params);
+    T *r = _p_make_run_tree(G_sem,p,params,NULL);
     wjson(sem,r,"profile",0);
 
     //    spec_is_str_equal(_t2s(&test_profile_defs,r),"");
