@@ -61,6 +61,7 @@ void def_sys() {
 
 
 void sys_free() {
+    _t_free(_t_root(G_sem->stores[0].definitions));
     _sem_free(G_sem);
 }
 

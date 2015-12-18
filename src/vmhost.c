@@ -69,6 +69,7 @@ VMHost * _v_new() {
 void _v_free(VMHost *v) {
     _r_free(v->r);
     _s_free(v->installed_receptors);
+    _t_free(_t_root(v->sem->stores[0].definitions));
     _sem_free(v->sem);
     free(v);
 }
