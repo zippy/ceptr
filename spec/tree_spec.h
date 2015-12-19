@@ -620,6 +620,22 @@ void testTreeTemplate() {
 
     _t_free(template);
     _t_free(sem_map);
+
+    // test filling a slot that has specified children (which might also have SLOT)
+    template = _t_build(G_sem,0,SLOT,GOAL,REQUEST_HANDLER,SLOT_CHILDREN,TEST_INT_SYMBOL,1,SLOT,USAGE,REQUEST_DATA,NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);
+    spec_is_str_equal(t2s(template),"(SLOT (GOAL:REQUEST_HANDLER) (SLOT_CHILDREN (TEST_INT_SYMBOL:1) (SLOT (USAGE:REQUEST_DATA))))");
+    sem_map = _t_build(G_sem,0,SEMANTIC_MAP,
+                       SEMANTIC_LINK,USAGE,REQUEST_DATA,REPLACEMENT_VALUE,TEST_INT_SYMBOL,32,NULL_SYMBOL,NULL_SYMBOL,
+                       SEMANTIC_LINK,GOAL,REQUEST_HANDLER,REPLACEMENT_VALUE,ACTUAL_PROCESS,ADD_INT,NULL_SYMBOL,NULL_SYMBOL,
+                       NULL_SYMBOL);
+    spec_is_str_equal(t2s(sem_map),"(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (TEST_INT_SYMBOL:32))) (SEMANTIC_LINK (GOAL:REQUEST_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:ADD_INT))))");
+    _t_fill_template(template,sem_map);
+    spec_is_str_equal(t2s(template),"(process:ADD_INT (TEST_INT_SYMBOL:1) (TEST_INT_SYMBOL:32))");
+
+    _t_free(template);
+    _t_free(sem_map);
+
+
     //! [testTreeTemplate]
 }
 

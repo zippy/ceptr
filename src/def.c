@@ -277,8 +277,17 @@ size_t _d_get_structure_size(SemTable *sem,Structure s,void *surface) {
 // extract the template signature from the code
 void __d_tsig(SemTable *sem,T *code, T *tsig,TreeHash *hashes) {
     if (semeq(_t_symbol(code),SLOT)) {
+        TreeHash h;
+        T *c = NULL;
+        // slot children aren't part of the signature!!
+        if (c = _t_find(code,SLOT_CHILDREN)) {
+            int i = _t_node_index(c);
+            c = _t_clone(code);
+            _t_free(_t_detach_by_idx(c,i));
+            _t_hash(sem,c);
+        }
+        else h = _t_hash(sem,code);
         // check for duplicates
-        TreeHash h = _t_hash(sem,code);
         int i=0;
         while(hashes[i] && hashes[i]!=h) {
             i++;
@@ -287,10 +296,12 @@ void __d_tsig(SemTable *sem,T *code, T *tsig,TreeHash *hashes) {
         // if its unique then add it.
         if (!hashes[i]) {
             hashes[i] = h;
-            T *t = _t_clone(code);
-            t->contents.symbol = EXPECTED_SLOT;
-            _t_add(tsig,t);
+            if (!c) c = _t_clone(code); // clone it if it wasn't cloned above
+            c->contents.symbol = EXPECTED_SLOT;
+            _t_add(tsig,c);
+            c = NULL;
         }
+        if (c) _t_free(c);
     }
     else {
         DO_KIDS(code,__d_tsig(sem,_t_child(code,i),tsig,hashes));

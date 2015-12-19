@@ -724,16 +724,39 @@ T *_t_build(SemTable *sem,T *parent,...) {
 
 /**
  * replace SLOTS in a template with the SEMANTIC_LINKs in a SEMANTIC_MAP tree
+#include "semtrex.h"
+// used to resolve a semantic link that links kind to kind.
+T *__t_find_actual(T *sem_map,Symbol actual_kind,T *replacement_kind) {
+    T *result = NULL;
+    T *stx = _t_new_root(SEMTREX_WALK);
+    T *l = _sl(stx,SEMANTIC_LINK);
+    T *seq = _t_newr(l,SEMTREX_SEQUENCE);
+    T *x = _t_newr(seq,SEMTREX_VALUE_LITERAL);
+    T *k = _t_clone(replacement_kind);
+    _t_add(x,k);
+    x = _sl(seq,REPLACEMENT_VALUE);
+    T *g = _t_news(x,SEMTREX_GROUP,actual_kind);
+    x = _sl(g,actual_kind);
+    T *mr;
+    if (_t_matchr(stx,sem_map,&mr)) {
+        result = _stx_get_matched_node(actual_kind,mr,sem_map,NULL);
+        debug(D_TREE,"   re-mapping %s ->",t2s(replacement_kind));
+        debug(D_TREE,"%s\n",t2s(result));
+    }
+    _t_free(stx);
+    _t_free(mr);
+    return result;
+}
  *
  * @param[in,out] template the tree with SLOTs to be filled
- * @param[in] links tree of type SEMANTIC_MAP
+ * @param[in] sem_map mappings used to fill the template
  *
  * @note the template is modified in place, so the caller may need to clone a source template
  *
  * <b>Examples (from test suite):</b>
  * @snippet spec/tree_spec.h testTreeTemplate
 */
-void __t_fill_template(T *template, T *links,bool as_run_node) {
+void __t_fill_template(T *template, T *sem_map,bool as_run_node) {
     if (!template) return;
     bool is_run_node = (template->context.flags |= TFLAG_RUN_NODE) || as_run_node;
     if (semeq(_t_symbol(template),SLOT)) {
@@ -742,33 +765,66 @@ void __t_fill_template(T *template, T *links,bool as_run_node) {
         Symbol valsym = *(Symbol *)_t_surface(t);
         T *v = _t_child(template,SlotValueOfIdx);
         Symbol valof;
+        T *children = NULL;
         if (v) {
-            valof = *(Symbol *)_t_surface(v);
+            Symbol vsym = _t_symbol(v);
+            if (semeq(vsym,SLOT_IS_VALUE_OF))
+                valof = *(Symbol *)_t_surface(v);
+            else if (semeq(vsym,SLOT_CHILDREN)) {
+                __t_fill_template(v,sem_map,as_run_node);
+                _t_detach_by_ptr(template,v);
+                children = v;
+                v = NULL;
+            }
+            else {
+                raise_error("expecting SLOT_IS_VALUE_OF or SLOT_CHILDREN, got %s",_sem_get_name(G_sem,vsym));
+            }
         }
-
-        // scan all the links for semantic refs that match this slot.
+        debug(D_TREE,"replacing %s\n",t2s(template));
+        // scan all the sem_map for semantic refs that match this slot.
         // @todo convert this to a hashtable based implementation, probably on the treehash of the semantic ref
-        int i,c = _t_children(links);
+        int i,c = _t_children(sem_map);
         for(i=1;i<=c;i++) {
-            T *m = _t_child(links,i);
+            T *m = _t_child(sem_map,i);
             T *ref = _t_child(m,SemanticMapSemanticRefIdx);
             if (semeq(sym,_t_symbol(ref)) && semeq(valsym,*(Symbol *)_t_surface(ref))) {
+                debug(D_TREE,"with %s\n",t2s(m));
                 T *r = NULL;
                 T *replacement_value = _t_child(_t_child(m,SemanticMapReplacementValIdx),1);
                 if (semeq(sym,GOAL) && !v) { // treat a VALUE_OF slot as a symbol not a process
                     SemanticID p = _t_symbol(replacement_value);
                     if (!is_process(p)) {
-                        if (!(semeq(ACTUAL_PROCESS,p))) {
-                            puts(t2s(replacement_value));
-                            raise_error("only implemented ACTUAL_PROCESS for GOAL replacement values.");
+                        if (semeq(ACTUAL_PROCESS,p)) {
+                            p = *(Process *)_t_surface(replacement_value);
                         }
-                        p = *(Process *)_t_surface(replacement_value);
+                        else if (semeq(GOAL,p)) {
+                            // if the replacement value is a goal, we need to look for
+                            // it's actual value in the map
+                            T *x = __t_find_actual(sem_map,ACTUAL_PROCESS,replacement_value);
+                            if (!x)
+                                raise_error("unable to find actual for %s",t2s(m));
+                            p = *(Process *)_t_surface(x);
+                        }
+                        else {
+                            raise_error("expecting GOAL or ACTUAL_PROCESS for replacement values. got: %s",t2s(m));
+                        }
                     }
                     r = __t_new(0,p,0,0,is_run_node);
                     if (is_run_node)
                         ((rT *)r)->cur_child = RUN_TREE_NOT_EVAULATED;
                 }
                 else {
+                    SemanticID rsid = _t_symbol(replacement_value);
+                    // if the replacement value is a kind try to re-resolve from the map
+                    T *x = NULL;
+                    if (semeq(rsid,ROLE)) {
+                        T *x = __t_find_actual(sem_map,ACTUAL_RECEPTOR,replacement_value);
+                        if (x) replacement_value = x;
+                    }
+                    else if (semeq(rsid,USAGE)) {
+                        T *x = __t_find_actual(sem_map,ACTUAL_SYMBOL,replacement_value);
+                        if (x) replacement_value = x;
+                    }
                     if (v) {
                         // in the value case the replacement node is of the type specified in the template
                         // and the "value" is either the surface of the "ACTUAL_X" or its children
@@ -791,13 +847,19 @@ void __t_fill_template(T *template, T *links,bool as_run_node) {
                             r = _t_clone(replacement_value);
                     }
                 }
+                if (children) {
+                    T *t;
+                    while(t = _t_detach_by_idx(children,1))
+                        _t_add(r,t);
+                    _t_free(children);
+                }
                 _t_replace_node(template,r);
                 break;
             }
         }
     }
     else {
-        DO_KIDS(template,_t_fill_template(_t_child(template,i),links));
+        DO_KIDS(template,_t_fill_template(_t_child(template,i),sem_map));
     }
 }
 
@@ -923,6 +985,21 @@ T * _t_next_sibling(T *t) {
     }
     return 0;
 }
+
+/**
+ * search the children of a tree for symbol matching sym
+ * @param[in] t the tree
+ * @param[in] sym the SemanticID to search for
+ * @returns the found node or NULL
+ */
+T *_t_find(T *t,SemanticID sym) {
+    T *p;
+    DO_KIDS(t,
+            if (semeq(_t_symbol(p=_t_child(t,i)),sym)) return p;
+            );
+    return NULL;
+}
+
 
 /*****************  Tree path based accesses */
 /**

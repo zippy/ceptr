@@ -78,6 +78,7 @@ T *_t_child(T *t,int i);
 T * _t_root(T *t);
 T * _t_next_sibling(T *t);
 int _t_node_index(T *t);
+T *_t_find(T *t,Symbol sym);
 
 /*****************  Tree path based accesses */
 int _t_path_equal(int *p1,int *p2);

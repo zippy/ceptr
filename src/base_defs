@@ -127,6 +127,8 @@ Symbol: PROCESSES,[*PROCESS_DEFINITION];
 Structure: SEMANTIC_REFERENCE,|{GOAL|ROLE|USAGE};
 Symbol: SLOT_IS_VALUE_OF,SYMBOL;
 Structure: SLOT_STRUCTURE,(SEMANTIC_REFERENCE,?SLOT_IS_VALUE_OF);  semantic id and optional indicator to fill the value not the structure for the element in the template that needs filling
+Symbol: SLOT_CHILDREN,[!];
+Structure: SLOT_STRUCTURE,(SEMANTIC_REFERENCE,?SLOT_IS_VALUE_OF,?SLOT_CHILDREN);  semantic id and optional indicator to fill the value not the structure for the element in the template that needs filling
 Symbol: SLOT,SLOT_STRUCTURE;
 Symbol: REPLACEMENT_VALUE,[!];        what to fill the slot with
 Symbol: SEMANTIC_LINK,[(SEMANTIC_REFERENCE,REPLACEMENT_VALUE)];   mapping between a semantic reference and replacement value, used for filling templates
