@@ -576,6 +576,10 @@ SemanticID _getBuildType(SemTable *sem,SemanticID param,Structure *stP,T **defP)
         *defP = _sem_get_def(sem,param);
         return PROCESS_SIGNATURE;
     }
+    /* if (is_protocol(param)) { */
+    /*     *defP = _sem_get_def(sem,param); */
+    /*     return PROTOCOL_SEMANTICS; */
+    /* } */
     Structure st = _sem_get_symbol_structure(sem,param);
     *stP = st;
     if (semeq(st,NULL_STRUCTURE)) {
@@ -723,7 +727,73 @@ T *_t_build(SemTable *sem,T *parent,...) {
 }
 
 /**
- * replace SLOTS in a template with the SEMANTIC_LINKs in a SEMANTIC_MAP tree
+ * another helper for building trees in c
+ *
+ * @param[in] sem current semantic contexts
+ * @param[in] parent the tree to add the built tree onto (can be NULL)
+ * @param[in] ... varargs directing the building of the tree.  See examples
+ * @returns built tree
+ *
+ * @note this function doesn't validate that built tree follows the restrictions in the definitions it just uses the definitions to know what to expect in the varargs.  Thus if you put the wrong things in the varargs it will likely segfault!  Also you can build illegal trees.  It would be possible to add an expectations layer that would see if what comes next looks ok according to what's expected as specified in the definitions.  It would also be possible to run the built tree against the semtrex produced by _d_build_def_semtrex
+ */
+T *_t_build2(SemTable *sem,T *parent,...) {
+    va_list ap;
+    va_start (ap, parent);
+    Symbol param,type,node;
+    T *t = parent;
+    bool done = false;
+    Structure st = NULL_STRUCTURE;
+    char *stn;
+    T *def,*p;
+    int level = 0;
+    while(!done) {
+        param = va_arg(ap,Symbol);
+        if (semeq(param,STX_OP)) {
+            node = va_arg(ap,Symbol);
+            type = _getBuildType(sem,node,&st,&def);
+            if (semeq(type,STRUCTURE_SYMBOL) && semeq(*(Symbol *)_t_surface(def),NULL_SYMBOL)) {
+                debug(D_TREE,"building sys structure %s\n",_sem_get_name(sem,st));
+                if (semeq(st,PROCESS) || semeq(st,SYMBOL) || semeq(st,STRUCTURE) || semeq(st,PROTOCOL)) {
+                    t = _t_news(t,node,va_arg(ap,SemanticID));
+                }
+                else if (semeq(st,INTEGER) || semeq(st,BIT)) {
+                    t = _t_newi(t,node,va_arg(ap,int));
+                }
+                else if (semeq(st,CSTRING)) {
+                    t = _t_new_str(t,node,va_arg(ap,char *));
+                }
+                else if (semeq(st,TREE_PATH)) {
+                    int path[100];
+                    int j = 0;
+                    while((path[j]=va_arg(ap,int)) != TREE_PATH_TERMINATOR) {
+                        j++;
+                        if (j==100) raise_error("path too deep!");
+                    }
+                    t = _t_new(t,node,path,sizeof(int)*(j+1));
+                }
+                else {
+                    raise_error("unimplemented surface type:%s",_sem_get_name(sem,st));
+                }
+            }
+            else {
+                t = _t_newr(t,node);
+            }
+        }
+        else if (semeq(param,STX_CP)) {
+            p = _t_parent(t);
+            if (p == parent) {done = true;break;}
+            t = p;
+        }
+        else {
+            raise_error("expecting open or close! got: %s",_sem_get_name(sem,param));
+        }
+    }
+    va_end(ap);
+    return t;
+}
+
+
+
 #include "semtrex.h"
 // used to resolve a semantic link that links kind to kind.
 T *__t_find_actual(T *sem_map,Symbol actual_kind,T *replacement_kind) {
@@ -747,6 +817,9 @@ T *__t_find_actual(T *sem_map,Symbol actual_kind,T *replacement_kind) {
     _t_free(mr);
     return result;
 }
+
+/**
+ * replace SLOTS in a template with the replacement values from links in a SEMANTIC_MAP tree
  *
  * @param[in,out] template the tree with SLOTs to be filled
  * @param[in] sem_map mappings used to fill the template

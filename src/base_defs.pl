@@ -121,14 +121,14 @@ while (my $line = <$fh>) {
     chomp $line;
     next if ($line =~ /^ *#/);       # ignore comments
     next if ($line =~ /^[ \t]*$/);   # ignore whitespace lines
-    if ($line =~ /^\s*(.*?,)\s*$/) { # if line ends in a comma assume it continues on the next line
+    if ($line =~ /^\s*([^;]*)\s*$/) { # if line ends has no semicolon assume it continues on the next line
         $def .= $1;
         next;
     }
     $line =~ s/^\s+|\s+$//;  #trim leading and trailing whitespace
     $def .= $line;
 #    print "testing $def\n";
-    if ($def =~ /(.*): *(.*?);(.*)/) {
+    if ($def =~ /(.*): (.*?);(.*)/) {
         $def = "";
         my $type = $1;
         if ($type eq 'Context') {
@@ -175,6 +175,19 @@ while (my $line = <$fh>) {
                 $params =~ /(.*?),(.*)/;
                 my $name = $1;
                 my $def = $2;
+                if ($type eq 'Data') {
+                    $def =~ s/ *\(([^(]+):([^)]+)\)/($1,$2)/g;
+                    $def =~ s/ *\(/,STX_OP,/g;
+                    $def =~ s/\)/,STX_CP,/g;
+                    #$def =~ s/ \(([^(]+):([^)]+)\)/,$1,$2,/g;
+                    #$def =~ s/\)/,NULL_SYMBOL/g;
+                    #$def =~ s/ \(/,/g;
+                    $def =~ s/,,/,/g;
+                    $def =~ s/^,(.*),$/$1/;
+                    $def =~ s/\/([0-9\/]+)/$1,TREE_PATH_TERMINATOR/g;
+                    $def =~ s/\//,/g;
+               #     $def =~ s/^\((.*)/$1/;
+                }
                 &addDef($type,$context,$name,$def,$comment);
             }
             else {

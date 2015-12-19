@@ -355,7 +355,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                     response_point = code;
                 }
                 else {
-                    raise_error("request callback not implemented");
+                    raise_error("request callback not implemented for %s",t2s(callback));
                 }
                 signal = __r_make_signal(from,to,aspect,carrier,signal_contents,0,until);
 

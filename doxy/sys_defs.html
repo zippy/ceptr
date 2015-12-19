@@ -835,10 +835,34 @@
        <div class="def-struc-def">*(<a href="ref_sys_symbols.html#PROCESS_DEFINITION">PROCESS_DEFINITION</a>)</div>
        <div class="def-comment"></div>
    </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="GOAL"></a>GOAL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
+       <div class="def-comment"> A goal stands for an intended process, thus the symbol stored in a GOAL must be limited to those that are uses of the PROCESS structure.</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="ROLE"></a>ROLE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
+       <div class="def-comment">  A role stands for an expected agent, thus the symbol stored in a ROLE must be limited to those of structure RECEPTOR_ADDRESS.</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="USAGE"></a>USAGE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
+       <div class="def-comment"> A usage stands for a(n) X of a Symbol.</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="WEAL"></a>WEAL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
+       <div class="def-comment"> A weal stands for a included protocol, the the symbol store in an WEAL must be limited to those that are uses of the PROTOCOL structure</div>
+   </div>
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
        <div class="def-name"><a name="SEMANTIC_REFERENCE"></a>SEMANTIC-REFERENCE</div>
-       <div class="def-struc-def">OR(<a href="ref_sys_symbols.html#GOAL">GOAL</a>, <a href="ref_sys_symbols.html#ROLE">ROLE</a>, <a href="ref_sys_symbols.html#USAGE">USAGE</a>)</div>
+       <div class="def-struc-def">OR(<a href="ref_sys_symbols.html#GOAL">GOAL</a>, <a href="ref_sys_symbols.html#ROLE">ROLE</a>, <a href="ref_sys_symbols.html#USAGE">USAGE</a>, <a href="ref_sys_symbols.html#WEAL">WEAL</a>)</div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">
@@ -847,10 +871,16 @@
        <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
        <div class="def-comment"></div>
    </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SLOT_CHILDREN"></a>SLOT_CHILDREN</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
        <div class="def-name"><a name="SLOT_STRUCTURE"></a>SLOT-STRUCTURE</div>
-       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#SEMANTIC_REFERENCE">SEMANTIC_REFERENCE</a>, ?(<a href="ref_sys_symbols.html#SLOT_IS_VALUE_OF">SLOT_IS_VALUE_OF</a>))</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#SEMANTIC_REFERENCE">SEMANTIC_REFERENCE</a>, ?(<a href="ref_sys_symbols.html#SLOT_IS_VALUE_OF">SLOT_IS_VALUE_OF</a>), ?(<a href="ref_sys_symbols.html#SLOT_CHILDREN">SLOT_CHILDREN</a>))</div>
        <div class="def-comment">  semantic id and optional indicator to fill the value not the structure for the element in the template that needs filling</div>
    </div>
    <div class="def-item def-symbol">
@@ -1045,24 +1075,6 @@
        <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
        <div class="def-comment"></div>
    </div>
-   <div class="def-item def-symbol">
-       <div class="def-type">Symbol:</div>
-       <div class="def-name"><a name="ROLE"></a>ROLE</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
-       <div class="def-comment">  A role stands for an expected agent, thus the symbol stored in a ROLE must be limited to those of structure RECEPTOR_ADDRESS.</div>
-   </div>
-   <div class="def-item def-symbol">
-       <div class="def-type">Symbol:</div>
-       <div class="def-name"><a name="GOAL"></a>GOAL</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
-       <div class="def-comment"> A goal stands for an intended process, thus the symbol stored in a GOAL must be limited to those that are uses of the PROCESS structure.</div>
-   </div>
-   <div class="def-item def-symbol">
-       <div class="def-type">Symbol:</div>
-       <div class="def-name"><a name="USAGE"></a>USAGE</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
-       <div class="def-comment"> A usage stands for a(n) X of a Symbol.</div>
-   </div>
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
        <div class="def-name"><a name="ONE_OR_MORE_OF_ROLE"></a>ONE-OR-MORE-OF-ROLE</div>
@@ -1081,22 +1093,16 @@
        <div class="def-sym-def"><a href="ref_sys_structures.html#ONE_OR_MORE_OF_ROLE">ONE-OR-MORE-OF-ROLE</a></div>
        <div class="def-comment"></div>
    </div>
-   <div class="def-item def-symbol">
-       <div class="def-type">Symbol:</div>
-       <div class="def-name"><a name="PATTERN_SYMBOL"></a>PATTERN_SYMBOL</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
-       <div class="def-comment"></div>
-   </div>
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
-       <div class="def-name"><a name="LIST_OF_ROLE_AND_SOURCE_AND_PATTERN_SYMBOL_AND_ACTION"></a>LIST-OF-ROLE-AND-SOURCE-AND-PATTERN-SYMBOL-AND-ACTION</div>
-       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#ROLE">ROLE</a>, <a href="ref_sys_symbols.html#SOURCE">SOURCE</a>, <a href="ref_sys_symbols.html#PATTERN_SYMBOL">PATTERN_SYMBOL</a>, <a href="ref_sys_symbols.html#ACTION">ACTION</a>)</div>
+       <div class="def-name"><a name="LIST_OF_ROLE_AND_SOURCE_AND_PATTERN_AND_ACTION"></a>LIST-OF-ROLE-AND-SOURCE-AND-PATTERN-AND-ACTION</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#ROLE">ROLE</a>, <a href="ref_sys_symbols.html#SOURCE">SOURCE</a>, <a href="ref_sys_symbols.html#PATTERN">PATTERN</a>, <a href="ref_sys_symbols.html#ACTION">ACTION</a>)</div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="EXPECT"></a>EXPECT</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_ROLE_AND_SOURCE_AND_PATTERN_SYMBOL_AND_ACTION">LIST-OF-ROLE-AND-SOURCE-AND-PATTERN-SYMBOL-AND-ACTION</a></div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_ROLE_AND_SOURCE_AND_PATTERN_AND_ACTION">LIST-OF-ROLE-AND-SOURCE-AND-PATTERN-AND-ACTION</a></div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-structure">
@@ -1159,6 +1165,12 @@
        <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
        <div class="def-comment"></div>
    </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="ACTUAL_PROTOCOL"></a>ACTUAL_PROTOCOL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#PROTOCOL">PROTOCOL</a></div>
+       <div class="def-comment"></div>
+   </div>
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
        <div class="def-name"><a name="TUPLE_OF_GOAL_AND_ACTUAL_PROCESS"></a>TUPLE-OF-GOAL-AND-ACTUAL-PROCESS</div>
@@ -1197,9 +1209,21 @@
    </div>
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="TUPLE_OF_WEAL_AND_ACTUAL_PROTOCOL"></a>TUPLE-OF-WEAL-AND-ACTUAL-PROTOCOL</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#WEAL">WEAL</a>, <a href="ref_sys_symbols.html#ACTUAL_PROTOCOL">ACTUAL_PROTOCOL</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="WHICH_PROTOCOL"></a>WHICH_PROTOCOL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TUPLE_OF_WEAL_AND_ACTUAL_PROTOCOL">TUPLE-OF-WEAL-AND-ACTUAL-PROTOCOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
        <div class="def-name"><a name="MAPPING"></a>MAPPING</div>
-       <div class="def-struc-def">OR(<a href="ref_sys_symbols.html#WHICH_PROCESS">WHICH_PROCESS</a>, <a href="ref_sys_symbols.html#WHICH_RECEPTOR">WHICH_RECEPTOR</a>, <a href="ref_sys_symbols.html#WHICH_SYMBOL">WHICH_SYMBOL</a>)</div>
-       <div class="def-comment">  maps abstract to concrete</div>
+       <div class="def-struc-def">OR(<a href="ref_sys_symbols.html#WHICH_PROCESS">WHICH_PROCESS</a>, <a href="ref_sys_symbols.html#WHICH_RECEPTOR">WHICH_RECEPTOR</a>, <a href="ref_sys_symbols.html#WHICH_SYMBOL">WHICH_SYMBOL</a>, <a href="ref_sys_symbols.html#WHICH_PROTOCOL">WHICH_PROTOCOL</a>)</div>
+       <div class="def-comment">  maps abstract semantic reference to concrete instantiation</div>
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
@@ -1245,9 +1269,21 @@
    </div>
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="PAIR_OF_WEAL"></a>PAIR-OF-WEAL</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#WEAL">WEAL</a>, <a href="ref_sys_symbols.html#WEAL">WEAL</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="WHICH_WEAL"></a>WHICH_WEAL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#PAIR_OF_WEAL">PAIR-OF-WEAL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
        <div class="def-name"><a name="LINKING"></a>LINKING</div>
-       <div class="def-struc-def">OR(<a href="ref_sys_symbols.html#WHICH_GOAL">WHICH_GOAL</a>, <a href="ref_sys_symbols.html#WHICH_ROLE">WHICH_ROLE</a>, <a href="ref_sys_symbols.html#WHICH_USAGE">WHICH_USAGE</a>)</div>
-       <div class="def-comment"> links two abstract role/goal/usage</div>
+       <div class="def-struc-def">OR(<a href="ref_sys_symbols.html#WHICH_GOAL">WHICH_GOAL</a>, <a href="ref_sys_symbols.html#WHICH_ROLE">WHICH_ROLE</a>, <a href="ref_sys_symbols.html#WHICH_USAGE">WHICH_USAGE</a>, <a href="ref_sys_symbols.html#WHICH_WEAL">WHICH_WEAL</a>)</div>
+       <div class="def-comment"> links two abstract semantic references (role/goal/usage/weal).</div>
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
@@ -1275,14 +1311,14 @@
    </div>
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
-       <div class="def-name"><a name="LIST_OF_ZERO_OR_MORE_OF_ROLE_AND_ZERO_OR_MORE_OF_GOAL_AND_ZERO_OR_MORE_OF_USAGE"></a>LIST-OF-ZERO-OR-MORE-OF-ROLE-AND-ZERO-OR-MORE-OF-GOAL-AND-ZERO-OR-MORE-OF-USAGE</div>
-       <div class="def-struc-def">SEQ(*(<a href="ref_sys_symbols.html#ROLE">ROLE</a>), *(<a href="ref_sys_symbols.html#GOAL">GOAL</a>), *(<a href="ref_sys_symbols.html#USAGE">USAGE</a>))</div>
+       <div class="def-name"><a name="LIST_OF_ZERO_OR_MORE_OF_ROLE_AND_ZERO_OR_MORE_OF_GOAL_AND_ZERO_OR_MORE_OF_USAGE_AND_ZERO_OR_MORE_OF_WEAL"></a>LIST-OF-ZERO-OR-MORE-OF-ROLE-AND-ZERO-OR-MORE-OF-GOAL-AND-ZERO-OR-MORE-OF-USAGE-AND-ZERO-OR-MORE-OF-WEAL</div>
+       <div class="def-struc-def">SEQ(*(<a href="ref_sys_symbols.html#ROLE">ROLE</a>), *(<a href="ref_sys_symbols.html#GOAL">GOAL</a>), *(<a href="ref_sys_symbols.html#USAGE">USAGE</a>), *(<a href="ref_sys_symbols.html#WEAL">WEAL</a>))</div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="PROTOCOL_SEMANTICS"></a>PROTOCOL_SEMANTICS</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_ZERO_OR_MORE_OF_ROLE_AND_ZERO_OR_MORE_OF_GOAL_AND_ZERO_OR_MORE_OF_USAGE">LIST-OF-ZERO-OR-MORE-OF-ROLE-AND-ZERO-OR-MORE-OF-GOAL-AND-ZERO-OR-MORE-OF-USAGE</a></div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_ZERO_OR_MORE_OF_ROLE_AND_ZERO_OR_MORE_OF_GOAL_AND_ZERO_OR_MORE_OF_USAGE_AND_ZERO_OR_MORE_OF_WEAL">LIST-OF-ZERO-OR-MORE-OF-ROLE-AND-ZERO-OR-MORE-OF-GOAL-AND-ZERO-OR-MORE-OF-USAGE-AND-ZERO-OR-MORE-OF-WEAL</a></div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-structure">
@@ -2100,6 +2136,12 @@
        <div class="def-sym-def"><a href="ref_sys_structures.html#PROCESS">PROCESS</a></div>
        <div class="def-comment"></div>
    </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="backnforth"></a>backnforth</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#INTERACTION">INTERACTION</a></div>
+       <div class="def-comment"></div>
+   </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
        <div class="def-name"><a name="send_request"></a>send_request</div>
@@ -2117,7 +2159,7 @@
    <div class="def-item def-protocol">
        <div class="def-type">Protocol:</div>
        <div class="def-name"><a name="REQUESTING"></a>REQUESTING</div>
-       <div class="def-protocol-def">ROLE,REQUESTER,ROLE,RESPONDER,GOAL,REQUEST_HANDLER,GOAL,RESPONSE_HANDLER,USAGE,REQUEST_DATA,USAGE,RESPONSE_DATA,INTERACTION,"backnforth",INITIATE,REQUESTER,RESPONDER,req_action,EXPECT,RESPONDER,REQUESTER,resp_pattern,resp_action</div>
+       <div class="def-protocol-def">req_def</div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">
@@ -2160,7 +2202,7 @@
    <div class="def-item def-protocol">
        <div class="def-type">Protocol:</div>
        <div class="def-name"><a name="RECOGNIZE"></a>RECOGNIZE</div>
-       <div class="def-protocol-def">INCLUSION,REQUESTING,WHICH_ROLE,REQUESTER,RECOGNIZER,WHICH_ROLE,RESPONDER,RECOGNIZEE,WHICH_GOAL,REQUEST_HANDLER,RECOGNITION,WHICH_SYMBOL,REQUEST_DATA,are_you,WHICH_SYMBOL,RESPONSE_DATA,i_am,WHICH_PROCESS,RESPONSE_HANDLER,fill_i_am</div>
+       <div class="def-protocol-def">recog_def</div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">
@@ -2224,10 +2266,16 @@
        <div class="def-sig-out">response id(SYMBOL:<a href="ref_sys_symbols.html#SIGNAL_UUID">SIGNAL_UUID</a>)</div>
        <div class="def-comment"><i>respond with yup</i></div>
    </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="alive"></a>alive</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#INTERACTION">INTERACTION</a></div>
+       <div class="def-comment"></div>
+   </div>
    <div class="def-item def-protocol">
        <div class="def-type">Protocol:</div>
        <div class="def-name"><a name="ALIVE"></a>ALIVE</div>
-       <div class="def-protocol-def">ROLE,SERVER,ROLE,CLIENT,GOAL,HANDLER,INTERACTION,"alive",EXPECT,SERVER,CLIENT,pattern1,action1,EXPECT,CLIENT,SERVER,pattern2,action2</div>
+       <div class="def-protocol-def">alive_def</div>
        <div class="def-comment"></div>
    </div>
 </div>

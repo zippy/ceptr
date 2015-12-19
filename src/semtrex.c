@@ -706,7 +706,8 @@ T *_stx_get_matched_node(Symbol s,T *match_results,T *match_tree,int *sibs) {
         raise_error("expected to have match!");
     }
     int *path = (int *)_t_surface(_t_child(m,SemtrexMatchPathIdx));
-    *sibs = *(int*)_t_surface(_t_child(m,SemtrexMatchSibsIdx));
+    if (sibs)
+        *sibs = *(int*)_t_surface(_t_child(m,SemtrexMatchSibsIdx));
     T *x = _t_get(match_tree,path);
 
     if (!x) {

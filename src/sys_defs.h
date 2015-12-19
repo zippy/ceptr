@@ -44,8 +44,8 @@ char * G_label;
 #define sT_PCNT(str) _t_news(0,SYMBOL_OF_STRUCTURE,str)
 #define sT_BANG _t_newr(0,STRUCTURE_ANYTHING)
 
-#define sProt(ctx,name,...) {T *def=_o_make_protocol_def(sem,ctx,"" #name "",__VA_ARGS__,NULL_SYMBOL);name = _d_define_protocol(sem,def,ctx);}
-#define sData(ctx,name,...) T *name=_t_build(sem,0,__VA_ARGS__,NULL_SYMBOL);
+#define sProt(ctx,name,def) {_o_add_label("" #name "",def);name = _d_define_protocol(sem,def,ctx);}
+#define sData(ctx,name,...) T *name=_t_build2(sem,0,__VA_ARGS__);
 
 T *sT_(SemTable *sem,Symbol sym,int num_params,...);
 

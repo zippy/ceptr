@@ -1107,7 +1107,7 @@ void testRunTreeTemplate() {
     spec_is_str_equal(t2s(sm),"(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (PING))) (SEMANTIC_LINK (USAGE:RESPONSE_DATA) (REPLACEMENT_VALUE (PING))) (SEMANTIC_LINK (ROLE:RESPONDER) (REPLACEMENT_VALUE (TO_ADDRESS (RECEPTOR_ADDR:3)))) (SEMANTIC_LINK (GOAL:REQUEST_HANDLER) (REPLACEMENT_VALUE (process:NOOP))))");
 
     T *r = _p_make_run_tree(G_sem,send_request,params,sm);
-    spec_is_str_equal(t2s(r),"(RUN_TREE (process:REQUEST (TO_ADDRESS (RECEPTOR_ADDR:3)) (PING) (PING) (PING) (process:NOOP)) (PARAMS))");
+    spec_is_str_equal(t2s(r),"(RUN_TREE (process:NOOP (process:REQUEST (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:backnforth) (PING) (CARRIER:backnforth))) (PARAMS))");
     _t_free(r);
     _t_free(sm);
 }

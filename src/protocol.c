@@ -14,15 +14,11 @@
 #include "debug.h"
 
 extern VMHost *G_vm;
-// search the children of a tree for symbol matching sym
-T *_t_find_child(T *t,Symbol sym) {
-    T *p;
-    DO_KIDS(t,
-            puts(_sem_get_name(G_vm->r->sem,_t_symbol(_t_child(t,i))));
-            if (semeq(_t_symbol(p=_t_child(t,i)),sym)) return p;
 
-            );
-    return NULL;
+void *_o_add_label(char *label,T *def) {
+    T *l = _t_new_str(0,PROTOCOL_LABEL,label);
+    int path[2] = {1,TREE_PATH_TERMINATOR};
+    _t_insert_at(def,path,l);
 }
 
 /**
@@ -366,7 +362,7 @@ T * _o_resolve(SemTable *sem,T *def, T *sem_map){
  */
 void _o_express_role(Receptor *r,Protocol protocol,Symbol role,Aspect aspect,T *bindings) {
     T *p = _sem_get_def(r->sem,protocol);
-    if (!p) raise_error("protocol not found");
+    if (!p) raise_error("protocol %s not found",_sem_get_name(r->sem,protocol));
     T *sem_map = _t_new_root(SEMANTIC_MAP);
     p = _o_unwrap(r->sem,p,sem_map);  // creates a cloned, uwrapped protocol def.
     if (bindings) {
@@ -384,7 +380,8 @@ void _o_express_role(Receptor *r,Protocol protocol,Symbol role,Aspect aspect,T *
     int i,c=_t_children(p);
     for(i=1;i<=c;i++) {
         t = _t_child(p,i);
-        if (semeq(_sem_get_symbol_structure(r->sem,_t_symbol(t)),INTERACTION)) {
+        Symbol interaction = _t_symbol(t);
+        if (semeq(_sem_get_symbol_structure(r->sem,interaction),INTERACTION)) {
             int j;
             int b = _t_children(t);
             for(j=1;j<=b;j++) {
@@ -400,7 +397,7 @@ void _o_express_role(Receptor *r,Protocol protocol,Symbol role,Aspect aspect,T *
                             raise_error("binding missing for GOAL:%s in %s",_sem_get_name(r->sem,*(SemanticID *)_t_surface(a)),_t2s(r->sem,x));
                         }
                         T *sm = sem_map ? _t_clone(sem_map) : NULL;
-                        T *e = __r_build_expectation(protocol,pattern,a,0,0,sm);
+                        T *e = __r_build_expectation(interaction,pattern,a,0,0,sm);
                         debug(D_PROTOCOL,"express %s adds expectation: %s\n",_sem_get_name(r->sem,role),_t2s(r->sem,e));
                         __r_add_expectation(r,aspect,e);
                     }
@@ -412,5 +409,38 @@ void _o_express_role(Receptor *r,Protocol protocol,Symbol role,Aspect aspect,T *
     if (unbound) _t_free(unbound);
     if (sem_map) _t_free(sem_map);
 }
+
+/**
+ * initiate the first signal in a protocol interaction
+ *
+ * @param[in] receptor initiating the protocol interaction
+ * @param[in] protocol which protocol
+ * @param[in] interaction which interaction in the protocol
+ * @param[in] bindings tree of PROTOCOL_BINDINGS
+ */
+void _o_initiate(Receptor *r,SemanticID protocol,SemanticID interaction,T *bindings) {
+    T *p = _sem_get_def(r->sem,protocol);
+    if (!p) raise_error("protocol %s not found",_sem_get_name(r->sem,protocol));
+    T *sem_map = _t_new_root(SEMANTIC_MAP);
+    p = _o_unwrap(r->sem,p,sem_map);  // creates a cloned, uwrapped protocol def.
+    if (bindings) {
+        _o_bindings2sem_map(bindings,sem_map);
+    }
+    T *ia = _t_find(p,interaction);
+    if (!ia) raise_error("interaction %s not found",_sem_get_name(r->sem,interaction));
+    T *initiate = _t_find(ia,INITIATE);
+    if (!initiate) raise_error("INITIATE not found in %s ",_sem_get_name(r->sem,interaction));
+    //@todo somehow check that we've expressed the role in INITIATE
+
+    T *action = _t_child(initiate,InitiateActionIdx);
+    Process proc = *(Process*) _t_surface(action);
+    T *params = _t_new_root(PARAMS);  //@todo fix this, would should probably get params from the INITIATE?
+    T *rt = _p_make_run_tree(r->sem,proc,params,sem_map);
+    _t_free(params);
+    __p_addrt2q(r->q,rt,sem_map);
+
+    _t_free(p);
+}
+
 
 /** @}*/

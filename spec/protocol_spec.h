@@ -5,12 +5,9 @@
  */
 
 #include "../src/protocol.h"
-
 void testProtocolRequesting() {
-
     spec_is_str_equal(t2s(_sem_get_def(G_sem,REQUESTING)),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL:REQUESTING) (PROTOCOL_SEMANTICS (ROLE:REQUESTER) (ROLE:RESPONDER) (GOAL:REQUEST_HANDLER) (GOAL:RESPONSE_HANDLER) (USAGE:REQUEST_DATA) (USAGE:RESPONSE_DATA)) (backnforth (INITIATE (ROLE:REQUESTER) (DESTINATION (ROLE:RESPONDER)) (ACTION:send_request)) (EXPECT (ROLE:RESPONDER) (SOURCE (ROLE:REQUESTER)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SLOT (USAGE:REQUEST_DATA) (SLOT_IS_VALUE_OF:SEMTREX_SYMBOL)))) (ACTION:send_response))))");
-
-    spec_is_str_equal(t2s(_sem_get_def(G_sem,send_request)),"(PROCESS_DEFINITION (PROCESS_NAME:send_request) (PROCESS_INTENTION:send request) (process:REQUEST (SLOT (ROLE:RESPONDER) (SLOT_IS_VALUE_OF:TO_ADDRESS)) (SLOT (USAGE:REQUEST_DATA)) (SLOT (USAGE:REQUEST_DATA)) (SLOT (USAGE:RESPONSE_DATA)) (SLOT (GOAL:REQUEST_HANDLER))) (PROCESS_SIGNATURE (OUTPUT_SIGNATURE (SIGNATURE_LABEL:response) (SIGNATURE_ANY)) (TEMPLATE_SIGNATURE (EXPECTED_SLOT (ROLE:RESPONDER) (SLOT_IS_VALUE_OF:TO_ADDRESS)) (EXPECTED_SLOT (USAGE:REQUEST_DATA)) (EXPECTED_SLOT (USAGE:RESPONSE_DATA)) (EXPECTED_SLOT (GOAL:REQUEST_HANDLER)))))");
+    spec_is_str_equal(t2s(_sem_get_def(G_sem,send_request)),"(PROCESS_DEFINITION (PROCESS_NAME:send_request) (PROCESS_INTENTION:send request) (SLOT (GOAL:REQUEST_HANDLER) (SLOT_CHILDREN (process:REQUEST (SLOT (ROLE:RESPONDER) (SLOT_IS_VALUE_OF:TO_ADDRESS)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:backnforth) (SLOT (USAGE:REQUEST_DATA)) (CARRIER:backnforth)))) (PROCESS_SIGNATURE (OUTPUT_SIGNATURE (SIGNATURE_LABEL:response) (SIGNATURE_ANY)) (TEMPLATE_SIGNATURE (EXPECTED_SLOT (GOAL:REQUEST_HANDLER)))))");
 
     spec_is_str_equal(t2s(_sem_get_def(G_sem,send_response)),"(PROCESS_DEFINITION (PROCESS_NAME:send_response) (PROCESS_INTENTION:send response) (process:RESPOND (SIGNAL_REF:/1/4) (SLOT (GOAL:RESPONSE_HANDLER))) (PROCESS_SIGNATURE (OUTPUT_SIGNATURE (SIGNATURE_LABEL:response id) (SIGNATURE_SYMBOL:SIGNAL_UUID)) (TEMPLATE_SIGNATURE (EXPECTED_SLOT (GOAL:RESPONSE_HANDLER)))))");
 
@@ -42,7 +39,6 @@ void testProtocolRecognize() {
     T *w = _t_newr(res,WHICH_PROCESS);
     _t_news(w,GOAL,RECOGNITION);
     _t_news(w,ACTUAL_PROCESS,proc);
-    //    debug_enable(D_PROTOCOL);
 
 
     _o_express_role(self,RECOGNIZE,RECOGNIZER,DEFAULT_ASPECT,bindings);
@@ -54,48 +50,64 @@ void testProtocolRecognize() {
     // recognizee doesn't need any bindings because that role's completed by unwrapping
     _o_express_role(self,RECOGNIZE,RECOGNIZEE,DEFAULT_ASPECT,NULL);
     // however it does add expectation
-    spec_is_str_equal(_td(self,self->flux),"(FLUX (DEFAULT_ASPECT (EXPECTATIONS (EXPECTATION (CARRIER:RECOGNIZE) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:are_you))) (ACTION:send_response) (PARAMS) (END_CONDITIONS (UNLIMITED)) (SEMANTIC_MAP (SEMANTIC_LINK (ROLE:REQUESTER) (REPLACEMENT_VALUE (ROLE:RECOGNIZER))) (SEMANTIC_LINK (ROLE:RESPONDER) (REPLACEMENT_VALUE (ROLE:RECOGNIZEE))) (SEMANTIC_LINK (GOAL:REQUEST_HANDLER) (REPLACEMENT_VALUE (GOAL:RECOGNITION))) (SEMANTIC_LINK (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:are_you))) (SEMANTIC_LINK (USAGE:RESPONSE_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:i_am))) (SEMANTIC_LINK (GOAL:RESPONSE_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:fill_i_am)))))) (SIGNALS)))");
-
-    debug_disable(D_PROTOCOL);
+    spec_is_str_equal(_td(self,self->flux),"(FLUX (DEFAULT_ASPECT (EXPECTATIONS (EXPECTATION (CARRIER:backnforth) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:are_you))) (ACTION:send_response) (PARAMS) (END_CONDITIONS (UNLIMITED)) (SEMANTIC_MAP (SEMANTIC_LINK (ROLE:REQUESTER) (REPLACEMENT_VALUE (ROLE:RECOGNIZER))) (SEMANTIC_LINK (ROLE:RESPONDER) (REPLACEMENT_VALUE (ROLE:RECOGNIZEE))) (SEMANTIC_LINK (GOAL:REQUEST_HANDLER) (REPLACEMENT_VALUE (GOAL:RECOGNITION))) (SEMANTIC_LINK (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:are_you))) (SEMANTIC_LINK (USAGE:RESPONSE_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:i_am))) (SEMANTIC_LINK (GOAL:RESPONSE_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:fill_i_am)))))) (SIGNALS)))");
 
     VMHost *v = G_vm;
     Xaddr x = _v_new_receptor(v,v->r,TEST_RECEPTOR,self);
     _v_activate(v,x);
 
-    /* _o_initiate(RECOGNIZE,"backnforth", */
-    /*             RESPONDER => self->addr */
-    /*             REQUEST_DATA => _t_newr(0,are_you), */
-    /*             ); */
+    bindings = _t_new_root(PROTOCOL_BINDINGS);
+    res = _t_newr(bindings,RESOLUTION);
+    w = _t_newr(res,WHICH_RECEPTOR);
+    _t_news(w,ROLE,RECOGNIZEE);
+    __r_make_addr(w,ACTUAL_RECEPTOR,self->addr);
+    res = _t_newr(bindings,RESOLUTION);
+    w = _t_newr(res,WHICH_PROCESS);
+    _t_news(w,GOAL,RECOGNITION);
+    _t_news(w,ACTUAL_PROCESS,NOOP);
 
-    T *s = __r_make_signal(self->addr,self->addr,DEFAULT_ASPECT,RECOGNIZE,_t_newr(0,are_you),0,0);
-    //    debug_enable(D_SIGNALS);
-    _r_send(self,s);
+    spec_is_str_equal(t2s(bindings),"(PROTOCOL_BINDINGS (RESOLUTION (WHICH_RECEPTOR (ROLE:RECOGNIZEE) (ACTUAL_RECEPTOR (RECEPTOR_ADDR:3)))) (RESOLUTION (WHICH_PROCESS (GOAL:RECOGNITION) (ACTUAL_PROCESS:NOOP))))");
 
-    spec_is_str_equal(t2s(self->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:RECOGNIZE) (SIGNAL_UUID)) (BODY:{(are_you)})))");
+    //debug_enable(D_PROTOCOL);
+    //debug_enable(D_TREE);
+    debug_enable(D_SIGNALS);
+    _o_initiate(self,RECOGNIZE,backnforth,bindings);
+    _p_reduceq(self->q);
+    debug_disable(D_SIGNALS);
+    spec_is_str_equal(t2s(_t_getv(self->pending_signals,1,SignalEnvelopeIdx,EnvelopeCarrierIdx,TREE_PATH_TERMINATOR)),"(CARRIER:backnforth)");
+    spec_is_str_equal(t2s(_t_getv(self->pending_signals,1,SignalBodyIdx,TREE_PATH_TERMINATOR)),"(BODY:{(are_you)})");
+    spec_is_str_equal(t2s(_t_getv(self->pending_responses,1,PendingResponseCarrierIdx,TREE_PATH_TERMINATOR)),"(CARRIER:backnforth)");
+
     _v_deliver_signals(v,self);
     T *signals = __r_get_signals(self,DEFAULT_ASPECT);
-    spec_is_str_equal(t2s(signals),"(SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:RECOGNIZE) (SIGNAL_UUID)) (BODY:{(are_you)}) (RUN_TREE (process:RESPOND (SIGNAL_REF:/1/4) (process:fill_i_am)) (PARAMS))))");
+    spec_is_str_equal(t2s(signals),"(SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:backnforth) (SIGNAL_UUID)) (BODY:{(are_you)}) (RUN_TREE (process:RESPOND (SIGNAL_REF:/1/4) (process:fill_i_am)) (PARAMS))))");
+    spec_is_str_equal(t2s(_t_getv(signals,1,SignalBodyIdx+1,TREE_PATH_TERMINATOR)),"(RUN_TREE (process:RESPOND (SIGNAL_REF:/1/4) (process:fill_i_am)) (PARAMS))");
+
     //debug_enable(D_REDUCE+D_REDUCEV);
+
     _p_reduceq(self->q);
+    debug_disable(D_TREE);
     debug_disable(D_REDUCE+D_REDUCEV);
 
     spec_is_str_equal(_td(self,self->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:RECOGNIZE) (SIGNAL_UUID) (IN_RESPONSE_TO_UUID)) (BODY:{(i_am (RECEPTOR_LABEL:super cept) (RECEPTOR_IDENTIFIER:314159))})))");
     _v_deliver_signals(v,self);
 
     spec_is_str_equal(t2s(self->root),"");
-    /* debug_disable(D_SIGNALS); */
+    debug_disable(D_SIGNALS);
 
 }
 
 void testProtocolAlive() {
     SemTable *sem = G_vm->r->sem;
 
+    spec_is_str_equal(t2s(_sem_get_def(G_sem,ALIVE)),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL:ALIVE) (PROTOCOL_SEMANTICS (ROLE:SERVER) (ROLE:CLIENT) (GOAL:HANDLER)) (alive (EXPECT (ROLE:SERVER) (SOURCE (ROLE:CLIENT)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:PING))) (ACTION:respond_with_yup)) (EXPECT (ROLE:CLIENT) (SOURCE (ROLE:SERVER)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:YUP))) (SLOT (GOAL:HANDLER) (SLOT_IS_VALUE_OF:ACTION)))))");
+
     Receptor *r =  _r_new(sem,TEST_RECEPTOR);
 
     _o_express_role(r,ALIVE,SERVER,DEFAULT_ASPECT,NULL);
 
     // check that it was expressed
-    spec_is_str_equal(_td(r,r->flux),"(FLUX (DEFAULT_ASPECT (EXPECTATIONS (EXPECTATION (CARRIER:ALIVE) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:PING))) (ACTION:respond_with_yup) (PARAMS) (END_CONDITIONS (UNLIMITED)))) (SIGNALS)))");
+    spec_is_str_equal(_td(r,r->flux),"(FLUX (DEFAULT_ASPECT (EXPECTATIONS (EXPECTATION (CARRIER:alive) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:PING))) (ACTION:respond_with_yup) (PARAMS) (END_CONDITIONS (UNLIMITED)))) (SIGNALS)))");
 
     Receptor *r2 =  _r_new(sem,TEST_RECEPTOR);
     T *noop = _t_new_root(NOOP);
@@ -108,16 +120,16 @@ void testProtocolAlive() {
     _t_free(bindings);
 
     // check that the expressed expectation is bound correctly to the handler
-    spec_is_str_equal(_td(r2,r2->flux),"(FLUX (DEFAULT_ASPECT (EXPECTATIONS (EXPECTATION (CARRIER:ALIVE) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:YUP))) (ACTION:do nothing) (PARAMS) (END_CONDITIONS (UNLIMITED)) (SEMANTIC_MAP (SEMANTIC_LINK (GOAL:HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:do nothing)))))) (SIGNALS)))");
+    spec_is_str_equal(_td(r2,r2->flux),"(FLUX (DEFAULT_ASPECT (EXPECTATIONS (EXPECTATION (CARRIER:alive) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:YUP))) (ACTION:do nothing) (PARAMS) (END_CONDITIONS (UNLIMITED)) (SEMANTIC_MAP (SEMANTIC_LINK (GOAL:HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:do nothing)))))) (SIGNALS)))");
 
-    T *s = __r_make_signal(r->addr,r->addr,DEFAULT_ASPECT,ALIVE,_t_new_root(PING),0,0);
+    T *s = __r_make_signal(r->addr,r->addr,DEFAULT_ASPECT,alive,_t_new_root(PING),0,0);
     //debug_enable(D_SIGNALS);
     spec_is_equal(_r_deliver(r,s),noDeliveryErr);
     spec_is_str_equal(_td(r,r->q->active->context->run_tree),"(RUN_TREE (process:RESPOND (SIGNAL_REF:/1/4) (YUP)) (PARAMS))");  // responds on the carrier in the signal envelope
     debug_disable(D_SIGNALS);
     spec_is_equal(_p_reduceq(r->q),noReductionErr);
     spec_is_str_equal(_td(r,r->q->completed->context->run_tree),"(RUN_TREE (SIGNAL_UUID) (PARAMS))");
-    spec_is_str_equal(_td(r,r->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:ALIVE) (SIGNAL_UUID) (IN_RESPONSE_TO_UUID)) (BODY:{(YUP)})))");
+    spec_is_str_equal(_td(r,r->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:alive) (SIGNAL_UUID) (IN_RESPONSE_TO_UUID)) (BODY:{(YUP)})))");
 
     _r_free(r);
     _r_free(r2);
