@@ -357,8 +357,7 @@ void _t_replace(T *t,int i,T *r) {
 /**
  * Replace the a node with the given node.
  *
- * @note, the node must not be a root node
- * @note frees the replaced node
+ * @note frees any children of node to be replaced.  Beware that the second parameter pointer gets freed too and will become invalid
  *
  * @param[in] t node to be replaced
  * @param[in] r node to replace
@@ -367,9 +366,18 @@ void _t_replace(T *t,int i,T *r) {
  * @snippet spec/tree_spec.h testTreeReplace
  */
 void _t_replace_node(T *t,T *r) {
-    T *p = _t_parent(t);
-    if (!p) raise_error("cant replace a root node");
-    _t_replace(p,_t_node_index(t),r);
+    root_check(r);
+    if  ((t->context.flags & TFLAG_RUN_NODE) != (r->context.flags & TFLAG_RUN_NODE)) {
+        raise_error("runnode mismatch");
+    }
+    __t_free_children(t);
+    t->contents = r->contents;
+    t->structure.child_count = r->structure.child_count;
+    t->structure.children = r->structure.children;
+    t->context = r->context;
+    free(r);
+    // fix the childrens' parent pointer
+    DO_KIDS(t,_t_child(t,i)->structure.parent = t);
 }
 
 /**

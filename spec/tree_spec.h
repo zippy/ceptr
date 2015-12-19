@@ -349,6 +349,26 @@ void testTreeReplace() {
     spec_is_str_equal(t2s(_t_get(t,p)),"(HTTP_REQUEST_VERSION (VERSION_MAJOR:1) (VERSION_MINOR:1))");
 
     _t_free(t);
+
+    t = _t_build(G_sem,0,SEMANTIC_MAP,SEMANTIC_LINK,USAGE,REQUEST_DATA,REPLACEMENT_VALUE,ACTUAL_SYMBOL,PING,NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);
+
+    T *t2 = _t_build(G_sem,0,TEST_ANYTHING_SYMBOL,TEST_INT_SYMBOL,1,TEST_INT_SYMBOL,2,TEST_INT_SYMBOL,1,TEST_INT_SYMBOL,3,NULL_SYMBOL,NULL_SYMBOL);
+
+    // test that replace_node can replace at the parent level.
+    _t_replace_node(t,t2);
+    spec_is_str_equal(t2s(t),"(TEST_ANYTHING_SYMBOL (TEST_INT_SYMBOL:1) (TEST_INT_SYMBOL:2) (TEST_INT_SYMBOL:1) (TEST_INT_SYMBOL:3))");
+    spec_is_ptr_equal(_t_parent(t),NULL);
+    spec_is_ptr_equal(_t_parent(_t_child(t,2)),t);
+
+    // and also at the child level
+    t2 = _t_newi(0,TEST_INT_SYMBOL,314);
+    _t_replace_node(_t_child(t,2),t2);
+    spec_is_str_equal(t2s(t),"(TEST_ANYTHING_SYMBOL (TEST_INT_SYMBOL:1) (TEST_INT_SYMBOL:314) (TEST_INT_SYMBOL:1) (TEST_INT_SYMBOL:3))");
+    spec_is_ptr_equal(_t_parent(_t_child(t,2)),t);
+
+
+    _t_free(t);
+
     //! [testTreeReplace]
 }
 
