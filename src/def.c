@@ -279,11 +279,14 @@ void __d_tsig(SemTable *sem,T *code, T *tsig,TreeHash *hashes) {
     if (semeq(_t_symbol(code),SLOT)) {
         TreeHash h;
         T *c = NULL;
-        // slot children aren't part of the signature!!
+        // slot children aren't part of the signature they are part of the
+        // the code that needs to be searched!
         if (c = _t_find(code,SLOT_CHILDREN)) {
             int i = _t_node_index(c);
             c = _t_clone(code);
-            _t_free(_t_detach_by_idx(c,i));
+            T *sc = _t_detach_by_idx(c,i);
+            __d_tsig(sem,sc,tsig,hashes);
+            _t_free(sc);
             _t_hash(sem,c);
         }
         else h = _t_hash(sem,code);
