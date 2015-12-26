@@ -107,9 +107,13 @@ $(document).ready(function(){initNavTree('todo.html','');});
 <dd>make this not realloc each time?  </dd>
 <dt><a class="anchor" id="_todo000007"></a>Global <a class="el" href="mtree_8c.html#ad787e09f41339d2e4d72722558c6ce9e">__m_add_nodes</a>  (<a class="el" href="structH.html">H</a> h, <a class="el" href="structL.html">L</a> *l, int c)</dt>
 <dd>make this not realloc each time!!  </dd>
-<dt><a class="anchor" id="_todo000011"></a>Global <a class="el" href="process_8h.html#a70cc645c3ab87098fb313ab2a07bed35">__p_check_signature</a>  (<a class="el" href="structSemTable.html">SemTable</a> *sem, Process p, <a class="el" href="structT.html">T</a> *params)</dt>
+<dt><a class="anchor" id="_todo000022"></a>Global <a class="el" href="process_8h.html#a53647755d44a349e70e44e371925ed15">__p_addrt2q</a>  (<a class="el" href="structQ.html">Q</a> *q, <a class="el" href="structT.html">T</a> *t, <a class="el" href="structT.html">T</a> *sem_map)</dt>
+<dd>make thread safe. currently you shouldn't call this if the <a class="el" href="structQ.html">Q</a> is being actively reduced  </dd>
+<dt><a class="anchor" id="_todo000022"></a>Global <a class="el" href="process_8h.html#a53647755d44a349e70e44e371925ed15">__p_addrt2q</a>  (<a class="el" href="structQ.html">Q</a> *q, <a class="el" href="structT.html">T</a> *t, <a class="el" href="structT.html">T</a> *sem_map)</dt>
+<dd>make thread safe. currently you shouldn't call this if the <a class="el" href="structQ.html">Q</a> is being actively reduced  </dd>
+<dt><a class="anchor" id="_todo000011"></a>Global <a class="el" href="process_8h.html#af5119c83be43c40dd489b7e8a338b40f">__p_check_signature</a>  (<a class="el" href="structSemTable.html">SemTable</a> *sem, Process p, <a class="el" href="structT.html">T</a> *params, <a class="el" href="structT.html">T</a> *sem_map)</dt>
 <dd>add SIGNATURE_SYMBOL for setting up process signatures by Symbol not just Structure  </dd>
-<dt><a class="anchor" id="_todo000011"></a>Global <a class="el" href="process_8h.html#a70cc645c3ab87098fb313ab2a07bed35">__p_check_signature</a>  (<a class="el" href="structSemTable.html">SemTable</a> *sem, Process p, <a class="el" href="structT.html">T</a> *params)</dt>
+<dt><a class="anchor" id="_todo000011"></a>Global <a class="el" href="process_8h.html#af5119c83be43c40dd489b7e8a338b40f">__p_check_signature</a>  (<a class="el" href="structSemTable.html">SemTable</a> *sem, Process p, <a class="el" href="structT.html">T</a> *params, <a class="el" href="structT.html">T</a> *sem_map)</dt>
 <dd>add SIGNATURE_SYMBOL for setting up process signatures by Symbol not just Structure  </dd>
 <dt><a class="anchor" id="_todo000024"></a>Global <a class="el" href="process_8h.html#ae55f31a15b53840b8241fafea0f50189">__p_make_form</a>  (Symbol sym, char *output_label, Symbol output_type, <a class="el" href="structSemanticID.html">SemanticID</a> output_sem,...)</dt>
 <dd>add more sensible handling of output signature. We still aren't quite sure what to do about the output label, and how to handle output signature pass through from the results, probably need a special symbol for that  </dd>
@@ -148,11 +152,7 @@ $(document).ready(function(){initNavTree('todo.html','');});
 <dd>this is not thread safe! </dd>
 <dt><a class="anchor" id="_todo000008"></a>Global <a class="el" href="mtree_8h.html#ac2c4b050224da6010e036ff381f31c3e">_m_walk</a>  (<a class="el" href="structH.html">H</a> h, void(*walkfn)(<a class="el" href="structH.html">H</a>, <a class="el" href="structN.html">N</a> *, void *, <a class="el" href="structMwalkState.html">MwalkState</a> *, <a class="el" href="structMaddr.html">Maddr</a>), void *user_data)</dt>
 <dd>checks to make sure root isn't deleted or null?  </dd>
-<dt><a class="anchor" id="_todo000022"></a>Global <a class="el" href="process_8h.html#aa925828fc4de916a63206ae1f868dc0e">_p_addrt2q</a>  (<a class="el" href="structQ.html">Q</a> *q, <a class="el" href="structT.html">T</a> *t)</dt>
-<dd>make thread safe. currently you shouldn't call this if the <a class="el" href="structQ.html">Q</a> is being actively reduced  </dd>
-<dt><a class="anchor" id="_todo000022"></a>Global <a class="el" href="process_8h.html#aa925828fc4de916a63206ae1f868dc0e">_p_addrt2q</a>  (<a class="el" href="structQ.html">Q</a> *q, <a class="el" href="structT.html">T</a> *t)</dt>
-<dd>make thread safe. currently you shouldn't call this if the <a class="el" href="structQ.html">Q</a> is being actively reduced  </dd>
-<dt><a class="anchor" id="_todo000010"></a>Global <a class="el" href="process_8c.html#ac003c8996585734471b20cd105e7cb05">_p_fill_from_match</a>  (<a class="el" href="structT.html">T</a> *t, <a class="el" href="structT.html">T</a> *match_results, <a class="el" href="structT.html">T</a> *match_tree)</dt>
+<dt><a class="anchor" id="_todo000010"></a>Global <a class="el" href="process_8h.html#a003f9d30641ce562d54e16220a43049c">_p_fill_from_match</a>  (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structT.html">T</a> *t, <a class="el" href="structT.html">T</a> *match_results, <a class="el" href="structT.html">T</a> *match_tree)</dt>
 <dd>what to do if match has sibs??  </dd>
 <dt><a class="anchor" id="_todo000023"></a>Global <a class="el" href="process_8h.html#a64e8965291c67057b06f273db19a465d">_p_reduceq</a>  (<a class="el" href="structQ.html">Q</a> *q)</dt>
 <dd>figure out what error we should be sending back here, i.e. what if  </dd>
@@ -206,7 +206,7 @@ $(document).ready(function(){initNavTree('todo.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Dec 17 2015 01:20:32 for ceptr by
+    <li class="footer">Generated on Fri Dec 25 2015 22:58:39 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

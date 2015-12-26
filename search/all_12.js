@@ -12,6 +12,7 @@ var searchData=
   ['scape_5felem',['scape_elem',['../structscape__elem.html',1,'']]],
   ['scape_5fspec_2eh',['scape_spec.h',['../scape__spec_8h.html',1,'']]],
   ['sem',['sem',['../structReceptor.html#a4bb9ce729b6b85fb99326e9df7b23cbd',1,'Receptor::sem()'],['../structVMHost.html#a0718944e7f9d848d3b96f704ea0f0252',1,'VMHost::sem()']]],
+  ['sem_5fmap',['sem_map',['../structR.html#a1a20fa2571b46755d508992a8939db55',1,'R']]],
   ['semanticid',['SemanticID',['../structSemanticID.html',1,'']]],
   ['semtable',['SemTable',['../structSemTable.html',1,'']]],
   ['semtable_2ec',['semtable.c',['../semtable_8c.html',1,'']]],

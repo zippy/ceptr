@@ -143,7 +143,7 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>t2s</b>(t)&#160;&#160;&#160;_t2s(G_sem,t)</td></tr>
 <tr class="separator:gaf64194bb4f202d37a561867d6c8c6a1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa4447c774f7e10ca998296b37fbba141"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaa4447c774f7e10ca998296b37fbba141"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>t2sp</b>(t)&#160;&#160;&#160;<a class="el" href="group__def.html#ga650def1f2919516ccd42490bacf6aa7d">__t2s</a>(G_sem,t,4)</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>t2sp</b>(t)&#160;&#160;&#160;<a class="el" href="group__def.html#ga650def1f2919516ccd42490bacf6aa7d">__t2s</a>(G_sem,t,INDENT)</td></tr>
 <tr class="separator:gaa4447c774f7e10ca998296b37fbba141"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga565e2013041b995120d6772e50fb2925"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga565e2013041b995120d6772e50fb2925"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>_t2s</b>(d, t)&#160;&#160;&#160;<a class="el" href="group__def.html#ga650def1f2919516ccd42490bacf6aa7d">__t2s</a>(d,t,NO_INDENT)</td></tr>
@@ -262,41 +262,46 @@ Enumerations</h2></td></tr>
 <tr class="memitem:ga16af7b253440dadd46a80a4b9fddba4d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga16af7b253440dadd46a80a4b9fddba4d"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>SignatureOutputSigIdx</b> =1
  }</td></tr>
 <tr class="separator:ga16af7b253440dadd46a80a4b9fddba4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaba01db17f4a2bfbc3db60dc172972a25"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaba01db17f4a2bfbc3db60dc172972a25"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>ProtocolDefNameIdx</b> =1, 
-<b>ProtocolDefSemanticsIdx</b>
+<tr class="memitem:gaba01db17f4a2bfbc3db60dc172972a25"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaba01db17f4a2bfbc3db60dc172972a25"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>InputSigLabelIdx</b> =1, 
+<b>InputSigSemVariantsIdx</b>, 
+<b>InputSigOptionalIdx</b>
  }</td></tr>
 <tr class="separator:gaba01db17f4a2bfbc3db60dc172972a25"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaaf105ae5beaca1dee30ae54530691fce"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaaf105ae5beaca1dee30ae54530691fce"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>RuntreeCodeIdx</b> =1, 
+<tr class="memitem:gaaf105ae5beaca1dee30ae54530691fce"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaaf105ae5beaca1dee30ae54530691fce"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>ProtocolDefNameIdx</b> =1, 
+<b>ProtocolDefSemanticsIdx</b>
+ }</td></tr>
+<tr class="separator:gaaf105ae5beaca1dee30ae54530691fce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga80155586fa275b28773c9b203f52caba"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga80155586fa275b28773c9b203f52caba"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>RuntreeCodeIdx</b> =1, 
 <b>RunTreeParamsIdx</b>, 
 <b>RunTreeErrorCodeIdx</b>
  }</td></tr>
-<tr class="separator:gaaf105ae5beaca1dee30ae54530691fce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga80155586fa275b28773c9b203f52caba"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga80155586fa275b28773c9b203f52caba"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>ResolutionWhichIdx</b> =1
- }</td></tr>
 <tr class="separator:ga80155586fa275b28773c9b203f52caba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6b7b47dd702d9e331586d485013fd1ea"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga6b7b47dd702d9e331586d485013fd1ea"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>ConnectionWhichIdx</b> =1
+<tr class="memitem:ga6b7b47dd702d9e331586d485013fd1ea"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga6b7b47dd702d9e331586d485013fd1ea"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>ResolutionWhichIdx</b> =1
  }</td></tr>
 <tr class="separator:ga6b7b47dd702d9e331586d485013fd1ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf9bdc3014f3d54c426b6d2df10de4960"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaf9bdc3014f3d54c426b6d2df10de4960"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>SemtrexMatchSymbolIdx</b> =1, 
+<tr class="memitem:gaf9bdc3014f3d54c426b6d2df10de4960"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaf9bdc3014f3d54c426b6d2df10de4960"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>ConnectionWhichIdx</b> =1
+ }</td></tr>
+<tr class="separator:gaf9bdc3014f3d54c426b6d2df10de4960"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadb49720dc49f7d4e4cf9adbf2948e409"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gadb49720dc49f7d4e4cf9adbf2948e409"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>SemtrexMatchSymbolIdx</b> =1, 
 <b>SemtrexMatchPathIdx</b>, 
 <b>SemtrexMatchSibsIdx</b>
  }</td></tr>
-<tr class="separator:gaf9bdc3014f3d54c426b6d2df10de4960"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gadb49720dc49f7d4e4cf9adbf2948e409"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gadb49720dc49f7d4e4cf9adbf2948e409"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>InclusionPnameIdx</b> =1
- }</td></tr>
 <tr class="separator:gadb49720dc49f7d4e4cf9adbf2948e409"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaae05225933a42f81e7c4a9fb286596f9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaae05225933a42f81e7c4a9fb286596f9"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>SemanticMapSemanticRefIdx</b> =1, 
-<b>SemanticMapReplacementValIdx</b>
+<tr class="memitem:gaae05225933a42f81e7c4a9fb286596f9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaae05225933a42f81e7c4a9fb286596f9"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>InclusionPnameIdx</b> =1
  }</td></tr>
 <tr class="separator:gaae05225933a42f81e7c4a9fb286596f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga39fca1837c5ce7715cbf571669660c13"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga39fca1837c5ce7715cbf571669660c13"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>SlotSemanticRefIdx</b> =1, 
-<b>SlotValueOfIdx</b>
+<tr class="memitem:ga39fca1837c5ce7715cbf571669660c13"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga39fca1837c5ce7715cbf571669660c13"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>SemanticMapSemanticRefIdx</b> =1, 
+<b>SemanticMapReplacementValIdx</b>
  }</td></tr>
 <tr class="separator:ga39fca1837c5ce7715cbf571669660c13"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaaf8fd5f0e57d456151c951e0f3715fc4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaaf8fd5f0e57d456151c951e0f3715fc4"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>NO_INDENT</b> =0, 
-<b>INDENT</b> =-1
+<tr class="memitem:gaaf8fd5f0e57d456151c951e0f3715fc4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaaf8fd5f0e57d456151c951e0f3715fc4"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>SlotSemanticRefIdx</b> =1, 
+<b>SlotValueOfIdx</b>
  }</td></tr>
 <tr class="separator:gaaf8fd5f0e57d456151c951e0f3715fc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga94798fdadfbf49a7c658ace669a1d310"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga94798fdadfbf49a7c658ace669a1d310"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>NO_INDENT</b> =0, 
+<b>INDENT</b> =-1
+ }</td></tr>
+<tr class="separator:ga94798fdadfbf49a7c658ace669a1d310"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -385,7 +390,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>sys_free</b> ()</td><
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="def_8h.html">def.h</a></li>
-    <li class="footer">Generated on Thu Dec 17 2015 01:20:32 for ceptr by
+    <li class="footer">Generated on Fri Dec 25 2015 22:58:38 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

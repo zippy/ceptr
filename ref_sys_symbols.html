@@ -188,7 +188,12 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="PROCESS_SIGNATURE"></a>PROCESS_SIGNATURE</td><td><a href="ref_sys_structures.html#PROCESS_FORM">PROCESS-FORM</a></td><td></td></tr>
 <tr><td><a name="CODE"></a>CODE</td><td><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></td><td></td></tr>
 <tr><td><a name="PROCESS_DEFINITION"></a>PROCESS_DEFINITION</td><td><a href="ref_sys_structures.html#LIST_OF_PROCESS_NAME_AND_PROCESS_INTENTION_AND_CODE_AND_PROCESS_SIGNATURE">LIST-OF-PROCESS-NAME-AND-PROCESS-INTENTION-AND-CODE-AND-PROCESS-SIGNATURE</a></td><td></td></tr>
+<tr><td><a name="GOAL"></a>GOAL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td> A goal stands for an intended process, thus the symbol stored in a GOAL must be limited to those that are uses of the PROCESS structure.</td></tr>
+<tr><td><a name="ROLE"></a>ROLE</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>  A role stands for an expected agent, thus the symbol stored in a ROLE must be limited to those of structure RECEPTOR_ADDRESS.</td></tr>
+<tr><td><a name="USAGE"></a>USAGE</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td> A usage stands for a(n) X of a Symbol.</td></tr>
+<tr><td><a name="WEAL"></a>WEAL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td> A weal stands for a included protocol, the the symbol store in an WEAL must be limited to those that are uses of the PROTOCOL structure</td></tr>
 <tr><td><a name="SLOT_IS_VALUE_OF"></a>SLOT_IS_VALUE_OF</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
+<tr><td><a name="SLOT_CHILDREN"></a>SLOT_CHILDREN</td><td><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></td><td></td></tr>
 <tr><td><a name="SLOT"></a>SLOT</td><td><a href="ref_sys_structures.html#SLOT_STRUCTURE">SLOT-STRUCTURE</a></td><td></td></tr>
 <tr><td><a name="REPLACEMENT_VALUE"></a>REPLACEMENT_VALUE</td><td><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></td><td>        what to fill the slot with</td></tr>
 <tr><td><a name="SEMANTIC_LINK"></a>SEMANTIC_LINK</td><td><a href="ref_sys_structures.html#TUPLE_OF_SEMANTIC_REFERENCE_AND_REPLACEMENT_VALUE">TUPLE-OF-SEMANTIC-REFERENCE-AND-REPLACEMENT-VALUE</a></td><td>   mapping between a semantic reference and replacement value, used for filling templates</td></tr>
@@ -210,30 +215,31 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="SIGNAL_REF"></a>SIGNAL_REF</td><td><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></td><td>               used in a code tree triggered by an expectation as a reference to a part of the signal that triggered the action.</td></tr>
 <tr><td><a name="RESULT_SYMBOL"></a>RESULT_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
 <tr><td><a name="REDUCTION_ERROR_SYMBOL"></a>REDUCTION_ERROR_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
-<tr><td><a name="ROLE"></a>ROLE</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>  A role stands for an expected agent, thus the symbol stored in a ROLE must be limited to those of structure RECEPTOR_ADDRESS.</td></tr>
-<tr><td><a name="GOAL"></a>GOAL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td> A goal stands for an intended process, thus the symbol stored in a GOAL must be limited to those that are uses of the PROCESS structure.</td></tr>
-<tr><td><a name="USAGE"></a>USAGE</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td> A usage stands for a(n) X of a Symbol.</td></tr>
 <tr><td><a name="SOURCE"></a>SOURCE</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_ROLE">ONE-OR-MORE-OF-ROLE</a></td><td></td></tr>
 <tr><td><a name="DESTINATION"></a>DESTINATION</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_ROLE">ONE-OR-MORE-OF-ROLE</a></td><td></td></tr>
-<tr><td><a name="PATTERN_SYMBOL"></a>PATTERN_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
-<tr><td><a name="EXPECT"></a>EXPECT</td><td><a href="ref_sys_structures.html#LIST_OF_ROLE_AND_SOURCE_AND_PATTERN_SYMBOL_AND_ACTION">LIST-OF-ROLE-AND-SOURCE-AND-PATTERN-SYMBOL-AND-ACTION</a></td><td></td></tr>
+<tr><td><a name="EXPECT"></a>EXPECT</td><td><a href="ref_sys_structures.html#LIST_OF_ROLE_AND_SOURCE_AND_PATTERN_AND_ACTION">LIST-OF-ROLE-AND-SOURCE-AND-PATTERN-AND-ACTION</a></td><td></td></tr>
 <tr><td><a name="INITIATE"></a>INITIATE</td><td><a href="ref_sys_structures.html#LIST_OF_ROLE_AND_DESTINATION_AND_ACTION">LIST-OF-ROLE-AND-DESTINATION-AND-ACTION</a></td><td></td></tr>
 <tr><td><a name="PNAME"></a>PNAME</td><td><a href="ref_sys_structures.html#PROTOCOL">PROTOCOL</a></td><td></td></tr>
 <tr><td><a name="INCLUSION"></a>INCLUSION</td><td><a href="ref_sys_structures.html#TUPLE_OF_PNAME_AND_ONE_OR_MORE_OF_LOGICAL_OR_OF_RESOLUTION_AND_CONNECTION">TUPLE-OF-PNAME-AND-ONE-OR-MORE-OF-LOGICAL-OR-OF-RESOLUTION-AND-CONNECTION</a></td><td></td></tr>
 <tr><td><a name="ACTUAL_PROCESS"></a>ACTUAL_PROCESS</td><td><a href="ref_sys_structures.html#PROCESS">PROCESS</a></td><td></td></tr>
 <tr><td><a name="ACTUAL_RECEPTOR"></a>ACTUAL_RECEPTOR</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
 <tr><td><a name="ACTUAL_SYMBOL"></a>ACTUAL_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
+<tr><td><a name="ACTUAL_PROTOCOL"></a>ACTUAL_PROTOCOL</td><td><a href="ref_sys_structures.html#PROTOCOL">PROTOCOL</a></td><td></td></tr>
+<tr><td><a name="ACTUAL_VALUE"></a>ACTUAL_VALUE</td><td><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></td><td>  this really can't be anything, rather only something that's a SYMBOL semantic type</td></tr>
 <tr><td><a name="WHICH_PROCESS"></a>WHICH_PROCESS</td><td><a href="ref_sys_structures.html#TUPLE_OF_GOAL_AND_ACTUAL_PROCESS">TUPLE-OF-GOAL-AND-ACTUAL-PROCESS</a></td><td></td></tr>
 <tr><td><a name="WHICH_RECEPTOR"></a>WHICH_RECEPTOR</td><td><a href="ref_sys_structures.html#TUPLE_OF_ROLE_AND_ACTUAL_RECEPTOR">TUPLE-OF-ROLE-AND-ACTUAL-RECEPTOR</a></td><td></td></tr>
 <tr><td><a name="WHICH_SYMBOL"></a>WHICH_SYMBOL</td><td><a href="ref_sys_structures.html#TUPLE_OF_USAGE_AND_ACTUAL_SYMBOL">TUPLE-OF-USAGE-AND-ACTUAL-SYMBOL</a></td><td></td></tr>
+<tr><td><a name="WHICH_PROTOCOL"></a>WHICH_PROTOCOL</td><td><a href="ref_sys_structures.html#TUPLE_OF_WEAL_AND_ACTUAL_PROTOCOL">TUPLE-OF-WEAL-AND-ACTUAL-PROTOCOL</a></td><td></td></tr>
+<tr><td><a name="WHICH_VALUE"></a>WHICH_VALUE</td><td><a href="ref_sys_structures.html#TUPLE_OF_ACTUAL_SYMBOL_AND_ACTUAL_VALUE">TUPLE-OF-ACTUAL-SYMBOL-AND-ACTUAL-VALUE</a></td><td></td></tr>
 <tr><td><a name="RESOLUTION"></a>RESOLUTION</td><td><a href="ref_sys_structures.html#MAPPING">MAPPING</a></td><td></td></tr>
 <tr><td><a name="WHICH_GOAL"></a>WHICH_GOAL</td><td><a href="ref_sys_structures.html#PAIR_OF_GOAL">PAIR-OF-GOAL</a></td><td></td></tr>
 <tr><td><a name="WHICH_ROLE"></a>WHICH_ROLE</td><td><a href="ref_sys_structures.html#PAIR_OF_ROLE">PAIR-OF-ROLE</a></td><td></td></tr>
 <tr><td><a name="WHICH_USAGE"></a>WHICH_USAGE</td><td><a href="ref_sys_structures.html#PAIR_OF_USAGE">PAIR-OF-USAGE</a></td><td></td></tr>
+<tr><td><a name="WHICH_WEAL"></a>WHICH_WEAL</td><td><a href="ref_sys_structures.html#PAIR_OF_WEAL">PAIR-OF-WEAL</a></td><td></td></tr>
 <tr><td><a name="CONNECTION"></a>CONNECTION</td><td><a href="ref_sys_structures.html#LINKING">LINKING</a></td><td></td></tr>
 <tr><td><a name="PROTOCOL_BINDINGS"></a>PROTOCOL_BINDINGS</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_RESOLUTION">ONE-OR-MORE-OF-RESOLUTION</a></td><td></td></tr>
 <tr><td><a name="PROTOCOL_LABEL"></a>PROTOCOL_LABEL</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
-<tr><td><a name="PROTOCOL_SEMANTICS"></a>PROTOCOL_SEMANTICS</td><td><a href="ref_sys_structures.html#LIST_OF_ZERO_OR_MORE_OF_ROLE_AND_ZERO_OR_MORE_OF_GOAL_AND_ZERO_OR_MORE_OF_USAGE">LIST-OF-ZERO-OR-MORE-OF-ROLE-AND-ZERO-OR-MORE-OF-GOAL-AND-ZERO-OR-MORE-OF-USAGE</a></td><td></td></tr>
+<tr><td><a name="PROTOCOL_SEMANTICS"></a>PROTOCOL_SEMANTICS</td><td><a href="ref_sys_structures.html#LIST_OF_ZERO_OR_MORE_OF_ROLE_AND_ZERO_OR_MORE_OF_GOAL_AND_ZERO_OR_MORE_OF_USAGE_AND_ZERO_OR_MORE_OF_WEAL">LIST-OF-ZERO-OR-MORE-OF-ROLE-AND-ZERO-OR-MORE-OF-GOAL-AND-ZERO-OR-MORE-OF-USAGE-AND-ZERO-OR-MORE-OF-WEAL</a></td><td></td></tr>
 <tr><td><a name="PROTOCOL_DEFINITION"></a>PROTOCOL_DEFINITION</td><td><a href="ref_sys_structures.html#LIST_OF_PROTOCOL_LABEL_AND_PROTOCOL_SEMANTICS_AND_ZERO_OR_MORE_OF_STRUCTURE_OF_INTERACTION_AND_ZERO_OR_MORE_OF_INCLUSION">LIST-OF-PROTOCOL-LABEL-AND-PROTOCOL-SEMANTICS-AND-ZERO-OR-MORE-OF-STRUCTURE-OF-INTERACTION-AND-ZERO-OR-MORE-OF-INCLUSION</a></td><td></td></tr>
 <tr><td><a name="MANIFEST_LABEL"></a>MANIFEST_LABEL</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td>           a label in the manifest to identify a binding</td></tr>
 <tr><td><a name="MANIFEST_SPEC"></a>MANIFEST_SPEC</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>             a symbol to specify what type of data must be provided for a given manifest label</td></tr>
@@ -317,6 +323,7 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="RESPONSE_DATA"></a>RESPONSE_DATA</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
 <tr><td><a name="RESPONSE_HANDLER"></a>RESPONSE_HANDLER</td><td><a href="ref_sys_structures.html#PROCESS">PROCESS</a></td><td></td></tr>
 <tr><td><a name="REQUEST_HANDLER"></a>REQUEST_HANDLER</td><td><a href="ref_sys_structures.html#PROCESS">PROCESS</a></td><td></td></tr>
+<tr><td><a name="backnforth"></a>backnforth</td><td><a href="ref_sys_structures.html#INTERACTION">INTERACTION</a></td><td></td></tr>
 <tr><td><a name="RECOGNIZER"></a>RECOGNIZER</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
 <tr><td><a name="RECOGNIZEE"></a>RECOGNIZEE</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
 <tr><td><a name="RECOGNITION"></a>RECOGNITION</td><td><a href="ref_sys_structures.html#PROCESS">PROCESS</a></td><td></td></tr>
@@ -330,6 +337,7 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="PING"></a>PING</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
 <tr><td><a name="YUP"></a>YUP</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
 <tr><td><a name="HANDLER"></a>HANDLER</td><td><a href="ref_sys_structures.html#PROCESS">PROCESS</a></td><td></td></tr>
+<tr><td><a name="alive"></a>alive</td><td><a href="ref_sys_structures.html#INTERACTION">INTERACTION</a></td><td></td></tr>
 <tr><td><a name="TEST_INT_SYMBOL"></a>TEST_INT_SYMBOL</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
 <tr><td><a name="TEST_INT_SYMBOL2"></a>TEST_INT_SYMBOL2</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
 <tr><td><a name="TEST_FLOAT_SYMBOL"></a>TEST_FLOAT_SYMBOL</td><td><a href="ref_sys_structures.html#FLOAT">FLOAT</a></td><td></td></tr>
@@ -350,7 +358,7 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Dec 17 2015 01:20:32 for ceptr by
+    <li class="footer">Generated on Fri Dec 25 2015 22:58:39 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

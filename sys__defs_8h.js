@@ -6,7 +6,7 @@ var sys__defs_8h =
     [ "is_sys_symbol", "sys__defs_8h.html#af494e2f2b61f6d7490b61b44d5181125", null ],
     [ "sData", "sys__defs_8h.html#a89ba96850ddb85f8d4e351fd8383a2b2", null ],
     [ "sP", "sys__defs_8h.html#a730d238b56524b7c068aac53a5df583b", null ],
-    [ "sProt", "sys__defs_8h.html#a8b03fa28c85245ab005b09c5b79952a3", null ],
+    [ "sProt", "sys__defs_8h.html#ad531ce97ea095fe35c7ce657ba80c160", null ],
     [ "sT", "sys__defs_8h.html#a8905a396623084b0907589f66b3e69bc", null ],
     [ "sT_BANG", "sys__defs_8h.html#a7e137737198173e708fe6065281b7ed5", null ],
     [ "sT_OR", "sys__defs_8h.html#a8dfb82e5a17f4e53f0f05a93a46e7c72", null ],
