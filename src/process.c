@@ -94,19 +94,33 @@ Error __p_check_signature(SemTable *sem,Process p,T *code,T *sem_map) {
         Symbol sym = _t_symbol(s);
         if (semeq(sym,INPUT_SIGNATURE)) {
             input_sigs++;
+            T *param = _t_child(code,i-1);
             T *sig = _t_child(s,2); // input signatures start at 2
-            if(semeq(_t_symbol(sig),SIGNATURE_STRUCTURE)) {
-                Structure ss = *(Symbol *)_t_surface(sig);
-                if (!semeq(_sem_get_symbol_structure(sem,_t_symbol(_t_child(code,i-1))),ss) && !semeq(ss,TREE))
-                    return signatureMismatchReductionErr;
+            bool is_optional = _t_child(s,InputSigOptionalIdx) != NULL;
+            if (!param && !is_optional)
+                //                raise_error("missing non-optional param");
+                return tooFewParamsReductionErr;
+            if (!param && is_optional) {
+                // don't count as required sig
+                input_sigs--;
             }
-            else if(semeq(_t_symbol(sig),SIGNATURE_SYMBOL)) {
-                raise_error("not implemented");
-            }
-            else if(semeq(_t_symbol(sig),SIGNATURE_ANY)) {
-            }
-            else {
-                raise_error("unknown signature checking symbol: %s",_sem_get_name(sem,_t_symbol(sig)));
+            if (param) {
+                if(semeq(_t_symbol(sig),SIGNATURE_STRUCTURE)) {
+                    Structure ss = *(Symbol *)_t_surface(sig);
+                    if (!semeq(_sem_get_symbol_structure(sem,_t_symbol(param)),ss) && !semeq(ss,TREE))
+                        return signatureMismatchReductionErr;
+                }
+                else if(semeq(_t_symbol(sig),SIGNATURE_SYMBOL)) {
+                    Symbol ss = *(Symbol *)_t_surface(sig);
+                    if (!semeq(ss,_t_symbol(param)))
+                        raise_error("signatureMismatchReductionErr");
+                    //                    return signatureMismatchReductionErr;
+                }
+                else if(semeq(_t_symbol(sig),SIGNATURE_ANY)) {
+                }
+                else {
+                    raise_error("unknown signature checking symbol: %s",_sem_get_name(sem,_t_symbol(sig)));
+                }
             }
         }
         else if (semeq(sym,TEMPLATE_SIGNATURE)) {
@@ -922,7 +936,9 @@ Error _p_step(Q *q, R **contextP) {
                         // a new run-tree run that process
 
                         Error e = __p_check_signature(q->r->sem,s,np,context->sem_map);
-                        if (e) context->state = e;
+                        if (e) {
+                            context->state = e;
+                        }
                         else {
                             T *run_tree = _p_make_run_tree(q->r->sem,s,np,context->sem_map);
                             context->state = Pushed;

@@ -19,28 +19,34 @@ void testProtocolRecognize() {
 
     T *recog = _sem_get_def(G_sem,RECOGNIZE);
 
+    // check the recognize protocol definition
     spec_is_str_equal(t2s(recog),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL:RECOGNIZE) (PROTOCOL_SEMANTICS) (INCLUSION (PNAME:REQUESTING) (CONNECTION (WHICH_ROLE (ROLE:REQUESTER) (ROLE:RECOGNIZER))) (CONNECTION (WHICH_ROLE (ROLE:RESPONDER) (ROLE:RECOGNIZEE))) (CONNECTION (WHICH_GOAL (GOAL:REQUEST_HANDLER) (GOAL:RECOGNITION))) (RESOLUTION (WHICH_SYMBOL (USAGE:REQUEST_DATA) (ACTUAL_SYMBOL:are_you))) (RESOLUTION (WHICH_SYMBOL (USAGE:RESPONSE_DATA) (ACTUAL_SYMBOL:i_am))) (RESOLUTION (WHICH_PROCESS (GOAL:RESPONSE_HANDLER) (ACTUAL_PROCESS:fill_i_am)))))");
 
     T *sem_map = _t_new_root(SEMANTIC_MAP);
     T *t = _o_unwrap(G_sem,recog,sem_map);
+    // and also check how it gets unwrapped because it's defined in terms of REQUESTING
     spec_is_str_equal(t2s(t),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL:RECOGNIZE) (PROTOCOL_SEMANTICS (ROLE:RECOGNIZER) (GOAL:RECOGNITION)) (backnforth (INITIATE (ROLE:RECOGNIZER) (DESTINATION (ROLE:RECOGNIZEE)) (ACTION:send_request)) (EXPECT (ROLE:RECOGNIZEE) (SOURCE (ROLE:RECOGNIZER)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:are_you))) (ACTION:send_response))))");
 
+    // the unwrapping should build up a semantic map
     spec_is_str_equal(t2s(sem_map),"(SEMANTIC_MAP (SEMANTIC_LINK (ROLE:REQUESTER) (REPLACEMENT_VALUE (ROLE:RECOGNIZER))) (SEMANTIC_LINK (ROLE:RESPONDER) (REPLACEMENT_VALUE (ROLE:RECOGNIZEE))) (SEMANTIC_LINK (GOAL:REQUEST_HANDLER) (REPLACEMENT_VALUE (GOAL:RECOGNITION))) (SEMANTIC_LINK (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:are_you))) (SEMANTIC_LINK (USAGE:RESPONSE_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:i_am))) (SEMANTIC_LINK (GOAL:RESPONSE_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:fill_i_am))))");
     _t_free(sem_map);
 
+    // create a receptor to express the proctocl
     Receptor *self =  _r_new(G_sem,TEST_RECEPTOR);
 
+    // and a noop-action to run as the result of recognizing
     T *noop = _t_new_root(NOOP);
     _t_newi(noop,TEST_INT_SYMBOL,314);
     Process proc = _r_define_process(self,noop,"do nothing","long desc...",NULL);
 
+    // which we add to the bindings
     T *bindings = _t_new_root(PROTOCOL_BINDINGS);
     T *res = _t_newr(bindings,RESOLUTION);
     T *w = _t_newr(res,WHICH_PROCESS);
     _t_news(w,GOAL,RECOGNITION);
     _t_news(w,ACTUAL_PROCESS,proc);
 
-
+    // that get used to express the RECOGNIZER half of the protocol
     _o_express_role(self,RECOGNIZE,RECOGNIZER,DEFAULT_ASPECT,bindings);
     _t_free(bindings);
 
@@ -56,6 +62,7 @@ void testProtocolRecognize() {
     Xaddr x = _v_new_receptor(v,v->r,TEST_RECEPTOR,self);
     _v_activate(v,x);
 
+    // now create bindings for the RECONIZEE half of the protocols
     bindings = _t_new_root(PROTOCOL_BINDINGS);
     res = _t_newr(bindings,RESOLUTION);
     w = _t_newr(res,WHICH_RECEPTOR);
@@ -65,36 +72,54 @@ void testProtocolRecognize() {
     w = _t_newr(res,WHICH_PROCESS);
     _t_news(w,GOAL,RECOGNITION);
     _t_news(w,ACTUAL_PROCESS,NOOP);
+    res = _t_newr(bindings,RESOLUTION);
+    w = _t_newr(res,WHICH_VALUE);
+    _t_news(w,ACTUAL_SYMBOL,are_you);
+    T *val = _t_newr(w,ACTUAL_VALUE);
+    val = _t_newr(val,are_you);
+    _t_newr(val,SEMTREX_WALK);
 
-    spec_is_str_equal(t2s(bindings),"(PROTOCOL_BINDINGS (RESOLUTION (WHICH_RECEPTOR (ROLE:RECOGNIZEE) (ACTUAL_RECEPTOR (RECEPTOR_ADDR:3)))) (RESOLUTION (WHICH_PROCESS (GOAL:RECOGNITION) (ACTUAL_PROCESS:NOOP))))");
+    spec_is_str_equal(t2s(bindings),"(PROTOCOL_BINDINGS (RESOLUTION (WHICH_RECEPTOR (ROLE:RECOGNIZEE) (ACTUAL_RECEPTOR (RECEPTOR_ADDR:3)))) (RESOLUTION (WHICH_PROCESS (GOAL:RECOGNITION) (ACTUAL_PROCESS:NOOP))) (RESOLUTION (WHICH_VALUE (ACTUAL_SYMBOL:are_you) (ACTUAL_VALUE (are_you (SEMTREX_WALK))))))");
 
-    //debug_enable(D_PROTOCOL);
-    //debug_enable(D_TREE);
-    debug_enable(D_SIGNALS);
+    /* debug_enable(D_PROTOCOL); */
+    /* debug_enable(D_TREE); */
+    /* debug_enable(D_SIGNALS); */
+    // now initiate recognition
     _o_initiate(self,RECOGNIZE,backnforth,bindings);
     _p_reduceq(self->q);
     debug_disable(D_SIGNALS);
+
+    // which should produce signals on the flux
     spec_is_str_equal(t2s(_t_getv(self->pending_signals,1,SignalEnvelopeIdx,EnvelopeCarrierIdx,TREE_PATH_TERMINATOR)),"(CARRIER:backnforth)");
-    spec_is_str_equal(t2s(_t_getv(self->pending_signals,1,SignalBodyIdx,TREE_PATH_TERMINATOR)),"(BODY:{(are_you)})");
+    spec_is_str_equal(t2s(_t_getv(self->pending_signals,1,SignalBodyIdx,TREE_PATH_TERMINATOR)),"(BODY:{(are_you (SEMTREX_WALK))})");
     spec_is_str_equal(t2s(_t_getv(self->pending_responses,1,PendingResponseCarrierIdx,TREE_PATH_TERMINATOR)),"(CARRIER:backnforth)");
 
     _v_deliver_signals(v,self);
+    // check the signal's envelope, body, and run-tree
     T *signals = __r_get_signals(self,DEFAULT_ASPECT);
-    spec_is_str_equal(t2s(signals),"(SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:backnforth) (SIGNAL_UUID)) (BODY:{(are_you)}) (RUN_TREE (process:RESPOND (SIGNAL_REF:/1/4) (process:fill_i_am)) (PARAMS))))");
+    T *e = _t_clone(_t_getv(signals,1,SignalEnvelopeIdx,TREE_PATH_TERMINATOR));
+    _t_free(_t_detach_by_idx(e,EnvelopeExtraIdx)); // get rid of the end conditions which are variable so we can't test them!
+    spec_is_str_equal(t2s(e),"(ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:backnforth) (SIGNAL_UUID))");
+    _t_free(e);
+    spec_is_str_equal(t2s(_t_getv(signals,1,SignalBodyIdx,TREE_PATH_TERMINATOR)),"(BODY:{(are_you (SEMTREX_WALK))})");
     spec_is_str_equal(t2s(_t_getv(signals,1,SignalBodyIdx+1,TREE_PATH_TERMINATOR)),"(RUN_TREE (process:RESPOND (SIGNAL_REF:/1/4) (process:fill_i_am)) (PARAMS))");
 
-    //debug_enable(D_REDUCE+D_REDUCEV);
+    //    debug_enable(D_REDUCE+D_REDUCEV);
 
+    // which when get reduced, return the i_am result
     _p_reduceq(self->q);
     debug_disable(D_TREE);
+    debug_disable(D_PROTOCOL);
     debug_disable(D_REDUCE+D_REDUCEV);
 
-    spec_is_str_equal(_td(self,self->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:RECOGNIZE) (SIGNAL_UUID) (IN_RESPONSE_TO_UUID)) (BODY:{(i_am (RECEPTOR_LABEL:super cept) (RECEPTOR_IDENTIFIER:314159))})))");
+    spec_is_str_equal(_td(self,self->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:backnforth) (SIGNAL_UUID) (IN_RESPONSE_TO_UUID)) (BODY:{(i_am (RECEPTOR_LABEL:super cept) (RECEPTOR_IDENTIFIER:314159))})))");
     _v_deliver_signals(v,self);
 
-    spec_is_str_equal(t2s(self->root),"");
+    spec_is_str_equal(t2s(self->q->active->context->run_tree),"(RUN_TREE (process:NOOP (i_am (RECEPTOR_LABEL:super cept) (RECEPTOR_IDENTIFIER:314159))) (PARAMS))");
+
     debug_disable(D_SIGNALS);
 
+    //@todo cleanup! which we can't do yet because we haven't written code to remove installed receptors
 }
 
 void testProtocolAlive() {

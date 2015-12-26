@@ -1171,6 +1171,12 @@
        <div class="def-sym-def"><a href="ref_sys_structures.html#PROTOCOL">PROTOCOL</a></div>
        <div class="def-comment"></div>
    </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="ACTUAL_VALUE"></a>ACTUAL_VALUE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></div>
+       <div class="def-comment">  this really can't be anything, rather only something that's a SYMBOL semantic type</div>
+   </div>
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
        <div class="def-name"><a name="TUPLE_OF_GOAL_AND_ACTUAL_PROCESS"></a>TUPLE-OF-GOAL-AND-ACTUAL-PROCESS</div>
@@ -1221,8 +1227,20 @@
    </div>
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="TUPLE_OF_ACTUAL_SYMBOL_AND_ACTUAL_VALUE"></a>TUPLE-OF-ACTUAL-SYMBOL-AND-ACTUAL-VALUE</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#ACTUAL_SYMBOL">ACTUAL_SYMBOL</a>, <a href="ref_sys_symbols.html#ACTUAL_VALUE">ACTUAL_VALUE</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="WHICH_VALUE"></a>WHICH_VALUE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TUPLE_OF_ACTUAL_SYMBOL_AND_ACTUAL_VALUE">TUPLE-OF-ACTUAL-SYMBOL-AND-ACTUAL-VALUE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
        <div class="def-name"><a name="MAPPING"></a>MAPPING</div>
-       <div class="def-struc-def">OR(<a href="ref_sys_symbols.html#WHICH_PROCESS">WHICH_PROCESS</a>, <a href="ref_sys_symbols.html#WHICH_RECEPTOR">WHICH_RECEPTOR</a>, <a href="ref_sys_symbols.html#WHICH_SYMBOL">WHICH_SYMBOL</a>, <a href="ref_sys_symbols.html#WHICH_PROTOCOL">WHICH_PROTOCOL</a>)</div>
+       <div class="def-struc-def">OR(<a href="ref_sys_symbols.html#WHICH_PROCESS">WHICH_PROCESS</a>, <a href="ref_sys_symbols.html#WHICH_RECEPTOR">WHICH_RECEPTOR</a>, <a href="ref_sys_symbols.html#WHICH_SYMBOL">WHICH_SYMBOL</a>, <a href="ref_sys_symbols.html#WHICH_PROTOCOL">WHICH_PROTOCOL</a>, <a href="ref_sys_symbols.html#WHICH_VALUE">WHICH_VALUE</a>)</div>
        <div class="def-comment">  maps abstract semantic reference to concrete instantiation</div>
    </div>
    <div class="def-item def-symbol">
@@ -2195,8 +2213,8 @@
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
        <div class="def-name"><a name="fill_i_am"></a>fill_i_am</div>
-       <div class="def-sig-in"></div>
-       <div class="def-sig-out">result(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
+       <div class="def-sig-in"><li>[pattern(SYMBOL:<a href="ref_sys_symbols.html#are_you">are_you</a>)]</li></div>
+       <div class="def-sig-out">identity(STRUCTURE:<a href="ref_sys_symbols.html#RECEPTOR_IDENTITY">RECEPTOR_IDENTITY</a>)</div>
        <div class="def-comment"><i>fill i am</i></div>
    </div>
    <div class="def-item def-protocol">

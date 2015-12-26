@@ -812,9 +812,9 @@ T *__t_find_actual(T *sem_map,Symbol actual_kind,T *replacement_kind) {
         result = _stx_get_matched_node(actual_kind,mr,sem_map,NULL);
         debug(D_TREE,"   re-mapping %s ->",t2s(replacement_kind));
         debug(D_TREE,"%s\n",t2s(result));
+        _t_free(mr);
     }
     _t_free(stx);
-    _t_free(mr);
     return result;
 }
 
@@ -913,11 +913,23 @@ void __t_fill_template(T *template, T *sem_map,bool as_run_node) {
                         }
                     }
                     else {
-                        // in the structure case the replacement node is simply a clone of the replacement
+                        // in the structure case: first, check to see if the replacement node is an "ACTUAL_SYMBOL" in which case we try to find an actual value for that symbol in the semantic map, and if that fails, simply assume that the symbol value is the actual value.
+                        T *temp = NULL;
+                        if (semeq(rsid,ACTUAL_SYMBOL)) {
+                            Symbol acsym = *(Symbol *)_t_surface(replacement_value);
+                            T *ac = _t_news(0,ACTUAL_SYMBOL,acsym);
+                            T *x = __t_find_actual(sem_map,ACTUAL_VALUE,ac);
+                            _t_free(ac);
+                            if (x) {
+                                replacement_value = _t_child(x,1);
+                            }
+                            else replacement_value = temp = _t_new_root(acsym);
+                        }
                         if (is_run_node)
                             r = _t_rclone(replacement_value);
                         else
                             r = _t_clone(replacement_value);
+                        if (temp) _t_free(temp);
                     }
                 }
                 if (children) {

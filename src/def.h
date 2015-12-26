@@ -39,6 +39,7 @@ enum {SourceRoleIdx=1};
 enum {DefLabelIdx=1,SymbolDefStructureIdx};
 enum {ProcessDefNameIdx=1,ProcessDefIntentionIdx,ProcessDefCodeIdx,ProcessDefSignatureIdx};
 enum {SignatureOutputSigIdx=1};
+enum {InputSigLabelIdx=1,InputSigSemVariantsIdx,InputSigOptionalIdx};
 enum {ProtocolDefNameIdx=1,ProtocolDefSemanticsIdx};
 enum {RuntreeCodeIdx=1,RunTreeParamsIdx,RunTreeErrorCodeIdx};
 enum {ResolutionWhichIdx=1};
@@ -79,7 +80,7 @@ Context _d_get_receptor_context(SemTable *sem,SemanticID r);
 
 enum{NO_INDENT=0,INDENT=-1};
 #define t2s(t) _t2s(G_sem,t)
-#define t2sp(t) __t2s(G_sem,t,4)
+#define t2sp(t) __t2s(G_sem,t,INDENT)
 #define _t2s(d,t) __t2s(d,t,NO_INDENT)
 char * __t2s(SemTable *sem,T *t,int indent);
 char *_indent_line(int level,char *buf);

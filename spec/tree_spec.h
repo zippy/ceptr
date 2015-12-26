@@ -610,7 +610,7 @@ void testTreeTemplate() {
                        NULL_SYMBOL);
     spec_is_str_equal(t2s(sem_map),"(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:PING))) (SEMANTIC_LINK (ROLE:RESPONDER) (REPLACEMENT_VALUE (ACTUAL_RECEPTOR (RECEPTOR_ADDR:3)))))");
     _t_fill_template(template,sem_map);
-    spec_is_str_equal(t2s(template),"(process:REQUEST (TO_ADDRESS (RECEPTOR_ADDR:3)) (ACTUAL_SYMBOL:PING) (ACTUAL_SYMBOL:PING))");
+    spec_is_str_equal(t2s(template),"(process:REQUEST (TO_ADDRESS (RECEPTOR_ADDR:3)) (PING) (PING))");
     _t_free(template);
     _t_free(sem_map);
 

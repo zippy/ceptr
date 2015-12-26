@@ -218,8 +218,8 @@ T *_o_bindings2sem_map(T *bindings, T *sem_map) {
             T *r = _t_newr(t,REPLACEMENT_VALUE);
             _t_add(r,_t_clone(_t_child(w,2)));
             );
-    debug(D_PROTOCOL,"converting bindings %s\n",t2s(bindings));
-    debug(D_PROTOCOL,"to sem map %s\n",t2s(sem_map));
+    debug(D_PROTOCOL,"converting bindings %s\n",t2sp(bindings));
+    debug(D_PROTOCOL,"to sem map %s\n",t2sp(sem_map));
     return sem_map;
 }
 

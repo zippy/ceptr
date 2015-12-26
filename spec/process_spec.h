@@ -826,6 +826,12 @@ void testProcessSignatureMatching() {
 
     _t_free(n);
     _t_free(sm);
+
+    n = _t_new_root(fill_i_am);
+
+    spec_is_equal(__p_check_signature(G_sem,fill_i_am,n,NULL),noReductionErr);
+    _t_free(n);
+
 }
 
 void testProcessError() {
