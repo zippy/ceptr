@@ -418,7 +418,11 @@ void testReceptorSerialize() {
     Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
     Symbol lat,lon,house_loc;
     Structure latlong;
-    defineHouseLocation(r,&lat,&lon,&latlong,&house_loc);
+    //defineHouseLocation(r,&lat,&lon,&latlong,&house_loc);
+    lat = _r_get_sem_by_label(r,"latitude");
+    lon = _r_get_sem_by_label(r,"longitude");
+    house_loc = _r_get_sem_by_label(r,"house location");
+    latlong = _r_get_sem_by_label(r,"latlong");
 
     // create a house location tree
     T *t = _t_new_root(house_loc);
@@ -441,10 +445,18 @@ void testReceptorSerialize() {
     char buf[2000];
     char buf1[2000];
 
+    T *signal_contents = _t_newi(0,TEST_INT_SYMBOL,314);
+    ReceptorAddress from = {3}; // DUMMY ADDR
+    ReceptorAddress to = {4}; // DUMMY ADDR
+
+    // add a signal too
+    T *s = __r_make_signal(from,to,DEFAULT_ASPECT,TESTING,signal_contents,0,0);
+    _r_deliver(r,s);
+
     _r_serialize(r,&surface,&length);
 
-    // serialized receptor is two stacked serialized mtrees, first one for the tree
-    // and then one for the instances
+    // serialized receptor is two stacked serialized mtrees, first one for the state tree
+    // and then the second for the receptor's instances
     S *s1 = (S *)surface;
     S *s2 = (S *)(surface + s1->total_size);
     spec_is_long_equal(length,s1->total_size+s2->total_size);
@@ -710,7 +722,7 @@ void testReceptor() {
     testReceptorDef();
     testReceptorDefMatch();
     testReceptorInstanceNew();
-    //  testReceptorSerialize();
+    testReceptorSerialize();
     testReceptorNums();
     testReceptorEdgeStream();
     testReceptorClock();
