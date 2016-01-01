@@ -86,7 +86,7 @@ void testTreeNewReceptor() {
     spec_is_ptr_equal(_t_surface(tr),r);
     spec_is_true(!(tr->context.flags & TFLAG_ALLOCATED));
 
-    spec_is_str_equal(t2s(t),"(TEST_ANYTHING_SYMBOL (TEST_RECEPTOR:{(RECEPTOR_INSTANCE (CONTEXT_NUM:3) (PARENT_CONTEXT_NUM:0) (RECEPTOR_STATE (FLUX (DEFAULT_ASPECT (EXPECTATIONS) (SIGNALS))) (PENDING_SIGNALS) (PENDING_RESPONSES) (RECEPTOR_ELAPSED_TIME:0)))}))");
+    spec_is_str_equal(t2s(t),"(TEST_ANYTHING_SYMBOL (TEST_RECEPTOR:{(RECEPTOR_INSTANCE (INSTANCE_OF:TEST_RECEPTOR) (CONTEXT_NUM:3) (PARENT_CONTEXT_NUM:0) (RECEPTOR_STATE (FLUX (DEFAULT_ASPECT (EXPECTATIONS) (SIGNALS))) (PENDING_SIGNALS) (PENDING_RESPONSES) (RECEPTOR_ELAPSED_TIME:0)))}))");
 
     _t_free(t); // note, no need to free the receptor explicitly, as _t_free knows about it
     //! [testTreeNewReceptor]

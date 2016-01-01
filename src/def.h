@@ -21,7 +21,7 @@
 // @todo figure out a better way to handle this... like put defs like these
 // into the symbol gen code (talk about a semantic muddle! If only I had ceptr...)
 // Note, that I tried that and it's hard!
-enum {ReceptorInstanceContextNumIdx=1,ReceptorInstanceParentContextIdx,ReceptorInstanceStateIdx};
+enum {ReceptorInstanceInstOfIdx=1,ReceptorInstanceContextNumIdx,ReceptorInstanceParentContextIdx,ReceptorInstanceStateIdx};
 enum {ReceptorDefinitionLabelIdx=1,ReceptorDefinitionDefsIdx};
 enum {ReceptorFluxIdx=1,ReceptorPendingSignalsIdx,ReceptorPendingResponsesIdx,ReceptorElapsedTimeIdx};
 enum {EnvelopeFromIdx=1,EnvelopeToIdx,EnvelopeAspectIdx,EnvelopeCarrierIdx,EnvelopeUUIDIdx,EnvelopeExtraIdx};

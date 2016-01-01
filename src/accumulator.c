@@ -17,14 +17,35 @@
 
 VMHost *G_vm = 0;
 
-//@todo refactor into something better
-void __a_vmfn(char *buf,char *dir) {
-    strcpy(buf,dir);
-    strcpy(buf+strlen(buf),"/vmhost.x");
+#define PATHS_FN "paths"
+#define SEM_FN "sem"
+
+#define __a_vm_state_fn(buf,dir) __a_vm_fn(buf,dir,"state")
+#define __a_vmfn(buf,dir) __a_vm_fn(buf,dir,"")
+void __a_vm_fn(char *buf,char *dir,char *suffix) {
+    sprintf(buf,"%s/vmhost%s.x",dir,suffix);
 }
-void __a_vmsfn(char *buf,char *dir) {
-    strcpy(buf,dir);
-    strcpy(buf+strlen(buf),"/vmhost_state.x");
+
+void __a_serializet(T *t,char *name) {
+    char fn[1000];
+    H h =_m_new_from_t(t);
+    S *s = _m_serialize(h.m);
+    __a_vm_fn(fn,G_vm->dir,name);
+    writeFile(fn,s,s->total_size);
+    free(s);
+    _m_free(h);
+}
+
+T *__a_unserializet(char *dir_path,char *name) {
+    char fn[1000];
+    __a_vm_fn(fn,dir_path,name);
+    S *s;
+    readFile(fn,&s,0);
+    H h = _m_unserialize(s);
+    free(s);
+    T *t = _t_new_from_m(h);
+    _m_free(h);
+    return t;
 }
 
 /**
@@ -50,28 +71,45 @@ void _a_boot(char *dir_path) {
         _v_instantiate_builtins(G_vm);
     }
     else {
-        // unserialize all of the vmhost's instantiated receptors and other instances
         char fn[1000];
         void *buffer;
+        // unserialize the semtable base tree
+        SemTable *sem = _sem_new();
+        T *t = __a_unserializet(dir_path,SEM_FN);
+        sem->stores[0].definitions = t;
+
+        // restore definitions to the correct store slots
+        T *paths = __a_unserializet(dir_path,PATHS_FN);
+        int i = 0;
+        int c = _t_children(paths);
+        for(i=1;i<=c;i++) {
+            T *p = _t_child(paths,i);
+            if (semeq(RECEPTOR_PATH,_t_symbol(p))) {
+                T *x = _t_get(t,(int *)_t_surface(p));
+                sem->stores[i-1].definitions = x;
+            }
+        }
+        _t_free(paths);
+        sem->contexts = c+1;
+
+        // unserialize all of the vmhost's instantiated receptors and other instances
         __a_vmfn(fn,dir_path);
         readFile(fn,&buffer,0);
 
-        SemTable *sem = _sem_new();
-        raise_error("fix semtable, it needs to get loaded first");
         Receptor *r = _r_unserialize(sem,buffer);
-        G_vm = __v_init(r,NULL);
+        G_vm = __v_init(r,sem);
         free(buffer);
 
         // unserialize other vmhost state data
-        __a_vmsfn(fn,dir_path);
         S *s;
+        __a_vm_state_fn(fn,dir_path);
         readFile(fn,&s,0);
         H h = _m_unserialize(s);
         free(s);
 
         H hars; hars.m=h.m; hars.a = _m_child(h,1); // first child is ACTIVE_RECEPTORS
         H har; har.m=h.m;
-        int i,j = _m_children(hars);
+        int j = _m_children(hars);
         for (i=1;i<=j;i++) {
             har.a = _m_child(hars,i);
             if(!semeq(_m_symbol(har),RECEPTOR_XADDR)) raise_error("expecting RECEPTOR_XADDR!");
@@ -99,25 +137,42 @@ void _a_shut_down() {
     _v_join_thread(&G_vm->clock_thread);
     _v_join_thread(&G_vm->vm_thread);
 
+    char fn[1000];
+
+    // serialize the semtable
+    __a_serializet(_t_root(G_vm->sem->stores[0].definitions),SEM_FN);
+
+    int i;
+    T *paths = _t_new_root(RECEPTOR_PATHS);
+    for (i=0;i<G_vm->sem->contexts;i++) { // we don't need the path of the root so start at 1
+        int *p = _t_get_path(G_vm->sem->stores[i].definitions);
+        if (p) {
+            _t_new(paths,RECEPTOR_PATH,p,sizeof(int)*(_t_path_depth(p)+1));
+            free(p);
+        }
+        else
+            _t_newr(paths,STRUCTURE_ANYTHING); // should be something like DELETED_CONTEXT
+    }
+    __a_serializet(paths,PATHS_FN);
+    _t_free(paths);
+
     // serialize the receptor part of the vmhost
     void *surface;
     size_t length;
     _r_serialize(G_vm->r,&surface,&length);
     //    _r_unserialize(surface);
-    char fn[1000];
     __a_vmfn(fn,G_vm->dir);
     writeFile(fn,surface,length);
     free(surface);
 
     // serialize other parts of the vmhost
-    int i;
     H h = _m_newr(null_H,SYS_STATE);
     H har = _m_newr(h,ACTIVE_RECEPTORS);
     for (i=0;i<G_vm->active_receptor_count;i++) {
         _m_new(har,RECEPTOR_XADDR,&G_vm->active_receptors[i].x,sizeof(Xaddr));
     }
     S *s = _m_serialize(h.m);
-    __a_vmsfn(fn,G_vm->dir);
+    __a_vm_state_fn(fn,G_vm->dir);
     writeFile(fn,s,s->total_size);
     free(s);
     _m_free(h);

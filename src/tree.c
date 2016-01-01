@@ -1132,6 +1132,7 @@ int _t_path_depth(int *p) {
  * @snippet spec/tree_spec.h testTreePathGetPath
  */
 int * _t_get_path(T *t) {
+    if (!t) return NULL;
     T *n;
     // allocate an array to hold the
     int s = sizeof(int)*20; // assume most trees are shallower than 10 nodes to prevent realloc
@@ -1505,6 +1506,7 @@ char * _t2rawjson(SemTable *sem,T *t,int level,char *buf) {
             case STRUCTURE_ID:
             case PROCESS_ID:
             case PROTOCOL_ID:
+            case RECEPTOR_ID:
                 {
                     SemanticID sem =*(SemanticID *)_t_surface(t);
                     sprintf(buf,",\"surface\":");
@@ -1528,7 +1530,7 @@ char * _t2rawjson(SemTable *sem,T *t,int level,char *buf) {
                     sprintf(buf,",\"surface\":%s",c);
                     break;
                 }
-            case RECEPTOR_ID:
+            case RECEPTOR_SURFACE_ID:
                 if (t->context.flags & (TFLAG_SURFACE_IS_TREE+TFLAG_SURFACE_IS_RECEPTOR)) {
                     c = _t2rawjson(sem,((Receptor *)_t_surface(t))->root,0,tbuf);
                     sprintf(buf,",\"surface\":%s",c);
@@ -1648,6 +1650,10 @@ char * _t2json(SemTable *sem,T *t,int level,char *buf) {
                 c = _sem_get_name(sem,*(Protocol *)_t_surface(t));
                 sprintf(buf,"\"type\":\"PROTOCOL\",\"name\":\"%s\",\"surface\":\"%s\"",n,c?c:"<unknown>");
                 break;
+            case RECEPTOR_ID:
+                c = _sem_get_name(sem,*(SemanticID *)_t_surface(t));
+                sprintf(buf,"\"type\":\"RECEPTOR\",\"name\":\"%s\",\"surface\":\"%s\"",n,c?c:"<unknown>");
+                break;
             case TREE_PATH_ID:
                 sprintf(buf,"\"type\":\"TREE_PATH\",\"name\":\"%s\",\"surface\":\"%s\"",n,_t_sprint_path((int *)_t_surface(t),b));
                 break;
@@ -1664,7 +1670,7 @@ char * _t2json(SemTable *sem,T *t,int level,char *buf) {
                     sprintf(buf,"\"type\":\"TREE\",\"name\":\"%s\",\"surface\":%s",n,c);
                     break;
                 }
-            case RECEPTOR_ID:
+            case RECEPTOR_SURFACE_ID:
                 if (t->context.flags & (TFLAG_SURFACE_IS_TREE+TFLAG_SURFACE_IS_RECEPTOR)) {
                     c = _t2json(sem,((Receptor *)_t_surface(t))->root,0,tbuf);
                     sprintf(buf,"\"type\":\"RECEPTOR\",\"name\":\"%s\",\"surface\":%s",n,c);

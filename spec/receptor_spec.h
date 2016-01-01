@@ -35,7 +35,7 @@ void testReceptorCreate() {
     t = _t_child(r->flux,1);
     spec_is_symbol_equal(r,_t_symbol(t),DEFAULT_ASPECT);
 
-    spec_is_str_equal(t2s(r->root),"(RECEPTOR_INSTANCE (CONTEXT_NUM:3) (PARENT_CONTEXT_NUM:0) (RECEPTOR_STATE (FLUX (DEFAULT_ASPECT (EXPECTATIONS) (SIGNALS))) (PENDING_SIGNALS) (PENDING_RESPONSES) (RECEPTOR_ELAPSED_TIME:0)))");
+    spec_is_str_equal(t2s(r->root),"(RECEPTOR_INSTANCE (INSTANCE_OF:TEST_RECEPTOR) (CONTEXT_NUM:3) (PARENT_CONTEXT_NUM:0) (RECEPTOR_STATE (FLUX (DEFAULT_ASPECT (EXPECTATIONS) (SIGNALS))) (PENDING_SIGNALS) (PENDING_RESPONSES) (RECEPTOR_ELAPSED_TIME:0)))");
 
     _r_free(r);
     //! [testReceptorCreate]
@@ -418,7 +418,6 @@ void testReceptorSerialize() {
     Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
     Symbol lat,lon,house_loc;
     Structure latlong;
-    //defineHouseLocation(r,&lat,&lon,&latlong,&house_loc);
     lat = _r_get_sem_by_label(r,"latitude");
     lon = _r_get_sem_by_label(r,"longitude");
     house_loc = _r_get_sem_by_label(r,"house location");
@@ -639,7 +638,7 @@ void testReceptorEdgeStream() {
 
 void testReceptorClock() {
     Receptor *r = _r_makeClockReceptor(G_sem);
-    spec_is_str_equal(_td(r,r->root),"(RECEPTOR_INSTANCE (CONTEXT_NUM:4) (PARENT_CONTEXT_NUM:0) (RECEPTOR_STATE (FLUX (DEFAULT_ASPECT (EXPECTATIONS (EXPECTATION (CARRIER:CLOCK_TELL_TIME) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:CLOCK_TELL_TIME))) (ACTION:respond with current time) (PARAMS) (END_CONDITIONS (UNLIMITED)))) (SIGNALS))) (PENDING_SIGNALS) (PENDING_RESPONSES) (RECEPTOR_ELAPSED_TIME:0)))");
+    spec_is_str_equal(_td(r,r->root),"(RECEPTOR_INSTANCE (INSTANCE_OF:CLOCK_RECEPTOR) (CONTEXT_NUM:4) (PARENT_CONTEXT_NUM:0) (RECEPTOR_STATE (FLUX (DEFAULT_ASPECT (EXPECTATIONS (EXPECTATION (CARRIER:CLOCK_TELL_TIME) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:CLOCK_TELL_TIME))) (ACTION:respond with current time) (PARAMS) (END_CONDITIONS (UNLIMITED)))) (SIGNALS))) (PENDING_SIGNALS) (PENDING_RESPONSES) (RECEPTOR_ELAPSED_TIME:0)))");
 
    /*
       The clock receptor should do two things: respond to CLOCK_TELL_TIME signals with the current time, and also allow you to plant a listener based on a semtrex for any kind of time you want.  If you want the current time just plant a listener for TICK.  If you want to listen for every second plant a listener on the Symbol literal SECOND, and the clock receptor will trigger the listener every time the SECOND changes.  You can also listen for particular intervals and times by adding specificity to the semtrex, so to trigger a 3:30am action a-la-cron listen for: "/<TICK:(%HOUR=3,MINUTE=30)>"

@@ -551,6 +551,7 @@ char * __t_dump(SemTable *sem,T *t,int level,char *buf) {
             case STRUCTURE_ID:
             case PROCESS_ID:
             case PROTOCOL_ID:
+            case RECEPTOR_ID:
                 c = _sem_get_name(sem,*(SemanticID *)_t_surface(t));
                 sprintf(buf,"(%s:%s",n,c?c:"<unknown>");
                 break;
@@ -577,7 +578,7 @@ char * __t_dump(SemTable *sem,T *t,int level,char *buf) {
                     break;
                 }
                 raise_error("TREE struct without TREE node flags");
-            case RECEPTOR_ID:
+            case RECEPTOR_SURFACE_ID:
                 raise_error("boink bad receptor struct");
             case SCAPE_ID:
                 if (t->context.flags & TFLAG_SURFACE_IS_SCAPE) {

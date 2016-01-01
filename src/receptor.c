@@ -78,6 +78,7 @@ T *__r_make_definitions() {
  */
 Receptor *_r_new(SemTable *sem,SemanticID r) {
     T *t = _t_new_root(RECEPTOR_INSTANCE);
+    _t_news(t,INSTANCE_OF,r);
     if (semeq(r,SYS_RECEPTOR)) {
         _t_newi(t,CONTEXT_NUM,0);
         _t_newi(t,PARENT_CONTEXT_NUM,-1);

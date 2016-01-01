@@ -20,7 +20,7 @@ VMHost *__v_init(Receptor *r,SemTable *sem) {
     v->r = r;
     v->active_receptor_count = 0;
     v->receptor_count = 0;
-    v->installed_receptors = _s_new(RECEPTOR_IDENTIFIER,RECEPTOR);
+    v->installed_receptors = _s_new(RECEPTOR_IDENTIFIER,RECEPTOR_SURFACE);
     v->vm_thread.state = 0;
     v->clock_thread.state = 0;
     v->sem = sem;

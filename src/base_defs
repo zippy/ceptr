@@ -13,13 +13,14 @@ Structure: SYMBOL,NULL_SYMBOL;          surface is a c struct (SemID) representi
 Structure: STRUCTURE,NULL_SYMBOL;       surface is a c struct (SemID) representing structures
 Structure: PROCESS,NULL_SYMBOL;         surface is a c struct (SemID) representing processes
 Structure: PROTOCOL,NULL_SYMBOL;        surface is a c struct (SemID) representing protocols
+Structure: RECEPTOR,NULL_SYMBOL;        surface is a c struct (SemID) representing receptors
 Structure: SCAPE,NULL_SYMBOL;
 Structure: ENUM,NULL_SYMBOL;            @todo
 Structure: TREE_PATH,NULL_SYMBOL;       surface is an -1 terminated set of c ints
 Structure: XADDR,NULL_SYMBOL;
 Structure: SURFACE,NULL_SYMBOL;
 Structure: TREE,NULL_SYMBOL;            surface is a c pointer to a tree
-Structure: RECEPTOR,NULL_SYMBOL;        surface is a c pointer to a receptor structure
+Structure: RECEPTOR_SURFACE,NULL_SYMBOL;   surface is a c pointer to a receptor structure
 Structure: SEMTREX,NULL_SYMBOL;
 Structure: STREAM,NULL_SYMBOL;          surface is a c struct holding state for unix (and other) streams
 Structure: UUID,NULL_SYMBOL;            surface is a c struct holding a UUID
@@ -97,6 +98,7 @@ Symbol: BODY,TREE;                          orthogonal tree that holds message b
 Symbol: SIGNAL_UUID,UUID;
 Symbol: IN_RESPONSE_TO_UUID,UUID;
 Symbol: RECEPTOR_PATH,TREE_PATH;
+Symbol: RECEPTOR_PATHS,[+RECEPTOR_PATH];
 Symbol: RECEPTOR_ADDR,INTEGER;
 Structure: RECEPTOR_ADDRESS,|{RECEPTOR_ADDR|RECEPTOR_PATH};
 Symbol: FROM_ADDRESS,RECEPTOR_ADDRESS;
@@ -217,7 +219,8 @@ Symbol: RECEPTORS,[*RECEPTOR_DEFINITION];
 Symbol: RECEPTOR_STATE,[(FLUX,PENDING_SIGNALS,PENDING_RESPONSES,RECEPTOR_ELAPSED_TIME)];
 Symbol: PARENT_CONTEXT_NUM,INTEGER;        identifies the semantic context of a receptors parent
 Symbol: CONTEXT_NUM,INTEGER;               identifies the semantic context of a receptor
-Symbol: RECEPTOR_INSTANCE,[(CONTEXT_NUM,PARENT_CONTEXT_NUM,RECEPTOR_STATE)];
+Symbol: INSTANCE_OF,RECEPTOR;              identifies the kind of receptor this is
+Symbol: RECEPTOR_INSTANCE,[(INSTANCE_OF,CONTEXT_NUM,PARENT_CONTEXT_NUM,RECEPTOR_STATE)];
 
 Symbol: SERIALIZED_RECEPTOR,BLOB;
 
