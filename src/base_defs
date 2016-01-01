@@ -346,7 +346,6 @@ Symbol: REQUEST_HANDLER,PROCESS;
 Symbol: backnforth,INTERACTION;
 Data: req_code,(SLOT (GOAL:REQUEST_HANDLER) (SLOT_CHILDREN (REQUEST (SLOT (ROLE:RESPONDER) (SLOT_IS_VALUE_OF:TO_ADDRESS)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:backnforth) (SLOT (USAGE:REQUEST_DATA)) (CARRIER:backnforth))));
 Process: send_request,req_code,"send request","response",SIGNATURE_ANY,NULL_STRUCTURE,0;
-Data: req_action,(ACTION:send_request);
 
 Data: resp_code,(RESPOND (SIGNAL_REF:/1/4) (SLOT (GOAL:RESPONSE_HANDLER)));
 Process: send_response,resp_code,"send response","response id",SIGNATURE_SYMBOL,SIGNAL_UUID,0;

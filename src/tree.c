@@ -370,7 +370,7 @@ void _t_replace_node(T *t,T *r) {
     if  ((t->context.flags & TFLAG_RUN_NODE) != (r->context.flags & TFLAG_RUN_NODE)) {
         raise_error("runnode mismatch");
     }
-    __t_free_children(t);
+    __t_free(t);
     t->contents = r->contents;
     t->structure.child_count = r->structure.child_count;
     t->structure.children = r->structure.children;

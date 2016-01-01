@@ -52,6 +52,7 @@ void testRunTree() {
     T *params = _t_build(G_sem,0,PARAMS,TEST_INT_SYMBOL,123,TEST_INT_SYMBOL,321,BOOLEAN,1,NULL_SYMBOL);
 
     T *r = _p_make_run_tree(G_sem,p,params,NULL);
+    _t_free(params);
 
     spec_is_str_equal(t2s(r),"(RUN_TREE (process:IF (PARAM_REF:/2/3) (PARAM_REF:/2/1) (PARAM_REF:/2/2)) (PARAMS (TEST_INT_SYMBOL:123) (TEST_INT_SYMBOL:321) (BOOLEAN:1)))");
 
@@ -65,6 +66,7 @@ void testRunTree() {
     // you can also create a run tree with a system process
 
     r = _p_make_run_tree(G_sem,ADD_INT,params,NULL);
+    _t_free(params);
     spec_is_str_equal(t2s(r),"(RUN_TREE (process:ADD_INT (TEST_INT_SYMBOL:123) (TEST_INT_SYMBOL:321)) (PARAMS))");
 
     _t_free(r);
@@ -644,6 +646,10 @@ void testProcessRefs() {
 
     spec_is_str_equal(t2s(run_tree), "(RUN_TREE (TEST_ANYTHING_SYMBOL (TEST_INT_SYMBOL:314) (TEST_STR_SYMBOL:foo)) (PARAMS (TEST_INT_SYMBOL:314)))");
 
+    // now remove the run-tree from the signal or it won't get cleanup up by the free.
+    _t_detach_by_ptr(signal,run_tree);
+    _t_free(signal);
+
     _r_free(r);
 }
 
@@ -1023,7 +1029,6 @@ void testProcessMulti() {
     __t_newi(n,TEST_INT_SYMBOL,123,1);
     __t_newi(n,TEST_INT_SYMBOL,124,1);
     T *t1 = _p_make_run_tree(G_sem,if_even,n,NULL);
-
     __t_newi(n,TEST_INT_SYMBOL,100,1);
     T *l2 = __t_new(n,if_even,0,0,1);
     __t_newi(l2,TEST_INT_SYMBOL,2,1);
@@ -1113,6 +1118,7 @@ void testRunTreeTemplate() {
     spec_is_str_equal(t2s(sm),"(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (PING))) (SEMANTIC_LINK (USAGE:RESPONSE_DATA) (REPLACEMENT_VALUE (PING))) (SEMANTIC_LINK (ROLE:RESPONDER) (REPLACEMENT_VALUE (TO_ADDRESS (RECEPTOR_ADDR:3)))) (SEMANTIC_LINK (GOAL:REQUEST_HANDLER) (REPLACEMENT_VALUE (process:NOOP))))");
 
     T *r = _p_make_run_tree(G_sem,send_request,params,sm);
+    _t_free(params);
     spec_is_str_equal(t2s(r),"(RUN_TREE (process:NOOP (process:REQUEST (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:backnforth) (PING) (CARRIER:backnforth))) (PARAMS))");
     _t_free(r);
     _t_free(sm);
