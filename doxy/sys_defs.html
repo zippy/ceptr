@@ -1159,6 +1159,12 @@
        <div class="def-struc-def">SEQ(*(<a href="ref_sys_symbols.html#EXPECT">EXPECT</a>), *(<a href="ref_sys_symbols.html#INITIATE">INITIATE</a>))</div>
        <div class="def-comment"></div>
    </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="WHICH_INTERACTION"></a>WHICH_INTERACTION</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
+       <div class="def-comment">   the symbols stored in an WHICH_INTERACTION must be limited to those that are uses of the INTERACTION structure</div>
+   </div>
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
        <div class="def-name"><a name="ZERO_OR_MORE_OF_PROTOCOL_DEFINITION"></a>ZERO-OR-MORE-OF-PROTOCOL-DEFINITION</div>
@@ -1930,6 +1936,13 @@
    </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
+       <div class="def-name"><a name="INITIATE_PROTOCOL"></a>INITIATE_PROTOCOL</div>
+       <div class="def-sig-in"><li>protocol(SYMBOL:<a href="ref_sys_symbols.html#PNAME">PNAME</a>)</li><li>interaction(SYMBOL:<a href="ref_sys_symbols.html#WHICH_INTERACTION">WHICH_INTERACTION</a>)</li><li>bindings(SYMBOL:<a href="ref_sys_symbols.html#PROTOCOL_BINDINGS">PROTOCOL_BINDINGS</a>)</li></div>
+       <div class="def-sig-out">error(SYMBOL:<a href="ref_sys_symbols.html#REDUCTION_ERROR_SYMBOL">REDUCTION_ERROR_SYMBOL</a>)</div>
+       <div class="def-comment"><i>initiate the first step of a protocol</i></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
        <div class="def-name"><a name="MAGIC"></a>MAGIC</div>
        <div class="def-sig-in"></div>
        <div class="def-sig-out">result(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
@@ -2400,9 +2413,34 @@
    <h4>CLOCK_CONTEXT</h4>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="TIME_TELLER"></a>TIME_TELLER</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="TIME_HEARER"></a>TIME_HEARER</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="CLOCK_TELL_TIME"></a>CLOCK_TELL_TIME</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
        <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="tell_time"></a>tell_time</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#INTERACTION">INTERACTION</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="time_request"></a>time_request</div>
+       <div class="def-sig-in"></div>
+       <div class="def-sig-out">response(SYMBOL:<a href="ref_sys_symbols.html#TICK">TICK</a>)</div>
+       <div class="def-comment"><i>request current time</i></div>
    </div>
 </div>
 <div class="defs-context">
