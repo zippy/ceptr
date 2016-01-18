@@ -15,6 +15,7 @@
 #include "accumulator.h"
 #include "debug.h"
 #include "mtree.h"
+#include "protocol.h"
 #include <stdarg.h>
 #include <time.h>
 #include <unistd.h>
@@ -955,12 +956,30 @@ Receptor *_r_makeStreamWriterReceptor(SemTable *sem,Symbol stream_symbol,Stream 
 void _r_defineClockReceptor(SemTable *sem) {
     Context clk_ctx =  _d_get_receptor_context(sem,CLOCK_RECEPTOR);
     T *resp = _t_new_root(RESPOND);
-    _t_news(resp,CARRIER,TICK);
+    int p[] = {SignalEnvelopeIdx,EnvelopeCarrierIdx,TREE_PATH_TERMINATOR};
+    _t_new(resp,SIGNAL_REF,p,sizeof(int)*4);
+
     Xaddr x = {TICK,1};
     T *g = _t_newr(resp,GET);
     _t_new(g,GET_XADDR,&x,sizeof(Xaddr));
     T *signature = __p_make_signature("result",SIGNATURE_SYMBOL,NULL_SYMBOL,NULL);
     Process proc = _d_define_process(sem,resp,"respond with current time","long desc...",signature,clk_ctx);
+    T *act = _t_newp(0,ACTION,proc);
+    T *pattern = _t_new_root(PATTERN);
+    T *s = _sl(pattern,CLOCK_TELL_TIME);
+
+    T *req_act = _t_newp(0,ACTION,time_request);
+
+    T *def = _o_make_protocol_def(sem,clk_ctx,"time",
+                                  ROLE,TIME_TELLER,
+                                  ROLE,TIME_HEARER,
+                                  INTERACTION,tell_time,
+                                  INITIATE,TIME_HEARER,TIME_TELLER,req_act,
+                                  EXPECT,TIME_TELLER,TIME_HEARER,pattern,act,NULL_SYMBOL,
+                                  NULL_SYMBOL
+                                  );
+    Protocol tt = _d_define_protocol(sem,def,clk_ctx);
+
 }
 
 Receptor *_r_makeClockReceptor(SemTable *sem) {
@@ -973,11 +992,15 @@ Receptor *_r_makeClockReceptor(SemTable *sem) {
     T *tick = __r_make_tick();  // initial tick, will get updated by clock thread.
     Xaddr x = _r_new_instance(r,tick);
 
-    Process proc = _sem_get_by_label(sem,"respond with current time",r->context);
+    Protocol time = _sem_get_by_label(sem,"time",r->context);
+    _o_express_role(r,time,TIME_TELLER,DEFAULT_ASPECT,NULL);
 
-    T *act = _t_newp(0,ACTION,proc);
-    T *params = _t_new_root(PARAMS);
-    _r_add_expectation(r,DEFAULT_ASPECT,CLOCK_TELL_TIME,expect,act,params,0,NULL);
+
+    /* Process proc = _sem_get_by_label(sem,"respond with current time",r->context); */
+
+    /* T *act = _t_newp(0,ACTION,proc); */
+    /* T *params = _t_new_root(PARAMS); */
+    /* _r_add_expectation(r,DEFAULT_ASPECT,CLOCK_TELL_TIME,expect,act,params,0,NULL); */
 
     return r;
 }

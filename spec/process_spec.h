@@ -547,6 +547,42 @@ void testProcessStream() {
     _r_free(r);
 }
 
+void testProcessInitiate(){
+    Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
+    Q *q = r->q;
+    Protocol time = _sem_get_by_label(G_sem,"time",CLOCK_CONTEXT);
+
+    T *n = _t_new_root(INITIATE_PROTOCOL);
+    T *p = _t_news(n,PNAME,time);
+    T *i = _t_news(n,WHICH_INTERACTION,tell_time);
+    T *bindings = _t_newr(n,PROTOCOL_BINDINGS);
+    T *res = _t_newr(bindings,RESOLUTION);
+    T *w = _t_newr(res,WHICH_RECEPTOR);
+    _t_news(w,ROLE,TIME_TELLER);
+    __r_make_addr(w,ACTUAL_RECEPTOR,r->addr);
+    res = _t_newr(bindings,RESOLUTION);
+    w = _t_newr(res,WHICH_RECEPTOR);
+    _t_news(w,ROLE,TIME_HEARER);
+    ReceptorAddress clock_addr = {3}; // @todo bogus!!! fix getting clock address somehow
+    __r_make_addr(w,ACTUAL_RECEPTOR,clock_addr);
+    res = _t_newr(bindings,RESOLUTION);
+    w = _t_newr(res,WHICH_PROCESS);
+    _t_news(w,GOAL,REQUEST_HANDLER);
+    T *noop = _t_new_root(NOOP);
+    Process proc = _r_define_process(r,noop,"do nothing","long desc...",NULL);
+    _t_news(w,ACTUAL_PROCESS,proc);
+
+    T *run_tree = __p_build_run_tree(n,0);
+    _t_free(n);
+    Qe *e = _p_addrt2q(q,run_tree);
+
+    spec_is_str_equal(_td(r,r->pending_signals),"(PENDING_SIGNALS)");
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    spec_is_equal(_t_children(r->pending_signals),1);
+
+    _r_free(r);
+}
+
 //-----------------------------------------------------------------------------------------
 // tests of process execution (reduction)
 
@@ -1138,6 +1174,7 @@ void testProcess() {
     testProcessRequest();
     testProcessQuote();
     testProcessStream();
+    testProcessInitiate();
     testProcessReduce();
     testProcessRefs();
     testProcessReduceDefinedProcess();

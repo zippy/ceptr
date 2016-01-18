@@ -182,11 +182,13 @@ void _setupTestProtocols() {
     T *action =  _t_build(G_sem,0,SLOT,GOAL,process,SLOT_IS_VALUE_OF,ACTION,NULL_SYMBOL);
     T *pattern = _t_build(G_sem,0,PATTERN,SEMTREX_SYMBOL_LITERAL,SLOT,USAGE,data,SLOT_IS_VALUE_OF,SEMTREX_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);
 
+    Symbol act = _d_define_symbol(G_sem,INTERACTION,"act",TEST_CONTEXT);
+
     simple_def = _o_make_protocol_def(G_sem,TEST_CONTEXT,"do",
                                       ROLE,agent,
                                       GOAL,process,
                                       USAGE,data,
-                                      INTERACTION,"act",
+                                      INTERACTION,act,
                                         EXPECT,agent,agent,pattern,action,
                                       NULL_SYMBOL);
     simple = _d_define_protocol(G_sem,simple_def,TEST_CONTEXT);

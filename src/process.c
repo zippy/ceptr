@@ -617,6 +617,19 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             }
         }
         break;
+    case INITIATE_PROTOCOL_ID:
+        {
+            T *protocol = _t_detach_by_idx(code,1);
+            T *interaction = _t_detach_by_idx(code,1);
+            T *bindings = _t_detach_by_idx(code,1);
+            _o_initiate(q->r,*(SemanticID *)_t_surface(protocol),*(SemanticID *)_t_surface(interaction),bindings);
+            _t_free(protocol);
+            _t_free(interaction);
+
+            /// @todo what should this really return?
+            x = __t_news(0,REDUCTION_ERROR_SYMBOL,NULL_SYMBOL,1);
+        }
+        break;
     case MAGIC_ID:
         {switch(*(int *)_t_surface(code)) {
             case MagicReceptors:

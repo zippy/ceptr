@@ -89,26 +89,12 @@ T *_o_make_protocol_def(SemTable *sem,Context c,char *label,...) {
         }
         if (semeq(state,INTERACTION)) {
             if (semeq(param,INTERACTION)) {
-                char *l = va_arg(params,char*);
-                Symbol interaction = _d_define_symbol(sem,INTERACTION,l,c);
+                Symbol interaction =  va_arg(params,Symbol);
                 t = _t_newr(t,interaction);
             }
             else if (semeq(param,EXPECT) || semeq(param,INITIATE)) {
                 p = t;
                 state = param;
-            }
-            else pop = true;
-        }
-        if (semeq(state,INITIATE)) {
-            if (semeq(param,INITIATE)) {
-                t = _t_newr(p,INITIATE);
-                Symbol role = va_arg(params,Symbol);
-                _t_news(t,ROLE,role);
-                T *s = _t_newr(t,DESTINATION);
-                Symbol source = va_arg(params,Symbol);
-                _t_news(s,ROLE,source);
-                T *action = va_arg(params,T*);
-                _t_add(t,action);
             }
             else pop = true;
         }
@@ -122,6 +108,19 @@ T *_o_make_protocol_def(SemTable *sem,Context c,char *label,...) {
                 _t_news(s,ROLE,source);
                 T *pattern = va_arg(params,T*);
                 _t_add(t,pattern);
+                T *action = va_arg(params,T*);
+                _t_add(t,action);
+            }
+            else pop = true;
+        }
+        if (semeq(state,INITIATE)) {
+            if (semeq(param,INITIATE)) {
+                t = _t_newr(p,INITIATE);
+                Symbol role = va_arg(params,Symbol);
+                _t_news(t,ROLE,role);
+                T *s = _t_newr(t,DESTINATION);
+                Symbol source = va_arg(params,Symbol);
+                _t_news(s,ROLE,source);
                 T *action = va_arg(params,T*);
                 _t_add(t,action);
             }
@@ -427,9 +426,9 @@ void _o_initiate(Receptor *r,SemanticID protocol,SemanticID interaction,T *bindi
         _o_bindings2sem_map(bindings,sem_map);
     }
     T *ia = _t_find(p,interaction);
-    if (!ia) raise_error("interaction %s not found",_sem_get_name(r->sem,interaction));
+    if (!ia) raise_error("interaction '%s' not found in protocol definition",_sem_get_name(r->sem,interaction));
     T *initiate = _t_find(ia,INITIATE);
-    if (!initiate) raise_error("INITIATE not found in %s ",_sem_get_name(r->sem,interaction));
+    if (!initiate) raise_error("no INITIATE found in %s interaction",_sem_get_name(r->sem,interaction));
     //@todo somehow check that we've expressed the role in INITIATE
 
     T *action = _t_child(initiate,InitiateActionIdx);

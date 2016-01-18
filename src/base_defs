@@ -173,6 +173,7 @@ Symbol: INITIATE,[(ROLE,DESTINATION,ACTION)];
 Symbol: PNAME,PROTOCOL;
 Symbol: INCLUSION,[(PNAME,+|{RESOLUTION|CONNECTION})];
 Structure: INTERACTION,(*EXPECT,*INITIATE);
+Symbol: WHICH_INTERACTION,SYMBOL;   the symbols stored in an WHICH_INTERACTION must be limited to those that are uses of the INTERACTION structure
 
 Symbol: PROTOCOLS,[*PROTOCOL_DEFINITION];
 Symbol: ACTUAL_PROCESS,PROCESS;
@@ -288,7 +289,7 @@ Process: LT_INT,0,"test less than","result",SIGNATURE_SYMBOL,BOOLEAN,"int1",SIGN
 Process: GT_INT,0,"test greater than","result",SIGNATURE_SYMBOL,BOOLEAN,"int1",SIGNATURE_STRUCTURE,INTEGER,"int2",SIGNATURE_STRUCTURE,INTEGER,0;
 Process: LTE_INT,0,"test less than or equal","result",SIGNATURE_SYMBOL,BOOLEAN,"int1",SIGNATURE_STRUCTURE,INTEGER,"int2",SIGNATURE_STRUCTURE,INTEGER,0;
 Process: GTE_INT,0,"test greater than or equal","result",SIGNATURE_SYMBOL,BOOLEAN,"int1",SIGNATURE_STRUCTURE,INTEGER,"int2",SIGNATURE_STRUCTURE,INTEGER,0;
-
+Process: INITIATE_PROTOCOL,0,"initiate the first step of a protocol","error",SIGNATURE_SYMBOL,REDUCTION_ERROR_SYMBOL,"protocol",SIGNATURE_SYMBOL,PNAME,"interaction",SIGNATURE_SYMBOL,WHICH_INTERACTION,"bindings",SIGNATURE_SYMBOL,PROTOCOL_BINDINGS,0;
 Process: MAGIC,0,"dark magic","result",SIGNATURE_ANY,NULL_STRUCTURE,0;   this process reduces to hardcoded special things as a scaffold for things we don't know how to build in ceptr yet.
 
 Symbol: STX_SL,NULL_STRUCTURE;
@@ -435,7 +436,12 @@ Symbol: TESTING,SYMBOL;
 ########################################################################################
 Context: CLOCK;
 
+Symbol: TIME_TELLER,RECEPTOR_ADDRESS;
+Symbol: TIME_HEARER,RECEPTOR_ADDRESS;
 Symbol: CLOCK_TELL_TIME,NULL_STRUCTURE;
+Symbol: tell_time,INTERACTION;
+Data: time_req_code,(SLOT (GOAL:REQUEST_HANDLER) (SLOT_CHILDREN (REQUEST (SLOT (ROLE:TIME_TELLER) (SLOT_IS_VALUE_OF:TO_ADDRESS)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:tell_time) (CLOCK_TELL_TIME) (RESPONSE_CARRIER:tell_time)));
+Process: time_request,time_req_code,"request current time","response",SIGNATURE_SYMBOL,TICK,0;
 
 ########################################################################################
 Context: STREAM_READER;

@@ -148,6 +148,7 @@ enum SYSSymbolIDs {
     INITIATE_ID,
     PNAME_ID,
     INCLUSION_ID,
+    WHICH_INTERACTION_ID,
     ACTUAL_PROCESS_ID,
     ACTUAL_RECEPTOR_ID,
     ACTUAL_SYMBOL_ID,
@@ -366,6 +367,7 @@ SemanticID EXPECT;
 SemanticID INITIATE;
 SemanticID PNAME;
 SemanticID INCLUSION;
+SemanticID WHICH_INTERACTION;
 SemanticID ACTUAL_PROCESS;
 SemanticID ACTUAL_RECEPTOR;
 SemanticID ACTUAL_SYMBOL;
@@ -716,6 +718,7 @@ enum SYSProcessIDs {
     GT_INT_ID,
     LTE_INT_ID,
     GTE_INT_ID,
+    INITIATE_PROTOCOL_ID,
     MAGIC_ID,
     NUM_SYS_PROCESSES
 };
@@ -744,6 +747,7 @@ SemanticID LT_INT;
 SemanticID GT_INT;
 SemanticID LTE_INT;
 SemanticID GTE_INT;
+SemanticID INITIATE_PROTOCOL;
 SemanticID MAGIC;
 
 /**********************************************************************************/
@@ -923,10 +927,16 @@ enum TESTProtocolIDs {
 // CLOCK:Symbol
 enum CLOCKSymbolIDs {
     NULL_CLOCK_SYMBOL_ID,
+    TIME_TELLER_ID,
+    TIME_HEARER_ID,
     CLOCK_TELL_TIME_ID,
+    tell_time_ID,
     NUM_CLOCK_SYMBOLS
 };
+SemanticID TIME_TELLER;
+SemanticID TIME_HEARER;
 SemanticID CLOCK_TELL_TIME;
+SemanticID tell_time;
 
 /**********************************************************************************/
 // CLOCK:Structure
@@ -939,8 +949,10 @@ enum CLOCKStructureIDs {
 // CLOCK:Process
 enum CLOCKProcessIDs {
     NULL_CLOCK_PROCESS_ID,
+    time_request_ID,
     NUM_CLOCK_PROCESSES
 };
+SemanticID time_request;
 
 /**********************************************************************************/
 // CLOCK:Protocol

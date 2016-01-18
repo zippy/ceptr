@@ -32,7 +32,7 @@ void testAccBootStrap() {
     // new clock receptor should be instantiated and active
     spec_is_equal(G_vm->active_receptor_count,1);
     Receptor *clock = G_vm->active_receptors[0].r;
-    spec_is_str_equal(t2s(clock->root),"(RECEPTOR_INSTANCE (INSTANCE_OF:CLOCK_RECEPTOR) (CONTEXT_NUM:4) (PARENT_CONTEXT_NUM:0) (RECEPTOR_STATE (FLUX (DEFAULT_ASPECT (EXPECTATIONS (EXPECTATION (CARRIER:CLOCK_TELL_TIME) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:CLOCK_TELL_TIME))) (ACTION:respond with current time) (PARAMS) (END_CONDITIONS (UNLIMITED)))) (SIGNALS))) (PENDING_SIGNALS) (PENDING_RESPONSES) (RECEPTOR_ELAPSED_TIME:0)))");
+    spec_is_str_equal(t2s(clock->root),"(RECEPTOR_INSTANCE (INSTANCE_OF:CLOCK_RECEPTOR) (CONTEXT_NUM:4) (PARENT_CONTEXT_NUM:0) (RECEPTOR_STATE (FLUX (DEFAULT_ASPECT (EXPECTATIONS (EXPECTATION (CARRIER:tell_time) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:CLOCK_TELL_TIME))) (ACTION:respond with current time) (PARAMS) (END_CONDITIONS (UNLIMITED)))) (SIGNALS))) (PENDING_SIGNALS) (PENDING_RESPONSES) (RECEPTOR_ELAPSED_TIME:0)))");
 
     // now add an expectation in the clock
     T *tick = __r_make_tick();

@@ -78,14 +78,30 @@ void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp
     _r_add_expectation(r,DEFAULT_ASPECT,LINE,expect,act,params,0,NULL);
 
     // (expect (on flux SHELL_COMMAND:time) action(send std_out (convert_to_lines (send clock get_time))))
+    // converting to use the clock protocol currently breaks the shell because the return value TICK
+    // isn't getting passed to the right place.  This will get fixed when convert the shell to be
+    // protocol based and thereby connect up the two protocols see #
 
-    T *code = _t_new_root(REQUEST);
+    Protocol time = _sem_get_by_label(G_sem,"time",CLOCK_CONTEXT);
+    T *code = _t_new_root(INITIATE_PROTOCOL);
+    _t_news(code,PNAME,time);
+    _t_news(code,WHICH_INTERACTION,tell_time);
+    T *bindings = _t_newr(code,PROTOCOL_BINDINGS);
+    T *res = _t_newr(bindings,RESOLUTION);
+    T *w = _t_newr(res,WHICH_RECEPTOR);
+    _t_news(w,ROLE,TIME_HEARER);
+    __r_make_addr(w,ACTUAL_RECEPTOR,r->addr);
+    res = _t_newr(bindings,RESOLUTION);
+    w = _t_newr(res,WHICH_RECEPTOR);
+    _t_news(w,ROLE,TIME_TELLER);
     ReceptorAddress clock_addr = {3}; // @todo bogus!!! fix getting clock address somehow
-    __r_make_addr(code,TO_ADDRESS,clock_addr);
-    _t_news(code,ASPECT_IDENT,DEFAULT_ASPECT);
-    _t_news(code,CARRIER,CLOCK_TELL_TIME);
-    _t_newr(code,CLOCK_TELL_TIME);
-    _t_news(code,RESPONSE_CARRIER,TICK);
+    __r_make_addr(w,ACTUAL_RECEPTOR,clock_addr);
+    res = _t_newr(bindings,RESOLUTION);
+    w = _t_newr(res,WHICH_PROCESS);
+    _t_news(w,GOAL,REQUEST_HANDLER);
+    T *noop = _t_new_root(NOOP);
+    proc = _r_define_process(r,noop,"do nothing","long desc...",NULL);
+    _t_news(w,ACTUAL_PROCESS,proc);
 
     addCommand(r,o_r->addr,"time","get time",code);
 
