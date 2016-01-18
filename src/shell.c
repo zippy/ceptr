@@ -80,7 +80,7 @@ void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp
     // (expect (on flux SHELL_COMMAND:time) action(send std_out (convert_to_lines (send clock get_time))))
     // converting to use the clock protocol currently breaks the shell because the return value TICK
     // isn't getting passed to the right place.  This will get fixed when convert the shell to be
-    // protocol based and thereby connect up the two protocols see #
+    // protocol based and thereby connect up the two protocols see #93
 
     Protocol time = _sem_get_by_label(G_sem,"time",CLOCK_CONTEXT);
     T *code = _t_new_root(INITIATE_PROTOCOL);
