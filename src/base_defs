@@ -440,7 +440,7 @@ Symbol: TIME_TELLER,RECEPTOR_ADDRESS;
 Symbol: TIME_HEARER,RECEPTOR_ADDRESS;
 Symbol: CLOCK_TELL_TIME,NULL_STRUCTURE;
 Symbol: tell_time,INTERACTION;
-Data: time_req_code,(SLOT (GOAL:REQUEST_HANDLER) (SLOT_CHILDREN (REQUEST (SLOT (ROLE:TIME_TELLER) (SLOT_IS_VALUE_OF:TO_ADDRESS)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:tell_time) (CLOCK_TELL_TIME) (RESPONSE_CARRIER:tell_time)));
+Data: time_req_code,(SLOT (GOAL:REQUEST_HANDLER) (SLOT_CHILDREN (REQUEST (SLOT (ROLE:TIME_TELLER) (SLOT_IS_VALUE_OF:TO_ADDRESS)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:tell_time) (CLOCK_TELL_TIME) (RESPONSE_CARRIER:tell_time))));
 Process: time_request,time_req_code,"request current time","response",SIGNATURE_SYMBOL,TICK,0;
 
 ########################################################################################

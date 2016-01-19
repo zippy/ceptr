@@ -780,7 +780,7 @@ Error _r_deliver(Receptor *r, T *signal) {
                             debug(D_SIGNALS,"unblocking for response %s\n",_td(r,response));
                             _t_replace(_t_parent(result),_t_node_index(result), response);
                             e->context->node_pointer = response;
-
+                            debug(D_SIGNALS,"  runtree: %s\n",_td(r,e->context->run_tree));
                             __p_unblock(q,e);
                         }
                         pthread_mutex_unlock(&q->mutex);
@@ -973,6 +973,7 @@ void _r_defineClockReceptor(SemTable *sem) {
     T *def = _o_make_protocol_def(sem,clk_ctx,"time",
                                   ROLE,TIME_TELLER,
                                   ROLE,TIME_HEARER,
+                                  GOAL,REQUEST_HANDLER,
                                   INTERACTION,tell_time,
                                   INITIATE,TIME_HEARER,TIME_TELLER,req_act,
                                   EXPECT,TIME_TELLER,TIME_HEARER,pattern,act,NULL_SYMBOL,

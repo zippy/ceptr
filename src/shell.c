@@ -12,7 +12,7 @@
 #include "semtrex.h"
 
 
-void addCommand(Receptor *r,ReceptorAddress ox,char *command,char *desc,T *code) {
+void addCommand(Receptor *r,ReceptorAddress ox,char *command,char *desc,T *code,T *bindings_handler) {
     T *expect = _t_new_root(PATTERN);
     T *s = _t_news(expect,SEMTREX_GROUP,SHELL_COMMAND);
 
@@ -26,7 +26,23 @@ void addCommand(Receptor *r,ReceptorAddress ox,char *command,char *desc,T *code)
 
     _t_news(p,ASPECT_IDENT,DEFAULT_ASPECT);
     _t_news(p,CARRIER,NULL_SYMBOL);
-    _t_add(p,code);
+
+    // if code is actually an INITIATE then we will have a bindings handler
+    // to which we want to add the SAY command as the ACTUAL_PROCESS
+    // and we will replace the p with code which does the proper protocol
+    // initiation.  Kinda weird, I know...
+    if (bindings_handler) {
+        char proc_name[255] = "handle ";
+        strcpy(&proc_name[7],command);
+        int pt1[] = {2,1,TREE_PATH_TERMINATOR};
+        _t_new(p,PARAM_REF,pt1,sizeof(int)*3);
+        Process proc = _r_define_process(r,p,proc_name,"long desc...",NULL);
+        _t_news(bindings_handler,ACTUAL_PROCESS,proc);
+        p = code;
+    }
+    else {
+        _t_add(p,code);
+    }
 
     Process proc = _r_define_process(r,p,desc,"long desc...",NULL);
     T *act = _t_newp(0,ACTION,proc);
@@ -77,10 +93,7 @@ void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp
     _t_news(slot,USAGE,VERB);
     _r_add_expectation(r,DEFAULT_ASPECT,LINE,expect,act,params,0,NULL);
 
-    // (expect (on flux SHELL_COMMAND:time) action(send std_out (convert_to_lines (send clock get_time))))
-    // converting to use the clock protocol currently breaks the shell because the return value TICK
-    // isn't getting passed to the right place.  This will get fixed when convert the shell to be
-    // protocol based and thereby connect up the two protocols see #93
+    // (expect (on flux SHELL_COMMAND:time) action(initiate tell_time in time protocol with handler -> send std_out (convert_to_lines (send clock get_time))))
 
     Protocol time = _sem_get_by_label(G_sem,"time",CLOCK_CONTEXT);
     T *code = _t_new_root(INITIATE_PROTOCOL);
@@ -99,20 +112,17 @@ void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp
     res = _t_newr(bindings,RESOLUTION);
     w = _t_newr(res,WHICH_PROCESS);
     _t_news(w,GOAL,REQUEST_HANDLER);
-    T *noop = _t_new_root(NOOP);
-    proc = _r_define_process(r,noop,"do nothing","long desc...",NULL);
-    _t_news(w,ACTUAL_PROCESS,proc);
 
-    addCommand(r,o_r->addr,"time","get time",code);
+    addCommand(r,o_r->addr,"time","get time",code,w);
 
     // (expect (on flux SHELL_COMMAND:receptor) action (send std_out (convert_to_lines (send vmhost receptor-list))))
 
     code = _t_newi(0,MAGIC,MagicReceptors);
-    addCommand(r,o_r->addr,"receptors","get receptor list",code);
+    addCommand(r,o_r->addr,"receptors","get receptor list",code,NULL);
 
     // (expect (on flux SHELL_COMMAND:receptor) action (send std_out (convert_to_lines (send vmhost shutdown)))
     code = _t_newi(0,MAGIC,MagicQuit);
-    addCommand(r,o_r->addr,"quit","shut down the vmhost",code);
+    addCommand(r,o_r->addr,"quit","shut down the vmhost",code,NULL);
 
 }
 

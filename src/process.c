@@ -85,6 +85,8 @@ Error __p_check_signature(SemTable *sem,Process p,T *code,T *sem_map) {
     T *processes = _sem_get_defs(sem,p);
     T *def = _d_get_process_code(processes,p);
     T *signature = _t_child(def,ProcessDefSignatureIdx);
+    // @todo if there's no signature we should probably fail, but instead we assume everything's ok
+    if (!signature) return 0;
     int sigs = _t_children(signature);
     int input_sigs = 0;
     int i;

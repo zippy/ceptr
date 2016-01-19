@@ -324,10 +324,10 @@ void testVMHostShell() {
 
     makeShell(G_vm,input,output,&i_r,&o_r,&input_stream,&output_stream);
 
-    //debug_enable(D_STREAM+D_SIGNALS);
+    //   debug_enable(D_STREAM+D_SIGNALS+D_TREE+D_PROTOCOL);
     _v_start_vmhost(G_vm);
     sleep(1);
-    debug_disable(D_STREAM+D_SIGNALS);
+    debug_disable(D_STREAM+D_SIGNALS+D_TREE+D_PROTOCOL);
 
     // confirm that the completed processes get cleaned up in the course of the vmhosts processing
     spec_is_ptr_equal(i_r->q->completed,NULL);
@@ -339,8 +339,8 @@ void testVMHostShell() {
 
     spec_is_true(output_data != 0); // protect against seg-faults when nothing was written to the stream...
     if (output_data != 0) {
-        output_data[122] =0;  // clip the tick so it work regardless of the time
-        spec_is_str_equal(output_data,"COMPOSITORY:0 DEV_COMPOSITORY:1 TEST_RECEPTOR:2 CLOCK_RECEPTOR:3 shell:4 STREAM_READER:5 STREAM_WRITER:6\n(TICK (TODAY (YEAR:");}
+        output_data[125] =0;  // clip the tick so it work regardless of the time
+        spec_is_str_equal(output_data,"COMPOSITORY:0 DEV_COMPOSITORY:1 TEST_RECEPTOR:2 CLOCK_RECEPTOR:3 shell:4 STREAM_READER:5 STREAM_WRITER:6 \n(TICK (TODAY (YEAR:");}
     __r_kill(G_vm->r);
 
     _v_join_thread(&G_vm->clock_thread);
