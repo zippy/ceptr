@@ -151,7 +151,8 @@ Xaddr _v_new_receptor(VMHost *v,Receptor *parent,Symbol s, Receptor *r) {
         raise_error("too many receptors");
     }
     int c = v->receptor_count++;
-    v->routing_table[c]=r;
+    v->routing_table[c].r=r;
+    v->routing_table[c].s=s;
     r->addr.addr = c;
 
     //@todo what ever else is needed at the vmhost level to add the receptor's
@@ -254,7 +255,7 @@ void _v_deliver_signals(VMHost *v, Receptor *sender) {
             if (toP->addr >= v->receptor_count) {
                 raise_error("to address: %d doesn't exist!",toP->addr);
             }
-            r = v->routing_table[toP->addr];
+            r = v->routing_table[toP->addr].r;
         }
 
         Error err = _r_deliver(r,s);

@@ -638,10 +638,9 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                     int i;
                     int l = 0;
                     for (i=0;i<G_vm->receptor_count;i++) {
-                        Receptor *r = G_vm->routing_table[i];
+                        Receptor *r = G_vm->routing_table[i].r;
                         if (r) {
-                            SemanticID sid ={r->parent,SEM_TYPE_RECEPTOR,r->context};
-                            char *n = _sem_get_name(r->sem,sid);
+                            char *n = _sem_get_name(r->sem,G_vm->routing_table[i].s);
                             if (!n) n= "??";
                             int nl = strlen(n);
                             memcpy(&s[l],n,nl);

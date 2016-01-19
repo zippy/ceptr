@@ -246,8 +246,8 @@ enum ReceptorStates {Alive=0,Dead};
 */
 struct Receptor {
     T *root;             ///< RECEPTOR_INSTANCE semantic tree
-    Context parent;      ///< the context this receptor definition lives in
-    Context context;     ///< the context this receptor definition creates
+    Context parent;      ///< the context this receptor's definition lives in
+    Context context;     ///< the context this receptor's definition creates
     ReceptorAddress addr;///< the address by which to get messages to this receptor instance
     SemTable *sem;       ///< pointer back to the semantic table context where the receptor's running
     T *flux;             ///< pointer for quick access to the flux

@@ -27,6 +27,10 @@ typedef struct ActiveReceptor {
     Receptor *r;
 } ActiveReceptor;
 
+typedef struct ReceptorRoute {
+    Receptor *r;
+    SemanticID s;
+} ReceptorRoute;
 
 #define MAX_ACTIVE_RECEPTORS 1000
 #define MAX_RECEPTORS 1000
@@ -34,7 +38,7 @@ typedef struct ActiveReceptor {
  * VMHost holds all the data for an active virtual machine host
  */
 struct VMHost {
-    Receptor *routing_table[MAX_RECEPTORS];
+    ReceptorRoute routing_table[MAX_RECEPTORS];
     int receptor_count;
     Receptor *r;                ///< Receptor data for this vm host
     SemTable *sem;              ///< Semantic Table for definitions on this host

@@ -249,14 +249,18 @@ void testDefReceptor() {
     T *d = __r_make_definitions();
     T *defs;
 
-    SemanticID r = _d_define_receptor(G_sem,"streamscapes",d,TEST_CONTEXT);
-    defs = _sem_get_defs(G_sem,r);
+    SemanticID s = _d_define_receptor(G_sem,"streamscapes",d,TEST_CONTEXT);
+    defs = _sem_get_defs(G_sem,s);
     spec_is_str_equal(t2s(defs),"(RECEPTORS (RECEPTOR_DEFINITION (RECEPTOR_LABEL:streamscapes) (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (RECEPTORS) (PROTOCOLS) (SCAPES))))");
 
-    T *d2 = __sem_get_defs(G_sem,SEM_TYPE_RECEPTOR, _d_get_receptor_context(G_sem,r));
+    T *d2 = __sem_get_defs(G_sem,SEM_TYPE_RECEPTOR, _d_get_receptor_context(G_sem,s));
 
     spec_is_ptr_equal(d2,_t_child(d,SEM_TYPE_RECEPTOR));
 
+    Receptor *r = _r_new(G_sem,s);
+    char *n = _sem_get_name(r->sem,s);
+    spec_is_str_equal(n,"streamscapes");
+    _r_free(r);
     //@todo undefining things??
 }
 
