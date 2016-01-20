@@ -94,6 +94,25 @@ void testProcessGet() {
     _r_free(r);
 }
 
+void testProcessNew() {
+    Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
+    Q *q = r->q;
+
+    T *n = _t_newr(0,NEW);
+    _t_news(n,NEW_TYPE,TEST_INT_SYMBOL);
+    _t_newi(n,TEST_INT_SYMBOL2,314);
+    T *run_tree = __p_build_run_tree(n,0);
+    _t_free(n);
+    Qe *e = _p_addrt2q(q,run_tree);
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (NEW_XADDR:TEST_INT_SYMBOL.1) (PARAMS))");
+    T *i = _r_get_instance(r,*(Xaddr *)_t_surface(_t_child(run_tree,1)));
+    spec_is_str_equal(t2s(i),"(TEST_INT_SYMBOL:314)");
+    //    _t_free(i);
+    _r_free(r);
+}
+
 void testProcessFillMatch() {
     T *t = _t_new_root(RUN_TREE);
     // test FILL_FROM_MATCH which takes three params, the template tree, the stx-match and the tree it matched on
@@ -1164,6 +1183,7 @@ void testProcess() {
     _defIfEven();
     testRunTree();
     testProcessGet();
+    testProcessNew();
     testProcessFillMatch();
     testProcessFillMatchFull();
     testProcessIf();

@@ -191,6 +191,25 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             _t_free(t);
         }
         break;
+    case NEW_ID:
+        {
+            T *t = _t_detach_by_idx(code,1);
+            Symbol s = *(Symbol *)_t_surface(t);
+            _t_free(t);
+            t = _t_detach_by_idx(code,1);
+            Structure struc_new = _sem_get_symbol_structure(q->r->sem,s);
+            Structure struc_val = _sem_get_symbol_structure(q->r->sem,_t_symbol(t));
+            if (!semeq(struc_new,struc_val)) {
+                //@todo convert to reduction error
+                raise_error("mismatch structures in NEW");
+            }
+            else {
+                t->contents.symbol = s;
+                Xaddr xa = _r_new_instance(q->r,t);
+                x = __t_new(0,NEW_XADDR,&xa,sizeof(Xaddr),1);
+            }
+        }
+        break;
     case IF_ID:
         t = _t_child(code,1);
         b = (*(int *)_t_surface(t)) ? 2 : 3;
