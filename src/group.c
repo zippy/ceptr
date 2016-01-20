@@ -10,6 +10,7 @@
 
 #include "group.h"
 #include "protocol.h"
+#include "debug.h"
 
 #define C_authChanId 1
 
@@ -32,14 +33,21 @@ Receptor *_makeTokenAuthProtocolReceptor() {
         send action to verifier;
         else return error;
     }
-    T *t_d = _o_new(r,token_auth,
+    T *t_d = _o_new(r,authenticate,
                     ROLE,authenticator,
                     ROLE,authenticatee,
                     ROLE,verifier,
+                    USAGE,token,
+                    USAGE,message,
                     CONVERSATION,"bind",
-                    authenticator,authenticatee,e1,
-                    CONVERSATION,"do",
-                    authenticatee,authenticator,e2,
+                       authenticator,authenticatee,e1,
+                    CONVERSATION,"notarize",
+                       authenticatee,authenticator, {
+
+                       }
+                       verifier,authenticator, {
+                          send message
+                       }
                     NULL_SYMBOL
                     );
 
@@ -55,6 +63,7 @@ _o_new(r,authoring,"authoring"
        ROLE,medium,
        ROLE,reader,
        ROLE,editor,
+       USAGE,resource,
        CONVERSATION "create",
          medium,author,{store resource;return post id;}
        CONVERSATION "read",
@@ -65,29 +74,76 @@ _o_new(r,authoring,"authoring"
          medium,author,{delete resource by id;}
        )
 
-_o_new(r,following,"following"  //watching tuning-into listening
+_o_new(r,follow,"follow"  //watching tuning-into listening
        ROLE,channel,
+       ROLE,subscriber_subscriptions_channel,  //stand in for scapes
        ROLE,subscriber,
        ROLE,poster,
-       CONVERSATION,"subscribe",
-         channel,subscriber,{e = LISTEN,new post scape,RESPOND(to the subscribe request) with post value},
-       BIND_WITH,authoring {
-       ROLES:
-           channel -> medium;
-           poster -> author;
-           subscriber -> reader;
-       SYMBOLS:
-           post -> resource;
-       ACTIONS:
-       }
+       USAGE,post,
 
+       CONVERSATION,"view",
+           channel,subscriber,
+           WRAPPING,requesting,
+             ROLE,subscriber,requester,
+             ROLE,channel,responder,
+             SYMBOL,request,VIEW(from_id,to_id),
+             SYMBOL,response,posts,
+             PROCESS,request_handler,{
+             RESPOND with read from channel posts based on constraints in the VIEW structure
+           }
+       CONVERSATION,"subscribe",
+           channel,subscriber,
+           WRAPPING,requesting,
+             ROLE,subscriber,requester,
+             ROLE,channel,responder,
+             SYMBOL,request,subscribe,
+             SYMBOL,response,subscription_result,
+             PROCESS,request_handler,{
+                 create in subscriber_subscriptions_channel (channel_id,message_id=0)
+           }
+       WRAPPING,authoring,
+          RECEPTOR,channel,medium,
+          RECEPTOR,poster,author,
+          RECEPTOR,subscriber,reader,
+          SYMBOL,post,resource,
+       )
+
+_o_make_protocol_def(sem,"talk",
+       ROLE,group,
+       ROLE,proxy,
+       ROLE,member,
+       CONVERSATION,"membership",
+          group_addr,member,e_join,
+       CONVERSATION,"subscribe",
+          channel_addr,proxy_addr,e_sub,
+       CONVERSATION,"crud",
+       proxy_addr,member,e_crud,
+       CONVERSATION,"act",
+          member,proxy_addr,e_act,
+       NULL_SYMBOL
+
+      WRAPPING,follow,
+       RECEPTOR,proxy,subscriber,
+       RECEPTOR,proxy,poster,
+
+      WRAPPING,authenticate,
+       RECEPTOR,group,authenticator,
+       RECEPTOR,member,authenticatee,
+       RECEPTOR,channel,verifier,
+
+);
 */
+
+
 Receptor *makeGroup(VMHost *v,char *label) {
     SemTable *sem = v->r->sem;
-    Symbol group = _r_define_symbol(v->r,RECEPTOR,label);
+    Symbol group = _d_define_receptor(sem,label,__r_make_definitions(),DEV_COMPOSITORY_CONTEXT);
     Receptor *r = _r_new(sem,group);
-    /* Xaddr groupx = _v_new_receptor(v,v->r,group,r); */
-
+    Xaddr groupx = _v_new_receptor(v,v->r,group,r);
+    _v_activate(v,groupx);
+    //debug_enable(D_PROTOCOL);
+    _o_express_role(r,group1,GROUP,DEFAULT_ASPECT,NULL);
+    debug_disable(D_PROTOCOL);
     /* Symbol channel_addr = _r_define_symbol(r,RECEPTOR_ADDRESS,"channel"); */
     /* Symbol member =  _r_define_symbol(r,RECEPTOR_ADDRESS,"member"); */
     /* Symbol group_addr = _r_define_symbol(r,RECEPTOR_ADDRESS,"group"); */
@@ -98,7 +154,7 @@ Receptor *makeGroup(VMHost *v,char *label) {
     /* Symbol post_id = _r_define_symbol(r,INTEGER,"post_id"); */
 
     /* T *e_join,*e_sub,*e_crud,*e_act; */
-    /* T *g_d = _o_new(r,group,talking, */
+    /* T *g_d = _o_make_protocol_def(sem,"talking", */
     /*                 ROLE,channel_addr, */
     /*                 ROLE,group_addr, */
     /*                 ROLE,proxy_addr, */
@@ -112,7 +168,7 @@ Receptor *makeGroup(VMHost *v,char *label) {
     /*                 CONVERSATION,"act", */
     /*                     member,proxy_addr,e_act, */
     /*                 NULL_SYMBOL); */
-
+    /* _r_define_protocol(r,) */
     /* T *proc = _t_new_root(IF); */
     /* T *t = _t_newr(proc,SAY); */
     /* __r_make_addr(t,TO_ADDRESS,C_authChanId);  // @todo find the right address value to use by convention for the auth channel */

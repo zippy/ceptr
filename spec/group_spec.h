@@ -8,7 +8,8 @@
 
 void testGroupCreate() {
     Receptor *r = makeGroup(G_vm,"ceptr chat");
-    spec_is_str_equal(_r_get_symbol_name(G_vm->r,_t_symbol(r->root)),"ceptr chat");
+    spec_is_str_equal(_td(r,_t_child(r->root,1)),"(INSTANCE_OF:ceptr chat)");
+    spec_is_str_equal(_td(r,r->flux),"(FLUX (DEFAULT_ASPECT (EXPECTATIONS (EXPECTATION (CARRIER:enroll) (PATTERN (SEMTREX_SYMBOL_ANY)) (ACTION:enroll_client) (PARAMS) (END_CONDITIONS (UNLIMITED)))) (SIGNALS)))");
 }
 
 void testGroup() {

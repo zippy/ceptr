@@ -816,6 +816,9 @@ enum DEV_COMPOSITORYSymbolIDs {
     YUP_ID,
     HANDLER_ID,
     alive_ID,
+    GROUP_ID,
+    MEMBER_ID,
+    enroll_ID,
     NUM_DEV_COMPOSITORY_SYMBOLS
 };
 SemanticID REQUESTER;
@@ -839,6 +842,9 @@ SemanticID PING;
 SemanticID YUP;
 SemanticID HANDLER;
 SemanticID alive;
+SemanticID GROUP;
+SemanticID MEMBER;
+SemanticID enroll;
 
 /**********************************************************************************/
 // DEV_COMPOSITORY:Structure
@@ -857,12 +863,16 @@ enum DEV_COMPOSITORYProcessIDs {
     send_response_ID,
     fill_i_am_ID,
     respond_with_yup_ID,
+    request_membership_ID,
+    enroll_client_ID,
     NUM_DEV_COMPOSITORY_PROCESSES
 };
 SemanticID send_request;
 SemanticID send_response;
 SemanticID fill_i_am;
 SemanticID respond_with_yup;
+SemanticID request_membership;
+SemanticID enroll_client;
 
 /**********************************************************************************/
 // DEV_COMPOSITORY:Protocol
@@ -871,11 +881,13 @@ enum DEV_COMPOSITORYProtocolIDs {
     REQUESTING_ID,
     RECOGNIZE_ID,
     ALIVE_ID,
+    group1_ID,
     NUM_DEV_COMPOSITORY_PROTOCOLS
 };
 SemanticID REQUESTING;
 SemanticID RECOGNIZE;
 SemanticID ALIVE;
+SemanticID group1;
 
 /**********************************************************************************/
 // TEST:Symbol

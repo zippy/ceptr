@@ -419,6 +419,25 @@ Data: alive_def,
 
 Protocol: ALIVE,alive_def;
 
+##### defs for group receptor
+Symbol: GROUP,RECEPTOR_ADDRESS;
+Symbol: MEMBER,RECEPTOR_ADDRESS;
+Symbol: enroll,INTERACTION;
+
+Data: request_membership_code,(SAY (SLOT (ROLE:GROUP) (SLOT_IS_VALUE_OF:TO_ADDRESS)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:enroll) (YUP));
+Process: request_membership,request_membership_code,"request membership","result",SIGNATURE_STRUCTURE,NULL_STRUCTURE,0;
+
+Data: enroll_client_code,(NEW (NEW_TYPE:MEMBER) (SIGNAL_REF:/1/4));
+Process: enroll_client,enroll_client_code,"enroll client","result",SIGNATURE_STRUCTURE,NULL_STRUCTURE,0;
+
+Data: group1_def,
+      (PROTOCOL_DEFINITION
+          (PROTOCOL_SEMANTICS (ROLE:GROUP) (ROLE:MEMBER))
+          (enroll
+                (EXPECT (ROLE:GROUP) (ROLE:MEMBER) (PATTERN (SEMTREX_SYMBOL_ANY)) (ACTION:enroll_client))
+                (INITIATE (ROLE:MEMBER) (ROLE:GROUP) (ACTION:request_membership))));
+Protocol: group1,group1_def;
+ 
 ########################################################################################
 # a handful of definitions for testing things
 Context: TEST;
