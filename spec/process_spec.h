@@ -100,10 +100,20 @@ void testProcessNew() {
 
     T *n = _t_newr(0,NEW);
     _t_news(n,NEW_TYPE,TEST_INT_SYMBOL);
-    _t_newi(n,TEST_INT_SYMBOL2,314);
+    _t_new_str(n,TEST_STR_SYMBOL,"fish");
     T *run_tree = __p_build_run_tree(n,0);
     _t_free(n);
     Qe *e = _p_addrt2q(q,run_tree);
+    _p_reduceq(q);
+
+    spec_is_equal(r->q->completed->context->err,structureMismatchReductionErr);
+
+    n = _t_newr(0,NEW);
+    _t_news(n,NEW_TYPE,TEST_INT_SYMBOL);
+    _t_newi(n,TEST_INT_SYMBOL2,314);
+    run_tree = __p_build_run_tree(n,0);
+    _t_free(n);
+    e = _p_addrt2q(q,run_tree);
     spec_is_equal(_p_reduceq(q),noReductionErr);
 
     spec_is_str_equal(t2s(run_tree),"(RUN_TREE (NEW_XADDR:TEST_INT_SYMBOL.1) (PARAMS))");

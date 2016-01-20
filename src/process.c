@@ -200,8 +200,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             Structure struc_new = _sem_get_symbol_structure(q->r->sem,s);
             Structure struc_val = _sem_get_symbol_structure(q->r->sem,_t_symbol(t));
             if (!semeq(struc_new,struc_val)) {
-                //@todo convert to reduction error
-                raise_error("mismatch structures in NEW");
+                return structureMismatchReductionErr;
             }
             else {
                 t->contents.symbol = s;
@@ -1054,6 +1053,7 @@ Error _p_step(Q *q, R **contextP) {
             case deadStreamReadReductionErr: se=DEAD_STREAM_READ_ERR;break;
             case missingSemanticMapReductionErr: se=MISSING_SEMANTIC_MAP_ERR;break;
             case mismatchSemanticMapReductionErr: se=MISMATCH_SEMANTIC_MAP_ERR;break;
+            case structureMismatchReductionErr: se=STRUCTURE_MISMATCH_ERR;break;
             case unixErrnoReductionErr:
                 /// @todo make a better error symbol here... :-P
                 extra = _t_new_str(0,TEST_STR_SYMBOL,strerror(errno));
