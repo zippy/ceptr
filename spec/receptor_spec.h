@@ -667,18 +667,7 @@ void testReceptorClock() {
 
     spec_is_str_equal(_td(r,r->q->active->context->run_tree),"(RUN_TREE (process:REQUEST (TO_ADDRESS (RECEPTOR_ADDR:4)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:tell_time) (CLOCK_TELL_TIME) (RESPONSE_CARRIER:tell_time)) (PARAMS))");
 
-    while (r->q->contexts_count) {
-        _p_reduceq(r->q);
-
-        // @todo fix this fake signal sending which only works here in this test because
-        // the signals are being sent to ourself!
-        T *signals = r->pending_signals;
-        while(_t_children(signals)>0) {
-            T *s = _t_detach_by_idx(signals,1);
-            Error err = _r_deliver(r,s);
-            if (err) raise_error("delivery error: %d",err);
-        }
-    }
+    _test_reduce_signals(r);
 
     // we need a better indicator of success, but this at least shows that pending signals and
     // pending responses created should have been cleaned up.

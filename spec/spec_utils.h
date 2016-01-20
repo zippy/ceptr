@@ -14,6 +14,7 @@ void dump2json(SemTable *sem,T *t,char *n);
 T *makeDelta(Symbol sym,int *path,T *t,int count);
 void _visdump(SemTable *sem,T *x,int *path);
 void visdump(SemTable *sem,T *x);
+void _test_reduce_signals(Receptor *r);
 
 #define startVisdump(n) G_visdump_fn = n;G_visdump_count = 1;
 #define endVisdump() G_visdump_count = 0;

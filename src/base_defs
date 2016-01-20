@@ -427,7 +427,7 @@ Symbol: enroll,INTERACTION;
 Data: request_membership_code,(SAY (SLOT (ROLE:GROUP) (SLOT_IS_VALUE_OF:TO_ADDRESS)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:enroll) (YUP));
 Process: request_membership,request_membership_code,"request membership","result",SIGNATURE_STRUCTURE,NULL_STRUCTURE,0;
 
-Data: enroll_client_code,(NEW (NEW_TYPE:MEMBER) (SIGNAL_REF:/1/4));
+Data: enroll_client_code,(NEW (NEW_TYPE:MEMBER) (SIGNAL_REF:/1/1));  /1/1 is the from
 Process: enroll_client,enroll_client_code,"enroll client","result",SIGNATURE_STRUCTURE,NULL_STRUCTURE,0;
 
 Data: group1_def,

@@ -52,3 +52,18 @@ void visdump(SemTable *sem,T *x) {
     free(path);
     }
 }
+
+void _test_reduce_signals(Receptor *r) {
+    while (r->q->contexts_count) {
+        _p_reduceq(r->q);
+
+        // @todo fix this fake signal sending which only works here in this test because
+        // the signals are being sent to ourself!
+        T *signals = r->pending_signals;
+        while(_t_children(signals)>0) {
+            T *s = _t_detach_by_idx(signals,1);
+            Error err = _r_deliver(r,s);
+            if (err) raise_error("delivery error: %d",err);
+        }
+    }
+}
