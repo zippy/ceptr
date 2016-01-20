@@ -51,12 +51,11 @@ void addCommand(Receptor *r,ReceptorAddress ox,char *command,char *desc,T *code,
 }
 
 void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp,Stream **isp,Stream **osp) {
-    // create the shell receptor
-
-    Symbol shell = _d_define_receptor(G_vm->r->sem,"shell",__r_make_definitions(),DEV_COMPOSITORY_CONTEXT);
+    // define and then create the shell receptor
+    Symbol shell = _d_define_receptor(v->r->sem,"shell",__r_make_definitions(),DEV_COMPOSITORY_CONTEXT);
     Receptor *r = _r_new(v->sem,shell);
-    Xaddr shellx = _v_new_receptor(G_vm,G_vm->r,shell,r);
-    _v_activate(G_vm,shellx);
+    Xaddr shellx = _v_new_receptor(v,v->r,shell,r);
+    _v_activate(v,shellx);
 
     // create stdin/out receptors
 
@@ -64,12 +63,12 @@ void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp
     Stream *input_stream = *isp = _st_new_unix_stream(input,1);
 
     Receptor *i_r = *irp = _r_makeStreamReaderReceptor(v->sem,TEST_STREAM_SYMBOL,input_stream,r->addr);
-    Xaddr ix = _v_new_receptor(G_vm,G_vm->r,STREAM_READER,i_r);
-    _v_activate(G_vm,ix);
+    Xaddr ix = _v_new_receptor(v,v->r,STREAM_READER,i_r);
+    _v_activate(v,ix);
 
     Receptor *o_r = *orp = _r_makeStreamWriterReceptor(v->sem,TEST_STREAM_SYMBOL,output_stream);
-    Xaddr ox = _v_new_receptor(G_vm,G_vm->r,STREAM_WRITER,o_r);
-    _v_activate(G_vm,ox);
+    Xaddr ox = _v_new_receptor(v,v->r,STREAM_WRITER,o_r);
+    _v_activate(v,ox);
 
     // create expectations for commands
     // (expect (on std_in LINE) action (send self (shell_command parsed from LINE))
@@ -95,7 +94,7 @@ void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp
 
     // (expect (on flux SHELL_COMMAND:time) action(initiate tell_time in time protocol with handler -> send std_out (convert_to_lines (send clock get_time))))
 
-    Protocol time = _sem_get_by_label(G_sem,"time",CLOCK_CONTEXT);
+    Protocol time = _sem_get_by_label(v->sem,"time",CLOCK_CONTEXT);
     T *code = _t_new_root(INITIATE_PROTOCOL);
     _t_news(code,PNAME,time);
     _t_news(code,WHICH_INTERACTION,tell_time);

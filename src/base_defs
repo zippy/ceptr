@@ -420,7 +420,7 @@ Data: alive_def,
 Protocol: ALIVE,alive_def;
 
 ########################################################################################
-# a handful of definitions for testing things 
+# a handful of definitions for testing things
 Context: TEST;
 
 Symbol: TEST_INT_SYMBOL,INTEGER;
@@ -445,6 +445,10 @@ Symbol: CLOCK_TELL_TIME,NULL_STRUCTURE;
 Symbol: tell_time,INTERACTION;
 Data: time_req_code,(SLOT (GOAL:REQUEST_HANDLER) (SLOT_CHILDREN (REQUEST (SLOT (ROLE:TIME_TELLER) (SLOT_IS_VALUE_OF:TO_ADDRESS)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:tell_time) (CLOCK_TELL_TIME) (RESPONSE_CARRIER:tell_time))));
 Process: time_request,time_req_code,"request current time","response",SIGNATURE_SYMBOL,TICK,0;
+
+# note: look for the clock protocol def in src/receptor.c#_r_defineClockReceptor
+#       currently we don't have a way to define xaddrs as "immediate" data which
+#       is necessary to complete the protocol definition for the clock receptor
 
 ########################################################################################
 Context: STREAM_READER;
