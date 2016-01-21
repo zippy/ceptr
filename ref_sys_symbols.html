@@ -165,6 +165,7 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="SIGNAL_UUID"></a>SIGNAL_UUID</td><td><a href="ref_sys_structures.html#UUID">UUID</a></td><td></td></tr>
 <tr><td><a name="IN_RESPONSE_TO_UUID"></a>IN_RESPONSE_TO_UUID</td><td><a href="ref_sys_structures.html#UUID">UUID</a></td><td></td></tr>
 <tr><td><a name="RECEPTOR_PATH"></a>RECEPTOR_PATH</td><td><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></td><td></td></tr>
+<tr><td><a name="RECEPTOR_PATHS"></a>RECEPTOR_PATHS</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_RECEPTOR_PATH">ONE-OR-MORE-OF-RECEPTOR-PATH</a></td><td></td></tr>
 <tr><td><a name="RECEPTOR_ADDR"></a>RECEPTOR_ADDR</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
 <tr><td><a name="FROM_ADDRESS"></a>FROM_ADDRESS</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
 <tr><td><a name="TO_ADDRESS"></a>TO_ADDRESS</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
@@ -221,6 +222,7 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="INITIATE"></a>INITIATE</td><td><a href="ref_sys_structures.html#LIST_OF_ROLE_AND_DESTINATION_AND_ACTION">LIST-OF-ROLE-AND-DESTINATION-AND-ACTION</a></td><td></td></tr>
 <tr><td><a name="PNAME"></a>PNAME</td><td><a href="ref_sys_structures.html#PROTOCOL">PROTOCOL</a></td><td></td></tr>
 <tr><td><a name="INCLUSION"></a>INCLUSION</td><td><a href="ref_sys_structures.html#TUPLE_OF_PNAME_AND_ONE_OR_MORE_OF_LOGICAL_OR_OF_RESOLUTION_AND_CONNECTION">TUPLE-OF-PNAME-AND-ONE-OR-MORE-OF-LOGICAL-OR-OF-RESOLUTION-AND-CONNECTION</a></td><td></td></tr>
+<tr><td><a name="WHICH_INTERACTION"></a>WHICH_INTERACTION</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>   the symbols stored in an WHICH_INTERACTION must be limited to those that are uses of the INTERACTION structure</td></tr>
 <tr><td><a name="ACTUAL_PROCESS"></a>ACTUAL_PROCESS</td><td><a href="ref_sys_structures.html#PROCESS">PROCESS</a></td><td></td></tr>
 <tr><td><a name="ACTUAL_RECEPTOR"></a>ACTUAL_RECEPTOR</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
 <tr><td><a name="ACTUAL_SYMBOL"></a>ACTUAL_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
@@ -255,7 +257,8 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="RECEPTOR_STATE"></a>RECEPTOR_STATE</td><td><a href="ref_sys_structures.html#LIST_OF_FLUX_AND_PENDING_SIGNALS_AND_PENDING_RESPONSES_AND_RECEPTOR_ELAPSED_TIME">LIST-OF-FLUX-AND-PENDING-SIGNALS-AND-PENDING-RESPONSES-AND-RECEPTOR-ELAPSED-TIME</a></td><td></td></tr>
 <tr><td><a name="PARENT_CONTEXT_NUM"></a>PARENT_CONTEXT_NUM</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td>        identifies the semantic context of a receptors parent</td></tr>
 <tr><td><a name="CONTEXT_NUM"></a>CONTEXT_NUM</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td>               identifies the semantic context of a receptor</td></tr>
-<tr><td><a name="RECEPTOR_INSTANCE"></a>RECEPTOR_INSTANCE</td><td><a href="ref_sys_structures.html#LIST_OF_CONTEXT_NUM_AND_PARENT_CONTEXT_NUM_AND_RECEPTOR_STATE">LIST-OF-CONTEXT-NUM-AND-PARENT-CONTEXT-NUM-AND-RECEPTOR-STATE</a></td><td></td></tr>
+<tr><td><a name="INSTANCE_OF"></a>INSTANCE_OF</td><td><a href="ref_sys_structures.html#RECEPTOR">RECEPTOR</a></td><td>              identifies the kind of receptor this is</td></tr>
+<tr><td><a name="RECEPTOR_INSTANCE"></a>RECEPTOR_INSTANCE</td><td><a href="ref_sys_structures.html#LIST_OF_INSTANCE_OF_AND_CONTEXT_NUM_AND_PARENT_CONTEXT_NUM_AND_RECEPTOR_STATE">LIST-OF-INSTANCE-OF-AND-CONTEXT-NUM-AND-PARENT-CONTEXT-NUM-AND-RECEPTOR-STATE</a></td><td></td></tr>
 <tr><td><a name="SERIALIZED_RECEPTOR"></a>SERIALIZED_RECEPTOR</td><td><a href="ref_sys_structures.html#BLOB">BLOB</a></td><td></td></tr>
 <tr><td><a name="ACTIVE_RECEPTORS"></a>ACTIVE_RECEPTORS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_RECEPTOR_XADDR">ZERO-OR-MORE-OF-RECEPTOR-XADDR</a></td><td></td></tr>
 <tr><td><a name="SYS_STATE"></a>SYS_STATE</td><td><a href="ref_sys_structures.html#LIST_OF_ACTIVE_RECEPTORS">LIST-OF-ACTIVE-RECEPTORS</a></td><td></td></tr>
@@ -280,7 +283,10 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="DEAD_STREAM_READ_ERR"></a>DEAD_STREAM_READ_ERR</td><td><a href="ref_sys_structures.html#REDUCTION_ERROR">REDUCTION-ERROR</a></td><td></td></tr>
 <tr><td><a name="MISSING_SEMANTIC_MAP_ERR"></a>MISSING_SEMANTIC_MAP_ERR</td><td><a href="ref_sys_structures.html#REDUCTION_ERROR">REDUCTION-ERROR</a></td><td></td></tr>
 <tr><td><a name="MISMATCH_SEMANTIC_MAP_ERR"></a>MISMATCH_SEMANTIC_MAP_ERR</td><td><a href="ref_sys_structures.html#REDUCTION_ERROR">REDUCTION-ERROR</a></td><td></td></tr>
+<tr><td><a name="STRUCTURE_MISMATCH_ERR"></a>STRUCTURE_MISMATCH_ERR</td><td><a href="ref_sys_structures.html#REDUCTION_ERROR">REDUCTION-ERROR</a></td><td></td></tr>
 <tr><td><a name="GET_XADDR"></a>GET_XADDR</td><td><a href="ref_sys_structures.html#XADDR">XADDR</a></td><td></td></tr>
+<tr><td><a name="NEW_XADDR"></a>NEW_XADDR</td><td><a href="ref_sys_structures.html#XADDR">XADDR</a></td><td></td></tr>
+<tr><td><a name="NEW_TYPE"></a>NEW_TYPE</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
 <tr><td><a name="TIMEOUT_AT"></a>TIMEOUT_AT</td><td><a href="ref_sys_structures.html#TIMESTAMP">TIMESTAMP</a></td><td>       specifies a timeout for requests</td></tr>
 <tr><td><a name="COUNT"></a>COUNT</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
 <tr><td><a name="UNLIMITED"></a>UNLIMITED</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
@@ -338,6 +344,11 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="YUP"></a>YUP</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
 <tr><td><a name="HANDLER"></a>HANDLER</td><td><a href="ref_sys_structures.html#PROCESS">PROCESS</a></td><td></td></tr>
 <tr><td><a name="alive"></a>alive</td><td><a href="ref_sys_structures.html#INTERACTION">INTERACTION</a></td><td></td></tr>
+<tr><td><a name="GROUP"></a>GROUP</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
+<tr><td><a name="MEMBER"></a>MEMBER</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
+<tr><td><a name="enrollment"></a>enrollment</td><td><a href="ref_sys_structures.html#INTERACTION">INTERACTION</a></td><td></td></tr>
+<tr><td><a name="speaking"></a>speaking</td><td><a href="ref_sys_structures.html#INTERACTION">INTERACTION</a></td><td></td></tr>
+<tr><td><a name="MESSAGE"></a>MESSAGE</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
 <tr><td><a name="TEST_INT_SYMBOL"></a>TEST_INT_SYMBOL</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
 <tr><td><a name="TEST_INT_SYMBOL2"></a>TEST_INT_SYMBOL2</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
 <tr><td><a name="TEST_FLOAT_SYMBOL"></a>TEST_FLOAT_SYMBOL</td><td><a href="ref_sys_structures.html#FLOAT">FLOAT</a></td><td></td></tr>
@@ -350,7 +361,10 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="TEST_ALPHABETIZE_SCAPE_SYMBOL"></a>TEST_ALPHABETIZE_SCAPE_SYMBOL</td><td><a href="ref_sys_structures.html#SCAPE">SCAPE</a></td><td></td></tr>
 <tr><td><a name="TEST_SYMBOL_SYMBOL"></a>TEST_SYMBOL_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
 <tr><td><a name="TESTING"></a>TESTING</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
+<tr><td><a name="TIME_TELLER"></a>TIME_TELLER</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
+<tr><td><a name="TIME_HEARER"></a>TIME_HEARER</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
 <tr><td><a name="CLOCK_TELL_TIME"></a>CLOCK_TELL_TIME</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
+<tr><td><a name="tell_time"></a>tell_time</td><td><a href="ref_sys_structures.html#INTERACTION">INTERACTION</a></td><td></td></tr>
 <tr><td><a name="LINE"></a>LINE</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td>                           text lines from unix streams</td></tr>
 </table>
  </div></div><!-- contents -->
@@ -358,7 +372,7 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Dec 25 2015 22:58:39 for ceptr by
+    <li class="footer">Generated on Thu Jan 21 2016 16:09:42 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

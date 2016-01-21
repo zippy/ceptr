@@ -10,6 +10,10 @@ var group__vmhost =
       [ "r", "structActiveReceptor.html#adcb0f70000d68e02f3a8bf16119d00f8", null ],
       [ "x", "structActiveReceptor.html#a50f0a4386a602c756d16fa2a50256f4a", null ]
     ] ],
+    [ "ReceptorRoute", "structReceptorRoute.html", [
+      [ "r", "structReceptorRoute.html#ad5addd207a80adf99de2f3ff7705eb4f", null ],
+      [ "s", "structReceptorRoute.html#ae20bd324e5b33c191842e6bace503895", null ]
+    ] ],
     [ "VMHost", "structVMHost.html", [
       [ "active_receptor_count", "structVMHost.html#a97819ac8dc92af600c64aa6835e45983", null ],
       [ "active_receptors", "structVMHost.html#a95ef186e3477224ee0be117e7f9abbe3", null ],
@@ -19,7 +23,7 @@ var group__vmhost =
       [ "process_state", "structVMHost.html#a6210d87a36adbc358e239510cade66b4", null ],
       [ "r", "structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e", null ],
       [ "receptor_count", "structVMHost.html#a8d0ab9c1662566cae10457f292ee0c87", null ],
-      [ "routing_table", "structVMHost.html#adab7c72c82658d94ab4d48b340862d50", null ],
+      [ "routing_table", "structVMHost.html#a4027fe2c92bce5f9d030fdef8a232373", null ],
       [ "sem", "structVMHost.html#a0718944e7f9d848d3b96f704ea0f0252", null ],
       [ "vm_thread", "structVMHost.html#ada4998fffaedd9669bdada5ef0ec478f", null ]
     ] ],

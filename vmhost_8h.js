@@ -4,6 +4,7 @@ var vmhost_8h =
     [ "MAX_RECEPTORS", "group__vmhost.html#ga22d5fbd08cda7fbb0e42dc1b1c4461da", null ],
     [ "SELF_RECEPTOR_ADDR", "group__vmhost.html#gab03de0220bc6c5148f8e97c4fd8b6d87", null ],
     [ "ActiveReceptor", "group__vmhost.html#ga6c44cd3da992698a1e57bbcf25b423a1", null ],
+    [ "ReceptorRoute", "group__vmhost.html#ga4c4581ffed5f90d981adafcdf2e424ee", null ],
     [ "thread", "group__vmhost.html#ga713b95fcfb383cf3c6e49d19d7c0fe96", null ],
     [ "VMHost", "group__vmhost.html#ga28f6922ceb70f5d815e9227bfed8b062", null ],
     [ "__v_init", "group__vmhost.html#gafad5aa5ec8efd6a773fa4a08815e38c1", null ],

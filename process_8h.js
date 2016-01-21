@@ -41,7 +41,8 @@ var process_8h =
       [ "unixErrnoReductionErr", "process_8h.html#aafd8125ddd0cd2cb2675dea09aacb099a9f86d2a69eeedfc041eadaa4a34113d0", null ],
       [ "deadStreamReadReductionErr", "process_8h.html#aafd8125ddd0cd2cb2675dea09aacb099aa4c428966bd288fdcc0da6f0674f518c", null ],
       [ "missingSemanticMapReductionErr", "process_8h.html#aafd8125ddd0cd2cb2675dea09aacb099ad72fd44c5832edb9e93505b735dc1da7", null ],
-      [ "mismatchSemanticMapReductionErr", "process_8h.html#aafd8125ddd0cd2cb2675dea09aacb099a9bbcf59f02a691df812b81b7dd0f3199", null ]
+      [ "mismatchSemanticMapReductionErr", "process_8h.html#aafd8125ddd0cd2cb2675dea09aacb099a9bbcf59f02a691df812b81b7dd0f3199", null ],
+      [ "structureMismatchReductionErr", "process_8h.html#aafd8125ddd0cd2cb2675dea09aacb099a33ad18201419dbde3f654c901f1c3400", null ]
     ] ],
     [ "__p_addrt2q", "process_8h.html#a53647755d44a349e70e44e371925ed15", null ],
     [ "__p_build_run_tree", "process_8h.html#a1d2c7b7c331d6ac0e45495de62fb1f13", null ],

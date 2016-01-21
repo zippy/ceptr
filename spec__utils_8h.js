@@ -2,6 +2,7 @@ var spec__utils_8h =
 [
     [ "endVisdump", "spec__utils_8h.html#a320c177283fd74b874d861ff8ccbeef8", null ],
     [ "startVisdump", "spec__utils_8h.html#a12a58048b47d3e5ab517a98c00710467", null ],
+    [ "_test_reduce_signals", "spec__utils_8h.html#a8ec650ffc96c13e5be530a8e57e77b08", null ],
     [ "_visdump", "spec__utils_8h.html#a57babb909bbdb4624e02145fd9a333b5", null ],
     [ "dump2json", "spec__utils_8h.html#a5002194fcc77dd87a92b4ccb0a2010d5", null ],
     [ "makeDelta", "spec__utils_8h.html#a0dab8662f3b21fb4f167ec9143dc483e", null ],

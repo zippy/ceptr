@@ -7,6 +7,7 @@ var searchData=
   ['receptor_2eh',['receptor.h',['../receptor_8h.html',1,'']]],
   ['receptor_5fspec_2eh',['receptor_spec.h',['../receptor__spec_8h.html',1,'']]],
   ['receptoraddress',['ReceptorAddress',['../structReceptorAddress.html',1,'']]],
+  ['receptorroute',['ReceptorRoute',['../structReceptorRoute.html',1,'']]],
   ['reference_20documents',['Reference Documents',['../group__ref__docs.html',1,'']]],
   ['root',['root',['../structReceptor.html#aec6f1eee133a993b59baf50e75620fb6',1,'Receptor']]],
   ['rt',['rT',['../structrT.html',1,'']]],

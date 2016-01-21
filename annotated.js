@@ -19,6 +19,7 @@ var annotated =
     [ "R", "structR.html", "structR" ],
     [ "Receptor", "structReceptor.html", "structReceptor" ],
     [ "ReceptorAddress", "structReceptorAddress.html", "structReceptorAddress" ],
+    [ "ReceptorRoute", "structReceptorRoute.html", "structReceptorRoute" ],
     [ "rT", "structrT.html", "structrT" ],
     [ "S", "structS.html", "structS" ],
     [ "Scape", "structScape.html", "structScape" ],

@@ -123,15 +123,30 @@ Include dependency graph for accumulator.c:</div>
 </div>
 <p><a href="accumulator_8c_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="memitem:ab2e8796cf3a9bef8e1c8e587274dc421"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab2e8796cf3a9bef8e1c8e587274dc421"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>PATHS_FN</b>&#160;&#160;&#160;&quot;paths&quot;</td></tr>
+<tr class="separator:ab2e8796cf3a9bef8e1c8e587274dc421"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10b9d5fafd8859317d0f42a67bda8425"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a10b9d5fafd8859317d0f42a67bda8425"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>SEM_FN</b>&#160;&#160;&#160;&quot;sem&quot;</td></tr>
+<tr class="separator:a10b9d5fafd8859317d0f42a67bda8425"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a069685f3170df71192ffe3c952c5b430"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a069685f3170df71192ffe3c952c5b430"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>__a_vm_state_fn</b>(buf, dir)&#160;&#160;&#160;__a_vm_fn(buf,dir,&quot;state&quot;)</td></tr>
+<tr class="separator:a069685f3170df71192ffe3c952c5b430"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9d6a5724554c712c0848870db34dcb9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac9d6a5724554c712c0848870db34dcb9"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>__a_vmfn</b>(buf, dir)&#160;&#160;&#160;__a_vm_fn(buf,dir,&quot;&quot;)</td></tr>
+<tr class="separator:ac9d6a5724554c712c0848870db34dcb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c5922c03eef9111c4e116773e8517fe"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1c5922c03eef9111c4e116773e8517fe"></a>
 <a class="el" href="structVMHost.html">VMHost</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>G_vm</b> = 0</td></tr>
 <tr class="separator:a1c5922c03eef9111c4e116773e8517fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8586556988ffce93186a292a96085d27"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8586556988ffce93186a292a96085d27"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>__a_vmfn</b> (char *buf, char *dir)</td></tr>
-<tr class="separator:a8586556988ffce93186a292a96085d27"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab2192b433dbd50df14d9a3c6a9a51248"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab2192b433dbd50df14d9a3c6a9a51248"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>__a_vmsfn</b> (char *buf, char *dir)</td></tr>
-<tr class="separator:ab2192b433dbd50df14d9a3c6a9a51248"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68cb5a4120642acb34af02a470b662a0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a68cb5a4120642acb34af02a470b662a0"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>__a_vm_fn</b> (char *buf, char *dir, char *suffix)</td></tr>
+<tr class="separator:a68cb5a4120642acb34af02a470b662a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abfb66395da0556eedbe9bf0af6f486fd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abfb66395da0556eedbe9bf0af6f486fd"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>__a_serializet</b> (<a class="el" href="structT.html">T</a> *t, char *name)</td></tr>
+<tr class="separator:abfb66395da0556eedbe9bf0af6f486fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef24ae6a47d20dc793acea060e870148"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aef24ae6a47d20dc793acea060e870148"></a>
+<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>__a_unserializet</b> (char *dir_path, char *name)</td></tr>
+<tr class="separator:aef24ae6a47d20dc793acea060e870148"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf3d0afe467ab198fc69ccaf7ee9fb5e9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__accumulator.html#gaf3d0afe467ab198fc69ccaf7ee9fb5e9">_a_boot</a> (char *dir_path)</td></tr>
 <tr class="separator:gaf3d0afe467ab198fc69ccaf7ee9fb5e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gacd134fcef0a0eb8ff30060432bb2e485"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__accumulator.html#gacd134fcef0a0eb8ff30060432bb2e485">_a_shut_down</a> ()</td></tr>
@@ -178,7 +193,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_a_unserialize_instan
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="accumulator_8c.html">accumulator.c</a></li>
-    <li class="footer">Generated on Fri Dec 25 2015 22:58:38 for ceptr by
+    <li class="footer">Generated on Thu Jan 21 2016 16:09:42 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
