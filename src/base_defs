@@ -423,20 +423,33 @@ Protocol: ALIVE,alive_def;
 ##### defs for group receptor
 Symbol: GROUP,RECEPTOR_ADDRESS;
 Symbol: MEMBER,RECEPTOR_ADDRESS;
-Symbol: enroll,INTERACTION;
+Symbol: enrollment,INTERACTION;
+Symbol: speaking,INTERACTION;
+Symbol: MESSAGE,CSTRING;
 
-Data: request_membership_code,(SAY (SLOT (ROLE:GROUP) (SLOT_IS_VALUE_OF:TO_ADDRESS)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:enroll) (YUP));
-Process: request_membership,request_membership_code,"request membership","result",SIGNATURE_STRUCTURE,NULL_STRUCTURE,0;
+Data: request_membership_code,(SAY (SLOT (ROLE:GROUP) (SLOT_IS_VALUE_OF:TO_ADDRESS)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:enrollment) (YUP));
+Process: request_membership,request_membership_code,"request membership","result",SIGNATURE_SYMBOL,SIGNAL_UUID,0;
 
-Data: enroll_client_code,(NEW (NEW_TYPE:MEMBER) (SIGNAL_REF:/1/1));  /1/1 is the from
-Process: enroll_client,enroll_client_code,"enroll client","result",SIGNATURE_STRUCTURE,NULL_STRUCTURE,0;
+Data: enroll_code,(NEW (NEW_TYPE:MEMBER) (SIGNAL_REF:/1/1));  /1/1 is the FROM_ADDRESS
+Process: enroll,enroll_code,"enroll client","result",SIGNATURE_STRUCTURE,NULL_STRUCTURE,0;
+
+Data: speak_code,(SAY (SLOT (ROLE:GROUP) (SLOT_IS_VALUE_OF:TO_ADDRESS)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:speaking) (SLOT (USAGE:MESSAGE)));
+Process: speak,speak_code,"speak","result",SIGNATURE_SYMBOL,SIGNAL_UUID,0;
+
+Data: group_listen_code,(NEW (NEW_TYPE:MESSAGE) (SIGNAL_REF:/2/0));
+Process: group_listen,group_listen_code,"group_listen","result",SIGNATURE_SYMBOL,SIGNAL_UUID,0;
 
 Data: group1_def,
       (PROTOCOL_DEFINITION
           (PROTOCOL_SEMANTICS (ROLE:GROUP) (ROLE:MEMBER))
-          (enroll
-                (EXPECT (ROLE:GROUP) (ROLE:MEMBER) (PATTERN (SEMTREX_SYMBOL_ANY)) (ACTION:enroll_client))
-                (INITIATE (ROLE:MEMBER) (ROLE:GROUP) (ACTION:request_membership))));
+          (enrollment
+                (EXPECT (ROLE:GROUP) (ROLE:MEMBER) (PATTERN (SEMTREX_SYMBOL_ANY)) (ACTION:enroll))
+                (INITIATE (ROLE:MEMBER) (ROLE:GROUP) (ACTION:request_membership)))
+          (speaking
+                (EXPECT (ROLE:GROUP) (ROLE:MEMBER) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:MESSAGE))) (ACTION:group_listen))
+                (INITIATE (ROLE:MEMBER) (ROLE:GROUP) (ACTION:speak)))
+                );
+                
 Protocol: group1,group1_def;
  
 ########################################################################################

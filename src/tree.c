@@ -860,6 +860,8 @@ void __t_fill_template(T *template, T *sem_map,bool as_run_node) {
         for(i=1;i<=c;i++) {
             T *m = _t_child(sem_map,i);
             T *ref = _t_child(m,SemanticMapSemanticRefIdx);
+            debug(D_TREE,"checking to see if sym:%s == _t_symbol(ref):%s\n",_sem_get_name(G_sem,sym),_sem_get_name(G_sem,_t_symbol(ref)));
+            debug(D_TREE," and that valsym:%s == _t_surface(ref):%s\n",_sem_get_name(G_sem,valsym),_sem_get_name(G_sem,*(Symbol *)_t_surface(ref)));
             if (semeq(sym,_t_symbol(ref)) && semeq(valsym,*(Symbol *)_t_surface(ref))) {
                 debug(D_TREE,"with %s\n",t2s(m));
                 T *r = NULL;
@@ -924,6 +926,9 @@ void __t_fill_template(T *template, T *sem_map,bool as_run_node) {
                                 replacement_value = _t_child(x,1);
                             }
                             else replacement_value = temp = _t_new_root(acsym);
+                        }
+                        else if (semeq(rsid,ACTUAL_VALUE)) {
+                            replacement_value = _t_child(replacement_value,1);
                         }
                         if (is_run_node)
                             r = _t_rclone(replacement_value);

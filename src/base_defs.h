@@ -820,7 +820,9 @@ enum DEV_COMPOSITORYSymbolIDs {
     alive_ID,
     GROUP_ID,
     MEMBER_ID,
-    enroll_ID,
+    enrollment_ID,
+    speaking_ID,
+    MESSAGE_ID,
     NUM_DEV_COMPOSITORY_SYMBOLS
 };
 SemanticID REQUESTER;
@@ -846,7 +848,9 @@ SemanticID HANDLER;
 SemanticID alive;
 SemanticID GROUP;
 SemanticID MEMBER;
-SemanticID enroll;
+SemanticID enrollment;
+SemanticID speaking;
+SemanticID MESSAGE;
 
 /**********************************************************************************/
 // DEV_COMPOSITORY:Structure
@@ -866,7 +870,9 @@ enum DEV_COMPOSITORYProcessIDs {
     fill_i_am_ID,
     respond_with_yup_ID,
     request_membership_ID,
-    enroll_client_ID,
+    enroll_ID,
+    speak_ID,
+    group_listen_ID,
     NUM_DEV_COMPOSITORY_PROCESSES
 };
 SemanticID send_request;
@@ -874,7 +880,9 @@ SemanticID send_response;
 SemanticID fill_i_am;
 SemanticID respond_with_yup;
 SemanticID request_membership;
-SemanticID enroll_client;
+SemanticID enroll;
+SemanticID speak;
+SemanticID group_listen;
 
 /**********************************************************************************/
 // DEV_COMPOSITORY:Protocol

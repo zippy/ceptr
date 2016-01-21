@@ -2372,23 +2372,49 @@
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
-       <div class="def-name"><a name="enroll"></a>enroll</div>
+       <div class="def-name"><a name="enrollment"></a>enrollment</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#INTERACTION">INTERACTION</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="speaking"></a>speaking</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#INTERACTION">INTERACTION</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="MESSAGE"></a>MESSAGE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
        <div class="def-name"><a name="request_membership"></a>request_membership</div>
        <div class="def-sig-in"></div>
-       <div class="def-sig-out">result(STRUCTURE:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
+       <div class="def-sig-out">result(SYMBOL:<a href="ref_sys_symbols.html#SIGNAL_UUID">SIGNAL_UUID</a>)</div>
        <div class="def-comment"><i>request membership</i></div>
    </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
-       <div class="def-name"><a name="enroll_client"></a>enroll_client</div>
+       <div class="def-name"><a name="enroll"></a>enroll</div>
        <div class="def-sig-in"></div>
        <div class="def-sig-out">result(STRUCTURE:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
        <div class="def-comment"><i>enroll client</i></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="speak"></a>speak</div>
+       <div class="def-sig-in"></div>
+       <div class="def-sig-out">result(SYMBOL:<a href="ref_sys_symbols.html#SIGNAL_UUID">SIGNAL_UUID</a>)</div>
+       <div class="def-comment"><i>speak</i></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="group_listen"></a>group_listen</div>
+       <div class="def-sig-in"></div>
+       <div class="def-sig-out">result(SYMBOL:<a href="ref_sys_symbols.html#SIGNAL_UUID">SIGNAL_UUID</a>)</div>
+       <div class="def-comment"><i>group_listen</i></div>
    </div>
    <div class="def-item def-protocol">
        <div class="def-type">Protocol:</div>
