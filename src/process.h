@@ -20,7 +20,7 @@ enum ReductionError {Ascend=-1,Descend=-2,Pushed=-3,Pop=-4,Eval=-5,Block=-6,Done
 enum QueueError {noErr = 0, contextNotFoundErr};
 
 enum IterationPhase {EvalCondition,EvalBody};
-enum IterationType {IterateTypeCount,IterateTypeUnknown,IterateTypeCond};
+enum IterationType {IterateTypeCount,IterateTypeUnknown,IterateTypeCond,IterateTypeOnSymbol};
 
 enum MagicProcesses {MagicReceptors,MagicQuit};
 

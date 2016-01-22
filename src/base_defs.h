@@ -217,6 +217,8 @@ enum SYSSymbolIDs {
     COUNT_ID,
     UNLIMITED_ID,
     REPETITIONS_ID,
+    ITERATE_ON_SYMBOL_ID,
+    ITERATION_DATA_ID,
     STX_SL_ID,
     STX_OP_ID,
     STX_CP_ID,
@@ -439,6 +441,8 @@ SemanticID TIMEOUT_AT;
 SemanticID COUNT;
 SemanticID UNLIMITED;
 SemanticID REPETITIONS;
+SemanticID ITERATE_ON_SYMBOL;
+SemanticID ITERATION_DATA;
 SemanticID STX_SL;
 SemanticID STX_OP;
 SemanticID STX_CP;

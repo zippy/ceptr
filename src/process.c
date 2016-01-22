@@ -506,23 +506,31 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
         }
         break;
     case ITERATE_ID:
-        // replicate is a special case, we have to check the phase to see what to do
+        // iterate is a special case, we have to check the phase to see what to do
         // after the children have been evaluated.
         {
             IterationState *state = *(IterationState **)_t_surface(code);
-            int done = 0;
+            bool done = false;
             int next_phase;
             // get the condition or body results into x
             x = _t_detach_by_idx(code,2);
             switch(state->phase) {
             case EvalCondition: {
                 // if this is the first time evaluating the cond, figure out what type
-                // of replication we are doing based on the semantics
+                // of iteration we are doing based on the semantics
                 if (state->type == IterateTypeUnknown) {
                     Symbol c = _t_symbol(x);
                     if (semeq(c,BOOLEAN)) {
                         state->type = IterateTypeCond;
                         state->count = 0;
+                    }
+                    else if (semeq(c,ITERATE_ON_SYMBOL)) {
+                        state->type = IterateTypeOnSymbol;
+                        T *params = _t_child(code,1);
+                        T *list = _t_newr(params,ITERATION_DATA);
+                        _a_get_instances(&q->r->instances,*(Symbol *)_t_surface(x),list);
+                        // if the list has no children the we are already done
+                        done = !_t_children(list);
                     }
                     else {
                         Structure s = _sem_get_symbol_structure(q->r->sem,c);
@@ -531,11 +539,11 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                             state->count = *(int *)_t_surface(x);
                         }
                         else {
-                            raise_error("unable to determine replication type!");
+                            raise_error("unable to determine iteration type! symbol was:%s",_sem_get_name(G_sem,s));
                         }
                     }
                 }
-                // evaluate condition based on replication type
+                // evaluate condition based on iteration type
                 switch(state->type) {
                 case IterateTypeCond:
                     done = !*(int *)_t_surface(x);
@@ -543,26 +551,39 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                 case IterateTypeCount:
                     done = (--state->count < 0);
                     break;
+                // IterateTypeOnSymbol handled above
                 }
                 next_phase = EvalBody;
                 break;
             }
             case EvalBody:
-                // if this is count replication, just check the counter for done
-                next_phase = (state->type == IterateTypeCount) ? EvalBody : EvalCondition;
+                // if this is cond iteration we have to alternate between phases because
+                // the cond has to be re-cloned and evaluated.  For other iteration types
+                // the conditionality not internal so we evaluate it directly
+                // @todo we should refactor this code because the done checking also appear
+                // above in the first IterateTypeUnknown case.
+                next_phase = (state->type == IterateTypeCond) ? EvalCondition :  EvalBody;
                 if (state->type == IterateTypeCount){
-                    if (--state->count < 0) done = 1;
+                    if (--state->count < 0) done = true;
                 }
                 else {
-                    // if we aren't doing count replication, use the count var just
+                    // we aren't doing count iteration, use the count var just
                     // to keep track of how many times we've gone through the loop
                     state->count++;
-                    if (state->count > 9) done = 1;  // temporary infinite loop breaker
+                    if (state->type == IterateTypeOnSymbol) {
+                        T *params = _t_child(code,1);
+                        int p = _t_children(params);
+                        T *list = _t_child(params,p);  // iterate list should be last child
+                        T *t = _t_detach_by_idx(list,1);
+                        _t_free(t);
+                        if (!_t_children(list)) done = true;
+                    }
+                    //if (state->count > 9) done = true;  // temporary infinite loop breaker
                 }
             }
             if (done) {
-                // we are done so free up the replication state info
-                /// @todo the value returned from the loop will be what??(what's in x)
+                // we are done so free up the iteration state info
+                /// @todo the value returned from the iteration will be what??(what's in x)
                 _t_free(state->code);
                 free(state);
                 code->contents.size = 0;
@@ -940,13 +961,12 @@ Error _p_step(Q *q, R **contextP) {
             } else
                 {
                 if (semeq(s,ITERATE)) {
-                    // if first time we are hitting this replication
-                    // then we need to set it up
-                    //                    raise(SIGINT);
+                    // if first time we are hitting this iteration
+                    // then we need to set up the state data to track the iteration
                     if (_t_size(np) == 0) {
                         // sanity check
                         if (_t_children(np) != 3) {raise_error("ITERATE must have 3 params");}
-                        // create a copy of the code and stick it in the replication state struct
+                        // create a copy of the code and stick it in the iteration state struct
                         IterationState *state = malloc(sizeof(IterationState));
                         state->phase = EvalCondition;
                         state->code = _t_rclone(np);

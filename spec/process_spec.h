@@ -958,7 +958,7 @@ void testProcessIterate() {
     size_t size;
     output = open_memstream(&output_data,&size);
 
-    // a replicate process that writes to a stream and 3 times
+    // an iterate process that writes to a stream and 3 times
     T *code = _t_new_root(ITERATE);
     T *params = _t_newr(code,PARAMS);
     _t_newi(code,TEST_INT_SYMBOL,3);
@@ -968,6 +968,8 @@ void testProcessIterate() {
     _t_new_stream(x,TEST_STREAM_SYMBOL,st);
     _t_new_str(x,LINE,"testing");
 
+    spec_is_str_equal(t2s(code),"(process:ITERATE (PARAMS) (TEST_INT_SYMBOL:3) (process:STREAM_WRITE (TEST_STREAM_SYMBOL) (LINE:testing)))");
+
     T *t = __p_build_run_tree(code,0);
     Error e = _p_reduce(G_sem,t);
     spec_is_equal(e,noReductionErr);
@@ -976,7 +978,7 @@ void testProcessIterate() {
 
     _t_free(t);
 
-    // now test replication with a condition instead of an INTEGER
+    // now test iteration with a condition instead of an INTEGER
     //  a condition that checks to see if the param is less than 3
     x = _t_newr(0,LT_INT);
     int p[] = {1,1,1,TREE_PATH_TERMINATOR};
@@ -986,16 +988,62 @@ void testProcessIterate() {
     _t_newi(params,TEST_INT_SYMBOL,314);
 
     _t_replace(code,2,x);
+    spec_is_str_equal(t2s(code),"(process:ITERATE (PARAMS (TEST_INT_SYMBOL:314)) (process:LT_INT (PARAM_REF:/1/1/1) (TEST_INT_SYMBOL:3)) (process:STREAM_WRITE (TEST_STREAM_SYMBOL) (LINE:testing)))");
 
     t = __p_build_run_tree(code,0);
     e = _p_reduce(G_sem,t);
     spec_is_equal(e,noReductionErr);
     spec_is_str_equal(output_data,"testing\ntesting\ntesting\n");
+    _t_free(t);
 
     _st_free(st);
     free(output_data);
     _t_free(code);
+}
+
+void testProcessIterateOnSymbol() {
+    FILE *output;
+
+    char *output_data = NULL;
+    size_t size;
+    output = open_memstream(&output_data,&size);
+
+    // an iterate process that writes to a stream and 3 times
+    T *code = _t_new_root(ITERATE);
+    T *params = _t_newr(code,PARAMS);
+
+    _t_news(code,ITERATE_ON_SYMBOL,TEST_STR_SYMBOL);
+
+    T *t = _t_newr(code,STREAM_WRITE);
+    Stream *st = _st_new_unix_stream(output,0);
+    _t_new_stream(t,TEST_STREAM_SYMBOL,st);
+    int p[] = {1,1,1,1,TREE_PATH_TERMINATOR};
+    _t_new(t,PARAM_REF,p,sizeof(int)*5);
+
+    spec_is_str_equal(t2s(code),"(process:ITERATE (PARAMS) (ITERATE_ON_SYMBOL:TEST_STR_SYMBOL) (process:STREAM_WRITE (TEST_STREAM_SYMBOL) (PARAM_REF:/1/1/1/1)))");
+    T *run_tree = __p_build_run_tree(code,0);
     _t_free(t);
+
+    Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
+
+    Xaddr x;
+    t = _t_new_str(0,TEST_STR_SYMBOL,"thing1 ");
+    x = _r_new_instance(r,t);
+    t = _t_new_str(0,TEST_STR_SYMBOL,"thing2 ");
+    x = _r_new_instance(r,t);
+
+    Q *q = r->q;
+    Qe *e = _p_addrt2q(q,run_tree);
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    spec_is_equal(q->contexts_count,0);
+    spec_is_ptr_equal(q->completed,e);
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (REDUCTION_ERROR_SYMBOL:NULL_SYMBOL) (PARAMS))");
+
+    spec_is_str_equal(output_data,"thing1 thing2 ");
+
+    _st_free(st);
+    free(output_data);
+    _r_free(r);
 }
 
 void testProcessListen() {
@@ -1212,6 +1260,7 @@ void testProcess() {
     testProcessError();
     testProcessRaise();
     testProcessIterate();
+    testProcessIterateOnSymbol();
     testProcessListen();
     testProcessErrorTrickleUp();
     testProcessMulti();

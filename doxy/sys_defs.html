@@ -1777,6 +1777,18 @@
        <div class="def-struc-def">SEQ(?(<a href="ref_sys_symbols.html#TIMEOUT_AT">TIMEOUT_AT</a>), ?(<a href="ref_sys_symbols.html#REPETITIONS">REPETITIONS</a>))</div>
        <div class="def-comment"></div>
    </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="ITERATE_ON_SYMBOL"></a>ITERATE_ON_SYMBOL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="ITERATION_DATA"></a>ITERATION_DATA</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></div>
+       <div class="def-comment">    data to iterate over</div>
+   </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
        <div class="def-name"><a name="NOOP"></a>NOOP</div>
@@ -1810,7 +1822,7 @@
        <div class="def-name"><a name="ITERATE"></a>ITERATE</div>
        <div class="def-sig-in"><li>condtion(PROCESS:<a href="ref_sys_symbols.html#BOOLEAN">BOOLEAN</a>)</li><li>do(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</li></div>
        <div class="def-sig-out">result(PASSTHRU:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
-       <div class="def-comment"><i>iterate a process</i><br />                     this process checks the structure of the result of the "condition" param, if it's a BOOLEAN, it treats the iteration as a while loop and iterates until the BOOLEAN is false; if it's an INTEGER it treats the iteration as repeat loop and iterates as many times as the value of the INTEGER</div>
+       <div class="def-comment"><i>iterate a process</i><br />                     this process checks the structure of the result of the "condition" param, if it's a BOOLEAN, it treats the iteration as a while loop and iterates until the BOOLEAN is false; if it's an INTEGER it treats the iteration as repeat loop and iterates as many times as the value of the INTEGER; if it's a ITERATE_ON_SYMBOL then it iterates on all the instances of that symbol type which get added into the PARAMS each time through</div>
    </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
