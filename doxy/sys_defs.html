@@ -1789,6 +1789,11 @@
        <div class="def-sym-def"><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></div>
        <div class="def-comment">    data to iterate over</div>
    </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="BLOCK"></a>BLOCK</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></div>
+       <div class="def-comment">    set of processes for DO</div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
        <div class="def-name"><a name="NOOP"></a>NOOP</div>
@@ -1809,6 +1814,13 @@
        <div class="def-sig-in"><li>what(SYMBOL:<a href="ref_sys_symbols.html#NEW_TYPE">NEW_TYPE</a>)</li></div>
        <div class="def-sig-out">xaddr(SYMBOL:<a href="ref_sys_symbols.html#NEW_XADDR">NEW_XADDR</a>)</div>
        <div class="def-comment"><i>new instance</i><br /> reduces to the xaddr of a newly created instance of type NEW_TYPE.  the structures of "what" and "value" must match, but not the symbols</div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="DO"></a>DO</div>
+       <div class="def-sig-in"><li>actions(SYMBOL:<a href="ref_sys_symbols.html#BLOCK">BLOCK</a>)</li></div>
+       <div class="def-sig-out">result(PASSTHRU:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
+       <div class="def-comment"><i>do</i><br /> execute a BLOCK of instructions for side-effects returning the value of the last one.  We do the BLOCK thing because we don't yet have variable sized arugments for processes.  I would like it better if the actions could just be the children of the DO process</div>
    </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>

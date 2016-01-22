@@ -123,6 +123,18 @@ void testProcessNew() {
     _r_free(r);
 }
 
+void testProcessDo() {
+    T *code = _t_build(G_sem,0,
+                       DO,BLOCK,
+                       TEST_INT_SYMBOL,1,
+                       TEST_INT_SYMBOL,2,
+                       NULL_SYMBOL,NULL_SYMBOL);
+    spec_is_str_equal(t2s(code),"(process:DO (BLOCK (TEST_INT_SYMBOL:1) (TEST_INT_SYMBOL:2)))");
+    spec_is_equal(__p_reduce_sys_proc(0,DO,code,0),noReductionErr);
+    spec_is_str_equal(t2s(code),"(TEST_INT_SYMBOL:2)");
+    _t_free(code);
+}
+
 void testProcessFillMatch() {
     T *t = _t_new_root(RUN_TREE);
     // test FILL_FROM_MATCH which takes three params, the template tree, the stx-match and the tree it matched on
@@ -1242,6 +1254,7 @@ void testProcess() {
     testRunTree();
     testProcessGet();
     testProcessNew();
+    testProcessDo();
     testProcessFillMatch();
     testProcessFillMatchFull();
     testProcessIf();

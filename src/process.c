@@ -209,6 +209,16 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             }
         }
         break;
+    case DO_ID:
+        {
+            // all of the blocks children should have been reduced
+            // so all we need to do is return the last one.
+            T *block = _t_detach_by_idx(code,1);
+            int p = _t_children(block);
+            x = _t_detach_by_idx(block,p);
+            _t_free(block);
+        }
+        break;
     case IF_ID:
         t = _t_child(code,1);
         b = (*(int *)_t_surface(t)) ? 2 : 3;

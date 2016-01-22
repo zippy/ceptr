@@ -219,6 +219,7 @@ enum SYSSymbolIDs {
     REPETITIONS_ID,
     ITERATE_ON_SYMBOL_ID,
     ITERATION_DATA_ID,
+    BLOCK_ID,
     STX_SL_ID,
     STX_OP_ID,
     STX_CP_ID,
@@ -443,6 +444,7 @@ SemanticID UNLIMITED;
 SemanticID REPETITIONS;
 SemanticID ITERATE_ON_SYMBOL;
 SemanticID ITERATION_DATA;
+SemanticID BLOCK;
 SemanticID STX_SL;
 SemanticID STX_OP;
 SemanticID STX_CP;
@@ -706,6 +708,7 @@ enum SYSProcessIDs {
     NOOP_ID,
     GET_ID,
     NEW_ID,
+    DO_ID,
     IF_ID,
     ITERATE_ID,
     SAY_ID,
@@ -736,6 +739,7 @@ enum SYSProcessIDs {
 SemanticID NOOP;
 SemanticID GET;
 SemanticID NEW;
+SemanticID DO;
 SemanticID IF;
 SemanticID ITERATE;
 SemanticID SAY;
