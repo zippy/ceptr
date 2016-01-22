@@ -204,6 +204,7 @@ T *_a_get_instance(Instances *instances,Xaddr x) {
 }
 
 T *_a_set_instance(Instances *instances,Xaddr x,T *t) {
+    //@todo sanity check on t's symbol type?
     instance_elem *i = __a_get_instance(instances,x);
     if (i) {
         _t_free(i->instance);
@@ -211,6 +212,19 @@ T *_a_set_instance(Instances *instances,Xaddr x,T *t) {
         return i->instance;
     }
     return 0;
+}
+
+void _a_get_instances(Instances *instances,Symbol s,T *t) {
+    instances_elem *e;
+    HASH_FIND_INT( *instances, &s, e );
+    if (e) {
+        Instance *iP = &e->instances;
+        instance_elem *curi,*tmpi;
+        HASH_ITER(hh, *iP, curi, tmpi) {
+            T *c = _t_clone(curi->instance);
+            _t_add(t,c);
+        }
+    }
 }
 
 Xaddr _a_new_instance(Instances *instances,T *t) {

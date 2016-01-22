@@ -83,12 +83,37 @@ void testAccBootStrap() {
 
 void testAccInstances() {
     Instances i = NULL;
-    T *t = _t_new_root(PARAMS);
+    T *t = _t_newi(0,TEST_INT_SYMBOL,1);
 
     Xaddr x = _a_new_instance(&i,t);
     spec_is_ptr_equal(t,_a_get_instance(&i,x));
 
+    t = _t_newi(0,TEST_INT_SYMBOL,2);
+    _a_set_instance(&i,x,t);
+    spec_is_ptr_equal(t,_a_get_instance(&i,x));
+
     _a_free_instances(&i);
+}
+
+void testAccGetInstances() {
+    Instances i = NULL;
+    T *t;
+    Xaddr x;
+
+    t = _t_newi(0,TEST_INT_SYMBOL,1);
+    x = _a_new_instance(&i,t);
+    t = _t_newi(0,TEST_INT_SYMBOL,2);
+    x = _a_new_instance(&i,t);
+    t = _t_newi(0,TEST_INT_SYMBOL,3);
+    x = _a_new_instance(&i,t);
+
+    t = _t_new_root(ITERATION_DATA);
+    _a_get_instances(&i,TEST_INT_SYMBOL,t);
+    spec_is_str_equal(t2s(t),"(ITERATION_DATA (TEST_INT_SYMBOL:1) (TEST_INT_SYMBOL:2) (TEST_INT_SYMBOL:3))");
+    _t_free(t);
+
+    _a_free_instances(&i);
+
 }
 
 void testAccPersistInstances() {
@@ -130,5 +155,6 @@ void testAccumulator() {
 
     testAccBootStrap();
     testAccInstances();
+    testAccGetInstances();
     testAccPersistInstances();
 }
