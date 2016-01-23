@@ -16,7 +16,8 @@ var process_8h =
     ] ],
     [ "MagicProcesses", "process_8h.html#a03e650c12910a0e1b96f2f18539e2902", [
       [ "MagicReceptors", "process_8h.html#a03e650c12910a0e1b96f2f18539e2902a2614cefab0746f5c138cfe956c71e9c5", null ],
-      [ "MagicQuit", "process_8h.html#a03e650c12910a0e1b96f2f18539e2902a4c20237ca5fb62be0003df34585d4db0", null ]
+      [ "MagicQuit", "process_8h.html#a03e650c12910a0e1b96f2f18539e2902a4c20237ca5fb62be0003df34585d4db0", null ],
+      [ "MagicDebug", "process_8h.html#a03e650c12910a0e1b96f2f18539e2902a9158cf0178c61b5223399bbbdb15521c", null ]
     ] ],
     [ "QueueError", "process_8h.html#a0822535a60c22a2ff4e36c5f600a9826", [
       [ "noErr", "process_8h.html#a0822535a60c22a2ff4e36c5f600a9826a29314e147c76ea079f859e0db61a0dfd", null ],
