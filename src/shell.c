@@ -123,6 +123,10 @@ void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp
     code = _t_newi(0,MAGIC,MagicQuit);
     addCommand(r,o_r->addr,"quit","shut down the vmhost",code,NULL);
 
+    // (expect (on flux SHELL_COMMAND:debug) action (send std_out (convert_to_lines (magic toggle debug)))
+    code = _t_newi(0,MAGIC,MagicDebug);
+    addCommand(r,o_r->addr,"debug","toggle debug mode",code,NULL);
+
 }
 
 /** @}*/

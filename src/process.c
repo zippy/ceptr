@@ -705,6 +705,16 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                     free(s);
                 }
                 break;
+            case MagicDebug:
+                if (!debugging(D_SIGNALS)) {
+                    debug_enable(D_SIGNALS);
+                    x = __t_new_str(0,LINE,"debugging enabled",1);
+                }
+                else {
+                    debug_disable(D_SIGNALS);
+                    x = __t_new_str(0,LINE,"debugging disabled",1);
+                }
+                break;
             case MagicQuit:
                 if (G_vm) {
                     __r_kill(G_vm->r);

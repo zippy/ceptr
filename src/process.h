@@ -22,7 +22,7 @@ enum QueueError {noErr = 0, contextNotFoundErr};
 enum IterationPhase {EvalCondition,EvalBody};
 enum IterationType {IterateTypeCount,IterateTypeUnknown,IterateTypeCond,IterateTypeOnSymbol};
 
-enum MagicProcesses {MagicReceptors,MagicQuit};
+enum MagicProcesses {MagicReceptors,MagicQuit,MagicDebug};
 
 typedef struct IterationState {
     T *code;
