@@ -15,14 +15,14 @@
          { "symbol":{ "context":3,"id":4 },"type":"CSTRING","name":"TEST_STR_SYMBOL","surface":" "},
          { "symbol":{ "context":0,"id":110 },"type":"TREE_PATH","name":"PARAM_REF","surface":"/2/1/2/4"}]}]},
    { "symbol":{ "context":0,"id":79 },"type":"ZERO_OR_MORE_OF_ANY_SYMBOL","name":"PARAMS","children":[
-      { "symbol":{ "context":3,"id":137 },"type":"PROFILE","name":"USER_PROFILE","children":[
-         { "symbol":{ "context":3,"id":129 },"type":"NAME","name":"PROFILE_NAME","children":[
-            { "symbol":{ "context":3,"id":127 },"type":"CSTRING","name":"FIRST_NAME","surface":"Jane"},
-            { "symbol":{ "context":3,"id":128 },"type":"CSTRING","name":"LAST_NAME","surface":"Smith"}]},
-         { "symbol":{ "context":3,"id":135 },"type":"ADDRESS","name":"PROFILE_ADDRESS","children":[
-            { "symbol":{ "context":3,"id":130 },"type":"CSTRING","name":"STREET_ADDRESS","surface":"126 Main Street"},
-            { "symbol":{ "context":3,"id":131 },"type":"CSTRING","name":"CITY","surface":"Smallville"},
-            { "symbol":{ "context":3,"id":132 },"type":"CSTRING","name":"STATE","surface":"CA"},
-            { "symbol":{ "context":3,"id":133 },"type":"CSTRING","name":"ZIP","surface":"12345"},
-            { "symbol":{ "context":3,"id":134 },"type":"CSTRING","name":"COUNTRY","surface":"USA"}]},
-         { "symbol":{ "context":3,"id":136 },"type":"CSTRING","name":"PROFILE_EMAIL","surface":"test@example.com"}]}]}]}
+      { "symbol":{ "context":3,"id":145 },"type":"PROFILE","name":"USER_PROFILE","children":[
+         { "symbol":{ "context":3,"id":137 },"type":"NAME","name":"PROFILE_NAME","children":[
+            { "symbol":{ "context":3,"id":135 },"type":"CSTRING","name":"FIRST_NAME","surface":"Jane"},
+            { "symbol":{ "context":3,"id":136 },"type":"CSTRING","name":"LAST_NAME","surface":"Smith"}]},
+         { "symbol":{ "context":3,"id":143 },"type":"ADDRESS","name":"PROFILE_ADDRESS","children":[
+            { "symbol":{ "context":3,"id":138 },"type":"CSTRING","name":"STREET_ADDRESS","surface":"126 Main Street"},
+            { "symbol":{ "context":3,"id":139 },"type":"CSTRING","name":"CITY","surface":"Smallville"},
+            { "symbol":{ "context":3,"id":140 },"type":"CSTRING","name":"STATE","surface":"CA"},
+            { "symbol":{ "context":3,"id":141 },"type":"CSTRING","name":"ZIP","surface":"12345"},
+            { "symbol":{ "context":3,"id":142 },"type":"CSTRING","name":"COUNTRY","surface":"USA"}]},
+         { "symbol":{ "context":3,"id":144 },"type":"CSTRING","name":"PROFILE_EMAIL","surface":"test@example.com"}]}]}]}

@@ -56,13 +56,14 @@ int main(int argc, const char **argv) {
     testReceptor();
     testScape();
     testVMHost();
-    /* /\* testAccumulator(); *\/ */
+    testAccumulator();
+    testProtocol();
 
-    /* /\* //\\***** examples *\/ */
+    /***** examples */
     testProfileExample();
     testHTTPExample();
-    /* /\* //testGroup(); *\/ */
-    /* testProtocol(); */
+
+    testGroup();
 
     _cleanup_HTTPDefs();
     sys_free();
