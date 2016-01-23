@@ -92,6 +92,10 @@ void testAccInstances() {
     _a_set_instance(&i,x,t);
     spec_is_ptr_equal(t,_a_get_instance(&i,x));
 
+    t = _t_new_str(0,TEST_STR_SYMBOL,"fish");
+    x = _a_new_instance(&i,t);
+
+    spec_is_str_equal(t2s(i),"(INSTANCES (SYMBOL_INSTANCES:TEST_INT_SYMBOL (TEST_INT_SYMBOL:2)) (SYMBOL_INSTANCES:TEST_STR_SYMBOL (TEST_STR_SYMBOL:fish)))");
     _a_free_instances(&i);
 }
 
@@ -153,7 +157,7 @@ void testAccumulator() {
         mkdir(temp_dir,0700);
     }
 
-    testAccBootStrap();
+    //    testAccBootStrap();
     testAccInstances();
     testAccGetInstances();
     testAccPersistInstances();

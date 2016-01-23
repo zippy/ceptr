@@ -208,24 +208,24 @@ void _v_send_signals(VMHost *v,T *signals) {
 
 /// @todo this should probably be implemented in a scape but for now
 // we just loop through all instances searching for a match
-Xaddr __v_get_receptor_xaddr(Instances *instances,Receptor *r) {
-    instances_elem *e = 0;
-    SemanticID sid = {r->parent,SEM_TYPE_RECEPTOR,r->context};
-    Xaddr result = {sid,0};
-    HASH_FIND_INT( *instances, &sid, e );
-    if (e) {
-        Instance *iP = &e->instances;
+/* Xaddr __v_get_receptor_xaddr(Instances *instances,Receptor *r) { */
+/*     instances_elem *e = 0; */
+/*     SemanticID sid = {r->parent,SEM_TYPE_RECEPTOR,r->context}; */
+/*     Xaddr result = {sid,0}; */
+/*     HASH_FIND_INT( *instances, &sid, e ); */
+/*     if (e) { */
+/*         Instance *iP = &e->instances; */
 
-        instance_elem *curi,*tmpi;
-        HASH_ITER(hh, *iP, curi, tmpi) {
-            if (__r_get_receptor(curi->instance) == r) {
-                result.addr = curi->addr;
-                return result;
-            }
-        }
-    }
-    return result;
-}
+/*         instance_elem *curi,*tmpi; */
+/*         HASH_ITER(hh, *iP, curi, tmpi) { */
+/*             if (__r_get_receptor(curi->instance) == r) { */
+/*                 result.addr = curi->addr; */
+/*                 return result; */
+/*             } */
+/*         } */
+/*     } */
+/*     return result; */
+/* } */
 
 /**
  * scaffolding function for signal delivery

@@ -14,6 +14,7 @@
 #include "receptor.h"
 #include <sys/types.h>
 #include <sys/stat.h>
+#include "debug.h"
 
 VMHost *G_vm = 0;
 
@@ -184,115 +185,91 @@ void _a_shut_down() {
 
 /*------------------------------------------------------------------------*/
 
-instance_elem *__a_get_instance(Instances *instances,Xaddr x) {
-    instances_elem *e = 0;
-    HASH_FIND_INT( *instances, &x.symbol, e );
-    if (e) {
-        instance_elem *i = 0;
-        Instance *iP = &e->instances;
-        HASH_FIND_INT( *iP, &x.addr, i );
-        if (i) {
-            return i;
-        }
-    }
-    return 0;
+T *__a_find(T *t,SemanticID sym) {
+    T *p;
+    DO_KIDS(t,
+            p =_t_child(t,i);
+            if (semeq(*(Symbol *)_t_surface(p),sym)) return p;
+            );
+    return NULL;
 }
+
 
 T *_a_get_instance(Instances *instances,Xaddr x) {
-    instance_elem *i = __a_get_instance(instances,x);
-    return i ? i->instance : NULL;
+    T *t = *instances;
+    if (!t) return NULL;
+    t = __a_find(t,x.symbol);
+    if (t) {
+        return _t_child(t,x.addr);
+    }
+    return NULL;
 }
 
-T *_a_set_instance(Instances *instances,Xaddr x,T *t) {
+T *_a_set_instance(Instances *instances,Xaddr x,T *r) {
     //@todo sanity check on t's symbol type?
-    instance_elem *i = __a_get_instance(instances,x);
-    if (i) {
-        _t_free(i->instance);
-        i->instance = t;
-        return i->instance;
+    T *t = _a_get_instance(instances,x);
+    if (t) {
+        _t_replace(_t_parent(t),_t_node_index(t),r);
+        return r;
     }
-    return 0;
+    return NULL;
 }
 
 void _a_get_instances(Instances *instances,Symbol s,T *t) {
-    instances_elem *e;
-    HASH_FIND_INT( *instances, &s, e );
-    if (e) {
-        Instance *iP = &e->instances;
-        instance_elem *curi,*tmpi;
-        HASH_ITER(hh, *iP, curi, tmpi) {
-            T *c = _t_clone(curi->instance);
-            _t_add(t,c);
-        }
-    }
+    T *x = *instances;
+    if (!x) return;
+    x = __a_find(x,s);
+    if (x)
+        DO_KIDS(x,_t_add(t,_t_clone(_t_child(x,i))));
 }
 
 Xaddr _a_new_instance(Instances *instances,T *t) {
+    T *x = *instances;
+    if (!x) x = *instances = _t_new_root(INSTANCES);
     Symbol s = _t_symbol(t);
-    instances_elem *e;
-
-    HASH_FIND_INT( *instances, &s, e );
-    if (!e) {
-        e = malloc(sizeof(struct instances_elem));
-        e->instances = NULL;
-        e->s = s;
-        e->last_id = 0;
-        HASH_ADD_INT(*instances,s,e);
-    }
-    e->last_id++;
-    instance_elem *i;
-    i = malloc(sizeof(struct instance_elem));
-    i->instance = t;
-    i->addr = e->last_id;
-    Instance *iP = &e->instances;
-    HASH_ADD_INT(*iP,addr,i);
-
+    T *si =  __a_find(x,s);
+    if (!si) si = _t_news(x,SYMBOL_INSTANCES,s);
+    _t_add(si,t);
     Xaddr result;
     result.symbol = s;
-    result.addr = e->last_id;
-
+    result.addr = _t_children(si);
     return result;
 }
 
-void instanceFree(Instance *i) {
-    instance_elem *cur,*tmp;
-    HASH_ITER(hh, *i, cur, tmp) {
-        _t_free((*i)->instance);
-        HASH_DEL(*i,cur);  /* delete; cur advances to next */
-        free(cur);
+void _a_free_instances(Instances *instances) {
+    T *x = *instances;
+    if (x) {
+        _t_free(x);
+        *instances = NULL;
     }
 }
 
-void _a_free_instances(Instances *i) {
-    instances_elem *cur,*tmp;
-    HASH_ITER(hh, *i, cur, tmp) {
-        instanceFree(&(*i)->instances);
-        HASH_DEL(*i,cur);  /* delete; cur advances to next */
-        free(cur);
-    }
-}
-
-S *__a_serialize_instances(Instances *i) {
+S *__a_serialize_instances(Instances *instances) {
+    T *x = *instances;
     T *t = _t_new_root(PARAMS);
-    instances_elem *cur,*tmp;
-    HASH_ITER(hh, *i, cur, tmp) {
-        T *sym = _t_news(t,STRUCTURE_SYMBOL,cur->s);  // just using this symbol to store the symbol type
-        Instance *iP = &cur->instances;
-        instance_elem *curi,*tmpi;
-        HASH_ITER(hh, *iP, curi, tmpi) {
-            T *c;
-            if (is_receptor(cur->s)) {
-                void *surface;
-                size_t length;
-                Receptor *r = __r_get_receptor(curi->instance);
-                _r_serialize(r,&surface,&length);
-                c = _t_new(0,SERIALIZED_RECEPTOR,surface,length);
-                //@todo create a version of _t_new that doesn't have to realloc the surface but can just use it
-                free(surface);
-            }
-            else c = _t_clone(curi->instance);
-            _t_add(sym,c);
-        }
+    if (x) {
+        T *p;
+        Symbol s;
+        DO_KIDS(x,
+                p =_t_child(x,i);
+                s = *(Symbol *)_t_surface(p);
+                T *sym = _t_news(t,STRUCTURE_SYMBOL,s);  // just using this symbol to store the symbol type
+                T *c;
+                DO_KIDS(p,
+                        c = _t_child(p,i);
+                        if (is_receptor(s)) {
+                            void *surface;
+                            size_t length;
+                            Receptor *r = __r_get_receptor(c);
+                            _r_serialize(r,&surface,&length);
+                            c = _t_new(0,SERIALIZED_RECEPTOR,surface,length);
+                            //@todo create a version of _t_new that doesn't have to realloc the surface but can just use it
+                            free(surface);
+                        }
+                        else c = _t_clone(c);
+                        _t_add(sym,c);
+                        );
+                );
     }
     H h = _m_new_from_t(t);
     S *s = _m_serialize(h.m);

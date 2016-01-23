@@ -252,6 +252,8 @@ enum SYSSymbolIDs {
     TREE_DELTA_COUNT_ID,
     TREE_DELTA_ADD_ID,
     TREE_DELTA_REPLACE_ID,
+    INSTANCES_ID,
+    SYMBOL_INSTANCES_ID,
     NUM_SYS_SYMBOLS
 };
 SemanticID STRUCTURES;
@@ -477,6 +479,8 @@ SemanticID TREE_DELTA_VALUE;
 SemanticID TREE_DELTA_COUNT;
 SemanticID TREE_DELTA_ADD;
 SemanticID TREE_DELTA_REPLACE;
+SemanticID INSTANCES;
+SemanticID SYMBOL_INSTANCES;
 
 /**********************************************************************************/
 // SYS:Structure

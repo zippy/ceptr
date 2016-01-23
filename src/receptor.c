@@ -1069,19 +1069,6 @@ ReceptorAddress __r_get_self_address(Receptor *r) {
 }
 
 void __r_dump_instances(Receptor *r) {
-    Instances *i = &r->instances;
-    T *t = _t_new_root(PARAMS);  // bogus symbol, just using to build the tree
-    instances_elem *cur,*tmp;
-    HASH_ITER(hh, *i, cur, tmp) {
-        T *sym = _t_news(t,STRUCTURE_SYMBOL,cur->s);  // just using this symbol to store the symbol type
-        Instance *iP = &cur->instances;
-        instance_elem *curi,*tmpi;
-        HASH_ITER(hh, *iP, curi, tmpi) {
-            T *c = _t_clone(curi->instance);
-            _t_add(sym,c);
-        }
-    }
-    printf("INSTANCES:%s\n",_t2s(r->sem,t));
-    _t_free(t);
+    printf("INSTANCES:%s\n",_t2s(r->sem,r->instances));
 }
 /** @}*/

@@ -339,6 +339,9 @@ Structure: TREE_DELTA,TREE_DELTA_PATH,TREE_DELTA_VALUE,TREE_DELTA_COUNT;
 Symbol: TREE_DELTA_ADD,TREE_DELTA;
 Symbol: TREE_DELTA_REPLACE,TREE_DELTA;
 
+Symbol: INSTANCES,[!];
+Symbol: SYMBOL_INSTANCES,SYMBOL;
+
 ########################################################################################
 # this context will contain SEED or POD structures that wrap receptors for global sharing
 Context: COMPOSITORY;

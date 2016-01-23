@@ -152,26 +152,8 @@ typedef struct table_elem {
 } table_elem;
 typedef table_elem *LabelTable;
 
-/**
- * An element in the store of instances of one symbol type
- */
-typedef struct instance_elem {
-    int addr;                  ///< key to this instance
-    T *instance;           ///< the stored instance
-    UT_hash_handle hh;         ///< makes this structure hashable using the uthash library
-} instance_elem;
-typedef instance_elem *Instance;
-
-/**
- * An element in the store for all the instances of one symbol type
- */
-typedef struct instances_elem {
-    Symbol s;                ///< key to store of this symbol type
-    Instance instances;      ///< instances store
-    int last_id;             ///< the last allocated id for instances
-    UT_hash_handle hh;       ///< makes this structure hashable using the uthash library
-} instances_elem;
-typedef instances_elem *Instances;
+// for now store instances in an INSTANCES semantic tree
+typedef T *Instances;
 
 // ** types for processing
 // run-tree context
