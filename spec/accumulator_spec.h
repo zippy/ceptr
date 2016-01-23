@@ -59,9 +59,11 @@ void testAccBootStrap() {
     _a_boot(dname);
 
     // verify that clock with planted expectation and it's accumulated data are re-instantiated at boot
-    Xaddr x = {CLOCK_RECEPTOR,2};
+    //__r_dump_instances(G_vm->r);
+
+    Xaddr x = {CLOCK_RECEPTOR,1};
     T *ct = _r_get_instance(G_vm->r,x);
-    spec_is_true(ct != NULL);
+    spec_is_false(ct == NULL);
     /* Receptor *cr = __r_get_receptor(ct); */
 
     /* char buf1[1000]; */
@@ -157,7 +159,7 @@ void testAccumulator() {
         mkdir(temp_dir,0700);
     }
 
-    //    testAccBootStrap();
+    testAccBootStrap();
     testAccInstances();
     testAccGetInstances();
     testAccPersistInstances();
