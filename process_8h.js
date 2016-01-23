@@ -11,7 +11,8 @@ var process_8h =
     [ "IterationType", "process_8h.html#a761e9a3212fa1c575246db8212d6c521", [
       [ "IterateTypeCount", "process_8h.html#a761e9a3212fa1c575246db8212d6c521a6f5949b7d93a97dae8665a6bc3b5b68e", null ],
       [ "IterateTypeUnknown", "process_8h.html#a761e9a3212fa1c575246db8212d6c521a5b1ea1857359475fbed29896bc2c42c2", null ],
-      [ "IterateTypeCond", "process_8h.html#a761e9a3212fa1c575246db8212d6c521a7e4122aa240ae00ec7622b138cf4624f", null ]
+      [ "IterateTypeCond", "process_8h.html#a761e9a3212fa1c575246db8212d6c521a7e4122aa240ae00ec7622b138cf4624f", null ],
+      [ "IterateTypeOnSymbol", "process_8h.html#a761e9a3212fa1c575246db8212d6c521afd06037e702d5a852687ed582521e2c9", null ]
     ] ],
     [ "MagicProcesses", "process_8h.html#a03e650c12910a0e1b96f2f18539e2902", [
       [ "MagicReceptors", "process_8h.html#a03e650c12910a0e1b96f2f18539e2902a2614cefab0746f5c138cfe956c71e9c5", null ],

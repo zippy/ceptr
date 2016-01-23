@@ -5,8 +5,6 @@ var annotated =
     [ "BranchPoint", "structBranchPoint.html", "structBranchPoint" ],
     [ "ContextStore", "structContextStore.html", "structContextStore" ],
     [ "H", "structH.html", "structH" ],
-    [ "instance_elem", "structinstance__elem.html", "structinstance__elem" ],
-    [ "instances_elem", "structinstances__elem.html", "structinstances__elem" ],
     [ "IterationState", "structIterationState.html", "structIterationState" ],
     [ "L", "structL.html", "structL" ],
     [ "M", "structM.html", "structM" ],

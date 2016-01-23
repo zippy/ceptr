@@ -1880,6 +1880,24 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
        <div class="def-struc-def">SEQ(?(<a href="ref_sys_symbols.html#TIMEOUT_AT">TIMEOUT_AT</a>), ?(<a href="ref_sys_symbols.html#REPETITIONS">REPETITIONS</a>))</div>
        <div class="def-comment"></div>
    </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="ITERATE_ON_SYMBOL"></a>ITERATE_ON_SYMBOL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="ITERATION_DATA"></a>ITERATION_DATA</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></div>
+       <div class="def-comment">    data to iterate over</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="BLOCK"></a>BLOCK</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></div>
+       <div class="def-comment">    set of processes for DO</div>
+   </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
        <div class="def-name"><a name="NOOP"></a>NOOP</div>
@@ -1903,6 +1921,13 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
    </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
+       <div class="def-name"><a name="DO"></a>DO</div>
+       <div class="def-sig-in"><li>actions(SYMBOL:<a href="ref_sys_symbols.html#BLOCK">BLOCK</a>)</li></div>
+       <div class="def-sig-out">result(PASSTHRU:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
+       <div class="def-comment"><i>do</i><br /> execute a BLOCK of instructions for side-effects returning the value of the last one.  We do the BLOCK thing because we don't yet have variable sized arugments for processes.  I would like it better if the actions could just be the children of the DO process</div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
        <div class="def-name"><a name="IF"></a>IF</div>
        <div class="def-sig-in"><li>condition(PROCESS:<a href="ref_sys_symbols.html#BOOLEAN">BOOLEAN</a>)</li><li>then(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</li><li>[else(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)]</li></div>
        <div class="def-sig-out">result(PASSTHRU:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
@@ -1913,7 +1938,7 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
        <div class="def-name"><a name="ITERATE"></a>ITERATE</div>
        <div class="def-sig-in"><li>condtion(PROCESS:<a href="ref_sys_symbols.html#BOOLEAN">BOOLEAN</a>)</li><li>do(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</li></div>
        <div class="def-sig-out">result(PASSTHRU:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
-       <div class="def-comment"><i>iterate a process</i><br />                     this process checks the structure of the result of the "condition" param, if it's a BOOLEAN, it treats the iteration as a while loop and iterates until the BOOLEAN is false; if it's an INTEGER it treats the iteration as repeat loop and iterates as many times as the value of the INTEGER</div>
+       <div class="def-comment"><i>iterate a process</i><br />                     this process checks the structure of the result of the "condition" param, if it's a BOOLEAN, it treats the iteration as a while loop and iterates until the BOOLEAN is false; if it's an INTEGER it treats the iteration as repeat loop and iterates as many times as the value of the INTEGER; if it's a ITERATE_ON_SYMBOL then it iterates on all the instances of that symbol type which get added into the PARAMS each time through</div>
    </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
@@ -2280,6 +2305,18 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
        <div class="def-sym-def"><a href="ref_sys_structures.html#TREE_DELTA">TREE-DELTA</a></div>
        <div class="def-comment"></div>
    </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="INSTANCES"></a>INSTANCES</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SYMBOL_INSTANCES"></a>SYMBOL_INSTANCES</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
 </div>
 <div class="defs-context">
    <h4>DEV_COMPOSITORY_CONTEXT</h4>
@@ -2481,7 +2518,7 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
-       <div class="def-name"><a name="speaking"></a>speaking</div>
+       <div class="def-name"><a name="converse"></a>converse</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#INTERACTION">INTERACTION</a></div>
        <div class="def-comment"></div>
    </div>
@@ -2648,7 +2685,7 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Jan 21 2016 16:09:42 for ceptr by
+    <li class="footer">Generated on Sat Jan 23 2016 09:43:39 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

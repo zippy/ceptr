@@ -122,8 +122,7 @@ Include dependency graph for base_defs.h:</div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="base__defs_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="base__defs_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 </div>
 <p><a href="base__defs_8h_source.html">Go to the source code of this file.</a></p>
@@ -380,46 +379,52 @@ Enumerations</h2></td></tr>
 <b>UNLIMITED_ID</b>, 
 <br />
 &#160;&#160;<b>REPETITIONS_ID</b>, 
-<b>STX_SL_ID</b>, 
+<b>ITERATE_ON_SYMBOL_ID</b>, 
+<b>ITERATION_DATA_ID</b>, 
+<b>BLOCK_ID</b>, 
+<br />
+&#160;&#160;<b>STX_SL_ID</b>, 
 <b>STX_OP_ID</b>, 
 <b>STX_CP_ID</b>, 
+<b>STX_SET_ID</b>, 
 <br />
-&#160;&#160;<b>STX_SET_ID</b>, 
-<b>STX_OS_ID</b>, 
+&#160;&#160;<b>STX_OS_ID</b>, 
 <b>STX_CS_ID</b>, 
 <b>STX_LABEL_ID</b>, 
+<b>STX_OG_ID</b>, 
 <br />
-&#160;&#160;<b>STX_OG_ID</b>, 
-<b>STX_CG_ID</b>, 
+&#160;&#160;<b>STX_CG_ID</b>, 
 <b>STX_EQ_ID</b>, 
 <b>STX_NEQ_ID</b>, 
+<b>STX_WALK_ID</b>, 
 <br />
-&#160;&#160;<b>STX_WALK_ID</b>, 
-<b>STX_STAR_ID</b>, 
+&#160;&#160;<b>STX_STAR_ID</b>, 
 <b>STX_PLUS_ID</b>, 
 <b>STX_Q_ID</b>, 
+<b>STX_OR_ID</b>, 
 <br />
-&#160;&#160;<b>STX_OR_ID</b>, 
-<b>STX_COMMA_ID</b>, 
+&#160;&#160;<b>STX_COMMA_ID</b>, 
 <b>STX_EXCEPT_ID</b>, 
 <b>STX_NOT_ID</b>, 
+<b>STX_VAL_S_ID</b>, 
 <br />
-&#160;&#160;<b>STX_VAL_S_ID</b>, 
-<b>STX_VAL_C_ID</b>, 
+&#160;&#160;<b>STX_VAL_C_ID</b>, 
 <b>STX_VAL_I_ID</b>, 
 <b>STX_VAL_F_ID</b>, 
+<b>STX_TOKENS_ID</b>, 
 <br />
-&#160;&#160;<b>STX_TOKENS_ID</b>, 
-<b>STX_SIBS_ID</b>, 
+&#160;&#160;<b>STX_SIBS_ID</b>, 
 <b>STX_CHILD_ID</b>, 
 <b>STX_POSTFIX_ID</b>, 
+<b>TREE_DELTA_PATH_ID</b>, 
 <br />
-&#160;&#160;<b>TREE_DELTA_PATH_ID</b>, 
-<b>TREE_DELTA_VALUE_ID</b>, 
+&#160;&#160;<b>TREE_DELTA_VALUE_ID</b>, 
 <b>TREE_DELTA_COUNT_ID</b>, 
 <b>TREE_DELTA_ADD_ID</b>, 
+<b>TREE_DELTA_REPLACE_ID</b>, 
 <br />
-&#160;&#160;<b>TREE_DELTA_REPLACE_ID</b>, 
+&#160;&#160;<b>INSTANCES_ID</b>, 
+<b>SYMBOL_INSTANCES_ID</b>, 
 <b>NUM_SYS_SYMBOLS</b>
 <br />
  }</td></tr>
@@ -571,37 +576,38 @@ Enumerations</h2></td></tr>
 <b>GET_ID</b>, 
 <b>NEW_ID</b>, 
 <br />
-&#160;&#160;<b>IF_ID</b>, 
+&#160;&#160;<b>DO_ID</b>, 
+<b>IF_ID</b>, 
 <b>ITERATE_ID</b>, 
 <b>SAY_ID</b>, 
-<b>REQUEST_ID</b>, 
 <br />
-&#160;&#160;<b>LISTEN_ID</b>, 
+&#160;&#160;<b>REQUEST_ID</b>, 
+<b>LISTEN_ID</b>, 
 <b>RESPOND_ID</b>, 
 <b>QUOTE_ID</b>, 
-<b>FILL_FROM_MATCH_ID</b>, 
 <br />
-&#160;&#160;<b>RAISE_ID</b>, 
+&#160;&#160;<b>FILL_FROM_MATCH_ID</b>, 
+<b>RAISE_ID</b>, 
 <b>STREAM_READ_ID</b>, 
 <b>STREAM_WRITE_ID</b>, 
-<b>STREAM_ALIVE_ID</b>, 
 <br />
-&#160;&#160;<b>CONCAT_STR_ID</b>, 
+&#160;&#160;<b>STREAM_ALIVE_ID</b>, 
+<b>CONCAT_STR_ID</b>, 
 <b>ADD_INT_ID</b>, 
 <b>SUB_INT_ID</b>, 
-<b>MULT_INT_ID</b>, 
 <br />
-&#160;&#160;<b>DIV_INT_ID</b>, 
+&#160;&#160;<b>MULT_INT_ID</b>, 
+<b>DIV_INT_ID</b>, 
 <b>MOD_INT_ID</b>, 
 <b>EQ_INT_ID</b>, 
-<b>LT_INT_ID</b>, 
 <br />
-&#160;&#160;<b>GT_INT_ID</b>, 
+&#160;&#160;<b>LT_INT_ID</b>, 
+<b>GT_INT_ID</b>, 
 <b>LTE_INT_ID</b>, 
 <b>GTE_INT_ID</b>, 
-<b>INITIATE_PROTOCOL_ID</b>, 
 <br />
-&#160;&#160;<b>MAGIC_ID</b>, 
+&#160;&#160;<b>INITIATE_PROTOCOL_ID</b>, 
+<b>MAGIC_ID</b>, 
 <b>NUM_SYS_PROCESSES</b>
 <br />
  }</td></tr>
@@ -658,7 +664,7 @@ Enumerations</h2></td></tr>
 <b>MEMBER_ID</b>, 
 <br />
 &#160;&#160;<b>enrollment_ID</b>, 
-<b>speaking_ID</b>, 
+<b>converse_ID</b>, 
 <b>MESSAGE_ID</b>, 
 <b>NUM_DEV_COMPOSITORY_SYMBOLS</b>
 <br />
@@ -1383,6 +1389,15 @@ Variables</h2></td></tr>
 <tr class="memitem:a79f6751d425a511ccfd074ba7e61bf5f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a79f6751d425a511ccfd074ba7e61bf5f"></a>
 <a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>REPETITIONS</b></td></tr>
 <tr class="separator:a79f6751d425a511ccfd074ba7e61bf5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30991b07075b08e5083081d35ee3fc14"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a30991b07075b08e5083081d35ee3fc14"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ITERATE_ON_SYMBOL</b></td></tr>
+<tr class="separator:a30991b07075b08e5083081d35ee3fc14"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9de0906922092121350a62b75603565a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9de0906922092121350a62b75603565a"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ITERATION_DATA</b></td></tr>
+<tr class="separator:a9de0906922092121350a62b75603565a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad664e832b43eefe65e284548bcd698d8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad664e832b43eefe65e284548bcd698d8"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>BLOCK</b></td></tr>
+<tr class="separator:ad664e832b43eefe65e284548bcd698d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aec1f6645e5c6a04cb23981cbf651af62"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aec1f6645e5c6a04cb23981cbf651af62"></a>
 <a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STX_SL</b></td></tr>
 <tr class="separator:aec1f6645e5c6a04cb23981cbf651af62"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1479,6 +1494,12 @@ Variables</h2></td></tr>
 <tr class="memitem:a15d047c2fa793b21259d1ca3e8052c47"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a15d047c2fa793b21259d1ca3e8052c47"></a>
 <a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TREE_DELTA_REPLACE</b></td></tr>
 <tr class="separator:a15d047c2fa793b21259d1ca3e8052c47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef23275134592daad126ee1abcbc5c27"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aef23275134592daad126ee1abcbc5c27"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>INSTANCES</b></td></tr>
+<tr class="separator:aef23275134592daad126ee1abcbc5c27"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adfde764a5758c76b2ec00a7d37ff6e2a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adfde764a5758c76b2ec00a7d37ff6e2a"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SYMBOL_INSTANCES</b></td></tr>
+<tr class="separator:adfde764a5758c76b2ec00a7d37ff6e2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3afdaa93875b9d6f5fc874dc28169bd2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3afdaa93875b9d6f5fc874dc28169bd2"></a>
 <a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>BIT</b></td></tr>
 <tr class="separator:a3afdaa93875b9d6f5fc874dc28169bd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1812,6 +1833,9 @@ Variables</h2></td></tr>
 <tr class="memitem:a82a3df001ae0514122b416c1f2685c22"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a82a3df001ae0514122b416c1f2685c22"></a>
 <a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>NEW</b></td></tr>
 <tr class="separator:a82a3df001ae0514122b416c1f2685c22"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9947563e68c80f6260dee4fd480e8a43"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9947563e68c80f6260dee4fd480e8a43"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>DO</b></td></tr>
+<tr class="separator:a9947563e68c80f6260dee4fd480e8a43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28e0ac7ea66dc0250099e12d91d2e4bf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a28e0ac7ea66dc0250099e12d91d2e4bf"></a>
 <a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>IF</b></td></tr>
 <tr class="separator:a28e0ac7ea66dc0250099e12d91d2e4bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1959,9 +1983,9 @@ Variables</h2></td></tr>
 <tr class="memitem:ac5481c95ec86e0c679f4aca3860ef2ac"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac5481c95ec86e0c679f4aca3860ef2ac"></a>
 <a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>enrollment</b></td></tr>
 <tr class="separator:ac5481c95ec86e0c679f4aca3860ef2ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abaf64da9a856a1bee5704797e4785e95"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abaf64da9a856a1bee5704797e4785e95"></a>
-<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>speaking</b></td></tr>
-<tr class="separator:abaf64da9a856a1bee5704797e4785e95"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af59390ea8faebb654edbb0aa2a8283a9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af59390ea8faebb654edbb0aa2a8283a9"></a>
+<a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>converse</b></td></tr>
+<tr class="separator:af59390ea8faebb654edbb0aa2a8283a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ebf5bdcea41c9f8dca0c438c9feee27"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8ebf5bdcea41c9f8dca0c438c9feee27"></a>
 <a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>MESSAGE</b></td></tr>
 <tr class="separator:a8ebf5bdcea41c9f8dca0c438c9feee27"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2071,7 +2095,7 @@ Variables</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="base__defs_8h.html">base_defs.h</a></li>
-    <li class="footer">Generated on Thu Jan 21 2016 16:09:42 for ceptr by
+    <li class="footer">Generated on Sat Jan 23 2016 09:43:39 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

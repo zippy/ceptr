@@ -113,333 +113,323 @@ $(document).ready(function(){initNavTree('accumulator_8c_source.html','');});
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="receptor_8h.html">receptor.h</a>&quot;</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;sys/types.h&gt;</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;sys/stat.h&gt;</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<a class="code" href="structVMHost.html">VMHost</a> *G_vm = 0;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#define PATHS_FN &quot;paths&quot;</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#define SEM_FN &quot;sem&quot;</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#define __a_vm_state_fn(buf,dir) __a_vm_fn(buf,dir,&quot;state&quot;)</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#define __a_vmfn(buf,dir) __a_vm_fn(buf,dir,&quot;&quot;)</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keywordtype">void</span> __a_vm_fn(<span class="keywordtype">char</span> *buf,<span class="keywordtype">char</span> *dir,<span class="keywordtype">char</span> *suffix) {</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    sprintf(buf,<span class="stringliteral">&quot;%s/vmhost%s.x&quot;</span>,dir,suffix);</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;}</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keywordtype">void</span> __a_serializet(<a class="code" href="structT.html">T</a> *t,<span class="keywordtype">char</span> *name) {</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keywordtype">char</span> fn[1000];</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <a class="code" href="structH.html">H</a> h =<a class="code" href="mtree_8c.html#a0c5bd733621f48184a13a1202bd24fed">_m_new_from_t</a>(t);</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <a class="code" href="structS.html">S</a> *s = <a class="code" href="mtree_8c.html#a27481040e0d545565d203c0f37b30d79">_m_serialize</a>(h.m);</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    __a_vm_fn(fn,G_vm-&gt;dir,name);</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    writeFile(fn,s,s-&gt;total_size);</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    free(s);</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    _m_free(h);</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;}</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<a class="code" href="structT.html">T</a> *__a_unserializet(<span class="keywordtype">char</span> *dir_path,<span class="keywordtype">char</span> *name) {</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keywordtype">char</span> fn[1000];</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    __a_vm_fn(fn,dir_path,name);</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <a class="code" href="structS.html">S</a> *s;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    readFile(fn,&amp;s,0);</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <a class="code" href="structH.html">H</a> h = <a class="code" href="mtree_8c.html#a641f65780358ce0f40479d6ccaba1735">_m_unserialize</a>(s);</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    free(s);</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <a class="code" href="structT.html">T</a> *t = <a class="code" href="mtree_8c.html#ab0e6e5f78e7ec6f3c9165feca0eae093">_t_new_from_m</a>(h);</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    _m_free(h);</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordflow">return</span> t;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;}</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="group__accumulator.html#gaf3d0afe467ab198fc69ccaf7ee9fb5e9">   59</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__accumulator.html#gaf3d0afe467ab198fc69ccaf7ee9fb5e9">_a_boot</a>(<span class="keywordtype">char</span> *dir_path) {</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="comment">// check if the storage directory exists</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keyword">struct </span>stat st = {0};</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordflow">if</span> (stat(dir_path, &amp;st) == -1) {</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="comment">// if no directory we are firing up an initial instance, so</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="comment">// create directory</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        mkdir(dir_path,0700);</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="comment">// instantiate a VMHost object</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        G_vm = <a class="code" href="group__vmhost.html#gab6fbe5683628fb0d62a966316ced938d">_v_new</a>();</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="comment">// create the basic receptors that all VMHosts have</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <a class="code" href="group__vmhost.html#ga74a1f49de857467af1613bb0e71b0963">_v_instantiate_builtins</a>(G_vm);</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    }</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <span class="keywordtype">char</span> fn[1000];</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <span class="keywordtype">void</span> *buffer;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        <span class="comment">// unserialize the semtable base tree</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <a class="code" href="structSemTable.html">SemTable</a> *sem = _sem_new();</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        <a class="code" href="structT.html">T</a> *t = __a_unserializet(dir_path,SEM_FN);</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        sem-&gt;stores[0].definitions = t;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="comment">// restore definitions to the correct store slots</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <a class="code" href="structT.html">T</a> *paths = __a_unserializet(dir_path,PATHS_FN);</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="keywordtype">int</span> i = 0;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <span class="keywordtype">int</span> c = <a class="code" href="group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc">_t_children</a>(paths);</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="keywordflow">for</span>(i=1;i&lt;=c;i++) {</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            <a class="code" href="structT.html">T</a> *p = <a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(paths,i);</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            <span class="keywordflow">if</span> (semeq(RECEPTOR_PATH,<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(p))) {</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                <a class="code" href="structT.html">T</a> *x = <a class="code" href="group__tree.html#gaf019d190c9623de809d006e309a441af">_t_get</a>(t,(<span class="keywordtype">int</span> *)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(p));</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                sem-&gt;stores[i-1].definitions = x;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            }</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        }</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(paths);</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        sem-&gt;contexts = c+1;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        <span class="comment">// unserialize all of the vmhost&#39;s instantiated receptors and other instances</span></div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        __a_vmfn(fn,dir_path);</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        readFile(fn,&amp;buffer,0);</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        <a class="code" href="structReceptor.html">Receptor</a> *r = <a class="code" href="group__receptor.html#ga63e9fb219f66164df22ffb5356b218b2">_r_unserialize</a>(sem,buffer);</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        G_vm = __v_init(r,sem);</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        free(buffer);</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        <span class="comment">// unserialize other vmhost state data</span></div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        <a class="code" href="structS.html">S</a> *s;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        __a_vm_state_fn(fn,dir_path);</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        readFile(fn,&amp;s,0);</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        <a class="code" href="structH.html">H</a> h = <a class="code" href="mtree_8c.html#a641f65780358ce0f40479d6ccaba1735">_m_unserialize</a>(s);</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        free(s);</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        <a class="code" href="structH.html">H</a> hars; hars.m=h.m; hars.a = <a class="code" href="mtree_8c.html#a8f0130ea8f017ec2aed0c72a9be77a47">_m_child</a>(h,1); <span class="comment">// first child is ACTIVE_RECEPTORS</span></div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        <a class="code" href="structH.html">H</a> har; har.m=h.m;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        <span class="keywordtype">int</span> j = <a class="code" href="mtree_8c.html#a810511f76ba90cfb41460732ef11bcb0">_m_children</a>(hars);</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        <span class="keywordflow">for</span> (i=1;i&lt;=j;i++) {</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;            har.a = <a class="code" href="mtree_8c.html#a8f0130ea8f017ec2aed0c72a9be77a47">_m_child</a>(hars,i);</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;            <span class="keywordflow">if</span>(!semeq(<a class="code" href="mtree_8c.html#ab8786adc8759967b5ab4314e7827065b">_m_symbol</a>(har),RECEPTOR_XADDR)) raise_error(<span class="stringliteral">&quot;expecting RECEPTOR_XADDR!&quot;</span>);</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            <a class="code" href="group__vmhost.html#ga53694170e5452b8062ec405e6a9a3f60">_v_activate</a>(G_vm,*(<a class="code" href="structXaddr.html">Xaddr</a> *)<a class="code" href="mtree_8c.html#a0131231a4ed8941c12b7281e7a2bce4d">_m_surface</a>(har));</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        }</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        _m_free(h);</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    }</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    G_vm-&gt;dir = dir_path;</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <span class="comment">// _a_check_vm_host_version_on_the_compository();</span></div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    _v_start_vmhost(G_vm);</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;}</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="debug_8h.html">debug.h</a>&quot;</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<a class="code" href="structVMHost.html">VMHost</a> *G_vm = 0;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#define PATHS_FN &quot;paths&quot;</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#define SEM_FN &quot;sem&quot;</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#define __a_vm_state_fn(buf,dir) __a_vm_fn(buf,dir,&quot;state&quot;)</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#define __a_vmfn(buf,dir) __a_vm_fn(buf,dir,&quot;&quot;)</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keywordtype">void</span> __a_vm_fn(<span class="keywordtype">char</span> *buf,<span class="keywordtype">char</span> *dir,<span class="keywordtype">char</span> *suffix) {</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    sprintf(buf,<span class="stringliteral">&quot;%s/vmhost%s.x&quot;</span>,dir,suffix);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;}</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keywordtype">void</span> __a_serializet(<a class="code" href="structT.html">T</a> *t,<span class="keywordtype">char</span> *name) {</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keywordtype">char</span> fn[1000];</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <a class="code" href="structH.html">H</a> h =<a class="code" href="mtree_8c.html#a0c5bd733621f48184a13a1202bd24fed">_m_new_from_t</a>(t);</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <a class="code" href="structS.html">S</a> *s = <a class="code" href="mtree_8c.html#a27481040e0d545565d203c0f37b30d79">_m_serialize</a>(h.m);</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    __a_vm_fn(fn,G_vm-&gt;dir,name);</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    writeFile(fn,s,s-&gt;total_size);</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    free(s);</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    _m_free(h);</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;}</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<a class="code" href="structT.html">T</a> *__a_unserializet(<span class="keywordtype">char</span> *dir_path,<span class="keywordtype">char</span> *name) {</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keywordtype">char</span> fn[1000];</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    __a_vm_fn(fn,dir_path,name);</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <a class="code" href="structS.html">S</a> *s;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    readFile(fn,&amp;s,0);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <a class="code" href="structH.html">H</a> h = <a class="code" href="mtree_8c.html#a641f65780358ce0f40479d6ccaba1735">_m_unserialize</a>(s);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    free(s);</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <a class="code" href="structT.html">T</a> *t = <a class="code" href="mtree_8c.html#ab0e6e5f78e7ec6f3c9165feca0eae093">_t_new_from_m</a>(h);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    _m_free(h);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordflow">return</span> t;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;}</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="group__accumulator.html#gaf3d0afe467ab198fc69ccaf7ee9fb5e9">   60</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__accumulator.html#gaf3d0afe467ab198fc69ccaf7ee9fb5e9">_a_boot</a>(<span class="keywordtype">char</span> *dir_path) {</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="comment">// check if the storage directory exists</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keyword">struct </span>stat st = {0};</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordflow">if</span> (stat(dir_path, &amp;st) == -1) {</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="comment">// if no directory we are firing up an initial instance, so</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="comment">// create directory</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        mkdir(dir_path,0700);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="comment">// instantiate a VMHost object</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        G_vm = <a class="code" href="group__vmhost.html#gab6fbe5683628fb0d62a966316ced938d">_v_new</a>();</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="comment">// create the basic receptors that all VMHosts have</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <a class="code" href="group__vmhost.html#ga74a1f49de857467af1613bb0e71b0963">_v_instantiate_builtins</a>(G_vm);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    }</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <span class="keywordtype">char</span> fn[1000];</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        <span class="keywordtype">void</span> *buffer;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <span class="comment">// unserialize the semtable base tree</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        <a class="code" href="structSemTable.html">SemTable</a> *sem = _sem_new();</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <a class="code" href="structT.html">T</a> *t = __a_unserializet(dir_path,SEM_FN);</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        sem-&gt;stores[0].definitions = t;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="comment">// restore definitions to the correct store slots</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <a class="code" href="structT.html">T</a> *paths = __a_unserializet(dir_path,PATHS_FN);</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <span class="keywordtype">int</span> i = 0;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="keywordtype">int</span> c = <a class="code" href="group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc">_t_children</a>(paths);</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="keywordflow">for</span>(i=1;i&lt;=c;i++) {</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            <a class="code" href="structT.html">T</a> *p = <a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(paths,i);</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            <span class="keywordflow">if</span> (semeq(RECEPTOR_PATH,<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(p))) {</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                <a class="code" href="structT.html">T</a> *x = <a class="code" href="group__tree.html#gaf019d190c9623de809d006e309a441af">_t_get</a>(t,(<span class="keywordtype">int</span> *)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(p));</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                sem-&gt;stores[i-1].definitions = x;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            }</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        }</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(paths);</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        sem-&gt;contexts = c+1;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        <span class="comment">// unserialize all of the vmhost&#39;s instantiated receptors and other instances</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        __a_vmfn(fn,dir_path);</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        readFile(fn,&amp;buffer,0);</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        <a class="code" href="structReceptor.html">Receptor</a> *r = <a class="code" href="group__receptor.html#ga63e9fb219f66164df22ffb5356b218b2">_r_unserialize</a>(sem,buffer);</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        G_vm = __v_init(r,sem);</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        free(buffer);</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        <span class="comment">// unserialize other vmhost state data</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        <a class="code" href="structS.html">S</a> *s;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        __a_vm_state_fn(fn,dir_path);</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        readFile(fn,&amp;s,0);</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        <a class="code" href="structH.html">H</a> h = <a class="code" href="mtree_8c.html#a641f65780358ce0f40479d6ccaba1735">_m_unserialize</a>(s);</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        free(s);</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        <a class="code" href="structH.html">H</a> hars; hars.m=h.m; hars.a = <a class="code" href="mtree_8c.html#a8f0130ea8f017ec2aed0c72a9be77a47">_m_child</a>(h,1); <span class="comment">// first child is ACTIVE_RECEPTORS</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        <a class="code" href="structH.html">H</a> har; har.m=h.m;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        <span class="keywordtype">int</span> j = <a class="code" href="mtree_8c.html#a810511f76ba90cfb41460732ef11bcb0">_m_children</a>(hars);</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        <span class="keywordflow">for</span> (i=1;i&lt;=j;i++) {</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;            har.a = <a class="code" href="mtree_8c.html#a8f0130ea8f017ec2aed0c72a9be77a47">_m_child</a>(hars,i);</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            <span class="keywordflow">if</span>(!semeq(<a class="code" href="mtree_8c.html#ab8786adc8759967b5ab4314e7827065b">_m_symbol</a>(har),RECEPTOR_XADDR)) raise_error(<span class="stringliteral">&quot;expecting RECEPTOR_XADDR!&quot;</span>);</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;            <a class="code" href="group__vmhost.html#ga53694170e5452b8062ec405e6a9a3f60">_v_activate</a>(G_vm,*(<a class="code" href="structXaddr.html">Xaddr</a> *)<a class="code" href="mtree_8c.html#a0131231a4ed8941c12b7281e7a2bce4d">_m_surface</a>(har));</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        }</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        _m_free(h);</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    }</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    G_vm-&gt;dir = dir_path;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    <span class="comment">// _a_check_vm_host_version_on_the_compository();</span></div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    _v_start_vmhost(G_vm);</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;}</div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;</div>
-<div class="line"><a name="l00133"></a><span class="lineno"><a class="line" href="group__accumulator.html#gacd134fcef0a0eb8ff30060432bb2e485">  133</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__accumulator.html#gacd134fcef0a0eb8ff30060432bb2e485">_a_shut_down</a>() {</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    <span class="comment">// cleanly close down any processing in the VM_Host</span></div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    __r_kill(G_vm-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>);</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    _v_join_thread(&amp;G_vm-&gt;clock_thread);</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    _v_join_thread(&amp;G_vm-&gt;vm_thread);</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    <span class="keywordtype">char</span> fn[1000];</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    <span class="comment">// serialize the semtable</span></div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    __a_serializet(<a class="code" href="group__tree.html#ga81a9fea3df69847f0916eb4a84fe64d3">_t_root</a>(G_vm-&gt;<a class="code" href="structVMHost.html#a0718944e7f9d848d3b96f704ea0f0252">sem</a>-&gt;stores[0].definitions),SEM_FN);</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    <span class="keywordtype">int</span> i;</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    <a class="code" href="structT.html">T</a> *paths = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(RECEPTOR_PATHS);</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    <span class="keywordflow">for</span> (i=0;i&lt;G_vm-&gt;<a class="code" href="structVMHost.html#a0718944e7f9d848d3b96f704ea0f0252">sem</a>-&gt;contexts;i++) { <span class="comment">// we don&#39;t need the path of the root so start at 1</span></div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        <span class="keywordtype">int</span> *p = <a class="code" href="group__tree.html#gae4c9b743462f0a3808c9f02c3bf33da8">_t_get_path</a>(G_vm-&gt;<a class="code" href="structVMHost.html#a0718944e7f9d848d3b96f704ea0f0252">sem</a>-&gt;stores[i].definitions);</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;        <span class="keywordflow">if</span> (p) {</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;            _t_new(paths,RECEPTOR_PATH,p,<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>)*(<a class="code" href="group__tree.html#ga55270b512ed52ffe5a938a793fa5cd7f">_t_path_depth</a>(p)+1));</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;            free(p);</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        }</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;        <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;            <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(paths,STRUCTURE_ANYTHING); <span class="comment">// should be something like DELETED_CONTEXT</span></div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    }</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    __a_serializet(paths,PATHS_FN);</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(paths);</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    <span class="comment">// serialize the receptor part of the vmhost</span></div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    <span class="keywordtype">void</span> *surface;</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    <span class="keywordtype">size_t</span> length;</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    <a class="code" href="group__receptor.html#ga3e737841784555574a0d90ad2eff4cc4">_r_serialize</a>(G_vm-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,&amp;surface,&amp;length);</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <span class="comment">//    _r_unserialize(surface);</span></div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    __a_vmfn(fn,G_vm-&gt;dir);</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    writeFile(fn,surface,length);</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    free(surface);</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    <span class="comment">// serialize other parts of the vmhost</span></div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    <a class="code" href="structH.html">H</a> h = <a class="code" href="mtree_8c.html#adb19f3ed4e8aa551480218555052e153">_m_newr</a>(null_H,SYS_STATE);</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    <a class="code" href="structH.html">H</a> har = <a class="code" href="mtree_8c.html#adb19f3ed4e8aa551480218555052e153">_m_newr</a>(h,ACTIVE_RECEPTORS);</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    <span class="keywordflow">for</span> (i=0;i&lt;G_vm-&gt;active_receptor_count;i++) {</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;        _m_new(har,RECEPTOR_XADDR,&amp;G_vm-&gt;<a class="code" href="structVMHost.html#a95ef186e3477224ee0be117e7f9abbe3">active_receptors</a>[i].x,<span class="keyword">sizeof</span>(<a class="code" href="structXaddr.html">Xaddr</a>));</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    }</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <a class="code" href="structS.html">S</a> *s = <a class="code" href="mtree_8c.html#a27481040e0d545565d203c0f37b30d79">_m_serialize</a>(h.m);</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    __a_vm_state_fn(fn,G_vm-&gt;dir);</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    writeFile(fn,s,s-&gt;total_size);</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    free(s);</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    _m_free(h);</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    <span class="comment">// free the memory used by the SYS_RECEPTOR</span></div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    <a class="code" href="group__vmhost.html#ga44e0f6d62e38448bfa058f287cc463eb">_v_free</a>(G_vm);</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    G_vm = NULL;</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;}</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;<span class="comment">/*------------------------------------------------------------------------*/</span></div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;<a class="code" href="structinstance__elem.html">instance_elem</a> *__a_get_instance(<a class="code" href="structinstances__elem.html">Instances</a> *instances,<a class="code" href="structXaddr.html">Xaddr</a> x) {</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    <a class="code" href="structinstances__elem.html">instances_elem</a> *e = 0;</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    HASH_FIND_INT( *instances, &amp;x.symbol, e );</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    <span class="keywordflow">if</span> (e) {</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        <a class="code" href="structinstance__elem.html">instance_elem</a> *i = 0;</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;        <a class="code" href="structinstance__elem.html">Instance</a> *iP = &amp;e-&gt;<a class="code" href="structinstances__elem.html#a734b66c913756eb945351222cb601a87">instances</a>;</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        HASH_FIND_INT( *iP, &amp;x.addr, i );</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;        <span class="keywordflow">if</span> (i) {</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;            <span class="keywordflow">return</span> i;</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;        }</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    }</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;}</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;<a class="code" href="structT.html">T</a> *_a_get_instance(<a class="code" href="structinstances__elem.html">Instances</a> *instances,<a class="code" href="structXaddr.html">Xaddr</a> x) {</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    <a class="code" href="structinstance__elem.html">instance_elem</a> *i = __a_get_instance(instances,x);</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    <span class="keywordflow">return</span> i ? i-&gt;<a class="code" href="structinstance__elem.html#a7a42321cb232ac42535157a9e654127f">instance</a> : NULL;</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;}</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;<a class="code" href="structT.html">T</a> *_a_set_instance(<a class="code" href="structinstances__elem.html">Instances</a> *instances,<a class="code" href="structXaddr.html">Xaddr</a> x,<a class="code" href="structT.html">T</a> *t) {</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    <a class="code" href="structinstance__elem.html">instance_elem</a> *i = __a_get_instance(instances,x);</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    <span class="keywordflow">if</span> (i) {</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(i-&gt;<a class="code" href="structinstance__elem.html#a7a42321cb232ac42535157a9e654127f">instance</a>);</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        i-&gt;<a class="code" href="structinstance__elem.html#a7a42321cb232ac42535157a9e654127f">instance</a> = t;</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;        <span class="keywordflow">return</span> i-&gt;<a class="code" href="structinstance__elem.html#a7a42321cb232ac42535157a9e654127f">instance</a>;</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    }</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;}</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;<a class="code" href="structXaddr.html">Xaddr</a> _a_new_instance(<a class="code" href="structinstances__elem.html">Instances</a> *instances,<a class="code" href="structT.html">T</a> *t) {</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    <a class="code" href="structSemanticID.html">Symbol</a> s = <a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(t);</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    <a class="code" href="structinstances__elem.html">instances_elem</a> *e;</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    HASH_FIND_INT( *instances, &amp;s, e );</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    <span class="keywordflow">if</span> (!e) {</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;        e = malloc(<span class="keyword">sizeof</span>(<span class="keyword">struct</span> <a class="code" href="structinstances__elem.html">instances_elem</a>));</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;        e-&gt;<a class="code" href="structinstances__elem.html#a734b66c913756eb945351222cb601a87">instances</a> = NULL;</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;        e-&gt;<a class="code" href="structinstances__elem.html#aeeb84ef2b0bb4b596d161bc84f17937d">s</a> = s;</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;        e-&gt;<a class="code" href="structinstances__elem.html#a8de2d1f9439151657a718b405a16cae4">last_id</a> = 0;</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;        HASH_ADD_INT(*instances,s,e);</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    }</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    e-&gt;<a class="code" href="structinstances__elem.html#a8de2d1f9439151657a718b405a16cae4">last_id</a>++;</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    <a class="code" href="structinstance__elem.html">instance_elem</a> *i;</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    i = malloc(<span class="keyword">sizeof</span>(<span class="keyword">struct</span> <a class="code" href="structinstance__elem.html">instance_elem</a>));</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;    i-&gt;<a class="code" href="structinstance__elem.html#a7a42321cb232ac42535157a9e654127f">instance</a> = t;</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    i-&gt;<a class="code" href="structinstance__elem.html#a86b4388e64f55687d1c000af2eb7b0e4">addr</a> = e-&gt;<a class="code" href="structinstances__elem.html#a8de2d1f9439151657a718b405a16cae4">last_id</a>;</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    <a class="code" href="structinstance__elem.html">Instance</a> *iP = &amp;e-&gt;<a class="code" href="structinstances__elem.html#a734b66c913756eb945351222cb601a87">instances</a>;</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    HASH_ADD_INT(*iP,addr,i);</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    <a class="code" href="structXaddr.html">Xaddr</a> result;</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    result.symbol = s;</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    result.addr = e-&gt;<a class="code" href="structinstances__elem.html#a8de2d1f9439151657a718b405a16cae4">last_id</a>;</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;}</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;<span class="keywordtype">void</span> instanceFree(<a class="code" href="structinstance__elem.html">Instance</a> *i) {</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    <a class="code" href="structinstance__elem.html">instance_elem</a> *cur,*tmp;</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    HASH_ITER(hh, *i, cur, tmp) {</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;        <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>((*i)-&gt;instance);</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;        HASH_DEL(*i,cur);  <span class="comment">/* delete; cur advances to next */</span></div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;        free(cur);</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    }</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;}</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;<span class="keywordtype">void</span> _a_free_instances(<a class="code" href="structinstances__elem.html">Instances</a> *i) {</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    <a class="code" href="structinstances__elem.html">instances_elem</a> *cur,*tmp;</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;    HASH_ITER(hh, *i, cur, tmp) {</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        instanceFree(&amp;(*i)-&gt;instances);</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;        HASH_DEL(*i,cur);  <span class="comment">/* delete; cur advances to next */</span></div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;        free(cur);</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    }</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;}</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;<a class="code" href="structS.html">S</a> *__a_serialize_instances(<a class="code" href="structinstances__elem.html">Instances</a> *i) {</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;    <a class="code" href="structT.html">T</a> *t = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(PARAMS);</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    <a class="code" href="structinstances__elem.html">instances_elem</a> *cur,*tmp;</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;    HASH_ITER(hh, *i, cur, tmp) {</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        <a class="code" href="structT.html">T</a> *sym = _t_news(t,STRUCTURE_SYMBOL,cur-&gt;<a class="code" href="structinstances__elem.html#aeeb84ef2b0bb4b596d161bc84f17937d">s</a>);  <span class="comment">// just using this symbol to store the symbol type</span></div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;        <a class="code" href="structinstance__elem.html">Instance</a> *iP = &amp;cur-&gt;<a class="code" href="structinstances__elem.html#a734b66c913756eb945351222cb601a87">instances</a>;</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;        <a class="code" href="structinstance__elem.html">instance_elem</a> *curi,*tmpi;</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;        HASH_ITER(hh, *iP, curi, tmpi) {</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;            <a class="code" href="structT.html">T</a> *c;</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;            <span class="keywordflow">if</span> (is_receptor(cur-&gt;<a class="code" href="structinstances__elem.html#aeeb84ef2b0bb4b596d161bc84f17937d">s</a>)) {</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;                <span class="keywordtype">void</span> *surface;</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;                <span class="keywordtype">size_t</span> length;</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;                <a class="code" href="structReceptor.html">Receptor</a> *r = <a class="code" href="group__receptor.html#gac438809f0d3f3add97efd49729c9027f">__r_get_receptor</a>(curi-&gt;<a class="code" href="structinstance__elem.html#a7a42321cb232ac42535157a9e654127f">instance</a>);</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;                <a class="code" href="group__receptor.html#ga3e737841784555574a0d90ad2eff4cc4">_r_serialize</a>(r,&amp;surface,&amp;length);</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;                c = _t_new(0,SERIALIZED_RECEPTOR,surface,length);</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;                <span class="comment">//@todo create a version of _t_new that doesn&#39;t have to realloc the surface but can just use it</span></div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;                free(surface);</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;            }</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;            <span class="keywordflow">else</span> c = <a class="code" href="group__tree.html#ga7535eb2963c6cf5fc78cb14287581f92">_t_clone</a>(curi-&gt;<a class="code" href="structinstance__elem.html#a7a42321cb232ac42535157a9e654127f">instance</a>);</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;            <a class="code" href="group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c">_t_add</a>(sym,c);</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;        }</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    }</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;    <a class="code" href="structH.html">H</a> h = <a class="code" href="mtree_8c.html#a0c5bd733621f48184a13a1202bd24fed">_m_new_from_t</a>(t);</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    <a class="code" href="structS.html">S</a> *s = <a class="code" href="mtree_8c.html#a27481040e0d545565d203c0f37b30d79">_m_serialize</a>(h.m);</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;    _m_free(h);<a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    <span class="keywordflow">return</span> s;</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;}</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;</div>
+<div class="line"><a name="l00134"></a><span class="lineno"><a class="line" href="group__accumulator.html#gacd134fcef0a0eb8ff30060432bb2e485">  134</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__accumulator.html#gacd134fcef0a0eb8ff30060432bb2e485">_a_shut_down</a>() {</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <span class="comment">// cleanly close down any processing in the VM_Host</span></div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    __r_kill(G_vm-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>);</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    _v_join_thread(&amp;G_vm-&gt;clock_thread);</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    _v_join_thread(&amp;G_vm-&gt;vm_thread);</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    <span class="keywordtype">char</span> fn[1000];</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    <span class="comment">// serialize the semtable</span></div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    __a_serializet(<a class="code" href="group__tree.html#ga81a9fea3df69847f0916eb4a84fe64d3">_t_root</a>(G_vm-&gt;<a class="code" href="structVMHost.html#a0718944e7f9d848d3b96f704ea0f0252">sem</a>-&gt;stores[0].definitions),SEM_FN);</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    <span class="keywordtype">int</span> i;</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    <a class="code" href="structT.html">T</a> *paths = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(RECEPTOR_PATHS);</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    <span class="keywordflow">for</span> (i=0;i&lt;G_vm-&gt;<a class="code" href="structVMHost.html#a0718944e7f9d848d3b96f704ea0f0252">sem</a>-&gt;contexts;i++) { <span class="comment">// we don&#39;t need the path of the root so start at 1</span></div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;        <span class="keywordtype">int</span> *p = <a class="code" href="group__tree.html#gae4c9b743462f0a3808c9f02c3bf33da8">_t_get_path</a>(G_vm-&gt;<a class="code" href="structVMHost.html#a0718944e7f9d848d3b96f704ea0f0252">sem</a>-&gt;stores[i].definitions);</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        <span class="keywordflow">if</span> (p) {</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;            _t_new(paths,RECEPTOR_PATH,p,<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>)*(<a class="code" href="group__tree.html#ga55270b512ed52ffe5a938a793fa5cd7f">_t_path_depth</a>(p)+1));</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;            free(p);</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;        }</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;        <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;            <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(paths,STRUCTURE_ANYTHING); <span class="comment">// should be something like DELETED_CONTEXT</span></div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    }</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    __a_serializet(paths,PATHS_FN);</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(paths);</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    <span class="comment">// serialize the receptor part of the vmhost</span></div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    <span class="keywordtype">void</span> *surface;</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    <span class="keywordtype">size_t</span> length;</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <a class="code" href="group__receptor.html#ga3e737841784555574a0d90ad2eff4cc4">_r_serialize</a>(G_vm-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,&amp;surface,&amp;length);</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <span class="comment">//    _r_unserialize(surface);</span></div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    __a_vmfn(fn,G_vm-&gt;dir);</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    writeFile(fn,surface,length);</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    free(surface);</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    <span class="comment">// serialize other parts of the vmhost</span></div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    <a class="code" href="structH.html">H</a> h = <a class="code" href="mtree_8c.html#adb19f3ed4e8aa551480218555052e153">_m_newr</a>(null_H,SYS_STATE);</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    <a class="code" href="structH.html">H</a> har = <a class="code" href="mtree_8c.html#adb19f3ed4e8aa551480218555052e153">_m_newr</a>(h,ACTIVE_RECEPTORS);</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    <span class="keywordflow">for</span> (i=0;i&lt;G_vm-&gt;active_receptor_count;i++) {</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;        _m_new(har,RECEPTOR_XADDR,&amp;G_vm-&gt;<a class="code" href="structVMHost.html#a95ef186e3477224ee0be117e7f9abbe3">active_receptors</a>[i].x,<span class="keyword">sizeof</span>(<a class="code" href="structXaddr.html">Xaddr</a>));</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    }</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    <a class="code" href="structS.html">S</a> *s = <a class="code" href="mtree_8c.html#a27481040e0d545565d203c0f37b30d79">_m_serialize</a>(h.m);</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    __a_vm_state_fn(fn,G_vm-&gt;dir);</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    writeFile(fn,s,s-&gt;total_size);</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    free(s);</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    _m_free(h);</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    <span class="comment">// free the memory used by the SYS_RECEPTOR</span></div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    <a class="code" href="group__vmhost.html#ga44e0f6d62e38448bfa058f287cc463eb">_v_free</a>(G_vm);</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    G_vm = NULL;</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;}</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;<span class="comment">/*------------------------------------------------------------------------*/</span></div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;<a class="code" href="structT.html">T</a> *__a_find(<a class="code" href="structT.html">T</a> *t,<a class="code" href="structSemanticID.html">SemanticID</a> sym) {</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    <a class="code" href="structT.html">T</a> *p;</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    DO_KIDS(t,</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;            p =<a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(t,i);</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;            <span class="keywordflow">if</span> (semeq(*(<a class="code" href="structSemanticID.html">Symbol</a> *)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(p),sym)) <span class="keywordflow">return</span> p;</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;            );</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    <span class="keywordflow">return</span> NULL;</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;}</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;<a class="code" href="structT.html">T</a> *_a_get_instance(<a class="code" href="structT.html">Instances</a> *instances,<a class="code" href="structXaddr.html">Xaddr</a> x) {</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    <a class="code" href="structT.html">T</a> *t = *instances;</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    <span class="keywordflow">if</span> (!t) <span class="keywordflow">return</span> NULL;</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    t = __a_find(t,x.symbol);</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    <span class="keywordflow">if</span> (t) {</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(t,x.addr);</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    }</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    <span class="keywordflow">return</span> NULL;</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;}</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;<a class="code" href="structT.html">T</a> *_a_set_instance(<a class="code" href="structT.html">Instances</a> *instances,<a class="code" href="structXaddr.html">Xaddr</a> x,<a class="code" href="structT.html">T</a> *r) {</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    <span class="comment">//@todo sanity check on t&#39;s symbol type?</span></div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    <a class="code" href="structT.html">T</a> *t = _a_get_instance(instances,x);</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    <span class="keywordflow">if</span> (t) {</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;        <a class="code" href="group__tree.html#ga0dcacdfd022b2a04b8fb53eb25ee367e">_t_replace</a>(<a class="code" href="group__tree.html#ga18ca0b633cdd6b8f2d3d0f2598c4a933">_t_parent</a>(t),<a class="code" href="group__tree.html#gaa47f880fb18ec33c8f31c2aee78df797">_t_node_index</a>(t),r);</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;        <span class="keywordflow">return</span> r;</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    }</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    <span class="keywordflow">return</span> NULL;</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;}</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;<span class="keywordtype">void</span> _a_get_instances(<a class="code" href="structT.html">Instances</a> *instances,<a class="code" href="structSemanticID.html">Symbol</a> s,<a class="code" href="structT.html">T</a> *t) {</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;    <a class="code" href="structT.html">T</a> *x = *instances;</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    <span class="keywordflow">if</span> (!x) <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    x = __a_find(x,s);</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    <span class="keywordflow">if</span> (x)</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;        DO_KIDS(x,<a class="code" href="group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c">_t_add</a>(t,<a class="code" href="group__tree.html#ga7535eb2963c6cf5fc78cb14287581f92">_t_clone</a>(<a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(x,i))));</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;}</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;<a class="code" href="structXaddr.html">Xaddr</a> _a_new_instance(<a class="code" href="structT.html">Instances</a> *instances,<a class="code" href="structT.html">T</a> *t) {</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    <a class="code" href="structT.html">T</a> *x = *instances;</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    <span class="keywordflow">if</span> (!x) x = *instances = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(INSTANCES);</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    <a class="code" href="structSemanticID.html">Symbol</a> s = <a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(t);</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    <a class="code" href="structT.html">T</a> *si =  __a_find(x,s);</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;    <span class="keywordflow">if</span> (!si) si = _t_news(x,SYMBOL_INSTANCES,s);</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    <a class="code" href="group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c">_t_add</a>(si,t);</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    <a class="code" href="structXaddr.html">Xaddr</a> result;</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    result.symbol = s;</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    result.addr = <a class="code" href="group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc">_t_children</a>(si);</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;}</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;<span class="keywordtype">void</span> _a_free_instances(<a class="code" href="structT.html">Instances</a> *instances) {</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    <a class="code" href="structT.html">T</a> *x = *instances;</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    <span class="keywordflow">if</span> (x) {</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;        <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(x);</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;        *instances = NULL;</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    }</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;}</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;<a class="code" href="structS.html">S</a> *__a_serialize_instances(<a class="code" href="structT.html">Instances</a> *instances) {</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    <a class="code" href="structT.html">T</a> *x = *instances;</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    <a class="code" href="structT.html">T</a> *t = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(PARAMS);</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    <span class="keywordflow">if</span> (x) {</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;        <a class="code" href="structT.html">T</a> *p;</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;        <a class="code" href="structSemanticID.html">Symbol</a> s;</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        DO_KIDS(x,</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;                p =<a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(x,i);</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;                s = *(<a class="code" href="structSemanticID.html">Symbol</a> *)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(p);</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;                <a class="code" href="structT.html">T</a> *sym = _t_news(t,STRUCTURE_SYMBOL,s);  <span class="comment">// just using this symbol to store the symbol type</span></div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;                <a class="code" href="structT.html">T</a> *c;</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;                DO_KIDS(p,</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;                        c = <a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(p,i);</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;                        <span class="keywordflow">if</span> (is_receptor(s)) {</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;                            <span class="keywordtype">void</span> *surface;</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;                            <span class="keywordtype">size_t</span> length;</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;                            <a class="code" href="structReceptor.html">Receptor</a> *r = <a class="code" href="group__receptor.html#gac438809f0d3f3add97efd49729c9027f">__r_get_receptor</a>(c);</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;                            <a class="code" href="group__receptor.html#ga3e737841784555574a0d90ad2eff4cc4">_r_serialize</a>(r,&amp;surface,&amp;length);</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;                            c = _t_new(0,SERIALIZED_RECEPTOR,surface,length);</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;                            <span class="comment">//@todo create a version of _t_new that doesn&#39;t have to realloc the surface but can just use it</span></div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;                            free(surface);</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;                        }</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;                        <span class="keywordflow">else</span> c = <a class="code" href="group__tree.html#ga7535eb2963c6cf5fc78cb14287581f92">_t_clone</a>(c);</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;                        <a class="code" href="group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c">_t_add</a>(sym,c);</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;                        );</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;                );</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    }</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    <a class="code" href="structH.html">H</a> h = <a class="code" href="mtree_8c.html#a0c5bd733621f48184a13a1202bd24fed">_m_new_from_t</a>(t);</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;    <a class="code" href="structS.html">S</a> *s = <a class="code" href="mtree_8c.html#a27481040e0d545565d203c0f37b30d79">_m_serialize</a>(h.m);</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    _m_free(h);<a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    <span class="keywordflow">return</span> s;</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;}</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;<span class="comment">// the quick and dirty serialization builds a new tree</span></div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;<span class="comment">// which we will just serialize as an mtree.</span></div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;<span class="comment">// is is very inefficient @fixme</span></div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;<span class="keywordtype">void</span> _a_serialize_instances(<a class="code" href="structT.html">Instances</a> *i,<span class="keywordtype">char</span> *file) {</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;    <a class="code" href="structS.html">S</a> *s = __a_serialize_instances(i);</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;    FILE *ofp;</div>
 <div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;<span class="comment">// the quick and dirty serialization builds a new tree</span></div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;<span class="comment">// which we will just serialize as an mtree.</span></div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;<span class="comment">// is is very inefficient @fixme</span></div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;<span class="keywordtype">void</span> _a_serialize_instances(<a class="code" href="structinstances__elem.html">Instances</a> *i,<span class="keywordtype">char</span> *file) {</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    <a class="code" href="structS.html">S</a> *s = __a_serialize_instances(i);</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;    FILE *ofp;</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;    ofp = fopen(file, <span class="stringliteral">&quot;w&quot;</span>);</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;    <span class="keywordflow">if</span> (ofp == NULL) {</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;        raise_error(<span class="stringliteral">&quot;Can&#39;t open output file %s!\n&quot;</span>,file);</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;    }</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;        fwrite(s,1,s-&gt;total_size,ofp);</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;        fclose(ofp);</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;    }</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;    free(s);</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;}</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;<span class="keywordtype">void</span> __a_unserialize_instances(<a class="code" href="structSemTable.html">SemTable</a> *sem,<a class="code" href="structinstances__elem.html">Instances</a> *instances,<a class="code" href="structS.html">S</a> *s) {</div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;    <a class="code" href="structH.html">H</a> h = <a class="code" href="mtree_8c.html#a641f65780358ce0f40479d6ccaba1735">_m_unserialize</a>(s);</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;    <a class="code" href="structT.html">T</a> *t = <a class="code" href="mtree_8c.html#ab0e6e5f78e7ec6f3c9165feca0eae093">_t_new_from_m</a>(h);</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;    _m_free(h);</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;    <span class="keywordtype">int</span> j,c = <a class="code" href="group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc">_t_children</a>(t);</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;    <span class="keywordflow">for</span>(j=1;j&lt;=c;j++) {</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;        <a class="code" href="structT.html">T</a> *u = <a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(t,j);</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;        <a class="code" href="structSemanticID.html">SemanticID</a> s = *(<a class="code" href="structSemanticID.html">SemanticID</a> *)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(u);</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;        <span class="keywordtype">int</span> is_receptor = is_receptor(s);</div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;        <span class="keywordflow">while</span>(<a class="code" href="group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc">_t_children</a>(u)) {</div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;            <a class="code" href="structT.html">T</a> *i = <a class="code" href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a>(u,1);</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;            <span class="keywordflow">if</span> (is_receptor) {</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;                <a class="code" href="structReceptor.html">Receptor</a> *r = <a class="code" href="group__receptor.html#ga63e9fb219f66164df22ffb5356b218b2">_r_unserialize</a>(sem,<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(i));</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;                <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(i);</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;                <a class="code" href="group__tree.html#ga7fd137a24b6795e1fc25c50ba91a767f">_t_new_receptor</a>(0,s,r);</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;            }</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;            _a_new_instance(instances, i);</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;        }</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;    }</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;}</div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;<span class="keywordtype">void</span> _a_unserialize_instances(<a class="code" href="structSemTable.html">SemTable</a> *sem,<a class="code" href="structinstances__elem.html">Instances</a> *instances,<span class="keywordtype">char</span> *file) {</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;    FILE *ofp;</div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;</div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;    ofp = fopen(file, <span class="stringliteral">&quot;r&quot;</span>);</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;    <span class="keywordflow">if</span> (ofp == NULL) {</div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;        raise_error(<span class="stringliteral">&quot;Can&#39;t open input file %s!\n&quot;</span>,file);</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;    }</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;    <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;        Mmagic magic;</div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;        fread(&amp;magic, 1,<span class="keyword">sizeof</span>(magic), ofp);</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;        <span class="comment">// @todo check magic value</span></div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;        <span class="keywordtype">size_t</span> total_size;</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;        fread(&amp;magic, 1,<span class="keyword">sizeof</span>(magic), ofp);</div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;        <a class="code" href="structS.html">S</a> *s = malloc(total_size);</div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;        s-&gt;magic = magic;</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;        s-&gt;total_size = total_size;</div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;        <span class="keywordtype">size_t</span> read_size = total_size-<span class="keyword">sizeof</span>(Mmagic)-<span class="keyword">sizeof</span>(total_size);</div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;        fread(&amp;s-&gt;levels,1,read_size,ofp);</div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;        fclose(ofp);</div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;        __a_unserialize_instances(sem,instances,s);</div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;        free(s);</div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;    }</div>
-<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;}</div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;</div>
-<div class="ttc" id="structinstance__elem_html"><div class="ttname"><a href="structinstance__elem.html">instance_elem</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00158">ceptr_types.h:158</a></div></div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;    ofp = fopen(file, <span class="stringliteral">&quot;w&quot;</span>);</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    <span class="keywordflow">if</span> (ofp == NULL) {</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;        raise_error(<span class="stringliteral">&quot;Can&#39;t open output file %s!\n&quot;</span>,file);</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;    }</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;    <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;        fwrite(s,1,s-&gt;total_size,ofp);</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;        fclose(ofp);</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;    }</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    free(s);</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;}</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;<span class="keywordtype">void</span> __a_unserialize_instances(<a class="code" href="structSemTable.html">SemTable</a> *sem,<a class="code" href="structT.html">Instances</a> *instances,<a class="code" href="structS.html">S</a> *s) {</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;    <a class="code" href="structH.html">H</a> h = <a class="code" href="mtree_8c.html#a641f65780358ce0f40479d6ccaba1735">_m_unserialize</a>(s);</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    <a class="code" href="structT.html">T</a> *t = <a class="code" href="mtree_8c.html#ab0e6e5f78e7ec6f3c9165feca0eae093">_t_new_from_m</a>(h);</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;    _m_free(h);</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;    <span class="keywordtype">int</span> j,c = <a class="code" href="group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc">_t_children</a>(t);</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;    <span class="keywordflow">for</span>(j=1;j&lt;=c;j++) {</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;        <a class="code" href="structT.html">T</a> *u = <a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(t,j);</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;        <a class="code" href="structSemanticID.html">SemanticID</a> s = *(<a class="code" href="structSemanticID.html">SemanticID</a> *)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(u);</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;        <span class="keywordtype">int</span> is_receptor = is_receptor(s);</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;        <span class="keywordflow">while</span>(<a class="code" href="group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc">_t_children</a>(u)) {</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;            <a class="code" href="structT.html">T</a> *i = <a class="code" href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a>(u,1);</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;            <span class="keywordflow">if</span> (is_receptor) {</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;                <a class="code" href="structReceptor.html">Receptor</a> *r = <a class="code" href="group__receptor.html#ga63e9fb219f66164df22ffb5356b218b2">_r_unserialize</a>(sem,<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(i));</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;                <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(i);</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;                <a class="code" href="group__tree.html#ga7fd137a24b6795e1fc25c50ba91a767f">_t_new_receptor</a>(0,s,r);</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;            }</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;            _a_new_instance(instances, i);</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;        }</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;    }</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;}</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;<span class="keywordtype">void</span> _a_unserialize_instances(<a class="code" href="structSemTable.html">SemTable</a> *sem,<a class="code" href="structT.html">Instances</a> *instances,<span class="keywordtype">char</span> *file) {</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;    FILE *ofp;</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;    ofp = fopen(file, <span class="stringliteral">&quot;r&quot;</span>);</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;    <span class="keywordflow">if</span> (ofp == NULL) {</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;        raise_error(<span class="stringliteral">&quot;Can&#39;t open input file %s!\n&quot;</span>,file);</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;    }</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;    <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;        Mmagic magic;</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;        fread(&amp;magic, 1,<span class="keyword">sizeof</span>(magic), ofp);</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;        <span class="comment">// @todo check magic value</span></div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;        <span class="keywordtype">size_t</span> total_size;</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;        fread(&amp;magic, 1,<span class="keyword">sizeof</span>(magic), ofp);</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;        <a class="code" href="structS.html">S</a> *s = malloc(total_size);</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;        s-&gt;magic = magic;</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;        s-&gt;total_size = total_size;</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;        <span class="keywordtype">size_t</span> read_size = total_size-<span class="keyword">sizeof</span>(Mmagic)-<span class="keyword">sizeof</span>(total_size);</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;        fread(&amp;s-&gt;levels,1,read_size,ofp);</div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;        fclose(ofp);</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;        __a_unserialize_instances(sem,instances,s);</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;        free(s);</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;    }</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;}</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;</div>
 <div class="ttc" id="group__tree_html_ga25dd0f385044ffbcc7c215ea80fa00b4"><div class="ttname"><a href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a></div><div class="ttdeci">T * _t_new_root(Symbol symbol)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00137">tree.c:137</a></div></div>
 <div class="ttc" id="structT_html"><div class="ttname"><a href="structT.html">T</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00114">ceptr_types.h:114</a></div></div>
 <div class="ttc" id="group__receptor_html_ga3e737841784555574a0d90ad2eff4cc4"><div class="ttname"><a href="group__receptor.html#ga3e737841784555574a0d90ad2eff4cc4">_r_serialize</a></div><div class="ttdeci">void _r_serialize(Receptor *r, void **surfaceP, size_t *lengthP)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00386">receptor.c:386</a></div></div>
@@ -447,25 +437,23 @@ $(document).ready(function(){initNavTree('accumulator_8c_source.html','');});
 <div class="ttc" id="group__tree_html_gaf019d190c9623de809d006e309a441af"><div class="ttname"><a href="group__tree.html#gaf019d190c9623de809d006e309a441af">_t_get</a></div><div class="ttdeci">T * _t_get(T *t, int *p)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l01196">tree.c:1196</a></div></div>
 <div class="ttc" id="mtree_8c_html_ab8786adc8759967b5ab4314e7827065b"><div class="ttname"><a href="mtree_8c.html#ab8786adc8759967b5ab4314e7827065b">_m_symbol</a></div><div class="ttdeci">Symbol _m_symbol(H h)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00448">mtree.c:448</a></div></div>
 <div class="ttc" id="mtree_8c_html_a0131231a4ed8941c12b7281e7a2bce4d"><div class="ttname"><a href="mtree_8c.html#a0131231a4ed8941c12b7281e7a2bce4d">_m_surface</a></div><div class="ttdeci">void * _m_surface(H h)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00352">mtree.c:352</a></div></div>
+<div class="ttc" id="debug_8h_html"><div class="ttname"><a href="debug_8h.html">debug.h</a></div></div>
 <div class="ttc" id="group__tree_html_ga403644d86c835ceae71dc7af0356900f"><div class="ttname"><a href="group__tree.html#ga403644d86c835ceae71dc7af0356900f">_t_detach_by_idx</a></div><div class="ttdeci">T * _t_detach_by_idx(T *t, int i)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00255">tree.c:255</a></div></div>
 <div class="ttc" id="group__tree_html_ga55270b512ed52ffe5a938a793fa5cd7f"><div class="ttname"><a href="group__tree.html#ga55270b512ed52ffe5a938a793fa5cd7f">_t_path_depth</a></div><div class="ttdeci">int _t_path_depth(int *p)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l01120">tree.c:1120</a></div></div>
+<div class="ttc" id="group__tree_html_gaa47f880fb18ec33c8f31c2aee78df797"><div class="ttname"><a href="group__tree.html#gaa47f880fb18ec33c8f31c2aee78df797">_t_node_index</a></div><div class="ttdeci">int _t_node_index(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l01042">tree.c:1042</a></div></div>
 <div class="ttc" id="mtree_8c_html_a27481040e0d545565d203c0f37b30d79"><div class="ttname"><a href="mtree_8c.html#a27481040e0d545565d203c0f37b30d79">_m_serialize</a></div><div class="ttdeci">S * _m_serialize(M *m)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00645">mtree.c:645</a></div></div>
 <div class="ttc" id="semtrex_8h_html"><div class="ttname"><a href="semtrex_8h.html">semtrex.h</a></div><div class="ttdoc">Semantic tree regular expression header file. </div></div>
-<div class="ttc" id="structinstances__elem_html_a734b66c913756eb945351222cb601a87"><div class="ttname"><a href="structinstances__elem.html#a734b66c913756eb945351222cb601a87">instances_elem::instances</a></div><div class="ttdeci">Instance instances</div><div class="ttdoc">instances store </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00170">ceptr_types.h:170</a></div></div>
 <div class="ttc" id="group__tree_html_ga7fd137a24b6795e1fc25c50ba91a767f"><div class="ttname"><a href="group__tree.html#ga7fd137a24b6795e1fc25c50ba91a767f">_t_new_receptor</a></div><div class="ttdeci">T * _t_new_receptor(T *parent, Symbol symbol, Receptor *r)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00181">tree.c:181</a></div></div>
-<div class="ttc" id="structinstance__elem_html_a7a42321cb232ac42535157a9e654127f"><div class="ttname"><a href="structinstance__elem.html#a7a42321cb232ac42535157a9e654127f">instance_elem::instance</a></div><div class="ttdeci">T * instance</div><div class="ttdoc">the stored instance </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00160">ceptr_types.h:160</a></div></div>
 <div class="ttc" id="group__tree_html_gae4c9b743462f0a3808c9f02c3bf33da8"><div class="ttname"><a href="group__tree.html#gae4c9b743462f0a3808c9f02c3bf33da8">_t_get_path</a></div><div class="ttdeci">int * _t_get_path(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l01139">tree.c:1139</a></div></div>
 <div class="ttc" id="group__vmhost_html_ga74a1f49de857467af1613bb0e71b0963"><div class="ttname"><a href="group__vmhost.html#ga74a1f49de857467af1613bb0e71b0963">_v_instantiate_builtins</a></div><div class="ttdeci">void _v_instantiate_builtins(VMHost *v)</div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8c_source.html#l00322">vmhost.c:322</a></div></div>
 <div class="ttc" id="structS_html"><div class="ttname"><a href="structS.html">S</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00068">ceptr_types.h:68</a></div></div>
 <div class="ttc" id="group__tree_html_ga7535eb2963c6cf5fc78cb14287581f92"><div class="ttname"><a href="group__tree.html#ga7535eb2963c6cf5fc78cb14287581f92">_t_clone</a></div><div class="ttdeci">T * _t_clone(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00566">tree.c:566</a></div></div>
 <div class="ttc" id="group__tree_html_ga3e2009f5a82889263d560d2c1479606a"><div class="ttname"><a href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a></div><div class="ttdeci">T * _t_newr(T *parent, Symbol symbol)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00148">tree.c:148</a></div></div>
-<div class="ttc" id="structinstance__elem_html_a86b4388e64f55687d1c000af2eb7b0e4"><div class="ttname"><a href="structinstance__elem.html#a86b4388e64f55687d1c000af2eb7b0e4">instance_elem::addr</a></div><div class="ttdeci">int addr</div><div class="ttdoc">key to this instance </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00159">ceptr_types.h:159</a></div></div>
 <div class="ttc" id="group__tree_html_ga81a9fea3df69847f0916eb4a84fe64d3"><div class="ttname"><a href="group__tree.html#ga81a9fea3df69847f0916eb4a84fe64d3">_t_root</a></div><div class="ttdeci">T * _t_root(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l01030">tree.c:1030</a></div></div>
 <div class="ttc" id="group__tree_html_ga946600fb570f0cc913450905f6189d49"><div class="ttname"><a href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a></div><div class="ttdeci">Symbol _t_symbol(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00986">tree.c:986</a></div></div>
 <div class="ttc" id="group__tree_html_ga07dd808fabd8a722b417f2f5e5ca132b"><div class="ttname"><a href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a></div><div class="ttdeci">T * _t_child(T *t, int i)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l01009">tree.c:1009</a></div></div>
-<div class="ttc" id="structinstances__elem_html_a8de2d1f9439151657a718b405a16cae4"><div class="ttname"><a href="structinstances__elem.html#a8de2d1f9439151657a718b405a16cae4">instances_elem::last_id</a></div><div class="ttdeci">int last_id</div><div class="ttdoc">the last allocated id for instances </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00171">ceptr_types.h:171</a></div></div>
 <div class="ttc" id="group__receptor_html_gac438809f0d3f3add97efd49729c9027f"><div class="ttname"><a href="group__receptor.html#gac438809f0d3f3add97efd49729c9027f">__r_get_receptor</a></div><div class="ttdeci">Receptor * __r_get_receptor(T *installed_receptor)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00849">receptor.c:849</a></div></div>
-<div class="ttc" id="group__accumulator_html_gacd134fcef0a0eb8ff30060432bb2e485"><div class="ttname"><a href="group__accumulator.html#gacd134fcef0a0eb8ff30060432bb2e485">_a_shut_down</a></div><div class="ttdeci">void _a_shut_down()</div><div class="ttdef"><b>Definition:</b> <a href="accumulator_8c_source.html#l00133">accumulator.c:133</a></div></div>
+<div class="ttc" id="group__accumulator_html_gacd134fcef0a0eb8ff30060432bb2e485"><div class="ttname"><a href="group__accumulator.html#gacd134fcef0a0eb8ff30060432bb2e485">_a_shut_down</a></div><div class="ttdeci">void _a_shut_down()</div><div class="ttdef"><b>Definition:</b> <a href="accumulator_8c_source.html#l00134">accumulator.c:134</a></div></div>
 <div class="ttc" id="group__vmhost_html_ga44e0f6d62e38448bfa058f287cc463eb"><div class="ttname"><a href="group__vmhost.html#ga44e0f6d62e38448bfa058f287cc463eb">_v_free</a></div><div class="ttdeci">void _v_free(VMHost *v)</div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8c_source.html#l00069">vmhost.c:69</a></div></div>
 <div class="ttc" id="receptor_8h_html"><div class="ttname"><a href="receptor_8h.html">receptor.h</a></div><div class="ttdoc">receptor implementation header file </div></div>
 <div class="ttc" id="group__vmhost_html_gab6fbe5683628fb0d62a966316ced938d"><div class="ttname"><a href="group__vmhost.html#gab6fbe5683628fb0d62a966316ced938d">_v_new</a></div><div class="ttdeci">VMHost * _v_new()</div><div class="ttdoc">Creates a new virtual machine host. </div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8c_source.html#l00040">vmhost.c:40</a></div></div>
@@ -474,23 +462,23 @@ $(document).ready(function(){initNavTree('accumulator_8c_source.html','');});
 <div class="ttc" id="group__vmhost_html_ga53694170e5452b8062ec405e6a9a3f60"><div class="ttname"><a href="group__vmhost.html#ga53694170e5452b8062ec405e6a9a3f60">_v_activate</a></div><div class="ttdeci">void _v_activate(VMHost *v, Xaddr x)</div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8c_source.html#l00170">vmhost.c:170</a></div></div>
 <div class="ttc" id="structVMHost_html_a0718944e7f9d848d3b96f704ea0f0252"><div class="ttname"><a href="structVMHost.html#a0718944e7f9d848d3b96f704ea0f0252">VMHost::sem</a></div><div class="ttdeci">SemTable * sem</div><div class="ttdoc">Semantic Table for definitions on this host. </div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8h_source.html#l00044">vmhost.h:44</a></div></div>
 <div class="ttc" id="group__receptor_html_ga63e9fb219f66164df22ffb5356b218b2"><div class="ttname"><a href="group__receptor.html#ga63e9fb219f66164df22ffb5356b218b2">_r_unserialize</a></div><div class="ttdeci">Receptor * _r_unserialize(SemTable *sem, void *surface)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00413">receptor.c:413</a></div></div>
-<div class="ttc" id="structSemTable_html"><div class="ttname"><a href="structSemTable.html">SemTable</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00233">ceptr_types.h:233</a></div></div>
+<div class="ttc" id="group__tree_html_ga18ca0b633cdd6b8f2d3d0f2598c4a933"><div class="ttname"><a href="group__tree.html#ga18ca0b633cdd6b8f2d3d0f2598c4a933">_t_parent</a></div><div class="ttdeci">T * _t_parent(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l01020">tree.c:1020</a></div></div>
+<div class="ttc" id="structSemTable_html"><div class="ttname"><a href="structSemTable.html">SemTable</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00215">ceptr_types.h:215</a></div></div>
 <div class="ttc" id="mtree_8c_html_ab0e6e5f78e7ec6f3c9165feca0eae093"><div class="ttname"><a href="mtree_8c.html#ab0e6e5f78e7ec6f3c9165feca0eae093">_t_new_from_m</a></div><div class="ttdeci">T * _t_new_from_m(H h)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00250">mtree.c:250</a></div></div>
 <div class="ttc" id="structVMHost_html"><div class="ttname"><a href="structVMHost.html">VMHost</a></div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8h_source.html#l00040">vmhost.h:40</a></div></div>
 <div class="ttc" id="mtree_8c_html_a0c5bd733621f48184a13a1202bd24fed"><div class="ttname"><a href="mtree_8c.html#a0c5bd733621f48184a13a1202bd24fed">_m_new_from_t</a></div><div class="ttdeci">H _m_new_from_t(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00206">mtree.c:206</a></div></div>
-<div class="ttc" id="group__accumulator_html_gaf3d0afe467ab198fc69ccaf7ee9fb5e9"><div class="ttname"><a href="group__accumulator.html#gaf3d0afe467ab198fc69ccaf7ee9fb5e9">_a_boot</a></div><div class="ttdeci">void _a_boot(char *dir_path)</div><div class="ttdef"><b>Definition:</b> <a href="accumulator_8c_source.html#l00059">accumulator.c:59</a></div></div>
+<div class="ttc" id="group__accumulator_html_gaf3d0afe467ab198fc69ccaf7ee9fb5e9"><div class="ttname"><a href="group__accumulator.html#gaf3d0afe467ab198fc69ccaf7ee9fb5e9">_a_boot</a></div><div class="ttdeci">void _a_boot(char *dir_path)</div><div class="ttdef"><b>Definition:</b> <a href="accumulator_8c_source.html#l00060">accumulator.c:60</a></div></div>
 <div class="ttc" id="structVMHost_html_a95ef186e3477224ee0be117e7f9abbe3"><div class="ttname"><a href="structVMHost.html#a95ef186e3477224ee0be117e7f9abbe3">VMHost::active_receptors</a></div><div class="ttdeci">ActiveReceptor active_receptors[MAX_ACTIVE_RECEPTORS]</div><div class="ttdoc">pointer to array that holds all currently active receptors </div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8h_source.html#l00045">vmhost.h:45</a></div></div>
-<div class="ttc" id="structReceptor_html"><div class="ttname"><a href="structReceptor.html">Receptor</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00247">ceptr_types.h:247</a></div></div>
-<div class="ttc" id="structXaddr_html"><div class="ttname"><a href="structXaddr.html">Xaddr</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00275">ceptr_types.h:275</a></div></div>
+<div class="ttc" id="structReceptor_html"><div class="ttname"><a href="structReceptor.html">Receptor</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00229">ceptr_types.h:229</a></div></div>
+<div class="ttc" id="structXaddr_html"><div class="ttname"><a href="structXaddr.html">Xaddr</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00257">ceptr_types.h:257</a></div></div>
 <div class="ttc" id="structH_html"><div class="ttname"><a href="structH.html">H</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00083">ceptr_types.h:83</a></div></div>
-<div class="ttc" id="structinstances__elem_html_aeeb84ef2b0bb4b596d161bc84f17937d"><div class="ttname"><a href="structinstances__elem.html#aeeb84ef2b0bb4b596d161bc84f17937d">instances_elem::s</a></div><div class="ttdeci">Symbol s</div><div class="ttdoc">key to store of this symbol type </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00169">ceptr_types.h:169</a></div></div>
 <div class="ttc" id="structVMHost_html_a218d2e91e129dee7c71e1b06ff533a6e"><div class="ttname"><a href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">VMHost::r</a></div><div class="ttdeci">Receptor * r</div><div class="ttdoc">Receptor data for this vm host. </div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8h_source.html#l00043">vmhost.h:43</a></div></div>
 <div class="ttc" id="mtree_8c_html_a810511f76ba90cfb41460732ef11bcb0"><div class="ttname"><a href="mtree_8c.html#a810511f76ba90cfb41460732ef11bcb0">_m_children</a></div><div class="ttdeci">int _m_children(H h)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00315">mtree.c:315</a></div></div>
 <div class="ttc" id="mtree_8h_html"><div class="ttname"><a href="mtree_8h.html">mtree.h</a></div><div class="ttdoc">semantic tree matrix header file `` </div></div>
-<div class="ttc" id="structinstances__elem_html"><div class="ttname"><a href="structinstances__elem.html">instances_elem</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00168">ceptr_types.h:168</a></div></div>
 <div class="ttc" id="group__tree_html_ga3b7a6499fe49f8e6a54166d583b08d5c"><div class="ttname"><a href="group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c">_t_add</a></div><div class="ttdeci">void _t_add(T *t, T *c)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00238">tree.c:238</a></div></div>
 <div class="ttc" id="group__tree_html_ga4b1df42f7a8edbe3a6192d64ab027ecc"><div class="ttname"><a href="group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc">_t_children</a></div><div class="ttdeci">int _t_children(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00963">tree.c:963</a></div></div>
 <div class="ttc" id="accumulator_8h_html"><div class="ttname"><a href="accumulator_8h.html">accumulator.h</a></div><div class="ttdoc">header file for the accumulator </div></div>
+<div class="ttc" id="group__tree_html_ga0dcacdfd022b2a04b8fb53eb25ee367e"><div class="ttname"><a href="group__tree.html#ga0dcacdfd022b2a04b8fb53eb25ee367e">_t_replace</a></div><div class="ttdeci">void _t_replace(T *t, int i, T *r)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00349">tree.c:349</a></div></div>
 <div class="ttc" id="group__tree_html_ga31e55cdc031e5f12523b998e89080db6"><div class="ttname"><a href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a></div><div class="ttdeci">void _t_free(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00503">tree.c:503</a></div></div>
 <div class="ttc" id="structSemanticID_html"><div class="ttname"><a href="structSemanticID.html">SemanticID</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00022">ceptr_types.h:22</a></div></div>
 <div class="ttc" id="mtree_8c_html_adb19f3ed4e8aa551480218555052e153"><div class="ttname"><a href="mtree_8c.html#adb19f3ed4e8aa551480218555052e153">_m_newr</a></div><div class="ttdeci">H _m_newr(H parent, Symbol s)</div><div class="ttdef"><b>Definition:</b> <a href="mtree_8c_source.html#l00145">mtree.c:145</a></div></div>
@@ -500,7 +488,7 @@ $(document).ready(function(){initNavTree('accumulator_8c_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="accumulator_8c.html">accumulator.c</a></li>
-    <li class="footer">Generated on Thu Jan 21 2016 16:09:42 for ceptr by
+    <li class="footer">Generated on Sat Jan 23 2016 09:43:39 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

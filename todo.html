@@ -125,7 +125,7 @@ $(document).ready(function(){initNavTree('todo.html','');});
 <p>check the structure type to make sure it's compatible as a string (i.e. it's null terminated) </p>
 <p>other integrity checks, i.e. length etc? </p>
 <p>what should this really return? </p>
-<p>the value returned from the loop will be what??(what's in x) </p>
+<p>the value returned from the iteration will be what??(what's in x) </p>
 <p>what should this really return? </p>
 <p>this would probably be faster with just one total realloc for all children </p>
 <p>what happens if it has more than one child! validity check? </p>
@@ -133,7 +133,7 @@ $(document).ready(function(){initNavTree('todo.html','');});
 <p>check the structure type to make sure it's compatible as a string (i.e. it's null terminated) </p>
 <p>other integrity checks, i.e. length etc? </p>
 <p>what should this really return? </p>
-<p>the value returned from the loop will be what??(what's in x) </p>
+<p>the value returned from the iteration will be what??(what's in x) </p>
 <p class="enddd">what should this really return?  </p>
 </dd>
 <dt><a class="anchor" id="_todo000029"></a>Global <a class="el" href="group__receptor.html#ga893186e8d759e9aa1f14d932900e8046">__r_make_signal</a>  (<a class="el" href="structReceptorAddress.html">ReceptorAddress</a> from, <a class="el" href="structReceptorAddress.html">ReceptorAddress</a> to, Aspect aspect, Symbol carrier, <a class="el" href="structT.html">T</a> *signal_contents, <a class="el" href="structUUIDt.html">UUIDt</a> *in_response_to, <a class="el" href="structT.html">T</a> *until)</dt>
@@ -142,8 +142,6 @@ $(document).ready(function(){initNavTree('todo.html','');});
 <dd>Handle the case where the surface of the node to be morphed is itself a tree  </dd>
 <dt><a class="anchor" id="_todo000041"></a>Global <a class="el" href="group__tree.html#gaccea340904db1ac6db2d34335554a5a4">__t_serialize</a>  (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structT.html">T</a> *t, void **bufferP, size_t offset, size_t current_size, int compact)</dt>
 <dd>compact is really a shorthand for whether this is a fixed size tree or not this should actually be determined on the fly by looking at the structure types.  </dd>
-<dt><a class="anchor" id="_todo000044"></a>Global <a class="el" href="group__vmhost.html#ga861469ce8640d16306fb6bdbb6e43f54">__v_get_receptor_xaddr</a>  (Instances *instances, <a class="el" href="structReceptor.html">Receptor</a> *r)</dt>
-<dd>this should probably be implemented in a scape but for now  </dd>
 <dt><a class="anchor" id="_todo000005"></a>Global <a class="el" href="group__def.html#ga15d66273ad66f17580a90a30c90b8f07">_d_build_def_semtrex</a>  (<a class="el" href="structSemTable.html">SemTable</a> *sem, Symbol s, <a class="el" href="structT.html">T</a> *parent)</dt>
 <dd>currently this won't detect an incorrect strcture with extra children. This is because we don't haven't yet implemented the equivalent of "$" for semtrex. </dd>
 <dt><a class="anchor" id="_todo000004"></a>Global <a class="el" href="group__def.html#gaee8a21fdd29944bf44bb03457511515d">_d_define_process</a>  (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structT.html">T</a> *code, char *name, char *intention, <a class="el" href="structT.html">T</a> *signature, Context c)</dt>
@@ -186,6 +184,8 @@ $(document).ready(function(){initNavTree('todo.html','');});
 </dd>
 <dt><a class="anchor" id="_todo000039"></a>Global <a class="el" href="group__tree.html#ga57e9b6efeca702757896ce2ca5a720af">_t_next_sibling</a>  (<a class="el" href="structT.html">T</a> *t)</dt>
 <dd>improve algorithm as this is very expensive if called all the time.  </dd>
+<dt><a class="anchor" id="_todo000044"></a>Global <a class="el" href="group__vmhost.html#ga7c2d4696c7ed325684c45f113ce0c2b2">_v_deliver_signals</a>  (<a class="el" href="structVMHost.html">VMHost</a> *v, <a class="el" href="structReceptor.html">Receptor</a> *sender)</dt>
+<dd>this should probably be implemented in a scape but for now  </dd>
 <dt><a class="anchor" id="_todo000043"></a>Global <a class="el" href="group__vmhost.html#ga1af12cca486bb811908a204d9cbd19f8">_v_install_r</a>  (<a class="el" href="structVMHost.html">VMHost</a> *v, <a class="el" href="structXaddr.html">Xaddr</a> package, <a class="el" href="structT.html">T</a> *bindings, char *label)</dt>
 <dd>expand the manifest to allow optional binding, etc, using semtrex to do the matching instead of assuming positional matching  </dd>
 <dt><a class="anchor" id="_todo000042"></a>Global <a class="el" href="group__vmhost.html#ga77978d4eb40c4812d4b9804dfaa31fcf">_v_load_receptor_package</a>  (<a class="el" href="structVMHost.html">VMHost</a> *v, <a class="el" href="structT.html">T</a> *p)</dt>
@@ -208,7 +208,7 @@ $(document).ready(function(){initNavTree('todo.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Jan 21 2016 16:09:42 for ceptr by
+    <li class="footer">Generated on Sat Jan 23 2016 09:43:39 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
