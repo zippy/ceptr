@@ -62,7 +62,7 @@ The tests also produce a bunch semantic trees dumped out to json for visualizati
 
 ## License
 
-Copyright (C) 2013-2015, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al.)
+Copyright (C) 2013-2016, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al.)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the license provided in the LICENSE file (GPLv3).
