@@ -1,8 +1,18 @@
+function addParents(tree,parent) {
+    tree.parent = parent;
+    if (tree.children) {
+        tree.children.forEach(function(child){
+            addParents(child,tree);
+        });
+    }
+}
+
 function loadTree(file_name,completedFN) {
     var fn = file_name+".json";
     var tree;
     $.get(fn, {},function(data,status) {
         console.log("loading:"+fn);
+        addParents(data);
         completedFN(data);
     }).fail(function(x) {
         console.log("failed to load:"+fn);
@@ -141,7 +151,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         },
         // insert a full semantic tree at the current cursor position
         insertTree: function(tree) {
-            _insertTree.call(this,tree,this.elem,undefined);
+            _insertTree.call(this,tree,this.elem);
         }
     };
 
@@ -163,14 +173,14 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
         }
     }
 
-    function _insertTree(tree,parent,parent_sem) {
+    function _insertTree(tree,elem) {
         var me = this;
-        var s = $.create('sem',{inside:parent});
-        _setupSem.call(this,tree.sem,s,true,parent_sem);
+        var s = $.create('sem',{inside:elem});
+        _setupSem.call(this,tree.sem,s,true,tree.parent ? tree.parent.sem : undefined);
 
         if (tree.children) {
             tree.children.forEach(function(child){
-                _insertTree.call(me,child,s,tree.sem);
+                _insertTree.call(me,child,s);
             });
         }
         if (tree.surface) {
@@ -239,7 +249,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
                     }
                     else {structure_type = "complex"};
                 });
-                if (structure_type == "fixed") symbols = s;
+                if (structure_type === "fixed") symbols = s;
             }
             else {
                 structure_type = "complex";
@@ -459,7 +469,7 @@ var JQ = $;  //jquery if needed for anything complicated, trying to not have dep
     _.getStructSymbols = getStructSymbols;
 
     function Tnew(parent,symbol,surface) {
-        var n = {sem:symbol};
+        var n = {sem:symbol,parent:parent};
         if (surface) n.surface = surface;
         if (!parent.children) {
             parent.children = [n];

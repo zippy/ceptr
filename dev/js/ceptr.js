@@ -26,10 +26,42 @@ function t_get(tree,path) {
     return _t_get(tree,p);
 }
 
-// given a string path get the element out of the tree
+// given an array path get the element out of the tree
 function _t_get(tree,p) {
     while(p.length > 0) {tree = tree.children[p[0]-1];p.shift();}
     return tree;
+}
+
+// return an array path to the given node
+// recursively searches back up the tree storing the path values as it goes
+function _t_get_path(node,path) {
+    if (!node.parent) {
+        if (!path) return [];
+        return path;
+    }
+    else {
+        var i,c = node.parent.children.length;
+        for (i=0;i<c;i++) {
+            if (node.parent.children[i] == node) {
+                if (path) path.unshift(i+1);
+                else path = [i+1];
+                return _t_get_path(node.parent,path);
+            }
+        }
+        console.log("failed to find node in parent's children");
+    }
+}
+
+// return a string path to the given node
+function t_get_path(node) {
+    var p = _t_get_path(node);
+    return "/"+p.join("/");
+}
+
+// return the root of the tree the given node is a part of
+function _t_root(node) {
+    if (!node.parent) return node;
+    return _t_root(node.parent);
 }
 
 // add a tree as the last child of the given tree
