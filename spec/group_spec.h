@@ -8,10 +8,14 @@
 
 void testGroupCreate() {
     Receptor *r = makeGroup(G_vm,"ceptr chat");
-    spec_is_str_equal(_td(r,_t_child(r->root,1)),"(INSTANCE_OF:ceptr chat)");
-    spec_is_str_equal(_td(r,r->flux),"(FLUX (DEFAULT_ASPECT (EXPECTATIONS (EXPECTATION (CARRIER:enrollment) (PATTERN (SEMTREX_SYMBOL_ANY)) (ACTION:enroll) (PARAMS) (END_CONDITIONS (UNLIMITED))) (EXPECTATION (CARRIER:speaking) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:MESSAGE))) (ACTION:group_listen) (PARAMS) (END_CONDITIONS (UNLIMITED)))) (SIGNALS)))");
+    Receptor *m = _r_new(G_sem,TEST_RECEPTOR);
+    Xaddr mx = _v_new_receptor(G_vm,G_vm->r,TEST_RECEPTOR,m);
+    _v_activate(G_vm,mx);
 
-    // these make the group receptor act as a member of itself
+    spec_is_str_equal(_td(r,_t_child(r->root,1)),"(INSTANCE_OF:ceptr chat)");
+    spec_is_str_equal(_td(r,r->flux),"(FLUX (DEFAULT_ASPECT (EXPECTATIONS (EXPECTATION (CARRIER:enrollment) (PATTERN (SEMTREX_SYMBOL_ANY)) (ACTION:enroll) (PARAMS) (END_CONDITIONS (UNLIMITED))) (EXPECTATION (CARRIER:converse) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:MESSAGE))) (ACTION:group_listen) (PARAMS) (END_CONDITIONS (UNLIMITED)))) (SIGNALS)))");
+
+    // bindings for m to request membership
     T *bindings = _t_new_root(PROTOCOL_BINDINGS);
     T *res = _t_newr(bindings,RESOLUTION);
     T *w = _t_newr(res,WHICH_RECEPTOR);
@@ -20,14 +24,31 @@ void testGroupCreate() {
     res = _t_newr(bindings,RESOLUTION);
     w = _t_newr(res,WHICH_RECEPTOR);
     _t_news(w,ROLE,MEMBER);
-    __r_make_addr(w,ACTUAL_RECEPTOR,r->addr);
+    __r_make_addr(w,ACTUAL_RECEPTOR,m->addr);
 
-    _o_initiate(r,group1,enrollment,bindings);
+    // @todo bleah, this should be a better proc, at least with a SIGNAL_REF
+    // or something.
+    T *noop = _t_new_root(NOOP);
+    _t_newi(noop,TEST_INT_SYMBOL,314);
+    Process proc = _r_define_process(m,noop,"do nothing","long desc...",NULL);
 
-    _test_reduce_signals(r);
+    T *bindings2 = _t_build(G_sem,0,PROTOCOL_BINDINGS,RESOLUTION,WHICH_PROCESS,GOAL,HANDLER,ACTUAL_PROCESS,proc,NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);
+
+    _o_express_role(m,group1,MEMBER,DEFAULT_ASPECT,bindings2);
+    _t_free(bindings2);
+    _o_initiate(m,group1,enrollment,bindings);
+
+    _p_reduceq(m->q);
+    _v_deliver_signals(G_vm,m);
+    _p_reduceq(r->q);
 
     // see that member got added to the group
-    spec_is_str_equal(_td(r,_t_child(__r_get_signals(r,DEFAULT_ASPECT),1)),"(SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:enrollment) (SIGNAL_UUID)) (BODY:{(YUP)}) (RUN_TREE (NEW_XADDR:MEMBER.1) (PARAMS)))");
+    spec_is_str_equal(_td(r,_t_child(__r_get_signals(r,DEFAULT_ASPECT),1)),"(SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:4)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:enrollment) (SIGNAL_UUID)) (BODY:{(YUP)}) (RUN_TREE (NEW_XADDR:MEMBER.1) (PARAMS)))");
+
+    T *t = _t_new_root(ITERATION_DATA);
+    _a_get_instances(&r->instances,MEMBER,t);
+    spec_is_str_equal(t2s(t),"(ITERATION_DATA (MEMBER (RECEPTOR_ADDR:4)))");
+    _t_free(t);
 
     res = _t_newr(bindings,RESOLUTION);
     w = _t_newr(res,WHICH_VALUE);
@@ -35,15 +56,35 @@ void testGroupCreate() {
     T *val = _t_newr(w,ACTUAL_VALUE);
     val = _t_new_str(val,MESSAGE,"hi there!");
 
-    //    debug_enable(D_PROTOCOL+D_SIGNALS+D_TREE);
-    _o_initiate(r,group1,speaking,bindings);
-    _test_reduce_signals(r);
 
-    spec_is_str_equal(_td(r,_t_child(__r_get_signals(r,DEFAULT_ASPECT),2)),"(SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:speaking) (SIGNAL_UUID)) (BODY:{(MESSAGE:hi there!)}) (RUN_TREE (NEW_XADDR:MESSAGE.2) (PARAMS)))");
+    //debug_enable(D_PROTOCOL+D_SIGNALS+D_TREE);
+    _o_initiate(m,group1,converse,bindings);
+    /* _test_reduce_signals(r); */
+    _p_reduceq(m->q);
+    _v_deliver_signals(G_vm,m);
+    _p_reduceq(r->q);
+    _v_deliver_signals(G_vm,r);
+    _p_reduceq(m->q);
+
+    spec_is_str_equal(_td(r,_t_child(__r_get_signals(r,DEFAULT_ASPECT),2)),"(SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:4)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:converse) (SIGNAL_UUID)) (BODY:{(MESSAGE:hi there!)}) (RUN_TREE (SIGNAL_UUID) (PARAMS)))");
+
+    t = _t_new_root(ITERATION_DATA);
+    _a_get_instances(&r->instances,MESSAGE,t);
+    spec_is_str_equal(t2s(t),"(ITERATION_DATA (MESSAGE:hi there!))");
+    _t_free(t);
+
+    t = _t_new_root(ITERATION_DATA);
+    _a_get_instances(&r->instances,MEMBER,t);
+    spec_is_str_equal(t2s(t),"(ITERATION_DATA (MEMBER (RECEPTOR_ADDR:4)))");
+    _t_free(t);
+
+    spec_is_str_equal(_td(m,_t_child(__r_get_signals(m,DEFAULT_ASPECT),1)),"(SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:4)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:converse) (SIGNAL_UUID)) (BODY:{(MESSAGE:hi there!)}) (RUN_TREE (TEST_INT_SYMBOL:314) (PARAMS)))");
     debug_disable(D_PROTOCOL+D_SIGNALS);
 
+    _t_free(bindings);
     // @todo find bug that causes _r_free to freak out, seems like a loop in the tree
-    //      _r_free(r);
+    // _r_free(r);
+    // _r_free(m);
 }
 
 void testGroup() {

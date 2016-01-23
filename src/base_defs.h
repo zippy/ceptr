@@ -833,7 +833,7 @@ enum DEV_COMPOSITORYSymbolIDs {
     GROUP_ID,
     MEMBER_ID,
     enrollment_ID,
-    speaking_ID,
+    converse_ID,
     MESSAGE_ID,
     NUM_DEV_COMPOSITORY_SYMBOLS
 };
@@ -861,7 +861,7 @@ SemanticID alive;
 SemanticID GROUP;
 SemanticID MEMBER;
 SemanticID enrollment;
-SemanticID speaking;
+SemanticID converse;
 SemanticID MESSAGE;
 
 /**********************************************************************************/
