@@ -726,6 +726,7 @@ enum SYSProcessIDs {
     STREAM_WRITE_ID,
     STREAM_ALIVE_ID,
     CONCAT_STR_ID,
+    EXPLODE_STR_ID,
     ADD_INT_ID,
     SUB_INT_ID,
     MULT_INT_ID,
@@ -757,6 +758,7 @@ SemanticID STREAM_READ;
 SemanticID STREAM_WRITE;
 SemanticID STREAM_ALIVE;
 SemanticID CONCAT_STR;
+SemanticID EXPLODE_STR;
 SemanticID ADD_INT;
 SemanticID SUB_INT;
 SemanticID MULT_INT;

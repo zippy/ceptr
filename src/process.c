@@ -319,6 +319,13 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
         }
         x->contents.symbol = sy;
         break;
+    case EXPLODE_STR_ID:
+        {
+            T *t = _t_detach_by_idx(code,1);
+            x = makeASCIITree((char *)_t_surface(t));
+            _t_free(t);
+        }
+        break;
     case RESPOND_ID:
         {
             T *signal = _t_parent(context->run_tree);

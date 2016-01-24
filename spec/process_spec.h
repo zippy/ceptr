@@ -320,11 +320,15 @@ void testProcessString() {
     _t_new_str(n,TEST_STR_SYMBOL,"Fred");
     _t_new_str(n,TEST_STR_SYMBOL," ");
     _t_new_str(n,TEST_STR_SYMBOL,"Smith");
-
     __p_reduce_sys_proc(0,CONCAT_STR,n,0);
-
     spec_is_str_equal(t2s(n),"(TEST_NAME_SYMBOL:Fred Smith)");
+    _t_free(n);
 
+    // test string to char tree conversion
+    n = _t_new_root(EXPLODE_STR);
+    _t_new_str(n,TEST_STR_SYMBOL,"fish");
+    __p_reduce_sys_proc(0,EXPLODE_STR,n,0);
+    spec_is_str_equal(t2s(n),"(ASCII_CHARS (ASCII_CHAR:'f') (ASCII_CHAR:'i') (ASCII_CHAR:'s') (ASCII_CHAR:'h'))");
     _t_free(n);
 }
 

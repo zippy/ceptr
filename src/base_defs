@@ -290,6 +290,7 @@ Process: STREAM_READ,0,"read from a stream","result",SIGNATURE_PASSTHRU,NULL_STR
 Process: STREAM_WRITE,0,"write to a stream","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"stream",SIGNATURE_STRUCTURE,STREAM,"what",SIGNATURE_ANY,NULL_STRUCTURE,0;
 Process: STREAM_ALIVE,0,"test if stream is alive for reading","alive",SIGNATURE_SYMBOL,BOOLEAN,"stream",SIGNATURE_STRUCTURE,STREAM,0;
 Process: CONCAT_STR,0,"concatinate strings","concatenation",SIGNATURE_STRUCTURE,CSTRING,"into",SIGNATURE_SYMBOL,RESULT_SYMBOL,"str1",SIGNATURE_STRUCTURE,CSTRING,"str2",SIGNATURE_STRUCTURE,CSTRING,0;  concatenates two strings of any symbol type into an new symbol type specified by the "into" parameter
+Process: EXPLODE_STR,0,"explode string","ascii tree",SIGNATURE_SYMBOL,ASCII_CHARS,"str",SIGNATURE_STRUCTURE,CSTRING,0;  converts a string into a ASCII_CHARS tree
 Process: ADD_INT,0,"addition","sum",SIGNATURE_STRUCTURE,INTEGER,"augend",SIGNATURE_STRUCTURE,INTEGER,"addend",SIGNATURE_STRUCTURE,INTEGER,0;
 Process: SUB_INT,0,"subtract","difference",SIGNATURE_STRUCTURE,INTEGER,"minuend",SIGNATURE_STRUCTURE,INTEGER,"subtrahend",SIGNATURE_STRUCTURE,INTEGER,0;
 Process: MULT_INT,0,"multiply","product",SIGNATURE_STRUCTURE,INTEGER,"multiplicand",SIGNATURE_STRUCTURE,INTEGER,"multiplier",SIGNATURE_STRUCTURE,INTEGER,0;
