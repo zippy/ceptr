@@ -97,7 +97,17 @@ void testAccInstances() {
     t = _t_new_str(0,TEST_STR_SYMBOL,"fish");
     x = _a_new_instance(&i,t);
 
-    spec_is_str_equal(t2s(i),"(INSTANCES (SYMBOL_INSTANCES:TEST_INT_SYMBOL (TEST_INT_SYMBOL:2)) (SYMBOL_INSTANCES:TEST_STR_SYMBOL (TEST_STR_SYMBOL:fish)))");
+    t = _t_newi(0,TEST_INT_SYMBOL,3);
+    x = _a_new_instance(&i,t);
+
+    t = _t_newi(0,TEST_INT_SYMBOL,4);
+    _a_new_instance(&i,t);
+    _a_delete_instance(&i,x);
+
+    t = _a_get_instance(&i,x);
+    spec_is_ptr_equal(t,NULL);
+
+    spec_is_str_equal(t2s(i),"(INSTANCES (SYMBOL_INSTANCES:TEST_INT_SYMBOL (TEST_INT_SYMBOL:2) (DELETED_INSTANCE) (TEST_INT_SYMBOL:4)) (SYMBOL_INSTANCES:TEST_STR_SYMBOL (TEST_STR_SYMBOL:fish)))");
     _a_free_instances(&i);
 }
 
@@ -112,10 +122,14 @@ void testAccGetInstances() {
     x = _a_new_instance(&i,t);
     t = _t_newi(0,TEST_INT_SYMBOL,3);
     x = _a_new_instance(&i,t);
+    t = _t_newi(0,TEST_INT_SYMBOL,4);
+    _a_new_instance(&i,t);
+
+    _a_delete_instance(&i,x);
 
     t = _t_new_root(ITERATION_DATA);
     _a_get_instances(&i,TEST_INT_SYMBOL,t);
-    spec_is_str_equal(t2s(t),"(ITERATION_DATA (TEST_INT_SYMBOL:1) (TEST_INT_SYMBOL:2) (TEST_INT_SYMBOL:3))");
+    spec_is_str_equal(t2s(t),"(ITERATION_DATA (TEST_INT_SYMBOL:1) (TEST_INT_SYMBOL:2) (TEST_INT_SYMBOL:4))");
     _t_free(t);
 
     _a_free_instances(&i);

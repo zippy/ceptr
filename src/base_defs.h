@@ -210,8 +210,7 @@ enum SYSSymbolIDs {
     MISSING_SEMANTIC_MAP_ERR_ID,
     MISMATCH_SEMANTIC_MAP_ERR_ID,
     STRUCTURE_MISMATCH_ERR_ID,
-    GET_XADDR_ID,
-    NEW_XADDR_ID,
+    WHICH_XADDR_ID,
     NEW_TYPE_ID,
     TIMEOUT_AT_ID,
     COUNT_ID,
@@ -254,6 +253,7 @@ enum SYSSymbolIDs {
     TREE_DELTA_REPLACE_ID,
     INSTANCES_ID,
     SYMBOL_INSTANCES_ID,
+    DELETED_INSTANCE_ID,
     NUM_SYS_SYMBOLS
 };
 SemanticID STRUCTURES;
@@ -437,8 +437,7 @@ SemanticID DEAD_STREAM_READ_ERR;
 SemanticID MISSING_SEMANTIC_MAP_ERR;
 SemanticID MISMATCH_SEMANTIC_MAP_ERR;
 SemanticID STRUCTURE_MISMATCH_ERR;
-SemanticID GET_XADDR;
-SemanticID NEW_XADDR;
+SemanticID WHICH_XADDR;
 SemanticID NEW_TYPE;
 SemanticID TIMEOUT_AT;
 SemanticID COUNT;
@@ -481,6 +480,7 @@ SemanticID TREE_DELTA_ADD;
 SemanticID TREE_DELTA_REPLACE;
 SemanticID INSTANCES;
 SemanticID SYMBOL_INSTANCES;
+SemanticID DELETED_INSTANCE;
 
 /**********************************************************************************/
 // SYS:Structure
@@ -710,8 +710,9 @@ SemanticID TREE_DELTA;
 enum SYSProcessIDs {
     NULL_PROCESS_ID,
     NOOP_ID,
-    GET_ID,
     NEW_ID,
+    GET_ID,
+    DEL_ID,
     DO_ID,
     IF_ID,
     ITERATE_ID,
@@ -743,8 +744,9 @@ enum SYSProcessIDs {
     NUM_SYS_PROCESSES
 };
 SemanticID NOOP;
-SemanticID GET;
 SemanticID NEW;
+SemanticID GET;
+SemanticID DEL;
 SemanticID DO;
 SemanticID IF;
 SemanticID ITERATE;

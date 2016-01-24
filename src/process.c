@@ -182,6 +182,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
         x = _t_detach_by_idx(code,1);
         break;
     case GET_ID:
+    case DEL_ID:
         {
             T *t = _t_detach_by_idx(code,1);
             Xaddr xa = *(Xaddr *)_t_surface(t);
@@ -189,6 +190,9 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             if (!v) raise_error("Invalid xaddr in GET");
             x = _t_rclone(v);
             _t_free(t);
+            if (s.id == DEL_ID) {
+                _r_delete_instance(q->r,xa);
+            }
         }
         break;
     case NEW_ID:
@@ -205,7 +209,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             else {
                 t->contents.symbol = s;
                 Xaddr xa = _r_new_instance(q->r,t);
-                x = __t_new(0,NEW_XADDR,&xa,sizeof(Xaddr),1);
+                x = __t_new(0,WHICH_XADDR,&xa,sizeof(Xaddr),1);
             }
         }
         break;

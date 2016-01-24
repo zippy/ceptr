@@ -1725,13 +1725,7 @@
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
-       <div class="def-name"><a name="GET_XADDR"></a>GET_XADDR</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#XADDR">XADDR</a></div>
-       <div class="def-comment"></div>
-   </div>
-   <div class="def-item def-symbol">
-       <div class="def-type">Symbol:</div>
-       <div class="def-name"><a name="NEW_XADDR"></a>NEW_XADDR</div>
+       <div class="def-name"><a name="WHICH_XADDR"></a>WHICH_XADDR</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#XADDR">XADDR</a></div>
        <div class="def-comment"></div>
    </div>
@@ -1804,17 +1798,24 @@
    </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
+       <div class="def-name"><a name="NEW"></a>NEW</div>
+       <div class="def-sig-in"><li>what(SYMBOL:<a href="ref_sys_symbols.html#NEW_TYPE">NEW_TYPE</a>)</li></div>
+       <div class="def-sig-out">xaddr(SYMBOL:<a href="ref_sys_symbols.html#WHICH_XADDR">WHICH_XADDR</a>)</div>
+       <div class="def-comment"><i>new instance</i><br /> reduces to the xaddr of a newly created instance of type NEW_TYPE.  the structures of "what" and "value" must match, but not the symbols</div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
        <div class="def-name"><a name="GET"></a>GET</div>
-       <div class="def-sig-in"><li>what(SYMBOL:<a href="ref_sys_symbols.html#GET_XADDR">GET_XADDR</a>)</li></div>
+       <div class="def-sig-in"><li>what(SYMBOL:<a href="ref_sys_symbols.html#WHICH_XADDR">WHICH_XADDR</a>)</li></div>
        <div class="def-sig-out">value(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
        <div class="def-comment"><i>get instance value</i><br />   reduces to the value of the instance at the xaddr of the "what" parameter</div>
    </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
-       <div class="def-name"><a name="NEW"></a>NEW</div>
-       <div class="def-sig-in"><li>what(SYMBOL:<a href="ref_sys_symbols.html#NEW_TYPE">NEW_TYPE</a>)</li></div>
-       <div class="def-sig-out">xaddr(SYMBOL:<a href="ref_sys_symbols.html#NEW_XADDR">NEW_XADDR</a>)</div>
-       <div class="def-comment"><i>new instance</i><br /> reduces to the xaddr of a newly created instance of type NEW_TYPE.  the structures of "what" and "value" must match, but not the symbols</div>
+       <div class="def-name"><a name="DEL"></a>DEL</div>
+       <div class="def-sig-in"><li>what(SYMBOL:<a href="ref_sys_symbols.html#WHICH_XADDR">WHICH_XADDR</a>)</li></div>
+       <div class="def-sig-out">value(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
+       <div class="def-comment"><i>delete instance</i><br />   reduces to the value of the deleted instance at the xaddr of the "what" parameter</div>
    </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
@@ -2226,6 +2227,12 @@
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="SYMBOL_INSTANCES"></a>SYMBOL_INSTANCES</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="DELETED_INSTANCE"></a>DELETED_INSTANCE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
        <div class="def-comment"></div>
    </div>
 </div>

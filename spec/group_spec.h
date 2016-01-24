@@ -43,7 +43,7 @@ void testGroupCreate() {
     _p_reduceq(r->q);
 
     // see that member got added to the group
-    spec_is_str_equal(_td(r,_t_child(__r_get_signals(r,DEFAULT_ASPECT),1)),"(SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:4)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:enrollment) (SIGNAL_UUID)) (BODY:{(YUP)}) (RUN_TREE (NEW_XADDR:MEMBER.1) (PARAMS)))");
+    spec_is_str_equal(_td(r,_t_child(__r_get_signals(r,DEFAULT_ASPECT),1)),"(SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:4)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:enrollment) (SIGNAL_UUID)) (BODY:{(YUP)}) (RUN_TREE (WHICH_XADDR:MEMBER.1) (PARAMS)))");
 
     T *t = _t_new_root(ITERATION_DATA);
     _a_get_instances(&r->instances,MEMBER,t);

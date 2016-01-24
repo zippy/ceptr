@@ -52,6 +52,7 @@ int _r_def_match(Receptor *r,Symbol s,T *t);
 Xaddr _r_new_instance(Receptor *r,T *t);
 T *_r_get_instance(Receptor *r,Xaddr x);
 T * _r_set_instance(Receptor *r,Xaddr x,T *t);
+T * _r_delete_instance(Receptor *r,Xaddr x);
 TreeHash _r_hash(Receptor *r,Xaddr t);
 
 /******************  receptor serialization */

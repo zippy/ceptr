@@ -194,35 +194,6 @@ T *__a_find(T *t,SemanticID sym) {
     return NULL;
 }
 
-
-T *_a_get_instance(Instances *instances,Xaddr x) {
-    T *t = *instances;
-    if (!t) return NULL;
-    t = __a_find(t,x.symbol);
-    if (t) {
-        return _t_child(t,x.addr);
-    }
-    return NULL;
-}
-
-T *_a_set_instance(Instances *instances,Xaddr x,T *r) {
-    //@todo sanity check on t's symbol type?
-    T *t = _a_get_instance(instances,x);
-    if (t) {
-        _t_replace(_t_parent(t),_t_node_index(t),r);
-        return r;
-    }
-    return NULL;
-}
-
-void _a_get_instances(Instances *instances,Symbol s,T *t) {
-    T *x = *instances;
-    if (!x) return;
-    x = __a_find(x,s);
-    if (x)
-        DO_KIDS(x,_t_add(t,_t_clone(_t_child(x,i))));
-}
-
 Xaddr _a_new_instance(Instances *instances,T *t) {
     T *x = *instances;
     if (!x) x = *instances = _t_new_root(INSTANCES);
@@ -234,6 +205,52 @@ Xaddr _a_new_instance(Instances *instances,T *t) {
     result.symbol = s;
     result.addr = _t_children(si);
     return result;
+}
+
+T *_a_get_instance(Instances *instances,Xaddr x) {
+    T *t = *instances;
+    if (!t) return NULL;
+    t = __a_find(t,x.symbol);
+    if (t) {
+        t = _t_child(t,x.addr);
+        if (t && !semeq(_t_symbol(t),DELETED_INSTANCE)) return t;
+    }
+    return NULL;
+}
+
+T *_a_set_instance(Instances *instances,Xaddr x,T *r) {
+    //@todo sanity check on t's symbol type?
+    T *t = _a_get_instance(instances,x);
+    if (t) {
+        _t_replace(_t_parent(t),_t_node_index(t),r);
+        return t;
+    }
+    return NULL;
+}
+
+void _a_get_instances(Instances *instances,Symbol s,T *t) {
+    T *c,*x = *instances;
+    if (!x) return;
+    x = __a_find(x,s);
+    if (x)
+        DO_KIDS(x,
+                c = _t_child(x,i);
+                if (!semeq(_t_symbol(c),DELETED_INSTANCE))
+                    _t_add(t,_t_clone(c));
+                );
+}
+
+void _a_delete_instance(Instances *instances,Xaddr x) {
+    T *t = *instances;
+    if (!t) return;
+    t = __a_find(t,x.symbol);
+    if (t) {
+        t = _t_child(t,x.addr);
+        if (t) {
+            T *d = _t_new_root(DELETED_INSTANCE);
+            _t_replace_node(t,d);
+        }
+    }
 }
 
 void _a_free_instances(Instances *instances) {

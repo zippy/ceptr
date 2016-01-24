@@ -83,13 +83,40 @@ void testProcessGet() {
     Xaddr x = _r_new_instance(r,t);
 
     T *n = _t_newr(0,GET);
-    _t_new(n,GET_XADDR,&x,sizeof(Xaddr));
+    _t_new(n,WHICH_XADDR,&x,sizeof(Xaddr));
     T *run_tree = __p_build_run_tree(n,0);
     _t_free(n);
     Qe *e = _p_addrt2q(q,run_tree);
     spec_is_equal(_p_reduceq(q),noReductionErr);
 
     spec_is_str_equal(t2s(run_tree),"(RUN_TREE (TEST_INT_SYMBOL:314) (PARAMS))");
+    t = _t_new_root(ITERATION_DATA);
+    _a_get_instances(&r->instances,TEST_INT_SYMBOL,t);
+    spec_is_str_equal(t2s(t),"(ITERATION_DATA (TEST_INT_SYMBOL:314))");
+    _t_free(t);
+
+    _r_free(r);
+}
+
+void testProcessDel() {
+    Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
+    Q *q = r->q;
+
+    T *t = _t_newi(0,TEST_INT_SYMBOL,314);
+    Xaddr x = _r_new_instance(r,t);
+
+    T *n = _t_newr(0,DEL);
+    _t_new(n,WHICH_XADDR,&x,sizeof(Xaddr));
+    T *run_tree = __p_build_run_tree(n,0);
+    _t_free(n);
+    Qe *e = _p_addrt2q(q,run_tree);
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (TEST_INT_SYMBOL:314) (PARAMS))");
+    t = _t_new_root(ITERATION_DATA);
+    _a_get_instances(&r->instances,TEST_INT_SYMBOL,t);
+    spec_is_str_equal(t2s(t),"(ITERATION_DATA)");
+    _t_free(t);
 
     _r_free(r);
 }
@@ -116,7 +143,7 @@ void testProcessNew() {
     e = _p_addrt2q(q,run_tree);
     spec_is_equal(_p_reduceq(q),noReductionErr);
 
-    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (NEW_XADDR:TEST_INT_SYMBOL.1) (PARAMS))");
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (WHICH_XADDR:TEST_INT_SYMBOL.1) (PARAMS))");
     T *i = _r_get_instance(r,*(Xaddr *)_t_surface(_t_child(run_tree,1)));
     spec_is_str_equal(t2s(i),"(TEST_INT_SYMBOL:314)");
     //    _t_free(i);
@@ -1289,6 +1316,7 @@ void testProcess() {
     _defIfEven();
     testRunTree();
     testProcessGet();
+    testProcessDel();
     testProcessNew();
     testProcessDo();
     testProcessSemtrex();

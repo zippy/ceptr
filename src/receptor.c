@@ -327,7 +327,7 @@ int _r_def_match(Receptor *r,Symbol s,T *t) {
  * be handled by interacting with the data-engine.
  *
  * <b>Examples (from test suite):</b>
- * @snippet spec/receptor_spec.h testReceptorInstanceNew
+ * @snippet spec/receptor_spec.h testReceptorInstances
  */
 Xaddr _r_new_instance(Receptor *r,T *t) {
     return _a_new_instance(&r->instances,t);
@@ -341,7 +341,7 @@ Xaddr _r_new_instance(Receptor *r,T *t) {
  * @returns the instance tree
  *
  * <b>Examples (from test suite):</b>
- * @snippet spec/receptor_spec.h testReceptorInstanceNew
+ * @snippet spec/receptor_spec.h testReceptorInstances
  */
 T * _r_get_instance(Receptor *r,Xaddr x) {
     return _a_get_instance(&r->instances,x);
@@ -356,10 +356,23 @@ T * _r_get_instance(Receptor *r,Xaddr x) {
  * @returns the instance tree
  *
  * <b>Examples (from test suite):</b>
- * @snippet spec/receptor_spec.h testReceptorInstanceNew
+ * @snippet spec/receptor_spec.h testReceptorInstances
  */
 T * _r_set_instance(Receptor *r,Xaddr x,T *t) {
     return _a_set_instance(&r->instances,x,t);
+}
+
+/**
+ * delete the instance for a given xaddr
+ *
+ * @param[in] r the receptor context in which things are defined
+ * @param[in] x the xaddr of the instance
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/receptor_spec.h testReceptorInstances
+ */
+T * _r_delete_instance(Receptor *r,Xaddr x) {
+    _a_delete_instance(&r->instances,x);
 }
 
 /**
@@ -961,7 +974,7 @@ void _r_defineClockReceptor(SemTable *sem) {
 
     Xaddr x = {TICK,1};
     T *g = _t_newr(resp,GET);
-    _t_new(g,GET_XADDR,&x,sizeof(Xaddr));
+    _t_new(g,WHICH_XADDR,&x,sizeof(Xaddr));
     T *signature = __p_make_signature("result",SIGNATURE_SYMBOL,NULL_SYMBOL,NULL);
     Process proc = _d_define_process(sem,resp,"respond with current time","long desc...",signature,clk_ctx);
     T *act = _t_newp(0,ACTION,proc);

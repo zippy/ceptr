@@ -20,10 +20,11 @@ void _a_boot(char *dir_name);
 void _a_start_vmhost();
 void _a_shut_down();
 
+Xaddr _a_new_instance(Instances *i,T *t);
 T *_a_get_instance(Instances *i,Xaddr x);
 void _a_get_instances(Instances *instances,Symbol s,T *t);
 T *_a_set_instance(Instances *instances,Xaddr x,T *t);
-Xaddr _a_new_instance(Instances *i,T *t);
+void _a_delete_instance(Instances *instances,Xaddr x);
 void _a_free_instances(Instances *i);
 
 S *__a_serialize_instances(Instances *i);

@@ -386,8 +386,8 @@ void testReceptorDefMatch() {
     //! [testReceptorDefMatch]
 }
 
-void testReceptorInstanceNew() {
-    //! [testReceptorInstancesNew]
+void testReceptorInstances() {
+    //! [testReceptorInstances]
     Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
     Symbol lat,lon,house_loc;
     Structure latlong;
@@ -407,10 +407,14 @@ void testReceptorInstanceNew() {
     T *i = _r_get_instance(r,x);
 
     wjson(r->sem,i,"houseloc",-1);
-    spec_is_ptr_equal(t,i);
+    spec_is_ptr_equal(i,t);
+
+    _r_delete_instance(r,x);
+    i = _r_get_instance(r,x);
+    spec_is_ptr_equal(i,NULL);
 
     _r_free(r);
-    //! [testReceptorInstancesNew]
+    //! [testReceptorInstances]
 }
 
 void testReceptorSerialize() {
@@ -733,7 +737,7 @@ void testReceptor() {
     testReceptorExpectation();
     testReceptorDef();
     testReceptorDefMatch();
-    testReceptorInstanceNew();
+    testReceptorInstances();
     //    testReceptorSerialize();
     testReceptorNums();
     testReceptorEdgeStream();
