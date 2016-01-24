@@ -13,7 +13,7 @@ void testGroupCreate() {
     _v_activate(G_vm,mx);
 
     spec_is_str_equal(_td(r,_t_child(r->root,1)),"(INSTANCE_OF:ceptr chat)");
-    spec_is_str_equal(_td(r,r->flux),"(FLUX (DEFAULT_ASPECT (EXPECTATIONS (EXPECTATION (CARRIER:enrollment) (PATTERN (SEMTREX_SYMBOL_ANY)) (ACTION:enroll) (PARAMS) (END_CONDITIONS (UNLIMITED))) (EXPECTATION (CARRIER:converse) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:MESSAGE))) (ACTION:group_listen) (PARAMS) (END_CONDITIONS (UNLIMITED)))) (SIGNALS)))");
+    spec_is_str_equal(_td(r,r->flux),"(FLUX (DEFAULT_ASPECT (EXPECTATIONS (EXPECTATION (CARRIER:enrollment) (PATTERN (SEMTREX_SYMBOL_ANY)) (ACTION:enroll) (PARAMS) (END_CONDITIONS (UNLIMITED))) (EXPECTATION (CARRIER:converse) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:MESSAGE))) (ACTION:group_listen) (PARAMS (SLOT (USAGE:NULL_SYMBOL))) (END_CONDITIONS (UNLIMITED)))) (SIGNALS)))");
 
     // bindings for m to request membership
     T *bindings = _t_new_root(PROTOCOL_BINDINGS);
@@ -66,7 +66,7 @@ void testGroupCreate() {
     _v_deliver_signals(G_vm,r);
     _p_reduceq(m->q);
 
-    spec_is_str_equal(_td(r,_t_child(__r_get_signals(r,DEFAULT_ASPECT),2)),"(SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:4)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:converse) (SIGNAL_UUID)) (BODY:{(MESSAGE:hi there!)}) (RUN_TREE (SIGNAL_UUID) (PARAMS)))");
+    spec_is_str_equal(_td(r,_t_child(__r_get_signals(r,DEFAULT_ASPECT),2)),"(SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:4)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:converse) (SIGNAL_UUID)) (BODY:{(MESSAGE:hi there!)}) (RUN_TREE (SIGNAL_UUID) (PARAMS (MESSAGE:hi there!))))");
 
     t = _t_new_root(ITERATION_DATA);
     _a_get_instances(&r->instances,MESSAGE,t);

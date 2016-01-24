@@ -396,7 +396,9 @@ void _o_express_role(Receptor *r,Protocol protocol,Symbol role,Aspect aspect,T *
                             raise_error("binding missing for GOAL:%s in %s",_sem_get_name(r->sem,*(SemanticID *)_t_surface(a)),_t2s(r->sem,x));
                         }
                         T *sm = sem_map ? _t_clone(sem_map) : NULL;
-                        T *e = __r_build_expectation(interaction,pattern,a,0,0,sm);
+                        T *params = _t_child(x,ExpectParamsIdx);
+                        if (params) params = _t_clone(params);
+                        T *e = __r_build_expectation(interaction,pattern,a,params,0,sm);
                         debug(D_PROTOCOL,"express %s adds expectation: %s\n",_sem_get_name(r->sem,role),_t2s(r->sem,e));
                         __r_add_expectation(r,aspect,e);
                     }

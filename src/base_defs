@@ -170,7 +170,7 @@ Symbol: USAGE,SYMBOL; A usage stands for a(n) X of a Symbol.
 Symbol: WEAL,SYMBOL; A weal stands for a included protocol, the the symbol store in an WEAL must be limited to those that are uses of the PROTOCOL structure
 Symbol: SOURCE,[+ROLE];
 Symbol: DESTINATION,[+ROLE];
-Symbol: EXPECT,[(ROLE,SOURCE,PATTERN,ACTION)];
+Symbol: EXPECT,[(ROLE,SOURCE,PATTERN,ACTION,?PARAMS)];
 Symbol: INITIATE,[(ROLE,DESTINATION,ACTION)];
 Symbol: PNAME,PROTOCOL;
 Symbol: INCLUSION,[(PNAME,+|{RESOLUTION|CONNECTION})];
@@ -448,8 +448,8 @@ Process: speak,speak_code,"speak","result",SIGNATURE_SYMBOL,SIGNAL_UUID,0;
 
 Data: group_listen_code,
       (DO (BLOCK
-              (NEW (NEW_TYPE:MESSAGE) (SIGNAL_REF:/2/0))
-              (ITERATE (PARAMS) (ITERATE_ON_SYMBOL:MEMBER) (SAY (PARAM_REF:/1/1/2/1/1/1) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:converse) (SIGNAL_REF:/2/0)))));   /2/0 is the contents of the BODY
+              (NEW (NEW_TYPE:MESSAGE) (PARAM_REF:/2/1))
+              (ITERATE (PARAMS) (ITERATE_ON_SYMBOL:MEMBER) (SAY (PARAM_REF:/1/1/2/1/1/1) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:converse) (PARAM_REF:/2/1)))));  we could also use SIGNAL_REF /2/0 as the contents of the BODY
 Process: group_listen,group_listen_code,"group_listen","result",SIGNATURE_SYMBOL,SIGNAL_UUID,0;
 
 Data: group1_def,
@@ -459,7 +459,7 @@ Data: group1_def,
                 (EXPECT (ROLE:GROUP) (ROLE:MEMBER) (PATTERN (SEMTREX_SYMBOL_ANY)) (ACTION:enroll))
                 (INITIATE (ROLE:MEMBER) (ROLE:GROUP) (ACTION:request_membership)))
           (converse
-                (EXPECT (ROLE:GROUP) (ROLE:MEMBER) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:MESSAGE))) (ACTION:group_listen))
+                (EXPECT (ROLE:GROUP) (ROLE:MEMBER) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:MESSAGE))) (ACTION:group_listen) (PARAMS (SLOT (USAGE:NULL_SYMBOL))))
                 (EXPECT (ROLE:MEMBER) (ROLE:GROUP) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:MESSAGE))) (SLOT (GOAL:HANDLER) (SLOT_IS_VALUE_OF:ACTION)))
                 (INITIATE (ROLE:MEMBER) (ROLE:GROUP) (ACTION:speak)))
                 );
