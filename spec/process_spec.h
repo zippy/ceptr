@@ -140,8 +140,8 @@ void testProcessSemtrex() {
     // test string concatenation
     T *n = _t_new_root(MATCH);
     T *pattern = _sl(n,TICK);
-    T *tick = __r_make_tick();
-    _t_add(n,tick);
+    T *t = __r_make_tick();
+    _t_add(n,t);
     __p_reduce_sys_proc(0,MATCH,n,0);
     spec_is_str_equal(t2s(n),"(BOOLEAN:1)");
     _t_free(n);
@@ -152,6 +152,19 @@ void testProcessSemtrex() {
     __p_reduce_sys_proc(0,MATCH,n,0);
     spec_is_str_equal(t2s(n),"(BOOLEAN:0)");
     _t_free(n);
+
+    n = _t_new_root(MATCH);
+    pattern = _t_newr(n,SEMTREX_WALK);
+    T *g = _t_news(pattern,SEMTREX_GROUP,TEST_CHAR_SYMBOL);
+    __stxcv(g,'s');
+    t = makeASCIITree("fish");
+    _t_add(n,t);
+    _t_newi(n,BOOLEAN,1);
+    __p_reduce_sys_proc(0,MATCH,n,0);
+    spec_is_str_equal(t2s(n),"(SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:TEST_CHAR_SYMBOL) (SEMTREX_MATCH_PATH:/3) (SEMTREX_MATCH_SIBLINGS_COUNT:1))");
+
+    _t_free(n);
+
 }
 
 void testProcessFillMatch() {

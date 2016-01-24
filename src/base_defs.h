@@ -931,6 +931,7 @@ enum TESTSymbolIDs {
     TEST_ALPHABETIZE_SCAPE_SYMBOL_ID,
     TEST_SYMBOL_SYMBOL_ID,
     TESTING_ID,
+    TEST_CHAR_SYMBOL_ID,
     NUM_TEST_SYMBOLS
 };
 SemanticID TEST_INT_SYMBOL;
@@ -945,6 +946,7 @@ SemanticID TEST_NAME_SYMBOL;
 SemanticID TEST_ALPHABETIZE_SCAPE_SYMBOL;
 SemanticID TEST_SYMBOL_SYMBOL;
 SemanticID TESTING;
+SemanticID TEST_CHAR_SYMBOL;
 
 /**********************************************************************************/
 // TEST:Structure

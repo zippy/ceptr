@@ -414,6 +414,31 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             }
         }
         break;
+    case MATCH_ID:
+        {
+            T *pattern = _t_detach_by_idx(code,1);
+            T *t = _t_detach_by_idx(code,1);
+            bool matchr = false;
+            if (_t_children(code)) {
+                T *t = _t_detach_by_idx(code,1);
+                matchr = *(int*)_t_surface(t);
+                _t_free(t);
+            }
+            T *results;
+            bool match;
+            if (matchr) {
+                match =_t_matchr(pattern,t,&results);
+                if (match) x = results;
+                else x = _t_newi(0,BOOLEAN,0);
+            }
+            else {
+                match = _t_match(pattern,t);
+                x = _t_newi(0,BOOLEAN,match);
+            }
+            _t_free(pattern);
+            _t_free(t);
+        }
+        break;
     case FILL_FROM_MATCH_ID:
         match_results = _t_child(code,2);
         match_tree = _t_child(code,3);
@@ -686,16 +711,6 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
 
             /// @todo what should this really return?
             x = __t_news(0,REDUCTION_ERROR_SYMBOL,NULL_SYMBOL,1);
-        }
-        break;
-    case MATCH_ID:
-        {
-            T *pattern = _t_detach_by_idx(code,1);
-            T *t = _t_detach_by_idx(code,1);
-            bool match = _t_match(pattern,t);
-            _t_free(pattern);
-            _t_free(t);
-            x = _t_newi(0,BOOLEAN,match);
         }
         break;
     case MAGIC_ID:
