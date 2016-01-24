@@ -688,6 +688,16 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             x = __t_news(0,REDUCTION_ERROR_SYMBOL,NULL_SYMBOL,1);
         }
         break;
+    case MATCH_ID:
+        {
+            T *pattern = _t_detach_by_idx(code,1);
+            T *t = _t_detach_by_idx(code,1);
+            bool match = _t_match(pattern,t);
+            _t_free(pattern);
+            _t_free(t);
+            x = _t_newi(0,BOOLEAN,match);
+        }
+        break;
     case MAGIC_ID:
         {switch(*(int *)_t_surface(code)) {
             case MagicReceptors:

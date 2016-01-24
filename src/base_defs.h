@@ -718,6 +718,7 @@ enum SYSProcessIDs {
     SAY_ID,
     REQUEST_ID,
     LISTEN_ID,
+    MATCH_ID,
     RESPOND_ID,
     QUOTE_ID,
     FILL_FROM_MATCH_ID,
@@ -750,6 +751,7 @@ SemanticID ITERATE;
 SemanticID SAY;
 SemanticID REQUEST;
 SemanticID LISTEN;
+SemanticID MATCH;
 SemanticID RESPOND;
 SemanticID QUOTE;
 SemanticID FILL_FROM_MATCH;

@@ -135,6 +135,25 @@ void testProcessDo() {
     _t_free(code);
 }
 
+void testProcessSemtrex() {
+
+    // test string concatenation
+    T *n = _t_new_root(MATCH);
+    T *pattern = _sl(n,TICK);
+    T *tick = __r_make_tick();
+    _t_add(n,tick);
+    __p_reduce_sys_proc(0,MATCH,n,0);
+    spec_is_str_equal(t2s(n),"(BOOLEAN:1)");
+    _t_free(n);
+
+    n = _t_new_root(MATCH);
+    pattern = _sl(n,TICK);
+    _t_newi(n,TEST_INT_SYMBOL,1);
+    __p_reduce_sys_proc(0,MATCH,n,0);
+    spec_is_str_equal(t2s(n),"(BOOLEAN:0)");
+    _t_free(n);
+}
+
 void testProcessFillMatch() {
     T *t = _t_new_root(RUN_TREE);
     // test FILL_FROM_MATCH which takes three params, the template tree, the stx-match and the tree it matched on
@@ -1259,6 +1278,7 @@ void testProcess() {
     testProcessGet();
     testProcessNew();
     testProcessDo();
+    testProcessSemtrex();
     testProcessFillMatch();
     testProcessFillMatchFull();
     testProcessIf();
