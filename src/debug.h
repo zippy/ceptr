@@ -21,6 +21,8 @@ enum {D_NONE=0x0000,D_ALL=0xFFFF,D_SPEC=0x8000,D_SIGNALS=0x0001,D_REDUCE=0x0002,
 
 #include <stdio.h>
 
+#define DEBUGGER raise(SIGINT)
+
 #define debugging(type) (type&G_debug_mask)
 
 char *dtypestr(int type);

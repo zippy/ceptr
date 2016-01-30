@@ -373,22 +373,57 @@ void testProcessIntMath() {
 
 void testProcessString() {
 
+    T *run_tree = _t_new_root(RUN_TREE);
+    R *c = __p_make_context(run_tree,0,0,NULL);
+    Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
+
     // test string concatenation
     T *n = _t_new_root(CONCAT_STR);
     _t_news(n,RESULT_SYMBOL,TEST_NAME_SYMBOL);
     _t_new_str(n,TEST_STR_SYMBOL,"Fred");
     _t_new_str(n,TEST_STR_SYMBOL," ");
     _t_new_str(n,TEST_STR_SYMBOL,"Smith");
-    __p_reduce_sys_proc(0,CONCAT_STR,n,0);
+    spec_is_equal(__p_reduce_sys_proc(c,CONCAT_STR,n,r->q),noReductionErr);
+
     spec_is_str_equal(t2s(n),"(TEST_NAME_SYMBOL:Fred Smith)");
     _t_free(n);
 
     // test string to char tree conversion
-    n = _t_new_root(EXPLODE_STR);
+    n = _t_new_root(EXPAND_STR);
     _t_new_str(n,TEST_STR_SYMBOL,"fish");
-    __p_reduce_sys_proc(0,EXPLODE_STR,n,0);
+    spec_is_equal(__p_reduce_sys_proc(0,EXPAND_STR,n,0),noReductionErr);
     spec_is_str_equal(t2s(n),"(ASCII_CHARS (ASCII_CHAR:'f') (ASCII_CHAR:'i') (ASCII_CHAR:'s') (ASCII_CHAR:'h'))");
     _t_free(n);
+
+    // test string contraction
+    n = _t_new_root(CONTRACT_STR);
+    _t_news(n,RESULT_SYMBOL,TEST_NAME_SYMBOL);
+    char xx = 'F';
+    _t_new(n,ASCII_CHAR,&xx,sizeof(char));
+    _t_new_str(n,TEST_STR_SYMBOL,"red");
+    xx = ' ';
+    _t_new(n,ASCII_CHAR,&xx,sizeof(char));
+    _t_new_str(n,TEST_STR_SYMBOL,"Smith");
+    spec_is_equal(__p_reduce_sys_proc(c,CONTRACT_STR,n,r->q),noReductionErr);
+    spec_is_str_equal(t2s(n),"(TEST_NAME_SYMBOL:Fred Smith)");
+    _t_free(n);
+
+    n = _t_new_root(CONTRACT_STR);
+    spec_is_equal(__p_reduce_sys_proc(c,CONTRACT_STR,n,r->q),tooFewParamsReductionErr);
+    _t_newi(n,TEST_INT_SYMBOL,314);
+    spec_is_equal(__p_reduce_sys_proc(c,CONTRACT_STR,n,r->q),signatureMismatchReductionErr);
+    _t_news(n,RESULT_SYMBOL,TEST_INT_SYMBOL);
+    spec_is_equal(__p_reduce_sys_proc(c,CONTRACT_STR,n,r->q),signatureMismatchReductionErr);
+    _t_news(n,RESULT_SYMBOL,TEST_NAME_SYMBOL);
+    spec_is_equal(__p_reduce_sys_proc(c,CONTRACT_STR,n,r->q),tooFewParamsReductionErr);
+    _t_news(n,RESULT_SYMBOL,TEST_NAME_SYMBOL);
+    _t_newi(n,TEST_INT_SYMBOL,314);
+    spec_is_equal(__p_reduce_sys_proc(c,CONTRACT_STR,n,r->q),incompatibleTypeReductionErr);
+    _t_free(n);
+
+    _p_free_context(c);
+    _r_free(r);
+
 }
 
 void testProcessRespond() {

@@ -291,18 +291,29 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
         *((int *)&x->contents.surface) = *((int *)&x->contents.surface)>=c;
         x->contents.symbol = BOOLEAN;
         break;
+    case CONTRACT_STR_ID:
     case CONCAT_STR_ID:
         // if the first parameter is a RESULT SYMBOL then we use that as the symbol type for the result tree.
         x = _t_detach_by_idx(code,1);
+        if (!x) return tooFewParamsReductionErr;
         sy = _t_symbol(x);
         if (semeq(RESULT_SYMBOL,sy)) {
             sy = *(Symbol *)_t_surface(x);
             _t_free(x);
+            // confirm that the result structure is a CSTRING
+            Structure struc = _sem_get_symbol_structure(q->r->sem,sy);
+            if (!semeq(struc,CSTRING))
+                return signatureMismatchReductionErr;
             x = _t_detach_by_idx(code,1);
+        } else if (s.id == CONTRACT_STR_ID) {// CONTRACT requires first param to be RESULT_SYMBOL
+            _t_free(x);
+            return signatureMismatchReductionErr;
         }
-        //@todo, add a bunch of sanity checking here to make sure the
-        // parameters are all CSTRINGS
+        if (!x) {
+            return tooFewParamsReductionErr;
+        }
         c = _t_children(code);
+
         // make sure the surface was allocated and if not, converted to an alloced surface
         if (c > 0) {
             if (!(x->context.flags & TFLAG_ALLOCATED)) {
@@ -312,10 +323,28 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                 x->context.flags = TFLAG_ALLOCATED+TFLAG_RUN_NODE;
             }
         }
+        // check type the first node
+        Structure struc = _sem_get_symbol_structure(q->r->sem,_t_symbol(x));
+        if (semeq(struc,CHAR)) {
+            x->contents.surface = realloc(x->contents.surface,++x->contents.size);
+            ((char *)x->contents.surface)[1] = 0;
+        }
+        else if (!semeq(struc,CSTRING)) {
+            _t_free(x);
+            return incompatibleTypeReductionErr;
+        }
         /// @todo this would probably be faster with just one total realloc for all children
         for(b=1;b<=c;b++) {
-            str = (char *)_t_surface(_t_child(code,b));
-            int size = strlen(str);
+            T *t = _t_child(code,b);
+            struc = _sem_get_symbol_structure(q->r->sem,_t_symbol(t));
+            str = (char *)_t_surface(t);
+            int size;
+            if (semeq(struc,CSTRING)) size = strlen(str);
+            else if (semeq(struc,CHAR)) size = 1;
+            else {
+                _t_free(x);
+                return incompatibleTypeReductionErr;
+            }
             x->contents.surface = realloc(x->contents.surface,x->contents.size+size);
             memcpy(x->contents.surface+x->contents.size-1,str,size);
             x->contents.size+=size;
@@ -323,7 +352,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
         }
         x->contents.symbol = sy;
         break;
-    case EXPLODE_STR_ID:
+    case EXPAND_STR_ID:
         {
             T *t = _t_detach_by_idx(code,1);
             x = makeASCIITree((char *)_t_surface(t));

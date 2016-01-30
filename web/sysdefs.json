@@ -1616,8 +1616,8 @@
                {"sem":{ "ctx":0,"type":2,"id":96 },"surface":"str2"},
                {"sem":{ "ctx":0,"type":2,"id":97 },"surface":{ "ctx":0,"type":1,"id":5 }}]}]}]},
       {"sem":{ "ctx":0,"type":2,"id":86 },"children":[
-         {"sem":{ "ctx":0,"type":2,"id":82 },"surface":"EXPLODE_STR"},
-         {"sem":{ "ctx":0,"type":2,"id":83 },"surface":"explode string"},
+         {"sem":{ "ctx":0,"type":2,"id":82 },"surface":"EXPAND_STR"},
+         {"sem":{ "ctx":0,"type":2,"id":83 },"surface":"expand string"},
          {"sem":{ "ctx":0,"type":3,"id":0 }},
          {"sem":{ "ctx":0,"type":2,"id":84 },"children":[
             {"sem":{ "ctx":0,"type":2,"id":106 },"children":[
@@ -1626,6 +1626,17 @@
             {"sem":{ "ctx":0,"type":2,"id":105 },"children":[
                {"sem":{ "ctx":0,"type":2,"id":96 },"surface":"str"},
                {"sem":{ "ctx":0,"type":2,"id":97 },"surface":{ "ctx":0,"type":1,"id":5 }}]}]}]},
+      {"sem":{ "ctx":0,"type":2,"id":86 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":82 },"surface":"CONTRACT_STR"},
+         {"sem":{ "ctx":0,"type":2,"id":83 },"surface":"contract to string"},
+         {"sem":{ "ctx":0,"type":3,"id":0 }},
+         {"sem":{ "ctx":0,"type":2,"id":84 },"children":[
+            {"sem":{ "ctx":0,"type":2,"id":106 },"children":[
+               {"sem":{ "ctx":0,"type":2,"id":96 },"surface":"string"},
+               {"sem":{ "ctx":0,"type":2,"id":97 },"surface":{ "ctx":0,"type":1,"id":5 }}]},
+            {"sem":{ "ctx":0,"type":2,"id":105 },"children":[
+               {"sem":{ "ctx":0,"type":2,"id":96 },"surface":"into"},
+               {"sem":{ "ctx":0,"type":2,"id":98 },"surface":{ "ctx":0,"type":2,"id":112 }}]}]}]},
       {"sem":{ "ctx":0,"type":2,"id":86 },"children":[
          {"sem":{ "ctx":0,"type":2,"id":82 },"surface":"ADD_INT"},
          {"sem":{ "ctx":0,"type":2,"id":83 },"surface":"addition"},

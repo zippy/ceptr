@@ -1924,10 +1924,17 @@
    </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
-       <div class="def-name"><a name="EXPLODE_STR"></a>EXPLODE_STR</div>
+       <div class="def-name"><a name="EXPAND_STR"></a>EXPAND_STR</div>
        <div class="def-sig-in"><li>str(STRUCTURE:<a href="ref_sys_symbols.html#CSTRING">CSTRING</a>)</li></div>
        <div class="def-sig-out">ascii tree(SYMBOL:<a href="ref_sys_symbols.html#ASCII_CHARS">ASCII_CHARS</a>)</div>
-       <div class="def-comment"><i>explode string</i><br />  converts a string into a ASCII_CHARS tree</div>
+       <div class="def-comment"><i>expand string</i><br />  converts a CSTRING into an ASCII_CHARS tree</div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="CONTRACT_STR"></a>CONTRACT_STR</div>
+       <div class="def-sig-in"><li>into(SYMBOL:<a href="ref_sys_symbols.html#RESULT_SYMBOL">RESULT_SYMBOL</a>)</li></div>
+       <div class="def-sig-out">string(STRUCTURE:<a href="ref_sys_symbols.html#CSTRING">CSTRING</a>)</div>
+       <div class="def-comment"><i>contract to string</i><br />  converts any number of chars or cstring into a single cstring of symbol type indicated by the into param</div>
    </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
