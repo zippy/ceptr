@@ -54,6 +54,8 @@ The tests also produce a bunch semantic trees dumped out to json for visualizati
 
 [wiki](https://github.com/zippy/ceptr/wiki)
 
+[live dev chat](http://ceptr.org/live_dev_chat) 1st and 3rd Wednesdays of the month, 3pm EST.
+
 ### Contributor Guidelines
 
 * We use test driven development.  Adding a new function or feature, should mean you've added a new test in the spec/ directory.  Our [testing framework] (https://github.com/zippy/ceptr/blob/master/spec/test_framework.h) provides a bunch of C macros that test an expectation with a result, and nicely print broken tests when they fail.  Check out any file in the spec directory to see how it's done.
