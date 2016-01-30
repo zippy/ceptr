@@ -60,7 +60,8 @@ void _r_serialize(Receptor *r,void **surfaceP,size_t *lengthP);
 Receptor * _r_unserialize(SemTable *sem,void *surface);
 
 /******************  receptor signaling */
-T *__r_make_addr(T *parent,Symbol type,ReceptorAddress addr);
+#define __r_make_addr(p,t,a) ___r_make_addr(p,t,a,0)
+T *___r_make_addr(T *parent,Symbol type,ReceptorAddress addr,bool is_run_node);
 ReceptorAddress __r_get_addr(T *addr);
 
 T * __r_make_signal(ReceptorAddress from,ReceptorAddress to,Aspect aspect,Symbol carrier,T *signal_contents,UUIDt *in_response_to,T* until);

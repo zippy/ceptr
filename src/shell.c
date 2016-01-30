@@ -73,15 +73,15 @@ void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp
     // create expectations for commands
     // (expect (on std_in LINE) action (send self (shell_command parsed from LINE))
     T *expect = _t_new_root(PATTERN);
-    T *s = _t_news(expect,SEMTREX_GROUP,VERB);
-    _sl(s,LINE);
+    T *s = _sl(expect,LINE);
     T *p = _t_new_root(SAY);
-    ReceptorAddress to =  __r_get_self_address(r);
-
-    __r_make_addr(p,TO_ADDRESS,to);
-    _t_news(p,ASPECT_IDENT,DEFAULT_ASPECT);
+    T *addr = _t_newr(p,SELF_ADDR);
+    _t_news(addr,RESULT_SYMBOL,TO_ADDRESS);
+     _t_news(p,ASPECT_IDENT,DEFAULT_ASPECT);
     _t_news(p,CARRIER,SHELL_COMMAND);
     T *x = _t_newr(p,SHELL_COMMAND);
+    x = _t_newr(x,CONTRACT_STR);
+    _t_news(x,RESULT_SYMBOL,VERB);
     int pt1[] = {2,1,TREE_PATH_TERMINATOR};
     _t_new(x,PARAM_REF,pt1,sizeof(int)*4);
 
@@ -89,7 +89,7 @@ void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp
     T *act = _t_newp(0,ACTION,proc);
     T* params = _t_new_root(PARAMS);
     T* slot = _t_newr(params,SLOT);
-    _t_news(slot,USAGE,VERB);
+    _t_news(slot,USAGE,NULL_SYMBOL);
     _r_add_expectation(r,DEFAULT_ASPECT,LINE,expect,act,params,0,NULL);
 
     // (expect (on flux SHELL_COMMAND:time) action(initiate tell_time in time protocol with handler -> send std_out (convert_to_lines (send clock get_time))))

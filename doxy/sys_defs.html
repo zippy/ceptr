@@ -1854,6 +1854,13 @@
    </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
+       <div class="def-name"><a name="SELF_ADDR"></a>SELF_ADDR</div>
+       <div class="def-sig-in"><li>as(SYMBOL:<a href="ref_sys_symbols.html#RESULT_SYMBOL">RESULT_SYMBOL</a>)</li></div>
+       <div class="def-sig-out">address(PASSTHRU:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
+       <div class="def-comment"><i>self address</i><br />  reduces to current RECEPTOR_ADDRESS as a use of the as symbol</div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
        <div class="def-name"><a name="LISTEN"></a>LISTEN</div>
        <div class="def-sig-in"><li>on(SYMBOL:<a href="ref_sys_symbols.html#ASPECT_IDENT">ASPECT_IDENT</a>)</li><li>for(SYMBOL:<a href="ref_sys_symbols.html#CARRIER">CARRIER</a>)</li><li>match(SYMBOL:<a href="ref_sys_symbols.html#PATTERN">PATTERN</a>)</li><li>[do(SYMBOL:<a href="ref_sys_symbols.html#ACTION">ACTION</a>)]</li><li>[with(SYMBOL:<a href="ref_sys_symbols.html#PARAMS">PARAMS</a>)]</li><li>[until(SYMBOL:<a href="ref_sys_symbols.html#END_CONDITIONS">END_CONDITIONS</a>)]</li></div>
        <div class="def-sig-out">error(SYMBOL:<a href="ref_sys_symbols.html#REDUCTION_ERROR_SYMBOL">REDUCTION_ERROR_SYMBOL</a>)</div>

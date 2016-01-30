@@ -41,7 +41,8 @@ T *_t_newt(T *parent,Symbol symbol,T *t);
 #define _t_new_str(parent,symbol,str) __t_new_str(parent,symbol,str,0)
 T *__t_new_str(T *parent,Symbol symbol,char *str,int is_run_node);
 T *_t_new_root(Symbol symbol);
-T *_t_newr(T *parent,Symbol symbol);
+#define _t_newr(p,s) __t_newr(p,s,0)
+T *__t_newr(T *parent,Symbol symbol,bool is_run_node);
 T *_t_new_receptor(T *parent,Symbol symbol,Receptor *r);
 T *_t_new_scape(T *parent,Symbol symbol,Scape *s);
 T *_t_new_stream(T *parent,Symbol symbol,Stream *s);

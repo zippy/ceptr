@@ -746,6 +746,15 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             x = __t_news(0,REDUCTION_ERROR_SYMBOL,NULL_SYMBOL,1);
         }
         break;
+    case SELF_ADDR_ID:
+        {
+            x = _t_detach_by_idx(code,1);
+            Symbol sym = *(Symbol *)_t_surface(x);
+            _t_free(x);
+            ReceptorAddress addr =  __r_get_self_address(q->r);
+            x = ___r_make_addr(0,sym,addr,true);
+        }
+        break;
     case MAGIC_ID:
         {switch(*(int *)_t_surface(code)) {
             case MagicReceptors:

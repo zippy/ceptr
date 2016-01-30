@@ -718,6 +718,7 @@ enum SYSProcessIDs {
     ITERATE_ID,
     SAY_ID,
     REQUEST_ID,
+    SELF_ADDR_ID,
     LISTEN_ID,
     MATCH_ID,
     RESPOND_ID,
@@ -753,6 +754,7 @@ SemanticID IF;
 SemanticID ITERATE;
 SemanticID SAY;
 SemanticID REQUEST;
+SemanticID SELF_ADDR;
 SemanticID LISTEN;
 SemanticID MATCH;
 SemanticID RESPOND;

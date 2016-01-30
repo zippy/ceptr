@@ -145,8 +145,8 @@ T *_t_new_root(Symbol symbol) {
  * @param[in] symbol semantic symbol for the node to be create
  * @returns pointer to node allocated on the heap
  */
-T *_t_newr(T *parent,Symbol symbol) {
-    return _t_new(parent,symbol,0,0);
+T *__t_newr(T *parent,Symbol symbol,bool is_run_node) {
+    return __t_new(parent,symbol,0,0,is_run_node);
 }
 
 /* create tree node whose surface is a specially allocated c structure,

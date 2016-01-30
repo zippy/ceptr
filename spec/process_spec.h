@@ -1212,6 +1212,16 @@ void testProcessListen() {
     _r_free(r);
 }
 
+void testProcessSelfAddr() {
+    Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
+
+    T *n = _t_new_root(SELF_ADDR);
+    _t_news(n,RESULT_SYMBOL,TO_ADDRESS);
+    spec_is_equal(__p_reduce_sys_proc(0,SELF_ADDR,n,r->q),noReductionErr);
+    spec_is_str_equal(t2s(n),"(TO_ADDRESS (RECEPTOR_ADDR:3))");
+    _r_free(r);
+}
+
 void testProcessErrorTrickleUp() {
     //! [testProcessErrorTrickleUp]
     Process divz = _defDivZero();  // add the if_even process to our defs
@@ -1375,6 +1385,7 @@ void testProcess() {
     testProcessIterate();
     testProcessIterateOnSymbol();
     testProcessListen();
+    testProcessSelfAddr();
     testProcessErrorTrickleUp();
     testProcessMulti();
     testRunTreeTemplate();

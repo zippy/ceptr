@@ -453,9 +453,9 @@ Receptor * _r_unserialize(SemTable *sem,void *surface) {
 // build a receptor address.  This is scaffolding for later receptor
 // addressing that will include both ceptrnet addresses and receptor paths
 // as a possible options for addressing the receptor.
-T *__r_make_addr(T *parent,Symbol type,ReceptorAddress addr) {
-    T *a = _t_newr(parent,type);
-    _t_newi(a,RECEPTOR_ADDR,addr.addr);
+T *___r_make_addr(T *parent,Symbol type,ReceptorAddress addr,bool is_run_node) {
+    T *a = __t_newr(parent,type,is_run_node);
+    __t_newi(a,RECEPTOR_ADDR,addr.addr,is_run_node);
     return a;
 }
 
