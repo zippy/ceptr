@@ -12,7 +12,7 @@ var receptor__spec_8h =
     [ "testReceptorEdgeStream", "receptor__spec_8h.html#afceb592c80fbad8dd4a6182b52e660fb", null ],
     [ "testReceptorEndCondition", "receptor__spec_8h.html#acff3c89cf36549c763443c88c468428b", null ],
     [ "testReceptorExpectation", "receptor__spec_8h.html#a1cff5f815970b5209885f117bc705fd0", null ],
-    [ "testReceptorInstanceNew", "receptor__spec_8h.html#a9584612d41b06b90041df77e64da66b8", null ],
+    [ "testReceptorInstances", "receptor__spec_8h.html#a741a85af68569521b05909746e0f3e72", null ],
     [ "testReceptorNums", "receptor__spec_8h.html#a911778bdc03a15ad22c407116d5b1345", null ],
     [ "testReceptorResponseDeliver", "receptor__spec_8h.html#a2f1f002ca0f35a9b0ff7b3519cbd9f29", null ],
     [ "testReceptorSerialize", "receptor__spec_8h.html#a0c65a8eec063de14d49ae6c3fadcf0d8", null ],

@@ -11,6 +11,7 @@ var accumulator_8c =
     [ "__a_unserializet", "accumulator_8c.html#aef24ae6a47d20dc793acea060e870148", null ],
     [ "__a_vm_fn", "accumulator_8c.html#a68cb5a4120642acb34af02a470b662a0", null ],
     [ "_a_boot", "group__accumulator.html#gaf3d0afe467ab198fc69ccaf7ee9fb5e9", null ],
+    [ "_a_delete_instance", "group__accumulator.html#ga13b76f08aaf550162dbaae98c9f424a8", null ],
     [ "_a_free_instances", "group__accumulator.html#ga547a2a64758fbf9354d8498e07cb8d2b", null ],
     [ "_a_get_instance", "group__accumulator.html#gaa967dcf3850e900ee02c57e571cbcfb4", null ],
     [ "_a_get_instances", "group__accumulator.html#ga8f64bf0e0989ee8a09ee60c3e260457c", null ],

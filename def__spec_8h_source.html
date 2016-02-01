@@ -274,9 +274,9 @@ $(document).ready(function(){initNavTree('def__spec_8h_source.html','');});
 <div class="line"><a name="l00181"></a><span class="lineno"><a class="line" href="def__spec_8h.html#aad381bff8dcf1dced2f7611abfce508e">  181</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="def__spec_8h.html#aad381bff8dcf1dced2f7611abfce508e">testDefProcessTemplate</a>() {</div>
 <div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    <a class="code" href="structT.html">T</a> *defs = __sem_get_defs(G_sem,SEM_TYPE_PROCESS,TEST_CONTEXT);</div>
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    <a class="code" href="structT.html">T</a> *code = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(NOOP); <span class="comment">// some code with a template</span></div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    <a class="code" href="structT.html">T</a> *t = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(code,SLOT);</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    <a class="code" href="structT.html">T</a> *t = _t_newr(code,SLOT);</div>
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    _t_news(t,GOAL,REQUEST_HANDLER);</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    t = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(code,SLOT);</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    t = _t_newr(code,SLOT);</div>
 <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    _t_news(t,USAGE,REQUEST_DATA);</div>
 <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    _t_news(t,SLOT_IS_VALUE_OF,TEST_INT_SYMBOL);</div>
 <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    <a class="code" href="structT.html">T</a> *signature = __p_make_signature(<span class="stringliteral">&quot;result&quot;</span>,SIGNATURE_SYMBOL,NULL_SYMBOL,NULL);</div>
@@ -374,7 +374,6 @@ $(document).ready(function(){initNavTree('def__spec_8h_source.html','');});
 <div class="ttc" id="def__spec_8h_html_a3782adfdff29ee1088fb2e66d373739b"><div class="ttname"><a href="def__spec_8h.html#a3782adfdff29ee1088fb2e66d373739b">testDefSemtrex</a></div><div class="ttdeci">void testDefSemtrex()</div><div class="ttdef"><b>Definition:</b> <a href="def__spec_8h_source.html#l00202">def_spec.h:202</a></div></div>
 <div class="ttc" id="def__spec_8h_html_aad381bff8dcf1dced2f7611abfce508e"><div class="ttname"><a href="def__spec_8h.html#aad381bff8dcf1dced2f7611abfce508e">testDefProcessTemplate</a></div><div class="ttdeci">void testDefProcessTemplate()</div><div class="ttdef"><b>Definition:</b> <a href="def__spec_8h_source.html#l00181">def_spec.h:181</a></div></div>
 <div class="ttc" id="group__receptor_html_ga6f650808029d4c598ebe6515d9900ef8"><div class="ttname"><a href="group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8">_r_free</a></div><div class="ttdeci">void _r_free(Receptor *r)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00170">receptor.c:170</a></div></div>
-<div class="ttc" id="group__tree_html_ga3e2009f5a82889263d560d2c1479606a"><div class="ttname"><a href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a></div><div class="ttdeci">T * _t_newr(T *parent, Symbol symbol)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00148">tree.c:148</a></div></div>
 <div class="ttc" id="def__spec_8h_html_a56a27a1c1dbaa31060bb3d6aafdcba99"><div class="ttname"><a href="def__spec_8h.html#a56a27a1c1dbaa31060bb3d6aafdcba99">testDefSymbol</a></div><div class="ttdeci">void testDefSymbol()</div><div class="ttdef"><b>Definition:</b> <a href="def__spec_8h_source.html#l00029">def_spec.h:29</a></div></div>
 <div class="ttc" id="group__tree_html_ga946600fb570f0cc913450905f6189d49"><div class="ttname"><a href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a></div><div class="ttdeci">Symbol _t_symbol(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00986">tree.c:986</a></div></div>
 <div class="ttc" id="group__tree_html_ga07dd808fabd8a722b417f2f5e5ca132b"><div class="ttname"><a href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a></div><div class="ttdeci">T * _t_child(T *t, int i)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l01009">tree.c:1009</a></div></div>
@@ -404,7 +403,7 @@ $(document).ready(function(){initNavTree('def__spec_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><a class="el" href="def__spec_8h.html">def_spec.h</a></li>
-    <li class="footer">Generated on Sat Jan 23 2016 12:18:29 for ceptr by
+    <li class="footer">Generated on Sun Jan 31 2016 21:37:10 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

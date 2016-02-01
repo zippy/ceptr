@@ -150,6 +150,9 @@ Macros</h2></td></tr>
 <tr class="memitem:ga17ed65913f6f06f6657ed07a06381ec1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga17ed65913f6f06f6657ed07a06381ec1"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>_t_new_str</b>(parent, symbol, str)&#160;&#160;&#160;<a class="el" href="group__tree.html#gac1d2fb0c7e543a73db3a6213094f95e1">__t_new_str</a>(parent,symbol,str,0)</td></tr>
 <tr class="separator:ga17ed65913f6f06f6657ed07a06381ec1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga10cf1dc932e9a75e024cd8cad694ae44"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga10cf1dc932e9a75e024cd8cad694ae44"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>_t_newr</b>(p, s)&#160;&#160;&#160;<a class="el" href="group__tree.html#gadd1fa37c05f932fed42c43fb7015128c">__t_newr</a>(p,s,0)</td></tr>
+<tr class="separator:ga10cf1dc932e9a75e024cd8cad694ae44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad21056f1fcb0720601ca898903eeaef0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gad21056f1fcb0720601ca898903eeaef0"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>_t_fill_template</b>(t, i)&#160;&#160;&#160;<a class="el" href="group__tree.html#gac1c43acbe9e29de7e0c9244c65ce44a3">__t_fill_template</a>(t,i,false)</td></tr>
 <tr class="separator:gad21056f1fcb0720601ca898903eeaef0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -190,8 +193,8 @@ Functions</h2></td></tr>
 <tr class="separator:gac1d2fb0c7e543a73db3a6213094f95e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga25dd0f385044ffbcc7c215ea80fa00b4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a> (<a class="el" href="structSemanticID.html">Symbol</a> symbol)</td></tr>
 <tr class="separator:ga25dd0f385044ffbcc7c215ea80fa00b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3e2009f5a82889263d560d2c1479606a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a> (<a class="el" href="structT.html">T</a> *parent, <a class="el" href="structSemanticID.html">Symbol</a> symbol)</td></tr>
-<tr class="separator:ga3e2009f5a82889263d560d2c1479606a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadd1fa37c05f932fed42c43fb7015128c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tree.html#gadd1fa37c05f932fed42c43fb7015128c">__t_newr</a> (<a class="el" href="structT.html">T</a> *parent, <a class="el" href="structSemanticID.html">Symbol</a> symbol, bool is_run_node)</td></tr>
+<tr class="separator:gadd1fa37c05f932fed42c43fb7015128c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7fd137a24b6795e1fc25c50ba91a767f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tree.html#ga7fd137a24b6795e1fc25c50ba91a767f">_t_new_receptor</a> (<a class="el" href="structT.html">T</a> *parent, <a class="el" href="structSemanticID.html">Symbol</a> symbol, <a class="el" href="structReceptor.html">Receptor</a> *r)</td></tr>
 <tr class="separator:ga7fd137a24b6795e1fc25c50ba91a767f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab0f78fac726577a933574041c95a590d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tree.html#gab0f78fac726577a933574041c95a590d">_t_new_scape</a> (<a class="el" href="structT.html">T</a> *parent, <a class="el" href="structSemanticID.html">Symbol</a> symbol, <a class="el" href="structScape.html">Scape</a> *s)</td></tr>
@@ -613,6 +616,49 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>__uuid_equal</b> (<a c
 <dl class="section return"><dt>Returns</dt><dd>pointer to node allocated on the heap </dd></dl>
 
 <p>Definition at line <a class="el" href="tree_8c_source.html#l00080">80</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gadd1fa37c05f932fed42c43fb7015128c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structT.html">T</a>* __t_newr </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structT.html">T</a> *&#160;</td>
+          <td class="paramname"><em>parent</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structSemanticID.html">Symbol</a>&#160;</td>
+          <td class="paramname"><em>symbol</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>is_run_node</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Create a new tree sub-root node (with null surface)</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">parent</td><td>parent node for the node to be created. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">symbol</td><td>semantic symbol for the node to be create </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>pointer to node allocated on the heap </dd></dl>
+
+<p>Definition at line <a class="el" href="tree_8c_source.html#l00148">148</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
 
 </div>
 </div>
@@ -1935,43 +1981,6 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>__uuid_equal</b> (<a c
 
 </div>
 </div>
-<a class="anchor" id="ga3e2009f5a82889263d560d2c1479606a"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structT.html">T</a>* _t_newr </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structT.html">T</a> *&#160;</td>
-          <td class="paramname"><em>parent</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structSemanticID.html">Symbol</a>&#160;</td>
-          <td class="paramname"><em>symbol</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Create a new tree sub-root node (with null surface)</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">parent</td><td>parent node for the node to be created. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">symbol</td><td>semantic symbol for the node to be create </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>pointer to node allocated on the heap </dd></dl>
-
-<p>Definition at line <a class="el" href="tree_8c_source.html#l00148">148</a> of file <a class="el" href="tree_8c_source.html">tree.c</a>.</p>
-
-</div>
-</div>
 <a class="anchor" id="ga79cff1b1b9d692acc297634be059c6a9"></a>
 <div class="memitem">
 <div class="memproto">
@@ -2268,7 +2277,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>__uuid_equal</b> (<a c
 <p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structT.html">T</a> *t = <a class="code" href="http__example_8h.html#a1c182b5a6e82ef49c6967183a15c3e8b">_makeTestHTTPRequestTree</a>(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// replace the version with a new version</span></div>
-<div class="line">    <a class="code" href="structT.html">T</a> *t_version = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(0,HTTP_REQUEST_VERSION);</div>
+<div class="line">    <a class="code" href="structT.html">T</a> *t_version = _t_newr(0,HTTP_REQUEST_VERSION);</div>
 <div class="line">    _t_newi(t_version,VERSION_MAJOR,1);</div>
 <div class="line">    _t_newi(t_version,VERSION_MINOR,1);</div>
 <div class="line"></div>
@@ -2337,7 +2346,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>__uuid_equal</b> (<a c
 <p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structT.html">T</a> *t = <a class="code" href="http__example_8h.html#a1c182b5a6e82ef49c6967183a15c3e8b">_makeTestHTTPRequestTree</a>(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// replace the version with a new version</span></div>
-<div class="line">    <a class="code" href="structT.html">T</a> *t_version = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(0,HTTP_REQUEST_VERSION);</div>
+<div class="line">    <a class="code" href="structT.html">T</a> *t_version = _t_newr(0,HTTP_REQUEST_VERSION);</div>
 <div class="line">    _t_newi(t_version,VERSION_MAJOR,1);</div>
 <div class="line">    _t_newi(t_version,VERSION_MINOR,1);</div>
 <div class="line"></div>
@@ -2602,7 +2611,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>__uuid_equal</b> (<a c
 <p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structT.html">T</a> *t = <a class="code" href="http__example_8h.html#a1c182b5a6e82ef49c6967183a15c3e8b">_makeTestHTTPRequestTree</a>(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// replace the version with a new version</span></div>
-<div class="line">    <a class="code" href="structT.html">T</a> *t_version = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(0,HTTP_REQUEST_VERSION);</div>
+<div class="line">    <a class="code" href="structT.html">T</a> *t_version = _t_newr(0,HTTP_REQUEST_VERSION);</div>
 <div class="line">    _t_newi(t_version,VERSION_MAJOR,1);</div>
 <div class="line">    _t_newi(t_version,VERSION_MINOR,1);</div>
 <div class="line"></div>
@@ -2648,7 +2657,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>__uuid_equal</b> (<a c
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Jan 23 2016 12:18:30 for ceptr by
+    <li class="footer">Generated on Sun Jan 31 2016 21:37:11 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

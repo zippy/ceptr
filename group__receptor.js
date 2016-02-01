@@ -25,6 +25,7 @@ var group__receptor =
     [ "_r_define_process", "group__receptor.html#ga9e248fdb6e6d814935ac88e67e10e769", null ],
     [ "_r_define_structure", "group__receptor.html#gae291bec8771c13074164984b08db4874", null ],
     [ "_r_define_symbol", "group__receptor.html#ga29fd5ebc5d1c142a7da96bd0dd36292c", null ],
+    [ "_r_delete_instance", "group__receptor.html#ga2d10d474fac25653e38738ba8ac027e7", null ],
     [ "_r_deliver", "group__receptor.html#ga7d40f33135ee51640d0d24b8c9e3e046", null ],
     [ "_r_free", "group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8", null ],
     [ "_r_get_instance", "group__receptor.html#gadc618904f81240b244e816234d1c906e", null ],

@@ -153,6 +153,9 @@ Macros</h2></td></tr>
 <tr class="memitem:ga17ed65913f6f06f6657ed07a06381ec1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga17ed65913f6f06f6657ed07a06381ec1"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>_t_new_str</b>(parent, symbol, str)&#160;&#160;&#160;<a class="el" href="group__tree.html#gac1d2fb0c7e543a73db3a6213094f95e1">__t_new_str</a>(parent,symbol,str,0)</td></tr>
 <tr class="separator:ga17ed65913f6f06f6657ed07a06381ec1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga10cf1dc932e9a75e024cd8cad694ae44"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga10cf1dc932e9a75e024cd8cad694ae44"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>_t_newr</b>(p, s)&#160;&#160;&#160;<a class="el" href="group__tree.html#gadd1fa37c05f932fed42c43fb7015128c">__t_newr</a>(p,s,0)</td></tr>
+<tr class="separator:ga10cf1dc932e9a75e024cd8cad694ae44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad21056f1fcb0720601ca898903eeaef0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gad21056f1fcb0720601ca898903eeaef0"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>_t_fill_template</b>(t, i)&#160;&#160;&#160;<a class="el" href="group__tree.html#gac1c43acbe9e29de7e0c9244c65ce44a3">__t_fill_template</a>(t,i,false)</td></tr>
 <tr class="separator:gad21056f1fcb0720601ca898903eeaef0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -193,8 +196,8 @@ Functions</h2></td></tr>
 <tr class="separator:gac1d2fb0c7e543a73db3a6213094f95e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga25dd0f385044ffbcc7c215ea80fa00b4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a> (<a class="el" href="structSemanticID.html">Symbol</a> symbol)</td></tr>
 <tr class="separator:ga25dd0f385044ffbcc7c215ea80fa00b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3e2009f5a82889263d560d2c1479606a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a> (<a class="el" href="structT.html">T</a> *parent, <a class="el" href="structSemanticID.html">Symbol</a> symbol)</td></tr>
-<tr class="separator:ga3e2009f5a82889263d560d2c1479606a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadd1fa37c05f932fed42c43fb7015128c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tree.html#gadd1fa37c05f932fed42c43fb7015128c">__t_newr</a> (<a class="el" href="structT.html">T</a> *parent, <a class="el" href="structSemanticID.html">Symbol</a> symbol, bool is_run_node)</td></tr>
+<tr class="separator:gadd1fa37c05f932fed42c43fb7015128c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7fd137a24b6795e1fc25c50ba91a767f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tree.html#ga7fd137a24b6795e1fc25c50ba91a767f">_t_new_receptor</a> (<a class="el" href="structT.html">T</a> *parent, <a class="el" href="structSemanticID.html">Symbol</a> symbol, <a class="el" href="structReceptor.html">Receptor</a> *r)</td></tr>
 <tr class="separator:ga7fd137a24b6795e1fc25c50ba91a767f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab0f78fac726577a933574041c95a590d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tree.html#gab0f78fac726577a933574041c95a590d">_t_new_scape</a> (<a class="el" href="structT.html">T</a> *parent, <a class="el" href="structSemanticID.html">Symbol</a> symbol, <a class="el" href="structScape.html">Scape</a> *s)</td></tr>
@@ -309,7 +312,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>__uuid_equal</b> (<a c
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="tree_8h.html">tree.h</a></li>
-    <li class="footer">Generated on Sat Jan 23 2016 12:18:30 for ceptr by
+    <li class="footer">Generated on Sun Jan 31 2016 21:37:10 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

@@ -189,8 +189,8 @@ $(document).ready(function(){initNavTree('tree_8c_source.html','');});
 <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    <span class="keywordflow">return</span> _t_new(0,symbol,0,0);</div>
 <div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;}</div>
 <div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;</div>
-<div class="line"><a name="l00148"></a><span class="lineno"><a class="line" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">  148</a></span>&#160;<a class="code" href="structT.html">T</a> *<a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(<a class="code" href="structT.html">T</a> *parent,<a class="code" href="structSemanticID.html">Symbol</a> symbol) {</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    <span class="keywordflow">return</span> _t_new(parent,symbol,0,0);</div>
+<div class="line"><a name="l00148"></a><span class="lineno"><a class="line" href="group__tree.html#gadd1fa37c05f932fed42c43fb7015128c">  148</a></span>&#160;<a class="code" href="structT.html">T</a> *<a class="code" href="group__tree.html#gadd1fa37c05f932fed42c43fb7015128c">__t_newr</a>(<a class="code" href="structT.html">T</a> *parent,<a class="code" href="structSemanticID.html">Symbol</a> symbol,<span class="keywordtype">bool</span> is_run_node) {</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__tree.html#ga53abffe57c4ccf60c106a8a45d98d47d">__t_new</a>(parent,symbol,0,0,is_run_node);</div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;}</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;</div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;<span class="comment">/* create tree node whose surface is a specially allocated c structure,</span></div>
@@ -411,7 +411,7 @@ $(document).ready(function(){initNavTree('tree_8c_source.html','');});
 <div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;        nt = <a class="code" href="group__tree.html#ga79cff1b1b9d692acc297634be059c6a9">_t_newt</a>(p,<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(t),__t_clone((<a class="code" href="structT.html">T</a> *)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(t),0));</div>
 <div class="line"><a name="l00520"></a><span class="lineno">  520</span>&#160;    }</div>
 <div class="line"><a name="l00521"></a><span class="lineno">  521</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span>(<a class="code" href="group__tree.html#gac97d0dd9bbdeb14978735bac1eb0b25e">_t_size</a>(t) == 0)</div>
-<div class="line"><a name="l00522"></a><span class="lineno">  522</span>&#160;        nt = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(p,<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(t));</div>
+<div class="line"><a name="l00522"></a><span class="lineno">  522</span>&#160;        nt = _t_newr(p,<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(t));</div>
 <div class="line"><a name="l00523"></a><span class="lineno">  523</span>&#160;    <span class="keywordflow">else</span></div>
 <div class="line"><a name="l00524"></a><span class="lineno">  524</span>&#160;        nt = _t_new(p,<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(t),<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(t),<a class="code" href="group__tree.html#gac97d0dd9bbdeb14978735bac1eb0b25e">_t_size</a>(t));</div>
 <div class="line"><a name="l00525"></a><span class="lineno">  525</span>&#160;    DO_KIDS(t,__t_clone(<a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(t,i),nt));</div>
@@ -515,7 +515,7 @@ $(document).ready(function(){initNavTree('tree_8c_source.html','');});
 <div class="line"><a name="l00644"></a><span class="lineno">  644</span>&#160;            }</div>
 <div class="line"><a name="l00645"></a><span class="lineno">  645</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (semeq(type,NULL_STRUCTURE)) {</div>
 <div class="line"><a name="l00646"></a><span class="lineno">  646</span>&#160;                <span class="comment">// null structure literal so just add it and pop</span></div>
-<div class="line"><a name="l00647"></a><span class="lineno">  647</span>&#160;                <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,param);</div>
+<div class="line"><a name="l00647"></a><span class="lineno">  647</span>&#160;                _t_newr(t,param);</div>
 <div class="line"><a name="l00648"></a><span class="lineno">  648</span>&#160;                state = bPop;</div>
 <div class="line"><a name="l00649"></a><span class="lineno">  649</span>&#160;            }</div>
 <div class="line"><a name="l00650"></a><span class="lineno">  650</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (semeq(type,STRUCTURE_OR)) {</div>
@@ -588,7 +588,7 @@ $(document).ready(function(){initNavTree('tree_8c_source.html','');});
 <div class="line"><a name="l00717"></a><span class="lineno">  717</span>&#160;            <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00718"></a><span class="lineno">  718</span>&#160;        <span class="keywordflow">case</span> bAddRoot:</div>
 <div class="line"><a name="l00719"></a><span class="lineno">  719</span>&#160;            debug(D_TREE,<span class="stringliteral">&quot;adding node %s\n&quot;</span>,_sem_get_name(sem,param));</div>
-<div class="line"><a name="l00720"></a><span class="lineno">  720</span>&#160;            t  = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,param);</div>
+<div class="line"><a name="l00720"></a><span class="lineno">  720</span>&#160;            t  = _t_newr(t,param);</div>
 <div class="line"><a name="l00721"></a><span class="lineno">  721</span>&#160;            state = bReadSymbol;</div>
 <div class="line"><a name="l00722"></a><span class="lineno">  722</span>&#160;            <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00723"></a><span class="lineno">  723</span>&#160;        }</div>
@@ -637,7 +637,7 @@ $(document).ready(function(){initNavTree('tree_8c_source.html','');});
 <div class="line"><a name="l00776"></a><span class="lineno">  776</span>&#160;                }</div>
 <div class="line"><a name="l00777"></a><span class="lineno">  777</span>&#160;            }</div>
 <div class="line"><a name="l00778"></a><span class="lineno">  778</span>&#160;            <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00779"></a><span class="lineno">  779</span>&#160;                t = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,node);</div>
+<div class="line"><a name="l00779"></a><span class="lineno">  779</span>&#160;                t = _t_newr(t,node);</div>
 <div class="line"><a name="l00780"></a><span class="lineno">  780</span>&#160;            }</div>
 <div class="line"><a name="l00781"></a><span class="lineno">  781</span>&#160;        }</div>
 <div class="line"><a name="l00782"></a><span class="lineno">  782</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (semeq(param,STX_CP)) {</div>
@@ -661,8 +661,8 @@ $(document).ready(function(){initNavTree('tree_8c_source.html','');});
 <div class="line"><a name="l00800"></a><span class="lineno">  800</span>&#160;    <a class="code" href="structT.html">T</a> *result = NULL;</div>
 <div class="line"><a name="l00801"></a><span class="lineno">  801</span>&#160;    <a class="code" href="structT.html">T</a> *stx = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(SEMTREX_WALK);</div>
 <div class="line"><a name="l00802"></a><span class="lineno">  802</span>&#160;    <a class="code" href="structT.html">T</a> *l = <a class="code" href="group__semtrex.html#ga12e70dc3d5fde33655e8731ad3bdd935">_sl</a>(stx,SEMANTIC_LINK);</div>
-<div class="line"><a name="l00803"></a><span class="lineno">  803</span>&#160;    <a class="code" href="structT.html">T</a> *seq = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(l,SEMTREX_SEQUENCE);</div>
-<div class="line"><a name="l00804"></a><span class="lineno">  804</span>&#160;    <a class="code" href="structT.html">T</a> *x = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(seq,SEMTREX_VALUE_LITERAL);</div>
+<div class="line"><a name="l00803"></a><span class="lineno">  803</span>&#160;    <a class="code" href="structT.html">T</a> *seq = _t_newr(l,SEMTREX_SEQUENCE);</div>
+<div class="line"><a name="l00804"></a><span class="lineno">  804</span>&#160;    <a class="code" href="structT.html">T</a> *x = _t_newr(seq,SEMTREX_VALUE_LITERAL);</div>
 <div class="line"><a name="l00805"></a><span class="lineno">  805</span>&#160;    <a class="code" href="structT.html">T</a> *k = <a class="code" href="group__tree.html#ga7535eb2963c6cf5fc78cb14287581f92">_t_clone</a>(replacement_kind);</div>
 <div class="line"><a name="l00806"></a><span class="lineno">  806</span>&#160;    <a class="code" href="group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c">_t_add</a>(x,k);</div>
 <div class="line"><a name="l00807"></a><span class="lineno">  807</span>&#160;    x = <a class="code" href="group__semtrex.html#ga12e70dc3d5fde33655e8731ad3bdd935">_sl</a>(seq,REPLACEMENT_VALUE);</div>
@@ -1097,7 +1097,7 @@ $(document).ready(function(){initNavTree('tree_8c_source.html','');});
 <div class="line"><a name="l01437"></a><span class="lineno"> 1437</span>&#160;        *surfaceP += size;</div>
 <div class="line"><a name="l01438"></a><span class="lineno"> 1438</span>&#160;    }</div>
 <div class="line"><a name="l01439"></a><span class="lineno"> 1439</span>&#160;    <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l01440"></a><span class="lineno"> 1440</span>&#160;        t = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,s);</div>
+<div class="line"><a name="l01440"></a><span class="lineno"> 1440</span>&#160;        t = _t_newr(t,s);</div>
 <div class="line"><a name="l01441"></a><span class="lineno"> 1441</span>&#160;    }</div>
 <div class="line"><a name="l01442"></a><span class="lineno"> 1442</span>&#160;</div>
 <div class="line"><a name="l01443"></a><span class="lineno"> 1443</span>&#160;    <span class="keywordtype">int</span> i;</div>
@@ -1386,7 +1386,7 @@ $(document).ready(function(){initNavTree('tree_8c_source.html','');});
 <div class="ttc" id="group__tree_html_ga7535eb2963c6cf5fc78cb14287581f92"><div class="ttname"><a href="group__tree.html#ga7535eb2963c6cf5fc78cb14287581f92">_t_clone</a></div><div class="ttdeci">T * _t_clone(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00566">tree.c:566</a></div></div>
 <div class="ttc" id="group__receptor_html_ga6f650808029d4c598ebe6515d9900ef8"><div class="ttname"><a href="group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8">_r_free</a></div><div class="ttdeci">void _r_free(Receptor *r)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00170">receptor.c:170</a></div></div>
 <div class="ttc" id="tree_8h_html"><div class="ttname"><a href="tree_8h.html">tree.h</a></div><div class="ttdoc">semantic trees header file </div></div>
-<div class="ttc" id="group__tree_html_ga3e2009f5a82889263d560d2c1479606a"><div class="ttname"><a href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a></div><div class="ttdeci">T * _t_newr(T *parent, Symbol symbol)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00148">tree.c:148</a></div></div>
+<div class="ttc" id="group__tree_html_gadd1fa37c05f932fed42c43fb7015128c"><div class="ttname"><a href="group__tree.html#gadd1fa37c05f932fed42c43fb7015128c">__t_newr</a></div><div class="ttdeci">T * __t_newr(T *parent, Symbol symbol, bool is_run_node)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00148">tree.c:148</a></div></div>
 <div class="ttc" id="scape_8c_html_a3248dd3373ca8f722b69d385aec37d7d"><div class="ttname"><a href="scape_8c.html#a3248dd3373ca8f722b69d385aec37d7d">_s_free</a></div><div class="ttdeci">void _s_free(Scape *s)</div><div class="ttdef"><b>Definition:</b> <a href="scape_8c_source.html#l00043">scape.c:43</a></div></div>
 <div class="ttc" id="group__tree_html_ga81a9fea3df69847f0916eb4a84fe64d3"><div class="ttname"><a href="group__tree.html#ga81a9fea3df69847f0916eb4a84fe64d3">_t_root</a></div><div class="ttdeci">T * _t_root(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l01030">tree.c:1030</a></div></div>
 <div class="ttc" id="group__tree_html_gaa22307828da90c976a3d73932c16c1ca"><div class="ttname"><a href="group__tree.html#gaa22307828da90c976a3d73932c16c1ca">_t_serialize</a></div><div class="ttdeci">void _t_serialize(SemTable *sem, T *t, void **surfaceP, size_t *lengthP)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l01403">tree.c:1403</a></div></div>
@@ -1440,7 +1440,7 @@ $(document).ready(function(){initNavTree('tree_8c_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="tree_8c.html">tree.c</a></li>
-    <li class="footer">Generated on Sat Jan 23 2016 12:18:29 for ceptr by
+    <li class="footer">Generated on Sun Jan 31 2016 21:37:10 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

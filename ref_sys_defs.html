@@ -1216,14 +1216,14 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
    </div>
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
-       <div class="def-name"><a name="LIST_OF_ROLE_AND_SOURCE_AND_PATTERN_AND_ACTION"></a>LIST-OF-ROLE-AND-SOURCE-AND-PATTERN-AND-ACTION</div>
-       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#ROLE">ROLE</a>, <a href="ref_sys_symbols.html#SOURCE">SOURCE</a>, <a href="ref_sys_symbols.html#PATTERN">PATTERN</a>, <a href="ref_sys_symbols.html#ACTION">ACTION</a>)</div>
+       <div class="def-name"><a name="LIST_OF_ROLE_AND_SOURCE_AND_PATTERN_AND_ACTION_AND_ZERO_OR_ONE_OF_PARAMS"></a>LIST-OF-ROLE-AND-SOURCE-AND-PATTERN-AND-ACTION-AND-ZERO-OR-ONE-OF-PARAMS</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#ROLE">ROLE</a>, <a href="ref_sys_symbols.html#SOURCE">SOURCE</a>, <a href="ref_sys_symbols.html#PATTERN">PATTERN</a>, <a href="ref_sys_symbols.html#ACTION">ACTION</a>, ?(<a href="ref_sys_symbols.html#PARAMS">PARAMS</a>))</div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="EXPECT"></a>EXPECT</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_ROLE_AND_SOURCE_AND_PATTERN_AND_ACTION">LIST-OF-ROLE-AND-SOURCE-AND-PATTERN-AND-ACTION</a></div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_ROLE_AND_SOURCE_AND_PATTERN_AND_ACTION_AND_ZERO_OR_ONE_OF_PARAMS">LIST-OF-ROLE-AND-SOURCE-AND-PATTERN-AND-ACTION-AND-ZERO-OR-ONE-OF-PARAMS</a></div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-structure">
@@ -1828,13 +1828,7 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
-       <div class="def-name"><a name="GET_XADDR"></a>GET_XADDR</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#XADDR">XADDR</a></div>
-       <div class="def-comment"></div>
-   </div>
-   <div class="def-item def-symbol">
-       <div class="def-type">Symbol:</div>
-       <div class="def-name"><a name="NEW_XADDR"></a>NEW_XADDR</div>
+       <div class="def-name"><a name="WHICH_XADDR"></a>WHICH_XADDR</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#XADDR">XADDR</a></div>
        <div class="def-comment"></div>
    </div>
@@ -1907,17 +1901,24 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
    </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
+       <div class="def-name"><a name="NEW"></a>NEW</div>
+       <div class="def-sig-in"><li>what(SYMBOL:<a href="ref_sys_symbols.html#NEW_TYPE">NEW_TYPE</a>)</li></div>
+       <div class="def-sig-out">xaddr(SYMBOL:<a href="ref_sys_symbols.html#WHICH_XADDR">WHICH_XADDR</a>)</div>
+       <div class="def-comment"><i>new instance</i><br /> reduces to the xaddr of a newly created instance of type NEW_TYPE.  the structures of "what" and "value" must match, but not the symbols</div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
        <div class="def-name"><a name="GET"></a>GET</div>
-       <div class="def-sig-in"><li>what(SYMBOL:<a href="ref_sys_symbols.html#GET_XADDR">GET_XADDR</a>)</li></div>
+       <div class="def-sig-in"><li>what(SYMBOL:<a href="ref_sys_symbols.html#WHICH_XADDR">WHICH_XADDR</a>)</li></div>
        <div class="def-sig-out">value(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
        <div class="def-comment"><i>get instance value</i><br />   reduces to the value of the instance at the xaddr of the "what" parameter</div>
    </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
-       <div class="def-name"><a name="NEW"></a>NEW</div>
-       <div class="def-sig-in"><li>what(SYMBOL:<a href="ref_sys_symbols.html#NEW_TYPE">NEW_TYPE</a>)</li></div>
-       <div class="def-sig-out">xaddr(SYMBOL:<a href="ref_sys_symbols.html#NEW_XADDR">NEW_XADDR</a>)</div>
-       <div class="def-comment"><i>new instance</i><br /> reduces to the xaddr of a newly created instance of type NEW_TYPE.  the structures of "what" and "value" must match, but not the symbols</div>
+       <div class="def-name"><a name="DEL"></a>DEL</div>
+       <div class="def-sig-in"><li>what(SYMBOL:<a href="ref_sys_symbols.html#WHICH_XADDR">WHICH_XADDR</a>)</li></div>
+       <div class="def-sig-out">value(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
+       <div class="def-comment"><i>delete instance</i><br />   reduces to the value of the deleted instance at the xaddr of the "what" parameter</div>
    </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
@@ -1956,10 +1957,24 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
    </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
+       <div class="def-name"><a name="SELF_ADDR"></a>SELF_ADDR</div>
+       <div class="def-sig-in"><li>as(SYMBOL:<a href="ref_sys_symbols.html#RESULT_SYMBOL">RESULT_SYMBOL</a>)</li></div>
+       <div class="def-sig-out">address(PASSTHRU:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
+       <div class="def-comment"><i>self address</i><br />  reduces to current RECEPTOR_ADDRESS as a use of the as symbol</div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
        <div class="def-name"><a name="LISTEN"></a>LISTEN</div>
        <div class="def-sig-in"><li>on(SYMBOL:<a href="ref_sys_symbols.html#ASPECT_IDENT">ASPECT_IDENT</a>)</li><li>for(SYMBOL:<a href="ref_sys_symbols.html#CARRIER">CARRIER</a>)</li><li>match(SYMBOL:<a href="ref_sys_symbols.html#PATTERN">PATTERN</a>)</li><li>[do(SYMBOL:<a href="ref_sys_symbols.html#ACTION">ACTION</a>)]</li><li>[with(SYMBOL:<a href="ref_sys_symbols.html#PARAMS">PARAMS</a>)]</li><li>[until(SYMBOL:<a href="ref_sys_symbols.html#END_CONDITIONS">END_CONDITIONS</a>)]</li></div>
        <div class="def-sig-out">error(SYMBOL:<a href="ref_sys_symbols.html#REDUCTION_ERROR_SYMBOL">REDUCTION_ERROR_SYMBOL</a>)</div>
        <div class="def-comment"><i>plant a listener</i><br />  If you don't provide an action, the assumption is that the LISTEN process will block and  will reduce to the SEMTREX_MATCH.  This will also force the END_CONDITIONS/REPETITIONS to COUNT:1.  If "for" carrier is NULL_SYMBOL the expectation will match on all carriers.</div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="MATCH"></a>MATCH</div>
+       <div class="def-sig-in"><li>pattern(STRUCTURE:<a href="ref_sys_symbols.html#SEMTREX">SEMTREX</a>)</li><li>against(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</li><li>[return match(SYMBOL:<a href="ref_sys_symbols.html#BOOLEAN">BOOLEAN</a>)]</li></div>
+       <div class="def-sig-out">matched(SYMBOL:<a href="ref_sys_symbols.html#BOOLEAN">BOOLEAN</a>)</div>
+       <div class="def-comment"><i>semtrex match</i></div>
    </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
@@ -2016,6 +2031,20 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
        <div class="def-sig-in"><li>into(SYMBOL:<a href="ref_sys_symbols.html#RESULT_SYMBOL">RESULT_SYMBOL</a>)</li><li>str1(STRUCTURE:<a href="ref_sys_symbols.html#CSTRING">CSTRING</a>)</li><li>str2(STRUCTURE:<a href="ref_sys_symbols.html#CSTRING">CSTRING</a>)</li></div>
        <div class="def-sig-out">concatenation(STRUCTURE:<a href="ref_sys_symbols.html#CSTRING">CSTRING</a>)</div>
        <div class="def-comment"><i>concatinate strings</i><br />  concatenates two strings of any symbol type into an new symbol type specified by the "into" parameter</div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="EXPAND_STR"></a>EXPAND_STR</div>
+       <div class="def-sig-in"><li>str(STRUCTURE:<a href="ref_sys_symbols.html#CSTRING">CSTRING</a>)</li></div>
+       <div class="def-sig-out">ascii tree(SYMBOL:<a href="ref_sys_symbols.html#ASCII_CHARS">ASCII_CHARS</a>)</div>
+       <div class="def-comment"><i>expand string</i><br />  converts a CSTRING into an ASCII_CHARS tree</div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="CONTRACT_STR"></a>CONTRACT_STR</div>
+       <div class="def-sig-in"><li>into(SYMBOL:<a href="ref_sys_symbols.html#RESULT_SYMBOL">RESULT_SYMBOL</a>)</li></div>
+       <div class="def-sig-out">string(STRUCTURE:<a href="ref_sys_symbols.html#CSTRING">CSTRING</a>)</div>
+       <div class="def-comment"><i>contract to string</i><br />  converts any number of chars or cstring into a single cstring of symbol type indicated by the into param</div>
    </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
@@ -2315,6 +2344,12 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="SYMBOL_INSTANCES"></a>SYMBOL_INSTANCES</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="DELETED_INSTANCE"></a>DELETED_INSTANCE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
        <div class="def-comment"></div>
    </div>
 </div>
@@ -2637,6 +2672,12 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
        <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
        <div class="def-comment"></div>
    </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="TEST_CHAR_SYMBOL"></a>TEST_CHAR_SYMBOL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CHAR">CHAR</a></div>
+       <div class="def-comment"></div>
+   </div>
 </div>
 <div class="defs-context">
    <h4>CLOCK_CONTEXT</h4>
@@ -2685,7 +2726,7 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Jan 23 2016 12:18:30 for ceptr by
+    <li class="footer">Generated on Sun Jan 31 2016 21:37:10 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

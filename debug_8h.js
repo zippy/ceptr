@@ -5,6 +5,7 @@ var debug_8h =
     [ "debug", "debug_8h.html#aef07eb1f60d520f3c22c6d45fc4ba2cd", null ],
     [ "DEBUG_DEFAULT_MASK", "debug_8h.html#a09f0d91897644560e914085ce94b2c6d", null ],
     [ "DEBUG_MASK", "debug_8h.html#a3a0a4b8064a8773b4e3a4a3c5bdc0ea3", null ],
+    [ "DEBUGGER", "debug_8h.html#a1a79d68958390ef0582f82cd2272a3a1", null ],
     [ "debugging", "debug_8h.html#af0b593fd1ae81504a7418b6c3e14655e", null ],
     [ "D_NONE", "debug_8h.html#a06fc87d81c62e9abb8790b6e5713c55bab4507046b5535a01282b3f9e30decdb1", null ],
     [ "D_ALL", "debug_8h.html#a06fc87d81c62e9abb8790b6e5713c55ba02b5d2162ae547d9f1df826cd7e4acea", null ],

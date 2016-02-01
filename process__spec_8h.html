@@ -132,12 +132,18 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>testRunTree</b> ()</t
 <tr class="memitem:ab96cbcfdd06c93a0d77a65e8418d13fa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab96cbcfdd06c93a0d77a65e8418d13fa"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>testProcessGet</b> ()</td></tr>
 <tr class="separator:ab96cbcfdd06c93a0d77a65e8418d13fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10ebe0b9c73bd52c4e15057d8787c9bc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a10ebe0b9c73bd52c4e15057d8787c9bc"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>testProcessDel</b> ()</td></tr>
+<tr class="separator:a10ebe0b9c73bd52c4e15057d8787c9bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac9931038b16167e181542f5d5e11ccdb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac9931038b16167e181542f5d5e11ccdb"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>testProcessNew</b> ()</td></tr>
 <tr class="separator:ac9931038b16167e181542f5d5e11ccdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab16282476754b9a10d31b9aed4c544a3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab16282476754b9a10d31b9aed4c544a3"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>testProcessDo</b> ()</td></tr>
 <tr class="separator:ab16282476754b9a10d31b9aed4c544a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa683816428e527fa0e7610498cf44d8d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa683816428e527fa0e7610498cf44d8d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>testProcessSemtrex</b> ()</td></tr>
+<tr class="separator:aa683816428e527fa0e7610498cf44d8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87403cd06cd709734c257665f27b84f2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a87403cd06cd709734c257665f27b84f2"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>testProcessFillMatch</b> ()</td></tr>
 <tr class="separator:a87403cd06cd709734c257665f27b84f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -202,6 +208,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>testProcessIterateOnS
 <tr class="memitem:a90b4b5b026569d3f4e2f2a1905d0d788"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a90b4b5b026569d3f4e2f2a1905d0d788"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>testProcessListen</b> ()</td></tr>
 <tr class="separator:a90b4b5b026569d3f4e2f2a1905d0d788"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91e698d76341899977e9ac86821f56b4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a91e698d76341899977e9ac86821f56b4"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>testProcessSelfAddr</b> ()</td></tr>
+<tr class="separator:a91e698d76341899977e9ac86821f56b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46990c9ddd15682d03076d589d46a0df"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="process__spec_8h.html#a46990c9ddd15682d03076d589d46a0df">testProcessErrorTrickleUp</a> ()</td></tr>
 <tr class="separator:a46990c9ddd15682d03076d589d46a0df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a014ab3883818d777171247160a556f70"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="process__spec_8h.html#a014ab3883818d777171247160a556f70">testProcessMulti</a> ()</td></tr>
@@ -243,7 +252,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>G_next_process_id</b><
 <p>[defIfEven] </p>
 <p>helper to generate an example process definition that creates a divide by zero error</p>
 <div class="fragment"></div><!-- fragment -->
-<p>Definition at line <a class="el" href="process__spec_8h_source.html#l00781">781</a> of file <a class="el" href="process__spec_8h_source.html">process_spec.h</a>.</p>
+<p>Definition at line <a class="el" href="process__spec_8h_source.html#l00879">879</a> of file <a class="el" href="process__spec_8h_source.html">process_spec.h</a>.</p>
 
 </div>
 </div>
@@ -276,8 +285,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>G_next_process_id</b><
 <div class="line"><span class="comment">       }</span></div>
 <div class="line"><span class="comment">    */</span></div>
 <div class="line">    code = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(IF);                       <span class="comment">// IF is a system process</span></div>
-<div class="line">    <a class="code" href="structT.html">T</a> *eq = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(code,EQ_INT);</div>
-<div class="line">    <a class="code" href="structT.html">T</a> *mod = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(eq,MOD_INT);</div>
+<div class="line">    <a class="code" href="structT.html">T</a> *eq = _t_newr(code,EQ_INT);</div>
+<div class="line">    <a class="code" href="structT.html">T</a> *mod = _t_newr(eq,MOD_INT);</div>
 <div class="line">    <span class="keywordtype">int</span> p1[] = {2,1,TREE_PATH_TERMINATOR};        <span class="comment">// paths to the parameter refrences in the run tree: second branch, b1</span></div>
 <div class="line">    <span class="keywordtype">int</span> p2[] = {2,2,TREE_PATH_TERMINATOR};        <span class="comment">// second branch, b2</span></div>
 <div class="line">    <span class="keywordtype">int</span> p3[] = {2,3,TREE_PATH_TERMINATOR};        <span class="comment">// second branch, b3</span></div>
@@ -296,7 +305,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>G_next_process_id</b><
 <div class="line">    G_ifeven =  <a class="code" href="group__def.html#gaee8a21fdd29944bf44bb03457511515d">_d_define_process</a>(G_sem,code,<span class="stringliteral">&quot;if even&quot;</span>,<span class="stringliteral">&quot;return 2nd child if even, third if not&quot;</span>,signature,TEST_CONTEXT);</div>
 <div class="line">}</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="process__spec_8h_source.html#l00740">740</a> of file <a class="el" href="process__spec_8h_source.html">process_spec.h</a>.</p>
+<p>Definition at line <a class="el" href="process__spec_8h_source.html#l00838">838</a> of file <a class="el" href="process__spec_8h_source.html">process_spec.h</a>.</p>
 
 </div>
 </div>
@@ -315,7 +324,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>G_next_process_id</b><
 <p>[testProcessErrorTrickleUp]</p>
 <p>[testProcessErrorTrickleUp] </p>
 
-<p>Definition at line <a class="el" href="process__spec_8h_source.html#l01117">1117</a> of file <a class="el" href="process__spec_8h_source.html">process_spec.h</a>.</p>
+<p>Definition at line <a class="el" href="process__spec_8h_source.html#l01225">1225</a> of file <a class="el" href="process__spec_8h_source.html">process_spec.h</a>.</p>
 
 </div>
 </div>
@@ -333,7 +342,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>G_next_process_id</b><
 </div><div class="memdoc">
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000045">Todo:</a></b></dt><dd>when interpolating from a match, how do we handle non-leaf interpollations, i.e. where do you hook children onto? </dd></dl>
 
-<p>Definition at line <a class="el" href="process__spec_8h_source.html#l00186">186</a> of file <a class="el" href="process__spec_8h_source.html">process_spec.h</a>.</p>
+<p>Definition at line <a class="el" href="process__spec_8h_source.html#l00245">245</a> of file <a class="el" href="process__spec_8h_source.html">process_spec.h</a>.</p>
 
 </div>
 </div>
@@ -351,7 +360,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>G_next_process_id</b><
 </div><div class="memdoc">
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000046">Todo:</a></b></dt><dd>structure type checking for integer math? Too expensive? </dd></dl>
 
-<p>Definition at line <a class="el" href="process__spec_8h_source.html#l00199">199</a> of file <a class="el" href="process__spec_8h_source.html">process_spec.h</a>.</p>
+<p>Definition at line <a class="el" href="process__spec_8h_source.html#l00258">258</a> of file <a class="el" href="process__spec_8h_source.html">process_spec.h</a>.</p>
 
 </div>
 </div>
@@ -370,7 +379,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>G_next_process_id</b><
 <p>[testProcessMulti]</p>
 <p>[testProcessMulti] </p>
 
-<p>Definition at line <a class="el" href="process__spec_8h_source.html#l01143">1143</a> of file <a class="el" href="process__spec_8h_source.html">process_spec.h</a>.</p>
+<p>Definition at line <a class="el" href="process__spec_8h_source.html#l01251">1251</a> of file <a class="el" href="process__spec_8h_source.html">process_spec.h</a>.</p>
 
 </div>
 </div>
@@ -391,7 +400,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>G_next_process_id</b><
 <p>[testProcessReduceDefinedProcess]</p>
 <p>[testProcessReduceDefinedProcess] </p>
 
-<p>Definition at line <a class="el" href="process__spec_8h_source.html#l00799">799</a> of file <a class="el" href="process__spec_8h_source.html">process_spec.h</a>.</p>
+<p>Definition at line <a class="el" href="process__spec_8h_source.html#l00897">897</a> of file <a class="el" href="process__spec_8h_source.html">process_spec.h</a>.</p>
 
 </div>
 </div>
@@ -401,7 +410,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>G_next_process_id</b><
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><a class="el" href="process__spec_8h.html">process_spec.h</a></li>
-    <li class="footer">Generated on Sat Jan 23 2016 12:18:30 for ceptr by
+    <li class="footer">Generated on Sun Jan 31 2016 21:37:10 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

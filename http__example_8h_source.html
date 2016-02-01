@@ -322,23 +322,23 @@ $(document).ready(function(){initNavTree('http__example_8h_source.html','');});
 <div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    <span class="comment">// do that as a best practice so that semtrex expectation matching can efficiently</span></div>
 <div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    <span class="comment">// switch to different processing based on version numbers.</span></div>
 <div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    <a class="code" href="structT.html">T</a> *t = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(HTTP_REQUEST);</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    <a class="code" href="structT.html">T</a> *t_version = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,HTTP_REQUEST_VERSION);</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    <a class="code" href="structT.html">T</a> *t_version = _t_newr(t,HTTP_REQUEST_VERSION);</div>
 <div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    _t_newi(t_version,VERSION_MAJOR,1);</div>
 <div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    _t_newi(t_version,VERSION_MINOR,0);</div>
 <div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    <a class="code" href="structT.html">T</a> *t_method = _t_new(t,HTTP_REQUEST_METHOD,<span class="stringliteral">&quot;GET&quot;</span>,4);</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;    <a class="code" href="structT.html">T</a> *t_path = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,HTTP_REQUEST_PATH);</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    <a class="code" href="structT.html">T</a> *t_segments = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t_path,HTTP_REQUEST_PATH_SEGMENTS);</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;    <a class="code" href="structT.html">T</a> *t_path = _t_newr(t,HTTP_REQUEST_PATH);</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    <a class="code" href="structT.html">T</a> *t_segments = _t_newr(t_path,HTTP_REQUEST_PATH_SEGMENTS);</div>
 <div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    _t_new(t_segments,HTTP_REQUEST_PATH_SEGMENT,<span class="stringliteral">&quot;groups&quot;</span>,7);</div>
 <div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    _t_new(t_segments,HTTP_REQUEST_PATH_SEGMENT,<span class="stringliteral">&quot;5&quot;</span>,2);</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    <a class="code" href="structT.html">T</a> *t_file = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t_path,HTTP_REQUEST_PATH_FILE);</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    <a class="code" href="structT.html">T</a> *t_file = _t_newr(t_path,HTTP_REQUEST_PATH_FILE);</div>
 <div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    _t_new(t_file,FILE_NAME,<span class="stringliteral">&quot;users&quot;</span>,6);</div>
 <div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    _t_new(t_file,FILE_EXTENSION,<span class="stringliteral">&quot;json&quot;</span>,5);</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    <a class="code" href="structT.html">T</a> *t_query = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t_path,HTTP_REQUEST_PATH_QUERY);</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    <a class="code" href="structT.html">T</a> *t_params = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t_query,HTTP_REQUEST_PATH_QUERY_PARAMS);</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    <a class="code" href="structT.html">T</a> *t_param1 = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t_params,HTTP_REQUEST_PATH_QUERY_PARAM);</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    <a class="code" href="structT.html">T</a> *t_query = _t_newr(t_path,HTTP_REQUEST_PATH_QUERY);</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    <a class="code" href="structT.html">T</a> *t_params = _t_newr(t_query,HTTP_REQUEST_PATH_QUERY_PARAMS);</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    <a class="code" href="structT.html">T</a> *t_param1 = _t_newr(t_params,HTTP_REQUEST_PATH_QUERY_PARAM);</div>
 <div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    _t_new(t_param1,PARAM_KEY,<span class="stringliteral">&quot;sort_by&quot;</span>,8);</div>
 <div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    _t_new(t_param1,PARAM_VALUE,<span class="stringliteral">&quot;last_name&quot;</span>,10);</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    <a class="code" href="structT.html">T</a> *t_param2 = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t_params,HTTP_REQUEST_PATH_QUERY_PARAM);</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    <a class="code" href="structT.html">T</a> *t_param2 = _t_newr(t_params,HTTP_REQUEST_PATH_QUERY_PARAM);</div>
 <div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    _t_new(t_param2,PARAM_KEY,<span class="stringliteral">&quot;page&quot;</span>,5);</div>
 <div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    _t_new(t_param2,PARAM_VALUE,<span class="stringliteral">&quot;2&quot;</span>,2);</div>
 <div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;</div>
@@ -367,9 +367,9 @@ $(document).ready(function(){initNavTree('http__example_8h_source.html','');});
 <div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;    *pP = p;</div>
 <div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;</div>
 <div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    <a class="code" href="structT.html">T</a> *params = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(PARAMS);</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    <a class="code" href="structT.html">T</a> *http_resp = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(params,HTTP_RESPONSE);</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    <a class="code" href="structT.html">T</a> *http_resp = _t_newr(params,HTTP_RESPONSE);</div>
 <div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;    _t_new(http_resp,HTTP_RESPONSE_CONTENT_TYPE,<span class="stringliteral">&quot;CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT&quot;</span>,38);</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    <a class="code" href="structT.html">T</a> *s = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(http_resp,SLOT);</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    <a class="code" href="structT.html">T</a> *s = _t_newr(http_resp,SLOT);</div>
 <div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    _t_news(s,USAGE,HTTP_REQUEST_PATH_SEGMENT);</div>
 <div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    *paramsP = params;</div>
 <div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;}</div>
@@ -379,21 +379,21 @@ $(document).ready(function(){initNavTree('http__example_8h_source.html','');});
 <div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;</div>
 <div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;    <a class="code" href="structT.html">T</a> *stx= <a class="code" href="group__semtrex.html#ga12e70dc3d5fde33655e8731ad3bdd935">_sl</a>(0,ASCII_CHARS);</div>
 <div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    t = _t_news(stx,SEMTREX_GROUP,HTTP_REQUEST);</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;    <a class="code" href="structT.html">T</a> *sq = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,SEMTREX_SEQUENCE);</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;    <a class="code" href="structT.html">T</a> *sq = _t_newr(t,SEMTREX_SEQUENCE);</div>
 <div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;    t = _t_news(sq,SEMTREX_GROUP,HTTP_REQUEST_METHOD);</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    t = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,SEMTREX_ONE_OR_MORE);</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    t = _t_newr(t,SEMTREX_ONE_OR_MORE);</div>
 <div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;    __stxcvm(t,1,1,<span class="charliteral">&#39; &#39;</span>);  </div>
 <div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;    __stxcv(sq,<span class="charliteral">&#39; &#39;</span>);</div>
 <div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;</div>
 <div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;    t = _t_news(sq,SEMTREX_GROUP,HTTP_REQUEST_PATH);</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    <a class="code" href="structT.html">T</a> *sqq = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,SEMTREX_SEQUENCE);</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    <a class="code" href="structT.html">T</a> *sqq = _t_newr(t,SEMTREX_SEQUENCE);</div>
 <div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;</div>
 <div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;    t = _t_news(sqq,SEMTREX_GROUP,HTTP_REQUEST_PATH_SEGMENTS);</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;    t = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,SEMTREX_ONE_OR_MORE);</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;    t = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,SEMTREX_SEQUENCE);</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;    t = _t_newr(t,SEMTREX_ONE_OR_MORE);</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;    t = _t_newr(t,SEMTREX_SEQUENCE);</div>
 <div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;    __stxcv(t,<span class="charliteral">&#39;/&#39;</span>);</div>
 <div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    t = _t_news(t,SEMTREX_GROUP,HTTP_REQUEST_PATH_SEGMENT);</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    t = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,SEMTREX_ZERO_OR_MORE);</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    t = _t_newr(t,SEMTREX_ZERO_OR_MORE);</div>
 <div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;    __stxcvm(t,1,3,<span class="charliteral">&#39;/&#39;</span>,<span class="charliteral">&#39;?&#39;</span>,<span class="charliteral">&#39; &#39;</span>);</div>
 <div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;</div>
 <div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;    <span class="comment">/* t = _t_news(sq,SEMTREX_GROUP,HTTP_REQUEST_PATH_FILE); */</span></div>
@@ -409,27 +409,27 @@ $(document).ready(function(){initNavTree('http__example_8h_source.html','');});
 <div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;    <span class="comment">/* t = _t_newr(t,SEMTREX_ONE_OR_MORE); */</span></div>
 <div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;    <span class="comment">/* __stxcvm(t,1,2,&#39;?&#39;,&#39; &#39;); */</span></div>
 <div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;    t = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(sq,SEMTREX_ZERO_OR_ONE);</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;    t = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,SEMTREX_SEQUENCE);</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;    t = _t_newr(sq,SEMTREX_ZERO_OR_ONE);</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;    t = _t_newr(t,SEMTREX_SEQUENCE);</div>
 <div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;    __stxcv(t,<span class="charliteral">&#39;?&#39;</span>);</div>
 <div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;</div>
 <div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;    <a class="code" href="structT.html">T</a> *f;</div>
 <div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;    t = _t_news(t,SEMTREX_GROUP,HTTP_REQUEST_PATH_QUERY);</div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;    t = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,SEMTREX_ONE_OR_MORE);</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;    t = _t_newr(t,SEMTREX_ONE_OR_MORE);</div>
 <div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;    t = _t_news(t,SEMTREX_GROUP,HTTP_REQUEST_PATH_QUERY_PARAMS);</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;    t = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,SEMTREX_ONE_OR_MORE);</div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;    <a class="code" href="structT.html">T</a> *qps = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,SEMTREX_SEQUENCE);</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;    t = _t_newr(t,SEMTREX_ONE_OR_MORE);</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;    <a class="code" href="structT.html">T</a> *qps = _t_newr(t,SEMTREX_SEQUENCE);</div>
 <div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;    t = _t_news(qps,SEMTREX_GROUP,HTTP_REQUEST_PATH_QUERY_PARAM);</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;    f = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,SEMTREX_SEQUENCE);</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;    f = _t_newr(t,SEMTREX_SEQUENCE);</div>
 <div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    t = _t_news(f,SEMTREX_GROUP,PARAM_KEY);</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;    t = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,SEMTREX_ONE_OR_MORE);</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;    t = _t_newr(t,SEMTREX_ONE_OR_MORE);</div>
 <div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;    __stxcvm(t,1,3,<span class="charliteral">&#39;&amp;&#39;</span>,<span class="charliteral">&#39; &#39;</span>,<span class="charliteral">&#39;=&#39;</span>);</div>
 <div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;    __stxcv(f,<span class="charliteral">&#39;=&#39;</span>);</div>
 <div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;    t = _t_news(f,SEMTREX_GROUP,PARAM_VALUE);</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;    t = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,SEMTREX_ZERO_OR_MORE);</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;    t = _t_newr(t,SEMTREX_ZERO_OR_MORE);</div>
 <div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;    __stxcvm(t,1,2,<span class="charliteral">&#39;&amp;&#39;</span>,<span class="charliteral">&#39; &#39;</span>);</div>
 <div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;</div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;    t = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(qps,SEMTREX_ZERO_OR_ONE);</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;    t = _t_newr(qps,SEMTREX_ZERO_OR_ONE);</div>
 <div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;    __stxcv(t,<span class="charliteral">&#39;&amp;&#39;</span>);</div>
 <div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;</div>
 <div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;    __stxcv(sq,<span class="charliteral">&#39; &#39;</span>);</div>
@@ -440,7 +440,7 @@ $(document).ready(function(){initNavTree('http__example_8h_source.html','');});
 <div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;    __stxcv(sq,<span class="charliteral">&#39;P&#39;</span>);</div>
 <div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;    __stxcv(sq,<span class="charliteral">&#39;/&#39;</span>);</div>
 <div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;    t = _t_news(sq,SEMTREX_GROUP,HTTP_REQUEST_VERSION);</div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;    t = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,SEMTREX_SEQUENCE);</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;    t = _t_newr(t,SEMTREX_SEQUENCE);</div>
 <div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;    f = _t_news(t,SEMTREX_GROUP,VERSION_MAJOR);</div>
 <div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;    __stxcv(f,<span class="charliteral">&#39;0&#39;</span>);</div>
 <div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;    __stxcv(t,<span class="charliteral">&#39;.&#39;</span>);</div>
@@ -501,7 +501,7 @@ $(document).ready(function(){initNavTree('http__example_8h_source.html','');});
 <div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;        <a class="code" href="structT.html">T</a> *a = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(HTML_ATTRIBUTES);</div>
 <div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;        <span class="keywordtype">int</span> j,ac = <a class="code" href="group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc">_t_children</a>(c);</div>
 <div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;        <span class="keywordflow">for</span>(j=4;j&lt;=ac;j++) {</div>
-<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;            <a class="code" href="structT.html">T</a> *attr = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(a,HTML_ATTRIBUTE);</div>
+<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;            <a class="code" href="structT.html">T</a> *attr = _t_newr(a,HTML_ATTRIBUTE);</div>
 <div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;            <a class="code" href="structT.html">T</a> *at = <a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(c,j);</div>
 <div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;            <a class="code" href="structT.html">T</a> *m = <a class="code" href="group__semtrex.html#gada90f89374f4577e3ac8819e500a97a7">_t_get_match</a>(at,PARAM_KEY);</div>
 <div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;            <a class="code" href="group__semtrex.html#ga4ff0c2f907a002cce83813f17b6481d5">asciiT_tos</a>(h,m,attr,PARAM_KEY);</div>
@@ -528,10 +528,10 @@ $(document).ready(function(){initNavTree('http__example_8h_source.html','');});
 <div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;    <span class="comment">//  T *st = _t_newr(sq,SEMTREX_ZERO_OR_MORE);</span></div>
 <div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;    <span class="comment">//  _t_newr(st,SEMTREX_SYMBOL_ANY);</span></div>
 <div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;    <a class="code" href="structT.html">T</a> *g =  _t_news(s,SEMTREX_GROUP,HTML_TAG);</div>
-<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;    <a class="code" href="structT.html">T</a> *sq = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(g,SEMTREX_SEQUENCE);</div>
+<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;    <a class="code" href="structT.html">T</a> *sq = _t_newr(g,SEMTREX_SEQUENCE);</div>
 <div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;    <a class="code" href="group__semtrex.html#ga12e70dc3d5fde33655e8731ad3bdd935">_sl</a>(sq,HTML_TOK_TAG_OPEN);</div>
 <div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;    g = _t_news(sq,SEMTREX_GROUP,HTML_CONTENT);</div>
-<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;    <a class="code" href="structT.html">T</a>* st = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(g,SEMTREX_ZERO_OR_MORE);</div>
+<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;    <a class="code" href="structT.html">T</a>* st = _t_newr(g,SEMTREX_ZERO_OR_MORE);</div>
 <div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;    <a class="code" href="group__semtrex.html#gabbe3a3359feb3be7f9dd5b7fbbbb74ed">__sl</a>(st,1,2,HTML_TOK_TAG_OPEN,HTML_TOK_TAG_CLOSE);</div>
 <div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;    <a class="code" href="group__semtrex.html#ga12e70dc3d5fde33655e8731ad3bdd935">_sl</a>(sq,HTML_TOK_TAG_CLOSE);</div>
 <div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;</div>
@@ -577,7 +577,7 @@ $(document).ready(function(){initNavTree('http__example_8h_source.html','');});
 <div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;        <span class="keywordtype">char</span> *otag = <a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(t);</div>
 <div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160;        <a class="code" href="structSemanticID.html">Symbol</a> ts = getTag(otag,G_stag_sym,G_stag_str);</div>
 <div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;        <a class="code" href="group__tree.html#gad6597b652983165f6b2993211a598ad4">__t_morph</a>(t,ts,0,0,0);</div>
-<div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160;        <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(t,HTML_CONTENT);</div>
+<div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160;        _t_newr(t,HTML_CONTENT);</div>
 <div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;        delta = makeDelta(TREE_DELTA_REPLACE,path,t,1);</div>
 <div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;        wjson(G_sem,delta,<span class="stringliteral">&quot;html&quot;</span>,fnc++);</div>
 <div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160;        <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(delta);</div>
@@ -596,11 +596,11 @@ $(document).ready(function(){initNavTree('http__example_8h_source.html','');});
 <div class="line"><a name="l00510"></a><span class="lineno">  510</span>&#160;<span class="keywordtype">void</span> testHTTPExample() {</div>
 <div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160;    <a class="code" href="structT.html">T</a> *t = parseHTML(<span class="stringliteral">&quot;&lt;html&gt;&lt;body&gt;&lt;div&gt;Hello &lt;b&gt;world!&lt;/b&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;&quot;</span>);</div>
 <div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160;    <a class="code" href="structT.html">T</a> *r = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(HTTP_RESPONSE);</div>
-<div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;    <a class="code" href="structT.html">T</a> *s = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(r,HTTP_RESPONSE_STATUS);</div>
+<div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;    <a class="code" href="structT.html">T</a> *s = _t_newr(r,HTTP_RESPONSE_STATUS);</div>
 <div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;    _t_newi(s,STATUS_VALUE,200);</div>
 <div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160;    _t_new_str(s,STATUS_TEXT,<span class="stringliteral">&quot;OK&quot;</span>);</div>
 <div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;    _t_new_str(r,HTTP_RESPONSE_CONTENT_TYPE,<span class="stringliteral">&quot;CeptrSymbol/HTML_DOCUMENT&quot;</span>);</div>
-<div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;    <a class="code" href="structT.html">T</a> *d = <a class="code" href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a>(r,HTML_DOCUMENT);</div>
+<div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;    <a class="code" href="structT.html">T</a> *d = _t_newr(r,HTML_DOCUMENT);</div>
 <div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;    <a class="code" href="group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c">_t_add</a>(d,t);</div>
 <div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;    spec_is_str_equal(t2s(r),<span class="stringliteral">&quot;(HTTP_RESPONSE (HTTP_RESPONSE_STATUS (STATUS_VALUE:200) (STATUS_TEXT:OK)) (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTML_DOCUMENT) (HTML_DOCUMENT (HTML_HTML (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_BODY (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_DIV (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_TEXT:Hello ) (HTML_B (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_TEXT:world!)))))))))))&quot;</span>);</div>
 <div class="line"><a name="l00520"></a><span class="lineno">  520</span>&#160;    wjson(G_sem,r,<span class="stringliteral">&quot;httpresp&quot;</span>,-1);</div>
@@ -620,7 +620,6 @@ $(document).ready(function(){initNavTree('http__example_8h_source.html','');});
 <div class="ttc" id="group__tree_html_ga55270b512ed52ffe5a938a793fa5cd7f"><div class="ttname"><a href="group__tree.html#ga55270b512ed52ffe5a938a793fa5cd7f">_t_path_depth</a></div><div class="ttdeci">int _t_path_depth(int *p)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l01120">tree.c:1120</a></div></div>
 <div class="ttc" id="group__tree_html_gae4c9b743462f0a3808c9f02c3bf33da8"><div class="ttname"><a href="group__tree.html#gae4c9b743462f0a3808c9f02c3bf33da8">_t_get_path</a></div><div class="ttdeci">int * _t_get_path(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l01139">tree.c:1139</a></div></div>
 <div class="ttc" id="group__receptor_html_ga6f650808029d4c598ebe6515d9900ef8"><div class="ttname"><a href="group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8">_r_free</a></div><div class="ttdeci">void _r_free(Receptor *r)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00170">receptor.c:170</a></div></div>
-<div class="ttc" id="group__tree_html_ga3e2009f5a82889263d560d2c1479606a"><div class="ttname"><a href="group__tree.html#ga3e2009f5a82889263d560d2c1479606a">_t_newr</a></div><div class="ttdeci">T * _t_newr(T *parent, Symbol symbol)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00148">tree.c:148</a></div></div>
 <div class="ttc" id="group__semtrex_html_gabbe3a3359feb3be7f9dd5b7fbbbb74ed"><div class="ttname"><a href="group__semtrex.html#gabbe3a3359feb3be7f9dd5b7fbbbb74ed">__sl</a></div><div class="ttdeci">T * __sl(T *p, bool not, int count,...)</div><div class="ttdef"><b>Definition:</b> <a href="semtrex_8c_source.html#l01159">semtrex.c:1159</a></div></div>
 <div class="ttc" id="group__tree_html_ga07dd808fabd8a722b417f2f5e5ca132b"><div class="ttname"><a href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a></div><div class="ttdeci">T * _t_child(T *t, int i)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l01009">tree.c:1009</a></div></div>
 <div class="ttc" id="group__semtrex_html_gad46a0cafec3ba9ca1500ecd6f8984238"><div class="ttname"><a href="group__semtrex.html#gad46a0cafec3ba9ca1500ecd6f8984238">makeASCIITree</a></div><div class="ttdeci">T * makeASCIITree(char *c)</div><div class="ttdef"><b>Definition:</b> <a href="semtrex_8c_source.html#l01089">semtrex.c:1089</a></div></div>
@@ -650,7 +649,7 @@ $(document).ready(function(){initNavTree('http__example_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><a class="el" href="http__example_8h.html">http_example.h</a></li>
-    <li class="footer">Generated on Sat Jan 23 2016 12:18:29 for ceptr by
+    <li class="footer">Generated on Sun Jan 31 2016 21:37:10 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

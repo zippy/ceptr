@@ -76,6 +76,7 @@ var def_8h =
     [ "ExpectSourceIdx", "group__def.html#ggab04a0655cd1e3bcac5e8f48c18df1a57afdd0a57adf3d85dfaf8885b08ffc1cc4", null ],
     [ "ExpectPatternIdx", "group__def.html#ggab04a0655cd1e3bcac5e8f48c18df1a57af2a0215566c74e6a28f4a12751a0c210", null ],
     [ "ExpectActionIdx", "group__def.html#ggab04a0655cd1e3bcac5e8f48c18df1a57a845a427966c03340cdf8f5ff61c4995d", null ],
+    [ "ExpectParamsIdx", "group__def.html#ggab04a0655cd1e3bcac5e8f48c18df1a57a180c286e2c24dbe27dbc3755042e0a05", null ],
     [ "ASPECTIndexes", "group__def.html#ga5d784acb0641793528d225b9cf6aeece", [
       [ "aspectExpectationsIdx", "group__def.html#gga5d784acb0641793528d225b9cf6aeeceadceb2c21432add228dea877767e8050d", null ],
       [ "aspectSignalsIdx", "group__def.html#gga5d784acb0641793528d225b9cf6aeeceadf885c0fe9b0de2d587b6241bc8ab2aa", null ]

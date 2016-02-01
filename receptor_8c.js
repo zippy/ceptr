@@ -1,6 +1,7 @@
 var receptor_8c =
 [
     [ "___clock_thread", "group__receptor.html#ga4cb85b79ae4207e4595d003d11beb226", null ],
+    [ "___r_make_addr", "group__receptor.html#gaa527a7d21f05aefecb3a98b080ae278b", null ],
     [ "__r_add_expectation", "group__receptor.html#gaea860a7adb59f9097232671cc426fba2", null ],
     [ "__r_build_expectation", "group__receptor.html#ga1934a15079da0b2f2a3112261010cd66", null ],
     [ "__r_build_wakeup_info", "group__receptor.html#ga2489d73f268a2bb8bd0f8a04e3ffd731", null ],
@@ -17,7 +18,6 @@ var receptor_8c =
     [ "__r_get_symbol_structure", "group__receptor.html#ga120e66982d483fbe004fd969cf1c353f", null ],
     [ "__r_init", "receptor_8c.html#a3df5d946055afd7aa91c5dd7d676fa9d", null ],
     [ "__r_kill", "group__receptor.html#ga2e6346f24ce76ad12990f6863d1ff3d6", null ],
-    [ "__r_make_addr", "group__receptor.html#ga26df1ff50cb08812f6d515e16a987e80", null ],
     [ "__r_make_definitions", "group__receptor.html#gabaaec446095a7557ebae18e87d760454", null ],
     [ "__r_make_signal", "group__receptor.html#ga893186e8d759e9aa1f14d932900e8046", null ],
     [ "__r_make_timestamp", "group__receptor.html#gabd442a49cee4e353034991f0049e2dda", null ],
@@ -33,6 +33,7 @@ var receptor_8c =
     [ "_r_define_structure", "group__receptor.html#gae291bec8771c13074164984b08db4874", null ],
     [ "_r_define_symbol", "group__receptor.html#ga29fd5ebc5d1c142a7da96bd0dd36292c", null ],
     [ "_r_defineClockReceptor", "group__receptor.html#ga38c5f03b0087fce63a149a011284a63d", null ],
+    [ "_r_delete_instance", "group__receptor.html#ga2d10d474fac25653e38738ba8ac027e7", null ],
     [ "_r_deliver", "group__receptor.html#ga7d40f33135ee51640d0d24b8c9e3e046", null ],
     [ "_r_free", "group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8", null ],
     [ "_r_get_instance", "group__receptor.html#gadc618904f81240b244e816234d1c906e", null ],
