@@ -50,7 +50,7 @@ The tests also produce a bunch of semantic trees dumped out to json for visualiz
 
 [![Join the dev chat at https://gitter.im/zippy/ceptr](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/zippy/ceptr?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-[![Ready](https://badge.waffle.io/zippy/ceptr.svg?label=ready&title=Ready)](http://waffle.io/zippy/ceptr)
+[![In Progress](https://badge.waffle.io/zippy/ceptr.svg?label=in%20progress&title=In%20Progress)](http://waffle.io/zippy/ceptr)
 
 [issue tracking](https://github.com/zippy/ceptr/issues)
 
