@@ -1,6 +1,6 @@
 # ceptr
 
-Ceptr provides a new computing stack for semantic self-describing data, and protocols.
+Ceptr provides a new computing stack for semantic self-describing data and protocols, which enables a new kind recomposable medium for distributed social computing.
 
 ## Installation
 
@@ -10,7 +10,7 @@ Then cd into the root directory of the repo and type:
 
     make ceptr
 
-This will build a ceptr node running the command-line receptor, which is currently very primitive, with just one command "time". more coming soon!
+This will build a ceptr node running the command-line receptor, which is currently very primitive, with just four commands "time" (which returns a Tick semantic tree) "receptors" (which lists the currently active receptors) "debug" (which toggles debug mode) and "quit". more coming soon!
 
 For some guidance on getting the code-base to compile on Windows using Eclipse see: https://github.com/zippy/ceptr/blob/master/ceptr-eclipse-csharp-interface.txt  (Note: this hasn't been tested recently...)
 
@@ -25,6 +25,8 @@ Also, see "Testing" below.
 You can read the code and API documentation here: http://zippy.github.io/ceptr/
 
 Or watch a brief overview webinar/video here: https://www.youtube.com/watch?v=3Db-8lD1lNA
+
+Or check out this prezi: https://prezi.com/raptqxuputwp/ceptr-tech-overview/
 
 ## Architecture
 
@@ -42,7 +44,7 @@ To compile and run all the tests simply cd into the root directory and type:
 
 This runs all of the tests, which live in the specs sub-directory.
 
-The tests also produce a bunch semantic trees dumped out to json for visualization in a testing web-app.  To be able to see these, you need to place the contents of the "web" sub-directory into a web server somewhere, and then just point your browser to that directory.  Please note that this isn't a comprehensive testing environment, just a space we've used for creating visuals for presentation purposes.
+The tests also produce a bunch of semantic trees dumped out to json for visualization in a testing web-app.  To be able to see these, you need to place the contents of the "web" sub-directory into a web server somewhere, and then just point your browser to that directory.  Please note that this isn't a comprehensive testing environment, just a space we've used for creating visuals for presentation purposes.
 
 ## Development
 
