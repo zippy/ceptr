@@ -482,7 +482,7 @@ void testReceptorSerialize() {
     spec_is_sem_equal(_t_symbol(ru->pending_signals),PENDING_SIGNALS);
     spec_is_sem_equal(_t_symbol(ru->pending_responses),PENDING_RESPONSES);
 
-    // check that the unserialized is matched up to the correct definitions in the semtable
+    // check that the unserialized receptor is matched up to the correct definitions in the semtable
     spec_is_sem_equal(_r_get_sem_by_label(ru,"latitude"),lat);
     spec_is_sem_equal(_r_get_sem_by_label(ru,"latlong"),latlong);
 
@@ -494,20 +494,21 @@ void testReceptorSerialize() {
     spec_is_str_equal(buf1,buf);
 
     t1 = _r_get_instance(ru,xr);
-    buf[0] = buf1[0] = 0;
-    __t_dump(r->sem,ir,0,buf);
-    __t_dump(ru->sem,t1,0,buf1);
-    spec_is_str_equal(buf1,buf);
-
-    Receptor *r3 = __r_get_receptor(t1);
-    t1 = _r_get_instance(r3,x2);
-    spec_is_equal(*(int*)_t_surface(t1),314);
-
-    //    __r_dump_instances(r3);  show the 314 int
+    spec_is_true(t1 != NULL);
+    if (t1) {
+        buf[0] = buf1[0] = 0;
+        __t_dump(r->sem,ir,0,buf);
+        __t_dump(ru->sem,t1,0,buf1);
+        spec_is_str_equal(buf1,buf);
+        Receptor *r3 = __r_get_receptor(t1);
+        t1 = _r_get_instance(r3,x2);
+        spec_is_equal(*(int*)_t_surface(t1),314);
+        _r_free(ru);
+    }
+    //__r_dump_instances(r3); // show the 314 int
 
     free(surface);
     _r_free(r);
-    _r_free(ru);
     //! [testReceptorSerialize]
 }
 
@@ -738,7 +739,7 @@ void testReceptor() {
     testReceptorDef();
     testReceptorDefMatch();
     testReceptorInstances();
-    //    testReceptorSerialize();
+    testReceptorSerialize();
     testReceptorNums();
     testReceptorEdgeStream();
     testReceptorClock();

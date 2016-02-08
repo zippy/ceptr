@@ -1082,6 +1082,6 @@ ReceptorAddress __r_get_self_address(Receptor *r) {
 }
 
 void __r_dump_instances(Receptor *r) {
-    printf("INSTANCES:%s\n",_t2s(r->sem,r->instances));
+    printf("\nINSTANCES:%s\n",_t2s(r->sem,r->instances));
 }
 /** @}*/

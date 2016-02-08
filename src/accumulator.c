@@ -329,7 +329,7 @@ void __a_unserialize_instances(SemTable *sem,Instances *instances,S *s) {
             if (is_receptor) {
                 Receptor *r = _r_unserialize(sem,_t_surface(i));
                 _t_free(i);
-                _t_new_receptor(0,s,r);
+                i = _t_new_receptor(0,s,r);
             }
             _a_new_instance(instances, i);
         }

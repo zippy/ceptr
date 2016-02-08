@@ -59,11 +59,12 @@ int main(int argc, const char **argv) {
     testAccumulator();
     testProtocol();
 
-    /***** examples */
+    //**** receptor tests
+    testGroup();
+
+    /* /\***** examples *\/ */
     testProfileExample();
     testHTTPExample();
-
-    testGroup();
 
     _cleanup_HTTPDefs();
     sys_free();
