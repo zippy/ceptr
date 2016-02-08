@@ -13,203 +13,15 @@
 #include "../src/semtrex.h"
 #include "spec_utils.h"
 
-Symbol OCTET_STREAM;
-
-Structure HTTP_REQUEST_V09;
-
-Structure URI;
-Symbol HTTP_REQUEST_PATH_SEGMENTS;
-Symbol HTTP_REQUEST_PATH_SEGMENT;
-Symbol HTTP_REQUEST_PATH_FILE;
-Symbol FILE_NAME;
-Symbol FILE_EXTENSION;
-Structure FILE_HANDLE;
-
-Symbol HTTP_REQUEST_PATH_QUERY;
-Symbol HTTP_REQUEST_PATH_QUERY_PARAMS;
-Symbol HTTP_REQUEST_PATH_QUERY_PARAM;
-Structure KEY_VALUE_PARAM;
-Symbol PARAM_KEY;
-Symbol PARAM_VALUE;
-
-Symbol HTTP_REQUEST;
-Symbol HTTP_REQUEST_METHOD;
-Symbol HTTP_REQUEST_PATH;
-Symbol HTTP_REQUEST_HOST;
-
-Structure VERSION;
-Symbol HTTP_REQUEST_VERSION;
-Symbol VERSION_MAJOR;
-Symbol VERSION_MINOR;
-
-Symbol HTTP_RESPONSE;
-Symbol HTTP_RESPONSE_CONTENT_TYPE;
-Symbol HTTP_RESPONSE_BODY;
-Symbol HTTP_RESPONSE_STATUS;
-Structure STATUS;
-Symbol STATUS_VALUE;
-Symbol STATUS_TEXT;
-
 Receptor *HTTP_receptor;
-
-void _setup_version_defs(Receptor *r) {
-    SY(r,VERSION_MAJOR,INTEGER);
-    SY(r,VERSION_MINOR,INTEGER);
-    ST(r,VERSION,2,VERSION_MAJOR,VERSION_MINOR);
-}
-
-void _setup_status_defs(Receptor *r) {
-    SY(r,STATUS_VALUE,INTEGER);
-    SY(r,STATUS_TEXT,CSTRING);
-    ST(r,STATUS,2,STATUS_VALUE,STATUS_TEXT);
-}
-
-#define SD(r,label,def) st = __r_define_structure(r,label,def)
-
-//@todo make this actually match request-URI rather than just the path
-void _setup_uri_defs(Receptor *r) {
-    T *t;
-    Structure st;
-
-    SY(r,HTTP_REQUEST_PATH_SEGMENT,CSTRING);
-    t = _t_new_root(STRUCTURE_ZERO_OR_MORE);
-    _t_news(t,STRUCTURE_SYMBOL,HTTP_REQUEST_PATH_SEGMENT);
-    SD(r,"segments list",t);
-    SY(r,HTTP_REQUEST_PATH_SEGMENTS,st);
-
-    SY(r,FILE_NAME,CSTRING);
-    SY(r,FILE_EXTENSION,CSTRING);
-    ST(r,FILE_HANDLE,2,FILE_NAME,FILE_EXTENSION);
-    SY(r,HTTP_REQUEST_PATH_FILE,FILE_HANDLE);
-
-    SY(r,PARAM_KEY,CSTRING);
-    SY(r,PARAM_VALUE,CSTRING);
-    ST(r,KEY_VALUE_PARAM,2,PARAM_KEY,PARAM_VALUE);
-    SY(r,HTTP_REQUEST_PATH_QUERY_PARAM,KEY_VALUE_PARAM);
-
-    t = _t_new_root(STRUCTURE_ZERO_OR_MORE);
-    _t_news(t,STRUCTURE_SYMBOL,HTTP_REQUEST_PATH_QUERY_PARAM);
-    SD(r,"query param list",t);
-    SY(r,HTTP_REQUEST_PATH_QUERY_PARAMS,st);
-
-    t = _t_new_root(STRUCTURE_ZERO_OR_ONE);
-    _t_news(t,STRUCTURE_SYMBOL,HTTP_REQUEST_PATH_QUERY_PARAMS);
-    SD(r,"query struct",t);
-    SY(r,HTTP_REQUEST_PATH_QUERY,st);
-
-    ST(r,URI,3,
-       HTTP_REQUEST_PATH_SEGMENTS,
-       HTTP_REQUEST_PATH_FILE,
-       HTTP_REQUEST_PATH_QUERY
-       );
-}
-
-Symbol HTML_DOCUMENT;
-Structure HTML_ELEMENT;
-Symbol HTML_ATTRIBUTES;
-Symbol HTML_ATTRIBUTE;
-Symbol HTML_CONTENT;
-Symbol HTML_TEXT;
-Symbol HTML_HTML;
-Symbol HTML_HEAD;
-Symbol HTML_TITLE;
-Symbol HTML_BODY;
-Symbol HTML_DIV;
-Symbol HTML_P;
-Symbol HTML_IMG;
-Symbol HTML_A;
-Symbol HTML_B;
-Symbol HTML_UL;
-Symbol HTML_OL;
-Symbol HTML_LI;
-Symbol HTML_SPAN;
-Symbol HTML_H1;
-Symbol HTML_H2;
-Symbol HTML_H3;
-Symbol HTML_H4;
-Symbol HTML_FORM;
-Symbol HTML_INPUT;
-Symbol HTML_BUTTON;
-
-//semtrex html symbols
-
-Symbol HTML_TOKENS;
-Symbol HTML_TOK_TAG_OPEN;
-Symbol HTML_TOK_TAG_CLOSE;
-Symbol HTML_TOK_TAG_SELFCLOSE;
-Symbol HTML_TAG;
-
-void _setup_html_defs(Receptor *r) {
-    SY(r,HTML_DOCUMENT,NULL_STRUCTURE); //@todo should be an optionality structure
-    SY(r,HTML_TOKENS,NULL_STRUCTURE);   //@todo should be an optionality structure
-    SY(r,HTML_TOK_TAG_OPEN,CSTRING);
-    SY(r,HTML_TOK_TAG_CLOSE,CSTRING);
-    SY(r,HTML_TOK_TAG_SELFCLOSE,CSTRING);
-    SY(r,HTML_TAG,CSTRING);
-
-
-    SY(r,HTML_ATTRIBUTES,NULL_STRUCTURE); //@todo should be an optionality structure
-    SY(r,HTML_ATTRIBUTE,KEY_VALUE_PARAM);
-    SY(r,HTML_CONTENT,NULL_STRUCTURE);  // really should be semtrex: /(HTML_ELEMENT|HTML_TEXT)+
-    SY(r,HTML_TEXT,CSTRING);
-    ST(r,HTML_ELEMENT,2,
-       HTML_ATTRIBUTES,
-       HTML_CONTENT
-       );
-    SY(r,HTML_HTML,HTML_ELEMENT);
-    SY(r,HTML_HEAD,HTML_ELEMENT);
-    SY(r,HTML_TITLE,HTML_ELEMENT);
-    SY(r,HTML_BODY,HTML_ELEMENT);
-    SY(r,HTML_DIV,HTML_ELEMENT);
-    SY(r,HTML_P,HTML_ELEMENT);
-    SY(r,HTML_IMG,HTML_ELEMENT);
-    SY(r,HTML_A,HTML_ELEMENT);
-    SY(r,HTML_B,HTML_ELEMENT);
-    SY(r,HTML_UL,HTML_ELEMENT);
-    SY(r,HTML_OL,HTML_ELEMENT);
-    SY(r,HTML_LI,HTML_ELEMENT);
-    SY(r,HTML_SPAN,HTML_ELEMENT);
-    SY(r,HTML_H1,HTML_ELEMENT);
-    SY(r,HTML_H2,HTML_ELEMENT);
-    SY(r,HTML_H3,HTML_ELEMENT);
-    SY(r,HTML_H4,HTML_ELEMENT);
-    SY(r,HTML_FORM,HTML_ELEMENT);
-    SY(r,HTML_INPUT,HTML_ELEMENT);
-    SY(r,HTML_BUTTON,HTML_ELEMENT);
-}
 
 void _setup_HTTPDefs() {
     Receptor *r = HTTP_receptor = _r_new(G_sem,TEST_RECEPTOR);
-
-    SY(r,OCTET_STREAM,CSTRING);
-
-    SY(r,HTTP_REQUEST_METHOD,CSTRING);
-
-    _setup_uri_defs(r);
-    SY(r,HTTP_REQUEST_PATH,URI);
-
-    _setup_version_defs(r);
-    SY(r,HTTP_REQUEST_VERSION,VERSION);
-
-    ST(r,HTTP_REQUEST_V09,3,HTTP_REQUEST_VERSION,HTTP_REQUEST_METHOD,HTTP_REQUEST_PATH);
-    SY(r,HTTP_REQUEST,HTTP_REQUEST_V09);
-
-    SY(r,HTTP_REQUEST_HOST,CSTRING);
-
-    SY(r,HTTP_RESPONSE,NULL_STRUCTURE);  //@todo should be an optionality structure
-    SY(r,HTTP_RESPONSE_CONTENT_TYPE,CSTRING);
-    SY(r,HTTP_RESPONSE_BODY,CSTRING);
-
-    _setup_status_defs(r);
-    SY(r,HTTP_RESPONSE_STATUS,STATUS);
-
-    _setup_html_defs(r);
 }
 
 void _cleanup_HTTPDefs() {
     _r_free(HTTP_receptor);
 }
-
 
 //! [makeTestHTTPRequestTree]
 /**
@@ -218,31 +30,7 @@ void _cleanup_HTTPDefs() {
  * @snippet spec/http_example.h makeTestHTTPRequestTree
  */
 T *_makeTestHTTPRequestTree() {
-    // manually build up a tree for the HTTP request:
-    //     GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
-    // Note that we put the version at the beginning of our tree just because in ceptr we
-    // do that as a best practice so that semtrex expectation matching can efficiently
-    // switch to different processing based on version numbers.
-    T *t = _t_new_root(HTTP_REQUEST);
-    T *t_version = _t_newr(t,HTTP_REQUEST_VERSION);
-    _t_newi(t_version,VERSION_MAJOR,1);
-    _t_newi(t_version,VERSION_MINOR,0);
-    T *t_method = _t_new(t,HTTP_REQUEST_METHOD,"GET",4);
-    T *t_path = _t_newr(t,HTTP_REQUEST_PATH);
-    T *t_segments = _t_newr(t_path,HTTP_REQUEST_PATH_SEGMENTS);
-    _t_new(t_segments,HTTP_REQUEST_PATH_SEGMENT,"groups",7);
-    _t_new(t_segments,HTTP_REQUEST_PATH_SEGMENT,"5",2);
-    T *t_file = _t_newr(t_path,HTTP_REQUEST_PATH_FILE);
-    _t_new(t_file,FILE_NAME,"users",6);
-    _t_new(t_file,FILE_EXTENSION,"json",5);
-    T *t_query = _t_newr(t_path,HTTP_REQUEST_PATH_QUERY);
-    T *t_params = _t_newr(t_query,HTTP_REQUEST_PATH_QUERY_PARAMS);
-    T *t_param1 = _t_newr(t_params,HTTP_REQUEST_PATH_QUERY_PARAM);
-    _t_new(t_param1,PARAM_KEY,"sort_by",8);
-    _t_new(t_param1,PARAM_VALUE,"last_name",10);
-    T *t_param2 = _t_newr(t_params,HTTP_REQUEST_PATH_QUERY_PARAM);
-    _t_new(t_param2,PARAM_KEY,"page",5);
-    _t_new(t_param2,PARAM_VALUE,"2",2);
+    T *t = _t_clone(G_http_req_example);
 
     // confirm that we built the request right!
      T *stx = _d_build_def_semtrex(G_sem,HTTP_REQUEST,0);

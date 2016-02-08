@@ -31,6 +31,7 @@ my %declared;
 my %anon;
 my %comments;
 my %declmap;
+my %global_data;
 my @contexts;
 
 sub addDef {
@@ -171,26 +172,33 @@ while (my $line = <$fh>) {
                 my $structure_def = $2;
                 &addDef($type,$context,$name,&convertStrucDef($structure_def),$comment);
             }
-            elsif (($type eq 'Process') || ($type eq 'Protocol') || ($type eq 'Data')) {
+            elsif (($type eq 'Process') || ($type eq 'Protocol')) {
                 $params =~ /(.*?),(.*)/;
                 my $name = $1;
                 my $def = $2;
-                if ($type eq 'Data') {
-                    $def =~ s/ *\(([^(]+):([^)]+)\)/($1,$2)/g;
-                    $def =~ s/ *\(/,STX_OP,/g;
-                    $def =~ s/\)/,STX_CP,/g;
-                    #$def =~ s/ \(([^(]+):([^)]+)\)/,$1,$2,/g;
-                    #$def =~ s/\)/,NULL_SYMBOL/g;
-                    #$def =~ s/ \(/,/g;
-                    $def =~ s/,,/,/g;
-                    $def =~ s/^,(.*),$/$1/;
-                    $def =~ s/\/([0-9\/]+)/$1,TREE_PATH_TERMINATOR/g;
-                    $def =~ s/\//,/g;
-               #     $def =~ s/^\((.*)/$1/;
-                }
                 &addDef($type,$context,$name,$def,$comment);
             }
-            else {
+            elsif ($type =~ /(.*)Data/) {
+                my $data_type = $1;
+                $type = 'Data';
+                $params =~ /(.*?),(.*)/;
+                my $name = $1;
+                my $def = $2;
+                $global_data{$name} = 1 if ($data_type eq 'Global');
+
+                $def =~ s/ *\(([^(]+):([^)]+)\)/($1,$2)/g;
+                $def =~ s/ *\(/,STX_OP,/g;
+                $def =~ s/\)/,STX_CP,/g;
+                #$def =~ s/ \(([^(]+):([^)]+)\)/,$1,$2,/g;
+                #$def =~ s/\)/,NULL_SYMBOL/g;
+                #$def =~ s/ \(/,/g;
+                $def =~ s/,,/,/g;
+                $def =~ s/^,(.*),$/$1/;
+                $def =~ s/\/([0-9\/]+)/$1,TREE_PATH_TERMINATOR/g;
+                $def =~ s/\//,/g;
+                #     $def =~ s/^\((.*)/$1/;
+                &addDef($type,$context,$name,$def,$comment);
+            } else {
                 die "unknown directive: $type";
             }
         }
@@ -253,6 +261,9 @@ foreach my $s (@d) {
     my $n = shift @x;
     my $p = join(',',@x);
     print $cfh "  $fmap{$n}($p);\n";
+    if ($n eq 'Data' && $global_data{$x[1]}) {
+        printf $cfh "  G_$x[1] = $x[1];\n";
+    }
 }
 print $cfh "}\n\n";
 
@@ -369,6 +380,13 @@ EOF
     #     }
     # }
 }
+
+## add global data to the header file
+foreach my $s (keys %global_data) {
+    print $hfh "\n//Global data from base_defs\n";
+    print $hfh 'T * G_'.$s.";\n";
+}
+
 print $hfh <<EOF;
 
 #endif

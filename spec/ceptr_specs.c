@@ -61,10 +61,10 @@ int main(int argc, const char **argv) {
 
     //**** receptor tests
     testGroup();
+    testHTTPExample();
 
     /* /\***** examples *\/ */
     testProfileExample();
-    testHTTPExample();
 
     _cleanup_HTTPDefs();
     sys_free();

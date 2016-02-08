@@ -269,4 +269,58 @@
 <tr><td><a name="CLOCK_TELL_TIME"></a>CLOCK_TELL_TIME</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
 <tr><td><a name="tell_time"></a>tell_time</td><td><a href="ref_sys_structures.html#INTERACTION">INTERACTION</a></td><td></td></tr>
 <tr><td><a name="LINE"></a>LINE</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td>                           text lines from unix streams</td></tr>
+<tr><td><a name="OCTET_STREAM"></a>OCTET_STREAM</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="PARAM_KEY"></a>PARAM_KEY</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="PARAM_VALUE"></a>PARAM_VALUE</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="VERSION_MAJOR"></a>VERSION_MAJOR</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
+<tr><td><a name="VERSION_MINOR"></a>VERSION_MINOR</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
+<tr><td><a name="STATUS_VALUE"></a>STATUS_VALUE</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
+<tr><td><a name="STATUS_TEXT"></a>STATUS_TEXT</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="HTTP_REQUEST_PATH_SEGMENT"></a>HTTP_REQUEST_PATH_SEGMENT</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="HTTP_REQUEST_PATH_SEGMENTS"></a>HTTP_REQUEST_PATH_SEGMENTS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_HTTP_REQUEST_PATH_SEGMENT">ZERO-OR-MORE-OF-HTTP-REQUEST-PATH-SEGMENT</a></td><td></td></tr>
+<tr><td><a name="FILE_NAME"></a>FILE_NAME</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="FILE_EXTENSION"></a>FILE_EXTENSION</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="HTTP_REQUEST_PATH_FILE"></a>HTTP_REQUEST_PATH_FILE</td><td><a href="ref_sys_structures.html#FILE_HANDLE">FILE-HANDLE</a></td><td></td></tr>
+<tr><td><a name="HTTP_REQUEST_PATH_QUERY_PARAM"></a>HTTP_REQUEST_PATH_QUERY_PARAM</td><td><a href="ref_sys_structures.html#KEY_VALUE_PARAM">KEY-VALUE-PARAM</a></td><td></td></tr>
+<tr><td><a name="HTTP_REQUEST_PATH_QUERY_PARAMS"></a>HTTP_REQUEST_PATH_QUERY_PARAMS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_HTTP_REQUEST_PATH_QUERY_PARAM">ZERO-OR-MORE-OF-HTTP-REQUEST-PATH-QUERY-PARAM</a></td><td></td></tr>
+<tr><td><a name="HTTP_REQUEST_PATH_QUERY"></a>HTTP_REQUEST_PATH_QUERY</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_HTTP_REQUEST_PATH_QUERY_PARAMS">ZERO-OR-MORE-OF-HTTP-REQUEST-PATH-QUERY-PARAMS</a></td><td></td></tr>
+<tr><td><a name="HTTP_REQUEST_METHOD"></a>HTTP_REQUEST_METHOD</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="HTTP_REQUEST_PATH"></a>HTTP_REQUEST_PATH</td><td><a href="ref_sys_structures.html#URI">URI</a></td><td></td></tr>
+<tr><td><a name="HTTP_REQUEST_VERSION"></a>HTTP_REQUEST_VERSION</td><td><a href="ref_sys_structures.html#VERSION">VERSION</a></td><td></td></tr>
+<tr><td><a name="HTTP_REQUEST"></a>HTTP_REQUEST</td><td><a href="ref_sys_structures.html#HTTP_REQUEST_V09">HTTP-REQUEST-V09</a></td><td></td></tr>
+<tr><td><a name="HTTP_REQUEST_HOST"></a>HTTP_REQUEST_HOST</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="HTTP_RESPONSE_CONTENT_TYPE"></a>HTTP_RESPONSE_CONTENT_TYPE</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="HTTP_RESPONSE_BODY"></a>HTTP_RESPONSE_BODY</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="HTTP_RESPONSE_STATUS"></a>HTTP_RESPONSE_STATUS</td><td><a href="ref_sys_structures.html#STATUS">STATUS</a></td><td></td></tr>
+<tr><td><a name="HTTP_RESPONSE"></a>HTTP_RESPONSE</td><td><a href="ref_sys_structures.html#LIST_OF_HTTP_RESPONSE_CONTENT_TYPE_AND_HTTP_RESPONSE_BODY_AND_HTTP_RESPONSE_STATUS">LIST-OF-HTTP-RESPONSE-CONTENT-TYPE-AND-HTTP-RESPONSE-BODY-AND-HTTP-RESPONSE-STATUS</a></td><td></td></tr>
+<tr><td><a name="HTML_DOCUMENT"></a>HTML_DOCUMENT</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td> //@todo should be an optionality structure</td></tr>
+<tr><td><a name="HTML_TOK_TAG_OPEN"></a>HTML_TOK_TAG_OPEN</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="HTML_TOK_TAG_CLOSE"></a>HTML_TOK_TAG_CLOSE</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="HTML_TOK_TAG_SELFCLOSE"></a>HTML_TOK_TAG_SELFCLOSE</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="HTML_TAG"></a>HTML_TAG</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="HTML_TOKENS"></a>HTML_TOKENS</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td>   //@todo should be an optionality structure</td></tr>
+<tr><td><a name="HTML_ATTRIBUTE"></a>HTML_ATTRIBUTE</td><td><a href="ref_sys_structures.html#KEY_VALUE_PARAM">KEY-VALUE-PARAM</a></td><td></td></tr>
+<tr><td><a name="HTML_ATTRIBUTES"></a>HTML_ATTRIBUTES</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_HTML_ATTRIBUTE">ZERO-OR-MORE-OF-HTML-ATTRIBUTE</a></td><td></td></tr>
+<tr><td><a name="HTML_CONTENT"></a>HTML_CONTENT</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td>  // really should be semtrex: /(HTML_ELEMENT|HTML_TEXT)+</td></tr>
+<tr><td><a name="HTML_TEXT"></a>HTML_TEXT</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="HTML_HTML"></a>HTML_HTML</td><td><a href="ref_sys_structures.html#HTML_ELEMENT">HTML-ELEMENT</a></td><td></td></tr>
+<tr><td><a name="HTML_HEAD"></a>HTML_HEAD</td><td><a href="ref_sys_structures.html#HTML_ELEMENT">HTML-ELEMENT</a></td><td></td></tr>
+<tr><td><a name="HTML_TITLE"></a>HTML_TITLE</td><td><a href="ref_sys_structures.html#HTML_ELEMENT">HTML-ELEMENT</a></td><td></td></tr>
+<tr><td><a name="HTML_BODY"></a>HTML_BODY</td><td><a href="ref_sys_structures.html#HTML_ELEMENT">HTML-ELEMENT</a></td><td></td></tr>
+<tr><td><a name="HTML_DIV"></a>HTML_DIV</td><td><a href="ref_sys_structures.html#HTML_ELEMENT">HTML-ELEMENT</a></td><td></td></tr>
+<tr><td><a name="HTML_P"></a>HTML_P</td><td><a href="ref_sys_structures.html#HTML_ELEMENT">HTML-ELEMENT</a></td><td></td></tr>
+<tr><td><a name="HTML_IMG"></a>HTML_IMG</td><td><a href="ref_sys_structures.html#HTML_ELEMENT">HTML-ELEMENT</a></td><td></td></tr>
+<tr><td><a name="HTML_A"></a>HTML_A</td><td><a href="ref_sys_structures.html#HTML_ELEMENT">HTML-ELEMENT</a></td><td></td></tr>
+<tr><td><a name="HTML_B"></a>HTML_B</td><td><a href="ref_sys_structures.html#HTML_ELEMENT">HTML-ELEMENT</a></td><td></td></tr>
+<tr><td><a name="HTML_UL"></a>HTML_UL</td><td><a href="ref_sys_structures.html#HTML_ELEMENT">HTML-ELEMENT</a></td><td></td></tr>
+<tr><td><a name="HTML_OL"></a>HTML_OL</td><td><a href="ref_sys_structures.html#HTML_ELEMENT">HTML-ELEMENT</a></td><td></td></tr>
+<tr><td><a name="HTML_LI"></a>HTML_LI</td><td><a href="ref_sys_structures.html#HTML_ELEMENT">HTML-ELEMENT</a></td><td></td></tr>
+<tr><td><a name="HTML_SPAN"></a>HTML_SPAN</td><td><a href="ref_sys_structures.html#HTML_ELEMENT">HTML-ELEMENT</a></td><td></td></tr>
+<tr><td><a name="HTML_H1"></a>HTML_H1</td><td><a href="ref_sys_structures.html#HTML_ELEMENT">HTML-ELEMENT</a></td><td></td></tr>
+<tr><td><a name="HTML_H2"></a>HTML_H2</td><td><a href="ref_sys_structures.html#HTML_ELEMENT">HTML-ELEMENT</a></td><td></td></tr>
+<tr><td><a name="HTML_H3"></a>HTML_H3</td><td><a href="ref_sys_structures.html#HTML_ELEMENT">HTML-ELEMENT</a></td><td></td></tr>
+<tr><td><a name="HTML_H4"></a>HTML_H4</td><td><a href="ref_sys_structures.html#HTML_ELEMENT">HTML-ELEMENT</a></td><td></td></tr>
+<tr><td><a name="HTML_FORM"></a>HTML_FORM</td><td><a href="ref_sys_structures.html#HTML_ELEMENT">HTML-ELEMENT</a></td><td></td></tr>
+<tr><td><a name="HTML_INPUT"></a>HTML_INPUT</td><td><a href="ref_sys_structures.html#HTML_ELEMENT">HTML-ELEMENT</a></td><td></td></tr>
+<tr><td><a name="HTML_BUTTON"></a>HTML_BUTTON</td><td><a href="ref_sys_structures.html#HTML_ELEMENT">HTML-ELEMENT</a></td><td></td></tr>
 </table>
