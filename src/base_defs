@@ -615,3 +615,18 @@ GlobalData: http_req_example,
             (HTTP_REQUEST_PATH_QUERY_PARAM
                (PARAM_KEY:"page")
                (PARAM_VALUE:"2"))))));    GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
+
+##### defs for HTTP protocol
+Symbol: HTTP_CLIENT,RECEPTOR_ADDRESS;
+Symbol: HTTP_SERVER,RECEPTOR_ADDRESS;
+
+Data: http_def,(PROTOCOL_DEFINITION
+      (PROTOCOL_SEMANTICS)
+      (INCLUSION (PNAME:REQUESTING)
+                 (CONNECTION (WHICH_ROLE (ROLE:REQUESTER) (ROLE:HTTP_CLIENT)))
+                 (CONNECTION (WHICH_ROLE (ROLE:RESPONDER) (ROLE:HTTP_SERVER)))
+                 (RESOLUTION (WHICH_SYMBOL (USAGE:REQUEST_DATA) (ACTUAL_SYMBOL:HTTP_REQUEST)))
+                 (RESOLUTION (WHICH_SYMBOL (USAGE:RESPONSE_DATA) (ACTUAL_SYMBOL:HTTP_RESPONSE)))
+                 ));
+
+Protocol: HTTP,http_def;

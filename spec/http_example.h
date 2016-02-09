@@ -9,9 +9,13 @@
 
 #include "../src/ceptr.h"
 #include "../src/receptor.h"
+#include "../src/protocol.h"
 #include "../src/def.h"
 #include "../src/semtrex.h"
 #include "spec_utils.h"
+#include "../src/vmhost.h"
+#include "../src/accumulator.h"
+#include <unistd.h>
 
 //! [makeTestHTTPRequestTree]
 /**
@@ -285,7 +289,7 @@ T *parseHTML(char *html) {
     raise_error("HTML doesn't match");
 }
 
-void testHTTPExample() {
+void testHTTPparseHTML() {
     T *t = parseHTML("<html><body><div>Hello <b>world!</b></div></body></html>");
     T *r = _t_new_root(HTTP_RESPONSE);
     T *s = _t_newr(r,HTTP_RESPONSE_STATUS);
@@ -298,6 +302,72 @@ void testHTTPExample() {
     wjson(G_sem,r,"httpresp",-1);
 
     _t_free(r);
+
+}
+
+void testHTTPprotocol() {
+    T *http = _sem_get_def(G_sem,HTTP);
+
+    // check the HTTP protocol definition
+    spec_is_str_equal(t2s(http),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL:HTTP) (PROTOCOL_SEMANTICS) (INCLUSION (PNAME:REQUESTING) (CONNECTION (WHICH_ROLE (ROLE:REQUESTER) (ROLE:HTTP_CLIENT))) (CONNECTION (WHICH_ROLE (ROLE:RESPONDER) (ROLE:HTTP_SERVER))) (RESOLUTION (WHICH_SYMBOL (USAGE:REQUEST_DATA) (ACTUAL_SYMBOL:HTTP_REQUEST))) (RESOLUTION (WHICH_SYMBOL (USAGE:RESPONSE_DATA) (ACTUAL_SYMBOL:HTTP_RESPONSE)))))");
+
+    T *sem_map = _t_new_root(SEMANTIC_MAP);
+    T *t = _o_unwrap(G_sem,http,sem_map);
+    // and also check how it gets unwrapped because it's defined in terms of REQUESTING
+    // @todo, how come HTTP_SERVER and the two handler goals aren't added to the semantics?
+    spec_is_str_equal(t2s(t),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL:HTTP) (PROTOCOL_SEMANTICS (ROLE:HTTP_CLIENT) (GOAL:REQUEST_HANDLER)) (backnforth (INITIATE (ROLE:HTTP_CLIENT) (DESTINATION (ROLE:HTTP_SERVER)) (ACTION:send_request)) (EXPECT (ROLE:HTTP_SERVER) (SOURCE (ROLE:HTTP_CLIENT)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:HTTP_REQUEST))) (ACTION:send_response))))");
+
+    // the unwrapping should build up a semantic map
+    spec_is_str_equal(t2s(sem_map),"(SEMANTIC_MAP (SEMANTIC_LINK (ROLE:REQUESTER) (REPLACEMENT_VALUE (ROLE:HTTP_CLIENT))) (SEMANTIC_LINK (ROLE:RESPONDER) (REPLACEMENT_VALUE (ROLE:HTTP_SERVER))) (SEMANTIC_LINK (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:HTTP_REQUEST))) (SEMANTIC_LINK (USAGE:RESPONSE_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:HTTP_RESPONSE))))");
+    _t_free(sem_map);
+
+    VMHost *v = G_vm = _v_new();
+    _v_instantiate_builtins(G_vm);
+
+    FILE *rs,*ws;
+    char buffer[] = "GET /test HTTP/0.9\n";
+
+    rs = fmemopen(buffer, strlen (buffer), "r");
+    Stream *reader_stream = _st_new_unix_stream(rs,1);
+
+    char *output_data;
+    size_t size;
+    ws = open_memstream(&output_data,&size);
+    Stream *writer_stream = _st_new_unix_stream(ws,0);
+
+    Receptor *w = _r_makeStreamWriterReceptor(v->sem,TEST_STREAM_SYMBOL,writer_stream);
+    Xaddr writer = _v_new_receptor(v,v->r,STREAM_WRITER,w);
+
+    Receptor *r = _r_makeStreamReaderReceptor(v->sem,TEST_STREAM_SYMBOL,reader_stream,w->addr);
+    Xaddr reader =  _v_new_receptor(v,v->r,STREAM_READER,r);
+
+    //   debug_enable(D_STREAM+D_SIGNALS+D_TREE+D_PROTOCOL);
+    _v_start_vmhost(G_vm);
+    sleep(1);
+    debug_disable(D_STREAM+D_SIGNALS+D_TREE+D_PROTOCOL);
+
+    fputs("not implemented!",ws);fflush(ws);
+
+    spec_is_true(output_data != 0); // protect against seg-faults when nothing was written to the stream...
+    if (output_data != 0) {
+        spec_is_str_equal(output_data,"<html><body><h3>you requested:</h3><div>test</divv></body></html>\n");
+    }
+    __r_kill(G_vm->r);
+
+    _v_join_thread(&G_vm->clock_thread);
+    _v_join_thread(&G_vm->vm_thread);
+
+    _st_free(reader_stream);
+    _st_free(writer_stream);
+    free(output_data);
+    _v_free(v);
+    G_vm = NULL;
+
+}
+
+void testHTTP() {
+    testHTTPparseHTML();
+    testHTTPprotocol();
 }
 
 #endif

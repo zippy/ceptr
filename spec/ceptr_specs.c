@@ -60,7 +60,7 @@ int main(int argc, const char **argv) {
 
     //**** receptor tests
     testGroup();
-    testHTTPExample();
+    testHTTP();
 
     /* /\***** examples *\/ */
     testProfileExample();

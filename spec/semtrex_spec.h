@@ -878,7 +878,7 @@ void testSemtrexParseHHTPReq() {
     char buf[50000];
     T *stx;
     stx = parseSemtrex(G_sem,stxs);
-    //  stx = _makeHTTPRequestSemtrex();
+    //stx = _makeHTTPRequestSemtrex();
 
     _t2json(G_sem,stx,INDENT,buf);
     writeFile("web/httpreqstx.json",buf,strlen(buf));
