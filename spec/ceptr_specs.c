@@ -43,7 +43,6 @@ int main(int argc, const char **argv) {
     }
     else {
     def_sys();
-    _setup_HTTPDefs();
     //**** core tests
     testSemTable();
     testDef();
@@ -66,7 +65,6 @@ int main(int argc, const char **argv) {
     /* /\***** examples *\/ */
     testProfileExample();
 
-    _cleanup_HTTPDefs();
     sys_free();
     report_tests();
     }

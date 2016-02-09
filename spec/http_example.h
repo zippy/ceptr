@@ -13,16 +13,6 @@
 #include "../src/semtrex.h"
 #include "spec_utils.h"
 
-Receptor *HTTP_receptor;
-
-void _setup_HTTPDefs() {
-    Receptor *r = HTTP_receptor = _r_new(G_sem,TEST_RECEPTOR);
-}
-
-void _cleanup_HTTPDefs() {
-    _r_free(HTTP_receptor);
-}
-
 //! [makeTestHTTPRequestTree]
 /**
  * generate a test semantic tree that represents an HTTP request

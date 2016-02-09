@@ -355,12 +355,12 @@ void testMTreeSerialize() {
     writeFile("web/test.cmt",s,s->total_size);
     _m_free(h);free(s);
 
-    h = _m_new_from_t(__sem_get_defs(HTTP_receptor->sem,SEM_TYPE_STRUCTURE,HTTP_receptor->context));
+    h = _m_new_from_t(__sem_get_defs(G_sem,SEM_TYPE_STRUCTURE,INTERNET_CONTEXT));
     s = _m_serialize(h.m);
     writeFile("web/httpstructures.cmt",s,s->total_size);
     _m_free(h);free(s);
 
-    h = _m_new_from_t(__sem_get_defs(HTTP_receptor->sem,SEM_TYPE_SYMBOL,HTTP_receptor->context));
+    h = _m_new_from_t(__sem_get_defs(G_sem,SEM_TYPE_SYMBOL,INTERNET_CONTEXT));
     s = _m_serialize(h.m);
     writeFile("web/httpsymbols.cmt",s,s->total_size);
     _m_free(h);free(s);

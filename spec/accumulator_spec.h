@@ -155,7 +155,7 @@ void testAccPersistInstances() {
 
     S *s = __a_serialize_instances(&i);
     _a_free_instances(&i);
-    __a_unserialize_instances(HTTP_receptor->sem,&i,s);
+    __a_unserialize_instances(G_sem,&i,s);
 
     spec_is_str_equal(t2s(_a_get_instance(&i,x)),"(PARAMS (TEST_INT_SYMBOL:314))");
     spec_is_str_equal(t2s(_a_get_instance(&i,y)),t2s(htc));
