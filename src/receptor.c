@@ -894,7 +894,7 @@ char *__td(Receptor *r,T *t,char *buf) {
 
 /*****************  Built-in core and edge receptors */
 
-Receptor *_r_makeStreamReaderReceptor(SemTable *sem,Symbol stream_symbol,Stream *st,ReceptorAddress to) {
+Receptor *_r_makeStreamReaderReceptor(SemTable *sem,Symbol stream_symbol,Stream *st,ReceptorAddress to,Symbol carrier) {
     Receptor *r = _r_new(sem,STREAM_READER);
 
     // code is something like:
@@ -910,7 +910,7 @@ Receptor *_r_makeStreamReaderReceptor(SemTable *sem,Symbol stream_symbol,Stream 
 
     __r_make_addr(say,TO_ADDRESS,to);
     _t_news(say,ASPECT_IDENT,DEFAULT_ASPECT);
-    _t_news(say,CARRIER,LINE);
+    _t_news(say,CARRIER,carrier);
 
     T *s = _t_new(say,STREAM_READ,0,0);
     _t_new_stream(s,stream_symbol,st);

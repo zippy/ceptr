@@ -586,7 +586,7 @@ void testReceptorEdgeStream() {
     Receptor *w = _r_makeStreamWriterReceptor(v->sem,TEST_STREAM_SYMBOL,writer_stream);
     Xaddr writer = _v_new_receptor(v,v->r,STREAM_WRITER,w);
 
-    Receptor *r = _r_makeStreamReaderReceptor(v->sem,TEST_STREAM_SYMBOL,reader_stream,w->addr);
+    Receptor *r = _r_makeStreamReaderReceptor(v->sem,TEST_STREAM_SYMBOL,reader_stream,w->addr,LINE);
     Xaddr reader =  _v_new_receptor(v,v->r,STREAM_READER,r);
 
     spec_is_str_equal(_td(w,__r_get_expectations(w,DEFAULT_ASPECT)),"(EXPECTATIONS (EXPECTATION (CARRIER:NULL_SYMBOL) (PATTERN (SEMTREX_SYMBOL_ANY)) (ACTION:echo input to stream) (PARAMS (SLOT (USAGE:NULL_SYMBOL))) (END_CONDITIONS (UNLIMITED))))");

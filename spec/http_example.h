@@ -338,7 +338,7 @@ void testHTTPprotocol() {
     Receptor *w = _r_makeStreamWriterReceptor(v->sem,TEST_STREAM_SYMBOL,writer_stream);
     Xaddr writer = _v_new_receptor(v,v->r,STREAM_WRITER,w);
 
-    Receptor *r = _r_makeStreamReaderReceptor(v->sem,TEST_STREAM_SYMBOL,reader_stream,w->addr);
+    Receptor *r = _r_makeStreamReaderReceptor(v->sem,TEST_STREAM_SYMBOL,reader_stream,w->addr,LINE);
     Xaddr reader =  _v_new_receptor(v,v->r,STREAM_READER,r);
 
     //   debug_enable(D_STREAM+D_SIGNALS+D_TREE+D_PROTOCOL);
@@ -350,7 +350,7 @@ void testHTTPprotocol() {
 
     spec_is_true(output_data != 0); // protect against seg-faults when nothing was written to the stream...
     if (output_data != 0) {
-        spec_is_str_equal(output_data,"<html><body><h3>you requested:</h3><div>test</divv></body></html>\n");
+        spec_is_str_equal(output_data,"<html><body><h3>you requested:</h3><div>test</div></body></html>\n");
     }
     __r_kill(G_vm->r);
 

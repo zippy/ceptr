@@ -832,9 +832,14 @@ enum DEV_COMPOSITORYSymbolIDs {
     RECOGNITION_ID,
     are_you_ID,
     i_am_ID,
+    LINE_ID,
     VERB_ID,
     COMMAND_PARAMETER_ID,
     SHELL_COMMAND_ID,
+    LINE_SENDER_ID,
+    COMMAND_RECEIVER_ID,
+    parse_line_ID,
+    COMMAND_TYPE_ID,
     SERVER_ID,
     CLIENT_ID,
     PING_ID,
@@ -860,9 +865,14 @@ SemanticID RECOGNIZEE;
 SemanticID RECOGNITION;
 SemanticID are_you;
 SemanticID i_am;
+SemanticID LINE;
 SemanticID VERB;
 SemanticID COMMAND_PARAMETER;
 SemanticID SHELL_COMMAND;
+SemanticID LINE_SENDER;
+SemanticID COMMAND_RECEIVER;
+SemanticID parse_line;
+SemanticID COMMAND_TYPE;
 SemanticID SERVER;
 SemanticID CLIENT;
 SemanticID PING;
@@ -891,6 +901,7 @@ enum DEV_COMPOSITORYProcessIDs {
     send_request_ID,
     send_response_ID,
     fill_i_am_ID,
+    line_2_command_ID,
     respond_with_yup_ID,
     request_membership_ID,
     enroll_ID,
@@ -901,6 +912,7 @@ enum DEV_COMPOSITORYProcessIDs {
 SemanticID send_request;
 SemanticID send_response;
 SemanticID fill_i_am;
+SemanticID line_2_command;
 SemanticID respond_with_yup;
 SemanticID request_membership;
 SemanticID enroll;
@@ -913,12 +925,14 @@ enum DEV_COMPOSITORYProtocolIDs {
     NULL_DEV_COMPOSITORY_PROTOCOL_ID,
     REQUESTING_ID,
     RECOGNIZE_ID,
+    PARSE_COMMAND_FROM_LINE_ID,
     ALIVE_ID,
     group1_ID,
     NUM_DEV_COMPOSITORY_PROTOCOLS
 };
 SemanticID REQUESTING;
 SemanticID RECOGNIZE;
+SemanticID PARSE_COMMAND_FROM_LINE;
 SemanticID ALIVE;
 SemanticID group1;
 
@@ -1018,10 +1032,8 @@ enum CLOCKProtocolIDs {
 // STREAM_READER:Symbol
 enum STREAM_READERSymbolIDs {
     NULL_STREAM_READER_SYMBOL_ID,
-    LINE_ID,
     NUM_STREAM_READER_SYMBOLS
 };
-SemanticID LINE;
 
 /**********************************************************************************/
 // STREAM_READER:Structure

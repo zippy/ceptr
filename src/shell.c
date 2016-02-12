@@ -62,7 +62,7 @@ void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp
     Stream *output_stream = *osp = _st_new_unix_stream(output,0);
     Stream *input_stream = *isp = _st_new_unix_stream(input,1);
 
-    Receptor *i_r = *irp = _r_makeStreamReaderReceptor(v->sem,TEST_STREAM_SYMBOL,input_stream,r->addr);
+    Receptor *i_r = *irp = _r_makeStreamReaderReceptor(v->sem,TEST_STREAM_SYMBOL,input_stream,r->addr,parse_line);
     Xaddr ix = _v_new_receptor(v,v->r,STREAM_READER,i_r);
     _v_activate(v,ix);
 
@@ -70,37 +70,33 @@ void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp
     Xaddr ox = _v_new_receptor(v,v->r,STREAM_WRITER,o_r);
     _v_activate(v,ox);
 
-    // create expectations for commands
-    // (expect (on std_in LINE) action (send self (shell_command parsed from LINE))
-    T *expect = _t_new_root(PATTERN);
-    T *s = _sl(expect,LINE);
-    T *p = _t_new_root(SAY);
-    T *addr = _t_newr(p,SELF_ADDR);
-    _t_news(addr,RESULT_SYMBOL,TO_ADDRESS);
-     _t_news(p,ASPECT_IDENT,DEFAULT_ASPECT);
-    _t_news(p,CARRIER,SHELL_COMMAND);
-    T *x = _t_newr(p,SHELL_COMMAND);
-    x = _t_newr(x,CONTRACT_STR);
-    _t_news(x,RESULT_SYMBOL,VERB);
-    int pt1[] = {2,1,TREE_PATH_TERMINATOR};
-    _t_new(x,PARAM_REF,pt1,sizeof(int)*4);
+    // set up shell to express the line parsing protocol when it receives LINES from the stream reader
+    Protocol clp = _sem_get_by_label(v->sem,"PARSE_COMMAND_FROM_LINE",DEV_COMPOSITORY_CONTEXT);
+    T *bindings = _t_new_root(PROTOCOL_BINDINGS);
+    T *res = _t_newr(bindings,RESOLUTION);
+    T *w = _t_newr(res,WHICH_RECEPTOR);
+    _t_news(w,ROLE,LINE_SENDER);
+    __r_make_addr(w,ACTUAL_RECEPTOR,i_r->addr);
+    res = _t_newr(bindings,RESOLUTION);
+    w = _t_newr(res,WHICH_RECEPTOR);
+    _t_news(w,ROLE,COMMAND_RECEIVER);
+    __r_make_addr(w,ACTUAL_RECEPTOR,r->addr);
+    res = _t_newr(bindings,RESOLUTION);
+    w = _t_newr(res,WHICH_SYMBOL);
+    _t_news(w,USAGE,COMMAND_TYPE);
+    _t_news(w,ACTUAL_SYMBOL,SHELL_COMMAND);
 
-    Process proc = _r_define_process(r,p,"send self command","long desc...",NULL);
-    T *act = _t_newp(0,ACTION,proc);
-    T* params = _t_new_root(PARAMS);
-    T* slot = _t_newr(params,SLOT);
-    _t_news(slot,USAGE,NULL_SYMBOL);
-    _r_add_expectation(r,DEFAULT_ASPECT,LINE,expect,act,params,0,NULL);
+    _o_express_role(r,clp,COMMAND_RECEIVER,DEFAULT_ASPECT,bindings);
+    _t_free(bindings);
 
-    // (expect (on flux SHELL_COMMAND:time) action(initiate tell_time in time protocol with handler -> send std_out (convert_to_lines (send clock get_time))))
-
+    // set up shell to use the CLOCK TELL_TIME protocol for the time command
     Protocol time = _sem_get_by_label(v->sem,"time",CLOCK_CONTEXT);
     T *code = _t_new_root(INITIATE_PROTOCOL);
     _t_news(code,PNAME,time);
     _t_news(code,WHICH_INTERACTION,tell_time);
-    T *bindings = _t_newr(code,PROTOCOL_BINDINGS);
-    T *res = _t_newr(bindings,RESOLUTION);
-    T *w = _t_newr(res,WHICH_RECEPTOR);
+    bindings = _t_newr(code,PROTOCOL_BINDINGS);
+    res = _t_newr(bindings,RESOLUTION);
+    w = _t_newr(res,WHICH_RECEPTOR);
     _t_news(w,ROLE,TIME_HEARER);
     __r_make_addr(w,ACTUAL_RECEPTOR,r->addr);
     res = _t_newr(bindings,RESOLUTION);

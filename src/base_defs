@@ -409,10 +409,36 @@ Data: recog_def,(PROTOCOL_DEFINITION
 Protocol: RECOGNIZE,recog_def;
 
 ##### defs for shell receptor
+Symbol: LINE,CSTRING;                           text lines from unix streams
 Symbol: VERB,CSTRING;
 Symbol: COMMAND_PARAMETER,CSTRING;
 Structure: COMMAND,(VERB,*COMMAND_PARAMETER);
 Symbol: SHELL_COMMAND,COMMAND;
+
+Symbol: LINE_SENDER,RECEPTOR_ADDRESS;
+Symbol: COMMAND_RECEIVER,RECEPTOR_ADDRESS;
+Symbol: parse_line,INTERACTION;
+Symbol: COMMAND_TYPE,SYMBOL;
+
+Data: line_2_command_proc,(SAY
+      (SLOT (ROLE:COMMAND_RECEIVER) (SLOT_IS_VALUE_OF:TO_ADDRESS))
+      (ASPECT_IDENT:DEFAULT_ASPECT)
+      (SLOT (USAGE:COMMAND_TYPE) (SLOT_IS_VALUE_OF:CARRIER))
+      (SLOT (USAGE:COMMAND_TYPE)
+            (SLOT_CHILDREN
+                (CONTRACT_STR (RESULT_SYMBOL:VERB) (PARAM_REF:/2/1))
+            ))
+      );
+Process: line_2_command,line_2_command_proc,"parse a COMMAND from a LINE","signal id",SIGNATURE_SYMBOL,SIGNAL_UUID,0;
+
+Data: cl_parser_def,
+      (PROTOCOL_DEFINITION
+          (PROTOCOL_SEMANTICS (ROLE:LINE_SENDER) (ROLE:COMMAND_RECEIVER) (USAGE:COMMAND_TYPE))
+          (parse_line
+                (EXPECT (ROLE:COMMAND_RECEIVER) (SOURCE (ROLE:LINE_SENDER)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:LINE))) (ACTION:line_2_command) (PARAMS (SLOT (USAGE:NULL_SYMBOL))))
+                ));
+
+Protocol: PARSE_COMMAND_FROM_LINE,cl_parser_def;
 
 ###### definitions for an ALIVE protocol
 Symbol: SERVER,RECEPTOR_ADDRESS;
@@ -504,8 +530,6 @@ Process: time_request,time_req_code,"request current time","response",SIGNATURE_
 
 ########################################################################################
 Context: STREAM_READER;
-
-Symbol: LINE,CSTRING;                           text lines from unix streams
 
 ########################################################################################
 Context: STREAM_WRITER;

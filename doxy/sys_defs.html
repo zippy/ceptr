@@ -2359,6 +2359,12 @@
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="LINE"></a>LINE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-comment">                           text lines from unix streams</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="VERB"></a>VERB</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
        <div class="def-comment"></div>
@@ -2379,6 +2385,43 @@
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="SHELL_COMMAND"></a>SHELL_COMMAND</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#COMMAND">COMMAND</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="LINE_SENDER"></a>LINE_SENDER</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="COMMAND_RECEIVER"></a>COMMAND_RECEIVER</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="parse_line"></a>parse_line</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#INTERACTION">INTERACTION</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="COMMAND_TYPE"></a>COMMAND_TYPE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="line_2_command"></a>line_2_command</div>
+       <div class="def-sig-in"></div>
+       <div class="def-sig-out">signal id(SYMBOL:<a href="ref_sys_symbols.html#SIGNAL_UUID">SIGNAL_UUID</a>)</div>
+       <div class="def-comment"><i>parse a COMMAND from a LINE</i></div>
+   </div>
+   <div class="def-item def-protocol">
+       <div class="def-type">Protocol:</div>
+       <div class="def-name"><a name="PARSE_COMMAND_FROM_LINE"></a>PARSE_COMMAND_FROM_LINE</div>
+       <div class="def-protocol-def">cl_parser_def</div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">
@@ -2608,15 +2651,6 @@
        <div class="def-sig-in"></div>
        <div class="def-sig-out">response(SYMBOL:<a href="ref_sys_symbols.html#TICK">TICK</a>)</div>
        <div class="def-comment"><i>request current time</i></div>
-   </div>
-</div>
-<div class="defs-context">
-   <h4>STREAM_READER_CONTEXT</h4>
-   <div class="def-item def-symbol">
-       <div class="def-type">Symbol:</div>
-       <div class="def-name"><a name="LINE"></a>LINE</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
-       <div class="def-comment">                           text lines from unix streams</div>
    </div>
 </div>
 <div class="defs-context">
