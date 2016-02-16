@@ -500,7 +500,16 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                 if (semeq(RESULT_SYMBOL,sy)) {
                     sy = *(Symbol *)_t_surface(s);
                     _t_free(s);
-                    x = __t_new(0,sy,_st_data(st),_st_data_size(st),1);
+                    if (semeq(sy,ASCII_CHARS)) {
+                        int l = _st_data_size(st);
+                        char *c = _st_data(st);
+                        x = __t_newr(0,ASCII_CHARS,true);
+                        while (--l) { // ignore final NULL
+                            __t_newi(x,ASCII_CHAR,*c,true);
+                            c++;
+                        }
+                    }
+                    else x = __t_new(0,sy,_st_data(st),_st_data_size(st),1);
                     _st_data_read(st);
                 }
                 else {raise_error("expecting RESULT_SYMBOL");}
