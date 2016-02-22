@@ -65,12 +65,15 @@ void _makeTestHTTPResponseProcess(Receptor *r,T **paramsP,Process *pP) {
 }
 //! [makeTestHTTPResponseProcess]
 
+char *G_stxs = "/ASCII_CHARS/<HTTP_REQUEST:<HTTP_REQUEST_METHOD:ASCII_CHAR!=' '+>,ASCII_CHAR=' ',<HTTP_REQUEST_PATH:<HTTP_REQUEST_PATH_SEGMENTS:(ASCII_CHAR='/',<HTTP_REQUEST_PATH_SEGMENT:ASCII_CHAR!={'/','?',' '}*>)+>>,(ASCII_CHAR='?',<HTTP_REQUEST_PATH_QUERY:<HTTP_REQUEST_PATH_QUERY_PARAMS:(<HTTP_REQUEST_PATH_QUERY_PARAM:<PARAM_KEY:ASCII_CHAR!={'&',' ','='}+>,ASCII_CHAR='=',<PARAM_VALUE:ASCII_CHAR!={'&',' '}*>>,ASCII_CHAR='&'?)+>+>)?,ASCII_CHAR=' ',ASCII_CHAR='H',ASCII_CHAR='T',ASCII_CHAR='T',ASCII_CHAR='P',ASCII_CHAR='/',<HTTP_REQUEST_VERSION:<VERSION_MAJOR:ASCII_CHAR='0'>,ASCII_CHAR='.',<VERSION_MINOR:ASCII_CHAR='9'>>>";
+
 /**
  * generate a semtrex that will match a valid HTTP request in an ASCII_CHARS tree
  *
  */
 T *_makeHTTPRequestSemtrex() {
-    T *t;
+    T *t = parseSemtrex(G_sem,G_stxs);
+    return t;
 
     T *stx= _sl(0,ASCII_CHARS);
     t = _t_news(stx,SEMTREX_GROUP,HTTP_REQUEST);
@@ -305,6 +308,16 @@ void testHTTPparseHTML() {
 
 }
 
+Receptor *makeHTTP(VMHost *v,T *bindings) {
+    SemTable *sem = v->r->sem;
+    Symbol http = _d_define_receptor(sem,"http server",__r_make_definitions(),DEV_COMPOSITORY_CONTEXT);
+    Receptor *r = _r_new(sem,http);
+    Xaddr httpx = _v_new_receptor(v,v->r,http,r);
+    _o_express_role(r,HTTP,HTTP_SERVER,DEFAULT_ASPECT,bindings);
+    _v_activate(v,httpx);
+    return r;
+}
+
 void testHTTPprotocol() {
     T *http = _sem_get_def(G_sem,HTTP);
 
@@ -324,6 +337,10 @@ void testHTTPprotocol() {
     VMHost *v = G_vm = _v_new();
     _v_instantiate_builtins(G_vm);
 
+    T *bindings  = NULL;
+    Receptor *r = makeHTTP(v,bindings);
+    //_t_free(bindings);
+
     FILE *rs,*ws;
     char buffer[] = "GET /test HTTP/0.9\n";
 
@@ -335,11 +352,11 @@ void testHTTPprotocol() {
     ws = open_memstream(&output_data,&size);
     Stream *writer_stream = _st_new_unix_stream(ws,0);
 
-    Receptor *w = _r_makeStreamWriterReceptor(v->sem,TEST_STREAM_SYMBOL,writer_stream);
-    Xaddr writer = _v_new_receptor(v,v->r,STREAM_WRITER,w);
+    Receptor *wr = _r_makeStreamWriterReceptor(v->sem,TEST_STREAM_SYMBOL,writer_stream);
+    Xaddr writer = _v_new_receptor(v,v->r,STREAM_WRITER,wr);
 
-    Receptor *r = _r_makeStreamReaderReceptor(v->sem,TEST_STREAM_SYMBOL,reader_stream,w->addr,LINE);
-    Xaddr reader =  _v_new_receptor(v,v->r,STREAM_READER,r);
+    Receptor *rr = _r_makeStreamReaderReceptor(v->sem,TEST_STREAM_SYMBOL,reader_stream,r->addr,LINE,ASCII_CHARS);
+    Xaddr reader =  _v_new_receptor(v,v->r,STREAM_READER,rr);
 
     //   debug_enable(D_STREAM+D_SIGNALS+D_TREE+D_PROTOCOL);
     _v_start_vmhost(G_vm);

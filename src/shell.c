@@ -62,7 +62,7 @@ void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp
     Stream *output_stream = *osp = _st_new_unix_stream(output,0);
     Stream *input_stream = *isp = _st_new_unix_stream(input,1);
 
-    Receptor *i_r = *irp = _r_makeStreamReaderReceptor(v->sem,TEST_STREAM_SYMBOL,input_stream,r->addr,parse_line);
+    Receptor *i_r = *irp = _r_makeStreamReaderReceptor(v->sem,TEST_STREAM_SYMBOL,input_stream,r->addr,parse_line,LINE);
     Xaddr ix = _v_new_receptor(v,v->r,STREAM_READER,i_r);
     _v_activate(v,ix);
 

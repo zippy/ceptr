@@ -894,7 +894,7 @@ char *__td(Receptor *r,T *t,char *buf) {
 
 /*****************  Built-in core and edge receptors */
 
-Receptor *_r_makeStreamReaderReceptor(SemTable *sem,Symbol stream_symbol,Stream *st,ReceptorAddress to,Symbol carrier) {
+Receptor *_r_makeStreamReaderReceptor(SemTable *sem,Symbol stream_symbol,Stream *st,ReceptorAddress to,Symbol carrier,Symbol result_symbol) {
     Receptor *r = _r_new(sem,STREAM_READER);
 
     // code is something like:
@@ -914,7 +914,7 @@ Receptor *_r_makeStreamReaderReceptor(SemTable *sem,Symbol stream_symbol,Stream 
 
     T *s = _t_new(say,STREAM_READ,0,0);
     _t_new_stream(s,stream_symbol,st);
-    _t_new(s,RESULT_SYMBOL,&LINE,sizeof(Symbol));
+    _t_new(s,RESULT_SYMBOL,&result_symbol,sizeof(Symbol));
 
     T *run_tree = __p_build_run_tree(p,0);
     _t_free(p);
