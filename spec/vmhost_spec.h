@@ -309,6 +309,9 @@ void testVMHostShell() {
 
     // set up the vmhost
     G_vm = _v_new();
+    SemTable *gsem = G_sem;
+    G_sem = G_vm->sem;
+
     _v_instantiate_builtins(G_vm);
 
     // allocate c input out streams to mimic stdin and stdout
@@ -349,6 +352,7 @@ void testVMHostShell() {
     // free the memory used by the SYS_RECEPTOR
     _v_free(G_vm);
     G_vm = NULL;
+    G_sem = gsem;
 
     _st_free(input_stream);
     _st_free(output_stream);
