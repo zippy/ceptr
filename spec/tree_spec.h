@@ -408,7 +408,7 @@ void testTreeInsertAt() {
     t = _t_new_root(ASCII_CHARS);
     p[0] = 1;
     p[1] = TREE_PATH_TERMINATOR;
-    _t_insert_at(t,p,_t_newi(0,ASCII_CHAR,'x'));
+    _t_insert_at(t,p,_t_newc(0,ASCII_CHAR,'x'));
 
     spec_is_str_equal(t2s(t),"(ASCII_CHARS (ASCII_CHAR:'x'))");
     _t_free(t);
@@ -584,6 +584,9 @@ void testTreeBuild() {
     spec_is_str_equal(t2s(t),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL:RECOGNIZE) (PROTOCOL_SEMANTICS) (INCLUSION (PNAME:REQUESTING) (CONNECTION (WHICH_ROLE (ROLE:REQUESTER) (ROLE:RECOGNIZER))) (CONNECTION (WHICH_ROLE (ROLE:RESPONDER) (ROLE:RECOGNIZEE))) (CONNECTION (WHICH_GOAL (GOAL:REQUEST_HANDLER) (GOAL:RECOGNITION))) (RESOLUTION (WHICH_SYMBOL (USAGE:REQUEST_DATA) (ACTUAL_SYMBOL:are_you))) (RESOLUTION (WHICH_SYMBOL (USAGE:RESPONSE_DATA) (ACTUAL_SYMBOL:i_am))) (RESOLUTION (WHICH_PROCESS (GOAL:RESPONSE_HANDLER) (ACTUAL_PROCESS:fill_i_am)))))");
     _t_free(t);
 
+    t = _t_build2(G_sem,0,STX_OP,ASCII_CHAR,'x',STX_CP);
+    spec_is_str_equal(t2s(t),"(ASCII_CHAR:'x')");
+    _t_free(t);
     //! [testTreeBuild]
 
 }

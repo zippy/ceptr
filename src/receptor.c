@@ -641,11 +641,13 @@ void __r_test_expectation(Receptor *r,T *expectation,T *signal) {
     debug(D_SIGNALS,"matching %s\n",_td(q->r,signal_contents));
     debug(D_SIGNALS,"against %s\n",_td(q->r,stx));
 
+    bool matched;
+    matched = _t_matchr(stx,signal_contents,&m);
     bool allow;
     bool cleanup;
     evaluateEndCondition(_t_child(expectation,ExpectationEndCondsIdx),&cleanup,&allow);
 
-    if (allow && _t_matchr(stx,signal_contents,&m)) {
+    if (allow && matched) {
         debug(D_SIGNALS,"got a match on %s\n",_td(q->r,stx));
 
         T *rt=0;

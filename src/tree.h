@@ -31,15 +31,17 @@
 enum TreeSurfaceFlags {TFLAG_ALLOCATED=0x0001,TFLAG_SURFACE_IS_TREE=0x0002,TFLAG_SURFACE_IS_RECEPTOR = 0x0004,TFLAG_SURFACE_IS_SCAPE=0x0008,TFLAG_SURFACE_IS_STREAM=0x0010,TFLAG_DELETED=0x0020,TFLAG_RUN_NODE=0x0040,TFLAG_REFERENCE=0x8000};
 
 /*****************  Node creation and deletion*/
-T *__t_new(T *t,Symbol symbol, void *surface, size_t size,int is_run_node);
+T *__t_new(T *t,Symbol symbol, void *surface, size_t size,bool is_run_node);
 #define _t_new(p,sy,su,s) __t_new(p,sy,su,s,0)
-T *__t_newi(T *parent,Symbol symbol,int surface,int is_run_node);
+T *__t_newc(T *t,Symbol symbol, char c,bool is_run_node);
+#define _t_newc(parent,symbol,c) __t_newc(parent,symbol,c,0)
+T *__t_newi(T *parent,Symbol symbol,int surface,bool is_run_node);
 #define _t_newi(p,sy,su) __t_newi(p,sy,su,0)
-T *__t_news(T *parent,Symbol symbol,SemanticID surface,int is_run_node);
+T *__t_news(T *parent,Symbol symbol,SemanticID surface,bool is_run_node);
 #define _t_news(parent,symbol,surface) __t_news(parent,symbol,surface,0)
 T *_t_newt(T *parent,Symbol symbol,T *t);
 #define _t_new_str(parent,symbol,str) __t_new_str(parent,symbol,str,0)
-T *__t_new_str(T *parent,Symbol symbol,char *str,int is_run_node);
+T *__t_new_str(T *parent,Symbol symbol,char *str,bool is_run_node);
 T *_t_new_root(Symbol symbol);
 #define _t_newr(p,s) __t_newr(p,s,0)
 T *__t_newr(T *parent,Symbol symbol,bool is_run_node);

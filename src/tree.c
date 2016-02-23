@@ -50,7 +50,7 @@ void __t_init(T *t,T *parent,Symbol symbol) {
  * @param[in] size size in bytes of the surface
  * @returns pointer to node allocated on the heap
  */
-T * __t_new(T *parent,Symbol symbol,void *surface,size_t size,int is_run_node) {
+T * __t_new(T *parent,Symbol symbol,void *surface,size_t size,bool is_run_node) {
     T *t = malloc(is_run_node ? sizeof(rT) : sizeof(T));
     __t_init(t,parent,symbol);
     if (is_run_node) t->context.flags |= TFLAG_RUN_NODE;
@@ -70,6 +70,18 @@ T * __t_new(T *parent,Symbol symbol,void *surface,size_t size,int is_run_node) {
 }
 
 /**
+ * Create a new tree node with an char surface
+ *
+ * @param[in] parent parent node for the node to be created.  Can be 0 if this is a root node
+ * @param[in] symbol semantic symbol for the node to be create
+ * @param[in] surface char value to store in the surface
+ * @returns pointer to node allocated on the heap
+ */
+T * __t_newc(T *parent,Symbol symbol,char surface,bool is_run_node) {
+    return __t_new(parent,symbol,&surface,sizeof(char),is_run_node);
+}
+
+/**
  * Create a new tree node with an integer surface
  *
  * @param[in] parent parent node for the node to be created.  Can be 0 if this is a root node
@@ -77,7 +89,7 @@ T * __t_new(T *parent,Symbol symbol,void *surface,size_t size,int is_run_node) {
  * @param[in] surface integer value to store in the surface
  * @returns pointer to node allocated on the heap
  */
-T * __t_newi(T *parent,Symbol symbol,int surface,int is_run_node) {
+T * __t_newi(T *parent,Symbol symbol,int surface,bool is_run_node) {
     return __t_new(parent,symbol,&surface,sizeof(int),is_run_node);
     T *t = malloc(is_run_node ? sizeof(rT) : sizeof(T));
     *((int *)&t->contents.surface) = surface;
@@ -95,7 +107,7 @@ T * __t_newi(T *parent,Symbol symbol,int surface,int is_run_node) {
  * @param[in] surface semanticID value to store in the surface
  * @returns pointer to node allocated on the heap
  */
-T *__t_news(T *parent,Symbol symbol,SemanticID surface,int is_run_node){
+T *__t_news(T *parent,Symbol symbol,SemanticID surface,bool is_run_node){
     return __t_new(parent,symbol,&surface,sizeof(SemanticID),is_run_node);
 }
 
@@ -124,7 +136,7 @@ T * _t_newt(T *parent,Symbol symbol,T *surface) {
  * @param[in] surface string value to store in the surface
  * @returns pointer to node allocated on the heap
  */
-T * __t_new_str(T *parent,Symbol symbol,char *surface,int is_run_node) {
+T * __t_new_str(T *parent,Symbol symbol,char *surface,bool is_run_node) {
     return __t_new(parent,symbol,surface,strlen(surface)+1,is_run_node);
 }
 
@@ -153,7 +165,7 @@ T *__t_newr(T *parent,Symbol symbol,bool is_run_node) {
    i.e. a receptor, scape, or stream, these nodes get cloned as references
    so the c-structure isn't double freed
  */
-T *__t_new_special(T *parent,Symbol symbol,void *s,int flag,int is_run_node) {
+T *__t_new_special(T *parent,Symbol symbol,void *s,int flag,bool is_run_node) {
     T *t = malloc(is_run_node ? sizeof(rT) : sizeof(T));
     t->contents.surface = s;
     t->contents.size = sizeof(void *);
@@ -761,6 +773,10 @@ T *_t_build2(SemTable *sem,T *parent,...) {
                 }
                 else if (semeq(st,CSTRING)) {
                     t = _t_new_str(t,node,va_arg(ap,char *));
+                }
+                else if (semeq(st,CHAR)) {
+                    int x = va_arg(ap,int);
+                    t = _t_newc(t,node,x);
                 }
                 else if (semeq(st,TREE_PATH)) {
                     int path[100];

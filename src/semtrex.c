@@ -374,21 +374,26 @@ int __symbol_set_does_not_contain(T *s,T *t) {
 /* advance the cursor according to the instructions in the state*/
 T * __transition(SState *s,T *t) {
     int i;
+    if (!t) debug(D_STX_MATCH,"transition: t is null\n");
     if (!t) return 0;
     switch(s->transition) {
     case TransitionNextChild:
+        debug(D_STX_MATCH,"transition: next child\n");
         t = _t_next_sibling(t);
         break;
     case TransitionDown:
+        debug(D_STX_MATCH,"transition: down\n");
         t = _t_child(t,1);
         break;
     default:
+        debug(D_STX_MATCH,"transition: popping\n");
         for(i=s->transition;i<0;i++) {
             t = _t_parent(t);
         }
         t = _t_next_sibling(t);
         break;
     }
+    debug(D_STX_MATCH,"transition: result %s\n",!t ? "NULL":t2s(t));
     return t;
 }
 
@@ -399,9 +404,11 @@ int _val_match(T *t,T *t1) {
     int i;
     char *p1,*p2;
     size_t l = _t_size(t1);
+    debug(D_STX_MATCH,"comparing sizes %ld,%ld\n",l,_t_size(t));
     if (l != _t_size(t)) return 0;
-
-    return memcmp(_t_surface(t),_t_surface(t1),l)==0;
+    i = memcmp(_t_surface(t),_t_surface(t1),l);
+    debug(D_STX_MATCH,"compare result: %d\n",i);
+    return i==0;
 }
 
 #define FAIL {s=0;break;}
@@ -515,7 +522,7 @@ int __t_match(T *semtrex,T *source_t,T **rP) {
                 if (!t) FAIL;
                 int count = _t_children(v);
                 int i;
-                debug(D_STX_MATCH,"  seeking:%s\n",__t_dump(G_sem,v,0,buf));
+                debug(D_STX_MATCH,"  seeking:%s%s\n",s->data.value.flags & LITERAL_NOT ? " ~":"",__t_dump(G_sem,v,0,buf));
                 Symbol ts = _t_symbol(t);
                 if (s->data.value.flags & LITERAL_NOT) {
                     if (s->data.value.flags & LITERAL_SET) {
@@ -985,7 +992,7 @@ char * _dump_semtrex(SemTable *sem,T *s,char *buf) {
 // helper to add a stx_char value literal to a semtrex
 T *__stxcv(T *p,char c) {
     T *t =  _t_newr(p,SEMTREX_VALUE_LITERAL);
-    _t_newi(t,ASCII_CHAR,c);
+    _t_newc(t,ASCII_CHAR,c);
     return t;
 }
 
@@ -998,7 +1005,7 @@ T *__stxcvm(T *p,int not,int count,...) {
     va_start(chars,count);
     int i;
     for(i=0;i<count;i++) {
-        _t_newi(v,ASCII_CHAR,va_arg(chars,int));
+        _t_newc(v,ASCII_CHAR,va_arg(chars,int));
     }
     va_end(chars);
 
@@ -1089,7 +1096,7 @@ T *wrap(T *tokens,T *results, Symbol contents_s, Symbol open_s) {
 T *makeASCIITree(char *c) {
     T *s = _t_new_root(ASCII_CHARS);
     while(*c) {
-        _t_newi(s,ASCII_CHAR,*c);
+        _t_newc(s,ASCII_CHAR,*c);
         c++;
     }
     return s;
@@ -1150,7 +1157,7 @@ T *asciiT_tos(T* asciiT,T* match,T *t,Symbol s) {
 T *asciiT_toc(T* asciiT,T* match,T *t,Symbol s) {
     int *path = (int *)_t_surface(_t_child(match,2));
     int c = *(int *)_t_surface(_t_get(asciiT,path));
-    return _t_newi(t,s,c);
+    return _t_newc(t,s,c);
 }
 
 /**

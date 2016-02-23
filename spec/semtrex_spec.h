@@ -197,9 +197,9 @@ void testMatchOr() {
     _t_free(s);
 
     t = _t_new_root(ASCII_CHARS);
-    _t_newi(t,ASCII_CHAR,'/');
-    _t_newi(t,ASCII_CHAR,'X');
-    _t_newi(t,ASCII_CHAR,')');
+    _t_newc(t,ASCII_CHAR,'/');
+    _t_newc(t,ASCII_CHAR,'X');
+    _t_newc(t,ASCII_CHAR,')');
 
     s = _sl(0,ASCII_CHARS);
     T *x = _t_newr(s,SEMTREX_SEQUENCE);
@@ -487,9 +487,9 @@ void testMatchGroupMulti() {
     sX(TSTX_SL,NULL_STRUCTURE);
 
     T *s = _t_new_root(ASCII_CHARS);
-    _t_newi(s,ASCII_CHAR,'/');
-    _t_newi(s,ASCII_CHAR,'(');
-    _t_newi(s,ASCII_CHAR,'(');
+    _t_newc(s,ASCII_CHAR,'/');
+    _t_newc(s,ASCII_CHAR,'(');
+    _t_newc(s,ASCII_CHAR,'(');
 
     T *ts = _t_news(0,SEMTREX_GROUP,STX_TOKENS);
     T *g = _sl(ts,ASCII_CHARS);
@@ -581,15 +581,15 @@ void testMatchLiteralValue() {
     _t_free(t);
 
     t = _t_new_root(ASCII_CHARS);
-    _t_newi(t,ASCII_CHAR,'a');
-    _t_newi(t,ASCII_CHAR,'b');
-    _t_newi(t,ASCII_CHAR,'/');
+    _t_newc(t,ASCII_CHAR,'a');
+    _t_newc(t,ASCII_CHAR,'b');
+    _t_newc(t,ASCII_CHAR,'/');
 
     s = _sl(0,ASCII_CHARS);
     T *sq = _t_newr(s,SEMTREX_SEQUENCE);
     T *g = _t_news(sq,SEMTREX_GROUP,TEST_GROUP_SYMBOL1);
     T *x = _t_newr(g,SEMTREX_ZERO_OR_MORE);
-    newvl(x,1,3,_t_newi(0,ASCII_CHAR,'/'),_t_newi(0,ASCII_CHAR,'?'),_t_newi(0,ASCII_CHAR,' '));
+    newvl(x,1,3,_t_newc(0,ASCII_CHAR,'/'),_t_newc(0,ASCII_CHAR,'?'),_t_newc(0,ASCII_CHAR,' '));
 
     T *r;
     //debug_enable(D_STX_MATCH);
@@ -771,11 +771,11 @@ void testSemtrexDump() {
     spec_is_str_equal(_dump_semtrex(G_sem,s,buf),"/TEST_STR_SYMBOL|TEST_INT_SYMBOL");
     _t_free(s);
 
-    s = newvl(0,1,1,_t_newi(0,ASCII_CHAR,'x'));
+    s = newvl(0,1,1,_t_newc(0,ASCII_CHAR,'x'));
     spec_is_str_equal(_dump_semtrex(G_sem,s,buf),"/ASCII_CHAR!='x'");
     _t_free(s);
 
-    s = newvl(0,0,1,_t_newi(0,ASCII_CHAR,'x'));
+    s = newvl(0,0,1,_t_newc(0,ASCII_CHAR,'x'));
     spec_is_str_equal(_dump_semtrex(G_sem,s,buf),"/ASCII_CHAR='x'");
     _t_free(s);
 

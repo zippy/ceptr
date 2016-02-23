@@ -505,7 +505,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                         char *c = _st_data(st);
                         x = __t_newr(0,ASCII_CHARS,true);
                         while (--l) { // ignore final NULL
-                            __t_newi(x,ASCII_CHAR,*c,true);
+                            __t_newc(x,ASCII_CHAR,*c,true);
                             c++;
                         }
                     }
