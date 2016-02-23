@@ -820,6 +820,8 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
     code->structure.children = x->structure.children;
     code->contents = x->contents;
     code->context = x->context;
+    // we do have to fixe the parent value of all the children
+    DO_KIDS(code,_t_child(code,i)->structure.parent = code);
     free(x);
     return err;
 }
