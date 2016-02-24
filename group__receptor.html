@@ -297,9 +297,9 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_r_get_symbol_name<
 <tr class="memitem:ga16d730727540e2be8140618c3e8d8026"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga16d730727540e2be8140618c3e8d8026"></a>
 char *&#160;</td><td class="memItemRight" valign="bottom"><b>_r_get_process_name</b> (<a class="el" href="structReceptor.html">Receptor</a> *r, <a class="el" href="structSemanticID.html">Process</a> p)</td></tr>
 <tr class="separator:ga16d730727540e2be8140618c3e8d8026"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga66fd5925f062ddaf33bd8800dd46e503"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga66fd5925f062ddaf33bd8800dd46e503"></a>
-<a class="el" href="structReceptor.html">Receptor</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>_r_makeStreamReaderReceptor</b> (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structSemanticID.html">Symbol</a> stream_symbol, <a class="el" href="structStream.html">Stream</a> *stream, <a class="el" href="structReceptorAddress.html">ReceptorAddress</a> to)</td></tr>
-<tr class="separator:ga66fd5925f062ddaf33bd8800dd46e503"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4f8ffb3e8fcd57a94ba5385b9e20a7b9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga4f8ffb3e8fcd57a94ba5385b9e20a7b9"></a>
+<a class="el" href="structReceptor.html">Receptor</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>_r_makeStreamReaderReceptor</b> (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structSemanticID.html">Symbol</a> stream_symbol, <a class="el" href="structStream.html">Stream</a> *stream, <a class="el" href="structReceptorAddress.html">ReceptorAddress</a> to, <a class="el" href="structSemanticID.html">Symbol</a> carrier, <a class="el" href="structSemanticID.html">Symbol</a> result_symbol)</td></tr>
+<tr class="separator:ga4f8ffb3e8fcd57a94ba5385b9e20a7b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga5efa73b6c76f092582c00db9e8730f19"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga5efa73b6c76f092582c00db9e8730f19"></a>
 <a class="el" href="structReceptor.html">Receptor</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>_r_makeStreamWriterReceptor</b> (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structSemanticID.html">Symbol</a> stream_symbol, <a class="el" href="structStream.html">Stream</a> *stream)</td></tr>
 <tr class="separator:ga5efa73b6c76f092582c00db9e8730f19"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -360,7 +360,7 @@ Variables</h2></td></tr>
 </dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000034">Todo:</a></b></dt><dd>this will skip some seconds over time.... make more sophisticated </dd></dl>
 
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l01034">1034</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l01036">1036</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -425,7 +425,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>get the <a class="el" href="structReceptor.html">Receptor</a> structure from an installed receptor </p>
 
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00862">862</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00864">864</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -1044,7 +1044,7 @@ Variables</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Error </dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000032">Todo:</a></b></dt><dd>figure out what kinds of errors could be returned by _r_deliver</dd></dl>
 <p><b>Examples (from test suite):</b> </p><div class="fragment"></div><!-- fragment -->
-<p>Definition at line <a class="el" href="receptor_8c_source.html#l00734">734</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
+<p>Definition at line <a class="el" href="receptor_8c_source.html#l00736">736</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
 </div>
 </div>
@@ -1563,7 +1563,7 @@ Variables</h2></td></tr>
 <div class="line">    spec_is_sem_equal(<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(ru-&gt;pending_signals),PENDING_SIGNALS);</div>
 <div class="line">    spec_is_sem_equal(<a class="code" href="group__tree.html#ga946600fb570f0cc913450905f6189d49">_t_symbol</a>(ru-&gt;pending_responses),PENDING_RESPONSES);</div>
 <div class="line"></div>
-<div class="line">    <span class="comment">// check that the unserialized is matched up to the correct definitions in the semtable</span></div>
+<div class="line">    <span class="comment">// check that the unserialized receptor is matched up to the correct definitions in the semtable</span></div>
 <div class="line">    spec_is_sem_equal(<a class="code" href="group__receptor.html#ga2b16e941a406a95aba1c8db047d00041">_r_get_sem_by_label</a>(ru,<span class="stringliteral">&quot;latitude&quot;</span>),lat);</div>
 <div class="line">    spec_is_sem_equal(<a class="code" href="group__receptor.html#ga2b16e941a406a95aba1c8db047d00041">_r_get_sem_by_label</a>(ru,<span class="stringliteral">&quot;latlong&quot;</span>),latlong);</div>
 <div class="line"></div>
@@ -1575,20 +1575,21 @@ Variables</h2></td></tr>
 <div class="line">    spec_is_str_equal(buf1,buf);</div>
 <div class="line"></div>
 <div class="line">    t1 = <a class="code" href="group__receptor.html#gadc618904f81240b244e816234d1c906e">_r_get_instance</a>(ru,xr);</div>
-<div class="line">    buf[0] = buf1[0] = 0;</div>
-<div class="line">    __t_dump(r-&gt;<a class="code" href="structReceptor.html#a4bb9ce729b6b85fb99326e9df7b23cbd">sem</a>,ir,0,buf);</div>
-<div class="line">    __t_dump(ru-&gt;<a class="code" href="structReceptor.html#a4bb9ce729b6b85fb99326e9df7b23cbd">sem</a>,t1,0,buf1);</div>
-<div class="line">    spec_is_str_equal(buf1,buf);</div>
-<div class="line"></div>
-<div class="line">    <a class="code" href="structReceptor.html">Receptor</a> *r3 = <a class="code" href="group__receptor.html#gac438809f0d3f3add97efd49729c9027f">__r_get_receptor</a>(t1);</div>
-<div class="line">    t1 = <a class="code" href="group__receptor.html#gadc618904f81240b244e816234d1c906e">_r_get_instance</a>(r3,x2);</div>
-<div class="line">    spec_is_equal(*(<span class="keywordtype">int</span>*)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(t1),314);</div>
-<div class="line"></div>
-<div class="line">    <span class="comment">//    __r_dump_instances(r3);  show the 314 int</span></div>
+<div class="line">    spec_is_true(t1 != NULL);</div>
+<div class="line">    <span class="keywordflow">if</span> (t1) {</div>
+<div class="line">        buf[0] = buf1[0] = 0;</div>
+<div class="line">        __t_dump(r-&gt;<a class="code" href="structReceptor.html#a4bb9ce729b6b85fb99326e9df7b23cbd">sem</a>,ir,0,buf);</div>
+<div class="line">        __t_dump(ru-&gt;<a class="code" href="structReceptor.html#a4bb9ce729b6b85fb99326e9df7b23cbd">sem</a>,t1,0,buf1);</div>
+<div class="line">        spec_is_str_equal(buf1,buf);</div>
+<div class="line">        <a class="code" href="structReceptor.html">Receptor</a> *r3 = <a class="code" href="group__receptor.html#gac438809f0d3f3add97efd49729c9027f">__r_get_receptor</a>(t1);</div>
+<div class="line">        t1 = <a class="code" href="group__receptor.html#gadc618904f81240b244e816234d1c906e">_r_get_instance</a>(r3,x2);</div>
+<div class="line">        spec_is_equal(*(<span class="keywordtype">int</span>*)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(t1),314);</div>
+<div class="line">        <a class="code" href="group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8">_r_free</a>(ru);</div>
+<div class="line">    }</div>
+<div class="line">    <span class="comment">//__r_dump_instances(r3); // show the 314 int</span></div>
 <div class="line"></div>
 <div class="line">    free(surface);</div>
 <div class="line">    <a class="code" href="group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8">_r_free</a>(r);</div>
-<div class="line">    <a class="code" href="group__receptor.html#ga6f650808029d4c598ebe6515d9900ef8">_r_free</a>(ru);</div>
 </div><!-- fragment -->
 <p>Definition at line <a class="el" href="receptor_8c_source.html#l00399">399</a> of file <a class="el" href="receptor_8c_source.html">receptor.c</a>.</p>
 
@@ -1706,7 +1707,7 @@ Variables</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Jan 31 2016 21:37:37 for ceptr by
+    <li class="footer">Generated on Wed Feb 24 2016 12:26:58 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

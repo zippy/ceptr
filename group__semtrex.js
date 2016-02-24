@@ -48,7 +48,7 @@ var group__semtrex =
     [ "_stx_freeFA", "group__semtrex.html#gacbce8db372cc051950f8d684af47c39a", null ],
     [ "_stx_makeFA", "group__semtrex.html#ga23ed44c9e7a1637d5f7d49e6114af83a", null ],
     [ "_stx_results2sem_map", "group__semtrex.html#gac1deec5ba9d594173f431d3e54421a10", null ],
-    [ "_t_embody_from_match", "group__semtrex.html#ga25d59875a246ba9fb47131bced426517", null ],
+    [ "_t_embody_from_match", "group__semtrex.html#gab356356566a5980a3352043de750d8f2", null ],
     [ "_t_get_match", "group__semtrex.html#gada90f89374f4577e3ac8819e500a97a7", null ],
     [ "_t_match", "group__semtrex.html#ga8e580d7393964e5df55e92aebf587e3f", null ],
     [ "_t_matchr", "group__semtrex.html#ga27540c8e1822da3160a0cc4717df410f", null ],

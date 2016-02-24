@@ -103,7 +103,6 @@ $(document).ready(function(){initNavTree('http__example_8h.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
@@ -112,13 +111,18 @@ $(document).ready(function(){initNavTree('http__example_8h.html','');});
 <div class="contents">
 <div class="textblock"><code>#include &quot;../src/ceptr.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="receptor_8h_source.html">../src/receptor.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="protocol_8h_source.html">../src/protocol.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="def_8h_source.html">../src/def.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="semtrex_8h_source.html">../src/semtrex.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="spec__utils_8h_source.html">spec_utils.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="vmhost_8h_source.html">../src/vmhost.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="accumulator_8h_source.html">../src/accumulator.h</a>&quot;</code><br />
+<code>#include &lt;unistd.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for http_example.h:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="http__example_8h__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="http__example_8h__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -128,32 +132,8 @@ This graph shows which files directly or indirectly include this file:</div>
 </div>
 <p><a href="http__example_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:ac57ac502a38d941ec43f7761f54e1027"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac57ac502a38d941ec43f7761f54e1027"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SD</b>(r, label, def)&#160;&#160;&#160;st = <a class="el" href="group__receptor.html#ga9a017ac5e8250b6143719abe815be93a">__r_define_structure</a>(r,label,def)</td></tr>
-<tr class="separator:ac57ac502a38d941ec43f7761f54e1027"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a2b17ade41161967a62605f61bb5c3d88"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2b17ade41161967a62605f61bb5c3d88"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>_setup_version_defs</b> (<a class="el" href="structReceptor.html">Receptor</a> *r)</td></tr>
-<tr class="separator:a2b17ade41161967a62605f61bb5c3d88"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af1b8d8ddf3cdafcf41984a689819c7e8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af1b8d8ddf3cdafcf41984a689819c7e8"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>_setup_status_defs</b> (<a class="el" href="structReceptor.html">Receptor</a> *r)</td></tr>
-<tr class="separator:af1b8d8ddf3cdafcf41984a689819c7e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6f5b6088ac2bceac16f5e88aaa6cf8bf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6f5b6088ac2bceac16f5e88aaa6cf8bf"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>_setup_uri_defs</b> (<a class="el" href="structReceptor.html">Receptor</a> *r)</td></tr>
-<tr class="separator:a6f5b6088ac2bceac16f5e88aaa6cf8bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8cb46b802b440bf98bcd9a93b01b2399"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8cb46b802b440bf98bcd9a93b01b2399"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>_setup_html_defs</b> (<a class="el" href="structReceptor.html">Receptor</a> *r)</td></tr>
-<tr class="separator:a8cb46b802b440bf98bcd9a93b01b2399"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa8f69139ef8347c21bbe6113b62d8620"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa8f69139ef8347c21bbe6113b62d8620"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>_setup_HTTPDefs</b> ()</td></tr>
-<tr class="separator:aa8f69139ef8347c21bbe6113b62d8620"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4ea9f33298d5ba4d31f3481beef1baf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac4ea9f33298d5ba4d31f3481beef1baf"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>_cleanup_HTTPDefs</b> ()</td></tr>
-<tr class="separator:ac4ea9f33298d5ba4d31f3481beef1baf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c182b5a6e82ef49c6967183a15c3e8b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="http__example_8h.html#a1c182b5a6e82ef49c6967183a15c3e8b">_makeTestHTTPRequestTree</a> ()</td></tr>
 <tr class="memdesc:a1c182b5a6e82ef49c6967183a15c3e8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">[makeTestHTTPRequestTree]  <a href="#a1c182b5a6e82ef49c6967183a15c3e8b">More...</a><br /></td></tr>
 <tr class="separator:a1c182b5a6e82ef49c6967183a15c3e8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -161,7 +141,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_cleanup_HTTPDefs</b>
 <tr class="memdesc:a5476caaca538a030a6770bc99a42f372"><td class="mdescLeft">&#160;</td><td class="mdescRight">[makeTestHTTPRequestTree]  <a href="#a5476caaca538a030a6770bc99a42f372">More...</a><br /></td></tr>
 <tr class="separator:a5476caaca538a030a6770bc99a42f372"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af05800edd63bd301c2f47a5e846e2642"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="http__example_8h.html#af05800edd63bd301c2f47a5e846e2642">_makeHTTPRequestSemtrex</a> ()</td></tr>
-<tr class="memdesc:af05800edd63bd301c2f47a5e846e2642"><td class="mdescLeft">&#160;</td><td class="mdescRight">[makeTestHTTPResponseProcess]  <a href="#af05800edd63bd301c2f47a5e846e2642">More...</a><br /></td></tr>
 <tr class="separator:af05800edd63bd301c2f47a5e846e2642"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a9a110a7470525d3f724a70eb456211"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5a9a110a7470525d3f724a70eb456211"></a>
 <a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>makeDeltaAdd</b> (<a class="el" href="structT.html">T</a> *src, <a class="el" href="structT.html">T</a> *t)</td></tr>
@@ -172,198 +151,25 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_cleanup_HTTPDefs</b>
 <tr class="memitem:a9f13fd33625bed498ed9d7a701339c31"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9f13fd33625bed498ed9d7a701339c31"></a>
 <a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>parseHTML</b> (char *html)</td></tr>
 <tr class="separator:a9f13fd33625bed498ed9d7a701339c31"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae24eeb5809320b4cc9909ecb008224ce"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae24eeb5809320b4cc9909ecb008224ce"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>testHTTPExample</b> ()</td></tr>
-<tr class="separator:ae24eeb5809320b4cc9909ecb008224ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a06e1c798b593a002069e40c9605c29"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7a06e1c798b593a002069e40c9605c29"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>testHTTPparseHTML</b> ()</td></tr>
+<tr class="separator:a7a06e1c798b593a002069e40c9605c29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16280ce3dd192396f55d3f4637d59429"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a16280ce3dd192396f55d3f4637d59429"></a>
+<a class="el" href="structReceptor.html">Receptor</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>makeHTTP</b> (<a class="el" href="structVMHost.html">VMHost</a> *v, <a class="el" href="structT.html">T</a> *bindings)</td></tr>
+<tr class="separator:a16280ce3dd192396f55d3f4637d59429"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac202a7c335caaa959c810906f4b7b593"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac202a7c335caaa959c810906f4b7b593"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>testHTTPprotocol</b> ()</td></tr>
+<tr class="separator:ac202a7c335caaa959c810906f4b7b593"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a153812d95da1d439f491af0b8d508599"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a153812d95da1d439f491af0b8d508599"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>testHTTP</b> ()</td></tr>
+<tr class="separator:a153812d95da1d439f491af0b8d508599"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a59d64b807d94f51198c1b752c06b8a43"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a59d64b807d94f51198c1b752c06b8a43"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>OCTET_STREAM</b></td></tr>
-<tr class="separator:a59d64b807d94f51198c1b752c06b8a43"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1875d93efa9a83a4f99e533ab30b304"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa1875d93efa9a83a4f99e533ab30b304"></a>
-<a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTTP_REQUEST_V09</b></td></tr>
-<tr class="separator:aa1875d93efa9a83a4f99e533ab30b304"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a52d51e7a976166c7d7182eb82b11be69"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a52d51e7a976166c7d7182eb82b11be69"></a>
-<a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><b>URI</b></td></tr>
-<tr class="separator:a52d51e7a976166c7d7182eb82b11be69"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae4b93ef4a5451e283c96034c4c4250a7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae4b93ef4a5451e283c96034c4c4250a7"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTTP_REQUEST_PATH_SEGMENTS</b></td></tr>
-<tr class="separator:ae4b93ef4a5451e283c96034c4c4250a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9e7fe5827e591407d4a3a183ca2d935"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa9e7fe5827e591407d4a3a183ca2d935"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTTP_REQUEST_PATH_SEGMENT</b></td></tr>
-<tr class="separator:aa9e7fe5827e591407d4a3a183ca2d935"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3739f8ece93e551db97ab22c3cddebbe"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3739f8ece93e551db97ab22c3cddebbe"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTTP_REQUEST_PATH_FILE</b></td></tr>
-<tr class="separator:a3739f8ece93e551db97ab22c3cddebbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a54789be18105f8367dccd210e87c4e3b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a54789be18105f8367dccd210e87c4e3b"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>FILE_NAME</b></td></tr>
-<tr class="separator:a54789be18105f8367dccd210e87c4e3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a63d1c993754f20961dea6c7a9815108a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a63d1c993754f20961dea6c7a9815108a"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>FILE_EXTENSION</b></td></tr>
-<tr class="separator:a63d1c993754f20961dea6c7a9815108a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8568a508afa1e01179353ef4d15bd84b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8568a508afa1e01179353ef4d15bd84b"></a>
-<a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><b>FILE_HANDLE</b></td></tr>
-<tr class="separator:a8568a508afa1e01179353ef4d15bd84b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0fd15e7782502995475bba538b8b317c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0fd15e7782502995475bba538b8b317c"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTTP_REQUEST_PATH_QUERY</b></td></tr>
-<tr class="separator:a0fd15e7782502995475bba538b8b317c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69c892488bb14eaa7503befa361cb7c1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a69c892488bb14eaa7503befa361cb7c1"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTTP_REQUEST_PATH_QUERY_PARAMS</b></td></tr>
-<tr class="separator:a69c892488bb14eaa7503befa361cb7c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a12c1e9842baca6beeb091443ae706a29"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a12c1e9842baca6beeb091443ae706a29"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTTP_REQUEST_PATH_QUERY_PARAM</b></td></tr>
-<tr class="separator:a12c1e9842baca6beeb091443ae706a29"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa726eeb7a93c4375fec221be201791ec"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa726eeb7a93c4375fec221be201791ec"></a>
-<a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><b>KEY_VALUE_PARAM</b></td></tr>
-<tr class="separator:aa726eeb7a93c4375fec221be201791ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a971d824c589b29451bc8fb0c84e69b0c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a971d824c589b29451bc8fb0c84e69b0c"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PARAM_KEY</b></td></tr>
-<tr class="separator:a971d824c589b29451bc8fb0c84e69b0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2708b1a10c4a7e277f3d6cd8f4bba17"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae2708b1a10c4a7e277f3d6cd8f4bba17"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PARAM_VALUE</b></td></tr>
-<tr class="separator:ae2708b1a10c4a7e277f3d6cd8f4bba17"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ba8f6e29ad42e2606781b45226cef54"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3ba8f6e29ad42e2606781b45226cef54"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTTP_REQUEST</b></td></tr>
-<tr class="separator:a3ba8f6e29ad42e2606781b45226cef54"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6389e4fa6c18f5cce5cc8ef8a3cd8971"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6389e4fa6c18f5cce5cc8ef8a3cd8971"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTTP_REQUEST_METHOD</b></td></tr>
-<tr class="separator:a6389e4fa6c18f5cce5cc8ef8a3cd8971"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb09b43399ee2ece015a0c0b2b574b0b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acb09b43399ee2ece015a0c0b2b574b0b"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTTP_REQUEST_PATH</b></td></tr>
-<tr class="separator:acb09b43399ee2ece015a0c0b2b574b0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8bc7989f4a66b51c220336d65869bf72"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8bc7989f4a66b51c220336d65869bf72"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTTP_REQUEST_HOST</b></td></tr>
-<tr class="separator:a8bc7989f4a66b51c220336d65869bf72"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9aecbe8ebb0782b6d072686bc3eb0f66"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9aecbe8ebb0782b6d072686bc3eb0f66"></a>
-<a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><b>VERSION</b></td></tr>
-<tr class="separator:a9aecbe8ebb0782b6d072686bc3eb0f66"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb6ae5867be40257d0a4bc9d976c17b0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abb6ae5867be40257d0a4bc9d976c17b0"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTTP_REQUEST_VERSION</b></td></tr>
-<tr class="separator:abb6ae5867be40257d0a4bc9d976c17b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c3fb4d0f1f8f3dad064f65082ead844"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9c3fb4d0f1f8f3dad064f65082ead844"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>VERSION_MAJOR</b></td></tr>
-<tr class="separator:a9c3fb4d0f1f8f3dad064f65082ead844"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af43e0d66dec7a006291d118d635b6711"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af43e0d66dec7a006291d118d635b6711"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>VERSION_MINOR</b></td></tr>
-<tr class="separator:af43e0d66dec7a006291d118d635b6711"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a41bf8d18047ad9f31eed5b9b503f502a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a41bf8d18047ad9f31eed5b9b503f502a"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTTP_RESPONSE</b></td></tr>
-<tr class="separator:a41bf8d18047ad9f31eed5b9b503f502a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab8c983cdadfdf42e8bf1e7fe8b44bfa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aab8c983cdadfdf42e8bf1e7fe8b44bfa"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTTP_RESPONSE_CONTENT_TYPE</b></td></tr>
-<tr class="separator:aab8c983cdadfdf42e8bf1e7fe8b44bfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8313d2056250fd7ee2e8c32fb01f142c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8313d2056250fd7ee2e8c32fb01f142c"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTTP_RESPONSE_BODY</b></td></tr>
-<tr class="separator:a8313d2056250fd7ee2e8c32fb01f142c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37bee36feb68514f24a57aacbd1292f2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a37bee36feb68514f24a57aacbd1292f2"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTTP_RESPONSE_STATUS</b></td></tr>
-<tr class="separator:a37bee36feb68514f24a57aacbd1292f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae11ebe978c58758887d86a598998559b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae11ebe978c58758887d86a598998559b"></a>
-<a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STATUS</b></td></tr>
-<tr class="separator:ae11ebe978c58758887d86a598998559b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a697a6b26b26fee35e573de755500c5a3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a697a6b26b26fee35e573de755500c5a3"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STATUS_VALUE</b></td></tr>
-<tr class="separator:a697a6b26b26fee35e573de755500c5a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a20b5be06bd6c53d422c56092694dd9d7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a20b5be06bd6c53d422c56092694dd9d7"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>STATUS_TEXT</b></td></tr>
-<tr class="separator:a20b5be06bd6c53d422c56092694dd9d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a905a2f4ef8d313395b34ed1b6ef9f017"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a905a2f4ef8d313395b34ed1b6ef9f017"></a>
-<a class="el" href="structReceptor.html">Receptor</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>HTTP_receptor</b></td></tr>
-<tr class="separator:a905a2f4ef8d313395b34ed1b6ef9f017"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad9ad2240528a800797695e9130a070b4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad9ad2240528a800797695e9130a070b4"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTML_DOCUMENT</b></td></tr>
-<tr class="separator:ad9ad2240528a800797695e9130a070b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac3343496e49a2b633139040f1fa7f464"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac3343496e49a2b633139040f1fa7f464"></a>
-<a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTML_ELEMENT</b></td></tr>
-<tr class="separator:ac3343496e49a2b633139040f1fa7f464"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af58274d9f8ac81ef7713e19025ce25cf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af58274d9f8ac81ef7713e19025ce25cf"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTML_ATTRIBUTES</b></td></tr>
-<tr class="separator:af58274d9f8ac81ef7713e19025ce25cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2bdc388ded8e95b656152dd0394fdd34"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2bdc388ded8e95b656152dd0394fdd34"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTML_ATTRIBUTE</b></td></tr>
-<tr class="separator:a2bdc388ded8e95b656152dd0394fdd34"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8bd3bf8dcffe8d0e38d964c99522919c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8bd3bf8dcffe8d0e38d964c99522919c"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTML_CONTENT</b></td></tr>
-<tr class="separator:a8bd3bf8dcffe8d0e38d964c99522919c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d963f082fd82d7346a5591dfb0bb0df"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0d963f082fd82d7346a5591dfb0bb0df"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTML_TEXT</b></td></tr>
-<tr class="separator:a0d963f082fd82d7346a5591dfb0bb0df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae027c17ee89469cd0ccc42cb4d6ff71a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae027c17ee89469cd0ccc42cb4d6ff71a"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTML_HTML</b></td></tr>
-<tr class="separator:ae027c17ee89469cd0ccc42cb4d6ff71a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a522b636334982c6f5b6a854701e7c756"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a522b636334982c6f5b6a854701e7c756"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTML_HEAD</b></td></tr>
-<tr class="separator:a522b636334982c6f5b6a854701e7c756"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec390952f837f0521c4113098f1628ef"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aec390952f837f0521c4113098f1628ef"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTML_TITLE</b></td></tr>
-<tr class="separator:aec390952f837f0521c4113098f1628ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab50daf7b397899a09ef7edec4c11b40f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab50daf7b397899a09ef7edec4c11b40f"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTML_BODY</b></td></tr>
-<tr class="separator:ab50daf7b397899a09ef7edec4c11b40f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5cf2b19b50c84e8f8e5df60c3c14fa54"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5cf2b19b50c84e8f8e5df60c3c14fa54"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTML_DIV</b></td></tr>
-<tr class="separator:a5cf2b19b50c84e8f8e5df60c3c14fa54"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab0f2d547add0c7589775f76c79976ba0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab0f2d547add0c7589775f76c79976ba0"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTML_P</b></td></tr>
-<tr class="separator:ab0f2d547add0c7589775f76c79976ba0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9110d415b4041b5e79b4ac6a309367a0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9110d415b4041b5e79b4ac6a309367a0"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTML_IMG</b></td></tr>
-<tr class="separator:a9110d415b4041b5e79b4ac6a309367a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1c8cd3d90c519da75ae96ca29a3435c7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1c8cd3d90c519da75ae96ca29a3435c7"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTML_A</b></td></tr>
-<tr class="separator:a1c8cd3d90c519da75ae96ca29a3435c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ccd4a5bdc8af3dc74f04d29a156a269"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6ccd4a5bdc8af3dc74f04d29a156a269"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTML_B</b></td></tr>
-<tr class="separator:a6ccd4a5bdc8af3dc74f04d29a156a269"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a88d5a8932614b4fb6f2bf4efc0080a51"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a88d5a8932614b4fb6f2bf4efc0080a51"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTML_UL</b></td></tr>
-<tr class="separator:a88d5a8932614b4fb6f2bf4efc0080a51"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2cc6ec16d6664f4c5a16d36a96b97bd2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2cc6ec16d6664f4c5a16d36a96b97bd2"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTML_OL</b></td></tr>
-<tr class="separator:a2cc6ec16d6664f4c5a16d36a96b97bd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6846835eb6c464d5bae4471f4bb12568"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6846835eb6c464d5bae4471f4bb12568"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTML_LI</b></td></tr>
-<tr class="separator:a6846835eb6c464d5bae4471f4bb12568"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea54d2d0fe3dae380ebfd4f167fc3514"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aea54d2d0fe3dae380ebfd4f167fc3514"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTML_SPAN</b></td></tr>
-<tr class="separator:aea54d2d0fe3dae380ebfd4f167fc3514"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab46c3ff6dc0b89e6c2980af79af201fb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab46c3ff6dc0b89e6c2980af79af201fb"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTML_H1</b></td></tr>
-<tr class="separator:ab46c3ff6dc0b89e6c2980af79af201fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a53946b9efbf140e7dd41115045734ef4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a53946b9efbf140e7dd41115045734ef4"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTML_H2</b></td></tr>
-<tr class="separator:a53946b9efbf140e7dd41115045734ef4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a43ded6bfdd31a679b7cf993e8a99bf8f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a43ded6bfdd31a679b7cf993e8a99bf8f"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTML_H3</b></td></tr>
-<tr class="separator:a43ded6bfdd31a679b7cf993e8a99bf8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad6eda638f72a5079da61d492f851f8ce"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad6eda638f72a5079da61d492f851f8ce"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTML_H4</b></td></tr>
-<tr class="separator:ad6eda638f72a5079da61d492f851f8ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a3f974384335a0354e4de6c213958ed"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6a3f974384335a0354e4de6c213958ed"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTML_FORM</b></td></tr>
-<tr class="separator:a6a3f974384335a0354e4de6c213958ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad5073261109eca6a6322c1a89bcadec4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad5073261109eca6a6322c1a89bcadec4"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTML_INPUT</b></td></tr>
-<tr class="separator:ad5073261109eca6a6322c1a89bcadec4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af45ff49d971835da4b626da3f5e619d2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af45ff49d971835da4b626da3f5e619d2"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTML_BUTTON</b></td></tr>
-<tr class="separator:af45ff49d971835da4b626da3f5e619d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a58835fd1acd51e01196b39dfd50453a7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a58835fd1acd51e01196b39dfd50453a7"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTML_TOKENS</b></td></tr>
-<tr class="separator:a58835fd1acd51e01196b39dfd50453a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7997fe9531abf19dbac5b2b09106c1d9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7997fe9531abf19dbac5b2b09106c1d9"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTML_TOK_TAG_OPEN</b></td></tr>
-<tr class="separator:a7997fe9531abf19dbac5b2b09106c1d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a195b4f975b32aed4d2745aeb6102bb30"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a195b4f975b32aed4d2745aeb6102bb30"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTML_TOK_TAG_CLOSE</b></td></tr>
-<tr class="separator:a195b4f975b32aed4d2745aeb6102bb30"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f2a36c16f55a6062b3942bfa8dcdcd8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7f2a36c16f55a6062b3942bfa8dcdcd8"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTML_TOK_TAG_SELFCLOSE</b></td></tr>
-<tr class="separator:a7f2a36c16f55a6062b3942bfa8dcdcd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afdbc0125441a245664da994421366a11"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afdbc0125441a245664da994421366a11"></a>
-<a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HTML_TAG</b></td></tr>
-<tr class="separator:afdbc0125441a245664da994421366a11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab25be2feb3ef9f92c3bd1cecace8168"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aab25be2feb3ef9f92c3bd1cecace8168"></a>
+char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="http__example_8h.html#aab25be2feb3ef9f92c3bd1cecace8168">G_stxs</a> = &quot;/ASCII_CHARS/&lt;HTTP_REQUEST:&lt;HTTP_REQUEST_METHOD:ASCII_CHAR!=' '+&gt;,ASCII_CHAR=' ',&lt;HTTP_REQUEST_PATH:&lt;HTTP_REQUEST_PATH_SEGMENTS:(ASCII_CHAR='/',&lt;HTTP_REQUEST_PATH_SEGMENT:ASCII_CHAR!={'/','?',' '}*&gt;)+&gt;&gt;,(ASCII_CHAR='?',&lt;HTTP_REQUEST_PATH_QUERY:&lt;HTTP_REQUEST_PATH_QUERY_PARAMS:(&lt;HTTP_REQUEST_PATH_QUERY_PARAM:&lt;PARAM_KEY:ASCII_CHAR!={'&amp;',' ','='}+&gt;,ASCII_CHAR='=',&lt;PARAM_VALUE:ASCII_CHAR!={'&amp;',' '}*&gt;&gt;,ASCII_CHAR='&amp;'?)+&gt;+&gt;)?,ASCII_CHAR=' ',ASCII_CHAR='<a class="el" href="structH.html">H</a>',ASCII_CHAR='<a class="el" href="structT.html">T</a>',ASCII_CHAR='<a class="el" href="structT.html">T</a>',ASCII_CHAR='P',ASCII_CHAR='/',&lt;HTTP_REQUEST_VERSION:&lt;VERSION_MAJOR:ASCII_CHAR='0'&gt;,ASCII_CHAR='.',&lt;VERSION_MINOR:ASCII_CHAR='9'&gt;&gt;&gt;&quot;</td></tr>
+<tr class="memdesc:aab25be2feb3ef9f92c3bd1cecace8168"><td class="mdescLeft">&#160;</td><td class="mdescRight">[makeTestHTTPResponseProcess] <br /></td></tr>
+<tr class="separator:aab25be2feb3ef9f92c3bd1cecace8168"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section copyright"><dt>Copyright</dt><dd>Copyright (C) 2013-2016, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al). This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3). </dd></dl>
@@ -382,12 +188,10 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>[makeTestHTTPResponseProcess] </p>
 <p>generate a semtrex that will match a valid HTTP request in an ASCII_CHARS tree </p>
 <p>= ' ' </p>
 
-<p>Definition at line <a class="el" href="http__example_8h_source.html#l00290">290</a> of file <a class="el" href="http__example_8h_source.html">http_example.h</a>.</p>
+<p>Definition at line <a class="el" href="http__example_8h_source.html#l00074">74</a> of file <a class="el" href="http__example_8h_source.html">http_example.h</a>.</p>
 
 </div>
 </div>
@@ -408,31 +212,7 @@ Variables</h2></td></tr>
 <p>generate a test semantic tree that represents an HTTP request</p>
 <div class="fragment"><div class="line"></div>
 <div class="line"><a class="code" href="structT.html">T</a> *<a class="code" href="http__example_8h.html#a1c182b5a6e82ef49c6967183a15c3e8b">_makeTestHTTPRequestTree</a>() {</div>
-<div class="line">    <span class="comment">// manually build up a tree for the HTTP request:</span></div>
-<div class="line">    <span class="comment">//     GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
-<div class="line">    <span class="comment">// Note that we put the version at the beginning of our tree just because in ceptr we</span></div>
-<div class="line">    <span class="comment">// do that as a best practice so that semtrex expectation matching can efficiently</span></div>
-<div class="line">    <span class="comment">// switch to different processing based on version numbers.</span></div>
-<div class="line">    <a class="code" href="structT.html">T</a> *t = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(HTTP_REQUEST);</div>
-<div class="line">    <a class="code" href="structT.html">T</a> *t_version = _t_newr(t,HTTP_REQUEST_VERSION);</div>
-<div class="line">    _t_newi(t_version,VERSION_MAJOR,1);</div>
-<div class="line">    _t_newi(t_version,VERSION_MINOR,0);</div>
-<div class="line">    <a class="code" href="structT.html">T</a> *t_method = _t_new(t,HTTP_REQUEST_METHOD,<span class="stringliteral">&quot;GET&quot;</span>,4);</div>
-<div class="line">    <a class="code" href="structT.html">T</a> *t_path = _t_newr(t,HTTP_REQUEST_PATH);</div>
-<div class="line">    <a class="code" href="structT.html">T</a> *t_segments = _t_newr(t_path,HTTP_REQUEST_PATH_SEGMENTS);</div>
-<div class="line">    _t_new(t_segments,HTTP_REQUEST_PATH_SEGMENT,<span class="stringliteral">&quot;groups&quot;</span>,7);</div>
-<div class="line">    _t_new(t_segments,HTTP_REQUEST_PATH_SEGMENT,<span class="stringliteral">&quot;5&quot;</span>,2);</div>
-<div class="line">    <a class="code" href="structT.html">T</a> *t_file = _t_newr(t_path,HTTP_REQUEST_PATH_FILE);</div>
-<div class="line">    _t_new(t_file,FILE_NAME,<span class="stringliteral">&quot;users&quot;</span>,6);</div>
-<div class="line">    _t_new(t_file,FILE_EXTENSION,<span class="stringliteral">&quot;json&quot;</span>,5);</div>
-<div class="line">    <a class="code" href="structT.html">T</a> *t_query = _t_newr(t_path,HTTP_REQUEST_PATH_QUERY);</div>
-<div class="line">    <a class="code" href="structT.html">T</a> *t_params = _t_newr(t_query,HTTP_REQUEST_PATH_QUERY_PARAMS);</div>
-<div class="line">    <a class="code" href="structT.html">T</a> *t_param1 = _t_newr(t_params,HTTP_REQUEST_PATH_QUERY_PARAM);</div>
-<div class="line">    _t_new(t_param1,PARAM_KEY,<span class="stringliteral">&quot;sort_by&quot;</span>,8);</div>
-<div class="line">    _t_new(t_param1,PARAM_VALUE,<span class="stringliteral">&quot;last_name&quot;</span>,10);</div>
-<div class="line">    <a class="code" href="structT.html">T</a> *t_param2 = _t_newr(t_params,HTTP_REQUEST_PATH_QUERY_PARAM);</div>
-<div class="line">    _t_new(t_param2,PARAM_KEY,<span class="stringliteral">&quot;page&quot;</span>,5);</div>
-<div class="line">    _t_new(t_param2,PARAM_VALUE,<span class="stringliteral">&quot;2&quot;</span>,2);</div>
+<div class="line">    <a class="code" href="structT.html">T</a> *t = <a class="code" href="group__tree.html#ga7535eb2963c6cf5fc78cb14287581f92">_t_clone</a>(G_http_req_example);</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// confirm that we built the request right!</span></div>
 <div class="line">     <a class="code" href="structT.html">T</a> *stx = <a class="code" href="group__def.html#ga15d66273ad66f17580a90a30c90b8f07">_d_build_def_semtrex</a>(G_sem,HTTP_REQUEST,0);</div>
@@ -443,7 +223,7 @@ Variables</h2></td></tr>
 <div class="line">    <span class="keywordflow">return</span> t;</div>
 <div class="line">}</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="http__example_8h_source.html#l00220">220</a> of file <a class="el" href="http__example_8h_source.html">http_example.h</a>.</p>
+<p>Definition at line <a class="el" href="http__example_8h_source.html#l00026">26</a> of file <a class="el" href="http__example_8h_source.html">http_example.h</a>.</p>
 
 </div>
 </div>
@@ -501,7 +281,7 @@ Variables</h2></td></tr>
 <div class="line">    *paramsP = params;</div>
 <div class="line">}</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="http__example_8h_source.html#l00264">264</a> of file <a class="el" href="http__example_8h_source.html">http_example.h</a>.</p>
+<p>Definition at line <a class="el" href="http__example_8h_source.html#l00046">46</a> of file <a class="el" href="http__example_8h_source.html">http_example.h</a>.</p>
 
 </div>
 </div>
@@ -511,7 +291,7 @@ Variables</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><a class="el" href="http__example_8h.html">http_example.h</a></li>
-    <li class="footer">Generated on Sun Jan 31 2016 21:37:37 for ceptr by
+    <li class="footer">Generated on Wed Feb 24 2016 12:26:57 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

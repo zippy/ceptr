@@ -44,7 +44,7 @@ var receptor_8c =
     [ "_r_hash", "group__receptor.html#ga1570f1fca510bdaf19d044592ee035ce", null ],
     [ "_r_make_state", "group__receptor.html#gab147bd87aa6a7b7b16bf8eb76139de23", null ],
     [ "_r_makeClockReceptor", "group__receptor.html#ga64ec3a9dd239556bdebb03763eac749e", null ],
-    [ "_r_makeStreamReaderReceptor", "group__receptor.html#ga66fd5925f062ddaf33bd8800dd46e503", null ],
+    [ "_r_makeStreamReaderReceptor", "group__receptor.html#ga4f8ffb3e8fcd57a94ba5385b9e20a7b9", null ],
     [ "_r_makeStreamWriterReceptor", "group__receptor.html#ga5efa73b6c76f092582c00db9e8730f19", null ],
     [ "_r_new", "group__receptor.html#ga9f66f2aaba88463a6e1f238a367a33f9", null ],
     [ "_r_new_instance", "group__receptor.html#gadd08a3c284251a2ec7e03b8f91eddc5c", null ],
