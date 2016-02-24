@@ -1102,19 +1102,27 @@ T *makeASCIITree(char *c) {
     return s;
 }
 
-/**
- * convert ascii tokens from a match to an integer and add them to the given tree
- */
-T *asciiT_toi(T* asciiT,T* match,T *t,Symbol s) {
-    char buf[10];
+char *_asciiT2str(T* asciiT,T* match,T *t,char *buf) {
+    int path[100];
     int sibs = *(int *)_t_surface(_t_child(match,SemtrexMatchSibsIdx));
-    int *path = (int *)_t_surface(_t_child(match,SemtrexMatchPathIdx));
-    int j,d = _t_path_depth(path);
+    int *p = (int *)_t_surface(_t_child(match,SemtrexMatchPathIdx));
+    int j,d = _t_path_depth(p);
+    if (d>=100) {raise_error("path too deep!");}
+    memcpy(path,p,sizeof(int)*(d+1));
     for(j=0;j<sibs;j++) {
         buf[j] = *(char *)_t_surface(_t_get(asciiT,path));
         path[d-1]++;
     }
     buf[j]=0;
+    return buf;
+}
+
+/**
+ * convert ascii tokens from a match to an integer and add them to the given tree
+ */
+T *asciiT_toi(T* asciiT,T* match,T *t,Symbol s) {
+    char buf[10];
+    _asciiT2str(asciiT,match,t,buf);
     return _t_newi(t,s,atoi(buf));
 }
 
@@ -1123,14 +1131,7 @@ T *asciiT_toi(T* asciiT,T* match,T *t,Symbol s) {
  */
 T *asciiT_tof(T* asciiT,T* match,T *t,Symbol s) {
     char buf[10];
-    int sibs = *(int *)_t_surface(_t_child(match,SemtrexMatchSibsIdx));
-    int *path = (int *)_t_surface(_t_child(match,SemtrexMatchPathIdx));
-    int j,d = _t_path_depth(path);
-    for(j=0;j<sibs;j++) {
-        buf[j] = *(char *)_t_surface(_t_get(asciiT,path));
-        path[d-1]++;
-    }
-    buf[j]=0;
+    _asciiT2str(asciiT,match,t,buf);
     float f = atof(buf);
     return _t_new(t,s,&f,sizeof(float));
 }
@@ -1140,15 +1141,8 @@ T *asciiT_tof(T* asciiT,T* match,T *t,Symbol s) {
  */
 T *asciiT_tos(T* asciiT,T* match,T *t,Symbol s) {
     char buf[255];
-    int sibs = *(int *)_t_surface(_t_child(match,SemtrexMatchSibsIdx));
-    int *path = (int *)_t_surface(_t_child(match,SemtrexMatchPathIdx));
-   int j,d = _t_path_depth(path);
-    for(j=0;j<sibs;j++) {
-        buf[j] = *(char *)_t_surface(_t_get(asciiT,path));
-        path[d-1]++;
-    }
-    buf[j]=0;
-    return _t_new(t,s,buf,j+1);
+    _asciiT2str(asciiT,match,t,buf);
+    return _t_new_str(t,s,buf);
 }
 
 /**
