@@ -335,14 +335,17 @@ void testHTTPprotocol() {
     _t_free(sem_map);
 
     VMHost *v = G_vm = _v_new();
+    SemTable *gsem = G_sem;
+    G_sem = v->sem;
+
     _v_instantiate_builtins(G_vm);
 
-    T *bindings  = NULL;
+    T *bindings = NULL;
     Receptor *r = makeHTTP(v,bindings);
     //_t_free(bindings);
 
     FILE *rs,*ws;
-    char buffer[] = "GET /test HTTP/0.9\n";
+    char buffer[] = "GET /path/to/file.ext?name=joe&age=30 HTTP/0.9\n";
 
     rs = fmemopen(buffer, strlen (buffer), "r");
     Stream *reader_stream = _st_new_unix_stream(rs,1);
@@ -354,11 +357,25 @@ void testHTTPprotocol() {
 
     Receptor *wr = _r_makeStreamWriterReceptor(v->sem,TEST_STREAM_SYMBOL,writer_stream);
     Xaddr writer = _v_new_receptor(v,v->r,STREAM_WRITER,wr);
+    _v_activate(v,writer);
 
-    Receptor *rr = _r_makeStreamReaderReceptor(v->sem,TEST_STREAM_SYMBOL,reader_stream,r->addr,LINE,ASCII_CHARS);
+    Receptor *rr = _r_makeStreamReaderReceptor(v->sem,TEST_STREAM_SYMBOL,reader_stream,r->addr,parse_line,ASCII_CHARS);
     Xaddr reader =  _v_new_receptor(v,v->r,STREAM_READER,rr);
+    _v_activate(v,reader);
 
-    //   debug_enable(D_STREAM+D_SIGNALS+D_TREE+D_PROTOCOL);
+    bindings = _t_new_root(PROTOCOL_BINDINGS);
+    T *res = _t_newr(bindings,RESOLUTION);
+    T *w = _t_newr(res,WHICH_RECEPTOR);
+    _t_news(w,ROLE,HTTP_REQUEST_SENDER);
+    __r_make_addr(w,ACTUAL_RECEPTOR,rr->addr);
+    res = _t_newr(bindings,RESOLUTION);
+    w = _t_newr(res,WHICH_RECEPTOR);
+    _t_news(w,ROLE,HTTP_SERVER);
+    __r_make_addr(w,ACTUAL_RECEPTOR,r->addr);
+    _o_express_role(r,PARSE_HTTP_REQUEST_FROM_LINE,HTTP_SERVER,DEFAULT_ASPECT,bindings);
+    _t_free(bindings);
+
+    debug_enable(D_STREAM+D_SIGNALS+D_TREE+D_PROTOCOL);
     _v_start_vmhost(G_vm);
     sleep(1);
     debug_disable(D_STREAM+D_SIGNALS+D_TREE+D_PROTOCOL);
@@ -379,6 +396,7 @@ void testHTTPprotocol() {
     free(output_data);
     _v_free(v);
     G_vm = NULL;
+    G_sem = gsem;
 
 }
 

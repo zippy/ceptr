@@ -1144,6 +1144,7 @@ enum INTERNETSymbolIDs {
     HTML_BUTTON_ID,
     HTTP_CLIENT_ID,
     HTTP_SERVER_ID,
+    HTTP_REQUEST_SENDER_ID,
     NUM_INTERNET_SYMBOLS
 };
 SemanticID OCTET_STREAM;
@@ -1202,6 +1203,7 @@ SemanticID HTML_INPUT;
 SemanticID HTML_BUTTON;
 SemanticID HTTP_CLIENT;
 SemanticID HTTP_SERVER;
+SemanticID HTTP_REQUEST_SENDER;
 
 /**********************************************************************************/
 // INTERNET:Structure
@@ -1238,16 +1240,20 @@ SemanticID HTML_ELEMENT;
 // INTERNET:Process
 enum INTERNETProcessIDs {
     NULL_INTERNET_PROCESS_ID,
+    line_2_httpreq_ID,
     NUM_INTERNET_PROCESSES
 };
+SemanticID line_2_httpreq;
 
 /**********************************************************************************/
 // INTERNET:Protocol
 enum INTERNETProtocolIDs {
     NULL_INTERNET_PROTOCOL_ID,
+    PARSE_HTTP_REQUEST_FROM_LINE_ID,
     HTTP_ID,
     NUM_INTERNET_PROTOCOLS
 };
+SemanticID PARSE_HTTP_REQUEST_FROM_LINE;
 SemanticID HTTP;
 
 //Global data from base_defs
