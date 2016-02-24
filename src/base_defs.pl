@@ -186,16 +186,16 @@ while (my $line = <$fh>) {
                 my $def = $2;
                 $global_data{$name} = 1 if ($data_type eq 'Global');
 
-                $def =~ s/ *\(([^(]+):([^)]+)\)/($1,$2)/g;
+                while ($def =~ s/ *\(([^(]+):([^)]+)\)/($1,$2)/g) {} ;
                 $def =~ s/ *\(/,STX_OP,/g;
                 $def =~ s/\)/,STX_CP,/g;
                 #$def =~ s/ \(([^(]+):([^)]+)\)/,$1,$2,/g;
                 #$def =~ s/\)/,NULL_SYMBOL/g;
                 #$def =~ s/ \(/,/g;
                 $def =~ s/,,/,/g;
-                $def =~ s/^,(.*),$/$1/;
+                $def =~ s/^,(.*),$/$1/g;
                 $def =~ s/\/([0-9\/]+)/$1,TREE_PATH_TERMINATOR/g;
-                $def =~ s/\//,/g;
+                $def =~ s/\/([0-9])/,$1/g;
                 #     $def =~ s/^\((.*)/$1/;
                 &addDef($type,$context,$name,$def,$comment);
             } else {
