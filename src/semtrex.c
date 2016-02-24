@@ -762,11 +762,16 @@ T *_t_get_match(T *match,Symbol group)
  * create a new tree based on the matched elements from a semtrex match
  *
  * @param[in] sem semantic context
- * @param[in] match a match from a call to _t_matchr
- * @param[in] parent the parent tree to add the embodiment into
+ * @param[in] match a match results from a call to _t_matchr
+ * @param[in] group the symbol of the group in the match to embody
+ * @param[in] t the matching tree
  *
  */
-T *_t_embody_from_match(SemTable *sem,T *match,T *parent) {
+T *_t_embody_from_match(SemTable *sem,T *match,Symbol group,T *t) {
+    return __t_embody_from_match(sem,_t_get_match(match,group),t);
+}
+
+T *__t_embody_from_match(SemTable *sem,T *match,T *t) {
     Symbol s = *(Symbol *)_t_surface(_t_child(match,1));
     if (semeq(s,NULL_SYMBOL)) return 0;
     T *e;
@@ -776,7 +781,7 @@ T *_t_embody_from_match(SemTable *sem,T *match,T *parent) {
         for(i=4;i<=j;i++) {
             T *c = _t_child(match,i);
             if (c) {
-                T *r = _t_embody_from_match(sem,c,parent);
+                T *r = __t_embody_from_match(sem,c,t);
                 if (r) _t_add(e,r);
             }
         }
@@ -788,16 +793,16 @@ T *_t_embody_from_match(SemTable *sem,T *match,T *parent) {
         T *x;
         switch(st.id) {
         case CSTRING_ID:
-            return asciiT_tos(parent,match,0,s);
+            return asciiT_tos(t,match,0,s);
         case INTEGER_ID:
-            return asciiT_toi(parent,match,0,s);
+            return asciiT_toi(t,match,0, s);
         case FLOAT_ID:
-            return asciiT_tof(parent,match,0,s);
+            return asciiT_tof(t,match,0,s);
         case CHAR_ID:
-            return asciiT_toc(parent,match,0,s);
+            return asciiT_toc(t,match,0,s);
         default:
             p = (int *)_t_surface(_t_child(match,2));
-            x = _t_get(parent,p);
+            x = _t_get(t,p);
             e = _t_clone(x);
         }
     }
@@ -1877,12 +1882,21 @@ void __stx_r2fi(SemTable *sem,T *mr,T *mt, T *sem_map) {
         Structure mrs = _sem_get_symbol_structure(sem,msym);
         Structure xs = _sem_get_symbol_structure(sem,xsym);
 
-        //@todo conversion of types when possible?
-        if (!semeq(mrs,xs)) raise_error("incompatible structures in match: %s(%s) and %s(%s)",
-                                        _sem_get_name(sem,msym),_sem_get_name(sem,msym),
-                                        _sem_get_name(sem,xsym),_sem_get_name(sem,xs));
-
-        x->contents.symbol = msym;
+        // the structures are the same then we can just set the symbol type
+        if (semeq(mrs,xs)) {
+            x->contents.symbol = msym;
+        }
+        else {
+            // otherwise try embody from match
+            T *e = _t_embody_from_match(sem,mr,msym,mt);
+            if (!e)
+            raise_error("unable to embody from match: %s(%s) -> %s(%s)",
+                        _sem_get_name(sem,xsym),_sem_get_name(sem,xs),
+                        _sem_get_name(sem,msym),_sem_get_name(sem,msym)
+                        );
+            _t_free(x);
+            x = e;
+        }
     }
     _t_add(r,x);
     int i;

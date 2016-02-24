@@ -91,13 +91,13 @@ struct SState {
 SState * _stx_makeFA(T *s,int *statesP);
 void _stx_freeFA(SState *s);
 int _t_match(T *semtrex,T *t);
-
 T *G_ts,*G_te;
 int _t_matchr(T *semtrex,T *t,T **r);
 T *_stx_get_matched_node(Symbol s,T *match_results,T *match_tree,int *sibs);
 void _stx_replace(T *semtrex,T *t,T *replace);
 T *_t_get_match(T *result,Symbol group);
-T *_t_embody_from_match(SemTable *sem,T *match,T *t);
+T *__t_embody_from_match(SemTable *sem,T *match,T *t);
+T *_t_embody_from_match(SemTable *sem,T *match,Symbol group,T *t);
 char * _dump_semtrex(SemTable *sem,T *s,char *buf);
 T *makeASCIITree(char *c);
 T *parseSemtrex(SemTable *sem,char *stx);
