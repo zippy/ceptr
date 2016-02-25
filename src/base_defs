@@ -539,10 +539,11 @@ Process: time_request,time_req_code,"request current time","response",SIGNATURE_
 #       is necessary to complete the protocol definition for the clock receptor
 
 ########################################################################################
-Context: STREAM_READER;
+Context: STREAM_EDGE;
 
-########################################################################################
-Context: STREAM_WRITER;
+# process used by the stream edge receptor
+Data: echo2stream_code,(STREAM_WRITE (PARAM_REF:/2/1) (PARAM_REF:/2/2));
+Process: echo2stream,echo2stream_code,"echo input to stream","result",SIGNATURE_SYMBOL,NULL_SYMBOL,"stream",SIGNATURE_STRUCTURE,STREAM,"value",SIGNATURE_ANY,NULL_STRUCTURE,0;
 
 ########################################################################################
 Context: INTERNET;

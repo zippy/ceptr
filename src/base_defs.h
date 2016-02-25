@@ -20,11 +20,10 @@ SemanticID COMPOSITORY;
 SemanticID DEV_COMPOSITORY;
 SemanticID TEST_RECEPTOR;
 SemanticID CLOCK_RECEPTOR;
-SemanticID STREAM_READER;
-SemanticID STREAM_WRITER;
+SemanticID STREAM_EDGE;
 SemanticID INTERNET;
 
-enum SemanticContexts {SYS_CONTEXT,COMPOSITORY_CONTEXT,DEV_COMPOSITORY_CONTEXT,TEST_CONTEXT,CLOCK_CONTEXT,STREAM_READER_CONTEXT,STREAM_WRITER_CONTEXT,INTERNET_CONTEXT,_NUM_DEFAULT_CONTEXTS};
+enum SemanticContexts {SYS_CONTEXT,COMPOSITORY_CONTEXT,DEV_COMPOSITORY_CONTEXT,TEST_CONTEXT,CLOCK_CONTEXT,STREAM_EDGE_CONTEXT,INTERNET_CONTEXT,_NUM_DEFAULT_CONTEXTS};
 
 /**********************************************************************************/
 // SYS:Symbol
@@ -1031,59 +1030,33 @@ enum CLOCKProtocolIDs {
 };
 
 /**********************************************************************************/
-// STREAM_READER:Symbol
-enum STREAM_READERSymbolIDs {
-    NULL_STREAM_READER_SYMBOL_ID,
-    NUM_STREAM_READER_SYMBOLS
+// STREAM_EDGE:Symbol
+enum STREAM_EDGESymbolIDs {
+    NULL_STREAM_EDGE_SYMBOL_ID,
+    NUM_STREAM_EDGE_SYMBOLS
 };
 
 /**********************************************************************************/
-// STREAM_READER:Structure
-enum STREAM_READERStructureIDs {
-    NULL_STREAM_READER_STRUCTURE_ID,
-    NUM_STREAM_READER_STRUCTURES
+// STREAM_EDGE:Structure
+enum STREAM_EDGEStructureIDs {
+    NULL_STREAM_EDGE_STRUCTURE_ID,
+    NUM_STREAM_EDGE_STRUCTURES
 };
 
 /**********************************************************************************/
-// STREAM_READER:Process
-enum STREAM_READERProcessIDs {
-    NULL_STREAM_READER_PROCESS_ID,
-    NUM_STREAM_READER_PROCESSES
+// STREAM_EDGE:Process
+enum STREAM_EDGEProcessIDs {
+    NULL_STREAM_EDGE_PROCESS_ID,
+    echo2stream_ID,
+    NUM_STREAM_EDGE_PROCESSES
 };
+SemanticID echo2stream;
 
 /**********************************************************************************/
-// STREAM_READER:Protocol
-enum STREAM_READERProtocolIDs {
-    NULL_STREAM_READER_PROTOCOL_ID,
-    NUM_STREAM_READER_PROTOCOLS
-};
-
-/**********************************************************************************/
-// STREAM_WRITER:Symbol
-enum STREAM_WRITERSymbolIDs {
-    NULL_STREAM_WRITER_SYMBOL_ID,
-    NUM_STREAM_WRITER_SYMBOLS
-};
-
-/**********************************************************************************/
-// STREAM_WRITER:Structure
-enum STREAM_WRITERStructureIDs {
-    NULL_STREAM_WRITER_STRUCTURE_ID,
-    NUM_STREAM_WRITER_STRUCTURES
-};
-
-/**********************************************************************************/
-// STREAM_WRITER:Process
-enum STREAM_WRITERProcessIDs {
-    NULL_STREAM_WRITER_PROCESS_ID,
-    NUM_STREAM_WRITER_PROCESSES
-};
-
-/**********************************************************************************/
-// STREAM_WRITER:Protocol
-enum STREAM_WRITERProtocolIDs {
-    NULL_STREAM_WRITER_PROTOCOL_ID,
-    NUM_STREAM_WRITER_PROTOCOLS
+// STREAM_EDGE:Protocol
+enum STREAM_EDGEProtocolIDs {
+    NULL_STREAM_EDGE_PROTOCOL_ID,
+    NUM_STREAM_EDGE_PROTOCOLS
 };
 
 /**********************************************************************************/

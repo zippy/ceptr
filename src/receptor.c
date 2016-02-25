@@ -895,9 +895,15 @@ char *__td(Receptor *r,T *t,char *buf) {
 }
 
 /*****************  Built-in core and edge receptors */
+// functions for stream edge receptors
 
-Receptor *_r_makeStreamReaderReceptor(SemTable *sem,Symbol stream_symbol,Stream *st,ReceptorAddress to,Symbol carrier,Symbol result_symbol) {
-    Receptor *r = _r_new(sem,STREAM_READER);
+Receptor *_r_makeStreamEdgeReceptor(SemTable *sem) {
+    Receptor *r = _r_new(sem,STREAM_EDGE);
+    return r;
+}
+
+
+void _r_addReader(Receptor *r,Symbol stream_symbol,Stream *st,ReceptorAddress to,Symbol carrier,Symbol result_symbol) {
 
     // code is something like:
     // (do (not stream eof) (send to (read_stream stream line)))
@@ -921,12 +927,9 @@ Receptor *_r_makeStreamReaderReceptor(SemTable *sem,Symbol stream_symbol,Stream 
     T *run_tree = __p_build_run_tree(p,0);
     _t_free(p);
     _p_addrt2q(r->q,run_tree);
-
-    return r;
 }
 
-Receptor *_r_makeStreamWriterReceptor(SemTable *sem,Symbol stream_symbol,Stream *st) {
-    Receptor *r = _r_new(sem,STREAM_WRITER);
+void _r_addWriter(Receptor *r,Symbol stream_symbol,Stream *st) {
 
     T *expect = _t_new_root(PATTERN);
 
@@ -946,26 +949,15 @@ Receptor *_r_makeStreamWriterReceptor(SemTable *sem,Symbol stream_symbol,Stream 
     /* _dump_semtrex(r->sem,t,buf); */
     /* puts(buf); */
 
-    T *x = _t_new_root(STREAM_WRITE);
-
-    _t_new_stream(x,stream_symbol,st);
-    int pt1[] = {2,1,TREE_PATH_TERMINATOR};
-    _t_new(x,PARAM_REF,pt1,sizeof(int)*4);
-
     T* params = _t_new_root(PARAMS);
+    _t_new_stream(params,stream_symbol,st);
     T* s = _t_newr(params,SLOT);
     _t_news(s,USAGE,NULL_SYMBOL);
 
-    T *signature = __p_make_signature("result",SIGNATURE_SYMBOL,NULL_SYMBOL,
-                                      "stream",SIGNATURE_STRUCTURE,STREAM,
-                                      NULL);
-
-    Process proc = _r_define_process(r,x,"echo input to stream","long desc...",signature);
-    T *act = _t_newp(0,ACTION,proc);
+    T *act = _t_newp(0,ACTION,echo2stream);
 
     _r_add_expectation(r,DEFAULT_ASPECT,NULL_SYMBOL,expect,act,params,0,NULL);
 
-    return r;
 }
 
 void _r_defineClockReceptor(SemTable *sem) {

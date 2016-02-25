@@ -21,8 +21,7 @@ SemanticID COMPOSITORY={0,0,0};
 SemanticID DEV_COMPOSITORY={0,0,0};
 SemanticID TEST_RECEPTOR={0,0,0};
 SemanticID CLOCK_RECEPTOR={0,0,0};
-SemanticID STREAM_READER={0,0,0};
-SemanticID STREAM_WRITER={0,0,0};
+SemanticID STREAM_EDGE={0,0,0};
 SemanticID INTERNET={0,0,0};
 SemanticID BIT={0,0,0};
 SemanticID INTEGER={0,0,0};
@@ -456,6 +455,7 @@ SemanticID TIME_HEARER={0,0,0};
 SemanticID CLOCK_TELL_TIME={0,0,0};
 SemanticID tell_time={0,0,0};
 SemanticID time_request={0,0,0};
+SemanticID echo2stream={0,0,0};
 SemanticID OCTET_STREAM={0,0,0};
 SemanticID PARAM_KEY={0,0,0};
 SemanticID PARAM_VALUE={0,0,0};
@@ -1015,6 +1015,8 @@ void base_defs(SemTable *sem) {
   sY(CLOCK_CONTEXT,tell_time,INTERACTION);
   sData(CLOCK_CONTEXT,time_req_code,STX_OP,SLOT,STX_OP,GOAL,REQUEST_HANDLER,STX_CP,STX_OP,SLOT_CHILDREN,STX_OP,REQUEST,STX_OP,SLOT,STX_OP,ROLE,TIME_TELLER,STX_CP,STX_OP,SLOT_IS_VALUE_OF,TO_ADDRESS,STX_CP,STX_CP,STX_OP,ASPECT_IDENT,DEFAULT_ASPECT,STX_CP,STX_OP,CARRIER,tell_time,STX_CP,STX_OP,CLOCK_TELL_TIME,STX_CP,STX_OP,RESPONSE_CARRIER,tell_time,STX_CP,STX_CP,STX_CP,STX_CP);
   sP(CLOCK_CONTEXT,time_request,time_req_code,"request current time","response",SIGNATURE_SYMBOL,TICK,0);
+  sData(STREAM_EDGE_CONTEXT,echo2stream_code,STX_OP,STREAM_WRITE,STX_OP,PARAM_REF,2,1,TREE_PATH_TERMINATOR,STX_CP,STX_OP,PARAM_REF,2,2,TREE_PATH_TERMINATOR,STX_CP,STX_CP);
+  sP(STREAM_EDGE_CONTEXT,echo2stream,echo2stream_code,"echo input to stream","result",SIGNATURE_SYMBOL,NULL_SYMBOL,"stream",SIGNATURE_STRUCTURE,STREAM,"value",SIGNATURE_ANY,NULL_STRUCTURE,0);
   sY(INTERNET_CONTEXT,OCTET_STREAM,CSTRING);
   sY(INTERNET_CONTEXT,PARAM_KEY,CSTRING);
   sY(INTERNET_CONTEXT,PARAM_VALUE,CSTRING);
@@ -1103,8 +1105,7 @@ void base_contexts(SemTable *sem) {
     DEV_COMPOSITORY = _d_define_receptor(sem,"DEV_COMPOSITORY",__r_make_definitions(),SYS_CONTEXT);
     TEST_RECEPTOR = _d_define_receptor(sem,"TEST_RECEPTOR",__r_make_definitions(),SYS_CONTEXT);
     CLOCK_RECEPTOR = _d_define_receptor(sem,"CLOCK_RECEPTOR",__r_make_definitions(),SYS_CONTEXT);
-    STREAM_READER = _d_define_receptor(sem,"STREAM_READER",__r_make_definitions(),SYS_CONTEXT);
-    STREAM_WRITER = _d_define_receptor(sem,"STREAM_WRITER",__r_make_definitions(),SYS_CONTEXT);
+    STREAM_EDGE = _d_define_receptor(sem,"STREAM_EDGE",__r_make_definitions(),SYS_CONTEXT);
     INTERNET = _d_define_receptor(sem,"INTERNET",__r_make_definitions(),SYS_CONTEXT);
 
 }

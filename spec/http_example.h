@@ -352,7 +352,7 @@ void testHTTPprotocol() {
 
     _v_instantiate_builtins(G_vm);
 
-    debug_enable(D_STREAM+D_SIGNALS+D_TREE+D_PROTOCOL);
+    //debug_enable(D_STREAM+D_SIGNALS+D_TREE+D_PROTOCOL);
     Receptor *r = makeHTTP(v,fill_i_am);
 
     FILE *rs,*ws;
@@ -366,19 +366,17 @@ void testHTTPprotocol() {
     ws = open_memstream(&output_data,&size);
     Stream *writer_stream = _st_new_unix_stream(ws,0);
 
-    Receptor *wr = _r_makeStreamWriterReceptor(v->sem,TEST_STREAM_SYMBOL,writer_stream);
-    Xaddr writer = _v_new_receptor(v,v->r,STREAM_WRITER,wr);
-    _v_activate(v,writer);
-
-    Receptor *rr = _r_makeStreamReaderReceptor(v->sem,TEST_STREAM_SYMBOL,reader_stream,r->addr,parse_line,ASCII_CHARS);
-    Xaddr reader =  _v_new_receptor(v,v->r,STREAM_READER,rr);
-    _v_activate(v,reader);
+    Receptor *er = _r_makeStreamEdgeReceptor(v->sem);
+    Xaddr edge = _v_new_receptor(v,v->r,STREAM_EDGE,er);
+    _r_addWriter(er,TEST_STREAM_SYMBOL,writer_stream);
+    _r_addReader(er,TEST_STREAM_SYMBOL,reader_stream,r->addr,parse_line,ASCII_CHARS);
+    _v_activate(v,edge);
 
     T *bindings = _t_new_root(PROTOCOL_BINDINGS);
     T *res = _t_newr(bindings,RESOLUTION);
     T *w = _t_newr(res,WHICH_RECEPTOR);
     _t_news(w,ROLE,HTTP_REQUEST_SENDER);
-    __r_make_addr(w,ACTUAL_RECEPTOR,rr->addr);
+    __r_make_addr(w,ACTUAL_RECEPTOR,er->addr);
     res = _t_newr(bindings,RESOLUTION);
     w = _t_newr(res,WHICH_RECEPTOR);
     _t_news(w,ROLE,HTTP_SERVER);
