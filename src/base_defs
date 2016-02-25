@@ -440,6 +440,16 @@ Data: cl_parser_def,
 
 Protocol: PARSE_COMMAND_FROM_LINE,cl_parser_def;
 
+
+Data: shell_def,(PROTOCOL_DEFINITION
+      (PROTOCOL_SEMANTICS)
+      (INCLUSION (PNAME:REQUESTING)
+                 (RESOLUTION (WHICH_SYMBOL (USAGE:REQUEST_DATA) (ACTUAL_SYMBOL:COMMAND)))
+# we can't do this here because the code is too complicated be produced by the perl parser see shell.c for the actuall shell_handler code
+#                 (RESOLUTION (WHICH_PROCESS (GOAL:RESPONSE_HANDLER) (ACTUAL_PROCESS:shell_handler)))
+                 ));
+Protocol: COMMAND_SHELL,shell_def;
+
 ###### definitions for an ALIVE protocol
 Symbol: SERVER,RECEPTOR_ADDRESS;
 Symbol: CLIENT,RECEPTOR_ADDRESS;
