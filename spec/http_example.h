@@ -308,12 +308,24 @@ void testHTTPparseHTML() {
 
 }
 
-Receptor *makeHTTP(VMHost *v,T *bindings) {
+Receptor *makeHTTP(VMHost *v,Process handler) {
     SemTable *sem = v->r->sem;
     Symbol http = _d_define_receptor(sem,"http server",__r_make_definitions(),DEV_COMPOSITORY_CONTEXT);
     Receptor *r = _r_new(sem,http);
     Xaddr httpx = _v_new_receptor(v,v->r,http,r);
+
+    T *bindings = _t_new_root(PROTOCOL_BINDINGS);
+    T *res = _t_newr(bindings,RESOLUTION);
+    T *w = _t_newr(res,WHICH_RECEPTOR);
+    _t_news(w,ROLE,HTTP_SERVER);
+    __r_make_addr(w,ACTUAL_RECEPTOR,r->addr);
+    res = _t_newr(bindings,RESOLUTION);
+    w = _t_newr(res,WHICH_PROCESS);
+    _t_news(w,GOAL,HTTP_RESPONSE_HANDLER);
+    _t_news(w,ACTUAL_PROCESS,handler);
+
     _o_express_role(r,HTTP,HTTP_SERVER,DEFAULT_ASPECT,bindings);
+    _t_free(bindings);
     _v_activate(v,httpx);
     return r;
 }
@@ -322,16 +334,16 @@ void testHTTPprotocol() {
     T *http = _sem_get_def(G_sem,HTTP);
 
     // check the HTTP protocol definition
-    spec_is_str_equal(t2s(http),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL:HTTP) (PROTOCOL_SEMANTICS) (INCLUSION (PNAME:REQUESTING) (CONNECTION (WHICH_ROLE (ROLE:REQUESTER) (ROLE:HTTP_CLIENT))) (CONNECTION (WHICH_ROLE (ROLE:RESPONDER) (ROLE:HTTP_SERVER))) (RESOLUTION (WHICH_SYMBOL (USAGE:REQUEST_DATA) (ACTUAL_SYMBOL:HTTP_REQUEST))) (RESOLUTION (WHICH_SYMBOL (USAGE:RESPONSE_DATA) (ACTUAL_SYMBOL:HTTP_RESPONSE)))))");
+    spec_is_str_equal(t2s(http),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL:HTTP) (PROTOCOL_SEMANTICS (GOAL:HTTP_RESPONSE_HANDLER)) (INCLUSION (PNAME:REQUESTING) (CONNECTION (WHICH_ROLE (ROLE:REQUESTER) (ROLE:HTTP_CLIENT))) (CONNECTION (WHICH_ROLE (ROLE:RESPONDER) (ROLE:HTTP_SERVER))) (RESOLUTION (WHICH_SYMBOL (USAGE:REQUEST_DATA) (ACTUAL_SYMBOL:HTTP_REQUEST))) (RESOLUTION (WHICH_SYMBOL (USAGE:RESPONSE_DATA) (ACTUAL_SYMBOL:HTTP_RESPONSE))) (RESOLUTION (WHICH_PROCESS (GOAL:RESPONSE_HANDLER) (ACTUAL_PROCESS:httpresp)))))");
 
     T *sem_map = _t_new_root(SEMANTIC_MAP);
     T *t = _o_unwrap(G_sem,http,sem_map);
     // and also check how it gets unwrapped because it's defined in terms of REQUESTING
     // @todo, how come HTTP_SERVER and the two handler goals aren't added to the semantics?
-    spec_is_str_equal(t2s(t),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL:HTTP) (PROTOCOL_SEMANTICS (ROLE:HTTP_CLIENT) (GOAL:REQUEST_HANDLER)) (backnforth (INITIATE (ROLE:HTTP_CLIENT) (DESTINATION (ROLE:HTTP_SERVER)) (ACTION:send_request)) (EXPECT (ROLE:HTTP_SERVER) (SOURCE (ROLE:HTTP_CLIENT)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:HTTP_REQUEST))) (ACTION:send_response))))");
+    spec_is_str_equal(t2s(t),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL:HTTP) (PROTOCOL_SEMANTICS (GOAL:HTTP_RESPONSE_HANDLER) (ROLE:HTTP_CLIENT)) (backnforth (INITIATE (ROLE:HTTP_CLIENT) (DESTINATION (ROLE:HTTP_SERVER)) (ACTION:send_request)) (EXPECT (ROLE:HTTP_SERVER) (SOURCE (ROLE:HTTP_CLIENT)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:HTTP_REQUEST))) (ACTION:send_response))))");
 
     // the unwrapping should build up a semantic map
-    spec_is_str_equal(t2s(sem_map),"(SEMANTIC_MAP (SEMANTIC_LINK (ROLE:REQUESTER) (REPLACEMENT_VALUE (ROLE:HTTP_CLIENT))) (SEMANTIC_LINK (ROLE:RESPONDER) (REPLACEMENT_VALUE (ROLE:HTTP_SERVER))) (SEMANTIC_LINK (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:HTTP_REQUEST))) (SEMANTIC_LINK (USAGE:RESPONSE_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:HTTP_RESPONSE))))");
+    spec_is_str_equal(t2s(sem_map),"(SEMANTIC_MAP (SEMANTIC_LINK (ROLE:REQUESTER) (REPLACEMENT_VALUE (ROLE:HTTP_CLIENT))) (SEMANTIC_LINK (ROLE:RESPONDER) (REPLACEMENT_VALUE (ROLE:HTTP_SERVER))) (SEMANTIC_LINK (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:HTTP_REQUEST))) (SEMANTIC_LINK (USAGE:RESPONSE_DATA) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:HTTP_RESPONSE))) (SEMANTIC_LINK (GOAL:RESPONSE_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:httpresp))))");
     _t_free(sem_map);
 
     VMHost *v = G_vm = _v_new();
@@ -340,9 +352,8 @@ void testHTTPprotocol() {
 
     _v_instantiate_builtins(G_vm);
 
-    T *bindings = NULL;
-    Receptor *r = makeHTTP(v,bindings);
-    //_t_free(bindings);
+    debug_enable(D_STREAM+D_SIGNALS+D_TREE+D_PROTOCOL);
+    Receptor *r = makeHTTP(v,fill_i_am);
 
     FILE *rs,*ws;
     char buffer[] = "GET /path/to/file.ext?name=joe&age=30 HTTP/0.9\n";
@@ -363,7 +374,7 @@ void testHTTPprotocol() {
     Xaddr reader =  _v_new_receptor(v,v->r,STREAM_READER,rr);
     _v_activate(v,reader);
 
-    bindings = _t_new_root(PROTOCOL_BINDINGS);
+    T *bindings = _t_new_root(PROTOCOL_BINDINGS);
     T *res = _t_newr(bindings,RESOLUTION);
     T *w = _t_newr(res,WHICH_RECEPTOR);
     _t_news(w,ROLE,HTTP_REQUEST_SENDER);
@@ -375,7 +386,6 @@ void testHTTPprotocol() {
     _o_express_role(r,PARSE_HTTP_REQUEST_FROM_LINE,HTTP_SERVER,DEFAULT_ASPECT,bindings);
     _t_free(bindings);
 
-    debug_enable(D_STREAM+D_SIGNALS+D_TREE+D_PROTOCOL);
     _v_start_vmhost(G_vm);
     sleep(1);
     debug_disable(D_STREAM+D_SIGNALS+D_TREE+D_PROTOCOL);

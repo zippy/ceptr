@@ -1147,6 +1147,7 @@ enum INTERNETSymbolIDs {
     HTTP_CLIENT_ID,
     HTTP_SERVER_ID,
     HTTP_REQUEST_SENDER_ID,
+    HTTP_RESPONSE_HANDLER_ID,
     NUM_INTERNET_SYMBOLS
 };
 SemanticID OCTET_STREAM;
@@ -1206,6 +1207,7 @@ SemanticID HTML_BUTTON;
 SemanticID HTTP_CLIENT;
 SemanticID HTTP_SERVER;
 SemanticID HTTP_REQUEST_SENDER;
+SemanticID HTTP_RESPONSE_HANDLER;
 
 /**********************************************************************************/
 // INTERNET:Structure
@@ -1243,9 +1245,11 @@ SemanticID HTML_ELEMENT;
 enum INTERNETProcessIDs {
     NULL_INTERNET_PROCESS_ID,
     line_2_httpreq_ID,
+    httpresp_ID,
     NUM_INTERNET_PROCESSES
 };
 SemanticID line_2_httpreq;
+SemanticID httpresp;
 
 /**********************************************************************************/
 // INTERNET:Protocol
