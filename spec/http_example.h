@@ -380,24 +380,26 @@ void testHTTPprotocol() {
     T *bindings = _t_new_root(PROTOCOL_BINDINGS);
     T *res = _t_newr(bindings,RESOLUTION);
     T *w = _t_newr(res,WHICH_RECEPTOR);
-    _t_news(w,ROLE,HTTP_REQUEST_SENDER);
+    _t_news(w,ROLE,HTTP_REQUEST_PARSER);
+    __r_make_addr(w,ACTUAL_RECEPTOR,er->addr);
+    res = _t_newr(bindings,RESOLUTION);
+    w = _t_newr(res,WHICH_RECEPTOR);
+    _t_news(w,ROLE,LINE_SENDER);
     __r_make_addr(w,ACTUAL_RECEPTOR,er->addr);
     res = _t_newr(bindings,RESOLUTION);
     w = _t_newr(res,WHICH_RECEPTOR);
     _t_news(w,ROLE,HTTP_SERVER);
     __r_make_addr(w,ACTUAL_RECEPTOR,r->addr);
-    _o_express_role(er,PARSE_HTTP_REQUEST_FROM_LINE,HTTP_SERVER,HTTP_ASPECT,bindings);
+    _o_express_role(er,PARSE_HTTP_REQUEST_FROM_LINE,HTTP_REQUEST_PARSER,HTTP_ASPECT,bindings);
     _t_free(bindings);
 
     _v_start_vmhost(G_vm);
     sleep(1);
     debug_disable(D_STREAM+D_SIGNALS+D_TREE+D_PROTOCOL);
 
-    fputs("not implemented!",ws);fflush(ws);
-
     spec_is_true(output_data != 0); // protect against seg-faults when nothing was written to the stream...
     if (output_data != 0) {
-        spec_is_str_equal(output_data,"<html><body><h3>you requested:</h3><div>test</div></body></html>\n");
+        spec_is_str_equal(output_data,"HTTP/1.1 200 OK\nContent-Type: text/ceptr\n\nbody\n");
     }
     __r_kill(G_vm->r);
 
