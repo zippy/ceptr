@@ -42,12 +42,17 @@ Receptor * __r_init(T *t,SemTable *sem) {
     return r;
 }
 
+T *__r_add_aspect(T *flux,Aspect aspect) {
+    T *a = _t_newr(flux,aspect);
+    _t_newr(a,EXPECTATIONS);
+    _t_newr(a,SIGNALS);
+    return a;
+}
+
 T *_r_make_state() {
     T *t = _t_new_root(RECEPTOR_STATE);
     T *f = _t_newr(t,FLUX);
-    T *a = _t_newr(f,DEFAULT_ASPECT);
-    _t_newr(a,EXPECTATIONS);
-    _t_newr(a,SIGNALS);
+    __r_add_aspect(f,DEFAULT_ASPECT);
     _t_newr(t,PENDING_SIGNALS);
     _t_newr(t,PENDING_RESPONSES);
     _t_newi(t,RECEPTOR_ELAPSED_TIME,0);
@@ -829,6 +834,7 @@ Error _r_deliver(Receptor *r, T *signal) {
         _t_add(as,signal);
         // walk through all the expectations on the aspect and see if any expectations match this incoming signal
         T *es = __r_get_expectations(r,aspect);
+        debug(D_SIGNALS,"Testing %d expectations\n",es ? _t_children(es) : 0);
 
         DO_KIDS(es,
                 l = _t_child(es,i);
@@ -848,13 +854,14 @@ T *__r_get_aspect(Receptor *r,Aspect aspect) {
             if (semeq(aspect,_t_symbol(a)))
                 return a;
             );
-    return NULL;
+    a = __r_add_aspect(r->flux,aspect);
+    return a;
 }
 T *__r_get_expectations(Receptor *r,Aspect aspect) {
-    return _t_child(__r_get_aspect(r,aspect),1);
+    return _t_child(__r_get_aspect(r,aspect),aspectExpectationsIdx);
 }
 T *__r_get_signals(Receptor *r,Aspect aspect) {
-    return _t_child(__r_get_aspect(r,aspect),2);
+    return _t_child(__r_get_aspect(r,aspect),aspectSignalsIdx);
 }
 
 
@@ -903,7 +910,7 @@ Receptor *_r_makeStreamEdgeReceptor(SemTable *sem) {
 }
 
 
-void _r_addReader(Receptor *r,Symbol stream_symbol,Stream *st,ReceptorAddress to,Symbol carrier,Symbol result_symbol) {
+void _r_addReader(Receptor *r,Symbol stream_symbol,Stream *st,ReceptorAddress to,Aspect aspect,Symbol carrier,Symbol result_symbol) {
 
     // code is something like:
     // (do (not stream eof) (send to (read_stream stream line)))
@@ -917,7 +924,7 @@ void _r_addReader(Receptor *r,Symbol stream_symbol,Stream *st,ReceptorAddress to
     T *say = _t_newr(p,SAY);
 
     __r_make_addr(say,TO_ADDRESS,to);
-    _t_news(say,ASPECT_IDENT,DEFAULT_ASPECT);
+    _t_news(say,ASPECT_IDENT,aspect);
     _t_news(say,CARRIER,carrier);
 
     T *s = _t_new(say,STREAM_READ,0,0);
@@ -929,7 +936,7 @@ void _r_addReader(Receptor *r,Symbol stream_symbol,Stream *st,ReceptorAddress to
     _p_addrt2q(r->q,run_tree);
 }
 
-void _r_addWriter(Receptor *r,Symbol stream_symbol,Stream *st) {
+void _r_addWriter(Receptor *r,Symbol stream_symbol,Stream *st,Aspect aspect) {
 
     T *expect = _t_new_root(PATTERN);
 
@@ -956,7 +963,7 @@ void _r_addWriter(Receptor *r,Symbol stream_symbol,Stream *st) {
 
     T *act = _t_newp(0,ACTION,echo2stream);
 
-    _r_add_expectation(r,DEFAULT_ASPECT,NULL_SYMBOL,expect,act,params,0,NULL);
+    _r_add_expectation(r,aspect,NULL_SYMBOL,expect,act,params,0,NULL);
 
 }
 

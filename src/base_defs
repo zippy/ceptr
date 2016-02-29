@@ -87,10 +87,10 @@ Symbol: ASCII_CHARS,[+ASCII_CHAR];
 Symbol: RECEPTOR_XADDR,XADDR;               An Xaddr that points to a receptor
 Declare: EXPECTATIONS,SIGNALS;
 Structure: ASPECT,(EXPECTATIONS,SIGNALS);
-Symbol: DEFAULT_ASPECT,ASPECT;              
+Symbol: DEFAULT_ASPECT,ASPECT;
 Symbol: FLUX,[+%ASPECT];                    tree to hold all incoming and in process signals on the various aspects
 Symbol: SCAPE_SPEC,NULL_STRUCTURE;          @todo...
-Symbol: ASPECT_IDENT,SYMBOL;                when we get ranges, this should limit the surface symbol those of ASPECT structure
+Symbol: ASPECT_IDENT,SYMBOL;                when we get ranges, this should limit the surface symbol those defined as usages of ASPECT
 Symbol: ASPECT_TYPE,BIT;                    really should be an enum of IN, OUT
 Symbol: ASPECT_LABEL,CSTRING;
 Symbol: ASPECT_DEF,[(ASPECT_TYPE,ASPECT_LABEL)];   what else goes in the aspect definition?
@@ -362,11 +362,12 @@ Symbol: REQUESTER,RECEPTOR_ADDRESS;
 Symbol: RESPONDER,RECEPTOR_ADDRESS;
 Symbol: REQUEST_DATA,SYMBOL;
 Symbol: RESPONSE_DATA,SYMBOL;
+Symbol: CHANNEL,SYMBOL;
 Symbol: RESPONSE_HANDLER,PROCESS;
 Symbol: REQUEST_HANDLER,PROCESS;
 
 Symbol: backnforth,INTERACTION;
-Data: req_code,(SLOT (GOAL:REQUEST_HANDLER) (SLOT_CHILDREN (REQUEST (SLOT (ROLE:RESPONDER) (SLOT_IS_VALUE_OF:TO_ADDRESS)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:backnforth) (SLOT (USAGE:REQUEST_DATA)) (CARRIER:backnforth))));
+Data: req_code,(SLOT (GOAL:REQUEST_HANDLER) (SLOT_CHILDREN (REQUEST (SLOT (ROLE:RESPONDER) (SLOT_IS_VALUE_OF:TO_ADDRESS)) (SLOT (USAGE:CHANNEL) (SLOT_IS_VALUE_OF:ASPECT_IDENT)) (CARRIER:backnforth) (SLOT (USAGE:REQUEST_DATA)) (CARRIER:backnforth)))));
 Process: send_request,req_code,"send request","response",SIGNATURE_ANY,NULL_STRUCTURE,0;
 
 Data: resp_code,(RESPOND (SIGNAL_REF:/1/4) (SLOT (GOAL:RESPONSE_HANDLER)));
@@ -378,6 +379,7 @@ Data: req_def,(PROTOCOL_DEFINITION
          (ROLE:RESPONDER)
          (GOAL:REQUEST_HANDLER)
          (GOAL:RESPONSE_HANDLER)
+         (USAGE:CHANNEL)
          (USAGE:REQUEST_DATA)
          (USAGE:RESPONSE_DATA))
       (backnforth
@@ -404,6 +406,7 @@ Data: recog_def,(PROTOCOL_DEFINITION
                  (CONNECTION (WHICH_GOAL (GOAL:REQUEST_HANDLER) (GOAL:RECOGNITION)))
                  (RESOLUTION (WHICH_SYMBOL (USAGE:REQUEST_DATA) (ACTUAL_SYMBOL:are_you)))
                  (RESOLUTION (WHICH_SYMBOL (USAGE:RESPONSE_DATA) (ACTUAL_SYMBOL:i_am)))
+                 (RESOLUTION (WHICH_SYMBOL (USAGE:CHANNEL) (ACTUAL_SYMBOL:DEFAULT_ASPECT)))
                  (RESOLUTION (WHICH_PROCESS (GOAL:RESPONSE_HANDLER) (ACTUAL_PROCESS:fill_i_am)))));
 
 Protocol: RECOGNIZE,recog_def;
@@ -447,6 +450,7 @@ Data: shell_def,(PROTOCOL_DEFINITION
                  (RESOLUTION (WHICH_SYMBOL (USAGE:REQUEST_DATA) (ACTUAL_SYMBOL:COMMAND)))
 # we can't do this here because the code is too complicated be produced by the perl parser see shell.c for the actuall shell_handler code
 #                 (RESOLUTION (WHICH_PROCESS (GOAL:RESPONSE_HANDLER) (ACTUAL_PROCESS:shell_handler)))
+                 (RESOLUTION (WHICH_SYMBOL (USAGE:CHANNEL) (ACTUAL_SYMBOL:DEFAULT_ASPECT)))
                  ));
 Protocol: COMMAND_SHELL,shell_def;
 
@@ -657,11 +661,16 @@ Symbol: HTTP_SERVER,RECEPTOR_ADDRESS;
 
 Symbol: HTTP_REQUEST_SENDER,RECEPTOR_ADDRESS;
 
-Data: line_2_httpreq_proc,(SAY
-      (SLOT (ROLE:HTTP_SERVER) (SLOT_IS_VALUE_OF:TO_ADDRESS))
+Data: line_2_httpreq_proc, (SAY
+      (SLOT (ROLE:HTTP_REQUEST_SENDER) (SLOT_IS_VALUE_OF:TO_ADDRESS))
       (ASPECT_IDENT:DEFAULT_ASPECT)
-      (CARRIER:backnforth)
-      (PARAM_REF:/2/1)
+      (CARRIER:LINE)
+      (REQUEST
+        (SLOT (ROLE:HTTP_SERVER) (SLOT_IS_VALUE_OF:TO_ADDRESS))
+        (ASPECT_IDENT:HTTP_ASPECT)
+        (CARRIER:backnforth)
+        (PARAM_REF:/2/1)
+        (RESPONSE_CARRIER:backnforth))
       );
 Process: line_2_httpreq,line_2_httpreq_proc,"parse an HTTP_REQUEST from a LINE","signal id",SIGNATURE_SYMBOL,SIGNAL_UUID,0;
 
@@ -675,6 +684,7 @@ Data: httpreq_parser_def,
 
 Protocol: PARSE_HTTP_REQUEST_FROM_LINE,httpreq_parser_def;
 
+Symbol: HTTP_ASPECT,ASPECT;
 Symbol: HTTP_RESPONSE_HANDLER,PROCESS;
 
 Data: httpresp_proc,(HTTP_RESPONSE (HTTP_RESPONSE_STATUS (STATUS_VALUE:200) (STATUS_TEXT:"OK")) (HTTP_RESPONSE_CONTENT_TYPE:"CeptrSymbol/HTML_DOCUMENT") (HTTP_RESPONSE_BODY (SLOT (GOAL:HTTP_RESPONSE_HANDLER))));
@@ -687,6 +697,7 @@ Data: http_def,(PROTOCOL_DEFINITION
                  (CONNECTION (WHICH_ROLE (ROLE:RESPONDER) (ROLE:HTTP_SERVER)))
                  (RESOLUTION (WHICH_SYMBOL (USAGE:REQUEST_DATA) (ACTUAL_SYMBOL:HTTP_REQUEST)))
                  (RESOLUTION (WHICH_SYMBOL (USAGE:RESPONSE_DATA) (ACTUAL_SYMBOL:HTTP_RESPONSE)))
+                 (RESOLUTION (WHICH_SYMBOL (USAGE:CHANNEL) (ACTUAL_SYMBOL:HTTP_ASPECT)))
                  (RESOLUTION (WHICH_PROCESS (GOAL:RESPONSE_HANDLER) (ACTUAL_PROCESS:httpresp)))
                  ));
 

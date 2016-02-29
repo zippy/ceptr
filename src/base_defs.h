@@ -823,6 +823,7 @@ enum DEV_COMPOSITORYSymbolIDs {
     RESPONDER_ID,
     REQUEST_DATA_ID,
     RESPONSE_DATA_ID,
+    CHANNEL_ID,
     RESPONSE_HANDLER_ID,
     REQUEST_HANDLER_ID,
     backnforth_ID,
@@ -856,6 +857,7 @@ SemanticID REQUESTER;
 SemanticID RESPONDER;
 SemanticID REQUEST_DATA;
 SemanticID RESPONSE_DATA;
+SemanticID CHANNEL;
 SemanticID RESPONSE_HANDLER;
 SemanticID REQUEST_HANDLER;
 SemanticID backnforth;
@@ -1120,6 +1122,7 @@ enum INTERNETSymbolIDs {
     HTTP_CLIENT_ID,
     HTTP_SERVER_ID,
     HTTP_REQUEST_SENDER_ID,
+    HTTP_ASPECT_ID,
     HTTP_RESPONSE_HANDLER_ID,
     NUM_INTERNET_SYMBOLS
 };
@@ -1180,6 +1183,7 @@ SemanticID HTML_BUTTON;
 SemanticID HTTP_CLIENT;
 SemanticID HTTP_SERVER;
 SemanticID HTTP_REQUEST_SENDER;
+SemanticID HTTP_ASPECT;
 SemanticID HTTP_RESPONSE_HANDLER;
 
 /**********************************************************************************/

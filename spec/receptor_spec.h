@@ -585,8 +585,8 @@ void testReceptorEdgeStream() {
 
     Receptor *r = _r_makeStreamEdgeReceptor(v->sem);
     Xaddr edge = _v_new_receptor(v,v->r,STREAM_EDGE,r);
-    _r_addWriter(r,TEST_STREAM_SYMBOL,writer_stream);
-    _r_addReader(r,TEST_STREAM_SYMBOL,reader_stream,r->addr,LINE,LINE);
+    _r_addWriter(r,TEST_STREAM_SYMBOL,writer_stream,DEFAULT_ASPECT);
+    _r_addReader(r,TEST_STREAM_SYMBOL,reader_stream,r->addr,DEFAULT_ASPECT,LINE,LINE);
 
     spec_is_str_equal(_td(r,__r_get_expectations(r,DEFAULT_ASPECT)),"(EXPECTATIONS (EXPECTATION (CARRIER:NULL_SYMBOL) (PATTERN (SEMTREX_SYMBOL_ANY)) (ACTION:echo2stream) (PARAMS (TEST_STREAM_SYMBOL) (SLOT (USAGE:NULL_SYMBOL))) (END_CONDITIONS (UNLIMITED))))");
 
