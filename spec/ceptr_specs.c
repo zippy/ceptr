@@ -44,26 +44,26 @@ int main(int argc, const char **argv) {
     else {
     def_sys();
     //**** core tests
-    testSemTable();
-    testDef();
+    /* testSemTable(); */
+    /* testDef(); */
     testTree();
-    testMTree();
+    /* testMTree(); */
     testStream();
-    testLabel();
-    testSemtrex();
+    /* testLabel(); */
+    // testSemtrex();
     testProcess();
-    testReceptor();
-    testScape();
+     testReceptor();
+    /* testScape(); */
     testVMHost();
-    testAccumulator();
-    testProtocol();
+    /* testAccumulator(); */
+    /* testProtocol(); */
 
-    //**** receptor tests
-    testGroup();
+    /* //\**** receptor tests */
+    /* testGroup(); */
     testHTTP();
 
-    /* /\***** examples *\/ */
-    testProfileExample();
+    /* /\* /\\***** examples *\\/ *\/ */
+    /* testProfileExample(); */
 
     sys_free();
     report_tests();

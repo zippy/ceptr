@@ -290,15 +290,29 @@
 <tr><td><a name="HTTP_REQUEST_PATH_QUERY_PARAM"></a>HTTP_REQUEST_PATH_QUERY_PARAM</td><td><a href="ref_sys_structures.html#KEY_VALUE_PARAM">KEY-VALUE-PARAM</a></td><td></td></tr>
 <tr><td><a name="HTTP_REQUEST_PATH_QUERY_PARAMS"></a>HTTP_REQUEST_PATH_QUERY_PARAMS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_HTTP_REQUEST_PATH_QUERY_PARAM">ZERO-OR-MORE-OF-HTTP-REQUEST-PATH-QUERY-PARAM</a></td><td></td></tr>
 <tr><td><a name="HTTP_REQUEST_PATH_QUERY"></a>HTTP_REQUEST_PATH_QUERY</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_HTTP_REQUEST_PATH_QUERY_PARAMS">ZERO-OR-MORE-OF-HTTP-REQUEST-PATH-QUERY-PARAMS</a></td><td></td></tr>
+<tr><td><a name="MEDIA_TYPE_IDENT"></a>MEDIA_TYPE_IDENT</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
+<tr><td><a name="MEDIA_SUBTYPE_IDENT"></a>MEDIA_SUBTYPE_IDENT</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
+<tr><td><a name="MEDIA_PARAM"></a>MEDIA_PARAM</td><td><a href="ref_sys_structures.html#KEY_VALUE_PARAM">KEY-VALUE-PARAM</a></td><td></td></tr>
+<tr><td><a name="CONTENT_TYPE"></a>CONTENT_TYPE</td><td><a href="ref_sys_structures.html#MEDIA_TYPE">MEDIA-TYPE</a></td><td></td></tr>
+<tr><td><a name="TEXT_MEDIA_TYPE"></a>TEXT_MEDIA_TYPE</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
+<tr><td><a name="HTML_TEXT_MEDIA_SUBTYPE"></a>HTML_TEXT_MEDIA_SUBTYPE</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
+<tr><td><a name="PLAIN_TEXT_MEDIA_SUBTYPE"></a>PLAIN_TEXT_MEDIA_SUBTYPE</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
+<tr><td><a name="CEPTR_TEXT_MEDIA_SUBTYPE"></a>CEPTR_TEXT_MEDIA_SUBTYPE</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
+<tr><td><a name="CONTENT_ENCODING"></a>CONTENT_ENCODING</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td>  cstring for now, add semantic later.</td></tr>
 <tr><td><a name="HTTP_REQUEST_METHOD"></a>HTTP_REQUEST_METHOD</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
 <tr><td><a name="HTTP_REQUEST_PATH"></a>HTTP_REQUEST_PATH</td><td><a href="ref_sys_structures.html#URI">URI</a></td><td></td></tr>
 <tr><td><a name="HTTP_REQUEST_VERSION"></a>HTTP_REQUEST_VERSION</td><td><a href="ref_sys_structures.html#VERSION">VERSION</a></td><td></td></tr>
 <tr><td><a name="HTTP_REQUEST"></a>HTTP_REQUEST</td><td><a href="ref_sys_structures.html#HTTP_REQUEST_V09">HTTP-REQUEST-V09</a></td><td></td></tr>
 <tr><td><a name="HTTP_REQUEST_HOST"></a>HTTP_REQUEST_HOST</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
-<tr><td><a name="HTTP_RESPONSE_CONTENT_TYPE"></a>HTTP_RESPONSE_CONTENT_TYPE</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="HEADER_KEY"></a>HEADER_KEY</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="HEADER_VALUE"></a>HEADER_VALUE</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="HTTP_RESPONSE_HEADER"></a>HTTP_RESPONSE_HEADER</td><td><a href="ref_sys_structures.html#HEADER">HEADER</a></td><td></td></tr>
+<tr><td><a name="HTTP_GENERAL_HEADER"></a>HTTP_GENERAL_HEADER</td><td><a href="ref_sys_structures.html#HEADER">HEADER</a></td><td></td></tr>
+<tr><td><a name="HTTP_ENTITY_HEADER"></a>HTTP_ENTITY_HEADER</td><td><a href="ref_sys_structures.html#LOGICAL_OR_OF_CONTENT_TYPE_AND_CONTENT_ENCODING">LOGICAL-OR-OF-CONTENT-TYPE-AND-CONTENT-ENCODING</a></td><td>    @todo plus a few more see https://www.w3.org/Protocols/rfc2616/rfc2616-sec7.html#sec7.1</td></tr>
 <tr><td><a name="HTTP_RESPONSE_BODY"></a>HTTP_RESPONSE_BODY</td><td><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></td><td></td></tr>
 <tr><td><a name="HTTP_RESPONSE_STATUS"></a>HTTP_RESPONSE_STATUS</td><td><a href="ref_sys_structures.html#STATUS">STATUS</a></td><td></td></tr>
-<tr><td><a name="HTTP_RESPONSE"></a>HTTP_RESPONSE</td><td><a href="ref_sys_structures.html#LIST_OF_HTTP_RESPONSE_CONTENT_TYPE_AND_HTTP_RESPONSE_BODY_AND_HTTP_RESPONSE_STATUS">LIST-OF-HTTP-RESPONSE-CONTENT-TYPE-AND-HTTP-RESPONSE-BODY-AND-HTTP-RESPONSE-STATUS</a></td><td></td></tr>
+<tr><td><a name="HTTP_HEADERS"></a>HTTP_HEADERS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_LOGICAL_OR_OF_HTTP_GENERAL_HEADER_AND_HTTP_RESPONSE_HEADER_AND_HTTP_ENTITY_HEADER">ZERO-OR-MORE-OF-LOGICAL-OR-OF-HTTP-GENERAL-HEADER-AND-HTTP-RESPONSE-HEADER-AND-HTTP-ENTITY-HEADER</a></td><td></td></tr>
+<tr><td><a name="HTTP_RESPONSE"></a>HTTP_RESPONSE</td><td><a href="ref_sys_structures.html#LIST_OF_HTTP_RESPONSE_STATUS_AND_HTTP_HEADERS_AND_HTTP_RESPONSE_BODY">LIST-OF-HTTP-RESPONSE-STATUS-AND-HTTP-HEADERS-AND-HTTP-RESPONSE-BODY</a></td><td></td></tr>
 <tr><td><a name="HTML_DOCUMENT"></a>HTML_DOCUMENT</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td> //@todo should be an optionality structure</td></tr>
 <tr><td><a name="HTML_TOK_TAG_OPEN"></a>HTML_TOK_TAG_OPEN</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
 <tr><td><a name="HTML_TOK_TAG_CLOSE"></a>HTML_TOK_TAG_CLOSE</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>

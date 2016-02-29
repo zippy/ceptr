@@ -56,11 +56,23 @@ void _makeTestHTTPResponseProcess(Receptor *r,T **paramsP,Process *pP) {
     Process p = _r_define_process(r,resp,"code path ping","respond with the value of the first parameter",NULL);
     *pP = p;
 
-    T *params = _t_new_root(PARAMS);
-    T *http_resp = _t_newr(params,HTTP_RESPONSE);
-    _t_new(http_resp,HTTP_RESPONSE_CONTENT_TYPE,"CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT",38);
-    T *s = _t_newr(http_resp,SLOT);
-    _t_news(s,USAGE,HTTP_REQUEST_PATH_SEGMENT);
+    T *params = _t_build(G_sem,0,
+                         PARAMS,
+                         HTTP_RESPONSE,
+                         HTTP_RESPONSE_STATUS,STATUS_VALUE,200,STATUS_TEXT,"OK",NULL_SYMBOL,
+                         HTTP_HEADERS,
+                         CONTENT_TYPE,MEDIA_TYPE_IDENT,TEXT_MEDIA_TYPE,MEDIA_SUBTYPE_IDENT,CEPTR_TEXT_MEDIA_SUBTYPE,NULL_SYMBOL,NULL_SYMBOL,
+                         HTTP_RESPONSE_BODY,
+                         SLOT,USAGE,HTTP_REQUEST_PATH_SEGMENT,NULL_SYMBOL,
+                         NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL
+                         );
+
+
+    /*     _t_new_root(PARAMS); */
+    /* T *http_resp = _t_newr(params,HTTP_RESPONSE); */
+    /* _t_new(http_resp,HTTP_RESPONSE_CONTENT_TYPE,"CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT",38); */
+    /* T *s = _t_newr(http_resp,SLOT); */
+    /* _t_news(s,USAGE,HTTP_REQUEST_PATH_SEGMENT); */
     *paramsP = params;
 }
 //! [makeTestHTTPResponseProcess]
@@ -294,17 +306,10 @@ T *parseHTML(char *html) {
 
 void testHTTPparseHTML() {
     T *t = parseHTML("<html><body><div>Hello <b>world!</b></div></body></html>");
-    T *r = _t_new_root(HTTP_RESPONSE);
-    T *s = _t_newr(r,HTTP_RESPONSE_STATUS);
-    _t_newi(s,STATUS_VALUE,200);
-    _t_new_str(s,STATUS_TEXT,"OK");
-    _t_new_str(r,HTTP_RESPONSE_CONTENT_TYPE,"CeptrSymbol/HTML_DOCUMENT");
-    T *d = _t_newr(r,HTML_DOCUMENT);
-    _t_add(d,t);
-    spec_is_str_equal(t2s(r),"(HTTP_RESPONSE (HTTP_RESPONSE_STATUS (STATUS_VALUE:200) (STATUS_TEXT:OK)) (HTTP_RESPONSE_CONTENT_TYPE:CeptrSymbol/HTML_DOCUMENT) (HTML_DOCUMENT (HTML_HTML (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_BODY (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_DIV (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_TEXT:Hello ) (HTML_B (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_TEXT:world!)))))))))))");
-    wjson(G_sem,r,"httpresp",-1);
 
-    _t_free(r);
+    spec_is_str_equal(t2s(t),"(HTML_HTML (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_BODY (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_DIV (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_TEXT:Hello ) (HTML_B (HTML_ATTRIBUTES) (HTML_CONTENT (HTML_TEXT:world!)))))))))");
+
+    _t_free(t);
 
 }
 

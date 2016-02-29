@@ -2829,6 +2829,66 @@
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="MEDIA_TYPE_IDENT"></a>MEDIA_TYPE_IDENT</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="MEDIA_SUBTYPE_IDENT"></a>MEDIA_SUBTYPE_IDENT</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="MEDIA_PARAM"></a>MEDIA_PARAM</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#KEY_VALUE_PARAM">KEY-VALUE-PARAM</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="MEDIA_TYPE"></a>MEDIA-TYPE</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#MEDIA_TYPE_IDENT">MEDIA_TYPE_IDENT</a>, <a href="ref_sys_symbols.html#MEDIA_SUBTYPE_IDENT">MEDIA_SUBTYPE_IDENT</a>, *(<a href="ref_sys_symbols.html#MEDIA_PARAM">MEDIA_PARAM</a>))</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="CONTENT_TYPE"></a>CONTENT_TYPE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#MEDIA_TYPE">MEDIA-TYPE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="TEXT_MEDIA_TYPE"></a>TEXT_MEDIA_TYPE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="HTML_TEXT_MEDIA_SUBTYPE"></a>HTML_TEXT_MEDIA_SUBTYPE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="PLAIN_TEXT_MEDIA_SUBTYPE"></a>PLAIN_TEXT_MEDIA_SUBTYPE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="CEPTR_TEXT_MEDIA_SUBTYPE"></a>CEPTR_TEXT_MEDIA_SUBTYPE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="CONTENT_ENCODING"></a>CONTENT_ENCODING</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-comment">  cstring for now, add semantic later.</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="HTTP_REQUEST_METHOD"></a>HTTP_REQUEST_METHOD</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
        <div class="def-comment"></div>
@@ -2865,9 +2925,45 @@
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
-       <div class="def-name"><a name="HTTP_RESPONSE_CONTENT_TYPE"></a>HTTP_RESPONSE_CONTENT_TYPE</div>
+       <div class="def-name"><a name="HEADER_KEY"></a>HEADER_KEY</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
        <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="HEADER_VALUE"></a>HEADER_VALUE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="HEADER"></a>HEADER</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#HEADER_KEY">HEADER_KEY</a>, <a href="ref_sys_symbols.html#HEADER_VALUE">HEADER_VALUE</a>)</div>
+       <div class="def-comment">    generic headers for now, should be more semantic</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="HTTP_RESPONSE_HEADER"></a>HTTP_RESPONSE_HEADER</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#HEADER">HEADER</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="HTTP_GENERAL_HEADER"></a>HTTP_GENERAL_HEADER</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#HEADER">HEADER</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="LOGICAL_OR_OF_CONTENT_TYPE_AND_CONTENT_ENCODING"></a>LOGICAL-OR-OF-CONTENT-TYPE-AND-CONTENT-ENCODING</div>
+       <div class="def-struc-def">OR(<a href="ref_sys_symbols.html#CONTENT_TYPE">CONTENT_TYPE</a>, <a href="ref_sys_symbols.html#CONTENT_ENCODING">CONTENT_ENCODING</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="HTTP_ENTITY_HEADER"></a>HTTP_ENTITY_HEADER</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LOGICAL_OR_OF_CONTENT_TYPE_AND_CONTENT_ENCODING">LOGICAL-OR-OF-CONTENT-TYPE-AND-CONTENT-ENCODING</a></div>
+       <div class="def-comment">    @todo plus a few more see https://www.w3.org/Protocols/rfc2616/rfc2616-sec7.html#sec7.1</div>
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
@@ -2883,14 +2979,26 @@
    </div>
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
-       <div class="def-name"><a name="LIST_OF_HTTP_RESPONSE_CONTENT_TYPE_AND_HTTP_RESPONSE_BODY_AND_HTTP_RESPONSE_STATUS"></a>LIST-OF-HTTP-RESPONSE-CONTENT-TYPE-AND-HTTP-RESPONSE-BODY-AND-HTTP-RESPONSE-STATUS</div>
-       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#HTTP_RESPONSE_CONTENT_TYPE">HTTP_RESPONSE_CONTENT_TYPE</a>, <a href="ref_sys_symbols.html#HTTP_RESPONSE_BODY">HTTP_RESPONSE_BODY</a>, <a href="ref_sys_symbols.html#HTTP_RESPONSE_STATUS">HTTP_RESPONSE_STATUS</a>)</div>
+       <div class="def-name"><a name="ZERO_OR_MORE_OF_LOGICAL_OR_OF_HTTP_GENERAL_HEADER_AND_HTTP_RESPONSE_HEADER_AND_HTTP_ENTITY_HEADER"></a>ZERO-OR-MORE-OF-LOGICAL-OR-OF-HTTP-GENERAL-HEADER-AND-HTTP-RESPONSE-HEADER-AND-HTTP-ENTITY-HEADER</div>
+       <div class="def-struc-def">*(OR(<a href="ref_sys_symbols.html#HTTP_GENERAL_HEADER">HTTP_GENERAL_HEADER</a>, <a href="ref_sys_symbols.html#HTTP_RESPONSE_HEADER">HTTP_RESPONSE_HEADER</a>, <a href="ref_sys_symbols.html#HTTP_ENTITY_HEADER">HTTP_ENTITY_HEADER</a>))</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="HTTP_HEADERS"></a>HTTP_HEADERS</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_LOGICAL_OR_OF_HTTP_GENERAL_HEADER_AND_HTTP_RESPONSE_HEADER_AND_HTTP_ENTITY_HEADER">ZERO-OR-MORE-OF-LOGICAL-OR-OF-HTTP-GENERAL-HEADER-AND-HTTP-RESPONSE-HEADER-AND-HTTP-ENTITY-HEADER</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="LIST_OF_HTTP_RESPONSE_STATUS_AND_HTTP_HEADERS_AND_HTTP_RESPONSE_BODY"></a>LIST-OF-HTTP-RESPONSE-STATUS-AND-HTTP-HEADERS-AND-HTTP-RESPONSE-BODY</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#HTTP_RESPONSE_STATUS">HTTP_RESPONSE_STATUS</a>, <a href="ref_sys_symbols.html#HTTP_HEADERS">HTTP_HEADERS</a>, <a href="ref_sys_symbols.html#HTTP_RESPONSE_BODY">HTTP_RESPONSE_BODY</a>)</div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="HTTP_RESPONSE"></a>HTTP_RESPONSE</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_HTTP_RESPONSE_CONTENT_TYPE_AND_HTTP_RESPONSE_BODY_AND_HTTP_RESPONSE_STATUS">LIST-OF-HTTP-RESPONSE-CONTENT-TYPE-AND-HTTP-RESPONSE-BODY-AND-HTTP-RESPONSE-STATUS</a></div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_HTTP_RESPONSE_STATUS_AND_HTTP_HEADERS_AND_HTTP_RESPONSE_BODY">LIST-OF-HTTP-RESPONSE-STATUS-AND-HTTP-HEADERS-AND-HTTP-RESPONSE-BODY</a></div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">
