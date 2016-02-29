@@ -194,6 +194,22 @@ void testProcessSemtrex() {
 
 }
 
+void testProcessFill() {
+    Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
+    T *n = _t_new_root(FILL);
+    _t_build(G_sem,n,SLOT,GOAL,REQUEST_HANDLER,SLOT_CHILDREN,TEST_INT_SYMBOL,1,SLOT,USAGE,REQUEST_DATA,NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);
+    _t_build(G_sem,n,SEMANTIC_MAP,
+             SEMANTIC_LINK,USAGE,REQUEST_DATA,REPLACEMENT_VALUE,TEST_INT_SYMBOL,32,NULL_SYMBOL,NULL_SYMBOL,
+             SEMANTIC_LINK,GOAL,REQUEST_HANDLER,REPLACEMENT_VALUE,ACTUAL_PROCESS,ADD_INT,NULL_SYMBOL,NULL_SYMBOL,
+             NULL_SYMBOL);
+    spec_is_equal(__p_reduce_sys_proc(0,FILL,n,r->q),noReductionErr);
+
+    //@todo, should this have been reduced too?  Or should there be an explicit eval kind of thing?
+    spec_is_str_equal(t2s(n),"(process:ADD_INT (TEST_INT_SYMBOL:1) (TEST_INT_SYMBOL:32))");
+    _t_free(n);
+    _r_free(r);
+}
+
 void testProcessFillMatch() {
     T *t = _t_new_root(RUN_TREE);
     // test FILL_FROM_MATCH which takes three params, the template tree, the stx-match and the tree it matched on
@@ -1392,6 +1408,7 @@ void testProcess() {
     testProcessNew();
     testProcessDo();
     testProcessSemtrex();
+    testProcessFill();
     testProcessFillMatch();
     testProcessFillMatchFull();
     testProcessIf();

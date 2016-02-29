@@ -472,6 +472,14 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             _t_free(t);
         }
         break;
+    case FILL_ID:
+        {
+            x = _t_detach_by_idx(code,1);
+            T *sem_map = _t_detach_by_idx(code,1);
+            _t_fill_template(x,sem_map);
+            _t_free(sem_map);
+        }
+        break;
     case FILL_FROM_MATCH_ID:
         match_results = _t_child(code,2);
         match_tree = _t_child(code,3);

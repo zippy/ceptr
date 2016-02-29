@@ -285,6 +285,7 @@ Process: MATCH,0,"semtrex match","matched",SIGNATURE_SYMBOL,BOOLEAN,"pattern",SI
 
 Process: RESPOND,0,"respond to signal","response id",SIGNATURE_SYMBOL,SIGNAL_UUID,"respond on",SIGNATURE_SYMBOL,CARRIER,"response contents",SIGNATURE_ANY,NULL_STRUCTURE,0;
 Process: QUOTE,0,"quote a process so that it can be passed as a value","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"process",SIGNATURE_PROCESS,NULL_PROCESS,0;
+Process: FILL,0,"fill template from map","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"template",SIGNATURE_ANY,NULL_STRUCTURE,"map",SIGNATURE_SYMBOL,SEMANTIC_MAP,0;
 Process: FILL_FROM_MATCH,0,"fill template from match results","result",SIGNATURE_ANY,NULL_STRUCTURE,0;
 Process: RAISE,0,"raise reduction error","result",SIGNATURE_STRUCTURE,NULL_STRUCTURE,"error",SIGNATURE_SYMBOL,REDUCTION_ERROR_SYMBOL,0;   this process doesn't really return anything, because it triggers the handler for the error in the "error" parameter
 Process: STREAM_READ,0,"read from a stream","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"stream",SIGNATURE_STRUCTURE,STREAM,"into",SIGNATURE_SYMBOL,RESULT_SYMBOL,0;  the data on the stream will appear as the surface of the symbol type given by the "into" param. Clearly this could get ugly as there is no semantic checking that that's ok...

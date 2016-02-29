@@ -742,6 +742,7 @@ enum SYSProcessIDs {
     LTE_INT_ID,
     GTE_INT_ID,
     INITIATE_PROTOCOL_ID,
+    FILL_ID,
     MAGIC_ID,
     NUM_SYS_PROCESSES
 };
@@ -778,6 +779,7 @@ SemanticID GT_INT;
 SemanticID LTE_INT;
 SemanticID GTE_INT;
 SemanticID INITIATE_PROTOCOL;
+SemanticID FILL;
 SemanticID MAGIC;
 
 /**********************************************************************************/
