@@ -160,3 +160,19 @@ void _st_free(Stream *stream) {
     }
     free(stream);
 }
+
+/**
+ * write to a stream
+ *
+ */
+int _st_write(Stream *st,char *buf,size_t len) {
+    if (st->type != UnixStream) raise_error("unknown stream type:%d\n",st->type);
+    FILE *stream = st->data.unix_stream;
+
+    int err = fwrite(buf,sizeof(char),len,stream);
+    debug(D_STREAM,"write of '%s' results in %d\n",buf,err);
+    if (err > 0) {
+        fflush(stream);
+    }
+    return err;
+}

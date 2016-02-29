@@ -833,6 +833,7 @@ enum DEV_COMPOSITORYSymbolIDs {
     are_you_ID,
     i_am_ID,
     LINE_ID,
+    LINES_ID,
     VERB_ID,
     COMMAND_PARAMETER_ID,
     SHELL_COMMAND_ID,
@@ -867,6 +868,7 @@ SemanticID RECOGNITION;
 SemanticID are_you;
 SemanticID i_am;
 SemanticID LINE;
+SemanticID LINES;
 SemanticID VERB;
 SemanticID COMMAND_PARAMETER;
 SemanticID SHELL_COMMAND;
@@ -890,9 +892,11 @@ SemanticID MESSAGE;
 // DEV_COMPOSITORY:Structure
 enum DEV_COMPOSITORYStructureIDs {
     NULL_DEV_COMPOSITORY_STRUCTURE_ID,
+    ZERO_OR_MORE_OF_LINE_ID,
     COMMAND_ID,
     NUM_DEV_COMPOSITORY_STRUCTURES
 };
+SemanticID ZERO_OR_MORE_OF_LINE;
 SemanticID COMMAND;
 
 /**********************************************************************************/

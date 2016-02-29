@@ -657,6 +657,9 @@ void testProcessStream() {
     _t_new_stream(n,TEST_STREAM_SYMBOL,st);
     _t_new_str(n,TEST_STR_SYMBOL,"fish\n");
     _t_new_str(n,LINE,"cow");
+    T *lns = _t_newr(n,LINES);
+    _t_new_str(lns,LINE,"thing1");
+    _t_new_str(lns,LINE,"thing2");
     _t_newi(n,TEST_INT_SYMBOL,314);
 
     run_tree = __p_build_run_tree(n,0);
@@ -665,9 +668,12 @@ void testProcessStream() {
 
     spec_is_equal(_p_reduceq(q),noReductionErr);
 
-    spec_is_str_equal(buffer,"line1\nabc\nfish\ncow\n(TEST_INT_SYMBOL:314)\n");
+    char *expected_result = "line1\nabc\nfish\ncow\nthing1\nthing2\n(TEST_INT_SYMBOL:314)";
+
+    spec_is_str_equal(buffer,expected_result);
 
     _st_free(st);
+
 
     // test writing to a readonly stream
     stream = fmemopen(buffer, strlen (buffer), "r");
@@ -686,7 +692,7 @@ void testProcessStream() {
     spec_is_equal(e->context->err,unixErrnoReductionErr);
 
     // buffer should remain unchanged
-    spec_is_str_equal(buffer,"line1\nabc\nfish\ncow\n(TEST_INT_SYMBOL:314)\n");
+    spec_is_str_equal(buffer,expected_result);
 
     while ((fgetc (stream)) != EOF);
     n = _t_new_root(STREAM_ALIVE);

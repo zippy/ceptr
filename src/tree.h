@@ -112,6 +112,8 @@ char * _t2json(SemTable *sem,T *t,int level,char *buf);
 
 /*****************  Misc... */
 
+int _t_write(SemTable *sem,T *t,Stream *stream);
+
 #define DO_KIDS(t,x) {int i,_c=_t_children(t);for(i=1;i<=_c;i++){x;}}
 
 #define root_check(c) if (c->structure.parent != 0) {raise_error("can't add a node that isn't a root!");}

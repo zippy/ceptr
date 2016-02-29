@@ -54,5 +54,7 @@ void _st_free(Stream *);
 #define _st_data(st) (st)->buf
 #define _st_data_size(st) (st)->data_size
 
+int _st_write(Stream *stream,char *buf,size_t len);
+
 #endif
 /** @}*/

@@ -14,8 +14,7 @@ void testCallback(Stream *st) {
     st->callback = 0;
 }
 
-void testStream() {
-
+void testStreamCreate() {
     // test basic stream creation
     Stream *s = _st_new_unix_stream(stdout,0);
     spec_is_equal(s->type,UnixStream);
@@ -23,14 +22,16 @@ void testStream() {
     spec_is_ptr_equal(s->data.unix_stream,stdout);
     s->flags &= ~StreamCloseOnFree; // don't close the stdin on free...
     _st_free(s);
+}
 
+void testStreamRead() {
     //    debug_enable(D_STREAM);
     // test reading from a stream
     FILE *input;
 
     char data[] = "line1\nline2\n";
     input = fmemopen(data, strlen(data), "r");
-    s = _st_new_unix_stream(input,1);
+    Stream *s = _st_new_unix_stream(input,1);
     spec_is_true(s->flags&StreamReader);
     spec_is_true(s->flags&StreamWaiting);
 
@@ -64,4 +65,24 @@ void testStream() {
         raise_error("ERROR; return code from pthread_join() is %d\n", rc);
     }
     _st_free(s);
+}
+
+void testStreamWrite() {
+    char buffer[500] = "x";
+    FILE *stream;
+    stream = fmemopen(buffer, 500, "r+");
+    Stream *st = _st_new_unix_stream(stream,1);
+
+    spec_is_equal(_st_write(st,"fishy",6),6);
+
+    char *expected_result = "fishy";
+    spec_is_str_equal(buffer,expected_result);
+
+    _st_free(st);
+}
+
+void testStream() {
+    testStreamCreate();
+    testStreamRead();
+    testStreamWrite();
 }

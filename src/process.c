@@ -535,42 +535,13 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             // get the stream param
             T *s = _t_detach_by_idx(code,1);
             Stream *st = _t_surface(s);
-            if (st->type != UnixStream) raise_error("unknown stream type:%d\n",st->type);
-            FILE *stream = st->data.unix_stream;
             _t_free(s);
             // get the data to write as string
             while(s = _t_detach_by_idx(code,1)) {
-                /// @todo check the structure type to make sure it's compatible as a string (i.e. it's null terminated)
-                /// @todo other integrity checks, i.e. length etc?
-                char *str;
-                Symbol sym = _t_symbol(s);
-                Structure struc = _sem_get_symbol_structure(q->r->sem,sym);
-                int add_nl = 1;
-                if (semeq(struc,CSTRING)) {
-                    str = _t_surface(s);
-                    debug(D_STREAM,"found a cstring to write: %s\n",str);
-                    if (!semeq(sym,LINE)) add_nl = 0;
-                }
-                else {
-                    str = _t2s(q->r->sem,s);
-                }
-                //str = t2s(s);
-                int err = fputs(str,stream);
-                if (err < 0) {
-                    debug(D_STREAM,"unix error %d on attempting to write: %s\n",errno,str);
-                    _t_free(s);
-                    return unixErrnoReductionErr;
-                }
-                else {
-                    debug(D_STREAM,"just wrote: %s\n",str);
-                }
+                int err = _t_write(q->r->sem,s,st);
                 _t_free(s);
-                if (add_nl) {
-                    err = fputs("\n",stream);
-                    if (err < 0) return unixErrnoReductionErr;
-                }
+                if (err == 0) return unixErrnoReductionErr;
             }
-            fflush(stream);
             /// @todo what should this really return?
             x = __t_news(0,REDUCTION_ERROR_SYMBOL,NULL_SYMBOL,1);
         }

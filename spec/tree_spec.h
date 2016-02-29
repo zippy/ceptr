@@ -646,6 +646,35 @@ void testTreeTemplate() {
     //! [testTreeTemplate]
 }
 
+void testTreeStreamWrite() {
+    char buffer[500] = "x";
+    FILE *stream;
+    stream = fmemopen(buffer, 500, "r+");
+    Stream *st = _st_new_unix_stream(stream,1);
+    T *t = _t_new_str(0,TEST_STR_SYMBOL,"fish\n");
+    _t_write(G_sem,t,st);
+    _t_free(t);
+
+    t = _t_new_str(0,LINE,"cow");
+    _t_write(G_sem,t,st);
+    _t_free(t);
+
+    t = _t_new_root(LINES);
+    _t_new_str(t,LINE,"thing1");
+    _t_new_str(t,LINE,"thing2");
+    _t_write(G_sem,t,st);
+    _t_free(t);
+
+    t = _t_newi(0,TEST_INT_SYMBOL,314);
+    _t_write(G_sem,t,st);
+    _t_free(t);
+
+    char *expected_result = "fish\ncow\nthing1\nthing2\n(TEST_INT_SYMBOL:314)";
+    spec_is_str_equal(buffer,expected_result);
+
+    _st_free(st);
+}
+
 void testTree() {
     testCreateTreeNodes();
     testTreeNewReceptor();
@@ -675,4 +704,5 @@ void testTree() {
     testProcessHTML();
     testTreeBuild();
     testTreeTemplate();
+    testTreeStreamWrite();
 }

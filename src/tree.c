@@ -1738,4 +1738,49 @@ char * _t2json(SemTable *sem,T *t,int level,char *buf) {
     return result;
 }
 
+// assumes that t is a CSTRING structured tree
+int __t_writeln(T *t,Stream *stream) {
+    int err;
+    char *str = _t_surface(t);
+    err = _st_write(stream,str,strlen(str));
+    if (err > 0) {
+        err = _st_write(stream,"\n",1);
+    }
+    return err;
+}
+
+/**
+ * write a tree out to a stream
+ *
+ * @param[in] sem current semantic contexts
+ * @param[in] t the tree to write out
+ * @param[in] stream the stream to write to
+ * @returns unix error code, or number of bytes written
+ */
+int _t_write(SemTable *sem,T *t,Stream *stream) {
+    int err;
+    Symbol sym = _t_symbol(t);
+    if (semeq(sym,LINE)) {
+        err = __t_writeln(t,stream);
+    }
+    else if (semeq(sym,LINES)) {
+        DO_KIDS(t,
+                err = __t_writeln(_t_child(t,i),stream);
+                if (err == 0) return 0;
+                );
+    }
+    else {
+        char *str;
+        Structure struc = _sem_get_symbol_structure(sem,sym);
+        if (semeq(struc,CSTRING)) {
+            str = _t_surface(t);
+        }
+        else {
+            str = _t2s(sem,t);
+        }
+        err = _st_write(stream,str,strlen(str));
+    }
+    return err;
+}
+
 /** @}*/

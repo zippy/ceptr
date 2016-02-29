@@ -413,6 +413,7 @@ Protocol: RECOGNIZE,recog_def;
 
 ##### defs for shell receptor
 Symbol: LINE,CSTRING;                           text lines from unix streams
+Symbol: LINES,[*LINE];
 Symbol: VERB,CSTRING;
 Symbol: COMMAND_PARAMETER,CSTRING;
 Structure: COMMAND,(VERB,*COMMAND_PARAMETER);
