@@ -447,6 +447,51 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             }
         }
         break;
+    case TRANSCODE_ID:
+        {
+            T *src = _t_detach_by_idx(code,2);
+            T *to = _t_detach_by_idx(code,1);
+            Symbol to_sym = *(Symbol *)_t_surface(to);
+            Symbol src_sym = _t_symbol(src);
+            _t_free(to);
+            if (semeq(to_sym,src_sym)) x = src;
+            else {
+                Structure src_s = _sem_get_symbol_structure(q->r->sem,src_sym);
+                Structure to_s = _sem_get_symbol_structure(q->r->sem,to_sym);
+                if (semeq(to_s,src_s)) {
+                    x = src;
+                    x->contents.symbol = to_sym;
+                }
+                else {
+                    x = src;
+                    x->contents.symbol = to_sym;
+                    if (semeq(to_s,INTEGER)) {
+                        if (semeq(src_s,CSTRING)) {
+                            x = __t_newi(0,to_sym,atoi(_t_surface(src)),true);
+                            _t_free(src);
+                        }
+                        else return structureMismatchReductionErr;
+                    }
+                    else if (semeq(to_s,CSTRING)) {
+                        if (semeq(src_s,INTEGER)) {
+                            char buf[100];
+                            sprintf(buf,"%d",*(int *)_t_surface(src));
+                            _t_free(src);
+                            x = __t_new_str(0,to_sym,buf,true);
+                        }
+                        else if (semeq(src_s,CHAR)) {
+                            char buf[2];
+                            buf[0] = *(char *)_t_surface(src);
+                            buf[1] = 0;
+                            x = __t_new_str(0,to_sym,buf,true);
+                            _t_free(src);
+                        }
+                        else return structureMismatchReductionErr;
+                    }
+                }
+            }
+        }
+        break;
     case MATCH_ID:
         {
             T *pattern = _t_detach_by_idx(code,1);

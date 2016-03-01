@@ -162,6 +162,43 @@ void testProcessDo() {
     _t_free(code);
 }
 
+void testProcessTranscode() {
+    Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
+
+    // transcode of same structure should just change the symbol type
+    T *n = _t_new_root(TRANSCODE);
+    _t_news(n,TRANSCODE_TYPE,TEST_INT_SYMBOL);
+    _t_newi(n,TEST_INT_SYMBOL2,314);
+    spec_is_equal(__p_reduce_sys_proc(0,TRANSCODE,n,r->q),noReductionErr);
+    spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:314)");
+    _t_free(n);
+
+    // transcode of INTEGER to CSTRING
+    n = _t_new_root(TRANSCODE);
+    _t_news(n,TRANSCODE_TYPE,TEST_STR_SYMBOL);
+    _t_newi(n,TEST_INT_SYMBOL,314);
+    spec_is_equal(__p_reduce_sys_proc(0,TRANSCODE,n,r->q),noReductionErr);
+    spec_is_str_equal(t2s(n),"(TEST_STR_SYMBOL:314)");
+    _t_free(n);
+
+    // transcode of CHAR to CSTRING
+    n = _t_new_root(TRANSCODE);
+    _t_news(n,TRANSCODE_TYPE,TEST_STR_SYMBOL);
+    _t_newc(n,ASCII_CHAR,'x');
+    spec_is_equal(__p_reduce_sys_proc(0,TRANSCODE,n,r->q),noReductionErr);
+    spec_is_str_equal(t2s(n),"(TEST_STR_SYMBOL:x)");
+    _t_free(n);
+
+    // transcode of CSTRING to INTEGER
+    n = _t_new_root(TRANSCODE);
+    _t_news(n,TRANSCODE_TYPE,TEST_INT_SYMBOL);
+    _t_new_str(n,TEST_STR_SYMBOL,"314");
+    spec_is_equal(__p_reduce_sys_proc(0,TRANSCODE,n,r->q),noReductionErr);
+    spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:314)");
+    _t_free(n);
+    _r_free(r);
+}
+
 void testProcessSemtrex() {
 
     // test string concatenation
@@ -1407,6 +1444,7 @@ void testProcess() {
     testProcessDel();
     testProcessNew();
     testProcessDo();
+    testProcessTranscode();
     testProcessSemtrex();
     testProcessFill();
     testProcessFillMatch();

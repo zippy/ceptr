@@ -1789,6 +1789,12 @@
        <div class="def-sym-def"><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></div>
        <div class="def-comment">    set of processes for DO</div>
    </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="TRANSCODE_TYPE"></a>TRANSCODE_TYPE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
        <div class="def-name"><a name="NOOP"></a>NOOP</div>
@@ -1823,6 +1829,13 @@
        <div class="def-sig-in"><li>actions(SYMBOL:<a href="ref_sys_symbols.html#BLOCK">BLOCK</a>)</li></div>
        <div class="def-sig-out">result(PASSTHRU:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
        <div class="def-comment"><i>do</i><br /> execute a BLOCK of instructions for side-effects returning the value of the last one.  We do the BLOCK thing because we don't yet have variable sized arugments for processes.  I would like it better if the actions could just be the children of the DO process</div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="TRANSCODE"></a>TRANSCODE</div>
+       <div class="def-sig-in"><li>to(SYMBOL:<a href="ref_sys_symbols.html#TRANSCODE_TYPE">TRANSCODE_TYPE</a>)</li><li>source(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</li></div>
+       <div class="def-sig-out">result(PASSTHRU:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
+       <div class="def-comment"><i>transform semantic type</i><br /> transform the semantic type of a tree to a different type (if possible)</div>
    </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
@@ -1886,6 +1899,13 @@
        <div class="def-sig-in"><li>process(PROCESS:<a href="ref_sys_symbols.html#NULL_PROCESS">NULL_PROCESS</a>)</li></div>
        <div class="def-sig-out">result(PASSTHRU:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
        <div class="def-comment"><i>quote a process so that it can be passed as a value</i></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="FILL"></a>FILL</div>
+       <div class="def-sig-in"><li>template(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</li><li>map(SYMBOL:<a href="ref_sys_symbols.html#SEMANTIC_MAP">SEMANTIC_MAP</a>)</li></div>
+       <div class="def-sig-out">result(PASSTHRU:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
+       <div class="def-comment"><i>fill template from map</i></div>
    </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
@@ -2019,13 +2039,6 @@
        <div class="def-sig-in"><li>protocol(SYMBOL:<a href="ref_sys_symbols.html#PNAME">PNAME</a>)</li><li>interaction(SYMBOL:<a href="ref_sys_symbols.html#WHICH_INTERACTION">WHICH_INTERACTION</a>)</li><li>bindings(SYMBOL:<a href="ref_sys_symbols.html#PROTOCOL_BINDINGS">PROTOCOL_BINDINGS</a>)</li></div>
        <div class="def-sig-out">error(SYMBOL:<a href="ref_sys_symbols.html#REDUCTION_ERROR_SYMBOL">REDUCTION_ERROR_SYMBOL</a>)</div>
        <div class="def-comment"><i>initiate the first step of a protocol</i></div>
-   </div>
-   <div class="def-item def-process">
-       <div class="def-type">Process:</div>
-       <div class="def-name"><a name="FILL"></a>FILL</div>
-       <div class="def-sig-in"><li>template(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</li><li>map(SYMBOL:<a href="ref_sys_symbols.html#SEMANTIC_MAP">SEMANTIC_MAP</a>)</li></div>
-       <div class="def-sig-out">result(PASSTHRU:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
-       <div class="def-comment"><i>fill template from map</i></div>
    </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>

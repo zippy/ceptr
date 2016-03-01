@@ -219,6 +219,7 @@ enum SYSSymbolIDs {
     ITERATE_ON_SYMBOL_ID,
     ITERATION_DATA_ID,
     BLOCK_ID,
+    TRANSCODE_TYPE_ID,
     STX_SL_ID,
     STX_OP_ID,
     STX_CP_ID,
@@ -446,6 +447,7 @@ SemanticID REPETITIONS;
 SemanticID ITERATE_ON_SYMBOL;
 SemanticID ITERATION_DATA;
 SemanticID BLOCK;
+SemanticID TRANSCODE_TYPE;
 SemanticID STX_SL;
 SemanticID STX_OP;
 SemanticID STX_CP;
@@ -714,6 +716,7 @@ enum SYSProcessIDs {
     GET_ID,
     DEL_ID,
     DO_ID,
+    TRANSCODE_ID,
     IF_ID,
     ITERATE_ID,
     SAY_ID,
@@ -723,6 +726,7 @@ enum SYSProcessIDs {
     MATCH_ID,
     RESPOND_ID,
     QUOTE_ID,
+    FILL_ID,
     FILL_FROM_MATCH_ID,
     RAISE_ID,
     STREAM_READ_ID,
@@ -742,7 +746,6 @@ enum SYSProcessIDs {
     LTE_INT_ID,
     GTE_INT_ID,
     INITIATE_PROTOCOL_ID,
-    FILL_ID,
     MAGIC_ID,
     NUM_SYS_PROCESSES
 };
@@ -751,6 +754,7 @@ SemanticID NEW;
 SemanticID GET;
 SemanticID DEL;
 SemanticID DO;
+SemanticID TRANSCODE;
 SemanticID IF;
 SemanticID ITERATE;
 SemanticID SAY;
@@ -760,6 +764,7 @@ SemanticID LISTEN;
 SemanticID MATCH;
 SemanticID RESPOND;
 SemanticID QUOTE;
+SemanticID FILL;
 SemanticID FILL_FROM_MATCH;
 SemanticID RAISE;
 SemanticID STREAM_READ;
@@ -779,7 +784,6 @@ SemanticID GT_INT;
 SemanticID LTE_INT;
 SemanticID GTE_INT;
 SemanticID INITIATE_PROTOCOL;
-SemanticID FILL;
 SemanticID MAGIC;
 
 /**********************************************************************************/
