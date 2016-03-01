@@ -175,6 +175,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
     Symbol sy;
     T *x,*t,*match_results,*match_tree;
     Error err = noReductionErr;
+    bool dissolve = false;
     switch(s.id) {
     case NOOP_ID:
         // noop simply replaces itself with it's own child
@@ -470,7 +471,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                             x = __t_newi(0,to_sym,atoi(_t_surface(src)),true);
                             _t_free(src);
                         }
-                        else return structureMismatchReductionErr;
+                        else return incompatibleTypeReductionErr;
                     }
                     else if (semeq(to_s,CSTRING)) {
                         if (semeq(src_s,INTEGER)) {
@@ -486,11 +487,20 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                             x = __t_new_str(0,to_sym,buf,true);
                             _t_free(src);
                         }
-                        else return structureMismatchReductionErr;
+                        else return incompatibleTypeReductionErr;
                     }
                 }
             }
         }
+        break;
+    case DISSOLVE_ID:
+        // dissolve can't be the root process!
+        if (!_t_parent(code)) return structureMismatchReductionErr;
+
+        // if the param has children, then they are to be inserted into the
+        // parent's children at this instruction's spot.
+        x = _t_detach_by_idx(code,1);
+        dissolve = _t_children(x) > 0;
         break;
     case MATCH_ID:
         {
@@ -835,18 +845,41 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
         raise_error("unknown sys-process id: %d",s.id);
     }
 
-    // any remaining children of 'code' are the parameters which have all now been "used up"
-    // so we can call the low-level __t_free the clean them up and then replace the contents of
-    // the 'code' node with the contents of the 'x' node that was either detached or produced
-    // by the the process that just ran
-    __t_free(code);
-    code->structure.child_count = x->structure.child_count;
-    code->structure.children = x->structure.children;
-    code->contents = x->contents;
-    code->context = x->context;
-    // we do have to fixe the parent value of all the children
-    DO_KIDS(code,_t_child(code,i)->structure.parent = code);
-    free(x);
+    if (!dissolve) {
+        // in the normal case we just replace code with the value of x, so:
+        // any remaining children of 'code' are the parameters which have all now been "used up"
+        // so we can call the low-level __t_free the clean them up and then replace the contents of
+        // the 'code' node with the contents of the 'x' node that was either detached or produced
+        // by the the process that just ran
+        __t_free(code);
+        code->structure.child_count = x->structure.child_count;
+        code->structure.children = x->structure.children;
+        code->contents = x->contents;
+        code->context = x->context;
+        // we do have to fixe the parent value of all the children
+        DO_KIDS(code,_t_child(code,i)->structure.parent = code);
+        free(x);
+    }
+    else {
+        // in the dissolve case we have to insert x's children into the spot where code was, so:
+        // first build a path
+        int path[2] = {0,TREE_PATH_TERMINATOR};
+        path[0] = _t_node_index(code);
+        T *parent = _t_parent(code);
+        // then free the code node
+        _t_detach_by_ptr(parent,code);
+        _t_free(code);
+
+        // then loop through x's children inserting them in the parent
+        T *c;
+        while (c = _t_detach_by_idx(x,1)) {
+            _t_insert_at(parent,path,c);
+            path[0]++;
+        }
+        _t_free(x);  // and free the decapitated root!
+
+        //@todo, I think this might cause those children to be evaluated twice which may be a mistake...
+    }
     return err;
 }
 

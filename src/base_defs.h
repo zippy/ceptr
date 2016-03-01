@@ -717,6 +717,7 @@ enum SYSProcessIDs {
     DEL_ID,
     DO_ID,
     TRANSCODE_ID,
+    DISSOLVE_ID,
     IF_ID,
     ITERATE_ID,
     SAY_ID,
@@ -755,6 +756,7 @@ SemanticID GET;
 SemanticID DEL;
 SemanticID DO;
 SemanticID TRANSCODE;
+SemanticID DISSOLVE;
 SemanticID IF;
 SemanticID ITERATE;
 SemanticID SAY;

@@ -199,6 +199,27 @@ void testProcessTranscode() {
     _r_free(r);
 }
 
+void testProcessDissolve() {
+    T *n = _t_new_root(DISSOLVE);
+    spec_is_equal(__p_reduce_sys_proc(0,DISSOLVE,n,0),structureMismatchReductionErr);
+    _t_free(n);
+
+    Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
+
+    n = _t_build(G_sem,0,LINES,LINE,"fish",DISSOLVE,LINES,LINE,"cat",LINE,"dog",NULL_SYMBOL,NULL_SYMBOL,CONCAT_STR,RESULT_SYMBOL,LINE,TEST_STR_SYMBOL,"sh",TEST_STR_SYMBOL,"oe",NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);
+    spec_is_str_equal(t2s(n),"(LINES (LINE:fish) (process:DISSOLVE (LINES (LINE:cat) (LINE:dog))) (process:CONCAT_STR (RESULT_SYMBOL:LINE) (TEST_STR_SYMBOL:sh) (TEST_STR_SYMBOL:oe)))");
+
+    Q *q = r->q;
+    T *run_tree = __p_build_run_tree(n,0);
+    _t_free(n);
+    Qe *e = _p_addrt2q(q,run_tree);
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+
+    spec_is_str_equal(t2s(_t_child(run_tree,1)),"(LINES (LINE:fish) (LINE:cat) (LINE:dog) (LINE:shoe))");
+
+    _r_free(r);
+}
+
 void testProcessSemtrex() {
 
     // test string concatenation
@@ -1445,6 +1466,7 @@ void testProcess() {
     testProcessNew();
     testProcessDo();
     testProcessTranscode();
+    testProcessDissolve();
     testProcessSemtrex();
     testProcessFill();
     testProcessFillMatch();
