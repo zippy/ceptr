@@ -459,6 +459,7 @@ void _t_insert_at(T *t, int *path, T *i) {
                     raise_error("Can't insert into the root!");
                 }
                 _t_add(p,i);
+                path[d]++;
                 return;
             }
         }
