@@ -229,6 +229,13 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
         b = (*(int *)_t_surface(t)) ? 2 : 3;
         x = _t_detach_by_idx(code,b);
         break;
+    case EQ_SYM_ID:
+        x = __t_newi(0,BOOLEAN,
+                     semeq(
+                           *(Symbol *)_t_surface(_t_child(code,1)),
+                           *(Symbol *)_t_surface(_t_child(code,2))),
+                           true);
+        break;
     case ADD_INT_ID:
         x = _t_detach_by_idx(code,1);
         c = *(int *)_t_surface(_t_child(code,1));
