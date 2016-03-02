@@ -242,13 +242,13 @@ Structure __r_define_structure(Receptor *r,char *label,T *structure_def) {
  * @param[in] code the code tree for this process
  * @param[in] name the name of the process
  * @param[in] intention a description of what the process intends to do/transform
- * @param[in] in the input signature for the process
- * @param[in] out the output signature for the process
+ * @param[in] signature the signature for the process
+ * @param[in] link the output signature for the process
  * @returns the new Process
  *
  */
-Process _r_define_process(Receptor *r,T *code,char *name,char *intention,T *signature) {
-    Process p = _d_define_process(r->sem,code,name,intention,signature,r->context);
+Process _r_define_process(Receptor *r,T *code,char *name,char *intention,T *signature,T *link) {
+    Process p = _d_define_process(r->sem,code,name,intention,signature,link,r->context);
     return p;
 }
 
@@ -977,7 +977,7 @@ void _r_defineClockReceptor(SemTable *sem) {
     T *g = _t_newr(resp,GET);
     _t_new(g,WHICH_XADDR,&x,sizeof(Xaddr));
     T *signature = __p_make_signature("result",SIGNATURE_SYMBOL,NULL_SYMBOL,NULL);
-    Process proc = _d_define_process(sem,resp,"respond with current time","long desc...",signature,clk_ctx);
+    Process proc = _d_define_process(sem,resp,"respond with current time","long desc...",signature,NULL,clk_ctx);
     T *act = _t_newp(0,ACTION,proc);
     T *pattern = _t_new_root(PATTERN);
     T *s = _sl(pattern,CLOCK_TELL_TIME);

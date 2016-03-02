@@ -83,6 +83,7 @@ Symbol: SEMTREX_MATCH_SIBLINGS_COUNT,INTEGER;  In the FSA_ID, it's the length of
 
 Symbol: ASCII_CHAR,CHAR;
 Symbol: ASCII_CHARS,[+ASCII_CHAR];
+Symbol: ASCII_STR,CSTRING;
 
 Symbol: RECEPTOR_XADDR,XADDR;               An Xaddr that points to a receptor
 Declare: EXPECTATIONS,SIGNALS;
@@ -121,11 +122,24 @@ Symbol: ACTION,PROCESS;                     code tree_ID, which specifies the ac
 Declare: PARAMS,SEMANTIC_MAP;
 Symbol: EXPECTATION,[(CARRIER,PATTERN,ACTION,PARAMS,END_CONDITIONS,?SEMANTIC_MAP)];
 Symbol: EXPECTATIONS,[*EXPECTATION];        list of carrier/expectation/action tress
+
+# process defintion symbols
+# ?the types of processes: transcode / (operate/compare) / (constrain/validate/range/enum) / flow / side-effect
+Symbol: TRANSCODER,NULL_STRUCTURE;
+Symbol: OPERATOR,NULL_STRUCTURE;
+Symbol: VALIDATOR,NULL_STRUCTURE;
+Symbol: PROCESS_OF_STRUCTURE,STRUCTURE;
+Symbol: PROCESS_OF_SYMBOL,SYMBOL;
+Symbol: PROCESS_OF_PROCESS,PROCESS;
+Symbol: PROCESS_OF,[|{PROCESS_OF_STRUCTURE|PROCESS_OF_SYMBOL|PROCESS_OF_PROCESS}];
+Symbol: PROCESS_TYPE,[|{TRANSCODER|OPERATOR|VALIDATOR}];
+Symbol: PROCESS_LINK,[(PROCESS_OF,PROCESS_TYPE)];
+
 Symbol: PROCESS_NAME,CSTRING;
 Symbol: PROCESS_INTENTION,CSTRING;
 Declare: PROCESS_SIGNATURE;
 Symbol: CODE,[!];
-Symbol: PROCESS_DEFINITION,[(PROCESS_NAME,PROCESS_INTENTION,CODE,PROCESS_SIGNATURE)];
+Symbol: PROCESS_DEFINITION,[(PROCESS_NAME,PROCESS_INTENTION,CODE,PROCESS_SIGNATURE,?PROCESS_LINK)];
 Symbol: PROCESSES,[*PROCESS_DEFINITION];
 
 Declare: GOAL,ROLE,USAGE,WEAL;
@@ -243,6 +257,9 @@ Symbol: NOW,TIME;
 Structure: TIMESTAMP,TODAY,NOW;
 Symbol: TICK,TIMESTAMP;
 
+Symbol: DATE_DIVIDER,CSTRING;
+Symbol: US_SHORT_DATE,CSTRING;
+
 Symbol: ERROR_LOCATION,TREE_PATH;
 Structure: REDUCTION_ERROR,ERROR_LOCATION;
 Symbol: ZERO_DIVIDE_ERR,REDUCTION_ERROR;
@@ -270,14 +287,14 @@ Symbol: ITERATE_ON_SYMBOL,SYMBOL;
 Symbol: ITERATION_DATA,[!];    data to iterate over
 Symbol: BLOCK,[!];    set of processes for DO
 
-Symbol: TRANSCODE_TYPE,SYMBOL;
+Symbol: TRANSCODE_TO,SYMBOL;
 
 Process: NOOP,0,"no-op","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"do",SIGNATURE_ANY,NULL_STRUCTURE,0;   this process reduces to its single "do" parameter.
 Process: NEW,0,"new instance","xaddr",SIGNATURE_SYMBOL,WHICH_XADDR,"what",SIGNATURE_SYMBOL,NEW_TYPE,0; reduces to the xaddr of a newly created instance of type NEW_TYPE.  the structures of "what" and "value" must match, but not the symbols
 Process: GET,0,"get instance value","value",SIGNATURE_ANY,NULL_STRUCTURE,"what",SIGNATURE_SYMBOL,WHICH_XADDR,0;   reduces to the value of the instance at the xaddr of the "what" parameter
 Process: DEL,0,"delete instance","value",SIGNATURE_ANY,NULL_STRUCTURE,"what",SIGNATURE_SYMBOL,WHICH_XADDR,0;   reduces to the value of the deleted instance at the xaddr of the "what" parameter
 Process: DO,0,"do","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"actions",SIGNATURE_SYMBOL,BLOCK,0; execute a BLOCK of instructions for side-effects returning the value of the last one.  We do the BLOCK thing because we don't yet have variable sized arugments for processes.  I would like it better if the actions could just be the children of the DO process
-Process: TRANSCODE,0,"transform semantic type","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"to",SIGNATURE_SYMBOL,TRANSCODE_TYPE,"source",SIGNATURE_ANY,NULL_STRUCTURE,0; transform the semantic type of a tree to a different type (if possible)
+Process: TRANSCODE,0,"transform semantic type","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"to",SIGNATURE_SYMBOL,TRANSCODE_TO,"source",SIGNATURE_ANY,NULL_STRUCTURE,0; transform the semantic type of a tree to a different type (if possible).  If there are multiple children DISSOLVE is implied
 Process: DISSOLVE,0,"merge children into parent's children","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"tree",SIGNATURE_ANY,NULL_STRUCTURE,0; remove the root of the child, merging it's children into the parent's children at the process's spot
 Process: IF,0,"if","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"condition",SIGNATURE_PROCESS,BOOLEAN,"then",SIGNATURE_ANY,NULL_STRUCTURE,"else",SIGNATURE_OPTIONAL,SIGNATURE_ANY,NULL_STRUCTURE,0;  this is a traditional "if" process that reduces conditionally to either the "then" or the "else" parameter depending on the value of the "condition" parameter.  Note: we may be replacing this with a more lispy COND process
 Process: ITERATE,0,"iterate a process","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"condtion",SIGNATURE_PROCESS,BOOLEAN,"do",SIGNATURE_ANY,NULL_STRUCTURE,0;                     this process checks the structure of the result of the "condition" param, if it's a BOOLEAN, it treats the iteration as a while loop and iterates until the BOOLEAN is false; if it's an INTEGER it treats the iteration as repeat loop and iterates as many times as the value of the INTEGER; if it's a ITERATE_ON_SYMBOL then it iterates on all the instances of that symbol type which get added into the PARAMS each time through
@@ -298,6 +315,7 @@ Process: STREAM_ALIVE,0,"test if stream is alive for reading","alive",SIGNATURE_
 Process: CONCAT_STR,0,"concatinate strings","concatenation",SIGNATURE_STRUCTURE,CSTRING,"into",SIGNATURE_SYMBOL,RESULT_SYMBOL,"str1",SIGNATURE_STRUCTURE,CSTRING,"str2",SIGNATURE_STRUCTURE,CSTRING,0;  concatenates two strings of any symbol type into an new symbol type specified by the "into" parameter
 Process: EXPAND_STR,0,"expand string","ascii tree",SIGNATURE_SYMBOL,ASCII_CHARS,"str",SIGNATURE_STRUCTURE,CSTRING,0;  converts a CSTRING into an ASCII_CHARS tree
 Process: CONTRACT_STR,0,"contract to string","string",SIGNATURE_STRUCTURE,CSTRING,"into",SIGNATURE_SYMBOL,RESULT_SYMBOL,0;  converts any number of chars or cstring into a single cstring of symbol type indicated by the into param
+Process: EQ_SYM,0,"test equality","equality",SIGNATURE_SYMBOL,BOOLEAN,"symbol1",SIGNATURE_STRUCTURE,SYMBOL,"symbol2",SIGNATURE_STRUCTURE,SYMBOL,0;
 Process: ADD_INT,0,"addition","sum",SIGNATURE_STRUCTURE,INTEGER,"augend",SIGNATURE_STRUCTURE,INTEGER,"addend",SIGNATURE_STRUCTURE,INTEGER,0;
 Process: SUB_INT,0,"subtract","difference",SIGNATURE_STRUCTURE,INTEGER,"minuend",SIGNATURE_STRUCTURE,INTEGER,"subtrahend",SIGNATURE_STRUCTURE,INTEGER,0;
 Process: MULT_INT,0,"multiply","product",SIGNATURE_STRUCTURE,INTEGER,"multiplicand",SIGNATURE_STRUCTURE,INTEGER,"multiplier",SIGNATURE_STRUCTURE,INTEGER,0;
@@ -361,6 +379,15 @@ Context: COMPOSITORY;
 ########################################################################################
 # definitions in progress that only exist on a local machine
 Context: DEV_COMPOSITORY;
+
+Data: date2usshortdate_proc,(CONCAT_STR (RESULT_SYMBOL:US_SHORT_DATE) 
+      (TRANSCODE (TRANSCODE_TO:ASCII_STR)
+                 (PARAM_REF:/2/1/2)
+                 (DATE_DIVIDER:"/")
+                 (PARAM_REF:/2/1/3)
+                 (DATE_DIVIDER:"/")
+                 (PARAM_REF:/2/1/1)));
+Process: date2usshortdate,date2usshortdate_proc,"date to us short format date transcoder","to",SIGNATURE_SYMBOL,US_SHORT_DATE,"from",SIGNATURE_STRUCTURE,DATE,0;
 
 ###### defs for an abstract requesting protocol
 Symbol: REQUESTER,RECEPTOR_ADDRESS;
@@ -606,6 +633,14 @@ Symbol: HTML_TEXT_MEDIA_SUBTYPE,NULL_STRUCTURE;
 Symbol: PLAIN_TEXT_MEDIA_SUBTYPE,NULL_STRUCTURE;
 Symbol: CEPTR_TEXT_MEDIA_SUBTYPE,NULL_STRUCTURE;
 
+Data: content_type_2_line_proc, (CONCAT_STR (RESULT_SYMBOL:LINE)
+      (LINE:"Content-type") (ASCII_CHAR:':')
+      (TRANSCODE (TRANSCODE_TO:LINE) (PARAM_REF:/2/1/1))
+      (ASCII_CHAR:'/')
+      (TRANSCODE (TRANSCODE_TO:LINE) (PARAM_REF:/2/1/2))
+      );
+Process: content_type_2_line,content_type_2_line_proc,"content type transcoder","output",SIGNATURE_SYMBOL,LINE,"input",SIGNATURE_SYMBOL,CONTENT_TYPE,0;
+
 Symbol: CONTENT_ENCODING,CSTRING;  cstring for now, add semantic later.
 
 # http defs
@@ -700,9 +735,9 @@ Data: line_2_httpreq_proc, (SAY
             (CARRIER:backnforth)
             (PARAM_REF:/2/1)
             (RESPONSE_CARRIER:backnforth))
-          (LINES (CONTRACT_STR (RESULT_SYMBOL:LINE) (LINE:"HTTP") (ASCII_CHAR:'/') (LINE:"1.1 ") (TRANSCODE (TRANSCODE_TYPE:LINE) (PARAM_REF:/1/4/1/1/1/1)) (ASCII_CHAR:' ') (PARAM_REF:/1/4/1/1/1/2))))));
+          (LINES (CONTRACT_STR (RESULT_SYMBOL:LINE) (LINE:"HTTP") (ASCII_CHAR:'/') (LINE:"1.1 ") (TRANSCODE (TRANSCODE_TO:LINE) (PARAM_REF:/1/4/1/1/1/1)) (ASCII_CHAR:' ') (PARAM_REF:/1/4/1/1/1/2))))));
 #
-# (DISSOLVE (TRANSCODE (TRANSCODE_TYPE:LINES) reference-here))
+# (DISSOLVE (TRANSCODE (TRANSCODE_TO:LINES) reference-here))
 
 Process: line_2_httpreq,line_2_httpreq_proc,"parse an HTTP_REQUEST from a LINE","signal id",SIGNATURE_SYMBOL,SIGNAL_UUID,0;
 

@@ -186,7 +186,8 @@ while (my $line = <$fh>) {
                 my $def = $2;
                 $global_data{$name} = 1 if ($data_type eq 'Global');
 
-                while ($def =~ s/ *\(([^(]+):([^)]+)\)/($1,$2)/g) {} ;
+                while ($def =~ s/\(([a-zA-Z0-9_]+):/($1,/g) {};
+                #while ($def =~ s/ *\(([^(]+):([^)]+)\)/($1,$2)/g) {} ;
                 $def =~ s/ *\(/,STX_OP,/g;
                 $def =~ s/\)/,STX_CP,/g;
                 #$def =~ s/ \(([^(]+):([^)]+)\)/,$1,$2,/g;

@@ -41,7 +41,7 @@ Structure _r_define_structure(Receptor *r,char *label,int num_params,...);
 Structure __r_define_structure(Receptor *r,char *label,T *structure_def);
 Structure __r_get_symbol_structure(Receptor *r,Symbol s);
 size_t __r_get_symbol_size(Receptor *r,Symbol s,void *surface);
-Process _r_define_process(Receptor *r,T *code,char *name,char *intention,T *signature);
+Process _r_define_process(Receptor *r,T *code,char *name,char *intention,T *signature,T *link);
 Protocol _r_define_protocol(Receptor *r,T *p);
 
 T *_r_build_def_semtrex(Receptor *r,Symbol s);

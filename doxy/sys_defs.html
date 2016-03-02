@@ -513,6 +513,12 @@
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="ASCII_STR"></a>ASCII_STR</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="RECEPTOR_XADDR"></a>RECEPTOR_XADDR</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#XADDR">XADDR</a></div>
        <div class="def-comment">               An Xaddr that points to a receptor</div>
@@ -807,6 +813,78 @@
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="TRANSCODER"></a>TRANSCODER</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="OPERATOR"></a>OPERATOR</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="VALIDATOR"></a>VALIDATOR</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="PROCESS_OF_STRUCTURE"></a>PROCESS_OF_STRUCTURE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#STRUCTURE">STRUCTURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="PROCESS_OF_SYMBOL"></a>PROCESS_OF_SYMBOL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="PROCESS_OF_PROCESS"></a>PROCESS_OF_PROCESS</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#PROCESS">PROCESS</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="LOGICAL_OR_OF_PROCESS_OF_STRUCTURE_AND_PROCESS_OF_SYMBOL_AND_PROCESS_OF_PROCESS"></a>LOGICAL-OR-OF-PROCESS-OF-STRUCTURE-AND-PROCESS-OF-SYMBOL-AND-PROCESS-OF-PROCESS</div>
+       <div class="def-struc-def">OR(<a href="ref_sys_symbols.html#PROCESS_OF_STRUCTURE">PROCESS_OF_STRUCTURE</a>, <a href="ref_sys_symbols.html#PROCESS_OF_SYMBOL">PROCESS_OF_SYMBOL</a>, <a href="ref_sys_symbols.html#PROCESS_OF_PROCESS">PROCESS_OF_PROCESS</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="PROCESS_OF"></a>PROCESS_OF</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LOGICAL_OR_OF_PROCESS_OF_STRUCTURE_AND_PROCESS_OF_SYMBOL_AND_PROCESS_OF_PROCESS">LOGICAL-OR-OF-PROCESS-OF-STRUCTURE-AND-PROCESS-OF-SYMBOL-AND-PROCESS-OF-PROCESS</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="LOGICAL_OR_OF_TRANSCODER_AND_OPERATOR_AND_VALIDATOR"></a>LOGICAL-OR-OF-TRANSCODER-AND-OPERATOR-AND-VALIDATOR</div>
+       <div class="def-struc-def">OR(<a href="ref_sys_symbols.html#TRANSCODER">TRANSCODER</a>, <a href="ref_sys_symbols.html#OPERATOR">OPERATOR</a>, <a href="ref_sys_symbols.html#VALIDATOR">VALIDATOR</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="PROCESS_TYPE"></a>PROCESS_TYPE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LOGICAL_OR_OF_TRANSCODER_AND_OPERATOR_AND_VALIDATOR">LOGICAL-OR-OF-TRANSCODER-AND-OPERATOR-AND-VALIDATOR</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="TUPLE_OF_PROCESS_OF_AND_PROCESS_TYPE"></a>TUPLE-OF-PROCESS-OF-AND-PROCESS-TYPE</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#PROCESS_OF">PROCESS_OF</a>, <a href="ref_sys_symbols.html#PROCESS_TYPE">PROCESS_TYPE</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="PROCESS_LINK"></a>PROCESS_LINK</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TUPLE_OF_PROCESS_OF_AND_PROCESS_TYPE">TUPLE-OF-PROCESS-OF-AND-PROCESS-TYPE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="PROCESS_NAME"></a>PROCESS_NAME</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
        <div class="def-comment"></div>
@@ -837,14 +915,14 @@
    </div>
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
-       <div class="def-name"><a name="LIST_OF_PROCESS_NAME_AND_PROCESS_INTENTION_AND_CODE_AND_PROCESS_SIGNATURE"></a>LIST-OF-PROCESS-NAME-AND-PROCESS-INTENTION-AND-CODE-AND-PROCESS-SIGNATURE</div>
-       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#PROCESS_NAME">PROCESS_NAME</a>, <a href="ref_sys_symbols.html#PROCESS_INTENTION">PROCESS_INTENTION</a>, <a href="ref_sys_symbols.html#CODE">CODE</a>, <a href="ref_sys_symbols.html#PROCESS_SIGNATURE">PROCESS_SIGNATURE</a>)</div>
+       <div class="def-name"><a name="LIST_OF_PROCESS_NAME_AND_PROCESS_INTENTION_AND_CODE_AND_PROCESS_SIGNATURE_AND_ZERO_OR_ONE_OF_PROCESS_LINK"></a>LIST-OF-PROCESS-NAME-AND-PROCESS-INTENTION-AND-CODE-AND-PROCESS-SIGNATURE-AND-ZERO-OR-ONE-OF-PROCESS-LINK</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#PROCESS_NAME">PROCESS_NAME</a>, <a href="ref_sys_symbols.html#PROCESS_INTENTION">PROCESS_INTENTION</a>, <a href="ref_sys_symbols.html#CODE">CODE</a>, <a href="ref_sys_symbols.html#PROCESS_SIGNATURE">PROCESS_SIGNATURE</a>, ?(<a href="ref_sys_symbols.html#PROCESS_LINK">PROCESS_LINK</a>))</div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="PROCESS_DEFINITION"></a>PROCESS_DEFINITION</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_PROCESS_NAME_AND_PROCESS_INTENTION_AND_CODE_AND_PROCESS_SIGNATURE">LIST-OF-PROCESS-NAME-AND-PROCESS-INTENTION-AND-CODE-AND-PROCESS-SIGNATURE</a></div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_PROCESS_NAME_AND_PROCESS_INTENTION_AND_CODE_AND_PROCESS_SIGNATURE_AND_ZERO_OR_ONE_OF_PROCESS_LINK">LIST-OF-PROCESS-NAME-AND-PROCESS-INTENTION-AND-CODE-AND-PROCESS-SIGNATURE-AND-ZERO-OR-ONE-OF-PROCESS-LINK</a></div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-structure">
@@ -1641,6 +1719,18 @@
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="DATE_DIVIDER"></a>DATE_DIVIDER</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="US_SHORT_DATE"></a>US_SHORT_DATE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="ERROR_LOCATION"></a>ERROR_LOCATION</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></div>
        <div class="def-comment"></div>
@@ -1791,7 +1881,7 @@
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
-       <div class="def-name"><a name="TRANSCODE_TYPE"></a>TRANSCODE_TYPE</div>
+       <div class="def-name"><a name="TRANSCODE_TO"></a>TRANSCODE_TO</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
        <div class="def-comment"></div>
    </div>
@@ -1833,9 +1923,9 @@
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
        <div class="def-name"><a name="TRANSCODE"></a>TRANSCODE</div>
-       <div class="def-sig-in"><li>to(SYMBOL:<a href="ref_sys_symbols.html#TRANSCODE_TYPE">TRANSCODE_TYPE</a>)</li><li>source(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</li></div>
+       <div class="def-sig-in"><li>to(SYMBOL:<a href="ref_sys_symbols.html#TRANSCODE_TO">TRANSCODE_TO</a>)</li><li>source(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</li></div>
        <div class="def-sig-out">result(PASSTHRU:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
-       <div class="def-comment"><i>transform semantic type</i><br /> transform the semantic type of a tree to a different type (if possible)</div>
+       <div class="def-comment"><i>transform semantic type</i><br /> transform the semantic type of a tree to a different type (if possible).  If there are multiple children DISSOLVE is implied</div>
    </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
@@ -2286,6 +2376,13 @@
 </div>
 <div class="defs-context">
    <h4>DEV_COMPOSITORY_CONTEXT</h4>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="date2usshortdate"></a>date2usshortdate</div>
+       <div class="def-sig-in"><li>from(STRUCTURE:<a href="ref_sys_symbols.html#DATE">DATE</a>)</li></div>
+       <div class="def-sig-out">to(SYMBOL:<a href="ref_sys_symbols.html#US_SHORT_DATE">US_SHORT_DATE</a>)</div>
+       <div class="def-comment"><i>date to us short format date transcoder</i></div>
+   </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="REQUESTER"></a>REQUESTER</div>
@@ -2914,6 +3011,13 @@
        <div class="def-name"><a name="CEPTR_TEXT_MEDIA_SUBTYPE"></a>CEPTR_TEXT_MEDIA_SUBTYPE</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
        <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="content_type_2_line"></a>content_type_2_line</div>
+       <div class="def-sig-in"><li>input(SYMBOL:<a href="ref_sys_symbols.html#CONTENT_TYPE">CONTENT_TYPE</a>)</li></div>
+       <div class="def-sig-out">output(SYMBOL:<a href="ref_sys_symbols.html#LINE">LINE</a>)</div>
+       <div class="def-comment"><i>content type transcoder</i></div>
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>

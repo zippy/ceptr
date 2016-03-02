@@ -148,12 +148,18 @@ void testDefProcess() {
                                       "val",SIGNATURE_STRUCTURE,INTEGER,
                                       "exponent",SIGNATURE_STRUCTURE,INTEGER,
                                       NULL);
-    Process p = _d_define_process(G_sem,code,"power","takes the mathematical power of the two params",signature,TEST_CONTEXT);
+    T *link = _t_build(G_sem,0,PROCESS_LINK,
+                       PROCESS_OF_STRUCTURE,INTEGER,PROCESS_TYPE,OPERATOR,
+                       NULL_SYMBOL,NULL_SYMBOL
+                       );
+    Process p = _d_define_process(G_sem,code,"power","takes the mathematical power of the two params",signature,link,TEST_CONTEXT);
 
     spec_is_true(is_process(p));
     spec_is_true(!is_symbol(p));
     spec_is_equal(_t_children(defs),p.id);
     T *s = _t_child(defs,p.id);
+
+    spec_is_str_equal(t2s(s),"(PROCESS_DEFINITION (PROCESS_NAME:power) (PROCESS_INTENTION:takes the mathematical power of the two params) (process:NOOP) (PROCESS_SIGNATURE (OUTPUT_SIGNATURE (SIGNATURE_LABEL:result) (SIGNATURE_SYMBOL:NULL_SYMBOL)) (INPUT_SIGNATURE (SIGNATURE_LABEL:val) (SIGNATURE_STRUCTURE:INTEGER)) (INPUT_SIGNATURE (SIGNATURE_LABEL:exponent) (SIGNATURE_STRUCTURE:INTEGER))) (PROCESS_LINK (PROCESS_OF_STRUCTURE:INTEGER) (PROCESS_TYPE (OPERATOR))))");
 
     spec_is_sem_equal(_t_symbol(s),PROCESS_DEFINITION);
 
@@ -174,6 +180,10 @@ void testDefProcess() {
     T *sig = _t_child(s,ProcessDefSignatureIdx);
     spec_is_sem_equal(_t_symbol(sig),PROCESS_SIGNATURE);
 
+    // fifth child is the link
+    T *l = _t_child(s,ProcessDefLinkIdx);
+    spec_is_sem_equal(_t_symbol(l),PROCESS_LINK);
+
     spec_is_str_equal(__d_get_sem_name(defs,p),"power");
 
     //! [testDefProcess]
@@ -188,7 +198,7 @@ void testDefProcessTemplate() {
     _t_news(t,USAGE,REQUEST_DATA);
     _t_news(t,SLOT_IS_VALUE_OF,TEST_INT_SYMBOL);
     T *signature = __p_make_signature("result",SIGNATURE_SYMBOL,NULL_SYMBOL,NULL);
-    Process p = _d_define_process(G_sem,code,"test_template_proc","long desc..",signature,TEST_CONTEXT);
+    Process p = _d_define_process(G_sem,code,"test_template_proc","long desc..",signature,NULL,TEST_CONTEXT);
     T *def = _sem_get_def(G_sem,p);
 
     T *sig = _t_child(def,ProcessDefSignatureIdx);

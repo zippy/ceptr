@@ -37,7 +37,7 @@ void testProtocolRecognize() {
     // and a noop-action to run as the result of recognizing
     T *noop = _t_new_root(NOOP);
     _t_newi(noop,TEST_INT_SYMBOL,314);
-    Process proc = _r_define_process(self,noop,"do nothing","long desc...",NULL);
+    Process proc = _r_define_process(self,noop,"do nothing","long desc...",NULL,NULL);
 
     // which we add to the bindings
     T *bindings = _t_new_root(PROTOCOL_BINDINGS);
@@ -137,7 +137,7 @@ void testProtocolAlive() {
     Receptor *r2 =  _r_new(sem,TEST_RECEPTOR);
     T *noop = _t_new_root(NOOP);
     _t_newi(noop,TEST_INT_SYMBOL,314);
-    Process proc = _r_define_process(r2,noop,"do nothing","long desc...",NULL);
+    Process proc = _r_define_process(r2,noop,"do nothing","long desc...",NULL,NULL);
 
     T *bindings = _t_build(G_sem,0,PROTOCOL_BINDINGS,RESOLUTION,WHICH_PROCESS,GOAL,HANDLER,ACTUAL_PROCESS,proc,NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);
 
@@ -214,7 +214,7 @@ void testProtocolResolve() {
 
     T *noop = _t_new_root(NOOP);
     _t_newi(noop,TEST_INT_SYMBOL,314);
-    Process proc = _d_define_process(G_sem,noop,"do nothing","long desc...",NULL,TEST_CONTEXT);
+    Process proc = _d_define_process(G_sem,noop,"do nothing","long desc...",NULL,NULL,TEST_CONTEXT);
 
     T *bindings = _t_build(G_sem,0,PROTOCOL_BINDINGS,RESOLUTION,WHICH_PROCESS,GOAL,process,ACTUAL_PROCESS,proc,NULL_SYMBOL,RESOLUTION,WHICH_SYMBOL,USAGE,data,ACTUAL_SYMBOL,TEST_INT_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);
 

@@ -47,7 +47,7 @@ void testRunTree() {
     // test that __p_make_signature does what we think it should
     spec_is_str_equal(buf,t2s(signature));
 
-    Process p = _d_define_process(G_sem,code,"myif","a duplicate of the sys if process with params in different order",signature,TEST_CONTEXT);
+    Process p = _d_define_process(G_sem,code,"myif","a duplicate of the sys if process with params in different order",signature,NULL,TEST_CONTEXT);
 
     T *params = _t_build(G_sem,0,PARAMS,TEST_INT_SYMBOL,123,TEST_INT_SYMBOL,321,BOOLEAN,1,NULL_SYMBOL);
 
@@ -167,7 +167,7 @@ void testProcessTranscode() {
 
     // transcode of same structure should just change the symbol type
     T *n = _t_new_root(TRANSCODE);
-    _t_news(n,TRANSCODE_TYPE,TEST_INT_SYMBOL);
+    _t_news(n,TRANSCODE_TO,TEST_INT_SYMBOL);
     _t_newi(n,TEST_INT_SYMBOL2,314);
     spec_is_equal(__p_reduce_sys_proc(0,TRANSCODE,n,r->q),noReductionErr);
     spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:314)");
@@ -175,15 +175,24 @@ void testProcessTranscode() {
 
     // transcode of INTEGER to CSTRING
     n = _t_new_root(TRANSCODE);
-    _t_news(n,TRANSCODE_TYPE,TEST_STR_SYMBOL);
+    _t_news(n,TRANSCODE_TO,TEST_STR_SYMBOL);
     _t_newi(n,TEST_INT_SYMBOL,314);
     spec_is_equal(__p_reduce_sys_proc(0,TRANSCODE,n,r->q),noReductionErr);
     spec_is_str_equal(t2s(n),"(TEST_STR_SYMBOL:314)");
     _t_free(n);
 
+    // transcode of FLOAT to CSTRING
+    n = _t_new_root(TRANSCODE);
+    _t_news(n,TRANSCODE_TO,TEST_STR_SYMBOL);
+    float f = 3.14159;
+    _t_new(n,TEST_FLOAT_SYMBOL,&f,sizeof(float));
+    spec_is_equal(__p_reduce_sys_proc(0,TRANSCODE,n,r->q),noReductionErr);
+    spec_is_str_equal(t2s(n),"(TEST_STR_SYMBOL:3.141590)");
+    _t_free(n);
+
     // transcode of CHAR to CSTRING
     n = _t_new_root(TRANSCODE);
-    _t_news(n,TRANSCODE_TYPE,TEST_STR_SYMBOL);
+    _t_news(n,TRANSCODE_TO,TEST_STR_SYMBOL);
     _t_newc(n,ASCII_CHAR,'x');
     spec_is_equal(__p_reduce_sys_proc(0,TRANSCODE,n,r->q),noReductionErr);
     spec_is_str_equal(t2s(n),"(TEST_STR_SYMBOL:x)");
@@ -191,11 +200,39 @@ void testProcessTranscode() {
 
     // transcode of CSTRING to INTEGER
     n = _t_new_root(TRANSCODE);
-    _t_news(n,TRANSCODE_TYPE,TEST_INT_SYMBOL);
+    _t_news(n,TRANSCODE_TO,TEST_INT_SYMBOL);
     _t_new_str(n,TEST_STR_SYMBOL,"314");
     spec_is_equal(__p_reduce_sys_proc(0,TRANSCODE,n,r->q),noReductionErr);
     spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:314)");
     _t_free(n);
+
+    //transcode of constructed symbol to CSTRING
+    n = _t_build(G_sem,0,
+                 TRANSCODE,TRANSCODE_TO,LINE,
+                 CONTENT_TYPE,MEDIA_TYPE_IDENT,TEXT_MEDIA_TYPE,MEDIA_SUBTYPE_IDENT,CEPTR_TEXT_MEDIA_SUBTYPE,
+                 NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);
+    Q *q = r->q;
+    T *run_tree = __p_build_run_tree(n,0);
+    _t_free(n);
+    Qe *e = _p_addrt2q(q,run_tree);
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    spec_is_str_equal(t2s(_t_child(run_tree,1)),"(LINE:Content-Type: text/ceptr)");
+
+    //        debug_enable(D_REDUCE+D_REDUCEV);
+    n = _t_build(G_sem,0,
+                 TRANSCODE,TRANSCODE_TO,LINE,
+                 TODAY,YEAR,2015,MONTH,1,DAY,30,NULL_SYMBOL
+                 ,NULL_SYMBOL);
+    //    spec_is_equal(__p_reduce_sys_proc(0,TRANSCODE,n,r->q),noReductionErr);
+    run_tree = __p_build_run_tree(n,0);
+    _t_free(n);
+    e = _p_addrt2q(q,run_tree);
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    debug_disable(D_REDUCE+D_REDUCEV);
+    spec_is_str_equal(t2s(_t_child(run_tree,1)),"(US_SHORT_DATE:1/30/2015)");
+    //    _t_free(n);
+
+
     _r_free(r);
 }
 
@@ -214,8 +251,15 @@ void testProcessDissolve() {
     _t_free(n);
     Qe *e = _p_addrt2q(q,run_tree);
     spec_is_equal(_p_reduceq(q),noReductionErr);
-
     spec_is_str_equal(t2s(_t_child(run_tree,1)),"(LINES (LINE:fish) (LINE:cat) (LINE:dog) (LINE:shoe))");
+
+    // @todo when we have var arg signatures then this spec should be made to work
+    /* n = _t_build(G_sem,0,LINES,LINE,"fish",DISSOLVE,LINE,"cat",LINE,"dog",NULL_SYMBOL,NULL_SYMBOL); */
+    /* run_tree = __p_build_run_tree(n,0); */
+    /* _t_free(n); */
+    /* _p_addrt2q(q,run_tree); */
+    /* spec_is_equal(_p_reduceq(q),noReductionErr); */
+    /* spec_is_str_equal(t2s(_t_child(run_tree,1)),"(LINES (LINE:fish) (LINE:cat) (LINE:dog))"); */
 
     _r_free(r);
 }
@@ -816,7 +860,7 @@ void testProcessInitiate(){
     w = _t_newr(res,WHICH_PROCESS);
     _t_news(w,GOAL,REQUEST_HANDLER);
     T *noop = _t_new_root(NOOP);
-    Process proc = _r_define_process(r,noop,"do nothing","long desc...",NULL);
+    Process proc = _r_define_process(r,noop,"do nothing","long desc...",NULL,NULL);
     _t_news(w,ACTUAL_PROCESS,proc);
 
     T *run_tree = __p_build_run_tree(n,0);
@@ -974,7 +1018,7 @@ void _defIfEven() {
                                       "false_branch",SIGNATURE_ANY,NULL_STRUCTURE,
                                       NULL);
 
-    G_ifeven =  _d_define_process(G_sem,code,"if even","return 2nd child if even, third if not",signature,TEST_CONTEXT);
+    G_ifeven =  _d_define_process(G_sem,code,"if even","return 2nd child if even, third if not",signature,NULL,TEST_CONTEXT);
 }
 //! [defIfEven]
 
@@ -998,7 +1042,7 @@ Process _defDivZero() {
                                       "val",SIGNATURE_STRUCTURE,INTEGER,
                                       NULL);
 
-    return _d_define_process(G_sem,code,"divByZero","create a divide by zero error",signature,TEST_CONTEXT);
+    return _d_define_process(G_sem,code,"divByZero","create a divide by zero error",signature,NULL,TEST_CONTEXT);
 }
 //! [defDivZero]
 

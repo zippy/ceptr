@@ -36,7 +36,7 @@ void addCommand(Receptor *r,ReceptorAddress ox,char *command,char *desc,T *code,
         strcpy(&proc_name[7],command);
         int pt1[] = {2,1,TREE_PATH_TERMINATOR};
         _t_new(p,PARAM_REF,pt1,sizeof(int)*3);
-        Process proc = _r_define_process(r,p,proc_name,"long desc...",NULL);
+        Process proc = _r_define_process(r,p,proc_name,"long desc...",NULL,NULL);
         _t_news(bindings_handler,ACTUAL_PROCESS,proc);
         p = code;
     }
@@ -44,7 +44,7 @@ void addCommand(Receptor *r,ReceptorAddress ox,char *command,char *desc,T *code,
         _t_add(p,code);
     }
 
-    Process proc = _r_define_process(r,p,desc,"long desc...",NULL);
+    Process proc = _r_define_process(r,p,desc,"long desc...",NULL,NULL);
     T *act = _t_newp(0,ACTION,proc);
 
     _r_add_expectation(r,DEFAULT_ASPECT,SHELL_COMMAND,expect,act,0,0,NULL);

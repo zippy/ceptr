@@ -257,7 +257,7 @@ void testVMHostActivateReceptor()  {
 
     T *noop = _t_new_root(NOOP);
     _t_newi(noop,TEST_INT_SYMBOL,314);
-    Process proc = _r_define_process(client,noop,"do nothing","long desc...",NULL);
+    Process proc = _r_define_process(client,noop,"do nothing","long desc...",NULL,NULL);
 
     T *binding = _t_new_root(PROTOCOL_BINDINGS);
     T *res = _t_newr(binding,RESOLUTION);

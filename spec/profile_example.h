@@ -127,7 +127,7 @@ void testProfileExample() {
 
     //    _t_new(code,PARAM_REF,pt2,sizeof(int)*4);
 
-    Process p = _d_define_process(sem,code,"profileToMailingLabel","given a profile produce a mailing label",signature,test_profile_receptor->context);
+    Process p = _d_define_process(sem,code,"profileToMailingLabel","given a profile produce a mailing label",signature,NULL,test_profile_receptor->context);
 
     T *params = _t_new_root(PARAMS);
     _t_add(params,t);

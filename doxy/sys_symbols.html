@@ -46,6 +46,7 @@
 <tr><td><a name="SEMTREX_MATCH_SIBLINGS_COUNT"></a>SEMTREX_MATCH_SIBLINGS_COUNT</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td>  In the FSA_ID, it's the length of the match</td></tr>
 <tr><td><a name="ASCII_CHAR"></a>ASCII_CHAR</td><td><a href="ref_sys_structures.html#CHAR">CHAR</a></td><td></td></tr>
 <tr><td><a name="ASCII_CHARS"></a>ASCII_CHARS</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_ASCII_CHAR">ONE-OR-MORE-OF-ASCII-CHAR</a></td><td></td></tr>
+<tr><td><a name="ASCII_STR"></a>ASCII_STR</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
 <tr><td><a name="RECEPTOR_XADDR"></a>RECEPTOR_XADDR</td><td><a href="ref_sys_structures.html#XADDR">XADDR</a></td><td>               An Xaddr that points to a receptor</td></tr>
 <tr><td><a name="EXPECTATIONS"></a>EXPECTATIONS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_EXPECTATION">ZERO-OR-MORE-OF-EXPECTATION</a></td><td>        list of carrier/expectation/action tress</td></tr>
 <tr><td><a name="SIGNALS"></a>SIGNALS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_SIGNAL">ZERO-OR-MORE-OF-SIGNAL</a></td><td>                  list of signals on an aspect in the flux</td></tr>
@@ -81,11 +82,20 @@
 <tr><td><a name="PARAMS"></a>PARAMS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_ANY_SYMBOL">ZERO-OR-MORE-OF-ANY-SYMBOL</a></td><td></td></tr>
 <tr><td><a name="SEMANTIC_MAP"></a>SEMANTIC_MAP</td><td><a href="ref_sys_structures.html#LIST_OF_ONE_OR_MORE_OF_SEMANTIC_LINK">LIST-OF-ONE-OR-MORE-OF-SEMANTIC-LINK</a></td><td></td></tr>
 <tr><td><a name="EXPECTATION"></a>EXPECTATION</td><td><a href="ref_sys_structures.html#LIST_OF_CARRIER_AND_PATTERN_AND_ACTION_AND_PARAMS_AND_END_CONDITIONS_AND_ZERO_OR_ONE_OF_SEMANTIC_MAP">LIST-OF-CARRIER-AND-PATTERN-AND-ACTION-AND-PARAMS-AND-END-CONDITIONS-AND-ZERO-OR-ONE-OF-SEMANTIC-MAP</a></td><td></td></tr>
+<tr><td><a name="TRANSCODER"></a>TRANSCODER</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
+<tr><td><a name="OPERATOR"></a>OPERATOR</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
+<tr><td><a name="VALIDATOR"></a>VALIDATOR</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
+<tr><td><a name="PROCESS_OF_STRUCTURE"></a>PROCESS_OF_STRUCTURE</td><td><a href="ref_sys_structures.html#STRUCTURE">STRUCTURE</a></td><td></td></tr>
+<tr><td><a name="PROCESS_OF_SYMBOL"></a>PROCESS_OF_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
+<tr><td><a name="PROCESS_OF_PROCESS"></a>PROCESS_OF_PROCESS</td><td><a href="ref_sys_structures.html#PROCESS">PROCESS</a></td><td></td></tr>
+<tr><td><a name="PROCESS_OF"></a>PROCESS_OF</td><td><a href="ref_sys_structures.html#LOGICAL_OR_OF_PROCESS_OF_STRUCTURE_AND_PROCESS_OF_SYMBOL_AND_PROCESS_OF_PROCESS">LOGICAL-OR-OF-PROCESS-OF-STRUCTURE-AND-PROCESS-OF-SYMBOL-AND-PROCESS-OF-PROCESS</a></td><td></td></tr>
+<tr><td><a name="PROCESS_TYPE"></a>PROCESS_TYPE</td><td><a href="ref_sys_structures.html#LOGICAL_OR_OF_TRANSCODER_AND_OPERATOR_AND_VALIDATOR">LOGICAL-OR-OF-TRANSCODER-AND-OPERATOR-AND-VALIDATOR</a></td><td></td></tr>
+<tr><td><a name="PROCESS_LINK"></a>PROCESS_LINK</td><td><a href="ref_sys_structures.html#TUPLE_OF_PROCESS_OF_AND_PROCESS_TYPE">TUPLE-OF-PROCESS-OF-AND-PROCESS-TYPE</a></td><td></td></tr>
 <tr><td><a name="PROCESS_NAME"></a>PROCESS_NAME</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
 <tr><td><a name="PROCESS_INTENTION"></a>PROCESS_INTENTION</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
 <tr><td><a name="PROCESS_SIGNATURE"></a>PROCESS_SIGNATURE</td><td><a href="ref_sys_structures.html#PROCESS_FORM">PROCESS-FORM</a></td><td></td></tr>
 <tr><td><a name="CODE"></a>CODE</td><td><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></td><td></td></tr>
-<tr><td><a name="PROCESS_DEFINITION"></a>PROCESS_DEFINITION</td><td><a href="ref_sys_structures.html#LIST_OF_PROCESS_NAME_AND_PROCESS_INTENTION_AND_CODE_AND_PROCESS_SIGNATURE">LIST-OF-PROCESS-NAME-AND-PROCESS-INTENTION-AND-CODE-AND-PROCESS-SIGNATURE</a></td><td></td></tr>
+<tr><td><a name="PROCESS_DEFINITION"></a>PROCESS_DEFINITION</td><td><a href="ref_sys_structures.html#LIST_OF_PROCESS_NAME_AND_PROCESS_INTENTION_AND_CODE_AND_PROCESS_SIGNATURE_AND_ZERO_OR_ONE_OF_PROCESS_LINK">LIST-OF-PROCESS-NAME-AND-PROCESS-INTENTION-AND-CODE-AND-PROCESS-SIGNATURE-AND-ZERO-OR-ONE-OF-PROCESS-LINK</a></td><td></td></tr>
 <tr><td><a name="GOAL"></a>GOAL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td> A goal stands for an intended process, thus the symbol stored in a GOAL must be limited to those that are uses of the PROCESS structure.</td></tr>
 <tr><td><a name="ROLE"></a>ROLE</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>  A role stands for an expected agent, thus the symbol stored in a ROLE must be limited to those of structure RECEPTOR_ADDRESS.</td></tr>
 <tr><td><a name="USAGE"></a>USAGE</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td> A usage stands for a(n) X of a Symbol.</td></tr>
@@ -168,6 +178,8 @@
 <tr><td><a name="TODAY"></a>TODAY</td><td><a href="ref_sys_structures.html#DATE">DATE</a></td><td></td></tr>
 <tr><td><a name="NOW"></a>NOW</td><td><a href="ref_sys_structures.html#TIME">TIME</a></td><td></td></tr>
 <tr><td><a name="TICK"></a>TICK</td><td><a href="ref_sys_structures.html#TIMESTAMP">TIMESTAMP</a></td><td></td></tr>
+<tr><td><a name="DATE_DIVIDER"></a>DATE_DIVIDER</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="US_SHORT_DATE"></a>US_SHORT_DATE</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
 <tr><td><a name="ERROR_LOCATION"></a>ERROR_LOCATION</td><td><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></td><td></td></tr>
 <tr><td><a name="ZERO_DIVIDE_ERR"></a>ZERO_DIVIDE_ERR</td><td><a href="ref_sys_structures.html#REDUCTION_ERROR">REDUCTION-ERROR</a></td><td></td></tr>
 <tr><td><a name="TOO_FEW_PARAMS_ERR"></a>TOO_FEW_PARAMS_ERR</td><td><a href="ref_sys_structures.html#REDUCTION_ERROR">REDUCTION-ERROR</a></td><td></td></tr>
@@ -190,7 +202,7 @@
 <tr><td><a name="ITERATE_ON_SYMBOL"></a>ITERATE_ON_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
 <tr><td><a name="ITERATION_DATA"></a>ITERATION_DATA</td><td><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></td><td>    data to iterate over</td></tr>
 <tr><td><a name="BLOCK"></a>BLOCK</td><td><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></td><td>    set of processes for DO</td></tr>
-<tr><td><a name="TRANSCODE_TYPE"></a>TRANSCODE_TYPE</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
+<tr><td><a name="TRANSCODE_TO"></a>TRANSCODE_TO</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
 <tr><td><a name="STX_SL"></a>STX_SL</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
 <tr><td><a name="STX_OP"></a>STX_OP</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
 <tr><td><a name="STX_CP"></a>STX_CP</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>

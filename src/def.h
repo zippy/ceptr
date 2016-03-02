@@ -37,7 +37,7 @@ enum {ExpectRoleIdx=1,ExpectSourceIdx,ExpectPatternIdx,ExpectActionIdx,ExpectPar
 enum {InitiateRoleIdx=1,InitiateDestinationIdx,InitiateActionIdx};
 enum {SourceRoleIdx=1};
 enum {DefLabelIdx=1,SymbolDefStructureIdx};
-enum {ProcessDefNameIdx=1,ProcessDefIntentionIdx,ProcessDefCodeIdx,ProcessDefSignatureIdx};
+enum {ProcessDefNameIdx=1,ProcessDefIntentionIdx,ProcessDefCodeIdx,ProcessDefSignatureIdx,ProcessDefLinkIdx};
 enum {SignatureOutputSigIdx=1};
 enum {InputSigLabelIdx=1,InputSigSemVariantsIdx,InputSigOptionalIdx};
 enum {ProtocolDefNameIdx=1,ProtocolDefSemanticsIdx};
@@ -51,7 +51,7 @@ enum {SlotSemanticRefIdx=1,SlotValueOfIdx};
 
 #define ST(r,name,num,...) name = _r_define_structure(r,"" #name "",num,__VA_ARGS__)
 #define SY(r,name,str) name = _r_define_symbol(r,str,"" #name "")
-#define SP(r,code,name,intention,signature) name = _r_define_process(r,code,"" #name "",intention,signature)
+#define SP(r,code,name,intention,signature,link) name = _r_define_process(r,code,"" #name "",intention,signature,link)
 
 int semeq(SemanticID s1,SemanticID s2);
 SemanticID _d_define(SemTable *sem,T *def,SemanticType semtype,Context c);
@@ -69,8 +69,8 @@ T * _d_make_vstruc_def(SemTable *sem,char *label,int num_params,va_list params);
 Structure __d_get_symbol_structure(T *symbols,Symbol s);
 size_t _d_get_symbol_size(SemTable *sem,Symbol s,void *surface);
 size_t _d_get_structure_size(SemTable *sem,Symbol s,void *surface);
-T *_d_make_process_def(T *code,char *name,char *intention,T *signature);
-Process _d_define_process(SemTable *sem,T *code,char *name,char *intention,T *signature,Context c);
+T *_d_make_process_def(T *code,char *name,char *intention,T *signature,T *link);
+Process _d_define_process(SemTable *sem,T *code,char *name,char *intention,T *signature,T *link,Context c);
 Protocol _d_define_protocol(SemTable *sem,T *def,Context c);
 T *_d_make_protocol_def(SemTable *sem,char *label,...);
 T * _d_build_def_semtrex(SemTable *sem,Symbol s,T *parent);

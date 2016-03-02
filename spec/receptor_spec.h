@@ -328,10 +328,10 @@ void testReceptorDef() {
     spec_is_long_equal(__r_get_symbol_size(r,home,surface),sizeof(float)*2+6);
 
     T *code = _t_new_root(NOOP);
-    Process p = _r_define_process(r,code,"power","takes the mathematical power of the two params",NULL);
+    Process p = _r_define_process(r,code,"do nothing","long version of doing nothing",NULL,NULL);
     def = _sem_get_def(r->sem,p);
 
-    //    spec_is_str_equal(_td(r,def),"");
+    spec_is_str_equal(_td(r,def),"(PROCESS_DEFINITION (PROCESS_NAME:do nothing) (PROCESS_INTENTION:long version of doing nothing) (process:NOOP) (PROCESS_SIGNATURE))");
 
     _r_free(r);
 }
@@ -674,7 +674,7 @@ void testReceptorClock() {
     // or something.
     T *noop = _t_new_root(NOOP);
     _t_newi(noop,TEST_INT_SYMBOL,314);
-    Process proc = _r_define_process(r,noop,"do nothing","long desc...",NULL);
+    Process proc = _r_define_process(r,noop,"do nothing","long desc...",NULL,NULL);
     _t_news(w,ACTUAL_PROCESS,proc);
 
     _o_initiate(r,time,tell_time,bindings);

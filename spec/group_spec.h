@@ -30,7 +30,7 @@ void testGroupCreate() {
     // or something.
     T *noop = _t_new_root(NOOP);
     _t_newi(noop,TEST_INT_SYMBOL,314);
-    Process proc = _r_define_process(m,noop,"do nothing","long desc...",NULL);
+    Process proc = _r_define_process(m,noop,"do nothing","long desc...",NULL,NULL);
 
     T *bindings2 = _t_build(G_sem,0,PROTOCOL_BINDINGS,RESOLUTION,WHICH_PROCESS,GOAL,HANDLER,ACTUAL_PROCESS,proc,NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);
 

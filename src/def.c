@@ -324,17 +324,21 @@ void __d_tsig(SemTable *sem,T *code, T *tsig,TreeHash *hashes) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testDefProcess
  */
-T *_d_make_process_def(T *code,char *name,char *intention,T *signature) {
+T *_d_make_process_def(T *code,char *name,char *intention,T *signature,T *link) {
     T *def = _t_new_root(PROCESS_DEFINITION);
     _t_new_str(def,PROCESS_NAME,name);
     _t_new(def,PROCESS_INTENTION,intention,strlen(intention)+1);
     if (!code)
         code = _t_new_root(NULL_PROCESS); // indicates a system (i.e. non ceptr) defined process
     _t_add(def,code);
-    if (signature) {
-        _t_add(def,signature);
+    if (!signature) {
+        // @todo, we really shouldn't be doing this, but have to for now...
+        signature = _t_new_root(PROCESS_SIGNATURE);
     }
-
+    _t_add(def,signature);
+    if (link) {
+        _t_add(def,link);
+    }
     return def;
 }
 
@@ -353,8 +357,8 @@ T *_d_make_process_def(T *code,char *name,char *intention,T *signature) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/def_spec.h testDefProcess
  */
-Process _d_define_process(SemTable *sem,T *code,char *name,char *intention,T *signature,Context c) {
-    T *def = _d_make_process_def(code,name,intention,signature);
+Process _d_define_process(SemTable *sem,T *code,char *name,char *intention,T *signature,T *link,Context c) {
+    T *def = _d_make_process_def(code,name,intention,signature,link);
     if (signature && code) {
         T *tsig = _t_new_root(TEMPLATE_SIGNATURE);
         TreeHash h[MAX_HASHES]={0,0,0,0,0,0,0,0,0,0};

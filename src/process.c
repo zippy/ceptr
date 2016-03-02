@@ -70,6 +70,19 @@ void _p_fill_from_match(SemTable *sem,T *t,T *match_results,T *match_tree) {
     _t_free(sem_map);
 }
 
+Process _p_get_transcoder(SemTable *sem,Symbol src_sym,Symbol to_sym) {
+    if (semeq(CONTENT_TYPE,src_sym) && semeq(LINE,to_sym))
+        return content_type_2_line;
+    else {
+        Structure src_s = _sem_get_symbol_structure(sem,src_sym);
+        Structure to_s = _sem_get_symbol_structure(sem,to_sym);
+        if (semeq(src_s,DATE) && semeq(to_s,CSTRING)) {
+            return date2usshortdate;
+        }
+    }
+    return NULL_PROCESS;
+}
+
 /**
  * check a group of parameters to see if they match a process input signature
  *
@@ -86,8 +99,9 @@ Error __p_check_signature(SemTable *sem,Process p,T *code,T *sem_map) {
     T *def = _d_get_process_code(processes,p);
     T *signature = _t_child(def,ProcessDefSignatureIdx);
     // @todo if there's no signature we should probably fail, but instead we assume everything's ok
-    if (!signature) return 0;
+    // (sig should always have at least 1 child, the output sig)
     int sigs = _t_children(signature);
+    if (!sigs) return 0;
     int input_sigs = 0;
     int i;
 
@@ -457,46 +471,77 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
         break;
     case TRANSCODE_ID:
         {
-            T *src = _t_detach_by_idx(code,2);
             T *to = _t_detach_by_idx(code,1);
             Symbol to_sym = *(Symbol *)_t_surface(to);
-            Symbol src_sym = _t_symbol(src);
             _t_free(to);
-            if (semeq(to_sym,src_sym)) x = src;
-            else {
-                Structure src_s = _sem_get_symbol_structure(q->r->sem,src_sym);
-                Structure to_s = _sem_get_symbol_structure(q->r->sem,to_sym);
-                if (semeq(to_s,src_s)) {
-                    x = src;
-                    x->contents.symbol = to_sym;
-                }
+            Structure to_s = _sem_get_symbol_structure(q->r->sem,to_sym);
+
+            T *t = __t_newr(0,PARAMS,true);  //holder for the transcoding children
+            T *src;
+            while (src = _t_detach_by_idx(code,1)) {
+                Symbol src_sym = _t_symbol(src);
+                if (semeq(to_sym,src_sym)) x = src;
                 else {
-                    x = src;
-                    x->contents.symbol = to_sym;
-                    if (semeq(to_s,INTEGER)) {
-                        if (semeq(src_s,CSTRING)) {
-                            x = __t_newi(0,to_sym,atoi(_t_surface(src)),true);
-                            _t_free(src);
-                        }
-                        else return incompatibleTypeReductionErr;
+                    Process p = _p_get_transcoder(q->r->sem,src_sym,to_sym);
+                    if (!semeq(p,NULL_PROCESS)) {
+                        // we found a defined process for trans coding between the symbols
+                        x = __t_newr(0,p,true);
+                        _t_add(x,src);
+                        //                    __t_newi(x,TEST_INT_SYMBOL,3333,true);
+                        err=redoReduction;
                     }
-                    else if (semeq(to_s,CSTRING)) {
-                        if (semeq(src_s,INTEGER)) {
-                            char buf[100];
-                            sprintf(buf,"%d",*(int *)_t_surface(src));
-                            _t_free(src);
-                            x = __t_new_str(0,to_sym,buf,true);
+                    else {
+                        // built in transcodings for built in structures
+                        Structure src_s = _sem_get_symbol_structure(q->r->sem,src_sym);
+                        if (semeq(to_s,src_s)) {
+                            x = src;
+                            x->contents.symbol = to_sym;
                         }
-                        else if (semeq(src_s,CHAR)) {
-                            char buf[2];
-                            buf[0] = *(char *)_t_surface(src);
-                            buf[1] = 0;
-                            x = __t_new_str(0,to_sym,buf,true);
-                            _t_free(src);
+                        else if (semeq(to_s,INTEGER)) {
+                            if (semeq(src_s,CSTRING)) {
+                                x = __t_newi(0,to_sym,atoi(_t_surface(src)),true);
+                                _t_free(src);
+                            }
+                            else return incompatibleTypeReductionErr;
+                        }
+                        else if (semeq(to_s,CSTRING)) {
+                            if (semeq(src_s,INTEGER)) {
+                                char buf[100];
+                                sprintf(buf,"%d",*(int *)_t_surface(src));
+                                _t_free(src);
+                                x = __t_new_str(0,to_sym,buf,true);
+                            }
+                            else if (semeq(src_s,FLOAT)) {
+                                char buf[100];
+                                sprintf(buf,"%f",*(float *)_t_surface(src));
+                                _t_free(src);
+                                x = __t_new_str(0,to_sym,buf,true);
+                            }
+                            else if (semeq(src_s,CHAR)) {
+                                char buf[2];
+                                buf[0] = *(char *)_t_surface(src);
+                                buf[1] = 0;
+                                x = __t_new_str(0,to_sym,buf,true);
+                                _t_free(src);
+                            }
+                            else {
+                                x = __t_new_str(0,to_sym,_t2s(q->r->sem,src),true);
+                                _t_free(src);
+                            }
                         }
                         else return incompatibleTypeReductionErr;
                     }
                 }
+                _t_add(t,x);
+            }
+            if (_t_children(t) == 1) {
+                x = _t_detach_by_idx(t,1);
+                _t_free(t);
+            }
+            else {
+                x = __t_newr(0,DISSOLVE,true);
+                _t_add(x,t);
+                err = redoReduction;
             }
         }
         break;
@@ -876,7 +921,6 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
         // then free the code node
         _t_detach_by_ptr(parent,code);
         _t_free(code);
-
         // then loop through x's children inserting them in the parent
         T *c;
         while (c = _t_detach_by_idx(x,1)) {
@@ -1176,7 +1220,12 @@ Error _p_step(Q *q, R **contextP) {
                         // if it's a sys process we can just reduce it in and then ascend
                         // or move to the error handling state
                         Error e = __p_reduce_sys_proc(context,s,np,q);
-                        context->state = e ? e : Ascend;
+                        if (e == redoReduction) {
+                            context->state = Eval;
+                            context->node_pointer = _t_child(context->parent,context->idx);
+                            set_rt_cur_child(q->r,context->node_pointer,1); // reset the current child count on the code
+                        }
+                        else context->state = e ? e : Ascend;
                     }
                 }
                 else if(count) {
