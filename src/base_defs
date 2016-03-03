@@ -634,10 +634,16 @@ Symbol: PLAIN_TEXT_MEDIA_SUBTYPE,NULL_STRUCTURE;
 Symbol: CEPTR_TEXT_MEDIA_SUBTYPE,NULL_STRUCTURE;
 
 Data: content_type_2_line_proc, (CONCAT_STR (RESULT_SYMBOL:LINE)
-      (LINE:"Content-type") (ASCII_CHAR:':')
-      (TRANSCODE (TRANSCODE_TO:LINE) (PARAM_REF:/2/1/1))
+      (LINE:"Content-Type") (ASCII_CHAR:':') (ASCII_CHAR:' ')
+      (IF (EQ_SYM (PARAM_REF:/2/1/1) (TEST_SYMBOL_SYMBOL:TEXT_MEDIA_TYPE))
+          (LINE:"text")
+          (LINE:"unknown"))
       (ASCII_CHAR:'/')
-      (TRANSCODE (TRANSCODE_TO:LINE) (PARAM_REF:/2/1/2))
+      (IF (EQ_SYM (PARAM_REF:/2/1/2) (TEST_SYMBOL_SYMBOL:HTML_TEXT_MEDIA_SUBTYPE))
+          (LINE:"html")
+          (IF (EQ_SYM (PARAM_REF:/2/1/2) (TEST_SYMBOL_SYMBOL:PLAIN_TEXT_MEDIA_SUBTYPE))
+          (LINE:"plain")
+          (LINE:"ceptr"))))
       );
 Process: content_type_2_line,content_type_2_line_proc,"content type transcoder","output",SIGNATURE_SYMBOL,LINE,"input",SIGNATURE_SYMBOL,CONTENT_TYPE,0;
 
