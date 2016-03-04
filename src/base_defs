@@ -319,6 +319,8 @@ Process: CONCAT_STR,0,"concatinate strings","concatenation",SIGNATURE_STRUCTURE,
 Process: EXPAND_STR,0,"expand string","ascii tree",SIGNATURE_SYMBOL,ASCII_CHARS,"str",SIGNATURE_STRUCTURE,CSTRING,0;  converts a CSTRING into an ASCII_CHARS tree
 Process: CONTRACT_STR,0,"contract to string","string",SIGNATURE_STRUCTURE,CSTRING,"into",SIGNATURE_SYMBOL,RESULT_SYMBOL,0;  converts any number of chars or cstring into a single cstring of symbol type indicated by the into param
 Process: EQ_SYM,0,"test equality","equality",SIGNATURE_SYMBOL,BOOLEAN,"symbol1",SIGNATURE_STRUCTURE,SYMBOL,"symbol2",SIGNATURE_STRUCTURE,SYMBOL,0;
+Symbol: EQUALITY_TEST_SYMBOL,SYMBOL;  a symbol to use when testing the symbol equality
+Process: EQ_SYM,0,"test equality","equality",SIGNATURE_SYMBOL,BOOLEAN,"symbol1",SIGNATURE_STRUCTURE,SYMBOL,"symbol2",SIGNATURE_STRUCTURE,SYMBOL,0;  test the quality of two SYMBOL type parameters
 Process: ADD_INT,0,"addition","sum",SIGNATURE_STRUCTURE,INTEGER,"augend",SIGNATURE_STRUCTURE,INTEGER,"addend",SIGNATURE_STRUCTURE,INTEGER,0;
 Process: SUB_INT,0,"subtract","difference",SIGNATURE_STRUCTURE,INTEGER,"minuend",SIGNATURE_STRUCTURE,INTEGER,"subtrahend",SIGNATURE_STRUCTURE,INTEGER,0;
 Process: MULT_INT,0,"multiply","product",SIGNATURE_STRUCTURE,INTEGER,"multiplicand",SIGNATURE_STRUCTURE,INTEGER,"multiplier",SIGNATURE_STRUCTURE,INTEGER,0;

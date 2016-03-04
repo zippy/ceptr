@@ -370,13 +370,13 @@ void testProcessIf() {
 
 void testProcessSym() {
     T *n = _t_new_root(EQ_SYM);
-    _t_news(n,TEST_SYMBOL_SYMBOL,TEST_INT_SYMBOL);
+    _t_news(n,EQUALITY_TEST_SYMBOL,TEST_INT_SYMBOL);
     _t_news(n,TEST_SYMBOL_SYMBOL,TEST_INT_SYMBOL);
     __p_reduce_sys_proc(0,EQ_SYM,n,0);
     spec_is_str_equal(t2s(n),"(BOOLEAN:1)");
     _t_free(n);
     n = _t_new_root(EQ_SYM);
-    _t_news(n,TEST_SYMBOL_SYMBOL,TEST_INT_SYMBOL);
+    _t_news(n,EQUALITY_TEST_SYMBOL,TEST_INT_SYMBOL);
     _t_news(n,TEST_SYMBOL_SYMBOL,TEST_STR_SYMBOL);
     __p_reduce_sys_proc(0,EQ_SYM,n,0);
     spec_is_str_equal(t2s(n),"(BOOLEAN:0)");
