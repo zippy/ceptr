@@ -688,6 +688,15 @@ T *_t_build(SemTable *sem,T *parent,...) {
             else if (semeq(st,CSTRING)) {
                 t = _t_new_str(t,param,va_arg(ap,char *));
             }
+            else if (semeq(st,CHAR)) {
+                int i = va_arg(ap,int);
+                t = _t_newc(t,param,i);
+            }
+            else if (semeq(st,FLOAT)) {
+                double d = va_arg(ap,double); // because vararg floats get promoted to doubles
+                float f = d;
+                t = _t_new(t,param,&f,sizeof(float));
+            }
             else if (semeq(st,TREE_PATH)) {
                 int path[100];
                 int j = 0;
