@@ -166,51 +166,46 @@ void testProcessTranscode() {
     Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
 
     // transcode of same structure should just change the symbol type
-    T *n = _t_new_root(TRANSCODE);
-    _t_news(n,TRANSCODE_TO,TEST_INT_SYMBOL);
-    _t_newi(n,TEST_INT_SYMBOL2,314);
+    T *n;
+    n = _t_build(G_sem,0,TRANSCODE,TRANSCODE_PARAMS,TRANSCODE_TO,TEST_INT_SYMBOL,NULL_SYMBOL,
+                 TRANSCODE_ITEMS,TEST_INT_SYMBOL2,314,NULL_SYMBOL,NULL_SYMBOL);
     spec_is_equal(__p_reduce_sys_proc(0,TRANSCODE,n,r->q),noReductionErr);
     spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:314)");
     _t_free(n);
 
     // transcode of INTEGER to CSTRING
-    n = _t_new_root(TRANSCODE);
-    _t_news(n,TRANSCODE_TO,TEST_STR_SYMBOL);
-    _t_newi(n,TEST_INT_SYMBOL,314);
+    n = _t_build(G_sem,0,TRANSCODE,TRANSCODE_PARAMS,TRANSCODE_TO,TEST_STR_SYMBOL,NULL_SYMBOL,
+                 TRANSCODE_ITEMS,TEST_INT_SYMBOL,314,NULL_SYMBOL,NULL_SYMBOL);
     spec_is_equal(__p_reduce_sys_proc(0,TRANSCODE,n,r->q),noReductionErr);
     spec_is_str_equal(t2s(n),"(TEST_STR_SYMBOL:314)");
     _t_free(n);
 
     // transcode of FLOAT to CSTRING
-    n = _t_new_root(TRANSCODE);
-    _t_news(n,TRANSCODE_TO,TEST_STR_SYMBOL);
-    float f = 3.14159;
-    _t_new(n,TEST_FLOAT_SYMBOL,&f,sizeof(float));
+    n = _t_build(G_sem,0,TRANSCODE,TRANSCODE_PARAMS,TRANSCODE_TO,TEST_STR_SYMBOL,NULL_SYMBOL,
+                 TRANSCODE_ITEMS,TEST_FLOAT_SYMBOL,3.14159,NULL_SYMBOL,NULL_SYMBOL);
     spec_is_equal(__p_reduce_sys_proc(0,TRANSCODE,n,r->q),noReductionErr);
     spec_is_str_equal(t2s(n),"(TEST_STR_SYMBOL:3.141590)");
     _t_free(n);
 
     // transcode of CHAR to CSTRING
-    n = _t_new_root(TRANSCODE);
-    _t_news(n,TRANSCODE_TO,TEST_STR_SYMBOL);
-    _t_newc(n,ASCII_CHAR,'x');
-    spec_is_equal(__p_reduce_sys_proc(0,TRANSCODE,n,r->q),noReductionErr);
+    n = _t_build(G_sem,0,TRANSCODE,TRANSCODE_PARAMS,TRANSCODE_TO,TEST_STR_SYMBOL,NULL_SYMBOL,
+                 TRANSCODE_ITEMS,ASCII_CHAR,'x',NULL_SYMBOL,NULL_SYMBOL);
+     spec_is_equal(__p_reduce_sys_proc(0,TRANSCODE,n,r->q),noReductionErr);
     spec_is_str_equal(t2s(n),"(TEST_STR_SYMBOL:x)");
     _t_free(n);
 
     // transcode of CSTRING to INTEGER
-    n = _t_new_root(TRANSCODE);
-    _t_news(n,TRANSCODE_TO,TEST_INT_SYMBOL);
-    _t_new_str(n,TEST_STR_SYMBOL,"314");
+    n = _t_build(G_sem,0,TRANSCODE,TRANSCODE_PARAMS,TRANSCODE_TO,TEST_INT_SYMBOL,NULL_SYMBOL,
+                 TRANSCODE_ITEMS,TEST_STR_SYMBOL,"314",NULL_SYMBOL,NULL_SYMBOL);
     spec_is_equal(__p_reduce_sys_proc(0,TRANSCODE,n,r->q),noReductionErr);
     spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:314)");
     _t_free(n);
 
     //transcode of constructed symbol to CSTRING
     n = _t_build(G_sem,0,
-                 TRANSCODE,TRANSCODE_TO,LINE,
-                 CONTENT_TYPE,MEDIA_TYPE_IDENT,TEXT_MEDIA_TYPE,MEDIA_SUBTYPE_IDENT,CEPTR_TEXT_MEDIA_SUBTYPE,
-                 NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);
+                 TRANSCODE,TRANSCODE_PARAMS,TRANSCODE_TO,LINE,NULL_SYMBOL,
+                 TRANSCODE_ITEMS,CONTENT_TYPE,MEDIA_TYPE_IDENT,TEXT_MEDIA_TYPE,MEDIA_SUBTYPE_IDENT,CEPTR_TEXT_MEDIA_SUBTYPE,
+                 NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);
     Q *q = r->q;
     T *run_tree = __p_build_run_tree(n,0);
     _t_free(n);
@@ -220,9 +215,9 @@ void testProcessTranscode() {
 
     //        debug_enable(D_REDUCE+D_REDUCEV);
     n = _t_build(G_sem,0,
-                 TRANSCODE,TRANSCODE_TO,LINE,
-                 TODAY,YEAR,2015,MONTH,1,DAY,30,NULL_SYMBOL
-                 ,NULL_SYMBOL);
+                 TRANSCODE,TRANSCODE_PARAMS,TRANSCODE_TO,LINE,NULL_SYMBOL,
+                 TRANSCODE_ITEMS,TODAY,YEAR,2015,MONTH,1,DAY,30,NULL_SYMBOL
+                 ,NULL_SYMBOL,NULL_SYMBOL);
     //    spec_is_equal(__p_reduce_sys_proc(0,TRANSCODE,n,r->q),noReductionErr);
     run_tree = __p_build_run_tree(n,0);
     _t_free(n);

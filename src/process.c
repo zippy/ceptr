@@ -471,14 +471,20 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
         break;
     case TRANSCODE_ID:
         {
-            T *to = _t_detach_by_idx(code,1);
+            T *params = _t_detach_by_idx(code,1);
+            if (!params) return signatureMismatchReductionErr;
+            T *to = _t_child(params,1);
+            if (!to) return signatureMismatchReductionErr;
+
             Symbol to_sym = *(Symbol *)_t_surface(to);
             _t_free(to);
             Structure to_s = _sem_get_symbol_structure(q->r->sem,to_sym);
 
+            T *items = _t_child(code,1);
+            if (!items) return signatureMismatchReductionErr;
             T *t = __t_newr(0,PARAMS,true);  //holder for the transcoding children
             T *src;
-            while (src = _t_detach_by_idx(code,1)) {
+            while (src = _t_detach_by_idx(items,1)) {
                 Symbol src_sym = _t_symbol(src);
                 if (semeq(to_sym,src_sym)) x = src;
                 else {
