@@ -46,7 +46,7 @@ char *__d_get_sem_name(T *defs,SemanticID s) {
     char *n = NULL;
     T *def = _t_child(defs,s.id);
     if (def) {
-        T *t = _t_child(def,DefLabelIdx);  // label is always first child
+        T *t = _t_child(def,DefLabelIdx);
         n = (char *)_t_surface(t);
     }
     return n;

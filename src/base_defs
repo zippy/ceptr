@@ -318,7 +318,6 @@ Process: STREAM_ALIVE,0,"test if stream is alive for reading","alive",SIGNATURE_
 Process: CONCAT_STR,0,"concatinate strings","concatenation",SIGNATURE_STRUCTURE,CSTRING,"into",SIGNATURE_SYMBOL,RESULT_SYMBOL,"str1",SIGNATURE_STRUCTURE,CSTRING,"str2",SIGNATURE_STRUCTURE,CSTRING,0;  concatenates two strings of any symbol type into an new symbol type specified by the "into" parameter
 Process: EXPAND_STR,0,"expand string","ascii tree",SIGNATURE_SYMBOL,ASCII_CHARS,"str",SIGNATURE_STRUCTURE,CSTRING,0;  converts a CSTRING into an ASCII_CHARS tree
 Process: CONTRACT_STR,0,"contract to string","string",SIGNATURE_STRUCTURE,CSTRING,"into",SIGNATURE_SYMBOL,RESULT_SYMBOL,0;  converts any number of chars or cstring into a single cstring of symbol type indicated by the into param
-Process: EQ_SYM,0,"test equality","equality",SIGNATURE_SYMBOL,BOOLEAN,"symbol1",SIGNATURE_STRUCTURE,SYMBOL,"symbol2",SIGNATURE_STRUCTURE,SYMBOL,0;
 Symbol: EQUALITY_TEST_SYMBOL,SYMBOL;  a symbol to use when testing the symbol equality
 Process: EQ_SYM,0,"test equality","equality",SIGNATURE_SYMBOL,BOOLEAN,"symbol1",SIGNATURE_STRUCTURE,SYMBOL,"symbol2",SIGNATURE_STRUCTURE,SYMBOL,0;  test the quality of two SYMBOL type parameters
 Process: ADD_INT,0,"addition","sum",SIGNATURE_STRUCTURE,INTEGER,"augend",SIGNATURE_STRUCTURE,INTEGER,"addend",SIGNATURE_STRUCTURE,INTEGER,0;
@@ -632,7 +631,7 @@ Symbol: MEDIA_TYPE_IDENT,SYMBOL;
 Symbol: MEDIA_SUBTYPE_IDENT,SYMBOL;
 Symbol: MEDIA_PARAM,KEY_VALUE_PARAM;
 Structure: MEDIA_TYPE,(MEDIA_TYPE_IDENT,MEDIA_SUBTYPE_IDENT,*MEDIA_PARAM);
-Symbol: CONTENT_TYPE,MEDIA_TYPE;  
+Symbol: CONTENT_TYPE,MEDIA_TYPE;   (HTTP_HEADER_LABEL:"Content-Type")
 # basic media types
 Symbol: TEXT_MEDIA_TYPE,NULL_STRUCTURE;
 Symbol: HTML_TEXT_MEDIA_SUBTYPE,NULL_STRUCTURE;
@@ -662,7 +661,8 @@ Symbol: HTTP_ENTITY_HEADER,[|{CONTENT_TYPE|CONTENT_ENCODING}];    @todo plus a f
 
 Symbol: HTTP_RESPONSE_BODY,[!];
 Symbol: HTTP_RESPONSE_STATUS,STATUS;
-Symbol: HTTP_HEADERS,[*|{HTTP_GENERAL_HEADER|HTTP_RESPONSE_HEADER|HTTP_ENTITY_HEADER}];
+Symbol: HTTP_HEADER,[|{HTTP_GENERAL_HEADER|HTTP_RESPONSE_HEADER|HTTP_ENTITY_HEADER}];
+Symbol: HTTP_HEADERS,[*HTTP_HEADER];
 Symbol: HTTP_RESPONSE,[(HTTP_RESPONSE_STATUS,HTTP_HEADERS,HTTP_RESPONSE_BODY)];
 
 # html defs
