@@ -8,7 +8,7 @@
 #include "../src/process.h"
 
 void testRunTree() {
-    T *code,*signature;
+    T *code;
 
     // a process that would look something like this in lisp:
     // (defun my_if (true_branch false_branch condition) (if (condition) (true_branch) (false_branch)))
@@ -21,36 +21,14 @@ void testRunTree() {
     _t_new(code,PARAM_REF,pt1,sizeof(int)*4);
     _t_new(code,PARAM_REF,pt2,sizeof(int)*4);
 
-    T *xsignature = __p_make_signature("result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,
+    T *signature = __p_make_signature("result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,
                                    "condition",SIGNATURE_PROCESS,BOOLEAN,
                                    "true_branch",SIGNATURE_ANY,NULL_STRUCTURE,
                                    "false_branch",SIGNATURE_ANY,NULL_STRUCTURE,
                                    NULL);
-    char buf[1000];
-    __t_dump(G_sem,xsignature,NO_INDENT,buf);
-    _t_free(xsignature);
-
-
-    signature = _t_new_root(PROCESS_SIGNATURE);
-    T *o = _t_newr(signature,OUTPUT_SIGNATURE);
-    T *l = _t_newr(o,SIGNATURE_LABEL);
-    _t_new_str(l,ENGLISH_LABEL,"result");
-    _t_news(o,SIGNATURE_PASSTHRU,NULL_STRUCTURE);
-    T *i3 = _t_newr(signature,INPUT_SIGNATURE);
-    l = _t_newr(i3,SIGNATURE_LABEL);
-    _t_new_str(l,ENGLISH_LABEL,"condition");
-    _t_news(i3,SIGNATURE_PROCESS,BOOLEAN); // a process that returns a boolean
-    T *i1 = _t_newr(signature,INPUT_SIGNATURE);
-    l = _t_newr(i1,SIGNATURE_LABEL);
-    _t_new_str(l,ENGLISH_LABEL,"true_branch");
-    _t_news(i1,SIGNATURE_ANY,NULL_STRUCTURE);
-    T *i2 = _t_newr(signature,INPUT_SIGNATURE);
-    l = _t_newr(i2,SIGNATURE_LABEL);
-    _t_new_str(l,ENGLISH_LABEL,"false_branch");
-    _t_news(i2,SIGNATURE_ANY,NULL_STRUCTURE);
 
     // test that __p_make_signature does what we think it should
-    spec_is_str_equal(buf,t2s(signature));
+    spec_is_str_equal(t2s(signature),"(PROCESS_SIGNATURE (OUTPUT_SIGNATURE (SIGNATURE_LABEL (ENGLISH_LABEL:result)) (SIGNATURE_PASSTHRU)) (INPUT_SIGNATURE (SIGNATURE_LABEL (ENGLISH_LABEL:condition)) (SIGNATURE_PROCESS:BOOLEAN)) (INPUT_SIGNATURE (SIGNATURE_LABEL (ENGLISH_LABEL:true_branch)) (SIGNATURE_ANY)) (INPUT_SIGNATURE (SIGNATURE_LABEL (ENGLISH_LABEL:false_branch)) (SIGNATURE_ANY)))");
 
     Process p = _d_define_process(G_sem,code,"myif","a duplicate of the sys if process with params in different order",signature,NULL,TEST_CONTEXT);
 
