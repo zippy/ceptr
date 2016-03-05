@@ -1,18 +1,18 @@
-{ "symbol":{ "context":0,"id":222 },"type":"TREE_DELTA","name":"TREE_DELTA_REPLACE","children":[
-   { "symbol":{ "context":0,"id":218 },"type":"TREE_PATH","name":"TREE_DELTA_PATH","surface":"/1"},
-   { "symbol":{ "context":0,"id":219 },"type":"ANY_SYMBOL","name":"TREE_DELTA_VALUE","children":[
-      { "symbol":{ "context":7,"id":35 },"type":"HTML_ELEMENT","name":"HTML_HTML","children":[
-         { "symbol":{ "context":7,"id":32 },"type":"ZERO_OR_MORE_OF_HTML_ATTRIBUTE","name":"HTML_ATTRIBUTES"},
-         { "symbol":{ "context":7,"id":33 },"type":"NULL_STRUCTURE","name":"HTML_CONTENT","children":[
-            { "symbol":{ "context":7,"id":38 },"type":"HTML_ELEMENT","name":"HTML_BODY","children":[
-               { "symbol":{ "context":7,"id":32 },"type":"ZERO_OR_MORE_OF_HTML_ATTRIBUTE","name":"HTML_ATTRIBUTES"},
-               { "symbol":{ "context":7,"id":33 },"type":"NULL_STRUCTURE","name":"HTML_CONTENT","children":[
-                  { "symbol":{ "context":7,"id":39 },"type":"HTML_ELEMENT","name":"HTML_DIV","children":[
-                     { "symbol":{ "context":7,"id":32 },"type":"ZERO_OR_MORE_OF_HTML_ATTRIBUTE","name":"HTML_ATTRIBUTES"},
-                     { "symbol":{ "context":7,"id":33 },"type":"NULL_STRUCTURE","name":"HTML_CONTENT","children":[
-                        { "symbol":{ "context":7,"id":34 },"type":"CSTRING","name":"HTML_TEXT","surface":"Hello "},
-                        { "symbol":{ "context":7,"id":43 },"type":"HTML_ELEMENT","name":"HTML_B","children":[
-                           { "symbol":{ "context":7,"id":32 },"type":"ZERO_OR_MORE_OF_HTML_ATTRIBUTE","name":"HTML_ATTRIBUTES"},
-                           { "symbol":{ "context":7,"id":33 },"type":"NULL_STRUCTURE","name":"HTML_CONTENT","children":[
-                              { "symbol":{ "context":7,"id":34 },"type":"CSTRING","name":"HTML_TEXT","surface":"world!"}]}]}]}]}]}]}]}]}]},
-   { "symbol":{ "context":0,"id":220 },"type":"INTEGER","name":"TREE_DELTA_COUNT","surface":3}]}
+{ "symbol":{ "context":0,"id":238 },"type":"TREE_DELTA","name":"TREE_DELTA_REPLACE","children":[
+   { "symbol":{ "context":0,"id":234 },"type":"TREE_PATH","name":"TREE_DELTA_PATH","surface":"/1"},
+   { "symbol":{ "context":0,"id":235 },"type":"ANY_SYMBOL","name":"TREE_DELTA_VALUE","children":[
+      { "symbol":{ "context":6,"id":51 },"type":"HTML_ELEMENT","name":"HTML_HTML","children":[
+         { "symbol":{ "context":6,"id":48 },"type":"ZERO_OR_MORE_OF_HTML_ATTRIBUTE","name":"HTML_ATTRIBUTES"},
+         { "symbol":{ "context":6,"id":49 },"type":"NULL_STRUCTURE","name":"HTML_CONTENT","children":[
+            { "symbol":{ "context":6,"id":54 },"type":"HTML_ELEMENT","name":"HTML_BODY","children":[
+               { "symbol":{ "context":6,"id":48 },"type":"ZERO_OR_MORE_OF_HTML_ATTRIBUTE","name":"HTML_ATTRIBUTES"},
+               { "symbol":{ "context":6,"id":49 },"type":"NULL_STRUCTURE","name":"HTML_CONTENT","children":[
+                  { "symbol":{ "context":6,"id":55 },"type":"HTML_ELEMENT","name":"HTML_DIV","children":[
+                     { "symbol":{ "context":6,"id":48 },"type":"ZERO_OR_MORE_OF_HTML_ATTRIBUTE","name":"HTML_ATTRIBUTES"},
+                     { "symbol":{ "context":6,"id":49 },"type":"NULL_STRUCTURE","name":"HTML_CONTENT","children":[
+                        { "symbol":{ "context":6,"id":50 },"type":"CSTRING","name":"HTML_TEXT","surface":"Hello "},
+                        { "symbol":{ "context":6,"id":59 },"type":"HTML_ELEMENT","name":"HTML_B","children":[
+                           { "symbol":{ "context":6,"id":48 },"type":"ZERO_OR_MORE_OF_HTML_ATTRIBUTE","name":"HTML_ATTRIBUTES"},
+                           { "symbol":{ "context":6,"id":49 },"type":"NULL_STRUCTURE","name":"HTML_CONTENT","children":[
+                              { "symbol":{ "context":6,"id":50 },"type":"CSTRING","name":"HTML_TEXT","surface":"world!"}]}]}]}]}]}]}]}]}]},
+   { "symbol":{ "context":0,"id":236 },"type":"INTEGER","name":"TREE_DELTA_COUNT","surface":3}]}
