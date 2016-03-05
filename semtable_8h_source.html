@@ -123,14 +123,17 @@ $(document).ready(function(){initNavTree('semtable_8h_source.html','');});
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<a class="code" href="structT.html">T</a> *__sem_get_defs(<a class="code" href="structSemTable.html">SemTable</a> *st,SemanticType semtype,Context c);</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#define _sem_get_def(sem,s) __sem_get_def(sem,(s).semtype,(s).context,(s).id)</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<a class="code" href="structT.html">T</a> *__sem_get_def(<a class="code" href="structSemTable.html">SemTable</a> *sem,SemanticType semtype,Context c,SemanticAddr i);</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keywordtype">char</span> *_sem_get_name(<a class="code" href="structSemTable.html">SemTable</a> *sem,<a class="code" href="structSemanticID.html">SemanticID</a> s);</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<a class="code" href="structSemanticID.html">Structure</a> _sem_get_symbol_structure(<a class="code" href="structSemTable.html">SemTable</a> *sem,<a class="code" href="structSemanticID.html">Symbol</a> s);</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<a class="code" href="structSemanticID.html">SemanticID</a> _sem_get_by_label(<a class="code" href="structSemTable.html">SemTable</a> *sem,<span class="keywordtype">char</span> *label,Context ctx);</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keywordtype">char</span> *<a class="code" href="semtable_8h.html#ab9c386734b4ac2b01f11c82bf1af1c70">_sem_get_name</a>(<a class="code" href="structSemTable.html">SemTable</a> *sem,<a class="code" href="structSemanticID.html">SemanticID</a> s);</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keywordtype">void</span> <a class="code" href="semtable_8h.html#aa4d8c47e1a50f071cf3e90c38e0ebebf">_sem_add_label</a>(<a class="code" href="structSemTable.html">SemTable</a> *sem,<a class="code" href="structSemanticID.html">SemanticID</a> s,<a class="code" href="structSemanticID.html">Symbol</a> label_type,<span class="keywordtype">char</span> *label);</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<a class="code" href="structSemanticID.html">Structure</a> _sem_get_symbol_structure(<a class="code" href="structSemTable.html">SemTable</a> *sem,<a class="code" href="structSemanticID.html">Symbol</a> s);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<a class="code" href="structSemanticID.html">SemanticID</a> _sem_get_by_label(<a class="code" href="structSemTable.html">SemTable</a> *sem,<span class="keywordtype">char</span> *label,Context ctx);</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="structT_html"><div class="ttname"><a href="structT.html">T</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00114">ceptr_types.h:114</a></div></div>
 <div class="ttc" id="structContextStore_html"><div class="ttname"><a href="structContextStore.html">ContextStore</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00208">ceptr_types.h:208</a></div></div>
+<div class="ttc" id="semtable_8h_html_aa4d8c47e1a50f071cf3e90c38e0ebebf"><div class="ttname"><a href="semtable_8h.html#aa4d8c47e1a50f071cf3e90c38e0ebebf">_sem_add_label</a></div><div class="ttdeci">void _sem_add_label(SemTable *sem, SemanticID s, Symbol label_type, char *label)</div><div class="ttdef"><b>Definition:</b> <a href="semtable_8c_source.html#l00123">semtable.c:123</a></div></div>
 <div class="ttc" id="structSemTable_html"><div class="ttname"><a href="structSemTable.html">SemTable</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00215">ceptr_types.h:215</a></div></div>
+<div class="ttc" id="semtable_8h_html_ab9c386734b4ac2b01f11c82bf1af1c70"><div class="ttname"><a href="semtable_8h.html#ab9c386734b4ac2b01f11c82bf1af1c70">_sem_get_name</a></div><div class="ttdeci">char * _sem_get_name(SemTable *sem, SemanticID s)</div><div class="ttdef"><b>Definition:</b> <a href="semtable_8c_source.html#l00085">semtable.c:85</a></div></div>
 <div class="ttc" id="structSemanticID_html"><div class="ttname"><a href="structSemanticID.html">SemanticID</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00022">ceptr_types.h:22</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -138,7 +141,7 @@ $(document).ready(function(){initNavTree('semtable_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="semtable_8h.html">semtable.h</a></li>
-    <li class="footer">Generated on Wed Feb 24 2016 12:26:57 for ceptr by
+    <li class="footer">Generated on Sat Mar 5 2016 10:23:25 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

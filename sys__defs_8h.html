@@ -123,8 +123,7 @@ Include dependency graph for sys_defs.h:</div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="sys__defs_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="sys__defs_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 </div>
 <p><a href="sys__defs_8h_source.html">Go to the source code of this file.</a></p>
@@ -156,7 +155,7 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>sYs</b>(ctx, sym, str)&#160;&#160;&#160;__d_set_symbol_structure(__sem_get_defs(sem,SEM_TYPE_SYMBOL,ctx),sym,str)</td></tr>
 <tr class="separator:a29f55129e7ae84352824fbf74d80f09b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a730d238b56524b7c068aac53a5df583b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a730d238b56524b7c068aac53a5df583b"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>sP</b>(ctx, name, code, intention,...)&#160;&#160;&#160;name = <a class="el" href="group__def.html#gaee8a21fdd29944bf44bb03457511515d">_d_define_process</a>(sem,code,&quot;&quot; #name &quot;&quot;,intention,__p_make_signature(__VA_ARGS__),ctx)</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>sP</b>(ctx, name, code, intention,...)&#160;&#160;&#160;name = <a class="el" href="group__def.html#gad9a468887d0dc74ab76ad59a39aa423e">_d_define_process</a>(sem,code,&quot;&quot; #name &quot;&quot;,intention,__p_make_signature(__VA_ARGS__),NULL,ctx)</td></tr>
 <tr class="separator:a730d238b56524b7c068aac53a5df583b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8dfb82e5a17f4e53f0f05a93a46e7c72"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8dfb82e5a17f4e53f0f05a93a46e7c72"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>sT_OR</b>(...)&#160;&#160;&#160;sT_(sem,STRUCTURE_OR,__VA_ARGS__)</td></tr>
@@ -177,7 +176,7 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>sT_SYM</b>(sym)&#160;&#160;&#160;_t_news(0,STRUCTURE_SYMBOL,sym)</td></tr>
 <tr class="separator:a7b56acc7cef1d0ed2e186bd2b25329b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a90f9b1d614a54c91bbf12797387e659e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a90f9b1d614a54c91bbf12797387e659e"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>sT_PCNT</b>(str)&#160;&#160;&#160;_t_news(0,SYMBOL_OF_STRUCTURE,str)</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>sT_PCNT</b>(str)&#160;&#160;&#160;_t_news(0,STRUCTURE_STRUCTURE,str)</td></tr>
 <tr class="separator:a90f9b1d614a54c91bbf12797387e659e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e137737198173e708fe6065281b7ed5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7e137737198173e708fe6065281b7ed5"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>sT_BANG</b>&#160;&#160;&#160;_t_newr(0,STRUCTURE_ANYTHING)</td></tr>
@@ -188,6 +187,9 @@ Macros</h2></td></tr>
 <tr class="memitem:a89ba96850ddb85f8d4e351fd8383a2b2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a89ba96850ddb85f8d4e351fd8383a2b2"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>sData</b>(ctx, name,...)&#160;&#160;&#160;<a class="el" href="structT.html">T</a> *name=<a class="el" href="group__tree.html#ga9a822dc9fa8d68b89a582fdcda02cb02">_t_build2</a>(sem,0,__VA_ARGS__);</td></tr>
 <tr class="separator:a89ba96850ddb85f8d4e351fd8383a2b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16d2a922ec134260eeb2be0a8813ac9d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a16d2a922ec134260eeb2be0a8813ac9d"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>sLabel</b>(ctx, s, label_type, label)&#160;&#160;&#160;<a class="el" href="semtable_8h.html#aa4d8c47e1a50f071cf3e90c38e0ebebf">_sem_add_label</a>(sem,s,label_type,label);</td></tr>
+<tr class="separator:a16d2a922ec134260eeb2be0a8813ac9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -227,7 +229,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>G_label</b></td></t
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="sys__defs_8h.html">sys_defs.h</a></li>
-    <li class="footer">Generated on Wed Feb 24 2016 12:26:58 for ceptr by
+    <li class="footer">Generated on Sat Mar 5 2016 10:23:25 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

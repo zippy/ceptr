@@ -146,9 +146,10 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_sem_ctx2s</b> (<a 
 <tr class="memitem:a05482a09a2673e7a23e499d30a2586ac"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a05482a09a2673e7a23e499d30a2586ac"></a>
 <a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>__sem_get_def</b> (<a class="el" href="structSemTable.html">SemTable</a> *sem, SemanticType semtype, Context c, SemanticAddr i)</td></tr>
 <tr class="separator:a05482a09a2673e7a23e499d30a2586ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab9c386734b4ac2b01f11c82bf1af1c70"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab9c386734b4ac2b01f11c82bf1af1c70"></a>
-char *&#160;</td><td class="memItemRight" valign="bottom"><b>_sem_get_name</b> (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structSemanticID.html">SemanticID</a> s)</td></tr>
+<tr class="memitem:ab9c386734b4ac2b01f11c82bf1af1c70"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="semtable_8c.html#ab9c386734b4ac2b01f11c82bf1af1c70">_sem_get_name</a> (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structSemanticID.html">SemanticID</a> s)</td></tr>
 <tr class="separator:ab9c386734b4ac2b01f11c82bf1af1c70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4d8c47e1a50f071cf3e90c38e0ebebf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="semtable_8c.html#aa4d8c47e1a50f071cf3e90c38e0ebebf">_sem_add_label</a> (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structSemanticID.html">SemanticID</a> s, <a class="el" href="structSemanticID.html">Symbol</a> label_type, char *label)</td></tr>
+<tr class="separator:aa4d8c47e1a50f071cf3e90c38e0ebebf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1fdd0134fe282f8ca84baf6aee9e3e14"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1fdd0134fe282f8ca84baf6aee9e3e14"></a>
 <a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><b>_sem_get_symbol_structure</b> (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structSemanticID.html">Symbol</a> s)</td></tr>
 <tr class="separator:a1fdd0134fe282f8ca84baf6aee9e3e14"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -161,13 +162,111 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>_sem_get_name</b> (
 <dl class="section copyright"><dt>Copyright</dt><dd>Copyright (C) 2013-2016, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al). This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3). </dd></dl>
 
 <p>Definition in file <a class="el" href="semtable_8c_source.html">semtable.c</a>.</p>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="aa4d8c47e1a50f071cf3e90c38e0ebebf"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void _sem_add_label </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSemTable.html">SemTable</a> *&#160;</td>
+          <td class="paramname"><em>sem</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structSemanticID.html">Symbol</a>&#160;</td>
+          <td class="paramname"><em>label_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>label</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>add a name to a definition</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">sem</td><td>is the semantic table where symbols and structures are defined </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>the semantic id of the definition to add a label to </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">label_type</td><td>is a symbol of the label type to add </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">label</td><td>text of the label</td></tr>
+  </table>
+  </dd>
+</dl>
+<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    <a class="code" href="structSemanticID.html">SemanticID</a> s = _sem_get_by_label(G_sem,<span class="stringliteral">&quot;DEFINITIONS&quot;</span>,SYS_CONTEXT);</div>
+<div class="line">    spec_is_sem_equal(s,DEFINITIONS);</div>
+<div class="line"></div>
+</div><!-- fragment -->
+<p>Definition at line <a class="el" href="semtable_8c_source.html#l00123">123</a> of file <a class="el" href="semtable_8c_source.html">semtable.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab9c386734b4ac2b01f11c82bf1af1c70"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char* _sem_get_name </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSemTable.html">SemTable</a> *&#160;</td>
+          <td class="paramname"><em>sem</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td>
+          <td class="paramname"><em>s</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>get symbol's label</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">sem</td><td>is the semantic table where symbols and structures are define </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>the Symbol to return the label of </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>char * pointing to surface of label node</dd></dl>
+<p><b>Examples (from test suite):</b> </p><div class="fragment"><div class="line">    spec_is_str_equal(<a class="code" href="semtable_8c.html#ab9c386734b4ac2b01f11c82bf1af1c70">_sem_get_name</a>(G_sem,TEST_INT_SYMBOL),<span class="stringliteral">&quot;TEST_INT_SYMBOL&quot;</span>);</div>
+<div class="line">    spec_is_str_equal(<a class="code" href="semtable_8c.html#ab9c386734b4ac2b01f11c82bf1af1c70">_sem_get_name</a>(G_sem,NULL_SYMBOL),<span class="stringliteral">&quot;NULL_SYMBOL&quot;</span>);</div>
+<div class="line">    spec_is_str_equal(<a class="code" href="semtable_8c.html#ab9c386734b4ac2b01f11c82bf1af1c70">_sem_get_name</a>(G_sem,NULL_STRUCTURE),<span class="stringliteral">&quot;NULL_STRUCTURE&quot;</span>);</div>
+<div class="line">    spec_is_str_equal(<a class="code" href="semtable_8c.html#ab9c386734b4ac2b01f11c82bf1af1c70">_sem_get_name</a>(G_sem,NULL_PROCESS),<span class="stringliteral">&quot;NULL_PROCESS&quot;</span>);</div>
+<div class="line">    spec_is_str_equal(<a class="code" href="semtable_8c.html#ab9c386734b4ac2b01f11c82bf1af1c70">_sem_get_name</a>(G_sem,DEFINITIONS),<span class="stringliteral">&quot;DEFINITIONS&quot;</span>);</div>
+<div class="line">    spec_is_str_equal(<a class="code" href="semtable_8c.html#ab9c386734b4ac2b01f11c82bf1af1c70">_sem_get_name</a>(G_sem,INTEGER),<span class="stringliteral">&quot;INTEGER&quot;</span>);</div>
+<div class="line">    spec_is_str_equal(<a class="code" href="semtable_8c.html#ab9c386734b4ac2b01f11c82bf1af1c70">_sem_get_name</a>(G_sem,IF),<span class="stringliteral">&quot;IF&quot;</span>);</div>
+</div><!-- fragment -->
+<p>Definition at line <a class="el" href="semtable_8c_source.html#l00085">85</a> of file <a class="el" href="semtable_8c_source.html">semtable.c</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="semtable_8c.html">semtable.c</a></li>
-    <li class="footer">Generated on Wed Feb 24 2016 12:26:58 for ceptr by
+    <li class="footer">Generated on Sat Mar 5 2016 10:23:25 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

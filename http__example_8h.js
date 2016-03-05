@@ -5,7 +5,7 @@ var http__example_8h =
     [ "_makeTestHTTPResponseProcess", "http__example_8h.html#a5476caaca538a030a6770bc99a42f372", null ],
     [ "getTag", "http__example_8h.html#ae2d12fe3b340d03faeb870a1b9774302", null ],
     [ "makeDeltaAdd", "http__example_8h.html#a5a9a110a7470525d3f724a70eb456211", null ],
-    [ "makeHTTP", "http__example_8h.html#a16280ce3dd192396f55d3f4637d59429", null ],
+    [ "makeHTTP", "http__example_8h.html#a41f859b514eab62bd3bf3685d144c155", null ],
     [ "parseHTML", "http__example_8h.html#a9f13fd33625bed498ed9d7a701339c31", null ],
     [ "testHTTP", "http__example_8h.html#a153812d95da1d439f491af0b8d508599", null ],
     [ "testHTTPparseHTML", "http__example_8h.html#a7a06e1c798b593a002069e40c9605c29", null ],

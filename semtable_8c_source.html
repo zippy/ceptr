@@ -171,69 +171,86 @@ $(document).ready(function(){initNavTree('semtable_8c_source.html','');});
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(defs,i);</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;}</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="keywordtype">char</span> *_sem_get_name(<a class="code" href="structSemTable.html">SemTable</a> *sem,<a class="code" href="structSemanticID.html">SemanticID</a> s) {</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordflow">if</span> (s.id == 0) {</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <span class="keywordflow">if</span> (s.context == SYS_CONTEXT) {</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            <span class="keywordflow">switch</span> (s.semtype) {</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <span class="keywordflow">case</span> SEM_TYPE_STRUCTURE: <span class="keywordflow">return</span> <span class="stringliteral">&quot;NULL_STRUCTURE&quot;</span>;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            <span class="keywordflow">case</span> SEM_TYPE_SYMBOL: <span class="keywordflow">return</span> <span class="stringliteral">&quot;NULL_SYMBOL&quot;</span>;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            <span class="keywordflow">case</span> SEM_TYPE_PROCESS: <span class="keywordflow">return</span> <span class="stringliteral">&quot;NULL_PROCESS&quot;</span>;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            <span class="keywordflow">case</span> SEM_TYPE_RECEPTOR: <span class="keywordflow">return</span> <span class="stringliteral">&quot;SYS_RECEPTOR&quot;</span>;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            <span class="keywordflow">default</span>: raise_error(<span class="stringliteral">&quot;bad semtype&quot;</span>);</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            }</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        }</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            raise_error(<span class="stringliteral">&quot;unexpected semantic NULL id!&quot;</span>);</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        }</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    }</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__def.html#ga210d7b312760266e54e75cba41bfb42e">__d_get_sem_name</a>(_sem_get_defs(sem,s),s);</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;}</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<a class="code" href="structSemanticID.html">Structure</a> _sem_get_symbol_structure(<a class="code" href="structSemTable.html">SemTable</a> *sem,<a class="code" href="structSemanticID.html">Symbol</a> s){</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keywordflow">if</span> (!is_symbol(s)) raise_error(<span class="stringliteral">&quot;Bad symbol: semantic type not SEM_TYPE_SYMBOL&quot;</span>);</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__def.html#ga9482f4a5f8e4c442b9869fd316d150ee">__d_get_symbol_structure</a>(_sem_get_defs(sem,s),s);</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;}</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="comment">// @todo, convert this to hash table label table!!</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<a class="code" href="structSemanticID.html">SemanticID</a> _sem_get_by_label(<a class="code" href="structSemTable.html">SemTable</a> *sem,<span class="keywordtype">char</span> *label,Context c) {</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <a class="code" href="structContextStore.html">ContextStore</a> *ctx = __sem_context(sem,c);</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <a class="code" href="structT.html">T</a> *d = ctx-&gt;definitions;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keywordflow">if</span> (!d) raise_error(<span class="stringliteral">&quot;no definitions in context %s&quot;</span>,_sem_ctx2s(sem,c));</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <span class="keywordtype">int</span> i,j;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <a class="code" href="structSemanticID.html">SemanticID</a> sid = {c,0,0};</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <span class="keywordflow">for</span>(i=1;i&lt;=<a class="code" href="group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc">_t_children</a>(d);i++) {</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        <a class="code" href="structT.html">T</a> *defs = <a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(d,i);</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        <span class="keywordflow">for</span>(j=1;j&lt;=<a class="code" href="group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc">_t_children</a>(defs);j++) {</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;            <a class="code" href="structT.html">T</a> *def = <a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(defs,j);</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            <span class="keywordflow">if</span> (strcmp(label,(<span class="keywordtype">char</span> *)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(<a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(def,DefLabelIdx)))==0) {</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                sid.semtype = i;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;                sid.id = j;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;                <span class="keywordflow">return</span> sid;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;            }</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        }</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    }</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    raise_error(<span class="stringliteral">&quot;implement what to do if label not found!&quot;</span>);</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <span class="keywordflow">return</span> sid;</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;}</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;</div>
+<div class="line"><a name="l00085"></a><span class="lineno"><a class="line" href="semtable_8h.html#ab9c386734b4ac2b01f11c82bf1af1c70">   85</a></span>&#160;<span class="keywordtype">char</span> *<a class="code" href="semtable_8c.html#ab9c386734b4ac2b01f11c82bf1af1c70">_sem_get_name</a>(<a class="code" href="structSemTable.html">SemTable</a> *sem,<a class="code" href="structSemanticID.html">SemanticID</a> s) {</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keywordflow">if</span> (s.id == 0) {</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        <span class="keywordflow">if</span> (s.context == SYS_CONTEXT) {</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            <span class="keywordflow">switch</span> (s.semtype) {</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            <span class="keywordflow">case</span> SEM_TYPE_STRUCTURE: <span class="keywordflow">return</span> <span class="stringliteral">&quot;NULL_STRUCTURE&quot;</span>;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            <span class="keywordflow">case</span> SEM_TYPE_SYMBOL: <span class="keywordflow">return</span> <span class="stringliteral">&quot;NULL_SYMBOL&quot;</span>;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            <span class="keywordflow">case</span> SEM_TYPE_PROCESS: <span class="keywordflow">return</span> <span class="stringliteral">&quot;NULL_PROCESS&quot;</span>;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            <span class="keywordflow">case</span> SEM_TYPE_RECEPTOR: <span class="keywordflow">return</span> <span class="stringliteral">&quot;SYS_RECEPTOR&quot;</span>;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            <span class="keywordflow">default</span>: raise_error(<span class="stringliteral">&quot;bad semtype&quot;</span>);</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            }</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        }</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            raise_error(<span class="stringliteral">&quot;unexpected semantic NULL id!&quot;</span>);</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        }</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    }</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <a class="code" href="structT.html">T</a> *def = _sem_get_def(sem,s);</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="keywordtype">char</span> *n = NULL;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keywordflow">if</span> (def) {</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        <span class="keywordtype">int</span> path[] ={DefLabelIdx,1,TREE_PATH_TERMINATOR};</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        <a class="code" href="structT.html">T</a> *t = <a class="code" href="group__tree.html#gaf019d190c9623de809d006e309a441af">_t_get</a>(def,path);</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        <span class="keywordflow">if</span> (!t) raise_error(<span class="stringliteral">&quot;missing label!&quot;</span>);</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        n = (<span class="keywordtype">char</span> *)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(t);</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    }</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <span class="keywordflow">return</span> n;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;}</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
+<div class="line"><a name="l00123"></a><span class="lineno"><a class="line" href="semtable_8h.html#aa4d8c47e1a50f071cf3e90c38e0ebebf">  123</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="semtable_8c.html#aa4d8c47e1a50f071cf3e90c38e0ebebf">_sem_add_label</a>(<a class="code" href="structSemTable.html">SemTable</a> *sem,<a class="code" href="structSemanticID.html">SemanticID</a> s,<a class="code" href="structSemanticID.html">Symbol</a> label_type,<span class="keywordtype">char</span> *label) {</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <a class="code" href="structT.html">T</a> *def = _sem_get_def(sem,s);</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    <a class="code" href="structT.html">T</a> *labels  = <a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(def,DefLabelIdx);</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    _t_new_str(labels,label_type,label);</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;}</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;<a class="code" href="structSemanticID.html">Structure</a> _sem_get_symbol_structure(<a class="code" href="structSemTable.html">SemTable</a> *sem,<a class="code" href="structSemanticID.html">Symbol</a> s){</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    <span class="keywordflow">if</span> (!is_symbol(s)) raise_error(<span class="stringliteral">&quot;Bad symbol: semantic type not SEM_TYPE_SYMBOL&quot;</span>);</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__def.html#ga9482f4a5f8e4c442b9869fd316d150ee">__d_get_symbol_structure</a>(_sem_get_defs(sem,s),s);</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;}</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="comment">// @todo, convert this to hash table label table!!</span></div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<a class="code" href="structSemanticID.html">SemanticID</a> _sem_get_by_label(<a class="code" href="structSemTable.html">SemTable</a> *sem,<span class="keywordtype">char</span> *label,Context c) {</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    <a class="code" href="structContextStore.html">ContextStore</a> *ctx = __sem_context(sem,c);</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    <a class="code" href="structT.html">T</a> *d = ctx-&gt;definitions;</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    <span class="keywordflow">if</span> (!d) raise_error(<span class="stringliteral">&quot;no definitions in context %s&quot;</span>,_sem_ctx2s(sem,c));</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    <span class="keywordtype">int</span> i,j;</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    <a class="code" href="structSemanticID.html">SemanticID</a> sid = {c,0,0};</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    <span class="keywordflow">for</span>(i=1;i&lt;=<a class="code" href="group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc">_t_children</a>(d);i++) {</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;        <a class="code" href="structT.html">T</a> *defs = <a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(d,i);</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;        <span class="keywordflow">for</span>(j=1;j&lt;=<a class="code" href="group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc">_t_children</a>(defs);j++) {</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;            <a class="code" href="structT.html">T</a> *def = <a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(defs,j);</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;            <span class="keywordflow">if</span> (strcmp(label,(<span class="keywordtype">char</span> *)<a class="code" href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a>(<a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(<a class="code" href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a>(def,DefLabelIdx),1)))==0) {</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;                sid.semtype = i;</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;                sid.id = j;</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;                <span class="keywordflow">return</span> sid;</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;            }</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        }</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    }</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    raise_error(<span class="stringliteral">&quot;implement what to do if label not found!&quot;</span>);</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <span class="keywordflow">return</span> sid;</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;}</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;</div>
+<div class="ttc" id="semtable_8c_html_ab9c386734b4ac2b01f11c82bf1af1c70"><div class="ttname"><a href="semtable_8c.html#ab9c386734b4ac2b01f11c82bf1af1c70">_sem_get_name</a></div><div class="ttdeci">char * _sem_get_name(SemTable *sem, SemanticID s)</div><div class="ttdef"><b>Definition:</b> <a href="semtable_8c_source.html#l00085">semtable.c:85</a></div></div>
 <div class="ttc" id="structT_html"><div class="ttname"><a href="structT.html">T</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00114">ceptr_types.h:114</a></div></div>
+<div class="ttc" id="group__tree_html_gaf019d190c9623de809d006e309a441af"><div class="ttname"><a href="group__tree.html#gaf019d190c9623de809d006e309a441af">_t_get</a></div><div class="ttdeci">T * _t_get(T *t, int *p)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l01222">tree.c:1222</a></div></div>
 <div class="ttc" id="def_8h_html"><div class="ttname"><a href="def_8h.html">def.h</a></div><div class="ttdoc">header file for symbol and structure definition functions </div></div>
 <div class="ttc" id="structContextStore_html"><div class="ttname"><a href="structContextStore.html">ContextStore</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00208">ceptr_types.h:208</a></div></div>
-<div class="ttc" id="group__tree_html_ga07dd808fabd8a722b417f2f5e5ca132b"><div class="ttname"><a href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a></div><div class="ttdeci">T * _t_child(T *t, int i)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l01025">tree.c:1025</a></div></div>
-<div class="ttc" id="group__def_html_ga9482f4a5f8e4c442b9869fd316d150ee"><div class="ttname"><a href="group__def.html#ga9482f4a5f8e4c442b9869fd316d150ee">__d_get_symbol_structure</a></div><div class="ttdeci">Structure __d_get_symbol_structure(T *symbols, Symbol s)</div><div class="ttdef"><b>Definition:</b> <a href="def_8c_source.html#l00192">def.c:192</a></div></div>
-<div class="ttc" id="group__tree_html_gac9278e540a0d63526b60cc0591283a62"><div class="ttname"><a href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a></div><div class="ttdeci">void * _t_surface(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00989">tree.c:989</a></div></div>
+<div class="ttc" id="group__tree_html_ga07dd808fabd8a722b417f2f5e5ca132b"><div class="ttname"><a href="group__tree.html#ga07dd808fabd8a722b417f2f5e5ca132b">_t_child</a></div><div class="ttdeci">T * _t_child(T *t, int i)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l01035">tree.c:1035</a></div></div>
+<div class="ttc" id="group__def_html_ga9482f4a5f8e4c442b9869fd316d150ee"><div class="ttname"><a href="group__def.html#ga9482f4a5f8e4c442b9869fd316d150ee">__d_get_symbol_structure</a></div><div class="ttdeci">Structure __d_get_symbol_structure(T *symbols, Symbol s)</div><div class="ttdef"><b>Definition:</b> <a href="def_8c_source.html#l00155">def.c:155</a></div></div>
+<div class="ttc" id="group__tree_html_gac9278e540a0d63526b60cc0591283a62"><div class="ttname"><a href="group__tree.html#gac9278e540a0d63526b60cc0591283a62">_t_surface</a></div><div class="ttdeci">void * _t_surface(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00999">tree.c:999</a></div></div>
 <div class="ttc" id="structSemTable_html"><div class="ttname"><a href="structSemTable.html">SemTable</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00215">ceptr_types.h:215</a></div></div>
 <div class="ttc" id="semtable_8h_html"><div class="ttname"><a href="semtable_8h.html">semtable.h</a></div><div class="ttdoc">header file for table for coordinating meaning across a vmhost </div></div>
-<div class="ttc" id="group__tree_html_ga4b1df42f7a8edbe3a6192d64ab027ecc"><div class="ttname"><a href="group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc">_t_children</a></div><div class="ttdeci">int _t_children(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00979">tree.c:979</a></div></div>
+<div class="ttc" id="semtable_8c_html_aa4d8c47e1a50f071cf3e90c38e0ebebf"><div class="ttname"><a href="semtable_8c.html#aa4d8c47e1a50f071cf3e90c38e0ebebf">_sem_add_label</a></div><div class="ttdeci">void _sem_add_label(SemTable *sem, SemanticID s, Symbol label_type, char *label)</div><div class="ttdef"><b>Definition:</b> <a href="semtable_8c_source.html#l00123">semtable.c:123</a></div></div>
+<div class="ttc" id="group__tree_html_ga4b1df42f7a8edbe3a6192d64ab027ecc"><div class="ttname"><a href="group__tree.html#ga4b1df42f7a8edbe3a6192d64ab027ecc">_t_children</a></div><div class="ttdeci">int _t_children(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00989">tree.c:989</a></div></div>
 <div class="ttc" id="structSemanticID_html"><div class="ttname"><a href="structSemanticID.html">SemanticID</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00022">ceptr_types.h:22</a></div></div>
-<div class="ttc" id="group__def_html_ga210d7b312760266e54e75cba41bfb42e"><div class="ttname"><a href="group__def.html#ga210d7b312760266e54e75cba41bfb42e">__d_get_sem_name</a></div><div class="ttdeci">char * __d_get_sem_name(T *defs, SemanticID s)</div><div class="ttdef"><b>Definition:</b> <a href="def_8c_source.html#l00045">def.c:45</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="semtable_8c.html">semtable.c</a></li>
-    <li class="footer">Generated on Wed Feb 24 2016 12:26:57 for ceptr by
+    <li class="footer">Generated on Sat Mar 5 2016 10:23:25 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

@@ -55,5 +55,6 @@ var group__tree =
     [ "_t_sprint_path", "group__tree.html#ga0e63c83e6413f47238db7fa20373c526", null ],
     [ "_t_surface", "group__tree.html#gac9278e540a0d63526b60cc0591283a62", null ],
     [ "_t_swap", "group__tree.html#ga6cccdd5299163ed93045c512d5e1ab9c", null ],
-    [ "_t_symbol", "group__tree.html#ga946600fb570f0cc913450905f6189d49", null ]
+    [ "_t_symbol", "group__tree.html#ga946600fb570f0cc913450905f6189d49", null ],
+    [ "_t_write", "group__tree.html#ga6f0701d10f7034149090d28f0e6512b2", null ]
 ];

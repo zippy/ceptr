@@ -139,6 +139,8 @@ void *&#160;</td><td class="memItemRight" valign="bottom"><b>__st_unix_stream_re
 <tr class="separator:ab2a9830ab76c5e671aaf4061b6bd296e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a968db3488104e65751b060be40ea9b58"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stream_8c.html#a968db3488104e65751b060be40ea9b58">_st_free</a> (<a class="el" href="structStream.html">Stream</a> *stream)</td></tr>
 <tr class="separator:a968db3488104e65751b060be40ea9b58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc1200527bf33bc8bf4746174aaae3f2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stream_8c.html#adc1200527bf33bc8bf4746174aaae3f2">_st_write</a> (<a class="el" href="structStream.html">Stream</a> *st, char *buf, size_t len)</td></tr>
+<tr class="separator:adc1200527bf33bc8bf4746174aaae3f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>stream abstraction implementation </p>
@@ -252,13 +254,48 @@ void *&#160;</td><td class="memItemRight" valign="bottom"><b>__st_unix_stream_re
 
 </div>
 </div>
+<a class="anchor" id="adc1200527bf33bc8bf4746174aaae3f2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int _st_write </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structStream.html">Stream</a> *&#160;</td>
+          <td class="paramname"><em>st</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>buf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>write to a stream </p>
+
+<p>Definition at line <a class="el" href="stream_8c_source.html#l00168">168</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="stream_8c.html">stream.c</a></li>
-    <li class="footer">Generated on Wed Feb 24 2016 12:26:58 for ceptr by
+    <li class="footer">Generated on Sat Mar 5 2016 10:23:25 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

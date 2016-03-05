@@ -32,6 +32,7 @@ var process_8h =
       [ "Block", "process_8h.html#aafd8125ddd0cd2cb2675dea09aacb099aa00f801460e81f86eab56d86fe627551", null ],
       [ "Done", "process_8h.html#aafd8125ddd0cd2cb2675dea09aacb099aa7929b884d7db9093d6ed453feedf2a2", null ],
       [ "noReductionErr", "process_8h.html#aafd8125ddd0cd2cb2675dea09aacb099a5e14542d929b99e4ac2079c47cc35f5d", null ],
+      [ "redoReduction", "process_8h.html#aafd8125ddd0cd2cb2675dea09aacb099a0d99cef3513b6737abf2c84028486a8d", null ],
       [ "raiseReductionErr", "process_8h.html#aafd8125ddd0cd2cb2675dea09aacb099a1b4181289d3311d0003cb9fb4d76f763", null ],
       [ "tooFewParamsReductionErr", "process_8h.html#aafd8125ddd0cd2cb2675dea09aacb099ac4c9db59af3e1c0059bc0ba6a0811136", null ],
       [ "tooManyParamsReductionErr", "process_8h.html#aafd8125ddd0cd2cb2675dea09aacb099a74173fc0228da1a407274c292ebdb3af", null ],

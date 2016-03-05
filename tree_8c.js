@@ -28,6 +28,7 @@ var tree_8c =
     [ "__t_news", "group__tree.html#gae50ae693e2c2ebd7dd842fcce7f78cca", null ],
     [ "__t_rclone", "tree_8c.html#a2899189ae8b7940b6d3913b0dbcec81a", null ],
     [ "__t_serialize", "group__tree.html#gaccea340904db1ac6db2d34335554a5a4", null ],
+    [ "__t_writeln", "tree_8c.html#a80e8b6a5358a1b8a92bba018dfd1a0d3", null ],
     [ "__uuid_equal", "group__tree.html#ga88591763ab94f7aaab16279461fc8b6e", null ],
     [ "__uuid_gen", "group__tree.html#ga3bc51ddefc411f494fe5a6722f6802ba", null ],
     [ "_getBuildType", "tree_8c.html#a3978642c662d49512283ad5e45764353", null ],
@@ -73,5 +74,6 @@ var tree_8c =
     [ "_t_surface", "group__tree.html#gac9278e540a0d63526b60cc0591283a62", null ],
     [ "_t_swap", "group__tree.html#ga6cccdd5299163ed93045c512d5e1ab9c", null ],
     [ "_t_symbol", "group__tree.html#ga946600fb570f0cc913450905f6189d49", null ],
-    [ "_t_unserialize", "group__tree.html#gada7e4bc630391f0f09fff2813ed5d7e2", null ]
+    [ "_t_unserialize", "group__tree.html#gada7e4bc630391f0f09fff2813ed5d7e2", null ],
+    [ "_t_write", "group__tree.html#ga6f0701d10f7034149090d28f0e6512b2", null ]
 ];

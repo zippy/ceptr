@@ -123,8 +123,7 @@ Include dependency graph for def.h:</div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="def_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="def_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 </div>
 <p><a href="def_8h_source.html">Go to the source code of this file.</a></p>
@@ -137,9 +136,9 @@ Macros</h2></td></tr>
 <tr class="memitem:gae1b79002e6089c76d6c0dfb68f2056c6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gae1b79002e6089c76d6c0dfb68f2056c6"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>SY</b>(r, name, str)&#160;&#160;&#160;name = <a class="el" href="group__receptor.html#ga29fd5ebc5d1c142a7da96bd0dd36292c">_r_define_symbol</a>(r,str,&quot;&quot; #name &quot;&quot;)</td></tr>
 <tr class="separator:gae1b79002e6089c76d6c0dfb68f2056c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaee1a8a5387d3ed3950134e615cb76225"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaee1a8a5387d3ed3950134e615cb76225"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SP</b>(r, code, name, intention, signature)&#160;&#160;&#160;name = <a class="el" href="group__receptor.html#ga9e248fdb6e6d814935ac88e67e10e769">_r_define_process</a>(r,code,&quot;&quot; #name &quot;&quot;,intention,signature)</td></tr>
-<tr class="separator:gaee1a8a5387d3ed3950134e615cb76225"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaafb3b294775b38a2e577d0eba25a9578"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaafb3b294775b38a2e577d0eba25a9578"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>SP</b>(r, code, name, intention, signature, link)&#160;&#160;&#160;name = <a class="el" href="group__receptor.html#ga6bb73d41388d17428e5735ad9cbe5917">_r_define_process</a>(r,code,&quot;&quot; #name &quot;&quot;,intention,signature,link)</td></tr>
+<tr class="separator:gaafb3b294775b38a2e577d0eba25a9578"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf64194bb4f202d37a561867d6c8c6a1f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaf64194bb4f202d37a561867d6c8c6a1f"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>t2s</b>(t)&#160;&#160;&#160;_t2s(G_sem,t)</td></tr>
 <tr class="separator:gaf64194bb4f202d37a561867d6c8c6a1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -259,10 +258,14 @@ Enumerations</h2></td></tr>
 <b>SymbolDefStructureIdx</b>
  }</td></tr>
 <tr class="separator:gac36f475ca5b446f4fde4c9b90bec77c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga05589fbab0657f08285ebdfe93f5ec9e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga05589fbab0657f08285ebdfe93f5ec9e"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>ProcessDefNameIdx</b> =1, 
+<tr class="memitem:ga05589fbab0657f08285ebdfe93f5ec9e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga05589fbab0657f08285ebdfe93f5ec9e"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <br />
+&#160;&#160;<b>ProcessDefNameIdx</b> =1, 
 <b>ProcessDefIntentionIdx</b>, 
 <b>ProcessDefCodeIdx</b>, 
-<b>ProcessDefSignatureIdx</b>
+<b>ProcessDefSignatureIdx</b>, 
+<br />
+&#160;&#160;<b>ProcessDefLinkIdx</b>
+<br />
  }</td></tr>
 <tr class="separator:ga05589fbab0657f08285ebdfe93f5ec9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga16af7b253440dadd46a80a4b9fddba4d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga16af7b253440dadd46a80a4b9fddba4d"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>SignatureOutputSigIdx</b> =1
@@ -317,16 +320,12 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>semeq</b> (<a class="e
 <tr class="memitem:ga1948e9707d7d787b8cc57fa6a6981af0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga1948e9707d7d787b8cc57fa6a6981af0"></a>
 <a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>_d_define</b> (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structT.html">T</a> *def, SemanticType semtype, Context c)</td></tr>
 <tr class="separator:ga1948e9707d7d787b8cc57fa6a6981af0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga210d7b312760266e54e75cba41bfb42e"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__def.html#ga210d7b312760266e54e75cba41bfb42e">__d_get_sem_name</a> (<a class="el" href="structT.html">T</a> *defs, <a class="el" href="structSemanticID.html">SemanticID</a> s)</td></tr>
-<tr class="separator:ga210d7b312760266e54e75cba41bfb42e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga48474fcfea9848df5821203d38ea5237"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga48474fcfea9848df5821203d38ea5237"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>__d_validate_symbol</b> (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structSemanticID.html">Symbol</a> s, char *n)</td></tr>
 <tr class="separator:ga48474fcfea9848df5821203d38ea5237"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaca59ccc7ed2b54770ac084af9df8e64c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaca59ccc7ed2b54770ac084af9df8e64c"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>__d_validate_structure</b> (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structSemanticID.html">Structure</a> s, char *n)</td></tr>
 <tr class="separator:gaca59ccc7ed2b54770ac084af9df8e64c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2095cbdaa156af8c5fb8eef8b6267278"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__def.html#ga2095cbdaa156af8c5fb8eef8b6267278">_d_make_symbol_def</a> (<a class="el" href="structSemanticID.html">Structure</a> s, char *label)</td></tr>
-<tr class="separator:ga2095cbdaa156af8c5fb8eef8b6267278"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga83921b9941f28a5dcf8a4141ab75598b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga83921b9941f28a5dcf8a4141ab75598b"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>__d_set_symbol_structure</b> (<a class="el" href="structT.html">T</a> *symbols, <a class="el" href="structSemanticID.html">Symbol</a> sym, <a class="el" href="structSemanticID.html">Structure</a> s)</td></tr>
 <tr class="separator:ga83921b9941f28a5dcf8a4141ab75598b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -335,9 +334,6 @@ SemanticAddr&#160;</td><td class="memItemRight" valign="bottom"><b>_d_get_def_ad
 <tr class="separator:gab54c792007459e7ea612b0a0a1a4dedb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3f075d8ef101d4a88a6668f01cf44080"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSemanticID.html">Symbol</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__def.html#ga3f075d8ef101d4a88a6668f01cf44080">_d_define_symbol</a> (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structSemanticID.html">Structure</a> s, char *label, Context c)</td></tr>
 <tr class="separator:ga3f075d8ef101d4a88a6668f01cf44080"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1044416177c0f62bf58df9e86a8ecff5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga1044416177c0f62bf58df9e86a8ecff5"></a>
-<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>_d_make_structure_def</b> (char *label, <a class="el" href="structT.html">T</a> *structure_def)</td></tr>
-<tr class="separator:ga1044416177c0f62bf58df9e86a8ecff5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa07e8bdb0806d0e55d0f892c791def0d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__def.html#gaa07e8bdb0806d0e55d0f892c791def0d">_d_define_structure</a> (<a class="el" href="structSemTable.html">SemTable</a> *sem, char *label, <a class="el" href="structT.html">T</a> *structure_def, Context c)</td></tr>
 <tr class="separator:gaa07e8bdb0806d0e55d0f892c791def0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf0ec17bf7fbf0d0aadb870f3500b23c5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSemanticID.html">Structure</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__def.html#gaf0ec17bf7fbf0d0aadb870f3500b23c5">_d_define_structure_v</a> (<a class="el" href="structSemTable.html">SemTable</a> *sem, char *label, Context c, int num_params,...)</td></tr>
@@ -351,10 +347,10 @@ SemanticAddr&#160;</td><td class="memItemRight" valign="bottom"><b>_d_get_def_ad
 <tr class="separator:ga63d387c448c4ab2f9acbf7010e45664d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf51869e61eb84e17986d26da65205eaf"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__def.html#gaf51869e61eb84e17986d26da65205eaf">_d_get_structure_size</a> (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structSemanticID.html">Symbol</a> s, void *surface)</td></tr>
 <tr class="separator:gaf51869e61eb84e17986d26da65205eaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6ee4dbd2d1ad94bd853ae2735a2da0a6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__def.html#ga6ee4dbd2d1ad94bd853ae2735a2da0a6">_d_make_process_def</a> (<a class="el" href="structT.html">T</a> *code, char *name, char *intention, <a class="el" href="structT.html">T</a> *signature)</td></tr>
-<tr class="separator:ga6ee4dbd2d1ad94bd853ae2735a2da0a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaee8a21fdd29944bf44bb03457511515d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSemanticID.html">Process</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__def.html#gaee8a21fdd29944bf44bb03457511515d">_d_define_process</a> (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structT.html">T</a> *code, char *name, char *intention, <a class="el" href="structT.html">T</a> *signature, Context c)</td></tr>
-<tr class="separator:gaee8a21fdd29944bf44bb03457511515d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga11a5be6824ab23ce307902b1f9864e9b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__def.html#ga11a5be6824ab23ce307902b1f9864e9b">_d_make_process_def</a> (<a class="el" href="structT.html">T</a> *code, char *name, char *intention, <a class="el" href="structT.html">T</a> *signature, <a class="el" href="structT.html">T</a> *link)</td></tr>
+<tr class="separator:ga11a5be6824ab23ce307902b1f9864e9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad9a468887d0dc74ab76ad59a39aa423e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSemanticID.html">Process</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__def.html#gad9a468887d0dc74ab76ad59a39aa423e">_d_define_process</a> (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structT.html">T</a> *code, char *name, char *intention, <a class="el" href="structT.html">T</a> *signature, <a class="el" href="structT.html">T</a> *link, Context c)</td></tr>
+<tr class="separator:gad9a468887d0dc74ab76ad59a39aa423e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad328204a09fa7f68a65080044a9b5109"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSemanticID.html">Protocol</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__def.html#gad328204a09fa7f68a65080044a9b5109">_d_define_protocol</a> (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structT.html">T</a> *def, Context c)</td></tr>
 <tr class="separator:gad328204a09fa7f68a65080044a9b5109"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga164b809ae794ffe8e95b52c7a74adea3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga164b809ae794ffe8e95b52c7a74adea3"></a>
@@ -396,7 +392,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>sys_free</b> ()</td><
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="def_8h.html">def.h</a></li>
-    <li class="footer">Generated on Wed Feb 24 2016 12:26:58 for ceptr by
+    <li class="footer">Generated on Sat Mar 5 2016 10:23:25 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

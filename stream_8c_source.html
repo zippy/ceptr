@@ -239,6 +239,19 @@ $(document).ready(function(){initNavTree('stream_8c_source.html','');});
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    }</div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    free(stream);</div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;}</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;</div>
+<div class="line"><a name="l00168"></a><span class="lineno"><a class="line" href="stream_8h.html#a77c2b4344266e1a27e2c9067787cba4a">  168</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="stream_8c.html#adc1200527bf33bc8bf4746174aaae3f2">_st_write</a>(<a class="code" href="structStream.html">Stream</a> *st,<span class="keywordtype">char</span> *buf,<span class="keywordtype">size_t</span> len) {</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    <span class="keywordflow">if</span> (st-&gt;type != UnixStream) raise_error(<span class="stringliteral">&quot;unknown stream type:%d\n&quot;</span>,st-&gt;type);</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    FILE *stream = st-&gt;data.unix_stream;</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    <span class="keywordtype">int</span> err = fwrite(buf,<span class="keyword">sizeof</span>(<span class="keywordtype">char</span>),len,stream);</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    debug(D_STREAM,<span class="stringliteral">&quot;write of &#39;%s&#39; results in %d\n&quot;</span>,buf,err);</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <span class="keywordflow">if</span> (err &gt; 0) {</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;        fflush(stream);</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    }</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    <span class="keywordflow">return</span> err;</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;}</div>
+<div class="ttc" id="stream_8c_html_adc1200527bf33bc8bf4746174aaae3f2"><div class="ttname"><a href="stream_8c.html#adc1200527bf33bc8bf4746174aaae3f2">_st_write</a></div><div class="ttdeci">int _st_write(Stream *st, char *buf, size_t len)</div><div class="ttdef"><b>Definition:</b> <a href="stream_8c_source.html#l00168">stream.c:168</a></div></div>
 <div class="ttc" id="structStream_html"><div class="ttname"><a href="structStream.html">Stream</a></div><div class="ttdef"><b>Definition:</b> <a href="stream_8h_source.html#l00028">stream.h:28</a></div></div>
 <div class="ttc" id="debug_8h_html"><div class="ttname"><a href="debug_8h.html">debug.h</a></div></div>
 <div class="ttc" id="stream_8c_html_a968db3488104e65751b060be40ea9b58"><div class="ttname"><a href="stream_8c.html#a968db3488104e65751b060be40ea9b58">_st_free</a></div><div class="ttdeci">void _st_free(Stream *stream)</div><div class="ttdef"><b>Definition:</b> <a href="stream_8c_source.html#l00148">stream.c:148</a></div></div>
@@ -255,7 +268,7 @@ $(document).ready(function(){initNavTree('stream_8c_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="stream_8c.html">stream.c</a></li>
-    <li class="footer">Generated on Wed Feb 24 2016 12:26:57 for ceptr by
+    <li class="footer">Generated on Sat Mar 5 2016 10:23:25 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

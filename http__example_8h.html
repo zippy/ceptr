@@ -121,8 +121,7 @@ $(document).ready(function(){initNavTree('http__example_8h.html','');});
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for http_example.h:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="http__example_8h__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="http__example_8h__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -154,9 +153,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a7a06e1c798b593a002069e40c9605c29"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7a06e1c798b593a002069e40c9605c29"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>testHTTPparseHTML</b> ()</td></tr>
 <tr class="separator:a7a06e1c798b593a002069e40c9605c29"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a16280ce3dd192396f55d3f4637d59429"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a16280ce3dd192396f55d3f4637d59429"></a>
-<a class="el" href="structReceptor.html">Receptor</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>makeHTTP</b> (<a class="el" href="structVMHost.html">VMHost</a> *v, <a class="el" href="structT.html">T</a> *bindings)</td></tr>
-<tr class="separator:a16280ce3dd192396f55d3f4637d59429"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41f859b514eab62bd3bf3685d144c155"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a41f859b514eab62bd3bf3685d144c155"></a>
+<a class="el" href="structReceptor.html">Receptor</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>makeHTTP</b> (<a class="el" href="structVMHost.html">VMHost</a> *v, <a class="el" href="structSemanticID.html">Process</a> handler)</td></tr>
+<tr class="separator:a41f859b514eab62bd3bf3685d144c155"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac202a7c335caaa959c810906f4b7b593"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac202a7c335caaa959c810906f4b7b593"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>testHTTPprotocol</b> ()</td></tr>
 <tr class="separator:ac202a7c335caaa959c810906f4b7b593"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -191,7 +190,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ht
 <p>generate a semtrex that will match a valid HTTP request in an ASCII_CHARS tree </p>
 <p>= ' ' </p>
 
-<p>Definition at line <a class="el" href="http__example_8h_source.html#l00074">74</a> of file <a class="el" href="http__example_8h_source.html">http_example.h</a>.</p>
+<p>Definition at line <a class="el" href="http__example_8h_source.html#l00086">86</a> of file <a class="el" href="http__example_8h_source.html">http_example.h</a>.</p>
 
 </div>
 </div>
@@ -270,14 +269,26 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ht
 <div class="line">    <span class="keywordtype">int</span> pt1[] = {2,1,TREE_PATH_TERMINATOR};</div>
 <div class="line">    _t_new(resp,PARAM_REF,pt1,<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>)*3);</div>
 <div class="line"></div>
-<div class="line">    <a class="code" href="structSemanticID.html">Process</a> p = <a class="code" href="group__receptor.html#ga9e248fdb6e6d814935ac88e67e10e769">_r_define_process</a>(r,resp,<span class="stringliteral">&quot;code path ping&quot;</span>,<span class="stringliteral">&quot;respond with the value of the first parameter&quot;</span>,NULL);</div>
+<div class="line">    <a class="code" href="structSemanticID.html">Process</a> p = <a class="code" href="group__receptor.html#ga6bb73d41388d17428e5735ad9cbe5917">_r_define_process</a>(r,resp,<span class="stringliteral">&quot;code path ping&quot;</span>,<span class="stringliteral">&quot;respond with the value of the first parameter&quot;</span>,NULL,NULL);</div>
 <div class="line">    *pP = p;</div>
 <div class="line"></div>
-<div class="line">    <a class="code" href="structT.html">T</a> *params = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(PARAMS);</div>
-<div class="line">    <a class="code" href="structT.html">T</a> *http_resp = _t_newr(params,HTTP_RESPONSE);</div>
-<div class="line">    _t_new(http_resp,HTTP_RESPONSE_CONTENT_TYPE,<span class="stringliteral">&quot;CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT&quot;</span>,38);</div>
-<div class="line">    <a class="code" href="structT.html">T</a> *s = _t_newr(http_resp,SLOT);</div>
-<div class="line">    _t_news(s,USAGE,HTTP_REQUEST_PATH_SEGMENT);</div>
+<div class="line">    <a class="code" href="structT.html">T</a> *params = <a class="code" href="group__tree.html#gaebfc497f04bdfbfd3a241771b146bebc">_t_build</a>(G_sem,0,</div>
+<div class="line">                         PARAMS,</div>
+<div class="line">                         HTTP_RESPONSE,</div>
+<div class="line">                         HTTP_RESPONSE_STATUS,STATUS_VALUE,200,STATUS_TEXT,<span class="stringliteral">&quot;OK&quot;</span>,NULL_SYMBOL,</div>
+<div class="line">                         HTTP_HEADERS,</div>
+<div class="line">                         CONTENT_TYPE,MEDIA_TYPE_IDENT,TEXT_MEDIA_TYPE,MEDIA_SUBTYPE_IDENT,CEPTR_TEXT_MEDIA_SUBTYPE,NULL_SYMBOL,NULL_SYMBOL,</div>
+<div class="line">                         HTTP_RESPONSE_BODY,</div>
+<div class="line">                         SLOT,USAGE,HTTP_REQUEST_PATH_SEGMENT,NULL_SYMBOL,</div>
+<div class="line">                         NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL</div>
+<div class="line">                         );</div>
+<div class="line"></div>
+<div class="line"></div>
+<div class="line">    <span class="comment">/*     _t_new_root(PARAMS); */</span></div>
+<div class="line">    <span class="comment">/* T *http_resp = _t_newr(params,HTTP_RESPONSE); */</span></div>
+<div class="line">    <span class="comment">/* _t_new(http_resp,HTTP_RESPONSE_CONTENT_TYPE,&quot;CeptrSymbol/HTTP_REQUEST_PATH_SEGMENT&quot;,38); */</span></div>
+<div class="line">    <span class="comment">/* T *s = _t_newr(http_resp,SLOT); */</span></div>
+<div class="line">    <span class="comment">/* _t_news(s,USAGE,HTTP_REQUEST_PATH_SEGMENT); */</span></div>
 <div class="line">    *paramsP = params;</div>
 <div class="line">}</div>
 </div><!-- fragment -->
@@ -291,7 +302,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ht
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><a class="el" href="http__example_8h.html">http_example.h</a></li>
-    <li class="footer">Generated on Wed Feb 24 2016 12:26:57 for ceptr by
+    <li class="footer">Generated on Sat Mar 5 2016 10:23:25 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

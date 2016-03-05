@@ -115,13 +115,13 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="STRUCTURE_OR"></a>STRUCTURE_OR</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_STRUCTURE_DEF">ONE-OR-MORE-OF-STRUCTURE-DEF</a></td><td></td></tr>
 <tr><td><a name="STRUCTURE_ZERO_OR_MORE"></a>STRUCTURE_ZERO_OR_MORE</td><td><a href="ref_sys_structures.html#STRUCTURE_DEF">STRUCTURE-DEF</a></td><td></td></tr>
 <tr><td><a name="STRUCTURE_ONE_OR_MORE"></a>STRUCTURE_ONE_OR_MORE</td><td><a href="ref_sys_structures.html#STRUCTURE_DEF">STRUCTURE-DEF</a></td><td></td></tr>
-<tr><td><a name="SYMBOL_OF_STRUCTURE"></a>SYMBOL_OF_STRUCTURE</td><td><a href="ref_sys_structures.html#STRUCTURE">STRUCTURE</a></td><td></td></tr>
+<tr><td><a name="STRUCTURE_STRUCTURE"></a>STRUCTURE_STRUCTURE</td><td><a href="ref_sys_structures.html#STRUCTURE">STRUCTURE</a></td><td></td></tr>
 <tr><td><a name="STRUCTURE_ANYTHING"></a>STRUCTURE_ANYTHING</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
-<tr><td><a name="STRUCTURE_LABEL"></a>STRUCTURE_LABEL</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="STRUCTURE_LABEL"></a>STRUCTURE_LABEL</td><td><a href="ref_sys_structures.html#LABEL">LABEL</a></td><td></td></tr>
 <tr><td><a name="STRUCTURE_DEFINITION"></a>STRUCTURE_DEFINITION</td><td><a href="ref_sys_structures.html#TUPLE_OF_STRUCTURE_LABEL_AND_STRUCTURE_DEF">TUPLE-OF-STRUCTURE-LABEL-AND-STRUCTURE-DEF</a></td><td></td></tr>
 <tr><td><a name="STRUCTURE_ZERO_OR_ONE"></a>STRUCTURE_ZERO_OR_ONE</td><td><a href="ref_sys_structures.html#STRUCTURE_DEF">STRUCTURE-DEF</a></td><td></td></tr>
 <tr><td><a name="SYMBOL_STRUCTURE"></a>SYMBOL_STRUCTURE</td><td><a href="ref_sys_structures.html#STRUCTURE">STRUCTURE</a></td><td></td></tr>
-<tr><td><a name="SYMBOL_LABEL"></a>SYMBOL_LABEL</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="SYMBOL_LABEL"></a>SYMBOL_LABEL</td><td><a href="ref_sys_structures.html#LABEL">LABEL</a></td><td></td></tr>
 <tr><td><a name="SYMBOL_DEFINITION"></a>SYMBOL_DEFINITION</td><td><a href="ref_sys_structures.html#TUPLE_OF_SYMBOL_LABEL_AND_SYMBOL_STRUCTURE">TUPLE-OF-SYMBOL-LABEL-AND-SYMBOL-STRUCTURE</a></td><td></td></tr>
 <tr><td><a name="BOOLEAN"></a>BOOLEAN</td><td><a href="ref_sys_structures.html#BIT">BIT</a></td><td></td></tr>
 <tr><td><a name="SEMTREX_MATCH_PATH"></a>SEMTREX_MATCH_PATH</td><td><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></td><td>       Path to symbol matched by semtrex</td></tr>
@@ -149,13 +149,14 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="SEMTREX_MATCH_SIBLINGS_COUNT"></a>SEMTREX_MATCH_SIBLINGS_COUNT</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td>  In the FSA_ID, it's the length of the match</td></tr>
 <tr><td><a name="ASCII_CHAR"></a>ASCII_CHAR</td><td><a href="ref_sys_structures.html#CHAR">CHAR</a></td><td></td></tr>
 <tr><td><a name="ASCII_CHARS"></a>ASCII_CHARS</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_ASCII_CHAR">ONE-OR-MORE-OF-ASCII-CHAR</a></td><td></td></tr>
+<tr><td><a name="ASCII_STR"></a>ASCII_STR</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
 <tr><td><a name="RECEPTOR_XADDR"></a>RECEPTOR_XADDR</td><td><a href="ref_sys_structures.html#XADDR">XADDR</a></td><td>               An Xaddr that points to a receptor</td></tr>
 <tr><td><a name="EXPECTATIONS"></a>EXPECTATIONS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_EXPECTATION">ZERO-OR-MORE-OF-EXPECTATION</a></td><td>        list of carrier/expectation/action tress</td></tr>
 <tr><td><a name="SIGNALS"></a>SIGNALS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_SIGNAL">ZERO-OR-MORE-OF-SIGNAL</a></td><td>                  list of signals on an aspect in the flux</td></tr>
 <tr><td><a name="DEFAULT_ASPECT"></a>DEFAULT_ASPECT</td><td><a href="ref_sys_structures.html#ASPECT">ASPECT</a></td><td></td></tr>
 <tr><td><a name="FLUX"></a>FLUX</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_STRUCTURE_OF_ASPECT">ONE-OR-MORE-OF-STRUCTURE-OF-ASPECT</a></td><td>                    tree to hold all incoming and in process signals on the various aspects</td></tr>
 <tr><td><a name="SCAPE_SPEC"></a>SCAPE_SPEC</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td>          @todo...</td></tr>
-<tr><td><a name="ASPECT_IDENT"></a>ASPECT_IDENT</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>                when we get ranges, this should limit the surface symbol those of ASPECT structure</td></tr>
+<tr><td><a name="ASPECT_IDENT"></a>ASPECT_IDENT</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>                when we get ranges, this should limit the surface symbol those defined as usages of ASPECT</td></tr>
 <tr><td><a name="ASPECT_TYPE"></a>ASPECT_TYPE</td><td><a href="ref_sys_structures.html#BIT">BIT</a></td><td>                    really should be an enum of IN, OUT</td></tr>
 <tr><td><a name="ASPECT_LABEL"></a>ASPECT_LABEL</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
 <tr><td><a name="ASPECT_DEF"></a>ASPECT_DEF</td><td><a href="ref_sys_structures.html#TUPLE_OF_ASPECT_TYPE_AND_ASPECT_LABEL">TUPLE-OF-ASPECT-TYPE-AND-ASPECT-LABEL</a></td><td>   what else goes in the aspect definition?</td></tr>
@@ -184,11 +185,20 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="PARAMS"></a>PARAMS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_ANY_SYMBOL">ZERO-OR-MORE-OF-ANY-SYMBOL</a></td><td></td></tr>
 <tr><td><a name="SEMANTIC_MAP"></a>SEMANTIC_MAP</td><td><a href="ref_sys_structures.html#LIST_OF_ONE_OR_MORE_OF_SEMANTIC_LINK">LIST-OF-ONE-OR-MORE-OF-SEMANTIC-LINK</a></td><td></td></tr>
 <tr><td><a name="EXPECTATION"></a>EXPECTATION</td><td><a href="ref_sys_structures.html#LIST_OF_CARRIER_AND_PATTERN_AND_ACTION_AND_PARAMS_AND_END_CONDITIONS_AND_ZERO_OR_ONE_OF_SEMANTIC_MAP">LIST-OF-CARRIER-AND-PATTERN-AND-ACTION-AND-PARAMS-AND-END-CONDITIONS-AND-ZERO-OR-ONE-OF-SEMANTIC-MAP</a></td><td></td></tr>
-<tr><td><a name="PROCESS_NAME"></a>PROCESS_NAME</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="TRANSCODER"></a>TRANSCODER</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
+<tr><td><a name="OPERATOR"></a>OPERATOR</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
+<tr><td><a name="VALIDATOR"></a>VALIDATOR</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
+<tr><td><a name="PROCESS_OF_STRUCTURE"></a>PROCESS_OF_STRUCTURE</td><td><a href="ref_sys_structures.html#STRUCTURE">STRUCTURE</a></td><td></td></tr>
+<tr><td><a name="PROCESS_OF_SYMBOL"></a>PROCESS_OF_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
+<tr><td><a name="PROCESS_OF_PROCESS"></a>PROCESS_OF_PROCESS</td><td><a href="ref_sys_structures.html#PROCESS">PROCESS</a></td><td></td></tr>
+<tr><td><a name="PROCESS_OF"></a>PROCESS_OF</td><td><a href="ref_sys_structures.html#LOGICAL_OR_OF_PROCESS_OF_STRUCTURE_AND_PROCESS_OF_SYMBOL_AND_PROCESS_OF_PROCESS">LOGICAL-OR-OF-PROCESS-OF-STRUCTURE-AND-PROCESS-OF-SYMBOL-AND-PROCESS-OF-PROCESS</a></td><td></td></tr>
+<tr><td><a name="PROCESS_TYPE"></a>PROCESS_TYPE</td><td><a href="ref_sys_structures.html#LOGICAL_OR_OF_TRANSCODER_AND_OPERATOR_AND_VALIDATOR">LOGICAL-OR-OF-TRANSCODER-AND-OPERATOR-AND-VALIDATOR</a></td><td></td></tr>
+<tr><td><a name="PROCESS_LINK"></a>PROCESS_LINK</td><td><a href="ref_sys_structures.html#TUPLE_OF_PROCESS_OF_AND_PROCESS_TYPE">TUPLE-OF-PROCESS-OF-AND-PROCESS-TYPE</a></td><td></td></tr>
+<tr><td><a name="PROCESS_NAME"></a>PROCESS_NAME</td><td><a href="ref_sys_structures.html#LABEL">LABEL</a></td><td></td></tr>
 <tr><td><a name="PROCESS_INTENTION"></a>PROCESS_INTENTION</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
 <tr><td><a name="PROCESS_SIGNATURE"></a>PROCESS_SIGNATURE</td><td><a href="ref_sys_structures.html#PROCESS_FORM">PROCESS-FORM</a></td><td></td></tr>
 <tr><td><a name="CODE"></a>CODE</td><td><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></td><td></td></tr>
-<tr><td><a name="PROCESS_DEFINITION"></a>PROCESS_DEFINITION</td><td><a href="ref_sys_structures.html#LIST_OF_PROCESS_NAME_AND_PROCESS_INTENTION_AND_CODE_AND_PROCESS_SIGNATURE">LIST-OF-PROCESS-NAME-AND-PROCESS-INTENTION-AND-CODE-AND-PROCESS-SIGNATURE</a></td><td></td></tr>
+<tr><td><a name="PROCESS_DEFINITION"></a>PROCESS_DEFINITION</td><td><a href="ref_sys_structures.html#LIST_OF_PROCESS_NAME_AND_PROCESS_INTENTION_AND_CODE_AND_PROCESS_SIGNATURE_AND_ZERO_OR_ONE_OF_PROCESS_LINK">LIST-OF-PROCESS-NAME-AND-PROCESS-INTENTION-AND-CODE-AND-PROCESS-SIGNATURE-AND-ZERO-OR-ONE-OF-PROCESS-LINK</a></td><td></td></tr>
 <tr><td><a name="GOAL"></a>GOAL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td> A goal stands for an intended process, thus the symbol stored in a GOAL must be limited to those that are uses of the PROCESS structure.</td></tr>
 <tr><td><a name="ROLE"></a>ROLE</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>  A role stands for an expected agent, thus the symbol stored in a ROLE must be limited to those of structure RECEPTOR_ADDRESS.</td></tr>
 <tr><td><a name="USAGE"></a>USAGE</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td> A usage stands for a(n) X of a Symbol.</td></tr>
@@ -198,7 +208,7 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="SLOT"></a>SLOT</td><td><a href="ref_sys_structures.html#SLOT_STRUCTURE">SLOT-STRUCTURE</a></td><td></td></tr>
 <tr><td><a name="REPLACEMENT_VALUE"></a>REPLACEMENT_VALUE</td><td><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></td><td>        what to fill the slot with</td></tr>
 <tr><td><a name="SEMANTIC_LINK"></a>SEMANTIC_LINK</td><td><a href="ref_sys_structures.html#TUPLE_OF_SEMANTIC_REFERENCE_AND_REPLACEMENT_VALUE">TUPLE-OF-SEMANTIC-REFERENCE-AND-REPLACEMENT-VALUE</a></td><td>   mapping between a semantic reference and replacement value, used for filling templates</td></tr>
-<tr><td><a name="SIGNATURE_LABEL"></a>SIGNATURE_LABEL</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="SIGNATURE_LABEL"></a>SIGNATURE_LABEL</td><td><a href="ref_sys_structures.html#LABEL">LABEL</a></td><td></td></tr>
 <tr><td><a name="SIGNATURE_STRUCTURE"></a>SIGNATURE_STRUCTURE</td><td><a href="ref_sys_structures.html#STRUCTURE">STRUCTURE</a></td><td>      the structure that would match</td></tr>
 <tr><td><a name="SIGNATURE_SYMBOL"></a>SIGNATURE_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>            the symbol that would match</td></tr>
 <tr><td><a name="SIGNATURE_PROCESS"></a>SIGNATURE_PROCESS</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>           the output signature of the process</td></tr>
@@ -240,7 +250,7 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="WHICH_WEAL"></a>WHICH_WEAL</td><td><a href="ref_sys_structures.html#PAIR_OF_WEAL">PAIR-OF-WEAL</a></td><td></td></tr>
 <tr><td><a name="CONNECTION"></a>CONNECTION</td><td><a href="ref_sys_structures.html#LINKING">LINKING</a></td><td></td></tr>
 <tr><td><a name="PROTOCOL_BINDINGS"></a>PROTOCOL_BINDINGS</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_RESOLUTION">ONE-OR-MORE-OF-RESOLUTION</a></td><td></td></tr>
-<tr><td><a name="PROTOCOL_LABEL"></a>PROTOCOL_LABEL</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="PROTOCOL_LABEL"></a>PROTOCOL_LABEL</td><td><a href="ref_sys_structures.html#LABEL">LABEL</a></td><td></td></tr>
 <tr><td><a name="PROTOCOL_SEMANTICS"></a>PROTOCOL_SEMANTICS</td><td><a href="ref_sys_structures.html#LIST_OF_ZERO_OR_MORE_OF_ROLE_AND_ZERO_OR_MORE_OF_GOAL_AND_ZERO_OR_MORE_OF_USAGE_AND_ZERO_OR_MORE_OF_WEAL">LIST-OF-ZERO-OR-MORE-OF-ROLE-AND-ZERO-OR-MORE-OF-GOAL-AND-ZERO-OR-MORE-OF-USAGE-AND-ZERO-OR-MORE-OF-WEAL</a></td><td></td></tr>
 <tr><td><a name="PROTOCOL_DEFINITION"></a>PROTOCOL_DEFINITION</td><td><a href="ref_sys_structures.html#LIST_OF_PROTOCOL_LABEL_AND_PROTOCOL_SEMANTICS_AND_ZERO_OR_MORE_OF_STRUCTURE_OF_INTERACTION_AND_ZERO_OR_MORE_OF_INCLUSION">LIST-OF-PROTOCOL-LABEL-AND-PROTOCOL-SEMANTICS-AND-ZERO-OR-MORE-OF-STRUCTURE-OF-INTERACTION-AND-ZERO-OR-MORE-OF-INCLUSION</a></td><td></td></tr>
 <tr><td><a name="MANIFEST_LABEL"></a>MANIFEST_LABEL</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td>           a label in the manifest to identify a binding</td></tr>
@@ -252,7 +262,7 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="BINDING_PAIR"></a>BINDING_PAIR</td><td><a href="ref_sys_structures.html#TUPLE_OF_MANIFEST_LABEL_AND_ANY_SYMBOL">TUPLE-OF-MANIFEST-LABEL-AND-ANY-SYMBOL</a></td><td>                a pair that matches a MANIFEST_LABEL with a given binding</td></tr>
 <tr><td><a name="BINDINGS"></a>BINDINGS</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_BINDING_PAIR">ONE-OR-MORE-OF-BINDING-PAIR</a></td><td>                    specifics that match a MANIFEST and allow a receptor to be installed</td></tr>
 <tr><td><a name="RECEPTOR_ELAPSED_TIME"></a>RECEPTOR_ELAPSED_TIME</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
-<tr><td><a name="RECEPTOR_LABEL"></a>RECEPTOR_LABEL</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="RECEPTOR_LABEL"></a>RECEPTOR_LABEL</td><td><a href="ref_sys_structures.html#LABEL">LABEL</a></td><td></td></tr>
 <tr><td><a name="RECEPTOR_DEFINITION"></a>RECEPTOR_DEFINITION</td><td><a href="ref_sys_structures.html#TUPLE_OF_RECEPTOR_LABEL_AND_DEFINITIONS">TUPLE-OF-RECEPTOR-LABEL-AND-DEFINITIONS</a></td><td></td></tr>
 <tr><td><a name="RECEPTOR_STATE"></a>RECEPTOR_STATE</td><td><a href="ref_sys_structures.html#LIST_OF_FLUX_AND_PENDING_SIGNALS_AND_PENDING_RESPONSES_AND_RECEPTOR_ELAPSED_TIME">LIST-OF-FLUX-AND-PENDING-SIGNALS-AND-PENDING-RESPONSES-AND-RECEPTOR-ELAPSED-TIME</a></td><td></td></tr>
 <tr><td><a name="PARENT_CONTEXT_NUM"></a>PARENT_CONTEXT_NUM</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td>        identifies the semantic context of a receptors parent</td></tr>
@@ -271,6 +281,8 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="TODAY"></a>TODAY</td><td><a href="ref_sys_structures.html#DATE">DATE</a></td><td></td></tr>
 <tr><td><a name="NOW"></a>NOW</td><td><a href="ref_sys_structures.html#TIME">TIME</a></td><td></td></tr>
 <tr><td><a name="TICK"></a>TICK</td><td><a href="ref_sys_structures.html#TIMESTAMP">TIMESTAMP</a></td><td></td></tr>
+<tr><td><a name="DATE_DIVIDER"></a>DATE_DIVIDER</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="US_SHORT_DATE"></a>US_SHORT_DATE</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
 <tr><td><a name="ERROR_LOCATION"></a>ERROR_LOCATION</td><td><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></td><td></td></tr>
 <tr><td><a name="ZERO_DIVIDE_ERR"></a>ZERO_DIVIDE_ERR</td><td><a href="ref_sys_structures.html#REDUCTION_ERROR">REDUCTION-ERROR</a></td><td></td></tr>
 <tr><td><a name="TOO_FEW_PARAMS_ERR"></a>TOO_FEW_PARAMS_ERR</td><td><a href="ref_sys_structures.html#REDUCTION_ERROR">REDUCTION-ERROR</a></td><td></td></tr>
@@ -293,6 +305,10 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="ITERATE_ON_SYMBOL"></a>ITERATE_ON_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
 <tr><td><a name="ITERATION_DATA"></a>ITERATION_DATA</td><td><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></td><td>    data to iterate over</td></tr>
 <tr><td><a name="BLOCK"></a>BLOCK</td><td><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></td><td>    set of processes for DO</td></tr>
+<tr><td><a name="TRANSCODE_TO"></a>TRANSCODE_TO</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
+<tr><td><a name="TRANSCODE_PARAMS"></a>TRANSCODE_PARAMS</td><td><a href="ref_sys_structures.html#TUPLE_OF_TRANSCODE_TO_AND_ZERO_OR_MORE_OF_ANY_SYMBOL">TUPLE-OF-TRANSCODE-TO-AND-ZERO-OR-MORE-OF-ANY-SYMBOL</a></td><td></td></tr>
+<tr><td><a name="TRANSCODE_ITEMS"></a>TRANSCODE_ITEMS</td><td><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></td><td></td></tr>
+<tr><td><a name="EQUALITY_TEST_SYMBOL"></a>EQUALITY_TEST_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>  a symbol to use when testing the symbol equality</td></tr>
 <tr><td><a name="STX_SL"></a>STX_SL</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
 <tr><td><a name="STX_OP"></a>STX_OP</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
 <tr><td><a name="STX_CP"></a>STX_CP</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
@@ -328,10 +344,15 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="INSTANCES"></a>INSTANCES</td><td><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></td><td></td></tr>
 <tr><td><a name="SYMBOL_INSTANCES"></a>SYMBOL_INSTANCES</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
 <tr><td><a name="DELETED_INSTANCE"></a>DELETED_INSTANCE</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
+<tr><td><a name="ENGLISH_LABEL"></a>ENGLISH_LABEL</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="SPANISH_LABEL"></a>SPANISH_LABEL</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="FRENCH_LABEL"></a>FRENCH_LABEL</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="GERMAN_LABEL"></a>GERMAN_LABEL</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
 <tr><td><a name="REQUESTER"></a>REQUESTER</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
 <tr><td><a name="RESPONDER"></a>RESPONDER</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
 <tr><td><a name="REQUEST_DATA"></a>REQUEST_DATA</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
 <tr><td><a name="RESPONSE_DATA"></a>RESPONSE_DATA</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
+<tr><td><a name="CHANNEL"></a>CHANNEL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
 <tr><td><a name="RESPONSE_HANDLER"></a>RESPONSE_HANDLER</td><td><a href="ref_sys_structures.html#PROCESS">PROCESS</a></td><td></td></tr>
 <tr><td><a name="REQUEST_HANDLER"></a>REQUEST_HANDLER</td><td><a href="ref_sys_structures.html#PROCESS">PROCESS</a></td><td></td></tr>
 <tr><td><a name="backnforth"></a>backnforth</td><td><a href="ref_sys_structures.html#INTERACTION">INTERACTION</a></td><td></td></tr>
@@ -341,6 +362,7 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="are_you"></a>are_you</td><td><a href="ref_sys_structures.html#SEMTREX">SEMTREX</a></td><td></td></tr>
 <tr><td><a name="i_am"></a>i_am</td><td><a href="ref_sys_structures.html#RECEPTOR_IDENTITY">RECEPTOR-IDENTITY</a></td><td></td></tr>
 <tr><td><a name="LINE"></a>LINE</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td>                           text lines from unix streams</td></tr>
+<tr><td><a name="LINES"></a>LINES</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_LINE">ZERO-OR-MORE-OF-LINE</a></td><td></td></tr>
 <tr><td><a name="VERB"></a>VERB</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
 <tr><td><a name="COMMAND_PARAMETER"></a>COMMAND_PARAMETER</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
 <tr><td><a name="SHELL_COMMAND"></a>SHELL_COMMAND</td><td><a href="ref_sys_structures.html#COMMAND">COMMAND</a></td><td></td></tr>
@@ -391,15 +413,31 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="HTTP_REQUEST_PATH_QUERY_PARAM"></a>HTTP_REQUEST_PATH_QUERY_PARAM</td><td><a href="ref_sys_structures.html#KEY_VALUE_PARAM">KEY-VALUE-PARAM</a></td><td></td></tr>
 <tr><td><a name="HTTP_REQUEST_PATH_QUERY_PARAMS"></a>HTTP_REQUEST_PATH_QUERY_PARAMS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_HTTP_REQUEST_PATH_QUERY_PARAM">ZERO-OR-MORE-OF-HTTP-REQUEST-PATH-QUERY-PARAM</a></td><td></td></tr>
 <tr><td><a name="HTTP_REQUEST_PATH_QUERY"></a>HTTP_REQUEST_PATH_QUERY</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_HTTP_REQUEST_PATH_QUERY_PARAMS">ZERO-OR-MORE-OF-HTTP-REQUEST-PATH-QUERY-PARAMS</a></td><td></td></tr>
+<tr><td><a name="HTTP_HEADER_LABEL"></a>HTTP_HEADER_LABEL</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="MEDIA_TYPE_IDENT"></a>MEDIA_TYPE_IDENT</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
+<tr><td><a name="MEDIA_SUBTYPE_IDENT"></a>MEDIA_SUBTYPE_IDENT</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
+<tr><td><a name="MEDIA_PARAM"></a>MEDIA_PARAM</td><td><a href="ref_sys_structures.html#KEY_VALUE_PARAM">KEY-VALUE-PARAM</a></td><td></td></tr>
+<tr><td><a name="CONTENT_TYPE"></a>CONTENT_TYPE</td><td><a href="ref_sys_structures.html#MEDIA_TYPE">MEDIA-TYPE</a></td><td></td></tr>
+<tr><td><a name="TEXT_MEDIA_TYPE"></a>TEXT_MEDIA_TYPE</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
+<tr><td><a name="HTML_TEXT_MEDIA_SUBTYPE"></a>HTML_TEXT_MEDIA_SUBTYPE</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
+<tr><td><a name="PLAIN_TEXT_MEDIA_SUBTYPE"></a>PLAIN_TEXT_MEDIA_SUBTYPE</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
+<tr><td><a name="CEPTR_TEXT_MEDIA_SUBTYPE"></a>CEPTR_TEXT_MEDIA_SUBTYPE</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
+<tr><td><a name="CONTENT_ENCODING"></a>CONTENT_ENCODING</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td>  cstring for now, add semantic later.</td></tr>
 <tr><td><a name="HTTP_REQUEST_METHOD"></a>HTTP_REQUEST_METHOD</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
 <tr><td><a name="HTTP_REQUEST_PATH"></a>HTTP_REQUEST_PATH</td><td><a href="ref_sys_structures.html#URI">URI</a></td><td></td></tr>
 <tr><td><a name="HTTP_REQUEST_VERSION"></a>HTTP_REQUEST_VERSION</td><td><a href="ref_sys_structures.html#VERSION">VERSION</a></td><td></td></tr>
 <tr><td><a name="HTTP_REQUEST"></a>HTTP_REQUEST</td><td><a href="ref_sys_structures.html#HTTP_REQUEST_V09">HTTP-REQUEST-V09</a></td><td></td></tr>
 <tr><td><a name="HTTP_REQUEST_HOST"></a>HTTP_REQUEST_HOST</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
-<tr><td><a name="HTTP_RESPONSE_CONTENT_TYPE"></a>HTTP_RESPONSE_CONTENT_TYPE</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
-<tr><td><a name="HTTP_RESPONSE_BODY"></a>HTTP_RESPONSE_BODY</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="HEADER_KEY"></a>HEADER_KEY</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="HEADER_VALUE"></a>HEADER_VALUE</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="HTTP_RESPONSE_HEADER"></a>HTTP_RESPONSE_HEADER</td><td><a href="ref_sys_structures.html#HEADER">HEADER</a></td><td></td></tr>
+<tr><td><a name="HTTP_GENERAL_HEADER"></a>HTTP_GENERAL_HEADER</td><td><a href="ref_sys_structures.html#HEADER">HEADER</a></td><td></td></tr>
+<tr><td><a name="HTTP_ENTITY_HEADER"></a>HTTP_ENTITY_HEADER</td><td><a href="ref_sys_structures.html#LOGICAL_OR_OF_CONTENT_TYPE_AND_CONTENT_ENCODING">LOGICAL-OR-OF-CONTENT-TYPE-AND-CONTENT-ENCODING</a></td><td>    @todo plus a few more see https://www.w3.org/Protocols/rfc2616/rfc2616-sec7.html#sec7.1</td></tr>
+<tr><td><a name="HTTP_RESPONSE_BODY"></a>HTTP_RESPONSE_BODY</td><td><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></td><td></td></tr>
 <tr><td><a name="HTTP_RESPONSE_STATUS"></a>HTTP_RESPONSE_STATUS</td><td><a href="ref_sys_structures.html#STATUS">STATUS</a></td><td></td></tr>
-<tr><td><a name="HTTP_RESPONSE"></a>HTTP_RESPONSE</td><td><a href="ref_sys_structures.html#LIST_OF_HTTP_RESPONSE_CONTENT_TYPE_AND_HTTP_RESPONSE_BODY_AND_HTTP_RESPONSE_STATUS">LIST-OF-HTTP-RESPONSE-CONTENT-TYPE-AND-HTTP-RESPONSE-BODY-AND-HTTP-RESPONSE-STATUS</a></td><td></td></tr>
+<tr><td><a name="HTTP_HEADER"></a>HTTP_HEADER</td><td><a href="ref_sys_structures.html#LOGICAL_OR_OF_HTTP_GENERAL_HEADER_AND_HTTP_RESPONSE_HEADER_AND_HTTP_ENTITY_HEADER">LOGICAL-OR-OF-HTTP-GENERAL-HEADER-AND-HTTP-RESPONSE-HEADER-AND-HTTP-ENTITY-HEADER</a></td><td></td></tr>
+<tr><td><a name="HTTP_HEADERS"></a>HTTP_HEADERS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_HTTP_HEADER">ZERO-OR-MORE-OF-HTTP-HEADER</a></td><td></td></tr>
+<tr><td><a name="HTTP_RESPONSE"></a>HTTP_RESPONSE</td><td><a href="ref_sys_structures.html#LIST_OF_HTTP_RESPONSE_STATUS_AND_HTTP_HEADERS_AND_HTTP_RESPONSE_BODY">LIST-OF-HTTP-RESPONSE-STATUS-AND-HTTP-HEADERS-AND-HTTP-RESPONSE-BODY</a></td><td></td></tr>
 <tr><td><a name="HTML_DOCUMENT"></a>HTML_DOCUMENT</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td> //@todo should be an optionality structure</td></tr>
 <tr><td><a name="HTML_TOK_TAG_OPEN"></a>HTML_TOK_TAG_OPEN</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
 <tr><td><a name="HTML_TOK_TAG_CLOSE"></a>HTML_TOK_TAG_CLOSE</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
@@ -432,14 +470,16 @@ $(document).ready(function(){initNavTree('ref_sys_symbols.html','');});
 <tr><td><a name="HTML_BUTTON"></a>HTML_BUTTON</td><td><a href="ref_sys_structures.html#HTML_ELEMENT">HTML-ELEMENT</a></td><td></td></tr>
 <tr><td><a name="HTTP_CLIENT"></a>HTTP_CLIENT</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
 <tr><td><a name="HTTP_SERVER"></a>HTTP_SERVER</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
-<tr><td><a name="HTTP_REQUEST_SENDER"></a>HTTP_REQUEST_SENDER</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
+<tr><td><a name="HTTP_REQUEST_PARSER"></a>HTTP_REQUEST_PARSER</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
+<tr><td><a name="HTTP_ASPECT"></a>HTTP_ASPECT</td><td><a href="ref_sys_structures.html#ASPECT">ASPECT</a></td><td></td></tr>
+<tr><td><a name="HTTP_RESPONSE_HANDLER"></a>HTTP_RESPONSE_HANDLER</td><td><a href="ref_sys_structures.html#PROCESS">PROCESS</a></td><td></td></tr>
 </table>
  </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Feb 24 2016 12:26:58 for ceptr by
+    <li class="footer">Generated on Sat Mar 5 2016 10:23:25 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

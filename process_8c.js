@@ -19,6 +19,7 @@ var process_8c =
     [ "_p_free_context", "process_8c.html#a2a0ec4e60c9205d052151f461275fe12", null ],
     [ "_p_free_elements", "process_8c.html#a1ed49046dc88de3d605d2d426571a4e3", null ],
     [ "_p_freeq", "process_8c.html#aea59e125f10441efe75f6047ee7b35e1", null ],
+    [ "_p_get_transcoder", "process_8c.html#a235fbdee2e822c99deaaf35b390a7697", null ],
     [ "_p_make_run_tree", "process_8c.html#ae01e759a3a518b00ac631178de801be8", null ],
     [ "_p_newq", "process_8c.html#ab687631a788dd02e54df41041ed55f1c", null ],
     [ "_p_reduce", "process_8c.html#a86a763d6e0b891d443750199f1a0f5b1", null ],

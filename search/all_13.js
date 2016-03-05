@@ -26,6 +26,7 @@ var searchData=
   ['test_20suite',['Test Suite',['../group__tests.html',1,'']]],
   ['testscapeaddelement',['testScapeAddElement',['../scape__spec_8h.html#a6d5ce3afd114532201a79937f6fb1247',1,'scape_spec.h']]],
   ['testscapenew',['testScapeNew',['../scape__spec_8h.html#a895ab132a0a1e72c8e1c5c63bc1ae4dd',1,'scape_spec.h']]],
+  ['testsemaddlabel',['testSemAddLabel',['../semtable__spec_8h.html#afe06505545d63615c135b160e3c64585',1,'semtable_spec.h']]],
   ['testsemgetbylabel',['testSemGetByLabel',['../semtable__spec_8h.html#aa01be69fbc2c75a00dfbb4a95257cd12',1,'semtable_spec.h']]],
   ['testsemgetsymbolstructure',['testSemGetSymbolStructure',['../semtable__spec_8h.html#a45f00a2d648a8fd97ff8075ef4593773',1,'semtable_spec.h']]],
   ['testsemtablecreate',['testSemTableCreate',['../semtable__spec_8h.html#ab10241f610faeae2fc98909e4662858e',1,'semtable_spec.h']]],

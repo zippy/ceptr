@@ -135,7 +135,7 @@ $(document).ready(function(){initNavTree('shell_8c_source.html','');});
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        strcpy(&amp;proc_name[7],command);</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <span class="keywordtype">int</span> pt1[] = {2,1,TREE_PATH_TERMINATOR};</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        _t_new(p,PARAM_REF,pt1,<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>)*3);</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <a class="code" href="structSemanticID.html">Process</a> proc = <a class="code" href="group__receptor.html#ga9e248fdb6e6d814935ac88e67e10e769">_r_define_process</a>(r,p,proc_name,<span class="stringliteral">&quot;long desc...&quot;</span>,NULL);</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <a class="code" href="structSemanticID.html">Process</a> proc = <a class="code" href="group__receptor.html#ga6bb73d41388d17428e5735ad9cbe5917">_r_define_process</a>(r,p,proc_name,<span class="stringliteral">&quot;long desc...&quot;</span>,NULL,NULL);</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        _t_news(bindings_handler,ACTUAL_PROCESS,proc);</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        p = code;</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    }</div>
@@ -143,7 +143,7 @@ $(document).ready(function(){initNavTree('shell_8c_source.html','');});
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        <a class="code" href="group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c">_t_add</a>(p,code);</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    }</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <a class="code" href="structSemanticID.html">Process</a> proc = <a class="code" href="group__receptor.html#ga9e248fdb6e6d814935ac88e67e10e769">_r_define_process</a>(r,p,desc,<span class="stringliteral">&quot;long desc...&quot;</span>,NULL);</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <a class="code" href="structSemanticID.html">Process</a> proc = <a class="code" href="group__receptor.html#ga6bb73d41388d17428e5735ad9cbe5917">_r_define_process</a>(r,p,desc,<span class="stringliteral">&quot;long desc...&quot;</span>,NULL,NULL);</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <a class="code" href="structT.html">T</a> *act = <a class="code" href="group__tree.html#ga48ffc2a6e4aa4856b76fb53b97db87f3">_t_newp</a>(0,ACTION,proc);</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <a class="code" href="group__receptor.html#gaabb070f3fefc65c40cd339ee2d88d464">_r_add_expectation</a>(r,DEFAULT_ASPECT,SHELL_COMMAND,expect,act,0,0,NULL);</div>
@@ -161,69 +161,71 @@ $(document).ready(function(){initNavTree('shell_8c_source.html','');});
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <a class="code" href="structStream.html">Stream</a> *output_stream = *osp = <a class="code" href="stream_8c.html#a583a5536a8b45f8a542449b4ff3f7e5e">_st_new_unix_stream</a>(output,0);</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <a class="code" href="structStream.html">Stream</a> *input_stream = *isp = <a class="code" href="stream_8c.html#a583a5536a8b45f8a542449b4ff3f7e5e">_st_new_unix_stream</a>(input,1);</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <a class="code" href="structReceptor.html">Receptor</a> *i_r = *irp = _r_makeStreamReaderReceptor(v-&gt;<a class="code" href="structVMHost.html#a0718944e7f9d848d3b96f704ea0f0252">sem</a>,TEST_STREAM_SYMBOL,input_stream,r-&gt;<a class="code" href="structReceptor.html#afeea3c89b6853516cd4c4d8e9d885174">addr</a>,parse_line,LINE);</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <a class="code" href="structXaddr.html">Xaddr</a> ix = _v_new_receptor(v,v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,STREAM_READER,i_r);</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <a class="code" href="group__vmhost.html#ga53694170e5452b8062ec405e6a9a3f60">_v_activate</a>(v,ix);</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <a class="code" href="structReceptor.html">Receptor</a> *o_r = *orp = _r_makeStreamWriterReceptor(v-&gt;<a class="code" href="structVMHost.html#a0718944e7f9d848d3b96f704ea0f0252">sem</a>,TEST_STREAM_SYMBOL,output_stream);</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <a class="code" href="structXaddr.html">Xaddr</a> ox = _v_new_receptor(v,v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,STREAM_WRITER,o_r);</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <a class="code" href="group__vmhost.html#ga53694170e5452b8062ec405e6a9a3f60">_v_activate</a>(v,ox);</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="comment">// set up shell to express the line parsing protocol when it receives LINES from the stream reader</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <a class="code" href="structSemanticID.html">Protocol</a> clp = _sem_get_by_label(v-&gt;<a class="code" href="structVMHost.html#a0718944e7f9d848d3b96f704ea0f0252">sem</a>,<span class="stringliteral">&quot;PARSE_COMMAND_FROM_LINE&quot;</span>,DEV_COMPOSITORY_CONTEXT);</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <a class="code" href="structT.html">T</a> *bindings = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(PROTOCOL_BINDINGS);</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <a class="code" href="structT.html">T</a> *res = _t_newr(bindings,RESOLUTION);</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <a class="code" href="structT.html">T</a> *w = _t_newr(res,WHICH_RECEPTOR);</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    _t_news(w,ROLE,LINE_SENDER);</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    __r_make_addr(w,ACTUAL_RECEPTOR,i_r-&gt;<a class="code" href="structReceptor.html#afeea3c89b6853516cd4c4d8e9d885174">addr</a>);</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    res = _t_newr(bindings,RESOLUTION);</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    w = _t_newr(res,WHICH_RECEPTOR);</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    _t_news(w,ROLE,COMMAND_RECEIVER);</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    __r_make_addr(w,ACTUAL_RECEPTOR,r-&gt;<a class="code" href="structReceptor.html#afeea3c89b6853516cd4c4d8e9d885174">addr</a>);</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    res = _t_newr(bindings,RESOLUTION);</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    w = _t_newr(res,WHICH_SYMBOL);</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    _t_news(w,USAGE,COMMAND_TYPE);</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    _t_news(w,ACTUAL_SYMBOL,SHELL_COMMAND);</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <a class="code" href="group__accumulator.html#ga46ff4d16575a21f8c7d02fa754ac6d2f">_o_express_role</a>(r,clp,COMMAND_RECEIVER,DEFAULT_ASPECT,bindings);</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(bindings);</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="comment">// set up shell to use the CLOCK TELL_TIME protocol for the time command</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <a class="code" href="structSemanticID.html">Protocol</a> time = _sem_get_by_label(v-&gt;<a class="code" href="structVMHost.html#a0718944e7f9d848d3b96f704ea0f0252">sem</a>,<span class="stringliteral">&quot;time&quot;</span>,CLOCK_CONTEXT);</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <a class="code" href="structT.html">T</a> *code = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(INITIATE_PROTOCOL);</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    _t_news(code,PNAME,time);</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    _t_news(code,WHICH_INTERACTION,tell_time);</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    bindings = _t_newr(code,PROTOCOL_BINDINGS);</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    res = _t_newr(bindings,RESOLUTION);</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    w = _t_newr(res,WHICH_RECEPTOR);</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    _t_news(w,ROLE,TIME_HEARER);</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    __r_make_addr(w,ACTUAL_RECEPTOR,r-&gt;<a class="code" href="structReceptor.html#afeea3c89b6853516cd4c4d8e9d885174">addr</a>);</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    res = _t_newr(bindings,RESOLUTION);</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    w = _t_newr(res,WHICH_RECEPTOR);</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    _t_news(w,ROLE,TIME_TELLER);</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <a class="code" href="structReceptorAddress.html">ReceptorAddress</a> clock_addr = {3}; <span class="comment">// @todo bogus!!! fix getting clock address somehow</span></div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    __r_make_addr(w,ACTUAL_RECEPTOR,clock_addr);</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    res = _t_newr(bindings,RESOLUTION);</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    w = _t_newr(res,WHICH_PROCESS);</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    _t_news(w,GOAL,REQUEST_HANDLER);</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    addCommand(r,o_r-&gt;<a class="code" href="structReceptor.html#afeea3c89b6853516cd4c4d8e9d885174">addr</a>,<span class="stringliteral">&quot;time&quot;</span>,<span class="stringliteral">&quot;get time&quot;</span>,code,w);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <a class="code" href="structReceptor.html">Receptor</a> *i_r = *irp = _r_makeStreamEdgeReceptor(v-&gt;<a class="code" href="structVMHost.html#a0718944e7f9d848d3b96f704ea0f0252">sem</a>);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    _r_addReader(i_r,TEST_STREAM_SYMBOL,input_stream,r-&gt;<a class="code" href="structReceptor.html#afeea3c89b6853516cd4c4d8e9d885174">addr</a>,DEFAULT_ASPECT,parse_line,LINE);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <a class="code" href="structXaddr.html">Xaddr</a> ix = _v_new_receptor(v,v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,STREAM_EDGE,i_r);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <a class="code" href="group__vmhost.html#ga53694170e5452b8062ec405e6a9a3f60">_v_activate</a>(v,ix);</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <a class="code" href="structReceptor.html">Receptor</a> *o_r = *orp = _r_makeStreamEdgeReceptor(v-&gt;<a class="code" href="structVMHost.html#a0718944e7f9d848d3b96f704ea0f0252">sem</a>);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    _r_addWriter(o_r,TEST_STREAM_SYMBOL,output_stream,DEFAULT_ASPECT);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <a class="code" href="structXaddr.html">Xaddr</a> ox = _v_new_receptor(v,v-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>,STREAM_EDGE,o_r);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <a class="code" href="group__vmhost.html#ga53694170e5452b8062ec405e6a9a3f60">_v_activate</a>(v,ox);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="comment">// set up shell to express the line parsing protocol when it receives LINES from the stream reader</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <a class="code" href="structSemanticID.html">Protocol</a> clp = _sem_get_by_label(v-&gt;<a class="code" href="structVMHost.html#a0718944e7f9d848d3b96f704ea0f0252">sem</a>,<span class="stringliteral">&quot;PARSE_COMMAND_FROM_LINE&quot;</span>,DEV_COMPOSITORY_CONTEXT);</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <a class="code" href="structT.html">T</a> *bindings = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(PROTOCOL_BINDINGS);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <a class="code" href="structT.html">T</a> *res = _t_newr(bindings,RESOLUTION);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <a class="code" href="structT.html">T</a> *w = _t_newr(res,WHICH_RECEPTOR);</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    _t_news(w,ROLE,LINE_SENDER);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    __r_make_addr(w,ACTUAL_RECEPTOR,i_r-&gt;<a class="code" href="structReceptor.html#afeea3c89b6853516cd4c4d8e9d885174">addr</a>);</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    res = _t_newr(bindings,RESOLUTION);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    w = _t_newr(res,WHICH_RECEPTOR);</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    _t_news(w,ROLE,COMMAND_RECEIVER);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    __r_make_addr(w,ACTUAL_RECEPTOR,r-&gt;<a class="code" href="structReceptor.html#afeea3c89b6853516cd4c4d8e9d885174">addr</a>);</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    res = _t_newr(bindings,RESOLUTION);</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    w = _t_newr(res,WHICH_SYMBOL);</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    _t_news(w,USAGE,COMMAND_TYPE);</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    _t_news(w,ACTUAL_SYMBOL,SHELL_COMMAND);</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <a class="code" href="group__accumulator.html#ga46ff4d16575a21f8c7d02fa754ac6d2f">_o_express_role</a>(r,clp,COMMAND_RECEIVER,DEFAULT_ASPECT,bindings);</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(bindings);</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="comment">// set up shell to use the CLOCK TELL_TIME protocol for the time command</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <a class="code" href="structSemanticID.html">Protocol</a> time = _sem_get_by_label(v-&gt;<a class="code" href="structVMHost.html#a0718944e7f9d848d3b96f704ea0f0252">sem</a>,<span class="stringliteral">&quot;time&quot;</span>,CLOCK_CONTEXT);</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <a class="code" href="structT.html">T</a> *code = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(INITIATE_PROTOCOL);</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    _t_news(code,PNAME,time);</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    _t_news(code,WHICH_INTERACTION,tell_time);</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    bindings = _t_newr(code,PROTOCOL_BINDINGS);</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    res = _t_newr(bindings,RESOLUTION);</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    w = _t_newr(res,WHICH_RECEPTOR);</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    _t_news(w,ROLE,TIME_HEARER);</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    __r_make_addr(w,ACTUAL_RECEPTOR,r-&gt;<a class="code" href="structReceptor.html#afeea3c89b6853516cd4c4d8e9d885174">addr</a>);</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    res = _t_newr(bindings,RESOLUTION);</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    w = _t_newr(res,WHICH_RECEPTOR);</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    _t_news(w,ROLE,TIME_TELLER);</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <a class="code" href="structReceptorAddress.html">ReceptorAddress</a> clock_addr = {3}; <span class="comment">// @todo bogus!!! fix getting clock address somehow</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    __r_make_addr(w,ACTUAL_RECEPTOR,clock_addr);</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    res = _t_newr(bindings,RESOLUTION);</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    w = _t_newr(res,WHICH_PROCESS);</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    _t_news(w,GOAL,REQUEST_HANDLER);</div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="comment">// (expect (on flux SHELL_COMMAND:receptor) action (send std_out (convert_to_lines (send vmhost receptor-list))))</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    addCommand(r,o_r-&gt;<a class="code" href="structReceptor.html#afeea3c89b6853516cd4c4d8e9d885174">addr</a>,<span class="stringliteral">&quot;time&quot;</span>,<span class="stringliteral">&quot;get time&quot;</span>,code,w);</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    code = _t_newi(0,MAGIC,MagicReceptors);</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    addCommand(r,o_r-&gt;<a class="code" href="structReceptor.html#afeea3c89b6853516cd4c4d8e9d885174">addr</a>,<span class="stringliteral">&quot;receptors&quot;</span>,<span class="stringliteral">&quot;get receptor list&quot;</span>,code,NULL);</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <span class="comment">// (expect (on flux SHELL_COMMAND:receptor) action (send std_out (convert_to_lines (send vmhost shutdown)))</span></div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    code = _t_newi(0,MAGIC,MagicQuit);</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    addCommand(r,o_r-&gt;<a class="code" href="structReceptor.html#afeea3c89b6853516cd4c4d8e9d885174">addr</a>,<span class="stringliteral">&quot;quit&quot;</span>,<span class="stringliteral">&quot;shut down the vmhost&quot;</span>,code,NULL);</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <span class="comment">// (expect (on flux SHELL_COMMAND:debug) action (send std_out (convert_to_lines (magic toggle debug)))</span></div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    code = _t_newi(0,MAGIC,MagicDebug);</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    addCommand(r,o_r-&gt;<a class="code" href="structReceptor.html#afeea3c89b6853516cd4c4d8e9d885174">addr</a>,<span class="stringliteral">&quot;debug&quot;</span>,<span class="stringliteral">&quot;toggle debug mode&quot;</span>,code,NULL);</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;}</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="comment">// (expect (on flux SHELL_COMMAND:receptor) action (send std_out (convert_to_lines (send vmhost receptor-list))))</span></div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    code = _t_newi(0,MAGIC,MagicReceptors);</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    addCommand(r,o_r-&gt;<a class="code" href="structReceptor.html#afeea3c89b6853516cd4c4d8e9d885174">addr</a>,<span class="stringliteral">&quot;receptors&quot;</span>,<span class="stringliteral">&quot;get receptor list&quot;</span>,code,NULL);</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    <span class="comment">// (expect (on flux SHELL_COMMAND:receptor) action (send std_out (convert_to_lines (send vmhost shutdown)))</span></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    code = _t_newi(0,MAGIC,MagicQuit);</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    addCommand(r,o_r-&gt;<a class="code" href="structReceptor.html#afeea3c89b6853516cd4c4d8e9d885174">addr</a>,<span class="stringliteral">&quot;quit&quot;</span>,<span class="stringliteral">&quot;shut down the vmhost&quot;</span>,code,NULL);</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="comment">// (expect (on flux SHELL_COMMAND:debug) action (send std_out (convert_to_lines (magic toggle debug)))</span></div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    code = _t_newi(0,MAGIC,MagicDebug);</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    addCommand(r,o_r-&gt;<a class="code" href="structReceptor.html#afeea3c89b6853516cd4c4d8e9d885174">addr</a>,<span class="stringliteral">&quot;debug&quot;</span>,<span class="stringliteral">&quot;toggle debug mode&quot;</span>,code,NULL);</div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;}</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;</div>
 <div class="ttc" id="group__tree_html_ga25dd0f385044ffbcc7c215ea80fa00b4"><div class="ttname"><a href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a></div><div class="ttdeci">T * _t_new_root(Symbol symbol)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00149">tree.c:149</a></div></div>
 <div class="ttc" id="structT_html"><div class="ttname"><a href="structT.html">T</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00114">ceptr_types.h:114</a></div></div>
 <div class="ttc" id="structStream_html"><div class="ttname"><a href="structStream.html">Stream</a></div><div class="ttdef"><b>Definition:</b> <a href="stream_8h_source.html#l00028">stream.h:28</a></div></div>
@@ -233,21 +235,21 @@ $(document).ready(function(){initNavTree('shell_8c_source.html','');});
 <div class="ttc" id="structReceptor_html_afeea3c89b6853516cd4c4d8e9d885174"><div class="ttname"><a href="structReceptor.html#afeea3c89b6853516cd4c4d8e9d885174">Receptor::addr</a></div><div class="ttdeci">ReceptorAddress addr</div><div class="ttdoc">the address by which to get messages to this receptor instance </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00233">ceptr_types.h:233</a></div></div>
 <div class="ttc" id="structReceptorAddress_html"><div class="ttname"><a href="structReceptorAddress.html">ReceptorAddress</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00190">ceptr_types.h:190</a></div></div>
 <div class="ttc" id="group__vmhost_html_ga53694170e5452b8062ec405e6a9a3f60"><div class="ttname"><a href="group__vmhost.html#ga53694170e5452b8062ec405e6a9a3f60">_v_activate</a></div><div class="ttdeci">void _v_activate(VMHost *v, Xaddr x)</div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8c_source.html#l00170">vmhost.c:170</a></div></div>
-<div class="ttc" id="group__receptor_html_ga9f66f2aaba88463a6e1f238a367a33f9"><div class="ttname"><a href="group__receptor.html#ga9f66f2aaba88463a6e1f238a367a33f9">_r_new</a></div><div class="ttdeci">Receptor * _r_new(SemTable *sem, SemanticID r)</div><div class="ttdoc">Creates a new receptor. </div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00080">receptor.c:80</a></div></div>
-<div class="ttc" id="group__receptor_html_ga9e248fdb6e6d814935ac88e67e10e769"><div class="ttname"><a href="group__receptor.html#ga9e248fdb6e6d814935ac88e67e10e769">_r_define_process</a></div><div class="ttdeci">Process _r_define_process(Receptor *r, T *code, char *name, char *intention, T *signature)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00245">receptor.c:245</a></div></div>
-<div class="ttc" id="group__def_html_ga7b491672589fc853007cac114a7f0a03"><div class="ttname"><a href="group__def.html#ga7b491672589fc853007cac114a7f0a03">_d_define_receptor</a></div><div class="ttdeci">SemanticID _d_define_receptor(SemTable *sem, char *label, T *def, Context c)</div><div class="ttdef"><b>Definition:</b> <a href="def_8c_source.html#l00425">def.c:425</a></div></div>
+<div class="ttc" id="group__receptor_html_ga9f66f2aaba88463a6e1f238a367a33f9"><div class="ttname"><a href="group__receptor.html#ga9f66f2aaba88463a6e1f238a367a33f9">_r_new</a></div><div class="ttdeci">Receptor * _r_new(SemTable *sem, SemanticID r)</div><div class="ttdoc">Creates a new receptor. </div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00085">receptor.c:85</a></div></div>
+<div class="ttc" id="group__def_html_ga7b491672589fc853007cac114a7f0a03"><div class="ttname"><a href="group__def.html#ga7b491672589fc853007cac114a7f0a03">_d_define_receptor</a></div><div class="ttdeci">SemanticID _d_define_receptor(SemTable *sem, char *label, T *def, Context c)</div><div class="ttdef"><b>Definition:</b> <a href="def_8c_source.html#l00395">def.c:395</a></div></div>
 <div class="ttc" id="structVMHost_html_a0718944e7f9d848d3b96f704ea0f0252"><div class="ttname"><a href="structVMHost.html#a0718944e7f9d848d3b96f704ea0f0252">VMHost::sem</a></div><div class="ttdeci">SemTable * sem</div><div class="ttdoc">Semantic Table for definitions on this host. </div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8h_source.html#l00044">vmhost.h:44</a></div></div>
 <div class="ttc" id="structVMHost_html"><div class="ttname"><a href="structVMHost.html">VMHost</a></div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8h_source.html#l00040">vmhost.h:40</a></div></div>
 <div class="ttc" id="structReceptor_html_a4bb9ce729b6b85fb99326e9df7b23cbd"><div class="ttname"><a href="structReceptor.html#a4bb9ce729b6b85fb99326e9df7b23cbd">Receptor::sem</a></div><div class="ttdeci">SemTable * sem</div><div class="ttdoc">pointer back to the semantic table context where the receptor&#39;s running </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00234">ceptr_types.h:234</a></div></div>
-<div class="ttc" id="group__accumulator_html_ga46ff4d16575a21f8c7d02fa754ac6d2f"><div class="ttname"><a href="group__accumulator.html#ga46ff4d16575a21f8c7d02fa754ac6d2f">_o_express_role</a></div><div class="ttdeci">void _o_express_role(Receptor *r, Protocol protocol, Symbol role, Aspect aspect, T *bindings)</div><div class="ttdef"><b>Definition:</b> <a href="protocol_8c_source.html#l00362">protocol.c:362</a></div></div>
+<div class="ttc" id="group__accumulator_html_ga46ff4d16575a21f8c7d02fa754ac6d2f"><div class="ttname"><a href="group__accumulator.html#ga46ff4d16575a21f8c7d02fa754ac6d2f">_o_express_role</a></div><div class="ttdeci">void _o_express_role(Receptor *r, Protocol protocol, Symbol role, Aspect aspect, T *bindings)</div><div class="ttdef"><b>Definition:</b> <a href="protocol_8c_source.html#l00364">protocol.c:364</a></div></div>
 <div class="ttc" id="structReceptor_html"><div class="ttname"><a href="structReceptor.html">Receptor</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00229">ceptr_types.h:229</a></div></div>
 <div class="ttc" id="structXaddr_html"><div class="ttname"><a href="structXaddr.html">Xaddr</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00257">ceptr_types.h:257</a></div></div>
 <div class="ttc" id="stream_8c_html_a583a5536a8b45f8a542449b4ff3f7e5e"><div class="ttname"><a href="stream_8c.html#a583a5536a8b45f8a542449b4ff3f7e5e">_st_new_unix_stream</a></div><div class="ttdeci">Stream * _st_new_unix_stream(FILE *stream, int reader)</div><div class="ttdef"><b>Definition:</b> <a href="stream_8c_source.html#l00083">stream.c:83</a></div></div>
 <div class="ttc" id="structVMHost_html_a218d2e91e129dee7c71e1b06ff533a6e"><div class="ttname"><a href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">VMHost::r</a></div><div class="ttdeci">Receptor * r</div><div class="ttdoc">Receptor data for this vm host. </div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8h_source.html#l00043">vmhost.h:43</a></div></div>
 <div class="ttc" id="group__semtrex_html_ga12e70dc3d5fde33655e8731ad3bdd935"><div class="ttname"><a href="group__semtrex.html#ga12e70dc3d5fde33655e8731ad3bdd935">_sl</a></div><div class="ttdeci">#define _sl(t, s)</div><div class="ttdoc">macro to add a single symbol literal to semtrex tree </div><div class="ttdef"><b>Definition:</b> <a href="semtrex_8h_source.html#l00117">semtrex.h:117</a></div></div>
 <div class="ttc" id="group__tree_html_ga3b7a6499fe49f8e6a54166d583b08d5c"><div class="ttname"><a href="group__tree.html#ga3b7a6499fe49f8e6a54166d583b08d5c">_t_add</a></div><div class="ttdeci">void _t_add(T *t, T *c)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00250">tree.c:250</a></div></div>
-<div class="ttc" id="group__tree_html_ga31e55cdc031e5f12523b998e89080db6"><div class="ttname"><a href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a></div><div class="ttdeci">void _t_free(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00515">tree.c:515</a></div></div>
-<div class="ttc" id="group__receptor_html_gaabb070f3fefc65c40cd339ee2d88d464"><div class="ttname"><a href="group__receptor.html#gaabb070f3fefc65c40cd339ee2d88d464">_r_add_expectation</a></div><div class="ttdeci">void _r_add_expectation(Receptor *r, Aspect aspect, Symbol carrier, T *pattern, T *action, T *with, T *until, T *using)</div><div class="ttdoc">Adds an expectation to a receptor&#39;s aspect. </div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00148">receptor.c:148</a></div></div>
+<div class="ttc" id="group__receptor_html_ga6bb73d41388d17428e5735ad9cbe5917"><div class="ttname"><a href="group__receptor.html#ga6bb73d41388d17428e5735ad9cbe5917">_r_define_process</a></div><div class="ttdeci">Process _r_define_process(Receptor *r, T *code, char *name, char *intention, T *signature, T *link)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00250">receptor.c:250</a></div></div>
+<div class="ttc" id="group__tree_html_ga31e55cdc031e5f12523b998e89080db6"><div class="ttname"><a href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a></div><div class="ttdeci">void _t_free(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00516">tree.c:516</a></div></div>
+<div class="ttc" id="group__receptor_html_gaabb070f3fefc65c40cd339ee2d88d464"><div class="ttname"><a href="group__receptor.html#gaabb070f3fefc65c40cd339ee2d88d464">_r_add_expectation</a></div><div class="ttdeci">void _r_add_expectation(Receptor *r, Aspect aspect, Symbol carrier, T *pattern, T *action, T *with, T *until, T *using)</div><div class="ttdoc">Adds an expectation to a receptor&#39;s aspect. </div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00153">receptor.c:153</a></div></div>
 <div class="ttc" id="structSemanticID_html"><div class="ttname"><a href="structSemanticID.html">SemanticID</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00022">ceptr_types.h:22</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -255,7 +257,7 @@ $(document).ready(function(){initNavTree('shell_8c_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="shell_8c.html">shell.c</a></li>
-    <li class="footer">Generated on Wed Feb 24 2016 12:26:57 for ceptr by
+    <li class="footer">Generated on Sat Mar 5 2016 10:23:25 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

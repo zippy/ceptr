@@ -149,11 +149,14 @@ $(document).ready(function(){initNavTree('stream_8h_source.html','');});
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor">#define _st_data(st) (st)-&gt;buf</span></div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#define _st_data_size(st) (st)-&gt;data_size</span></div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keywordtype">int</span> <a class="code" href="stream_8h.html#a77c2b4344266e1a27e2c9067787cba4a">_st_write</a>(<a class="code" href="structStream.html">Stream</a> *stream,<span class="keywordtype">char</span> *buf,<span class="keywordtype">size_t</span> len);</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
 <div class="ttc" id="structStream_html"><div class="ttname"><a href="structStream.html">Stream</a></div><div class="ttdef"><b>Definition:</b> <a href="stream_8h_source.html#l00028">stream.h:28</a></div></div>
 <div class="ttc" id="stream_8h_html_ab2a9830ab76c5e671aaf4061b6bd296e"><div class="ttname"><a href="stream_8h.html#ab2a9830ab76c5e671aaf4061b6bd296e">_st_kill</a></div><div class="ttdeci">void _st_kill(Stream *st)</div><div class="ttdef"><b>Definition:</b> <a href="stream_8c_source.html#l00136">stream.c:136</a></div></div>
 <div class="ttc" id="stream_8h_html_abb3d2ea8ba1e9e81d5804f68715ea529"><div class="ttname"><a href="stream_8h.html#abb3d2ea8ba1e9e81d5804f68715ea529">_st_start_read</a></div><div class="ttdeci">void _st_start_read(Stream *st)</div><div class="ttdef"><b>Definition:</b> <a href="stream_8c_source.html#l00114">stream.c:114</a></div></div>
+<div class="ttc" id="stream_8h_html_a77c2b4344266e1a27e2c9067787cba4a"><div class="ttname"><a href="stream_8h.html#a77c2b4344266e1a27e2c9067787cba4a">_st_write</a></div><div class="ttdeci">int _st_write(Stream *stream, char *buf, size_t len)</div><div class="ttdef"><b>Definition:</b> <a href="stream_8c_source.html#l00168">stream.c:168</a></div></div>
 <div class="ttc" id="stream_8h_html_a9bac5b101e58747900c48e16c0e0f94b"><div class="ttname"><a href="stream_8h.html#a9bac5b101e58747900c48e16c0e0f94b">_st_data_read</a></div><div class="ttdeci">void _st_data_read(Stream *st)</div><div class="ttdef"><b>Definition:</b> <a href="stream_8c_source.html#l00125">stream.c:125</a></div></div>
 <div class="ttc" id="stream_8h_html_a583a5536a8b45f8a542449b4ff3f7e5e"><div class="ttname"><a href="stream_8h.html#a583a5536a8b45f8a542449b4ff3f7e5e">_st_new_unix_stream</a></div><div class="ttdeci">Stream * _st_new_unix_stream(FILE *stream, int reader)</div><div class="ttdef"><b>Definition:</b> <a href="stream_8c_source.html#l00083">stream.c:83</a></div></div>
 <div class="ttc" id="stream_8h_html_afe0923e53392b62793ec3e80f88021aa"><div class="ttname"><a href="stream_8h.html#afe0923e53392b62793ec3e80f88021aa">_st_free</a></div><div class="ttdeci">void _st_free(Stream *)</div><div class="ttdef"><b>Definition:</b> <a href="stream_8c_source.html#l00148">stream.c:148</a></div></div>
@@ -163,7 +166,7 @@ $(document).ready(function(){initNavTree('stream_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="stream_8h.html">stream.h</a></li>
-    <li class="footer">Generated on Wed Feb 24 2016 12:26:57 for ceptr by
+    <li class="footer">Generated on Sat Mar 5 2016 10:23:25 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

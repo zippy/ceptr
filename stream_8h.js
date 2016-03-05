@@ -17,5 +17,6 @@ var stream_8h =
     [ "_st_free", "stream_8h.html#afe0923e53392b62793ec3e80f88021aa", null ],
     [ "_st_kill", "stream_8h.html#ab2a9830ab76c5e671aaf4061b6bd296e", null ],
     [ "_st_new_unix_stream", "stream_8h.html#a583a5536a8b45f8a542449b4ff3f7e5e", null ],
-    [ "_st_start_read", "stream_8h.html#abb3d2ea8ba1e9e81d5804f68715ea529", null ]
+    [ "_st_start_read", "stream_8h.html#abb3d2ea8ba1e9e81d5804f68715ea529", null ],
+    [ "_st_write", "stream_8h.html#a77c2b4344266e1a27e2c9067787cba4a", null ]
 ];

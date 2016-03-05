@@ -121,8 +121,7 @@ Include dependency graph for stream.h:</div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="stream_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="stream_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 </div>
 <p><a href="stream_8h_source.html">Go to the source code of this file.</a></p>
@@ -166,6 +165,8 @@ typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><b>hasDataCall
 <tr class="separator:ab2a9830ab76c5e671aaf4061b6bd296e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe0923e53392b62793ec3e80f88021aa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stream_8h.html#afe0923e53392b62793ec3e80f88021aa">_st_free</a> (<a class="el" href="structStream.html">Stream</a> *)</td></tr>
 <tr class="separator:afe0923e53392b62793ec3e80f88021aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77c2b4344266e1a27e2c9067787cba4a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stream_8h.html#a77c2b4344266e1a27e2c9067787cba4a">_st_write</a> (<a class="el" href="structStream.html">Stream</a> *stream, char *buf, size_t len)</td></tr>
+<tr class="separator:a77c2b4344266e1a27e2c9067787cba4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>streams abstraction header file </p>
@@ -279,13 +280,48 @@ typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><b>hasDataCall
 
 </div>
 </div>
+<a class="anchor" id="a77c2b4344266e1a27e2c9067787cba4a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int _st_write </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structStream.html">Stream</a> *&#160;</td>
+          <td class="paramname"><em>st</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>buf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>write to a stream </p>
+
+<p>Definition at line <a class="el" href="stream_8c_source.html#l00168">168</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="stream_8h.html">stream.h</a></li>
-    <li class="footer">Generated on Wed Feb 24 2016 12:26:58 for ceptr by
+    <li class="footer">Generated on Sat Mar 5 2016 10:23:25 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

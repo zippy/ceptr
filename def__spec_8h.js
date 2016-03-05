@@ -1,7 +1,6 @@
 var def__spec_8h =
 [
     [ "testDef", "def__spec_8h.html#a8abeb9bc8058c07837fab6574a2ceca0", null ],
-    [ "testDefGetName", "def__spec_8h.html#aae885c9c2d0b504611963c0f7f84bac3", null ],
     [ "testDefProcess", "def__spec_8h.html#ae5c15da7bedbab290404f99ffdcabbfb", null ],
     [ "testDefProcessTemplate", "def__spec_8h.html#aad381bff8dcf1dced2f7611abfce508e", null ],
     [ "testDefReceptor", "def__spec_8h.html#aee799103563b515e3d0d3de8302779a9", null ],
