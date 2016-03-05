@@ -25,7 +25,7 @@ sub openf {
 
 my %c;
 my @d;
-my %fmap = ('Structure'=>'sT','StructureS'=>'sTs','Symbol'=>'sY','Process'=>'sP','SetSymbol'=>'sYs','Protocol'=>'sProt','Data'=>'sData');
+my %fmap = ('Structure'=>'sT','StructureS'=>'sTs','Symbol'=>'sY','Process'=>'sP','SetSymbol'=>'sYs','Protocol'=>'sProt','Data'=>'sData','Label'=>'sLabel');
 my $context = "SYS";
 my %declared;
 my %anon;
@@ -172,7 +172,7 @@ while (my $line = <$fh>) {
                 my $structure_def = $2;
                 &addDef($type,$context,$name,&convertStrucDef($structure_def),$comment);
             }
-            elsif (($type eq 'Process') || ($type eq 'Protocol')) {
+            elsif (($type eq 'Process') || ($type eq 'Protocol') || ($type eq 'Label') ) {
                 $params =~ /(.*?),(.*)/;
                 my $name = $1;
                 my $def = $2;
@@ -250,6 +250,7 @@ foreach my $s (@d) {
     my @x = @$s;
     next if ($x[0] eq 'SetSymbol');
     next if ($x[0] eq 'Data');
+    next if ($x[0] eq 'Label');
     print $cfh "SemanticID $x[2]={0,0,0};\n";
 }
 

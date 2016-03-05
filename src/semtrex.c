@@ -1043,7 +1043,7 @@ Symbol get_symbol(char *symbol_name,SemTable *sem) {
         int i,c = _t_children(symbols);
         for(i=1;i<=c;i++) {
             T *t = _t_child(symbols,i);
-            T *c = _t_child(t,1);
+            T *c = _t_child(_t_child(t,DefLabelIdx),1);
             if (!strcmp(symbol_name,(char *)_t_surface(c))) {
                 Symbol r = {ctx,SEM_TYPE_SYMBOL,i};
                 return r;

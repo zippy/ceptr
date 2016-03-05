@@ -48,9 +48,17 @@ testSemGetByLabel() {
     //! [testSemGetByLabel]
 }
 
+void testSemAddLabel() {
+    //! [testSemAddLabel]
+    _sem_add_label(G_sem,BIT,ASCII_STR,"one or zero");
+    spec_is_str_equal(t2s(_sem_get_def(G_sem,BIT)),"(STRUCTURE_DEFINITION (STRUCTURE_LABEL (ENGLISH_LABEL:BIT) (ASCII_STR:one or zero)) (STRUCTURE_SYMBOL:NULL_SYMBOL))");
+    //! [testSemAddLabel]
+}
+
 void testSemTable() {
     testSemTableCreate();
     testSemTableGetName();
     testSemGetSymbolStructure();
     testSemGetByLabel();
+    testSemAddLabel();
 }

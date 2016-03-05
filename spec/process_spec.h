@@ -30,18 +30,23 @@ void testRunTree() {
     __t_dump(G_sem,xsignature,NO_INDENT,buf);
     _t_free(xsignature);
 
+
     signature = _t_new_root(PROCESS_SIGNATURE);
     T *o = _t_newr(signature,OUTPUT_SIGNATURE);
-    _t_new_str(o,SIGNATURE_LABEL,"result");
+    T *l = _t_newr(o,SIGNATURE_LABEL);
+    _t_new_str(l,ENGLISH_LABEL,"result");
     _t_news(o,SIGNATURE_PASSTHRU,NULL_STRUCTURE);
     T *i3 = _t_newr(signature,INPUT_SIGNATURE);
-    _t_new_str(i3,SIGNATURE_LABEL,"condition");
+    l = _t_newr(i3,SIGNATURE_LABEL);
+    _t_new_str(l,ENGLISH_LABEL,"condition");
     _t_news(i3,SIGNATURE_PROCESS,BOOLEAN); // a process that returns a boolean
     T *i1 = _t_newr(signature,INPUT_SIGNATURE);
-    _t_new_str(i1,SIGNATURE_LABEL,"true_branch");
+    l = _t_newr(i1,SIGNATURE_LABEL);
+    _t_new_str(l,ENGLISH_LABEL,"true_branch");
     _t_news(i1,SIGNATURE_ANY,NULL_STRUCTURE);
     T *i2 = _t_newr(signature,INPUT_SIGNATURE);
-    _t_new_str(i2,SIGNATURE_LABEL,"false_branch");
+    l = _t_newr(i2,SIGNATURE_LABEL);
+    _t_new_str(l,ENGLISH_LABEL,"false_branch");
     _t_news(i2,SIGNATURE_ANY,NULL_STRUCTURE);
 
     // test that __p_make_signature does what we think it should

@@ -298,18 +298,18 @@ void testReceptorDef() {
 
     spec_is_structure_equal(r,__r_get_symbol_structure(r,lat),FLOAT);
 
-    T *def;
-    spec_is_str_equal((char *)_t_surface(_t_child(def = _sem_get_def(r->sem,lat),DefLabelIdx)),"Latitude");
-    spec_is_str_equal((char *)_t_surface(_t_child(_sem_get_def(r->sem,lon),DefLabelIdx)),"Longitude");
+    T *def = _sem_get_def(r->sem,lat);
+    spec_is_str_equal(t2s(def),"(SYMBOL_DEFINITION (SYMBOL_LABEL (ENGLISH_LABEL:Latitude)) (SYMBOL_STRUCTURE:FLOAT))");
+    def = _sem_get_def(r->sem,lon);
+    spec_is_str_equal(t2s(def),"(SYMBOL_DEFINITION (SYMBOL_LABEL (ENGLISH_LABEL:Longitude)) (SYMBOL_STRUCTURE:FLOAT))");
 
-     spec_is_sem_equal(_r_get_sem_by_label(r,"Latitude"),lat);
+    spec_is_sem_equal(_r_get_sem_by_label(r,"Latitude"),lat);
     spec_is_sem_equal(_sem_get_by_label(G_sem,"Latitude",r->context),lat);
 
     Structure latlong = _r_define_structure(r,"Latlong",2,lat,lon);
 
     def = _sem_get_def(r->sem,latlong);
-    T *l = _t_child(def,DefLabelIdx);
-    spec_is_str_equal((char *)_t_surface(l),"Latlong");
+    spec_is_str_equal(t2s(def),"(STRUCTURE_DEFINITION (STRUCTURE_LABEL (ENGLISH_LABEL:Latlong)) (STRUCTURE_SEQUENCE (STRUCTURE_SYMBOL:Latitude) (STRUCTURE_SYMBOL:Longitude)))");
 
     spec_is_structure_equal(r,_r_get_sem_by_label(r,"Latlong"),latlong);
     spec_is_long_equal(__r_get_symbol_size(r,lat,0),sizeof(float));
@@ -331,7 +331,7 @@ void testReceptorDef() {
     Process p = _r_define_process(r,code,"do nothing","long version of doing nothing",NULL,NULL);
     def = _sem_get_def(r->sem,p);
 
-    spec_is_str_equal(_td(r,def),"(PROCESS_DEFINITION (PROCESS_NAME:do nothing) (PROCESS_INTENTION:long version of doing nothing) (process:NOOP) (PROCESS_SIGNATURE))");
+    spec_is_str_equal(_td(r,def),"(PROCESS_DEFINITION (PROCESS_NAME (ENGLISH_LABEL:do nothing)) (PROCESS_INTENTION:long version of doing nothing) (process:NOOP) (PROCESS_SIGNATURE))");
 
     _r_free(r);
 }
@@ -651,7 +651,7 @@ void testReceptorClock() {
      */
     Protocol time = _sem_get_by_label(G_sem,"time",r->context);
     T *def = _sem_get_def(G_sem,time);
-    spec_is_str_equal(_td(r,def),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL:time) (PROTOCOL_SEMANTICS (ROLE:TIME_TELLER) (ROLE:TIME_HEARER) (GOAL:REQUEST_HANDLER)) (tell_time (INITIATE (ROLE:TIME_HEARER) (DESTINATION (ROLE:TIME_TELLER)) (ACTION:time_request)) (EXPECT (ROLE:TIME_TELLER) (SOURCE (ROLE:TIME_HEARER)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:CLOCK_TELL_TIME))) (ACTION:respond with current time))))");
+    spec_is_str_equal(_td(r,def),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL (ENGLISH_LABEL:time)) (PROTOCOL_SEMANTICS (ROLE:TIME_TELLER) (ROLE:TIME_HEARER) (GOAL:REQUEST_HANDLER)) (tell_time (INITIATE (ROLE:TIME_HEARER) (DESTINATION (ROLE:TIME_TELLER)) (ACTION:time_request)) (EXPECT (ROLE:TIME_TELLER) (SOURCE (ROLE:TIME_HEARER)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:CLOCK_TELL_TIME))) (ACTION:respond with current time))))");
 
     //    debug_enable(D_SIGNALS);
 

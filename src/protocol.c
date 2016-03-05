@@ -16,7 +16,8 @@
 extern VMHost *G_vm;
 
 void *_o_add_label(char *label,T *def) {
-    T *l = _t_new_str(0,PROTOCOL_LABEL,label);
+    T *l = _t_new_root(PROTOCOL_LABEL);
+    _t_new_str(l,ENGLISH_LABEL,label);
     int path[2] = {1,TREE_PATH_TERMINATOR};
     _t_insert_at(def,path,l);
 }
@@ -40,7 +41,8 @@ T *_o_make_protocol_def(SemTable *sem,Context c,char *label,...) {
     Symbol state = PROTOCOL_SEMANTICS;
     bool in_conv = false;
     T *p = _t_new_root(PROTOCOL_DEFINITION);
-    _t_new_str(p,PROTOCOL_LABEL,label);
+    T *l = _t_newr(p,PROTOCOL_LABEL);
+    _t_new_str(l,ENGLISH_LABEL,label);
     T *t = _t_newr(p,PROTOCOL_SEMANTICS);
     bool done = false;
     Symbol param;

@@ -72,6 +72,16 @@ T *__sem_get_def(SemTable *sem,SemanticType semtype,Context c,SemanticAddr i) {
     return _t_child(defs,i);
 }
 
+/**
+ * get symbol's label
+ *
+ * @param[in] sem is the semantic table where symbols and structures are define
+ * @param[in] s the Symbol to return the label of
+ * @returns char * pointing to surface of label node
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/semtable_spec.h testSemTableGetName
+ */
 char *_sem_get_name(SemTable *sem,SemanticID s) {
     if (s.id == 0) {
         if (s.context == SYS_CONTEXT) {
@@ -87,7 +97,33 @@ char *_sem_get_name(SemTable *sem,SemanticID s) {
             raise_error("unexpected semantic NULL id!");
         }
     }
-    return __d_get_sem_name(_sem_get_defs(sem,s),s);
+    T *def = _sem_get_def(sem,s);
+    char *n = NULL;
+    if (def) {
+        int path[] ={DefLabelIdx,1,TREE_PATH_TERMINATOR};
+        T *t = _t_get(def,path);
+        if (!t) raise_error("missing label!");
+        n = (char *)_t_surface(t);
+    }
+    return n;
+}
+
+
+/**
+ * add a name to a definition
+ *
+ * @param[in] sem is the semantic table where symbols and structures are defined
+ * @param[in] s the semantic id of the definition to add a label to
+ * @param[in] label_type is a symbol of the label type to add
+ * @param[in] label text of the label
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/semtable_spec.h testSemGetByLabel
+ */
+void _sem_add_label(SemTable *sem,SemanticID s,Symbol label_type,char *label) {
+    T *def = _sem_get_def(sem,s);
+    T *labels  = _t_child(def,DefLabelIdx);
+    _t_new_str(labels,label_type,label);
 }
 
 Structure _sem_get_symbol_structure(SemTable *sem,Symbol s){
@@ -106,7 +142,7 @@ SemanticID _sem_get_by_label(SemTable *sem,char *label,Context c) {
         T *defs = _t_child(d,i);
         for(j=1;j<=_t_children(defs);j++) {
             T *def = _t_child(defs,j);
-            if (strcmp(label,(char *)_t_surface(_t_child(def,DefLabelIdx)))==0) {
+            if (strcmp(label,(char *)_t_surface(_t_child(_t_child(def,DefLabelIdx),1)))==0) {
                 sid.semtype = i;
                 sid.id = j;
                 return sid;

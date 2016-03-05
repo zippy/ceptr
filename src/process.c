@@ -1617,7 +1617,8 @@ T *__p_make_form(Symbol sym,char *output_label,Symbol output_type,SemanticID out
     int optional;
     T *signature = _t_new_root(sym);
     T *o = _t_newr(signature,OUTPUT_SIGNATURE);
-    _t_new_str(o,SIGNATURE_LABEL,output_label);
+    T *l = _t_newr(o,SIGNATURE_LABEL);
+    _t_new_str(l,ENGLISH_LABEL,output_label);
     if (semeq(output_type,SIGNATURE_PASSTHRU)) {
         _t_newr(o,output_type);
     }
@@ -1635,7 +1636,8 @@ T *__p_make_form(Symbol sym,char *output_label,Symbol output_type,SemanticID out
         }
         value = va_arg(params,Symbol);
         T *i = _t_newr(signature,INPUT_SIGNATURE);
-        _t_new_str(i,SIGNATURE_LABEL,label);
+        l = _t_newr(i,SIGNATURE_LABEL);
+        _t_new_str(l,ENGLISH_LABEL,label);
         _t_news(i,type,value);
         if (optional) _t_newr(i,SIGNATURE_OPTIONAL);
     }

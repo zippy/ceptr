@@ -8,12 +8,6 @@
 #include "../src/receptor.h"
 #include "spec_utils.h"
 
-void testDefGetName() {
-    T *symbols = __sem_get_defs(G_sem,SEM_TYPE_SYMBOL,TEST_CONTEXT);
-
-    spec_is_str_equal(__d_get_sem_name(symbols,TEST_INT_SYMBOL),"TEST_INT_SYMBOL");
-}
-
 void testDefValidate() {
     T *symbols = __sem_get_defs(G_sem,SEM_TYPE_SYMBOL,TEST_CONTEXT);
     T *structures = __sem_get_defs(G_sem,SEM_TYPE_STRUCTURE,TEST_CONTEXT);
@@ -42,15 +36,14 @@ void testDefSymbol() {
     spec_is_sem_equal(_t_symbol(_t_child(defs,ss.id)),SYMBOL_DEFINITION);
     spec_is_sem_equal(_t_symbol(_t_child(_t_child(defs,ss.id),SymbolDefStructureIdx)),SYMBOL_STRUCTURE);
     spec_is_sem_equal(_t_symbol(_t_child(_t_child(defs,ss.id),DefLabelIdx)),SYMBOL_LABEL);
-    spec_is_str_equal(__d_get_sem_name(defs,ss),"shoe size");
-    spec_is_str_equal(t2s(defs),"(SYMBOLS (SYMBOL_DEFINITION (SYMBOL_LABEL:shoe size) (SYMBOL_STRUCTURE:INTEGER)))");
+    spec_is_str_equal(t2s(defs),"(SYMBOLS (SYMBOL_DEFINITION (SYMBOL_LABEL (ENGLISH_LABEL:shoe size)) (SYMBOL_STRUCTURE:INTEGER)))");
 
     ss = _d_define_symbol(G_sem,NULL_STRUCTURE,"street number",ctx); // pre-declared to NULL
 
     spec_is_equal(ss.id,2);
-    spec_is_str_equal(t2s(_t_child(defs,ss.id)),"(SYMBOL_DEFINITION (SYMBOL_LABEL:street number) (SYMBOL_STRUCTURE:NULL_STRUCTURE))");
+    spec_is_str_equal(t2s(_t_child(defs,ss.id)),"(SYMBOL_DEFINITION (SYMBOL_LABEL (ENGLISH_LABEL:street number)) (SYMBOL_STRUCTURE:NULL_STRUCTURE))");
     __d_set_symbol_structure(defs,ss,INTEGER);
-    spec_is_str_equal(t2s(_t_child(defs,ss.id)),"(SYMBOL_DEFINITION (SYMBOL_LABEL:street number) (SYMBOL_STRUCTURE:INTEGER))");
+    spec_is_str_equal(t2s(_t_child(defs,ss.id)),"(SYMBOL_DEFINITION (SYMBOL_LABEL (ENGLISH_LABEL:street number)) (SYMBOL_STRUCTURE:INTEGER))");
     spec_is_equal(_d_get_def_addr(_t_child(defs,ss.id)),ss.id);
 
     _sem_free_context(G_sem,ctx);
@@ -63,20 +56,8 @@ void testDefStructure() {
     T *defs = __sem_get_defs(G_sem,SEM_TYPE_STRUCTURE,TEST_CONTEXT);
 
     Structure st = _d_define_structure_v(G_sem,"boolean pair",TEST_CONTEXT,2,BOOLEAN,BOOLEAN);
-    spec_is_equal(_t_children(defs),st.id);
-    T *s = _t_child(defs,st.id);
-    spec_is_sem_equal(_t_symbol(s),STRUCTURE_DEFINITION);
-    spec_is_equal(_t_children(s),2);
-    T *l = _t_child(s,DefLabelIdx);
-    T *p = _t_child(s,2);
-    spec_is_symbol_equal(0,_t_symbol(l),STRUCTURE_LABEL);
-    spec_is_str_equal((char *)_t_surface(l),"boolean pair");
-    spec_is_symbol_equal(0,_t_symbol(p),STRUCTURE_SEQUENCE);
-    spec_is_symbol_equal(0,_t_symbol(_t_child(p,1)),STRUCTURE_SYMBOL);
-    spec_is_symbol_equal(0,_t_symbol(_t_child(p,2)),STRUCTURE_SYMBOL);
-    spec_is_str_equal(__d_get_sem_name(defs,st),"boolean pair");
 
-    spec_is_str_equal(t2s(_sem_get_def(G_sem,st)),"(STRUCTURE_DEFINITION (STRUCTURE_LABEL:boolean pair) (STRUCTURE_SEQUENCE (STRUCTURE_SYMBOL:BOOLEAN) (STRUCTURE_SYMBOL:BOOLEAN)))");
+    spec_is_str_equal(t2s(_sem_get_def(G_sem,st)),"(STRUCTURE_DEFINITION (STRUCTURE_LABEL (ENGLISH_LABEL:boolean pair)) (STRUCTURE_SEQUENCE (STRUCTURE_SYMBOL:BOOLEAN) (STRUCTURE_SYMBOL:BOOLEAN)))");
 
     //! [testDefStructure]
 }
@@ -106,7 +87,7 @@ void testGetSize() {
     spec_is_long_equal(_d_get_structure_size(G_sem,FLOAT,0),sizeof(float));
     spec_is_long_equal(_d_get_structure_size(G_sem,XADDR,0),sizeof(Xaddr));
     spec_is_long_equal(_d_get_symbol_size(G_sem,STRUCTURE_SYMBOL,0),sizeof(Symbol));
-    spec_is_long_equal(_d_get_symbol_size(G_sem,SYMBOL_LABEL,"shoe_size"),10);
+    spec_is_long_equal(_d_get_symbol_size(G_sem,ENGLISH_LABEL,"shoe_size"),10);
 
     // test user-defined symbols and structures
     T *symbols = __sem_get_defs(G_sem,SEM_TYPE_SYMBOL,TEST_CONTEXT);
@@ -159,32 +140,7 @@ void testDefProcess() {
     spec_is_equal(_t_children(defs),p.id);
     T *s = _t_child(defs,p.id);
 
-    spec_is_str_equal(t2s(s),"(PROCESS_DEFINITION (PROCESS_NAME:power) (PROCESS_INTENTION:takes the mathematical power of the two params) (process:NOOP) (PROCESS_SIGNATURE (OUTPUT_SIGNATURE (SIGNATURE_LABEL:result) (SIGNATURE_SYMBOL:NULL_SYMBOL)) (INPUT_SIGNATURE (SIGNATURE_LABEL:val) (SIGNATURE_STRUCTURE:INTEGER)) (INPUT_SIGNATURE (SIGNATURE_LABEL:exponent) (SIGNATURE_STRUCTURE:INTEGER))) (PROCESS_LINK (PROCESS_OF_STRUCTURE:INTEGER) (PROCESS_TYPE (OPERATOR))))");
-
-    spec_is_sem_equal(_t_symbol(s),PROCESS_DEFINITION);
-
-    // first child is the name of the process
-    T *name = _t_child(s,1);
-    spec_is_sem_equal(_t_symbol(name),PROCESS_NAME);
-    spec_is_str_equal((char *)_t_surface(name),"power");
-
-    // second child is process intention as text (documentation)
-    T *intention = _t_child(s,ProcessDefIntentionIdx);
-    spec_is_sem_equal(_t_symbol(intention),PROCESS_INTENTION);
-    spec_is_str_equal((char *)_t_surface(intention),"takes the mathematical power of the two params");
-
-    // third child is code itself
-    spec_is_ptr_equal(_t_child(s,ProcessDefCodeIdx),code);
-
-    // fourth child is the signature
-    T *sig = _t_child(s,ProcessDefSignatureIdx);
-    spec_is_sem_equal(_t_symbol(sig),PROCESS_SIGNATURE);
-
-    // fifth child is the link
-    T *l = _t_child(s,ProcessDefLinkIdx);
-    spec_is_sem_equal(_t_symbol(l),PROCESS_LINK);
-
-    spec_is_str_equal(__d_get_sem_name(defs,p),"power");
+    spec_is_str_equal(t2s(s),"(PROCESS_DEFINITION (PROCESS_NAME (ENGLISH_LABEL:power)) (PROCESS_INTENTION:takes the mathematical power of the two params) (process:NOOP) (PROCESS_SIGNATURE (OUTPUT_SIGNATURE (SIGNATURE_LABEL (ENGLISH_LABEL:result)) (SIGNATURE_SYMBOL:NULL_SYMBOL)) (INPUT_SIGNATURE (SIGNATURE_LABEL (ENGLISH_LABEL:val)) (SIGNATURE_STRUCTURE:INTEGER)) (INPUT_SIGNATURE (SIGNATURE_LABEL (ENGLISH_LABEL:exponent)) (SIGNATURE_STRUCTURE:INTEGER))) (PROCESS_LINK (PROCESS_OF_STRUCTURE:INTEGER) (PROCESS_TYPE (OPERATOR))))");
 
     //! [testDefProcess]
 }
@@ -241,18 +197,22 @@ void testDefSysDefs() {
     dump2json(G_sem,__sem_context(G_sem,SYS_CONTEXT)->definitions,"sysdefs");
 
     // an example of a defined structure (STRUCTURE_DEF)
-    spec_is_str_equal(t2s(_sem_get_def(G_sem,STRUCTURE_DEF)),"(STRUCTURE_DEFINITION (STRUCTURE_LABEL:STRUCTURE_DEF) (STRUCTURE_OR (STRUCTURE_SYMBOL:STRUCTURE_SYMBOL) (STRUCTURE_SYMBOL:STRUCTURE_SEQUENCE) (STRUCTURE_SYMBOL:STRUCTURE_OR) (STRUCTURE_SYMBOL:STRUCTURE_ZERO_OR_MORE) (STRUCTURE_SYMBOL:STRUCTURE_ONE_OR_MORE) (STRUCTURE_SYMBOL:STRUCTURE_ZERO_OR_ONE) (STRUCTURE_SYMBOL:SYMBOL_OF_STRUCTURE) (STRUCTURE_SYMBOL:STRUCTURE_ANYTHING)))");
+    spec_is_str_equal(t2s(_sem_get_def(G_sem,STRUCTURE_DEF)),"(STRUCTURE_DEFINITION (STRUCTURE_LABEL (ENGLISH_LABEL:STRUCTURE_DEF)) (STRUCTURE_OR (STRUCTURE_SYMBOL:STRUCTURE_SYMBOL) (STRUCTURE_SYMBOL:STRUCTURE_SEQUENCE) (STRUCTURE_SYMBOL:STRUCTURE_OR) (STRUCTURE_SYMBOL:STRUCTURE_ZERO_OR_MORE) (STRUCTURE_SYMBOL:STRUCTURE_ONE_OR_MORE) (STRUCTURE_SYMBOL:STRUCTURE_ZERO_OR_ONE) (STRUCTURE_SYMBOL:STRUCTURE_STRUCTURE) (STRUCTURE_SYMBOL:STRUCTURE_ANYTHING)))");
 
-    spec_is_str_equal(t2s(_sem_get_def(G_sem,CSTRING)),"(STRUCTURE_DEFINITION (STRUCTURE_LABEL:CSTRING) (STRUCTURE_SYMBOL:NULL_SYMBOL))");
+    spec_is_str_equal(t2s(_sem_get_def(G_sem,CSTRING)),"(STRUCTURE_DEFINITION (STRUCTURE_LABEL (ENGLISH_LABEL:CSTRING)) (STRUCTURE_SYMBOL:NULL_SYMBOL))");
 
     // an example of a defined process (IF)
-    spec_is_str_equal(t2s(_sem_get_def(G_sem,IF)),"(PROCESS_DEFINITION (PROCESS_NAME:IF) (PROCESS_INTENTION:if) (process:NULL_PROCESS) (PROCESS_SIGNATURE (OUTPUT_SIGNATURE (SIGNATURE_LABEL:result) (SIGNATURE_PASSTHRU)) (INPUT_SIGNATURE (SIGNATURE_LABEL:condition) (SIGNATURE_PROCESS:BOOLEAN)) (INPUT_SIGNATURE (SIGNATURE_LABEL:then) (SIGNATURE_ANY)) (INPUT_SIGNATURE (SIGNATURE_LABEL:else) (SIGNATURE_ANY) (SIGNATURE_OPTIONAL))))");
+    spec_is_str_equal(t2s(_sem_get_def(G_sem,IF)),"(PROCESS_DEFINITION (PROCESS_NAME (ENGLISH_LABEL:IF)) (PROCESS_INTENTION:if) (process:NULL_PROCESS) (PROCESS_SIGNATURE (OUTPUT_SIGNATURE (SIGNATURE_LABEL (ENGLISH_LABEL:result)) (SIGNATURE_PASSTHRU)) (INPUT_SIGNATURE (SIGNATURE_LABEL (ENGLISH_LABEL:condition)) (SIGNATURE_PROCESS:BOOLEAN)) (INPUT_SIGNATURE (SIGNATURE_LABEL (ENGLISH_LABEL:then)) (SIGNATURE_ANY)) (INPUT_SIGNATURE (SIGNATURE_LABEL (ENGLISH_LABEL:else)) (SIGNATURE_ANY) (SIGNATURE_OPTIONAL))))");
 
     // an example of a process with code
-    spec_is_str_equal(t2s(_sem_get_def(G_sem,respond_with_yup)),"(PROCESS_DEFINITION (PROCESS_NAME:respond_with_yup) (PROCESS_INTENTION:respond with yup) (process:RESPOND (SIGNAL_REF:/1/4) (YUP)) (PROCESS_SIGNATURE (OUTPUT_SIGNATURE (SIGNATURE_LABEL:response id) (SIGNATURE_SYMBOL:SIGNAL_UUID))))");
+    spec_is_str_equal(t2s(_sem_get_def(G_sem,respond_with_yup)),"(PROCESS_DEFINITION (PROCESS_NAME (ENGLISH_LABEL:respond_with_yup)) (PROCESS_INTENTION:respond with yup) (process:RESPOND (SIGNAL_REF:/1/4) (YUP)) (PROCESS_SIGNATURE (OUTPUT_SIGNATURE (SIGNATURE_LABEL (ENGLISH_LABEL:response id)) (SIGNATURE_SYMBOL:SIGNAL_UUID))))");
 
     // an example of a defined protocol (alive)
-    spec_is_str_equal(t2s(_sem_get_def(G_sem,ALIVE)),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL:ALIVE) (PROTOCOL_SEMANTICS (ROLE:SERVER) (ROLE:CLIENT) (GOAL:HANDLER)) (alive (EXPECT (ROLE:SERVER) (SOURCE (ROLE:CLIENT)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:PING))) (ACTION:respond_with_yup)) (EXPECT (ROLE:CLIENT) (SOURCE (ROLE:SERVER)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:YUP))) (SLOT (GOAL:HANDLER) (SLOT_IS_VALUE_OF:ACTION)))))");
+    spec_is_str_equal(t2s(_sem_get_def(G_sem,ALIVE)),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL (ENGLISH_LABEL:ALIVE)) (PROTOCOL_SEMANTICS (ROLE:SERVER) (ROLE:CLIENT) (GOAL:HANDLER)) (alive (EXPECT (ROLE:SERVER) (SOURCE (ROLE:CLIENT)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:PING))) (ACTION:respond_with_yup)) (EXPECT (ROLE:CLIENT) (SOURCE (ROLE:SERVER)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:YUP))) (SLOT (GOAL:HANDLER) (SLOT_IS_VALUE_OF:ACTION)))))");
+
+    // an example of an a extra label:
+    spec_is_str_equal(t2s(_sem_get_def(G_sem,CONTENT_TYPE)),"(SYMBOL_DEFINITION (SYMBOL_LABEL (ENGLISH_LABEL:CONTENT_TYPE) (HTTP_HEADER_LABEL:Content-Type)) (SYMBOL_STRUCTURE:MEDIA_TYPE))");
+
 }
 
 void testDefReceptor() {
@@ -261,7 +221,7 @@ void testDefReceptor() {
 
     SemanticID s = _d_define_receptor(G_sem,"streamscapes",d,TEST_CONTEXT);
     defs = _sem_get_defs(G_sem,s);
-    spec_is_str_equal(t2s(defs),"(RECEPTORS (RECEPTOR_DEFINITION (RECEPTOR_LABEL:streamscapes) (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (RECEPTORS) (PROTOCOLS) (SCAPES))))");
+    spec_is_str_equal(t2s(defs),"(RECEPTORS (RECEPTOR_DEFINITION (RECEPTOR_LABEL (ENGLISH_LABEL:streamscapes)) (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (RECEPTORS) (PROTOCOLS) (SCAPES))))");
 
     T *d2 = __sem_get_defs(G_sem,SEM_TYPE_RECEPTOR, _d_get_receptor_context(G_sem,s));
 
@@ -274,8 +234,8 @@ void testDefReceptor() {
     //@todo undefining things??
 }
 
+
 void testDef() {
-    testDefGetName();
     testDefSysDefs();
     testDefValidate();
     testDefSymbol();

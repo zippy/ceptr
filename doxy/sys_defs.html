@@ -219,7 +219,7 @@
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
-       <div class="def-name"><a name="SYMBOL_OF_STRUCTURE"></a>SYMBOL_OF_STRUCTURE</div>
+       <div class="def-name"><a name="STRUCTURE_STRUCTURE"></a>STRUCTURE_STRUCTURE</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#STRUCTURE">STRUCTURE</a></div>
        <div class="def-comment"></div>
    </div>
@@ -232,13 +232,19 @@
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
        <div class="def-name"><a name="STRUCTURE_DEF"></a>STRUCTURE-DEF</div>
-       <div class="def-struc-def">OR(<a href="ref_sys_symbols.html#STRUCTURE_SYMBOL">STRUCTURE_SYMBOL</a>, <a href="ref_sys_symbols.html#STRUCTURE_SEQUENCE">STRUCTURE_SEQUENCE</a>, <a href="ref_sys_symbols.html#STRUCTURE_OR">STRUCTURE_OR</a>, <a href="ref_sys_symbols.html#STRUCTURE_ZERO_OR_MORE">STRUCTURE_ZERO_OR_MORE</a>, <a href="ref_sys_symbols.html#STRUCTURE_ONE_OR_MORE">STRUCTURE_ONE_OR_MORE</a>, <a href="ref_sys_symbols.html#STRUCTURE_ZERO_OR_ONE">STRUCTURE_ZERO_OR_ONE</a>, <a href="ref_sys_symbols.html#SYMBOL_OF_STRUCTURE">SYMBOL_OF_STRUCTURE</a>, <a href="ref_sys_symbols.html#STRUCTURE_ANYTHING">STRUCTURE_ANYTHING</a>)</div>
+       <div class="def-struc-def">OR(<a href="ref_sys_symbols.html#STRUCTURE_SYMBOL">STRUCTURE_SYMBOL</a>, <a href="ref_sys_symbols.html#STRUCTURE_SEQUENCE">STRUCTURE_SEQUENCE</a>, <a href="ref_sys_symbols.html#STRUCTURE_OR">STRUCTURE_OR</a>, <a href="ref_sys_symbols.html#STRUCTURE_ZERO_OR_MORE">STRUCTURE_ZERO_OR_MORE</a>, <a href="ref_sys_symbols.html#STRUCTURE_ONE_OR_MORE">STRUCTURE_ONE_OR_MORE</a>, <a href="ref_sys_symbols.html#STRUCTURE_ZERO_OR_ONE">STRUCTURE_ZERO_OR_ONE</a>, <a href="ref_sys_symbols.html#STRUCTURE_STRUCTURE">STRUCTURE_STRUCTURE</a>, <a href="ref_sys_symbols.html#STRUCTURE_ANYTHING">STRUCTURE_ANYTHING</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="LABEL"></a>LABEL</div>
+       <div class="def-struc-def">+(%<a href="ref_sys_structures.html#CSTRING">CSTRING</a>)</div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="STRUCTURE_LABEL"></a>STRUCTURE_LABEL</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LABEL">LABEL</a></div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-structure">
@@ -280,7 +286,7 @@
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="SYMBOL_LABEL"></a>SYMBOL_LABEL</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LABEL">LABEL</a></div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-structure">
@@ -886,7 +892,7 @@
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="PROCESS_NAME"></a>PROCESS_NAME</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LABEL">LABEL</a></div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">
@@ -1012,7 +1018,7 @@
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="SIGNATURE_LABEL"></a>SIGNATURE_LABEL</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LABEL">LABEL</a></div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">
@@ -1426,7 +1432,7 @@
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="PROTOCOL_LABEL"></a>PROTOCOL_LABEL</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LABEL">LABEL</a></div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-structure">
@@ -1546,7 +1552,7 @@
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="RECEPTOR_LABEL"></a>RECEPTOR_LABEL</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LABEL">LABEL</a></div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-structure">
@@ -2397,6 +2403,30 @@
        <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
        <div class="def-comment"></div>
    </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="ENGLISH_LABEL"></a>ENGLISH_LABEL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SPANISH_LABEL"></a>SPANISH_LABEL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="FRENCH_LABEL"></a>FRENCH_LABEL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="GERMAN_LABEL"></a>GERMAN_LABEL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-comment"></div>
+   </div>
 </div>
 <div class="defs-context">
    <h4>DEV_COMPOSITORY_CONTEXT</h4>
@@ -2984,6 +3014,12 @@
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="HTTP_HEADER_LABEL"></a>HTTP_HEADER_LABEL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="MEDIA_TYPE_IDENT"></a>MEDIA_TYPE_IDENT</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
        <div class="def-comment"></div>
@@ -3010,7 +3046,7 @@
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="CONTENT_TYPE"></a>CONTENT_TYPE</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#MEDIA_TYPE">MEDIA-TYPE</a></div>
-       <div class="def-comment">   (HTTP_HEADER_LABEL:"Content-Type")</div>
+       <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>

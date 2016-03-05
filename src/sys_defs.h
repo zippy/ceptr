@@ -41,11 +41,12 @@ char * G_label;
 #define sT_PLUS(...) sT_(sem,STRUCTURE_ONE_OR_MORE,1,__VA_ARGS__)
 #define sT_QMRK(...) sT_(sem,STRUCTURE_ZERO_OR_ONE,1,__VA_ARGS__)
 #define sT_SYM(sym) _t_news(0,STRUCTURE_SYMBOL,sym)
-#define sT_PCNT(str) _t_news(0,SYMBOL_OF_STRUCTURE,str)
+#define sT_PCNT(str) _t_news(0,STRUCTURE_STRUCTURE,str)
 #define sT_BANG _t_newr(0,STRUCTURE_ANYTHING)
 
 #define sProt(ctx,name,def) {_o_add_label("" #name "",def);name = _d_define_protocol(sem,def,ctx);}
 #define sData(ctx,name,...) T *name=_t_build2(sem,0,__VA_ARGS__);
+#define sLabel(ctx,s,label_type,label) _sem_add_label(sem,s,label_type,label);
 
 T *sT_(SemTable *sem,Symbol sym,int num_params,...);
 

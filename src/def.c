@@ -32,26 +32,6 @@ SemanticID _d_define(SemTable *sem,T *def,SemanticType semtype,Context c) {
     return sid;
 }
 
-/**
- * get symbol's label
- *
- * @param[in] symbols a symbol def tree containing symbol definitions
- * @param[in] s the Symbol to return the name for
- * @returns char * pointing to label
- *
- * <b>Examples (from test suite):</b>
- * @snippet spec/def_spec.h testSymbolGetName
- */
-char *__d_get_sem_name(T *defs,SemanticID s) {
-    char *n = NULL;
-    T *def = _t_child(defs,s.id);
-    if (def) {
-        T *t = _t_child(def,DefLabelIdx);
-        n = (char *)_t_surface(t);
-    }
-    return n;
-}
-
 // internal check to see if a symbol is valid
 void __d_validate_symbol(SemTable *sem,Symbol s,char *n) {
     if (!is_symbol(s)) raise_error("Bad symbol in %s def: semantic type not SEM_TYPE_SYMBOL",n);
@@ -66,23 +46,6 @@ void __d_validate_structure(SemTable *sem,Structure s,char *n) {
     if (is_sys_structure(s) && (s.id == 0)) return; // NULL_STRUCTURE ok
     T *structures = _sem_get_defs(sem,s);
     if(s.id && !_t_child(structures,s.id)) {raise_error("Unknown structure <%d.%d.%d> in declaration of %s",s.context,s.semtype,s.id,n);}
-}
-
-/**
- * build a symbol definition
- *
- * @param[in] s the structure type for this symbol
- * @param[in] label a c-string label for this symbol
- * @returns the new symbol def
- *
- * <b>Examples (from test suite):</b>
- * @snippet spec/def_spec.h testDefSymbol
- */
-T *_d_make_symbol_def(Structure s,char *label){
-    T *def = _t_new_root(SYMBOL_DEFINITION);
-    _t_new(def,SYMBOL_LABEL,label,strlen(label)+1);
-    _t_news(def,SYMBOL_STRUCTURE,s);
-    return def;
 }
 
 // this is used to reset the structure of a symbol that has been pre declared as NULL_SYMBOL
@@ -118,15 +81,12 @@ void __d_set_structure_def(T *structures,Structure s,T *def) {
  */
 Symbol _d_define_symbol(SemTable *sem,Structure s,char *label,Context c){
     __d_validate_structure(sem,s,label);
-    T *def = _d_make_symbol_def(s,label);
-    return _d_define(sem,def,SEM_TYPE_SYMBOL,c);
-}
+    T *def = _t_new_root(SYMBOL_DEFINITION);
+    T *l = _t_newr(def,SYMBOL_LABEL);
+    _t_new_str(l,ENGLISH_LABEL,label);
+    _t_news(def,SYMBOL_STRUCTURE,s);
 
-T *_d_make_structure(char *label,T *structure_def) {
-    T *def = _t_new_root(STRUCTURE_DEFINITION);
-    T *l = _t_new(def,STRUCTURE_LABEL,label,strlen(label)+1);
-    if (structure_def) _t_add(def,structure_def);
-    return def;
+    return _d_define(sem,def,SEM_TYPE_SYMBOL,c);
 }
 
 /**
@@ -141,7 +101,10 @@ T *_d_make_structure(char *label,T *structure_def) {
  * @snippet spec/def_spec.h testDefStructure
  */
 Structure _d_define_structure(SemTable *sem,char *label,T *structure_def,Context c) {
-    T *def = _d_make_structure(label,structure_def);
+    T *def = _t_new_root(STRUCTURE_DEFINITION);
+    T *l = _t_newr(def,STRUCTURE_LABEL);
+    _t_new_str(l,ENGLISH_LABEL,label);
+    if (structure_def) _t_add(def,structure_def);
     return _d_define(sem,def,SEM_TYPE_STRUCTURE,c);
 }
 
@@ -198,6 +161,8 @@ Structure __d_get_symbol_structure(T *symbols,Symbol s) {
     return *(Structure *)_t_surface(t);
 }
 
+
+
 /**
  * get the size of a symbol
  *
@@ -236,7 +201,7 @@ size_t _sys_structure_size(int id,void *surface) {
 /**
  * get the size of a structure
  *
- * @param[in] sem is the semantic table where symbols and structures are define
+ * @param[in] sem is the semantic table where symbols and structures are defined
  * @param[in] s the structure
  * @param[in] surface the surface of the structure (may be necessary beause some structures have length info in the data)
  * @returns size of the structure
@@ -326,7 +291,8 @@ void __d_tsig(SemTable *sem,T *code, T *tsig,TreeHash *hashes) {
  */
 T *_d_make_process_def(T *code,char *name,char *intention,T *signature,T *link) {
     T *def = _t_new_root(PROCESS_DEFINITION);
-    _t_new_str(def,PROCESS_NAME,name);
+    T *l = _t_newr(def,PROCESS_NAME);
+    _t_new_str(l,ENGLISH_LABEL,name);
     _t_new(def,PROCESS_INTENTION,intention,strlen(intention)+1);
     if (!code)
         code = _t_new_root(NULL_PROCESS); // indicates a system (i.e. non ceptr) defined process
@@ -442,7 +408,8 @@ SemanticID _d_define_receptor(SemTable *sem,char *label,T *def,Context c) {
     // we can get later in _d_get_receptor_address
     (*(int *)_t_surface(d)) = new_context;
 
-    _t_new_str(d,RECEPTOR_LABEL,label);
+    T *l=_t_newr(d,RECEPTOR_LABEL);
+    _t_new_str(l,ENGLISH_LABEL,label);
     _t_add(d,def);
 
     // account for the one exception where the VMHost is defined inside itself

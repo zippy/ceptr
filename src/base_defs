@@ -2,6 +2,19 @@
 # the base definitions for all systems.
 # Copyright (C) 2013-2016, The MetaCurrency Project (Eric Harris-Braun, Arthur Brock, et. al).  This file is part of the Ceptr platform and is released under the terms of the license contained in the file LICENSE (GPLv3).
 
+# this file gets read by base_defs.pl which generates base_defs.c and base_defs.h from it.
+#
+# Some notes:
+# in a symbol definition you can create an anonymous structure definition by surounding it with []
+# the syntax for structure definitions are as follows:
+# (x)    -> (STRUCTURE_SEQUENCE x)
+# ?x     -> (STRUCTURE_ZERO_OR_ONE x)
+# *x     -> (STRUCTURE_ZERO_OR_MORE x)
+# +x     -> (STRUCTURE_ONE_OR_MORE x)
+# |{x|y} -> (STRUCTURE_OR x y)
+# %x     -> (STRUCTURE_STRUCTURE:x)
+# !      -> (STRUCTURE_ANYTHING)
+
 Context: SYS;
 
 # These are "bottoming out" structures that are implemented by the system, not composed;
@@ -33,10 +46,11 @@ Declare: STRUCTURES,SYMBOLS,PROCESSES,PROTOCOLS,RECEPTORS,SCAPES;
 Symbol: DEFINITIONS,[(STRUCTURES,SYMBOLS,PROCESSES,PROTOCOLS,RECEPTORS,*SCAPES)];
 
 Declare: STRUCTURE_SYMBOL,STRUCTURE_SEQUENCE,STRUCTURE_OR,STRUCTURE_ZERO_OR_MORE,STRUCTURE_ONE_OR_MORE;
-Symbol: SYMBOL_OF_STRUCTURE,STRUCTURE;
+Symbol: STRUCTURE_STRUCTURE,STRUCTURE;
 Symbol: STRUCTURE_ANYTHING,NULL_STRUCTURE;
-Structure: STRUCTURE_DEF,|{STRUCTURE_SYMBOL|STRUCTURE_SEQUENCE|STRUCTURE_OR|STRUCTURE_ZERO_OR_MORE|STRUCTURE_ONE_OR_MORE|STRUCTURE_ZERO_OR_ONE|SYMBOL_OF_STRUCTURE|STRUCTURE_ANYTHING};
-Symbol: STRUCTURE_LABEL,CSTRING;
+Structure: STRUCTURE_DEF,|{STRUCTURE_SYMBOL|STRUCTURE_SEQUENCE|STRUCTURE_OR|STRUCTURE_ZERO_OR_MORE|STRUCTURE_ONE_OR_MORE|STRUCTURE_ZERO_OR_ONE|STRUCTURE_STRUCTURE|STRUCTURE_ANYTHING};
+Structure: LABEL,+%CSTRING;
+Symbol: STRUCTURE_LABEL,LABEL;
 Symbol: STRUCTURE_DEFINITION,[(STRUCTURE_LABEL,STRUCTURE_DEF)];
 Symbol: STRUCTURES,[*STRUCTURE_DEFINITION];
 Symbol: STRUCTURE_SEQUENCE,[+STRUCTURE_DEF];
@@ -47,7 +61,7 @@ Symbol: STRUCTURE_ONE_OR_MORE,STRUCTURE_DEF;
 Symbol: STRUCTURE_ZERO_OR_ONE,STRUCTURE_DEF;
 
 Symbol: SYMBOL_STRUCTURE,STRUCTURE;
-Symbol: SYMBOL_LABEL,CSTRING;
+Symbol: SYMBOL_LABEL,LABEL;
 Symbol: SYMBOL_DEFINITION,[(SYMBOL_LABEL,SYMBOL_STRUCTURE)];
 Symbol: SYMBOLS,[*SYMBOL_DEFINITION];
 
@@ -135,7 +149,7 @@ Symbol: PROCESS_OF,[|{PROCESS_OF_STRUCTURE|PROCESS_OF_SYMBOL|PROCESS_OF_PROCESS}
 Symbol: PROCESS_TYPE,[|{TRANSCODER|OPERATOR|VALIDATOR}];
 Symbol: PROCESS_LINK,[(PROCESS_OF,PROCESS_TYPE)];
 
-Symbol: PROCESS_NAME,CSTRING;
+Symbol: PROCESS_NAME,LABEL;
 Symbol: PROCESS_INTENTION,CSTRING;
 Declare: PROCESS_SIGNATURE;
 Symbol: CODE,[!];
@@ -153,7 +167,7 @@ Symbol: SEMANTIC_LINK,[(SEMANTIC_REFERENCE,REPLACEMENT_VALUE)];   mapping betwee
 Symbol: SEMANTIC_MAP,[(+SEMANTIC_LINK)];
 
 
-Symbol: SIGNATURE_LABEL,CSTRING;
+Symbol: SIGNATURE_LABEL,LABEL;
 Symbol: SIGNATURE_STRUCTURE,STRUCTURE;      the structure that would match
 Symbol: SIGNATURE_SYMBOL,SYMBOL;            the symbol that would match
 Symbol: SIGNATURE_PROCESS,SYMBOL;           the output signature of the process
@@ -212,7 +226,7 @@ Structure: LINKING,|{WHICH_GOAL|WHICH_ROLE|WHICH_USAGE|WHICH_WEAL}; links two ab
 Symbol: CONNECTION,LINKING;
 Symbol: PROTOCOL_BINDINGS,[+RESOLUTION];
 
-Symbol: PROTOCOL_LABEL,CSTRING;
+Symbol: PROTOCOL_LABEL,LABEL;
 Symbol: PROTOCOL_SEMANTICS,[(*ROLE,*GOAL,*USAGE,*WEAL)];
 Symbol: PROTOCOL_DEFINITION,[(PROTOCOL_LABEL,PROTOCOL_SEMANTICS,*%INTERACTION,*INCLUSION)];
 
@@ -227,7 +241,7 @@ Symbol: BINDING_PAIR,[(MANIFEST_LABEL,!)];                a pair that matches a 
 Symbol: BINDINGS,[+BINDING_PAIR];                    specifics that match a MANIFEST and allow a receptor to be installed
 
 Symbol: RECEPTOR_ELAPSED_TIME,INTEGER;
-Symbol: RECEPTOR_LABEL,CSTRING;
+Symbol: RECEPTOR_LABEL,LABEL;
 Structure: RECEPTOR_IDENTITY,RECEPTOR_LABEL,RECEPTOR_IDENTIFIER; placeholder structure for compository identifier
 
 Symbol: RECEPTOR_DEFINITION,[(RECEPTOR_LABEL,DEFINITIONS)];
@@ -294,6 +308,7 @@ Process: DEL,0,"delete instance","value",SIGNATURE_ANY,NULL_STRUCTURE,"what",SIG
 Process: DO,0,"do","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"actions",SIGNATURE_SYMBOL,BLOCK,0; execute a BLOCK of instructions for side-effects returning the value of the last one.  We do the BLOCK thing because we don't yet have variable sized arugments for processes.  I would like it better if the actions could just be the children of the DO process
 Process: DISSOLVE,0,"merge children into parent's children","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"tree",SIGNATURE_ANY,NULL_STRUCTURE,0; remove the root of the child, merging it's children into the parent's children at the process's spot
 
+#Symbol: LABEL_TYPE,SYMBOL;   should be limmited to symbols of type CSTRING by validator...
 Symbol: TRANSCODE_TO,SYMBOL;
 Symbol: TRANSCODE_PARAMS,[(TRANSCODE_TO,*!)];
 Symbol: TRANSCODE_ITEMS,[!];
@@ -375,6 +390,12 @@ Symbol: INSTANCES,[!];
 Symbol: SYMBOL_INSTANCES,SYMBOL;
 Symbol: DELETED_INSTANCE,NULL_STRUCTURE;
 
+#language labels
+Symbol: ENGLISH_LABEL,CSTRING;
+Symbol: SPANISH_LABEL,CSTRING;
+Symbol: FRENCH_LABEL,CSTRING;
+Symbol: GERMAN_LABEL,CSTRING;
+
 ########################################################################################
 # this context will contain SEED or POD structures that wrap receptors for global sharing
 Context: COMPOSITORY;
@@ -432,7 +453,7 @@ Symbol: RECOGNITION,PROCESS;
 Symbol: are_you,SEMTREX;
 Symbol: i_am,RECEPTOR_IDENTITY;
 
-Data: iam_code,(NOOP (i_am (RECEPTOR_LABEL:"super cept") (RECEPTOR_IDENTIFIER:314159)));
+Data: iam_code,(NOOP (i_am (RECEPTOR_LABEL (ENGLISH_LABEL:"super cept")) (RECEPTOR_IDENTIFIER:314159)));
 Process: fill_i_am,iam_code,"fill i am","identity",SIGNATURE_STRUCTURE,RECEPTOR_IDENTITY,"pattern",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,are_you,0;
 
 Data: recog_def,(PROTOCOL_DEFINITION
@@ -625,6 +646,9 @@ Structure: URI,(
        HTTP_REQUEST_PATH_QUERY
        );
 
+
+Symbol: HTTP_HEADER_LABEL,CSTRING;
+
 # media type defs (for content-type)
 
 Symbol: MEDIA_TYPE_IDENT,SYMBOL;
@@ -637,6 +661,8 @@ Symbol: TEXT_MEDIA_TYPE,NULL_STRUCTURE;
 Symbol: HTML_TEXT_MEDIA_SUBTYPE,NULL_STRUCTURE;
 Symbol: PLAIN_TEXT_MEDIA_SUBTYPE,NULL_STRUCTURE;
 Symbol: CEPTR_TEXT_MEDIA_SUBTYPE,NULL_STRUCTURE;
+
+Label: CONTENT_TYPE,HTTP_HEADER_LABEL,"Content-Type";
 
 Data: content_type_2_line_proc, (LINE:"Content-Type text/plain");  placeholder proc
 
