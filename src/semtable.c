@@ -73,11 +73,11 @@ T *__sem_get_def(SemTable *sem,SemanticType semtype,Context c,SemanticAddr i) {
 }
 
 /**
- * get symbol's label
+ * get symbol's name
  *
  * @param[in] sem is the semantic table where symbols and structures are define
  * @param[in] s the Symbol to return the label of
- * @returns char * pointing to surface of label node
+ * @returns cstring surface of the first label in the definition
  *
  * <b>Examples (from test suite):</b>
  * @snippet spec/semtable_spec.h testSemTableGetName
@@ -108,7 +108,32 @@ char *_sem_get_name(SemTable *sem,SemanticID s) {
     return n;
 }
 
-
+/**
+ * get one of a symbol's labels
+ *
+ * @param[in] sem is the semantic table where symbols and structures are define
+ * @param[in] s the Symbol to return the label of
+ * @param[in] s the Symbol to return the label of
+ * @returns label or NULL if the definition couldn't be found
+ *
+ * @note the label returned is a pointer to the actual label in the definition. it must not be changed or modified!  Clone it if you need to.
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/semtable_spec.h testSemTableGetLabel
+ */
+T * _sem_get_label(SemTable *sem,SemanticID s,Symbol label_type) {
+    if (s.id == 0) {
+        raise_error("semantic NULL have no defs!");
+    }
+    T *def = _sem_get_def(sem,s);
+    T *label = NULL;
+    if (def) {
+        T *labels = _t_child(def,DefLabelIdx);
+        label = _t_find(labels,label_type);
+        if (!label) label = _t_child(labels,1);
+    }
+    return label;
+}
 /**
  * add a name to a definition
  *

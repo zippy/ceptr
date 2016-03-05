@@ -32,6 +32,13 @@ void testSemTableGetName() {
     //! [testSemTableGetName]
 }
 
+void testSemTableGetLabel() {
+    //! [testSemTableGetLabel]
+    spec_is_str_equal(t2s(_sem_get_label(G_sem,CONTENT_TYPE,HTTP_HEADER_LABEL)),"(HTTP_HEADER_LABEL:Content-Type)");
+    spec_is_str_equal(t2s(_sem_get_label(G_sem,CONTENT_TYPE,TEST_SYMBOL_SYMBOL)),"(ENGLISH_LABEL:CONTENT_TYPE)");
+    //! [testSemTableGetLabel]
+}
+
 testSemGetSymbolStructure() {
     //! [testSemGetSymbolStructure]
     spec_is_structure_equal(0,_sem_get_symbol_structure(G_sem,STRUCTURE_DEFINITION),TUPLE_OF_STRUCTURE_LABEL_AND_STRUCTURE_DEF);
@@ -58,6 +65,7 @@ void testSemAddLabel() {
 void testSemTable() {
     testSemTableCreate();
     testSemTableGetName();
+    testSemTableGetLabel();
     testSemGetSymbolStructure();
     testSemGetByLabel();
     testSemAddLabel();

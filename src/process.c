@@ -1138,7 +1138,40 @@ Error _p_step(Q *q, R **contextP) {
             }
             Process s = _t_symbol(np);
 
-            if (semeq(s,PARAM_REF)) {
+            if (semeq(s,PARAMETER)) {
+                T *ref = _t_child(_t_child(np,ParameterReferenceIdx),1);
+                Symbol ref_sym = _t_symbol(ref);
+                T *param;
+                if (semeq(ref_sym,PARAM_PATH)) {
+                    param = _t_get(context->run_tree,(int *)_t_surface(ref));
+                }
+                else if (semeq(ref_sym,PARAM_LABEL)) {
+                    raise_error("reference by PARAM_LABEL not implemented");
+                }
+                else raise_error("unknown reference type %s",_sem_get_name(q->r->sem,ref_sym));
+
+                T *result = _t_child(_t_child(np,ParameterResultIdx),1);
+                Symbol result_sym = _t_symbol(result);
+                if (semeq(result_sym,RESULT_VALUE)) {
+                    np = _t_rclone(param);
+                }
+                else if (semeq(result_sym,RESULT_SYMBOL)) {
+                    np = __t_news(0,*(Symbol *)_t_surface(result),_t_symbol(param),true);
+                }
+                else if (semeq(result_sym,RESULT_LABEL)) {
+                    Symbol label_sym = *(Symbol *)_t_surface(result);
+                    Symbol param_sym = _t_symbol(param);
+                    T *l = _sem_get_label(q->r->sem,param_sym,label_sym);
+                    if (!l) raise_error("label not found for param symbol");
+                    np = _t_rclone(l);
+                }
+                else raise_error("unknown result type %s",_sem_get_name(q->r->sem,result_sym));
+
+                context->node_pointer = np;
+                _t_replace(context->parent, context->idx,np);
+                s = _t_symbol(np);
+            }
+            else if (semeq(s,PARAM_REF)) {
                 T *param = _t_get(context->run_tree,(int *)_t_surface(np));
                 if (!param) {
                     raise_error("request for non-existent param");

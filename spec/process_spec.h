@@ -924,6 +924,39 @@ void testProcessReduce() {
     _t_free(t);
 }
 
+void testProcessParameter() {
+    Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
+
+    T *n = _t_build(G_sem,0,TEST_ANYTHING_SYMBOL,DISSOLVE,
+                    PARAMETER,
+                    PARAMETER_REFERENCE,PARAM_PATH,2,1,TREE_PATH_TERMINATOR,
+                    PARAMETER_RESULT,RESULT_VALUE,NULL_SYMBOL,
+                    NULL_SYMBOL,
+                    PARAMETER,
+                    PARAMETER_REFERENCE,PARAM_PATH,2,2,TREE_PATH_TERMINATOR,
+                    PARAMETER_RESULT,RESULT_SYMBOL,TEST_SYMBOL_SYMBOL,NULL_SYMBOL,
+                    PARAMETER,
+                    PARAMETER_REFERENCE,PARAM_PATH,2,1,TREE_PATH_TERMINATOR,
+                    PARAMETER_RESULT,RESULT_LABEL,ENGLISH_LABEL,NULL_SYMBOL,
+                    NULL_SYMBOL,NULL_SYMBOL);
+
+    spec_is_str_equal(t2s(n), "(TEST_ANYTHING_SYMBOL (process:DISSOLVE (process:PARAMETER (PARAMETER_REFERENCE (PARAM_PATH:/2/1)) (PARAMETER_RESULT (RESULT_VALUE)))) (process:PARAMETER (PARAMETER_REFERENCE (PARAM_PATH:/2/2)) (PARAMETER_RESULT (RESULT_SYMBOL:TEST_SYMBOL_SYMBOL))) (process:PARAMETER (PARAMETER_REFERENCE (PARAM_PATH:/2/1)) (PARAMETER_RESULT (RESULT_LABEL:ENGLISH_LABEL))))");
+
+    T *p1 = _t_newi(0,TEST_INT_SYMBOL,314);
+    T *p2 = _t_new_str(0,TEST_STR_SYMBOL,"314");
+    T *run_tree = __p_build_run_tree(n,2,p1,p2);
+    _t_free(p1);
+    _t_free(p2);
+    _t_free(n);
+    Q *q = r->q;
+    Qe *e = _p_addrt2q(q,run_tree);
+
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    spec_is_str_equal(t2s(run_tree), "(RUN_TREE (TEST_ANYTHING_SYMBOL (TEST_INT_SYMBOL:314) (TEST_SYMBOL_SYMBOL:TEST_STR_SYMBOL) (ENGLISH_LABEL:TEST_INT_SYMBOL)) (PARAMS (TEST_INT_SYMBOL:314) (TEST_STR_SYMBOL:314)))");
+
+    _r_free(r);
+}
+
 void testProcessRefs() {
     Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
     Q *q = r->q;
@@ -1497,6 +1530,7 @@ void testRunTreeTemplate() {
 
 void testProcess() {
     _defIfEven();
+    testProcessParameter();
     testRunTree();
     testProcessGet();
     testProcessDel();

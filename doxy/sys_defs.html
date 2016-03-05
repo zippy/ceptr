@@ -1920,6 +1920,67 @@
        <div class="def-sig-out">result(PASSTHRU:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
        <div class="def-comment"><i>do</i><br /> execute a BLOCK of instructions for side-effects returning the value of the last one.  We do the BLOCK thing because we don't yet have variable sized arugments for processes.  I would like it better if the actions could just be the children of the DO process</div>
    </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="PARAM_PATH"></a>PARAM_PATH</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="STRUCTURE_OF_CSTRING"></a>STRUCTURE-OF-CSTRING</div>
+       <div class="def-struc-def">%<a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="PARAM_LABEL"></a>PARAM_LABEL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#STRUCTURE_OF_CSTRING">STRUCTURE-OF-CSTRING</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="LOGICAL_OR_OF_PARAM_PATH_AND_PARAM_LABEL"></a>LOGICAL-OR-OF-PARAM-PATH-AND-PARAM-LABEL</div>
+       <div class="def-struc-def">OR(<a href="ref_sys_symbols.html#PARAM_PATH">PARAM_PATH</a>, <a href="ref_sys_symbols.html#PARAM_LABEL">PARAM_LABEL</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="PARAMETER_REFERENCE"></a>PARAMETER_REFERENCE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LOGICAL_OR_OF_PARAM_PATH_AND_PARAM_LABEL">LOGICAL-OR-OF-PARAM-PATH-AND-PARAM-LABEL</a></div>
+       <div class="def-comment">  a way of refering to the parameter to be</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="RESULT_VALUE"></a>RESULT_VALUE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="RESULT_LABEL"></a>RESULT_LABEL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="LOGICAL_OR_OF_RESULT_SYMBOL_AND_RESULT_VALUE_AND_RESULT_LABEL"></a>LOGICAL-OR-OF-RESULT-SYMBOL-AND-RESULT-VALUE-AND-RESULT-LABEL</div>
+       <div class="def-struc-def">OR(<a href="ref_sys_symbols.html#RESULT_SYMBOL">RESULT_SYMBOL</a>, <a href="ref_sys_symbols.html#RESULT_VALUE">RESULT_VALUE</a>, <a href="ref_sys_symbols.html#RESULT_LABEL">RESULT_LABEL</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="PARAMETER_RESULT"></a>PARAMETER_RESULT</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LOGICAL_OR_OF_RESULT_SYMBOL_AND_RESULT_VALUE_AND_RESULT_LABEL">LOGICAL-OR-OF-RESULT-SYMBOL-AND-RESULT-VALUE-AND-RESULT-LABEL</a></div>
+       <div class="def-comment"> if the value of PARAMETER_RESULT is RESULT_SYMBOL, PARAMETER will reduce to the parameter's symbol at the RESULT_SYMBOL symbol. If the value is RESULT_VALUE then PARAMETER will reduce to the parameter's value. If the value is RESULT_LABEL, then PARAMETER will reduce to the label of the symbol type stored in RESULT_LABEL (or the default if not found)</div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="PARAMETER"></a>PARAMETER</div>
+       <div class="def-sig-in"><li>reference(SYMBOL:<a href="ref_sys_symbols.html#PARAMETER_REFERENCE">PARAMETER_REFERENCE</a>)</li><li>as(SYMBOL:<a href="ref_sys_symbols.html#PARAMETER_RESULT">PARAMETER_RESULT</a>)</li></div>
+       <div class="def-sig-out">result(PASSTHRU:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
+       <div class="def-comment"><i>get parameter data</i></div>
+   </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
        <div class="def-name"><a name="DISSOLVE"></a>DISSOLVE</div>

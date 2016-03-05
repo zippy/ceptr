@@ -23,6 +23,7 @@ T *__sem_get_defs(SemTable *st,SemanticType semtype,Context c);
 #define _sem_get_def(sem,s) __sem_get_def(sem,(s).semtype,(s).context,(s).id)
 T *__sem_get_def(SemTable *sem,SemanticType semtype,Context c,SemanticAddr i);
 char *_sem_get_name(SemTable *sem,SemanticID s);
+T * _sem_get_label(SemTable *sem,SemanticID s,Symbol label_type);
 void _sem_add_label(SemTable *sem,SemanticID s,Symbol label_type,char *label);
 Structure _sem_get_symbol_structure(SemTable *sem,Symbol s);
 SemanticID _sem_get_by_label(SemTable *sem,char *label,Context ctx);
