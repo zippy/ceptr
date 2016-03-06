@@ -25,7 +25,7 @@ sub openf {
 
 my %c;
 my @d;
-my %fmap = ('Structure'=>'sT','StructureS'=>'sTs','Symbol'=>'sY','Process'=>'sP','SetSymbol'=>'sYs','Protocol'=>'sProt','Data'=>'sData','Label'=>'sLabel');
+my %fmap = ('Structure'=>'sT','StructureS'=>'sTs','Symbol'=>'sY','Process'=>'sP','ProcessL'=>'sPL','SetSymbol'=>'sYs','Protocol'=>'sProt','Data'=>'sData','Label'=>'sLabel');
 my $context = "SYS";
 my %declared;
 my %anon;
@@ -57,6 +57,7 @@ sub addDef {
         }
 
         my $defs = $c{$context};
+        $type = "Process" if $type eq 'ProcessL';
 
         if (! exists $defs->{$type}) {
             $defs->{$type} = [];
@@ -172,7 +173,7 @@ while (my $line = <$fh>) {
                 my $structure_def = $2;
                 &addDef($type,$context,$name,&convertStrucDef($structure_def),$comment);
             }
-            elsif (($type eq 'Process') || ($type eq 'Protocol') || ($type eq 'Label') ) {
+            elsif (($type =~ /^Process/) || ($type eq 'Protocol') || ($type eq 'Label') ) {
                 $params =~ /(.*?),(.*)/;
                 my $name = $1;
                 my $def = $2;
@@ -347,7 +348,7 @@ sub printEnum {
 sub hout {
     my $context = shift;
     my $type = shift;
-    my $types = $type eq "Process" ? "Processes" : $type."s";
+    my $types = $type =~/^Process/ ? "Processes" : $type."s";
 
     my $defs = $c{$context};
     my $a = $defs->{$type};
@@ -360,7 +361,6 @@ enum $context${\($type)}IDs {
 EOF
     foreach my $s (@$a) {
         print $hfh '    '.$s."_ID,\n";
-
     }
     print $hfh '    NUM_'.$context.'_'.uc($types)."\n};\n";
     foreach my $s (@$a) {
@@ -440,8 +440,14 @@ foreach my $s (@d) {
         $sysdhtml .= "<div class=\"defs-context\">\n   <h4>$context</h4>\n";
         $cur_ctx = $context;
     }
-    if ($type eq 'Process') {
-        my ($code,$desc,$out,$out_type,$out_sym,@def) = split /,/,$def;
+    if ($type =~ /^Process/) {
+        my ($code,$desc,$link_to,$link_as,$out,$out_type,$out_sym,@def);
+        if ($type eq 'Process') {
+            ($code,$desc,$out,$out_type,$out_sym,@def) = split /,/,$def;
+        }
+        elsif ($type eq 'ProcessL') {
+            ($code,$desc,$link_to,$link_as,$out,$out_type,$out_sym,@def) = split /,/,$def;
+        }
         $desc =~ /"(.*)"/;
         $desc = $1;
         $out = &processSig($out,$out_type,$out_sym);

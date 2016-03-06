@@ -34,6 +34,7 @@ char * G_label;
 #define sY(ctx,name,str) name = _d_define_symbol(sem,str,"" #name "",ctx)
 #define sYs(ctx,sym,str) __d_set_symbol_structure(__sem_get_defs(sem,SEM_TYPE_SYMBOL,ctx),sym,str)
 #define sP(ctx,name,code,intention,...) name = _d_define_process(sem,code,"" #name "",intention,__p_make_signature(__VA_ARGS__),NULL,ctx)
+#define sPL(ctx,name,code,intention,link_to,link_as,...) name = _d_define_process(sem,code,"" #name "",intention,__p_make_signature(__VA_ARGS__), _t_build(sem,0,PROCESS_LINK,PROCESS_OF_STRUCTURE,link_to,PROCESS_TYPE,link_as,NULL_SYMBOL,NULL_SYMBOL),ctx)
 
 #define sT_OR(...) sT_(sem,STRUCTURE_OR,__VA_ARGS__)
 #define sT_SEQ(...) sT_(sem,STRUCTURE_SEQUENCE,__VA_ARGS__)
