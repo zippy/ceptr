@@ -5,15 +5,34 @@
 # this file gets read by base_defs.pl which generates base_defs.c and base_defs.h from it.
 #
 # Some notes:
-# in a symbol definition you can create an anonymous structure definition by surounding it with []
-# the syntax for structure definitions are as follows:
-# (x)    -> (STRUCTURE_SEQUENCE x)
+#
+# general format:
+# <Directive>:<params>; <comments>
+#
+# <Directive> =
+#
+# Context: <name>;
+# Symbol: <symbol-label>,<structure>;                
+# or
+# Symbol: <symbol-label>,'['<structure defs>']';
+#
+# Structure: <symbol-label>,<structure defs>;
+#
+# <structure defs> =
+# (x,y,...)    -> (STRUCTURE_SEQUENCE (x) (y))
 # ?x     -> (STRUCTURE_ZERO_OR_ONE x)
 # *x     -> (STRUCTURE_ZERO_OR_MORE x)
 # +x     -> (STRUCTURE_ONE_OR_MORE x)
-# |{x|y} -> (STRUCTURE_OR x y)
+# |{x|y|...} -> (STRUCTURE_OR x y)
 # %x     -> (STRUCTURE_STRUCTURE:x)
 # !      -> (STRUCTURE_ANYTHING)
+#
+# Data: <data-label>,<lispy encoded tree>;
+# GlobalData: <data-label>, <lispy encoded tree>;
+# Process: <process-label>,<code-tree>,<label>,<result-label>,<output-signature-type>,<output-signature-sub-type>,[<input-signature-type>,<input-signature-sub-type>].,0;
+# ProcessL: <process-label>,<code-tree>,<label>,<linked-to>,<link-type>,<result-label>,<output-signature-type>,<output-signature-sub-type>,[<input-signature-type>,<input-signature-sub-type>].,0;
+# Label: <semantic-id-to-label>,<label-type>,<string>;
+# Protocol: <protocol-label>,<data>;
 
 Context: SYS;
 
