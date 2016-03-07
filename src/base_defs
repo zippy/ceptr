@@ -14,12 +14,21 @@
 # Context: <name>;
 # Symbol: <symbol-label>,<structure>;                
 # or
-# Symbol: <symbol-label>,'['<structure defs>']';
+# Symbol: <symbol-label>,'['<structure-def>']';
 #
-# Structure: <symbol-label>,<structure defs>;
+# Structure: <symbol-label>,<structure-def>;
 #
-# <structure defs> =
-# (x,y,...)    -> (STRUCTURE_SEQUENCE (x) (y))
+# <structure-def> = <structure-sequence> | <structure-zero-or-one> | <structure-zero-or-more> | <structure-one-or-more> | <structure-or> | <structure-structure> | <structure-anything>
+# <structure-sequence>     => '(' <structure-def> [',' <structure-def>]... ')'
+# <structure-zero-or-one>  => '?' <structure-def>
+# <structure-zero-or-more> => '*' <structure-def>
+# <structure-one-or-more>  => '+' <structure-def>
+# <structure-or>           =>  '|' '{' <structure-def>[ '|' <structure-def>]... '}'
+# <structure-structure>    => '%' <structure-label>
+# <structure-anything>     => '!'
+#
+# or more informally and in terms of the tree it creates:
+# (x,y...)    -> (STRUCTURE_SEQUENCE (x) (y))
 # ?x     -> (STRUCTURE_ZERO_OR_ONE x)
 # *x     -> (STRUCTURE_ZERO_OR_MORE x)
 # +x     -> (STRUCTURE_ONE_OR_MORE x)
