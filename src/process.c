@@ -856,6 +856,26 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             x = ___r_make_addr(0,sym,addr,true);
         }
         break;
+    case GET_LABEL_ID:
+        {
+            x = _t_detach_by_idx(code,1);
+            Symbol sym = *(Symbol *)_t_surface(x);
+            _t_free(x);
+            x = _t_detach_by_idx(code,1);
+            Symbol type = *(Symbol *)_t_surface(x);
+            _t_free(x);
+            x = _t_detach_by_idx(code,1);
+            Symbol as;
+            if (x) {
+                as = *(Symbol *)_t_surface(x);
+                _t_free(x);
+            }
+            else as = type;
+            T *l = _sem_get_label(q->r->sem,sym,type);
+            if (!l) raise_error("label not found for symbol");
+            x = __t_new_str(0,as,_t_surface(l),true);
+        }
+        break;
     case MAGIC_ID:
         {switch(*(int *)_t_surface(code)) {
             case MagicReceptors:

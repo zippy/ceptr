@@ -345,12 +345,15 @@ Symbol: PARAMETER_RESULT,[|{RESULT_SYMBOL|RESULT_VALUE|RESULT_LABEL}]; if the va
 Process: PARAMETER,0,"get parameter data","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"reference",SIGNATURE_SYMBOL,PARAMETER_REFERENCE,"as",SIGNATURE_SYMBOL,PARAMETER_RESULT,0;
 Process: DISSOLVE,0,"merge children into parent's children","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"tree",SIGNATURE_ANY,NULL_STRUCTURE,0; remove the root of the child, merging it's children into the parent's children at the process's spot
 
-#Symbol: LABEL_TYPE,SYMBOL;   should be limmited to symbols of type CSTRING by validator...
 Symbol: TRANSCODE_TO,SYMBOL;
 Symbol: TRANSCODE_PARAMS,[(TRANSCODE_TO,*!)];
 Symbol: TRANSCODE_ITEMS,[!];
 
 Process: TRANSCODE,0,"transform semantic type","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"using",SIGNATURE_SYMBOL,TRANSCODE_PARAMS,"convert",SIGNATURE_SYMBOL,TRANSCODE_ITEMS,0; transform the semantic types of a itemstree to a different type as specified in the parameters.  If TRANSCODE_ITEMS has multiple children DISSOLVE is implied
+
+Symbol: LABEL_SYMBOL,SYMBOL;
+Symbol: LABEL_TYPE,SYMBOL;   should be limmited to symbols of type CSTRING by validator...
+Process: GET_LABEL,0,"get a symbol's label","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"of",SIGNATURE_SYMBOL,LABEL_SYMBOL,"type",SIGNATURE_SYMBOL,LABEL_TYPE,"as",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,RESULT_SYMBOL,0; 
 Process: IF,0,"if","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"condition",SIGNATURE_PROCESS,BOOLEAN,"then",SIGNATURE_ANY,NULL_STRUCTURE,"else",SIGNATURE_OPTIONAL,SIGNATURE_ANY,NULL_STRUCTURE,0;  this is a traditional "if" process that reduces conditionally to either the "then" or the "else" parameter depending on the value of the "condition" parameter.  Note: we may be replacing this with a more lispy COND process
 Process: ITERATE,0,"iterate a process","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"condtion",SIGNATURE_PROCESS,BOOLEAN,"do",SIGNATURE_ANY,NULL_STRUCTURE,0;                     this process checks the structure of the result of the "condition" param, if it's a BOOLEAN, it treats the iteration as a while loop and iterates until the BOOLEAN is false; if it's an INTEGER it treats the iteration as repeat loop and iterates as many times as the value of the INTEGER; if it's a ITERATE_ON_SYMBOL then it iterates on all the instances of that symbol type which get added into the PARAMS each time through
 Process: SAY,0,"send a message to a receptor","signal id",SIGNATURE_SYMBOL,SIGNAL_UUID,"to",SIGNATURE_SYMBOL,TO_ADDRESS,"on",SIGNATURE_SYMBOL,ASPECT_IDENT,"carrier",SIGNATURE_SYMBOL,CARRIER,"message",SIGNATURE_ANY,NULL_STRUCTURE,0;
@@ -685,6 +688,7 @@ Structure: URI,(
 
 
 Symbol: HTTP_HEADER_LABEL,CSTRING;
+Symbol: MEDIA_TYPE_LABEL,CSTRING;
 
 # media type defs (for content-type)
 
@@ -692,16 +696,28 @@ Symbol: MEDIA_TYPE_IDENT,SYMBOL;
 Symbol: MEDIA_SUBTYPE_IDENT,SYMBOL;
 Symbol: MEDIA_PARAM,KEY_VALUE_PARAM;
 Structure: MEDIA_TYPE,(MEDIA_TYPE_IDENT,MEDIA_SUBTYPE_IDENT,*MEDIA_PARAM);
-Symbol: CONTENT_TYPE,MEDIA_TYPE;   (HTTP_HEADER_LABEL:"Content-Type")
+Symbol: CONTENT_TYPE,MEDIA_TYPE;
+Label: CONTENT_TYPE,HTTP_HEADER_LABEL,"Content-Type";
 # basic media types
 Symbol: TEXT_MEDIA_TYPE,NULL_STRUCTURE;
+Label: TEXT_MEDIA_TYPE,MEDIA_TYPE_LABEL,"text";
 Symbol: HTML_TEXT_MEDIA_SUBTYPE,NULL_STRUCTURE;
+Label:  HTML_TEXT_MEDIA_SUBTYPE,MEDIA_TYPE_LABEL,"html";
 Symbol: PLAIN_TEXT_MEDIA_SUBTYPE,NULL_STRUCTURE;
+Label:  PLAIN_TEXT_MEDIA_SUBTYPE,MEDIA_TYPE_LABEL,"plain";
 Symbol: CEPTR_TEXT_MEDIA_SUBTYPE,NULL_STRUCTURE;
+Label:  CEPTR_TEXT_MEDIA_SUBTYPE,MEDIA_TYPE_LABEL,"ceptr";
 
-Label: CONTENT_TYPE,HTTP_HEADER_LABEL,"Content-Type";
+Symbol: MEDIA_TYPE_SEPARATOR,NULL_STRUCTURE;
+Label: MEDIA_TYPE_SEPARATOR,MEDIA_TYPE_LABEL,"/";
+Symbol: HEADER_SEPARATOR,NULL_STRUCTURE;
+Label: HEADER_SEPARATOR,HTTP_HEADER_LABEL,"@ ";
 
-Data: content_type_2_line_proc, (LINE:"Content-Type text/plain");  placeholder proc
+Data: content_type_2_line_proc, (CONCAT_STR (RESULT_SYMBOL:LINE)
+      (PARAMETER (PARAMETER_REFERENCE (PARAM_PATH:/2/1)) (PARAMETER_RESULT (RESULT_LABEL:HTTP_HEADER_LABEL)))
+      (GET_LABEL (LABEL_SYMBOL:HEADER_SEPARATOR) (LABEL_TYPE:HTTP_HEADER_LABEL))
+#      (SLOT (USAGE:TRANSCODED_STRUCTURE))
+      );
 
 Process: content_type_2_line,content_type_2_line_proc,"content type transcoder","output",SIGNATURE_SYMBOL,LINE,"input",SIGNATURE_SYMBOL,CONTENT_TYPE,0;
 

@@ -1387,6 +1387,20 @@ void testProcessSelfAddr() {
     _t_news(n,RESULT_SYMBOL,TO_ADDRESS);
     spec_is_equal(__p_reduce_sys_proc(0,SELF_ADDR,n,r->q),noReductionErr);
     spec_is_str_equal(t2s(n),"(TO_ADDRESS (RECEPTOR_ADDR:3))");
+    _t_free(n);
+    _r_free(r);
+}
+
+void testProcessGetLabel() {
+    Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
+    T *n = _t_build(G_sem,0,GET_LABEL,
+                    LABEL_SYMBOL,CONTENT_TYPE,
+                    LABEL_TYPE,HTTP_HEADER_LABEL,
+                    RESULT_SYMBOL,LINE,
+                    NULL_SYMBOL,NULL_SYMBOL);
+    spec_is_equal(__p_reduce_sys_proc(0,GET_LABEL,n,r->q),noReductionErr);
+    spec_is_str_equal(t2s(n),"(LINE:Content-Type)");
+    _t_free(n);
     _r_free(r);
 }
 
@@ -1562,6 +1576,7 @@ void testProcess() {
     testProcessIterateOnSymbol();
     testProcessListen();
     testProcessSelfAddr();
+    testProcessGetLabel();
     testProcessErrorTrickleUp();
     testProcessMulti();
     testRunTreeTemplate();
