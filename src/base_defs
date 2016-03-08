@@ -453,7 +453,7 @@ Data: date2usshortdate_proc,(CONCAT_STR (RESULT_SYMBOL:US_SHORT_DATE)
                      (PARAM_REF:/2/1/3)
                      (DATE_DIVIDER:"/")
                      (PARAM_REF:/2/1/1))));
-Process: date2usshortdate,date2usshortdate_proc,"date to us short format date transcoder","to",SIGNATURE_SYMBOL,US_SHORT_DATE,"from",SIGNATURE_STRUCTURE,DATE,0;
+ProcessL: date2usshortdate,date2usshortdate_proc,"date to us short format date transcoder",DATE,TRANSCODER,"to",SIGNATURE_SYMBOL,US_SHORT_DATE,"from",SIGNATURE_STRUCTURE,DATE,0;
 
 ###### defs for an abstract requesting protocol
 Symbol: REQUESTER,RECEPTOR_ADDRESS;
@@ -626,6 +626,7 @@ Symbol: TEST_ALPHABETIZE_SCAPE_SYMBOL,SCAPE;
 Symbol: TEST_SYMBOL_SYMBOL,SYMBOL;
 Symbol: TESTING,SYMBOL;
 Symbol: TEST_CHAR_SYMBOL,CHAR;
+Symbol: TEST_INTEGERS,[*TEST_INT_SYMBOL];
 
 ########################################################################################
 Context: CLOCK;
@@ -698,6 +699,7 @@ Symbol: MEDIA_PARAM,KEY_VALUE_PARAM;
 Structure: MEDIA_TYPE,(MEDIA_TYPE_IDENT,MEDIA_SUBTYPE_IDENT,*MEDIA_PARAM);
 Symbol: CONTENT_TYPE,MEDIA_TYPE;
 Label: CONTENT_TYPE,HTTP_HEADER_LABEL,"Content-Type";
+
 # basic media types
 Symbol: TEXT_MEDIA_TYPE,NULL_STRUCTURE;
 Label: TEXT_MEDIA_TYPE,MEDIA_TYPE_LABEL,"text";
@@ -711,15 +713,22 @@ Label:  CEPTR_TEXT_MEDIA_SUBTYPE,MEDIA_TYPE_LABEL,"ceptr";
 Symbol: MEDIA_TYPE_SEPARATOR,NULL_STRUCTURE;
 Label: MEDIA_TYPE_SEPARATOR,MEDIA_TYPE_LABEL,"/";
 Symbol: HEADER_SEPARATOR,NULL_STRUCTURE;
-Label: HEADER_SEPARATOR,HTTP_HEADER_LABEL,"@ ";
+Label: HEADER_SEPARATOR,HTTP_HEADER_LABEL,": ";
+
+Data: meda_type_2_ascii_str_proc, (CONCAT_STR (RESULT_SYMBOL:ASCII_STR)
+      (GET_LABEL (PARAM_REF:/2/1/1) (LABEL_TYPE:MEDIA_TYPE_LABEL))
+      (GET_LABEL (LABEL_SYMBOL:MEDIA_TYPE_SEPARATOR) (LABEL_TYPE:MEDIA_TYPE_LABEL))
+      (GET_LABEL (PARAM_REF:/2/1/2) (LABEL_TYPE:MEDIA_TYPE_LABEL))
+      );
+ProcessL: meda_type_2_ascii_str,meda_type_2_ascii_str_proc,"media type transcoder",MEDIA_TYPE,TRANSCODER,"output",SIGNATURE_SYMBOL,ASCII_STR,"input",SIGNATURE_STRUCTURE,MEDIA_TYPE,0;
 
 Data: content_type_2_line_proc, (CONCAT_STR (RESULT_SYMBOL:LINE)
       (PARAMETER (PARAMETER_REFERENCE (PARAM_PATH:/2/1)) (PARAMETER_RESULT (RESULT_LABEL:HTTP_HEADER_LABEL)))
       (GET_LABEL (LABEL_SYMBOL:HEADER_SEPARATOR) (LABEL_TYPE:HTTP_HEADER_LABEL))
-#      (SLOT (USAGE:TRANSCODED_STRUCTURE))
+      (meda_type_2_ascii_str (PARAM_REF:/2/1))
       );
 
-Process: content_type_2_line,content_type_2_line_proc,"content type transcoder","output",SIGNATURE_SYMBOL,LINE,"input",SIGNATURE_SYMBOL,CONTENT_TYPE,0;
+ProcessL: content_type_2_line,content_type_2_line_proc,"content type transcoder",CONTENT_TYPE,TRANSCODER,"output",SIGNATURE_SYMBOL,LINE,"input",SIGNATURE_SYMBOL,CONTENT_TYPE,0;
 
 Symbol: CONTENT_ENCODING,CSTRING;  cstring for now, add semantic later.
 
@@ -734,6 +743,8 @@ Symbol: HTTP_REQUEST_HOST,CSTRING;
 Symbol: HEADER_KEY,CSTRING;
 Symbol: HEADER_VALUE,CSTRING;
 Structure: HEADER,(HEADER_KEY,HEADER_VALUE);    generic headers for now, should be more semantic
+Symbol: LINE_HEADER,HEADER;
+Symbol: LINE_HEADERS,[(*HEADER)];
 Symbol: HTTP_RESPONSE_HEADER,HEADER;
 Symbol: HTTP_GENERAL_HEADER,HEADER;
 Symbol: HTTP_ENTITY_HEADER,[|{CONTENT_TYPE|CONTENT_ENCODING}];    @todo plus a few more see https://www.w3.org/Protocols/rfc2616/rfc2616-sec7.html#sec7.1
@@ -816,9 +827,11 @@ Data: line_2_httpreq_proc, (SAY
             (CARRIER:backnforth)
             (PARAM_REF:/2/1)
             (RESPONSE_CARRIER:backnforth))
-          (LINES (CONTRACT_STR (RESULT_SYMBOL:LINE) (LINE:"HTTP") (ASCII_CHAR:'/') (LINE:"1.1 ") (TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:LINE)) (TRANSCODE_ITEMS (PARAM_REF:/1/4/1/1/1/1)) (ASCII_CHAR:' ') (PARAM_REF:/1/4/1/1/1/2)))))));
-#
-# (DISSOLVE (TRANSCODE (TRANSCODE_TO:LINES) reference-here))
+          (LINES
+                (CONTRACT_STR (RESULT_SYMBOL:LINE) (ASCII_STR:"HTTP") (ASCII_CHAR:'/') (ASCII_STR:"1.1 ") (TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:ASCII_STR)) (TRANSCODE_ITEMS (PARAM_REF:/1/4/1/1/1/1)) (ASCII_CHAR:' ') (PARAM_REF:/1/4/1/1/1/2)))
+                (DISSOLVE (TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:LINES)) (TRANSCODE_ITEMS (PARAM_REF:/1/4/1/1/2)))))
+
+          )));
 
 Process: line_2_httpreq,line_2_httpreq_proc,"parse an HTTP_REQUEST from a LINE","signal id",SIGNATURE_SYMBOL,SIGNAL_UUID,0;
 

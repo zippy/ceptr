@@ -83,6 +83,139 @@ Process _p_get_transcoder(SemTable *sem,Symbol src_sym,Symbol to_sym) {
     return NULL_PROCESS;
 }
 
+int _p_transcode(SemTable *sem, T* src,Symbol to_sym, Structure to_s,T **result) {
+    debug(D_TRANSCODE,"transcoding a %s to a %s\n",_sem_get_name(sem,_t_symbol(src)),_sem_get_name(sem,to_sym));
+    Symbol src_sym = _t_symbol(src);
+    T *x;
+    bool dofree = true;
+    int err = noReductionErr;
+    if (semeq(to_sym,src_sym)) {
+        x = src;
+        dofree = false;
+    }
+    else {
+        Process p = _p_get_transcoder(sem,src_sym,to_sym);
+        if (!semeq(p,NULL_PROCESS)) {
+            // we found a defined process for trans coding between the symbols
+            x = __t_newr(0,p,true);
+            _t_add(x,src);
+            err=redoReduction;
+            dofree = false;
+            //                    __t_newi(x,TEST_INT_SYMBOL,3333,true);
+        }
+        else {
+            // built in transcodings for built in structures
+            Structure src_s = _sem_get_symbol_structure(sem,src_sym);
+            if (semeq(to_s,src_s)) {
+                x = src;
+                x->contents.symbol = to_sym;
+                dofree = false;
+            }
+            else if (semeq(to_s,INTEGER)) {
+                if (semeq(src_s,CSTRING)) {
+                    x = __t_newi(0,to_sym,atoi(_t_surface(src)),true);
+                }
+                else return incompatibleTypeReductionErr;
+            }
+            else if (semeq(to_s,CSTRING)) {
+                if (semeq(src_s,INTEGER)) {
+                    char buf[100];
+                    sprintf(buf,"%d",*(int *)_t_surface(src));
+                    x = __t_new_str(0,to_sym,buf,true);
+                }
+                else if (semeq(src_s,FLOAT)) {
+                    char buf[100];
+                    sprintf(buf,"%f",*(float *)_t_surface(src));
+                    x = __t_new_str(0,to_sym,buf,true);
+                }
+                else if (semeq(src_s,CHAR)) {
+                    char buf[2];
+                    buf[0] = *(char *)_t_surface(src);
+                    buf[1] = 0;
+                    x = __t_new_str(0,to_sym,buf,true);
+                }
+                else {
+
+                    // get the definition of the structure of the src symbol.
+                    T *def = _sem_get_def(sem,src_s);
+                    Symbol s_def = *(Symbol *)_t_surface(_t_child(def,2));
+
+                    // if it's an optionality structure then we can recurse on transcode
+                    // and dissolve the results into the parent
+                    if (!semeq(s_def,NULL_SYMBOL)) {
+                        if (_t_children(src) == 0) x = __t_new_str(0,to_sym,"",true);
+                        else {
+                            x = __t_newr(0,DISSOLVE,true);
+                            T *k,*r;
+                            int e;
+                            while (k = _t_detach_by_idx(src,1)) {
+                                e = _p_transcode(sem,k,to_sym,to_s,&r);
+                                if (e && e != redoReduction) {
+                                    _t_free(src);
+                                    return e;
+                                }
+                                _t_add(x,r);
+                            }
+                            err = redoReduction;
+                        }
+                    }
+                    else x = __t_new_str(0,to_sym,_t2s(sem,src),true);
+                }
+            }
+            else {
+                // This a special case where if the src and dest strutctures
+                // of the same form *X then we can transcode the elements
+                // @todo generalize
+                // get the definition of the structure of the src and dest
+                T *sdef = _sem_get_def(sem,src_s);
+                sdef = _t_child(sdef,2);
+                debug(D_TRANSCODE,"source def: %s\n",t2s(sdef));
+                Symbol sdef_sym = _t_symbol(sdef);
+
+                T *tdef = _sem_get_def(sem,to_s);
+                tdef = _t_child(tdef,2);
+                debug(D_TRANSCODE,"to def: %s\n",t2s(tdef));
+                Symbol tdef_sym = _t_symbol(tdef);
+
+                T *k;
+                Symbol k_sym;
+                if (semeq(tdef_sym,sdef_sym) &&
+                    (semeq(tdef_sym,STRUCTURE_ZERO_OR_MORE)||
+                     semeq(tdef_sym,STRUCTURE_ZERO_OR_ONE)||
+                     semeq(tdef_sym,STRUCTURE_ONE_OR_MORE)) &&
+                    semeq(k_sym = _t_symbol(k = _t_child(tdef,1)),
+                          _t_symbol( _t_child(sdef,1))) &&
+                    semeq(k_sym,STRUCTURE_SYMBOL)) {
+                    x = __t_newr(0,to_sym,true);
+                    T *m,*r;
+                    int e;
+                    // the to becomes the surface of the STRUCTURE_SYMBOL def
+                    Symbol to_sym = *(Symbol *)_t_surface(k);
+                    Structure to_s = _sem_get_symbol_structure(sem,to_sym);
+                    while (m = _t_detach_by_idx(src,1)) {
+                        e = _p_transcode(sem,m,to_sym,to_s,&r);
+                        if (e && e != redoReduction) {
+                            _t_free(src);
+                            return e;
+                        }
+                        _t_add(x,r);
+                    }
+                    err = redoReduction;
+                }
+                else {
+                    _t_free(src);
+                    return incompatibleTypeReductionErr;
+                }
+            }
+        }
+    }
+    *result = x;
+    debug(D_TRANSCODE,"transcode result: %s\n",_t2s(sem,x));
+    if (dofree) _t_free(src);
+    return err;
+}
+
+
 /**
  * check a group of parameters to see if they match a process input signature
  *
@@ -485,58 +618,10 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             T *t = __t_newr(0,PARAMS,true);  //holder for the transcoding children
             T *src;
             while (src = _t_detach_by_idx(items,1)) {
-                Symbol src_sym = _t_symbol(src);
-                if (semeq(to_sym,src_sym)) x = src;
-                else {
-                    Process p = _p_get_transcoder(q->r->sem,src_sym,to_sym);
-                    if (!semeq(p,NULL_PROCESS)) {
-                        // we found a defined process for trans coding between the symbols
-                        x = __t_newr(0,p,true);
-                        _t_add(x,src);
-                        //                    __t_newi(x,TEST_INT_SYMBOL,3333,true);
-                        err=redoReduction;
-                    }
-                    else {
-                        // built in transcodings for built in structures
-                        Structure src_s = _sem_get_symbol_structure(q->r->sem,src_sym);
-                        if (semeq(to_s,src_s)) {
-                            x = src;
-                            x->contents.symbol = to_sym;
-                        }
-                        else if (semeq(to_s,INTEGER)) {
-                            if (semeq(src_s,CSTRING)) {
-                                x = __t_newi(0,to_sym,atoi(_t_surface(src)),true);
-                                _t_free(src);
-                            }
-                            else return incompatibleTypeReductionErr;
-                        }
-                        else if (semeq(to_s,CSTRING)) {
-                            if (semeq(src_s,INTEGER)) {
-                                char buf[100];
-                                sprintf(buf,"%d",*(int *)_t_surface(src));
-                                _t_free(src);
-                                x = __t_new_str(0,to_sym,buf,true);
-                            }
-                            else if (semeq(src_s,FLOAT)) {
-                                char buf[100];
-                                sprintf(buf,"%f",*(float *)_t_surface(src));
-                                _t_free(src);
-                                x = __t_new_str(0,to_sym,buf,true);
-                            }
-                            else if (semeq(src_s,CHAR)) {
-                                char buf[2];
-                                buf[0] = *(char *)_t_surface(src);
-                                buf[1] = 0;
-                                x = __t_new_str(0,to_sym,buf,true);
-                                _t_free(src);
-                            }
-                            else {
-                                x = __t_new_str(0,to_sym,_t2s(q->r->sem,src),true);
-                                _t_free(src);
-                            }
-                        }
-                        else return incompatibleTypeReductionErr;
-                    }
+                int e = _p_transcode(q->r->sem,src,to_sym,to_s,&x);
+                if (e != noReductionErr) {
+                    if (e != redoReduction) return e;
+                    else err = e;
                 }
                 _t_add(t,x);
             }
@@ -1282,7 +1367,7 @@ Error _p_step(Q *q, R **contextP) {
                         if (e == redoReduction) {
                             context->state = Eval;
                             context->node_pointer = _t_child(context->parent,context->idx);
-                            set_rt_cur_child(q->r,context->node_pointer,1); // reset the current child count on the code
+                            set_rt_cur_child(q->r,context->node_pointer,RUN_TREE_NOT_EVAULATED); // reset the current child count on the code
                         }
                         else context->state = e ? e : Ascend;
                     }

@@ -1046,6 +1046,7 @@ enum TESTSymbolIDs {
     TEST_SYMBOL_SYMBOL_ID,
     TESTING_ID,
     TEST_CHAR_SYMBOL_ID,
+    TEST_INTEGERS_ID,
     NUM_TEST_SYMBOLS
 };
 SemanticID TEST_INT_SYMBOL;
@@ -1061,13 +1062,16 @@ SemanticID TEST_ALPHABETIZE_SCAPE_SYMBOL;
 SemanticID TEST_SYMBOL_SYMBOL;
 SemanticID TESTING;
 SemanticID TEST_CHAR_SYMBOL;
+SemanticID TEST_INTEGERS;
 
 /**********************************************************************************/
 // TEST:Structure
 enum TESTStructureIDs {
     NULL_TEST_STRUCTURE_ID,
+    ZERO_OR_MORE_OF_TEST_INT_SYMBOL_ID,
     NUM_TEST_STRUCTURES
 };
+SemanticID ZERO_OR_MORE_OF_TEST_INT_SYMBOL;
 
 /**********************************************************************************/
 // TEST:Process
@@ -1190,6 +1194,8 @@ enum INTERNETSymbolIDs {
     HTTP_REQUEST_HOST_ID,
     HEADER_KEY_ID,
     HEADER_VALUE_ID,
+    LINE_HEADER_ID,
+    LINE_HEADERS_ID,
     HTTP_RESPONSE_HEADER_ID,
     HTTP_GENERAL_HEADER_ID,
     HTTP_ENTITY_HEADER_ID,
@@ -1270,6 +1276,8 @@ SemanticID HTTP_REQUEST;
 SemanticID HTTP_REQUEST_HOST;
 SemanticID HEADER_KEY;
 SemanticID HEADER_VALUE;
+SemanticID LINE_HEADER;
+SemanticID LINE_HEADERS;
 SemanticID HTTP_RESPONSE_HEADER;
 SemanticID HTTP_GENERAL_HEADER;
 SemanticID HTTP_ENTITY_HEADER;
@@ -1329,6 +1337,7 @@ enum INTERNETStructureIDs {
     MEDIA_TYPE_ID,
     HTTP_REQUEST_V09_ID,
     HEADER_ID,
+    LIST_OF_ZERO_OR_MORE_OF_HEADER_ID,
     LOGICAL_OR_OF_CONTENT_TYPE_AND_CONTENT_ENCODING_ID,
     LOGICAL_OR_OF_HTTP_GENERAL_HEADER_AND_HTTP_RESPONSE_HEADER_AND_HTTP_ENTITY_HEADER_ID,
     ZERO_OR_MORE_OF_HTTP_HEADER_ID,
@@ -1348,6 +1357,7 @@ SemanticID URI;
 SemanticID MEDIA_TYPE;
 SemanticID HTTP_REQUEST_V09;
 SemanticID HEADER;
+SemanticID LIST_OF_ZERO_OR_MORE_OF_HEADER;
 SemanticID LOGICAL_OR_OF_CONTENT_TYPE_AND_CONTENT_ENCODING;
 SemanticID LOGICAL_OR_OF_HTTP_GENERAL_HEADER_AND_HTTP_RESPONSE_HEADER_AND_HTTP_ENTITY_HEADER;
 SemanticID ZERO_OR_MORE_OF_HTTP_HEADER;
@@ -1359,11 +1369,13 @@ SemanticID HTML_ELEMENT;
 // INTERNET:Process
 enum INTERNETProcessIDs {
     NULL_INTERNET_PROCESS_ID,
+    meda_type_2_ascii_str_ID,
     content_type_2_line_ID,
     line_2_httpreq_ID,
     httpresp_ID,
     NUM_INTERNET_PROCESSES
 };
+SemanticID meda_type_2_ascii_str;
 SemanticID content_type_2_line;
 SemanticID line_2_httpreq;
 SemanticID httpresp;

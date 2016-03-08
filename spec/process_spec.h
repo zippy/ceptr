@@ -184,6 +184,19 @@ void testProcessTranscode() {
     spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:314)");
     _t_free(n);
 
+    //debug_enable(D_TRANSCODE);
+    // transcode of matching optionality structures
+    n = _t_build(G_sem,0,TRANSCODE,TRANSCODE_PARAMS,TRANSCODE_TO,LINES,NULL_SYMBOL,
+                 TRANSCODE_ITEMS,TEST_INTEGERS,
+                 TEST_INT_SYMBOL,1,
+                 TEST_INT_SYMBOL,2,
+                 TEST_INT_SYMBOL,314,
+                 NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);
+    spec_is_equal(__p_reduce_sys_proc(0,TRANSCODE,n,r->q),redoReduction);
+    spec_is_str_equal(t2s(n),"(LINES (LINE:1) (LINE:2) (LINE:314))");
+    _t_free(n);
+    debug_disable(D_TRANSCODE);
+
     //transcode of constructed symbol to CSTRING
     n = _t_build(G_sem,0,
                  TRANSCODE,TRANSCODE_PARAMS,TRANSCODE_TO,LINE,NULL_SYMBOL,
@@ -208,8 +221,22 @@ void testProcessTranscode() {
     spec_is_equal(_p_reduceq(q),noReductionErr);
     debug_disable(D_REDUCE+D_REDUCEV);
     spec_is_str_equal(t2s(_t_child(run_tree,1)),"(US_SHORT_DATE:1/30/2015)");
-    //    _t_free(n);
 
+    //debug_enable(D_TRANSCODE);
+    //debug_enable(D_REDUCE+D_REDUCEV);
+    // transcode of matching optionality structures with subreduction
+    n = _t_build(G_sem,0,TRANSCODE,TRANSCODE_PARAMS,TRANSCODE_TO,LINES,NULL_SYMBOL,
+                 TRANSCODE_ITEMS,HTTP_HEADERS,
+                 CONTENT_TYPE,MEDIA_TYPE_IDENT,TEXT_MEDIA_TYPE,MEDIA_SUBTYPE_IDENT,CEPTR_TEXT_MEDIA_SUBTYPE,NULL_SYMBOL,
+                 CONTENT_TYPE,MEDIA_TYPE_IDENT,TEXT_MEDIA_TYPE,MEDIA_SUBTYPE_IDENT,HTML_TEXT_MEDIA_SUBTYPE,NULL_SYMBOL,
+                 NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);
+    run_tree = __p_build_run_tree(n,0);
+    _t_free(n);
+    _p_addrt2q(q,run_tree);
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (LINES (LINE:Content-Type: text/ceptr) (LINE:Content-Type: text/html)) (PARAMS))");
+    debug_disable(D_TRANSCODE);
+    debug_disable(D_REDUCE+D_REDUCEV);
 
     _r_free(r);
 }

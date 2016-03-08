@@ -31,11 +31,16 @@ void __t_append_child(T *t,T *c) {
     t->structure.children[t->structure.child_count++] = c;
 }
 
-void __t_init(T *t,T *parent,Symbol symbol) {
+T * __t_init(T *parent,Symbol symbol,bool is_run_node) {
+    T *t = malloc(is_run_node ? sizeof(rT) : sizeof(T));
     t->structure.child_count = 0;
     t->structure.parent = parent;
     t->contents.symbol = symbol;
     t->context.flags = 0;
+    if (is_run_node) {
+        ((rT *)t)->cur_child = RUN_TREE_NOT_EVAULATED;
+        t->context.flags |= TFLAG_RUN_NODE;
+    }
     if (parent != NULL) {
         __t_append_child(parent,t);
     }
@@ -51,8 +56,7 @@ void __t_init(T *t,T *parent,Symbol symbol) {
  * @returns pointer to node allocated on the heap
  */
 T * __t_new(T *parent,Symbol symbol,void *surface,size_t size,bool is_run_node) {
-    T *t = malloc(is_run_node ? sizeof(rT) : sizeof(T));
-    __t_init(t,parent,symbol);
+    T *t = __t_init(parent,symbol,is_run_node);
     if (is_run_node) t->context.flags |= TFLAG_RUN_NODE;
     if (size && surface) {
         void *dst;
@@ -91,12 +95,7 @@ T * __t_newc(T *parent,Symbol symbol,char surface,bool is_run_node) {
  */
 T * __t_newi(T *parent,Symbol symbol,int surface,bool is_run_node) {
     return __t_new(parent,symbol,&surface,sizeof(int),is_run_node);
-    T *t = malloc(is_run_node ? sizeof(rT) : sizeof(T));
-    *((int *)&t->contents.surface) = surface;
-    t->contents.size = sizeof(int);
-    __t_init(t,parent,symbol);
-    if (is_run_node) t->context.flags |= TFLAG_RUN_NODE;
-    return t;
+
 }
 
 /**
@@ -120,10 +119,10 @@ T *__t_news(T *parent,Symbol symbol,SemanticID surface,bool is_run_node){
  * @returns pointer to node allocated on the heap
  */
 T * _t_newt(T *parent,Symbol symbol,T *surface) {
-    T *t = malloc(sizeof(T));
+    T *t = __t_init(parent,symbol,false);
     *((T **)&t->contents.surface) = surface;
     t->contents.size = sizeof(T *);
-    __t_init(t,parent,symbol);
+
     t->context.flags |= TFLAG_SURFACE_IS_TREE;
     return t;
 }
@@ -166,10 +165,10 @@ T *__t_newr(T *parent,Symbol symbol,bool is_run_node) {
    so the c-structure isn't double freed
  */
 T *__t_new_special(T *parent,Symbol symbol,void *s,int flag,bool is_run_node) {
-    T *t = malloc(is_run_node ? sizeof(rT) : sizeof(T));
+    T *t = __t_init(parent,symbol,is_run_node);
     t->contents.surface = s;
     t->contents.size = sizeof(void *);
-    __t_init(t,parent,symbol);
+
     t->context.flags |= flag;
     if (is_run_node) t->context.flags |= TFLAG_RUN_NODE;
     return t;

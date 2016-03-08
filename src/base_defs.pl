@@ -130,7 +130,7 @@ while (my $line = <$fh>) {
     $line =~ s/^\s+|\s+$//;  #trim leading and trailing whitespace
     $def .= $line;
 #    print "testing $def\n";
-    if ($def =~ /(.*): (.*?);(.*)/) {
+    if ($def =~ /(.*?): (.*?);(.*)/) {
         $def = "";
         my $type = $1;
         if ($type eq 'Context') {
