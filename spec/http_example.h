@@ -393,14 +393,14 @@ void testHTTPprotocol() {
     _o_express_role(er,PARSE_HTTP_REQUEST_FROM_LINE,HTTP_REQUEST_PARSER,HTTP_ASPECT,bindings);
     _t_free(bindings);
 
-    //    debug_enable(D_TRANSCODE+D_REDUCE);
+    //debug_enable(D_TRANSCODE+D_STEP+D_STREAM);
     _v_start_vmhost(G_vm);
     sleep(1);
     debug_disable(D_STREAM+D_SIGNALS+D_TREE+D_PROTOCOL);
-    debug_disable(D_TRANSCODE+D_REDUCE);
+    debug_disable(D_TRANSCODE+D_REDUCE+D_REDUCEV);
     spec_is_true(output_data != 0); // protect against seg-faults when nothing was written to the stream...
     if (output_data != 0) {
-        spec_is_str_equal(output_data,"HTTP/1.1 200 OK\nContent-Type: text/ceptr\n\nbody\n");
+        spec_is_str_equal(output_data,"HTTP/1.1 200 OK\nContent-Type: text/ceptr\n\nsuper cept\n314159\n");
     }
     __r_kill(G_vm->r);
 

@@ -15,6 +15,8 @@ char *dtypestr(int type) {
     if (type & D_LISTEN) {sprintf(s,"_LISTEN");s--;};
     if (type & D_TREE) {sprintf(s,"_TREE");s--;};
     if (type & D_PROTOCOL) {sprintf(s,"_PROTOCOL");s--;};
+    if (type & D_TRANSCODE) {sprintf(s,"_TRANSCODE");s--;};
+    if (type & D_STEP) {sprintf(s,"_STEP");s--;};
     *s=0;
     return G_dtype;
 }

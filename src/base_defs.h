@@ -1371,12 +1371,14 @@ enum INTERNETProcessIDs {
     NULL_INTERNET_PROCESS_ID,
     meda_type_2_ascii_str_ID,
     content_type_2_line_ID,
+    http_response_2_lines_ID,
     line_2_httpreq_ID,
     httpresp_ID,
     NUM_INTERNET_PROCESSES
 };
 SemanticID meda_type_2_ascii_str;
 SemanticID content_type_2_line;
+SemanticID http_response_2_lines;
 SemanticID line_2_httpreq;
 SemanticID httpresp;
 

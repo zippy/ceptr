@@ -71,7 +71,11 @@ void _p_fill_from_match(SemTable *sem,T *t,T *match_results,T *match_tree) {
 }
 
 Process _p_get_transcoder(SemTable *sem,Symbol src_sym,Symbol to_sym) {
-    if (semeq(CONTENT_TYPE,src_sym) && semeq(LINE,to_sym))
+
+    if (semeq(HTTP_RESPONSE,src_sym) && semeq(LINES,to_sym)) {
+        return http_response_2_lines;
+    }
+    else if (semeq(CONTENT_TYPE,src_sym) && semeq(LINE,to_sym))
         return content_type_2_line;
     else {
         Structure src_s = _sem_get_symbol_structure(sem,src_sym);
@@ -146,6 +150,7 @@ int _p_transcode(SemTable *sem, T* src,Symbol to_sym, Structure to_s,T **result)
                         if (_t_children(src) == 0) x = __t_new_str(0,to_sym,"",true);
                         else {
                             x = __t_newr(0,DISSOLVE,true);
+                            T *xx = __t_newr(x,LINES,true);
                             T *k,*r;
                             int e;
                             while (k = _t_detach_by_idx(src,1)) {
@@ -154,7 +159,7 @@ int _p_transcode(SemTable *sem, T* src,Symbol to_sym, Structure to_s,T **result)
                                     _t_free(src);
                                     return e;
                                 }
-                                _t_add(x,r);
+                                _t_add(xx,r);
                             }
                             err = redoReduction;
                         }
@@ -163,6 +168,7 @@ int _p_transcode(SemTable *sem, T* src,Symbol to_sym, Structure to_s,T **result)
                 }
             }
             else {
+                debug(D_TRANSCODE,"trying to find structural match\n");
                 // This a special case where if the src and dest strutctures
                 // of the same form *X then we can transcode the elements
                 // @todo generalize
@@ -203,6 +209,7 @@ int _p_transcode(SemTable *sem, T* src,Symbol to_sym, Structure to_s,T **result)
                     err = redoReduction;
                 }
                 else {
+                    debug(D_TRANSCODE,"unable to match\n");
                     _t_free(src);
                     return incompatibleTypeReductionErr;
                 }
@@ -322,6 +329,11 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
     Symbol sy;
     T *x,*t,*match_results,*match_tree;
     Error err = noReductionErr;
+    SemTable *sem = q ? q->r->sem : G_sem;
+
+    debug(D_REDUCE,"Reducing sys proc: %s\n",_sem_get_name(sem,s));
+    debug(D_STEP,"Reducing %s\n",_t2s(sem,code));
+
     bool dissolve = false;
     switch(s.id) {
     case NOOP_ID:
@@ -349,8 +361,8 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             Symbol s = *(Symbol *)_t_surface(t);
             _t_free(t);
             t = _t_detach_by_idx(code,1);
-            Structure struc_new = _sem_get_symbol_structure(q->r->sem,s);
-            Structure struc_val = _sem_get_symbol_structure(q->r->sem,_t_symbol(t));
+            Structure struc_new = _sem_get_symbol_structure(sem,s);
+            Structure struc_val = _sem_get_symbol_structure(sem,_t_symbol(t));
             if (!semeq(struc_new,struc_val)) {
                 return structureMismatchReductionErr;
             }
@@ -456,7 +468,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             sy = *(Symbol *)_t_surface(x);
             _t_free(x);
             // confirm that the result structure is a CSTRING
-            Structure struc = _sem_get_symbol_structure(q->r->sem,sy);
+            Structure struc = _sem_get_symbol_structure(sem,sy);
             if (!semeq(struc,CSTRING))
                 return signatureMismatchReductionErr;
             x = _t_detach_by_idx(code,1);
@@ -479,7 +491,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             }
         }
         // check type the first node
-        Structure struc = _sem_get_symbol_structure(q->r->sem,_t_symbol(x));
+        Structure struc = _sem_get_symbol_structure(sem,_t_symbol(x));
         if (semeq(struc,CHAR)) {
             x->contents.surface = realloc(x->contents.surface,++x->contents.size);
             ((char *)x->contents.surface)[1] = 0;
@@ -491,7 +503,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
         /// @todo this would probably be faster with just one total realloc for all children
         for(b=1;b<=c;b++) {
             T *t = _t_child(code,b);
-            struc = _sem_get_symbol_structure(q->r->sem,_t_symbol(t));
+            struc = _sem_get_symbol_structure(sem,_t_symbol(t));
             str = (char *)_t_surface(t);
             int size;
             if (semeq(struc,CSTRING)) size = strlen(str);
@@ -520,7 +532,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             if (!signal || !semeq(_t_symbol(signal),SIGNAL))
                 return notInSignalContextReductionError;
             T *t = _t_detach_by_idx(code,1);
-            if (!semeq(CARRIER,_t_symbol(t))) raise_error("expected CARRIER got %s",_t2s(q->r->sem,t));
+            if (!semeq(CARRIER,_t_symbol(t))) raise_error("expected CARRIER got %s",_t2s(sem,t));
             Symbol carrier = *(Symbol*)_t_surface(t);
             _t_free(t);
             T *response_contents = _t_detach_by_idx(code,1);
@@ -611,14 +623,14 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
 
             Symbol to_sym = *(Symbol *)_t_surface(to);
             _t_free(to);
-            Structure to_s = _sem_get_symbol_structure(q->r->sem,to_sym);
+            Structure to_s = _sem_get_symbol_structure(sem,to_sym);
 
             T *items = _t_child(code,1);
             if (!items) return signatureMismatchReductionErr;
             T *t = __t_newr(0,PARAMS,true);  //holder for the transcoding children
             T *src;
             while (src = _t_detach_by_idx(items,1)) {
-                int e = _p_transcode(q->r->sem,src,to_sym,to_s,&x);
+                int e = _p_transcode(sem,src,to_sym,to_s,&x);
                 if (e != noReductionErr) {
                     if (e != redoReduction) return e;
                     else err = e;
@@ -683,7 +695,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
         match_tree = _t_child(code,3);
         x = _t_detach_by_idx(code,1);
         /// @todo interpolation errors?
-        _p_fill_from_match(q->r->sem,x,match_results,match_tree);
+        _p_fill_from_match(sem,x,match_results,match_tree);
         break;
     case RAISE_ID:
         return raiseReductionErr;
@@ -744,7 +756,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             _t_free(s);
             // get the data to write as string
             while(s = _t_detach_by_idx(code,1)) {
-                int err = _t_write(q->r->sem,s,st);
+                int err = _t_write(sem,s,st);
                 _t_free(s);
                 if (err == 0) return unixErrnoReductionErr;
             }
@@ -794,13 +806,13 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                         done = !_t_children(list);
                     }
                     else {
-                        Structure s = _sem_get_symbol_structure(q->r->sem,c);
+                        Structure s = _sem_get_symbol_structure(sem,c);
                         if (semeq(s,INTEGER)) {
                             state->type = IterateTypeCount;
                             state->count = *(int *)_t_surface(x);
                         }
                         else {
-                            raise_error("unable to determine iteration type! symbol was:%s",_sem_get_name(G_sem,s));
+                            raise_error("unable to determine iteration type! symbol was:%s",_sem_get_name(sem,s));
                         }
                     }
                 }
@@ -956,7 +968,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                 _t_free(x);
             }
             else as = type;
-            T *l = _sem_get_label(q->r->sem,sym,type);
+            T *l = _sem_get_label(sem,sym,type);
             if (!l) raise_error("label not found for symbol");
             x = __t_new_str(0,as,_t_surface(l),true);
         }
@@ -1008,6 +1020,10 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
         raise_error("unknown sys-process id: %d",s.id);
     }
 
+    if (debugging(D_STEP)) {
+        if (err==redoReduction) debug(D_STEP,"   redoing reduction\n");
+    }
+
     if (!dissolve) {
         // in the normal case we just replace code with the value of x, so:
         // any remaining children of 'code' are the parameters which have all now been "used up"
@@ -1022,6 +1038,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
         // we do have to fixe the parent value of all the children
         DO_KIDS(code,_t_child(code,i)->structure.parent = code);
         free(x);
+        debug(D_STEP,"  to  %s\n",_t2s(sem,code));
     }
     else {
         // in the dissolve case we have to insert x's children into the spot where code was, so:
@@ -1039,6 +1056,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             path[0]++;
         }
         _t_free(x);  // and free the decapitated root!
+        debug(D_STEP,"  dissolving to  %s\n",_t2s(sem,parent));
 
         //@todo, I think this might cause those children to be evaluated twice which may be a mistake...
     }
@@ -1178,6 +1196,48 @@ Error _p_reduce(SemTable *sem,T *rt) {
     return e;
 }
 
+T * __p_buildErr(R *context) {
+    Symbol se;
+    T *extra = NULL;
+    //@todo: fix this so we don't actually use an error value that
+    // then has to be translated into a symbol, but rather so that we
+    // can programatically calculate the symbol.
+    // or, perhaps, the Error type should actually be the REDUCTION_ERROR
+    // symbol that we generate when we want to return an error during the
+    // reduction process (rather than here).  That way we actually have the
+    // symbol whether or not a we have an error handler for context.
+
+    switch(context->state) {
+    case tooFewParamsReductionErr: se=TOO_FEW_PARAMS_ERR;break;
+    case tooManyParamsReductionErr: se=TOO_MANY_PARAMS_ERR;break;
+    case signatureMismatchReductionErr: se=SIGNATURE_MISMATCH_ERR;break;
+    case notProcessReductionError: se=NOT_A_PROCESS_ERR;break;
+    case notInSignalContextReductionError: se=NOT_IN_SIGNAL_CONTEXT_ERR;
+    case divideByZeroReductionErr: se=ZERO_DIVIDE_ERR;break;
+    case incompatibleTypeReductionErr: se=INCOMPATIBLE_TYPE_ERR;break;
+    case deadStreamReadReductionErr: se=DEAD_STREAM_READ_ERR;break;
+    case missingSemanticMapReductionErr: se=MISSING_SEMANTIC_MAP_ERR;break;
+    case mismatchSemanticMapReductionErr: se=MISMATCH_SEMANTIC_MAP_ERR;break;
+    case structureMismatchReductionErr: se=STRUCTURE_MISMATCH_ERR;break;
+    case unixErrnoReductionErr:
+        se=UNIX_ERRNO_ERR;
+        extra = _t_new_str(0,TEST_STR_SYMBOL,strerror(errno));
+        break;
+    case raiseReductionErr:
+        se = *(Symbol *)_t_surface(_t_child(context->node_pointer,1));
+        break;
+    default: raise_error("unknown reduction error: %d",context->state);
+    }
+    T *err = __t_newr(0,se,true);
+    int *path = _t_get_path(context->node_pointer);
+   _t_new(err,ERROR_LOCATION,path,sizeof(int)*(_t_path_depth(path)+1));
+    free(path);
+    if (extra) {
+        _t_add(err,extra);
+    }
+    return err;
+}
+
 /**
  * take one step in the execution state machine given a run-tree context
  *
@@ -1190,6 +1250,7 @@ Error _p_reduce(SemTable *sem,T *rt) {
  */
 Error _p_step(Q *q, R **contextP) {
     R *context = *contextP;
+    SemTable *sem = q->r->sem;
 
     switch(context->state) {
     case noReductionErr:
@@ -1253,7 +1314,7 @@ Error _p_step(Q *q, R **contextP) {
                 else if (semeq(ref_sym,PARAM_LABEL)) {
                     raise_error("reference by PARAM_LABEL not implemented");
                 }
-                else raise_error("unknown reference type %s",_sem_get_name(q->r->sem,ref_sym));
+                else raise_error("unknown reference type %s",_sem_get_name(sem,ref_sym));
 
                 T *result = _t_child(_t_child(np,ParameterResultIdx),1);
                 Symbol result_sym = _t_symbol(result);
@@ -1266,20 +1327,23 @@ Error _p_step(Q *q, R **contextP) {
                 else if (semeq(result_sym,RESULT_LABEL)) {
                     Symbol label_sym = *(Symbol *)_t_surface(result);
                     Symbol param_sym = _t_symbol(param);
-                    T *l = _sem_get_label(q->r->sem,param_sym,label_sym);
+                    T *l = _sem_get_label(sem,param_sym,label_sym);
                     if (!l) raise_error("label not found for param symbol");
                     np = _t_rclone(l);
                 }
-                else raise_error("unknown result type %s",_sem_get_name(q->r->sem,result_sym));
+                else raise_error("unknown result type %s",_sem_get_name(sem,result_sym));
 
                 context->node_pointer = np;
                 _t_replace(context->parent, context->idx,np);
                 s = _t_symbol(np);
             }
             else if (semeq(s,PARAM_REF)) {
-                T *param = _t_get(context->run_tree,(int *)_t_surface(np));
+                int *path = (int *)_t_surface(np);
+                T *param = _t_get(context->run_tree,path);
                 if (!param) {
-                    raise_error("request for non-existent param");
+                    char buf[255];
+                    _t_sprint_path(path,buf);
+                    raise_error("request for non-existent param %s in %s",buf,_t2s(sem,context->run_tree));
                 }
                 context->node_pointer = np = _t_rclone(param);
                 _t_replace(context->parent, context->idx,np);
@@ -1341,26 +1405,25 @@ Error _p_step(Q *q, R **contextP) {
                     // if the process is QUOTE that's a special case and we evaluate it
                     // immediately without descending.
                     if (!is_sys_process(s)) {
+                        debug(D_STEP,"Stepping into %s\n",_sem_get_name(sem,s));
                         // if it's user defined process then we check the signature and then make
                         // a new run-tree run that process
 
-                        Error e = __p_check_signature(q->r->sem,s,np,context->sem_map);
+                        Error e = __p_check_signature(sem,s,np,context->sem_map);
                         if (e) {
                             context->state = e;
                         }
                         else {
-                            T *run_tree = _p_make_run_tree(q->r->sem,s,np,context->sem_map);
+                            T *run_tree = _p_make_run_tree(sem,s,np,context->sem_map);
                             context->state = Pushed;
                             // @todo for now we just are just passing the semantic map from one
                             // context to the next, but I'm pretty sure we're going to need a way
                             // for folks to modify this on the fly as processes are called
                             *contextP = __p_make_context(run_tree,context,context->id,context->sem_map);
-                            debug(D_REDUCE,"New context for %s: %s\n\n",_sem_get_name(q->r->sem,s),_t2s(q->r->sem,run_tree));
+                            debug(D_REDUCE,"New context for %s: %s\n\n",_sem_get_name(sem,s),_t2s(sem,run_tree));
                         }
                     }
                     else {
-                        debug(D_REDUCE,"Reducing sys proc: %s\n",_sem_get_name(q->r->sem,s));
-
                         // if it's a sys process we can just reduce it in and then ascend
                         // or move to the error handling state
                         Error e = __p_reduce_sys_proc(context,s,np,q);
@@ -1371,13 +1434,14 @@ Error _p_step(Q *q, R **contextP) {
                         }
                         else context->state = e ? e : Ascend;
                     }
+
                 }
                 else if(count) {
                     //descend and increment the current child we're working on!
                     context->state = Descend;
                 }
                 else {
-                    raise_error("whoa! brain fart! on %d,%s",count,_t2s(q->r->sem,np));
+                    raise_error("whoa! brain fart! on %d,%s",count,_t2s(sem,np));
                 }
             }
         }
@@ -1408,6 +1472,12 @@ Error _p_step(Q *q, R **contextP) {
         context->err = context->state;
         if (_t_children(context->run_tree) <= 2) {
             // no error handler so just return the error
+            if (debugging(D_STEP)) {
+                T *err =  __p_buildErr(context);
+                debug(D_STEP,"Reduction Err (no handler): %s\n",_t2s(sem,err));
+                debug(D_STEP,"   node_pointer @ err: %s\n",_t2s(sem,context->node_pointer));
+                _t_free(err);
+            }
             context->state = Pop;
         }
         else {
@@ -1415,43 +1485,12 @@ Error _p_step(Q *q, R **contextP) {
             // which gets added on as the 4th child of the run tree when the
             // error happens.
             T *ps = _t_newr(context->run_tree,PARAMS);
-            T *extra = NULL;
-            //@todo: fix this so we don't actually use an error value that
-            // then has to be translated into a symbol, but rather so that we
-            // can programatically calculate the symbol.
-            // or, perhaps, the Error type should actually be the REDUCTION_ERROR
-            // symbol that we generate when we want to return an error during the
-            // reduction process (rather than here).  That way we actually have the
-            // symbol whether or not a we have an error handler for context.
-            Symbol se;
-            switch(context->state) {
-            case tooFewParamsReductionErr: se=TOO_FEW_PARAMS_ERR;break;
-            case tooManyParamsReductionErr: se=TOO_MANY_PARAMS_ERR;break;
-            case signatureMismatchReductionErr: se=SIGNATURE_MISMATCH_ERR;break;
-            case notProcessReductionError: se=NOT_A_PROCESS_ERR;break;
-            case notInSignalContextReductionError: se=NOT_IN_SIGNAL_CONTEXT_ERR;
-            case divideByZeroReductionErr: se=ZERO_DIVIDE_ERR;break;
-            case incompatibleTypeReductionErr: se=INCOMPATIBLE_TYPE_ERR;break;
-            case deadStreamReadReductionErr: se=DEAD_STREAM_READ_ERR;break;
-            case missingSemanticMapReductionErr: se=MISSING_SEMANTIC_MAP_ERR;break;
-            case mismatchSemanticMapReductionErr: se=MISMATCH_SEMANTIC_MAP_ERR;break;
-            case structureMismatchReductionErr: se=STRUCTURE_MISMATCH_ERR;break;
-            case unixErrnoReductionErr:
-                /// @todo make a better error symbol here... :-P
-                extra = _t_new_str(0,TEST_STR_SYMBOL,strerror(errno));
-                break;
-            case raiseReductionErr:
-                se = *(Symbol *)_t_surface(_t_child(context->node_pointer,1));
-                break;
-            default: raise_error("unknown reduction error: %d",context->state);
-            }
-            T *err = __t_new(ps,se,0,0,1);
-            int *path = _t_get_path(context->node_pointer);
-            _t_new(err,ERROR_LOCATION,path,sizeof(int)*(_t_path_depth(path)+1));
-            free(path);
-            if (extra) {
-                _t_add(err,extra);
-            }
+
+            T *err = __p_buildErr(context);
+            debug(D_STEP,"In Error Handler with %s\n",_t2s(sem,err));
+            debug(D_STEP,"   node_pointer @ err: %s\n",_t2s(sem,context->node_pointer));
+            _t_add(ps,err);
+
             // switch the node_pointer to the top of the error handling routine
             context->node_pointer = _t_child(context->run_tree,RunTreeErrorCodeIdx);
             context->idx = RunTreeErrorCodeIdx;
