@@ -1749,11 +1749,13 @@ char * _t2json(SemTable *sem,T *t,int level,char *buf) {
 
 // assumes that t is a CSTRING structured tree
 int __t_writeln(T *t,Stream *stream) {
-    int err;
+    int err = 0;
     char *str = _t_surface(t);
-    err = _st_write(stream,str,strlen(str));
-    if (err > 0) {
+    int len = strlen(str);
+    if (len) err = _st_write(stream,str,len);
+    if (!len || err > 0) {
         err = _st_write(stream,"\n",1);
+        if (err > 0) err += err;
     }
     return err;
 }
