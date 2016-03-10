@@ -274,6 +274,13 @@ Error __p_check_signature(SemTable *sem,Process p,T *code,T *sem_map) {
                 }
                 else if(semeq(_t_symbol(sig),SIGNATURE_ANY)) {
                 }
+                else if(semeq(_t_symbol(sig),SIGNATURE_PROCESS)) {
+                    Symbol expected = *(Symbol *)_t_surface(sig);
+                    Symbol actual = _t_symbol(param);
+                    if (!semeq(expected,expected)) {
+                        raise_error("expecting process to reduce to %s, got: %s\n",_sem_get_name(sem,expected),_t2s(sem,param));
+                    }
+                }
                 else {
                     raise_error("unknown signature checking symbol: %s",_sem_get_name(sem,_t_symbol(sig)));
                 }
@@ -1426,6 +1433,10 @@ Error _p_step(Q *q, R **contextP) {
                     else {
                         // if it's a sys process we can just reduce it in and then ascend
                         // or move to the error handling state
+
+                        //Error e = __p_check_signature(sem,s,np,context->sem_map);
+                        //if (e) raise_error("SIG FAILURE on %s\n",_t2s(sem,np));
+
                         Error e = __p_reduce_sys_proc(context,s,np,q);
                         if (e == redoReduction) {
                             context->state = Eval;
