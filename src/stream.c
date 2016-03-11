@@ -128,6 +128,21 @@ void _st_data_read(Stream *st) {
 }
 
 /**
+ * query if a stream is alive
+ *
+ */
+bool _st_is_alive(Stream *st) {
+    if (st->type == UnixStream) {
+        FILE *stream = st->data.unix_stream;
+        if (st->flags & StreamAlive)
+            if (feof(stream)) st->flags &= ~StreamAlive;
+        debug(D_STREAM,"checking if StreamAlive: %s\n",st->flags & StreamAlive ? "yes":"no");
+        return st->flags&StreamAlive;
+    }
+    raise_error("unknown stream type:%d\n",st->type);
+}
+
+/**
  * kill a stream
  *
  * if a reader stream is blocked and waiting, calls  _st_start_read so that
@@ -148,7 +163,9 @@ void _st_kill(Stream *st) {
 void _st_free(Stream *stream) {
 
     if (stream->flags & StreamCloseOnFree) {
-        fclose(stream->data.unix_stream);
+        if (stream->type == UnixStream)
+            fclose(stream->data.unix_stream);
+        else raise_error("unknown stream type:%d\n",stream->type);
     }
     _st_kill(stream);
     //@todo who should clean up the mutexes??

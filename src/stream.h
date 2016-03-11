@@ -14,6 +14,7 @@
 
 #include <stdio.h>
 #include <pthread.h>
+#include <stdbool.h>
 
 enum StreamTypes {UnixStream=123};
 enum {StreamHasData=0x0001,StreamCloseOnFree=0x0002,StreamReader=0x0004,StreamWaiting=0x0008,StreamAlive=0x8000};
@@ -49,6 +50,7 @@ Stream *_st_new_unix_stream(FILE *stream,int reader);
 
 void _st_start_read(Stream *st);
 void _st_data_read(Stream *st);
+bool _st_is_alive(Stream *st);
 void _st_kill(Stream *st);
 void _st_free(Stream *);
 #define _st_data(st) (st)->buf

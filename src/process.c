@@ -712,7 +712,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             // get the stream param
             T *s = _t_child(code,1);
             Stream *st = _t_surface(s);
-            if (st->type != UnixStream) raise_error("unknown stream type:%d\n",st->type);
+
             //@todo possible another parameter to specify if we should read lines, or specific number of bytes
             st->callback = 0;
             if (st->flags & StreamHasData) {
@@ -776,12 +776,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             // get the stream param
             T *s = _t_detach_by_idx(code,1);
             Stream *st = _t_surface(s);
-            if (st->type != UnixStream) raise_error("unknown stream type:%d\n",st->type);
-            FILE *stream = st->data.unix_stream;
-            if (st->flags & StreamAlive)
-                if (feof(stream)) st->flags &= ~StreamAlive;
-            debug(D_STREAM,"checking if StreamAlive: %s\n",st->flags & StreamAlive ? "yes":"no");
-            x = __t_newi(0,BOOLEAN, (st->flags&StreamAlive)?1:0,1);
+            x = __t_newi(0,BOOLEAN,_st_is_alive(st),true);
             _t_free(s);
         }
         break;

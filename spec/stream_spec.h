@@ -24,6 +24,27 @@ void testStreamCreate() {
     _st_free(s);
 }
 
+void testStreamAlive() {
+    FILE *input;
+
+    char data[] = "line1\nline2\n";
+    input = fmemopen(data, strlen(data), "r");
+    Stream *s = _st_new_unix_stream(input,1);
+
+    spec_is_true(_st_is_alive(s));
+    _st_kill(s);
+    spec_is_false(_st_is_alive(s));
+
+    void *status;
+    int rc;
+
+    rc = pthread_join(s->pthread, &status);
+    if (rc) {
+        raise_error("ERROR; return code from pthread_join() is %d\n", rc);
+    }
+    _st_free(s);
+}
+
 void testStreamRead() {
     //    debug_enable(D_STREAM);
     // test reading from a stream
@@ -83,6 +104,7 @@ void testStreamWrite() {
 
 void testStream() {
     testStreamCreate();
+    testStreamAlive();
     testStreamRead();
     testStreamWrite();
 }
