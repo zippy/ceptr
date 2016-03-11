@@ -67,3 +67,26 @@ void _test_reduce_signals(Receptor *r) {
         }
     }
 }
+
+char *doSys(char *cmd) {
+    FILE *pipe = popen(cmd, "r");
+    if (!pipe) raise_error("Error running %s\n",cmd);
+    int sz = 1000;
+    int remaining = sz;
+    char *buffer = malloc(sz);
+    char buf[255];
+    while (fgets(buf, 255, pipe) != NULL) {
+        int l = strlen(buf);
+        if (l > remaining) {
+            int increase_by = l < sz ? sz : l*2;
+            remaining += increase_by;
+            sz += increase_by;
+            buffer = realloc(buffer,sz);
+        }
+        memcpy(&buffer[sz-remaining],buf,l);
+        remaining -= l;
+    }
+    buffer[sz-remaining] = 0;
+    pclose(pipe);
+    return buffer;
+}
