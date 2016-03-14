@@ -459,6 +459,8 @@ void _st_kill(Stream *st) {
 void _st_free(Stream *st) {
 
     if (st->flags & StreamCloseOnFree) {
+        debug(D_STREAM,"cleaning up stream\n");
+
         if (st->type == UnixStream)
             fclose(st->data.unix_stream);
         else if (st->type == SocketStream) {

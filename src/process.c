@@ -729,7 +729,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                         int l = _st_data_size(st);
                         char *c = _st_data(st);
                         x = __t_newr(0,ASCII_CHARS,true);
-                        while (--l) { // ignore final NULL
+                        while (l--) {
                             __t_newc(x,ASCII_CHAR,*c,true);
                             c++;
                         }

@@ -791,6 +791,7 @@ void testProcessStream() {
     spec_is_str_equal(t2s(run_tree),"(RUN_TREE (ASCII_CHARS (ASCII_CHAR:'a') (ASCII_CHAR:'b') (ASCII_CHAR:'c')) (PARAMS))");
 
     // test writing to the stream
+    fseek(stream,strlen(buffer),SEEK_SET);
     n = _t_new_root(STREAM_WRITE);
     _t_new_stream(n,TEST_STREAM_SYMBOL,st);
     _t_new_str(n,TEST_STR_SYMBOL,"fish\n");
