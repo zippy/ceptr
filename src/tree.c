@@ -224,8 +224,8 @@ T *_t_new_scape(T *parent,Symbol symbol,Scape *s) {
  * <b>Examples (from test suite):</b>
  * @snippet spec/tree_spec.h testTreeStream
  */
-T *_t_new_stream(T *parent,Symbol symbol,Stream *s) {
-    return __t_new_special(parent,symbol,s,TFLAG_SURFACE_IS_STREAM+TFLAG_REFERENCE,0);
+T *_t_new_cptr(T *parent,Symbol symbol,void *s) {
+    return __t_new_special(parent,symbol,s,TFLAG_SURFACE_IS_CPTR+TFLAG_REFERENCE,0);
 }
 
 /**
@@ -497,9 +497,8 @@ void __t_free(T *t) {
         }
         else if (t->context.flags & TFLAG_SURFACE_IS_SCAPE)
             _s_free((Scape *)t->contents.surface);
-        else if (t->context.flags & TFLAG_SURFACE_IS_STREAM) {
+        else if (t->context.flags & TFLAG_SURFACE_IS_CPTR) {
             raise_error("WHAAA!");
-            _st_free((Stream *)t->contents.surface);
         }
     }
 }
@@ -523,7 +522,7 @@ T *__t_clone(T *t,T *p) {
 
     // if the tree points to a type that has an allocated c structure as its surface
     // the clone must be marked as a reference, otherwise it would get freed twice
-    if (flags & (TFLAG_SURFACE_IS_RECEPTOR+TFLAG_SURFACE_IS_SCAPE+TFLAG_SURFACE_IS_STREAM)) {
+    if (flags & (TFLAG_SURFACE_IS_RECEPTOR+TFLAG_SURFACE_IS_SCAPE+TFLAG_SURFACE_IS_CPTR)) {
         nt = __t_new_special(p,_t_symbol(t),_t_surface(t),flags,0);
         nt->context.flags |= TFLAG_REFERENCE;
     }
@@ -548,7 +547,7 @@ T *__t_rclone(T *t,T *p) {
     }
     // if the tree points to a type that has an allocated c structure as its surface
     // the clone must be marked as a reference, otherwise it would get freed twice
-    else if (flags & (TFLAG_SURFACE_IS_RECEPTOR+TFLAG_SURFACE_IS_SCAPE+TFLAG_SURFACE_IS_STREAM)) {
+    else if (flags & (TFLAG_SURFACE_IS_RECEPTOR+TFLAG_SURFACE_IS_SCAPE+TFLAG_SURFACE_IS_CPTR)) {
         nt = __t_new_special(p,_t_symbol(t),_t_surface(t),flags,1);
         nt->context.flags |= TFLAG_REFERENCE;
     }
@@ -996,7 +995,7 @@ int _t_children(T *t) {
  * @returns pointer to node's surface
  */
 void * _t_surface(T *t) {
-    if (t->context.flags & (TFLAG_ALLOCATED|TFLAG_SURFACE_IS_TREE|TFLAG_SURFACE_IS_SCAPE|TFLAG_SURFACE_IS_STREAM))
+    if (t->context.flags & (TFLAG_ALLOCATED|TFLAG_SURFACE_IS_TREE|TFLAG_SURFACE_IS_SCAPE|TFLAG_SURFACE_IS_CPTR))
         return t->contents.surface;
     else
         return &t->contents.surface;
@@ -1551,7 +1550,7 @@ char * _t2rawjson(SemTable *sem,T *t,int level,char *buf) {
                 x = *(Xaddr *)_t_surface(t);
                 sprintf(buf,",\"surface\":{ \"symbol\":\"%s\",\"addr\":%d }",_sem_get_name(sem,x.symbol),x.addr);
                 break;
-            case STREAM_ID:
+            case CPOINTER_ID:
                 sprintf(buf,",\"surface\":\"%p\"",_t_surface(t));
                 break;
             case TREE_ID:
@@ -1691,8 +1690,8 @@ char * _t2json(SemTable *sem,T *t,int level,char *buf) {
                 x = *(Xaddr *)_t_surface(t);
                 sprintf(buf,"\"type\":\"XADDR\",\"name\":\"%s\",\"surface\":{ \"symbol\":\"%s\",\"addr\":%d }",n,_sem_get_name(sem,x.symbol),x.addr);
                 break;
-            case STREAM_ID:
-                sprintf(buf,"\"type\":\"STREAM\",\"name\":\"%s\",\"surface\":\"%p\"",n,_t_surface(t));
+            case CPOINTER_ID:
+                sprintf(buf,"\"type\":\"CPOINTER\",\"name\":\"%s\",\"surface\":\"%p\"",n,_t_surface(t));
                 break;
             case TREE_ID:
                 if (t->context.flags & TFLAG_SURFACE_IS_TREE) {

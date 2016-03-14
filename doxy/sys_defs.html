@@ -123,9 +123,9 @@
    </div>
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
-       <div class="def-name"><a name="STREAM"></a>STREAM</div>
+       <div class="def-name"><a name="CPOINTER"></a>CPOINTER</div>
        <div class="def-struc-def"><a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a></div>
-       <div class="def-comment">          surface is a c struct holding state for unix (and other) streams</div>
+       <div class="def-comment">        surface is c pointer of some sort, used for edge receptor data</div>
    </div>
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
@@ -137,7 +137,7 @@
        <div class="def-type">Structure:</div>
        <div class="def-name"><a name="BLOB"></a>BLOB</div>
        <div class="def-struc-def"><a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a></div>
-       <div class="def-comment">            surface is and undefined blob of bytes</div>
+       <div class="def-comment">            surface is an undefined blob of bytes</div>
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
@@ -1869,6 +1869,18 @@
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="EDGE_STREAM"></a>EDGE_STREAM</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CPOINTER">CPOINTER</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="EDGE_LISTENER"></a>EDGE_LISTENER</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CPOINTER">CPOINTER</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="ITERATE_ON_SYMBOL"></a>ITERATE_ON_SYMBOL</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
        <div class="def-comment"></div>
@@ -2125,21 +2137,21 @@
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
        <div class="def-name"><a name="STREAM_READ"></a>STREAM_READ</div>
-       <div class="def-sig-in"><li>stream(STRUCTURE:<a href="ref_sys_symbols.html#STREAM">STREAM</a>)</li><li>into(SYMBOL:<a href="ref_sys_symbols.html#RESULT_SYMBOL">RESULT_SYMBOL</a>)</li></div>
+       <div class="def-sig-in"><li>stream(SYMBOL:<a href="ref_sys_symbols.html#EDGE_STREAM">EDGE_STREAM</a>)</li><li>into(SYMBOL:<a href="ref_sys_symbols.html#RESULT_SYMBOL">RESULT_SYMBOL</a>)</li></div>
        <div class="def-sig-out">result(PASSTHRU:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
        <div class="def-comment"><i>read from a stream</i><br />  the data on the stream will appear as the surface of the symbol type given by the "into" param. Clearly this could get ugly as there is no semantic checking that that's ok...</div>
    </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
        <div class="def-name"><a name="STREAM_WRITE"></a>STREAM_WRITE</div>
-       <div class="def-sig-in"><li>stream(STRUCTURE:<a href="ref_sys_symbols.html#STREAM">STREAM</a>)</li><li>what(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</li></div>
+       <div class="def-sig-in"><li>stream(SYMBOL:<a href="ref_sys_symbols.html#EDGE_STREAM">EDGE_STREAM</a>)</li><li>what(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</li></div>
        <div class="def-sig-out">result(PASSTHRU:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
        <div class="def-comment"><i>write to a stream</i></div>
    </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
        <div class="def-name"><a name="STREAM_ALIVE"></a>STREAM_ALIVE</div>
-       <div class="def-sig-in"><li>stream(STRUCTURE:<a href="ref_sys_symbols.html#STREAM">STREAM</a>)</li></div>
+       <div class="def-sig-in"><li>stream(SYMBOL:<a href="ref_sys_symbols.html#EDGE_STREAM">EDGE_STREAM</a>)</li></div>
        <div class="def-sig-out">alive(SYMBOL:<a href="ref_sys_symbols.html#BOOLEAN">BOOLEAN</a>)</div>
        <div class="def-comment"><i>test if stream is alive for reading</i></div>
    </div>
@@ -2873,12 +2885,6 @@
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
-       <div class="def-name"><a name="TEST_STREAM_SYMBOL"></a>TEST_STREAM_SYMBOL</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#STREAM">STREAM</a></div>
-       <div class="def-comment"></div>
-   </div>
-   <div class="def-item def-symbol">
-       <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="TEST_NAME_SYMBOL"></a>TEST_NAME_SYMBOL</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
        <div class="def-comment"></div>
@@ -2959,7 +2965,7 @@
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
        <div class="def-name"><a name="echo2stream"></a>echo2stream</div>
-       <div class="def-sig-in"><li>stream(STRUCTURE:<a href="ref_sys_symbols.html#STREAM">STREAM</a>)</li><li>value(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</li></div>
+       <div class="def-sig-in"><li>stream(SYMBOL:<a href="ref_sys_symbols.html#EDGE_STREAM">EDGE_STREAM</a>)</li><li>value(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</li></div>
        <div class="def-sig-out">result(SYMBOL:<a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a>)</div>
        <div class="def-comment"><i>echo input to stream</i></div>
    </div>

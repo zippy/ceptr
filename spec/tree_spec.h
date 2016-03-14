@@ -112,18 +112,18 @@ void testTreeStream() {
     stream = fmemopen(buffer, strlen (buffer), "r+");
 
     Stream *s = _st_new_unix_stream(stream,0);
-    T *ts = _t_new_stream(0,TEST_STREAM_SYMBOL,s);
+    T *ts = _t_new_cptr(0,EDGE_STREAM,s);
 
-    spec_is_true(ts->context.flags & TFLAG_SURFACE_IS_STREAM);
+    spec_is_true(ts->context.flags & TFLAG_SURFACE_IS_CPTR);
     spec_is_true(ts->context.flags & TFLAG_REFERENCE);
     spec_is_ptr_equal(_t_surface(ts),s);
     char *x = t2s(ts);
-    x[19]=0; // chop off the actual address cus that changes all the time
-    spec_is_str_equal(x,"(TEST_STREAM_SYMBOL");
+    x[12]=0; // chop off the actual address cus that changes all the time
+    spec_is_str_equal(x,"(EDGE_STREAM");
 
     _t_free(ts);
-    // note, for now we must handle all stream deallocation manually because _t_new_stream
-    // always makes the symbols as references to the Stream object
+    // note, for now we must handle all stream deallocation manually because the stream
+    // is just stored in the tree as a cptr
     _st_free(s);
 
     //! [testTreeStream]

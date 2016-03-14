@@ -747,14 +747,14 @@ void testProcessStream() {
     // a boolean if the stream is readable or not.
     T *n = _t_new_root(STREAM_ALIVE);
     Stream *st = _st_new_unix_stream(stream,1);
-    _t_new_stream(n,TEST_STREAM_SYMBOL,st);
+    _t_new_cptr(n,EDGE_STREAM,st);
     __p_reduce_sys_proc(0,STREAM_ALIVE,n,0);
     spec_is_str_equal(t2s(n),"(BOOLEAN:1)");
     _t_free(n);
 
     // test reading a stream
     n = _t_new_root(STREAM_READ);
-    _t_new_stream(n,TEST_STREAM_SYMBOL,st);
+    _t_new_cptr(n,EDGE_STREAM,st);
     _t_news(n,RESULT_SYMBOL,TEST_STR_SYMBOL);
 
     T *run_tree = __p_build_run_tree(n,0);
@@ -779,7 +779,7 @@ void testProcessStream() {
 
     // now test reading again but this time into an ASCII_CHARS tree
     n = _t_new_root(STREAM_READ);
-    _t_new_stream(n,TEST_STREAM_SYMBOL,st);
+    _t_new_cptr(n,EDGE_STREAM,st);
     _t_news(n,RESULT_SYMBOL,ASCII_CHARS);
 
     run_tree = __p_build_run_tree(n,0);
@@ -793,7 +793,7 @@ void testProcessStream() {
     // test writing to the stream
     fseek(stream,strlen(buffer),SEEK_SET);
     n = _t_new_root(STREAM_WRITE);
-    _t_new_stream(n,TEST_STREAM_SYMBOL,st);
+    _t_new_cptr(n,EDGE_STREAM,st);
     _t_new_str(n,TEST_STR_SYMBOL,"fish\n");
     _t_new_str(n,LINE,"cow");
     T *lns = _t_newr(n,LINES);
@@ -819,7 +819,7 @@ void testProcessStream() {
     st = _st_new_unix_stream(stream,0);
     n = _t_new_root(STREAM_WRITE);
 
-    _t_new_stream(n,TEST_STREAM_SYMBOL,st);
+    _t_new_cptr(n,EDGE_STREAM,st);
     _t_new_str(n,TEST_STR_SYMBOL,"fish\n");
 
     run_tree = __p_build_run_tree(n,0);
@@ -835,7 +835,7 @@ void testProcessStream() {
 
     _st_kill(st);
     n = _t_new_root(STREAM_ALIVE);
-    _t_new_stream(n,TEST_STREAM_SYMBOL,st);
+    _t_new_cptr(n,EDGE_STREAM,st);
     __p_reduce_sys_proc(0,STREAM_ALIVE,n,0);
     spec_is_str_equal(t2s(n),"(BOOLEAN:0)");
     _t_free(n);
@@ -1271,10 +1271,10 @@ void testProcessIterate() {
 
     T *x = _t_newr(code,STREAM_WRITE);
     Stream *st = _st_new_unix_stream(output,0);
-    _t_new_stream(x,TEST_STREAM_SYMBOL,st);
+    _t_new_cptr(x,EDGE_STREAM,st);
     _t_new_str(x,LINE,"testing");
 
-    spec_is_str_equal(t2s(code),"(process:ITERATE (PARAMS) (TEST_INT_SYMBOL:3) (process:STREAM_WRITE (TEST_STREAM_SYMBOL) (LINE:testing)))");
+    spec_is_str_equal(t2s(code),"(process:ITERATE (PARAMS) (TEST_INT_SYMBOL:3) (process:STREAM_WRITE (EDGE_STREAM) (LINE:testing)))");
 
     T *t = __p_build_run_tree(code,0);
     Error e = _p_reduce(G_sem,t);
@@ -1294,7 +1294,7 @@ void testProcessIterate() {
     _t_newi(params,TEST_INT_SYMBOL,314);
 
     _t_replace(code,2,x);
-    spec_is_str_equal(t2s(code),"(process:ITERATE (PARAMS (TEST_INT_SYMBOL:314)) (process:LT_INT (PARAM_REF:/1/1/1) (TEST_INT_SYMBOL:3)) (process:STREAM_WRITE (TEST_STREAM_SYMBOL) (LINE:testing)))");
+    spec_is_str_equal(t2s(code),"(process:ITERATE (PARAMS (TEST_INT_SYMBOL:314)) (process:LT_INT (PARAM_REF:/1/1/1) (TEST_INT_SYMBOL:3)) (process:STREAM_WRITE (EDGE_STREAM) (LINE:testing)))");
 
     t = __p_build_run_tree(code,0);
     e = _p_reduce(G_sem,t);
@@ -1322,11 +1322,11 @@ void testProcessIterateOnSymbol() {
 
     T *t = _t_newr(code,STREAM_WRITE);
     Stream *st = _st_new_unix_stream(output,0);
-    _t_new_stream(t,TEST_STREAM_SYMBOL,st);
+    _t_new_cptr(t,EDGE_STREAM,st);
     int p[] = {1,1,1,1,TREE_PATH_TERMINATOR};
     _t_new(t,PARAM_REF,p,sizeof(int)*5);
 
-    spec_is_str_equal(t2s(code),"(process:ITERATE (PARAMS) (ITERATE_ON_SYMBOL:TEST_STR_SYMBOL) (process:STREAM_WRITE (TEST_STREAM_SYMBOL) (PARAM_REF:/1/1/1/1)))");
+    spec_is_str_equal(t2s(code),"(process:ITERATE (PARAMS) (ITERATE_ON_SYMBOL:TEST_STR_SYMBOL) (process:STREAM_WRITE (EDGE_STREAM) (PARAM_REF:/1/1/1/1)))");
     T *run_tree = __p_build_run_tree(code,0);
     _t_free(t);
 

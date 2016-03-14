@@ -190,7 +190,7 @@ size_t _sys_structure_size(int id,void *surface) {
     case FLOAT_ID: return sizeof(float);
     case CSTRING_ID: return strlen(surface)+1;
     case XADDR_ID: return sizeof(Xaddr);
-    case STREAM_ID:
+    case CPOINTER_ID:
     case RECEPTOR_ID:
     case SCAPE_ID:
         return sizeof(void *);
@@ -533,7 +533,7 @@ char * __t_dump(SemTable *sem,T *t,int level,char *buf) {
                 x = *(Xaddr *)_t_surface(t);
                 sprintf(buf,"(%s:%s.%d",n,_sem_get_name(sem,x.symbol),x.addr);
                 break;
-            /* case STREAM_ID: */
+            /* case CPOINTER_ID: */
             /*     sprintf(buf,"(%s:%p",n,_t_surface(t)); */
             /*     break; */
             /* case UUID_ID: */

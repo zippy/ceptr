@@ -910,7 +910,7 @@ Receptor *_r_makeStreamEdgeReceptor(SemTable *sem) {
 }
 
 
-void _r_addReader(Receptor *r,Symbol stream_symbol,Stream *st,ReceptorAddress to,Aspect aspect,Symbol carrier,Symbol result_symbol) {
+void _r_addReader(Receptor *r,Stream *st,ReceptorAddress to,Aspect aspect,Symbol carrier,Symbol result_symbol) {
 
     // code is something like:
     // (do (not stream eof) (send to (read_stream stream line)))
@@ -919,7 +919,7 @@ void _r_addReader(Receptor *r,Symbol stream_symbol,Stream *st,ReceptorAddress to
     T *params = _t_newr(p,PARAMS);
     T *eof = _t_newr(p,STREAM_ALIVE);
 
-    _t_new_stream(eof,stream_symbol,st);
+    _t_new_cptr(eof,EDGE_STREAM,st);
     //    _t_newi(p,TEST_INT_SYMBOL,2);  // two repetitions
     T *say = _t_newr(p,SAY);
 
@@ -928,7 +928,7 @@ void _r_addReader(Receptor *r,Symbol stream_symbol,Stream *st,ReceptorAddress to
     _t_news(say,CARRIER,carrier);
 
     T *s = _t_new(say,STREAM_READ,0,0);
-    _t_new_stream(s,stream_symbol,st);
+    _t_new_cptr(s,EDGE_STREAM,st);
     _t_new(s,RESULT_SYMBOL,&result_symbol,sizeof(Symbol));
 
     T *run_tree = __p_build_run_tree(p,0);
@@ -936,7 +936,7 @@ void _r_addReader(Receptor *r,Symbol stream_symbol,Stream *st,ReceptorAddress to
     _p_addrt2q(r->q,run_tree);
 }
 
-void _r_addWriter(Receptor *r,Symbol stream_symbol,Stream *st,Aspect aspect) {
+void _r_addWriter(Receptor *r,Stream *st,Aspect aspect) {
 
     T *expect = _t_new_root(PATTERN);
 
@@ -957,7 +957,7 @@ void _r_addWriter(Receptor *r,Symbol stream_symbol,Stream *st,Aspect aspect) {
     /* puts(buf); */
 
     T* params = _t_new_root(PARAMS);
-    _t_new_stream(params,stream_symbol,st);
+    _t_new_cptr(params,EDGE_STREAM,st);
     T* s = _t_newr(params,SLOT);
     _t_news(s,USAGE,NULL_SYMBOL);
 

@@ -585,10 +585,10 @@ void testReceptorEdgeStream() {
 
     Receptor *r = _r_makeStreamEdgeReceptor(v->sem);
     Xaddr edge = _v_new_receptor(v,v->r,STREAM_EDGE,r);
-    _r_addWriter(r,TEST_STREAM_SYMBOL,writer_stream,DEFAULT_ASPECT);
-    _r_addReader(r,TEST_STREAM_SYMBOL,reader_stream,r->addr,DEFAULT_ASPECT,LINE,LINE);
+    _r_addWriter(r,writer_stream,DEFAULT_ASPECT);
+    _r_addReader(r,reader_stream,r->addr,DEFAULT_ASPECT,LINE,LINE);
 
-    spec_is_str_equal(_td(r,__r_get_expectations(r,DEFAULT_ASPECT)),"(EXPECTATIONS (EXPECTATION (CARRIER:NULL_SYMBOL) (PATTERN (SEMTREX_SYMBOL_ANY)) (ACTION:echo2stream) (PARAMS (TEST_STREAM_SYMBOL) (SLOT (USAGE:NULL_SYMBOL))) (END_CONDITIONS (UNLIMITED))))");
+    spec_is_str_equal(_td(r,__r_get_expectations(r,DEFAULT_ASPECT)),"(EXPECTATIONS (EXPECTATION (CARRIER:NULL_SYMBOL) (PATTERN (SEMTREX_SYMBOL_ANY)) (ACTION:echo2stream) (PARAMS (EDGE_STREAM) (SLOT (USAGE:NULL_SYMBOL))) (END_CONDITIONS (UNLIMITED))))");
 
     // manually run the reader's process queue
     //debug_enable(D_STREAM);
@@ -619,19 +619,19 @@ void testReceptorEdgeStream() {
     _v_deliver_signals(v,r);
 
     // and see that they've shown up in the edge receptor's flux signals list
-    spec_is_str_equal(_td(r,__r_get_signals(r,DEFAULT_ASPECT)),"(SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:LINE) (SIGNAL_UUID)) (BODY:{(LINE:line1)}) (RUN_TREE (process:STREAM_WRITE (PARAM_REF:/2/1) (PARAM_REF:/2/2)) (PARAMS (TEST_STREAM_SYMBOL) (LINE:line1)))) (SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:LINE) (SIGNAL_UUID)) (BODY:{(LINE:line2)}) (RUN_TREE (process:STREAM_WRITE (PARAM_REF:/2/1) (PARAM_REF:/2/2)) (PARAMS (TEST_STREAM_SYMBOL) (LINE:line2)))))");
+    spec_is_str_equal(_td(r,__r_get_signals(r,DEFAULT_ASPECT)),"(SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:LINE) (SIGNAL_UUID)) (BODY:{(LINE:line1)}) (RUN_TREE (process:STREAM_WRITE (PARAM_REF:/2/1) (PARAM_REF:/2/2)) (PARAMS (EDGE_STREAM) (LINE:line1)))) (SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:LINE) (SIGNAL_UUID)) (BODY:{(LINE:line2)}) (RUN_TREE (process:STREAM_WRITE (PARAM_REF:/2/1) (PARAM_REF:/2/2)) (PARAMS (EDGE_STREAM) (LINE:line2)))))");
 
     // and that they've been removed from process queue pending signals list
     spec_is_str_equal(_td(r,r->pending_signals),"(PENDING_SIGNALS)");
 
-    spec_is_str_equal(_td(r,r->q->active->context->run_tree),"(RUN_TREE (process:STREAM_WRITE (PARAM_REF:/2/1) (PARAM_REF:/2/2)) (PARAMS (TEST_STREAM_SYMBOL) (LINE:line1)))");
+    spec_is_str_equal(_td(r,r->q->active->context->run_tree),"(RUN_TREE (process:STREAM_WRITE (PARAM_REF:/2/1) (PARAM_REF:/2/2)) (PARAMS (EDGE_STREAM) (LINE:line1)))");
 
     // manually run the process queue
     //    debug_enable(D_REDUCE);
     _p_reduceq(r->q);
     //    debug_disable(D_REDUCE);
 
-    spec_is_str_equal(_td(r,r->q->completed->context->run_tree),"(RUN_TREE (REDUCTION_ERROR_SYMBOL:NULL_SYMBOL) (PARAMS (TEST_STREAM_SYMBOL) (LINE:line2)))");
+    spec_is_str_equal(_td(r,r->q->completed->context->run_tree),"(RUN_TREE (REDUCTION_ERROR_SYMBOL:NULL_SYMBOL) (PARAMS (EDGE_STREAM) (LINE:line2)))");
 
     spec_is_str_equal(output_data,"line1\nline2\n");
 

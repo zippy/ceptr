@@ -28,7 +28,7 @@
 #define TREE_CHILDREN_BLOCK 5
 #define TREE_PATH_TERMINATOR -9999
 
-enum TreeSurfaceFlags {TFLAG_ALLOCATED=0x0001,TFLAG_SURFACE_IS_TREE=0x0002,TFLAG_SURFACE_IS_RECEPTOR = 0x0004,TFLAG_SURFACE_IS_SCAPE=0x0008,TFLAG_SURFACE_IS_STREAM=0x0010,TFLAG_DELETED=0x0020,TFLAG_RUN_NODE=0x0040,TFLAG_REFERENCE=0x8000};
+enum TreeSurfaceFlags {TFLAG_ALLOCATED=0x0001,TFLAG_SURFACE_IS_TREE=0x0002,TFLAG_SURFACE_IS_RECEPTOR = 0x0004,TFLAG_SURFACE_IS_SCAPE=0x0008,TFLAG_SURFACE_IS_CPTR=0x0010,TFLAG_DELETED=0x0020,TFLAG_RUN_NODE=0x0040,TFLAG_REFERENCE=0x8000};
 
 /*****************  Node creation and deletion*/
 T *__t_new(T *t,Symbol symbol, void *surface, size_t size,bool is_run_node);
@@ -47,7 +47,7 @@ T *_t_new_root(Symbol symbol);
 T *__t_newr(T *parent,Symbol symbol,bool is_run_node);
 T *_t_new_receptor(T *parent,Symbol symbol,Receptor *r);
 T *_t_new_scape(T *parent,Symbol symbol,Scape *s);
-T *_t_new_stream(T *parent,Symbol symbol,Stream *s);
+T *_t_new_cptr(T *parent,Symbol symbol,void *s);
 T *_t_newp(T *parent,Symbol symbol,Process surface);
 
 void _t_add(T *t,T *c);

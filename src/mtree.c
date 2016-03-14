@@ -169,7 +169,7 @@ H __mnft(H parent,T *t) {
     // it must be copied into the mtree as reference, otherwise it would get freed twice
     // when the mtree is freed
 
-    if (flags & (TFLAG_SURFACE_IS_RECEPTOR+TFLAG_SURFACE_IS_SCAPE+TFLAG_SURFACE_IS_STREAM)) flags |= TFLAG_REFERENCE;
+    if (flags & (TFLAG_SURFACE_IS_RECEPTOR+TFLAG_SURFACE_IS_SCAPE+TFLAG_SURFACE_IS_CPTR)) flags |= TFLAG_REFERENCE;
     void *surface = _t_surface(t);
     void *sp;
     H h;
@@ -179,7 +179,7 @@ H __mnft(H parent,T *t) {
         h = _m_newt(parent,_t_symbol(t),sh);
     }
     else {
-        if (flags & (TFLAG_SURFACE_IS_RECEPTOR+TFLAG_SURFACE_IS_SCAPE+TFLAG_SURFACE_IS_STREAM)) {
+        if (flags & (TFLAG_SURFACE_IS_RECEPTOR+TFLAG_SURFACE_IS_SCAPE+TFLAG_SURFACE_IS_CPTR)) {
             sp = surface;
             surface = &sp;
         }
