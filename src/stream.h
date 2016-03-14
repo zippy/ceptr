@@ -75,7 +75,7 @@ void _st_close_listener(SocketListener *l);
 
 void _st_start_read(Stream *st);
 void _st_data_consumed(Stream *st);
-bool _st_is_alive(Stream *st);
+#define _st_is_alive(st) ((st->flags & StreamAlive) || (st->scan_state != StreamScanComplete))
 void _st_kill(Stream *st);
 void _st_free(Stream *);
 #define _st_data(st) (&(st)->buf[st->unit_start])

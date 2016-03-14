@@ -172,32 +172,33 @@ void testStreamRead(size_t rs) {
     spec_is_true(s->flags&StreamWaiting);
 
     _st_start_read(s);
-    while(!(s->flags&StreamHasData) && s->flags&StreamAlive ) {sleepms(1);};
+    while(!(s->flags&StreamHasData) && _st_is_alive(s)) {sleepms(1);};
     spec_is_buffer_equal(_st_data(s),"line1",_st_data_size(s));
     _st_data_consumed(s);
     spec_is_false(s->flags&StreamHasData);
+    spec_is_true(_st_is_alive(s));
 
     // test callback getting the value
     s->callback = testCallback;
     s->callback_arg1 = "arg val";
     _st_start_read(s);
-    while(!(s->flags&StreamHasData) && s->flags&StreamAlive ) {sleepms(1);};
+    while(!(s->flags&StreamHasData) && _st_is_alive(s) ) {sleepms(1);};
     spec_is_true(s->flags&StreamHasData);
     _st_data_consumed(s);
     spec_is_false(s->flags&StreamHasData);
 
     // test final value with no new-line
     _st_start_read(s);
-    while(!(s->flags&StreamHasData) && s->flags&StreamAlive ) {sleepms(1);};
+    while(!(s->flags&StreamHasData) && _st_is_alive(s) ) {sleepms(1);};
     spec_is_true(s->flags&StreamHasData);
     spec_is_buffer_equal(_st_data(s),"line3",_st_data_size(s));
     _st_data_consumed(s);
     spec_is_false(s->flags&StreamHasData);
 
     _st_start_read(s);
-    while(!(s->flags&StreamHasData) && s->flags&StreamAlive ) {sleepms(1);};
+    while(!(s->flags&StreamHasData) && _st_is_alive(s) ) {sleepms(1);};
     spec_is_false(s->flags&StreamHasData);
-    spec_is_false(s->flags&StreamAlive);
+    spec_is_false(_st_is_alive(s));
 
     debug_disable(D_STREAM);
 
@@ -255,13 +256,6 @@ void testStreamSocket() {
 
     _st_close_listener(l);
 
-    void *status;
-    int rc;
-
-    rc = pthread_join(l->pthread, &status);
-    if (rc) {
-        raise_error("ERROR; return code from pthread_join() is %d\n", rc);
-    }
     debug_disable(D_SOCKET+D_STREAM);
 }
 

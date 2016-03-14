@@ -169,9 +169,15 @@ void __st_stream_read(Stream *st) {
     else raise_error("unknown stream type");
 
     if (l==0) {
-        debug(D_STREAM,"load return zero, clearing alive bit\n");
-        if (st->scan_state == StreamScanPartial)
+        debug(D_STREAM,"load return zero, clearing alive bit. scan state: %s\n",ss2str(st->scan_state));
+        if (st->scan_state == StreamScanPartial) {
+            // treat as successful line
+            st->scan_state = StreamScanComplete;
             st->flags |= StreamHasData;
+        }
+        else if (st->scan_state == StreamScanInitial)
+            st->scan_state = StreamScanComplete;
+
         st->flags &= ~StreamAlive;
         return;
     }
@@ -204,7 +210,7 @@ void *_st_stream_read(void *arg) {
         pthread_cond_wait(&st->cv, &st->mutex);
         st->flags &= ~StreamWaiting;
 
-        if (!(st->flags & StreamHasData) && (st->flags & StreamAlive)) {
+        if (!(st->flags & StreamHasData) && _st_is_alive(st)) {
             debug(D_STREAM,"starting read.\n");
             // this call is expected to block until a unit can be read and will
             // result in StreamHasData being set when it returns
@@ -218,7 +224,7 @@ void *_st_stream_read(void *arg) {
         if (st->callback) {
             (st->callback)(st);
         }
-    } while (st->flags & StreamAlive);
+    } while _st_is_alive(st);
     pthread_exit(NULL);
 }
 
@@ -310,10 +316,12 @@ void *__st_socket_stream_accept(void *arg) {
             break;
         }
 
-        inet_ntop(their_addr.ss_family,
-                  get_in_addr((struct sockaddr *)&their_addr),
-                  s, sizeof s);
-        debug(D_SOCKET,"listener on %d: got connection from %s\n",l->port, s);
+        if (debugging(D_SOCKET)) {
+            inet_ntop(their_addr.ss_family,
+                      get_in_addr((struct sockaddr *)&their_addr),
+                      s, sizeof s);
+            debug(D_SOCKET,"listener on %d: got connection from %s\n",l->port, s);
+        }
 
         Stream *st = _st_new_socket_stream(new_fd);
         (l->callback)(st);
@@ -385,10 +393,10 @@ SocketListener *_st_new_socket_listener(int port,lisenterConnectionCallbackFn fn
     if (rc){
         raise_error("Error starting listener thread; return code from pthread_create() is %d\n", rc);
     }
-
-    /* s->type = UnixSocket; */
-    /* s->flags = StreamCloseOnFree; */
-    /* s->data.socket_stream = stream; */
+    pthread_detach(l->pthread);
+    if (rc){
+        raise_error("Error detaching listener thread; return code from pthread_detach() is %d\n", rc);
+    }
     return l;
 }
 
@@ -397,7 +405,7 @@ SocketListener *_st_new_socket_listener(int port,lisenterConnectionCallbackFn fn
  */
 void _st_close_listener(SocketListener *l) {
     shutdown(l->sockfd,SHUT_RDWR);
-    //  free(l);
+    free(l);
 }
 
 /**
@@ -421,24 +429,6 @@ void _st_data_consumed(Stream *st) {
 }
 
 /**
- * query if a stream is alive
- *
- */
-bool _st_is_alive(Stream *st) {
-    if (st->type == UnixStream) {
-        FILE *stream = st->data.unix_stream;
-        if (st->flags & StreamAlive)
-            if (feof(stream)) st->flags &= ~StreamAlive;
-        debug(D_STREAM,"checking if StreamAlive: %s\n",st->flags & StreamAlive ? "yes":"no");
-        return st->flags&StreamAlive;
-    }
-    else if (st->type == SocketStream) {
-        return st->flags&StreamAlive;
-    }
-    raise_error("unknown stream type:%d\n",st->type);
-}
-
-/**
  * kill a stream
  *
  * if a reader stream is blocked and waiting, calls  _st_start_read so that
@@ -446,6 +436,7 @@ bool _st_is_alive(Stream *st) {
  */
 void _st_kill(Stream *st) {
     st->flags &= ~StreamAlive;
+    st->scan_state = StreamScanComplete;
     if (st->flags & StreamWaiting) {
         _st_start_read(st);
         while(st->flags & StreamWaiting) {sleepms(1);};

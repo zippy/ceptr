@@ -833,7 +833,7 @@ void testProcessStream() {
     // buffer should remain unchanged
     spec_is_str_equal(buffer,expected_result);
 
-    while ((fgetc (stream)) != EOF);
+    _st_kill(st);
     n = _t_new_root(STREAM_ALIVE);
     _t_new_stream(n,TEST_STREAM_SYMBOL,st);
     __p_reduce_sys_proc(0,STREAM_ALIVE,n,0);

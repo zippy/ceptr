@@ -602,7 +602,7 @@ void testReceptorEdgeStream() {
     while(!(st->flags&StreamHasData) && st->flags&StreamAlive ) {sleepms(1);};
     spec_is_equal(_p_reduceq(q),noReductionErr);
     //debug_disable(D_STREAM);
-    spec_is_false(st->flags&StreamAlive);
+    spec_is_false(_st_is_alive(st));
 
     spec_is_false(r->q->completed == NULL);
     if (r->q->completed) {
