@@ -735,7 +735,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                         }
                     }
                     else x = __t_new(0,sy,_st_data(st),_st_data_size(st),1);
-                    _st_data_read(st);
+                    _st_data_consumed(st);
                 }
                 else {raise_error("expecting RESULT_SYMBOL");}
             }

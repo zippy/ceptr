@@ -17,6 +17,7 @@ char *dtypestr(int type) {
     if (type & D_PROTOCOL) {sprintf(s,"_PROTOCOL");s--;};
     if (type & D_TRANSCODE) {sprintf(s,"_TRANSCODE");s--;};
     if (type & D_STEP) {sprintf(s,"_STEP");s--;};
+    if (type & D_SOCKET) {sprintf(s,"_SOCKET");s--;};
     *s=0;
     return G_dtype;
 }
