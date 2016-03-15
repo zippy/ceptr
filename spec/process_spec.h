@@ -833,6 +833,8 @@ void testProcessStream() {
     // buffer should remain unchanged
     spec_is_str_equal(buffer,expected_result);
 
+    //    debug_enable(D_STREAM+D_SOCKET+D_SIGNALS);
+
     _st_kill(st);
     n = _t_new_root(STREAM_ALIVE);
     _t_new_cptr(n,EDGE_STREAM,st);
@@ -842,7 +844,31 @@ void testProcessStream() {
 
     _st_free(st);
     _r_free(r);
+    debug_disable(D_STREAM+D_SOCKET+D_SIGNALS);
+
 }
+
+void testProcessStreamClose() {
+    Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
+    Q *q = r->q;
+
+    FILE *stream;
+    char buffer[500] = "line1\nabc\n";
+    stream = fmemopen(buffer, 500, "r+");
+
+    T *n = _t_new_root(STREAM_CLOSE);
+    Stream *st = _st_new_unix_stream(stream,true);
+    _t_new_cptr(n,EDGE_STREAM,st);
+    //debug_enable(D_STREAM+D_SOCKET+D_SIGNALS);
+    __p_reduce_sys_proc(0,STREAM_CLOSE,n,0);
+    //@todo figure out what STREAM_CLOSE should really return
+    spec_is_str_equal(t2s(n),"(BOOLEAN:1)");
+    _t_free(n);
+    debug_disable(D_STREAM+D_SOCKET+D_SIGNALS);
+
+    _r_free(r);
+}
+
 
 void testProcessInitiate(){
     Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
@@ -1593,6 +1619,7 @@ void testProcess() {
     testProcessRequest();
     testProcessQuote();
     testProcessStream();
+    testProcessStreamClose();
     testProcessInitiate();
     testProcessReduce();
     testProcessRefs();

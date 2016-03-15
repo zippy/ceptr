@@ -378,6 +378,7 @@ Process: RAISE,0,"raise reduction error","result",SIGNATURE_STRUCTURE,NULL_STRUC
 Process: STREAM_READ,0,"read from a stream","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"stream",SIGNATURE_SYMBOL,EDGE_STREAM,"into",SIGNATURE_SYMBOL,RESULT_SYMBOL,0;  the data on the stream will appear as the surface of the symbol type given by the "into" param. Clearly this could get ugly as there is no semantic checking that that's ok...
 Process: STREAM_WRITE,0,"write to a stream","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"stream",SIGNATURE_SYMBOL,EDGE_STREAM,"what",SIGNATURE_ANY,NULL_STRUCTURE,0;
 Process: STREAM_ALIVE,0,"test if stream is alive for reading","alive",SIGNATURE_SYMBOL,BOOLEAN,"stream",SIGNATURE_SYMBOL,EDGE_STREAM,0;
+Process: STREAM_CLOSE,0,"close a stream","true",SIGNATURE_SYMBOL,BOOLEAN,"stream",SIGNATURE_SYMBOL,EDGE_STREAM,0;
 Process: CONCAT_STR,0,"concatinate strings","concatenation",SIGNATURE_STRUCTURE,CSTRING,"into",SIGNATURE_SYMBOL,RESULT_SYMBOL,"str1",SIGNATURE_STRUCTURE,CSTRING,"str2",SIGNATURE_STRUCTURE,CSTRING,0;  concatenates two strings of any symbol type into an new symbol type specified by the "into" parameter
 Process: EXPAND_STR,0,"expand string","ascii tree",SIGNATURE_SYMBOL,ASCII_CHARS,"str",SIGNATURE_STRUCTURE,CSTRING,0;  converts a CSTRING into an ASCII_CHARS tree
 Process: CONTRACT_STR,0,"contract to string","string",SIGNATURE_STRUCTURE,CSTRING,"into",SIGNATURE_SYMBOL,RESULT_SYMBOL,0;  converts any number of chars or cstring into a single cstring of symbol type indicated by the into param

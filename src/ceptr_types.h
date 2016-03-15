@@ -240,6 +240,7 @@ struct Receptor {
     Instances instances; ///< the instances store
     Q *q;                ///< process queue
     int state;           ///< state information about the receptor that the vmhost manages
+    T *edge;             ///< data store for edge receptors
 };
 
 typedef struct UUIDt {

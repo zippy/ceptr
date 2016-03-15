@@ -795,6 +795,24 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             _t_free(s);
         }
         break;
+    case STREAM_CLOSE_ID:
+        {
+            // get the stream param
+            T *s = _t_detach_by_idx(code,1);
+            Stream *st = _t_surface(s);
+            _st_kill(st);
+            void *status;
+            int rc;
+
+            rc = pthread_join(st->pthread, &status);
+            if (rc) {
+                raise_error("ERROR; return code from pthread_join() is %d\n", rc);
+            }
+            _st_free(st);
+            x = __t_newi(0,BOOLEAN,1,true);
+            _t_free(s);
+        }
+        break;
     case ITERATE_ID:
         // iterate is a special case, we have to check the phase to see what to do
         // after the children have been evaluated.

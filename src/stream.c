@@ -443,6 +443,11 @@ void _st_data_consumed(Stream *st) {
  * the reader thread can complete.
  */
 void _st_kill(Stream *st) {
+    if (st->flags & StreamDying) {
+        debug(D_STREAM,"already dying\n");
+        return;
+    }
+
     st->flags &= ~StreamAlive;
     st->flags |= StreamDying;
     if (st->type == SocketStream) {
