@@ -326,7 +326,7 @@ void *__st_socket_stream_accept(void *arg) {
         Stream *st = _st_new_socket_stream(new_fd);
         (l->callback)(st,l->callback_arg);
 
-    } while(1);
+    } while(l->alive);
     pthread_exit(NULL);
 }
 
@@ -341,6 +341,7 @@ SocketListener *_st_new_socket_listener(int port,lisenterConnectionCallbackFn fn
     l->port = port;
     l->callback = fn;
     l->callback_arg = callback_arg;
+    l->alive = true;
 
     int sockfd;  // listen on sock_fd, new connection on new_fd
     struct addrinfo hints, *servinfo, *p;
@@ -405,7 +406,10 @@ SocketListener *_st_new_socket_listener(int port,lisenterConnectionCallbackFn fn
  *close a socket listener
  */
 void _st_close_listener(SocketListener *l) {
+    l->alive = false;
     shutdown(l->sockfd,SHUT_RDWR);
+    //@todo this is a cheap way to signal the listener accept thread to die, we need to do something better
+    sleepms(1);
     free(l);
 }
 
@@ -413,8 +417,11 @@ void _st_close_listener(SocketListener *l) {
  * wake the stream reader thread
 */
 void _st_start_read(Stream *st) {
+
     // don't throw the error if the stream is being killed
-    if ((st->flags & StreamHasData) && (st->flags & StreamAlive)) {raise_error("stream data hasn't been consumed!");}
+    // @todo figure out why this didn't work by testing the value of StreamAlive which is
+    // also cleared in _st_kill at the same time StreamDying is set.
+    if ((st->flags & StreamHasData) && !(st->flags & StreamDying)) {raise_error("stream data hasn't been consumed!");}
     debug(D_STREAM,"waking stream reader\n");
     pthread_mutex_lock(&st->mutex);
     pthread_cond_signal(&st->cv);
@@ -437,10 +444,18 @@ void _st_data_consumed(Stream *st) {
  */
 void _st_kill(Stream *st) {
     st->flags &= ~StreamAlive;
-    st->scan_state = StreamScanComplete;
-    if (st->flags & StreamWaiting) {
-        _st_start_read(st);
-        while(st->flags & StreamWaiting) {sleepms(1);};
+    st->flags |= StreamDying;
+    if (st->type == SocketStream) {
+        debug(D_SOCKET,"shutting down socket in st_kill\n");
+        shutdown(st->data.socket_stream,SHUT_RDWR);
+    }
+    if (st->flags & StreamReader) {
+        debug(D_STREAM,"shutting down reader in st_kill\n");
+        st->scan_state = StreamScanComplete;
+        if (st->flags & StreamWaiting) {
+            _st_start_read(st);
+            while(st->flags & StreamWaiting) {sleepms(1);};
+        }
     }
 }
 
@@ -485,9 +500,12 @@ int _st_write(Stream *st,char *buf,size_t len) {
         }
     }
     else if (st->type == SocketStream) {
-        bytes_written = send(st->data.socket_stream,buf,len,0);
+        bytes_written = send(st->data.socket_stream,buf,len,MSG_NOSIGNAL);
     }
     else raise_error("unknown stream type:%d\n",st->type);
     debug(D_STREAM,"write of '%s' results in %d\n",buf,bytes_written);
+    if (st->flags & StreamCloseAfterOneWrite) {
+        _st_kill(st);
+    }
     return bytes_written;
 }

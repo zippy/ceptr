@@ -40,7 +40,6 @@ void testStreamAlive() {
     _st_free(s);
 }
 
-
 void testStreamScan() {
 
     Stream * s = __st_alloc_stream();

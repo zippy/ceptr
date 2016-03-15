@@ -39,6 +39,7 @@ Receptor * __r_init(T *t,SemTable *sem) {
     r->flux = _t_child(state,ReceptorFluxIdx);
     r->pending_signals = _t_child(state,ReceptorPendingSignalsIdx);
     r->pending_responses = _t_child(state,ReceptorPendingResponsesIdx);
+    r->edge = NULL;
     return r;
 }
 
@@ -909,6 +910,35 @@ Receptor *_r_makeStreamEdgeReceptor(SemTable *sem) {
     return r;
 }
 
+void __r_listenerCallback(Stream *st,void *arg) {
+    Receptor *r = (Receptor *)arg;
+    T *e = _t_child(r->edge,2);
+    Aspect a = *(Aspect *)_t_surface(_t_child(e,2));
+    _r_addReader(r,st,
+                 *(ReceptorAddress *)_t_surface(_t_child(_t_child(e,1),1)),
+                 a,
+                 *(Symbol *)_t_surface(_t_child(e,3)),
+                 *(Symbol *)_t_surface(_t_child(e,4))
+                 );
+    st->flags |= StreamCloseAfterOneWrite;
+    _r_addWriter(r,st,a);
+}
+
+SocketListener *_r_addListener(Receptor *r,int port,ReceptorAddress to,Aspect aspect,Symbol carrier,Symbol result_symbol) {
+    T *e = _t_new_root(PARAMS);
+
+    SocketListener *l = _st_new_socket_listener(port,__r_listenerCallback,r);
+    _t_new_cptr(e,EDGE_LISTENER,l);
+
+    T *say = _t_newr(e,SAY);
+    __r_make_addr(say,TO_ADDRESS,to);
+    _t_news(say,ASPECT_IDENT,aspect);
+    _t_news(say,CARRIER,carrier);
+    _t_news(say,RESULT_SYMBOL,carrier);
+    if (r->edge) raise_error("edge in use!!");
+    r->edge = e;
+    return l;
+}
 
 void _r_addReader(Receptor *r,Stream *st,ReceptorAddress to,Aspect aspect,Symbol carrier,Symbol result_symbol) {
 

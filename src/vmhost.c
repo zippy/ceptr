@@ -11,6 +11,7 @@
 #include "vmhost.h"
 #include "tree.h"
 #include "accumulator.h"
+#include "debug.h"
 /******************  create and destroy virtual machine */
 
 
@@ -313,7 +314,7 @@ void *__v_process(void *arg) {
 
 // fire up the threads that make the vmhost work
 void _v_start_vmhost(VMHost *v) {
-    _v_start_thread(&v->vm_thread,__v_process,G_vm);
+    _v_start_thread(&v->vm_thread,__v_process,v);
 }
 
 /**

@@ -100,6 +100,7 @@ Xaddr G_null_xaddr;
 
 /*****************  Built-in core and edge receptors */
 Receptor *_r_makeStreamEdgeReceptor(SemTable *sem);
+SocketListener *_r_addListener(Receptor *r,int port,ReceptorAddress to,Aspect aspect,Symbol carrier,Symbol result_symbol);
 void _r_addReader(Receptor *r,Stream *st,ReceptorAddress to,Aspect aspect,Symbol carrier,Symbol result_symbol);
 void _r_addWriter(Receptor *r,Stream *st,Aspect aspect);
 void _r_defineClockReceptor(SemTable *sem);

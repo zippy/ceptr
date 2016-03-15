@@ -37,10 +37,18 @@ void processUnblocker(Stream *st) {
     // we might need to wait for the process to actually be blocked in the processing thread
     // so if unblock reports that the process isn't blocked, then just wait for a bit.
     // @todo, this is really ugly and could lead to deadlock, so we should fix it somehow!
-    while (err = _p_unblock((Q *)st->callback_arg1,st->callback_arg2)) {
+
+    // sometimes the unblocker gets called by the stream completion after the actual
+    // code finished running for what ever reason,so if the code is already dead, we
+    // just ignore that case.
+    // @todo, this is gonna bite our ass, and should be fixed
+    int i = 1000;
+    while ((i-- > 0) && (err = _p_unblock((Q *)st->callback_arg1,st->callback_arg2))) {
+        if (err == 2) return; //raise_error("can't unblock completed process!");
+        if (err == 3) return; //raise_error("can't unblock non-existent process");
         sleepms(1);
     }
-    //    if (err) raise_error("couldn't unblock!");
+    if (err) raise_error("process never blocked!");
 }
 
 // setup the default until condition (only once, and 30 second timeout)
@@ -734,12 +742,19 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                             c++;
                         }
                     }
-                    else x = __t_new(0,sy,_st_data(st),_st_data_size(st),1);
+                    else {
+                        debug(D_STREAM,"creating %s '%.*s'\n",_sem_get_name(sem,sy),(int)_st_data_size(st),_st_data(st));
+                        // @todo fix this to be a flag instruction to __t_new
+                        // currently it only works because that value is the newline in the
+                        // read buffer.
+                        _st_data(st)[_st_data_size(st)] = 0;
+                        x = __t_new(0,sy,_st_data(st),_st_data_size(st)+1,1);
+                    }
                     _st_data_consumed(st);
                 }
                 else {raise_error("expecting RESULT_SYMBOL");}
             }
-            else if (st->flags & StreamAlive) {
+            else if (_st_is_alive(st)) {
                 st->callback = processUnblocker;
                 st->callback_arg1 = q;
                 st->callback_arg2 = q->active->id;
@@ -1157,7 +1172,13 @@ Error _p_unblock(Q *q,int id) {
         __p_unblock(q,e);
     }
     else {
-        err = 1;
+        // if the process has been completed then return err 2 otherwise 1
+        e = __p_find_context(q->completed,id);
+        if (e) err = 2;
+        else {
+            e = __p_find_context(q->active,id);
+            err = e ? 1 : 3;
+        }
     }
     pthread_mutex_unlock(&q->mutex);
     debug(D_LOCK,"unblock UNLOCK\n");

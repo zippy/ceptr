@@ -641,6 +641,48 @@ void testReceptorEdgeStream() {
     _v_free(v);
 }
 
+bool G_done = false;
+void *_ltester(void *arg) {
+    char *result = doSys("echo 'testing!\nfish\n' | nc localhost 8888");
+    spec_is_str_equal(result,"fishy");
+    free(result);
+    G_done = true;
+    pthread_exit(NULL);
+}
+
+void testReceptorEdgeListener() {
+    VMHost *v = _v_new();
+    Receptor *r = _r_makeStreamEdgeReceptor(v->sem);
+    Xaddr edge = _v_new_receptor(v,v->r,STREAM_EDGE,r);
+
+    SocketListener *l = _r_addListener(r,8888,r->addr,DEFAULT_ASPECT,LINE,LINE);
+    _v_activate(v,edge);
+
+    _v_start_vmhost(v);
+    // debug_enable(D_STREAM+D_SOCKET+D_SIGNALS);
+
+    pthread_t thread;
+    int rc;
+    rc = pthread_create(&thread,0,_ltester,NULL);
+    if (rc){
+        raise_error("ERROR; return code from pthread_create() is %d\n", rc);
+    }
+    pthread_detach(thread);
+    if (rc){
+        raise_error("Error detaching tester thread; return code from pthread_detach() is %d\n", rc);
+    }
+    while(!G_done) sleepms(1);
+
+    __r_kill(v->r);
+    _v_join_thread(&v->vm_thread);
+    debug_disable(D_STREAM+D_SOCKET+D_SIGNALS);
+
+    _st_close_listener(l);
+
+    _v_free(v);
+
+}
+
 void testReceptorClock() {
     Receptor *r = _r_makeClockReceptor(G_sem);
     spec_is_str_equal(_td(r,r->root),"(RECEPTOR_INSTANCE (INSTANCE_OF:CLOCK_RECEPTOR) (CONTEXT_NUM:4) (PARENT_CONTEXT_NUM:0) (RECEPTOR_STATE (FLUX (DEFAULT_ASPECT (EXPECTATIONS (EXPECTATION (CARRIER:tell_time) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:CLOCK_TELL_TIME))) (ACTION:respond with current time) (PARAMS) (END_CONDITIONS (UNLIMITED)))) (SIGNALS))) (PENDING_SIGNALS) (PENDING_RESPONSES) (RECEPTOR_ELAPSED_TIME:0)))");
@@ -741,5 +783,6 @@ void testReceptor() {
     testReceptorSerialize();
     testReceptorNums();
     testReceptorEdgeStream();
+    testReceptorEdgeListener();
     testReceptorClock();
 }

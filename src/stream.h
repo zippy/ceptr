@@ -17,7 +17,7 @@
 #include <stdbool.h>
 
 enum StreamTypes {UnixStream,SocketStream};
-enum {StreamHasData=0x0001,StreamCloseOnFree=0x0002,StreamReader=0x0004,StreamWaiting=0x0008,StreamAlive=0x8000};
+enum {StreamHasData=0x0001,StreamCloseOnFree=0x0002,StreamReader=0x0004,StreamWaiting=0x0008,StreamAlive=0x8000,StreamCloseAfterOneWrite=0x0010,StreamDying=0x0100};
 
 typedef struct Stream Stream;
 
@@ -61,6 +61,7 @@ struct SocketListener {
     pthread_t pthread;
     lisenterConnectionCallbackFn callback;
     void *callback_arg;
+    bool alive;
 };
 #define DEFAULT_READER_BUFFER_SIZE 1000
 #define _st_new_unix_stream(s,r) __st_new_unix_stream(s,r?DEFAULT_READER_BUFFER_SIZE:0)
@@ -76,7 +77,7 @@ void _st_close_listener(SocketListener *l);
 
 void _st_start_read(Stream *st);
 void _st_data_consumed(Stream *st);
-#define _st_is_alive(st) ((st->flags & StreamAlive) || (st->scan_state != StreamScanComplete))
+#define _st_is_alive(st) ((st->flags & StreamAlive) || (st->flags & StreamReader && (st->scan_state != StreamScanComplete)))
 void _st_kill(Stream *st);
 void _st_free(Stream *);
 #define _st_data(st) (&(st)->buf[st->unit_start])
