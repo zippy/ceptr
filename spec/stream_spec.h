@@ -226,9 +226,10 @@ void testStreamWrite() {
     _st_free(st);
 }
 
-void testSocketCallback(Stream *s) {
+void testSocketListernCallback(Stream *s,void *arg) {
     spec_is_true(s->flags&StreamReader);
     spec_is_true(s->flags&StreamWaiting);
+    spec_is_equal(*(int *)arg,31415);
 
     _st_start_read(s);
     while(!(s->flags&StreamHasData) && s->flags&StreamAlive ) {sleepms(1);};
@@ -245,7 +246,9 @@ void testSocketCallback(Stream *s) {
 
 void testStreamSocket() {
     //    debug_enable(D_SOCKET+D_STREAM);
-    SocketListener *l = _st_new_socket_listener(8888,testSocketCallback);
+
+    int arg = 31415;
+    SocketListener *l = _st_new_socket_listener(8888,testSocketListernCallback,&arg);
     char *result = doSys("echo 'testing!\nfish\n' | nc localhost 8888");
     spec_is_str_equal(result,"fishy");
     free(result);

@@ -324,7 +324,7 @@ void *__st_socket_stream_accept(void *arg) {
         }
 
         Stream *st = _st_new_socket_stream(new_fd);
-        (l->callback)(st);
+        (l->callback)(st,l->callback_arg);
 
     } while(1);
     pthread_exit(NULL);
@@ -334,12 +334,13 @@ void *__st_socket_stream_accept(void *arg) {
 /**
  * create a socket listener on a port which will generate socket streams when connections arrive
  */
-SocketListener *_st_new_socket_listener(int port,lisenterConnectionCallbackFn fn) {
+SocketListener *_st_new_socket_listener(int port,lisenterConnectionCallbackFn fn,void *callback_arg) {
     char portstr[255];
     sprintf(portstr,"%d",port);
     SocketListener *l = malloc(sizeof(SocketListener));
     l->port = port;
     l->callback = fn;
+    l->callback_arg = callback_arg;
 
     int sockfd;  // listen on sock_fd, new connection on new_fd
     struct addrinfo hints, *servinfo, *p;

@@ -53,13 +53,14 @@ struct Stream {
 };
 
 typedef struct SocketListener SocketListener;
-typedef void (*lisenterConnectionCallbackFn)(Stream *);
+typedef void (*lisenterConnectionCallbackFn)(Stream *,void *);
 
 struct SocketListener {
     int port;
     int sockfd;
     pthread_t pthread;
     lisenterConnectionCallbackFn callback;
+    void *callback_arg;
 };
 #define DEFAULT_READER_BUFFER_SIZE 1000
 #define _st_new_unix_stream(s,r) __st_new_unix_stream(s,r?DEFAULT_READER_BUFFER_SIZE:0)
@@ -70,7 +71,7 @@ Stream *__st_alloc_stream();
 
 void __st_scan(Stream *st);
 
-SocketListener *_st_new_socket_listener(int port,lisenterConnectionCallbackFn fn);
+SocketListener *_st_new_socket_listener(int port,lisenterConnectionCallbackFn fn,void *callback_arg);
 void _st_close_listener(SocketListener *l);
 
 void _st_start_read(Stream *st);
