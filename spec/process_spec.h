@@ -222,9 +222,6 @@ void testProcessTranscode() {
     debug_disable(D_REDUCE+D_REDUCEV);
     spec_is_str_equal(t2s(_t_child(run_tree,1)),"(US_SHORT_DATE:1/30/2015)");
 
-    //debug_enable(D_TRANSCODE);
-    //debug_enable(D_REDUCE+D_REDUCEV);
-    // transcode of matching optionality structures with subreduction
     n = _t_build(G_sem,0,TRANSCODE,TRANSCODE_PARAMS,TRANSCODE_TO,LINES,NULL_SYMBOL,
                  TRANSCODE_ITEMS,HTTP_HEADERS,
                  CONTENT_TYPE,MEDIA_TYPE_IDENT,TEXT_MEDIA_TYPE,MEDIA_SUBTYPE_IDENT,CEPTR_TEXT_MEDIA_SUBTYPE,NULL_SYMBOL,
@@ -235,8 +232,21 @@ void testProcessTranscode() {
     _p_addrt2q(q,run_tree);
     spec_is_equal(_p_reduceq(q),noReductionErr);
     spec_is_str_equal(t2s(run_tree),"(RUN_TREE (LINES (LINE:Content-Type: text/ceptr) (LINE:Content-Type: text/html)) (PARAMS))");
+
+    //debug_enable(D_TRANSCODE+D_STEP);
+    //    debug_enable(D_REDUCE+D_REDUCEV);
+    n = _t_new_root(ascii_chars_2_http_req);
+    _t_build(G_sem,n,TRANSCODE,TRANSCODE_PARAMS,TRANSCODE_TO,ASCII_CHARS,NULL_SYMBOL,
+             TRANSCODE_ITEMS,TEST_STR_SYMBOL,"GET /path/to/file.ext?name=joe&age=30 HTTP/0.9\n",NULL_SYMBOL,NULL_SYMBOL);
+    run_tree = __p_build_run_tree(n,0);
+    _t_free(n);
+    _p_addrt2q(q,run_tree);
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (HTTP_REQUEST (HTTP_REQUEST_METHOD:GET) (HTTP_REQUEST_PATH (HTTP_REQUEST_PATH_SEGMENTS (HTTP_REQUEST_PATH_SEGMENT:path) (HTTP_REQUEST_PATH_SEGMENT:to) (HTTP_REQUEST_PATH_SEGMENT:file.ext))) (HTTP_REQUEST_PATH_QUERY (HTTP_REQUEST_PATH_QUERY_PARAMS (HTTP_REQUEST_PATH_QUERY_PARAM (PARAM_KEY:name) (PARAM_VALUE:joe)) (HTTP_REQUEST_PATH_QUERY_PARAM (PARAM_KEY:age) (PARAM_VALUE:30)))) (HTTP_REQUEST_VERSION (VERSION_MAJOR:0) (VERSION_MINOR:9))) (PARAMS))");
+
     debug_disable(D_TRANSCODE);
     debug_disable(D_REDUCE+D_REDUCEV);
+    debug_disable(D_STEP);
 
     _r_free(r);
 }
@@ -298,7 +308,6 @@ void testProcessSemtrex() {
     spec_is_str_equal(t2s(n),"(SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:TEST_CHAR_SYMBOL) (SEMTREX_MATCH_PATH:/3) (SEMTREX_MATCH_SIBLINGS_COUNT:1))");
 
     _t_free(n);
-
 }
 
 void testProcessFill() {

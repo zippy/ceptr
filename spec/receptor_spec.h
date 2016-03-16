@@ -644,7 +644,7 @@ void testReceptorEdgeStream() {
 bool G_done = false;
 void *_ltester(void *arg) {
     char *result = doSys("echo 'testing!\nfish\n' | nc localhost 8888");
-    spec_is_str_equal(result,"fishy");
+    spec_is_str_equal(result,"testing!\nfish\n");
     free(result);
     G_done = true;
     pthread_exit(NULL);
@@ -657,7 +657,7 @@ void testReceptorEdgeListener() {
 
     SocketListener *l = _r_addListener(r,8888,r->addr,DEFAULT_ASPECT,LINE,LINE);
     _v_activate(v,edge);
-
+    spec_is_str_equal(_t2s(v->sem,r->edge),"(PARAMS (EDGE_LISTENER) (process:SAY (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:LINE) (RESULT_SYMBOL:LINE)))");
     _v_start_vmhost(v);
     // debug_enable(D_STREAM+D_SOCKET+D_SIGNALS);
 
@@ -676,8 +676,6 @@ void testReceptorEdgeListener() {
     __r_kill(v->r);
     _v_join_thread(&v->vm_thread);
     debug_disable(D_STREAM+D_SOCKET+D_SIGNALS);
-
-    _st_close_listener(l);
 
     _v_free(v);
 

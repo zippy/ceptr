@@ -171,12 +171,26 @@ void _r_remove_expectation(Receptor *r,T *expectation) {
 }
 
 /**
- * Destroys a receptor freeing all memory it uses.
+ * Destroys a receptor freeing all the memory it uses.
  */
 void _r_free(Receptor *r) {
     _t_free(r->root);
     _a_free_instances(&r->instances);
     if (r->q) _p_freeq(r->q);
+
+    // special cases for cleaning up edge receptor resources that
+    // don't get cleaned up the usual way, i.e. socket listener streams
+    if (r->edge) {
+        T *t;
+        while(t = _t_detach_by_idx(r->edge,1)) {
+            if (semeq(_t_symbol(t),EDGE_LISTENER)) {
+                SocketListener *l =  (SocketListener *)_t_surface(t);
+                _st_close_listener(l);
+            }
+            _t_free(t);
+        }
+        _t_free(r->edge);
+    }
     free(r);
 }
 

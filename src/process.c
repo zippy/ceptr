@@ -129,6 +129,19 @@ int _p_transcode(SemTable *sem, T* src,Symbol to_sym, Structure to_s,T **result)
                 }
                 else return incompatibleTypeReductionErr;
             }
+            else if (semeq(to_sym,ASCII_CHARS)) {
+                if (semeq(src_s,CSTRING)) {
+                    char *c = (char *)_t_surface(src);
+                    int l = _t_size(src);
+                    x = __t_newr(0,ASCII_CHARS,true);
+                    while (--l) { // ignore the terminating null
+                        __t_newc(x,ASCII_CHAR,*c,true);
+                        c++;
+                    }
+
+                }
+                else return incompatibleTypeReductionErr;
+            }
             else if (semeq(to_s,CSTRING)) {
                 if (semeq(src_s,INTEGER)) {
                     char buf[100];
@@ -686,12 +699,16 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             bool match;
             if (matchr) {
                 match =_t_matchr(pattern,t,&results);
-                if (match) x = results;
-                else x = _t_newi(0,BOOLEAN,0);
+                if (match) {
+                    x = _t_rclone(results);
+                    _t_free(results);
+                }
+
+                else x = __t_newi(0,BOOLEAN,0,true);
             }
             else {
                 match = _t_match(pattern,t);
-                x = _t_newi(0,BOOLEAN,match);
+                x = __t_newi(0,BOOLEAN,match,true);
             }
             _t_free(pattern);
             _t_free(t);
@@ -1267,7 +1284,7 @@ T * __p_buildErr(R *context) {
     case raiseReductionErr:
         se = *(Symbol *)_t_surface(_t_child(context->node_pointer,1));
         break;
-    default: raise_error("unknown reduction error: %d",context->state);
+    default: raise_error("unknown reduction error: %d",context->err);
     }
     T *err = __t_newr(0,se,true);
     int *path = _t_get_path(context->node_pointer);
@@ -1312,6 +1329,11 @@ Error _p_step(Q *q, R **contextP) {
 
         // if this is top caller on the stack then we are completely done
         if (!context->caller) {
+            if (debugging(D_REDUCE) && (context->err)) {
+                //                T *err =  __p_buildErr(context);
+                debug(D_REDUCE,"finishing reduction with unhandled error: %d\n",context->err);
+                //                _t_free(err);
+            }
             context->state = Done;
             break;
         }
@@ -1715,6 +1737,22 @@ void debug_np(int type,T *np) {
 }
 #endif
 
+
+#ifdef CEPTR_DEBUG
+char *sn[]={"Done","Ascend","Descend","Pushed","Pop","Eval","Block"};
+char *__debug_state_str(R *context) {
+    int s = context->state;
+
+    char *result;
+    if (s <= 0) result = sn[-s];
+    else {
+        T *e = __p_buildErr(context);
+        result = t2s(e);
+        _t_free(e);
+    }
+    return result;
+}
+#endif
 /**
  * reduce all the processes in a queue
  *
@@ -1729,11 +1767,9 @@ Error _p_reduceq(Q *q) {
 
     while (q->contexts_count) {
 #ifdef CEPTR_DEBUG
-        char *sn[]={"Done","Ascend","Descend","Pushed","Pop","Eval","Block"};
-#define __debug_state_str(s) (s <= 0 ? sn[-s] : "Error")
         if (debugging(D_REDUCEV)) {
             R *context = qe->context;
-            char *s = __debug_state_str(context->state);
+            char *s = __debug_state_str(context);
             debug(D_REDUCEV,"ID:%d -- State %s(%d)\n",qe->id,s,context->state);
             debug(D_REDUCEV,"  idx:%d\n",context->idx);
             debug(D_REDUCEV,"%s\n",_t2s(q->r->sem,context->run_tree));
@@ -1759,7 +1795,7 @@ Error _p_reduceq(Q *q) {
         qe->accounts.elapsed_time +=  diff_micro(&start, &end);
 
 #ifdef CEPTR_DEBUG
-        debug(D_REDUCEV,"result state:%s\n\n",__debug_state_str(qe->context->state));
+        debug(D_REDUCEV,"result state:%s\n\n",__debug_state_str(qe->context));
         if (debugging(D_REDUCE) && prev_state == Eval) {
             debug_np(D_REDUCE,qe->context->node_pointer);
             debug(D_REDUCE,"Eval: %s\n\n",_t2s(q->r->sem,qe->context->run_tree));

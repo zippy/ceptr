@@ -241,7 +241,11 @@ size_t _d_get_structure_size(SemTable *sem,Structure s,void *surface) {
 #define MAX_HASHES 10
 // extract the template signature from the code
 void __d_tsig(SemTable *sem,T *code, T *tsig,TreeHash *hashes) {
-    if (semeq(_t_symbol(code),SLOT)) {
+    Symbol sym = _t_symbol(code);
+
+    // hack to get around falsely adding a TEMPLATE_SIGNATURE see bug #127
+    if (semeq(sym,FILL_FROM_MATCH)) return;
+    if (semeq(sym,SLOT)) {
         TreeHash h;
         T *c = NULL;
         // slot children aren't part of the signature they are part of the
