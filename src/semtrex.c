@@ -796,6 +796,8 @@ T *__t_embody_from_match(SemTable *sem,T *match,T *t) {
             return asciiT_tos(t,match,0,s);
         case INTEGER_ID:
             return asciiT_toi(t,match,0, s);
+        case INTEGER64_ID:
+            return asciiT_tol(t,match,0, s);
         case FLOAT_ID:
             return asciiT_tof(t,match,0,s);
         case CHAR_ID:
@@ -1129,6 +1131,15 @@ T *asciiT_toi(T* asciiT,T* match,T *t,Symbol s) {
     char buf[10];
     _asciiT2str(asciiT,match,t,buf);
     return _t_newi(t,s,atoi(buf));
+}
+
+/**
+ * convert ascii tokens from a match to a 64 bit integer and add them to the given tree
+ */
+T *asciiT_tol(T* asciiT,T* match,T *t,Symbol s) {
+    char buf[12];
+    _asciiT2str(asciiT,match,t,buf);
+    return _t_newi64(t,s,atol(buf));
 }
 
 /**

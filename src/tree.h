@@ -37,6 +37,8 @@ T *__t_newc(T *t,Symbol symbol, char c,bool is_run_node);
 #define _t_newc(parent,symbol,c) __t_newc(parent,symbol,c,0)
 T *__t_newi(T *parent,Symbol symbol,int surface,bool is_run_node);
 #define _t_newi(p,sy,su) __t_newi(p,sy,su,0)
+T *__t_newi64(T *parent,Symbol symbol,long surface,bool is_run_node);
+#define _t_newi64(p,sy,su) __t_newi64(p,sy,su,0)
 T *__t_news(T *parent,Symbol symbol,SemanticID surface,bool is_run_node);
 #define _t_news(parent,symbol,surface) __t_news(parent,symbol,surface,0)
 T *_t_newt(T *parent,Symbol symbol,T *t);

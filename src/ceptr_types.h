@@ -15,9 +15,9 @@ enum SemanticTypes {SEM_TYPE_STRUCTURE=1,SEM_TYPE_SYMBOL,SEM_TYPE_PROCESS,SEM_TY
 #define is_protocol(s) ((s).semtype == SEM_TYPE_PROTOCOL)
 #define is_receptor(s) ((s).semtype == SEM_TYPE_RECEPTOR)
 
-typedef uint32_t Context;
-typedef uint8_t SemanticType;
-typedef uint16_t SemanticAddr;
+typedef uint32_t Context;     // 4G types of receptors
+typedef uint8_t SemanticType; // 256 types of semantic things
+typedef uint16_t SemanticAddr;// 64K types of symbols/structure per receptor
 
 typedef struct SemanticID {
     Context context;

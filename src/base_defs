@@ -49,6 +49,7 @@ Context: SYS;
 # thus we use the NULL_SYMBOL to indicate their surface definition, because it's not really defined in ceptr terms.
 Structure: BIT,NULL_SYMBOL;             surface is 0 or 1
 Structure: INTEGER,NULL_SYMBOL;         surface is a c int
+Structure: INTEGER64,NULL_SYMBOL;       surface is a c long
 Structure: FLOAT,NULL_SYMBOL;           surface is a c float
 Structure: CHAR,NULL_SYMBOL;            surface is a c char
 Structure: CSTRING,NULL_SYMBOL;         surface is a null terminated set of bytes
@@ -624,6 +625,7 @@ Context: TEST;
 
 Symbol: TEST_INT_SYMBOL,INTEGER;
 Symbol: TEST_INT_SYMBOL2,INTEGER;
+Symbol: TEST_INT64_SYMBOL,INTEGER64;
 Symbol: TEST_FLOAT_SYMBOL,FLOAT;
 Symbol: TEST_STR_SYMBOL,CSTRING;
 Symbol: TEST_TREE_SYMBOL,TREE;      an orthogonal tree

@@ -689,6 +689,12 @@ void testTreeStreamWrite() {
     _st_free(st);
 }
 
+void testTreeInt64() {
+    T *t = _t_newi64(0,TEST_INT64_SYMBOL,5000000001);
+    spec_is_str_equal(t2s(t),"(TEST_INT64_SYMBOL:5000000001)");
+    _t_free(t);
+}
+
 void testTree() {
     testCreateTreeNodes();
     testTreeNewReceptor();
@@ -719,4 +725,5 @@ void testTree() {
     testTreeBuild();
     testTreeTemplate();
     testTreeStreamWrite();
+    testTreeInt64();
 }

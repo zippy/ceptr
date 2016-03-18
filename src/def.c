@@ -187,6 +187,7 @@ size_t _sys_structure_size(int id,void *surface) {
     case SYMBOL_ID: return sizeof(Symbol);
     case BIT_ID:
     case INTEGER_ID: return sizeof(int);
+    case INTEGER64_ID: return sizeof(uint64_t);
     case FLOAT_ID: return sizeof(float);
     case CSTRING_ID: return strlen(surface)+1;
     case XADDR_ID: return sizeof(Xaddr);
@@ -518,6 +519,9 @@ char * __t_dump(SemTable *sem,T *t,int level,char *buf) {
             case BIT_ID:
             case INTEGER_ID:
                 sprintf(buf,"(%s:%d",n,*(int *)_t_surface(t));
+                break;
+            case INTEGER64_ID:
+                sprintf(buf,"(%s:%ld",n,*(uint64_t *)_t_surface(t));
                 break;
             case FLOAT_ID:
                 sprintf(buf,"(%s:%f",n,*(float *)_t_surface(t));

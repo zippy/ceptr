@@ -95,7 +95,18 @@ T * __t_newc(T *parent,Symbol symbol,char surface,bool is_run_node) {
  */
 T * __t_newi(T *parent,Symbol symbol,int surface,bool is_run_node) {
     return __t_new(parent,symbol,&surface,sizeof(int),is_run_node);
+}
 
+/**
+ * Create a new tree node with an long surface
+ *
+ * @param[in] parent parent node for the node to be created.  Can be 0 if this is a root node
+ * @param[in] symbol semantic symbol for the node to be create
+ * @param[in] surface long integer value to store in the surface
+ * @returns pointer to node allocated on the heap
+ */
+T * __t_newi64(T *parent,Symbol symbol,long surface,bool is_run_node) {
+    return __t_new(parent,symbol,&surface,sizeof(long),is_run_node);
 }
 
 /**
@@ -1528,6 +1539,9 @@ char * _t2rawjson(SemTable *sem,T *t,int level,char *buf) {
             case INTEGER_ID:
                 sprintf(buf,",\"surface\":%d",*(int *)_t_surface(t));
                 break;
+            case INTEGER64_ID:
+                sprintf(buf,",\"surface\":%ld",*(uint64_t *)_t_surface(t));
+                break;
             case FLOAT_ID:
                 sprintf(buf,",\"surface\":%f",*(float *)_t_surface(t));
                 break;
@@ -1659,6 +1673,9 @@ char * _t2json(SemTable *sem,T *t,int level,char *buf) {
                 break;
             case INTEGER_ID:
                 sprintf(buf,"\"type\":\"INTEGER\",\"name\":\"%s\",\"surface\":%d",n,*(int *)_t_surface(t));
+                break;
+            case INTEGER64_ID:
+                sprintf(buf,"\"type\":\"INTEGER64\",\"name\":\"%s\",\"surface\":%ld",n,*(uint64_t*)_t_surface(t));
                 break;
             case FLOAT_ID:
                 sprintf(buf,"\"type\":\"FLOAT\",\"name\":\"%s\",\"surface\":%f",n,*(float *)_t_surface(t));

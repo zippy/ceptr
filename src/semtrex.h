@@ -107,6 +107,7 @@ T *__stxcv(T *stxx,char c);
 T *__stxcvm(T *stxx,int not,int count,...);
 
 T *asciiT_toi(T* asciiT,T* match,T *t,Symbol s);
+T *asciiT_tol(T* asciiT,T* match,T *t,Symbol s);
 T *asciiT_tof(T* asciiT,T* match,T *t,Symbol s);
 T *asciiT_tos(T* asciiT,T* match,T *t,Symbol s);
 T *asciiT_toc(T* asciiT,T* match,T *t,Symbol s);
