@@ -1227,14 +1227,14 @@
    </div>
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
-       <div class="def-name"><a name="TUPLE_OF_PNAME_AND_ONE_OR_MORE_OF_LOGICAL_OR_OF_RESOLUTION_AND_CONNECTION"></a>TUPLE-OF-PNAME-AND-ONE-OR-MORE-OF-LOGICAL-OR-OF-RESOLUTION-AND-CONNECTION</div>
-       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#PNAME">PNAME</a>, +(OR(<a href="ref_sys_symbols.html#RESOLUTION">RESOLUTION</a>, <a href="ref_sys_symbols.html#CONNECTION">CONNECTION</a>)))</div>
+       <div class="def-name"><a name="TUPLE_OF_PNAME_AND_ONE_OR_MORE_OF_LOGICAL_OR_OF_RESOLUTION_AND_LINKAGE"></a>TUPLE-OF-PNAME-AND-ONE-OR-MORE-OF-LOGICAL-OR-OF-RESOLUTION-AND-LINKAGE</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#PNAME">PNAME</a>, +(OR(<a href="ref_sys_symbols.html#RESOLUTION">RESOLUTION</a>, <a href="ref_sys_symbols.html#LINKAGE">LINKAGE</a>)))</div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="INCLUSION"></a>INCLUSION</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#TUPLE_OF_PNAME_AND_ONE_OR_MORE_OF_LOGICAL_OR_OF_RESOLUTION_AND_CONNECTION">TUPLE-OF-PNAME-AND-ONE-OR-MORE-OF-LOGICAL-OR-OF-RESOLUTION-AND-CONNECTION</a></div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TUPLE_OF_PNAME_AND_ONE_OR_MORE_OF_LOGICAL_OR_OF_RESOLUTION_AND_LINKAGE">TUPLE-OF-PNAME-AND-ONE-OR-MORE-OF-LOGICAL-OR-OF-RESOLUTION-AND-LINKAGE</a></div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-structure">
@@ -1407,14 +1407,14 @@
    </div>
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
-       <div class="def-name"><a name="LINKING"></a>LINKING</div>
+       <div class="def-name"><a name="LINK"></a>LINK</div>
        <div class="def-struc-def">OR(<a href="ref_sys_symbols.html#WHICH_GOAL">WHICH_GOAL</a>, <a href="ref_sys_symbols.html#WHICH_ROLE">WHICH_ROLE</a>, <a href="ref_sys_symbols.html#WHICH_USAGE">WHICH_USAGE</a>, <a href="ref_sys_symbols.html#WHICH_WEAL">WHICH_WEAL</a>)</div>
        <div class="def-comment"> links two abstract semantic references (role/goal/usage/weal).</div>
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
-       <div class="def-name"><a name="CONNECTION"></a>CONNECTION</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#LINKING">LINKING</a></div>
+       <div class="def-name"><a name="LINKAGE"></a>LINKAGE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LINK">LINK</a></div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-structure">
@@ -3588,6 +3588,13 @@
        <div class="def-name"><a name="PARSE_HTTP_REQUEST_FROM_LINE"></a>PARSE_HTTP_REQUEST_FROM_LINE</div>
        <div class="def-protocol-def">httpreq_parser_def</div>
        <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="ascii_chars_2_http_req"></a>ascii_chars_2_http_req</div>
+       <div class="def-sig-in"><li>input(SYMBOL:<a href="ref_sys_symbols.html#ASCII_CHARS">ASCII_CHARS</a>)</li></div>
+       <div class="def-sig-out">output(SYMBOL:<a href="ref_sys_symbols.html#HTTP_REQUEST">HTTP_REQUEST</a>)</div>
+       <div class="def-comment"><i>http req transcoder</i></div>
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>

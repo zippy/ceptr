@@ -153,19 +153,19 @@ T *_o_make_protocol_def(SemTable *sem,Context c,char *label,...) {
                 _t_news(w,ACTUAL_RECEPTOR,va_arg(params,Symbol));
             }
             else if (semeq(param,WHICH_USAGE)) {
-                T *l = _t_newr(t,CONNECTION);
+                T *l = _t_newr(t,LINKAGE);
                 T *w = _t_newr(l,WHICH_USAGE);
                 _t_news(w,USAGE,va_arg(params,Symbol));
                 _t_news(w,USAGE,va_arg(params,Symbol));
             }
             else if (semeq(param,WHICH_GOAL)) {
-                T *l = _t_newr(t,CONNECTION);
+                T *l = _t_newr(t,LINKAGE);
                 T *w = _t_newr(l,WHICH_GOAL);
                 _t_news(w,GOAL,va_arg(params,Process));
                 _t_news(w,GOAL,va_arg(params,Process));
             }
             else if (semeq(param,WHICH_ROLE)) {
-                T *l = _t_newr(t,CONNECTION);
+                T *l = _t_newr(t,LINKAGE);
                 T *w = _t_newr(l,WHICH_ROLE);
                 _t_news(w,ROLE,va_arg(params,Symbol));
                 _t_news(w,ROLE,va_arg(params,Symbol));
@@ -245,7 +245,7 @@ T * _o_unwrap(SemTable *sem,T *def,T *sem_map) {
             T *bindings = NULL;
             for(j=InclusionPnameIdx+1;j<=c;j++) {
                 T *x = _t_child(t,j); // get the connection or resolution
-                if (semeq(_t_symbol(x),CONNECTION)) {
+                if (semeq(_t_symbol(x),LINKAGE)) {
                     T *w = _t_child(x,ConnectionWhichIdx);  // get the which
                     T *t = _t_newr(sem_map,SEMANTIC_LINK);
                     _t_add(t,_t_clone(_t_child(w,1)));
@@ -256,7 +256,7 @@ T * _o_unwrap(SemTable *sem,T *def,T *sem_map) {
                     if (!bindings) bindings = _t_new_root(PROTOCOL_BINDINGS);
                     _t_add(bindings,_t_clone(x));
                 }
-                else raise_error("expecting CONNECTION or RESOLUTION");
+                else raise_error("expecting LINKAGE or RESOLUTION");
             }
 
             if (sem_map) {
@@ -277,7 +277,7 @@ T * _o_unwrap(SemTable *sem,T *def,T *sem_map) {
                 unbound_semantics = _t_detach_by_idx(p_def,ProtocolDefSemanticsIdx);
             }
 
-            // after doing the semantics mapping from the CONNECTIONS and RESOLUTIONS
+            // after doing the semantics mapping from the LINKAGEs and RESOLUTIONs
             // we need to add into the parent semantics and sem_map that weren't resolved
             // or connected for later binding
 
@@ -316,7 +316,7 @@ T * _o_unwrap(SemTable *sem,T *def,T *sem_map) {
  * convert a, possibly composed, protocol definition into an expressable definition
  *
  * convert a PROTOCOL_DEF to a concertized version according to the
- * RESOLUTIONS and CONNECTIONS in the the def and the bindings
+ * RESOLUTIONs and LINKAGEs in the the def and the bindings
  *
  * @param[in] sem SemTable contexts
  * @param[in,out] def protocol definition to resolve
