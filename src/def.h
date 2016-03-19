@@ -49,6 +49,8 @@ enum {InclusionPnameIdx=1};
 enum {SemanticMapSemanticRefIdx=1,SemanticMapReplacementValIdx};
 enum {SlotSemanticRefIdx=1,SlotValueOfIdx};
 enum {ParameterReferenceIdx=1,ParameterResultIdx=2};
+enum {InstanceStoreInstancesIdx=1,InstanceStoreTokensIdx=2};
+enum {InstanceTokensLastTokenIdx=1};
 
 #define ST(r,name,num,...) name = _r_define_structure(r,"" #name "",num,__VA_ARGS__)
 #define SY(r,name,str) name = _r_define_symbol(r,str,"" #name "")

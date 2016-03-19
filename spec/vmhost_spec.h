@@ -158,7 +158,7 @@ void testVMHostCreate() {
 /*     T *pack = _r_get_instance(v->c,xp); */
 /*     T *id = _t_child(pack,2); */
 /*     TreeHash h = _t_hash(v->r->sem,id); */
-/*     spec_is_xaddr_equal(v->r,_s_get(v->installed_receptors,h),xp); */
+/*     spec_is_xaddr_equal(v->r->sem,_s_get(v->installed_receptors,h),xp); */
 
 /*     _v_free(v); */
 /*     //! [testVMHostInstallReceptor] */

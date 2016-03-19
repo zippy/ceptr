@@ -107,7 +107,7 @@ void testAccInstances() {
     t = _a_get_instance(&i,x);
     spec_is_ptr_equal(t,NULL);
 
-    spec_is_str_equal(t2s(i),"(INSTANCES (SYMBOL_INSTANCES:TEST_INT_SYMBOL (TEST_INT_SYMBOL:2) (DELETED_INSTANCE) (TEST_INT_SYMBOL:4)) (SYMBOL_INSTANCES:TEST_STR_SYMBOL (TEST_STR_SYMBOL:fish)))");
+    spec_is_str_equal(t2s(i),"(INSTANCE_STORE (INSTANCES (SYMBOL_INSTANCES:TEST_INT_SYMBOL (TEST_INT_SYMBOL:2) (DELETED_INSTANCE) (TEST_INT_SYMBOL:4)) (SYMBOL_INSTANCES:TEST_STR_SYMBOL (TEST_STR_SYMBOL:fish))))");
     _a_free_instances(&i);
 }
 
@@ -124,6 +124,8 @@ void testAccGetInstances() {
     x = _a_new_instance(&i,t);
     t = _t_newi(0,TEST_INT_SYMBOL,4);
     _a_new_instance(&i,t);
+
+    spec_is_str_equal(t2s(i),"(INSTANCE_STORE (INSTANCES (SYMBOL_INSTANCES:TEST_INT_SYMBOL (TEST_INT_SYMBOL:1) (TEST_INT_SYMBOL:2) (TEST_INT_SYMBOL:3) (TEST_INT_SYMBOL:4))))");
 
     _a_delete_instance(&i,x);
 
@@ -166,6 +168,40 @@ void testAccPersistInstances() {
     free(s);
 }
 
+void testAccToken() {
+    Instances i = NULL;
+    T *t,*token1,*token2,*d1,*d2;
+    Xaddr x,xx;
+
+    t = _t_newi(0,TEST_INT_SYMBOL,1);
+    x = _a_new_instance(&i,t);
+
+    d1 = _t_newi(0,TEST_INT_SYMBOL,314); // dependency 1
+    d2 = _t_newi(0,TEST_INT_SYMBOL,123); // dependency 2
+    // generate a token for the xaddr with  each dependency
+    token1 = _a_gen_token(&i,x,d1);
+    token2 = _a_gen_token(&i,x,d2);
+
+    spec_is_str_equal(t2s(i),"(INSTANCE_STORE (INSTANCES (SYMBOL_INSTANCES:TEST_INT_SYMBOL (TEST_INT_SYMBOL:1))) (INSTANCE_TOKENS (LAST_TOKEN:2) (INSTANCE_TOKEN:1 (TOKEN_XADDR:TEST_INT_SYMBOL.1) (DEPENDENCY_HASH:1156909558)) (INSTANCE_TOKEN:2 (TOKEN_XADDR:TEST_INT_SYMBOL.1) (DEPENDENCY_HASH:1552538631))))");
+
+    // test getting back xaddrs from tokens and their dependency
+    xx = _a_get_token_xaddr(&i,token1,d1);
+    spec_is_xaddr_equal(G_sem,x,xx);
+    xx = _a_get_token_xaddr(&i,token2,d2);
+    spec_is_xaddr_equal(G_sem,x,xx);
+
+    // test that getting an xaddr from a token and incorrect dependency fails
+    xx = _a_get_token_xaddr(&i,token1,d2);
+    spec_is_true(is_null_xaddr(xx));
+    xx = _a_get_token_xaddr(&i,token2,d1);
+    spec_is_true(is_null_xaddr(xx));
+
+    _t_free(token1);
+    _t_free(token2);
+    _a_free_instances(&i);
+
+}
+
 void testAccumulator() {
     struct stat st = {0};
     char *temp_dir = "tmp";
@@ -177,4 +213,5 @@ void testAccumulator() {
     testAccInstances();
     testAccGetInstances();
     testAccPersistInstances();
+    testAccToken();
 }

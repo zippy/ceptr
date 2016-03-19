@@ -96,7 +96,7 @@ Xaddr G_null_xaddr;
 
 #define spec_is_process_equal(r,got, expected) spec_total++; if (semeq(expected,got)){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %s but was %s",__FUNCTION__,__LINE__,#got,_r_get_process_name(r,expected),_r_get_process_name(r,got));}
 
-#define spec_is_xaddr_equal(r,got,expected)  spec_total++; if (is_xaddr_eq(got,expected)){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %s.%d but was %s.%d",__FUNCTION__,__LINE__,#got,!is_null_symbol(expected.symbol)?_r_get_symbol_name(r,expected.symbol):"0",expected.addr,!is_null_symbol(got.symbol) ? _r_get_symbol_name(r,got.symbol):"0",got.addr);}
+#define spec_is_xaddr_equal(sem,got,expected)  spec_total++; if (is_xaddr_eq(got,expected)){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %s.%d but was %s.%d",__FUNCTION__,__LINE__,#got,!is_null_symbol(expected.symbol)?_sem_get_name(sem,expected.symbol):"0",expected.addr,!is_null_symbol(got.symbol) ? _sem_get_name(sem,got.symbol):"0",got.addr);}
 
 /*****************  Built-in core and edge receptors */
 Receptor *_r_makeStreamEdgeReceptor(SemTable *sem);

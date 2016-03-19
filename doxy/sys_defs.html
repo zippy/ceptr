@@ -2492,12 +2492,6 @@
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
-       <div class="def-name"><a name="INSTANCES"></a>INSTANCES</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></div>
-       <div class="def-comment"></div>
-   </div>
-   <div class="def-item def-symbol">
-       <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="SYMBOL_INSTANCES"></a>SYMBOL_INSTANCES</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
        <div class="def-comment"></div>
@@ -2506,6 +2500,66 @@
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="DELETED_INSTANCE"></a>DELETED_INSTANCE</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="INSTANCE_TOKEN"></a>INSTANCE_TOKEN</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#INTEGER64">INTEGER64</a></div>
+       <div class="def-comment"> token to refer to an xaddr from outside the receptor</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="LAST_TOKEN"></a>LAST_TOKEN</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#INTEGER64">INTEGER64</a></div>
+       <div class="def-comment"> token counter for gen</div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="ZERO_OR_MORE_OF_SYMBOL_INSTANCES"></a>ZERO-OR-MORE-OF-SYMBOL-INSTANCES</div>
+       <div class="def-struc-def">*(<a href="ref_sys_symbols.html#SYMBOL_INSTANCES">SYMBOL_INSTANCES</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="INSTANCES"></a>INSTANCES</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_SYMBOL_INSTANCES">ZERO-OR-MORE-OF-SYMBOL-INSTANCES</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="TUPLE_OF_LAST_TOKEN_AND_ZERO_OR_MORE_OF_INSTANCE_TOKEN"></a>TUPLE-OF-LAST-TOKEN-AND-ZERO-OR-MORE-OF-INSTANCE-TOKEN</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#LAST_TOKEN">LAST_TOKEN</a>, *(<a href="ref_sys_symbols.html#INSTANCE_TOKEN">INSTANCE_TOKEN</a>))</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="INSTANCE_TOKENS"></a>INSTANCE_TOKENS</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TUPLE_OF_LAST_TOKEN_AND_ZERO_OR_MORE_OF_INSTANCE_TOKEN">TUPLE-OF-LAST-TOKEN-AND-ZERO-OR-MORE-OF-INSTANCE-TOKEN</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="TUPLE_OF_INSTANCES_AND_ZERO_OR_ONE_OF_INSTANCE_TOKENS"></a>TUPLE-OF-INSTANCES-AND-ZERO-OR-ONE-OF-INSTANCE-TOKENS</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#INSTANCES">INSTANCES</a>, ?(<a href="ref_sys_symbols.html#INSTANCE_TOKENS">INSTANCE_TOKENS</a>))</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="INSTANCE_STORE"></a>INSTANCE_STORE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TUPLE_OF_INSTANCES_AND_ZERO_OR_ONE_OF_INSTANCE_TOKENS">TUPLE-OF-INSTANCES-AND-ZERO-OR-ONE-OF-INSTANCE-TOKENS</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="DEPENDENCY_HASH"></a>DEPENDENCY_HASH</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#INTEGER">INTEGER</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="TOKEN_XADDR"></a>TOKEN_XADDR</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#XADDR">XADDR</a></div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">

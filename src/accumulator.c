@@ -16,6 +16,7 @@
 #include <sys/stat.h>
 #include "debug.h"
 
+
 VMHost *G_vm = 0;
 
 #define PATHS_FN "paths"
@@ -194,9 +195,20 @@ T *__a_find(T *t,SemanticID sym) {
     return NULL;
 }
 
+T *__a_get_instances(Instances *instances) {
+    T *t = *instances;
+    if (!t) return NULL;
+    t = _t_child(t,InstanceStoreInstancesIdx);
+    if (!t) raise_error("Missing INSTANCES");
+    return t;
+}
+
 Xaddr _a_new_instance(Instances *instances,T *t) {
-    T *x = *instances;
-    if (!x) x = *instances = _t_new_root(INSTANCES);
+    T *x = __a_get_instances(instances);
+    if (!x) {
+        x = *instances = _t_new_root(INSTANCE_STORE);
+        x = _t_newr(x,INSTANCES);
+    }
     Symbol s = _t_symbol(t);
     T *si =  __a_find(x,s);
     if (!si) si = _t_news(x,SYMBOL_INSTANCES,s);
@@ -208,7 +220,7 @@ Xaddr _a_new_instance(Instances *instances,T *t) {
 }
 
 T *_a_get_instance(Instances *instances,Xaddr x) {
-    T *t = *instances;
+    T *t = __a_get_instances(instances);
     if (!t) return NULL;
     t = __a_find(t,x.symbol);
     if (t) {
@@ -229,7 +241,8 @@ T *_a_set_instance(Instances *instances,Xaddr x,T *r) {
 }
 
 void _a_get_instances(Instances *instances,Symbol s,T *t) {
-    T *c,*x = *instances;
+    T *c;
+    T *x = __a_get_instances(instances);
     if (!x) return;
     x = __a_find(x,s);
     if (x)
@@ -241,7 +254,7 @@ void _a_get_instances(Instances *instances,Symbol s,T *t) {
 }
 
 void _a_delete_instance(Instances *instances,Xaddr x) {
-    T *t = *instances;
+    T *t = __a_get_instances(instances);
     if (!t) return;
     t = __a_find(t,x.symbol);
     if (t) {
@@ -262,7 +275,7 @@ void _a_free_instances(Instances *instances) {
 }
 
 S *__a_serialize_instances(Instances *instances) {
-    T *x = *instances;
+    T *x = __a_get_instances(instances);
     T *t = _t_new_root(PARAMS);
     if (x) {
         T *p;
@@ -359,6 +372,58 @@ void _a_unserialize_instances(SemTable *sem,Instances *instances,char *file) {
         __a_unserialize_instances(sem,instances,s);
         free(s);
     }
+}
+
+T *__a_get_tokens(Instances *instances) {
+    T *t = *instances;
+    if (!t) raise_error("uninitialized instances");
+    t = _t_child(t,InstanceStoreTokensIdx);
+    return t;
+}
+
+T *_a_gen_token(Instances *instances,Xaddr x,T *dependency) {
+    T *tokens = __a_get_tokens(instances);
+    T *c;
+    if (!tokens) {
+        tokens = _t_newr(*instances,INSTANCE_TOKENS);
+        c = _t_newi64(tokens,LAST_TOKEN,0);
+    }
+    else c = _t_child(tokens,InstanceTokensLastTokenIdx);
+    // @todo semaphore lock
+    uint64_t *l = (uint64_t *)_t_surface(c);
+    (*l)++;
+    T *t = _t_newi(tokens,INSTANCE_TOKEN,*l);
+    T *result = _t_clone(t);
+
+    // cheat and add the token xaddr and dependency as leaves of the last token here in the store
+    _t_new(t,TOKEN_XADDR,&x,sizeof(Xaddr));
+    _t_newi(t,DEPENDENCY_HASH,_t_hash(G_sem,dependency));
+
+    return result;
+}
+
+
+T *__a_find_token(T *t,long token) {
+    T *p;
+    int i,c =_t_children(t);
+    for (i=2;i<=c;i++) {
+        p =_t_child(t,i);
+        if (*(uint64_t *)_t_surface(p) == token) return p;
+    }
+    return NULL;
+}
+
+Xaddr _a_get_token_xaddr(Instances *instances,T *token,T *dependency) {
+    T *tokens = __a_get_tokens(instances);
+    if (tokens) {
+        T *t = __a_find_token(tokens,*(uint64_t *)_t_surface(token));
+        if (t) {
+            TreeHash h = *(TreeHash *)_t_surface(_t_child(t,2));
+            if (h == _t_hash(G_sem,dependency))
+                return *(Xaddr *)_t_surface(_t_child(t,1));
+        }
+    }
+    return G_null_xaddr;
 }
 
 /** @}*/

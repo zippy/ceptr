@@ -132,7 +132,7 @@ void __st_scan(Stream *st) {
 }
 
 
-char *ss2str(s) {
+char *ss2str(int s) {
     switch(s) {
     case StreamScanSuccess:return "StreamScanSuccess";
     case StreamScanPartial:return "StreamScanPartial";
