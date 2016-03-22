@@ -434,10 +434,8 @@ Xaddr _a_get_token_xaddr(Instances *instances,T *token,T *dependency) {
 void _a_add_dependency(Instances *instances,T *token,T *dependency) {
     T *tokens = __a_get_tokens(instances);
     if (tokens) {
-        puts("HERE");
         T *t = __a_find_token(tokens,*(uint64_t *)_t_surface(token));
         if (t) {
-            puts("THERE");
             _t_newi(t,DEPENDENCY_HASH,_t_hash(G_sem,dependency));
             return;
         }
