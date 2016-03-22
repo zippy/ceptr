@@ -15,7 +15,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include "debug.h"
-
+#include "util.h"
 
 VMHost *G_vm = 0;
 
@@ -41,8 +41,7 @@ void __a_serializet(T *t,char *name) {
 T *__a_unserializet(char *dir_path,char *name) {
     char fn[1000];
     __a_vm_fn(fn,dir_path,name);
-    S *s;
-    readFile(fn,&s,0);
+    S *s = readFile(fn,0);
     H h = _m_unserialize(s);
     free(s);
     T *t = _t_new_from_m(h);
@@ -96,7 +95,7 @@ void _a_boot(char *dir_path) {
 
         // unserialize all of the vmhost's instantiated receptors and other instances
         __a_vmfn(fn,dir_path);
-        readFile(fn,&buffer,0);
+        buffer = readFile(fn,0);
 
         Receptor *r = _r_unserialize(sem,buffer);
         G_vm = __v_init(r,sem);
@@ -105,7 +104,7 @@ void _a_boot(char *dir_path) {
         // unserialize other vmhost state data
         S *s;
         __a_vm_state_fn(fn,dir_path);
-        readFile(fn,&s,0);
+        s = readFile(fn,0);
         H h = _m_unserialize(s);
         free(s);
 
@@ -392,7 +391,7 @@ T *_a_gen_token(Instances *instances,Xaddr x,T *dependency) {
     // @todo semaphore lock
     uint64_t *l = (uint64_t *)_t_surface(c);
     (*l)++;
-    T *t = _t_newi(tokens,INSTANCE_TOKEN,*l);
+    T *t = _t_newi64(tokens,INSTANCE_TOKEN,*l);
     T *result = _t_clone(t);
 
     // cheat and add the token xaddr and dependency as leaves of the last token here in the store
@@ -403,7 +402,7 @@ T *_a_gen_token(Instances *instances,Xaddr x,T *dependency) {
 }
 
 
-T *__a_find_token(T *t,long token) {
+T *__a_find_token(T *t,uint64_t token) {
     T *p;
     int i,c =_t_children(t);
     for (i=2;i<=c;i++) {
@@ -435,8 +434,10 @@ Xaddr _a_get_token_xaddr(Instances *instances,T *token,T *dependency) {
 void _a_add_dependency(Instances *instances,T *token,T *dependency) {
     T *tokens = __a_get_tokens(instances);
     if (tokens) {
+        puts("HERE");
         T *t = __a_find_token(tokens,*(uint64_t *)_t_surface(token));
         if (t) {
+            puts("THERE");
             _t_newi(t,DEPENDENCY_HASH,_t_hash(G_sem,dependency));
             return;
         }

@@ -16,7 +16,7 @@
 void hexDump(char *desc, void *addr, int len);
 int strcicmp(char const *a, char const *b);
 void writeFile(char *fn,void *data,size_t size);
-void readFile(char *fn,void **data,size_t *size);
+void *readFile(char *fn,size_t *size);
 uint64_t diff_micro(struct timespec *start, struct timespec *end);
 void sleepms(long milliseconds);
 #define sleepns(ns) nanosleep((const struct timespec[]){{0, ns}}, NULL);

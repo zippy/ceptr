@@ -65,7 +65,7 @@ void writeFile(char *fn,void *data,size_t size) {
     }
 }
 
-void readFile(char *fn,void **data,size_t *size) {
+void *readFile(char *fn,size_t *size) {
     off_t file_size;
     char *buffer;
     struct stat stbuf;
@@ -95,8 +95,8 @@ void readFile(char *fn,void **data,size_t *size) {
         free(buffer);
         raise_error("error reading %s: %d",fn,errno);
     }
-    *data = buffer;
     close(fd);
+    return buffer;
 }
 
 uint64_t diff_micro(struct timespec *start, struct timespec *end)

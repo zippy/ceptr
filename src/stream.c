@@ -19,6 +19,9 @@
 #include <arpa/inet.h>
 #include <sys/wait.h>
 #include <signal.h>
+#include <stdio.h>
+#include <unistd.h>
+
 
 #include "process.h"
 #include "debug.h"

@@ -18,6 +18,7 @@
 #include "debug.h"
 #include <errno.h>
 #include "accumulator.h"
+#include "protocol.h"
 void rt_check(Receptor *r,T *t) {
     if (!(t->context.flags & TFLAG_RUN_NODE)) raise_error("Whoa! Not a run node! %s\n",_td(r,t));
 }
@@ -1655,18 +1656,8 @@ Q *_p_newq(Receptor *r) {
     return q;
 }
 
-// clean up a queue element
-_p_free_elements(Qe *e) {
-    while(e) {
-        _p_free_context(e->context);
-        Qe *n = e->next;
-        free(e);
-        e = n;
-    }
-}
-
 // clean up a context including its run-trees
-_p_free_context(R *c) {
+void _p_free_context(R *c) {
     while(c) {
         // free any run_trees that are roots, i.e. assume
         // that a tree in a context that's part of another tree
@@ -1676,6 +1667,16 @@ _p_free_context(R *c) {
         R *n = c->caller;
         free(c);
         c = n;
+    }
+}
+
+// clean up a queue element
+void _p_free_elements(Qe *e) {
+    while(e) {
+        _p_free_context(e->context);
+        Qe *n = e->next;
+        free(e);
+        e = n;
     }
 }
 

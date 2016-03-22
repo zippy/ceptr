@@ -44,6 +44,7 @@ Error _p_unblock(Q *q,int id);
 Error _p_reduce(SemTable *sem,T *run_tree);
 Q *_p_newq(Receptor *r);
 void _p_freeq(Q *q);
+void _p_free_context(R *c);
 #define _p_addrt2q(q,t) __p_addrt2q(q,t,NULL);
 Qe *__p_addrt2q(Q *q,T *t,T *sem_map);
 Error _p_reduceq(Q *q);

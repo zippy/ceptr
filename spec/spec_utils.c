@@ -53,6 +53,9 @@ void visdump(SemTable *sem,T *x) {
     }
 }
 
+#include "../src/process.h"
+#include "../src/receptor.h"
+
 void _test_reduce_signals(Receptor *r) {
     while (r->q->contexts_count) {
         _p_reduceq(r->q);

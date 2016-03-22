@@ -580,6 +580,7 @@ T* _r_request(Receptor *r,T *signal,Symbol response_carrier,T *code_point,int pr
 }
 
 // check if the end condition has been met
+// @todo find the correct home for this function
 void evaluateEndCondition(T *ec,bool *cleanup,bool *allow) {
     *cleanup = false;
     *allow = false;

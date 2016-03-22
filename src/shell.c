@@ -10,6 +10,7 @@
 
 #include "shell.h"
 #include "semtrex.h"
+#include "protocol.h"
 
 
 void addCommand(Receptor *r,ReceptorAddress ox,char *command,char *desc,T *code,T *bindings_handler) {

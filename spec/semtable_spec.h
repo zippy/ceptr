@@ -39,7 +39,7 @@ void testSemTableGetLabel() {
     //! [testSemTableGetLabel]
 }
 
-testSemGetSymbolStructure() {
+void testSemGetSymbolStructure() {
     //! [testSemGetSymbolStructure]
     spec_is_structure_equal(0,_sem_get_symbol_structure(G_sem,STRUCTURE_DEFINITION),TUPLE_OF_STRUCTURE_LABEL_AND_STRUCTURE_DEF);
     spec_is_structure_equal(0,_sem_get_symbol_structure(G_sem,STRUCTURE_SYMBOL),SYMBOL);
@@ -47,7 +47,7 @@ testSemGetSymbolStructure() {
     //! [testSemGetSymbolStructure]
 }
 
-testSemGetByLabel() {
+void testSemGetByLabel() {
     //! [testSemGetByLabel]
     SemanticID s = _sem_get_by_label(G_sem,"DEFINITIONS",SYS_CONTEXT);
     spec_is_sem_equal(s,DEFINITIONS);

@@ -69,6 +69,7 @@ T *__r_build_wakeup_info(T *code_point,int process_id);
 T* __r_send(Receptor *r,T *signal);
 T* _r_send(Receptor *r,T *signal);
 T* _r_request(Receptor *r,T *signal,Symbol response_carrier,T *code_point,int process_id);
+void evaluateEndCondition(T *ec,bool *cleanup,bool *allow);
 void __r_test_expectation(Receptor *r,T *expectation,T *signal);
 Error _r_deliver(Receptor *r, T *signal);
 

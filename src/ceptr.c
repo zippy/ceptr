@@ -7,6 +7,7 @@
 
 #include "ceptr.h"
 #include "accumulator.h"
+#include "shell.h"
 #include <stdio.h>
 
 int main(int argc, const char **argv) {
