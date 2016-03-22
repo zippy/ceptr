@@ -202,7 +202,6 @@ void testAccToken() {
     spec_is_true(is_null_xaddr(xx));
     _a_add_dependency(&i,token1,d3);
     char *with_two_dependencies = "(INSTANCE_STORE (INSTANCES (SYMBOL_INSTANCES:TEST_INT_SYMBOL (TEST_INT_SYMBOL:1))) (INSTANCE_TOKENS (LAST_TOKEN:2) (INSTANCE_TOKEN:1 (TOKEN_XADDR:TEST_INT_SYMBOL.1) (DEPENDENCY_HASH:1156909558) (DEPENDENCY_HASH:1973223375)) (INSTANCE_TOKEN:2 (TOKEN_XADDR:TEST_INT_SYMBOL.1) (DEPENDENCY_HASH:1552538631))))";
-
     spec_is_str_equal(t2s(i),with_two_dependencies);
     // check that dependency isn't added in twice
     _a_add_dependency(&i,token1,d3);
@@ -212,6 +211,14 @@ void testAccToken() {
     spec_is_xaddr_equal(G_sem,x,xx);
     xx = _a_get_token_xaddr(&i,token2,d3);
     spec_is_true(is_null_xaddr(xx));
+
+
+    // test deleting a dependency
+    _a_delete_dependency(&i,token1,d3);
+    spec_is_str_equal(t2s(i),"(INSTANCE_STORE (INSTANCES (SYMBOL_INSTANCES:TEST_INT_SYMBOL (TEST_INT_SYMBOL:1))) (INSTANCE_TOKENS (LAST_TOKEN:2) (INSTANCE_TOKEN:1 (TOKEN_XADDR:TEST_INT_SYMBOL.1) (DEPENDENCY_HASH:1156909558)) (INSTANCE_TOKEN:2 (TOKEN_XADDR:TEST_INT_SYMBOL.1) (DEPENDENCY_HASH:1552538631))))");
+    xx = _a_get_token_xaddr(&i,token1,d3);
+    spec_is_true(is_null_xaddr(xx));
+
 
     _t_free(token1);
     _t_free(token2);

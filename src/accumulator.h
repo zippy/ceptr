@@ -35,6 +35,7 @@ void _a_unserialize_instances(SemTable *sem,Instances *i,char *file);
 T *_a_gen_token(Instances *i,Xaddr x,T *dependency);
 Xaddr _a_get_token_xaddr(Instances *i,T *token,T *dependency);
 void _a_add_dependency(Instances *instances,T *token,T *dependency);
+void _a_delete_dependency(Instances *instances,T *token,T *dependency);
 
 VMHost *G_vm;
 
