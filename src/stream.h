@@ -67,6 +67,7 @@ struct SocketListener {
 #define _st_new_unix_stream(s,r) __st_new_unix_stream(s,r?DEFAULT_READER_BUFFER_SIZE:0)
 Stream *__st_new_unix_stream(FILE *stream,size_t reader_buffer_size);
 Stream *__st_alloc_stream();
+size_t __st_unix_stream_load(Stream *st);
 #define __st_init_scan(s) s->scan_state = StreamScanInitial
 #define __st_buf_full(s) (s->bytes_used == s->buf_size)
 
