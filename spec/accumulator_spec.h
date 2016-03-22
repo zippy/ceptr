@@ -219,6 +219,9 @@ void testAccToken() {
     xx = _a_get_token_xaddr(&i,token1,d3);
     spec_is_true(is_null_xaddr(xx));
 
+    // test deleting a token
+    _a_delete_token(&i,token1);
+    spec_is_str_equal(t2s(i),"(INSTANCE_STORE (INSTANCES (SYMBOL_INSTANCES:TEST_INT_SYMBOL (TEST_INT_SYMBOL:1))) (INSTANCE_TOKENS (LAST_TOKEN:2) (INSTANCE_TOKEN:2 (TOKEN_XADDR:TEST_INT_SYMBOL.1) (DEPENDENCY_HASH:1552538631))))");
 
     _t_free(token1);
     _t_free(token2);

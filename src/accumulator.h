@@ -36,6 +36,7 @@ T *_a_gen_token(Instances *i,Xaddr x,T *dependency);
 Xaddr _a_get_token_xaddr(Instances *i,T *token,T *dependency);
 void _a_add_dependency(Instances *instances,T *token,T *dependency);
 void _a_delete_dependency(Instances *instances,T *token,T *dependency);
+void _a_delete_token(Instances *instances,T *token);
 
 VMHost *G_vm;
 

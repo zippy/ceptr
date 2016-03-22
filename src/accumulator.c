@@ -465,4 +465,15 @@ void _a_delete_dependency(Instances *instances,T *token,T *dependency) {
     raise_error("token not found:%s\n",_t2s(G_sem,token));
 }
 
+void _a_delete_token(Instances *instances,T *token){
+    T *tokens = __a_get_tokens(instances);
+    if (tokens) {
+        T *t = __a_find_token(tokens,*(uint64_t *)_t_surface(token));
+        if (t) {
+            _t_detach_by_ptr(tokens,t);
+            _t_free(t);
+        }
+    }
+}
+
 /** @}*/
