@@ -418,12 +418,30 @@ Xaddr _a_get_token_xaddr(Instances *instances,T *token,T *dependency) {
     if (tokens) {
         T *t = __a_find_token(tokens,*(uint64_t *)_t_surface(token));
         if (t) {
-            TreeHash h = *(TreeHash *)_t_surface(_t_child(t,2));
-            if (h == _t_hash(G_sem,dependency))
-                return *(Xaddr *)_t_surface(_t_child(t,1));
+            T *p;
+            TreeHash dh = _t_hash(G_sem,dependency);
+            int i,c =_t_children(t);
+            for (i=2;i<=c;i++) {
+                p =_t_child(t,i);
+                TreeHash h = *(TreeHash *)_t_surface(p);
+                if (h == dh)
+                    return *(Xaddr *)_t_surface(_t_child(t,1));
+            }
         }
     }
     return G_null_xaddr;
+}
+
+void _a_add_dependency(Instances *instances,T *token,T *dependency) {
+    T *tokens = __a_get_tokens(instances);
+    if (tokens) {
+        T *t = __a_find_token(tokens,*(uint64_t *)_t_surface(token));
+        if (t) {
+            _t_newi(t,DEPENDENCY_HASH,_t_hash(G_sem,dependency));
+            return;
+        }
+    }
+    raise_error("token not found:%s\n",_t2s(G_sem,token));
 }
 
 /** @}*/
