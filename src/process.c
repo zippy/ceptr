@@ -647,8 +647,9 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
         {
             T *params = _t_detach_by_idx(code,1);
             if (!params) return signatureMismatchReductionErr;
-            T *to = _t_child(params,1);
+            T *to = _t_detach_by_idx(params,1);
             if (!to) return signatureMismatchReductionErr;
+            _t_free(params);
 
             Symbol to_sym = *(Symbol *)_t_surface(to);
             _t_free(to);

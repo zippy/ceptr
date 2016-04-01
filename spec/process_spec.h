@@ -1363,7 +1363,7 @@ void testProcessIterateOnSymbol() {
 
     spec_is_str_equal(t2s(code),"(process:ITERATE (PARAMS) (ITERATE_ON_SYMBOL:TEST_STR_SYMBOL) (process:STREAM_WRITE (EDGE_STREAM) (PARAM_REF:/1/1/1/1)))");
     T *run_tree = __p_build_run_tree(code,0);
-    _t_free(t);
+    _t_free(code);
 
     Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
 
