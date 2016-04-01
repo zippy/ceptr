@@ -298,7 +298,7 @@ void testMatchStar() {
     T *signal_contents = _t_newi(0,TEST_INT_SYMBOL,314);
     ReceptorAddress fr = {3}; // DUMMY ADDR
     ReceptorAddress to = {4}; // DUMMY ADDR
-    T *sig = __r_make_signal(fr,to,DEFAULT_ASPECT,TESTING,signal_contents,0,0);
+    T *sig = __r_make_signal(fr,to,DEFAULT_ASPECT,TESTING,signal_contents,0,0,0);
     T *sig2 = _t_clone(sig);
     _t_add(t,sig);
     spec_is_true(_t_matchr(s,t,&r));
@@ -330,7 +330,7 @@ void testMatchPlus() {
     T *signal_contents = _t_newi(0,TEST_INT_SYMBOL,314);
     ReceptorAddress fr = {3}; // DUMMY ADDR
     ReceptorAddress to = {4}; // DUMMY ADDR
-    T *sig = __r_make_signal(fr,to,DEFAULT_ASPECT,TESTING,signal_contents,0,0);
+    T *sig = __r_make_signal(fr,to,DEFAULT_ASPECT,TESTING,signal_contents,0,0,0);
     T *sig2 = _t_clone(sig);
     _t_add(t,sig);
     spec_is_true(_t_matchr(s,t,&r));
@@ -366,7 +366,7 @@ void testMatchQ() {
     T *signal_contents = _t_newi(0,TEST_INT_SYMBOL,314);
     ReceptorAddress fr = {3}; // DUMMY ADDR
     ReceptorAddress to = {4}; // DUMMY ADDR
-    T *sig = __r_make_signal(fr,to,DEFAULT_ASPECT,TESTING,signal_contents,0,0);
+    T *sig = __r_make_signal(fr,to,DEFAULT_ASPECT,TESTING,signal_contents,0,0,0);
     T *sig2 = _t_clone(sig);
     _t_add(t,sig);
     spec_is_true(_t_matchr(s,t,&r));

@@ -173,7 +173,7 @@ void testProcessTranscode() {
     // transcode of CHAR to CSTRING
     n = _t_build(G_sem,0,TRANSCODE,TRANSCODE_PARAMS,TRANSCODE_TO,TEST_STR_SYMBOL,NULL_SYMBOL,
                  TRANSCODE_ITEMS,ASCII_CHAR,'x',NULL_SYMBOL,NULL_SYMBOL);
-     spec_is_equal(__p_reduce_sys_proc(0,TRANSCODE,n,r->q),noReductionErr);
+    spec_is_equal(__p_reduce_sys_proc(0,TRANSCODE,n,r->q),noReductionErr);
     spec_is_str_equal(t2s(n),"(TEST_STR_SYMBOL:x)");
     _t_free(n);
 
@@ -580,7 +580,7 @@ void testProcessRespond() {
     ReceptorAddress f = {3}; // DUMMY ADDR
     ReceptorAddress t = {4}; // DUMMY ADDR
 
-    T *s = __r_make_signal(f,t,DEFAULT_ASPECT,TESTING,signal_contents,0,defaultRequestUntil());
+    T *s = __r_make_signal(f,t,DEFAULT_ASPECT,TESTING,signal_contents,0,defaultRequestUntil(),0);
 
     T *run_tree = _t_new_root(RUN_TREE);
     T *n = _t_newr(run_tree,RESPOND);
@@ -689,7 +689,7 @@ void testProcessRequest() {
     // debug_enable(D_SIGNALS);
     // generate a response signal
 
-    T *s = __r_make_signal(r->addr,r->addr,DEFAULT_ASPECT,TESTING,_t_new_str(0,TEST_STR_SYMBOL,"one fish"),_t_surface(_t_child(run_tree,1)),0);
+    T *s = __r_make_signal(r->addr,r->addr,DEFAULT_ASPECT,TESTING,_t_new_str(0,TEST_STR_SYMBOL,"one fish"),_t_surface(_t_child(run_tree,1)),0,0);
     _r_deliver(r,s);
     spec_is_str_equal(_td(r,r->pending_responses),"(PENDING_RESPONSES)");
 
@@ -722,6 +722,71 @@ void testProcessRequest() {
     _r_free(r);
     _t_free(p);
     _t_free(code);
+}
+
+
+T *_testProcessAddSay(T *parent,int id) {
+    T *say =  _t_newr(parent,SAY);
+    ReceptorAddress to = {id}; // DUMMY ADDR
+    __r_make_addr(say,TO_ADDRESS,to);
+    _t_news(say,ASPECT_IDENT,DEFAULT_ASPECT);
+    _t_news(say,CARRIER,TESTING);
+    _t_newi(say,TEST_INT_SYMBOL,314);
+    return say;
+}
+
+/*
+  (DO
+     (SAY <to> <aspect> <carrier> <message> )
+     (CONVERSE
+        (BLOCK
+            (LISTEN <aspect> <carrier> <action>)
+            (SAY <to> <aspect> <carrier> <message> )
+        )
+        (END_CONDITIONS (UNLIMITED))
+        )
+  )
+*/
+
+void testProcessConverse() {
+    T *code = _t_newr(0,DO);
+    T *db = _t_newr(code,BLOCK);
+    T *p = _t_newr(db,CONVERSE);
+    T *block = _t_newr(p,BLOCK);
+
+    // add to say instructions, one outside the conversation, one inside.
+    _testProcessAddSay(db,99);
+    _testProcessAddSay(block,100);
+
+    T *ec = _t_newr(p,END_CONDITIONS);
+    _t_newr(ec,UNLIMITED);
+
+    Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
+
+    T *run_tree = __p_build_run_tree(code,0);
+    _t_free(code);
+
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (process:DO (BLOCK (process:CONVERSE (BLOCK (process:SAY (TO_ADDRESS (RECEPTOR_ADDR:100)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (TEST_INT_SYMBOL:314))) (END_CONDITIONS (UNLIMITED))) (process:SAY (TO_ADDRESS (RECEPTOR_ADDR:99)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (TEST_INT_SYMBOL:314)))) (PARAMS))");
+
+    // add the run tree into a queue and run it
+    G_next_process_id = 0; // reset the process ids so the test will always work
+    Q *q = r->q;
+    T *cons = r->conversations;
+    T *ps = r->pending_signals;
+    Qe *e =_p_addrt2q(q,run_tree);
+    R *c = e->context;
+
+    // after reduction the context should look like it would after a
+    // a listen, but there should also be a conversation recorded
+    //debug_enable(D_STEP);
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    debug_disable(D_STEP);
+    spec_is_str_equal(t2s(cons),"(CONVERSATIONS (CONVERSATION (CONVERSATION_UUID) (END_CONDITIONS (UNLIMITED))))");
+
+    // The signal to 100 should have the conversation id in it
+    spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:100)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (SIGNAL_UUID) (CONVERSATION_UUID)) (BODY:{(TEST_INT_SYMBOL:314)})) (SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:99)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (SIGNAL_UUID)) (BODY:{(TEST_INT_SYMBOL:314)})))");
+
+    _r_free(r);
 }
 
 void testProcessQuote() {
@@ -1037,7 +1102,7 @@ void testProcessRefs() {
     _t_free(t);
     ReceptorAddress fm = {3}; // DUMMY ADDR
     ReceptorAddress to = {4}; // DUMMY ADDR
-    T *signal = __r_make_signal(fm,to,DEFAULT_ASPECT,TESTING,_t_new_str(0,TEST_STR_SYMBOL,"foo"),0,0);
+    T *signal = __r_make_signal(fm,to,DEFAULT_ASPECT,TESTING,_t_new_str(0,TEST_STR_SYMBOL,"foo"),0,0,0);
 
     // simulate that this run-tree is on the flux.
     _t_add(signal,run_tree);
@@ -1428,7 +1493,7 @@ void testProcessListen() {
 
     spec_is_str_equal(t2s(__r_get_expectations(r,DEFAULT_ASPECT)),"(EXPECTATIONS (EXPECTATION (CARRIER:TESTING) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TEST_STR_SYMBOL))) (WAKEUP_REFERENCE (PROCESS_IDENT:1) (CODE_PATH:/1)) (PARAMS (SLOT (USAGE:NULL_SYMBOL))) (END_CONDITIONS (COUNT:1))))");
 
-    T *s = __r_make_signal(r->addr,r->addr,DEFAULT_ASPECT,TESTING,_t_new_str(0,TEST_STR_SYMBOL,"fishy!"),0,0);
+    T *s = __r_make_signal(r->addr,r->addr,DEFAULT_ASPECT,TESTING,_t_new_str(0,TEST_STR_SYMBOL,"fishy!"),0,0,0);
     _r_deliver(r,s);
     spec_is_equal(_p_reduceq(q),noReductionErr);
 
@@ -1626,6 +1691,7 @@ void testProcess() {
     testProcessRespond();
     testProcessSay();
     testProcessRequest();
+    testProcessConverse();
     testProcessQuote();
     testProcessStream();
     testProcessStreamClose();

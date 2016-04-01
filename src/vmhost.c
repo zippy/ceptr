@@ -191,7 +191,7 @@ void _v_activate(VMHost *v, Xaddr x) {
  * @snippet spec/vmhost_spec.h testVMHostActivateReceptor
  */
 void _v_send(VMHost *v,ReceptorAddress from,ReceptorAddress to,Aspect aspect,Symbol carrier,T *contents) {
-    T *s = __r_make_signal(from,to,aspect,carrier,contents,0,0);
+    T *s = __r_make_signal(from,to,aspect,carrier,contents,0,0,0);
     T *x = _r_send(v->r,s);
     _t_free(x);
 }

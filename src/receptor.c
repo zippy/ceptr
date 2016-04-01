@@ -39,6 +39,7 @@ Receptor * __r_init(T *t,SemTable *sem) {
     r->flux = _t_child(state,ReceptorFluxIdx);
     r->pending_signals = _t_child(state,ReceptorPendingSignalsIdx);
     r->pending_responses = _t_child(state,ReceptorPendingResponsesIdx);
+    r->conversations = _t_child(state,ReceptorConversationsIdx);
     r->edge = NULL;
     return r;
 }
@@ -56,6 +57,7 @@ T *_r_make_state() {
     __r_add_aspect(f,DEFAULT_ASPECT);
     _t_newr(t,PENDING_SIGNALS);
     _t_newr(t,PENDING_RESPONSES);
+    _t_newr(t,CONVERSATIONS);
     _t_newi(t,RECEPTOR_ELAPSED_TIME,0);
     return t;
 }
@@ -495,7 +497,7 @@ ReceptorAddress __r_get_addr(T *addr) {
  * @param[in] signal_contents the message to be sent, which will be wrapped in a SIGNAL
  * @todo signal should have timestamps and other meta info
  */
-T* __r_make_signal(ReceptorAddress from,ReceptorAddress to,Aspect aspect,Symbol carrier,T *signal_contents,UUIDt *in_response_to,T* until) {
+T* __r_make_signal(ReceptorAddress from,ReceptorAddress to,Aspect aspect,Symbol carrier,T *signal_contents,UUIDt *in_response_to,T* until,R *context) {
     T *s = _t_new_root(SIGNAL);
     T *e = _t_newr(s,ENVELOPE);
     // @todo convert to paths at some point?
@@ -512,6 +514,11 @@ T* __r_make_signal(ReceptorAddress from,ReceptorAddress to,Aspect aspect,Symbol 
         _t_new(e,IN_RESPONSE_TO_UUID,in_response_to,sizeof(UUIDt));
     else if (until)
         _t_add(e,until);
+    if (context) {
+        if (context->conversation) {
+            _t_add(e,_t_clone(context->conversation));
+        }
+    }
     return s;
 }
 
@@ -1087,7 +1094,7 @@ void *___clock_thread(void *arg){
         debug(D_CLOCK,"%s\n",_td(r,tick));
         Xaddr x = {TICK,1};
         _r_set_instance(r,x,tick);
-        //        T *signal = __r_make_signal(self,self,DEFAULT_ASPECT,TICK,tick,0,0);
+        //        T *signal = __r_make_signal(self,self,DEFAULT_ASPECT,TICK,tick,0,0,0);
         //        _r_deliver(r,signal);
         sleep(1);
         /// @todo this will skip some seconds over time.... make more sophisticated

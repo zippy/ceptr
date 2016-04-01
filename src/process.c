@@ -417,6 +417,11 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
         b = (*(int *)_t_surface(t)) ? 2 : 3;
         x = _t_detach_by_idx(code,b);
         break;
+    /* case COND_ID: */
+    /*     { */
+    /*         return structureMismatchReductionErr; */
+    /*     } */
+    /*     break; */
     case EQ_SYM_ID:
         x = __t_newi(0,BOOLEAN,
                      semeq(
@@ -571,7 +576,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             Aspect a = *(Aspect *)_t_surface(_t_child(envelope,EnvelopeAspectIdx));
             UUIDt uuid = *(UUIDt *)_t_surface(_t_child(envelope,EnvelopeUUIDIdx));
 
-            T *response = __r_make_signal(from,to,a,carrier,response_contents,&uuid,0);
+            T *response = __r_make_signal(from,to,a,carrier,response_contents,&uuid,0,context);
             x = _r_send(q->r,response);
         }
         break;
@@ -605,7 +610,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             T *signal;
 
             if (s.id == SAY_ID) {
-                signal = __r_make_signal(from,to,aspect,carrier,signal_contents,0,0);
+                signal = __r_make_signal(from,to,aspect,carrier,signal_contents,0,0,context);
                 x = _r_send(q->r,signal);
             }
             else if (s.id == REQUEST_ID) {
@@ -637,11 +642,15 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                 else {
                     raise_error("request callback not implemented for %s",t2s(callback));
                 }
-                signal = __r_make_signal(from,to,aspect,carrier,signal_contents,0,until);
+                signal = __r_make_signal(from,to,aspect,carrier,signal_contents,0,until,context);
 
                 x = _r_request(q->r,signal,response_carrier,response_point,context->id);
             }
         }
+        break;
+    case CONVERSE_ID:
+        context->conversation = NULL;
+        x = __t_newi(0,TEST_INT_SYMBOL,99999,true);
         break;
     case TRANSCODE_ID:
         {
@@ -1132,6 +1141,7 @@ R *__p_make_context(T *run_tree,R *caller,int process_id,T *sem_map) {
     context->idx = 1;
     context->caller = caller;
     context->sem_map = sem_map;
+    context->conversation = NULL;
     if (caller) caller->callee = context;
     return context;
 }
@@ -1444,8 +1454,7 @@ Error _p_step(Q *q, R **contextP) {
                 else
 #endif
                     context->state = Ascend;
-            } else
-                {
+            } else {
                 if (semeq(s,ITERATE)) {
                     // if first time we are hitting this iteration
                     // then we need to set up the state data to track the iteration
@@ -1459,9 +1468,36 @@ Error _p_step(Q *q, R **contextP) {
                         state->type = IterateTypeUnknown;
                         *((IterationState **)&np->contents.surface) = state;
                         np->contents.size = sizeof(IterationState *);
+
                         // we start in condition phase so throw away the code copy
                         T *x = _t_detach_by_idx(np,3);
                         _t_free(x);
+                    }
+                }
+                else if (semeq(s,CONVERSE)) {
+                    // generate a new conversation ID and add it to the receptor's conversation list
+                    // if first time we are hitting the CONVERSE instruction
+                    // in the tree (i.e. on the way down) we need to register
+                    // the conversation IDs and make the tree
+                    if (_t_size(np) == 0) {
+                        T *c = _t_newr(0,CONVERSATION);
+                        UUIDt cuuid = __uuid_gen();
+                        T *cu = _t_new(c,CONVERSATION_UUID,&cuuid,sizeof(UUIDt));
+                        T *ec = _t_child(np,2); //@todo get this value semantically i.e _t_get_siganture_child(np,"until");
+                        if (ec) _t_add(c,_t_clone(ec));
+                        //@todo NOT THREAD SAFE, add locking
+                        _t_add(q->r->conversations,c);
+                        //@todo UNLOCK
+                        ConversationState *state = malloc(sizeof(ConversationState));
+                        *((ConversationState **)&np->contents.surface) = state;
+                        np->contents.size = sizeof(ConversationState *);
+                        np->context.flags |= TFLAG_ALLOCATED;
+
+                        // register the conversation with the context
+                        if (context->conversation) {
+                            raise_error("multiple CONVERSE per execution frame not implemented");
+                        }
+                        else context->conversation = cu;
                     }
                 }
                 if (count == get_rt_cur_child(q->r,np) || semeq(s,QUOTE)) {

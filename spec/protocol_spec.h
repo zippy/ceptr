@@ -147,7 +147,7 @@ void testProtocolAlive() {
     // check that the expressed expectation is bound correctly to the handler
     spec_is_str_equal(_td(r2,r2->flux),"(FLUX (DEFAULT_ASPECT (EXPECTATIONS (EXPECTATION (CARRIER:alive) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:YUP))) (ACTION:do nothing) (PARAMS) (END_CONDITIONS (UNLIMITED)) (SEMANTIC_MAP (SEMANTIC_LINK (GOAL:HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:do nothing)))))) (SIGNALS)))");
 
-    T *s = __r_make_signal(r->addr,r->addr,DEFAULT_ASPECT,alive,_t_new_root(PING),0,0);
+    T *s = __r_make_signal(r->addr,r->addr,DEFAULT_ASPECT,alive,_t_new_root(PING),0,0,0);
     //debug_enable(D_SIGNALS);
     spec_is_equal(_r_deliver(r,s),noDeliveryErr);
     spec_is_str_equal(_td(r,r->q->active->context->run_tree),"(RUN_TREE (process:RESPOND (SIGNAL_REF:/1/4) (YUP)) (PARAMS))");  // responds on the carrier in the signal envelope

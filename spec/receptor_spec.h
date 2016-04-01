@@ -36,7 +36,7 @@ void testReceptorCreate() {
     t = _t_child(r->flux,1);
     spec_is_symbol_equal(r,_t_symbol(t),DEFAULT_ASPECT);
 
-    spec_is_str_equal(t2s(r->root),"(RECEPTOR_INSTANCE (INSTANCE_OF:TEST_RECEPTOR) (CONTEXT_NUM:3) (PARENT_CONTEXT_NUM:0) (RECEPTOR_STATE (FLUX (DEFAULT_ASPECT (EXPECTATIONS) (SIGNALS))) (PENDING_SIGNALS) (PENDING_RESPONSES) (RECEPTOR_ELAPSED_TIME:0)))");
+    spec_is_str_equal(t2s(r->root),"(RECEPTOR_INSTANCE (INSTANCE_OF:TEST_RECEPTOR) (CONTEXT_NUM:3) (PARENT_CONTEXT_NUM:0) (RECEPTOR_STATE (FLUX (DEFAULT_ASPECT (EXPECTATIONS) (SIGNALS))) (PENDING_SIGNALS) (PENDING_RESPONSES) (CONVERSATIONS) (RECEPTOR_ELAPSED_TIME:0)))");
 
     _r_free(r);
     //! [testReceptorCreate]
@@ -69,7 +69,7 @@ void testReceptorSignal() {
     ReceptorAddress f = {3}; // DUMMY ADDR
     ReceptorAddress t = {4}; // DUMMY ADDR
 
-    T *s = __r_make_signal(f,t,DEFAULT_ASPECT,TESTING,sc=_t_clone(signal_contents),0,0);
+    T *s = __r_make_signal(f,t,DEFAULT_ASPECT,TESTING,sc=_t_clone(signal_contents),0,0,0);
 
     spec_is_symbol_equal(r,_t_symbol(s),SIGNAL);
 
@@ -82,7 +82,7 @@ void testReceptorSignal() {
     _t_free(s);
 
     UUIDt u = __uuid_gen();
-    s = __r_make_signal(f,t,DEFAULT_ASPECT,TESTING,_t_clone(signal_contents),&u,0);
+    s = __r_make_signal(f,t,DEFAULT_ASPECT,TESTING,_t_clone(signal_contents),&u,0,0);
     spec_is_str_equal(t2s(s),"(SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:4)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (SIGNAL_UUID) (IN_RESPONSE_TO_UUID)) (BODY:{(TEST_INT_SYMBOL:314)}))");
     int p[] = {SignalEnvelopeIdx,EnvelopeExtraIdx,TREE_PATH_TERMINATOR};
     T *ru = _t_get(s,p);
@@ -90,7 +90,7 @@ void testReceptorSignal() {
 
     _t_free(s);
     T *ec = defaultRequestUntil();
-    s = __r_make_signal(f,t,DEFAULT_ASPECT,TESTING,signal_contents,0,ec);
+    s = __r_make_signal(f,t,DEFAULT_ASPECT,TESTING,signal_contents,0,ec,0);
     spec_is_ptr_equal(ec,_t_get(s,p));
     _t_free(s);
 
@@ -104,7 +104,7 @@ void testReceptorSignalDeliver() {
     ReceptorAddress t = {4}; // DUMMY ADDR
 
     // a new signal should simply be placed on the flux when delivered
-    T *s = __r_make_signal(f,t,DEFAULT_ASPECT,TESTING,signal_contents,0,0);
+    T *s = __r_make_signal(f,t,DEFAULT_ASPECT,TESTING,signal_contents,0,0,0);
     spec_is_equal(_r_deliver(r,s),noDeliveryErr);
 
     T *signals = __r_get_signals(r,DEFAULT_ASPECT);
@@ -154,7 +154,7 @@ void testReceptorResponseDeliver() {
 
     // get the original signal uuid from the run tree
     UUIDt response_id = *(UUIDt *)_t_surface(_t_child(_t_child(rt,1),1));
-    T *s = __r_make_signal(from,to,DEFAULT_ASPECT,TESTING,_t_new_str(0,TEST_STR_SYMBOL,"foo"),&response_id,0);
+    T *s = __r_make_signal(from,to,DEFAULT_ASPECT,TESTING,_t_new_str(0,TEST_STR_SYMBOL,"foo"),&response_id,0,0);
 
     //    debug_enable(D_SIGNALS);
     spec_is_equal(_r_deliver(r,s),noDeliveryErr);
@@ -219,7 +219,7 @@ void testReceptorExpectation() {
     ReceptorAddress f = {3}; // DUMMY ADDR
     ReceptorAddress t = {4}; // DUMMY ADDR
 
-    T *signal = __r_make_signal(f,t,DEFAULT_ASPECT,HTTP_REQUEST,signal_contents,0,0);
+    T *signal = __r_make_signal(f,t,DEFAULT_ASPECT,HTTP_REQUEST,signal_contents,0,0,0);
 
     // our expectation pattern should match on the first path segment
     // /HTTP_REQUEST/.,.,HTTP_REQUEST_PATH/HTTP_REQUEST_PATH_SEGMENTS/<HTTP_REQUEST_PATH_SEGMENT:HTTP_REQUEST_PATH_SEGMENT>
@@ -454,7 +454,7 @@ void testReceptorSerialize() {
     ReceptorAddress to = {4}; // DUMMY ADDR
 
     // add a signal too
-    T *s = __r_make_signal(from,to,DEFAULT_ASPECT,TESTING,signal_contents,0,0);
+    T *s = __r_make_signal(from,to,DEFAULT_ASPECT,TESTING,signal_contents,0,0,0);
     _r_deliver(r,s);
 
     _r_serialize(r,&surface,&length);
@@ -683,7 +683,7 @@ void testReceptorEdgeListener() {
 
 void testReceptorClock() {
     Receptor *r = _r_makeClockReceptor(G_sem);
-    spec_is_str_equal(_td(r,r->root),"(RECEPTOR_INSTANCE (INSTANCE_OF:CLOCK_RECEPTOR) (CONTEXT_NUM:4) (PARENT_CONTEXT_NUM:0) (RECEPTOR_STATE (FLUX (DEFAULT_ASPECT (EXPECTATIONS (EXPECTATION (CARRIER:tell_time) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:CLOCK_TELL_TIME))) (ACTION:respond with current time) (PARAMS) (END_CONDITIONS (UNLIMITED)))) (SIGNALS))) (PENDING_SIGNALS) (PENDING_RESPONSES) (RECEPTOR_ELAPSED_TIME:0)))");
+    spec_is_str_equal(_td(r,r->root),"(RECEPTOR_INSTANCE (INSTANCE_OF:CLOCK_RECEPTOR) (CONTEXT_NUM:4) (PARENT_CONTEXT_NUM:0) (RECEPTOR_STATE (FLUX (DEFAULT_ASPECT (EXPECTATIONS (EXPECTATION (CARRIER:tell_time) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:CLOCK_TELL_TIME))) (ACTION:respond with current time) (PARAMS) (END_CONDITIONS (UNLIMITED)))) (SIGNALS))) (PENDING_SIGNALS) (PENDING_RESPONSES) (CONVERSATIONS) (RECEPTOR_ELAPSED_TIME:0)))");
 
    /*
       The clock receptor should do two things: respond to CLOCK_TELL_TIME signals with the current time, and also allow you to plant a listener based on a semtrex for any kind of time you want.  If you want the current time just plant a listener for TICK.  If you want to listen for every second plant a listener on the Symbol literal SECOND, and the clock receptor will trigger the listener every time the SECOND changes.  You can also listen for particular intervals and times by adding specificity to the semtrex, so to trigger a 3:30am action a-la-cron listen for: "/<TICK:(%HOUR=3,MINUTE=30)>"

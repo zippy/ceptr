@@ -23,7 +23,7 @@
 // Note, that I tried that and it's hard!
 enum {ReceptorInstanceInstOfIdx=1,ReceptorInstanceContextNumIdx,ReceptorInstanceParentContextIdx,ReceptorInstanceStateIdx};
 enum {ReceptorDefinitionLabelIdx=1,ReceptorDefinitionDefsIdx};
-enum {ReceptorFluxIdx=1,ReceptorPendingSignalsIdx,ReceptorPendingResponsesIdx,ReceptorElapsedTimeIdx};
+enum {ReceptorFluxIdx=1,ReceptorPendingSignalsIdx,ReceptorPendingResponsesIdx,ReceptorConversationsIdx,ReceptorElapsedTimeIdx};
 enum {EnvelopeFromIdx=1,EnvelopeToIdx,EnvelopeAspectIdx,EnvelopeCarrierIdx,EnvelopeUUIDIdx,EnvelopeExtraIdx};
 enum {SignalEnvelopeIdx=1,SignalBodyIdx};
 enum {PendingResponseUUIDIdx=1,PendingResponseCarrierIdx,PendingResponseWakeupIdx,PendingResponseEndCondsIdx};

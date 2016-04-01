@@ -19,7 +19,7 @@ void testVMHostCreate() {
     spec_is_equal(_t_children(_t_child(sem->stores[0].definitions,SEM_TYPE_SYMBOL)),NUM_SYS_SYMBOLS-1);
     spec_is_equal(_t_children(_t_child(sem->stores[0].definitions,SEM_TYPE_STRUCTURE)),NUM_SYS_STRUCTURES-1);
 
-    spec_is_str_equal(t2s(v->r->root),"(RECEPTOR_INSTANCE (INSTANCE_OF:SYS_RECEPTOR) (CONTEXT_NUM:0) (PARENT_CONTEXT_NUM:-1) (RECEPTOR_STATE (FLUX (DEFAULT_ASPECT (EXPECTATIONS) (SIGNALS))) (PENDING_SIGNALS) (PENDING_RESPONSES) (RECEPTOR_ELAPSED_TIME:0)))");
+    spec_is_str_equal(t2s(v->r->root),"(RECEPTOR_INSTANCE (INSTANCE_OF:SYS_RECEPTOR) (CONTEXT_NUM:0) (PARENT_CONTEXT_NUM:-1) (RECEPTOR_STATE (FLUX (DEFAULT_ASPECT (EXPECTATIONS) (SIGNALS))) (PENDING_SIGNALS) (PENDING_RESPONSES) (CONVERSATIONS) (RECEPTOR_ELAPSED_TIME:0)))");
 
     // test the installed receptors scape
     spec_is_sem_equal(v->installed_receptors->key_source,RECEPTOR_IDENTIFIER);

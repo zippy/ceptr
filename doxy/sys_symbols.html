@@ -60,15 +60,16 @@
 <tr><td><a name="ASPECTS"></a>ASPECTS</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_ASPECT_DEF">ONE-OR-MORE-OF-ASPECT-DEF</a></td><td></td></tr>
 <tr><td><a name="CARRIER"></a>CARRIER</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
 <tr><td><a name="BODY"></a>BODY</td><td><a href="ref_sys_structures.html#TREE">TREE</a></td><td>                          orthogonal tree that holds message body</td></tr>
-<tr><td><a name="SIGNAL_UUID"></a>SIGNAL_UUID</td><td><a href="ref_sys_structures.html#UUID">UUID</a></td><td></td></tr>
-<tr><td><a name="IN_RESPONSE_TO_UUID"></a>IN_RESPONSE_TO_UUID</td><td><a href="ref_sys_structures.html#UUID">UUID</a></td><td></td></tr>
+<tr><td><a name="SIGNAL_UUID"></a>SIGNAL_UUID</td><td><a href="ref_sys_structures.html#UUID">UUID</a></td><td>           @todo change from UUID to hash link as per #132</td></tr>
+<tr><td><a name="IN_RESPONSE_TO_UUID"></a>IN_RESPONSE_TO_UUID</td><td><a href="ref_sys_structures.html#UUID">UUID</a></td><td>   @todo change from UUID to hash link as per #132</td></tr>
+<tr><td><a name="CONVERSATION_UUID"></a>CONVERSATION_UUID</td><td><a href="ref_sys_structures.html#UUID">UUID</a></td><td>     @todo change from UUID to hash link as per #132</td></tr>
 <tr><td><a name="RECEPTOR_PATH"></a>RECEPTOR_PATH</td><td><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></td><td></td></tr>
 <tr><td><a name="RECEPTOR_PATHS"></a>RECEPTOR_PATHS</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_RECEPTOR_PATH">ONE-OR-MORE-OF-RECEPTOR-PATH</a></td><td></td></tr>
 <tr><td><a name="RECEPTOR_ADDR"></a>RECEPTOR_ADDR</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
 <tr><td><a name="FROM_ADDRESS"></a>FROM_ADDRESS</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
 <tr><td><a name="TO_ADDRESS"></a>TO_ADDRESS</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
 <tr><td><a name="END_CONDITIONS"></a>END_CONDITIONS</td><td><a href="ref_sys_structures.html#TUPLE_OF_ZERO_OR_ONE_OF_TIMEOUT_AT_AND_ZERO_OR_ONE_OF_REPETITIONS">TUPLE-OF-ZERO-OR-ONE-OF-TIMEOUT-AT-AND-ZERO-OR-ONE-OF-REPETITIONS</a></td><td></td></tr>
-<tr><td><a name="ENVELOPE"></a>ENVELOPE</td><td><a href="ref_sys_structures.html#LIST_OF_FROM_ADDRESS_AND_TO_ADDRESS_AND_ASPECT_IDENT_AND_CARRIER_AND_SIGNAL_UUID_AND_ZERO_OR_ONE_OF_LOGICAL_OR_OF_END_CONDITIONS_AND_IN_RESPONSE_TO_UUID">LIST-OF-FROM-ADDRESS-AND-TO-ADDRESS-AND-ASPECT-IDENT-AND-CARRIER-AND-SIGNAL-UUID-AND-ZERO-OR-ONE-OF-LOGICAL-OR-OF-END-CONDITIONS-AND-IN-RESPONSE-TO-UUID</a></td><td></td></tr>
+<tr><td><a name="ENVELOPE"></a>ENVELOPE</td><td><a href="ref_sys_structures.html#LIST_OF_FROM_ADDRESS_AND_TO_ADDRESS_AND_ASPECT_IDENT_AND_CARRIER_AND_SIGNAL_UUID_AND_ZERO_OR_ONE_OF_CONVERSATION_UUID_AND_ZERO_OR_ONE_OF_LOGICAL_OR_OF_END_CONDITIONS_AND_IN_RESPONSE_TO_UUID">LIST-OF-FROM-ADDRESS-AND-TO-ADDRESS-AND-ASPECT-IDENT-AND-CARRIER-AND-SIGNAL-UUID-AND-ZERO-OR-ONE-OF-CONVERSATION-UUID-AND-ZERO-OR-ONE-OF-LOGICAL-OR-OF-END-CONDITIONS-AND-IN-RESPONSE-TO-UUID</a></td><td></td></tr>
 <tr><td><a name="SIGNAL"></a>SIGNAL</td><td><a href="ref_sys_structures.html#TUPLE_OF_ENVELOPE_AND_BODY">TUPLE-OF-ENVELOPE-AND-BODY</a></td><td>                        a signal on the flux.  It's first child is the contents of the signal</td></tr>
 <tr><td><a name="PENDING_SIGNALS"></a>PENDING_SIGNALS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_SIGNAL">ZERO-OR-MORE-OF-SIGNAL</a></td><td>               list of signals pending to be sent by the SYS_RECEPTOR</td></tr>
 <tr><td><a name="CODE_PATH"></a>CODE_PATH</td><td><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></td><td></td></tr>
@@ -82,6 +83,8 @@
 <tr><td><a name="PARAMS"></a>PARAMS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_ANY_SYMBOL">ZERO-OR-MORE-OF-ANY-SYMBOL</a></td><td></td></tr>
 <tr><td><a name="SEMANTIC_MAP"></a>SEMANTIC_MAP</td><td><a href="ref_sys_structures.html#LIST_OF_ONE_OR_MORE_OF_SEMANTIC_LINK">LIST-OF-ONE-OR-MORE-OF-SEMANTIC-LINK</a></td><td></td></tr>
 <tr><td><a name="EXPECTATION"></a>EXPECTATION</td><td><a href="ref_sys_structures.html#LIST_OF_CARRIER_AND_PATTERN_AND_ACTION_AND_PARAMS_AND_END_CONDITIONS_AND_ZERO_OR_ONE_OF_SEMANTIC_MAP">LIST-OF-CARRIER-AND-PATTERN-AND-ACTION-AND-PARAMS-AND-END-CONDITIONS-AND-ZERO-OR-ONE-OF-SEMANTIC-MAP</a></td><td></td></tr>
+<tr><td><a name="CONVERSATION"></a>CONVERSATION</td><td><a href="ref_sys_structures.html#TUPLE_OF_CONVERSATION_UUID_AND_END_CONDITIONS">TUPLE-OF-CONVERSATION-UUID-AND-END-CONDITIONS</a></td><td></td></tr>
+<tr><td><a name="CONVERSATIONS"></a>CONVERSATIONS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_CONVERSATION">ZERO-OR-MORE-OF-CONVERSATION</a></td><td></td></tr>
 <tr><td><a name="TRANSCODER"></a>TRANSCODER</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
 <tr><td><a name="OPERATOR"></a>OPERATOR</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
 <tr><td><a name="VALIDATOR"></a>VALIDATOR</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
@@ -161,7 +164,7 @@
 <tr><td><a name="RECEPTOR_ELAPSED_TIME"></a>RECEPTOR_ELAPSED_TIME</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
 <tr><td><a name="RECEPTOR_LABEL"></a>RECEPTOR_LABEL</td><td><a href="ref_sys_structures.html#LABEL">LABEL</a></td><td></td></tr>
 <tr><td><a name="RECEPTOR_DEFINITION"></a>RECEPTOR_DEFINITION</td><td><a href="ref_sys_structures.html#TUPLE_OF_RECEPTOR_LABEL_AND_DEFINITIONS">TUPLE-OF-RECEPTOR-LABEL-AND-DEFINITIONS</a></td><td></td></tr>
-<tr><td><a name="RECEPTOR_STATE"></a>RECEPTOR_STATE</td><td><a href="ref_sys_structures.html#LIST_OF_FLUX_AND_PENDING_SIGNALS_AND_PENDING_RESPONSES_AND_RECEPTOR_ELAPSED_TIME">LIST-OF-FLUX-AND-PENDING-SIGNALS-AND-PENDING-RESPONSES-AND-RECEPTOR-ELAPSED-TIME</a></td><td></td></tr>
+<tr><td><a name="RECEPTOR_STATE"></a>RECEPTOR_STATE</td><td><a href="ref_sys_structures.html#LIST_OF_FLUX_AND_PENDING_SIGNALS_AND_PENDING_RESPONSES_AND_CONVERSATIONS_AND_RECEPTOR_ELAPSED_TIME">LIST-OF-FLUX-AND-PENDING-SIGNALS-AND-PENDING-RESPONSES-AND-CONVERSATIONS-AND-RECEPTOR-ELAPSED-TIME</a></td><td></td></tr>
 <tr><td><a name="PARENT_CONTEXT_NUM"></a>PARENT_CONTEXT_NUM</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td>        identifies the semantic context of a receptors parent</td></tr>
 <tr><td><a name="CONTEXT_NUM"></a>CONTEXT_NUM</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td>               identifies the semantic context of a receptor</td></tr>
 <tr><td><a name="INSTANCE_OF"></a>INSTANCE_OF</td><td><a href="ref_sys_structures.html#RECEPTOR">RECEPTOR</a></td><td>              identifies the kind of receptor this is</td></tr>

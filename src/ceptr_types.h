@@ -169,6 +169,7 @@ struct R {
     R *caller;        ///< a pointer to the context that invoked this run-tree/context
     R *callee;        ///< a pointer to the context we've invoked
     T *sem_map;       ///< semantic map in effect for this context
+    T *conversation;  ///< record of the conversation UUID active in this context frame
 };
 
 // ** structure to hold in process accounting
@@ -235,6 +236,7 @@ struct Receptor {
     T *flux;             ///< pointer for quick access to the flux
     T *pending_signals;
     T *pending_responses;
+    T *conversations;
     pthread_mutex_t pending_signals_mutex;
     pthread_mutex_t pending_responses_mutex;
     Instances instances; ///< the instances store
