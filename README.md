@@ -12,7 +12,7 @@ Then cd into the root directory of the repo and type:
 
 This will build a ceptr node running the command-line receptor, which is currently very primitive, with just four commands "time" (which returns a Tick semantic tree) "receptors" (which lists the currently active receptors) "debug" (which toggles debug mode) and "quit". more coming soon!
 
-For some guidance on getting the code-base to compile on Windows using Eclipse see: https://github.com/zippy/ceptr/blob/master/ceptr-eclipse-csharp-interface.txt  (Note: this hasn't been tested recently...)
+For some guidance on getting the code-base to compile on Windows using Eclipse see: https://github.com/zippy/ceptr/blob/master/ceptr-eclipse-csharp-interface.txt  (Note: this hasn't been tested recently and is no longer in sync with the c codebase...)
 
 ## Usage
 
@@ -26,11 +26,13 @@ You can read the code and API documentation here: http://zippy.github.io/ceptr/
 
 Or watch a brief overview webinar/video here: https://www.youtube.com/watch?v=3Db-8lD1lNA
 
-Or check out this prezi: https://prezi.com/raptqxuputwp/ceptr-tech-overview/
-
 ## Architecture
 
 For a broad overview of the project see [the Ceptr Revelation] (http://ceptr.org/revelation/)
+
+Or check out this prezi: https://prezi.com/raptqxuputwp/ceptr-tech-overview/
+
+Or this longer presentation of that prezi: https://www.youtube.com/watch?v=Y9ZhswdOm14
 
 ## Streamscapes
 
@@ -48,15 +50,17 @@ The tests also produce a bunch of semantic trees dumped out to json for visualiz
 
 ## Development
 
-[![Join the dev chat at https://gitter.im/zippy/ceptr](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/zippy/ceptr?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join the dev chat at https://gitter.im/zippy/ceptr](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/zippy/ceptr?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![In Progress](https://badge.waffle.io/zippy/ceptr.svg?label=in%20progress&title=In%20Progress)](http://waffle.io/zippy/ceptr)
 
-[![In Progress](https://badge.waffle.io/zippy/ceptr.svg?label=in%20progress&title=In%20Progress)](http://waffle.io/zippy/ceptr)
+[roadmap & kanban](https://waffle.io/zippy/ceptr)
 
 [issue tracking](https://github.com/zippy/ceptr/issues)
 
 [wiki](https://github.com/zippy/ceptr/wiki)
 
-[live dev chat](http://ceptr.org/devchat) 1st and 3rd Wednesdays of the month, 3pm EST.
+[live dev-chat](http://ceptr.org/devchat) 1st and 3rd Wednesdays of the month, 3pm EST.
+
+[livecoding](https://www.livecoding.tv/zippy/)
 
 ### Contributor Guidelines
 
