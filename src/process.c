@@ -570,13 +570,15 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             Symbol carrier = *(Symbol*)_t_surface(t);
             _t_free(t);
             T *response_contents = _t_detach_by_idx(code,1);
-            T *envelope = _t_child(signal,SignalEnvelopeIdx);
-            ReceptorAddress to = __r_get_addr(_t_child(envelope,EnvelopeFromIdx)); // from and to reverse in response
-            ReceptorAddress from = __r_get_addr(_t_child(envelope,EnvelopeToIdx));
-            Aspect a = *(Aspect *)_t_surface(_t_child(envelope,EnvelopeAspectIdx));
-            UUIDt uuid = *(UUIDt *)_t_surface(_t_child(envelope,EnvelopeUUIDIdx));
+            T *head = _t_getv(signal,SignalMessageIdx,MessageHeadIdx,TREE_PATH_TERMINATOR);
 
-            T *response = __r_make_signal(from,to,a,carrier,response_contents,&uuid,0,context);
+            ReceptorAddress to = __r_get_addr(_t_child(head,HeadFromIdx)); // from and to reverse in response
+            ReceptorAddress from = __r_get_addr(_t_child(head,HeadToIdx));
+            Aspect a = *(Aspect *)_t_surface(_t_child(head,HeadAspectIdx));
+            T *su = _t_getv(signal,SignalEnvelopeIdx,EnvelopeSignalUUIDIdx,TREE_PATH_TERMINATOR);
+            UUIDt uuid = *(UUIDt *)_t_surface(su);
+
+            T *response = __r_make_signal(from,to,a,carrier,response_contents,&uuid,0,context->conversation);
             x = _r_send(q->r,response);
         }
         break;
@@ -610,7 +612,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             T *signal;
 
             if (s.id == SAY_ID) {
-                signal = __r_make_signal(from,to,aspect,carrier,signal_contents,0,0,context);
+                signal = __r_make_signal(from,to,aspect,carrier,signal_contents,0,0,context->conversation);
                 x = _r_send(q->r,signal);
             }
             else if (s.id == REQUEST_ID) {
@@ -642,7 +644,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                 else {
                     raise_error("request callback not implemented for %s",t2s(callback));
                 }
-                signal = __r_make_signal(from,to,aspect,carrier,signal_contents,0,until,context);
+                signal = __r_make_signal(from,to,aspect,carrier,signal_contents,0,until,context->conversation);
 
                 x = _r_request(q->r,signal,response_carrier,response_point,context->id);
             }
@@ -1432,7 +1434,9 @@ Error _p_step(Q *q, R **contextP) {
                 }
                 T *param = _t_get(sig,(int *)_t_surface(np));
                 if (!param) {
-                    raise_error("request for non-existent signal portion");
+                    char buf[1000];
+
+                    raise_error("request for non-existent signal portion.  signal was: %s \n path was:%s\n",t2s(sig),_t_sprint_path((int *)_t_surface(np),buf));
                 }
                 context->node_pointer = np = _t_rclone(param);
                 _t_replace(context->parent, context->idx,np);

@@ -69,9 +69,11 @@
 <tr><td><a name="FROM_ADDRESS"></a>FROM_ADDRESS</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
 <tr><td><a name="TO_ADDRESS"></a>TO_ADDRESS</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
 <tr><td><a name="END_CONDITIONS"></a>END_CONDITIONS</td><td><a href="ref_sys_structures.html#TUPLE_OF_ZERO_OR_ONE_OF_TIMEOUT_AT_AND_ZERO_OR_ONE_OF_REPETITIONS">TUPLE-OF-ZERO-OR-ONE-OF-TIMEOUT-AT-AND-ZERO-OR-ONE-OF-REPETITIONS</a></td><td></td></tr>
-<tr><td><a name="ENVELOPE"></a>ENVELOPE</td><td><a href="ref_sys_structures.html#LIST_OF_FROM_ADDRESS_AND_TO_ADDRESS_AND_ASPECT_IDENT_AND_CARRIER_AND_SIGNAL_UUID_AND_ZERO_OR_ONE_OF_CONVERSATION_UUID_AND_ZERO_OR_ONE_OF_LOGICAL_OR_OF_END_CONDITIONS_AND_IN_RESPONSE_TO_UUID">LIST-OF-FROM-ADDRESS-AND-TO-ADDRESS-AND-ASPECT-IDENT-AND-CARRIER-AND-SIGNAL-UUID-AND-ZERO-OR-ONE-OF-CONVERSATION-UUID-AND-ZERO-OR-ONE-OF-LOGICAL-OR-OF-END-CONDITIONS-AND-IN-RESPONSE-TO-UUID</a></td><td></td></tr>
-<tr><td><a name="SIGNAL"></a>SIGNAL</td><td><a href="ref_sys_structures.html#TUPLE_OF_ENVELOPE_AND_BODY">TUPLE-OF-ENVELOPE-AND-BODY</a></td><td>                        a signal on the flux.  It's first child is the contents of the signal</td></tr>
-<tr><td><a name="PENDING_SIGNALS"></a>PENDING_SIGNALS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_SIGNAL">ZERO-OR-MORE-OF-SIGNAL</a></td><td>               list of signals pending to be sent by the SYS_RECEPTOR</td></tr>
+<tr><td><a name="ENVELOPE"></a>ENVELOPE</td><td><a href="ref_sys_structures.html#LIST_OF_SIGNAL_UUID">LIST-OF-SIGNAL-UUID</a></td><td></td></tr>
+<tr><td><a name="HEAD"></a>HEAD</td><td><a href="ref_sys_structures.html#LIST_OF_FROM_ADDRESS_AND_TO_ADDRESS_AND_ASPECT_IDENT_AND_CARRIER_AND_ZERO_OR_ONE_OF_CONVERSATION_UUID_AND_ZERO_OR_ONE_OF_LOGICAL_OR_OF_END_CONDITIONS_AND_IN_RESPONSE_TO_UUID">LIST-OF-FROM-ADDRESS-AND-TO-ADDRESS-AND-ASPECT-IDENT-AND-CARRIER-AND-ZERO-OR-ONE-OF-CONVERSATION-UUID-AND-ZERO-OR-ONE-OF-LOGICAL-OR-OF-END-CONDITIONS-AND-IN-RESPONSE-TO-UUID</a></td><td></td></tr>
+<tr><td><a name="MESSAGE"></a>MESSAGE</td><td><a href="ref_sys_structures.html#TUPLE_OF_HEAD_AND_BODY">TUPLE-OF-HEAD-AND-BODY</a></td><td>              meta-data of a signal</td></tr>
+<tr><td><a name="SIGNAL"></a>SIGNAL</td><td><a href="ref_sys_structures.html#TUPLE_OF_ENVELOPE_AND_MESSAGE">TUPLE-OF-ENVELOPE-AND-MESSAGE</a></td><td>        a signal on the flux.  It's first child is the contents of the signal</td></tr>
+<tr><td><a name="PENDING_SIGNALS"></a>PENDING_SIGNALS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_SIGNAL">ZERO-OR-MORE-OF-SIGNAL</a></td><td>          list of signals pending to be sent by the SYS_RECEPTOR</td></tr>
 <tr><td><a name="CODE_PATH"></a>CODE_PATH</td><td><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></td><td></td></tr>
 <tr><td><a name="PROCESS_IDENT"></a>PROCESS_IDENT</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
 <tr><td><a name="WAKEUP_REFERENCE"></a>WAKEUP_REFERENCE</td><td><a href="ref_sys_structures.html#TUPLE_OF_PROCESS_IDENT_AND_CODE_PATH">TUPLE-OF-PROCESS-IDENT-AND-CODE-PATH</a></td><td></td></tr>
@@ -296,7 +298,7 @@
 <tr><td><a name="MEMBER"></a>MEMBER</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
 <tr><td><a name="enrollment"></a>enrollment</td><td><a href="ref_sys_structures.html#INTERACTION">INTERACTION</a></td><td></td></tr>
 <tr><td><a name="converse"></a>converse</td><td><a href="ref_sys_structures.html#INTERACTION">INTERACTION</a></td><td></td></tr>
-<tr><td><a name="MESSAGE"></a>MESSAGE</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="MESSAGE_TEXT"></a>MESSAGE_TEXT</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
 <tr><td><a name="TEST_INT_SYMBOL"></a>TEST_INT_SYMBOL</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
 <tr><td><a name="TEST_INT_SYMBOL2"></a>TEST_INT_SYMBOL2</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
 <tr><td><a name="TEST_INT64_SYMBOL"></a>TEST_INT64_SYMBOL</td><td><a href="ref_sys_structures.html#INTEGER64">INTEGER64</a></td><td></td></tr>

@@ -153,10 +153,12 @@ Structure: RECEPTOR_ADDRESS,|{RECEPTOR_ADDR|RECEPTOR_PATH};
 Symbol: FROM_ADDRESS,RECEPTOR_ADDRESS;
 Symbol: TO_ADDRESS,RECEPTOR_ADDRESS;
 Declare: END_CONDITIONS;
-Symbol: ENVELOPE,[(FROM_ADDRESS,TO_ADDRESS,ASPECT_IDENT,CARRIER,SIGNAL_UUID,?CONVERSATION_UUID,?|{END_CONDITIONS|IN_RESPONSE_TO_UUID})];
-Symbol: SIGNAL,[(ENVELOPE,BODY)];                        a signal on the flux.  It's first child is the contents of the signal
+Symbol: ENVELOPE,[(SIGNAL_UUID)];
+Symbol: HEAD,[(FROM_ADDRESS,TO_ADDRESS,ASPECT_IDENT,CARRIER,?CONVERSATION_UUID,?|{END_CONDITIONS|IN_RESPONSE_TO_UUID})];
+Symbol: MESSAGE,[(HEAD,BODY)];              meta-data of a signal
+Symbol: SIGNAL,[(ENVELOPE,MESSAGE)];        a signal on the flux.  It's first child is the contents of the signal
 Symbol: SIGNALS,[*SIGNAL];                  list of signals on an aspect in the flux
-Symbol: PENDING_SIGNALS,[*SIGNAL];               list of signals pending to be sent by the SYS_RECEPTOR
+Symbol: PENDING_SIGNALS,[*SIGNAL];          list of signals pending to be sent by the SYS_RECEPTOR
 Symbol: CODE_PATH,TREE_PATH;
 Symbol: PROCESS_IDENT,INTEGER;
 Symbol: WAKEUP_REFERENCE,[(PROCESS_IDENT,CODE_PATH)];
@@ -491,7 +493,7 @@ Symbol: backnforth,INTERACTION;
 Data: req_code,(SLOT (GOAL:REQUEST_HANDLER) (SLOT_CHILDREN (REQUEST (SLOT (ROLE:RESPONDER) (SLOT_IS_VALUE_OF:TO_ADDRESS)) (SLOT (USAGE:CHANNEL) (SLOT_IS_VALUE_OF:ASPECT_IDENT)) (CARRIER:backnforth) (SLOT (USAGE:REQUEST_DATA)) (CARRIER:backnforth)))));
 Process: send_request,req_code,"send request","response",SIGNATURE_ANY,NULL_STRUCTURE,0;
 
-Data: resp_code,(RESPOND (SIGNAL_REF:/1/4) (SLOT (GOAL:RESPONSE_HANDLER)));
+Data: resp_code,(RESPOND (SIGNAL_REF:/2/1/4) (SLOT (GOAL:RESPONSE_HANDLER)));
 Process: send_response,resp_code,"send response","response id",SIGNATURE_SYMBOL,SIGNAL_UUID,0;
 
 Data: req_def,(PROTOCOL_DEFINITION
@@ -585,7 +587,7 @@ Symbol: PING,NULL_STRUCTURE;
 Symbol: YUP,NULL_STRUCTURE;
 Symbol: HANDLER,PROCESS;
 
-Data: ping_resp,(RESPOND (SIGNAL_REF:/1/4) (YUP));
+Data: ping_resp,(RESPOND (SIGNAL_REF:/2/1/4) (YUP));
 Process: respond_with_yup,ping_resp,"respond with yup","response id",SIGNATURE_SYMBOL,SIGNAL_UUID,0;
 Symbol: alive,INTERACTION;
 
@@ -603,21 +605,21 @@ Symbol: GROUP,RECEPTOR_ADDRESS;
 Symbol: MEMBER,RECEPTOR_ADDRESS;
 Symbol: enrollment,INTERACTION;
 Symbol: converse,INTERACTION;
-Symbol: MESSAGE,CSTRING;
+Symbol: MESSAGE_TEXT,CSTRING;
 
 Data: request_membership_code,(SAY (SLOT (ROLE:GROUP) (SLOT_IS_VALUE_OF:TO_ADDRESS)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:enrollment) (YUP));   we could say anything, just using yup for now...
 Process: request_membership,request_membership_code,"request membership","result",SIGNATURE_SYMBOL,SIGNAL_UUID,0;
 
-Data: enroll_code,(NEW (NEW_TYPE:MEMBER) (SIGNAL_REF:/1/1));  /1/1 is the FROM_ADDRESS
+Data: enroll_code,(NEW (NEW_TYPE:MEMBER) (SIGNAL_REF:/1/1/1));  /1/1/1 is the FROM_ADDRESS
 Process: enroll,enroll_code,"enroll client","result",SIGNATURE_STRUCTURE,NULL_STRUCTURE,0;
 
-Data: speak_code,(SAY (SLOT (ROLE:GROUP) (SLOT_IS_VALUE_OF:TO_ADDRESS)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:converse) (SLOT (USAGE:MESSAGE)));
+Data: speak_code,(SAY (SLOT (ROLE:GROUP) (SLOT_IS_VALUE_OF:TO_ADDRESS)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:converse) (SLOT (USAGE:MESSAGE_TEXT)));
 Process: speak,speak_code,"speak","result",SIGNATURE_SYMBOL,SIGNAL_UUID,0;
 
 Data: group_listen_code,
       (DO (BLOCK
-              (NEW (NEW_TYPE:MESSAGE) (PARAM_REF:/2/1))
-              (ITERATE (PARAMS) (ITERATE_ON_SYMBOL:MEMBER) (SAY (PARAM_REF:/1/1/2/1/1/1) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:converse) (PARAM_REF:/2/1)))));  we could also use SIGNAL_REF /2/0 as the contents of the BODY
+              (NEW (NEW_TYPE:MESSAGE_TEXT) (PARAM_REF:/2/1))
+              (ITERATE (PARAMS) (ITERATE_ON_SYMBOL:MEMBER) (SAY (PARAM_REF:/1/1/2/1/1/1) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:converse) (PARAM_REF:/2/1)))));  we could also use SIGNAL_REF /1/2/0 as the contents of the BODY
 Process: group_listen,group_listen_code,"group_listen","result",SIGNATURE_SYMBOL,SIGNAL_UUID,0;
 
 Data: group1_def,
@@ -627,8 +629,8 @@ Data: group1_def,
                 (EXPECT (ROLE:GROUP) (ROLE:MEMBER) (PATTERN (SEMTREX_SYMBOL_ANY)) (ACTION:enroll))
                 (INITIATE (ROLE:MEMBER) (ROLE:GROUP) (ACTION:request_membership)))
           (converse
-                (EXPECT (ROLE:GROUP) (ROLE:MEMBER) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:MESSAGE))) (ACTION:group_listen) (PARAMS (SLOT (USAGE:NULL_SYMBOL))))
-                (EXPECT (ROLE:MEMBER) (ROLE:GROUP) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:MESSAGE))) (SLOT (GOAL:HANDLER) (SLOT_IS_VALUE_OF:ACTION)))
+                (EXPECT (ROLE:GROUP) (ROLE:MEMBER) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:MESSAGE_TEXT))) (ACTION:group_listen) (PARAMS (SLOT (USAGE:NULL_SYMBOL))))
+                (EXPECT (ROLE:MEMBER) (ROLE:GROUP) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:MESSAGE_TEXT))) (SLOT (GOAL:HANDLER) (SLOT_IS_VALUE_OF:ACTION)))
                 (INITIATE (ROLE:MEMBER) (ROLE:GROUP) (ACTION:speak)))
                 );
                 

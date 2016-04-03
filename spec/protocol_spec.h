@@ -9,7 +9,7 @@ void testProtocolRequesting() {
     spec_is_str_equal(t2s(_sem_get_def(G_sem,REQUESTING)),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL (ENGLISH_LABEL:REQUESTING)) (PROTOCOL_SEMANTICS (ROLE:REQUESTER) (ROLE:RESPONDER) (GOAL:REQUEST_HANDLER) (GOAL:RESPONSE_HANDLER) (USAGE:CHANNEL) (USAGE:REQUEST_DATA) (USAGE:RESPONSE_DATA)) (backnforth (INITIATE (ROLE:REQUESTER) (DESTINATION (ROLE:RESPONDER)) (ACTION:send_request)) (EXPECT (ROLE:RESPONDER) (SOURCE (ROLE:REQUESTER)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SLOT (USAGE:REQUEST_DATA) (SLOT_IS_VALUE_OF:SEMTREX_SYMBOL)))) (ACTION:send_response))))");
     spec_is_str_equal(t2s(_sem_get_def(G_sem,send_request)),"(PROCESS_DEFINITION (PROCESS_NAME (ENGLISH_LABEL:send_request)) (PROCESS_INTENTION:send request) (SLOT (GOAL:REQUEST_HANDLER) (SLOT_CHILDREN (process:REQUEST (SLOT (ROLE:RESPONDER) (SLOT_IS_VALUE_OF:TO_ADDRESS)) (SLOT (USAGE:CHANNEL) (SLOT_IS_VALUE_OF:ASPECT_IDENT)) (CARRIER:backnforth) (SLOT (USAGE:REQUEST_DATA)) (CARRIER:backnforth)))) (PROCESS_SIGNATURE (OUTPUT_SIGNATURE (SIGNATURE_LABEL (ENGLISH_LABEL:response)) (SIGNATURE_ANY)) (TEMPLATE_SIGNATURE (EXPECTED_SLOT (ROLE:RESPONDER) (SLOT_IS_VALUE_OF:TO_ADDRESS)) (EXPECTED_SLOT (USAGE:CHANNEL) (SLOT_IS_VALUE_OF:ASPECT_IDENT)) (EXPECTED_SLOT (USAGE:REQUEST_DATA)) (EXPECTED_SLOT (GOAL:REQUEST_HANDLER)))))");
 
-    spec_is_str_equal(t2s(_sem_get_def(G_sem,send_response)),"(PROCESS_DEFINITION (PROCESS_NAME (ENGLISH_LABEL:send_response)) (PROCESS_INTENTION:send response) (process:RESPOND (SIGNAL_REF:/1/4) (SLOT (GOAL:RESPONSE_HANDLER))) (PROCESS_SIGNATURE (OUTPUT_SIGNATURE (SIGNATURE_LABEL (ENGLISH_LABEL:response id)) (SIGNATURE_SYMBOL:SIGNAL_UUID)) (TEMPLATE_SIGNATURE (EXPECTED_SLOT (GOAL:RESPONSE_HANDLER)))))");
+    spec_is_str_equal(t2s(_sem_get_def(G_sem,send_response)),"(PROCESS_DEFINITION (PROCESS_NAME (ENGLISH_LABEL:send_response)) (PROCESS_INTENTION:send response) (process:RESPOND (SIGNAL_REF:/2/1/4) (SLOT (GOAL:RESPONSE_HANDLER))) (PROCESS_SIGNATURE (OUTPUT_SIGNATURE (SIGNATURE_LABEL (ENGLISH_LABEL:response id)) (SIGNATURE_SYMBOL:SIGNAL_UUID)) (TEMPLATE_SIGNATURE (EXPECTED_SLOT (GOAL:RESPONSE_HANDLER)))))");
 
     //@todo trying to express request protocol should fail because it's not concrete enough
 
@@ -90,19 +90,19 @@ void testProtocolRecognize() {
     debug_disable(D_SIGNALS);
 
     // which should produce signals on the flux
-    spec_is_str_equal(t2s(_t_getv(self->pending_signals,1,SignalEnvelopeIdx,EnvelopeCarrierIdx,TREE_PATH_TERMINATOR)),"(CARRIER:backnforth)");
-    spec_is_str_equal(t2s(_t_getv(self->pending_signals,1,SignalBodyIdx,TREE_PATH_TERMINATOR)),"(BODY:{(are_you (SEMTREX_WALK))})");
+    spec_is_str_equal(t2s(_t_getv(self->pending_signals,1,SignalMessageIdx,MessageHeadIdx,HeadCarrierIdx,TREE_PATH_TERMINATOR)),"(CARRIER:backnforth)");
+    spec_is_str_equal(t2s(_t_getv(self->pending_signals,1,SignalMessageIdx,MessageBodyIdx,TREE_PATH_TERMINATOR)),"(BODY:{(are_you (SEMTREX_WALK))})");
     spec_is_str_equal(t2s(_t_getv(self->pending_responses,1,PendingResponseCarrierIdx,TREE_PATH_TERMINATOR)),"(CARRIER:backnforth)");
 
     _v_deliver_signals(v,self);
     // check the signal's envelope, body, and run-tree
     T *signals = __r_get_signals(self,DEFAULT_ASPECT);
-    T *e = _t_clone(_t_getv(signals,1,SignalEnvelopeIdx,TREE_PATH_TERMINATOR));
-    _t_free(_t_detach_by_idx(e,EnvelopeExtraIdx)); // get rid of the end conditions which are variable so we can't test them!
-    spec_is_str_equal(t2s(e),"(ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:backnforth) (SIGNAL_UUID))");
-    _t_free(e);
-    spec_is_str_equal(t2s(_t_getv(signals,1,SignalBodyIdx,TREE_PATH_TERMINATOR)),"(BODY:{(are_you (SEMTREX_WALK))})");
-    spec_is_str_equal(t2s(_t_getv(signals,1,SignalBodyIdx+1,TREE_PATH_TERMINATOR)),"(RUN_TREE (process:RESPOND (SIGNAL_REF:/1/4) (process:fill_i_am)) (PARAMS))");
+    T *h = _t_clone(_t_getv(signals,1,SignalMessageIdx,MessageHeadIdx,TREE_PATH_TERMINATOR));
+    _t_free(_t_detach_by_idx(h,HeadExtraIdx)); // get rid of the end conditions which are variable so we can't test them!
+    spec_is_str_equal(t2s(h),"(HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:backnforth))");
+    _t_free(h);
+    spec_is_str_equal(t2s(_t_getv(signals,1,SignalMessageIdx,MessageBodyIdx,TREE_PATH_TERMINATOR)),"(BODY:{(are_you (SEMTREX_WALK))})");
+    spec_is_str_equal(t2s(_t_getv(signals,1,SignalMessageIdx+1,TREE_PATH_TERMINATOR)),"(RUN_TREE (process:RESPOND (SIGNAL_REF:/2/1/4) (process:fill_i_am)) (PARAMS))");
 
     //    debug_enable(D_REDUCE+D_REDUCEV);
 
@@ -112,7 +112,7 @@ void testProtocolRecognize() {
     debug_disable(D_PROTOCOL);
     debug_disable(D_REDUCE+D_REDUCEV);
 
-    spec_is_str_equal(_td(self,self->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:backnforth) (SIGNAL_UUID) (IN_RESPONSE_TO_UUID)) (BODY:{(i_am (RECEPTOR_LABEL (ENGLISH_LABEL:super cept)) (RECEPTOR_IDENTIFIER:314159))})))");
+    spec_is_str_equal(_td(self,self->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:backnforth) (IN_RESPONSE_TO_UUID)) (BODY:{(i_am (RECEPTOR_LABEL (ENGLISH_LABEL:super cept)) (RECEPTOR_IDENTIFIER:314159))}))))");
     _v_deliver_signals(v,self);
 
     spec_is_str_equal(t2s(self->q->active->context->run_tree),"(RUN_TREE (process:NOOP (i_am (RECEPTOR_LABEL (ENGLISH_LABEL:super cept)) (RECEPTOR_IDENTIFIER:314159))) (PARAMS))");
@@ -150,11 +150,11 @@ void testProtocolAlive() {
     T *s = __r_make_signal(r->addr,r->addr,DEFAULT_ASPECT,alive,_t_new_root(PING),0,0,0);
     //debug_enable(D_SIGNALS);
     spec_is_equal(_r_deliver(r,s),noDeliveryErr);
-    spec_is_str_equal(_td(r,r->q->active->context->run_tree),"(RUN_TREE (process:RESPOND (SIGNAL_REF:/1/4) (YUP)) (PARAMS))");  // responds on the carrier in the signal envelope
+    spec_is_str_equal(_td(r,r->q->active->context->run_tree),"(RUN_TREE (process:RESPOND (SIGNAL_REF:/2/1/4) (YUP)) (PARAMS))");  // responds on the carrier in the signal envelope
     debug_disable(D_SIGNALS);
     spec_is_equal(_p_reduceq(r->q),noReductionErr);
     spec_is_str_equal(_td(r,r->q->completed->context->run_tree),"(RUN_TREE (SIGNAL_UUID) (PARAMS))");
-    spec_is_str_equal(_td(r,r->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:alive) (SIGNAL_UUID) (IN_RESPONSE_TO_UUID)) (BODY:{(YUP)})))");
+    spec_is_str_equal(_td(r,r->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:alive) (IN_RESPONSE_TO_UUID)) (BODY:{(YUP)}))))");
 
     _r_free(r);
     _r_free(r2);

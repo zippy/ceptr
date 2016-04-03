@@ -699,27 +699,51 @@
    </div>
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
-       <div class="def-name"><a name="LIST_OF_FROM_ADDRESS_AND_TO_ADDRESS_AND_ASPECT_IDENT_AND_CARRIER_AND_SIGNAL_UUID_AND_ZERO_OR_ONE_OF_CONVERSATION_UUID_AND_ZERO_OR_ONE_OF_LOGICAL_OR_OF_END_CONDITIONS_AND_IN_RESPONSE_TO_UUID"></a>LIST-OF-FROM-ADDRESS-AND-TO-ADDRESS-AND-ASPECT-IDENT-AND-CARRIER-AND-SIGNAL-UUID-AND-ZERO-OR-ONE-OF-CONVERSATION-UUID-AND-ZERO-OR-ONE-OF-LOGICAL-OR-OF-END-CONDITIONS-AND-IN-RESPONSE-TO-UUID</div>
-       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#FROM_ADDRESS">FROM_ADDRESS</a>, <a href="ref_sys_symbols.html#TO_ADDRESS">TO_ADDRESS</a>, <a href="ref_sys_symbols.html#ASPECT_IDENT">ASPECT_IDENT</a>, <a href="ref_sys_symbols.html#CARRIER">CARRIER</a>, <a href="ref_sys_symbols.html#SIGNAL_UUID">SIGNAL_UUID</a>, ?(<a href="ref_sys_symbols.html#CONVERSATION_UUID">CONVERSATION_UUID</a>), ?(OR(<a href="ref_sys_symbols.html#END_CONDITIONS">END_CONDITIONS</a>, <a href="ref_sys_symbols.html#IN_RESPONSE_TO_UUID">IN_RESPONSE_TO_UUID</a>)))</div>
+       <div class="def-name"><a name="LIST_OF_SIGNAL_UUID"></a>LIST-OF-SIGNAL-UUID</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#SIGNAL_UUID">SIGNAL_UUID</a>)</div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="ENVELOPE"></a>ENVELOPE</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_FROM_ADDRESS_AND_TO_ADDRESS_AND_ASPECT_IDENT_AND_CARRIER_AND_SIGNAL_UUID_AND_ZERO_OR_ONE_OF_CONVERSATION_UUID_AND_ZERO_OR_ONE_OF_LOGICAL_OR_OF_END_CONDITIONS_AND_IN_RESPONSE_TO_UUID">LIST-OF-FROM-ADDRESS-AND-TO-ADDRESS-AND-ASPECT-IDENT-AND-CARRIER-AND-SIGNAL-UUID-AND-ZERO-OR-ONE-OF-CONVERSATION-UUID-AND-ZERO-OR-ONE-OF-LOGICAL-OR-OF-END-CONDITIONS-AND-IN-RESPONSE-TO-UUID</a></div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_SIGNAL_UUID">LIST-OF-SIGNAL-UUID</a></div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
-       <div class="def-name"><a name="TUPLE_OF_ENVELOPE_AND_BODY"></a>TUPLE-OF-ENVELOPE-AND-BODY</div>
-       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#ENVELOPE">ENVELOPE</a>, <a href="ref_sys_symbols.html#BODY">BODY</a>)</div>
+       <div class="def-name"><a name="LIST_OF_FROM_ADDRESS_AND_TO_ADDRESS_AND_ASPECT_IDENT_AND_CARRIER_AND_ZERO_OR_ONE_OF_CONVERSATION_UUID_AND_ZERO_OR_ONE_OF_LOGICAL_OR_OF_END_CONDITIONS_AND_IN_RESPONSE_TO_UUID"></a>LIST-OF-FROM-ADDRESS-AND-TO-ADDRESS-AND-ASPECT-IDENT-AND-CARRIER-AND-ZERO-OR-ONE-OF-CONVERSATION-UUID-AND-ZERO-OR-ONE-OF-LOGICAL-OR-OF-END-CONDITIONS-AND-IN-RESPONSE-TO-UUID</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#FROM_ADDRESS">FROM_ADDRESS</a>, <a href="ref_sys_symbols.html#TO_ADDRESS">TO_ADDRESS</a>, <a href="ref_sys_symbols.html#ASPECT_IDENT">ASPECT_IDENT</a>, <a href="ref_sys_symbols.html#CARRIER">CARRIER</a>, ?(<a href="ref_sys_symbols.html#CONVERSATION_UUID">CONVERSATION_UUID</a>), ?(OR(<a href="ref_sys_symbols.html#END_CONDITIONS">END_CONDITIONS</a>, <a href="ref_sys_symbols.html#IN_RESPONSE_TO_UUID">IN_RESPONSE_TO_UUID</a>)))</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="HEAD"></a>HEAD</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_FROM_ADDRESS_AND_TO_ADDRESS_AND_ASPECT_IDENT_AND_CARRIER_AND_ZERO_OR_ONE_OF_CONVERSATION_UUID_AND_ZERO_OR_ONE_OF_LOGICAL_OR_OF_END_CONDITIONS_AND_IN_RESPONSE_TO_UUID">LIST-OF-FROM-ADDRESS-AND-TO-ADDRESS-AND-ASPECT-IDENT-AND-CARRIER-AND-ZERO-OR-ONE-OF-CONVERSATION-UUID-AND-ZERO-OR-ONE-OF-LOGICAL-OR-OF-END-CONDITIONS-AND-IN-RESPONSE-TO-UUID</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="TUPLE_OF_HEAD_AND_BODY"></a>TUPLE-OF-HEAD-AND-BODY</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#HEAD">HEAD</a>, <a href="ref_sys_symbols.html#BODY">BODY</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="MESSAGE"></a>MESSAGE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TUPLE_OF_HEAD_AND_BODY">TUPLE-OF-HEAD-AND-BODY</a></div>
+       <div class="def-comment">              meta-data of a signal</div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="TUPLE_OF_ENVELOPE_AND_MESSAGE"></a>TUPLE-OF-ENVELOPE-AND-MESSAGE</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#ENVELOPE">ENVELOPE</a>, <a href="ref_sys_symbols.html#MESSAGE">MESSAGE</a>)</div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="SIGNAL"></a>SIGNAL</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#TUPLE_OF_ENVELOPE_AND_BODY">TUPLE-OF-ENVELOPE-AND-BODY</a></div>
-       <div class="def-comment">                        a signal on the flux.  It's first child is the contents of the signal</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TUPLE_OF_ENVELOPE_AND_MESSAGE">TUPLE-OF-ENVELOPE-AND-MESSAGE</a></div>
+       <div class="def-comment">        a signal on the flux.  It's first child is the contents of the signal</div>
    </div>
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
@@ -731,7 +755,7 @@
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="PENDING_SIGNALS"></a>PENDING_SIGNALS</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_SIGNAL">ZERO-OR-MORE-OF-SIGNAL</a></div>
-       <div class="def-comment">               list of signals pending to be sent by the SYS_RECEPTOR</div>
+       <div class="def-comment">          list of signals pending to be sent by the SYS_RECEPTOR</div>
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
@@ -2904,7 +2928,7 @@
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
-       <div class="def-name"><a name="MESSAGE"></a>MESSAGE</div>
+       <div class="def-name"><a name="MESSAGE_TEXT"></a>MESSAGE_TEXT</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
        <div class="def-comment"></div>
    </div>

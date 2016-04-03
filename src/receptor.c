@@ -494,30 +494,34 @@ ReceptorAddress __r_get_addr(T *addr) {
  * @param[in] from source Receptor Xaddr
  * @param[in] to destination Receptor Xaddr
  * @param[in] aspect Aspect over which the message will be sent
- * @param[in] signal_contents the message to be sent, which will be wrapped in a SIGNAL
- * @todo signal should have timestamps and other meta info
+ * @param[in] carrier Carrier used for matching expectations
+ * @param[in] signal_contents the message to be sent, which will be wrapped in a BODY
+ * @param[in] in_response_to optional IN_RESPONSE_TO_UUID for request response
+ * @param[in] until optional END_CONDITIONS for a request
+ * @param[in] conversation optional conversation id for signals that should be routed to a conversation
+ * @todo signal should have timestamps
  */
-T* __r_make_signal(ReceptorAddress from,ReceptorAddress to,Aspect aspect,Symbol carrier,T *signal_contents,UUIDt *in_response_to,T* until,R *context) {
+T* __r_make_signal(ReceptorAddress from,ReceptorAddress to,Aspect aspect,Symbol carrier,T *signal_contents,UUIDt *in_response_to,T* until,T *conversation) {
     T *s = _t_new_root(SIGNAL);
     T *e = _t_newr(s,ENVELOPE);
+    T *m = _t_newr(s,MESSAGE);
+    T *h = _t_newr(m,HEAD);
     // @todo convert to paths at some point?
-    __r_make_addr(e,FROM_ADDRESS,from);
-    __r_make_addr(e,TO_ADDRESS,to);
-    _t_news(e,ASPECT_IDENT,aspect);
-    _t_news(e,CARRIER,carrier);
+    __r_make_addr(h,FROM_ADDRESS,from);
+    __r_make_addr(h,TO_ADDRESS,to);
+    _t_news(h,ASPECT_IDENT,aspect);
+    _t_news(h,CARRIER,carrier);
     UUIDt t = __uuid_gen();
     _t_new(e,SIGNAL_UUID,&t,sizeof(UUIDt));
-    T *b = _t_newt(s,BODY,signal_contents);
+    T *b = _t_newt(m,BODY,signal_contents);
 
     if (in_response_to && until) raise_error("attempt to make signal with both response_uuid and until");
     if (in_response_to)
-        _t_new(e,IN_RESPONSE_TO_UUID,in_response_to,sizeof(UUIDt));
+        _t_new(h,IN_RESPONSE_TO_UUID,in_response_to,sizeof(UUIDt));
     else if (until)
-        _t_add(e,until);
-    if (context) {
-        if (context->conversation) {
-            _t_add(e,_t_clone(context->conversation));
-        }
+        _t_add(h,until);
+    if (conversation) {
+        _t_add(h,_t_clone(conversation));
     }
     return s;
 }
@@ -538,7 +542,7 @@ T* __r_send(Receptor *r,T *signal) {
 
     //@todo for now we return the UUID of the signal as the result.  Perhaps later we return an error condition if delivery to address is known to be impossible, or something like that.
     T *envelope = _t_child(signal,SignalEnvelopeIdx);
-    return _t_rclone(_t_child(envelope,EnvelopeUUIDIdx));
+    return _t_rclone(_t_child(envelope,EnvelopeSignalUUIDIdx));
 }
 
 /**
@@ -575,7 +579,7 @@ T* _r_request(Receptor *r,T *signal,Symbol response_carrier,T *code_point,int pr
     _t_add(pr,_t_clone(result));
     _t_news(pr,CARRIER,response_carrier);
     _t_add(pr,__r_build_wakeup_info(code_point,process_id));
-    int p[] = {SignalEnvelopeIdx,EnvelopeExtraIdx,TREE_PATH_TERMINATOR};
+    int p[] = {SignalMessageIdx,MessageHeadIdx,HeadExtraIdx,TREE_PATH_TERMINATOR};
     T *ec = _t_get(signal,p);
     if (!ec || !semeq(_t_symbol(ec),END_CONDITIONS)) raise_error("request missing END_CONDITIONS");
     _t_add(pr,_t_clone(ec));
@@ -649,11 +653,13 @@ void evaluateEndCondition(T *ec,bool *cleanup,bool *allow) {
  */
 void __r_test_expectation(Receptor *r,T *expectation,T *signal) {
     Q *q = r->q;
-    T *signal_contents = (T *)_t_surface(_t_child(signal,SignalBodyIdx));
+    int p[] = {SignalMessageIdx,MessageBodyIdx,TREE_PATH_TERMINATOR};
+    T *body = _t_get(signal,p);
+    T *signal_contents = (T *)_t_surface(body);
 
     //test carriers first because they must match
     T *e_carrier = _t_child(expectation,ExpectationCarrierIdx);
-    T *s_carrier = _t_getv(signal,SignalEnvelopeIdx,EnvelopeCarrierIdx,TREE_PATH_TERMINATOR);
+    T *s_carrier = _t_getv(signal,SignalMessageIdx,MessageHeadIdx,HeadCarrierIdx,TREE_PATH_TERMINATOR);
 
     debug(D_SIGNALS,"checking signal carrier %s\n",_td(q->r,s_carrier));
     debug(D_SIGNALS,"against expectation carrier %s\n",_td(q->r,e_carrier));
@@ -764,17 +770,20 @@ T* __r_sanatize_response(Receptor *r,T* response) {
 Error _r_deliver(Receptor *r, T *signal) {
     T *l;
 
-    T *envelope = _t_child(signal,SignalEnvelopeIdx);
+    T *head = _t_getv(signal,SignalMessageIdx,MessageHeadIdx,TREE_PATH_TERMINATOR);
+    T *body = _t_getv(signal,SignalMessageIdx,MessageBodyIdx,TREE_PATH_TERMINATOR);
 
     // see if this is more than a plain send signal we are delivering
     // if there are END_CONDITIONS we know this is a request
     // if there is a an IN_RESPONSE_TO_UUID then we know it's a response
-    T *extra=_t_child(envelope,EnvelopeExtraIdx);
+    T *extra=_t_child(head,HeadExtraIdx);
     if (extra && semeq(IN_RESPONSE_TO_UUID,_t_symbol(extra))) {
         // responses don't trigger expectation matching, instead they
         // go through the pending_responses list to see where the signal goes
         UUIDt *u = (UUIDt*)_t_surface(extra);
         debug(D_SIGNALS,"Delivering response: %s\n",_td(r,signal));
+        Symbol signal_carrier = *(Symbol *)_t_surface(_t_child(head,HeadCarrierIdx));
+
         DO_KIDS(r->pending_responses,
                 l = _t_child(r->pending_responses,i);
                 if (__uuid_equal(u,(UUIDt *)_t_surface(_t_child(l,PendingResponseUUIDIdx)))) {
@@ -790,10 +799,9 @@ Error _r_deliver(Receptor *r, T *signal) {
                         T *wakeup = _t_child(l,PendingResponseWakeupIdx);
                         int process_id = *(int *)_t_surface(_t_child(wakeup,WakeupReferenceProcessIdentIdx));
                         int *code_path = (int *)_t_surface(_t_child(wakeup,WakeupReferenceCodePathIdx));
-                        T *response = (T *)_t_surface(_t_child(signal,SignalBodyIdx));
+                        T *response = (T *)_t_surface(body);
                         // now set up the signal so when it's freed below, the body doesn't get freed too
                         signal->context.flags &= ~TFLAG_SURFACE_IS_TREE;
-                        Symbol signal_carrier = *(Symbol *)_t_surface(_t_child(envelope,EnvelopeCarrierIdx));
                         if (!semeq(carrier,signal_carrier)) {
                             debug(D_SIGNALS,"response failed carrier check, expecting %s, but got %s!\n",_r_get_symbol_name(r,carrier),_r_get_symbol_name(r,signal_carrier));
                             //@todo what kind of logging of these kinds of events?
@@ -849,7 +857,7 @@ Error _r_deliver(Receptor *r, T *signal) {
             // @todo anything specific we need to store here??
         }
 
-        Aspect aspect = *(Aspect *)_t_surface(_t_child(envelope,EnvelopeAspectIdx));
+        Aspect aspect = *(Aspect *)_t_surface(_t_child(head,HeadAspectIdx));
 
         T *as = __r_get_signals(r,aspect);
 
@@ -1022,7 +1030,7 @@ void _r_addWriter(Receptor *r,Stream *st,Aspect aspect) {
 void _r_defineClockReceptor(SemTable *sem) {
     Context clk_ctx =  _d_get_receptor_context(sem,CLOCK_RECEPTOR);
     T *resp = _t_new_root(RESPOND);
-    int p[] = {SignalEnvelopeIdx,EnvelopeCarrierIdx,TREE_PATH_TERMINATOR};
+    int p[] = {SignalMessageIdx,MessageHeadIdx,HeadCarrierIdx,TREE_PATH_TERMINATOR};
     _t_new(resp,SIGNAL_REF,p,sizeof(int)*4);
 
     Xaddr x = {TICK,1};

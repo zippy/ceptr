@@ -236,10 +236,10 @@ void _v_deliver_signals(VMHost *v, Receptor *sender) {
 
     while(_t_children(signals)>0) {
         T *s = _t_detach_by_idx(signals,1);
-        T *envelope = _t_child(s,1);
-        //      T *contents = _t_child(s,2);
-        ReceptorAddress *toP = (ReceptorAddress *)_t_surface(_t_child(_t_child(envelope,EnvelopeToIdx),1));
-        ReceptorAddress *fromP = (ReceptorAddress *)_t_surface(_t_child(_t_child(envelope,EnvelopeFromIdx),1));
+        T *head = _t_getv(s,SignalMessageIdx,MessageHeadIdx,TREE_PATH_TERMINATOR);
+
+        ReceptorAddress *toP = (ReceptorAddress *)_t_surface(_t_child(_t_child(head,HeadToIdx),1));
+        ReceptorAddress *fromP = (ReceptorAddress *)_t_surface(_t_child(_t_child(head,HeadFromIdx),1));
 
         // if the from or to address is "self" (-1) we find the senders self
         // fix the values in the signal we are about to deliver.

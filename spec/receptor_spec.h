@@ -74,8 +74,13 @@ void testReceptorSignal() {
     spec_is_symbol_equal(r,_t_symbol(s),SIGNAL);
 
     T *envelope = _t_child(s,SignalEnvelopeIdx);
-    spec_is_str_equal(t2s(envelope),"(ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:4)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (SIGNAL_UUID))");
-    T *body = _t_child(s,SignalBodyIdx);
+    spec_is_str_equal(t2s(envelope),"(ENVELOPE (SIGNAL_UUID))");
+
+    T *message = _t_child(s,SignalMessageIdx);
+
+    T *head = _t_child(message,MessageHeadIdx);
+    spec_is_str_equal(t2s(head),"(HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:4)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING))");
+    T *body = _t_child(message,MessageBodyIdx);
     spec_is_str_equal(t2s(body),"(BODY:{(TEST_INT_SYMBOL:314)})");
     T *contents = (T*)_t_surface(body);
     spec_is_ptr_equal(sc,contents);
@@ -83,8 +88,8 @@ void testReceptorSignal() {
 
     UUIDt u = __uuid_gen();
     s = __r_make_signal(f,t,DEFAULT_ASPECT,TESTING,_t_clone(signal_contents),&u,0,0);
-    spec_is_str_equal(t2s(s),"(SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:4)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (SIGNAL_UUID) (IN_RESPONSE_TO_UUID)) (BODY:{(TEST_INT_SYMBOL:314)}))");
-    int p[] = {SignalEnvelopeIdx,EnvelopeExtraIdx,TREE_PATH_TERMINATOR};
+    spec_is_str_equal(t2s(s),"(SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:4)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (IN_RESPONSE_TO_UUID)) (BODY:{(TEST_INT_SYMBOL:314)})))");
+    int p[] = {SignalMessageIdx,MessageHeadIdx,HeadExtraIdx,TREE_PATH_TERMINATOR};
     T *ru = _t_get(s,p);
     spec_is_true(__uuid_equal(&u,_t_surface(ru)));
 
@@ -108,7 +113,7 @@ void testReceptorSignalDeliver() {
     spec_is_equal(_r_deliver(r,s),noDeliveryErr);
 
     T *signals = __r_get_signals(r,DEFAULT_ASPECT);
-    spec_is_str_equal(_td(r,signals),"(SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:4)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (SIGNAL_UUID)) (BODY:{(TEST_INT_SYMBOL:314)})))");
+    spec_is_str_equal(_td(r,signals),"(SIGNALS (SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:4)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING)) (BODY:{(TEST_INT_SYMBOL:314)}))))");
     _r_free(r);
 }
 
@@ -120,7 +125,7 @@ void testReceptorResponseDeliver() {
 
     ReceptorAddress tt = {4}; // DUMMY ADDR
 
-    // set up receptor to have sent and signal and blocked waiting for the response
+    // set up receptor to have sent a signal and blocked waiting for the response
     T *t = _t_new_root(RUN_TREE);
     T *p = _t_new_root(NOOP);
     T *req = _t_newr(p,REQUEST);
@@ -271,14 +276,14 @@ void testReceptorExpectation() {
     // signal and run_tree should be added and ready on the process queue
     spec_is_equal(r->q->contexts_count,1);
     spec_is_str_equal(_td(r,__r_get_signals(r,DEFAULT_ASPECT)),
-                      "(SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:4)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:HTTP_REQUEST) (SIGNAL_UUID)) (BODY:{(HTTP_REQUEST (HTTP_REQUEST_VERSION (VERSION_MAJOR:1) (VERSION_MINOR:0)) (HTTP_REQUEST_METHOD:GET) (HTTP_REQUEST_PATH (HTTP_REQUEST_PATH_SEGMENTS (HTTP_REQUEST_PATH_SEGMENT:groups) (HTTP_REQUEST_PATH_SEGMENT:5)) (HTTP_REQUEST_PATH_FILE (FILE_NAME:users) (FILE_EXTENSION:json)) (HTTP_REQUEST_PATH_QUERY (HTTP_REQUEST_PATH_QUERY_PARAMS (HTTP_REQUEST_PATH_QUERY_PARAM (PARAM_KEY:sort_by) (PARAM_VALUE:last_name)) (HTTP_REQUEST_PATH_QUERY_PARAM (PARAM_KEY:page) (PARAM_VALUE:2))))))}) (RUN_TREE (process:RESPOND (CARRIER:HTTP_RESPONSE) (PARAM_REF:/2/1)) (PARAMS (HTTP_RESPONSE (HTTP_RESPONSE_STATUS (STATUS_VALUE:200) (STATUS_TEXT:OK)) (HTTP_HEADERS (CONTENT_TYPE (MEDIA_TYPE_IDENT:TEXT_MEDIA_TYPE) (MEDIA_SUBTYPE_IDENT:CEPTR_TEXT_MEDIA_SUBTYPE))) (HTTP_RESPONSE_BODY (HTTP_REQUEST_PATH_SEGMENT:groups)))))))"
+                      "(SIGNALS (SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:4)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:HTTP_REQUEST)) (BODY:{(HTTP_REQUEST (HTTP_REQUEST_VERSION (VERSION_MAJOR:1) (VERSION_MINOR:0)) (HTTP_REQUEST_METHOD:GET) (HTTP_REQUEST_PATH (HTTP_REQUEST_PATH_SEGMENTS (HTTP_REQUEST_PATH_SEGMENT:groups) (HTTP_REQUEST_PATH_SEGMENT:5)) (HTTP_REQUEST_PATH_FILE (FILE_NAME:users) (FILE_EXTENSION:json)) (HTTP_REQUEST_PATH_QUERY (HTTP_REQUEST_PATH_QUERY_PARAMS (HTTP_REQUEST_PATH_QUERY_PARAM (PARAM_KEY:sort_by) (PARAM_VALUE:last_name)) (HTTP_REQUEST_PATH_QUERY_PARAM (PARAM_KEY:page) (PARAM_VALUE:2))))))})) (RUN_TREE (process:RESPOND (CARRIER:HTTP_RESPONSE) (PARAM_REF:/2/1)) (PARAMS (HTTP_RESPONSE (HTTP_RESPONSE_STATUS (STATUS_VALUE:200) (STATUS_TEXT:OK)) (HTTP_HEADERS (CONTENT_TYPE (MEDIA_TYPE_IDENT:TEXT_MEDIA_TYPE) (MEDIA_SUBTYPE_IDENT:CEPTR_TEXT_MEDIA_SUBTYPE))) (HTTP_RESPONSE_BODY (HTTP_REQUEST_PATH_SEGMENT:groups)))))))"
                       );
 
     // manually run the process queue
     _p_reduceq(r->q);
 
     // should add a pending signal to be sent with the matched PATH_SEGMENT returned as the response signal body
-    spec_is_str_equal(_td(r,r->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:4)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:HTTP_RESPONSE) (SIGNAL_UUID) (IN_RESPONSE_TO_UUID)) (BODY:{(HTTP_RESPONSE (HTTP_RESPONSE_STATUS (STATUS_VALUE:200) (STATUS_TEXT:OK)) (HTTP_HEADERS (CONTENT_TYPE (MEDIA_TYPE_IDENT:TEXT_MEDIA_TYPE) (MEDIA_SUBTYPE_IDENT:CEPTR_TEXT_MEDIA_SUBTYPE))) (HTTP_RESPONSE_BODY (HTTP_REQUEST_PATH_SEGMENT:groups)))})))");
+    spec_is_str_equal(_td(r,r->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:4)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:HTTP_RESPONSE) (IN_RESPONSE_TO_UUID)) (BODY:{(HTTP_RESPONSE (HTTP_RESPONSE_STATUS (STATUS_VALUE:200) (STATUS_TEXT:OK)) (HTTP_HEADERS (CONTENT_TYPE (MEDIA_TYPE_IDENT:TEXT_MEDIA_TYPE) (MEDIA_SUBTYPE_IDENT:CEPTR_TEXT_MEDIA_SUBTYPE))) (HTTP_RESPONSE_BODY (HTTP_REQUEST_PATH_SEGMENT:groups)))}))))");
 
     result = _t_child(r->q->completed->context->run_tree,1);
     spec_is_str_equal(_td(r,result),"(SIGNAL_UUID)");
@@ -613,13 +618,13 @@ void testReceptorEdgeStream() {
     /* /// @todo BOOLEAN is what's left from the replicate.  Should it be something else? */
     /* spec_is_str_equal(_td(r,result),"(RUN_TREE (BOOLEAN:0))"); */
 
-    spec_is_str_equal(_td(r,r->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:LINE) (SIGNAL_UUID)) (BODY:{(LINE:line1)})) (SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:LINE) (SIGNAL_UUID)) (BODY:{(LINE:line2)})))");
+    spec_is_str_equal(_td(r,r->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:LINE)) (BODY:{(LINE:line1)}))) (SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:LINE)) (BODY:{(LINE:line2)}))))");
 
     // manually run the signal sending code
     _v_deliver_signals(v,r);
 
     // and see that they've shown up in the edge receptor's flux signals list
-    spec_is_str_equal(_td(r,__r_get_signals(r,DEFAULT_ASPECT)),"(SIGNALS (SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:LINE) (SIGNAL_UUID)) (BODY:{(LINE:line1)}) (RUN_TREE (process:STREAM_WRITE (PARAM_REF:/2/1) (PARAM_REF:/2/2)) (PARAMS (EDGE_STREAM) (LINE:line1)))) (SIGNAL (ENVELOPE (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:LINE) (SIGNAL_UUID)) (BODY:{(LINE:line2)}) (RUN_TREE (process:STREAM_WRITE (PARAM_REF:/2/1) (PARAM_REF:/2/2)) (PARAMS (EDGE_STREAM) (LINE:line2)))))");
+    spec_is_str_equal(_td(r,__r_get_signals(r,DEFAULT_ASPECT)),"(SIGNALS (SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:LINE)) (BODY:{(LINE:line1)})) (RUN_TREE (process:STREAM_WRITE (PARAM_REF:/2/1) (PARAM_REF:/2/2)) (PARAMS (EDGE_STREAM) (LINE:line1)))) (SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:LINE)) (BODY:{(LINE:line2)})) (RUN_TREE (process:STREAM_WRITE (PARAM_REF:/2/1) (PARAM_REF:/2/2)) (PARAMS (EDGE_STREAM) (LINE:line2)))))");
 
     // and that they've been removed from process queue pending signals list
     spec_is_str_equal(_td(r,r->pending_signals),"(PENDING_SIGNALS)");

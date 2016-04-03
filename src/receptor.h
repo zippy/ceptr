@@ -64,7 +64,7 @@ Receptor * _r_unserialize(SemTable *sem,void *surface);
 T *___r_make_addr(T *parent,Symbol type,ReceptorAddress addr,bool is_run_node);
 ReceptorAddress __r_get_addr(T *addr);
 
-T * __r_make_signal(ReceptorAddress from,ReceptorAddress to,Aspect aspect,Symbol carrier,T *signal_contents,UUIDt *in_response_to,T* until,R *context);
+T * __r_make_signal(ReceptorAddress from,ReceptorAddress to,Aspect aspect,Symbol carrier,T *signal_contents,UUIDt *in_response_to,T* until,T *conversation);
 T *__r_build_wakeup_info(T *code_point,int process_id);
 T* __r_send(Receptor *r,T *signal);
 T* _r_send(Receptor *r,T *signal);

@@ -24,8 +24,10 @@
 enum {ReceptorInstanceInstOfIdx=1,ReceptorInstanceContextNumIdx,ReceptorInstanceParentContextIdx,ReceptorInstanceStateIdx};
 enum {ReceptorDefinitionLabelIdx=1,ReceptorDefinitionDefsIdx};
 enum {ReceptorFluxIdx=1,ReceptorPendingSignalsIdx,ReceptorPendingResponsesIdx,ReceptorConversationsIdx,ReceptorElapsedTimeIdx};
-enum {EnvelopeFromIdx=1,EnvelopeToIdx,EnvelopeAspectIdx,EnvelopeCarrierIdx,EnvelopeUUIDIdx,EnvelopeExtraIdx};
-enum {SignalEnvelopeIdx=1,SignalBodyIdx};
+enum {SignalEnvelopeIdx=1,SignalMessageIdx};
+enum {MessageHeadIdx=1,MessageBodyIdx};
+enum {HeadFromIdx=1,HeadToIdx,HeadAspectIdx,HeadCarrierIdx,HeadExtraIdx};
+enum {EnvelopeSignalUUIDIdx=1};
 enum {PendingResponseUUIDIdx=1,PendingResponseCarrierIdx,PendingResponseWakeupIdx,PendingResponseEndCondsIdx};
 enum {WakeupReferenceProcessIdentIdx=1,WakeupReferenceCodePathIdx};
 enum {ExpectationCarrierIdx=1,ExpectationPatternIdx,ExpectationActionIdx,ExpectationParamsIdx,ExpectationEndCondsIdx,ExpectationSemanticMapIdx};
