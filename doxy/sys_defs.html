@@ -1953,7 +1953,7 @@
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
-       <div class="def-name"><a name="BLOCK"></a>BLOCK</div>
+       <div class="def-name"><a name="SCOPE"></a>SCOPE</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></div>
        <div class="def-comment">    set of processes for DO</div>
    </div>
@@ -1988,9 +1988,9 @@
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
        <div class="def-name"><a name="DO"></a>DO</div>
-       <div class="def-sig-in"><li>actions(SYMBOL:<a href="ref_sys_symbols.html#BLOCK">BLOCK</a>)</li></div>
+       <div class="def-sig-in"><li>actions(SYMBOL:<a href="ref_sys_symbols.html#SCOPE">SCOPE</a>)</li></div>
        <div class="def-sig-out">result(PASSTHRU:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
-       <div class="def-comment"><i>do</i><br /> execute a BLOCK of instructions for side-effects returning the value of the last one.  We do the BLOCK thing because we don't yet have variable sized arugments for processes.  I would like it better if the actions could just be the children of the DO process</div>
+       <div class="def-comment"><i>do</i><br /> execute a SCOPE of instructions for side-effects returning the value of the last one.  I would like it better if the actions could just be the children of the DO process</div>
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
@@ -2141,9 +2141,23 @@
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
        <div class="def-name"><a name="CONVERSE"></a>CONVERSE</div>
-       <div class="def-sig-in"><li>do(PROCESS:<a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a>)</li><li>[until(SYMBOL:<a href="ref_sys_symbols.html#END_CONDITIONS">END_CONDITIONS</a>)]</li></div>
+       <div class="def-sig-in"><li>do(PROCESS:<a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a>)</li><li>[until(SYMBOL:<a href="ref_sys_symbols.html#END_CONDITIONS">END_CONDITIONS</a>)]</li><li>[wait(SYMBOL:<a href="ref_sys_symbols.html#BOOLEAN">BOOLEAN</a>)]</li></div>
        <div class="def-sig-out">result(PASSTHRU:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
-       <div class="def-comment"><i>set up a conversation scope for signaling</i><br />  if there is no "callback" param, then this process will block until the result comes back or the "until" causes cleanup of pending request.</div>
+       <div class="def-comment"><i>set up a conversation scope for signaling</i><br /> Use "until" to specify when the system will terminate the conversation.  Use "wait" to specify whether the CONVERSE instruction should be paused when it goes out of scope waiting for the conversation to complete. If you use asynchronous REQUEST or LISTEN instructions in the scope the conversation and you don’t set "wait" to TRUE you will want to use the THIS_SCOPE instruction to get the conversation identifier so you can call the COMPLETE instruction someplace later or the conversation will never get cleaned up.</div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="COMPLETE"></a>COMPLETE</div>
+       <div class="def-sig-in"><li>with(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</li><li>[conversation(SYMBOL:<a href="ref_sys_symbols.html#CONVERSATION_UUID">CONVERSATION_UUID</a>)]</li></div>
+       <div class="def-sig-out">result(PASSTHRU:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
+       <div class="def-comment"><i>cause a conversation to come to completion</i><br /> Cleans up a conversation and causes the CONVERSE instruction to reduce to value of "with". If "conversation" provided, completes that conversation, otherwise assumes the value of THIS_SCOPE.  If the specified conversation doesn’t exist (i.e. because it was cleaned up by its end conditions) COMPLETE will invoke the error handler.  Note that it’s possible that the CONVERSE instruction was already reduced, in which case the value of with_someting will get ignored.  If the COMPLETE instruction is not inside a CONVERSE scope, it will be reduced to the value of "conversation"</div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="THIS_SCOPE"></a>THIS_SCOPE</div>
+       <div class="def-sig-in"></div>
+       <div class="def-sig-out">conversation(SYMBOL:<a href="ref_sys_symbols.html#CONVERSATION_UUID">CONVERSATION_UUID</a>)</div>
+       <div class="def-comment"><i>get the conversation id of the current scope</i><br />    Reduces to the identifier of the current conversation. Executing THIS_SCOPE not somewhere inside a CONVERSE will invoke the error handler.</div>
    </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>

@@ -71,6 +71,9 @@ T* _r_send(Receptor *r,T *signal);
 T* _r_request(Receptor *r,T *signal,Symbol response_carrier,T *code_point,int process_id);
 void evaluateEndCondition(T *ec,bool *cleanup,bool *allow);
 void __r_test_expectation(Receptor *r,T *expectation,T *signal);
+T *_r_add_conversation(Receptor *r,UUIDt id,T *end_conditions);
+T *_r_find_conversation(Receptor *r, UUIDt cuuid);
+void __r_complete_conversation(Receptor *r, T *conversation);
 Error _r_deliver(Receptor *r, T *signal);
 
 /******************  internal utilities */

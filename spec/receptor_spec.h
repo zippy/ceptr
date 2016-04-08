@@ -117,6 +117,26 @@ void testReceptorSignalDeliver() {
     _r_free(r);
 }
 
+void testReceptorDeliverConversation() {
+    Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
+    T *signal_contents = _t_newi(0,TEST_INT_SYMBOL,314);
+    ReceptorAddress f = {3}; // DUMMY ADDR
+    ReceptorAddress t = {4}; // DUMMY ADDR
+
+    // the first signal in a conversation should create a conversation record
+    UUIDt cuuid = __uuid_gen();
+    T *cu = _t_new(0,CONVERSATION_UUID,&cuuid,sizeof(UUIDt));
+
+    T *s = __r_make_signal(f,t,DEFAULT_ASPECT,TESTING,signal_contents,0,0,cu);
+
+    spec_is_str_equal(_td(r,r->conversations),"(CONVERSATIONS)");
+    spec_is_equal(_r_deliver(r,s),noDeliveryErr);
+    // when the signal arrives a new conversation should be in place
+    spec_is_str_equal(_td(r,r->conversations),"(CONVERSATIONS (CONVERSATION (CONVERSATION_UUID) (END_CONDITIONS (UNLIMITED))))");
+    _t_free(cu);
+    _r_free(r);
+}
+
 extern int G_next_process_id;
 void testReceptorResponseDeliver() {
     Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
@@ -664,7 +684,7 @@ void testReceptorEdgeListener() {
     _v_activate(v,edge);
     spec_is_str_equal(_t2s(v->sem,r->edge),"(PARAMS (EDGE_LISTENER) (process:SAY (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:LINE) (RESULT_SYMBOL:LINE)))");
     _v_start_vmhost(v);
-    // debug_enable(D_STREAM+D_SOCKET+D_SIGNALS);
+    //debug_enable(D_STREAM+D_SOCKET+D_SIGNALS);
 
     pthread_t thread;
     int rc;
@@ -777,6 +797,7 @@ void testReceptor() {
     testReceptorAddRemoveExpectation();
     testReceptorSignal();
     testReceptorSignalDeliver();
+    testReceptorDeliverConversation();
     testReceptorResponseDeliver();
     testReceptorEndCondition();
     testReceptorExpectation();

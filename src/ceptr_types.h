@@ -155,6 +155,11 @@ typedef table_elem *LabelTable;
 // for now store instances in an INSTANCES semantic tree
 typedef T *Instances;
 
+typedef struct ConversationState {
+    T *node_pointer;
+    T *id;
+} ConversationState;
+
 // ** types for processing
 // run-tree context
 typedef struct R R;
@@ -169,7 +174,7 @@ struct R {
     R *caller;        ///< a pointer to the context that invoked this run-tree/context
     R *callee;        ///< a pointer to the context we've invoked
     T *sem_map;       ///< semantic map in effect for this context
-    T *conversation;  ///< record of the conversation UUID active in this context frame
+    ConversationState *conversation;  ///< record of the conversation state active in this context frame
 };
 
 // ** structure to hold in process accounting

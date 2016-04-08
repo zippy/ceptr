@@ -31,10 +31,6 @@ typedef struct IterationState {
     int type;
 } IterationState;
 
-typedef struct ConversationState {
-    int dummy;
-} ConversationState;
-
 T *defaultRequestUntil();
 R *__p_make_context(T *run_tree,R *caller,int process_id,T *sem_map);
 Error _p_step(Q *q, R **contextP);

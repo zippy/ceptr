@@ -135,11 +135,11 @@ void testProcessNew() {
 
 void testProcessDo() {
     T *code = _t_build(G_sem,0,
-                       DO,BLOCK,
+                       DO,SCOPE,
                        TEST_INT_SYMBOL,1,
                        TEST_INT_SYMBOL,2,
                        NULL_SYMBOL,NULL_SYMBOL);
-    spec_is_str_equal(t2s(code),"(process:DO (BLOCK (TEST_INT_SYMBOL:1) (TEST_INT_SYMBOL:2)))");
+    spec_is_str_equal(t2s(code),"(process:DO (SCOPE (TEST_INT_SYMBOL:1) (TEST_INT_SYMBOL:2)))");
     spec_is_equal(__p_reduce_sys_proc(0,DO,code,0),noReductionErr);
     spec_is_str_equal(t2s(code),"(TEST_INT_SYMBOL:2)");
     _t_free(code);
@@ -737,36 +737,35 @@ T *_testProcessAddSay(T *parent,int id) {
 
 /*
   (DO
-     (SAY <to> <aspect> <carrier> <message> )
-     (CONVERSE
-        (BLOCK
+     (SCOPE
+       (SAY <to> <aspect> <carrier> <message> )
+       (CONVERSE
+          (SCOPE
             (LISTEN <aspect> <carrier> <action>)
             (SAY <to> <aspect> <carrier> <message> )
-        )
+          )
         (END_CONDITIONS (UNLIMITED))
-        )
+      )
+    )
   )
 */
 
 void testProcessConverse() {
     T *code = _t_newr(0,DO);
-    T *db = _t_newr(code,BLOCK);
+    T *db = _t_newr(code,SCOPE);
     T *p = _t_newr(db,CONVERSE);
-    T *block = _t_newr(p,BLOCK);
+    T *scope = _t_newr(p,SCOPE);
 
     // add to say instructions, one outside the conversation, one inside.
     _testProcessAddSay(db,99);
-    _testProcessAddSay(block,100);
-
-    T *ec = _t_newr(p,END_CONDITIONS);
-    _t_newr(ec,UNLIMITED);
+    _testProcessAddSay(scope,100);
 
     Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
 
     T *run_tree = __p_build_run_tree(code,0);
     _t_free(code);
 
-    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (process:DO (BLOCK (process:CONVERSE (BLOCK (process:SAY (TO_ADDRESS (RECEPTOR_ADDR:100)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (TEST_INT_SYMBOL:314))) (END_CONDITIONS (UNLIMITED))) (process:SAY (TO_ADDRESS (RECEPTOR_ADDR:99)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (TEST_INT_SYMBOL:314)))) (PARAMS))");
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (process:DO (SCOPE (process:CONVERSE (SCOPE (process:SAY (TO_ADDRESS (RECEPTOR_ADDR:100)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (TEST_INT_SYMBOL:314)))) (process:SAY (TO_ADDRESS (RECEPTOR_ADDR:99)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (TEST_INT_SYMBOL:314)))) (PARAMS))");
 
     // add the run tree into a queue and run it
     G_next_process_id = 0; // reset the process ids so the test will always work
@@ -786,7 +785,52 @@ void testProcessConverse() {
     // The signal to 100 should have the conversation id in it
     spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:100)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (CONVERSATION_UUID)) (BODY:{(TEST_INT_SYMBOL:314)}))) (SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:99)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING)) (BODY:{(TEST_INT_SYMBOL:314)}))))");
 
+    // now use the COMPLETE instruction to clean-up
+
+    code = _t_newr(0,COMPLETE);
+    _t_newi(code,TEST_INT_SYMBOL,314);
+    _t_add(code,_t_clone(_t_getv(cons,1,ConversationIdentIdx,TREE_PATH_TERMINATOR)));
+
+    run_tree = __p_build_run_tree(code,0);
+    _t_free(code);
+    e =_p_addrt2q(q,run_tree);
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+
+    // and the conversation should be cleaned up
+    spec_is_str_equal(t2s(cons),"(CONVERSATIONS)");
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (CONVERSATION_UUID) (PARAMS))");
+
     _r_free(r);
+}
+
+void testProcessThisScope() {
+    T *code = _t_new_root(CONVERSE);
+    T *scope = _t_newr(code,SCOPE);
+    _t_newr(scope,THIS_SCOPE);
+
+    Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
+
+    T *run_tree = __p_build_run_tree(code,0);
+    _t_free(code);
+
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (process:CONVERSE (SCOPE (process:THIS_SCOPE))) (PARAMS))");
+
+    // add the run tree into a queue and run it
+    G_next_process_id = 0; // reset the process ids so the test will always work
+    Q *q = r->q;
+    T *cons = r->conversations;
+    Qe *e =_p_addrt2q(q,run_tree);
+    R *c = e->context;
+
+    //debug_enable(D_STEP);
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    debug_disable(D_STEP);
+    spec_is_str_equal(t2s(cons),"(CONVERSATIONS (CONVERSATION (CONVERSATION_UUID) (END_CONDITIONS (UNLIMITED))))");
+
+    // should reduce to the conversations ID because of the THIS_SCOPE instruction
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (CONVERSATION_UUID) (PARAMS))");
+    _r_free(r);
+
 }
 
 void testProcessQuote() {
@@ -1692,6 +1736,7 @@ void testProcess() {
     testProcessSay();
     testProcessRequest();
     testProcessConverse();
+    testProcessThisScope();
     testProcessQuote();
     testProcessStream();
     testProcessStreamClose();

@@ -403,13 +403,17 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
         }
         break;
     case DO_ID:
+    case CONVERSE_ID:
         {
-            // all of the blocks children should have been reduced
+            // all of the scope's children should have been reduced
             // so all we need to do is return the last one.
-            T *block = _t_detach_by_idx(code,1);
-            int p = _t_children(block);
-            x = _t_detach_by_idx(block,p);
-            _t_free(block);
+            T *scope = _t_detach_by_idx(code,1);
+            int p = _t_children(scope);
+            x = _t_detach_by_idx(scope,p);
+            _t_free(scope);
+            if (s.id == CONVERSE_ID) {
+                context->conversation = NULL;
+            }
         }
         break;
     case IF_ID:
@@ -578,7 +582,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             T *su = _t_getv(signal,SignalEnvelopeIdx,EnvelopeSignalUUIDIdx,TREE_PATH_TERMINATOR);
             UUIDt uuid = *(UUIDt *)_t_surface(su);
 
-            T *response = __r_make_signal(from,to,a,carrier,response_contents,&uuid,0,context->conversation);
+            T *response = __r_make_signal(from,to,a,carrier,response_contents,&uuid,0,context->conversation ? context->conversation->id : NULL);
             x = _r_send(q->r,response);
         }
         break;
@@ -612,7 +616,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             T *signal;
 
             if (s.id == SAY_ID) {
-                signal = __r_make_signal(from,to,aspect,carrier,signal_contents,0,0,context->conversation);
+                signal = __r_make_signal(from,to,aspect,carrier,signal_contents,0,0,context->conversation ? context->conversation->id : NULL);
                 x = _r_send(q->r,signal);
             }
             else if (s.id == REQUEST_ID) {
@@ -644,15 +648,44 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                 else {
                     raise_error("request callback not implemented for %s",t2s(callback));
                 }
-                signal = __r_make_signal(from,to,aspect,carrier,signal_contents,0,until,context->conversation);
+                signal = __r_make_signal(from,to,aspect,carrier,signal_contents,0,until,context->conversation ? context->conversation->id : NULL);
 
                 x = _r_request(q->r,signal,response_carrier,response_point,context->id);
             }
         }
         break;
-    case CONVERSE_ID:
-        context->conversation = NULL;
-        x = __t_newi(0,TEST_INT_SYMBOL,99999,true);
+    case THIS_SCOPE_ID:
+        // @todo make this return an error that would invoke the error handler
+        if (!context->conversation)
+            raise_error("whoa THIS_SCOPE executed outside CONVERSE!");
+        x = _t_rclone(context->conversation->id);
+        break;
+    case COMPLETE_ID:
+        {
+            T *with = _t_detach_by_idx(code,1);
+            T *cid = _t_detach_by_idx(code,1);
+
+            if (!cid) {
+                // in the case no conversation id parameter then we need to look in
+                // we get it from the context
+                // @todo make this return an error that would invoke the error handler
+                if (!context->conversation)
+                    raise_error("COMPLETE invoked without conversation id outside of CONVERSE");
+                cid = context->conversation->id;
+                raise_error("not implemented");
+            }
+            else {
+                // if the conversation param was specified we need to get it from
+
+                UUIDt cuuid = *(UUIDt *)_t_surface(cid);
+                T *c = _r_find_conversation(q->r,cuuid);
+                if (!c) {
+                    raise_error("can't find conversation");
+                }
+                __r_complete_conversation(q->r,c);
+                x = cid;
+            }
+        }
         break;
     case TRANSCODE_ID:
         {
@@ -1479,20 +1512,27 @@ Error _p_step(Q *q, R **contextP) {
                     }
                 }
                 else if (semeq(s,CONVERSE)) {
-                    // generate a new conversation ID and add it to the receptor's conversation list
                     // if first time we are hitting the CONVERSE instruction
                     // in the tree (i.e. on the way down) we need to register
                     // the conversation IDs and make the tree
                     if (_t_size(np) == 0) {
-                        T *c = _t_newr(0,CONVERSATION);
                         UUIDt cuuid = __uuid_gen();
-                        T *cu = _t_new(c,CONVERSATION_UUID,&cuuid,sizeof(UUIDt));
-                        T *ec = _t_child(np,2); //@todo get this value semantically i.e _t_get_siganture_child(np,"until");
-                        if (ec) _t_add(c,_t_clone(ec));
-                        //@todo NOT THREAD SAFE, add locking
-                        _t_add(q->r->conversations,c);
-                        //@todo UNLOCK
+                        T *until,*wait = NULL;
+                        //@todo get these value semantically i.e _t_get_siganture_child(np,"until");
+                        until =_t_child(np,2);
+                        if (until) {
+                            if (semeq(_t_symbol(until),BOOLEAN)) {
+                                wait = until;
+                                until = NULL;
+                            }
+                            else wait = _t_child(np,3);
+                        }
+
+                        T *c = _r_add_conversation(q->r,cuuid,until);
+
                         ConversationState *state = malloc(sizeof(ConversationState));
+                        state->node_pointer = np;
+                        state->id = _t_child(c,ConversationIdentIdx);
                         *((ConversationState **)&np->contents.surface) = state;
                         np->contents.size = sizeof(ConversationState *);
                         np->context.flags |= TFLAG_ALLOCATED;
@@ -1501,7 +1541,7 @@ Error _p_step(Q *q, R **contextP) {
                         if (context->conversation) {
                             raise_error("multiple CONVERSE per execution frame not implemented");
                         }
-                        else context->conversation = cu;
+                        else context->conversation = state;
                     }
                 }
                 if (count == get_rt_cur_child(q->r,np) || semeq(s,QUOTE)) {

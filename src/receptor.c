@@ -123,6 +123,12 @@ Receptor *_r_new_receptor_from_package(SemTable *sem,Symbol s,T *p,T *bindings) 
     return r;
 }
 
+T *__r_build_default_until() {
+    T *until = _t_new_root(END_CONDITIONS);
+    _t_newr(until,UNLIMITED);
+    return until;
+}
+
 // helper to build and expectation tree
 T *__r_build_expectation(Symbol carrier,T *pattern,T *action,T *with,T *until,T *using) {
     T *e = _t_newr(0,EXPECTATION);
@@ -132,8 +138,7 @@ T *__r_build_expectation(Symbol carrier,T *pattern,T *action,T *with,T *until,T 
     if (!with) with = _t_new_root(PARAMS);
     _t_add(e,with);
     if (!until) {
-        until = _t_new_root(END_CONDITIONS);
-        _t_newr(until,UNLIMITED);
+        until = __r_build_default_until();
     }
     _t_add(e,until);
     if (using)
@@ -748,6 +753,120 @@ T* __r_sanatize_response(Receptor *r,T* response) {
     return _t_rclone(response);
 }
 
+int __r_deliver_response(Receptor *r,T *response_to,T *signal) {
+    T *head = _t_getv(signal,SignalMessageIdx,MessageHeadIdx,TREE_PATH_TERMINATOR);
+    // responses don't trigger expectation matching, instead they
+    // go through the pending_responses list to see where the signal goes
+    UUIDt *u = (UUIDt*)_t_surface(response_to);
+    debug(D_SIGNALS,"Delivering response: %s\n",_td(r,signal));
+    Symbol signal_carrier = *(Symbol *)_t_surface(_t_child(head,HeadCarrierIdx));
+
+    T *body = _t_getv(signal,SignalMessageIdx,MessageBodyIdx,TREE_PATH_TERMINATOR);
+    T *response = (T *)_t_surface(body);
+    T *l;
+    DO_KIDS(r->pending_responses,
+            l = _t_child(r->pending_responses,i);
+            if (__uuid_equal(u,(UUIDt *)_t_surface(_t_child(l,PendingResponseUUIDIdx)))) {
+
+                // get the end conditions so we can see if we should actually respond
+                T *ec = _t_child(l,PendingResponseEndCondsIdx);
+                bool allow;
+                bool cleanup;
+                evaluateEndCondition(ec,&cleanup,&allow);
+
+                if (allow) {
+                    Symbol carrier = *(Symbol *)_t_surface(_t_child(l,PendingResponseCarrierIdx));
+                    T *wakeup = _t_child(l,PendingResponseWakeupIdx);
+                    int process_id = *(int *)_t_surface(_t_child(wakeup,WakeupReferenceProcessIdentIdx));
+                    int *code_path = (int *)_t_surface(_t_child(wakeup,WakeupReferenceCodePathIdx));
+                    // now set up the signal so when it's freed below, the body doesn't get freed too
+                    signal->context.flags &= ~TFLAG_SURFACE_IS_TREE;
+                    if (!semeq(carrier,signal_carrier)) {
+                        debug(D_SIGNALS,"response failed carrier check, expecting %s, but got %s!\n",_r_get_symbol_name(r,carrier),_r_get_symbol_name(r,signal_carrier));
+                        //@todo what kind of logging of these kinds of events?
+                        break;
+                    }
+
+                    response = __r_sanatize_response(r,response);
+                    // if the response isn't safe just break
+                    if (!response) {
+                        //@todo figure out if this means we should throw away the pending response too
+                        break;
+                    }
+
+                    Q *q = r->q;
+                    debug(D_LOCK,"deliver LOCK\n");
+                    pthread_mutex_lock(&q->mutex);
+                    Qe *e = __p_find_context(q->blocked,process_id);
+                    if (e) {
+                        T *result = _t_get(e->context->run_tree,code_path);
+                        // if the code path was from a signal on the flux, it's root
+                        // will be the receptor, so the first get will fail so try again
+                        if (!result) result = _t_get(r->root,code_path);
+                        // @todo that really wasn't very pretty, and what happens if that
+                        // fails?  how do we handle it!?
+                        if (!result) raise_error("failed to find code path when delivering response!");
+
+                        debug(D_SIGNALS,"unblocking for response %s\n",_td(r,response));
+                        _t_replace(_t_parent(result),_t_node_index(result), response);
+                        e->context->node_pointer = response;
+                        debug(D_SIGNALS,"  runtree: %s\n",_td(r,e->context->run_tree));
+                        __p_unblock(q,e);
+                    }
+                    pthread_mutex_unlock(&q->mutex);
+                    debug(D_LOCK,"deliver UNLOCK\n");
+                }
+
+                if (cleanup) {
+                    debug(D_SIGNALS,"removing pending response: %s\n",_td(r,l));
+                    _t_detach_by_idx(r->pending_responses,i);
+                    //i--;
+                    _t_free(l);
+                }
+                break;
+            }
+            );
+    _t_free(signal);
+    return noDeliveryErr;
+}
+
+T * _r_add_conversation(Receptor *r,UUIDt id,T *until) {
+    T *c = _t_new_root(CONVERSATION);
+    T *cu = _t_new(c,CONVERSATION_UUID,&id,sizeof(UUIDt));
+
+    _t_add(c, until ? _t_clone(until) : __r_build_default_until());
+
+    //@todo NOT THREAD SAFE, add locking
+    _t_add(r->conversations,c);
+    //@todo UNLOCK
+    return c;
+}
+
+T *_r_find_conversation(Receptor *r, UUIDt cuuid) {
+    T *c,*ci;
+    bool found = false;
+
+    // @todo reimplement with semtrex?
+
+    // @todo lock?
+    DO_KIDS(r->conversations,
+            c = _t_child(r->conversations,i);
+            ci = _t_child(c,ConversationIdentIdx);
+            if (__uuid_equal(&cuuid,(UUIDt *)_t_surface(ci))) {
+                found = true;
+                break;
+            }
+            );
+    // @todo unlock
+    return found?c:NULL;
+}
+
+void __r_complete_conversation(Receptor *r, T *conversation) {
+    // @todo lock?
+    _t_detach_by_ptr(_t_parent(conversation),conversation);
+    // @todo unlock?
+}
+
 /**
  * Send a signal to a receptor
  *
@@ -768,90 +887,43 @@ T* __r_sanatize_response(Receptor *r,T* response) {
  * @snippet spec/receptor_spec.h testReceptorAction
  */
 Error _r_deliver(Receptor *r, T *signal) {
-    T *l;
 
     T *head = _t_getv(signal,SignalMessageIdx,MessageHeadIdx,TREE_PATH_TERMINATOR);
-    T *body = _t_getv(signal,SignalMessageIdx,MessageBodyIdx,TREE_PATH_TERMINATOR);
 
-    // see if this is more than a plain send signal we are delivering
-    // if there are END_CONDITIONS we know this is a request
-    // if there is a an IN_RESPONSE_TO_UUID then we know it's a response
-    T *extra=_t_child(head,HeadExtraIdx);
-    if (extra && semeq(IN_RESPONSE_TO_UUID,_t_symbol(extra))) {
-        // responses don't trigger expectation matching, instead they
-        // go through the pending_responses list to see where the signal goes
-        UUIDt *u = (UUIDt*)_t_surface(extra);
-        debug(D_SIGNALS,"Delivering response: %s\n",_td(r,signal));
-        Symbol signal_carrier = *(Symbol *)_t_surface(_t_child(head,HeadCarrierIdx));
+    T *conversation = NULL;
+    T *end_conditions = NULL;
+    T *response_to = NULL;
 
-        DO_KIDS(r->pending_responses,
-                l = _t_child(r->pending_responses,i);
-                if (__uuid_equal(u,(UUIDt *)_t_surface(_t_child(l,PendingResponseUUIDIdx)))) {
+    // check the optional HEAD items to see if this is more than a plain signal
+    int optionals = HeadExtraIdx;
+    T *extra;
+    while(extra =_t_child(head,optionals++)) {
+        Symbol sym = _t_symbol(extra);
+        if (semeq(CONVERSATION_UUID,sym))
+            conversation = extra;
+        else if (semeq(IN_RESPONSE_TO_UUID,sym))
+            response_to = extra;
+        else if (semeq(END_CONDITIONS,sym))
+            end_conditions = extra;
+    }
 
-                    // get the end conditions so we can see if we should actually respond
-                    T *ec = _t_child(l,PendingResponseEndCondsIdx);
-                    bool allow;
-                    bool cleanup;
-                    evaluateEndCondition(ec,&cleanup,&allow);
+    // if there is a conversation, check to see if we've got a scope open for it
+    if (conversation) {
+        UUIDt cuuid = *(UUIDt *)_t_surface(conversation);
+        T *c = _r_find_conversation(r,cuuid);
+        if (!c) {
+            c = _r_add_conversation(r,cuuid,end_conditions);
+        }
+    }
 
-                    if (allow) {
-                        Symbol carrier = *(Symbol *)_t_surface(_t_child(l,PendingResponseCarrierIdx));
-                        T *wakeup = _t_child(l,PendingResponseWakeupIdx);
-                        int process_id = *(int *)_t_surface(_t_child(wakeup,WakeupReferenceProcessIdentIdx));
-                        int *code_path = (int *)_t_surface(_t_child(wakeup,WakeupReferenceCodePathIdx));
-                        T *response = (T *)_t_surface(body);
-                        // now set up the signal so when it's freed below, the body doesn't get freed too
-                        signal->context.flags &= ~TFLAG_SURFACE_IS_TREE;
-                        if (!semeq(carrier,signal_carrier)) {
-                            debug(D_SIGNALS,"response failed carrier check, expecting %s, but got %s!\n",_r_get_symbol_name(r,carrier),_r_get_symbol_name(r,signal_carrier));
-                            //@todo what kind of logging of these kinds of events?
-                            break;
-                        }
-
-                        response = __r_sanatize_response(r,response);
-                        // if the response isn't safe just break
-                        if (!response) {
-                            //@todo figure out if this means we should throw away the pending response too
-                            break;
-                        }
-
-                        Q *q = r->q;
-                        debug(D_LOCK,"deliver LOCK\n");
-                        pthread_mutex_lock(&q->mutex);
-                        Qe *e = __p_find_context(q->blocked,process_id);
-                        if (e) {
-                            T *result = _t_get(e->context->run_tree,code_path);
-                            // if the code path was from a signal on the flux, it's root
-                            // will be the receptor, so the first get will fail so try again
-                            if (!result) result = _t_get(r->root,code_path);
-                            // @todo that really wasn't very pretty, and what happens if that
-                            // fails?  how do we handle it!?
-                            if (!result) raise_error("failed to find code path when delivering response!");
-
-                            debug(D_SIGNALS,"unblocking for response %s\n",_td(r,response));
-                            _t_replace(_t_parent(result),_t_node_index(result), response);
-                            e->context->node_pointer = response;
-                            debug(D_SIGNALS,"  runtree: %s\n",_td(r,e->context->run_tree));
-                            __p_unblock(q,e);
-                        }
-                        pthread_mutex_unlock(&q->mutex);
-                        debug(D_LOCK,"deliver UNLOCK\n");
-                    }
-
-                    if (cleanup) {
-                        debug(D_SIGNALS,"removing pending response: %s\n",_td(r,l));
-                        _t_detach_by_idx(r->pending_responses,i);
-                        //i--;
-                        _t_free(l);
-                    }
-                    break;
-                }
-                );
-        _t_free(signal);
+    // if there is an IN_RESPONSE_TO_UUID then we know it's a response
+    if (response_to) {
+        return __r_deliver_response(r,response_to,signal);
     }
     else {
 
-        if (extra && semeq(END_CONDITIONS,_t_symbol(extra))) {
+        // if there are END_CONDITIONS we know this is a request
+        if (end_conditions) {
             // determine if we will honor the request conditions?
             // perhaps that all happens at the protocol level
             // @todo anything specific we need to store here??
@@ -866,7 +938,7 @@ Error _r_deliver(Receptor *r, T *signal) {
         // walk through all the expectations on the aspect and see if any expectations match this incoming signal
         T *es = __r_get_expectations(r,aspect);
         debug(D_SIGNALS,"Testing %d expectations\n",es ? _t_children(es) : 0);
-
+        T *l;
         DO_KIDS(es,
                 l = _t_child(es,i);
                 __r_test_expectation(r,l,signal);
