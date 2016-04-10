@@ -681,14 +681,49 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                 if (!context->conversation)
                     raise_error("COMPLETE invoked without conversation id outside of CONVERSE");
                 cid = context->conversation->id;
-                // remember to cleanup 'with'
-                raise_error("not implemented");
+                UUIDt cuuid = *(UUIDt *)_t_surface(cid);
+                T *w = __r_cleanup_conversation(q->r,cuuid);
+                if (w) _t_free(w);
+                // @todo maybe only use the wakeup_ref and don't store converse_pointer?
+                T *c = context->conversation->converse_pointer;
+                T *p = _t_parent(c);
+
+                _t_replace(p,_t_node_index(c), with);
+                context->parent = p;
+                context->node_pointer = with;
+                //                set_rt_cur_child(q->r,context->node_pointer,RUN_TREE_EVALUATED);
+                //                context->idx = RUN_TREE_EVALUATED;
+
+                return(noErr);
             }
             else {
                 // if the conversation param was specified we need to get it from
 
                 UUIDt cuuid = *(UUIDt *)_t_surface(cid);
-                __r_complete_conversation(q->r,cuuid,with);
+                T *w = __r_cleanup_conversation(q->r,cuuid);
+                // restart the CONVERSE instruction that spawned this conversation
+                if (w) {
+                    int *code_path = (int *)_t_surface(_t_child(w,WakeupReferenceCodePathIdx));
+                    int process_id = *(int *)_t_surface(_t_child(w,WakeupReferenceProcessIdentIdx));
+                    debug(D_LOCK,"complete LOCK\n");
+                    pthread_mutex_lock(&q->mutex);
+                    Qe *e = __p_find_context(q->blocked,process_id);
+                    if (e) {
+                        if (with) {
+                            T *result = _t_get(e->context->run_tree,code_path);
+                            if (!result) raise_error("failed to find code path when completing converse!");
+                            T *p = _t_parent(result);
+                            _t_replace(p,_t_node_index(result), with);
+                            e->context->node_pointer = with;
+                        }
+
+                        debug(D_SIGNALS,"unblocking CONVERSE\n");
+                        __p_unblock(q,e);
+                    }
+                    else if (with) _t_free(with);
+                    pthread_mutex_unlock(&q->mutex);
+                    debug(D_LOCK,"complete UNLOCK\n");
+                }
                 x = cid;
             }
         }

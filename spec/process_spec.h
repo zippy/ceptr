@@ -809,6 +809,24 @@ void testProcessConverse() {
     // 'with' value from the COMPLETE
     spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:100)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (CONVERSATION_UUID)) (BODY:{(TEST_INT_SYMBOL:31415)}))) (SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:99)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING)) (BODY:{(TEST_INT_SYMBOL:123)}))))");
 
+
+    // setup a case for testing the COMPLETE instruction within the CONVERSE SCOPE
+    p = _t_newr(0,CONVERSE);
+    scope = _t_newr(p,SCOPE);
+    T *complete = _t_newr(scope,COMPLETE);
+    _t_newi(complete,TEST_INT_SYMBOL,321);
+    _t_newi(scope,TEST_INT_SYMBOL,123);
+
+    run_tree = __p_build_run_tree(p,0);
+    _t_free(p);
+
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (process:CONVERSE (SCOPE (process:COMPLETE (TEST_INT_SYMBOL:321)) (TEST_INT_SYMBOL:123))) (PARAMS))");
+    e =_p_addrt2q(q,run_tree);
+    //debug_enable(D_REDUCE+D_REDUCEV);
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    debug_disable(D_STEP);
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (TEST_INT_SYMBOL:321) (PARAMS))");
+
     _r_free(r);
 }
 

@@ -72,7 +72,7 @@ void evaluateEndCondition(T *ec,bool *cleanup,bool *allow);
 void __r_test_expectation(Receptor *r,T *expectation,T *signal);
 T * _r_add_conversation(Receptor *r,UUIDt id,T *until,T *wakeup);
 T *_r_find_conversation(Receptor *r, UUIDt cuuid);
-void __r_complete_conversation(Receptor *r, UUIDt cuuid,T *value);
+T *__r_cleanup_conversation(Receptor *r, UUIDt cuuid);
 Error _r_deliver(Receptor *r, T *signal);
 
 /******************  internal utilities */

@@ -855,41 +855,22 @@ T *_r_find_conversation(Receptor *r, UUIDt cuuid) {
     return found?c:NULL;
 }
 
-void __r_complete_conversation(Receptor *r, UUIDt cuuid,T *value) {
+// cleans up any pending requests, listens and the conversation record
+// returns the wakeup reference
+T * __r_cleanup_conversation(Receptor *r, UUIDt cuuid) {
     // @todo lock conversations?
     T *c = _r_find_conversation(r,cuuid);
     if (!c) {
         raise_error("can't find conversation");
     }
-    // restart the CONVERSE instruction that spawned this conversation
-    T *w = _t_child(c,ConversationWakeupIdx);
-    if (w) {
-        int *code_path = (int *)_t_surface(_t_child(w,WakeupReferenceCodePathIdx));
-        int process_id = *(int *)_t_surface(_t_child(w,WakeupReferenceProcessIdentIdx));
-        Q *q= r->q;
-        debug(D_LOCK,"complete LOCK\n");
-        pthread_mutex_lock(&q->mutex);
-        Qe *e = __p_find_context(q->blocked,process_id);
-        if (e) {
-            if (value) {
-                T *result = _t_get(e->context->run_tree,code_path);
-                if (!result) raise_error("failed to find code path when completing converse!");
-                T *p = _t_parent(result);
-                _t_replace(p,_t_node_index(result), value);
-                e->context->node_pointer = value;
-            }
+    T *w = _t_detach_by_idx(c,ConversationWakeupIdx);
 
-            debug(D_SIGNALS,"unblocking CONVERSE\n");
-            __p_unblock(q,e);
-        }
-        else if (value) _t_free(value);
-        pthread_mutex_unlock(&q->mutex);
-        debug(D_LOCK,"complete UNLOCK\n");
-    }
+    //@todo look for any pending REQUESTs or LISTENTs keyed to this conversation and clean them up too.
 
     _t_detach_by_ptr(_t_parent(c),c);
     _t_free(c);
     // @todo unlock conversations?
+    return w;
 }
 
 /**
