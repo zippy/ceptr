@@ -725,13 +725,13 @@ void testProcessRequest() {
 }
 
 
-T *_testProcessAddSay(T *parent,int id) {
+T *_testProcessAddSay(T *parent,int id,T *message) {
     T *say =  _t_newr(parent,SAY);
     ReceptorAddress to = {id}; // DUMMY ADDR
     __r_make_addr(say,TO_ADDRESS,to);
     _t_news(say,ASPECT_IDENT,DEFAULT_ASPECT);
     _t_news(say,CARRIER,TESTING);
-    _t_newi(say,TEST_INT_SYMBOL,314);
+    _t_add(say,message);
     return say;
 }
 
@@ -751,21 +751,18 @@ T *_testProcessAddSay(T *parent,int id) {
 */
 
 void testProcessConverse() {
-    T *code = _t_newr(0,DO);
-    T *db = _t_newr(code,SCOPE);
-    T *p = _t_newr(db,CONVERSE);
+    T *p = _t_newr(0,CONVERSE);
     T *scope = _t_newr(p,SCOPE);
-
-    // add to say instructions, one outside the conversation, one inside.
-    _testProcessAddSay(db,99);
-    _testProcessAddSay(scope,100);
-
-    Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
+    _t_newi(p,BOOLEAN,1);
+    _testProcessAddSay(scope,100,_t_newi(0,TEST_INT_SYMBOL,31415));
+    T *code = _testProcessAddSay(0,99,p);
 
     T *run_tree = __p_build_run_tree(code,0);
     _t_free(code);
 
-    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (process:DO (SCOPE (process:CONVERSE (SCOPE (process:SAY (TO_ADDRESS (RECEPTOR_ADDR:100)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (TEST_INT_SYMBOL:314)))) (process:SAY (TO_ADDRESS (RECEPTOR_ADDR:99)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (TEST_INT_SYMBOL:314)))) (PARAMS))");
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (process:SAY (TO_ADDRESS (RECEPTOR_ADDR:99)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (process:CONVERSE (SCOPE (process:SAY (TO_ADDRESS (RECEPTOR_ADDR:100)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (TEST_INT_SYMBOL:31415))) (BOOLEAN:1))) (PARAMS))");
+
+    Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
 
     // add the run tree into a queue and run it
     G_next_process_id = 0; // reset the process ids so the test will always work
@@ -775,30 +772,42 @@ void testProcessConverse() {
     Qe *e =_p_addrt2q(q,run_tree);
     R *c = e->context;
 
-    // after reduction the context should look like it would after a
-    // a listen, but there should also be a conversation recorded
+    // after reduction the context be paused because we set wait to true
+    // and there should also be a conversation recorded
     //debug_enable(D_STEP);
     spec_is_equal(_p_reduceq(q),noReductionErr);
     debug_disable(D_STEP);
-    spec_is_str_equal(t2s(cons),"(CONVERSATIONS (CONVERSATION (CONVERSATION_UUID) (END_CONDITIONS (UNLIMITED))))");
+    spec_is_str_equal(t2s(cons),"(CONVERSATIONS (CONVERSATION (CONVERSATION_UUID) (END_CONDITIONS (UNLIMITED)) (WAKEUP_REFERENCE (PROCESS_IDENT:1) (CODE_PATH:/1/4))))");
+
+    //CONVERSE should be reduced to the signal UUID from the containing scope
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (process:SAY (TO_ADDRESS (RECEPTOR_ADDR:99)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (SIGNAL_UUID)) (PARAMS))");
+    spec_is_ptr_equal(q->blocked,e);
 
     // The signal to 100 should have the conversation id in it
-    spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:100)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (CONVERSATION_UUID)) (BODY:{(TEST_INT_SYMBOL:314)}))) (SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:99)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING)) (BODY:{(TEST_INT_SYMBOL:314)}))))");
+    spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:100)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (CONVERSATION_UUID)) (BODY:{(TEST_INT_SYMBOL:31415)}))))");
 
     // now use the COMPLETE instruction to clean-up
-
     code = _t_newr(0,COMPLETE);
-    _t_newi(code,TEST_INT_SYMBOL,314);
+    _t_newi(code,TEST_INT_SYMBOL,123);
     _t_add(code,_t_clone(_t_getv(cons,1,ConversationIdentIdx,TREE_PATH_TERMINATOR)));
 
-    run_tree = __p_build_run_tree(code,0);
+    T *run_tree2 = __p_build_run_tree(code,0);
     _t_free(code);
-    e =_p_addrt2q(q,run_tree);
+    Qe *e2 =_p_addrt2q(q,run_tree2);
     spec_is_equal(_p_reduceq(q),noReductionErr);
+    spec_is_ptr_equal(q->blocked,NULL);
+    spec_is_ptr_equal(q->active,NULL);
+    spec_is_ptr_equal(q->completed,e);
+    spec_is_ptr_equal(q->completed->next,e2);
 
-    // and the conversation should be cleaned up
+    // and the conversation should be cleaned up and the CONVERSE run-tree should have reduced
     spec_is_str_equal(t2s(cons),"(CONVERSATIONS)");
-    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (CONVERSATION_UUID) (PARAMS))");
+    // and the run tree should be completed with the value from the COMPLETE instruction
+    spec_is_str_equal(t2s(run_tree2),"(RUN_TREE (CONVERSATION_UUID) (PARAMS))");
+
+    // and the second signal shouldn't have the conversation id in it and it's body should be the
+    // 'with' value from the COMPLETE
+    spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:100)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (CONVERSATION_UUID)) (BODY:{(TEST_INT_SYMBOL:31415)}))) (SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:99)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING)) (BODY:{(TEST_INT_SYMBOL:123)}))))");
 
     _r_free(r);
 }
@@ -825,7 +834,7 @@ void testProcessThisScope() {
     //debug_enable(D_STEP);
     spec_is_equal(_p_reduceq(q),noReductionErr);
     debug_disable(D_STEP);
-    spec_is_str_equal(t2s(cons),"(CONVERSATIONS (CONVERSATION (CONVERSATION_UUID) (END_CONDITIONS (UNLIMITED))))");
+    spec_is_str_equal(t2s(cons),"(CONVERSATIONS (CONVERSATION (CONVERSATION_UUID) (END_CONDITIONS (UNLIMITED)) (WAKEUP_REFERENCE (PROCESS_IDENT:1) (CODE_PATH:/1))))");
 
     // should reduce to the conversations ID because of the THIS_SCOPE instruction
     spec_is_str_equal(t2s(run_tree),"(RUN_TREE (CONVERSATION_UUID) (PARAMS))");

@@ -156,7 +156,7 @@ typedef table_elem *LabelTable;
 typedef T *Instances;
 
 typedef struct ConversationState {
-    T *node_pointer;
+    T *converse_pointer;
     T *id;
 } ConversationState;
 

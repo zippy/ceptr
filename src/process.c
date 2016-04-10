@@ -414,6 +414,15 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             if (s.id == CONVERSE_ID) {
                 context->conversation = NULL;
             }
+            T *t;
+            while (t = _t_detach_by_idx(code,1)) {
+                if (semeq(_t_symbol(t),BOOLEAN)) {
+                    if (*(int *)_t_surface(t)) {
+                        err = Block;
+                    }
+                }
+                _t_free(t);
+            }
         }
         break;
     case IF_ID:
@@ -672,17 +681,14 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                 if (!context->conversation)
                     raise_error("COMPLETE invoked without conversation id outside of CONVERSE");
                 cid = context->conversation->id;
+                // remember to cleanup 'with'
                 raise_error("not implemented");
             }
             else {
                 // if the conversation param was specified we need to get it from
 
                 UUIDt cuuid = *(UUIDt *)_t_surface(cid);
-                T *c = _r_find_conversation(q->r,cuuid);
-                if (!c) {
-                    raise_error("can't find conversation");
-                }
-                __r_complete_conversation(q->r,c);
+                __r_complete_conversation(q->r,cuuid,with);
                 x = cid;
             }
         }
@@ -1018,7 +1024,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                 debug(D_LISTEN,"adding expectation\n");
             }
             else {
-                act = __r_build_wakeup_info(code,context->id);
+                act = __p_build_wakeup_info(code,context->id);
                 if (!until) {
                     until = _t_new_root(END_CONDITIONS);
                     _t_newi(until,COUNT,1);
@@ -1528,10 +1534,12 @@ Error _p_step(Q *q, R **contextP) {
                             else wait = _t_child(np,3);
                         }
 
-                        T *c = _r_add_conversation(q->r,cuuid,until);
+                        T *c = _r_add_conversation(q->r,cuuid,until?_t_clone(until):NULL,
+                                                   __p_build_wakeup_info(np,context->id)
+                                                   );
 
                         ConversationState *state = malloc(sizeof(ConversationState));
-                        state->node_pointer = np;
+                        state->converse_pointer = np;  // save the node pointer for later COMPLETEs
                         state->id = _t_child(c,ConversationIdentIdx);
                         *((ConversationState **)&np->contents.surface) = state;
                         np->contents.size = sizeof(ConversationState *);
@@ -1649,6 +1657,19 @@ Error _p_step(Q *q, R **contextP) {
         }
     }
     return context->state;
+}
+
+
+/**
+ * low level function to build a WAKEUP_REFERENCE symbol used for unblocking a process
+ */
+T* __p_build_wakeup_info(T *code_point,int process_id) {
+    T *wakeup = _t_new_root(WAKEUP_REFERENCE);
+    _t_newi(wakeup,PROCESS_IDENT,process_id);
+    int *path = _t_get_path(code_point);
+    _t_new(wakeup,CODE_PATH,path,sizeof(int)*(_t_path_depth(path)+1));
+    free(path);
+    return wakeup;
 }
 
 /**

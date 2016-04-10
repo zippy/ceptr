@@ -65,15 +65,14 @@ T *___r_make_addr(T *parent,Symbol type,ReceptorAddress addr,bool is_run_node);
 ReceptorAddress __r_get_addr(T *addr);
 
 T * __r_make_signal(ReceptorAddress from,ReceptorAddress to,Aspect aspect,Symbol carrier,T *signal_contents,UUIDt *in_response_to,T* until,T *conversation);
-T *__r_build_wakeup_info(T *code_point,int process_id);
 T* __r_send(Receptor *r,T *signal);
 T* _r_send(Receptor *r,T *signal);
 T* _r_request(Receptor *r,T *signal,Symbol response_carrier,T *code_point,int process_id);
 void evaluateEndCondition(T *ec,bool *cleanup,bool *allow);
 void __r_test_expectation(Receptor *r,T *expectation,T *signal);
-T *_r_add_conversation(Receptor *r,UUIDt id,T *end_conditions);
+T * _r_add_conversation(Receptor *r,UUIDt id,T *until,T *wakeup);
 T *_r_find_conversation(Receptor *r, UUIDt cuuid);
-void __r_complete_conversation(Receptor *r, T *conversation);
+void __r_complete_conversation(Receptor *r, UUIDt cuuid,T *value);
 Error _r_deliver(Receptor *r, T *signal);
 
 /******************  internal utilities */

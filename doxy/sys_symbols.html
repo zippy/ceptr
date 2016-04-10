@@ -76,7 +76,7 @@
 <tr><td><a name="PENDING_SIGNALS"></a>PENDING_SIGNALS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_SIGNAL">ZERO-OR-MORE-OF-SIGNAL</a></td><td>          list of signals pending to be sent by the SYS_RECEPTOR</td></tr>
 <tr><td><a name="CODE_PATH"></a>CODE_PATH</td><td><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></td><td></td></tr>
 <tr><td><a name="PROCESS_IDENT"></a>PROCESS_IDENT</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
-<tr><td><a name="WAKEUP_REFERENCE"></a>WAKEUP_REFERENCE</td><td><a href="ref_sys_structures.html#TUPLE_OF_PROCESS_IDENT_AND_CODE_PATH">TUPLE-OF-PROCESS-IDENT-AND-CODE-PATH</a></td><td></td></tr>
+<tr><td><a name="WAKEUP_REFERENCE"></a>WAKEUP_REFERENCE</td><td><a href="ref_sys_structures.html#CODE_REF">CODE-REF</a></td><td></td></tr>
 <tr><td><a name="PENDING_RESPONSE"></a>PENDING_RESPONSE</td><td><a href="ref_sys_structures.html#LIST_OF_SIGNAL_UUID_AND_CARRIER_AND_WAKEUP_REFERENCE_AND_END_CONDITIONS">LIST-OF-SIGNAL-UUID-AND-CARRIER-AND-WAKEUP-REFERENCE-AND-END-CONDITIONS</a></td><td></td></tr>
 <tr><td><a name="PENDING_RESPONSES"></a>PENDING_RESPONSES</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_PENDING_RESPONSE">ZERO-OR-MORE-OF-PENDING-RESPONSE</a></td><td></td></tr>
 <tr><td><a name="RESPONSE_CARRIER"></a>RESPONSE_CARRIER</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>            expected carrier for the response to a signal that "listen" to changes on the flux</td></tr>
@@ -85,7 +85,7 @@
 <tr><td><a name="PARAMS"></a>PARAMS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_ANY_SYMBOL">ZERO-OR-MORE-OF-ANY-SYMBOL</a></td><td></td></tr>
 <tr><td><a name="SEMANTIC_MAP"></a>SEMANTIC_MAP</td><td><a href="ref_sys_structures.html#LIST_OF_ONE_OR_MORE_OF_SEMANTIC_LINK">LIST-OF-ONE-OR-MORE-OF-SEMANTIC-LINK</a></td><td></td></tr>
 <tr><td><a name="EXPECTATION"></a>EXPECTATION</td><td><a href="ref_sys_structures.html#LIST_OF_CARRIER_AND_PATTERN_AND_ACTION_AND_PARAMS_AND_END_CONDITIONS_AND_ZERO_OR_ONE_OF_SEMANTIC_MAP">LIST-OF-CARRIER-AND-PATTERN-AND-ACTION-AND-PARAMS-AND-END-CONDITIONS-AND-ZERO-OR-ONE-OF-SEMANTIC-MAP</a></td><td></td></tr>
-<tr><td><a name="CONVERSATION"></a>CONVERSATION</td><td><a href="ref_sys_structures.html#TUPLE_OF_CONVERSATION_UUID_AND_END_CONDITIONS">TUPLE-OF-CONVERSATION-UUID-AND-END-CONDITIONS</a></td><td></td></tr>
+<tr><td><a name="CONVERSATION"></a>CONVERSATION</td><td><a href="ref_sys_structures.html#LIST_OF_CONVERSATION_UUID_AND_END_CONDITIONS_AND_ZERO_OR_ONE_OF_WAKEUP_REFERENCE">LIST-OF-CONVERSATION-UUID-AND-END-CONDITIONS-AND-ZERO-OR-ONE-OF-WAKEUP-REFERENCE</a></td><td></td></tr>
 <tr><td><a name="CONVERSATIONS"></a>CONVERSATIONS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_CONVERSATION">ZERO-OR-MORE-OF-CONVERSATION</a></td><td></td></tr>
 <tr><td><a name="TRANSCODER"></a>TRANSCODER</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
 <tr><td><a name="OPERATOR"></a>OPERATOR</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>

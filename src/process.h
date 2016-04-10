@@ -50,6 +50,7 @@ Qe *__p_addrt2q(Q *q,T *t,T *sem_map);
 Error _p_reduceq(Q *q);
 void *_p_reduceq_thread(void *arg);
 T *_p_make_run_tree(SemTable *sem,Process p,T *params,T *sem_map);
+T *__p_build_wakeup_info(T *code_point,int process_id);
 T *__p_build_run_tree(T* code,int num_params,...);
 void _p_cleanup(Q *q);
 #define __p_make_signature(output_label,output_type,output_sem,...) __p_make_form(PROCESS_SIGNATURE,output_label,output_type,output_sem,__VA_ARGS__)

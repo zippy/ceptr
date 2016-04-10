@@ -161,7 +161,8 @@ Symbol: SIGNALS,[*SIGNAL];                  list of signals on an aspect in the 
 Symbol: PENDING_SIGNALS,[*SIGNAL];          list of signals pending to be sent by the SYS_RECEPTOR
 Symbol: CODE_PATH,TREE_PATH;
 Symbol: PROCESS_IDENT,INTEGER;
-Symbol: WAKEUP_REFERENCE,[(PROCESS_IDENT,CODE_PATH)];
+Structure: CODE_REF,(PROCESS_IDENT,CODE_PATH);
+Symbol: WAKEUP_REFERENCE,CODE_REF;
 Symbol: PENDING_RESPONSE,[(SIGNAL_UUID,CARRIER,WAKEUP_REFERENCE,END_CONDITIONS)];
 Symbol: PENDING_RESPONSES,[*PENDING_RESPONSE];
 Symbol: RESPONSE_CARRIER,SYMBOL;            expected carrier for the response to a signal that "listen" to changes on the flux
@@ -171,7 +172,7 @@ Declare: PARAMS,SEMANTIC_MAP;
 Symbol: EXPECTATION,[(CARRIER,PATTERN,ACTION,PARAMS,END_CONDITIONS,?SEMANTIC_MAP)];
 Symbol: EXPECTATIONS,[*EXPECTATION];        list of carrier/expectation/action tress
 
-Symbol: CONVERSATION,[(CONVERSATION_UUID,END_CONDITIONS)];
+Symbol: CONVERSATION,[(CONVERSATION_UUID,END_CONDITIONS,?WAKEUP_REFERENCE)];
 Symbol: CONVERSATIONS,[*CONVERSATION];
 
 # process defintion symbols

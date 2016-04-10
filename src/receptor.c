@@ -531,16 +531,6 @@ T* __r_make_signal(ReceptorAddress from,ReceptorAddress to,Aspect aspect,Symbol 
     return s;
 }
 
-// create WAKEUP_REFERENCE symbol used for unblocking a process
-T* __r_build_wakeup_info(T *code_point,int process_id) {
-    T *wakeup = _t_new_root(WAKEUP_REFERENCE);
-    _t_newi(wakeup,PROCESS_IDENT,process_id);
-    int *path = _t_get_path(code_point);
-    _t_new(wakeup,CODE_PATH,path,sizeof(int)*(_t_path_depth(path)+1));
-    free(path);
-    return wakeup;
-}
-
 // low level send, must be called with pending_signals resource locked!!
 T* __r_send(Receptor *r,T *signal) {
     _t_add(r->pending_signals,signal);
@@ -583,7 +573,7 @@ T* _r_request(Receptor *r,T *signal,Symbol response_carrier,T *code_point,int pr
     T *pr = _t_newr(r->pending_responses,PENDING_RESPONSE);
     _t_add(pr,_t_clone(result));
     _t_news(pr,CARRIER,response_carrier);
-    _t_add(pr,__r_build_wakeup_info(code_point,process_id));
+    _t_add(pr,__p_build_wakeup_info(code_point,process_id));
     int p[] = {SignalMessageIdx,MessageHeadIdx,HeadExtraIdx,TREE_PATH_TERMINATOR};
     T *ec = _t_get(signal,p);
     if (!ec || !semeq(_t_symbol(ec),END_CONDITIONS)) raise_error("request missing END_CONDITIONS");
@@ -700,11 +690,11 @@ void __r_test_expectation(Receptor *r,T *expectation,T *signal) {
             /* /// @todo later this should be integrated into some kind of scoping handling */
             T *params = _t_rclone(_t_child(expectation,ExpectationParamsIdx));
             _p_fill_from_match(r->sem,params,m,signal_contents);
-            int process_id = *(int *)_t_surface(_t_child(action,1));
-            int *code_path = (int *)_t_surface(_t_child(action,2));
+            int process_id = *(int *)_t_surface(_t_child(action,WakeupReferenceProcessIdentIdx));
+            int *code_path = (int *)_t_surface(_t_child(action,WakeupReferenceCodePathIdx));
 
             // @todo figure out how to refactor this with the similar
-            // code in _r_deliver.
+            // code in _r_deliver_response and __r_complete_conversation.
             debug(D_LOCK,"listen LOCK\n");
             pthread_mutex_lock(&q->mutex);
             Qe *e = __p_find_context(q->blocked,process_id);
@@ -830,11 +820,15 @@ int __r_deliver_response(Receptor *r,T *response_to,T *signal) {
     return noDeliveryErr;
 }
 
-T * _r_add_conversation(Receptor *r,UUIDt id,T *until) {
+// registers a new conversation at the receptor level.  Note that this routine
+// expects that the until param (if provided) can be added to the conversation tree,
+// i.e. it must not be part of some other tree.
+T * _r_add_conversation(Receptor *r,UUIDt id,T *until,T *wakeup) {
     T *c = _t_new_root(CONVERSATION);
     T *cu = _t_new(c,CONVERSATION_UUID,&id,sizeof(UUIDt));
 
-    _t_add(c, until ? _t_clone(until) : __r_build_default_until());
+    _t_add(c, until ? until : __r_build_default_until());
+    if (wakeup) _t_add(c,wakeup);
 
     //@todo NOT THREAD SAFE, add locking
     _t_add(r->conversations,c);
@@ -861,10 +855,41 @@ T *_r_find_conversation(Receptor *r, UUIDt cuuid) {
     return found?c:NULL;
 }
 
-void __r_complete_conversation(Receptor *r, T *conversation) {
-    // @todo lock?
-    _t_detach_by_ptr(_t_parent(conversation),conversation);
-    // @todo unlock?
+void __r_complete_conversation(Receptor *r, UUIDt cuuid,T *value) {
+    // @todo lock conversations?
+    T *c = _r_find_conversation(r,cuuid);
+    if (!c) {
+        raise_error("can't find conversation");
+    }
+    // restart the CONVERSE instruction that spawned this conversation
+    T *w = _t_child(c,ConversationWakeupIdx);
+    if (w) {
+        int *code_path = (int *)_t_surface(_t_child(w,WakeupReferenceCodePathIdx));
+        int process_id = *(int *)_t_surface(_t_child(w,WakeupReferenceProcessIdentIdx));
+        Q *q= r->q;
+        debug(D_LOCK,"complete LOCK\n");
+        pthread_mutex_lock(&q->mutex);
+        Qe *e = __p_find_context(q->blocked,process_id);
+        if (e) {
+            if (value) {
+                T *result = _t_get(e->context->run_tree,code_path);
+                if (!result) raise_error("failed to find code path when completing converse!");
+                T *p = _t_parent(result);
+                _t_replace(p,_t_node_index(result), value);
+                e->context->node_pointer = value;
+            }
+
+            debug(D_SIGNALS,"unblocking CONVERSE\n");
+            __p_unblock(q,e);
+        }
+        else if (value) _t_free(value);
+        pthread_mutex_unlock(&q->mutex);
+        debug(D_LOCK,"complete UNLOCK\n");
+    }
+
+    _t_detach_by_ptr(_t_parent(c),c);
+    _t_free(c);
+    // @todo unlock conversations?
 }
 
 /**
@@ -912,7 +937,7 @@ Error _r_deliver(Receptor *r, T *signal) {
         UUIDt cuuid = *(UUIDt *)_t_surface(conversation);
         T *c = _r_find_conversation(r,cuuid);
         if (!c) {
-            c = _r_add_conversation(r,cuuid,end_conditions);
+            c = _r_add_conversation(r,cuuid,end_conditions,NULL);
         }
     }
 
