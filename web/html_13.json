@@ -1,4 +1,19 @@
-{ "symbol":{ "context":0,"id":252 },"type":"TREE_DELTA","name":"TREE_DELTA_ADD","children":[
-   { "symbol":{ "context":0,"id":249 },"type":"TREE_PATH","name":"TREE_DELTA_PATH","surface":""},
+{ "symbol":{ "context":0,"id":253 },"type":"TREE_DELTA","name":"TREE_DELTA_REPLACE","children":[
+   { "symbol":{ "context":0,"id":249 },"type":"TREE_PATH","name":"TREE_DELTA_PATH","surface":"/3"},
    { "symbol":{ "context":0,"id":250 },"type":"ANY_SYMBOL","name":"TREE_DELTA_VALUE","children":[
-      { "symbol":{ "context":6,"id":48 },"type":"CSTRING","name":"HTML_TOK_TAG_CLOSE","surface":"body"}]}]}
+      { "symbol":{ "context":6,"id":60 },"type":"HTML_ELEMENT","name":"HTML_DIV","children":[
+         { "symbol":{ "context":6,"id":53 },"type":"ZERO_OR_MORE_OF_HTML_ATTRIBUTE","name":"HTML_ATTRIBUTES","children":[
+            { "symbol":{ "context":6,"id":52 },"type":"KEY_VALUE_PARAM","name":"HTML_ATTRIBUTE","children":[
+               { "symbol":{ "context":6,"id":2 },"type":"CSTRING","name":"PARAM_KEY","surface":"id"},
+               { "symbol":{ "context":6,"id":3 },"type":"CSTRING","name":"PARAM_VALUE","surface":"314"}]},
+            { "symbol":{ "context":6,"id":52 },"type":"KEY_VALUE_PARAM","name":"HTML_ATTRIBUTE","children":[
+               { "symbol":{ "context":6,"id":2 },"type":"CSTRING","name":"PARAM_KEY","surface":"class"},
+               { "symbol":{ "context":6,"id":3 },"type":"CSTRING","name":"PARAM_VALUE","surface":"contents"}]}]},
+         { "symbol":{ "context":6,"id":54 },"type":"NULL_STRUCTURE","name":"HTML_CONTENT","children":[
+            { "symbol":{ "context":6,"id":55 },"type":"CSTRING","name":"HTML_TEXT","surface":"Hello world"},
+            { "symbol":{ "context":6,"id":49 },"type":"CSTRING","name":"HTML_TOK_TAG_SELFCLOSE","surface":"img","children":[
+               { "symbol":{ "context":6,"id":53 },"type":"ZERO_OR_MORE_OF_HTML_ATTRIBUTE","name":"HTML_ATTRIBUTES","children":[
+                  { "symbol":{ "context":6,"id":52 },"type":"KEY_VALUE_PARAM","name":"HTML_ATTRIBUTE","children":[
+                     { "symbol":{ "context":6,"id":2 },"type":"CSTRING","name":"PARAM_KEY","surface":"src"},
+                     { "symbol":{ "context":6,"id":3 },"type":"CSTRING","name":"PARAM_VALUE","surface":"test.png"}]}]}]}]}]}]},
+   { "symbol":{ "context":0,"id":251 },"type":"INTEGER","name":"TREE_DELTA_COUNT","surface":4}]}

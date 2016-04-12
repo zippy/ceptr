@@ -703,12 +703,15 @@ void testTreeFindBySymbol() {
 
     T *match = _t_newr(0,PATTERN);
     _sl(match,TEST_INT_SYMBOL);
-    T *t = __r_build_expectation(TEST_INT_SYMBOL,match,_t_newp(0,ACTION,NOOP),0,0,0);
     UUIDt cuuid = __uuid_gen();
-    T *cu = _t_new(t,CONVERSATION_UUID,&cuuid,sizeof(UUIDt));
+    T *cid = _t_new(0,CONVERSATION_UUID,&cuuid,sizeof(UUIDt));
 
-    spec_is_ptr_equal(__t_find(t,CONVERSATION_UUID,ExpectationOptionalsIdx),cu);
+    T *t = __r_build_expectation(TEST_INT_SYMBOL,match,_t_newp(0,ACTION,NOOP),0,0,NULL,cid);
+
+    spec_is_ptr_equal(__t_find(t,CONVERSATION_UUID,ExpectationOptionalsIdx),cid);
     spec_is_ptr_equal(__t_find(t,SEMANTIC_MAP,ExpectationOptionalsIdx),NULL);
+
+    _t_free(t);
 }
 
 void testTree() {

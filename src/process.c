@@ -1052,9 +1052,10 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                 _t_news(s,USAGE,NULL_SYMBOL);
             }
 
+            T *cid = context && context->conversation ? _t_clone(context->conversation->id) : NULL;
             // @todo add SEMANTIC_MAP into LISTEN
             if (act) {
-                _r_add_expectation(q->r,aspect,carrier,match,act,with,until,NULL);
+                _r_add_expectation(q->r,aspect,carrier,match,act,with,until,NULL,cid);
                 x = __t_news(0,REDUCTION_ERROR_SYMBOL,NULL_SYMBOL,1);
                 debug(D_LISTEN,"adding expectation\n");
             }
@@ -1064,7 +1065,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                     until = _t_new_root(END_CONDITIONS);
                     _t_newi(until,COUNT,1);
                 }
-                _r_add_expectation(q->r,aspect,carrier,match,act,with,until,NULL);
+                _r_add_expectation(q->r,aspect,carrier,match,act,with,until,NULL,cid);
                 debug(D_LISTEN,"adding expectation and blocking at %d,%s\n",context->id,_td(q->r,code));
                 return Block;
             }

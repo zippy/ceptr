@@ -130,7 +130,7 @@ T *__r_build_default_until() {
 }
 
 // helper to build and expectation tree
-T *__r_build_expectation(Symbol carrier,T *pattern,T *action,T *with,T *until,T *using) {
+T *__r_build_expectation(Symbol carrier,T *pattern,T *action,T *with,T *until,T *using,T *cid) {
     T *e = _t_newr(0,EXPECTATION);
     _t_news(e,CARRIER,carrier);
     _t_add(e,pattern);
@@ -143,6 +143,9 @@ T *__r_build_expectation(Symbol carrier,T *pattern,T *action,T *with,T *until,T 
     _t_add(e,until);
     if (using)
         _t_add(e,using);
+    if (cid) {
+        _t_add(e,cid);
+    }
     return e;
 }
 
@@ -158,8 +161,8 @@ T *__r_build_expectation(Symbol carrier,T *pattern,T *action,T *with,T *until,T 
  * @param[in] until end conditions for cleaning up this expectation
  *
  */
-void _r_add_expectation(Receptor *r,Aspect aspect,Symbol carrier,T *pattern,T *action,T *with,T *until,T *using) {
-    T *e = __r_build_expectation(carrier,pattern,action,with,until,using);
+void _r_add_expectation(Receptor *r,Aspect aspect,Symbol carrier,T *pattern,T *action,T *with,T *until,T *using,T *cid) {
+    T *e = __r_build_expectation(carrier,pattern,action,with,until,using,cid);
     __r_add_expectation(r,aspect,e);
 }
 
@@ -574,7 +577,7 @@ T* _r_request(Receptor *r,T *signal,Symbol response_carrier,T *code_point,int pr
     _t_add(pr,_t_clone(result));
     _t_news(pr,CARRIER,response_carrier);
     _t_add(pr,__p_build_wakeup_info(code_point,process_id));
-    int p[] = {SignalMessageIdx,MessageHeadIdx,HeadExtraIdx,TREE_PATH_TERMINATOR};
+    int p[] = {SignalMessageIdx,MessageHeadIdx,HeadOptionalsIdx,TREE_PATH_TERMINATOR};
     T *ec = _t_get(signal,p);
     if (!ec || !semeq(_t_symbol(ec),END_CONDITIONS)) raise_error("request missing END_CONDITIONS");
     _t_add(pr,_t_clone(ec));
@@ -654,13 +657,25 @@ void __r_test_expectation(Receptor *r,T *expectation,T *signal) {
 
     //test carriers first because they must match
     T *e_carrier = _t_child(expectation,ExpectationCarrierIdx);
-    T *s_carrier = _t_getv(signal,SignalMessageIdx,MessageHeadIdx,HeadCarrierIdx,TREE_PATH_TERMINATOR);
+    T *head =_t_getv(signal,SignalMessageIdx,MessageHeadIdx,TREE_PATH_TERMINATOR);
+    T *s_carrier = _t_child(head,HeadCarrierIdx);
 
     debug(D_SIGNALS,"checking signal carrier %s\n",_td(q->r,s_carrier));
     debug(D_SIGNALS,"against expectation carrier %s\n",_td(q->r,e_carrier));
 
     Symbol esym = *(Symbol *)_t_surface(e_carrier);
     if (!semeq(esym,*(Symbol *)_t_surface(s_carrier)) && !semeq(esym,NULL_SYMBOL)) return;
+
+    T *s_cid = __t_find(head,CONVERSATION_UUID,HeadOptionalsIdx);
+    T *e_cid = __t_find(expectation,CONVERSATION_UUID,ExpectationOptionalsIdx);
+    debug(D_SIGNALS,"checking signal conversation %s\n",_td(q->r,s_cid));
+    debug(D_SIGNALS,"against expectation conversation %s\n",_td(q->r,e_cid));
+
+    // if expectation or signal in a conversation but the other isn't then it doesn't match
+    if ((!s_cid && e_cid) || (s_cid && !e_cid)) return;
+    if (s_cid && e_cid) {
+        if (!__uuid_equal((UUIDt *)_t_surface(s_cid),((UUIDt *)_t_surface(e_cid)))) return;
+    }
 
     T *pattern,*m;
     pattern = _t_child(expectation,ExpectationPatternIdx);
@@ -901,7 +916,7 @@ Error _r_deliver(Receptor *r, T *signal) {
     T *response_to = NULL;
 
     // check the optional HEAD items to see if this is more than a plain signal
-    int optionals = HeadExtraIdx;
+    int optionals = HeadOptionalsIdx;
     T *extra;
     while(extra =_t_child(head,optionals++)) {
         Symbol sym = _t_symbol(extra);
@@ -1101,7 +1116,7 @@ void _r_addWriter(Receptor *r,Stream *st,Aspect aspect) {
 
     T *act = _t_newp(0,ACTION,echo2stream);
 
-    _r_add_expectation(r,aspect,NULL_SYMBOL,expect,act,params,0,NULL);
+    _r_add_expectation(r,aspect,NULL_SYMBOL,expect,act,params,0,NULL,NULL);
 
 }
 
@@ -1153,7 +1168,7 @@ Receptor *_r_makeClockReceptor(SemTable *sem) {
 
     /* T *act = _t_newp(0,ACTION,proc); */
     /* T *params = _t_new_root(PARAMS); */
-    /* _r_add_expectation(r,DEFAULT_ASPECT,CLOCK_TELL_TIME,expect,act,params,0,NULL); */
+    /* _r_add_expectation(r,DEFAULT_ASPECT,CLOCK_TELL_TIME,expect,act,params,0,NULL,NULL); */
 
     return r;
 }

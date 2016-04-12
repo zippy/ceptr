@@ -213,7 +213,7 @@ void testVMHostCreate() {
 /*     spec_is_str_equal(_dump_semtrex(G_sem,req,buf),"/(HTTP_REQUEST/.*,HTTP_REQUEST_HOST=helloworld.com)"); */
 /*     free(sv); */
 
-/*     _r_add_expectation(hello_r,DEFAULT_ASPECT,HTTP_REQUEST,expect,act,0,0); */
+/*     _r_add_expectation(hello_r,DEFAULT_ASPECT,HTTP_REQUEST,expect,act,0,0,0); */
 
 /*     // build up an HTTP_REQUEST tree that corresponds with a simple get for host helloworld.com */
 /*     T *s = _t_new_root(HTTP_REQUEST); */

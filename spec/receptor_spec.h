@@ -51,7 +51,7 @@ void testReceptorAddRemoveExpectation() {
     T *s = _t_new_root(PATTERN);
     _sl(s,dummy);
     T *a = _t_news(0,ACTION,NULL_PROCESS);
-    _r_add_expectation(r,DEFAULT_ASPECT,TEST_INT_SYMBOL,s,a,0,0,NULL);
+    _r_add_expectation(r,DEFAULT_ASPECT,TEST_INT_SYMBOL,s,a,0,0,NULL,NULL);
 
     T *es = __r_get_expectations(r,DEFAULT_ASPECT);
     T *e = _t_child(es,1);      // expectation should have been added as first child of expectations
@@ -89,7 +89,7 @@ void testReceptorSignal() {
     UUIDt u = __uuid_gen();
     s = __r_make_signal(f,t,DEFAULT_ASPECT,TESTING,_t_clone(signal_contents),&u,0,0);
     spec_is_str_equal(t2s(s),"(SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:4)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (IN_RESPONSE_TO_UUID)) (BODY:{(TEST_INT_SYMBOL:314)})))");
-    int p[] = {SignalMessageIdx,MessageHeadIdx,HeadExtraIdx,TREE_PATH_TERMINATOR};
+    int p[] = {SignalMessageIdx,MessageHeadIdx,HeadOptionalsIdx,TREE_PATH_TERMINATOR};
     T *ru = _t_get(s,p);
     spec_is_true(__uuid_equal(&u,_t_surface(ru)));
 
@@ -288,7 +288,7 @@ void testReceptorExpectation() {
 
     T *using = NULL;
 
-    _r_add_expectation(r,DEFAULT_ASPECT,HTTP_REQUEST,pattern,act,params,until,using);
+    _r_add_expectation(r,DEFAULT_ASPECT,HTTP_REQUEST,pattern,act,params,until,using,NULL);
 
     Error err = _r_deliver(r,signal);
     spec_is_equal(err,noDeliveryErr);

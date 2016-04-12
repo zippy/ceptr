@@ -48,7 +48,7 @@ void addCommand(Receptor *r,ReceptorAddress ox,char *command,char *desc,T *code,
     Process proc = _r_define_process(r,p,desc,"long desc...",NULL,NULL);
     T *act = _t_newp(0,ACTION,proc);
 
-    _r_add_expectation(r,DEFAULT_ASPECT,SHELL_COMMAND,expect,act,0,0,NULL);
+    _r_add_expectation(r,DEFAULT_ASPECT,SHELL_COMMAND,expect,act,0,0,NULL,NULL);
 }
 
 void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp,Stream **isp,Stream **osp) {

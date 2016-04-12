@@ -98,7 +98,7 @@ void testProtocolRecognize() {
     // check the signal's envelope, body, and run-tree
     T *signals = __r_get_signals(self,DEFAULT_ASPECT);
     T *h = _t_clone(_t_getv(signals,1,SignalMessageIdx,MessageHeadIdx,TREE_PATH_TERMINATOR));
-    _t_free(_t_detach_by_idx(h,HeadExtraIdx)); // get rid of the end conditions which are variable so we can't test them!
+    _t_free(_t_detach_by_idx(h,HeadOptionalsIdx)); // get rid of the end conditions which are variable so we can't test them!
     spec_is_str_equal(t2s(h),"(HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:backnforth))");
     _t_free(h);
     spec_is_str_equal(t2s(_t_getv(signals,1,SignalMessageIdx,MessageBodyIdx,TREE_PATH_TERMINATOR)),"(BODY:{(are_you (SEMTREX_WALK))})");

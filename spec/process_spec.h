@@ -603,7 +603,7 @@ void testProcessRespond() {
     spec_is_str_equal(t2s(n),"(SIGNAL_UUID)");
     spec_is_str_equal(_td(r,r->pending_signals),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:4)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (IN_RESPONSE_TO_UUID)) (BODY:{(TEST_INT_SYMBOL:271)}))))");
     T *u1 = _t_child(_t_child(s,SignalEnvelopeIdx),EnvelopeSignalUUIDIdx);
-    int p[] = {1,SignalMessageIdx,MessageHeadIdx,HeadExtraIdx,TREE_PATH_TERMINATOR};
+    int p[] = {1,SignalMessageIdx,MessageHeadIdx,HeadOptionalsIdx,TREE_PATH_TERMINATOR};
     T *u2 = _t_get(r->pending_signals,p);
     spec_is_true(__uuid_equal(_t_surface(u1),_t_surface(u2)));
 
@@ -826,6 +826,67 @@ void testProcessConverse() {
     spec_is_equal(_p_reduceq(q),noReductionErr);
     debug_disable(D_STEP);
     spec_is_str_equal(t2s(run_tree),"(RUN_TREE (TEST_INT_SYMBOL:321) (PARAMS))");
+
+    _r_free(r);
+}
+
+void testProcessConverseListen() {
+
+    T *code = _t_build(G_sem,0,NEW,NEW_TYPE,TEST_INT_SYMBOL,PARAM_REF,2,1,TREE_PATH_TERMINATOR,NULL_SYMBOL,NULL_SYMBOL);
+    spec_is_str_equal(t2s(code),"(process:NEW (NEW_TYPE:TEST_INT_SYMBOL) (PARAM_REF:/2/1))");
+
+
+    T *signature = __p_make_signature("result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,
+                                      "int",SIGNATURE_SYMBOL,TEST_INT_SYMBOL,
+                                      NULL);
+    Process p = _d_define_process(G_sem,code,"new int","",signature,NULL,TEST_CONTEXT);
+
+    code = _t_newr(0,CONVERSE);
+    T *scope = _t_newr(code,SCOPE);
+    _t_newi(code,BOOLEAN,1);
+    T *n = _t_newr(scope,LISTEN);
+    _t_news(n,ASPECT_IDENT,DEFAULT_ASPECT);
+    _t_news(n,CARRIER,TEST_INT_SYMBOL);
+    T *match = _t_newr(n,PATTERN);
+    _sl(match,TEST_INT_SYMBOL);
+    T *a = _t_newp(n,ACTION,p);
+    _t_newi(a,TEST_INT_SYMBOL,314);
+
+    T *run_tree = __p_build_run_tree(code,0);
+    _t_free(code);
+
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (process:CONVERSE (SCOPE (process:LISTEN (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TEST_INT_SYMBOL) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TEST_INT_SYMBOL))) (ACTION:new int (TEST_INT_SYMBOL:314)))) (BOOLEAN:1)) (PARAMS))");
+
+    Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
+
+    // add the run tree into a queue and run it
+    G_next_process_id = 0; // reset the process ids so the test will always work
+    Q *q = r->q;
+    T *cons = r->conversations;
+    T *ps = r->pending_signals;
+    Qe *e =_p_addrt2q(q,run_tree);
+    R *c = e->context;
+
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    spec_is_ptr_equal(q->blocked,e);
+
+    T *ex = __r_get_expectations(r,DEFAULT_ASPECT);
+    spec_is_str_equal(t2s(ex),"(EXPECTATIONS (EXPECTATION (CARRIER:TEST_INT_SYMBOL) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TEST_INT_SYMBOL))) (ACTION:new int (TEST_INT_SYMBOL:314)) (PARAMS (SLOT (USAGE:NULL_SYMBOL))) (END_CONDITIONS (UNLIMITED)) (CONVERSATION_UUID)))");
+
+    T *t = _t_newi(0,TEST_INT_SYMBOL,314);
+    //    debug_enable(D_LISTEN+D_SIGNALS);
+    T *s = __r_make_signal(r->addr,r->addr,DEFAULT_ASPECT,TEST_INT_SYMBOL,t,0,0,0);
+    _r_deliver(r,s);
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    // we should have no instances in the instance store, because the signal wasn't part of the conversation
+    spec_is_str_equal(t2s(r->instances),"");
+
+    T *cid = _t_clone(_t_getv(cons,1,ConversationIdentIdx,TREE_PATH_TERMINATOR));
+    s = __r_make_signal(r->addr,r->addr,DEFAULT_ASPECT,TEST_INT_SYMBOL,_t_clone(t),0,0,cid);
+    _r_deliver(r,s);
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    debug_disable(D_LISTEN+D_SIGNALS);
+    spec_is_str_equal(t2s(r->instances),"(INSTANCE_STORE (INSTANCES (SYMBOL_INSTANCES:TEST_INT_SYMBOL (TEST_INT_SYMBOL:314))))");
 
     _r_free(r);
 }
@@ -1763,6 +1824,7 @@ void testProcess() {
     testProcessSay();
     testProcessRequest();
     testProcessConverse();
+    testProcessConverseListen();
     testProcessThisScope();
     testProcessQuote();
     testProcessStream();
