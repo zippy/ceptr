@@ -1115,13 +1115,16 @@ T * _t_next_sibling(T *t) {
  * search the children of a tree for symbol matching sym
  * @param[in] t the tree
  * @param[in] sym the SemanticID to search for
+ * @param[in] start_child index of the child at which to start the search
  * @returns the found node or NULL
  */
-T *_t_find(T *t,SemanticID sym) {
+T *__t_find(T *t,SemanticID sym,int start_child) {
     T *p;
-    DO_KIDS(t,
-            if (semeq(_t_symbol(p=_t_child(t,i)),sym)) return p;
-            );
+    int i;
+    int c = _t_children(t);
+    for(i = start_child;i<=c;i++) {
+        if (semeq(_t_symbol(p=_t_child(t,i)),sym)) return p;
+    }
     return NULL;
 }
 

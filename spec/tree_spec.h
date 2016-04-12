@@ -695,6 +695,22 @@ void testTreeInt64() {
     _t_free(t);
 }
 
+void testTreeFindBySymbol() {
+    // many times we have symbols with structures that have optional items
+    // instead of using a semtrex search, this is a simply scan by symbol type
+    // find routine.  So for example expectations have optional semantic maps and
+    // conversation so this can be used to find one if it exists.
+
+    T *match = _t_newr(0,PATTERN);
+    _sl(match,TEST_INT_SYMBOL);
+    T *t = __r_build_expectation(TEST_INT_SYMBOL,match,_t_newp(0,ACTION,NOOP),0,0,0);
+    UUIDt cuuid = __uuid_gen();
+    T *cu = _t_new(t,CONVERSATION_UUID,&cuuid,sizeof(UUIDt));
+
+    spec_is_ptr_equal(__t_find(t,CONVERSATION_UUID,ExpectationOptionalsIdx),cu);
+    spec_is_ptr_equal(__t_find(t,SEMANTIC_MAP,ExpectationOptionalsIdx),NULL);
+}
+
 void testTree() {
     testCreateTreeNodes();
     testTreeNewReceptor();
@@ -726,4 +742,5 @@ void testTree() {
     testTreeTemplate();
     testTreeStreamWrite();
     testTreeInt64();
+    testTreeFindBySymbol();
 }

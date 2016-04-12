@@ -169,7 +169,7 @@ Symbol: RESPONSE_CARRIER,SYMBOL;            expected carrier for the response to
 Symbol: PATTERN,SEMTREX_DEF;                expectation is a semtrex (thus has one child which is the first part of the semtrex)
 Symbol: ACTION,PROCESS;                     code tree_ID, which specifies the action to perform when an expectation's semtrex matches
 Declare: PARAMS,SEMANTIC_MAP;
-Symbol: EXPECTATION,[(CARRIER,PATTERN,ACTION,PARAMS,END_CONDITIONS,?SEMANTIC_MAP)];
+Symbol: EXPECTATION,[(CARRIER,PATTERN,ACTION,PARAMS,END_CONDITIONS,?SEMANTIC_MAP,?CONVERSATION_UUID)];
 Symbol: EXPECTATIONS,[*EXPECTATION];        list of carrier/expectation/action tress
 
 Symbol: CONVERSATION,[(CONVERSATION_UUID,END_CONDITIONS,?WAKEUP_REFERENCE)];

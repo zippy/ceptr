@@ -719,7 +719,7 @@ void __r_test_expectation(Receptor *r,T *expectation,T *signal) {
             // _p_make_run_tree assumes rT nodes
             T *params = _t_rclone(_t_child(expectation,ExpectationParamsIdx));
             _p_fill_from_match(r->sem,params,m,signal_contents);
-            T *sm = _t_child(expectation,ExpectationSemanticMapIdx);
+            T *sm = __t_find(expectation,SEMANTIC_MAP,ExpectationOptionalsIdx);
             if (sm) sm = _t_clone(sm);
             debug(D_SIGNALS,"creating a run tree for action %s with params %s\n",_sem_get_name(r->sem,p),_t2s(r->sem,params));
             //@todo check the signature?
