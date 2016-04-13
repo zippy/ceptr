@@ -74,7 +74,8 @@ void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp
     _v_activate(v,ox);
 
     // set up shell to express the line parsing protocol when it receives LINES from the stream reader
-    Protocol clp = _sem_get_by_label(v->sem,"PARSE_COMMAND_FROM_LINE",DEV_COMPOSITORY_CONTEXT);
+    Protocol clp;
+    __sem_get_by_label(v->sem,"PARSE_COMMAND_FROM_LINE",&clp,DEV_COMPOSITORY_CONTEXT);
     T *bindings = _t_new_root(PROTOCOL_BINDINGS);
     T *res = _t_newr(bindings,RESOLUTION);
     T *w = _t_newr(res,WHICH_RECEPTOR);
@@ -93,7 +94,8 @@ void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp
     _t_free(bindings);
 
     // set up shell to use the CLOCK TELL_TIME protocol for the time command
-    Protocol time = _sem_get_by_label(v->sem,"time",CLOCK_CONTEXT);
+    Protocol time;
+    __sem_get_by_label(v->sem,"time",&time,CLOCK_CONTEXT);
     T *code = _t_new_root(INITIATE_PROTOCOL);
     _t_news(code,PNAME,time);
     _t_news(code,WHICH_INTERACTION,tell_time);

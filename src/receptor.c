@@ -286,7 +286,10 @@ Protocol _r_define_protocol(Receptor *r,T *protocol_def) {
  * find a symbol by its label
  */
 Symbol _r_get_sem_by_label(Receptor *r,char *label) {
-    return _sem_get_by_label(r->sem,label,r->context);
+    SemanticID sid;
+    if (!__sem_get_by_label(r->sem,label,&sid,r->context))
+        raise_error("label not found %s",label);
+    return sid;
 }
 
 /**
@@ -1160,11 +1163,13 @@ Receptor *_r_makeClockReceptor(SemTable *sem) {
     T *tick = __r_make_tick();  // initial tick, will get updated by clock thread.
     Xaddr x = _r_new_instance(r,tick);
 
-    Protocol time = _sem_get_by_label(sem,"time",r->context);
+    Protocol time;
+    __sem_get_by_label(sem,"time",&time,r->context);
     _o_express_role(r,time,TIME_TELLER,DEFAULT_ASPECT,NULL);
 
 
-    /* Process proc = _sem_get_by_label(sem,"respond with current time",r->context); */
+    /* Process proc;
+       __sem_get_by_label(sem,"respond with current time",&proc,r->context); */
 
     /* T *act = _t_newp(0,ACTION,proc); */
     /* T *params = _t_new_root(PARAMS); */

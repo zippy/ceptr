@@ -16,7 +16,8 @@
 char __d_extra_buf[100];
 
 int semeq(SemanticID s1,SemanticID s2) {
-    return (memcmp(&s1,&s2,sizeof(SemanticID))==0);
+    return (s1.context == s2.context)&&(s1.semtype == s2.semtype)&&(s1.id==s2.id);
+    //    return (memcmp(&s1,&s2,sizeof(SemanticID))==0);
 }
 
 // used to find the semantic address for a def when building a SemanticID

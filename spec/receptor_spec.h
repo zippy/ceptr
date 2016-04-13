@@ -329,7 +329,9 @@ void testReceptorDef() {
     spec_is_str_equal(t2s(def),"(SYMBOL_DEFINITION (SYMBOL_LABEL (ENGLISH_LABEL:Longitude)) (SYMBOL_STRUCTURE:FLOAT))");
 
     spec_is_sem_equal(_r_get_sem_by_label(r,"Latitude"),lat);
-    spec_is_sem_equal(_sem_get_by_label(G_sem,"Latitude",r->context),lat);
+    SemanticID sid;
+    __sem_get_by_label(G_sem,"Latitude",&sid,r->context);
+    spec_is_sem_equal(sid,lat);
 
     Structure latlong = _r_define_structure(r,"Latlong",2,lat,lon);
 
@@ -714,7 +716,8 @@ void testReceptorClock() {
       The clock receptor should do two things: respond to CLOCK_TELL_TIME signals with the current time, and also allow you to plant a listener based on a semtrex for any kind of time you want.  If you want the current time just plant a listener for TICK.  If you want to listen for every second plant a listener on the Symbol literal SECOND, and the clock receptor will trigger the listener every time the SECOND changes.  You can also listen for particular intervals and times by adding specificity to the semtrex, so to trigger a 3:30am action a-la-cron listen for: "/<TICK:(%HOUR=3,MINUTE=30)>"
        @todo we should also make the clock receptor also respond to other semantic formats, i.e. so it's easy to listen for things like "on Wednesdays", or other semantic date/time identifiers.
      */
-    Protocol time = _sem_get_by_label(G_sem,"time",r->context);
+    Protocol time;
+    __sem_get_by_label(G_sem,"time",&time,r->context);
     T *def = _sem_get_def(G_sem,time);
     spec_is_str_equal(_td(r,def),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL (ENGLISH_LABEL:time)) (PROTOCOL_SEMANTICS (ROLE:TIME_TELLER) (ROLE:TIME_HEARER) (GOAL:REQUEST_HANDLER)) (tell_time (INITIATE (ROLE:TIME_HEARER) (DESTINATION (ROLE:TIME_TELLER)) (ACTION:time_request)) (EXPECT (ROLE:TIME_TELLER) (SOURCE (ROLE:TIME_HEARER)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:CLOCK_TELL_TIME))) (ACTION:respond with current time))))");
 

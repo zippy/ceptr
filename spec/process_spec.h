@@ -1079,7 +1079,8 @@ void testProcessStreamClose() {
 void testProcessInitiate(){
     Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
     Q *q = r->q;
-    Protocol time = _sem_get_by_label(G_sem,"time",CLOCK_CONTEXT);
+    Protocol time;
+    __sem_get_by_label(G_sem,"time",&time,CLOCK_CONTEXT);
 
     T *n = _t_new_root(INITIATE_PROTOCOL);
     T *p = _t_news(n,PNAME,time);
