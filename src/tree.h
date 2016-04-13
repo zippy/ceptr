@@ -69,6 +69,9 @@ T *_t_rclone(T *t);
 
 T *_t_build(SemTable *sem,T *t,...);
 T *_t_build2(SemTable *sem,T *t,...);
+T *__t_tokenize(char *s);
+T *_t_parse(SemTable *sem,T *parent,char *s);
+
 #define _t_fill_template(t,i) __t_fill_template(t,i,false)
 void __t_fill_template(T *template, T *items,bool as_run_node);
 

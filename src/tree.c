@@ -775,8 +775,7 @@ T *_t_build2(SemTable *sem,T *parent,...) {
     bool done = false;
     Structure st = NULL_STRUCTURE;
     char *stn;
-    T *def,*p;
-    int level = 0;
+    T *def;
     while(!done) {
         param = va_arg(ap,Symbol);
         if (semeq(param,STX_OP)) {
@@ -815,7 +814,7 @@ T *_t_build2(SemTable *sem,T *parent,...) {
             }
         }
         else if (semeq(param,STX_CP)) {
-            p = _t_parent(t);
+            T *p = _t_parent(t);
             if (p == parent) {done = true;break;}
             t = p;
         }
@@ -826,7 +825,170 @@ T *_t_build2(SemTable *sem,T *parent,...) {
     va_end(ap);
     return t;
 }
+#define test_buffer_overrun if (i == 999) raise_error("buf overrun\n");
 
+T *__t_tokenize(char *s) {
+    T *t = _t_new_root(P_TOKENS);
+    char buf[1000];
+    while(*s) {
+        int c = *s;
+        if (isspace(c)) {s++;continue;}
+        if (c == '(') _t_newr(t,P_OP);
+        else if (c == ')') _t_newr(t,P_CP);
+        else if (c == ':') _t_newr(t,P_COLON);
+        else if (c == '\'') {
+            c = *++s;
+            if (!c) raise_error("expecting char value, got end of string");
+            int x = *++s;
+            if (!x) raise_error("expecting ', got end of string");
+            if (x != '\'') raise_error("expecting ' got %c\n",x);
+            _t_newc(t,P_VAL_C,c);
+        }
+        else if (c == '"') {
+            int i = 0;
+            while((c=buf[i]=*++s) && c != '"' && i<999) i++;
+            test_buffer_overrun;
+            if (!c) raise_error("no closing quote found");
+            buf[i]=0;
+            _t_new_str(t,P_VAL_S,buf);
+        }
+        else if (isdigit(c) || c == '.') {
+            bool is_float = false;
+            int i = 0;
+            while((c=buf[i]=*s) && (isdigit(c) || (c =='.' && !is_float)) && i<999) {
+                if (c=='.') is_float = true;
+                i++; s++;
+            }
+            buf[i]=0;
+            if (is_float) {
+                float f = atof(buf);
+                _t_new(t,P_VAL_F,&f,sizeof(float));
+            }
+            else _t_newi(t,P_VAL_I,atoi(buf));
+            test_buffer_overrun;
+            if (c=='.') raise_error("unexpected . in number\n");
+            s--;
+
+        }
+        else if (c == '/') {
+            int j = 0;
+            int path[100];
+            while(c=='/') {
+                int i = 0;
+                s++;
+                while((c=buf[i]=*s) && isdigit(c) && i<999) {
+                    i++; s++;
+                }
+                test_buffer_overrun;
+                if (i==0) raise_error("expecting a number");
+                buf[i]=0;
+                path[j++] = atoi(buf);
+                if (j==99) raise_error("path too deep in parse");
+            }
+            path[j++]=TREE_PATH_TERMINATOR;
+            _t_new(t,P_VAL_PATH,path,sizeof(int)*j);
+            s--;
+        }
+        else {
+            int i = 0;
+            while((c=buf[i]=*s) && (isalnum(c) || c =='_') && i<999) {i++; s++;}
+            test_buffer_overrun;
+            buf[i]=0;
+            _t_new_str(t,P_LABEL,buf);
+            s--;
+        }
+        s++;
+    }
+    return t;
+}
+
+/**
+ * convert a string to a semantic tree
+ *
+ * @param[in] s the string to be converted
+ * @returns tree
+ */
+T *_t_parse(SemTable *sem,T *parent,char *s) {
+    T *tokens = __t_tokenize(s);
+    T *t = parent;
+    bool done = false;
+    Structure st = NULL_STRUCTURE;
+    char c,*stn;
+    int level = 0;
+    int i,idx = 1;
+    T *tok;
+    while (tok = _t_child(tokens,idx++)) {
+        if (semeq(P_OP,_t_symbol(tok))) {
+            tok = _t_child(tokens,idx++);
+            if (!tok) raise_error("unexpected end of tokens!");
+            if (!semeq(P_LABEL,_t_symbol(tok)))
+                raise_error("expecting symbol LABEL");
+            char *label = (char *)_t_surface(tok);
+            SemanticID node;
+            if (!_sem_get_by_label(sem,label,&node)) {
+                raise_error("unknown semantic id:%s",label);
+            }
+            T *def;
+            Structure st;
+            Symbol type = _getBuildType(sem,node,&st,&def);
+            // if the symbol is a structure type or has a NULL_SYMBOL as it's definitional
+            // surface then we know that we have a simple structure to build
+            if (semeq(type,STRUCTURE_SYMBOL) && semeq(*(Symbol *)_t_surface(def),NULL_SYMBOL)) {
+                tok = _t_child(tokens,idx++);
+                if (!tok) raise_error("unexpected end of tokens! expecting P_COLON");
+                if (!semeq(P_COLON,_t_symbol(tok)))
+                    raise_error("expecting P_COLON got %s",_t2s(sem,tok));
+                tok = _t_child(tokens,idx++);
+                if (!tok) raise_error("unexpected end of tokens! expecting a value token");
+                Symbol v = _t_symbol(tok);
+                if (!(semeq(v,P_VAL_S)||semeq(v,P_VAL_C)||semeq(v,P_VAL_I)||semeq(v,P_VAL_F)||semeq(v,P_VAL_PATH)||semeq(v,P_LABEL) )) raise_error("expecting value symbol got: %s",_t2s(sem,tok));
+
+                if (semeq(st,PROCESS) || semeq(st,SYMBOL) || semeq(st,STRUCTURE) || semeq(st,PROTOCOL)) {
+                    if (!semeq(v,P_LABEL)) raise_error("expecting a label for the value of a SemanticID");
+                    label = (char *)_t_surface(tok);
+                    if (!_sem_get_by_label(sem,label,&v)) {
+                        raise_error("unknown semantic id:%s",label);
+                    }
+                    t = _t_news(t,node,v);
+                }
+                else if (semeq(st,INTEGER) || semeq(st,BIT)) {
+                    if (!semeq(v,P_VAL_I)) raise_error("expecting a P_VAL_I got %s",_sem_get_name(sem,v));
+                    t = _t_newi(t,node,*(int *)_t_surface(tok));
+                }
+                else if (semeq(st,CSTRING)) {
+                    if (!semeq(v,P_VAL_S)) raise_error("expecting a P_VAL_S got %s",_sem_get_name(sem,v));
+                    t = _t_new_str(t,node,(char *)_t_surface(tok));
+                }
+                else if (semeq(st,CHAR)) {
+                    if (!semeq(v,P_VAL_C)) raise_error("expecting a P_VAL_C got %s",_sem_get_name(sem,v));
+                    int x = *(int *)_t_surface(tok);
+                    t = _t_newc(t,node,x);
+                }
+                else if (semeq(st,TREE_PATH)) {
+                    if (!semeq(v,P_VAL_PATH)) raise_error("expecting a P_VAL_PATH got %s",_sem_get_name(sem,v));
+                    t = _t_new(t,node,_t_surface(tok),_t_size(tok));
+                }
+                else {
+                    raise_error("unimplemented surface type:%s",_sem_get_name(sem,st));
+                }
+            }
+            else {
+                t = _t_newr(t,node);
+            }
+        }
+        else if (semeq(P_CP,_t_symbol(tok))) {
+            T *p = _t_parent(t);
+            if (p == parent) {done = true;break;}
+            t = p;
+        }
+        else {
+            raise_error("expecting open or close paren! got: %s\n",_t2s(sem,tok));
+        }
+    }
+    if (idx < _t_children(tokens)) raise_error("found ending close paren but some tokens still remain: %s",_t2s(sem,tokens));
+    _t_free(tokens);
+    return t;
+}
 
 
 #include "semtrex.h"

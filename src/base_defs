@@ -472,6 +472,18 @@ Context: COMPOSITORY;
 # definitions in progress that only exist on a local machine
 Context: DEV_COMPOSITORY;
 
+Symbol: P_OP,NULL_STRUCTURE;
+Symbol: P_CP,NULL_STRUCTURE;
+Symbol: P_COLON,NULL_STRUCTURE;
+Symbol: P_LABEL,CSTRING;
+Symbol: P_VAL_S,CSTRING;
+Symbol: P_VAL_C,CHAR;
+Symbol: P_VAL_I,INTEGER;
+Symbol: P_VAL_F,FLOAT;
+Symbol: P_VAL_PATH,TREE_PATH;
+
+Symbol: P_TOKENS,[*|{P_OP|P_CP|P_COLON|P_LABEL|P_VAL_S|P_VAL_C|P_VAL_I|P_VAL_F|P_VAL_PATH}];
+
 Data: date2usshortdate_proc,(CONCAT_STR (RESULT_SYMBOL:US_SHORT_DATE) 
       (TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:ASCII_STR))
                  (TRANSCODE_ITEMS

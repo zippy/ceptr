@@ -237,7 +237,7 @@ struct Receptor {
     Context parent;      ///< the context this receptor's definition lives in
     Context context;     ///< the context this receptor's definition creates
     ReceptorAddress addr;///< the address by which to get messages to this receptor instance
-    SemTable *sem;       ///< pointer back to the semantic table context where the receptor's running
+    SemTable *sem;       ///< pointer back to the genotype table for this receptor's vmhost instance
     T *flux;             ///< pointer for quick access to the flux
     T *pending_signals;
     T *pending_responses;
