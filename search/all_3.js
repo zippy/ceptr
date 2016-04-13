@@ -8,5 +8,7 @@ var searchData=
   ['context',['context',['../structReceptor.html#ae57114199054b577820844eaff7593dd',1,'Receptor']]],
   ['contexts_5fcount',['contexts_count',['../structQ.html#a6708b052b51ce11613e298bf11a26328',1,'Q']]],
   ['contextstore',['ContextStore',['../structContextStore.html',1,'']]],
+  ['conversation',['conversation',['../structR.html#a3ece97cab1f94e844efb881e8e3dd8d9',1,'R']]],
+  ['conversationstate',['ConversationState',['../structConversationState.html',1,'']]],
   ['ceptr',['ceptr',['../index.html',1,'']]]
 ];

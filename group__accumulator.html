@@ -156,6 +156,21 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>__a_unserialize_insta
 <tr class="memitem:gacddc78a13deabb1c2f6fd92eb257928f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gacddc78a13deabb1c2f6fd92eb257928f"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>_a_unserialize_instances</b> (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structT.html">Instances</a> *i, char *file)</td></tr>
 <tr class="separator:gacddc78a13deabb1c2f6fd92eb257928f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga96d62a9bc613446a456b151c8f7c9168"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga96d62a9bc613446a456b151c8f7c9168"></a>
+<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>_a_gen_token</b> (<a class="el" href="structT.html">Instances</a> *i, <a class="el" href="structXaddr.html">Xaddr</a> x, <a class="el" href="structT.html">T</a> *dependency)</td></tr>
+<tr class="separator:ga96d62a9bc613446a456b151c8f7c9168"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga18910f3c4fc22a0c96fd160b74b6289f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga18910f3c4fc22a0c96fd160b74b6289f"></a>
+<a class="el" href="structXaddr.html">Xaddr</a>&#160;</td><td class="memItemRight" valign="bottom"><b>_a_get_token_xaddr</b> (<a class="el" href="structT.html">Instances</a> *i, <a class="el" href="structT.html">T</a> *token, <a class="el" href="structT.html">T</a> *dependency)</td></tr>
+<tr class="separator:ga18910f3c4fc22a0c96fd160b74b6289f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga788a26f834f97438b5b46e257a8952d9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga788a26f834f97438b5b46e257a8952d9"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>_a_add_dependency</b> (<a class="el" href="structT.html">Instances</a> *instances, <a class="el" href="structT.html">T</a> *token, <a class="el" href="structT.html">T</a> *dependency)</td></tr>
+<tr class="separator:ga788a26f834f97438b5b46e257a8952d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaec97c85b5329f545d8c426088422d2fe"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaec97c85b5329f545d8c426088422d2fe"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>_a_delete_dependency</b> (<a class="el" href="structT.html">Instances</a> *instances, <a class="el" href="structT.html">T</a> *token, <a class="el" href="structT.html">T</a> *dependency)</td></tr>
+<tr class="separator:gaec97c85b5329f545d8c426088422d2fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac14efcc213ee4dad2336aa63245f0400"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gac14efcc213ee4dad2336aa63245f0400"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>_a_delete_token</b> (<a class="el" href="structT.html">Instances</a> *instances, <a class="el" href="structT.html">T</a> *token)</td></tr>
+<tr class="separator:gac14efcc213ee4dad2336aa63245f0400"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -413,7 +428,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_t_replace_sem_refs</
       </table>
 </div><div class="memdoc">
 <p>convert a, possibly composed, protocol definition into an expressable definition</p>
-<p>convert a PROTOCOL_DEF to a concertized version according to the RESOLUTIONS and CONNECTIONS in the the def and the bindings</p>
+<p>convert a PROTOCOL_DEF to a concertized version according to the RESOLUTIONs and LINKAGEs in the the def and the bindings</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">sem</td><td><a class="el" href="structSemTable.html">SemTable</a> contexts </td></tr>
@@ -478,7 +493,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_t_replace_sem_refs</
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Mar 5 2016 10:23:25 for ceptr by
+    <li class="footer">Generated on Tue Apr 12 2016 21:48:57 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

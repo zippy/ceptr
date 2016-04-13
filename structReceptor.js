@@ -2,6 +2,8 @@ var structReceptor =
 [
     [ "addr", "structReceptor.html#afeea3c89b6853516cd4c4d8e9d885174", null ],
     [ "context", "structReceptor.html#ae57114199054b577820844eaff7593dd", null ],
+    [ "conversations", "structReceptor.html#a3945b51856a5636501bda74c681e4182", null ],
+    [ "edge", "structReceptor.html#afd45d33d3b6b5fdb8039b58e95587742", null ],
     [ "flux", "structReceptor.html#af8aee3ef6d1d93b80427faa57e6f1468", null ],
     [ "instances", "structReceptor.html#a6150c6bff7a9724b4dd436a75fe4cc4b", null ],
     [ "parent", "structReceptor.html#ab5037726ba2360fe29cc238ab1d98e94", null ],

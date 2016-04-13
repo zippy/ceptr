@@ -130,12 +130,12 @@ $(document).ready(function(){initNavTree('accumulator__spec_8h_source.html','');
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <a class="code" href="group__accumulator.html#gaf3d0afe467ab198fc69ccaf7ee9fb5e9">_a_boot</a>(dname);</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    spec_is_equal(stat(dname, &amp;st),0); <span class="comment">// does after boot</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    spec_is_str_equal(t2s(G_vm-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>-&gt;<a class="code" href="structReceptor.html#aec6f1eee133a993b59baf50e75620fb6">root</a>),<span class="stringliteral">&quot;(RECEPTOR_INSTANCE (INSTANCE_OF:SYS_RECEPTOR) (CONTEXT_NUM:0) (PARENT_CONTEXT_NUM:-1) (RECEPTOR_STATE (FLUX (DEFAULT_ASPECT (EXPECTATIONS) (SIGNALS))) (PENDING_SIGNALS) (PENDING_RESPONSES) (RECEPTOR_ELAPSED_TIME:0)))&quot;</span>);</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    spec_is_str_equal(t2s(G_vm-&gt;<a class="code" href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">r</a>-&gt;<a class="code" href="structReceptor.html#aec6f1eee133a993b59baf50e75620fb6">root</a>),<span class="stringliteral">&quot;(RECEPTOR_INSTANCE (INSTANCE_OF:SYS_RECEPTOR) (CONTEXT_NUM:0) (PARENT_CONTEXT_NUM:-1) (RECEPTOR_STATE (FLUX (DEFAULT_ASPECT (EXPECTATIONS) (SIGNALS))) (PENDING_SIGNALS) (PENDING_RESPONSES) (CONVERSATIONS) (RECEPTOR_ELAPSED_TIME:0)))&quot;</span>);</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="comment">// new clock receptor should be instantiated and active</span></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    spec_is_equal(G_vm-&gt;active_receptor_count,1);</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <a class="code" href="structReceptor.html">Receptor</a> *clock = G_vm-&gt;<a class="code" href="structVMHost.html#a95ef186e3477224ee0be117e7f9abbe3">active_receptors</a>[0].r;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    spec_is_str_equal(t2s(clock-&gt;<a class="code" href="structReceptor.html#aec6f1eee133a993b59baf50e75620fb6">root</a>),<span class="stringliteral">&quot;(RECEPTOR_INSTANCE (INSTANCE_OF:CLOCK_RECEPTOR) (CONTEXT_NUM:4) (PARENT_CONTEXT_NUM:0) (RECEPTOR_STATE (FLUX (DEFAULT_ASPECT (EXPECTATIONS (EXPECTATION (CARRIER:tell_time) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:CLOCK_TELL_TIME))) (ACTION:respond with current time) (PARAMS) (END_CONDITIONS (UNLIMITED)))) (SIGNALS))) (PENDING_SIGNALS) (PENDING_RESPONSES) (RECEPTOR_ELAPSED_TIME:0)))&quot;</span>);</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    spec_is_str_equal(t2s(clock-&gt;<a class="code" href="structReceptor.html#aec6f1eee133a993b59baf50e75620fb6">root</a>),<span class="stringliteral">&quot;(RECEPTOR_INSTANCE (INSTANCE_OF:CLOCK_RECEPTOR) (CONTEXT_NUM:4) (PARENT_CONTEXT_NUM:0) (RECEPTOR_STATE (FLUX (DEFAULT_ASPECT (EXPECTATIONS (EXPECTATION (CARRIER:tell_time) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:CLOCK_TELL_TIME))) (ACTION:respond with current time) (PARAMS) (END_CONDITIONS (UNLIMITED)))) (SIGNALS))) (PENDING_SIGNALS) (PENDING_RESPONSES) (CONVERSATIONS) (RECEPTOR_ELAPSED_TIME:0)))&quot;</span>);</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="comment">// now add an expectation in the clock</span></div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <a class="code" href="structT.html">T</a> *tick = __r_make_tick();</div>
@@ -210,7 +210,7 @@ $(document).ready(function(){initNavTree('accumulator__spec_8h_source.html','');
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    t = _a_get_instance(&amp;i,x);</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    spec_is_ptr_equal(t,NULL);</div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    spec_is_str_equal(t2s(i),<span class="stringliteral">&quot;(INSTANCES (SYMBOL_INSTANCES:TEST_INT_SYMBOL (TEST_INT_SYMBOL:2) (DELETED_INSTANCE) (TEST_INT_SYMBOL:4)) (SYMBOL_INSTANCES:TEST_STR_SYMBOL (TEST_STR_SYMBOL:fish)))&quot;</span>);</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    spec_is_str_equal(t2s(i),<span class="stringliteral">&quot;(INSTANCE_STORE (INSTANCES (SYMBOL_INSTANCES:TEST_INT_SYMBOL (TEST_INT_SYMBOL:2) (DELETED_INSTANCE) (TEST_INT_SYMBOL:4)) (SYMBOL_INSTANCES:TEST_STR_SYMBOL (TEST_STR_SYMBOL:fish))))&quot;</span>);</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    _a_free_instances(&amp;i);</div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;}</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
@@ -228,81 +228,148 @@ $(document).ready(function(){initNavTree('accumulator__spec_8h_source.html','');
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    t = _t_newi(0,TEST_INT_SYMBOL,4);</div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    _a_new_instance(&amp;i,t);</div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    _a_delete_instance(&amp;i,x);</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    spec_is_str_equal(t2s(i),<span class="stringliteral">&quot;(INSTANCE_STORE (INSTANCES (SYMBOL_INSTANCES:TEST_INT_SYMBOL (TEST_INT_SYMBOL:1) (TEST_INT_SYMBOL:2) (TEST_INT_SYMBOL:3) (TEST_INT_SYMBOL:4))))&quot;</span>);</div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    t = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(ITERATION_DATA);</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    _a_get_instances(&amp;i,TEST_INT_SYMBOL,t);</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    spec_is_str_equal(t2s(t),<span class="stringliteral">&quot;(ITERATION_DATA (TEST_INT_SYMBOL:1) (TEST_INT_SYMBOL:2) (TEST_INT_SYMBOL:4))&quot;</span>);</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    _a_free_instances(&amp;i);</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    _a_delete_instance(&amp;i,x);</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    t = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(ITERATION_DATA);</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    _a_get_instances(&amp;i,TEST_INT_SYMBOL,t);</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    spec_is_str_equal(t2s(t),<span class="stringliteral">&quot;(ITERATION_DATA (TEST_INT_SYMBOL:1) (TEST_INT_SYMBOL:2) (TEST_INT_SYMBOL:4))&quot;</span>);</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(t);</div>
 <div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;}</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    _a_free_instances(&amp;i);</div>
 <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;<span class="keywordtype">void</span> testAccPersistInstances() {</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    <a class="code" href="structT.html">Instances</a> i = NULL;</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    <a class="code" href="structT.html">T</a> *it = _t_newi(0,TEST_INT_SYMBOL,1);</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    _a_new_instance(&amp;i,it);</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    it = _t_newi(0,TEST_INT_SYMBOL,2);</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    <a class="code" href="structXaddr.html">Xaddr</a> z = _a_new_instance(&amp;i,it);</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    <a class="code" href="structT.html">T</a> *t = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(PARAMS);</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    _t_newi(t,TEST_INT_SYMBOL,314);</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    <a class="code" href="structXaddr.html">Xaddr</a> x = _a_new_instance(&amp;i,t);</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    <a class="code" href="structT.html">T</a> *ht = <a class="code" href="http__example_8h.html#a1c182b5a6e82ef49c6967183a15c3e8b">_makeTestHTTPRequestTree</a>(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <a class="code" href="structT.html">T</a> *htc = <a class="code" href="group__tree.html#ga7535eb2963c6cf5fc78cb14287581f92">_t_clone</a>(ht);</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <a class="code" href="structXaddr.html">Xaddr</a> y = _a_new_instance(&amp;i,ht);</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <a class="code" href="structS.html">S</a> *s = __a_serialize_instances(&amp;i);</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    _a_free_instances(&amp;i);</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    __a_unserialize_instances(G_sem,&amp;i,s);</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    spec_is_str_equal(t2s(_a_get_instance(&amp;i,x)),<span class="stringliteral">&quot;(PARAMS (TEST_INT_SYMBOL:314))&quot;</span>);</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    spec_is_str_equal(t2s(_a_get_instance(&amp;i,y)),t2s(htc));</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    spec_is_str_equal(t2s(_a_get_instance(&amp;i,z)),<span class="stringliteral">&quot;(TEST_INT_SYMBOL:2)&quot;</span>);</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(htc);</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    _a_free_instances(&amp;i);</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    free(s);</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;}</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="keywordtype">void</span> testAccumulator() {</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    <span class="keyword">struct </span>stat st = {0};</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    <span class="keywordtype">char</span> *temp_dir = <span class="stringliteral">&quot;tmp&quot;</span>;</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    <span class="keywordflow">if</span> (stat(temp_dir, &amp;st) == -1) {</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;        mkdir(temp_dir,0700);</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    }</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;}</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;<span class="keywordtype">void</span> testAccPersistInstances() {</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    <a class="code" href="structT.html">Instances</a> i = NULL;</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    <a class="code" href="structT.html">T</a> *it = _t_newi(0,TEST_INT_SYMBOL,1);</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    _a_new_instance(&amp;i,it);</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    it = _t_newi(0,TEST_INT_SYMBOL,2);</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    <a class="code" href="structXaddr.html">Xaddr</a> z = _a_new_instance(&amp;i,it);</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    <a class="code" href="structT.html">T</a> *t = <a class="code" href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a>(PARAMS);</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    _t_newi(t,TEST_INT_SYMBOL,314);</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    <a class="code" href="structXaddr.html">Xaddr</a> x = _a_new_instance(&amp;i,t);</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <a class="code" href="structT.html">T</a> *ht = <a class="code" href="http__example_8h.html#a1c182b5a6e82ef49c6967183a15c3e8b">_makeTestHTTPRequestTree</a>(); <span class="comment">// GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0</span></div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <a class="code" href="structT.html">T</a> *htc = <a class="code" href="group__tree.html#ga7535eb2963c6cf5fc78cb14287581f92">_t_clone</a>(ht);</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <a class="code" href="structXaddr.html">Xaddr</a> y = _a_new_instance(&amp;i,ht);</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    <a class="code" href="structS.html">S</a> *s = __a_serialize_instances(&amp;i);</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    _a_free_instances(&amp;i);</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    __a_unserialize_instances(G_sem,&amp;i,s);</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    spec_is_str_equal(t2s(_a_get_instance(&amp;i,x)),<span class="stringliteral">&quot;(PARAMS (TEST_INT_SYMBOL:314))&quot;</span>);</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    spec_is_str_equal(t2s(_a_get_instance(&amp;i,y)),t2s(htc));</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    spec_is_str_equal(t2s(_a_get_instance(&amp;i,z)),<span class="stringliteral">&quot;(TEST_INT_SYMBOL:2)&quot;</span>);</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(htc);</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    _a_free_instances(&amp;i);</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    free(s);</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;}</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="keywordtype">void</span> testAccToken() {</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    <a class="code" href="structT.html">Instances</a> i = NULL;</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    <a class="code" href="structT.html">T</a> *t,*token1,*token2,*d1,*d2;</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <a class="code" href="structXaddr.html">Xaddr</a> x,xx;</div>
 <div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    testAccBootStrap();</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    testAccInstances();</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    testAccGetInstances();</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    testAccPersistInstances();</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;}</div>
-<div class="ttc" id="group__tree_html_ga25dd0f385044ffbcc7c215ea80fa00b4"><div class="ttname"><a href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a></div><div class="ttdeci">T * _t_new_root(Symbol symbol)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00149">tree.c:149</a></div></div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    t = _t_newi(0,TEST_INT_SYMBOL,1);</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    x = _a_new_instance(&amp;i,t);</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    d1 = _t_newi(0,TEST_INT_SYMBOL,314); <span class="comment">// dependency 1</span></div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    d2 = _t_newi(0,TEST_INT_SYMBOL,123); <span class="comment">// dependency 2</span></div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    <span class="comment">// generate a token for the xaddr with  each dependency</span></div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    token1 = _a_gen_token(&amp;i,x,d1);</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    token2 = _a_gen_token(&amp;i,x,d2);</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    spec_is_str_equal(t2s(i),<span class="stringliteral">&quot;(INSTANCE_STORE (INSTANCES (SYMBOL_INSTANCES:TEST_INT_SYMBOL (TEST_INT_SYMBOL:1))) (INSTANCE_TOKENS (LAST_TOKEN:2) (INSTANCE_TOKEN:1 (TOKEN_XADDR:TEST_INT_SYMBOL.1) (DEPENDENCY_HASH:1156909558)) (INSTANCE_TOKEN:2 (TOKEN_XADDR:TEST_INT_SYMBOL.1) (DEPENDENCY_HASH:1552538631))))&quot;</span>);</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <span class="comment">// test getting back xaddrs from tokens and their dependency</span></div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    xx = _a_get_token_xaddr(&amp;i,token1,d1);</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    spec_is_xaddr_equal(G_sem,x,xx);</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    xx = _a_get_token_xaddr(&amp;i,token2,d2);</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    spec_is_xaddr_equal(G_sem,x,xx);</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    <span class="comment">// test that getting an xaddr from a token with an incorrect dependency fails</span></div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    xx = _a_get_token_xaddr(&amp;i,token1,d2);</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    spec_is_true(is_null_xaddr(xx));</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    xx = _a_get_token_xaddr(&amp;i,token2,d1);</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    spec_is_true(is_null_xaddr(xx));</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    <span class="comment">// test adding a dependency to a token</span></div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    <a class="code" href="structT.html">T</a> *d3 = _t_newi(0,TEST_INT_SYMBOL,999); <span class="comment">// dependency 3</span></div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    xx = _a_get_token_xaddr(&amp;i,token1,d3);</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    spec_is_true(is_null_xaddr(xx));</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    _a_add_dependency(&amp;i,token1,d3);</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    <span class="keywordtype">char</span> *with_two_dependencies = <span class="stringliteral">&quot;(INSTANCE_STORE (INSTANCES (SYMBOL_INSTANCES:TEST_INT_SYMBOL (TEST_INT_SYMBOL:1))) (INSTANCE_TOKENS (LAST_TOKEN:2) (INSTANCE_TOKEN:1 (TOKEN_XADDR:TEST_INT_SYMBOL.1) (DEPENDENCY_HASH:1156909558) (DEPENDENCY_HASH:1973223375)) (INSTANCE_TOKEN:2 (TOKEN_XADDR:TEST_INT_SYMBOL.1) (DEPENDENCY_HASH:1552538631))))&quot;</span>;</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    spec_is_str_equal(t2s(i),with_two_dependencies);</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    <span class="comment">// check that dependency isn&#39;t added in twice</span></div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    _a_add_dependency(&amp;i,token1,d3);</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    spec_is_str_equal(t2s(i),with_two_dependencies);</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    xx = _a_get_token_xaddr(&amp;i,token1,d3);</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    spec_is_xaddr_equal(G_sem,x,xx);</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    xx = _a_get_token_xaddr(&amp;i,token2,d3);</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    spec_is_true(is_null_xaddr(xx));</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    <span class="comment">// test deleting a dependency</span></div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    _a_delete_dependency(&amp;i,token1,d3);</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    spec_is_str_equal(t2s(i),<span class="stringliteral">&quot;(INSTANCE_STORE (INSTANCES (SYMBOL_INSTANCES:TEST_INT_SYMBOL (TEST_INT_SYMBOL:1))) (INSTANCE_TOKENS (LAST_TOKEN:2) (INSTANCE_TOKEN:1 (TOKEN_XADDR:TEST_INT_SYMBOL.1) (DEPENDENCY_HASH:1156909558)) (INSTANCE_TOKEN:2 (TOKEN_XADDR:TEST_INT_SYMBOL.1) (DEPENDENCY_HASH:1552538631))))&quot;</span>);</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;    xx = _a_get_token_xaddr(&amp;i,token1,d3);</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    spec_is_true(is_null_xaddr(xx));</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    <span class="comment">// test deleting a token</span></div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    _a_delete_token(&amp;i,token1);</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    spec_is_str_equal(t2s(i),<span class="stringliteral">&quot;(INSTANCE_STORE (INSTANCES (SYMBOL_INSTANCES:TEST_INT_SYMBOL (TEST_INT_SYMBOL:1))) (INSTANCE_TOKENS (LAST_TOKEN:2) (INSTANCE_TOKEN:2 (TOKEN_XADDR:TEST_INT_SYMBOL.1) (DEPENDENCY_HASH:1552538631))))&quot;</span>);</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(token1);</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(token2);</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(d1);</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(d2);</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    <a class="code" href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a>(d3);</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;    _a_free_instances(&amp;i);</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;}</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;<span class="keywordtype">void</span> testAccumulator() {</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    <span class="keyword">struct </span>stat st = {0};</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    <span class="keywordtype">char</span> *temp_dir = <span class="stringliteral">&quot;tmp&quot;</span>;</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    <span class="keywordflow">if</span> (stat(temp_dir, &amp;st) == -1) {</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        mkdir(temp_dir,0700);</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    }</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    testAccBootStrap();</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    testAccInstances();</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    testAccGetInstances();</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    testAccPersistInstances();</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    testAccToken();</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;}</div>
+<div class="ttc" id="group__tree_html_ga25dd0f385044ffbcc7c215ea80fa00b4"><div class="ttname"><a href="group__tree.html#ga25dd0f385044ffbcc7c215ea80fa00b4">_t_new_root</a></div><div class="ttdeci">T * _t_new_root(Symbol symbol)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00159">tree.c:159</a></div></div>
 <div class="ttc" id="structT_html"><div class="ttname"><a href="structT.html">T</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00114">ceptr_types.h:114</a></div></div>
 <div class="ttc" id="structS_html"><div class="ttname"><a href="structS.html">S</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00068">ceptr_types.h:68</a></div></div>
-<div class="ttc" id="group__tree_html_ga7535eb2963c6cf5fc78cb14287581f92"><div class="ttname"><a href="group__tree.html#ga7535eb2963c6cf5fc78cb14287581f92">_t_clone</a></div><div class="ttdeci">T * _t_clone(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00579">tree.c:579</a></div></div>
+<div class="ttc" id="group__tree_html_ga7535eb2963c6cf5fc78cb14287581f92"><div class="ttname"><a href="group__tree.html#ga7535eb2963c6cf5fc78cb14287581f92">_t_clone</a></div><div class="ttdeci">T * _t_clone(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00588">tree.c:588</a></div></div>
 <div class="ttc" id="group__accumulator_html_gacd134fcef0a0eb8ff30060432bb2e485"><div class="ttname"><a href="group__accumulator.html#gacd134fcef0a0eb8ff30060432bb2e485">_a_shut_down</a></div><div class="ttdeci">void _a_shut_down()</div><div class="ttdef"><b>Definition:</b> <a href="accumulator_8c_source.html#l00134">accumulator.c:134</a></div></div>
-<div class="ttc" id="structReceptor_html_af8aee3ef6d1d93b80427faa57e6f1468"><div class="ttname"><a href="structReceptor.html#af8aee3ef6d1d93b80427faa57e6f1468">Receptor::flux</a></div><div class="ttdeci">T * flux</div><div class="ttdoc">pointer for quick access to the flux </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00235">ceptr_types.h:235</a></div></div>
-<div class="ttc" id="structReceptor_html_aec6f1eee133a993b59baf50e75620fb6"><div class="ttname"><a href="structReceptor.html#aec6f1eee133a993b59baf50e75620fb6">Receptor::root</a></div><div class="ttdeci">T * root</div><div class="ttdoc">RECEPTOR_INSTANCE semantic tree. </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00230">ceptr_types.h:230</a></div></div>
+<div class="ttc" id="structReceptor_html_af8aee3ef6d1d93b80427faa57e6f1468"><div class="ttname"><a href="structReceptor.html#af8aee3ef6d1d93b80427faa57e6f1468">Receptor::flux</a></div><div class="ttdeci">T * flux</div><div class="ttdoc">pointer for quick access to the flux </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00241">ceptr_types.h:241</a></div></div>
+<div class="ttc" id="structReceptor_html_aec6f1eee133a993b59baf50e75620fb6"><div class="ttname"><a href="structReceptor.html#aec6f1eee133a993b59baf50e75620fb6">Receptor::root</a></div><div class="ttdeci">T * root</div><div class="ttdoc">RECEPTOR_INSTANCE semantic tree. </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00236">ceptr_types.h:236</a></div></div>
 <div class="ttc" id="group__accumulator_html_gaf3d0afe467ab198fc69ccaf7ee9fb5e9"><div class="ttname"><a href="group__accumulator.html#gaf3d0afe467ab198fc69ccaf7ee9fb5e9">_a_boot</a></div><div class="ttdeci">void _a_boot(char *dir_path)</div><div class="ttdef"><b>Definition:</b> <a href="accumulator_8c_source.html#l00060">accumulator.c:60</a></div></div>
 <div class="ttc" id="structVMHost_html_a95ef186e3477224ee0be117e7f9abbe3"><div class="ttname"><a href="structVMHost.html#a95ef186e3477224ee0be117e7f9abbe3">VMHost::active_receptors</a></div><div class="ttdeci">ActiveReceptor active_receptors[MAX_ACTIVE_RECEPTORS]</div><div class="ttdoc">pointer to array that holds all currently active receptors </div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8h_source.html#l00045">vmhost.h:45</a></div></div>
 <div class="ttc" id="http__example_8h_html_a1c182b5a6e82ef49c6967183a15c3e8b"><div class="ttname"><a href="http__example_8h.html#a1c182b5a6e82ef49c6967183a15c3e8b">_makeTestHTTPRequestTree</a></div><div class="ttdeci">T * _makeTestHTTPRequestTree()</div><div class="ttdoc">[makeTestHTTPRequestTree] </div><div class="ttdef"><b>Definition:</b> <a href="http__example_8h_source.html#l00026">http_example.h:26</a></div></div>
-<div class="ttc" id="group__receptor_html_gadc618904f81240b244e816234d1c906e"><div class="ttname"><a href="group__receptor.html#gadc618904f81240b244e816234d1c906e">_r_get_instance</a></div><div class="ttdeci">T * _r_get_instance(Receptor *r, Xaddr x)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00351">receptor.c:351</a></div></div>
-<div class="ttc" id="structReceptor_html"><div class="ttname"><a href="structReceptor.html">Receptor</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00229">ceptr_types.h:229</a></div></div>
-<div class="ttc" id="structXaddr_html"><div class="ttname"><a href="structXaddr.html">Xaddr</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00257">ceptr_types.h:257</a></div></div>
+<div class="ttc" id="group__receptor_html_gadc618904f81240b244e816234d1c906e"><div class="ttname"><a href="group__receptor.html#gadc618904f81240b244e816234d1c906e">_r_get_instance</a></div><div class="ttdeci">T * _r_get_instance(Receptor *r, Xaddr x)</div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00376">receptor.c:376</a></div></div>
+<div class="ttc" id="structReceptor_html"><div class="ttname"><a href="structReceptor.html">Receptor</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00235">ceptr_types.h:235</a></div></div>
+<div class="ttc" id="structXaddr_html"><div class="ttname"><a href="structXaddr.html">Xaddr</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00265">ceptr_types.h:265</a></div></div>
 <div class="ttc" id="structVMHost_html_a218d2e91e129dee7c71e1b06ff533a6e"><div class="ttname"><a href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">VMHost::r</a></div><div class="ttdeci">Receptor * r</div><div class="ttdoc">Receptor data for this vm host. </div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8h_source.html#l00043">vmhost.h:43</a></div></div>
-<div class="ttc" id="group__tree_html_ga31e55cdc031e5f12523b998e89080db6"><div class="ttname"><a href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a></div><div class="ttdeci">void _t_free(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00516">tree.c:516</a></div></div>
+<div class="ttc" id="group__tree_html_ga31e55cdc031e5f12523b998e89080db6"><div class="ttname"><a href="group__tree.html#ga31e55cdc031e5f12523b998e89080db6">_t_free</a></div><div class="ttdeci">void _t_free(T *t)</div><div class="ttdef"><b>Definition:</b> <a href="tree_8c_source.html#l00525">tree.c:525</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><b>accumulator_spec.h</b></li>
-    <li class="footer">Generated on Sat Mar 5 2016 10:23:24 for ceptr by
+    <li class="footer">Generated on Tue Apr 12 2016 21:48:56 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

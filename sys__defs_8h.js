@@ -7,6 +7,7 @@ var sys__defs_8h =
     [ "sData", "sys__defs_8h.html#a89ba96850ddb85f8d4e351fd8383a2b2", null ],
     [ "sLabel", "sys__defs_8h.html#a16d2a922ec134260eeb2be0a8813ac9d", null ],
     [ "sP", "sys__defs_8h.html#a730d238b56524b7c068aac53a5df583b", null ],
+    [ "sPL", "sys__defs_8h.html#a9be470072673a2d99873fde69b8da1e4", null ],
     [ "sProt", "sys__defs_8h.html#ad531ce97ea095fe35c7ce657ba80c160", null ],
     [ "sT", "sys__defs_8h.html#a8905a396623084b0907589f66b3e69bc", null ],
     [ "sT_BANG", "sys__defs_8h.html#a7e137737198173e708fe6065281b7ed5", null ],

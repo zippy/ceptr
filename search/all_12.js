@@ -27,6 +27,7 @@ var searchData=
   ['shell_2ec',['shell.c',['../shell_8c.html',1,'']]],
   ['shell_2eh',['shell.h',['../shell_8h.html',1,'']]],
   ['sliteral',['Sliteral',['../structSliteral.html',1,'']]],
+  ['socketlistener',['SocketListener',['../structSocketListener.html',1,'']]],
   ['spec_5futils_2ec',['spec_utils.c',['../spec__utils_8c.html',1,'']]],
   ['spec_5futils_2eh',['spec_utils.h',['../spec__utils_8h.html',1,'']]],
   ['sread',['SREAD',['../tree_8c.html#a3f7ee4a117ea9cd3ad10aaef8a50400a',1,'tree.c']]],

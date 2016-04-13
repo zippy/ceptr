@@ -8,6 +8,7 @@ var searchData=
   ['sgroupclose',['SgroupClose',['../structSgroupClose.html',1,'']]],
   ['sgroupopen',['SgroupOpen',['../structSgroupOpen.html',1,'']]],
   ['sliteral',['Sliteral',['../structSliteral.html',1,'']]],
+  ['socketlistener',['SocketListener',['../structSocketListener.html',1,'']]],
   ['sstate',['SState',['../structSState.html',1,'']]],
   ['stream',['Stream',['../structStream.html',1,'']]],
   ['stypedata',['STypeData',['../unionSTypeData.html',1,'']]],

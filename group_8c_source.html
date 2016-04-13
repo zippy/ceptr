@@ -280,7 +280,7 @@ $(document).ready(function(){initNavTree('group_8c_source.html','');});
 <div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    <span class="comment">/* t = _t_newr(proc,RESPOND); */</span></div>
 <div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    <span class="comment">/* _t_news(t,RESPONSE_CARRIER,talking); */</span></div>
 <div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    <span class="comment">//  T *e = __r_build_expectation(join,join_stx,join_process,0,0);</span></div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    <span class="comment">//  T *e = __r_build_expectation(join,join_stx,join_process,0,0,NULL,NULL);</span></div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;</div>
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;</div>
 <div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <span class="comment">/* group { */</span></div>
@@ -320,15 +320,15 @@ $(document).ready(function(){initNavTree('group_8c_source.html','');});
 <div class="ttc" id="debug_8h_html"><div class="ttname"><a href="debug_8h.html">debug.h</a></div></div>
 <div class="ttc" id="group_8h_html"><div class="ttname"><a href="group_8h.html">group.h</a></div><div class="ttdoc">group communication receptors header file </div></div>
 <div class="ttc" id="protocol_8h_html"><div class="ttname"><a href="protocol_8h.html">protocol.h</a></div><div class="ttdoc">protocol helpers header file </div></div>
-<div class="ttc" id="group__vmhost_html_ga53694170e5452b8062ec405e6a9a3f60"><div class="ttname"><a href="group__vmhost.html#ga53694170e5452b8062ec405e6a9a3f60">_v_activate</a></div><div class="ttdeci">void _v_activate(VMHost *v, Xaddr x)</div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8c_source.html#l00170">vmhost.c:170</a></div></div>
-<div class="ttc" id="group__receptor_html_ga9f66f2aaba88463a6e1f238a367a33f9"><div class="ttname"><a href="group__receptor.html#ga9f66f2aaba88463a6e1f238a367a33f9">_r_new</a></div><div class="ttdeci">Receptor * _r_new(SemTable *sem, SemanticID r)</div><div class="ttdoc">Creates a new receptor. </div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00085">receptor.c:85</a></div></div>
-<div class="ttc" id="group__def_html_ga7b491672589fc853007cac114a7f0a03"><div class="ttname"><a href="group__def.html#ga7b491672589fc853007cac114a7f0a03">_d_define_receptor</a></div><div class="ttdeci">SemanticID _d_define_receptor(SemTable *sem, char *label, T *def, Context c)</div><div class="ttdef"><b>Definition:</b> <a href="def_8c_source.html#l00395">def.c:395</a></div></div>
-<div class="ttc" id="structSemTable_html"><div class="ttname"><a href="structSemTable.html">SemTable</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00215">ceptr_types.h:215</a></div></div>
+<div class="ttc" id="group__vmhost_html_ga53694170e5452b8062ec405e6a9a3f60"><div class="ttname"><a href="group__vmhost.html#ga53694170e5452b8062ec405e6a9a3f60">_v_activate</a></div><div class="ttdeci">void _v_activate(VMHost *v, Xaddr x)</div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8c_source.html#l00171">vmhost.c:171</a></div></div>
+<div class="ttc" id="group__receptor_html_ga9f66f2aaba88463a6e1f238a367a33f9"><div class="ttname"><a href="group__receptor.html#ga9f66f2aaba88463a6e1f238a367a33f9">_r_new</a></div><div class="ttdeci">Receptor * _r_new(SemTable *sem, SemanticID r)</div><div class="ttdoc">Creates a new receptor. </div><div class="ttdef"><b>Definition:</b> <a href="receptor_8c_source.html#l00088">receptor.c:88</a></div></div>
+<div class="ttc" id="group__def_html_ga7b491672589fc853007cac114a7f0a03"><div class="ttname"><a href="group__def.html#ga7b491672589fc853007cac114a7f0a03">_d_define_receptor</a></div><div class="ttdeci">SemanticID _d_define_receptor(SemTable *sem, char *label, T *def, Context c)</div><div class="ttdef"><b>Definition:</b> <a href="def_8c_source.html#l00400">def.c:400</a></div></div>
+<div class="ttc" id="structSemTable_html"><div class="ttname"><a href="structSemTable.html">SemTable</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00221">ceptr_types.h:221</a></div></div>
 <div class="ttc" id="structVMHost_html"><div class="ttname"><a href="structVMHost.html">VMHost</a></div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8h_source.html#l00040">vmhost.h:40</a></div></div>
-<div class="ttc" id="structReceptor_html_a4bb9ce729b6b85fb99326e9df7b23cbd"><div class="ttname"><a href="structReceptor.html#a4bb9ce729b6b85fb99326e9df7b23cbd">Receptor::sem</a></div><div class="ttdeci">SemTable * sem</div><div class="ttdoc">pointer back to the semantic table context where the receptor&#39;s running </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00234">ceptr_types.h:234</a></div></div>
+<div class="ttc" id="structReceptor_html_a4bb9ce729b6b85fb99326e9df7b23cbd"><div class="ttname"><a href="structReceptor.html#a4bb9ce729b6b85fb99326e9df7b23cbd">Receptor::sem</a></div><div class="ttdeci">SemTable * sem</div><div class="ttdoc">pointer back to the semantic table context where the receptor&#39;s running </div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00240">ceptr_types.h:240</a></div></div>
 <div class="ttc" id="group__accumulator_html_ga46ff4d16575a21f8c7d02fa754ac6d2f"><div class="ttname"><a href="group__accumulator.html#ga46ff4d16575a21f8c7d02fa754ac6d2f">_o_express_role</a></div><div class="ttdeci">void _o_express_role(Receptor *r, Protocol protocol, Symbol role, Aspect aspect, T *bindings)</div><div class="ttdef"><b>Definition:</b> <a href="protocol_8c_source.html#l00364">protocol.c:364</a></div></div>
-<div class="ttc" id="structReceptor_html"><div class="ttname"><a href="structReceptor.html">Receptor</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00229">ceptr_types.h:229</a></div></div>
-<div class="ttc" id="structXaddr_html"><div class="ttname"><a href="structXaddr.html">Xaddr</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00257">ceptr_types.h:257</a></div></div>
+<div class="ttc" id="structReceptor_html"><div class="ttname"><a href="structReceptor.html">Receptor</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00235">ceptr_types.h:235</a></div></div>
+<div class="ttc" id="structXaddr_html"><div class="ttname"><a href="structXaddr.html">Xaddr</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00265">ceptr_types.h:265</a></div></div>
 <div class="ttc" id="structVMHost_html_a218d2e91e129dee7c71e1b06ff533a6e"><div class="ttname"><a href="structVMHost.html#a218d2e91e129dee7c71e1b06ff533a6e">VMHost::r</a></div><div class="ttdeci">Receptor * r</div><div class="ttdoc">Receptor data for this vm host. </div><div class="ttdef"><b>Definition:</b> <a href="vmhost_8h_source.html#l00043">vmhost.h:43</a></div></div>
 <div class="ttc" id="structSemanticID_html"><div class="ttname"><a href="structSemanticID.html">SemanticID</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00022">ceptr_types.h:22</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
@@ -337,7 +337,7 @@ $(document).ready(function(){initNavTree('group_8c_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="group_8c.html">group.c</a></li>
-    <li class="footer">Generated on Sat Mar 5 2016 10:23:25 for ceptr by
+    <li class="footer">Generated on Tue Apr 12 2016 21:48:56 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

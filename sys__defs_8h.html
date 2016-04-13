@@ -123,7 +123,8 @@ Include dependency graph for sys_defs.h:</div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="sys__defs_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="sys__defs_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 </div>
 <p><a href="sys__defs_8h_source.html">Go to the source code of this file.</a></p>
@@ -157,6 +158,9 @@ Macros</h2></td></tr>
 <tr class="memitem:a730d238b56524b7c068aac53a5df583b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a730d238b56524b7c068aac53a5df583b"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>sP</b>(ctx, name, code, intention,...)&#160;&#160;&#160;name = <a class="el" href="group__def.html#gad9a468887d0dc74ab76ad59a39aa423e">_d_define_process</a>(sem,code,&quot;&quot; #name &quot;&quot;,intention,__p_make_signature(__VA_ARGS__),NULL,ctx)</td></tr>
 <tr class="separator:a730d238b56524b7c068aac53a5df583b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9be470072673a2d99873fde69b8da1e4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9be470072673a2d99873fde69b8da1e4"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>sPL</b>(ctx, name, code, intention, link_to, link_as,...)&#160;&#160;&#160;name = <a class="el" href="group__def.html#gad9a468887d0dc74ab76ad59a39aa423e">_d_define_process</a>(sem,code,&quot;&quot; #name &quot;&quot;,intention,__p_make_signature(__VA_ARGS__), <a class="el" href="group__tree.html#gaebfc497f04bdfbfd3a241771b146bebc">_t_build</a>(sem,0,PROCESS_LINK,PROCESS_OF_STRUCTURE,link_to,PROCESS_TYPE,link_as,NULL_SYMBOL,NULL_SYMBOL),ctx)</td></tr>
+<tr class="separator:a9be470072673a2d99873fde69b8da1e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8dfb82e5a17f4e53f0f05a93a46e7c72"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8dfb82e5a17f4e53f0f05a93a46e7c72"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>sT_OR</b>(...)&#160;&#160;&#160;sT_(sem,STRUCTURE_OR,__VA_ARGS__)</td></tr>
 <tr class="separator:a8dfb82e5a17f4e53f0f05a93a46e7c72"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -229,7 +233,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>G_label</b></td></t
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="sys__defs_8h.html">sys_defs.h</a></li>
-    <li class="footer">Generated on Sat Mar 5 2016 10:23:25 for ceptr by
+    <li class="footer">Generated on Tue Apr 12 2016 21:48:57 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

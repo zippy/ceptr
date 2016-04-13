@@ -170,7 +170,7 @@ $(document).ready(function(){initNavTree('util_8c_source.html','');});
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    }</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;}</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keywordtype">void</span> readFile(<span class="keywordtype">char</span> *fn,<span class="keywordtype">void</span> **data,<span class="keywordtype">size_t</span> *size) {</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keywordtype">void</span> *readFile(<span class="keywordtype">char</span> *fn,<span class="keywordtype">size_t</span> *size) {</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    off_t file_size;</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordtype">char</span> *buffer;</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keyword">struct </span>stat stbuf;</div>
@@ -200,8 +200,8 @@ $(document).ready(function(){initNavTree('util_8c_source.html','');});
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        free(buffer);</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        raise_error(<span class="stringliteral">&quot;error reading %s: %d&quot;</span>,fn,errno);</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    }</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    *data = buffer;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    close(fd);</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    close(fd);</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keywordflow">return</span> buffer;</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;}</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;uint64_t diff_micro(<span class="keyword">struct</span> timespec *start, <span class="keyword">struct</span> timespec *end)</div>
@@ -226,7 +226,7 @@ $(document).ready(function(){initNavTree('util_8c_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="util_8c.html">util.c</a></li>
-    <li class="footer">Generated on Sat Mar 5 2016 10:23:25 for ceptr by
+    <li class="footer">Generated on Tue Apr 12 2016 21:48:57 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

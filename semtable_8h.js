@@ -10,6 +10,7 @@ var semtable_8h =
     [ "_sem_free", "semtable_8h.html#aa78cb06b6e350914d067a545a45d870c", null ],
     [ "_sem_free_context", "semtable_8h.html#ad0fa66ea487fff7e215e508526979749", null ],
     [ "_sem_get_by_label", "semtable_8h.html#a7320b3dfa0494dcaeb27f342aeb19c74", null ],
+    [ "_sem_get_label", "semtable_8h.html#a4577e7a8225930a298484ae245244b0d", null ],
     [ "_sem_get_name", "semtable_8h.html#ab9c386734b4ac2b01f11c82bf1af1c70", null ],
     [ "_sem_get_symbol_structure", "semtable_8h.html#a1fdd0134fe282f8ca84baf6aee9e3e14", null ],
     [ "_sem_new", "semtable_8h.html#a7611e7c7d2506ed3e120881656963e53", null ],

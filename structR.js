@@ -2,6 +2,7 @@ var structR =
 [
     [ "callee", "structR.html#aec3b036fadeaf91cc4ece8727b9d683c", null ],
     [ "caller", "structR.html#ac8848a92ff8778bc051c92589ed7b2df", null ],
+    [ "conversation", "structR.html#a3ece97cab1f94e844efb881e8e3dd8d9", null ],
     [ "err", "structR.html#a162dc9bc3600d14082290d73d6e86ccc", null ],
     [ "id", "structR.html#a4182dd8437a5164bc6f4363b52ec0656", null ],
     [ "idx", "structR.html#a79fed799edaa4716723ebc8c0e44dc8c", null ],

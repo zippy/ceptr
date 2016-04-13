@@ -140,12 +140,24 @@ pthread_cond_t&#160;</td><td class="memItemRight" valign="bottom"><b>cv</b></td>
 <tr class="memitem:a2fa4478cf31c4f9da7ff76ff01928f2b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2fa4478cf31c4f9da7ff76ff01928f2b"></a>
 char *&#160;</td><td class="memItemRight" valign="bottom"><b>buf</b></td></tr>
 <tr class="separator:a2fa4478cf31c4f9da7ff76ff01928f2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9a7ce2a565c065ce5468192cd75b1690"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9a7ce2a565c065ce5468192cd75b1690"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>buf_size</b></td></tr>
-<tr class="separator:a9a7ce2a565c065ce5468192cd75b1690"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33b847d69114c9cf31f831f689723baa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a33b847d69114c9cf31f831f689723baa"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>data_size</b></td></tr>
-<tr class="separator:a33b847d69114c9cf31f831f689723baa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b2c1f2977163d451f2f1265d4d6ba63"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6b2c1f2977163d451f2f1265d4d6ba63"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>buf_size</b></td></tr>
+<tr class="separator:a6b2c1f2977163d451f2f1265d4d6ba63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41a7ca362e29b7c00bd3e1e5b8919bdb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a41a7ca362e29b7c00bd3e1e5b8919bdb"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>bytes_used</b></td></tr>
+<tr class="separator:a41a7ca362e29b7c00bd3e1e5b8919bdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82b82ffc3d42f9fbb9e776c85ce7065e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a82b82ffc3d42f9fbb9e776c85ce7065e"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>scan_state</b></td></tr>
+<tr class="separator:a82b82ffc3d42f9fbb9e776c85ce7065e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb0a376c822170895b3d47f4b845af47"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abb0a376c822170895b3d47f4b845af47"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>unit_start</b></td></tr>
+<tr class="separator:abb0a376c822170895b3d47f4b845af47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2dc5762581a95176bc2481be248db2ee"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2dc5762581a95176bc2481be248db2ee"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>unit_size</b></td></tr>
+<tr class="separator:a2dc5762581a95176bc2481be248db2ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8baafb0ecc4f61a33234fe01cd90863"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae8baafb0ecc4f61a33234fe01cd90863"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>partial</b></td></tr>
+<tr class="separator:ae8baafb0ecc4f61a33234fe01cd90863"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1617596b012929a6a68a37fffe2b75a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af1617596b012929a6a68a37fffe2b75a"></a>
 hasDataCallbackFn&#160;</td><td class="memItemRight" valign="bottom"><b>callback</b></td></tr>
 <tr class="separator:af1617596b012929a6a68a37fffe2b75a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -155,18 +167,21 @@ void *&#160;</td><td class="memItemRight" valign="bottom"><b>callback_arg1</b></
 <tr class="memitem:a08e31ce0e3f9c976b97b39f21c01a9aa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a08e31ce0e3f9c976b97b39f21c01a9aa"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>callback_arg2</b></td></tr>
 <tr class="separator:a08e31ce0e3f9c976b97b39f21c01a9aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e809cb4f555bda3401b15bf1fa52bdb"><td class="memItemLeft" ><a class="anchor" id="a2e809cb4f555bda3401b15bf1fa52bdb"></a>
+<tr class="memitem:aad1f4b406bde139b8ed48cd4397c8c5e"><td class="memItemLeft" ><a class="anchor" id="aad1f4b406bde139b8ed48cd4397c8c5e"></a>
 union {</td></tr>
-<tr class="memitem:a4729ccdc7ad9d8f63b05d236047f1c84"><td class="memItemLeft" >
+<tr class="memitem:a4efc14a271855e96386026167f24d786"><td class="memItemLeft" >
 &#160;&#160;&#160;FILE *&#160;&#160;&#160;<b>unix_stream</b></td></tr>
-<tr class="separator:a4729ccdc7ad9d8f63b05d236047f1c84"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e809cb4f555bda3401b15bf1fa52bdb"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><b>data</b></td></tr>
-<tr class="separator:a2e809cb4f555bda3401b15bf1fa52bdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a4efc14a271855e96386026167f24d786"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a680aad2c0f15b3e4a7a0d6b3be16fe7f"><td class="memItemLeft" >
+&#160;&#160;&#160;int&#160;&#160;&#160;<b>socket_stream</b></td></tr>
+<tr class="separator:a680aad2c0f15b3e4a7a0d6b3be16fe7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad1f4b406bde139b8ed48cd4397c8c5e"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><b>data</b></td></tr>
+<tr class="separator:aad1f4b406bde139b8ed48cd4397c8c5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>abstraction for a stream data type </p>
 
-<p>Definition at line <a class="el" href="stream_8h_source.html#l00028">28</a> of file <a class="el" href="stream_8h_source.html">stream.h</a>.</p>
+<p>Definition at line <a class="el" href="stream_8h_source.html#l00030">30</a> of file <a class="el" href="stream_8h_source.html">stream.h</a>.</p>
 </div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li>src/<a class="el" href="stream_8h_source.html">stream.h</a></li>
 </ul>
@@ -176,7 +191,7 @@ union {</td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="structStream.html">Stream</a></li>
-    <li class="footer">Generated on Sat Mar 5 2016 10:23:25 for ceptr by
+    <li class="footer">Generated on Tue Apr 12 2016 21:48:57 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

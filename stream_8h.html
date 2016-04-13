@@ -113,15 +113,18 @@ $(document).ready(function(){initNavTree('stream_8h.html','');});
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;stdio.h&gt;</code><br />
 <code>#include &lt;pthread.h&gt;</code><br />
+<code>#include &lt;stdbool.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for stream.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="stream_8h__incl.svg" width="174" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="stream_8h__incl.svg" width="272" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="stream_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="stream_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 </div>
 <p><a href="stream_8h_source.html">Go to the source code of this file.</a></p>
@@ -130,37 +133,80 @@ This graph shows which files directly or indirectly include this file:</div>
 Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structStream.html">Stream</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSocketListener.html">SocketListener</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afefb79c0216dd153cf3a026168a66eaa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afefb79c0216dd153cf3a026168a66eaa"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>DEFAULT_READER_BUFFER_SIZE</b>&#160;&#160;&#160;1000</td></tr>
+<tr class="separator:afefb79c0216dd153cf3a026168a66eaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84623b4eb28910e55aa35946fa72c62f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a84623b4eb28910e55aa35946fa72c62f"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>_st_new_unix_stream</b>(s, r)&#160;&#160;&#160;<a class="el" href="stream_8h.html#a0f0967f1aaf65274ae114078b4346885">__st_new_unix_stream</a>(s,r?DEFAULT_READER_BUFFER_SIZE:0)</td></tr>
+<tr class="separator:a84623b4eb28910e55aa35946fa72c62f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4aef522d32d3950b723cdde07a5a488b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4aef522d32d3950b723cdde07a5a488b"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>__st_init_scan</b>(s)&#160;&#160;&#160;s-&gt;scan_state = StreamScanInitial</td></tr>
+<tr class="separator:a4aef522d32d3950b723cdde07a5a488b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15106e05dac01e6d61eb4ebd5e4bd815"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a15106e05dac01e6d61eb4ebd5e4bd815"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>__st_buf_full</b>(s)&#160;&#160;&#160;(s-&gt;bytes_used == s-&gt;buf_size)</td></tr>
+<tr class="separator:a15106e05dac01e6d61eb4ebd5e4bd815"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a531ce39ff033657e7ef4ab82e7f6f93c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a531ce39ff033657e7ef4ab82e7f6f93c"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>_st_is_alive</b>(st)&#160;&#160;&#160;((st-&gt;flags &amp; StreamAlive) || (st-&gt;flags &amp; StreamReader &amp;&amp; (st-&gt;scan_state != StreamScanComplete)))</td></tr>
+<tr class="separator:a531ce39ff033657e7ef4ab82e7f6f93c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9ebf71538d56e7938e86b92db4d9ca32"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9ebf71538d56e7938e86b92db4d9ca32"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>_st_data</b>(st)&#160;&#160;&#160;(st)-&gt;buf</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>_st_data</b>(st)&#160;&#160;&#160;(&amp;(st)-&gt;buf[st-&gt;unit_start])</td></tr>
 <tr class="separator:a9ebf71538d56e7938e86b92db4d9ca32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afcbfe05dbc0da4f57e892de6e64018a3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afcbfe05dbc0da4f57e892de6e64018a3"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>_st_data_size</b>(st)&#160;&#160;&#160;(st)-&gt;data_size</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>_st_data_size</b>(st)&#160;&#160;&#160;(st)-&gt;unit_size</td></tr>
 <tr class="separator:afcbfe05dbc0da4f57e892de6e64018a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5653712efdf75595414f08800f191f73"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5653712efdf75595414f08800f191f73"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>StreamTypes</b> { <b>UnixStream</b> =123
+<tr class="memitem:a5653712efdf75595414f08800f191f73"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5653712efdf75595414f08800f191f73"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>StreamTypes</b> { <b>UnixStream</b>, 
+<b>SocketStream</b>
  }</td></tr>
 <tr class="separator:a5653712efdf75595414f08800f191f73"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aabfcbcb5ac86a1edac4035264bc7d2b8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aabfcbcb5ac86a1edac4035264bc7d2b8"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <br />
+<tr class="memitem:a4caf8d8f829279fba122163d961608a4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4caf8d8f829279fba122163d961608a4"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <br />
 &#160;&#160;<b>StreamHasData</b> =0x0001, 
 <b>StreamCloseOnFree</b> =0x0002, 
 <b>StreamReader</b> =0x0004, 
 <b>StreamWaiting</b> =0x0008, 
 <br />
-&#160;&#160;<b>StreamAlive</b> =0x8000
+&#160;&#160;<b>StreamAlive</b> =0x8000, 
+<b>StreamCloseAfterOneWrite</b> =0x0010, 
+<b>StreamDying</b> =0x0100
 <br />
  }</td></tr>
-<tr class="separator:aabfcbcb5ac86a1edac4035264bc7d2b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a4caf8d8f829279fba122163d961608a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00d54a45dd15144c1fa18944c2e39adc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a00d54a45dd15144c1fa18944c2e39adc"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>ScanStates</b> { <b>StreamScanInitial</b>, 
+<b>StreamScanSuccess</b>, 
+<b>StreamScanPartial</b>, 
+<b>StreamScanComplete</b>
+ }</td></tr>
+<tr class="separator:a00d54a45dd15144c1fa18944c2e39adc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e76c504c13a7baa62d7ea29c4af657b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9e76c504c13a7baa62d7ea29c4af657b"></a>
 typedef struct <a class="el" href="structStream.html">Stream</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Stream</b></td></tr>
 <tr class="separator:a9e76c504c13a7baa62d7ea29c4af657b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aae02eaa881e0ed98951c2e65d4cc418c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aae02eaa881e0ed98951c2e65d4cc418c"></a>
 typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><b>hasDataCallbackFn</b> )(<a class="el" href="structStream.html">Stream</a> *)</td></tr>
 <tr class="separator:aae02eaa881e0ed98951c2e65d4cc418c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a583a5536a8b45f8a542449b4ff3f7e5e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structStream.html">Stream</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stream_8h.html#a583a5536a8b45f8a542449b4ff3f7e5e">_st_new_unix_stream</a> (FILE *stream, int reader)</td></tr>
-<tr class="separator:a583a5536a8b45f8a542449b4ff3f7e5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab96be8edeffac68974f6a05117ba5200"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab96be8edeffac68974f6a05117ba5200"></a>
+typedef struct <a class="el" href="structSocketListener.html">SocketListener</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SocketListener</b></td></tr>
+<tr class="separator:ab96be8edeffac68974f6a05117ba5200"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ced44e979cbfc483921fdb8f9b81a34"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0ced44e979cbfc483921fdb8f9b81a34"></a>
+typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><b>lisenterConnectionCallbackFn</b> )(<a class="el" href="structStream.html">Stream</a> *, void *)</td></tr>
+<tr class="separator:a0ced44e979cbfc483921fdb8f9b81a34"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f0967f1aaf65274ae114078b4346885"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structStream.html">Stream</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stream_8h.html#a0f0967f1aaf65274ae114078b4346885">__st_new_unix_stream</a> (FILE *stream, size_t reader_buffer_size)</td></tr>
+<tr class="separator:a0f0967f1aaf65274ae114078b4346885"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a540f55876328f494e59c51c761aa7487"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a540f55876328f494e59c51c761aa7487"></a>
+<a class="el" href="structStream.html">Stream</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>__st_alloc_stream</b> ()</td></tr>
+<tr class="separator:a540f55876328f494e59c51c761aa7487"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a195c164d4a468edbd6b434e2cd92df"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stream_8h.html#a4a195c164d4a468edbd6b434e2cd92df">__st_unix_stream_load</a> (<a class="el" href="structStream.html">Stream</a> *st)</td></tr>
+<tr class="separator:a4a195c164d4a468edbd6b434e2cd92df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6f033b47452ebffad8b4d613700cd7b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stream_8h.html#af6f033b47452ebffad8b4d613700cd7b">__st_scan</a> (<a class="el" href="structStream.html">Stream</a> *st)</td></tr>
+<tr class="separator:af6f033b47452ebffad8b4d613700cd7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad20ee66b188634c439da4f3f790ed7b1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSocketListener.html">SocketListener</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stream_8h.html#ad20ee66b188634c439da4f3f790ed7b1">_st_new_socket_listener</a> (int port, lisenterConnectionCallbackFn fn, void *callback_arg)</td></tr>
+<tr class="separator:ad20ee66b188634c439da4f3f790ed7b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb7b03c09131b8d30d20d3c59332218b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stream_8h.html#afb7b03c09131b8d30d20d3c59332218b">_st_close_listener</a> (<a class="el" href="structSocketListener.html">SocketListener</a> *l)</td></tr>
+<tr class="separator:afb7b03c09131b8d30d20d3c59332218b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb3d2ea8ba1e9e81d5804f68715ea529"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stream_8h.html#abb3d2ea8ba1e9e81d5804f68715ea529">_st_start_read</a> (<a class="el" href="structStream.html">Stream</a> *st)</td></tr>
 <tr class="separator:abb3d2ea8ba1e9e81d5804f68715ea529"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9bac5b101e58747900c48e16c0e0f94b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stream_8h.html#a9bac5b101e58747900c48e16c0e0f94b">_st_data_read</a> (<a class="el" href="structStream.html">Stream</a> *st)</td></tr>
-<tr class="separator:a9bac5b101e58747900c48e16c0e0f94b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1f81dee38191862a7c809d3b4b6809c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stream_8h.html#ae1f81dee38191862a7c809d3b4b6809c">_st_data_consumed</a> (<a class="el" href="structStream.html">Stream</a> *st)</td></tr>
+<tr class="separator:ae1f81dee38191862a7c809d3b4b6809c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2a9830ab76c5e671aaf4061b6bd296e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stream_8h.html#ab2a9830ab76c5e671aaf4061b6bd296e">_st_kill</a> (<a class="el" href="structStream.html">Stream</a> *st)</td></tr>
 <tr class="separator:ab2a9830ab76c5e671aaf4061b6bd296e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe0923e53392b62793ec3e80f88021aa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stream_8h.html#afe0923e53392b62793ec3e80f88021aa">_st_free</a> (<a class="el" href="structStream.html">Stream</a> *)</td></tr>
@@ -174,12 +220,102 @@ typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><b>hasDataCall
 
 <p>Definition in file <a class="el" href="stream_8h_source.html">stream.h</a>.</p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="a9bac5b101e58747900c48e16c0e0f94b"></a>
+<a class="anchor" id="a0f0967f1aaf65274ae114078b4346885"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void _st_data_read </td>
+          <td class="memname"><a class="el" href="structStream.html">Stream</a>* __st_new_unix_stream </td>
+          <td>(</td>
+          <td class="paramtype">FILE *&#160;</td>
+          <td class="paramname"><em>stream</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>reader_buffer_size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>create a new stream object of the unix file flavor</p>
+<p>if the the stream is a read stream you must pass in a starting buffer size </p>
+
+<p>Definition at line <a class="el" href="stream_8c_source.html#l00272">272</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af6f033b47452ebffad8b4d613700cd7b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void __st_scan </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structStream.html">Stream</a> *&#160;</td>
+          <td class="paramname"><em>st</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>scan a stream's buffer for a unit</p>
+<p>currently a unit simply is defined by a new-line char </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000034">Todo:</a></b></dt><dd>allow other delimiters to mark off a unit. </dd></dl>
+
+<p>Definition at line <a class="el" href="stream_8c_source.html#l00112">112</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a4a195c164d4a468edbd6b434e2cd92df"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t __st_unix_stream_load </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structStream.html">Stream</a> *&#160;</td>
+          <td class="paramname"><em>st</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>load file data into the stream buffer</p>
+<p>returns the number of bytes loaded if 0 bytes loaded, st-&gt;err will hold the reason, which is either because and EndOfFile condition, or a some other unix error (from errno)</p>
+<p>if the buffer is already full when this function is called, it will attempt to increase the buffer size with a realloc before reading. </p>
+
+<p>Definition at line <a class="el" href="stream_8c_source.html#l00047">47</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="afb7b03c09131b8d30d20d3c59332218b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void _st_close_listener </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSocketListener.html">SocketListener</a> *&#160;</td>
+          <td class="paramname"><em>l</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>close a socket listener </p>
+
+<p>Definition at line <a class="el" href="stream_8c_source.html#l00412">412</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ae1f81dee38191862a7c809d3b4b6809c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void _st_data_consumed </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structStream.html">Stream</a> *&#160;</td>
           <td class="paramname"><em>st</em></td><td>)</td>
@@ -189,7 +325,7 @@ typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><b>hasDataCall
 </div><div class="memdoc">
 <p>mark that data in a stream has been consumed </p>
 
-<p>Definition at line <a class="el" href="stream_8c_source.html#l00125">125</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
+<p>Definition at line <a class="el" href="stream_8c_source.html#l00438">438</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
 
 </div>
 </div>
@@ -201,14 +337,14 @@ typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><b>hasDataCall
           <td class="memname">void _st_free </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structStream.html">Stream</a> *&#160;</td>
-          <td class="paramname"><em>stream</em></td><td>)</td>
+          <td class="paramname"><em>st</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p>release the resources of a stream object </p>
 
-<p>Definition at line <a class="el" href="stream_8c_source.html#l00148">148</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
+<p>Definition at line <a class="el" href="stream_8c_source.html#l00475">475</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
 
 </div>
 </div>
@@ -228,25 +364,31 @@ typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><b>hasDataCall
 <p>kill a stream</p>
 <p>if a reader stream is blocked and waiting, calls _st_start_read so that the reader thread can complete. </p>
 
-<p>Definition at line <a class="el" href="stream_8c_source.html#l00136">136</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
+<p>Definition at line <a class="el" href="stream_8c_source.html#l00449">449</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a583a5536a8b45f8a542449b4ff3f7e5e"></a>
+<a class="anchor" id="ad20ee66b188634c439da4f3f790ed7b1"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structStream.html">Stream</a>* _st_new_unix_stream </td>
+          <td class="memname"><a class="el" href="structSocketListener.html">SocketListener</a>* _st_new_socket_listener </td>
           <td>(</td>
-          <td class="paramtype">FILE *&#160;</td>
-          <td class="paramname"><em>stream</em>, </td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>port</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>reader</em>&#160;</td>
+          <td class="paramtype">lisenterConnectionCallbackFn&#160;</td>
+          <td class="paramname"><em>fn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>callback_arg</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -255,9 +397,9 @@ typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><b>hasDataCall
         </tr>
       </table>
 </div><div class="memdoc">
-<p>create a new stream object of the unix flavor </p>
+<p>create a socket listener on a port which will generate socket streams when connections arrive </p>
 
-<p>Definition at line <a class="el" href="stream_8c_source.html#l00083">83</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
+<p>Definition at line <a class="el" href="stream_8c_source.html#l00341">341</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
 
 </div>
 </div>
@@ -276,7 +418,7 @@ typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><b>hasDataCall
 </div><div class="memdoc">
 <p>wake the stream reader thread </p>
 
-<p>Definition at line <a class="el" href="stream_8c_source.html#l00114">114</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
+<p>Definition at line <a class="el" href="stream_8c_source.html#l00423">423</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
 
 </div>
 </div>
@@ -311,7 +453,7 @@ typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><b>hasDataCall
 </div><div class="memdoc">
 <p>write to a stream </p>
 
-<p>Definition at line <a class="el" href="stream_8c_source.html#l00168">168</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
+<p>Definition at line <a class="el" href="stream_8c_source.html#l00502">502</a> of file <a class="el" href="stream_8c_source.html">stream.c</a>.</p>
 
 </div>
 </div>
@@ -321,7 +463,7 @@ typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><b>hasDataCall
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="stream_8h.html">stream.h</a></li>
-    <li class="footer">Generated on Sat Mar 5 2016 10:23:25 for ceptr by
+    <li class="footer">Generated on Tue Apr 12 2016 21:48:57 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

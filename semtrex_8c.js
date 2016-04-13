@@ -51,6 +51,7 @@ var semtrex_8c =
     [ "asciiT_toc", "group__semtrex.html#ga74a1cae16040c9c0778cb3796017036a", null ],
     [ "asciiT_tof", "group__semtrex.html#ga439277cec19476888483166d06bf8460", null ],
     [ "asciiT_toi", "group__semtrex.html#ga95bb803d107e65b2ddcd9bde258a40be", null ],
+    [ "asciiT_tol", "group__semtrex.html#ga56f3a8b016b16636057489ecaabe6b9d", null ],
     [ "asciiT_tos", "group__semtrex.html#ga4ff0c2f907a002cce83813f17b6481d5", null ],
     [ "get_symbol", "semtrex_8c.html#ab3f8bbca148784f1a87e09841bc31a81", null ],
     [ "list1", "semtrex_8c.html#a27270856d607cf2cc84b27b46473513b", null ],

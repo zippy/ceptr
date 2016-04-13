@@ -118,12 +118,14 @@ $(document).ready(function(){initNavTree('accumulator_8h.html','');});
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for accumulator.h:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="accumulator_8h__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="accumulator_8h__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="accumulator_8h__dep__incl.svg" width="100%" height="496"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="accumulator_8h__dep__incl.svg" width="100%" height="496"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 </div>
 <p><a href="accumulator_8h_source.html">Go to the source code of this file.</a></p>
@@ -167,6 +169,21 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>__a_unserialize_insta
 <tr class="memitem:gacddc78a13deabb1c2f6fd92eb257928f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gacddc78a13deabb1c2f6fd92eb257928f"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>_a_unserialize_instances</b> (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structT.html">Instances</a> *i, char *file)</td></tr>
 <tr class="separator:gacddc78a13deabb1c2f6fd92eb257928f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga96d62a9bc613446a456b151c8f7c9168"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga96d62a9bc613446a456b151c8f7c9168"></a>
+<a class="el" href="structT.html">T</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>_a_gen_token</b> (<a class="el" href="structT.html">Instances</a> *i, <a class="el" href="structXaddr.html">Xaddr</a> x, <a class="el" href="structT.html">T</a> *dependency)</td></tr>
+<tr class="separator:ga96d62a9bc613446a456b151c8f7c9168"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga18910f3c4fc22a0c96fd160b74b6289f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga18910f3c4fc22a0c96fd160b74b6289f"></a>
+<a class="el" href="structXaddr.html">Xaddr</a>&#160;</td><td class="memItemRight" valign="bottom"><b>_a_get_token_xaddr</b> (<a class="el" href="structT.html">Instances</a> *i, <a class="el" href="structT.html">T</a> *token, <a class="el" href="structT.html">T</a> *dependency)</td></tr>
+<tr class="separator:ga18910f3c4fc22a0c96fd160b74b6289f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga788a26f834f97438b5b46e257a8952d9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga788a26f834f97438b5b46e257a8952d9"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>_a_add_dependency</b> (<a class="el" href="structT.html">Instances</a> *instances, <a class="el" href="structT.html">T</a> *token, <a class="el" href="structT.html">T</a> *dependency)</td></tr>
+<tr class="separator:ga788a26f834f97438b5b46e257a8952d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaec97c85b5329f545d8c426088422d2fe"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaec97c85b5329f545d8c426088422d2fe"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>_a_delete_dependency</b> (<a class="el" href="structT.html">Instances</a> *instances, <a class="el" href="structT.html">T</a> *token, <a class="el" href="structT.html">T</a> *dependency)</td></tr>
+<tr class="separator:gaec97c85b5329f545d8c426088422d2fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac14efcc213ee4dad2336aa63245f0400"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gac14efcc213ee4dad2336aa63245f0400"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>_a_delete_token</b> (<a class="el" href="structT.html">Instances</a> *instances, <a class="el" href="structT.html">T</a> *token)</td></tr>
+<tr class="separator:gac14efcc213ee4dad2336aa63245f0400"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -185,7 +202,7 @@ Variables</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="accumulator_8h.html">accumulator.h</a></li>
-    <li class="footer">Generated on Sat Mar 5 2016 10:23:25 for ceptr by
+    <li class="footer">Generated on Tue Apr 12 2016 21:48:57 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

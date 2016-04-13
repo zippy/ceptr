@@ -135,25 +135,26 @@ $(document).ready(function(){initNavTree('sys__defs_8h_source.html','');});
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#define sY(ctx,name,str) name = _d_define_symbol(sem,str,&quot;&quot; #name &quot;&quot;,ctx)</span></div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#define sYs(ctx,sym,str) __d_set_symbol_structure(__sem_get_defs(sem,SEM_TYPE_SYMBOL,ctx),sym,str)</span></div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#define sP(ctx,name,code,intention,...) name = _d_define_process(sem,code,&quot;&quot; #name &quot;&quot;,intention,__p_make_signature(__VA_ARGS__),NULL,ctx)</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#define sT_OR(...) sT_(sem,STRUCTURE_OR,__VA_ARGS__)</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#define sT_SEQ(...) sT_(sem,STRUCTURE_SEQUENCE,__VA_ARGS__)</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#define sT_STAR(...) sT_(sem,STRUCTURE_ZERO_OR_MORE,1,__VA_ARGS__)</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#define sT_PLUS(...) sT_(sem,STRUCTURE_ONE_OR_MORE,1,__VA_ARGS__)</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#define sT_QMRK(...) sT_(sem,STRUCTURE_ZERO_OR_ONE,1,__VA_ARGS__)</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#define sT_SYM(sym) _t_news(0,STRUCTURE_SYMBOL,sym)</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#define sT_PCNT(str) _t_news(0,STRUCTURE_STRUCTURE,str)</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#define sT_BANG _t_newr(0,STRUCTURE_ANYTHING)</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">#define sProt(ctx,name,def) {_o_add_label(&quot;&quot; #name &quot;&quot;,def);name = _d_define_protocol(sem,def,ctx);}</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#define sData(ctx,name,...) T *name=_t_build2(sem,0,__VA_ARGS__);</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">#define sLabel(ctx,s,label_type,label) _sem_add_label(sem,s,label_type,label);</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<a class="code" href="structT.html">T</a> *sT_(<a class="code" href="structSemTable.html">SemTable</a> *sem,<a class="code" href="structSemanticID.html">Symbol</a> sym,<span class="keywordtype">int</span> num_params,...);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#define sPL(ctx,name,code,intention,link_to,link_as,...) name = _d_define_process(sem,code,&quot;&quot; #name &quot;&quot;,intention,__p_make_signature(__VA_ARGS__), _t_build(sem,0,PROCESS_LINK,PROCESS_OF_STRUCTURE,link_to,PROCESS_TYPE,link_as,NULL_SYMBOL,NULL_SYMBOL),ctx)</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#define sT_OR(...) sT_(sem,STRUCTURE_OR,__VA_ARGS__)</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#define sT_SEQ(...) sT_(sem,STRUCTURE_SEQUENCE,__VA_ARGS__)</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#define sT_STAR(...) sT_(sem,STRUCTURE_ZERO_OR_MORE,1,__VA_ARGS__)</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#define sT_PLUS(...) sT_(sem,STRUCTURE_ONE_OR_MORE,1,__VA_ARGS__)</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#define sT_QMRK(...) sT_(sem,STRUCTURE_ZERO_OR_ONE,1,__VA_ARGS__)</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#define sT_SYM(sym) _t_news(0,STRUCTURE_SYMBOL,sym)</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#define sT_PCNT(str) _t_news(0,STRUCTURE_STRUCTURE,str)</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#define sT_BANG _t_newr(0,STRUCTURE_ANYTHING)</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#define sProt(ctx,name,def) {_o_add_label(&quot;&quot; #name &quot;&quot;,def);name = _d_define_protocol(sem,def,ctx);}</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">#define sData(ctx,name,...) T *name=_t_build2(sem,0,__VA_ARGS__);</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor">#define sLabel(ctx,s,label_type,label) _sem_add_label(sem,s,label_type,label);</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<a class="code" href="structT.html">T</a> *sT_(<a class="code" href="structSemTable.html">SemTable</a> *sem,<a class="code" href="structSemanticID.html">Symbol</a> sym,<span class="keywordtype">int</span> num_params,...);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="structT_html"><div class="ttname"><a href="structT.html">T</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00114">ceptr_types.h:114</a></div></div>
-<div class="ttc" id="structSemTable_html"><div class="ttname"><a href="structSemTable.html">SemTable</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00215">ceptr_types.h:215</a></div></div>
+<div class="ttc" id="structSemTable_html"><div class="ttname"><a href="structSemTable.html">SemTable</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00221">ceptr_types.h:221</a></div></div>
 <div class="ttc" id="semtable_8h_html"><div class="ttname"><a href="semtable_8h.html">semtable.h</a></div><div class="ttdoc">header file for table for coordinating meaning across a vmhost </div></div>
 <div class="ttc" id="structSemanticID_html"><div class="ttname"><a href="structSemanticID.html">SemanticID</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00022">ceptr_types.h:22</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
@@ -162,7 +163,7 @@ $(document).ready(function(){initNavTree('sys__defs_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="sys__defs_8h.html">sys_defs.h</a></li>
-    <li class="footer">Generated on Sat Mar 5 2016 10:23:25 for ceptr by
+    <li class="footer">Generated on Tue Apr 12 2016 21:48:57 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

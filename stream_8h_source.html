@@ -112,61 +112,96 @@ $(document).ready(function(){initNavTree('stream_8h_source.html','');});
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;pthread.h&gt;</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">enum</span> StreamTypes {UnixStream=123};</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keyword">enum</span> {StreamHasData=0x0001,StreamCloseOnFree=0x0002,StreamReader=0x0004,StreamWaiting=0x0008,StreamAlive=0x8000};</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structStream.html">Stream</a> <a class="code" href="structStream.html">Stream</a>;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">typedef</span> void (*hasDataCallbackFn)(<a class="code" href="structStream.html">Stream</a> *);</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="structStream.html">   28</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structStream.html">Stream</a> {</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keywordtype">int</span> type;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keywordtype">int</span> flags;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keywordtype">int</span> err;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    pthread_t pthread;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    pthread_mutex_t mutex;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    pthread_cond_t cv;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keywordtype">char</span> *buf;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keywordtype">int</span> buf_size;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keywordtype">int</span> data_size;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    hasDataCallbackFn callback;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keywordtype">void</span> *callback_arg1;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keywordtype">int</span> callback_arg2;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="comment">// hold data for the different types of streams that are implemented</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="comment">// for now just unix_streams</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keyword">union </span>{</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        FILE *unix_stream;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    } data;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;};</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<a class="code" href="structStream.html">Stream</a> *<a class="code" href="stream_8h.html#a583a5536a8b45f8a542449b4ff3f7e5e">_st_new_unix_stream</a>(FILE *stream,<span class="keywordtype">int</span> reader);</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="keywordtype">void</span> <a class="code" href="stream_8h.html#abb3d2ea8ba1e9e81d5804f68715ea529">_st_start_read</a>(<a class="code" href="structStream.html">Stream</a> *st);</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keywordtype">void</span> <a class="code" href="stream_8h.html#a9bac5b101e58747900c48e16c0e0f94b">_st_data_read</a>(<a class="code" href="structStream.html">Stream</a> *st);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keywordtype">void</span> <a class="code" href="stream_8h.html#ab2a9830ab76c5e671aaf4061b6bd296e">_st_kill</a>(<a class="code" href="structStream.html">Stream</a> *st);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keywordtype">void</span> <a class="code" href="stream_8h.html#afe0923e53392b62793ec3e80f88021aa">_st_free</a>(<a class="code" href="structStream.html">Stream</a> *);</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor">#define _st_data(st) (st)-&gt;buf</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#define _st_data_size(st) (st)-&gt;data_size</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keywordtype">int</span> <a class="code" href="stream_8h.html#a77c2b4344266e1a27e2c9067787cba4a">_st_write</a>(<a class="code" href="structStream.html">Stream</a> *stream,<span class="keywordtype">char</span> *buf,<span class="keywordtype">size_t</span> len);</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="ttc" id="structStream_html"><div class="ttname"><a href="structStream.html">Stream</a></div><div class="ttdef"><b>Definition:</b> <a href="stream_8h_source.html#l00028">stream.h:28</a></div></div>
-<div class="ttc" id="stream_8h_html_ab2a9830ab76c5e671aaf4061b6bd296e"><div class="ttname"><a href="stream_8h.html#ab2a9830ab76c5e671aaf4061b6bd296e">_st_kill</a></div><div class="ttdeci">void _st_kill(Stream *st)</div><div class="ttdef"><b>Definition:</b> <a href="stream_8c_source.html#l00136">stream.c:136</a></div></div>
-<div class="ttc" id="stream_8h_html_abb3d2ea8ba1e9e81d5804f68715ea529"><div class="ttname"><a href="stream_8h.html#abb3d2ea8ba1e9e81d5804f68715ea529">_st_start_read</a></div><div class="ttdeci">void _st_start_read(Stream *st)</div><div class="ttdef"><b>Definition:</b> <a href="stream_8c_source.html#l00114">stream.c:114</a></div></div>
-<div class="ttc" id="stream_8h_html_a77c2b4344266e1a27e2c9067787cba4a"><div class="ttname"><a href="stream_8h.html#a77c2b4344266e1a27e2c9067787cba4a">_st_write</a></div><div class="ttdeci">int _st_write(Stream *stream, char *buf, size_t len)</div><div class="ttdef"><b>Definition:</b> <a href="stream_8c_source.html#l00168">stream.c:168</a></div></div>
-<div class="ttc" id="stream_8h_html_a9bac5b101e58747900c48e16c0e0f94b"><div class="ttname"><a href="stream_8h.html#a9bac5b101e58747900c48e16c0e0f94b">_st_data_read</a></div><div class="ttdeci">void _st_data_read(Stream *st)</div><div class="ttdef"><b>Definition:</b> <a href="stream_8c_source.html#l00125">stream.c:125</a></div></div>
-<div class="ttc" id="stream_8h_html_a583a5536a8b45f8a542449b4ff3f7e5e"><div class="ttname"><a href="stream_8h.html#a583a5536a8b45f8a542449b4ff3f7e5e">_st_new_unix_stream</a></div><div class="ttdeci">Stream * _st_new_unix_stream(FILE *stream, int reader)</div><div class="ttdef"><b>Definition:</b> <a href="stream_8c_source.html#l00083">stream.c:83</a></div></div>
-<div class="ttc" id="stream_8h_html_afe0923e53392b62793ec3e80f88021aa"><div class="ttname"><a href="stream_8h.html#afe0923e53392b62793ec3e80f88021aa">_st_free</a></div><div class="ttdeci">void _st_free(Stream *)</div><div class="ttdef"><b>Definition:</b> <a href="stream_8c_source.html#l00148">stream.c:148</a></div></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &lt;stdbool.h&gt;</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keyword">enum</span> StreamTypes {UnixStream,SocketStream};</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keyword">enum</span> {StreamHasData=0x0001,StreamCloseOnFree=0x0002,StreamReader=0x0004,StreamWaiting=0x0008,StreamAlive=0x8000,StreamCloseAfterOneWrite=0x0010,StreamDying=0x0100};</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structStream.html">Stream</a> <a class="code" href="structStream.html">Stream</a>;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">typedef</span> void (*hasDataCallbackFn)(<a class="code" href="structStream.html">Stream</a> *);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">enum</span> ScanStates {StreamScanInitial,StreamScanSuccess,StreamScanPartial,StreamScanComplete};</div>
+<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="structStream.html">   30</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structStream.html">Stream</a> {</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keywordtype">int</span> type;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keywordtype">int</span> flags;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keywordtype">int</span> err;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    pthread_t pthread;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    pthread_mutex_t mutex;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    pthread_cond_t cv;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keywordtype">char</span> *buf;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordtype">size_t</span> buf_size;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keywordtype">size_t</span> bytes_used;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keywordtype">int</span> scan_state;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keywordtype">size_t</span> unit_start;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keywordtype">size_t</span> unit_size;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keywordtype">size_t</span> partial;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    hasDataCallbackFn callback;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordtype">void</span> *callback_arg1;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keywordtype">int</span> callback_arg2;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="comment">// hold data for the different types of streams that are implemented</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="comment">// for now just unix_streams</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keyword">union </span>{</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        FILE *unix_stream;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <span class="keywordtype">int</span> socket_stream;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    } data;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;};</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structSocketListener.html">SocketListener</a> <a class="code" href="structSocketListener.html">SocketListener</a>;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keyword">typedef</span> void (*lisenterConnectionCallbackFn)(<a class="code" href="structStream.html">Stream</a> *,<span class="keywordtype">void</span> *);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="structSocketListener.html">   58</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structSocketListener.html">SocketListener</a> {</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordtype">int</span> port;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">int</span> sockfd;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    pthread_t pthread;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    lisenterConnectionCallbackFn callback;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordtype">void</span> *callback_arg;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordtype">bool</span> alive;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;};</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor">#define DEFAULT_READER_BUFFER_SIZE 1000</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">#define _st_new_unix_stream(s,r) __st_new_unix_stream(s,r?DEFAULT_READER_BUFFER_SIZE:0)</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<a class="code" href="structStream.html">Stream</a> *<a class="code" href="stream_8h.html#a0f0967f1aaf65274ae114078b4346885">__st_new_unix_stream</a>(FILE *stream,<span class="keywordtype">size_t</span> reader_buffer_size);</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<a class="code" href="structStream.html">Stream</a> *__st_alloc_stream();</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="keywordtype">size_t</span> <a class="code" href="stream_8h.html#a4a195c164d4a468edbd6b434e2cd92df">__st_unix_stream_load</a>(<a class="code" href="structStream.html">Stream</a> *st);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">#define __st_init_scan(s) s-&gt;scan_state = StreamScanInitial</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor">#define __st_buf_full(s) (s-&gt;bytes_used == s-&gt;buf_size)</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="keywordtype">void</span> <a class="code" href="stream_8h.html#af6f033b47452ebffad8b4d613700cd7b">__st_scan</a>(<a class="code" href="structStream.html">Stream</a> *st);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<a class="code" href="structSocketListener.html">SocketListener</a> *<a class="code" href="stream_8h.html#ad20ee66b188634c439da4f3f790ed7b1">_st_new_socket_listener</a>(<span class="keywordtype">int</span> port,lisenterConnectionCallbackFn fn,<span class="keywordtype">void</span> *callback_arg);</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="keywordtype">void</span> <a class="code" href="stream_8h.html#afb7b03c09131b8d30d20d3c59332218b">_st_close_listener</a>(<a class="code" href="structSocketListener.html">SocketListener</a> *l);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="keywordtype">void</span> <a class="code" href="stream_8h.html#abb3d2ea8ba1e9e81d5804f68715ea529">_st_start_read</a>(<a class="code" href="structStream.html">Stream</a> *st);</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="keywordtype">void</span> <a class="code" href="stream_8h.html#ae1f81dee38191862a7c809d3b4b6809c">_st_data_consumed</a>(<a class="code" href="structStream.html">Stream</a> *st);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="preprocessor">#define _st_is_alive(st) ((st-&gt;flags &amp; StreamAlive) || (st-&gt;flags &amp; StreamReader &amp;&amp; (st-&gt;scan_state != StreamScanComplete)))</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="keywordtype">void</span> <a class="code" href="stream_8h.html#ab2a9830ab76c5e671aaf4061b6bd296e">_st_kill</a>(<a class="code" href="structStream.html">Stream</a> *st);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="keywordtype">void</span> <a class="code" href="stream_8h.html#afe0923e53392b62793ec3e80f88021aa">_st_free</a>(<a class="code" href="structStream.html">Stream</a> *);</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="preprocessor">#define _st_data(st) (&amp;(st)-&gt;buf[st-&gt;unit_start])</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="preprocessor">#define _st_data_size(st) (st)-&gt;unit_size</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="keywordtype">int</span> <a class="code" href="stream_8h.html#a77c2b4344266e1a27e2c9067787cba4a">_st_write</a>(<a class="code" href="structStream.html">Stream</a> *stream,<span class="keywordtype">char</span> *buf,<span class="keywordtype">size_t</span> len);</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
+<div class="ttc" id="stream_8h_html_a0f0967f1aaf65274ae114078b4346885"><div class="ttname"><a href="stream_8h.html#a0f0967f1aaf65274ae114078b4346885">__st_new_unix_stream</a></div><div class="ttdeci">Stream * __st_new_unix_stream(FILE *stream, size_t reader_buffer_size)</div><div class="ttdef"><b>Definition:</b> <a href="stream_8c_source.html#l00272">stream.c:272</a></div></div>
+<div class="ttc" id="structStream_html"><div class="ttname"><a href="structStream.html">Stream</a></div><div class="ttdef"><b>Definition:</b> <a href="stream_8h_source.html#l00030">stream.h:30</a></div></div>
+<div class="ttc" id="stream_8h_html_ab2a9830ab76c5e671aaf4061b6bd296e"><div class="ttname"><a href="stream_8h.html#ab2a9830ab76c5e671aaf4061b6bd296e">_st_kill</a></div><div class="ttdeci">void _st_kill(Stream *st)</div><div class="ttdef"><b>Definition:</b> <a href="stream_8c_source.html#l00449">stream.c:449</a></div></div>
+<div class="ttc" id="stream_8h_html_ae1f81dee38191862a7c809d3b4b6809c"><div class="ttname"><a href="stream_8h.html#ae1f81dee38191862a7c809d3b4b6809c">_st_data_consumed</a></div><div class="ttdeci">void _st_data_consumed(Stream *st)</div><div class="ttdef"><b>Definition:</b> <a href="stream_8c_source.html#l00438">stream.c:438</a></div></div>
+<div class="ttc" id="stream_8h_html_af6f033b47452ebffad8b4d613700cd7b"><div class="ttname"><a href="stream_8h.html#af6f033b47452ebffad8b4d613700cd7b">__st_scan</a></div><div class="ttdeci">void __st_scan(Stream *st)</div><div class="ttdef"><b>Definition:</b> <a href="stream_8c_source.html#l00112">stream.c:112</a></div></div>
+<div class="ttc" id="stream_8h_html_abb3d2ea8ba1e9e81d5804f68715ea529"><div class="ttname"><a href="stream_8h.html#abb3d2ea8ba1e9e81d5804f68715ea529">_st_start_read</a></div><div class="ttdeci">void _st_start_read(Stream *st)</div><div class="ttdef"><b>Definition:</b> <a href="stream_8c_source.html#l00423">stream.c:423</a></div></div>
+<div class="ttc" id="stream_8h_html_afb7b03c09131b8d30d20d3c59332218b"><div class="ttname"><a href="stream_8h.html#afb7b03c09131b8d30d20d3c59332218b">_st_close_listener</a></div><div class="ttdeci">void _st_close_listener(SocketListener *l)</div><div class="ttdef"><b>Definition:</b> <a href="stream_8c_source.html#l00412">stream.c:412</a></div></div>
+<div class="ttc" id="stream_8h_html_a77c2b4344266e1a27e2c9067787cba4a"><div class="ttname"><a href="stream_8h.html#a77c2b4344266e1a27e2c9067787cba4a">_st_write</a></div><div class="ttdeci">int _st_write(Stream *stream, char *buf, size_t len)</div><div class="ttdef"><b>Definition:</b> <a href="stream_8c_source.html#l00502">stream.c:502</a></div></div>
+<div class="ttc" id="stream_8h_html_ad20ee66b188634c439da4f3f790ed7b1"><div class="ttname"><a href="stream_8h.html#ad20ee66b188634c439da4f3f790ed7b1">_st_new_socket_listener</a></div><div class="ttdeci">SocketListener * _st_new_socket_listener(int port, lisenterConnectionCallbackFn fn, void *callback_arg)</div><div class="ttdef"><b>Definition:</b> <a href="stream_8c_source.html#l00341">stream.c:341</a></div></div>
+<div class="ttc" id="stream_8h_html_a4a195c164d4a468edbd6b434e2cd92df"><div class="ttname"><a href="stream_8h.html#a4a195c164d4a468edbd6b434e2cd92df">__st_unix_stream_load</a></div><div class="ttdeci">size_t __st_unix_stream_load(Stream *st)</div><div class="ttdef"><b>Definition:</b> <a href="stream_8c_source.html#l00047">stream.c:47</a></div></div>
+<div class="ttc" id="structSocketListener_html"><div class="ttname"><a href="structSocketListener.html">SocketListener</a></div><div class="ttdef"><b>Definition:</b> <a href="stream_8h_source.html#l00058">stream.h:58</a></div></div>
+<div class="ttc" id="stream_8h_html_afe0923e53392b62793ec3e80f88021aa"><div class="ttname"><a href="stream_8h.html#afe0923e53392b62793ec3e80f88021aa">_st_free</a></div><div class="ttdeci">void _st_free(Stream *)</div><div class="ttdef"><b>Definition:</b> <a href="stream_8c_source.html#l00475">stream.c:475</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="stream_8h.html">stream.h</a></li>
-    <li class="footer">Generated on Sat Mar 5 2016 10:23:25 for ceptr by
+    <li class="footer">Generated on Tue Apr 12 2016 21:48:57 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

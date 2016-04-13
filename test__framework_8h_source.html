@@ -124,7 +124,7 @@ $(document).ready(function(){initNavTree('test__framework_8h_source.html','');})
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#define spec_is_ptr_equal(got, expected) spec_total++; {void *__got=got;void *__ex=expected;if (__ex==__got){putchar(&#39;.&#39;);} else {putchar(&#39;F&#39;);sprintf(failures[spec_failures++],&quot;%s:%d expected %s to be %p but was %p&quot;,__FUNCTION__,__LINE__,#got,__ex,__got);}}</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#define spec_is_path_equal(got, expected) spec_total++; {int *__got=got;int *__ex=expected; if (__got &amp;&amp; _t_path_equal(__got,__ex)){putchar(&#39;.&#39;);} else {putchar(&#39;F&#39;);sprintf(failures[spec_failures++],&quot;%s:%d expected %s to be %s but was %s&quot;,__FUNCTION__,__LINE__,#got,_t_sprint_path(__ex,buf1),__got ? _t_sprint_path(__got,buf2) : &quot;nil&quot;);}}</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#define spec_is_float_equal(got, expected) spec_total++; {float=__got;float __ex=expected; if (__ex==__got){putchar(&#39;.&#39;);} else {putchar(&#39;F&#39;);sprintf(failures[spec_failures++],&quot;%s:%d expected %s to be %f but was %f&quot;,__FUNCTION__,__LINE__,#got,__ex,__got);}}</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#define spec_is_buffer_equal(got, expected, length) spec_total++; if (memcmp(got,expected,length)==0){putchar(&#39;.&#39;);} else {putchar(&#39;F&#39;);sprintf(failures[spec_failures++],&quot;%s:%d expected %ld bytes from %s to match %s by they didn&#39;t&quot;,__FUNCTION__,__LINE__,(long)length,#got,#expected);}</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#define spec_is_buffer_equal(got, expected, length) spec_total++; if ((strlen(expected) == length) &amp;&amp; memcmp(got,expected,length)==0){putchar(&#39;.&#39;);} else {putchar(&#39;F&#39;);sprintf(failures[spec_failures++],&quot;%s:%d expected %ld bytes from %s to match %s but got %.*s&quot;,__FUNCTION__,__LINE__,(long)length,#got,#expected,(int)length,got);}</span></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keywordtype">void</span> report_tests() {</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keywordtype">int</span> i;</div>
@@ -144,7 +144,7 @@ $(document).ready(function(){initNavTree('test__framework_8h_source.html','');})
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><a class="el" href="test__framework_8h.html">test_framework.h</a></li>
-    <li class="footer">Generated on Sat Mar 5 2016 10:23:24 for ceptr by
+    <li class="footer">Generated on Tue Apr 12 2016 21:48:56 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

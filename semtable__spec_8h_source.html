@@ -131,40 +131,48 @@ $(document).ready(function(){initNavTree('semtable__spec_8h_source.html','');});
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    spec_is_str_equal(<a class="code" href="semtable_8c.html#ab9c386734b4ac2b01f11c82bf1af1c70">_sem_get_name</a>(G_sem,IF),<span class="stringliteral">&quot;IF&quot;</span>);</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;}</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="semtable__spec_8h.html#a45f00a2d648a8fd97ff8075ef4593773">   35</a></span>&#160;<a class="code" href="semtable__spec_8h.html#a45f00a2d648a8fd97ff8075ef4593773">testSemGetSymbolStructure</a>() {</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    spec_is_structure_equal(0,_sem_get_symbol_structure(G_sem,STRUCTURE_DEFINITION),TUPLE_OF_STRUCTURE_LABEL_AND_STRUCTURE_DEF);</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    spec_is_structure_equal(0,_sem_get_symbol_structure(G_sem,STRUCTURE_SYMBOL),SYMBOL);</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;}</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
-<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="semtable__spec_8h.html#aa01be69fbc2c75a00dfbb4a95257cd12">   43</a></span>&#160;<a class="code" href="semtable__spec_8h.html#aa01be69fbc2c75a00dfbb4a95257cd12">testSemGetByLabel</a>() {</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <a class="code" href="structSemanticID.html">SemanticID</a> s = _sem_get_by_label(G_sem,<span class="stringliteral">&quot;DEFINITIONS&quot;</span>,SYS_CONTEXT);</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    spec_is_sem_equal(s,DEFINITIONS);</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;}</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="semtable__spec_8h.html#afe06505545d63615c135b160e3c64585">   51</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="semtable__spec_8h.html#afe06505545d63615c135b160e3c64585">testSemAddLabel</a>() {</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <a class="code" href="semtable_8c.html#aa4d8c47e1a50f071cf3e90c38e0ebebf">_sem_add_label</a>(G_sem,BIT,ASCII_STR,<span class="stringliteral">&quot;one or zero&quot;</span>);</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    spec_is_str_equal(t2s(_sem_get_def(G_sem,BIT)),<span class="stringliteral">&quot;(STRUCTURE_DEFINITION (STRUCTURE_LABEL (ENGLISH_LABEL:BIT) (ASCII_STR:one or zero)) (STRUCTURE_SYMBOL:NULL_SYMBOL))&quot;</span>);</div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="semtable__spec_8h.html#a02148ad041896972890a0f04ab8556d0">   35</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="semtable__spec_8h.html#a02148ad041896972890a0f04ab8556d0">testSemTableGetLabel</a>() {</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    spec_is_str_equal(t2s(<a class="code" href="semtable_8c.html#a4577e7a8225930a298484ae245244b0d">_sem_get_label</a>(G_sem,CONTENT_TYPE,HTTP_HEADER_LABEL)),<span class="stringliteral">&quot;(HTTP_HEADER_LABEL:Content-Type)&quot;</span>);</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    spec_is_str_equal(t2s(<a class="code" href="semtable_8c.html#a4577e7a8225930a298484ae245244b0d">_sem_get_label</a>(G_sem,CONTENT_TYPE,TEST_SYMBOL_SYMBOL)),<span class="stringliteral">&quot;(ENGLISH_LABEL:CONTENT_TYPE)&quot;</span>);</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;}</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="semtable__spec_8h.html#ae33542a8951eac2c04864db813321334">   42</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="semtable__spec_8h.html#ae33542a8951eac2c04864db813321334">testSemGetSymbolStructure</a>() {</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    spec_is_structure_equal(0,_sem_get_symbol_structure(G_sem,STRUCTURE_DEFINITION),TUPLE_OF_STRUCTURE_LABEL_AND_STRUCTURE_DEF);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    spec_is_structure_equal(0,_sem_get_symbol_structure(G_sem,STRUCTURE_SYMBOL),SYMBOL);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;}</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="semtable__spec_8h.html#a3ba5f8a65dc95ece14992f2d0ab2f048">   50</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="semtable__spec_8h.html#a3ba5f8a65dc95ece14992f2d0ab2f048">testSemGetByLabel</a>() {</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <a class="code" href="structSemanticID.html">SemanticID</a> s = _sem_get_by_label(G_sem,<span class="stringliteral">&quot;DEFINITIONS&quot;</span>,SYS_CONTEXT);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    spec_is_sem_equal(s,DEFINITIONS);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;}</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keywordtype">void</span> testSemTable() {</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <a class="code" href="semtable__spec_8h.html#ab10241f610faeae2fc98909e4662858e">testSemTableCreate</a>();</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <a class="code" href="semtable__spec_8h.html#a274281cb43d1782f04e1d670f03505be">testSemTableGetName</a>();</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <a class="code" href="semtable__spec_8h.html#a45f00a2d648a8fd97ff8075ef4593773">testSemGetSymbolStructure</a>();</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <a class="code" href="semtable__spec_8h.html#aa01be69fbc2c75a00dfbb4a95257cd12">testSemGetByLabel</a>();</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <a class="code" href="semtable__spec_8h.html#afe06505545d63615c135b160e3c64585">testSemAddLabel</a>();</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;}</div>
+<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="semtable__spec_8h.html#afe06505545d63615c135b160e3c64585">   58</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="semtable__spec_8h.html#afe06505545d63615c135b160e3c64585">testSemAddLabel</a>() {</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <a class="code" href="semtable_8c.html#aa4d8c47e1a50f071cf3e90c38e0ebebf">_sem_add_label</a>(G_sem,BIT,ASCII_STR,<span class="stringliteral">&quot;one or zero&quot;</span>);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    spec_is_str_equal(t2s(_sem_get_def(G_sem,BIT)),<span class="stringliteral">&quot;(STRUCTURE_DEFINITION (STRUCTURE_LABEL (ENGLISH_LABEL:BIT) (ASCII_STR:one or zero)) (STRUCTURE_SYMBOL:NULL_SYMBOL))&quot;</span>);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;}</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="keywordtype">void</span> testSemTable() {</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <a class="code" href="semtable__spec_8h.html#ab10241f610faeae2fc98909e4662858e">testSemTableCreate</a>();</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <a class="code" href="semtable__spec_8h.html#a274281cb43d1782f04e1d670f03505be">testSemTableGetName</a>();</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <a class="code" href="semtable__spec_8h.html#a02148ad041896972890a0f04ab8556d0">testSemTableGetLabel</a>();</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <a class="code" href="semtable__spec_8h.html#ae33542a8951eac2c04864db813321334">testSemGetSymbolStructure</a>();</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <a class="code" href="semtable__spec_8h.html#a3ba5f8a65dc95ece14992f2d0ab2f048">testSemGetByLabel</a>();</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <a class="code" href="semtable__spec_8h.html#afe06505545d63615c135b160e3c64585">testSemAddLabel</a>();</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;}</div>
 <div class="ttc" id="semtable_8c_html_ab9c386734b4ac2b01f11c82bf1af1c70"><div class="ttname"><a href="semtable_8c.html#ab9c386734b4ac2b01f11c82bf1af1c70">_sem_get_name</a></div><div class="ttdeci">char * _sem_get_name(SemTable *sem, SemanticID s)</div><div class="ttdef"><b>Definition:</b> <a href="semtable_8c_source.html#l00085">semtable.c:85</a></div></div>
 <div class="ttc" id="structT_html"><div class="ttname"><a href="structT.html">T</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00114">ceptr_types.h:114</a></div></div>
-<div class="ttc" id="semtable__spec_8h_html_afe06505545d63615c135b160e3c64585"><div class="ttname"><a href="semtable__spec_8h.html#afe06505545d63615c135b160e3c64585">testSemAddLabel</a></div><div class="ttdeci">void testSemAddLabel()</div><div class="ttdef"><b>Definition:</b> <a href="semtable__spec_8h_source.html#l00051">semtable_spec.h:51</a></div></div>
+<div class="ttc" id="semtable__spec_8h_html_a02148ad041896972890a0f04ab8556d0"><div class="ttname"><a href="semtable__spec_8h.html#a02148ad041896972890a0f04ab8556d0">testSemTableGetLabel</a></div><div class="ttdeci">void testSemTableGetLabel()</div><div class="ttdef"><b>Definition:</b> <a href="semtable__spec_8h_source.html#l00035">semtable_spec.h:35</a></div></div>
+<div class="ttc" id="semtable__spec_8h_html_afe06505545d63615c135b160e3c64585"><div class="ttname"><a href="semtable__spec_8h.html#afe06505545d63615c135b160e3c64585">testSemAddLabel</a></div><div class="ttdeci">void testSemAddLabel()</div><div class="ttdef"><b>Definition:</b> <a href="semtable__spec_8h_source.html#l00058">semtable_spec.h:58</a></div></div>
+<div class="ttc" id="semtable_8c_html_a4577e7a8225930a298484ae245244b0d"><div class="ttname"><a href="semtable_8c.html#a4577e7a8225930a298484ae245244b0d">_sem_get_label</a></div><div class="ttdeci">T * _sem_get_label(SemTable *sem, SemanticID s, Symbol label_type)</div><div class="ttdef"><b>Definition:</b> <a href="semtable_8c_source.html#l00124">semtable.c:124</a></div></div>
 <div class="ttc" id="semtable__spec_8h_html_a274281cb43d1782f04e1d670f03505be"><div class="ttname"><a href="semtable__spec_8h.html#a274281cb43d1782f04e1d670f03505be">testSemTableGetName</a></div><div class="ttdeci">void testSemTableGetName()</div><div class="ttdef"><b>Definition:</b> <a href="semtable__spec_8h_source.html#l00023">semtable_spec.h:23</a></div></div>
 <div class="ttc" id="semtable__spec_8h_html_ab10241f610faeae2fc98909e4662858e"><div class="ttname"><a href="semtable__spec_8h.html#ab10241f610faeae2fc98909e4662858e">testSemTableCreate</a></div><div class="ttdeci">void testSemTableCreate()</div><div class="ttdef"><b>Definition:</b> <a href="semtable__spec_8h_source.html#l00010">semtable_spec.h:10</a></div></div>
-<div class="ttc" id="semtable__spec_8h_html_aa01be69fbc2c75a00dfbb4a95257cd12"><div class="ttname"><a href="semtable__spec_8h.html#aa01be69fbc2c75a00dfbb4a95257cd12">testSemGetByLabel</a></div><div class="ttdeci">testSemGetByLabel()</div><div class="ttdef"><b>Definition:</b> <a href="semtable__spec_8h_source.html#l00043">semtable_spec.h:43</a></div></div>
-<div class="ttc" id="structSemTable_html"><div class="ttname"><a href="structSemTable.html">SemTable</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00215">ceptr_types.h:215</a></div></div>
+<div class="ttc" id="structSemTable_html"><div class="ttname"><a href="structSemTable.html">SemTable</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00221">ceptr_types.h:221</a></div></div>
 <div class="ttc" id="structL_html"><div class="ttname"><a href="structL.html">L</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00051">ceptr_types.h:51</a></div></div>
-<div class="ttc" id="semtable_8c_html_aa4d8c47e1a50f071cf3e90c38e0ebebf"><div class="ttname"><a href="semtable_8c.html#aa4d8c47e1a50f071cf3e90c38e0ebebf">_sem_add_label</a></div><div class="ttdeci">void _sem_add_label(SemTable *sem, SemanticID s, Symbol label_type, char *label)</div><div class="ttdef"><b>Definition:</b> <a href="semtable_8c_source.html#l00123">semtable.c:123</a></div></div>
-<div class="ttc" id="semtable__spec_8h_html_a45f00a2d648a8fd97ff8075ef4593773"><div class="ttname"><a href="semtable__spec_8h.html#a45f00a2d648a8fd97ff8075ef4593773">testSemGetSymbolStructure</a></div><div class="ttdeci">testSemGetSymbolStructure()</div><div class="ttdef"><b>Definition:</b> <a href="semtable__spec_8h_source.html#l00035">semtable_spec.h:35</a></div></div>
+<div class="ttc" id="semtable__spec_8h_html_a3ba5f8a65dc95ece14992f2d0ab2f048"><div class="ttname"><a href="semtable__spec_8h.html#a3ba5f8a65dc95ece14992f2d0ab2f048">testSemGetByLabel</a></div><div class="ttdeci">void testSemGetByLabel()</div><div class="ttdef"><b>Definition:</b> <a href="semtable__spec_8h_source.html#l00050">semtable_spec.h:50</a></div></div>
+<div class="ttc" id="semtable__spec_8h_html_ae33542a8951eac2c04864db813321334"><div class="ttname"><a href="semtable__spec_8h.html#ae33542a8951eac2c04864db813321334">testSemGetSymbolStructure</a></div><div class="ttdeci">void testSemGetSymbolStructure()</div><div class="ttdef"><b>Definition:</b> <a href="semtable__spec_8h_source.html#l00042">semtable_spec.h:42</a></div></div>
+<div class="ttc" id="semtable_8c_html_aa4d8c47e1a50f071cf3e90c38e0ebebf"><div class="ttname"><a href="semtable_8c.html#aa4d8c47e1a50f071cf3e90c38e0ebebf">_sem_add_label</a></div><div class="ttdeci">void _sem_add_label(SemTable *sem, SemanticID s, Symbol label_type, char *label)</div><div class="ttdef"><b>Definition:</b> <a href="semtable_8c_source.html#l00148">semtable.c:148</a></div></div>
 <div class="ttc" id="structSemanticID_html"><div class="ttname"><a href="structSemanticID.html">SemanticID</a></div><div class="ttdef"><b>Definition:</b> <a href="ceptr__types_8h_source.html#l00022">ceptr_types.h:22</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -172,7 +180,7 @@ $(document).ready(function(){initNavTree('semtable__spec_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_937849c47cd127d593123ed6329d29aa.html">spec</a></li><li class="navelem"><a class="el" href="semtable__spec_8h.html">semtable_spec.h</a></li>
-    <li class="footer">Generated on Sat Mar 5 2016 10:23:24 for ceptr by
+    <li class="footer">Generated on Tue Apr 12 2016 21:48:56 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
