@@ -145,12 +145,7 @@ void testProcessDefine() {
 }
 
 void testProcessDo() {
-    T *code = _t_build(G_sem,0,
-                       DO,SCOPE,
-                       TEST_INT_SYMBOL,1,
-                       TEST_INT_SYMBOL,2,
-                       NULL_SYMBOL,NULL_SYMBOL);
-    spec_is_str_equal(t2s(code),"(process:DO (SCOPE (TEST_INT_SYMBOL:1) (TEST_INT_SYMBOL:2)))");
+    T *code = _t_parse(G_sem,0,"(DO (SCOPE (TEST_INT_SYMBOL:1) (TEST_INT_SYMBOL:2)))");
     spec_is_equal(__p_reduce_sys_proc(0,DO,code,0),noReductionErr);
     spec_is_str_equal(t2s(code),"(TEST_INT_SYMBOL:2)");
     _t_free(code);
@@ -161,48 +156,38 @@ void testProcessTranscode() {
 
     // transcode of same structure should just change the symbol type
     T *n;
-    n = _t_build(G_sem,0,TRANSCODE,TRANSCODE_PARAMS,TRANSCODE_TO,TEST_INT_SYMBOL,NULL_SYMBOL,
-                 TRANSCODE_ITEMS,TEST_INT_SYMBOL2,314,NULL_SYMBOL,NULL_SYMBOL);
+    n = _t_parse(G_sem,0,"(TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:TEST_INT_SYMBOL)) (TRANSCODE_ITEMS (TEST_INT_SYMBOL2:314)))");
     spec_is_equal(__p_reduce_sys_proc(0,TRANSCODE,n,r->q),noReductionErr);
     spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:314)");
     _t_free(n);
 
     // transcode of INTEGER to CSTRING
-    n = _t_build(G_sem,0,TRANSCODE,TRANSCODE_PARAMS,TRANSCODE_TO,TEST_STR_SYMBOL,NULL_SYMBOL,
-                 TRANSCODE_ITEMS,TEST_INT_SYMBOL,314,NULL_SYMBOL,NULL_SYMBOL);
+    n = _t_parse(G_sem,0,"(TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:TEST_STR_SYMBOL)) (TRANSCODE_ITEMS (TEST_INT_SYMBOL2:314)))");
     spec_is_equal(__p_reduce_sys_proc(0,TRANSCODE,n,r->q),noReductionErr);
     spec_is_str_equal(t2s(n),"(TEST_STR_SYMBOL:314)");
     _t_free(n);
 
     // transcode of FLOAT to CSTRING
-    n = _t_build(G_sem,0,TRANSCODE,TRANSCODE_PARAMS,TRANSCODE_TO,TEST_STR_SYMBOL,NULL_SYMBOL,
-                 TRANSCODE_ITEMS,TEST_FLOAT_SYMBOL,3.14159,NULL_SYMBOL,NULL_SYMBOL);
+    n = _t_parse(G_sem,0,"(TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:TEST_STR_SYMBOL)) (TRANSCODE_ITEMS (TEST_FLOAT_SYMBOL:3.14159)))");
     spec_is_equal(__p_reduce_sys_proc(0,TRANSCODE,n,r->q),noReductionErr);
     spec_is_str_equal(t2s(n),"(TEST_STR_SYMBOL:3.141590)");
     _t_free(n);
 
     // transcode of CHAR to CSTRING
-    n = _t_build(G_sem,0,TRANSCODE,TRANSCODE_PARAMS,TRANSCODE_TO,TEST_STR_SYMBOL,NULL_SYMBOL,
-                 TRANSCODE_ITEMS,ASCII_CHAR,'x',NULL_SYMBOL,NULL_SYMBOL);
+    n = _t_parse(G_sem,0,"(TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:TEST_STR_SYMBOL)) (TRANSCODE_ITEMS (ASCII_CHAR:'x')))");
     spec_is_equal(__p_reduce_sys_proc(0,TRANSCODE,n,r->q),noReductionErr);
     spec_is_str_equal(t2s(n),"(TEST_STR_SYMBOL:x)");
     _t_free(n);
 
     // transcode of CSTRING to INTEGER
-    n = _t_build(G_sem,0,TRANSCODE,TRANSCODE_PARAMS,TRANSCODE_TO,TEST_INT_SYMBOL,NULL_SYMBOL,
-                 TRANSCODE_ITEMS,TEST_STR_SYMBOL,"314",NULL_SYMBOL,NULL_SYMBOL);
+    n = _t_parse(G_sem,0,"(TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:TEST_INT_SYMBOL)) (TRANSCODE_ITEMS (TEST_STR_SYMBOL:\"314\")))");
     spec_is_equal(__p_reduce_sys_proc(0,TRANSCODE,n,r->q),noReductionErr);
     spec_is_str_equal(t2s(n),"(TEST_INT_SYMBOL:314)");
     _t_free(n);
 
     //debug_enable(D_TRANSCODE);
     // transcode of matching optionality structures
-    n = _t_build(G_sem,0,TRANSCODE,TRANSCODE_PARAMS,TRANSCODE_TO,LINES,NULL_SYMBOL,
-                 TRANSCODE_ITEMS,TEST_INTEGERS,
-                 TEST_INT_SYMBOL,1,
-                 TEST_INT_SYMBOL,2,
-                 TEST_INT_SYMBOL,314,
-                 NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);
+    n = _t_parse(G_sem,0,"(TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:LINES)) (TRANSCODE_ITEMS (TEST_INTEGERS (TEST_INT_SYMBOL:1) (TEST_INT_SYMBOL:2) (TEST_INT_SYMBOL:314))))");
     spec_is_equal(__p_reduce_sys_proc(0,TRANSCODE,n,r->q),redoReduction);
     spec_is_str_equal(t2s(n),"(LINES (LINE:1) (LINE:2) (LINE:314))");
     _t_free(n);
