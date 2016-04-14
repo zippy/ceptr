@@ -1450,9 +1450,9 @@ void testProcessError() {
     _t_add(t,c);
     T *ps = _t_newr(t,PARAMS);
 
-    // error routine is just a param ref to pass back the error tree
-    int pt[] = {4,1,TREE_PATH_TERMINATOR};
-    __t_new(t,PARAM_REF,pt,sizeof(int)*4,1);
+    // error routine is just a param ref to pass back the reduction error
+    int pt[] = {RunTreeErrorParamsIdx,1,TREE_PATH_TERMINATOR};
+    __t_new(t,PARAM_REF,pt,sizeof(int)*4,true);
 
     Error e = _p_reduce(G_sem,t);
     spec_is_equal(e,noReductionErr);
@@ -1475,9 +1475,9 @@ void testProcessRaise() {
     _t_add(t,c);
     T *ps = _t_newr(t,PARAMS);
 
-    // error routine is just a param ref to pass back the error tree
-    int pt[] = {4,1,TREE_PATH_TERMINATOR};
-    __t_new(t,PARAM_REF,pt,sizeof(int)*4,1);
+    // error routine is just a param ref to pass back the reduction error
+    int pt[] = {RunTreeErrorParamsIdx,1,TREE_PATH_TERMINATOR};
+    __t_new(t,PARAM_REF,pt,sizeof(int)*4,true);
 
     Error e = _p_reduce(G_sem,t);
     spec_is_equal(e,noReductionErr);

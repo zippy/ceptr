@@ -340,7 +340,7 @@ Symbol: EDGE_LISTENER,CPOINTER;
 
 Symbol: ITERATE_ON_SYMBOL,SYMBOL;
 Symbol: ITERATION_DATA,[!];    data to iterate over
-Symbol: SCOPE,[!];    set of processes for DO
+Symbol: SCOPE,[!];    set of processes for DO/CONVERSE
 
 Process: NOOP,0,"no-op","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"do",SIGNATURE_ANY,NULL_STRUCTURE,0;   this process reduces to its single "do" parameter.
 

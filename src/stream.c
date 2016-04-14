@@ -228,6 +228,7 @@ void *_st_stream_read(void *arg) {
             (st->callback)(st);
         }
     } while _st_is_alive(st);
+    debug(D_STREAM,"stream reading finished.\n");
     pthread_exit(NULL);
 }
 

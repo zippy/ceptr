@@ -291,7 +291,7 @@ Error __p_check_signature(SemTable *sem,Process p,T *code,T *sem_map) {
                 else if(semeq(_t_symbol(sig),SIGNATURE_SYMBOL)) {
                     Symbol ss = *(Symbol *)_t_surface(sig);
                     if (!semeq(ss,_t_symbol(param)))
-                        raise_error("signatureMismatchReductionErr");
+                        raise_error("signatureMismatchReductionErr expected:%s got:%s\n",_sem_get_name(sem,ss),_t2s(sem,param));
                     //                    return signatureMismatchReductionErr;
                 }
                 else if(semeq(_t_symbol(sig),SIGNATURE_ANY)) {
@@ -299,7 +299,7 @@ Error __p_check_signature(SemTable *sem,Process p,T *code,T *sem_map) {
                 else if(semeq(_t_symbol(sig),SIGNATURE_PROCESS)) {
                     Symbol expected = *(Symbol *)_t_surface(sig);
                     Symbol actual = _t_symbol(param);
-                    if (!semeq(expected,expected)) {
+                    if (!semeq(expected,actual)) {
                         raise_error("expecting process to reduce to %s, got: %s\n",_sem_get_name(sem,expected),_t2s(sem,param));
                     }
                 }
@@ -344,6 +344,14 @@ Error __p_check_signature(SemTable *sem,Process p,T *code,T *sem_map) {
     if (param_count < input_sigs) return tooFewParamsReductionErr;
 
     return 0;
+}
+
+/* low level function to unwind a run-tree to a specific point*/
+void __p_unwind_to_point(R *context,T *code_point,T *with) {
+    T *p = _t_parent(code_point);
+    _t_replace(p,_t_node_index(code_point), with);
+    context->parent = p;
+    context->node_pointer = with;
 }
 
 /**
@@ -690,6 +698,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             T *with = _t_detach_by_idx(code,1);
             T *cid = _t_detach_by_idx(code,1);
 
+            // @todo think about if this would cause other arbitrary weirdness, like what about any pending wakeups (from requests) that point to spots in the code that's getting unwound.
             if (!cid) {
                 // in the case no conversation id parameter then we need to look in
                 // we get it from the context
@@ -700,16 +709,11 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                 UUIDt cuuid = *(UUIDt *)_t_surface(cid);
                 T *w = __r_cleanup_conversation(q->r,cuuid);
                 if (w) _t_free(w);
-                // @todo maybe only use the wakeup_ref and don't store converse_pointer?
+
+                // now move the execution point up to the CONVERSE root.
+                // @todo maybe only use the wakeup_ref (like below) and don't store converse_pointer?
                 T *c = context->conversation->converse_pointer;
-                T *p = _t_parent(c);
-
-                _t_replace(p,_t_node_index(c), with);
-                context->parent = p;
-                context->node_pointer = with;
-                //                set_rt_cur_child(q->r,context->node_pointer,RUN_TREE_EVALUATED);
-                //                context->idx = RUN_TREE_EVALUATED;
-
+                __p_unwind_to_point(context,c,with);
                 return(noErr);
             }
             else {
@@ -726,13 +730,10 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                     Qe *e = __p_find_context(q->blocked,process_id);
                     if (e) {
                         if (with) {
-                            T *result = _t_get(e->context->run_tree,code_path);
-                            if (!result) raise_error("failed to find code path when completing converse!");
-                            T *p = _t_parent(result);
-                            _t_replace(p,_t_node_index(result), with);
-                            e->context->node_pointer = with;
+                            T *c = _t_get(e->context->run_tree,code_path);
+                            if (!c) raise_error("failed to find code path when completing converse!");
+                            __p_unwind_to_point(e->context,c,with);
                         }
-
                         debug(D_SIGNALS,"unblocking CONVERSE\n");
                         __p_unblock(q,e);
                     }
@@ -1424,7 +1425,7 @@ Error _p_step(Q *q, R **contextP) {
         // if this was the successful reduction by an error handler
         // move the value to the 1st child
         if (context->err) {
-            T *t = _t_detach_by_idx(context->run_tree,3);
+            T *t = _t_detach_by_idx(context->run_tree,RunTreeErrorCodeIdx);
             if (t) {
                 _t_replace(context->run_tree,1,t);
 
@@ -1963,7 +1964,7 @@ Error _p_reduceq(Q *q) {
             // remove from the round-robin
             __p_dequeue(q->active,qe);
 
-            debug(D_REDUCEV,"Just completed:\n");
+            debug(D_REDUCEV,"Just completed:%d\n",qe->id);
 
             // add to the completed list
             __p_enqueue(q->completed,qe);
