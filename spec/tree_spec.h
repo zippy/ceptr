@@ -715,13 +715,13 @@ void testTreeFindBySymbol() {
 }
 
 void testTreeParse() {
-    char *s = "( ) \n\t TEST_LABEL:1 1.2 .334 'c' \"string\" /1/2/3)";
+    char *s = "( ) \n\t TEST_LABEL:1 1.2 .334 'c'%\"string\" /1/2/3)";
     T *t = __t_tokenize(s);
-    spec_is_str_equal(t2s(t),"(P_TOKENS (P_OP) (P_CP) (P_LABEL:TEST_LABEL) (P_COLON) (P_VAL_I:1) (P_VAL_F:1.200000) (P_VAL_F:0.334000) (P_VAL_C:'c') (P_VAL_S:string) (P_VAL_PATH:/1/2/3) (P_CP))");
+    spec_is_str_equal(t2s(t),"(P_TOKENS (P_OP) (P_CP) (P_LABEL:TEST_LABEL) (P_COLON) (P_VAL_I:1) (P_VAL_F:1.200000) (P_VAL_F:0.334000) (P_VAL_C:'c') (P_INTERPOLATE) (P_VAL_S:string) (P_VAL_PATH:/1/2/3) (P_CP))");
 
-    s = "(DO (SCOPE (TEST_INT_SYMBOL:1) (TEST_CHAR_SYMBOL:'x') (TEST_STR_SYMBOL:\"fish\") (PARAM_REF:/1/2/3) (CARRIER:backnforth)))";
-    t = _t_parse(G_sem,0,s);
-    spec_is_str_equal(t2s(t),"(process:DO (SCOPE (TEST_INT_SYMBOL:1) (TEST_CHAR_SYMBOL:'x') (TEST_STR_SYMBOL:fish) (PARAM_REF:/1/2/3) (CARRIER:backnforth)))");
+    s = "(DO (SCOPE (TEST_INT_SYMBOL:1) (TEST_CHAR_SYMBOL:'x')% (TEST_STR_SYMBOL:\"fish\") (PARAM_REF:/1/2/3) (CARRIER:backnforth)))";
+    t = _t_parse(G_sem,0,s,_t_newc(0,ASCII_CHAR,'y'));
+    spec_is_str_equal(t2s(t),"(process:DO (SCOPE (TEST_INT_SYMBOL:1) (TEST_CHAR_SYMBOL:'x') (ASCII_CHAR:'y') (TEST_STR_SYMBOL:fish) (PARAM_REF:/1/2/3) (CARRIER:backnforth)))");
     _t_free(t);
 }
 

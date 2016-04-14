@@ -958,6 +958,7 @@ enum DEV_COMPOSITORYSymbolIDs {
     P_OP_ID,
     P_CP_ID,
     P_COLON_ID,
+    P_INTERPOLATE_ID,
     P_LABEL_ID,
     P_VAL_S_ID,
     P_VAL_C_ID,
@@ -1003,6 +1004,7 @@ enum DEV_COMPOSITORYSymbolIDs {
 SemanticID P_OP;
 SemanticID P_CP;
 SemanticID P_COLON;
+SemanticID P_INTERPOLATE;
 SemanticID P_LABEL;
 SemanticID P_VAL_S;
 SemanticID P_VAL_C;

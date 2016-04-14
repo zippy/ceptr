@@ -836,6 +836,7 @@ T *__t_tokenize(char *s) {
         if (c == '(') _t_newr(t,P_OP);
         else if (c == ')') _t_newr(t,P_CP);
         else if (c == ':') _t_newr(t,P_COLON);
+        else if (c == '%') _t_newr(t,P_INTERPOLATE);
         else if (c == '\'') {
             c = *++s;
             if (!c) raise_error("expecting char value, got end of string");
@@ -905,20 +906,26 @@ T *__t_tokenize(char *s) {
 /**
  * convert a string to a semantic tree
  *
+ * @param[in] sem the semantic context
+ * @param[in] parent the parent node under which to add the parsed tree (can be NULL)
  * @param[in] s the string to be converted
+ * @param[in] ... any substitution tree nodes
  * @returns tree
  */
-T *_t_parse(SemTable *sem,T *parent,char *s) {
+T *_t_parse(SemTable *sem,T *parent,char *s,...) {
     T *tokens = __t_tokenize(s);
     T *t = parent;
-    bool done = false;
     Structure st = NULL_STRUCTURE;
-    char c,*stn;
-    int level = 0;
     int i,idx = 1;
     T *tok;
+    va_list ap;
+    va_start (ap, s);
     while (tok = _t_child(tokens,idx++)) {
-        if (semeq(P_OP,_t_symbol(tok))) {
+        if (semeq(P_INTERPOLATE,_t_symbol(tok))) {
+            _t_add(t,va_arg(ap,T *));
+        }
+        // if we are opening a new tree node
+        else if (semeq(P_OP,_t_symbol(tok))) {
             tok = _t_child(tokens,idx++);
             if (!tok) raise_error("unexpected end of tokens!");
             if (!semeq(P_LABEL,_t_symbol(tok)))
@@ -982,7 +989,7 @@ T *_t_parse(SemTable *sem,T *parent,char *s) {
         }
         else if (semeq(P_CP,_t_symbol(tok))) {
             T *p = _t_parent(t);
-            if (p == parent) {done = true;break;}
+            if (p == parent) {break;}
             t = p;
         }
         else {
@@ -991,6 +998,7 @@ T *_t_parse(SemTable *sem,T *parent,char *s) {
     }
     if (idx < _t_children(tokens)) raise_error("found ending close paren but some tokens still remain: %s",_t2s(sem,tokens));
     _t_free(tokens);
+    va_end(ap);
     return t;
 }
 
