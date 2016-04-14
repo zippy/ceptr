@@ -824,6 +824,7 @@ SemanticID TUPLE_OF_INSTANCES_AND_ZERO_OR_ONE_OF_INSTANCE_TOKENS;
 enum SYSProcessIDs {
     NULL_PROCESS_ID,
     NOOP_ID,
+    DEFINE_ID,
     NEW_ID,
     GET_ID,
     DEL_ID,
@@ -870,6 +871,7 @@ enum SYSProcessIDs {
     NUM_SYS_PROCESSES
 };
 SemanticID NOOP;
+SemanticID DEFINE;
 SemanticID NEW;
 SemanticID GET;
 SemanticID DEL;

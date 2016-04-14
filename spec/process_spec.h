@@ -133,6 +133,17 @@ void testProcessNew() {
     _r_free(r);
 }
 
+void testProcessDefine() {
+    Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
+    T *p = _t_parse(G_sem,0,"(DEFINE (SYMBOL_DEFINITION (SYMBOL_LABEL (ENGLISH_LABEL:\"age\")) (SYMBOL_STRUCTURE:INTEGER)))");
+    spec_is_equal(__p_reduce_sys_proc(0,DEFINE,p,r->q),noReductionErr);
+    spec_is_str_equal(t2s(p),"(RESULT_SYMBOL:age)");
+    T *d = _sem_get_def(G_sem,*(Symbol *)_t_surface(p));
+    spec_is_str_equal(t2s(d),"(SYMBOL_DEFINITION (SYMBOL_LABEL (ENGLISH_LABEL:age)) (SYMBOL_STRUCTURE:INTEGER))");
+    _t_free(p);
+    _r_free(r);
+}
+
 void testProcessDo() {
     T *code = _t_build(G_sem,0,
                        DO,SCOPE,
@@ -1810,6 +1821,7 @@ void testProcess() {
     testProcessGet();
     testProcessDel();
     testProcessNew();
+    testProcessDefine();
     testProcessDo();
     testProcessTranscode();
     testProcessDissolve();

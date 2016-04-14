@@ -384,6 +384,22 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             }
         }
         break;
+    case DEFINE_ID:
+        {
+            T *def = _t_detach_by_idx(code,1);
+            //@todo some kind of validation of the def??
+            SemanticType semtype;
+            Symbol s = _t_symbol(def);
+            if (semeq(s,SYMBOL_DEFINITION)) semtype = SEM_TYPE_SYMBOL;
+            else if (semeq(s,STRUCTURE_DEFINITION)) semtype = SEM_TYPE_STRUCTURE;
+            else if (semeq(s,PROCESS_DEFINITION)) semtype = SEM_TYPE_PROCESS;
+            else if (semeq(s,RECEPTOR_DEFINITION)) semtype = SEM_TYPE_RECEPTOR;
+            else if (semeq(s,PROTOCOL_DEFINITION)) semtype = SEM_TYPE_PROTOCOL;
+            else raise_error("unknown definition type: %s",_sem_get_name(sem,s));
+            SemanticID ns = _d_define(sem,def,semtype,q->r->context);
+            x = _t_news(0,RESULT_SYMBOL,ns);
+        }
+        break;
     case NEW_ID:
         {
             T *t = _t_detach_by_idx(code,1);

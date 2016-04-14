@@ -343,6 +343,8 @@ Symbol: ITERATION_DATA,[!];    data to iterate over
 Symbol: SCOPE,[!];    set of processes for DO
 
 Process: NOOP,0,"no-op","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"do",SIGNATURE_ANY,NULL_STRUCTURE,0;   this process reduces to its single "do" parameter.
+
+Process: DEFINE,0,"add a new definition","symbol",SIGNATURE_SYMBOL,RESULT_SYMBOL,"def",SIGNATURE_SYMBOL,SYMBOL_DEFINITION,0;
 Process: NEW,0,"new instance","xaddr",SIGNATURE_SYMBOL,WHICH_XADDR,"what",SIGNATURE_SYMBOL,NEW_TYPE,"value",SIGNATURE_ANY,NULL_STRUCTURE,0; reduces to the xaddr of a newly created instance of type NEW_TYPE.  the structures of "what" and "value" must match, but not the symbols
 Process: GET,0,"get instance value","value",SIGNATURE_ANY,NULL_STRUCTURE,"what",SIGNATURE_SYMBOL,WHICH_XADDR,0;   reduces to the value of the instance at the xaddr of the "what" parameter
 Process: DEL,0,"delete instance","value",SIGNATURE_ANY,NULL_STRUCTURE,"what",SIGNATURE_SYMBOL,WHICH_XADDR,0;   reduces to the value of the deleted instance at the xaddr of the "what" parameter
