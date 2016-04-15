@@ -881,10 +881,12 @@ T *__t_tokenize(char *s) {
                     i++; s++;
                 }
                 test_buffer_overrun;
-                if (i==0) raise_error("expecting a number");
-                buf[i]=0;
-                path[j++] = atoi(buf);
-                if (j==99) raise_error("path too deep in parse");
+                if (i==0 && c!=')') raise_error("expecting a number");
+                if (i) {
+                    buf[i]=0;
+                    path[j++] = atoi(buf);
+                    if (j==99) raise_error("path too deep in parse");
+                }
             }
             path[j++]=TREE_PATH_TERMINATOR;
             _t_new(t,P_VAL_PATH,path,sizeof(int)*j);
@@ -1482,7 +1484,10 @@ char * _t_sprint_path(int *fp,char *buf) {
             b += strlen(b);
         }
     }
-    else buf[0] = 0;
+    else {
+        buf[0] = '/';
+        buf[1] = 0;
+    }
 
     return buf;
 }

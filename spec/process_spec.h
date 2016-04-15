@@ -12,14 +12,7 @@ void testRunTree() {
 
     // a process that would look something like this in lisp:
     // (defun my_if (true_branch false_branch condition) (if (condition) (true_branch) (false_branch)))
-    code = _t_new_root(IF);                             // IF is a system process
-    int pt1[] = {2,1,TREE_PATH_TERMINATOR};
-    int pt2[] = {2,2,TREE_PATH_TERMINATOR};
-    int pt3[] = {2,3,TREE_PATH_TERMINATOR};
-
-    _t_new(code,PARAM_REF,pt3,sizeof(int)*4);
-    _t_new(code,PARAM_REF,pt1,sizeof(int)*4);
-    _t_new(code,PARAM_REF,pt2,sizeof(int)*4);
+    code = _t_parse(G_sem,0,"(IF (PARAM_REF:/2/3) (PARAM_REF:/2/1) (PARAM_REF:/2/2))");
 
     T *signature = __p_make_signature("result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,
                                    "condition",SIGNATURE_PROCESS,BOOLEAN,
@@ -32,7 +25,7 @@ void testRunTree() {
 
     Process p = _d_define_process(G_sem,code,"myif","a duplicate of the sys if process with params in different order",signature,NULL,TEST_CONTEXT);
 
-    T *params = _t_build(G_sem,0,PARAMS,TEST_INT_SYMBOL,123,TEST_INT_SYMBOL,321,BOOLEAN,1,NULL_SYMBOL);
+    T *params = _t_parse(G_sem,0,"(PARAMS (TEST_INT_SYMBOL:123) (TEST_INT_SYMBOL:321) (BOOLEAN:1))");
 
     T *r = _p_make_run_tree(G_sem,p,params,NULL);
     _t_free(params);
@@ -45,7 +38,7 @@ void testRunTree() {
 
     _t_free(r);
 
-    params = _t_build(G_sem,0,PARAMS,TEST_INT_SYMBOL,123,TEST_INT_SYMBOL,321,NULL_SYMBOL);
+    params = _t_parse(G_sem,0,"(PARAMS (TEST_INT_SYMBOL:123) (TEST_INT_SYMBOL:321))");
     // you can also create a run tree with a system process
 
     r = _p_make_run_tree(G_sem,ADD_INT,params,NULL);
@@ -297,12 +290,7 @@ void testProcessSemtrex() {
 
 void testProcessFill() {
     Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
-    T *n = _t_new_root(FILL);
-    _t_build(G_sem,n,SLOT,GOAL,REQUEST_HANDLER,SLOT_CHILDREN,TEST_INT_SYMBOL,1,SLOT,USAGE,REQUEST_DATA,NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);
-    _t_build(G_sem,n,SEMANTIC_MAP,
-             SEMANTIC_LINK,USAGE,REQUEST_DATA,REPLACEMENT_VALUE,TEST_INT_SYMBOL,32,NULL_SYMBOL,NULL_SYMBOL,
-             SEMANTIC_LINK,GOAL,REQUEST_HANDLER,REPLACEMENT_VALUE,ACTUAL_PROCESS,ADD_INT,NULL_SYMBOL,NULL_SYMBOL,
-             NULL_SYMBOL);
+    T *n = _t_parse(G_sem,0,"(FILL (SLOT (GOAL:REQUEST_HANDLER) (SLOT_CHILDREN (TEST_INT_SYMBOL:1) (SLOT (USAGE:REQUEST_DATA)))) (SEMANTIC_MAP (SEMANTIC_LINK (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (TEST_INT_SYMBOL:32))) (SEMANTIC_LINK (GOAL:REQUEST_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:ADD_INT)))))");
     spec_is_equal(__p_reduce_sys_proc(0,FILL,n,r->q),noReductionErr);
 
     //@todo, should this have been reduced too?  Or should there be an explicit eval kind of thing?
@@ -324,6 +312,10 @@ void testProcessFillMatch() {
     _t_new(p2,SEMTREX_MATCH_PATH,path,2*sizeof(int));
     _t_newi(p2,SEMTREX_MATCH_SIBLINGS_COUNT,1);
     T *p3 = _t_newi(n,TEST_INT_SYMBOL2,314);
+
+    // @todo N.B. SEMTREX_MATCH is not used correctly, the structure is interpreted two different
+    // ways, as both and INT and SYMBOL, so we can't use parse because it will fail on the incorrect type
+    //n = _t_parse(G_sem,0,"(FILL_FROM_MATCH (TEST_ANYTHING_SYMBOL (SLOT (USAGE:TEST_INT_SYMBOL2))) (SEMTREX_MATCH:1 (SEMTREX_MATCH:TEST_INT_SYMBOL2) (SEMTREX_MATCH_PATH:/) (SEMTREX_MATCH_SIBLINGS_COUNT:1)) (TEST_INT_SYMBOL2:314))");
 
     T *c = _t_rclone(n);
     _t_add(t,c);
@@ -536,11 +528,11 @@ void testProcessPath() {
     _t_free(p);
     p = _t_parse(G_sem,0,"(POP_PATH (RECEPTOR_PATH:/4/1/1) (RESULT_SYMBOL:CONTINUE_LOCATION) (POP_COUNT:3))");
     __p_reduce_sys_proc(0,POP_PATH,p,0);
-    spec_is_str_equal(t2s(p),"(CONTINUE_LOCATION:)");
+    spec_is_str_equal(t2s(p),"(CONTINUE_LOCATION:/)");
     _t_free(p);
     p = _t_parse(G_sem,0,"(POP_PATH (RECEPTOR_PATH:/4/1/1) (RESULT_SYMBOL:CONTINUE_LOCATION) (POP_COUNT:10))");
     __p_reduce_sys_proc(0,POP_PATH,p,0);
-    spec_is_str_equal(t2s(p),"(CONTINUE_LOCATION:)");
+    spec_is_str_equal(t2s(p),"(CONTINUE_LOCATION:/)");
     _t_free(p);}
 
 void testProcessString() {
@@ -857,30 +849,19 @@ void testProcessConverse() {
 
 void testProcessConverseListen() {
 
-    T *code = _t_build(G_sem,0,NEW,NEW_TYPE,TEST_INT_SYMBOL,PARAM_REF,2,1,TREE_PATH_TERMINATOR,NULL_SYMBOL,NULL_SYMBOL);
-    spec_is_str_equal(t2s(code),"(process:NEW (NEW_TYPE:TEST_INT_SYMBOL) (PARAM_REF:/2/1))");
-
+    T *code = _t_parse(G_sem,0,"(NEW (NEW_TYPE:TEST_INT_SYMBOL) (PARAM_REF:/2/1))");
 
     T *signature = __p_make_signature("result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,
                                       "int",SIGNATURE_SYMBOL,TEST_INT_SYMBOL,
                                       NULL);
-    Process p = _d_define_process(G_sem,code,"new int","",signature,NULL,TEST_CONTEXT);
+    Process p = _d_define_process(G_sem,code,"new_int","",signature,NULL,TEST_CONTEXT);
 
-    code = _t_newr(0,CONVERSE);
-    T *scope = _t_newr(code,SCOPE);
-    _t_newi(code,BOOLEAN,1);
-    T *n = _t_newr(scope,LISTEN);
-    _t_news(n,ASPECT_IDENT,DEFAULT_ASPECT);
-    _t_news(n,CARRIER,TEST_INT_SYMBOL);
-    T *match = _t_newr(n,PATTERN);
-    _sl(match,TEST_INT_SYMBOL);
-    T *a = _t_newp(n,ACTION,p);
-    _t_newi(a,TEST_INT_SYMBOL,314);
+    code = _t_parse(G_sem,0,"(CONVERSE (SCOPE (LISTEN (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TEST_INT_SYMBOL) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TEST_INT_SYMBOL))) (ACTION:new_int (TEST_INT_SYMBOL:314)))) (BOOLEAN:1))");
 
     T *run_tree = __p_build_run_tree(code,0);
     _t_free(code);
 
-    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (process:CONVERSE (SCOPE (process:LISTEN (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TEST_INT_SYMBOL) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TEST_INT_SYMBOL))) (ACTION:new int (TEST_INT_SYMBOL:314)))) (BOOLEAN:1)) (PARAMS))");
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (process:CONVERSE (SCOPE (process:LISTEN (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TEST_INT_SYMBOL) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TEST_INT_SYMBOL))) (ACTION:new_int (TEST_INT_SYMBOL:314)))) (BOOLEAN:1)) (PARAMS))");
 
     Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
 
@@ -896,7 +877,7 @@ void testProcessConverseListen() {
     spec_is_ptr_equal(q->blocked,e);
 
     T *ex = __r_get_expectations(r,DEFAULT_ASPECT);
-    spec_is_str_equal(t2s(ex),"(EXPECTATIONS (EXPECTATION (CARRIER:TEST_INT_SYMBOL) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TEST_INT_SYMBOL))) (ACTION:new int (TEST_INT_SYMBOL:314)) (PARAMS (SLOT (USAGE:NULL_SYMBOL))) (END_CONDITIONS (UNLIMITED)) (CONVERSATION_UUID)))");
+    spec_is_str_equal(t2s(ex),"(EXPECTATIONS (EXPECTATION (CARRIER:TEST_INT_SYMBOL) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TEST_INT_SYMBOL))) (ACTION:new_int (TEST_INT_SYMBOL:314)) (PARAMS (SLOT (USAGE:NULL_SYMBOL))) (END_CONDITIONS (UNLIMITED)) (CONVERSATION_UUID)))");
 
     T *t = _t_newi(0,TEST_INT_SYMBOL,314);
     //    debug_enable(D_LISTEN+D_SIGNALS);
