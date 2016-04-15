@@ -185,7 +185,10 @@ size_t _sys_structure_size(int id,void *surface) {
     case TREE_ID:
     case NULL_STRUCTURE_ID: return 0;
         //      case SEMTREX: return
-    case SYMBOL_ID: return sizeof(Symbol);
+    case PROCESS_ID:
+    case PROTOCOL_ID:
+    case STRUCTURE_ID:
+    case SYMBOL_ID: return sizeof(SemanticID);
     case BIT_ID:
     case INTEGER_ID: return sizeof(int);
     case INTEGER64_ID: return sizeof(uint64_t);

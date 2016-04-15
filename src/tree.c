@@ -959,24 +959,24 @@ T *_t_parse(SemTable *sem,T *parent,char *s,...) {
                     t = _t_news(t,node,v);
                 }
                 else if (semeq(st,INTEGER) || semeq(st,BIT)) {
-                    if (!semeq(v,P_VAL_I)) raise_error("expecting a P_VAL_I got %s",_sem_get_name(sem,v));
+                    if (!semeq(v,P_VAL_I)) raise_error("expecting a P_VAL_I got %s",_t2s(sem,tok));
                     t = _t_newi(t,node,*(int *)_t_surface(tok));
                 }
                 else if (semeq(st,FLOAT)) {
-                    if (!semeq(v,P_VAL_F)) raise_error("expecting a P_VAL_F got %s",_sem_get_name(sem,v));
+                    if (!semeq(v,P_VAL_F)) raise_error("expecting a P_VAL_F got %s",_t2s(sem,tok));
                     t = _t_new(t,node,(float *)_t_surface(tok),sizeof(float));
                 }
                 else if (semeq(st,CSTRING)) {
-                    if (!semeq(v,P_VAL_S)) raise_error("expecting a P_VAL_S got %s",_sem_get_name(sem,v));
+                    if (!semeq(v,P_VAL_S)) raise_error("expecting a P_VAL_S got %s",_t2s(sem,tok));
                     t = _t_new_str(t,node,(char *)_t_surface(tok));
                 }
                 else if (semeq(st,CHAR)) {
-                    if (!semeq(v,P_VAL_C)) raise_error("expecting a P_VAL_C got %s",_sem_get_name(sem,v));
+                    if (!semeq(v,P_VAL_C)) raise_error("expecting a P_VAL_C got %s",_t2s(sem,tok));
                     int x = *(int *)_t_surface(tok);
                     t = _t_newc(t,node,x);
                 }
                 else if (semeq(st,TREE_PATH)) {
-                    if (!semeq(v,P_VAL_PATH)) raise_error("expecting a P_VAL_PATH got %s",_sem_get_name(sem,v));
+                    if (!semeq(v,P_VAL_PATH)) raise_error("expecting a P_VAL_PATH got %s",_t2s(sem,tok));
                     t = _t_new(t,node,_t_surface(tok),_t_size(tok));
                 }
                 else {

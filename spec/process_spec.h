@@ -194,10 +194,7 @@ void testProcessTranscode() {
     debug_disable(D_TRANSCODE);
 
     //transcode of constructed symbol to CSTRING
-    n = _t_build(G_sem,0,
-                 TRANSCODE,TRANSCODE_PARAMS,TRANSCODE_TO,LINE,NULL_SYMBOL,
-                 TRANSCODE_ITEMS,CONTENT_TYPE,MEDIA_TYPE_IDENT,TEXT_MEDIA_TYPE,MEDIA_SUBTYPE_IDENT,CEPTR_TEXT_MEDIA_SUBTYPE,
-                 NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);
+    n = _t_parse(G_sem,0,"(TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:LINE)) (TRANSCODE_ITEMS (CONTENT_TYPE (MEDIA_TYPE_IDENT:TEXT_MEDIA_TYPE) (MEDIA_SUBTYPE_IDENT:CEPTR_TEXT_MEDIA_SUBTYPE))))");
     Q *q = r->q;
     T *run_tree = __p_build_run_tree(n,0);
     _t_free(n);
@@ -206,10 +203,8 @@ void testProcessTranscode() {
     spec_is_str_equal(t2s(_t_child(run_tree,1)),"(LINE:Content-Type: text/ceptr)");
 
     //        debug_enable(D_REDUCE+D_REDUCEV);
-    n = _t_build(G_sem,0,
-                 TRANSCODE,TRANSCODE_PARAMS,TRANSCODE_TO,LINE,NULL_SYMBOL,
-                 TRANSCODE_ITEMS,TODAY,YEAR,2015,MONTH,1,DAY,30,NULL_SYMBOL
-                 ,NULL_SYMBOL,NULL_SYMBOL);
+    n = _t_parse(G_sem,0,"(TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:LINE)) (TRANSCODE_ITEMS (TODAY (YEAR:2015) (MONTH:1) (DAY:30))))");
+
     //    spec_is_equal(__p_reduce_sys_proc(0,TRANSCODE,n,r->q),noReductionErr);
     run_tree = __p_build_run_tree(n,0);
     _t_free(n);
@@ -218,11 +213,7 @@ void testProcessTranscode() {
     debug_disable(D_REDUCE+D_REDUCEV);
     spec_is_str_equal(t2s(_t_child(run_tree,1)),"(US_SHORT_DATE:1/30/2015)");
 
-    n = _t_build(G_sem,0,TRANSCODE,TRANSCODE_PARAMS,TRANSCODE_TO,LINES,NULL_SYMBOL,
-                 TRANSCODE_ITEMS,HTTP_HEADERS,
-                 CONTENT_TYPE,MEDIA_TYPE_IDENT,TEXT_MEDIA_TYPE,MEDIA_SUBTYPE_IDENT,CEPTR_TEXT_MEDIA_SUBTYPE,NULL_SYMBOL,
-                 CONTENT_TYPE,MEDIA_TYPE_IDENT,TEXT_MEDIA_TYPE,MEDIA_SUBTYPE_IDENT,HTML_TEXT_MEDIA_SUBTYPE,NULL_SYMBOL,
-                 NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);
+    n = _t_parse(G_sem,0,"(TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:LINES)) (TRANSCODE_ITEMS (HTTP_HEADERS (CONTENT_TYPE (MEDIA_TYPE_IDENT:TEXT_MEDIA_TYPE) (MEDIA_SUBTYPE_IDENT:CEPTR_TEXT_MEDIA_SUBTYPE)) (CONTENT_TYPE (MEDIA_TYPE_IDENT:TEXT_MEDIA_TYPE) (MEDIA_SUBTYPE_IDENT:HTML_TEXT_MEDIA_SUBTYPE)))))");
     run_tree = __p_build_run_tree(n,0);
     _t_free(n);
     _p_addrt2q(q,run_tree);
@@ -231,9 +222,8 @@ void testProcessTranscode() {
 
     //debug_enable(D_TRANSCODE+D_STEP);
     //    debug_enable(D_REDUCE+D_REDUCEV);
-    n = _t_new_root(ascii_chars_2_http_req);
-    _t_build(G_sem,n,TRANSCODE,TRANSCODE_PARAMS,TRANSCODE_TO,ASCII_CHARS,NULL_SYMBOL,
-             TRANSCODE_ITEMS,TEST_STR_SYMBOL,"GET /path/to/file.ext?name=joe&age=30 HTTP/0.9\n",NULL_SYMBOL,NULL_SYMBOL);
+    n = _t_parse(G_sem,0,"(ascii_chars_2_http_req (TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:ASCII_CHARS)) (TRANSCODE_ITEMS (TEST_STR_SYMBOL:\"GET /path/to/file.ext?name=joe&age=30 HTTP/0.9\n\"))))");
+
     run_tree = __p_build_run_tree(n,0);
     _t_free(n);
     _p_addrt2q(q,run_tree);
@@ -254,8 +244,7 @@ void testProcessDissolve() {
 
     Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
 
-    n = _t_build(G_sem,0,LINES,LINE,"fish",DISSOLVE,LINES,LINE,"cat",LINE,"dog",NULL_SYMBOL,NULL_SYMBOL,CONCAT_STR,RESULT_SYMBOL,LINE,TEST_STR_SYMBOL,"sh",TEST_STR_SYMBOL,"oe",NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);
-    spec_is_str_equal(t2s(n),"(LINES (LINE:fish) (process:DISSOLVE (LINES (LINE:cat) (LINE:dog))) (process:CONCAT_STR (RESULT_SYMBOL:LINE) (TEST_STR_SYMBOL:sh) (TEST_STR_SYMBOL:oe)))");
+    n = _t_parse(G_sem,0,"(LINES (LINE:\"fish\") (DISSOLVE (LINES (LINE:\"cat\") (LINE:\"dog\"))) (CONCAT_STR (RESULT_SYMBOL:LINE) (TEST_STR_SYMBOL:\"sh\") (TEST_STR_SYMBOL:\"oe\")))");
 
     Q *q = r->q;
     T *run_tree = __p_build_run_tree(n,0);
@@ -1224,20 +1213,7 @@ void testProcessReduce() {
 void testProcessParameter() {
     Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
 
-    T *n = _t_build(G_sem,0,TEST_ANYTHING_SYMBOL,DISSOLVE,
-                    PARAMETER,
-                    PARAMETER_REFERENCE,PARAM_PATH,2,1,TREE_PATH_TERMINATOR,
-                    PARAMETER_RESULT,RESULT_VALUE,NULL_SYMBOL,
-                    NULL_SYMBOL,
-                    PARAMETER,
-                    PARAMETER_REFERENCE,PARAM_PATH,2,2,TREE_PATH_TERMINATOR,
-                    PARAMETER_RESULT,RESULT_SYMBOL,TEST_SYMBOL_SYMBOL,NULL_SYMBOL,
-                    PARAMETER,
-                    PARAMETER_REFERENCE,PARAM_PATH,2,1,TREE_PATH_TERMINATOR,
-                    PARAMETER_RESULT,RESULT_LABEL,ENGLISH_LABEL,NULL_SYMBOL,
-                    NULL_SYMBOL,NULL_SYMBOL);
-
-    spec_is_str_equal(t2s(n), "(TEST_ANYTHING_SYMBOL (process:DISSOLVE (process:PARAMETER (PARAMETER_REFERENCE (PARAM_PATH:/2/1)) (PARAMETER_RESULT (RESULT_VALUE)))) (process:PARAMETER (PARAMETER_REFERENCE (PARAM_PATH:/2/2)) (PARAMETER_RESULT (RESULT_SYMBOL:TEST_SYMBOL_SYMBOL))) (process:PARAMETER (PARAMETER_REFERENCE (PARAM_PATH:/2/1)) (PARAMETER_RESULT (RESULT_LABEL:ENGLISH_LABEL))))");
+    T *n = _t_parse(G_sem,0,"(TEST_ANYTHING_SYMBOL (DISSOLVE (PARAMETER (PARAMETER_REFERENCE (PARAM_PATH:/2/1)) (PARAMETER_RESULT (RESULT_VALUE)))) (PARAMETER (PARAMETER_REFERENCE (PARAM_PATH:/2/2)) (PARAMETER_RESULT (RESULT_SYMBOL:TEST_SYMBOL_SYMBOL))) (PARAMETER (PARAMETER_REFERENCE (PARAM_PATH:/2/1)) (PARAMETER_RESULT (RESULT_LABEL:ENGLISH_LABEL))))");
 
     T *p1 = _t_newi(0,TEST_INT_SYMBOL,314);
     T *p2 = _t_new_str(0,TEST_STR_SYMBOL,"314");
@@ -1296,29 +1272,7 @@ Process G_ifeven;
  */
 //! [defIfEven]
 void _defIfEven() {
-    T *code;
-
-    /* a process that would look something like this in lisp:
-       (defun if_even (val true_branch false_branch) (if (eq (mod val 2 ) 0) (true_branch) (false_branch)))
-
-       or something like this in c:
-
-       void if_even(int val,void (*true_branch)(),void (*false_branch)() ){
-           if (val%2==0) (*true_branch)();
-       else (*false_branch)();
-       }
-    */
-    code = _t_new_root(IF);                       // IF is a system process
-    T *eq = _t_newr(code,EQ_INT);
-    T *mod = _t_newr(eq,MOD_INT);
-    int p1[] = {2,1,TREE_PATH_TERMINATOR};        // paths to the parameter refrences in the run tree: second branch, b1
-    int p2[] = {2,2,TREE_PATH_TERMINATOR};        // second branch, b2
-    int p3[] = {2,3,TREE_PATH_TERMINATOR};        // second branch, b3
-    _t_new(mod,PARAM_REF,p1,sizeof(int)*3);       // param_ref should be a path_param_ref, also to be added is a label_param_ref
-    _t_newi(mod,TEST_INT_SYMBOL,2);
-    _t_newi(eq,TEST_INT_SYMBOL,0);
-    _t_new(code,PARAM_REF,p2,sizeof(int)*3);
-    _t_new(code,PARAM_REF,p3,sizeof(int)*3);
+    T *code = _t_parse(G_sem,0,"(IF (EQ_INT (MOD_INT (PARAM_REF:/2/1) (TEST_INT_SYMBOL:2)) (TEST_INT_SYMBOL:0)) (PARAM_REF:/2/2) (PARAM_REF:/2/3))");
 
     T *signature = __p_make_signature("result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,
                                       "val",SIGNATURE_STRUCTURE,INTEGER,
@@ -1482,10 +1436,7 @@ void testProcessSignatureMatching() {
 
 void testProcessError() {
     T *t = _t_new_root(RUN_TREE);
-    T *n = _t_new_root(NOOP);
-    T *d = _t_newr(n,DIV_INT);
-    _t_newi(d,TEST_INT_SYMBOL,100);
-    _t_newi(d,TEST_INT_SYMBOL,0);
+    T *n = _t_parse(G_sem,0,"(NOOP (DIV_INT (TEST_INT_SYMBOL:100) (TEST_INT_SYMBOL:0)))");
     T *c = _t_rclone(n);
     _t_add(t,c);
     T *ps = _t_newr(t,PARAMS);
@@ -1534,16 +1485,8 @@ void testProcessIterate() {
     output = open_memstream(&output_data,&size);
 
     // an iterate process that writes to a stream and 3 times
-    T *code = _t_new_root(ITERATE);
-    T *params = _t_newr(code,PARAMS);
-    _t_newi(code,TEST_INT_SYMBOL,3);
-
-    T *x = _t_newr(code,STREAM_WRITE);
     Stream *st = _st_new_unix_stream(output,0);
-    _t_new_cptr(x,EDGE_STREAM,st);
-    _t_new_str(x,LINE,"testing");
-
-    spec_is_str_equal(t2s(code),"(process:ITERATE (PARAMS) (TEST_INT_SYMBOL:3) (process:STREAM_WRITE (EDGE_STREAM) (LINE:testing)))");
+    T *code = _t_parse(G_sem,0,"(ITERATE (PARAMS) (TEST_INT_SYMBOL:3) (STREAM_WRITE % (LINE:\"testing\")))",_t_new_cptr(0,EDGE_STREAM,st));
 
     T *t = __p_build_run_tree(code,0);
     Error e = _p_reduce(G_sem,t);
@@ -1552,18 +1495,11 @@ void testProcessIterate() {
     //    spec_is_str_equal(t2s(t),"xxx"); @todo something here when we figure out return value
 
     _t_free(t);
+    _t_free(code);
 
     // now test iteration with a condition instead of an INTEGER
     //  a condition that checks to see if the param is less than 3
-    x = _t_newr(0,LT_INT);
-    int p[] = {1,1,1,TREE_PATH_TERMINATOR};
-    _t_new(x,PARAM_REF,p,sizeof(int)*4);
-    _t_newi(x,TEST_INT_SYMBOL,3);
-
-    _t_newi(params,TEST_INT_SYMBOL,314);
-
-    _t_replace(code,2,x);
-    spec_is_str_equal(t2s(code),"(process:ITERATE (PARAMS (TEST_INT_SYMBOL:314)) (process:LT_INT (PARAM_REF:/1/1/1) (TEST_INT_SYMBOL:3)) (process:STREAM_WRITE (EDGE_STREAM) (LINE:testing)))");
+    code = _t_parse(G_sem,0,"(ITERATE (PARAMS (TEST_INT_SYMBOL:314)) (LT_INT (PARAM_REF:/1/1/1) (TEST_INT_SYMBOL:3)) (STREAM_WRITE % (LINE:\"testing\")))",_t_new_cptr(0,EDGE_STREAM,st));
 
     t = __p_build_run_tree(code,0);
     e = _p_reduce(G_sem,t);
@@ -1584,25 +1520,15 @@ void testProcessIterateOnSymbol() {
     output = open_memstream(&output_data,&size);
 
     // an iterate process that writes to a stream and 3 times
-    T *code = _t_new_root(ITERATE);
-    T *params = _t_newr(code,PARAMS);
-
-    _t_news(code,ITERATE_ON_SYMBOL,TEST_STR_SYMBOL);
-
-    T *t = _t_newr(code,STREAM_WRITE);
     Stream *st = _st_new_unix_stream(output,0);
-    _t_new_cptr(t,EDGE_STREAM,st);
-    int p[] = {1,1,1,1,TREE_PATH_TERMINATOR};
-    _t_new(t,PARAM_REF,p,sizeof(int)*5);
-
-    spec_is_str_equal(t2s(code),"(process:ITERATE (PARAMS) (ITERATE_ON_SYMBOL:TEST_STR_SYMBOL) (process:STREAM_WRITE (EDGE_STREAM) (PARAM_REF:/1/1/1/1)))");
+    T *code = _t_parse(G_sem,0,"(ITERATE (PARAMS) (ITERATE_ON_SYMBOL:TEST_STR_SYMBOL) (STREAM_WRITE % (PARAM_REF:/1/1/1/1)))",_t_new_cptr(0,EDGE_STREAM,st));
     T *run_tree = __p_build_run_tree(code,0);
     _t_free(code);
 
     Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
 
     Xaddr x;
-    t = _t_new_str(0,TEST_STR_SYMBOL,"thing1 ");
+    T *t = _t_new_str(0,TEST_STR_SYMBOL,"thing1 ");
     x = _r_new_instance(r,t);
     t = _t_new_str(0,TEST_STR_SYMBOL,"thing2 ");
     x = _r_new_instance(r,t);
@@ -1625,13 +1551,7 @@ void testProcessListen() {
     Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
 
     // test regular asynchronous listening.
-    T *n = _t_new_root(LISTEN);
-    _t_news(n,ASPECT_IDENT,DEFAULT_ASPECT);
-    _t_news(n,CARRIER,TICK);
-    T *match = _t_newr(n,PATTERN);
-    _sl(match,TICK);
-    T *a = _t_newp(n,ACTION,NOOP);
-    _t_newi(a,TEST_INT_SYMBOL,314);
+    T *n = _t_parse(G_sem,0,"(LISTEN (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TICK) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TICK))) (ACTION:NOOP (TEST_INT_SYMBOL:314)))");
     spec_is_equal(__p_reduce_sys_proc(0,LISTEN,n,r->q),noReductionErr);
     spec_is_str_equal(t2s(n),"(REDUCTION_ERROR_SYMBOL:NULL_SYMBOL)"); //@todo is this right??
     _t_free(n);
@@ -1642,11 +1562,7 @@ void testProcessListen() {
     _r_remove_expectation(r, _t_child(ex,1));
 
     // test listen that blocks
-    n = _t_new_root(LISTEN);
-    _t_news(n,ASPECT_IDENT,DEFAULT_ASPECT);
-    _t_news(n,CARRIER,TESTING);
-    match = _t_newr(n,PATTERN);
-    _sl(match,TEST_STR_SYMBOL);
+    n = _t_parse(G_sem,0,"(LISTEN (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TEST_STR_SYMBOL))))");
 
     G_next_process_id = 0; // reset the process ids so the test will always work
     T *run_tree = __p_build_run_tree(n,0);
@@ -1690,11 +1606,7 @@ void testProcessSelfAddr() {
 
 void testProcessGetLabel() {
     Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
-    T *n = _t_build(G_sem,0,GET_LABEL,
-                    LABEL_SYMBOL,CONTENT_TYPE,
-                    LABEL_TYPE,HTTP_HEADER_LABEL,
-                    RESULT_SYMBOL,LINE,
-                    NULL_SYMBOL,NULL_SYMBOL);
+    T *n = _t_parse(G_sem,0,"(GET_LABEL (LABEL_SYMBOL:CONTENT_TYPE) (LABEL_TYPE:HTTP_HEADER_LABEL) (RESULT_SYMBOL:LINE))");
     spec_is_equal(__p_reduce_sys_proc(0,GET_LABEL,n,r->q),noReductionErr);
     spec_is_str_equal(t2s(n),"(LINE:Content-Type)");
     _t_free(n);
@@ -1810,27 +1722,7 @@ void testProcessMulti() {
 void testRunTreeTemplate() {
 
     T *params = _t_new_root(PARAMS);
-    T *sm = _t_build(G_sem,0,
-                     SEMANTIC_MAP,
-                     SEMANTIC_LINK,
-                     USAGE,CHANNEL,
-                     REPLACEMENT_VALUE,ASPECT_IDENT,DEFAULT_ASPECT,NULL_SYMBOL,NULL_SYMBOL,
-                     SEMANTIC_LINK,
-                     USAGE,REQUEST_DATA,
-                     REPLACEMENT_VALUE,PING,NULL_SYMBOL,
-                     SEMANTIC_LINK,
-                     USAGE,RESPONSE_DATA,
-                     REPLACEMENT_VALUE,PING,NULL_SYMBOL,
-                     SEMANTIC_LINK,
-                     ROLE,RESPONDER,
-                     REPLACEMENT_VALUE,TO_ADDRESS,RECEPTOR_ADDR,3,NULL_SYMBOL,NULL_SYMBOL,
-                     SEMANTIC_LINK,
-                     GOAL,REQUEST_HANDLER,
-                     REPLACEMENT_VALUE,NOOP,NULL_SYMBOL,
-                     NULL_SYMBOL,NULL_SYMBOL,NULL_SYMBOL
-                     );
-
-    spec_is_str_equal(t2s(sm),"(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:CHANNEL) (REPLACEMENT_VALUE (ASPECT_IDENT:DEFAULT_ASPECT))) (SEMANTIC_LINK (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (PING))) (SEMANTIC_LINK (USAGE:RESPONSE_DATA) (REPLACEMENT_VALUE (PING))) (SEMANTIC_LINK (ROLE:RESPONDER) (REPLACEMENT_VALUE (TO_ADDRESS (RECEPTOR_ADDR:3)))) (SEMANTIC_LINK (GOAL:REQUEST_HANDLER) (REPLACEMENT_VALUE (process:NOOP))))");
+    T *sm = _t_parse(G_sem,0,"(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:CHANNEL) (REPLACEMENT_VALUE (ASPECT_IDENT:DEFAULT_ASPECT))) (SEMANTIC_LINK (USAGE:REQUEST_DATA) (REPLACEMENT_VALUE (PING))) (SEMANTIC_LINK (USAGE:RESPONSE_DATA) (REPLACEMENT_VALUE (PING))) (SEMANTIC_LINK (ROLE:RESPONDER) (REPLACEMENT_VALUE (TO_ADDRESS (RECEPTOR_ADDR:3)))) (SEMANTIC_LINK (GOAL:REQUEST_HANDLER) (REPLACEMENT_VALUE (NOOP))))");
 
     T *r = _p_make_run_tree(G_sem,send_request,params,sm);
     _t_free(params);
