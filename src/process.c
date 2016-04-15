@@ -454,11 +454,39 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
         b = (*(int *)_t_surface(t)) ? 2 : 3;
         x = _t_detach_by_idx(code,b);
         break;
-    /* case COND_ID: */
-    /*     { */
-    /*         return structureMismatchReductionErr; */
-    /*     } */
-    /*     break; */
+    case COND_ID:
+        // COND is a special case, we have to check the phase to see what to do
+        // after the children have been evaluated.
+        {
+            CondState *state = *(CondState **)_t_surface(code);
+            // get the condition or else results into x
+            x = _t_detach_by_idx(code,1);
+            if (state->phase == EvalCondCondtions) {
+                // if the condition was true, then we have to load the body for evaluation
+                T *cond_pair = _t_detach_by_idx(state->conditions,1);
+                if (*(int *)_t_surface(x)) {
+                    _t_add(code,_t_detach_by_idx(cond_pair,1));
+                    state->phase = EvalCondResult;
+                } else  {
+                    // otherwise we have to move on to the next condition or the Else
+                    T *c = _t_child(state->conditions,1);
+                    _t_add(code,_t_detach_by_idx(c,1));
+                    if (semeq(_t_symbol(c),COND_ELSE)) {
+                        state->phase = EvalCondResult;
+                    }
+                }
+                _t_free(cond_pair);
+                _t_free(x);
+                return Eval;
+            }
+            else {
+                // cleanup the state before returning.
+                _t_free(state->conditions);
+                free(state);
+                code->contents.size = 0;
+            }
+        }
+        break;
     case EQ_SYM_ID:
         x = __t_newi(0,BOOLEAN,
                      semeq(
@@ -1568,6 +1596,27 @@ Error _p_step(Q *q, R **contextP) {
                         // we start in condition phase so throw away the code copy
                         T *x = _t_detach_by_idx(np,3);
                         _t_free(x);
+                    }
+                }
+                else if (semeq(s,COND)) {
+                    // if first time we are hitting the cond
+                    // the we need to set up the state data to track flow control
+                    if (_t_size(np) == 0) {
+                        CondState *state = malloc(sizeof(CondState));
+                        // remove the conditions and store them in state
+                        T *c = state->conditions = _t_detach_by_idx(np,1);
+                        c = _t_child(c,1);
+                        // we add the first child of the COND_PAIR or the COND_ELSE
+                        // to the code for reduction and set the phase appropriately
+                        _t_add(np,_t_detach_by_idx(c,1));
+                        if (semeq(_t_symbol(c),COND_PAIR)) {
+                            state->phase = EvalCondCondtions;
+                        }
+                        else {
+                            state->phase = EvalCondResult;
+                        }
+                        *((CondState **)&np->contents.surface) = state;
+                        np->contents.size = sizeof(CondState *);
                     }
                 }
                 else if (semeq(s,CONVERSE)) {

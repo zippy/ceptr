@@ -383,6 +383,28 @@ void testProcessIf() {
     _t_free(n);
 }
 
+void testProcessCond(){
+    T *t = _t_new_root(RUN_TREE);
+    T *n = _t_parse(G_sem,0,"(COND (CONDITIONS (COND_PAIR (BOOLEAN:0) (ASCII_CHAR:'x')) (COND_ELSE (ASCII_CHAR:'y'))))");
+    T *c = _t_rclone(n);
+    _t_add(t,c);
+    _p_reduce(G_sem,t);
+
+    spec_is_str_equal(t2s(_t_child(t,1)),"(ASCII_CHAR:'y')");
+    _t_free(t);
+    _t_free(n);
+
+    t = _t_new_root(RUN_TREE);
+    n = _t_parse(G_sem,0,"(COND (CONDITIONS (COND_PAIR (BOOLEAN:0) (ASCII_CHAR:'x')) (COND_PAIR (BOOLEAN:1) (ASCII_CHAR:'y')) (COND_ELSE (ASCII_CHAR:'z'))))");
+    c = _t_rclone(n);
+    _t_add(t,c);
+    _p_reduce(G_sem,t);
+
+    spec_is_str_equal(t2s(_t_child(t,1)),"(ASCII_CHAR:'y')");
+    _t_free(t);
+    _t_free(n);
+}
+
 void testProcessSym() {
     T *n = _t_new_root(EQ_SYM);
     _t_news(n,EQUALITY_TEST_SYMBOL,TEST_INT_SYMBOL);
@@ -1815,6 +1837,7 @@ void testProcess() {
     testProcessFillMatch();
     testProcessFillMatchFull();
     testProcessIf();
+    testProcessCond();
     testProcessSym();
     testProcessIntMath();
     testProcessString();

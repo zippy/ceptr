@@ -2117,6 +2117,43 @@
        <div class="def-sig-out">result(PASSTHRU:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
        <div class="def-comment"><i>get a symbol's label</i></div>
    </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="PAIR_OF_ANY_SYMBOL"></a>PAIR-OF-ANY-SYMBOL</div>
+       <div class="def-struc-def">SEQ(!, !)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="COND_PAIR"></a>COND_PAIR</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#PAIR_OF_ANY_SYMBOL">PAIR-OF-ANY-SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="COND_ELSE"></a>COND_ELSE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="TUPLE_OF_ZERO_OR_MORE_OF_COND_PAIR_AND_COND_ELSE"></a>TUPLE-OF-ZERO-OR-MORE-OF-COND-PAIR-AND-COND-ELSE</div>
+       <div class="def-struc-def">SEQ(*(<a href="ref_sys_symbols.html#COND_PAIR">COND_PAIR</a>), <a href="ref_sys_symbols.html#COND_ELSE">COND_ELSE</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="CONDITIONS"></a>CONDITIONS</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TUPLE_OF_ZERO_OR_MORE_OF_COND_PAIR_AND_COND_ELSE">TUPLE-OF-ZERO-OR-MORE-OF-COND-PAIR-AND-COND-ELSE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="COND"></a>COND</div>
+       <div class="def-sig-in"><li>conditions(SYMBOL:<a href="ref_sys_symbols.html#CONDITIONS">CONDITIONS</a>)</li></div>
+       <div class="def-sig-out">result(PASSTHRU:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
+       <div class="def-comment"><i>cond</i><br /> this is a traditional lisp "cond" process that reduces conditionally to the COND_PAIR that evaluates to true, or to the COND_ELSE in none of them do.</div>
+   </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
        <div class="def-name"><a name="IF"></a>IF</div>
