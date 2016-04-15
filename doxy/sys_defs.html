@@ -1197,15 +1197,15 @@
    </div>
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
-       <div class="def-name"><a name="LIST_OF_CODE_AND_PARAMS_AND_ZERO_OR_ONE_OF_CODE"></a>LIST-OF-CODE-AND-PARAMS-AND-ZERO-OR-ONE-OF-CODE</div>
-       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#CODE">CODE</a>, <a href="ref_sys_symbols.html#PARAMS">PARAMS</a>, ?(<a href="ref_sys_symbols.html#CODE">CODE</a>))</div>
+       <div class="def-name"><a name="LIST_OF_CODE_AND_PARAMS_AND_ZERO_OR_ONE_OF_CODE_AND_ZERO_OR_ONE_OF_PARAMS"></a>LIST-OF-CODE-AND-PARAMS-AND-ZERO-OR-ONE-OF-CODE-AND-ZERO-OR-ONE-OF-PARAMS</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#CODE">CODE</a>, <a href="ref_sys_symbols.html#PARAMS">PARAMS</a>, ?(<a href="ref_sys_symbols.html#CODE">CODE</a>), ?(<a href="ref_sys_symbols.html#PARAMS">PARAMS</a>))</div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="RUN_TREE"></a>RUN_TREE</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_CODE_AND_PARAMS_AND_ZERO_OR_ONE_OF_CODE">LIST-OF-CODE-AND-PARAMS-AND-ZERO-OR-ONE-OF-CODE</a></div>
-       <div class="def-comment">     think about this as a stack frame and its code and error handling code</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_CODE_AND_PARAMS_AND_ZERO_OR_ONE_OF_CODE_AND_ZERO_OR_ONE_OF_PARAMS">LIST-OF-CODE-AND-PARAMS-AND-ZERO-OR-ONE-OF-CODE-AND-ZERO-OR-ONE-OF-PARAMS</a></div>
+       <div class="def-comment">     think about this as a stack frame and its code and error handling code plus error params</div>
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
@@ -2390,6 +2390,25 @@
        <div class="def-sig-in"><li>int1(STRUCTURE:<a href="ref_sys_symbols.html#INTEGER">INTEGER</a>)</li><li>int2(STRUCTURE:<a href="ref_sys_symbols.html#INTEGER">INTEGER</a>)</li></div>
        <div class="def-sig-out">result(SYMBOL:<a href="ref_sys_symbols.html#BOOLEAN">BOOLEAN</a>)</div>
        <div class="def-comment"><i>test greater than or equal</i></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="RESTART_AT"></a>RESTART_AT</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="POP_COUNT"></a>POP_COUNT</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#INTEGER">INTEGER</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="POP_PATH"></a>POP_PATH</div>
+       <div class="def-sig-in"><li>path(STRUCTURE:<a href="ref_sys_symbols.html#TREE_PATH">TREE_PATH</a>)</li><li>as(SYMBOL:<a href="ref_sys_symbols.html#RESULT_SYMBOL">RESULT_SYMBOL</a>)</li><li>[count(SYMBOL:<a href="ref_sys_symbols.html#POP_COUNT">POP_COUNT</a>)]</li></div>
+       <div class="def-sig-out">result(PASSTHRU:<a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a>)</div>
+       <div class="def-comment"><i>pop values off a tree path</i></div>
    </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>

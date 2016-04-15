@@ -536,6 +536,24 @@ void testProcessIntMath() {
 
 }
 
+void testProcessPath() {
+    T *p = _t_parse(G_sem,0,"(POP_PATH (RECEPTOR_PATH:/4/1/1) (RESULT_SYMBOL:RESTART_AT))");
+    __p_reduce_sys_proc(0,POP_PATH,p,0);
+    spec_is_str_equal(t2s(p),"(RESTART_AT:/4/1)");
+    _t_free(p);
+    p = _t_parse(G_sem,0,"(POP_PATH (RECEPTOR_PATH:/4/1/1) (RESULT_SYMBOL:RESTART_AT) (POP_COUNT:2))");
+    __p_reduce_sys_proc(0,POP_PATH,p,0);
+    spec_is_str_equal(t2s(p),"(RESTART_AT:/4)");
+    _t_free(p);
+    p = _t_parse(G_sem,0,"(POP_PATH (RECEPTOR_PATH:/4/1/1) (RESULT_SYMBOL:RESTART_AT) (POP_COUNT:3))");
+    __p_reduce_sys_proc(0,POP_PATH,p,0);
+    spec_is_str_equal(t2s(p),"(RESTART_AT:)");
+    _t_free(p);
+    p = _t_parse(G_sem,0,"(POP_PATH (RECEPTOR_PATH:/4/1/1) (RESULT_SYMBOL:RESTART_AT) (POP_COUNT:10))");
+    __p_reduce_sys_proc(0,POP_PATH,p,0);
+    spec_is_str_equal(t2s(p),"(RESTART_AT:)");
+    _t_free(p);}
+
 void testProcessString() {
 
     T *run_tree = _t_new_root(RUN_TREE);
@@ -1840,6 +1858,7 @@ void testProcess() {
     testProcessCond();
     testProcessSym();
     testProcessIntMath();
+    testProcessPath();
     testProcessString();
     testProcessRespond();
     testProcessSay();

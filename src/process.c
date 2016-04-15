@@ -557,6 +557,19 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
         *((int *)&x->contents.surface) = *((int *)&x->contents.surface)>=c;
         x->contents.symbol = BOOLEAN;
         break;
+    case POP_PATH_ID:
+        {
+            x = _t_detach_by_idx(code,1);
+            T *as = _t_child(code,1);
+            T *count = _t_child(code,2);
+            x->contents.symbol = *(Symbol *)_t_surface(as);
+            int i = count ? *(int *)_t_surface(count) : 1;
+            int *path = (int *)_t_surface(x);
+            int d = _t_path_depth(path);
+            if (i>d) path[0] = TREE_PATH_TERMINATOR;
+            else path[d-i] = TREE_PATH_TERMINATOR;
+        }
+        break;
     case CONTRACT_STR_ID:
     case CONCAT_STR_ID:
         // if the first parameter is a RESULT SYMBOL then we use that as the symbol type for the result tree.

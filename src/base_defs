@@ -223,7 +223,7 @@ Symbol: TEMPLATE_SIGNATURE,[(*EXPECTED_SLOT)];
 Structure: PROCESS_FORM,(OUTPUT_SIGNATURE,*INPUT_SIGNATURE,*TEMPLATE_SIGNATURE);
 Symbol: PROCESS_SIGNATURE,PROCESS_FORM;
 
-Symbol: RUN_TREE,[(CODE,PARAMS,?CODE)];     think about this as a stack frame and its code and error handling code
+Symbol: RUN_TREE,[(CODE,PARAMS,?CODE,?PARAMS)];     think about this as a stack frame and its code and error handling code plus error params   
 Symbol: PARAM_REF,TREE_PATH;                used in a code tree as a reference to a parameter
 Symbol: SIGNAL_REF,TREE_PATH;               used in a code tree triggered by an expectation as a reference to a part of the signal that triggered the action.
 Symbol: PARAMS,[*!];
@@ -408,6 +408,9 @@ ProcessL: LT_INT,0,"test less than",INTEGER,OPERATOR,"result",SIGNATURE_SYMBOL,B
 ProcessL: GT_INT,0,"test greater than",INTEGER,OPERATOR,"result",SIGNATURE_SYMBOL,BOOLEAN,"int1",SIGNATURE_STRUCTURE,INTEGER,"int2",SIGNATURE_STRUCTURE,INTEGER,0;
 ProcessL: LTE_INT,0,"test less than or equal",INTEGER,OPERATOR,"result",SIGNATURE_SYMBOL,BOOLEAN,"int1",SIGNATURE_STRUCTURE,INTEGER,"int2",SIGNATURE_STRUCTURE,INTEGER,0;
 ProcessL: GTE_INT,0,"test greater than or equal",INTEGER,OPERATOR,"result",SIGNATURE_SYMBOL,BOOLEAN,"int1",SIGNATURE_STRUCTURE,INTEGER,"int2",SIGNATURE_STRUCTURE,INTEGER,0;
+Symbol: RESTART_AT,TREE_PATH;
+Symbol: POP_COUNT,INTEGER;
+Process: POP_PATH,0,"pop values off a tree path","result",SIGNATURE_PASSTHRU,NULL_SYMBOL,"path",SIGNATURE_STRUCTURE,TREE_PATH,"as",SIGNATURE_SYMBOL,RESULT_SYMBOL,"count",SIGNATURE_OPTIONAL,SIGNATURE_SYMBOL,POP_COUNT,0;
 Process: INITIATE_PROTOCOL,0,"initiate the first step of a protocol","error",SIGNATURE_SYMBOL,REDUCTION_ERROR_SYMBOL,"protocol",SIGNATURE_SYMBOL,PNAME,"interaction",SIGNATURE_SYMBOL,WHICH_INTERACTION,"bindings",SIGNATURE_SYMBOL,PROTOCOL_BINDINGS,0;
 Process: MAGIC,0,"dark magic","result",SIGNATURE_ANY,NULL_STRUCTURE,0;   this process reduces to hardcoded special things as a scaffold for things we don't know how to build in ceptr yet.
 

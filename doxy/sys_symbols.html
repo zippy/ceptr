@@ -123,7 +123,7 @@
 <tr><td><a name="OUTPUT_SIGNATURE"></a>OUTPUT_SIGNATURE</td><td><a href="ref_sys_structures.html#TUPLE_OF_SIGNATURE_LABEL_AND_SIGNATURE_OUTPUT_TYPE">TUPLE-OF-SIGNATURE-LABEL-AND-SIGNATURE-OUTPUT-TYPE</a></td><td></td></tr>
 <tr><td><a name="EXPECTED_SLOT"></a>EXPECTED_SLOT</td><td><a href="ref_sys_structures.html#SLOT_STRUCTURE">SLOT-STRUCTURE</a></td><td>  use of the slot structure not as a slot but as what kind of slot to expect (for the template signature)</td></tr>
 <tr><td><a name="TEMPLATE_SIGNATURE"></a>TEMPLATE_SIGNATURE</td><td><a href="ref_sys_structures.html#LIST_OF_ZERO_OR_MORE_OF_EXPECTED_SLOT">LIST-OF-ZERO-OR-MORE-OF-EXPECTED-SLOT</a></td><td></td></tr>
-<tr><td><a name="RUN_TREE"></a>RUN_TREE</td><td><a href="ref_sys_structures.html#LIST_OF_CODE_AND_PARAMS_AND_ZERO_OR_ONE_OF_CODE">LIST-OF-CODE-AND-PARAMS-AND-ZERO-OR-ONE-OF-CODE</a></td><td>     think about this as a stack frame and its code and error handling code</td></tr>
+<tr><td><a name="RUN_TREE"></a>RUN_TREE</td><td><a href="ref_sys_structures.html#LIST_OF_CODE_AND_PARAMS_AND_ZERO_OR_ONE_OF_CODE_AND_ZERO_OR_ONE_OF_PARAMS">LIST-OF-CODE-AND-PARAMS-AND-ZERO-OR-ONE-OF-CODE-AND-ZERO-OR-ONE-OF-PARAMS</a></td><td>     think about this as a stack frame and its code and error handling code plus error params</td></tr>
 <tr><td><a name="PARAM_REF"></a>PARAM_REF</td><td><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></td><td>                used in a code tree as a reference to a parameter</td></tr>
 <tr><td><a name="SIGNAL_REF"></a>SIGNAL_REF</td><td><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></td><td>               used in a code tree triggered by an expectation as a reference to a part of the signal that triggered the action.</td></tr>
 <tr><td><a name="RESULT_SYMBOL"></a>RESULT_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
@@ -224,6 +224,8 @@
 <tr><td><a name="COND_ELSE"></a>COND_ELSE</td><td><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></td><td></td></tr>
 <tr><td><a name="CONDITIONS"></a>CONDITIONS</td><td><a href="ref_sys_structures.html#TUPLE_OF_ZERO_OR_MORE_OF_COND_PAIR_AND_COND_ELSE">TUPLE-OF-ZERO-OR-MORE-OF-COND-PAIR-AND-COND-ELSE</a></td><td></td></tr>
 <tr><td><a name="EQUALITY_TEST_SYMBOL"></a>EQUALITY_TEST_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>  a symbol to use when testing the symbol equality</td></tr>
+<tr><td><a name="RESTART_AT"></a>RESTART_AT</td><td><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></td><td></td></tr>
+<tr><td><a name="POP_COUNT"></a>POP_COUNT</td><td><a href="ref_sys_structures.html#INTEGER">INTEGER</a></td><td></td></tr>
 <tr><td><a name="STX_SL"></a>STX_SL</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
 <tr><td><a name="STX_OP"></a>STX_OP</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
 <tr><td><a name="STX_CP"></a>STX_CP</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
