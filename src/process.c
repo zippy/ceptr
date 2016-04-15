@@ -734,6 +734,18 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             raise_error("whoa THIS_SCOPE executed outside CONVERSE!");
         x = _t_rclone(context->conversation->id);
         break;
+    case CONTINUE_ID:
+        {
+            T *at = _t_detach_by_idx(code,1);
+            T *with = _t_detach_by_idx(_t_child(code,1),1);
+            int *path = (int *)_t_surface(at);
+            // @todo validate that the path is on ok path to unwind to...
+            T *c = _t_get(context->run_tree,path);
+            if (!c) raise_error("continue at point invalid");
+            __p_unwind_to_point(context,c,with);
+            return(noErr);
+        }
+        break;
     case COMPLETE_ID:
         {
             T *with = _t_detach_by_idx(code,1);

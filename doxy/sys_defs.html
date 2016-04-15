@@ -2393,12 +2393,6 @@
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
-       <div class="def-name"><a name="RESTART_AT"></a>RESTART_AT</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></div>
-       <div class="def-comment"></div>
-   </div>
-   <div class="def-item def-symbol">
-       <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="POP_COUNT"></a>POP_COUNT</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#INTEGER">INTEGER</a></div>
        <div class="def-comment"></div>
@@ -2409,6 +2403,25 @@
        <div class="def-sig-in"><li>path(STRUCTURE:<a href="ref_sys_symbols.html#TREE_PATH">TREE_PATH</a>)</li><li>as(SYMBOL:<a href="ref_sys_symbols.html#RESULT_SYMBOL">RESULT_SYMBOL</a>)</li><li>[count(SYMBOL:<a href="ref_sys_symbols.html#POP_COUNT">POP_COUNT</a>)]</li></div>
        <div class="def-sig-out">result(PASSTHRU:<a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a>)</div>
        <div class="def-comment"><i>pop values off a tree path</i></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="CONTINUE_LOCATION"></a>CONTINUE_LOCATION</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="CONTINUE_VALUE"></a>CONTINUE_VALUE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="CONTINUE"></a>CONTINUE</div>
+       <div class="def-sig-in"><li>at(SYMBOL:<a href="ref_sys_symbols.html#CONTINUE_LOCATION">CONTINUE_LOCATION</a>)</li><li>with(SYMBOL:<a href="ref_sys_symbols.html#CONTINUE_VALUE">CONTINUE_VALUE</a>)</li></div>
+       <div class="def-sig-out">result(PASSTHRU:<a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a>)</div>
+       <div class="def-comment"><i>restart reduction at some parent</i></div>
    </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>

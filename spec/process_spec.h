@@ -537,21 +537,21 @@ void testProcessIntMath() {
 }
 
 void testProcessPath() {
-    T *p = _t_parse(G_sem,0,"(POP_PATH (RECEPTOR_PATH:/4/1/1) (RESULT_SYMBOL:RESTART_AT))");
+    T *p = _t_parse(G_sem,0,"(POP_PATH (RECEPTOR_PATH:/4/1/1) (RESULT_SYMBOL:CONTINUE_LOCATION))");
     __p_reduce_sys_proc(0,POP_PATH,p,0);
-    spec_is_str_equal(t2s(p),"(RESTART_AT:/4/1)");
+    spec_is_str_equal(t2s(p),"(CONTINUE_LOCATION:/4/1)");
     _t_free(p);
-    p = _t_parse(G_sem,0,"(POP_PATH (RECEPTOR_PATH:/4/1/1) (RESULT_SYMBOL:RESTART_AT) (POP_COUNT:2))");
+    p = _t_parse(G_sem,0,"(POP_PATH (RECEPTOR_PATH:/4/1/1) (RESULT_SYMBOL:CONTINUE_LOCATION) (POP_COUNT:2))");
     __p_reduce_sys_proc(0,POP_PATH,p,0);
-    spec_is_str_equal(t2s(p),"(RESTART_AT:/4)");
+    spec_is_str_equal(t2s(p),"(CONTINUE_LOCATION:/4)");
     _t_free(p);
-    p = _t_parse(G_sem,0,"(POP_PATH (RECEPTOR_PATH:/4/1/1) (RESULT_SYMBOL:RESTART_AT) (POP_COUNT:3))");
+    p = _t_parse(G_sem,0,"(POP_PATH (RECEPTOR_PATH:/4/1/1) (RESULT_SYMBOL:CONTINUE_LOCATION) (POP_COUNT:3))");
     __p_reduce_sys_proc(0,POP_PATH,p,0);
-    spec_is_str_equal(t2s(p),"(RESTART_AT:)");
+    spec_is_str_equal(t2s(p),"(CONTINUE_LOCATION:)");
     _t_free(p);
-    p = _t_parse(G_sem,0,"(POP_PATH (RECEPTOR_PATH:/4/1/1) (RESULT_SYMBOL:RESTART_AT) (POP_COUNT:10))");
+    p = _t_parse(G_sem,0,"(POP_PATH (RECEPTOR_PATH:/4/1/1) (RESULT_SYMBOL:CONTINUE_LOCATION) (POP_COUNT:10))");
     __p_reduce_sys_proc(0,POP_PATH,p,0);
-    spec_is_str_equal(t2s(p),"(RESTART_AT:)");
+    spec_is_str_equal(t2s(p),"(CONTINUE_LOCATION:)");
     _t_free(p);}
 
 void testProcessString() {
@@ -1839,6 +1839,20 @@ void testRunTreeTemplate() {
     _t_free(sm);
 }
 
+void testProcessContinue() {
+
+    // CONTINUE allows you to restart reduction some other place on the tree.
+    T *t = _t_new_root(RUN_TREE);
+    T *n = _t_parse(G_sem,0,"(NOOP (IF (BOOLEAN:0) (CONTINUE (CONTINUE_LOCATION:/1) (CONTINUE_VALUE (TEST_STR_SYMBOL:\"fish\"))) (TEST_INT_SYMBOL:413)))");
+    T *c = _t_rclone(n);
+    _t_add(t,c);
+    _p_reduce(G_sem,t);
+
+    spec_is_str_equal(t2s(_t_child(t,1)),"(TEST_STR_SYMBOL:fish)");
+    _t_free(t);
+    _t_free(n);
+}
+
 void testProcess() {
     _defIfEven();
     testProcessParameter();
@@ -1884,4 +1898,5 @@ void testProcess() {
     testProcessErrorTrickleUp();
     testProcessMulti();
     testRunTreeTemplate();
+    testProcessContinue();
 }
