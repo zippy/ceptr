@@ -118,14 +118,12 @@ $(document).ready(function(){initNavTree('def_8h.html','');});
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for def.h:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="def_8h__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="def_8h__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="def_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="def_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 </div>
 <p><a href="def_8h_source.html">Go to the source code of this file.</a></p>
@@ -294,7 +292,8 @@ Enumerations</h2></td></tr>
 <tr class="separator:ga6b7b47dd702d9e331586d485013fd1ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf9bdc3014f3d54c426b6d2df10de4960"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaf9bdc3014f3d54c426b6d2df10de4960"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>RuntreeCodeIdx</b> =1, 
 <b>RunTreeParamsIdx</b>, 
-<b>RunTreeErrorCodeIdx</b>
+<b>RunTreeErrorCodeIdx</b>, 
+<b>RunTreeErrorParamsIdx</b>
  }</td></tr>
 <tr class="separator:gaf9bdc3014f3d54c426b6d2df10de4960"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gadb49720dc49f7d4e4cf9adbf2948e409"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gadb49720dc49f7d4e4cf9adbf2948e409"></a>enum &#160;</td><td class="memItemRight" valign="bottom">{ <b>ResolutionWhichIdx</b> =1
@@ -389,8 +388,10 @@ SemanticAddr&#160;</td><td class="memItemRight" valign="bottom"><b>_d_get_def_ad
 <tr class="memitem:gaf8aa0bc822a3388973c0753b060ad146"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaf8aa0bc822a3388973c0753b060ad146"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>_sys_structure_size</b> (int id, void *surface)</td></tr>
 <tr class="separator:gaf8aa0bc822a3388973c0753b060ad146"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7b491672589fc853007cac114a7f0a03"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__def.html#ga7b491672589fc853007cac114a7f0a03">_d_define_receptor</a> (<a class="el" href="structSemTable.html">SemTable</a> *sem, char *label, <a class="el" href="structT.html">T</a> *def, Context c)</td></tr>
-<tr class="separator:ga7b491672589fc853007cac114a7f0a03"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga02d58ad9f7ac4482d99e0ef31e119b3a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__def.html#ga02d58ad9f7ac4482d99e0ef31e119b3a">_d_define_receptor</a> (<a class="el" href="structSemTable.html">SemTable</a> *sem, char *label, <a class="el" href="structT.html">T</a> *definitions, Context c)</td></tr>
+<tr class="separator:ga02d58ad9f7ac4482d99e0ef31e119b3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga036a7762cf738c687dacec95107442a0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSemanticID.html">SemanticID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__def.html#ga036a7762cf738c687dacec95107442a0">__d_define_receptor</a> (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structT.html">T</a> *def, Context c)</td></tr>
+<tr class="separator:ga036a7762cf738c687dacec95107442a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2da51092463cc447043324135ae45919"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga2da51092463cc447043324135ae45919"></a>
 Context&#160;</td><td class="memItemRight" valign="bottom"><b>_d_get_receptor_context</b> (<a class="el" href="structSemTable.html">SemTable</a> *sem, <a class="el" href="structSemanticID.html">SemanticID</a> r)</td></tr>
 <tr class="separator:ga2da51092463cc447043324135ae45919"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -420,7 +421,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>sys_free</b> ()</td><
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="def_8h.html">def.h</a></li>
-    <li class="footer">Generated on Tue Apr 12 2016 21:48:57 for ceptr by
+    <li class="footer">Generated on Sat Apr 16 2016 17:00:50 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>

@@ -45,6 +45,7 @@ var group__tree =
     [ "_t_next_sibling", "group__tree.html#ga57e9b6efeca702757896ce2ca5a720af", null ],
     [ "_t_node_index", "group__tree.html#gaa47f880fb18ec33c8f31c2aee78df797", null ],
     [ "_t_parent", "group__tree.html#ga18ca0b633cdd6b8f2d3d0f2598c4a933", null ],
+    [ "_t_parse", "group__tree.html#ga749a1b6c40a2fd3d36dc0f3e7f6bb6af", null ],
     [ "_t_path_depth", "group__tree.html#ga55270b512ed52ffe5a938a793fa5cd7f", null ],
     [ "_t_path_equal", "group__tree.html#ga1d7afbc2a405c20a83b7bee4cfcb3a29", null ],
     [ "_t_pathcpy", "group__tree.html#ga608555368dfdef7de1872f89b6fed637", null ],

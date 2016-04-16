@@ -2,6 +2,7 @@ var def_8c =
 [
     [ "MAX_HASHES", "def_8c.html#afa554317e7a371329316836d01c9d1d5", null ],
     [ "MAX_LEVEL", "def_8c.html#a5bb4257ca9fa4bfcf9391b7895b97761", null ],
+    [ "__d_define_receptor", "group__def.html#ga036a7762cf738c687dacec95107442a0", null ],
     [ "__d_get_symbol_structure", "group__def.html#ga9482f4a5f8e4c442b9869fd316d150ee", null ],
     [ "__d_set_structure_def", "def_8c.html#a04efc8e66ed5ab08728864f36b114538", null ],
     [ "__d_set_symbol_structure", "group__def.html#ga83921b9941f28a5dcf8a4141ab75598b", null ],
@@ -14,7 +15,7 @@ var def_8c =
     [ "_d_define", "group__def.html#ga1948e9707d7d787b8cc57fa6a6981af0", null ],
     [ "_d_define_process", "group__def.html#gad9a468887d0dc74ab76ad59a39aa423e", null ],
     [ "_d_define_protocol", "group__def.html#gad328204a09fa7f68a65080044a9b5109", null ],
-    [ "_d_define_receptor", "group__def.html#ga7b491672589fc853007cac114a7f0a03", null ],
+    [ "_d_define_receptor", "group__def.html#ga02d58ad9f7ac4482d99e0ef31e119b3a", null ],
     [ "_d_define_structure", "group__def.html#gaa07e8bdb0806d0e55d0f892c791def0d", null ],
     [ "_d_define_structure_v", "group__def.html#gaf0ec17bf7fbf0d0aadb870f3500b23c5", null ],
     [ "_d_define_symbol", "group__def.html#ga3f075d8ef101d4a88a6668f01cf44080", null ],

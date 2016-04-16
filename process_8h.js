@@ -1,9 +1,15 @@
 var process_8h =
 [
     [ "IterationState", "structIterationState.html", "structIterationState" ],
+    [ "CondState", "structCondState.html", "structCondState" ],
     [ "__p_make_signature", "process_8h.html#a06d9c2843285b7bd650d00c5aa3a0aa5", null ],
     [ "_p_addrt2q", "process_8h.html#ab6f09c5cd56e4af2a2977e44dadcc448", null ],
+    [ "CondState", "process_8h.html#a12c7411de22dada1e23465a43eee37ad", null ],
     [ "IterationState", "process_8h.html#a43b6c27f77184076c5cd44fc37c67d35", null ],
+    [ "CondPhase", "process_8h.html#a24e19d94ee52d0a20eac4f2d71ab09c4", [
+      [ "EvalCondCondtions", "process_8h.html#a24e19d94ee52d0a20eac4f2d71ab09c4a111986ae580698cd903948d80cb1624f", null ],
+      [ "EvalCondResult", "process_8h.html#a24e19d94ee52d0a20eac4f2d71ab09c4a4d4c88b6fc087aa6ad923004317e5b91", null ]
+    ] ],
     [ "IterationPhase", "process_8h.html#a0c9e04b0598971d806a6c7b2d772d7ee", [
       [ "EvalCondition", "process_8h.html#a0c9e04b0598971d806a6c7b2d772d7eea03e7020f0cb871e968911005aeb2de80", null ],
       [ "EvalBody", "process_8h.html#a0c9e04b0598971d806a6c7b2d772d7eea99b37816fb44028e53b6117eb3f24523", null ]

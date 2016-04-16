@@ -1204,6 +1204,18 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SIGNATURE_RECEPTOR"></a>SIGNATURE_RECEPTOR</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#RECEPTOR">RECEPTOR</a></div>
+       <div class="def-comment">        use of receptor in signature</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SIGNATURE_PROTOCOL"></a>SIGNATURE_PROTOCOL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#PROTOCOL">PROTOCOL</a></div>
+       <div class="def-comment">        use of protocol in signature</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="SIGNATURE_PASSTHRU"></a>SIGNATURE_PASSTHRU</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
        <div class="def-comment"></div>
@@ -1300,15 +1312,15 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
    </div>
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
-       <div class="def-name"><a name="LIST_OF_CODE_AND_PARAMS_AND_ZERO_OR_ONE_OF_CODE"></a>LIST-OF-CODE-AND-PARAMS-AND-ZERO-OR-ONE-OF-CODE</div>
-       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#CODE">CODE</a>, <a href="ref_sys_symbols.html#PARAMS">PARAMS</a>, ?(<a href="ref_sys_symbols.html#CODE">CODE</a>))</div>
+       <div class="def-name"><a name="LIST_OF_CODE_AND_PARAMS_AND_ZERO_OR_ONE_OF_CODE_AND_ZERO_OR_ONE_OF_PARAMS"></a>LIST-OF-CODE-AND-PARAMS-AND-ZERO-OR-ONE-OF-CODE-AND-ZERO-OR-ONE-OF-PARAMS</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#CODE">CODE</a>, <a href="ref_sys_symbols.html#PARAMS">PARAMS</a>, ?(<a href="ref_sys_symbols.html#CODE">CODE</a>), ?(<a href="ref_sys_symbols.html#PARAMS">PARAMS</a>))</div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="RUN_TREE"></a>RUN_TREE</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_CODE_AND_PARAMS_AND_ZERO_OR_ONE_OF_CODE">LIST-OF-CODE-AND-PARAMS-AND-ZERO-OR-ONE-OF-CODE</a></div>
-       <div class="def-comment">     think about this as a stack frame and its code and error handling code</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_CODE_AND_PARAMS_AND_ZERO_OR_ONE_OF_CODE_AND_ZERO_OR_ONE_OF_PARAMS">LIST-OF-CODE-AND-PARAMS-AND-ZERO-OR-ONE-OF-CODE-AND-ZERO-OR-ONE-OF-PARAMS</a></div>
+       <div class="def-comment">     think about this as a stack frame and its code and error handling code plus error params</div>
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
@@ -1332,6 +1344,30 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="RESULT_SYMBOL"></a>RESULT_SYMBOL</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="RESULT_STRUCTURE"></a>RESULT_STRUCTURE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#STRUCTURE">STRUCTURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="RESULT_PROCESS"></a>RESULT_PROCESS</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#PROCESS">PROCESS</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="RESULT_RECEPTOR"></a>RESULT_RECEPTOR</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#RECEPTOR">RECEPTOR</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="RESULT_PROTOCOL"></a>RESULT_PROTOCOL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#PROTOCOL">PROTOCOL</a></div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">
@@ -2058,7 +2094,7 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="SCOPE"></a>SCOPE</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></div>
-       <div class="def-comment">    set of processes for DO</div>
+       <div class="def-comment">    set of processes for DO/CONVERSE</div>
    </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
@@ -2066,6 +2102,41 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
        <div class="def-sig-in"><li>do(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</li></div>
        <div class="def-sig-out">result(PASSTHRU:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
        <div class="def-comment"><i>no-op</i><br />   this process reduces to its single "do" parameter.</div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="DEF_SYMBOL"></a>DEF_SYMBOL</div>
+       <div class="def-sig-in"><li>def(SYMBOL:<a href="ref_sys_symbols.html#SYMBOL_DEFINITION">SYMBOL_DEFINITION</a>)</li></div>
+       <div class="def-sig-out">symbol(SYMBOL:<a href="ref_sys_symbols.html#RESULT_SYMBOL">RESULT_SYMBOL</a>)</div>
+       <div class="def-comment"><i>define a new symbol</i></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="DEF_STRUCTURE"></a>DEF_STRUCTURE</div>
+       <div class="def-sig-in"><li>def(SYMBOL:<a href="ref_sys_symbols.html#SYMBOL_DEFINITION">SYMBOL_DEFINITION</a>)</li></div>
+       <div class="def-sig-out">structure(STRUCTURE:<a href="ref_sys_symbols.html#RESULT_STRUCTURE">RESULT_STRUCTURE</a>)</div>
+       <div class="def-comment"><i>define a new structure</i></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="DEF_PROCESS"></a>DEF_PROCESS</div>
+       <div class="def-sig-in"><li>def(SYMBOL:<a href="ref_sys_symbols.html#PROCESS_DEFINITION">PROCESS_DEFINITION</a>)</li></div>
+       <div class="def-sig-out">process(PROCESS:<a href="ref_sys_symbols.html#RESULT_PROCESS">RESULT_PROCESS</a>)</div>
+       <div class="def-comment"><i>define a new process</i></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="DEF_RECEPTOR"></a>DEF_RECEPTOR</div>
+       <div class="def-sig-in"><li>def(SYMBOL:<a href="ref_sys_symbols.html#RECEPTOR_DEFINITION">RECEPTOR_DEFINITION</a>)</li></div>
+       <div class="def-sig-out">receptor(RECEPTOR:<a href="ref_sys_symbols.html#RESULT_RECEPTOR">RESULT_RECEPTOR</a>)</div>
+       <div class="def-comment"><i>define a new receptor</i></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="DEF_PROTOCOL"></a>DEF_PROTOCOL</div>
+       <div class="def-sig-in"><li>def(SYMBOL:<a href="ref_sys_symbols.html#PROTOCOL_DEFINITION">PROTOCOL_DEFINITION</a>)</li></div>
+       <div class="def-sig-out">protocol(PROTOCOL:<a href="ref_sys_symbols.html#RESULT_PROTOCOL">RESULT_PROTOCOL</a>)</div>
+       <div class="def-comment"><i>define a new protocol</i></div>
    </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
@@ -2212,6 +2283,43 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
        <div class="def-sig-in"><li>of(SYMBOL:<a href="ref_sys_symbols.html#LABEL_SYMBOL">LABEL_SYMBOL</a>)</li><li>type(SYMBOL:<a href="ref_sys_symbols.html#LABEL_TYPE">LABEL_TYPE</a>)</li><li>[as(SYMBOL:<a href="ref_sys_symbols.html#RESULT_SYMBOL">RESULT_SYMBOL</a>)]</li></div>
        <div class="def-sig-out">result(PASSTHRU:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
        <div class="def-comment"><i>get a symbol's label</i></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="PAIR_OF_ANY_SYMBOL"></a>PAIR-OF-ANY-SYMBOL</div>
+       <div class="def-struc-def">SEQ(!, !)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="COND_PAIR"></a>COND_PAIR</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#PAIR_OF_ANY_SYMBOL">PAIR-OF-ANY-SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="COND_ELSE"></a>COND_ELSE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="TUPLE_OF_ZERO_OR_MORE_OF_COND_PAIR_AND_COND_ELSE"></a>TUPLE-OF-ZERO-OR-MORE-OF-COND-PAIR-AND-COND-ELSE</div>
+       <div class="def-struc-def">SEQ(*(<a href="ref_sys_symbols.html#COND_PAIR">COND_PAIR</a>), <a href="ref_sys_symbols.html#COND_ELSE">COND_ELSE</a>)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="CONDITIONS"></a>CONDITIONS</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TUPLE_OF_ZERO_OR_MORE_OF_COND_PAIR_AND_COND_ELSE">TUPLE-OF-ZERO-OR-MORE-OF-COND-PAIR-AND-COND-ELSE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="COND"></a>COND</div>
+       <div class="def-sig-in"><li>conditions(SYMBOL:<a href="ref_sys_symbols.html#CONDITIONS">CONDITIONS</a>)</li></div>
+       <div class="def-sig-out">result(PASSTHRU:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</div>
+       <div class="def-comment"><i>cond</i><br /> this is a traditional lisp "cond" process that reduces conditionally to the COND_PAIR that evaluates to true, or to the COND_ELSE in none of them do.</div>
    </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
@@ -2449,6 +2557,38 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
        <div class="def-sig-in"><li>int1(STRUCTURE:<a href="ref_sys_symbols.html#INTEGER">INTEGER</a>)</li><li>int2(STRUCTURE:<a href="ref_sys_symbols.html#INTEGER">INTEGER</a>)</li></div>
        <div class="def-sig-out">result(SYMBOL:<a href="ref_sys_symbols.html#BOOLEAN">BOOLEAN</a>)</div>
        <div class="def-comment"><i>test greater than or equal</i></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="POP_COUNT"></a>POP_COUNT</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#INTEGER">INTEGER</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="POP_PATH"></a>POP_PATH</div>
+       <div class="def-sig-in"><li>path(STRUCTURE:<a href="ref_sys_symbols.html#TREE_PATH">TREE_PATH</a>)</li><li>as(SYMBOL:<a href="ref_sys_symbols.html#RESULT_SYMBOL">RESULT_SYMBOL</a>)</li><li>[count(SYMBOL:<a href="ref_sys_symbols.html#POP_COUNT">POP_COUNT</a>)]</li></div>
+       <div class="def-sig-out">result(PASSTHRU:<a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a>)</div>
+       <div class="def-comment"><i>pop values off a tree path</i></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="CONTINUE_LOCATION"></a>CONTINUE_LOCATION</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="CONTINUE_VALUE"></a>CONTINUE_VALUE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="CONTINUE"></a>CONTINUE</div>
+       <div class="def-sig-in"><li>at(SYMBOL:<a href="ref_sys_symbols.html#CONTINUE_LOCATION">CONTINUE_LOCATION</a>)</li><li>with(SYMBOL:<a href="ref_sys_symbols.html#CONTINUE_VALUE">CONTINUE_VALUE</a>)</li></div>
+       <div class="def-sig-out">result(PASSTHRU:<a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a>)</div>
+       <div class="def-comment"><i>restart reduction at some parent</i></div>
    </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
@@ -2767,6 +2907,78 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
 </div>
 <div class="defs-context">
    <h4>DEV_COMPOSITORY_CONTEXT</h4>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="P_OP"></a>P_OP</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="P_CP"></a>P_CP</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="P_COLON"></a>P_COLON</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="P_INTERPOLATE"></a>P_INTERPOLATE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="P_LABEL"></a>P_LABEL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="P_VAL_S"></a>P_VAL_S</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="P_VAL_C"></a>P_VAL_C</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CHAR">CHAR</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="P_VAL_I"></a>P_VAL_I</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#INTEGER">INTEGER</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="P_VAL_F"></a>P_VAL_F</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#FLOAT">FLOAT</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="P_VAL_PATH"></a>P_VAL_PATH</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#TREE_PATH">TREE-PATH</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="ZERO_OR_MORE_OF_LOGICAL_OR_OF_P_OP_AND_P_CP_AND_P_COLON_AND_P_LABEL_AND_P_VAL_S_AND_P_VAL_C_AND_P_VAL_I_AND_P_VAL_F_AND_P_VAL_PATH"></a>ZERO-OR-MORE-OF-LOGICAL-OR-OF-P-OP-AND-P-CP-AND-P-COLON-AND-P-LABEL-AND-P-VAL-S-AND-P-VAL-C-AND-P-VAL-I-AND-P-VAL-F-AND-P-VAL-PATH</div>
+       <div class="def-struc-def">*(OR(<a href="ref_sys_symbols.html#P_OP">P_OP</a>, <a href="ref_sys_symbols.html#P_CP">P_CP</a>, <a href="ref_sys_symbols.html#P_COLON">P_COLON</a>, <a href="ref_sys_symbols.html#P_LABEL">P_LABEL</a>, <a href="ref_sys_symbols.html#P_VAL_S">P_VAL_S</a>, <a href="ref_sys_symbols.html#P_VAL_C">P_VAL_C</a>, <a href="ref_sys_symbols.html#P_VAL_I">P_VAL_I</a>, <a href="ref_sys_symbols.html#P_VAL_F">P_VAL_F</a>, <a href="ref_sys_symbols.html#P_VAL_PATH">P_VAL_PATH</a>))</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="P_TOKENS"></a>P_TOKENS</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_LOGICAL_OR_OF_P_OP_AND_P_CP_AND_P_COLON_AND_P_LABEL_AND_P_VAL_S_AND_P_VAL_C_AND_P_VAL_I_AND_P_VAL_F_AND_P_VAL_PATH">ZERO-OR-MORE-OF-LOGICAL-OR-OF-P-OP-AND-P-CP-AND-P-COLON-AND-P-LABEL-AND-P-VAL-S-AND-P-VAL-C-AND-P-VAL-I-AND-P-VAL-F-AND-P-VAL-PATH</a></div>
+       <div class="def-comment"></div>
+   </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
        <div class="def-name"><a name="date2usshortdate"></a>date2usshortdate</div>
@@ -3219,13 +3431,6 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
        <div class="def-sig-in"><li>stream(SYMBOL:<a href="ref_sys_symbols.html#EDGE_STREAM">EDGE_STREAM</a>)</li><li>value(ANY:<a href="ref_sys_symbols.html#NULL_STRUCTURE">NULL_STRUCTURE</a>)</li></div>
        <div class="def-sig-out">result(SYMBOL:<a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a>)</div>
        <div class="def-comment"><i>echo input to stream</i></div>
-   </div>
-   <div class="def-item def-process">
-       <div class="def-type">Process:</div>
-       <div class="def-name"><a name="stream_listen"></a>stream_listen</div>
-       <div class="def-sig-in"><li>to(SYMBOL:<a href="ref_sys_symbols.html#TO_ADDRESS">TO_ADDRESS</a>)</li><li>aspect(SYMBOL:<a href="ref_sys_symbols.html#ASPECT_IDENT">ASPECT_IDENT</a>)</li><li>on(SYMBOL:<a href="ref_sys_symbols.html#CARRIER">CARRIER</a>)</li><li>as(SYMBOL:<a href="ref_sys_symbols.html#RESULT_SYMBOL">RESULT_SYMBOL</a>)</li><li>stream(SYMBOL:<a href="ref_sys_symbols.html#EDGE_STREAM">EDGE_STREAM</a>)</li></div>
-       <div class="def-sig-out">result(SYMBOL:<a href="ref_sys_symbols.html#NULL_SYMBOL">NULL_SYMBOL</a>)</div>
-       <div class="def-comment"><i>listening conversation for streams</i></div>
    </div>
 </div>
 <div class="defs-context">
@@ -3877,7 +4082,7 @@ $(document).ready(function(){initNavTree('ref_sys_defs.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Apr 12 2016 21:48:57 for ceptr by
+    <li class="footer">Generated on Sat Apr 16 2016 17:00:50 for ceptr by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.7 </li>
   </ul>
