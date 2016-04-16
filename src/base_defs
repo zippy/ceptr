@@ -698,6 +698,14 @@ Context: STREAM_EDGE;
 Data: echo2stream_code,(STREAM_WRITE (PARAM_REF:/2/1) (PARAM_REF:/2/2));
 Process: echo2stream,echo2stream_code,"echo input to stream","result",SIGNATURE_SYMBOL,NULL_SYMBOL,"stream",SIGNATURE_SYMBOL,EDGE_STREAM,"value",SIGNATURE_ANY,NULL_STRUCTURE,0;
 
+# This doesn't work because the SLOT get's misinterpreted by __d_tsig see #127
+#Data: stream_listen_code,(CONVERSE
+#         (SCOPE
+#             (LISTEN (PARAM_REF:/2/2) (PARAM_REF:/2/3) (PATTERN (SEMTREX_SYMBOL_ANY)) (ACTION:echo2stream) (PARAMS (PARAM_REF:/2/5) (SLOT (USAGE:NULL_SYMBOL))))
+#             (ITERATE (PARAMS) (STREAM_ALIVE (PARAM_REF:/2/5))
+#               (SAY (PARAM_REF:/2/1) (PARAM_REF:/2/2) (PARAM_REF:/2/3) (STREAM_READ (PARAM_REF:/2/5) (PARAM_REF:/2/4))))) (BOOLEAN:1));
+#Process: stream_listen,stream_listen_code,"listening conversation for streams","result",SIGNATURE_SYMBOL,NULL_SYMBOL,"to",SIGNATURE_SYMBOL,TO_ADDRESS,"aspect",SIGNATURE_SYMBOL,ASPECT_IDENT,"on",SIGNATURE_SYMBOL,CARRIER,"as",SIGNATURE_SYMBOL,RESULT_SYMBOL,"stream",SIGNATURE_SYMBOL,EDGE_STREAM,0;
+
 ########################################################################################
 Context: INTERNET;
 

@@ -674,8 +674,9 @@ void __r_test_expectation(Receptor *r,T *expectation,T *signal) {
     debug(D_SIGNALS,"checking signal conversation %s\n",_td(q->r,s_cid));
     debug(D_SIGNALS,"against expectation conversation %s\n",_td(q->r,e_cid));
 
-    // if expectation or signal in a conversation but the other isn't then it doesn't match
-    if ((!s_cid && e_cid) || (s_cid && !e_cid)) return;
+    // if expectation is keyed to a conversation and the signal isn't the instant no match
+    if (e_cid && !s_cid) return;
+    // if both signal and expectation are keyed to a conversation test the ids for equality
     if (s_cid && e_cid) {
         if (!__uuid_equal((UUIDt *)_t_surface(s_cid),((UUIDt *)_t_surface(e_cid)))) return;
     }
@@ -1039,15 +1040,92 @@ Receptor *_r_makeStreamEdgeReceptor(SemTable *sem) {
 void __r_listenerCallback(Stream *st,void *arg) {
     Receptor *r = (Receptor *)arg;
     T *e = _t_child(r->edge,2);
-    Aspect a = *(Aspect *)_t_surface(_t_child(e,2));
-    _r_addReader(r,st,
-                 *(ReceptorAddress *)_t_surface(_t_child(_t_child(e,1),1)),
-                 a,
-                 *(Symbol *)_t_surface(_t_child(e,3)),
-                 *(Symbol *)_t_surface(_t_child(e,4))
-                 );
-    st->flags |= StreamCloseAfterOneWrite;
-    _r_addWriter(r,st,a);
+    ReceptorAddress to = *(ReceptorAddress *)_t_surface(_t_child(_t_child(e,1),1));
+    Symbol aspect = *(Symbol *)_t_surface(_t_child(e,2));
+    Symbol carrier = *(Symbol *)_t_surface(_t_child(e,3));
+    Symbol result_symbol = *(Symbol *)_t_surface(_t_child(e,4));
+
+
+    /*
+(RUN_TREE
+       (CONVERSE
+         (SCOPE
+             (LISTEN <aspect> <carrier> <match> (ACTION:echo2stream) (PARAMS (EDGE_STREAM) (SLOT (NULL_SYMBOL))))
+             (LISTEN CONTROL <carrier> (PATTERN (CLOSE)) (STREAM_CLOSE (EDGE_STREAM)))
+
+             (ITERATE (PARAMS) (STREAM_ALIVE (EDGE_STREAM))
+                 (SAY <to> <aspect> <carrier> (STREAM_READ (EDGE_STREAM) (RESULT_SYMBOL:<result>)))))
+
+
+         (END_CONDITIONS (TIMEOUT_VALUE_HERE))
+         (BOOLEAN:1) )
+
+         (PARAMS)
+         (COND (CONDITIONS
+             (COND_PAIR (EQ_SYM (SYMBOL_OF (PARAM_REF:/4/1)) (RESULT_SYMBOL:READ_ON_DEAD_STREAM_ERROR))
+             (CONTINUE (POP_PATH (PARAM_REF:/4/1/1) (RESULT_SYMBOL:CONTINUE_LOCATION) (POP_COUNT:2))
+                                        (CONTINUE_VALUE (BOOLEAN:0))))
+             (COND_ELSE (RAISE (PARAM_REF:/4/1)))
+         ))
+
+         (PARAMS  (READ_ON_DEAD_STREAM_ERROR (ERROR_LOCATION:/1/1/3/3/4))))
+
+    */
+
+    T *code;
+    code = _t_new_root(CONVERSE);
+    T *p = _t_newr(code,SCOPE);
+    _t_newi(code,BOOLEAN,1);
+    T *l= _t_newr(p,LISTEN);
+    _t_news(l,ASPECT_IDENT,aspect);
+    _t_news(l,CARRIER,carrier);
+    T *match = _t_new_root(PATTERN);
+    _t_newr(match,SEMTREX_SYMBOL_ANY);
+    _t_add(l,match);
+    _t_newp(l,ACTION,echo2stream);
+    T* params = _t_newr(l,PARAMS);
+    _t_new_cptr(params,EDGE_STREAM,st);
+    T* s = _t_newr(params,SLOT);
+    _t_news(s,USAGE,NULL_SYMBOL);
+
+    T *it = _t_newr(p,ITERATE);
+    params = _t_newr(it,PARAMS);
+    T *eof = _t_newr(it,STREAM_ALIVE);
+
+    _t_new_cptr(eof,EDGE_STREAM,st);
+    //    _t_newi(p,TEST_INT_SYMBOL,2);  // two repetitions
+    T *say = _t_newr(it,SAY);
+
+    __r_make_addr(say,TO_ADDRESS,to);
+    _t_news(say,ASPECT_IDENT,aspect);
+    _t_news(say,CARRIER,carrier);
+
+    s = _t_newr(say,STREAM_READ);
+    _t_new_cptr(s,EDGE_STREAM,st);
+    _t_news(s,RESULT_SYMBOL,result_symbol);
+
+    s = _t_newr(p,STREAM_CLOSE);
+    _t_new_cptr(s,EDGE_STREAM,st);
+
+    /* code = _t_new_root(stream_listen); */
+    /* __r_make_addr(code,TO_ADDRESS,to); */
+    /* _t_news(code,ASPECT_IDENT,aspect); */
+    /* _t_news(code,CARRIER,carrier); */
+    /* _t_news(code,RESULT_SYMBOL,result_symbol); */
+    /* _t_new_cptr(code,EDGE_STREAM,st); */
+
+    T *run_tree = __p_build_run_tree(code,0);
+    _t_free(code);
+
+    // add an error handler that just completes the iteration
+    // @todo we shouldn't really be parsing this from a freaking string here... it should be cached statically someplace...
+    T *x = _t_parse(r->sem,0,"(CONTINUE (POP_PATH (PARAM_REF:/4/1/1) (RESULT_SYMBOL:CONTINUE_LOCATION) (POP_COUNT:2)) (CONTINUE_VALUE (BOOLEAN:0)))");
+    T *y = _t_rclone(x);
+    _t_free(x);
+    _t_add(run_tree,y);
+
+    _p_addrt2q(r->q,run_tree);
+
 }
 
 SocketListener *_r_addListener(Receptor *r,int port,ReceptorAddress to,Aspect aspect,Symbol carrier,Symbol result_symbol) {
@@ -1060,18 +1138,27 @@ SocketListener *_r_addListener(Receptor *r,int port,ReceptorAddress to,Aspect as
     __r_make_addr(say,TO_ADDRESS,to);
     _t_news(say,ASPECT_IDENT,aspect);
     _t_news(say,CARRIER,carrier);
-    _t_news(say,RESULT_SYMBOL,carrier);
+    _t_news(say,RESULT_SYMBOL,result_symbol);
     if (r->edge) raise_error("edge in use!!");
     r->edge = e;
     return l;
 }
 
-void _r_addReader(Receptor *r,Stream *st,ReceptorAddress to,Aspect aspect,Symbol carrier,Symbol result_symbol) {
+void _r_addReader(Receptor *r,Stream *st,ReceptorAddress to,Aspect aspect,Symbol carrier,Symbol result_symbol,bool conversation) {
 
     // code is something like:
     // (do (not stream eof) (send to (read_stream stream line)))
 
-    T *p = _t_new_root(ITERATE);
+    T *p,*code = NULL;
+    if (conversation) {
+        code = _t_new_root(CONVERSE);
+        p = _t_newr(code,SCOPE);
+        p = _t_newr(p,ITERATE);
+    }
+    else {
+        code = p = _t_new_root(ITERATE);
+    }
+
     T *params = _t_newr(p,PARAMS);
     T *eof = _t_newr(p,STREAM_ALIVE);
 
@@ -1087,8 +1174,8 @@ void _r_addReader(Receptor *r,Stream *st,ReceptorAddress to,Aspect aspect,Symbol
     _t_new_cptr(s,EDGE_STREAM,st);
     _t_new(s,RESULT_SYMBOL,&result_symbol,sizeof(Symbol));
 
-    T *run_tree = __p_build_run_tree(p,0);
-    _t_free(p);
+    T *run_tree = __p_build_run_tree(code,0);
+    _t_free(code);
     _p_addrt2q(r->q,run_tree);
 }
 

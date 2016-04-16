@@ -374,7 +374,7 @@ void testHTTPprotocol() {
     Receptor *er = _r_makeStreamEdgeReceptor(v->sem);
     Xaddr edge = _v_new_receptor(v,v->r,STREAM_EDGE,er);
     _r_addWriter(er,writer_stream,DEFAULT_ASPECT);
-    _r_addReader(er,reader_stream,er->addr,HTTP_ASPECT,parse_line,ASCII_CHARS);
+    _r_addReader(er,reader_stream,er->addr,HTTP_ASPECT,parse_line,ASCII_CHARS,false);
     _v_activate(v,edge);
 
     T *bindings = _t_new_root(PROTOCOL_BINDINGS);

@@ -613,7 +613,7 @@ void testReceptorEdgeStream() {
     Receptor *r = _r_makeStreamEdgeReceptor(v->sem);
     Xaddr edge = _v_new_receptor(v,v->r,STREAM_EDGE,r);
     _r_addWriter(r,writer_stream,DEFAULT_ASPECT);
-    _r_addReader(r,reader_stream,r->addr,DEFAULT_ASPECT,LINE,LINE);
+    _r_addReader(r,reader_stream,r->addr,DEFAULT_ASPECT,LINE,LINE,false);
 
     spec_is_str_equal(_td(r,__r_get_expectations(r,DEFAULT_ASPECT)),"(EXPECTATIONS (EXPECTATION (CARRIER:NULL_SYMBOL) (PATTERN (SEMTREX_SYMBOL_ANY)) (ACTION:echo2stream) (PARAMS (EDGE_STREAM) (SLOT (USAGE:NULL_SYMBOL))) (END_CONDITIONS (UNLIMITED))))");
 
@@ -671,7 +671,7 @@ void testReceptorEdgeStream() {
 bool G_done = false;
 void *_ltester(void *arg) {
     char *result = doSys("echo 'testing!\nfish\n' | nc localhost 8888");
-    spec_is_str_equal(result,"testing!\nfish\n");
+    spec_is_str_equal(result,"testing!\nfish\n\n");
     free(result);
     G_done = true;
     pthread_exit(NULL);
@@ -686,7 +686,7 @@ void testReceptorEdgeListener() {
     _v_activate(v,edge);
     spec_is_str_equal(_t2s(v->sem,r->edge),"(PARAMS (EDGE_LISTENER) (process:SAY (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:LINE) (RESULT_SYMBOL:LINE)))");
     _v_start_vmhost(v);
-    //debug_enable(D_STREAM+D_SOCKET+D_SIGNALS);
+    //    debug_enable(D_STREAM+D_SOCKET+D_SIGNALS+D_STEP+D_REDUCE+D_REDUCEV);
 
     pthread_t thread;
     int rc;
@@ -699,10 +699,11 @@ void testReceptorEdgeListener() {
         raise_error("Error detaching tester thread; return code from pthread_detach() is %d\n", rc);
     }
     while(!G_done) sleepms(1);
-
     __r_kill(v->r);
     _v_join_thread(&v->vm_thread);
-    debug_disable(D_STREAM+D_SOCKET+D_SIGNALS);
+
+    debug_disable(D_STREAM+D_SOCKET+D_SIGNALS+D_STEP+D_REDUCE+D_REDUCEV);
+    spec_is_str_equal(t2s(r->flux),"(FLUX (DEFAULT_ASPECT (EXPECTATIONS (EXPECTATION (CARRIER:LINE) (PATTERN (SEMTREX_SYMBOL_ANY)) (ACTION:echo2stream) (PARAMS (EDGE_STREAM) (SLOT (USAGE:NULL_SYMBOL))) (END_CONDITIONS (UNLIMITED)) (CONVERSATION_UUID))) (SIGNALS (SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:LINE) (CONVERSATION_UUID)) (BODY:{(LINE:testing!)})) (RUN_TREE (REDUCTION_ERROR_SYMBOL:NULL_SYMBOL) (PARAMS (EDGE_STREAM) (LINE:testing!)))) (SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:LINE) (CONVERSATION_UUID)) (BODY:{(LINE:fish)})) (RUN_TREE (REDUCTION_ERROR_SYMBOL:NULL_SYMBOL) (PARAMS (EDGE_STREAM) (LINE:fish)))) (SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:LINE) (CONVERSATION_UUID)) (BODY:{(LINE:)})) (RUN_TREE (REDUCTION_ERROR_SYMBOL:NULL_SYMBOL) (PARAMS (EDGE_STREAM) (LINE:)))))))");
 
     _v_free(v);
 
