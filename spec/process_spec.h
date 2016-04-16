@@ -128,12 +128,47 @@ void testProcessNew() {
 
 void testProcessDefine() {
     Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
-    T *p = _t_parse(G_sem,0,"(DEFINE (SYMBOL_DEFINITION (SYMBOL_LABEL (ENGLISH_LABEL:\"age\")) (SYMBOL_STRUCTURE:INTEGER)))");
-    spec_is_equal(__p_reduce_sys_proc(0,DEFINE,p,r->q),noReductionErr);
+
+    T *p = _t_parse(r->sem,0,"(DEF_SYMBOL (SYMBOL_DEFINITION (SYMBOL_LABEL (ENGLISH_LABEL:\"age\")) (SYMBOL_STRUCTURE:INTEGER)))");
+    spec_is_equal(__p_reduce_sys_proc(0,DEF_SYMBOL,p,r->q),noReductionErr);
     spec_is_str_equal(t2s(p),"(RESULT_SYMBOL:age)");
-    T *d = _sem_get_def(G_sem,*(Symbol *)_t_surface(p));
+    T *d = _sem_get_def(r->sem,*(Symbol *)_t_surface(p));
     spec_is_str_equal(t2s(d),"(SYMBOL_DEFINITION (SYMBOL_LABEL (ENGLISH_LABEL:age)) (SYMBOL_STRUCTURE:INTEGER))");
     _t_free(p);
+
+    p = _t_parse(r->sem,0,"(DEF_STRUCTURE (STRUCTURE_DEFINITION (STRUCTURE_LABEL (ENGLISH_LABEL:\"age_pair\")) (STRUCTURE_SEQUENCE (STRUCTURE_SYMBOL:age) (STRUCTURE_SYMBOL:age)))");
+    spec_is_equal(__p_reduce_sys_proc(0,DEF_STRUCTURE,p,r->q),noReductionErr);
+    spec_is_str_equal(t2s(p),"(RESULT_STRUCTURE:age_pair)");
+    d = _sem_get_def(r->sem,*(Symbol *)_t_surface(p));
+    spec_is_str_equal(t2s(d),"(STRUCTURE_DEFINITION (STRUCTURE_LABEL (ENGLISH_LABEL:age_pair)) (STRUCTURE_SEQUENCE (STRUCTURE_SYMBOL:age) (STRUCTURE_SYMBOL:age)))");
+    _t_free(p);
+
+    p = _t_parse(r->sem,0,"(DEF_PROCESS (PROCESS_DEFINITION (PROCESS_NAME (ENGLISH_LABEL:\"power\")) (PROCESS_INTENTION:\"takes the mathematical power of the two params\") (NOOP) (PROCESS_SIGNATURE (OUTPUT_SIGNATURE (SIGNATURE_LABEL (ENGLISH_LABEL:\"result\")) (SIGNATURE_SYMBOL:NULL_SYMBOL)) (INPUT_SIGNATURE (SIGNATURE_LABEL (ENGLISH_LABEL:\"val\")) (SIGNATURE_STRUCTURE:INTEGER)) (INPUT_SIGNATURE (SIGNATURE_LABEL (ENGLISH_LABEL:\"exponent\")) (SIGNATURE_STRUCTURE:INTEGER))) (PROCESS_LINK (PROCESS_OF_STRUCTURE:INTEGER) (PROCESS_TYPE (OPERATOR))))");
+    spec_is_equal(__p_reduce_sys_proc(0,DEF_PROCESS,p,r->q),noReductionErr);
+    spec_is_str_equal(t2s(p),"(RESULT_PROCESS:power)");
+    d = _sem_get_def(r->sem,*(Symbol *)_t_surface(p));
+    spec_is_str_equal(t2s(d),"(PROCESS_DEFINITION (PROCESS_NAME (ENGLISH_LABEL:power)) (PROCESS_INTENTION:takes the mathematical power of the two params) (process:NOOP) (PROCESS_SIGNATURE (OUTPUT_SIGNATURE (SIGNATURE_LABEL (ENGLISH_LABEL:result)) (SIGNATURE_SYMBOL:NULL_SYMBOL)) (INPUT_SIGNATURE (SIGNATURE_LABEL (ENGLISH_LABEL:val)) (SIGNATURE_STRUCTURE:INTEGER)) (INPUT_SIGNATURE (SIGNATURE_LABEL (ENGLISH_LABEL:exponent)) (SIGNATURE_STRUCTURE:INTEGER))) (PROCESS_LINK (PROCESS_OF_STRUCTURE:INTEGER) (PROCESS_TYPE (OPERATOR))))");
+    _t_free(p);
+
+    p = _t_parse(r->sem,0,"(DEF_RECEPTOR (RECEPTOR_DEFINITION (RECEPTOR_LABEL (ENGLISH_LABEL:\"streamscapes\")) (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (RECEPTORS) (PROTOCOLS) (SCAPES)))");
+    spec_is_equal(__p_reduce_sys_proc(0,DEF_RECEPTOR,p,r->q),noReductionErr);
+    spec_is_str_equal(t2s(p),"(RESULT_RECEPTOR:streamscapes)");
+    d = _sem_get_def(r->sem,*(Symbol *)_t_surface(p));
+    spec_is_str_equal(t2s(d),"(RECEPTOR_DEFINITION (RECEPTOR_LABEL (ENGLISH_LABEL:streamscapes)) (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (RECEPTORS) (PROTOCOLS) (SCAPES)))");
+    _t_free(p);
+
+    _d_define_symbol(G_sem,RECEPTOR_ADDRESS,"agent",r->context);
+    _d_define_symbol(G_sem,PROCESS,"process",r->context);
+    _d_define_symbol(G_sem,SYMBOL,"data",r->context);
+    _d_define_symbol(G_sem,INTERACTION,"act",r->context);
+
+    p = _t_parse(r->sem,0,"(DEF_PROTOCOL (PROTOCOL_DEFINITION (PROTOCOL_LABEL (ENGLISH_LABEL:\"do\")) (PROTOCOL_SEMANTICS (ROLE:agent) (GOAL:process) (USAGE:data)) (act (EXPECT (ROLE:agent) (SOURCE (ROLE:agent)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SLOT (USAGE:data) (SLOT_IS_VALUE_OF:SEMTREX_SYMBOL)))) (SLOT (GOAL:process) (SLOT_IS_VALUE_OF:ACTION))))))");
+    spec_is_equal(__p_reduce_sys_proc(0,DEF_PROTOCOL,p,r->q),noReductionErr);
+    spec_is_str_equal(t2s(p),"(RESULT_PROTOCOL:do)");
+    d = _sem_get_def(r->sem,*(Symbol *)_t_surface(p));
+    spec_is_str_equal(t2s(d),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL (ENGLISH_LABEL:do)) (PROTOCOL_SEMANTICS (ROLE:agent) (GOAL:process) (USAGE:data)) (act (EXPECT (ROLE:agent) (SOURCE (ROLE:agent)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SLOT (USAGE:data) (SLOT_IS_VALUE_OF:SEMTREX_SYMBOL)))) (SLOT (GOAL:process) (SLOT_IS_VALUE_OF:ACTION)))))");
+    _t_free(p);
+
     _r_free(r);
 }
 

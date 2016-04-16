@@ -1101,6 +1101,18 @@
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SIGNATURE_RECEPTOR"></a>SIGNATURE_RECEPTOR</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#RECEPTOR">RECEPTOR</a></div>
+       <div class="def-comment">        use of receptor in signature</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SIGNATURE_PROTOCOL"></a>SIGNATURE_PROTOCOL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#PROTOCOL">PROTOCOL</a></div>
+       <div class="def-comment">        use of protocol in signature</div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="SIGNATURE_PASSTHRU"></a>SIGNATURE_PASSTHRU</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
        <div class="def-comment"></div>
@@ -1229,6 +1241,30 @@
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="RESULT_SYMBOL"></a>RESULT_SYMBOL</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="RESULT_STRUCTURE"></a>RESULT_STRUCTURE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#STRUCTURE">STRUCTURE</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="RESULT_PROCESS"></a>RESULT_PROCESS</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#PROCESS">PROCESS</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="RESULT_RECEPTOR"></a>RESULT_RECEPTOR</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#RECEPTOR">RECEPTOR</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="RESULT_PROTOCOL"></a>RESULT_PROTOCOL</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#PROTOCOL">PROTOCOL</a></div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">
@@ -1966,10 +2002,38 @@
    </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>
-       <div class="def-name"><a name="DEFINE"></a>DEFINE</div>
+       <div class="def-name"><a name="DEF_SYMBOL"></a>DEF_SYMBOL</div>
        <div class="def-sig-in"><li>def(SYMBOL:<a href="ref_sys_symbols.html#SYMBOL_DEFINITION">SYMBOL_DEFINITION</a>)</li></div>
        <div class="def-sig-out">symbol(SYMBOL:<a href="ref_sys_symbols.html#RESULT_SYMBOL">RESULT_SYMBOL</a>)</div>
-       <div class="def-comment"><i>add a new definition</i></div>
+       <div class="def-comment"><i>define a new symbol</i></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="DEF_STRUCTURE"></a>DEF_STRUCTURE</div>
+       <div class="def-sig-in"><li>def(SYMBOL:<a href="ref_sys_symbols.html#SYMBOL_DEFINITION">SYMBOL_DEFINITION</a>)</li></div>
+       <div class="def-sig-out">structure(STRUCTURE:<a href="ref_sys_symbols.html#RESULT_STRUCTURE">RESULT_STRUCTURE</a>)</div>
+       <div class="def-comment"><i>define a new structure</i></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="DEF_PROCESS"></a>DEF_PROCESS</div>
+       <div class="def-sig-in"><li>def(SYMBOL:<a href="ref_sys_symbols.html#PROCESS_DEFINITION">PROCESS_DEFINITION</a>)</li></div>
+       <div class="def-sig-out">process(PROCESS:<a href="ref_sys_symbols.html#RESULT_PROCESS">RESULT_PROCESS</a>)</div>
+       <div class="def-comment"><i>define a new process</i></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="DEF_RECEPTOR"></a>DEF_RECEPTOR</div>
+       <div class="def-sig-in"><li>def(SYMBOL:<a href="ref_sys_symbols.html#RECEPTOR_DEFINITION">RECEPTOR_DEFINITION</a>)</li></div>
+       <div class="def-sig-out">receptor(RECEPTOR:<a href="ref_sys_symbols.html#RESULT_RECEPTOR">RESULT_RECEPTOR</a>)</div>
+       <div class="def-comment"><i>define a new receptor</i></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="DEF_PROTOCOL"></a>DEF_PROTOCOL</div>
+       <div class="def-sig-in"><li>def(SYMBOL:<a href="ref_sys_symbols.html#PROTOCOL_DEFINITION">PROTOCOL_DEFINITION</a>)</li></div>
+       <div class="def-sig-out">protocol(PROTOCOL:<a href="ref_sys_symbols.html#RESULT_PROTOCOL">RESULT_PROTOCOL</a>)</div>
+       <div class="def-comment"><i>define a new protocol</i></div>
    </div>
    <div class="def-item def-process">
        <div class="def-type">Process:</div>

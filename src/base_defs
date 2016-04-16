@@ -209,6 +209,8 @@ Symbol: SIGNATURE_LABEL,LABEL;
 Symbol: SIGNATURE_STRUCTURE,STRUCTURE;      the structure that would match
 Symbol: SIGNATURE_SYMBOL,SYMBOL;            the symbol that would match
 Symbol: SIGNATURE_PROCESS,SYMBOL;           the output signature of the process
+Symbol: SIGNATURE_RECEPTOR,RECEPTOR;        use of receptor in signature
+Symbol: SIGNATURE_PROTOCOL,PROTOCOL;        use of protocol in signature
 Symbol: SIGNATURE_PASSTHRU,NULL_STRUCTURE;
 Symbol: SIGNATURE_ANY,NULL_STRUCTURE;
 Symbol: SIGNATURE_OPTIONAL,NULL_STRUCTURE;
@@ -228,6 +230,10 @@ Symbol: PARAM_REF,TREE_PATH;                used in a code tree as a reference t
 Symbol: SIGNAL_REF,TREE_PATH;               used in a code tree triggered by an expectation as a reference to a part of the signal that triggered the action.
 Symbol: PARAMS,[*!];
 Symbol: RESULT_SYMBOL,SYMBOL;
+Symbol: RESULT_STRUCTURE,STRUCTURE;
+Symbol: RESULT_PROCESS,PROCESS;
+Symbol: RESULT_RECEPTOR,RECEPTOR;
+Symbol: RESULT_PROTOCOL,PROTOCOL;
 Symbol: REDUCTION_ERROR_SYMBOL,SYMBOL;
 
 Symbol: ROLE,SYMBOL;  A role stands for an expected agent, thus the symbol stored in a ROLE must be limited to those of structure RECEPTOR_ADDRESS.
@@ -344,7 +350,12 @@ Symbol: SCOPE,[!];    set of processes for DO/CONVERSE
 
 Process: NOOP,0,"no-op","result",SIGNATURE_PASSTHRU,NULL_STRUCTURE,"do",SIGNATURE_ANY,NULL_STRUCTURE,0;   this process reduces to its single "do" parameter.
 
-Process: DEFINE,0,"add a new definition","symbol",SIGNATURE_SYMBOL,RESULT_SYMBOL,"def",SIGNATURE_SYMBOL,SYMBOL_DEFINITION,0;
+Process: DEF_SYMBOL,0,"define a new symbol","symbol",SIGNATURE_SYMBOL,RESULT_SYMBOL,"def",SIGNATURE_SYMBOL,SYMBOL_DEFINITION,0;
+Process: DEF_STRUCTURE,0,"define a new structure","structure",SIGNATURE_STRUCTURE,RESULT_STRUCTURE,"def",SIGNATURE_SYMBOL,SYMBOL_DEFINITION,0;
+Process: DEF_PROCESS,0,"define a new process","process",SIGNATURE_PROCESS,RESULT_PROCESS,"def",SIGNATURE_SYMBOL,PROCESS_DEFINITION,0;
+Process: DEF_RECEPTOR,0,"define a new receptor","receptor",SIGNATURE_RECEPTOR,RESULT_RECEPTOR,"def",SIGNATURE_SYMBOL,RECEPTOR_DEFINITION,0;
+Process: DEF_PROTOCOL,0,"define a new protocol","protocol",SIGNATURE_PROTOCOL,RESULT_PROTOCOL,"def",SIGNATURE_SYMBOL,PROTOCOL_DEFINITION,0;
+
 Process: NEW,0,"new instance","xaddr",SIGNATURE_SYMBOL,WHICH_XADDR,"what",SIGNATURE_SYMBOL,NEW_TYPE,"value",SIGNATURE_ANY,NULL_STRUCTURE,0; reduces to the xaddr of a newly created instance of type NEW_TYPE.  the structures of "what" and "value" must match, but not the symbols
 Process: GET,0,"get instance value","value",SIGNATURE_ANY,NULL_STRUCTURE,"what",SIGNATURE_SYMBOL,WHICH_XADDR,0;   reduces to the value of the instance at the xaddr of the "what" parameter
 Process: DEL,0,"delete instance","value",SIGNATURE_ANY,NULL_STRUCTURE,"what",SIGNATURE_SYMBOL,WHICH_XADDR,0;   reduces to the value of the deleted instance at the xaddr of the "what" parameter

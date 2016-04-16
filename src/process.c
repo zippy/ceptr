@@ -392,20 +392,44 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             }
         }
         break;
-    case DEFINE_ID:
+    case DEF_SYMBOL_ID:
         {
             T *def = _t_detach_by_idx(code,1);
             //@todo some kind of validation of the def??
-            SemanticType semtype;
-            Symbol s = _t_symbol(def);
-            if (semeq(s,SYMBOL_DEFINITION)) semtype = SEM_TYPE_SYMBOL;
-            else if (semeq(s,STRUCTURE_DEFINITION)) semtype = SEM_TYPE_STRUCTURE;
-            else if (semeq(s,PROCESS_DEFINITION)) semtype = SEM_TYPE_PROCESS;
-            else if (semeq(s,RECEPTOR_DEFINITION)) semtype = SEM_TYPE_RECEPTOR;
-            else if (semeq(s,PROTOCOL_DEFINITION)) semtype = SEM_TYPE_PROTOCOL;
-            else raise_error("unknown definition type: %s",_sem_get_name(sem,s));
-            SemanticID ns = _d_define(sem,def,semtype,q->r->context);
+            SemanticID ns = _d_define(sem,def, SEM_TYPE_SYMBOL,q->r->context);
             x = _t_news(0,RESULT_SYMBOL,ns);
+        }
+        break;
+    case DEF_STRUCTURE_ID:
+        {
+            T *def = _t_detach_by_idx(code,1);
+            //@todo some kind of validation of the def??
+            SemanticID ns = _d_define(sem,def, SEM_TYPE_STRUCTURE,q->r->context);
+            x = _t_news(0,RESULT_STRUCTURE,ns);
+        }
+        break;
+    case DEF_PROCESS_ID:
+        {
+            T *def = _t_detach_by_idx(code,1);
+            //@todo some kind of validation of the def??
+            SemanticID ns = _d_define(sem,def, SEM_TYPE_PROCESS,q->r->context);
+            x = _t_news(0,RESULT_PROCESS,ns);
+        }
+        break;
+    case DEF_RECEPTOR_ID:
+        {
+            T *def = _t_detach_by_idx(code,1);
+            //@todo some kind of validation of the def??
+            SemanticID ns = __d_define_receptor(sem,def,q->r->context);
+            x = _t_news(0,RESULT_RECEPTOR,ns);
+        }
+        break;
+    case DEF_PROTOCOL_ID:
+        {
+            T *def = _t_detach_by_idx(code,1);
+            //@todo some kind of validation of the def??
+            SemanticID ns = _d_define(sem,def,SEM_TYPE_PROTOCOL,q->r->context);
+            x = _t_news(0,RESULT_PROTOCOL,ns);
         }
         break;
     case NEW_ID:

@@ -78,7 +78,8 @@ Protocol _d_define_protocol(SemTable *sem,T *def,Context c);
 T *_d_make_protocol_def(SemTable *sem,char *label,...);
 T * _d_build_def_semtrex(SemTable *sem,Symbol s,T *parent);
 size_t _sys_structure_size(int id,void *surface);
-SemanticID _d_define_receptor(SemTable *sem,char *label,T *def,Context c);
+SemanticID _d_define_receptor(SemTable *sem,char *label,T *definitions,Context c);
+SemanticID __d_define_receptor(SemTable *sem,T *def,Context c);
 Context _d_get_receptor_context(SemTable *sem,SemanticID r);
 
 enum{NO_INDENT=0,INDENT=-1};
