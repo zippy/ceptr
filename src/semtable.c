@@ -179,6 +179,7 @@ bool __sem_get_by_label(SemTable *sem,char *label,SemanticID *sid,Context c) {
 
 bool _sem_get_by_label(SemTable *sem,char *label,SemanticID *sid) {
     int i;
+    if (!strcmp(label,"NULL_SYMBOL")) {*sid = NULL_SYMBOL; return true;}
     for(i=0;i<sem->contexts;i++)
         if (__sem_get_by_label(sem,label,sid,i)) return true;
     return false;

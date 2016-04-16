@@ -723,6 +723,11 @@ void testTreeParse() {
     t = _t_parse(G_sem,0,s,_t_newc(0,ASCII_CHAR,'y'));
     spec_is_str_equal(t2s(t),"(process:DO (SCOPE (TEST_INT_SYMBOL:1) (TEST_CHAR_SYMBOL:'x') (ASCII_CHAR:'y') (TEST_STR_SYMBOL:fish) (PARAM_REF:/1/2/3) (CARRIER:backnforth)))");
     _t_free(t);
+
+    s = "(SIGNATURE_SYMBOL:NULL_SYMBOL)";
+    t = _t_parse(G_sem,0,s);
+    spec_is_str_equal(t2s(t),s);
+    _t_free(t);
 }
 
 void testTree() {
