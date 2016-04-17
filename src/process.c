@@ -1312,7 +1312,8 @@ R *__p_make_context(T *run_tree,R *caller,int process_id,T *sem_map) {
     context->idx = 1;
     context->caller = caller;
     context->sem_map = sem_map;
-    context->conversation = NULL;
+    // copy in the callers conversation context too.
+    context->conversation = caller ? caller->conversation : NULL;
     if (caller) caller->callee = context;
     return context;
 }

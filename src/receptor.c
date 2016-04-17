@@ -648,8 +648,10 @@ void evaluateEndCondition(T *ec,bool *cleanup,bool *allow) {
 }
 
 bool __cid_equal(SemTable *sem,T *cid1,T*cid2) {
-    // can we just use the top UUID?
-    return _t_hash(sem,cid1) == _t_hash(sem,cid2);
+    UUIDt u1 = __cid_getUUID(cid1);
+    UUIDt u2 = __cid_getUUID(cid2);
+    return __uuid_equal(&u1,&u2);
+    //    return _t_hash(sem,cid1) == _t_hash(sem,cid2);
 }
 
 T *__cid_new(T *parent,UUIDt *c,T *topic) {

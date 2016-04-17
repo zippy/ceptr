@@ -879,6 +879,27 @@ void testProcessConverse() {
     debug_disable(D_STEP);
     spec_is_str_equal(t2s(run_tree),"(RUN_TREE (TEST_INT_SYMBOL:321) (PARAMS))");
 
+
+    // setup a case for testing that a conversation scope gets "inherited" by sub-contexts
+    code = _testProcessAddSay(0,100,_t_new_str(0,TEST_STR_SYMBOL,"What I said!"));
+    T *signature = __p_make_signature("result",SIGNATURE_SYMBOL,NULL_SYMBOL,NULL);
+    Process sayer = _d_define_process(G_sem,code,"sayer","sends a signal to 100",signature,0,r->context);
+
+    p = _t_newr(0,CONVERSE);
+    scope = _t_newr(p,SCOPE);
+    _t_newr(scope,sayer);
+
+    run_tree = __p_build_run_tree(p,0);
+    _t_free(p);
+
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (process:CONVERSE (SCOPE (process:sayer))) (PARAMS))");
+    e =_p_addrt2q(q,run_tree);
+    //debug_enable(D_STEP);
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    debug_disable(D_STEP);
+    // the say inside the function call should also be part of the conversation
+    spec_is_str_equal(t2s(_t_child(ps,_t_children(ps))),"(SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:100)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (CONVERSATION_IDENT (CONVERSATION_UUID))) (BODY:{(TEST_STR_SYMBOL:What I said!)})))");
+
     _r_free(r);
 }
 
