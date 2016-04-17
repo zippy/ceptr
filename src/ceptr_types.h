@@ -155,10 +155,12 @@ typedef table_elem *LabelTable;
 // for now store instances in an INSTANCES semantic tree
 typedef T *Instances;
 
-typedef struct ConversationState {
-    T *converse_pointer;
-    T *id;
-} ConversationState;
+typedef struct ConversationState ConversationState;
+struct ConversationState {
+    T *converse_pointer;    ///< pointer to the CONVERSE instruction in the run tree
+    T *cid;                 ///< pointer to CONVERSATION_IDENT in receptors CONVERSATIONS tree
+    ConversationState *next;
+};
 
 // ** types for processing
 // run-tree context

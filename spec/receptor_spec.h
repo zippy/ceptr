@@ -132,8 +132,38 @@ void testReceptorDeliverConversation() {
     spec_is_str_equal(_td(r,r->conversations),"(CONVERSATIONS)");
     spec_is_equal(_r_deliver(r,s),noDeliveryErr);
     // when the signal arrives a new conversation should be in place
-    spec_is_str_equal(_td(r,r->conversations),"(CONVERSATIONS (CONVERSATION (CONVERSATION_IDENT (CONVERSATION_UUID)) (END_CONDITIONS (UNLIMITED))))");
+    spec_is_str_equal(_td(r,r->conversations),"(CONVERSATIONS (CONVERSATION (CONVERSATION_IDENT (CONVERSATION_UUID)) (END_CONDITIONS (UNLIMITED)) (CONVERSATIONS)))");
     _t_free(cu);
+    _r_free(r);
+}
+
+void testReceptorConversations() {
+    Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
+    spec_is_str_equal(_td(r,r->conversations),"(CONVERSATIONS)");
+
+    UUIDt u = __uuid_gen();
+    T *c = _r_add_conversation(r,0,&u,0,0);
+    spec_is_str_equal(_td(r,c),"(CONVERSATION (CONVERSATION_IDENT (CONVERSATION_UUID)) (END_CONDITIONS (UNLIMITED)) (CONVERSATIONS))");
+    spec_is_str_equal(_td(r,r->conversations),"(CONVERSATIONS (CONVERSATION (CONVERSATION_IDENT (CONVERSATION_UUID)) (END_CONDITIONS (UNLIMITED)) (CONVERSATIONS)))");
+
+    spec_is_ptr_equal(_r_find_conversation(r,&u),c);
+
+    // add a child conversation
+    UUIDt u2 = __uuid_gen();
+    T *c2 = _r_add_conversation(r,&u,&u2,0,0);
+
+    spec_is_str_equal(_td(r,r->conversations),"(CONVERSATIONS (CONVERSATION (CONVERSATION_IDENT (CONVERSATION_UUID)) (END_CONDITIONS (UNLIMITED)) (CONVERSATIONS (CONVERSATION (CONVERSATION_IDENT (CONVERSATION_UUID)) (END_CONDITIONS (UNLIMITED)) (CONVERSATIONS)))))");
+
+    spec_is_ptr_equal(_r_find_conversation(r,&u2),c2);
+
+    // add a sibling conversation
+    UUIDt u3 = __uuid_gen();
+    T *c3 = _r_add_conversation(r,0,&u3,0,0);
+
+    spec_is_str_equal(_td(r,r->conversations),"(CONVERSATIONS (CONVERSATION (CONVERSATION_IDENT (CONVERSATION_UUID)) (END_CONDITIONS (UNLIMITED)) (CONVERSATIONS (CONVERSATION (CONVERSATION_IDENT (CONVERSATION_UUID)) (END_CONDITIONS (UNLIMITED)) (CONVERSATIONS)))) (CONVERSATION (CONVERSATION_IDENT (CONVERSATION_UUID)) (END_CONDITIONS (UNLIMITED)) (CONVERSATIONS)))");
+
+    spec_is_ptr_equal(_r_find_conversation(r,&u3),c3);
+
     _r_free(r);
 }
 
@@ -801,8 +831,9 @@ void testReceptor() {
     testReceptorAddRemoveExpectation();
     testReceptorSignal();
     testReceptorSignalDeliver();
-    testReceptorDeliverConversation();
     testReceptorResponseDeliver();
+    testReceptorDeliverConversation();
+    testReceptorConversations();
     testReceptorEndCondition();
     testReceptorExpectation();
     testReceptorDef();

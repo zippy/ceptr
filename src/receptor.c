@@ -647,23 +647,6 @@ void evaluateEndCondition(T *ec,bool *cleanup,bool *allow) {
     debug(D_SIGNALS,"after end condition %s cleanup=%s allow=%s\n",t2s(ec),*cleanup?"true":"false",*allow?"true":"false");
 }
 
-bool __cid_equal(SemTable *sem,T *cid1,T*cid2) {
-    UUIDt u1 = __cid_getUUID(cid1);
-    UUIDt u2 = __cid_getUUID(cid2);
-    return __uuid_equal(&u1,&u2);
-    //    return _t_hash(sem,cid1) == _t_hash(sem,cid2);
-}
-
-T *__cid_new(T *parent,UUIDt *c,T *topic) {
-    T *cid = _t_newr(parent,CONVERSATION_IDENT);
-    _t_new(cid,CONVERSATION_UUID,c,sizeof(UUIDt));
-    return cid;
-}
-
-UUIDt __cid_getUUID(T *cid) {
-    return *(UUIDt *)_t_surface(_t_child(cid,ConversationIdentUUIDIdx));
-}
-
 /**
  * low level function for testing expectation patterns on signals and either adding a new run tree
  * onto the current Q or reawakening the process that's been blocked waiting for the expectation
@@ -856,44 +839,80 @@ int __r_deliver_response(Receptor *r,T *response_to,T *signal) {
     return noDeliveryErr;
 }
 
+
+bool __cid_equal(SemTable *sem,T *cid1,T*cid2) {
+    UUIDt *u1 = __cid_getUUID(cid1);
+    UUIDt *u2 = __cid_getUUID(cid2);
+    return __uuid_equal(u1,u2);
+    //    return _t_hash(sem,cid1) == _t_hash(sem,cid2);
+}
+
+T *__cid_new(T *parent,UUIDt *c,T *topic) {
+    T *cid = _t_newr(parent,CONVERSATION_IDENT);
+    _t_new(cid,CONVERSATION_UUID,c,sizeof(UUIDt));
+    return cid;
+}
+
+UUIDt *__cid_getUUID(T *cid) {
+    return (UUIDt *)_t_surface(_t_child(cid,ConversationIdentUUIDIdx));
+}
+
 // registers a new conversation at the receptor level.  Note that this routine
 // expects that the until param (if provided) can be added to the conversation tree,
 // i.e. it must not be part of some other tree.
-T * _r_add_conversation(Receptor *r,UUIDt id,T *until,T *wakeup) {
+T * _r_add_conversation(Receptor *r,UUIDt *parent_u,UUIDt *u,T *until,T *wakeup) {
     T *c = _t_new_root(CONVERSATION);
-    T *cu = __cid_new(c,&id,0);
+    T *cu = __cid_new(c,u,0);
 
     _t_add(c, until ? until : __r_build_default_until());
+    _t_newr(c,CONVERSATIONS); // add the root for any sub-conversations
     if (wakeup) _t_add(c,wakeup);
 
     //@todo NOT THREAD SAFE, add locking
-    _t_add(r->conversations,c);
+    T *p;
+    if (parent_u) {
+        p = _r_find_conversation(r,parent_u);
+        p = _t_child(p,ConversationConversationsIdx);
+        if (!p) raise_error("parent conversation not found!");
+    }
+    else p = r->conversations;
+    _t_add(p,c);
     //@todo UNLOCK
     return c;
 }
 
-T *_r_find_conversation(Receptor *r, UUIDt cuuid) {
+// finds a conversation searching recursively through sub-conversations
+T *__r_find_conversation(T *conversations, UUIDt *uuid) {
     T *c,*ci;
     bool found = false;
 
-    // @todo reimplement with semtrex?
-
     // @todo lock?
-    DO_KIDS(r->conversations,
-            c = _t_child(r->conversations,i);
-            ci = _t_child(_t_child(c,ConversationIdentIdx),ConversationIdentUUIDIdx);
-            if (__uuid_equal(&cuuid,(UUIDt *)_t_surface(ci))) {
+    DO_KIDS(conversations,
+            c = _t_child(conversations,i);
+            UUIDt *u = __cid_getUUID(_t_child(c,ConversationIdentIdx));
+            if (__uuid_equal(uuid,u)) {
                 found = true;
                 break;
+            }
+            T *sub_conversations = _t_child(c,ConversationConversationsIdx);
+            if (_t_children(sub_conversations)) {
+                c = __r_find_conversation(sub_conversations,uuid);
+                if (c) {found = true;break;}
             }
             );
     // @todo unlock
     return found?c:NULL;
 }
 
+T *_r_find_conversation(Receptor *r, UUIDt *uuid) {
+    // @todo reimplement with semtrex?
+    return __r_find_conversation(r->conversations, uuid);
+}
+
 // cleans up any pending requests, listens and the conversation record
 // returns the wakeup reference
-T * __r_cleanup_conversation(Receptor *r, UUIDt cuuid) {
+// @todo how about cleaning up sub-conversattions!!!
+T * __r_cleanup_conversation(Receptor *r, UUIDt *cuuid) {
     // @todo lock conversations?
     T *c = _r_find_conversation(r,cuuid);
     if (!c) {
@@ -951,10 +970,10 @@ Error _r_deliver(Receptor *r, T *signal) {
 
     // if there is a conversation, check to see if we've got a scope open for it
     if (conversation) {
-        UUIDt cuuid = __cid_getUUID(conversation);
+        UUIDt *cuuid = __cid_getUUID(conversation);
         T *c = _r_find_conversation(r,cuuid);
         if (!c) {
-            c = _r_add_conversation(r,cuuid,end_conditions,NULL);
+            c = _r_add_conversation(r,0,cuuid,end_conditions,NULL);
         }
     }
 

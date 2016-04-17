@@ -704,11 +704,11 @@ void testTreeFindBySymbol() {
     T *match = _t_newr(0,PATTERN);
     _sl(match,TEST_INT_SYMBOL);
     UUIDt cuuid = __uuid_gen();
-    T *cid = _t_new(0,CONVERSATION_UUID,&cuuid,sizeof(UUIDt));
+    T *cid = __cid_new(0,&cuuid,0);
 
     T *t = __r_build_expectation(TEST_INT_SYMBOL,match,_t_newp(0,ACTION,NOOP),0,0,NULL,cid);
 
-    spec_is_ptr_equal(__t_find(t,CONVERSATION_UUID,ExpectationOptionalsIdx),cid);
+    spec_is_ptr_equal(__t_find(t,CONVERSATION_IDENT,ExpectationOptionalsIdx),cid);
     spec_is_ptr_equal(__t_find(t,SEMANTIC_MAP,ExpectationOptionalsIdx),NULL);
 
     _t_free(t);

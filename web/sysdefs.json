@@ -305,13 +305,11 @@
             {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":61 }}]}]},
       {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
          {"sem":{ "ctx":0,"type":2,"id":15 },"children":[
-            {"sem":{ "ctx":0,"type":2,"id":277 },"surface":"LIST_OF_CONVERSATION_UUID_AND_ZERO_OR_ONE_OF_TOPIC_AND_ZERO_OR_ONE_OF_CONVERSATION_IDENT"}]},
+            {"sem":{ "ctx":0,"type":2,"id":277 },"surface":"TUPLE_OF_CONVERSATION_UUID_AND_ZERO_OR_ONE_OF_TOPIC"}]},
          {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
             {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":63 }},
             {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
-               {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":71 }}]},
-            {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
-               {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":72 }}]}]}]},
+               {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":71 }}]}]}]},
       {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
          {"sem":{ "ctx":0,"type":2,"id":15 },"children":[
             {"sem":{ "ctx":0,"type":2,"id":277 },"surface":"LIST_OF_FROM_ADDRESS_AND_TO_ADDRESS_AND_ASPECT_IDENT_AND_CARRIER_AND_ZERO_OR_ONE_OF_CONVERSATION_IDENT_AND_ZERO_OR_ONE_OF_LOGICAL_OR_OF_END_CONDITIONS_AND_IN_RESPONSE_TO_UUID"}]},
@@ -382,17 +380,18 @@
             {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":87 }}]}]},
       {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
          {"sem":{ "ctx":0,"type":2,"id":15 },"children":[
-            {"sem":{ "ctx":0,"type":2,"id":277 },"surface":"LIST_OF_CONVERSATION_UUID_AND_END_CONDITIONS_AND_ZERO_OR_ONE_OF_WAKEUP_REFERENCE"}]},
-         {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
-            {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":63 }},
-            {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":69 }},
-            {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
-               {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":79 }}]}]}]},
-      {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
-         {"sem":{ "ctx":0,"type":2,"id":15 },"children":[
             {"sem":{ "ctx":0,"type":2,"id":277 },"surface":"ZERO_OR_MORE_OF_CONVERSATION"}]},
          {"sem":{ "ctx":0,"type":2,"id":11 },"children":[
             {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":88 }}]}]},
+      {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
+         {"sem":{ "ctx":0,"type":2,"id":15 },"children":[
+            {"sem":{ "ctx":0,"type":2,"id":277 },"surface":"LIST_OF_CONVERSATION_UUID_AND_END_CONDITIONS_AND_CONVERSATIONS_AND_ZERO_OR_ONE_OF_WAKEUP_REFERENCE"}]},
+         {"sem":{ "ctx":0,"type":2,"id":9 },"children":[
+            {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":63 }},
+            {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":69 }},
+            {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":89 }},
+            {"sem":{ "ctx":0,"type":2,"id":17 },"children":[
+               {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":79 }}]}]}]},
       {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
          {"sem":{ "ctx":0,"type":2,"id":15 },"children":[
             {"sem":{ "ctx":0,"type":2,"id":277 },"surface":"LOGICAL_OR_OF_PROCESS_OF_STRUCTURE_AND_PROCESS_OF_SYMBOL_AND_PROCESS_OF_PROCESS"}]},
@@ -1239,11 +1238,11 @@
       {"sem":{ "ctx":0,"type":2,"id":20 },"children":[
          {"sem":{ "ctx":0,"type":2,"id":19 },"children":[
             {"sem":{ "ctx":0,"type":2,"id":277 },"surface":"CONVERSATION"}]},
-         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":57 }}]},
+         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":58 }}]},
       {"sem":{ "ctx":0,"type":2,"id":20 },"children":[
          {"sem":{ "ctx":0,"type":2,"id":19 },"children":[
             {"sem":{ "ctx":0,"type":2,"id":277 },"surface":"CONVERSATIONS"}]},
-         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":58 }}]},
+         {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":57 }}]},
       {"sem":{ "ctx":0,"type":2,"id":20 },"children":[
          {"sem":{ "ctx":0,"type":2,"id":19 },"children":[
             {"sem":{ "ctx":0,"type":2,"id":277 },"surface":"TRANSCODER"}]},

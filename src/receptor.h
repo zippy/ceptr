@@ -69,13 +69,13 @@ T* __r_send(Receptor *r,T *signal);
 T* _r_send(Receptor *r,T *signal);
 T* _r_request(Receptor *r,T *signal,Symbol response_carrier,T *code_point,int process_id);
 void evaluateEndCondition(T *ec,bool *cleanup,bool *allow);
+void __r_test_expectation(Receptor *r,T *expectation,T *signal);
 bool __cid_equal(SemTable *sem,T *cid1,T*cid2);
 T *__cid_new(T *parent,UUIDt *c,T *topic);
-UUIDt __cid_getUUID(T *cid);
-void __r_test_expectation(Receptor *r,T *expectation,T *signal);
-T * _r_add_conversation(Receptor *r,UUIDt id,T *until,T *wakeup);
-T *_r_find_conversation(Receptor *r, UUIDt cuuid);
-T *__r_cleanup_conversation(Receptor *r, UUIDt cuuid);
+UUIDt *__cid_getUUID(T *cid);
+T * _r_add_conversation(Receptor *r,UUIDt *parent_u,UUIDt *u,T *until,T *wakeup);
+T *_r_find_conversation(Receptor *r, UUIDt *cuuid);
+T *__r_cleanup_conversation(Receptor *r, UUIDt *cuuid);
 Error _r_deliver(Receptor *r, T *signal);
 
 /******************  internal utilities */

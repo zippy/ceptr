@@ -154,9 +154,9 @@ Symbol: FROM_ADDRESS,RECEPTOR_ADDRESS;
 Symbol: TO_ADDRESS,RECEPTOR_ADDRESS;
 Declare: END_CONDITIONS;
 Symbol: ENVELOPE,[(SIGNAL_UUID)];
-Symbol: TOPIC,SYMBOL;    semantic identifier for a conversation
-Declare: CONVERSATION_IDENT;
-Symbol: CONVERSATION_IDENT,[(CONVERSATION_UUID,?TOPIC,?CONVERSATION_IDENT)];
+#Symbol: TOPIC,SYMBOL;    semantic identifier for a conversation
+#,?TOPIC
+Symbol: CONVERSATION_IDENT,[(CONVERSATION_UUID)];
 Symbol: HEAD,[(FROM_ADDRESS,TO_ADDRESS,ASPECT_IDENT,CARRIER,?CONVERSATION_IDENT,?|{END_CONDITIONS|IN_RESPONSE_TO_UUID})];
 Symbol: MESSAGE,[(HEAD,BODY)];              meta-data of a signal
 Symbol: SIGNAL,[(ENVELOPE,MESSAGE)];        a signal on the flux.  It's first child is the contents of the signal
@@ -175,8 +175,9 @@ Declare: PARAMS,SEMANTIC_MAP;
 Symbol: EXPECTATION,[(CARRIER,PATTERN,ACTION,PARAMS,END_CONDITIONS,?SEMANTIC_MAP,?CONVERSATION_UUID)];
 Symbol: EXPECTATIONS,[*EXPECTATION];        list of carrier/expectation/action tress
 
-Symbol: CONVERSATION,[(CONVERSATION_UUID,END_CONDITIONS,?WAKEUP_REFERENCE)];
+Declare: CONVERSATION;
 Symbol: CONVERSATIONS,[*CONVERSATION];
+Symbol: CONVERSATION,[(CONVERSATION_UUID,END_CONDITIONS,CONVERSATIONS,?WAKEUP_REFERENCE)];
 
 # process defintion symbols
 # ?the types of processes: transcode / (operate/compare) / (constrain/validate/range/enum) / flow / side-effect

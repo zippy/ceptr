@@ -829,7 +829,7 @@ void testProcessConverse() {
     //debug_enable(D_STEP);
     spec_is_equal(_p_reduceq(q),noReductionErr);
     debug_disable(D_STEP);
-    spec_is_str_equal(t2s(cons),"(CONVERSATIONS (CONVERSATION (CONVERSATION_IDENT (CONVERSATION_UUID)) (END_CONDITIONS (UNLIMITED)) (WAKEUP_REFERENCE (PROCESS_IDENT:1) (CODE_PATH:/1/4))))");
+    spec_is_str_equal(t2s(cons),"(CONVERSATIONS (CONVERSATION (CONVERSATION_IDENT (CONVERSATION_UUID)) (END_CONDITIONS (UNLIMITED)) (CONVERSATIONS) (WAKEUP_REFERENCE (PROCESS_IDENT:1) (CODE_PATH:/1/4))))");
 
     //CONVERSE should be reduced to the signal UUID from the containing scope
     spec_is_str_equal(t2s(run_tree),"(RUN_TREE (process:SAY (TO_ADDRESS (RECEPTOR_ADDR:99)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (SIGNAL_UUID)) (PARAMS))");
@@ -888,17 +888,41 @@ void testProcessConverse() {
     p = _t_newr(0,CONVERSE);
     scope = _t_newr(p,SCOPE);
     _t_newr(scope,sayer);
+    complete = _t_newr(scope,COMPLETE); // and make sure this scope gets cleaned up
+    _t_newi(complete,TEST_INT_SYMBOL,321);
 
     run_tree = __p_build_run_tree(p,0);
     _t_free(p);
 
-    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (process:CONVERSE (SCOPE (process:sayer))) (PARAMS))");
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (process:CONVERSE (SCOPE (process:sayer) (process:COMPLETE (TEST_INT_SYMBOL:321)))) (PARAMS))");
     e =_p_addrt2q(q,run_tree);
     //debug_enable(D_STEP);
     spec_is_equal(_p_reduceq(q),noReductionErr);
     debug_disable(D_STEP);
     // the say inside the function call should also be part of the conversation
     spec_is_str_equal(t2s(_t_child(ps,_t_children(ps))),"(SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:100)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (CONVERSATION_IDENT (CONVERSATION_UUID))) (BODY:{(TEST_STR_SYMBOL:What I said!)})))");
+
+    // test conversation nesting
+    p = _t_newr(0,CONVERSE);
+    scope = _t_newr(p,SCOPE);
+    T *p2 = _t_newr(scope,CONVERSE);
+    p2 = _t_newr(p2,SCOPE);
+    _t_newr(p2,sayer);
+
+    run_tree = __p_build_run_tree(p,0);
+    _t_free(p);
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (process:CONVERSE (SCOPE (process:CONVERSE (SCOPE (process:sayer))))) (PARAMS))");
+
+    e =_p_addrt2q(q,run_tree);
+    //debug_enable(D_STEP);
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    debug_disable(D_STEP);
+    // the conversation uuid in the signal should match the sub-conversations uuid
+    T *last_sig = _t_child(ps,_t_children(ps));
+    T *head =_t_getv(last_sig,SignalMessageIdx,MessageHeadIdx,TREE_PATH_TERMINATOR);
+    T *s_cid = __t_find(head,CONVERSATION_IDENT,HeadOptionalsIdx);
+    T *cid =_t_getv(r->conversations,1,ConversationConversationsIdx,1,ConversationIdentIdx,TREE_PATH_TERMINATOR);
+    spec_is_true(__uuid_equal(__cid_getUUID(cid),__cid_getUUID(s_cid)));
 
     _r_free(r);
 }
@@ -975,7 +999,7 @@ void testProcessThisScope() {
     //debug_enable(D_STEP);
     spec_is_equal(_p_reduceq(q),noReductionErr);
     debug_disable(D_STEP);
-    spec_is_str_equal(t2s(cons),"(CONVERSATIONS (CONVERSATION (CONVERSATION_IDENT (CONVERSATION_UUID)) (END_CONDITIONS (UNLIMITED)) (WAKEUP_REFERENCE (PROCESS_IDENT:1) (CODE_PATH:/1))))");
+    spec_is_str_equal(t2s(cons),"(CONVERSATIONS (CONVERSATION (CONVERSATION_IDENT (CONVERSATION_UUID)) (END_CONDITIONS (UNLIMITED)) (CONVERSATIONS) (WAKEUP_REFERENCE (PROCESS_IDENT:1) (CODE_PATH:/1))))");
 
     // should reduce to the conversations ID because of the THIS_SCOPE instruction
     spec_is_str_equal(t2s(run_tree),"(RUN_TREE (CONVERSATION_IDENT (CONVERSATION_UUID)) (PARAMS))");

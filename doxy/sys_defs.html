@@ -709,22 +709,16 @@
        <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_SIGNAL_UUID">LIST-OF-SIGNAL-UUID</a></div>
        <div class="def-comment"></div>
    </div>
-   <div class="def-item def-symbol">
-       <div class="def-type">Symbol:</div>
-       <div class="def-name"><a name="TOPIC"></a>TOPIC</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
-       <div class="def-comment">    semantic identifier for a conversation</div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="LIST_OF_CONVERSATION_UUID"></a>LIST-OF-CONVERSATION-UUID</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#CONVERSATION_UUID">CONVERSATION_UUID</a>)</div>
+       <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="CONVERSATION_IDENT"></a>CONVERSATION_IDENT</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_CONVERSATION_UUID_AND_ZERO_OR_ONE_OF_TOPIC_AND_ZERO_OR_ONE_OF_CONVERSATION_IDENT">LIST-OF-CONVERSATION-UUID-AND-ZERO-OR-ONE-OF-TOPIC-AND-ZERO-OR-ONE-OF-CONVERSATION-IDENT</a></div>
-       <div class="def-comment"></div>
-   </div>
-   <div class="def-item def-structure">
-       <div class="def-type">Structure:</div>
-       <div class="def-name"><a name="LIST_OF_CONVERSATION_UUID_AND_ZERO_OR_ONE_OF_TOPIC_AND_ZERO_OR_ONE_OF_CONVERSATION_IDENT"></a>LIST-OF-CONVERSATION-UUID-AND-ZERO-OR-ONE-OF-TOPIC-AND-ZERO-OR-ONE-OF-CONVERSATION-IDENT</div>
-       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#CONVERSATION_UUID">CONVERSATION_UUID</a>, ?(<a href="ref_sys_symbols.html#TOPIC">TOPIC</a>), ?(<a href="ref_sys_symbols.html#CONVERSATION_IDENT">CONVERSATION_IDENT</a>))</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_CONVERSATION_UUID">LIST-OF-CONVERSATION-UUID</a></div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-structure">
@@ -871,16 +865,10 @@
        <div class="def-struc-def">*(<a href="ref_sys_symbols.html#EXPECTATION">EXPECTATION</a>)</div>
        <div class="def-comment"></div>
    </div>
-   <div class="def-item def-structure">
-       <div class="def-type">Structure:</div>
-       <div class="def-name"><a name="LIST_OF_CONVERSATION_UUID_AND_END_CONDITIONS_AND_ZERO_OR_ONE_OF_WAKEUP_REFERENCE"></a>LIST-OF-CONVERSATION-UUID-AND-END-CONDITIONS-AND-ZERO-OR-ONE-OF-WAKEUP-REFERENCE</div>
-       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#CONVERSATION_UUID">CONVERSATION_UUID</a>, <a href="ref_sys_symbols.html#END_CONDITIONS">END_CONDITIONS</a>, ?(<a href="ref_sys_symbols.html#WAKEUP_REFERENCE">WAKEUP_REFERENCE</a>))</div>
-       <div class="def-comment"></div>
-   </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="CONVERSATION"></a>CONVERSATION</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_CONVERSATION_UUID_AND_END_CONDITIONS_AND_ZERO_OR_ONE_OF_WAKEUP_REFERENCE">LIST-OF-CONVERSATION-UUID-AND-END-CONDITIONS-AND-ZERO-OR-ONE-OF-WAKEUP-REFERENCE</a></div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_CONVERSATION_UUID_AND_END_CONDITIONS_AND_CONVERSATIONS_AND_ZERO_OR_ONE_OF_WAKEUP_REFERENCE">LIST-OF-CONVERSATION-UUID-AND-END-CONDITIONS-AND-CONVERSATIONS-AND-ZERO-OR-ONE-OF-WAKEUP-REFERENCE</a></div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-structure">
@@ -893,6 +881,12 @@
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="CONVERSATIONS"></a>CONVERSATIONS</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_CONVERSATION">ZERO-OR-MORE-OF-CONVERSATION</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="LIST_OF_CONVERSATION_UUID_AND_END_CONDITIONS_AND_CONVERSATIONS_AND_ZERO_OR_ONE_OF_WAKEUP_REFERENCE"></a>LIST-OF-CONVERSATION-UUID-AND-END-CONDITIONS-AND-CONVERSATIONS-AND-ZERO-OR-ONE-OF-WAKEUP-REFERENCE</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#CONVERSATION_UUID">CONVERSATION_UUID</a>, <a href="ref_sys_symbols.html#END_CONDITIONS">END_CONDITIONS</a>, <a href="ref_sys_symbols.html#CONVERSATIONS">CONVERSATIONS</a>, ?(<a href="ref_sys_symbols.html#WAKEUP_REFERENCE">WAKEUP_REFERENCE</a>))</div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">

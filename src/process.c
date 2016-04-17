@@ -460,7 +460,9 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             x = _t_detach_by_idx(scope,p);
             _t_free(scope);
             if (s.id == CONVERSE_ID) {
-                context->conversation = NULL;
+                //pop off the last conversation reference
+                if (context->conversation)
+                    context->conversation = context->conversation->next;
             }
             T *t;
             while (t = _t_detach_by_idx(code,1)) {
@@ -680,7 +682,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             T *su = _t_getv(signal,SignalEnvelopeIdx,EnvelopeSignalUUIDIdx,TREE_PATH_TERMINATOR);
             UUIDt uuid = *(UUIDt *)_t_surface(su);
 
-            T *response = __r_make_signal(from,to,a,carrier,response_contents,&uuid,0,context->conversation ? context->conversation->id : NULL);
+            T *response = __r_make_signal(from,to,a,carrier,response_contents,&uuid,0,context->conversation ? context->conversation->cid : NULL);
             x = _r_send(q->r,response);
         }
         break;
@@ -714,7 +716,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             T *signal;
 
             if (s.id == SAY_ID) {
-                signal = __r_make_signal(from,to,aspect,carrier,signal_contents,0,0,context->conversation ? context->conversation->id : NULL);
+                signal = __r_make_signal(from,to,aspect,carrier,signal_contents,0,0,context->conversation ? context->conversation->cid : NULL);
                 x = _r_send(q->r,signal);
             }
             else if (s.id == REQUEST_ID) {
@@ -746,7 +748,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                 else {
                     raise_error("request callback not implemented for %s",t2s(callback));
                 }
-                signal = __r_make_signal(from,to,aspect,carrier,signal_contents,0,until,context->conversation ? context->conversation->id : NULL);
+                signal = __r_make_signal(from,to,aspect,carrier,signal_contents,0,until,context->conversation ? context->conversation->cid : NULL);
 
                 x = _r_request(q->r,signal,response_carrier,response_point,context->id);
             }
@@ -756,7 +758,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
         // @todo make this return an error that would invoke the error handler
         if (!context->conversation)
             raise_error("whoa THIS_SCOPE executed outside CONVERSE!");
-        x = _t_rclone(context->conversation->id);
+        x = _t_rclone(context->conversation->cid);
         break;
     case CONTINUE_ID:
         {
@@ -782,8 +784,8 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                 // @todo make this return an error that would invoke the error handler
                 if (!context->conversation)
                     raise_error("COMPLETE invoked without conversation id outside of CONVERSE");
-                cid = context->conversation->id;
-                UUIDt cuuid = __cid_getUUID(cid);
+                cid = context->conversation->cid;
+                UUIDt *cuuid = __cid_getUUID(cid);
                 T *w = __r_cleanup_conversation(q->r,cuuid);
                 if (w) _t_free(w);
 
@@ -796,7 +798,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             else {
                 // if the conversation param was specified we need to get it from
 
-                UUIDt cuuid = __cid_getUUID(cid);
+                UUIDt *cuuid = __cid_getUUID(cid);
                 T *w = __r_cleanup_conversation(q->r,cuuid);
                 // restart the CONVERSE instruction that spawned this conversation
                 if (w) {
@@ -1146,7 +1148,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                 _t_news(s,USAGE,NULL_SYMBOL);
             }
 
-            T *cid = context && context->conversation ? _t_clone(context->conversation->id) : NULL;
+            T *cid = context && context->conversation ? _t_clone(context->conversation->cid) : NULL;
             // @todo add SEMANTIC_MAP into LISTEN
             if (act) {
                 _r_add_expectation(q->r,aspect,carrier,match,act,with,until,NULL,cid);
@@ -1686,22 +1688,29 @@ Error _p_step(Q *q, R **contextP) {
                             else wait = _t_child(np,3);
                         }
 
-                        T *c = _r_add_conversation(q->r,cuuid,until?_t_clone(until):NULL,
+                        UUIDt *parent_u;
+                        if (context->conversation) {
+                            parent_u = __cid_getUUID(context->conversation->cid);
+                        }
+                        else {
+                            parent_u = NULL;
+                        }
+
+                        T *c = _r_add_conversation(q->r,parent_u,&cuuid,until?_t_clone(until):NULL,
                                                    __p_build_wakeup_info(np,context->id)
                                                    );
 
                         ConversationState *state = malloc(sizeof(ConversationState));
                         state->converse_pointer = np;  // save the node pointer for later COMPLETEs
-                        state->id = _t_child(c,ConversationIdentIdx);
+                        state->cid = _t_child(c,ConversationIdentIdx);
                         *((ConversationState **)&np->contents.surface) = state;
                         np->contents.size = sizeof(ConversationState *);
                         np->context.flags |= TFLAG_ALLOCATED;
 
-                        // register the conversation with the context
-                        if (context->conversation) {
-                            raise_error("multiple CONVERSE per execution frame not implemented");
-                        }
-                        else context->conversation = state;
+                        // register the conversation with the context linking an existing conversation
+                        // to the new one if it exists
+                        state->next = context->conversation;
+                        context->conversation = state;
                     }
                 }
                 if (count == get_rt_cur_child(q->r,np) || semeq(s,QUOTE)) {
