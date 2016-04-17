@@ -783,7 +783,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                 if (!context->conversation)
                     raise_error("COMPLETE invoked without conversation id outside of CONVERSE");
                 cid = context->conversation->id;
-                UUIDt cuuid = *(UUIDt *)_t_surface(cid);
+                UUIDt cuuid = __cid_getUUID(cid);
                 T *w = __r_cleanup_conversation(q->r,cuuid);
                 if (w) _t_free(w);
 
@@ -796,7 +796,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             else {
                 // if the conversation param was specified we need to get it from
 
-                UUIDt cuuid = *(UUIDt *)_t_surface(cid);
+                UUIDt cuuid = __cid_getUUID(cid);
                 T *w = __r_cleanup_conversation(q->r,cuuid);
                 // restart the CONVERSE instruction that spawned this conversation
                 if (w) {

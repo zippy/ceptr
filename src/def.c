@@ -195,6 +195,7 @@ size_t _sys_structure_size(int id,void *surface) {
     case FLOAT_ID: return sizeof(float);
     case CSTRING_ID: return strlen(surface)+1;
     case XADDR_ID: return sizeof(Xaddr);
+    case UUID_ID: return sizeof(UUIDt);
     case CPOINTER_ID:
     case RECEPTOR_ID:
     case SCAPE_ID:

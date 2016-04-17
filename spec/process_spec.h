@@ -829,14 +829,14 @@ void testProcessConverse() {
     //debug_enable(D_STEP);
     spec_is_equal(_p_reduceq(q),noReductionErr);
     debug_disable(D_STEP);
-    spec_is_str_equal(t2s(cons),"(CONVERSATIONS (CONVERSATION (CONVERSATION_UUID) (END_CONDITIONS (UNLIMITED)) (WAKEUP_REFERENCE (PROCESS_IDENT:1) (CODE_PATH:/1/4))))");
+    spec_is_str_equal(t2s(cons),"(CONVERSATIONS (CONVERSATION (CONVERSATION_IDENT (CONVERSATION_UUID)) (END_CONDITIONS (UNLIMITED)) (WAKEUP_REFERENCE (PROCESS_IDENT:1) (CODE_PATH:/1/4))))");
 
     //CONVERSE should be reduced to the signal UUID from the containing scope
     spec_is_str_equal(t2s(run_tree),"(RUN_TREE (process:SAY (TO_ADDRESS (RECEPTOR_ADDR:99)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (SIGNAL_UUID)) (PARAMS))");
     spec_is_ptr_equal(q->blocked,e);
 
     // The signal to 100 should have the conversation id in it
-    spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:100)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (CONVERSATION_UUID)) (BODY:{(TEST_INT_SYMBOL:31415)}))))");
+    spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:100)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (CONVERSATION_IDENT (CONVERSATION_UUID))) (BODY:{(TEST_INT_SYMBOL:31415)}))))");
 
     // now use the COMPLETE instruction to clean-up
     code = _t_newr(0,COMPLETE);
@@ -855,11 +855,11 @@ void testProcessConverse() {
     // and the conversation should be cleaned up and the CONVERSE run-tree should have reduced
     spec_is_str_equal(t2s(cons),"(CONVERSATIONS)");
     // and the run tree should be completed with the value from the COMPLETE instruction
-    spec_is_str_equal(t2s(run_tree2),"(RUN_TREE (CONVERSATION_UUID) (PARAMS))");
+    spec_is_str_equal(t2s(run_tree2),"(RUN_TREE (CONVERSATION_IDENT (CONVERSATION_UUID)) (PARAMS))");
 
     // and the second signal shouldn't have the conversation id in it and it's body should be the
     // 'with' value from the COMPLETE
-    spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:100)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (CONVERSATION_UUID)) (BODY:{(TEST_INT_SYMBOL:31415)}))) (SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:99)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING)) (BODY:{(TEST_INT_SYMBOL:123)}))))");
+    spec_is_str_equal(t2s(ps),"(PENDING_SIGNALS (SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:100)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (CONVERSATION_IDENT (CONVERSATION_UUID))) (BODY:{(TEST_INT_SYMBOL:31415)}))) (SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:99)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING)) (BODY:{(TEST_INT_SYMBOL:123)}))))");
 
 
     // setup a case for testing the COMPLETE instruction within the CONVERSE SCOPE
@@ -912,7 +912,7 @@ void testProcessConverseListen() {
     spec_is_ptr_equal(q->blocked,e);
 
     T *ex = __r_get_expectations(r,DEFAULT_ASPECT);
-    spec_is_str_equal(t2s(ex),"(EXPECTATIONS (EXPECTATION (CARRIER:TEST_INT_SYMBOL) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TEST_INT_SYMBOL))) (ACTION:new_int (TEST_INT_SYMBOL:314)) (PARAMS (SLOT (USAGE:NULL_SYMBOL))) (END_CONDITIONS (UNLIMITED)) (CONVERSATION_UUID)))");
+    spec_is_str_equal(t2s(ex),"(EXPECTATIONS (EXPECTATION (CARRIER:TEST_INT_SYMBOL) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TEST_INT_SYMBOL))) (ACTION:new_int (TEST_INT_SYMBOL:314)) (PARAMS (SLOT (USAGE:NULL_SYMBOL))) (END_CONDITIONS (UNLIMITED)) (CONVERSATION_IDENT (CONVERSATION_UUID))))");
 
     T *t = _t_newi(0,TEST_INT_SYMBOL,314);
     //    debug_enable(D_LISTEN+D_SIGNALS);
@@ -954,10 +954,10 @@ void testProcessThisScope() {
     //debug_enable(D_STEP);
     spec_is_equal(_p_reduceq(q),noReductionErr);
     debug_disable(D_STEP);
-    spec_is_str_equal(t2s(cons),"(CONVERSATIONS (CONVERSATION (CONVERSATION_UUID) (END_CONDITIONS (UNLIMITED)) (WAKEUP_REFERENCE (PROCESS_IDENT:1) (CODE_PATH:/1))))");
+    spec_is_str_equal(t2s(cons),"(CONVERSATIONS (CONVERSATION (CONVERSATION_IDENT (CONVERSATION_UUID)) (END_CONDITIONS (UNLIMITED)) (WAKEUP_REFERENCE (PROCESS_IDENT:1) (CODE_PATH:/1))))");
 
     // should reduce to the conversations ID because of the THIS_SCOPE instruction
-    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (CONVERSATION_UUID) (PARAMS))");
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (CONVERSATION_IDENT (CONVERSATION_UUID)) (PARAMS))");
     _r_free(r);
 
 }

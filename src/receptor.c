@@ -647,6 +647,21 @@ void evaluateEndCondition(T *ec,bool *cleanup,bool *allow) {
     debug(D_SIGNALS,"after end condition %s cleanup=%s allow=%s\n",t2s(ec),*cleanup?"true":"false",*allow?"true":"false");
 }
 
+bool __cid_equal(SemTable *sem,T *cid1,T*cid2) {
+    // can we just use the top UUID?
+    return _t_hash(sem,cid1) == _t_hash(sem,cid2);
+}
+
+T *__cid_new(T *parent,UUIDt *c,T *topic) {
+    T *cid = _t_newr(parent,CONVERSATION_IDENT);
+    _t_new(cid,CONVERSATION_UUID,c,sizeof(UUIDt));
+    return cid;
+}
+
+UUIDt __cid_getUUID(T *cid) {
+    return *(UUIDt *)_t_surface(_t_child(cid,ConversationIdentUUIDIdx));
+}
+
 /**
  * low level function for testing expectation patterns on signals and either adding a new run tree
  * onto the current Q or reawakening the process that's been blocked waiting for the expectation
@@ -669,8 +684,8 @@ void __r_test_expectation(Receptor *r,T *expectation,T *signal) {
     Symbol esym = *(Symbol *)_t_surface(e_carrier);
     if (!semeq(esym,*(Symbol *)_t_surface(s_carrier)) && !semeq(esym,NULL_SYMBOL)) return;
 
-    T *s_cid = __t_find(head,CONVERSATION_UUID,HeadOptionalsIdx);
-    T *e_cid = __t_find(expectation,CONVERSATION_UUID,ExpectationOptionalsIdx);
+    T *s_cid = __t_find(head,CONVERSATION_IDENT,HeadOptionalsIdx);
+    T *e_cid = __t_find(expectation,CONVERSATION_IDENT,ExpectationOptionalsIdx);
     debug(D_SIGNALS,"checking signal conversation %s\n",_td(q->r,s_cid));
     debug(D_SIGNALS,"against expectation conversation %s\n",_td(q->r,e_cid));
 
@@ -678,7 +693,7 @@ void __r_test_expectation(Receptor *r,T *expectation,T *signal) {
     if (e_cid && !s_cid) return;
     // if both signal and expectation are keyed to a conversation test the ids for equality
     if (s_cid && e_cid) {
-        if (!__uuid_equal((UUIDt *)_t_surface(s_cid),((UUIDt *)_t_surface(e_cid)))) return;
+        if (!__cid_equal(r->sem,s_cid,e_cid)) return;
     }
 
     T *pattern,*m;
@@ -844,7 +859,7 @@ int __r_deliver_response(Receptor *r,T *response_to,T *signal) {
 // i.e. it must not be part of some other tree.
 T * _r_add_conversation(Receptor *r,UUIDt id,T *until,T *wakeup) {
     T *c = _t_new_root(CONVERSATION);
-    T *cu = _t_new(c,CONVERSATION_UUID,&id,sizeof(UUIDt));
+    T *cu = __cid_new(c,&id,0);
 
     _t_add(c, until ? until : __r_build_default_until());
     if (wakeup) _t_add(c,wakeup);
@@ -864,7 +879,7 @@ T *_r_find_conversation(Receptor *r, UUIDt cuuid) {
     // @todo lock?
     DO_KIDS(r->conversations,
             c = _t_child(r->conversations,i);
-            ci = _t_child(c,ConversationIdentIdx);
+            ci = _t_child(_t_child(c,ConversationIdentIdx),ConversationIdentUUIDIdx);
             if (__uuid_equal(&cuuid,(UUIDt *)_t_surface(ci))) {
                 found = true;
                 break;
@@ -924,7 +939,7 @@ Error _r_deliver(Receptor *r, T *signal) {
     T *extra;
     while(extra =_t_child(head,optionals++)) {
         Symbol sym = _t_symbol(extra);
-        if (semeq(CONVERSATION_UUID,sym))
+        if (semeq(CONVERSATION_IDENT,sym))
             conversation = extra;
         else if (semeq(IN_RESPONSE_TO_UUID,sym))
             response_to = extra;
@@ -934,7 +949,7 @@ Error _r_deliver(Receptor *r, T *signal) {
 
     // if there is a conversation, check to see if we've got a scope open for it
     if (conversation) {
-        UUIDt cuuid = *(UUIDt *)_t_surface(conversation);
+        UUIDt cuuid = __cid_getUUID(conversation);
         T *c = _r_find_conversation(r,cuuid);
         if (!c) {
             c = _r_add_conversation(r,cuuid,end_conditions,NULL);
