@@ -31,8 +31,8 @@
 (define-derived-mode ceptr-mode fundamental-mode "Ceptr"
   "Major  mode for editing Ceptr semantic trees"
   (setq-local font-lock-defaults '(ceptr-font-lock-defaults))
-;  (set (make-local-variable 'indent-line-function) 'lisp-indent-function)
-  (set (make-local-variable 'indent-tabs-mode) 1)
+  (set (make-local-variable 'indent-line-function) 'lisp-indent-line)
+  (set (make-local-variable 'indent-tabs-mode) nil)
   )
 (progn
    (add-to-list 'auto-mode-alist '("\\.cptr\\'" . ceptr-mode))
