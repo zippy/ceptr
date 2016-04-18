@@ -29,6 +29,7 @@
         (":\\('.'\\))" . (1 font-lock-string-face))              ;char surface
         (":\\([a-z_A-Z0-9_]+\\)" . (1 font-lock-type-face))      ;symbol surface
         (":\\(/[0-9/]+\\)" . (1 font-lock-string-face))          ;path surface
+        ("\\([a-z_A-Z0-9!@#$%^&*{}-]+\\)" . (1 font-lock-warning-face))                ;anything else
         ) )
 
 (define-derived-mode ceptr-mode fundamental-mode "Ceptr"
