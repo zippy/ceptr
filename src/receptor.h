@@ -67,7 +67,7 @@ ReceptorAddress __r_get_addr(T *addr);
 T * __r_make_signal(ReceptorAddress from,ReceptorAddress to,Aspect aspect,Symbol carrier,T *signal_contents,UUIDt *in_response_to,T* until,T *conversation);
 T* __r_send(Receptor *r,T *signal);
 T* _r_send(Receptor *r,T *signal);
-T* _r_request(Receptor *r,T *signal,Symbol response_carrier,T *code_point,int process_id);
+T* _r_request(Receptor *r,T *signal,Symbol response_carrier,T *code_point,int process_id,T *cid);
 void evaluateEndCondition(T *ec,bool *cleanup,bool *allow);
 void __r_test_expectation(Receptor *r,T *expectation,T *signal);
 bool __cid_equal(SemTable *sem,T *cid1,T*cid2);

@@ -15,7 +15,8 @@
 
 #include "tree.h"
 
-enum ReductionError {Ascend=-1,Descend=-2,Pushed=-3,Pop=-4,Eval=-5,Block=-6,Done=0,noReductionErr=0,redoReduction,raiseReductionErr,tooFewParamsReductionErr=TOO_FEW_PARAMS_ERR_ID,tooManyParamsReductionErr=TOO_MANY_PARAMS_ERR_ID,signatureMismatchReductionErr=SIGNATURE_MISMATCH_ERR_ID,notProcessReductionError=NOT_A_PROCESS_ERR_ID,divideByZeroReductionErr=ZERO_DIVIDE_ERR_ID,notInSignalContextReductionError=NOT_IN_SIGNAL_CONTEXT_ERR_ID,incompatibleTypeReductionErr=INCOMPATIBLE_TYPE_ERR_ID,unixErrnoReductionErr=UNIX_ERRNO_ERR_ID,deadStreamReadReductionErr=DEAD_STREAM_READ_ERR_ID,missingSemanticMapReductionErr=MISSING_SEMANTIC_MAP_ERR_ID,mismatchSemanticMapReductionErr=MISMATCH_SEMANTIC_MAP_ERR_ID,structureMismatchReductionErr=STRUCTURE_MISMATCH_ERR_ID};
+enum ReductionError {Ascend=-1,Descend=-2,Pushed=-3,Pop=-4,Eval=-5,Block=-6,Done=0,noReductionErr=0,redoReduction,raiseReductionErr,tooFewParamsReductionErr=TOO_FEW_PARAMS_ERR_ID,tooManyParamsReductionErr=TOO_MANY_PARAMS_ERR_ID,signatureMismatchReductionErr=SIGNATURE_MISMATCH_ERR_ID,notProcessReductionError=NOT_A_PROCESS_ERR_ID,divideByZeroReductionErr=ZERO_DIVIDE_ERR_ID,notInSignalContextReductionError=NOT_IN_SIGNAL_CONTEXT_ERR_ID,incompatibleTypeReductionErr=INCOMPATIBLE_TYPE_ERR_ID,unixErrnoReductionErr=UNIX_ERRNO_ERR_ID,deadStreamReadReductionErr=DEAD_STREAM_READ_ERR_ID,missingSemanticMapReductionErr=MISSING_SEMANTIC_MAP_ERR_ID,mismatchSemanticMapReductionErr=MISMATCH_SEMANTIC_MAP_ERR_ID,structureMismatchReductionErr=STRUCTURE_MISMATCH_ERR_ID//,conversatonCompletedReductionErr=CONVERSATION_COMPLETED_ERR_ID
+};
 
 enum QueueError {noErr = 0, contextNotFoundErr};
 
@@ -44,8 +45,9 @@ Error __p_check_signature(SemTable *sem,Process p,T *params,T *sem_map);
 Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q);
 void _p_enqueue(Qe **listP,Qe *e);
 Qe *__p_find_context(Qe *e,int process_id);
-void __p_unblock(Q *q,Qe *e);
+void __p_unblock(Q *q,Qe *e,Error err);
 Error _p_unblock(Q *q,int id);
+void _p_wakeup(Q *q,T *wakeup, T *with,Error err);
 Error _p_reduce(SemTable *sem,T *run_tree);
 Q *_p_newq(Receptor *r);
 void _p_freeq(Q *q);

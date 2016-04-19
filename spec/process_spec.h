@@ -974,6 +974,11 @@ void testProcessConverseListen() {
     debug_disable(D_LISTEN+D_SIGNALS);
     spec_is_str_equal(t2s(r->instances),"(INSTANCE_STORE (INSTANCES (SYMBOL_INSTANCES:TEST_INT_SYMBOL (TEST_INT_SYMBOL:314))))");
 
+
+    // test __r_cleanup (should actually be testing it via a call to COMPLETE)
+    __r_cleanup_conversation(r,__cid_getUUID(cid));
+    spec_is_str_equal(t2s(ex),"(EXPECTATIONS)");
+
     _r_free(r);
 }
 
@@ -1806,6 +1811,56 @@ void testProcessContinue() {
     _t_free(n);
 }
 
+void testProcessWakeup() {
+    Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
+
+    T *p = _t_parse(G_sem,0,"(NOOP (REQUEST (TO_ADDRESS (RECEPTOR_ADDR:99)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (TEST_INT_SYMBOL:314) (RESPONSE_CARRIER:TESTING) (END_CONDITIONS (COUNT:1))))");
+
+    T *code =_t_rclone(p);
+    T *run_tree = __p_build_run_tree(code,0);
+    _t_free(code);
+    spec_is_str_equal(_td(r,run_tree),"(RUN_TREE (process:NOOP (process:REQUEST (TO_ADDRESS (RECEPTOR_ADDR:99)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:TESTING) (TEST_INT_SYMBOL:314) (RESPONSE_CARRIER:TESTING) (END_CONDITIONS (COUNT:1)))) (PARAMS))");
+
+    // add the run tree into a queue and run it
+    G_next_process_id = 0; // reset the process ids so the test will always work
+    Q *q = r->q;
+    Qe *e =_p_addrt2q(q,run_tree);
+    R *c = e->context;
+
+    // after reduction the context should be in the blocked state
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    spec_is_equal(q->contexts_count,0);
+    spec_is_ptr_equal(q->blocked,e);
+    spec_is_equal(c->state,Block);
+    spec_is_str_equal(_td(r,r->pending_responses),"(PENDING_RESPONSES (PENDING_RESPONSE (SIGNAL_UUID) (CARRIER:TESTING) (WAKEUP_REFERENCE (PROCESS_IDENT:1) (CODE_PATH:/1/1)) (END_CONDITIONS (COUNT:1))))");
+    T *wakeup = _t_getv(r->pending_responses,1,PendingResponseWakeupIdx,TREE_PATH_TERMINATOR);
+
+    _p_wakeup(q,wakeup,NULL,divideByZeroReductionErr);
+    spec_is_equal(q->contexts_count,1);
+    spec_is_ptr_equal(q->blocked,NULL);
+    spec_is_ptr_equal(q->active,e);
+    spec_is_equal(c->state,divideByZeroReductionErr);
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    spec_is_equal(q->contexts_count,0);
+
+    code =_t_rclone(p);
+    run_tree = __p_build_run_tree(code,0);
+    _t_free(code);
+    e =_p_addrt2q(q,run_tree);
+    c = e->context;
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    wakeup = _t_getv(r->pending_responses,2,PendingResponseWakeupIdx,TREE_PATH_TERMINATOR);
+    _p_wakeup(q,wakeup,_t_newi(0,TEST_INT_SYMBOL,314),noReductionErr);
+    spec_is_ptr_equal(q->blocked,NULL);
+    spec_is_ptr_equal(q->active,e);
+    spec_is_equal(c->state,Eval);
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    spec_is_str_equal(_td(r,run_tree),"(RUN_TREE (TEST_INT_SYMBOL:314) (PARAMS))");
+
+    _t_free(p);
+    _r_free(r);
+}
+
 void testProcess() {
     _defIfEven();
     testProcessParameter();
@@ -1852,4 +1907,5 @@ void testProcess() {
     testProcessMulti();
     testRunTreeTemplate();
     testProcessContinue();
+    testProcessWakeup();
 }

@@ -512,7 +512,7 @@ ReceptorAddress __r_get_addr(T *addr) {
  * @param[in] conversation optional conversation id for signals that should be routed to a conversation
  * @todo signal should have timestamps
  */
-T* __r_make_signal(ReceptorAddress from,ReceptorAddress to,Aspect aspect,Symbol carrier,T *signal_contents,UUIDt *in_response_to,T* until,T *conversation) {
+T* __r_make_signal(ReceptorAddress from,ReceptorAddress to,Aspect aspect,Symbol carrier,T *signal_contents,UUIDt *in_response_to,T* until,T *cid) {
     T *s = _t_new_root(SIGNAL);
     T *e = _t_newr(s,ENVELOPE);
     T *m = _t_newr(s,MESSAGE);
@@ -531,8 +531,8 @@ T* __r_make_signal(ReceptorAddress from,ReceptorAddress to,Aspect aspect,Symbol 
         _t_new(h,IN_RESPONSE_TO_UUID,in_response_to,sizeof(UUIDt));
     else if (until)
         _t_add(h,until);
-    if (conversation) {
-        _t_add(h,_t_clone(conversation));
+    if (cid) {
+        _t_add(h,_t_clone(cid));
     }
     return s;
 }
@@ -572,10 +572,10 @@ T* _r_send(Receptor *r,T *signal) {
  * @returns a clone of the UUID of the message sent.
  * @todo signal should have timestamps and other meta info
  */
-T* _r_request(Receptor *r,T *signal,Symbol response_carrier,T *code_point,int process_id) {
+T* _r_request(Receptor *r,T *signal,Symbol response_carrier,T *code_point,int process_id,T *cid) {
 
     //@todo lock resources
-    T *result = __r_send(r,signal);
+    T *result = __r_send(r,signal); // result is signal UUID
     T *pr = _t_newr(r->pending_responses,PENDING_RESPONSE);
     _t_add(pr,_t_clone(result));
     _t_news(pr,CARRIER,response_carrier);
@@ -584,6 +584,7 @@ T* _r_request(Receptor *r,T *signal,Symbol response_carrier,T *code_point,int pr
     T *ec = _t_get(signal,p);
     if (!ec || !semeq(_t_symbol(ec),END_CONDITIONS)) raise_error("request missing END_CONDITIONS");
     _t_add(pr,_t_clone(ec));
+    if (cid) _t_add(pr,_t_clone(cid));
 
     debug(D_SIGNALS,"sending request and adding pending response: %s\n",_td(r,pr));
     //@todo unlock resources
@@ -709,27 +710,7 @@ void __r_test_expectation(Receptor *r,T *expectation,T *signal) {
             /* /// @todo later this should be integrated into some kind of scoping handling */
             T *params = _t_rclone(_t_child(expectation,ExpectationParamsIdx));
             _p_fill_from_match(r->sem,params,m,signal_contents);
-            int process_id = *(int *)_t_surface(_t_child(action,WakeupReferenceProcessIdentIdx));
-            int *code_path = (int *)_t_surface(_t_child(action,WakeupReferenceCodePathIdx));
-
-            // @todo figure out how to refactor this with the similar
-            // code in _r_deliver_response and __r_complete_conversation.
-            debug(D_LOCK,"listen LOCK\n");
-            pthread_mutex_lock(&q->mutex);
-            Qe *e = __p_find_context(q->blocked,process_id);
-            if (e) {
-                T *result = _t_get(e->context->run_tree,code_path);
-                if (!result) raise_error("failed to find code path when waking up expectation!");
-                T *p = _t_parent(result);
-                _t_replace(p,_t_node_index(result), params);
-                e->context->node_pointer = params;
-
-                __p_unblock(q,e);
-                debug(D_LISTEN+D_SIGNALS,"unblocking action at %d,%s\n",process_id,_td(q->r,p));
-            }
-            else _t_free(params);
-            pthread_mutex_unlock(&q->mutex);
-            debug(D_LOCK,"listen UNLOCK\n");
+            _p_wakeup(q,action,params,noReductionErr);
             cleanup = true; //always cleanup after a wakeup because the context is gone.
         }
         else {
@@ -786,8 +767,6 @@ int __r_deliver_response(Receptor *r,T *response_to,T *signal) {
                 if (allow) {
                     Symbol carrier = *(Symbol *)_t_surface(_t_child(l,PendingResponseCarrierIdx));
                     T *wakeup = _t_child(l,PendingResponseWakeupIdx);
-                    int process_id = *(int *)_t_surface(_t_child(wakeup,WakeupReferenceProcessIdentIdx));
-                    int *code_path = (int *)_t_surface(_t_child(wakeup,WakeupReferenceCodePathIdx));
                     // now set up the signal so when it's freed below, the body doesn't get freed too
                     signal->context.flags &= ~TFLAG_SURFACE_IS_TREE;
                     if (!semeq(carrier,signal_carrier)) {
@@ -802,28 +781,7 @@ int __r_deliver_response(Receptor *r,T *response_to,T *signal) {
                         //@todo figure out if this means we should throw away the pending response too
                         break;
                     }
-
-                    Q *q = r->q;
-                    debug(D_LOCK,"deliver LOCK\n");
-                    pthread_mutex_lock(&q->mutex);
-                    Qe *e = __p_find_context(q->blocked,process_id);
-                    if (e) {
-                        T *result = _t_get(e->context->run_tree,code_path);
-                        // if the code path was from a signal on the flux, it's root
-                        // will be the receptor, so the first get will fail so try again
-                        if (!result) result = _t_get(r->root,code_path);
-                        // @todo that really wasn't very pretty, and what happens if that
-                        // fails?  how do we handle it!?
-                        if (!result) raise_error("failed to find code path when delivering response!");
-
-                        debug(D_SIGNALS,"unblocking for response %s\n",_td(r,response));
-                        _t_replace(_t_parent(result),_t_node_index(result), response);
-                        e->context->node_pointer = response;
-                        debug(D_SIGNALS,"  runtree: %s\n",_td(r,e->context->run_tree));
-                        __p_unblock(q,e);
-                    }
-                    pthread_mutex_unlock(&q->mutex);
-                    debug(D_LOCK,"deliver UNLOCK\n");
+                    _p_wakeup(r->q,wakeup,response,noReductionErr);
                 }
 
                 if (cleanup) {
@@ -909,9 +867,55 @@ T *_r_find_conversation(Receptor *r, UUIDt *uuid) {
     return __r_find_conversation(r->conversations, uuid);
 }
 
+
+typedef void (*doConversationFn)(T *,void *);
+void __r_walk_conversation(T *conversation, doConversationFn fn,void *param) {
+    (*fn)(_t_child(conversation,ConversationIdentIdx),param);
+
+    T *conversations = _t_child(conversation,ConversationConversationsIdx);
+    if (_t_children(conversations)) {
+        T *c;
+        DO_KIDS(conversations,
+                c = _t_child(conversations,i);
+                __r_walk_conversation(c,param,fn);
+            );
+    }
+}
+
+void _cleaner(T *cid,void *p) {
+    Receptor *r = (Receptor *)p;
+    UUIDt *u = __cid_getUUID(cid);
+    T *e,*ex;
+    int i,j;
+    // remove any pending listeners that were established in the covnersation
+    // @todo implement saving expectations in conversations into a hash
+    // so we don't have to do this ugly n^2 search...
+    for(j=1;j<=_t_children(r->flux);j++) {
+        ex = _t_child(_t_child(r->flux,j),aspectExpectationsIdx);
+        for(i=1;i<=_t_children(ex);i++) {
+            e = _t_child(ex,i);
+            T *cid = __t_find(e,CONVERSATION_IDENT,ExpectationOptionalsIdx);
+            if (cid && __uuid_equal(u,__cid_getUUID(cid))) {
+                _t_detach_by_ptr(ex,e);
+                _t_free(e);
+                i--;
+            }
+        }
+    }
+    // remove any pending response handlers from requests
+    for(i=1;i<=_t_children(r->pending_responses);i++) {
+        e = _t_child(r->pending_responses,i);
+        T *cid = _t_child(e,PendingResponseConversationIdentIdx);
+        if (cid && __uuid_equal(u,__cid_getUUID(cid))) {
+            _t_detach_by_ptr(r->pending_responses,e);
+            _t_free(e);
+            i--;
+        }
+    }
+}
+
 // cleans up any pending requests, listens and the conversation record
 // returns the wakeup reference
-// @todo how about cleaning up sub-conversattions!!!
 T * __r_cleanup_conversation(Receptor *r, UUIDt *cuuid) {
     // @todo lock conversations?
     T *c = _r_find_conversation(r,cuuid);
@@ -920,7 +924,7 @@ T * __r_cleanup_conversation(Receptor *r, UUIDt *cuuid) {
     }
     T *w = _t_detach_by_idx(c,ConversationWakeupIdx);
 
-    //@todo look for any pending REQUESTs or LISTENTs keyed to this conversation and clean them up too.
+    __r_walk_conversation(c,_cleaner,r);
 
     _t_detach_by_ptr(_t_parent(c),c);
     _t_free(c);

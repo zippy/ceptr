@@ -795,14 +795,14 @@
    </div>
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
-       <div class="def-name"><a name="LIST_OF_SIGNAL_UUID_AND_CARRIER_AND_WAKEUP_REFERENCE_AND_END_CONDITIONS"></a>LIST-OF-SIGNAL-UUID-AND-CARRIER-AND-WAKEUP-REFERENCE-AND-END-CONDITIONS</div>
-       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#SIGNAL_UUID">SIGNAL_UUID</a>, <a href="ref_sys_symbols.html#CARRIER">CARRIER</a>, <a href="ref_sys_symbols.html#WAKEUP_REFERENCE">WAKEUP_REFERENCE</a>, <a href="ref_sys_symbols.html#END_CONDITIONS">END_CONDITIONS</a>)</div>
+       <div class="def-name"><a name="LIST_OF_SIGNAL_UUID_AND_CARRIER_AND_WAKEUP_REFERENCE_AND_END_CONDITIONS_AND_ZERO_OR_ONE_OF_CONVERSATION_IDENT"></a>LIST-OF-SIGNAL-UUID-AND-CARRIER-AND-WAKEUP-REFERENCE-AND-END-CONDITIONS-AND-ZERO-OR-ONE-OF-CONVERSATION-IDENT</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#SIGNAL_UUID">SIGNAL_UUID</a>, <a href="ref_sys_symbols.html#CARRIER">CARRIER</a>, <a href="ref_sys_symbols.html#WAKEUP_REFERENCE">WAKEUP_REFERENCE</a>, <a href="ref_sys_symbols.html#END_CONDITIONS">END_CONDITIONS</a>, ?(<a href="ref_sys_symbols.html#CONVERSATION_IDENT">CONVERSATION_IDENT</a>))</div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="PENDING_RESPONSE"></a>PENDING_RESPONSE</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_SIGNAL_UUID_AND_CARRIER_AND_WAKEUP_REFERENCE_AND_END_CONDITIONS">LIST-OF-SIGNAL-UUID-AND-CARRIER-AND-WAKEUP-REFERENCE-AND-END-CONDITIONS</a></div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_SIGNAL_UUID_AND_CARRIER_AND_WAKEUP_REFERENCE_AND_END_CONDITIONS_AND_ZERO_OR_ONE_OF_CONVERSATION_IDENT">LIST-OF-SIGNAL-UUID-AND-CARRIER-AND-WAKEUP-REFERENCE-AND-END-CONDITIONS-AND-ZERO-OR-ONE-OF-CONVERSATION-IDENT</a></div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-structure">
@@ -1851,8 +1851,20 @@
    </div>
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
-       <div class="def-name"><a name="REDUCTION_ERROR"></a>REDUCTION_ERROR</div>
-       <div class="def-struc-def"><a href="ref_sys_symbols.html#ERROR_LOCATION">ERROR_LOCATION</a></div>
+       <div class="def-name"><a name="LIST_OF_ANY_SYMBOL"></a>LIST-OF-ANY-SYMBOL</div>
+       <div class="def-struc-def">SEQ(!)</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="ERROR_DATA"></a>ERROR_DATA</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_ANY_SYMBOL">LIST-OF-ANY-SYMBOL</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-structure">
+       <div class="def-type">Structure:</div>
+       <div class="def-name"><a name="REDUCTION_ERROR"></a>REDUCTION-ERROR</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#ERROR_LOCATION">ERROR_LOCATION</a>, <a href="ref_sys_symbols.html#ERROR_DATA">ERROR_DATA</a>)</div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">

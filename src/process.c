@@ -748,9 +748,10 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                 else {
                     raise_error("request callback not implemented for %s",t2s(callback));
                 }
-                signal = __r_make_signal(from,to,aspect,carrier,signal_contents,0,until,context->conversation ? context->conversation->cid : NULL);
+                T *cid = context->conversation ? context->conversation->cid : NULL;
+                signal = __r_make_signal(from,to,aspect,carrier,signal_contents,0,until,cid);
 
-                x = _r_request(q->r,signal,response_carrier,response_point,context->id);
+                x = _r_request(q->r,signal,response_carrier,response_point,context->id,cid);
             }
         }
         break;
@@ -814,7 +815,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                             __p_unwind_to_point(e->context,c,with);
                         }
                         debug(D_SIGNALS,"unblocking CONVERSE\n");
-                        __p_unblock(q,e);
+                        __p_unblock(q,e,noReductionErr);
                     }
                     else if (with) _t_free(with);
                     pthread_mutex_unlock(&q->mutex);
@@ -1373,11 +1374,11 @@ Qe *__p_find_context(Qe *e,int process_id) {
 }
 
 // low level unblock. Should be called only when q mutex is locked
-void __p_unblock(Q *q,Qe *e) {
+void __p_unblock(Q *q,Qe *e,Error err) {
     __p_dequeue(q->blocked,e);
     __p_enqueue(q->active,e);
     q->contexts_count++;
-    e->context->state = Eval;
+    e->context->state = err ? err : Eval;
 }
 
 /**
@@ -1390,7 +1391,7 @@ Error _p_unblock(Q *q,int id) {
     pthread_mutex_lock(&q->mutex);
     Qe *e = __p_find_context(q->blocked,id);
     if (e) {
-        __p_unblock(q,e);
+        __p_unblock(q,e,noReductionErr);
     }
     else {
         // if the process has been completed then return err 2 otherwise 1
@@ -1404,6 +1405,48 @@ Error _p_unblock(Q *q,int id) {
     pthread_mutex_unlock(&q->mutex);
     debug(D_LOCK,"unblock UNLOCK\n");
     return err;
+}
+
+
+/**
+ * wakeup a process that's been paused
+ *
+ * @param[in] q the processing q in which to search for the process
+ * @param[in] wakeup the WAKEUP_REF tree that identifies what needs waking up
+ * @param[in] with a value to replace the current node_pointer with (i.e. a result)
+ * @param[in] err an error value if the wakeup should trigger the error handler instead of resuming processing
+ */
+void _p_wakeup(Q *q,T *wakeup, T *with,Error err) {
+    int process_id = *(int *)_t_surface(_t_child(wakeup,WakeupReferenceProcessIdentIdx));
+    //int *code_path = (int *)_t_surface(_t_child(wakeup,WakeupReferenceCodePathIdx));
+
+    debug(D_LOCK,"wakeup LOCK\n");
+    pthread_mutex_lock(&q->mutex);
+    Qe *e = __p_find_context(q->blocked,process_id);
+    if (e) {
+        // code_path is something I thought I needed to restart execution at the right place
+        // I currently think that was a mistake, because a blocked process should really only
+        // be blocked at ONE place, wherever the node_pointer is.
+        /* T *t = _t_get(e->context->run_tree,code_path); */
+        /* if (!t) raise_error("failed to find code path when waking up expectation!"); */
+        /* if (t != e->context->node_pointer) */
+        /*     raise_error("wakeup ref and node_pointer don't match"); */
+        if (with) {
+            if (!(with->context.flags & TFLAG_RUN_NODE)) {
+                T *w = _t_rclone(with);
+                _t_free(with);
+                with = w;
+            }
+            T *t = e->context->node_pointer;
+            T *p = _t_parent(t);
+            _t_replace(p,_t_node_index(t), with);
+            e->context->node_pointer = with;
+        }
+        __p_unblock(q,e,err);
+    }
+    else { if (with) _t_free(with);}
+    pthread_mutex_unlock(&q->mutex);
+    debug(D_LOCK,"wakeup UNLOCK\n");
 }
 
 /**
@@ -1463,6 +1506,7 @@ T * __p_buildErr(R *context) {
     case missingSemanticMapReductionErr: se=MISSING_SEMANTIC_MAP_ERR;break;
     case mismatchSemanticMapReductionErr: se=MISMATCH_SEMANTIC_MAP_ERR;break;
     case structureMismatchReductionErr: se=STRUCTURE_MISMATCH_ERR;break;
+        //    case conversatonCompletedReductionErr: se=CONVERSATION_COMPLETED_ERR;break;
     case unixErrnoReductionErr:
         se=UNIX_ERRNO_ERR;
         extra = _t_new_str(0,TEST_STR_SYMBOL,strerror(errno));
