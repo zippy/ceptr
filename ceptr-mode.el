@@ -24,12 +24,12 @@
 
 (setq ceptr-font-lock-defaults
       '(("\(\\([a-z_A-Z0-9_]+\\)" . (1 font-lock-function-name-face))
-;        ("\"\\([^ ]+?\\)\"" . (1 font-lock-string-face))
-        (":\\([0-9.]+\\))" . (1 font-lock-keyword-face))         ;integer or float surface
-        (":\\('.'\\))" . (1 font-lock-string-face))              ;char surface
-        (":\\([a-z_A-Z0-9_]+\\)" . (1 font-lock-type-face))      ;symbol surface
-        (":\\(/[0-9/]+\\)" . (1 font-lock-string-face))          ;path surface
-        ("\\([a-z_A-Z0-9!@#$%^&*{}-]+\\)" . (1 font-lock-warning-face))                ;anything else
+        ("\\(:\\)\"\\([^ ]+?\\)\"" (1 font-lock-builtin-face) (2 font-lock-string-face))
+        ("\\(:\\)\\([0-9]+\\(.[0-9]+\\)?\\)" (1 font-lock-builtin-face) (2 font-lock-keyword-face))  ;integer or float surface
+        ("\\(:\\)\\('.'\\)" (1 font-lock-builtin-face) (2 font-lock-string-face))                    ;char surface
+        ("\\(:\\)\\([a-z_A-Z0-9_]+\\)" (1 font-lock-builtin-face) (2 font-lock-type-face))           ;symbol surface
+        ("\\(:\\)\\(/[0-9/]+\\)" (1 font-lock-builtin-face) (2 font-lock-string-face))               ;path surface
+        ("\\([a-z_A-Z0-9!@#$%^&*-.]+\\)" . (1 font-lock-warning-face))                               ;anything else
         ) )
 
 (define-derived-mode ceptr-mode fundamental-mode "Ceptr"
