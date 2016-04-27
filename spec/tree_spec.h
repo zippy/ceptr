@@ -666,11 +666,13 @@ void testTreeStreamWrite() {
     stream = fmemopen(buffer, 500, "r+");
     Stream *st = _st_new_unix_stream(stream,1);
     T *t = _t_new_str(0,TEST_STR_SYMBOL,"fish\n");
-    _t_write(G_sem,t,st);
+    spec_is_equal(_t_write(G_sem,t,st),5);
+    spec_is_str_equal(buffer,"fish\n");
     _t_free(t);
 
     t = _t_new_str(0,LINE,"cow");
-    _t_write(G_sem,t,st);
+    spec_is_equal(_t_write(G_sem,t,st),4);
+    spec_is_str_equal(buffer,"fish\ncow\n");
     _t_free(t);
 
     t = _t_new_root(LINES);

@@ -1952,8 +1952,8 @@ int __t_writeln(T *t,Stream *stream) {
     int len = strlen(str);
     if (len) err = _st_write(stream,str,len);
     if (!len || err > 0) {
-        err = _st_write(stream,"\n",1);
-        if (err > 0) err += err;
+        int e = _st_write(stream,"\n",1);
+        if (e > 0) err += e;
     }
     return err;
 }

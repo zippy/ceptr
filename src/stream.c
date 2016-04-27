@@ -505,7 +505,12 @@ int _st_write(Stream *st,char *buf,size_t len) {
         FILE *stream = st->data.unix_stream;
         bytes_written = fwrite(buf,sizeof(char),len,stream);
         if (bytes_written > 0) {
-            fflush(stream);
+            // reading and restoring the stream position here is due to a bug in the glibc 2.23
+            // see: https://sourceware.org/bugzilla/show_bug.cgi?id=20005
+            long pos = ftell(stream);
+            int err = fflush(stream);
+            if (err) raise_error("got error on flush: %d",errno);
+            fseek(stream,pos,SEEK_SET);
         }
     }
     else if (st->type == SocketStream) {

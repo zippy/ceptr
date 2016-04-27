@@ -215,12 +215,15 @@ void testStreamWrite() {
     char buffer[500] = "x";
     FILE *stream;
     stream = fmemopen(buffer, 500, "r+");
-    Stream *st = _st_new_unix_stream(stream,1);
 
-    spec_is_equal(_st_write(st,"fishy",6),6);
+    Stream *st = _st_new_unix_stream(stream,1);
+    spec_is_equal(_st_write(st,"fishy",5),5);
 
     char *expected_result = "fishy";
     spec_is_str_equal(buffer,expected_result);
+
+    spec_is_equal(_st_write(st," in the sea",11),11);
+    spec_is_str_equal(buffer,"fishy in the sea");
 
     _st_free(st);
 }
