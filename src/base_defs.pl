@@ -1,4 +1,4 @@
-#!/usr/local/bin/perl
+#!/usr/bin/perl
 
 # This script generates c code that defines system semantic definitions.
 # It reads the file "base_defs" as a source file for creating the definitions.
@@ -263,7 +263,8 @@ foreach my $s (@d) {
     my @x = @$s;
     my $n = shift @x;
     my $p = join(',',@x);
-    print $cfh "  $fmap{$n}($p);\n";
+    my $extra = ($n =~ /^Process/) ? ',0L' : '';
+    print $cfh "  $fmap{$n}($p$extra);\n";
     if ($n eq 'Data' && $global_data{$x[1]}) {
         printf $cfh "  G_$x[1] = $x[1];\n";
     }
