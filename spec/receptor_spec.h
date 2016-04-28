@@ -712,6 +712,7 @@ void testReceptorEdgeListener() {
     Receptor *r = _r_makeStreamEdgeReceptor(v->sem);
     Xaddr edge = _v_new_receptor(v,v->r,STREAM_EDGE,r);
 
+    // listen and then send the received LINE directly back to your self.  Acts like "echo."
     SocketListener *l = _r_addListener(r,8888,r->addr,DEFAULT_ASPECT,LINE,LINE);
     _v_activate(v,edge);
     spec_is_str_equal(_t2s(v->sem,r->edge),"(PARAMS (EDGE_LISTENER) (process:SAY (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:LINE) (RESULT_SYMBOL:LINE)))");
