@@ -903,17 +903,14 @@ Data: line_2_httpreq_proc, (SAY
       (SLOT (ROLE:LINE_SENDER) (SLOT_IS_VALUE_OF:TO_ADDRESS))
       (ASPECT_IDENT:DEFAULT_ASPECT)
       (CARRIER:LINE)
-      (DO (SCOPE
-          (REQUEST
+      (TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:LINES)) (TRANSCODE_ITEMS
+         (REQUEST
             (SLOT (ROLE:HTTP_SERVER) (SLOT_IS_VALUE_OF:TO_ADDRESS))
             (ASPECT_IDENT:HTTP_ASPECT)
             (CARRIER:backnforth)
             (PARAM_REF:/2/1)
-            (RESPONSE_CARRIER:backnforth))
-          (TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:LINES)) (TRANSCODE_ITEMS (PARAM_REF:/1/4/1/1)))
-          
-
-          )));
+            (RESPONSE_CARRIER:backnforth))))
+      )));
 
 Process: line_2_httpreq,line_2_httpreq_proc,"parse an HTTP_REQUEST from a LINE","signal id",SIGNATURE_SYMBOL,SIGNAL_UUID,0;
 
