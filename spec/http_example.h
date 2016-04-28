@@ -416,9 +416,34 @@ void testHTTPprotocol() {
 
 }
 
+void testHTTPedgeReceptor() {
+    VMHost *v = G_vm = _v_new();
+    SemTable *gsem = G_sem;
+    G_sem = v->sem;
+    _v_instantiate_builtins(G_vm);
+
+
+    //debug_enable(D_TRANSCODE+D_STEP+D_STREAM);
+    _v_start_vmhost(G_vm);
+    sleep(1);
+    debug_disable(D_STREAM+D_SIGNALS+D_TREE+D_PROTOCOL);
+    debug_disable(D_TRANSCODE+D_REDUCE+D_REDUCEV);
+
+    __r_kill(G_vm->r);
+
+    _v_join_thread(&G_vm->clock_thread);
+    _v_join_thread(&G_vm->vm_thread);
+
+    _v_free(v);
+    G_vm = NULL;
+    G_sem = gsem;
+
+}
+
 void testHTTP() {
     testHTTPparseHTML();
     testHTTPprotocol();
+    testHTTPedgeReceptor();
 }
 
 #endif
