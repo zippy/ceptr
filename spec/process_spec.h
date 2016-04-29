@@ -1046,7 +1046,7 @@ void testProcessStream() {
     Q *q = r->q;
 
     FILE *stream;
-    char buffer[500] = "line1\nabc\n";
+    char buffer[500] = "line1\nabc\nGET /path/to/file.ext HTTP/0.9\n";
     stream = fmemopen(buffer, 500, "r+");
 
     // test the basic case of the STREAM_ALIVE process which returns
@@ -1096,6 +1096,19 @@ void testProcessStream() {
     spec_is_equal(_p_reduceq(q),noReductionErr);
     spec_is_str_equal(t2s(run_tree),"(RUN_TREE (ASCII_CHARS (ASCII_CHAR:'a') (ASCII_CHAR:'b') (ASCII_CHAR:'c')) (PARAMS))");
 
+    // now test reading again but this time into a symbol that requires transcoding
+    n = _t_new_root(STREAM_READ);
+    _t_new_cptr(n,EDGE_STREAM,st);
+    _t_news(n,RESULT_SYMBOL,HTTP_REQUEST);
+
+    run_tree = __p_build_run_tree(n,0);
+    _t_free(n);
+    e = _p_addrt2q(q,run_tree);
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    while(!(st->flags&StreamHasData) && st->flags&StreamAlive ) {sleepms(1);};
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (HTTP_REQUEST (HTTP_REQUEST_METHOD:GET) (HTTP_REQUEST_PATH (HTTP_REQUEST_PATH_SEGMENTS (HTTP_REQUEST_PATH_SEGMENT:path) (HTTP_REQUEST_PATH_SEGMENT:to) (HTTP_REQUEST_PATH_SEGMENT:file.ext))) (HTTP_REQUEST_VERSION (VERSION_MAJOR:0) (VERSION_MINOR:9))) (PARAMS))");
+
     // test writing to the stream
     fseek(stream,strlen(buffer),SEEK_SET);
     n = _t_new_root(STREAM_WRITE);
@@ -1113,7 +1126,7 @@ void testProcessStream() {
 
     spec_is_equal(_p_reduceq(q),noReductionErr);
 
-    char *expected_result = "line1\nabc\nfish\ncow\nthing1\nthing2\n(TEST_INT_SYMBOL:314)";
+    char *expected_result = "line1\nabc\nGET /path/to/file.ext HTTP/0.9\nfish\ncow\nthing1\nthing2\n(TEST_INT_SYMBOL:314)";
 
     spec_is_str_equal(buffer,expected_result);
 

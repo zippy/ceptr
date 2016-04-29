@@ -936,23 +936,31 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                 if (semeq(RESULT_SYMBOL,sy)) {
                     sy = *(Symbol *)_t_surface(s);
                     _t_free(s);
-                    if (semeq(sy,ASCII_CHARS)) {
-                        int l = _st_data_size(st);
-                        char *c = _st_data(st);
-                        x = __t_newr(0,ASCII_CHARS,true);
+		    size_t l = _st_data_size(st);
+		    char *c = _st_data(st);
+
+		    Structure to_s = _sem_get_symbol_structure(sem,sy);
+		    if (semeq(to_s,CSTRING)) {
+			debug(D_STREAM,"creating CSTRING: %s '%.*s'\n",_sem_get_name(sem,sy),(int)l,c);
+			// @todo fix this to be a flag instruction to __t_new
+			// currently it only works because that value is the newline in the
+			// read buffer.
+			_st_data(st)[l] = 0;
+			x = __t_new(0,sy,c,l+1,1);
+		    }
+		    else {
+			debug(D_STREAM,"non CSTRING RESULT_SYMBOL so converting to ASCII_CHARS and transcoding to %s \n",_sem_get_name(sem,sy));
+                        T *src = __t_newr(0,ASCII_CHARS,true);
                         while (l--) {
-                            __t_newc(x,ASCII_CHAR,*c,true);
+                            __t_newc(src,ASCII_CHAR,*c,true);
                             c++;
                         }
-                    }
-                    else {
-                        debug(D_STREAM,"creating %s '%.*s'\n",_sem_get_name(sem,sy),(int)_st_data_size(st),_st_data(st));
-                        // @todo fix this to be a flag instruction to __t_new
-                        // currently it only works because that value is the newline in the
-                        // read buffer.
-                        _st_data(st)[_st_data_size(st)] = 0;
-                        x = __t_new(0,sy,_st_data(st),_st_data_size(st)+1,1);
-                    }
+			int e = _p_transcode(sem,src,sy,to_s,&x);
+			if (e != noReductionErr) {
+			    if (e != redoReduction) return e;
+			    else err = e;
+			}
+		    }
                     _st_data_consumed(st);
                 }
                 else {raise_error("expecting RESULT_SYMBOL");}
