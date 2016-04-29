@@ -248,9 +248,18 @@ void testProcessTranscode() {
     spec_is_equal(_p_reduceq(q),noReductionErr);
     spec_is_str_equal(t2s(run_tree),"(RUN_TREE (LINES (LINE:Content-Type: text/ceptr) (LINE:Content-Type: text/html)) (PARAMS))");
 
-    //debug_enable(D_TRANSCODE+D_STEP);
-    //    debug_enable(D_REDUCE+D_REDUCEV);
     n = _t_parse(G_sem,0,"(ascii_chars_2_http_req (TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:ASCII_CHARS)) (TRANSCODE_ITEMS (TEST_STR_SYMBOL:\"GET /path/to/file.ext?name=joe&age=30 HTTP/0.9\n\"))))");
+
+    run_tree = __p_build_run_tree(n,0);
+    _t_free(n);
+    _p_addrt2q(q,run_tree);
+    spec_is_equal(_p_reduceq(q),noReductionErr);
+    spec_is_str_equal(t2s(run_tree),"(RUN_TREE (HTTP_REQUEST (HTTP_REQUEST_METHOD:GET) (HTTP_REQUEST_PATH (HTTP_REQUEST_PATH_SEGMENTS (HTTP_REQUEST_PATH_SEGMENT:path) (HTTP_REQUEST_PATH_SEGMENT:to) (HTTP_REQUEST_PATH_SEGMENT:file.ext))) (HTTP_REQUEST_PATH_QUERY (HTTP_REQUEST_PATH_QUERY_PARAMS (HTTP_REQUEST_PATH_QUERY_PARAM (PARAM_KEY:name) (PARAM_VALUE:joe)) (HTTP_REQUEST_PATH_QUERY_PARAM (PARAM_KEY:age) (PARAM_VALUE:30)))) (HTTP_REQUEST_VERSION (VERSION_MAJOR:0) (VERSION_MINOR:9))) (PARAMS))");
+
+    //  debug_enable(D_TRANSCODE+D_STEP);
+    //  debug_enable(D_REDUCE+D_REDUCEV);
+
+    n = _t_parse(G_sem,0,"(TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:HTTP_REQUEST)) (TRANSCODE_ITEMS (TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:ASCII_CHARS)) (TRANSCODE_ITEMS (TEST_STR_SYMBOL:\"GET /path/to/file.ext?name=joe&age=30 HTTP/0.9\n\")))))");
 
     run_tree = __p_build_run_tree(n,0);
     _t_free(n);

@@ -86,6 +86,8 @@ Process _p_get_transcoder(SemTable *sem,Symbol src_sym,Symbol to_sym) {
     }
     else if (semeq(CONTENT_TYPE,src_sym) && semeq(LINE,to_sym))
         return content_type_2_line;
+    else if (semeq(ASCII_CHARS,src_sym) && semeq(HTTP_REQUEST,to_sym))
+        return ascii_chars_2_http_req;
     else {
         Structure src_s = _sem_get_symbol_structure(sem,src_sym);
         Structure to_s = _sem_get_symbol_structure(sem,to_sym);
