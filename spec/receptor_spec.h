@@ -12,6 +12,7 @@
 #include "../src/protocol.h"
 #include "http_example.h"
 #include <unistd.h>
+#include "spec_utils.h"
 
 void testReceptorCreate() {
     //! [testReceptorCreate]
@@ -698,7 +699,6 @@ void testReceptorEdgeStream() {
     _v_free(v);
 }
 
-bool G_done = false;
 void *_ltester(void *arg) {
     char *result = doSys("echo 'testing!\nfish\n' | nc localhost 8888");
     spec_is_str_equal(result,"testing!\nfish\n\n");
@@ -715,10 +715,13 @@ void testReceptorEdgeListener() {
     // listen and then send the received LINE directly back to your self.  Acts like "echo."
     SocketListener *l = _r_addListener(r,8888,r->addr,DEFAULT_ASPECT,LINE,LINE);
     _v_activate(v,edge);
-    spec_is_str_equal(_t2s(v->sem,r->edge),"(PARAMS (EDGE_LISTENER) (process:SAY (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:LINE) (RESULT_SYMBOL:LINE)))");
-    _v_start_vmhost(v);
-    //    debug_enable(D_STREAM+D_SOCKET+D_SIGNALS+D_STEP+D_REDUCE+D_REDUCEV);
 
+    //@todo currently we don't actually have a real symbol for the EDGE_SPEC and we're just using PARAMS.  FIXME!
+    spec_is_str_equal(_t2s(v->sem,r->edge),"(PARAMS (EDGE_LISTENER) (process:CONVERSE (SCOPE (process:LISTEN (PARAM_REF:/2/2) (PARAM_REF:/2/3) (PATTERN (SEMTREX_SYMBOL_ANY)) (ACTION:echo2stream) (PARAMS (PARAM_REF:/2/5) (SLOT (USAGE:NULL_SYMBOL)))) (process:ITERATE (PARAMS) (process:STREAM_ALIVE (PARAM_REF:/2/5)) (process:SAY (PARAM_REF:/2/1) (PARAM_REF:/2/2) (PARAM_REF:/2/3) (process:STREAM_READ (PARAM_REF:/2/5) (PARAM_REF:/2/4)))) (process:STREAM_CLOSE (PARAM_REF:/2/5))) (BOOLEAN:1)) (PARAMS (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:LINE) (RESULT_SYMBOL:LINE)) (process:CONTINUE (process:POP_PATH (PARAM_REF:/4/1/1) (RESULT_SYMBOL:CONTINUE_LOCATION) (POP_COUNT:2)) (CONTINUE_VALUE (BOOLEAN:0))))");
+    _v_start_vmhost(v);
+    //debug_enable(D_STREAM+D_SOCKET+D_SIGNALS+D_STEP);//+D_REDUCE+D_REDUCEV
+
+    G_done = false;
     pthread_t thread;
     int rc;
     rc = pthread_create(&thread,0,_ltester,NULL);

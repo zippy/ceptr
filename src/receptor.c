@@ -1079,90 +1079,18 @@ Receptor *_r_makeStreamEdgeReceptor(SemTable *sem) {
 
 void __r_listenerCallback(Stream *st,void *arg) {
     Receptor *r = (Receptor *)arg;
-    T *e = _t_child(r->edge,2);
-    ReceptorAddress to = *(ReceptorAddress *)_t_surface(_t_child(_t_child(e,1),1));
-    Symbol aspect = *(Symbol *)_t_surface(_t_child(e,2));
-    Symbol carrier = *(Symbol *)_t_surface(_t_child(e,3));
-    Symbol result_symbol = *(Symbol *)_t_surface(_t_child(e,4));
 
-
-    /*
-(RUN_TREE
-       (CONVERSE
-         (SCOPE
-             (LISTEN <aspect> <carrier> <match> (ACTION:echo2stream) (PARAMS (EDGE_STREAM) (SLOT (NULL_SYMBOL))))
-             (LISTEN CONTROL <carrier> (PATTERN (CLOSE)) (STREAM_CLOSE (EDGE_STREAM)))
-
-             (ITERATE (PARAMS) (STREAM_ALIVE (EDGE_STREAM))
-                 (SAY <to> <aspect> <carrier> (STREAM_READ (EDGE_STREAM) (RESULT_SYMBOL:<result>)))))
-
-
-         (END_CONDITIONS (TIMEOUT_VALUE_HERE))
-         (BOOLEAN:1) )
-
-         (PARAMS)
-         (COND (CONDITIONS
-             (COND_PAIR (EQ_SYM (SYMBOL_OF (PARAM_REF:/4/1)) (RESULT_SYMBOL:READ_ON_DEAD_STREAM_ERROR))
-             (CONTINUE (POP_PATH (PARAM_REF:/4/1/1) (RESULT_SYMBOL:CONTINUE_LOCATION) (POP_COUNT:2))
-                                        (CONTINUE_VALUE (BOOLEAN:0))))
-             (COND_ELSE (RAISE (PARAM_REF:/4/1)))
-         ))
-
-         (PARAMS  (READ_ON_DEAD_STREAM_ERROR (ERROR_LOCATION:/1/1/3/3/4))))
-
-    */
-
-    T *code;
-    code = _t_new_root(CONVERSE);
-    T *p = _t_newr(code,SCOPE);
-    _t_newi(code,BOOLEAN,1);
-    T *l= _t_newr(p,LISTEN);
-    _t_news(l,ASPECT_IDENT,aspect);
-    _t_news(l,CARRIER,carrier);
-    T *match = _t_new_root(PATTERN);
-    _t_newr(match,SEMTREX_SYMBOL_ANY);
-    _t_add(l,match);
-    _t_newp(l,ACTION,echo2stream);
-    T* params = _t_newr(l,PARAMS);
+    T *code = _t_rclone(_t_child(r->edge,2));
+    T *params = _t_clone(_t_child(r->edge,3));
     _t_new_cptr(params,EDGE_STREAM,st);
-    T* s = _t_newr(params,SLOT);
-    _t_news(s,USAGE,NULL_SYMBOL);
+    T *err_handler = _t_child(r->edge,4);
 
-    T *it = _t_newr(p,ITERATE);
-    params = _t_newr(it,PARAMS);
-    T *eof = _t_newr(it,STREAM_ALIVE);
-
-    _t_new_cptr(eof,EDGE_STREAM,st);
-    //    _t_newi(p,TEST_INT_SYMBOL,2);  // two repetitions
-    T *say = _t_newr(it,SAY);
-
-    __r_make_addr(say,TO_ADDRESS,to);
-    _t_news(say,ASPECT_IDENT,aspect);
-    _t_news(say,CARRIER,carrier);
-
-    s = _t_newr(say,STREAM_READ);
-    _t_new_cptr(s,EDGE_STREAM,st);
-    _t_news(s,RESULT_SYMBOL,result_symbol);
-
-    s = _t_newr(p,STREAM_CLOSE);
-    _t_new_cptr(s,EDGE_STREAM,st);
-
-    /* code = _t_new_root(stream_listen); */
-    /* __r_make_addr(code,TO_ADDRESS,to); */
-    /* _t_news(code,ASPECT_IDENT,aspect); */
-    /* _t_news(code,CARRIER,carrier); */
-    /* _t_news(code,RESULT_SYMBOL,result_symbol); */
-    /* _t_new_cptr(code,EDGE_STREAM,st); */
-
-    T *run_tree = __p_build_run_tree(code,0);
-    _t_free(code);
-
-    // add an error handler that just completes the iteration
-    // @todo we shouldn't really be parsing this from a freaking string here... it should be cached statically someplace...
-    T *x = _t_parse(r->sem,0,"(CONTINUE (POP_PATH (PARAM_REF:/4/1/1) (RESULT_SYMBOL:CONTINUE_LOCATION) (POP_COUNT:2)) (CONTINUE_VALUE (BOOLEAN:0)))");
-    T *y = _t_rclone(x);
-    _t_free(x);
-    _t_add(run_tree,y);
+    T *run_tree = _t_new_root(RUN_TREE);
+    _t_add(run_tree,code);
+    _t_add(run_tree,params);
+    if (err_handler) {
+	_t_add(run_tree,_t_rclone(err_handler));
+    }
 
     _p_addrt2q(r->q,run_tree);
 
@@ -1174,11 +1102,44 @@ SocketListener *_r_addListener(Receptor *r,int port,ReceptorAddress to,Aspect as
     SocketListener *l = _st_new_socket_listener(port,__r_listenerCallback,r);
     _t_new_cptr(e,EDGE_LISTENER,l);
 
-    T *say = _t_newr(e,SAY);
-    __r_make_addr(say,TO_ADDRESS,to);
-    _t_news(say,ASPECT_IDENT,aspect);
-    _t_news(say,CARRIER,carrier);
-    _t_news(say,RESULT_SYMBOL,result_symbol);
+    /*
+      (RUN_TREE
+        (CONVERSE
+	  (SCOPE
+	    (LISTEN <aspect> <carrier> <match> (ACTION:echo2stream) (PARAMS (EDGE_STREAM) (SLOT (NULL_SYMBOL))))
+	    (LISTEN CONTROL <carrier> (PATTERN (CLOSE)) (STREAM_CLOSE (EDGE_STREAM)))
+
+	    (ITERATE (PARAMS) (STREAM_ALIVE (EDGE_STREAM))
+	    (SAY <to> <aspect> <carrier> (STREAM_READ (EDGE_STREAM) (RESULT_SYMBOL:<result>)))))
+
+
+	    (END_CONDITIONS (TIMEOUT_VALUE_HERE))
+	    (BOOLEAN:1) )
+
+	(PARAMS)
+
+        (COND (CONDITIONS
+	        (COND_PAIR (EQ_SYM (SYMBOL_OF (PARAM_REF:/4/1)) (RESULT_SYMBOL:READ_ON_DEAD_STREAM_ERROR))
+		   (CONTINUE (POP_PATH (PARAM_REF:/4/1/1) (RESULT_SYMBOL:CONTINUE_LOCATION) (POP_COUNT:2))
+		   (CONTINUE_VALUE (BOOLEAN:0))))
+		(COND_ELSE (RAISE (PARAM_REF:/4/1)))
+		))
+
+       (PARAMS  (READ_ON_DEAD_STREAM_ERROR (ERROR_LOCATION:/1/1/3/3/4))))
+
+    */
+
+    T *code = _t_parse(r->sem,e,"(CONVERSE (SCOPE (LISTEN (PARAM_REF:/2/2) (PARAM_REF:/2/3) (PATTERN (SEMTREX_SYMBOL_ANY)) (ACTION:echo2stream) (PARAMS (PARAM_REF:/2/5) (SLOT (USAGE:NULL_SYMBOL)))) (ITERATE (PARAMS) (STREAM_ALIVE (PARAM_REF:/2/5)) (SAY (PARAM_REF:/2/1) (PARAM_REF:/2/2) (PARAM_REF:/2/3) (STREAM_READ (PARAM_REF:/2/5) (PARAM_REF:/2/4)))) (STREAM_CLOSE (PARAM_REF:/2/5))) (BOOLEAN:1))");
+
+    T *params = _t_newr(e,PARAMS);
+    __r_make_addr(params,TO_ADDRESS,to);
+    _t_news(params,ASPECT_IDENT,aspect);
+    _t_news(params,CARRIER,carrier);
+    _t_news(params,RESULT_SYMBOL,result_symbol);
+
+    // add an error handler that just completes the iteration
+    _t_parse(r->sem,e,"(CONTINUE (POP_PATH (PARAM_REF:/4/1/1) (RESULT_SYMBOL:CONTINUE_LOCATION) (POP_COUNT:2)) (CONTINUE_VALUE (BOOLEAN:0)))");
+
     if (r->edge) raise_error("edge in use!!");
     r->edge = e;
     return l;

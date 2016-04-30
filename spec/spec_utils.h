@@ -22,5 +22,6 @@ char *doSys(char *cmd);
 
 char *G_visdump_fn;
 int G_visdump_count;
+bool G_done;
 
 #endif
