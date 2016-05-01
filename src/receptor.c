@@ -1096,7 +1096,7 @@ void __r_listenerCallback(Stream *st,void *arg) {
 
 }
 
-SocketListener *_r_addListener(Receptor *r,int port,ReceptorAddress to,Aspect aspect,Symbol carrier,Symbol result_symbol) {
+SocketListener *_r_addListener(Receptor *r,int port,ReceptorAddress to,Aspect listen_at,Symbol listen_carrier,Aspect say_to,Symbol say_carrier,Symbol stream_read_into) {
     T *e = _t_new_root(PARAMS);
 
     SocketListener *l = _st_new_socket_listener(port,__r_listenerCallback,r);
@@ -1129,13 +1129,9 @@ SocketListener *_r_addListener(Receptor *r,int port,ReceptorAddress to,Aspect as
 
     */
 
-    T *code = _t_parse(r->sem,e,"(CONVERSE (SCOPE (LISTEN (PARAM_REF:/2/2) (PARAM_REF:/2/3) (PATTERN (SEMTREX_SYMBOL_ANY)) (ACTION:echo2stream) (PARAMS (PARAM_REF:/2/5) (SLOT (USAGE:NULL_SYMBOL)))) (ITERATE (PARAMS) (STREAM_ALIVE (PARAM_REF:/2/5)) (SAY (PARAM_REF:/2/1) (PARAM_REF:/2/2) (PARAM_REF:/2/3) (STREAM_READ (PARAM_REF:/2/5) (PARAM_REF:/2/4)))) (STREAM_CLOSE (PARAM_REF:/2/5))) (BOOLEAN:1))");
+    T *code = _t_parse(r->sem,e,"(CONVERSE (SCOPE (LISTEN % % (PATTERN (SEMTREX_SYMBOL_ANY)) (ACTION:echo2stream) (PARAMS (PARAM_REF:/2/1) (SLOT (USAGE:NULL_SYMBOL)))) (ITERATE (PARAMS) (STREAM_ALIVE (PARAM_REF:/2/1)) (SAY % % % (STREAM_READ (PARAM_REF:/2/1) %))) (STREAM_CLOSE (PARAM_REF:/2/1))) (BOOLEAN:1))",_t_news(0,ASPECT_IDENT,listen_at),_t_news(0,CARRIER,listen_carrier),__r_make_addr(0,TO_ADDRESS,to),_t_news(0,ASPECT_IDENT,say_to),_t_news(0,ASPECT_IDENT,say_carrier),_t_news(0,RESULT_SYMBOL,stream_read_into));
 
     T *params = _t_newr(e,PARAMS);
-    __r_make_addr(params,TO_ADDRESS,to);
-    _t_news(params,ASPECT_IDENT,aspect);
-    _t_news(params,CARRIER,carrier);
-    _t_news(params,RESULT_SYMBOL,result_symbol);
 
     // add an error handler that just completes the iteration
     _t_parse(r->sem,e,"(CONTINUE (POP_PATH (PARAM_REF:/4/1/1) (RESULT_SYMBOL:CONTINUE_LOCATION) (POP_COUNT:2)) (CONTINUE_VALUE (BOOLEAN:0)))");

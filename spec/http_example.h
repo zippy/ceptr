@@ -416,22 +416,54 @@ void testHTTPprotocol() {
 
 }
 
+void *_httptester(void *arg) {
+    char *result = doSys("echo 'GET /path/to/file.ext HTTP/0.9' | nc localhost 8888");
+    spec_is_str_equal(result,"xxx");
+    free(result);
+    G_done = true;
+    pthread_exit(NULL);
+}
+
 void testHTTPedgeReceptor() {
+
+    //setup vmhost instance
     VMHost *v = G_vm = _v_new();
     SemTable *gsem = G_sem;
     G_sem = v->sem;
-    _v_instantiate_builtins(G_vm);
+    //    _v_instantiate_builtins(G_vm);
 
+    // create empty edge receptor
+    Receptor *r = _r_makeStreamEdgeReceptor(v->sem);
+    // instantiate it in the vmhost
+    Xaddr edge = _v_new_receptor(v,v->r,STREAM_EDGE,r);
+    // set up a socket listener that will transcode ascii to HTTP_REQUEST and send all the received requests to an HTTP aspect on the same receptor
+    SocketListener *l = _r_addListener(r,8888,r->addr,DEFAULT_ASPECT,LINES,HTTP_ASPECT,HTTP_REQUEST,HTTP_REQUEST);
+    _v_activate(v,edge);
 
-    //debug_enable(D_TRANSCODE+D_STEP+D_STREAM);
+    debug_enable(D_TRANSCODE+D_STEP+D_STREAM);
     _v_start_vmhost(G_vm);
-    sleep(1);
+
+    G_done = false;
+    pthread_t thread;
+    int rc;
+    rc = pthread_create(&thread,0,_httptester,NULL);
+    if (rc){
+        raise_error("ERROR; return code from pthread_create() is %d\n", rc);
+    }
+    pthread_detach(thread);
+    if (rc){
+        raise_error("Error detaching tester thread; return code from pthread_detach() is %d\n", rc);
+    }
+    while(!G_done) sleepms(1);
+
     debug_disable(D_STREAM+D_SIGNALS+D_TREE+D_PROTOCOL);
     debug_disable(D_TRANSCODE+D_REDUCE+D_REDUCEV);
 
-    __r_kill(G_vm->r);
+    spec_is_str_equal(t2s(r->flux),"");
 
-    _v_join_thread(&G_vm->clock_thread);
+    // cleanup vmhost instance
+    __r_kill(G_vm->r);
+    //    _v_join_thread(&G_vm->clock_thread);
     _v_join_thread(&G_vm->vm_thread);
 
     _v_free(v);
