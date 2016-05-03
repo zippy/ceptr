@@ -712,12 +712,47 @@ void testReceptorEdgeListener() {
     Receptor *r = _r_makeStreamEdgeReceptor(v->sem);
     Xaddr edge = _v_new_receptor(v,v->r,STREAM_EDGE,r);
 
+    /*
+      (RUN_TREE
+         (INITIATE (PNAME:HTTP)
+	           (WHICH_INTERACTION:backnforth)
+		   (BINDINGS)
+	 )
+      )
+      (RUN_TREE
+        (CONVERSE
+	  (SCOPE
+	    (LISTEN <aspect> <carrier> <match> (ACTION:echo2stream) (PARAMS (EDGE_STREAM) (SLOT (NULL_SYMBOL))))
+	    (LISTEN CONTROL <carrier> (PATTERN (CLOSE)) (STREAM_CLOSE (EDGE_STREAM)))
+
+	    (ITERATE (PARAMS) (STREAM_ALIVE (EDGE_STREAM))
+	    (SAY <to> <aspect> <carrier> (STREAM_READ (EDGE_STREAM) (RESULT_SYMBOL:<result>)))))
+
+
+	    (END_CONDITIONS (TIMEOUT_VALUE_HERE))
+	    (BOOLEAN:1) )
+
+	(PARAMS)
+
+        (COND (CONDITIONS
+	        (COND_PAIR (EQ_SYM (SYMBOL_OF (PARAM_REF:/4/1)) (RESULT_SYMBOL:READ_ON_DEAD_STREAM_ERROR))
+		   (CONTINUE (POP_PATH (PARAM_REF:/4/1/1) (RESULT_SYMBOL:CONTINUE_LOCATION) (POP_COUNT:2))
+		   (CONTINUE_VALUE (BOOLEAN:0))))
+		(COND_ELSE (RAISE (PARAM_REF:/4/1)))
+		))
+
+       (PARAMS  (READ_ON_DEAD_STREAM_ERROR (ERROR_LOCATION:/1/1/3/3/4))))
+
+    */
+
+    T *code = _t_parse(r->sem,0,"(CONVERSE (SCOPE (LISTEN (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:LINE) (PATTERN (SEMTREX_SYMBOL_ANY)) (ACTION:echo2stream) (PARAMS (PARAM_REF:/2/1) (SLOT (USAGE:NULL_SYMBOL)))) (ITERATE (PARAMS) (STREAM_ALIVE (PARAM_REF:/2/1)) (SAY % (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:LINE) (STREAM_READ (PARAM_REF:/2/1) (RESULT_SYMBOL:LINE)))) (STREAM_CLOSE (PARAM_REF:/2/1))) (BOOLEAN:1))",__r_make_addr(0,TO_ADDRESS,r->addr));
+    T *err_handler = _t_parse(r->sem,0,"(CONTINUE (POP_PATH (PARAM_REF:/4/1/1) (RESULT_SYMBOL:CONTINUE_LOCATION) (POP_COUNT:2)) (CONTINUE_VALUE (BOOLEAN:0)))");
     // listen and then send the received LINE directly back to your self.  Acts like "echo."
-    SocketListener *l = _r_addListener(r,8888,r->addr,DEFAULT_ASPECT,LINE,DEFAULT_ASPECT,LINE,LINE);
+    SocketListener *l = _r_addListener(r,8888,code,0,err_handler);
     _v_activate(v,edge);
 
     //@todo currently we don't actually have a real symbol for the EDGE_SPEC and we're just using PARAMS.  FIXME!
-    spec_is_str_equal(_t2s(v->sem,r->edge),"(PARAMS (EDGE_LISTENER) (process:CONVERSE (SCOPE (process:LISTEN (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:LINE) (PATTERN (SEMTREX_SYMBOL_ANY)) (ACTION:echo2stream) (PARAMS (PARAM_REF:/2/1) (SLOT (USAGE:NULL_SYMBOL)))) (process:ITERATE (PARAMS) (process:STREAM_ALIVE (PARAM_REF:/2/1)) (process:SAY (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (ASPECT_IDENT:LINE) (process:STREAM_READ (PARAM_REF:/2/1) (RESULT_SYMBOL:LINE)))) (process:STREAM_CLOSE (PARAM_REF:/2/1))) (BOOLEAN:1)) (PARAMS) (process:CONTINUE (process:POP_PATH (PARAM_REF:/4/1/1) (RESULT_SYMBOL:CONTINUE_LOCATION) (POP_COUNT:2)) (CONTINUE_VALUE (BOOLEAN:0))))");
+    spec_is_str_equal(_t2s(v->sem,r->edge),"(PARAMS (EDGE_LISTENER) (process:CONVERSE (SCOPE (process:LISTEN (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:LINE) (PATTERN (SEMTREX_SYMBOL_ANY)) (ACTION:echo2stream) (PARAMS (PARAM_REF:/2/1) (SLOT (USAGE:NULL_SYMBOL)))) (process:ITERATE (PARAMS) (process:STREAM_ALIVE (PARAM_REF:/2/1)) (process:SAY (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:LINE) (process:STREAM_READ (PARAM_REF:/2/1) (RESULT_SYMBOL:LINE)))) (process:STREAM_CLOSE (PARAM_REF:/2/1))) (BOOLEAN:1)) (PARAMS) (process:CONTINUE (process:POP_PATH (PARAM_REF:/4/1/1) (RESULT_SYMBOL:CONTINUE_LOCATION) (POP_COUNT:2)) (CONTINUE_VALUE (BOOLEAN:0))))");
     _v_start_vmhost(v);
     //debug_enable(D_STREAM+D_SOCKET+D_SIGNALS+D_STEP);//+D_REDUCE+D_REDUCEV
 

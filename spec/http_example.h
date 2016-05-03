@@ -437,10 +437,27 @@ void testHTTPedgeReceptor() {
     // instantiate it in the vmhost
     Xaddr edge = _v_new_receptor(v,v->r,STREAM_EDGE,r);
     // set up a socket listener that will transcode ascii to HTTP_REQUEST and send all the received requests to an HTTP aspect on the same receptor
-    SocketListener *l = _r_addListener(r,8888,r->addr,DEFAULT_ASPECT,LINES,HTTP_ASPECT,HTTP_REQUEST,HTTP_REQUEST);
+    T *code = _t_parse(r->sem,0,"(CONVERSE (SCOPE (LISTEN (ASPECT_IDENT:HTTP_ASPECT) (CARRIER:LINES) (PATTERN (SEMTREX_SYMBOL_ANY)) (ACTION:echo2stream) (PARAMS (PARAM_REF:/2/1) (SLOT (USAGE:NULL_SYMBOL)))) (ITERATE (PARAMS) (STREAM_ALIVE (PARAM_REF:/2/1)) (SAY % (ASPECT_IDENT:HTTP_ASPECT) (CARRIER:backnforth) (STREAM_READ (PARAM_REF:/2/1) (RESULT_SYMBOL:HTTP_REQUEST)))) (STREAM_CLOSE (PARAM_REF:/2/1))) (BOOLEAN:1))",__r_make_addr(0,TO_ADDRESS,r->addr));
+    // add an error handler that just completes the iteration
+    T *err_handler = _t_parse(r->sem,0,"(CONTINUE (POP_PATH (PARAM_REF:/4/1/1) (RESULT_SYMBOL:CONTINUE_LOCATION) (POP_COUNT:2)) (CONTINUE_VALUE (BOOLEAN:0)))");
+
+    SocketListener *l = _r_addListener(r,8888,code,0,err_handler);
     _v_activate(v,edge);
 
-    debug_enable(D_TRANSCODE+D_STEP+D_STREAM);
+    T *bindings = _t_new_root(PROTOCOL_BINDINGS);
+    T *res = _t_newr(bindings,RESOLUTION);
+    T *w = _t_newr(res,WHICH_RECEPTOR);
+    _t_news(w,ROLE,HTTP_SERVER);
+    __r_make_addr(w,ACTUAL_RECEPTOR,r->addr);
+    res = _t_newr(bindings,RESOLUTION);
+    w = _t_newr(res,WHICH_PROCESS);
+    _t_news(w,GOAL,HTTP_RESPONSE_HANDLER);
+    _t_news(w,ACTUAL_PROCESS,fill_i_am);
+
+    _o_express_role(r,HTTP,HTTP_SERVER,HTTP_ASPECT,bindings);
+    _t_free(bindings);
+    //    debug_enable(D_TRANSCODE+D_STEP+D_STREAM);
+    debug_enable(D_SIGNALS);
     _v_start_vmhost(G_vm);
 
     G_done = false;
@@ -455,7 +472,7 @@ void testHTTPedgeReceptor() {
         raise_error("Error detaching tester thread; return code from pthread_detach() is %d\n", rc);
     }
     while(!G_done) sleepms(1);
-
+    sleepms(1);
     debug_disable(D_STREAM+D_SIGNALS+D_TREE+D_PROTOCOL);
     debug_disable(D_TRANSCODE+D_REDUCE+D_REDUCEV);
 

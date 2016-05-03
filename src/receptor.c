@@ -1096,45 +1096,15 @@ void __r_listenerCallback(Stream *st,void *arg) {
 
 }
 
-SocketListener *_r_addListener(Receptor *r,int port,ReceptorAddress to,Aspect listen_at,Symbol listen_carrier,Aspect say_to,Symbol say_carrier,Symbol stream_read_into) {
+SocketListener *_r_addListener(Receptor *r,int port,T *code,T*params,T *err_handler) {
     T *e = _t_new_root(PARAMS);
 
     SocketListener *l = _st_new_socket_listener(port,__r_listenerCallback,r);
     _t_new_cptr(e,EDGE_LISTENER,l);
-
-    /*
-      (RUN_TREE
-        (CONVERSE
-	  (SCOPE
-	    (LISTEN <aspect> <carrier> <match> (ACTION:echo2stream) (PARAMS (EDGE_STREAM) (SLOT (NULL_SYMBOL))))
-	    (LISTEN CONTROL <carrier> (PATTERN (CLOSE)) (STREAM_CLOSE (EDGE_STREAM)))
-
-	    (ITERATE (PARAMS) (STREAM_ALIVE (EDGE_STREAM))
-	    (SAY <to> <aspect> <carrier> (STREAM_READ (EDGE_STREAM) (RESULT_SYMBOL:<result>)))))
-
-
-	    (END_CONDITIONS (TIMEOUT_VALUE_HERE))
-	    (BOOLEAN:1) )
-
-	(PARAMS)
-
-        (COND (CONDITIONS
-	        (COND_PAIR (EQ_SYM (SYMBOL_OF (PARAM_REF:/4/1)) (RESULT_SYMBOL:READ_ON_DEAD_STREAM_ERROR))
-		   (CONTINUE (POP_PATH (PARAM_REF:/4/1/1) (RESULT_SYMBOL:CONTINUE_LOCATION) (POP_COUNT:2))
-		   (CONTINUE_VALUE (BOOLEAN:0))))
-		(COND_ELSE (RAISE (PARAM_REF:/4/1)))
-		))
-
-       (PARAMS  (READ_ON_DEAD_STREAM_ERROR (ERROR_LOCATION:/1/1/3/3/4))))
-
-    */
-
-    T *code = _t_parse(r->sem,e,"(CONVERSE (SCOPE (LISTEN % % (PATTERN (SEMTREX_SYMBOL_ANY)) (ACTION:echo2stream) (PARAMS (PARAM_REF:/2/1) (SLOT (USAGE:NULL_SYMBOL)))) (ITERATE (PARAMS) (STREAM_ALIVE (PARAM_REF:/2/1)) (SAY % % % (STREAM_READ (PARAM_REF:/2/1) %))) (STREAM_CLOSE (PARAM_REF:/2/1))) (BOOLEAN:1))",_t_news(0,ASPECT_IDENT,listen_at),_t_news(0,CARRIER,listen_carrier),__r_make_addr(0,TO_ADDRESS,to),_t_news(0,ASPECT_IDENT,say_to),_t_news(0,ASPECT_IDENT,say_carrier),_t_news(0,RESULT_SYMBOL,stream_read_into));
-
-    T *params = _t_newr(e,PARAMS);
-
-    // add an error handler that just completes the iteration
-    _t_parse(r->sem,e,"(CONTINUE (POP_PATH (PARAM_REF:/4/1/1) (RESULT_SYMBOL:CONTINUE_LOCATION) (POP_COUNT:2)) (CONTINUE_VALUE (BOOLEAN:0)))");
+    _t_add(e,code);
+    if (!params) params = _t_newr(e,PARAMS);
+    else _t_add(e,params);
+    if (err_handler) _t_add(e,err_handler);
 
     if (r->edge) raise_error("edge in use!!");
     r->edge = e;
