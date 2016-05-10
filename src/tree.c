@@ -937,9 +937,12 @@ T *_t_parse(SemTable *sem,T *parent,char *s,...) {
             if (!_sem_get_by_label(sem,label,&node)) {
                 raise_error("unknown semantic id:%s",label);
             }
+
             T *def;
             Structure st;
-            Symbol type = _getBuildType(sem,node,&st,&def);
+            Symbol type = NULL_SYMBOL;
+
+	    if (!semeq(node,NULL_SYMBOL)) type = _getBuildType(sem,node,&st,&def);
             // if the symbol is a structure type or has a NULL_SYMBOL as it's definitional
             // surface then we know that we have a simple structure to build
             if (semeq(type,STRUCTURE_SYMBOL) && semeq(*(Symbol *)_t_surface(def),NULL_SYMBOL)) {
@@ -1019,19 +1022,20 @@ T *__t_find_actual(T *sem_map,Symbol actual_kind,T *replacement_kind) {
     T *g = _t_news(x,SEMTREX_GROUP,actual_kind);
     x = _sl(g,actual_kind);
     T *mr;
+    debug(D_TREE,"   trying to find a %s in sem_map\n",t2s(replacement_kind));
     if (_t_matchr(stx,sem_map,&mr)) {
         result = _stx_get_matched_node(actual_kind,mr,sem_map,NULL);
         debug(D_TREE,"   re-mapping %s ->",t2s(replacement_kind));
         debug(D_TREE,"%s\n",t2s(result));
         _t_free(mr);
-    }
+    } else {debug(D_TREE,"   failed!\n");}
     _t_free(stx);
     return result;
-}
+};
 
 /**
  * replace SLOTS in a template with the replacement values from links in a SEMANTIC_MAP tree
- *
+ *;
  * @param[in,out] template the tree with SLOTs to be filled
  * @param[in] sem_map mappings used to fill the template
  *
@@ -1042,6 +1046,9 @@ T *__t_find_actual(T *sem_map,Symbol actual_kind,T *replacement_kind) {
 */
 void __t_fill_template(T *template, T *sem_map,bool as_run_node) {
     if (!template) return;
+    debug(D_TREE,"filling template:\n%s\n",__t2s(G_sem,template,INDENT));
+    debug(D_TREE,"from sem_map:\n%s\n\n",__t2s(G_sem,sem_map,INDENT));
+
     bool is_run_node = (template->context.flags |= TFLAG_RUN_NODE) || as_run_node;
     if (semeq(_t_symbol(template),SLOT)) {
         T *t = _t_child(template,SlotSemanticRefIdx);
@@ -1071,9 +1078,10 @@ void __t_fill_template(T *template, T *sem_map,bool as_run_node) {
         for(i=1;i<=c;i++) {
             T *m = _t_child(sem_map,i);
             T *ref = _t_child(m,SemanticMapSemanticRefIdx);
-            debug(D_TREE,"checking to see if sym:%s == _t_symbol(ref):%s\n",_sem_get_name(G_sem,sym),_sem_get_name(G_sem,_t_symbol(ref)));
+            debug(D_TREE,"(checking to see if sym:%s == _t_symbol(ref):%s\n",_sem_get_name(G_sem,sym),_sem_get_name(G_sem,_t_symbol(ref)));
             debug(D_TREE," and that valsym:%s == _t_surface(ref):%s\n",_sem_get_name(G_sem,valsym),_sem_get_name(G_sem,*(Symbol *)_t_surface(ref)));
             if (semeq(sym,_t_symbol(ref)) && semeq(valsym,*(Symbol *)_t_surface(ref))) {
+                debug(D_TREE," yes!)\n");
                 debug(D_TREE,"with %s\n",t2s(m));
                 T *r = NULL;
                 T *replacement_value = _t_child(_t_child(m,SemanticMapReplacementValIdx),1);
@@ -1085,7 +1093,7 @@ void __t_fill_template(T *template, T *sem_map,bool as_run_node) {
                         }
                         else if (semeq(GOAL,p)) {
                             // if the replacement value is a goal, we need to look for
-                            // it's actual value in the map
+                            // it's actual process symbol in the map
                             T *x = __t_find_actual(sem_map,ACTUAL_PROCESS,replacement_value);
                             if (!x)
                                 raise_error("unable to find actual for %s",t2s(m));
@@ -1101,6 +1109,7 @@ void __t_fill_template(T *template, T *sem_map,bool as_run_node) {
                 }
                 else {
                     SemanticID rsid = _t_symbol(replacement_value);
+		    debug(D_TREE,"replacement value: %s\n",t2s(replacement_value));
                     // if the replacement value is a kind try to re-resolve from the map
                     T *x = NULL;
                     if (semeq(rsid,ROLE)) {
@@ -1112,7 +1121,7 @@ void __t_fill_template(T *template, T *sem_map,bool as_run_node) {
                         if (x) replacement_value = x;
                     }
                     if (v) {
-                        // in the value case the replacement node is of the type specified in the template
+                        // in the value_of case the replacement node is of the type specified in the template
                         // and the "value" is either the surface of the "ACTUAL_X" or its children
                         if (_t_children(replacement_value)) {
                             if (is_run_node)
@@ -1141,10 +1150,16 @@ void __t_fill_template(T *template, T *sem_map,bool as_run_node) {
                         else if (semeq(rsid,ACTUAL_VALUE)) {
                             replacement_value = _t_child(replacement_value,1);
                         }
-                        if (is_run_node)
-                            r = _t_rclone(replacement_value);
-                        else
-                            r = _t_clone(replacement_value);
+			if (semeq(NULL_SYMBOL,_t_symbol(replacement_value))) {
+			    replacement_value = NULL;
+			}
+			if (replacement_value) {
+			    if (is_run_node)
+				r = _t_rclone(replacement_value);
+			    else
+				r = _t_clone(replacement_value);
+			}
+			else r = NULL;
                         if (temp) _t_free(temp);
                     }
                 }
@@ -1154,14 +1169,22 @@ void __t_fill_template(T *template, T *sem_map,bool as_run_node) {
                         _t_add(r,t);
                     _t_free(children);
                 }
-                _t_replace_node(template,r);
+                if (r) _t_replace_node(template,r);
+		else {
+		    T *p = _t_parent(template);
+		    if (!p) raise_error("not expecting a root node!");
+		    _t_detach_by_ptr(p,template);
+		    _t_free(template);
+		}
                 break;
             }
+	    else { debug(D_TREE," nope)\n");}
         }
     }
     else {
         DO_KIDS(template,_t_fill_template(_t_child(template,i),sem_map));
     }
+    debug(D_TREE,"results in:\n%s\n\n",__t2s(G_sem,template,INDENT));
 }
 
 /******************** Node data accessors */

@@ -1183,12 +1183,11 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             T *protocol = _t_detach_by_idx(code,1);
             T *interaction = _t_detach_by_idx(code,1);
             T *bindings = _t_detach_by_idx(code,1);
-            _o_initiate(q->r,*(SemanticID *)_t_surface(protocol),*(SemanticID *)_t_surface(interaction),bindings);
+	    T *sem_map;
+	    x = __o_initiate(q->r,*(SemanticID *)_t_surface(protocol),*(SemanticID *)_t_surface(interaction),bindings,&sem_map);
             _t_free(protocol);
             _t_free(interaction);
-
-            /// @todo what should this really return?
-            x = __t_news(0,REDUCTION_ERROR_SYMBOL,NULL_SYMBOL,1);
+	    err = redoReduction;
         }
         break;
     case SELF_ADDR_ID:
@@ -1800,9 +1799,31 @@ Error _p_step(Q *q, R **contextP) {
 
                         Error e = __p_reduce_sys_proc(context,s,np,q);
                         if (e == redoReduction) {
-                            context->state = Eval;
-                            context->node_pointer = _t_child(context->parent,context->idx);
-                            set_rt_cur_child(q->r,context->node_pointer,RUN_TREE_NOT_EVAULATED); // reset the current child count on the code
+
+			    // reset the node_pointer
+                            np = context->node_pointer = _t_child(context->parent,context->idx);
+			    // there are two reasons to redoReduction, one because the call to reduce_sys_proc
+			    // added more code to the runtree that just still needs to be reduced
+			    // or because it added a new run-tree, which needs to be treated as a function
+			    // call and thus adding a new context
+			    if (semeq(RUN_TREE,_t_symbol(np))) {
+				context->state = Pushed;
+				// swap out the RUN_TREE for a dummy proc
+				// @todo really the error returned by reduce_sys_proc should be a struct
+				// with the RUN_TREE in it so we don't have store it in the actual tree
+				int i = _t_node_index(np);
+				T *p = _t_parent(np);
+				T *dummy = __t_newr(0,NOOP,true);
+				p->structure.children[i-1] = dummy;
+				dummy->structure.parent = p;
+				np->structure.parent = NULL;
+				*contextP = __p_make_context(np,context,context->id,context->sem_map);
+				debug(D_REDUCE,"Redoing with a new context for: %s\n\n",_t2s(sem,np));
+			    }
+			    else {
+				context->state = Eval;
+				set_rt_cur_child(q->r,np,RUN_TREE_NOT_EVAULATED); // reset the current child count on the code
+			    }
                         }
                         else context->state = e ? e : Ascend;
                     }

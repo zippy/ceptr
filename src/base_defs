@@ -258,7 +258,7 @@ Symbol: ACTUAL_PROCESS,PROCESS;
 Symbol: ACTUAL_RECEPTOR,RECEPTOR_ADDRESS;
 Symbol: ACTUAL_SYMBOL,SYMBOL;
 Symbol: ACTUAL_PROTOCOL,PROTOCOL;
-Symbol: ACTUAL_VALUE,[!];  this really can't be anything, rather only something that's a SYMBOL semantic type
+Symbol: ACTUAL_VALUE,[!];  this really can't be an anything, rather only something that's a SYMBOL semantic type
 Symbol: WHICH_PROCESS,[(GOAL,ACTUAL_PROCESS)];
 Symbol: WHICH_RECEPTOR,[(ROLE,ACTUAL_RECEPTOR)];
 Symbol: WHICH_SYMBOL,[(USAGE,ACTUAL_SYMBOL)];
@@ -522,35 +522,36 @@ ProcessL: date2usshortdate,date2usshortdate_proc,"date to us short format date t
 ###### defs for an abstract requesting protocol
 Symbol: REQUESTER,RECEPTOR_ADDRESS;
 Symbol: RESPONDER,RECEPTOR_ADDRESS;
-Symbol: REQUEST_DATA,SYMBOL;
-Symbol: RESPONSE_DATA,SYMBOL;
+Symbol: REQUEST_TYPE,SYMBOL;
+Symbol: RESPONSE_TYPE,SYMBOL;
 Symbol: CHANNEL,SYMBOL;
-Symbol: RESPONSE_HANDLER,PROCESS;
 Symbol: REQUEST_HANDLER,PROCESS;
+Symbol: RESPONSE_HANDLER,PROCESS;
 
 Symbol: backnforth,INTERACTION;
-Data: req_code,(SLOT (GOAL:REQUEST_HANDLER) (SLOT_CHILDREN (REQUEST (SLOT (ROLE:RESPONDER) (SLOT_IS_VALUE_OF:TO_ADDRESS)) (SLOT (USAGE:CHANNEL) (SLOT_IS_VALUE_OF:ASPECT_IDENT)) (CARRIER:backnforth) (SLOT (USAGE:REQUEST_DATA)) (CARRIER:backnforth)))));
+Data: req_code,(SLOT (GOAL:RESPONSE_HANDLER) (SLOT_CHILDREN (REQUEST (SLOT (ROLE:RESPONDER) (SLOT_IS_VALUE_OF:TO_ADDRESS)) (SLOT (USAGE:CHANNEL) (SLOT_IS_VALUE_OF:ASPECT_IDENT)) (CARRIER:backnforth) (SLOT (USAGE:REQUEST_TYPE)) (CARRIER:backnforth)))));
 Process: send_request,req_code,"send request","response",SIGNATURE_ANY,NULL_STRUCTURE;
 
-Data: resp_code,(RESPOND (SIGNAL_REF:/2/1/4) (SLOT (GOAL:RESPONSE_HANDLER)));
+Data: resp_code,(RESPOND (SIGNAL_REF:/2/1/4) (SLOT (GOAL:REQUEST_HANDLER)));
 Process: send_response,resp_code,"send response","response id",SIGNATURE_SYMBOL,SIGNAL_UUID;
 
 Data: req_def,(PROTOCOL_DEFINITION
       (PROTOCOL_SEMANTICS
          (ROLE:REQUESTER)
          (ROLE:RESPONDER)
-         (GOAL:REQUEST_HANDLER)
          (GOAL:RESPONSE_HANDLER)
+         (GOAL:REQUEST_HANDLER)
          (USAGE:CHANNEL)
-         (USAGE:REQUEST_DATA)
-         (USAGE:RESPONSE_DATA))
+         (USAGE:REQUEST_TYPE)
+         (USAGE:RESPONSE_TYPE)
+)
       (backnforth
          (INITIATE (ROLE:REQUESTER) (DESTINATION (ROLE:RESPONDER)) (ACTION:send_request))
-         (EXPECT (ROLE:RESPONDER) (SOURCE (ROLE:REQUESTER)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SLOT (USAGE:REQUEST_DATA) (SLOT_IS_VALUE_OF:SEMTREX_SYMBOL)))) (ACTION:send_response))));
+         (EXPECT (ROLE:RESPONDER) (SOURCE (ROLE:REQUESTER)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SLOT (USAGE:REQUEST_TYPE) (SLOT_IS_VALUE_OF:SEMTREX_SYMBOL)))) (ACTION:send_response))));
 
 Protocol: REQUESTING,req_def;
 
-# @todo:  questions:  how did it get made explicit that the signature of the REQUEST_HANDLER is of type RESPONSE_DATA?  somehow when req_code got filled on the fly?  It's necessary to be able to figure this out for UI that would make visible what you can compose with REQUESTING.
+# @todo:  questions:  how did it get made explicit that the signature of the RESPONSE_HANDLER is of type RESPONSE_TYPE?  somehow when req_code got filled on the fly?  It's necessary to be able to figure this out for UI that would make visible what you can compose with REQUESTING.
 
 ##### defs for recognize protocol (like ping, only semantic)
 Symbol: RECOGNIZER,RECEPTOR_ADDRESS;
@@ -567,11 +568,11 @@ Data: recog_def,(PROTOCOL_DEFINITION
       (INCLUSION (PNAME:REQUESTING)
                  (LINKAGE (WHICH_ROLE (ROLE:REQUESTER) (ROLE:RECOGNIZER)))
                  (LINKAGE (WHICH_ROLE (ROLE:RESPONDER) (ROLE:RECOGNIZEE)))
-                 (LINKAGE (WHICH_GOAL (GOAL:REQUEST_HANDLER) (GOAL:RECOGNITION)))
-                 (RESOLUTION (WHICH_SYMBOL (USAGE:REQUEST_DATA) (ACTUAL_SYMBOL:are_you)))
-                 (RESOLUTION (WHICH_SYMBOL (USAGE:RESPONSE_DATA) (ACTUAL_SYMBOL:i_am)))
+                 (LINKAGE (WHICH_GOAL (GOAL:RESPONSE_HANDLER) (GOAL:RECOGNITION)))
+                 (RESOLUTION (WHICH_SYMBOL (USAGE:REQUEST_TYPE) (ACTUAL_SYMBOL:are_you)))
+                 (RESOLUTION (WHICH_SYMBOL (USAGE:RESPONSE_TYPE) (ACTUAL_SYMBOL:i_am)))
                  (RESOLUTION (WHICH_SYMBOL (USAGE:CHANNEL) (ACTUAL_SYMBOL:DEFAULT_ASPECT)))
-                 (RESOLUTION (WHICH_PROCESS (GOAL:RESPONSE_HANDLER) (ACTUAL_PROCESS:fill_i_am)))));
+                 (RESOLUTION (WHICH_PROCESS (GOAL:REQUEST_HANDLER) (ACTUAL_PROCESS:fill_i_am)))));
 
 Protocol: RECOGNIZE,recog_def;
 
@@ -612,9 +613,9 @@ Protocol: PARSE_COMMAND_FROM_LINE,cl_parser_def;
 Data: shell_def,(PROTOCOL_DEFINITION
       (PROTOCOL_SEMANTICS)
       (INCLUSION (PNAME:REQUESTING)
-                 (RESOLUTION (WHICH_SYMBOL (USAGE:REQUEST_DATA) (ACTUAL_SYMBOL:COMMAND)))
+                 (RESOLUTION (WHICH_SYMBOL (USAGE:REQUEST_TYPE) (ACTUAL_SYMBOL:COMMAND)))
 # we can't do this here because the code is too complicated be produced by the perl parser see shell.c for the actuall shell_handler code
-#                 (RESOLUTION (WHICH_PROCESS (GOAL:RESPONSE_HANDLER) (ACTUAL_PROCESS:shell_handler)))
+#                 (RESOLUTION (WHICH_PROCESS (GOAL:REQUEST_HANDLER) (ACTUAL_PROCESS:shell_handler)))
                  (RESOLUTION (WHICH_SYMBOL (USAGE:CHANNEL) (ACTUAL_SYMBOL:DEFAULT_ASPECT)))
                  ));
 Protocol: COMMAND_SHELL,shell_def;
@@ -701,7 +702,7 @@ Symbol: TIME_TELLER,RECEPTOR_ADDRESS;
 Symbol: TIME_HEARER,RECEPTOR_ADDRESS;
 Symbol: CLOCK_TELL_TIME,NULL_STRUCTURE;
 Symbol: tell_time,INTERACTION;
-Data: time_req_code,(SLOT (GOAL:REQUEST_HANDLER) (SLOT_CHILDREN (REQUEST (SLOT (ROLE:TIME_TELLER) (SLOT_IS_VALUE_OF:TO_ADDRESS)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:tell_time) (CLOCK_TELL_TIME) (RESPONSE_CARRIER:tell_time))));
+Data: time_req_code,(SLOT (GOAL:RESPONSE_HANDLER) (SLOT_CHILDREN (REQUEST (SLOT (ROLE:TIME_TELLER) (SLOT_IS_VALUE_OF:TO_ADDRESS)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:tell_time) (CLOCK_TELL_TIME) (RESPONSE_CARRIER:tell_time))));
 Process: time_request,time_req_code,"request current time","response",SIGNATURE_SYMBOL,TICK;
 
 # note: look for the clock protocol def in src/receptor.c#_r_defineClockReceptor
@@ -935,20 +936,20 @@ ProcessL: ascii_chars_2_http_req,ascii_chars_2_http_req_proc,"http req transcode
 
 
 Symbol: HTTP_ASPECT,ASPECT;
-Symbol: HTTP_RESPONSE_HANDLER,PROCESS;
+Symbol: HTTP_REQUEST_HANDLER,PROCESS;
 
-Data: httpresp_proc,(HTTP_RESPONSE (HTTP_RESPONSE_STATUS (STATUS_VALUE:200) (STATUS_TEXT:"OK")) (HTTP_HEADERS (CONTENT_TYPE (MEDIA_TYPE_IDENT:TEXT_MEDIA_TYPE) (MEDIA_SUBTYPE_IDENT:CEPTR_TEXT_MEDIA_SUBTYPE))) (HTTP_RESPONSE_BODY (SLOT (GOAL:HTTP_RESPONSE_HANDLER))));
+Data: httpresp_proc,(HTTP_RESPONSE (HTTP_RESPONSE_STATUS (STATUS_VALUE:200) (STATUS_TEXT:"OK")) (HTTP_HEADERS (CONTENT_TYPE (MEDIA_TYPE_IDENT:TEXT_MEDIA_TYPE) (MEDIA_SUBTYPE_IDENT:CEPTR_TEXT_MEDIA_SUBTYPE))) (HTTP_RESPONSE_BODY (SLOT (GOAL:HTTP_REQUEST_HANDLER))));
 Process: httpresp,httpresp_proc,"build an HTTP_RESPONSE","response",SIGNATURE_SYMBOL,HTTP_RESPONSE;
 
 Data: http_def,(PROTOCOL_DEFINITION
-      (PROTOCOL_SEMANTICS (GOAL:HTTP_RESPONSE_HANDLER))
+      (PROTOCOL_SEMANTICS (GOAL:HTTP_REQUEST_HANDLER))
       (INCLUSION (PNAME:REQUESTING)
                  (LINKAGE (WHICH_ROLE (ROLE:REQUESTER) (ROLE:HTTP_CLIENT)))
                  (LINKAGE (WHICH_ROLE (ROLE:RESPONDER) (ROLE:HTTP_SERVER)))
-                 (RESOLUTION (WHICH_SYMBOL (USAGE:REQUEST_DATA) (ACTUAL_SYMBOL:HTTP_REQUEST)))
-                 (RESOLUTION (WHICH_SYMBOL (USAGE:RESPONSE_DATA) (ACTUAL_SYMBOL:HTTP_RESPONSE)))
+                 (RESOLUTION (WHICH_SYMBOL (USAGE:REQUEST_TYPE) (ACTUAL_SYMBOL:HTTP_REQUEST)))
+                 (RESOLUTION (WHICH_SYMBOL (USAGE:RESPONSE_TYPE) (ACTUAL_SYMBOL:HTTP_RESPONSE)))
                  (RESOLUTION (WHICH_SYMBOL (USAGE:CHANNEL) (ACTUAL_SYMBOL:HTTP_ASPECT)))
-                 (RESOLUTION (WHICH_PROCESS (GOAL:RESPONSE_HANDLER) (ACTUAL_PROCESS:httpresp)))
+                 (RESOLUTION (WHICH_PROCESS (GOAL:REQUEST_HANDLER) (ACTUAL_PROCESS:httpresp)))
                  ));
 
 Protocol: HTTP,http_def;

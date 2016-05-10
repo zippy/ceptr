@@ -111,7 +111,7 @@ void makeShell(VMHost *v,FILE *input, FILE *output,Receptor **irp,Receptor **orp
     __r_make_addr(w,ACTUAL_RECEPTOR,clock_addr);
     res = _t_newr(bindings,RESOLUTION);
     w = _t_newr(res,WHICH_PROCESS);
-    _t_news(w,GOAL,REQUEST_HANDLER);
+    _t_news(w,GOAL,RESPONSE_HANDLER);
 
     addCommand(r,o_r->addr,"time","get time",code,w);
 

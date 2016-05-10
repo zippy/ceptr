@@ -789,7 +789,7 @@ void testReceptorClock() {
     Protocol time;
     __sem_get_by_label(G_sem,"time",&time,r->context);
     T *def = _sem_get_def(G_sem,time);
-    spec_is_str_equal(_td(r,def),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL (ENGLISH_LABEL:time)) (PROTOCOL_SEMANTICS (ROLE:TIME_TELLER) (ROLE:TIME_HEARER) (GOAL:REQUEST_HANDLER)) (tell_time (INITIATE (ROLE:TIME_HEARER) (DESTINATION (ROLE:TIME_TELLER)) (ACTION:time_request)) (EXPECT (ROLE:TIME_TELLER) (SOURCE (ROLE:TIME_HEARER)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:CLOCK_TELL_TIME))) (ACTION:respond with current time))))");
+    spec_is_str_equal(_td(r,def),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL (ENGLISH_LABEL:time)) (PROTOCOL_SEMANTICS (ROLE:TIME_TELLER) (ROLE:TIME_HEARER) (GOAL:RESPONSE_HANDLER)) (tell_time (INITIATE (ROLE:TIME_HEARER) (DESTINATION (ROLE:TIME_TELLER)) (ACTION:time_request)) (EXPECT (ROLE:TIME_TELLER) (SOURCE (ROLE:TIME_HEARER)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:CLOCK_TELL_TIME))) (ACTION:respond with current time))))");
 
     //    debug_enable(D_SIGNALS);
 
@@ -806,7 +806,7 @@ void testReceptorClock() {
     __r_make_addr(w,ACTUAL_RECEPTOR,r->addr);
     res = _t_newr(bindings,RESOLUTION);
     w = _t_newr(res,WHICH_PROCESS);
-    _t_news(w,GOAL,REQUEST_HANDLER);
+    _t_news(w,GOAL,RESPONSE_HANDLER);
 
     // @todo bleah, this should be a better proc, at least with a SIGNAL_REF
     // or something.

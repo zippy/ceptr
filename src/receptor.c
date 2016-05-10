@@ -1197,7 +1197,7 @@ void _r_defineClockReceptor(SemTable *sem) {
     T *def = _o_make_protocol_def(sem,clk_ctx,"time",
                                   ROLE,TIME_TELLER,
                                   ROLE,TIME_HEARER,
-                                  GOAL,REQUEST_HANDLER,
+                                  GOAL,RESPONSE_HANDLER,
                                   INTERACTION,tell_time,
                                   INITIATE,TIME_HEARER,TIME_TELLER,req_act,
                                   EXPECT,TIME_TELLER,TIME_HEARER,pattern,act,NULL_SYMBOL,

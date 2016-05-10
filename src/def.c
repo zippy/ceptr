@@ -519,6 +519,9 @@ char * __t_dump(SemTable *sem,T *t,int level,char *buf) {
             raise_error("bad node flags for receptor semtype!");
         }
     }
+    else if (semeq(s,NULL_SYMBOL)) {
+	sprintf(buf,"(NULL_SYMBOL");
+    }
     else {
         Structure st = _sem_get_symbol_structure(sem,s);
         if (!is_sys_structure(st)) {

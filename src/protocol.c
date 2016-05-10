@@ -315,7 +315,7 @@ T * _o_unwrap(SemTable *sem,T *def,T *sem_map) {
 /**
  * convert a, possibly composed, protocol definition into an expressable definition
  *
- * convert a PROTOCOL_DEF to a concertized version according to the
+ * convert a PROTOCOL_DEF to a concretized version according to the
  * RESOLUTIONs and LINKAGEs in the the def and the bindings
  *
  * @param[in] sem SemTable contexts
@@ -414,14 +414,18 @@ void _o_express_role(Receptor *r,Protocol protocol,Symbol role,Aspect aspect,T *
 }
 
 /**
- * initiate the first signal in a protocol interaction
+ * build a run-tree and semantic map that will initiate a protocol interaction
  *
  * @param[in] receptor initiating the protocol interaction
  * @param[in] protocol which protocol
  * @param[in] interaction which interaction in the protocol
  * @param[in] bindings tree of PROTOCOL_BINDINGS
+ * @param[out] sem_map semantic map built by the protocol
+ *
+ * @returns run-tree
  */
-void _o_initiate(Receptor *r,SemanticID protocol,SemanticID interaction,T *bindings) {
+
+T * __o_initiate(Receptor *r,SemanticID protocol,SemanticID interaction,T *bindings,T **sem_mapP) {
     T *p = _sem_get_def(r->sem,protocol);
     if (!p) raise_error("protocol %s not found",_sem_get_name(r->sem,protocol));
     T *sem_map = _t_new_root(SEMANTIC_MAP);
@@ -440,9 +444,24 @@ void _o_initiate(Receptor *r,SemanticID protocol,SemanticID interaction,T *bindi
     T *params = _t_new_root(PARAMS);  //@todo fix this, would should probably get params from the INITIATE?
     T *rt = _p_make_run_tree(r->sem,proc,params,sem_map);
     _t_free(params);
-    __p_addrt2q(r->q,rt,sem_map);
-
     _t_free(p);
+
+    *sem_mapP = sem_map;
+    return rt;
+}
+
+/**
+ * initiate the first signal in a protocol interaction
+ *
+ * @param[in] receptor initiating the protocol interaction
+ * @param[in] protocol which protocol
+ * @param[in] interaction which interaction in the protocol
+ * @param[in] bindings tree of PROTOCOL_BINDINGS
+ */
+void _o_initiate(Receptor *r,SemanticID protocol,SemanticID interaction,T *bindings) {
+    T *sem_map;
+    T *rt = __o_initiate(r,protocol,interaction,bindings,&sem_map);
+    __p_addrt2q(r->q,rt,sem_map);
 }
 
 

@@ -149,16 +149,16 @@ void testDefProcessTemplate() {
     T *defs = __sem_get_defs(G_sem,SEM_TYPE_PROCESS,TEST_CONTEXT);
     T *code = _t_new_root(NOOP); // some code with a template
     T *t = _t_newr(code,SLOT);
-    _t_news(t,GOAL,REQUEST_HANDLER);
+    _t_news(t,GOAL,RESPONSE_HANDLER);
     t = _t_newr(code,SLOT);
-    _t_news(t,USAGE,REQUEST_DATA);
+    _t_news(t,USAGE,REQUEST_TYPE);
     _t_news(t,SLOT_IS_VALUE_OF,TEST_INT_SYMBOL);
     T *signature = __p_make_signature("result",SIGNATURE_SYMBOL,NULL_SYMBOL,NULL);
     Process p = _d_define_process(G_sem,code,"test_template_proc","long desc..",signature,NULL,TEST_CONTEXT);
     T *def = _sem_get_def(G_sem,p);
 
     T *sig = _t_child(def,ProcessDefSignatureIdx);
-    spec_is_str_equal(t2s(_t_child(sig,2)),"(TEMPLATE_SIGNATURE (EXPECTED_SLOT (GOAL:REQUEST_HANDLER)) (EXPECTED_SLOT (USAGE:REQUEST_DATA) (SLOT_IS_VALUE_OF:TEST_INT_SYMBOL)))");
+    spec_is_str_equal(t2s(_t_child(sig,2)),"(TEMPLATE_SIGNATURE (EXPECTED_SLOT (GOAL:RESPONSE_HANDLER)) (EXPECTED_SLOT (USAGE:REQUEST_TYPE) (SLOT_IS_VALUE_OF:TEST_INT_SYMBOL)))");
 
     //! [testDefProcessTemplate]
 }

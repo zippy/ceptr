@@ -20,6 +20,7 @@ T *_o_bindings2sem_map(T *bindings, T *sem_map);
 T *_o_unwrap(SemTable *sem,T *def,T *sem_map);
 T *_o_resolve(SemTable *sem,T *def, T *bindings);
 void _o_express_role(Receptor *r,Symbol protocol,Symbol role,Aspect aspect,T *action);
+T * __o_initiate(Receptor *r,SemanticID protocol,SemanticID interaction,T *bindings,T **sem_mapP);
 void _o_initiate(Receptor *r,SemanticID protocol,SemanticID interaction,T *bindings);
 
 #endif
