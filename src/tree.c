@@ -780,7 +780,8 @@ T *_t_build2(SemTable *sem,T *parent,...) {
         param = va_arg(ap,Symbol);
         if (semeq(param,STX_OP)) {
             node = va_arg(ap,Symbol);
-            type = _getBuildType(sem,node,&st,&def);
+	    type = NULL_SYMBOL;
+	    if (!semeq(node,NULL_SYMBOL)) type = _getBuildType(sem,node,&st,&def);
             if (semeq(type,STRUCTURE_SYMBOL) && semeq(*(Symbol *)_t_surface(def),NULL_SYMBOL)) {
                 debug(D_TREE,"building sys structure %s\n",_sem_get_name(sem,st));
                 if (semeq(st,PROCESS) || semeq(st,SYMBOL) || semeq(st,STRUCTURE) || semeq(st,PROTOCOL)) {
@@ -1038,13 +1039,14 @@ T *__t_find_actual(T *sem_map,Symbol actual_kind,T *replacement_kind) {
  *;
  * @param[in,out] template the tree with SLOTs to be filled
  * @param[in] sem_map mappings used to fill the template
+ * @returns boolean indicating whether fill resulted in templates removal
  *
  * @note the template is modified in place, so the caller may need to clone a source template
  *
  * <b>Examples (from test suite):</b>
  * @snippet spec/tree_spec.h testTreeTemplate
 */
-void __t_fill_template(T *template, T *sem_map,bool as_run_node) {
+bool __t_fill_template(T *template, T *sem_map,bool as_run_node) {
     if (!template) return;
     debug(D_TREE,"filling template:\n%s\n",__t2s(G_sem,template,INDENT));
     debug(D_TREE,"from sem_map:\n%s\n\n",__t2s(G_sem,sem_map,INDENT));
@@ -1175,6 +1177,7 @@ void __t_fill_template(T *template, T *sem_map,bool as_run_node) {
 		    if (!p) raise_error("not expecting a root node!");
 		    _t_detach_by_ptr(p,template);
 		    _t_free(template);
+		    template = NULL;
 		}
                 break;
             }
@@ -1182,9 +1185,15 @@ void __t_fill_template(T *template, T *sem_map,bool as_run_node) {
         }
     }
     else {
-        DO_KIDS(template,_t_fill_template(_t_child(template,i),sem_map));
+	int i;
+	for(i=1;i<=_t_children(template);i++) {
+	    T *t = _t_child(template,i);
+	    // if the fill resulted in deletion we need to decrease the count to not skip a child
+	    if (_t_fill_template(t,sem_map)) i--;
+	}
     }
-    debug(D_TREE,"results in:\n%s\n\n",__t2s(G_sem,template,INDENT));
+    debug(D_TREE,"results in:\n%s\n\n",template ? __t2s(G_sem,template,INDENT) : "<nothing>");
+    return template == NULL;
 }
 
 /******************** Node data accessors */

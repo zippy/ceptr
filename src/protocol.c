@@ -262,7 +262,8 @@ T *_o_bindings2sem_map(T *bindings, T *sem_map,T *defaults) {
 T * _o_unwrap(SemTable *sem,T *def,T *sem_map) {
     T *d = _t_clone(def);
     int i;
-    for (i=1;i<=_t_children(d);i++) {
+    T *defaults = _t_find(d,PROTOCOL_DEFAULTS);
+    for (i=ProtocolDefOptionalsIdx;i<=_t_children(d);i++) {
         T *t = _t_child(d,i);
         if (semeq(_t_symbol(t),INCLUSION)) {
             Protocol p = *(Protocol *)_t_surface(_t_child(t,InclusionPnameIdx));
@@ -329,15 +330,16 @@ T * _o_unwrap(SemTable *sem,T *def,T *sem_map) {
 	    if (semeq(PROTOCOL_DEFAULTS,_t_symbol(_t_child(p_def,ProtocolDefSemanticsIdx)))) {
 		x = _t_detach_by_idx(p_def,ProtocolDefSemanticsIdx);
 		debug(D_PROTOCOL,"merging defaults: %s",_t2s(sem,x));
-		T *defaults = _t_find(d,PROTOCOL_DEFAULTS);
 		// if the including protocol has no defaults we can just insert them
 		if (!defaults) {
 		    int path[] = {ProtocolDefOptionalsIdx,TREE_PATH_TERMINATOR};
 		    _t_insert_at(d,path,x);
+		    defaults = x;
 		}
 		else {
 		    // otherwise we have to merge in any that don't already exist
 		    _o_merge_sem_map(x,defaults);
+		    _t_free(x);
 		}
 	    }
 
