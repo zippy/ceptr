@@ -207,8 +207,31 @@ void _t_replace_sem_refs(T *t, T *sem_map) {
     }
 }
 
-// convert PROTOCOL_BINDINGS to SEMANTIC_MAP
-T *_o_bindings2sem_map(T *bindings, T *sem_map) {
+// merges semantic links from the from tree to the into tree only if they don't exist
+void _o_merge_sem_map(T *from,T *into) {
+    DO_KIDS(from,
+	    T *l = _t_child(from,i);
+	    T *v = _t_clone(_t_child(l,1));
+	    // @todo conceivably this could break for some G_sems, but it shouldn't
+	    // it would be better to have a hard-coded or pre-compiled semtrex fragment here
+	    // but parsing is easier.
+	    T *s = _t_parse(G_sem,0,"(SEMTREX_WALK (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:SEMANTIC_LINK) (SEMTREX_VALUE_LITERAL %)))",v);
+	    if (!_t_match(s,into)) {
+		_t_add(into,_t_clone(l));
+	    }
+	    _t_free(s);
+	    );
+}
+
+/**
+ * convert PROTOCOL_BINDINGS to SEMANTIC_MAP adding in any defaults
+ *
+ * @param[in] bindings PROTOCOL_BINDINGS to be converted
+ * @param[in,out] sem_map SEMANTIC_MAP to be added to (may be NULL)
+ * @param[in] defaults PROTOCOL_DEFAULTS to be added if not in bindings
+ * @returns either sem_map if given, or newly allocated SEMANTIC_MAP tree
+ */
+T *_o_bindings2sem_map(T *bindings, T *sem_map,T *defaults) {
     if (!sem_map)
         sem_map = _t_new_root(SEMANTIC_MAP);
     DO_KIDS(bindings,
@@ -219,7 +242,11 @@ T *_o_bindings2sem_map(T *bindings, T *sem_map) {
             T *r = _t_newr(t,REPLACEMENT_VALUE);
             _t_add(r,_t_clone(_t_child(w,2)));
             );
+    if (defaults) {
+	_o_merge_sem_map(defaults,sem_map);
+    }
     debug(D_PROTOCOL,"converting bindings %s\n",t2sp(bindings));
+    if (defaults) debug(D_PROTOCOL,"with defaults %s\n",t2sp(defaults));
     debug(D_PROTOCOL,"to sem map %s\n",t2sp(sem_map));
     return sem_map;
 }
@@ -268,7 +295,7 @@ T * _o_unwrap(SemTable *sem,T *def,T *sem_map) {
 
             T *unbound_semantics;
             if (bindings) {
-                _o_bindings2sem_map(bindings,sem_map);
+                _o_bindings2sem_map(bindings,sem_map,NULL);
                 unbound_semantics = _o_resolve(sem,p_def,sem_map);
                 _t_free(bindings);
                 _t_free(_t_detach_by_idx(p_def,ProtocolDefSemanticsIdx));
@@ -296,11 +323,27 @@ T * _o_unwrap(SemTable *sem,T *def,T *sem_map) {
                 }
                 else _t_free(x);
             }
-            _t_detach_by_ptr(d,t);  // remove the INCLUSION specs
+            _t_detach_by_ptr(d,t);  // remove the INCLUSION specs from the including protocol
+
+	    // handle merging in protocol defaults
+	    if (semeq(PROTOCOL_DEFAULTS,_t_symbol(_t_child(p_def,ProtocolDefSemanticsIdx)))) {
+		x = _t_detach_by_idx(p_def,ProtocolDefSemanticsIdx);
+		debug(D_PROTOCOL,"merging defaults: %s",_t2s(sem,x));
+		T *defaults = _t_find(d,PROTOCOL_DEFAULTS);
+		// if the including protocol has no defaults we can just insert them
+		if (!defaults) {
+		    int path[] = {ProtocolDefOptionalsIdx,TREE_PATH_TERMINATOR};
+		    _t_insert_at(d,path,x);
+		}
+		else {
+		    // otherwise we have to merge in any that don't already exist
+		    _o_merge_sem_map(x,defaults);
+		}
+	    }
 
             // add in the unwrapped interactions
-            while(x = _t_detach_by_idx(p_def,ProtocolDefSemanticsIdx)) {
-                _t_add(d,x);
+	    while(x = _t_detach_by_idx(p_def,ProtocolDefSemanticsIdx)) {
+		_t_add(d,x);
             }
             _t_free(unbound_semantics);
             _t_free(p_def);
@@ -367,7 +410,7 @@ void _o_express_role(Receptor *r,Protocol protocol,Symbol role,Aspect aspect,T *
     T *sem_map = _t_new_root(SEMANTIC_MAP);
     p = _o_unwrap(r->sem,p,sem_map);  // creates a cloned, uwrapped protocol def.
     if (bindings) {
-        _o_bindings2sem_map(bindings,sem_map);
+        _o_bindings2sem_map(bindings,sem_map,_t_find(p,PROTOCOL_DEFAULTS));
     }
     T *unbound = _o_resolve(r->sem,p,sem_map);
     debug(D_PROTOCOL,"express %s yelids unbound: %s\n",_sem_get_name(r->sem,role),_t2s(r->sem,unbound));
@@ -431,7 +474,7 @@ T * __o_initiate(Receptor *r,SemanticID protocol,SemanticID interaction,T *bindi
     T *sem_map = _t_new_root(SEMANTIC_MAP);
     p = _o_unwrap(r->sem,p,sem_map);  // creates a cloned, uwrapped protocol def.
     if (bindings) {
-        _o_bindings2sem_map(bindings,sem_map);
+        _o_bindings2sem_map(bindings,sem_map,_t_find(p,PROTOCOL_DEFAULTS));
     }
     T *ia = _t_find(p,interaction);
     if (!ia) raise_error("interaction '%s' not found in protocol definition",_sem_get_name(r->sem,interaction));

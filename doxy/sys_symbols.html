@@ -84,7 +84,7 @@
 <tr><td><a name="PATTERN"></a>PATTERN</td><td><a href="ref_sys_structures.html#SEMTREX_DEF">SEMTREX-DEF</a></td><td>                expectation is a semtrex (thus has one child which is the first part of the semtrex)</td></tr>
 <tr><td><a name="ACTION"></a>ACTION</td><td><a href="ref_sys_structures.html#PROCESS">PROCESS</a></td><td>                     code tree_ID, which specifies the action to perform when an expectation's semtrex matches</td></tr>
 <tr><td><a name="PARAMS"></a>PARAMS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_ANY_SYMBOL">ZERO-OR-MORE-OF-ANY-SYMBOL</a></td><td></td></tr>
-<tr><td><a name="SEMANTIC_MAP"></a>SEMANTIC_MAP</td><td><a href="ref_sys_structures.html#LIST_OF_ONE_OR_MORE_OF_SEMANTIC_LINK">LIST-OF-ONE-OR-MORE-OF-SEMANTIC-LINK</a></td><td></td></tr>
+<tr><td><a name="SEMANTIC_MAP"></a>SEMANTIC_MAP</td><td><a href="ref_sys_structures.html#SEMANTIC_LINKS">SEMANTIC-LINKS</a></td><td></td></tr>
 <tr><td><a name="EXPECTATION"></a>EXPECTATION</td><td><a href="ref_sys_structures.html#LIST_OF_CARRIER_AND_PATTERN_AND_ACTION_AND_PARAMS_AND_END_CONDITIONS_AND_ZERO_OR_ONE_OF_SEMANTIC_MAP_AND_ZERO_OR_ONE_OF_CONVERSATION_UUID">LIST-OF-CARRIER-AND-PATTERN-AND-ACTION-AND-PARAMS-AND-END-CONDITIONS-AND-ZERO-OR-ONE-OF-SEMANTIC-MAP-AND-ZERO-OR-ONE-OF-CONVERSATION-UUID</a></td><td></td></tr>
 <tr><td><a name="CONVERSATION"></a>CONVERSATION</td><td><a href="ref_sys_structures.html#LIST_OF_CONVERSATION_UUID_AND_END_CONDITIONS_AND_CONVERSATIONS_AND_ZERO_OR_ONE_OF_WAKEUP_REFERENCE">LIST-OF-CONVERSATION-UUID-AND-END-CONDITIONS-AND-CONVERSATIONS-AND-ZERO-OR-ONE-OF-WAKEUP-REFERENCE</a></td><td></td></tr>
 <tr><td><a name="CONVERSATIONS"></a>CONVERSATIONS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_CONVERSATION">ZERO-OR-MORE-OF-CONVERSATION</a></td><td></td></tr>
@@ -111,6 +111,7 @@
 <tr><td><a name="SLOT"></a>SLOT</td><td><a href="ref_sys_structures.html#SLOT_STRUCTURE">SLOT-STRUCTURE</a></td><td></td></tr>
 <tr><td><a name="REPLACEMENT_VALUE"></a>REPLACEMENT_VALUE</td><td><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></td><td>        what to fill the slot with</td></tr>
 <tr><td><a name="SEMANTIC_LINK"></a>SEMANTIC_LINK</td><td><a href="ref_sys_structures.html#TUPLE_OF_SEMANTIC_REFERENCE_AND_REPLACEMENT_VALUE">TUPLE-OF-SEMANTIC-REFERENCE-AND-REPLACEMENT-VALUE</a></td><td>   mapping between a semantic reference and replacement value, used for filling templates</td></tr>
+<tr><td><a name="PROTOCOL_DEFAULTS"></a>PROTOCOL_DEFAULTS</td><td><a href="ref_sys_structures.html#SEMANTIC_LINKS">SEMANTIC-LINKS</a></td><td></td></tr>
 <tr><td><a name="SIGNATURE_LABEL"></a>SIGNATURE_LABEL</td><td><a href="ref_sys_structures.html#LABEL">LABEL</a></td><td></td></tr>
 <tr><td><a name="SIGNATURE_STRUCTURE"></a>SIGNATURE_STRUCTURE</td><td><a href="ref_sys_structures.html#STRUCTURE">STRUCTURE</a></td><td>      the structure that would match</td></tr>
 <tr><td><a name="SIGNATURE_SYMBOL"></a>SIGNATURE_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>            the symbol that would match</td></tr>
@@ -142,6 +143,7 @@
 <tr><td><a name="PNAME"></a>PNAME</td><td><a href="ref_sys_structures.html#PROTOCOL">PROTOCOL</a></td><td></td></tr>
 <tr><td><a name="INCLUSION"></a>INCLUSION</td><td><a href="ref_sys_structures.html#TUPLE_OF_PNAME_AND_ONE_OR_MORE_OF_LOGICAL_OR_OF_RESOLUTION_AND_LINKAGE">TUPLE-OF-PNAME-AND-ONE-OR-MORE-OF-LOGICAL-OR-OF-RESOLUTION-AND-LINKAGE</a></td><td></td></tr>
 <tr><td><a name="WHICH_INTERACTION"></a>WHICH_INTERACTION</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>   the symbols stored in an WHICH_INTERACTION must be limited to those that are uses of the INTERACTION structure</td></tr>
+<tr><td><a name="PROTOCOL_DEFINITION"></a>PROTOCOL_DEFINITION</td><td><a href="ref_sys_structures.html#LIST_OF_PROTOCOL_LABEL_AND_PROTOCOL_SEMANTICS_AND_ZERO_OR_MORE_OF_PROTOCOL_DEFAULTS_AND_ZERO_OR_MORE_OF_STRUCTURE_OF_INTERACTION_AND_ZERO_OR_MORE_OF_INCLUSION">LIST-OF-PROTOCOL-LABEL-AND-PROTOCOL-SEMANTICS-AND-ZERO-OR-MORE-OF-PROTOCOL-DEFAULTS-AND-ZERO-OR-MORE-OF-STRUCTURE-OF-INTERACTION-AND-ZERO-OR-MORE-OF-INCLUSION</a></td><td></td></tr>
 <tr><td><a name="ACTUAL_PROCESS"></a>ACTUAL_PROCESS</td><td><a href="ref_sys_structures.html#PROCESS">PROCESS</a></td><td></td></tr>
 <tr><td><a name="ACTUAL_RECEPTOR"></a>ACTUAL_RECEPTOR</td><td><a href="ref_sys_structures.html#RECEPTOR_ADDRESS">RECEPTOR-ADDRESS</a></td><td></td></tr>
 <tr><td><a name="ACTUAL_SYMBOL"></a>ACTUAL_SYMBOL</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td></td></tr>
@@ -161,7 +163,6 @@
 <tr><td><a name="PROTOCOL_BINDINGS"></a>PROTOCOL_BINDINGS</td><td><a href="ref_sys_structures.html#ONE_OR_MORE_OF_RESOLUTION">ONE-OR-MORE-OF-RESOLUTION</a></td><td></td></tr>
 <tr><td><a name="PROTOCOL_LABEL"></a>PROTOCOL_LABEL</td><td><a href="ref_sys_structures.html#LABEL">LABEL</a></td><td></td></tr>
 <tr><td><a name="PROTOCOL_SEMANTICS"></a>PROTOCOL_SEMANTICS</td><td><a href="ref_sys_structures.html#LIST_OF_ZERO_OR_MORE_OF_ROLE_AND_ZERO_OR_MORE_OF_GOAL_AND_ZERO_OR_MORE_OF_USAGE_AND_ZERO_OR_MORE_OF_WEAL">LIST-OF-ZERO-OR-MORE-OF-ROLE-AND-ZERO-OR-MORE-OF-GOAL-AND-ZERO-OR-MORE-OF-USAGE-AND-ZERO-OR-MORE-OF-WEAL</a></td><td></td></tr>
-<tr><td><a name="PROTOCOL_DEFINITION"></a>PROTOCOL_DEFINITION</td><td><a href="ref_sys_structures.html#LIST_OF_PROTOCOL_LABEL_AND_PROTOCOL_SEMANTICS_AND_ZERO_OR_MORE_OF_STRUCTURE_OF_INTERACTION_AND_ZERO_OR_MORE_OF_INCLUSION">LIST-OF-PROTOCOL-LABEL-AND-PROTOCOL-SEMANTICS-AND-ZERO-OR-MORE-OF-STRUCTURE-OF-INTERACTION-AND-ZERO-OR-MORE-OF-INCLUSION</a></td><td></td></tr>
 <tr><td><a name="MANIFEST_LABEL"></a>MANIFEST_LABEL</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td>           a label in the manifest to identify a binding</td></tr>
 <tr><td><a name="MANIFEST_SPEC"></a>MANIFEST_SPEC</td><td><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></td><td>             a symbol to specify what type of data must be provided for a given manifest label</td></tr>
 <tr><td><a name="MANIFEST_PAIR"></a>MANIFEST_PAIR</td><td><a href="ref_sys_structures.html#TUPLE_OF_MANIFEST_LABEL_AND_MANIFEST_SPEC">TUPLE-OF-MANIFEST-LABEL-AND-MANIFEST-SPEC</a></td><td></td></tr>

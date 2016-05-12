@@ -844,7 +844,7 @@
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="SEMANTIC_MAP"></a>SEMANTIC_MAP</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_ONE_OR_MORE_OF_SEMANTIC_LINK">LIST-OF-ONE-OR-MORE-OF-SEMANTIC-LINK</a></div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SEMANTIC_LINKS">SEMANTIC-LINKS</a></div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-structure">
@@ -1083,8 +1083,14 @@
    </div>
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
-       <div class="def-name"><a name="LIST_OF_ONE_OR_MORE_OF_SEMANTIC_LINK"></a>LIST-OF-ONE-OR-MORE-OF-SEMANTIC-LINK</div>
+       <div class="def-name"><a name="SEMANTIC_LINKS"></a>SEMANTIC-LINKS</div>
        <div class="def-struc-def">SEQ(+(<a href="ref_sys_symbols.html#SEMANTIC_LINK">SEMANTIC_LINK</a>))</div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="PROTOCOL_DEFAULTS"></a>PROTOCOL_DEFAULTS</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#SEMANTIC_LINKS">SEMANTIC-LINKS</a></div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">
@@ -1357,6 +1363,12 @@
        <div class="def-sym-def"><a href="ref_sys_structures.html#SYMBOL">SYMBOL</a></div>
        <div class="def-comment">   the symbols stored in an WHICH_INTERACTION must be limited to those that are uses of the INTERACTION structure</div>
    </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="PROTOCOL_DEFINITION"></a>PROTOCOL_DEFINITION</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_PROTOCOL_LABEL_AND_PROTOCOL_SEMANTICS_AND_ZERO_OR_MORE_OF_PROTOCOL_DEFAULTS_AND_ZERO_OR_MORE_OF_STRUCTURE_OF_INTERACTION_AND_ZERO_OR_MORE_OF_INCLUSION">LIST-OF-PROTOCOL-LABEL-AND-PROTOCOL-SEMANTICS-AND-ZERO-OR-MORE-OF-PROTOCOL-DEFAULTS-AND-ZERO-OR-MORE-OF-STRUCTURE-OF-INTERACTION-AND-ZERO-OR-MORE-OF-INCLUSION</a></div>
+       <div class="def-comment"></div>
+   </div>
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
        <div class="def-name"><a name="ZERO_OR_MORE_OF_PROTOCOL_DEFINITION"></a>ZERO-OR-MORE-OF-PROTOCOL-DEFINITION</div>
@@ -1557,14 +1569,8 @@
    </div>
    <div class="def-item def-structure">
        <div class="def-type">Structure:</div>
-       <div class="def-name"><a name="LIST_OF_PROTOCOL_LABEL_AND_PROTOCOL_SEMANTICS_AND_ZERO_OR_MORE_OF_STRUCTURE_OF_INTERACTION_AND_ZERO_OR_MORE_OF_INCLUSION"></a>LIST-OF-PROTOCOL-LABEL-AND-PROTOCOL-SEMANTICS-AND-ZERO-OR-MORE-OF-STRUCTURE-OF-INTERACTION-AND-ZERO-OR-MORE-OF-INCLUSION</div>
-       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#PROTOCOL_LABEL">PROTOCOL_LABEL</a>, <a href="ref_sys_symbols.html#PROTOCOL_SEMANTICS">PROTOCOL_SEMANTICS</a>, *(%<a href="ref_sys_structures.html#INTERACTION">INTERACTION</a>), *(<a href="ref_sys_symbols.html#INCLUSION">INCLUSION</a>))</div>
-       <div class="def-comment"></div>
-   </div>
-   <div class="def-item def-symbol">
-       <div class="def-type">Symbol:</div>
-       <div class="def-name"><a name="PROTOCOL_DEFINITION"></a>PROTOCOL_DEFINITION</div>
-       <div class="def-sym-def"><a href="ref_sys_structures.html#LIST_OF_PROTOCOL_LABEL_AND_PROTOCOL_SEMANTICS_AND_ZERO_OR_MORE_OF_STRUCTURE_OF_INTERACTION_AND_ZERO_OR_MORE_OF_INCLUSION">LIST-OF-PROTOCOL-LABEL-AND-PROTOCOL-SEMANTICS-AND-ZERO-OR-MORE-OF-STRUCTURE-OF-INTERACTION-AND-ZERO-OR-MORE-OF-INCLUSION</a></div>
+       <div class="def-name"><a name="LIST_OF_PROTOCOL_LABEL_AND_PROTOCOL_SEMANTICS_AND_ZERO_OR_MORE_OF_PROTOCOL_DEFAULTS_AND_ZERO_OR_MORE_OF_STRUCTURE_OF_INTERACTION_AND_ZERO_OR_MORE_OF_INCLUSION"></a>LIST-OF-PROTOCOL-LABEL-AND-PROTOCOL-SEMANTICS-AND-ZERO-OR-MORE-OF-PROTOCOL-DEFAULTS-AND-ZERO-OR-MORE-OF-STRUCTURE-OF-INTERACTION-AND-ZERO-OR-MORE-OF-INCLUSION</div>
+       <div class="def-struc-def">SEQ(<a href="ref_sys_symbols.html#PROTOCOL_LABEL">PROTOCOL_LABEL</a>, <a href="ref_sys_symbols.html#PROTOCOL_SEMANTICS">PROTOCOL_SEMANTICS</a>, *(<a href="ref_sys_symbols.html#PROTOCOL_DEFAULTS">PROTOCOL_DEFAULTS</a>), *(%<a href="ref_sys_structures.html#INTERACTION">INTERACTION</a>), *(<a href="ref_sys_symbols.html#INCLUSION">INCLUSION</a>))</div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-structure">

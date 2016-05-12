@@ -184,13 +184,7 @@ void _setupTestProtocols() {
 
     Symbol act = _d_define_symbol(G_sem,INTERACTION,"act",TEST_CONTEXT);
 
-    simple_def = _o_make_protocol_def(G_sem,TEST_CONTEXT,"do",
-                                      ROLE,agent,
-                                      GOAL,process,
-                                      USAGE,data,
-                                      INTERACTION,act,
-                                        EXPECT,agent,agent,pattern,action,
-                                      NULL_SYMBOL);
+    simple_def = _t_parse(G_sem,0,"(PROTOCOL_DEFINITION (PROTOCOL_LABEL (ENGLISH_LABEL:\"do\")) (PROTOCOL_SEMANTICS (ROLE:agent) (GOAL:process) (USAGE:data)) (PROTOCOL_DEFAULTS (SEMANTIC_LINK (USAGE:data) (REPLACEMENT_VALUE (USAGE:TEST_STR_SYMBOL))) (SEMANTIC_LINK (GOAL:process) (REPLACEMENT_VALUE (ACTUAL_PROCESS:NOOP)))) (act (EXPECT (ROLE:agent) (SOURCE (ROLE:agent)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SLOT (USAGE:data) (SLOT_IS_VALUE_OF:SEMTREX_SYMBOL)))) (SLOT (GOAL:process) (SLOT_IS_VALUE_OF:ACTION)))))");
     simple = _d_define_protocol(G_sem,simple_def,TEST_CONTEXT);
 
     // a protocol that's a wrapping of the simple protocol
@@ -199,14 +193,7 @@ void _setupTestProtocols() {
     shaking = _d_define_symbol(G_sem,PROCESS,"shaking",TEST_CONTEXT);
     info = _d_define_symbol(G_sem,SYMBOL,"info",TEST_CONTEXT);
 
-    shake_def = _o_make_protocol_def(G_sem,TEST_CONTEXT,"shake",
-                                     ROLE,mover,
-                                     ROLE,shaker,
-                                     INCLUSION,simple,
-                                       WHICH_ROLE,agent,mover,
-                                       WHICH_GOAL,process,shaking,
-                                       WHICH_USAGE,data,info,
-                                      NULL_SYMBOL);
+    shake_def = _t_parse(G_sem,0,"(PROTOCOL_DEFINITION (PROTOCOL_LABEL (ENGLISH_LABEL:\"shake\")) (PROTOCOL_SEMANTICS (ROLE:mover) (ROLE:shaker)) (PROTOCOL_DEFAULTS (SEMANTIC_LINK (USAGE:info) (REPLACEMENT_VALUE (USAGE:TEST_FLOAT_SYMBOL)))) (INCLUSION (PNAME:do) (LINKAGE (WHICH_ROLE (ROLE:agent) (ROLE:mover))) (LINKAGE (WHICH_GOAL (GOAL:process) (GOAL:shaking))) (LINKAGE (WHICH_USAGE (USAGE:data) (USAGE:info)))))");
     shake = _d_define_protocol(G_sem,shake_def,TEST_CONTEXT);
 }
 
@@ -214,18 +201,16 @@ void testProtocolResolve() {
 
     T *noop = _t_new_root(NOOP);
     _t_newi(noop,TEST_INT_SYMBOL,314);
-    Process proc = _d_define_process(G_sem,noop,"do nothing","long desc...",NULL,NULL,TEST_CONTEXT);
+    Process proc = _d_define_process(G_sem,noop,"do_nothing","long desc...",NULL,NULL,TEST_CONTEXT);
 
-    T *bindings = _t_build(G_sem,0,PROTOCOL_BINDINGS,RESOLUTION,WHICH_PROCESS,GOAL,process,ACTUAL_PROCESS,proc,NULL_SYMBOL,RESOLUTION,WHICH_SYMBOL,USAGE,data,ACTUAL_SYMBOL,TEST_INT_SYMBOL,NULL_SYMBOL,NULL_SYMBOL);
+    T *bindings = _t_parse(G_sem,0,"(PROTOCOL_BINDINGS (RESOLUTION (WHICH_PROCESS (GOAL:process) (ACTUAL_PROCESS:do_nothing))) (RESOLUTION (WHICH_SYMBOL (USAGE:data) (ACTUAL_SYMBOL:TEST_INT_SYMBOL))))");
 
-    spec_is_str_equal(t2s(bindings),"(PROTOCOL_BINDINGS (RESOLUTION (WHICH_PROCESS (GOAL:process) (ACTUAL_PROCESS:do nothing))) (RESOLUTION (WHICH_SYMBOL (USAGE:data) (ACTUAL_SYMBOL:TEST_INT_SYMBOL))))");
-    spec_is_str_equal(t2s(simple_def),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL (ENGLISH_LABEL:do)) (PROTOCOL_SEMANTICS (ROLE:agent) (GOAL:process) (USAGE:data)) (act (EXPECT (ROLE:agent) (SOURCE (ROLE:agent)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SLOT (USAGE:data) (SLOT_IS_VALUE_OF:SEMTREX_SYMBOL)))) (SLOT (GOAL:process) (SLOT_IS_VALUE_OF:ACTION)))))");
     T *resolved = _t_clone(simple_def);
-    T *sem_map = _o_bindings2sem_map(bindings,NULL);
-    spec_is_str_equal(t2s(sem_map),"(SEMANTIC_MAP (SEMANTIC_LINK (GOAL:process) (REPLACEMENT_VALUE (ACTUAL_PROCESS:do nothing))) (SEMANTIC_LINK (USAGE:data) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:TEST_INT_SYMBOL))))");
+    T *sem_map = _o_bindings2sem_map(bindings,NULL,NULL);
+    spec_is_str_equal(t2s(sem_map),"(SEMANTIC_MAP (SEMANTIC_LINK (GOAL:process) (REPLACEMENT_VALUE (ACTUAL_PROCESS:do_nothing))) (SEMANTIC_LINK (USAGE:data) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:TEST_INT_SYMBOL))))");
     T *unbound = _o_resolve(G_sem,resolved,sem_map);
     spec_is_str_equal(t2s(unbound),"(PROTOCOL_SEMANTICS (ROLE:agent))");
-    spec_is_str_equal(t2s(resolved),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL (ENGLISH_LABEL:do)) (PROTOCOL_SEMANTICS (ROLE:agent) (GOAL:process) (USAGE:data)) (act (EXPECT (ROLE:agent) (SOURCE (ROLE:agent)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TEST_INT_SYMBOL))) (ACTION:do nothing))))");
+    spec_is_str_equal(t2s(resolved),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL (ENGLISH_LABEL:do)) (PROTOCOL_SEMANTICS (ROLE:agent) (GOAL:process) (USAGE:data)) (PROTOCOL_DEFAULTS (SEMANTIC_LINK (USAGE:data) (REPLACEMENT_VALUE (USAGE:TEST_STR_SYMBOL))) (SEMANTIC_LINK (GOAL:process) (REPLACEMENT_VALUE (ACTUAL_PROCESS:NOOP)))) (act (EXPECT (ROLE:agent) (SOURCE (ROLE:agent)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TEST_INT_SYMBOL))) (ACTION:do_nothing))))");
 
     _t_free(bindings);
     _t_free(sem_map);
@@ -234,16 +219,25 @@ void testProtocolResolve() {
 
 void testProtocolUnwrap() {
     T *sem_map = _t_new_root(SEMANTIC_MAP);
-    //    debug_enable(D_PROTOCOL);
+    //debug_enable(D_PROTOCOL);
     T *unwrapped = _o_unwrap(G_sem,shake_def,sem_map);
-    debug_disable(D_PROTOCOL);
+    //debug_disable(D_PROTOCOL);
     spec_is_str_equal(t2s(sem_map),"(SEMANTIC_MAP (SEMANTIC_LINK (ROLE:agent) (REPLACEMENT_VALUE (ROLE:mover))) (SEMANTIC_LINK (GOAL:process) (REPLACEMENT_VALUE (GOAL:shaking))) (SEMANTIC_LINK (USAGE:data) (REPLACEMENT_VALUE (USAGE:info))))");
     _t_free(sem_map);
-    spec_is_str_equal(t2s(unwrapped),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL (ENGLISH_LABEL:shake)) (PROTOCOL_SEMANTICS (ROLE:mover) (ROLE:shaker) (GOAL:shaking) (USAGE:info)) (act (EXPECT (ROLE:mover) (SOURCE (ROLE:mover)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SLOT (USAGE:info) (SLOT_IS_VALUE_OF:SEMTREX_SYMBOL)))) (SLOT (GOAL:shaking) (SLOT_IS_VALUE_OF:ACTION)))))");
+
+    spec_is_str_equal(t2s(unwrapped),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL (ENGLISH_LABEL:shake)) (PROTOCOL_SEMANTICS (ROLE:mover) (ROLE:shaker) (GOAL:shaking) (USAGE:info)) (PROTOCOL_DEFAULTS (SEMANTIC_LINK (USAGE:info) (REPLACEMENT_VALUE (USAGE:TEST_FLOAT_SYMBOL))) (SEMANTIC_LINK (GOAL:shaking) (REPLACEMENT_VALUE (ACTUAL_PROCESS:NOOP)))) (act (EXPECT (ROLE:mover) (SOURCE (ROLE:mover)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SLOT (USAGE:info) (SLOT_IS_VALUE_OF:SEMTREX_SYMBOL)))) (SLOT (GOAL:shaking) (SLOT_IS_VALUE_OF:ACTION)))))");
     _t_free(unwrapped);
 }
 
-
+void testProtocolDefaults() {
+    // protocol defaults should get added into to the semantic map for items not in the bindings
+    T *bindings = _t_parse(G_sem,0,"(PROTOCOL_BINDINGS (RESOLUTION (WHICH_SYMBOL (USAGE:data) (ACTUAL_SYMBOL:TEST_INT_SYMBOL))))");
+    T *defaults = _t_find(simple_def,PROTOCOL_DEFAULTS);
+    T *sem_map = _o_bindings2sem_map(bindings,NULL,defaults);
+    spec_is_str_equal(t2s(sem_map),"(SEMANTIC_MAP (SEMANTIC_LINK (USAGE:data) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:TEST_INT_SYMBOL))) (SEMANTIC_LINK (GOAL:process) (REPLACEMENT_VALUE (ACTUAL_PROCESS:NOOP))))");
+    _t_free(sem_map);
+    _t_free(bindings);
+}
 
 /* Symbol wrapper [(token,conversationbody)]; */
 /* Symbol open_request,close_notice ; */
@@ -277,5 +271,6 @@ void testProtocol() {
     testProtocolRequesting();
     testProtocolRecognize();
     testProtocolAlive();
+    testProtocolDefaults();
     _v_free(G_vm);
 }
