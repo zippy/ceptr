@@ -719,7 +719,7 @@ Process: time_request,time_req_code,"request current time","response",SIGNATURE_
 Context: STREAM_EDGE;
 
 # process used by the stream edge receptor
-Data: echo2stream_code,(STREAM_WRITE (PARAM_REF:/2/1) (PARAM_REF:/2/2));
+Data: echo2stream_code,(STREAM_WRITE (PARAM_REF:/2/1) (TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:LINES)) (TRANSCODE_ITEMS (PARAM_REF:/2/2))));
 Process: echo2stream,echo2stream_code,"echo input to stream","result",SIGNATURE_SYMBOL,NULL_SYMBOL,"stream",SIGNATURE_SYMBOL,EDGE_STREAM,"value",SIGNATURE_ANY,NULL_STRUCTURE;
 
 # This doesn't work because the SLOT get's misinterpreted by __d_tsig see #127
@@ -835,6 +835,13 @@ Symbol: HTTP_RESPONSE_STATUS,STATUS;
 Symbol: HTTP_HEADER,[|{HTTP_GENERAL_HEADER|HTTP_RESPONSE_HEADER|HTTP_ENTITY_HEADER}];
 Symbol: HTTP_HEADERS,[*HTTP_HEADER];
 Symbol: HTTP_RESPONSE,[(HTTP_RESPONSE_STATUS,HTTP_HEADERS,HTTP_RESPONSE_BODY)];
+
+Data: http_response_status_2_ascii_str_proc, (CONTRACT_STR (RESULT_SYMBOL:ASCII_STR)
+      (TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:ASCII_STR)) (TRANSCODE_ITEMS (PARAM_REF:/2/1/1)))
+      (ASCII_CHAR:' ')
+      (TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:ASCII_STR)) (TRANSCODE_ITEMS (PARAM_REF:/2/1/2)))
+      );
+ProcessL:  http_response_status_2_ascii_str, http_response_status_2_ascii_str_proc,"http response status transcoder",HTTP_RESPONSE_STATUS,TRANSCODER,"output",SIGNATURE_SYMBOL,ASCII_STR,"input",SIGNATURE_SYMBOL,HTTP_RESPONSE_STATUS;
 
 Data: http_response_2_lines_proc, (LINES
       (CONTRACT_STR (RESULT_SYMBOL:LINE) (ASCII_STR:"HTTP") (ASCII_CHAR:'/') (ASCII_STR:"1.1 ") (TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:ASCII_STR)) (TRANSCODE_ITEMS (PARAM_REF:/2/1/1)) (ASCII_CHAR:' ') (PARAM_REF:/2/1/2)))

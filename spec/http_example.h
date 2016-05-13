@@ -345,10 +345,10 @@ void testHTTPprotocol() {
     T *t = _o_unwrap(G_sem,http,sem_map);
     // and also check how it gets unwrapped because it's defined in terms of REQUESTING
     // @todo, how come HTTP_SERVER and the two handler goals aren't added to the semantics?
-    spec_is_str_equal(t2s(t),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL (ENGLISH_LABEL:HTTP)) (PROTOCOL_SEMANTICS (GOAL:HTTP_REQUEST_HANDLER) (ROLE:HTTP_CLIENT)) (backnforth (INITIATE (ROLE:HTTP_CLIENT) (DESTINATION (ROLE:HTTP_SERVER)) (ACTION:send_request)) (EXPECT (ROLE:HTTP_SERVER) (SOURCE (ROLE:HTTP_CLIENT)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:HTTP_REQUEST))) (ACTION:send_response))))");
+    spec_is_str_equal(t2s(t),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL (ENGLISH_LABEL:HTTP)) (PROTOCOL_SEMANTICS (GOAL:HTTP_REQUEST_HANDLER) (ROLE:HTTP_CLIENT) (USAGE:RESPONSE_HANDLER_PARAMETERS)) (PROTOCOL_DEFAULTS (SEMANTIC_LINK (USAGE:RESPONSE_HANDLER_PARAMETERS) (REPLACEMENT_VALUE (NULL_SYMBOL)))) (backnforth (INITIATE (ROLE:HTTP_CLIENT) (DESTINATION (ROLE:HTTP_SERVER)) (ACTION:send_request)) (EXPECT (ROLE:HTTP_SERVER) (SOURCE (ROLE:HTTP_CLIENT)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:HTTP_REQUEST))) (ACTION:send_response))))");
 
     // the unwrapping should build up a semantic map
-    spec_is_str_equal(t2s(sem_map),"(SEMANTIC_MAP (SEMANTIC_LINK (ROLE:REQUESTER) (REPLACEMENT_VALUE (ROLE:HTTP_CLIENT))) (SEMANTIC_LINK (ROLE:RESPONDER) (REPLACEMENT_VALUE (ROLE:HTTP_SERVER))) (SEMANTIC_LINK (USAGE:REQUEST_TYPE (REPLACEMENT_VALUE (ACTUAL_SYMBOL:HTTP_REQUEST))) (SEMANTIC_LINK (USAGE:RESPONSE_TYPE) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:HTTP_RESPONSE))) (SEMANTIC_LINK (USAGE:CHANNEL) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:HTTP_ASPECT))) (SEMANTIC_LINK (GOAL:REQUEST_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:httpresp))))");
+    spec_is_str_equal(t2s(sem_map),"(SEMANTIC_MAP (SEMANTIC_LINK (ROLE:REQUESTER) (REPLACEMENT_VALUE (ROLE:HTTP_CLIENT))) (SEMANTIC_LINK (ROLE:RESPONDER) (REPLACEMENT_VALUE (ROLE:HTTP_SERVER))) (SEMANTIC_LINK (USAGE:REQUEST_TYPE) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:HTTP_REQUEST))) (SEMANTIC_LINK (USAGE:RESPONSE_TYPE) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:HTTP_RESPONSE))) (SEMANTIC_LINK (USAGE:CHANNEL) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:HTTP_ASPECT))) (SEMANTIC_LINK (GOAL:REQUEST_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:httpresp))))");
     _t_free(sem_map);
 
     VMHost *v = G_vm = _v_new();
@@ -393,7 +393,7 @@ void testHTTPprotocol() {
     _o_express_role(er,PARSE_HTTP_REQUEST_FROM_LINE,HTTP_REQUEST_PARSER,HTTP_ASPECT,bindings);
     _t_free(bindings);
 
-    //debug_enable(D_TRANSCODE+D_STEP+D_STREAM);
+    //debug_enable(D_TRANSCODE+D_STEP+D_REDUCE+D_STREAM);
     _v_start_vmhost(G_vm);
     sleep(1);
     debug_disable(D_STREAM+D_SIGNALS+D_TREE+D_PROTOCOL);
@@ -418,7 +418,7 @@ void testHTTPprotocol() {
 
 void *_httptester(void *arg) {
     char *result = doSys("echo 'GET /path/to/file.ext HTTP/0.9' | nc localhost 8888");
-    spec_is_str_equal(result,"xxx");
+    spec_is_str_equal(result,"HTTP/1.1 200 OK\nContent-Type: text/ceptr\n\nsuper cept\n314159\n");
     free(result);
     G_done = true;
     pthread_exit(NULL);
@@ -437,7 +437,6 @@ void testHTTPedgeReceptor() {
     // instantiate it in the vmhost
     Xaddr edge = _v_new_receptor(v,v->r,STREAM_EDGE,r);
     // set up a socket listener that will transcode ascii to HTTP_REQUEST and send all the received requests to an HTTP aspect on the same receptor
-    //    T *code = _t_parse(r->sem,0,"(CONVERSE (SCOPE (LISTEN (ASPECT_IDENT:HTTP_ASPECT) (CARRIER:LINES) (PATTERN (SEMTREX_SYMBOL_ANY)) (ACTION:echo2stream) (PARAMS (PARAM_REF:/2/1) (SLOT (USAGE:NULL_SYMBOL)))) (ITERATE (PARAMS) (STREAM_ALIVE (PARAM_REF:/2/1)) (SAY % (ASPECT_IDENT:HTTP_ASPECT) (CARRIER:backnforth) (STREAM_READ (PARAM_REF:/2/1) (RESULT_SYMBOL:HTTP_REQUEST)))) (STREAM_CLOSE (PARAM_REF:/2/1))) (BOOLEAN:1))",__r_make_addr(0,TO_ADDRESS,r->addr));
     T *code = _t_parse(r->sem,0,"(CONVERSE (SCOPE (ITERATE (PARAMS) (STREAM_ALIVE (PARAM_REF:/2/1)) (INITIATE_PROTOCOL (PNAME:HTTP) (WHICH_INTERACTION:backnforth) (PROTOCOL_BINDINGS (RESOLUTION (WHICH_RECEPTOR (ROLE:HTTP_CLIENT) %)) (RESOLUTION (WHICH_RECEPTOR (ROLE:HTTP_SERVER) %)) (RESOLUTION (WHICH_PROCESS (GOAL:RESPONSE_HANDLER) (ACTUAL_PROCESS:echo2stream))) (RESOLUTION (WHICH_USAGE (USAGE:RESPONSE_HANDLER_PARAMETERS) (ACTUAL_VALUE (PARAM_REF:/2/1)))) (RESOLUTION (WHICH_VALUE (ACTUAL_SYMBOL:HTTP_REQUEST) (ACTUAL_VALUE (STREAM_READ (PARAM_REF:/2/1) (RESULT_SYMBOL:HTTP_REQUEST)))))) ) ) (STREAM_CLOSE (PARAM_REF:/2/1))) (BOOLEAN:1))",__r_make_addr(0,ACTUAL_RECEPTOR,r->addr),__r_make_addr(0,ACTUAL_RECEPTOR,r->addr));
     // add an error handler that just completes the iteration
     T *err_handler = _t_parse(r->sem,0,"(CONTINUE (POP_PATH (PARAM_REF:/4/1/1) (RESULT_SYMBOL:CONTINUE_LOCATION) (POP_COUNT:5)) (CONTINUE_VALUE (BOOLEAN:0)))");
@@ -459,7 +458,7 @@ void testHTTPedgeReceptor() {
     _t_free(bindings);
 
     //    debug_enable(D_TRANSCODE+D_STEP+D_STREAM);
-    debug_enable(D_SIGNALS+D_STEP);
+    //debug_enable(D_SIGNALS+D_STEP);
     _v_start_vmhost(G_vm);
 
     G_done = false;
@@ -478,7 +477,7 @@ void testHTTPedgeReceptor() {
     debug_disable(D_STREAM+D_SIGNALS+D_TREE+D_PROTOCOL);
     debug_disable(D_TRANSCODE+D_REDUCE+D_REDUCEV+D_STEP);
 
-    spec_is_str_equal(t2s(r->flux),"");
+    //spec_is_str_equal(t2s(r->flux),"");
 
     // cleanup vmhost instance
     __r_kill(G_vm->r);
