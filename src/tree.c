@@ -1724,7 +1724,7 @@ char * _t2rawjson(SemTable *sem,T *t,int level,char *buf) {
     buf+= strlen(buf);
     _add_sem(buf,s);
     buf+= strlen(buf);
-    if (is_symbol(s)) {
+    if (is_symbol(s) && !semeq(s,NULL_SYMBOL)) {
         Structure st = _sem_get_symbol_structure(sem,s);
 
         if (is_sys_structure(st)) {
