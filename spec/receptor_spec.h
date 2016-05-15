@@ -677,17 +677,17 @@ void testReceptorEdgeStream() {
     _v_deliver_signals(v,r);
 
     // and see that they've shown up in the edge receptor's flux signals list
-    spec_is_str_equal(_td(r,__r_get_signals(r,DEFAULT_ASPECT)),"(SIGNALS (SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:LINE)) (BODY:{(LINE:line1)})) (RUN_TREE (process:STREAM_WRITE (PARAM_REF:/2/1) (PARAM_REF:/2/2)) (PARAMS (EDGE_STREAM) (LINE:line1)))) (SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:LINE)) (BODY:{(LINE:line2)})) (RUN_TREE (process:STREAM_WRITE (PARAM_REF:/2/1) (PARAM_REF:/2/2)) (PARAMS (EDGE_STREAM) (LINE:line2)))))");
+    spec_is_str_equal(_td(r,__r_get_signals(r,DEFAULT_ASPECT)),"(SIGNALS (SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:LINE)) (BODY:{(LINE:line1)})) (RUN_TREE (process:STREAM_WRITE (PARAM_REF:/2/1) (process:TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:LINES)) (TRANSCODE_ITEMS (PARAM_REF:/2/2)))) (PARAMS (EDGE_STREAM) (LINE:line1)))) (SIGNAL (ENVELOPE (SIGNAL_UUID)) (MESSAGE (HEAD (FROM_ADDRESS (RECEPTOR_ADDR:3)) (TO_ADDRESS (RECEPTOR_ADDR:3)) (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:LINE)) (BODY:{(LINE:line2)})) (RUN_TREE (process:STREAM_WRITE (PARAM_REF:/2/1) (process:TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:LINES)) (TRANSCODE_ITEMS (PARAM_REF:/2/2)))) (PARAMS (EDGE_STREAM) (LINE:line2)))))");
 
     // and that they've been removed from process queue pending signals list
     spec_is_str_equal(_td(r,r->pending_signals),"(PENDING_SIGNALS)");
 
-    spec_is_str_equal(_td(r,r->q->active->context->run_tree),"(RUN_TREE (process:STREAM_WRITE (PARAM_REF:/2/1) (PARAM_REF:/2/2)) (PARAMS (EDGE_STREAM) (LINE:line1)))");
+    spec_is_str_equal(_td(r,r->q->active->context->run_tree),"(RUN_TREE (process:STREAM_WRITE (PARAM_REF:/2/1) (process:TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:LINES)) (TRANSCODE_ITEMS (PARAM_REF:/2/2)))) (PARAMS (EDGE_STREAM) (LINE:line1)))");
 
     // manually run the process queue
-    //    debug_enable(D_REDUCE);
+    //debug_enable(D_REDUCE+D_STEP);
     _p_reduceq(r->q);
-    //    debug_disable(D_REDUCE);
+    debug_disable(D_REDUCE+D_STEP);
 
     spec_is_str_equal(_td(r,r->q->completed->context->run_tree),"(RUN_TREE (REDUCTION_ERROR_SYMBOL:NULL_SYMBOL) (PARAMS (EDGE_STREAM) (LINE:line2)))");
 

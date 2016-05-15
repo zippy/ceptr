@@ -114,3 +114,21 @@ void sleepms(long milliseconds) {
     ts.tv_nsec = (milliseconds-(ts.tv_sec*1000))*MS_PER_NANO_SECOND;
     nanosleep(&ts,NULL);
 }
+
+void bin_to_strhex(unsigned char *bin, unsigned int binsz, char **result)
+{
+    char          hex_str[]= "0123456789abcdef";
+    unsigned int  i;
+
+    *result = (char *)malloc(binsz * 2 + 1);
+    (*result)[binsz * 2] = 0;
+
+    if (!binsz)
+	return;
+
+    for (i = 0; i < binsz; i++)
+	{
+	    (*result)[i * 2 + 0] = hex_str[(bin[i] >> 4) & 0x0F];
+	    (*result)[i * 2 + 1] = hex_str[(bin[i]     ) & 0x0F];
+	}
+}

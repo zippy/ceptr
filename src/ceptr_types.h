@@ -16,14 +16,14 @@ enum SemanticTypes {SEM_TYPE_STRUCTURE=1,SEM_TYPE_SYMBOL,SEM_TYPE_PROCESS,SEM_TY
 #define is_receptor(s) ((s).semtype == SEM_TYPE_RECEPTOR)
 
 typedef uint32_t Context;     // 4G types of receptors
-typedef uint8_t SemanticType; // 256 types of semantic things
+typedef uint16_t SemanticType; // 256 types of semantic things (but using 2 bytes for struct alignment!)
 typedef uint16_t SemanticAddr;// 64K types of symbols/structure per receptor
 
 typedef struct SemanticID {
     Context context;
     SemanticType semtype;
     SemanticAddr id;
-    uint8_t _reserved; // add an extra 8 bits to make this a 64bit structure.
+    //c    uint8_t _reserved; // add an extra 8 bits to make this a 64bit structure.
 } SemanticID;
 
 // creating aliases for SemanticIDs as hints for use.

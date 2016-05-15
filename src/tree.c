@@ -1546,8 +1546,6 @@ TreeHash _t_hash(SemTable *sem,T *t) {
         void *surface = _t_surface(t);
         h.s = _t_symbol(t);
         //@todo fix this so we don't have keep doing this on the recursive calls...
-        T *symbols = _sem_get_defs(sem,h.s);
-        T *structures = _sem_get_defs(sem,h.s);
         size_t l = _d_get_symbol_size(sem,h.s,surface);
         if (l > 0)
             h.h = hashfn((char *)surface,l);
