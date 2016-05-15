@@ -212,10 +212,13 @@ int _p_transcode(SemTable *sem, T* src,Symbol to_sym, Structure to_s,T **result)
 
                 T *k;
                 Symbol k_sym;
+
+		bool tsym_isa_list = (semeq(tdef_sym,STRUCTURE_ZERO_OR_MORE)||
+				      semeq(tdef_sym,STRUCTURE_ZERO_OR_ONE)||
+				      semeq(tdef_sym,STRUCTURE_ONE_OR_MORE));
+
                 if (semeq(tdef_sym,sdef_sym) &&
-                    (semeq(tdef_sym,STRUCTURE_ZERO_OR_MORE)||
-                     semeq(tdef_sym,STRUCTURE_ZERO_OR_ONE)||
-                     semeq(tdef_sym,STRUCTURE_ONE_OR_MORE)) &&
+                    tsym_isa_list &&
                     semeq(k_sym = _t_symbol(k = _t_child(tdef,1)),
                           _t_symbol( _t_child(sdef,1))) &&
                     semeq(k_sym,STRUCTURE_SYMBOL)) {
@@ -235,11 +238,19 @@ int _p_transcode(SemTable *sem, T* src,Symbol to_sym, Structure to_s,T **result)
                     }
                     err = redoReduction;
                 }
+		else if (tsym_isa_list &&
+			 semeq(k_sym = _t_symbol(k = _t_child(tdef,1)),STRUCTURE_SYMBOL) &&
+			 semeq(src_sym,*(Symbol *)_t_surface(k))) {
+		    // special case of transcoding a singleton into a list of that same type
+		    x = __t_newr(0,to_sym,true);
+		    _t_add(x,src);
+		    dofree=false;
+		}
                 else {
                     debug(D_TRANSCODE,"unable to match\n");
                     _t_free(src);
                     return incompatibleTypeReductionErr;
-                }
+		}
             }
         }
     }
