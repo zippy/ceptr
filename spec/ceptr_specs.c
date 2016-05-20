@@ -42,7 +42,9 @@ int main(int argc, const char **argv) {
         printf("ERROR: %d\n",err);
     }
     else {
-    def_sys();
+    G_sem = def_sys();
+    load_contexts(G_sem);
+
     //**** core tests
     testSemTable();
     testDef();
@@ -65,7 +67,7 @@ int main(int argc, const char **argv) {
     /****** examples */
     /* testProfileExample(); */
 
-    sys_free();
+    sys_free(G_sem);
     report_tests();
     }
     pthread_exit(NULL);

@@ -1521,11 +1521,9 @@ SemanticID httpresp;
 enum INTERNETProtocolIDs {
     NULL_INTERNET_PROTOCOL_ID,
     PARSE_HTTP_REQUEST_FROM_LINE_ID,
-    HTTP_ID,
     NUM_INTERNET_PROTOCOLS
 };
 SemanticID PARSE_HTTP_REQUEST_FROM_LINE;
-SemanticID HTTP;
 
 //Global data from base_defs
 T * G_http_req_example;

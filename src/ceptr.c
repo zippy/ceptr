@@ -12,7 +12,7 @@
 
 int main(int argc, const char **argv) {
 
-    def_sys();
+    G_sem = def_sys();
     char *dname = "tmp/shell_vm";
 
     //    _a_boot(dname);
@@ -38,5 +38,6 @@ int main(int argc, const char **argv) {
     _v_join_thread(&G_vm->clock_thread);
     _v_join_thread(&G_vm->vm_thread);
 
+    sys_free(G_sem);
 
 }

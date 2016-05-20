@@ -98,7 +98,7 @@ char * __t_dump(SemTable *sem,T *t,int level,char *buf);
 
 #define spec_is_sem_equal(got, expected) spec_total++; if (semeq(expected,got)){putchar('.');} else {putchar('F');sprintf(failures[spec_failures++],"%s:%d expected %s to be %d.%d.%d but was %d.%d.%d",__FUNCTION__,__LINE__,#got,(expected).context,(expected).semtype,(expected).id,(got).context,(got).semtype,(got).id);}
 
-void def_sys();
-void sys_free();
+SemTable *def_sys();
+void sys_free(SemTable *sem);
 #endif
 /** @}*/

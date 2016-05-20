@@ -314,7 +314,7 @@ void testHTTPparseHTML() {
 }
 
 Receptor *makeHTTP(VMHost *v,Process handler) {
-    SemTable *sem = v->r->sem;
+    SemTable *sem = v->sem;
     Symbol http = _d_define_receptor(sem,"http server",__r_make_definitions(),DEV_COMPOSITORY_CONTEXT);
     Receptor *r = _r_new(sem,http);
     Xaddr httpx = _v_new_receptor(v,v->r,http,r);
@@ -329,6 +329,8 @@ Receptor *makeHTTP(VMHost *v,Process handler) {
     _t_news(w,GOAL,HTTP_REQUEST_HANDLER);
     _t_news(w,ACTUAL_PROCESS,handler);
 
+    Symbol HTTP;
+    _sem_get_by_label(sem,"HTTP",&HTTP);
     _o_express_role(r,HTTP,HTTP_SERVER,HTTP_ASPECT,bindings);
     _t_free(bindings);
     _v_activate(v,httpx);
@@ -336,6 +338,15 @@ Receptor *makeHTTP(VMHost *v,Process handler) {
 }
 
 void testHTTPprotocol() {
+
+    VMHost *v = G_vm = _v_new();
+    SemTable *gsem = G_sem;
+    G_sem = v->sem;
+
+    _v_instantiate_builtins(G_vm);
+
+    Symbol HTTP;
+    _sem_get_by_label(G_sem,"HTTP",&HTTP);
     T *http = _sem_get_def(G_sem,HTTP);
 
     // check the HTTP protocol definition
@@ -350,12 +361,6 @@ void testHTTPprotocol() {
     // the unwrapping should build up a semantic map
     spec_is_str_equal(t2s(sem_map),"(SEMANTIC_MAP (SEMANTIC_LINK (ROLE:REQUESTER) (REPLACEMENT_VALUE (ROLE:HTTP_CLIENT))) (SEMANTIC_LINK (ROLE:RESPONDER) (REPLACEMENT_VALUE (ROLE:HTTP_SERVER))) (SEMANTIC_LINK (USAGE:REQUEST_TYPE) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:HTTP_REQUEST))) (SEMANTIC_LINK (USAGE:RESPONSE_TYPE) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:HTTP_RESPONSE))) (SEMANTIC_LINK (USAGE:CHANNEL) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:HTTP_ASPECT))) (SEMANTIC_LINK (GOAL:REQUEST_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:httpresp))))");
     _t_free(sem_map);
-
-    VMHost *v = G_vm = _v_new();
-    SemTable *gsem = G_sem;
-    G_sem = v->sem;
-
-    _v_instantiate_builtins(G_vm);
 
     //debug_enable(D_STREAM+D_SIGNALS+D_TREE+D_PROTOCOL);
     Receptor *r = makeHTTP(v,fill_i_am);
@@ -454,6 +459,9 @@ void testHTTPedgeReceptor() {
     _t_news(w,GOAL,HTTP_REQUEST_HANDLER);
     _t_news(w,ACTUAL_PROCESS,fill_i_am);
 
+    Symbol HTTP;
+    _sem_get_by_label(G_sem,"HTTP",&HTTP);
+
     _o_express_role(r,HTTP,HTTP_SERVER,HTTP_ASPECT,bindings);
     _t_free(bindings);
 
@@ -489,6 +497,7 @@ void testHTTPedgeReceptor() {
     G_sem = gsem;
 
 }
+
 
 void testHTTP() {
     testHTTPparseHTML();

@@ -84,7 +84,7 @@ void *readFile(char *fn,size_t *size) {
     file_size = stbuf.st_size;
     if (size) *size = file_size;
 
-    buffer = malloc(file_size);
+    buffer = malloc(file_size+1);
     if (buffer == NULL) {
         close(fd);
         raise_error("unable to allocate enough memory for contents of: %s",fn);
@@ -96,6 +96,7 @@ void *readFile(char *fn,size_t *size) {
         raise_error("error reading %s: %d",fn,errno);
     }
     close(fd);
+    buffer[file_size]=0;
     return buffer;
 }
 

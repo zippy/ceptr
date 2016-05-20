@@ -47,6 +47,8 @@ VMHost * _v_new() {
     Receptor *r = _r_new(sem,SYS_RECEPTOR);
     VMHost *v = __v_init(r,sem);
 
+    load_contexts(sem);
+
     r = _r_new(sem,COMPOSITORY);
     _v_new_receptor(v,v->r,COMPOSITORY,r);
 
@@ -57,7 +59,6 @@ VMHost * _v_new() {
     _v_new_receptor(v,v->r,TEST_RECEPTOR,r);
 
     _r_defineClockReceptor(sem);
-
 
     return v;
 }

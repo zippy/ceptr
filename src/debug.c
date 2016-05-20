@@ -18,6 +18,7 @@ char *dtypestr(int type) {
     if (type & D_TRANSCODE) {sprintf(s,"_TRANSCODE");s--;};
     if (type & D_STEP) {sprintf(s,"_STEP");s--;};
     if (type & D_SOCKET) {sprintf(s,"_SOCKET");s--;};
+    if (type & D_BOOT) {sprintf(s,"_BOOT");s--;};
     *s=0;
     return G_dtype;
 }

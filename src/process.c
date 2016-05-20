@@ -413,7 +413,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             T *def = _t_detach_by_idx(code,1);
             //@todo some kind of validation of the def??
             SemanticID ns = _d_define(sem,def, SEM_TYPE_SYMBOL,q->r->context);
-            x = _t_news(0,RESULT_SYMBOL,ns);
+            x = __t_news(0,RESULT_SYMBOL,ns,true);
         }
         break;
     case DEF_STRUCTURE_ID:
@@ -421,7 +421,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             T *def = _t_detach_by_idx(code,1);
             //@todo some kind of validation of the def??
             SemanticID ns = _d_define(sem,def, SEM_TYPE_STRUCTURE,q->r->context);
-            x = _t_news(0,RESULT_STRUCTURE,ns);
+            x = __t_news(0,RESULT_STRUCTURE,ns,true);
         }
         break;
     case DEF_PROCESS_ID:
@@ -429,7 +429,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             T *def = _t_detach_by_idx(code,1);
             //@todo some kind of validation of the def??
             SemanticID ns = _d_define(sem,def, SEM_TYPE_PROCESS,q->r->context);
-            x = _t_news(0,RESULT_PROCESS,ns);
+            x = __t_news(0,RESULT_PROCESS,ns,true);
         }
         break;
     case DEF_RECEPTOR_ID:
@@ -437,7 +437,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             T *def = _t_detach_by_idx(code,1);
             //@todo some kind of validation of the def??
             SemanticID ns = __d_define_receptor(sem,def,q->r->context);
-            x = _t_news(0,RESULT_RECEPTOR,ns);
+            x = __t_news(0,RESULT_RECEPTOR,ns,true);
         }
         break;
     case DEF_PROTOCOL_ID:
@@ -445,7 +445,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             T *def = _t_detach_by_idx(code,1);
             //@todo some kind of validation of the def??
             SemanticID ns = _d_define(sem,def,SEM_TYPE_PROTOCOL,q->r->context);
-            x = _t_news(0,RESULT_PROTOCOL,ns);
+            x = __t_news(0,RESULT_PROTOCOL,ns,true);
         }
         break;
     case NEW_ID:
