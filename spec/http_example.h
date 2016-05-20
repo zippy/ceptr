@@ -313,114 +313,6 @@ void testHTTPparseHTML() {
 
 }
 
-Receptor *makeHTTP(VMHost *v,Process handler) {
-    SemTable *sem = v->sem;
-    Symbol http = _d_define_receptor(sem,"http server",__r_make_definitions(),DEV_COMPOSITORY_CONTEXT);
-    Receptor *r = _r_new(sem,http);
-    Xaddr httpx = _v_new_receptor(v,v->r,http,r);
-
-    T *bindings = _t_new_root(PROTOCOL_BINDINGS);
-    T *res = _t_newr(bindings,RESOLUTION);
-    T *w = _t_newr(res,WHICH_RECEPTOR);
-    _t_news(w,ROLE,HTTP_SERVER);
-    __r_make_addr(w,ACTUAL_RECEPTOR,r->addr);
-    res = _t_newr(bindings,RESOLUTION);
-    w = _t_newr(res,WHICH_PROCESS);
-    _t_news(w,GOAL,HTTP_REQUEST_HANDLER);
-    _t_news(w,ACTUAL_PROCESS,handler);
-
-    Symbol HTTP;
-    _sem_get_by_label(sem,"HTTP",&HTTP);
-    _o_express_role(r,HTTP,HTTP_SERVER,HTTP_ASPECT,bindings);
-    _t_free(bindings);
-    _v_activate(v,httpx);
-    return r;
-}
-
-void testHTTPprotocol() {
-
-    VMHost *v = G_vm = _v_new();
-    SemTable *gsem = G_sem;
-    G_sem = v->sem;
-
-    _v_instantiate_builtins(G_vm);
-
-    Symbol HTTP;
-    _sem_get_by_label(G_sem,"HTTP",&HTTP);
-    T *http = _sem_get_def(G_sem,HTTP);
-
-    // check the HTTP protocol definition
-    spec_is_str_equal(t2s(http),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL (ENGLISH_LABEL:HTTP)) (PROTOCOL_SEMANTICS (GOAL:HTTP_REQUEST_HANDLER)) (INCLUSION (PNAME:REQUESTING) (LINKAGE (WHICH_ROLE (ROLE:REQUESTER) (ROLE:HTTP_CLIENT))) (LINKAGE (WHICH_ROLE (ROLE:RESPONDER) (ROLE:HTTP_SERVER))) (RESOLUTION (WHICH_SYMBOL (USAGE:REQUEST_TYPE) (ACTUAL_SYMBOL:HTTP_REQUEST))) (RESOLUTION (WHICH_SYMBOL (USAGE:RESPONSE_TYPE) (ACTUAL_SYMBOL:HTTP_RESPONSE))) (RESOLUTION (WHICH_SYMBOL (USAGE:CHANNEL) (ACTUAL_SYMBOL:HTTP_ASPECT))) (RESOLUTION (WHICH_PROCESS (GOAL:REQUEST_HANDLER) (ACTUAL_PROCESS:httpresp)))))");
-
-    T *sem_map = _t_new_root(SEMANTIC_MAP);
-    T *t = _o_unwrap(G_sem,http,sem_map);
-    // and also check how it gets unwrapped because it's defined in terms of REQUESTING
-    // @todo, how come HTTP_SERVER and the two handler goals aren't added to the semantics?
-    spec_is_str_equal(t2s(t),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL (ENGLISH_LABEL:HTTP)) (PROTOCOL_SEMANTICS (GOAL:HTTP_REQUEST_HANDLER) (ROLE:HTTP_CLIENT) (USAGE:RESPONSE_HANDLER_PARAMETERS)) (PROTOCOL_DEFAULTS (SEMANTIC_LINK (USAGE:RESPONSE_HANDLER_PARAMETERS) (REPLACEMENT_VALUE (NULL_SYMBOL)))) (backnforth (INITIATE (ROLE:HTTP_CLIENT) (DESTINATION (ROLE:HTTP_SERVER)) (ACTION:send_request)) (EXPECT (ROLE:HTTP_SERVER) (SOURCE (ROLE:HTTP_CLIENT)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:HTTP_REQUEST))) (ACTION:send_response))))");
-
-    // the unwrapping should build up a semantic map
-    spec_is_str_equal(t2s(sem_map),"(SEMANTIC_MAP (SEMANTIC_LINK (ROLE:REQUESTER) (REPLACEMENT_VALUE (ROLE:HTTP_CLIENT))) (SEMANTIC_LINK (ROLE:RESPONDER) (REPLACEMENT_VALUE (ROLE:HTTP_SERVER))) (SEMANTIC_LINK (USAGE:REQUEST_TYPE) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:HTTP_REQUEST))) (SEMANTIC_LINK (USAGE:RESPONSE_TYPE) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:HTTP_RESPONSE))) (SEMANTIC_LINK (USAGE:CHANNEL) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:HTTP_ASPECT))) (SEMANTIC_LINK (GOAL:REQUEST_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:httpresp))))");
-    _t_free(sem_map);
-
-    //debug_enable(D_STREAM+D_SIGNALS+D_TREE+D_PROTOCOL);
-    Receptor *r = makeHTTP(v,fill_i_am);
-
-    FILE *rs,*ws;
-    char buffer[] = "GET /path/to/file.ext?name=joe&age=30 HTTP/0.9\n";
-
-    rs = fmemopen(buffer, strlen (buffer), "r");
-    Stream *reader_stream = _st_new_unix_stream(rs,1);
-
-    char *output_data;
-    size_t size;
-    ws = open_memstream(&output_data,&size);
-    Stream *writer_stream = _st_new_unix_stream(ws,0);
-
-    Receptor *er = _r_makeStreamEdgeReceptor(v->sem);
-    Xaddr edge = _v_new_receptor(v,v->r,STREAM_EDGE,er);
-    _r_addWriter(er,writer_stream,DEFAULT_ASPECT);
-    _r_addReader(er,reader_stream,er->addr,HTTP_ASPECT,parse_line,ASCII_CHARS,false);
-    _v_activate(v,edge);
-
-    T *bindings = _t_new_root(PROTOCOL_BINDINGS);
-    T *res = _t_newr(bindings,RESOLUTION);
-    T *w = _t_newr(res,WHICH_RECEPTOR);
-    _t_news(w,ROLE,HTTP_REQUEST_PARSER);
-    __r_make_addr(w,ACTUAL_RECEPTOR,er->addr);
-    res = _t_newr(bindings,RESOLUTION);
-    w = _t_newr(res,WHICH_RECEPTOR);
-    _t_news(w,ROLE,LINE_SENDER);
-    __r_make_addr(w,ACTUAL_RECEPTOR,er->addr);
-    res = _t_newr(bindings,RESOLUTION);
-    w = _t_newr(res,WHICH_RECEPTOR);
-    _t_news(w,ROLE,HTTP_SERVER);
-    __r_make_addr(w,ACTUAL_RECEPTOR,r->addr);
-    _o_express_role(er,PARSE_HTTP_REQUEST_FROM_LINE,HTTP_REQUEST_PARSER,HTTP_ASPECT,bindings);
-    _t_free(bindings);
-
-    //debug_enable(D_TRANSCODE+D_STEP+D_REDUCE+D_STREAM);
-    _v_start_vmhost(G_vm);
-    sleep(1);
-    debug_disable(D_STREAM+D_SIGNALS+D_TREE+D_PROTOCOL);
-    debug_disable(D_TRANSCODE+D_REDUCE+D_REDUCEV);
-    spec_is_true(output_data != 0); // protect against seg-faults when nothing was written to the stream...
-    if (output_data != 0) {
-        spec_is_str_equal(output_data,"HTTP/1.1 200 OK\nContent-Type: text/ceptr\n\nsuper cept\n314159\n");
-    }
-    __r_kill(G_vm->r);
-
-    _v_join_thread(&G_vm->clock_thread);
-    _v_join_thread(&G_vm->vm_thread);
-
-    _st_free(reader_stream);
-    _st_free(writer_stream);
-    free(output_data);
-    _v_free(v);
-    G_vm = NULL;
-    G_sem = gsem;
-
-}
-
 void *_httptester(void *arg) {
     char *result = doSys("echo 'GET /path/to/file.ext HTTP/0.9' | nc localhost 8888");
     spec_is_str_equal(result,"HTTP/1.1 200 OK\nContent-Type: text/ceptr\n\nsuper cept\n314159\n");
@@ -436,6 +328,24 @@ void testHTTPedgeReceptor() {
     SemTable *gsem = G_sem;
     G_sem = v->sem;
     //    _v_instantiate_builtins(G_vm);
+
+    Symbol HTTP;
+    _sem_get_by_label(G_sem,"HTTP",&HTTP);
+
+    T *http_def = _sem_get_def(G_sem,HTTP);
+
+    // check the HTTP protocol definition
+    spec_is_str_equal(t2s(http_def),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL (ENGLISH_LABEL:HTTP)) (PROTOCOL_SEMANTICS (GOAL:HTTP_REQUEST_HANDLER)) (INCLUSION (PNAME:REQUESTING) (LINKAGE (WHICH_ROLE (ROLE:REQUESTER) (ROLE:HTTP_CLIENT))) (LINKAGE (WHICH_ROLE (ROLE:RESPONDER) (ROLE:HTTP_SERVER))) (RESOLUTION (WHICH_SYMBOL (USAGE:REQUEST_TYPE) (ACTUAL_SYMBOL:HTTP_REQUEST))) (RESOLUTION (WHICH_SYMBOL (USAGE:RESPONSE_TYPE) (ACTUAL_SYMBOL:HTTP_RESPONSE))) (RESOLUTION (WHICH_SYMBOL (USAGE:CHANNEL) (ACTUAL_SYMBOL:HTTP_ASPECT))) (RESOLUTION (WHICH_PROCESS (GOAL:REQUEST_HANDLER) (ACTUAL_PROCESS:httpresp)))))");
+
+    T *sem_map = _t_new_root(SEMANTIC_MAP);
+    T *t = _o_unwrap(G_sem,http_def,sem_map);
+    // and also check how it gets unwrapped because it's defined in terms of REQUESTING
+    // @todo, how come HTTP_SERVER and the two handler goals aren't added to the semantics?
+    spec_is_str_equal(t2s(t),"(PROTOCOL_DEFINITION (PROTOCOL_LABEL (ENGLISH_LABEL:HTTP)) (PROTOCOL_SEMANTICS (GOAL:HTTP_REQUEST_HANDLER) (ROLE:HTTP_CLIENT) (USAGE:RESPONSE_HANDLER_PARAMETERS)) (PROTOCOL_DEFAULTS (SEMANTIC_LINK (USAGE:RESPONSE_HANDLER_PARAMETERS) (REPLACEMENT_VALUE (NULL_SYMBOL)))) (backnforth (INITIATE (ROLE:HTTP_CLIENT) (DESTINATION (ROLE:HTTP_SERVER)) (ACTION:send_request)) (EXPECT (ROLE:HTTP_SERVER) (SOURCE (ROLE:HTTP_CLIENT)) (PATTERN (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:HTTP_REQUEST))) (ACTION:send_response))))");
+
+    // the unwrapping should build up a semantic map
+    spec_is_str_equal(t2s(sem_map),"(SEMANTIC_MAP (SEMANTIC_LINK (ROLE:REQUESTER) (REPLACEMENT_VALUE (ROLE:HTTP_CLIENT))) (SEMANTIC_LINK (ROLE:RESPONDER) (REPLACEMENT_VALUE (ROLE:HTTP_SERVER))) (SEMANTIC_LINK (USAGE:REQUEST_TYPE) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:HTTP_REQUEST))) (SEMANTIC_LINK (USAGE:RESPONSE_TYPE) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:HTTP_RESPONSE))) (SEMANTIC_LINK (USAGE:CHANNEL) (REPLACEMENT_VALUE (ACTUAL_SYMBOL:HTTP_ASPECT))) (SEMANTIC_LINK (GOAL:REQUEST_HANDLER) (REPLACEMENT_VALUE (ACTUAL_PROCESS:httpresp))))");
+    _t_free(sem_map);
 
     // create empty edge receptor
     Receptor *r = _r_makeStreamEdgeReceptor(v->sem);
@@ -458,9 +368,6 @@ void testHTTPedgeReceptor() {
     w = _t_newr(res,WHICH_PROCESS);
     _t_news(w,GOAL,HTTP_REQUEST_HANDLER);
     _t_news(w,ACTUAL_PROCESS,fill_i_am);
-
-    Symbol HTTP;
-    _sem_get_by_label(G_sem,"HTTP",&HTTP);
 
     _o_express_role(r,HTTP,HTTP_SERVER,HTTP_ASPECT,bindings);
     _t_free(bindings);
@@ -501,7 +408,6 @@ void testHTTPedgeReceptor() {
 
 void testHTTP() {
     testHTTPparseHTML();
-    testHTTPprotocol();
     testHTTPedgeReceptor();
 }
 
