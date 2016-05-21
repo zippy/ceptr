@@ -1,4 +1,4 @@
-all: clean specs ceptr
+all: clean test ceptr
 .PHONY: all
 
 CEPTR_SRC_FILES := $(wildcard src/*.h src/*.c)
@@ -8,7 +8,7 @@ SPECS_SRC_FILES := $(filter-out src/ceptr.c, $(SPECS_SRC_FILES))
 ceptr: $(CEPTR_SRC_FILES)
 	gcc -pthread -g -o ceptr $(CEPTR_SRC_FILES)
 
-specs: ceptr_specs
+test: ceptr_specs
 	./ceptr_specs
 
 ceptr_specs: $(SPECS_SRC_FILES)

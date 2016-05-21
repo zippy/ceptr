@@ -139,29 +139,43 @@ void load_context(char *path, Receptor *parent) {
     // or if we will use its name to create a new context
     SemTable *sem = parent->sem;
     SemanticID rsid;
-    Receptor *r;
-    if (_sem_get_by_label(sem,name,&rsid)) {
-        if (!is_receptor(rsid)) raise_error("%s is not a receptor!",name);
-    }
-    else {
-        T *def = _t_parse(sem,0,"(RECEPTOR_DEFINITION (RECEPTOR_LABEL %) (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (RECEPTORS) (PROTOCOLS) (SCAPES)))",_t_new_str(0,ENGLISH_LABEL,name));
-        rsid = __d_define_receptor(sem,def,parent->context);
-    }
-    r = _r_new(sem,rsid);
+    Receptor *r = 0;
 
     char *code_text = readFile(path,&l);
-    char *start,c;
+    char *start,*t,c;
     char p = 0;
+
+    char ctx[255];
 
     s = code_text;
     while(l>0) {
         start = s;
         while(l>0) {
             l--; c = *s++;
-            if (p == '\n' && c == '-') {*(s-1) = 0;break;}
+            if (p == '\n' && c == '-') {
+                *(s-1) = 0;
+                t = ctx;
+                while((c=*s++) && c != '\n') *t++ = c;
+                *t = 0;
+                break;
+            }
             p = c;
         }
-        debug(D_BOOT,"executing: %s\n",start);
+        if (ctx[0] && strcmp(ctx,name)) {
+            strcpy(name,ctx);
+            if (r) {_r_free(r);r = 0;};
+        }
+        if (!r) {
+            if (_sem_get_by_label(sem,name,&rsid)) {
+                if (!is_receptor(rsid)) raise_error("%s is not a receptor!",name);
+            }
+            else {
+                T *def = _t_parse(sem,0,"(RECEPTOR_DEFINITION (RECEPTOR_LABEL %) (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (RECEPTORS) (PROTOCOLS) (SCAPES)))",_t_new_str(0,ENGLISH_LABEL,name));
+                rsid = __d_define_receptor(sem,def,parent->context);
+            }
+            r = _r_new(sem,rsid);
+        }
+        debug(D_BOOT,"executing into %s: %s\n",name,start);
         T *code = _t_parse(sem,0,start);
         Q *q = r->q;
         T *run_tree = __p_build_run_tree(code,0);
@@ -170,5 +184,5 @@ void load_context(char *path, Receptor *parent) {
         _p_reduceq(q);
         debug(D_BOOT,"results in: %s\n",_t2s(sem,run_tree));
     }
-    _r_free(r);
+    if (r) _r_free(r);
 }

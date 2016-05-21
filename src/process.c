@@ -94,9 +94,9 @@ Process _p_get_transcoder(SemTable *sem,Symbol src_sym,Symbol to_sym) {
         if (semeq(src_s,DATE) && semeq(to_s,CSTRING)) {
             return date2usshortdate;
         }
-	if (semeq(HTTP_RESPONSE_STATUS,src_sym) && semeq(to_s,CSTRING)) {
-	    return http_response_status_2_ascii_str;
-	}
+        if (semeq(HTTP_RESPONSE_STATUS,src_sym) && semeq(to_s,CSTRING)) {
+            return http_response_status_2_ascii_str;
+        }
     }
     return NULL_PROCESS;
 }

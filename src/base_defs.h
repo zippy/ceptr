@@ -1273,10 +1273,8 @@ enum STREAM_EDGEStructureIDs {
 // STREAM_EDGE:Process
 enum STREAM_EDGEProcessIDs {
     NULL_STREAM_EDGE_PROCESS_ID,
-    echo2stream_ID,
     NUM_STREAM_EDGE_PROCESSES
 };
-SemanticID echo2stream;
 
 /**********************************************************************************/
 // STREAM_EDGE:Protocol

@@ -1171,6 +1171,9 @@ void _r_addWriter(Receptor *r,Stream *st,Aspect aspect) {
     T* s = _t_newr(params,SLOT);
     _t_news(s,USAGE,NULL_SYMBOL);
 
+    Symbol echo2stream;
+    _sem_get_by_label(G_sem,"echo2stream",&echo2stream);
+
     T *act = _t_newp(0,ACTION,echo2stream);
 
     _r_add_expectation(r,aspect,NULL_SYMBOL,expect,act,params,0,NULL,NULL);
