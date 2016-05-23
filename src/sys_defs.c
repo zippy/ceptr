@@ -150,21 +150,28 @@ void load_context(char *path, Receptor *parent) {
     s = code_text;
     while(l>0) {
         start = s;
+        // look for a line that starts with a '-' which mark indicates that we should
+        // stop reading an interpret what came before
         while(l>0) {
             l--; c = *s++;
             if (p == '\n' && c == '-') {
                 *(s-1) = 0;
                 t = ctx;
+                // look for a name on that line that we load into ctx
                 while((c=*s++) && c != '\n') *t++ = c;
                 *t = 0;
                 break;
             }
             p = c;
         }
+        // if ctx isn't the same as the name, then it names the context we are to load
+        // this (and subsequent) code chunks into, so copy ctx into name and cleanup the
+        // last receptor instance if needed
         if (ctx[0] && strcmp(ctx,name)) {
             strcpy(name,ctx);
             if (r) {_r_free(r);r = 0;};
         }
+        // set up a receptor instance for the named context and create a the context if needed.
         if (!r) {
             if (_sem_get_by_label(sem,name,&rsid)) {
                 if (!is_receptor(rsid)) raise_error("%s is not a receptor!",name);
