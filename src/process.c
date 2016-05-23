@@ -211,46 +211,46 @@ int _p_transcode(SemTable *sem, T* src,Symbol to_sym, Structure to_s,T **result)
                 Symbol tdef_sym = _t_symbol(tdef);
 
                 T *k;
-                Symbol k_sym;
+                Symbol k_sym = _t_symbol(k = _t_child(tdef,StructureDefDefIdx));
+                bool tsym_isa_simple_list = (semeq(tdef_sym,STRUCTURE_ZERO_OR_MORE)||
+                                             semeq(tdef_sym,STRUCTURE_ZERO_OR_ONE)||
+                                             semeq(tdef_sym,STRUCTURE_ONE_OR_MORE)) &&
+                                            semeq(k_sym,STRUCTURE_SYMBOL);
+                x = NULL;
+                if (tsym_isa_simple_list) {
+                    Symbol to_list_of_sym = *(Symbol *)_t_surface(k);
+                    if (semeq(tdef_sym,sdef_sym) &&
+                        semeq(_t_symbol( _t_child(sdef,StructureDefDefIdx)),STRUCTURE_SYMBOL)) {
+                        debug(D_TRANSCODE,"transcoding elements of simple list\n");
+                        x = __t_newr(0,to_sym,true);
+                        T *m,*r;
+                        int e;
+                        // the to becomes the surface of the STRUCTURE_SYMBOL def
 
-		bool tsym_isa_list = (semeq(tdef_sym,STRUCTURE_ZERO_OR_MORE)||
-				      semeq(tdef_sym,STRUCTURE_ZERO_OR_ONE)||
-				      semeq(tdef_sym,STRUCTURE_ONE_OR_MORE));
-
-                if (semeq(tdef_sym,sdef_sym) &&
-                    tsym_isa_list &&
-                    semeq(k_sym = _t_symbol(k = _t_child(tdef,1)),
-                          _t_symbol( _t_child(sdef,1))) &&
-                    semeq(k_sym,STRUCTURE_SYMBOL)) {
-                    x = __t_newr(0,to_sym,true);
-                    T *m,*r;
-                    int e;
-                    // the to becomes the surface of the STRUCTURE_SYMBOL def
-                    Symbol to_sym = *(Symbol *)_t_surface(k);
-                    Structure to_s = _sem_get_symbol_structure(sem,to_sym);
-                    while (m = _t_detach_by_idx(src,1)) {
-                        e = _p_transcode(sem,m,to_sym,to_s,&r);
-                        if (e && e != redoReduction) {
-                            _t_free(src);
-                            return e;
+                        Structure to_s = _sem_get_symbol_structure(sem,to_list_of_sym);
+                        while (m = _t_detach_by_idx(src,1)) {
+                            e = _p_transcode(sem,m,to_list_of_sym,to_s,&r);
+                            if (e && e != redoReduction) {
+                                _t_free(src);
+                                return e;
+                            }
+                            _t_add(x,r);
                         }
-                        _t_add(x,r);
+                        err = redoReduction;
                     }
-                    err = redoReduction;
+                    else if (semeq(src_sym,to_list_of_sym)) {
+                        debug(D_TRANSCODE,"transcoding singleton into simple list\n");
+                        // special case of transcoding a singleton into a list of that same type
+                        x = __t_newr(0,to_sym,true);
+                        _t_add(x,src);
+                        dofree=false;
+                    }
                 }
-		else if (tsym_isa_list &&
-			 semeq(k_sym = _t_symbol(k = _t_child(tdef,1)),STRUCTURE_SYMBOL) &&
-			 semeq(src_sym,*(Symbol *)_t_surface(k))) {
-		    // special case of transcoding a singleton into a list of that same type
-		    x = __t_newr(0,to_sym,true);
-		    _t_add(x,src);
-		    dofree=false;
-		}
-                else {
+                if (!x) {
                     debug(D_TRANSCODE,"unable to match\n");
                     _t_free(src);
                     return incompatibleTypeReductionErr;
-		}
+                }
             }
         }
     }
