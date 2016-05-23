@@ -44,6 +44,7 @@ T * __t_init(T *parent,Symbol symbol,bool is_run_node) {
     if (parent != NULL) {
         __t_append_child(parent,t);
     }
+    return t;
 }
 
 /**
@@ -174,7 +175,7 @@ T *__t_newr(T *parent,Symbol symbol,bool is_run_node) {
 /* create tree node whose surface is a specially allocated c structure,
    i.e. a receptor, scape, or stream, these nodes get cloned as references
    so the c-structure isn't double freed
- */
+*/
 T *__t_new_special(T *parent,Symbol symbol,void *s,int flag,bool is_run_node) {
     T *t = __t_init(parent,symbol,is_run_node);
     t->contents.surface = s;
@@ -301,7 +302,7 @@ void _t_detach_by_ptr(T *t,T *c) {
                 }
                 break;
             }
-            );
+        );
 
     if (c) c->structure.parent = 0;
 }
@@ -780,8 +781,8 @@ T *_t_build2(SemTable *sem,T *parent,...) {
         param = va_arg(ap,Symbol);
         if (semeq(param,STX_OP)) {
             node = va_arg(ap,Symbol);
-	    type = NULL_SYMBOL;
-	    if (!semeq(node,NULL_SYMBOL)) type = _getBuildType(sem,node,&st,&def);
+            type = NULL_SYMBOL;
+            if (!semeq(node,NULL_SYMBOL)) type = _getBuildType(sem,node,&st,&def);
             if (semeq(type,STRUCTURE_SYMBOL) && semeq(*(Symbol *)_t_surface(def),NULL_SYMBOL)) {
                 debug(D_TREE,"building sys structure %s\n",_sem_get_name(sem,st));
                 if (semeq(st,PROCESS) || semeq(st,SYMBOL) || semeq(st,STRUCTURE) || semeq(st,PROTOCOL)) {
@@ -918,12 +919,11 @@ T *__t_tokenize(char *s) {
 T *_t_parse(SemTable *sem,T *parent,char *s,...) {
     T *tokens = __t_tokenize(s);
     T *t = parent;
-    Structure st = NULL_STRUCTURE;
-    int i,idx = 1;
+    int idx = 1;
     T *tok;
     va_list ap;
     va_start (ap, s);
-    while (tok = _t_child(tokens,idx++)) {
+    while ((tok = _t_child(tokens,idx++))) {
         if (semeq(P_INTERPOLATE,_t_symbol(tok))) {
             _t_add(t,va_arg(ap,T *));
         }
@@ -943,7 +943,7 @@ T *_t_parse(SemTable *sem,T *parent,char *s,...) {
             Structure st;
             Symbol type = NULL_SYMBOL;
 
-	    if (!semeq(node,NULL_SYMBOL)) type = _getBuildType(sem,node,&st,&def);
+            if (!semeq(node,NULL_SYMBOL)) type = _getBuildType(sem,node,&st,&def);
             // if the symbol is a structure type or has a NULL_SYMBOL as it's definitional
             // surface then we know that we have a simple structure to build
             if (semeq(type,STRUCTURE_SYMBOL) && semeq(*(Symbol *)_t_surface(def),NULL_SYMBOL)) {
@@ -1045,7 +1045,7 @@ T *__t_find_actual(T *sem_map,Symbol actual_kind,T *replacement_kind) {
  *
  * <b>Examples (from test suite):</b>
  * @snippet spec/tree_spec.h testTreeTemplate
-*/
+ */
 bool __t_fill_template(T *template, T *sem_map,bool as_run_node) {
     if (!template) return;
     debug(D_TREE,"filling template:\n%s\n",__t2s(G_sem,template,INDENT));
@@ -1111,7 +1111,7 @@ bool __t_fill_template(T *template, T *sem_map,bool as_run_node) {
                 }
                 else {
                     SemanticID rsid = _t_symbol(replacement_value);
-		    debug(D_TREE,"replacement value: %s\n",t2s(replacement_value));
+                    debug(D_TREE,"replacement value: %s\n",t2s(replacement_value));
                     // if the replacement value is a kind try to re-resolve from the map
                     T *x = NULL;
                     if (semeq(rsid,ROLE)) {
@@ -1152,16 +1152,16 @@ bool __t_fill_template(T *template, T *sem_map,bool as_run_node) {
                         else if (semeq(rsid,ACTUAL_VALUE)) {
                             replacement_value = _t_child(replacement_value,1);
                         }
-			if (semeq(NULL_SYMBOL,_t_symbol(replacement_value))) {
-			    replacement_value = NULL;
-			}
-			if (replacement_value) {
-			    if (is_run_node)
-				r = _t_rclone(replacement_value);
-			    else
-				r = _t_clone(replacement_value);
-			}
-			else r = NULL;
+                        if (semeq(NULL_SYMBOL,_t_symbol(replacement_value))) {
+                            replacement_value = NULL;
+                        }
+                        if (replacement_value) {
+                            if (is_run_node)
+                                r = _t_rclone(replacement_value);
+                            else
+                                r = _t_clone(replacement_value);
+                        }
+                        else r = NULL;
                         if (temp) _t_free(temp);
                     }
                 }
@@ -1172,25 +1172,25 @@ bool __t_fill_template(T *template, T *sem_map,bool as_run_node) {
                     _t_free(children);
                 }
                 if (r) _t_replace_node(template,r);
-		else {
-		    T *p = _t_parent(template);
-		    if (!p) raise_error("not expecting a root node!");
-		    _t_detach_by_ptr(p,template);
-		    _t_free(template);
-		    template = NULL;
-		}
+                else {
+                    T *p = _t_parent(template);
+                    if (!p) raise_error("not expecting a root node!");
+                    _t_detach_by_ptr(p,template);
+                    _t_free(template);
+                    template = NULL;
+                }
                 break;
             }
-	    else { debug(D_TREE," nope)\n");}
+            else { debug(D_TREE," nope)\n");}
         }
     }
     else {
-	int i;
-	for(i=1;i<=_t_children(template);i++) {
-	    T *t = _t_child(template,i);
-	    // if the fill resulted in deletion we need to decrease the count to not skip a child
-	    if (_t_fill_template(t,sem_map)) i--;
-	}
+        int i;
+        for(i=1;i<=_t_children(template);i++) {
+            T *t = _t_child(template,i);
+            // if the fill resulted in deletion we need to decrease the count to not skip a child
+            if (_t_fill_template(t,sem_map)) i--;
+        }
     }
     debug(D_TREE,"results in:\n%s\n\n",template ? __t2s(G_sem,template,INDENT) : "<nothing>");
     return template == NULL;
@@ -1762,13 +1762,13 @@ char * _t2rawjson(SemTable *sem,T *t,int level,char *buf) {
             case PROCESS_ID:
             case PROTOCOL_ID:
             case RECEPTOR_ID:
-                {
-                    SemanticID sem =*(SemanticID *)_t_surface(t);
-                    sprintf(buf,",\"surface\":");
-                    buf+= strlen(buf);
-                    _add_sem(buf,sem);
-                }
-                break;
+            {
+                SemanticID sem =*(SemanticID *)_t_surface(t);
+                sprintf(buf,",\"surface\":");
+                buf+= strlen(buf);
+                _add_sem(buf,sem);
+            }
+            break;
             case TREE_PATH_ID:
                 sprintf(buf,",\"surface\":\"%s\"",_t_sprint_path((int *)_t_surface(t),b));
                 break;
@@ -2006,7 +2006,7 @@ int _t_write(SemTable *sem,T *t,Stream *stream) {
         DO_KIDS(t,
                 err = __t_writeln(_t_child(t,i),stream);
                 if (err == 0) return 0;
-                );
+            );
     }
     else {
         char *str;

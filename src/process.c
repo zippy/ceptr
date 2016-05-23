@@ -180,7 +180,7 @@ int _p_transcode(SemTable *sem, T* src,Symbol to_sym, Structure to_s,T **result)
                             T *xx = __t_newr(x,LINES,true);
                             T *k,*r;
                             int e;
-                            while (k = _t_detach_by_idx(src,1)) {
+                            while ((k = _t_detach_by_idx(src,1))) {
                                 e = _p_transcode(sem,k,to_sym,to_s,&r);
                                 if (e && e != redoReduction) {
                                     _t_free(src);
@@ -201,12 +201,12 @@ int _p_transcode(SemTable *sem, T* src,Symbol to_sym, Structure to_s,T **result)
                 // @todo generalize
                 // get the definition of the structure of the src and dest
                 T *sdef = _sem_get_def(sem,src_s);
-                sdef = _t_child(sdef,2);
+                sdef = _t_child(sdef,SymbolDefStructureIdx);
                 debug(D_TRANSCODE,"source def: %s\n",t2s(sdef));
                 Symbol sdef_sym = _t_symbol(sdef);
 
                 T *tdef = _sem_get_def(sem,to_s);
-                tdef = _t_child(tdef,2);
+                tdef = _t_child(tdef,SymbolDefStructureIdx);
                 debug(D_TRANSCODE,"to def: %s\n",t2s(tdef));
                 Symbol tdef_sym = _t_symbol(tdef);
 
@@ -228,7 +228,7 @@ int _p_transcode(SemTable *sem, T* src,Symbol to_sym, Structure to_s,T **result)
                         // the to becomes the surface of the STRUCTURE_SYMBOL def
 
                         Structure to_s = _sem_get_symbol_structure(sem,to_list_of_sym);
-                        while (m = _t_detach_by_idx(src,1)) {
+                        while ((m = _t_detach_by_idx(src,1))) {
                             e = _p_transcode(sem,m,to_list_of_sym,to_s,&r);
                             if (e && e != redoReduction) {
                                 _t_free(src);
@@ -481,7 +481,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                     context->conversation = context->conversation->next;
             }
             T *t;
-            while (t = _t_detach_by_idx(code,1)) {
+            while ((t = _t_detach_by_idx(code,1))) {
                 if (semeq(_t_symbol(t),BOOLEAN)) {
                     if (*(int *)_t_surface(t)) {
                         err = Block;
@@ -857,7 +857,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             if (!items) return signatureMismatchReductionErr;
             T *t = __t_newr(0,PARAMS,true);  //holder for the transcoding children
             T *src;
-            while (src = _t_detach_by_idx(items,1)) {
+            while ((src = _t_detach_by_idx(items,1))) {
                 int e = _p_transcode(sem,src,to_sym,to_s,&x);
                 if (e != noReductionErr) {
                     if (e != redoReduction) return e;
@@ -950,31 +950,31 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
                 if (semeq(RESULT_SYMBOL,sy)) {
                     sy = *(Symbol *)_t_surface(s);
                     _t_free(s);
-		    size_t l = _st_data_size(st);
-		    char *c = _st_data(st);
+                    size_t l = _st_data_size(st);
+                    char *c = _st_data(st);
 
-		    Structure to_s = _sem_get_symbol_structure(sem,sy);
-		    if (semeq(to_s,CSTRING)) {
-			debug(D_STREAM,"creating CSTRING: %s '%.*s'\n",_sem_get_name(sem,sy),(int)l,c);
-			// @todo fix this to be a flag instruction to __t_new
-			// currently it only works because that value is the newline in the
-			// read buffer.
-			_st_data(st)[l] = 0;
-			x = __t_new(0,sy,c,l+1,1);
-		    }
-		    else {
-			debug(D_STREAM,"non CSTRING RESULT_SYMBOL so converting to ASCII_CHARS and transcoding to %s \n",_sem_get_name(sem,sy));
+                    Structure to_s = _sem_get_symbol_structure(sem,sy);
+                    if (semeq(to_s,CSTRING)) {
+                        debug(D_STREAM,"creating CSTRING: %s '%.*s'\n",_sem_get_name(sem,sy),(int)l,c);
+                        // @todo fix this to be a flag instruction to __t_new
+                        // currently it only works because that value is the newline in the
+                        // read buffer.
+                        _st_data(st)[l] = 0;
+                        x = __t_new(0,sy,c,l+1,1);
+                    }
+                    else {
+                        debug(D_STREAM,"non CSTRING RESULT_SYMBOL so converting to ASCII_CHARS and transcoding to %s \n",_sem_get_name(sem,sy));
                         T *src = __t_newr(0,ASCII_CHARS,true);
                         while (l--) {
                             __t_newc(src,ASCII_CHAR,*c,true);
                             c++;
                         }
-			int e = _p_transcode(sem,src,sy,to_s,&x);
-			if (e != noReductionErr) {
-			    if (e != redoReduction) return e;
-			    else err = e;
-			}
-		    }
+                        int e = _p_transcode(sem,src,sy,to_s,&x);
+                        if (e != noReductionErr) {
+                            if (e != redoReduction) return e;
+                            else err = e;
+                        }
+                    }
                     _st_data_consumed(st);
                 }
                 else {raise_error("expecting RESULT_SYMBOL");}
@@ -1002,7 +1002,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
             Stream *st = _t_surface(s);
             _t_free(s);
             // get the data to write as string
-            while(s = _t_detach_by_idx(code,1)) {
+            while ((s = _t_detach_by_idx(code,1))) {
                 int err = _t_write(sem,s,st);
                 _t_free(s);
                 if (err == 0) return unixErrnoReductionErr;
@@ -1311,7 +1311,7 @@ Error __p_reduce_sys_proc(R *context,Symbol s,T *code,Q *q) {
         _t_free(code);
         // then loop through x's children inserting them in the parent
         T *c;
-        while (c = _t_detach_by_idx(x,1)) {
+        while ((c = _t_detach_by_idx(x,1))) {
             _t_insert_at(parent,path,c);
             path[0]++;
         }
@@ -1744,7 +1744,7 @@ Error _p_step(Q *q, R **contextP) {
                     // the conversation IDs and make the tree
                     if (_t_size(np) == 0) {
                         UUIDt cuuid = __uuid_gen();
-                        T *until,*wait = NULL;
+                        T *until,*wait = NULL;  //@todo wait set but not used... what was I doing here?
                         //@todo get these value semantically i.e _t_get_siganture_child(np,"until");
                         until =_t_child(np,2);
                         if (until) {
@@ -1813,31 +1813,30 @@ Error _p_step(Q *q, R **contextP) {
 
                         Error e = __p_reduce_sys_proc(context,s,np,q);
                         if (e == redoReduction) {
-
-			    // reset the node_pointer
+                            // reset the node_pointer
                             np = context->node_pointer = _t_child(context->parent,context->idx);
-			    // there are two reasons to redoReduction, one because the call to reduce_sys_proc
-			    // added more code to the runtree that just still needs to be reduced
-			    // or because it added a new run-tree, which needs to be treated as a function
-			    // call and thus adding a new context
-			    if (semeq(RUN_TREE,_t_symbol(np))) {
-				context->state = Pushed;
-				// swap out the RUN_TREE for a dummy proc
-				// @todo really the error returned by reduce_sys_proc should be a struct
-				// with the RUN_TREE in it so we don't have store it in the actual tree
-				int i = _t_node_index(np);
-				T *p = _t_parent(np);
-				T *dummy = __t_newr(0,NOOP,true);
-				p->structure.children[i-1] = dummy;
-				dummy->structure.parent = p;
-				np->structure.parent = NULL;
-				*contextP = __p_make_context(np,context,context->id,context->sem_map);
-				debug(D_REDUCE,"Redoing with a new context for: %s\n\n",_t2s(sem,np));
-			    }
-			    else {
-				context->state = Eval;
-				set_rt_cur_child(q->r,np,RUN_TREE_NOT_EVAULATED); // reset the current child count on the code
-			    }
+                            // there are two reasons to redoReduction, one because the call to reduce_sys_proc
+                            // added more code to the runtree that just still needs to be reduced
+                            // or because it added a new run-tree, which needs to be treated as a function
+                            // call and thus adding a new context
+                            if (semeq(RUN_TREE,_t_symbol(np))) {
+                                context->state = Pushed;
+                                // swap out the RUN_TREE for a dummy proc
+                                // @todo really the error returned by reduce_sys_proc should be a struct
+                                // with the RUN_TREE in it so we don't have store it in the actual tree
+                                int i = _t_node_index(np);
+                                T *p = _t_parent(np);
+                                T *dummy = __t_newr(0,NOOP,true);
+                                p->structure.children[i-1] = dummy;
+                                dummy->structure.parent = p;
+                                np->structure.parent = NULL;
+                                *contextP = __p_make_context(np,context,context->id,context->sem_map);
+                                debug(D_REDUCE,"Redoing with a new context for: %s\n\n",_t2s(sem,np));
+                            }
+                            else {
+                                context->state = Eval;
+                                set_rt_cur_child(q->r,np,RUN_TREE_NOT_EVAULATED); // reset the current child count on the code
+                            }
                         }
                         else context->state = e ? e : Ascend;
                     }
@@ -2038,7 +2037,6 @@ void _p_free_elements(Qe *e) {
  * @param[in] q the queue to be freed
  */
 void _p_freeq(Q *q) {
-    Qe *e = q->active;
     _p_free_elements(q->active);
     _p_free_elements(q->completed);
     _p_free_elements(q->blocked);
@@ -2073,8 +2071,6 @@ Qe *__p_addrt2q(Q *q,T *run_tree,T *sem_map) {
  * @param[in] q the queue to be processed
  */
 void *_p_reduceq_thread(void *arg){
-    Q *q = (Q*)arg;
-
     int err;
     err = _p_reduceq((Q *)arg);
     pthread_exit(NULL);
@@ -2236,7 +2232,7 @@ T *__p_make_form(Symbol sym,char *output_label,Symbol output_type,SemanticID out
     else {
         _t_news(o,output_type,output_sem);
     }
-    while (label = va_arg(params,char*)) {
+    while ((label = va_arg(params,char*))) {
         type = va_arg(params,Symbol);
         if (semeq(type,SIGNATURE_OPTIONAL)) {
             optional = 1;
