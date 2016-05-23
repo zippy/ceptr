@@ -181,9 +181,9 @@ Symbol: CONVERSATION,[(CONVERSATION_UUID,END_CONDITIONS,CONVERSATIONS,?WAKEUP_RE
 
 # process defintion symbols
 # ?the types of processes: transcode / (operate/compare) / (constrain/validate/range/enum) / flow / side-effect
-Symbol: TRANSCODER,NULL_STRUCTURE;
-Symbol: OPERATOR,NULL_STRUCTURE;
-Symbol: VALIDATOR,NULL_STRUCTURE;
+Symbol: TRANSCODER,NULL_STRUCTURE;   should be an enum value for process type
+Symbol: OPERATOR,NULL_STRUCTURE;     should be an enum value for process type
+Symbol: VALIDATOR,NULL_STRUCTURE;    should be an enum value for process type
 Symbol: PROCESS_OF_STRUCTURE,STRUCTURE;
 Symbol: PROCESS_OF_SYMBOL,SYMBOL;
 Symbol: PROCESS_OF_PROCESS,PROCESS;
@@ -322,8 +322,9 @@ Symbol: NOW,TIME;
 Structure: TIMESTAMP,TODAY,NOW;
 Symbol: TICK,TIMESTAMP;
 
-Symbol: DATE_DIVIDER,CSTRING;
+Symbol: DELIMITER,CSTRING;
 Symbol: US_SHORT_DATE,CSTRING;
+Symbol: SHORT_TIME,CSTRING;
 
 Symbol: ERROR_LOCATION,TREE_PATH;
 Symbol: ERROR_DATA,[(!)];
@@ -516,11 +517,21 @@ Data: date2usshortdate_proc,(CONCAT_STR (RESULT_SYMBOL:US_SHORT_DATE)
       (TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:ASCII_STR))
                  (TRANSCODE_ITEMS
                      (PARAM_REF:/2/1/2)
-                     (DATE_DIVIDER:"/")
+                     (DELIMITER:"/")
                      (PARAM_REF:/2/1/3)
-                     (DATE_DIVIDER:"/")
+                     (DELIMITER:"/")
                      (PARAM_REF:/2/1/1))));
 ProcessL: date2usshortdate,date2usshortdate_proc,"date to us short format date transcoder",DATE,TRANSCODER,"to",SIGNATURE_SYMBOL,US_SHORT_DATE,"from",SIGNATURE_STRUCTURE,DATE;
+
+Data: time2shortime_proc,(CONCAT_STR (RESULT_SYMBOL:SHORT_TIME)
+      (TRANSCODE (TRANSCODE_PARAMS (TRANSCODE_TO:ASCII_STR))
+                 (TRANSCODE_ITEMS
+                     (PARAM_REF:/2/1/1)
+                     (DELIMITER:":")
+                     (PARAM_REF:/2/1/2)
+                     (DELIMITER:":")
+                     (PARAM_REF:/2/1/3))));
+ProcessL: time2shortime,time2shortime_proc,"time to short format date transcoder",TIME,TRANSCODER,"to",SIGNATURE_SYMBOL,SHORT_TIME,"from",SIGNATURE_STRUCTURE,TIME;
 
 ###### defs for an abstract requesting protocol
 Symbol: REQUESTER,RECEPTOR_ADDRESS;

@@ -152,6 +152,7 @@ void load_context(char *path, Receptor *parent) {
         start = s;
         // look for a line that starts with a '-' which mark indicates that we should
         // stop reading an interpret what came before
+        ctx[0] = 0;
         while(l>0) {
             l--; c = *s++;
             if (p == '\n' && c == '-') {
@@ -174,22 +175,26 @@ void load_context(char *path, Receptor *parent) {
         // set up a receptor instance for the named context and create a the context if needed.
         if (!r) {
             if (_sem_get_by_label(sem,name,&rsid)) {
+                debug(D_BOOT,"found existing context: %s\n",name);
                 if (!is_receptor(rsid)) raise_error("%s is not a receptor!",name);
             }
             else {
+                debug(D_BOOT,"creating context: %s\n",name);
                 T *def = _t_parse(sem,0,"(RECEPTOR_DEFINITION (RECEPTOR_LABEL %) (DEFINITIONS (STRUCTURES) (SYMBOLS) (PROCESSES) (RECEPTORS) (PROTOCOLS) (SCAPES)))",_t_new_str(0,ENGLISH_LABEL,name));
                 rsid = __d_define_receptor(sem,def,parent->context);
             }
             r = _r_new(sem,rsid);
         }
-        debug(D_BOOT,"executing into %s: %s\n",name,start);
+        debug(D_BOOT,"executing into %s:\n%s\n",name,start);
         T *code = _t_parse(sem,0,start);
-        Q *q = r->q;
-        T *run_tree = __p_build_run_tree(code,0);
-        _t_free(code);
-        Qe *e = _p_addrt2q(q,run_tree);
-        _p_reduceq(q);
-        debug(D_BOOT,"results in: %s\n",_t2s(sem,run_tree));
+        if (code) {
+            Q *q = r->q;
+            T *run_tree = __p_build_run_tree(code,0);
+            _t_free(code);
+            Qe *e = _p_addrt2q(q,run_tree);
+            _p_reduceq(q);
+            debug(D_BOOT,"results in: %s\n",_t2s(sem,run_tree));
+        }
     }
     if (r) _r_free(r);
 }

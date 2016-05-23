@@ -94,6 +94,9 @@ Process _p_get_transcoder(SemTable *sem,Symbol src_sym,Symbol to_sym) {
         if (semeq(src_s,DATE) && semeq(to_s,CSTRING)) {
             return date2usshortdate;
         }
+        if (semeq(src_s,TIME) && semeq(to_s,CSTRING)) {
+            return time2shortime;
+        }
         if (semeq(HTTP_RESPONSE_STATUS,src_sym) && semeq(to_s,CSTRING)) {
             return http_response_status_2_ascii_str;
         }
@@ -238,11 +241,24 @@ int _p_transcode(SemTable *sem, T* src,Symbol to_sym, Structure to_s,T **result)
                         }
                         err = redoReduction;
                     }
-                    else if (semeq(src_sym,to_list_of_sym)) {
+                    else {
+                        // if the to is a simple list but the src isn't then if the
+                        // src happens to be of the right type we can simply added it as a
+                        // singleton to the list.  Otherwise we first have to try transcoding it
                         debug(D_TRANSCODE,"transcoding singleton into simple list\n");
-                        // special case of transcoding a singleton into a list of that same type
+                        T *singleton = src;
+                        if (!semeq(src_sym,to_list_of_sym)) {
+                            debug(D_TRANSCODE,"src doesn't match, recurring..\n");
+                            int e;
+                            e = _p_transcode(sem,src,to_list_of_sym,_sem_get_symbol_structure(sem,to_list_of_sym),&singleton);
+                            if (e && e != redoReduction) {
+                                _t_free(src);
+                                return e;
+                            }
+                            err = redoReduction;
+                        }
                         x = __t_newr(0,to_sym,true);
-                        _t_add(x,src);
+                        _t_add(x,singleton);
                         dofree=false;
                     }
                 }

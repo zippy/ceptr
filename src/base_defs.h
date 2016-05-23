@@ -220,8 +220,9 @@ enum SYSSymbolIDs {
     TODAY_ID,
     NOW_ID,
     TICK_ID,
-    DATE_DIVIDER_ID,
+    DELIMITER_ID,
     US_SHORT_DATE_ID,
+    SHORT_TIME_ID,
     ERROR_LOCATION_ID,
     ERROR_DATA_ID,
     ZERO_DIVIDE_ERR_ID,
@@ -503,8 +504,9 @@ SemanticID SECOND;
 SemanticID TODAY;
 SemanticID NOW;
 SemanticID TICK;
-SemanticID DATE_DIVIDER;
+SemanticID DELIMITER;
 SemanticID US_SHORT_DATE;
+SemanticID SHORT_TIME;
 SemanticID ERROR_LOCATION;
 SemanticID ERROR_DATA;
 SemanticID ZERO_DIVIDE_ERR;
@@ -1118,6 +1120,7 @@ SemanticID COMMAND;
 enum DEV_COMPOSITORYProcessIDs {
     NULL_DEV_COMPOSITORY_PROCESS_ID,
     date2usshortdate_ID,
+    time2shortime_ID,
     send_request_ID,
     send_response_ID,
     fill_i_am_ID,
@@ -1130,6 +1133,7 @@ enum DEV_COMPOSITORYProcessIDs {
     NUM_DEV_COMPOSITORY_PROCESSES
 };
 SemanticID date2usshortdate;
+SemanticID time2shortime;
 SemanticID send_request;
 SemanticID send_response;
 SemanticID fill_i_am;

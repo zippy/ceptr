@@ -893,19 +893,19 @@
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="TRANSCODER"></a>TRANSCODER</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
-       <div class="def-comment"></div>
+       <div class="def-comment">   should be an enum value for process type</div>
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="OPERATOR"></a>OPERATOR</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
-       <div class="def-comment"></div>
+       <div class="def-comment">     should be an enum value for process type</div>
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="VALIDATOR"></a>VALIDATOR</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></div>
-       <div class="def-comment"></div>
+       <div class="def-comment">    should be an enum value for process type</div>
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
@@ -1839,13 +1839,19 @@
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
-       <div class="def-name"><a name="DATE_DIVIDER"></a>DATE_DIVIDER</div>
+       <div class="def-name"><a name="DELIMITER"></a>DELIMITER</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
        <div class="def-comment"></div>
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
        <div class="def-name"><a name="US_SHORT_DATE"></a>US_SHORT_DATE</div>
+       <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
+       <div class="def-comment"></div>
+   </div>
+   <div class="def-item def-symbol">
+       <div class="def-type">Symbol:</div>
+       <div class="def-name"><a name="SHORT_TIME"></a>SHORT_TIME</div>
        <div class="def-sym-def"><a href="ref_sys_structures.html#CSTRING">CSTRING</a></div>
        <div class="def-comment"></div>
    </div>
@@ -2912,6 +2918,13 @@
        <div class="def-sig-in"><li>from(STRUCTURE:<a href="ref_sys_symbols.html#DATE">DATE</a>)</li></div>
        <div class="def-sig-out">to(SYMBOL:<a href="ref_sys_symbols.html#US_SHORT_DATE">US_SHORT_DATE</a>)</div>
        <div class="def-comment"><i>date to us short format date transcoder</i></div>
+   </div>
+   <div class="def-item def-process">
+       <div class="def-type">Process:</div>
+       <div class="def-name"><a name="time2shortime"></a>time2shortime</div>
+       <div class="def-sig-in"><li>from(STRUCTURE:<a href="ref_sys_symbols.html#TIME">TIME</a>)</li></div>
+       <div class="def-sig-out">to(SYMBOL:<a href="ref_sys_symbols.html#SHORT_TIME">SHORT_TIME</a>)</div>
+       <div class="def-comment"><i>time to short format date transcoder</i></div>
    </div>
    <div class="def-item def-symbol">
        <div class="def-type">Symbol:</div>
