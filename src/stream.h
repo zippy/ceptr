@@ -17,7 +17,7 @@
 #include <stdbool.h>
 
 enum StreamTypes {UnixStream,SocketStream};
-enum {StreamHasData=0x0001,StreamCloseOnFree=0x0002,StreamReader=0x0004,StreamWaiting=0x0008,StreamAlive=0x8000,StreamCloseAfterOneWrite=0x0010,StreamDying=0x0100};
+enum {StreamHasData=0x0001,StreamCloseOnFree=0x0002,StreamReader=0x0004,StreamWaiting=0x0008,StreamAlive=0x8000,StreamCloseAfterOneWrite=0x0010,StreamDying=0x0100,StreamLoadByLine=0x0200};
 
 typedef struct Stream Stream;
 

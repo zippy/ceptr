@@ -43,15 +43,18 @@ void testStreamAlive() {
 void testStreamScan() {
 
     Stream * s = __st_alloc_stream();
-    s->type = 99;
+    s->type = 99;       // typed doesn't matter, just testing scan.
     s->buf_size = 100;
 
+    // setup stream buffer as if three lines have been read in
     s->buf = "line1\ncat\ndog";
     s->bytes_used = strlen(s->buf);
 
+    // test initializing the scan state
     __st_init_scan(s);
     spec_is_equal(s->scan_state,StreamScanInitial);
 
+    // test how scans loads state data with offsets into the buffer for each unit
     __st_scan(s);
     spec_is_equal(s->scan_state,StreamScanSuccess);
     spec_is_equal(s->unit_start,0);
@@ -60,13 +63,15 @@ void testStreamScan() {
     spec_is_equal(s->scan_state,StreamScanSuccess);
     spec_is_equal(s->unit_start,6);
     spec_is_equal(s->unit_size,3);
+
+    // test how scan of unterminated data at end of buffer sets state to Partial
     __st_scan(s);
     spec_is_equal(s->scan_state,StreamScanPartial);
+    spec_is_equal(s->unit_start,10);
 
     // repeat calls to scan continue with Partial result
     __st_scan(s);
     spec_is_equal(s->scan_state,StreamScanPartial);
-
 
     // simulate reading in some extra bytes into the buffer (but not enough)
     s->buf = "line1\ncat\ndogg";  s->bytes_used = strlen(s->buf);
@@ -92,7 +97,6 @@ void testStreamScan() {
     __st_scan(s);
     spec_is_equal(s->scan_state,StreamScanComplete);
 
-
     _st_free(s);
 
 }
@@ -101,7 +105,7 @@ void testStreamFileLoad() {
     FILE *input;
     //debug_enable(D_STREAM);
 
-    char data[] = "line1\nline2\n";
+    char data[] = "line1\nline2\nline3\n";
     input = fmemopen(data, strlen(data), "r");
     Stream *s = _st_new_unix_stream(input,false);
     // manually allocate a buffer for reading
@@ -109,7 +113,14 @@ void testStreamFileLoad() {
     s->buf_size = 99;
     memset(s->buf,0,100);
 
-    spec_is_equal(__st_unix_stream_load(s),strlen(data));
+    // start by loading line, by line
+    s->flags |= StreamLoadByLine;
+    spec_is_equal(__st_unix_stream_load(s),6);
+    spec_is_str_equal(s->buf,"line1\n");
+
+    // then just switch to slurp mode.
+    s->flags &= ~StreamLoadByLine;
+    spec_is_equal(__st_unix_stream_load(s),12);
     spec_is_str_equal(s->buf,data);
     spec_is_equal(s->bytes_used,strlen(data));
     spec_is_equal(errno,0);
@@ -139,7 +150,7 @@ void testStreamFileLoad() {
     spec_is_equal(errno,0);
     spec_is_equal(s->err,0);
 
-    spec_is_equal(__st_unix_stream_load(s),2);
+    spec_is_equal(__st_unix_stream_load(s),8);
     s->buf[s->bytes_used] = 0;
     spec_is_str_equal(s->buf,data);
     spec_is_false(__st_buf_full(s));
@@ -208,6 +219,7 @@ void testStreamRead(size_t rs) {
     if (rc) {
         raise_error("ERROR; return code from pthread_join() is %d\n", rc);
     }
+
     _st_free(s);
 }
 

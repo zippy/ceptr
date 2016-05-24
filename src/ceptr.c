@@ -27,6 +27,7 @@ int main(int argc, const char **argv) {
     makeShell(G_vm,stdin,stdout,&i_r,&o_r,&input_stream,&output_stream);
     output_stream->flags &= ~StreamCloseOnFree; // don't close the stdout on free...
     input_stream->flags &= ~StreamCloseOnFree; // don't close the stdin on free...
+    input_stream->flags |= StreamLoadByLine;   // don't wait for EOF when loading from stdin!!
 
     //debug_enable(D_SIGNALS);
     _v_start_vmhost(G_vm);

@@ -58,10 +58,20 @@ size_t __st_unix_stream_load(Stream *st) {
     char *buf = st->buf+st->bytes_used;
     st->err = 0;
 
-    size_t l = fread(buf,1,max,stream);
+    size_t l;
+    if (st->flags & StreamLoadByLine) {
+        int c;
+        l = 0;
+        while(l < max && (c = fgetc(stream)) != EOF) {
+            buf[l++] = c;
+            if (c == '\n') break;
+        }
+    }
+    else l = fread(buf,1,max,stream);
     debug(D_STREAM,"loaded %ld bytes from file: %.*s\n",l,(int)l,buf);
     if (l == 0) {
         st->err = errno;
+        debug(D_STREAM,"read 0 bytes with errno: %d\n",st->err);
     }
     else {
         st->bytes_used += l;
@@ -103,23 +113,28 @@ size_t __st_socket_stream_load(Stream *st) {
     return l;
 }
 
+
 /**
  * scan a stream's buffer for a unit
  *
  * currently a unit simply is defined by a new-line char
- * @todo allow other delimiters to mark off a unit.
+ * @todo allow other delimiters, or even simply a length, to mark off a unit.
  */
 void __st_scan(Stream *st) {
+    // if this is the initial scan, then setup the unit_start to 0
     if (st->scan_state == StreamScanInitial)
         st->unit_start = 0;
+    // otherwise set the unit start the byte after the terminator from the
+    // last read (hence the +1)
     else if (st->scan_state == StreamScanSuccess)
         st->unit_start +=  st->unit_size + 1;
+    // we have completely scanned the buffer if the unit start is >= the bytes in the buffer
     if (st->unit_start >= st->bytes_used) {
         st->scan_state = StreamScanComplete;
         return;
     }
 
-    char c;
+    // set the current read offset taking into account previous partial scans
     size_t i=  (st->scan_state == StreamScanPartial) ? st->partial : st->unit_start;
 
     while (i<st->bytes_used) {
@@ -158,7 +173,10 @@ char *ss2str(int s) {
 void __st_stream_read(Stream *st) {
     size_t l;
 
-    if (st->bytes_used > 0) goto scan;
+    if (st->bytes_used > 0) {
+        debug(D_STREAM,"data in buffer, skipping read to continue scanning\n");
+        goto scan;
+    }
     // woot!  a good use case for gotos!
  init:
     __st_init_scan(st);
@@ -193,9 +211,12 @@ void __st_stream_read(Stream *st) {
         return;
     }
     else if (st->scan_state == StreamScanPartial) {
+        debug(D_STREAM,"partial found, trying to load more data\n");
         goto load;
     }
     else if (st->scan_state == StreamScanComplete) {
+        debug(D_STREAM,"buffer fully read, reinitialzing buffer\n");
+        st->bytes_used = 0;
         goto init;
     }
     raise_error("unknown scan state!");
