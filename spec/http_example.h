@@ -356,7 +356,7 @@ void testHTTPedgeReceptor() {
     // add an error handler that just completes the iteration
     T *err_handler = _t_parse(r->sem,0,"(CONTINUE (POP_PATH (PARAM_REF:/4/1/1) (RESULT_SYMBOL:CONTINUE_LOCATION) (POP_COUNT:5)) (CONTINUE_VALUE (BOOLEAN:0)))");
 
-    SocketListener *l = _r_addListener(r,8888,code,0,err_handler);
+    SocketListener *l = _r_addListener(r,8888,code,0,err_handler,DELIM_LF);
     _v_activate(v,edge);
 
     T *bindings = _t_new_root(PROTOCOL_BINDINGS);

@@ -1979,13 +1979,7 @@ char * _t2json(SemTable *sem,T *t,int level,char *buf) {
 int __t_writeln(T *t,Stream *stream) {
     int err = 0;
     char *str = _t_surface(t);
-    int len = strlen(str);
-    if (len) err = _st_write(stream,str,len);
-    if (!len || err > 0) {
-        int e = _st_write(stream,"\n",1);
-        if (e > 0) err += e;
-    }
-    return err;
+    return _st_writeln(stream,str);
 }
 
 /**

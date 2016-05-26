@@ -748,7 +748,7 @@ void testReceptorEdgeListener() {
     T *code = _t_parse(r->sem,0,"(CONVERSE (SCOPE (LISTEN (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:LINE) (PATTERN (SEMTREX_SYMBOL_ANY)) (ACTION:echo2stream) (PARAMS (PARAM_REF:/2/1) (SLOT (USAGE:NULL_SYMBOL)))) (ITERATE (PARAMS) (STREAM_ALIVE (PARAM_REF:/2/1)) (SAY % (ASPECT_IDENT:DEFAULT_ASPECT) (CARRIER:LINE) (STREAM_READ (PARAM_REF:/2/1) (RESULT_SYMBOL:LINE)))) (STREAM_CLOSE (PARAM_REF:/2/1))) (BOOLEAN:1))",__r_make_addr(0,TO_ADDRESS,r->addr));
     T *err_handler = _t_parse(r->sem,0,"(CONTINUE (POP_PATH (PARAM_REF:/4/1/1) (RESULT_SYMBOL:CONTINUE_LOCATION) (POP_COUNT:2)) (CONTINUE_VALUE (BOOLEAN:0)))");
     // listen and then send the received LINE directly back to your self.  Acts like "echo."
-    SocketListener *l = _r_addListener(r,8888,code,0,err_handler);
+    SocketListener *l = _r_addListener(r,8888,code,0,err_handler,DELIM_LF);
     _v_activate(v,edge);
 
     //@todo currently we don't actually have a real symbol for the EDGE_SPEC and we're just using PARAMS.  FIXME!

@@ -97,6 +97,21 @@ void testStreamScan() {
     __st_scan(s);
     spec_is_equal(s->scan_state,StreamScanComplete);
 
+    // test scanning with a multi-char delimiter
+    s->delim = DELIM_CRLF;
+    s->delim_len = 2;
+    s->buf = "line1\r\ncat\r\ndoggy\r\n";
+    s->bytes_used = strlen(s->buf);
+    __st_init_scan(s);
+    __st_scan(s);
+    spec_is_equal(s->scan_state,StreamScanSuccess);
+    spec_is_equal(s->unit_start,0);
+    spec_is_equal(s->unit_size,5);
+    __st_scan(s);
+    spec_is_equal(s->scan_state,StreamScanSuccess);
+    spec_is_equal(s->unit_start,7);
+    spec_is_equal(s->unit_size,3);
+
     _st_free(s);
 
 }
@@ -240,6 +255,30 @@ void testStreamWrite() {
     _st_free(st);
 }
 
+void testStreamWriteLine() {
+    char buffer[500] = "x";
+    FILE *stream;
+    stream = fmemopen(buffer, 500, "r+");
+
+    Stream *st = _st_new_unix_stream(stream,1);
+    spec_is_equal(_st_writeln(st,"fishy"),6);
+
+    char *expected_result = "fishy\n";
+    spec_is_str_equal(buffer,expected_result);
+
+    spec_is_equal(_st_writeln(st,"in the sea"),11);
+    spec_is_str_equal(buffer,"fishy\nin the sea\n");
+
+    st->delim = DELIM_CRLF;
+    st->delim_len = 2;
+
+    spec_is_equal(_st_writeln(st,"not me"),8);
+    spec_is_str_equal(buffer,"fishy\nin the sea\nnot me\r\n");
+
+    _st_free(st);
+}
+
+
 void testSocketListernCallback(Stream *s,void *arg) {
     spec_is_true(s->flags&StreamReader);
     spec_is_true(s->flags&StreamWaiting);
@@ -262,7 +301,7 @@ void testStreamSocket() {
     //    debug_enable(D_SOCKET+D_STREAM);
 
     int arg = 31415;
-    SocketListener *l = _st_new_socket_listener(8888,testSocketListernCallback,&arg);
+    SocketListener *l = _st_new_socket_listener(8888,testSocketListernCallback,&arg,DELIM_LF);
     char *result = doSys("echo 'testing!\nfish\n' | nc localhost 8888");
     spec_is_str_equal(result,"fishy");
     free(result);
@@ -285,5 +324,6 @@ void testStream() {
     testStreamRead(10);
     testStreamRead(2);
     testStreamWrite();
+    testStreamWriteLine();
     testStreamSocket();
 }

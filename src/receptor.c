@@ -1089,17 +1089,17 @@ void __r_listenerCallback(Stream *st,void *arg) {
     _t_add(run_tree,code);
     _t_add(run_tree,params);
     if (err_handler) {
-	_t_add(run_tree,_t_rclone(err_handler));
+        _t_add(run_tree,_t_rclone(err_handler));
     }
 
     _p_addrt2q(r->q,run_tree);
 
 }
 
-SocketListener *_r_addListener(Receptor *r,int port,T *code,T*params,T *err_handler) {
+SocketListener *_r_addListener(Receptor *r,int port,T *code,T*params,T *err_handler,char *delim) {
     T *e = _t_new_root(PARAMS);
 
-    SocketListener *l = _st_new_socket_listener(port,__r_listenerCallback,r);
+    SocketListener *l = _st_new_socket_listener(port,__r_listenerCallback,r,delim);
     _t_new_cptr(e,EDGE_LISTENER,l);
     _t_add(e,code);
     if (!params) params = _t_newr(e,PARAMS);
