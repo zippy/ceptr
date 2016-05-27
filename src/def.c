@@ -521,15 +521,16 @@ char *_indent_line(int level,char *buf) {
     return buf;
 }
 
+#include "ansicolor.h"
 #define MAX_LEVEL 100
-
+T *G_cursor = NULL;
 char * __t_dump(SemTable *sem,T *t,int level,char *buf) {
     if (!t) return "";
     Symbol s = _t_symbol(t);
     char b[255];
     char tbuf[2000];
     int i;
-    char *c;
+    char *c,*obuf;
     Xaddr x;
     buf = _indent_line(level,buf);
 
@@ -545,6 +546,8 @@ char * __t_dump(SemTable *sem,T *t,int level,char *buf) {
     /* } */
 
     char *n = _sem_get_name(sem,s);
+    obuf = buf;
+    if (t == G_cursor) {sprintf(buf,KRED);buf += strlen(buf);}
 
     if (is_process(s)) {
         sprintf(buf,"(process:%s",n);
@@ -559,7 +562,7 @@ char * __t_dump(SemTable *sem,T *t,int level,char *buf) {
         }
     }
     else if (semeq(s,NULL_SYMBOL)) {
-	sprintf(buf,"(NULL_SYMBOL");
+        sprintf(buf,"(NULL_SYMBOL");
     }
     else {
         Structure st = _sem_get_symbol_structure(sem,s);
@@ -643,9 +646,11 @@ char * __t_dump(SemTable *sem,T *t,int level,char *buf) {
             }
         }
     }
+    if (t == G_cursor) {sprintf(buf+strlen(buf),KNRM);}
+
     DO_KIDS(t,__t_dump(sem,_t_child(t,i),level < 0 ? level-1 : level+1,buf+strlen(buf)));
     sprintf(buf+strlen(buf),")");
-    return buf;
+    return obuf;
 }
 
 /** @}*/

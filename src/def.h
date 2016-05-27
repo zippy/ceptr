@@ -57,6 +57,8 @@ enum {InstanceTokensLastTokenIdx=1};
 enum {ConversationIdentIdx=1,ConversationUntilIdx,ConversationConversationsIdx,ConversationWakeupIdx};
 enum {ConversationIdentUUIDIdx=1,ConversationIdentOptionalsIdx};
 
+T *G_cursor; // used in _t_dump to highlight a particular node
+
 #define ST(r,name,num,...) name = _r_define_structure(r,"" #name "",num,__VA_ARGS__)
 #define SY(r,name,str) name = _r_define_symbol(r,str,"" #name "")
 #define SP(r,code,name,intention,signature,link) name = _r_define_process(r,code,"" #name "",intention,signature,link)

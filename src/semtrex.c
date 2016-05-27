@@ -331,7 +331,7 @@ T *G_ts,*G_te;
 #define DEBUG_MATCH
 #ifdef DEBUG_MATCH
 #define MATCH_DEBUGG(s,x)       debug(D_STX_MATCH,"IN:" #s " for %s\n",x);debug(D_STX_MATCH,"  cursor:%s\n",_t2s(G_sem,t));
-#define MATCH_DEBUG(_s)  debug(D_STX_MATCH,"IN:" #_s "\n");debug(D_STX_MATCH,"  cursor:%s\n",!t ? "NULL" : _t2s(G_sem,t));G_cur_stx_state=s;debug(D_STX_MATCH,"%s\n",_stx_dump(fa,G_stx_dump_buf));
+#define MATCH_DEBUG(_s)  G_cursor=t;debug(D_STX_MATCH,"IN:" #_s "\n");debug(D_STX_MATCH,"  cursor:%s\n",!t ? "NULL" : _t2s(G_sem,_t_root(t)));G_cur_stx_state=s;debug(D_STX_MATCH,"%s\n",_stx_dump(fa,G_stx_dump_buf));
 
 #else
 #define MATCH_DEBUG(s)
@@ -1929,7 +1929,7 @@ T *_stx_results2sem_map(SemTable *sem,T *match_results,T *match_tree) {
 
 
 // debugging code to dump out an ascii representation of the stx fsa
-
+#include "ansicolor.h"
 static int dump_id = 99;
 SState *G_cur_stx_state = NULL;
 char G_stx_dump_buf[10000];
@@ -1940,7 +1940,7 @@ void __stx_dump(SState *s,char *buf) {
     if (s->_did == dump_id) {pbuf("X");return;}
     s->_did = dump_id;
     if (s == G_cur_stx_state)
-        pbuf("^*^");
+        pbuf(KRED);
     switch (s->type) {
     case StateMatch:
     pbuf("(M)");
@@ -1980,6 +1980,8 @@ void __stx_dump(SState *s,char *buf) {
     default:
     pbuf("(\?\?)");
     }
+    if (s == G_cur_stx_state)
+        pbuf(KNRM);
     if (s->out) {pbuf("->");__stx_dump(s->out,buf);}
     if (s->out1) {pbuf("[->");__stx_dump(s->out1,buf);pbuf("]");}
     //        printf("\n");
