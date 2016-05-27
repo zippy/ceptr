@@ -87,6 +87,7 @@ struct SState {
     int _did;                   ///< used to hold a mark when freeing and printing out FSA to prevent looping.
     STypeData data;             ///< a union to hold the data for which ever type of SState this is
 };
+SState *G_cur_stx_state;
 
 SState * _stx_makeFA(T *s,int *statesP);
 void _stx_freeFA(SState *s);
@@ -127,4 +128,8 @@ T *__sl(T *p, bool not,int count, ...);
 
 #endif
 
+void __stx_dump(SState *s,char *buf);
+char * _stx_dump(SState *s,char *buf);
+void stx_dump(T *s);
+char G_stx_dump_buf[10000];
 /** @}*/

@@ -64,64 +64,6 @@ T *_makeTestSemtrex1() {
     return s;
 }
 
-static int dump_id = 99;
-
-void __stx_dump(SState *s) {
-    T *v;
-    if (s->_did == dump_id) {printf("X");return;}
-    s->_did = dump_id;
-    switch (s->type) {
-    case StateMatch:
-    printf("(M)");
-    break;
-    case StateGroupOpen:
-    printf("{%d:%s",s->data.groupo.uid,_sem_get_name(G_sem,s->data.groupo.symbol));
-    break;
-    case StateGroupClose:
-    printf("%d:%s}",s->data.groupc.openP->data.groupo.uid,_sem_get_name(G_sem,s->data.groupc.openP->data.groupo.symbol));
-    break;
-    case StateSymbol:
-    printf("(%s%s:%d)",(s->data.symbol.flags & LITERAL_NOT) ? "!" : "",
-           _sem_get_name(G_sem,_t_symbol(_t_child(_t_child(s->data.symbol.symbols,1),1))),s->transition);
-    break;
-    case StateValue:
-    printf("(%s%s=:%d)",_sem_get_name(G_sem,_t_symbol(_t_child(_t_child(s->data.value.values,1),1))),(s->data.value.flags & LITERAL_NOT) ? "!" : "",s->transition);
-    break;
-    case StateAny:
-    printf("(.:%d)",s->transition);
-    break;
-    case StateDescend:
-    printf("(/)");
-    break;
-    case StateNot:
-    printf("(~)");
-    break;
-    case StateSplit:
-    printf("S");
-    break;
-    case StateWalk:
-    printf("(%%)");
-    break;
-    default:
-    printf("(\?\?)");
-    }
-    if (s->out) {printf("->");__stx_dump(s->out);}
-    if (s->out1) {printf("[->");__stx_dump(s->out1);printf("]");}
-    //        printf("\n");
-}
-
-void _stx_dump(SState *s) {
-    ++dump_id;
-    __stx_dump(s);
-}
-
-void stx_dump(T *s) {
-    int l;
-
-    SState *f = _stx_makeFA(s,&l);    _stx_dump(f);
-    _stx_freeFA(f);
-}
-
 #define spec_state_equal(sa,st,tt,s) \
     spec_is_equal(sa->type,st);\
     spec_is_equal(sa->transition,tt);\

@@ -275,8 +275,6 @@ char * __stx_makeFA(T *t,SState **in,Ptrlist **out,int level,int *statesP) {
     return 0;
 }
 
-void _stx_dump(SState *s);
-
 /**
  * wrapper function for building the finite state automata recursively and patching it to the final match state
  */
@@ -333,7 +331,7 @@ T *G_ts,*G_te;
 #define DEBUG_MATCH
 #ifdef DEBUG_MATCH
 #define MATCH_DEBUGG(s,x)       debug(D_STX_MATCH,"IN:" #s " for %s\n",x);debug(D_STX_MATCH,"  cursor:%s\n",_t2s(G_sem,t));
-#define MATCH_DEBUG(s)  debug(D_STX_MATCH,"IN:" #s "\n");debug(D_STX_MATCH,"  cursor:%s\n",!t ? "NULL" : _t2s(G_sem,t));
+#define MATCH_DEBUG(_s)  debug(D_STX_MATCH,"IN:" #_s "\n");debug(D_STX_MATCH,"  cursor:%s\n",!t ? "NULL" : _t2s(G_sem,t));G_cur_stx_state=s;debug(D_STX_MATCH,"%s\n",_stx_dump(fa,G_stx_dump_buf));
 
 #else
 #define MATCH_DEBUG(s)
@@ -1927,6 +1925,79 @@ T *_stx_results2sem_map(SemTable *sem,T *match_results,T *match_tree) {
     T *sem_map = _t_new_root(SEMANTIC_MAP);
     __stx_r2fi(sem,match_results,match_tree,sem_map);
     return sem_map;
+}
+
+
+// debugging code to dump out an ascii representation of the stx fsa
+
+static int dump_id = 99;
+SState *G_cur_stx_state = NULL;
+char G_stx_dump_buf[10000];
+#define pbuf(...) sprintf(buf+strlen(buf),__VA_ARGS__)
+void __stx_dump(SState *s,char *buf) {
+    T *x;
+    Symbol sym;
+    if (s->_did == dump_id) {pbuf("X");return;}
+    s->_did = dump_id;
+    if (s == G_cur_stx_state)
+        pbuf("^*^");
+    switch (s->type) {
+    case StateMatch:
+    pbuf("(M)");
+    break;
+    case StateGroupOpen:
+    pbuf("{%d:%s",s->data.groupo.uid,_sem_get_name(G_sem,s->data.groupo.symbol));
+    break;
+    case StateGroupClose:
+    pbuf("%d:%s}",s->data.groupc.openP->data.groupo.uid,_sem_get_name(G_sem,s->data.groupc.openP->data.groupo.symbol));
+    break;
+    case StateSymbol:
+        x = s->data.symbol.symbols;
+        if (semeq(_t_symbol(x),SEMTREX_SYMBOL))
+            sym = *(Symbol *)_t_surface(x);
+        else raise_error("unimplemented state data type in stx_dump\n");
+        pbuf("(%s%s:%d)",(s->data.symbol.flags & LITERAL_NOT) ? "!" : "",
+           _sem_get_name(G_sem,sym),s->transition);
+    break;
+    case StateValue:
+    pbuf("(%s%s=:%d)",_sem_get_name(G_sem,_t_symbol(_t_child(_t_child(s->data.value.values,1),1))),(s->data.value.flags & LITERAL_NOT) ? "!" : "",s->transition);
+    break;
+    case StateAny:
+    pbuf("(.:%d)",s->transition);
+    break;
+    case StateDescend:
+    printf("(/)");
+    break;
+    case StateNot:
+    pbuf("(~)");
+    break;
+    case StateSplit:
+    pbuf("S");
+    break;
+    case StateWalk:
+    pbuf("(%%)");
+    break;
+    default:
+    pbuf("(\?\?)");
+    }
+    if (s->out) {pbuf("->");__stx_dump(s->out,buf);}
+    if (s->out1) {pbuf("[->");__stx_dump(s->out1,buf);pbuf("]");}
+    //        printf("\n");
+}
+
+char * _stx_dump(SState *s,char *buf) {
+    ++dump_id;
+    buf[0] = 0;
+    __stx_dump(s,buf);
+    return buf;
+}
+
+void stx_dump(T *s) {
+    int l;
+
+    SState *f = _stx_makeFA(s,&l);    _stx_dump(f,G_stx_dump_buf);
+    puts(G_stx_dump_buf);
+    _stx_freeFA(f);
 }
 
 /**@}*/
