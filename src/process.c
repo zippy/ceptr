@@ -214,7 +214,7 @@ int _p_transcode(SemTable *sem, T* src,Symbol to_sym, Structure to_s,T **result)
                 Symbol tdef_sym = _t_symbol(tdef);
 
                 T *k;
-                Symbol k_sym = _t_symbol(k = _t_child(tdef,StructureDefDefIdx));
+                Symbol k_sym = _t_symbol(k = _t_child(tdef,1));
                 bool tsym_isa_simple_list = (semeq(tdef_sym,STRUCTURE_ZERO_OR_MORE)||
                                              semeq(tdef_sym,STRUCTURE_ZERO_OR_ONE)||
                                              semeq(tdef_sym,STRUCTURE_ONE_OR_MORE)) &&
@@ -223,7 +223,7 @@ int _p_transcode(SemTable *sem, T* src,Symbol to_sym, Structure to_s,T **result)
                 if (tsym_isa_simple_list) {
                     Symbol to_list_of_sym = *(Symbol *)_t_surface(k);
                     if (semeq(tdef_sym,sdef_sym) &&
-                        semeq(_t_symbol( _t_child(sdef,StructureDefDefIdx)),STRUCTURE_SYMBOL)) {
+                        semeq(_t_symbol( _t_child(sdef,1)),STRUCTURE_SYMBOL)) {
                         debug(D_TRANSCODE,"transcoding elements of simple list\n");
                         x = __t_newr(0,to_sym,true);
                         T *m,*r;

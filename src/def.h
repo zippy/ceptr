@@ -21,7 +21,6 @@
 // @todo figure out a better way to handle this... like put defs like these
 // into the symbol gen code (talk about a semantic muddle! If only I had ceptr...)
 // Note, that I tried that and it's hard!
-enum {StructureDefDefIdx=1};
 enum {ReceptorInstanceInstOfIdx=1,ReceptorInstanceContextNumIdx,ReceptorInstanceParentContextIdx,ReceptorInstanceStateIdx};
 enum {ReceptorDefinitionLabelIdx=1,ReceptorDefinitionDefsIdx};
 enum {ReceptorFluxIdx=1,ReceptorPendingSignalsIdx,ReceptorPendingResponsesIdx,ReceptorConversationsIdx,ReceptorElapsedTimeIdx};
@@ -40,6 +39,7 @@ enum {ExpectRoleIdx=1,ExpectSourceIdx,ExpectPatternIdx,ExpectActionIdx,ExpectPar
 enum {InitiateRoleIdx=1,InitiateDestinationIdx,InitiateActionIdx};
 enum {SourceRoleIdx=1};
 enum {DefLabelIdx=1,SymbolDefStructureIdx};
+enum {StructureDefLabelIdx=1,StructureDefDefIdx};
 enum {ProcessDefNameIdx=1,ProcessDefIntentionIdx,ProcessDefCodeIdx,ProcessDefSignatureIdx,ProcessDefLinkIdx};
 enum {SignatureOutputSigIdx=1};
 enum {InputSigLabelIdx=1,InputSigSemVariantsIdx,InputSigOptionalIdx};

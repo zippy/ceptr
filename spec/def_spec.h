@@ -163,8 +163,6 @@ void testDefProcessTemplate() {
     //! [testDefProcessTemplate]
 }
 
-
-
 void testDefSemtrex() {
     //! [testDefSemtrex]
     Receptor *r = _r_new(G_sem,TEST_RECEPTOR);
@@ -180,6 +178,12 @@ void testDefSemtrex() {
     __t_dump(r->sem,stx,0,buf);
     spec_is_str_equal(buf,"(SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:house_loc) (SEMTREX_SEQUENCE (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:lat)) (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:lon))))");
 
+    T *t = _t_parse(G_sem,0,"(house_loc (lat:22.2) (lon:43.9))");
+    spec_is_true(_t_match(stx,t));
+    _t_free(t);
+    t = _t_parse(G_sem,0,"(house_loc (lat:22.2) (lat:43.9))");
+    spec_is_false(_t_match(stx,t));
+    _t_free(t);
     _t_free(stx);
     _r_free(r);
     //! [testDefSemtrex]

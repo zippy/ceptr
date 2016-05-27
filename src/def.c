@@ -359,6 +359,52 @@ Protocol _d_define_protocol(SemTable *sem,T *def,Context c) {
     return _d_define(sem,def,SEM_TYPE_PROTOCOL,c);
 }
 
+T *__d_build_def_semtrex(SemTable *sem,T *def,T *stx) {
+    Symbol def_sym = _t_symbol(def);
+    if (semeq(def_sym,STRUCTURE_SYMBOL)) {
+        stx = _d_build_def_semtrex(sem,*(Symbol *)_t_surface(def),stx);
+    }
+    else if (semeq(def_sym,STRUCTURE_SEQUENCE)) {
+        int i,c = _t_children(def);
+        if (c > 0) {
+            stx = _t_newr(stx,SEMTREX_SEQUENCE);
+            for(i=1;i<=c;i++) {
+                __d_build_def_semtrex(sem,_t_child(def,i),stx);
+            }
+        }
+    }
+    else if (semeq(def_sym,STRUCTURE_OR)) {
+        int i,c = _t_children(def);
+        if (c == 1) {
+            stx = _t_newr(stx,SEMTREX_ZERO_OR_ONE);
+            __d_build_def_semtrex(sem,_t_child(def,1),stx);
+        }
+        else if (c > 1) {
+            // semtrex OR is binary whereas structure def or is a set,
+            // so we have to build up a binary try OR structure
+            // so, we build it up from the bottom first, building from the
+            // last child backwards.
+            T *last = __d_build_def_semtrex(sem,_t_child(def,c),NULL);
+            for(i=c-1;i>=1;i--) {
+                T *or = _t_new_root(SEMTREX_OR);
+                __d_build_def_semtrex(sem,_t_child(def,c),or);
+                _t_add(or,last);
+                last = or;
+            }
+            if (stx) _t_add(stx,last);
+            stx = last;
+        }
+    }
+    else if (semeq(def_sym,STRUCTURE_ZERO_OR_MORE)) {
+        stx = _t_newr(stx,SEMTREX_ZERO_OR_MORE);
+        __d_build_def_semtrex(sem,_t_child(def,1),stx);
+    }
+    else {
+        raise_error("translation from %s not implemented\n",_sem_get_name(sem,def_sym));
+    }
+    return stx;
+}
+
 /**
  * Walks the definition of a symbol to build a semtrex that would match that definiton
  *
@@ -377,16 +423,9 @@ T * _d_build_def_semtrex(SemTable *sem,Symbol s,T *parent) {
 
     Structure st = _sem_get_symbol_structure(sem,s);
     if (!(is_sys_structure(st))) {
-        T *structure = _d_get_structure_def(_sem_get_defs(sem,st),st);
-        T *parts = _t_child(structure,2);
-        int i,c = _t_children(parts);
-        if (c > 0) {
-            T *seq = _t_newr(stx,SEMTREX_SEQUENCE);
-            for(i=1;i<=c;i++) {
-                T *p = _t_child(parts,i);
-                _d_build_def_semtrex(sem,*(Symbol *)_t_surface(p),seq);
-            }
-        }
+        T *structure = _sem_get_def(sem,st);
+        T *def = _t_child(structure,StructureDefDefIdx);
+        __d_build_def_semtrex(sem,def,stx);
     }
     return stx;
 }
