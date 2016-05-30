@@ -66,7 +66,7 @@ Finally, zippy314 does some [livecoding](https://www.livecoding.tv/zippy/)..
 
 * Protocols for Inclusion.
 
-We recognize the need to actively foster vibrant thriving community, which means among other things, building a culture that breaks cycles of marginalization and dominance behavior.  To that end many open source communities adopt Codes of Conduct like [this one](http://contributor-covenant.org/version/1/3/0/).  We are in the process of addressing the goals of such codes in what we feel is a more general way, by establishing meta requirements for each membrane within our social organism to describe its <i>Protocols for Inclusion</i>.  Until we have done so please operate using the above referenced code a general protocol for inclusion.
+We recognize the need to actively foster vibrant thriving community, which means among other things, building a culture that breaks cycles of marginalization and dominance behavior.  To that end many open source communities adopt Codes of Conduct like [this one](http://contributor-covenant.org/version/1/3/0/).  We are in the process of addressing the goals of such codes in what we feel is a more general way, by establishing meta requirements for each membrane within our social organism to describe its <i>Protocols for Inclusion</i>.  Until we have done so please operate using the above referenced code as a general protocol for inclusion.
 
 ## License
 
