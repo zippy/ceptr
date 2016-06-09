@@ -813,12 +813,6 @@ ProcessL: content_type_2_line,content_type_2_line_proc,"content type transcoder"
 Symbol: CONTENT_ENCODING,CSTRING;  cstring for now, add semantic later.
 
 # http defs
-Symbol: HTTP_REQUEST_METHOD,CSTRING;
-Symbol: HTTP_REQUEST_PATH,URI;
-Symbol: HTTP_REQUEST_VERSION,VERSION;
-Structure: HTTP_REQUEST_V09,(HTTP_REQUEST_VERSION,HTTP_REQUEST_METHOD,HTTP_REQUEST_PATH);
-Symbol: HTTP_REQUEST,HTTP_REQUEST_V09;
-Symbol: HTTP_REQUEST_HOST,CSTRING;
 
 Symbol: HEADER_KEY,CSTRING;
 Symbol: HEADER_VALUE,CSTRING;
@@ -828,6 +822,17 @@ Symbol: LINE_HEADERS,[(*HEADER)];
 Symbol: HTTP_RESPONSE_HEADER,HEADER;
 Symbol: HTTP_GENERAL_HEADER,HEADER;
 Symbol: HTTP_ENTITY_HEADER,[|{CONTENT_TYPE|CONTENT_ENCODING}];    @todo plus a few more see https://www.w3.org/Protocols/rfc2616/rfc2616-sec7.html#sec7.1
+
+Symbol: HTTP_REQUEST_HOST,CSTRING;  @todo, should actually be a "domain-name address:port"
+Symbol: HTTP_REQUEST_USER_AGENT,CSTRING;
+Symbol: HTTP_REQUEST_METHOD,CSTRING;
+Symbol: HTTP_REQUEST_PATH,URI;
+Symbol: HTTP_REQUEST_VERSION,VERSION;
+Symbol: HTTP_REQUEST_LINE,[(HTTP_REQUEST_VERSION,HTTP_REQUEST_METHOD,HTTP_REQUEST_PATH)];
+Symbol: HTTP_REQUEST_BODY,[!];
+Symbol: HTTP_REQUEST_HEADER,[|{HTTP_REQUEST_HOST|HTTP_REQUEST_USER_AGENT}];  @todo plus a bunch more see rfc2616 section 5.3
+Symbol: HTTP_REQUEST_HEADERS,[*|{HTTP_REQUEST_HEADER|HTTP_GENERAL_HEADER|HTTP_ENTITY_HEADER}];
+Symbol: HTTP_REQUEST,[(HTTP_REQUEST_LINE,HTTP_REQUEST_HEADERS,HTTP_REQUEST_BODY)];
 
 Symbol: HTTP_RESPONSE_BODY,[!];
 Symbol: HTTP_RESPONSE_STATUS,STATUS;
@@ -886,9 +891,10 @@ Symbol: HTML_BUTTON,HTML_ELEMENT;
 
 GlobalData: http_req_example,
 (HTTP_REQUEST
+   (HTTP_REQUEST_LINE
    (HTTP_REQUEST_VERSION
       (VERSION_MAJOR:1)
-      (VERSION_MINOR:0))
+      (VERSION_MINOR:1))
    (HTTP_REQUEST_METHOD:"GET")
    (HTTP_REQUEST_PATH
       (HTTP_REQUEST_PATH_SEGMENTS
@@ -904,7 +910,10 @@ GlobalData: http_req_example,
                (PARAM_VALUE:"last_name"))
             (HTTP_REQUEST_PATH_QUERY_PARAM
                (PARAM_KEY:"page")
-               (PARAM_VALUE:"2"))))));    GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
+               (PARAM_VALUE:"2"))))))
+    (HTTP_REQUEST_HEADERS)           
+    (HTTP_REQUEST_BODY)
+               );    GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.1
 
 ##### defs for HTTP protocol
 Symbol: HTTP_CLIENT,RECEPTOR_ADDRESS;

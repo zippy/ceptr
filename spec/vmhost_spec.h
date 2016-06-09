@@ -327,7 +327,7 @@ void testVMHostShell() {
 
     makeShell(G_vm,input,output,&i_r,&o_r,&input_stream,&output_stream);
 
-    //   debug_enable(D_STREAM+D_SIGNALS+D_TREE+D_PROTOCOL);
+    // debug_enable(D_STREAM+D_SIGNALS+D_TREE+D_PROTOCOL+D_STEP);
     _v_start_vmhost(G_vm);
     sleep(1);
     debug_disable(D_STREAM+D_SIGNALS+D_TREE+D_PROTOCOL);

@@ -32,6 +32,7 @@
 
 #include <setjmp.h>
 
+
 jmp_buf G_err;
 
 int main(int argc, const char **argv) {
@@ -43,26 +44,29 @@ int main(int argc, const char **argv) {
     }
     else {
     G_sem = def_sys();
+    //debug_enable(D_BOOT);
     load_contexts(G_sem);
+    //debug_disable(D_BOOT);
 
     //**** core tests
-    testSemTable();
-    testDef();
-    testTree();
-    testMTree();
-    testStream();
-    testLabel();
+    //   testSemTable();
+//    testDef();
+    //testTree();
+    //testMTree();
+    //testStream();
+    //testLabel();
     testSemtrex();
-    testProcess();
-    testReceptor();
-    testScape();
-    testVMHost();
-    testAccumulator();
-    testProtocol();
+    //testProcess();
+    /* testReceptor(); */
+    /* testScape(); */
+    /* testVMHost(); */
+    /* testAccumulator(); */
+    /* testProtocol(); */
 
-    /**** receptor tests */
-    /* /\* testGroup(); *\/ */
-    testHTTP();
+    /* /\**** receptor tests *\/ */
+    /* /\* /\\* testGroup(); *\\/ *\/ */
+
+    //   testHTTP();
 
     /****** examples */
     /* testProfileExample(); */

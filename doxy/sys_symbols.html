@@ -373,11 +373,6 @@
 <tr><td><a name="MEDIA_TYPE_SEPARATOR"></a>MEDIA_TYPE_SEPARATOR</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
 <tr><td><a name="HEADER_SEPARATOR"></a>HEADER_SEPARATOR</td><td><a href="ref_sys_structures.html#NULL_STRUCTURE">NULL-STRUCTURE</a></td><td></td></tr>
 <tr><td><a name="CONTENT_ENCODING"></a>CONTENT_ENCODING</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td>  cstring for now, add semantic later.</td></tr>
-<tr><td><a name="HTTP_REQUEST_METHOD"></a>HTTP_REQUEST_METHOD</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
-<tr><td><a name="HTTP_REQUEST_PATH"></a>HTTP_REQUEST_PATH</td><td><a href="ref_sys_structures.html#URI">URI</a></td><td></td></tr>
-<tr><td><a name="HTTP_REQUEST_VERSION"></a>HTTP_REQUEST_VERSION</td><td><a href="ref_sys_structures.html#VERSION">VERSION</a></td><td></td></tr>
-<tr><td><a name="HTTP_REQUEST"></a>HTTP_REQUEST</td><td><a href="ref_sys_structures.html#HTTP_REQUEST_V09">HTTP-REQUEST-V09</a></td><td></td></tr>
-<tr><td><a name="HTTP_REQUEST_HOST"></a>HTTP_REQUEST_HOST</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
 <tr><td><a name="HEADER_KEY"></a>HEADER_KEY</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
 <tr><td><a name="HEADER_VALUE"></a>HEADER_VALUE</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
 <tr><td><a name="LINE_HEADER"></a>LINE_HEADER</td><td><a href="ref_sys_structures.html#HEADER">HEADER</a></td><td></td></tr>
@@ -385,6 +380,16 @@
 <tr><td><a name="HTTP_RESPONSE_HEADER"></a>HTTP_RESPONSE_HEADER</td><td><a href="ref_sys_structures.html#HEADER">HEADER</a></td><td></td></tr>
 <tr><td><a name="HTTP_GENERAL_HEADER"></a>HTTP_GENERAL_HEADER</td><td><a href="ref_sys_structures.html#HEADER">HEADER</a></td><td></td></tr>
 <tr><td><a name="HTTP_ENTITY_HEADER"></a>HTTP_ENTITY_HEADER</td><td><a href="ref_sys_structures.html#LOGICAL_OR_OF_CONTENT_TYPE_AND_CONTENT_ENCODING">LOGICAL-OR-OF-CONTENT-TYPE-AND-CONTENT-ENCODING</a></td><td>    @todo plus a few more see https://www.w3.org/Protocols/rfc2616/rfc2616-sec7.html#sec7.1</td></tr>
+<tr><td><a name="HTTP_REQUEST_HOST"></a>HTTP_REQUEST_HOST</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td>  @todo, should actually be a "domain-name address:port"</td></tr>
+<tr><td><a name="HTTP_REQUEST_USER_AGENT"></a>HTTP_REQUEST_USER_AGENT</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="HTTP_REQUEST_METHOD"></a>HTTP_REQUEST_METHOD</td><td><a href="ref_sys_structures.html#CSTRING">CSTRING</a></td><td></td></tr>
+<tr><td><a name="HTTP_REQUEST_PATH"></a>HTTP_REQUEST_PATH</td><td><a href="ref_sys_structures.html#URI">URI</a></td><td></td></tr>
+<tr><td><a name="HTTP_REQUEST_VERSION"></a>HTTP_REQUEST_VERSION</td><td><a href="ref_sys_structures.html#VERSION">VERSION</a></td><td></td></tr>
+<tr><td><a name="HTTP_REQUEST_LINE"></a>HTTP_REQUEST_LINE</td><td><a href="ref_sys_structures.html#LIST_OF_HTTP_REQUEST_VERSION_AND_HTTP_REQUEST_METHOD_AND_HTTP_REQUEST_PATH">LIST-OF-HTTP-REQUEST-VERSION-AND-HTTP-REQUEST-METHOD-AND-HTTP-REQUEST-PATH</a></td><td></td></tr>
+<tr><td><a name="HTTP_REQUEST_BODY"></a>HTTP_REQUEST_BODY</td><td><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></td><td></td></tr>
+<tr><td><a name="HTTP_REQUEST_HEADER"></a>HTTP_REQUEST_HEADER</td><td><a href="ref_sys_structures.html#LOGICAL_OR_OF_HTTP_REQUEST_HOST_AND_HTTP_REQUEST_USER_AGENT">LOGICAL-OR-OF-HTTP-REQUEST-HOST-AND-HTTP-REQUEST-USER-AGENT</a></td><td>  @todo plus a bunch more see rfc2616 section 5.3</td></tr>
+<tr><td><a name="HTTP_REQUEST_HEADERS"></a>HTTP_REQUEST_HEADERS</td><td><a href="ref_sys_structures.html#ZERO_OR_MORE_OF_LOGICAL_OR_OF_HTTP_REQUEST_HEADER_AND_HTTP_GENERAL_HEADER_AND_HTTP_ENTITY_HEADER">ZERO-OR-MORE-OF-LOGICAL-OR-OF-HTTP-REQUEST-HEADER-AND-HTTP-GENERAL-HEADER-AND-HTTP-ENTITY-HEADER</a></td><td></td></tr>
+<tr><td><a name="HTTP_REQUEST"></a>HTTP_REQUEST</td><td><a href="ref_sys_structures.html#LIST_OF_HTTP_REQUEST_LINE_AND_HTTP_REQUEST_HEADERS_AND_HTTP_REQUEST_BODY">LIST-OF-HTTP-REQUEST-LINE-AND-HTTP-REQUEST-HEADERS-AND-HTTP-REQUEST-BODY</a></td><td></td></tr>
 <tr><td><a name="HTTP_RESPONSE_BODY"></a>HTTP_RESPONSE_BODY</td><td><a href="ref_sys_structures.html#ANY_SYMBOL">ANY-SYMBOL</a></td><td></td></tr>
 <tr><td><a name="HTTP_RESPONSE_STATUS"></a>HTTP_RESPONSE_STATUS</td><td><a href="ref_sys_structures.html#STATUS">STATUS</a></td><td></td></tr>
 <tr><td><a name="HTTP_HEADER"></a>HTTP_HEADER</td><td><a href="ref_sys_structures.html#LOGICAL_OR_OF_HTTP_GENERAL_HEADER_AND_HTTP_RESPONSE_HEADER_AND_HTTP_ENTITY_HEADER">LOGICAL-OR-OF-HTTP-GENERAL-HEADER-AND-HTTP-RESPONSE-HEADER-AND-HTTP-ENTITY-HEADER</a></td><td></td></tr>
