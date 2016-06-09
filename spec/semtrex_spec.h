@@ -22,6 +22,8 @@ Symbol sy4 = {0,0,4};
 Symbol TEST_GROUP_SYMBOL1;
 Symbol TEST_GROUP_SYMBOL2;
 
+Symbol A,B,C,D,E,F,Root;
+
 #define sYt(name,str) name = _d_define_symbol(G_sem,str,"" #name "",TEST_CONTEXT)
 #define sX(name,str) Symbol name = _d_define_symbol(G_sem,str,"" #name "",TEST_CONTEXT)
 
@@ -37,6 +39,14 @@ void _stxSetup() {
     sYt(sy4,CSTRING);
     sYt(TEST_GROUP_SYMBOL1,INTEGER);
     sYt(TEST_GROUP_SYMBOL2,CSTRING);
+
+    sYt(A,NULL_STRUCTURE);
+    sYt(B,NULL_STRUCTURE);
+    sYt(C,NULL_STRUCTURE);
+    sYt(D,NULL_STRUCTURE);
+    sYt(E,NULL_STRUCTURE);
+    sYt(F,NULL_STRUCTURE);
+    sYt(Root,NULL_STRUCTURE);
 }
 
 T *_makeTestTree1() {
@@ -64,46 +74,46 @@ T *_makeTestSemtrex1() {
     return s;
 }
 
-#define spec_state_equal(sa,st,tt,s) \
-    spec_is_equal(sa->type,st);\
-    spec_is_equal(sa->transition,tt);\
-    spec_is_symbol_equal(0,*(Symbol *)_t_surface(sa->data.symbol.symbols),s); \
-    spec_is_ptr_equal(sa->out1,NULL);
+/* #define spec_state_equal(sa,st,tt,s) \ */
+/*     spec_is_equal(sa->type,st);\ */
+/*     spec_is_equal(sa->transition,tt);\ */
+/*     spec_is_symbol_equal(0,*(Symbol *)_t_surface(sa->data.symbol.symbols),s); \ */
+/*     spec_is_ptr_equal(sa->out1,NULL); */
 
 
-void testMakeFA() {
-    SState *s1, *s2, *s3, *s4, *s5, *s6;
-    T *s = _makeTestSemtrex1();
+/* void testMakeFA() { */
+/*     SState *s1, *s2, *s3, *s4, *s5, *s6; */
+/*     T *s = _makeTestSemtrex1(); */
 
-    int states = 0;
-    SState *sa = _stx_makeFA(s,&states);
-    spec_is_equal(states,6);
+/*     int states = 0; */
+/*     SState *sa = _stx_makeFA(s,&states); */
+/*     spec_is_equal(states,6); */
 
-    spec_state_equal(sa,StateSymbol,TransitionDown,TEST_STR_SYMBOL);
+/*     spec_state_equal(sa,StateSymbol,TransitionDown,TEST_STR_SYMBOL); */
 
-    s1 = sa->out;
-    spec_state_equal(s1,StateSymbol,TransitionDown,sy1);
+/*     s1 = sa->out; */
+/*     spec_state_equal(s1,StateSymbol,TransitionDown,sy1); */
 
-    s2 = s1->out;
-    spec_state_equal(s2,StateSymbol,TransitionDown,sy11);
+/*     s2 = s1->out; */
+/*     spec_state_equal(s2,StateSymbol,TransitionDown,sy11); */
 
-    s3 = s2->out;
-    spec_state_equal(s3,StateSymbol,-2,sy111);
+/*     s3 = s2->out; */
+/*     spec_state_equal(s3,StateSymbol,-2,sy111); */
 
-    s4 = s3->out;
-    spec_state_equal(s4,StateSymbol,TransitionNextChild,sy2);
+/*     s4 = s3->out; */
+/*     spec_state_equal(s4,StateSymbol,TransitionNextChild,sy2); */
 
-    s5 = s4->out;
-    spec_state_equal(s5,StateSymbol,TransitionUp,sy3);
+/*     s5 = s4->out; */
+/*     spec_state_equal(s5,StateSymbol,TransitionUp,sy3); */
 
-    s6 = s5->out;
-    spec_is_equal(s6->type,StateMatch);
+/*     s6 = s5->out; */
+/*     spec_is_equal(s6->type,StateMatch); */
 
-    spec_is_ptr_equal(s6->out,NULL);
+/*     spec_is_ptr_equal(s6->out,NULL); */
 
-    _stx_freeFA(sa);
-    _t_free(s);
-}
+/*     _stx_freeFA(sa); */
+/*     _t_free(s); */
+/* } */
 
 void testMatchTrees() {
     T *t = _makeTestTree1();
@@ -111,6 +121,7 @@ void testMatchTrees() {
     T *s2;
 
     spec_is_true(_t_match(s,t));
+
     Symbol sy99 = {0,0,99};
     s2 = _sl(_t_child(s,2),sy99);
     spec_is_true(!_t_match(s,t));
@@ -138,25 +149,41 @@ void testMatchOr() {
     _t_free(t);
     _t_free(s);
 
-    t = _t_new_root(ASCII_CHARS);
-    _t_newc(t,ASCII_CHAR,'/');
-    _t_newc(t,ASCII_CHAR,'X');
-    _t_newc(t,ASCII_CHAR,')');
+    s = _t_parse(G_sem,0,"(SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ASCII_CHARS) (SEMTREX_SEQUENCE (SEMTREX_VALUE_LITERAL (ASCII_CHAR:'/')) (SEMTREX_OR (SEMTREX_SEQUENCE (SEMTREX_VALUE_LITERAL (ASCII_CHAR:'(')) (SEMTREX_VALUE_LITERAL (ASCII_CHAR:')'))) (SEMTREX_VALUE_LITERAL (ASCII_CHAR:'X')))))");
 
-    s = _sl(0,ASCII_CHARS);
-    T *x = _t_newr(s,SEMTREX_SEQUENCE);
-    __stxcv(x,'/');
-    T *o = _t_newr(x,SEMTREX_OR);
-    T *parens = _t_newr(o,SEMTREX_SEQUENCE);
-    __stxcv(parens,'(');
-    __stxcv(parens,')');
-    __stxcv(o,'X');
-
+    char buf[2000];
+    spec_is_str_equal(_dump_semtrex(G_sem,s,buf),"/ASCII_CHARS/(ASCII_CHAR='/',(ASCII_CHAR='(',ASCII_CHAR=')')|ASCII_CHAR='X')");
+    t = _t_parse(G_sem,0,"(ASCII_CHARS (ASCII_CHAR:'/') (ASCII_CHAR:'X') (ASCII_CHAR:')')");
     spec_is_true(_t_match(s,t));
-
     _t_free(t);
+
+    t = _t_parse(G_sem,0,"(ASCII_CHARS (ASCII_CHAR:'/') (ASCII_CHAR:'(') (ASCII_CHAR:')')");
+    spec_is_true(_t_match(s,t));
+    _t_free(t);
+
+    t = _t_parse(G_sem,0,"(ASCII_CHARS (ASCII_CHAR:'/') (ASCII_CHAR:')')");
+    spec_is_false(_t_match(s,t));
+    _t_free(t);
+
     _t_free(s);
 
+    s = _t_parse(G_sem,0,"(SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:A) (SEMTREX_SEQUENCE (SEMTREX_OR (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:B)) (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:C) (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:D)))) (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:E))))");
+    spec_is_str_equal(_dump_semtrex(G_sem,s,buf),"/A/(B|C/D,E)");
+
+    t = _t_parse(G_sem,0,"(A (C (D)) (E))");
+
+    //debug_enable(D_STX_MATCH);
+    spec_is_true(_t_match(s,t));
+    debug_disable(D_STX_MATCH);
+    _t_free(t);
+    t = _t_parse(G_sem,0,"(A (B) (E))");
+    spec_is_true(_t_match(s,t));
+    _t_free(t);
+    t = _t_parse(G_sem,0,"(A (C) (E))");
+    spec_is_false(_t_match(s,t));
+    _t_free(t);
+
+    _t_free(s);
 }
 
 void testMatchAny() {
@@ -222,7 +249,7 @@ void testMatchExcept() {
 }
 
 void testMatchStar() {
-    // /SIGNALS/<SIGNALS:SIGNAL?>
+    // /SIGNALS/<SIGNALS:SIGNAL*>
     T *r;
     T *s = _sl(0,SIGNALS);
     T *g = _t_news(s,SEMTREX_GROUP,SIGNALS);
@@ -243,6 +270,7 @@ void testMatchStar() {
     T *sig = __r_make_signal(fr,to,DEFAULT_ASPECT,TESTING,signal_contents,0,0,0);
     T *sig2 = _t_clone(sig);
     _t_add(t,sig);
+
     spec_is_true(_t_matchr(s,t,&r));
     spec_is_str_equal(t2s(r),"(SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:SIGNALS) (SEMTREX_MATCH_PATH:/1) (SEMTREX_MATCH_SIBLINGS_COUNT:1))");
     _t_free(r);
@@ -255,6 +283,29 @@ void testMatchStar() {
     spec_is_false(_t_match(s,signal_contents));
     _t_free(t);
     _t_free(s);
+
+    char buf[1000];
+    s = _t_parse(G_sem,0,"(SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:A) (SEMTREX_SEQUENCE (SEMTREX_ZERO_OR_MORE (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:B))) (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:C))))");
+    spec_is_str_equal(_dump_semtrex(G_sem,s,buf),"/A/(B*,C)");
+
+    t = _t_parse(G_sem,0,"(A (B) (C))");
+    spec_is_true(_t_match(s,t));
+    _t_free(t);
+    t = _t_parse(G_sem,0,"(A (B) (B) (B) (C))");
+    spec_is_true(_t_match(s,t));
+    _t_free(t);
+    _t_free(s);
+
+    s = _t_parse(G_sem,0,"(SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:A) (SEMTREX_SEQUENCE (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:B) (SEMTREX_ZERO_OR_MORE (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:C)))) (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:D))))");
+    spec_is_str_equal(_dump_semtrex(G_sem,s,buf),"/A/(B/C*,D)");
+
+    t = _t_parse(G_sem,0,"(A (B (C)) (D))");
+//    debug_enable(D_STX_MATCH+D_STX_BUILD);
+    spec_is_true(_t_match(s,t));
+    debug_disable(D_STX_MATCH+D_STX_BUILD);
+    _t_free(t);
+    _t_free(s);
+
 }
 
 void testMatchPlus() {
@@ -311,7 +362,9 @@ void testMatchQ() {
     T *sig = __r_make_signal(fr,to,DEFAULT_ASPECT,TESTING,signal_contents,0,0,0);
     T *sig2 = _t_clone(sig);
     _t_add(t,sig);
+    //debug_enable(D_STX_MATCH);
     spec_is_true(_t_matchr(s,t,&r));
+    debug_disable(D_STX_MATCH);
     spec_is_str_equal(t2s(r),"(SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:SIGNALS) (SEMTREX_MATCH_PATH:/1) (SEMTREX_MATCH_SIBLINGS_COUNT:1))");
     _t_free(r);
 
@@ -349,7 +402,9 @@ void testMatchGroup() {
     _t_newr(sg2,SEMTREX_SYMBOL_ANY);
     s3 = _sl(ss,sy4);
 
+    //debug_enable(D_STX_MATCH);
     spec_is_true(_t_matchr(s,t,&r));
+    debug_disable(D_STX_MATCH);
 
     spec_is_str_equal(t2s(r),"(SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:TEST_GROUP_SYMBOL1) (SEMTREX_MATCH_PATH:/1) (SEMTREX_MATCH_SIBLINGS_COUNT:3) (SEMTREX_MATCH:2 (SEMTREX_MATCH_SYMBOL:TEST_GROUP_SYMBOL2) (SEMTREX_MATCH_PATH:/3) (SEMTREX_MATCH_SIBLINGS_COUNT:1)))");
 
@@ -366,18 +421,14 @@ void testMatchGroup() {
     _t_free(s);
 
     // /TEST_STR_SYMBOL/(<TEST_GROUP_SYMBOL1:<TEST_GROUP_SYMBOL2:.>*>,sy4)  <- a more complicated group semtrex, this time where a group will be repeated
-    s = _sl(0,TEST_STR_SYMBOL);
-    ss = _t_newr(s,SEMTREX_SEQUENCE);
-    sg = _t_news(ss,SEMTREX_GROUP,TEST_GROUP_SYMBOL1);
-    ss2 = _t_newr(sg,SEMTREX_SEQUENCE);
-    //    _t_newr(ss2,SEMTREX_SYMBOL_ANY);
-    st = _t_newr(ss2,SEMTREX_ZERO_OR_MORE);
-    sg2 = _t_news(st,SEMTREX_GROUP,TEST_GROUP_SYMBOL2);
-    _t_newr(sg2,SEMTREX_SYMBOL_ANY);
-    s3 = _sl(ss,sy4);
-
-
+    s = _t_parse(G_sem,0,"(SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TEST_STR_SYMBOL) (SEMTREX_SEQUENCE (SEMTREX_GROUP:TEST_GROUP_SYMBOL1 (SEMTREX_ZERO_OR_MORE (SEMTREX_GROUP:TEST_GROUP_SYMBOL2 (SEMTREX_SYMBOL_ANY)))) (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:sy4))))");
+    char buf[2000];
+    spec_is_str_equal(_dump_semtrex(G_sem,s,buf),"/TEST_STR_SYMBOL/(<TEST_GROUP_SYMBOL1:<TEST_GROUP_SYMBOL2:.>*>,sy4)");
+    //t = _t_parse(G_sem,0,"");
+    //t = (TEST_STR_SYMBOL:t (sy1:t1 (sy11:t11 (sy111:t111))) (sy2:t2 (sy21:t21) (sy22:t22)) (sy3:t3) (sy4:t4))
+    //debug_enable(D_STX_MATCH+D_STX_BUILD);
     spec_is_true(_t_matchr(s,t,&r));
+    debug_disable(D_STX_MATCH+D_STX_BUILD);
 
     spec_is_str_equal(t2s(r),"(SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:TEST_GROUP_SYMBOL1) (SEMTREX_MATCH_PATH:/1) (SEMTREX_MATCH_SIBLINGS_COUNT:3) (SEMTREX_MATCH:2 (SEMTREX_MATCH_SYMBOL:TEST_GROUP_SYMBOL2) (SEMTREX_MATCH_PATH:/1) (SEMTREX_MATCH_SIBLINGS_COUNT:1)) (SEMTREX_MATCH:2 (SEMTREX_MATCH_SYMBOL:TEST_GROUP_SYMBOL2) (SEMTREX_MATCH_PATH:/2) (SEMTREX_MATCH_SIBLINGS_COUNT:1)) (SEMTREX_MATCH:2 (SEMTREX_MATCH_SYMBOL:TEST_GROUP_SYMBOL2) (SEMTREX_MATCH_PATH:/3) (SEMTREX_MATCH_SIBLINGS_COUNT:1)))");
     _t_free(s);
@@ -522,21 +573,15 @@ void testMatchLiteralValue() {
 
     _t_free(t);
 
-    t = _t_new_root(ASCII_CHARS);
-    _t_newc(t,ASCII_CHAR,'a');
-    _t_newc(t,ASCII_CHAR,'b');
-    _t_newc(t,ASCII_CHAR,'/');
-
-    s = _sl(0,ASCII_CHARS);
-    T *sq = _t_newr(s,SEMTREX_SEQUENCE);
-    T *g = _t_news(sq,SEMTREX_GROUP,TEST_GROUP_SYMBOL1);
-    T *x = _t_newr(g,SEMTREX_ZERO_OR_MORE);
-    newvl(x,1,3,_t_newc(0,ASCII_CHAR,'/'),_t_newc(0,ASCII_CHAR,'?'),_t_newc(0,ASCII_CHAR,' '));
+    s = _t_parse(G_sem,0,"(SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:ASCII_CHARS) (SEMTREX_SEQUENCE (SEMTREX_GROUP:TEST_GROUP_SYMBOL1 (SEMTREX_ZERO_OR_MORE (SEMTREX_VALUE_LITERAL_NOT (SEMTREX_VALUE_SET (ASCII_CHAR:'/') (ASCII_CHAR:'?') (ASCII_CHAR:' ')))))))");
+    char buf[2000];
+    spec_is_str_equal(_dump_semtrex(G_sem,s,buf),"/ASCII_CHARS/<TEST_GROUP_SYMBOL1:ASCII_CHAR!={'/','?',' '}*>");
+    t = _t_parse(G_sem,0,"(ASCII_CHARS (ASCII_CHAR:'a') (ASCII_CHAR:'b') (ASCII_CHAR:'/'))");
 
     T *r;
-    //debug_enable(D_STX_MATCH);
+    //debug_enable(D_STX_MATCH+D_STX_BUILD);
     spec_is_true(_t_matchr(s,t,&r));
-    debug_disable(D_STX_MATCH);
+    debug_disable(D_STX_MATCH+D_STX_BUILD);
 
     spec_is_str_equal(t2s(r),"(SEMTREX_MATCH:1 (SEMTREX_MATCH_SYMBOL:TEST_GROUP_SYMBOL1) (SEMTREX_MATCH_PATH:/1) (SEMTREX_MATCH_SIBLINGS_COUNT:2))");
 
@@ -670,12 +715,12 @@ void testMatchNot() {
     //debug_disable(D_STX_MATCH);
 
     spec_is_str_equal(t2s(results),"");
-    int *p = _t_get_path(G_ts);
-    puts("MATCHPATH:");
-    puts(_t_sprint_path(p,buf));
+    //int *p = _t_get_path(G_ts);
+    //puts("MATCHPATH:");
+    //puts(_t_sprint_path(p,buf));
 
-    _t_free(results);
-    free(p);
+    //_t_free(results);
+    //free(p);
 
 /*    __t_dump(0,t,0,buf);
     puts("ABABBA:");
@@ -809,6 +854,20 @@ void testSemtrexParse() {
     spec_is_str_equal(_dump_semtrex(G_sem,s,buf),stx);
     spec_is_str_equal(t2s(s),"(SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:STX_TOKENS) (SEMTREX_SEQUENCE (SEMTREX_SYMBOL_LITERAL_NOT (SEMTREX_SYMBOL_SET (SEMTREX_SYMBOL:STX_OP) (SEMTREX_SYMBOL:STX_CP))) (SEMTREX_VALUE_LITERAL_NOT (SEMTREX_VALUE_SET (ASCII_CHAR:'a') (ASCII_CHAR:'b'))) (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL_SET (SEMTREX_SYMBOL:STX_OP) (SEMTREX_SYMBOL:STX_CP)))))");
     _t_free(s);
+
+    stx = "/HTTP_REQUEST/(HTTP_REQUEST_HEADERS/HTTP_REQUEST_HOST*,HTTP_REQUEST_BODY)";
+    s = parseSemtrex(G_sem,stx);
+    spec_is_str_equal(_dump_semtrex(G_sem,s,buf),stx);
+
+    spec_is_str_equal(t2s(s),"(SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:HTTP_REQUEST) (SEMTREX_SEQUENCE (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:HTTP_REQUEST_HEADERS)) (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:HTTP_REQUEST_BODY))))");
+    stx_dump(s);
+//(HTTP_REQUEST_LINE (HTTP_REQUEST_VERSION (VERSION_MAJOR:1) (VERSION_MINOR:1)) (HTTP_REQUEST_METHOD:\"GET\") (HTTP_REQUEST_PATH (HTTP_REQUEST_PATH_SEGMENTS (HTTP_REQUEST_PATH_SEGMENT:\"groups\") (HTTP_REQUEST_PATH_SEGMENT:\"5\")) (HTTP_REQUEST_PATH_FILE (FILE_NAME:\"users\") (FILE_EXTENSION:\"json\")) (HTTP_REQUEST_PATH_QUERY (HTTP_REQUEST_PATH_QUERY_PARAMS (HTTP_REQUEST_PATH_QUERY_PARAM (PARAM_KEY:\"sort_by\") (PARAM_VALUE:\"last_name\")) (HTTP_REQUEST_PATH_QUERY_PARAM (PARAM_KEY:\"page\") (PARAM_VALUE:\"2\"))))))
+    T *t = _t_parse(G_sem,0,"(HTTP_REQUEST  (HTTP_REQUEST_HEADERS (HTTP_REQUEST_HOST:\"fish.com\")) (HTTP_REQUEST_BODY))");
+
+    spec_is_true(_t_match(s,t));
+    _t_free(s);
+    _t_free(t);
+
 }
 
 void testSemtrexParseHHTPReq() {
@@ -923,7 +982,7 @@ void testSemtrexReplace() {
 
 void testSemtrex() {
     _stxSetup();
-    testMakeFA();
+    //testMakeFA();
     testMatchTrees();
     testSemtrexDump();
     testMatchOr();

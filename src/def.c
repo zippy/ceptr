@@ -421,6 +421,8 @@ T *__d_build_def_semtrex(SemTable *sem,T *def,T *stx) {
 T * _d_build_def_semtrex(SemTable *sem,Symbol s,T *parent) {
     T *stx = _sl(parent,s);
 
+    //printf("building semtrex for %s\n",_sem_get_name(sem,s));
+
     Structure st = _sem_get_symbol_structure(sem,s);
     if (!(is_sys_structure(st))) {
         T *structure = _sem_get_def(sem,st);
@@ -547,7 +549,7 @@ char * __t_dump(SemTable *sem,T *t,int level,char *buf) {
 
     char *n = _sem_get_name(sem,s);
     obuf = buf;
-    if (t == G_cursor) {sprintf(buf,KRED);buf += strlen(buf);}
+    if (t && (t == G_cursor)) {sprintf(buf,KRED);buf += strlen(buf);}
 
     if (is_process(s)) {
         sprintf(buf,"(process:%s",n);
@@ -646,7 +648,7 @@ char * __t_dump(SemTable *sem,T *t,int level,char *buf) {
             }
         }
     }
-    if (t == G_cursor) {sprintf(buf+strlen(buf),KNRM);}
+    if (t&&(t == G_cursor)) {sprintf(buf+strlen(buf),KNRM);}
 
     DO_KIDS(t,__t_dump(sem,_t_child(t,i),level < 0 ? level-1 : level+1,buf+strlen(buf)));
     sprintf(buf+strlen(buf),")");
