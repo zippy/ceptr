@@ -381,13 +381,13 @@ T *__d_build_def_semtrex(SemTable *sem,T *def,T *stx) {
         }
         else if (c > 1) {
             // semtrex OR is binary whereas structure def or is a set,
-            // so we have to build up a binary try OR structure
+            // so we have to build up a binary tree OR structure
             // so, we build it up from the bottom first, building from the
             // last child backwards.
             T *last = __d_build_def_semtrex(sem,_t_child(def,c),NULL);
             for(i=c-1;i>=1;i--) {
                 T *or = _t_new_root(SEMTREX_OR);
-                __d_build_def_semtrex(sem,_t_child(def,c),or);
+                __d_build_def_semtrex(sem,_t_child(def,i),or);
                 _t_add(or,last);
                 last = or;
             }

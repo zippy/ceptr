@@ -32,6 +32,7 @@
 
 #include <setjmp.h>
 
+Symbol A,B,C,D,E,F,Root;
 
 jmp_buf G_err;
 
@@ -47,6 +48,15 @@ int main(int argc, const char **argv) {
     //debug_enable(D_BOOT);
     load_contexts(G_sem);
     //debug_disable(D_BOOT);
+
+    // define some generic symbols for doing specs
+    sYt(A,NULL_STRUCTURE);
+    sYt(B,NULL_STRUCTURE);
+    sYt(C,NULL_STRUCTURE);
+    sYt(D,NULL_STRUCTURE);
+    sYt(E,NULL_STRUCTURE);
+    sYt(F,NULL_STRUCTURE);
+    sYt(Root,NULL_STRUCTURE);
 
     //**** core tests
     //   testSemTable();

@@ -8,6 +8,8 @@
 #include "../src/hashfn.h"
 #include "../src/semtrex.h"
 #include "../src/receptor.h"
+#include "http_example.h"
+#include "spec_utils.h"
 
 Symbol sy0 = {0,0,0};
 Symbol sy1 = {0,0,1};
@@ -22,11 +24,6 @@ Symbol sy4 = {0,0,4};
 Symbol TEST_GROUP_SYMBOL1;
 Symbol TEST_GROUP_SYMBOL2;
 
-Symbol A,B,C,D,E,F,Root;
-
-#define sYt(name,str) name = _d_define_symbol(G_sem,str,"" #name "",TEST_CONTEXT)
-#define sX(name,str) Symbol name = _d_define_symbol(G_sem,str,"" #name "",TEST_CONTEXT)
-
 void _stxSetup() {
     sYt(sy0,CSTRING);
     sYt(sy1,CSTRING);
@@ -40,13 +37,6 @@ void _stxSetup() {
     sYt(TEST_GROUP_SYMBOL1,INTEGER);
     sYt(TEST_GROUP_SYMBOL2,CSTRING);
 
-    sYt(A,NULL_STRUCTURE);
-    sYt(B,NULL_STRUCTURE);
-    sYt(C,NULL_STRUCTURE);
-    sYt(D,NULL_STRUCTURE);
-    sYt(E,NULL_STRUCTURE);
-    sYt(F,NULL_STRUCTURE);
-    sYt(Root,NULL_STRUCTURE);
 }
 
 T *_makeTestTree1() {
@@ -304,6 +294,14 @@ void testMatchStar() {
     spec_is_true(_t_match(s,t));
     debug_disable(D_STX_MATCH+D_STX_BUILD);
     _t_free(t);
+
+    t = _t_parse(G_sem,0,"(A (B) (D))");
+    debug_enable(D_STX_MATCH+D_STX_BUILD);
+    spec_is_true(_t_match(s,t));
+    debug_disable(D_STX_MATCH+D_STX_BUILD);
+    _t_free(t);
+
+
     _t_free(s);
 
 }

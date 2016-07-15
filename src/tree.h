@@ -99,6 +99,7 @@ T * _t_getv(T *t,...);
 int *_t_get_path(T *t);
 void * _t_get_surface(T *t,int *p);
 char * _t_sprint_path(int *fp,char *buf);
+T * _t_path_walk(T *t,int **pathP,int *lenP );
 
 /*****************  Tree hashing utilities */
 TreeHash _t_hash(SemTable *sem,T *t);

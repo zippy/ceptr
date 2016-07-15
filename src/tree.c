@@ -1047,7 +1047,7 @@ T *__t_find_actual(T *sem_map,Symbol actual_kind,T *replacement_kind) {
  * @snippet spec/tree_spec.h testTreeTemplate
  */
 bool __t_fill_template(T *template, T *sem_map,bool as_run_node) {
-    if (!template) return;
+    if (!template) return false;
     debug(D_TREE,"filling template:\n%s\n",__t2s(G_sem,template,INDENT));
     debug(D_TREE,"from sem_map:\n%s\n\n",__t2s(G_sem,sem_map,INDENT));
 
@@ -1113,7 +1113,6 @@ bool __t_fill_template(T *template, T *sem_map,bool as_run_node) {
                     SemanticID rsid = _t_symbol(replacement_value);
                     debug(D_TREE,"replacement value: %s\n",t2s(replacement_value));
                     // if the replacement value is a kind try to re-resolve from the map
-                    T *x = NULL;
                     if (semeq(rsid,ROLE)) {
                         T *x = __t_find_actual(sem_map,ACTUAL_RECEPTOR,replacement_value);
                         if (x) replacement_value = x;
@@ -1524,6 +1523,78 @@ char * _t_sprint_path(int *fp,char *buf) {
     return buf;
 }
 
+/**
+ * walk a tree using a path as a "cursor"
+ *
+ * the initial call to _t_path_walk can pass in NULL as the pointer, in which case
+ * the routine will allocate a buffer of size indicated in *lenP which should be a multiple
+ * of sizeof(int).  Subsequent calls expect *lenP to be the current size of the buffer which
+ * will be reallocated if needed.
+ *
+ * @param[in] t the tree to walk
+ * @param[in,out] pathP the pointer to the path cursor to walk from (allocates buffer if non provided)
+ * @param[in,out] lenP the path buffer size (used to calculate whether a realloc is needed)
+ *
+ * <b>Examples (from test suite):</b>
+ * @snippet spec/tree_spec.h testTreePathWalk
+ */
+T *_t_path_walk(T *t,int **pathP,int *lenP ) {
+    int *p,i;
+
+    if (*pathP == NULL) {
+
+        // if the pathP is NULL then this is the first call, so we can descend the left branch
+        // and malloc our path buffer based on how far we had to descend.
+        int d = 0;
+        while (_t_children(t)) {
+            t = _t_child(t,1);
+            d++;
+        }
+        *lenP = sizeof(int)*(d+1);
+        *pathP = p = malloc(*lenP);
+        for(i=0;i<d;i++) {p[i]=1;}
+        p[d]=TREE_PATH_TERMINATOR;
+        return t;
+    }
+    else {
+        // otherwise, figure out what we need to do by the context.
+        p = *pathP;
+        int d = _t_path_depth(p);
+
+        // if the current path is the root, then simply remain at the root because we are already done
+        // @todo how to signal this as an error?
+        if (d == 0) return NULL;
+
+        T *x = _t_get(t,p);
+        // the next node is always either the left descend of the current node's next sibling, or
+        // if it has no next sibling, then the parent
+        int cur_idx = p[d-1];
+        T* parent = _t_parent(x);
+        if (_t_children(parent) > cur_idx) {
+            // current node does have next siblings so next will be the left descend of the sibling
+            i = ++p[d-1];               // first adjust the path to be the next sibling
+            x = _t_child(parent,i);     // get the next sibling node
+            i = 0;
+            while (_t_children(x)) { // and do the left descend
+                x = _t_child(x,1);
+                i++;
+            }
+            // now check if we need to realloc
+            int new_depth_size = (i+d+1)*sizeof(int);
+            if ( new_depth_size > *lenP) {
+                *pathP = p = realloc(*pathP,*lenP=new_depth_size);
+            }
+            while(i--) p[d++]=1;
+            p[d]=TREE_PATH_TERMINATOR;
+            return x;
+        }
+        else {
+            // no next sibling so the next node is the parent
+            p[d-1] = TREE_PATH_TERMINATOR;
+            return parent;
+        }
+    }
+}
 
 /*****************  Tree hashing utilities */
 

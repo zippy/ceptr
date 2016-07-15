@@ -8,7 +8,6 @@
 #include "../src/receptor.h"
 #include "http_example.h"
 
-
 void testCreateTreeNodes() {
     /* test the creation of trees and the various function that give access to created data elements
        and basic tree structure navigation
@@ -297,6 +296,57 @@ void testTreePathSprint() {
     int p5[] = {3,0,2,1,1,TREE_PATH_TERMINATOR};
 
     spec_is_str_equal(_t_sprint_path(p5,buf),"/3/0/2/1/1");
+    //! [testTreePathSprint]
+}
+
+void testTreePathWalk() {
+    //! [testTreePathWalk]
+    T *x,*t = _t_parse(G_sem,0,"(Root (A) (B (C (D) (E))) (F))");
+
+    int *path = NULL;
+    int len;
+
+    x = _t_path_walk(t,&path,&len);
+    spec_is_str_equal(t2s(x),"(A)");
+    int p1[] = {1,TREE_PATH_TERMINATOR};
+    spec_is_path_equal(path,p1);
+    spec_is_equal(len,2*sizeof(int));
+
+    x = _t_path_walk(t,&path,&len);
+    spec_is_str_equal(t2s(x),"(D)");
+    int p2[] = {2,1,1,TREE_PATH_TERMINATOR};
+    spec_is_path_equal(path,p2);
+    spec_is_equal(len,4*sizeof(int));
+
+    x = _t_path_walk(t,&path,&len);
+    spec_is_str_equal(t2s(x),"(E)");
+    int p3[] = {2,1,2,TREE_PATH_TERMINATOR};
+    spec_is_path_equal(path,p3);
+
+    x = _t_path_walk(t,&path,&len);
+    spec_is_str_equal(t2s(x),"(C (D) (E))");
+    int p4[] = {2,1,TREE_PATH_TERMINATOR};
+    spec_is_path_equal(path,p4);
+
+    x = _t_path_walk(t,&path,&len);
+    spec_is_str_equal(t2s(x),"(B (C (D) (E)))");
+    int p5[] = {2,TREE_PATH_TERMINATOR};
+    spec_is_path_equal(path,p5);
+
+    x = _t_path_walk(t,&path,&len);
+    spec_is_str_equal(t2s(x),"(F)");
+    int p6[] = {3,TREE_PATH_TERMINATOR};
+    spec_is_path_equal(path,p6);
+
+    x = _t_path_walk(t,&path,&len);
+    spec_is_str_equal(t2s(x),"(Root (A) (B (C (D) (E))) (F))");
+    int p7[] = {TREE_PATH_TERMINATOR};
+    spec_is_path_equal(path,p7);
+
+    x = _t_path_walk(t,&path,&len);
+    spec_is_ptr_equal(x,NULL);
+
+    free(path);
     //! [testTreePathSprint]
 }
 
@@ -766,4 +816,5 @@ void testTree() {
     testTreeInt64();
     testTreeFindBySymbol();
     testTreeParse();
+     testTreePathWalk();
 }

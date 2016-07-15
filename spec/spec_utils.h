@@ -24,4 +24,9 @@ char *G_visdump_fn;
 int G_visdump_count;
 bool G_done;
 
+#define sYt(name,str) name = _d_define_symbol(G_sem,str,"" #name "",TEST_CONTEXT)
+#define sX(name,str) Symbol name = _d_define_symbol(G_sem,str,"" #name "",TEST_CONTEXT)
+
+Symbol A,B,C,D,E,F,Root;
+
 #endif
