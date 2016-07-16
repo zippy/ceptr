@@ -2,7 +2,8 @@
    {"sem":{ "ctx":0,"type":2,"id":1 },"children":[
       {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
          {"sem":{ "ctx":0,"type":2,"id":15 },"children":[
-            {"sem":{ "ctx":0,"type":2,"id":279 },"surface":"BIT"}]},
+            {"sem":{ "ctx":0,"type":2,"id":279 },"surface":"BIT"},
+            {"sem":{ "ctx":0,"type":2,"id":47 },"surface":"one or zero"}]},
          {"sem":{ "ctx":0,"type":2,"id":8 },"surface":{ "ctx":0,"type":2,"id":0 }}]},
       {"sem":{ "ctx":0,"type":2,"id":16 },"children":[
          {"sem":{ "ctx":0,"type":2,"id":15 },"children":[
@@ -3678,7 +3679,35 @@
                {"sem":{ "ctx":0,"type":2,"id":20 },"children":[
                   {"sem":{ "ctx":0,"type":2,"id":19 },"children":[
                      {"sem":{ "ctx":0,"type":2,"id":279 },"surface":"TEST_INTEGERS"}]},
-                  {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":3,"type":1,"id":1 }}]}]},
+                  {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":3,"type":1,"id":1 }}]},
+               {"sem":{ "ctx":0,"type":2,"id":20 },"children":[
+                  {"sem":{ "ctx":0,"type":2,"id":19 },"children":[
+                     {"sem":{ "ctx":0,"type":2,"id":279 },"surface":"A"}]},
+                  {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":0 }}]},
+               {"sem":{ "ctx":0,"type":2,"id":20 },"children":[
+                  {"sem":{ "ctx":0,"type":2,"id":19 },"children":[
+                     {"sem":{ "ctx":0,"type":2,"id":279 },"surface":"B"}]},
+                  {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":0 }}]},
+               {"sem":{ "ctx":0,"type":2,"id":20 },"children":[
+                  {"sem":{ "ctx":0,"type":2,"id":19 },"children":[
+                     {"sem":{ "ctx":0,"type":2,"id":279 },"surface":"C"}]},
+                  {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":0 }}]},
+               {"sem":{ "ctx":0,"type":2,"id":20 },"children":[
+                  {"sem":{ "ctx":0,"type":2,"id":19 },"children":[
+                     {"sem":{ "ctx":0,"type":2,"id":279 },"surface":"D"}]},
+                  {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":0 }}]},
+               {"sem":{ "ctx":0,"type":2,"id":20 },"children":[
+                  {"sem":{ "ctx":0,"type":2,"id":19 },"children":[
+                     {"sem":{ "ctx":0,"type":2,"id":279 },"surface":"E"}]},
+                  {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":0 }}]},
+               {"sem":{ "ctx":0,"type":2,"id":20 },"children":[
+                  {"sem":{ "ctx":0,"type":2,"id":19 },"children":[
+                     {"sem":{ "ctx":0,"type":2,"id":279 },"surface":"F"}]},
+                  {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":0 }}]},
+               {"sem":{ "ctx":0,"type":2,"id":20 },"children":[
+                  {"sem":{ "ctx":0,"type":2,"id":19 },"children":[
+                     {"sem":{ "ctx":0,"type":2,"id":279 },"surface":"Root"}]},
+                  {"sem":{ "ctx":0,"type":2,"id":18 },"surface":{ "ctx":0,"type":1,"id":0 }}]}]},
             {"sem":{ "ctx":0,"type":2,"id":3 }},
             {"sem":{ "ctx":0,"type":2,"id":5 }},
             {"sem":{ "ctx":0,"type":2,"id":4 }},

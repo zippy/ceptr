@@ -134,5 +134,5 @@ T *__sl(T *p, bool not,int count, ...);
 void __stx_dump(SState *s,char *buf);
 char * _stx_dump(SState *s,char *buf);
 void stx_dump(T *s);
-char G_stx_dump_buf[10000];
+char G_stx_dump_buf[100000];
 /** @}*/

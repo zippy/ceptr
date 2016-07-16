@@ -279,7 +279,7 @@ void testTreeConvert() {
     T *t = _makeTestHTTPRequestTree(); // GET /groups/5/users.json?sort_by=last_name?page=2 HTTP/1.0
     H h = _m_new_from_t(t);
 
-    spec_is_symbol_equal(0,_m_symbol(h),HTTP_REQUEST);
+    spec_is_symbol_equal(0,_m_symbol(h),HTTP_REQUEST_LINE);
     H hh = h;
     hh.a.l = 1;
     spec_is_symbol_equal(0,_m_symbol(hh),HTTP_REQUEST_VERSION);

@@ -1535,6 +1535,8 @@ char * _t_sprint_path(int *fp,char *buf) {
  * @param[in,out] pathP the pointer to the path cursor to walk from (allocates buffer if non provided)
  * @param[in,out] lenP the path buffer size (used to calculate whether a realloc is needed)
  *
+ * @todo optimize reallocing
+ *
  * <b>Examples (from test suite):</b>
  * @snippet spec/tree_spec.h testTreePathWalk
  */

@@ -298,7 +298,7 @@ char * __stx_makeFA(T *t,SState **in,Ptrlist **out,int level,int *statesP) {
     case SEMTREX_WALK_ID:
         debug(D_STX_BUILD,"WALK\n");
         if (c != 1) return "Walk must have 1 child";
-        s = state(StateWalk,statesP,level);
+        s = state(StateWalk,statesP,TransitionNone);
         *in = s;
         err = __stx_makeFA(_t_child(t,1),&i,&o,level,statesP);
         if (err) return err;
@@ -402,40 +402,62 @@ int __symbol_set_does_not_contain(T *s,T *t) {
 }
 
 /* advance the cursor according to the instructions in the state*/
-T * __transition(TransitionType transition,T *t) {
+T *__transition(TransitionType transition,T *source_t,int *cursor) {
     int i;
-    if (!t) debug(D_STX_MATCH,"transition: t is null\n");
-    if (!t) return 0;
+    i = 0;
+    char buf[1000];
+    debug(D_STX_MATCH,"transition: cursor %s\n",_t_sprint_path(cursor,buf));
+    while(cursor[i] != TREE_PATH_TERMINATOR) i++;
+//    if (!t) debug(D_STX_MATCH,"transition: t is null\n");
+//    if (!t) return 0;
     if (transition == TransitionDown) {
         debug(D_STX_MATCH,"transition: down\n");
-        t = _t_child(t,1);
+        //@todo add max checking
+        cursor[i++] = 1;
+        cursor[i]= TREE_PATH_TERMINATOR;
     }
     else if (isTransitionPop(transition)) {
         debug(D_STX_MATCH,"transition: popping %d\n",transition);
-        for(i=transition;i<0;i++) {
-            t = _t_parent(t);
+        if (i+transition <0) {
+            raise_error("transition: would pop above root!!\n");
         }
+        i = i+transition;
+        cursor[i] = TREE_PATH_TERMINATOR;
+        i--;
         // popping always means also moving to next child after the pop
-        t = _t_next_sibling(t);
+        if (i >= 0)
+            cursor[i]++;
     }
     else if (isTransitionNext(transition)) {
         debug(D_STX_MATCH,"transition: next\n");
-        t = _t_next_sibling(t);
+        i--;
+        if (i >= 0) cursor[i]++;
+        else {
+            // @todo this is weird because we are setting the path to something that
+            // we know will be invalid, but we don't have some true ontological representation
+            // of a "NULL_PATH" which we probably should really have, but that means adding
+            // checks for null path all over the place in tree.c
+            cursor[0] = -2;
+            cursor[1]= TREE_PATH_TERMINATOR;
+        }
     }
-
-    debug(D_STX_MATCH,"transition: result %s\n",!t ? "NULL":t2s(t));
+    T *t = _t_get(source_t,cursor);
+    debug(D_STX_MATCH,"transition: result %s %s\n",_t_sprint_path(cursor,buf),!t ? "NULL":t2s(t));
     return t;
 }
 
-// helper to see if the surface of given tree nodes matche
+// helper to see if the surface of given tree nodes matched
 /// @todo move this to tree.c
 int _val_match(T *t,T *t1) {
 
     int i;
-    char *p1,*p2;
     size_t l = _t_size(t1);
     debug(D_STX_MATCH,"comparing sizes %ld,%ld\n",l,_t_size(t));
     if (l != _t_size(t)) return 0;
+    // @todo this is dangerous because some surfaces, if they come from
+    // c sructures, might have extra bytes in them that aren't cleared/set by the compiler
+    // and will thus be different to a memcmp even though the values being stored
+    // are actually the same.
     i = memcmp(_t_surface(t),_t_surface(t1),l);
     debug(D_STX_MATCH,"compare result: %d\n",i);
     return i==0;
@@ -493,28 +515,31 @@ void __fix(T *source_t,T *r) {
 }
 
 #define MAX_BRANCH_DEPTH 5000
-
+#define CURSOR_MAX_DEPTH 100
 // structure to hold backtracking data for match algorithm
 typedef struct BranchPoint {
-    T *walk;
+    T *walk_root;
+    int *walk_cursor;
+    int walk_len;
     SState *s;
     TransitionType transition;
-    T *cursor;
-    T *cursor_prev;
+    int cursor[CURSOR_MAX_DEPTH];
+//    T *cursor;
+//    T *cursor_prev;
     T *match;
     int *r_path;
 } BranchPoint;
 
 char * __stx_dump_state(SState *s,char *buf);
 char G_stx_debug_buf[1000];
-#define _PUSH_BRANCH(state,t,c,cp,w) {                                    \
-        G_stx_debug_buf[0]=0;debug(D_STX_MATCH,"pushing split branch for backtracking to state %s\n    with cursor:%s and cur_prev:%s\n",__stx_dump_state(state,G_stx_debug_buf),c?t2s(c):"NULL",cp?t2s(cp):"NULL"); \
+#define _PUSH_BRANCH(state,t,crs,c,w) {                                  \
+        G_stx_debug_buf[0]=0;debug(D_STX_MATCH,"pushing split branch for backtracking to state %s\n    with cursor:%s \n",__stx_dump_state(state,G_stx_debug_buf),c?t2s(c):"NULL"); \
     if((depth+1)>=MAX_BRANCH_DEPTH) {raise_error("MAX branch depth exceeded");} \
     stack[depth].s = state;                                             \
     stack[depth].transition = t;                                        \
-    stack[depth].cursor = c;                                            \
-    stack[depth].cursor_prev = cp;                                      \
-    stack[depth].walk = w;                                              \
+    _t_pathcpy(stack[depth].cursor,crs);                                \
+    stack[depth].walk_root = w;                                         \
+    if (w) stack[depth].walk_cursor = NULL;                             \
     if (rP) {                                                           \
         if (*rP) {                                                      \
             stack[depth].match = _t_clone(*rP);                         \
@@ -525,11 +550,11 @@ char G_stx_debug_buf[1000];
     depth++;                                                            \
 }
 
-#define PUSH_BRANCH(state,t,c,cp) _PUSH_BRANCH(state,t,c,cp,0)
-#define PUSH_WALK_POINT(state,t,c,cp) _PUSH_BRANCH(state,t,c,cp,c)
+#define PUSH_BRANCH(state,t,crs,c) _PUSH_BRANCH(state,t,crs,c,0)
+#define PUSH_WALK_POINT(state,t,crs,c) _PUSH_BRANCH(state,t,crs,c,c)
 
 #define FAIL {s=0;break;}
-#define TRANSITION(x) if (!t) {FAIL;}; if (!x) {FAIL;}; t = __transition(s->transition,t); s = s->out;
+#define TRANSITION(x) if (!t) {FAIL;}; if (!x) {FAIL;}; t=__transition(s->transition,source_t,cursor); s = s->out;
 
 /**
  * build an FSA from semtrex tree and walk it using a recursive backtracing algorithm to match the tree in t.
@@ -545,7 +570,7 @@ int __t_match(T *semtrex,T *source_t,T **rP) {
     BranchPoint stack[MAX_BRANCH_DEPTH];
 
     int depth = 0;
-    T *t = source_t,*prev_t;
+    T *t = source_t;
     int matched;
     T *r = 0,*x;
     if (rP) *rP = 0;
@@ -555,8 +580,12 @@ int __t_match(T *semtrex,T *source_t,T **rP) {
     SState *fa = _stx_makeFA(semtrex,&states);
     SState *s = fa;
 
+    int cursor[100] = {TREE_PATH_TERMINATOR};
+
     while (s && s != &matchstate) {
+        t = _t_get(source_t,cursor);
         debug(D_STX_MATCH,"IN:%s\n",G_s_str[s->type]);
+        debug(D_STX_MATCH,"  CURSOR: %s\n",_t_sprint_path(cursor,buf));
         if (s->type == StateGroupOpen) {
             o = &s->data.groupo;
             debug(D_STX_MATCH,"   for %s\n",_sem_get_name(G_sem,o->symbol));
@@ -610,7 +639,7 @@ int __t_match(T *semtrex,T *source_t,T **rP) {
 
                 if (!matched) FAIL;
             }
-            t = __transition(s->transition,t);
+            t = __transition(s->transition,source_t,cursor);
             s = s->out;
             break;
         case StateSymbol:
@@ -629,12 +658,16 @@ int __t_match(T *semtrex,T *source_t,T **rP) {
             TRANSITION(1);
             break;
         case StateSplit:
-            PUSH_BRANCH(s->out1,s->transition1,t,prev_t);
+            PUSH_BRANCH(s->out1,s->transition1,cursor,t);
             s = s->out;
             break;
         case StateWalk:
             s = s->out;
-            PUSH_WALK_POINT(s,s->transition,t,prev_t);
+            // the walk point branch only gets pushed once because if the branch fails
+            // it just gets restarted with the cursor advanced one step from the last
+            // time through.  This is why we push on the destination state from the walk
+            // state instead of on the walk state itself.
+            PUSH_WALK_POINT(s,s->transition,cursor,t);
             break;
         case StateGroupOpen:
             o = &s->data.groupo;
@@ -659,7 +692,6 @@ int __t_match(T *semtrex,T *source_t,T **rP) {
             if (rP) {
 
                 int pt[2] = {3,TREE_PATH_TERMINATOR};
-//                if (prev_t != t) raise_error("BOING");
                 T *x = _t_new(0,SEMTREX_MATCH_CURSOR,&t,sizeof(t));
                 _t_insert_at(r, pt, x);
 
@@ -670,12 +702,18 @@ int __t_match(T *semtrex,T *source_t,T **rP) {
             break;
         case StateDescend:
             t = _t_child(t,1);
+            {
+                int i = 0;
+                //@todo add max checking
+                while(cursor[i] != TREE_PATH_TERMINATOR)i++;
+                cursor[i++] = 1;
+                cursor[i]= TREE_PATH_TERMINATOR;
+            }
             s = s->out;
             break;
         case StateMatch:
             break;
         }
-        prev_t = t;
         // if we just had a fail see if there is some backtracking we can do
         if (!s && depth) {
             --depth;
@@ -691,32 +729,30 @@ int __t_match(T *semtrex,T *source_t,T **rP) {
 
             // pop back to the state in the FSA where we failed
             s = stack[depth].s;
-            // reset the saved cursor
-            t = stack[depth].cursor;
-            prev_t = stack[depth].cursor_prev;
-            debug(D_STX_MATCH,"     popping to--%s\n", t ? t2s(t) : "NULL");
-            debug(D_STX_MATCH,"     prev_t:%s\n",prev_t ? t2s(prev_t) : "NULL");
-            debug(D_STX_MATCH,"     running tranistion:%d\n",stack[depth].transition);
-            // and run the transition that we saved for moving to that state that
-            // normally would have been run in the TRANSITION macro
-            t = __transition(stack[depth].transition,t);
 
-            T *walk = stack[depth].walk;
-            if(walk) {
-                t = _t_child(walk,1);
-                if (!t) {
-                    t = _t_next_sibling(walk);
-                    if (!t) {
-                        T *p = walk;
-                        T *root = stack[depth].cursor;
-                        while(1) {
-                            p = _t_parent(p);
-                            if (!p || p == root) {t = 0;break;}
-                            if ((t = _t_next_sibling(p))) break;
-                        }
-                    }
+            T *walk = stack[depth].walk_root;
+            if (!walk) {
+                // if this isn't a walk branch then:
+
+                // restore the saved cursor
+                _t_pathcpy(cursor,stack[depth].cursor);
+                t = _t_get(source_t,cursor);
+                debug(D_STX_MATCH,"     popping to--%s %s\n",_t_sprint_path(cursor,buf), t ? t2s(t) : "NULL");
+                debug(D_STX_MATCH,"     running transition:%d\n",stack[depth].transition);
+
+                // run the transition that we saved for
+                // moving to that state that normally would have been run in the TRANSITION macro
+                t = __transition(stack[depth].transition,source_t,cursor);
+            }
+            else {
+                // if it is a walk branch, then take the next step in the walk.
+                t = _t_path_walk(walk,&stack[depth].walk_cursor,&stack[depth].walk_len);
+                // if there is one then restart the branch otherwise we failed
+                if (t) {
+                    _t_pathcpy(cursor,stack[depth].walk_cursor);
+                    depth++;
+                    debug(D_STX_MATCH,"     walking to--%s %s\n",_t_sprint_path(cursor,buf), t ? t2s(t) : "NULL");
                 }
-                if (t) {stack[depth++].walk = t;}
                 else s = 0;
             }
         }
@@ -733,6 +769,9 @@ int __t_match(T *semtrex,T *source_t,T **rP) {
     }
     // clean up any remaining stack frames
     while (depth--) {
+        if (stack[depth].walk_root) {
+            if (stack[depth].walk_cursor) free(stack[depth].walk_cursor);
+        }
         if (rP) {
             if ((r = stack[depth].match)) {
                 _t_free(r);
@@ -2007,7 +2046,7 @@ char *transition2Str(TransitionType transition) {
 #include "ansicolor.h"
 static int dump_id = 99;
 SState *G_cur_stx_state = NULL;
-char G_stx_dump_buf[10000];
+char G_stx_dump_buf[100000];
 #define pbuf(...) sprintf(buf+strlen(buf),__VA_ARGS__)
 
 char * __stx_dump_state(SState *s,char *buf) {
@@ -2045,7 +2084,8 @@ char * __stx_dump_state(SState *s,char *buf) {
             }
         }
         else {
-            pbuf("%s",t2s(_t_child(_t_child(s->data.value.values,1),1)));
+            T *x = _t_child(s->data.value.values,1);
+            pbuf("%s",x ? t2s(_t_child(x,1)) : "_nil_");
         }
         pbuf(")");
         break;

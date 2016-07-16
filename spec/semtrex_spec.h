@@ -296,7 +296,7 @@ void testMatchStar() {
     _t_free(t);
 
     t = _t_parse(G_sem,0,"(A (B) (D))");
-    debug_enable(D_STX_MATCH+D_STX_BUILD);
+//    debug_enable(D_STX_MATCH+D_STX_BUILD);
     spec_is_true(_t_match(s,t));
     debug_disable(D_STX_MATCH+D_STX_BUILD);
     _t_free(t);
@@ -642,6 +642,7 @@ void testMatchWalk() {
 
     // search for a sequence
     //  %(sy3,sy4)
+    //debug_enable(D_STX_MATCH);
     s = _t_new_root(SEMTREX_WALK);
     T *g = _t_news(s,SEMTREX_GROUP,TEST_GROUP_SYMBOL1);
     T *sq = _t_newr(g,SEMTREX_SEQUENCE);
@@ -655,6 +656,15 @@ void testMatchWalk() {
     _t_free(s);
 
     _t_free(t);
+
+    // this test is taken from code that broke in semtrex parsing, I think because of the
+    // walking
+    s = _t_parse(G_sem,0,"(SEMTREX_WALK (SEMTREX_SEQUENCE (SEMTREX_ZERO_OR_MORE (SEMTREX_SYMBOL_ANY)) (SEMTREX_GROUP:STX_CHILD (SEMTREX_SEQUENCE (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:STX_LABEL)) (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:STX_SL)) (SEMTREX_SYMBOL_LITERAL_NOT (SEMTREX_SYMBOL:STX_SL))))))");
+    t = _t_parse(G_sem,0,"(STX_TOKENS (STX_SL) (STX_LABEL:\"TEST_STR_SYMBOL\") (STX_SL) (STX_SIBS (STX_LABEL:\"sy1\") (STX_SL) (STX_LABEL:\"sy11\") (STX_SL) (STX_LABEL:\"sy111\") (STX_COMMA) (STX_LABEL:\"sy2\") (STX_COMMA) (STX_LABEL:\"sy3\")))");
+
+    //debug_enable(D_STX_MATCH);
+    _t_matchr(s,t,&results);
+    debug_disable(D_STX_MATCH);
 
 }
 
@@ -787,7 +797,9 @@ void testSemtrexParse() {
     char *stx;
     T *s;
     stx = "/TEST_STR_SYMBOL/(sy1/sy11/sy111,sy2,sy3)";
+
     s = parseSemtrex(G_sem,stx);
+
     spec_is_str_equal(_dump_semtrex(G_sem,s,buf),stx);
     spec_is_str_equal(t2s(s),"(SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:TEST_STR_SYMBOL) (SEMTREX_SEQUENCE (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:sy1) (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:sy11) (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:sy111)))) (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:sy2)) (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:sy3))))");
     _t_free(s);
@@ -857,8 +869,8 @@ void testSemtrexParse() {
     s = parseSemtrex(G_sem,stx);
     spec_is_str_equal(_dump_semtrex(G_sem,s,buf),stx);
 
-    spec_is_str_equal(t2s(s),"(SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:HTTP_REQUEST) (SEMTREX_SEQUENCE (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:HTTP_REQUEST_HEADERS)) (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:HTTP_REQUEST_BODY))))");
-    stx_dump(s);
+    spec_is_str_equal(t2s(s),"(SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:HTTP_REQUEST) (SEMTREX_SEQUENCE (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:HTTP_REQUEST_HEADERS) (SEMTREX_ZERO_OR_MORE (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:HTTP_REQUEST_HOST)))) (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:HTTP_REQUEST_BODY))))");
+//    stx_dump(s);
 //(HTTP_REQUEST_LINE (HTTP_REQUEST_VERSION (VERSION_MAJOR:1) (VERSION_MINOR:1)) (HTTP_REQUEST_METHOD:\"GET\") (HTTP_REQUEST_PATH (HTTP_REQUEST_PATH_SEGMENTS (HTTP_REQUEST_PATH_SEGMENT:\"groups\") (HTTP_REQUEST_PATH_SEGMENT:\"5\")) (HTTP_REQUEST_PATH_FILE (FILE_NAME:\"users\") (FILE_EXTENSION:\"json\")) (HTTP_REQUEST_PATH_QUERY (HTTP_REQUEST_PATH_QUERY_PARAMS (HTTP_REQUEST_PATH_QUERY_PARAM (PARAM_KEY:\"sort_by\") (PARAM_VALUE:\"last_name\")) (HTTP_REQUEST_PATH_QUERY_PARAM (PARAM_KEY:\"page\") (PARAM_VALUE:\"2\"))))))
     T *t = _t_parse(G_sem,0,"(HTTP_REQUEST  (HTTP_REQUEST_HEADERS (HTTP_REQUEST_HOST:\"fish.com\")) (HTTP_REQUEST_BODY))");
 

@@ -59,27 +59,27 @@ int main(int argc, const char **argv) {
     sYt(Root,NULL_STRUCTURE);
 
     //**** core tests
-    //   testSemTable();
-//    testDef();
-    //testTree();
-    //testMTree();
-    //testStream();
-    //testLabel();
+    testSemTable();
+    testDef();
+    testTree();
+    testMTree();
+    testStream();
+    testLabel();
     testSemtrex();
-    //testProcess();
-    /* testReceptor(); */
-    /* testScape(); */
-    /* testVMHost(); */
-    /* testAccumulator(); */
-    /* testProtocol(); */
+    testProcess();
+    testReceptor();
+    testScape();
+    testVMHost();
+    testAccumulator();
+    testProtocol();
 
     /* /\**** receptor tests *\/ */
     /* /\* /\\* testGroup(); *\\/ *\/ */
 
-    //   testHTTP();
+    testHTTP();
 
     /****** examples */
-    /* testProfileExample(); */
+    testProfileExample();
 
     sys_free(G_sem);
     report_tests();

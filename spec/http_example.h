@@ -28,9 +28,9 @@ T *_makeTestHTTPRequestTree() {
 
     // confirm that we built the request right!
      T *stx = _d_build_def_semtrex(G_sem,HTTP_REQUEST,0);
-     puts(t2s(stx));
-     puts(t2s(t));
-     stx = _t_parse(G_sem,0,"(SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:HTTP_REQUEST) (SEMTREX_SEQUENCE (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:HTTP_REQUEST_LINE)) (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:HTTP_REQUEST_HEADERS) (SEMTREX_SEQUENCE (SEMTREX_ZERO_OR_MORE (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:CONTENT_ENCODING))))) (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:HTTP_REQUEST_BODY))))");
+     //   puts(t2s(stx));
+     //  puts(t2s(t));
+     //    stx = _t_parse(G_sem,0,"(SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:HTTP_REQUEST) (SEMTREX_SEQUENCE (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:HTTP_REQUEST_LINE)) (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:HTTP_REQUEST_HEADERS) (SEMTREX_SEQUENCE (SEMTREX_ZERO_OR_MORE (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:CONTENT_ENCODING))))) (SEMTREX_SYMBOL_LITERAL (SEMTREX_SYMBOL:HTTP_REQUEST_BODY))))");
      if (!_t_match(stx,t)) {raise_error("BAD HTTP_REQUEST semtrex");}
      _t_free(stx);
 
@@ -317,6 +317,7 @@ void testHTTPparseHTML() {
     _t_free(t);
 
 }
+
 //Host: fish.com\n\n
 void *_httptester(void *arg) {
     char *result = doSys("echo 'GET /path/to/file.ext HTTP/0.9' | nc localhost 8888");
@@ -378,7 +379,7 @@ void testHTTPedgeReceptor() {
     _t_free(bindings);
 
     //    debug_enable(D_TRANSCODE+D_STEP+D_STREAM);
-    debug_enable(D_SIGNALS+D_STEP+D_STREAM);
+    //debug_enable(D_SIGNALS+D_STEP+D_STREAM);
     _v_start_vmhost(G_vm);
 
     G_done = false;

@@ -429,11 +429,14 @@ void testTreeSwap() {
     // replace the version with a new version
     T *t_version = _t_newr(0,HTTP_REQUEST_VERSION);
     _t_newi(t_version,VERSION_MAJOR,1);
-    _t_newi(t_version,VERSION_MINOR,1);
+    _t_newi(t_version,VERSION_MINOR,2);
 
+    spec_is_str_equal(t2s(_t_child(t,1)),"(HTTP_REQUEST_VERSION (VERSION_MAJOR:1) (VERSION_MINOR:1))");
     T *s = _t_swap(t,1,t_version);
-    spec_is_str_equal(t2s(s),"(HTTP_REQUEST_VERSION (VERSION_MAJOR:1) (VERSION_MINOR:0))");
+    // swap returns the node swapped out as a root node
+    spec_is_str_equal(t2s(s),"(HTTP_REQUEST_VERSION (VERSION_MAJOR:1) (VERSION_MINOR:1))");
     spec_is_ptr_equal(_t_parent(s),NULL);
+    spec_is_str_equal(t2s(_t_child(t,1)),"(HTTP_REQUEST_VERSION (VERSION_MAJOR:1) (VERSION_MINOR:2))");
 
     _t_free(s);
     _t_free(t);
@@ -798,6 +801,7 @@ void testTree() {
     testTreePathDepth();
     testTreePathCopy();
     testTreePathSprint();
+    testTreePathWalk();
     testTreeClone();
     testTreeReplace();
     testTreeSwap();
@@ -816,5 +820,4 @@ void testTree() {
     testTreeInt64();
     testTreeFindBySymbol();
     testTreeParse();
-     testTreePathWalk();
 }
