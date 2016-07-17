@@ -362,7 +362,9 @@ Protocol _d_define_protocol(SemTable *sem,T *def,Context c) {
 T *__d_build_def_semtrex(SemTable *sem,T *def,T *stx) {
     Symbol def_sym = _t_symbol(def);
     if (semeq(def_sym,STRUCTURE_SYMBOL)) {
-        stx = _d_build_def_semtrex(sem,*(Symbol *)_t_surface(def),stx);
+        Symbol sym = *(Symbol *)_t_surface(def);
+        if (!semeq(NULL_SYMBOL,sym))
+            stx = _d_build_def_semtrex(sem,sym,stx);
     }
     else if (semeq(def_sym,STRUCTURE_SEQUENCE)) {
         int i,c = _t_children(def);
@@ -395,8 +397,18 @@ T *__d_build_def_semtrex(SemTable *sem,T *def,T *stx) {
             stx = last;
         }
     }
+    else if (semeq(def_sym,STRUCTURE_ANYTHING)) {
+        stx = _t_newr(stx,SEMTREX_ZERO_OR_MORE);
+        stx = _t_newr(stx,SEMTREX_SYMBOL_ANY);
+        if (_t_children(def))
+            __d_build_def_semtrex(sem,_t_child(def,1),stx);
+    }
     else if (semeq(def_sym,STRUCTURE_ZERO_OR_MORE)) {
         stx = _t_newr(stx,SEMTREX_ZERO_OR_MORE);
+        __d_build_def_semtrex(sem,_t_child(def,1),stx);
+    }
+    else if (semeq(def_sym,STRUCTURE_ONE_OR_MORE)) {
+        stx = _t_newr(stx,SEMTREX_ONE_OR_MORE);
         __d_build_def_semtrex(sem,_t_child(def,1),stx);
     }
     else {
@@ -422,9 +434,8 @@ T * _d_build_def_semtrex(SemTable *sem,Symbol s,T *parent) {
     T *stx = _sl(parent,s);
 
     //printf("building semtrex for %s\n",_sem_get_name(sem,s));
-
     Structure st = _sem_get_symbol_structure(sem,s);
-    if (!(is_sys_structure(st))) {
+    if (!semeq(st,NULL_STRUCTURE)) {
         T *structure = _sem_get_def(sem,st);
         T *def = _t_child(structure,StructureDefDefIdx);
         __d_build_def_semtrex(sem,def,stx);

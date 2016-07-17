@@ -73,8 +73,8 @@ int main(int argc, const char **argv) {
     testAccumulator();
     testProtocol();
 
-    /* /\**** receptor tests *\/ */
-    /* /\* /\\* testGroup(); *\\/ *\/ */
+    /**** receptor tests */
+    /* testGroup(); */
 
     testHTTP();
 
